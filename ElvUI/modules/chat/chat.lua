@@ -93,6 +93,18 @@ local smileyKeys = {
 	["</3"]="BrokenHeart",
 };
 
+local specialChatIcons = {
+	["Kil'jaeden"] = {
+		["Elvz"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\ElvUI_Chat_Logo:13:22|t"
+	},
+	["Illidan"] = {
+		["Affinichi"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\Bathrobe_Chat_Logo.blp:15:15|t",
+		["Uplift"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\Bathrobe_Chat_Logo.blp:15:15|t",
+		["Affinitii"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\Bathrobe_Chat_Logo.blp:15:15|t",
+		["Affinity"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\Bathrobe_Chat_Logo.blp:15:15|t"
+	},
+}
+
 CH.Keywords = {};
 
 function CH:GetGroupDistribution()
@@ -248,7 +260,7 @@ function CH:StyleChat(frame)
 			else
 				editbox:SetBackdropBorderColor(ChatTypeInfo[type..id].r,ChatTypeInfo[type..id].g,ChatTypeInfo[type..id].b)
 			end
-		else
+		elseif type then
 			editbox:SetBackdropBorderColor(ChatTypeInfo[type].r,ChatTypeInfo[type].g,ChatTypeInfo[type].b)
 		end
 	end)
@@ -310,10 +322,18 @@ end
 
 function CH:OnEnter(frame)
 	_G[frame:GetName().."Text"]:Show()
+	
+	if frame.conversationIcon then
+		frame.conversationIcon:Show()
+	end
 end
 
 function CH:OnLeave(frame)
 	_G[frame:GetName().."Text"]:Hide()
+	
+	if frame.conversationIcon then
+		frame.conversationIcon:Hide()
+	end
 end
 
 local x = CreateFrame('Frame')
@@ -328,19 +348,41 @@ function CH:SetupChatTabs(frame, hook)
 	
 	if not hook then
 		_G[frame:GetName().."Text"]:Show()
+		
+		if frame.conversationIcon then
+			frame.conversationIcon:Show()
+		end
 	elseif GetMouseFocus() ~= frame then
 		_G[frame:GetName().."Text"]:Hide()
+		
+		if frame.conversationIcon then 
+			frame.conversationIcon:Hide()
+		end
 	end
 end
 
-function CH:PositionChat(override)
-	if (InCombatLockdown() and not override and self.initialMove) or (IsMouseButtonDown("LeftButton") and not override) then return end
+function CH:UpdateAnchors()
+	for _, frameName in pairs(CHAT_FRAMES) do
+		local frame = _G[frameName..'EditBox']
+		if not frame then break; end
+		if E.db.datatexts.leftChatPanel and E.db.chat.editBoxPosition == 'BELOW_CHAT' then
+			frame:SetAllPoints(LeftChatDataPanel)
+		else
+			frame:SetAllPoints(LeftChatTab)
+		end
+	end
 	
+	CH:PositionChat(true)
+end
+
+function CH:PositionChat(override)
+	if not self.db.lockPositions or ((InCombatLockdown() and not override and self.initialMove) or (IsMouseButtonDown("LeftButton") and not override)) then return end
+	if not RightChatPanel or not LeftChatPanel then return; end
 	RightChatPanel:Size(E.db.chat.panelWidth, E.db.chat.panelHeight)
 	LeftChatPanel:Size(E.db.chat.panelWidth, E.db.chat.panelHeight)	
 	
 	if E.private.chat.enable ~= true then return end
-	
+		
 	local chat, chatbg, tab, id, point, button, isDocked, chatFound
 	for _, frameName in pairs(CHAT_FRAMES) do
 		chat = _G[frameName]
@@ -358,8 +400,12 @@ function CH:PositionChat(override)
 	else
 		self.RightChatWindowID = nil
 	end
-	
+
 	for i=1, CreatedFrames do
+		local BASE_OFFSET = 60
+		if E.PixelMode then
+			BASE_OFFSET = BASE_OFFSET - 3
+		end	
 		chat = _G[format("ChatFrame%d", i)]
 		chatbg = format("ChatFrame%dBackground", i)
 		button = _G[format("ButtonCF%d", i)]
@@ -378,18 +424,20 @@ function CH:PositionChat(override)
 				isDocked = false
 			end	
 		end	
-		
-		if not chat.isInitialized then return end
+
 		
 		if point == "BOTTOMRIGHT" and chat:IsShown() and not (id > NUM_CHAT_WINDOWS) and id == self.RightChatWindowID then
-			if id ~= 2 then
-				chat:ClearAllPoints()
+			chat:ClearAllPoints()
+			if E.db.datatexts.rightChatPanel then
 				chat:Point("BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 1, 3)
-				chat:SetSize(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - 60))
 			else
-				chat:ClearAllPoints()
-				chat:Point("BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 1, 3)
-				chat:Size(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - 60) - CombatLogQuickButtonFrame_Custom:GetHeight())				
+				BASE_OFFSET = BASE_OFFSET - 24
+				chat:Point("BOTTOMLEFT", RightChatDataPanel, "BOTTOMLEFT", 1, 1)
+			end
+			if id ~= 2 then
+				chat:SetSize(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - BASE_OFFSET))
+			else
+				chat:Size(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - BASE_OFFSET) - CombatLogQuickButtonFrame_Custom:GetHeight())				
 			end
 			
 			
@@ -414,8 +462,13 @@ function CH:PositionChat(override)
 		else
 			if id ~= 2 and not (id > NUM_CHAT_WINDOWS) then
 				chat:ClearAllPoints()
-				chat:Point("BOTTOMLEFT", LeftChatToggleButton, "TOPLEFT", 1, 3)
-				chat:Size(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - 60))
+				if E.db.datatexts.leftChatPanel then
+					chat:Point("BOTTOMLEFT", LeftChatToggleButton, "TOPLEFT", 1, 3)
+				else
+					BASE_OFFSET = BASE_OFFSET - 24
+					chat:Point("BOTTOMLEFT", LeftChatToggleButton, "BOTTOMLEFT", 1, 1)
+				end
+				chat:Size(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - BASE_OFFSET))
 				FCF_SavePositionAndDimensions(chat)		
 			end
 			chat:SetParent(LeftChatPanel)
@@ -423,6 +476,7 @@ function CH:PositionChat(override)
 			if chat:IsMovable() then
 				chat:SetUserPlaced(true)
 			end
+			
 			if E.db.chat.panelBackdrop == 'HIDEBOTH' or E.db.chat.panelBackdrop == 'RIGHT' then
 				CH:SetupChatTabs(tab, true)
 			else
@@ -553,25 +607,43 @@ function CH:AddMessage(text, ...)
 			text = text:gsub("^%["..RAID_WARNING.."%]", '['..L['RW']..']')	
 			text = text:gsub("%[BN_CONVERSATION:", '%['..L["BN:"])
 		end
-	
+
+		local timeStamp
 		if CHAT_TIMESTAMP_FORMAT ~= nil then
-			TIMESTAMP_FORMAT = CHAT_TIMESTAMP_FORMAT
-			CHAT_TIMESTAMP_FORMAT = nil;
-		elseif GetCVar('showTimestamps') == 'none' then
-			TIMESTAMP_FORMAT = nil;
+			timeStamp = BetterDate(CHAT_TIMESTAMP_FORMAT, time());
+			text = text:gsub(timeStamp, '')
 		end
 		
 		--Add Timestamps
-		if ( TIMESTAMP_FORMAT ) then
-			local timestamp = BetterDate(TIMESTAMP_FORMAT, time())
-			timestamp = timestamp:gsub(' ', '')
-			timestamp = timestamp:gsub('AM', ' AM')
-			timestamp = timestamp:gsub('PM', ' PM')
-			text = '|cffB3B3B3['..timestamp..'] |r'..text
+		if ( CH.db.timeStampFormat and CH.db.timeStampFormat ~= 'NONE' ) then
+			timeStamp = BetterDate(CH.db.timeStampFormat, CH.timeOverride or time());
+			timeStamp = timeStamp:gsub(' ', '')
+			timeStamp = timeStamp:gsub('AM', ' AM')
+			timeStamp = timeStamp:gsub('PM', ' PM')
+			text = '|cffB3B3B3['..timeStamp..'] |r'..text
 		end
+		
+		if specialChatIcons[E.myrealm] then
+			for character, texture in pairs(specialChatIcons[E.myrealm]) do
+				text = text:gsub('|Hplayer:'..character..':', texture..'|Hplayer:'..character..':')
+			end
 			
-		text = text:gsub('|Hplayer:Elvz:', '|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t|Hplayer:Elvz:')
-		text = text:gsub('|Hplayer:Elvz%-', '|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t|Hplayer:Elvz%-')
+			for realm, _ in pairs(specialChatIcons) do
+				if realm ~= E.myrealm then
+					for character, texture in pairs(specialChatIcons[realm]) do
+						text = text:gsub("|Hplayer:"..character.."%-"..realm, texture.."|Hplayer:"..character.."%-"..realm)
+					end
+				end
+			end			
+		else
+			for realm, _ in pairs(specialChatIcons) do
+				for character, texture in pairs(specialChatIcons[realm]) do
+					text = text:gsub("|Hplayer:"..character.."%-"..realm, texture.."|Hplayer:"..character.."%-"..realm)
+				end
+			end		
+		end
+		
+		CH.timeOverride = nil;
 	end
 
 	self.OldAddMessage(self, text, ...)
@@ -627,14 +699,7 @@ function CH:DisableHyperlink()
 	end
 end
 
-function CH:EnableChatThrottle()
-	self:RegisterEvent("CHAT_MSG_CHANNEL", "ChatThrottleHandler")
-	self:RegisterEvent("CHAT_MSG_YELL", "ChatThrottleHandler")	
-end
-
 function CH:DisableChatThrottle()
-	self:UnregisterEvent("CHAT_MSG_CHANNEL")
-	self:UnregisterEvent("CHAT_MSG_YELL")	
 	table.wipe(msgList); table.wipe(msgCount); table.wipe(msgTime)
 end
 
@@ -650,17 +715,15 @@ function CH:SetupChat(event, ...)
 		else
 			frame:SetShadowColor(0, 0, 0, 1)
 		end
-		frame:SetShadowOffset((E.mult or 1), -(E.mult or 1))		
+		frame:SetTimeVisible(100)
+		frame:SetShadowOffset((E.mult or 1), -(E.mult or 1))	
+		frame:SetFading(self.db.fade)
 	end	
 	
 	if self.db.hyperlinkHover then
 		self:EnableHyperlink()
 	end
-	
-	if self.db.throttleInterval ~= 0 then
-		self:EnableChatThrottle()
-	end
-	
+
 	GeneralDockManager:SetParent(LeftChatPanel)
 	self:ScheduleRepeatingTimer('PositionChat', 1)
 	self:PositionChat(true)
@@ -675,8 +738,9 @@ local sizes = {
 	":14:14",
 	":15:15",
 	":16:16",
-	":12:20",
+	":13:22",
 	":14",
+	":16",
 }
 
 local function PrepareMessage(author, message)
@@ -700,6 +764,7 @@ end
 
 local locale = GetLocale()
 function CH:CHAT_MSG_CHANNEL(event, message, author, ...)
+	
 	local isSpam = nil
 	if locale == 'enUS' or locale == 'enGB' then
 		isSpam = CH.SpamFilter(self, event, message, author, ...)
@@ -710,7 +775,6 @@ function CH:CHAT_MSG_CHANNEL(event, message, author, ...)
 	else
 		local blockFlag = false
 		local msg = PrepareMessage(author, message)
-		
 
 		-- ignore player messages
 		if author == UnitName("player") then return CH.FindURL(self, event, message, author, ...) end
@@ -933,15 +997,93 @@ function CH:PET_BATTLE_CLOSE()
 	end
 end
 
+function CH:UpdateFading()
+	for _, frameName in pairs(CHAT_FRAMES) do
+		local frame = _G[frameName]
+		if frame then
+			frame:SetFading(self.db.fade)
+		end
+	end
+end
+
+function CH:DisplayChatHistory()	
+	local temp, data = {}
+	for id, _ in pairs(ElvCharacterData.ChatHistory) do
+		table.insert(temp, tonumber(id))
+	end
+	
+	table.sort(temp, function(a, b)
+		return a < b
+	end)
+	
+	for i = 1, #temp do
+		data = ElvCharacterData.ChatHistory[tostring(temp[i])]
+
+		if type(data) == "table" then
+			CH.timeOverride = temp[i]
+			ChatFrame_MessageEventHandler(DEFAULT_CHAT_FRAME, data[20], unpack(data))
+		end
+	end
+end
+
+local function GetTimeForSavedMessage()
+	local randomTime = select(2, ("."):split(GetTime() or "0."..math.random(1, 999), 2)) or 0
+	return time().."."..randomTime
+end
+
+function CH:SaveChatHistory(event, ...)
+	if self.db.throttleInterval ~= 0 and (event == 'CHAT_MESSAGE_SAY' or event == 'CHAT_MESSAGE_YELL' or event == 'CHAT_MSG_CHANNEL') then	
+		self:ChatThrottleHandler(event, ...)		
+		
+		local message, author = ...
+		local msg = PrepareMessage(author, message)
+		if author ~= UnitName("player") and msgList[msg] then
+			if difftime(time(), msgTime[msg]) <= CH.db.throttleInterval then
+				return;
+			end
+		end		
+	end
+	
+	local temp = {...}
+	if #temp > 0 then
+	  temp[20] = event
+	  local timeForMessage = GetTimeForSavedMessage()
+	  ElvCharacterData.ChatHistory[timeForMessage] = temp
+	  
+		local c, k = 0
+		for id, data in pairs(ElvCharacterData.ChatHistory) do
+			c = c + 1
+			if (not k) or k > id then
+				k = id
+			end
+		end
+		
+		if c > 128 then
+			ElvCharacterData.ChatHistory[k] = nil
+		end	  
+	end
+end
+
+DEFAULT_CHAT_FRAME:UnregisterEvent("GUILD_MOTD")
 function CH:Initialize()
 	self.db = E.db.chat
-	if E.private.chat.enable ~= true then return end
+	local msg = GetGuildRosterMOTD() or ""
+	if E.private.chat.enable ~= true then 
+		DEFAULT_CHAT_FRAME:RegisterEvent("GUILD_MOTD")
+		ChatFrame_SystemEventHandler(DEFAULT_CHAT_FRAME, "GUILD_MOTD", msg)
+		return 
+	end
 	if not ElvCharacterData.ChatEditHistory then
 		ElvCharacterData.ChatEditHistory = {};
 	end
 	
+	if not ElvCharacterData.ChatHistory or not self.db.chatHistory then
+		ElvCharacterData.ChatHistory = {};
+	end
+	
 	self:UpdateChatKeywords()
-
+	
+	self:UpdateFading()
 	E.Chat = self
 	self:SecureHook('ChatEdit_OnEnterPressed')
 	FriendsMicroButton:Kill()
@@ -959,7 +1101,27 @@ function CH:Initialize()
 	self:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
 	self:RegisterEvent('PET_BATTLE_CLOSE')
 	self:SetupChat()
-
+	self:UpdateAnchors()
+	
+	self:RegisterEvent('CHAT_MSG_BATTLEGROUND', 'SaveChatHistory')
+	self:RegisterEvent('CHAT_MSG_BATTLEGROUND_LEADER', 'SaveChatHistory')
+	self:RegisterEvent("CHAT_MSG_BN_WHISPER", 'SaveChatHistory')
+	self:RegisterEvent("CHAT_MSG_BN_WHISPER_INFORM", 'SaveChatHistory')
+	self:RegisterEvent("CHAT_MSG_CHANNEL", 'SaveChatHistory')
+	self:RegisterEvent("CHAT_MSG_EMOTE", 'SaveChatHistory')
+	self:RegisterEvent("CHAT_MSG_GUILD", 'SaveChatHistory')
+	self:RegisterEvent("CHAT_MSG_GUILD_ACHIEVEMENT", 'SaveChatHistory')
+	self:RegisterEvent("CHAT_MSG_OFFICER", 'SaveChatHistory')
+	self:RegisterEvent("CHAT_MSG_PARTY", 'SaveChatHistory')
+	self:RegisterEvent("CHAT_MSG_PARTY_LEADER", 'SaveChatHistory')
+	self:RegisterEvent("CHAT_MSG_RAID", 'SaveChatHistory')
+	self:RegisterEvent("CHAT_MSG_RAID_LEADER", 'SaveChatHistory')
+	self:RegisterEvent("CHAT_MSG_RAID_WARNING", 'SaveChatHistory')
+	self:RegisterEvent("CHAT_MSG_SAY", 'SaveChatHistory')
+	self:RegisterEvent("CHAT_MSG_WHISPER", 'SaveChatHistory')
+	self:RegisterEvent("CHAT_MSG_WHISPER_INFORM", 'SaveChatHistory')
+	self:RegisterEvent("CHAT_MSG_YELL", 'SaveChatHistory')
+	
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_CHANNEL", CH.CHAT_MSG_CHANNEL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_YELL", CH.CHAT_MSG_YELL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_SAY", CH.CHAT_MSG_SAY)
@@ -978,7 +1140,26 @@ function CH:Initialize()
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER_INFORM", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_INLINE_TOAST_BROADCAST", CH.FindURL)
 	
+	
+	if self.db.chatHistory then
+		self.SoundPlayed = true;
+		self:DisplayChatHistory()
+		self.SoundPlayed = nil;
+		local f = CreateFrame('Frame')
+		local OnUpdate = function(self)
+			local msg = GetGuildRosterMOTD()
+			if (msg and msg:len() > 0) then
+				ChatFrame_SystemEventHandler(DEFAULT_CHAT_FRAME, "GUILD_MOTD", msg)		
+				DEFAULT_CHAT_FRAME:RegisterEvent("GUILD_MOTD")
+				self:SetScript('OnUpdate', nil)
+			end		
+		end
+		f:SetScript('OnUpdate', OnUpdate)
+	end
+		
+	
 	local S = E:GetModule('Skins')
+	S:HandleNextPrevButton(CombatLogQuickButtonFrame_CustomAdditionalFilterButton, true)
 	local frame = CreateFrame("Frame", "CopyChatFrame", E.UIParent)
 	frame:SetTemplate('Transparent')
 	frame:Size(700, 200)
@@ -1010,7 +1191,11 @@ function CH:Initialize()
 		
 		for _, size in pairs(sizes) do
 			if string.find(text, size) and not string.find(text, size.."]") then
-				self:SetText(string.gsub(text, size, ":12:12"))
+				if size == ':13:22' then
+					self:SetText(string.gsub(text, size, ":12:20"))
+				else
+					self:SetText(string.gsub(text, size, ":12:12"))
+				end
 			end		
 		end
 	end)
@@ -1021,6 +1206,12 @@ function CH:Initialize()
 	close:EnableMouse(true)
 	
 	S:HandleCloseButton(close)	
+
+	--Disable Blizzard
+	InterfaceOptionsSocialPanelTimestampsButton:SetAlpha(0)
+	InterfaceOptionsSocialPanelTimestampsButton:SetScale(0.000001)
+	InterfaceOptionsSocialPanelTimestamps:SetAlpha(0)
+	InterfaceOptionsSocialPanelTimestamps:SetScale(0.000001)
 end
 
 E:RegisterModule(CH:GetName())

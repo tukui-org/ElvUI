@@ -2,12 +2,12 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
+	LootHistoryFrame:SetFrameStrata('HIGH')
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.loot ~= true then return end
 	local frame = MissingLootFrame
 
 	frame:StripTextures()
 	frame:CreateBackdrop("Default")
-	frame:CreateShadow()
 
 	S:HandleCloseButton(MissingLootFramePassButton)
 
@@ -20,8 +20,9 @@ local function LoadSkin()
 
 			S:HandleItemButton(slot, true)
 
-			local quality = select(4, GetMissingLootItemInfo(i))
+			local texture, name, count, quality = GetMissingLootItemInfo(i);
 			local color = (GetItemQualityColor(quality)) or (unpack(E.media.bordercolor))
+			icon:SetTexture(texture)
 			frame:SetBackdropBorderColor(color)
 		end
 		
@@ -65,7 +66,53 @@ local function LoadSkin()
 			end
 		end
 	end
-	hooksecurefunc("LootHistoryFrame_FullUpdate", UpdateLoots)	
+	hooksecurefunc("LootHistoryFrame_FullUpdate", UpdateLoots)
+
+	--masterloot
+	MasterLooterFrame:StripTextures()
+	MasterLooterFrame:SetTemplate()
+	MasterLooterFrame:SetFrameStrata('FULLSCREEN_DIALOG')
+	
+	hooksecurefunc("MasterLooterFrame_Show", function()
+		local b = MasterLooterFrame.Item
+		if b then
+			local i = b.Icon
+			local icon = i:GetTexture()
+			local c = ITEM_QUALITY_COLORS[LootFrame.selectedQuality]
+
+			b:StripTextures()
+			i:SetTexture(icon)
+			i:SetTexCoord(unpack(E.TexCoords))
+			b:CreateBackdrop()
+			b.backdrop:SetOutside(i)
+			b.backdrop:SetBackdropBorderColor(c.r, c.g, c.b)
+		end
+
+		for i=1, MasterLooterFrame:GetNumChildren() do
+			local child = select(i, MasterLooterFrame:GetChildren())
+			if child and not child.isSkinned and not child:GetName() then
+				if child:GetObjectType() == "Button" then
+					if child:GetPushedTexture() then
+						S:HandleCloseButton(child)
+					else
+						child:SetTemplate()
+						child:StyleButton()
+					end
+					child.isSkinned = true
+				end
+			end
+		end
+	end) 
+	
+	BonusRollFrame:StripTextures()
+	BonusRollFrame:SetTemplate('Transparent')
+	BonusRollFrame.PromptFrame.Icon:SetTexCoord(unpack(E.TexCoords))
+	BonusRollFrame.PromptFrame.IconBackdrop = CreateFrame("Frame", nil, BonusRollFrame.PromptFrame)
+	BonusRollFrame.PromptFrame.IconBackdrop:SetFrameLevel(BonusRollFrame.PromptFrame.IconBackdrop:GetFrameLevel() - 1)
+	BonusRollFrame.PromptFrame.IconBackdrop:SetOutside(BonusRollFrame.PromptFrame.Icon)
+	BonusRollFrame.PromptFrame.IconBackdrop:SetTemplate()	
+	BonusRollFrame.PromptFrame.Timer.Bar:SetTexture(1, 1, 1)
+	BonusRollFrame.PromptFrame.Timer.Bar:SetVertexColor(1, 1, 1)
 end
 
 S:RegisterSkin("ElvUI", LoadSkin)

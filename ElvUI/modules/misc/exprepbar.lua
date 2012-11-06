@@ -6,8 +6,8 @@ FACTION_STANDING_LABEL100 = UNKNOWN
 function M:UpdateExpRepAnchors()
 	local repBar = ReputationBarMover
 	local expBar = ExperienceBarMover
-	
-	if E.db.movers and (E:HasMoverBeenMoved('ExperienceBarMover') or E:HasMoverBeenMoved('ReputationBarMover')) or not repBar or not expBar then return; end
+
+	if (E:HasMoverBeenMoved('ExperienceBarMover') or E:HasMoverBeenMoved('ReputationBarMover')) or not repBar or not expBar then return; end
 	repBar:ClearAllPoints()
 	expBar:ClearAllPoints()
 	
@@ -106,11 +106,11 @@ function M:UpdateReputation(event)
 		
 		
 		if textFormat == 'PERCENT' then
-			text = string.format('%d%% [%s]', value / max * 100, _G['FACTION_STANDING_LABEL'..ID])
+			text = string.format('%s: %d%% [%s]', name, ((value - min) / (max - min) * 100), _G['FACTION_STANDING_LABEL'..ID])
 		elseif textFormat == 'CURMAX' then
-			text = string.format('%s - %s [%s]', E:ShortValue(value), E:ShortValue(max), _G['FACTION_STANDING_LABEL'..ID])
+			text = string.format('%s: %s - %s [%s]', name, E:ShortValue(value - min), E:ShortValue(max - min), _G['FACTION_STANDING_LABEL'..ID])
 		elseif textFormat == 'CURPERC' then
-			text = string.format('%s - %d%% [%s]', E:ShortValue(value), value / max * 100, _G['FACTION_STANDING_LABEL'..ID])
+			text = string.format('%s: %s - %d%% [%s]', name, E:ShortValue(value - min), ((value - min) / (max - min) * 100), _G['FACTION_STANDING_LABEL'..ID])
 		end					
 		
 		bar.text:SetText(text)		
@@ -237,4 +237,6 @@ function M:LoadExpRepBar()
 
 	E:CreateMover(self.expBar, "ExperienceBarMover", "Experience Bar")
 	E:CreateMover(self.repBar, "ReputationBarMover", "Reputation Bar")
+	
+	self:UpdateExpRepAnchors()
 end

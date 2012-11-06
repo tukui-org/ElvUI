@@ -26,6 +26,9 @@ E['valueColorUpdateFuncs'] = {};
 E.TexCoords = {.08, .92, .08, .92}
 E.FrameLocks = {}
 E.CreditsList = {};
+E.Spacing = 1;
+E.Border = 2;
+E.PixelMode = false;
 
 E.InversePoints = {
 	TOP = 'BOTTOM',
@@ -135,6 +138,18 @@ local function CheckClassColor(r, g, b)
 	return matchFound
 end
 
+function E:GetColorTable(data)
+	if not data.r or not data.g or not data.b then
+		error("Could not unpack color values.")
+	end
+	
+	if data.a then
+		return {data.r, data.g, data.b, data.a}
+	else
+		return {data.r, data.g, data.b}
+	end
+end
+
 function E:UpdateMedia()	
 	--Fonts
 	self["media"].normFont = LSM:Fetch("font", self.db['general'].font)
@@ -157,12 +172,10 @@ function E:UpdateMedia()
 	self["media"].bordercolor = {border.r, border.g, border.b}
 
 	--Backdrop Color
-	local backdrop = self.db['general'].backdropcolor
-	self["media"].backdropcolor = {backdrop.r, backdrop.g, backdrop.b}
+	self["media"].backdropcolor = E:GetColorTable(self.db['general'].backdropcolor)
 
 	--Backdrop Fade Color
-	backdrop = self.db['general'].backdropfadecolor
-	self["media"].backdropfadecolor = {backdrop.r, backdrop.g, backdrop.b, backdrop.a}
+	self["media"].backdropfadecolor = E:GetColorTable(self.db['general'].backdropfadecolor)
 	
 	--Value Color
 	local value = self.db['general'].valuecolor
@@ -182,7 +195,7 @@ function E:UpdateMedia()
 		RightChatPanel.tex:SetTexture(E.db.chat.panelBackdropNameRight)
 		RightChatPanel.tex:SetAlpha(E.db.general.backdropfadecolor.a - 0.55 > 0 and E.db.general.backdropfadecolor.a - 0.55 or 0.5)		
 	end
-
+	
 	self:ValueFuncCall()
 	self:UpdateBlizzardFonts()
 end
@@ -192,6 +205,7 @@ function E:RequestBGInfo()
 end
 
 function E:PLAYER_ENTERING_WORLD()
+	self:CheckRole()
 	if not self.MediaUpdated then
 		self:UpdateMedia()
 		self.MediaUpdated = true;
@@ -225,7 +239,7 @@ end
 
 function E:UpdateBorderColors()
 	for frame, _ in pairs(self["frames"]) do
-		if frame then
+		if frame and not frame.ignoreUpdates then
 			if frame.template == 'Default' or frame.template == 'Transparent' or frame.template == nil then
 				frame:SetBackdropBorderColor(unpack(self['media'].bordercolor))
 			end
@@ -262,6 +276,8 @@ function E:UpdateFontTemplates()
 		end
 	end
 end
+
+
 
 --This frame everything in ElvUI should be anchored to for Eyefinity support.
 E.UIParent = CreateFrame('Frame', 'ElvUIParent', UIParent);
@@ -339,8 +355,8 @@ function E:CheckRole()
 			self.role = "Caster";
 		end		
 	end
-	
-	if self.HealingClasses[self.myclass] and not self.myclass == 'PRIEST' then
+
+	if self.HealingClasses[self.myclass] ~= nil and self.myclass ~= 'PRIEST' then
 		if self:CheckTalentTree(self.HealingClasses[self.myclass]) then
 			self.DispelClasses[self.myclass].Magic = true;
 		else
@@ -349,34 +365,43 @@ function E:CheckRole()
 	end
 end
 
+function E:IncompatibleAddOn(addon, module)
+	E.PopupDialogs['INCOMPATIBLE_ADDON'].button1 = addon
+	E.PopupDialogs['INCOMPATIBLE_ADDON'].button2 = 'ElvUI '..module
+	E.PopupDialogs['INCOMPATIBLE_ADDON'].addon = addon
+	E.PopupDialogs['INCOMPATIBLE_ADDON'].module = module
+	E:StaticPopup_Show('INCOMPATIBLE_ADDON', addon, module)
+end
+
 function E:CheckIncompatible()
+	if E.global.ignoreIncompatible then return; end
 	if IsAddOnLoaded('Prat-3.0') and E.private.chat.enable then
-		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Prat', 'Chat'))
+		E:IncompatibleAddOn('Prat-3.0', 'Chat')
 	elseif IsAddOnLoaded('Chatter') and E.private.chat.enable then
-		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Chatter', 'Chat'))
+		E:IncompatibleAddOn('Chatter', 'Chat')
 	end
 	
-	if IsAddOnLoaded('Bartender4') and E.private.actionbar.enable then
-		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Bartender', 'ActionBar'))
+	--[[if IsAddOnLoaded('Bartender4') and E.private.actionbar.enable then
+		E:IncompatibleAddOn('Bartender4', 'ActionBar')
 	elseif IsAddOnLoaded('Dominos') and E.private.actionbar.enable then
-		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Dominos', 'ActionBar'))
-	end	
+		E:IncompatibleAddOn('Dominos', 'ActionBar')
+	end]]
 	
 	if IsAddOnLoaded('TidyPlates') and E.private.nameplate.enable then
-		E:Print(format(L['INCOMPATIBLE_ADDON'], 'TidyPlates', 'NamePlate'))
+		E:IncompatibleAddOn('TidyPlates', 'NamePlate')
 	elseif IsAddOnLoaded('Aloft') and E.private.nameplate.enable then
-		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Aloft', 'NamePlate'))
+		E:IncompatibleAddOn('Aloft', 'NamePlate')
 	end	
 	
-	if IsAddOnLoaded('ArkInventory') and E.private.general.bags then
-		E:Print(format(L['INCOMPATIBLE_ADDON'], 'ArkInventory', 'Bags'))
-	elseif IsAddOnLoaded('Bagnon') and E.private.general.bags then
-		E:Print(format(L['INCOMPATIBLE_ADDON'], 'Bagnon', 'Bags'))
-	elseif IsAddOnLoaded('OneBag3') and E.private.general.bags then
-		E:Print(format(L['INCOMPATIBLE_ADDON'], 'OneBag3', 'Bags'))
-	elseif IsAddOnLoaded('OneBank3') and E.private.general.bags then
-		E:Print(format(L['INCOMPATIBLE_ADDON'], 'OneBank3', 'Bags'))
-	end
+	--[[if IsAddOnLoaded('ArkInventory') and E.private.bags.enable then
+		E:IncompatibleAddOn('ArkInventory', 'Bags')
+	elseif IsAddOnLoaded('Bagnon') and E.private.bags.enable then
+		E:IncompatibleAddOn('Bagnon', 'Bags')
+	elseif IsAddOnLoaded('OneBag3') and E.private.bags.enable then
+		E:IncompatibleAddOn('OneBag3', 'Bags')
+	elseif IsAddOnLoaded('OneBank3') and E.private.bags.enable then
+		E:IncompatibleAddOn('OneBank3', 'Bags')
+	end]]
 end
 
 function E:IsFoolsDay()
@@ -425,12 +450,12 @@ local function SendRecieve(self, event, prefix, message, channel, sender)
 	if event == "CHAT_MSG_ADDON" then
 		if sender == E.myname then return end
 
-		if prefix == "ElvUIVC" and sender ~= 'Elvz' and not string.find(sender, 'Elvz%-') and not E.recievedOutOfDateMessage then
+		if prefix == "ElvUIVC" and sender ~= 'Elvz' and not string.find(sender, "Elvz%-Kil'jaeden") and not E.recievedOutOfDateMessage then
 			if E.version ~= 'BETA' and tonumber(message) ~= nil and tonumber(message) > tonumber(E.version) then
 				E:Print(L["Your version of ElvUI is out of date. You can download the latest version from http://www.tukui.org"])
 				E.recievedOutOfDateMessage = true
 			end
-		elseif prefix == 'ElvSays' and (sender == 'Elvz' or string.find(sender, 'Elvz-')) then ---HAHHAHAHAHHA
+		elseif prefix == 'ElvSays' and ((sender == 'Elvz' and E.myrealm == "Kil'jaeden") or string.find(sender, "Elvz%-Kil'jaeden")) then ---HAHHAHAHAHHA
 			local user, channel, msg, sendTo = string.split(',', message)
 			
 			if (user ~= 'ALL' and user == E.myname) or user == 'ALL' then
@@ -456,7 +481,8 @@ function E:UpdateAll(ignoreInstall)
 	self.global = self.data.global;
 	
 	self:SetMoversPositions()
-
+	self:UpdateMedia()
+	
 	local UF = self:GetModule('UnitFrames')
 	UF.db = self.db.unitframe
 	UF:Update_AllFrames()
@@ -471,11 +497,17 @@ function E:UpdateAll(ignoreInstall)
 	AB:UpdateMicroPositionDimensions()
 	 
 	local bags = E:GetModule('Bags'); 
+	bags.db = self.db.bags
 	bags:Layout(); 
 	bags:Layout(true); 
 	bags:PositionBagFrames()
 	bags:SizeAndPositionBagBar()
-
+	
+	local totems = E:GetModule('Totems'); 
+	totems.db = self.db.general.totems
+	totems:PositionAndSize()
+	totems:ToggleEnable()
+	
 	self:GetModule('Layout'):ToggleChatPanels()
 	
 	local DT = self:GetModule('DataTexts')
@@ -509,10 +541,14 @@ function E:UpdateAll(ignoreInstall)
 	
 	self:GetModule('Minimap'):UpdateSettings()
 	
-	self:UpdateMedia()
 	self:UpdateBorderColors()
 	self:UpdateBackdropColors()
 	self:UpdateFrameTemplates()
+	
+	local LO = E:GetModule('Layout')
+	LO:ToggleChatPanels()	
+	LO:BottomPanelVisibility()
+	LO:TopPanelVisibility()
 	
 	collectgarbage('collect');
 end
@@ -571,7 +607,10 @@ function E:InitializeInitialModules()
 	for _, module in pairs(E['RegisteredInitialModules']) do
 		local module = self:GetModule(module, true)
 		if module and module.Initialize then
-			module:Initialize()
+			local _, catch = pcall(module.Initialize, module)
+			if catch and GetCVarBool('scriptErrors') == 1 then
+				ScriptErrorsFrame_OnError(catch, false)
+			end
 		end
 	end
 end
@@ -584,9 +623,155 @@ end
 
 function E:InitializeModules()	
 	for _, module in pairs(E['RegisteredModules']) do
-		if self:GetModule(module).Initialize then
-			self:GetModule(module):Initialize()
+		local module = self:GetModule(module)
+		if module.Initialize then
+			local _, catch = pcall(module.Initialize, module)
+			if catch and GetCVarBool('scriptErrors') == 1 then
+				ScriptErrorsFrame_OnError(catch, false)
+			end
 		end
+	end
+end
+
+--DATABASE CONVERSIONS
+function E:DBConversions()
+	if type(self.db.unitframe.units.arena.pvpTrinket) == 'boolean' then
+		self.db.unitframe.units.arena.pvpTrinket = table.copy(self.DF["profile"].unitframe.units.arena.pvpTrinket, true)
+	end	
+
+	local invalidValues = {
+		['current-percent'] = true,
+		['current-max'] = true,
+		['current'] = true,
+		['percent'] = true,
+		['deficit'] = true,
+		['blank'] = true,
+	}
+	
+	for unit, _ in pairs(self.db.unitframe.units) do
+		if self.db.unitframe.units[unit] and type(self.db.unitframe.units[unit]) == 'table' then
+			for optionGroup, _ in pairs(self.db.unitframe.units[unit]) do
+				if self.db.unitframe.units[unit][optionGroup] and type(self.db.unitframe.units[unit][optionGroup]) == 'table' then
+					if self.db.unitframe.units[unit][optionGroup].text_format and invalidValues[self.db.unitframe.units[unit][optionGroup].text_format] then
+						if P.unitframe.units[unit] then
+							self.db.unitframe.units[unit][optionGroup].text_format = P.unitframe.units[unit][optionGroup].text_format
+						else
+							P.unitframe.units[unit] = nil; --this is old old code that shoulda been removed.. pre 3.5 code
+						end
+					end
+				end
+			end
+		end
+	end
+	
+	--To prevent confusion
+	--If any of the following settings are differant from default settings, we'll disable smart aura display
+	--Because this option seems to cause a lot of confusion
+	if self.db.unitframe.units.target.buffs.enable ~= P.unitframe.units.target.buffs.enable then
+		E.db.unitframe.units.target.smartAuraDisplay = 'DISABLED'
+	end
+	
+	if self.db.unitframe.units.target.debuffs.enable ~= P.unitframe.units.target.debuffs.enable then
+		E.db.unitframe.units.target.smartAuraDisplay = 'DISABLED'
+	end	
+	
+	if self.db.unitframe.units.target.aurabar.enable ~= P.unitframe.units.target.aurabar.enable then
+		E.db.unitframe.units.target.smartAuraDisplay = 'DISABLED'
+	end	
+	
+	if self.db.unitframe.units.target.aurabar.anchorPoint ~= P.unitframe.units.target.aurabar.anchorPoint then
+		E.db.unitframe.units.target.smartAuraDisplay = 'DISABLED'
+	end		
+	
+	if type(self.db.tooltip.ufhide) == 'boolean' then
+		self.db.tooltip.ufhide = 'ALL';
+	end
+	
+	if self.db.auras.consolidedBuffs then
+		self.db.auras.consolidatedBuffs.enable = self.db.auras.consolidedBuffs
+		self.db.auras.consolidedBuffs = nil;
+	end
+	
+	if self.db.auras.filterConsolidated then
+		self.db.auras.consolidatedBuffs.filter = self.db.auras.filterConsolidated
+		self.db.auras.filterConsolidated = nil;
+	end	
+	
+	if self.db.auras.consolidatedDurations then
+		self.db.auras.consolidatedBuffs.durations = self.db.auras.consolidatedDurations
+		self.db.auras.consolidatedDurations = nil;
+	end	
+	
+	--Why?? Because these units can only have one type of reaction
+	local booleanUnits = {
+		['player'] = true,
+		['pet'] = true,
+		['boss'] = true,
+		['party'] = true,
+		['raid10'] = true,
+		['raid25'] = true,
+		['raid40'] = true,
+	}
+	
+	local changedOptions = {
+		['playerOnly'] = true,
+		['noConsolidated'] = true,
+		['useBlacklist'] = true,
+		['useWhitelist'] = true,
+		['noDuration'] = true,
+		['onlyDispellable'] = true
+	}
+	
+	for unit, _ in pairs(self.db.unitframe.units) do
+		if self.db.unitframe.units[unit] and type(self.db.unitframe.units[unit]) == 'table' then
+			for optionGroup, _ in pairs(self.db.unitframe.units[unit]) do
+				if (optionGroup == 'buffs' or optionGroup == 'debuffs' or optionGroup == 'aurabar') and self.db.unitframe.units[unit][optionGroup] and type(self.db.unitframe.units[unit][optionGroup]) == 'table' then
+					for option, value in pairs(self.db.unitframe.units[unit][optionGroup]) do
+						if changedOptions[option] then
+							if booleanUnits[unit] then
+								if self.db.unitframe.units[unit][optionGroup][option] == 'ALL' or self.db.unitframe.units[unit][optionGroup][option] == 'FRIENDLY' or self.db.unitframe.units[unit][optionGroup][option] == 'ENEMY' then
+									self.db.unitframe.units[unit][optionGroup][option] = true;
+								elseif self.db.unitframe.units[unit][optionGroup][option] == 'NONE' then
+									self.db.unitframe.units[unit][optionGroup][option] = false;
+								end
+							else
+								--Do this in an array? eh whatever
+								if self.db.unitframe.units[unit][optionGroup][option] == 'ALL' then
+									self.db.unitframe.units[unit][optionGroup][option] = {friendly = true, enemy = true};
+								elseif self.db.unitframe.units[unit][optionGroup][option] == 'FRIENDLY' then
+									self.db.unitframe.units[unit][optionGroup][option] = {friendly = true, enemy = false};
+								elseif self.db.unitframe.units[unit][optionGroup][option] == 'ENEMY' then
+									self.db.unitframe.units[unit][optionGroup][option] = {friendly = false, enemy = true};
+								elseif self.db.unitframe.units[unit][optionGroup][option] == 'NONE' then
+									self.db.unitframe.units[unit][optionGroup][option] = {friendly = false, enemy = false};
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+		
+		if self.db.unitframe.units[unit] and self.db.unitframe.units[unit].castbar then
+			if unit == 'player' then
+				if self.db.unitframe.units[unit].castbar.color then
+					self.db.unitframe.colors.castColor = self.db.unitframe.units[unit].castbar.color
+				end
+				
+				if self.db.unitframe.units[unit].castbar.interruptcolor then
+					self.db.unitframe.colors.castNoInterrupt = self.db.unitframe.units[unit].castbar.interruptcolor
+				end				
+			end
+			
+			if self.db.unitframe.units[unit].castbar.color or self.db.unitframe.units[unit].castbar.interruptcolor then
+				self.db.unitframe.units[unit].castbar.color = nil;
+				self.db.unitframe.units[unit].castbar.interruptcolor = nil;
+			end
+		end
+	end	
+	
+	if self.db.install_complete and not self.global.newThemePrompt and self.db.theme ~= 'pixelPerfect' then
+		self.private.general.pixelPerfect = false;
 	end
 end
 
@@ -605,7 +790,8 @@ function E:Initialize()
 	self.db = self.data.profile;
 	self.global = self.data.global;
 	self:CheckIncompatible()
-
+	self:DBConversions()
+	
 	self:CheckRole()
 	self:UIScale('PLAYER_LOGIN');
 
@@ -616,8 +802,12 @@ function E:Initialize()
 
 	self.initialized = true
 	
-	if self.db.install_complete == nil or (self.db.install_complete and type(self.db.install_complete) == 'boolean') or (self.db.install_complete and type(tonumber(self.db.install_complete)) == 'number' and tonumber(self.db.install_complete) <= 3.83) then
+	if self.db.install_complete == nil then
 		self:Install()
+	elseif (self.db.install_complete and type(self.db.install_complete) == 'boolean') or (self.db.install_complete and type(tonumber(self.db.install_complete)) == 'number' and tonumber(self.db.install_complete) <= 4.22) then
+		self:Install()
+		ElvUIInstallFrame.SetPage(7)
+		self:StaticPopup_Show('CONFIGAURA_SET')
 	end
 	
 	if not string.find(date(), '04/01/') then	
@@ -655,5 +845,16 @@ function E:Initialize()
 	
 	if self.db.general.loginmessage then
 		print(select(2, E:GetModule('Chat'):FindURL(nil, format(L['LOGIN_MSG'], self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version)))..'.')
+	end	
+
+	
+	if self.__showMessage then
+		if self.private.general.pixelPerfect then
+			self.global.newThemePrompt = true;
+		else
+			self:StaticPopup_Show('NEW_THEME');
+		end
+	elseif self.__setupTheme then
+		self:SetupTheme('pixelPerfect', nil, true);
 	end	
 end

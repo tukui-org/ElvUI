@@ -19,7 +19,6 @@ local function LoadSkin()
 	PlayerTalentFrame.backdrop:SetAllPoints()
 	PlayerTalentFrame.backdrop:SetFrameLevel(0)
 	PlayerTalentFrame.backdrop:SetPoint('BOTTOMRIGHT', PlayerTalentFrame, 'BOTTOMRIGHT', 0, -6)
-	PlayerTalentFrame.backdrop:CreateShadow('Default')
 	
 	PlayerTalentFrameInset:StripTextures()
 	PlayerTalentFrameInset:CreateBackdrop('Default')
@@ -89,7 +88,7 @@ local function LoadSkin()
 	
 	hooksecurefunc('PlayerTalentFrame_UpdateSpecs', function()
 		local point, relatedTo, point2, x, y = PlayerSpecTab1:GetPoint()
-		PlayerSpecTab1:Point(point, relatedTo, point2, 1, y)	
+		PlayerSpecTab1:Point(point, relatedTo, point2, E.PixelMode and -1 or 1, y)	
 	end)
 
 	for i = 1, MAX_NUM_TALENT_TIERS do
@@ -116,9 +115,7 @@ local function LoadSkin()
 			bu.bg:CreateBackdrop("Overlay")
 			bu.bg:SetFrameLevel(bu:GetFrameLevel() - 1)
 			bu.bg:Point("TOPLEFT", 15, -1)
-			bu.bg:Point("BOTTOMRIGHT", -10, 1)
-			bu.bg:CreateShadow('Default')
-			bu.bg.shadow:SetBackdropBorderColor(0, 1, 0, 1)			
+			bu.bg:Point("BOTTOMRIGHT", -10, 1)	
 		end
 	end
 

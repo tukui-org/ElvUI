@@ -1,53 +1,73 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local A = E:GetModule('Auras');
+local LSM = LibStub("LibSharedMedia-3.0")
 
 A.Stats = {
-	117667, --Legacy of The Emperor
-	1126, -- Mark of The Wild
-	20217, -- Blessing Of Kings
+	[90363] = 'HUNTER', -- Embrace of the Shale Spider
+	[117667] = 'MONK', --Legacy of The Emperor
+	[1126] = 'DRUID', -- Mark of The Wild
+	[20217] = 'PALADIN', -- Blessing Of Kings
+	['DEFAULT'] = 20217
 }
 
 A.Stamina = {
-	469, -- Commanding Shout
-	6307, -- Imp. Blood Pact
-	21562, -- Power Word: Fortitude
+	[90364] = 'HUNTER', -- Qiraji Fortitude
+	[469] = 'WARRIOR', -- Commanding Shout
+	[6307] = 'WARLOCK', -- Imp. Blood Pact
+	[21562] = 'PRIEST', -- Power Word: Fortitude
+	['DEFAULT'] = 21562
 }
 
 A.AttackPower = {
-	19506, -- Trueshot Aura
-	6673, -- Battle Shout
-	57330, -- Horn of Winter
+	[19506] = 'HUNTER', -- Trueshot Aura
+	[6673] = 'WARRIOR', -- Battle Shout
+	[57330] = 'DEATHKNIGHT', -- Horn of Winter
+	['DEFAULT'] = 57330
 }
 
 A.SpellPower = {
-	77747, -- Burning Wrath
-	109773, -- Dark Intent
-	61316, -- Dalaran Brilliance
-	1459, -- Arcane Brilliance
+	[126309] = 'HUNTER', -- Still Water
+	[77747] = 'SHAMAN', -- Burning Wrath
+	[109773] = 'WARLOCK', -- Dark Intent
+	[61316] = 'MAGE', -- Dalaran Brilliance
+	[1459] = 'MAGE', -- Arcane Brilliance
+	['DEFAULT'] = 1459
 }
 
 A.AttackSpeed = {
-	30809, -- Unleashed Rage
-	113742, -- Swiftblade's Cunning
-	55610, -- Improved Icy Talons
+	[128432] = 'HUNTER', -- Cackling Howl
+	[128433] = 'HUNTER', -- Serpent's Swiftness
+	[30809] = 'SHAMAN', -- Unleashed Rage
+	[113742] = 'ROGUE', -- Swiftblade's Cunning
+	[55610] = 'DEATHKNIGHT', -- Improved Icy Talons
+	['DEFAULT'] = 55610
 }
 
 A.SpellHaste = {
-	24907, -- Moonkin Aura
-	51470, -- Elemental Oath
-	49868, -- Mind Quickening
+	[24907] = 'DRUID', -- Moonkin Aura
+	[51470] = 'SHAMAN', -- Elemental Oath
+	[49868] = 'PRIEST', -- Mind Quickening
+	['DEFAULT'] = 49868
 }
 
 A.CriticalStrike = {
-	1459, -- Arcane Brilliance
-	61316, -- Dalaran Brilliance
-	24932, -- Leader of The Pact
-	116781, -- Legacy of the White Tiger
+	[126309] = 'HUNTER', -- Still Water
+	[24604] = 'HUNTER', -- Furious Howl
+	[90309] = 'HUNTER', -- Terrifying Roar
+	[126373] = 'HUNTER', -- Fearless Roar
+	[1459] = 'MAGE', -- Arcane Brilliance
+	[61316] = 'MAGE', -- Dalaran Brilliance
+	[24932] = 'DRUID', -- Leader of The Pact
+	[116781] = 'MONK', -- Legacy of the White Tiger
+	['DEFAULT'] = 116781
 }
 
 A.Mastery = {
-	116956, --Grace of Air
-	19740, -- Blessing of Might
+	[93435] = 'HUNTER', --Roar of Courage
+	[128997] = 'HUNTER', --Spirit Beast Blessing
+	[116956] = 'SHAMAN', --Grace of Air
+	[19740] = 'PALADIN', -- Blessing of Might	
+	['DEFAULT'] = 19740
 }
 
 A.IndexTable = {
@@ -61,17 +81,41 @@ A.IndexTable = {
 
 function A:CheckFilterForActiveBuff(filter)
 	local spellName, texture
-	for _, spell in pairs(filter) do
-		spellName, _, texture = GetSpellInfo(spell)
-		
-		assert(spellName, spell..': ID is not correct.')
-		
-		if UnitAura("player", spellName) then
-			return spellName, texture
+	for spell, _ in pairs(filter) do
+		if spell ~= 'DEFAULT' then
+			spellName, _, texture = GetSpellInfo(spell)
+			
+			assert(spellName, spell..': ID is not correct.')
+			
+			if UnitAura("player", spellName) then
+				return spellName, texture
+			end
 		end
+		
+		texture =  select(3, GetSpellInfo(filter['DEFAULT']))
 	end
 
 	return false, texture
+end
+
+function A:UpdateConsolidatedTime(elapsed)
+	if(self.expiration) then	
+		self.expiration = math.max(self.expiration - elapsed, 0)
+		if(self.expiration <= 0) then
+			self.timer:SetText("")
+		else
+			local time = A:FormatTime(self.expiration)
+			if self.expiration <= 86400.5 and self.expiration > 3600.5 then
+				self.timer:SetText("|cffcccccc"..time.."|r")
+			elseif self.expiration <= 3600.5 and self.expiration > 60.5 then
+				self.timer:SetText("|cffcccccc"..time.."|r")
+			elseif self.expiration <= 60.5 and self.expiration > E.db.auras.fadeThreshold then
+				self.timer:SetText("|cffcccccc"..time.."|r")
+			elseif self.expiration <= 5 then
+				self.timer:SetText("|cffff0000"..time.."|r")
+			end
+		end
+	end
 end
 
 function A:UpdateReminder(event, unit)
@@ -79,37 +123,80 @@ function A:UpdateReminder(event, unit)
 	local frame = self.frame
 	
 	if event ~= 'UNIT_AURA' and not InCombatLockdown() then
-		if E.role == 'Caster' then
-			ConsolidatedBuffsTooltipBuff3:Hide()
-			ConsolidatedBuffsTooltipBuff4:Hide()
-			ConsolidatedBuffsTooltipBuff5:Show()
-			ConsolidatedBuffsTooltipBuff6:Show()			
+		if E.db.auras.consolidatedBuffs.filter then
+			if E.role == 'Caster' then
+				ConsolidatedBuffsTooltipBuff3:Hide()
+				ConsolidatedBuffsTooltipBuff4:Hide()
+				ConsolidatedBuffsTooltipBuff5:Show()
+				ConsolidatedBuffsTooltipBuff6:Show()			
+			else
+				ConsolidatedBuffsTooltipBuff3:Show()
+				ConsolidatedBuffsTooltipBuff4:Show()
+				ConsolidatedBuffsTooltipBuff5:Hide()
+				ConsolidatedBuffsTooltipBuff6:Hide()		
+			end
 		else
-			ConsolidatedBuffsTooltipBuff3:Show()
-			ConsolidatedBuffsTooltipBuff4:Show()
-			ConsolidatedBuffsTooltipBuff5:Hide()
-			ConsolidatedBuffsTooltipBuff6:Hide()		
+			for i=3, 6 do
+				_G['ConsolidatedBuffsTooltipBuff'..i]:Show()
+			end			
 		end
 	end
 	
-	if E.role == 'Caster' then
-		A.IndexTable[3] = A.SpellPower
-		A.IndexTable[4] = A.SpellHaste
+	if E.db.auras.consolidatedBuffs.filter then
+		A.IndexTable[7] = nil;
+		A.IndexTable[8] = nil;		
+		A.IndexTable[5] = A.CriticalStrike;
+		A.IndexTable[6] = A.Mastery;
+		
+		if E.role == 'Caster' then
+			A.IndexTable[3] = A.SpellPower
+			A.IndexTable[4] = A.SpellHaste
+		else
+			A.IndexTable[3] = A.AttackPower
+			A.IndexTable[4] = A.AttackSpeed
+		end
 	else
-		A.IndexTable[3] = A.AttackPower
-		A.IndexTable[4] = A.AttackSpeed
+		A.IndexTable[3] = A.AttackPower;
+		A.IndexTable[4] = A.AttackSpeed;
+		A.IndexTable[5] = A.SpellPower;
+		A.IndexTable[6] = A.SpellHaste;			
+		A.IndexTable[7] = A.CriticalStrike;
+		A.IndexTable[8] = A.Mastery;	
 	end
 	
-	
-	for i = 1, 6 do
+	for i = 1, E.db.auras.consolidatedBuffs.filter and 6 or 8 do
 		local hasBuff, texture = self:CheckFilterForActiveBuff(self.IndexTable[i])
 		frame['spell'..i].t:SetTexture(texture)
+		
 		if hasBuff then
-			frame['spell'..i]:SetAlpha(0.2)
+			local spellName, duration, expirationTime, _
+			for i=1, 32 do
+				spellName, _, _, _, _, duration, expirationTime = UnitBuff('player', i)
+				if spellName == hasBuff then
+					break;
+				end
+			end
+			
+			frame['spell'..i].expiration = expirationTime - GetTime()
+			frame['spell'..i].duration = duration
+			
+			if (duration == 0 and expirationTime == 0) or E.db.auras.consolidatedBuffs.durations ~= true then
+				frame['spell'..i].t:SetAlpha(0.3)
+				frame['spell'..i]:SetScript('OnUpdate', nil)
+				frame['spell'..i].timer:SetText(nil)
+				CooldownFrame_SetTimer(frame['spell'..i].cd, 0, 0, 0)
+			else
+				CooldownFrame_SetTimer(frame['spell'..i].cd, expirationTime - duration, duration, 1)
+				frame['spell'..i].t:SetAlpha(1)
+				frame['spell'..i]:SetScript('OnUpdate', A.UpdateConsolidatedTime)
+			end
 			frame['spell'..i].hasBuff = hasBuff
 		else
-			frame['spell'..i]:SetAlpha(1)
+			CooldownFrame_SetTimer(frame['spell'..i].cd, 0, 0, 0)
 			frame['spell'..i].hasBuff = nil
+			frame['spell'..i].t:SetAlpha(1)
+			frame['spell'..i]:SetScript('OnUpdate', nil)
+			frame['spell'..i].timer:SetText(nil)
 		end
 	end
 end
@@ -121,29 +208,49 @@ function A:Button_OnEnter()
 	
 	local id = self:GetParent():GetID()
 	
-	if (id == 3 or id == 4) and E.role == 'Caster' then
-		A.IndexTable[3] = A.SpellPower
-		A.IndexTable[4] = A.SpellHaste
+	if E.db.auras.consolidatedBuffs.filter then
+		A.IndexTable[7] = nil;
+		A.IndexTable[8] = nil;	
+		A.IndexTable[5] = A.CriticalStrike;
+		A.IndexTable[6] = A.Mastery;
 		
-		GameTooltip:AddLine(_G["RAID_BUFF_"..id+2])
-	elseif id >= 5 then
-		GameTooltip:AddLine(_G["RAID_BUFF_"..id+2])
-	else
-		if E.role ~= "Caster" then
-			A.IndexTable[3] = A.AttackPower
-			A.IndexTable[4] = A.AttackSpeed
+		if (id == 3 or id == 4) and E.role == 'Caster' then
+			A.IndexTable[3] = A.SpellPower
+			A.IndexTable[4] = A.SpellHaste
+			
+			GameTooltip:AddLine(_G["RAID_BUFF_"..id+2])
+		elseif id >= 5 then
+			GameTooltip:AddLine(_G["RAID_BUFF_"..id+2])
+		else
+			if E.role ~= "Caster" then
+				A.IndexTable[3] = A.AttackPower
+				A.IndexTable[4] = A.AttackSpeed
+			end
+			
+			GameTooltip:AddLine(_G["RAID_BUFF_"..id])
 		end
+	else
+		A.IndexTable[3] = A.AttackPower;
+		A.IndexTable[4] = A.AttackSpeed;
+		A.IndexTable[5] = A.SpellPower;
+		A.IndexTable[6] = A.SpellHaste;			
+		A.IndexTable[7] = A.CriticalStrike;
+		A.IndexTable[8] = A.Mastery;
 		
 		GameTooltip:AddLine(_G["RAID_BUFF_"..id])
 	end
-
+	
 	GameTooltip:AddLine(" ")
-	for _, spellID in pairs(A.IndexTable[id]) do
-		local spellName = GetSpellInfo(spellID)
-		if self:GetParent().hasBuff == spellName then
-			GameTooltip:AddLine(spellName, 1, 0, 0)
-		else
-			GameTooltip:AddLine(spellName, 1, 1, 1)
+	for spellID, buffProvider in pairs(A.IndexTable[id]) do
+		if spellID ~= 'DEFAULT' then
+			local spellName = GetSpellInfo(spellID)
+			local color = RAID_CLASS_COLORS[buffProvider]
+			
+			if self:GetParent().hasBuff == spellName then
+				GameTooltip:AddLine(spellName..' - '..ACTIVE_PETS, color.r, color.g, color.b)
+			else
+				GameTooltip:AddLine(spellName, color.r, color.g, color.b)
+			end
 		end
 	end
 
@@ -154,24 +261,21 @@ function A:Button_OnLeave()
 	GameTooltip:Hide()
 end
 
-function A:CreateButton(relativeTo, isFirst, isLast)
-	local button = CreateFrame("Button", name, ElvUI_ConsolidatedBuffs)
+function A:CreateButton()
+	local button = CreateFrame("Button", nil, ElvUI_ConsolidatedBuffs)
 	button:SetTemplate('Default')
-	button:Size(E.ConsolidatedBuffsWidth - 4)
-	if isFirst then
-		button:Point("TOP", relativeTo, "TOP", 0, -2)
-	else
-		button:Point("TOP", relativeTo, "BOTTOM", 0, -1)
-	end
 	
-	if isLast then
-		button:Point("BOTTOM", ElvUI_ConsolidatedBuffs, "BOTTOM", 0, 2)
-	end
-
 	button.t = button:CreateTexture(nil, "OVERLAY")
 	button.t:SetTexCoord(unpack(E.TexCoords))
 	button.t:SetInside()
 	button.t:SetTexture("Interface\\Icons\\INV_Misc_QuestionMark")
+	
+	button.cd = CreateFrame('Cooldown', nil, button, 'CooldownFrameTemplate')
+	button.cd:SetInside()
+	button.cd.noOCC = true;
+	
+	button.timer = button.cd:CreateFontString(nil, 'OVERLAY')
+	button.timer:SetPoint('CENTER')
 	
 	return button
 end
@@ -205,28 +309,43 @@ function A:DisableCB()
 	self:UnregisterEvent("ZONE_CHANGED_NEW_AREA")
 end
 
-function A:Construct_ConsolidatedBuffs()
-	local frame = CreateFrame('Frame', 'ElvUI_ConsolidatedBuffs', Minimap)
-	frame:SetTemplate('Default')
+function A:Update_ConsolidatedBuffsSettings()
+	local frame = self.frame
 	frame:Width(E.ConsolidatedBuffsWidth)
-	frame:Point('TOPLEFT', Minimap.backdrop, 'TOPRIGHT', 1, 0)
-	frame:Point('BOTTOMLEFT', Minimap.backdrop, 'BOTTOMRIGHT', 1, 0)
-
-	frame.spell1 = self:CreateButton(frame, true)
-	frame.spell2 = self:CreateButton(frame.spell1)
-	frame.spell3 = self:CreateButton(frame.spell2)
-	frame.spell4 = self:CreateButton(frame.spell3)
-	frame.spell5 = self:CreateButton(frame.spell4)
-	frame.spell6 = self:CreateButton(frame.spell5, nil, true)
-	self.frame = frame
-
 	for i=1, NUM_LE_RAID_BUFF_TYPES do
 		local id = i
-		if i > 4 then
+		if i > 4 and E.db.auras.consolidatedBuffs.filter then
 			id = i - 2
 		end
 		
-		frame["spell"..id]:SetID(id)
+		frame['spell'..i].t:SetAlpha(1)
+		frame['spell'..i]:ClearAllPoints()
+		frame['spell'..i]:Size(E.ConsolidatedBuffsWidth - (E.PixelMode and 1 or 4)) -- 4 needs to be 1
+		
+		if i == 1 then
+			frame['spell'..i]:Point("TOP", ElvUI_ConsolidatedBuffs, "TOP", 0, -(E.PixelMode and 0 or 2)) -- -2 needs to be 0
+		else
+			frame['spell'..i]:Point("TOP", frame['spell'..i - 1], "BOTTOM", 0, (E.PixelMode and 1 or -1)) -- -1 needs to be 1
+		end
+
+		if i == 6 and E.db.auras.consolidatedBuffs.filter or i == 8 then
+			frame['spell'..i]:Point("BOTTOM", ElvUI_ConsolidatedBuffs, "BOTTOM", 0, (E.PixelMode and 0 or 2)) --2 needs to be 0
+		end
+		
+		if E.db.auras.consolidatedBuffs.filter and i > 6 then
+			frame['spell'..i]:Hide()
+		else
+			frame['spell'..i]:Show()
+		end
+		
+		if E.db.auras.consolidatedBuffs.durations then
+			frame['spell'..i].cd:SetAlpha(1)
+		else
+			frame['spell'..i].cd:SetAlpha(0)
+		end
+		
+		local font = LSM:Fetch("font", E.db.auras.consolidatedBuffs.font)
+		frame['spell'..i].timer:FontTemplate(font, E.db.auras.consolidatedBuffs.fontSize, E.db.auras.consolidatedBuffs.fontOutline)	
 		
 		--This is so hackish its funny.. 
 		--Have to do this to be able to right click a consolidated buff icon in combat and remove the aura.
@@ -238,11 +357,28 @@ function A:Construct_ConsolidatedBuffs()
 		_G['ConsolidatedBuffsTooltipBuff'..i]:SetScript("OnLeave", A.Button_OnLeave)		
 	end
 	
-	if E.db.auras.consolidedBuffs then
-		self:EnableCB()
+	if E.db.auras.consolidatedBuffs.enable and E.private.general.minimap.enable then
+		E:GetModule('Auras'):EnableCB()
 	else
-		self:DisableCB()
+		E:GetModule('Auras'):DisableCB()
+	end	
+end
+
+function A:Construct_ConsolidatedBuffs()
+	local frame = CreateFrame('Frame', 'ElvUI_ConsolidatedBuffs', Minimap)
+	frame:SetTemplate('Default')
+	frame:Width(E.ConsolidatedBuffsWidth)
+	frame:Point('TOPLEFT', Minimap.backdrop, 'TOPRIGHT', (E.PixelMode and -1 or 1), 0)
+	frame:Point('BOTTOMLEFT', Minimap.backdrop, 'BOTTOMRIGHT', (E.PixelMode and -1 or 1), 0)
+	self.frame = frame
+	
+	for i=1, NUM_LE_RAID_BUFF_TYPES do
+		frame['spell'..i] = self:CreateButton()
+		frame["spell"..i]:SetID(i)
 	end
+
+	
+	self:Update_ConsolidatedBuffsSettings()
 end
 
 E:RegisterModule(A:GetName())

@@ -59,6 +59,9 @@ function UF:Construct_UF(frame, unit)
 	
 	frame:SetFrameLevel(5)
 	
+	frame.RaisedElementParent = CreateFrame('Frame', nil, frame)
+	frame.RaisedElementParent:SetFrameLevel(frame:GetFrameLevel() + 10)	
+	
 	if not self['groupunits'][unit] then
 		local stringTitle = E:StringTitle(unit)
 		if stringTitle:find('target') then
@@ -116,6 +119,12 @@ function UF:GetAuraAnchorFrame(frame, attachTo, isConflict)
 	
 	if isConflict or attachTo == 'FRAME' then
 		return frame
+	elseif attachTo == 'TRINKET' then
+		if select(2, IsInInstance()) == "arena" then
+			return frame.Trinket
+		else
+			return frame.PVPSpecIcon
+		end	
 	elseif attachTo == 'BUFFS' then
 		return frame.Buffs
 	elseif attachTo == 'DEBUFFS' then
@@ -134,57 +143,62 @@ end
 
 function UF:UpdateColors()
 	local db = self.db.colors
-	local tapped = db.tapped
-	local dc = db.disconnected
-	local mana = db.power.MANA
-	local rage = db.power.RAGE
-	local focus = db.power.FOCUS
-	local energy = db.power.ENERGY
-	local runic = db.power.RUNIC_POWER
-	local good = db.reaction.GOOD
-	local bad = db.reaction.BAD
-	local neutral = db.reaction.NEUTRAL
-	local health = db.health
+
+	local good = E:GetColorTable(db.reaction.GOOD)
+	local bad = E:GetColorTable(db.reaction.BAD)
+	local neutral = E:GetColorTable(db.reaction.NEUTRAL)
 	
-	ElvUF['colors'] = setmetatable({
-		tapped = {tapped.r, tapped.g, tapped.b},
-		disconnected = {dc.r, dc.g, dc.b},
-		health = {health.r, health.g, health.b},
-		power = setmetatable({
-			["MANA"] = {mana.r, mana.g, mana.b},
-			["RAGE"] = {rage.r, rage.g, rage.b},
-			["FOCUS"] = {focus.r, focus.g, focus.b},
-			["ENERGY"] = {energy.r, energy.g, energy.b},
-			["RUNES"] = {0.55, 0.57, 0.61},
-			["RUNIC_POWER"] = {runic.r, runic.g, runic.b},
-			["AMMOSLOT"] = {0.8, 0.6, 0},
-			["FUEL"] = {0, 0.55, 0.5},
-			["POWER_TYPE_STEAM"] = {0.55, 0.57, 0.61},
-			["POWER_TYPE_PYRITE"] = {0.60, 0.09, 0.17},
-		}, {__index = ElvUF['colors'].power}),
-		runes = setmetatable({
-				[1] = {1, 0, 0},   -- blood
-				[2] = {0, .5, 0},  -- unholy
-				[3] = {0, 1, 1},   -- frost
-				[4] = {.9, .1, 1}, -- death				
-		}, {__index = ElvUF['colors'].runes}),
-		reaction = setmetatable({
-			[1] = {bad.r, bad.g, bad.b}, -- Hated
-			[2] = {bad.r, bad.g, bad.b}, -- Hostile
-			[3] = {bad.r, bad.g, bad.b}, -- Unfriendly
-			[4] = {neutral.r, neutral.g, neutral.b}, -- Neutral
-			[5] = {good.r, good.g, good.b}, -- Friendly
-			[6] = {good.r, good.g, good.b}, -- Honored
-			[7] = {good.r, good.g, good.b}, -- Revered
-			[8] = {good.r, good.g, good.b}, -- Exalted	
-		}, {__index = ElvUF['colors'].reaction}),
-		smooth = setmetatable({
-			1, 0, 0,
-			1, 1, 0,
-			health.r, health.g, health.b
-		}, {__index = ElvUF['colors'].smooth}),
-		
-	}, {__index = ElvUF['colors']})
+	ElvUF.colors.tapped = E:GetColorTable(db.tapped);
+	ElvUF.colors.disconnected = E:GetColorTable(db.disconnected);
+	ElvUF.colors.health = E:GetColorTable(db.health);
+	ElvUF.colors.power.MANA = E:GetColorTable(db.power.MANA);
+	ElvUF.colors.power.RAGE = E:GetColorTable(db.power.RAGE);
+	ElvUF.colors.power.FOCUS = E:GetColorTable(db.power.FOCUS);
+	ElvUF.colors.power.ENERGY = E:GetColorTable(db.power.ENERGY);
+	ElvUF.colors.power.RUNIC_POWER = E:GetColorTable(db.power.RUNIC_POWER);
+	
+	ElvUF.colors.runes = {}
+	ElvUF.colors.runes[1] = E:GetColorTable(db.classResources.DEATHKNIGHT[1])
+	ElvUF.colors.runes[2] = E:GetColorTable(db.classResources.DEATHKNIGHT[2])
+	ElvUF.colors.runes[3] = E:GetColorTable(db.classResources.DEATHKNIGHT[3])
+	ElvUF.colors.runes[4] = E:GetColorTable(db.classResources.DEATHKNIGHT[4])
+	
+	ElvUF.colors.holyPower = E:GetColorTable(db.classResources.PALADIN);
+	
+	ElvUF.colors.arcaneCharges = E:GetColorTable(db.classResources.MAGE);
+	
+	ElvUF.colors.shadowOrbs = E:GetColorTable(db.classResources.PRIEST);
+	
+	ElvUF.colors.eclipseBar = {}
+	ElvUF.colors.eclipseBar[1] = E:GetColorTable(db.classResources.DRUID[1])
+	ElvUF.colors.eclipseBar[2] = E:GetColorTable(db.classResources.DRUID[2])
+	
+	ElvUF.colors.harmony = {}
+	ElvUF.colors.harmony[1] = E:GetColorTable(db.classResources.MONK[1])
+	ElvUF.colors.harmony[2] = E:GetColorTable(db.classResources.MONK[2])
+	ElvUF.colors.harmony[3] = E:GetColorTable(db.classResources.MONK[3])
+	ElvUF.colors.harmony[4] = E:GetColorTable(db.classResources.MONK[4])
+	ElvUF.colors.harmony[5] = E:GetColorTable(db.classResources.MONK[5])
+	
+	ElvUF.colors.WarlockResource = {}
+	ElvUF.colors.WarlockResource[1] = E:GetColorTable(db.classResources.WARLOCK[1])
+	ElvUF.colors.WarlockResource[2] = E:GetColorTable(db.classResources.WARLOCK[2])
+	ElvUF.colors.WarlockResource[3] = E:GetColorTable(db.classResources.WARLOCK[3])
+	
+	ElvUF.colors.reaction[1] = bad
+	ElvUF.colors.reaction[2] = bad
+	ElvUF.colors.reaction[3] = bad
+	ElvUF.colors.reaction[4] = neutral
+	ElvUF.colors.reaction[5] = good
+	ElvUF.colors.reaction[6] = good
+	ElvUF.colors.reaction[7] = good
+	ElvUF.colors.reaction[8] = good
+	ElvUF.colors.smooth = {1, 0, 0,
+	1, 1, 0,
+	unpack(E:GetColorTable(db.health))}
+	
+	ElvUF.colors.castColor = E:GetColorTable(db.castColor);
+	ElvUF.colors.castNoInterrupt = E:GetColorTable(db.castNoInterrupt);
 end
 
 function UF:Update_StatusBars()
@@ -344,7 +358,12 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 	
 	self[group].Update = function()
 		local db = self.db['units'][group]
-		if db.enable ~= true then return end
+		if db.enable ~= true then 
+			self[group]:SetAttribute("showParty", false)
+			self[group]:SetAttribute("showRaid", false)
+			self[group]:SetAttribute("showSolo", false)			
+			return
+		end
 		UF["Update_"..E:StringTitle(group).."Header"](self, self[group], db)
 		
 		for i=1, self[group]:GetNumChildren() do
@@ -360,14 +379,8 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 			end			
 		end			
 	end	
-
-	if self.db['units'][group].enable then
-		self[group].Update()
-	else
-		self[group]:SetAttribute("showParty", false)
-		self[group]:SetAttribute("showRaid", false)
-		self[group]:SetAttribute("showSolo", false)	
-	end
+	
+	self[group].Update()
 end
 
 function UF:PLAYER_REGEN_ENABLED()
@@ -593,6 +606,8 @@ end
 CompactUnitFrameProfiles:UnregisterEvent('VARIABLES_LOADED') 	--Re-Register this event only if disableblizzard is turned off.
 function UF:Initialize()	
 	self.db = E.db["unitframe"]
+	
+	CompactUnitFrameProfiles:RegisterEvent('VARIABLES_LOADED')
 	if E.private["unitframe"].enable ~= true then return; end
 	E.UnitFrames = UF;
 	
@@ -607,15 +622,17 @@ function UF:Initialize()
 	]]);
 
 	RegisterStateDriver(ElvUF_Parent, "show", '[petbattle] hide;show');	
-
+	
+	self:UpdateColors()
 	ElvUF:RegisterStyle('ElvUF', function(frame, unit)
 		self:Construct_UF(frame, unit)
 	end)
-		
+	
 	self:LoadUnits()
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 	self:RegisterEvent('ARENA_PREP_OPPONENT_SPECIALIZATIONS', 'UpdatePrep')
 	self:RegisterEvent('ARENA_OPPONENT_UPDATE', 'UpdatePrep')
+
 	if E.private["unitframe"].disableBlizzard then
 		self:DisableBlizzard()	
 		self:SecureHook('UnitFrameThreatIndicator_Initialize')
@@ -628,16 +645,17 @@ function UF:Initialize()
 		else
 			ElvUF:DisableBlizzard('arena')
 		end
-		
+			
 		for _, menu in pairs(UnitPopupMenus) do
 			for index = #menu, 1, -1 do
 				if removeMenuOptions[menu[index]] then
 					table.remove(menu, index)
 				end
 			end
-		end
-		
+		end				
+
 		self:RegisterEvent('GROUP_ROSTER_UPDATE', 'DisableBlizzard')
+		UIParent:UnregisterEvent('GROUP_ROSTER_UPDATE') --This may fuck shit up.. we'll see...
 	else
 		CompactUnitFrameProfiles:RegisterEvent('VARIABLES_LOADED')
 	end
@@ -666,7 +684,14 @@ function UF:ToggleForceShowGroupFrames(unitGroup, numGroup)
 end
 
 local ignoreSettings = {
-	['position'] = true
+	['position'] = true,
+	['playerOnly'] = true,
+	['noConsolidated'] = true,
+	['useBlacklist'] = true,
+	['useWhitelist'] = true,
+	['noDuration'] = true,
+	['onlyDispellable'] = true,
+	['useFilter'] = true,
 }
 function UF:MergeUnitSettings(fromUnit, toUnit)
 	local db = self.db['units']
@@ -684,7 +709,7 @@ function UF:MergeUnitSettings(fromUnit, toUnit)
 							if db[toUnit][option] ~= nil and db[toUnit][option][opt] ~= nil then
 								db[toUnit][option][opt] = val
 							end				
-						elseif not ignoreSettings[o] then
+						elseif not ignoreSettings[opt] then
 							if type(val) == 'table' then
 								for o, v in pairs(db[fromUnit][option][opt]) do
 									if not ignoreSettings[o] then
@@ -703,6 +728,7 @@ function UF:MergeUnitSettings(fromUnit, toUnit)
 		E:Print(L['You cannot copy settings from the same unit.'])
 	end
 	
+	E:SetupTheme(E.db.theme, true)
 	self:Update_AllFrames()
 end
 

@@ -21,6 +21,10 @@ function M:SkinBubble(frame)
 	NP:CreateVirtualFrame(frame)	
 	NP:SetVirtualBorder(frame, frame.text:GetTextColor())	
 	
+	if E.PixelMode then
+		frame.backdrop2:SetTexture(unpack(E["media"].backdropfadecolor))
+	end
+	
 	frame:SetClampedToScreen(false)
 	frame.isBubblePowered = true
 	frame:HookScript('OnUpdate', M.UpdateBubbleBorder)
@@ -29,7 +33,8 @@ end
 function M:IsChatBubble(frame)
 	if frame:GetName() then return end
 	if not frame:GetRegions() then return end
-	return frame:GetRegions():GetTexture() == [[Interface\Tooltips\ChatBubble-Background]]	
+	local region = frame:GetRegions()
+	return region:GetTexture() == [[Interface\Tooltips\ChatBubble-Background]]	
 end
 
 function M:HookBubbles(...)

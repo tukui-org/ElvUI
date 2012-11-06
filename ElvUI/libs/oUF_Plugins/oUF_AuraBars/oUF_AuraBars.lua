@@ -47,13 +47,13 @@ local function SetAnchors(self)
 		frame:ClearAllPoints()
 		if self.down == true then
 			if self == anchor then -- Root frame so indent for icon
-				frame:SetPoint('TOPLEFT', anchor, 'BOTTOMLEFT', (frame:GetHeight() + (self.gap or 0) ), 0)
+				frame:SetPoint('TOPLEFT', anchor, 'TOPLEFT', (frame:GetHeight() + (self.gap or 0) ), -1)
 			else
 				frame:SetPoint('TOPLEFT', anchor, 'BOTTOMLEFT', 0, (-self.spacing or 0))
 			end
 		else
 			if self == anchor then -- Root frame so indent for icon
-				frame:SetPoint('BOTTOMLEFT', anchor, 'TOPLEFT', (frame:GetHeight() + (self.gap or 0) ), 0)
+				frame:SetPoint('BOTTOMLEFT', anchor, 'BOTTOMLEFT', (frame:GetHeight() + (self.gap or 0)), 1)
 			else
 				frame:SetPoint('BOTTOMLEFT', anchor, 'TOPLEFT', 0, (self.spacing or 0))
 			end
@@ -79,13 +79,13 @@ local function CreateAuraBar(oUF, anchor)
 	
 	if auraBarParent.down == true then
 		if auraBarParent == anchor then -- Root frame so indent for icon
-			frame:SetPoint('TOPLEFT', anchor, 'BOTTOMLEFT', (frame:GetHeight() + (auraBarParent.gap or 0) ), 0)
+			frame:SetPoint('TOPLEFT', anchor, 'TOPLEFT', (frame:GetHeight() + (auraBarParent.gap or 0) ), -1)
 		else
 			frame:SetPoint('TOPLEFT', anchor, 'BOTTOMLEFT', 0, (-auraBarParent.spacing or 0))
 		end
 	else
 		if auraBarParent == anchor then -- Root frame so indent for icon
-			frame:SetPoint('BOTTOMLEFT', anchor, 'TOPLEFT', (frame:GetHeight() + (auraBarParent.gap or 0) ), 0)
+			frame:SetPoint('BOTTOMLEFT', anchor, 'BOTTOMLEFT', (frame:GetHeight() + (auraBarParent.gap or 0)), 1)
 		else
 			frame:SetPoint('BOTTOMLEFT', anchor, 'TOPLEFT', 0, (auraBarParent.spacing or 0))
 		end
@@ -197,10 +197,10 @@ local function Update(self, event, unit)
 	local auras = {}
 	local lastAuraIndex = 0
 	for index = 1, 40 do
-		local name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate = UnitAura(unit, index, helpOrHarm)
+		local name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID = UnitAura(unit, index, helpOrHarm)
 		if not name then break end
 		
-		if (auraBars.filter or DefaultFilter)(self, unit, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate) then
+		if (auraBars.filter or DefaultFilter)(self, unit, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID) then
 			lastAuraIndex = lastAuraIndex + 1
 			auras[lastAuraIndex] = {}
 			auras[lastAuraIndex].name = name
@@ -224,6 +224,10 @@ local function Update(self, event, unit)
 
 	-- Show and configure bars for buffs/debuffs.
 	local bars = auraBars.bars
+	if lastAuraIndex == 0 then
+		self.AuraBars:SetHeight(1)
+	end
+	
 	for index = 1 , lastAuraIndex do
 		if auraBars:GetWidth() == 0 then break; end
 		local aura = auras[index]
@@ -233,7 +237,15 @@ local function Update(self, event, unit)
 			frame = CreateAuraBar(self, index == 1 and auraBars or bars[index - 1])
 			bars[index] = frame
 		end
-
+		
+		if index == lastAuraIndex then
+			if self.AuraBars.down then
+				self.AuraBars:SetHeight(self.AuraBars:GetTop() - frame:GetBottom())
+			else
+				self.AuraBars:SetHeight(frame:GetTop() - self.AuraBars:GetBottom())
+			end
+		end
+		
 		local bar = frame.statusBar
 		frame.index = index
 		
@@ -271,9 +283,14 @@ local function Update(self, event, unit)
 		
 		if helpOrHarm == 'HARMFUL' then
 			local debuffType = bar.aura.debuffType and bar.aura.debuffType or 'none'
+			
 			r, g, b = DebuffTypeColor[debuffType].r, DebuffTypeColor[debuffType].g, DebuffTypeColor[debuffType].b
 			if auraBars.debuffColor then
 				r, g, b = unpack(auraBars.debuffColor)
+			else
+				if debuffType == 'none' and auraBars.defaultDebuffColor then
+					r, g, b = unpack(auraBars.defaultDebuffColor)
+				end
 			end			
 		end
 		bar:SetStatusBarColor(r, g, b)

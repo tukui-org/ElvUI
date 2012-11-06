@@ -1,7 +1,6 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local DT = E:GetModule('DataTexts')
 
---[[This file is a blank datatext example template, this file will not be loaded.]]
 local displayString, lastPanel
 local format = string.format
 local targetlv, playerlv
@@ -14,7 +13,7 @@ function IsWearingShield()
 	local itemID = GetInventoryItemID('player', slotID)
 	
 	if itemID then
-		return select(7, GetItemInfo(itemID)) == 'Shields'
+		return select(9, GetItemInfo(itemID))
 	end
 end
 
@@ -60,7 +59,7 @@ local function OnEvent(self, event, unit)
 		numAvoidances = numAvoidances - 1
 	end
 	
-	if not IsWearingShield() then
+	if IsWearingShield() ~= "INVTYPE_SHIELD" then
 		block = 0
 		numAvoidances = numAvoidances - 1
 	end

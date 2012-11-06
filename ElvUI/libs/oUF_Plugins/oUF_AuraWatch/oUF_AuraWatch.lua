@@ -190,7 +190,7 @@ local function Update(frame, event, unit)
 	if frame.unit ~= unit or not unit then return end
 	local watch = frame.AuraWatch
 	local index, icons = 1, watch.watched
-	local _, name, texture, count, duration, remaining, caster, key, icon, spellid 
+	local _, name, texture, count, duration, remaining, caster, key, icon, spellID
 	local filter = "HELPFUL"
 	local guid = UnitGUID(unit)
 	if not guid then return end
@@ -203,7 +203,7 @@ local function Update(frame, event, unit)
 	end
 	
 	while true do
-		name, _, texture, count, _, duration, remaining, caster, _, _, spellid = UnitAura(unit, index, filter)
+		name, _, texture, count, _, duration, remaining, caster, _, _, spellID = UnitAura(unit, index, filter)
 		if not name then 
 			if filter == "HELPFUL" then
 				filter = "HARMFUL"
@@ -218,6 +218,7 @@ local function Update(frame, event, unit)
 				key = name..texture
 			end
 			icon = icons[key]
+
 			if icon and (icon.anyUnit or (caster and icon.fromUnits and icon.fromUnits[caster])) then
 				resetIcon(icon, watch, count, duration, remaining)
 				GUIDs[guid][key] = true
@@ -247,68 +248,73 @@ local function setupIcons(self)
 	for _,icon in pairs(icons) do
 	
 		local name, _, image = GetSpellInfo(icon.spellID)
-		if not name then error("oUF_AuraWatch error: no spell with "..tostring(icon.spellID).." spell ID exists") end
-		icon.name = name
-	
-		if not icon.cd and not (watch.hideCooldown or icon.hideCooldown) then
-			local cd = CreateFrame("Cooldown", nil, icon)
-			cd:SetAllPoints(icon)
-			icon.cd = cd
-		end
 
-		if not icon.icon then
-			local tex = icon:CreateTexture(nil, "BACKGROUND")
-			tex:SetAllPoints(icon)
-			tex:SetTexture(image)
-			icon.icon = tex
-			if not icon.overlay then
-				local overlay = icon:CreateTexture(nil, "OVERLAY")
-				overlay:SetTexture"Interface\\Buttons\\UI-Debuff-Overlays"
-				overlay:SetAllPoints(icon)
-				overlay:SetTexCoord(.296875, .5703125, 0, .515625)
-				overlay:SetVertexColor(1, 0, 0)
-				icon.overlay = overlay
-			end
-		end
-
-		if not icon.count and not (watch.hideCount or icon.hideCount) then
-			local count = icon:CreateFontString(nil, "OVERLAY")
-			count:SetFontObject(NumberFontNormal)
-			count:SetPoint("BOTTOMRIGHT", icon, "BOTTOMRIGHT", -1, 0)
-			icon.count = count
-		end
-
-		if icon.onlyShowMissing == nil then
-			icon.onlyShowMissing = watch.onlyShowMissing
-		end
-		if icon.onlyShowPresent == nil then
-			icon.onlyShowPresent = watch.onlyShowPresent
-		end
-		if icon.presentAlpha == nil then
-			icon.presentAlpha = watch.presentAlpha
-		end
-		if icon.missingAlpha == nil then
-			icon.missingAlpha = watch.missingAlpha
-		end		
-		if icon.fromUnits == nil then
-			icon.fromUnits = watch.fromUnits or PLAYER_UNITS
-		end
-		if icon.anyUnit == nil then
-			icon.anyUnit = watch.anyUnit
-		end
+		if name then
+			icon.name = name
 		
-		if watch.strictMatching then
-			watch.watched[icon.spellID] = icon
-		else
-			watch.watched[name..image] = icon
-		end
+			if not icon.cd and not (watch.hideCooldown or icon.hideCooldown) then
+				local cd = CreateFrame("Cooldown", nil, icon)
+				cd:SetAllPoints(icon)
+				icon.cd = cd
+			end
 
-		if watch.PostCreateIcon then watch:PostCreateIcon(icon, icon.spellID, name, self) end
+			if not icon.icon then
+				local tex = icon:CreateTexture(nil, "BACKGROUND")
+				tex:SetAllPoints(icon)
+				tex:SetTexture(image)
+				icon.icon = tex
+				if not icon.overlay then
+					local overlay = icon:CreateTexture(nil, "OVERLAY")
+					overlay:SetTexture"Interface\\Buttons\\UI-Debuff-Overlays"
+					overlay:SetAllPoints(icon)
+					overlay:SetTexCoord(.296875, .5703125, 0, .515625)
+					overlay:SetVertexColor(1, 0, 0)
+					icon.overlay = overlay
+				end
+			end
+
+			if not icon.count and not (watch.hideCount or icon.hideCount) then
+				local count = icon:CreateFontString(nil, "OVERLAY")
+				count:SetFontObject(NumberFontNormal)
+				count:SetPoint("BOTTOMRIGHT", icon, "BOTTOMRIGHT", -1, 0)
+				icon.count = count
+			end
+
+			if icon.onlyShowMissing == nil then
+				icon.onlyShowMissing = watch.onlyShowMissing
+			end
+			if icon.onlyShowPresent == nil then
+				icon.onlyShowPresent = watch.onlyShowPresent
+			end
+			if icon.presentAlpha == nil then
+				icon.presentAlpha = watch.presentAlpha
+			end
+			if icon.missingAlpha == nil then
+				icon.missingAlpha = watch.missingAlpha
+			end		
+			if icon.fromUnits == nil then
+				icon.fromUnits = watch.fromUnits or PLAYER_UNITS
+			end
+			if icon.anyUnit == nil then
+				icon.anyUnit = watch.anyUnit
+			end
+			
+			if watch.strictMatching then
+				watch.watched[icon.spellID] = icon
+			else
+				watch.watched[name..image] = icon
+			end
+
+			if watch.PostCreateIcon then watch:PostCreateIcon(icon, icon.spellID, name, self) end
+		else
+			print("oUF_AuraWatch error: no spell with "..tostring(icon.spellID).." spell ID exists")
+		end
 	end
 end
 
 local function Enable(self)
 	if self.AuraWatch then
+		self.AuraWatch.Update = setupIcons
 		self:RegisterEvent("UNIT_AURA", Update)
 		setupIcons(self)
 		return true

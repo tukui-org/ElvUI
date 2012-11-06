@@ -80,7 +80,35 @@ local function LoadSkin()
 	
 	CharacterFrameExpandButton:Size(CharacterFrameExpandButton:GetWidth() - 7, CharacterFrameExpandButton:GetHeight() - 7)
 	S:HandleNextPrevButton(CharacterFrameExpandButton)
+	
+	hooksecurefunc('CharacterFrame_Collapse', function()
+		CharacterFrameExpandButton:SetNormalTexture(nil);
+		CharacterFrameExpandButton:SetPushedTexture(nil);
+		CharacterFrameExpandButton:SetDisabledTexture(nil);
+		SquareButton_SetIcon(CharacterFrameExpandButton, 'RIGHT')
+	end)
+	
+	hooksecurefunc('CharacterFrame_Expand', function()
+		CharacterFrameExpandButton:SetNormalTexture(nil);
+		CharacterFrameExpandButton:SetPushedTexture(nil);
+		CharacterFrameExpandButton:SetDisabledTexture(nil);
+		SquareButton_SetIcon(CharacterFrameExpandButton, 'LEFT');
+	end)
 
+	if (GetCVar("characterFrameCollapsed") ~= "0") then
+		SquareButton_SetIcon(CharacterFrameExpandButton, 'RIGHT')
+	else
+		SquareButton_SetIcon(CharacterFrameExpandButton, 'LEFT');
+	end	
+
+	S:HandleCloseButton(ReputationDetailCloseButton)
+	S:HandleCloseButton(TokenFramePopupCloseButton)
+
+	S:HandleCheckBox(ReputationDetailAtWarCheckBox)
+	S:HandleCheckBox(ReputationDetailMainScreenCheckBox)
+	S:HandleCheckBox(ReputationDetailInactiveCheckBox)
+	S:HandleCheckBox(TokenFramePopupInactiveCheckBox)
+	S:HandleCheckBox(TokenFramePopupBackpackCheckBox)
 
 	EquipmentFlyoutFrameHighlight:Kill()
 	local function SkinItemFlyouts()
@@ -297,9 +325,6 @@ local function LoadSkin()
 	
 	--Pet
 	PetModelFrame:CreateBackdrop("Default")
-	PetPaperDollFrameExpBar:StripTextures()
-	PetPaperDollFrameExpBar:SetStatusBarTexture(E["media"].normTex)
-	PetPaperDollFrameExpBar:CreateBackdrop("Default")
 	S:HandleRotateButton(PetModelFrameRotateRightButton)
 	S:HandleRotateButton(PetModelFrameRotateLeftButton)
 	PetModelFrameRotateRightButton:ClearAllPoints()

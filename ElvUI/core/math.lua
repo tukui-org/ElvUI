@@ -108,7 +108,8 @@ function E:GetScreenQuadrant(frame)
 end
 
 function E:GetXYOffset(position, override)
-	local x, y = override or 1, override or 1
+	local default = E.PixelMode and 0 or 1
+	local x, y = override or default, override or default
 	
 	if position == 'TOP' or position == 'TOPLEFT' or position == 'TOPRIGHT' then
 		return 0, y
@@ -181,7 +182,7 @@ end
 
 function E:ShortenString(string, numChars, dots)
 	assert(string, 'You need to provide a string to shorten. Usage: E:ShortenString(string, numChars, includeDots)')
-	assert(string, 'You need to provide a length to shorten the string to. Usage: E:ShortenString(string, numChars, includeDots)')
+	assert(numChars, 'You need to provide a length to shorten the string to. Usage: E:ShortenString(string, numChars, includeDots)')
 	
 	local bytes = string:len()
 	if (bytes <= numChars) then

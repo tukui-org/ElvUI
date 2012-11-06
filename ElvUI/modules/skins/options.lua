@@ -34,6 +34,16 @@ E.Options.args.skins = {
 			disabled = function() return not E.private.skins.blizzard.enable end,
 			guiInline = true,
 			args = {	
+				bmah = {
+					type = 'toggle',
+					name = L['Black Market AH'],
+					desc = L['TOGGLESKIN_DESC'],
+				},
+				transmogrify = {
+					type = 'toggle',
+					name = L['Transmogrify Frame'],
+					desc = L['TOGGLESKIN_DESC'],
+				},
 				encounterjournal = {
 					type = "toggle",
 					name = L["Encounter Journal"],
@@ -102,11 +112,6 @@ E.Options.args.skins = {
 				talent = {
 					type = "toggle",
 					name = L["Talent Frame"],
-					desc = L["TOGGLESKIN_DESC"],							
-				},
-				glyph = {
-					type = "toggle",
-					name = L["Glyph Frame"],
 					desc = L["TOGGLESKIN_DESC"],							
 				},
 				auctionhouse = {

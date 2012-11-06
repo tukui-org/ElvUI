@@ -49,8 +49,8 @@ local function Point(obj, arg1, arg2, arg3, arg4, arg5)
 end
 
 local function SetOutside(obj, anchor, xOffset, yOffset)
-	xOffset = xOffset or 2
-	yOffset = yOffset or 2
+	xOffset = xOffset or E.Border
+	yOffset = yOffset or E.Border
 	anchor = anchor or obj:GetParent()
 	
 	if obj:GetPoint() then
@@ -62,8 +62,8 @@ local function SetOutside(obj, anchor, xOffset, yOffset)
 end
 
 local function SetInside(obj, anchor, xOffset, yOffset)
-	xOffset = xOffset or 2
-	yOffset = yOffset or 2
+	xOffset = xOffset or E.Border
+	yOffset = yOffset or E.Border
 	anchor = anchor or obj:GetParent()
 	
 	if obj:GetPoint() then
@@ -79,13 +79,23 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates)
 	
 	f.template = t
 	f.glossTex = glossTex
-
-	f:SetBackdrop({
-	  bgFile = E["media"].blankTex, 
-	  edgeFile = E["media"].blankTex, 
-	  tile = false, tileSize = 0, edgeSize = E.mult, 
-	  insets = { left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
-	})
+	f.ignoreUpdates = ignoreUpdates
+	
+	if E.private.general.pixelPerfect then
+		f:SetBackdrop({
+		  bgFile = E["media"].blankTex, 
+		  edgeFile = E["media"].blankTex, 
+		  tile = false, tileSize = 0, edgeSize = E.mult, 
+		  insets = { left = 0, right = 0, top = 0, bottom = 0}
+		})	
+	else
+		f:SetBackdrop({
+		  bgFile = E["media"].blankTex, 
+		  edgeFile = E["media"].blankTex, 
+		  tile = false, tileSize = 0, edgeSize = E.mult, 
+		  insets = { left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
+		})
+	end
 
 	if not f.backdropTexture and t ~= 'Transparent' then
 		local backdropTexture = f:CreateTexture(nil, "BORDER")
@@ -94,7 +104,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates)
 	elseif t == 'Transparent' then
 		f:SetBackdropColor(backdropr, backdropg, backdropb, backdropa)
 		
-		if not f.oborder and not f.iborder then
+		if not f.oborder and not f.iborder and not E.private.general.pixelPerfect then
 			local border = CreateFrame("Frame", nil, f)
 			border:SetInside(f, E.mult, E.mult)
 			border:SetBackdrop({
@@ -128,6 +138,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates)
 		else
 			f.backdropTexture:SetTexture(E["media"].blankTex)
 		end
+		
 		f.backdropTexture:SetInside(f)
 	end
 	
@@ -136,6 +147,8 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates)
 	if not ignoreUpdates then
 		E["frames"][f] = true
 	end
+	
+	frame = nil;
 end
 
 local function CreateBackdrop(f, t, tex)

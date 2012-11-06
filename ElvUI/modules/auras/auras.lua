@@ -40,42 +40,28 @@ function A:UpdateTime(elapsed)
 	end
 end
 
-function A:UpdateWeapons(button, slot, active, expiration)
-	if not button.texture then
-		button.texture = button:CreateTexture(nil, "BORDER")
-		button.texture:SetAllPoints()
+function A:UpdateWeapon(button)
+	if not button.backdrop then
+		button:Size(E.private.auras.size + 4)
+		button.backdrop = CreateFrame('Frame', nil, button)
+		button.backdrop:SetAllPoints()
+		button.backdrop:SetTemplate('Default', nil, true)
+		button.backdrop:SetBackdropBorderColor(137/255, 0, 191/255)
+		button.backdrop:SetFrameLevel(button:GetFrameLevel() - 2)
 		
-		button.time = button:CreateFontString(nil, "ARTWORK")
-		button.time:SetPoint("TOP", button, 'BOTTOM', 0, -2)
-		button.time:FontTemplate(nil, nil, 'OUTLINE')
-		button.time:SetShadowColor(0, 0, 0, 0.4)
-		button.time:SetShadowOffset(E.mult, -E.mult)
-				
-		button:CreateBackdrop('Default')
-		
-		button.highlight = button:CreateTexture(nil, "HIGHLIGHT")
-		button.highlight:SetTexture(1,1,1,0.45)
-		button.highlight:SetAllPoints(button.texture)		
+		button.time = _G[button:GetName()..'Duration']
+		button.icon = _G[button:GetName()..'Icon']
+
+		_G[button:GetName()..'Border']:Hide()
+		button.icon:SetTexCoord(unpack(E.TexCoords))
+		button.icon:SetInside()
+		button.time:ClearAllPoints()
+		button.time:Point("BOTTOM",button,'BOTTOM', 0, -10)
+		button.time:FontTemplate(nil, nil, 'OUTLINE')	
 	end
+
 	local font = LSM:Fetch("font", self.db.font)
 	button.time:FontTemplate(font, self.db.fontSize, self.db.fontOutline)	
-	
-	if active then
-		button.id = GetInventorySlotInfo(slot)
-		button.quality = GetInventoryItemQuality('player', button.id)
-		button.icon = GetInventoryItemTexture("player", button.id)
-		button.texture:SetTexture(button.icon)
-		button.texture:SetTexCoord(unpack(E.TexCoords))		
-		button.expiration = (expiration/1000)
-		
-		local r, g, b = GetItemQualityColor(button.quality)
-		button.backdrop:SetBackdropBorderColor(r, g, b)
-		button:SetScript("OnUpdate", A.UpdateTime)		
-	elseif not active then
-		button.texture:SetTexture(nil)
-		button.time:SetText("")
-		button:SetScript("OnUpdate", nil)
-	end
 end
 
 function A:UpdateAuras(header, button)
@@ -121,9 +107,12 @@ function A:UpdateAuras(header, button)
 end
 
 function A:ScanAuras(event, unit)
+	if InCombatLockdown() then 
+		self:RegisterEvent('PLAYER_REGEN_ENABLED')
+	end
 	if(unit) then
 		if(unit ~= PlayerFrame.unit) then return end
-		if(unit ~= self:GetAttribute("unit")) then
+		if(unit ~= self:GetAttribute("unit")) and not InCombatLockdown() then
 			self:SetAttribute("unit", unit)
 		end
 	end
@@ -134,20 +123,9 @@ function A:ScanAuras(event, unit)
 			A:UpdateAuras(self, child)
 		end
 	end
-end
-
-local TimeSinceLastUpdate = 1
-function A:CheckWeapons(elapsed)
-	TimeSinceLastUpdate = TimeSinceLastUpdate + elapsed
 	
-	if (TimeSinceLastUpdate >= 1) then
-		local e1, e1time, _, e2, e2time  = GetWeaponEnchantInfo()
-		
-		local w1 = self:GetAttribute("tempEnchant1")
-
-		if w1 then A:UpdateWeapons(w1, "MainHandSlot", e1, e1time) end
-
-		TimeSinceLastUpdate = 0
+	if event == 'PLAYER_REGEN_ENABLED' then
+		self:UnregisterEvent('PLAYER_REGEN_ENABLED')
 	end
 end
 
@@ -155,8 +133,9 @@ function A:UpdateHeader(header)
 	local db = self.db.debuffs
 	if header:GetAttribute('filter') == 'HELPFUL' then
 		db = self.db.buffs
-		header:SetAttribute("consolidateTo", self.db.consolidedBuffs == true and E.private.general.minimap.enable == true and 1 or 0)
+		header:SetAttribute("consolidateTo", self.db.consolidatedBuffs.enable == true and E.private.general.minimap.enable == true and 1 or 0)
 		header:SetAttribute("separateOwn", self.db.seperateOwn)
+		header:SetAttribute('consolidateDuration', -1)
 	end
 
 	header:SetAttribute("sortMethod", db.sortMethod)
@@ -182,6 +161,10 @@ function A:UpdateAllHeaders()
 			A:UpdateHeader(header)
 		end
 	end
+	
+	for i = 1, 2 do
+		A:UpdateWeapon(_G["TempEnchant"..i])
+	end
 end
 
 function A:CreateAuraHeader(filter)
@@ -195,14 +178,7 @@ function A:CreateAuraHeader(filter)
 	header:SetAttribute("unit", "player")
 	header:SetAttribute("filter", filter)
 	RegisterStateDriver(header, "visibility", "[petbattle] hide; show")
-	
-	-- look for weapons buffs
-	if filter == "HELPFUL" then
-		header:SetAttribute("includeWeapons", 1)
-		header:SetAttribute("weaponTemplate", "ElvUIAuraTemplate")
-		header:HookScript("OnUpdate", A.CheckWeapons)
-	end
-	
+		
 	A:UpdateHeader(header)
 	header:Show()
 	
@@ -210,16 +186,17 @@ function A:CreateAuraHeader(filter)
 end
 
 function A:PostDrag(position)
+	if InCombatLockdown() then return; end
 	local headers = {ElvUIPlayerBuffs,ElvUIPlayerDebuffs}
 	for _, header in pairs(headers) do
 		if header then
 			if not position then position = E:GetScreenQuadrant(header) end
 			if string.find(position, "LEFT") then
 				header:SetAttribute("point", "TOPLEFT")
-				header:SetAttribute("xOffset", (E.private.auras.size + 10))
+				header:SetAttribute("xOffset", (E.private.auras.size + (E.PixelMode and 6 or 10)))
 			else
 				header:SetAttribute("point", "TOPRIGHT")
-				header:SetAttribute("xOffset", -(E.private.auras.size + 10))		
+				header:SetAttribute("xOffset", -(E.private.auras.size + (E.PixelMode and 6 or 10)))		
 			end
 			
 			header:ClearAllPoints()
@@ -227,43 +204,100 @@ function A:PostDrag(position)
 	end
 	
 	if string.find(position, "LEFT") then
-		ElvUIPlayerBuffs:Point("TOPLEFT", AurasHolder, "TOPLEFT", 2, -2)
+		ElvUIPlayerBuffs:Point("TOPLEFT", AurasHolder, "TOPLEFT", E.Border, -E.Border)
 		
 		if ElvUIPlayerDebuffs then
-			ElvUIPlayerDebuffs:Point("BOTTOMLEFT", AurasHolder, "BOTTOMLEFT", 2, 2)
+			ElvUIPlayerDebuffs:Point("BOTTOMLEFT", AurasHolder, "BOTTOMLEFT", E.Border, E.Border)
 		end
 	else
-		ElvUIPlayerBuffs:Point("TOPRIGHT", AurasHolder, "TOPRIGHT", -2, -2)
+		ElvUIPlayerBuffs:Point("TOPRIGHT", AurasHolder, "TOPRIGHT", -E.Border, -E.Border)
 		
 		if ElvUIPlayerDebuffs then
-			ElvUIPlayerDebuffs:Point("BOTTOMRIGHT", AurasHolder, "BOTTOMRIGHT", -2, 2)	
+			ElvUIPlayerDebuffs:Point("BOTTOMRIGHT", AurasHolder, "BOTTOMRIGHT", -E.Border, E.Border)	
 		end
 	end
 end
 
+function A:WeaponPostDrag(point)
+	if not point then point = E:GetScreenQuadrant(self) end
+	if string.find(point, "LEFT") then
+		TempEnchant1:ClearAllPoints()
+		TempEnchant2:ClearAllPoints()
+		TempEnchant1:SetPoint("TOPLEFT", self, "TOPLEFT", 0, 0)
+		TempEnchant2:SetPoint("LEFT", TempEnchant1, "RIGHT", 4, 0)	
+	else
+		TempEnchant1:ClearAllPoints()
+		TempEnchant2:ClearAllPoints()
+		TempEnchant1:SetPoint("TOPRIGHT", self, "TOPRIGHT", 0, 0)
+		TempEnchant2:SetPoint("RIGHT", TempEnchant1, "LEFT", -4, 0)		
+	end
+end
+
+function A:UpdateWeaponText(auraButton, timeLeft)
+	local duration = auraButton.duration;
+	if(timeLeft) then	
+		if(timeLeft <= 0) then
+			duration:SetText("")
+		else
+			local time = A:FormatTime(timeLeft)
+			if timeLeft <= 86400.5 and timeLeft > 3600.5 then
+				duration:SetText("|cffcccccc"..time.."|r")
+				E:StopFlash(auraButton)
+			elseif timeLeft <= 3600.5 and timeLeft > 60.5 then
+				duration:SetText("|cffcccccc"..time.."|r")
+				E:StopFlash(auraButton)
+			elseif timeLeft <= 60.5 and timeLeft > E.db.auras.fadeThreshold then
+				duration:SetText("|cffcccccc"..time.."|r")
+				E:StopFlash(auraButton)
+			elseif timeLeft <= E.db.auras.fadeThreshold then
+				duration:SetText("|cffff0000"..time.."|r")
+				E:Flash(auraButton, 1)
+			end
+		end
+	end
+end
 
 function A:Initialize()
 	if self.db then return; end --IDK WHY BUT THIS IS GETTING CALLED TWICE FROM SOMEWHERE...
+	
 	self.db = E.db.auras
-	
-	if E.private.auras.enable ~= true then return end
-	
+
 	BuffFrame:Kill()
 	ConsolidatedBuffs:Kill()
-	TemporaryEnchantFrame:Kill()	
 	InterfaceOptionsFrameCategoriesButton12:SetScale(0.0001)
 	
+	self:Construct_ConsolidatedBuffs()
+	if E.private.auras.enable ~= true then TemporaryEnchantFrame:Kill(); return end
+	
 	local holder = CreateFrame("Frame", "AurasHolder", E.UIParent)
-	holder:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", -8, 2)
+	holder:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", -8, (E.PixelMode and 6 or 2))
 	holder:Width(456)
 	holder:Height(E.MinimapHeight)
 	
 	self.BuffFrame = self:CreateAuraHeader("HELPFUL")
 	self.DebuffFrame = self:CreateAuraHeader("HARMFUL")
+	
+	self.EnchantHeader = CreateFrame('Frame', 'ElvUITemporaryEnchantFrame', E.UIParent, 'SecureHandlerStateTemplate');
+	self.EnchantHeader:Size((E.private.auras.size + 6) * 2, E.private.auras.size + 4)
+	self.EnchantHeader:Point('TOPRIGHT', MMHolder, 'BOTTOMRIGHT', 0, -4)
+	self.EnchantHeader:SetAttribute("_onstate-show", [[		
+			if newstate == "hide" then
+				self:Hide();
+			else
+				self:Show();
+			end	
+		]]);
+	
+	RegisterStateDriver(self.EnchantHeader, "show", '[petbattle] hide;show');	
+	self:SecureHook('AuraButton_UpdateDuration', 'UpdateWeaponText')
+	TemporaryEnchantFrame:SetParent(self.EnchantHeader)
+	
+	for i = 1, 2 do
+		A:UpdateWeapon(_G["TempEnchant"..i])	
+	end
 
-	E:CreateMover(AurasHolder, "AurasMover", "Auras Frame", false, nil, A.PostDrag)
-
-	self:Construct_ConsolidatedBuffs()
+	E:CreateMover(AurasHolder, "AurasMover", "Auras Frame", nil, nil, A.PostDrag)
+	E:CreateMover(self.EnchantHeader, 'TempEnchantMover', 'Weapons', nil, nil, A.WeaponPostDrag)
 end
 
 E:RegisterModule(A:GetName())

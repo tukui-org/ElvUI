@@ -70,8 +70,8 @@ function UF:Update_TankHeader(header, db)
 end
 
 function UF:Update_TankFrames(frame, db)
-	local BORDER = E:Scale(2)
-	local SPACING = E:Scale(1)
+	local BORDER = E.Border;
+	local SPACING = E.Spacing;
 	
 	frame.colors = ElvUF.colors
 	frame.Range = {insideAlpha = 1, outsideAlpha = E.db.unitframe.OORAlpha}

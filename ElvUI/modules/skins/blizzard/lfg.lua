@@ -28,10 +28,8 @@ local function LoadSkin()
 	S:HandleCloseButton(LFGDungeonReadyDialogCloseButton)
 	LFGDungeonReadyDialog:StripTextures()
 	LFGDungeonReadyDialog:SetTemplate("Transparent")
-	LFGDungeonReadyDialog:CreateShadow("Default")	
 	LFGDungeonReadyStatus:StripTextures()
 	LFGDungeonReadyStatus:SetTemplate("Transparent")
-	LFGDungeonReadyStatus:CreateShadow("Default")
 	LFGDungeonReadyDialog.SetBackdrop = E.noop
 	LFGDungeonReadyDialog.filigree:SetAlpha(0)
 	LFGDungeonReadyDialog.bottomArt:SetAlpha(0)	
@@ -89,7 +87,6 @@ local function LoadSkin()
 	end
 
 	PVEFrame:CreateBackdrop("Transparent")
-	PVEFrame:CreateShadow('Default')
 	for i=1, 2 do
 		S:HandleTab(_G['PVEFrameTab'..i])
 	end
@@ -139,8 +136,18 @@ local function LoadSkin()
 	for i = 1, NUM_LFD_CHOICE_BUTTONS do
 		S:HandleCheckBox(_G["LFDQueueFrameSpecificListButton"..i].enableButton)
 	end
-
-	S:HandleCheckBox(ScenarioQueueFrameSpecificButton1.enableButton)
+	
+	hooksecurefunc("ScenarioQueueFrameSpecific_Update", function()
+		
+		for i = 1, NUM_SCENARIO_CHOICE_BUTTONS do
+			local button = _G["ScenarioQueueFrameSpecificButton"..i]
+			
+			if button and not button.skinned then
+				S:HandleCheckBox(button.enableButton)
+				button.skinned = true;
+			end
+		end
+	end)
 
 	for i = 1, NUM_LFR_CHOICE_BUTTONS do
 		local bu = _G["LFRQueueFrameSpecificListButton"..i].enableButton
@@ -250,7 +257,6 @@ local function LoadSkin()
 	end
 
 	RaidBrowserFrame:CreateBackdrop('Transparent')
-	RaidBrowserFrame:CreateShadow('Default')
 	S:HandleCloseButton(RaidBrowserFrameCloseButton)
 	S:HandleButton(LFRQueueFrameFindGroupButton)
 	S:HandleButton(LFRQueueFrameAcceptCommentButton)

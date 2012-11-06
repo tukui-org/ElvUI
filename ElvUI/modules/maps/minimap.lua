@@ -149,8 +149,8 @@ function M:UpdateSettings()
 	end
 	E.MinimapSize = E.private.general.minimap.enable and E.db.general.minimap.size or Minimap:GetWidth() + 10
 	
-	if E.db.auras.consolidedBuffs and E.private.auras.enable then
-		E.ConsolidatedBuffsWidth = ((E.MinimapSize - 6) / 6) + 4
+	if E.db.auras.consolidatedBuffs.enable then
+		E.ConsolidatedBuffsWidth = ((E.MinimapSize - (E.db.auras.consolidatedBuffs.filter and 6 or 8)) / (E.db.auras.consolidatedBuffs.filter and 6 or 8)) + (E.PixelMode and 3 or 4)-- 4 needs to be 3
 	else
 		E.ConsolidatedBuffsWidth = 0;
 	end
@@ -173,12 +173,12 @@ function M:UpdateSettings()
 	end	
 	
 	if MMHolder then
-		MMHolder:Width((Minimap:GetWidth() + 4) + E.ConsolidatedBuffsWidth)
+		MMHolder:Width((Minimap:GetWidth() + (E.PixelMode and 3 or 4)) + E.ConsolidatedBuffsWidth)
 		
 		if E.db.datatexts.minimapPanels then
-			MMHolder:Height(Minimap:GetHeight() + 27)
+			MMHolder:Height(Minimap:GetHeight() + (E.PixelMode and 22 or 27))
 		else
-			MMHolder:Height(Minimap:GetHeight() + 5)	
+			MMHolder:Height(Minimap:GetHeight() + (E.PixelMode and 2 or 5))	
 		end
 	end
 	
@@ -210,7 +210,7 @@ function M:UpdateSettings()
 	end
 			
 	if ElvConfigToggle then
-		if E.private.auras.enable and E.db.auras.consolidedBuffs and E.db.datatexts.minimapPanels and E.private.general.minimap.enable then
+		if E.db.auras.consolidatedBuffs.enable and E.db.datatexts.minimapPanels and E.private.general.minimap.enable then
 			ElvConfigToggle:Show()
 			ElvConfigToggle:Width(E.ConsolidatedBuffsWidth)
 		else
@@ -219,16 +219,7 @@ function M:UpdateSettings()
 	end
 	
 	if ElvUI_ConsolidatedBuffs then
-		ElvUI_ConsolidatedBuffs:Width(E.ConsolidatedBuffsWidth)
-		for i=1, 6 do
-			ElvUI_ConsolidatedBuffs['spell'..i]:Size(E.ConsolidatedBuffsWidth - 4)
-		end
-		
-		if E.db.auras.consolidedBuffs and E.private.general.minimap.enable then
-			E:GetModule('Auras'):EnableCB()
-		else
-			E:GetModule('Auras'):DisableCB()
-		end
+		E:GetModule('Auras'):Update_ConsolidatedBuffsSettings()
 	end
 end
 
@@ -237,7 +228,7 @@ function M:Initialize()
 	if not E.private.general.minimap.enable then 
 		Minimap:SetMaskTexture('Textures\\MinimapMask')
 		return; 
-	end
+	end	
 	
 	local mmholder = CreateFrame('Frame', 'MMHolder', Minimap)
 	mmholder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -3, -3)
@@ -247,7 +238,10 @@ function M:Initialize()
 	Minimap:ClearAllPoints()
 	Minimap:Point("TOPLEFT", mmholder, "TOPLEFT", 2, -2)
 	Minimap:SetMaskTexture('Interface\\ChatFrame\\ChatFrameBackground')
+	Minimap:SetQuestBlobRingAlpha(0) 
+	Minimap:SetArchBlobRingAlpha(0)	
 	Minimap:CreateBackdrop('Default')
+	Minimap:SetFrameLevel(Minimap:GetFrameLevel() + 2)
 	Minimap:HookScript('OnEnter', function(self)
 		if E.db.general.minimap.locationText ~= 'MOUSEOVER' or not E.private.general.minimap.enable then return; end
 		self.location:Show()
@@ -307,6 +301,10 @@ function M:Initialize()
 	GuildInstanceDifficulty:SetParent(Minimap)
 	GuildInstanceDifficulty:Point("TOPLEFT", Minimap, "TOPLEFT", 0, 0)
 	
+	MiniMapChallengeMode:ClearAllPoints()
+	MiniMapChallengeMode:SetParent(Minimap)
+	MiniMapChallengeMode:Point("TOPLEFT", Minimap, "TOPLEFT", 8, -8)
+	
 	if TimeManagerClockButton then
 		TimeManagerClockButton:Kill()
 	end
@@ -345,6 +343,7 @@ function M:Initialize()
 	fm:SetScript("OnDragStart", function(self) self:StartMoving() end)
 	fm:SetScript("OnDragStop", function(self) self:StopMovingOrSizing() end)
 	fm:Hide()
+	E.FrameLocks['FarmModeMap'] = true;
 	
 	FarmModeMap:SetScript('OnShow', function() 	
 		if not E:HasMoverBeenMoved('AurasMover') then

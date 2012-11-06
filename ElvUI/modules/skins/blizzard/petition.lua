@@ -5,7 +5,6 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.petition ~= true then return end
 	PetitionFrame:StripTextures(true)
 	PetitionFrame:SetTemplate("Transparent")
-	PetitionFrame:CreateShadow("Default")
 	PetitionFrameInset:Kill()
 	S:HandleButton(PetitionFrameSignButton)
 	S:HandleButton(PetitionFrameRequestButton)

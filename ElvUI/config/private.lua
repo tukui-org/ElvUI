@@ -8,8 +8,10 @@ V['general'] = {
 	["normTex"] = "Minimalist",
 	["glossTex"] = "Minimalist",	
 	["dmgfont"] = "ElvUI Combat",
+	["namefont"] = "ElvUI Font",
 	['bubbles'] = true,
-	['bags'] = true,
+	['pixelPerfect'] = true,
+	["raidIconStyle"] = "classic",
 	
 	['minimap'] = {
 		['enable'] = true,
@@ -18,6 +20,7 @@ V['general'] = {
 
 V['bags'] = {
 	['enable'] = true,
+	['bagBar'] = false,
 }
 
 V["nameplate"] = {
@@ -40,6 +43,7 @@ V['skins'] = {
 	['blizzard'] = {
 		['enable'] = true,
 		["bags"] = true,
+		["bmah"] = true, --black market ah
 		["reforge"] = true,
 		["calendar"] = true,
 		["achievement"] = true,
@@ -53,7 +57,6 @@ V['skins'] = {
 		["tradeskill"] = true,
 		["raid"] = true,
 		["talent"] = true,
-		["glyph"] = true,
 		["auctionhouse"] = true,
 		["barber"] = true,
 		["macro"] = true,

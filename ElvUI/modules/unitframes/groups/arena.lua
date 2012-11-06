@@ -31,13 +31,13 @@ function UF:Construct_ArenaFrames(frame)
 		frame.prepFrame:SetFrameStrata('BACKGROUND')
 		frame.prepFrame:SetAllPoints(frame)
 		frame.prepFrame.Health = CreateFrame('StatusBar', nil, frame.prepFrame)
-		frame.prepFrame.Health:Point('BOTTOMLEFT', frame.prepFrame, 'BOTTOMLEFT', 2, 2)
-		frame.prepFrame.Health:Point('TOPRIGHT', frame.prepFrame, 'TOPRIGHT', -(2 + E.db.unitframe.units.arena.height), -2)
+		frame.prepFrame.Health:Point('BOTTOMLEFT', frame.prepFrame, 'BOTTOMLEFT', E.Border, E.Border)
+		frame.prepFrame.Health:Point('TOPRIGHT', frame.prepFrame, 'TOPRIGHT', -(E.Border + E.db.unitframe.units.arena.height), -E.Border)
 		frame.prepFrame.Health:CreateBackdrop()
 		
 		frame.prepFrame.Icon = frame.prepFrame:CreateTexture(nil, 'OVERLAY')
 		frame.prepFrame.Icon.bg = CreateFrame('Frame', nil, frame.prepFrame)
-		frame.prepFrame.Icon.bg:Point('TOPLEFT', frame.prepFrame.Health.backdrop, 'TOPRIGHT', 1, 0)
+		frame.prepFrame.Icon.bg:Point('TOPLEFT', frame.prepFrame.Health.backdrop, 'TOPRIGHT', E.PixelMode and -1 or 1, 0)
 		frame.prepFrame.Icon.bg:Point('BOTTOMRIGHT', frame.prepFrame, 'BOTTOMRIGHT', 0, 0)
 		frame.prepFrame.Icon.bg:SetTemplate('Default')
 		frame.prepFrame.Icon:SetParent(frame.prepFrame.Icon.bg)
@@ -57,8 +57,8 @@ end
 
 function UF:Update_ArenaFrames(frame, db)
 	frame.db = db
-	local BORDER = E:Scale(2)
-	local SPACING = E:Scale(1)
+	local BORDER = E.Border;
+	local SPACING = E.Spacing;
 	local INDEX = frame.index
 	local UNIT_WIDTH = db.width
 	local UNIT_HEIGHT = db.height
@@ -185,7 +185,7 @@ function UF:Update_ArenaFrames(frame, db)
 				power:SetFrameStrata("MEDIUM")
 				power:SetFrameLevel(frame:GetFrameLevel() + 3)
 			else
-				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(BORDER + SPACING))
+				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(E.PixelMode and 0 or (BORDER + SPACING)))
 				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -(BORDER + PVPINFO_WIDTH), BORDER)
 			end
 		elseif frame:IsElementEnabled('Power') then
@@ -266,7 +266,7 @@ function UF:Update_ArenaFrames(frame, db)
 		end
 		
 		local x, y = E:GetXYOffset(db.debuffs.anchorPoint)
-		local attachTo = self:GetAuraAnchorFrame(frame, db.debuffs.attachTo, db.debuffs.attachTo == 'BUFFS' and db.buffs.attachTo == 'DEBUFFS' and db.buffs.enable)
+		local attachTo = self:GetAuraAnchorFrame(frame, db.debuffs.attachTo, db.debuffs.attachTo == 'BUFFS' and db.buffs.attachTo == 'DEBUFFS')
 		
 		debuffs:Point(E.InversePoints[db.debuffs.anchorPoint], attachTo, db.debuffs.anchorPoint, x + db.debuffs.xOffset, y + db.debuffs.yOffset)
 		debuffs:Height(debuffs.size * rows)
@@ -284,16 +284,16 @@ function UF:Update_ArenaFrames(frame, db)
 	--Castbar
 	do
 		local castbar = frame.Castbar
-		castbar:Width(db.castbar.width - 4)
+		castbar:Width(db.castbar.width - (E.PixelMode and 2 or (BORDER * 2)))
 		castbar:Height(db.castbar.height)
 		
 		--Icon
 		if db.castbar.icon then
 			castbar.Icon = castbar.ButtonIcon
-			castbar.Icon.bg:Width(db.castbar.height + 4)
-			castbar.Icon.bg:Height(db.castbar.height + 4)
+			castbar.Icon.bg:Width(db.castbar.height + (E.Border * 2))
+			castbar.Icon.bg:Height(db.castbar.height + (E.Border * 2))
 			
-			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - 5)
+			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - (E.PixelMode and 1 or 5))
 			castbar.Icon.bg:Show()
 		else
 			castbar.ButtonIcon.bg:Hide()
@@ -339,9 +339,9 @@ function UF:Update_ArenaFrames(frame, db)
 		local specIcon = frame.PVPSpecIcon
 		specIcon.bg:Point("TOPRIGHT", frame, "TOPRIGHT")
 		if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET then
-			specIcon.bg:SetPoint("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMRIGHT", SPACING, 0)
+			specIcon.bg:SetPoint("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMRIGHT", E.PixelMode and -1 or SPACING, 0)
 		else
-			specIcon.bg:SetPoint("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMRIGHT", SPACING, 0)	
+			specIcon.bg:SetPoint("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMRIGHT", E.PixelMode and -1 or SPACING, 0)	
 		end
 		
 		if db.pvpSpecIcon and not frame:IsElementEnabled('PVPSpecIcon') then
@@ -354,7 +354,7 @@ function UF:Update_ArenaFrames(frame, db)
 	if db.customTexts then
 		for objectName, _ in pairs(db.customTexts) do
 			if not frame[objectName] then
-				frame[objectName] = frame:CreateFontString(nil, 'OVERLAY')
+				frame[objectName] = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
 			end
 			
 			local objectDB = db.customTexts[objectName]
@@ -362,7 +362,9 @@ function UF:Update_ArenaFrames(frame, db)
 			
 			frame[objectName]:FontTemplate(UF.LSM:Fetch("font", objectDB.font or UF.db.font), objectDB.size or UF.db.fontSize, objectDB.fontOutline or UF.db.fontOutline)
 			frame:Tag(frame[objectName], objectDB.text_format or '')
-			frame[objectName]:SetPoint('CENTER', frame, 'CENTER', objectDB.xOffset, objectDB.yOffset)
+			frame[objectName]:SetJustifyH(objectDB.justifyH or 'CENTER')
+			frame[objectName]:ClearAllPoints()
+			frame[objectName]:SetPoint(objectDB.justifyH or 'CENTER', frame, 'CENTER', objectDB.xOffset, objectDB.yOffset)
 		end
 	end
 	

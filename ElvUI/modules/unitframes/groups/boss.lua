@@ -13,14 +13,15 @@ function UF:Construct_BossFrames(frame)
 	
 	frame.Name = self:Construct_NameText(frame)
 	
-	frame.Portrait = self:Construct_Portrait(frame)
+	frame.Portrait3D = self:Construct_Portrait(frame, 'model')
+	frame.Portrait2D = self:Construct_Portrait(frame, 'texture')
 	
 	frame.Buffs = self:Construct_Buffs(frame)
 	
 	frame.Debuffs = self:Construct_Debuffs(frame)
 	
 	frame.Castbar = self:Construct_Castbar(frame, 'RIGHT')
-	
+	frame.RaidIcon = UF:Construct_RaidIcon(frame)
 	frame.AltPowerBar = self:Construct_AltPowerBar(frame)
 	
 	frame:SetAttribute("type2", "focus")
@@ -31,8 +32,16 @@ end
 
 function UF:Update_BossFrames(frame, db)
 	frame.db = db
-	local BORDER = E:Scale(2)
-	local SPACING = E:Scale(1)
+	
+	if frame.Portrait then
+		frame.Portrait:Hide()
+		frame.Portrait:ClearAllPoints()
+		frame.Portrait.backdrop:Hide()
+	end
+	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
+	
+	local BORDER = E.Border;
+	local SPACING = E.Spacing;
 	local INDEX = frame.index
 	local UNIT_WIDTH = db.width
 	local UNIT_HEIGHT = db.height
@@ -172,7 +181,7 @@ function UF:Update_BossFrames(frame, db)
 				power:SetFrameStrata("MEDIUM")
 				power:SetFrameLevel(frame:GetFrameLevel() + 3)
 			else
-				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(BORDER + SPACING))
+				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(E.PixelMode and 0 or (BORDER + SPACING)))
 				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -(BORDER + PORTRAIT_WIDTH), BORDER)
 			end
 		elseif frame:IsElementEnabled('Power') then
@@ -194,16 +203,22 @@ function UF:Update_BossFrames(frame, db)
 			portrait:ClearAllPoints()
 			
 			if USE_PORTRAIT_OVERLAY then
-				portrait:SetFrameLevel(frame.Health:GetFrameLevel() + 1)
+				if db.portrait.style == '3D' then
+					portrait:SetFrameLevel(frame.Health:GetFrameLevel() + 1)
+				end
 				portrait:SetAllPoints(frame.Health)
 				portrait:SetAlpha(0.3)
 				portrait:Show()		
+				portrait.backdrop:Show()
 			else
 				portrait:SetAlpha(1)
 				portrait:Show()
-				
+				portrait.backdrop:Hide()
 				portrait.backdrop:ClearAllPoints()
 				portrait.backdrop:SetPoint("TOPRIGHT", frame, "TOPRIGHT")
+				if db.portrait.style == '3D' then
+					portrait:SetFrameLevel(frame:GetFrameLevel() + 5)
+				end								
 						
 				if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR then
 					portrait.backdrop:Point("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMRIGHT", SPACING, 0)
@@ -218,6 +233,7 @@ function UF:Update_BossFrames(frame, db)
 			if frame:IsElementEnabled('Portrait') then
 				frame:DisableElement('Portrait')
 				portrait:Hide()
+				portrait.backdrop:Hide()
 			end		
 		end
 	end
@@ -238,6 +254,7 @@ function UF:Update_BossFrames(frame, db)
 		frame.Buffs:ClearAllPoints()
 		frame.Debuffs:ClearAllPoints()
 	end
+	
 	
 	--Buffs
 	do
@@ -294,7 +311,7 @@ function UF:Update_BossFrames(frame, db)
 		end
 		
 		local x, y = E:GetXYOffset(db.debuffs.anchorPoint)
-		local attachTo = self:GetAuraAnchorFrame(frame, db.debuffs.attachTo, db.debuffs.attachTo == 'BUFFS' and db.buffs.attachTo == 'DEBUFFS' and db.buffs.enable)
+		local attachTo = self:GetAuraAnchorFrame(frame, db.debuffs.attachTo, db.debuffs.attachTo == 'BUFFS' and db.buffs.attachTo == 'DEBUFFS')
 		
 		debuffs:Point(E.InversePoints[db.debuffs.anchorPoint], attachTo, db.debuffs.anchorPoint, x + db.debuffs.xOffset, y + db.debuffs.yOffset)
 		debuffs:Height(debuffs.size * rows)
@@ -312,16 +329,16 @@ function UF:Update_BossFrames(frame, db)
 	--Castbar
 	do
 		local castbar = frame.Castbar
-		castbar:Width(db.castbar.width - 4)
+		castbar:Width(db.castbar.width - (E.PixelMode and BORDER or (BORDER * 2)))
 		castbar:Height(db.castbar.height)
 		
 		--Icon
 		if db.castbar.icon then
 			castbar.Icon = castbar.ButtonIcon
-			castbar.Icon.bg:Width(db.castbar.height + 4)
-			castbar.Icon.bg:Height(db.castbar.height + 4)
+			castbar.Icon.bg:Width(db.castbar.height + (E.Border * 2))
+			castbar.Icon.bg:Height(db.castbar.height + (E.Border * 2))
 			
-			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - 5)
+			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - (E.PixelMode and 1 or 5))
 			castbar.Icon.bg:Show()
 		else
 			castbar.ButtonIcon.bg:Hide()
@@ -343,6 +360,23 @@ function UF:Update_BossFrames(frame, db)
 			frame:DisableElement('Castbar')	
 		end			
 	end
+	
+	--Raid Icon
+	do
+		local RI = frame.RaidIcon
+		if db.raidicon.enable then
+			frame:EnableElement('RaidIcon')
+			RI:Show()
+			RI:Size(db.raidicon.size)
+			
+			local x, y = self:GetPositionOffset(db.raidicon.attachTo)
+			RI:ClearAllPoints()
+			RI:Point(db.raidicon.attachTo, frame, db.raidicon.attachTo, x + db.raidicon.xOffset, y + db.raidicon.yOffset)	
+		else
+			frame:DisableElement('RaidIcon')	
+			RI:Hide()
+		end
+	end		
 	
 	--AltPowerBar
 	do
@@ -385,7 +419,7 @@ function UF:Update_BossFrames(frame, db)
 	if db.customTexts then
 		for objectName, _ in pairs(db.customTexts) do
 			if not frame[objectName] then
-				frame[objectName] = frame:CreateFontString(nil, 'OVERLAY')
+				frame[objectName] = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
 			end
 			
 			local objectDB = db.customTexts[objectName]
@@ -393,7 +427,9 @@ function UF:Update_BossFrames(frame, db)
 			
 			frame[objectName]:FontTemplate(UF.LSM:Fetch("font", objectDB.font or UF.db.font), objectDB.size or UF.db.fontSize, objectDB.fontOutline or UF.db.fontOutline)
 			frame:Tag(frame[objectName], objectDB.text_format or '')
-			frame[objectName]:SetPoint('CENTER', frame, 'CENTER', objectDB.xOffset, objectDB.yOffset)
+			frame[objectName]:SetJustifyH(objectDB.justifyH or 'CENTER')
+			frame[objectName]:ClearAllPoints()
+			frame[objectName]:SetPoint(objectDB.justifyH or 'CENTER', frame, 'CENTER', objectDB.xOffset, objectDB.yOffset)
 		end
 	end	
 

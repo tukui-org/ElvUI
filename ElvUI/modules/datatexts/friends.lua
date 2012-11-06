@@ -116,10 +116,6 @@ local function BuildBNTable(total)
 		presenceID, presenceName, battleTag, isBattleTagPresence, toonName, toonID, client, isOnline, lastOnline, isAFK, isDND, messageText, noteText, isRIDFriend, messageTime, canSoR = BNGetFriendInfo(i)
 		hasFocus, _, _, realmName, realmID, faction, race, class, guild, zoneName, level, gameText = BNGetToonInfo(presenceID);
 		
-		if isBattleTagPresence then
-			presenceName = battleTag
-		end
-		
 		if isOnline then 
 			for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
 			BNTable[i] = { presenceID, presenceName, battleTag, toonName, toonID, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
@@ -135,28 +131,28 @@ local function BuildBNTable(total)
 	end
 	
 	sort(BNTable, function(a, b)
-		if a[2] and b[2] then
+		if a[2] and b[2] and a[3] and b[3] then
 			if a[2] == b[2] then return a[3] < b[3] end
 			return a[2] < b[2]
 		end
 	end)	
 	
 	sort(BNTableWoW, function(a, b)
-		if a[2] and b[2] then
+		if a[2] and b[2] and a[3] and b[3] then
 			if a[2] == b[2] then return a[3] < b[3] end
 			return a[2] < b[2]
 		end
 	end)
 	
 	sort(BNTableSC, function(a, b)
-		if a[2] and b[2] then
+		if a[2] and b[2] and a[3] and b[3] then
 			if a[2] == b[2] then return a[3] < b[3] end
 			return a[2] < b[2]
 		end
 	end)
 	
 	sort(BNTableD3, function(a, b)
-		if a[2] and b[2] then
+		if a[2] and b[2] and a[3] and b[3] then
 			if a[2] == b[2] then return a[3] < b[3] end
 			return a[2] < b[2]
 		end

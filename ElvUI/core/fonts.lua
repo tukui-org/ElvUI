@@ -13,15 +13,15 @@ function E:UpdateBlizzardFonts()
 	local NORMAL     = self["media"].normFont
 	local COMBAT     = LSM:Fetch('font', self.private.general.dmgfont)
 	local NUMBER     = self["media"].normFont
-	local CHAT		 = LSM:Fetch('font', self.db.chat.font)
+	local NAMEFONT		 = LSM:Fetch('font', self.private.general.namefont)
 	local MONOCHROME = ''
 	local _, editBoxFontSize, _, _, _, _, _, _, _, _ = GetChatWindowInfo(1)
 
 	UIDROPDOWNMENU_DEFAULT_TEXT_HEIGHT = 12
 	CHAT_FONT_HEIGHTS = {12, 13, 14, 15, 16, 17, 18, 19, 20}
 
-	UNIT_NAME_FONT     = CHAT
-	NAMEPLATE_FONT     = CHAT
+	UNIT_NAME_FONT     = NAMEFONT
+	NAMEPLATE_FONT     = NAMEFONT
 	DAMAGE_TEXT_FONT   = COMBAT
 	STANDARD_TEXT_FONT = NORMAL
 

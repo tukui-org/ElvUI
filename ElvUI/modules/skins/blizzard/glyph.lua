@@ -2,7 +2,7 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.glyph ~= true then return end
+	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.talent ~= true then return end
 	
 	GlyphFrame.background:ClearAllPoints()
 	GlyphFrame.background:SetAllPoints(PlayerTalentFrameInset)

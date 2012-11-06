@@ -298,7 +298,46 @@ local function LoadSkin()
 				end				
 			end
 		end	
-	end)	
+	end)
+	
+	local frame = BonusRollMoneyWonFrame
+	frame:SetAlpha(1)
+	frame.SetAlpha = E.noop
+
+	frame.Background:Kill()
+	frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+	frame.IconBorder:Kill()
+	
+	-- Icon border
+	frame.Icon.b = CreateFrame("Frame", nil, frame)
+	frame.Icon.b:SetTemplate("Default")
+	frame.Icon.b:SetOutside(frame.Icon)
+	frame.Icon:SetParent(frame.Icon.b)
+
+	frame:CreateBackdrop("Transparent")
+	frame.backdrop:SetPoint('TOPLEFT', frame.Icon.b, 'TOPLEFT', -4, 4)
+	frame.backdrop:SetPoint('BOTTOMRIGHT', frame.Icon.b, 'BOTTOMRIGHT', 180, -4)
+	
+	local frame = BonusRollLootWonFrame
+	frame:SetAlpha(1)
+	frame.SetAlpha = E.noop
+	
+	frame.Background:Kill()
+	frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+	frame.IconBorder:Kill()
+	frame.glow:Kill()
+	frame.shine:Kill()
+	
+	-- Icon border
+	frame.Icon.b = CreateFrame("Frame", nil, frame)
+	frame.Icon.b:SetTemplate("Default")
+	frame.Icon.b:SetOutside(frame.Icon)
+	frame.Icon:SetParent(frame.Icon.b)
+
+	frame:CreateBackdrop("Transparent")
+	frame.backdrop:SetPoint('TOPLEFT', frame.Icon.b, 'TOPLEFT', -4, 4)
+	frame.backdrop:SetPoint('BOTTOMRIGHT', frame.Icon.b, 'BOTTOMRIGHT', 180, -4)
+	
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)

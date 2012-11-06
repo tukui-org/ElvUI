@@ -2,15 +2,72 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 
 E.PopupDialogs = {};
 E.StaticPopup_DisplayedFrames = {};
-E.PopupDialogs['FAILED_UISCALE'] = {
-	text = L['You have changed your UIScale, however you still have the AutoScale option enabled in ElvUI. Press accept if you would like to disable the Auto Scale option.'],
+
+E.PopupDialogs['NEW_THEME'] = {
+	text = L['A new theme called Pixel Perfect has been added for ElvUI! This theme will increase overall performance and provides a cleaner appearance to all of ElvUI. Unfortionatly to apply this theme it will require some settings getting reset. Would you like to try the Pixel Perfect theme?'],
+	OnAccept = function() 
+		E:Install()
+		ElvUIInstallFrame.SetPage(4); 
+	end,
+	OnCancel = function() E.global.newThemePrompt = true; end,
+	button1 = ACCEPT,
+	button2 = DECLINE,	
+	timeout = 0,
+	whileDead = 1,	
+	hideOnEscape = false,		
+}
+
+E.PopupDialogs['DISABLE_INCOMPATIBLE_ADDON'] = {
+	text = L['Do you swear not to post in technical support about something not working without first disabling the addon/module combination first?'],
+	OnAccept = function() E.global.ignoreIncompatible = true; end,
+	OnCancel = function() E:StaticPopup_Hide('DISABLE_INCOMPATIBLE_ADDON'); E:StaticPopup_Show('INCOMPATIBLE_ADDON', E.PopupDialogs['INCOMPATIBLE_ADDON'].addon, E.PopupDialogs['INCOMPATIBLE_ADDON'].module) end,
+	button1 = L['I Swear'],
+	button2 = DECLINE,	
+	timeout = 0,
+	whileDead = 1,	
+	hideOnEscape = false,		
+}
+
+E.PopupDialogs['INCOMPATIBLE_ADDON'] = {
+	text = L['INCOMPATIBLE_ADDON'],
+	OnAccept = function(self) DisableAddOn(E.PopupDialogs['INCOMPATIBLE_ADDON'].addon); ReloadUI(); end,
+	OnCancel = function(self) E.private[string.lower(E.PopupDialogs['INCOMPATIBLE_ADDON'].module)].enable = false; ReloadUI(); end,
+	button3 = L['Disable Warning'],
+	OnAlt = function ()
+		E:StaticPopup_Hide('INCOMPATIBLE_ADDON')
+		E:StaticPopup_Show('DISABLE_INCOMPATIBLE_ADDON');
+	end,	
+	timeout = 0,
+	whileDead = 1,	
+	hideOnEscape = false,	
+}
+
+E.PopupDialogs['PIXELPERFECT_CHANGED'] = {
+	text = L["You have changed the pixel perfect option. You will have to complete the installation process to remove any graphical bugs."],
+	button1 = ACCEPT,
+	OnAccept = E.noop,
+	timeout = 0,
+	whileDead = 1,	
+	hideOnEscape = false,	
+}
+
+E.PopupDialogs['CONFIGAURA_SET'] = {
+	text = L["Because of the mass confusion caused by the new aura system I've implemented a new step to the installation process. This is optional. If you like how your auras are setup go to the last step and click finished to not be prompted again. If for some reason you are prompted repeatedly please restart your game."],
+	button1 = ACCEPT,
+	OnAccept = E.noop,
+	timeout = 0,
+	whileDead = 1,	
+	hideOnEscape = false,	
+}
+
+E.PopupDialogs['TALENT_TAINT'] = {
+	text = L["A taint has occured that is preventing you from using your talents/glyphs, this can happen if you've inspected someone. Unfortionatly theres nothing we can do to fix it, please reload your ui and try again."],
 	button1 = ACCEPT,
 	button2 = CANCEL,
-	OnAccept = function() E.db.general.autoscale = false; ReloadUI(); end,
+	OnAccept = function() ReloadUI(); end,
 	timeout = 0,
 	whileDead = 1,	
 	hideOnEscape = false,
-	preferredIndex = 3,
 }
 
 E.PopupDialogs['FAILED_UISCALE'] = {
@@ -21,7 +78,16 @@ E.PopupDialogs['FAILED_UISCALE'] = {
 	timeout = 0,
 	whileDead = 1,	
 	hideOnEscape = false,
-	preferredIndex = 3,
+}
+
+E.PopupDialogs['FAILED_UISCALE'] = {
+	text = L['You have changed your UIScale, however you still have the AutoScale option enabled in ElvUI. Press accept if you would like to disable the Auto Scale option.'],
+	button1 = ACCEPT,
+	button2 = CANCEL,
+	OnAccept = function() E.db.general.autoscale = false; ReloadUI(); end,
+	timeout = 0,
+	whileDead = 1,	
+	hideOnEscape = false,
 }
 
 E.PopupDialogs["CONFIG_RL"] = {
@@ -32,7 +98,6 @@ E.PopupDialogs["CONFIG_RL"] = {
 	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
-	preferredIndex = 3,
 }
 
 E.PopupDialogs["GLOBAL_RL"] = {
@@ -43,7 +108,6 @@ E.PopupDialogs["GLOBAL_RL"] = {
 	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
-	preferredIndex = 3,
 }
 
 E.PopupDialogs["PRIVATE_RL"] = {
@@ -54,7 +118,6 @@ E.PopupDialogs["PRIVATE_RL"] = {
 	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
-	preferredIndex = 3,
 }
 
 E.PopupDialogs["KEYBIND_MODE"] = {
@@ -66,7 +129,6 @@ E.PopupDialogs["KEYBIND_MODE"] = {
 	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
-	preferredIndex = 3,
 }
 
 E.PopupDialogs["DELETE_GRAYS"] = {
@@ -77,7 +139,6 @@ E.PopupDialogs["DELETE_GRAYS"] = {
 	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
-	preferredIndex = 3,
 }
 
 E.PopupDialogs["BUY_BANK_SLOT"] = {
@@ -93,7 +154,6 @@ E.PopupDialogs["BUY_BANK_SLOT"] = {
 	hasMoneyFrame = 1,
 	timeout = 0,
 	hideOnEscape = 1,
-	preferredIndex = 3,
 }
 
 E.PopupDialogs["CANNOT_BUY_BANK_SLOT"] = {
@@ -101,7 +161,6 @@ E.PopupDialogs["CANNOT_BUY_BANK_SLOT"] = {
 	button1 = ACCEPT,
 	timeout = 0,
 	whileDead = 1,	
-	preferredIndex = 3,
 }
 
 E.PopupDialogs["NO_BANK_BAGS"] = {
@@ -109,7 +168,6 @@ E.PopupDialogs["NO_BANK_BAGS"] = {
 	button1 = ACCEPT,
 	timeout = 0,
 	whileDead = 1,	
-	preferredIndex = 3
 }
 
 E.PopupDialogs["RESETUI_CHECK"] = {
@@ -121,7 +179,6 @@ E.PopupDialogs["RESETUI_CHECK"] = {
 	end,
 	timeout = 0,
 	whileDead = 1,
-	preferredIndex = 3,
 }
 
 E.PopupDialogs["APRIL_FOOLS"] = {
@@ -129,7 +186,6 @@ E.PopupDialogs["APRIL_FOOLS"] = {
 	button1 = ACCEPT,
 	timeout = 0,
 	whileDead = 1,	
-	preferredIndex = 3
 }
 
 
@@ -140,7 +196,6 @@ E.PopupDialogs["DISBAND_RAID"] = {
 	OnAccept = function() E:GetModule('Misc'):DisbandRaidGroup() end,
 	timeout = 0,
 	whileDead = 1,
-	preferredIndex = 3,
 }
 
 E.PopupDialogs["CONFIRM_LOOT_DISTRIBUTION"] = {
@@ -782,8 +837,7 @@ function E:Contruct_StaticPopups()
 		
 		--Skin
 		E.StaticPopupFrames[index]:SetTemplate('Transparent')
-		E.StaticPopupFrames[index]:CreateShadow('Default')
-		
+
 		for i = 1, 3 do
 			S:HandleButton(_G["ElvUI_StaticPopup"..index.."Button"..i])
 		end

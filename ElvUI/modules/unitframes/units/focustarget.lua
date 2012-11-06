@@ -22,8 +22,8 @@ end
 
 function UF:Update_FocusTargetFrame(frame, db)
 	frame.db = db
-	local BORDER = E:Scale(2)
-	local SPACING = E:Scale(1)
+	local BORDER = E.Border;
+	local SPACING = E.Spacing;
 	local UNIT_WIDTH = db.width
 	local UNIT_HEIGHT = db.height
 	
@@ -146,7 +146,7 @@ function UF:Update_FocusTargetFrame(frame, db)
 				power:SetFrameStrata("MEDIUM")
 				power:SetFrameLevel(frame:GetFrameLevel() + 3)
 			else
-				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(BORDER + SPACING))
+				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(E.PixelMode and 0 or (BORDER + SPACING)))
 				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -BORDER, BORDER)
 			end
 		elseif frame:IsElementEnabled('Power') then
@@ -227,7 +227,7 @@ function UF:Update_FocusTargetFrame(frame, db)
 		end
 		
 		local x, y = E:GetXYOffset(db.debuffs.anchorPoint)
-		local attachTo = self:GetAuraAnchorFrame(frame, db.debuffs.attachTo, db.debuffs.attachTo == 'BUFFS' and db.buffs.attachTo == 'DEBUFFS' and db.buffs.enable)
+		local attachTo = self:GetAuraAnchorFrame(frame, db.debuffs.attachTo, db.debuffs.attachTo == 'BUFFS' and db.buffs.attachTo == 'DEBUFFS')
 		
 		debuffs:Point(E.InversePoints[db.debuffs.anchorPoint], attachTo, db.debuffs.anchorPoint, x + db.debuffs.xOffset, y + db.debuffs.yOffset)
 		debuffs:Height(debuffs.size * rows)
@@ -242,10 +242,28 @@ function UF:Update_FocusTargetFrame(frame, db)
 		end
 	end	
 	
+	
+	--Raid Icon
+	do
+		local RI = frame.RaidIcon
+		if db.raidicon.enable then
+			frame:EnableElement('RaidIcon')
+			RI:Show()
+			RI:Size(db.raidicon.size)
+			
+			local x, y = self:GetPositionOffset(db.raidicon.attachTo)
+			RI:ClearAllPoints()
+			RI:Point(db.raidicon.attachTo, frame, db.raidicon.attachTo, x + db.raidicon.xOffset, y + db.raidicon.yOffset)	
+		else
+			frame:DisableElement('RaidIcon')	
+			RI:Hide()
+		end
+	end		
+	
 	if db.customTexts then
 		for objectName, _ in pairs(db.customTexts) do
 			if not frame[objectName] then
-				frame[objectName] = frame:CreateFontString(nil, 'OVERLAY')
+				frame[objectName] = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
 			end
 			
 			local objectDB = db.customTexts[objectName]
@@ -253,7 +271,9 @@ function UF:Update_FocusTargetFrame(frame, db)
 			
 			frame[objectName]:FontTemplate(UF.LSM:Fetch("font", objectDB.font or UF.db.font), objectDB.size or UF.db.fontSize, objectDB.fontOutline or UF.db.fontOutline)
 			frame:Tag(frame[objectName], objectDB.text_format or '')
-			frame[objectName]:SetPoint('CENTER', frame, 'CENTER', objectDB.xOffset, objectDB.yOffset)
+			frame[objectName]:SetJustifyH(objectDB.justifyH or 'CENTER')
+			frame[objectName]:ClearAllPoints()
+			frame[objectName]:SetPoint(objectDB.justifyH or 'CENTER', frame, 'CENTER', objectDB.xOffset, objectDB.yOffset)
 		end
 	end
 	

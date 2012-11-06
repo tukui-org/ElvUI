@@ -9,6 +9,9 @@ function UF:Construct_PartyFrames(unitGroup)
 	self:RegisterForClicks("AnyUp")
 	self:SetScript('OnEnter', UnitFrame_OnEnter)
 	self:SetScript('OnLeave', UnitFrame_OnLeave)	
+
+	self.RaisedElementParent = CreateFrame('Frame', nil, self)
+	self.RaisedElementParent:SetFrameLevel(self:GetFrameLevel() + 10)
 	
 	if self.isChild then
 		self.Health = UF:Construct_HealthBar(self, true)
@@ -45,6 +48,7 @@ function UF:Construct_PartyFrames(unitGroup)
 		self.HealPrediction = UF:Construct_HealComm(self)
 	end
 	
+	
 	UF:Update_PartyFrames(self, E.db['unitframe']['units']['party'])
 	UF:Update_StatusBars()
 	UF:Update_FontStrings()	
@@ -78,6 +82,9 @@ function UF:Update_PartyHeader(header, db)
 	elseif db.groupBy == 'ROLE' then
 		header:SetAttribute("groupingOrder", "MAINTANK,MAINASSIST,1,2,3,4,5,6,7,8")
 		header:SetAttribute('sortMethod', 'NAME')
+	elseif db.groupBy == 'NAME' then
+		header:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
+		header:SetAttribute('sortMethod', 'NAME')	
 	else
 		header:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
 		header:SetAttribute('sortMethod', 'INDEX')
@@ -142,8 +149,8 @@ end
 
 function UF:Update_PartyFrames(frame, db)
 	frame.db = db
-	local BORDER = E:Scale(2)
-	local SPACING = E:Scale(1)
+	local SPACING = E.Spacing;
+	local BORDER = E.Border;
 	local UNIT_WIDTH = db.width
 	local UNIT_HEIGHT = db.height
 	
@@ -325,7 +332,7 @@ function UF:Update_PartyFrames(frame, db)
 					power:SetFrameStrata("MEDIUM")
 					power:SetFrameLevel(frame:GetFrameLevel() + 3)
 				else
-					power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(BORDER + SPACING))
+					power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(E.PixelMode and 0 or (BORDER + SPACING)))
 					power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -(BORDER), BORDER)
 				end
 			else
@@ -338,23 +345,25 @@ function UF:Update_PartyFrames(frame, db)
 		--Target Glow
 		do
 			local tGlow = frame.TargetGlow
+			local SHADOW_SPACING = E.PixelMode and 3 or 4
 			tGlow:ClearAllPoints()
-			tGlow:Point("TOPLEFT", -4, 4)
-			tGlow:Point("TOPRIGHT", 4, 4)
+			
+			tGlow:Point("TOPLEFT", -SHADOW_SPACING, SHADOW_SPACING)
+			tGlow:Point("TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING)
 			
 			if USE_MINI_POWERBAR then
-				tGlow:Point("BOTTOMLEFT", -4, -4 + (POWERBAR_HEIGHT/2))
-				tGlow:Point("BOTTOMRIGHT", 4, -4 + (POWERBAR_HEIGHT/2))		
+				tGlow:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING + (POWERBAR_HEIGHT/2))
+				tGlow:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING + (POWERBAR_HEIGHT/2))		
 			else
-				tGlow:Point("BOTTOMLEFT", -4, -4)
-				tGlow:Point("BOTTOMRIGHT", 4, -4)
+				tGlow:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
+				tGlow:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
 			end
 			
 			if USE_POWERBAR_OFFSET then
-				tGlow:Point("TOPLEFT", -4+POWERBAR_OFFSET, 4)
-				tGlow:Point("TOPRIGHT", 4, 4)
-				tGlow:Point("BOTTOMLEFT", -4+POWERBAR_OFFSET, -4+POWERBAR_OFFSET)
-				tGlow:Point("BOTTOMRIGHT", 4, -4+POWERBAR_OFFSET)				
+				tGlow:Point("TOPLEFT", -SHADOW_SPACING+POWERBAR_OFFSET, SHADOW_SPACING)
+				tGlow:Point("TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING)
+				tGlow:Point("BOTTOMLEFT", -SHADOW_SPACING+POWERBAR_OFFSET, -SHADOW_SPACING+POWERBAR_OFFSET)
+				tGlow:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING+POWERBAR_OFFSET)				
 			end				
 		end		
 
@@ -426,7 +435,7 @@ function UF:Update_PartyFrames(frame, db)
 			end
 			
 			local x, y = E:GetXYOffset(db.debuffs.anchorPoint)
-			local attachTo = self:GetAuraAnchorFrame(frame, db.debuffs.attachTo, db.debuffs.attachTo == 'BUFFS' and db.buffs.attachTo == 'DEBUFFS' and db.buffs.enable)
+			local attachTo = self:GetAuraAnchorFrame(frame, db.debuffs.attachTo, db.debuffs.attachTo == 'BUFFS' and db.buffs.attachTo == 'DEBUFFS')
 			
 			debuffs:Point(E.InversePoints[db.debuffs.anchorPoint], attachTo, db.debuffs.anchorPoint, x + db.debuffs.xOffset, y + db.debuffs.yOffset)
 			debuffs:Height(debuffs.size * rows)
@@ -440,6 +449,23 @@ function UF:Update_PartyFrames(frame, db)
 				debuffs:Hide()
 			end
 		end	
+		
+		--Raid Icon
+		do
+			local RI = frame.RaidIcon
+			if db.raidicon.enable then
+				frame:EnableElement('RaidIcon')
+				RI:Show()
+				RI:Size(db.raidicon.size)
+				
+				local x, y = self:GetPositionOffset(db.raidicon.attachTo)
+				RI:ClearAllPoints()
+				RI:Point(db.raidicon.attachTo, frame, db.raidicon.attachTo, x + db.raidicon.xOffset, y + db.raidicon.yOffset)	
+			else
+				frame:DisableElement('RaidIcon')	
+				RI:Hide()
+			end
+		end			
 
 		--Debuff Highlight
 		do
@@ -531,7 +557,7 @@ function UF:Update_PartyFrames(frame, db)
 	if db.customTexts then
 		for objectName, _ in pairs(db.customTexts) do
 			if not frame[objectName] then
-				frame[objectName] = frame:CreateFontString(nil, 'OVERLAY')
+				frame[objectName] = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
 			end
 			
 			local objectDB = db.customTexts[objectName]
@@ -539,7 +565,9 @@ function UF:Update_PartyFrames(frame, db)
 			
 			frame[objectName]:FontTemplate(UF.LSM:Fetch("font", objectDB.font or UF.db.font), objectDB.size or UF.db.fontSize, objectDB.fontOutline or UF.db.fontOutline)
 			frame:Tag(frame[objectName], objectDB.text_format or '')
-			frame[objectName]:SetPoint('CENTER', frame, 'CENTER', objectDB.xOffset, objectDB.yOffset)
+			frame[objectName]:SetJustifyH(objectDB.justifyH or 'CENTER')
+			frame[objectName]:ClearAllPoints()
+			frame[objectName]:SetPoint(objectDB.justifyH or 'CENTER', frame, 'CENTER', objectDB.xOffset, objectDB.yOffset)
 		end
 	end	
 	

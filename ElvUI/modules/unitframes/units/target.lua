@@ -1,8 +1,5 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local UF = E:GetModule('UnitFrames');
-
-
-
 local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
@@ -16,7 +13,8 @@ function UF:Construct_TargetFrame(frame)
 	
 	frame.Name = self:Construct_NameText(frame)
 	
-	frame.Portrait = self:Construct_Portrait(frame)
+	frame.Portrait3D = self:Construct_Portrait(frame, 'model')
+	frame.Portrait2D = self:Construct_Portrait(frame, 'texture')
 	
 	frame.Buffs = self:Construct_Buffs(frame)
 
@@ -41,8 +39,16 @@ end
 
 function UF:Update_TargetFrame(frame, db)
 	frame.db = db
-	local BORDER = E:Scale(2)
-	local SPACING = E:Scale(1)	
+
+	if frame.Portrait then
+		frame.Portrait:Hide()
+		frame.Portrait:ClearAllPoints()
+		frame.Portrait.backdrop:Hide()
+	end
+	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D	
+	
+	local BORDER = E.Border;
+	local SPACING = E.Spacing;	
 	local UNIT_WIDTH = db.width
 	local UNIT_HEIGHT = db.height
 	
@@ -128,6 +134,7 @@ function UF:Update_TargetFrame(frame, db)
 		--Position
 		health:ClearAllPoints()
 		health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -BORDER)
+		
 		if USE_POWERBAR_OFFSET then			
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER+POWERBAR_OFFSET, BORDER+POWERBAR_OFFSET)
 		elseif USE_MINI_POWERBAR then
@@ -135,7 +142,7 @@ function UF:Update_TargetFrame(frame, db)
 		else
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER + POWERBAR_HEIGHT)
 		end
-		
+
 		health.bg:ClearAllPoints()
 		if not USE_PORTRAIT_OVERLAY then
 			health:Point("TOPRIGHT", -(PORTRAIT_WIDTH+BORDER), -BORDER)
@@ -202,7 +209,7 @@ function UF:Update_TargetFrame(frame, db)
 				power:SetFrameStrata("MEDIUM")
 				power:SetFrameLevel(frame:GetFrameLevel() + 3)
 			else
-				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(BORDER + SPACING))
+				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(E.PixelMode and 0 or (BORDER + SPACING)))
 				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -(BORDER + PORTRAIT_WIDTH), BORDER)
 			end
 		elseif frame:IsElementEnabled('Power') then
@@ -224,21 +231,28 @@ function UF:Update_TargetFrame(frame, db)
 			portrait:ClearAllPoints()
 			
 			if USE_PORTRAIT_OVERLAY then
-				portrait:SetFrameLevel(frame.Health:GetFrameLevel() + 1)
+				if db.portrait.style == '3D' then
+					portrait:SetFrameLevel(frame.Health:GetFrameLevel() + 1)
+				end
 				portrait:SetAllPoints(frame.Health)
 				portrait:SetAlpha(0.3)
 				portrait:Show()		
+				portrait.backdrop:Hide()
 			else
 				portrait:SetAlpha(1)
 				portrait:Show()
-				
+				portrait.backdrop:Show()
 				portrait.backdrop:ClearAllPoints()
-				portrait.backdrop:SetPoint("TOPRIGHT", frame, "TOPRIGHT")
-						
+				portrait.backdrop:SetPoint("TOPRIGHT", frame, "TOPRIGHT", E.PixelMode and -1 or 0, 0)
+					
+				if db.portrait.style == '3D' then
+					portrait:SetFrameLevel(frame:GetFrameLevel() + 5)
+				end		
+				
 				if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR then
-					portrait.backdrop:Point("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMRIGHT", SPACING, 0)
+					portrait.backdrop:Point("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMRIGHT", E.PixelMode and -1 or SPACING, 0)
 				else
-					portrait.backdrop:Point("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMRIGHT", SPACING, 0)
+					portrait.backdrop:Point("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMRIGHT", E.PixelMode and -1 or SPACING, 0)
 				end	
 							
 				portrait:Point('BOTTOMLEFT', portrait.backdrop, 'BOTTOMLEFT', BORDER, BORDER)		
@@ -248,6 +262,7 @@ function UF:Update_TargetFrame(frame, db)
 			if frame:IsElementEnabled('Portrait') then
 				frame:DisableElement('Portrait')
 				portrait:Hide()
+				portrait.backdrop:Hide()
 			end		
 		end
 	end
@@ -324,7 +339,7 @@ function UF:Update_TargetFrame(frame, db)
 		end
 		
 		local x, y = E:GetXYOffset(db.debuffs.anchorPoint)
-		local attachTo = self:GetAuraAnchorFrame(frame, db.debuffs.attachTo, db.debuffs.attachTo == 'BUFFS' and db.buffs.attachTo == 'DEBUFFS' and db.buffs.enable)
+		local attachTo = self:GetAuraAnchorFrame(frame, db.debuffs.attachTo, db.debuffs.attachTo == 'BUFFS' and db.buffs.attachTo == 'DEBUFFS')
 		
 		debuffs:Point(E.InversePoints[db.debuffs.anchorPoint], attachTo, db.debuffs.anchorPoint, x + db.debuffs.xOffset, y + db.debuffs.yOffset)
 		debuffs:Height(debuffs.size * rows)
@@ -339,33 +354,41 @@ function UF:Update_TargetFrame(frame, db)
 		end
 	end	
 	
-	--Castbar
 	do
 		local castbar = frame.Castbar
-		castbar:Width(db.castbar.width - 4)
+		castbar:Width(db.castbar.width - (E.PixelMode and 2 or (BORDER * 2)))
 		castbar:Height(db.castbar.height)
-		castbar.Holder:Width(db.castbar.width)
-		castbar.Holder:Height(db.castbar.height + 4)
+		castbar.Holder:Width(db.castbar.width + (E.PixelMode and 0 or (BORDER * 2)))
+		castbar.Holder:Height(db.castbar.height + (E.PixelMode and 2 or (BORDER * 2)))
 		castbar.Holder:GetScript('OnSizeChanged')(castbar.Holder)
+		
+		--Latency
+		if db.castbar.latency then
+			castbar.SafeZone = castbar.LatencyTexture
+			castbar.LatencyTexture:Show()
+		else
+			castbar.SafeZone = nil
+			castbar.LatencyTexture:Hide()
+		end
 		
 		--Icon
 		if db.castbar.icon then
 			castbar.Icon = castbar.ButtonIcon
-			castbar.Icon.bg:Width(db.castbar.height + 4)
-			castbar.Icon.bg:Height(db.castbar.height + 4)
+			castbar.Icon.bg:Width(db.castbar.height + (E.Border * 2))
+			castbar.Icon.bg:Height(db.castbar.height + (E.Border * 2))
 			
-			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - 5)
+			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - (E.PixelMode and 1 or 5))
 			castbar.Icon.bg:Show()
 		else
 			castbar.ButtonIcon.bg:Hide()
 			castbar.Icon = nil
 		end
-		
+
 		if db.castbar.spark then
 			castbar.Spark:Show()
 		else
 			castbar.Spark:Hide()
-		end		
+		end
 
 		if db.castbar.enable and not frame:IsElementEnabled('Castbar') then
 			frame:EnableElement('Castbar')
@@ -382,7 +405,7 @@ function UF:Update_TargetFrame(frame, db)
 			CPoints:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), -SPACING)
 			CPoints:SetFrameStrata("MEDIUM")
 		else
-			CPoints:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
+			CPoints:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, (E.PixelMode and 0 or (BORDER + SPACING)))
 			CPoints:SetFrameStrata("LOW")
 		end
 
@@ -405,7 +428,7 @@ function UF:Update_TargetFrame(frame, db)
 				if USE_MINI_COMBOBAR then
 					CPoints[i]:Point("LEFT", CPoints[i-1], "RIGHT", SPACING+(BORDER*2)+2, 0)
 				else
-					CPoints[i]:Point("LEFT", CPoints[i-1], "RIGHT", SPACING, 0)
+					CPoints[i]:Point("LEFT", CPoints[i-1], "RIGHT", 1, 0)
 				end
 			end	
 			
@@ -477,6 +500,23 @@ function UF:Update_TargetFrame(frame, db)
 		end
 	end	
 	
+	--Raid Icon
+	do
+		local RI = frame.RaidIcon
+		if db.raidicon.enable then
+			frame:EnableElement('RaidIcon')
+			RI:Show()
+			RI:Size(db.raidicon.size)
+			
+			local x, y = self:GetPositionOffset(db.raidicon.attachTo)
+			RI:ClearAllPoints()
+			RI:Point(db.raidicon.attachTo, frame, db.raidicon.attachTo, x + db.raidicon.xOffset, y + db.raidicon.yOffset)	
+		else
+			frame:DisableElement('RaidIcon')	
+			RI:Hide()
+		end
+	end		
+	
 	--AuraBars
 	do
 		local auraBars = frame.AuraBars
@@ -487,15 +527,18 @@ function UF:Update_TargetFrame(frame, db)
 			end
 			auraBars:Show()
 			auraBars.friendlyAuraType = db.aurabar.friendlyAuraType
-			auraBars.enemyAuraType = db.aurabar.enemyAuraType			
+			auraBars.enemyAuraType = db.aurabar.enemyAuraType
 			
-			local healthColor = UF.db.colors.health
+			local buffColor = UF.db.colors.auraBarBuff
+			local debuffColor = UF.db.colors.auraBarDebuff
 			local attachTo = frame
 			
 			if db.aurabar.attachTo == 'BUFFS' then
 				attachTo = frame.Buffs
 			elseif db.aurabar.attachTo == 'DEBUFFS' then
 				attachTo = frame.Debuffs
+			elseif db.aurabar.attachTo == 'PLAYER_AURABARS' and ElvUF_Player then
+				attachTo = ElvUF_Player.AuraBars
 			end
 			
 			local anchorPoint, anchorTo = 'BOTTOM', 'TOP'
@@ -503,10 +546,27 @@ function UF:Update_TargetFrame(frame, db)
 				anchorPoint, anchorTo = 'TOP', 'BOTTOM'
 			end
 			
+			local yOffset = 0;
+			if E.PixelMode then
+				if db.aurabar.anchorPoint == 'BELOW' then
+					yOffset = 1;
+				else
+					yOffset = -1;
+				end
+			end			
+			
 			auraBars:ClearAllPoints()
-			auraBars:SetPoint(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', POWERBAR_OFFSET, 0)
-			auraBars:SetPoint(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT')
-			auraBars.buffColor = {healthColor.r, healthColor.b, healthColor.g}
+			auraBars:SetPoint(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', attachTo == frame and -POWERBAR_OFFSET * (anchorTo == 'BOTTOM' and 0 or -1) or 0, db.aurabar.attachTo == 'PLAYER_AURABARS' and 5 or yOffset)
+			auraBars:SetPoint(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', (attachTo == frame and anchorTo == 'BOTTOM') and -POWERBAR_OFFSET or 0, db.aurabar.attachTo == 'PLAYER_AURABARS' and 5 or yOffset)			
+
+			auraBars.buffColor = {buffColor.r, buffColor.g, buffColor.b}
+			if UF.db.colors.auraBarByType then
+				auraBars.debuffColor = nil;
+				auraBars.defaultDebuffColor = {debuffColor.r, debuffColor.g, debuffColor.b}
+			else
+				auraBars.debuffColor = {debuffColor.r, debuffColor.g, debuffColor.b}
+				auraBars.defaultDebuffColor = nil;
+			end
 			auraBars.down = db.aurabar.anchorPoint == 'BELOW'
 			auraBars:SetAnchors()
 		else
@@ -520,7 +580,7 @@ function UF:Update_TargetFrame(frame, db)
 	if db.customTexts then
 		for objectName, _ in pairs(db.customTexts) do
 			if not frame[objectName] then
-				frame[objectName] = frame:CreateFontString(nil, 'OVERLAY')
+				frame[objectName] = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
 			end
 			
 			local objectDB = db.customTexts[objectName]
@@ -528,7 +588,9 @@ function UF:Update_TargetFrame(frame, db)
 			
 			frame[objectName]:FontTemplate(UF.LSM:Fetch("font", objectDB.font or UF.db.font), objectDB.size or UF.db.fontSize, objectDB.fontOutline or UF.db.fontOutline)
 			frame:Tag(frame[objectName], objectDB.text_format or '')
-			frame[objectName]:SetPoint('CENTER', frame, 'CENTER', objectDB.xOffset, objectDB.yOffset)
+			frame[objectName]:SetJustifyH(objectDB.justifyH or 'CENTER')
+			frame[objectName]:ClearAllPoints()
+			frame[objectName]:SetPoint(objectDB.justifyH or 'CENTER', frame, 'CENTER', objectDB.xOffset, objectDB.yOffset)
 		end
 	end
 	

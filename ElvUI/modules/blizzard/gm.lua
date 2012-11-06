@@ -9,5 +9,5 @@ function B:PositionGMFrames()
 
 	HelpOpenTicketButton:SetParent(Minimap)
 	HelpOpenTicketButton:ClearAllPoints()
-	HelpOpenTicketButton:SetPoint("TOPLEFT", Minimap, "TOPLEFT")
+	HelpOpenTicketButton:SetPoint("TOPRIGHT", Minimap, "TOPRIGHT")
 end

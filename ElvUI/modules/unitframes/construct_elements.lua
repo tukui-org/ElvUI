@@ -57,7 +57,7 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 	end
 	
 	if text then
-		health.value = health:CreateFontString(nil, 'OVERLAY')
+		health.value = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
 		UF:Configure_FontString(health.value)
 		health.value:SetParent(frame)
 		
@@ -92,7 +92,7 @@ function UF:Construct_PowerBar(frame, bg, text, textPos, lowtext)
 	end
 	
 	if text then
-		power.value = power:CreateFontString(nil, 'OVERLAY')	
+		power.value = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')	
 		UF:Configure_FontString(power.value)
 		power.value:SetParent(frame)
 		
@@ -119,10 +119,23 @@ function UF:Construct_PowerBar(frame, bg, text, textPos, lowtext)
 	return power
 end	
 
-function UF:Construct_Portrait(frame)
-	local portrait = CreateFrame("PlayerModel", nil, frame)
-	portrait:SetFrameStrata('LOW')
-	portrait:CreateBackdrop('Default')
+function UF:Construct_Portrait(frame, type)
+	local portrait
+	
+	if type == 'texture' then
+		local backdrop = CreateFrame('Frame',nil,frame)
+		portrait = frame:CreateTexture(nil, 'OVERLAY')
+		portrait:SetTexCoord(0.15,0.85,0.15,0.85)
+		backdrop:SetOutside(portrait)
+		backdrop:SetFrameLevel(frame:GetFrameLevel())
+		backdrop:SetTemplate('Default')
+		portrait.backdrop = backdrop	
+	else
+		portrait = CreateFrame("PlayerModel", nil, frame)
+		portrait:SetFrameStrata('LOW')
+		portrait:CreateBackdrop('Default')
+	end
+	
 	portrait.PostUpdate = self.PortraitUpdate
 
 	portrait.overlay = CreateFrame("Frame", nil, frame)
@@ -154,15 +167,6 @@ function UF:Construct_AuraIcon(button)
 	button.overlay:SetTexture(nil)
 	button.stealable:SetTexture(nil)
 
-	button:HookScript('OnEnter', function(self)
-		GameTooltip.auraBarLine = true;
-	end)	
-	
-	button:HookScript('OnLeave', function(self)
-		GameTooltip.auraBarLine = nil;
-		GameTooltip.numLines = nil
-	end)		
-	
 	button:RegisterForClicks('RightButtonUp')
 	button:SetScript('OnClick', function(self)
 		if not IsShiftKeyDown() then return; end
@@ -182,7 +186,7 @@ end
 
 function UF:Construct_Buffs(frame)
 	local buffs = CreateFrame('Frame', nil, frame)
-	buffs.spacing = E:Scale(1)
+	buffs.spacing = E.Spacing
 	buffs.PostCreateIcon = self.Construct_AuraIcon
 	buffs.PostUpdateIcon = self.PostUpdateAura
 	buffs.CustomFilter = self.AuraFilter
@@ -193,7 +197,7 @@ end
 
 function UF:Construct_Debuffs(frame)
 	local debuffs = CreateFrame('Frame', nil, frame)
-	debuffs.spacing = E:Scale(1)
+	debuffs.spacing = E.Spacing
 	debuffs.PostCreateIcon = self.Construct_AuraIcon
 	debuffs.PostUpdateIcon = self.PostUpdateAura
 	debuffs.CustomFilter = self.AuraFilter
@@ -242,13 +246,13 @@ function UF:Construct_Castbar(self, direction, moverName)
 	button:SetTemplate("Default")
 	
 	if direction == "LEFT" then
-		holder:Point("TOPRIGHT", self, "BOTTOMRIGHT", 0, -6)
-		castbar:Point('BOTTOMRIGHT', holder, 'BOTTOMRIGHT', -2, 2)
-		button:Point("RIGHT", castbar, "LEFT", -3, 0)
+		holder:Point("TOPRIGHT", self, "BOTTOMRIGHT", 0, -(E.Border * 3))
+		castbar:Point('BOTTOMRIGHT', holder, 'BOTTOMRIGHT', -E.Border, E.Border)
+		button:Point("RIGHT", castbar, "LEFT", E.PixelMode and 0 or -3, 0)
 	else
-		holder:Point("TOPLEFT", self, "BOTTOMLEFT", 0, -6)
-		castbar:Point('BOTTOMLEFT', holder, 'BOTTOMLEFT', 2, 2)
-		button:Point("LEFT", castbar, "RIGHT", 3, 0)
+		holder:Point("TOPLEFT", self, "BOTTOMLEFT", 0, -(E.Border * 3))
+		castbar:Point('BOTTOMLEFT', holder, 'BOTTOMLEFT', E.Border, E.Border)
+		button:Point("LEFT", castbar, "RIGHT", E.PixelMode and 0 or 3, 0)
 	end
 	
 	castbar.Holder = holder
@@ -280,13 +284,6 @@ function UF:Construct_PaladinResourceBar(frame)
 
 		bars[i]:CreateBackdrop('Default')
 		bars[i].backdrop:SetParent(bars)
-
-		bars[i]:SetStatusBarColor(228/255,225/255,16/255)
-		
-		bars[i].backdrop:CreateShadow('Default')
-		bars[i].backdrop.shadow:SetBackdropBorderColor(228/255,225/255,16/255)
-		bars[i].backdrop.shadow:Point("TOPLEFT", -4, 4)
-				
 	end
 	
 	bars.Override = UF.UpdateHoly
@@ -321,10 +318,8 @@ function UF:Construct_MageResourceBar(frame)
 		bars[i] = CreateFrame("StatusBar", nil, bars)
 		bars[i]:SetStatusBarTexture(E['media'].blankTex) --Dummy really, this needs to be set so we can change the color
 		bars[i]:GetStatusBarTexture():SetHorizTile(false)
-		bars[i]:SetStatusBarColor(0, 157/255, 255/255)
 		
 		bars[i].bg = bars[i]:CreateTexture(nil, 'ARTWORK')
-		bars[i].bg:SetTexture(0, 157/255, 255/255)
 		
 		UF['statusbars'][bars[i]] = true
 
@@ -379,7 +374,7 @@ end
 function UF:Construct_DeathKnightResourceBar(frame)
 	local runes = CreateFrame("Frame", nil, frame)
 	runes:CreateBackdrop('Default')
-
+	
 	for i = 1, UF['classMaxResourceBar'][E.myclass] do
 		runes[i] = CreateFrame("StatusBar", nil, runes)
 		UF['statusbars'][runes[i]] = true
@@ -408,14 +403,12 @@ function UF:Construct_DruidResourceBar(frame)
 	lunarBar:SetPoint('LEFT', eclipseBar)
 	lunarBar:SetStatusBarTexture(E['media'].blankTex)
 	UF['statusbars'][lunarBar] = true
-	lunarBar:SetStatusBarColor(.30, .52, .90)
 	eclipseBar.LunarBar = lunarBar
 
 	local solarBar = CreateFrame('StatusBar', nil, eclipseBar)
 	solarBar:SetPoint('LEFT', lunarBar:GetStatusBarTexture(), 'RIGHT')
 	solarBar:SetStatusBarTexture(E['media'].blankTex)
 	UF['statusbars'][solarBar] = true
-	solarBar:SetStatusBarColor(.80, .82,  .60)
 	eclipseBar.SolarBar = solarBar
 	
 	eclipseBar.Text = lunarBar:CreateFontString(nil, 'OVERLAY')
@@ -494,11 +487,25 @@ function UF:Construct_AltPowerBar(frame)
 end
 
 function UF:Construct_NameText(frame)
-	local name = frame:CreateFontString(nil, 'OVERLAY')
+	local parent = frame.RaisedElementParent or frame
+	local name = parent:CreateFontString(nil, 'OVERLAY')
 	UF:Configure_FontString(name)
 	name:SetPoint('CENTER', frame.Health)
 	
 	return name
+end
+
+function UF:Construct_VengeanceBar(frame)
+	local bar = CreateFrame('StatusBar', nil, frame);
+	bar:CreateBackdrop('Default');
+	UF['statusbars'][bar] = true;
+	bar:SetStatusBarTexture(E['media'].blankTex);
+	bar:GetStatusBarTexture():SetHorizTile(false);
+	bar:SetStatusBarColor(0.8, 0.0, 0.0);
+	bar:SetOrientation('VERTICAL');
+	bar.PostUpdate = UF.VengeanceUpdate
+	
+	return bar
 end
 
 function UF:Construct_Combobar(frame)
@@ -533,19 +540,28 @@ end
 
 function UF:Construct_AuraWatch(frame)
 	local auras = CreateFrame("Frame", nil, frame)
+	auras:SetFrameLevel(frame:GetFrameLevel() + 25)
 	auras:SetInside(frame.Health)
 	auras.presentAlpha = 1
 	auras.missingAlpha = 0
+	auras.strictMatching = true;
 	auras.icons = {}
 		
 	return auras
 end
 
 function UF:Construct_RaidDebuffs(frame)
-	local rdebuff = CreateFrame('Frame', nil, frame)
-	rdebuff:SetFrameLevel(rdebuff:GetFrameLevel() + 5)
+	local rdebuff = CreateFrame('Frame', nil, frame.RaisedElementParent)
 	rdebuff:Point('BOTTOM', frame, 'BOTTOM', 0, 2)
 	rdebuff:SetTemplate("Default")
+	
+	if E.PixelMode then
+		rdebuff.border = rdebuff:CreateTexture(nil, "BACKGROUND");
+		rdebuff.border:Point("TOPLEFT", -E.mult, E.mult);
+		rdebuff.border:Point("BOTTOMRIGHT", E.mult, -E.mult);
+		rdebuff.border:SetTexture(E["media"].blankTex);
+		rdebuff.border:SetVertexColor(0, 0, 0);
+	end	
 	
 	rdebuff.icon = rdebuff:CreateTexture(nil, 'OVERLAY')
 	rdebuff.icon:SetTexCoord(unpack(E.TexCoords))
@@ -581,10 +597,7 @@ function UF:Construct_DebuffHighlight(frame)
 end
 
 function UF:Construct_ResurectionIcon(frame)
-	local f = CreateFrame('Frame', nil, frame)
-	f:SetFrameLevel(20)
-
-	local tex = f:CreateTexture(nil, "OVERLAY")
+	local tex = frame.RaisedElementParent:CreateTexture(nil, "OVERLAY")
 	tex:Point('CENTER', frame.Health.value, 'CENTER')
 	tex:Size(30, 25)
 	tex:SetDrawLayer('OVERLAY', 7)
@@ -593,10 +606,7 @@ function UF:Construct_ResurectionIcon(frame)
 end
 
 function UF:Construct_RaidIcon(frame)
-	local f = CreateFrame('Frame', nil, frame)
-	f:SetFrameLevel(20)
-	
-	local tex = f:CreateTexture(nil, "OVERLAY")
+	local tex = (frame.RaisedElementParent or frame):CreateTexture(nil, "OVERLAY")
 	tex:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\raidicons.blp") 
 	tex:Size(18)
 	tex:Point("CENTER", frame.Health, "TOP", 0, 2)
@@ -606,10 +616,7 @@ function UF:Construct_RaidIcon(frame)
 end
 
 function UF:Construct_ReadyCheckIcon(frame)
-	local f = CreateFrame('Frame', nil, frame)
-	f:SetFrameLevel(20)
-	
-	local tex = f:CreateTexture(nil, "OVERLAY", nil, 7)
+	local tex = frame.RaisedElementParent:CreateTexture(nil, "OVERLAY", nil, 7)
 	tex:Size(12)
 	tex:Point("BOTTOM", frame.Health, "BOTTOM", 0, 2)
 	
@@ -708,20 +715,12 @@ function UF:Construct_AuraBars()
 	
 	bar.spellname:ClearAllPoints()
 	bar.spellname:SetPoint('LEFT', bar, 'LEFT', 2, 0)
+	bar.spellname:SetPoint('RIGHT', bar.spelltime, 'LEFT', -4, 0)
 	
 	bar.iconHolder:SetTemplate('Default')
 	bar.icon:SetInside(bar.iconHolder)
 	bar.icon:SetDrawLayer('OVERLAY')
 	
-	
-	bar.iconHolder:HookScript('OnEnter', function(self)
-		GameTooltip.auraBarLine = true;
-	end)	
-	
-	bar.iconHolder:HookScript('OnLeave', function(self)
-		GameTooltip.auraBarLine = nil;
-		GameTooltip.numLines = nil
-	end)		
 	
 	bar.iconHolder:RegisterForClicks('RightButtonUp')
 	bar.iconHolder:SetScript('OnClick', function(self)
@@ -742,21 +741,13 @@ end
 function UF:Construct_AuraBarHeader(frame)
 	local auraBar = CreateFrame('Frame', nil, frame)
 	auraBar.PostCreateBar = UF.Construct_AuraBars
-	auraBar.gap = 1
-	auraBar.spacing = 1
+	auraBar.gap = (E.PixelMode and -1 or 1)
+	auraBar.spacing = (E.PixelMode and -1 or 1)
 	auraBar.spark = true
 	auraBar.sort = true
-	auraBar.debuffColor = {0.8, 0.1, 0.1}
 	auraBar.filter = UF.AuraBarFilter
 	auraBar.PostUpdate = UF.ColorizeAuraBars
-	hooksecurefunc(GameTooltip, "SetUnitAura", function(self,...)
-		if self.auraBarLine and self.numLines ~= self:NumLines() then
-			self:AddLine(L['Hold shift + right click to blacklist this aura.'])
-			if not self.numLines then
-				self.numLines = self:NumLines()
-			end
-		end
-	end)	
+
 	
 	return auraBar
 end

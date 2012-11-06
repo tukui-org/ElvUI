@@ -54,17 +54,33 @@ local function LoadSkin()
 			WorldMapQuestDetailScrollFrame:CreateBackdrop("Default")
 			WorldMapQuestDetailScrollFrame.backdrop:Point("TOPLEFT", -22, 2)
 			WorldMapQuestDetailScrollFrame.backdrop:Point("BOTTOMRIGHT", 23, -4)
+					
+			WorldMapQuestDetailScrollFrame.spellTex = WorldMapQuestDetailScrollFrame:CreateTexture(nil, 'ARTWORK')
+			WorldMapQuestDetailScrollFrame.spellTex:SetTexture([[Interface\QuestFrame\QuestBG]])
+			WorldMapQuestDetailScrollFrame.spellTex:SetPoint("TOPLEFT", WorldMapQuestDetailScrollFrame.backdrop, 'TOPLEFT', 2, -2)
+			WorldMapQuestDetailScrollFrame.spellTex:Size(586, 310)
+			WorldMapQuestDetailScrollFrame.spellTex:SetTexCoord(0, 1, 0.02, 1)				
 		end
 		
 		if not WorldMapQuestRewardScrollFrame.backdrop then
 			WorldMapQuestRewardScrollFrame:CreateBackdrop("Default")
-			WorldMapQuestRewardScrollFrame.backdrop:Point("BOTTOMRIGHT", 22, -4)				
+			WorldMapQuestRewardScrollFrame.backdrop:Point("BOTTOMRIGHT", 22, -4)	
+			WorldMapQuestRewardScrollFrame.spellTex = WorldMapQuestRewardScrollFrame:CreateTexture(nil, 'ARTWORK')
+			WorldMapQuestRewardScrollFrame.spellTex:SetTexture([[Interface\QuestFrame\QuestBG]])
+			WorldMapQuestRewardScrollFrame.spellTex:SetPoint("TOPLEFT", WorldMapQuestRewardScrollFrame.backdrop, 'TOPLEFT', 2, -2)
+			WorldMapQuestRewardScrollFrame.spellTex:Size(585, 310)
+			WorldMapQuestRewardScrollFrame.spellTex:SetTexCoord(0, 1, 0.02, 1)				
 		end
 		
 		if not WorldMapQuestScrollFrame.backdrop then
 			WorldMapQuestScrollFrame:CreateBackdrop("Default")
 			WorldMapQuestScrollFrame.backdrop:Point("TOPLEFT", 0, 2)
-			WorldMapQuestScrollFrame.backdrop:Point("BOTTOMRIGHT", 25, -3)				
+			WorldMapQuestScrollFrame.backdrop:Point("BOTTOMRIGHT", 25, -3)	
+			WorldMapQuestScrollFrame.spellTex = WorldMapQuestScrollFrame:CreateTexture(nil, 'ARTWORK')
+			WorldMapQuestScrollFrame.spellTex:SetTexture([[Interface\QuestFrame\QuestBG]])
+			WorldMapQuestScrollFrame.spellTex:SetPoint("TOPLEFT", WorldMapQuestScrollFrame.backdrop, 'TOPLEFT', 2, -2)
+			WorldMapQuestScrollFrame.spellTex:Size(520, 1033)
+			WorldMapQuestScrollFrame.spellTex:SetTexCoord(0, 1, 0.02, 1)					
 		end
 	end			
 	

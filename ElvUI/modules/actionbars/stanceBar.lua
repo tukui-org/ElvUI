@@ -44,6 +44,8 @@ function AB:StyleShapeShift()
 			end
 		end
 	end
+	
+	self:AdjustMaxStanceButtons()
 end
 
 function AB:PositionAndSizeBarShapeShift()
@@ -78,7 +80,7 @@ function AB:PositionAndSizeBarShapeShift()
 	bar.mouseover = self.db['stanceBar'].mouseover
 	if self.db['stanceBar'].enabled then
 		bar:SetScale(1);
-		bar:SetAlpha(1);
+		bar:SetAlpha(bar.db.alpha);
 	else
 		bar:SetScale(0.000001);
 		bar:SetAlpha(0);
@@ -127,7 +129,7 @@ function AB:PositionAndSizeBarShapeShift()
 				self:HookScript(button, 'OnLeave', 'Button_OnLeave');					
 			end
 		else
-			bar:SetAlpha(1);
+			bar:SetAlpha(bar.db.alpha);
 			if self.hooks[bar] then
 				self:Unhook(bar, 'OnEnter');
 				self:Unhook(bar, 'OnLeave');
@@ -180,34 +182,32 @@ function AB:PositionAndSizeBarShapeShift()
 			button:SetAlpha(0);
 		else
 			button:SetScale(1);
-			button:SetAlpha(1);
+			button:SetAlpha(bar.db.alpha);
 		end
 		
 		self:StyleButton(button);
-		self:StyleShapeShift();
 	end
 	possibleButtons = nil;
 end
 
-function AB:AdjustMaxStanceButtons()
+function AB:AdjustMaxStanceButtons(event)
 	if InCombatLockdown() then return; end
 	
 	for i=1, #bar.buttons do
 		bar.buttons[i]:Hide()
 	end
-	
-	local numButtons = 0
+	local initialCreate = false;
+	local numButtons = GetNumShapeshiftForms()
 	for i = 1, NUM_STANCE_SLOTS do
 		if not bar.buttons[i] then
 			bar.buttons[i] = CreateFrame("CheckButton", format(bar:GetName().."Button%d", i), bar, "StanceButtonTemplate")
 			bar.buttons[i]:SetID(i)
+			initialCreate = true;
 		end
-		
-		local _, name = GetShapeshiftFormInfo(i);
-		if name then
+
+		if ( i <= numButtons ) then
 			bar.buttons[i]:Show();
 			bar.LastButton = i;
-			numButtons = numButtons + 1
 		else
 			bar.buttons[i]:Hide();
 		end
@@ -215,12 +215,19 @@ function AB:AdjustMaxStanceButtons()
 		
 	self:PositionAndSizeBarShapeShift();
 	
-	if numButtons == 0 then
-		UnregisterStateDriver(bar, "show");	
-		bar:Hide()
-	else
-		RegisterStateDriver(bar, "show", '[petbattle] hide;show');	
-	end	
+	if event == 'UPDATE_SHAPESHIFT_FORMS' then
+		self:StyleShapeShift()
+	end			
+	
+	if not C_PetBattles.IsInBattle() or initialCreate then
+		if numButtons == 0 then
+			UnregisterStateDriver(bar, "show");	
+			bar:Hide()
+		else
+			bar:Show()
+			RegisterStateDriver(bar, "show", '[petbattle] hide;show');	
+		end	
+	end
 end
 
 function AB:CreateBarShapeShift()
@@ -235,7 +242,7 @@ function AB:CreateBarShapeShift()
 			self:Show();
 		end	
 	]]);
-
+	
 	self:RegisterEvent('UPDATE_SHAPESHIFT_FORMS', 'AdjustMaxStanceButtons');
 	self:RegisterEvent('UPDATE_SHAPESHIFT_USABLE', 'StyleShapeShift');
 	self:RegisterEvent('UPDATE_SHAPESHIFT_COOLDOWN', 'StyleShapeShift');
@@ -245,4 +252,5 @@ function AB:CreateBarShapeShift()
 	E:CreateMover(bar, 'ShiftAB', 'Stance Bar', nil, -3, nil, 'ALL,ACTIONBARS');
 	self:AdjustMaxStanceButtons();
 	self:PositionAndSizeBarShapeShift();
+	self:StyleShapeShift();
 end

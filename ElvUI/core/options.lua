@@ -156,6 +156,22 @@ E.Options.args.general = {
 					desc = L["Don't scale the large world map to block out sides of the screen."],
 					get = function(info) return E.db.general.tinyWorldMap end,
 					set = function(info, value) E.db.general.tinyWorldMap = value; E:GetModule('WorldMap'):ToggleTinyWorldMapSetting() end					
+				},	
+				bottomPanel = {
+					order = 15,
+					type = 'toggle',
+					name = L['Bottom Panel'],
+					desc = L['Display a panel across the bottom of the screen. This is for cosmetic only.'],
+					get = function(info) return E.db.general.bottomPanel end,
+					set = function(info, value) E.db.general.bottomPanel = value; E:GetModule('Layout'):BottomPanelVisibility() end						
+				},
+				topPanel = {
+					order = 16,
+					type = 'toggle',
+					name = L['Top Panel'],
+					desc = L['Display a panel across the top of the screen. This is for cosmetic only.'],
+					get = function(info) return E.db.general.topPanel end,
+					set = function(info, value) E.db.general.topPanel = value; E:GetModule('Layout'):TopPanelVisibility() end						
 				},				
 			},
 		},	
@@ -352,14 +368,8 @@ E.Options.args.general = {
 					desc = L['The spacing between buttons.'],
 					min = 1, max = 10, step = 1,			
 				},
-				showBackdrop = {
-					order = 4,
-					type = 'toggle',
-					name = L['Backdrop'],
-					set = function(info, value) E.db.general.totems[ info[#info] ] = value; E:GetModule('Totems'):Update() end,
-				},
 				sortDirection = {
-					order = 6,
+					order = 4,
 					type = 'select',
 					name = L["Sort Direction"],
 					desc = L['The direction that the bag frames will grow from the anchor.'],
@@ -369,7 +379,7 @@ E.Options.args.general = {
 					},
 				},
 				growthDirection = {
-					order = 7,
+					order = 5,
 					type = 'select',
 					name = L['Bar Direction'],
 					desc = L['The direction that the bag frames be (Horizontal or Vertical).'],
@@ -420,7 +430,16 @@ E.Options.args.media = {
 					values = AceGUIWidgetLSMlists.font,
 					get = function(info) return E.private.general[ info[#info] ] end,							
 					set = function(info, value) E.private.general[ info[#info] ] = value; E:UpdateMedia(); E:UpdateFontTemplates(); E:StaticPopup_Show("PRIVATE_RL"); end,
-				},							
+				},
+				namefont = {
+					type = "select", dialogControl = 'LSM30_Font',
+					order = 3,
+					name = L["Name Font"],
+					desc = L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"],
+					values = AceGUIWidgetLSMlists.font,
+					get = function(info) return E.private.general[ info[#info] ] end,							
+					set = function(info, value) E.private.general[ info[#info] ] = value; E:UpdateMedia(); E:UpdateFontTemplates(); E:StaticPopup_Show("PRIVATE_RL"); end,
+				}
 			},
 		},	
 		textures = {
@@ -580,7 +599,7 @@ local DONATORS = {
 	"Paavi",
 	"Giorgio",
 	"Bearscantank",
-	"Varok",
+	"Eidolic",
 	"Cosmo",
 	"Adorno",
 	"Domoaligato",

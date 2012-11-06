@@ -10,7 +10,7 @@ To load the AddOn engine inside another addon add this to the top of your file:
 	local E, L, V, P, G, _ = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 ]]
 
-BINDING_HEADER_ELVUI = GetAddOnMetadata(..., "Title")
+BINDING_HEADER_ELVUI = GetAddOnMetadata(..., "Title");
 
 local AddOnName, Engine = ...;
 local AddOn = LibStub("AceAddon-3.0"):NewAddon(AddOnName, "AceConsole-3.0", "AceEvent-3.0", 'AceTimer-3.0', 'AceHook-3.0');
@@ -60,26 +60,70 @@ function AddOn:OnInitialize()
 			self:CopyTable(self.db, ElvData.profiles[profileKey])
 		end
 	end
-	
-	
+
 	self.private = table.copy(self.privateVars.profile, true);
 	if ElvPrivateData then
 		local profileKey
 		if ElvPrivateData.profileKeys then
 			profileKey = ElvPrivateData.profileKeys[self.myname..' - '..self.myrealm]
 		end
-		
-		if profileKey and ElvPrivateData.profiles and ElvPrivateData.profiles[profileKey] then
+				
+		if profileKey and ElvPrivateData.profiles and ElvPrivateData.profiles[profileKey] then		
 			self:CopyTable(self.private, ElvPrivateData.profiles[profileKey])
 		end
 	end	
 	
+	if self.db.install_complete and not self.global.newThemePrompt and self.db.theme ~= 'pixelPerfect' then
+		self.private.general.pixelPerfect = false;
+	end
+	
+	if self.db.install_complete and not self.global.newThemePrompt and not self.private.general.pixelPerfect then 
+		self.__showMessage = true;
+	elseif not self.db.theme and not self.db.install_complete then
+		self.__setupTheme = true;
+	end		
+	
+	if self.private.general.pixelPerfect then
+		self.Border = 1;
+		self.Spacing = 0;
+		self.PixelMode = true;
+	end
+		
+	
 	self:UIScale();
 	self:UpdateMedia();
 	
+	self:RegisterEvent('PLAYER_REGEN_DISABLED')
 	self:RegisterEvent('PLAYER_LOGIN', 'Initialize')
-	self:Contruct_StaticPopups()
+	self:Contruct_StaticPopups()	
 	self:InitializeInitialModules()
+end
+
+function AddOn:PLAYER_REGEN_ENABLED()
+	ACD:Open(AddOnName);
+	self:UnregisterEvent('PLAYER_REGEN_ENABLED');
+end
+
+function AddOn:PLAYER_REGEN_DISABLED()
+	local err = false;
+	if ACD.OpenFrames[AddOnName] then
+		self:RegisterEvent('PLAYER_REGEN_ENABLED');
+		ACD:Close(AddOnName);
+		err = true;
+	end
+	
+	if self.CreatedMovers then
+		for name, _ in pairs(self.CreatedMovers) do
+			if _G[name] and _G[name]:IsShown() then
+				err = true;
+				_G[name]:Hide();
+			end
+		end
+	end
+	
+	if err == true then
+		self:Print(ERR_NOT_IN_COMBAT);		
+	end		
 end
 
 function AddOn:OnProfileReset()
@@ -97,7 +141,7 @@ function AddOn:OnProfileReset()
 end
 
 function AddOn:OnProfileCopied(arg1, arg2, arg3)
-	E:StaticPopup_Show("COPY_PROFILE")
+	self:StaticPopup_Show("COPY_PROFILE")
 end
 
 function AddOn:LoadConfig()	
@@ -114,6 +158,12 @@ function AddOn:LoadConfig()
 end
 
 function AddOn:ToggleConfig() 
+	if InCombatLockdown() then
+		self:Print(ERR_NOT_IN_COMBAT)
+		self:RegisterEvent('PLAYER_REGEN_ENABLED')
+		return;
+	end
+
 	local mode = 'Close'
 	if not ACD.OpenFrames[AddOnName] then
 		mode = 'Open'

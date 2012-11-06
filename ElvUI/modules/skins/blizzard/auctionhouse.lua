@@ -7,8 +7,7 @@ local function LoadSkin()
 	S:HandleScrollBar(AuctionsScrollFrameScrollBar)
 	AuctionFrame:StripTextures(true)
 	AuctionFrame:SetTemplate("Transparent")
-	AuctionFrame:CreateShadow("Default")
-	
+
 	BrowseFilterScrollFrame:StripTextures()
 	BrowseScrollFrame:StripTextures()
 	AuctionsScrollFrame:StripTextures()
@@ -32,7 +31,6 @@ local function LoadSkin()
 	--Progress Frame
 	AuctionProgressFrame:StripTextures()
 	AuctionProgressFrame:SetTemplate("Transparent")
-	AuctionProgressFrame:CreateShadow("Default")
 	AuctionProgressFrameCancelButton:StyleButton()
 	AuctionProgressFrameCancelButton:SetTemplate("Default")
 	AuctionProgressFrameCancelButton:SetHitRectInsets(0, 0, 0, 0)

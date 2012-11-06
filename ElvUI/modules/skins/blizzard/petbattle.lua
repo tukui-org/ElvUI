@@ -9,7 +9,8 @@ local function LoadSkin()
 		f.ActiveAlly,
 		f.ActiveEnemy
 	}
-
+	S:HandleCloseButton(FloatingBattlePetTooltip.CloseButton)
+	
 	-- TOP FRAMES
 	f:StripTextures()
 
@@ -202,7 +203,7 @@ end)
 		tt.BorderBottomLeft:SetTexture(nil)
 		tt:SetTemplate("Transparent")	
 	end
-	
+
 	SkinPetTooltip(PetBattlePrimaryAbilityTooltip)
 	SkinPetTooltip(PetBattlePrimaryUnitTooltip)
 	SkinPetTooltip(BattlePetTooltip)
@@ -262,6 +263,14 @@ end)
 	bar:SetFrameLevel(0)
 	bar:SetFrameStrata('BACKGROUND')
 	bar.backdropTexture:SetDrawLayer('BACKGROUND', 0)
+	bar:SetScript('OnShow', function(self)
+		if not self.initialShow then
+			self.initialShow = true;
+			return;
+		end
+		
+		self.backdropTexture:SetDrawLayer('BACKGROUND', 1)
+	end)
 	
 	bf:StripTextures()
 	bf.TurnTimer:StripTextures()

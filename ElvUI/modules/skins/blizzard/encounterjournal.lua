@@ -5,29 +5,41 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.encounterjournal ~= true then return end
 	EncounterJournal:StripTextures(true)
 	
-	EncounterJournal.backdrop = EncounterJournal:CreateTexture(nil, "BACKGROUND")
-	EncounterJournal.backdrop:SetDrawLayer("BACKGROUND", -7)
-	EncounterJournal.backdrop:SetTexture(0, 0, 0)
-	EncounterJournal.backdrop:Point("TOPLEFT", EncounterJournal, "TOPLEFT", -E.mult*3, E.mult*3)
-	EncounterJournal.backdrop:Point("BOTTOMRIGHT", EncounterJournal, "BOTTOMRIGHT", E.mult*3, -E.mult*3)
-	
-	EncounterJournal.backdrop2 = EncounterJournal:CreateTexture(nil, "BACKGROUND")
-	EncounterJournal.backdrop2:SetDrawLayer("BACKGROUND", -6)
-	EncounterJournal.backdrop2:SetTexture(unpack(E['media'].bordercolor))
-	EncounterJournal.backdrop2:Point("TOPLEFT", EncounterJournal, "TOPLEFT", -E.mult*2, E.mult*2)
-	EncounterJournal.backdrop2:Point("BOTTOMRIGHT", EncounterJournal, "BOTTOMRIGHT", E.mult*2, -E.mult*2)						
+	if E.PixelMode then
+		EncounterJournal.backdrop = EncounterJournal:CreateTexture(nil, "BACKGROUND")
+		EncounterJournal.backdrop:SetDrawLayer("BACKGROUND", -7)
+		EncounterJournal.backdrop:SetTexture(unpack(E['media'].bordercolor))
+		EncounterJournal.backdrop:Point("TOPLEFT", EncounterJournal, "TOPLEFT", -E.mult, E.mult)
+		EncounterJournal.backdrop:Point("BOTTOMRIGHT", EncounterJournal, "BOTTOMRIGHT", E.mult, -E.mult)
 
-	EncounterJournal.backdrop3 = EncounterJournal:CreateTexture(nil, "BACKGROUND")
-	EncounterJournal.backdrop3:SetDrawLayer("BACKGROUND", -5)
-	EncounterJournal.backdrop3:SetTexture(0, 0, 0)
-	EncounterJournal.backdrop3:Point("TOPLEFT", EncounterJournal, "TOPLEFT", -E.mult, E.mult)
-	EncounterJournal.backdrop3:Point("BOTTOMRIGHT", EncounterJournal, "BOTTOMRIGHT", E.mult, -E.mult)					
+		EncounterJournal.backdrop2 = EncounterJournal:CreateTexture(nil, "BACKGROUND")
+		EncounterJournal.backdrop2:SetDrawLayer("BACKGROUND", -4)
+		EncounterJournal.backdrop2:SetTexture(unpack(E['media'].backdropcolor))
+		EncounterJournal.backdrop2:SetAllPoints()							
+	else
+		EncounterJournal.backdrop = EncounterJournal:CreateTexture(nil, "BACKGROUND")
+		EncounterJournal.backdrop:SetDrawLayer("BACKGROUND", -7)
+		EncounterJournal.backdrop:SetTexture(0, 0, 0)
+		EncounterJournal.backdrop:Point("TOPLEFT", EncounterJournal, "TOPLEFT", -E.mult*3, E.mult*3)
+		EncounterJournal.backdrop:Point("BOTTOMRIGHT", EncounterJournal, "BOTTOMRIGHT", E.mult*3, -E.mult*3)
+		
+		EncounterJournal.backdrop2 = EncounterJournal:CreateTexture(nil, "BACKGROUND")
+		EncounterJournal.backdrop2:SetDrawLayer("BACKGROUND", -6)
+		EncounterJournal.backdrop2:SetTexture(unpack(E['media'].bordercolor))
+		EncounterJournal.backdrop2:Point("TOPLEFT", EncounterJournal, "TOPLEFT", -E.mult*2, E.mult*2)
+		EncounterJournal.backdrop2:Point("BOTTOMRIGHT", EncounterJournal, "BOTTOMRIGHT", E.mult*2, -E.mult*2)						
 
-	EncounterJournal.backdrop4 = EncounterJournal:CreateTexture(nil, "BACKGROUND")
-	EncounterJournal.backdrop4:SetDrawLayer("BACKGROUND", -4)
-	EncounterJournal.backdrop4:SetTexture(unpack(E['media'].backdropcolor))
-	EncounterJournal.backdrop4:SetAllPoints()						
-	
+		EncounterJournal.backdrop3 = EncounterJournal:CreateTexture(nil, "BACKGROUND")
+		EncounterJournal.backdrop3:SetDrawLayer("BACKGROUND", -5)
+		EncounterJournal.backdrop3:SetTexture(0, 0, 0)
+		EncounterJournal.backdrop3:Point("TOPLEFT", EncounterJournal, "TOPLEFT", -E.mult, E.mult)
+		EncounterJournal.backdrop3:Point("BOTTOMRIGHT", EncounterJournal, "BOTTOMRIGHT", E.mult, -E.mult)					
+
+		EncounterJournal.backdrop4 = EncounterJournal:CreateTexture(nil, "BACKGROUND")
+		EncounterJournal.backdrop4:SetDrawLayer("BACKGROUND", -4)
+		EncounterJournal.backdrop4:SetTexture(unpack(E['media'].backdropcolor))
+		EncounterJournal.backdrop4:SetAllPoints()		
+	end
 	EncounterJournalNavBar:StripTextures(true)
 	EncounterJournalNavBarOverlay:StripTextures(true)
 	
@@ -41,44 +53,70 @@ local function LoadSkin()
 	
 	EncounterJournalInset:StripTextures(true)
 	EncounterJournal:HookScript("OnShow", function()
-		if not EncounterJournalInstanceSelect.backdrop then						
-			EncounterJournalInstanceSelect.backdrop = EncounterJournalInstanceSelect:CreateTexture(nil, "BACKGROUND")
-			EncounterJournalInstanceSelect.backdrop:SetDrawLayer("BACKGROUND", -3)
-			EncounterJournalInstanceSelect.backdrop:SetTexture(0, 0, 0)
-			EncounterJournalInstanceSelect.backdrop:Point("TOPLEFT", EncounterJournalInstanceSelect.bg, "TOPLEFT", -E.mult*3, E.mult*3)
-			EncounterJournalInstanceSelect.backdrop:Point("BOTTOMRIGHT", EncounterJournalInstanceSelect.bg, "BOTTOMRIGHT", E.mult*3, -E.mult*3)
-			
-			EncounterJournalInstanceSelect.backdrop2 = EncounterJournalInstanceSelect:CreateTexture(nil, "BACKGROUND")
-			EncounterJournalInstanceSelect.backdrop2:SetDrawLayer("BACKGROUND", -2)
-			EncounterJournalInstanceSelect.backdrop2:SetTexture(unpack(E['media'].bordercolor))
-			EncounterJournalInstanceSelect.backdrop2:Point("TOPLEFT", EncounterJournalInstanceSelect.bg, "TOPLEFT", -E.mult*2, E.mult*2)
-			EncounterJournalInstanceSelect.backdrop2:Point("BOTTOMRIGHT", EncounterJournalInstanceSelect.bg, "BOTTOMRIGHT", E.mult*2, -E.mult*2)						
+		if not EncounterJournalInstanceSelect.backdrop then	
+			if E.PixelMode then
+				EncounterJournalInstanceSelect.backdrop = EncounterJournalInstanceSelect:CreateTexture(nil, "BACKGROUND")
+				EncounterJournalInstanceSelect.backdrop:SetDrawLayer("BACKGROUND", -3)
+				EncounterJournalInstanceSelect.backdrop:SetTexture(unpack(E['media'].bordercolor))
+				EncounterJournalInstanceSelect.backdrop:Point("TOPLEFT", EncounterJournalInstanceSelect.bg, "TOPLEFT", -E.mult, E.mult)
+				EncounterJournalInstanceSelect.backdrop:Point("BOTTOMRIGHT", EncounterJournalInstanceSelect.bg, "BOTTOMRIGHT", E.mult, -E.mult)
 
-			EncounterJournalInstanceSelect.backdrop3 = EncounterJournalInstanceSelect:CreateTexture(nil, "BACKGROUND")
-			EncounterJournalInstanceSelect.backdrop3:SetDrawLayer("BACKGROUND", -1)
-			EncounterJournalInstanceSelect.backdrop3:SetTexture(0, 0, 0)
-			EncounterJournalInstanceSelect.backdrop3:Point("TOPLEFT", EncounterJournalInstanceSelect.bg, "TOPLEFT", -E.mult, E.mult)
-			EncounterJournalInstanceSelect.backdrop3:Point("BOTTOMRIGHT", EncounterJournalInstanceSelect.bg, "BOTTOMRIGHT", E.mult, -E.mult)								
+				EncounterJournalInstanceSelect.backdrop2 = EncounterJournalInstanceSelect:CreateTexture(nil, "BACKGROUND")
+				EncounterJournalInstanceSelect.backdrop2:SetDrawLayer("BACKGROUND", -2)
+				EncounterJournalInstanceSelect.backdrop2:SetTexture(unpack(E['media'].backdropcolor))
+				EncounterJournalInstanceSelect.backdrop2:SetAllPoints(EncounterJournalInstanceSelect.bg)					
+			else
+				EncounterJournalInstanceSelect.backdrop = EncounterJournalInstanceSelect:CreateTexture(nil, "BACKGROUND")
+				EncounterJournalInstanceSelect.backdrop:SetDrawLayer("BACKGROUND", -3)
+				EncounterJournalInstanceSelect.backdrop:SetTexture(0, 0, 0)
+				EncounterJournalInstanceSelect.backdrop:Point("TOPLEFT", EncounterJournalInstanceSelect.bg, "TOPLEFT", -E.mult*3, E.mult*3)
+				EncounterJournalInstanceSelect.backdrop:Point("BOTTOMRIGHT", EncounterJournalInstanceSelect.bg, "BOTTOMRIGHT", E.mult*3, -E.mult*3)
+				
+				EncounterJournalInstanceSelect.backdrop2 = EncounterJournalInstanceSelect:CreateTexture(nil, "BACKGROUND")
+				EncounterJournalInstanceSelect.backdrop2:SetDrawLayer("BACKGROUND", -2)
+				EncounterJournalInstanceSelect.backdrop2:SetTexture(unpack(E['media'].bordercolor))
+				EncounterJournalInstanceSelect.backdrop2:Point("TOPLEFT", EncounterJournalInstanceSelect.bg, "TOPLEFT", -E.mult*2, E.mult*2)
+				EncounterJournalInstanceSelect.backdrop2:Point("BOTTOMRIGHT", EncounterJournalInstanceSelect.bg, "BOTTOMRIGHT", E.mult*2, -E.mult*2)						
+
+				EncounterJournalInstanceSelect.backdrop3 = EncounterJournalInstanceSelect:CreateTexture(nil, "BACKGROUND")
+				EncounterJournalInstanceSelect.backdrop3:SetDrawLayer("BACKGROUND", -1)
+				EncounterJournalInstanceSelect.backdrop3:SetTexture(0, 0, 0)
+				EncounterJournalInstanceSelect.backdrop3:Point("TOPLEFT", EncounterJournalInstanceSelect.bg, "TOPLEFT", -E.mult, E.mult)
+				EncounterJournalInstanceSelect.backdrop3:Point("BOTTOMRIGHT", EncounterJournalInstanceSelect.bg, "BOTTOMRIGHT", E.mult, -E.mult)	
+			end
 		end
 		
-		if not EncounterJournalEncounterFrameInfo.backdrop then						
-			EncounterJournalEncounterFrameInfo.backdrop = EncounterJournalEncounterFrameInfo:CreateTexture(nil, "BACKGROUND")
-			EncounterJournalEncounterFrameInfo.backdrop:SetDrawLayer("BACKGROUND", -3)
-			EncounterJournalEncounterFrameInfo.backdrop:SetTexture(0, 0, 0)
-			EncounterJournalEncounterFrameInfo.backdrop:Point("TOPLEFT", EncounterJournalEncounterFrameInfoBG, "TOPLEFT", -E.mult*3, E.mult*3)
-			EncounterJournalEncounterFrameInfo.backdrop:Point("BOTTOMRIGHT", EncounterJournalEncounterFrameInfoBG, "BOTTOMRIGHT", E.mult*3, -E.mult*3)
-			
-			EncounterJournalEncounterFrameInfo.backdrop2 = EncounterJournalEncounterFrameInfo:CreateTexture(nil, "BACKGROUND")
-			EncounterJournalEncounterFrameInfo.backdrop2:SetDrawLayer("BACKGROUND", -2)
-			EncounterJournalEncounterFrameInfo.backdrop2:SetTexture(unpack(E['media'].bordercolor))
-			EncounterJournalEncounterFrameInfo.backdrop2:Point("TOPLEFT", EncounterJournalEncounterFrameInfoBG, "TOPLEFT", -E.mult*2, E.mult*2)
-			EncounterJournalEncounterFrameInfo.backdrop2:Point("BOTTOMRIGHT", EncounterJournalEncounterFrameInfoBG, "BOTTOMRIGHT", E.mult*2, -E.mult*2)						
+		if not EncounterJournalEncounterFrameInfo.backdrop then
+			if E.PixelMode then
+				EncounterJournalEncounterFrameInfo.backdrop = EncounterJournalEncounterFrameInfo:CreateTexture(nil, "BACKGROUND")
+				EncounterJournalEncounterFrameInfo.backdrop:SetDrawLayer("BACKGROUND", -1)
+				EncounterJournalEncounterFrameInfo.backdrop:SetTexture(unpack(E['media'].bordercolor))
+				EncounterJournalEncounterFrameInfo.backdrop:Point("TOPLEFT", EncounterJournalEncounterFrameInfoBG, "TOPLEFT", -E.mult, E.mult)
+				EncounterJournalEncounterFrameInfo.backdrop:Point("BOTTOMRIGHT", EncounterJournalEncounterFrameInfoBG, "BOTTOMRIGHT", E.mult, -E.mult)
 
-			EncounterJournalEncounterFrameInfo.backdrop3 = EncounterJournalEncounterFrameInfo:CreateTexture(nil, "BACKGROUND")
-			EncounterJournalEncounterFrameInfo.backdrop3:SetDrawLayer("BACKGROUND", -1)
-			EncounterJournalEncounterFrameInfo.backdrop3:SetTexture(0, 0, 0)
-			EncounterJournalEncounterFrameInfo.backdrop3:Point("TOPLEFT", EncounterJournalEncounterFrameInfoBG, "TOPLEFT", -E.mult, E.mult)
-			EncounterJournalEncounterFrameInfo.backdrop3:Point("BOTTOMRIGHT", EncounterJournalEncounterFrameInfoBG, "BOTTOMRIGHT", E.mult, -E.mult)								
+				EncounterJournalEncounterFrameInfo.backdrop2 = EncounterJournalEncounterFrameInfo:CreateTexture(nil, "BACKGROUND")
+				EncounterJournalEncounterFrameInfo.backdrop2:SetDrawLayer("BACKGROUND")
+				EncounterJournalEncounterFrameInfo.backdrop2:SetTexture(unpack(E['media'].backdropcolor))
+				EncounterJournalEncounterFrameInfo.backdrop2:SetAllPoints(EncounterJournalEncounterFrameInfoBG)				
+			else
+				EncounterJournalEncounterFrameInfo.backdrop = EncounterJournalEncounterFrameInfo:CreateTexture(nil, "BACKGROUND")
+				EncounterJournalEncounterFrameInfo.backdrop:SetDrawLayer("BACKGROUND", -3)
+				EncounterJournalEncounterFrameInfo.backdrop:SetTexture(0, 0, 0)
+				EncounterJournalEncounterFrameInfo.backdrop:Point("TOPLEFT", EncounterJournalEncounterFrameInfoBG, "TOPLEFT", -E.mult*3, E.mult*3)
+				EncounterJournalEncounterFrameInfo.backdrop:Point("BOTTOMRIGHT", EncounterJournalEncounterFrameInfoBG, "BOTTOMRIGHT", E.mult*3, -E.mult*3)
+				
+				EncounterJournalEncounterFrameInfo.backdrop2 = EncounterJournalEncounterFrameInfo:CreateTexture(nil, "BACKGROUND")
+				EncounterJournalEncounterFrameInfo.backdrop2:SetDrawLayer("BACKGROUND", -2)
+				EncounterJournalEncounterFrameInfo.backdrop2:SetTexture(unpack(E['media'].bordercolor))
+				EncounterJournalEncounterFrameInfo.backdrop2:Point("TOPLEFT", EncounterJournalEncounterFrameInfoBG, "TOPLEFT", -E.mult*2, E.mult*2)
+				EncounterJournalEncounterFrameInfo.backdrop2:Point("BOTTOMRIGHT", EncounterJournalEncounterFrameInfoBG, "BOTTOMRIGHT", E.mult*2, -E.mult*2)						
+
+				EncounterJournalEncounterFrameInfo.backdrop3 = EncounterJournalEncounterFrameInfo:CreateTexture(nil, "BACKGROUND")
+				EncounterJournalEncounterFrameInfo.backdrop3:SetDrawLayer("BACKGROUND", -1)
+				EncounterJournalEncounterFrameInfo.backdrop3:SetTexture(0, 0, 0)
+				EncounterJournalEncounterFrameInfo.backdrop3:Point("TOPLEFT", EncounterJournalEncounterFrameInfoBG, "TOPLEFT", -E.mult, E.mult)
+				EncounterJournalEncounterFrameInfo.backdrop3:Point("BOTTOMRIGHT", EncounterJournalEncounterFrameInfoBG, "BOTTOMRIGHT", E.mult, -E.mult)				
+			end							
 		end	
 
 	end)
@@ -98,7 +136,7 @@ local function LoadSkin()
 	EncounterJournalEncounterFrameInfoLootTab:GetDisabledTexture():SetTexture(nil)
 	EncounterJournalEncounterFrameInfoLootTab:GetHighlightTexture():SetTexture(nil)	
 		
-	EncounterJournalEncounterFrameInfoBossTab:Point('TOPLEFT', EncounterJournalEncounterFrameInfo, 'TOPRIGHT', 0, -35)
+	EncounterJournalEncounterFrameInfoBossTab:Point('TOPLEFT', EncounterJournalEncounterFrameInfo, 'TOPRIGHT', E.PixelMode and -3 or 0, -35)
 	EncounterJournalEncounterFrameInfoBossTab.SetPoint = E.noop
 	
 	EncounterJournalEncounterFrameInfoBossTab:CreateBackdrop('Default')

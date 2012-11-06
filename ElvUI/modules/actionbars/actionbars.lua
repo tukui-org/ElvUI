@@ -15,7 +15,7 @@ AB["barDefaults"] = {
 	["bar1"] = {
 		['page'] = 1,
 		['bindButtons'] = "ACTIONBUTTON",
-		['conditions'] = string.format("[vehicleui] %d; [possessbar] %d; [overridebar] %d; [bar:2] 2; [bar:3] 1; [bar:4] 2; [bar:5] 1; [bar:6] 2;", GetVehicleBarIndex(), GetVehicleBarIndex(), GetOverrideBarIndex()),
+		['conditions'] = string.format("[vehicleui] %d; [possessbar] %d; [overridebar] %d; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;", GetVehicleBarIndex(), GetVehicleBarIndex(), GetOverrideBarIndex()),
 		['position'] = "BOTTOM,ElvUIParent,BOTTOM,0,4",
 	},
 	["bar2"] = {
@@ -80,7 +80,7 @@ function AB:PositionAndSizeBar(barName)
 
 	bar:SetWidth(spacing + ((size * (buttonsPerRow * widthMult)) + ((spacing * (buttonsPerRow - 1)) * widthMult) + (spacing * widthMult)));
 	bar:SetHeight(spacing + ((size * (numColumns * heightMult)) + ((spacing * (numColumns - 1)) * heightMult) + (spacing * heightMult)));
-	
+
 	bar.mouseover = self.db[barName].mouseover
 	
 	if self.db[barName].backdrop == true then
@@ -128,7 +128,7 @@ function AB:PositionAndSizeBar(barName)
 				self:HookScript(button, 'OnLeave', 'Button_OnLeave');					
 			end
 		else
-			bar:SetAlpha(1);
+			bar:SetAlpha(self.db[barName].alpha);
 			if self.hooks[bar] then
 				self:Unhook(bar, 'OnEnter');
 				self:Unhook(bar, 'OnLeave');
@@ -191,7 +191,7 @@ function AB:PositionAndSizeBar(barName)
 		bar:SetScale(1);
 		
 		if not self.db[barName].mouseover then
-			bar:SetAlpha(1);
+			bar:SetAlpha(self.db[barName].alpha);
 		end
 	else
 		bar:SetScale(0.000001);
@@ -238,7 +238,7 @@ function AB:CreateBar(id)
 		else
 			self:Show();
 		end	
-	]])	
+	]])
 	
 	self["handledBars"]['bar'..id] = bar;
 	self:PositionAndSizeBar('bar'..id);
@@ -292,6 +292,44 @@ function AB:RemoveBindings()
 	end
 end
 
+function AB:UpdateBar1Paging()
+	if (E.private.actionbar.enable ~= true or InCombatLockdown()) or not self.isInitialized then return; end
+	local bar2Option = InterfaceOptionsActionBarsPanelBottomRight
+	local bar3Option = InterfaceOptionsActionBarsPanelBottomLeft
+	local bar4Option = InterfaceOptionsActionBarsPanelRightTwo
+	local bar5Option = InterfaceOptionsActionBarsPanelRight
+
+	if (self.db.bar2.enabled and not bar2Option:GetChecked()) or (not self.db.bar2.enabled and bar2Option:GetChecked())  then
+		bar2Option:Click()
+	end
+	
+	if (self.db.bar3.enabled and not bar3Option:GetChecked()) or (not self.db.bar3.enabled and bar3Option:GetChecked())  then
+		bar3Option:Click()
+	end
+	
+	if not self.db.bar5.enabled and not self.db.bar4.enabled then
+		if bar4Option:GetChecked() then
+			bar4Option:Click()
+		end				
+		
+		if bar5Option:GetChecked() then
+			bar5Option:Click()
+		end
+	elseif not self.db.bar5.enabled then
+		if not bar5Option:GetChecked() then
+			bar5Option:Click()
+		end
+		
+		if not bar4Option:GetChecked() then
+			bar4Option:Click()
+		end
+	elseif (self.db.bar4.enabled and not bar4Option:GetChecked()) or (not self.db.bar4.enabled and bar4Option:GetChecked()) then
+		bar4Option:Click()
+	elseif (self.db.bar5.enabled and not bar5Option:GetChecked()) or (not self.db.bar5.enabled and bar5Option:GetChecked()) then
+		bar5Option:Click()
+	end
+end
+
 function AB:UpdateButtonSettings()
 	if E.private.actionbar.enable ~= true then return end
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return; end
@@ -310,12 +348,6 @@ function AB:UpdateButtonSettings()
 	self:PositionAndSizeBarPet()
 	self:PositionAndSizeBarShapeShift()
 		
-	for barName, bar in pairs(self["handledBars"]) do
-		self:UpdateButtonConfig(bar, bar.bindButtons)
-	end
-end
-
-function AB:CVAR_UPDATE(event)
 	for barName, bar in pairs(self["handledBars"]) do
 		self:UpdateButtonConfig(bar, bar.bindButtons)
 	end
@@ -391,7 +423,7 @@ function AB:StyleButton(button, noBackdrop)
 end
 
 function AB:Bar_OnEnter(bar)
-	E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), 1)
+	E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), bar.db.alpha)
 end
 
 function AB:Bar_OnLeave(bar)
@@ -400,12 +432,24 @@ end
 
 function AB:Button_OnEnter(button)
 	local bar = button:GetParent()
-	E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), 1)
+	E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), bar.db.alpha)
 end
 
 function AB:Button_OnLeave(button)
 	local bar = button:GetParent()
 	E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
+end
+
+function AB:BlizzardOptionsPanel_OnEvent()
+	InterfaceOptionsActionBarsPanelBottomRight.Text:SetText(format(L['Remove Bar %d Action Page'], 2))
+	InterfaceOptionsActionBarsPanelBottomLeft.Text:SetText(format(L['Remove Bar %d Action Page'], 3))
+	InterfaceOptionsActionBarsPanelRightTwo.Text:SetText(format(L['Remove Bar %d Action Page'], 4))
+	InterfaceOptionsActionBarsPanelRight.Text:SetText(format(L['Remove Bar %d Action Page'], 5))
+	
+	InterfaceOptionsActionBarsPanelBottomRight:SetScript('OnEnter', nil)
+	InterfaceOptionsActionBarsPanelBottomLeft:SetScript('OnEnter', nil)
+	InterfaceOptionsActionBarsPanelRightTwo:SetScript('OnEnter', nil)
+	InterfaceOptionsActionBarsPanelRight:SetScript('OnEnter', nil)
 end
 
 function AB:DisableBlizzard()
@@ -455,24 +499,29 @@ function AB:DisableBlizzard()
 		_G['MultiCastActionButton'..i]:Hide()
 		_G['MultiCastActionButton'..i]:UnregisterAllEvents()
 		_G['MultiCastActionButton'..i]:SetAttribute("statehidden", true)
-		
-		--[[for index, button in pairs(ActionBarButtonEventsFrame.frames) do			
-			table.remove(ActionBarButtonEventsFrame.frames, index)
-		end]]
 	end
 
-	MultiCastActionBarFrame.ignoreFramePositionManager = true
-
+	ActionBarController:UnregisterAllEvents()
+	ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR')
 	
-	MainMenuBar:UnregisterAllEvents()
-	MainMenuBar:Hide()
-	MainMenuBar:SetParent(UIHider)
-	--[[for i=1, MainMenuBar:GetNumChildren() do
+	MainMenuBar:EnableMouse(false)
+	MainMenuBar:SetAlpha(0)
+	MainMenuExpBar:UnregisterAllEvents()
+	MainMenuExpBar:Hide()
+	MainMenuExpBar:SetParent(UIHider)
+	
+	for i=1, MainMenuBar:GetNumChildren() do
 		local child = select(i, MainMenuBar:GetChildren())
-		if child and child.UnregisterAllEvents then
+		if child then
 			child:UnregisterAllEvents()
+			child:Hide()
+			child:SetParent(UIHider)
 		end
-	end]]
+	end
+
+	ReputationWatchBar:UnregisterAllEvents()
+	ReputationWatchBar:Hide()
+	ReputationWatchBar:SetParent(UIHider)	
 
 	MainMenuBarArtFrame:UnregisterEvent("ACTIONBAR_PAGE_CHANGED")
 	MainMenuBarArtFrame:UnregisterEvent("ADDON_LOADED")
@@ -506,7 +555,19 @@ function AB:DisableBlizzard()
 	
 	InterfaceOptionsCombatPanelActionButtonUseKeyDown:SetScale(0.0001)
 	InterfaceOptionsCombatPanelActionButtonUseKeyDown:SetAlpha(0)
-	InterfaceOptionsFrameCategoriesButton6:SetScale(0.00001)
+	InterfaceOptionsActionBarsPanelSecureAbilityToggle:SetScale(0.0001)
+	InterfaceOptionsActionBarsPanelAlwaysShowActionBars:SetScale(0.0001)
+	InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton:SetScale(0.0001)
+	InterfaceOptionsActionBarsPanelLockActionBars:SetScale(0.0001)
+	InterfaceOptionsActionBarsPanelSecureAbilityToggle:SetAlpha(0)
+	InterfaceOptionsActionBarsPanelAlwaysShowActionBars:SetAlpha(0)
+	InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton:SetAlpha(0)
+	InterfaceOptionsActionBarsPanelLockActionBars:SetAlpha(0)
+	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetAlpha(0)
+	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetScale(0.00001)
+
+	self:SecureHook('BlizzardOptionsPanel_OnEvent')
+	--InterfaceOptionsFrameCategoriesButton6:SetScale(0.00001)
 	if PlayerTalentFrame then
 		PlayerTalentFrame:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 	else
@@ -516,13 +577,16 @@ end
 
 function AB:UpdateButtonConfig(bar, buttonName)
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return; end
-	if not bar.buttonConfig then bar.buttonConfig = { hideElements = {} } end
+	if not bar.buttonConfig then bar.buttonConfig = { hideElements = {}, colors = {} } end
 	bar.buttonConfig.hideElements.macro = self.db.macrotext
 	bar.buttonConfig.hideElements.hotkey = self.db.hotkeytext
-	bar.buttonConfig.showGrid = true
+	bar.buttonConfig.showGrid = self.db.showGrid
 	bar.buttonConfig.clickOnDown = self.db.keyDown
 	SetModifiedClick("PICKUPACTION", self.db.movementModifier)
-
+	bar.buttonConfig.colors.range = E:GetColorTable(self.db.noRangeColor)
+	bar.buttonConfig.colors.mana = E:GetColorTable(self.db.noPowerColor)
+	bar.buttonConfig.colors.hp = E:GetColorTable(self.db.noPowerColor)
+	
 	for i, button in pairs(bar.buttons) do
 		bar.buttonConfig.keyBoundTarget = format(buttonName.."%d", i)
 		button.keyBoundTarget = bar.buttonConfig.keyBoundTarget
@@ -682,18 +746,17 @@ end
 function AB:VehicleFix()
 	local barName = 'bar1'
 	local bar = self["handledBars"][barName]
-	if HasOverrideActionBar() or HasVehicleActionBar() then
+	local spacing = E:Scale(self.db[barName].buttonspacing);
+	local numButtons = self.db[barName].buttons;
+	local buttonsPerRow = self.db[barName].buttonsPerRow;		
+	local size = E:Scale(self.db[barName].buttonsize);
+	local point = self.db[barName].point;
+	local numColumns = ceil(numButtons / buttonsPerRow);
+		
+	if (HasOverrideActionBar() or HasVehicleActionBar()) and numButtons == 12 then
 		local widthMult = 1;
 		local heightMult = 1;
-		local spacing = E:Scale(self.db[barName].buttonspacing);
-		local buttonsPerRow = self.db[barName].buttonsPerRow;
-		local numButtons = self.db[barName].buttons;
-		local size = E:Scale(self.db[barName].buttonsize);
-		local point = self.db[barName].point;
-		local numColumns = ceil(numButtons / buttonsPerRow);
 	
-		widthMult = 1
-		heightMult = 1
 		bar.backdrop:ClearAllPoints()
 		bar.backdrop:SetPoint(self.db[barName].point, bar, self.db[barName].point)
 		bar.backdrop:SetWidth(spacing + ((size * (buttonsPerRow * widthMult)) + ((spacing * (buttonsPerRow - 1)) * widthMult) + (spacing * widthMult)));
@@ -735,8 +798,12 @@ function AB:Initialize()
 	self:RegisterEvent('PET_BATTLE_OPENING_DONE', 'RemoveBindings')
 	self:RegisterEvent('UPDATE_VEHICLE_ACTIONBAR', 'VehicleFix')
 	self:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR', 'VehicleFix')
-	self:RegisterEvent('CVAR_UPDATE')
-	self:ReassignBindings()
+	
+	if C_PetBattles.IsInBattle() then
+		self:RemoveBindings()
+	else
+		self:ReassignBindings()
+	end
 	
 	self:SecureHook('ActionButton_ShowOverlayGlow')
 	
