@@ -89,13 +89,13 @@ local function LoadSkin()
 		if not EncounterJournalEncounterFrameInfo.backdrop then
 			if E.PixelMode then
 				EncounterJournalEncounterFrameInfo.backdrop = EncounterJournalEncounterFrameInfo:CreateTexture(nil, "BACKGROUND")
-				EncounterJournalEncounterFrameInfo.backdrop:SetDrawLayer("BACKGROUND", -1)
+				EncounterJournalEncounterFrameInfo.backdrop:SetDrawLayer("BACKGROUND", -2)
 				EncounterJournalEncounterFrameInfo.backdrop:SetTexture(unpack(E['media'].bordercolor))
 				EncounterJournalEncounterFrameInfo.backdrop:Point("TOPLEFT", EncounterJournalEncounterFrameInfoBG, "TOPLEFT", -E.mult, E.mult)
 				EncounterJournalEncounterFrameInfo.backdrop:Point("BOTTOMRIGHT", EncounterJournalEncounterFrameInfoBG, "BOTTOMRIGHT", E.mult, -E.mult)
 
 				EncounterJournalEncounterFrameInfo.backdrop2 = EncounterJournalEncounterFrameInfo:CreateTexture(nil, "BACKGROUND")
-				EncounterJournalEncounterFrameInfo.backdrop2:SetDrawLayer("BACKGROUND")
+				EncounterJournalEncounterFrameInfo.backdrop2:SetDrawLayer("BACKGROUND", -1)
 				EncounterJournalEncounterFrameInfo.backdrop2:SetTexture(unpack(E['media'].backdropcolor))
 				EncounterJournalEncounterFrameInfo.backdrop2:SetAllPoints(EncounterJournalEncounterFrameInfoBG)				
 			else
