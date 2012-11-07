@@ -6,8 +6,8 @@ local function LoadSkin()
 	
 	ItemUpgradeFrame:StripTextures()
 	ItemUpgradeFrame:SetTemplate('Transparent')
-	ItemUpgradeFrameShadows:Kill()
-	ItemUpgradeFrameInset:Kill()
+	--ItemUpgradeFrameShadows:Kill()
+	--ItemUpgradeFrameInset:Kill()
 	
 	S:HandleCloseButton(ItemUpgradeFrameCloseButton)
 	
@@ -25,6 +25,7 @@ local function LoadSkin()
 	ItemUpgradeFrameMoneyFrame:StripTextures()
 	S:HandleButton(ItemUpgradeFrameUpgradeButton, true)
 	ItemUpgradeFrame.FinishedGlow:Kill()	
+	ItemUpgradeFrame.ButtonFrame:DisableDrawLayer('BORDER')
 end
 
 S:RegisterSkin("Blizzard_ItemUpgradeUI", LoadSkin)
