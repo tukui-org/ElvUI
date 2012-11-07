@@ -36,12 +36,14 @@ function NP:Initialize()
 		
 		NP:ForEachPlate(NP.InvalidCastCheck)
 		NP:ForEachPlate(NP.CheckFilter)
+		NP:ForEachPlate(NP.UpdateColoring)
 		
 		if(self.elapsed and self.elapsed > 0.2) then
 			NP:ForEachPlate(NP.UpdateThreat)
 			NP:ForEachPlate(NP.CheckUnit_Guid)
 			NP:ForEachPlate(NP.CheckRaidIcon)
 			NP:ForEachPlate(NP.Update_LevelText)
+			
 			self.elapsed = 0
 		else
 			self.elapsed = (self.elapsed or 0) + elapsed
@@ -180,10 +182,49 @@ function NP:HideObjects(frame)
 	end
 end
 
-function NP:Colorize(frame)
-	local r,g,b = frame.oldhp:GetStatusBarColor()
+function NP:Update_LevelText(frame)
+	local region = select(4, frame:GetRegions())
+	if region and region:GetObjectType() == 'FontString' then
+		frame.hp.oldlevel = select(4, frame:GetRegions())
+	end
+	
+	if frame.hp.oldlevel:IsShown() then
+		if self.db.showlevel == true then
+			local level, elite, mylevel = frame.hp.oldlevel:GetObjectType() == 'FontString' and tonumber(frame.hp.oldlevel:GetText()) or nil, frame.hp.elite:IsShown(), UnitLevel("player")
+			if frame.isBoss then
+				frame.hp.level:SetText("??")
+				frame.hp.level:SetTextColor(0.8, 0.05, 0)
+				frame.hp.level:Show()
+			elseif not elite and level == mylevel then
+				frame.hp.level:Hide()
+			elseif level then
+				frame.hp.level:SetText(level..(elite and "+" or ""))
+				frame.hp.level:SetTextColor(frame.hp.oldlevel:GetTextColor())
+				frame.hp.level:Show()
+			end
+			
+			frame.hp.oldlevel:SetWidth(000.1)
+		elseif frame.hp.level then
+			frame.hp.level:Hide()
+		end
+	elseif frame.isBoss and self.db.showlevel and frame.hp.level:GetText() ~= '??' then
+		frame.hp.level:SetText("??")
+		frame.hp.level:SetTextColor(0.8, 0.05, 0)
+		frame.hp.level:Show()	
+	end
+end
+
+function NP:NumberRound(...)
+	local temp = {}
+	for i = 1, select('#', ...) do
+		table.insert(temp, floor(select(i, ...)*100+.5)/100)
+	end
+	
+	return unpack(temp)
+end
+
+function NP:Colorize(frame, r, g, b)
 	for class, _ in pairs(RAID_CLASS_COLORS) do
-		local r, g, b = floor(r*100+.5)/100, floor(g*100+.5)/100, floor(b*100+.5)/100
 		if class == 'MONK' then
 			b = b - 0.01
 		end
@@ -191,6 +232,7 @@ function NP:Colorize(frame)
 			frame.hasClass = true
 			frame.isFriendly = false
 			frame.hp:SetStatusBarColor(RAID_CLASS_COLORS[class].r, RAID_CLASS_COLORS[class].g, RAID_CLASS_COLORS[class].b)
+			frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor = RAID_CLASS_COLORS[class].r, RAID_CLASS_COLORS[class].g, RAID_CLASS_COLORS[class].b
 			return
 		end
 	end
@@ -222,37 +264,15 @@ function NP:Colorize(frame)
 		frame.isFriendly = false
 	end
 	frame.hasClass = false
-	
+	frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor = r, g, b
 	frame.hp:SetStatusBarColor(r,g,b)
 end
 
-function NP:Update_LevelText(frame)
-	frame.hp.oldlevel = select(4, frame:GetRegions())
-
-	if frame.hp.oldlevel:IsShown() then
-		if self.db.showlevel == true then
-			local level, elite, mylevel = tonumber(frame.hp.oldlevel:GetText()), frame.hp.elite:IsShown(), UnitLevel("player")
-
-			if frame.isBoss then
-				frame.hp.level:SetText("??")
-				frame.hp.level:SetTextColor(0.8, 0.05, 0)
-				frame.hp.level:Show()
-			elseif not elite and level == mylevel then
-				frame.hp.level:Hide()
-			elseif level then
-				frame.hp.level:SetText(level..(elite and "+" or ""))
-				frame.hp.level:SetTextColor(frame.hp.oldlevel:GetTextColor())
-				frame.hp.level:Show()
-			end
-			
-			frame.hp.oldlevel:SetWidth(000.1)
-		elseif frame.hp.level then
-			frame.hp.level:Hide()
-		end
-	elseif frame.isBoss and self.db.showlevel and frame.hp.level:GetText() ~= '??' then
-		frame.hp.level:SetText("??")
-		frame.hp.level:SetTextColor(0.8, 0.05, 0)
-		frame.hp.level:Show()	
+function NP:UpdateColoring(frame)
+	local r, g, b = NP:NumberRound(frame.oldhp:GetStatusBarColor())
+	
+	if (r ~= frame.hp.rcolor or g ~= frame.hp.gcolor or b ~= frame.hp.bcolor) and (not InCombatLockdown() and self.db.enhancethreat) then
+		NP:Colorize(frame, r, g, b)
 	end
 end
 
@@ -271,10 +291,9 @@ function NP:HealthBar_OnShow(frame)
 		frame.hp.backdrop:SetPoint('TOPLEFT', -noscalemult*3, noscalemult*3)
 		frame.hp.backdrop:SetPoint('BOTTOMRIGHT', noscalemult*3, -noscalemult*3)	
 	end
-
-	self:Colorize(frame)
 	
-	frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor = frame.hp:GetStatusBarColor()
+	local r, g, b = NP:NumberRound(frame.oldhp:GetStatusBarColor())
+	NP:Colorize(frame, r, g, b)
 	frame.hp.hpbg:SetTexture(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor, 0.25)
 	
 	--Set the name text
@@ -358,11 +377,12 @@ function NP:SkinPlate(frame, nameFrame)
 	--F = frame
 
 	--for i=1, F:GetNumRegions() do r = select(i, F:GetRegions()); if r:GetObjectType() == 'Texture' then print(i, r:GetTexture()); elseif r:GetObjectType() == 'FontString' then print(i, r:GetText()); end end
-
+	
 	--Health Bar
 	if not frame.hp then
 		frame.oldhp = oldhp
 		frame.oldhp:HookScript('OnValueChanged', NP.ScanHealth)
+
 		local SHADOW_SPACING = E.PixelMode and (((noscalemult * 5) - UIParent:GetScale() / 3)) or 5
 		frame.hp = CreateFrame("Statusbar", nil, frame)
 		frame.hp:SetFrameLevel(oldhp:GetFrameLevel() + 1)
@@ -385,6 +405,13 @@ function NP:SkinPlate(frame, nameFrame)
 	frame.hp:SetStatusBarTexture(E["media"].normTex)
 	self:SetVirtualBackdrop(frame.hp, unpack(E["media"].backdropcolor))
 	
+	if not frame.overlay then
+		overlay:SetTexture(1, 1, 1, 0.35)
+		overlay:SetParent(frame.hp)
+		overlay:SetAllPoints()
+		frame.overlay = overlay
+	end	
+	
 	-- threat updates
 	if not frame.threat then	
 		frame.threat = threat
@@ -399,7 +426,9 @@ function NP:SkinPlate(frame, nameFrame)
 		frame.hp.elite = elite
 	end
 	frame.hp.level:FontTemplate(font, self.db.fontSize, self.db.fontOutline)
-	frame.hp.level:SetText(oldlevel:GetText())
+	if oldlevel:GetObjectType() == 'FontString' then
+		frame.hp.level:SetText(oldlevel:GetText())
+	end
 	
 	--Name Text
 	if not frame.hp.name then
@@ -716,15 +745,12 @@ end
 
 --Scan all visible nameplate for a known unit.
 function NP:CheckUnit_Guid(frame, ...)
-	local r, g, b = frame.hp.oldname:GetTextColor()
-	b = floor(b*100+.5)/100
-
 	if UnitExists("target") and frame:GetParent():GetAlpha() == 1 and UnitName("target") == frame.hp.name:GetText() then
 		frame.guid = UnitGUID("target")
 		frame.unit = "target"
 		NP:UpdateAurasByUnitID("target")
 		frame.hp.shadow:SetAlpha(1)
-	elseif b == 0 and UnitExists("mouseover") and UnitName("mouseover") == frame.hp.name:GetText() then
+	elseif frame.overlay:IsShown() and UnitExists("mouseover") and UnitName("mouseover") == frame.hp.name:GetText() then
 		frame.guid = UnitGUID("mouseover")
 		frame.unit = "mouseover"
 		NP:UpdateAurasByUnitID("mouseover")
