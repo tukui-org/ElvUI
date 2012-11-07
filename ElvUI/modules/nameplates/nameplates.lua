@@ -198,7 +198,7 @@ function NP:Colorize(frame)
 	frame.isPlayer = nil
 	
 	local color
-	print(r + g + b, (r + b + b) > 2)
+	
 	if (r + b + b) > 2 then -- tapped
 		r,g,b = 0.6, 0.6, 0.6
 		frame.isFriendly = false	
@@ -256,12 +256,9 @@ function NP:Update_LevelText(frame)
 	end
 end
 
-function NP:HealthBar_OnShow(self, frame)
-	if self.GetParent then frame = self; self = NP end
+function NP:HealthBar_OnShow(frame)
 	frame = frame:GetParent()
-	
 	local noscalemult = E.mult * UIParent:GetScale()
-	local r, g, b = frame.hp:GetStatusBarColor()
 	--Have to reposition this here so it doesnt resize after being hidden
 	frame.hp:ClearAllPoints()
 	frame.hp:Size(self.db.width, self.db.height)	
@@ -279,10 +276,6 @@ function NP:HealthBar_OnShow(self, frame)
 	
 	frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor = frame.hp:GetStatusBarColor()
 	frame.hp.hpbg:SetTexture(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor, 0.25)
-	
-	--Position Overlay
-	frame.overlay:ClearAllPoints()
-	frame.overlay:SetAllPoints(frame.hp)
 	
 	--Set the name text
 	frame.hp.name:SetText(frame.hp.oldname:GetText())	
@@ -306,7 +299,6 @@ end
 function NP:OnHide(frame)
 	frame.hp:SetStatusBarColor(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor)
 	frame.hp.name:SetTextColor(1, 1, 1)
-	frame.overlay:Hide()
 	frame.cb:Hide()
 	frame.unit = nil
 	frame.isMarked = nil
@@ -425,12 +417,6 @@ function NP:SkinPlate(frame, nameFrame)
 	end
 	frame.hp.value:FontTemplate(font, self.db.fontSize, self.db.fontOutline)
 	
-	--Overlay
-	local overlay = frame.hp:CreateTexture(nil, 'HIGHLIGHT')
-	overlay:SetAllPoints(frame.hp)
-	overlay:SetTexture(1,1,1,0.15)
-	frame.overlay = overlay
-	
 	--Cast Bar
 	if not frame.cb then
 		frame.oldcb = oldcb
@@ -533,7 +519,7 @@ function NP:SkinPlate(frame, nameFrame)
 	self:QueueObject(frame, bossicon)
 	self:QueueObject(frame, elite)
 	
-	self:HealthBar_OnShow(frame.hp)
+	self.HealthBar_OnShow(self, frame.hp)
 	self:CastBar_OnShow(frame.cb)
 	if not self.hooks[frame] then
 		self:HookScript(frame.cb, 'OnShow', 'CastBar_OnShow')
@@ -730,8 +716,9 @@ end
 
 --Scan all visible nameplate for a known unit.
 function NP:CheckUnit_Guid(frame, ...)
-	local _, _, b = frame.hp.oldname:GetTextColor()
-	
+	local r, g, b = frame.hp.oldname:GetTextColor()
+	b = floor(b*100+.5)/100
+
 	if UnitExists("target") and frame:GetParent():GetAlpha() == 1 and UnitName("target") == frame.hp.name:GetText() then
 		frame.guid = UnitGUID("target")
 		frame.unit = "target"
@@ -752,12 +739,9 @@ function NP:TogglePlate(frame, hide)
 	if hide == true then
 		frame.hp:Hide()
 		frame.cb:Hide()
-		frame.overlay:Hide()
-		frame.overlay:SetTexture(nil)
 		frame.hp.oldlevel:Hide()	
 	else
 		frame.hp:Show()
-		frame.overlay:SetTexture(1, 1, 1, 0.15)	
 	end
 end
 
@@ -814,25 +798,6 @@ function NP:CheckBGHealers()
 	end
 end
 
-function NP:CheckArenaHealers()
-	if not self.db.markBGHealers then return; end
-	local inInstance, instanceType = IsInInstance()
-	if inInstance and instanceType == 'arena' then
-		local numOpps = GetNumArenaOpponentSpecs()
-		for i=1, numOpps do
-			local specID = GetArenaOpponentSpec(i)
-			local unit = 'arena'..i
-			if specID and specID > 0 then
-				local _, talentSpec = GetSpecializationInfoByID(specID);
-				local unitName = UnitName(unit)
-				if unitName and self.Healers[talentSpec] then
-					self.BattleGroundHealers[unitName] = talentSpec
-				end
-			end	
-		end
-	end
-end
-
 function NP:PLAYER_ENTERING_WORLD()
 	if InCombatLockdown() and self.db.combat then 
 		SetCVar("nameplateShowEnemies", 1) 
@@ -871,7 +836,6 @@ function NP:UpdateAllPlates()
 	self:RegisterEvent('PLAYER_TARGET_CHANGED', 'UpdateCastInfo')
 	self:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
-	self:RegisterEvent('ARENA_OPPONENT_UPDATE', 'CheckArenaHealers')
 	self:RegisterEvent('PLAYER_REGEN_ENABLED')
 	self:RegisterEvent('PLAYER_REGEN_DISABLED')
 	self:RegisterEvent('UNIT_TARGET')

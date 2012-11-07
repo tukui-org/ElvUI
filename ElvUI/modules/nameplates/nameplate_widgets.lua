@@ -252,7 +252,7 @@ end
 
 function NP:SearchNameplateByGUID(guid)
 	for frame, _ in pairs(NP.Handled) do
-		frame = _G[frame]
+		frame = _G[frame]:GetChildren()
 		if frame and frame:IsShown() and frame.guid == guid then
 			return frame
 		end
@@ -263,7 +263,7 @@ function NP:SearchNameplateByName(sourceName)
 	if not sourceName then return; end
 	local SearchFor = strsplit("-", sourceName)
 	for frame, _ in pairs(NP.Handled) do
-		frame = _G[frame]
+		frame = _G[frame]:GetChildren()
 		if frame and frame:IsShown() and frame.hp.name:GetText() == SearchFor and frame.hasClass then
 			return frame
 		end
@@ -280,7 +280,7 @@ function NP:SearchNameplateByIcon(UnitFlags)
 	end	
 
 	for frame, _ in pairs(NP.Handled) do
-		frame = _G[frame]
+		frame = _G[frame]:GetChildren()
 		if frame and frame:IsShown() and frame.isMarked and (frame.raidIconType == UnitIcon) then
 			return frame
 		end
@@ -290,7 +290,7 @@ end
 function NP:SearchNameplateByIconName(raidicon)
 	local frame
 	for frame, _ in pairs(NP.Handled) do
-		frame = _G[frame]
+		frame = _G[frame]:GetChildren()
 		if frame and frame:IsShown() and frame.isMarked and (frame.raidIconType == raidIcon) then
 			return frame
 		end
