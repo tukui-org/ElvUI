@@ -292,19 +292,19 @@ function E:SetupTheme(theme, noDisplayMsg, noPopup)
 		E.db.unitframe.colors.castColor = E:GetColor(classColor.r, classColor.b, classColor.g)
 	else
 		E.db.general.bottomPanel = false;
-		E.db.general.bordercolor = E:GetColor(.1, .1, .1)
-		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
-		E.db.general.backdropfadecolor = E:GetColor(.054, .054, .054, .8)
-		E.db.unitframe.colors.auraBarBuff = E:GetColor(.1, .1, .1)
+		E.db.general.bordercolor = E:GetColor(.2, .2, .2)
+		E.db.general.backdropcolor = E:GetColor(.16, .16, .16)
+		E.db.general.backdropfadecolor = E:GetColor(.10, .10, .10, .9)
+		E.db.unitframe.colors.auraBarBuff = E:GetColor(.2, .2, .2)
 		E.db.unitframe.colors.healthclass = false
-		E.db.unitframe.colors.health = E:GetColor(.1, .1, .1)
-		E.db.unitframe.colors.castColor = E:GetColor(.1, .1, .1)
+		E.db.unitframe.colors.health = E:GetColor(.267, .267, .267)
+		E.db.unitframe.colors.castColor = E:GetColor(.66, .66, .66)
 	end
 	
 	--Value Color
-	if theme == "class" then
+	if theme == "class" or theme == "default" then
 		E.db.general.valuecolor = E:GetColor(classColor.r, classColor.b, classColor.g)
-	elseif theme == "classic" or theme == "default" then
+	elseif theme == "classic" then
 		E.db.general.valuecolor = E:GetColor(.09, .819, .513)
 	end
 	
