@@ -158,7 +158,7 @@ function NP:ForEachPlate(functionToRun, ...)
 	for frame, _ in pairs(NP.Handled) do
 		frame = _G[frame]
 		if frame and frame:IsShown() then
-			functionToRun(NP, frame, ...)
+			functionToRun(NP, select(1,frame:GetChildren()), ...)
 		end
 	end
 end
@@ -198,7 +198,11 @@ function NP:Colorize(frame)
 	frame.isPlayer = nil
 	
 	local color
-	if g+b == 0 then -- hostile
+	print(r + g + b, (r + b + b) > 2)
+	if (r + b + b) > 2 then -- tapped
+		r,g,b = 0.6, 0.6, 0.6
+		frame.isFriendly = false	
+	elseif g+b == 0 then -- hostile
 		color = self.db.enemy
 		r,g,b = color.r, color.g, color.b
 		frame.isFriendly = false
@@ -223,7 +227,7 @@ function NP:Colorize(frame)
 end
 
 function NP:Update_LevelText(frame)
-	frame.hp.oldlevel = select(5, frame:GetRegions())
+	frame.hp.oldlevel = select(4, frame:GetRegions())
 
 	if frame.hp.oldlevel:IsShown() then
 		if self.db.showlevel == true then
@@ -327,13 +331,42 @@ function NP:OnHide(frame)
 	end	
 end
 
-function NP:SkinPlate(frame)
+--local threat, hpborder, threat, oldlevel, _, raidicon, bossicon = frame:GetRegions()
+--local oldname = nameFrame:GetRegions()
+--[[
+1 nil
+2 Interface\Tooltips\Nameplate-Border
+3 nil
+4 Raider's Training Dummy
+5 nil
+6 Interface\TargetingFrame\UI-TargetingFrame-Skull
+7 Interface\TargetingFrame\UI-RaidTargetingIcons
+8 Interface\Tooltips\EliteNameplateIcon
+1 nil
+--local threat, hpborder, overlay, oldname, oldlevel, bossicon, raidicon, elite = frame:GetRegions()
+
+1 Interface\TargetingFrame\UI-TargetingFrame-Flash
+2 Interface\Tooltips\Nameplate-Border
+3 Interface\Tooltips\Nameplate-Glow
+4 9
+5 Interface\TargetingFrame\UI-TargetingFrame-Skull
+6 Interface\AddOns\ElvUI\media\textures\raidicons
+7 Interface\Tooltips\EliteNameplateIcon
+8 Interface\AddOns\ElvUI\media\textures\healer
+
+]]
+function NP:SkinPlate(frame, nameFrame)
 	local oldhp, oldcb = frame:GetChildren()
-	local threat, hpborder, overlay, oldname, oldlevel, bossicon, raidicon, elite = frame:GetRegions()
+	
 	local _, cbborder, cbshield, cbicon = oldcb:GetRegions()
+	local threat, hpborder, overlay, oldlevel, bossicon, raidicon, elite = frame:GetRegions()
+	local oldname = nameFrame:GetRegions()
 	local font = LSM:Fetch("font", self.db.font)
 	local noscalemult = E.mult * UIParent:GetScale()
-	
+	--F = frame
+
+	--for i=1, F:GetNumRegions() do r = select(i, F:GetRegions()); if r:GetObjectType() == 'Texture' then print(i, r:GetTexture()); elseif r:GetObjectType() == 'FontString' then print(i, r:GetText()); end end
+
 	--Health Bar
 	if not frame.hp then
 		frame.oldhp = oldhp
@@ -393,7 +426,8 @@ function NP:SkinPlate(frame)
 	frame.hp.value:FontTemplate(font, self.db.fontSize, self.db.fontOutline)
 	
 	--Overlay
-	overlay.oldTexture = overlay:GetTexture()
+	local overlay = frame.hp:CreateTexture(nil, 'HIGHLIGHT')
+	overlay:SetAllPoints(frame.hp)
 	overlay:SetTexture(1,1,1,0.15)
 	frame.overlay = overlay
 	
@@ -509,7 +543,7 @@ function NP:SkinPlate(frame)
 		self:HookScript(frame, "OnHide", "OnHide")	
 	end
 	
-	NP.Handled[frame:GetName()] = true
+	NP.Handled[frame:GetParent():GetName()] = true
 end
 
 
@@ -696,12 +730,14 @@ end
 
 --Scan all visible nameplate for a known unit.
 function NP:CheckUnit_Guid(frame, ...)
-	if UnitExists("target") and frame:GetAlpha() == 1 and UnitName("target") == frame.hp.name:GetText() then
+	local _, _, b = frame.hp.oldname:GetTextColor()
+	
+	if UnitExists("target") and frame:GetParent():GetAlpha() == 1 and UnitName("target") == frame.hp.name:GetText() then
 		frame.guid = UnitGUID("target")
 		frame.unit = "target"
 		NP:UpdateAurasByUnitID("target")
 		frame.hp.shadow:SetAlpha(1)
-	elseif frame.overlay:IsShown() and UnitExists("mouseover") and UnitName("mouseover") == frame.hp.name:GetText() then
+	elseif b == 0 and UnitExists("mouseover") and UnitName("mouseover") == frame.hp.name:GetText() then
 		frame.guid = UnitGUID("mouseover")
 		frame.unit = "mouseover"
 		NP:UpdateAurasByUnitID("mouseover")
@@ -826,7 +862,7 @@ function NP:UpdateAllPlates()
 	if E.private["nameplate"].enable ~= true then return end
 	for frame, _ in pairs(self.Handled) do
 		frame = _G[frame]
-		self:SkinPlate(frame)
+		self:SkinPlate(frame:GetChildren())
 	end
 
 	self:RegisterEvent("GROUP_ROSTER_UPDATE", "UpdateRoster")
@@ -848,8 +884,8 @@ function NP:HookFrames(...)
 		local frame = select(index, ...)
 		local region = frame:GetRegions()
 		
-		if(not NP.Handled[frame:GetName()] and (frame:GetName() and frame:GetName():find("NamePlate%d")) and region and region:GetObjectType() == 'Texture') then
-			NP:SkinPlate(frame)
+		if(not NP.Handled[frame:GetName()] and (frame:GetName() and frame:GetName():find("NamePlate%d"))) then
+			NP:SkinPlate(frame:GetChildren())
 		end
 	end
 end
