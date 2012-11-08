@@ -759,6 +759,13 @@ function NP:CheckUnit_Guid(frame, ...)
 		frame.unit = nil
 		frame.hp.shadow:SetAlpha(0)
 	end	
+	--[[if not frame.test then
+		frame.test = frame:CreateFontString(nil, 'OVERLAY')
+		frame.test:Point('TOP', frame, 'TOP')
+		frame.test:FontTemplate()
+		
+	end
+	frame.test:SetText(frame.guid)]]
 end
 
 function NP:TogglePlate(frame, hide)
