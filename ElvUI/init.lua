@@ -73,7 +73,7 @@ function AddOn:OnInitialize()
 		end
 	end	
 	
-	if self.db.install_complete and not self.global.newThemePrompt and self.db.theme ~= 'pixelPerfect' then
+	if self.db.install_complete and (self.db.theme ~= 'pixelPerfect' and self.db.theme ~= nil) then
 		self.private.general.pixelPerfect = false;
 	end
 	
