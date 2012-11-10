@@ -333,11 +333,12 @@ function NP:SkinPlate(frame)
 	local _, cbborder, cbshield, cbicon = oldcb:GetRegions()
 	local font = LSM:Fetch("font", self.db.font)
 	local noscalemult = E.mult * UIParent:GetScale()
-	
+
 	--Health Bar
 	if not frame.hp then
 		frame.oldhp = oldhp
 		frame.oldhp:HookScript('OnValueChanged', NP.ScanHealth)
+
 		local SHADOW_SPACING = E.PixelMode and (((noscalemult * 5) - UIParent:GetScale() / 3)) or 5
 		frame.hp = CreateFrame("Statusbar", nil, frame)
 		frame.hp:SetFrameLevel(oldhp:GetFrameLevel() + 1)

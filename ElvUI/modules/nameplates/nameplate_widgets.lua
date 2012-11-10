@@ -253,6 +253,7 @@ end
 function NP:SearchNameplateByGUID(guid)
 	for frame, _ in pairs(NP.Handled) do
 		frame = _G[frame]
+
 		if frame and frame:IsShown() and frame.guid == guid then
 			return frame
 		end
@@ -398,7 +399,7 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, ...)
 	if event == 'SPELL_AURA_APPLIED' or event == 'SPELL_HEAL' or event == 'SPELL_DAMAGE' or event == 'SPELL_MISS' then
 		self.GUIDIgnoreCast[sourceGUID] = spellName;
 	end
-	
+
 	if event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REFRESH" then
 		local duration = NP:GetSpellDuration(spellid)
 		local texture = GetSpellTexture(spellid)
@@ -418,7 +419,7 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, ...)
 		end
 	
 		local FoundPlate = nil;
-
+		
 		if not (castTime > 0) then return end		
 		if bit.band(sourceFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) > 0 then 
 			if bit.band(sourceFlags, COMBATLOG_OBJECT_CONTROL_PLAYER) > 0 then 
