@@ -106,7 +106,6 @@ function AB:PositionAndSizeBarShapeShift()
 	end
 	
 	local button, lastButton, lastColumnButton;
-	local possibleButtons = {};
 	for i=1, NUM_STANCE_SLOTS do
 		button = _G["ElvUI_StanceBarButton"..i];
 		lastButton = _G["ElvUI_StanceBarButton"..i-1];
@@ -115,8 +114,6 @@ function AB:PositionAndSizeBarShapeShift()
 		button:ClearAllPoints();
 		button:Size(size);
 		
-		possibleButtons[((i * buttonsPerRow) + 1)] = true;
-
 		if self.db['stanceBar'].mouseover == true then
 			bar:SetAlpha(0);
 			if not self.hooks[bar] then
@@ -154,7 +151,7 @@ function AB:PositionAndSizeBarShapeShift()
 			end
 			
 			button:Point(point, bar, point, x, y);
-		elseif possibleButtons[i] then
+		elseif (i - 1) % buttonsPerRow == 0 then
 			local x = 0;
 			local y = -spacing;
 			local buttonPoint, anchorPoint = "TOP", "BOTTOM";

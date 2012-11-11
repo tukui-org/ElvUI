@@ -124,7 +124,6 @@ function AB:PositionAndSizeBarPet()
 	end
 	
 	local button, lastButton, lastColumnButton, autoCast; 
-	local possibleButtons = {};
 	for i=1, NUM_PET_ACTION_SLOTS do
 		button = _G["PetActionButton"..i];
 		lastButton = _G["PetActionButton"..i-1];
@@ -135,8 +134,7 @@ function AB:PositionAndSizeBarPet()
 		button:Size(size);
 		
 		autoCast:SetOutside(button, autoCastSize, autoCastSize)
-		
-		possibleButtons[((i * buttonsPerRow) + 1)] = true;
+
 		button:SetAttribute("showgrid", 1);
 
 		if self.db['barPet'].mouseover == true then
@@ -176,7 +174,7 @@ function AB:PositionAndSizeBarPet()
 			end
 
 			button:Point(point, bar, point, x, y);
-		elseif possibleButtons[i] then
+		elseif (i - 1) % buttonsPerRow == 0 then
 			local x = 0;
 			local y = -spacing;
 			local buttonPoint, anchorPoint = "TOP", "BOTTOM";
