@@ -480,6 +480,9 @@ function E:UpdateAll(ignoreInstall)
 	self.db = self.data.profile;
 	self.global = self.data.global;
 	
+	self.db.theme = nil;
+	self.db.install_complete = nil;	
+	
 	self:SetMoversPositions()
 	self:UpdateMedia()
 	
