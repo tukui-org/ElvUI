@@ -125,7 +125,7 @@ end
 
 --Basically check if another class border is being used on a class that doesn't match. And then return true if a match is found.
 local function CheckClassColor(r, g, b)
-	if E.db.theme ~= 'class' then return end
+	if E.private.theme ~= 'class' then return end
 	local matchFound = false;
 	for class, _ in pairs(RAID_CLASS_COLORS) do
 		if class ~= E.myclass then
@@ -533,7 +533,7 @@ function E:UpdateAll(ignoreInstall)
 	
 	E:GetModule('Auras'):UpdateAllHeaders()
 	
-	if self.db.install_complete == nil or (self.db.install_complete and type(self.db.install_complete) == 'boolean') or (self.db.install_complete and type(tonumber(self.db.install_complete)) == 'number' and tonumber(self.db.install_complete) <= 3.83) then
+	if self.private.install_complete == nil or (self.private.install_complete and type(self.private.install_complete) == 'boolean') or (self.private.install_complete and type(tonumber(self.private.install_complete)) == 'number' and tonumber(self.private.install_complete) <= 3.83) then
 		if not ignoreInstall then
 			self:Install()
 		end
@@ -768,9 +768,19 @@ function E:DBConversions()
 				self.db.unitframe.units[unit].castbar.interruptcolor = nil;
 			end
 		end
+	end
+	
+	if self.db.install_complete then
+		self.private.install_complete = self.db.install_complete;
+		self.db.install_complete = nil;
+	end
+	
+	if self.db.theme then
+		self.private.theme = self.db.theme;
+		self.db.theme = nil;
 	end	
 	
-	if self.db.install_complete and (self.db.theme ~= 'pixelPerfect' and self.db.theme ~= nil) then
+	if self.private.install_complete and (self.private.theme ~= 'pixelPerfect' and self.private.theme ~= nil) then
 		self.private.general.pixelPerfect = false;
 	end
 end
@@ -802,9 +812,9 @@ function E:Initialize()
 
 	self.initialized = true
 	
-	if self.db.install_complete == nil then
+	if self.private.install_complete == nil then
 		self:Install()
-	elseif (self.db.install_complete and type(self.db.install_complete) == 'boolean') or (self.db.install_complete and type(tonumber(self.db.install_complete)) == 'number' and tonumber(self.db.install_complete) <= 4.22) then
+	elseif (self.private.install_complete and type(self.private.install_complete) == 'boolean') or (self.private.install_complete and type(tonumber(self.private.install_complete)) == 'number' and tonumber(self.private.install_complete) <= 4.22) then
 		self:Install()
 		ElvUIInstallFrame.SetPage(7)
 		self:StaticPopup_Show('CONFIGAURA_SET')

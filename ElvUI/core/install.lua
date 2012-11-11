@@ -171,7 +171,7 @@ end
 
 function E:SetupTheme(theme, noDisplayMsg, noPopup)
 	local classColor = RAID_CLASS_COLORS[E.myclass]
-	E.db.theme = theme
+	E.private.theme = theme
 
 	if not noPopup and ((not E.PixelMode and theme == 'pixelPerfect') or (E.PixelMode and theme ~= 'pixelPerfect')) then
 		E:StaticPopup_Show('PIXELPERFECT_CHANGED')
@@ -389,8 +389,8 @@ function E:SetupResolution(noDataReset)
 		E.db.lowresolutionset = nil;
 	end
 	
-	if not noDataReset and E.db.theme then
-		E:SetupTheme(E.db.theme, true)
+	if not noDataReset and E.private.theme then
+		E:SetupTheme(E.private.theme, true)
 	end
 
 	E:UpdateAll(true)
@@ -557,8 +557,8 @@ function E:SetupLayout(layout, noDataReset)
 	
 	E.db.layoutSet = layout
 	
-	if not noDataReset and E.db.theme then
-		E:SetupTheme(E.db.theme, true)
+	if not noDataReset and E.private.theme then
+		E:SetupTheme(E.private.theme, true)
 	end	
 	
 	E:UpdateAll(true)
@@ -612,7 +612,7 @@ local function SetupAuras(style)
 end
 
 local function InstallComplete()
-	E.db.install_complete = E.version
+	E.private.install_complete = E.version
 	
 	if GetCVarBool("Sound_EnableMusic") then
 		StopMusic()

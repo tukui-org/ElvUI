@@ -18,7 +18,7 @@ function E:UpdateBlizzardFonts()
 	local _, editBoxFontSize, _, _, _, _, _, _, _, _ = GetChatWindowInfo(1)
 
 	UIDROPDOWNMENU_DEFAULT_TEXT_HEIGHT = 12
-	CHAT_FONT_HEIGHTS = {12, 13, 14, 15, 16, 17, 18, 19, 20}
+	CHAT_FONT_HEIGHTS = {8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 
 	UNIT_NAME_FONT     = NAMEFONT
 	NAMEPLATE_FONT     = NAMEFONT
