@@ -45,7 +45,7 @@ function AddOn:OnInitialize()
 	
 	self.db = table.copy(self.DF.profile, true);
 	self.global = table.copy(self.DF.global, true);
-	
+	local dbProfileKey
 	if ElvData then
 		if ElvData.global then
 			self:CopyTable(self.global, ElvData.global)
@@ -57,6 +57,7 @@ function AddOn:OnInitialize()
 		end
 		
 		if profileKey and ElvData.profiles and ElvData.profiles[profileKey] then
+			dbProfileKey = profileKey
 			self:CopyTable(self.db, ElvData.profiles[profileKey])
 		end
 	end
@@ -79,11 +80,23 @@ function AddOn:OnInitialize()
 	end
 	
 	if self.db.theme then
-		self.private.theme = self.db.theme;
+		if ElvData.profileKeys and dbProfileKey then
+			for name, key in pairs(ElvData.profileKeys) do
+				if key == dbProfileKey then
+					if ElvPrivateData.profiles and ElvPrivateData.profiles[name] then
+						ElvPrivateData.profiles[name].theme = self.db.theme
+					end
+				end
+			end
+		end
+		self.private.theme = self.db.theme
 		self.db.theme = nil;
-	end		
+	end	
 	
-	if self.private.install_complete and (self.private.theme ~= 'pixelPerfect' and self.private.theme ~= nil) then
+	
+	if self.private.theme == 'pixelPerfect' then
+		self.private.general.pixelPerfect = true;
+	elseif self.private.install_complete and (self.private.theme ~= 'pixelPerfect' and self.private.theme ~= nil) then
 		self.private.general.pixelPerfect = false;
 	end
 	

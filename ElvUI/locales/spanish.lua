@@ -5,7 +5,7 @@ if not L then return end
 
 
 --TEMP
-L["A taint has occured that is preventing you from using your talents/glyphs, this can happen if you've inspected someone. Unfortionatly theres nothing we can do to fix it, please reload your ui and try again."] = "Ha ocurrido un problema que no te permite cambiar tus talentos y glifos, esto puede suceder si has inspeccionado a alguien. Desgraciadamente no podemos hacer nada para arreglarlo, por favor recarga tu interfaz y vuelve a intentarlo."
+L["A taint has occured that is preventing you from using your talents/glyphs, this can happen if you've inspected someone. Unfortunately theres nothing we can do to fix it, please reload your ui and try again."] = "Ha ocurrido un problema que no te permite cambiar tus talentos y glifos, esto puede suceder si has inspeccionado a alguien. Desgraciadamente no podemos hacer nada para arreglarlo, por favor recarga tu interfaz y vuelve a intentarlo."
 
 --ActionBars
 L[" |cff00ff00bound to |r"] = " |cff00ff00ligado(a) a |r"

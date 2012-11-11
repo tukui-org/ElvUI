@@ -4,7 +4,7 @@ E.PopupDialogs = {};
 E.StaticPopup_DisplayedFrames = {};
 
 E.PopupDialogs['NEW_THEME'] = {
-	text = L['A new theme called Pixel Perfect has been added for ElvUI! This theme will increase overall performance and provides a cleaner appearance to all of ElvUI. Unfortionatly to apply this theme it will require some settings getting reset. Would you like to try the Pixel Perfect theme?'],
+	text = L['A new theme called Pixel Perfect has been added for ElvUI! This theme will increase overall performance and provides a cleaner appearance to all of ElvUI. Unfortunately to apply this theme it will require some settings getting reset. Would you like to try the Pixel Perfect theme?'],
 	OnAccept = function() 
 		E:Install()
 		ElvUIInstallFrame.SetPage(4); 
@@ -61,7 +61,7 @@ E.PopupDialogs['CONFIGAURA_SET'] = {
 }
 
 E.PopupDialogs['TALENT_TAINT'] = {
-	text = L["A taint has occured that is preventing you from using your talents/glyphs, this can happen if you've inspected someone. Unfortionatly theres nothing we can do to fix it, please reload your ui and try again."],
+	text = L["A taint has occured that is preventing you from using your talents/glyphs, this can happen if you've inspected someone. Unfortunately theres nothing we can do to fix it, please reload your ui and try again."],
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	OnAccept = function() ReloadUI(); end,

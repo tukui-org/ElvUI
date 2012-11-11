@@ -783,7 +783,10 @@ function E:DBConversions()
 		self.db.theme = nil;
 	end	
 	
-	if self.private.install_complete and (self.private.theme ~= 'pixelPerfect' and self.private.theme ~= nil) then
+	
+	if self.private.theme == 'pixelPerfect' then
+		self.private.general.pixelPerfect = true;
+	elseif self.private.install_complete and (self.private.theme ~= 'pixelPerfect' and self.private.theme ~= nil) then
 		self.private.general.pixelPerfect = false;
 	end
 end
