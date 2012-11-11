@@ -416,7 +416,7 @@ function UF:PostCastStart(unit, name, rank, castid)
 		if UnitCanAttack("player", unit) then
 			self:SetStatusBarColor(unpack(ElvUF.colors.castNoInterrupt))
 		else
-			if E.db.theme == 'class' then
+			if E.private.theme == 'class' then
 				local color = RAID_CLASS_COLORS[E.myclass]
 				self:SetStatusBarColor(color.r, color.g, color.b)
 			else
@@ -424,7 +424,7 @@ function UF:PostCastStart(unit, name, rank, castid)
 			end					
 		end
 	else
-		if E.db.theme == 'class' then
+		if E.private.theme == 'class' then
 			local color = RAID_CLASS_COLORS[E.myclass]
 			self:SetStatusBarColor(color.r, color.g, color.b)
 		else
