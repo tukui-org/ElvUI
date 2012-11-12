@@ -193,9 +193,9 @@ function E:SetupTheme(theme, noDisplayMsg, noPopup)
 	
 	--Set colors
 	if theme == 'pixelPerfect' then
-		E.global.newThemePrompt = true;
 		E.private.general.pixelPerfect = true;
-		E.db.general.bordercolor = E:GetColor(0, 0, 0)
+		E.db.general.bottomPanel = true;
+		--E.db.general.bordercolor = E:GetColor(0, 0, 0)
 		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
 		E.db.general.backdropfadecolor = E:GetColor(.06, .06, .06, .8)
 		
@@ -203,50 +203,6 @@ function E:SetupTheme(theme, noDisplayMsg, noPopup)
 		E.db.unitframe.colors.health = E:GetColor(.31, .31, .31)
 		E.db.unitframe.colors.auraBarBuff = E:GetColor(.31, .31, .31)
 		E.db.unitframe.colors.castColor = E:GetColor(.31, .31, .31)	
-
-		E.db.general.bottomPanel = true;
-		E.db.actionbar.bar1.buttonspacing = 2;
-		E.db.actionbar.bar2.buttonspacing = 2;
-		E.db.actionbar.bar3.buttonspacing = 2;
-		E.db.actionbar.bar4.buttonspacing = 2;
-		E.db.actionbar.bar5.buttonspacing = 2;
-		E.db.actionbar.stanceBar.buttonspacing = 2;
-		E.db.actionbar.barPet.buttonspacing = 2;
-		
-		E.db.actionbar.bar1.backdrop = false;
-		E.db.actionbar.bar2.backdrop = false;
-		E.db.actionbar.bar5.backdrop = false;
-		E.db.actionbar.bar3.backdrop = false;
-		
-		E.db.actionbar.bar1.buttonsize = 32;
-		E.db.actionbar.bar2.buttonsize = 32;
-		E.db.actionbar.bar3.buttonsize = 32;
-		E.db.actionbar.bar4.buttonsize = 32;
-		E.db.actionbar.bar5.buttonsize = 32;
-		E.db.actionbar.stanceBar.buttonsize = 32;
-		E.db.actionbar.barPet.buttonsize = 32;
-		
-		E.db.unitframe.units.player.classbar.fill = 'fill';
-		E.db.unitframe.units.target.combobar.fill = 'fill';
-		
-		E.db.nameplate.fontSize = 7;
-		E.db.nameplate.fontOutline = 'MONOCHROMEOUTLINE';
-		E.db.nameplate.font = 'ElvUI Pixel';
-		E.db.nameplate.height = 7;
-		E.db.nameplate.width = 112;
-		
-		E.db.bags.bagSize = 34;
-		E.db.bags.bankSize = 34;
-		E.private.auras.size = 30;
-		
-		if not noDisplayMsg or noPopup then
-			if not E.db.movers then E.db.movers = {}; end
-			E.db.movers["ElvUF_PetMover"] = "BOTTOMElvUIParentBOTTOM0104"
-			E.db.movers["AurasMover"] = "TOPRIGHTElvUIParentTOPRIGHT-221-5"
-			E.db.movers["ElvUF_TargetTargetMover"] = "BOTTOMElvUIParentBOTTOM064"
-			E.db.movers["ElvUF_PlayerMover"] = "BOTTOMElvUIParentBOTTOM-27865"
-			E.db.movers["ElvUF_TargetMover"] = "BOTTOMElvUIParentBOTTOM27864"		
-		end
 	elseif theme == "classic" then
 		E.db.general.bottomPanel = false;
 		E.db.general.bordercolor = E:GetColor(.31, .31, .31)

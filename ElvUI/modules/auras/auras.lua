@@ -204,16 +204,16 @@ function A:PostDrag(position)
 	end
 	
 	if string.find(position, "LEFT") then
-		ElvUIPlayerBuffs:Point("TOPLEFT", AurasHolder, "TOPLEFT", E.Border, -E.Border)
+		ElvUIPlayerBuffs:Point("TOPLEFT", AurasHolder, "TOPLEFT", 2, -2)
 		
 		if ElvUIPlayerDebuffs then
-			ElvUIPlayerDebuffs:Point("BOTTOMLEFT", AurasHolder, "BOTTOMLEFT", E.Border, E.Border)
+			ElvUIPlayerDebuffs:Point("BOTTOMLEFT", AurasHolder, "BOTTOMLEFT", 2, 2)
 		end
 	else
-		ElvUIPlayerBuffs:Point("TOPRIGHT", AurasHolder, "TOPRIGHT", -E.Border, -E.Border)
+		ElvUIPlayerBuffs:Point("TOPRIGHT", AurasHolder, "TOPRIGHT", -2, -2)
 		
 		if ElvUIPlayerDebuffs then
-			ElvUIPlayerDebuffs:Point("BOTTOMRIGHT", AurasHolder, "BOTTOMRIGHT", -E.Border, E.Border)	
+			ElvUIPlayerDebuffs:Point("BOTTOMRIGHT", AurasHolder, "BOTTOMRIGHT", -2, 2)	
 		end
 	end
 end
@@ -270,7 +270,7 @@ function A:Initialize()
 	if E.private.auras.enable ~= true then TemporaryEnchantFrame:Kill(); return end
 	
 	local holder = CreateFrame("Frame", "AurasHolder", E.UIParent)
-	holder:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", -8, (E.PixelMode and 6 or 2))
+	holder:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", -8, 2)
 	holder:Width(456)
 	holder:Height(E.MinimapHeight)
 	

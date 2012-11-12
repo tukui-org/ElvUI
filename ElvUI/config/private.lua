@@ -29,7 +29,7 @@ V["nameplate"] = {
 
 V['auras'] = {
 	['enable'] = true,
-	['size'] = 26,
+	['size'] = 30,
 }
 
 V['chat'] = {

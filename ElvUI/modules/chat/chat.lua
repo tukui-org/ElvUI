@@ -247,7 +247,7 @@ function CH:StyleChat(frame)
 		end
 	end)
 	
-	for i, text in pairs(ElvCharacterData.ChatEditHistory) do
+	for i, text in pairs(ElvCharacterDB.ChatEditHistory) do
 		editbox:AddHistoryLine(text)
 	end	
 	
@@ -958,15 +958,15 @@ function CH:ChatEdit_AddHistory(editBox, line)
 	if line:find("/rl") then return; end
 	
 	if ( strlen(line) > 0 ) then
-		for i, text in pairs(ElvCharacterData.ChatEditHistory) do
+		for i, text in pairs(ElvCharacterDB.ChatEditHistory) do
 			if text == line then
 				return
 			end
 		end
 		
-		table.insert(ElvCharacterData.ChatEditHistory, #ElvCharacterData.ChatEditHistory + 1, line)
-		if #ElvCharacterData.ChatEditHistory > 5 then
-			table.remove(ElvCharacterData.ChatEditHistory, 1)
+		table.insert(ElvCharacterDB.ChatEditHistory, #ElvCharacterDB.ChatEditHistory + 1, line)
+		if #ElvCharacterDB.ChatEditHistory > 5 then
+			table.remove(ElvCharacterDB.ChatEditHistory, 1)
 		end
 	end
 end
@@ -1008,7 +1008,7 @@ end
 
 function CH:DisplayChatHistory()	
 	local temp, data = {}
-	for id, _ in pairs(ElvCharacterData.ChatHistory) do
+	for id, _ in pairs(ElvCharacterDB.ChatHistory) do
 		table.insert(temp, tonumber(id))
 	end
 	
@@ -1017,7 +1017,7 @@ function CH:DisplayChatHistory()
 	end)
 	
 	for i = 1, #temp do
-		data = ElvCharacterData.ChatHistory[tostring(temp[i])]
+		data = ElvCharacterDB.ChatHistory[tostring(temp[i])]
 
 		if type(data) == "table" then
 			CH.timeOverride = temp[i]
@@ -1048,10 +1048,10 @@ function CH:SaveChatHistory(event, ...)
 	if #temp > 0 then
 	  temp[20] = event
 	  local timeForMessage = GetTimeForSavedMessage()
-	  ElvCharacterData.ChatHistory[timeForMessage] = temp
+	  ElvCharacterDB.ChatHistory[timeForMessage] = temp
 	  
 		local c, k = 0
-		for id, data in pairs(ElvCharacterData.ChatHistory) do
+		for id, data in pairs(ElvCharacterDB.ChatHistory) do
 			c = c + 1
 			if (not k) or k > id then
 				k = id
@@ -1059,7 +1059,7 @@ function CH:SaveChatHistory(event, ...)
 		end
 		
 		if c > 128 then
-			ElvCharacterData.ChatHistory[k] = nil
+			ElvCharacterDB.ChatHistory[k] = nil
 		end	  
 	end
 end
@@ -1073,12 +1073,12 @@ function CH:Initialize()
 		ChatFrame_SystemEventHandler(DEFAULT_CHAT_FRAME, "GUILD_MOTD", msg)
 		return 
 	end
-	if not ElvCharacterData.ChatEditHistory then
-		ElvCharacterData.ChatEditHistory = {};
+	if not ElvCharacterDB.ChatEditHistory then
+		ElvCharacterDB.ChatEditHistory = {};
 	end
 	
-	if not ElvCharacterData.ChatHistory or not self.db.chatHistory then
-		ElvCharacterData.ChatHistory = {};
+	if not ElvCharacterDB.ChatHistory or not self.db.chatHistory then
+		ElvCharacterDB.ChatHistory = {};
 	end
 	
 	self:UpdateChatKeywords()

@@ -478,7 +478,7 @@ E.Options.args.media = {
 					type = "color",
 					order = 1,
 					name = L["Border Color"],
-					desc = L["Main border color of the UI."],
+					desc = L["Main border color of the UI. |cffFF0000This is disabled if you are using the pixel perfect theme.|r"],
 					hasAlpha = false,
 					get = function(info)
 						local t = E.db.general[ info[#info] ]
@@ -490,7 +490,8 @@ E.Options.args.media = {
 						t.r, t.g, t.b = r, g, b
 						E:UpdateMedia()
 						E:UpdateBorderColors()
-					end,					
+					end,	
+					disabled = function() return E.PixelMode end,
 				},
 				backdropcolor = {
 					type = "color",
