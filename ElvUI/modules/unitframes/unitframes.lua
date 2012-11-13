@@ -728,7 +728,7 @@ function UF:MergeUnitSettings(fromUnit, toUnit)
 		E:Print(L['You cannot copy settings from the same unit.'])
 	end
 	
-	E:SetupTheme(E.db.theme, true)
+	E:SetupTheme(E.private.theme, true)
 	self:Update_AllFrames()
 end
 
