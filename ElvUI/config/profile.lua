@@ -22,8 +22,8 @@ P['general'] = {
 	["font"] = "Friz Quadrata TT",
 
 	["bordercolor"] = { r = .20,g = .20,b = .20 },
-	["backdropcolor"] = { r = .13,g = .13,b = .13 },
-	["backdropfadecolor"] = { r = .10,g = .10,b = .10, a = 0.9 },
+	["backdropcolor"] = { r = .16,g = .16,b = .16 },
+	["backdropfadecolor"] = { r = .10,g = .10,b = .10, a = 0.8 },
 	["valuecolor"] = {r = valuer,g = valueg,b = valueb},
 
 	['mapAlpha'] = 1,

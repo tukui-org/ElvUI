@@ -273,7 +273,7 @@ function E:SetupTheme(theme, noDisplayMsg, noPopup)
 		E.db.general.bottomPanel = false;
 		E.db.general.bordercolor = E:GetColor(.2, .2, .2)
 		E.db.general.backdropcolor = E:GetColor(.16, .16, .16)
-		E.db.general.backdropfadecolor = E:GetColor(.10, .10, .10, .9)
+		E.db.general.backdropfadecolor = E:GetColor(.10, .10, .10, .8)
 		E.db.unitframe.colors.auraBarBuff = E:GetColor(.2, .2, .2)
 		E.db.unitframe.colors.healthclass = false
 		E.db.unitframe.colors.health = E:GetColor(.267, .267, .267)
