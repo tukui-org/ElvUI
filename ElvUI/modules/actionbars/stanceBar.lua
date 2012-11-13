@@ -230,7 +230,7 @@ end
 function AB:CreateBarShapeShift()
 	bar:CreateBackdrop('Default');
 	bar.backdrop:SetAllPoints();
-	bar:Point('TOPLEFT', LeftChatPanel, 'TOPRIGHT', 2, 4);
+	bar:Point('TOPLEFT', LeftChatPanel, 'TOPRIGHT', 2, (E.PixelMode and 2 or 4));
 	bar.buttons = {};
 	bar:SetAttribute("_onstate-show", [[		
 		if newstate == "hide" then

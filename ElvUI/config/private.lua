@@ -10,7 +10,7 @@ V['general'] = {
 	["dmgfont"] = "ElvUI Combat",
 	["namefont"] = "Friz Quadrata TT",
 	['bubbles'] = true,
-	['pixelPerfect'] = false,
+	['pixelPerfect'] = true,
 	["raidIconStyle"] = "classic",
 	
 	['minimap'] = {

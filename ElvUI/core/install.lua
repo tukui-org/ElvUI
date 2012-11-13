@@ -228,7 +228,7 @@ function E:SetupTheme(theme, noDisplayMsg, noPopup)
 		E.db.unitframe.colors.auraBarBuff = E:GetColor(.31, .31, .31)
 		E.db.unitframe.colors.castColor = E:GetColor(.31, .31, .31)	
 
-		E.db.general.bottomPanel = true;
+		E.db.general.bottomPanel = false;
 		E.db.actionbar.bar1.buttonspacing = 2;
 		E.db.actionbar.bar2.buttonspacing = 2;
 		E.db.actionbar.bar3.buttonspacing = 2;
@@ -236,11 +236,6 @@ function E:SetupTheme(theme, noDisplayMsg, noPopup)
 		E.db.actionbar.bar5.buttonspacing = 2;
 		E.db.actionbar.stanceBar.buttonspacing = 2;
 		E.db.actionbar.barPet.buttonspacing = 2;
-		
-		E.db.actionbar.bar1.backdrop = false;
-		E.db.actionbar.bar2.backdrop = false;
-		E.db.actionbar.bar5.backdrop = false;
-		E.db.actionbar.bar3.backdrop = false;
 		
 		E.db.actionbar.bar1.buttonsize = 32;
 		E.db.actionbar.bar2.buttonsize = 32;
@@ -250,27 +245,11 @@ function E:SetupTheme(theme, noDisplayMsg, noPopup)
 		E.db.actionbar.stanceBar.buttonsize = 32;
 		E.db.actionbar.barPet.buttonsize = 32;
 		
-		E.db.unitframe.units.player.classbar.fill = 'fill';
-		E.db.unitframe.units.target.combobar.fill = 'fill';
-		
-		E.db.nameplate.fontSize = 7;
-		E.db.nameplate.fontOutline = 'MONOCHROMEOUTLINE';
-		E.db.nameplate.font = 'ElvUI Pixel';
-		E.db.nameplate.height = 7;
-		E.db.nameplate.width = 112;
-		
-		E.db.bags.bagSize = 34;
-		E.db.bags.bankSize = 34;
+		E.db.bags.bagSize = 32;
+		E.db.bags.bankSize = 32;
+		E.db.bags.xOffset = -3;
 		E.private.auras.size = 30;
-		
-		if not noDisplayMsg or noPopup then
-			if not E.db.movers then E.db.movers = {}; end
-			E.db.movers["ElvUF_PetMover"] = "BOTTOMElvUIParentBOTTOM0104"
-			E.db.movers["AurasMover"] = "TOPRIGHTElvUIParentTOPRIGHT-221-5"
-			E.db.movers["ElvUF_TargetTargetMover"] = "BOTTOMElvUIParentBOTTOM064"
-			E.db.movers["ElvUF_PlayerMover"] = "BOTTOMElvUIParentBOTTOM-27865"
-			E.db.movers["ElvUF_TargetMover"] = "BOTTOMElvUIParentBOTTOM27864"		
-		end
+
 	elseif theme == "classic" then
 		E.db.general.bottomPanel = false;
 		E.db.general.bordercolor = E:GetColor(.31, .31, .31)
@@ -327,84 +306,12 @@ function E:SetupResolution(noDataReset)
 		E:ResetMovers('')
 	end
 	
-	if self == 'low' then
-		if not E.db.movers then E.db.movers = {}; end
-		if not noDataReset then
-			E.db.chat.panelWidth = 400
-			E.db.chat.panelHeight = 180
-			
-			E:CopyTable(E.db.actionbar, P.actionbar)
-					
-			E.db.actionbar.bar1.heightMult = 2;
-			E.db.actionbar.bar2.enabled = true;
-			E.db.actionbar.bar3.enabled = false;
-			E.db.actionbar.bar5.enabled = false;
-		end
-		
-		if not noDataReset then
-			E.db.auras.wrapAfter = 10;
-		end
-		E.db.general.reputation.width = 400
-		E.db.general.experience.width = 400
-		E.db.movers.ElvAB_2 = "CENTERElvUIParentBOTTOM056.18"
-		
-		if not noDataReset then
-			E:CopyTable(E.db.unitframe.units, P.unitframe.units)
-			
-			E.db.unitframe.fontSize = 10
-			
-			E.db.unitframe.units.player.width = 200;
-			E.db.unitframe.units.player.castbar.width = 200;
-			E.db.unitframe.units.player.classbar.fill = 'fill';
-			E.db.unitframe.units.player.health.text_format = "[healthcolor][health:current]"
-			
-			E.db.unitframe.units.target.width = 200;
-			E.db.unitframe.units.target.castbar.width = 200;
-			E.db.unitframe.units.target.health.text_format = '[healthcolor][health:current]'
-			
-			E.db.unitframe.units.pet.power.enable = false;
-			E.db.unitframe.units.pet.width = 200;
-			E.db.unitframe.units.pet.height = 26;
-			
-			E.db.unitframe.units.targettarget.debuffs.enable = false;
-			E.db.unitframe.units.targettarget.power.enable = false;
-			E.db.unitframe.units.targettarget.width = 200;
-			E.db.unitframe.units.targettarget.height = 26;	
-			
-			E.db.unitframe.units.boss.width = 200;
-			E.db.unitframe.units.boss.castbar.width = 200;
-			E.db.unitframe.units.arena.width = 200;
-			E.db.unitframe.units.arena.castbar.width = 200;			
-		end
-		
-		local isPixel = E.private.general.pixelPerfect
-		local xOffset = isPixel and 103 or 106;
-		local yOffset = isPixel and 125 or 135;
-		local yOffsetSmall = isPixel and 76 or 80;
-		
-		E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM"..-xOffset..""..yOffset
-		E.db.movers.ElvUF_TargetTargetMover = "BOTTOMElvUIParentBOTTOM"..xOffset..""..yOffsetSmall
-		E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM"..xOffset..""..yOffset
-		E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM"..-xOffset..""..yOffsetSmall
-		E.db.movers.ElvUF_FocusMover = "BOTTOMElvUIParentBOTTOM310332"
-		
-		E.db.lowresolutionset = true;
-	elseif not noDataReset then
+	if not noDataReset then
 		E.db.chat.panelWidth = P.chat.panelWidth
 		E.db.chat.panelHeight = P.chat.panelHeight
 		
 		E:CopyTable(E.db.actionbar, P.actionbar)
 		E:CopyTable(E.db.unitframe.units, P.unitframe.units)
-		
-		if E.private.general.pixelPerfect then
-			if not E.db.movers then E.db.movers = {}; end
-			
-			E.db.movers["ElvUF_PetMover"] = "BOTTOMElvUIParentBOTTOM0104"
-			E.db.movers["AurasMover"] = "TOPRIGHTElvUIParentTOPRIGHT-221-5"
-			E.db.movers["ElvUF_TargetTargetMover"] = "BOTTOMElvUIParentBOTTOM064"
-			E.db.movers["ElvUF_PlayerMover"] = "BOTTOMElvUIParentBOTTOM-27865"
-			E.db.movers["ElvUF_TargetMover"] = "BOTTOMElvUIParentBOTTOM27864"
-		end
 
 		E.db.auras.wrapAfter = P.auras.wrapAfter;	
 		E.db.general.reputation.width = P.general.reputation.width
@@ -505,113 +412,37 @@ function E:SetupLayout(layout, noDataReset)
 		end
 			
 		if not E.db.movers then E.db.movers = {}; end
-		if E.db.lowresolutionset then
-			E.db.movers.ElvUF_PlayerMover = "BOTTOMLEFTElvUIParentBOTTOMLEFT464230"
-			E.db.movers.ElvUF_TargetMover = "BOTTOMRIGHTElvUIParentBOTTOMRIGHT-464230"
-			E.db.movers.ElvUF_Raid40Mover = "BOTTOMElvUIParentBOTTOM0200"
-			E.db.movers.ElvUF_Raid25Mover = "BOTTOMElvUIParentBOTTOM0200"
-			E.db.movers.ElvUF_Raid10Mover = "BOTTOMElvUIParentBOTTOM0200"
-			E.db.movers.ElvUF_TargetTargetMover = "BOTTOMRIGHTElvUF_TargetBOTTOMRIGHT0150"
-			E.db.movers.ElvUF_PartyMover = "BOTTOMElvUIParentBOTTOM0200"
-			E.db.movers.ElvUF_PetMover = "BOTTOMLEFTElvUIParentBOTTOMLEFT464151"
-			E.db.movers.ElvUF_FocusMover = "BOTTOMLEFTElvUF_PlayerBOTTOMLEFT0150"
-			E.db.movers.ElvUF_FocusTargetMover = "BOTTOMLEFTElvUF_FocusBOTTOMLEFT0150"
-			E.db.movers.ElvUF_TankMover = "LEFTElvUIParentLEFT30350"
-			E.db.movers.ElvUF_AssistMover = "LEFTElvUIParentLEFT30250"
-			if BossHeaderMover then
-				BossHeaderMover:ClearAllPoints()
-				BossHeaderMover:SetPoint("BOTTOMLEFT",E.UIParent,"BOTTOMLEFT",30,250)
-				E:SaveMoverPosition("BossHeaderMover")
-			end
-			if BossButton then
-				BossButton:ClearAllPoints()
-				BossButton:SetPoint("BOTTOM",E.UIParent,"BOTTOM",425,75)
-				E:SaveMoverPosition("BossButton")
-			end
-			if AltPowerBarMover then
-				AltPowerBarMover:ClearAllPoints()
-				AltPowerBarMover:SetPoint("BOTTOM",E.UIParent,"BOTTOM",425,20)
-				E:SaveMoverPosition("AltPowerBarMover")
-			end
-		else
-			E.db.movers.ElvUF_PlayerMover = "BOTTOMLEFTElvUIParentBOTTOMLEFT464230"
-			E.db.movers.ElvUF_TargetMover = "BOTTOMRIGHTElvUIParentBOTTOMRIGHT-464230"
-			E.db.movers.ElvUF_Raid40Mover = "BOTTOMElvUIParentBOTTOM0200"
-			E.db.movers.ElvUF_Raid25Mover = "BOTTOMElvUIParentBOTTOM0200"
-			E.db.movers.ElvUF_Raid10Mover = "BOTTOMElvUIParentBOTTOM0200"
-			E.db.movers.ElvUF_TargetTargetMover = "BOTTOMRIGHTElvUF_TargetBOTTOMRIGHT0150"
-			E.db.movers.ElvUF_PartyMover = "BOTTOMElvUIParentBOTTOM0200"
-			E.db.movers.ElvUF_PetMover = "BOTTOMLEFTElvUIParentBOTTOMLEFT464151"
-			E.db.movers.ElvUF_FocusMover = "BOTTOMLEFTElvUF_PlayerBOTTOMLEFT0150"
-			E.db.movers.ElvUF_FocusTargetMover = "BOTTOMLEFTElvUF_FocusBOTTOMLEFT0150"
-			E.db.movers.ElvUF_TankMover = "LEFTElvUIParentLEFT30350"
-			E.db.movers.ElvUF_AssistMover = "LEFTElvUIParentLEFT30250"
-			if BossHeaderMover then
-				BossHeaderMover:ClearAllPoints()
-				BossHeaderMover:SetPoint("BOTTOMLEFT",E.UIParent,"BOTTOMLEFT",30,250)
-				E:SaveMoverPosition("BossHeaderMover")
-			end
-			if BossButton then
-				BossButton:ClearAllPoints()
-				BossButton:SetPoint("BOTTOM",E.UIParent,"BOTTOM",425,75)
-				E:SaveMoverPosition("BossButton")
-			end
-			if AltPowerBarMover then
-				AltPowerBarMover:ClearAllPoints()
-				AltPowerBarMover:SetPoint("BOTTOM",E.UIParent,"BOTTOM",425,20)
-				E:SaveMoverPosition("AltPowerBarMover")
-			end
+		E.db.movers.ElvUF_PlayerMover = "BOTTOMLEFTElvUIParentBOTTOMLEFT464230"
+		E.db.movers.ElvUF_TargetMover = "BOTTOMRIGHTElvUIParentBOTTOMRIGHT-464230"
+		E.db.movers.ElvUF_Raid40Mover = "BOTTOMElvUIParentBOTTOM0200"
+		E.db.movers.ElvUF_Raid25Mover = "BOTTOMElvUIParentBOTTOM0200"
+		E.db.movers.ElvUF_Raid10Mover = "BOTTOMElvUIParentBOTTOM0200"
+		E.db.movers.ElvUF_TargetTargetMover = "BOTTOMRIGHTElvUF_TargetBOTTOMRIGHT0150"
+		E.db.movers.ElvUF_PartyMover = "BOTTOMElvUIParentBOTTOM0200"
+		E.db.movers.ElvUF_PetMover = "BOTTOMLEFTElvUIParentBOTTOMLEFT464151"
+		E.db.movers.ElvUF_FocusMover = "BOTTOMLEFTElvUF_PlayerBOTTOMLEFT0150"
+		E.db.movers.ElvUF_FocusTargetMover = "BOTTOMLEFTElvUF_FocusBOTTOMLEFT0150"
+		E.db.movers.ElvUF_TankMover = "LEFTElvUIParentLEFT30350"
+		E.db.movers.ElvUF_AssistMover = "LEFTElvUIParentLEFT30250"
+		if BossHeaderMover then
+			BossHeaderMover:ClearAllPoints()
+			BossHeaderMover:SetPoint("BOTTOMLEFT",E.UIParent,"BOTTOMLEFT",30,250)
+			E:SaveMoverPosition("BossHeaderMover")
 		end
-	elseif E.db.lowresolutionset then
-		if not E.db.movers then E.db.movers = {}; end
-		E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM-106135"
-		E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM106135"
-		E.db.movers.ElvUF_TargetTargetMover = "BOTTOMElvUIParentBOTTOM10680"
-		E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM-10680"
-		E.db.movers.ElvUF_FocusMover = "BOTTOMElvUIParentBOTTOM310332"			
+		if BossButton then
+			BossButton:ClearAllPoints()
+			BossButton:SetPoint("BOTTOM",E.UIParent,"BOTTOM",425,75)
+			E:SaveMoverPosition("BossButton")
+		end
+		if AltPowerBarMover then
+			AltPowerBarMover:ClearAllPoints()
+			AltPowerBarMover:SetPoint("BOTTOM",E.UIParent,"BOTTOM",425,20)
+			E:SaveMoverPosition("AltPowerBarMover")
+		end
 	else
 		if not noDataReset then
 			E:ResetMovers('')
-			if E.private.general.pixelPerfect then
-				if not E.db.movers then E.db.movers = {}; end
-				E.db.movers["ElvUF_PetMover"] = "BOTTOMElvUIParentBOTTOM0104"
-				E.db.movers["AurasMover"] = "TOPRIGHTElvUIParentTOPRIGHT-221-5"
-				E.db.movers["ElvUF_TargetTargetMover"] = "BOTTOMElvUIParentBOTTOM064"
-				E.db.movers["ElvUF_PlayerMover"] = "BOTTOMElvUIParentBOTTOM-27865"
-				E.db.movers["ElvUF_TargetMover"] = "BOTTOMElvUIParentBOTTOM27864"		
-			end			
 		end
-	end
-	
-	if E.db.lowresolutionset and not noDataReset then
-		E.db.unitframe.units.player.width = 200;
-		E.db.unitframe.units.player.castbar.width = 200;
-		E.db.unitframe.units.player.classbar.fill = 'fill';
-		
-		E.db.unitframe.units.target.width = 200;
-		E.db.unitframe.units.target.castbar.width = 200;
-		
-		E.db.unitframe.units.pet.power.enable = false;
-		E.db.unitframe.units.pet.width = 200;
-		E.db.unitframe.units.pet.height = 26;
-		
-		E.db.unitframe.units.targettarget.debuffs.enable = false;
-		E.db.unitframe.units.targettarget.power.enable = false;
-		E.db.unitframe.units.targettarget.width = 200;
-		E.db.unitframe.units.targettarget.height = 26;	
-		
-		E.db.unitframe.units.boss.width = 200;
-		E.db.unitframe.units.boss.castbar.width = 200;
-		E.db.unitframe.units.arena.width = 200;
-		E.db.unitframe.units.arena.castbar.width = 200;		
-	end
-	
-	if not E.db.lowresolutionset and (layout == 'dpsCaster' or (layout == 'dpsMelee' and E.myclass == 'HUNTER')) then
-		if not E.db.movers then E.db.movers = {}; end
-		E.db.movers.ElvUF_PlayerCastbarMover = "BOTTOMElvUIParentBOTTOM0180"
-	--[[elseif not E.db.lowresolutionset and layout == 'tank' then --Not sure if i want to keep this.
-		if not E.db.movers then E.db.movers = {}; end
-		E.db.movers.ElvUF_TargetCastbarMover = "BOTTOMElvUIParentBOTTOM0180"]]
 	end
 	
 	--Datatexts
@@ -700,6 +531,9 @@ local function InstallComplete()
 		StopMusic()
 	end
 	
+	if E.PixelMode then
+		E:GetModule('Actionbars'):FixABPositions()
+	end
 	ReloadUI()
 end
 		
@@ -800,10 +634,7 @@ local function SetPage(PageNum)
 		
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', function() E.SetupResolution('high') end)
-		InstallOption1Button:SetText(L["High Resolution"])	
-		InstallOption2Button:Show()
-		InstallOption2Button:SetScript('OnClick', function() E.SetupResolution('low') end)
-		InstallOption2Button:SetText(L['Low Resolution'])
+		InstallOption1Button:SetText(L["High Resolution"])
 	elseif PageNum == 6 then
 		f.SubTitle:SetText(L["Layout"])
 		f.Desc1:SetText(L["You can now choose what layout you wish to use based on your combat role."])

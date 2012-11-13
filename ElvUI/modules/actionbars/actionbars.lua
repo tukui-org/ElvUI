@@ -40,7 +40,7 @@ AB["barDefaults"] = {
 		['page'] = 3,
 		['bindButtons'] = "MULTIACTIONBAR3BUTTON",
 		['conditions'] = "",
-		['position'] = "RIGHT,ElvUI_Bar1,LEFT,-4,0",
+		['position'] = "BOTTOMRIGHT,ElvUI_Bar1,BOTTOMLEFT,-3,0",
 	},	
 }
 
@@ -819,24 +819,29 @@ function AB:FixABPositions()
 	if ABdb.bar3.enabled == true then
 		if ABdb.bar2.enabled == true and ABdb.bar1.heightMult == 2 then
 			ElvAB_2:ClearAllPoints()
-			ElvAB_2:Point("BOTTOM",ElvUI_Bar1,"TOP",0,-38)
+			ElvAB_2:Point("BOTTOM",ElvUI_Bar1,"TOP",0,-(E.PixelMode and 36 or 38))
 			E:SaveMoverPosition("ElvAB_2")
 			ElvAB_3:ClearAllPoints()
-			ElvAB_3:Point("BOTTOM",ElvUI_Bar1,"TOP",0,2)
+			ElvAB_3:Point("BOTTOM",ElvUI_Bar1,"TOP",0,(E.PixelMode and 0 or 2))
 			E:SaveMoverPosition("ElvAB_3")
 		elseif ABdb.bar2.enabled == true and ABdb.bar1.heightMult == 3 then
 			ElvAB_2:ClearAllPoints()
-			ElvAB_2:Point("BOTTOM",ElvUI_Bar1,"TOP",0,-72)
+			ElvAB_2:Point("BOTTOM",ElvUI_Bar1,"TOP",0,-(E.PixelMode and 70 or 72))
 			E:SaveMoverPosition("ElvAB_2")
 			ElvAB_3:ClearAllPoints()
-			ElvAB_3:Point("BOTTOM",ElvUI_Bar1,"TOP",0,-38)
+			ElvAB_3:Point("BOTTOM",ElvUI_Bar1,"TOP",0,-(E.PixelMode and 36 or 38))
 			E:SaveMoverPosition("ElvAB_3")
 		elseif ABdb.bar2.enabled ~= true and ABdb.bar1.heightMult == 2 then
 			ElvAB_3:ClearAllPoints()
-			ElvAB_3:Point("BOTTOM",ElvUI_Bar1,"TOP",0,-38)
+			ElvAB_3:Point("BOTTOM",ElvUI_Bar1,"TOP",0,-(E.PixelMode and 36 or 38))
 			E:SaveMoverPosition("ElvAB_3")
 		end
-		E:Print("ActionBar 2 and 3 has been repositioned")
+		E:Print("ActionBar 2 and 3 have been repositioned")
+	elseif ABdb.bar2.enabled == true and ABdb.bar1.heightMult == 2 then
+		ElvAB_2:ClearAllPoints()
+		ElvAB_2:Point("BOTTOM",ElvUI_Bar1,"TOP",0,-(E.PixelMode and 36 or 38))
+		E:SaveMoverPosition("ElvAB_2")
+		E:Print("ActionBar 2 has been repositioned")
 	end
 end
 

@@ -12,12 +12,12 @@ function M:UpdateExpRepAnchors()
 	expBar:ClearAllPoints()
 	
 	if self.expBar:IsShown() and self.repBar:IsShown() then
-		expBar:Point('TOP', MMHolder, 'BOTTOM', 1, -1)
-		repBar:Point('TOP', self.expBar, 'BOTTOM', 0, -1)
+		expBar:Point('TOP', MMHolder, 'BOTTOM', (E.PixelMode and 0 or 1), -(E.PixelMode and 3 or 1))
+		repBar:Point('TOP', self.expBar, 'BOTTOM', 0, -(E.PixelMode and 1 or 1))
 	elseif self.expBar:IsShown() then
-		expBar:Point('TOP', MMHolder, 'BOTTOM', 1, -1)
+		expBar:Point('TOP', MMHolder, 'BOTTOM', (E.PixelMode and 0 or 1), -(E.PixelMode and 3 or 1))
 	else
-		repBar:Point('TOP', MMHolder, 'BOTTOM', 1, -1)
+		repBar:Point('TOP', MMHolder, 'BOTTOM', (E.PixelMode and 0 or 1), -(E.PixelMode and 3 or 1))
 	end
 end
 
@@ -180,10 +180,18 @@ function M:CreateBar(name, onEnter, ...)
 end
 
 function M:UpdateExpRepDimensions()
-	self.expBar:Width(E.db.general.experience.width)
+	if E:HasMoverBeenMoved('ExperienceBarMover') then
+		self.expBar:Width(E.db.general.experience.width)
+	else
+		self.expBar:Width(E.db.general.minimap.size + E.ConsolidatedBuffsWidth + (E.PixelMode and 1 or 5))
+	end
 	self.expBar:Height(E.db.general.experience.height)
 	
-	self.repBar:Width(E.db.general.reputation.width)
+	if E:HasMoverBeenMoved('ReputationBarMover') then
+		self.repBar:Width(E.db.general.reputation.width)
+	else
+		self.repBar:Width(E.db.general.minimap.size + E.ConsolidatedBuffsWidth + (E.PixelMode and 1 or 5))
+	end
 	self.repBar:Height(E.db.general.reputation.height)
 	
 	self.repBar.text:FontTemplate(nil, E.db.general.reputation.textSize)

@@ -55,7 +55,7 @@ P['general'] = {
 	},
 	['totems'] = {
 		['enable'] = true,
-		['growthDirection'] = 'VERTICAL',
+		['growthDirection'] = 'HORIZONTAL',
 		['sortDirection'] = 'ASCENDING',
 		['size'] = 40,
 		['spacing'] = 4,
