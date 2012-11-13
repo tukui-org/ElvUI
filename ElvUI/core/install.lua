@@ -343,26 +343,9 @@ function E:SetupLayout(layout, noDataReset)
 		end
 		
 		if not noDataReset then
-			E.db.unitframe.units.target.buffs.numrows = 1;
-			E.db.unitframe.units.target.buffs['growth-x'] = 'LEFT';
-			E.db.unitframe.units.target.buffs['growth-y'] = 'UP';
-			E.db.unitframe.units.target.buffs.initialAnchor = 'BOTTOMRIGHT';
-			E.db.unitframe.units.target.buffs.anchorPoint = 'TOPRIGHT';
-			E.db.unitframe.units.target.debuffs.numrows = 1;
-			E.db.unitframe.units.target.debuffs['growth-x'] = 'LEFT';
-			E.db.unitframe.units.target.debuffs['growth-y'] = 'UP';
-			E.db.unitframe.units.target.debuffs.initialAnchor = 'BOTTOMRIGHT';
-			E.db.unitframe.units.target.debuffs.anchorPoint = 'TOPRIGHT';
+			--Player, Target and Focus settings are set in SetupAuras
 			E.db.unitframe.units.target.castbar.yOffset = 0;
-			
 			E.db.unitframe.units.targettarget.height = 35;
-			
-			E.db.unitframe.units.focus.buffs['growth-y'] = 'UP';
-			E.db.unitframe.units.focus.buffs.initialAnchor = 'BOTTOMLEFT';
-			E.db.unitframe.units.focus.buffs.anchorPoint = 'TOPLEFT';
-			E.db.unitframe.units.focus.debuffs['growth-y'] = 'UP';
-			E.db.unitframe.units.focus.debuffs.initialAnchor = 'BOTTOMLEFT';
-			E.db.unitframe.units.focus.debuffs.anchorPoint = 'TOPLEFT';
 			E.db.unitframe.units.focus.castbar.yOffset = 0;
 			
 			E.db.unitframe.units.focustarget.buffs['growth-y'] = 'UP';
@@ -511,10 +494,21 @@ local function SetupAuras(style)
 		E.db.unitframe.units.target.aurabar.enable = false;
 	elseif style == 'classic' then
 		--seriosly is this fucking hard??
-		E.db.unitframe.units.target.smartAuraDisplay = 'DISABLED';
-		E.db.unitframe.units.target.buffs.playerOnly = {friendly = false, enemy = false};
-		E.db.unitframe.units.target.debuffs.enable = true;
-		E.db.unitframe.units.target.aurabar.attachTo = 'DEBUFFS';
+		E.db.unitframe.units.target.buffs.numrows = 1;
+		E.db.unitframe.units.target.buffs['growth-x'] = 'LEFT';
+		E.db.unitframe.units.target.buffs['growth-y'] = 'UP';
+		E.db.unitframe.units.target.buffs.anchorPoint = 'TOPRIGHT';
+		E.db.unitframe.units.target.debuffs.numrows = 1;
+		E.db.unitframe.units.target.debuffs['growth-x'] = 'LEFT';
+		E.db.unitframe.units.target.debuffs['growth-y'] = 'UP';
+		E.db.unitframe.units.target.debuffs.anchorPoint = 'TOPRIGHT';
+		
+		E.db.unitframe.units.focus.buffs['growth-y'] = 'UP';
+		E.db.unitframe.units.focus.buffs.initialAnchor = 'BOTTOMLEFT';
+		E.db.unitframe.units.focus.buffs.anchorPoint = 'TOPLEFT';
+		E.db.unitframe.units.focus.debuffs['growth-y'] = 'UP';
+		E.db.unitframe.units.focus.debuffs.initialAnchor = 'BOTTOMLEFT';
+		E.db.unitframe.units.focus.debuffs.anchorPoint = 'TOPLEFT';
 	end
 
 	E:GetModule('UnitFrames'):Update_AllFrames()	
