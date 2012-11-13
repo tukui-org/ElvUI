@@ -220,7 +220,7 @@ function E:SetupTheme(theme, noDisplayMsg, noPopup)
 		E.global.newThemePrompt = true;
 		E.private.general.pixelPerfect = true;
 		--E.db.general.bordercolor = E:GetColor(.1, .1, .1)
-		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
+		E.db.general.backdropcolor = E:GetColor(.13, .13, .13)
 		E.db.general.backdropfadecolor = E:GetColor(.06, .06, .06, .8)
 		
 		E.db.unitframe.colors.healthclass = false
