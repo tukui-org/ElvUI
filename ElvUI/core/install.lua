@@ -530,10 +530,7 @@ local function InstallComplete()
 	if GetCVarBool("Sound_EnableMusic") then
 		StopMusic()
 	end
-	
-	if E.PixelMode then
-		E:GetModule('Actionbars'):FixABPositions()
-	end
+
 	ReloadUI()
 end
 		
