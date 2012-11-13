@@ -102,7 +102,7 @@ function AddOn:OnInitialize()
 	
 	if self.private.install_complete and not self.global.newThemePrompt and not self.private.general.pixelPerfect then 
 		self.__showMessage = true;
-	elseif not self.db.theme and not self.private.install_complete then
+	elseif not self.private.theme and not self.private.install_complete then
 		self.__setupTheme = true;
 	end		
 	

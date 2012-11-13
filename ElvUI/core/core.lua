@@ -167,7 +167,9 @@ function E:UpdateMedia()
 		border = RAID_CLASS_COLORS[E.myclass]
 		E.db['general'].bordercolor.r = RAID_CLASS_COLORS[E.myclass].r
 		E.db['general'].bordercolor.g = RAID_CLASS_COLORS[E.myclass].g
-		E.db['general'].bordercolor.b = RAID_CLASS_COLORS[E.myclass].b		
+		E.db['general'].bordercolor.b = RAID_CLASS_COLORS[E.myclass].b
+	elseif E.PixelMode then
+		border = {r = 0, g = 0, b = 0}
 	end
 	self["media"].bordercolor = {border.r, border.g, border.b}
 
