@@ -287,7 +287,7 @@ function NP:HealthBar_OnShow(frame)
 
 	self:HealthBar_ValueChanged(frame.oldhp)
 	
-	if not E.PixelMode then
+	if not E.PixelMode and frame.hp.backdrop then
 		frame.hp.backdrop:SetPoint('TOPLEFT', -noscalemult*3, noscalemult*3)
 		frame.hp.backdrop:SetPoint('BOTTOMRIGHT', noscalemult*3, -noscalemult*3)	
 	end

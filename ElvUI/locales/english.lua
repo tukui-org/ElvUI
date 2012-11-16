@@ -253,6 +253,9 @@ Example: Interface\AddOns\ElvUI\media\textures\copy
 Or for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here.]=] ] = true;
 
 --Config / Install
+L["Pixel Perfect Set"] = true;
+L['The Pixel Perfect option will change the overall apperance of your UI. Using Pixel Perfect is a slight performance increase over the traditional layout.'] = true;
+L['Using this option will cause your borders around frames to be 1 pixel wide instead of 3 pixel. You may have to finish the installation to notice a differance. By default this is enabled.'] = true;
 L['Dark'] = true;
 L["Auras Set"] = true;
 L["Auras System"] = true;
@@ -292,7 +295,7 @@ L["Please press the continue button to go onto the next step."] = true;
 L["Resolution Style Set"] = true;
 L["Resolution"] = true;
 L["Run the installation process."] = true;
-L["Select the type of aura system you want to use with ElvUI's unitframes. The integrated system utilizes both aura-bars and aura-icons. The icons only system will display only icons and aurabars won't be used. The classic system will configure your auras to how they were pre-v4."] = true;
+L["Select the type of aura system you want to use with ElvUI's unitframes. The integrated system utilizes both aura-bars and aura-icons. The icons only system will display only icons and aurabars won't be used. The classic system will configure your auras to be default."] = true;
 L["Setup Chat"] = true;
 L["Setup CVars"] = true;
 L["Skip Process"] = true;

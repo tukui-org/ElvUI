@@ -61,8 +61,16 @@ E.Options.args.general = {
 			name = L["General"],
 			guiInline = true,
 			args = {
-				interruptAnnounce = {
+				pixelPerfect = {
 					order = 1,
+					name = L['Pixel Perfect'],
+					desc = L['The Pixel Perfect option will change the overall apperance of your UI. Using Pixel Perfect is a slight performance increase over the traditional layout.'],
+					type = 'toggle',
+					get = function(info) return E.private.general.pixelPerfect end,
+					set = function(info, value) E.private.general.pixelPerfect = value; E:StaticPopup_Show("PRIVATE_RL") end					
+				},
+				interruptAnnounce = {
+					order = 2,
 					name = L['Announce Interrupts'],
 					desc = L['Announce when you interrupt a spell to the specified chat channel.'],
 					type = 'select',
@@ -74,7 +82,7 @@ E.Options.args.general = {
 					},
 				},
 				autoRepair = {
-					order = 2,
+					order = 3,
 					name = L['Auto Repair'],
 					desc = L['Automatically repair using the following method when visiting a merchant.'],
 					type = 'select',
@@ -85,7 +93,7 @@ E.Options.args.general = {
 					},				
 				},
 				mapAlpha = {
-					order = 3,
+					order = 4,
 					name = L['Map Alpha While Moving'],
 					desc = L['Controls what the transparency of the worldmap will be set to when you are moving.'],
 					type = 'range',

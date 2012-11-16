@@ -401,7 +401,7 @@ P['unitframe'] = {
 			['width'] = 270,
 			['height'] = 54,
 			['healPrediction'] = true,
-			['smartAuraDisplay'] = 'SHOW_DEBUFFS_ON_FRIENDLIES',
+			['smartAuraDisplay'] = 'DISABLED',
 			['health'] = {
 				['text_format'] = '[healthcolor][health:current-percent]',
 				['position'] = 'RIGHT',
@@ -434,7 +434,7 @@ P['unitframe'] = {
 				['anchorPoint'] = 'TOPRIGHT',
 				['fontSize'] = 10,
 				['clickThrough'] = false,
-				['playerOnly'] = {friendly = true, enemy = false},
+				['playerOnly'] = {friendly = false, enemy = false},
 				['noConsolidated'] = {friendly = false, enemy = false},
 				['useBlacklist'] = {friendly = true, enemy = true},
 				['useWhitelist'] = {friendly = false, enemy = false},
@@ -445,7 +445,7 @@ P['unitframe'] = {
 				['yOffset'] = 0,
 			},
 			['debuffs'] = {
-				['enable'] = false,
+				['enable'] = true,
 				['perrow'] = 8,
 				['numrows'] = 1,
 				['attachTo'] = 'BUFFS',
@@ -477,7 +477,7 @@ P['unitframe'] = {
 			['aurabar'] = {
 				['enable'] = true,
 				['anchorPoint'] = 'ABOVE',
-				['attachTo'] = 'BUFFS',
+				['attachTo'] = 'DEBUFFS',
 				['playerOnly'] = {friendly = true, enemy = true},
 				['useBlacklist'] = {friendly = true, enemy = true},
 				['useWhitelist'] = {friendly = false, enemy = false},
