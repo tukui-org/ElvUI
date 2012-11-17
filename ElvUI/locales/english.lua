@@ -177,6 +177,8 @@ L['Wrap After'] = true;
 L['Your Auras First'] = true;
 
 --Chat
+L['Tab Panel'] = true;
+L['Toggle the chat tab panel backdrop.'] = true;
 L['Chat EditBox Position'] = true;
 L['Position of the Chat EditBox, if datatexts are disabled this will be forced to be above chat.'] = true;
 L['Below Chat'] = true;

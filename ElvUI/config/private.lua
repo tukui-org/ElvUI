@@ -11,8 +11,7 @@ V['general'] = {
 	["namefont"] = "ElvUI Font",
 	['bubbles'] = true,
 	['pixelPerfect'] = true,
-	["raidIconStyle"] = "classic",
-	
+
 	['minimap'] = {
 		['enable'] = true,
 	},

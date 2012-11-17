@@ -165,6 +165,7 @@ P['chat'] = {
 	['panelBackdropNameLeft'] = '',
 	['panelBackdropNameRight'] = '',
 	['panelBackdrop'] = 'SHOWBOTH',
+	['panelTabBackdrop'] = true,
 	['editBoxPosition'] = 'BELOW_CHAT',
 	
 	['tabFont'] = 'ElvUI Font',
