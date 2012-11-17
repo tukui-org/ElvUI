@@ -472,6 +472,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 			
 			-- Queue an inspect request
 			if unit and (CanInspect(unit)) and (not self:IsInspectFrameOpen()) then
+				if InspectFrame then InspectFrame.unit = "player" end
 				local lastInspectTime = (GetTime() - self.lastInspectRequest);
 				self.UpdateInspect.nextUpdate = (lastInspectTime > INSPECT_FREQ) and INSPECT_DELAY or (INSPECT_FREQ - lastInspectTime + INSPECT_DELAY);
 				self.UpdateInspect:Show();
