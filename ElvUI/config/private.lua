@@ -93,6 +93,7 @@ V['skins'] = {
 		["bgmap"] = true,
 		['mounts'] = true,
 		['petbattleui'] = true,
+		['losscontrol'] = true,
 	},
 }
 

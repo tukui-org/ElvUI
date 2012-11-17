@@ -681,6 +681,7 @@ local function LoadSkin()
         "CombatPanelEnemyCastBarsOnPortrait",
         "CombatPanelEnemyCastBarsOnNameplates",
         "CombatPanelAutoSelfCast",
+	  "CombatPanelLossOfControl",
         -- Display
         "DisplayPanelShowCloak",
         "DisplayPanelShowHelm",
@@ -819,6 +820,11 @@ local function LoadSkin()
         "CombatPanelTOTDropDown",
         "CombatPanelFocusCastKeyDropDown",
         "CombatPanelSelfCastKeyDropDown",
+	  "CombatPanelLossOfControlFullDropDown",
+	  "CombatPanelLossOfControlSilenceDropDown",
+	  "CombatPanelLossOfControlInterruptDropDown",
+	  "CombatPanelLossOfControlDisarmDropDown",
+	  "CombatPanelLossOfControlRootDropDown",
         -- Display
         "DisplayPanelAggroWarningDisplay",
         "DisplayPanelWorldPVPObjectiveDisplay",
