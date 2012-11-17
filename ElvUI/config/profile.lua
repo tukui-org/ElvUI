@@ -773,7 +773,6 @@ P['unitframe'] = {
 				['enable'] = true,
 				['size'] = 8,
 				['fontSize'] = 10,
-				['colorIcons'] = true,
 			},			
 		},
 		['pettarget'] = {
@@ -1068,7 +1067,6 @@ P['unitframe'] = {
 				['enable'] = true,
 				['size'] = 8,
 				['fontSize'] = 10,
-				['colorIcons'] = true,
 			},
 			['roleIcon'] = {
 				['enable'] = true,
@@ -1178,7 +1176,6 @@ P['unitframe'] = {
 				['enable'] = true,
 				['size'] = 8,
 				['fontSize'] = 10,
-				['colorIcons'] = true,
 			},
 			['rdebuffs'] = {
 				['enable'] = true,
@@ -1277,7 +1274,6 @@ P['unitframe'] = {
 				['enable'] = true,
 				['size'] = 8,
 				['fontSize'] = 10,
-				['colorIcons'] = true,
 			},
 			['rdebuffs'] = {
 				['enable'] = true,
@@ -1389,7 +1385,6 @@ P['unitframe'] = {
 				['enable'] = true,
 				['size'] = 8,
 				['fontSize'] = 10,
-				['colorIcons'] = true,
 			},	
 			['raidicon'] = {
 				['enable'] = true,

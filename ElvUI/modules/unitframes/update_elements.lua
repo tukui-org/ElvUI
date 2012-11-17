@@ -1092,6 +1092,7 @@ function UF:UpdateAuraWatch(frame)
 				icon.image = image
 				icon.spellID = spell["id"];
 				icon.anyUnit = spell["anyUnit"];
+				icon.style = spell['style'];
 				icon.onlyShowMissing = spell["onlyShowMissing"];
 				if spell["onlyShowMissing"] then
 					icon.presentAlpha = 0;
@@ -1103,14 +1104,19 @@ function UF:UpdateAuraWatch(frame)
 				icon:Width(db.size);
 				icon:Height(db.size);
 				icon:ClearAllPoints()
-				icon:SetPoint(spell["point"], 0, 0);
+				icon:SetPoint(spell["point"], E.PixelMode and UF:GetPositionOffset(spell["point"], 1) or 0, E.PixelMode and UF:GetPositionOffset(spell["point"], -1) or 0);
 
 				if not icon.icon then
 					icon.icon = icon:CreateTexture(nil, "BORDER");
 					icon.icon:SetAllPoints(icon);
 				end
 				
-				if db.colorIcons then
+				if not icon.text then
+					icon.text = icon:CreateFontString(nil, 'BORDER');
+				end
+				
+				
+				if icon.style == 'coloredIcon' then
 					icon.icon:SetTexture(E["media"].blankTex);
 					
 					if (spell["color"]) then
@@ -1118,10 +1124,13 @@ function UF:UpdateAuraWatch(frame)
 					else
 						icon.icon:SetVertexColor(0.8, 0.8, 0.8);
 					end			
-				else
+				elseif icon.style == 'texturedIcon' then
 					icon.icon:SetVertexColor(1, 1, 1)
 					icon.icon:SetTexCoord(.18, .82, .18, .82);
 					icon.icon:SetTexture(icon.image);
+				else
+					icon.icon:SetTexture(nil)
+					icon.text:SetTextColor(spell["color"].r, spell["color"].g, spell["color"].b)
 				end
 				
 				if not icon.cd then
@@ -1139,11 +1148,21 @@ function UF:UpdateAuraWatch(frame)
 					icon.border:SetVertexColor(0, 0, 0);
 				end
 				
+				if icon.style ~= 'coloredIcon' and icon.style ~= 'texturedIcon' then
+					icon.border:Hide();
+				else
+					icon.border:Show();
+				end
+				
 				if not icon.count then
 					icon.count = icon:CreateFontString(nil, "OVERLAY");
 					icon.count:SetPoint("CENTER", unpack(counterOffsets[spell["point"]]));
 				end
+				
 				icon.count:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), db.fontSize, 'OUTLINE');
+				icon.text:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), db.fontSize, 'OUTLINE');
+				icon.text:ClearAllPoints()
+				icon.text:SetPoint(spell["point"])
 				
 				if spell["enabled"] then
 					auras.icons[spell.id] = icon;

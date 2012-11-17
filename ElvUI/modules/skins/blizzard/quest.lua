@@ -124,6 +124,23 @@ local function LoadSkin()
 		end
 		self.spellTex:Height(self:GetHeight() + 217)	
 	end)
+		
+	hooksecurefunc("QuestInfo_Display", function(template, parentFrame)
+		  for i = 1, MAX_NUM_ITEMS do
+			local questItem = _G["QuestInfoItem"..i]
+			if not questItem:IsShown() then break end
+
+			local point, relativeTo, relativePoint, x, y = questItem:GetPoint()
+			if i == 1 then
+			    questItem:Point(point, relativeTo, relativePoint, 0, y)
+			elseif relativePoint == "BOTTOMLEFT" then
+			    questItem:Point(point, relativeTo, relativePoint, 0, -4)
+			else
+			    questItem:Point(point, relativeTo, relativePoint, 4, 0)
+			end
+		  end
+	    end)
+	
 	
 	--Quest Frame
 	QuestFrame:StripTextures(true)
