@@ -166,15 +166,13 @@ function NP:CreateAuraIcon(parent)
 		button.Icon:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",-noscalemult*3,noscalemult*3)
 		button.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)		
 	end
-		
+	
 	button.TimeLeft = button:CreateFontString(nil, 'OVERLAY')
 	button.TimeLeft:Point('CENTER', 1, 1)
 	button.TimeLeft:SetJustifyH('CENTER')	
-	button.TimeLeft:FontTemplate(nil, 7, 'OUTLINE')
 	button.TimeLeft:SetShadowColor(0, 0, 0, 0)
 	
 	button.Stacks = button:CreateFontString(nil,"OVERLAY")
-	button.Stacks:FontTemplate(nil,7,'OUTLINE')
 	button.Stacks:SetShadowColor(0, 0, 0, 0)
 	button.Stacks:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 0, 2)
 	

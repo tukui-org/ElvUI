@@ -86,6 +86,9 @@ P["nameplate"] = {
 	['font'] = 'ElvUI Pixel',
 	['fontSize'] = 7,
 	['fontOutline'] = 'MONOCHROMEOUTLINE',
+	['auraFont'] = 'ElvUI Pixel',
+	['auraFontSize'] = 7,
+	['auraFontOutline'] = 'MONOCHROMEOUTLINE',
 	
 	["markBGHealers"] = true,
 	["width"] = 112,

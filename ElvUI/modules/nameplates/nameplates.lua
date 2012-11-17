@@ -351,10 +351,7 @@ function NP:SkinPlate(frame, nameFrame)
 	local oldname = nameFrame:GetRegions()
 	local font = LSM:Fetch("font", self.db.font)
 	local noscalemult = E.mult * UIParent:GetScale()
-	--F = frame
 
-	--for i=1, F:GetNumRegions() do r = select(i, F:GetRegions()); if r:GetObjectType() == 'Texture' then print(i, r:GetTexture()); elseif r:GetObjectType() == 'FontString' then print(i, r:GetText()); end end
-	
 	--Health Bar
 	if not frame.hp then
 		frame.oldhp = oldhp
@@ -508,8 +505,9 @@ function NP:SkinPlate(frame, nameFrame)
 	end
 	
 	for index = 1, NP.MAX_DISPLAYABLE_DEBUFFS do 
-		if AuraIconFrames and AuraIconFrames[index] then
-			AuraIconFrames[index].TimeLeft:FontTemplate(font, self.db.fontSize - 3, self.db.fontOutline)
+		if frame.AuraWidget.AuraIconFrames and frame.AuraWidget.AuraIconFrames[index] then
+			frame.AuraWidget.AuraIconFrames[index].TimeLeft:FontTemplate(LSM:Fetch("font", self.db.auraFont), self.db.auraFontSize, self.db.auraFontOutline)
+			frame.AuraWidget.AuraIconFrames[index].Stacks:FontTemplate(LSM:Fetch("font", self.db.auraFont), self.db.auraFontSize, self.db.auraFontOutline)
 		end
 	end
 		
