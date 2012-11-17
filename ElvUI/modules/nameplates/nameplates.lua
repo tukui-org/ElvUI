@@ -342,30 +342,7 @@ function NP:OnHide(frame)
 	end	
 end
 
---local threat, hpborder, threat, oldlevel, _, raidicon, bossicon = frame:GetRegions()
---local oldname = nameFrame:GetRegions()
---[[
-1 nil
-2 Interface\Tooltips\Nameplate-Border
-3 nil
-4 Raider's Training Dummy
-5 nil
-6 Interface\TargetingFrame\UI-TargetingFrame-Skull
-7 Interface\TargetingFrame\UI-RaidTargetingIcons
-8 Interface\Tooltips\EliteNameplateIcon
-1 nil
---local threat, hpborder, overlay, oldname, oldlevel, bossicon, raidicon, elite = frame:GetRegions()
 
-1 Interface\TargetingFrame\UI-TargetingFrame-Flash
-2 Interface\Tooltips\Nameplate-Border
-3 Interface\Tooltips\Nameplate-Glow
-4 9
-5 Interface\TargetingFrame\UI-TargetingFrame-Skull
-6 Interface\AddOns\ElvUI\media\textures\raidicons
-7 Interface\Tooltips\EliteNameplateIcon
-8 Interface\AddOns\ElvUI\media\textures\healer
-
-]]
 function NP:SkinPlate(frame, nameFrame)
 	local oldhp, oldcb = frame:GetChildren()
 	
@@ -489,7 +466,6 @@ function NP:SkinPlate(frame, nameFrame)
 		raidicon:ClearAllPoints()
 		raidicon:SetPoint("BOTTOM", frame.hp, "TOP", 0, 16)
 		raidicon:SetSize(35, 35)
-		raidicon:SetTexture([[Interface\AddOns\ElvUI\media\textures\raidicons.blp]])	
 		frame.raidicon = raidicon	
 	end
 	

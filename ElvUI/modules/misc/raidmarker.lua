@@ -72,7 +72,7 @@ function M:LoadRaidMarker()
 		button:Size(40);
 		button:SetID(i);
 		button.Texture = button:CreateTexture(button:GetName().."NormalTexture", "ARTWORK");
-		button.Texture:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\raidicons.blp");
+		button.Texture:SetTexture([[Interface\TargetingFrame\UI-RaidTargetingIcons]]);
 		button.Texture:SetAllPoints();
 		SetRaidTargetIconTexture(button.Texture, i);
 		button:RegisterForClicks("LeftbuttonUp","RightbuttonUp");

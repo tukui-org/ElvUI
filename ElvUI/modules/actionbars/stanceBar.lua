@@ -184,7 +184,6 @@ function AB:PositionAndSizeBarShapeShift()
 		
 		self:StyleButton(button);
 	end
-	possibleButtons = nil;
 end
 
 function AB:AdjustMaxStanceButtons(event)
