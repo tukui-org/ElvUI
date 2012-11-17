@@ -1290,7 +1290,16 @@ E.Options.args.unitframe.args.player = {
 			name = L['Combat Fade'],
 			desc = L['Fade the unitframe when out of combat, not casting, no target exists.'],
 			type = 'toggle',
-			set = function(info, value) E.db.unitframe.units['player'][ info[#info] ] = value; UF:CreateAndUpdateUF('player'); UF:CreateAndUpdateUF('pet') end,
+			set = function(info, value) 
+				E.db.unitframe.units['player'][ info[#info] ] = value; 
+				UF:CreateAndUpdateUF('player'); 
+
+				if value == true then 
+					ElvUF_Pet:SetParent(ElvUF_Player)
+				else 
+					ElvUF_Pet:SetParent(ElvUF_Parent) 
+				end 
+			end,
 		},
 		healPrediction = {
 			order = 8,
