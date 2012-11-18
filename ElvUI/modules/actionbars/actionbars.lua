@@ -174,25 +174,22 @@ function AB:PositionAndSizeBar(barName)
 		end
 		
 		if i > numButtons then
-			button:SetScale(0.000001);
-			button:SetAlpha(0);
+			button:Hide()
 		else
-			button:SetScale(1);
-			button:SetAlpha(1);
+			button:Show()
 		end
 		
 		self:StyleButton(button);
 	end
 
 	if self.db[barName].enabled then
-		bar:SetScale(1);
+		bar:Show()
 		
 		if not self.db[barName].mouseover then
 			bar:SetAlpha(self.db[barName].alpha);
 		end
 	else
-		bar:SetScale(0.000001);
-		bar:SetAlpha(0);
+		bar:Hide()
 	end
 	
 	RegisterStateDriver(bar, "page", self:GetPage(barName, self['barDefaults'][barName].page, self['barDefaults'][barName].conditions));
