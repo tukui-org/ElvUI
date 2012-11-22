@@ -4,7 +4,7 @@ E.PopupDialogs = {};
 E.StaticPopup_DisplayedFrames = {};
 
 E.PopupDialogs['YOUR_FUCKED'] = {
-	text = "Your Fucked",
+	text = "You're Fucked!",
 	OnAccept = function() end,
 	button1 = ACCEPT,
 	timeout = 0,
