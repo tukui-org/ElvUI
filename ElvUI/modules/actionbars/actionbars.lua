@@ -188,12 +188,13 @@ function AB:PositionAndSizeBar(barName)
 		if not self.db[barName].mouseover then
 			bar:SetAlpha(self.db[barName].alpha);
 		end
+		RegisterStateDriver(bar, "show", self.db[barName].visibility);
+		RegisterStateDriver(bar, "page", self:GetPage(barName, self['barDefaults'][barName].page, self['barDefaults'][barName].conditions));
 	else
 		bar:Hide()
-	end
+		UnregisterStateDriver(bar, "show");
+	end 
 	
-	RegisterStateDriver(bar, "page", self:GetPage(barName, self['barDefaults'][barName].page, self['barDefaults'][barName].conditions));
-	RegisterStateDriver(bar, "show", self.db[barName].visibility);
 	
 	E:SetMoverSnapOffset('ElvAB_'..bar.id, bar.db.buttonspacing / 2)
 end

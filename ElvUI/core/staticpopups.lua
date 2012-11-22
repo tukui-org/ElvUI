@@ -3,6 +3,16 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 E.PopupDialogs = {};
 E.StaticPopup_DisplayedFrames = {};
 
+E.PopupDialogs['YOUR_FUCKED'] = {
+	text = "Your Fucked",
+	OnAccept = function() end,
+	button1 = ACCEPT,
+	timeout = 0,
+	whileDead = 1,	
+	hideOnEscape = false,		
+}
+
+
 E.PopupDialogs['DISABLE_INCOMPATIBLE_ADDON'] = {
 	text = L['Do you swear not to post in technical support about something not working without first disabling the addon/module combination first?'],
 	OnAccept = function() E.global.ignoreIncompatible = true; end,
