@@ -124,6 +124,7 @@ function D:PLAYER_REGEN_DISABLED()
 end
 
 function D:TaintError(event, addonName, addonFunc)
+	local inInstance, instanceType = IsInInstance();
 	if PlayerTalentFrame and PlayerTalentFrame:IsShown() then
 		for i = 1, 4, 1 do
 			if _G['StaticPopup'..i] then
@@ -131,8 +132,13 @@ function D:TaintError(event, addonName, addonFunc)
 			end
 		end
 		
-		E:StaticPopup_Show('TALENT_TAINT')
+		if instanceType == "arena" then
+			E:StaticPopup_Show('YOUR_FUCKED');
+		else
+			E:StaticPopup_Show('TALENT_TAINT');
+		end
 	end
+
 
 	if GetCVarBool('scriptErrors') ~= 1 or E.db.general.taintLog ~= true then return end
 	ScriptErrorsFrame_OnError(L["%s: %s tried to call the protected function '%s'."]:format(event, addonName or "<name>", addonFunc or "<func>"), false)

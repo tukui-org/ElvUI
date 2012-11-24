@@ -3,6 +3,15 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 E.PopupDialogs = {};
 E.StaticPopup_DisplayedFrames = {};
 
+E.PopupDialogs['YOUR_FUCKED'] = {
+	text = "You're Fucked!",
+	OnAccept = function() end,
+	button1 = ACCEPT,
+	timeout = 0,
+	whileDead = 1,	
+	hideOnEscape = false,		
+}
+
 E.PopupDialogs['NEW_THEME'] = {
 	text = L['A new theme called Pixel Perfect has been added for ElvUI! This theme will increase overall performance and provides a cleaner appearance to all of ElvUI. Unfortunately to apply this theme it will require some settings getting reset. Would you like to try the Pixel Perfect theme?'],
 	OnAccept = function() 
