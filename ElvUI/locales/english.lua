@@ -330,6 +330,11 @@ L["ELVUI_CREDITS"] = "I would like to give out a special shout out to the follow
 L["Testing:"] = true;
 
 --DataTexts
+L["World Boss(s)"] = true;
+L['Sha of Anger'] = true;
+L['Galleon'] = true;
+L['Defeated'] = true;
+L['Undefeated'] = true;
 L['Datatext Panel (Left)'] = true;
 L['Datatext Panel (Right)'] = true;
 L['Display data panels below the chat, used for datatexts.'] = true;
