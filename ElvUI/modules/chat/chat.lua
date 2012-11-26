@@ -444,7 +444,7 @@ function CH:PositionChat(override)
 			FCF_SavePositionAndDimensions(chat)			
 			
 			tab:SetParent(RightChatPanel)
-			chat:SetParent(tab)
+			chat:SetParent(RightChatPanel)
 			
 			if chat:IsMovable() then
 				chat:SetUserPlaced(true)
@@ -455,8 +455,8 @@ function CH:PositionChat(override)
 				CH:SetupChatTabs(tab, false)
 			end
 		elseif not isDocked and chat:IsShown() then
-			tab:SetParent(E.UIParent)
-			chat:SetParent(E.UIParent)
+			tab:SetParent(UIParent)
+			chat:SetParent(UIParent)
 			
 			CH:SetupChatTabs(tab, true)
 		else
@@ -472,7 +472,11 @@ function CH:PositionChat(override)
 				FCF_SavePositionAndDimensions(chat)		
 			end
 			chat:SetParent(LeftChatPanel)
-			tab:SetParent(GeneralDockManager)
+			if i > 2 then
+				tab:SetParent(GeneralDockManagerScrollFrameChild)
+			else
+				tab:SetParent(GeneralDockManager)
+			end
 			if chat:IsMovable() then
 				chat:SetUserPlaced(true)
 			end
@@ -1140,6 +1144,14 @@ function CH:Initialize()
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER_INFORM", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_INLINE_TOAST_BROADCAST", CH.FindURL)
 	
+	GeneralDockManagerOverflowButton:ClearAllPoints()
+	GeneralDockManagerOverflowButton:Point('BOTTOMRIGHT', LeftChatTab, 'BOTTOMRIGHT', -2, 2)
+	GeneralDockManagerOverflowButtonList:SetTemplate('Transparent')
+	hooksecurefunc(GeneralDockManagerScrollFrame, 'SetPoint', function(self, point, anchor, attachTo, x, y)
+		if anchor == GeneralDockManagerOverflowButton and x == 0 and y == 0 then
+			self:SetPoint(point, anchor, attachTo, -2, -6)
+		end
+	end)
 	
 	if self.db.chatHistory then
 		self.SoundPlayed = true;
