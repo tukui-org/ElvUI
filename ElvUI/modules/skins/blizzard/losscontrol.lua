@@ -16,26 +16,25 @@ local function LoadSkin()
 	LossOfControlFrame.AbilityName:ClearAllPoints()
 
 	local font = E["media"].normFont
-	hooksecurefunc('RaidNotice_UpdateSlot', function(textString, table)
-		if table.RAID_NOTICE_MAX_HEIGHT == 32 or table.RAID_NOTICE_MAX_HEIGHT == 28 then
-			textString:FontTemplate(font, 20, 'OUTLINE')
-		end
-	end)
-	
-
 	hooksecurefunc("LossOfControlFrame_SetUpDisplay", function(self, ...)	
 		self.Icon:ClearAllPoints()
 		self.Icon:SetPoint("CENTER", self, "CENTER", 0, 0)
 
 		self.AbilityName:ClearAllPoints()
 		self.AbilityName:SetPoint("BOTTOM", self, 0, -28)
-
+		self.AbilityName.scrollTime = nil;
+		self.AbilityName:FontTemplate(font, 20, 'OUTLINE')
+		
 		self.TimeLeft.NumberText:ClearAllPoints()
 		self.TimeLeft.NumberText:SetPoint("BOTTOM", self, 4, -58)
-
+		self.TimeLeft.NumberText.scrollTime = nil;
+		self.TimeLeft.NumberText:FontTemplate(font, 20, 'OUTLINE')
+		
 		self.TimeLeft.SecondsText:ClearAllPoints()
 		self.TimeLeft.SecondsText:SetPoint("BOTTOM", self, 0, -80)
-
+		self.TimeLeft.SecondsText.scrollTime = nil;
+		self.TimeLeft.SecondsText:FontTemplate(font, 20, 'OUTLINE')
+		
 		-- always stop shake animation on start
 		if self.Anim:IsPlaying() then
 			self.Anim:Stop()
