@@ -30,12 +30,12 @@ end
 local function OnEvent(self, event, ...)
 	if not IsLoggedIn() then return end
 	local NewMoney = GetMoney()
-	if (ElvData == nil) then ElvData = {}; end
-	if (ElvData['gold'] == nil) then ElvData['gold'] = {}; end
-	if (ElvData['gold'][E.myrealm] == nil) then ElvData['gold'][E.myrealm] = {} end
-	if (ElvData['gold'][E.myrealm][E.myname] == nil) then ElvData['gold'][E.myrealm][E.myname] = NewMoney end
+	if (ElvDB == nil) then ElvDB = {}; end
+	if (ElvDB['gold'] == nil) then ElvDB['gold'] = {}; end
+	if (ElvDB['gold'][E.myrealm] == nil) then ElvDB['gold'][E.myrealm] = {} end
+	if (ElvDB['gold'][E.myrealm][E.myname] == nil) then ElvDB['gold'][E.myrealm][E.myname] = NewMoney end
 
-	local OldMoney = ElvData['gold'][E.myrealm][E.myname] or NewMoney
+	local OldMoney = ElvDB['gold'][E.myrealm][E.myname] or NewMoney
 
 	local Change = NewMoney-OldMoney -- Positive if we gain money
 	if OldMoney>NewMoney then		-- Lost Money
@@ -46,7 +46,7 @@ local function OnEvent(self, event, ...)
 
 	self.text:SetText(formatMoney(NewMoney))
 
-	ElvData['gold'][E.myrealm][E.myname] = NewMoney
+	ElvDB['gold'][E.myrealm][E.myname] = NewMoney
 end
 
 local function Click()
@@ -69,10 +69,10 @@ local function OnEnter(self)
 	local totalGold = 0
 	GameTooltip:AddLine(L["Character: "])
 
-	for k,_ in pairs(ElvData['gold'][E.myrealm]) do
-		if ElvData['gold'][E.myrealm][k] then
-			GameTooltip:AddDoubleLine(k, FormatTooltipMoney(ElvData['gold'][E.myrealm][k]), 1, 1, 1, 1, 1, 1)
-			totalGold=totalGold+ElvData['gold'][E.myrealm][k]
+	for k,_ in pairs(ElvDB['gold'][E.myrealm]) do
+		if ElvDB['gold'][E.myrealm][k] then
+			GameTooltip:AddDoubleLine(k, FormatTooltipMoney(ElvDB['gold'][E.myrealm][k]), 1, 1, 1, 1, 1, 1)
+			totalGold=totalGold+ElvDB['gold'][E.myrealm][k]
 		end
 	end
 

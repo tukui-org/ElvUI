@@ -147,6 +147,43 @@ do
 	end
 end
 
+local day, hour, minute, second = 86400, 3600, 60, 1
+function formatTime(s)
+	if s >= day then
+		return format("%dd", ceil(s / hour))
+	elseif s >= hour then
+		return format("%dh", ceil(s / hour))
+	elseif s >= minute then
+		return format("%dm", ceil(s / minute))
+	elseif s >= minute / 12 then
+		return floor(s)
+	end
+	
+	return format("%.1f", s)
+end
+
+local function updateText(self, elapsed)
+	if self.timeLeft then
+		self.elapsed = (self.elapsed or 0) + elapsed
+		if self.elapsed >= 0.1 then
+			if not self.first then
+				self.timeLeft = self.timeLeft - self.elapsed
+			else
+				self.timeLeft = self.timeLeft - GetTime()
+				self.first = false
+			end
+			if self.timeLeft > 0 then
+				local time = formatTime(self.timeLeft)
+				self.text:SetText(time)
+			else
+				self.text:SetText('')
+				self:SetScript("OnUpdate", nil)
+			end
+			self.elapsed = 0
+		end
+	end
+end
+
 
 local function resetIcon(icon, frame, count, duration, remaining)
 	if icon.onlyShowMissing then
@@ -154,13 +191,20 @@ local function resetIcon(icon, frame, count, duration, remaining)
 	else
 		icon:Show()
 		if icon.cd then
-			if duration and duration > 0 then
+			if duration and duration > 0 and icon.style ~= 'text' then
 				icon.cd:SetCooldown(remaining - duration, duration)
 				icon.cd:Show()
 			else
 				icon.cd:Hide()
 			end
 		end
+		
+		if icon.style == 'text' then
+			icon.timeLeft = remaining
+			icon.first = true;
+			icon:SetScript('OnUpdate', updateText)
+		end
+		
 		if icon.count then
 			icon.count:SetText((count > 1 and count))
 		end

@@ -142,17 +142,6 @@ local function OnEnter(self)
 		end
 	end	
 
-	local timeText
-	local Hr, Min, AmPm = CalculateTimeValues(true)
-
-	GameTooltip:AddLine(" ")
-	timeText = E.db.datatexts.localtime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME
-	if AmPm == -1 then
-			GameTooltip:AddDoubleLine(timeText, string.format(europeDisplayFormat_nocolor, Hr, Min), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
-	else
-			GameTooltip:AddDoubleLine(timeText, string.format(ukDisplayFormat_nocolor, Hr, Min, APM[AmPm]), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
-	end
-
 	local oneraid, lockoutColor
 	for i = 1, GetNumSavedInstances() do
 		local name, _, reset, _, locked, extended, _, isRaid, maxPlayers, difficulty, numEncounters, encounterProgress  = GetSavedInstanceInfo(i)
@@ -178,6 +167,25 @@ local function OnEnter(self)
 				GameTooltip:AddDoubleLine(format(lockoutInfoFormatNoEnc, maxPlayers, idiff, name), formatTime, 1,1,1, lockoutColor.r,lockoutColor.g,lockoutColor.b)
 			end
 		end
+	end	
+	
+	GameTooltip:AddLine(" ")
+	GameTooltip:AddLine(L["World Boss(s)"])	
+	local quests = GetQuestsCompleted();
+	local shaKilled, galleonKilled = quests[32099], quests[32098]
+	GameTooltip:AddDoubleLine(L['Sha of Anger']..':', shaKilled and L['Defeated'] or L['Undefeated'], 1, 1, 1, 0.8, 0.8, 0.8)
+	GameTooltip:AddDoubleLine(L['Galleon']..':', galleonKilled and L['Defeated'] or L['Undefeated'], 1, 1, 1, 0.8, 0.8, 0.8)
+	
+	
+	local timeText
+	local Hr, Min, AmPm = CalculateTimeValues(true)
+
+	GameTooltip:AddLine(" ")
+	timeText = E.db.datatexts.localtime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME
+	if AmPm == -1 then
+		GameTooltip:AddDoubleLine(timeText, string.format(europeDisplayFormat_nocolor, Hr, Min), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
+	else
+		GameTooltip:AddDoubleLine(timeText, string.format(ukDisplayFormat_nocolor, Hr, Min, APM[AmPm]), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
 	end	
 	
 	GameTooltip:Show()

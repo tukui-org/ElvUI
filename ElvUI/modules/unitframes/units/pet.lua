@@ -249,6 +249,7 @@ function UF:Update_PetFrame(frame, db)
 		end
 	end	
 	
+	
 	--OverHealing
 	do
 		local healPrediction = frame.HealPrediction
@@ -276,7 +277,7 @@ function UF:Update_PetFrame(frame, db)
 	
 	--Combat Fade
 	do
-		if ElvUF_Player then
+		if ElvUF_Player and not InCombatLockdown() then
 			frame:SetParent(ElvUF_Player)
 		end
 	end	

@@ -39,80 +39,49 @@ local ACR = LibStub("AceConfigRegistry-3.0")
 local LibDualSpec = LibStub('LibDualSpec-1.0')
 
 function AddOn:OnInitialize()
-	if not ElvCharacterData then
-		ElvCharacterData = {};
+	if not ElvCharacterDB then
+		ElvCharacterDB = {};
 	end
+	
+	ElvCharacterData = nil; --Depreciated
+	ElvPrivateData = nil; --Depreciated
+	ElvData = nil; --Depreciated
 	
 	self.db = table.copy(self.DF.profile, true);
 	self.global = table.copy(self.DF.global, true);
-	local dbProfileKey
-	if ElvData then
-		if ElvData.global then
-			self:CopyTable(self.global, ElvData.global)
+	if ElvDB then
+		if ElvDB.global then
+			self:CopyTable(self.global, ElvDB.global)
 		end
 		
 		local profileKey
-		if ElvData.profileKeys then
-			profileKey = ElvData.profileKeys[self.myname..' - '..self.myrealm]
+		if ElvDB.profileKeys then
+			profileKey = ElvDB.profileKeys[self.myname..' - '..self.myrealm]
 		end
 		
-		if profileKey and ElvData.profiles and ElvData.profiles[profileKey] then
-			dbProfileKey = profileKey
-			self:CopyTable(self.db, ElvData.profiles[profileKey])
+		if profileKey and ElvDB.profiles and ElvDB.profiles[profileKey] then
+			self:CopyTable(self.db, ElvDB.profiles[profileKey])
 		end
 	end
 
 	self.private = table.copy(self.privateVars.profile, true);
-	if ElvPrivateData then
+	if ElvPrivateDB then
 		local profileKey
-		if ElvPrivateData.profileKeys then
-			profileKey = ElvPrivateData.profileKeys[self.myname..' - '..self.myrealm]
+		if ElvPrivateDB.profileKeys then
+			profileKey = ElvPrivateDB.profileKeys[self.myname..' - '..self.myrealm]
 		end
 				
-		if profileKey and ElvPrivateData.profiles and ElvPrivateData.profiles[profileKey] then		
-			self:CopyTable(self.private, ElvPrivateData.profiles[profileKey])
+		if profileKey and ElvPrivateDB.profiles and ElvPrivateDB.profiles[profileKey] then		
+			self:CopyTable(self.private, ElvPrivateDB.profiles[profileKey])
 		end
 	end	
-	
-	if self.db.install_complete then
-		self.private.install_complete = self.db.install_complete;
-		self.db.install_complete = nil;
-	end
-	
-	if self.db.theme then
-		if ElvData.profileKeys and dbProfileKey then
-			for name, key in pairs(ElvData.profileKeys) do
-				if key == dbProfileKey then
-					if ElvPrivateData.profiles and ElvPrivateData.profiles[name] then
-						ElvPrivateData.profiles[name].theme = self.db.theme
-					end
-				end
-			end
-		end
-		self.private.theme = self.db.theme
-		self.db.theme = nil;
-	end	
-	
-	
-	if self.private.theme == 'pixelPerfect' then
-		self.private.general.pixelPerfect = true;
-	elseif self.private.install_complete and (self.private.theme ~= 'pixelPerfect' and self.private.theme ~= nil) then
-		self.private.general.pixelPerfect = false;
-	end
-	
-	if self.private.install_complete and not self.global.newThemePrompt and not self.private.general.pixelPerfect then 
-		self.__showMessage = true;
-	elseif not self.private.theme and not self.private.install_complete then
-		self.__setupTheme = true;
-	end		
-	
+
 	if self.private.general.pixelPerfect then
 		self.Border = 1;
 		self.Spacing = 0;
 		self.PixelMode = true;
 	end
-		
-	
+
 	self:UIScale();
 	self:UpdateMedia();
 	
@@ -151,20 +120,16 @@ end
 
 function AddOn:OnProfileReset()
 	local profileKey
-	if ElvPrivateData.profileKeys then
-		profileKey = ElvPrivateData.profileKeys[self.myname..' - '..self.myrealm]
+	if ElvPrivateDB.profileKeys then
+		profileKey = ElvPrivateDB.profileKeys[self.myname..' - '..self.myrealm]
 	end
 	
-	if profileKey and ElvPrivateData.profiles and ElvPrivateData.profiles[profileKey] then
-		ElvPrivateData.profiles[profileKey] = nil;
+	if profileKey and ElvPrivateDB.profiles and ElvPrivateDB.profiles[profileKey] then
+		ElvPrivateDB.profiles[profileKey] = nil;
 	end	
 		
-	ElvCharacterData = nil;
+	ElvCharacterDB = nil;
 	ReloadUI()
-end
-
-function AddOn:OnProfileCopied(arg1, arg2, arg3)
-	self:StaticPopup_Show("COPY_PROFILE")
 end
 
 function AddOn:LoadConfig()	

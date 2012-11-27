@@ -157,10 +157,12 @@ E.Options.args.chat = {
 					name = L['Lock Positions'],
 					desc = L['Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish.'],	
 				},
-				spacer = {
+				panelTabBackdrop = {
 					order = 99,
-					type = 'description',
-					name = ' '
+					type = 'toggle',
+					name = L['Tab Panel'],
+					desc = L['Toggle the chat tab panel backdrop.'],
+					set = function(info, value) E.db.chat.panelTabBackdrop = value; E:GetModule('Layout'):ToggleChatPanels(); end,
 				},
 				panelBackdrop = {
 					order = 100,
@@ -192,7 +194,7 @@ E.Options.args.chat = {
 					min = 150, max = 700, step = 1,
 				},
 				keywords = {
-					order = 103,
+					order = 105,
 					name = L['Keywords'],
 					desc = L['List of words to color in chat if found in a message. If you wish to add multiple words you must seperate the word with a comma. To search for your current name you can use %MYNAME%.\n\nExample:\n%MYNAME%, ElvUI, RBGs, Tank'],
 					type = 'input',
@@ -200,7 +202,7 @@ E.Options.args.chat = {
 					set = function(info, value) E.db.chat[ info[#info] ] = value; CH:UpdateChatKeywords() end,
 				},				
 				panelBackdropNameLeft = {
-					order = 104,
+					order = 106,
 					type = 'input',
 					width = 'full',
 					name = L['Panel Texture (Left)'],
@@ -211,7 +213,7 @@ E.Options.args.chat = {
 					end,
 				},
 				panelBackdropNameRight = {
-					order = 105,
+					order = 107,
 					type = 'input',
 					width = 'full',
 					name = L['Panel Texture (Right)'],

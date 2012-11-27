@@ -16,7 +16,7 @@ P['general'] = {
 	['autoRoll'] = false,
 	['vendorGrays'] = true,
 	['autoAcceptInvite'] = false,
-	['bottomPanel'] = false,
+	['bottomPanel'] = true,
 
 	["fontSize"] = 11,
 	["font"] = "Friz Quadrata TT",
@@ -85,13 +85,16 @@ P['bags'] = {
 
 --NamePlate
 P["nameplate"] = {
-	['font'] = 'ElvUI Font',
-	['fontSize'] = 10,
-	['fontOutline'] = 'OUTLINE',
+	['font'] = 'ElvUI Pixel',
+	['fontSize'] = 7,
+	['fontOutline'] = 'MONOCHROMEOUTLINE',
+	['auraFont'] = 'ElvUI Pixel',
+	['auraFontSize'] = 7,
+	['auraFontOutline'] = 'MONOCHROMEOUTLINE',
 	
 	["markBGHealers"] = true,
-	["width"] = 114,
-	["height"] = 8,
+	["width"] = 112,
+	["height"] = 7,
 	["cbheight"] = 5,
 	["showlevel"] = true,
 	["enhancethreat"] = true,
@@ -167,6 +170,7 @@ P['chat'] = {
 	['panelBackdropNameLeft'] = '',
 	['panelBackdropNameRight'] = '',
 	['panelBackdrop'] = 'SHOWBOTH',
+	['panelTabBackdrop'] = true,
 	['editBoxPosition'] = 'BELOW_CHAT',
 
 	['tabFont'] = 'Friz Quadrata TT',
@@ -242,7 +246,7 @@ P['unitframe'] = {
 		['customhealthbackdrop'] = true,
 		['classbackdrop'] = false,
 		['auraBarByType'] = true,
-		
+
 		['castColor'] = { r = .66,g = .66,b = .66 },
 		['castNoInterrupt'] = { r = 0.78, g = 0.25, b = 0.25 },
 		
@@ -250,7 +254,7 @@ P['unitframe'] = {
 		['health_backdrop'] = { r = 97/255,g = 97/255,b = 97/255 },
 		['tapped'] = { r = 0.55, g = 0.57, b = 0.61},
 		['disconnected'] = { r = 0, g = 0, b = 0},
-		['auraBarBuff'] = P.general.bordercolor,
+		['auraBarBuff'] = { r = .31,g = .31,b = .31 },
 		['auraBarDebuff'] = {r = 0.8, g = 0.1, b = 0.1},
 		['power'] = {
 			["MANA"] = {r = 0.31, g = 0.45, b = 0.63},
@@ -482,7 +486,7 @@ P['unitframe'] = {
 			},	
 			['combobar'] = {
 				['enable'] = true,
-				['fill'] = 'spaced',
+				['fill'] = 'fill',
 				['height'] = 10,
 			},		
 			['aurabar'] = {
@@ -784,7 +788,6 @@ P['unitframe'] = {
 				['enable'] = true,
 				['size'] = 8,
 				['fontSize'] = 10,
-				['colorIcons'] = true,
 			},			
 		},
 		['pettarget'] = {
@@ -1080,7 +1083,6 @@ P['unitframe'] = {
 				['enable'] = true,
 				['size'] = 8,
 				['fontSize'] = 10,
-				['colorIcons'] = true,
 			},
 			['roleIcon'] = {
 				['enable'] = true,
@@ -1192,7 +1194,6 @@ P['unitframe'] = {
 				['enable'] = true,
 				['size'] = 8,
 				['fontSize'] = 10,
-				['colorIcons'] = true,
 			},
 			['rdebuffs'] = {
 				['enable'] = false,
@@ -1293,7 +1294,6 @@ P['unitframe'] = {
 				['enable'] = true,
 				['size'] = 8,
 				['fontSize'] = 10,
-				['colorIcons'] = true,
 			},
 			['rdebuffs'] = {
 				['enable'] = false,
@@ -1407,7 +1407,6 @@ P['unitframe'] = {
 				['enable'] = true,
 				['size'] = 8,
 				['fontSize'] = 10,
-				['colorIcons'] = true,
 			},	
 			['raidicon'] = {
 				['enable'] = true,
@@ -1484,8 +1483,8 @@ P["actionbar"] = {
 		['backdrop'] = true,
 		['heightMult'] = 2,
 		['widthMult'] = 1,
-		["buttonsize"] = 30,
-		["buttonspacing"] = 4,		
+		["buttonsize"] = 32,
+		["buttonspacing"] = 2,		
 		['alpha'] = 1,
 		['paging'] = {
 			["DRUID"] = "[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 8; [bonusbar:3] 9; [bonusbar:4] 10;",
@@ -1504,8 +1503,8 @@ P["actionbar"] = {
 		['backdrop'] = false,
 		['heightMult'] = 1,
 		['widthMult'] = 1,
-		["buttonsize"] = 30,
-		["buttonspacing"] = 4,	
+		["buttonsize"] = 32,
+		["buttonspacing"] = 2,	
 		['alpha'] = 1,
 		['paging'] = {},
 		['visibility'] = "[vehicleui] hide; [overridebar] hide; [petbattle] hide; show",
@@ -1519,8 +1518,8 @@ P["actionbar"] = {
 		['backdrop'] = false,
 		['heightMult'] = 1,
 		['widthMult'] = 1,
-		["buttonsize"] = 30,
-		["buttonspacing"] = 4,
+		["buttonsize"] = 32,
+		["buttonspacing"] = 2,
 		['alpha'] = 1,
 		['paging'] = {},
 		['visibility'] = "[vehicleui] hide; [overridebar] hide; [petbattle] hide; show",
@@ -1534,8 +1533,8 @@ P["actionbar"] = {
 		['backdrop'] = true,
 		['heightMult'] = 1,
 		['widthMult'] = 1,
-		["buttonsize"] = 30,
-		["buttonspacing"] = 4,
+		["buttonsize"] = 32,
+		["buttonspacing"] = 2,
 		['alpha'] = 1,
 		['paging'] = {},
 		['visibility'] = "[vehicleui] hide; [overridebar] hide; [petbattle] hide; show",
@@ -1546,11 +1545,11 @@ P["actionbar"] = {
 		['buttons'] = 6,
 		['buttonsPerRow'] = 3,
 		['point'] = 'BOTTOMLEFT',
-		['backdrop'] = true,
+		['backdrop'] = false,
 		['heightMult'] = 1,
 		['widthMult'] = 1,
-		["buttonsize"] = 30,
-		["buttonspacing"] = 4,
+		["buttonsize"] = 32,
+		["buttonspacing"] = 2,
 		['alpha'] = 1,
 		['paging'] = {},
 		['visibility'] = "[vehicleui] hide; [overridebar] hide; [petbattle] hide; show",
@@ -1564,8 +1563,8 @@ P["actionbar"] = {
 		['backdrop'] = true,
 		['heightMult'] = 1,
 		['widthMult'] = 1,
-		["buttonsize"] = 30,
-		["buttonspacing"] = 4,
+		["buttonsize"] = 32,
+		["buttonspacing"] = 2,
 		['alpha'] = 1,
 		['visibility'] = "[petbattle] hide;[pet,novehicleui,nooverridebar,nopossessbar] show;hide",
 	},

@@ -74,18 +74,6 @@ function TOTEMS:PositionAndSize()
 	self:Update()
 end
 
-function TOTEMS:OnClick()
-	DestroyTotem(self:GetID());
-end
-
-function TOTEMS:OnEnter()
-	GameTooltip:SetOwner(self, "ANCHOR_BOTTOMRIGHT");
-	GameTooltip:SetTotem(self:GetID());
-end
-
-function TOTEMS:OnLeave()
-	GameTooltip:Hide()
-end
 
 function TOTEMS:Initialize()
 	self.db = E.db.general.totems
@@ -101,10 +89,12 @@ function TOTEMS:Initialize()
 		frame:SetTemplate('Default')
 		frame:StyleButton()
 		frame:Hide()
-		frame:RegisterForClicks('RightButtonUp')
-		frame:SetScript('OnClick', self.OnClick)
-		frame:SetScript('OnEnter', self.OnEnter)
-		frame:SetScript('OnLeave', self.OnLeave)
+		
+		_G['TotemFrameTotem'..i]:ClearAllPoints();
+		_G['TotemFrameTotem'..i]:SetParent(frame);
+		_G['TotemFrameTotem'..i]:SetAllPoints(frame);
+		_G['TotemFrameTotem'..i]:StripTextures()
+		_G['TotemFrameTotem'..i]:SetAlpha(0)
 		
 		frame.iconTexture = frame:CreateTexture(nil, 'ARTWORK')
 		frame.iconTexture:SetInside()

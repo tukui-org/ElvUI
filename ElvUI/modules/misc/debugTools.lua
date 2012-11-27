@@ -132,13 +132,12 @@ function D:TaintError(event, addonName, addonFunc)
 			end
 		end
 		
-		if instanceType == "arena" then
-			E:StaticPopup_Show('YOUR_FUCKED');
+		if not instanceType == "arena" then
+			E:StaticPopup_Show('TALENT_TAINT')
 		else
-			E:StaticPopup_Show('TALENT_TAINT');
+			E:StaticPopup_Show('YOUR_FUCKED');
 		end
 	end
-
 
 	if GetCVarBool('scriptErrors') ~= 1 or E.db.general.taintLog ~= true then return end
 	ScriptErrorsFrame_OnError(L["%s: %s tried to call the protected function '%s'."]:format(event, addonName or "<name>", addonFunc or "<func>"), false)

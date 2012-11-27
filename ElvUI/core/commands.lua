@@ -21,7 +21,7 @@ function E:DisableAddon(addon)
 end
 
 function E:ResetGold()
-	ElvData.gold = nil;
+	ElvDB.gold = nil;
 	ReloadUI();
 end
 

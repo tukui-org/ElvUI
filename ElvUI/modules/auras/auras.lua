@@ -204,16 +204,16 @@ function A:PostDrag(position)
 	end
 	
 	if string.find(position, "LEFT") then
-		ElvUIPlayerBuffs:Point("TOPLEFT", AurasHolder, "TOPLEFT", E.Border, -E.Border)
+		ElvUIPlayerBuffs:Point("TOPLEFT", AurasHolder, "TOPLEFT", 2, -2)
 		
 		if ElvUIPlayerDebuffs then
-			ElvUIPlayerDebuffs:Point("BOTTOMLEFT", AurasHolder, "BOTTOMLEFT", E.Border, E.Border)
+			ElvUIPlayerDebuffs:Point("BOTTOMLEFT", AurasHolder, "BOTTOMLEFT", 2, 2)
 		end
 	else
-		ElvUIPlayerBuffs:Point("TOPRIGHT", AurasHolder, "TOPRIGHT", -E.Border, -E.Border)
+		ElvUIPlayerBuffs:Point("TOPRIGHT", AurasHolder, "TOPRIGHT", -2, -2)
 		
 		if ElvUIPlayerDebuffs then
-			ElvUIPlayerDebuffs:Point("BOTTOMRIGHT", AurasHolder, "BOTTOMRIGHT", -E.Border, E.Border)	
+			ElvUIPlayerDebuffs:Point("BOTTOMRIGHT", AurasHolder, "BOTTOMRIGHT", -2, 2)	
 		end
 	end
 end
