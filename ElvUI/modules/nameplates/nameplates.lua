@@ -304,6 +304,7 @@ function NP:HealthBar_OnShow(frame)
 	while frame.hp:GetEffectiveScale() < 1 do
 		frame.hp:SetScale(frame.hp:GetScale() + 0.01)
 	end
+	frame.AuraWidget:SetScale(frame.hp:GetScale())
 	
 	--Level Text
 	frame.isBoss = frame.hp.boss:IsShown()
@@ -325,6 +326,7 @@ function NP:OnHide(frame)
 	frame.hp:SetStatusBarColor(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor)
 	frame.hp.name:SetTextColor(1, 1, 1)
 	frame.hp:SetScale(1)
+	frame.AuraWidget:SetScale(1)
 	frame.cb:Hide()
 	frame.unit = nil
 	frame.isMarked = nil
