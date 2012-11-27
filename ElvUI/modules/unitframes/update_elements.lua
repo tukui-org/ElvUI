@@ -1104,7 +1104,7 @@ function UF:UpdateAuraWatch(frame)
 				icon:Width(db.size);
 				icon:Height(db.size);
 				icon:ClearAllPoints()
-				icon:SetPoint(spell["point"], E.PixelMode and UF:GetPositionOffset(spell["point"], 1) or 0, E.PixelMode and UF:GetPositionOffset(spell["point"], -1) or 0);
+				icon:SetPoint(spell["point"], E.PixelMode and UF:GetPositionOffset(spell["point"], 1) or 0, E.PixelMode and UF:GetPositionOffset(spell["point"], 1) or 0);
 
 				if not icon.icon then
 					icon.icon = icon:CreateTexture(nil, "BORDER");
@@ -1123,13 +1123,16 @@ function UF:UpdateAuraWatch(frame)
 						icon.icon:SetVertexColor(spell["color"].r, spell["color"].g, spell["color"].b);
 					else
 						icon.icon:SetVertexColor(0.8, 0.8, 0.8);
-					end			
+					end		
+					icon.text:Hide()
 				elseif icon.style == 'texturedIcon' then
 					icon.icon:SetVertexColor(1, 1, 1)
 					icon.icon:SetTexCoord(.18, .82, .18, .82);
 					icon.icon:SetTexture(icon.image);
+					icon.text:Hide()
 				else
 					icon.icon:SetTexture(nil)
+					icon.text:Show()
 					icon.text:SetTextColor(spell["color"].r, spell["color"].g, spell["color"].b)
 				end
 				
