@@ -270,7 +270,7 @@ function A:Initialize()
 	if E.private.auras.enable ~= true then TemporaryEnchantFrame:Kill(); return end
 	
 	local holder = CreateFrame("Frame", "AurasHolder", E.UIParent)
-	holder:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", -(E.PixelMode and 6 or 8), (E.PixelMode and 1 or 2))
+	holder:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", -(E.PixelMode and 4 or 8), 2)
 	holder:Width(456)
 	holder:Height(E.MinimapHeight)
 	

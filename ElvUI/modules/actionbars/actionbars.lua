@@ -174,9 +174,9 @@ function AB:PositionAndSizeBar(barName)
 		end
 		
 		if i > numButtons then
-			button:Hide()
+			button:Hide();
 		else
-			button:Show()
+			button:Show();
 		end
 		
 		self:StyleButton(button);
@@ -193,8 +193,7 @@ function AB:PositionAndSizeBar(barName)
 	else
 		bar:Hide()
 		UnregisterStateDriver(bar, "show");
-	end 
-	
+	end
 	
 	E:SetMoverSnapOffset('ElvAB_'..bar.id, bar.db.buttonspacing / 2)
 end
@@ -835,11 +834,6 @@ function AB:FixABPositions()
 			E:SaveMoverPosition("ElvAB_3")
 		end
 		E:Print("ActionBar 2 and 3 have been repositioned")
-	elseif ABdb.bar2.enabled == true and ABdb.bar1.heightMult == 2 then
-		ElvAB_2:ClearAllPoints()
-		ElvAB_2:Point("BOTTOM",ElvUI_Bar1,"TOP",0,-(E.PixelMode and 36 or 38))
-		E:SaveMoverPosition("ElvAB_2")
-		E:Print("ActionBar 2 has been repositioned")
 	end
 end
 
