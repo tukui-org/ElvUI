@@ -16,10 +16,8 @@ local function LoadSkin()
 	LossOfControlFrame.AbilityName:ClearAllPoints()
 
 	local font = E["media"].normFont
-	LossOfControlFrame.Anim:HookScript('OnFinished', function()
-		LossOfControlFrame.AbilityName:FontTemplate(font, 28, 'OUTLINE')
-		LossOfControlFrame.TimeLeft.NumberText:FontTemplate(font, 28, 'OUTLINE')
-		LossOfControlFrame.TimeLeft.SecondsText:FontTemplate(font, 28, 'OUTLINE')
+	hooksecurefunc('RaidNotice_UpdateSlot', function(textString)
+		textString:FontTemplate(font, 28, 'OUTLINE')
 	end)
 	
 
