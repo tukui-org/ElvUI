@@ -33,7 +33,7 @@ function UF:Construct_TargetFrame(frame)
 	
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
 	
-	frame:Point('BOTTOMRIGHT', E.UIParent, 'BOTTOM', 417, 75)
+	frame:Point('BOTTOMRIGHT', E.UIParent, 'BOTTOM', 413, 68)
 	E:CreateMover(frame, frame:GetName()..'Mover', 'Target Frame', nil, nil, nil, 'ALL,SOLO')
 end
 

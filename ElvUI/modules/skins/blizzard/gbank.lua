@@ -93,7 +93,7 @@ local function LoadSkin()
 			end
 			button:SetBackdropBorderColor(r, g, b)
 		end		
-	end)
+	end)	
 	
 	--Popup
 	GuildBankPopupFrame:StripTextures()

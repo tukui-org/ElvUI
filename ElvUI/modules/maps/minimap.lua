@@ -5,6 +5,8 @@ E.Minimap = M
 local calendar_string = string.gsub(SLASH_CALENDAR1, "/", "")
 calendar_string = string.gsub(calendar_string, "^%l", string.upper)
 
+
+
 local menuFrame = CreateFrame("Frame", "MinimapRightClickMenu", E.UIParent, "UIDropDownMenuTemplate")
 local menuList = {
 	{text = CHARACTER_BUTTON,
@@ -382,6 +384,15 @@ function M:Initialize()
 			FarmModeMap:Hide()
 		end
 	end)
+	
+	--PET JOURNAL TAINT FIX AS OF 5.1
+	PetJournal_LoadUI();
+	local info = UIPanelWindows['PetJournalParent'];
+	for name, value in pairs(info) do
+		PetJournalParent:SetAttribute("UIPanelLayout-"..name, value);
+	end	
+
+	PetJournalParent:SetAttribute("UIPanelLayout-defined", true);	
 end
 
 E:RegisterInitialModule(M:GetName())

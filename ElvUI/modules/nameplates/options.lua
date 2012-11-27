@@ -209,6 +209,31 @@ E.Options.args.nameplate = {
 								['THICKOUTLINE'] = 'THICKOUTLINE',
 							},
 						},	
+						auraFont = {
+							type = "select", dialogControl = 'LSM30_Font',
+							order = 7,
+							name = L['Aura'].. ' '..L["Font"],
+							values = AceGUIWidgetLSMlists.font,
+						},
+						auraFontSize = {
+							order = 8,
+							name = L['Aura'].. ' '..L["Font Size"],
+							type = "range",
+							min = 6, max = 22, step = 1,
+						},	
+						auraFontOutline = {
+							order = 9,
+							name = L['Aura'].. ' '..L["Font Outline"],
+							desc = L["Set the font outline."],
+							type = "select",
+							values = {
+								['NONE'] = L['None'],
+								['OUTLINE'] = 'OUTLINE',
+								['MONOCHROME'] = 'MONOCHROME',
+								['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
+								['THICKOUTLINE'] = 'THICKOUTLINE',
+							},
+						},							
 					},
 				},				
 				auras = {

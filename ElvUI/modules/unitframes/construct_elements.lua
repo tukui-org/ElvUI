@@ -607,7 +607,7 @@ end
 
 function UF:Construct_RaidIcon(frame)
 	local tex = (frame.RaisedElementParent or frame):CreateTexture(nil, "OVERLAY")
-	tex:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\raidicons.blp") 
+	tex:SetTexture([[Interface\TargetingFrame\UI-RaidTargetingIcons]]) 
 	tex:Size(18)
 	tex:Point("CENTER", frame.Health, "TOP", 0, 2)
 	tex.SetTexture = E.noop

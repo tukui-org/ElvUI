@@ -177,6 +177,8 @@ L['Wrap After'] = true;
 L['Your Auras First'] = true;
 
 --Chat
+L['Tab Panel'] = true;
+L['Toggle the chat tab panel backdrop.'] = true;
 L['Chat EditBox Position'] = true;
 L['Position of the Chat EditBox, if datatexts are disabled this will be forced to be above chat.'] = true;
 L['Below Chat'] = true;
@@ -253,7 +255,9 @@ Example: Interface\AddOns\ElvUI\media\textures\copy
 Or for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here.]=] ] = true;
 
 --Config / Install
-L['A new theme called Pixel Perfect has been added for ElvUI! This theme will increase overall performance and provides a cleaner appearance to all of ElvUI. Unfortunately to apply this theme it will require some settings getting reset. Would you like to try the Pixel Perfect theme?'] = true;
+L["Pixel Perfect Set"] = true;
+L['The Pixel Perfect option will change the overall apperance of your UI. Using Pixel Perfect is a slight performance increase over the traditional layout.'] = true;
+L['Using this option will cause your borders around frames to be 1 pixel wide instead of 3 pixel. You may have to finish the installation to notice a differance. By default this is enabled.'] = true;
 L['Dark'] = true;
 L["Auras Set"] = true;
 L["Auras System"] = true;
@@ -293,7 +297,7 @@ L["Please press the continue button to go onto the next step."] = true;
 L["Resolution Style Set"] = true;
 L["Resolution"] = true;
 L["Run the installation process."] = true;
-L["Select the type of aura system you want to use with ElvUI's unitframes. The integrated system utilizes both aura-bars and aura-icons. The icons only system will display only icons and aurabars won't be used. The classic system will configure your auras to how they were pre-v4."] = true;
+L["Select the type of aura system you want to use with ElvUI's unitframes. The integrated system utilizes both aura-bars and aura-icons. The icons only system will display only icons and aurabars won't be used. The classic system will configure your auras to be default."] = true;
 L["Setup Chat"] = true;
 L["Setup CVars"] = true;
 L["Skip Process"] = true;
@@ -481,7 +485,7 @@ L["Default Font"] = true;
 L["Font Size"] = true; --Also used in UnitFrames
 L["Fonts"] = true;
 L["Main backdrop color of the UI."] = true;
-L["Main border color of the UI."] = true;
+L["Main border color of the UI. |cffFF0000This is disabled if you are using the pixel perfect theme.|r"] = true;
 L["Media"] = true;
 L["Primary Texture"] = true;
 L["Secondary Texture"] = true;
@@ -739,10 +743,8 @@ L["Classbar"] = true;
 L['Click Through'] = true;
 L["Color health by amount remaining."] = true;
 L["Color health by classcolor or reaction."] = true;
-L["Color Icons"] = true;
 L["Color power by classcolor or reaction."] = true;
 L["Color the health backdrop by class or reaction."] = true;
-L["Color the icon to their set color in the filters section, otherwise use the icon texture."] = true;
 L["Color the unit healthbar if there is a debuff that can be dispelled by you."] = true;
 L["Color"] = true;
 L["Column Point"] = true;

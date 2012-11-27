@@ -432,10 +432,20 @@ local function UpdateFilterGroup()
 							['BOTTOM'] = 'BOTTOM',
 						}
 					},
+					style = {
+						name = L['Style'],
+						order = 3,
+						type = 'select',	
+						values = {
+							['coloredIcon'] = L['Colored Icon'],
+							['texturedIcon'] = L['Textured Icon'],
+							['text'] = L['Text'],
+						},
+					},					
 					color = {
 						name = L['Color'],
 						type = 'color',
-						order = 3,
+						order = 4,
 						get = function(info)
 							local t = E.global.unitframe.buffwatch.PET[tableIndex][ info[#info] ]
 							return t.r, t.g, t.b, t.a
@@ -448,13 +458,14 @@ local function UpdateFilterGroup()
 					},
 					anyUnit = {
 						name = L['Any Unit'],
-						order = 4,
-						type = 'toggle',					
+						order = 5,
+						type = 'toggle',	
 					},
 					onlyShowMissing = {
 						name = L['Show Missing'],
-						order = 5,
-						type = 'toggle',						
+						order = 6,
+						type = 'toggle',	
+						disabled = function() return E.global.unitframe.buffwatch.PET[tableIndex].style == 'text' end,
 					},
 				},			
 			}
@@ -592,10 +603,20 @@ local function UpdateFilterGroup()
 							['BOTTOM'] = 'BOTTOM',
 						}
 					},
+					style = {
+						name = L['Style'],
+						order = 3,
+						type = 'select',	
+						values = {
+							['coloredIcon'] = L['Colored Icon'],
+							['texturedIcon'] = L['Textured Icon'],
+							['text'] = L['Text'],
+						},
+					},					
 					color = {
 						name = L['Color'],
 						type = 'color',
-						order = 3,
+						order = 4,
 						get = function(info)
 							local t = E.global.unitframe.buffwatch[E.myclass][tableIndex][ info[#info] ]
 							return t.r, t.g, t.b, t.a
@@ -608,13 +629,14 @@ local function UpdateFilterGroup()
 					},
 					anyUnit = {
 						name = L['Any Unit'],
-						order = 4,
-						type = 'toggle',					
+						order = 5,
+						type = 'toggle',	
 					},
 					onlyShowMissing = {
 						name = L['Show Missing'],
-						order = 5,
-						type = 'toggle',						
+						order = 6,
+						type = 'toggle',	
+						disabled = function() return E.global.unitframe.buffwatch[E.myclass][tableIndex].style == 'text' end,
 					},
 				},			
 			}
@@ -1268,7 +1290,16 @@ E.Options.args.unitframe.args.player = {
 			name = L['Combat Fade'],
 			desc = L['Fade the unitframe when out of combat, not casting, no target exists.'],
 			type = 'toggle',
-			set = function(info, value) E.db.unitframe.units['player'][ info[#info] ] = value; UF:CreateAndUpdateUF('player'); UF:CreateAndUpdateUF('pet') end,
+			set = function(info, value) 
+				E.db.unitframe.units['player'][ info[#info] ] = value; 
+				UF:CreateAndUpdateUF('player'); 
+
+				if value == true then 
+					ElvUF_Pet:SetParent(ElvUF_Player)
+				else 
+					ElvUF_Pet:SetParent(ElvUF_Parent) 
+				end 
+			end,
 		},
 		healPrediction = {
 			order = 8,
@@ -5953,12 +5984,6 @@ E.Options.args.unitframe.args.pet = {
 					name = L['Enable'],
 					order = 1,
 				},
-				colorIcons = {
-					type = 'toggle',
-					name = L['Color Icons'],
-					desc = L['Color the icon to their set color in the filters section, otherwise use the icon texture.'],
-					order = 2,					
-				},
 				size = {
 					type = 'range',
 					name = L['Size'],
@@ -8574,12 +8599,6 @@ E.Options.args.unitframe.args.party = {
 					name = L['Enable'],
 					order = 1,
 				},
-				colorIcons = {
-					type = 'toggle',
-					name = L['Color Icons'],
-					desc = L['Color the icon to their set color in the filters section, otherwise use the icon texture.'],
-					order = 2,					
-				},
 				size = {
 					type = 'range',
 					name = L['Size'],
@@ -9345,12 +9364,6 @@ for i=10, 40, 15 do
 						type = 'toggle',
 						name = L['Enable'],
 						order = 1,
-					},
-					colorIcons = {
-						type = 'toggle',
-						name = L['Color Icons'],
-						desc = L['Color the icon to their set color in the filters section, otherwise use the icon texture.'],
-						order = 2,					
 					},
 					size = {
 						type = 'range',

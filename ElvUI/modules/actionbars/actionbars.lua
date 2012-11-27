@@ -174,9 +174,9 @@ function AB:PositionAndSizeBar(barName)
 		end
 		
 		if i > numButtons then
-			button:Hide();
+			button:Hide()
 		else
-			button:Show();
+			button:Show()
 		end
 		
 		self:StyleButton(button);
@@ -193,7 +193,8 @@ function AB:PositionAndSizeBar(barName)
 	else
 		bar:Hide()
 		UnregisterStateDriver(bar, "show");
-	end
+	end 
+	
 	
 	E:SetMoverSnapOffset('ElvAB_'..bar.id, bar.db.buttonspacing / 2)
 end

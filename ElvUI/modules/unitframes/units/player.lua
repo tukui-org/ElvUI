@@ -56,7 +56,7 @@ function UF:Construct_PlayerFrame(frame)
 		
 	frame.CombatFade = true
 
-	frame:Point('BOTTOMLEFT', E.UIParent, 'BOTTOM', -417, 75) --Set to default position	
+	frame:Point('BOTTOMLEFT', E.UIParent, 'BOTTOM', -413, 68) --Set to default position	
 	E:CreateMover(frame, frame:GetName()..'Mover', 'Player Frame', nil, nil, nil, 'ALL,SOLO')
 end
 
@@ -401,6 +401,11 @@ function UF:Update_PlayerFrame(frame, db)
 		if USE_POWERBAR then
 			if not frame:IsElementEnabled('Power') then
 				frame:EnableElement('Power')
+				
+				if frame.DruidAltMana then
+					frame:EnableElement('DruidAltMana')
+				end
+				
 				power:Show()
 			end		
 		
@@ -443,6 +448,11 @@ function UF:Update_PlayerFrame(frame, db)
 		elseif frame:IsElementEnabled('Power') then
 			frame:DisableElement('Power')
 			power:Hide()
+			
+			if frame.DruidAltMana then
+				frame:DisableElement('DruidAltMana')
+				frame.DruidAltMana:Hide()
+			end
 		end
 	end
 	

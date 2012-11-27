@@ -4,7 +4,7 @@ if select(2, UnitClass('player')) ~= "MONK" then return end
 local _, ns = ...
 local oUF = ns.oUF or oUF
 
-local SPELL_POWER_LIGHT_FORCE = SPELL_POWER_LIGHT_FORCE
+local SPELL_POWER_CHI = SPELL_POWER_CHI
 
 oUF.colors.Harmony = { 
 	[1] = {.57, .63, .35, 1},
@@ -17,10 +17,10 @@ oUF.colors.Harmony = {
 local function Update(self, event, unit)
 	local hb = self.Harmony
 	if(hb.PreUpdate) then hb:PreUpdate(event) end
-	local light = UnitPower("player", SPELL_POWER_LIGHT_FORCE)
+	local light = UnitPower("player", SPELL_POWER_CHI)
 	
 	-- if max light changed, show/hide the 5th and update anchors
-	local numPoints = UnitPowerMax("player", SPELL_POWER_LIGHT_FORCE)
+	local numPoints = UnitPowerMax("player", SPELL_POWER_CHI)
 
 	for i = 1, numPoints do
 		if i <= light then
