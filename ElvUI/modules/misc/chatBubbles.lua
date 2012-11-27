@@ -25,6 +25,8 @@ function M:SkinBubble(frame)
 		frame.backdrop2:SetTexture(unpack(E["media"].backdropfadecolor))
 	end
 	
+	frame.text:FontTemplate(nil, 14)
+	
 	frame:SetClampedToScreen(false)
 	frame.isBubblePowered = true
 	frame:HookScript('OnUpdate', M.UpdateBubbleBorder)

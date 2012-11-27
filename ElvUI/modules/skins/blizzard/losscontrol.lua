@@ -16,8 +16,10 @@ local function LoadSkin()
 	LossOfControlFrame.AbilityName:ClearAllPoints()
 
 	local font = E["media"].normFont
-	hooksecurefunc('RaidNotice_UpdateSlot', function(textString)
-		textString:FontTemplate(font, 28, 'OUTLINE')
+	hooksecurefunc('RaidNotice_UpdateSlot', function(textString, table)
+		if table.RAID_NOTICE_MAX_HEIGHT == 32 or table.RAID_NOTICE_MAX_HEIGHT == 28 then
+			textString:FontTemplate(font, 20, 'OUTLINE')
+		end
 	end)
 	
 
