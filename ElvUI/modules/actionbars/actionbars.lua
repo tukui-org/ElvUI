@@ -816,21 +816,21 @@ function AB:FixABPositions()
 	if ABdb.bar3.enabled == true then
 		if ABdb.bar2.enabled == true and ABdb.bar1.heightMult == 2 then
 			ElvAB_2:ClearAllPoints()
-			ElvAB_2:Point("BOTTOM",ElvUI_Bar1,"TOP",0,-(E.PixelMode and 36 or 38))
+			ElvAB_2:Point("BOTTOM",ElvUI_Bar1,"TOP",0,-38)
 			E:SaveMoverPosition("ElvAB_2")
 			ElvAB_3:ClearAllPoints()
-			ElvAB_3:Point("BOTTOM",ElvUI_Bar1,"TOP",0,(E.PixelMode and 0 or 2))
+			ElvAB_3:Point("BOTTOM",ElvUI_Bar1,"TOP",0,2)
 			E:SaveMoverPosition("ElvAB_3")
 		elseif ABdb.bar2.enabled == true and ABdb.bar1.heightMult == 3 then
 			ElvAB_2:ClearAllPoints()
-			ElvAB_2:Point("BOTTOM",ElvUI_Bar1,"TOP",0,-(E.PixelMode and 70 or 72))
+			ElvAB_2:Point("BOTTOM",ElvUI_Bar1,"TOP",0,-72)
 			E:SaveMoverPosition("ElvAB_2")
 			ElvAB_3:ClearAllPoints()
-			ElvAB_3:Point("BOTTOM",ElvUI_Bar1,"TOP",0,-(E.PixelMode and 36 or 38))
+			ElvAB_3:Point("BOTTOM",ElvUI_Bar1,"TOP",0,-38)
 			E:SaveMoverPosition("ElvAB_3")
 		elseif ABdb.bar2.enabled ~= true and ABdb.bar1.heightMult == 2 then
 			ElvAB_3:ClearAllPoints()
-			ElvAB_3:Point("BOTTOM",ElvUI_Bar1,"TOP",0,-(E.PixelMode and 36 or 38))
+			ElvAB_3:Point("BOTTOM",ElvUI_Bar1,"TOP",0,-38)
 			E:SaveMoverPosition("ElvAB_3")
 		end
 		E:Print("ActionBar 2 and 3 have been repositioned")
