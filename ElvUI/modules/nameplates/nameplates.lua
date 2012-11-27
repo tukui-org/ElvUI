@@ -235,12 +235,15 @@ function NP:Colorize(frame, r, g, b)
 			frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor = RAID_CLASS_COLORS[class].r, RAID_CLASS_COLORS[class].g, RAID_CLASS_COLORS[class].b
 			return
 		end
+		
+		if b == -0.01 then
+			b = 0;
+		end
 	end
 	
 	frame.isPlayer = nil
 	
 	local color
-	
 	if (r + b + b) > 2 then -- tapped
 		r,g,b = 0.6, 0.6, 0.6
 		frame.isFriendly = false	
@@ -298,7 +301,10 @@ function NP:HealthBar_OnShow(frame)
 	
 	--Set the name text
 	frame.hp.name:SetText(frame.hp.oldname:GetText())	
-
+	while frame.hp:GetEffectiveScale() < 1 do
+		frame.hp:SetScale(frame.hp:GetScale() + 0.01)
+	end
+	
 	--Level Text
 	frame.isBoss = frame.hp.boss:IsShown()
 	NP:Update_LevelText(frame)
@@ -318,6 +324,7 @@ end
 function NP:OnHide(frame)
 	frame.hp:SetStatusBarColor(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor)
 	frame.hp.name:SetTextColor(1, 1, 1)
+	frame.hp:SetScale(1)
 	frame.cb:Hide()
 	frame.unit = nil
 	frame.isMarked = nil
@@ -341,7 +348,6 @@ function NP:OnHide(frame)
 		end
 	end	
 end
-
 
 function NP:SkinPlate(frame, nameFrame)
 	local oldhp, oldcb = frame:GetChildren()
@@ -374,7 +380,7 @@ function NP:SkinPlate(frame, nameFrame)
 		
 		frame.hp.hpbg = frame.hp:CreateTexture(nil, 'BORDER')
 		frame.hp.hpbg:SetAllPoints(frame.hp)
-		frame.hp.hpbg:SetTexture(1,1,1,0.25) 				
+		frame.hp.hpbg:SetTexture(1,1,1,0.25) 	
 	end
 	frame.hp:SetStatusBarTexture(E["media"].normTex)
 	self:SetVirtualBackdrop(frame.hp, unpack(E["media"].backdropcolor))
