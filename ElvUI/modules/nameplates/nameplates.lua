@@ -36,13 +36,14 @@ function NP:Initialize()
 		
 		NP:ForEachPlate(NP.InvalidCastCheck)
 		NP:ForEachPlate(NP.CheckFilter)
-		NP:ForEachPlate(NP.UpdateColoring)
+		
 		
 		if(self.elapsed and self.elapsed > 0.2) then
 			NP:ForEachPlate(NP.UpdateThreat)
 			NP:ForEachPlate(NP.CheckUnit_Guid)
 			NP:ForEachPlate(NP.CheckRaidIcon)
 			NP:ForEachPlate(NP.Update_LevelText)
+			NP:ForEachPlate(NP.UpdateColoring)
 			
 			self.elapsed = 0
 		else
@@ -214,16 +215,12 @@ function NP:Update_LevelText(frame)
 	end
 end
 
-function NP:NumberRound(...)
-	local temp = {}
-	for i = 1, select('#', ...) do
-		table.insert(temp, floor(select(i, ...)*100+.5)/100)
-	end
-	
-	return unpack(temp)
+function NP:RoundColors(r, g, b)	
+	return floor(r*100+.5)/100, floor(g*100+.5)/100, floor(b*100+.5)/100
 end
 
 function NP:Colorize(frame, r, g, b)
+	frame.hp.originalr, frame.hp.originalg, frame.hp.originalb = r, g, b
 	for class, _ in pairs(RAID_CLASS_COLORS) do
 		if class == 'MONK' then
 			b = b - 0.01
@@ -272,9 +269,9 @@ function NP:Colorize(frame, r, g, b)
 end
 
 function NP:UpdateColoring(frame)
-	local r, g, b = NP:NumberRound(frame.oldhp:GetStatusBarColor())
+	local r, g, b = NP:RoundColors(frame.oldhp:GetStatusBarColor())
 	
-	if (r ~= frame.hp.rcolor or g ~= frame.hp.gcolor or b ~= frame.hp.bcolor) and (not InCombatLockdown() and self.db.enhancethreat) then
+	if (r ~= frame.hp.originalr or g ~= frame.hp.originalg or b ~= frame.hp.originalb) and (not InCombatLockdown() and self.db.enhancethreat) then
 		NP:Colorize(frame, r, g, b)
 	end
 end
@@ -295,7 +292,7 @@ function NP:HealthBar_OnShow(frame)
 		frame.hp.backdrop:SetPoint('BOTTOMRIGHT', noscalemult*3, -noscalemult*3)	
 	end
 	
-	local r, g, b = NP:NumberRound(frame.oldhp:GetStatusBarColor())
+	local r, g, b = NP:RoundColors(frame.oldhp:GetStatusBarColor())
 	NP:Colorize(frame, r, g, b)
 	frame.hp.hpbg:SetTexture(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor, 0.25)
 	
@@ -341,6 +338,9 @@ function NP:OnHide(frame)
 	frame.hp.rcolor = nil
 	frame.hp.gcolor = nil
 	frame.hp.bcolor = nil
+	frame.hp.originalr = nil
+	frame.hp.originalg = nil
+	frame.hp.originalb = nil
 	frame.hp.shadow:SetAlpha(0)
 	self:SetVirtualBackdrop(frame.hp, unpack(E["media"].backdropcolor))
 	self:SetVirtualBorder(frame.hp, unpack(E["media"].bordercolor))
