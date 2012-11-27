@@ -401,7 +401,11 @@ function UF:Update_PlayerFrame(frame, db)
 		if USE_POWERBAR then
 			if not frame:IsElementEnabled('Power') then
 				frame:EnableElement('Power')
-				frame:EnableElement('DruidAltMana')
+				
+				if frame.DruidAltMana then
+					frame:EnableElement('DruidAltMana')
+				end
+				
 				power:Show()
 			end		
 		
@@ -444,8 +448,11 @@ function UF:Update_PlayerFrame(frame, db)
 		elseif frame:IsElementEnabled('Power') then
 			frame:DisableElement('Power')
 			power:Hide()
-			frame:DisableElement('DruidAltMana')
-			frame.DruidAltMana:Hide()
+			
+			if frame.DruidAltMana then
+				frame:DisableElement('DruidAltMana')
+				frame.DruidAltMana:Hide()
+			end
 		end
 	end
 	

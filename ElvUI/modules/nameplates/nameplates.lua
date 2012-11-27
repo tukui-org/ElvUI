@@ -396,7 +396,7 @@ function NP:SkinPlate(frame, nameFrame)
 	
 	-- threat updates
 	if not frame.threat then	
-		frame.threat = threat
+		frame.threat = threat	
 	end
 	
 	--Level Text
