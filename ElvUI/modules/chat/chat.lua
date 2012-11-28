@@ -164,7 +164,9 @@ function CH:StyleChat(frame)
 	_G[name.."TabText"]:FontTemplate(LSM:Fetch("font", self.db.tabFont), self.db.tabFontSize, self.db.tabFontOutline)
 	
 	if frame.styled then return end
-
+	
+	frame:SetFrameLevel(4)
+	
 	local id = frame:GetID()
 	
 	local tab = _G[name..'Tab']
