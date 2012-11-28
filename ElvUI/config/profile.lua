@@ -65,10 +65,10 @@ P['general'] = {
 --Bags
 P['bags'] = {
     ['sortInverted'] = true,
-	['xOffset'] = -5,
+	['xOffset'] = -3,
 	['yOffset'] = 172,
-	['bagSize'] = 30,
-	['bankSize'] = 30,
+	['bagSize'] = 32,
+	['bankSize'] = 32,
 	['alignToChat'] = false,
 	['bagWidth'] = 385,
 	['bankWidth'] = 385,
