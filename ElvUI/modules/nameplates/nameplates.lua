@@ -36,15 +36,14 @@ function NP:Initialize()
 		
 		NP:ForEachPlate(NP.InvalidCastCheck)
 		NP:ForEachPlate(NP.CheckFilter)
-		
+		NP:ForEachPlate(NP.UpdateColoring)	
 		
 		if(self.elapsed and self.elapsed > 0.2) then
 			NP:ForEachPlate(NP.UpdateThreat)
 			NP:ForEachPlate(NP.CheckUnit_Guid)
 			NP:ForEachPlate(NP.CheckRaidIcon)
 			NP:ForEachPlate(NP.Update_LevelText)
-			NP:ForEachPlate(NP.UpdateColoring)
-			
+
 			self.elapsed = 0
 		else
 			self.elapsed = (self.elapsed or 0) + elapsed
@@ -235,10 +234,11 @@ function NP:Colorize(frame, r, g, b)
 			return
 		end
 	end
-	
+	--fix this
 	frame.isPlayer = nil
 	frame.isTagged = nil;
 	local color
+	
 	if (r + b + b) > 2 then -- tapped
 		r,g,b = 0.6, 0.6, 0.6
 		frame.isFriendly = false	
@@ -262,6 +262,7 @@ function NP:Colorize(frame, r, g, b)
 	else -- enemy player
 		frame.isFriendly = false
 	end
+	
 	frame.hasClass = false
 	frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor = r, g, b
 	frame.hp:SetStatusBarColor(r,g,b)
@@ -270,7 +271,7 @@ end
 function NP:UpdateColoring(frame)
 	local r, g, b = NP:RoundColors(frame.oldhp:GetStatusBarColor())
 	
-	if (r ~= frame.hp.originalr or g ~= frame.hp.originalg or b ~= frame.hp.originalb) and (not InCombatLockdown() and self.db.enhancethreat) then
+	if (r ~= frame.hp.originalr or g ~= frame.hp.originalg or b ~= frame.hp.originalb) then
 		NP:Colorize(frame, r, g, b)
 	end
 end
