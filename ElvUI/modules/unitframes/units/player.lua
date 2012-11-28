@@ -50,7 +50,6 @@ function UF:Construct_PlayerFrame(frame)
 	frame.PvPText = self:Construct_PvPIndicator(frame)
 	frame.DebuffHighlight = self:Construct_DebuffHighlight(frame)
 	frame.HealPrediction = self:Construct_HealComm(frame)
-	frame.Vengeance = self:Construct_VengeanceBar(frame)
 
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
 		
@@ -65,7 +64,6 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 	local health = frame.Health
 	local threat = frame.Threat
 	local power = frame.Power
-	local vengeance = frame.Vengeance
 	local PORTRAIT_WIDTH = db.portrait.width
 	local USE_PORTRAIT = db.portrait.enable
 	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
@@ -80,13 +78,7 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 	local SPACING = E.Spacing;
 	local BORDER = E.Border;
 	local SHADOW_SPACING = E.PixelMode and 3 or 4
-	local VENGEANCE_WIDTH = db.vengeance.width + (BORDER*2);
-	local USE_VENGEANCE = frame.Vengeance:IsShown();
-	
-	if not USE_VENGEANCE then
-		VENGEANCE_WIDTH = 0;
-	end
-	
+
 	if not USE_POWERBAR then
 		POWERBAR_HEIGHT = 0
 	end
@@ -99,23 +91,15 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 		CLASSBAR_HEIGHT = CLASSBAR_HEIGHT / 2
 	end
 	
-	if USE_VENGEANCE then
-		vengeance:Point('BOTTOMLEFT', power, 'BOTTOMRIGHT', BORDER*2 + (E.PixelMode and -1 or SPACING), 0)
-		vengeance:Point('TOPRIGHT', health, 'TOPRIGHT', VENGEANCE_WIDTH, 0)
-		
-		
-		if not USE_POWERBAR_OFFSET and not USE_MINI_POWERBAR then
-			power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -BORDER - VENGEANCE_WIDTH, BORDER)
-		end
-	elseif not USE_POWERBAR_OFFSET and not USE_MINI_POWERBAR then
+	if not USE_POWERBAR_OFFSET and not USE_MINI_POWERBAR then
 		power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -BORDER, BORDER)
 	end
 	
 	if isShown then
 		if db.power.offset ~= 0 then
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER+db.power.offset) - VENGEANCE_WIDTH, -(BORDER + CLASSBAR_HEIGHT + SPACING))
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER+db.power.offset), -(BORDER + CLASSBAR_HEIGHT + SPACING))
 		else
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER - VENGEANCE_WIDTH, -(BORDER + CLASSBAR_HEIGHT + SPACING))
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -(BORDER + CLASSBAR_HEIGHT + SPACING))
 		end
 		health:Point("TOPLEFT", frame, "TOPLEFT", PORTRAIT_WIDTH + BORDER, -(BORDER + CLASSBAR_HEIGHT + SPACING))	
 
@@ -158,9 +142,9 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 		end
 	else
 		if db.power.offset ~= 0 then
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER + db.power.offset) - VENGEANCE_WIDTH, -BORDER)
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER + db.power.offset), -BORDER)
 		else
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER - VENGEANCE_WIDTH, -BORDER)
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -BORDER)
 		end
 		health:Point("TOPLEFT", frame, "TOPLEFT", PORTRAIT_WIDTH + BORDER, -BORDER)	
 
@@ -1072,24 +1056,6 @@ function UF:Update_PlayerFrame(frame, db)
 				auraBars:Hide()
 			end		
 		end
-	end
-	
-	--Vengeance Bar
-	do
-		local bar = frame.Vengeance;
-		bar:SetPoint('CENTER', UIParent, 'CENTER')
-		bar:Size(20, 50)
-		
-		if db.vengeance.enable then
-			if not frame:IsElementEnabled('Vengeance') then
-				frame:EnableElement('Vengeance')
-			end
-
-		else
-			if frame:IsElementEnabled('Vengeance') then
-				frame:DisableElement('Vengeance')
-			end		
-		end	
 	end
 
 	if db.customTexts then
