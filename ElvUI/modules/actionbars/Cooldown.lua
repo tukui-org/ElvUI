@@ -145,6 +145,7 @@ function AB:OnSetCooldown(cd, start, duration)
 	if cd.timer then
 		if action then
 			local charges = GetActionCharges(action)
+			
 			if charges > 0 then
 				cd.timer:SetAlpha(0)
 				return

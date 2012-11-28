@@ -182,9 +182,7 @@ function AB:PositionAndSizeBar(barName)
 		self:StyleButton(button);
 	end
 
-	if self.db[barName].enabled then
-		bar:Show()
-		
+	if self.db[barName].enabled then		
 		if not self.db[barName].mouseover then
 			bar:SetAlpha(self.db[barName].alpha);
 		end
