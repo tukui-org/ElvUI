@@ -404,9 +404,9 @@ function E:CopyTable(currentTable, defaultTable)
 end
 
 function E:SendMessage()
-	local inInstance, instanceType = IsInInstance()
-	if inInstance and instanceType == 'pvp' or instanceType == 'arena' then
-		SendAddonMessage("ElvUIVC", E.version, "BATTLEGROUND")	
+	local inInstance = IsInInstance()
+	if inInstance then
+		SendAddonMessage("ElvUIVC", E.version, "INSTANCE_CHAT")	
 	else
 		if IsInRaid() then
 			SendAddonMessage("ElvUIVC", E.version, "RAID")
