@@ -8,14 +8,14 @@ local good, maybe, filter, login = {}, {}, {}, false
 
 local TIMESTAMP_FORMAT
 local DEFAULT_STRINGS = {
-	BATTLEGROUND = L['BG'],
 	GUILD = L['G'],
 	PARTY = L['P'],
 	RAID = L['R'],
 	OFFICER = L['O'],
-	BATTLEGROUND_LEADER = L['BGL'],
 	PARTY_LEADER = L['PL'],
 	RAID_LEADER = L['RL'],	
+	INSTANCE_CHAT = L['I'],
+	INSTANCE_CHAT_LEADER = L['IL'],
 }
 
 local hyperlinkTypes = {
