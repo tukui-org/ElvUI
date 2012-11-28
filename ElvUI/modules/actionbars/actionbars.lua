@@ -186,13 +186,12 @@ function AB:PositionAndSizeBar(barName)
 		if not self.db[barName].mouseover then
 			bar:SetAlpha(self.db[barName].alpha);
 		end
-		
-		RegisterStateDriver(bar, "show", "show;"); -- this is ghetto
-		RegisterStateDriver(bar, "show", self.db[barName].visibility);
+		bar:Show()
+		RegisterStateDriver(bar, "visibility", self.db[barName].visibility); -- this is ghetto
 		RegisterStateDriver(bar, "page", self:GetPage(barName, self['barDefaults'][barName].page, self['barDefaults'][barName].conditions));
 	else
 		bar:Hide()
-		UnregisterStateDriver(bar, "show");
+		UnregisterStateDriver(bar, "visibility");
 	end 
 	
 	
@@ -227,13 +226,6 @@ function AB:CreateBar(id)
 		control:ChildUpdate("state", newstate)
 	]]);
 	
-	bar:SetAttribute("_onstate-show", [[		
-		if newstate == "hide" then
-			self:Hide();
-		else
-			self:Show();
-		end	
-	]])
 	
 	self["handledBars"]['bar'..id] = bar;
 	self:PositionAndSizeBar('bar'..id);
