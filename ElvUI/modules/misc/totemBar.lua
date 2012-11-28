@@ -12,6 +12,14 @@ function TOTEMS:Update(event)
 			self.bar[i].iconTexture:SetTexture(icon)
 			displayedTotems = displayedTotems + 1
 			CooldownFrame_SetTimer(self.bar[i].cooldown, startTime, duration, 1)
+			
+			for d=1, MAX_TOTEMS do
+				if _G['TotemFrameTotem'..d..'IconTexture']:GetTexture() == icon then
+					_G['TotemFrameTotem'..d]:ClearAllPoints();
+					_G['TotemFrameTotem'..d]:SetParent(self.bar[i].holder);
+					_G['TotemFrameTotem'..d]:SetAllPoints(self.bar[i].holder);		
+				end		
+			end
 		else
 			self.bar[i]:Hide()
 		end
@@ -89,12 +97,9 @@ function TOTEMS:Initialize()
 		frame:SetTemplate('Default')
 		frame:StyleButton()
 		frame:Hide()
-		
-		_G['TotemFrameTotem'..i]:ClearAllPoints();
-		_G['TotemFrameTotem'..i]:SetParent(frame);
-		_G['TotemFrameTotem'..i]:SetAllPoints(frame);
-		_G['TotemFrameTotem'..i]:StripTextures()
-		_G['TotemFrameTotem'..i]:SetAlpha(0)
+		frame.holder = CreateFrame('Frame', nil, frame)
+		frame.holder:SetAlpha(0)
+		frame.holder:SetAllPoints()
 		
 		frame.iconTexture = frame:CreateTexture(nil, 'ARTWORK')
 		frame.iconTexture:SetInside()
