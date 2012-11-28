@@ -237,11 +237,12 @@ function NP:Colorize(frame, r, g, b)
 	end
 	
 	frame.isPlayer = nil
-	
+	frame.isTagged = nil;
 	local color
 	if (r + b + b) > 2 then -- tapped
 		r,g,b = 0.6, 0.6, 0.6
 		frame.isFriendly = false	
+		frame.isTagged = true;
 	elseif g+b == 0 then -- hostile
 		color = self.db.enemy
 		r,g,b = color.r, color.g, color.b
@@ -339,6 +340,7 @@ function NP:OnHide(frame)
 	frame.hp.originalr = nil
 	frame.hp.originalg = nil
 	frame.hp.originalb = nil
+	frame.isTagged = nil
 	frame.hp.shadow:SetAlpha(0)
 	self:SetVirtualBackdrop(frame.hp, unpack(E["media"].backdropcolor))
 	self:SetVirtualBorder(frame.hp, unpack(E["media"].bordercolor))
@@ -544,7 +546,7 @@ end
 
 local good, bad, transition, transition2, combat, goodscale, badscale
 function NP:UpdateThreat(frame)
-	if frame.hasClass then return end
+	if frame.hasClass or frame.isTagged then return end
 	combat = InCombatLockdown()
 	good = self.db.goodcolor
 	bad = self.db.badcolor
