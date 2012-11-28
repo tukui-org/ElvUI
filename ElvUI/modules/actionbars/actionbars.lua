@@ -181,11 +181,13 @@ function AB:PositionAndSizeBar(barName)
 		
 		self:StyleButton(button);
 	end
-
+	
 	if self.db[barName].enabled then		
 		if not self.db[barName].mouseover then
 			bar:SetAlpha(self.db[barName].alpha);
 		end
+		
+		RegisterStateDriver(bar, "show", "show;"); -- this is ghetto
 		RegisterStateDriver(bar, "show", self.db[barName].visibility);
 		RegisterStateDriver(bar, "page", self:GetPage(barName, self['barDefaults'][barName].page, self['barDefaults'][barName].conditions));
 	else
