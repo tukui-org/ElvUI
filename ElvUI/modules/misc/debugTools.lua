@@ -132,10 +132,10 @@ function D:TaintError(event, addonName, addonFunc)
 			end
 		end
 		
-		if not instanceType == "arena" then
-			E:StaticPopup_Show('TALENT_TAINT')
-		else
+		if instanceType == "arena" then
 			E:StaticPopup_Show('YOUR_FUCKED');
+		else
+			E:StaticPopup_Show('TALENT_TAINT')
 		end
 	end
 
