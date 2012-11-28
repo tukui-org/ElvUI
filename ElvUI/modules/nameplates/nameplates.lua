@@ -222,19 +222,17 @@ end
 function NP:Colorize(frame, r, g, b)
 	frame.hp.originalr, frame.hp.originalg, frame.hp.originalb = r, g, b
 	for class, _ in pairs(RAID_CLASS_COLORS) do
+		local bb = b
 		if class == 'MONK' then
-			b = b - 0.01
+			bb = bb - 0.01
 		end
-		if RAID_CLASS_COLORS[class].r == r and RAID_CLASS_COLORS[class].g == g and RAID_CLASS_COLORS[class].b == b then
+		
+		if RAID_CLASS_COLORS[class].r == r and RAID_CLASS_COLORS[class].g == g and RAID_CLASS_COLORS[class].b == bb then
 			frame.hasClass = true
 			frame.isFriendly = false
 			frame.hp:SetStatusBarColor(RAID_CLASS_COLORS[class].r, RAID_CLASS_COLORS[class].g, RAID_CLASS_COLORS[class].b)
 			frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor = RAID_CLASS_COLORS[class].r, RAID_CLASS_COLORS[class].g, RAID_CLASS_COLORS[class].b
 			return
-		end
-		
-		if b == -0.01 then
-			b = 0;
 		end
 	end
 	
