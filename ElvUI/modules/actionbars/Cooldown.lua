@@ -143,8 +143,9 @@ function AB:OnSetCooldown(cd, start, duration)
 	
 	local action = button._state_action or button.action
 	if cd.timer then
-		if action then
+		if action and type(action) == 'number' then
 			local charges = GetActionCharges(action)
+			
 			if charges > 0 then
 				cd.timer:SetAlpha(0)
 				return

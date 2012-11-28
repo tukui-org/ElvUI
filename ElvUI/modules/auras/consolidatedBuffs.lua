@@ -47,6 +47,7 @@ A.SpellHaste = {
 	[24907] = 'DRUID', -- Moonkin Aura
 	[51470] = 'SHAMAN', -- Elemental Oath
 	[49868] = 'PRIEST', -- Mind Quickening
+	[135678] = 'HUNTER', -- Energizing Spores
 	['DEFAULT'] = 49868
 }
 

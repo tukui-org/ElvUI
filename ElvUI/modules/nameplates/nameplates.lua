@@ -222,28 +222,27 @@ end
 function NP:Colorize(frame, r, g, b)
 	frame.hp.originalr, frame.hp.originalg, frame.hp.originalb = r, g, b
 	for class, _ in pairs(RAID_CLASS_COLORS) do
+		local bb = b
 		if class == 'MONK' then
-			b = b - 0.01
+			bb = bb - 0.01
 		end
-		if RAID_CLASS_COLORS[class].r == r and RAID_CLASS_COLORS[class].g == g and RAID_CLASS_COLORS[class].b == b then
+		
+		if RAID_CLASS_COLORS[class].r == r and RAID_CLASS_COLORS[class].g == g and RAID_CLASS_COLORS[class].b == bb then
 			frame.hasClass = true
 			frame.isFriendly = false
 			frame.hp:SetStatusBarColor(RAID_CLASS_COLORS[class].r, RAID_CLASS_COLORS[class].g, RAID_CLASS_COLORS[class].b)
 			frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor = RAID_CLASS_COLORS[class].r, RAID_CLASS_COLORS[class].g, RAID_CLASS_COLORS[class].b
 			return
 		end
-		
-		if b == -0.01 then
-			b = 0;
-		end
 	end
 	
 	frame.isPlayer = nil
-	
+	frame.isTagged = nil;
 	local color
 	if (r + b + b) > 2 then -- tapped
 		r,g,b = 0.6, 0.6, 0.6
 		frame.isFriendly = false	
+		frame.isTagged = true;
 	elseif g+b == 0 then -- hostile
 		color = self.db.enemy
 		r,g,b = color.r, color.g, color.b
@@ -341,6 +340,7 @@ function NP:OnHide(frame)
 	frame.hp.originalr = nil
 	frame.hp.originalg = nil
 	frame.hp.originalb = nil
+	frame.isTagged = nil
 	frame.hp.shadow:SetAlpha(0)
 	self:SetVirtualBackdrop(frame.hp, unpack(E["media"].backdropcolor))
 	self:SetVirtualBorder(frame.hp, unpack(E["media"].bordercolor))
@@ -546,7 +546,7 @@ end
 
 local good, bad, transition, transition2, combat, goodscale, badscale
 function NP:UpdateThreat(frame)
-	if frame.hasClass then return end
+	if frame.hasClass or frame.isTagged then return end
 	combat = InCombatLockdown()
 	good = self.db.goodcolor
 	bad = self.db.badcolor

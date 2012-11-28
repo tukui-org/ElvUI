@@ -52,7 +52,7 @@ local function SetupChat()
 			FCF_SetWindowName(frame, "Log")
 		end
 	end
-	
+
 	-- setup the "All" chat frame to filter out stuff shown in the right chat
 	ChatFrame_RemoveMessageGroup(ChatFrame1, "COMBAT_XP_GAIN")
 	ChatFrame_RemoveMessageGroup(ChatFrame1, "COMBAT_HONOR_GAIN")
@@ -75,6 +75,8 @@ local function SetupChat()
 	ChatFrame_AddMessageGroup(ChatFrame4, "RAID_WARNING")
 	ChatFrame_AddMessageGroup(ChatFrame4, "BATTLEGROUND")
 	ChatFrame_AddMessageGroup(ChatFrame4, "BATTLEGROUND_LEADER")
+	ChatFrame_AddMessageGroup(ChatFrame4, "INSTANCE_CHAT")
+	ChatFrame_AddMessageGroup(ChatFrame4, "INSTANCE_CHAT_LEADER")
 
 	-- Setup the Whisper chat frame
 	ChatFrame_RemoveAllMessageGroups(ChatFrame5)
@@ -109,7 +111,9 @@ local function SetupChat()
 	ToggleChatColorNamesByClassGroup(false, "RAID_LEADER")
 	ToggleChatColorNamesByClassGroup(false, "RAID_WARNING")
 	ToggleChatColorNamesByClassGroup(false, "BATTLEGROUND")
-	ToggleChatColorNamesByClassGroup(false, "BATTLEGROUND_LEADER")	
+	ToggleChatColorNamesByClassGroup(false, "BATTLEGROUND_LEADER")
+	ToggleChatColorNamesByClassGroup(false, "INSTANCE_CHAT")
+	ToggleChatColorNamesByClassGroup(false, "INSTANCE_CHAT_LEADER")
 	ToggleChatColorNamesByClassGroup(false, "CHANNEL1")
 	ToggleChatColorNamesByClassGroup(false, "CHANNEL2")
 	ToggleChatColorNamesByClassGroup(false, "CHANNEL3")

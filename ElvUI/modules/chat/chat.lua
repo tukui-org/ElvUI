@@ -8,14 +8,14 @@ local good, maybe, filter, login = {}, {}, {}, false
 
 local TIMESTAMP_FORMAT
 local DEFAULT_STRINGS = {
-	BATTLEGROUND = L['BG'],
 	GUILD = L['G'],
 	PARTY = L['P'],
 	RAID = L['R'],
 	OFFICER = L['O'],
-	BATTLEGROUND_LEADER = L['BGL'],
 	PARTY_LEADER = L['PL'],
 	RAID_LEADER = L['RL'],	
+	INSTANCE_CHAT = L['I'],
+	INSTANCE_CHAT_LEADER = L['IL'],
 }
 
 local hyperlinkTypes = {
@@ -164,7 +164,9 @@ function CH:StyleChat(frame)
 	_G[name.."TabText"]:FontTemplate(LSM:Fetch("font", self.db.tabFont), self.db.tabFontSize, self.db.tabFontOutline)
 	
 	if frame.styled then return end
-
+	
+	frame:SetFrameLevel(4)
+	
 	local id = frame:GetID()
 	
 	local tab = _G[name..'Tab']
