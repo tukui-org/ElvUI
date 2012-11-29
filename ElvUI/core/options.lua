@@ -537,9 +537,27 @@ E.Options.args.media = {
 						E:UpdateBackdropColors()
 					end,						
 				},
-				valuecolor = {
+				bubblefadecolor = {
 					type = "color",
 					order = 4,
+					name = L["Chat Bubble Color"],
+					desc = L["Backdrop color of chat bubbles"],
+					hasAlpha = true,
+					get = function(info)
+						local t = E.db.general[ info[#info] ]
+						return t.r, t.g, t.b, t.a
+					end,
+					set = function(info, r, g, b, a)
+						E.db.general[ info[#info] ] = {}
+						local t = E.db.general[ info[#info] ]	
+						t.r, t.g, t.b, t.a = r, g, b, a
+						E:UpdateMedia()
+						E:GetModule('Misc'):HookBubbles(WorldFrame:GetChildren())
+					end,						
+				},
+				valuecolor = {
+					type = "color",
+					order = 5,
 					name = L["Value Color"],
 					desc = L["Color some texts use."],
 					hasAlpha = false,
@@ -556,7 +574,7 @@ E.Options.args.media = {
 				},						
 				resetbutton = {
 					type = "execute",
-					order = 5,
+					order = 6,
 					name = L["Restore Defaults"],
 					func = function() 
 						E.db.general.backdropcolor = P.general.backdropcolor

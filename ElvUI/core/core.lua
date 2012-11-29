@@ -179,6 +179,9 @@ function E:UpdateMedia()
 	--Backdrop Fade Color
 	self["media"].backdropfadecolor = E:GetColorTable(self.db['general'].backdropfadecolor)
 	
+	--ChatBubble Fade Color
+	self["media"].bubblefadecolor = E:GetColorTable(self.db['general'].bubblefadecolor)
+	
 	--Value Color
 	local value = self.db['general'].valuecolor
 	if CheckClassColor(value.r, value.g, value.b) then

@@ -979,3 +979,5 @@ To disable leave the field blank, if you need more information visit http://www.
 --Personal Locale Strings
 L["Bottom_Datatext_Panel"] = "Bottom Datatext Panel"
 L["ChatTab_Datatext_Panel"] = "Right Chat Tab"
+L["Chat Bubble Color"] = "Chat Bubble Color"
+L["Backdrop color of chat bubbles"] = "Backdrop color of chat bubbles"
