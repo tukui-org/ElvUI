@@ -597,8 +597,6 @@ function TT:GameTooltip_OnUpdate(tt)
 		tt:SetBackdropColor(unpack(E["media"].backdropfadecolor))
 		tt:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 		tt.needRefresh = nil
-	elseif tt.forceRefresh then
-		tt.forceRefresh = nil
 	end
 end
 
@@ -736,7 +734,6 @@ function TT:Initialize()
 		if id and TT.db.spellid then
 			self:AddLine("|cFFCA3C3C"..ID.."|r".." "..id)
 			self:Show()
-			self.forceRefresh = true;
 		end
 	end)
 
@@ -745,7 +742,6 @@ function TT:Initialize()
 		if id and TT.db.spellid then
 			self:AddLine("|cFFCA3C3C"..ID.."|r".." "..id)
 			self:Show()
-			self.forceRefresh = true;
 		end
 	end)
 
@@ -754,7 +750,6 @@ function TT:Initialize()
 		if id and TT.db.spellid then
 			self:AddLine("|cFFCA3C3C"..ID.."|r".." "..id)
 			self:Show()
-			self.forceRefresh = true;
 		end
 	end)
 
@@ -768,10 +763,19 @@ function TT:Initialize()
 
 	GameTooltip:HookScript("OnTooltipSetSpell", function(self)
 		local id = select(3,self:GetSpell())
-		if id and TT.db.spellid then
-			self:AddLine("|cFFCA3C3C"..ID.."|r".." "..id)
+		local displayString = "|cFFCA3C3C"..ID.."|r".." "..id
+		local lines = self:NumLines()
+		local isFound
+		for i= 1, lines do
+			if _G["GameTooltipTextLeft"..i] and _G["GameTooltipTextLeft"..i]:GetText() and _G["GameTooltipTextLeft"..i]:GetText():find(displayString) then
+				isFound = true;
+				break
+			end
+		end
+		
+		if id and TT.db.spellid and not isFound then
+			self:AddLine(displayString)
 			self:Show()
-			self.forceRefresh = true;
 		end
 	end)
 	
