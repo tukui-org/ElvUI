@@ -763,6 +763,7 @@ function TT:Initialize()
 
 	GameTooltip:HookScript("OnTooltipSetSpell", function(self)
 		local id = select(3,self:GetSpell())
+		if not id or not TT.db.spellid then return; end
 		local displayString = "|cFFCA3C3C"..ID.."|r".." "..id
 		local lines = self:NumLines()
 		local isFound
@@ -773,7 +774,7 @@ function TT:Initialize()
 			end
 		end
 		
-		if id and TT.db.spellid and not isFound then
+		if not isFound then
 			self:AddLine(displayString)
 			self:Show()
 		end
