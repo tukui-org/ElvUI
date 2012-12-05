@@ -9461,7 +9461,7 @@ for i=10, 40, 15 do
 						order = 1,
 						name = L['Enable'],
 					},	
-					position = {
+					attachTo = {
 						type = 'select',
 						order = 2,
 						name = L['Position'],
