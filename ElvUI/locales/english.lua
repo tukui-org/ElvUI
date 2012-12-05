@@ -576,6 +576,9 @@ L["Use this filter."] = true;
 L["You can't remove a default name from the filter, disabling the name."] = true;
 
 --Skins
+L['Loss Control'] = true;
+L['Void Storage'] = true;
+L['Item Upgrade'] = true;
 L["Achievement Frame"] = true;
 L['Alert Frames'] = true;
 L["Archaeology Frame"] = true;

@@ -29,7 +29,7 @@ local function LoadSkin()
 		infoBar.HealthBarBackdrop = CreateFrame("Frame", nil, infoBar)
 		infoBar.HealthBarBackdrop:SetFrameLevel(infoBar:GetFrameLevel() - 1)
 		infoBar.HealthBarBackdrop:SetTemplate("Transparent")	
-		infoBar.HealthBarBackdrop:Width(infoBar.healthBarWidth + 4)
+		infoBar.HealthBarBackdrop:Width(infoBar.healthBarWidth + (E.Border * 2))
 		infoBar.ActualHealthBar:SetTexture(E.media.normTex)
 		
 		infoBar.PetTypeFrame = CreateFrame("Frame", nil, infoBar)
@@ -45,8 +45,8 @@ local function LoadSkin()
 		infoBar.FirstAttack:Size(30)
 		infoBar.FirstAttack:SetTexture("Interface\\PetBattles\\PetBattle-StatIcons")		
 		if index == 1 then
-			infoBar.HealthBarBackdrop:Point('TOPLEFT', infoBar.ActualHealthBar, 'TOPLEFT', -2, 2)
-			infoBar.HealthBarBackdrop:Point('BOTTOMLEFT', infoBar.ActualHealthBar, 'BOTTOMLEFT', -2, -2)
+			infoBar.HealthBarBackdrop:Point('TOPLEFT', infoBar.ActualHealthBar, 'TOPLEFT', -E.Border, E.Border)
+			infoBar.HealthBarBackdrop:Point('BOTTOMLEFT', infoBar.ActualHealthBar, 'BOTTOMLEFT', -E.Border, -E.Border)
 			infoBar.ActualHealthBar:SetVertexColor(171/255, 214/255, 116/255)	
 			f.Ally2.iconPoint = infoBar.IconBackdrop
 			f.Ally3.iconPoint = infoBar.IconBackdrop
@@ -61,8 +61,8 @@ local function LoadSkin()
 			infoBar.FirstAttack:SetVertexColor(.1,.1,.1,1)
 		
 		else
-			infoBar.HealthBarBackdrop:Point('TOPRIGHT', infoBar.ActualHealthBar, 'TOPRIGHT', 2, 2)
-			infoBar.HealthBarBackdrop:Point('BOTTOMRIGHT', infoBar.ActualHealthBar, 'BOTTOMRIGHT', 2, -2)
+			infoBar.HealthBarBackdrop:Point('TOPRIGHT', infoBar.ActualHealthBar, 'TOPRIGHT', E.Border, E.Border)
+			infoBar.HealthBarBackdrop:Point('BOTTOMRIGHT', infoBar.ActualHealthBar, 'BOTTOMRIGHT', E.Border, -E.Border)
 			infoBar.ActualHealthBar:SetVertexColor(196/255,  30/255,  60/255)
 			f.Enemy2.iconPoint = infoBar.IconBackdrop
 			f.Enemy3.iconPoint = infoBar.IconBackdrop	
@@ -236,14 +236,14 @@ end)
 		
 		infoBar.healthBarWidth = 40
 		infoBar.ActualHealthBar:ClearAllPoints()
-		infoBar.ActualHealthBar:SetPoint("TOPLEFT", infoBar.backdrop, 'BOTTOMLEFT', 2, -3)	
+		infoBar.ActualHealthBar:SetPoint("TOPLEFT", infoBar.backdrop, 'BOTTOMLEFT', E.Border, -3)	
 		
 		infoBar.HealthBarBackdrop = CreateFrame("Frame", nil, infoBar)
 		infoBar.HealthBarBackdrop:SetFrameLevel(infoBar:GetFrameLevel() - 1)
 		infoBar.HealthBarBackdrop:SetTemplate("Default")	
-		infoBar.HealthBarBackdrop:Width(infoBar.healthBarWidth + 4)	
-		infoBar.HealthBarBackdrop:Point('TOPLEFT', infoBar.ActualHealthBar, 'TOPLEFT', -2, 2)
-		infoBar.HealthBarBackdrop:Point('BOTTOMLEFT', infoBar.ActualHealthBar, 'BOTTOMLEFT', -2, -1)		
+		infoBar.HealthBarBackdrop:Width(infoBar.healthBarWidth + (E.Border*2))	
+		infoBar.HealthBarBackdrop:Point('TOPLEFT', infoBar.ActualHealthBar, 'TOPLEFT', -E.Border, E.Border)
+		infoBar.HealthBarBackdrop:Point('BOTTOMLEFT', infoBar.ActualHealthBar, 'BOTTOMLEFT', -E.Border, -E.Spacing)		
 	end
 	
 	f.Ally2:SetPoint("TOPRIGHT", f.Ally2.iconPoint, "TOPLEFT", -6, -2)
@@ -279,7 +279,7 @@ end)
 			
 	bf.TurnTimer.SkipButton:Width(bar:GetWidth())
 	bf.TurnTimer.SkipButton:ClearAllPoints()
-	bf.TurnTimer.SkipButton:SetPoint("BOTTOM", bar, "TOP", 0, 1)
+	bf.TurnTimer.SkipButton:SetPoint("BOTTOM", bar, "TOP", 0, E.PixelMode and -1 or 1)
 	bf.TurnTimer.SkipButton.ClearAllPoints = E.noop
 	bf.TurnTimer.SkipButton.SetPoint = E.noop
 
@@ -292,10 +292,10 @@ end)
 	bf.MicroButtonFrame:Kill()
 	bf.Delimiter:StripTextures()
 	bf.xpBar:SetParent(bar)
-	bf.xpBar:Width(bar:GetWidth() - 4)
+	bf.xpBar:Width(bar:GetWidth() - (E.Border * 2))
 	bf.xpBar:CreateBackdrop()
 	bf.xpBar:ClearAllPoints()
-	bf.xpBar:SetPoint("BOTTOM", bf.TurnTimer.SkipButton, "TOP", 0, 3)
+	bf.xpBar:SetPoint("BOTTOM", bf.TurnTimer.SkipButton, "TOP", 0, E.PixelMode and 0 or 3)
 	bf.xpBar:SetScript("OnShow", function(self) self:StripTextures() self:SetStatusBarTexture(E.media.normTex) end)
 
 	-- PETS SELECTION SKIN

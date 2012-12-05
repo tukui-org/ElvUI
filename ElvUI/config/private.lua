@@ -94,6 +94,7 @@ V['skins'] = {
 		['mounts'] = true,
 		['petbattleui'] = true,
 		['losscontrol'] = true,
+		['itemUpgrade'] = true,
 	},
 }
 
