@@ -200,10 +200,6 @@ function UF:UpdateAuraTimer(elapsed)
 				self.text:Hide()
 				self:SetScript("OnUpdate", nil)
 			end
-			if (not self.isDebuff) and E.db['general'].classtheme == true then
-				local r, g, b = self:GetParent():GetParent().Health.backdrop:GetBackdropBorderColor()
-				self:SetBackdropBorderColor(r, g, b)
-			end
 			self.elapsed = 0
 		end
 	end
@@ -416,20 +412,10 @@ function UF:PostCastStart(unit, name, rank, castid)
 		if UnitCanAttack("player", unit) then
 			self:SetStatusBarColor(unpack(ElvUF.colors.castNoInterrupt))
 		else
-			if E.private.theme == 'class' then
-				local color = RAID_CLASS_COLORS[E.myclass]
-				self:SetStatusBarColor(color.r, color.g, color.b)
-			else
-				self:SetStatusBarColor(unpack(ElvUF.colors.castColor))
-			end					
+			self:SetStatusBarColor(unpack(ElvUF.colors.castColor))			
 		end
 	else
-		if E.private.theme == 'class' then
-			local color = RAID_CLASS_COLORS[E.myclass]
-			self:SetStatusBarColor(color.r, color.g, color.b)
-		else
-			self:SetStatusBarColor(unpack(ElvUF.colors.castColor))
-		end	
+		self:SetStatusBarColor(unpack(ElvUF.colors.castColor))
 	end
 end
 
