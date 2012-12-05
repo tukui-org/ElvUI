@@ -132,11 +132,7 @@ function D:TaintError(event, addonName, addonFunc)
 			end
 		end
 		
-		if instanceType == "arena" then
-			E:StaticPopup_Show('YOUR_FUCKED');
-		else
-			E:StaticPopup_Show('TALENT_TAINT')
-		end
+		E:StaticPopup_Show('TALENT_TAINT')
 	end
 
 	if GetCVarBool('scriptErrors') ~= 1 or E.db.general.taintLog ~= true then return end
