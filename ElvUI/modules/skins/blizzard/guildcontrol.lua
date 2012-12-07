@@ -6,6 +6,9 @@ local function LoadSkin()
 	GuildControlUI:StripTextures()
 	GuildControlUIHbar:StripTextures()
 	GuildControlUI:SetTemplate("Transparent")
+	GuildControlUIRankBankFrameInset:StripTextures()
+	GuildControlUIRankBankFrameInsetScrollFrame:StripTextures()
+	S:HandleScrollBar(GuildControlUIRankBankFrameInsetScrollFrameScrollBar);
 	
 	local function SkinGuildRanks()
 		for i=1, GuildControlGetNumRanks() do
@@ -49,6 +52,49 @@ local function LoadSkin()
 	
 	GuildControlUIRankBankFrame:StripTextures()
 	
+	local function fixSkin(frame)
+		frame.backdrop:Hide();
+		--Initiate fucked up method of creating a backdrop
+		if not E.PixelMode then
+			frame.bg1 = frame:CreateTexture(nil, "BACKGROUND")
+			frame.bg1:SetDrawLayer("BACKGROUND", 4)
+			frame.bg1:SetTexture(E["media"].normTex) --Default TukUI users this is normTex, normTex doesn't exist
+			frame.bg1:SetVertexColor(unpack(E['media'].backdropcolor))
+			frame.bg1:Point("TOPLEFT", frame.backdrop, 'TOPLEFT', E.mult*4, -E.mult*4)
+			frame.bg1:Point("BOTTOMRIGHT", frame.backdrop, 'BOTTOMRIGHT', -E.mult*4, E.mult*4)				
+			
+			frame.bg2 = frame:CreateTexture(nil, "BACKGROUND")
+			frame.bg2:SetDrawLayer("BACKGROUND", 3)
+			frame.bg2:SetTexture(0,0,0)
+			frame.bg2:Point("TOPLEFT", frame.backdrop, 'TOPLEFT', E.mult*3, -E.mult*3)
+			frame.bg2:Point("BOTTOMRIGHT", frame.backdrop, 'BOTTOMRIGHT', -E.mult*3, E.mult*3)
+		
+			frame.bg3 = frame:CreateTexture(nil, "BACKGROUND")
+			frame.bg3:SetDrawLayer("BACKGROUND", 2)
+			frame.bg3:SetTexture(unpack(E['media'].bordercolor))
+			frame.bg3:Point("TOPLEFT", frame.backdrop, 'TOPLEFT', E.mult*2, -E.mult*2)
+			frame.bg3:Point("BOTTOMRIGHT", frame.backdrop, 'BOTTOMRIGHT', -E.mult*2, E.mult*2)			
+
+			frame.bg4 = frame:CreateTexture(nil, "BACKGROUND")
+			frame.bg4:SetDrawLayer("BACKGROUND", 1)
+			frame.bg4:SetTexture(0,0,0)
+			frame.bg4:Point("TOPLEFT", frame.backdrop, 'TOPLEFT', E.mult, -E.mult)
+			frame.bg4:Point("BOTTOMRIGHT", frame.backdrop, 'BOTTOMRIGHT', -E.mult, E.mult)
+		else
+			frame.bg1 = frame:CreateTexture(nil, "BACKGROUND")
+			frame.bg1:SetDrawLayer("BACKGROUND", 4)
+			frame.bg1:SetTexture(E["media"].normTex) --Default TukUI users this is normTex, normTex doesn't exist
+			frame.bg1:SetVertexColor(unpack(E['media'].backdropcolor))
+			frame.bg1:SetInside(frame.backdrop, E.mult)
+		
+			frame.bg3 = frame:CreateTexture(nil, "BACKGROUND")
+			frame.bg3:SetDrawLayer("BACKGROUND", 2)
+			frame.bg3:SetTexture(unpack(E['media'].bordercolor))
+			frame.bg3:SetAllPoints(frame.backdrop)		
+		end		
+	end
+	
+	
 	local once = false
 	hooksecurefunc("GuildControlUI_BankTabPermissions_Update", function()
 		local numTabs = GetNumGuildBankTabs()
@@ -64,7 +110,16 @@ local function LoadSkin()
 			
 			if once == false then
 				S:HandleButton(_G["GuildControlBankTab"..i.."BuyPurchaseButton"])
-				_G["GuildControlBankTab"..i.."OwnedStackBox"]:StripTextures()
+				S:HandleEditBox(_G["GuildControlBankTab"..i.."OwnedStackBox"])
+				S:HandleCheckBox(_G["GuildControlBankTab"..i.."OwnedViewCheck"])
+				S:HandleCheckBox(_G["GuildControlBankTab"..i.."OwnedDepositCheck"])
+				S:HandleCheckBox(_G["GuildControlBankTab"..i.."OwnedUpdateInfoCheck"])
+				
+				fixSkin(_G["GuildControlBankTab"..i.."OwnedStackBox"])
+				fixSkin(_G["GuildControlBankTab"..i.."OwnedViewCheck"])
+				fixSkin(_G["GuildControlBankTab"..i.."OwnedDepositCheck"])
+				fixSkin(_G["GuildControlBankTab"..i.."OwnedUpdateInfoCheck"])
+				
 			end
 		end
 		once = true
