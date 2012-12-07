@@ -62,8 +62,9 @@ local OnUpdate = function(self, elapsed)
 	end
 end
 
+local spellName = GetSpellInfo(54637)
 local UpdateType = function(self, event, rid, alt)
-	local isUsable = IsUsableSpell(54637)
+	local isUsable = IsUsableSpell(spellName)
 	local rune = self.Runes[runemap[rid]]
 	local runeType = GetRuneType(rid) or alt
 	if isUsable and runeType == 1 then runeType = 4; end
