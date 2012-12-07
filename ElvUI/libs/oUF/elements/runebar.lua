@@ -51,7 +51,7 @@ oUF.colors.runes = {
 }
 
 local runemap = { 1, 2, 5, 6, 3, 4 }
-
+local BLOOD_OF_THE_NORTH = 54637
 local OnUpdate = function(self, elapsed)
 	local duration = self.duration + elapsed
 	if(duration >= self.max) then
@@ -62,10 +62,14 @@ local OnUpdate = function(self, elapsed)
 	end
 end
 
+local spellName = GetSpellInfo(54637)
 local UpdateType = function(self, event, rid, alt)
+	local isUsable = IsUsableSpell(spellName)
 	local rune = self.Runes[runemap[rid]]
-	if not GetRuneType(rid) and not alt then return; end
-	local colors = oUF.colors.runes[GetRuneType(rid) or alt]
+	local runeType = GetRuneType(rid) or alt
+	if isUsable and runeType == 1 then runeType = 4; end
+	if not runeType then return; end
+	local colors = oUF.colors.runes[runeType]
 	local r, g, b = colors[1], colors[2], colors[3]
 
 	rune:SetStatusBarColor(r, g, b)
@@ -99,15 +103,12 @@ local Update = function(self, event)
 	end
 end
 
-local function UpdateAllRuneTypes(self, elapsed)
-	if GetSpecialization() == nil and elapsed then return; end
-	local runes = self:GetParent()
-	if(runes) then
+local function UpdateAllRuneTypes(self)
+	if(self) then
 		for i=1, 6 do
-			UpdateType(runes, nil, i)
+			UpdateType(self, nil, i)
 		end
 	end
-	self:SetScript('OnUpdate', nil)
 end
 
 local ForceUpdate = function(element)
@@ -122,8 +123,10 @@ local Enable = function(self, unit)
 
 		self:RegisterEvent("RUNE_POWER_UPDATE", UpdateRune, true)
 		self:RegisterEvent("RUNE_TYPE_UPDATE", UpdateType, true)	--I have no idea why this won't fire on initial login.
-		runes:SetScript('OnUpdate', UpdateAllRuneTypes)
+		self:RegisterEvent("PLAYER_ENTERING_WORLD", UpdateAllRuneTypes)
+		
 		if not runes.UpdateAllRuneTypes then runes.UpdateAllRuneTypes = UpdateAllRuneTypes end;
+		
 		for i=1, 6 do
 			local rune = runes[runemap[i]]
 			if(rune:IsObjectType'StatusBar' and not rune:GetStatusBarTexture()) then
@@ -150,13 +153,15 @@ local Disable = function(self)
 	RuneFrame.Show = nil
 	RuneFrame:Show()
 	
+
 	local runes = self.Runes
 	if(runes) then
 		runes:SetScript('OnUpdate', nil)
-	end
 
-	self:UnregisterEvent("RUNE_POWER_UPDATE", UpdateRune)
-	self:UnregisterEvent("RUNE_TYPE_UPDATE", UpdateType)
+		self:UnregisterEvent("RUNE_POWER_UPDATE", UpdateRune)
+		self:UnregisterEvent("RUNE_TYPE_UPDATE", UpdateType)
+		self:UnregisterEvent("PLAYER_ENTERING_WORLD", UpdateAllRuneTypes)
+	end	
 end
 
 oUF:AddElement("Runes", Update, Enable, Disable)

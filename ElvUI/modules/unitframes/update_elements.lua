@@ -200,10 +200,6 @@ function UF:UpdateAuraTimer(elapsed)
 				self.text:Hide()
 				self:SetScript("OnUpdate", nil)
 			end
-			if (not self.isDebuff) and E.db['general'].classtheme == true then
-				local r, g, b = self:GetParent():GetParent().Health.backdrop:GetBackdropBorderColor()
-				self:SetBackdropBorderColor(r, g, b)
-			end
 			self.elapsed = 0
 		end
 	end
@@ -416,20 +412,10 @@ function UF:PostCastStart(unit, name, rank, castid)
 		if UnitCanAttack("player", unit) then
 			self:SetStatusBarColor(unpack(ElvUF.colors.castNoInterrupt))
 		else
-			if E.private.theme == 'class' then
-				local color = RAID_CLASS_COLORS[E.myclass]
-				self:SetStatusBarColor(color.r, color.g, color.b)
-			else
-				self:SetStatusBarColor(unpack(ElvUF.colors.castColor))
-			end					
+			self:SetStatusBarColor(unpack(ElvUF.colors.castColor))			
 		end
 	else
-		if E.private.theme == 'class' then
-			local color = RAID_CLASS_COLORS[E.myclass]
-			self:SetStatusBarColor(color.r, color.g, color.b)
-		else
-			self:SetStatusBarColor(unpack(ElvUF.colors.castColor))
-		end	
+		self:SetStatusBarColor(unpack(ElvUF.colors.castColor))
 	end
 end
 
@@ -1099,7 +1085,7 @@ function UF:UpdateAuraWatch(frame)
 				icon:Width(db.size);
 				icon:Height(db.size);
 				icon:ClearAllPoints()
-				icon:SetPoint(spell["point"], E.PixelMode and UF:GetPositionOffset(spell["point"], 1) or 0, E.PixelMode and UF:GetPositionOffset(spell["point"], 1) or 0);
+				icon:SetPoint(spell["point"], frame.Health, spell['point'], E.PixelMode and 0, E.PixelMode and 0);
 
 				if not icon.icon then
 					icon.icon = icon:CreateTexture(nil, "BORDER");

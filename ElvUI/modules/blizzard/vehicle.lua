@@ -16,4 +16,5 @@ function B:PositionVehicleFrame()
 			VehicleSeatIndicator:SetScale(0.8)		
 		end
 	end)
+	VehicleSeatIndicator:SetPoint('TOPLEFT', MinimapCluster, 'TOPLEFT', 2, 2) -- initialize mover
 end

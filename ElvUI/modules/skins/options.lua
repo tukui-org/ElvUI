@@ -289,6 +289,21 @@ E.Options.args.skins = {
 					name = L["Pet Battle"],
 					desc = L["TOGGLESKIN_DESC"],									
 				},		
+				losscontrol = {
+					type = "toggle",
+					name = L['Loss Control'],
+					desc = L["TOGGLESKIN_DESC"],
+				},
+				voidstorage = {
+					type = "toggle",
+					name = L['Void Storage'],
+					desc = L["TOGGLESKIN_DESC"],				
+				},
+				itemUpgrade = {
+					type = "toggle",
+					name = L['Item Upgrade'],
+					desc = L["TOGGLESKIN_DESC"],				
+				},
 			},
 		},
 	},

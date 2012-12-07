@@ -14,6 +14,8 @@ function B:Initialize()
 	self:PositionVehicleFrame()
 	self:MoveWatchFrame()
 	self:PositionAltPowerBar()
+
+	E:CreateMover(LossOfControlFrame, 'LossControlMover', 'Loss Control Icon')
 	
 	CreateFrame("Frame"):SetScript("OnUpdate", function(self, elapsed)
 		if LFRBrowseFrame.timeToClear then

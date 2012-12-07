@@ -16,6 +16,7 @@ local DEFAULT_STRINGS = {
 	RAID_LEADER = L['RL'],	
 	INSTANCE_CHAT = L['I'],
 	INSTANCE_CHAT_LEADER = L['IL'],
+	PET_BATTLE_COMBAT_LOG = PET_BATTLE_COMBAT_LOG,
 }
 
 local hyperlinkTypes = {

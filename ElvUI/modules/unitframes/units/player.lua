@@ -895,7 +895,7 @@ function UF:Update_PlayerFrame(frame, db)
 				RuneFrame:Hide()				
 			end			
 			if runes.UpdateAllRuneTypes then
-				runes:UpdateAllRuneTypes() --colors update
+				runes.UpdateAllRuneTypes(frame) --colors update
 			end
 		elseif E.myclass == "DRUID" then
 			local eclipseBar = frame.EclipseBar
