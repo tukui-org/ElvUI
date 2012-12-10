@@ -1999,26 +1999,6 @@ E.Options.args.unitframe.args.player = {
 				},
 			},
 		},	
-		vengeance = {
-			order = 1400,
-			type = 'group',
-			name = L['Vengeance'],
-			get = function(info) return E.db.unitframe.units['player']['vengeance'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.units['player']['vengeance'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
-			args = {
-				enable = {
-					type = 'toggle',
-					order = 1,
-					name = L['Enable'],
-				},
-				width = {
-					order = 2,
-					name = L['Width'],
-					type = 'range',
-					min = 5, max = 25, step = 1,
-				},			
-			},
-		},		
 		raidicon = {
 			order = 2000,
 			type = 'group',
