@@ -111,7 +111,7 @@ function AB:PositionAndSizeBar(barName)
 		button:ClearAllPoints();
 		button:Size(size)
 		button:SetAttribute("showgrid", 1);
-		ActionButton_ShowGrid(button);
+		--ActionButton_ShowGrid(button);
 
 		if self.db[barName].mouseover == true then
 			bar:SetAlpha(0);
