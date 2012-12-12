@@ -163,8 +163,7 @@ E.Options.args.general = {
 					name = L["Tiny Map"],
 					desc = L["Don't scale the large world map to block out sides of the screen."],
 					get = function(info) return E.db.general.tinyWorldMap end,
-					set = function(info, value) E.db.general.tinyWorldMap = value; E:GetModule('WorldMap'):ToggleTinyWorldMapSetting() end,
-					disabled = true,
+					set = function(info, value) E.db.general.tinyWorldMap = value; E:GetModule('WorldMap'):ToggleTinyWorldMapSetting() end
 				},	
 				bottomPanel = {
 					order = 15,

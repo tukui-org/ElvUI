@@ -162,11 +162,11 @@ function M:Initialize()
 	WorldMapDetailFrame:SetFrameLevel(WorldMapFrame:GetFrameLevel() + 1)
 	WorldMapFrame:SetFrameStrata('HIGH')	
 	
-	--[[self:HookScript(WorldMapFrame, 'OnShow', 'WorldMapFrame_OnShow')
+	self:HookScript(WorldMapFrame, 'OnShow', 'WorldMapFrame_OnShow')
 	self:HookScript(WorldMapZoneDropDownButton, 'OnClick', 'ResetDropDownListPosition')
 	self:SecureHook("WorldMap_ToggleSizeDown", 'SetSmallWorldMap')	
 	self:RegisterEvent('PLAYER_REGEN_ENABLED')
-	self:RegisterEvent('PLAYER_REGEN_DISABLED')]]
+	self:RegisterEvent('PLAYER_REGEN_DISABLED')
 	
 	local CoordsHolder = CreateFrame('Frame', 'CoordsHolder', WorldMapFrame)
 	CoordsHolder:SetFrameLevel(WorldMapDetailFrame:GetFrameLevel() + 1)
@@ -183,14 +183,14 @@ function M:Initialize()
 	CoordsHolder.mouseCoords:SetText(MOUSE_LABEL..":   0, 0")
 	
 	self:ScheduleRepeatingTimer('UpdateCoords', 0.01)
-	--self:ToggleTinyWorldMapSetting()
+	self:ToggleTinyWorldMapSetting()
 	
 	
-	--[[DropDownList1:HookScript('OnShow', function(self)
+	DropDownList1:HookScript('OnShow', function(self)
 		if DropDownList1:GetScale() ~= UIParent:GetScale() and E.db.general.tinyWorldMap then
 			DropDownList1:SetScale(UIParent:GetScale())
 		end		
-	end)]]	
+	end)	
 end
 
 E:RegisterInitialModule(M:GetName())
