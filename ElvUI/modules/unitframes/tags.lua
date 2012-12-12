@@ -350,8 +350,8 @@ local function GetClassPower(class)
 		max = UnitPowerMax('player', SPELL_POWER_HOLY_POWER);	
 		r, g, b = 228/255, 225/255, 16/255
 	elseif class == 'MONK' then
-		min = UnitPower("player", SPELL_POWER_LIGHT_FORCE)
-		max = UnitPowerMax("player", SPELL_POWER_LIGHT_FORCE)
+		min = UnitPower("player", SPELL_POWER_CHI)
+		max = UnitPowerMax("player", SPELL_POWER_CHI)
 		r, g, b = unpack(Harmony[min])
 	elseif class == 'DRUID' and GetShapeshiftFormID() == MOONKIN_FORM then
 		min = UnitPower('player', SPELL_POWER_ECLIPSE)
