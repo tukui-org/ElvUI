@@ -699,7 +699,6 @@ L['You can toggle the microbar by using your middle mouse button on the minimap 
 L['You can use the /resetui command to reset all of your movers. You can also use the command to reset a specific mover, /resetui <mover name>.\nExample: /resetui Player Frame'] = true;
 
 --UnitFrames
-L['Vengeance'] = true;
 L['By Type'] = true;
 L['Color aurabar debuffs by type.'] = true;
 L["%s frame(s) has a conflicting anchor point, please change either the buff or debuff anchor point so they are not attached to each other. Forcing the debuffs to be attached to the main unitframe until fixed."] = true;
@@ -711,9 +710,9 @@ L["Add Spell"] = true;
 L["Add SpellID"] = true;
 L["Additional Filter"] = true;
 L["Affliction"] = true;
-L['Allow Dispellable Auras'] = true;
-L["Allow Personal Auras"] = true;
-L["Allow Whitelisted Auras"] = true;
+L['Block Non-Dispellable Auras'] = true;
+L["Block Non-Personal Auras"] = true;
+L["Block Non-Whitelisted Auras"] = true;
 L["An X offset (in pixels) to be used when anchoring new frames."] = true;
 L["An Y offset (in pixels) to be used when anchoring new frames."] = true;
 L["Any Unit"] = true;
