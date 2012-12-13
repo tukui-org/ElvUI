@@ -323,6 +323,7 @@ function NP:OnHide(frame)
 	frame.hp:SetStatusBarColor(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor)
 	frame.hp.name:SetTextColor(1, 1, 1)
 	frame.hp:SetScale(1)
+	frame.cb:SetScale(1)
 	frame.AuraWidget:SetScale(1)
 	frame.cb:Hide()
 	frame.unit = nil
