@@ -3,7 +3,7 @@ local L = AceLocale:NewLocale("ElvUI", "itIT");
 if not L then return; end
 
 --TEMP
-L["A taint has occured that is preventing you from using your talents/glyphs, this can happen if you've inspected someone. Unfortunately theres nothing we can do to fix it, please reload your ui and try again."] = true;
+L["A taint has occured that is preventing you from using your talents/glyphs. Please reload your user interface and try again."] = true;
 
 --ActionBars
 L[" |cff00ff00bound to |r"] = " |cff00ff00bound a |r";

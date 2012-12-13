@@ -868,6 +868,10 @@ function NP:CastBar_OnShow(frame)
 		frame:SetStatusBarColor(1, 208/255, 0)
 	end	
 	
+	while frame:GetEffectiveScale() < 1 do
+		frame:SetScale(frame:GetScale() + 0.01)
+	end	
+	
 	self:SetVirtualBorder(frame, unpack(E["media"].bordercolor))
 	self:SetVirtualBackdrop(frame, unpack(E["media"].backdropcolor))	
 	

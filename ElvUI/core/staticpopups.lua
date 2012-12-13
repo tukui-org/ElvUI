@@ -3,16 +3,6 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 E.PopupDialogs = {};
 E.StaticPopup_DisplayedFrames = {};
 
-E.PopupDialogs['YOUR_FUCKED'] = {
-	text = "You're Fucked!",
-	OnAccept = function() end,
-	button1 = ACCEPT,
-	timeout = 0,
-	whileDead = 1,	
-	hideOnEscape = false,		
-}
-
-
 E.PopupDialogs['DISABLE_INCOMPATIBLE_ADDON'] = {
 	text = L['Do you swear not to post in technical support about something not working without first disabling the addon/module combination first?'],
 	OnAccept = function() E.global.ignoreIncompatible = true; end,
@@ -57,7 +47,7 @@ E.PopupDialogs['CONFIGAURA_SET'] = {
 }
 
 E.PopupDialogs['TALENT_TAINT'] = {
-	text = L["A taint has occured that is preventing you from using your talents/glyphs, this can happen if you've inspected someone. Unfortunately theres nothing we can do to fix it, please reload your ui and try again."],
+	text = L["A taint has occured that is preventing you from using your talents/glyphs. Please reload your user interface and try again."],
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	OnAccept = function() ReloadUI(); end,
