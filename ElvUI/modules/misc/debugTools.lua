@@ -134,7 +134,7 @@ function D:TaintError(event, addonName, addonFunc)
 		
 		E:StaticPopup_Show('TALENT_TAINT')
 	end
-
+	
 	if GetCVarBool('scriptErrors') ~= 1 or E.db.general.taintLog ~= true then return end
 	ScriptErrorsFrame_OnError(L["%s: %s tried to call the protected function '%s'."]:format(event, addonName or "<name>", addonFunc or "<func>"), false)
 end
@@ -146,7 +146,7 @@ function D:Initialize()
 	if( not IsAddOnLoaded("Blizzard_DebugTools") ) then
 		LoadAddOn("Blizzard_DebugTools")
 	end
-	
+		
 	self:ModifyErrorFrame()
 	self:SecureHook('ScriptErrorsFrame_UpdateButtons')
 	self:SecureHook('ScriptErrorsFrame_OnError')
