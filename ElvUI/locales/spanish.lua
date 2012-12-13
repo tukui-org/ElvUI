@@ -5,7 +5,7 @@ if not L then return end
 
 
 --TEMP
-L["A taint has occured that is preventing you from using your talents/glyphs. Please reload your user interface and try again."] = "Ha ocurrido un problema que no te permite cambiar tus talentos y glifos, esto puede suceder si has inspeccionado a alguien. Desgraciadamente no podemos hacer nada para arreglarlo, por favor recarga tu interfaz y vuelve a intentarlo."
+L["A taint has occured that is preventing you from using your talents/glyphs. Please reload your user interface and try again."] = true;
 
 --ActionBars
 L[" |cff00ff00bound to |r"] = " |cff00ff00ligado(a) a |r"
@@ -612,10 +612,12 @@ L["Guild Frame"] = "Hermandad";
 L["Guild Registrar"] = "Registrar Hermandad";
 L["Help Frame"] = "Ayuda";
 L["Inspect Frame"] = "Inspección";
+L['Item Upgrade'] = true;
 L["KeyBinding Frame"] = "Asignación de Teclas";
 L["LF Guild Frame"] = "Búsqueda de Hermandad";
 L["LFG Frame"] = "Búsqueda de Grupo";
 L["Loot Frames"] = "Despojo";
+L['Loss Control'] = true;
 L["Macro Frame"] = "Macros";
 L["Mail Frame"] = "Correo";
 L["Merchant Frame"] = "Mercader";
@@ -642,6 +644,7 @@ L["Trade Frame"] = "Comercio";
 L["TradeSkill Frame"] = "Comercio de Habilidades";
 L["Trainer Frame"] = "Entrenador";
 L['Transmogrify Frame'] = "Transmogrificación";
+L['Void Storage'] = true;
 L["World Map"] = "Mapa Mundial";
 
 --Static Popups
@@ -718,9 +721,6 @@ L["Add Spell"] = "Añadir Hechizo";
 L["Add SpellID"] = "Añadir ID de Hechizo";
 L["Additional Filter"] = "Filtro Adicional";
 L["Affliction"] = 'Aflicción';
-L['Block Non-Dispellable Auras'] = "Permitir Auras que se puedan Disipar";
-L["Block Non-Personal Auras"] = "Permitir Auras Personales";
-L["Block Non-Whitelisted Auras"] = "Permitir Auras de la Lista Blanca";
 L["An X offset (in pixels) to be used when anchoring new frames."] = "Un desplazamiento X (en píxeles) para ser usado cuando se fijan nuevos marcos.";
 L["An Y offset (in pixels) to be used when anchoring new frames."] = "Un desplazamiento Y (en píxeles) para ser usado cuando se fijan nuevos marcos.";
 L["Any Unit"] = "Cualquier Unidad";
@@ -737,6 +737,9 @@ L['Below'] = "Debajo";
 L["Blacklist"] = "Lista Negra";
 L["Block Auras Without Duration"] = "Bloquear Auras Sin Duración";
 L["Block Blacklisted Auras"] = "Bloquear Auras de Lista Negra";
+L['Block Non-Dispellable Auras'] = true;
+L["Block Non-Personal Auras"] = true;
+L["Block Non-Whitelisted Auras"] = true;
 L["Block Raid Buffs"] = "Bloquear Beneficios de Banda";
 L['Blood'] = 'Sangre';
 L["Boss Frames"] = "Marco de Jefe";
@@ -949,7 +952,6 @@ L["Units Per Column"] = "Unidades por Columna";
 L["Up"] = "Arriba";
 L["Use the custom health backdrop color instead of a multiple of the main health color."] = "Usar el color de fondo personalizado para la salud en vez de un múltiplo del color principal.";
 L["Value must be a number"] = "El valor debe ser un número";
-L['Vengeance'] = 'Venganza'
 L["Vertical"] = "Vertical"; --Also used in bags section
 L["Visibility"] = "Visibilidad";
 L["What each frame should attach itself to, example setting it to TOP every unit will attach its top to the last point bottom."] = "Cada marco debería adjuntarse consigo mismo, por ejemplo estableciendo ARRIBA cada unidad se adjuntara a su último punto de abajo.";
