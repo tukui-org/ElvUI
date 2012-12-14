@@ -335,6 +335,7 @@ L["ELVUI_CREDITS"] = "I would like to give out a special shout out to the follow
 L["Testing:"] = true;
 
 --DataTexts
+L["Reset Data: Hold Shift + Right Click"] = true;
 L["(Hold Shift) Memory Usage"] = true;
 L["24-Hour Time"] = true;
 L['Always Display'] = true;
@@ -688,7 +689,6 @@ L['ElvUI has a dual spec feature which allows you to load different profiles bas
 L['For technical support visit us at http://www.tukui.org.'] = true;
 L['If you accidently remove a chat frame you can always go the in-game configuration menu, press install, go to the chat portion and reset them.'] = true
 L['If you are experiencing issues with ElvUI try disabling all your addons except ElvUI, remember ElvUI is a full UI replacement addon, you cannot run two addons that do the same thing.'] = true;
-L['If you need to reset the gold datatext type /resetgold.'] = true;
 L['The buff panel to the right of minimap is a list of your consolidated buffs. You can disable it in Buffs and Debuffs options of ElvUI.'] = true;
 L['The focus unit can be set by typing /focus when you are targetting the unit you want to focus. It is recommended you make a macro to do this.'] = true;
 L['To move abilities on the actionbars by default hold shift + drag. You can change the modifier key from the actionbar options menu.'] = true;

@@ -20,11 +20,6 @@ function E:DisableAddon(addon)
 	end
 end
 
-function E:ResetGold()
-	ElvDB.gold = nil;
-	ReloadUI();
-end
-
 function FarmMode()
 	if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT); return; end
 	if E.private.general.minimap.enable ~= true then return; end
@@ -180,7 +175,6 @@ function E:LoadCommands()
 	self:RegisterChatCommand("resetui", "ResetUI")
 	self:RegisterChatCommand("enable", "EnableAddon")
 	self:RegisterChatCommand("disable", "DisableAddon")
-	self:RegisterChatCommand('resetgold', 'ResetGold')
 	self:RegisterChatCommand('farmmode', 'FarmMode')
 	self:RegisterChatCommand('elvsays', 'ElvSays')
 	self:RegisterChatCommand('elvsayschannel', 'ElvSaysChannel')
