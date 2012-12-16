@@ -2,85 +2,6 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 local M = E:NewModule('WorldMap', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
 E.WorldMap = M
 
-function M:AdjustMapSize()
-	if InCombatLockdown() then return; end
-	
-	if E.db.general.tinyWorldMap then
-		if WORLDMAP_SETTINGS.size == WORLDMAP_FULLMAP_SIZE then
-			self:SetLargeWorldMap()
-		elseif WORLDMAP_SETTINGS.size == WORLDMAP_WINDOWED_SIZE then
-			self:SetSmallWorldMap()
-		elseif WORLDMAP_SETTINGS.size == WORLDMAP_QUESTLIST_SIZE then
-			self:SetQuestWorldMap()
-		end
-	end
-	
-	WorldMapFrame:SetFrameLevel(3)
-	WorldMapDetailFrame:SetFrameLevel(WorldMapFrame:GetFrameLevel() + 1)
-	WorldMapFrame:SetFrameStrata('HIGH')		
-end
-
-function M:SetLargeWorldMap()
-	if InCombatLockdown() then return; end
-	
-	if E.db.general.tinyWorldMap then
-		WorldMapFrame:EnableMouse(false)
-		WorldMapFrame:EnableKeyboard(false)
-		
-		if WorldMapFrame:GetAttribute('UIPanelLayout-area') ~= 'center' then
-			WorldMapFrame:SetAttribute('UIPanelLayout-area', 'center')
-		end
-		
-		if WorldMapFrame:GetAttribute('UIPanelLayout-allowOtherPanels') ~= true then	
-			WorldMapFrame:SetAttribute('UIPanelLayout-allowOtherPanels', true)
-		end
-		
-		WorldMapFrame:SetParent(UIParent);
-	end
-	
-	WorldMapFrameSizeUpButton:Hide()
-	WorldMapFrameSizeDownButton:Show()	
-end
-
-function M:SetQuestWorldMap()
-	if InCombatLockdown() then return; end
-	
-	if E.db.general.tinyWorldMap then
-		WorldMapFrame:EnableMouse(false)
-		WorldMapFrame:EnableKeyboard(false)
-		WorldMapFrame:SetParent(UIParent);
-		if WorldMapFrame:GetAttribute('UIPanelLayout-area') ~= 'center' then
-			WorldMapFrame:SetAttribute('UIPanelLayout-area', 'center')
-		end
-		
-		if WorldMapFrame:GetAttribute('UIPanelLayout-allowOtherPanels') ~= true then	
-			WorldMapFrame:SetAttribute('UIPanelLayout-allowOtherPanels', true)
-		end
-	end
-	
-	WorldMapFrameSizeUpButton:Hide()
-	WorldMapFrameSizeDownButton:Show()	
-end
-
-function M:SetSmallWorldMap()
-	if InCombatLockdown() then return; end
-	WorldMapLevelDropDown:ClearAllPoints()
-	WorldMapLevelDropDown:Point("TOPLEFT", WorldMapDetailFrame, "TOPLEFT", -10, -4)
-
-	WorldMapFrameSizeUpButton:Show()
-	WorldMapFrameSizeDownButton:Hide()	
-end
-
-function M:PLAYER_REGEN_ENABLED()
-	WorldMapFrameSizeDownButton:Enable()
-	WorldMapFrameSizeUpButton:Enable()	
-end
-
-function M:PLAYER_REGEN_DISABLED()
-	WorldMapFrameSizeDownButton:Disable()
-	WorldMapFrameSizeUpButton:Disable()
-end
-
 function M:UpdateCoords()
 	local inInstance, _ = IsInInstance()
 	local x, y = GetPlayerMapPosition("player")
@@ -115,48 +36,44 @@ function M:ResetDropDownListPosition(frame)
 	DropDownList1:Point("TOPRIGHT", frame, "BOTTOMRIGHT", -17, -4)
 end
 
-function M:WorldMapFrame_OnShow()
-	if InCombatLockdown() then return; end
-	WorldMapFrame:SetFrameLevel(3)
-	WorldMapDetailFrame:SetFrameLevel(WorldMapFrame:GetFrameLevel() + 1)
-	WorldMapFrame:SetFrameStrata('HIGH')	
-end
-
 function M:ToggleTinyWorldMapSetting()
 	if InCombatLockdown() then return; end
 	if E.db.general.tinyWorldMap then
 		BlackoutWorld:SetTexture(nil)
-		self:SecureHook("WorldMap_ToggleSizeUp", 'AdjustMapSize')	
-		self:SecureHook("WorldMapFrame_SetFullMapView", 'SetLargeWorldMap')
-		self:SecureHook("WorldMapFrame_SetQuestMapView", 'SetQuestWorldMap')
 
-		local info = UIPanelWindows['WorldMapFrame'];
-		for name, value in pairs(info) do
-			if value == "full" then value = "center"; end
-			WorldMapFrame:SetAttribute("UIPanelLayout-"..name, value);
-		end	
-
-		WorldMapFrame:SetAttribute("UIPanelLayout-defined", true);	
+		local CVar = GetCVarBool("miniWorldMap")
 		
-		if WORLDMAP_SETTINGS.size == WORLDMAP_FULLMAP_SIZE then
-			self:SetLargeWorldMap()
-		elseif WORLDMAP_SETTINGS.size == WORLDMAP_WINDOWED_SIZE then
-			self:SetSmallWorldMap()
-		elseif WORLDMAP_SETTINGS.size == WORLDMAP_QUESTLIST_SIZE then
-			self:SetQuestWorldMap()
-		end			
-	else
-		self:Unhook("WorldMap_ToggleSizeUp")
-		self:Unhook("WorldMapFrame_SetFullMapView")
-		self:Unhook("WorldMapFrame_SetQuestMapView")
-		if WORLDMAP_SETTINGS.size == WORLDMAP_FULLMAP_SIZE then
+		if CVar then
+			SetCVar("miniWorldMap", nil)
+			WorldMap_ToggleSizeUp()
+		end		
+		
+		WorldMapFrame:SetAttribute("UIPanelLayout-defined", true);	
+		WorldMapFrame:SetAttribute("UIPanelLayout-enabled", false)
+		WorldMapFrame:SetAttribute("UIPanelLayout-area", nil)		
+		
+		WorldMapFrameSizeUpButton:Hide()
+		WorldMapFrameSizeDownButton:Hide()
+		
+		WorldMapFrame:EnableMouse(false)
+		WorldMapFrame:EnableKeyboard(false)
+
+		WorldMapFrame:SetParent(UIParent);	
+	else		
+		if WORLDMAP_SETTINGS.size == WORLDMAP_FULLMAP_SIZE then		
 			WorldMap_ToggleSizeUp()
 			WorldMapFrame_SetFullMapView()
+			WorldMapFrameSizeUpButton:Hide()
+			WorldMapFrameSizeDownButton:Show()
 		elseif WORLDMAP_SETTINGS.size == WORLDMAP_WINDOWED_SIZE then
+			WorldMapFrameSizeUpButton:Show()
+			WorldMapFrameSizeDownButton:Hide()
 			WorldMap_ToggleSizeDown()
 		elseif WORLDMAP_SETTINGS.size == WORLDMAP_QUESTLIST_SIZE then
 			WorldMap_ToggleSizeUp()
 			WorldMapFrame_SetQuestMapView()
+			WorldMapFrameSizeUpButton:Hide()
+			WorldMapFrameSizeDownButton:Show()			
 		end		
 		BlackoutWorld:SetTexture(0, 0, 0, 1)
 	end
@@ -170,13 +87,9 @@ function M:Initialize()
 	WorldMapFrame:SetFrameLevel(3)
 	WorldMapDetailFrame:SetFrameLevel(WorldMapFrame:GetFrameLevel() + 1)
 	WorldMapFrame:SetFrameStrata('HIGH')	
-	
-	self:HookScript(WorldMapFrame, 'OnShow', 'WorldMapFrame_OnShow')
+
 	self:HookScript(WorldMapZoneDropDownButton, 'OnClick', 'ResetDropDownListPosition')
-	self:SecureHook("WorldMap_ToggleSizeDown", 'SetSmallWorldMap')	
-	self:RegisterEvent('PLAYER_REGEN_ENABLED')
-	self:RegisterEvent('PLAYER_REGEN_DISABLED')
-	
+
 	local CoordsHolder = CreateFrame('Frame', 'CoordsHolder', WorldMapFrame)
 	CoordsHolder:SetFrameLevel(WorldMapDetailFrame:GetFrameLevel() + 1)
 	CoordsHolder:SetFrameStrata(WorldMapDetailFrame:GetFrameStrata())
