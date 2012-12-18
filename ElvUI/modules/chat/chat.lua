@@ -6,6 +6,12 @@ local lines = {};
 local msgList, msgCount, msgTime = {}, {}, {}
 local good, maybe, filter, login = {}, {}, {}, false
 
+local cvars = {
+	["bnWhisperMode"] = true,
+	["conversationMode"] = true,
+	["whisperMode"] = true,
+}
+
 local TIMESTAMP_FORMAT
 local DEFAULT_STRINGS = {
 	GUILD = L['G'],
@@ -1071,6 +1077,7 @@ function CH:SaveChatHistory(event, ...)
 	end
 end
 
+
 DEFAULT_CHAT_FRAME:UnregisterEvent("GUILD_MOTD")
 function CH:Initialize()
 	self.db = E.db.chat
@@ -1229,8 +1236,28 @@ function CH:Initialize()
 	InterfaceOptionsSocialPanelTimestamps:SetAlpha(0)
 	InterfaceOptionsSocialPanelTimestamps:SetScale(0.000001)
 	
+	InterfaceOptionsSocialPanelWhisperMode:SetScale(0.000001)
+	InterfaceOptionsSocialPanelWhisperMode:SetAlpha(0)
+	InterfaceOptionsSocialPanelBnWhisperMode:SetScale(0.000001)
+	InterfaceOptionsSocialPanelBnWhisperMode:SetAlpha(0)	
+	InterfaceOptionsSocialPanelConversationMode:SetScale(0.000001)
+	InterfaceOptionsSocialPanelConversationMode:SetAlpha(0)
+	
+	InterfaceOptionsSocialPanelChatStyle:SetScale(0.000001)
+	InterfaceOptionsSocialPanelChatStyle:SetAlpha(0)
+	
 	CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Size(20, 22)
 	CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Point("TOPRIGHT", CombatLogQuickButtonFrame_Custom, "TOPRIGHT", 0, -1)	
+	
+	if GetCVar("conversationMode") ~= "inline" then
+		SetCVar("conversationMode", "inline")
+	end
+	
+	for cvar, _ in pairs(cvars) do
+		if GetCVar(cvar) ~= "inline" then
+			SetCVar(cvar, "inline")
+		end		
+	end
 end
 
 E:RegisterModule(CH:GetName())
