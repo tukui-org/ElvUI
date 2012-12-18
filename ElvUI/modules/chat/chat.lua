@@ -114,6 +114,34 @@ local specialChatIcons = {
 
 CH.Keywords = {};
 
+local function ChatFrame_OnMouseScroll(frame, delta)
+	if delta < 0 then
+		if IsShiftKeyDown() then
+			frame:ScrollToBottom()
+		else
+			for i = 1, 3 do
+				frame:ScrollDown()
+			end
+		end
+	elseif delta > 0 then
+		if IsShiftKeyDown() then
+			frame:ScrollToTop()
+		else
+			for i = 1, 3 do
+				frame:ScrollUp()
+			end
+		end
+		
+		if CH.db.scrollDownInterval ~= 0 then
+			if frame.ScrollTimer then
+				CH:CancelTimer(frame.ScrollTimer, true)
+			end
+
+			frame.ScrollTimer = CH:ScheduleTimer('ScrollToBottom', CH.db.scrollDownInterval, frame)
+		end		
+	end
+end
+
 function CH:GetGroupDistribution()
 	local inInstance, kind = IsInInstance()
 	if inInstance and (kind == "pvp") then
@@ -179,18 +207,23 @@ function CH:StyleChat(frame)
 	local tab = _G[name..'Tab']
 	local editbox = _G[name..'EditBox']
 	
-	for _, texName in pairs(tabTexs) do
-		_G[tab:GetName()..texName..'Left']:Kill()
-		_G[tab:GetName()..texName..'Middle']:Kill()
-		_G[tab:GetName()..texName..'Right']:Kill()	
-	end
+	tab:StripTextures()
 
-	tab:SetAlpha(1)
-	tab.SetAlpha = UIFrameFadeRemoveFrame	
+	hooksecurefunc(tab, "SetAlpha", function(t, alpha)
+		if alpha ~= 1 then
+			tab:SetAlpha(1)
+		end
+	end)
+
 	tab.text = _G[name.."TabText"]
 	tab.text:SetTextColor(unpack(E["media"].rgbvaluecolor))
-	tab.text.OldSetTextColor = tab.text.SetTextColor 
-	tab.text.SetTextColor = E.noop
+	hooksecurefunc(tab.text, "SetTextColor", function(t, r, g, b, a)
+		local rR, gG, bB = unpack(E["media"].rgbvaluecolor)
+
+		if r ~= rR or g ~= gG or b ~= bB then
+			t:SetTextColor(rR, gG, bB)
+		end
+	end)
 	
 	if tab.conversationIcon then
 		tab.conversationIcon:ClearAllPoints()
@@ -503,7 +536,7 @@ end
 
 local function UpdateChatTabColor(hex, r, g, b)
 	for i=1, CreatedFrames do
-		_G['ChatFrame'..i..'TabText']:OldSetTextColor(r, g, b)
+		_G['ChatFrame'..i..'TabText']:SetTextColor(r, g, b)
 	end
 end
 E['valueColorUpdateFuncs'][UpdateChatTabColor] = true
@@ -512,34 +545,6 @@ function CH:ScrollToBottom(frame)
 	frame:ScrollToBottom()
 	
 	self:CancelTimer(frame.ScrollTimer, true)
-end
-
-function FloatingChatFrame_OnMouseScroll(frame, delta)
-	if delta < 0 then
-		if IsShiftKeyDown() then
-			frame:ScrollToBottom()
-		else
-			for i = 1, 3 do
-				frame:ScrollDown()
-			end
-		end
-	elseif delta > 0 then
-		if IsShiftKeyDown() then
-			frame:ScrollToTop()
-		else
-			for i = 1, 3 do
-				frame:ScrollUp()
-			end
-		end
-		
-		if CH.db.scrollDownInterval ~= 0 then
-			if frame.ScrollTimer then
-				CH:CancelTimer(frame.ScrollTimer, true)
-			end
-
-			frame.ScrollTimer = CH:ScheduleTimer('ScrollToBottom', CH.db.scrollDownInterval, frame)
-		end		
-	end
 end
 
 function CH:PrintURL(url)
@@ -575,7 +580,7 @@ function CH:FindURL(event, msg, ...)
 end
 
 local OldChatFrame_OnHyperlinkShow
-local function URLChatFrame_OnHyperlinkShow(self, link, ...)
+local function URLChatFrame_OnHyperlinkShow(self, link, text, button)
 	CH.clickedframe = self
 	if (link):sub(1, 3) == "url" then
 		local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
@@ -587,7 +592,8 @@ local function URLChatFrame_OnHyperlinkShow(self, link, ...)
 		ChatFrameEditBox:HighlightText()
 		return
 	end
-	OldChatFrame_OnHyperlinkShow(self, link, ...)
+	
+	SetItemRef(link, text, button, self);
 end
 
 local function WIM_URLLink(link)
@@ -731,6 +737,14 @@ function CH:SetupChat(event, ...)
 		frame:SetTimeVisible(100)
 		frame:SetShadowOffset((E.mult or 1), -(E.mult or 1))	
 		frame:SetFading(self.db.fade)
+		
+		frame:SetScript("OnHyperlinkClick", URLChatFrame_OnHyperlinkShow)
+		frame:SetScript("OnMouseWheel", ChatFrame_OnMouseScroll)
+		hooksecurefunc(frame, "SetScript", function(f, script, func)
+			if script == "OnMouseWheel" and func ~= ChatFrame_OnMouseScroll then
+				f:SetScript(script, ChatFrame_OnMouseScroll)
+			end
+		end)
 	end	
 	
 	if self.db.hyperlinkHover then
@@ -901,47 +915,6 @@ function CH:AddLines(lines, ...)
   end
 end
 
-
-function CH:CopyLineFromPlayerlinkToEdit(origin_frame, ...)
-    local frame = (origin_frame and origin_frame:GetObjectType() == "ScrollingMessageFrame" and origin_frame) or self.clickedframe
-	if not frame then return; end
-	self.lines = {};
-	
-    for i=1, #self.lines do
-        self.lines[i] = nil
-    end
-
-    self:AddLines(self.lines, frame:GetRegions())
-
-    local dropdownFrame = UIDROPDOWNMENU_INIT_MENU
-
-    local name = dropdownFrame.name
-    local server = dropdownFrame.server  or ""
-    local linenum = dropdownFrame.lineID
-
-    local fullname = name;
-
-    if server:len()>0 then
-        fullname = name.."-"..server;
-    end
-
-    local findname = "|Hplayer:"..fullname..":"..tostring(linenum)
-    for i=1, #self.lines do
-        if self.lines[i]:find(findname:gsub("%-", "%%-")) then
-            local text = self.lines[i]:gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", ""):gsub("|H.-|h", ""):gsub("|h", "")
-			text = text:gsub('|', '')
-			
-            local editBox = ChatEdit_ChooseBoxForSend(frame);
-            if ( editBox ~= ChatEdit_GetActiveWindow() ) then
-                ChatFrame_OpenChat(text, frame);
-            else
-                editBox:SetText(text);
-            end
-        end
-    end
-end
-
-
 function CH:ChatEdit_OnEnterPressed(editBox)
 	local type = editBox:GetAttribute("chatType");
 	local chatFrame = editBox:GetParent();
@@ -1102,9 +1075,7 @@ function CH:Initialize()
 	self:SecureHook('ChatEdit_OnEnterPressed')
 	FriendsMicroButton:Kill()
 	ChatFrameMenuButton:Kill()
-	OldChatFrame_OnHyperlinkShow = ChatFrame_OnHyperlinkShow
-	ChatFrame_OnHyperlinkShow = URLChatFrame_OnHyperlinkShow
-	
+		
     if WIM then
       WIM.RegisterWidgetTrigger("chat_display", "whisper,chat,w2w,demo", "OnHyperlinkClick", function(self) CH.clickedframe = self end);
 	  WIM.RegisterItemRefHandler('url', WIM_URLLink)
