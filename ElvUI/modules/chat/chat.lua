@@ -207,7 +207,11 @@ function CH:StyleChat(frame)
 	local tab = _G[name..'Tab']
 	local editbox = _G[name..'EditBox']
 	
-	tab:StripTextures()
+	for _, texName in pairs(tabTexs) do
+		_G[tab:GetName()..texName..'Left']:SetTexture(nil)
+		_G[tab:GetName()..texName..'Middle']:SetTexture(nil)
+		_G[tab:GetName()..texName..'Right']:SetTexture(nil)
+	end
 
 	hooksecurefunc(tab, "SetAlpha", function(t, alpha)
 		if alpha ~= 1 then
@@ -1109,7 +1113,7 @@ function CH:Initialize()
 	self:RegisterEvent("CHAT_MSG_WHISPER", 'SaveChatHistory')
 	self:RegisterEvent("CHAT_MSG_WHISPER_INFORM", 'SaveChatHistory')
 	self:RegisterEvent("CHAT_MSG_YELL", 'SaveChatHistory')
-	
+
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_CHANNEL", CH.CHAT_MSG_CHANNEL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_YELL", CH.CHAT_MSG_YELL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_SAY", CH.CHAT_MSG_SAY)
@@ -1127,7 +1131,6 @@ function CH:Initialize()
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER_INFORM", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_INLINE_TOAST_BROADCAST", CH.FindURL)
-
 
 	GeneralDockManagerOverflowButton:ClearAllPoints()
 	GeneralDockManagerOverflowButton:Point('BOTTOMRIGHT', LeftChatTab, 'BOTTOMRIGHT', -2, 2)
@@ -1209,28 +1212,27 @@ function CH:Initialize()
 	InterfaceOptionsSocialPanelTimestampsButton:SetScale(0.000001)
 	InterfaceOptionsSocialPanelTimestamps:SetAlpha(0)
 	InterfaceOptionsSocialPanelTimestamps:SetScale(0.000001)
-	
 	InterfaceOptionsSocialPanelWhisperMode:SetScale(0.000001)
 	InterfaceOptionsSocialPanelWhisperMode:SetAlpha(0)
 	InterfaceOptionsSocialPanelBnWhisperMode:SetScale(0.000001)
-	InterfaceOptionsSocialPanelBnWhisperMode:SetAlpha(0)	
+	InterfaceOptionsSocialPanelBnWhisperMode:SetAlpha(0)
 	InterfaceOptionsSocialPanelConversationMode:SetScale(0.000001)
 	InterfaceOptionsSocialPanelConversationMode:SetAlpha(0)
-	
+
 	InterfaceOptionsSocialPanelChatStyle:SetScale(0.000001)
 	InterfaceOptionsSocialPanelChatStyle:SetAlpha(0)
-	
-	CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Size(20, 22)
-	CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Point("TOPRIGHT", CombatLogQuickButtonFrame_Custom, "TOPRIGHT", 0, -1)	
-	
+
+ 	CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Size(20, 22)
+ 	CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Point("TOPRIGHT", CombatLogQuickButtonFrame_Custom, "TOPRIGHT", 0, -1)
+
 	if GetCVar("conversationMode") ~= "inline" then
 		SetCVar("conversationMode", "inline")
 	end
-	
+
 	for cvar, _ in pairs(cvars) do
 		if GetCVar(cvar) ~= "inline" then
 			SetCVar(cvar, "inline")
-		end		
+		end
 	end
 	
 	if GetCVar("showTimestamps") ~= "none" then
