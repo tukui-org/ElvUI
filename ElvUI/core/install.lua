@@ -457,6 +457,8 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.movers.ElvUF_PetMover = "BOTTOMLEFTElvUIParentBOTTOMLEFT464151"
 			E.db.movers.ElvUF_FocusMover = "BOTTOMElvUIParentBOTTOM280332"			
 		end
+		
+		E.db.movers["BossButton"] = "TOPElvUIParentTOP0-250"
 	elseif E.db.lowresolutionset then
 		if not E.db.movers then E.db.movers = {}; end
 		E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM-106135"

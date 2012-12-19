@@ -13,7 +13,7 @@ P['general'] = {
 	['autoRoll'] = false,
 	['vendorGrays'] = false,
 	['autoAcceptInvite'] = false,
-	['bottomPanel'] = false,
+	['bottomPanel'] = true,
 
 	["fontSize"] = 12,
 	["font"] = "ElvUI Font",
