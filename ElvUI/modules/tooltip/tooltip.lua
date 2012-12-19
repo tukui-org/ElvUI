@@ -691,6 +691,16 @@ end
 
 function TT:Initialize()
 	self.db = E.db["tooltip"]
+
+	BNToastFrame:Point('TOPRIGHT', MMHolder, 'BOTTOMRIGHT', 0, -10);
+	E:CreateMover(BNToastFrame, 'BNETMover', 'BNet Frame')
+	hooksecurefunc(BNToastFrame, "SetPoint", function(self, point, anchor, anchorPoint, xOffset, yOffset)
+		if anchor ~= MMHolder then
+			BNToastFrame:ClearAllPoints()
+			BNToastFrame:Point('TOPRIGHT', MMHolder, 'BOTTOMRIGHT', 0, -10);
+		end
+	end)		
+	
 	if E.private["tooltip"].enable ~= true then return end
 	E.Tooltip = TT
 
@@ -779,11 +789,6 @@ function TT:Initialize()
 			self:Show()
 		end
 	end)
-	
-	BNToastFrame:Point('TOPRIGHT', MMHolder, 'BOTTOMRIGHT', 0, -10);
-	E:CreateMover(BNToastFrame, 'BNETMover', 'BNet Frame')
-	BNToastFrame.SetPoint = E.noop
-	BNToastFrame.ClearAllPoints = E.noop	
 end
 
 E:RegisterModule(TT:GetName())
