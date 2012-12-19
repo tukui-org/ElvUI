@@ -311,6 +311,10 @@ function CH:StyleChat(frame)
 		end
 	end)
 	
+	--this taints
+	frame.OldAddMessage = frame.AddMessage
+	frame.AddMessage = CH.AddMessage	
+	
 	--copy chat button
 	frame.button = CreateFrame('Frame', format("CopyChatButton%d", id), frame)
 	frame.button:SetAlpha(0)
@@ -614,11 +618,66 @@ function CH:ShortChannel()
 	return string.format("|Hchannel:%s|h[%s]|h", self, DEFAULT_STRINGS[self] or self:gsub("channel:", ""))
 end
 
-function CH:AddMessage()
+function CH:AddMessage(text, ...)
+	if type(text) == "string" then		
+		if CH.db.shortChannels then
+			text = text:gsub("|Hchannel:(.-)|h%[(.-)%]|h", CH.ShortChannel)
+			text = text:gsub('CHANNEL:', '')
+			text = text:gsub("^(.-|h) "..L['whispers'], "%1")
+			text = text:gsub("^(.-|h) "..L['says'], "%1")
+			text = text:gsub("^(.-|h) "..L['yells'], "%1")
+			text = text:gsub("<"..AFK..">", "[|cffFF0000"..L['AFK'].."|r] ")
+			text = text:gsub("<"..DND..">", "[|cffE7E716"..L['DND'].."|r] ")
+			text = text:gsub("^%["..RAID_WARNING.."%]", '['..L['RW']..']')	
+			text = text:gsub("%[BN_CONVERSATION:", '%['..L["BN:"])
+		end
+
+		local timeStamp
+		if CHAT_TIMESTAMP_FORMAT ~= nil then
+			timeStamp = BetterDate(CHAT_TIMESTAMP_FORMAT, time());
+			text = text:gsub(timeStamp, '')
+		end
+		
+		--Add Timestamps
+		if ( CH.db.timeStampFormat and CH.db.timeStampFormat ~= 'NONE' ) then
+			timeStamp = BetterDate(CH.db.timeStampFormat, CH.timeOverride or time());
+			timeStamp = timeStamp:gsub(' ', '')
+			timeStamp = timeStamp:gsub('AM', ' AM')
+			timeStamp = timeStamp:gsub('PM', ' PM')
+			text = '|cffB3B3B3['..timeStamp..'] |r'..text
+		end
+		
+		if specialChatIcons[E.myrealm] then
+			for character, texture in pairs(specialChatIcons[E.myrealm]) do
+				text = text:gsub('|Hplayer:'..character..':', texture..'|Hplayer:'..character..':')
+			end
+			
+			for realm, _ in pairs(specialChatIcons) do
+				if realm ~= E.myrealm then
+					for character, texture in pairs(specialChatIcons[realm]) do
+						text = text:gsub("|Hplayer:"..character.."%-"..realm, texture.."|Hplayer:"..character.."%-"..realm)
+					end
+				end
+			end			
+		else
+			for realm, _ in pairs(specialChatIcons) do
+				for character, texture in pairs(specialChatIcons[realm]) do
+					text = text:gsub("|Hplayer:"..character.."%-"..realm, texture.."|Hplayer:"..character.."%-"..realm)
+				end
+			end		
+		end
+		
+		CH.timeOverride = nil;
+	end
+
+	self.OldAddMessage(self, text, ...)
+end
+
+--[[function CH:AddMessage()
 	for i=1, self:GetNumRegions() do
 		local region = select(i, self:GetRegions())
 		
-		if region:GetObjectType() == "FontString" and not region.hooked then		
+		if region:GetObjectType() == "FontString" then		
 			local text = region:GetText();
 			if CH.db.shortChannels then
 				text = text:gsub("|Hchannel:(.-)|h%[(.-)%]|h", CH.ShortChannel)
@@ -632,15 +691,10 @@ function CH:AddMessage()
 				text = text:gsub("%[BN_CONVERSATION:", '%['..L["BN:"])
 			end
 
-			local timeStamp
-			if CHAT_TIMESTAMP_FORMAT ~= nil then
-				timeStamp = BetterDate(CHAT_TIMESTAMP_FORMAT, time());
-				text = text:gsub(timeStamp, '')
-			end
 			
 			--Add Timestamps
-			if ( CH.db.timeStampFormat and CH.db.timeStampFormat ~= 'NONE' ) then
-				timeStamp = BetterDate(CH.db.timeStampFormat, CH.timeOverride or time());
+			if ( CH.db.timeStampFormat and CH.db.timeStampFormat ~= 'NONE' ) and text:find('|Hplayer:') then
+				local timeStamp = BetterDate(CH.db.timeStampFormat, CH.timeOverride or time());
 				timeStamp = timeStamp:gsub(' ', '')
 				timeStamp = timeStamp:gsub('AM', ' AM')
 				timeStamp = timeStamp:gsub('PM', ' PM')
@@ -671,7 +725,7 @@ function CH:AddMessage()
 			CH.timeOverride = nil;
 		end
 	end
-end
+end]]
 
 local hyperLinkEntered
 function CH:OnHyperlinkEnter(frame, refString)
@@ -751,7 +805,8 @@ function CH:SetupChat(event, ...)
 			end
 		end)
 
-		frame:HookScript("OnMessageScrollChanged", CH.AddMessage)
+		--frame:HookScript("OnMessageScrollChanged", CH.AddMessage)
+		--hooksecurefunc(frame, "AddMessage", CH.AddMessage)
 	end	
 	
 	if self.db.hyperlinkHover then
