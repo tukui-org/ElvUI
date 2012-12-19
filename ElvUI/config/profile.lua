@@ -6,7 +6,6 @@ P.farmSize = 340
 --Core
 P['general'] = {
 	["taintLog"] = false,
-	["autoscale"] = true,
 	["stickyFrames"] = true,
 	['loginmessage'] = true,
 	["interruptAnnounce"] = "NONE",
@@ -14,7 +13,7 @@ P['general'] = {
 	['autoRoll'] = false,
 	['vendorGrays'] = false,
 	['autoAcceptInvite'] = false,
-	['bottomPanel'] = true,
+	['bottomPanel'] = false,
 
 	["fontSize"] = 12,
 	["font"] = "ElvUI Font",
@@ -208,6 +207,7 @@ P['datatexts'] = {
 P['tooltip'] = {
 	['anchor'] = 'SMART',
 	['health'] = true,
+	['healthHeight'] = 5,
 	['ufhide'] = 'NONE',
 	['whostarget'] = true,
 	['combathide'] = false,

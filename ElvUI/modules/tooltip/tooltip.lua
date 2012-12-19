@@ -705,7 +705,7 @@ function TT:Initialize()
 	E.Tooltip = TT
 
 	GameTooltipStatusBar:ClearAllPoints()
-	GameTooltipStatusBar:Height(5)
+	GameTooltipStatusBar:Height(self.db.healthHeight)
 	GameTooltipStatusBar:Point("TOPLEFT", GameTooltipStatusBar:GetParent(), "BOTTOMLEFT", 2, -5)
 	GameTooltipStatusBar:Point("TOPRIGHT", GameTooltipStatusBar:GetParent(), "BOTTOMRIGHT", -2, -5)
 	GameTooltipStatusBar:SetStatusBarTexture(E["media"].normTex)

@@ -135,12 +135,13 @@ E.Options.args.general = {
 					get = function(info) return E.private.general.lootRoll end,
 					set = function(info, value) E.private.general.lootRoll = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
-				autoscale = {
+				autoScale = {
 					order = 11,
 					name = L["Auto Scale"],
 					desc = L["Automatically scale the User Interface based on your screen resolution"],
 					type = "toggle",	
-					set = function(info, value) E.db.general[ info[#info] ] = value; E:StaticPopup_Show("CONFIG_RL") end
+					get = function(info) return E.global.general.autoScale end,
+					set = function(info, value) E.global.general[ info[#info] ] = value; E:StaticPopup_Show("GLOBAL_RL") end
 				},	
 
 				bubbles = {

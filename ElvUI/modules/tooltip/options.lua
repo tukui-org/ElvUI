@@ -99,8 +99,16 @@ E.Options.args.tooltip = {
 					type = 'toggle',
 					name = L['Health Text'],
 					desc = L['Display the health text on the tooltip.'],
-					set = function(info, value) E.db.tooltip[ info[#info] ] = value; if value then GameTooltipStatusBar.text:Show(); else GameTooltipStatusBar.text:Hide() end  end, --lazyness
+					set = function(info, value) E.db.tooltip[ info[#info] ] = value; if value then GameTooltipStatusBar.text:Show(); else GameTooltipStatusBar.text:Hide() end  end,
 				},
+				healthHeight = {
+					order = 11,
+					type = 'range',
+					name = L['Health Height'],
+					desc = L['Set the height of the tooltip healthbar.'],
+					min = 1, max = 15, step = 1,
+					set = function(info, value) E.db.tooltip[ info[#info] ] = value; GameTooltipStatusBar:Height(value); end,
+				},				
 			},
 		},
 	},

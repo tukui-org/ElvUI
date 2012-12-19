@@ -3,7 +3,7 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 --Determine if Eyefinity is being used, setup the pixel perfect script.
 local scale
 function E:UIScale(event)
-	if self.db.general.autoscale then
+	if self.global.general.autoScale then
 		scale = max(0.64, min(1.15, 768/self.screenheight));
 	else
 		scale = max(0.64, min(1.15, GetCVar('uiScale') or UIParent:GetScale() or 768/self.screenheight));
@@ -57,7 +57,7 @@ function E:UIScale(event)
 			local height = self.screenheight;
 			
 			-- if autoscale is off, find a new width value of self.UIParent for screen #1.
-			if not self.db['general'].autoscale or height > 1200 then
+			if not self.global.general.autoScale or height > 1200 then
 				local h = UIParent:GetHeight();
 				local ratio = self.screenheight / h;
 				local w = self.eyefinity / ratio;
@@ -85,7 +85,7 @@ function E:UIScale(event)
 			change = math.abs((E:Round(UIParent:GetScale(), 5) * 100) - (E:Round(scale, 5) * 100))
 		end
 
-		if event == 'UI_SCALE_CHANGED' and change and change > 1 and self.db.general.autoscale then
+		if event == 'UI_SCALE_CHANGED' and change and change > 1 and self.global.general.autoScale then
 			E:StaticPopup_Show('FAILED_UISCALE')
 		elseif event == 'UI_SCALE_CHANGED' and change and change > 1 then
 			E:StaticPopup_Show('CONFIG_RL')	

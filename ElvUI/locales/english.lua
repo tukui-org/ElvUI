@@ -681,6 +681,9 @@ L["You have changed your UIScale, however you still have the AutoScale option en
 L["You must purchase a bank slot first!"] = true;
 
 --Tooltip
+L['Display the health text on the tooltip.'] = true;
+L['Health Height'] = true;
+L['Set the height of the tooltip healthbar.'] = true;
 L['Always Hide'] = true;
 L["Anchor Mode"] = true;
 L["Anchor"] = true;
