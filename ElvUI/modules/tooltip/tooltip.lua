@@ -693,7 +693,7 @@ function TT:Initialize()
 	self.db = E.db["tooltip"]
 
 	BNToastFrame:Point('TOPRIGHT', MMHolder, 'BOTTOMRIGHT', 0, -10);
-	E:CreateMover(BNToastFrame, 'BNETMover', 'BNet Frame')
+	E:CreateMover(BNToastFrame, 'BNETMover', L['BNet Frame'])
 	hooksecurefunc(BNToastFrame, "SetPoint", function(self, point, anchor, anchorPoint, xOffset, yOffset)
 		if anchor ~= MMHolder then
 			BNToastFrame:ClearAllPoints()
@@ -720,7 +720,7 @@ function TT:Initialize()
 	GameTooltipAnchor:Point('BOTTOMRIGHT', RightChatToggleButton, 'BOTTOMRIGHT')
 	GameTooltipAnchor:Size(130, 20)
 	GameTooltipAnchor:SetFrameLevel(GameTooltipAnchor:GetFrameLevel() + 50)
-	E:CreateMover(GameTooltipAnchor, 'TooltipMover', 'Tooltip')
+	E:CreateMover(GameTooltipAnchor, 'TooltipMover', L['Tooltip'])
 	
 	self:SecureHook('GameTooltip_SetDefaultAnchor')
 	self:SecureHook('GameTooltip_ShowCompareItem')

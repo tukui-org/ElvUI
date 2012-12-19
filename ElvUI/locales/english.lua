@@ -520,6 +520,32 @@ L["Your items have been repaired for: "] = true;
 L["Your items have been repaired using guild bank funds for: "] = true;
 L["Your version of ElvUI is out of date. You can download the latest version from http://www.tukui.org"] = true; --core\core.lua
 
+--Movers
+L["Left Chat"] = true;
+L["Right Chat"] = true;
+L["Bar "] = true;
+L["Boss Button"] = true;
+L["Micro Bar"] = true;
+L["Pet Bar"] = true;
+L["Stance Bar"] = true;
+L["Auras Frame"] = true;
+L["Weapons"] = true;
+L["Loot / Alert Frames"] = true;
+L["Alternative Power"] = true;
+L["Loss Control Icon"] = true;
+L["GM Ticket Frame"] = true;
+L["Vehicle Seat Frame"] = true;
+L["Watch Frame"] = true;
+L["Loot Frame"] = true;
+L["Totems"] = true;
+L["BNet Frame"] = true;
+L["MA Frames"] = true;
+L["MT Frames"] = true;
+L["Raid 1-"] = true;
+L["Player Castbar"] = true;
+L["Target Castbar"] = true;
+L["Focus Castbar"] = true;
+
 --NamePlates
 L["Add Name"] = true;
 L["All"] = true;

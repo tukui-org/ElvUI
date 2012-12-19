@@ -60,7 +60,7 @@ function UF:Update_TankHeader(header, db)
 		header:ClearAllPoints()
 		header:Point("LEFT", E.UIParent, "LEFT", 6, 250)
 		
-		E:CreateMover(header, header:GetName()..'Mover', 'MT Frames', nil, nil, nil, 'ALL,RAID10,RAID25,RAID40')
+		E:CreateMover(header, header:GetName()..'Mover', L['MT Frames'], nil, nil, nil, 'ALL,RAID10,RAID25,RAID40')
 
 		header:SetAttribute('minHeight', header.dirtyHeight)
 		header:SetAttribute('minWidth', header.dirtyWidth)

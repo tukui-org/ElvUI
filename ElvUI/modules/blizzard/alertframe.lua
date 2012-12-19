@@ -177,5 +177,5 @@ function B:AlertMovers()
 		end
 	end)
 	
-	E:CreateMover(AlertFrameHolder, "AlertFrameMover", "Loot / Alert Frames", nil, nil, E.PostAlertMove)
+	E:CreateMover(AlertFrameHolder, "AlertFrameMover", L["Loot / Alert Frames"], nil, nil, E.PostAlertMove)
 end

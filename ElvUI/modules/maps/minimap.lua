@@ -315,7 +315,7 @@ function M:Initialize()
 		FeedbackUIButton:Kill()
 	end
 	
-	E:CreateMover(MMHolder, 'MinimapMover', 'Minimap')
+	E:CreateMover(MMHolder, 'MinimapMover', L['Minimap'])
 --[[	Minimap.SetPoint = E.noop;
 	MMHolder.SetPoint = E.noop;
 	Minimap.ClearAllPoints = E.noop;

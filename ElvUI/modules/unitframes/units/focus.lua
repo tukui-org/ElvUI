@@ -15,7 +15,7 @@ function UF:Construct_FocusFrame(frame)
 	
 	frame.Buffs = self:Construct_Buffs(frame)
 	
-	frame.Castbar = self:Construct_Castbar(frame, 'LEFT', 'Focus Castbar')
+	frame.Castbar = self:Construct_Castbar(frame, 'LEFT', L['Focus Castbar'])
 	frame.Castbar.SafeZone = nil
 	frame.Castbar.LatencyTexture:Hide()
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)	
@@ -27,7 +27,7 @@ function UF:Construct_FocusFrame(frame)
 	frame:RegisterEvent('PLAYER_FOCUS_CHANGED', UF.SmartAuraDisplay)	
 	
 	frame:Point('BOTTOMRIGHT', ElvUF_Target, 'TOPRIGHT', 0, 220)
-	E:CreateMover(frame, frame:GetName()..'Mover', 'Focus Frame', nil, nil, nil, 'ALL,SOLO')
+	E:CreateMover(frame, frame:GetName()..'Mover', L['Focus Frame'], nil, nil, nil, 'ALL,SOLO')
 end
 
 function UF:Update_FocusFrame(frame, db)

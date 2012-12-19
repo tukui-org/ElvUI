@@ -235,7 +235,7 @@ function AB:CreateBar(id)
 	
 	self["handledBars"]['bar'..id] = bar;
 	self:PositionAndSizeBar('bar'..id);
-	E:CreateMover(bar, 'ElvAB_'..id, 'Bar '..id, nil, nil, nil,'ALL,ACTIONBARS')
+	E:CreateMover(bar, 'ElvAB_'..id, L['Bar ']..id, nil, nil, nil,'ALL,ACTIONBARS')
 	return bar
 end
 

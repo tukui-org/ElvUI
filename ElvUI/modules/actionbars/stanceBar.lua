@@ -245,7 +245,7 @@ function AB:CreateBarShapeShift()
 	self:RegisterEvent('UPDATE_SHAPESHIFT_FORM', 'StyleShapeShift');
 	self:RegisterEvent('ACTIONBAR_PAGE_CHANGED', 'StyleShapeShift');
 	
-	E:CreateMover(bar, 'ShiftAB', 'Stance Bar', nil, -3, nil, 'ALL,ACTIONBARS');
+	E:CreateMover(bar, 'ShiftAB', L['Stance Bar'], nil, -3, nil, 'ALL,ACTIONBARS');
 	self:AdjustMaxStanceButtons();
 	self:PositionAndSizeBarShapeShift();
 	self:StyleShapeShift();

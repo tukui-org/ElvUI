@@ -20,7 +20,7 @@ function UF:Construct_TargetFrame(frame)
 
 	frame.Debuffs = self:Construct_Debuffs(frame)
 
-	frame.Castbar = self:Construct_Castbar(frame, 'RIGHT', 'Target Castbar')
+	frame.Castbar = self:Construct_Castbar(frame, 'RIGHT', L['Target Castbar'])
 	frame.Castbar.SafeZone = nil
 	frame.Castbar.LatencyTexture:Hide()
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)		
@@ -34,7 +34,7 @@ function UF:Construct_TargetFrame(frame)
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
 	
 	frame:Point('BOTTOMRIGHT', E.UIParent, 'BOTTOM', 413, 68)
-	E:CreateMover(frame, frame:GetName()..'Mover', 'Target Frame', nil, nil, nil, 'ALL,SOLO')
+	E:CreateMover(frame, frame:GetName()..'Mover', L['Target Frame'], nil, nil, nil, 'ALL,SOLO')
 end
 
 function UF:Update_TargetFrame(frame, db)
