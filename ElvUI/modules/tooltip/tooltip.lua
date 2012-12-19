@@ -573,7 +573,7 @@ function TT:GameTooltipStatusBar_OnValueChanged(tt, value)
 	end
 
 	if tt.text then
-		if unit then
+		if unit and self.db.health then
 			min, max = UnitHealth(unit), UnitHealthMax(unit)
 			tt.text:Show()
 			local hp = E:ShortValue(min).." / "..E:ShortValue(max)
