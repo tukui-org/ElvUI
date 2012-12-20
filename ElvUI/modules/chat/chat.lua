@@ -584,7 +584,6 @@ function CH:FindURL(event, msg, ...)
 	return false, msg, ...
 end
 
-local OldChatFrame_OnHyperlinkShow
 local function URLChatFrame_OnHyperlinkShow(self, link, text, button)
 	CH.clickedframe = self
 	if (link):sub(1, 3) == "url" then
@@ -597,8 +596,6 @@ local function URLChatFrame_OnHyperlinkShow(self, link, text, button)
 		ChatFrameEditBox:HighlightText()
 		return
 	end
-	
-	SetItemRef(link, text, button, self);
 end
 
 local function WIM_URLLink(link)
@@ -797,7 +794,7 @@ function CH:SetupChat(event, ...)
 		frame:SetShadowOffset((E.mult or 1), -(E.mult or 1))	
 		frame:SetFading(self.db.fade)
 		
-		frame:SetScript("OnHyperlinkClick", URLChatFrame_OnHyperlinkShow)
+		frame:HookScript("OnHyperlinkClick", URLChatFrame_OnHyperlinkShow)
 		frame:SetScript("OnMouseWheel", ChatFrame_OnMouseScroll)
 		hooksecurefunc(frame, "SetScript", function(f, script, func)
 			if script == "OnMouseWheel" and func ~= ChatFrame_OnMouseScroll then
