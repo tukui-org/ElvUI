@@ -105,6 +105,8 @@ local function LoadSkin()
 		WorldMapFrameAreaDescription:FontTemplate(nil, 40, "OUTLINE")
 		WorldMapFrameAreaDescription:SetShadowOffset(2, -2)	
 		
+		WorldMapFrameAreaPetLevels:FontTemplate(nil, 25, 'OUTLINE');
+		
 		WorldMapZoneInfo:FontTemplate(nil, 27, "OUTLINE")
 		WorldMapZoneInfo:SetShadowOffset(2, -2)		
 		

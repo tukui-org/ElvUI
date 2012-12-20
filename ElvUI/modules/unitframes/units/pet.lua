@@ -24,7 +24,7 @@ function UF:Construct_PetFrame(frame)
 	frame.AuraWatch = UF:Construct_AuraWatch(frame)
 	
 	frame:Point('TOPLEFT', ElvUF_Player, 'BOTTOMLEFT', 0, -30)
-	E:CreateMover(frame, frame:GetName()..'Mover', 'Pet Frame', nil, nil, nil, 'ALL,SOLO')
+	E:CreateMover(frame, frame:GetName()..'Mover', L['Pet Frame'], nil, nil, nil, 'ALL,SOLO')
 end
 
 function UF:Update_PetFrame(frame, db)

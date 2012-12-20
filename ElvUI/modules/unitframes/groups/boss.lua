@@ -27,7 +27,7 @@ function UF:Construct_BossFrames(frame)
 	frame:SetAttribute("type2", "focus")
 
 	BossHeader:Point('TOPLEFT', ElvUF_FocusTarget, 'BOTTOMRIGHT', 30, 0)
-	E:CreateMover(BossHeader, BossHeader:GetName()..'Mover', 'Boss Frames', nil, nil, nil, 'ALL,PARTY,RAID10,RAID25,RAID40')
+	E:CreateMover(BossHeader, BossHeader:GetName()..'Mover', L['Boss Frames'], nil, nil, nil, 'ALL,PARTY,RAID10,RAID25,RAID40')
 end
 
 function UF:Update_BossFrames(frame, db)

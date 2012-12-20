@@ -60,7 +60,7 @@ E.PopupDialogs['FAILED_UISCALE'] = {
 	text = L['You have changed your UIScale, however you still have the AutoScale option enabled in ElvUI. Press accept if you would like to disable the Auto Scale option.'],
 	button1 = ACCEPT,
 	button2 = CANCEL,
-	OnAccept = function() E.db.general.autoscale = false; ReloadUI(); end,
+	OnAccept = function() E.global.general.autoScale = false; ReloadUI(); end,
 	timeout = 0,
 	whileDead = 1,	
 	hideOnEscape = false,

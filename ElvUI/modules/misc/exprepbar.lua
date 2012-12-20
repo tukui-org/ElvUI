@@ -243,8 +243,8 @@ function M:LoadExpRepBar()
 	self:EnableDisable_ExperienceBar()
 	self:EnableDisable_ReputationBar()
 
-	E:CreateMover(self.expBar, "ExperienceBarMover", "Experience Bar")
-	E:CreateMover(self.repBar, "ReputationBarMover", "Reputation Bar")
+	E:CreateMover(self.expBar, "ExperienceBarMover", L["Experience Bar"])
+	E:CreateMover(self.repBar, "ReputationBarMover", L["Reputation Bar"])
 
 	self:UpdateExpRepAnchors()
 end

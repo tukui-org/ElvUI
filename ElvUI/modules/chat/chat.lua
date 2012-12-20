@@ -6,6 +6,12 @@ local lines = {};
 local msgList, msgCount, msgTime = {}, {}, {}
 local good, maybe, filter, login = {}, {}, {}, false
 
+local cvars = {
+	["bnWhisperMode"] = true,
+	["conversationMode"] = true,
+	["whisperMode"] = true,
+}
+
 local TIMESTAMP_FORMAT
 local DEFAULT_STRINGS = {
 	GUILD = L['G'],
@@ -108,6 +114,34 @@ local specialChatIcons = {
 
 CH.Keywords = {};
 
+local function ChatFrame_OnMouseScroll(frame, delta)
+	if delta < 0 then
+		if IsShiftKeyDown() then
+			frame:ScrollToBottom()
+		else
+			for i = 1, 3 do
+				frame:ScrollDown()
+			end
+		end
+	elseif delta > 0 then
+		if IsShiftKeyDown() then
+			frame:ScrollToTop()
+		else
+			for i = 1, 3 do
+				frame:ScrollUp()
+			end
+		end
+		
+		if CH.db.scrollDownInterval ~= 0 then
+			if frame.ScrollTimer then
+				CH:CancelTimer(frame.ScrollTimer, true)
+			end
+
+			frame.ScrollTimer = CH:ScheduleTimer('ScrollToBottom', CH.db.scrollDownInterval, frame)
+		end		
+	end
+end
+
 function CH:GetGroupDistribution()
 	local inInstance, kind = IsInInstance()
 	if inInstance and (kind == "pvp") then
@@ -174,17 +208,26 @@ function CH:StyleChat(frame)
 	local editbox = _G[name..'EditBox']
 	
 	for _, texName in pairs(tabTexs) do
-		_G[tab:GetName()..texName..'Left']:Kill()
-		_G[tab:GetName()..texName..'Middle']:Kill()
-		_G[tab:GetName()..texName..'Right']:Kill()	
+		_G[tab:GetName()..texName..'Left']:SetTexture(nil)
+		_G[tab:GetName()..texName..'Middle']:SetTexture(nil)
+		_G[tab:GetName()..texName..'Right']:SetTexture(nil)
 	end
 
-	tab:SetAlpha(1)
-	tab.SetAlpha = UIFrameFadeRemoveFrame	
+	hooksecurefunc(tab, "SetAlpha", function(t, alpha)
+		if alpha ~= 1 then
+			tab:SetAlpha(1)
+		end
+	end)
+
 	tab.text = _G[name.."TabText"]
 	tab.text:SetTextColor(unpack(E["media"].rgbvaluecolor))
-	tab.text.OldSetTextColor = tab.text.SetTextColor 
-	tab.text.SetTextColor = E.noop
+	hooksecurefunc(tab.text, "SetTextColor", function(t, r, g, b, a)
+		local rR, gG, bB = unpack(E["media"].rgbvaluecolor)
+
+		if r ~= rR or g ~= gG or b ~= bB then
+			t:SetTextColor(rR, gG, bB)
+		end
+	end)
 	
 	if tab.conversationIcon then
 		tab.conversationIcon:ClearAllPoints()
@@ -268,8 +311,9 @@ function CH:StyleChat(frame)
 		end
 	end)
 	
+	--this taints
 	frame.OldAddMessage = frame.AddMessage
-	frame.AddMessage = CH.AddMessage
+	frame.AddMessage = CH.AddMessage	
 	
 	--copy chat button
 	frame.button = CreateFrame('Frame', format("CopyChatButton%d", id), frame)
@@ -497,7 +541,7 @@ end
 
 local function UpdateChatTabColor(hex, r, g, b)
 	for i=1, CreatedFrames do
-		_G['ChatFrame'..i..'TabText']:OldSetTextColor(r, g, b)
+		_G['ChatFrame'..i..'TabText']:SetTextColor(r, g, b)
 	end
 end
 E['valueColorUpdateFuncs'][UpdateChatTabColor] = true
@@ -506,34 +550,6 @@ function CH:ScrollToBottom(frame)
 	frame:ScrollToBottom()
 	
 	self:CancelTimer(frame.ScrollTimer, true)
-end
-
-function FloatingChatFrame_OnMouseScroll(frame, delta)
-	if delta < 0 then
-		if IsShiftKeyDown() then
-			frame:ScrollToBottom()
-		else
-			for i = 1, 3 do
-				frame:ScrollDown()
-			end
-		end
-	elseif delta > 0 then
-		if IsShiftKeyDown() then
-			frame:ScrollToTop()
-		else
-			for i = 1, 3 do
-				frame:ScrollUp()
-			end
-		end
-		
-		if CH.db.scrollDownInterval ~= 0 then
-			if frame.ScrollTimer then
-				CH:CancelTimer(frame.ScrollTimer, true)
-			end
-
-			frame.ScrollTimer = CH:ScheduleTimer('ScrollToBottom', CH.db.scrollDownInterval, frame)
-		end		
-	end
 end
 
 function CH:PrintURL(url)
@@ -568,8 +584,7 @@ function CH:FindURL(event, msg, ...)
 	return false, msg, ...
 end
 
-local OldChatFrame_OnHyperlinkShow
-local function URLChatFrame_OnHyperlinkShow(self, link, ...)
+local function URLChatFrame_OnHyperlinkShow(self, link, text, button)
 	CH.clickedframe = self
 	if (link):sub(1, 3) == "url" then
 		local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
@@ -581,7 +596,6 @@ local function URLChatFrame_OnHyperlinkShow(self, link, ...)
 		ChatFrameEditBox:HighlightText()
 		return
 	end
-	OldChatFrame_OnHyperlinkShow(self, link, ...)
 end
 
 local function WIM_URLLink(link)
@@ -656,6 +670,60 @@ function CH:AddMessage(text, ...)
 	self.OldAddMessage(self, text, ...)
 end
 
+--[[function CH:AddMessage()
+	for i=1, self:GetNumRegions() do
+		local region = select(i, self:GetRegions())
+		
+		if region:GetObjectType() == "FontString" then		
+			local text = region:GetText();
+			if CH.db.shortChannels then
+				text = text:gsub("|Hchannel:(.-)|h%[(.-)%]|h", CH.ShortChannel)
+				text = text:gsub('CHANNEL:', '')
+				text = text:gsub("^(.-|h) "..L['whispers'], "%1")
+				text = text:gsub("^(.-|h) "..L['says'], "%1")
+				text = text:gsub("^(.-|h) "..L['yells'], "%1")
+				text = text:gsub("<"..AFK..">", "[|cffFF0000"..L['AFK'].."|r] ")
+				text = text:gsub("<"..DND..">", "[|cffE7E716"..L['DND'].."|r] ")
+				text = text:gsub("^%["..RAID_WARNING.."%]", '['..L['RW']..']')	
+				text = text:gsub("%[BN_CONVERSATION:", '%['..L["BN:"])
+			end
+
+			
+			--Add Timestamps
+			if ( CH.db.timeStampFormat and CH.db.timeStampFormat ~= 'NONE' ) and text:find('|Hplayer:') then
+				local timeStamp = BetterDate(CH.db.timeStampFormat, CH.timeOverride or time());
+				timeStamp = timeStamp:gsub(' ', '')
+				timeStamp = timeStamp:gsub('AM', ' AM')
+				timeStamp = timeStamp:gsub('PM', ' PM')
+				text = '|cffB3B3B3['..timeStamp..'] |r'..text
+			end
+			
+			if specialChatIcons[E.myrealm] then
+				for character, texture in pairs(specialChatIcons[E.myrealm]) do
+					text = text:gsub('|Hplayer:'..character..':', texture..'|Hplayer:'..character..':')
+				end
+				
+				for realm, _ in pairs(specialChatIcons) do
+					if realm ~= E.myrealm then
+						for character, texture in pairs(specialChatIcons[realm]) do
+							text = text:gsub("|Hplayer:"..character.."%-"..realm, texture.."|Hplayer:"..character.."%-"..realm)
+						end
+					end
+				end			
+			else
+				for realm, _ in pairs(specialChatIcons) do
+					for character, texture in pairs(specialChatIcons[realm]) do
+						text = text:gsub("|Hplayer:"..character.."%-"..realm, texture.."|Hplayer:"..character.."%-"..realm)
+					end
+				end		
+			end
+			
+			region:SetText(text)
+			CH.timeOverride = nil;
+		end
+	end
+end]]
+
 local hyperLinkEntered
 function CH:OnHyperlinkEnter(frame, refString)
 	if InCombatLockdown() then return; end
@@ -725,6 +793,17 @@ function CH:SetupChat(event, ...)
 		frame:SetTimeVisible(100)
 		frame:SetShadowOffset((E.mult or 1), -(E.mult or 1))	
 		frame:SetFading(self.db.fade)
+		
+		frame:HookScript("OnHyperlinkClick", URLChatFrame_OnHyperlinkShow)
+		frame:SetScript("OnMouseWheel", ChatFrame_OnMouseScroll)
+		hooksecurefunc(frame, "SetScript", function(f, script, func)
+			if script == "OnMouseWheel" and func ~= ChatFrame_OnMouseScroll then
+				f:SetScript(script, ChatFrame_OnMouseScroll)
+			end
+		end)
+
+		--frame:HookScript("OnMessageScrollChanged", CH.AddMessage)
+		--hooksecurefunc(frame, "AddMessage", CH.AddMessage)
 	end	
 	
 	if self.db.hyperlinkHover then
@@ -895,47 +974,6 @@ function CH:AddLines(lines, ...)
   end
 end
 
-
-function CH:CopyLineFromPlayerlinkToEdit(origin_frame, ...)
-    local frame = (origin_frame and origin_frame:GetObjectType() == "ScrollingMessageFrame" and origin_frame) or self.clickedframe
-	if not frame then return; end
-	self.lines = {};
-	
-    for i=1, #self.lines do
-        self.lines[i] = nil
-    end
-
-    self:AddLines(self.lines, frame:GetRegions())
-
-    local dropdownFrame = UIDROPDOWNMENU_INIT_MENU
-
-    local name = dropdownFrame.name
-    local server = dropdownFrame.server  or ""
-    local linenum = dropdownFrame.lineID
-
-    local fullname = name;
-
-    if server:len()>0 then
-        fullname = name.."-"..server;
-    end
-
-    local findname = "|Hplayer:"..fullname..":"..tostring(linenum)
-    for i=1, #self.lines do
-        if self.lines[i]:find(findname:gsub("%-", "%%-")) then
-            local text = self.lines[i]:gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", ""):gsub("|H.-|h", ""):gsub("|h", "")
-			text = text:gsub('|', '')
-			
-            local editBox = ChatEdit_ChooseBoxForSend(frame);
-            if ( editBox ~= ChatEdit_GetActiveWindow() ) then
-                ChatFrame_OpenChat(text, frame);
-            else
-                editBox:SetText(text);
-            end
-        end
-    end
-end
-
-
 function CH:ChatEdit_OnEnterPressed(editBox)
 	local type = editBox:GetAttribute("chatType");
 	local chatFrame = editBox:GetParent();
@@ -1071,6 +1109,7 @@ function CH:SaveChatHistory(event, ...)
 	end
 end
 
+
 DEFAULT_CHAT_FRAME:UnregisterEvent("GUILD_MOTD")
 function CH:Initialize()
 	self.db = E.db.chat
@@ -1095,9 +1134,7 @@ function CH:Initialize()
 	self:SecureHook('ChatEdit_OnEnterPressed')
 	FriendsMicroButton:Kill()
 	ChatFrameMenuButton:Kill()
-	OldChatFrame_OnHyperlinkShow = ChatFrame_OnHyperlinkShow
-	ChatFrame_OnHyperlinkShow = URLChatFrame_OnHyperlinkShow
-	
+		
     if WIM then
       WIM.RegisterWidgetTrigger("chat_display", "whisper,chat,w2w,demo", "OnHyperlinkClick", function(self) CH.clickedframe = self end);
 	  WIM.RegisterItemRefHandler('url', WIM_URLLink)
@@ -1128,7 +1165,7 @@ function CH:Initialize()
 	self:RegisterEvent("CHAT_MSG_WHISPER", 'SaveChatHistory')
 	self:RegisterEvent("CHAT_MSG_WHISPER_INFORM", 'SaveChatHistory')
 	self:RegisterEvent("CHAT_MSG_YELL", 'SaveChatHistory')
-	
+
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_CHANNEL", CH.CHAT_MSG_CHANNEL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_YELL", CH.CHAT_MSG_YELL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_SAY", CH.CHAT_MSG_SAY)
@@ -1146,7 +1183,6 @@ function CH:Initialize()
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER_INFORM", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_INLINE_TOAST_BROADCAST", CH.FindURL)
-
 
 	GeneralDockManagerOverflowButton:ClearAllPoints()
 	GeneralDockManagerOverflowButton:Point('BOTTOMRIGHT', LeftChatTab, 'BOTTOMRIGHT', -2, 2)
@@ -1228,9 +1264,32 @@ function CH:Initialize()
 	InterfaceOptionsSocialPanelTimestampsButton:SetScale(0.000001)
 	InterfaceOptionsSocialPanelTimestamps:SetAlpha(0)
 	InterfaceOptionsSocialPanelTimestamps:SetScale(0.000001)
+	InterfaceOptionsSocialPanelWhisperMode:SetScale(0.000001)
+	InterfaceOptionsSocialPanelWhisperMode:SetAlpha(0)
+	InterfaceOptionsSocialPanelBnWhisperMode:SetScale(0.000001)
+	InterfaceOptionsSocialPanelBnWhisperMode:SetAlpha(0)
+	InterfaceOptionsSocialPanelConversationMode:SetScale(0.000001)
+	InterfaceOptionsSocialPanelConversationMode:SetAlpha(0)
+
+	InterfaceOptionsSocialPanelChatStyle:SetScale(0.000001)
+	InterfaceOptionsSocialPanelChatStyle:SetAlpha(0)
+
+ 	CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Size(20, 22)
+ 	CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Point("TOPRIGHT", CombatLogQuickButtonFrame_Custom, "TOPRIGHT", 0, -1)
+
+	if GetCVar("conversationMode") ~= "inline" then
+		SetCVar("conversationMode", "inline")
+	end
+
+	for cvar, _ in pairs(cvars) do
+		if GetCVar(cvar) ~= "inline" then
+			SetCVar(cvar, "inline")
+		end
+	end
 	
-	CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Size(20, 22)
-	CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Point("TOPRIGHT", CombatLogQuickButtonFrame_Custom, "TOPRIGHT", 0, -1)	
+	if GetCVar("showTimestamps") ~= "none" then
+		SetCVar("showTimestamps", "none")
+	end
 end
 
 E:RegisterModule(CH:GetName())

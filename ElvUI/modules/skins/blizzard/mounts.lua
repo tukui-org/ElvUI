@@ -78,6 +78,9 @@ local function LoadSkin()
 	for i = 1, #PetJournal.listScroll.buttons do
 		local b = _G["PetJournalListScrollFrameButton"..i]
 		S:HandleItemButton(b)
+		b.dragButton.favorite:SetParent(b.backdrop)
+		b.dragButton.levelBG:SetAlpha(0)
+		b.dragButton.level:SetParent(b.backdrop)
 	end
 
 	local function UpdatePetCardQuality()
@@ -106,13 +109,11 @@ local function LoadSkin()
 			local b = _G["PetJournalListScrollFrameButton"..i]
 			local t = _G["PetJournalListScrollFrameButton"..i.."Name"]
 			local petID, speciesID, isOwned, customName, level, favorite, isRevoked, name, icon, petType, creatureID, sourceText, description, isWildPet, canBattle = C_PetJournal.GetPetInfoByIndex(index, isWild);
-			
+
 			if petID ~= nil then
 				local health, maxHealth, attack, speed, rarity = C_PetJournal.GetPetStats(petID);
 				if b.selectedTexture:IsShown() then
 					t:SetTextColor(1,1,0)
-				elseif favorite then
-					t:SetTextColor(.87,.51,0.1)
 				else
 					t:SetTextColor(1, 1, 1)
 				end
@@ -180,9 +181,10 @@ local function LoadSkin()
 	PetJournalPetCard:SetTemplate('Default')
 	PetJournalPetCardInset:StripTextures()
 	
-	PetJournalPetCardPetInfo.levelBG:Kill()
+	PetJournalPetCardPetInfo.levelBG:SetAlpha(0)
 	PetJournalPetCardPetInfoIcon:SetTexCoord(unpack(E.TexCoords))
 	PetJournalPetCardPetInfo:CreateBackdrop()
+	PetJournalPetCardPetInfo.favorite:SetParent(PetJournalPetCardPetInfo.backdrop)
 	PetJournalPetCardPetInfo.backdrop:SetOutside(PetJournalPetCardPetInfoIcon)
 	PetJournalPetCardPetInfoIcon:SetParent(PetJournalPetCardPetInfo.backdrop)
 	PetJournalPetCardPetInfo.backdrop:SetFrameLevel(PetJournalPetCardPetInfo.backdrop:GetFrameLevel() + 2)

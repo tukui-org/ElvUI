@@ -5,7 +5,7 @@ function B:PositionGMFrames()
 	TicketStatusFrame:ClearAllPoints()
 	TicketStatusFrame:SetPoint("TOPRIGHT", AurasHolder, "BOTTOMRIGHT", 0, -10)
 
-	E:CreateMover(TicketStatusFrame, "GMMover", "GM Ticket Frame")
+	E:CreateMover(TicketStatusFrame, "GMMover", L["GM Ticket Frame"])
 
 	HelpOpenTicketButton:SetParent(Minimap)
 	HelpOpenTicketButton:ClearAllPoints()

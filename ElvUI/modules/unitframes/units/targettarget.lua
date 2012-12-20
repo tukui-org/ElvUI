@@ -17,7 +17,7 @@ function UF:Construct_TargetTargetFrame(frame)
 	frame.Debuffs = self:Construct_Debuffs(frame)
 
 	frame:Point('TOPLEFT', ElvUF_Target, 'TOPRIGHT', 30, 0) --Set to default position
-	E:CreateMover(frame, frame:GetName()..'Mover', 'TargetTarget Frame', nil, nil, nil, 'ALL,SOLO')
+	E:CreateMover(frame, frame:GetName()..'Mover', L['TargetTarget Frame'], nil, nil, nil, 'ALL,SOLO')
 end
 
 function UF:Update_TargetTargetFrame(frame, db)

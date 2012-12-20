@@ -151,9 +151,16 @@ E.Options.args.nameplate = {
 					desc = L['Display a healer icon over known healers inside battlegrounds.'],
 					set = function(info, value) E.db.nameplate[ info[#info] ] = value; NP:PLAYER_ENTERING_WORLD(); NP:UpdateAllPlates() end,
 				},
+				classIcons = {
+					type = "toggle",
+					order = 8,
+					name = L["Class Icons"],
+					desc = L["Display a class icon on nameplates."],
+					set = function(info, value) E.db.nameplate[ info[#info] ] = value; NP:PLAYER_ENTERING_WORLD(); NP:UpdateAllPlates() end,
+				},
 				lowHealthWarning = {
 					type = 'select',
-					order = 8,
+					order = 9,
 					name = L['Low Health Warning'],
 					desc = L['Color the border of the nameplate yellow when it reaches the threshold point on these types of frames.'],
 					values = {
@@ -164,7 +171,7 @@ E.Options.args.nameplate = {
 				},
 				lowHealthWarningThreshold = {
 					type = 'range',
-					order = 9,
+					order = 10,
 					name = L['Low Health Threshold'],
 					desc = L['Color the border of the nameplate yellow when it reaches this point, it will be colored red when it reaches half this value.'],
 					isPercent = true,
@@ -172,7 +179,7 @@ E.Options.args.nameplate = {
 				},
 				bgMult = {
 					type = 'range',
-					order = 10,
+					order = 11,
 					name = L['Background Multiplier'],
 					desc = L['The backdrop of the nameplates color is scaled to match the color of the nameplate by this percentage. Set to zero to have no color in the nameplate backdrop.'],
 					isPercent = true,

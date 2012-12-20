@@ -24,18 +24,18 @@ function M:SetLargeWorldMap()
 	if InCombatLockdown() then return; end
 	
 	if E.db.general.tinyWorldMap then
+		WorldMapFrame:SetParent(E.UIParent)
 		WorldMapFrame:EnableMouse(false)
 		WorldMapFrame:EnableKeyboard(false)
+		WorldMapFrame:SetScale(1)
 		
 		if WorldMapFrame:GetAttribute('UIPanelLayout-area') ~= 'center' then
-			WorldMapFrame:SetAttribute('UIPanelLayout-area', 'center')
+			SetUIPanelAttribute(WorldMapFrame, "area", "center");
 		end
 		
-		if WorldMapFrame:GetAttribute('UIPanelLayout-allowOtherPanels') ~= true then	
-			WorldMapFrame:SetAttribute('UIPanelLayout-allowOtherPanels', true)
+		if WorldMapFrame:GetAttribute('UIPanelLayout-allowOtherPanels') ~= true then
+			SetUIPanelAttribute(WorldMapFrame, "allowOtherPanels", true)	
 		end
-		
-		WorldMapFrame:SetParent(UIParent);
 	end
 	
 	WorldMapFrameSizeUpButton:Hide()
@@ -46,15 +46,15 @@ function M:SetQuestWorldMap()
 	if InCombatLockdown() then return; end
 	
 	if E.db.general.tinyWorldMap then
+		WorldMapFrame:SetParent(E.UIParent)
 		WorldMapFrame:EnableMouse(false)
 		WorldMapFrame:EnableKeyboard(false)
-		WorldMapFrame:SetParent(UIParent);
 		if WorldMapFrame:GetAttribute('UIPanelLayout-area') ~= 'center' then
-			WorldMapFrame:SetAttribute('UIPanelLayout-area', 'center')
+			SetUIPanelAttribute(WorldMapFrame, "area", "center");
 		end
 		
-		if WorldMapFrame:GetAttribute('UIPanelLayout-allowOtherPanels') ~= true then	
-			WorldMapFrame:SetAttribute('UIPanelLayout-allowOtherPanels', true)
+		if WorldMapFrame:GetAttribute('UIPanelLayout-allowOtherPanels') ~= true then
+			SetUIPanelAttribute(WorldMapFrame, "allowOtherPanels", true)	
 		end
 	end
 	
@@ -66,7 +66,7 @@ function M:SetSmallWorldMap()
 	if InCombatLockdown() then return; end
 	WorldMapLevelDropDown:ClearAllPoints()
 	WorldMapLevelDropDown:Point("TOPLEFT", WorldMapDetailFrame, "TOPLEFT", -10, -4)
-
+	
 	WorldMapFrameSizeUpButton:Show()
 	WorldMapFrameSizeDownButton:Hide()	
 end
@@ -128,16 +128,7 @@ function M:ToggleTinyWorldMapSetting()
 		BlackoutWorld:SetTexture(nil)
 		self:SecureHook("WorldMap_ToggleSizeUp", 'AdjustMapSize')	
 		self:SecureHook("WorldMapFrame_SetFullMapView", 'SetLargeWorldMap')
-		self:SecureHook("WorldMapFrame_SetQuestMapView", 'SetQuestWorldMap')
-
-		local info = UIPanelWindows['WorldMapFrame'];
-		for name, value in pairs(info) do
-			if value == "full" then value = "center"; end
-			WorldMapFrame:SetAttribute("UIPanelLayout-"..name, value);
-		end	
-
-		WorldMapFrame:SetAttribute("UIPanelLayout-defined", true);	
-		
+		self:SecureHook("WorldMapFrame_SetQuestMapView", 'SetQuestWorldMap')	
 		if WORLDMAP_SETTINGS.size == WORLDMAP_FULLMAP_SIZE then
 			self:SetLargeWorldMap()
 		elseif WORLDMAP_SETTINGS.size == WORLDMAP_WINDOWED_SIZE then
@@ -198,8 +189,8 @@ function M:Initialize()
 	DropDownList1:HookScript('OnShow', function(self)
 		if DropDownList1:GetScale() ~= UIParent:GetScale() and E.db.general.tinyWorldMap then
 			DropDownList1:SetScale(UIParent:GetScale())
-		end
-	end)
+		end		
+	end)	
 end
 
 E:RegisterInitialModule(M:GetName())

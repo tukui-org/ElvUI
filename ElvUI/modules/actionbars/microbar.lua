@@ -124,5 +124,5 @@ function AB:SetupMicroBar()
 	self:MainMenuMicroButton_SetNormal()
 	self:UpdateMicroPositionDimensions()
 	
-	E:CreateMover(microBar, 'MicrobarMover', 'Micro Bar', nil, nil, nil, 'ALL,ACTIONBARS');
+	E:CreateMover(microBar, 'MicrobarMover', L['Micro Bar'], nil, nil, nil, 'ALL,ACTIONBARS');
 end

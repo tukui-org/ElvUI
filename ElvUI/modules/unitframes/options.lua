@@ -457,12 +457,12 @@ local function UpdateFilterGroup()
 						end,						
 					},
 					anyUnit = {
-						name = L['Any Unit'],
+						name = L['Show Aura From Other Players'],
 						order = 5,
 						type = 'toggle',	
 					},
 					onlyShowMissing = {
-						name = L['Show Missing'],
+						name = L['Show When Not Active'],
 						order = 6,
 						type = 'toggle',	
 						disabled = function() return E.global.unitframe.buffwatch.PET[tableIndex].style == 'text' end,
@@ -628,12 +628,12 @@ local function UpdateFilterGroup()
 						end,						
 					},
 					anyUnit = {
-						name = L['Any Unit'],
+						name = L['Show Aura From Other Players'],
 						order = 5,
 						type = 'toggle',	
 					},
 					onlyShowMissing = {
-						name = L['Show Missing'],
+						name = L['Show When Not Active'],
 						order = 6,
 						type = 'toggle',	
 						disabled = function() return E.global.unitframe.buffwatch[E.myclass][tableIndex].style == 'text' end,

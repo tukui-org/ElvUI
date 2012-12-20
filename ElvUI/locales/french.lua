@@ -3,7 +3,7 @@ local L = AceLocale:NewLocale("ElvUI", "frFR");
 if not L then return; end
 
 --TEMP
-L["A taint has occured that is preventing you from using your talents/glyphs. Please reload your user interface and try again."] = "Une Action s'est produite qui vous empeche d'utiliser vos talents/glyphes.Cela peut se produire si vous avez inspecté quelqu'un.Malheureusement il n'y a rien que l'on puisse reparer,rechargez votre UI et essayez à nouveau";
+L["A taint has occured that is preventing you from using your talents/glyphs. Please reload your user interface and try again."] = true;
 
 --ActionBars
 L[" |cff00ff00bound to |r"] = "|cff00ff00assigné à |r"
@@ -610,10 +610,12 @@ L["Guild Frame"] = "Guilde"
 L["Guild Registrar"] = "Bannière de guilde"
 L["Help Frame"] = "Fenêtre d'Assistance clientèle"
 L["Inspect Frame"] = "Fenêtre d'inspection"
+L['Item Upgrade'] = true;
 L["KeyBinding Frame"] = "Raccourcis"
 L["LF Guild Frame"] = "Recherche de guilde"
 L["LFG Frame"] = "Fenêtre Recherche de raid"
 L["Loot Frames"] = "Fenêtre de butin"
+L['Loss Control'] = true;
 L["Macro Frame"] = "Fenêtre de macro"
 L["Mail Frame"] = "Fenêtre du courrier"
 L["Merchant Frame"] = "Marchand"
@@ -640,6 +642,7 @@ L["Trade Frame"] = "Fenêtre d'échange"
 L["TradeSkill Frame"] = "Métiers"
 L["Trainer Frame"] = "Entraîneur"
 L['Transmogrify Frame'] = "Fenêtre de Transmogrification";
+L['Void Storage'] = true;
 L["World Map"] = "Carte du monde"
 
 --Static Popups
@@ -716,12 +719,9 @@ L["Add Spell"] = "Ajouter un sort"
 L["Add SpellID"] = "Ajouter l'identifiant d'un sort"
 L["Additional Filter"] = "Filtre Addionnels";
 L["Affliction"] = "Affliction";
-L['Block Non-Dispellable Auras'] = "Autoriser les Auras dissipable."
-L["Block Non-Personal Auras"] = "Autoriser les Auras personnelles"
-L["Block Non-Whitelisted Auras"] = "Autoriser les Auras sur liste Blanche"
 L["An X offset (in pixels) to be used when anchoring new frames."] = "Un décalage de l'axe X (en pixels) qui sera utilisé pour l'ancrage des nouveaux cadres."
 L["An Y offset (in pixels) to be used when anchoring new frames."] = "Un décalage de l'axe Y (en pixels) qui sera utilisé pour l'ancrage des nouveaux cadres."
-L["Any Unit"] = "N'importe quelle unité"
+L["Show Aura From Other Players"] = "N'importe quelle unité"
 L['Arcane Charges'] = "Charges d'Arcane";
 L["Arena Frames"] = "Cadre d'arène"
 L["Assist Frames"] = "Cadre des Soutiens"
@@ -735,6 +735,9 @@ L['Below'] = "En dessous"
 L["Blacklist"] = "Liste noire"
 L["Block Auras Without Duration"] = "Bloquer les Auras sans durée"
 L["Block Blacklisted Auras"] = "Bloquer les Auras sur liste Noir"
+L['Block Non-Dispellable Auras'] = true;
+L["Block Non-Personal Auras"] = true;
+L["Block Non-Whitelisted Auras"] = true;
 L["Block Raid Buffs"] = "Bloquer les Améliorations de Raid"
 L['Blood'] = "Sang";
 L["Boss Frames"] = "Cadre du Boss"
@@ -900,7 +903,7 @@ L["Sets the font instance's horizontal text alignment style."] = true;
 L['Shadow Orbs'] = "Orbres d'ombre";
 L["Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."] = "Affiche une barre sur la prédiction des soins à venir sur le cadre d'unité. Ainsi qu'une barre de couleur légèrement différente pour les soins entrants excédants."
 L['Show Auras'] = "Afficher les auras"
-L["Show Missing"] = "Afficher les manquants"
+L["Show When Not Active"] = "Afficher les manquants"
 L["Show Party"] = "Afficher le groupe"
 L["Show Raid"] = "Afficher le Raid"
 L["Show Solo"] = "Afficher seul"
@@ -947,7 +950,6 @@ L["Units Per Column"] = "Unités par colonne"
 L["Up"] = "Haut"
 L["Use the custom health backdrop color instead of a multiple of the main health color."] = "Utilise une couleur personnalisé pour colorer le fond de la barre de vie au lieu d'utiliser la couleur par défaut."
 L["Value must be a number"] = "La valeur doit être un nombre"
-L['Vengeance'] = "Vengeance";
 L["Vertical"] = "Verticale"
 L["Visibility"] = "Visibilité"
 L["What each frame should attach itself to, example setting it to TOP every unit will attach its top to the last point bottom."] = "Le point d'ancrage pour attacher les cadres entre eux, exemple: si le paramètre est sur TOP, tous les cadres d'unité se développeront vers le bas."

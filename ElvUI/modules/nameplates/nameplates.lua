@@ -19,6 +19,19 @@ NP.Healers = {
 	[L['Mistweaver']] = true,
 }
 
+ClassIconTable = {
+	DEATHKNIGHT = "Interface\\Icons\\Spell_Deathknight_ClassIcon",
+	DRUID = "Interface\\Icons\\INV_Misc_MonsterClaw_04",
+	WARLOCK = "Interface\\Icons\\Spell_Nature_FaerieFire",
+	HUNTER = "Interface\\Icons\\INV_Weapon_Bow_07",
+	MAGE = "Interface\\Icons\\INV_Staff_13",
+	PRIEST = "Interface\\Icons\\INV_Staff_30",
+	WARRIOR = "Interface\\Icons\\INV_Sword_27",
+	SHAMAN = "Interface\\Icons\\Spell_Nature_BloodLust",
+	PALADIN = "Interface\\AddOns\\addon\\UI-CharacterCreate-Classes_Paladin",
+	ROGUE = "Interface\\AddOns\\addon\\UI-CharacterCreate-Classes_Rogue",
+}
+
 function NP:Initialize()
 	self.db = E.db["nameplate"]
 	if E.private["nameplate"].enable ~= true then return end
@@ -197,6 +210,7 @@ function NP:Update_LevelText(frame)
 				frame.hp.level:Show()
 			elseif not elite and level == mylevel then
 				frame.hp.level:Hide()
+				frame.hp.level:SetText(nil)
 			elseif level then
 				frame.hp.level:SetText(level..(elite and "+" or ""))
 				frame.hp.level:SetTextColor(frame.hp.oldlevel:GetTextColor())
@@ -206,6 +220,7 @@ function NP:Update_LevelText(frame)
 			frame.hp.oldlevel:SetWidth(000.1)
 		elseif frame.hp.level then
 			frame.hp.level:Hide()
+			frame.hp.level:SetText(nil)
 		end
 	elseif frame.isBoss and self.db.showlevel and frame.hp.level:GetText() ~= '??' then
 		frame.hp.level:SetText("??")
@@ -227,7 +242,7 @@ function NP:Colorize(frame, r, g, b)
 		end
 		
 		if RAID_CLASS_COLORS[class].r == r and RAID_CLASS_COLORS[class].g == g and RAID_CLASS_COLORS[class].b == bb then
-			frame.hasClass = true
+			frame.hasClass = class
 			frame.isFriendly = false
 			frame.hp:SetStatusBarColor(RAID_CLASS_COLORS[class].r, RAID_CLASS_COLORS[class].g, RAID_CLASS_COLORS[class].b)
 			frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor = RAID_CLASS_COLORS[class].r, RAID_CLASS_COLORS[class].g, RAID_CLASS_COLORS[class].b
@@ -263,7 +278,7 @@ function NP:Colorize(frame, r, g, b)
 		frame.isFriendly = false
 	end
 	
-	frame.hasClass = false
+	frame.hasClass = nil
 	frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor = r, g, b
 	frame.hp:SetStatusBarColor(r,g,b)
 end
@@ -296,6 +311,15 @@ function NP:HealthBar_OnShow(frame)
 	NP:Colorize(frame, r, g, b)
 	frame.hp.hpbg:SetTexture(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor, 0.25)
 	
+	
+	if frame.hasClass and self.db.classIcons then
+		local tCoords = CLASS_BUTTONS[frame.hasClass]
+		frame.classIcon:SetTexCoord(tCoords[1], tCoords[2], tCoords[3], tCoords[4])
+		frame.classIcon:Show()
+	elseif frame.classIcon:IsShown() then
+		frame.classIcon:Hide()
+	end
+	
 	--Set the name text
 	frame.hp.name:SetText(frame.hp.oldname:GetText())	
 	while frame.hp:GetEffectiveScale() < 1 do
@@ -324,6 +348,7 @@ function NP:OnHide(frame)
 	frame.hp.name:SetTextColor(1, 1, 1)
 	frame.hp:SetScale(1)
 	frame.cb:SetScale(1)
+	frame.classIcon:Hide()
 	frame.AuraWidget:SetScale(1)
 	frame.cb:Hide()
 	frame.unit = nil
@@ -388,7 +413,7 @@ function NP:SkinPlate(frame, nameFrame)
 	end
 	frame.hp:SetStatusBarTexture(E["media"].normTex)
 	self:SetVirtualBackdrop(frame.hp, unpack(E["media"].backdropcolor))
-	
+		
 	if not frame.overlay then
 		overlay:SetTexture(1, 1, 1, 0.35)
 		overlay:SetParent(frame.hp)
@@ -413,6 +438,14 @@ function NP:SkinPlate(frame, nameFrame)
 	if oldlevel:GetObjectType() == 'FontString' then
 		frame.hp.level:SetText(oldlevel:GetText())
 	end
+	
+	if not frame.classIcon then
+		frame.classIcon = frame.hp:CreateTexture(nil, "ARTWORK");
+		frame.classIcon:Size(30);
+		frame.classIcon:Point("RIGHT", frame.hp.level, "LEFT", -1, 0);
+		frame.classIcon:SetTexture([[Interface\WorldStateFrame\Icons-Classes]]);
+		frame.classIcon:Hide();
+	end	
 	
 	--Name Text
 	if not frame.hp.name then

@@ -315,7 +315,7 @@ function M:Initialize()
 		FeedbackUIButton:Kill()
 	end
 	
-	E:CreateMover(MMHolder, 'MinimapMover', 'Minimap')
+	E:CreateMover(MMHolder, 'MinimapMover', L['Minimap'])
 --[[	Minimap.SetPoint = E.noop;
 	MMHolder.SetPoint = E.noop;
 	Minimap.ClearAllPoints = E.noop;
@@ -386,7 +386,6 @@ function M:Initialize()
 	end)
 	
 	--PET JOURNAL TAINT FIX AS OF 5.1
-	PetJournal_LoadUI();
 	local info = UIPanelWindows['PetJournalParent'];
 	for name, value in pairs(info) do
 		PetJournalParent:SetAttribute("UIPanelLayout-"..name, value);

@@ -17,7 +17,7 @@ function UF:Construct_FocusTargetFrame(frame)
 	frame.Debuffs = self:Construct_Debuffs(frame)
 
 	frame:Point('TOPLEFT', ElvUF_Focus, 'TOPRIGHT', 30, 0) --Set to default position
-	E:CreateMover(frame, frame:GetName()..'Mover', 'FocusTarget Frame', nil, -7, nil, 'ALL,SOLO')
+	E:CreateMover(frame, frame:GetName()..'Mover', L['FocusTarget Frame'], nil, -7, nil, 'ALL,SOLO')
 end
 
 function UF:Update_FocusTargetFrame(frame, db)

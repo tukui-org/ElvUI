@@ -28,5 +28,9 @@ function AB:SetupExtraButton()
 		end
 	end
 	
-	E:CreateMover(holder, 'BossButton', 'Boss Button', nil, nil, nil, 'ALL,ACTIONBARS');
+	if HasExtraActionBar() then
+		ExtraActionBarFrame:Show();
+	end
+	
+	E:CreateMover(holder, 'BossButton', L['Boss Button'], nil, nil, nil, 'ALL,ACTIONBARS');
 end

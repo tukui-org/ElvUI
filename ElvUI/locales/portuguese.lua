@@ -3,7 +3,7 @@ local L = AceLocale:NewLocale("ElvUI", "ptBR")
 if not L then return end
 
 --TEMP
-L["A taint has occured that is preventing you from using your talents/glyphs. Please reload your user interface and try again."] = "Ocorreu um problema que está a impedir que use os seus Talentos/Glifos, isto pode acontecer caso tenha inspeccionado alguém. Infelizmente não há nada que possamos fazer para corrigir o problema. Recarregue a sua ui e tente novamente."
+L["A taint has occured that is preventing you from using your talents/glyphs. Please reload your user interface and try again."] = true;
 
 --ActionBars
 L[" |cff00ff00bound to |r"] = " |cff00ff00Ligado a |r"
@@ -610,10 +610,12 @@ L["Guild Frame"] = "Quadro da Guilda";
 L["Guild Registrar"] = "Registrar Guilda";
 L["Help Frame"] = "Ajuda";
 L["Inspect Frame"] = "Inspeção";
+L['Item Upgrade'] = true;
 L["KeyBinding Frame"] = "Atalhos";
 L["LF Guild Frame"] = "Localizador de Guildas";
 L["LFG Frame"] = "Localizador de Masmorras";
 L["Loot Frames"] = "Saques";
+L['Loss Control'] = true;
 L["Macro Frame"] = "Macros";
 L["Mail Frame"] = "Correio";
 L["Merchant Frame"] = "Comerciante";
@@ -640,6 +642,7 @@ L["Trade Frame"] = "Negociar";
 L["TradeSkill Frame"] = "Profissões";
 L["Trainer Frame"] = "Instrutores";
 L['Transmogrify Frame'] = "Transmogrificação";
+L['Void Storage'] = true;
 L["World Map"] = "Mapa-múndi";
 
 --Static Popups
@@ -716,12 +719,9 @@ L["Add Spell"] = "Adicionar feitiço";
 L["Add SpellID"] = "Adicionar SpellID";
 L["Additional Filter"] = "Filtro adicional";
 L["Affliction"] = "Suplício";
-L['Block Non-Dispellable Auras'] = "Permitir Auras Dissipáveis";
-L["Block Non-Personal Auras"] = "Permitir Auras Pessoais";
-L["Block Non-Whitelisted Auras"] = "Permitir Auras da Lista Branca";
 L["An X offset (in pixels) to be used when anchoring new frames."] = "Uma distância X (em pixels) para ser usada quando fixar novos quadros.";
 L["An Y offset (in pixels) to be used when anchoring new frames."] = "Uma distância Y (em pixels) para ser usada quando fixar novos quadros.";
-L["Any Unit"] = "Qualquer Unidade";
+L["Show Aura From Other Players"] = "Qualquer Unidade";
 L['Arcane Charges'] = "Carga Arcana";
 L["Arena Frames"] = "Quadros de Arenas";
 L["Assist Frames"] = "Quadros de Assistentes";
@@ -735,6 +735,9 @@ L['Below'] = "Abaixo";
 L["Blacklist"] = "Lista negra";
 L["Block Auras Without Duration"] = "Bloquear Auras sem Duração";
 L["Block Blacklisted Auras"] = "Bloquear Auras da Lista Negra";
+L['Block Non-Dispellable Auras'] = true;
+L["Block Non-Personal Auras"] = true;
+L["Block Non-Whitelisted Auras"] = true;
 L["Block Raid Buffs"] = "Bloquear Bônus de Raid";
 L['Blood'] = "Sangue";
 L["Boss Frames"] = "Quadros dos Chefes";
@@ -900,7 +903,7 @@ L["Sets the font instance's horizontal text alignment style."] = "Define o estil
 L['Shadow Orbs'] = "Orbes Sombrios";
 L["Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."] = "Mostra a barra de predicção de cura no quadro de unidade. Também exibe uma barra com uma cor ligeiramente diferente para a predicção de sobrecura.";
 L['Show Auras'] = "Mostrar Auras";
-L["Show Missing"] = "Mostrar o que está em falta";
+L["Show When Not Active"] = "Mostrar o que está em falta";
 L["Show Party"] = "Mostrar Grupo";
 L["Show Raid"] = "Mostrar Raide";
 L["Show Solo"] = "Mostrar Sozinho";
@@ -947,7 +950,6 @@ L["Units Per Column"] = "Unidades por coluna";
 L["Up"] = "Para cima";
 L["Use the custom health backdrop color instead of a multiple of the main health color."] = "Usar a cor de fundo da vida personalizada em vez de um multiplo da cor de vida principal.";
 L["Value must be a number"] = "O valor tem de ser um número";
-L['Vengeance'] = true;
 L["Vertical"] = "Vertical"; --Also used in bags section
 L["Visibility"] = "Visibilidade";
 L["What each frame should attach itself to, example setting it to TOP every unit will attach its top to the last point bottom."] = "Em que cada quadro deve anexar-se, exemplo: definir para 'cima' fará com que todas as unidades anexem o seu topo ao último ponto de baixo.";
