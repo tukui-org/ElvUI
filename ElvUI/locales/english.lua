@@ -547,6 +547,8 @@ L["Target Castbar"] = true;
 L["Focus Castbar"] = true;
 
 --NamePlates
+L["Class Icons"] = true;
+L["Display a class icon on nameplates."] = true;
 L["Add Name"] = true;
 L["All"] = true;
 L['Aura'] = true;
