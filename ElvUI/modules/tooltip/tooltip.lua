@@ -695,9 +695,9 @@ function TT:Initialize()
 	BNToastFrame:Point('TOPRIGHT', MMHolder, 'BOTTOMRIGHT', 0, -10);
 	E:CreateMover(BNToastFrame, 'BNETMover', L['BNet Frame'])
 	hooksecurefunc(BNToastFrame, "SetPoint", function(self, point, anchor, anchorPoint, xOffset, yOffset)
-		if anchor ~= MMHolder then
+		if anchor ~= BNETMover then
 			BNToastFrame:ClearAllPoints()
-			BNToastFrame:Point('TOPRIGHT', MMHolder, 'BOTTOMRIGHT', 0, -10);
+			BNToastFrame:Point('TOPLEFT', BNETMover, 'TOPLEFT');
 		end
 	end)		
 	
