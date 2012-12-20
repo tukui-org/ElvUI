@@ -404,7 +404,8 @@ function E:CopyTable(currentTable, defaultTable)
 end
 
 function E:SendMessage()
-	if IsInRaid() then
+	local _, instanceType = IsInInstance()
+	if IsInRaid() and instanceType ~= 'arena' then
 		SendAddonMessage("ElvUIVC", E.version, IsPartyLFG() and "INSTANCE_CHAT" or "RAID")
 	elseif IsInGroup() then
 		SendAddonMessage("ElvUIVC", E.version, IsPartyLFG() and "INSTANCE_CHAT" or "PARTY")
