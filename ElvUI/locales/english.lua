@@ -521,6 +521,7 @@ L["Your items have been repaired using guild bank funds for: "] = true;
 L["Your version of ElvUI is out of date. You can download the latest version from http://www.tukui.org"] = true; --core\core.lua
 
 --Movers
+L[' Frames'] = true;
 L["Left Chat"] = true;
 L["Right Chat"] = true;
 L["Bar "] = true;
