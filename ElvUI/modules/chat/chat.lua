@@ -584,7 +584,7 @@ function CH:FindURL(event, msg, ...)
 	return false, msg, ...
 end
 
-local function URLChatFrame_OnHyperlinkShow(self, link, text, button)
+local function URLChatFrame_OnHyperlinkShow(self, link, ...)
 	CH.clickedframe = self
 	if (link):sub(1, 3) == "url" then
 		local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
@@ -594,8 +594,10 @@ local function URLChatFrame_OnHyperlinkShow(self, link, text, button)
 		end
 		ChatFrameEditBox:Insert(currentLink)
 		ChatFrameEditBox:HighlightText()
-		return
+		return;
 	end
+	
+	ChatFrame_OnHyperlinkShow(self, link, ...)
 end
 
 local function WIM_URLLink(link)
@@ -794,7 +796,7 @@ function CH:SetupChat(event, ...)
 		frame:SetShadowOffset((E.mult or 1), -(E.mult or 1))	
 		frame:SetFading(self.db.fade)
 		
-		frame:HookScript("OnHyperlinkClick", URLChatFrame_OnHyperlinkShow)
+		frame:SetScript("OnHyperlinkClick", URLChatFrame_OnHyperlinkShow)
 		frame:SetScript("OnMouseWheel", ChatFrame_OnMouseScroll)
 		hooksecurefunc(frame, "SetScript", function(f, script, func)
 			if script == "OnMouseWheel" and func ~= ChatFrame_OnMouseScroll then
@@ -1134,6 +1136,7 @@ function CH:Initialize()
 	self:SecureHook('ChatEdit_OnEnterPressed')
 	FriendsMicroButton:Kill()
 	ChatFrameMenuButton:Kill()
+
 		
     if WIM then
       WIM.RegisterWidgetTrigger("chat_display", "whisper,chat,w2w,demo", "OnHyperlinkClick", function(self) CH.clickedframe = self end);
