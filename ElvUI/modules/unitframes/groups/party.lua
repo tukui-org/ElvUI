@@ -102,7 +102,7 @@ function UF:Update_PartyHeader(header, db)
 	header:SetAttribute("maxColumns", db.maxColumns)
 	header:SetAttribute("unitsPerColumn", db.unitsPerColumn)
 	
-	header:SetAttribute('columnSpacing', db.columnSpacing)
+	header:SetAttribute('columnSpacing', db.yOffset)
 	header:SetAttribute("xOffset", db.xOffset)	
 	header:SetAttribute("yOffset", db.yOffset)
 

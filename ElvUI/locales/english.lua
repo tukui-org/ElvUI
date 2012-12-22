@@ -785,7 +785,6 @@ L["Color the unit healthbar if there is a debuff that can be dispelled by you."]
 L["Color"] = true;
 L['Colored Icon'] = true;
 L["Column Point"] = true;
-L["Column Spacing"] = true;
 L["Combat Fade"] = true;
 L["Combobar"] = true;
 L["Copy From"] = true;
@@ -954,7 +953,6 @@ L["Text Toggle On NPC"] = true;
 L['Text'] = true;
 L['Textured Icon'] = true;
 L["The alpha to set units that are out of range to."] = true;
-L["The amount of space (in pixels) between the columns."] = true;
 L["The anchor point for each new column. A value of LEFT will cause the columns to grow to the right."] = true;
 L["The following macro must be true in order for the group to be shown, in addition to any filter that may already be set."] = true;
 L["The font that the unitframes will use."] = true;
