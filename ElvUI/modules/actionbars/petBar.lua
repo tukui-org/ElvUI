@@ -2,7 +2,6 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 local AB = E:GetModule('ActionBars');
 
 local ceil = math.ceil;
-
 local bar = CreateFrame('Frame', 'ElvUI_BarPet', E.UIParent, 'SecureHandlerStateTemplate');
 
 function AB:UpdatePet()
@@ -206,7 +205,7 @@ function AB:PositionAndSizeBarPet()
 		end
 		
 		self:StyleButton(button);
-		
+
 		--wtf lol
 		if not button.CheckFixed then 
 			hooksecurefunc(button:GetCheckedTexture(), 'SetAlpha', function(self, value)
@@ -219,6 +218,13 @@ function AB:PositionAndSizeBarPet()
 	end
 
 	RegisterStateDriver(bar, "show", self.db['barPet'].visibility);
+end
+
+function AB:UpdatePetBindings()
+	for i=1, NUM_PET_ACTION_SLOTS do
+		local key = GetBindingKey("BONUSACTIONBUTTON"..i)
+		_G["PetActionButton"..i.."HotKey"]:SetText(key)
+	end
 end
 
 function AB:CreateBarPet()
@@ -250,7 +256,9 @@ function AB:CreateBarPet()
 	self:RegisterEvent('UNIT_AURA', 'UpdatePet');
 	self:RegisterEvent('PLAYER_FARSIGHT_FOCUS_CHANGED', 'UpdatePet');
 	self:RegisterEvent('PET_BAR_UPDATE_COOLDOWN', PetActionBar_UpdateCooldowns);
+
 	
 	E:CreateMover(bar, 'PetAB', L['Pet Bar'], nil, nil, nil, 'ALL,ACTIONBARS');
 	self:PositionAndSizeBarPet();
+	self:UpdatePetBindings()
 end

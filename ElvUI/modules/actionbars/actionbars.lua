@@ -257,7 +257,12 @@ function AB:CreateVehicleLeave()
 	RegisterStateDriver(vehicle, "visibility", "[vehicleui] show;[target=vehicle,exists] show;hide")
 end
 
-function AB:ReassignBindings()
+function AB:ReassignBindings(event)
+	if event == "UPDATE_BINDINGS" then
+		self:UpdatePetBindings();
+		self:UpdateStanceBindings();
+	end
+
 	if InCombatLockdown() then return end	
 	for _, bar in pairs(self["handledBars"]) do
 		if not bar then return end
