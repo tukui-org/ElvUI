@@ -11,8 +11,8 @@ E.version = GetAddOnMetadata("ElvUI", "Version");
 E.myrealm = GetRealmName();
 _, E.wowbuild = GetBuildInfo(); E.wowbuild = tonumber(E.wowbuild);
 E.resolution = GetCVar("gxResolution")
-E.screenheight = tonumber(string.match(E.resolution, "%d+x(%d+)"))
-E.screenwidth = tonumber(string.match(E.resolution, "(%d+)x+%d"))
+E.screenheight = floor(GetScreenHeight()*100+.5)/100
+E.screenwidth = floor(GetScreenWidth()*100+.5)/100
 
 
 --Tables
