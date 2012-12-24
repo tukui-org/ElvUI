@@ -3,7 +3,7 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 --Determine if Eyefinity is being used, setup the pixel perfect script.
 local scale
 function E:UIScale(event)
-	if IsMacClient() and (self.screenheight ~= self.global.screenheight or self.screenwidth ~= self.global.screenwidth) then
+	if IsMacClient() and self.global.screenheight and self.global.screenwidth and (self.screenheight ~= self.global.screenheight or self.screenwidth ~= self.global.screenwidth) then
 		self.screenheight = self.global.screenheight
 		self.screenwidth = self.global.screenwidth
 	end
