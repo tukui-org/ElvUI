@@ -275,7 +275,7 @@ function LO:CreateChatPanels()
 	RightChatPanel.fadeFunc = ChatPanelRight_OnFade
 	rchattb:Point('TOPLEFT', rchatdp, 'TOPRIGHT', (E.PixelMode and -1 or 1), 0)
 	rchattb:Point('BOTTOMRIGHT', rchat, 'BOTTOMRIGHT', -SPACING, SPACING)
-	rchattb:SetTemplate(E.PixelMode and 'Transparent' or 'Default', true)
+	rchattb:SetTemplate('Default', true)
 	rchattb:RegisterForClicks('AnyUp')
 	rchattb:SetScript('OnEnter', ChatButton_OnEnter)
 	rchattb:SetScript('OnLeave', ChatButton_OnLeave)
