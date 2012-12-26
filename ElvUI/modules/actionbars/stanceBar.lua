@@ -228,9 +228,14 @@ end
 
 function AB:UpdateStanceBindings()
 	for i = 1, NUM_STANCE_SLOTS do
-		local key = GetBindingKey("CLICK ElvUI_StanceBarButton"..i..":LeftButton")
-		_G["ElvUI_StanceBarButton"..i.."HotKey"]:SetText(key)	
-		self:FixKeybindText(_G["ElvUI_StanceBarButton"..i])
+		if self.db.hotkeytext then
+			_G["ElvUI_StanceBarButton"..i.."HotKey"]:Show()
+			local key = GetBindingKey("CLICK ElvUI_StanceBarButton"..i..":LeftButton")
+			_G["ElvUI_StanceBarButton"..i.."HotKey"]:SetText(key)	
+			self:FixKeybindText(_G["ElvUI_StanceBarButton"..i])
+		else
+			_G["ElvUI_StanceBarButton"..i.."HotKey"]:Hide()
+		end		
 	end
 end
 

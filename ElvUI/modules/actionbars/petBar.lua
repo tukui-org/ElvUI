@@ -223,7 +223,12 @@ end
 function AB:UpdatePetBindings()
 	for i=1, NUM_PET_ACTION_SLOTS do
 		local key = GetBindingKey("BONUSACTIONBUTTON"..i)
-		_G["PetActionButton"..i.."HotKey"]:SetText(key)
+		if self.db.hotkeytext then
+			_G["PetActionButton"..i.."HotKey"]:Show()
+			_G["PetActionButton"..i.."HotKey"]:SetText(key)
+		else
+			_G["PetActionButton"..i.."HotKey"]:Hide()
+		end
 	end
 end
 
