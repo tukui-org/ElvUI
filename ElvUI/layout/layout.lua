@@ -214,13 +214,13 @@ function LO:CreateChatPanels()
 	local lchattab = CreateFrame('Frame', 'LeftChatTab', LeftChatPanel)
 	lchattab:Point('TOPLEFT', lchat, 'TOPLEFT', SPACING, -SPACING)
 	lchattab:Point('BOTTOMRIGHT', lchat, 'TOPRIGHT', -SPACING, -(SPACING + PANEL_HEIGHT))
-	lchattab:SetTemplate(E.PixelMode and 'Transparent' or 'Default', true)
+	lchattab:SetTemplate('Default', true)
 	
 	--Left Chat Data Panel
 	local lchatdp = CreateFrame('Frame', 'LeftChatDataPanel', LeftChatPanel)
 	lchatdp:Point('BOTTOMLEFT', lchat, 'BOTTOMLEFT', SPACING + SIDE_BUTTON_WIDTH, SPACING)
 	lchatdp:Point('TOPRIGHT', lchat, 'BOTTOMRIGHT', -SPACING, (SPACING + PANEL_HEIGHT))
-	lchatdp:SetTemplate(E.PixelMode and 'Transparent' or 'Default', true)
+	lchatdp:SetTemplate('Default', true)
 	
 	E:GetModule('DataTexts'):RegisterPanel(lchatdp, 3, 'ANCHOR_TOPLEFT', -17, 4)
 	
