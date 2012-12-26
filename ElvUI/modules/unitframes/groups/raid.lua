@@ -114,7 +114,11 @@ for i=10, 40, 15 do
 		header:SetAttribute("maxColumns", db.maxColumns)
 		header:SetAttribute("unitsPerColumn", db.unitsPerColumn)
 		
-		header:SetAttribute('columnSpacing', db.yOffset)
+		if (db.point == "TOP" or db.point == "BOTTOM") and (db.columnAnchorPoint == "LEFT" or db.columnAnchorPoint == "RIGHT") then
+			header:SetAttribute('columnSpacing', db.xOffset)
+		else
+			header:SetAttribute('columnSpacing', db.yOffset)
+		end
 		header:SetAttribute("xOffset", db.xOffset)	
 		header:SetAttribute("yOffset", db.yOffset)
 
