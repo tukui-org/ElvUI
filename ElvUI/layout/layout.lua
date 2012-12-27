@@ -214,13 +214,13 @@ function LO:CreateChatPanels()
 	local lchattab = CreateFrame('Frame', 'LeftChatTab', LeftChatPanel)
 	lchattab:Point('TOPLEFT', lchat, 'TOPLEFT', SPACING, -SPACING)
 	lchattab:Point('BOTTOMRIGHT', lchat, 'TOPRIGHT', -SPACING, -(SPACING + PANEL_HEIGHT))
-	lchattab:SetTemplate(E.PixelMode and 'Transparent' or 'Default', true)
+	lchattab:SetTemplate('Default', true)
 	
 	--Left Chat Data Panel
 	local lchatdp = CreateFrame('Frame', 'LeftChatDataPanel', LeftChatPanel)
 	lchatdp:Point('BOTTOMLEFT', lchat, 'BOTTOMLEFT', SPACING + SIDE_BUTTON_WIDTH, SPACING)
 	lchatdp:Point('TOPRIGHT', lchat, 'BOTTOMRIGHT', -SPACING, (SPACING + PANEL_HEIGHT))
-	lchatdp:SetTemplate(E.PixelMode and 'Transparent' or 'Default', true)
+	lchatdp:SetTemplate('Default', true)
 	
 	E:GetModule('DataTexts'):RegisterPanel(lchatdp, 3, 'ANCHOR_TOPLEFT', -17, 4)
 	
@@ -230,7 +230,7 @@ function LO:CreateChatPanels()
 	LeftChatPanel.fadeFunc = ChatPanelLeft_OnFade
 	lchattb:Point('TOPRIGHT', lchatdp, 'TOPLEFT', -(E.PixelMode and -1 or 1), 0)
 	lchattb:Point('BOTTOMLEFT', lchat, 'BOTTOMLEFT', SPACING, SPACING)
-	lchattb:SetTemplate(E.PixelMode and 'Transparent' or 'Default', true)
+	lchattb:SetTemplate('Default', true)
 	lchattb:SetScript('OnEnter', ChatButton_OnEnter)
 	lchattb:SetScript('OnLeave', ChatButton_OnLeave)
 	lchattb:SetScript('OnClick', ChatButton_OnClick)
@@ -260,13 +260,13 @@ function LO:CreateChatPanels()
 	local rchattab = CreateFrame('Frame', 'RightChatTab', RightChatPanel)
 	rchattab:Point('TOPRIGHT', rchat, 'TOPRIGHT', -SPACING, -SPACING)
 	rchattab:Point('BOTTOMLEFT', rchat, 'TOPLEFT', SPACING, -(SPACING + PANEL_HEIGHT))
-	rchattab:SetTemplate(E.PixelMode and 'Transparent' or 'Default', true)
+	rchattab:SetTemplate('Default', true)
 	
 	--Right Chat Data Panel
 	local rchatdp = CreateFrame('Frame', 'RightChatDataPanel', RightChatPanel)
 	rchatdp:Point('BOTTOMLEFT', rchat, 'BOTTOMLEFT', SPACING, SPACING)
 	rchatdp:Point('TOPRIGHT', rchat, 'BOTTOMRIGHT', -(SPACING + SIDE_BUTTON_WIDTH), SPACING + PANEL_HEIGHT)
-	rchatdp:SetTemplate(E.PixelMode and 'Transparent' or 'Default', true)
+	rchatdp:SetTemplate('Default', true)
 	E:GetModule('DataTexts'):RegisterPanel(rchatdp, 3, 'ANCHOR_TOPRIGHT', 17, 4)
 	
 	--Right Chat Toggle Button
@@ -275,7 +275,7 @@ function LO:CreateChatPanels()
 	RightChatPanel.fadeFunc = ChatPanelRight_OnFade
 	rchattb:Point('TOPLEFT', rchatdp, 'TOPRIGHT', (E.PixelMode and -1 or 1), 0)
 	rchattb:Point('BOTTOMRIGHT', rchat, 'BOTTOMRIGHT', -SPACING, SPACING)
-	rchattb:SetTemplate(E.PixelMode and 'Transparent' or 'Default', true)
+	rchattb:SetTemplate('Default', true)
 	rchattb:RegisterForClicks('AnyUp')
 	rchattb:SetScript('OnEnter', ChatButton_OnEnter)
 	rchattb:SetScript('OnLeave', ChatButton_OnLeave)

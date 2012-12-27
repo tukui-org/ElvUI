@@ -8082,13 +8082,6 @@ E.Options.args.unitframe.args.party = {
 					desc = L['The maximum number of units that will be displayed in a single column.'],
 					min = 1, max = 40, step = 1,
 				},
-				columnSpacing = {
-					order = 8,
-					type = 'range',
-					name = L['Column Spacing'],
-					desc = L['The amount of space (in pixels) between the columns.'],
-					min = 0, max = 10, step = 1,
-				},		
 				xOffset = {
 					order = 9,
 					type = 'range',
@@ -8848,13 +8841,6 @@ for i=10, 40, 15 do
 						desc = L['The maximum number of units that will be displayed in a single column.'],
 						min = 1, max = 40, step = 1,
 					},
-					columnSpacing = {
-						order = 8,
-						type = 'range',
-						name = L['Column Spacing'],
-						desc = L['The amount of space (in pixels) between the columns.'],
-						min = 0, max = 10, step = 1,
-					},		
 					xOffset = {
 						order = 9,
 						type = 'range',
@@ -9426,7 +9412,19 @@ for i=10, 40, 15 do
 						name = L['Font Size'],
 						order = 3,
 						min = 7, max = 22, step = 1,
-					},				
+					},	
+					xOffset = {
+						order = 4,
+						type = 'range',
+						name = L['xOffset'],
+						min = -300, max = 300, step = 1,
+					},
+					yOffset = {
+						order = 5,
+						type = 'range',
+						name = L['yOffset'],
+						min = -300, max = 300, step = 1,
+					},		
 				},
 			},
 			raidicon = {

@@ -539,7 +539,6 @@ end
 
 function UF:Construct_RaidDebuffs(frame)
 	local rdebuff = CreateFrame('Frame', nil, frame.RaisedElementParent)
-	rdebuff:Point('BOTTOM', frame, 'BOTTOM', 0, 2)
 	rdebuff:SetTemplate("Default")
 	
 	if E.PixelMode then

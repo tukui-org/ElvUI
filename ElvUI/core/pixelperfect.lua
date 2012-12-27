@@ -3,6 +3,11 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 --Determine if Eyefinity is being used, setup the pixel perfect script.
 local scale
 function E:UIScale(event)
+	if IsMacClient() and self.global.screenheight and self.global.screenwidth and (self.screenheight ~= self.global.screenheight or self.screenwidth ~= self.global.screenwidth) then
+		self.screenheight = self.global.screenheight
+		self.screenwidth = self.global.screenwidth
+	end
+	
 	if self.global.general.autoScale then
 		scale = max(0.64, min(1.15, 768/self.screenheight));
 	else
@@ -51,6 +56,11 @@ function E:UIScale(event)
 	end	
 	
 	if (event == 'PLAYER_LOGIN' or event == 'UI_SCALE_CHANGED') then
+		if IsMacClient() then
+			self.global.screenheight = floor(GetScreenHeight()*100+.5)/100
+			self.global.screenwidth = floor(GetScreenWidth()*100+.5)/100
+		end
+
 		--Resize self.UIParent if Eyefinity is on.
 		if self.eyefinity then
 			local width = self.eyefinity;

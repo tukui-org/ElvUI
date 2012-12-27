@@ -14,7 +14,6 @@ E.resolution = GetCVar("gxResolution")
 E.screenheight = tonumber(string.match(E.resolution, "%d+x(%d+)"))
 E.screenwidth = tonumber(string.match(E.resolution, "(%d+)x+%d"))
 
-
 --Tables
 E["media"] = {};
 E["frames"] = {};
