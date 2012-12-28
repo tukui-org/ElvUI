@@ -280,8 +280,12 @@ end)
 	bf.TurnTimer.SkipButton:Width(bar:GetWidth())
 	bf.TurnTimer.SkipButton:ClearAllPoints()
 	bf.TurnTimer.SkipButton:SetPoint("BOTTOM", bar, "TOP", 0, E.PixelMode and -1 or 1)
-	bf.TurnTimer.SkipButton.ClearAllPoints = E.noop
-	bf.TurnTimer.SkipButton.SetPoint = E.noop
+	hooksecurefunc(bf.TurnTimer.SkipButton, "SetPoint", function(self, point, attachTo, anchorPoint, xOffset, yOffset)
+		if point ~= "BOTTOM" or point ~= bar or anchorPoint ~= "TOP" or xOffset ~= 0 or yOffset ~= (E.PixelMode and -1 or 1) then
+			bf.TurnTimer.SkipButton:ClearAllPoints()
+			bf.TurnTimer.SkipButton:SetPoint("BOTTOM", bar, "TOP", 0, E.PixelMode and -1 or 1)		
+		end
+	end)
 
 	bf.TurnTimer:Size(bf.TurnTimer.SkipButton:GetWidth(), bf.TurnTimer.SkipButton:GetHeight())
 	bf.TurnTimer:ClearAllPoints()

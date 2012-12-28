@@ -137,7 +137,11 @@ local function LoadSkin()
 	EncounterJournalEncounterFrameInfoLootTab:GetHighlightTexture():SetTexture(nil)	
 		
 	EncounterJournalEncounterFrameInfoBossTab:Point('TOPLEFT', EncounterJournalEncounterFrameInfo, 'TOPRIGHT', E.PixelMode and -3 or 0, -35)
-	EncounterJournalEncounterFrameInfoBossTab.SetPoint = E.noop
+	hooksecurefunc(EncounterJournalEncounterFrameInfoBossTab, "SetPoint", function(self, point, attachTo, anchorPoint, xOffset, yOffset)
+		if point ~= "TOPLEFT" or attachTo ~= EncounterJournalEncounterFrameInfo or anchorPoint ~= "TOPRIGHT" or xOffset ~= (E.PixelMode and -3 or 0) or yOffset ~= -35 then
+			EncounterJournalEncounterFrameInfoBossTab:Point('TOPLEFT', EncounterJournalEncounterFrameInfo, 'TOPRIGHT', E.PixelMode and -3 or 0, -35)
+		end
+	end)
 	
 	EncounterJournalEncounterFrameInfoBossTab:CreateBackdrop('Default')
 	EncounterJournalEncounterFrameInfoBossTab.backdrop:Point('TOPLEFT', 11, -8)

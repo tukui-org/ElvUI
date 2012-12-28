@@ -31,7 +31,12 @@ local function LoadSkin()
 		
 		button:ClearAllPoints()
 		button:Point("RIGHT", frame, "RIGHT", -10, 3)
-		button.SetPoint = E.noop
+		hooksecurefunc(button, "SetPoint", function(self, point, attachTo, anchorPoint, xOffset, yOffset)
+			if point ~= "RIGHT" or attachTo ~= frame or anchorPoint ~= "RIGHT" or xOffset ~= -10 or yOffset ~= 3 then
+				self:ClearAllPoints()
+				self:Point("RIGHT", frame, "RIGHT", -10, 3)			
+			end
+		end)
 		
 		S:HandleNextPrevButton(button, true)
 		
@@ -48,8 +53,19 @@ local function LoadSkin()
 	bg:Point("BOTTOMRIGHT", -8, 3)
 	
 	CalendarContextMenu:SetTemplate("Default")
-	CalendarContextMenu.SetBackdropColor = E.noop
-	CalendarContextMenu.SetBackdropBorderColor = E.noop
+	hooksecurefunc(CalendarContextMenu, "SetBackdropColor", function(self, r, g, b, a)
+		local r2, g2, b2, a2 = unpack(E["media"].backdropfadecolor)
+		if r ~= r2 or g ~= g2 or b ~= b2 or a ~= a2 then
+			self:SetBackdropColor(r2, g2, b2, a2)
+		end
+	end)
+	hooksecurefunc(CalendarContextMenu, "SetBackdropBorderColor", function(self, r, g, b)
+		local r2, g2, b2 = unpack(E["media"].bordercolor)
+		if r ~= r2 or g ~= g2 or b ~= b2 then
+			self:SetBackdropBorderColor(r2, g2, b2)
+		end
+	end)
+
 	
 	--Boost frame levels
 	for i=1, 42 do
@@ -87,7 +103,12 @@ local function LoadSkin()
 	S:HandleDropDownBox(CalendarCreateEventAMPMDropDown, 68)
 	S:HandleDropDownBox(CalendarCreateEventRepeatOptionDropDown, 120)
 	CalendarCreateEventIcon:SetTexCoord(unpack(E.TexCoords))
-	CalendarCreateEventIcon.SetTexCoord = E.noop
+	hooksecurefunc(CalendarCreateEventIcon, "SetTexCoord", function(self, x1, y1, x2, y2)
+		local x3, y3, x4, y4 = unpack(E.TexCoords)
+		if x1 ~= x3 or y1 ~= y3 or x2 ~= x4 or y2 ~= y4 then
+			self:SetTexCoord(unpack(E.TexCoords))
+		end
+	end)	
 	
 	CalendarCreateEventInviteListSection:StripTextures()
 	

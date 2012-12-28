@@ -10,7 +10,11 @@ local function LoadSkin()
 	S:HandleNextPrevButton(ItemTextPrevPageButton)
 	S:HandleNextPrevButton(ItemTextNextPageButton)
 	ItemTextPageText:SetTextColor(1, 1, 1)
-	ItemTextPageText.SetTextColor = E.noop
+	hooksecurefunc(ItemTextPageText, "SetTextColor", function(self, r, g, b)
+		if r ~= 1 or g ~= 1 or b ~= 1 then
+			ItemTextPageText:SetTextColor(1, 1, 1)
+		end
+	end)
 	ItemTextFrame:SetTemplate("Transparent")
 	ItemTextFrameInset:Kill()	
 	S:HandleScrollBar(ItemTextScrollFrameScrollBar)

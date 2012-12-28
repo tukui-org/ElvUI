@@ -82,8 +82,16 @@ local function LoadSkin()
 		tab:CreateBackdrop("Default")
 		tab.backdrop:SetAllPoints()
 		tab:StyleButton(true)	
-		tab:GetHighlightTexture().SetTexture = E.noop
-		tab:GetCheckedTexture().SetTexture = E.noop
+		hooksecurefunc(tab:GetHighlightTexture(), "SetTexture", function(self, texPath)
+			if texPath ~= nil then
+				self:SetTexture(nil)
+			end
+		end)
+		hooksecurefunc(tab:GetCheckedTexture(), "SetTexture", function(self, texPath)
+			if texPath ~= nil then
+				self:SetTexture(nil)
+			end
+		end)		
 	end
 	
 	hooksecurefunc('PlayerTalentFrame_UpdateSpecs', function()

@@ -238,7 +238,12 @@ function S:HandleDropDownBox(frame, width)
 	
 	button:ClearAllPoints()
 	button:Point("RIGHT", frame, "RIGHT", -10, 3)
-	button.SetPoint = E.noop
+	hooksecurefunc(button, "SetPoint", function(self, point, attachTo, anchorPoint, xOffset, yOffset)
+		if point ~= "RIGHT" or attachTo ~= frame or anchorPoint ~= "RIGHT" or xOffset ~= -10 or yOffset ~= 3 then
+			button:ClearAllPoints()
+			button:Point("RIGHT", frame, "RIGHT", -10, 3)		
+		end
+	end)
 	
 	self:HandleNextPrevButton(button, true)
 	
@@ -269,9 +274,23 @@ function S:HandleCheckBox(frame)
 		end
 	end)
 	
-	frame.SetNormalTexture = E.noop
-	frame.SetPushedTexture = E.noop
-	frame.SetHighlightTexture = E.noop
+	hooksecurefunc(frame, "SetNormalTexture", function(self, texPath)
+		if texPath ~= "" then
+			self:SetNormalTexture("");
+		end
+	end)
+	
+	hooksecurefunc(frame, "SetPushedTexture", function(self, texPath)
+		if texPath ~= "" then
+			self:SetPushedTexture("");
+		end
+	end)	
+	
+	hooksecurefunc(frame, "SetHighlightTexture", function(self, texPath)
+		if texPath ~= "" then
+			self:SetHighlightTexture("");
+		end
+	end)		
 end
 
 function S:HandleItemButton(b, shrinkIcon)
@@ -334,7 +353,11 @@ function S:HandleSliderFrame(frame)
 	frame:StripTextures()
 	frame:CreateBackdrop('Default')
 	frame.backdrop:SetAllPoints()
-	frame.SetBackdrop = E.noop
+	hooksecurefunc(frame, "SetBackdrop", function(self, backdrop)
+		if backdrop ~= nil then
+			frame:SetBackdrop(nil)
+		end
+	end)
 	frame:SetThumbTexture(E["media"].blankTex)
 	frame:GetThumbTexture():SetVertexColor(0.3, 0.3, 0.3)
 	frame:GetThumbTexture():Size(SIZE-2,SIZE-2)

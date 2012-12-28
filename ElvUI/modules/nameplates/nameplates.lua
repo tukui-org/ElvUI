@@ -19,18 +19,6 @@ NP.Healers = {
 	[L['Mistweaver']] = true,
 }
 
-ClassIconTable = {
-	DEATHKNIGHT = "Interface\\Icons\\Spell_Deathknight_ClassIcon",
-	DRUID = "Interface\\Icons\\INV_Misc_MonsterClaw_04",
-	WARLOCK = "Interface\\Icons\\Spell_Nature_FaerieFire",
-	HUNTER = "Interface\\Icons\\INV_Weapon_Bow_07",
-	MAGE = "Interface\\Icons\\INV_Staff_13",
-	PRIEST = "Interface\\Icons\\INV_Staff_30",
-	WARRIOR = "Interface\\Icons\\INV_Sword_27",
-	SHAMAN = "Interface\\Icons\\Spell_Nature_BloodLust",
-	PALADIN = "Interface\\AddOns\\addon\\UI-CharacterCreate-Classes_Paladin",
-	ROGUE = "Interface\\AddOns\\addon\\UI-CharacterCreate-Classes_Rogue",
-}
 
 function NP:Initialize()
 	self.db = E.db["nameplate"]
@@ -70,10 +58,8 @@ function NP:QueueObject(frame, object)
 	if not frame.queue then frame.queue = {} end
 	frame.queue[object] = true
 	
-	if object.OldShow then
-		object.Show = object.OldShow
-		object:Show()
-	end
+	object.allowShow = true;
+	object:Show();
 	
 	if object.OldTexture then
 		object:SetTexture(object.OldTexture)
@@ -84,7 +70,7 @@ function NP:CreateVirtualFrame(parent, point)
 	if point == nil then point = parent end
 	local noscalemult = E.mult * UIParent:GetScale()
 	
-	if point.backdrop then return end
+	if point.bordertop then return end
 
 	
 	point.backdrop2 = parent:CreateTexture(nil, "BORDER")
@@ -178,10 +164,17 @@ function NP:ForEachPlate(functionToRun, ...)
 	end
 end
 
+local function RehideFrame(self)
+	if not self.allowShow then
+		self:Hide()
+	end
+	
+	self.allowShow = nil;
+end
+
 function NP:HideObjects(frame)
 	for object in pairs(frame.queue) do
-		object.OldShow = object.Show
-		object.Show = E.noop
+		hooksecurefunc(object, "Show", RehideFrame)
 		
 		if object:GetObjectType() == "Texture" then
 			object.OldTexture = object:GetTexture()

@@ -110,8 +110,17 @@ local function LoadSkin()
 		S:HandleButton(GhostFrame)
 		GhostFrame:SetBackdropColor(0,0,0,0)
 		GhostFrame:SetBackdropBorderColor(0,0,0,0)
-		GhostFrame.SetBackdropColor = E.noop
-		GhostFrame.SetBackdropBorderColor = E.noop
+		
+		local function forceBackdropColor(self, r, g, b, a)
+			if r ~= 0 or g ~= 0 or b ~= 0 or a ~= 0 then
+				GhostFrame:SetBackdropColor(0,0,0,0)
+				GhostFrame:SetBackdropBorderColor(0,0,0,0)
+			end
+		end
+		
+		hooksecurefunc(GhostFrame, "SetBackdropColor", forceBackdropColor)
+		hooksecurefunc(GhostFrame, "SetBackdropBorderColor", forceBackdropColor)
+		
 		GhostFrame:ClearAllPoints()
 		GhostFrame:SetPoint("TOP", E.UIParent, "TOP", 0, -150)
 		S:HandleButton(GhostFrameContentsFrame)
@@ -583,7 +592,11 @@ local function LoadSkin()
 	S:HandleButton(GuildInviteFrameJoinButton)
 	S:HandleButton(GuildInviteFrameDeclineButton)
 	GuildInviteFrame:Height(225)
-	GuildInviteFrame.SetHeight = E.noop
+	hooksecurefunc(GuildInviteFrame, "SetHeight", function(self, height)
+		if height ~= 225 then
+			GuildInviteFrame:Height(225)
+		end
+	end)
 	GuildInviteFrameWarningText:Kill()
 	
 	local function SkinWatchFrameItems()

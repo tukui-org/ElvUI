@@ -676,6 +676,6 @@ function E:Initialize()
 	collectgarbage("collect");
 	
 	if self.db.general.loginmessage then
-		print(select(2, E:GetModule('Chat'):FindURL(nil, format(L['LOGIN_MSG'], self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version)))..'.')
+		print(select(2, E:GetModule('Chat'):FindURL("CHAT_MSG_DUMMY", format(L['LOGIN_MSG'], self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version)))..'.')
 	end	
 end
