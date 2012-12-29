@@ -254,21 +254,24 @@ function TT:Colorize(tt)
 	if (reaction) and (tapped and not tappedbyme or not connected or dead) then
 		r, g, b = 0.55, 0.57, 0.61
 		tt:SetBackdropBorderColor(r, g, b)
+		GameTooltipStatusBar.r, GameTooltipStatusBar.g, GameTooltipStatusBar.b = r, g, b
 		GameTooltipStatusBar.backdrop:SetBackdropBorderColor(r, g, b)
-		GameTooltipStatusBar:ColorBar(r, g, b)
+		GameTooltipStatusBar:SetStatusBarColor(r, g, b)
 	elseif player then
 		local class = select(2, UnitClass(unit))
 		if class then
 			local color = RAID_CLASS_COLORS[class]
 			tt:SetBackdropBorderColor(color.r, color.g, color.b)
+			GameTooltipStatusBar.r, GameTooltipStatusBar.g, GameTooltipStatusBar.b = color.r, color.g, color.b
 			GameTooltipStatusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-			GameTooltipStatusBar:ColorBar(color.r, color.g, color.b)
+			GameTooltipStatusBar:SetStatusBarColor(color.r, color.g, color.b)
 		end
 	elseif reaction then
 		local color = FACTION_BAR_COLORS[reaction]
 		tt:SetBackdropBorderColor(color.r, color.g, color.b)
+		GameTooltipStatusBar.r, GameTooltipStatusBar.g, GameTooltipStatusBar.b = color.r, color.g, color.b
 		GameTooltipStatusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-		GameTooltipStatusBar:ColorBar(color.r, color.g, color.b)
+		GameTooltipStatusBar:SetStatusBarColor(color.r, color.g, color.b)
 	else
 		local _, link = tt:GetItem()
 		local quality = link and select(3, GetItemInfo(link))
@@ -281,8 +284,9 @@ function TT:Colorize(tt)
 			if E.PixelMode then
 				r, g, b = 0.3, 0.3, 0.3
 			end
+			GameTooltipStatusBar.r, GameTooltipStatusBar.g, GameTooltipStatusBar.b = r, g, b
 			GameTooltipStatusBar.backdrop:SetBackdropBorderColor(r, g, b)
-			GameTooltipStatusBar:ColorBar(r, g, b)	
+			GameTooltipStatusBar:SetStatusBarColor(r, g, b)	
 		end
 	end	
 	
@@ -710,8 +714,15 @@ function TT:Initialize()
 	GameTooltipStatusBar:Point("TOPRIGHT", GameTooltipStatusBar:GetParent(), "BOTTOMRIGHT", -2, -5)
 	GameTooltipStatusBar:SetStatusBarTexture(E["media"].normTex)
 	GameTooltipStatusBar:CreateBackdrop('Transparent')
-	GameTooltipStatusBar.ColorBar = GameTooltipStatusBar.SetStatusBarColor
-	GameTooltipStatusBar.SetStatusBarColor = E.noop
+	
+	hooksecurefunc(GameTooltipStatusBar, "SetStatusBarColor", function(self, r, g, b)
+		if not self.r or not self.g or not self.b then return; end
+		
+		if r ~= self.r or g ~= self.g or b ~= self.b then
+			self:SetStatusBarColor(self.r, self.g, self.b)
+		end
+	end)
+	
 	GameTooltipStatusBar.text = GameTooltipStatusBar:CreateFontString(nil, "OVERLAY")
 	GameTooltipStatusBar.text:Point("CENTER", GameTooltipStatusBar, 0, -3)
 	GameTooltipStatusBar.text:FontTemplate(nil, nil, 'OUTLINE')

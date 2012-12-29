@@ -193,7 +193,12 @@ local function LoadSkin()
 		local icon = _G["AuctionsButton"..i.."Item"]
 		
 		_G["AuctionsButton"..i.."ItemIconTexture"]:SetTexCoord(unpack(E.TexCoords))
-		_G["AuctionsButton"..i.."ItemIconTexture"].SetTexCoord = E.noop
+		hooksecurefunc(_G["AuctionsButton"..i.."ItemIconTexture"], "SetTexCoord", function(self, x1, y1, x2, y2)
+			local x3, y3, x4, y4 = unpack(E.TexCoords)
+			if x1 ~= x3 or y1 ~= y3 or x2 ~= x4 or y2 ~= y4 then
+				self:SetTexCoord(unpack(E.TexCoords))
+			end
+		end)
 		_G["AuctionsButton"..i.."ItemIconTexture"]:SetInside()
 		
 		icon:StyleButton()

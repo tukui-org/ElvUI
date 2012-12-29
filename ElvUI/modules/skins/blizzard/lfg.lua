@@ -30,7 +30,13 @@ local function LoadSkin()
 	LFGDungeonReadyDialog:SetTemplate("Transparent")
 	LFGDungeonReadyStatus:StripTextures()
 	LFGDungeonReadyStatus:SetTemplate("Transparent")
-	LFGDungeonReadyDialog.SetBackdrop = E.noop
+
+	hooksecurefunc(LFGDungeonReadyDialog, "SetBackdrop", function(self, backdrop)
+		if backdrop.bgFile ~= E["media"].blankTex then
+			self:SetTemplate("Transparent")
+		end
+	end)
+	
 	LFGDungeonReadyDialog.filigree:SetAlpha(0)
 	LFGDungeonReadyDialog.bottomArt:SetAlpha(0)	
 	S:HandleCloseButton(LFGDungeonReadyStatusCloseButton)
@@ -152,8 +158,6 @@ local function LoadSkin()
 	for i = 1, NUM_LFR_CHOICE_BUTTONS do
 		local bu = _G["LFRQueueFrameSpecificListButton"..i].enableButton
 		S:HandleCheckBox(bu)
-		bu.SetNormalTexture = E.noop
-		bu.SetPushedTexture = E.noop
 	end
 
 	S:HandleDropDownBox(LFDQueueFrameTypeDropDown)
@@ -291,14 +295,27 @@ local function LoadSkin()
 				tab:CreateBackdrop("Default")
 				tab.backdrop:SetAllPoints()
 				tab:StyleButton(true)	
-				tab:GetHighlightTexture().SetTexture = E.noop
-				tab:GetCheckedTexture().SetTexture = E.noop
+				hooksecurefunc(tab:GetHighlightTexture(), "SetTexture", function(self, texPath)
+					if texPath ~= nil then
+						self:SetTexture(nil);
+					end
+				end)
+				
+				hooksecurefunc(tab:GetCheckedTexture(), "SetTexture", function(self, texPath)
+					if texPath ~= nil then
+						self:SetTexture(nil);
+					end
+				end	)	
 				
 				if i == 1 then
-					local point, relatedTo, point2, x, y = tab:GetPoint()
+					local point, relatedTo, point2, _, y = tab:GetPoint()
 					tab:Point(point, relatedTo, point2, 3, y)	
-					tab.SetPoint = E.noop
-					tab.ClearAllPoints = E.noop
+					hooksecurefunc(tab, "SetPoint", function(self, _, _, _, x)
+						if x ~= 3 then
+							self:ClearAllPoints()
+							self:SetPoint(point, relatedTo, point2, 3, y)	
+						end
+					end)
 				end		
 			end		
 			
