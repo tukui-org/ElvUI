@@ -58,7 +58,7 @@ function UF:Update_TankHeader(header, db)
 
 	if not header.positioned then
 		header:ClearAllPoints()
-		header:Point("LEFT", E.UIParent, "LEFT", 30, 150)
+		header:Point("LEFT", E.UIParent, "LEFT", 4, 100)
 		
 		E:CreateMover(header, header:GetName()..'Mover', L['MT Frames'], nil, nil, nil, 'ALL,RAID10,RAID25,RAID40')
 

@@ -55,7 +55,7 @@ function UF:Construct_PlayerFrame(frame)
 		
 	frame.CombatFade = true
 
-	frame:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 30, -30) --Set to default position
+	frame:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 15, -15) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', L['Player Frame'], nil, nil, nil, 'ALL,SOLO')
 end
 

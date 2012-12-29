@@ -9,7 +9,7 @@ function B:PositionVehicleFrame()
 			if VehicleSeatMover then
 				VehicleSeatIndicator:Point("TOPLEFT", VehicleSeatMover, "TOPLEFT", 0, 0)
 			else
-				VehicleSeatIndicator:Point("TOPLEFT", E.UIParent, "TOPLEFT", 22, -45)
+				VehicleSeatIndicator:Point("TOPRIGHT", AurasHolder, "BOTTOMRIGHT", 0, -10)
 				E:CreateMover(VehicleSeatIndicator, "VehicleSeatMover", L["Vehicle Seat Frame"])	
 			end
 			

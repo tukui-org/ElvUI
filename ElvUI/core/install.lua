@@ -364,33 +364,33 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.arena.castbar.width = 200;
 			
 			E.db.unitframe.units.party.width = 80;
-			E.db.unitframe.units.party.height = 52;
+			E.db.unitframe.units.party.xOffset = 3;
 			E.db.unitframe.units.party.healPrediction = true;
 			E.db.unitframe.units.party.health.frequentUpdates = true;
-			E.db.unitframe.units.party.debuffs.enable = true;
 			E.db.unitframe.units.party.debuffs.useFilter = 'Blacklist';
+			E.db.unitframe.units.party.debuffs.xOffset = 24;
 			E.db.unitframe.units.party.petsGroup.enable = true;
 			E.db.unitframe.units.party.petsGroup.width = 80;
-			E.db.unitframe.units.party.petsGroup.anchorPoint = "BOTTOM";
-			E.db.unitframe.units.party.petsGroup.yOffset = -3;
+			E.db.unitframe.units.party.petsGroup.yOffset = 3;
 			E.db.unitframe.units.party.targetsGroup.enable = false;
 
 			E.db.unitframe.units.raid10.width = 80;
-			E.db.unitframe.units.raid10.height = 52;
+			E.db.unitframe.units.raid10.xOffset = 3;
 			E.db.unitframe.units.raid10.healPrediction = true;
 			E.db.unitframe.units.raid10.health.frequentUpdates = true;
-			E.db.unitframe.units.raid10.debuffs.enable = true;
 			E.db.unitframe.units.raid10.debuffs.useFilter = 'Blacklist';
+			E.db.unitframe.units.raid10.debuffs.xOffset = 24;
 
 			E.db.unitframe.units.raid25.width = 80;
-			E.db.unitframe.units.raid25.height = 52;
+			E.db.unitframe.units.raid25.xOffset = 3;
 			E.db.unitframe.units.raid25.healPrediction = true;
 			E.db.unitframe.units.raid25.health.frequentUpdates = true;
 			E.db.unitframe.units.raid25.debuffs.enable = true;
 			E.db.unitframe.units.raid25.debuffs.useFilter = 'Blacklist';
+			E.db.unitframe.units.raid25.debuffs.xOffset = 24;
 
 			E.db.unitframe.units.raid40.width = 80;
-			E.db.unitframe.units.raid40.height = 30;
+			E.db.unitframe.units.raid40.xOffset = 3;
 			E.db.unitframe.units.raid40.healPrediction = true;
 			E.db.unitframe.units.raid40.health.frequentUpdates = true;
 			E.db.unitframe.units.raid40.rdebuffs.enable = true;
@@ -398,21 +398,21 @@ function E:SetupLayout(layout, noDataReset)
 		end
 			
 		if not E.db.movers then E.db.movers = {}; end
-		E.db.movers.ElvUF_PlayerMover = "BOTTOMLEFTElvUIParentBOTTOMLEFT464230"
-		E.db.movers.ElvUF_TargetMover = "BOTTOMRIGHTElvUIParentBOTTOMRIGHT-464230"
-		E.db.movers.ElvUF_Raid40Mover = "BOTTOMElvUIParentBOTTOM0200"
-		E.db.movers.ElvUF_Raid25Mover = "BOTTOMElvUIParentBOTTOM0200"
-		E.db.movers.ElvUF_Raid10Mover = "BOTTOMElvUIParentBOTTOM0200"
+		E.db.movers.ElvUF_PlayerMover = "BOTTOMLEFTElvUIParentBOTTOMLEFT490170"
+		E.db.movers.ElvUF_TargetMover = "BOTTOMRIGHTElvUIParentBOTTOMRIGHT-490170"
+		E.db.movers.ElvUF_Raid40Mover = "BOTTOMElvUIParentBOTTOM0170"
+		E.db.movers.ElvUF_Raid25Mover = "BOTTOMElvUIParentBOTTOM0170"
+		E.db.movers.ElvUF_Raid10Mover = "BOTTOMElvUIParentBOTTOM0170"
 		E.db.movers.ElvUF_TargetTargetMover = "BOTTOMRIGHTElvUF_TargetBOTTOMRIGHT0150"
-		E.db.movers.ElvUF_PartyMover = "BOTTOMElvUIParentBOTTOM0200"
-		E.db.movers.ElvUF_PetMover = "BOTTOMLEFTElvUIParentBOTTOMLEFT464151"
+		E.db.movers.ElvUF_PartyMover = "BOTTOMElvUIParentBOTTOM0170"
+		E.db.movers.ElvUF_PetMover = "BOTTOMLEFTElvUIParentBOTTOMLEFT490120"
 		E.db.movers.ElvUF_FocusMover = "BOTTOMLEFTElvUF_PlayerBOTTOMLEFT0150"
 		E.db.movers.ElvUF_FocusTargetMover = "BOTTOMLEFTElvUF_FocusBOTTOMLEFT0150"
-		E.db.movers.ElvUF_TankMover = "LEFTElvUIParentLEFT30350"
-		E.db.movers.ElvUF_AssistMover = "LEFTElvUIParentLEFT30250"
+		E.db.movers.ElvUF_TankMover = "LEFTElvUIParentLEFT4350"
+		E.db.movers.ElvUF_AssistMover = "LEFTElvUIParentLEFT4250"
 		if BossHeaderMover then
 			BossHeaderMover:ClearAllPoints()
-			BossHeaderMover:SetPoint("BOTTOMLEFT",E.UIParent,"BOTTOMLEFT",30,250)
+			BossHeaderMover:SetPoint("BOTTOMLEFT",E.UIParent,"BOTTOMLEFT",4,250)
 			E:SaveMoverPosition("BossHeaderMover")
 		end
 		if BossButton then
