@@ -202,11 +202,7 @@ local function LoadSkin()
 			object.icon:Size(36, 36)
 			hooksecurefunc(object.icon, "SetSize", function(self, width, height)
 				if width == 30 or height == 30 then
-					object.icon:Size(36, 36)
-					object.icon.bordertop:Height(36)
-					object.icon.borderbottom:Height(36)
-					object.icon.borderleft:Width(36)
-					object.icon.borderright:Width(36)
+					self:Size(36, 36)
 				end
 			end)
 			
