@@ -173,7 +173,8 @@ function B:AlertMovers()
 	
 	hooksecurefunc(GroupLootContainer, 'SetPoint', function(self, point, anchorTo, attachPoint, xOffset, yOffset)
 		if _G[anchorTo] == UIParent then
-			AlertFrame_FixAnchors()
+			--AlertFrame_FixAnchors()
+			E:PostAlertMove()
 		end
 	end)
 	

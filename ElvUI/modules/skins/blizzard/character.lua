@@ -187,7 +187,7 @@ local function LoadSkin()
 			object.BgTop:SetTexture(nil)
 			object.BgBottom:SetTexture(nil)
 			object.BgMiddle:SetTexture(nil)
-
+			object.icon:Size(36, 36)
 			object.Check:SetTexture(nil)
 			object.icon:SetTexCoord(unpack(E.TexCoords))
 
@@ -199,7 +199,7 @@ local function LoadSkin()
 				end
 			end)
 			
-			object.icon:Size(36, 36)
+			
 			hooksecurefunc(object.icon, "SetSize", function(self, width, height)
 				if width == 30 or height == 30 then
 					self:Size(36, 36)
