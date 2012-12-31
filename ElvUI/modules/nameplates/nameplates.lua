@@ -314,10 +314,19 @@ function NP:HealthBar_OnShow(frame)
 	end
 	
 	--Set the name text
-	frame.hp.name:SetText(frame.hp.oldname:GetText())	
+	frame.hp.name:SetText(frame.hp.oldname:GetText())
+	local isSmallNP
 	while frame.hp:GetEffectiveScale() < 1 do
 		frame.hp:SetScale(frame.hp:GetScale() + 0.01)
+		isSmallNP = true;
 	end
+	
+	if isSmallNP then
+		frame.hp:Width(frame:GetWidth() * frame:GetEffectiveScale())
+	end
+	
+	frame.isSmallNP = isSmallNP
+	
 	frame.AuraWidget:SetScale(frame.hp:GetScale())
 	
 	--Level Text
@@ -346,6 +355,7 @@ function NP:OnHide(frame)
 	frame.cb:Hide()
 	frame.unit = nil
 	frame.isMarked = nil
+	frame.isSmallNP = nil
 	frame.raidIconType = nil
 	frame.threatStatus = nil
 	frame.guid = nil

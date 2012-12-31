@@ -25,7 +25,8 @@ local AURA_TYPE_DEBUFF = 6
 local AURA_TARGET_HOSTILE = 1
 local AURA_TARGET_FRIENDLY = 2
 local AuraList, AuraGUID = {}, {}
-NP.MAX_DISPLAYABLE_DEBUFFS = 5
+NP.MAX_DISPLAYABLE_DEBUFFS = 5;
+NP.MAX_SMALLNP_DISPLAYABLE_DEBUFFS = 2;
 
 local AURA_TYPE = {
 	["Buff"] = 1,
@@ -719,12 +720,12 @@ function NP:UpdateIconGrid(frame, guid)
 				self:UpdateIcon(AuraIconFrames[AuraSlotIndex], cachedaura.texture, cachedaura.expiration, cachedaura.stacks) 
 				AuraSlotIndex = AuraSlotIndex + 1
 			end
-			if AuraSlotIndex > NP.MAX_DISPLAYABLE_DEBUFFS then break end
+			if AuraSlotIndex > (frame.isSmallNP and NP.MAX_SMALLNP_DISPLAYABLE_DEBUFFS or NP.MAX_DISPLAYABLE_DEBUFFS) then break end
 		end
 	end
 	
 	-- Clear Extra Slots
-	for AuraSlotIndex = AuraSlotIndex, NP.MAX_DISPLAYABLE_DEBUFFS do self:UpdateIcon(AuraIconFrames[AuraSlotIndex]) end
+	for AuraSlotIndex = AuraSlotIndex, (frame.isSmallNP and NP.MAX_SMALLNP_DISPLAYABLE_DEBUFFS or NP.MAX_DISPLAYABLE_DEBUFFS) do self:UpdateIcon(AuraIconFrames[AuraSlotIndex]) end
 	
 	self.DebuffCache = wipe(self.DebuffCache)
 end
@@ -868,10 +869,16 @@ function NP:CastBar_OnShow(frame)
 		frame:SetStatusBarColor(1, 208/255, 0)
 	end	
 	
+	local isSmallNP
 	while frame:GetEffectiveScale() < 1 do
 		frame:SetScale(frame:GetScale() + 0.01)
-	end	
+		isSmallNP = true;
+	end
 	
+	if isSmallNP then
+		frame:Width(frame:GetWidth() * frame:GetParent():GetEffectiveScale())
+	end
+		
 	self:SetVirtualBorder(frame, unpack(E["media"].bordercolor))
 	self:SetVirtualBackdrop(frame, unpack(E["media"].backdropcolor))	
 	
