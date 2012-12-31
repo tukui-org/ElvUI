@@ -8,7 +8,7 @@ ElvUI License
 
 	1. 	You may make modifications to this addon for private use only, you 
 		may not publicize any portion of this addon. The only exception being you may
-		upload to the tukui.org website.
+		upload to the tukui.org or github website.
 	
 	2. 	Do not modify the name of this addon, including the addon folders.
 	
