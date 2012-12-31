@@ -91,7 +91,7 @@ P["nameplate"] = {
 	['auraFont'] = 'ElvUI Font',
 	['auraFontSize'] = 10,
 	['auraFontOutline'] = 'OUTLINE',
-	
+	["smallPlates"] = true,
 	["classIcons"] = true,
 	["markBGHealers"] = true,
 	["width"] = 114,

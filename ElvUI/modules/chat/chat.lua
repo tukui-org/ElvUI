@@ -667,16 +667,14 @@ function CH:ShortChannel()
 	return string.format("|Hchannel:%s|h[%s]|h", self, DEFAULT_STRINGS[self] or self:gsub("channel:", ""))
 end
 
-function CH:StampMe(msg)
-	-- Add timestamps if enabled
+function CH:ConcatenateTimeStamp(msg)
 	if (CH.db.timeStampFormat and CH.db.timeStampFormat ~= 'NONE' ) then
 		local timeStamp = BetterDate(CH.db.timeStampFormat, CH.timeOverride or time());
 		timeStamp = timeStamp:gsub(' ', '')
 		timeStamp = timeStamp:gsub('AM', ' AM')
 		timeStamp = timeStamp:gsub('PM', ' PM')
 		msg = '|cffB3B3B3['..timeStamp..'] |r'..msg
-	else -- Leave message intact
-		msg = msg
+		CH.timeOverride = nil;
 	end
 
 	return msg
@@ -794,34 +792,37 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 
 		if ( type == "SYSTEM" or type == "SKILL" or type == "LOOT" or type == "CURRENCY" or type == "MONEY" or
 		     type == "OPENING" or type == "TRADESKILLS" or type == "PET_INFO" or type == "TARGETICONS" or type == "BN_WHISPER_PLAYER_OFFLINE") then
-			self:AddMessage(CH:StampMe(arg1), info.r, info.g, info.b, info.id);
+			self:AddMessage(CH:ConcatenateTimeStamp(arg1), info.r, info.g, info.b, info.id);
 		elseif ( strsub(type,1,7) == "COMBAT_" ) then
-			self:AddMessage(CH:StampMe(arg1), info.r, info.g, info.b, info.id);
+			self:AddMessage(CH:ConcatenateTimeStamp(arg1), info.r, info.g, info.b, info.id);
 		elseif ( strsub(type,1,6) == "SPELL_" ) then
-			self:AddMessage(CH:StampMe(arg1), info.r, info.g, info.b, info.id);
+			self:AddMessage(CH:ConcatenateTimeStamp(arg1), info.r, info.g, info.b, info.id);
 		elseif ( strsub(type,1,10) == "BG_SYSTEM_" ) then
-			self:AddMessage(CH:StampMe(arg1), info.r, info.g, info.b, info.id);
+			self:AddMessage(CH:ConcatenateTimeStamp(arg1), info.r, info.g, info.b, info.id);
 		elseif ( strsub(type,1,11) == "ACHIEVEMENT" ) then
-			self:AddMessage(format(CH:StampMe(arg1), "|Hplayer:"..arg2.."|h".."["..coloredName.."]".."|h"), info.r, info.g, info.b, info.id);
+			self:AddMessage(format(CH:ConcatenateTimeStamp(arg1), "|Hplayer:"..arg2.."|h".."["..coloredName.."]".."|h"), info.r, info.g, info.b, info.id);
 		elseif ( strsub(type,1,18) == "GUILD_ACHIEVEMENT" ) then
-			self:AddMessage(format(CH:StampMe(arg1), "|Hplayer:"..arg2.."|h".."["..coloredName.."]".."|h"), info.r, info.g, info.b, info.id);
+			self:AddMessage(format(CH:ConcatenateTimeStamp(arg1), "|Hplayer:"..arg2.."|h".."["..coloredName.."]".."|h"), info.r, info.g, info.b, info.id);
 		elseif ( type == "IGNORED" ) then
-			self:AddMessage(format(CH:StampMe(CHAT_IGNORED), arg2), info.r, info.g, info.b, info.id);
+			self:AddMessage(format(CH:ConcatenateTimeStamp(CHAT_IGNORED), arg2), info.r, info.g, info.b, info.id);
 		elseif ( type == "FILTERED" ) then
-			self:AddMessage(format(CH:StampMe(CHAT_FILTERED), arg2), info.r, info.g, info.b, info.id);
+			self:AddMessage(format(CH:ConcatenateTimeStamp(CHAT_FILTERED), arg2), info.r, info.g, info.b, info.id);
 		elseif ( type == "RESTRICTED" ) then
-			self:AddMessage(CH:StampMe(CHAT_RESTRICTED), info.r, info.g, info.b, info.id);
+			self:AddMessage(CH:ConcatenateTimeStamp(CHAT_RESTRICTED), info.r, info.g, info.b, info.id);
 		elseif ( type == "CHANNEL_LIST") then
 			if(channelLength > 0) then
-				self:AddMessage(format(CH:StampMe(_G["CHAT_"..type.."_GET"]..arg1), tonumber(arg8), arg4), info.r, info.g, info.b, info.id);
+				self:AddMessage(format(CH:ConcatenateTimeStamp(_G["CHAT_"..type.."_GET"]..arg1), tonumber(arg8), arg4), info.r, info.g, info.b, info.id);
 			else
-				self:AddMessage(CH:StampMe(arg1), info.r, info.g, info.b, info.id);
+				self:AddMessage(CH:ConcatenateTimeStamp(arg1), info.r, info.g, info.b, info.id);
 			end
 		elseif (type == "CHANNEL_NOTICE_USER") then
 			local globalstring = _G["CHAT_"..arg1.."_NOTICE_BN"];
 			if ( not globalstring ) then
 				globalstring = _G["CHAT_"..arg1.."_NOTICE"];
 			end
+			
+			CH:ConcatenateTimeStamp(globalstring);
+			
 			if(strlen(arg5) > 0) then
 				-- TWO users in this notice (E.G. x kicked y)
 				self:AddMessage(format(CH:StampMe(globalstring), arg8, arg4, arg2, arg5), info.r, info.g, info.b, info.id);
@@ -839,6 +840,8 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				arg4 = arg4.." "..arg10;
 			end
 			
+			CH:ConcatenateTimeStamp(globalstring);
+			
 			local accessID = ChatHistory_GetAccessID(Chat_GetChatCategory(type), arg8);
 			local typeID = ChatHistory_GetAccessID(infoType, arg8, arg12);
 			self:AddMessage(format(CH:StampMe(globalstring), arg8, arg4), info.r, info.g, info.b, info.id, false, accessID, typeID);
@@ -849,11 +852,11 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			
 			local accessID = ChatHistory_GetAccessID(Chat_GetChatCategory(type), arg8);
 			local typeID = ChatHistory_GetAccessID(infoType, arg8, arg12);
-			self:AddMessage(CH:StampMe(message), info.r, info.g, info.b, info.id, false, accessID, typeID);
+			self:AddMessage(CH:ConcatenateTimeStamp(message), info.r, info.g, info.b, info.id, false, accessID, typeID);
 		elseif ( type == "BN_CONVERSATION_LIST" ) then
 			local channelLink = format(CHAT_BN_CONVERSATION_GET_LINK, arg8, MAX_WOW_CHAT_CHANNELS + arg8);
 			local message = format(CHAT_BN_CONVERSATION_LIST, channelLink, arg1);
-			self:AddMessage(CH:StampMe(message), info.r, info.g, info.b, info.id, false, accessID, typeID);
+			self:AddMessage(CH:ConcatenateTimeStamp(message), info.r, info.g, info.b, info.id, false, accessID, typeID);
 		elseif ( type == "BN_INLINE_TOAST_ALERT" ) then	
 			if ( arg1 == "FRIEND_OFFLINE" and not BNet_ShouldProcessOfflineEvents() ) then
 				return true;
@@ -880,20 +883,20 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				local playerLink = format("|HBNplayer:%s:%s:%s:%s:%s|h[%s]|h", arg2, arg13, arg11, Chat_GetChatCategory(type), 0, arg2);
 				message = format(globalstring, playerLink);
 			end
-			self:AddMessage(CH:StampMe(message), info.r, info.g, info.b, info.id);
+			self:AddMessage(CH:ConcatenateTimeStamp(message), info.r, info.g, info.b, info.id);
 		elseif ( type == "BN_INLINE_TOAST_BROADCAST" ) then
 			if ( arg1 ~= "" ) then
 				arg1 = RemoveExtraSpaces(arg1);
 				local playerLink = format("|HBNplayer:%s:%s:%s:%s:%s|h[%s]|h", arg2, arg13, arg11, Chat_GetChatCategory(type), 0, arg2);
-				self:AddMessage(format(CH:StampMe(BN_INLINE_TOAST_BROADCAST), playerLink, arg1), info.r, info.g, info.b, info.id);
+				self:AddMessage(format(CH:ConcatenateTimeStamp(BN_INLINE_TOAST_BROADCAST), playerLink, arg1), info.r, info.g, info.b, info.id);
 			end
 		elseif ( type == "BN_INLINE_TOAST_BROADCAST_INFORM" ) then
 			if ( arg1 ~= "" ) then
 				arg1 = RemoveExtraSpaces(arg1);
-				self:AddMessage(CH:StampMe(BN_INLINE_TOAST_BROADCAST_INFORM), info.r, info.g, info.b, info.id);
+				self:AddMessage(CH:ConcatenateTimeStamp(BN_INLINE_TOAST_BROADCAST_INFORM), info.r, info.g, info.b, info.id);
 			end
 		elseif ( type == "BN_INLINE_TOAST_CONVERSATION" ) then
-			self:AddMessage(format(CH:StampMe(BN_INLINE_TOAST_CONVERSATION), arg1), info.r, info.g, info.b, info.id);
+			self:AddMessage(format(CH:ConcatenateTimeStamp(BN_INLINE_TOAST_CONVERSATION), arg1), info.r, info.g, info.b, info.id);
 		else
 			local body;
 
@@ -1045,10 +1048,9 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				body = body:gsub("<"..AFK..">", "[|cffFF0000"..L['AFK'].."|r] ")
 				body = body:gsub("<"..DND..">", "[|cffE7E716"..L['DND'].."|r] ")
 				body = body:gsub("%[BN_CONVERSATION:", '%['..L["BN:"])			
-				body = body:gsub("^%["..RAID_WARNING.."%]", '['..L['RW']..']')
+				body = body:gsub("^%["..RAID_WARNING.."%]", '['..L['RW']..']')	
 			end
-			self:AddMessage(CH:StampMe(body), info.r, info.g, info.b, info.id, false, accessID, typeID);
-			CH.timeOverride = nil;
+			self:AddMessage(CH:ConcatenateTimeStamp(body), info.r, info.g, info.b, info.id, false, accessID, typeID);
 		end
  
 		if ( type == "WHISPER" or type == "BN_WHISPER" ) then
@@ -1066,7 +1068,9 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				if ( not CHAT_OPTIONS.HIDE_FRAME_ALERTS or type == "WHISPER" or type == "BN_WHISPER" ) then	--BN_WHISPER FIXME
 					if (not (type == "BN_CONVERSATION" and BNIsSelf(arg13))) then
 						if (not FCFManager_ShouldSuppressMessageFlash(self, chatGroup, chatTarget) ) then
-							FCF_StartAlertFlash(self);
+							--FCF_StartAlertFlash(self); THIS TAINTS<<<<<<<
+							_G[self:GetName().."Tab"].glow:Show()
+							_G[self:GetName().."Tab"]:SetScript("OnUpdate", CH.ChatTab_OnUpdate)
 						end
 					end
 				end
@@ -1074,6 +1078,15 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 		end
 
 		return true;
+	end
+end
+
+function CH:ChatTab_OnUpdate(elapsed)
+	if self.glow:IsShown() then
+		E:Flash(self.glow, 1)
+	else
+		E:StopFlash(self.glow);
+		self:SetScript("OnUpdate", nil)
 	end
 end
 
@@ -1125,7 +1138,10 @@ function CH:SetupChat(event, ...)
 				f:SetScript(script, ChatFrame_OnMouseScroll)
 			end
 		end)
-
+	
+		if not _G[frameName.."Tab"].glow.anim then
+			E:SetUpAnimGroup(_G[frameName.."Tab"].glow)
+		end
 	end	
 	
 	if self.db.hyperlinkHover then
@@ -1568,7 +1584,7 @@ function CH:Initialize()
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_CONVERSATION", CH.FindURL)	
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER_INFORM", CH.FindURL)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_INLINE_TOAST_BROADCAST", CH.FindURL)	
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_INLINE_TOAST_BROADCAST", CH.FindURL)
 	
 
 	GeneralDockManagerOverflowButton:ClearAllPoints()
@@ -1651,12 +1667,12 @@ function CH:Initialize()
 	InterfaceOptionsSocialPanelTimestampsButton:SetScale(0.000001)
 	InterfaceOptionsSocialPanelTimestamps:SetAlpha(0)
 	InterfaceOptionsSocialPanelTimestamps:SetScale(0.000001)
-	InterfaceOptionsSocialPanelWhisperMode:SetScale(0.000001)
+	--[[InterfaceOptionsSocialPanelWhisperMode:SetScale(0.000001)
 	InterfaceOptionsSocialPanelWhisperMode:SetAlpha(0)
 	InterfaceOptionsSocialPanelBnWhisperMode:SetScale(0.000001)
 	InterfaceOptionsSocialPanelBnWhisperMode:SetAlpha(0)
 	InterfaceOptionsSocialPanelConversationMode:SetScale(0.000001)
-	InterfaceOptionsSocialPanelConversationMode:SetAlpha(0)
+	InterfaceOptionsSocialPanelConversationMode:SetAlpha(0)]]
 	
 	InterfaceOptionsSocialPanelChatStyle:EnableMouse(false)
 	InterfaceOptionsSocialPanelChatStyleButton:Hide()
@@ -1665,7 +1681,7 @@ function CH:Initialize()
  	CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Size(20, 22)
  	CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Point("TOPRIGHT", CombatLogQuickButtonFrame_Custom, "TOPRIGHT", 0, -1)
 	
-	if GetCVar("conversationMode") ~= "inline" then
+	--[[if GetCVar("conversationMode") ~= "inline" then
 		SetCVar("conversationMode", "inline")
 	end
 
@@ -1677,7 +1693,7 @@ function CH:Initialize()
 	
 	if GetCVar("showTimestamps") ~= "none" then
 		SetCVar("showTimestamps", "none")
-	end	
+	end]]
 end
 
 E:RegisterModule(CH:GetName())
