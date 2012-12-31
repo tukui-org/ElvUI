@@ -667,6 +667,19 @@ function CH:ShortChannel()
 	return string.format("|Hchannel:%s|h[%s]|h", self, DEFAULT_STRINGS[self] or self:gsub("channel:", ""))
 end
 
+function CH:ConcatenateTimeStamp(msg)
+	if (CH.db.timeStampFormat and CH.db.timeStampFormat ~= 'NONE' ) then
+		local timeStamp = BetterDate(CH.db.timeStampFormat, CH.timeOverride or time());
+		timeStamp = timeStamp:gsub(' ', '')
+		timeStamp = timeStamp:gsub('AM', ' AM')
+		timeStamp = timeStamp:gsub('PM', ' PM')
+		msg = '|cffB3B3B3['..timeStamp..'] |r'..msg
+		CH.timeOverride = nil;
+	end
+	
+	return msg
+end
+
 function CH:ChatFrame_MessageEventHandler(event, ...)
 	if ( strsub(event, 1, 8) == "CHAT_MSG" ) then
 		local arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14 = ...;
@@ -779,34 +792,37 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 	
 		if ( type == "SYSTEM" or type == "SKILL" or type == "LOOT" or type == "CURRENCY" or type == "MONEY" or
 		     type == "OPENING" or type == "TRADESKILLS" or type == "PET_INFO" or type == "TARGETICONS" or type == "BN_WHISPER_PLAYER_OFFLINE") then
-			self:AddMessage(arg1, info.r, info.g, info.b, info.id);
+			self:AddMessage(CH:ConcatenateTimeStamp(arg1), info.r, info.g, info.b, info.id);
 		elseif ( strsub(type,1,7) == "COMBAT_" ) then
-			self:AddMessage(arg1, info.r, info.g, info.b, info.id);
+			self:AddMessage(CH:ConcatenateTimeStamp(arg1), info.r, info.g, info.b, info.id);
 		elseif ( strsub(type,1,6) == "SPELL_" ) then
-			self:AddMessage(arg1, info.r, info.g, info.b, info.id);
+			self:AddMessage(CH:ConcatenateTimeStamp(arg1), info.r, info.g, info.b, info.id);
 		elseif ( strsub(type,1,10) == "BG_SYSTEM_" ) then
-			self:AddMessage(arg1, info.r, info.g, info.b, info.id);
+			self:AddMessage(CH:ConcatenateTimeStamp(arg1), info.r, info.g, info.b, info.id);
 		elseif ( strsub(type,1,11) == "ACHIEVEMENT" ) then
-			self:AddMessage(format(arg1, "|Hplayer:"..arg2.."|h".."["..coloredName.."]".."|h"), info.r, info.g, info.b, info.id);
+			self:AddMessage(format(CH:ConcatenateTimeStamp(arg1), "|Hplayer:"..arg2.."|h".."["..coloredName.."]".."|h"), info.r, info.g, info.b, info.id);
 		elseif ( strsub(type,1,18) == "GUILD_ACHIEVEMENT" ) then
-			self:AddMessage(format(arg1, "|Hplayer:"..arg2.."|h".."["..coloredName.."]".."|h"), info.r, info.g, info.b, info.id);
+			self:AddMessage(format(CH:ConcatenateTimeStamp(arg1), "|Hplayer:"..arg2.."|h".."["..coloredName.."]".."|h"), info.r, info.g, info.b, info.id);
 		elseif ( type == "IGNORED" ) then
-			self:AddMessage(format(CHAT_IGNORED, arg2), info.r, info.g, info.b, info.id);
+			self:AddMessage(format(CH:ConcatenateTimeStamp(CHAT_IGNORED), arg2), info.r, info.g, info.b, info.id);
 		elseif ( type == "FILTERED" ) then
-			self:AddMessage(format(CHAT_FILTERED, arg2), info.r, info.g, info.b, info.id);
+			self:AddMessage(format(CH:ConcatenateTimeStamp(CHAT_FILTERED), arg2), info.r, info.g, info.b, info.id);
 		elseif ( type == "RESTRICTED" ) then
-			self:AddMessage(CHAT_RESTRICTED, info.r, info.g, info.b, info.id);
+			self:AddMessage(CH:ConcatenateTimeStamp(CHAT_RESTRICTED), info.r, info.g, info.b, info.id);
 		elseif ( type == "CHANNEL_LIST") then
 			if(channelLength > 0) then
-				self:AddMessage(format(_G["CHAT_"..type.."_GET"]..arg1, tonumber(arg8), arg4), info.r, info.g, info.b, info.id);
+				self:AddMessage(format(CH:ConcatenateTimeStamp(_G["CHAT_"..type.."_GET"]..arg1), tonumber(arg8), arg4), info.r, info.g, info.b, info.id);
 			else
-				self:AddMessage(arg1, info.r, info.g, info.b, info.id);
+				self:AddMessage(CH:ConcatenateTimeStamp(arg1), info.r, info.g, info.b, info.id);
 			end
 		elseif (type == "CHANNEL_NOTICE_USER") then
 			local globalstring = _G["CHAT_"..arg1.."_NOTICE_BN"];
 			if ( not globalstring ) then
 				globalstring = _G["CHAT_"..arg1.."_NOTICE"];
 			end
+			
+			CH:ConcatenateTimeStamp(globalstring);
+			
 			if(strlen(arg5) > 0) then
 				-- TWO users in this notice (E.G. x kicked y)
 				self:AddMessage(format(globalstring, arg8, arg4, arg2, arg5), info.r, info.g, info.b, info.id);
@@ -824,6 +840,8 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				arg4 = arg4.." "..arg10;
 			end
 			
+			CH:ConcatenateTimeStamp(globalstring);
+			
 			local accessID = ChatHistory_GetAccessID(Chat_GetChatCategory(type), arg8);
 			local typeID = ChatHistory_GetAccessID(infoType, arg8, arg12);
 			self:AddMessage(format(globalstring, arg8, arg4), info.r, info.g, info.b, info.id, false, accessID, typeID);
@@ -834,11 +852,11 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			
 			local accessID = ChatHistory_GetAccessID(Chat_GetChatCategory(type), arg8);
 			local typeID = ChatHistory_GetAccessID(infoType, arg8, arg12);
-			self:AddMessage(message, info.r, info.g, info.b, info.id, false, accessID, typeID);
+			self:AddMessage(CH:ConcatenateTimeStamp(message), info.r, info.g, info.b, info.id, false, accessID, typeID);
 		elseif ( type == "BN_CONVERSATION_LIST" ) then
 			local channelLink = format(CHAT_BN_CONVERSATION_GET_LINK, arg8, MAX_WOW_CHAT_CHANNELS + arg8);
 			local message = format(CHAT_BN_CONVERSATION_LIST, channelLink, arg1);
-			self:AddMessage(message, info.r, info.g, info.b, info.id, false, accessID, typeID);
+			self:AddMessage(CH:ConcatenateTimeStamp(message), info.r, info.g, info.b, info.id, false, accessID, typeID);
 		elseif ( type == "BN_INLINE_TOAST_ALERT" ) then	
 			if ( arg1 == "FRIEND_OFFLINE" and not BNet_ShouldProcessOfflineEvents() ) then
 				return true;
@@ -865,20 +883,20 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				local playerLink = format("|HBNplayer:%s:%s:%s:%s:%s|h[%s]|h", arg2, arg13, arg11, Chat_GetChatCategory(type), 0, arg2);
 				message = format(globalstring, playerLink);
 			end
-			self:AddMessage(message, info.r, info.g, info.b, info.id);
+			self:AddMessage(CH:ConcatenateTimeStamp(message), info.r, info.g, info.b, info.id);
 		elseif ( type == "BN_INLINE_TOAST_BROADCAST" ) then
 			if ( arg1 ~= "" ) then
 				arg1 = RemoveExtraSpaces(arg1);
 				local playerLink = format("|HBNplayer:%s:%s:%s:%s:%s|h[%s]|h", arg2, arg13, arg11, Chat_GetChatCategory(type), 0, arg2);
-				self:AddMessage(format(BN_INLINE_TOAST_BROADCAST, playerLink, arg1), info.r, info.g, info.b, info.id);
+				self:AddMessage(format(CH:ConcatenateTimeStamp(BN_INLINE_TOAST_BROADCAST), playerLink, arg1), info.r, info.g, info.b, info.id);
 			end
 		elseif ( type == "BN_INLINE_TOAST_BROADCAST_INFORM" ) then
 			if ( arg1 ~= "" ) then
 				arg1 = RemoveExtraSpaces(arg1);
-				self:AddMessage(BN_INLINE_TOAST_BROADCAST_INFORM, info.r, info.g, info.b, info.id);
+				self:AddMessage(CH:ConcatenateTimeStamp(BN_INLINE_TOAST_BROADCAST_INFORM), info.r, info.g, info.b, info.id);
 			end
 		elseif ( type == "BN_INLINE_TOAST_CONVERSATION" ) then
-			self:AddMessage(format(BN_INLINE_TOAST_CONVERSATION, arg1), info.r, info.g, info.b, info.id);
+			self:AddMessage(format(CH:ConcatenateTimeStamp(BN_INLINE_TOAST_CONVERSATION), arg1), info.r, info.g, info.b, info.id);
 		else
 			local body;
 
@@ -1020,13 +1038,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			end
 			
 			--Add Timestamps
-			if ( CH.db.timeStampFormat and CH.db.timeStampFormat ~= 'NONE' ) then
-				local timeStamp = BetterDate(CH.db.timeStampFormat, CH.timeOverride or time());
-				timeStamp = timeStamp:gsub(' ', '')
-				timeStamp = timeStamp:gsub('AM', ' AM')
-				timeStamp = timeStamp:gsub('PM', ' PM')
-				body = '|cffB3B3B3['..timeStamp..'] |r'..body
-			end
+			CH:ConcatenateTimeStamp(body)
 			
 			local accessID = ChatHistory_GetAccessID(chatGroup, chatTarget);
 			local typeID = ChatHistory_GetAccessID(infoType, chatTarget, arg12 == "" and arg13 or arg12);
