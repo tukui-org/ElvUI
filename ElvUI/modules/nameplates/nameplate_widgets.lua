@@ -720,12 +720,12 @@ function NP:UpdateIconGrid(frame, guid)
 				self:UpdateIcon(AuraIconFrames[AuraSlotIndex], cachedaura.texture, cachedaura.expiration, cachedaura.stacks) 
 				AuraSlotIndex = AuraSlotIndex + 1
 			end
-			if AuraSlotIndex > (frame.isSmallNP and NP.MAX_SMALLNP_DISPLAYABLE_DEBUFFS or NP.MAX_DISPLAYABLE_DEBUFFS) then break end
+			if AuraSlotIndex > ((frame.isSmallNP and NP.db.smallPlates) and NP.MAX_SMALLNP_DISPLAYABLE_DEBUFFS or NP.MAX_DISPLAYABLE_DEBUFFS) then break end
 		end
 	end
 	
 	-- Clear Extra Slots
-	for AuraSlotIndex = AuraSlotIndex, (frame.isSmallNP and NP.MAX_SMALLNP_DISPLAYABLE_DEBUFFS or NP.MAX_DISPLAYABLE_DEBUFFS) do self:UpdateIcon(AuraIconFrames[AuraSlotIndex]) end
+	for AuraSlotIndex = AuraSlotIndex, ((frame.isSmallNP and NP.db.smallPlates) and NP.MAX_SMALLNP_DISPLAYABLE_DEBUFFS or NP.MAX_DISPLAYABLE_DEBUFFS) do self:UpdateIcon(AuraIconFrames[AuraSlotIndex]) end
 	
 	self.DebuffCache = wipe(self.DebuffCache)
 end
@@ -875,7 +875,7 @@ function NP:CastBar_OnShow(frame)
 		isSmallNP = true;
 	end
 	
-	if isSmallNP then
+	if isSmallNP and NP.db.smallPlates then
 		frame:Width(frame:GetWidth() * frame:GetParent():GetEffectiveScale())
 	end
 		

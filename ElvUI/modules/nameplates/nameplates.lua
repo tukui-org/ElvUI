@@ -321,11 +321,11 @@ function NP:HealthBar_OnShow(frame)
 		isSmallNP = true;
 	end
 	
-	if isSmallNP then
+	frame.isSmallNP = isSmallNP and NP.db.smallPlates
+	
+	if frame.isSmallNP then
 		frame.hp:Width(frame:GetWidth() * frame:GetEffectiveScale())
 	end
-	
-	frame.isSmallNP = isSmallNP
 	
 	frame.AuraWidget:SetScale(frame.hp:GetScale())
 	
