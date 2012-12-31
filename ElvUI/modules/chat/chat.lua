@@ -1042,17 +1042,18 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			
 			local accessID = ChatHistory_GetAccessID(chatGroup, chatTarget);
 			local typeID = ChatHistory_GetAccessID(infoType, chatTarget, arg12 == "" and arg13 or arg12);
-			body = body:gsub("|Hchannel:(.-)|h%[(.-)%]|h", CH.ShortChannel)
-			body = body:gsub('CHANNEL:', '')
-			body = body:gsub("^(.-|h) "..L['whispers'], "%1")
-			body = body:gsub("^(.-|h) "..L['says'], "%1")
-			body = body:gsub("^(.-|h) "..L['yells'], "%1")
-			body = body:gsub("<"..AFK..">", "[|cffFF0000"..L['AFK'].."|r] ")
-			body = body:gsub("<"..DND..">", "[|cffE7E716"..L['DND'].."|r] ")
-			body = body:gsub("%[BN_CONVERSATION:", '%['..L["BN:"])			
-			body = body:gsub("^%["..RAID_WARNING.."%]", '['..L['RW']..']')	
+			if CH.db.shortChannels then
+				body = body:gsub("|Hchannel:(.-)|h%[(.-)%]|h", CH.ShortChannel)
+				body = body:gsub('CHANNEL:', '')
+				body = body:gsub("^(.-|h) "..L['whispers'], "%1")
+				body = body:gsub("^(.-|h) "..L['says'], "%1")
+				body = body:gsub("^(.-|h) "..L['yells'], "%1")
+				body = body:gsub("<"..AFK..">", "[|cffFF0000"..L['AFK'].."|r] ")
+				body = body:gsub("<"..DND..">", "[|cffE7E716"..L['DND'].."|r] ")
+				body = body:gsub("%[BN_CONVERSATION:", '%['..L["BN:"])			
+				body = body:gsub("^%["..RAID_WARNING.."%]", '['..L['RW']..']')	
+			end
 			self:AddMessage(body, info.r, info.g, info.b, info.id, false, accessID, typeID);
-			CH.timeOverride = nil;
 		end
  
 		if ( type == "WHISPER" or type == "BN_WHISPER" ) then
