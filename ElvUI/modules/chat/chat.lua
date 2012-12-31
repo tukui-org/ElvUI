@@ -1037,9 +1037,6 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				body = "|Hchannel:channel:"..arg8.."|h["..arg4.."]|h "..body;
 			end
 			
-			--Add Timestamps
-			CH:ConcatenateTimeStamp(body)
-			
 			local accessID = ChatHistory_GetAccessID(chatGroup, chatTarget);
 			local typeID = ChatHistory_GetAccessID(infoType, chatTarget, arg12 == "" and arg13 or arg12);
 			if CH.db.shortChannels then
@@ -1053,7 +1050,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				body = body:gsub("%[BN_CONVERSATION:", '%['..L["BN:"])			
 				body = body:gsub("^%["..RAID_WARNING.."%]", '['..L['RW']..']')	
 			end
-			self:AddMessage(body, info.r, info.g, info.b, info.id, false, accessID, typeID);
+			self:AddMessage(CH:ConcatenateTimeStamp(body), info.r, info.g, info.b, info.id, false, accessID, typeID);
 		end
  
 		if ( type == "WHISPER" or type == "BN_WHISPER" ) then
@@ -1071,7 +1068,9 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				if ( not CHAT_OPTIONS.HIDE_FRAME_ALERTS or type == "WHISPER" or type == "BN_WHISPER" ) then	--BN_WHISPER FIXME
 					if (not (type == "BN_CONVERSATION" and BNIsSelf(arg13))) then
 						if (not FCFManager_ShouldSuppressMessageFlash(self, chatGroup, chatTarget) ) then
-							FCF_StartAlertFlash(self);
+							--FCF_StartAlertFlash(self); THIS TAINTS<<<<<<<
+							_G[self:GetName().."Tab"].glow:Show()
+							_G[self:GetName().."Tab"]:SetScript("OnUpdate", CH.ChatTab_OnUpdate)
 						end
 					end
 				end
@@ -1079,6 +1078,15 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 		end
 
 		return true;
+	end
+end
+
+function CH:ChatTab_OnUpdate(elapsed)
+	if self.glow:IsShown() then
+		E:Flash(self.glow, 1)
+	else
+		E:StopFlash(self.glow);
+		self:SetScript("OnUpdate", nil)
 	end
 end
 
@@ -1130,7 +1138,10 @@ function CH:SetupChat(event, ...)
 				f:SetScript(script, ChatFrame_OnMouseScroll)
 			end
 		end)
-
+	
+		if not _G[frameName.."Tab"].glow.anim then
+			E:SetUpAnimGroup(_G[frameName.."Tab"].glow)
+		end
 	end	
 	
 	if self.db.hyperlinkHover then
@@ -1573,7 +1584,7 @@ function CH:Initialize()
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_CONVERSATION", CH.FindURL)	
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER_INFORM", CH.FindURL)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_INLINE_TOAST_BROADCAST", CH.FindURL)	
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_INLINE_TOAST_BROADCAST", CH.FindURL)
 	
 
 	GeneralDockManagerOverflowButton:ClearAllPoints()
@@ -1656,12 +1667,12 @@ function CH:Initialize()
 	InterfaceOptionsSocialPanelTimestampsButton:SetScale(0.000001)
 	InterfaceOptionsSocialPanelTimestamps:SetAlpha(0)
 	InterfaceOptionsSocialPanelTimestamps:SetScale(0.000001)
-	InterfaceOptionsSocialPanelWhisperMode:SetScale(0.000001)
+	--[[InterfaceOptionsSocialPanelWhisperMode:SetScale(0.000001)
 	InterfaceOptionsSocialPanelWhisperMode:SetAlpha(0)
 	InterfaceOptionsSocialPanelBnWhisperMode:SetScale(0.000001)
 	InterfaceOptionsSocialPanelBnWhisperMode:SetAlpha(0)
 	InterfaceOptionsSocialPanelConversationMode:SetScale(0.000001)
-	InterfaceOptionsSocialPanelConversationMode:SetAlpha(0)
+	InterfaceOptionsSocialPanelConversationMode:SetAlpha(0)]]
 	
 	InterfaceOptionsSocialPanelChatStyle:EnableMouse(false)
 	InterfaceOptionsSocialPanelChatStyleButton:Hide()
@@ -1670,7 +1681,7 @@ function CH:Initialize()
  	CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Size(20, 22)
  	CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Point("TOPRIGHT", CombatLogQuickButtonFrame_Custom, "TOPRIGHT", 0, -1)
 	
-	if GetCVar("conversationMode") ~= "inline" then
+	--[[if GetCVar("conversationMode") ~= "inline" then
 		SetCVar("conversationMode", "inline")
 	end
 
@@ -1682,7 +1693,7 @@ function CH:Initialize()
 	
 	if GetCVar("showTimestamps") ~= "none" then
 		SetCVar("showTimestamps", "none")
-	end	
+	end]]
 end
 
 E:RegisterModule(CH:GetName())
