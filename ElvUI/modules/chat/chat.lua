@@ -821,7 +821,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				globalstring = _G["CHAT_"..arg1.."_NOTICE"];
 			end
 			
-			CH:ConcatenateTimeStamp(globalstring);
+			globalString = CH:ConcatenateTimeStamp(globalstring);
 			
 			if(strlen(arg5) > 0) then
 				-- TWO users in this notice (E.G. x kicked y)
@@ -840,7 +840,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				arg4 = arg4.." "..arg10;
 			end
 			
-			CH:ConcatenateTimeStamp(globalstring);
+			globalString = CH:ConcatenateTimeStamp(globalstring);
 			
 			local accessID = ChatHistory_GetAccessID(Chat_GetChatCategory(type), arg8);
 			local typeID = ChatHistory_GetAccessID(infoType, arg8, arg12);
