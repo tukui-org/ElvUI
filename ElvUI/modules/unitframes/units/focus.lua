@@ -397,7 +397,7 @@ function UF:Update_FocusFrame(frame, db)
 	end
 	
 	if db.customTexts then
-		local customFont = UF.LSM:Fetch("font", objectDB.font or UF.db.font)
+		local customFont = UF.LSM:Fetch("font", UF.db.font)
 		for objectName, _ in pairs(db.customTexts) do
 			if not frame[objectName] then
 				frame[objectName] = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
@@ -406,6 +406,10 @@ function UF:Update_FocusFrame(frame, db)
 			local objectDB = db.customTexts[objectName]
 			UF:CreateCustomTextGroup('focus', objectName)
 			
+			if objectDB.font then
+				customFont = UF.LSM:Fetch("font", objectDB.font)
+			end
+						
 			frame[objectName]:FontTemplate(customFont, objectDB.size or UF.db.fontSize, objectDB.fontOutline or UF.db.fontOutline)
 			frame:Tag(frame[objectName], objectDB.text_format or '')
 			frame[objectName]:SetJustifyH(objectDB.justifyH or 'CENTER')
