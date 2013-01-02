@@ -1,5 +1,9 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 
+local format = string.format
+local lower = string.lower
+local split = string.split
+
 function E:EnableAddon(addon)
 	local _, _, _, _, _, reason, _ = GetAddOnInfo(addon)
 	if reason ~= "MISSING" then 
@@ -50,12 +54,12 @@ local channel = 'PARTY'
 local target = nil;
 function E:ElvSaysChannel(chnl)
 	channel = chnl
-	E:Print(string.format('ElvSays channel has been changed to %s.', chnl))
+	E:Print(format('ElvSays channel has been changed to %s.', chnl))
 end
 
 function E:ElvSaysTarget(tgt)
 	target = tgt
-	E:Print(string.format('ElvSays target has been changed to %s.', tgt))
+	E:Print(format('ElvSays target has been changed to %s.', tgt))
 end
 
 function E:ElvSays(msg)
@@ -80,7 +84,7 @@ function E:Grid(msg)
 end
 
 function E:LuaError(msg)
-	msg = string.lower(msg)
+	msg = lower(msg)
 	if (msg == 'on') then
 		SetCVar("scriptErrors", 1)
 		ReloadUI()
@@ -125,7 +129,7 @@ function E:DelayScriptCall(msg)
 end
 
 function E:MassGuildKick(msg)
-	local minLevel, minDays, minRankIndex = string.split(',', msg)
+	local minLevel, minDays, minRankIndex = split(',', msg)
 	minRankIndex = tonumber(minRankIndex);
 	minLevel = tonumber(minLevel);
 	minDays = tonumber(minDays);

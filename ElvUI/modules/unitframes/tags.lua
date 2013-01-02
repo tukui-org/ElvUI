@@ -11,7 +11,7 @@ ElvUF.Tags.Events['afk'] = 'PLAYER_FLAGS_CHANGED'
 ElvUF.Tags.Methods['afk'] = function(unit)
 	local isAFK = UnitIsAFK(unit)
 	if isAFK then
-		return '|cffFFFFFF[|r|cffFF0000'..DEFAULT_AFK_MESSAGE..'|r|cFFFFFFFF]|r'
+		return ('|cffFFFFFF[|r|cffFF0000%s|r|cFFFFFFFF]|r'):format(DEFAULT_AFK_MESSAGE)
 	else
 		return ''
 	end
@@ -19,183 +19,150 @@ end
 
 ElvUF.Tags.Events['healthcolor'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION'
 ElvUF.Tags.Methods['healthcolor'] = function(unit)
-	local min, max = UnitHealth(unit), UnitHealthMax(unit)
-	local status = not UnitIsConnected(unit) and L['Offline'] or UnitIsGhost(unit) and L['Ghost'] or UnitIsDead(unit) and DEAD
-
-	if (status) then
+	if UnitIsDeadOrGhost(unit) or not UnitIsConnected(unit) then
 		return Hex(0.84, 0.75, 0.65)
 	else
-		local r, g, b = ElvUF.ColorGradient(min, max, 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
+		local r, g, b = ElvUF.ColorGradient(UnitHealth(unit), UnitHealthMax(unit), 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
 		return Hex(r, g, b)
 	end
 end
 
 ElvUF.Tags.Events['health:current'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION'
 ElvUF.Tags.Methods['health:current'] = function(unit)
-	local min, max = UnitHealth(unit), UnitHealthMax(unit)
-	local status = not UnitIsConnected(unit) and L['Offline'] or UnitIsGhost(unit) and L['Ghost'] or UnitIsDead(unit) and DEAD
-
+	local status = UnitIsDead(unit) and DEAD or UnitIsGhost(unit) and L['Ghost'] or not UnitIsConnected(unit) and L['Offline']
 	if (status) then
 		return status
 	else
-		return E:GetFormattedText('CURRENT', min, max)
+		return E:GetFormattedText('CURRENT', UnitHealth(unit), UnitHealthMax(unit))
 	end
 end
 
 ElvUF.Tags.Events['health:deficit'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION'
 ElvUF.Tags.Methods['health:deficit'] = function(unit)
-	local min, max = UnitHealth(unit), UnitHealthMax(unit)
-	local status = not UnitIsConnected(unit) and L['Offline'] or UnitIsGhost(unit) and L['Ghost'] or UnitIsDead(unit) and DEAD
+	local status = UnitIsDead(unit) and DEAD or UnitIsGhost(unit) and L['Ghost'] or not UnitIsConnected(unit) and L['Offline']
 
 	if (status) then
 		return status
 	else
-		return E:GetFormattedText('DEFICIT', min, max)
+		return E:GetFormattedText('DEFICIT', UnitHealth(unit), UnitHealthMax(unit))
 	end
 end
 
 ElvUF.Tags.Events['health:current-percent'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION'
 ElvUF.Tags.Methods['health:current-percent'] = function(unit)
-	local min, max = UnitHealth(unit), UnitHealthMax(unit)
-	local status = not UnitIsConnected(unit) and L['Offline'] or UnitIsGhost(unit) and L['Ghost'] or UnitIsDead(unit) and DEAD
+	local status = UnitIsDead(unit) and DEAD or UnitIsGhost(unit) and L['Ghost'] or not UnitIsConnected(unit) and L['Offline']
 
 	if (status) then
 		return status
 	else
-		return E:GetFormattedText('CURRENT_PERCENT', min, max)
+		return E:GetFormattedText('CURRENT_PERCENT', UnitHealth(unit), UnitHealthMax(unit))
 	end
 end
 
 ElvUF.Tags.Events['health:current-max'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION'
 ElvUF.Tags.Methods['health:current-max'] = function(unit)
-	local min, max = UnitHealth(unit), UnitHealthMax(unit)
-	local status = not UnitIsConnected(unit) and L['Offline'] or UnitIsGhost(unit) and L['Ghost'] or UnitIsDead(unit) and DEAD
+	local status = UnitIsDead(unit) and DEAD or UnitIsGhost(unit) and L['Ghost'] or not UnitIsConnected(unit) and L['Offline']
 
 	if (status) then
 		return status
 	else
-		return E:GetFormattedText('CURRENT_MAX', min, max)
+		return E:GetFormattedText('CURRENT_MAX', UnitHealth(unit), UnitHealthMax(unit))
 	end
 end
 
 ElvUF.Tags.Events['health:current-max-percent'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION'
 ElvUF.Tags.Methods['health:current-max-percent'] = function(unit)
-	local min, max = UnitHealth(unit), UnitHealthMax(unit)
-	local status = not UnitIsConnected(unit) and L['Offline'] or UnitIsGhost(unit) and L['Ghost'] or UnitIsDead(unit) and DEAD
+	local status = UnitIsDead(unit) and DEAD or UnitIsGhost(unit) and L['Ghost'] or not UnitIsConnected(unit) and L['Offline']
 
 	if (status) then
 		return status
 	else
-		return E:GetFormattedText('CURRENT_MAX_PERCENT', min, max)
+		return E:GetFormattedText('CURRENT_MAX_PERCENT', UnitHealth(unit), UnitHealthMax(unit))
 	end
 end
 
 ElvUF.Tags.Events['health:max'] = 'UNIT_MAXHEALTH'
 ElvUF.Tags.Methods['health:max'] = function(unit)
-	local max = UnitHealth(unit), UnitHealthMax(unit)
+	local max = UnitHealthMax(unit)
 
 	return E:GetFormattedText('CURRENT', max, max)
 end
 
 ElvUF.Tags.Events['health:percent'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION'
 ElvUF.Tags.Methods['health:percent'] = function(unit)
-	local min, max = UnitHealth(unit), UnitHealthMax(unit)
-	local status = not UnitIsConnected(unit) and L['Offline'] or UnitIsGhost(unit) and L['Ghost'] or UnitIsDead(unit) and DEAD
+	local status = UnitIsDead(unit) and DEAD or UnitIsGhost(unit) and L['Ghost'] or not UnitIsConnected(unit) and L['Offline']
 
 	if (status) then
 		return status
 	else
-		return E:GetFormattedText('PERCENT', min, max)
+		return E:GetFormattedText('PERCENT', UnitHealth(unit), UnitHealthMax(unit))
 	end
 end
 
+local powerTypes = { [0] = "MANA", "RAGE", "FOCUS", "ENERGY", "RUNIC_POWER" }
+
 ElvUF.Tags.Events['powercolor'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
 ElvUF.Tags.Methods['powercolor'] = function(unit)
-	local pType, pToken, altR, altG, altB = UnitPowerType(unit)
-	local min, max = UnitPower(unit, pType), UnitPowerMax(unit, pType)
-	
-	local r, g, b = altR, altG, altB
-	local color = ElvUF['colors'].power[pToken]
+	local pType, _, altR, altG, altB = UnitPowerType(unit)	
+	local color = ElvUF['colors'].power[powerTypes[pType]]
 	if color then
-		r, g, b = color[1], color[2], color[3]
+		return Hex(color[1], color[2], color[3])
+	else
+		return Hex(altR, altG, altB)
 	end
-	
-	return Hex(r, g, b)
 end
 
 ElvUF.Tags.Events['power:current'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
 ElvUF.Tags.Methods['power:current'] = function(unit)
 	local pType = UnitPowerType(unit)
-	local min, max = UnitPower(unit, pType), UnitPowerMax(unit, pType)
-		
-	if min == 0 then
-		return ' '
-	else
-		return E:GetFormattedText('CURRENT', min, max)
-	end
+	local min = UnitPower(unit, pType)
+	
+	return min == 0 and ' ' or	E:GetFormattedText('CURRENT', min, UnitPowerMax(unit, pType))
 end
 
 ElvUF.Tags.Events['power:current-max'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
 ElvUF.Tags.Methods['power:current-max'] = function(unit)
 	local pType = UnitPowerType(unit)
-	local min, max = UnitPower(unit, pType), UnitPowerMax(unit, pType)
-		
-	if min == 0 then
-		return ' '
-	else
-		return E:GetFormattedText('CURRENT_MAX', min, max)
-	end
+	local min = UnitPower(unit, pType)
+
+	return min == 0 and ' ' or	E:GetFormattedText('CURRENT_MAX', min, UnitPowerMax(unit, pType))
 end
 
 ElvUF.Tags.Events['power:current-percent'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
 ElvUF.Tags.Methods['power:current-percent'] = function(unit)
 	local pType = UnitPowerType(unit)
-	local min, max = UnitPower(unit, pType), UnitPowerMax(unit, pType)
-		
-	if min == 0 then
-		return ' '
-	else
-		return E:GetFormattedText('CURRENT_PERCENT', min, max)
-	end
+	local min = UnitPower(unit, pType)
+
+	return min == 0 and ' ' or	E:GetFormattedText('CURRENT_PERCENT', min, UnitPowerMax(unit, pType))
 end
 
 ElvUF.Tags.Events['power:current-max-percent'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
 ElvUF.Tags.Methods['power:current-max-percent'] = function(unit)
 	local pType = UnitPowerType(unit)
-	local min, max = UnitPower(unit, pType), UnitPowerMax(unit, pType)
-		
-	if min == 0 then
-		return ' '
-	else
-		return E:GetFormattedText('CURRENT_MAX_PERCENT', min, max)
-	end
+	local min = UnitPower(unit, pType)
+
+	return min == 0 and ' ' or	E:GetFormattedText('CURRENT_MAX_PERCENT', min, UnitPowerMax(unit, pType))
 end
 
 ElvUF.Tags.Events['power:percent'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
 ElvUF.Tags.Methods['power:percent'] = function(unit)
 	local pType = UnitPowerType(unit)
-	local min, max = UnitPower(unit, pType), UnitPowerMax(unit, pType)
-		
-	if min == 0 then
-		return ' '
-	else
-		return E:GetFormattedText('PERCENT', min, max)
-	end
+	local min = UnitPower(unit, pType)
+
+	return min == 0 and ' ' or	E:GetFormattedText('PERCENT', min, UnitPowerMax(unit, pType))
 end
 
 ElvUF.Tags.Events['power:deficit'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
 ElvUF.Tags.Methods['power:deficit'] = function(unit)
 	local pType = UnitPowerType(unit)
-	local min, max = UnitPower(unit, pType), UnitPowerMax(unit, pType)
 		
-	return E:GetFormattedText('DEFICIT', min, max, r, g, b)
+	return E:GetFormattedText('DEFICIT', UnitPower(unit, pType), UnitPowerMax(unit, pType), r, g, b)
 end
 
 ElvUF.Tags.Events['power:max'] = 'UNIT_MAXPOWER'
 ElvUF.Tags.Methods['power:max'] = function(unit)
-	local pType = UnitPowerType(unit)
-	local max = UnitPowerMax(unit, pType)
-		
+	local max = UnitPowerMax(unit, UnitPowerType(unit))
+			
 	return E:GetFormattedText('CURRENT', max, max)
 end
 
@@ -254,38 +221,26 @@ end
 ElvUF.Tags.Events['name:short'] = 'UNIT_NAME_UPDATE'
 ElvUF.Tags.Methods['name:short'] = function(unit)
 	local name = UnitName(unit)
-	if name then
-		return E:ShortenString(name, 10)
-	else
-		return ''
-	end
+	return name ~= nil and E:ShortenString(name, 10) or ''
 end
 
 ElvUF.Tags.Events['name:medium'] = 'UNIT_NAME_UPDATE'
 ElvUF.Tags.Methods['name:medium'] = function(unit)
 	local name = UnitName(unit)
-	if name then	
-		return E:ShortenString(name, 15)
-	else
-		return ''
-	end	
+	return name ~= nil and E:ShortenString(name, 15) or ''
 end
 
 ElvUF.Tags.Events['name:long'] = 'UNIT_NAME_UPDATE'
 ElvUF.Tags.Methods['name:long'] = function(unit)
 	local name = UnitName(unit)
-	if name then	
-		return E:ShortenString(name, 20)
-	else
-		return ''
-	end	
+	return name ~= nil and E:ShortenString(name, 20) or ''
 end
 
 ElvUF.Tags.Events['threat:percent'] = 'UNIT_THREAT_LIST_UPDATE GROUP_ROSTER_UPDATE'
 ElvUF.Tags.Methods['threat:percent'] = function(unit)
-	local _, status, percent = UnitDetailedThreatSituation('player', unit)
+	local _, _, percent = UnitDetailedThreatSituation('player', unit)
 	if(percent and percent > 0) and (IsInGroup() or UnitExists('pet')) then
-		return string.format('%d%%', E:TrimFloatingPoint(percent / 100 * 100))
+		return format('%.0f%%', percent)
 	else 
 		return ''
 	end
@@ -293,7 +248,7 @@ end
 
 ElvUF.Tags.Events['threat:current'] = 'UNIT_THREAT_LIST_UPDATE GROUP_ROSTER_UPDATE'
 ElvUF.Tags.Methods['threat:current'] = function(unit)
-	local _, status, percent, _, threatvalue = UnitDetailedThreatSituation('player', unit)
+	local _, _, percent, _, threatvalue = UnitDetailedThreatSituation('player', unit)
 	if(percent and percent > 0) and (IsInGroup() or UnitExists('pet')) then
 		return E:ShortValue(threatvalue)
 	else 
@@ -304,27 +259,21 @@ end
 ElvUF.Tags.Events['threatcolor'] = 'UNIT_THREAT_LIST_UPDATE GROUP_ROSTER_UPDATE'
 ElvUF.Tags.Methods['threatcolor'] = function(unit)
 	local _, status = UnitDetailedThreatSituation('player', unit)
-	if(status) and (IsInGroup() or UnitExists('pet')) then
+	if (status) and (IsInGroup() or UnitExists('pet')) then
 		return Hex(GetThreatStatusColor(status))
 	else 
 		return ''
 	end
 end
 
-ElvUF.Tags.Methods['pvptimer'] = function(unit)
-	local time = GetPVPTimer()
-	local min = format("%01.f", floor((time / 1000) / 60))
-	local sec = format("%02.f", floor((time / 1000) - min * 60)) 
-	
-	if(UnitIsPVPFreeForAll(unit)) then
-		if time ~= 301000 and time ~= -1 then
-			return PVP.." ".."("..min..":"..sec..")"
-		else
-			return PVP
-		end
-	elseif UnitIsPVP(unit) then
-		if time ~= 301000 and time ~= -1 then
-			return PVP.." ".."("..min..":"..sec..")"
+ElvUF.Tags.Methods['pvptimer'] = function(unit)	
+	if (UnitIsPVPFreeForAll(unit) or UnitIsPVP(unit)) then
+		local timer = GetPVPTimer()
+
+		if timer ~= 301000 and timer ~= -1 then	
+			local mins = floor((timer / 1000) / 60)
+			local secs = floor((timer / 1000) - (mins * 60))
+			return ("%s (%01.f:%02.f)"):format(PVP, mins, secs)
 		else
 			return PVP
 		end

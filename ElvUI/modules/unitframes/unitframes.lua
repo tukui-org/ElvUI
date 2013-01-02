@@ -47,8 +47,28 @@ UF['classMaxResourceBar'] = {
 	['MAGE'] = 6,
 }
 
-local find = string.find
-local gsub = string.gsub
+UF['headerGroupBy'] = {
+	['CLASS'] = function(header)
+		header:SetAttribute("groupingOrder", "DEATHKNIGHT,DRUID,HUNTER,MAGE,PALADIN,PRIEST,SHAMAN,WARLOCK,WARRIOR")
+		header:SetAttribute('sortMethod', 'NAME')
+	end,
+	['ROLE'] = function(header)
+		header:SetAttribute("groupingOrder", "MAINTANK,MAINASSIST,1,2,3,4,5,6,7,8")
+		header:SetAttribute('sortMethod', 'NAME')	
+	end,
+	['NAME'] = function(header)
+		header:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
+		header:SetAttribute('sortMethod', 'NAME')	
+	end,
+	['GROUP'] = function(header)
+		header:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
+		header:SetAttribute('sortMethod', 'INDEX')
+	end,
+}
+
+local find, gsub, split, format = string.find, string.gsub, string.split, string.format
+local min = math.min
+local tremove = table.remove
 
 function UF:Construct_UF(frame, unit)
 	frame:RegisterForClicks("AnyUp")
@@ -114,7 +134,7 @@ end
 
 function UF:GetAuraAnchorFrame(frame, attachTo, isConflict)
 	if isConflict then
-		E:Print(string.format(L['%s frame(s) has a conflicting anchor point, please change either the buff or debuff anchor point so they are not attached to each other. Forcing the debuffs to be attached to the main unitframe until fixed.'], E:StringTitle(frame:GetName())))
+		E:Print(format(L['%s frame(s) has a conflicting anchor point, please change either the buff or debuff anchor point so they are not attached to each other. Forcing the debuffs to be attached to the main unitframe until fixed.'], E:StringTitle(frame:GetName())))
 	end
 	
 	if isConflict or attachTo == 'FRAME' then
@@ -202,9 +222,10 @@ function UF:UpdateColors()
 end
 
 function UF:Update_StatusBars()
+	local statusBarTexture = LSM:Fetch("statusbar", self.db.statusbar)
 	for statusbar in pairs(UF['statusbars']) do
 		if statusbar and statusbar:GetObjectType() == 'StatusBar' then
-			statusbar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
+			statusbar:SetStatusBarTexture(statusBarTexture)
 		end
 	end
 end
@@ -218,8 +239,9 @@ function UF:Update_FontString(object)
 end
 
 function UF:Update_FontStrings()
+	local stringFont = LSM:Fetch("font", self.db.font)
 	for font in pairs(UF['fontstrings']) do
-		font:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
+		font:FontTemplate(stringFont, self.db.fontSize, self.db.fontOutline)
 	end
 end
 
@@ -230,7 +252,7 @@ end
 
 function UF:ChangeVisibility(header, visibility)
 	if(visibility) then
-		local type, list = string.split(' ', visibility, 2)
+		local type, list = split(' ', visibility, 2)
 		if(list and type == 'custom') then
 			RegisterAttributeDriver(header, 'state-visibility', list)
 		end
@@ -309,7 +331,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 
 		local maxUnits, startingIndex = MAX_RAID_MEMBERS, -1
 		if db.maxColumns and db.unitsPerColumn then
-			startingIndex = -math.min(db.maxColumns * db.unitsPerColumn, maxUnits) + 1			
+			startingIndex = -min(db.maxColumns * db.unitsPerColumn, maxUnits) + 1			
 		end
 
 		if template then
@@ -534,10 +556,10 @@ function ElvUF:DisableBlizzard(unit)
 		HandleFrame(PlayerFrame)
 
 		-- For the damn vehicle support:
-		PlayerFrame:RegisterEvent('UNIT_ENTERING_VEHICLE')
-		PlayerFrame:RegisterEvent('UNIT_ENTERED_VEHICLE')
-		PlayerFrame:RegisterEvent('UNIT_EXITING_VEHICLE')
-		PlayerFrame:RegisterEvent('UNIT_EXITED_VEHICLE')
+		PlayerFrame:RegisterUnitEvent('UNIT_ENTERING_VEHICLE', "player")
+		PlayerFrame:RegisterUnitEvent('UNIT_ENTERED_VEHICLE', "player")
+		PlayerFrame:RegisterUnitEvent('UNIT_EXITING_VEHICLE', "player")
+		PlayerFrame:RegisterUnitEvent('UNIT_EXITED_VEHICLE', "player")
 		PlayerFrame:RegisterEvent('PLAYER_ENTERING_WORLD')
 		
 		-- User placed frames don't animate
@@ -649,7 +671,7 @@ function UF:Initialize()
 		for _, menu in pairs(UnitPopupMenus) do
 			for index = #menu, 1, -1 do
 				if removeMenuOptions[menu[index]] then
-					table.remove(menu, index)
+					tremove(menu, index)
 				end
 			end
 		end				

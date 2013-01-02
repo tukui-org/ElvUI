@@ -4,6 +4,7 @@ local RU = E:NewModule('RaidUtility', 'AceEvent-3.0');
 E.RaidUtility = RU
 
 local PANEL_HEIGHT = 125
+local find = string.find
 
 --Check if We are Raid Leader or Raid Officer
 local function CheckRaidStatus()
@@ -133,7 +134,7 @@ function RU:Initialize()
 		local screenWidth = E.UIParent:GetWidth() / 2
 		xOffset = xOffset - screenWidth
 		self:ClearAllPoints()
-		if string.find(point, "BOTTOM") then
+		if find(point, "BOTTOM") then
 			self:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', xOffset, -1)
 		else
 			self:SetPoint('TOP', E.UIParent, 'TOP', xOffset, 1)		

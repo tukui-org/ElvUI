@@ -3,10 +3,11 @@ local DT = E:GetModule('DataTexts')
 
 local displayString, lastPanel
 local format = string.format
+local join = string.join
 local targetlv, playerlv
 local basemisschance, leveldifference, dodge, parry, block, avoidance, unhittable, avoided, blocked, numAvoidances, unhittableMax
 local chanceString = "%.2f%%"
-local modifierString = string.join("", "%d (+", chanceString, ")")
+local modifierString = join("", "%d (+", chanceString, ")")
 
 function IsWearingShield()
 	local slotID = GetInventorySlotInfo("SecondaryHandSlot")
@@ -18,7 +19,6 @@ function IsWearingShield()
 end
 
 local function OnEvent(self, event, unit)
-	if event == "UNIT_AURA" and unit ~= 'player' then return end
 	targetlv, playerlv = UnitLevel("target"), UnitLevel("player")
 			
 	-- the 5 is for base miss chance
@@ -81,11 +81,11 @@ local function OnEnter(self)
 	DT:SetupTooltip(self)
 	
 	if targetlv > 1 then
-		GameTooltip:AddDoubleLine(L["Avoidance Breakdown"], string.join("", " (", L['lvl'], " ", targetlv, ")"))
+		GameTooltip:AddDoubleLine(L["Avoidance Breakdown"], join("", " (", L['lvl'], " ", targetlv, ")"))
 	elseif targetlv == -1 then
-		GameTooltip:AddDoubleLine(L["Avoidance Breakdown"], string.join("", " (", BOSS, ")"))
+		GameTooltip:AddDoubleLine(L["Avoidance Breakdown"], join("", " (", BOSS, ")"))
 	else
-		GameTooltip:AddDoubleLine(L["Avoidance Breakdown"], string.join("", " (", L['lvl'], " ", playerlv, ")"))
+		GameTooltip:AddDoubleLine(L["Avoidance Breakdown"], join("", " (", L['lvl'], " ", playerlv, ")"))
 	end
 	GameTooltip:AddLine' '
 	GameTooltip:AddDoubleLine(DODGE_CHANCE, format(chanceString, dodge),1,1,1)
@@ -105,7 +105,7 @@ end
 
 
 local function ValueColorUpdate(hex, r, g, b)
-	displayString = string.join("", "%s", hex, "%.2f%%|r")
+	displayString = join("", "%s", hex, "%.2f%%|r")
 	
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

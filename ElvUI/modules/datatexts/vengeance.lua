@@ -11,6 +11,9 @@ tooltiptext = _G[tooltip:GetName().."TextLeft2"]
 tooltip:SetOwner(E.UIParent, "ANCHOR_NONE")
 tooltiptext:SetText("")
 
+local join = string.join
+local match = string.match
+
 local function calculate(self, event, ...)
 
 	if VengeanceTooltip and not VengeanceTooltip:IsShown() then
@@ -24,7 +27,7 @@ local function calculate(self, event, ...)
 	if name then
 		tooltip:ClearLines()
 		tooltip:SetUnitBuff("player", name)
-		value = (tooltiptext:GetText() and tonumber(string.match(tostring(tooltiptext:GetText()), "%d+"))) or -1
+		value = (tooltiptext:GetText() and tonumber(match(tostring(tooltiptext:GetText()), "%d+"))) or -1
 	else
 		value = 0
 	end
@@ -33,7 +36,7 @@ local function calculate(self, event, ...)
 end
 
 local function ValueColorUpdate(hex, r, g, b)
-	displayString = string.join("", "%s: ", hex, "%s|r")
+	displayString = join("", "%s: ", hex, "%s|r")
 	
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

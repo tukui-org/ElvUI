@@ -5,6 +5,7 @@ local LSM = LibStub("LibSharedMedia-3.0")
 local OVERLAY = [=[Interface\TargetingFrame\UI-TargetingFrame-Flash]=]
 local numChildren = -1
 local backdrop
+
 NP.Handled = {} --Skinned Nameplates
 NP.BattleGroundHealers = {};
 
@@ -19,6 +20,7 @@ NP.Healers = {
 	[L['Mistweaver']] = true,
 }
 
+local twipe = table.wipe
 
 function NP:Initialize()
 	self.db = E.db["nameplate"]
@@ -30,8 +32,9 @@ function NP:Initialize()
 	end
 	
 	CreateFrame('Frame'):SetScript('OnUpdate', function(self, elapsed)
-		if(WorldFrame:GetNumChildren() ~= numChildren) then
-			numChildren = WorldFrame:GetNumChildren()
+		local count = WorldFrame:GetNumChildren()
+		if(count ~= numChildren) then
+			numChildren = count
 			NP:HookFrames(WorldFrame:GetChildren())
 		end	
 		
@@ -67,7 +70,7 @@ function NP:QueueObject(frame, object)
 end
 
 function NP:CreateVirtualFrame(parent, point)
-	if point == nil then point = parent end
+	point = point or parent
 	local noscalemult = E.mult * UIParent:GetScale()
 	
 	if point.bordertop then return end
@@ -173,14 +176,16 @@ local function RehideFrame(self)
 end
 
 function NP:HideObjects(frame)
+	local objectType
 	for object in pairs(frame.queue) do
 		hooksecurefunc(object, "Show", RehideFrame)
 		
-		if object:GetObjectType() == "Texture" then
+		objectType = object:GetObjectType()  
+		if objectType == "Texture" then
 			object.OldTexture = object:GetTexture()
 			object:SetTexture(nil)
 			object:SetTexCoord(0, 0, 0, 0)
-		elseif object:GetObjectType() == 'FontString' then
+		elseif objectType == 'FontString' then
 			object:SetWidth(0.001)
 		end
 		
@@ -552,8 +557,9 @@ function NP:SkinPlate(frame, nameFrame)
 	
 	for index = 1, NP.MAX_DISPLAYABLE_DEBUFFS do 
 		if frame.AuraWidget.AuraIconFrames and frame.AuraWidget.AuraIconFrames[index] then
-			frame.AuraWidget.AuraIconFrames[index].TimeLeft:FontTemplate(LSM:Fetch("font", self.db.auraFont), self.db.auraFontSize, self.db.auraFontOutline)
-			frame.AuraWidget.AuraIconFrames[index].Stacks:FontTemplate(LSM:Fetch("font", self.db.auraFont), self.db.auraFontSize, self.db.auraFontOutline)
+			local auraFont = LSM:Fetch("font", self.db.auraFont)
+			frame.AuraWidget.AuraIconFrames[index].TimeLeft:FontTemplate(auraFont, self.db.auraFontSize, self.db.auraFontOutline)
+			frame.AuraWidget.AuraIconFrames[index].Stacks:FontTemplate(auraFont, self.db.auraFontSize, self.db.auraFontOutline)
 		end
 	end
 		
@@ -861,10 +867,10 @@ function NP:PLAYER_ENTERING_WORLD()
 	self:UpdateRoster()
 	self:CleanAuraLists()
 	
-	table.wipe(self.BattleGroundHealers)
+	twipe(self.BattleGroundHealers)
 	local inInstance, instanceType = IsInInstance()
 	if inInstance and instanceType == 'pvp' and self.db.markBGHealers then
-		self.CheckHealerTimer = self:ScheduleRepeatingTimer("CheckBGHealers", 1)
+		self.CheckHealerTimer = self:ScheduleRepeatingTimer("CheckBGHealers", 3)
 		self:CheckBGHealers()
 	else
 		if self.CheckHealerTimer then
@@ -900,8 +906,9 @@ function NP:HookFrames(...)
 	for index = 1, select('#', ...) do
 		local frame = select(index, ...)
 		local region = frame:GetRegions()
+		local name = frame:GetName()
 		
-		if(not NP.Handled[frame:GetName()] and (frame:GetName() and frame:GetName():find("NamePlate%d"))) then
+		if(not NP.Handled[name] and (name and name:find("NamePlate%d"))) then
 			NP:SkinPlate(frame:GetChildren())
 		end
 	end

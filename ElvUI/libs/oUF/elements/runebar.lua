@@ -40,8 +40,10 @@
 
 if select(2, UnitClass("player")) ~= "DEATHKNIGHT" then return end
 
+
 local parent, ns = ...
 local oUF = ns.oUF
+local floor = math.floor
 
 oUF.colors.runes = {
 	{1, 0, 0},   -- blood
@@ -135,7 +137,7 @@ local Enable = function(self, unit)
 
 			-- From my minor testing this is a okey solution. A full login always remove
 			-- the death runes, or at least the clients knowledge about them.
-			UpdateType(self, nil, i, math.floor((runemap[i]+1)/2))
+			UpdateType(self, nil, i, floor((runemap[i]+1)/2))
 		end
 
 		-- oUF leaves the vehicle events registered on the player frame, so

@@ -1,39 +1,43 @@
 local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
+local abs = math.abs
+local floor = math.floor
+local join = string.join
+local format = string.format
+
 local defaultColor = { 1, 1, 1 }
 local Profit	= 0
 local Spent		= 0
+local copperFormatter = join("", "%d", L.copperabbrev)
+local silverFormatter = join("", "%d", L.silverabbrev, " %.2d", L.copperabbrev)
+local goldFormatter =  join("", "%s", L.goldabbrev, " %.2d", L.silverabbrev, " %.2d", L.copperabbrev)
+local resetInfoFormatter = join("", "|cffaaaaaa", L["Reset Data: Hold Shift + Right Click"], "|r")
 
-local function formatMoney(money)
-	local gold = floor(math.abs(money) / 10000)
-	local silver = mod(floor(math.abs(money) / 100), 100)
-	local copper = mod(floor(math.abs(money)), 100)
+local function FormatMoney(money)
+	local gold, silver, copper = floor(abs(money / 10000)), abs(mod(money / 100, 100)), abs(mod(money, 100))
 	if gold ~= 0 then
-		return format("%s"..L.goldabbrev.." %s"..L.silverabbrev.." %s"..L.copperabbrev, BreakUpLargeNumbers(gold), silver, copper)
+		return format(goldFormatter, BreakUpLargeNumbers(gold), silver, copper)
 	elseif silver ~= 0 then
-		return format("%s"..L.silverabbrev.." %s"..L.copperabbrev, silver, copper)
+		return format(silverFormatter, silver, copper)
 	else
-		return format("%s"..L.copperabbrev, copper)
+		return format(copperFormatter, copper)
 	end
 end
 
 local function FormatTooltipMoney(money)
 	if not money then return end
 	local gold, silver, copper = floor(abs(money / 10000)), abs(mod(money / 100, 100)), abs(mod(money, 100))
-	local cash = ""
-
-	cash = format("%s"..L.goldabbrev.." %d"..L.silverabbrev.." %d"..L.copperabbrev, BreakUpLargeNumbers(gold), silver, copper)
-	return cash
+	return format(goldFormatter, BreakUpLargeNumbers(gold), silver, copper)
 end
 
 local function OnEvent(self, event, ...)
 	if not IsLoggedIn() then return end
-	local NewMoney = GetMoney()
-	if (ElvDB == nil) then ElvDB = {}; end
-	if (ElvDB['gold'] == nil) then ElvDB['gold'] = {}; end
-	if (ElvDB['gold'][E.myrealm] == nil) then ElvDB['gold'][E.myrealm] = {} end
-	if (ElvDB['gold'][E.myrealm][E.myname] == nil) then ElvDB['gold'][E.myrealm][E.myname] = NewMoney end
+	local NewMoney = GetMoney();
+	ElvDB = ElvDB or { };
+	ElvDB['gold'] = ElvDB['gold'] or {};
+	ElvDB['gold'][E.myrealm] = ElvDB['gold'][E.myrealm] or {};
+	ElvDB['gold'][E.myrealm][E.myname] = ElvDB['gold'][E.myrealm][E.myname] or NewMoney;
 
 	local OldMoney = ElvDB['gold'][E.myrealm][E.myname] or NewMoney
 
@@ -44,7 +48,7 @@ local function OnEvent(self, event, ...)
 		Profit = Profit + Change
 	end
 
-	self.text:SetText(formatMoney(NewMoney))
+	self.text:SetText(FormatMoney(NewMoney))
 
 	ElvDB['gold'][E.myrealm][E.myname] = NewMoney
 end
@@ -63,12 +67,12 @@ local function OnEnter(self)
 	DT:SetupTooltip(self)
 
 	GameTooltip:AddLine(L['Session:'])
-	GameTooltip:AddDoubleLine(L["Earned:"], formatMoney(Profit), 1, 1, 1, 1, 1, 1)
-	GameTooltip:AddDoubleLine(L["Spent:"], formatMoney(Spent), 1, 1, 1, 1, 1, 1)
+	GameTooltip:AddDoubleLine(L["Earned:"], FormatMoney(Profit), 1, 1, 1, 1, 1, 1)
+	GameTooltip:AddDoubleLine(L["Spent:"], FormatMoney(Spent), 1, 1, 1, 1, 1, 1)
 	if Profit < Spent then
-		GameTooltip:AddDoubleLine(L["Deficit:"], formatMoney(Profit-Spent), 1, 0, 0, 1, 1, 1)
+		GameTooltip:AddDoubleLine(L["Deficit:"], FormatMoney(Profit-Spent), 1, 0, 0, 1, 1, 1)
 	elseif (Profit-Spent)>0 then
-		GameTooltip:AddDoubleLine(L["Profit:"	], formatMoney(Profit-Spent), 0, 1, 0, 1, 1, 1)
+		GameTooltip:AddDoubleLine(L["Profit:"	], FormatMoney(Profit-Spent), 0, 1, 0, 1, 1, 1)
 	end
 	GameTooltip:AddLine' '
 
@@ -96,7 +100,7 @@ local function OnEnter(self)
 	end
 	
 	GameTooltip:AddLine' '
-	GameTooltip:AddLine("|cffaaaaaa"..L["Reset Data: Hold Shift + Right Click"].."|r")
+	GameTooltip:AddLine(resetInfoFormatter)
 
 	GameTooltip:Show()
 end

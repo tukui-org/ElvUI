@@ -10,6 +10,8 @@ S.EmbeddableAddons = {
 	['Omen'] = true,
 }
 
+local find = string.find
+
 local function SetModifiedBackdrop(self)
 	if self.backdrop then self = self.backdrop end
 	self:SetBackdropBorderColor(unpack(E["media"].rgbvaluecolor))	
@@ -128,7 +130,7 @@ end
 
 function S:HandleNextPrevButton(btn, buttonOverride)
 	local norm, pushed, disabled
-	local inverseDirection = btn:GetName() and (string.find(btn:GetName(), 'Left') or string.find(btn:GetName(), 'Prev') or string.find(btn:GetName(), 'Decrement'))
+	local inverseDirection = btn:GetName() and (find(btn:GetName(), 'Left') or find(btn:GetName(), 'Prev') or find(btn:GetName(), 'Decrement'))
 	
 	btn:StripTextures()
 	btn:SetNormalTexture(nil)

@@ -2,13 +2,12 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 local DT = E:GetModule('DataTexts')
 
 local format = string.format
+local join = string.join
 local lastPanel
 local displayString = '';
+local expertiseString = join("", STAT_EXPERTISE, ": ")
 
 local function OnEvent(self, event, unit)
-	if event == "UNIT_AURA" and unit ~= 'player' then return end
-	lastPanel = self
-
 	local expertise, offhandExpertise = GetExpertise();
 	expertise = format("%.2f%%", expertise);
 	offhandExpertise = format("%.2f%%", offhandExpertise);
@@ -20,7 +19,8 @@ local function OnEvent(self, event, unit)
 	else
 		text = expertise;
 	end
-	self.text:SetFormattedText(displayString, STAT_EXPERTISE..": ", text)
+	self.text:SetFormattedText(displayString, expertiseString, text)
+	lastPanel = self
 end
 
 local function OnEnter(self)

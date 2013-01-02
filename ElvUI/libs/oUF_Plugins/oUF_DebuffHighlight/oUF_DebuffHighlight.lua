@@ -1,7 +1,7 @@
 local E, L, DF = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 local _, ns = ...
-local oUF = ns.oUF or oUF
+local oUF = oUF or ns.oUF
 if not oUF then return end
  
 local playerClass = select(2,UnitClass("player"))
