@@ -1,6 +1,8 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
+local format = string.format
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.guild ~= true then return end
 	GuildFrame:StripTextures(true)
@@ -282,7 +284,7 @@ local function LoadSkin()
 			if ( eventTime - time() < SIX_DAYS ) and CALENDAR_WEEKDAY_NAMES[weekday] then
 				displayDay = CALENDAR_WEEKDAY_NAMES[weekday];
 			elseif CALENDAR_WEEKDAY_NAMES[weekday] and day and month then
-				displayDay = string.format(GUILD_NEWS_DATE, CALENDAR_WEEKDAY_NAMES[weekday], day, month);
+				displayDay = format(GUILD_NEWS_DATE, CALENDAR_WEEKDAY_NAMES[weekday], day, month);
 			end
 		end
 		

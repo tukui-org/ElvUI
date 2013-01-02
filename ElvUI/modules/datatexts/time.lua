@@ -1,11 +1,15 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local DT = E:GetModule('DataTexts')
 
+local format = string.format
+local join = string.join
+local floor = math.floor
+
 local APM = { TIMEMANAGER_PM, TIMEMANAGER_AM }
 local europeDisplayFormat = '';
 local ukDisplayFormat = '';
-local europeDisplayFormat_nocolor = string.join("", "%02d", ":|r%02d")
-local ukDisplayFormat_nocolor = string.join("", "", "%d", ":|r%02d", " %s|r")
+local europeDisplayFormat_nocolor = join("", "%02d", ":|r%02d")
+local ukDisplayFormat_nocolor = join("", "", "%d", ":|r%02d", " %s|r")
 local timerLongFormat = "%d:%02d:%02d"
 local timerShortFormat = "%d:%02d"
 local lockoutInfoFormat = "%s%s |cffaaaaaa(%s, %s/%s)"
@@ -18,8 +22,8 @@ local enteredFrame = false;
 
 local Update, lastPanel; -- UpValue
 local function ValueColorUpdate(hex, r, g, b)
-	europeDisplayFormat = string.join("", "%02d", hex, ":|r%02d")
-	ukDisplayFormat = string.join("", "", "%d", hex, ":|r%02d", hex, " %s|r")
+	europeDisplayFormat = join("", "%02d", hex, ":|r%02d")
+	ukDisplayFormat = join("", "", "%d", hex, ":|r%02d", hex, " %s|r")
 	
 	if lastPanel ~= nil then
 		Update(lastPanel, 20000)
@@ -133,9 +137,9 @@ local function OnEnter(self)
 			else
 				local hour, min, sec = CalculateTimeLeft(startTime)
 				if hour > 0 then 
-					startTime = string.format(timerLongFormat, hour, min, sec) 
+					startTime = format(timerLongFormat, hour, min, sec) 
 				else 
-					startTime = string.format(timerShortFormat, min, sec)
+					startTime = format(timerShortFormat, min, sec)
 				end
 			end
 			GameTooltip:AddDoubleLine(format(formatBattleGroundInfo, localizedName), startTime, 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)	
@@ -183,9 +187,9 @@ local function OnEnter(self)
 	GameTooltip:AddLine(" ")
 	timeText = E.db.datatexts.localtime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME
 	if AmPm == -1 then
-		GameTooltip:AddDoubleLine(timeText, string.format(europeDisplayFormat_nocolor, Hr, Min), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
+		GameTooltip:AddDoubleLine(timeText, format(europeDisplayFormat_nocolor, Hr, Min), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
 	else
-		GameTooltip:AddDoubleLine(timeText, string.format(ukDisplayFormat_nocolor, Hr, Min, APM[AmPm]), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
+		GameTooltip:AddDoubleLine(timeText, format(ukDisplayFormat_nocolor, Hr, Min, APM[AmPm]), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
 	end	
 	
 	GameTooltip:Show()

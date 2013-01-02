@@ -3,6 +3,7 @@ local oUF = ns.oUF
 local Private = oUF.Private
 
 local argcheck = Private.argcheck
+local tinsert = table.insert
 
 local _QUEUE = {}
 local _FACTORY = CreateFrame'Frame'
@@ -31,7 +32,7 @@ function oUF:Factory(func)
 	if(IsLoggedIn() and _FACTORY.active) then
 		return func(self)
 	else
-		table.insert(_QUEUE, func)
+		tinsert(_QUEUE, func)
 	end
 end
 

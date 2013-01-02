@@ -23,7 +23,7 @@ function THREAT:Update()
 		local name = UnitName('target')
 		self.bar:Show()
 		self.bar:SetStatusBarColor(GetThreatStatusColor(status))
-		self.bar.text:SetFormattedText('%s: %d%%', name, E:TrimFloatingPoint(percent / 100 * 100))
+		self.bar.text:SetFormattedText('%s: %.0f%%', name, percent)
 		self.bar:SetValue(percent)
 	else
 		self.bar:Hide()

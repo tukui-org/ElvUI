@@ -1,6 +1,8 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
+local ceil = math.ceil
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.misc ~= true then return end
 	-- Blizzard frame we want to reskin
@@ -505,7 +507,7 @@ local function LoadSkin()
         if cctab then
             S:HandleTab(cctab)
             cctab:SetHeight(cctab:GetHeight()-2)
-            cctab:SetWidth(math.ceil(cctab:GetWidth()+1.6))
+            cctab:SetWidth(ceil(cctab:GetWidth()+1.6))
             _G["CombatConfigTab"..i.."Text"]:SetPoint("BOTTOM",0,10)
         end
     end

@@ -5,6 +5,7 @@ local E, L, DF = unpack(select(2, ...))
 local B = E:GetModule('Blizzard');
 local S = E:GetModule('Skins');
 
+local format, floor = string.format, math.floor
 local initialized = nil
 local colorBuffer = {}
 local editingText
@@ -12,15 +13,15 @@ local editingText
 local function UpdateAlphaText()
 	local a = OpacitySliderFrame:GetValue()
 	a = a * 100
-	a = math.floor(a +.05)
-	ColorPPBoxA:SetText(string.format("%d", a))	
+	a = floor(a +.05)
+	ColorPPBoxA:SetText(format("%d", a))	
 end
 
 local function UpdateAlpha(tbox)
 	local a = tbox:GetNumber()
 	if a > 100 then 
 		a = 100 
-		ColorPPBoxA:SetText(string.format("%d", a))
+		ColorPPBoxA:SetText(format("%d", a))
 	end
 	a = a/100
 	editingText = true
@@ -33,10 +34,10 @@ local function UpdateColorTexts(r, g, b)
 	r = r*255 
 	g = g*255
 	b = b*255
-	ColorPPBoxR:SetText(string.format("%d", r))
-	ColorPPBoxG:SetText(string.format("%d", g))
-	ColorPPBoxB:SetText(string.format("%d", b))
-	ColorPPBoxH:SetText(string.format("%.2x", r)..string.format("%.2x",g)..string.format("%.2x", b))
+	ColorPPBoxR:SetText(format("%d", r))
+	ColorPPBoxG:SetText(format("%d", g))
+	ColorPPBoxB:SetText(format("%d", b))
+	ColorPPBoxH:SetText(format("%.2x", r)..format("%.2x",g)..format("%.2x", b))
 end		
 
 local function UpdateColor(tbox)
@@ -44,15 +45,15 @@ local function UpdateColor(tbox)
 	local id = tbox:GetID()
 
 	if id == 1 then
-		r = string.format("%d", tbox:GetNumber())
+		r = format("%d", tbox:GetNumber())
 		if not r then r = 0 end
 		r = r/255
 	elseif id == 2 then
-		g = string.format("%d", tbox:GetNumber())
+		g = format("%d", tbox:GetNumber())
 		if not g then g = 0 end
 		g = g/255
 	elseif id == 3 then
-		b = string.format("%d", tbox:GetNumber())
+		b = format("%d", tbox:GetNumber())
 		if not b then b = 0 end
 		b = b/255
 	elseif id == 4 then
@@ -229,7 +230,7 @@ function B:EnhanceColorPicker()
 
 	-- set up edit box frames and interior label and text areas
 	local boxes = { "R", "G", "B", "H", "A" }	
-	for i = 1, table.getn(boxes) do
+	for i = 1, #boxes do
 
 		local rgb = boxes[i]
 		local box = CreateFrame("EditBox", "ColorPPBox"..rgb, ColorPickerFrame, "InputBoxTemplate")

@@ -10,10 +10,10 @@ local function LoadSkin()
 	ItemSocketingScrollFrame:CreateBackdrop("Transparent")
 	S:HandleScrollBar(ItemSocketingScrollFrameScrollBar, 2)
 	for i = 1, MAX_NUM_SOCKETS  do
-		local button = _G["ItemSocketingSocket"..i]
-		local button_bracket = _G["ItemSocketingSocket"..i.."BracketFrame"]
-		local button_bg = _G["ItemSocketingSocket"..i.."Background"]
-		local button_icon = _G["ItemSocketingSocket"..i.."IconTexture"]
+		local button = _G[("ItemSocketingSocket%d"):format(i)]
+		local button_bracket = _G[("ItemSocketingSocket%dBracketFrame"):format(i)]
+		local button_bg = _G[("ItemSocketingSocket%dBackground"):format(i)]
+		local button_icon = _G[("ItemSocketingSocket%dIconTexture"):format(i)]
 		button:StripTextures()
 		button:StyleButton(false)
 		button:SetTemplate("Default", true)
@@ -22,7 +22,7 @@ local function LoadSkin()
 		button_icon:SetTexCoord(unpack(E.TexCoords))
 		button_icon:SetInside()
 
-		ItemSocketingFrame:HookScript("OnUpdate", function(self)
+		ItemSocketingFrame:HookScript("OnShow", function(self)
 			gemColor = GetSocketTypes(i)
 			local color = GEM_TYPE_INFO[gemColor]
 			button:SetBackdropColor(color.r, color.g, color.b, 0.15)

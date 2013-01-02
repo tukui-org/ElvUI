@@ -29,7 +29,10 @@ end
 
 local OnUpdate = function(self, elapsed)
 	if(self.paused) then return end
-
+	self.lastupdate = (self.lastupdate or 0) + elapsed
+	if (self.lastupdate < .1) then return end
+	self.lastupdate = 0
+	
 	self:SetValue(GetMirrorTimerProgress(self.type) / 1e3)
 end
 

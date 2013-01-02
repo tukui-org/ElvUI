@@ -5,18 +5,15 @@ local lastPanel
 local armorString = ARMOR..": "
 local chanceString = "%.2f%%";
 local format = string.format
+local join = string.join
 local displayString = ''; 
 local baseArmor, effectiveArmor, armor, posBuff, negBuff
 	
 local function OnEvent(self, event, unit)
-	if event == "UNIT_RESISTANCES" and unit ~= 'player' then return end
-	lastPanel = self
-	
 	baseArmor, effectiveArmor, armor, posBuff, negBuff = UnitArmor("player");
 
 	self.text:SetFormattedText(displayString, armorString, effectiveArmor)
-	
-	int = 2
+	lastPanel = self
 end
 
 
@@ -42,7 +39,7 @@ local function OnEnter(self)
 end
 
 local function ValueColorUpdate(hex, r, g, b)
-	displayString = string.join("", "%s", hex, "%d|r")
+	displayString = join("", "%s", hex, "%d|r")
 	
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)
