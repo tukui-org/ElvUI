@@ -20,6 +20,8 @@ local percentageString = "%.2f%%"
 local homeLatencyString = "%d ms"
 local kiloByteString = "%d kb"
 local megaByteString = "%.2f mb"
+local totalMemory = 0
+local bandwidth = 0
 
 local function formatMem(memory)
 	local mult = 10^1
@@ -51,12 +53,10 @@ local function UpdateMemory()
 	-- Update the memory usages of the addons
 	UpdateAddOnMemoryUsage()
 	-- Load memory usage in table
-	local addOnMem = 0
-	local totalMemory = 0
+	totalMemory = 0
 	for i = 1, #memoryTable do
-		addOnMem = GetAddOnMemoryUsage(memoryTable[i][1])
-		memoryTable[i][3] = addOnMem
-		totalMemory = totalMemory + addOnMem
+		memoryTable[i][3] = GetAddOnMemoryUsage(memoryTable[i][1])
+		totalMemory = totalMemory + memoryTable[i][3]
 	end
 	-- Sort the table to put the largest addon on top
 	sort(memoryTable, function(a, b)
@@ -64,8 +64,6 @@ local function UpdateMemory()
 			return a[3] > b[3]
 		end
 	end)
-	
-	return totalMemory
 end
 
 local function UpdateCPU()
@@ -99,10 +97,10 @@ local function OnEnter(self)
 	local cpuProfiling = GetCVar("scriptProfile") == "1"
 	DT:SetupTooltip(self)
 
-	local bandwidth = GetAvailableBandwidth()
-	local home_latency = select(3, GetNetStats()) 
+	UpdateMemory()	
+	bandwidth = GetAvailableBandwidth()
 	
-	GameTooltip:AddDoubleLine(L['Home Latency:'], format(homeLatencyString, home_latency), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+	GameTooltip:AddDoubleLine(L['Home Latency:'], format(homeLatencyString, select(3, GetNetStats())), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 	
 	if bandwidth ~= 0 then
 		GameTooltip:AddDoubleLine(L['Bandwidth'] , format(bandwidthString, bandwidth),0.69, 0.31, 0.31,0.84, 0.75, 0.65)
@@ -110,7 +108,6 @@ local function OnEnter(self)
 		GameTooltip:AddLine(" ")
 	end
 	
-	local totalMemory = UpdateMemory()
 	local totalCPU = nil
 	GameTooltip:AddDoubleLine(L['Total Memory:'], formatMem(totalMemory), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 	if cpuProfiling then
@@ -118,12 +115,13 @@ local function OnEnter(self)
 		GameTooltip:AddDoubleLine(L['Total CPU:'], format(homeLatencyString, totalCPU), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 	end
 	
+	local red, green
 	if IsShiftKeyDown() or not cpuProfiling then
 		GameTooltip:AddLine(" ")
 		for i = 1, #memoryTable do
 			if (memoryTable[i][4]) then
-				local red = memoryTable[i][3] / totalMemory
-				local green = 1 - red
+				red = memoryTable[i][3] / totalMemory
+				green = 1 - red
 				GameTooltip:AddDoubleLine(memoryTable[i][2], formatMem(memoryTable[i][3]), 1, 1, 1, red, green + .5, 0)
 			end						
 		end
@@ -133,8 +131,8 @@ local function OnEnter(self)
 		GameTooltip:AddLine(" ")
 		for i = 1, #cpuTable do
 			if (cpuTable[i][4]) then
-				local red = cpuTable[i][3] / totalCPU
-				local green = 1 - red
+				red = cpuTable[i][3] / totalCPU
+				green = 1 - red
 				GameTooltip:AddDoubleLine(cpuTable[i][2], format(homeLatencyString, cpuTable[i][3]), 1, 1, 1, red, green + .5, 0)
 			end						
 		end
@@ -160,25 +158,13 @@ local function Update(self, t)
 	end
 	if int2 < 0 then
 		local framerate = floor(GetFramerate())
-		local fpscolor = 4
 		local latency = select(4, GetNetStats()) 
-		local latencycolor = 4
 					
-		if latency < 150 then
-			latencycolor = 1
-		elseif latency >= 150 and latency < 300 then
-			latencycolor = 2
-		elseif latency >= 300 and latency < 500 then
-			latencycolor = 3
-		end
-		if framerate >= 30 then
-			fpscolor = 1
-		elseif framerate >= 20 and framerate < 30 then
-			fpscolor = 2
-		elseif framerate >= 10 and framerate < 20 then
-			fpscolor = 3
-		end
-		self.text:SetFormattedText(join("", "FPS: ", statusColors[fpscolor], "%d|r MS: ", statusColors[latencycolor], "%d|r"), framerate, latency)
+		self.text:SetFormattedText("FPS: %s%d|r MS: %s%d|r", 
+			statusColors[framerate >= 30 and 1 or (framerate >= 20 and framerate < 30) and 2 or (framerate >= 10 and framerate < 20) and 3 or 4], 
+			framerate, 
+			statusColors[latency < 150 and 1 or (latency >= 150 and latency < 300) and 2 or (latency >= 300 and latency < 500) and 3 or 4], 
+			latency)
 		int2 = 1
 		if enteredFrame then
 			OnEnter(self)
