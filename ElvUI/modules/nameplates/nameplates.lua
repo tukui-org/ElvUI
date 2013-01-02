@@ -60,10 +60,7 @@ end
 function NP:QueueObject(frame, object)
 	if not frame.queue then frame.queue = {} end
 	frame.queue[object] = true
-	
-	object.allowShow = true;
-	object:Show();
-	
+
 	if object.OldTexture then
 		object:SetTexture(object.OldTexture)
 	end
@@ -167,19 +164,9 @@ function NP:ForEachPlate(functionToRun, ...)
 	end
 end
 
-local function RehideFrame(self)
-	if not self.allowShow then
-		self:Hide()
-	end
-	
-	self.allowShow = nil;
-end
-
 function NP:HideObjects(frame)
 	local objectType
-	for object in pairs(frame.queue) do
-		hooksecurefunc(object, "Show", RehideFrame)
-		
+	for object in pairs(frame.queue) do		
 		objectType = object:GetObjectType()  
 		if objectType == "Texture" then
 			object.OldTexture = object:GetTexture()
@@ -187,9 +174,9 @@ function NP:HideObjects(frame)
 			object:SetTexCoord(0, 0, 0, 0)
 		elseif objectType == 'FontString' then
 			object:SetWidth(0.001)
+		else
+			object:Hide()
 		end
-		
-		object:Hide()
 	end
 end
 
@@ -198,11 +185,11 @@ function NP:Update_LevelText(frame)
 	if region and region:GetObjectType() == 'FontString' then
 		frame.hp.oldlevel = select(4, frame:GetRegions())
 	end
-	
+
 	if frame.hp.oldlevel:IsShown() then
 		if self.db.showlevel == true then
-			local level, elite, mylevel = frame.hp.oldlevel:GetObjectType() == 'FontString' and tonumber(frame.hp.oldlevel:GetText()) or nil, frame.hp.elite:IsShown(), UnitLevel("player")
-			if frame.isBoss then
+			local level, elite, boss, mylevel = frame.hp.oldlevel:GetObjectType() == 'FontString' and tonumber(frame.hp.oldlevel:GetText()) or nil, frame.isElite, frame.isBoss, UnitLevel("player")
+			if boss then
 				frame.hp.level:SetText("??")
 				frame.hp.level:SetTextColor(0.8, 0.05, 0)
 				frame.hp.level:Show()
@@ -223,7 +210,7 @@ function NP:Update_LevelText(frame)
 	elseif frame.isBoss and self.db.showlevel and frame.hp.level:GetText() ~= '??' then
 		frame.hp.level:SetText("??")
 		frame.hp.level:SetTextColor(0.8, 0.05, 0)
-		frame.hp.level:Show()	
+		frame.hp.level:Show()
 	end
 end
 
@@ -334,12 +321,13 @@ function NP:HealthBar_OnShow(frame)
 	
 	frame.AuraWidget:SetScale(frame.hp:GetScale())
 	
-	--Level Text
-	frame.isBoss = frame.hp.boss:IsShown()
-	NP:Update_LevelText(frame)
-	
 	NP.ScanHealth(frame.oldhp)
 	NP:CheckFilter(frame)
+	
+	frame.isBoss = frame.hp.boss:IsShown()
+	frame.isElite = frame.hp.elite:IsShown()
+	NP:Update_LevelText(frame)
+	
 	self:HideObjects(frame)
 end
 
@@ -358,6 +346,8 @@ function NP:OnHide(frame)
 	frame.classIcon:Hide()
 	frame.AuraWidget:SetScale(1)
 	frame.cb:Hide()
+	frame.isBoss = nil
+	frame.isElite = nil
 	frame.unit = nil
 	frame.isMarked = nil
 	frame.isSmallNP = nil
@@ -365,7 +355,6 @@ function NP:OnHide(frame)
 	frame.threatStatus = nil
 	frame.guid = nil
 	frame.hasClass = nil
-	frame.isBoss = nil;
 	frame.customColor = nil
 	frame.customScale = nil
 	frame.isFriendly = nil
@@ -383,7 +372,8 @@ function NP:OnHide(frame)
 		for _,icon in ipairs(frame.icons) do
 			icon:Hide()
 		end
-	end	
+	end
+
 end
 
 function NP:SkinPlate(frame, nameFrame)
@@ -445,6 +435,7 @@ function NP:SkinPlate(frame, nameFrame)
 	frame.hp.level:FontTemplate(font, self.db.fontSize, self.db.fontOutline)
 	if oldlevel:GetObjectType() == 'FontString' then
 		frame.hp.level:SetText(oldlevel:GetText())
+		frame.hp.level:SetTextColor(oldlevel:GetTextColor())
 	end
 	
 	if not frame.classIcon then
