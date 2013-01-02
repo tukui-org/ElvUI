@@ -8087,14 +8087,14 @@ E.Options.args.unitframe.args.party = {
 					type = 'range',
 					name = L['xOffset'],
 					desc = L['An X offset (in pixels) to be used when anchoring new frames.'],
-					min = -25, max = 25, step = 1,		
+					min = -50, max = 50, step = 1,		
 				},
 				yOffset = {
 					order = 10,
 					type = 'range',
 					name = L['yOffset'],
 					desc = L['An Y offset (in pixels) to be used when anchoring new frames.'],
-					min = -25, max = 25, step = 1,		
+					min = -50, max = 50, step = 1,		
 				},		
 				showParty = {
 					order = 11,
@@ -8846,14 +8846,14 @@ for i=10, 40, 15 do
 						type = 'range',
 						name = L['xOffset'],
 						desc = L['An X offset (in pixels) to be used when anchoring new frames.'],
-						min = -25, max = 25, step = 1,		
+						min = -50, max = 50, step = 1,		
 					},
 					yOffset = {
 						order = 10,
 						type = 'range',
 						name = L['yOffset'],
 						desc = L['An Y offset (in pixels) to be used when anchoring new frames.'],
-						min = -25, max = 25, step = 1,		
+						min = -50, max = 50, step = 1,		
 					},		
 					showParty = {
 						order = 11,

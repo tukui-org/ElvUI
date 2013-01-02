@@ -37,11 +37,10 @@ local AB = 461
 local TOK = 856
 local SSM = 860
 local name
-local pointIndex
 
 function DT:UPDATE_BATTLEFIELD_SCORE()
 	lastPanel = self
-	pointIndex = pointIndex or dataLayout[self:GetParent():GetName()][self.pointIndex]
+	local pointIndex = dataLayout[self:GetParent():GetName()][self.pointIndex]
 	for i=1, GetNumBattlefieldScores() do
 		name = GetBattlefieldScore(i)
 		if name == E.myname then
