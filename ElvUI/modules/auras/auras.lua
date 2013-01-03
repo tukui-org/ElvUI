@@ -32,11 +32,11 @@ A.DateColors = {
 
 -- short and long aura time formats
 A.TimeFormats = {
-	[0] = { '%d', '%dd' , 'd' },
-	[1] = { '%d', '%dh', 'h' },
-	[2] = { '%d', '%dm', 'm' },
-	[3] = { '%d', '%d', 's' },
-	[4] = { '%.1f', '%.1f', 's' },
+	[0] = { '%d', 'd' },
+	[1] = { '%d', 'h' },
+	[2] = { '%d', 'm' },
+	[3] = { '%d', 's' },
+	[4] = { '%.1f', 's' },
 }
 
 -- will return the the value to display, the formatter id to use and calculates the next update for the Aura
@@ -75,7 +75,7 @@ function A:UpdateTime(elapsed)
 
 	local timervalue, formatid
 	timervalue, formatid, self.nextupdate = A:AuraTimeGetInfo(self.expiration, E.db.auras.decimalThreshold)
-	self.time:SetFormattedText(("%s%s|r%s%s|r"):format(A.TimeColors[formatid], A.TimeFormats[formatid][1], A.DateColors[formatid], A.TimeFormats[formatid][3]), timervalue)	
+	self.time:SetFormattedText(("%s%s|r%s%s|r"):format(A.TimeColors[formatid], A.TimeFormats[formatid][1], A.DateColors[formatid], A.TimeFormats[formatid][2]), timervalue)	
 	if self.expiration > E.db.auras.fadeThreshold then
 		E:StopFlash(self)
 	else
@@ -284,7 +284,7 @@ function A:UpdateWeaponText(auraButton, timeLeft)
 			E:StopFlash(auraButton)
 		else
 			local timervalue, formatid = A:AuraTimeGetInfo(timeLeft, E.db.auras.decimalThreshold)
-			duration:SetFormattedText(("%s%s|r%s%s|r"):format(A.TimeColors[formatid], A.TimeFormats[formatid][1], A.DateColors[formatid], A.TimeFormats[formatid][3]), timervalue)	
+			duration:SetFormattedText(("%s%s|r%s%s|r"):format(A.TimeColors[formatid], A.TimeFormats[formatid][1], A.DateColors[formatid], A.TimeFormats[formatid][2]), timervalue)	
 			if timeLeft <= E.db.auras.fadeThreshold then
 				E:Flash(auraButton, 1)
 			else

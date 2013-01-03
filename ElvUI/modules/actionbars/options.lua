@@ -364,11 +364,11 @@ local function BuildABConfig()
 				name = L["Restore Defaults"],
 				order = 3,
 				func = function() 
-					self.db.expiringcolor = P['actionbar'].expiringcolor;
-					self.db.secondscolor = P['actionbar'].secondscolor;
-					self.db.minutescolor = P['actionbar'].minutescolor;
-					self.db.hourscolor = P['actionbar'].hourscolor;
-					self.db.dayscolor = P['actionbar'].dayscolor;
+					E.db.actionbar.expiringcolor = P['actionbar'].expiringcolor;
+					E.db.actionbar.secondscolor = P['actionbar'].secondscolor;
+					E.db.actionbar.minutescolor = P['actionbar'].minutescolor;
+					E.db.actionbar.hourscolor = P['actionbar'].hourscolor;
+					E.db.actionbar.dayscolor = P['actionbar'].dayscolor;
 					AB:UpdateCooldownSettings();
 				end,
 			},
