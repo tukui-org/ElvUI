@@ -166,7 +166,7 @@ function UF:UpdateAuraTimer(elapsed)
 	end
 
 	local timervalue, formatid
-	timervalue, formatid, self.nextupdate = A:AuraTimeGetInfo(self.expiration, E.db.auras.fadeThreshold)
+	timervalue, formatid, self.nextupdate = A:AuraTimeGetInfo(self.expiration, E.db.auras.decimalThreshold)
 	self.text:SetFormattedText(("%s%s|r"):format(A.TimeColors[formatid], A.TimeFormats[formatid][2]), timervalue)
 end
 
