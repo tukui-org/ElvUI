@@ -53,21 +53,28 @@ E.Options.args.auras = {
 					desc = L['Threshold before text changes red, goes into decimal form, and the icon will fade. Set to -1 to disable.'],
 					min = -1, max = 30, step = 1,
 					order = 3,
-				},	
+				},
+				decimalThreshold = {
+					type = 'range',
+					name = L["Decimal Threshold"],
+					desc = L['Threshold before the timer changes color and goes into decimal form. Set to -1 to disable.'],
+					min = -1, max = 30, step = 1,
+					order = 4,
+				},
 				font = {
 					type = "select", dialogControl = 'LSM30_Font',
-					order = 4,
+					order = 5,
 					name = L["Font"],
 					values = AceGUIWidgetLSMlists.font,
 				},
 				fontSize = {
-					order = 5,
+					order = 6,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},	
 				fontOutline = {
-					order = 6,
+					order = 7,
 					name = L["Font Outline"],
 					desc = L["Set the font outline."],
 					type = "select",
@@ -80,7 +87,217 @@ E.Options.args.auras = {
 					},
 				},					
 			},
-		},	
+		},
+		colors = {
+			order = 6,
+			type = 'group',
+			guiInline = true,
+			name = L['Colors'],
+			args = {
+				numbers = {
+					order = 1,
+					type = 'group',
+					guiInline = true,
+					name = 'Numbers',
+					args = {
+						restoreColors = {
+							order = 1,
+							type = 'execute',
+							name = L['Restore Defaults'],
+							func = function()
+								E.db.auras.expiringcolor = P['auras'].expiringcolor;
+								E.db.auras.secondscolor = P['auras'].secondscolor;
+								E.db.auras.minutescolor = P['auras'].minutescolor;
+								E.db.auras.hourscolor = P['auras'].hourscolor;
+								E.db.auras.dayscolor = P['auras'].dayscolor;
+								A:UpdateTimerSettings();
+							end,
+						},
+						expiringcolor = {
+							type = 'color',
+							order = 2,
+							name = L['Expiring'],
+							desc = L['Color when the text is about to expire'],
+							get = function(info)
+								local t = E.db.auras[ info[#info] ]
+								return t.r, t.g, t.b, t.a
+							end,
+							set = function(info, r, g, b)
+								E.db.auras[ info[#info] ] = {}
+								local t = E.db.auras[ info[#info] ]
+								t.r, t.g, t.b = r, g, b
+								A:UpdateTimerSettings();
+							end,					
+						},
+						secondscolor = {
+							type = 'color',
+							order = 3,
+							name = L['Seconds'],
+							desc = L['Color when the text is in the seconds format.'],
+							get = function(info)
+								local t = E.db.auras[ info[#info] ]
+								return t.r, t.g, t.b, t.a
+							end,
+							set = function(info, r, g, b)
+								E.db.auras[ info[#info] ] = {}
+								local t = E.db.auras[ info[#info] ]
+								t.r, t.g, t.b = r, g, b
+								A:UpdateTimerSettings();
+							end,				
+						},
+						minutescolor = {
+							type = 'color',
+							order = 4,
+							name = L['Minutes'],
+							desc = L['Color when the text is in the minutes format.'],
+							get = function(info)
+								local t = E.db.auras[ info[#info] ]
+								return t.r, t.g, t.b, t.a
+							end,
+							set = function(info, r, g, b)
+								E.db.auras[ info[#info] ] = {}
+								local t = E.db.auras[ info[#info] ]
+								t.r, t.g, t.b = r, g, b
+								A:UpdateTimerSettings();
+							end,				
+						},
+						hourscolor = {
+							type = 'color',
+							order = 5,
+							name = L['Hours'],
+							desc = L['Color when the text is in the hours format.'],
+							get = function(info)
+								local t = E.db.auras[ info[#info] ]
+								return t.r, t.g, t.b, t.a
+							end,
+							set = function(info, r, g, b)
+								E.db.auras[ info[#info] ] = {}
+								local t = E.db.auras[ info[#info] ]
+								t.r, t.g, t.b = r, g, b
+								A:UpdateTimerSettings();
+							end,				
+						},	
+						dayscolor = {
+							type = 'color',
+							order = 6,
+							name = L['Days'],
+							desc = L['Color when the text is in the days format.'],
+							get = function(info)
+								local t = E.db.auras[ info[#info] ]
+								return t.r, t.g, t.b, t.a
+							end,
+							set = function(info, r, g, b)
+								E.db.auras[ info[#info] ] = {}
+								local t = E.db.auras[ info[#info] ]
+								t.r, t.g, t.b = r, g, b
+								A:UpdateTimerSettings();
+							end,				
+						},
+					},
+				},
+				dateIndicator = {
+					order = 2,
+					type = 'group',
+					guiInline = true,
+					name = 'Date Indicator (s, m, h, d)',
+					args = {
+						restoreColors = {
+							order = 1,
+							type = 'execute',
+							name = L['Restore Defaults'],
+							func = function()
+								E.db.auras.expiringdatecolor = P['auras'].expiringdatecolor;
+								E.db.auras.secondsdatecolor = P['auras'].secondsdatecolor;
+								E.db.auras.minutesdatecolor = P['auras'].minutesdatecolor;
+								E.db.auras.hoursdatecolor = P['auras'].hoursdatecolor;
+								E.db.auras.daysdatecolor = P['auras'].daysdatecolor;
+								A:UpdateTimerSettings()
+							end,
+						},
+						expiringdatecolor = {
+							type = 'color',
+							order = 2,
+							name = L['Expiring'],
+							desc = L['Color when the text is about to expire'],
+							get = function(info)
+								local t = E.db.auras[ info[#info] ]
+								return t.r, t.g, t.b, t.a
+							end,
+							set = function(info, r, g, b)
+								E.db.auras[ info[#info] ] = {}
+								local t = E.db.auras[ info[#info] ]
+								t.r, t.g, t.b = r, g, b
+								A:UpdateTimerSettings();
+							end,					
+						},
+						secondsdatecolor = {
+							type = 'color',
+							order = 3,
+							name = L['Seconds'],
+							desc = L['Color when the text is in the seconds format.'],
+							get = function(info)
+								local t = E.db.auras[ info[#info] ]
+								return t.r, t.g, t.b, t.a
+							end,
+							set = function(info, r, g, b)
+								E.db.auras[ info[#info] ] = {}
+								local t = E.db.auras[ info[#info] ]
+								t.r, t.g, t.b = r, g, b
+								A:UpdateTimerSettings();
+							end,				
+						},
+						minutesdatecolor = {
+							type = 'color',
+							order = 4,
+							name = L['Minutes'],
+							desc = L['Color when the text is in the minutes format.'],
+							get = function(info)
+								local t = E.db.auras[ info[#info] ]
+								return t.r, t.g, t.b, t.a
+							end,
+							set = function(info, r, g, b)
+								E.db.auras[ info[#info] ] = {}
+								local t = E.db.auras[ info[#info] ]
+								t.r, t.g, t.b = r, g, b
+								A:UpdateTimerSettings();
+							end,				
+						},
+						hoursdatecolor = {
+							type = 'color',
+							order = 5,
+							name = L['Hours'],
+							desc = L['Color when the text is in the hours format.'],
+							get = function(info)
+								local t = E.db.auras[ info[#info] ]
+								return t.r, t.g, t.b, t.a
+							end,
+							set = function(info, r, g, b)
+								E.db.auras[ info[#info] ] = {}
+								local t = E.db.auras[ info[#info] ]
+								t.r, t.g, t.b = r, g, b
+								A:UpdateTimerSettings();
+							end,				
+						},	
+						daysdatecolor = {
+							type = 'color',
+							order = 6,
+							name = L['Days'],
+							desc = L['Color when the text is in the days format.'],
+							get = function(info)
+								local t = E.db.auras[ info[#info] ]
+								return t.r, t.g, t.b, t.a
+							end,
+							set = function(info, r, g, b)
+								E.db.auras[ info[#info] ] = {}
+								local t = E.db.auras[ info[#info] ]
+								t.r, t.g, t.b = r, g, b
+								A:UpdateTimerSettings();
+							end,				
+						},
+					},
+				},
+			},
+		},
 		consolidatedBuffs = {
 			order = 9,
 			type = 'group',

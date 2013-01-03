@@ -123,7 +123,18 @@ P['auras'] = {
 	['font'] = 'ElvUI Pixel',
 	['fontSize'] = 12,
 	['fontOutline'] = 'MONOCHROMEOUTLINE',
-		
+
+	["expiringcolor"] = { r = 1, g = 0, b = 0 },
+	["expiringdatecolor"] = { r = 1, g = 0, b = 0 },
+	["secondscolor"] = { r = 0.93, g = 0.93, b = 0.93 },
+	["secondsdatecolor"] = { r = 0.20, g = 0.25, b = 0.70 },
+	["minutescolor"] = { r = 0.93, g = 0.93, b = 0.93 },
+	["minutesdatecolor"] = { r = 0.20, g = 0.25, b = 0.70 },
+	["hourscolor"] = { r = 0.93, g = 0.93, b = 0.93 },
+	["hoursdatecolor"] = { r = 0.20, g = 0.25, b = 0.70 },
+	["dayscolor"] = { r = 0.93, g = 0.93, b = 0.93 },
+	["daysdatecolor"] = { r = 0.20, g = 0.25, b = 0.70 },
+
 	['consolidatedBuffs'] = {
 		['enable'] = true,
 		['filter'] = true,
@@ -132,9 +143,10 @@ P['auras'] = {
 		['fontSize'] = 10,
 		['fontOutline'] = 'MONOCHROMEOUTLINE',
 	},
-	
+
 	['wrapAfter'] = 12,
 	['fadeThreshold'] = -1,
+	['decimalThreshold'] = 5,
 	['buffs'] = {
 		['sortMethod'] = "TIME",
 		['sortDir'] = '-',
