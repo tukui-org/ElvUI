@@ -120,7 +120,7 @@ function A:UpdateConsolidatedTime(elapsed)
 	
 	local timervalue, formatid
 	timervalue, formatid, self.nextupdate = A:AuraTimeGetInfo(self.expiration, E.db.auras.fadeThreshold)
-	self.timer:SetFormattedText(("%s%s|r"):format(A.TimeColors[formatid], A.TimeFormats[formatid][1]), timervalue)
+	self.timer:SetFormattedText(("%s%s|r%s%s|r"):format(A.TimeColors[formatid], A.TimeFormats[formatid][1], A.DateColors[formatid], A.TimeFormats[formatid][2]), timervalue)
 end
 
 function A:UpdateReminder(event, unit)
