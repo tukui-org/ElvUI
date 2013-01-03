@@ -125,15 +125,15 @@ P['auras'] = {
 	['fontOutline'] = 'MONOCHROMEOUTLINE',
 
 	["expiringcolor"] = { r = 1, g = 0, b = 0 },
-	["expiringdatecolor"] = { r = 1, g = 0, b = 0 },
+	["expiringdatecolor"] = { r = 0.93, g = 0.93, b = 0.93 },
 	["secondscolor"] = { r = 0.93, g = 0.93, b = 0.93 },
-	["secondsdatecolor"] = { r = 0.20, g = 0.25, b = 0.70 },
+	["secondsdatecolor"] = { r = 0.93, g = 0.93, b = 0.93 },
 	["minutescolor"] = { r = 0.93, g = 0.93, b = 0.93 },
-	["minutesdatecolor"] = { r = 0.20, g = 0.25, b = 0.70 },
+	["minutesdatecolor"] = { r = 0.93, g = 0.93, b = 0.93 },
 	["hourscolor"] = { r = 0.93, g = 0.93, b = 0.93 },
-	["hoursdatecolor"] = { r = 0.20, g = 0.25, b = 0.70 },
+	["hoursdatecolor"] = { r = 0.93, g = 0.93, b = 0.93 },
 	["dayscolor"] = { r = 0.93, g = 0.93, b = 0.93 },
-	["daysdatecolor"] = { r = 0.20, g = 0.25, b = 0.70 },
+	["daysdatecolor"] = { r = 0.93, g = 0.93, b = 0.93 },
 
 	['consolidatedBuffs'] = {
 		['enable'] = true,
