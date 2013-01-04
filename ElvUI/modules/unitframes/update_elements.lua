@@ -167,7 +167,7 @@ function UF:UpdateAuraTimer(elapsed)
 
 	local timervalue, formatid
 	timervalue, formatid, self.nextupdate = A:AuraTimeGetInfo(self.expiration, E.db.auras.decimalThreshold)
-	self.text:SetFormattedText(("%s%s|r%s%s|r"):format(A.TimeColors[formatid], A.TimeFormats[formatid][1], A.DateColors[formatid], ((not formatid == 3 or not formatid == 4) and A.TimeFormats[formatid][2]) or ''), timervalue)
+	self.text:SetFormattedText(("%s%s|r%s%s|r"):format(A.TimeColors[formatid], A.TimeFormats[formatid][1], A.DateColors[formatid], (formatid < 3 and A.TimeFormats[formatid][2]) or ''), timervalue)
 end
 
 function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, duration, timeLeft)
