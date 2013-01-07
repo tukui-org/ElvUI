@@ -1,13 +1,5 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 
-local format = string.format
-local sub = string.sub
-local upper = string.upper
-
-local modf = math.modf
-local ceil = math.ceil
-local floor = math.floor
-
 --Return short value of a number
 function E:ShortValue(v)
 	if v >= 1e6 then
@@ -20,7 +12,7 @@ function E:ShortValue(v)
 end
 
 function E:IsEvenNumber(num)
-	if ( num % 2 ) == 0 then
+	if math.fmod(num, 2) == 0 then
 		return true;
 	else
 		return false;
@@ -30,21 +22,36 @@ end
 -- http://www.wowwiki.com/ColorGradient
 function E:ColorGradient(perc, ...)
 	if perc >= 1 then
-		return select(select('#', ...) - 2, ...)
+		local r, g, b = select(select('#', ...) - 2, ...)
+		return r, g, b
 	elseif perc <= 0 then
-		return ...
+		local r, g, b = ...
+		return r, g, b
 	end
 
 	local num = select('#', ...) / 3
-	local segment, relperc = modf(perc*(num-1))
+	local segment, relperc = math.modf(perc*(num-1))
 	local r1, g1, b1, r2, g2, b2 = select((segment*3)+1, ...)
 
 	return r1 + (r2-r1)*relperc, g1 + (g2-g1)*relperc, b1 + (b2-b1)*relperc
 end
 
+--Return short negative value of a number, example -1000 returned as string -1k
+function E:ShortValueNegative(v)
+	if v <= 999 then return v end
+	if v >= 1000000 then
+		local value = string.format("%.1fm", v/1000000)
+		return value
+	elseif v >= 1000 then
+		local value = string.format("%.1fk", v/1000)
+		return value
+	end
+end
+
 --Return rounded number
 function E:Round(v, decimals)
-    return (("%%.%df"):format(decimals or 0)):format(v)
+	if not decimals then decimals = 0 end
+    return (("%%.%df"):format(decimals)):format(v)
 end
 
 --Truncate a number off to n places
@@ -58,12 +65,12 @@ function E:RGBToHex(r, g, b)
 	r = r <= 1 and r >= 0 and r or 0
 	g = g <= 1 and g >= 0 and g or 0
 	b = b <= 1 and b >= 0 and b or 0
-	return format("|cff%02x%02x%02x", r*255, g*255, b*255)
+	return string.format("|cff%02x%02x%02x", r*255, g*255, b*255)
 end
 
 --Hex to RGB
 function E:HexToRGB(hex)
-	local rhex, ghex, bhex = sub(hex, 1, 2), sub(hex, 3, 4), sub(hex, 5, 6)
+	local rhex, ghex, bhex = string.sub(hex, 1, 2), string.sub(hex, 3, 4), string.sub(hex, 5, 6)
 	return tonumber(rhex, 16), tonumber(ghex, 16), tonumber(bhex, 16)
 end
 
@@ -115,6 +122,24 @@ function E:GetXYOffset(position, override)
 	end
 end
 
+--This is differant than the round function because if a number is 20.0 for example it will return an integer value instead of floating point (20.0 will be 20)
+function E:TrimFloatingPoint(number, decimals)
+	assert(number, 'You must provide a floating point number to trim decimals from. Usage: E:TrimFloatingPoint(floatingPoint, <decimals>)')
+	if not decimals then decimals = 1 end
+	
+	local newNumber = string.format("%%.%df", decimals):format(number)
+	local checkstring = "."
+	for i=1, decimals do
+		checkstring = checkstring..'0'
+	end
+
+	if newNumber ~= tostring(math.ceil(number))..checkstring then
+		return newNumber
+	end
+	
+	return math.floor(number)
+end
+
 local styles = {
 	['CURRENT'] = '%s',
 	['CURRENT_MAX'] = '%s - %s',
@@ -133,23 +158,25 @@ function E:GetFormattedText(style, min, max)
 	
 	local useStyle = styles[style]
 
+	local percentValue = E:TrimFloatingPoint(min / max * 100)
+	
 	if style == 'DEFICIT' then
 		local deficit = max - min
 		if deficit <= 0 then
 			return ''
 		else
-			return format(useStyle, E:ShortValue(deficit))
+			return string.format(useStyle, E:ShortValue(deficit))
 		end
 	elseif style == 'PERCENT' then
-		return format(useStyle, format("%.0f", min / max * 100))
+		return string.format(useStyle, percentValue)
 	elseif style == 'CURRENT' or ((style == 'CURRENT_MAX' or style == 'CURRENT_MAX_PERCENT' or style == 'CURRENT_PERCENT') and min == max) then
-		return format(styles['CURRENT'],  E:ShortValue(min))
+		return string.format(styles['CURRENT'],  E:ShortValue(min))
 	elseif style == 'CURRENT_MAX' then
-		return format(useStyle,  E:ShortValue(min), E:ShortValue(max))
+		return string.format(useStyle,  E:ShortValue(min), E:ShortValue(max))
 	elseif style == 'CURRENT_PERCENT' then
-		return format(useStyle, E:ShortValue(min), format("%.0f", min / max * 100))
+		return string.format(useStyle, E:ShortValue(min), percentValue)
 	elseif style == 'CURRENT_MAX_PERCENT' then
-		return format(useStyle, E:ShortValue(min), E:ShortValue(max), format("%.0f", min / max * 100))
+		return string.format(useStyle, E:ShortValue(min), E:ShortValue(max), percentValue)
 	end
 end
 
@@ -217,5 +244,5 @@ function E:Delay(delay, func, ...)
 end
 
 function E:StringTitle(str)
-	return str:gsub("(.)", upper, 1)
+	return str:gsub("(.)", string.upper, 1)
 end

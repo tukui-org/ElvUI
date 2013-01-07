@@ -10,10 +10,6 @@ local argcheck = Private.argcheck
 local print = Private.print
 local error = Private.error
 
-local upper = string.upper
-local split = string.split
-local tinsert, tremove = table.insert, table.remove
-
 local styles, style = {}
 local callback, objects = {}, {}
 
@@ -106,7 +102,7 @@ for k, v in pairs{
 			activeElements[self][name] = true
 
 			if(element.update) then
-				tinsert(self.__elements, element.update)
+				table.insert(self.__elements, element.update)
 			end
 		end
 	end,
@@ -120,7 +116,7 @@ for k, v in pairs{
 		local update = elements[name].update
 		for k, func in next, self.__elements do
 			if(func == update) then
-				tremove(self.__elements, k)
+				table.remove(self.__elements, k)
 				break
 			end
 		end
@@ -207,7 +203,7 @@ local initObject = function(unit, style, styleFunc, header, ...)
 		object = setmetatable(object, frame_metatable)
 
 		-- Expose the frame through oUF.objects.
-		tinsert(objects, object)
+		table.insert(objects, object)
 
 		-- We have to force update the frames when PEW fires.
 		object:RegisterEvent("PLAYER_ENTERING_WORLD", object.UpdateAllElements)
@@ -303,7 +299,7 @@ local walkObject = function(object, unit)
 end
 
 function oUF:RegisterInitCallback(func)
-	tinsert(callback, func)
+	table.insert(callback, func)
 end
 
 function oUF:RegisterMetaFunction(name, func)
@@ -410,7 +406,7 @@ local generateName = function(unit, ...)
 	elseif(party) then
 		append = 'Party'
 	elseif(unit) then
-		append = unit:gsub("^%l", upper)
+		append = unit:gsub("^%l", string.upper)
 	end
 
 	if(append) then
@@ -531,11 +527,11 @@ do
 		end
 
 		if(visibility) then
-			local type, list = split(' ', visibility, 2)
+			local type, list = string.split(' ', visibility, 2)
 			if(list and type == 'custom') then
 				RegisterAttributeDriver(header, 'state-visibility', list)
 			else
-				local condition = getCondition(split(',', visibility))
+				local condition = getCondition(string.split(',', visibility))
 				RegisterAttributeDriver(header, 'state-visibility', condition)
 			end
 		end

@@ -1,13 +1,14 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local DT = E:GetModule('DataTexts')
 
-local join = string.join
-
 local lastPanel
 local displayString = '';
 local hitRating, hitRatingBonus;
 
 local function OnEvent(self, event, unit)
+	if event == "UNIT_AURA" and unit ~= 'player' then return end
+	lastPanel = self
+
 	if E.role == "Caster" then
 		local expertise = GetExpertise();
 		hitRating = GetCombatRating(CR_HIT_SPELL)
@@ -23,7 +24,6 @@ local function OnEvent(self, event, unit)
 	end
 
 	self.text:SetFormattedText(displayString, L['Hit']..': ', hitRatingBonus)
-	lastPanel = self
 end
 
 
@@ -92,7 +92,7 @@ local function OnEnter(self)
 end
 
 local function ValueColorUpdate(hex, r, g, b)
-	displayString = join("", "%s", hex, "%.2f%%|r")
+	displayString = string.join("", "%s", hex, "%.2f%%|r")
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

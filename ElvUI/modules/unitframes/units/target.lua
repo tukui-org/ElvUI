@@ -4,8 +4,6 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
-local ceil = math.ceil
-local tinsert = table.insert
 function UF:Construct_TargetFrame(frame)	
 	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
 	frame.Health.frequentUpdates = true;
@@ -30,7 +28,7 @@ function UF:Construct_TargetFrame(frame)
 	frame.HealPrediction = self:Construct_HealComm(frame)
 	frame.DebuffHighlight = self:Construct_DebuffHighlight(frame)
 	
-	tinsert(frame.__elements, UF.SmartAuraDisplay)
+	table.insert(frame.__elements, UF.SmartAuraDisplay)
 	frame:RegisterEvent('PLAYER_TARGET_CHANGED', UF.SmartAuraDisplay)
 	
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
@@ -88,7 +86,7 @@ function UF:Update_TargetFrame(frame, db)
 				COMBOBAR_WIDTH = COMBOBAR_WIDTH - POWERBAR_OFFSET
 			end			
 		elseif USE_PORTRAIT then
-			COMBOBAR_WIDTH = ceil((UNIT_WIDTH - (BORDER*2)) - PORTRAIT_WIDTH)
+			COMBOBAR_WIDTH = math.ceil((UNIT_WIDTH - (BORDER*2)) - PORTRAIT_WIDTH)
 			
 			if USE_POWERBAR_OFFSET then
 				COMBOBAR_WIDTH = COMBOBAR_WIDTH - POWERBAR_OFFSET
@@ -579,9 +577,7 @@ function UF:Update_TargetFrame(frame, db)
 		end
 	end
 
-	
 	if db.customTexts then
-		local customFont = UF.LSM:Fetch("font", UF.db.font)
 		for objectName, _ in pairs(db.customTexts) do
 			if not frame[objectName] then
 				frame[objectName] = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
@@ -590,11 +586,7 @@ function UF:Update_TargetFrame(frame, db)
 			local objectDB = db.customTexts[objectName]
 			UF:CreateCustomTextGroup('target', objectName)
 			
-			if objectDB.font then
-				customFont = UF.LSM:Fetch("font", objectDB.font)
-			end
-						
-			frame[objectName]:FontTemplate(customFont, objectDB.size or UF.db.fontSize, objectDB.fontOutline or UF.db.fontOutline)
+			frame[objectName]:FontTemplate(UF.LSM:Fetch("font", objectDB.font or UF.db.font), objectDB.size or UF.db.fontSize, objectDB.fontOutline or UF.db.fontOutline)
 			frame:Tag(frame[objectName], objectDB.text_format or '')
 			frame[objectName]:SetJustifyH(objectDB.justifyH or 'CENTER')
 			frame[objectName]:ClearAllPoints()

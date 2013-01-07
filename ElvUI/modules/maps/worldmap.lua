@@ -182,7 +182,7 @@ function M:Initialize()
 	CoordsHolder.mouseCoords:SetPoint("BOTTOMLEFT", CoordsHolder.playerCoords, "TOPLEFT", 0, 5)
 	CoordsHolder.mouseCoords:SetText(MOUSE_LABEL..":   0, 0")
 	
-	self:ScheduleRepeatingTimer('UpdateCoords', 0.05)
+	self:ScheduleRepeatingTimer('UpdateCoords', 0.01)
 	self:ToggleTinyWorldMapSetting()
 	
 	

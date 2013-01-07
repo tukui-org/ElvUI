@@ -2,12 +2,11 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 local DT = E:GetModule('DataTexts')
 
 local format = string.format
-local join = string.join
 local lastPanel, active
 local displayString = '';
 local talent = {}
-local activeString = join("", "|cff00FF00" , ACTIVE_PETS, "|r")
-local inactiveString = join("", "|cffFF0000", FACTION_INACTIVE, "|r")
+local activeString = string.join("", "|cff00FF00" , ACTIVE_PETS, "|r")
+local inactiveString = string.join("", "|cffFF0000", FACTION_INACTIVE, "|r")
 
 local function OnEvent(self, event)
 	lastPanel = self
@@ -26,7 +25,7 @@ local function OnEnter(self)
 
 	for i = 1, GetNumSpecGroups() do
 		if GetSpecialization(false, false, i) then
-			GameTooltip:AddLine(join(" ", format(displayString, select(2, GetSpecializationInfo(GetSpecialization(false, false, i)))), (i == active and activeString or inactiveString)),1,1,1)
+			GameTooltip:AddLine(string.join(" ", string.format(displayString, select(2, GetSpecializationInfo(GetSpecialization(false, false, i)))), (i == active and activeString or inactiveString)),1,1,1)
 		end
 	end
 	
@@ -38,7 +37,7 @@ local function OnClick(self)
 end
 
 local function ValueColorUpdate(hex, r, g, b)
-	displayString = join("", "|cffFFFFFF%s:|r ")
+	displayString = string.join("", "|cffFFFFFF%s:|r ")
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

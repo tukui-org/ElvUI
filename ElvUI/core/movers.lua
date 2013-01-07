@@ -1,9 +1,6 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local Sticky = LibStub("LibSimpleSticky-1.0")
 
-local format = string.format
-local split = string.split
-
 E.CreatedMovers = {}
 
 local function SizeChanged(frame)
@@ -15,7 +12,7 @@ local function GetPoint(obj)
 	local point, anchor, secondaryPoint, x, y = obj:GetPoint()
 	if not anchor then anchor = ElvUIParent end
 
-	return format('%s\031%s\031%s\031%d\031%d', point, anchor:GetName(), secondaryPoint, E:Round(x), E:Round(y))
+	return string.format('%s\031%s\031%s\031%d\031%d', point, anchor:GetName(), secondaryPoint, E:Round(x), E:Round(y))
 end
 
 local function UpdateCoords(self)
@@ -65,7 +62,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 	if E.CreatedMovers[name].Created then return end
 	
 	if overlay == nil then overlay = true end
-	local point, anchor, secondaryPoint, x, y = split('\031', GetPoint(parent))
+	local point, anchor, secondaryPoint, x, y = string.split('\031', GetPoint(parent))
 	local f = CreateFrame("Button", name, E.UIParent)
 	f:SetFrameLevel(parent:GetFrameLevel() + 1)
 	f:SetClampedToScreen(true)
@@ -79,7 +76,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 	f.snapOffset = snapOffset or -2
 	E.CreatedMovers[name].mover = f
 	
-	E['snapBars'][#E['snapBars'] + 1] = f
+	tinsert(E['snapBars'], f)
 	
 	if overlay == true then
 		f:SetFrameStrata("DIALOG")
@@ -94,7 +91,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 			f:ClearAllPoints()
 		end
 		
-		local point, anchor, secondaryPoint, x, y = split('\031', E.db['movers'][name])
+		local point, anchor, secondaryPoint, x, y = string.split('\031', E.db['movers'][name])
 		f:SetPoint(point, anchor, secondaryPoint, x, y)
 	else
 
@@ -270,7 +267,7 @@ function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag, moverT
 		E.CreatedMovers[name]["point"] = GetPoint(parent)
 
 		E.CreatedMovers[name]["type"] = {}
-		local types = {split(',', moverTypes)}
+		local types = {string.split(',', moverTypes)}
 		for i = 1, #types do
 			local moverType = types[i]
 			E.CreatedMovers[name]["type"][moverType] = true
@@ -298,7 +295,7 @@ function E:ResetMovers(arg)
 	if arg == "" or arg == nil then
 		for name, _ in pairs(E.CreatedMovers) do
 			local f = _G[name]
-			local point, anchor, secondaryPoint, x, y = split('\031', E.CreatedMovers[name]['point'])
+			local point, anchor, secondaryPoint, x, y = string.split('\031', E.CreatedMovers[name]['point'])
 			f:ClearAllPoints()
 			f:SetPoint(point, anchor, secondaryPoint, x, y)
 			
@@ -316,7 +313,7 @@ function E:ResetMovers(arg)
 				if key == "text" then
 					if arg == value then 
 						local f = _G[name]
-						local point, anchor, secondaryPoint, x, y = split('\031', E.CreatedMovers[name]['point'])
+						local point, anchor, secondaryPoint, x, y = string.split('\031', E.CreatedMovers[name]['point'])
 						f:ClearAllPoints()
 						f:SetPoint(point, anchor, secondaryPoint, x, y)				
 						
@@ -340,11 +337,11 @@ function E:SetMoversPositions()
 		local f = _G[name]
 		local point, anchor, secondaryPoint, x, y
 		if E.db["movers"] and E.db["movers"][name] and type(E.db["movers"][name]) == 'string' then
-			point, anchor, secondaryPoint, x, y = split('\031', E.db["movers"][name])
+			point, anchor, secondaryPoint, x, y = string.split('\031', E.db["movers"][name])
 			f:ClearAllPoints()
 			f:SetPoint(point, anchor, secondaryPoint, x, y)
 		elseif f then
-			point, anchor, secondaryPoint, x, y = split('\031', E.CreatedMovers[name]['point'])
+			point, anchor, secondaryPoint, x, y = string.split('\031', E.CreatedMovers[name]['point'])
 			f:ClearAllPoints()
 			f:SetPoint(point, anchor, secondaryPoint, x, y)
 		end		

@@ -3,8 +3,6 @@ local ACD = LibStub("AceConfigDialog-3.0")
 local grid
 
 local selectedValue = 'GENERAL'
-local floor = math.floor
-
 E.ConfigModeLayouts = {
 	'GENERAL',
 	'ALL',
@@ -121,7 +119,7 @@ function E:Grid_Create()
 		tx:SetPoint('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(height/2 + size/2))
 	end
 	
-	for i = 1, floor((height/2)/hStep) do
+	for i = 1, math.floor((height/2)/hStep) do
 		local tx = grid:CreateTexture(nil, 'BACKGROUND') 
 		tx:SetTexture(0, 0, 0)
 		

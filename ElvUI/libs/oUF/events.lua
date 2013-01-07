@@ -6,8 +6,6 @@ local argcheck = Private.argcheck
 local error = Private.error
 local frame_metatable = Private.frame_metatable
 
-local tinsert, tremove = table.insert, table.remove
-
 -- Events
 local RegisterEvent, UnregisterEvent, IsEventRegistered
 
@@ -147,7 +145,7 @@ function frame_metatable.__index:RegisterEvent(event, func, unitless)
 				if(infunc == func) then return end
 			end
 
-			tinsert(curev, func)
+			table.insert(curev, func)
 		end
 	elseif(IsEventRegistered(self, event)) then
 		return
@@ -169,7 +167,7 @@ function frame_metatable.__index:UnregisterEvent(event, func)
 	if(type(curev) == 'table' and func) then
 		for k, infunc in next, curev do
 			if(infunc == func) then
-				tremove(curev, k)
+				table.remove(curev, k)
 
 				local n = #curev
 				if(n == 1) then

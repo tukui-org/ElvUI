@@ -4,8 +4,8 @@ local NP = E:GetModule("NamePlates");
 local numChildren = -1
 
 function M:UpdateBubbleBorder()
-	if not self.text then return end
-	NP:SetVirtualBorder(self, self.text:GetTextColor())
+	if not self:IsShown() or not self.text then return end
+	NP:SetVirtualBorder(self, self.text:GetTextColor())	
 end
 
 function M:SkinBubble(frame)
@@ -29,7 +29,7 @@ function M:SkinBubble(frame)
 	
 	frame:SetClampedToScreen(false)
 	frame.isBubblePowered = true
-	frame:HookScript('OnShow', M.UpdateBubbleBorder)
+	frame:HookScript('OnUpdate', M.UpdateBubbleBorder)
 end
 
 function M:IsChatBubble(frame)
@@ -43,25 +43,18 @@ function M:HookBubbles(...)
 	for index = 1, select('#', ...) do
 		local frame = select(index, ...)
 
-		if M:IsChatBubble(frame) and not frame.isBubblePowered then	M:SkinBubble(frame) end
+		if M:IsChatBubble(frame) and not frame.isBubblePowered then
+			M:SkinBubble(frame)
+		end
 	end
 end
 
 function M:LoadChatBubbles()
-	if not E.private.general.bubbles then return end
-	
-	local frame = CreateFrame('Frame')
-	frame.lastupdate = -2 -- wait 2 seconds before hooking frames
-	
-	frame:SetScript('OnUpdate', function(self, elapsed)
-		self.lastupdate = self.lastupdate + elapsed
-		if (self.lastupdate < .1) then return end
-		self.lastupdate = 0
-		
-		local count = WorldFrame:GetNumChildren()
-		if(count ~= numChildren) then
-			numChildren = count
+	if not E.private.general.bubbles then return; end
+	CreateFrame('Frame'):SetScript('OnUpdate', function(self, elapsed)
+		if(WorldFrame:GetNumChildren() ~= numChildren) then
+			numChildren = WorldFrame:GetNumChildren()
 			M:HookBubbles(WorldFrame:GetChildren())
 		end	
-	end)
+	end)	
 end

@@ -2,7 +2,6 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 local B = E:GetModule('Bags');
 
 local TOTAL_BAGS = NUM_BAG_FRAMES + 1
-local tinsert = table.insert
 
 local function OnEnter()
 	if E.db.bags.bagBar.mouseover ~= true then return; end
@@ -104,7 +103,7 @@ function B:LoadBagBar()
 	MainMenuBarBackpackButton:HookScript('OnEnter', OnEnter)
 	MainMenuBarBackpackButton:HookScript('OnLeave', OnLeave)
 		
-	tinsert(ElvUIBags.buttons, MainMenuBarBackpackButton)
+	table.insert(ElvUIBags.buttons, MainMenuBarBackpackButton)
 	self:SkinBag(MainMenuBarBackpackButton)
 
 	for i=0, NUM_BAG_FRAMES-1 do
@@ -115,7 +114,7 @@ function B:LoadBagBar()
 		b:HookScript('OnLeave', OnLeave)
 		
 		self:SkinBag(b)
-		tinsert(ElvUIBags.buttons, b)
+		table.insert(ElvUIBags.buttons, b)
 	end
 	
 	self:SizeAndPositionBagBar()

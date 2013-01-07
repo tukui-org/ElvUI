@@ -10,9 +10,6 @@ local lastSegment = 0
 local lastPanel
 local displayString = '';
 
-local join = string.join
-local max = math.max
-
 local function Reset()
 	timeStamp = 0
 	combatTime = 0
@@ -51,7 +48,7 @@ local function OnEvent(self, event, ...)
 			lastSegment = timeStamp
 			combatTime = select(1, ...) - timeStamp
 			lastHealAmount = select(15, ...)
-			healTotal = healTotal + max(0, lastHealAmount - overHeal)
+			healTotal = healTotal + math.max(0, lastHealAmount - overHeal)
 		end
 	elseif event == UNIT_PET then
 		petID = UnitGUID("pet")
@@ -66,7 +63,7 @@ local function OnClick(self)
 end
 
 local function ValueColorUpdate(hex, r, g, b)
-	displayString = join("", "%s", hex, "%.1f|r")
+	displayString = string.join("", "%s", hex, "%.1f|r")
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

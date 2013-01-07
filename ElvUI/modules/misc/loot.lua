@@ -5,9 +5,6 @@ local M = E:GetModule('Misc');
 local lootFrame, lootFrameHolder
 local iconSize = 30;
 
-local max = math.max
-local tinsert = table.insert
-
 local sq, ss, sn
 local OnEnter = function(self)
 	local slot = self:GetID()
@@ -51,7 +48,7 @@ local OnClick = function(self)
 	end
 end
 
-local OnShow = function(self)
+local OnUpdate = function(self)
 	if(GameTooltip:IsOwned(self)) then
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 		GameTooltip:SetLootItem(self:GetID())
@@ -71,7 +68,7 @@ local function anchorSlots(self)
 		end
 	end
 
-	self:Height(max(shownSlots * iconsize + 16, 20))
+	self:Height(math.max(shownSlots * iconsize + 16, 20))
 end
 
 local function createSlot(id)
@@ -87,7 +84,7 @@ local function createSlot(id)
 	frame:SetScript("OnEnter", OnEnter)
 	frame:SetScript("OnLeave", OnLeave)
 	frame:SetScript("OnClick", OnClick)
-	frame:SetScript("OnShow", OnShow)
+	frame:SetScript("OnUpdate", OnUpdate)
 
 	local iconFrame = CreateFrame("Frame", nil, frame)
 	iconFrame:Height(iconsize)
@@ -217,9 +214,9 @@ function M:LOOT_OPENED(event, autoloot)
 			slot.icon:SetTexture(texture)
 			
 			if quality then
-				m = max(m, quality)
+				m = math.max(m, quality)
 			end
-			w = max(w, slot.name:GetStringWidth())
+			w = math.max(w, slot.name:GetStringWidth())
 
 			slot:Enable()
 			slot:Show()
@@ -235,7 +232,7 @@ function M:LOOT_OPENED(event, autoloot)
 		slot.icon:SetTexture[[Interface\Icons\INV_Misc_Herb_AncientLichen]]
 
 		items = 1
-		w = max(w, slot.name:GetStringWidth())
+		w = math.max(w, slot.name:GetStringWidth())
 
 		slot.count:Hide()
 		slot.drop:Hide()
@@ -249,7 +246,7 @@ function M:LOOT_OPENED(event, autoloot)
 
 	local color = ITEM_QUALITY_COLORS[m]
 	lootFrame:SetBackdropBorderColor(color.r, color.g, color.b, .8)
-	lootFrame:Width(max(w, t))
+	lootFrame:Width(math.max(w, t))
 end
 
 function M:LoadLoot()
@@ -286,7 +283,7 @@ function M:LoadLoot()
 	
 	-- Fuzz
 	LootFrame:UnregisterAllEvents()
-	tinsert(UISpecialFrames, 'ElvLootFrame')
+	table.insert(UISpecialFrames, 'ElvLootFrame')
 
 	function _G.GroupLootDropDown_GiveLoot(self)
 		if ( sq >= MASTER_LOOT_THREHOLD ) then

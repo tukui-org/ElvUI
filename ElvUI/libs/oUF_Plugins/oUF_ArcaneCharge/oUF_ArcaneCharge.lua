@@ -1,5 +1,5 @@
 local _, ns = ...
-local oUF = oUF or ns.oUF
+local oUF = ns.oUF or oUF
 if not oUF then return end
 
 if select(2, UnitClass('player')) ~= "MAGE" then return end

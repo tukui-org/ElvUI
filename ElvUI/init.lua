@@ -37,7 +37,6 @@ local AC = LibStub("AceConfig-3.0")
 local ACD = LibStub("AceConfigDialog-3.0")
 local ACR = LibStub("AceConfigRegistry-3.0")
 local LibDualSpec = LibStub('LibDualSpec-1.0')
-local tcopy = table.copy
 
 function AddOn:OnInitialize()
 	if not ElvCharacterDB then
@@ -48,8 +47,8 @@ function AddOn:OnInitialize()
 	ElvPrivateData = nil; --Depreciated
 	ElvData = nil; --Depreciated
 	
-	self.db = tcopy(self.DF.profile, true);
-	self.global = tcopy(self.DF.global, true);
+	self.db = table.copy(self.DF.profile, true);
+	self.global = table.copy(self.DF.global, true);
 	if ElvDB then
 		if ElvDB.global then
 			self:CopyTable(self.global, ElvDB.global)
@@ -65,7 +64,7 @@ function AddOn:OnInitialize()
 		end
 	end
 
-	self.private = tcopy(self.privateVars.profile, true);
+	self.private = table.copy(self.privateVars.profile, true);
 	if ElvPrivateDB then
 		local profileKey
 		if ElvPrivateDB.profileKeys then

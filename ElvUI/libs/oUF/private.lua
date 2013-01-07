@@ -1,9 +1,6 @@
 local parent, ns = ...
 local Private = ns.oUF.Private
 
-local match = string.match
-local format = string.format
-
 function Private.argcheck(value, num, ...)
 	assert(type(num) == 'number', "Bad argument #2 to 'argcheck' (number expected, got "..type(num)..")")
 
@@ -12,7 +9,7 @@ function Private.argcheck(value, num, ...)
 	end
 
 	local types = strjoin(", ", ...)
-	local name = match(debugstack(2,2,0), ": in function [`<](.-)['>]")
+	local name = string.match(debugstack(2,2,0), ": in function [`<](.-)['>]")
 	error(("Bad argument #%d to '%s' (%s expected, got %s"):format(num, name, types, type(value)), 3)
 end
 
@@ -21,5 +18,5 @@ function Private.print(...)
 end
 
 function Private.error(...)
-	Private.print("|cffff0000Error:|r "..format(...))
+	Private.print("|cffff0000Error:|r "..string.format(...))
 end

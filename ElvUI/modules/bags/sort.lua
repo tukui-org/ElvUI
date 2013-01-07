@@ -2,26 +2,21 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 local B = E:GetModule('Bags');
 
 local bankBags = {BANK_CONTAINER}
-local match = string.match
-local gmatch = string.gmatch
-local floor = math.floor
-local tinsert, tremove, tsort = table.insert, table.remove, table.sort
-
 for i = NUM_BAG_SLOTS + 1, NUM_BAG_SLOTS + NUM_BANKBAGSLOTS do
-	tinsert(bankBags, i)
+	table.insert(bankBags, i)
 end
 
 local playerBags = {}
 for i = 0, NUM_BAG_SLOTS do
-	tinsert(playerBags, i)
+	table.insert(playerBags, i)
 end
 
 local allBags = {}
 for _,i in ipairs(playerBags) do
-	tinsert(allBags, i)
+	table.insert(allBags, i)
 end
 for _,i in ipairs(bankBags) do
-	tinsert(allBags, i)
+	table.insert(allBags, i)
 end
 
 local coreGroups = {
@@ -282,10 +277,10 @@ end
 local function ConvertLinkToID(link) 
 	if not link then return; end
 	
-	if tonumber(match(link, "item:(%d+)")) then
-		return tonumber(match(link, "item:(%d+)"));
+	if tonumber(string.match(link, "item:(%d+)")) then
+		return tonumber(string.match(link, "item:(%d+)"));
 	else
-		return tonumber(match(link, "battlepet:(%d+)")), true;
+		return tonumber(string.match(link, "battlepet:(%d+)")), true;
 	end
 end 
 
@@ -298,7 +293,7 @@ function B:Encode_BagSlot(bag, slot)
 end
 
 function B:Decode_BagSlot(int) 
-	return floor(int/100), int % 100 
+	return math.floor(int/100), int % 100 
 end
 
 function B:IsPartial(bag, slot)
@@ -311,7 +306,7 @@ function B:EncodeMove(source, target)
 end
 
 function B:DecodeMove(move)
-	local s = floor(move/10000)
+	local s = math.floor(move/10000)
 	local t = move%10000
 	s = (t>9000) and (s+1) or s
 	t = (t>9000) and (t-10000) or t
@@ -320,7 +315,7 @@ end
 
 function B:AddMove(source, destination)
 	UpdateLocation(source, destination)
-	tinsert(moves, 1, B:EncodeMove(source, destination))
+	table.insert(moves, 1, B:EncodeMove(source, destination))
 end
 
 function B:ScanBags()
@@ -387,7 +382,7 @@ function B.Stack(sourceBags, targetBags, canMove)
 		local itemID = bagIDs[bagSlot]
 		if itemID and (bagStacks[bagSlot] ~= bagMaxStacks[bagSlot]) then
 			targetItems[itemID] = (targetItems[itemID] or 0) + 1
-			tinsert(targetSlots, bagSlot)
+			table.insert(targetSlots, bagSlot)
 		end
 	end
 
@@ -426,10 +421,10 @@ function B.Sort(bags, sorter, invertDirection)
 	for i, bag, slot in B.IterateBags(bags, nil, 'both') do
 		local bagSlot = B:Encode_BagSlot(bag, slot)
 		initialOrder[bagSlot] = i
-		tinsert(bagSorted, bagSlot)
+		table.insert(bagSorted, bagSlot)
 	end	
 	
-	tsort(bagSorted, sorter)
+	table.sort(bagSorted, sorter)
 
 	local passNeeded = true
 	while passNeeded do
@@ -462,7 +457,7 @@ function B.FillBags(from, to)
 	B.Stack(from, to)
 	for _, bag in ipairs(to) do
 		if B:IsSpecialtyBag(bag) then
-			tinsert(specialtyBags, bag)
+			table.insert(specialtyBags, bag)
 		end
 	end
 	if #specialtyBags > 0 then
@@ -479,7 +474,7 @@ function B.Fill(sourceBags, targetBags, reverse, canMove)
 	for _, bag, slot in B.IterateBags(targetBags, reverse, "deposit") do
 		local bagSlot = B:Encode_BagSlot(bag, slot)
 		if not bagIDs[bagSlot] then
-			tinsert(emptySlots, bagSlot)
+			table.insert(emptySlots, bagSlot)
 		end
 	end
 
@@ -488,7 +483,7 @@ function B.Fill(sourceBags, targetBags, reverse, canMove)
 		local bagSlot = B:Encode_BagSlot(bag, slot)
 		local targetBag, targetSlot = B:Decode_BagSlot(emptySlots[1])
 		if bagIDs[bagSlot] and B:CanItemGoInBag(bag, slot, targetBag) and canMove(bagIDs[bagSlot], bag, slot) then
-			B:AddMove(bagSlot, tremove(emptySlots, 1))
+			B:AddMove(bagSlot, table.remove(emptySlots, 1))
 		end
 	end
 	wipe(emptySlots)
@@ -501,7 +496,7 @@ function B.SortBags(...)
 			local bagType = B:IsSpecialtyBag(slotNum)
 			if bagType == false then bagType = 'Normal' end
 			if not bagCache[bagType] then bagCache[bagType] = {} end
-			tinsert(bagCache[bagType], slotNum)
+			table.insert(bagCache[bagType], slotNum)
 		end	
 
 		for bagType, sortedBags in pairs(bagCache) do
@@ -625,7 +620,7 @@ function B:DoMoves()
 			moveTracker[moveSource] = targetID
 			moveTracker[moveTarget] = moveID
 			lastItemID = moveID
-			tremove(moves, i)
+			table.remove(moves, i)
 			if moves[i-1] then
 				if (GetTime() - start) > 0.5 then
 					WAIT_TIME  = 0;
@@ -638,10 +633,10 @@ function B:DoMoves()
 end
 
 function B:GetGroup(id)
-	if match(id, "^[-%d,]+$") then
+	if string.match(id, "^[-%d,]+$") then
 		local bags = {}
-		for b in gmatch(id, "-?%d+") do
-			tinsert(bags, tonumber(b))
+		for b in string.gmatch(id, "-?%d+") do
+			table.insert(bags, tonumber(b))
 		end
 		return bags
 	end
@@ -664,7 +659,7 @@ function B:CommandDecorator(func, groupsDefaults)
 		for bags in (groups or ""):gmatch("[^%s]+") do
 			bags = B:GetGroup(bags)
 			if bags then
-				tinsert(bagGroups, bags)
+				table.insert(bagGroups, bags)
 			end
 		end
 

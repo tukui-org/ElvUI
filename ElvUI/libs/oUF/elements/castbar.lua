@@ -6,6 +6,11 @@
 local parent, ns = ...
 local oUF = ns.oUF
 
+local UnitName = UnitName
+local GetTime = GetTime
+local UnitCastingInfo = UnitCastingInfo
+local UnitChannelInfo = UnitChannelInfo
+
 local updateSafeZone = function(self)
 	local sz = self.SafeZone
 	local width = self:GetWidth()
@@ -25,7 +30,11 @@ end
 
 local UNIT_SPELLCAST_SENT = function (self, event, unit, spell, rank, target)
 	local castbar = self.Castbar
-	castbar.curTarget = (target and target ~= "") and target or nil
+	if target and target ~= "" then
+		castbar.curTarget = target
+	else
+		castbar.curTarget = nil
+	end
 end
 
 local UNIT_SPELLCAST_START = function(self, event, unit, spell)
@@ -79,10 +88,12 @@ local UNIT_SPELLCAST_START = function(self, event, unit, spell)
 end
 
 local UNIT_SPELLCAST_FAILED = function(self, event, unit, spellname, _, castid)
-	if (self.unit ~= unit) or not unit then return end
+	if(self.unit ~= unit) or not unit then return end
 
 	local castbar = self.Castbar
-	if (castbar.castid ~= castid) then	return end
+	if(castbar.castid ~= castid) then
+		return
+	end
 
 	castbar.casting = nil
 	castbar.interrupt = nil
@@ -98,8 +109,9 @@ local UNIT_SPELLCAST_INTERRUPTED = function(self, event, unit, spellname, _, cas
 	if(self.unit ~= unit) or not unit then return end
 
 	local castbar = self.Castbar
-	if (castbar.castid ~= castid) then	return end
-
+	if(castbar.castid ~= castid) then
+		return
+	end
 	castbar.casting = nil
 	castbar.channeling = nil
 
@@ -160,10 +172,12 @@ local UNIT_SPELLCAST_DELAYED = function(self, event, unit, spellname, _, castid)
 end
 
 local UNIT_SPELLCAST_STOP = function(self, event, unit, spellname, _, castid)
-	if (self.unit ~= unit) or not unit then return end
+	if(self.unit ~= unit) or not unit then return end
 
 	local castbar = self.Castbar
-	if (castbar.castid ~= castid) then return end
+	if(castbar.castid ~= castid) then
+		return
+	end
 
 	castbar.casting = nil
 	castbar.interrupt = nil
@@ -176,11 +190,13 @@ local UNIT_SPELLCAST_STOP = function(self, event, unit, spellname, _, castid)
 end
 
 local UNIT_SPELLCAST_CHANNEL_START = function(self, event, unit, spellname)
-	if (self.unit ~= unit) or not unit then return end
+	if(self.unit ~= unit) or not unit then return end
 
 	local castbar = self.Castbar
 	local name, _, text, texture, startTime, endTime, isTrade, interrupt = UnitChannelInfo(unit)
-	if (not name) then return end
+	if(not name) then
+		return
+	end
 
 	endTime = endTime / 1e3
 	startTime = startTime / 1e3
@@ -272,44 +288,9 @@ local UNIT_SPELLCAST_CHANNEL_STOP = function(self, event, unit, spellname)
 	end
 end
 
-local UpdateCastingTimeInfo = function(self, duration)
-	if(self.Time) then
-		if(self.delay ~= 0) then
-			if(self.CustomDelayText) then
-				self:CustomDelayText(duration)
-			else
-				self.Time:SetFormattedText("%.1f|cffff0000-%.1f|r", duration, self.delay)
-			end
-		else
-			if(self.CustomTimeText) then
-				self:CustomTimeText(duration)
-			else
-				self.Time:SetFormattedText("%.1f", duration)
-			end
-		end
-	end
-	if(self.Spark) then
-		self.Spark:SetPoint("CENTER", self, "LEFT", (duration / self.max) * self:GetWidth(), 0)
-	end
-end
-
 local onUpdate = function(self, elapsed)
-	self.lastUpdate = (self.lastUpdate or 0) + elapsed
-	if self.lastUpdate < .02 then return end
-	
-	if not (self.casting or self.channeling) then
-		self.unitName = nil
-		self.casting = nil
-		self.castid = nil
-		self.channeling = nil
-
-		self:SetValue(1)
-		self:Hide()
-		return
-	end
-
 	if(self.casting) then
-		local duration = self.duration + self.lastUpdate
+		local duration = self.duration + elapsed
 		if(duration >= self.max) then
 			self.casting = nil
 			self:Hide()
@@ -318,12 +299,30 @@ local onUpdate = function(self, elapsed)
 			return
 		end
 
-		UpdateCastingTimeInfo(self, duration)
+		if(self.Time) then
+			if(self.delay ~= 0) then
+				if(self.CustomDelayText) then
+					self:CustomDelayText(duration)
+				else
+					self.Time:SetFormattedText("%.1f|cffff0000-%.1f|r", duration, self.delay)
+				end
+			else
+				if(self.CustomTimeText) then
+					self:CustomTimeText(duration)
+				else
+					self.Time:SetFormattedText("%.1f", duration)
+				end
+			end
+		end
 
 		self.duration = duration
 		self:SetValue(duration)
+
+		if(self.Spark) then
+			self.Spark:SetPoint("CENTER", self, "LEFT", (duration / self.max) * self:GetWidth(), 0)
+		end
 	elseif(self.channeling) then
-		local duration = self.duration - self.lastUpdate
+		local duration = self.duration - elapsed
 
 		if(duration <= 0) then
 			self.channeling = nil
@@ -333,13 +332,36 @@ local onUpdate = function(self, elapsed)
 			return
 		end
 
-		UpdateCastingTimeInfo(self, duration)
+		if(self.Time) then
+			if(self.delay ~= 0) then
+				if(self.CustomDelayText) then
+					self:CustomDelayText(duration)
+				else
+					self.Time:SetFormattedText("%.1f|cffff0000-%.1f|r", duration, self.delay)
+				end
+			else
+				if(self.CustomTimeText) then
+					self:CustomTimeText(duration)
+				else
+					self.Time:SetFormattedText("%.1f", duration)
+				end
+			end
+		end
 
 		self.duration = duration
 		self:SetValue(duration)
+		if(self.Spark) then
+			self.Spark:SetPoint("CENTER", self, "LEFT", (duration / self.max) * self:GetWidth(), 0)
+		end
+	else
+		self.unitName = nil
+		self.casting = nil
+		self.castid = nil
+		self.channeling = nil
+
+		self:SetValue(1)
+		self:Hide()
 	end
-	
-	self.lastUpdate = 0
 end
 
 local Update = function(self, ...)

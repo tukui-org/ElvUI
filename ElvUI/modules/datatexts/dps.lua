@@ -9,7 +9,6 @@ local timeStamp = 0
 local lastSegment = 0
 local lastPanel
 local displayString = '';
-local join = string.join
 
 local function Reset()
 	timeStamp = 0
@@ -70,7 +69,7 @@ local function OnClick(self)
 end
 
 local function ValueColorUpdate(hex, r, g, b)
-	displayString = join("", "%s", hex, "%.1f|r")
+	displayString = string.join("", "%s", hex, "%.1f|r")
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

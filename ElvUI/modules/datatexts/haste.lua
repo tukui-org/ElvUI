@@ -3,9 +3,11 @@ local DT = E:GetModule('DataTexts')
 
 local displayNumberString = ''
 local lastPanel;
-local join = string.join
 
 local function OnEvent(self, event, unit)
+	if event == "UNIT_AURA" and unit ~= 'player' then return end
+	lastPanel = self
+	
 	local hasteRating
 	if E.role == "Caster" then
 		hasteRating = UnitSpellHaste("player")
@@ -15,11 +17,10 @@ local function OnEvent(self, event, unit)
 		hasteRating = GetMeleeHaste()
 	end
 	self.text:SetFormattedText(displayNumberString, STAT_HASTE, hasteRating)
-	lastPanel = self
 end
 
 local function ValueColorUpdate(hex, r, g, b)
-	displayNumberString = join("", "%s: ", hex, "%.2f%%|r")
+	displayNumberString = string.join("", "%s: ", hex, "%.2f%%|r")
 	
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)
