@@ -1,4 +1,4 @@
-﻿## Interface: 50100
+## Interface: 50100
 ## Author: Elv
 ## Version: 5.19
 ## Title: |cff1784d1ElvUI|r
@@ -17,3 +17,7 @@ config\load_config.xml
 core\load_core.xml
 layout\load_layout.xml
 modules\load_modules.xml
+
+
+## X-Tukui-ProjectID: -2
+## X-Tukui-ProjectFolders: ElvUI

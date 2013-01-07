@@ -1,0 +1,21 @@
+	Tukui ElvUI Extra Skins/Options License
+	Copyright 2012 http://www.tukui.org
+
+	The contents of this addon, excluding third-party resources, are
+	copyrighted to their authors with all rights reserved.
+
+	Authors of this addon hereby grant you the following rights:
+
+	1. 	You may NOT make any modification inside this addon. If you want
+		to create your own edited version, please create it from outside.
+
+	2. 	Do not modify the name of this addon, including the addon folders.
+
+	3. 	This copyright notice shall be included in all copies or substantial
+		portions of the Software.
+
+	All rights not explicitly addressed in this license are reserved by
+	the copyright holders.
+
+	You can write us at Tukui.org for reporting abuse.
+	You can private message Azilroka or Sortokk for any bugs.
