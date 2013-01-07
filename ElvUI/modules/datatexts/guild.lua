@@ -11,13 +11,14 @@ local ceil			= math.ceil
 
 local tthead, ttsubh, ttoff = {r=0.4, g=0.78, b=1}, {r=0.75, g=0.9, b=1}, {r=.3,g=1,b=.3}
 local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
+local groupedTable = { "|cffaaaaaa*|r", "" } 
 local displayString = ""
 local noGuildString = ""
 local guildInfoString = "%s [%d]"
 local guildInfoString2 = join("", GUILD, ": %d/%d")
 local guildMotDString = "%s |cffaaaaaa- |cffffffff%s"
 local levelNameString = "|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r %s"
-local levelNameStatusString = "|cff%02x%02x%02x%d|r %s %s"
+local levelNameStatusString = "|cff%02x%02x%02x%d|r %s%s %s"
 local nameRankString = "%s |cff999999-|cffffffff %s"
 local guildXpCurrentString = gsub(join("", E:RGBToHex(ttsubh.r, ttsubh.g, ttsubh.b), GUILD_EXPERIENCE_CURRENT), ": ", ":|r |cffffffff", 1)
 local guildXpDailyString = gsub(join("", E:RGBToHex(ttsubh.r, ttsubh.g, ttsubh.b), GUILD_EXPERIENCE_DAILY), ": ", ":|r |cffffffff", 1)
@@ -43,38 +44,33 @@ local function SortGuildTable(shift)
 	end)
 end
 
+local chatframetexture = ChatFrame_GetMobileEmbeddedTexture(73/255, 177/255, 73/255)
+local onlinestatusstring = "|cffFFFFFF[|r|cffFF0000%s|r|cffFFFFFF]|r"
+local onlinestatus = {
+	[0] = function () return '' end,
+	[1] = function () return format(onlinestatusstring, L['AFK']) end,
+	[2] = function () return format(onlinestatusstring, L['DND']) end,
+}
+local mobilestatus = {
+	[0] = function () return chatframetexture end,
+	[1] = function () return MOBILE_AWAY_ICON end,
+	[2] = function () return MOBILE_BUSY_ICON end,
+}
+
 local function BuildGuildTable()
 	wipe(guildTable)
-	local name, rank, level, zone, note, officernote, connected, status, class, isMobile
-	local count = 0
+	local statusInfo
+	local name, rank, level, zone, note, officernote, connected, memberstatus, class, isMobile
 	for i = 1, GetNumGuildMembers() do
-		name, rank, rankIndex, level, _, zone, note, officernote, connected, status, class, _, _, isMobile = GetGuildRosterInfo(i)
-
-		if ( isMobile ) then
-			if status == 1 then
-				status = MOBILE_AWAY_ICON
-			elseif status == 2 then
-				status = MOBILE_BUSY_ICON
-			else
-				status = ChatFrame_GetMobileEmbeddedTexture(73/255, 177/255, 73/255)
-			end
-			zone = '';
-		else
-			if status == 1 then
-				status = "|cffFFFFFF[|r|cffFF0000"..L['AFK'].."|r|cffFFFFFF]|r"
-			elseif status == 2 then
-				status = "|cffFFFFFF[|r|cffFF0000"..L['DND'].."|r|cffFFFFFF]|r"
-			else 
-				status = '';
-			end		
-		end
+		name, rank, rankIndex, level, _, zone, note, officernote, connected, memberstatus, class, _, _, isMobile = GetGuildRosterInfo(i)
 		
+		statusInfo = isMobile and mobilestatus[memberstatus]() or onlinestatus[memberstatus]()
+		zone = isMobile and '' or zone
+
 		if connected then 
-			count = count + 1
-			guildTable[count] = { name, rank, level, zone, note, officernote, connected, status, class, rankIndex, isMobile }
+			guildTable[#guildTable + 1] = { name, rank, level, zone, note, officernote, connected, statusInfo, class, rankIndex, isMobile }
 		end
 	end
-	SortGuildTable(IsShiftKeyDown())
 end
 
 local function UpdateGuildXP()
@@ -94,31 +90,62 @@ local function UpdateGuildMessage()
 	guildMotD = GetGuildRosterMOTD()
 end
 
+local eventHandlers = {
+	-- special handler to request guild roster updates when guild members come online or go
+	-- offline, since this does not automatically trigger the GuildRoster update from the server
+	-- another check is to make sure your AFK flag in the GuildRoster is updated correctly
+	["CHAT_MSG_SYSTEM"] = function (self, arg1)
+		if find(arg1, friendOnline) or find(arg1, friendOffline) or find(arg1, MARKED_AFK) or find(arg1, CLEARED_AFK) then 
+			GuildRoster()
+		end
+	end,
+	['PLAYER_FLAGS_CHANGED'] = function (self, arg1)
+		local memberstatus = IsChatAFK() and 1 or IsChatDND() and 2 or 0
+
+		for i = 1, #guildTable do
+			if guildTable[i][1] == E.myname then
+				guildTable[i][8] = onlinestatus[memberstatus]()
+				break
+			end
+		end
+	end,
+	-- when we enter the world and guildframe is not available then
+	-- load guild frame, update guild message and guild xp	
+	["PLAYER_ENTERING_WORLD"] = function (self, arg1)
+		if not GuildFrame and IsInGuild() then 
+			LoadAddOn("Blizzard_GuildUI")
+			UpdateGuildMessage() 
+			UpdateGuildXP() 
+			GuildRoster() 
+		end
+	end,
+	-- Guild Roster updated, so rebuild the guild table
+	["GUILD_ROSTER_UPDATE"] = function (self, arg1)
+		BuildGuildTable()
+	end,
+	-- our guild xp changed, recalculate it	
+	["GUILD_XP_UPDATE"] = function (self, arg1)
+		UpdateGuildXP()
+	end,
+	["PLAYER_GUILD_UPDATE"] = function (self, arg1)
+		GuildRoster()
+	end,
+	-- our guild message of the day changed
+	["GUILD_MOTD"] = function (self, arg1)
+		UpdateGuildMessage()
+	end,
+	["ELVUI_FORCE_RUN"] = function() end,
+	["ELVUI_COLOR_UPDATE"] = function() end,
+}
+
 local function OnEvent(self, event, ...)
 	lastPanel = self
 	
 	if IsInGuild() then
-		-- special handler to request guild roster updates when guild members come online or go
-		-- offline, since this does not automatically trigger the GuildRoster update from the server
-		if event == "CHAT_MSG_SYSTEM" then
-			local message = select(1, ...)
-			if find(message, friendOnline) or find(message, friendOffline) then GuildRoster() end
-		end
-		-- our guild xp changed, recalculate it
-		if event == "GUILD_XP_UPDATE" then UpdateGuildXP() return end
-		-- our guild message of the day changed
-		if event == "GUILD_MOTD" then UpdateGuildMessage() return end
-		-- when we enter the world and guildframe is not available then
-		-- load guild frame, update guild message and guild xp
-		
-		if event == "PLAYER_ENTERING_WORLD" then
-			if not GuildFrame and IsInGuild() then LoadAddOn("Blizzard_GuildUI") UpdateGuildMessage() UpdateGuildXP() end
-		end
-		-- an event occured that could change the guild roster, so request update, and wait for guild roster update to occur
-		if (event ~= "GUILD_ROSTER_UPDATE" and event~="PLAYER_GUILD_UPDATE") or event == 'ELVUI_FORCE_RUN' then GuildRoster()  if event ~= 'ELVUI_FORCE_RUN' then return end end
+		eventHandlers[event](self, select(1, ...))
 
-		local _, online = GetNumGuildMembers()
-		
+		-- update datatext information
+		local _, online = GetNumGuildMembers()	
 		self.text:SetFormattedText(displayString, online)
 	else
 		self.text:SetText(noGuildString)
@@ -193,8 +220,9 @@ local function OnEnter(self)
 	DT:SetupTooltip(self)
 	
 	local total, online = GetNumGuildMembers()
-	GuildRoster()
-	BuildGuildTable()
+	if #guildTable == 0 then BuildGuildTable() end
+
+	SortGuildTable(IsShiftKeyDown())
 
 	local guildName, guildRank = GetGuildInfo('player')
 	local guildLevel = GetGuildLevel()
@@ -227,7 +255,7 @@ local function OnEnter(self)
 		GameTooltip:AddLine(format(standingString, COMBAT_FACTION_CHANGE, E:ShortValue(barValue), E:ShortValue(barMax), ceil((barValue / barMax) * 100)))
 	end
 	
-	local zonec, classc, levelc, info
+	local zonec, classc, levelc, info, grouped
 	local shown = 0
 	
 	GameTooltip:AddLine(' ')
@@ -242,12 +270,14 @@ local function OnEnter(self)
 		if GetRealZoneText() == info[4] then zonec = activezone else zonec = inactivezone end
 		classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[9]], GetQuestDifficultyColor(info[3])
 		
+		if (UnitInParty(info[1]) or UnitInRaid(info[1])) then grouped = 1 else grouped = 2 end
+
 		if IsShiftKeyDown() then
 			GameTooltip:AddDoubleLine(format(nameRankString, info[1], info[2]), info[4], classc.r, classc.g, classc.b, zonec.r, zonec.g, zonec.b)
 			if info[5] ~= "" then GameTooltip:AddLine(format(noteString, info[5]), ttsubh.r, ttsubh.g, ttsubh.b, 1) end
 			if info[6] ~= "" then GameTooltip:AddLine(format(officerNoteString, info[6]), ttoff.r, ttoff.g, ttoff.b, 1) end
 		else
-			GameTooltip:AddDoubleLine(format(levelNameStatusString, levelc.r*255, levelc.g*255, levelc.b*255, info[3], info[1], info[8]), info[4], classc.r,classc.g,classc.b, zonec.r,zonec.g,zonec.b)
+			GameTooltip:AddDoubleLine(format(levelNameStatusString, levelc.r*255, levelc.g*255, levelc.b*255, info[3], info[1], groupedTable[grouped], info[8]), info[4], classc.r,classc.g,classc.b, zonec.r,zonec.g,zonec.b)
 		end
 		shown = shown + 1
 	end	
@@ -277,4 +307,4 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 	onLeaveFunc - function to fire OnLeave, if not provided one will be set for you that hides the tooltip.
 ]]
 
-DT:RegisterDatatext('Guild', {'PLAYER_ENTERING_WORLD', "GUILD_ROSTER_SHOW", "GUILD_ROSTER_UPDATE", "GUILD_XP_UPDATE", "PLAYER_GUILD_UPDATE", "GUILD_MOTD", "CHAT_MSG_SYSTEM"}, OnEvent, nil, Click, OnEnter)
+DT:RegisterDatatext('Guild', {'PLAYER_ENTERING_WORLD', "GUILD_ROSTER_UPDATE", "GUILD_XP_UPDATE", "PLAYER_GUILD_UPDATE", "GUILD_MOTD", "CHAT_MSG_SYSTEM", "PLAYER_FLAGS_CHANGED"}, OnEvent, nil, Click, OnEnter)

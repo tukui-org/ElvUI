@@ -1,5 +1,7 @@
 ﻿local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 
+local tsort, tinsert = table.sort, table.insert
+
 E.Options.args = {
 	ElvUI_Header = {
 		order = 1,
@@ -643,21 +645,21 @@ local TESTERS = {
 	'Catok'
 }
 
-table.sort(DONATORS, function(a,b) return a < b end) --Alphabetize
+tsort(DONATORS, function(a,b) return a < b end) --Alphabetize
 for _, donatorName in pairs(DONATORS) do
-	table.insert(E.CreditsList, donatorName)
+	tinsert(E.CreditsList, donatorName)
 	DONATOR_STRING = DONATOR_STRING..LINE_BREAK..donatorName
 end
 
-table.sort(DEVELOPERS, function(a,b) return a < b end) --Alphabetize
+tsort(DEVELOPERS, function(a,b) return a < b end) --Alphabetize
 for _, devName in pairs(DEVELOPERS) do
-	table.insert(E.CreditsList, devName)
+	tinsert(E.CreditsList, devName)
 	DEVELOPER_STRING = DEVELOPER_STRING..LINE_BREAK..devName
 end
 
-table.sort(TESTERS, function(a,b) return a < b end) --Alphabetize
+tsort(TESTERS, function(a,b) return a < b end) --Alphabetize
 for _, testerName in pairs(TESTERS) do
-	table.insert(E.CreditsList, testerName)
+	tinsert(E.CreditsList, testerName)
 	TESTER_STRING = TESTER_STRING..LINE_BREAK..testerName
 end
 

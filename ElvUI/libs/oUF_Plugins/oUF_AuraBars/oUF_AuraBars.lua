@@ -1,19 +1,23 @@
 local _, ns = ...
-local oUF = ns.oUF or oUF
+local oUF = oUF or ns.oUF
 assert(oUF, 'oUF_AuraBars was unable to locate oUF install.')
+
+local format = string.format
+local floor, huge, min = math.floor, math.huge, math.min
+local tsort = table.sort
 
 local function Round(number, decimalPlaces)
 	if decimalPlaces and decimalPlaces > 0 then
 		local mult = 10^decimalPlaces
-		return math.floor(number * mult + .5) / mult
+		return floor(number * mult + .5) / mult
 	end
-	return math.floor(num + .5)
+	return floor(num + .5)
 end
 
 local function FormatTime(timeInSec)
-	local h = math.floor(timeInSec / 3600)
-	local m = math.floor((timeInSec - (3600 * h)) / 60)
-	local s = math.floor(timeInSec - ((3600 * h) + (60 * m)))
+	local h = floor(timeInSec / 3600)
+	local m = floor((timeInSec - (3600 * h)) / 60)
+	local s = floor(timeInSec - ((3600 * h) + (60 * m)))
 	if h > 0 then
 		return h .. ":" .. m .. "h"
 	elseif m > 0 then
@@ -172,7 +176,7 @@ local function DefaultFilter(self, unit, name, rank, icon, count, debuffType, du
 end
 
 local sort = function(a, b)
-	local compa, compb = a.noTime and math.huge or a.expirationTime, b.noTime and math.huge or b.expirationTime
+	local compa, compb = a.noTime and huge or a.expirationTime, b.noTime and huge or b.expirationTime
 	return compa > compb
 end
 
@@ -219,7 +223,7 @@ local function Update(self, event, unit)
 	end
 
 	if auraBars.sort then
-		table.sort(auras, type(auraBars.sort) == 'function' and auraBars.sort or sort)
+		tsort(auras, type(auraBars.sort) == 'function' and auraBars.sort or sort)
 	end
 
 	-- Show and configure bars for buffs/debuffs.
@@ -258,7 +262,7 @@ local function Update(self, event, unit)
 			bar:SetValue(1)
 		else
 			if auraBars.scaleTime then
-				local maxvalue = math.min(auraBars.scaleTime, bar.aura.duration)
+				local maxvalue = min(auraBars.scaleTime, bar.aura.duration)
 				bar:SetMinMaxValues(0, maxvalue)
 				bar:SetWidth(
 					( maxvalue / auraBars.scaleTime ) *
@@ -272,7 +276,7 @@ local function Update(self, event, unit)
 
 		bar.icon:SetTexture(bar.aura.icon)
 
-		bar.spellname:SetText(bar.aura.count > 1 and string.format("%s [%d]", bar.aura.name, bar.aura.count) or bar.aura.name)
+		bar.spellname:SetText(bar.aura.count > 1 and format("%s [%d]", bar.aura.name, bar.aura.count) or bar.aura.name)
 		bar.spelltime:SetText(not bar.noTime and FormatTime(bar.aura.expirationTime-GetTime()))
 
 		-- Colour bars

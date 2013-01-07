@@ -3,6 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 local lastPanel
 local displayString = '';
+local join = string.join
 
 local function OnEvent(self, event)
 	lastPanel = self
@@ -32,7 +33,7 @@ local function OnEnter(self)
 end
 
 local function ValueColorUpdate(hex, r, g, b)
-	displayString = string.join("", "%s", hex, "%.2f%%|r")
+	displayString = join("", "%s", hex, "%.2f%%|r")
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

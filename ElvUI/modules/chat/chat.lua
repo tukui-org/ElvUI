@@ -12,6 +12,9 @@ local cvars = {
 	["whisperMode"] = true,
 }
 
+local len, gsub, find, sub, gmatch, format, random = string.len, string.gsub, string.find, string.sub, string.gmatch, string.format, math.random
+local tinsert, tremove, tsort, twipe, tconcat = table.insert, table.remove, table.sort, table.wipe, table.concat
+
 local TIMESTAMP_FORMAT
 local DEFAULT_STRINGS = {
 	GUILD = L['G'],
@@ -158,7 +161,7 @@ end
 
 function CH:InsertEmotions(msg)
 	for k,v in pairs(smileyKeys) do
-		msg = string.gsub(msg,k,"|T"..smileyPack[v]..":16|t");
+		msg = gsub(msg,k,"|T"..smileyPack[v]..":16|t");
 	end
 	return msg;
 end
@@ -166,25 +169,23 @@ end
 function CH:GetSmileyReplacementText(msg)
 	if not self.db.emotionIcons or msg:find('/run') or msg:find('/dump') or msg:find('/script') then return msg end
 	local outstr = "";
-	local origlen = string.len(msg);
+	local origlen = len(msg);
 	local startpos = 1;
 	local endpos;
 	
 	while(startpos <= origlen) do
 		endpos = origlen;
-		local pos = string.find(msg,"|H",startpos,true);
+		local pos = find(msg,"|H",startpos,true);
 		if(pos ~= nil) then
 			endpos = pos;
 		end
-		outstr = outstr .. CH:InsertEmotions(string.sub(msg,startpos,endpos)); --run replacement on this bit
+		outstr = outstr .. CH:InsertEmotions(sub(msg,startpos,endpos)); --run replacement on this bit
 		startpos = endpos + 1;
 		if(pos ~= nil) then
-			endpos = string.find(msg,"|h]|r",startpos,-1) or string.find(msg,"|h",startpos,-1);
-			if(endpos == nil) then
-				endpos = origlen;
-			end
+			endpos = find(msg,"|h]|r",startpos,-1) or find(msg,"|h",startpos,-1);
+			endpos = endpos or origlen;
 			if(startpos < endpos) then
-				outstr = outstr .. string.sub(msg,startpos,endpos); --don't run replacement on this bit
+				outstr = outstr .. sub(msg,startpos,endpos); --don't run replacement on this bit
 				startpos = endpos + 1;
 			end
 		end
@@ -254,10 +255,10 @@ function CH:StyleChat(frame)
 		
 		if InCombatLockdown() then
 			local MIN_REPEAT_CHARACTERS = 5
-			if (string.len(text) > MIN_REPEAT_CHARACTERS) then
+			if (len(text) > MIN_REPEAT_CHARACTERS) then
 			local repeatChar = true;
 			for i=1, MIN_REPEAT_CHARACTERS, 1 do 
-				if ( string.sub(text,(0-i), (0-i)) ~= string.sub(text,(-1-i),(-1-i)) ) then
+				if ( sub(text,(0-i), (0-i)) ~= sub(text,(-1-i),(-1-i)) ) then
 					repeatChar = false;
 					break;
 				end
@@ -355,7 +356,7 @@ function CH:CopyChat(frame)
 		FCF_SetChatWindowFontSize(frame, frame, 0.01)
 		CopyChatFrame:Show()
 		local lineCt = self:GetLines(frame:GetRegions())
-		local text = table.concat(lines, "\n", 1, lineCt)
+		local text = tconcat(lines, "\n", 1, lineCt)
 		FCF_SetChatWindowFontSize(frame, frame, fontSize)
 		CopyChatFrameEditBox:SetText(text)
 	else
@@ -458,9 +459,7 @@ function CH:PositionChat(override)
 		isDocked = chat.isDocked
 		
 		if id > NUM_CHAT_WINDOWS then
-			if point == nil then
-				point = select(1, chat:GetPoint())
-			end
+			point = point or select(1, chat:GetPoint());
 			if select(2, tab:GetPoint()):GetName() ~= bg then
 				isDocked = true
 			else
@@ -660,11 +659,11 @@ function CH:DisableHyperlink()
 end
 
 function CH:DisableChatThrottle()
-	table.wipe(msgList); table.wipe(msgCount); table.wipe(msgTime)
+	twipe(msgList); twipe(msgCount); twipe(msgTime)
 end
 
 function CH:ShortChannel()
-	return string.format("|Hchannel:%s|h[%s]|h", self, DEFAULT_STRINGS[self] or self:gsub("channel:", ""))
+	return format("|Hchannel:%s|h[%s]|h", self, DEFAULT_STRINGS[self] or self:gsub("channel:", ""))
 end
 
 function CH:ConcatenateTimeStamp(msg)
@@ -821,7 +820,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				globalstring = _G["CHAT_"..arg1.."_NOTICE"];
 			end
 			
-			CH:ConcatenateTimeStamp(globalstring);
+			globalString = CH:ConcatenateTimeStamp(globalstring);
 			
 			if(strlen(arg5) > 0) then
 				-- TWO users in this notice (E.G. x kicked y)
@@ -840,7 +839,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				arg4 = arg4.." "..arg10;
 			end
 			
-			CH:ConcatenateTimeStamp(globalstring);
+			globalString = CH:ConcatenateTimeStamp(globalstring);
 			
 			local accessID = ChatHistory_GetAccessID(Chat_GetChatCategory(type), arg8);
 			local typeID = ChatHistory_GetAccessID(infoType, arg8, arg12);
@@ -966,10 +965,10 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			end
 			
 			-- Search for icon links and replace them with texture links.
-			for tag in string.gmatch(arg1, "%b{}") do
-				local term = strlower(string.gsub(tag, "[{}]", ""));
+			for tag in gmatch(arg1, "%b{}") do
+				local term = strlower(gsub(tag, "[{}]", ""));
 				if ( ICON_TAG_LIST[term] and ICON_LIST[ICON_TAG_LIST[term]] ) then
-					arg1 = string.gsub(arg1, tag, ICON_LIST[ICON_TAG_LIST[term]] .. "0|t");
+					arg1 = gsub(arg1, tag, ICON_LIST[ICON_TAG_LIST[term]] .. "0|t");
 				elseif ( GROUP_TAG_LIST[term] ) then
 					local groupIndex = GROUP_TAG_LIST[term];
 					local groupList = "[";
@@ -978,13 +977,13 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 						if ( name and subgroup == groupIndex ) then
 							local classColorTable = RAID_CLASS_COLORS[classFileName];
 							if ( classColorTable ) then
-								name = string.format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, name);
+								name = format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, name);
 							end
 							groupList = groupList..(groupList == "[" and "" or PLAYER_LIST_DELIMITER)..name;
 						end
 					end
 					groupList = groupList.."]";
-					arg1 = string.gsub(arg1, tag, groupList);
+					arg1 = gsub(arg1, tag, groupList);
 				end
 			end
 			
@@ -1022,7 +1021,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 					if ( type == "EMOTE" ) then
 						body = format(_G["CHAT_"..type.."_GET"]..message, pflag..playerLink..coloredName.."|h");
 					elseif ( type == "TEXT_EMOTE") then
-						body = string.gsub(message, arg2, pflag..playerLink..coloredName.."|h", 1);
+						body = gsub(message, arg2, pflag..playerLink..coloredName.."|h", 1);
 					else
 						body = format(_G["CHAT_"..type.."_GET"]..message, pflag..playerLink.."["..coloredName.."]".."|h");
 					end
@@ -1307,7 +1306,7 @@ function CH:AddLines(lines, ...)
   for i=select("#", ...),1,-1 do
     local x = select(i, ...)
     if x:GetObjectType() == "FontString" and not x:GetName() then
-        table.insert(lines, x:GetText())
+        tinsert(lines, x:GetText())
     end
   end
 end
@@ -1347,15 +1346,15 @@ function CH:ChatEdit_AddHistory(editBox, line)
 			end
 		end
 		
-		table.insert(ElvCharacterDB.ChatEditHistory, #ElvCharacterDB.ChatEditHistory + 1, line)
+		tinsert(ElvCharacterDB.ChatEditHistory, #ElvCharacterDB.ChatEditHistory + 1, line)
 		if #ElvCharacterDB.ChatEditHistory > 5 then
-			table.remove(ElvCharacterDB.ChatEditHistory, 1)
+			tremove(ElvCharacterDB.ChatEditHistory, 1)
 		end
 	end
 end
 
 function CH:UpdateChatKeywords()
-	table.wipe(CH.Keywords)
+	twipe(CH.Keywords)
 	local keywords = self.db.keywords
 	keywords = keywords:gsub(',%s', ',')
 
@@ -1392,10 +1391,10 @@ end
 function CH:DisplayChatHistory()	
 	local temp, data = {}
 	for id, _ in pairs(ElvCharacterDB.ChatHistory) do
-		table.insert(temp, tonumber(id))
+		tinsert(temp, tonumber(id))
 	end
 	
-	table.sort(temp, function(a, b)
+	tsort(temp, function(a, b)
 		return a < b
 	end)
 	
@@ -1410,7 +1409,7 @@ function CH:DisplayChatHistory()
 end
 
 local function GetTimeForSavedMessage()
-	local randomTime = select(2, ("."):split(GetTime() or "0."..math.random(1, 999), 2)) or 0
+	local randomTime = select(2, ("."):split(GetTime() or "0."..random(1, 999), 2)) or 0
 	return time().."."..randomTime
 end
 
@@ -1478,6 +1477,10 @@ function CH:ChatFrame_RemoveMessageEventFilter (event, filter)
 			chatFilters[event] = nil;
 		end
 	end
+end
+
+function CH:FCF_SetWindowAlpha(frame, alpha, doNotSave)
+	frame.oldAlpha = alpha or 1;
 end
 
 DEFAULT_CHAT_FRAME:UnregisterEvent("GUILD_MOTD")
@@ -1565,7 +1568,9 @@ function CH:Initialize()
 			
 	--Now hook onto Blizzards functions for other addons
 	self:SecureHook("ChatFrame_AddMessageEventFilter");
-	self:SecureHook("ChatFrame_RemoveMessageEventFilter");	
+	self:SecureHook("ChatFrame_RemoveMessageEventFilter");
+	
+	self:SecureHook("FCF_SetWindowAlpha")
 	
 	
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_CHANNEL", CH.CHAT_MSG_CHANNEL)
@@ -1645,11 +1650,11 @@ function CH:Initialize()
 		local text = self:GetText()
 		
 		for _, size in pairs(sizes) do
-			if string.find(text, size) and not string.find(text, size.."]") then
+			if find(text, size) and not find(text, size.."]") then
 				if size == ':13:22' then
-					self:SetText(string.gsub(text, size, ":12:20"))
+					self:SetText(gsub(text, size, ":12:20"))
 				else
-					self:SetText(string.gsub(text, size, ":12:12"))
+					self:SetText(gsub(text, size, ":12:12"))
 				end
 			end		
 		end

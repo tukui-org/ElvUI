@@ -4,7 +4,7 @@ local UF = E:GetModule('UnitFrames');
 local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
-
+local tinsert = table.insert
 function UF:Construct_TankFrames(unitGroup)
 	self:RegisterForClicks("AnyUp")
 	self:SetScript('OnEnter', UnitFrame_OnEnter)
@@ -15,7 +15,7 @@ function UF:Construct_TankFrames(unitGroup)
 	self.Health = UF:Construct_HealthBar(self, true)
 	self.Name = UF:Construct_NameText(self)
 
-	table.insert(self.__elements, UF.UpdateThreat)
+	tinsert(self.__elements, UF.UpdateThreat)
 	self:RegisterEvent('PLAYER_TARGET_CHANGED', UF.UpdateThreat)
 	self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', UF.UpdateThreat)
 	self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', UF.UpdateThreat)		

@@ -4,6 +4,9 @@ local oUF = ns.oUF
 local VISIBLE = 1
 local HIDDEN = 0
 
+local floor = math.floor
+local tinsert = table.insert
+
 local UpdateTooltip = function(self)
 	GameTooltip:SetUnitAura(self.parent.__owner.unit, self:GetID(), self.filter)
 end
@@ -54,7 +57,7 @@ local createAuraIcon = function(icons, index)
 	button:SetScript("OnEnter", OnEnter)
 	button:SetScript("OnLeave", OnLeave)
 
-	table.insert(icons, button)
+	tinsert(icons, button)
 
 	button.parent = icons
 	button.icon = icon
@@ -164,8 +167,8 @@ local SetPosition = function(icons, x)
 		local anchor = icons.initialAnchor or "BOTTOMLEFT"
 		local growthx = (icons["growth-x"] == "LEFT" and -1) or 1
 		local growthy = (icons["growth-y"] == "DOWN" and -1) or 1
-		local cols = math.floor(icons:GetWidth() / sizex + .5)
-		local rows = math.floor(icons:GetHeight() / sizey + .5)
+		local cols = floor(icons:GetWidth() / sizex + .5)
+		local rows = floor(icons:GetHeight() / sizey + .5)
 
 		for i = 1, #icons do
 			local button = icons[i]

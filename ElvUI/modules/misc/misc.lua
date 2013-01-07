@@ -3,6 +3,9 @@ local M = E:NewModule('Misc', 'AceEvent-3.0', 'AceTimer-3.0');
 
 E.Misc = M;
 local UIErrorsFrame = UIErrorsFrame;
+local interruptMsg = INTERRUPTED.." %s's \124cff71d5ff\124Hspell:%d\124h[%s]\124h\124r!"
+local floor = math.floor
+local format = string.format
 
 function M:ErrorFrameToggle(event)
 	if event == 'PLAYER_REGEN_DISABLED' then
@@ -13,19 +16,22 @@ function M:ErrorFrameToggle(event)
 end
 
 function M:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, _, sourceGUID, _, _, _, _, destName, _, _, _, _, _, spellID, spellName)
-	if not (event == "SPELL_INTERRUPT" and sourceGUID == UnitGUID('player')) then return end
+	if E.db.general.interruptAnnounce == "NONE" then return end -- No Announcement configured, exit.
+	if not (event == "SPELL_INTERRUPT" and sourceGUID == UnitGUID('player')) then return end -- No annoucable interrupt from player, exit.
 	
-	local inGroup, inRaid = IsInGroup(), IsInRaid()
-	if E.db.general.interruptAnnounce == "PARTY" and inGroup then
-		SendChatMessage(INTERRUPTED.." "..destName.."'s \124cff71d5ff\124Hspell:"..spellID.."\124h["..spellName.."]\124h\124r!", IsPartyLFG() and "INSTANCE_CHAT" or "PARTY")
-	elseif E.db.general.interruptAnnounce == "RAID" and inGroup then
+	local inGroup, inRaid, inPartyLFG = IsInGroup(), IsInRaid(), IsPartyLFG()
+	if not inGroup then return end -- not in group, exit.
+	
+	if E.db.general.interruptAnnounce == "PARTY" then
+		SendChatMessage(format(interruptMsg, destName, spellID, spellName), inPartyLFG and "INSTANCE_CHAT" or "PARTY")
+	elseif E.db.general.interruptAnnounce == "RAID" then
 		if inRaid then
-			SendChatMessage(INTERRUPTED.." "..destName.."'s \124cff71d5ff\124Hspell:"..spellID.."\124h["..spellName.."]\124h\124r!", IsPartyLFG() and "INSTANCE_CHAT" or "RAID")		
+			SendChatMessage(format(interruptMsg, destName, spellID, spellName), inPartyLFG and "INSTANCE_CHAT" or "RAID")		
 		else
-			SendChatMessage(INTERRUPTED.." "..destName.."'s \124cff71d5ff\124Hspell:"..spellID.."\124h["..spellName.."]\124h\124r!", IsPartyLFG() and "INSTANCE_CHAT" or "PARTY")
+			SendChatMessage(format(interruptMsg, destName, spellID, spellName), inPartyLFG and "INSTANCE_CHAT" or "PARTY")
 		end	
-	elseif E.db.general.interruptAnnounce == "SAY" and inGroup then
-		SendChatMessage(INTERRUPTED.." "..destName.."'s \124cff71d5ff\124Hspell:"..spellID.."\124h["..spellName.."]\124h\124r!", "SAY")	
+	elseif E.db.general.interruptAnnounce == "SAY" then
+		SendChatMessage(format(interruptMsg, destName, spellID, spellName), "SAY")	
 	end
 end
 
@@ -46,7 +52,7 @@ function M:MERCHANT_SHOW()
 	if cost > 0 then
 		if possible then
 			RepairAllItems(autoRepair == 'GUILD')
-			local c, s, g = cost%100, math.floor((cost%10000)/100), math.floor(cost/10000)
+			local c, s, g = cost%100, floor((cost%10000)/100), floor(cost/10000)
 			
 			if autoRepair == 'GUILD' then
 				E:Print(L['Your items have been repaired using guild bank funds for: ']..GetCoinTextureString(cost, 12))
@@ -79,14 +85,10 @@ function M:DisbandRaidGroup()
 	LeaveParty()
 end
 
-function M:IsPlayerMoving()
-	local val = GetUnitSpeed('player')
-	return val ~= 0
-end
-
 function M:CheckMovement()
-	if not WorldMapFrame:IsShown() then return; end
-	if self:IsPlayerMoving() then
+	if E.db.general.mapAlpha == 100 or not WorldMapFrame:IsShown() then return end
+	
+	if GetUnitSpeed('player') ~= 0 then
 		WorldMapFrame:SetAlpha(E.db.general.mapAlpha)
 	else
 		WorldMapFrame:SetAlpha(1)
@@ -179,7 +181,7 @@ function M:Initialize()
 	self:RegisterEvent('CVAR_UPDATE', 'ForceCVars')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 	
-	self.MovingTimer = self:ScheduleRepeatingTimer("CheckMovement", 0.1)
+	self.MovingTimer = self:ScheduleRepeatingTimer("CheckMovement", 0.2)
 end
 
 E:RegisterModule(M:GetName())

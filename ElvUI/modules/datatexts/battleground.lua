@@ -36,14 +36,20 @@ local TBFG = 736
 local AB = 461
 local TOK = 856
 local SSM = 860
+local name
 
 function DT:UPDATE_BATTLEFIELD_SCORE()
 	lastPanel = self
-	local index = dataLayout[self:GetParent():GetName()][self.pointIndex]
+	local pointIndex = dataLayout[self:GetParent():GetName()][self.pointIndex]
 	for i=1, GetNumBattlefieldScores() do
-		local name = GetBattlefieldScore(i)
+		name = GetBattlefieldScore(i)
 		if name == E.myname then
-			self.text:SetFormattedText(displayString, dataStrings[index], E:ShortValue(select(index, GetBattlefieldScore(i))))
+			if index == 10 or index == 11 then
+				self.text:SetFormattedText(displayString, dataStrings[pointIndex], E:ShortValue(select(pointIndex, GetBattlefieldScore(i))))
+			else
+				self.text:SetFormattedText(displayString, dataStrings[pointIndex], select(pointIndex, GetBattlefieldScore(i)))
+			end
+			break	
 		end
 	end
 end
@@ -51,9 +57,8 @@ end
 function DT:BattlegroundStats()
 	DT:SetupTooltip(self)
 	local CurrentMapID = GetCurrentMapAreaID()
-	
 	for index=1, GetNumBattlefieldScores() do
-		local name = GetBattlefieldScore(index)
+		name = GetBattlefieldScore(index)
 		if name and name == E.myname then
 			GameTooltip:AddDoubleLine(L['Stats For:'], name, 1,1,1, classColor.r, classColor.g, classColor.b)
 			GameTooltip:AddLine(" ")
@@ -80,7 +85,8 @@ function DT:BattlegroundStats()
 				GameTooltip:AddDoubleLine(L['Victory Points'], GetBattlefieldStatData(index, 2),1,1,1)	
 			elseif CurrentMapID == SSM then
 				GameTooltip:AddDoubleLine(L['Carts Controlled'], GetBattlefieldStatData(index, 1),1,1,1)	
-			end		
+			end
+			break
 		end
 	end	
 	

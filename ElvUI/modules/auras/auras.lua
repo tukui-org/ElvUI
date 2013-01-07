@@ -2,41 +2,75 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 local A = E:NewModule('Auras', 'AceHook-3.0', 'AceEvent-3.0');
 local LSM = LibStub("LibSharedMedia-3.0")
 
-function A:FormatTime(s)
-	local day, hour, minute = 86400, 3600, 60
-	if s >= day then
-		return format("|cffeeeeee%dd|r", ceil(s / day))
-	elseif s >= hour then
-		return format("|cffeeeeee%dh|r", ceil(s / hour))
-	elseif s >= minute then
-		return format("|cffeeeeee%dm|r", ceil(s / minute))
-	elseif s >= minute / 12 and s > E.db.auras.fadeThreshold then
-		return tostring(floor(s))..'s'
+local DAY, HOUR, MINUTE = 86400, 3600, 60 --used for calculating aura time text
+local DAYISH, HOURISH, MINUTEISH = 3600 * 23.5, 60 * 59.5, 59.5 --used for caclculating aura time at transition points
+local HALFDAYISH, HALFHOURISH, HALFMINUTEISH = DAY/2 + 0.5, HOUR/2 + 0.5, MINUTE/2 + 0.5 --used for calculating next update times
+
+local ceil = math.ceil
+local max = math.max
+local find = string.find
+local format = string.format
+local join = string.join
+
+-- aura time colors for days, hours, minutes, seconds, fadetimer
+A.TimeColors = {
+	[0] = '|cfffefefe',
+	[1] = '|cfffefefe',
+	[2] = '|cfffefefe',
+	[3] = '|cfffefefe',
+	[4] = '|cfffe0000',
+}
+
+-- short and long aura time formats
+A.TimeFormats = {
+	[0] = { '%dd', '%dd' },
+	[1] = { '%dh', '%dh' },
+	[2] = { '%dm', '%dm' },
+	[3] = { '%ds', '%d' },
+	[4] = { '%.1fs', '%.1f' },
+}
+
+-- will return the the value to display, the formatter id to use and calculates the next update for the Aura
+function A:AuraTimeGetInfo(s, threshhold)
+	if s < MINUTE then
+		if s >= threshhold then
+			return floor(s), 3, 0.51
+		else
+			return s, 4, 0.051
+		end
+	elseif s < HOUR then
+		local minutes = tonumber(E:Round(s/MINUTE))
+		return ceil(s / MINUTE), 2, minutes > 1 and (s - (minutes*MINUTE - HALFMINUTEISH)) or (s - MINUTEISH)
+	elseif s < DAY then
+		local hours = tonumber(E:Round(s/HOUR))
+		return ceil(s / HOUR), 1, hours > 1 and (s - (hours*HOUR - HALFHOURISH)) or (s - HOURISH)
+	else
+		local days = tonumber(E:Round(s/DAY))
+		return ceil(s / DAY), 0,  days > 1 and (s - (days*DAY - HALFDAYISH)) or (s - DAYISH)
 	end
-	return format("%.1fs", s)
 end
 
 function A:UpdateTime(elapsed)
-	if(self.expiration) then	
-		self.expiration = math.max(self.expiration - elapsed, 0)
-		if(self.expiration <= 0) then
-			self.time:SetText("")
-		else
-			local time = A:FormatTime(self.expiration)
-			if self.expiration <= 86400.5 and self.expiration > 3600.5 then
-				self.time:SetText("|cffcccccc"..time.."|r")
-				E:StopFlash(self)
-			elseif self.expiration <= 3600.5 and self.expiration > 60.5 then
-				self.time:SetText("|cffcccccc"..time.."|r")
-				E:StopFlash(self)
-			elseif self.expiration <= 60.5 and self.expiration > E.db.auras.fadeThreshold then
-				self.time:SetText("|cffcccccc"..time.."|r")
-				E:StopFlash(self)
-			elseif self.expiration <= E.db.auras.fadeThreshold then
-				self.time:SetText("|cffff0000"..time.."|r")
-				E:Flash(self, 1)
-			end
-		end
+	self.expiration = self.expiration - elapsed
+	if self.nextupdate > 0 then
+		self.nextupdate = self.nextupdate - elapsed
+		return
+	end
+	
+	if(self.expiration <= 0) then
+		self.time:SetText("")
+		E:StopFlash(self)
+		self:SetScript("OnUpdate", nil)
+		return
+	end
+
+	local timervalue, formatid
+	timervalue, formatid, self.nextupdate = A:AuraTimeGetInfo(self.expiration, E.db.auras.fadeThreshold)
+	self.time:SetFormattedText(("%s%s|r"):format(A.TimeColors[formatid], A.TimeFormats[formatid][1]), timervalue)	
+	if self.expiration > E.db.auras.fadeThreshold then
+		E:StopFlash(self)
+	else
+		E:Flash(self, 1)
 	end
 end
 
@@ -49,10 +83,10 @@ function A:UpdateWeapon(button)
 		button.backdrop:SetBackdropBorderColor(137/255, 0, 191/255)
 		button.backdrop:SetFrameLevel(button:GetFrameLevel() - 2)
 		
-		button.time = _G[button:GetName()..'Duration']
-		button.icon = _G[button:GetName()..'Icon']
-
-		_G[button:GetName()..'Border']:Hide()
+		button.time = _G[('%sDuration'):format(button:GetName())]
+		button.icon = _G[('%sIcon'):format(button:GetName())]
+		
+		_G[('%sBorder'):format(button:GetName())]:Hide()
 		button.icon:SetTexCoord(unpack(E.TexCoords))
 		button.icon:SetInside()
 		button.time:ClearAllPoints()
@@ -76,8 +110,6 @@ function A:UpdateAuras(header, button)
 		button.time = button:CreateFontString(nil, "ARTWORK")
 		button.time:SetPoint("TOP", button, 'BOTTOM', 0, -2)
 		button.time:FontTemplate()--safty
-
-		button:SetScript("OnUpdate", A.UpdateTime)
 		
 		button:CreateBackdrop('Default')
 
@@ -98,6 +130,8 @@ function A:UpdateAuras(header, button)
 		button.texture:SetTexCoord(unpack(E.TexCoords))
 		button.count:SetText(count > 1 and count or "")
 		button.expiration = expiration - GetTime()
+		button.nextupdate = 0
+		button:SetScript("OnUpdate", A.UpdateTime)
 		
 		if(header:GetAttribute("filter") == "HARMFUL") then
 			local color = DebuffTypeColor[dtype] or DebuffTypeColor.none
@@ -118,7 +152,7 @@ function A:ScanAuras(event, unit)
 	end
 	
 	for index = 1, 32 do		
-		local child = self:GetAttribute("child" .. index)
+		local child = self:GetAttribute(format("child%d", index))
 		if(child) then
 			A:UpdateAuras(self, child)
 		end
@@ -163,7 +197,7 @@ function A:UpdateAllHeaders()
 	end
 	
 	for i = 1, 2 do
-		A:UpdateWeapon(_G["TempEnchant"..i])
+		A:UpdateWeapon(_G[("TempEnchant%d"):format(i)])
 	end
 end
 
@@ -173,7 +207,7 @@ function A:CreateAuraHeader(filter)
 
 	local header = CreateFrame("Frame", name, E.UIParent, "SecureAuraHeaderTemplate")
 	header:SetClampedToScreen(true)
-	header:SetAttribute("template", "ElvUIAuraTemplate"..E.private.auras.size)
+	header:SetAttribute("template", ("ElvUIAuraTemplate%d"):format(E.private.auras.size))
 	header:HookScript("OnEvent", A.ScanAuras)
 	header:SetAttribute("unit", "player")
 	header:SetAttribute("filter", filter)
@@ -191,7 +225,7 @@ function A:PostDrag(position)
 	for _, header in pairs(headers) do
 		if header then
 			if not position then position = E:GetScreenQuadrant(header) end
-			if string.find(position, "LEFT") then
+			if find(position, "LEFT") then
 				header:SetAttribute("point", "TOPLEFT")
 				header:SetAttribute("xOffset", (E.private.auras.size + (E.PixelMode and 6 or 10)))
 			else
@@ -203,7 +237,7 @@ function A:PostDrag(position)
 		end
 	end
 	
-	if string.find(position, "LEFT") then
+	if find(position, "LEFT") then
 		ElvUIPlayerBuffs:Point("TOPLEFT", AurasHolder, "TOPLEFT", 2, -2)
 		
 		if ElvUIPlayerDebuffs then
@@ -220,7 +254,7 @@ end
 
 function A:WeaponPostDrag(point)
 	if not point then point = E:GetScreenQuadrant(self) end
-	if string.find(point, "LEFT") then
+	if find(point, "LEFT") then
 		TempEnchant1:ClearAllPoints()
 		TempEnchant2:ClearAllPoints()
 		TempEnchant1:SetPoint("TOPLEFT", self, "TOPLEFT", 0, 0)
@@ -238,20 +272,14 @@ function A:UpdateWeaponText(auraButton, timeLeft)
 	if(timeLeft) then	
 		if(timeLeft <= 0) then
 			duration:SetText("")
+			E:StopFlash(auraButton)
 		else
-			local time = A:FormatTime(timeLeft)
-			if timeLeft <= 86400.5 and timeLeft > 3600.5 then
-				duration:SetText("|cffcccccc"..time.."|r")
-				E:StopFlash(auraButton)
-			elseif timeLeft <= 3600.5 and timeLeft > 60.5 then
-				duration:SetText("|cffcccccc"..time.."|r")
-				E:StopFlash(auraButton)
-			elseif timeLeft <= 60.5 and timeLeft > E.db.auras.fadeThreshold then
-				duration:SetText("|cffcccccc"..time.."|r")
-				E:StopFlash(auraButton)
-			elseif timeLeft <= E.db.auras.fadeThreshold then
-				duration:SetText("|cffff0000"..time.."|r")
+			local timervalue, formatid = A:AuraTimeGetInfo(timeLeft, E.db.auras.fadeThreshold)
+			duration:SetFormattedText(("%s%s|r"):format(A.TimeColors[formatid], A.TimeFormats[formatid][2]), timervalue)	
+			if timeLeft <= E.db.auras.fadeThreshold then
 				E:Flash(auraButton, 1)
+			else
+				E:StopFlash(auraButton)
 			end
 		end
 	end
@@ -260,8 +288,23 @@ end
 function A:Initialize()
 	if self.db then return; end --IDK WHY BUT THIS IS GETTING CALLED TWICE FROM SOMEWHERE...
 	
-	self.db = E.db.auras
+	local color = E.db.actionbar.expiringcolor
+	A.TimeColors[4] = E:RGBToHex(color.r, color.g, color.b) -- color for timers that are soon to expire
+	
+	color = E.db.actionbar.secondscolor
+	A.TimeColors[3] = E:RGBToHex(color.r, color.g, color.b) -- color for timers that have seconds remaining
+	
+	color = E.db.actionbar.minutescolor
+	A.TimeColors[2] = E:RGBToHex(color.r, color.g, color.b) -- color for timers that have minutes remaining
+	
+	color = E.db.actionbar.hourscolor
+	A.TimeColors[1] = E:RGBToHex(color.r, color.g, color.b) -- color for timers that have hours remaining
+	
+	color = E.db.actionbar.dayscolor
+	A.TimeColors[0] = E:RGBToHex(color.r, color.g, color.b) -- color for timers that have days remaining	
 
+	self.db = E.db.auras
+	
 	BuffFrame:Kill()
 	ConsolidatedBuffs:Kill()
 	InterfaceOptionsFrameCategoriesButton12:SetScale(0.0001)
@@ -293,7 +336,7 @@ function A:Initialize()
 	TemporaryEnchantFrame:SetParent(self.EnchantHeader)
 	
 	for i = 1, 2 do
-		A:UpdateWeapon(_G["TempEnchant"..i])	
+		A:UpdateWeapon(_G[("TempEnchant%d"):format(i)])
 	end
 
 	E:CreateMover(AurasHolder, "AurasMover", L["Auras Frame"], nil, nil, A.PostDrag)

@@ -2,6 +2,8 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 local UF = E:GetModule('UnitFrames');
 local LSM = LibStub("LibSharedMedia-3.0");
 
+local format = string.format
+
 function UF:SpawnMenu()
 	local unit = E:StringTitle(self.unit)
 	if self.unit:find("targettarget") then return; end
@@ -173,7 +175,7 @@ function UF:Construct_AuraIcon(button)
 		local auraName = self.name
 		
 		if auraName then
-			E:Print(string.format(L['The spell "%s" has been added to the Blacklist unitframe aura filter.'], auraName))
+			E:Print(format(L['The spell "%s" has been added to the Blacklist unitframe aura filter.'], auraName))
 			E.global['unitframe']['aurafilters']['Blacklist']['spells'][auraName] = {
 				['enable'] = true,
 				['priority'] = 0,			
@@ -508,8 +510,6 @@ function UF:Construct_Combobar(frame)
 		
 		CPoints[i]:CreateBackdrop('Default')
 		CPoints[i].backdrop:SetParent(CPoints)
-		CPoints[i].backdrop:CreateShadow('Default')
-		CPoints[i].backdrop.shadow:Point("TOPLEFT", -4, 4)
 	end
 	
 	CPoints[1]:SetStatusBarColor(0.69, 0.31, 0.31)		
@@ -517,11 +517,7 @@ function UF:Construct_Combobar(frame)
 	CPoints[3]:SetStatusBarColor(0.65, 0.63, 0.35)
 	CPoints[4]:SetStatusBarColor(0.65, 0.63, 0.35)
 	CPoints[5]:SetStatusBarColor(0.33, 0.59, 0.33)	
-	
-	for i = 1, MAX_COMBO_POINTS do
-		CPoints[i].backdrop.shadow:SetBackdropBorderColor(CPoints[i]:GetStatusBarColor())
-	end
-	
+
 	return CPoints
 end
 
@@ -714,7 +710,7 @@ function UF:Construct_AuraBars()
 		local auraName = self:GetParent().aura.name
 		
 		if auraName then
-			E:Print(string.format(L['The spell "%s" has been added to the Blacklist unitframe aura filter.'], auraName))
+			E:Print(format(L['The spell "%s" has been added to the Blacklist unitframe aura filter.'], auraName))
 			E.global['unitframe']['aurafilters']['Blacklist']['spells'][auraName] = {
 				['enable'] = true,
 				['priority'] = 0,			

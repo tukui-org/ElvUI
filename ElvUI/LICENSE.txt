@@ -1,5 +1,5 @@
 ElvUI License
-	Copyright ©2009-2012
+	Copyright ©2009-2013
 
 	The contents of this addon, excluding third-party resources, are
 	copyrighted to their authors with all rights reserved.
@@ -7,8 +7,8 @@ ElvUI License
 	The author of this addon hereby grants you the following rights:
 
 	1. 	You may make modifications to this addon for private use only, you 
-		must have the authors express written consent to publicize any portion 
-		of this addon.
+		may not publicize any portion of this addon. The only exception being you may
+		upload to the tukui.org or github website.
 	
 	2. 	Do not modify the name of this addon, including the addon folders.
 	

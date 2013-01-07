@@ -1,6 +1,8 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local DT = E:GetModule('DataTexts')
 
+local join = string.join
+
 local displayString = ""
 local tooltipString = "%d%%"
 local totalDurability = 0
@@ -54,7 +56,7 @@ local function OnEnter(self)
 end
 
 local function ValueColorUpdate(hex, r, g, b)
-	displayString = string.join("", DURABILITY, ": ", hex, "%d%%|r")
+	displayString = join("", DURABILITY, ": ", hex, "%d%%|r")
 	
 	if lastPanel ~= nil then
 		OnEvent(lastPanel, 'ELVUI_COLOR_UPDATE')
