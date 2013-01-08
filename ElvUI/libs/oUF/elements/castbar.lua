@@ -295,8 +295,7 @@ end
 
 local onUpdate = function(self, elapsed)
 	self.lastUpdate = (self.lastUpdate or 0) + elapsed
-	if self.lastUpdate < .018 then return end
-	
+
 	if not (self.casting or self.channeling) then
 		self.unitName = nil
 		self.casting = nil
