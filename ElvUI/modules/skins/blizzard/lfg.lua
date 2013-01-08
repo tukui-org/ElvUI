@@ -317,6 +317,7 @@ local function LoadSkin()
 			S:HandleButton(LFRBrowseFrameRefreshButton)
 			S:HandleButton(LFRBrowseFrameInviteButton)
 			S:HandleButton(LFRBrowseFrameSendMessageButton)
+			LFRQueueFrameSpecificListScrollFrameScrollBar.skinned = true
 		end
 	end)
 end
