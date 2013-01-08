@@ -99,12 +99,10 @@ ElvUF.Tags.Methods['health:percent'] = function(unit)
 	end
 end
 
-local powerTypes = { [0] = "MANA", "RAGE", "FOCUS", "ENERGY", "RUNIC_POWER" }
-
 ElvUF.Tags.Events['powercolor'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
 ElvUF.Tags.Methods['powercolor'] = function(unit)
-	local pType, _, altR, altG, altB = UnitPowerType(unit)	
-	local color = ElvUF['colors'].power[powerTypes[pType]]
+	local pType, pToken, altR, altG, altB = UnitPowerType(unit)	
+	local color = ElvUF['colors'].power[pToken]
 	if color then
 		return Hex(color[1], color[2], color[3])
 	else

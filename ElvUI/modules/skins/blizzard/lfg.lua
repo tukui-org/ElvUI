@@ -305,18 +305,7 @@ local function LoadSkin()
 					if texPath ~= nil then
 						self:SetTexture(nil);
 					end
-				end	)	
-				
-				if i == 1 then
-					local point, relatedTo, point2, _, y = tab:GetPoint()
-					tab:Point(point, relatedTo, point2, 3, y)	
-					hooksecurefunc(tab, "SetPoint", function(self, _, _, _, x)
-						if x ~= 3 then
-							self:ClearAllPoints()
-							self:SetPoint(point, relatedTo, point2, 3, y)	
-						end
-					end)
-				end		
+				end	)		
 			end		
 			
 			for i=1, 7 do
@@ -328,6 +317,7 @@ local function LoadSkin()
 			S:HandleButton(LFRBrowseFrameRefreshButton)
 			S:HandleButton(LFRBrowseFrameInviteButton)
 			S:HandleButton(LFRBrowseFrameSendMessageButton)
+			LFRQueueFrameSpecificListScrollFrameScrollBar.skinned = true
 		end
 	end)
 end

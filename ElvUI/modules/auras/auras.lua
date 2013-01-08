@@ -310,7 +310,7 @@ function A:UpdateTimerSettings()
 	-- color for timers that have hours remaining
 	color = E.db.auras.hourscolor
 	A.TimeColors[1] = E:RGBToHex(color.r, color.g, color.b)
-	
+
 	-- color for timers that have days remaining
 	color = E.db.auras.dayscolor
 	A.TimeColors[0] = E:RGBToHex(color.r, color.g, color.b)
@@ -337,7 +337,7 @@ function A:UpdateTimerSettings()
 end
 
 function A:Initialize()
-	if self.db then return; end --IDK WHY BUT THIS IS GETTING CALLED TWICE FROM SOMEWHERE...	
+	if self.db then return; end --IDK WHY BUT THIS IS GETTING CALLED TWICE FROM SOMEWHERE...
 
 	self.db = E.db.auras
 	

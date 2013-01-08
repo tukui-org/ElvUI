@@ -231,7 +231,9 @@ function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, durati
 	end	
 	if duration == 0 or expiration == 0 then
 		button:SetScript('OnUpdate', nil)
-		button.text:SetText('')
+		if button.text:GetFont() then
+			button.text:SetText('')
+		end
 	end
 end
 
@@ -651,7 +653,7 @@ function UF:UpdateShardBar(spec)
 		self:Point("CENTER", frame.Health.backdrop, "TOP", -12, -2)
 	end
 	
-	local SPACING = db.classbar.fill == 'spaced' and 1 or 11
+	local SPACING = db.classbar.fill == 'spaced' and 11 or 1
 	for i = 1, maxBars do
 		self[i]:SetHeight(self:GetHeight())	
 		self[i]:SetWidth((self:GetWidth() - (maxBars - 1)) / maxBars)
@@ -1125,7 +1127,7 @@ function UF:UpdateRoleIcon()
 	local lfdrole = self.LFDRole
 	local db = self.db.roleIcon;
 	
-	if not (db or db.enable) then 
+	if (not db) or (db and not db.enable) then 
 		lfdrole:Hide()
 		return
 	end

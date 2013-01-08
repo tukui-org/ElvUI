@@ -17,7 +17,7 @@ local cooldown = getmetatable(ActionButton1Cooldown).__index
 local hooked, active = {}, {};
 local threshold
 
-AB.TimeColors = {
+local TimeColors = {
 	[0] = '|cffeeeeee',
 	[1] = '|cffeeeeee',
 	[2] = '|cffeeeeee',
@@ -25,7 +25,7 @@ AB.TimeColors = {
 	[4] = '|cfffe0000',
 }
 
-AB.TimeFormats = {
+local TimeFormats = {
 	[0] = '%dd',
 	[1] = '%dh',
 	[2] = '%dm',
@@ -47,7 +47,7 @@ local function Cooldown_OnUpdate(cd, elapsed)
 		else
 			local timervalue, formatid
 			timervalue, formatid, cd.nextUpdate = A:AuraTimeGetInfo(remain, threshold)		
-			cd.text:SetFormattedText(("%s%s|r"):format(AB.TimeColors[formatid], AB.TimeFormats[formatid]), timervalue)
+			cd.text:SetFormattedText(("%s%s|r"):format(TimeColors[formatid], TimeFormats[formatid]), timervalue)
 		end
 	else
 		AB:Cooldown_StopTimer(cd)
@@ -190,25 +190,24 @@ function AB:DisableCooldown()
 	end		
 end
 
-local color
 function AB:UpdateCooldownSettings()
-	color = self.db.expiringcolor
-	AB.TimeColors[4] = E:RGBToHex(color.r, color.g, color.b)
-	
-	color = self.db.secondscolor
-	AB.TimeColors[3] = E:RGBToHex(color.r, color.g, color.b)
-	
-	color = self.db.minutescolor
-	AB.TimeColors[2] = E:RGBToHex(color.r, color.g, color.b)
-	
-	color = self.db.hourscolor
-	AB.TimeColors[1] = E:RGBToHex(color.r, color.g, color.b)
-	
-	color = self.db.dayscolor
-	AB.TimeColors[0] = E:RGBToHex(color.r, color.g, color.b)
-	
 	threshold = self.db.treshold
-
+	
+	local color = E.db.actionbar.expiringcolor
+	TimeColors[4] = E:RGBToHex(color.r, color.g, color.b) -- color for timers that are soon to expire
+	
+	color = E.db.actionbar.secondscolor
+	TimeColors[3] = E:RGBToHex(color.r, color.g, color.b) -- color for timers that have seconds remaining
+	
+	color = E.db.actionbar.minutescolor
+	TimeColors[2] = E:RGBToHex(color.r, color.g, color.b) -- color for timers that have minutes remaining
+	
+	color = E.db.actionbar.hourscolor
+	TimeColors[1] = E:RGBToHex(color.r, color.g, color.b) -- color for timers that have hours remaining
+	
+	color = E.db.actionbar.dayscolor
+	TimeColors[0] = E:RGBToHex(color.r, color.g, color.b) -- color for timers that have days remaining	
+	
 	if self.db.enablecd then
 		self:EnableCooldown()
 	else
