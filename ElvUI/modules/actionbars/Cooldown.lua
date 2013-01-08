@@ -39,7 +39,7 @@ local function Cooldown_OnUpdate(cd, elapsed)
 		else
 			local timervalue, formatid
 			timervalue, formatid, cd.nextUpdate = A:AuraTimeGetInfo(remain, threshold)		
-			cd.text:SetFormattedText(("%s%s|r"):format(A.TimeColors[formatid], A.TimeFormats[formatid][2]), timervalue)
+			cd.text:SetFormattedText(("%s%s|r"):format(TimeColors[formatid], A.TimeFormats[formatid][2]), timervalue)
 		end
 	else
 		AB:Cooldown_StopTimer(cd)
