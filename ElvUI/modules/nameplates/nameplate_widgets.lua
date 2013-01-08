@@ -195,9 +195,18 @@ function NP:CreateAuraIcon(parent)
 	return button
 end
 
+local TimeColors = {
+	[0] = '|cffeeeeee',
+	[1] = '|cffeeeeee',
+	[2] = '|cffeeeeee',
+	[3] = '|cffFFEE00',
+	[4] = '|cfffe0000',
+}
+
 function NP:UpdateAuraTime(frame, expiration)
-	local timeleft = ceil(expiration-GetTime())
-	frame.TimeLeft:SetText(timeleft > 60 and ceil(timeleft/60).."m" or ceil(timeleft))
+	local timeleft = expiration-GetTime()
+	local timervalue, formatid = E:GetTimeInfo(timeleft, 4)	
+	frame.TimeLeft:SetFormattedText(("%s%s|r"):format(TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue)	
 end
 
 function NP:ClearAuraContext(frame)

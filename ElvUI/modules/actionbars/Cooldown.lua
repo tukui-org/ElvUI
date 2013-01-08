@@ -1,6 +1,5 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local AB = E:GetModule('ActionBars');
-local A = E:GetModule('Auras')
 
 local MIN_SCALE = 0.5
 local MIN_DURATION = 2.5
@@ -38,8 +37,8 @@ local function Cooldown_OnUpdate(cd, elapsed)
 			cd.nextUpdate = 500
 		else
 			local timervalue, formatid
-			timervalue, formatid, cd.nextUpdate = A:AuraTimeGetInfo(remain, threshold)		
-			cd.text:SetFormattedText(("%s%s|r"):format(TimeColors[formatid], A.TimeFormats[formatid][2]), timervalue)
+			timervalue, formatid, cd.nextUpdate = E:GetTimeInfo(remain, threshold)		
+			cd.text:SetFormattedText(("%s%s|r"):format(TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
 		end
 	else
 		AB:Cooldown_StopTimer(cd)
