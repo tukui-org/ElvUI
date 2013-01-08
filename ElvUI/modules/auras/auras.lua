@@ -14,10 +14,10 @@ local join = string.join
 
 -- aura time colors for days, hours, minutes, seconds, fadetimer
 A.TimeColors = {
-	[0] = '|cfffefefe',
-	[1] = '|cfffefefe',
-	[2] = '|cfffefefe',
-	[3] = '|cfffefefe',
+	[0] = '|cffeeeeee',
+	[1] = '|cffeeeeee',
+	[2] = '|cffeeeeee',
+	[3] = '|cffeeeeee',
 	[4] = '|cfffe0000',
 }
 
@@ -288,21 +288,6 @@ end
 function A:Initialize()
 	if self.db then return; end --IDK WHY BUT THIS IS GETTING CALLED TWICE FROM SOMEWHERE...
 	
-	local color = E.db.actionbar.expiringcolor
-	A.TimeColors[4] = E:RGBToHex(color.r, color.g, color.b) -- color for timers that are soon to expire
-	
-	color = E.db.actionbar.secondscolor
-	A.TimeColors[3] = E:RGBToHex(color.r, color.g, color.b) -- color for timers that have seconds remaining
-	
-	color = E.db.actionbar.minutescolor
-	A.TimeColors[2] = E:RGBToHex(color.r, color.g, color.b) -- color for timers that have minutes remaining
-	
-	color = E.db.actionbar.hourscolor
-	A.TimeColors[1] = E:RGBToHex(color.r, color.g, color.b) -- color for timers that have hours remaining
-	
-	color = E.db.actionbar.dayscolor
-	A.TimeColors[0] = E:RGBToHex(color.r, color.g, color.b) -- color for timers that have days remaining	
-
 	self.db = E.db.auras
 	
 	BuffFrame:Kill()
