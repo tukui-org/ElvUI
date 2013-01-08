@@ -231,7 +231,9 @@ function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, durati
 	end	
 	if duration == 0 or expiration == 0 then
 		button:SetScript('OnUpdate', nil)
-		button.text:SetText('')
+		if button.text:GetFont() then
+			button.text:SetText('')
+		end
 	end
 end
 
@@ -1125,7 +1127,7 @@ function UF:UpdateRoleIcon()
 	local lfdrole = self.LFDRole
 	local db = self.db.roleIcon;
 	
-	if not (db or db.enable) then 
+	if (not db) or (db and not db.enable) then 
 		lfdrole:Hide()
 		return
 	end
