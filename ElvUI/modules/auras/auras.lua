@@ -21,8 +21,8 @@ function A:UpdateTime(elapsed)
 	end
 
 	local timervalue, formatid
-	timervalue, formatid, self.nextupdate = E:GetTimeInfo(self.expiration, 4)
-	self.time:SetFormattedText(("%s%s|r"):format(E.TimeColors[formatid], E.TimeFormats[formatid][1]), timervalue)	
+	timervalue, formatid, self.nextupdate = E:GetTimeInfo(self.expiration, E.db.auras.decimalThreshold)
+	self.time:SetFormattedText(("%s%s|r%s%s|r"):format(E.TimeColors[formatid], E.TimeFormats[formatid][3], E.IndicatorColors[formatid], E.TimeFormats[formatid][4]), timervalue)
 	if self.expiration > E.db.auras.fadeThreshold then
 		E:StopFlash(self)
 	else
@@ -230,8 +230,8 @@ function A:UpdateWeaponText(auraButton, timeLeft)
 			duration:SetText("")
 			E:StopFlash(auraButton)
 		else
-			local timervalue, formatid = E:GetTimeInfo(timeLeft, E.db.auras.fadeThreshold)
-			duration:SetFormattedText(("%s%s|r"):format(E.TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue)	
+			local timervalue, formatid = E:GetTimeInfo(timeLeft, E.db.auras.decimalThreshold)
+			duration:SetFormattedText(("%s%s|r%s%s|r"):format(E.TimeColors[formatid], E.TimeFormats[formatid][3], E.IndicatorColors[formatid], E.TimeFormats[formatid][4]), timervalue)
 			if timeLeft <= E.db.auras.fadeThreshold then
 				E:Flash(auraButton, 1)
 			else
@@ -239,6 +239,48 @@ function A:UpdateWeaponText(auraButton, timeLeft)
 			end
 		end
 	end
+end
+
+function A:UpdateTimerSettings()
+	-- color for timers that are soon to expire
+	local color = E.db.auras.expiringcolor
+	E.TimeColors[4] = E:RGBToHex(color.r, color.g, color.b)
+	
+	-- color for timers that have seconds remaining
+	color = E.db.auras.secondscolor
+	E.TimeColors[3] = E:RGBToHex(color.r, color.g, color.b)
+	
+	-- color for timers that have minutes remaining
+	color = E.db.auras.minutescolor
+	E.TimeColors[2] = E:RGBToHex(color.r, color.g, color.b)
+	
+	-- color for timers that have hours remaining
+	color = E.db.auras.hourscolor
+	E.TimeColors[1] = E:RGBToHex(color.r, color.g, color.b)
+
+	-- color for timers that have days remaining
+	color = E.db.auras.dayscolor
+	E.TimeColors[0] = E:RGBToHex(color.r, color.g, color.b)
+	
+	-- Color for time indicator (s, m, h, d) on auras that are soon to expire
+	color = E.db.auras.indicatorexpiringcolor
+	E.IndicatorColors[4] = E:RGBToHex(color.r, color.g, color.b) 
+	
+	-- Color for time indicator (s, m, h, d) on auras that have seconds remaining
+	color = E.db.auras.indicatorsecondscolor
+	E.IndicatorColors[3] = E:RGBToHex(color.r, color.g, color.b)
+	
+	-- Color for time indicator (s, m, h, d) on auras that have minutes remaining
+	color = E.db.auras.indicatorminutescolor
+	E.IndicatorColors[2] = E:RGBToHex(color.r, color.g, color.b)
+	
+	-- Color for time indicator (s, m, h, d) on auras that have hours remaining
+	color = E.db.auras.indicatorhourscolor
+	E.IndicatorColors[1] = E:RGBToHex(color.r, color.g, color.b)
+	
+	-- Color for time indicator (s, m, h, d) on auras that have days remaining
+	color = E.db.auras.indicatordayscolor
+	E.IndicatorColors[0] = E:RGBToHex(color.r, color.g, color.b)
 end
 
 function A:Initialize()
@@ -279,7 +321,9 @@ function A:Initialize()
 	for i = 1, 2 do
 		A:UpdateWeapon(_G[("TempEnchant%d"):format(i)])
 	end
-	
+
+	A:UpdateTimerSettings()
+
 	E:CreateMover(AurasHolder, "AurasMover", L["Auras Frame"], nil, nil, A.PostDrag)
 	E:CreateMover(self.EnchantHeader, 'TempEnchantMover', L['Weapons'], nil, nil, A.WeaponPostDrag)
 end

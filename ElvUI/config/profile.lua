@@ -124,6 +124,17 @@ P['auras'] = {
 	['fontSize'] = 12,
 	['fontOutline'] = 'MONOCHROMEOUTLINE',
 
+	["expiringcolor"] = { r = 1, g = 0, b = 0 },
+	["indicatorexpiringcolor"] = { r = 0.93, g = 0.93, b = 0.93 },
+	["secondscolor"] = { r = 0.93, g = 0.93, b = 0.93 },
+	["indicatorsecondscolor"] = { r = 0.93, g = 0.93, b = 0.93 },
+	["minutescolor"] = { r = 0.93, g = 0.93, b = 0.93 },
+	["indicatorminutescolor"] = { r = 0.93, g = 0.93, b = 0.93 },
+	["hourscolor"] = { r = 0.93, g = 0.93, b = 0.93 },
+	["indicatorhourscolor"] = { r = 0.93, g = 0.93, b = 0.93 },
+	["dayscolor"] = { r = 0.93, g = 0.93, b = 0.93 },
+	["indicatordayscolor"] = { r = 0.93, g = 0.93, b = 0.93 },
+
 	['consolidatedBuffs'] = {
 		['enable'] = true,
 		['filter'] = true,
@@ -135,6 +146,7 @@ P['auras'] = {
 
 	['wrapAfter'] = 12,
 	['fadeThreshold'] = -1,
+	['decimalThreshold'] = 4,
 	['buffs'] = {
 		['sortMethod'] = "TIME",
 		['sortDir'] = '-',
