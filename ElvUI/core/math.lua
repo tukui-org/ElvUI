@@ -219,3 +219,46 @@ end
 function E:StringTitle(str)
 	return str:gsub("(.)", upper, 1)
 end
+
+-- aura time colors for days, hours, minutes, seconds, fadetimer
+E.TimeColors = {
+	[0] = '|cffeeeeee',
+	[1] = '|cffeeeeee',
+	[2] = '|cffeeeeee',
+	[3] = '|cffeeeeee',
+	[4] = '|cfffe0000',
+}
+
+-- short and long aura time formats
+E.TimeFormats = {
+	[0] = { '%dd', '%dd' },
+	[1] = { '%dh', '%dh' },
+	[2] = { '%dm', '%dm' },
+	[3] = { '%ds', '%d' },
+	[4] = { '%.1fs', '%.1f' },
+}
+
+
+local DAY, HOUR, MINUTE = 86400, 3600, 60 --used for calculating aura time text
+local DAYISH, HOURISH, MINUTEISH = 3600 * 23.5, 60 * 59.5, 59.5 --used for caclculating aura time at transition points
+local HALFDAYISH, HALFHOURISH, HALFMINUTEISH = DAY/2 + 0.5, HOUR/2 + 0.5, MINUTE/2 + 0.5 --used for calculating next update times
+
+-- will return the the value to display, the formatter id to use and calculates the next update for the Aura
+function E:GetTimeInfo(s, threshhold)
+	if s < MINUTE then
+		if s >= threshhold then
+			return floor(s), 3, 0.51
+		else
+			return s, 4, 0.051
+		end
+	elseif s < HOUR then
+		local minutes = tonumber(E:Round(s/MINUTE))
+		return ceil(s / MINUTE), 2, minutes > 1 and (s - (minutes*MINUTE - HALFMINUTEISH)) or (s - MINUTEISH)
+	elseif s < DAY then
+		local hours = tonumber(E:Round(s/HOUR))
+		return ceil(s / HOUR), 1, hours > 1 and (s - (hours*HOUR - HALFHOURISH)) or (s - HOURISH)
+	else
+		local days = tonumber(E:Round(s/DAY))
+		return ceil(s / DAY), 0,  days > 1 and (s - (days*DAY - HALFDAYISH)) or (s - DAYISH)
+	end
+end

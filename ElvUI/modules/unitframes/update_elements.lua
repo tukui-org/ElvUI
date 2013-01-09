@@ -1,6 +1,5 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local UF = E:GetModule('UnitFrames');
-local A = E:GetModule('Auras')
 local LSM = LibStub("LibSharedMedia-3.0");
 
 local sub = string.sub
@@ -166,8 +165,8 @@ function UF:UpdateAuraTimer(elapsed)
 	end
 
 	local timervalue, formatid
-	timervalue, formatid, self.nextupdate = A:AuraTimeGetInfo(self.expiration, E.db.auras.decimalThreshold)
-	self.text:SetFormattedText(("%s%s|r%s%s|r"):format(A.TimeColors[formatid], A.TimeFormats[formatid][1], A.DateColors[formatid], (formatid < 3 and A.TimeFormats[formatid][2]) or ''), timervalue)
+	timervalue, formatid, self.nextupdate = E:GetTimeInfo(self.expiration, 4)
+	self.text:SetFormattedText(("%s%s|r"):format(E.TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
 end
 
 function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, duration, timeLeft)
