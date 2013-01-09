@@ -1020,6 +1020,3 @@ L["Bottom_Datatext_Panel"] = "Bottom Datatext Panel"
 L["ChatTab_Datatext_Panel"] = "Right Chat Tab"
 L["Chat Bubble Color"] = "Chat Bubble Color"
 L["Backdrop color of chat bubbles"] = "Backdrop color of chat bubbles"
-L["Decimal Threshold"] = "Decimal Threshold"
-L['Threshold before text changes red, goes into decimal form, and the icon will fade. Set to -1 to disable.'] = 'Threshold before the icon will fade. Set to -1 to disable.'
-L['Threshold before the timer changes color and goes into decimal form. Set to -1 to disable.'] = 'Threshold before the timer changes color and goes into decimal form. Set to -1 to disable.'
