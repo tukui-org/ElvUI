@@ -311,6 +311,10 @@ function CH:StyleChat(frame)
 			editbox:SetBackdropBorderColor(ChatTypeInfo[type].r,ChatTypeInfo[type].g,ChatTypeInfo[type].b)
 		end
 	end)
+	
+	--this taints
+	frame.OldAddMessage = frame.AddMessage
+	frame.AddMessage = CH.AddMessage
 		
 	--copy chat button
 	frame.button = CreateFrame('Frame', format("CopyChatButton%d", id), frame)
@@ -336,6 +340,29 @@ function CH:StyleChat(frame)
 		
 	CreatedFrames = id
 	frame.styled = true
+end
+
+function CH:AddMessage(text, ...)
+	if type(text) == "string" then		
+		local timeStamp
+		if CHAT_TIMESTAMP_FORMAT ~= nil then
+			timeStamp = BetterDate(CHAT_TIMESTAMP_FORMAT, time());
+			text = text:gsub(timeStamp, '')
+		end
+		
+		--Add Timestamps
+		if ( CH.db.timeStampFormat and CH.db.timeStampFormat ~= 'NONE' ) then
+			timeStamp = BetterDate(CH.db.timeStampFormat, CH.timeOverride or time());
+			timeStamp = timeStamp:gsub(' ', '')
+			timeStamp = timeStamp:gsub('AM', ' AM')
+			timeStamp = timeStamp:gsub('PM', ' PM')
+			text = '|cffB3B3B3['..timeStamp..'] |r'..text
+		end
+		
+		CH.timeOverride = nil;
+	end
+
+	self.OldAddMessage(self, text, ...)
 end
 
 function CH:GetLines(...)
@@ -667,14 +694,14 @@ function CH:ShortChannel()
 end
 
 function CH:ConcatenateTimeStamp(msg)
-	if (CH.db.timeStampFormat and CH.db.timeStampFormat ~= 'NONE' ) then
-		local timeStamp = BetterDate(CH.db.timeStampFormat, CH.timeOverride or time());
-		timeStamp = timeStamp:gsub(' ', '')
-		timeStamp = timeStamp:gsub('AM', ' AM')
-		timeStamp = timeStamp:gsub('PM', ' PM')
-		msg = '|cffB3B3B3['..timeStamp..'] |r'..msg
-		CH.timeOverride = nil;
-	end
+	-- if (CH.db.timeStampFormat and CH.db.timeStampFormat ~= 'NONE' ) then
+		-- local timeStamp = BetterDate(CH.db.timeStampFormat, CH.timeOverride or time());
+		-- timeStamp = timeStamp:gsub(' ', '')
+		-- timeStamp = timeStamp:gsub('AM', ' AM')
+		-- timeStamp = timeStamp:gsub('PM', ' PM')
+		-- msg = '|cffB3B3B3['..timeStamp..'] |r'..msg
+		-- CH.timeOverride = nil;
+	-- end
 
 	return msg
 end
@@ -1133,6 +1160,8 @@ function CH:SetupChat(event, ...)
 				f:SetScript(script, ChatFrame_OnMouseScroll)
 			end
 		end)
+		
+		
 	
 		if not _G[frameName.."Tab"].glow.anim then
 			E:SetUpAnimGroup(_G[frameName.."Tab"].glow)
