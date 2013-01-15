@@ -18,7 +18,7 @@ AB["barDefaults"] = {
 	["bar1"] = {
 		['page'] = 1,
 		['bindButtons'] = "ACTIONBUTTON",
-		['conditions'] = format("[vehicleui] %d; [possessbar] %d; [overridebar] %d; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;", GetVehicleBarIndex(), GetVehicleBarIndex(), GetOverrideBarIndex()),
+		['conditions'] = format("[vehicleui] %d; [possessbar] %d; [overridebar] %d; [form] 0; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;", GetVehicleBarIndex(), GetVehicleBarIndex(), GetOverrideBarIndex()),
 		['position'] = "BOTTOM,ElvUIParent,BOTTOM,0,4",
 	},
 	["bar2"] = {
@@ -114,7 +114,6 @@ function AB:PositionAndSizeBar(barName)
 		button:ClearAllPoints();
 		button:Size(size)
 		button:SetAttribute("showgrid", 1);
-		--ActionButton_ShowGrid(button);
 
 		if self.db[barName].mouseover == true then
 			bar:SetAlpha(0);
@@ -189,6 +188,13 @@ function AB:PositionAndSizeBar(barName)
 		if not self.db[barName].mouseover then
 			bar:SetAlpha(self.db[barName].alpha);
 		end
+
+		if AB['barDefaults']['bar'..bar.id].conditions:find("[form]") then
+			bar:SetAttribute("hasTempBar", true)
+		else
+			bar:SetAttribute("hasTempBar", false)
+		end
+			
 		bar:Show()
 		RegisterStateDriver(bar, "visibility", self.db[barName].visibility); -- this is ghetto
 		RegisterStateDriver(bar, "page", self:GetPage(barName, self['barDefaults'][barName].page, self['barDefaults'][barName].conditions));
@@ -230,7 +236,17 @@ function AB:CreateBar(id)
 	end
 	self:UpdateButtonConfig(bar, bar.bindButtons)
 	
-	bar:SetAttribute("_onstate-page", [[ 
+	if AB['barDefaults']['bar'..id].conditions:find("[form]") then
+		bar:SetAttribute("hasTempBar", true)
+	else
+		bar:SetAttribute("hasTempBar", false)
+	end
+	
+	bar:SetAttribute("_onstate-page", [[
+		if HasTempShapeshiftActionBar() and self:GetAttribute("hasTempBar") then
+			newstate = GetTempShapeshiftBarIndex() or newstate
+		end	
+				
 		self:SetAttribute("state", newstate)
 		control:ChildUpdate("state", newstate)
 	]]);
