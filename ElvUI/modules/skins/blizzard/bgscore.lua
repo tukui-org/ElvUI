@@ -6,14 +6,13 @@ local function LoadSkin()
 	for i=19, MAX_WORLDSTATE_SCORE_BUTTONS do
 		_G['WorldStateScoreButton'..i]:StripTextures()
 	end
-	MAX_WORLDSTATE_SCORE_BUTTONS = 18; WorldStateScoreFrame_Resize()
 	
 	WorldStateScoreScrollFrame:StripTextures()
 	WorldStateScoreFrame:StripTextures()
 	WorldStateScoreFrame:SetTemplate("Transparent")
 	S:HandleCloseButton(WorldStateScoreFrameCloseButton)
 	S:HandleScrollBar(WorldStateScoreScrollFrameScrollBar)
-	WorldStateScoreFrameInset:Kill()
+	WorldStateScoreFrameInset:SetAlpha(0)
 	S:HandleButton(WorldStateScoreFrameLeaveButton)
 	
 	for i = 1, WorldStateScoreScrollFrameScrollChildFrame:GetNumChildren() do
