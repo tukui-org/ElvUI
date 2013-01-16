@@ -41,14 +41,10 @@ function NP:Initialize()
 		NP:ForEachPlate(NP.InvalidCastCheck)
 		NP:ForEachPlate(NP.CheckFilter)
 		NP:ForEachPlate(NP.UpdateColoring)	
-		
-		if(self.elapsed and self.elapsed > 0.1) then
-			NP:ForEachPlate(NP.CheckUnit_Guid)
-		end
-		
+
 		if(self.elapsed and self.elapsed > 0.2) then
 			NP:ForEachPlate(NP.UpdateThreat)
-			--NP:ForEachPlate(NP.CheckUnit_Guid)
+			NP:ForEachPlate(NP.CheckUnit_Guid)
 			NP:ForEachPlate(NP.CheckRaidIcon)
 			NP:ForEachPlate(NP.Update_LevelText)
 

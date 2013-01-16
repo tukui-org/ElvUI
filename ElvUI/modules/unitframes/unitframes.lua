@@ -18,7 +18,7 @@ local removeMenuOptions = {
 	["CLEAR_FOCUS"] = true,
 	["MOVE_PLAYER_FRAME"] = true,
 	["MOVE_TARGET_FRAME"] = true,
-	["PET_ABANDON"] = E.myclass ~= 'HUNTER',
+	["PET_DISMISS"] = E.myclass == 'HUNTER',
 }
 
 UF['headerstoload'] = {}
@@ -68,7 +68,7 @@ UF['headerGroupBy'] = {
 
 local find, gsub, split, format = string.find, string.gsub, string.split, string.format
 local min = math.min
-local tremove = table.remove
+local tremove, tinsert = table.remove, table.insert
 
 function UF:Construct_UF(frame, unit)
 	frame:RegisterForClicks("AnyUp")
@@ -625,6 +625,20 @@ function UF:UnitFrameThreatIndicator_Initialize(_, unitFrame)
 	unitFrame:UnregisterAllEvents() --Arena Taint Fix
 end
 
+function UF:RemoveDismissPet()
+	--This *should* make it so if you are in the Kara Event you can still use the dismiss pet from right click menu
+	--Otherwise hunters need to use the spell Dismiss Pet
+	if not PetCanBeAbandoned() then
+		if UnitPopupMenus["PET"][4] ~= "PET_DISMISS" then
+			tinsert(UnitPopupMenus["PET"], 4, "PET_DISMISS")
+		end		
+	else
+		if UnitPopupMenus["PET"][4] == "PET_DISMISS" then
+			tremove(UnitPopupMenus["PET"], 4)
+		end		
+	end
+end
+
 CompactUnitFrameProfiles:UnregisterEvent('VARIABLES_LOADED') 	--Re-Register this event only if disableblizzard is turned off.
 function UF:Initialize()	
 	self.db = E.db["unitframe"]
@@ -667,8 +681,13 @@ function UF:Initialize()
 		else
 			ElvUF:DisableBlizzard('arena')
 		end
-			
-		for _, menu in pairs(UnitPopupMenus) do
+		
+		if E.myclass == "HUNTER" then
+			self:RegisterEvent("UPDATE_POSSESS_BAR", "RemoveDismissPet")
+		end
+		
+		--index #4 is PET_DISMISS for PET UnitPopupMenus
+		for name, menu in pairs(UnitPopupMenus) do
 			for index = #menu, 1, -1 do
 				if removeMenuOptions[menu[index]] then
 					tremove(menu, index)

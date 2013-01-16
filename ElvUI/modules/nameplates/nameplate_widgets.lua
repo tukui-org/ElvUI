@@ -206,7 +206,7 @@ local TimeColors = {
 function NP:UpdateAuraTime(frame, expiration)
 	local timeleft = expiration-GetTime()
 	local timervalue, formatid = E:GetTimeInfo(timeleft, 4)	
-	frame.TimeLeft:SetFormattedText(("%s%s|r"):format(TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue)	
+	frame.TimeLeft:SetFormattedText(("%s%s|r"):format(TimeColors[formatid], E.TimeFormats[3][2]), timervalue)	
 end
 
 function NP:ClearAuraContext(frame)
