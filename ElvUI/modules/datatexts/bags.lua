@@ -25,13 +25,13 @@ local function OnEnter(self)
 	for i = 1, MAX_WATCHED_TOKENS do
 		local name, count, extraCurrencyType, icon, itemID = GetBackpackCurrencyInfo(i)
 		if name and i == 1 then
-			GameTooltip:AddLine(CURRENCY)
-			GameTooltip:AddLine(" ")
+			DT.tooltip:AddLine(CURRENCY)
+			DT.tooltip:AddLine(" ")
 		end
-		if name and count then GameTooltip:AddDoubleLine(name, count, 1, 1, 1) end
+		if name and count then DT.tooltip:AddDoubleLine(name, count, 1, 1, 1) end
 	end	
 	
-	GameTooltip:Show()
+	DT.tooltip:Show()
 end
 
 local function ValueColorUpdate(hex, r, g, b)

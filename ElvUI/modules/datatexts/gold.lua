@@ -57,7 +57,7 @@ local function Click(self, btn)
 	if btn == "RightButton" and IsShiftKeyDown() then
 		ElvDB.gold = nil;
 		OnEvent(self)
-		GameTooltip:Hide();
+		DT.tooltip:Hide();
 	else
 		ToggleAllBags()
 	end
@@ -66,43 +66,43 @@ end
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 
-	GameTooltip:AddLine(L['Session:'])
-	GameTooltip:AddDoubleLine(L["Earned:"], FormatMoney(Profit), 1, 1, 1, 1, 1, 1)
-	GameTooltip:AddDoubleLine(L["Spent:"], FormatMoney(Spent), 1, 1, 1, 1, 1, 1)
+	DT.tooltip:AddLine(L['Session:'])
+	DT.tooltip:AddDoubleLine(L["Earned:"], FormatMoney(Profit), 1, 1, 1, 1, 1, 1)
+	DT.tooltip:AddDoubleLine(L["Spent:"], FormatMoney(Spent), 1, 1, 1, 1, 1, 1)
 	if Profit < Spent then
-		GameTooltip:AddDoubleLine(L["Deficit:"], FormatMoney(Profit-Spent), 1, 0, 0, 1, 1, 1)
+		DT.tooltip:AddDoubleLine(L["Deficit:"], FormatMoney(Profit-Spent), 1, 0, 0, 1, 1, 1)
 	elseif (Profit-Spent)>0 then
-		GameTooltip:AddDoubleLine(L["Profit:"	], FormatMoney(Profit-Spent), 0, 1, 0, 1, 1, 1)
+		DT.tooltip:AddDoubleLine(L["Profit:"	], FormatMoney(Profit-Spent), 0, 1, 0, 1, 1, 1)
 	end
-	GameTooltip:AddLine' '
+	DT.tooltip:AddLine' '
 
 	local totalGold = 0
-	GameTooltip:AddLine(L["Character: "])
+	DT.tooltip:AddLine(L["Character: "])
 
 	for k,_ in pairs(ElvDB['gold'][E.myrealm]) do
 		if ElvDB['gold'][E.myrealm][k] then
-			GameTooltip:AddDoubleLine(k, FormatTooltipMoney(ElvDB['gold'][E.myrealm][k]), 1, 1, 1, 1, 1, 1)
+			DT.tooltip:AddDoubleLine(k, FormatTooltipMoney(ElvDB['gold'][E.myrealm][k]), 1, 1, 1, 1, 1, 1)
 			totalGold=totalGold+ElvDB['gold'][E.myrealm][k]
 		end
 	end
 
-	GameTooltip:AddLine' '
-	GameTooltip:AddLine(L["Server: "])
-	GameTooltip:AddDoubleLine(L["Total: "], FormatTooltipMoney(totalGold), 1, 1, 1, 1, 1, 1)
+	DT.tooltip:AddLine' '
+	DT.tooltip:AddLine(L["Server: "])
+	DT.tooltip:AddDoubleLine(L["Total: "], FormatTooltipMoney(totalGold), 1, 1, 1, 1, 1, 1)
 
 	for i = 1, MAX_WATCHED_TOKENS do
 		local name, count, extraCurrencyType, icon, itemID = GetBackpackCurrencyInfo(i)
 		if name and i == 1 then
-			GameTooltip:AddLine(" ")
-			GameTooltip:AddLine(CURRENCY)
+			DT.tooltip:AddLine(" ")
+			DT.tooltip:AddLine(CURRENCY)
 		end
-		if name and count then GameTooltip:AddDoubleLine(name, count, 1, 1, 1) end
+		if name and count then DT.tooltip:AddDoubleLine(name, count, 1, 1, 1) end
 	end
 	
-	GameTooltip:AddLine' '
-	GameTooltip:AddLine(resetInfoFormatter)
+	DT.tooltip:AddLine' '
+	DT.tooltip:AddLine(resetInfoFormatter)
 
-	GameTooltip:Show()
+	DT.tooltip:Show()
 end
 
 --[[

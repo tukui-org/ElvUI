@@ -100,52 +100,52 @@ local function OnEnter(self)
 	UpdateMemory()	
 	bandwidth = GetAvailableBandwidth()
 	
-	GameTooltip:AddDoubleLine(L['Home Latency:'], format(homeLatencyString, select(3, GetNetStats())), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+	DT.tooltip:AddDoubleLine(L['Home Latency:'], format(homeLatencyString, select(3, GetNetStats())), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 	
 	if bandwidth ~= 0 then
-		GameTooltip:AddDoubleLine(L['Bandwidth'] , format(bandwidthString, bandwidth),0.69, 0.31, 0.31,0.84, 0.75, 0.65)
-		GameTooltip:AddDoubleLine(L['Download'] , format(percentageString, GetDownloadedPercentage() *100),0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
-		GameTooltip:AddLine(" ")
+		DT.tooltip:AddDoubleLine(L['Bandwidth'] , format(bandwidthString, bandwidth),0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+		DT.tooltip:AddDoubleLine(L['Download'] , format(percentageString, GetDownloadedPercentage() *100),0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
+		DT.tooltip:AddLine(" ")
 	end
 	
 	local totalCPU = nil
-	GameTooltip:AddDoubleLine(L['Total Memory:'], formatMem(totalMemory), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+	DT.tooltip:AddDoubleLine(L['Total Memory:'], formatMem(totalMemory), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 	if cpuProfiling then
 		totalCPU = UpdateCPU()
-		GameTooltip:AddDoubleLine(L['Total CPU:'], format(homeLatencyString, totalCPU), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+		DT.tooltip:AddDoubleLine(L['Total CPU:'], format(homeLatencyString, totalCPU), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 	end
 	
 	local red, green
 	if IsShiftKeyDown() or not cpuProfiling then
-		GameTooltip:AddLine(" ")
+		DT.tooltip:AddLine(" ")
 		for i = 1, #memoryTable do
 			if (memoryTable[i][4]) then
 				red = memoryTable[i][3] / totalMemory
 				green = 1 - red
-				GameTooltip:AddDoubleLine(memoryTable[i][2], formatMem(memoryTable[i][3]), 1, 1, 1, red, green + .5, 0)
+				DT.tooltip:AddDoubleLine(memoryTable[i][2], formatMem(memoryTable[i][3]), 1, 1, 1, red, green + .5, 0)
 			end						
 		end
 	end
 	
 	if cpuProfiling and not IsShiftKeyDown() then
-		GameTooltip:AddLine(" ")
+		DT.tooltip:AddLine(" ")
 		for i = 1, #cpuTable do
 			if (cpuTable[i][4]) then
 				red = cpuTable[i][3] / totalCPU
 				green = 1 - red
-				GameTooltip:AddDoubleLine(cpuTable[i][2], format(homeLatencyString, cpuTable[i][3]), 1, 1, 1, red, green + .5, 0)
+				DT.tooltip:AddDoubleLine(cpuTable[i][2], format(homeLatencyString, cpuTable[i][3]), 1, 1, 1, red, green + .5, 0)
 			end						
 		end
-		GameTooltip:AddLine(" ")
-		GameTooltip:AddLine(L['(Hold Shift) Memory Usage'])
+		DT.tooltip:AddLine(" ")
+		DT.tooltip:AddLine(L['(Hold Shift) Memory Usage'])
 	end
 	
-	GameTooltip:Show()
+	DT.tooltip:Show()
 end
 
 local function OnLeave(self)
 	enteredFrame = false;
-	GameTooltip:Hide()
+	DT.tooltip:Hide()
 end
 
 local function Update(self, t)

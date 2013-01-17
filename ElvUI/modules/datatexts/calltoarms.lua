@@ -80,13 +80,13 @@ local function OnEnter(self)
 			allUnavailable = false
 			local rolesString = MakeIconString(tankReward, healerReward, dpsReward)
 			if rolesString ~= ""  then
-				GameTooltip:AddDoubleLine(name..":", rolesString, 1, 1, 1)
+				DT.tooltip:AddDoubleLine(name..":", rolesString, 1, 1, 1)
 			end
 			if tankReward or healerReward or dpsReward then numCTA = numCTA + 1 end
 		end
 	end
 
-	GameTooltip:Show()
+	DT.tooltip:Show()
 end
 
 --[[

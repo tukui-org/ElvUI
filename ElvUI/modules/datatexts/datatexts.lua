@@ -2,18 +2,15 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 local DT = E:NewModule('DataTexts', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
 local LDB = LibStub:GetLibrary("LibDataBroker-1.1");
 local LSM = LibStub("LibSharedMedia-3.0")
-
+local TT = E:GetModule("Tooltip")
 local len = string.len
 
 function DT:Initialize()
 	--if E.db["datatexts"].enable ~= true then return end
 	E.DataTexts = DT
 	
-	if E.db.datatexts.panels.spec1 then
-		E:CopyTable(E.db.datatexts.panels, E.db.datatexts.panels.spec1)
-		E.db.datatexts.panels.spec1 = nil;
-		E.db.datatexts.panels.spec2 = nil;
-	end	
+	self.tooltip = CreateFrame("GameTooltip", "DatatextTooltip", E.UIParent, "GameTooltipTemplate")
+	TT:HookScript(self.tooltip, 'OnShow', 'SetStyle')
 	
 	self:RegisterLDB()
 	self:LoadDataTexts()
@@ -40,8 +37,8 @@ function DT:RegisterLDB()
 		if obj.OnTooltipShow then
 			function OnEnter(self)
 				DT:SetupTooltip(self)
-				obj.OnTooltipShow(GameTooltip)
-				GameTooltip:Show()
+				obj.OnTooltipShow(self.tooltip)
+				self.tooltip:Show()
 			end
 		end
 		
@@ -49,14 +46,14 @@ function DT:RegisterLDB()
 			function OnEnter(self)
 				DT:SetupTooltip(self)
 				obj.OnEnter(self)
-				GameTooltip:Show()
+				self.tooltip:Show()
 			end		
 		end
 
 		if obj.OnLeave then
 			function OnLeave(self)
 				obj.OnLeave(self)
-				GameTooltip:Hide()
+				self.tooltip:Hide()
 			end		
 		end
 
@@ -116,14 +113,14 @@ function DT:UpdateAllDimensions()
 end
 
 function DT:Data_OnLeave()
-	GameTooltip:Hide()
+	DT.tooltip:Hide()
 end
 
 function DT:SetupTooltip(panel)
 	local parent = panel:GetParent()
-	GameTooltip:Hide()
-	GameTooltip:SetOwner(parent, parent.anchor, parent.xOff, parent.yOff)
-	GameTooltip:ClearLines()
+	self.tooltip:Hide()
+	self.tooltip:SetOwner(parent, parent.anchor, parent.xOff, parent.yOff)
+	self.tooltip:ClearLines()
 end
 
 function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff)
