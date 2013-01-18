@@ -1409,7 +1409,7 @@ P['unitframe'] = {
 				['size'] = 22,
 			},
 			['roleIcon'] = {
-				['enable'] = false,
+				['enable'] = true,
 				['position'] = 'RIGHT',
 			},		
 			['raidRoleIcons'] = {
