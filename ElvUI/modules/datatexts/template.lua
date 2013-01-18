@@ -18,7 +18,7 @@ end
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 
-	GameTooltip:Show()
+	DT.tooltip:Show()
 end
 
 --[[

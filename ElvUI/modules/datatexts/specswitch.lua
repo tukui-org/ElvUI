@@ -26,11 +26,11 @@ local function OnEnter(self)
 
 	for i = 1, GetNumSpecGroups() do
 		if GetSpecialization(false, false, i) then
-			GameTooltip:AddLine(join(" ", format(displayString, select(2, GetSpecializationInfo(GetSpecialization(false, false, i)))), (i == active and activeString or inactiveString)),1,1,1)
+			DT.tooltip:AddLine(join(" ", format(displayString, select(2, GetSpecializationInfo(GetSpecialization(false, false, i)))), (i == active and activeString or inactiveString)),1,1,1)
 		end
 	end
 	
-	GameTooltip:Show()
+	DT.tooltip:Show()
 end
 
 local function OnClick(self)

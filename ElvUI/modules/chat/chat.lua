@@ -1151,7 +1151,7 @@ function CH:SetupChat(event, ...)
 		
 		if id > NUM_CHAT_WINDOWS then
 			frame:SetScript("OnEvent", CH.FloatingChatFrame_OnEvent)
-		else
+		elseif id ~= 2 then
 			frame:SetScript("OnEvent", CH.ChatFrame_OnEvent)
 		end
 		

@@ -49,10 +49,10 @@ local function OnEnter(self)
 	DT:SetupTooltip(self)
 	
 	for slot, durability in pairs(invDurability) do
-		GameTooltip:AddDoubleLine(slot, format(tooltipString, durability), 1, 1, 1, E:ColorGradient(durability * 0.01, 1, 0, 0, 1, 1, 0, 0, 1, 0))
+		DT.tooltip:AddDoubleLine(slot, format(tooltipString, durability), 1, 1, 1, E:ColorGradient(durability * 0.01, 1, 0, 0, 1, 1, 0, 0, 1, 0))
 	end
 		
-	GameTooltip:Show()
+	DT.tooltip:Show()
 end
 
 local function ValueColorUpdate(hex, r, g, b)

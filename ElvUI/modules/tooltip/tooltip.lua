@@ -242,6 +242,7 @@ function TT:GameTooltip_ShowCompareItem(tt, shift)
 end
 
 function TT:Colorize(tt)
+	local isGameTooltip = tt == GameTooltip
 	local GMF = GetMouseFocus()
 	local unit = (select(2, tt:GetUnit())) or (GMF and GMF:GetAttribute("unit"))
 	
@@ -256,21 +257,27 @@ function TT:Colorize(tt)
 	if (reaction) and (tapped and not tappedbyme or not connected or dead) then
 		r, g, b = 0.55, 0.57, 0.61
 		tt:SetBackdropBorderColor(r, g, b)
-		GameTooltipStatusBar.backdrop:SetBackdropBorderColor(r, g, b)
-		GameTooltipStatusBar:ColorBar(r, g, b)
+		if isGameTooltip then
+			GameTooltipStatusBar.backdrop:SetBackdropBorderColor(r, g, b)
+			GameTooltipStatusBar:ColorBar(r, g, b)
+		end
 	elseif player then
 		local class = select(2, UnitClass(unit))
 		if class then
 			local color = RAID_CLASS_COLORS[class]
 			tt:SetBackdropBorderColor(color.r, color.g, color.b)
-			GameTooltipStatusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-			GameTooltipStatusBar:ColorBar(color.r, color.g, color.b)
+			if isGameTooltip then
+				GameTooltipStatusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+				GameTooltipStatusBar:ColorBar(color.r, color.g, color.b)
+			end
 		end
 	elseif reaction then
 		local color = FACTION_BAR_COLORS[reaction]
 		tt:SetBackdropBorderColor(color.r, color.g, color.b)
-		GameTooltipStatusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-		GameTooltipStatusBar:ColorBar(color.r, color.g, color.b)
+		if isGameTooltip then
+			GameTooltipStatusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+			GameTooltipStatusBar:ColorBar(color.r, color.g, color.b)
+		end
 	else
 		local _, link = tt:GetItem()
 		local quality = link and select(3, GetItemInfo(link))
@@ -283,8 +290,11 @@ function TT:Colorize(tt)
 			if E.PixelMode then
 				r, g, b = 0.3, 0.3, 0.3
 			end
-			GameTooltipStatusBar.backdrop:SetBackdropBorderColor(r, g, b)
-			GameTooltipStatusBar:ColorBar(r, g, b)	
+			
+			if isGameTooltip then
+				GameTooltipStatusBar.backdrop:SetBackdropBorderColor(r, g, b)
+				GameTooltipStatusBar:ColorBar(r, g, b)	
+			end
 		end
 	end	
 	
