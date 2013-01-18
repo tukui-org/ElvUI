@@ -37,8 +37,8 @@ function DT:RegisterLDB()
 		if obj.OnTooltipShow then
 			function OnEnter(self)
 				DT:SetupTooltip(self)
-				obj.OnTooltipShow(self.tooltip)
-				self.tooltip:Show()
+				obj.OnTooltipShow(DT.tooltip)
+				DT.tooltip:Show()
 			end
 		end
 		
@@ -46,14 +46,14 @@ function DT:RegisterLDB()
 			function OnEnter(self)
 				DT:SetupTooltip(self)
 				obj.OnEnter(self)
-				self.tooltip:Show()
+				DT.tooltip:Show()
 			end		
 		end
 
 		if obj.OnLeave then
 			function OnLeave(self)
 				obj.OnLeave(self)
-				self.tooltip:Hide()
+				DT.tooltip:Hide()
 			end		
 		end
 
