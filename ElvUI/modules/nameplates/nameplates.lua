@@ -432,9 +432,8 @@ function NP:SkinPlate(frame, nameFrame)
 	if not frame.cpoints then
 		frame.cpoints = CreateFrame("Frame", nil, frame.hp)
 		frame.cpoints:Point("CENTER", frame.hp, "BOTTOM")
-		frame.cpoints:Height(12)
+		frame.cpoints:Height(1)
 		frame.cpoints:Width(68)
-		frame.cpoints:SetTemplate()
 		
 		for i=1, MAX_COMBO_POINTS do
 			frame.cpoints[i] = frame.cpoints:CreateTexture(nil, 'OVERLAY')
