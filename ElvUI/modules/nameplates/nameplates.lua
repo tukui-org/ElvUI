@@ -9,6 +9,7 @@ local backdrop
 
 NP.Handled = {} --Skinned Nameplates
 NP.BattleGroundHealers = {};
+NP.CPointsGUID = ""
 
 NP.factionOpposites = {
 	['Horde'] = 1,
@@ -280,8 +281,16 @@ end
 
 function NP:HealthBar_OnShow(frame)
 	frame = frame:GetParent()
-
-	NP:UNIT_COMBO_POINTS(frame)
+	
+	
+	if UnitExists("target") and frame:GetParent():GetAlpha() == 1 and UnitName("target") == frame.hp.name:GetText() then
+		NP:UNIT_COMBO_POINTS(frame)
+	else
+		frame.cpoints:Hide()
+		for i=1, MAX_COMBO_POINTS do
+			frame.cpoints[i]:Hide()
+		end
+	end
 	local noscalemult = E.mult * UIParent:GetScale()
 	--Have to reposition this here so it doesnt resize after being hidden
 	frame.hp:ClearAllPoints()
@@ -423,8 +432,9 @@ function NP:SkinPlate(frame, nameFrame)
 	if not frame.cpoints then
 		frame.cpoints = CreateFrame("Frame", nil, frame.hp)
 		frame.cpoints:Point("CENTER", frame.hp, "BOTTOM")
-		frame.cpoints:Height(1)
+		frame.cpoints:Height(12)
 		frame.cpoints:Width(68)
+		frame.cpoints:SetTemplate()
 		
 		for i=1, MAX_COMBO_POINTS do
 			frame.cpoints[i] = frame.cpoints:CreateTexture(nil, 'OVERLAY')
@@ -796,7 +806,7 @@ function NP:GetTargetNameplate()
 	
 	for frame, _ in pairs(NP.Handled) do
 		frame = _G[frame]:GetChildren()
-		if frame:GetParent():GetAlpha() == 1 and UnitName("target") == frame.hp.name:GetText() then
+		if frame.guid == UnitGUID("target") then
 			return frame
 		end
 	end
@@ -818,6 +828,10 @@ function NP:CheckUnit_Guid(frame, ...)
 		frame.unit = nil
 		frame.hp.shadow:SetAlpha(0)
 	end	
+	
+	if NP.CPointsGUID ~= frame.guid and frame.cpoints:IsShown() then
+		frame.cpoints:Hide()
+	end
 	--[[if not frame.test then
 		frame.test = frame:CreateFontString(nil, 'OVERLAY')
 		frame.test:Point('TOP', frame, 'TOP')

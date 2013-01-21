@@ -920,13 +920,16 @@ function NP:HideCPoints(frame)
 end
 
 function NP:UNIT_COMBO_POINTS(frame)
+	if not UnitExists("target") then return; end
+	
 	if type(frame) ~= "table" then
 		self:ForEachPlate(self.HideCPoints)
 		frame = self:GetTargetNameplate()
 	end
 	
 	if not frame then return; end
-
+	
+	NP.CPointsGUID = frame.guid
 	frame.cpoints:Show()
 	
 	local cp
