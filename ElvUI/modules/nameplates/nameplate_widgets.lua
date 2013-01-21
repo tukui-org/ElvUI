@@ -920,7 +920,7 @@ function NP:HideCPoints(frame)
 end
 
 function NP:UNIT_COMBO_POINTS()
-	self:ForEachPlate(NP.HideCPoints)
+	self:ForEachPlate(self.HideCPoints)
 	local frame = self:GetTargetNameplate()
 	if not frame then return; end
 	

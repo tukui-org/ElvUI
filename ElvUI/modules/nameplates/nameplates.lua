@@ -280,13 +280,16 @@ end
 
 function NP:HealthBar_OnShow(frame)
 	frame = frame:GetParent()
+	
+	frame.cpoints:Hide()
+	
 	local noscalemult = E.mult * UIParent:GetScale()
 	--Have to reposition this here so it doesnt resize after being hidden
 	frame.hp:ClearAllPoints()
 	frame.hp:Size(self.db.width, self.db.height)	
 	frame.hp:SetPoint('BOTTOM', frame, 'BOTTOM', 0, 5)
 	frame.hp:GetStatusBarTexture():SetHorizTile(true)
-
+	
 	self:HealthBar_ValueChanged(frame.oldhp)
 	
 	if not E.PixelMode and frame.hp.backdrop then
