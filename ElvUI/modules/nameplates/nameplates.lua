@@ -2,6 +2,7 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 local NP = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
 local LSM = LibStub("LibSharedMedia-3.0")
 
+local CPOINT_TEX = [=[Interface\AddOns\ElvUI\media\textures\bubbleTex.tga]=]
 local OVERLAY = [=[Interface\TargetingFrame\UI-TargetingFrame-Flash]=]
 local numChildren = -1
 local backdrop
@@ -55,6 +56,7 @@ function NP:Initialize()
 	end)	
 
 	self:UpdateAllPlates()
+	self:ToggleCPoints()
 end
 
 function NP:QueueObject(frame, object)
@@ -373,7 +375,7 @@ function NP:OnHide(frame)
 			icon:Hide()
 		end
 	end
-
+	frame.cpoints:Hide()
 end
 
 function NP:SkinPlate(frame, nameFrame)
@@ -411,6 +413,29 @@ function NP:SkinPlate(frame, nameFrame)
 	end
 	frame.hp:SetStatusBarTexture(E["media"].normTex)
 	self:SetVirtualBackdrop(frame.hp, unpack(E["media"].backdropcolor))
+		
+	if not frame.cpoints then
+		frame.cpoints = CreateFrame("Frame", nil, frame.hp)
+		frame.cpoints:Point("CENTER", frame.hp, "BOTTOM")
+		frame.cpoints:Height(1)
+		frame.cpoints:Width(68)
+		
+		for i=1, MAX_COMBO_POINTS do
+			frame.cpoints[i] = frame.cpoints:CreateTexture(nil, 'OVERLAY')
+			frame.cpoints[i]:SetTexture(CPOINT_TEX)
+			frame.cpoints[i]:Size(12)
+			
+			if i == 1 then
+				frame.cpoints[i]:SetPoint("LEFT", frame.cpoints, "TOPLEFT")
+			else
+				frame.cpoints[i]:SetPoint("LEFT", frame.cpoints[i-1], "RIGHT", 2, 0)
+			end
+			
+			frame.cpoints[i]:Hide()
+		end
+		
+		frame.cpoints:Hide()
+	end
 		
 	if not frame.overlay then
 		overlay:SetTexture(1, 1, 1, 0.35)
@@ -757,6 +782,17 @@ function NP:ScanHealth()
 		end
 	elseif (frame.hasClass ~= true and frame.isFriendly ~= true) or NP.db.lowHealthWarning == 'ALL' then
 		NP:SetVirtualBorder(frame.hp, unpack(E["media"].bordercolor))
+	end
+end
+
+function NP:GetTargetNameplate()
+	if not UnitExists("target") then return end
+	
+	for frame, _ in pairs(NP.Handled) do
+		frame = _G[frame]:GetChildren()
+		if frame:GetParent():GetAlpha() == 1 and UnitName("target") == frame.hp.name:GetText() then
+			return frame
+		end
 	end
 end
 

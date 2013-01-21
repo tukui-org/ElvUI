@@ -89,7 +89,7 @@ P["nameplate"] = {
 	['auraFontSize'] = 7,
 	['auraFontOutline'] = 'MONOCHROMEOUTLINE',
 	["smallPlates"] = true,
-	
+	["comboPoints"] = true,
 	["classIcons"] = true,
 	["markBGHealers"] = true,
 	["width"] = 112,

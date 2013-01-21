@@ -20,6 +20,14 @@ NP.RaidTargetReference = {
 
 NP.GUIDIgnoreCast = {};
 
+NP.ComboColors = {
+	[1] = {0.69, 0.31, 0.31},
+	[2] = {0.69, 0.31, 0.31},
+	[3] = {0.65, 0.63, 0.35},
+	[4] = {0.65, 0.63, 0.35},
+	[5] = {0.33, 0.59, 0.33}
+}
+
 local AURA_TYPE_BUFF = 1
 local AURA_TYPE_DEBUFF = 6
 local AURA_TARGET_HOSTILE = 1
@@ -895,5 +903,42 @@ function NP:CastBar_OnValueChanged(frame)
 		NP:StartCastAnimationOnNameplate(frame:GetParent(), spell, spellid, icon, start, finish, nonInt, channel) 
 	else 
 		NP:StopCastAnimation(frame:GetParent()) 
+	end
+end
+
+function NP:ToggleCPoints()
+	if self.db.comboPoints then
+		self:RegisterEvent("UNIT_COMBO_POINTS")
+	else
+		self:ForEachPlate(NP.HideCPoints)
+		self:UnregisterEvent("UNIT_COMBO_POINTS")
+	end
+end
+
+function NP:HideCPoints(frame)
+	frame.cpoints:Hide()
+end
+
+function NP:UNIT_COMBO_POINTS()
+	self:ForEachPlate(NP.HideCPoints)
+	local frame = self:GetTargetNameplate()
+	if not frame then return; end
+	
+	frame.cpoints:Show()
+	
+	local cp
+	if(UnitHasVehicleUI'player') then
+		cp = GetComboPoints('vehicle', 'target')
+	else
+		cp = GetComboPoints('player', 'target')
+	end
+
+	for i=1, MAX_COMBO_POINTS do
+		if(i <= cp) then
+			frame.cpoints[i]:Show()
+			frame.cpoints[i]:SetVertexColor(unpack(NP.ComboColors[cp]))
+		else
+			frame.cpoints[i]:Hide()
+		end
 	end
 end

@@ -548,6 +548,8 @@ L["Target Castbar"] = true;
 L["Focus Castbar"] = true;
 
 --NamePlates
+L["Combo Points"] = true;
+L["Display combo points on nameplates."] = true;
 L["Small Plates"] = true;
 L["Adjust nameplate size on smaller mobs to scale down. This will only adjust the health bar width not the actual nameplate hitbox you click on."] = true;
 L["Class Icons"] = true;

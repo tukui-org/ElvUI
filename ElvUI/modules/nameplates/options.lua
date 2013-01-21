@@ -164,9 +164,16 @@ E.Options.args.nameplate = {
 					name = L["Small Plates"],
 					desc = L["Adjust nameplate size on smaller mobs to scale down. This will only adjust the health bar width not the actual nameplate hitbox you click on."],
 				},				
+				comboPoints = {
+					type = "toggle",
+					order = 10,
+					name = L["Combo Points"],
+					desc = L["Display combo points on nameplates."],
+					set = function(info, value) E.db.nameplate[ info[#info] ] = value; NP:ToggleCPoints() end,
+				},
 				lowHealthWarning = {
 					type = 'select',
-					order = 10,
+					order = 11,
 					name = L['Low Health Warning'],
 					desc = L['Color the border of the nameplate yellow when it reaches the threshold point on these types of frames.'],
 					values = {
@@ -177,7 +184,7 @@ E.Options.args.nameplate = {
 				},
 				lowHealthWarningThreshold = {
 					type = 'range',
-					order = 11,
+					order = 12,
 					name = L['Low Health Threshold'],
 					desc = L['Color the border of the nameplate yellow when it reaches this point, it will be colored red when it reaches half this value.'],
 					isPercent = true,
@@ -185,13 +192,13 @@ E.Options.args.nameplate = {
 				},
 				bgMult = {
 					type = 'range',
-					order = 12,
+					order = 13,
 					name = L['Background Multiplier'],
 					desc = L['The backdrop of the nameplates color is scaled to match the color of the nameplate by this percentage. Set to zero to have no color in the nameplate backdrop.'],
 					isPercent = true,
 					min = 0, max = 1, step = 0.01, 						
 				},
-
+		
 				fontGroup = {
 					order = 50,
 					type = 'group',
