@@ -908,7 +908,7 @@ end
 
 function NP:ToggleCPoints()
 	if self.db.comboPoints then
-		self:RegisterEvent("UNIT_COMBO_POINTS")
+		self:RegisterEvent("UNIT_COMBO_POINTS", "UpdateCPoints")
 	else
 		self:ForEachPlate(NP.HideCPoints)
 		self:UnregisterEvent("UNIT_COMBO_POINTS")
@@ -916,27 +916,37 @@ function NP:ToggleCPoints()
 end
 
 function NP:HideCPoints(frame)
-	frame.cpoints:Hide()
+	if not frame.cpoints[1]:IsShown() then return end
+	for i=1, MAX_COMBO_POINTS do
+		frame.cpoints[i]:Hide()
+	end
 end
 
-function NP:UNIT_COMBO_POINTS(frame)
-	if not UnitExists("target") then return; end
+function NP:UpdateCPoints(frame, isMouseover)
+	local unit = "target"
+	if isMouseover == true then
+		unit = "mouseover"
+	end
+	
+	--[[if not UnitExists(unit) then 
+		self:ForEachPlate(self.HideCPoints)
+		return; 
+	end]]
 	
 	if type(frame) ~= "table" then
-		self:ForEachPlate(self.HideCPoints)
 		frame = self:GetTargetNameplate()
+		if frame then
+			self:ForEachPlate(self.HideCPoints)
+		end
 	end
 	
 	if not frame then return; end
-	
-	NP.CPointsGUID = frame.guid
-	frame.cpoints:Show()
-	
+
 	local cp
 	if(UnitHasVehicleUI'player') then
-		cp = GetComboPoints('vehicle', 'target')
+		cp = GetComboPoints('vehicle', unit)
 	else
-		cp = GetComboPoints('player', 'target')
+		cp = GetComboPoints('player', unit)
 	end
 
 	for i=1, MAX_COMBO_POINTS do

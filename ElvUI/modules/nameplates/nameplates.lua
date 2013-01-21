@@ -9,7 +9,6 @@ local backdrop
 
 NP.Handled = {} --Skinned Nameplates
 NP.BattleGroundHealers = {};
-NP.CPointsGUID = ""
 
 NP.factionOpposites = {
 	['Horde'] = 1,
@@ -282,15 +281,6 @@ end
 function NP:HealthBar_OnShow(frame)
 	frame = frame:GetParent()
 	
-	
-	if UnitExists("target") and frame:GetParent():GetAlpha() == 1 and UnitName("target") == frame.hp.name:GetText() then
-		NP:UNIT_COMBO_POINTS(frame)
-	else
-		frame.cpoints:Hide()
-		for i=1, MAX_COMBO_POINTS do
-			frame.cpoints[i]:Hide()
-		end
-	end
 	local noscalemult = E.mult * UIParent:GetScale()
 	--Have to reposition this here so it doesnt resize after being hidden
 	frame.hp:ClearAllPoints()
@@ -386,8 +376,7 @@ function NP:OnHide(frame)
 			icon:Hide()
 		end
 	end
-	frame.cpoints:Hide()
-	
+
 	for i=1, MAX_COMBO_POINTS do
 		frame.cpoints[i]:Hide()
 	end
@@ -448,8 +437,6 @@ function NP:SkinPlate(frame, nameFrame)
 			
 			frame.cpoints[i]:Hide()
 		end
-		
-		frame.cpoints:Hide()
 	end
 		
 	if not frame.overlay then
@@ -818,19 +805,22 @@ function NP:CheckUnit_Guid(frame, ...)
 		frame.unit = "target"
 		NP:UpdateAurasByUnitID("target")
 		frame.hp.shadow:SetAlpha(1)
+		NP:UpdateCPoints(frame)
 	elseif frame.overlay:IsShown() and UnitExists("mouseover") and UnitName("mouseover") == frame.hp.name:GetText() then
 		frame.guid = UnitGUID("mouseover")
 		frame.unit = "mouseover"
 		NP:UpdateAurasByUnitID("mouseover")
 		frame.hp.shadow:SetAlpha(0)
+		
+		local cpoints = GetComboPoints('player', 'mouseover')
+		if cpoints and cpoints > 0 then
+			NP:UpdateCPoints(frame, true)
+		end
 	else
 		frame.unit = nil
 		frame.hp.shadow:SetAlpha(0)
 	end	
-	
-	if NP.CPointsGUID ~= frame.guid and frame.cpoints:IsShown() then
-		frame.cpoints:Hide()
-	end
+
 	--[[if not frame.test then
 		frame.test = frame:CreateFontString(nil, 'OVERLAY')
 		frame.test:Point('TOP', frame, 'TOP')
