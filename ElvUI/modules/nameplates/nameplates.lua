@@ -280,9 +280,8 @@ end
 
 function NP:HealthBar_OnShow(frame)
 	frame = frame:GetParent()
-	
-	frame.cpoints:Hide()
-	
+
+	NP:UNIT_COMBO_POINTS(frame)
 	local noscalemult = E.mult * UIParent:GetScale()
 	--Have to reposition this here so it doesnt resize after being hidden
 	frame.hp:ClearAllPoints()
@@ -379,6 +378,10 @@ function NP:OnHide(frame)
 		end
 	end
 	frame.cpoints:Hide()
+	
+	for i=1, MAX_COMBO_POINTS do
+		frame.cpoints[i]:Hide()
+	end
 end
 
 function NP:SkinPlate(frame, nameFrame)

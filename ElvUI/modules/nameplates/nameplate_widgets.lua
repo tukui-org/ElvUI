@@ -919,11 +919,14 @@ function NP:HideCPoints(frame)
 	frame.cpoints:Hide()
 end
 
-function NP:UNIT_COMBO_POINTS()
-	self:ForEachPlate(self.HideCPoints)
-	local frame = self:GetTargetNameplate()
-	if not frame then return; end
+function NP:UNIT_COMBO_POINTS(frame)
+	if type(frame) ~= "table" then
+		self:ForEachPlate(self.HideCPoints)
+		frame = self:GetTargetNameplate()
+	end
 	
+	if not frame then return; end
+
 	frame.cpoints:Show()
 	
 	local cp
