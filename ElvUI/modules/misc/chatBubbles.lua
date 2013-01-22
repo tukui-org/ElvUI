@@ -21,8 +21,11 @@ function M:SkinBubble(frame)
 	NP:CreateVirtualFrame(frame)	
 	NP:SetVirtualBorder(frame, frame.text:GetTextColor())	
 
+	if not E.PixelMode then
+		frame.backdrop:SetTexture(nil)
+	end
 	frame.backdrop2:SetTexture(unpack(E["media"].bubblefadecolor))
-
+	
 	frame.text:FontTemplate(nil, 14)
 	
 	frame:SetClampedToScreen(false)

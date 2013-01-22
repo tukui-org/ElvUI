@@ -582,6 +582,7 @@ E.Options.args.media = {
 					func = function() 
 						E.db.general.backdropcolor = P.general.backdropcolor
 						E.db.general.backdropfadecolor = P.general.backdropfadecolor
+						E.db.general.bubblefadecolor = P.general.bubblefadecolor
 						E.db.general.bordercolor = P.general.bordercolor
 						E.db.general.valuecolor = P.general.valuecolor
 						E:UpdateMedia()
