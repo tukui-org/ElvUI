@@ -11,8 +11,8 @@ NP.Handled = {} --Skinned Nameplates
 NP.BattleGroundHealers = {};
 
 NP.factionOpposites = {
-	['Horde'] = 1,
-	['Alliance'] = 0,
+	[0] = 1,
+	[1] = 0,
 }
 NP.Healers = {
 	[L['Restoration']] = true,
@@ -894,6 +894,8 @@ function NP:CheckBGHealers()
 end
 
 function NP:PLAYER_ENTERING_WORLD()
+	self.PlayerFaction = GetBattlefieldArenaFaction()
+	
 	if InCombatLockdown() and self.db.combat then 
 		SetCVar("nameplateShowEnemies", 1) 
 	elseif self.db.combat then
@@ -914,8 +916,6 @@ function NP:PLAYER_ENTERING_WORLD()
 			self.CheckHealerTimer = nil;
 		end
 	end
-	
-	self.PlayerFaction = UnitFactionGroup("player")
 end
 
 function NP:UpdateAllPlates()
