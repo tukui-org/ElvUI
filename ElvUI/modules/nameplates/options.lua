@@ -144,11 +144,11 @@ E.Options.args.nameplate = {
 					name = L["Combat Toggle"],
 					desc = L["Toggles the nameplates off when not in combat."],							
 				},	
-				markBGHealers = {
+				markHealers = {
 					type = 'toggle',
 					order = 7,
 					name = L['Healer Icon'],
-					desc = L['Display a healer icon over known healers inside battlegrounds.'],
+					desc = L['Display a healer icon over known healers inside battlegrounds or arenas.'],
 					set = function(info, value) E.db.nameplate[ info[#info] ] = value; NP:PLAYER_ENTERING_WORLD(); NP:UpdateAllPlates() end,
 				},
 				classIcons = {

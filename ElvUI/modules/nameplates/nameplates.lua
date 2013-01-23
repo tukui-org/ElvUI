@@ -8,13 +8,13 @@ local numChildren = -1
 local backdrop
 
 NP.Handled = {} --Skinned Nameplates
-NP.BattleGroundHealers = {};
+NP.Healers = {};
 
 NP.factionOpposites = {
 	[0] = 1,
 	[1] = 0,
 }
-NP.Healers = {
+NP.HealerSpecs = {
 	[L['Restoration']] = true,
 	[L['Holy']] = true,
 	[L['Discipline']] = true,
@@ -872,7 +872,7 @@ function NP:CheckFilter(frame, ...)
 	end
 	
 	--Check For Healers
-	if self.BattleGroundHealers[name] then
+	if self.Healers[name] then
 		frame.healerIcon:Show()
 	else
 		frame.healerIcon:Hide()
@@ -884,10 +884,30 @@ function NP:CheckBGHealers()
 		local name, _, _, _, _, faction, _, _, _, _, _, _, _, _, _, talentSpec = GetBattlefieldScore(i);
 		if name then
 			name = name:match("(.+)%-.+") or name
-			if name and self.Healers[talentSpec] and self.factionOpposites[self.PlayerFaction] == faction then
-				self.BattleGroundHealers[name] = talentSpec
-			elseif name and self.BattleGroundHealers[name] then
-				self.BattleGroundHealers[name] = nil;
+			if name and self.HealerSpecs[talentSpec] and self.factionOpposites[self.PlayerFaction] == faction then
+				self.Healers[name] = talentSpec
+			elseif name and self.Healers[name] then
+				self.Healers[name] = nil;
+			end
+		end
+	end
+end
+
+function NP:CheckArenaHealers()
+	local numOpps = GetNumArenaOpponentSpecs()
+	if not (numOpps > 1) then return end
+	
+	for i=1, 5 do
+		local name = UnitName(format('arena%d', i))
+		if name and name ~= UNKNOWN then
+			local s = GetArenaOpponentSpec(i)
+			local _, talentSpec = nil, UNKNOWN
+			if s and s > 0 then
+				_, talentSpec = GetSpecializationInfoByID(s)
+			end
+			
+			if talentSpec and talentSpec ~= UNKNOWN and self.HealerSpecs[talentSpec] then
+				self.Healers[name] = talentSpec
 			end
 		end
 	end
@@ -905,12 +925,18 @@ function NP:PLAYER_ENTERING_WORLD()
 	self:UpdateRoster()
 	self:CleanAuraLists()
 	
-	twipe(self.BattleGroundHealers)
+	twipe(self.Healers)
 	local inInstance, instanceType = IsInInstance()
-	if inInstance and instanceType == 'pvp' and self.db.markBGHealers then
+	if inInstance and instanceType == 'pvp' and self.db.markHealers then
 		self.CheckHealerTimer = self:ScheduleRepeatingTimer("CheckBGHealers", 3)
 		self:CheckBGHealers()
+	elseif inInstance and instanceType == 'arena' and self.db.markHealers then
+		self:RegisterEvent('UNIT_NAME_UPDATE', 'CheckArenaHealers')
+		self:RegisterEvent("ARENA_OPPONENT_UPDATE", 'CheckArenaHealers');
+		self:CheckArenaHealers()	
 	else
+		self:UnregisterEvent('UNIT_NAME_UPDATE')
+		self:UnregisterEvent("ARENA_OPPONENT_UPDATE")
 		if self.CheckHealerTimer then
 			self:CancelTimer(self.CheckHealerTimer)
 			self.CheckHealerTimer = nil;
