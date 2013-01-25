@@ -14,7 +14,7 @@ function B:MoveWatchFrame()
 	WatchFrame:ClearAllPoints()
 	WatchFrame:SetPoint('TOP', WatchFrameHolder, 'TOP')
 	WatchFrame:Height(E.screenheight / 2)
-	
+	WatchFrame:SetClampedToScreen(false)
 	hooksecurefunc(WatchFrame,"SetPoint",function(_,_,parent)
 		if parent ~= WatchFrameHolder then
 			WatchFrame:ClearAllPoints()
