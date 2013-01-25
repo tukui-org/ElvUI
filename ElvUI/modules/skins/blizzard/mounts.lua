@@ -83,21 +83,7 @@ local function LoadSkin()
 		b.dragButton.level:SetParent(b.backdrop)
 	end
 
-	local function UpdatePetCardQuality()
-		if PetJournalPetCard.petID  then
-			local speciesID, customName, level, xp, maxXp, displayID, name, icon, petType, creatureID, sourceText, description, isWild, canBattle, tradable = C_PetJournal.GetPetInfoByPetID(PetJournalPetCard.petID)
-			if canBattle then
-				local health, maxHealth, power, speed, rarity = C_PetJournal.GetPetStats(PetJournalPetCard.petID)
-				PetJournalPetCard.QualityFrame.quality:SetText(_G["BATTLE_PET_BREED_QUALITY"..rarity])
-				local color = ITEM_QUALITY_COLORS[rarity-1]
-				PetJournalPetCard.QualityFrame.quality:SetVertexColor(color.r, color.g, color.b)
-				PetJournalPetCard.QualityFrame:Show()
-			else
-				PetJournalPetCard.QualityFrame:Hide()
-			end
-		end
-	end
-	hooksecurefunc("PetJournal_UpdatePetCard", UpdatePetCardQuality)
+
 
 	local function ColorSelectedPet()
 		local petButtons = PetJournal.listScroll.buttons;
