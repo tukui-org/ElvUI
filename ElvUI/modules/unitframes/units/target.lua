@@ -488,19 +488,26 @@ function UF:Update_TargetFrame(frame, db)
 			healPrediction.otherBar:SetPoint('BOTTOMLEFT', healPrediction.myBar:GetStatusBarTexture(), 'BOTTOMRIGHT')	
 			healPrediction.otherBar:Width(db.width - (BORDER*2))
 			
+			healPrediction.absorbBar:ClearAllPoints()
+			healPrediction.absorbBar:SetPoint('TOPLEFT', healPrediction.otherBar:GetStatusBarTexture(), 'TOPRIGHT')	
+			healPrediction.absorbBar:SetPoint('BOTTOMLEFT', healPrediction.otherBar:GetStatusBarTexture(), 'BOTTOMRIGHT')	
+			healPrediction.absorbBar:Width(db.width - (BORDER*2))			
+			
 			if not USE_PORTRAIT_OVERLAY then
 				healPrediction.myBar:SetParent(frame)
 				healPrediction.otherBar:SetParent(frame)
+				healPrediction.absorbBar:SetParent(frame)
 			else	
 				healPrediction.myBar:SetParent(frame.Portrait.overlay)		
-				healPrediction.otherBar:SetParent(frame.Portrait.overlay)					
-			end			
+				healPrediction.otherBar:SetParent(frame.Portrait.overlay)	
+				healPrediction.absorbBar:SetParent(frame.Portrait.overlay)
+			end
 		else
 			if frame:IsElementEnabled('HealPrediction') then
 				frame:DisableElement('HealPrediction')
 			end		
 		end
-	end	
+	end
 	
 	--Raid Icon
 	do
