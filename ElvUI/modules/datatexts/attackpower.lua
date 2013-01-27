@@ -1,12 +1,12 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local DT = E:GetModule('DataTexts')
 
+local join = string.join
 local base, posBuff, negBuff, effective, Rbase, RposBuff, RnegBuff, Reffective, pwr
 local displayModifierString = ''
 local lastPanel;
 
 local function OnEvent(self, event, unit)	
-	if event == "UNIT_AURA" and unit ~= 'player' then return end
 	if E.myclass == "HUNTER" then
 		Rbase, RposBuff, RnegBuff = UnitRangedAttackPower("player");
 		Reffective = Rbase + RposBuff + RnegBuff;
@@ -22,7 +22,7 @@ local function OnEvent(self, event, unit)
 end
 
 local function ValueColorUpdate(hex, r, g, b)
-	displayNumberString = string.join("", "%s: ", hex, "%d|r")
+	displayNumberString = join("", "%s: ", hex, "%d|r")
 	
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

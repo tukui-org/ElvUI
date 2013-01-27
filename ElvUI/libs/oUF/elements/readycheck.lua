@@ -49,14 +49,17 @@ local Finish = function(self)
 end
 
 local OnUpdate = function(self, elapsed)
+	self.elapsed = (self.elapsed or 0) + elapsed
+	if self.elapsed < .25 then return end
+	
 	for icon in next, _TIMERS do
 		if(icon.finishedTimer) then
-			icon.finishedTimer = icon.finishedTimer - elapsed
+			icon.finishedTimer = icon.finishedTimer - self.elapsed
 			if(icon.finishedTimer <= 0) then
 				icon.finishedTimer = nil
 			end
 		elseif(icon.fadeTimer) then
-			icon.fadeTimer = icon.fadeTimer - elapsed
+			icon.fadeTimer = icon.fadeTimer - self.elapsed
 			icon:SetAlpha(icon.fadeTimer / (icon.fadeTime or 1.5))
 
 			if(icon.fadeTimer <= 0) then
@@ -65,6 +68,8 @@ local OnUpdate = function(self, elapsed)
 			end
 		end
 	end
+	
+	self.elapsed = 0
 end
 
 local Update = function(self, event)

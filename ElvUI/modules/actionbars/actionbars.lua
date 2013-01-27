@@ -8,6 +8,9 @@ local LAB = LibStub("LibActionButton-1.0")
 local LSM = LibStub("LibSharedMedia-3.0")
 
 local gsub = string.gsub
+local format = string.format
+local split = string.split
+
 E.ActionBars = AB
 AB["handledBars"] = {} --List of all bars
 AB["handledbuttons"] = {} --List of all buttons that have been modified.
@@ -15,7 +18,7 @@ AB["barDefaults"] = {
 	["bar1"] = {
 		['page'] = 1,
 		['bindButtons'] = "ACTIONBUTTON",
-		['conditions'] = string.format("[vehicleui] %d; [possessbar] %d; [overridebar] %d; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;", GetVehicleBarIndex(), GetVehicleBarIndex(), GetOverrideBarIndex()),
+		['conditions'] = format("[vehicleui] %d; [possessbar] %d; [overridebar] %d; [form,noform] 0; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;", GetVehicleBarIndex(), GetVehicleBarIndex(), GetOverrideBarIndex()),
 		['position'] = "BOTTOM,ElvUIParent,BOTTOM,0,4",
 	},
 	["bar2"] = {
@@ -111,7 +114,6 @@ function AB:PositionAndSizeBar(barName)
 		button:ClearAllPoints();
 		button:Size(size)
 		button:SetAttribute("showgrid", 1);
-		ActionButton_ShowGrid(button);
 
 		if self.db[barName].mouseover == true then
 			bar:SetAlpha(0);
@@ -181,18 +183,30 @@ function AB:PositionAndSizeBar(barName)
 		
 		self:StyleButton(button);
 	end
-
-	if self.db[barName].enabled then
-		bar:Show()
-		
+	
+	if self.db[barName].enabled or not bar.initialized then		
 		if not self.db[barName].mouseover then
 			bar:SetAlpha(self.db[barName].alpha);
 		end
-		RegisterStateDriver(bar, "show", self.db[barName].visibility);
+
+		if AB['barDefaults']['bar'..bar.id].conditions:find("[form]") then
+			bar:SetAttribute("hasTempBar", true)
+		else
+			bar:SetAttribute("hasTempBar", false)
+		end
+			
+		bar:Show()
+		RegisterStateDriver(bar, "visibility", self.db[barName].visibility); -- this is ghetto
 		RegisterStateDriver(bar, "page", self:GetPage(barName, self['barDefaults'][barName].page, self['barDefaults'][barName].conditions));
+		
+		if not bar.initialized then
+			bar.initialized = true;
+			AB:PositionAndSizeBar(barName)
+			return
+		end
 	else
 		bar:Hide()
-		UnregisterStateDriver(bar, "show");
+		UnregisterStateDriver(bar, "visibility");
 	end 
 	
 	
@@ -201,7 +215,7 @@ end
 
 function AB:CreateBar(id)
 	local bar = CreateFrame('Frame', 'ElvUI_Bar'..id, E.UIParent, 'SecureHandlerStateTemplate');
-	local point, anchor, attachTo, x, y = string.split(',', self['barDefaults']['bar'..id].position)
+	local point, anchor, attachTo, x, y = split(',', self['barDefaults']['bar'..id].position)
 	bar:Point(point, anchor, attachTo, x, y)
 	bar.id = id
 	bar:CreateBackdrop('Default');
@@ -222,22 +236,27 @@ function AB:CreateBar(id)
 	end
 	self:UpdateButtonConfig(bar, bar.bindButtons)
 	
-	bar:SetAttribute("_onstate-page", [[ 
-		self:SetAttribute("state", newstate)
-		control:ChildUpdate("state", newstate)
+	if AB['barDefaults']['bar'..id].conditions:find("[form]") then
+		bar:SetAttribute("hasTempBar", true)
+	else
+		bar:SetAttribute("hasTempBar", false)
+	end
+	
+	bar:SetAttribute("_onstate-page", [[
+		if HasTempShapeshiftActionBar() and self:GetAttribute("hasTempBar") then
+			newstate = GetTempShapeshiftBarIndex() or newstate
+		end	
+
+		if newstate ~= 0 then
+			self:SetAttribute("state", newstate)
+			control:ChildUpdate("state", newstate)
+		end
 	]]);
 	
-	bar:SetAttribute("_onstate-show", [[		
-		if newstate == "hide" then
-			self:Hide();
-		else
-			self:Show();
-		end	
-	]])
 	
 	self["handledBars"]['bar'..id] = bar;
 	self:PositionAndSizeBar('bar'..id);
-	E:CreateMover(bar, 'ElvAB_'..id, 'Bar '..id, nil, nil, nil,'ALL,ACTIONBARS')
+	E:CreateMover(bar, 'ElvAB_'..id, L['Bar ']..id, nil, nil, nil,'ALL,ACTIONBARS')
 	return bar
 end
 
@@ -259,7 +278,12 @@ function AB:CreateVehicleLeave()
 	RegisterStateDriver(vehicle, "visibility", "[vehicleui] show;[target=vehicle,exists] show;hide")
 end
 
-function AB:ReassignBindings()
+function AB:ReassignBindings(event)
+	if event == "UPDATE_BINDINGS" then
+		self:UpdatePetBindings();
+		self:UpdateStanceBindings();
+	end
+
 	if InCombatLockdown() then return end	
 	for _, bar in pairs(self["handledBars"]) do
 		if not bar then return end
@@ -336,13 +360,14 @@ function AB:UpdateButtonSettings()
 			self["handledbuttons"][button] = nil
 		end
 	end
-
+	
 	for i=1, 5 do
 		self:PositionAndSizeBar('bar'..i)
 	end	
 	self:PositionAndSizeBarPet()
 	self:PositionAndSizeBarShapeShift()
-		
+	self:UpdatePetBindings()	
+	self:UpdateStanceBindings()
 	for barName, bar in pairs(self["handledBars"]) do
 		self:UpdateButtonConfig(bar, bar.bindButtons)
 	end

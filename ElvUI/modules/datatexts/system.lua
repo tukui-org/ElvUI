@@ -1,6 +1,10 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local DT = E:GetModule('DataTexts')
 
+local format = string.format
+local sort = table.sort
+local join = string.join
+
 -- initial delay for update (let the ui load)
 local int, int2 = 6, 5
 local statusColors = {
@@ -16,15 +20,17 @@ local percentageString = "%.2f%%"
 local homeLatencyString = "%d ms"
 local kiloByteString = "%d kb"
 local megaByteString = "%.2f mb"
+local totalMemory = 0
+local bandwidth = 0
 
 local function formatMem(memory)
 	local mult = 10^1
 	if memory > 999 then
 		local mem = ((memory/1024) * mult) / mult
-		return string.format(megaByteString, mem)
+		return format(megaByteString, mem)
 	else
 		local mem = (memory * mult) / mult
-		return string.format(kiloByteString, mem)
+		return format(kiloByteString, mem)
 	end
 end
 
@@ -47,21 +53,17 @@ local function UpdateMemory()
 	-- Update the memory usages of the addons
 	UpdateAddOnMemoryUsage()
 	-- Load memory usage in table
-	local addOnMem = 0
-	local totalMemory = 0
+	totalMemory = 0
 	for i = 1, #memoryTable do
-		addOnMem = GetAddOnMemoryUsage(memoryTable[i][1])
-		memoryTable[i][3] = addOnMem
-		totalMemory = totalMemory + addOnMem
+		memoryTable[i][3] = GetAddOnMemoryUsage(memoryTable[i][1])
+		totalMemory = totalMemory + memoryTable[i][3]
 	end
 	-- Sort the table to put the largest addon on top
-	table.sort(memoryTable, function(a, b)
+	sort(memoryTable, function(a, b)
 		if a and b then
 			return a[3] > b[3]
 		end
 	end)
-	
-	return totalMemory
 end
 
 local function UpdateCPU()
@@ -77,7 +79,7 @@ local function UpdateCPU()
 	end
 	
 	-- Sort the table to put the largest addon on top
-	table.sort(cpuTable, function(a, b)
+	sort(cpuTable, function(a, b)
 		if a and b then
 			return a[3] > b[3]
 		end
@@ -95,55 +97,55 @@ local function OnEnter(self)
 	local cpuProfiling = GetCVar("scriptProfile") == "1"
 	DT:SetupTooltip(self)
 
-	local bandwidth = GetAvailableBandwidth()
-	local home_latency = select(3, GetNetStats()) 
+	UpdateMemory()	
+	bandwidth = GetAvailableBandwidth()
 	
-	GameTooltip:AddDoubleLine(L['Home Latency:'], string.format(homeLatencyString, home_latency), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+	DT.tooltip:AddDoubleLine(L['Home Latency:'], format(homeLatencyString, select(3, GetNetStats())), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 	
 	if bandwidth ~= 0 then
-		GameTooltip:AddDoubleLine(L['Bandwidth'] , string.format(bandwidthString, bandwidth),0.69, 0.31, 0.31,0.84, 0.75, 0.65)
-		GameTooltip:AddDoubleLine(L['Download'] , string.format(percentageString, GetDownloadedPercentage() *100),0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
-		GameTooltip:AddLine(" ")
+		DT.tooltip:AddDoubleLine(L['Bandwidth'] , format(bandwidthString, bandwidth),0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+		DT.tooltip:AddDoubleLine(L['Download'] , format(percentageString, GetDownloadedPercentage() *100),0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
+		DT.tooltip:AddLine(" ")
 	end
 	
-	local totalMemory = UpdateMemory()
 	local totalCPU = nil
-	GameTooltip:AddDoubleLine(L['Total Memory:'], formatMem(totalMemory), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+	DT.tooltip:AddDoubleLine(L['Total Memory:'], formatMem(totalMemory), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 	if cpuProfiling then
 		totalCPU = UpdateCPU()
-		GameTooltip:AddDoubleLine(L['Total CPU:'], string.format(homeLatencyString, totalCPU), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+		DT.tooltip:AddDoubleLine(L['Total CPU:'], format(homeLatencyString, totalCPU), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 	end
 	
+	local red, green
 	if IsShiftKeyDown() or not cpuProfiling then
-		GameTooltip:AddLine(" ")
+		DT.tooltip:AddLine(" ")
 		for i = 1, #memoryTable do
 			if (memoryTable[i][4]) then
-				local red = memoryTable[i][3] / totalMemory
-				local green = 1 - red
-				GameTooltip:AddDoubleLine(memoryTable[i][2], formatMem(memoryTable[i][3]), 1, 1, 1, red, green + .5, 0)
+				red = memoryTable[i][3] / totalMemory
+				green = 1 - red
+				DT.tooltip:AddDoubleLine(memoryTable[i][2], formatMem(memoryTable[i][3]), 1, 1, 1, red, green + .5, 0)
 			end						
 		end
 	end
 	
 	if cpuProfiling and not IsShiftKeyDown() then
-		GameTooltip:AddLine(" ")
+		DT.tooltip:AddLine(" ")
 		for i = 1, #cpuTable do
 			if (cpuTable[i][4]) then
-				local red = cpuTable[i][3] / totalCPU
-				local green = 1 - red
-				GameTooltip:AddDoubleLine(cpuTable[i][2], string.format(homeLatencyString, cpuTable[i][3]), 1, 1, 1, red, green + .5, 0)
+				red = cpuTable[i][3] / totalCPU
+				green = 1 - red
+				DT.tooltip:AddDoubleLine(cpuTable[i][2], format(homeLatencyString, cpuTable[i][3]), 1, 1, 1, red, green + .5, 0)
 			end						
 		end
-		GameTooltip:AddLine(" ")
-		GameTooltip:AddLine(L['(Hold Shift) Memory Usage'])
+		DT.tooltip:AddLine(" ")
+		DT.tooltip:AddLine(L['(Hold Shift) Memory Usage'])
 	end
 	
-	GameTooltip:Show()
+	DT.tooltip:Show()
 end
 
 local function OnLeave(self)
 	enteredFrame = false;
-	GameTooltip:Hide()
+	DT.tooltip:Hide()
 end
 
 local function Update(self, t)
@@ -156,26 +158,13 @@ local function Update(self, t)
 	end
 	if int2 < 0 then
 		local framerate = floor(GetFramerate())
-		local fpscolor = 4
 		local latency = select(4, GetNetStats()) 
-		local latencycolor = 4
 					
-		if latency < 150 then
-			latencycolor = 1
-		elseif latency >= 150 and latency < 300 then
-			latencycolor = 2
-		elseif latency >= 300 and latency < 500 then
-			latencycolor = 3
-		end
-		if framerate >= 30 then
-			fpscolor = 1
-		elseif framerate >= 20 and framerate < 30 then
-			fpscolor = 2
-		elseif framerate >= 10 and framerate < 20 then
-			fpscolor = 3
-		end
-		local displayFormat = string.join("", "FPS: ", statusColors[fpscolor], "%d|r MS: ", statusColors[latencycolor], "%d|r")
-		self.text:SetFormattedText(displayFormat, framerate, latency)
+		self.text:SetFormattedText("FPS: %s%d|r MS: %s%d|r", 
+			statusColors[framerate >= 30 and 1 or (framerate >= 20 and framerate < 30) and 2 or (framerate >= 10 and framerate < 20) and 3 or 4], 
+			framerate, 
+			statusColors[latency < 150 and 1 or (latency >= 150 and latency < 300) and 2 or (latency >= 300 and latency < 500) and 3 or 4], 
+			latency)
 		int2 = 1
 		if enteredFrame then
 			OnEnter(self)
@@ -195,4 +184,3 @@ end
 	onLeaveFunc - function to fire OnLeave, if not provided one will be set for you that hides the tooltip.
 ]]
 DT:RegisterDatatext('System', nil, nil, Update, Click, OnEnter, OnLeave)
-

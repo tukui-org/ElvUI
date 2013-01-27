@@ -166,7 +166,11 @@ local function LoadSkin()
 
 			object.Check:SetTexture(nil)
 			object.text:FontTemplate()
-			object.text.SetFont = E.noop
+			hooksecurefunc(object.text, "SetFont", function(self, font, fontSize, fontStyle)
+				if font ~= E["media"].normFont then
+					self:FontTemplate()
+				end
+			end)
 		end
 	end)
 	
@@ -183,22 +187,28 @@ local function LoadSkin()
 			object.BgTop:SetTexture(nil)
 			object.BgBottom:SetTexture(nil)
 			object.BgMiddle:SetTexture(nil)
-
+			object.icon:Size(36, 36)
 			object.Check:SetTexture(nil)
 			object.icon:SetTexCoord(unpack(E.TexCoords))
-			
-			if not object.backdrop then
-				object:CreateBackdrop("Default")
-			end
-			
-			object.backdrop:SetOutside(object.icon)
-			object.icon:SetParent(object.backdrop)
 
 			--Making all icons the same size and position because otherwise BlizzardUI tries to attach itself to itself when it refreshes
 			object.icon:SetPoint("LEFT", object, "LEFT", 4, 0)
-			object.icon.SetPoint = E.noop
-			object.icon:Size(36, 36)
-			object.icon.SetSize = E.noop
+			hooksecurefunc(object.icon, "SetPoint", function(self, point, attachTo, anchorPoint, xOffset, yOffset)
+				if point ~= "LEFT" or attachTo ~= object or anchorPoint ~= "LEFT" or xOffset ~= 4 or yOffset ~= 0 then
+					self:SetPoint("LEFT", object, "LEFT", 4, 0)
+				end
+			end)
+			
+			
+			hooksecurefunc(object.icon, "SetSize", function(self, width, height)
+				if width == 30 or height == 30 then
+					self:Size(36, 36)
+				end
+			end)
+			
+			if not object.icon.bordertop then
+				E:GetModule("NamePlates"):CreateVirtualFrame(object, object.icon)
+			end			
 		end
 		GearManagerDialogPopup:StripTextures()
 		GearManagerDialogPopup:SetTemplate("Transparent")
@@ -252,7 +262,11 @@ local function LoadSkin()
 					for i=1, tab:GetNumRegions() do
 						local region = select(i, tab:GetRegions())
 						region:SetTexCoord(0.16, 0.86, 0.16, 0.86)
-						region.SetTexCoord = E.noop
+						hooksecurefunc(region, "SetTexCoord", function(self, x1, y1, x2, y2)
+							if (x1 ~= 0.16 or y1 ~= 0.86 or x2 ~= 0.16 or y2 ~= 0.86) and x1 ~= nil then
+								self:SetTexCoord(0.16, 0.86, 0.16, 0.86)
+							end
+						end)
 					end
 				end
 				tab:CreateBackdrop("Default")
@@ -283,8 +297,8 @@ local function LoadSkin()
 				end
 				
 				_G["ReputationBar"..i.."Background"]:SetTexture(nil)
-				_G["ReputationBar"..i.."LeftLine"]:Kill()
-				_G["ReputationBar"..i.."BottomLine"]:Kill()
+				--_G["ReputationBar"..i.."LeftLine"]:Kill()
+				--_G["ReputationBar"..i.."BottomLine"]:Kill()
 				_G["ReputationBar"..i.."ReputationBarHighlight1"]:SetTexture(nil)
 				_G["ReputationBar"..i.."ReputationBarHighlight2"]:SetTexture(nil)	
 				_G["ReputationBar"..i.."ReputationBarAtWarHighlight1"]:SetTexture(nil)

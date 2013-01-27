@@ -6,6 +6,8 @@ local cancelled_rolls = {}
 local FRAME_WIDTH, FRAME_HEIGHT = 328, 28
 M.RollBars = {}
 
+local tinsert = table.insert
+
 local function ClickRoll(frame)
 	RollOnLoot(frame.parent.rollID, frame.rolltype)
 end
@@ -169,7 +171,7 @@ local function GetFrame()
 	else
 		f:Point("BOTTOM", next(M.RollBars) and M.RollBars[#M.RollBars] or AlertFrameHolder, "TOP", 0, 4)
 	end
-	table.insert(M.RollBars, f)
+	tinsert(M.RollBars, f)
 	return f
 end
 

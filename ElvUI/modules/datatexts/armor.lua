@@ -5,44 +5,41 @@ local lastPanel
 local armorString = ARMOR..": "
 local chanceString = "%.2f%%";
 local format = string.format
+local join = string.join
 local displayString = ''; 
 local baseArmor, effectiveArmor, armor, posBuff, negBuff
 	
 local function OnEvent(self, event, unit)
-	if event == "UNIT_RESISTANCES" and unit ~= 'player' then return end
-	lastPanel = self
-	
 	baseArmor, effectiveArmor, armor, posBuff, negBuff = UnitArmor("player");
 
 	self.text:SetFormattedText(displayString, armorString, effectiveArmor)
-	
-	int = 2
+	lastPanel = self
 end
 
 
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 	
-	GameTooltip:AddLine(L['Mitigation By Level: '])
-	GameTooltip:AddLine(' ')
+	DT.tooltip:AddLine(L['Mitigation By Level: '])
+	DT.tooltip:AddLine(' ')
 	
 	local playerlvl = UnitLevel('player') + 3
 	for i = 1, 4 do
 		local armorReduction = PaperDollFrame_GetArmorReduction(effectiveArmor, playerlvl);
-		GameTooltip:AddDoubleLine(playerlvl,format(chanceString, armorReduction),1,1,1)
+		DT.tooltip:AddDoubleLine(playerlvl,format(chanceString, armorReduction),1,1,1)
 		playerlvl = playerlvl - 1
 	end
 	local lv = UnitLevel("target")
 	if lv and lv > 0 and (lv > playerlvl + 3 or lv < playerlvl) then
 		local armorReduction = PaperDollFrame_GetArmorReduction(effectiveArmor, lv);
-		GameTooltip:AddDoubleLine(lv, format(chanceString, armorReduction),1,1,1)
+		DT.tooltip:AddDoubleLine(lv, format(chanceString, armorReduction),1,1,1)
 	end	
 		
-	GameTooltip:Show()
+	DT.tooltip:Show()
 end
 
 local function ValueColorUpdate(hex, r, g, b)
-	displayString = string.join("", "%s", hex, "%d|r")
+	displayString = join("", "%s", hex, "%d|r")
 	
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

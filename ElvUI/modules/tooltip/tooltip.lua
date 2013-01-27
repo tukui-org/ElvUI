@@ -4,6 +4,8 @@ local TT = E:NewModule('Tooltip', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
 local _G = getfenv(0)
 local GameTooltip, GameTooltipStatusBar = _G["GameTooltip"], _G["GameTooltipStatusBar"]
 local gsub, find, format = string.gsub, string.find, string.format
+local abs, floor = math.abs, math.floor
+
 TT.InspectCache = {};
 TT.lastInspectRequest = 0;
 
@@ -36,10 +38,10 @@ local linkTypes = {
 }
 
 local classification = {
-	worldboss = string.format("|cffAF5050 %s|r", BOSS),
-	rareelite = string.format("|cffAF5050+ %s|r", ITEM_QUALITY3_DESC),
+	worldboss = format("|cffAF5050 %s|r", BOSS),
+	rareelite = format("|cffAF5050+ %s|r", ITEM_QUALITY3_DESC),
 	elite = "|cffAF5050+|r",
-	rare = string.format("|cffAF5050 %s|r", ITEM_QUALITY3_DESC)
+	rare = format("|cffAF5050 %s|r", ITEM_QUALITY3_DESC)
 }
 
 function TT:IsInspectFrameOpen() 
@@ -240,6 +242,7 @@ function TT:GameTooltip_ShowCompareItem(tt, shift)
 end
 
 function TT:Colorize(tt)
+	local isGameTooltip = tt == GameTooltip
 	local GMF = GetMouseFocus()
 	local unit = (select(2, tt:GetUnit())) or (GMF and GMF:GetAttribute("unit"))
 	
@@ -254,21 +257,27 @@ function TT:Colorize(tt)
 	if (reaction) and (tapped and not tappedbyme or not connected or dead) then
 		r, g, b = 0.55, 0.57, 0.61
 		tt:SetBackdropBorderColor(r, g, b)
-		GameTooltipStatusBar.backdrop:SetBackdropBorderColor(r, g, b)
-		GameTooltipStatusBar:ColorBar(r, g, b)
+		if isGameTooltip then
+			GameTooltipStatusBar.backdrop:SetBackdropBorderColor(r, g, b)
+			GameTooltipStatusBar:ColorBar(r, g, b)
+		end
 	elseif player then
 		local class = select(2, UnitClass(unit))
 		if class then
 			local color = RAID_CLASS_COLORS[class]
 			tt:SetBackdropBorderColor(color.r, color.g, color.b)
-			GameTooltipStatusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-			GameTooltipStatusBar:ColorBar(color.r, color.g, color.b)
+			if isGameTooltip then
+				GameTooltipStatusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+				GameTooltipStatusBar:ColorBar(color.r, color.g, color.b)
+			end
 		end
 	elseif reaction then
 		local color = FACTION_BAR_COLORS[reaction]
 		tt:SetBackdropBorderColor(color.r, color.g, color.b)
-		GameTooltipStatusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-		GameTooltipStatusBar:ColorBar(color.r, color.g, color.b)
+		if isGameTooltip then
+			GameTooltipStatusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+			GameTooltipStatusBar:ColorBar(color.r, color.g, color.b)
+		end
 	else
 		local _, link = tt:GetItem()
 		local quality = link and select(3, GetItemInfo(link))
@@ -281,8 +290,11 @@ function TT:Colorize(tt)
 			if E.PixelMode then
 				r, g, b = 0.3, 0.3, 0.3
 			end
-			GameTooltipStatusBar.backdrop:SetBackdropBorderColor(r, g, b)
-			GameTooltipStatusBar:ColorBar(r, g, b)	
+			
+			if isGameTooltip then
+				GameTooltipStatusBar.backdrop:SetBackdropBorderColor(r, g, b)
+				GameTooltipStatusBar:ColorBar(r, g, b)	
+			end
 		end
 	end	
 	
@@ -337,9 +349,9 @@ function TT:AddTargetedBy()
 		if (#targetedList > 0) then
 			targetedList[#targetedList] = nil;
 			GameTooltip:AddLine(" ",nil,nil,nil,1);
-			local line = _G["GameTooltipTextLeft"..GameTooltip:NumLines()];
+			local line = _G[("GameTooltipTextLeft%d"):format(GameTooltip:NumLines())];
 			if not line then return end
-			line:SetFormattedText(L['Targeted By:'].." (|cffffffff%d|r): %s",(#targetedList + 1) / 3,table.concat(targetedList));
+			line:SetFormattedText("%s (|cffffffff%d|r): %s", L['Targeted By:'], (#targetedList + 1) / 3, table.concat(targetedList));
 			wipe(targetedList);
 		end
 	end
@@ -354,8 +366,8 @@ local SlotName = {
 function TT:GetItemLvL(unit)
 	local total, item = 0, 0
 
-	for i in pairs(SlotName) do
-		local slot = GetInventoryItemLink(unit, GetInventorySlotInfo(SlotName[i].."Slot"))
+	for i = 1, #SlotName do
+		local slot = GetInventoryItemLink(unit, GetInventorySlotInfo(("%sSlot"):format(SlotName[i])))
 		if (slot ~= nil) then
 			local _, _, _, ilvl = GetItemInfo(slot)
 			if ilvl ~= nil then
@@ -448,9 +460,9 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	local color = TT:GetColor(unit)	
 	if not color then color = "|CFFFFFFFF" end
 	if E.db.tooltip.titles then
-		GameTooltipTextLeft1:SetFormattedText("%s%s%s", color, title or name, realm and realm ~= "" and " - "..realm.."|r" or "|r")
+		GameTooltipTextLeft1:SetFormattedText("%s%s%s", color, title or name, realm and realm ~= "" and (" - %s|r"):format(realm) or "|r")
 	else
-		GameTooltipTextLeft1:SetFormattedText("%s%s%s", color, name, realm and realm ~= "" and " - "..realm.."|r" or "|r")
+		GameTooltipTextLeft1:SetFormattedText("%s%s%s", color, name, realm and realm ~= "" and (" - %s|r"):format(realm) or "|r")
 	end
 	
 	if isPlayer then
@@ -466,7 +478,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 				if inspectCache.GUID == GUID then
 					iLevel = inspectCache.ItemLevel or 0
 					talentSpec = inspectCache.TalentSpec or ""
-					lastUpdate = inspectCache.LastUpdate and math.abs(inspectCache.LastUpdate - math.floor(GetTime())) or 30
+					lastUpdate = inspectCache.LastUpdate and abs(inspectCache.LastUpdate - floor(GetTime())) or 30
 				end
 			end	
 			
@@ -479,9 +491,9 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		end
 		
 		if UnitIsAFK(unit) then
-			tt:AppendText((" %s"):format("[|cffFF0000"..L['AFK'].."|r]"))
+			tt:AppendText((" %s"):format(("[|cffFF0000%s|r]"):format(L['AFK'])))
 		elseif UnitIsDND(unit) then 
-			tt:AppendText((" %s"):format("[|cffE7E716"..L["DND"].."|r]"))
+			tt:AppendText((" %s"):format(("[|cffE7E716%s|r]"):format(L["DND"])))
 		end
 		
 		local factionColorR, factionColorG, factionColorB = 255, 255, 255
@@ -493,63 +505,64 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		if guildName then
 			if E.db.tooltip.guildranks then
 				if UnitIsInMyGuild(unit) then
-					GameTooltipTextLeft2:SetText("<"..E["media"].hexvaluecolor..guildName.."|r> ["..E["media"].hexvaluecolor..guildRankName.."|r]")
+					GameTooltipTextLeft2:SetText(("<%s%s|r> [%s%s|r]"):format(E["media"].hexvaluecolor, guildName, E["media"].hexvaluecolor, guildRankName))
 				else
-					GameTooltipTextLeft2:SetText("<|cff00ff10"..guildName.."|r> [|cff00ff10"..guildRankName.."|r]")
+					GameTooltipTextLeft2:SetText(("<|cff00ff10%s|r> [|cff00ff10%s|r]"):format(guildName, guildRankName))
 				end
 			else
 				if UnitIsInMyGuild(unit) then
-					GameTooltipTextLeft2:SetText("<"..E["media"].hexvaluecolor..guildName.."|r>")
+					GameTooltipTextLeft2:SetText(("<%s%s|r>"):format(E["media"].hexvaluecolor, guildName))
 				else
-					GameTooltipTextLeft2:SetText("<|cff00ff10"..guildName.."|r>")
+					GameTooltipTextLeft2:SetText(("<|cff00ff10%s|r>"):format(guildName))
 				end			
 			end
 			offset = offset + 1
 		end
 		
 		if talentSpec ~= "" and E.db.tooltip.talentSpec then
-			class = talentSpec..' '..class
+			class = ('%s %s'):format(talentSpec, class)
 		end
 		
 		for i= offset, lines do
-			if _G["GameTooltipTextLeft"..i] and _G["GameTooltipTextLeft"..i]:GetText() and (_G["GameTooltipTextLeft"..i]:GetText():find("^"..LEVEL)) then
-				_G["GameTooltipTextLeft"..i]:SetFormattedText("|cff%02x%02x%02x%s|r |cff%02x%02x%02x%s|r %s%s", r*255, g*255, b*255, level > 0 and level or "??", factionColorR, factionColorG, factionColorB, race, color, class.."|r")
+			local line = _G[("GameTooltipTextLeft%d"):format(i)]
+			if line and line:GetText() and (line:GetText():find(("^%s"):format(LEVEL))) then
+				line:SetFormattedText("|cff%02x%02x%02x%s|r |cff%02x%02x%02x%s|r %s%s", r*255, g*255, b*255, level > 0 and level or "??", factionColorR, factionColorG, factionColorB, race, color, class.."|r")
 				break
 			end
 		end
 	else
 		for i = 2, lines do			
-			if _G["GameTooltipTextLeft"..i] and _G["GameTooltipTextLeft"..i]:GetText() and ((_G["GameTooltipTextLeft"..i]:GetText():find("^"..LEVEL)) or (crtype and _G["GameTooltipTextLeft"..i]:GetText():find("^"..crtype))) then
-				_G["GameTooltipTextLeft"..i]:SetFormattedText("|cff%02x%02x%02x%s|r%s %s", r*255, g*255, b*255, classif ~= "worldboss" and level > 0 and level or "??", classification[classif] or "", crtype or "")
+			local line = _G[("GameTooltipTextLeft%d"):format(i)]
+			if line and line:GetText() and ((line:GetText():find(("^%s"):format(LEVEL))) or (crtype and line:GetText():find(("^%s"):format(crtype)))) then
+				line:SetFormattedText("|cff%02x%02x%02x%s|r%s %s", r*255, g*255, b*255, classif ~= "worldboss" and level > 0 and level or "??", classification[classif] or "", crtype or "")
 				break
 			end
 		end
 	end
 
 	for i = 1, tt:NumLines() do
-		local line = _G["GameTooltipTextLeft"..i]
+		local line = _G[("GameTooltipTextLeft%d"):format(i)]
 		while line and line:GetText() and (line:GetText() == PVP_ENABLED or line:GetText() == FACTION_HORDE or line:GetText() == FACTION_ALLIANCE) do
 			if line:GetText() == PVP_ENABLED then
-				local text = _G["GameTooltipTextLeft"..i-1]:GetText()
+				local text = _G[("GameTooltipTextLeft%d"):format(i - 1)]:GetText()
 				if text then
-					_G["GameTooltipTextLeft"..i-1]:SetText(text..' ('..PVP_ENABLED..')')
+					_G[("GameTooltipTextLeft%d"):format(i - 1)]:SetText(("%s (%s)"):format(text, PVP_ENABLED))
 				end
-			end 
-			
+			end 		
 			line:SetText()
 			break
 		end
 	end
 	
 	if iLevel > 1 and IsShiftKeyDown() then
-		GameTooltip:AddDoubleLine(STAT_AVERAGE_ITEM_LEVEL..":", "|cffFFFFFF"..iLevel.."|r")
+		GameTooltip:AddDoubleLine(STAT_AVERAGE_ITEM_LEVEL..":", ("|cffFFFFFF%d|r"):format(iLevel))
 	end	
 
 	-- ToT line
-	if UnitExists(unit.."target") and unit~="player" then
-		local hex = TT:GetColor(unit.."target")
-		if not hex then hex = "|cffFFFFFF" end
-		GameTooltip:AddDoubleLine(TARGET..":", hex..UnitName(unit.."target").."|r")
+	local totKey = ("%starget"):format(unit)
+	if unit~="player" and UnitExists(totKey) then
+		local hex = TT:GetColor(totKey) or "|cffFFFFFF"
+		GameTooltip:AddDoubleLine(TARGET..":", ("%s%s|r"):format(hex, UnitName(totKey)))
 	end
 	
 	if E.db.tooltip.whostarget then token = unit TT:AddTargetedBy() end
@@ -573,7 +586,7 @@ function TT:GameTooltipStatusBar_OnValueChanged(tt, value)
 	end
 
 	if tt.text then
-		if unit then
+		if unit and self.db.health then
 			min, max = UnitHealth(unit), UnitHealthMax(unit)
 			tt.text:Show()
 			local hp = E:ShortValue(min).." / "..E:ShortValue(max)
@@ -597,8 +610,6 @@ function TT:GameTooltip_OnUpdate(tt)
 		tt:SetBackdropColor(unpack(E["media"].backdropfadecolor))
 		tt:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 		tt.needRefresh = nil
-	elseif tt.forceRefresh then
-		tt.forceRefresh = nil
 	end
 end
 
@@ -610,11 +621,11 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 		local right = ""
 		
 		if link ~= nil and TT.db.spellid then
-			left = "|cFFCA3C3C"..ID.."|r "..link:match(":(%w+)")
+			left = (("|cFFCA3C3C%s|r %s"):format(ID, link)):match(":(%w+)")
 		end
 		
 		if num > 1 and self.db.count then
-			right = "|cFFCA3C3C"..L['Count'].."|r "..num
+			right = ("|cFFCA3C3C%s|r %d"):format(L['Count'], num)
 		end
 		
 		if left ~= "" or right ~= "" then
@@ -631,13 +642,13 @@ function TT:INSPECT_READY(event, GUID)
 	local talentSpec = TT:GetTalentSpec('mouseover')
 	local curTime = GetTime()
 	local matchFound
-	for index, _ in pairs(self.InspectCache) do
-		local inspectCache = self.InspectCache[index]
+	for index, inspectCache in ipairs(self.InspectCache) do
 		if inspectCache.GUID == GUID then
 			inspectCache.ItemLevel = ilvl
 			inspectCache.TalentSpec = talentSpec
-			inspectCache.LastUpdate = math.floor(curTime)
-			matchFound = true;
+			inspectCache.LastUpdate = floor(curTime)
+			matchFound = true
+			break
 		end
 	end
 
@@ -646,12 +657,12 @@ function TT:INSPECT_READY(event, GUID)
 			['GUID'] = GUID,
 			['ItemLevel'] = ilvl,
 			['TalentSpec'] = talentSpec,
-			['LastUpdate'] = math.floor(curTime)
+			['LastUpdate'] = floor(curTime)
 		}	
-		table.insert(self.InspectCache, GUIDInfo)
+		self.InspectCache[#self.InspectCache + 1] = GUIDInfo
 	end
 	
-	if #self.InspectCache > 30 then
+	if #self.InspectCache > 40 then
 		table.remove(self.InspectCache, 1)
 	end
 
@@ -693,11 +704,21 @@ end
 
 function TT:Initialize()
 	self.db = E.db["tooltip"]
+
+	BNToastFrame:Point('TOPRIGHT', MMHolder, 'BOTTOMRIGHT', 0, -10);
+	E:CreateMover(BNToastFrame, 'BNETMover', L['BNet Frame'])
+	hooksecurefunc(BNToastFrame, "SetPoint", function(self, point, anchor, anchorPoint, xOffset, yOffset)
+		if anchor ~= BNETMover then
+			BNToastFrame:ClearAllPoints()
+			BNToastFrame:Point('TOPLEFT', BNETMover, 'TOPLEFT');
+		end
+	end)		
+	
 	if E.private["tooltip"].enable ~= true then return end
 	E.Tooltip = TT
 
 	GameTooltipStatusBar:ClearAllPoints()
-	GameTooltipStatusBar:Height(5)
+	GameTooltipStatusBar:Height(self.db.healthHeight)
 	GameTooltipStatusBar:Point("TOPLEFT", GameTooltipStatusBar:GetParent(), "BOTTOMLEFT", 2, -5)
 	GameTooltipStatusBar:Point("TOPRIGHT", GameTooltipStatusBar:GetParent(), "BOTTOMRIGHT", -2, -5)
 	GameTooltipStatusBar:SetStatusBarTexture(E["media"].normTex)
@@ -712,7 +733,7 @@ function TT:Initialize()
 	GameTooltipAnchor:Point('BOTTOMRIGHT', RightChatToggleButton, 'BOTTOMRIGHT')
 	GameTooltipAnchor:Size(130, 20)
 	GameTooltipAnchor:SetFrameLevel(GameTooltipAnchor:GetFrameLevel() + 50)
-	E:CreateMover(GameTooltipAnchor, 'TooltipMover', 'Tooltip')
+	E:CreateMover(GameTooltipAnchor, 'TooltipMover', L['Tooltip'])
 	
 	self:SecureHook('GameTooltip_SetDefaultAnchor')
 	self:SecureHook('GameTooltip_ShowCompareItem')
@@ -734,51 +755,54 @@ function TT:Initialize()
 	hooksecurefunc(GameTooltip, "SetUnitBuff", function(self,...)
 		local id = select(11,UnitBuff(...))
 		if id and TT.db.spellid then
-			self:AddLine("|cFFCA3C3C"..ID.."|r".." "..id)
+			self:AddLine(("|cFFCA3C3C%s|r %d"):format(ID, id))
 			self:Show()
-			self.forceRefresh = true;
 		end
 	end)
 
 	hooksecurefunc(GameTooltip, "SetUnitDebuff", function(self,...)
 		local id = select(11,UnitDebuff(...))
 		if id and TT.db.spellid then
-			self:AddLine("|cFFCA3C3C"..ID.."|r".." "..id)
+			self:AddLine(("|cFFCA3C3C%s|r %d"):format(ID, id))
 			self:Show()
-			self.forceRefresh = true;
 		end
 	end)
 
 	hooksecurefunc(GameTooltip, "SetUnitAura", function(self,...)
 		local id = select(11,UnitAura(...))
 		if id and TT.db.spellid then
-			self:AddLine("|cFFCA3C3C"..ID.."|r".." "..id)
+			self:AddLine(("|cFFCA3C3C%s|r %d"):format(ID, id))
 			self:Show()
-			self.forceRefresh = true;
 		end
 	end)
 
 	hooksecurefunc("SetItemRef", function(link, text, button, chatFrame)
-		if string.find(link,"^spell:") and TT.db.spellid then
+		if find(link,"^spell:") and TT.db.spellid then
 			local id = string.sub(link,7)
-			ItemRefTooltip:AddLine("|cFFCA3C3C"..ID.."|r".." "..id)
+			ItemRefTooltip:AddLine(("|cFFCA3C3C%s|r %d"):format(ID, id))
 			ItemRefTooltip:Show()
 		end
 	end)
 
 	GameTooltip:HookScript("OnTooltipSetSpell", function(self)
 		local id = select(3,self:GetSpell())
-		if id and TT.db.spellid then
-			self:AddLine("|cFFCA3C3C"..ID.."|r".." "..id)
+		if not id or not TT.db.spellid then return; end
+		local displayString = ("|cFFCA3C3C%s|r %d"):format(ID, id)
+		local lines = self:NumLines()
+		local isFound
+		for i= 1, lines do
+			local line = _G[("GameTooltipTextLeft%d"):format(i)]
+			if line and line:GetText() and line:GetText():find(displayString) then
+				isFound = true;
+				break
+			end
+		end
+		
+		if not isFound then
+			self:AddLine(displayString)
 			self:Show()
-			self.forceRefresh = true;
 		end
 	end)
-	
-	BNToastFrame:Point('TOPRIGHT', MMHolder, 'BOTTOMRIGHT', 0, -10);
-	E:CreateMover(BNToastFrame, 'BNETMover', 'BNet Frame')
-	BNToastFrame.SetPoint = E.noop
-	BNToastFrame.ClearAllPoints = E.noop	
 end
 
 E:RegisterModule(TT:GetName())

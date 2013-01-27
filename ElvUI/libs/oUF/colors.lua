@@ -3,7 +3,7 @@ local oUF = ns.oUF
 local Private = oUF.Private
 
 local frame_metatable = Private.frame_metatable
-
+local modf = math.modf
 local colors = {
 	smooth = {
 		1, 0, 0,
@@ -59,7 +59,7 @@ local ColorGradient = function(a, b, ...)
 	end
 
 	local num = select('#', ...) / 3
-	local segment, relperc = math.modf(perc*(num-1))
+	local segment, relperc = modf(perc*(num-1))
 	local r1, g1, b1, r2, g2, b2 = select((segment*3)+1, ...)
 
 	return r1 + (r2-r1)*relperc, g1 + (g2-g1)*relperc, b1 + (b2-b1)*relperc

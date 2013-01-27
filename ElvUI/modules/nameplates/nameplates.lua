@@ -2,22 +2,26 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 local NP = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
 local LSM = LibStub("LibSharedMedia-3.0")
 
+local CPOINT_TEX = [=[Interface\AddOns\ElvUI\media\textures\bubbleTex.tga]=]
 local OVERLAY = [=[Interface\TargetingFrame\UI-TargetingFrame-Flash]=]
 local numChildren = -1
 local backdrop
+
 NP.Handled = {} --Skinned Nameplates
-NP.BattleGroundHealers = {};
+NP.Healers = {};
 
 NP.factionOpposites = {
-	['Horde'] = 1,
-	['Alliance'] = 0,
+	[0] = 1,
+	[1] = 0,
 }
-NP.Healers = {
+NP.HealerSpecs = {
 	[L['Restoration']] = true,
 	[L['Holy']] = true,
 	[L['Discipline']] = true,
 	[L['Mistweaver']] = true,
 }
+
+local twipe = table.wipe
 
 function NP:Initialize()
 	self.db = E.db["nameplate"]
@@ -29,22 +33,22 @@ function NP:Initialize()
 	end
 	
 	CreateFrame('Frame'):SetScript('OnUpdate', function(self, elapsed)
-		if(WorldFrame:GetNumChildren() ~= numChildren) then
-			numChildren = WorldFrame:GetNumChildren()
+		local count = WorldFrame:GetNumChildren()
+		if(count ~= numChildren) then
+			numChildren = count
 			NP:HookFrames(WorldFrame:GetChildren())
 		end	
 		
 		NP:ForEachPlate(NP.InvalidCastCheck)
 		NP:ForEachPlate(NP.CheckFilter)
-		
-		
+		NP:ForEachPlate(NP.UpdateColoring)	
+
 		if(self.elapsed and self.elapsed > 0.2) then
 			NP:ForEachPlate(NP.UpdateThreat)
 			NP:ForEachPlate(NP.CheckUnit_Guid)
 			NP:ForEachPlate(NP.CheckRaidIcon)
 			NP:ForEachPlate(NP.Update_LevelText)
-			NP:ForEachPlate(NP.UpdateColoring)
-			
+
 			self.elapsed = 0
 		else
 			self.elapsed = (self.elapsed or 0) + elapsed
@@ -52,27 +56,23 @@ function NP:Initialize()
 	end)	
 
 	self:UpdateAllPlates()
+	self:ToggleCPoints()
 end
 
 function NP:QueueObject(frame, object)
 	if not frame.queue then frame.queue = {} end
 	frame.queue[object] = true
-	
-	if object.OldShow then
-		object.Show = object.OldShow
-		object:Show()
-	end
-	
+
 	if object.OldTexture then
 		object:SetTexture(object.OldTexture)
 	end
 end
 
 function NP:CreateVirtualFrame(parent, point)
-	if point == nil then point = parent end
+	point = point or parent
 	local noscalemult = E.mult * UIParent:GetScale()
 	
-	if point.backdrop then return end
+	if point.bordertop then return end
 
 	
 	point.backdrop2 = parent:CreateTexture(nil, "BORDER")
@@ -167,19 +167,18 @@ function NP:ForEachPlate(functionToRun, ...)
 end
 
 function NP:HideObjects(frame)
-	for object in pairs(frame.queue) do
-		object.OldShow = object.Show
-		object.Show = E.noop
-		
-		if object:GetObjectType() == "Texture" then
+	local objectType
+	for object in pairs(frame.queue) do		
+		objectType = object:GetObjectType()  
+		if objectType == "Texture" then
 			object.OldTexture = object:GetTexture()
 			object:SetTexture(nil)
 			object:SetTexCoord(0, 0, 0, 0)
-		elseif object:GetObjectType() == 'FontString' then
+		elseif objectType == 'FontString' then
 			object:SetWidth(0.001)
+		else
+			object:Hide()
 		end
-		
-		object:Hide()
 	end
 end
 
@@ -188,16 +187,17 @@ function NP:Update_LevelText(frame)
 	if region and region:GetObjectType() == 'FontString' then
 		frame.hp.oldlevel = select(4, frame:GetRegions())
 	end
-	
+
 	if frame.hp.oldlevel:IsShown() then
 		if self.db.showlevel == true then
-			local level, elite, mylevel = frame.hp.oldlevel:GetObjectType() == 'FontString' and tonumber(frame.hp.oldlevel:GetText()) or nil, frame.hp.elite:IsShown(), UnitLevel("player")
-			if frame.isBoss then
+			local level, elite, boss, mylevel = frame.hp.oldlevel:GetObjectType() == 'FontString' and tonumber(frame.hp.oldlevel:GetText()) or nil, frame.isElite, frame.isBoss, UnitLevel("player")
+			if boss then
 				frame.hp.level:SetText("??")
 				frame.hp.level:SetTextColor(0.8, 0.05, 0)
 				frame.hp.level:Show()
 			elseif not elite and level == mylevel then
 				frame.hp.level:Hide()
+				frame.hp.level:SetText(nil)
 			elseif level then
 				frame.hp.level:SetText(level..(elite and "+" or ""))
 				frame.hp.level:SetTextColor(frame.hp.oldlevel:GetTextColor())
@@ -207,11 +207,12 @@ function NP:Update_LevelText(frame)
 			frame.hp.oldlevel:SetWidth(000.1)
 		elseif frame.hp.level then
 			frame.hp.level:Hide()
+			frame.hp.level:SetText(nil)
 		end
 	elseif frame.isBoss and self.db.showlevel and frame.hp.level:GetText() ~= '??' then
 		frame.hp.level:SetText("??")
 		frame.hp.level:SetTextColor(0.8, 0.05, 0)
-		frame.hp.level:Show()	
+		frame.hp.level:Show()
 	end
 end
 
@@ -222,28 +223,28 @@ end
 function NP:Colorize(frame, r, g, b)
 	frame.hp.originalr, frame.hp.originalg, frame.hp.originalb = r, g, b
 	for class, _ in pairs(RAID_CLASS_COLORS) do
+		local bb = b
 		if class == 'MONK' then
-			b = b - 0.01
+			bb = bb - 0.01
 		end
-		if RAID_CLASS_COLORS[class].r == r and RAID_CLASS_COLORS[class].g == g and RAID_CLASS_COLORS[class].b == b then
-			frame.hasClass = true
+		
+		if RAID_CLASS_COLORS[class].r == r and RAID_CLASS_COLORS[class].g == g and RAID_CLASS_COLORS[class].b == bb then
+			frame.hasClass = class
 			frame.isFriendly = false
 			frame.hp:SetStatusBarColor(RAID_CLASS_COLORS[class].r, RAID_CLASS_COLORS[class].g, RAID_CLASS_COLORS[class].b)
 			frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor = RAID_CLASS_COLORS[class].r, RAID_CLASS_COLORS[class].g, RAID_CLASS_COLORS[class].b
 			return
 		end
-		
-		if b == -0.01 then
-			b = 0;
-		end
 	end
-	
+	--fix this
 	frame.isPlayer = nil
-	
+	frame.isTagged = nil;
 	local color
+	
 	if (r + b + b) > 2 then -- tapped
 		r,g,b = 0.6, 0.6, 0.6
 		frame.isFriendly = false	
+		frame.isTagged = true;
 	elseif g+b == 0 then -- hostile
 		color = self.db.enemy
 		r,g,b = color.r, color.g, color.b
@@ -263,7 +264,8 @@ function NP:Colorize(frame, r, g, b)
 	else -- enemy player
 		frame.isFriendly = false
 	end
-	frame.hasClass = false
+	
+	frame.hasClass = nil
 	frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor = r, g, b
 	frame.hp:SetStatusBarColor(r,g,b)
 end
@@ -271,20 +273,21 @@ end
 function NP:UpdateColoring(frame)
 	local r, g, b = NP:RoundColors(frame.oldhp:GetStatusBarColor())
 	
-	if (r ~= frame.hp.originalr or g ~= frame.hp.originalg or b ~= frame.hp.originalb) and (not InCombatLockdown() and self.db.enhancethreat) then
+	if (r ~= frame.hp.originalr or g ~= frame.hp.originalg or b ~= frame.hp.originalb) then
 		NP:Colorize(frame, r, g, b)
 	end
 end
 
 function NP:HealthBar_OnShow(frame)
 	frame = frame:GetParent()
+	
 	local noscalemult = E.mult * UIParent:GetScale()
 	--Have to reposition this here so it doesnt resize after being hidden
 	frame.hp:ClearAllPoints()
 	frame.hp:Size(self.db.width, self.db.height)	
 	frame.hp:SetPoint('BOTTOM', frame, 'BOTTOM', 0, 5)
 	frame.hp:GetStatusBarTexture():SetHorizTile(true)
-
+	
 	self:HealthBar_ValueChanged(frame.oldhp)
 	
 	if not E.PixelMode and frame.hp.backdrop then
@@ -296,19 +299,38 @@ function NP:HealthBar_OnShow(frame)
 	NP:Colorize(frame, r, g, b)
 	frame.hp.hpbg:SetTexture(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor, 0.25)
 	
+	
+	if frame.hasClass and self.db.classIcons then
+		local tCoords = CLASS_BUTTONS[frame.hasClass]
+		frame.classIcon:SetTexCoord(tCoords[1], tCoords[2], tCoords[3], tCoords[4])
+		frame.classIcon:Show()
+	elseif frame.classIcon:IsShown() then
+		frame.classIcon:Hide()
+	end
+	
 	--Set the name text
-	frame.hp.name:SetText(frame.hp.oldname:GetText())	
+	frame.hp.name:SetText(frame.hp.oldname:GetText())
+	local isSmallNP
 	while frame.hp:GetEffectiveScale() < 1 do
 		frame.hp:SetScale(frame.hp:GetScale() + 0.01)
+		isSmallNP = true;
 	end
-	frame.AuraWidget:SetScale(frame.hp:GetScale())
 	
-	--Level Text
-	frame.isBoss = frame.hp.boss:IsShown()
-	NP:Update_LevelText(frame)
+	frame.isSmallNP = isSmallNP and NP.db.smallPlates
+	
+	if frame.isSmallNP then
+		frame.hp:Width(frame:GetWidth() * frame:GetEffectiveScale())
+	end
+	
+	frame.AuraWidget:SetScale(frame.hp:GetScale())
 	
 	NP.ScanHealth(frame.oldhp)
 	NP:CheckFilter(frame)
+	
+	frame.isBoss = frame.hp.boss:IsShown()
+	frame.isElite = frame.hp.elite:IsShown()
+	NP:Update_LevelText(frame)
+	
 	self:HideObjects(frame)
 end
 
@@ -323,15 +345,19 @@ function NP:OnHide(frame)
 	frame.hp:SetStatusBarColor(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor)
 	frame.hp.name:SetTextColor(1, 1, 1)
 	frame.hp:SetScale(1)
+	frame.cb:SetScale(1)
+	frame.classIcon:Hide()
 	frame.AuraWidget:SetScale(1)
 	frame.cb:Hide()
+	frame.isBoss = nil
+	frame.isElite = nil
 	frame.unit = nil
 	frame.isMarked = nil
+	frame.isSmallNP = nil
 	frame.raidIconType = nil
 	frame.threatStatus = nil
 	frame.guid = nil
 	frame.hasClass = nil
-	frame.isBoss = nil;
 	frame.customColor = nil
 	frame.customScale = nil
 	frame.isFriendly = nil
@@ -341,6 +367,7 @@ function NP:OnHide(frame)
 	frame.hp.originalr = nil
 	frame.hp.originalg = nil
 	frame.hp.originalb = nil
+	frame.isTagged = nil
 	frame.hp.shadow:SetAlpha(0)
 	self:SetVirtualBackdrop(frame.hp, unpack(E["media"].backdropcolor))
 	self:SetVirtualBorder(frame.hp, unpack(E["media"].bordercolor))
@@ -348,7 +375,11 @@ function NP:OnHide(frame)
 		for _,icon in ipairs(frame.icons) do
 			icon:Hide()
 		end
-	end	
+	end
+
+	for i=1, MAX_COMBO_POINTS do
+		frame.cpoints[i]:Hide()
+	end
 end
 
 function NP:SkinPlate(frame, nameFrame)
@@ -386,7 +417,28 @@ function NP:SkinPlate(frame, nameFrame)
 	end
 	frame.hp:SetStatusBarTexture(E["media"].normTex)
 	self:SetVirtualBackdrop(frame.hp, unpack(E["media"].backdropcolor))
-	
+		
+	if not frame.cpoints then
+		frame.cpoints = CreateFrame("Frame", nil, frame.hp)
+		frame.cpoints:Point("CENTER", frame.hp, "BOTTOM")
+		frame.cpoints:Height(1)
+		frame.cpoints:Width(68)
+		
+		for i=1, MAX_COMBO_POINTS do
+			frame.cpoints[i] = frame.cpoints:CreateTexture(nil, 'OVERLAY')
+			frame.cpoints[i]:SetTexture(CPOINT_TEX)
+			frame.cpoints[i]:Size(12)
+			
+			if i == 1 then
+				frame.cpoints[i]:SetPoint("LEFT", frame.cpoints, "TOPLEFT")
+			else
+				frame.cpoints[i]:SetPoint("LEFT", frame.cpoints[i-1], "RIGHT", 2, 0)
+			end
+			
+			frame.cpoints[i]:Hide()
+		end
+	end
+		
 	if not frame.overlay then
 		overlay:SetTexture(1, 1, 1, 0.35)
 		overlay:SetParent(frame.hp)
@@ -410,7 +462,16 @@ function NP:SkinPlate(frame, nameFrame)
 	frame.hp.level:FontTemplate(font, self.db.fontSize, self.db.fontOutline)
 	if oldlevel:GetObjectType() == 'FontString' then
 		frame.hp.level:SetText(oldlevel:GetText())
+		frame.hp.level:SetTextColor(oldlevel:GetTextColor())
 	end
+	
+	if not frame.classIcon then
+		frame.classIcon = frame.hp:CreateTexture(nil, "ARTWORK");
+		frame.classIcon:Size(30);
+		frame.classIcon:Point("RIGHT", frame.hp.level, "LEFT", -1, 0);
+		frame.classIcon:SetTexture([[Interface\WorldStateFrame\Icons-Classes]]);
+		frame.classIcon:Hide();
+	end	
 	
 	--Name Text
 	if not frame.hp.name then
@@ -514,8 +575,9 @@ function NP:SkinPlate(frame, nameFrame)
 	
 	for index = 1, NP.MAX_DISPLAYABLE_DEBUFFS do 
 		if frame.AuraWidget.AuraIconFrames and frame.AuraWidget.AuraIconFrames[index] then
-			frame.AuraWidget.AuraIconFrames[index].TimeLeft:FontTemplate(LSM:Fetch("font", self.db.auraFont), self.db.auraFontSize, self.db.auraFontOutline)
-			frame.AuraWidget.AuraIconFrames[index].Stacks:FontTemplate(LSM:Fetch("font", self.db.auraFont), self.db.auraFontSize, self.db.auraFontOutline)
+			local auraFont = LSM:Fetch("font", self.db.auraFont)
+			frame.AuraWidget.AuraIconFrames[index].TimeLeft:FontTemplate(auraFont, self.db.auraFontSize, self.db.auraFontOutline)
+			frame.AuraWidget.AuraIconFrames[index].Stacks:FontTemplate(auraFont, self.db.auraFontSize, self.db.auraFontOutline)
 		end
 	end
 		
@@ -546,7 +608,7 @@ end
 
 local good, bad, transition, transition2, combat, goodscale, badscale
 function NP:UpdateThreat(frame)
-	if frame.hasClass then return end
+	if frame.hasClass or frame.isTagged then return end
 	combat = InCombatLockdown()
 	good = self.db.goodcolor
 	bad = self.db.badcolor
@@ -725,6 +787,17 @@ function NP:ScanHealth()
 	end
 end
 
+function NP:GetTargetNameplate()
+	if not UnitExists("target") then return end
+	
+	for frame, _ in pairs(NP.Handled) do
+		frame = _G[frame]:GetChildren()
+		if frame.guid == UnitGUID("target") then
+			return frame
+		end
+	end
+end
+
 --Scan all visible nameplate for a known unit.
 function NP:CheckUnit_Guid(frame, ...)
 	if UnitExists("target") and frame:GetParent():GetAlpha() == 1 and UnitName("target") == frame.hp.name:GetText() then
@@ -732,15 +805,27 @@ function NP:CheckUnit_Guid(frame, ...)
 		frame.unit = "target"
 		NP:UpdateAurasByUnitID("target")
 		frame.hp.shadow:SetAlpha(1)
+		
+		if self.db.comboPoints then
+			NP:UpdateCPoints(frame)
+		end
 	elseif frame.overlay:IsShown() and UnitExists("mouseover") and UnitName("mouseover") == frame.hp.name:GetText() then
 		frame.guid = UnitGUID("mouseover")
 		frame.unit = "mouseover"
 		NP:UpdateAurasByUnitID("mouseover")
 		frame.hp.shadow:SetAlpha(0)
+		
+		if self.db.comboPoints then
+			local cpoints = GetComboPoints('player', 'mouseover')
+			if cpoints and cpoints > 0 then
+				NP:UpdateCPoints(frame, true)
+			end
+		end
 	else
 		frame.unit = nil
 		frame.hp.shadow:SetAlpha(0)
 	end	
+
 	--[[if not frame.test then
 		frame.test = frame:CreateFontString(nil, 'OVERLAY')
 		frame.test:Point('TOP', frame, 'TOP')
@@ -792,7 +877,7 @@ function NP:CheckFilter(frame, ...)
 	end
 	
 	--Check For Healers
-	if self.BattleGroundHealers[name] then
+	if self.Healers[name] then
 		frame.healerIcon:Show()
 	else
 		frame.healerIcon:Hide()
@@ -804,16 +889,38 @@ function NP:CheckBGHealers()
 		local name, _, _, _, _, faction, _, _, _, _, _, _, _, _, _, talentSpec = GetBattlefieldScore(i);
 		if name then
 			name = name:match("(.+)%-.+") or name
-			if name and self.Healers[talentSpec] and self.factionOpposites[self.PlayerFaction] == faction then
-				self.BattleGroundHealers[name] = talentSpec
-			elseif name and self.BattleGroundHealers[name] then
-				self.BattleGroundHealers[name] = nil;
+			if name and self.HealerSpecs[talentSpec] and self.factionOpposites[self.PlayerFaction] == faction then
+				self.Healers[name] = talentSpec
+			elseif name and self.Healers[name] then
+				self.Healers[name] = nil;
+			end
+		end
+	end
+end
+
+function NP:CheckArenaHealers()
+	local numOpps = GetNumArenaOpponentSpecs()
+	if not (numOpps > 1) then return end
+	
+	for i=1, 5 do
+		local name = UnitName(format('arena%d', i))
+		if name and name ~= UNKNOWN then
+			local s = GetArenaOpponentSpec(i)
+			local _, talentSpec = nil, UNKNOWN
+			if s and s > 0 then
+				_, talentSpec = GetSpecializationInfoByID(s)
+			end
+			
+			if talentSpec and talentSpec ~= UNKNOWN and self.HealerSpecs[talentSpec] then
+				self.Healers[name] = talentSpec
 			end
 		end
 	end
 end
 
 function NP:PLAYER_ENTERING_WORLD()
+	self.PlayerFaction = GetBattlefieldArenaFaction()
+	
 	if InCombatLockdown() and self.db.combat then 
 		SetCVar("nameplateShowEnemies", 1) 
 	elseif self.db.combat then
@@ -823,19 +930,23 @@ function NP:PLAYER_ENTERING_WORLD()
 	self:UpdateRoster()
 	self:CleanAuraLists()
 	
-	table.wipe(self.BattleGroundHealers)
+	twipe(self.Healers)
 	local inInstance, instanceType = IsInInstance()
-	if inInstance and instanceType == 'pvp' and self.db.markBGHealers then
-		self.CheckHealerTimer = self:ScheduleRepeatingTimer("CheckBGHealers", 1)
+	if inInstance and instanceType == 'pvp' and self.db.markHealers then
+		self.CheckHealerTimer = self:ScheduleRepeatingTimer("CheckBGHealers", 3)
 		self:CheckBGHealers()
+	elseif inInstance and instanceType == 'arena' and self.db.markHealers then
+		self:RegisterEvent('UNIT_NAME_UPDATE', 'CheckArenaHealers')
+		self:RegisterEvent("ARENA_OPPONENT_UPDATE", 'CheckArenaHealers');
+		self:CheckArenaHealers()	
 	else
+		self:UnregisterEvent('UNIT_NAME_UPDATE')
+		self:UnregisterEvent("ARENA_OPPONENT_UPDATE")
 		if self.CheckHealerTimer then
 			self:CancelTimer(self.CheckHealerTimer)
 			self.CheckHealerTimer = nil;
 		end
 	end
-	
-	self.PlayerFaction = UnitFactionGroup("player")
 end
 
 function NP:UpdateAllPlates()
@@ -862,8 +973,9 @@ function NP:HookFrames(...)
 	for index = 1, select('#', ...) do
 		local frame = select(index, ...)
 		local region = frame:GetRegions()
+		local name = frame:GetName()
 		
-		if(not NP.Handled[frame:GetName()] and (frame:GetName() and frame:GetName():find("NamePlate%d"))) then
+		if(not NP.Handled[name] and (name and name:find("NamePlate%d"))) then
 			NP:SkinPlate(frame:GetChildren())
 		end
 	end

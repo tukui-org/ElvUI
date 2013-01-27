@@ -1,5 +1,7 @@
 ﻿local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 
+local tsort, tinsert = table.sort, table.insert
+
 E.Options.args = {
 	ElvUI_Header = {
 		order = 1,
@@ -135,12 +137,13 @@ E.Options.args.general = {
 					get = function(info) return E.private.general.lootRoll end,
 					set = function(info, value) E.private.general.lootRoll = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
-				autoscale = {
+				autoScale = {
 					order = 11,
 					name = L["Auto Scale"],
 					desc = L["Automatically scale the User Interface based on your screen resolution"],
 					type = "toggle",	
-					set = function(info, value) E.db.general[ info[#info] ] = value; E:StaticPopup_Show("CONFIG_RL") end
+					get = function(info) return E.global.general.autoScale end,
+					set = function(info, value) E.global.general[ info[#info] ] = value; E:StaticPopup_Show("GLOBAL_RL") end
 				},	
 
 				bubbles = {
@@ -163,7 +166,7 @@ E.Options.args.general = {
 					name = L["Tiny Map"],
 					desc = L["Don't scale the large world map to block out sides of the screen."],
 					get = function(info) return E.db.general.tinyWorldMap end,
-					set = function(info, value) E.db.general.tinyWorldMap = value; E:GetModule('WorldMap'):ToggleTinyWorldMapSetting() end					
+					set = function(info, value) E.db.general.tinyWorldMap = value; E:GetModule('WorldMap'):ToggleTinyWorldMapSetting() end,
 				},	
 				bottomPanel = {
 					order = 15,
@@ -642,21 +645,21 @@ local TESTERS = {
 	'Catok'
 }
 
-table.sort(DONATORS, function(a,b) return a < b end) --Alphabetize
+tsort(DONATORS, function(a,b) return a < b end) --Alphabetize
 for _, donatorName in pairs(DONATORS) do
-	table.insert(E.CreditsList, donatorName)
+	tinsert(E.CreditsList, donatorName)
 	DONATOR_STRING = DONATOR_STRING..LINE_BREAK..donatorName
 end
 
-table.sort(DEVELOPERS, function(a,b) return a < b end) --Alphabetize
+tsort(DEVELOPERS, function(a,b) return a < b end) --Alphabetize
 for _, devName in pairs(DEVELOPERS) do
-	table.insert(E.CreditsList, devName)
+	tinsert(E.CreditsList, devName)
 	DEVELOPER_STRING = DEVELOPER_STRING..LINE_BREAK..devName
 end
 
-table.sort(TESTERS, function(a,b) return a < b end) --Alphabetize
+tsort(TESTERS, function(a,b) return a < b end) --Alphabetize
 for _, testerName in pairs(TESTERS) do
-	table.insert(E.CreditsList, testerName)
+	tinsert(E.CreditsList, testerName)
 	TESTER_STRING = TESTER_STRING..LINE_BREAK..testerName
 end
 

@@ -4,13 +4,9 @@ local AB = E:GetModule('ActionBars');
 local MIN_SCALE = 0.5
 local MIN_DURATION = 2.5
 local ICON_SIZE = 36 --the normal size for an icon (don't change this)
-local DAY, HOUR, MINUTE = 86400, 3600, 60 --used for formatting text
-local DAYISH, HOURISH, MINUTEISH = 3600 * 23.5, 60 * 59.5, 59.5 --used for formatting text at transition points
-local HALFDAYISH, HALFHOURISH, HALFMINUTEISH = DAY/2 + 0.5, HOUR/2 + 0.5, MINUTE/2 + 0.5 --used for calculating next update times
 local FONT_SIZE = 20 --the base font size to use at a scale of 1
 local MIN_SCALE = 0.5 --the minimum scale we want to show cooldown counts at, anything below this will be hidden
 local MIN_DURATION = 2.5 --the minimum duration to show cooldown text for
-local EXPIRING_DURATION, EXPIRING_FORMAT, SECONDS_FORMAT, MINUTES_FORMAT, HOURS_FORMAT, DAYS_FORMAT
 
 local floor = math.floor
 local min = math.min
@@ -18,48 +14,34 @@ local GetTime = GetTime
 
 local cooldown = getmetatable(ActionButton1Cooldown).__index
 local hooked, active = {}, {};
+local threshold
 
-function AB:Cooldown_GetTimeText(s)
-	--format text as seconds when below a minute
-
-	if s < MINUTEISH then
-		if s >= EXPIRING_DURATION then
-			return SECONDS_FORMAT, tonumber(E:Round(s)), 0.051
-		else
-			return EXPIRING_FORMAT, s, 0.051
-		end
-	--format text as minutes when below an hour
-	elseif s < HOURISH then
-		local minutes = tonumber(E:Round(s/MINUTE))
-		return MINUTES_FORMAT, minutes, minutes > 1 and (s - (minutes*MINUTE - HALFMINUTEISH)) or (s - MINUTEISH)
-	--format text as hours when below a day
-	elseif s < DAYISH then
-		local hours = tonumber(E:Round(s/HOUR))
-		return HOURS_FORMAT, hours, hours > 1 and (s - (hours*HOUR - HALFHOURISH)) or (s - HOURISH)
-	--format text as days
-	else
-		local days = tonumber(E:Round(s/DAY))
-		return DAYS_FORMAT, days,  days > 1 and (s - (days*DAY - HALFDAYISH)) or (s - DAYISH)
-	end
-end
+local TimeColors = {
+	[0] = '|cfffefefe',
+	[1] = '|cfffefefe',
+	[2] = '|cfffefefe',
+	[3] = '|cfffefefe',
+	[4] = '|cfffe0000',
+}
 
 local function Cooldown_OnUpdate(cd, elapsed)
 	if cd.nextUpdate > 0 then
 		cd.nextUpdate = cd.nextUpdate - elapsed
-	else
-		local remain = cd.duration - (GetTime() - cd.start)
-		if remain > 0.01 then
-			if (cd.fontScale * cd:GetEffectiveScale() / UIParent:GetScale()) < MIN_SCALE then
-				cd.text:SetText('')
-				cd.nextUpdate  = 1
-			else
-				local formatStr, time, nextUpdate = AB:Cooldown_GetTimeText(remain)
-				cd.text:SetFormattedText(formatStr, time)
-				cd.nextUpdate = nextUpdate
-			end
+		return
+	end
+
+	local remain = cd.duration - (GetTime() - cd.start)
+	if remain > 0.05 then
+		if (cd.fontScale * cd:GetEffectiveScale() / UIParent:GetScale()) < MIN_SCALE then
+			cd.text:SetText('')
+			cd.nextUpdate = 500
 		else
-			AB:Cooldown_StopTimer(cd)
+			local timervalue, formatid
+			timervalue, formatid, cd.nextUpdate = E:GetTimeInfo(remain, threshold)		
+			cd.text:SetFormattedText(("%s%s|r"):format(TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
 		end
+	else
+		AB:Cooldown_StopTimer(cd)
 	end
 end
 
@@ -143,8 +125,9 @@ function AB:OnSetCooldown(cd, start, duration)
 	
 	local action = button._state_action or button.action
 	if cd.timer then
-		if action then
+		if action and type(action) == 'number' then
 			local charges = GetActionCharges(action)
+			
 			if charges > 0 then
 				cd.timer:SetAlpha(0)
 				return
@@ -198,25 +181,23 @@ function AB:DisableCooldown()
 	end		
 end
 
-local color
 function AB:UpdateCooldownSettings()
-	color = self.db.expiringcolor
-	EXPIRING_FORMAT = E:RGBToHex(color.r, color.g, color.b)..'%.1f|r' --format for timers that are soon to expire
+	threshold = self.db.treshold
 	
-	color = self.db.secondscolor
-	SECONDS_FORMAT = E:RGBToHex(color.r, color.g, color.b)..'%d|r' --format for timers that have seconds remaining
+	local color = E.db.actionbar.expiringcolor
+	TimeColors[4] = E:RGBToHex(color.r, color.g, color.b) -- color for timers that are soon to expire
 	
-	color = self.db.minutescolor
-	MINUTES_FORMAT = E:RGBToHex(color.r, color.g, color.b)..'%dm|r' --format for timers that have minutes remaining
+	color = E.db.actionbar.secondscolor
+	TimeColors[3] = E:RGBToHex(color.r, color.g, color.b) -- color for timers that have seconds remaining
 	
-	color = self.db.hourscolor
-	HOURS_FORMAT = E:RGBToHex(color.r, color.g, color.b)..'%dh|r' --format for timers that have hours remaining
+	color = E.db.actionbar.minutescolor
+	TimeColors[2] = E:RGBToHex(color.r, color.g, color.b) -- color for timers that have minutes remaining
 	
-	color = self.db.dayscolor
-	DAYS_FORMAT = E:RGBToHex(color.r, color.g, color.b)..'%dd|r' --format for timers that have days remaining
+	color = E.db.actionbar.hourscolor
+	TimeColors[1] = E:RGBToHex(color.r, color.g, color.b) -- color for timers that have hours remaining
 	
-	
-	EXPIRING_DURATION = self.db.treshold
+	color = E.db.actionbar.dayscolor
+	TimeColors[0] = E:RGBToHex(color.r, color.g, color.b) -- color for timers that have days remaining	
 	
 	if self.db.enablecd then
 		self:EnableCooldown()

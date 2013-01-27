@@ -1,5 +1,9 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 
+local format = string.format
+local lower = string.lower
+local split = string.split
+
 function E:EnableAddon(addon)
 	local _, _, _, _, _, reason, _ = GetAddOnInfo(addon)
 	if reason ~= "MISSING" then 
@@ -18,11 +22,6 @@ function E:DisableAddon(addon)
 	else 
 		print("|cffff0000Error, Addon '"..addon.."' not found.|r") 
 	end
-end
-
-function E:ResetGold()
-	ElvDB.gold = nil;
-	ReloadUI();
 end
 
 function FarmMode()
@@ -55,12 +54,12 @@ local channel = 'PARTY'
 local target = nil;
 function E:ElvSaysChannel(chnl)
 	channel = chnl
-	E:Print(string.format('ElvSays channel has been changed to %s.', chnl))
+	E:Print(format('ElvSays channel has been changed to %s.', chnl))
 end
 
 function E:ElvSaysTarget(tgt)
 	target = tgt
-	E:Print(string.format('ElvSays target has been changed to %s.', tgt))
+	E:Print(format('ElvSays target has been changed to %s.', tgt))
 end
 
 function E:ElvSays(msg)
@@ -85,7 +84,7 @@ function E:Grid(msg)
 end
 
 function E:LuaError(msg)
-	msg = string.lower(msg)
+	msg = lower(msg)
 	if (msg == 'on') then
 		SetCVar("scriptErrors", 1)
 		ReloadUI()
@@ -129,6 +128,43 @@ function E:DelayScriptCall(msg)
 	end
 end
 
+function E:MassGuildKick(msg)
+	local minLevel, minDays, minRankIndex = split(',', msg)
+	minRankIndex = tonumber(minRankIndex);
+	minLevel = tonumber(minLevel);
+	minDays = tonumber(minDays);
+	
+	if not minLevel or not minDays then
+		E:Print("Usage: /cleanguild <minLevel>, <minDays>, [<minRankIndex>]");
+		return;
+	end
+	
+	if minDays > 31 then
+		E:Print("Maximum days value must be below 32.");
+		return;
+	end
+	
+	if not minRankIndex then minRankIndex = GuildControlGetNumRanks() - 1 end
+	
+	for i = 1, GetNumGuildMembers() do
+		local name, _, rankIndex, level, class, _, note, officerNote, connected, _, class = GetGuildRosterInfo(i)
+		local minLevelx = minLevel
+		
+		if class == "DEATHKNIGHT" then
+			minLevelx = minLevelx + 55
+		end
+		
+		if not connected then
+			local years, months, days, hours = GetGuildRosterLastOnline(i)
+			if days ~= nil and ((years > 0 or months > 0 or days >= minDays) and rankIndex >= minRankIndex) and note ~= nil and officerNote ~= nil and (level <= minLevelx) then
+				GuildUninvite(name)
+			end
+		end
+	end
+
+	SendChatMessage("Guild Cleanup Results: Removed all guild members below rank "..GuildControlGetRankName(minRankIndex)..", that have a minimal level of "..minLevel..", and have not been online for at least: "..minDays.." days.", "GUILD")
+end
+
 function E:LoadCommands()
 	self:RegisterChatCommand("in", "DelayScriptCall")
 	self:RegisterChatCommand("ec", "ToggleConfig")
@@ -143,11 +179,11 @@ function E:LoadCommands()
 	self:RegisterChatCommand("resetui", "ResetUI")
 	self:RegisterChatCommand("enable", "EnableAddon")
 	self:RegisterChatCommand("disable", "DisableAddon")
-	self:RegisterChatCommand('resetgold', 'ResetGold')
 	self:RegisterChatCommand('farmmode', 'FarmMode')
 	self:RegisterChatCommand('elvsays', 'ElvSays')
 	self:RegisterChatCommand('elvsayschannel', 'ElvSaysChannel')
 	self:RegisterChatCommand('elvsaystarget', 'ElvSaysTarget')
+	self:RegisterChatCommand('cleanguild', 'MassGuildKick')
 	if E.ActionBars then
 		self:RegisterChatCommand('kb', E.ActionBars.ActivateBindMode)
 	end

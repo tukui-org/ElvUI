@@ -3,7 +3,7 @@ local AB = E:GetModule('ActionBars');
 
 function AB:SetupExtraButton()
 	local holder = CreateFrame('Frame', nil, E.UIParent)
-	holder:Point('TOP', E.UIParent, 'TOP', 0, -250)
+	holder:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 150)
 	holder:Size(ExtraActionBarFrame:GetSize())
 	
 	ExtraActionBarFrame:SetParent(holder)
@@ -28,5 +28,9 @@ function AB:SetupExtraButton()
 		end
 	end
 	
-	E:CreateMover(holder, 'BossButton', 'Boss Button', nil, nil, nil, 'ALL,ACTIONBARS');
+	if HasExtraActionBar() then
+		ExtraActionBarFrame:Show();
+	end
+	
+	E:CreateMover(holder, 'BossButton', L['Boss Button'], nil, nil, nil, 'ALL,ACTIONBARS');
 end

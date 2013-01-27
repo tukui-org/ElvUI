@@ -1,6 +1,8 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local DT = E:GetModule('DataTexts')
 
+local join = string.join
+
 local displayString = ""
 local tooltipString = "%d%%"
 local totalDurability = 0
@@ -47,14 +49,14 @@ local function OnEnter(self)
 	DT:SetupTooltip(self)
 	
 	for slot, durability in pairs(invDurability) do
-		GameTooltip:AddDoubleLine(slot, format(tooltipString, durability), 1, 1, 1, E:ColorGradient(durability * 0.01, 1, 0, 0, 1, 1, 0, 0, 1, 0))
+		DT.tooltip:AddDoubleLine(slot, format(tooltipString, durability), 1, 1, 1, E:ColorGradient(durability * 0.01, 1, 0, 0, 1, 1, 0, 0, 1, 0))
 	end
 		
-	GameTooltip:Show()
+	DT.tooltip:Show()
 end
 
 local function ValueColorUpdate(hex, r, g, b)
-	displayString = string.join("", DURABILITY, ": ", hex, "%d%%|r")
+	displayString = join("", DURABILITY, ": ", hex, "%d%%|r")
 	
 	if lastPanel ~= nil then
 		OnEvent(lastPanel, 'ELVUI_COLOR_UPDATE')

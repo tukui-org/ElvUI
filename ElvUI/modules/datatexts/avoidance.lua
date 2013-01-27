@@ -3,10 +3,11 @@ local DT = E:GetModule('DataTexts')
 
 local displayString, lastPanel
 local format = string.format
+local join = string.join
 local targetlv, playerlv
 local basemisschance, leveldifference, dodge, parry, block, avoidance, unhittable, avoided, blocked, numAvoidances, unhittableMax
 local chanceString = "%.2f%%"
-local modifierString = string.join("", "%d (+", chanceString, ")")
+local modifierString = join("", "%d (+", chanceString, ")")
 
 function IsWearingShield()
 	local slotID = GetInventorySlotInfo("SecondaryHandSlot")
@@ -18,7 +19,6 @@ function IsWearingShield()
 end
 
 local function OnEvent(self, event, unit)
-	if event == "UNIT_AURA" and unit ~= 'player' then return end
 	targetlv, playerlv = UnitLevel("target"), UnitLevel("player")
 			
 	-- the 5 is for base miss chance
@@ -81,31 +81,31 @@ local function OnEnter(self)
 	DT:SetupTooltip(self)
 	
 	if targetlv > 1 then
-		GameTooltip:AddDoubleLine(L["Avoidance Breakdown"], string.join("", " (", L['lvl'], " ", targetlv, ")"))
+		DT.tooltip:AddDoubleLine(L["Avoidance Breakdown"], join("", " (", L['lvl'], " ", targetlv, ")"))
 	elseif targetlv == -1 then
-		GameTooltip:AddDoubleLine(L["Avoidance Breakdown"], string.join("", " (", BOSS, ")"))
+		DT.tooltip:AddDoubleLine(L["Avoidance Breakdown"], join("", " (", BOSS, ")"))
 	else
-		GameTooltip:AddDoubleLine(L["Avoidance Breakdown"], string.join("", " (", L['lvl'], " ", playerlv, ")"))
+		DT.tooltip:AddDoubleLine(L["Avoidance Breakdown"], join("", " (", L['lvl'], " ", playerlv, ")"))
 	end
-	GameTooltip:AddLine' '
-	GameTooltip:AddDoubleLine(DODGE_CHANCE, format(chanceString, dodge),1,1,1)
-	GameTooltip:AddDoubleLine(PARRY_CHANCE, format(chanceString, parry),1,1,1)
-	GameTooltip:AddDoubleLine(BLOCK_CHANCE, format(chanceString, block),1,1,1)
-	GameTooltip:AddDoubleLine(MISS_CHANCE, format(chanceString, basemisschance),1,1,1)
-	GameTooltip:AddLine' '
+	DT.tooltip:AddLine' '
+	DT.tooltip:AddDoubleLine(DODGE_CHANCE, format(chanceString, dodge),1,1,1)
+	DT.tooltip:AddDoubleLine(PARRY_CHANCE, format(chanceString, parry),1,1,1)
+	DT.tooltip:AddDoubleLine(BLOCK_CHANCE, format(chanceString, block),1,1,1)
+	DT.tooltip:AddDoubleLine(MISS_CHANCE, format(chanceString, basemisschance),1,1,1)
+	DT.tooltip:AddLine' '
 	
 	
 	if unhittable > 0 then
-		GameTooltip:AddDoubleLine(L['Unhittable:'], '+'..format(chanceString, unhittable), 1, 1, 1, 0, 1, 0)
+		DT.tooltip:AddDoubleLine(L['Unhittable:'], '+'..format(chanceString, unhittable), 1, 1, 1, 0, 1, 0)
 	else
-		GameTooltip:AddDoubleLine(L['Unhittable:'], format(chanceString, unhittable), 1, 1, 1, 1, 0, 0)
+		DT.tooltip:AddDoubleLine(L['Unhittable:'], format(chanceString, unhittable), 1, 1, 1, 1, 0, 0)
 	end
-	GameTooltip:Show()
+	DT.tooltip:Show()
 end
 
 
 local function ValueColorUpdate(hex, r, g, b)
-	displayString = string.join("", "%s", hex, "%.2f%%|r")
+	displayString = join("", "%s", hex, "%.2f%%|r")
 	
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

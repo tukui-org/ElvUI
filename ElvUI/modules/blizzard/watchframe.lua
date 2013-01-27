@@ -7,14 +7,14 @@ WatchFrameHolder:SetHeight(22)
 WatchFrameHolder:SetPoint('TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300)
 
 function B:MoveWatchFrame()
-	E:CreateMover(WatchFrameHolder, 'WatchFrameMover', 'Watch Frame')
+	E:CreateMover(WatchFrameHolder, 'WatchFrameMover', L['Watch Frame'])
 	WatchFrameHolder:SetAllPoints(WatchFrameMover)
 
 	
 	WatchFrame:ClearAllPoints()
 	WatchFrame:SetPoint('TOP', WatchFrameHolder, 'TOP')
 	WatchFrame:Height(E.screenheight / 2)
-	
+	WatchFrame:SetClampedToScreen(false)
 	hooksecurefunc(WatchFrame,"SetPoint",function(_,_,parent)
 		if parent ~= WatchFrameHolder then
 			WatchFrame:ClearAllPoints()

@@ -1,5 +1,13 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 
+local format = string.format
+local sub = string.sub
+local upper = string.upper
+
+local modf = math.modf
+local ceil = math.ceil
+local floor = math.floor
+
 --Return short value of a number
 function E:ShortValue(v)
 	if v >= 1e6 then
@@ -12,7 +20,7 @@ function E:ShortValue(v)
 end
 
 function E:IsEvenNumber(num)
-	if math.fmod(num, 2) == 0 then
+	if ( num % 2 ) == 0 then
 		return true;
 	else
 		return false;
@@ -22,36 +30,21 @@ end
 -- http://www.wowwiki.com/ColorGradient
 function E:ColorGradient(perc, ...)
 	if perc >= 1 then
-		local r, g, b = select(select('#', ...) - 2, ...)
-		return r, g, b
+		return select(select('#', ...) - 2, ...)
 	elseif perc <= 0 then
-		local r, g, b = ...
-		return r, g, b
+		return ...
 	end
 
 	local num = select('#', ...) / 3
-	local segment, relperc = math.modf(perc*(num-1))
+	local segment, relperc = modf(perc*(num-1))
 	local r1, g1, b1, r2, g2, b2 = select((segment*3)+1, ...)
 
 	return r1 + (r2-r1)*relperc, g1 + (g2-g1)*relperc, b1 + (b2-b1)*relperc
 end
 
---Return short negative value of a number, example -1000 returned as string -1k
-function E:ShortValueNegative(v)
-	if v <= 999 then return v end
-	if v >= 1000000 then
-		local value = string.format("%.1fm", v/1000000)
-		return value
-	elseif v >= 1000 then
-		local value = string.format("%.1fk", v/1000)
-		return value
-	end
-end
-
 --Return rounded number
 function E:Round(v, decimals)
-	if not decimals then decimals = 0 end
-    return (("%%.%df"):format(decimals)):format(v)
+    return (("%%.%df"):format(decimals or 0)):format(v)
 end
 
 --Truncate a number off to n places
@@ -65,12 +58,12 @@ function E:RGBToHex(r, g, b)
 	r = r <= 1 and r >= 0 and r or 0
 	g = g <= 1 and g >= 0 and g or 0
 	b = b <= 1 and b >= 0 and b or 0
-	return string.format("|cff%02x%02x%02x", r*255, g*255, b*255)
+	return format("|cff%02x%02x%02x", r*255, g*255, b*255)
 end
 
 --Hex to RGB
 function E:HexToRGB(hex)
-	local rhex, ghex, bhex = string.sub(hex, 1, 2), string.sub(hex, 3, 4), string.sub(hex, 5, 6)
+	local rhex, ghex, bhex = sub(hex, 1, 2), sub(hex, 3, 4), sub(hex, 5, 6)
 	return tonumber(rhex, 16), tonumber(ghex, 16), tonumber(bhex, 16)
 end
 
@@ -122,24 +115,6 @@ function E:GetXYOffset(position, override)
 	end
 end
 
---This is differant than the round function because if a number is 20.0 for example it will return an integer value instead of floating point (20.0 will be 20)
-function E:TrimFloatingPoint(number, decimals)
-	assert(number, 'You must provide a floating point number to trim decimals from. Usage: E:TrimFloatingPoint(floatingPoint, <decimals>)')
-	if not decimals then decimals = 1 end
-	
-	local newNumber = string.format("%%.%df", decimals):format(number)
-	local checkstring = "."
-	for i=1, decimals do
-		checkstring = checkstring..'0'
-	end
-
-	if newNumber ~= tostring(math.ceil(number))..checkstring then
-		return newNumber
-	end
-	
-	return math.floor(number)
-end
-
 local styles = {
 	['CURRENT'] = '%s',
 	['CURRENT_MAX'] = '%s - %s',
@@ -158,25 +133,23 @@ function E:GetFormattedText(style, min, max)
 	
 	local useStyle = styles[style]
 
-	local percentValue = E:TrimFloatingPoint(min / max * 100)
-	
 	if style == 'DEFICIT' then
 		local deficit = max - min
 		if deficit <= 0 then
 			return ''
 		else
-			return string.format(useStyle, E:ShortValue(deficit))
+			return format(useStyle, E:ShortValue(deficit))
 		end
 	elseif style == 'PERCENT' then
-		return string.format(useStyle, percentValue)
+		return format(useStyle, format("%.1f", min / max * 100))
 	elseif style == 'CURRENT' or ((style == 'CURRENT_MAX' or style == 'CURRENT_MAX_PERCENT' or style == 'CURRENT_PERCENT') and min == max) then
-		return string.format(styles['CURRENT'],  E:ShortValue(min))
+		return format(styles['CURRENT'],  E:ShortValue(min))
 	elseif style == 'CURRENT_MAX' then
-		return string.format(useStyle,  E:ShortValue(min), E:ShortValue(max))
+		return format(useStyle,  E:ShortValue(min), E:ShortValue(max))
 	elseif style == 'CURRENT_PERCENT' then
-		return string.format(useStyle, E:ShortValue(min), percentValue)
+		return format(useStyle, E:ShortValue(min), format("%.1f", min / max * 100))
 	elseif style == 'CURRENT_MAX_PERCENT' then
-		return string.format(useStyle, E:ShortValue(min), E:ShortValue(max), percentValue)
+		return format(useStyle, E:ShortValue(min), E:ShortValue(max), format("%.1f", min / max * 100))
 	end
 end
 
@@ -244,5 +217,48 @@ function E:Delay(delay, func, ...)
 end
 
 function E:StringTitle(str)
-	return str:gsub("(.)", string.upper, 1)
+	return str:gsub("(.)", upper, 1)
+end
+
+-- aura time colors for days, hours, minutes, seconds, fadetimer
+E.TimeColors = {
+	[0] = '|cffeeeeee',
+	[1] = '|cffeeeeee',
+	[2] = '|cffeeeeee',
+	[3] = '|cffeeeeee',
+	[4] = '|cfffe0000',
+}
+
+-- short and long aura time formats
+E.TimeFormats = {
+	[0] = { '%dd', '%dd' },
+	[1] = { '%dh', '%dh' },
+	[2] = { '%dm', '%dm' },
+	[3] = { '%ds', '%d' },
+	[4] = { '%.1fs', '%.1f' },
+}
+
+
+local DAY, HOUR, MINUTE = 86400, 3600, 60 --used for calculating aura time text
+local DAYISH, HOURISH, MINUTEISH = 3600 * 23.5, 60 * 59.5, 59.5 --used for caclculating aura time at transition points
+local HALFDAYISH, HALFHOURISH, HALFMINUTEISH = DAY/2 + 0.5, HOUR/2 + 0.5, MINUTE/2 + 0.5 --used for calculating next update times
+
+-- will return the the value to display, the formatter id to use and calculates the next update for the Aura
+function E:GetTimeInfo(s, threshhold)
+	if s < MINUTE then
+		if s >= threshhold then
+			return floor(s), 3, 0.51
+		else
+			return s, 4, 0.051
+		end
+	elseif s < HOUR then
+		local minutes = tonumber(E:Round(s/MINUTE))
+		return ceil(s / MINUTE), 2, minutes > 1 and (s - (minutes*MINUTE - HALFMINUTEISH)) or (s - MINUTEISH)
+	elseif s < DAY then
+		local hours = tonumber(E:Round(s/HOUR))
+		return ceil(s / HOUR), 1, hours > 1 and (s - (hours*HOUR - HALFHOURISH)) or (s - HOURISH)
+	else
+		local days = tonumber(E:Round(s/DAY))
+		return ceil(s / DAY), 0,  days > 1 and (s - (days*DAY - HALFDAYISH)) or (s - DAYISH)
+	end
 end

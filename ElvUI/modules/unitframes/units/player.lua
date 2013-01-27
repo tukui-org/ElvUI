@@ -25,7 +25,7 @@ function UF:Construct_PlayerFrame(frame)
 	
 	frame.Debuffs = self:Construct_Debuffs(frame)
 	
-	frame.Castbar = self:Construct_Castbar(frame, 'LEFT', 'Player Castbar')
+	frame.Castbar = self:Construct_Castbar(frame, 'LEFT', L['Player Castbar'])
 	
 	if E.myclass == "PALADIN" then
 		frame.HolyPower = self:Construct_PaladinResourceBar(frame)
@@ -50,14 +50,13 @@ function UF:Construct_PlayerFrame(frame)
 	frame.PvPText = self:Construct_PvPIndicator(frame)
 	frame.DebuffHighlight = self:Construct_DebuffHighlight(frame)
 	frame.HealPrediction = self:Construct_HealComm(frame)
-	frame.Vengeance = self:Construct_VengeanceBar(frame)
 
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
 		
 	frame.CombatFade = true
 
 	frame:Point('BOTTOMLEFT', E.UIParent, 'BOTTOM', -413, 68) --Set to default position	
-	E:CreateMover(frame, frame:GetName()..'Mover', 'Player Frame', nil, nil, nil, 'ALL,SOLO')
+	E:CreateMover(frame, frame:GetName()..'Mover', L['Player Frame'], nil, nil, nil, 'ALL,SOLO')
 end
 
 function UF:UpdatePlayerFrameAnchors(frame, isShown)
@@ -65,7 +64,6 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 	local health = frame.Health
 	local threat = frame.Threat
 	local power = frame.Power
-	local vengeance = frame.Vengeance
 	local PORTRAIT_WIDTH = db.portrait.width
 	local USE_PORTRAIT = db.portrait.enable
 	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
@@ -80,13 +78,7 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 	local SPACING = E.Spacing;
 	local BORDER = E.Border;
 	local SHADOW_SPACING = E.PixelMode and 3 or 4
-	local VENGEANCE_WIDTH = db.vengeance.width + (BORDER*2);
-	local USE_VENGEANCE = frame.Vengeance:IsShown();
-	
-	if not USE_VENGEANCE then
-		VENGEANCE_WIDTH = 0;
-	end
-	
+
 	if not USE_POWERBAR then
 		POWERBAR_HEIGHT = 0
 	end
@@ -99,23 +91,15 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 		CLASSBAR_HEIGHT = CLASSBAR_HEIGHT / 2
 	end
 	
-	if USE_VENGEANCE then
-		vengeance:Point('BOTTOMLEFT', power, 'BOTTOMRIGHT', BORDER*2 + (E.PixelMode and -1 or SPACING), 0)
-		vengeance:Point('TOPRIGHT', health, 'TOPRIGHT', VENGEANCE_WIDTH, 0)
-		
-		
-		if not USE_POWERBAR_OFFSET and not USE_MINI_POWERBAR then
-			power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -BORDER - VENGEANCE_WIDTH, BORDER)
-		end
-	elseif not USE_POWERBAR_OFFSET and not USE_MINI_POWERBAR then
+	if not USE_POWERBAR_OFFSET and not USE_MINI_POWERBAR then
 		power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -BORDER, BORDER)
 	end
 	
 	if isShown then
 		if db.power.offset ~= 0 then
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER+db.power.offset) - VENGEANCE_WIDTH, -(BORDER + CLASSBAR_HEIGHT + SPACING))
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER+db.power.offset), -(BORDER + CLASSBAR_HEIGHT + SPACING))
 		else
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER - VENGEANCE_WIDTH, -(BORDER + CLASSBAR_HEIGHT + SPACING))
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -(BORDER + CLASSBAR_HEIGHT + SPACING))
 		end
 		health:Point("TOPLEFT", frame, "TOPLEFT", PORTRAIT_WIDTH + BORDER, -(BORDER + CLASSBAR_HEIGHT + SPACING))	
 
@@ -158,9 +142,9 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 		end
 	else
 		if db.power.offset ~= 0 then
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER + db.power.offset) - VENGEANCE_WIDTH, -BORDER)
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER + db.power.offset), -BORDER)
 		else
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER - VENGEANCE_WIDTH, -BORDER)
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -BORDER)
 		end
 		health:Point("TOPLEFT", frame, "TOPLEFT", PORTRAIT_WIDTH + BORDER, -BORDER)	
 
@@ -911,7 +895,7 @@ function UF:Update_PlayerFrame(frame, db)
 				RuneFrame:Hide()				
 			end			
 			if runes.UpdateAllRuneTypes then
-				runes:UpdateAllRuneTypes() --colors update
+				runes.UpdateAllRuneTypes(frame) --colors update
 			end
 		elseif E.myclass == "DRUID" then
 			local eclipseBar = frame.EclipseBar
@@ -1073,26 +1057,10 @@ function UF:Update_PlayerFrame(frame, db)
 			end		
 		end
 	end
+
 	
-	--Vengeance Bar
-	do
-		local bar = frame.Vengeance;
-		bar:SetPoint('CENTER', UIParent, 'CENTER')
-		bar:Size(20, 50)
-		
-		if db.vengeance.enable then
-			if not frame:IsElementEnabled('Vengeance') then
-				frame:EnableElement('Vengeance')
-			end
-
-		else
-			if frame:IsElementEnabled('Vengeance') then
-				frame:DisableElement('Vengeance')
-			end		
-		end	
-	end
-
 	if db.customTexts then
+		local customFont = UF.LSM:Fetch("font", UF.db.font)
 		for objectName, _ in pairs(db.customTexts) do
 			if not frame[objectName] then
 				frame[objectName] = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
@@ -1101,7 +1069,11 @@ function UF:Update_PlayerFrame(frame, db)
 			local objectDB = db.customTexts[objectName]
 			UF:CreateCustomTextGroup('player', objectName)
 			
-			frame[objectName]:FontTemplate(UF.LSM:Fetch("font", objectDB.font or UF.db.font), objectDB.size or UF.db.fontSize, objectDB.fontOutline or UF.db.fontOutline)
+			if objectDB.font then
+				customFont = UF.LSM:Fetch("font", objectDB.font)
+			end
+			
+			frame[objectName]:FontTemplate(customFont, objectDB.size or UF.db.fontSize, objectDB.fontOutline or UF.db.fontOutline)
 			frame:Tag(frame[objectName], objectDB.text_format or '')
 			frame[objectName]:SetJustifyH(objectDB.justifyH or 'CENTER')
 			frame[objectName]:ClearAllPoints()

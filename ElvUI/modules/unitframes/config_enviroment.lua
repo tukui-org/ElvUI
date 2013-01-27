@@ -7,6 +7,8 @@ local attributeBlacklist = {["showplayer"] = true, ["showraid"] = true, ["showpa
 local configEnv
 local originalEnvs = {}
 local overrideFuncs = {}
+local format = string.format
+local min, random = math.min, math.random
 
 local function createConfigEnv()
 	if( configEnv ) then return end
@@ -17,7 +19,7 @@ local function createConfigEnv()
 			end
 			if E.CreditsList then
 				local max = #E.CreditsList
-				return E.CreditsList[math.random(1, max)]
+				return E.CreditsList[random(1, max)]
 			end
 			return 'Test Name'
 		end,
@@ -26,14 +28,14 @@ local function createConfigEnv()
 				return UnitClass(unit)
 			end		
 		
-			local classToken = CLASS_SORT_ORDER[math.random(1, #(CLASS_SORT_ORDER))]
+			local classToken = CLASS_SORT_ORDER[random(1, #(CLASS_SORT_ORDER))]
 			return LOCALIZED_CLASS_NAMES_MALE[classToken], classToken
 		end,
 		Hex = function(r, g, b)
 			if type(r) == "table" then
 				if r.r then r, g, b = r.r, r.g, r.b else r, g, b = unpack(r) end
 			end
-			return string.format("|cff%02x%02x%02x", r*255, g*255, b*255)
+			return format("|cff%02x%02x%02x", r*255, g*255, b*255)
 		end,
 		ColorGradient = ElvUF.ColorGradient,		
 	}, {
@@ -109,7 +111,7 @@ local function OnAttributeChanged(self, name)
 	if not self.forceShow then return; end
 	
 	local maxUnits = MAX_RAID_MEMBERS
-	local startingIndex = -math.min(self.db.maxColumns * self.db.unitsPerColumn, maxUnits) + 1
+	local startingIndex = -min(self.db.maxColumns * self.db.unitsPerColumn, maxUnits) + 1
 	if self:GetAttribute("startingIndex") ~= startingIndex then
 		self:SetAttribute("startingIndex", startingIndex)
 		UF:ShowChildUnits(self, self:GetChildren())	

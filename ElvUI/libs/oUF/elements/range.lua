@@ -5,6 +5,7 @@ local _FRAMES = {}
 local OnRangeFrame
 
 local UnitInRange, UnitIsConnected = UnitInRange, UnitIsConnected
+local tinsert, tremove = table.insert, table.remove
 
 -- updating of range.
 local timer = 0
@@ -45,7 +46,7 @@ end
 local Enable = function(self)
 	local range = self.Range
 	if(range and range.insideAlpha and range.outsideAlpha) then
-		table.insert(_FRAMES, self)
+		tinsert(_FRAMES, self)
 
 		if(not OnRangeFrame) then
 			OnRangeFrame = CreateFrame"Frame"
@@ -63,7 +64,7 @@ local Disable = function(self)
 	if(range) then
 		for k, frame in next, _FRAMES do
 			if(frame == self) then
-				table.remove(_FRAMES, k)
+				tremove(_FRAMES, k)
 				break
 			end
 		end

@@ -1,6 +1,8 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
+local ceil = math.ceil
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.misc ~= true then return end
 	-- Blizzard frame we want to reskin
@@ -110,8 +112,17 @@ local function LoadSkin()
 		S:HandleButton(GhostFrame)
 		GhostFrame:SetBackdropColor(0,0,0,0)
 		GhostFrame:SetBackdropBorderColor(0,0,0,0)
-		GhostFrame.SetBackdropColor = E.noop
-		GhostFrame.SetBackdropBorderColor = E.noop
+		
+		local function forceBackdropColor(self, r, g, b, a)
+			if r ~= 0 or g ~= 0 or b ~= 0 or a ~= 0 then
+				GhostFrame:SetBackdropColor(0,0,0,0)
+				GhostFrame:SetBackdropBorderColor(0,0,0,0)
+			end
+		end
+		
+		hooksecurefunc(GhostFrame, "SetBackdropColor", forceBackdropColor)
+		hooksecurefunc(GhostFrame, "SetBackdropBorderColor", forceBackdropColor)
+		
 		GhostFrame:ClearAllPoints()
 		GhostFrame:SetPoint("TOP", E.UIParent, "TOP", 0, -150)
 		S:HandleButton(GhostFrameContentsFrame)
@@ -496,7 +507,7 @@ local function LoadSkin()
         if cctab then
             S:HandleTab(cctab)
             cctab:SetHeight(cctab:GetHeight()-2)
-            cctab:SetWidth(math.ceil(cctab:GetWidth()+1.6))
+            cctab:SetWidth(ceil(cctab:GetWidth()+1.6))
             _G["CombatConfigTab"..i.."Text"]:SetPoint("BOTTOM",0,10)
         end
     end
@@ -583,7 +594,11 @@ local function LoadSkin()
 	S:HandleButton(GuildInviteFrameJoinButton)
 	S:HandleButton(GuildInviteFrameDeclineButton)
 	GuildInviteFrame:Height(225)
-	GuildInviteFrame.SetHeight = E.noop
+	hooksecurefunc(GuildInviteFrame, "SetHeight", function(self, height)
+		if height ~= 225 then
+			GuildInviteFrame:Height(225)
+		end
+	end)
 	GuildInviteFrameWarningText:Kill()
 	
 	local function SkinWatchFrameItems()

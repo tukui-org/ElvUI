@@ -14,6 +14,7 @@ local function LoadSkin()
 	LossOfControlFrame.Icon:SetTexCoord(.1, .9, .1, .9)
 	LossOfControlFrame:StripTextures()
 	LossOfControlFrame.AbilityName:ClearAllPoints()
+	LossOfControlFrame:Size(LossOfControlFrame.Icon:GetWidth() + 50)
 
 	local font = E["media"].normFont
 	hooksecurefunc("LossOfControlFrame_SetUpDisplay", function(self, ...)	

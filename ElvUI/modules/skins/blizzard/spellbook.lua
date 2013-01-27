@@ -141,9 +141,18 @@ local function LoadSkin()
 		tab:CreateBackdrop("Default")
 		tab.backdrop:SetAllPoints()
 		tab:StyleButton(true)	
-		tab:GetHighlightTexture().SetTexture = E.noop
-		tab:GetCheckedTexture().SetTexture = E.noop
-		
+		hooksecurefunc(tab:GetHighlightTexture(), "SetTexture", function(self, texPath)
+			if texPath ~= nil then
+				self:SetPushedTexture(nil);
+			end
+		end)	
+
+		hooksecurefunc(tab:GetCheckedTexture(), "SetTexture", function(self, texPath)
+			if texPath ~= nil then
+				self:SetHighlightTexture(nil);
+			end
+		end)		
+	
 		local point, relatedTo, point2, x, y = tab:GetPoint()
 		tab:Point(point, relatedTo, point2, 1, y)	
 	end	

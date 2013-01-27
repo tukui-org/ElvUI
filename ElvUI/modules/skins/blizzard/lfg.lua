@@ -17,6 +17,8 @@ local function LoadSkin()
 	PVEFrame.shadows:Hide()
 	S:HandleButton(LFDQueueFramePartyBackfillBackfillButton)
 	S:HandleButton(LFDQueueFramePartyBackfillNoBackfillButton)
+	S:HandleButton(LFDQueueFrameRandomScrollFrameChildFrameBonusRepFrame.ChooseButton)
+	S:HandleButton(ScenarioQueueFrameRandomScrollFrameChildFrameBonusRepFrame.ChooseButton)
 	
 	GroupFinderFrameGroupButton1.icon:SetTexture("Interface\\Icons\\INV_Helmet_08")
 	GroupFinderFrameGroupButton2.icon:SetTexture("Interface\\Icons\\inv_helmet_06")
@@ -30,7 +32,13 @@ local function LoadSkin()
 	LFGDungeonReadyDialog:SetTemplate("Transparent")
 	LFGDungeonReadyStatus:StripTextures()
 	LFGDungeonReadyStatus:SetTemplate("Transparent")
-	LFGDungeonReadyDialog.SetBackdrop = E.noop
+
+	hooksecurefunc(LFGDungeonReadyDialog, "SetBackdrop", function(self, backdrop)
+		if backdrop.bgFile ~= E["media"].blankTex then
+			self:SetTemplate("Transparent")
+		end
+	end)
+	
 	LFGDungeonReadyDialog.filigree:SetAlpha(0)
 	LFGDungeonReadyDialog.bottomArt:SetAlpha(0)	
 	S:HandleCloseButton(LFGDungeonReadyStatusCloseButton)
@@ -152,8 +160,6 @@ local function LoadSkin()
 	for i = 1, NUM_LFR_CHOICE_BUTTONS do
 		local bu = _G["LFRQueueFrameSpecificListButton"..i].enableButton
 		S:HandleCheckBox(bu)
-		bu.SetNormalTexture = E.noop
-		bu.SetPushedTexture = E.noop
 	end
 
 	S:HandleDropDownBox(LFDQueueFrameTypeDropDown)
@@ -291,15 +297,17 @@ local function LoadSkin()
 				tab:CreateBackdrop("Default")
 				tab.backdrop:SetAllPoints()
 				tab:StyleButton(true)	
-				tab:GetHighlightTexture().SetTexture = E.noop
-				tab:GetCheckedTexture().SetTexture = E.noop
+				hooksecurefunc(tab:GetHighlightTexture(), "SetTexture", function(self, texPath)
+					if texPath ~= nil then
+						self:SetTexture(nil);
+					end
+				end)
 				
-				if i == 1 then
-					local point, relatedTo, point2, x, y = tab:GetPoint()
-					tab:Point(point, relatedTo, point2, 3, y)	
-					tab.SetPoint = E.noop
-					tab.ClearAllPoints = E.noop
-				end		
+				hooksecurefunc(tab:GetCheckedTexture(), "SetTexture", function(self, texPath)
+					if texPath ~= nil then
+						self:SetTexture(nil);
+					end
+				end	)		
 			end		
 			
 			for i=1, 7 do
@@ -311,6 +319,7 @@ local function LoadSkin()
 			S:HandleButton(LFRBrowseFrameRefreshButton)
 			S:HandleButton(LFRBrowseFrameInviteButton)
 			S:HandleButton(LFRBrowseFrameSendMessageButton)
+			LFRQueueFrameSpecificListScrollFrameScrollBar.skinned = true
 		end
 	end)
 end

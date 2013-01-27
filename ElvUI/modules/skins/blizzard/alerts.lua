@@ -3,14 +3,19 @@ local S = E:GetModule('Skins')
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.alertframes ~= true then return end
-
+	local function forceAlpha(self, alpha)
+		if alpha ~= 1 then
+			self:SetAlpha(1)
+		end
+	end
+	
 	hooksecurefunc("AlertFrame_SetAchievementAnchors", function(anchorFrame)
 		for i = 1, MAX_ACHIEVEMENT_ALERTS do
 			local frame = _G["AchievementAlertFrame"..i]
 			
 			if frame then
 				frame:SetAlpha(1)
-				frame.SetAlpha = E.noop
+				hooksecurefunc(frame, "SetAlpha", forceAlpha)
 				if not frame.backdrop then
 					frame:CreateBackdrop("Transparent")
 					frame.backdrop:Point("TOPLEFT", _G[frame:GetName().."Background"], "TOPLEFT", -2, -6)
@@ -51,7 +56,7 @@ local function LoadSkin()
 			local frame = _G["DungeonCompletionAlertFrame"..i]
 			if frame then
 				frame:SetAlpha(1)
-				frame.SetAlpha = E.noop
+				hooksecurefunc(frame, "SetAlpha", forceAlpha)
 				if not frame.backdrop then
 					frame:CreateBackdrop("Transparent")
 					frame.backdrop:Point("TOPLEFT", frame, "TOPLEFT", -2, -6)
@@ -90,7 +95,7 @@ local function LoadSkin()
 
 		if frame then
 			frame:SetAlpha(1)
-			frame.SetAlpha = E.noop
+			hooksecurefunc(frame, "SetAlpha", forceAlpha)
 
 			if not frame.backdrop then
 				frame:CreateBackdrop("Transparent")
@@ -128,7 +133,7 @@ local function LoadSkin()
 		
 		if frame then
 			frame:SetAlpha(1)
-			frame.SetAlpha = E.noop
+			hooksecurefunc(frame, "SetAlpha", forceAlpha)
 
 			if not frame.backdrop then
 				frame:CreateBackdrop("Transparent")
@@ -171,7 +176,7 @@ local function LoadSkin()
 
 		if frame then
 			frame:SetAlpha(1)
-			frame.SetAlpha = E.noop
+			hooksecurefunc(frame, "SetAlpha", forceAlpha)
 
 			if not frame.backdrop then
 				frame:CreateBackdrop("Transparent")
@@ -213,7 +218,7 @@ local function LoadSkin()
 			local frame = _G['CriteriaAlertFrame'..i]
 			if frame then
 				frame:SetAlpha(1)
-				frame.SetAlpha = E.noop
+				hooksecurefunc(frame, "SetAlpha", forceAlpha)
 
 				if not frame.backdrop then
 					frame:CreateBackdrop("Transparent")
@@ -247,7 +252,7 @@ local function LoadSkin()
 			local frame = LOOT_WON_ALERT_FRAMES[i];
 			if frame then
 				frame:SetAlpha(1)
-				frame.SetAlpha = E.noop
+				hooksecurefunc(frame, "SetAlpha", forceAlpha)
 				
 				frame.Background:Kill()
 				frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
@@ -277,7 +282,7 @@ local function LoadSkin()
 			local frame = MONEY_WON_ALERT_FRAMES[i];
 			if frame then
 				frame:SetAlpha(1)
-				frame.SetAlpha = E.noop
+				hooksecurefunc(frame, "SetAlpha", forceAlpha)
 
 				frame.Background:Kill()
 				frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
@@ -302,7 +307,7 @@ local function LoadSkin()
 	
 	local frame = BonusRollMoneyWonFrame
 	frame:SetAlpha(1)
-	frame.SetAlpha = E.noop
+	hooksecurefunc(frame, "SetAlpha", forceAlpha)
 
 	frame.Background:Kill()
 	frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
@@ -320,7 +325,7 @@ local function LoadSkin()
 	
 	local frame = BonusRollLootWonFrame
 	frame:SetAlpha(1)
-	frame.SetAlpha = E.noop
+	hooksecurefunc(frame, "SetAlpha", forceAlpha)
 	
 	frame.Background:Kill()
 	frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)

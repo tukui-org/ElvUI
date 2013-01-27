@@ -63,6 +63,8 @@ local function SetupChat()
 	ChatFrame_AddMessageGroup(ChatFrame1, "RAID")
 	ChatFrame_AddMessageGroup(ChatFrame1, "RAID_LEADER")
 	ChatFrame_AddMessageGroup(ChatFrame1, "RAID_WARNING")
+	ChatFrame_AddMessageGroup(ChatFrame1, "INSTANCE_CHAT")
+	ChatFrame_AddMessageGroup(ChatFrame1, "INSTANCE_CHAT_LEADER")	
 	ChatFrame_AddMessageGroup(ChatFrame1, "BATTLEGROUND")
 	ChatFrame_AddMessageGroup(ChatFrame1, "BATTLEGROUND_LEADER")
 	ChatFrame_AddMessageGroup(ChatFrame1, "BG_HORDE")
@@ -112,6 +114,8 @@ local function SetupChat()
 	ToggleChatColorNamesByClassGroup(true, "RAID_WARNING")
 	ToggleChatColorNamesByClassGroup(true, "BATTLEGROUND")
 	ToggleChatColorNamesByClassGroup(true, "BATTLEGROUND_LEADER")	
+	ToggleChatColorNamesByClassGroup(true, "INSTANCE_CHAT")
+	ToggleChatColorNamesByClassGroup(true, "INSTANCE_CHAT_LEADER")		
 	ToggleChatColorNamesByClassGroup(true, "CHANNEL1")
 	ToggleChatColorNamesByClassGroup(true, "CHANNEL2")
 	ToggleChatColorNamesByClassGroup(true, "CHANNEL3")
@@ -453,6 +457,8 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.movers.ElvUF_PetMover = "BOTTOMLEFTElvUIParentBOTTOMLEFT464151"
 			E.db.movers.ElvUF_FocusMover = "BOTTOMElvUIParentBOTTOM280332"			
 		end
+		
+		E.db.movers["BossButton"] = "TOPElvUIParentTOP0-250"
 	elseif E.db.lowresolutionset then
 		if not E.db.movers then E.db.movers = {}; end
 		E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM-106135"

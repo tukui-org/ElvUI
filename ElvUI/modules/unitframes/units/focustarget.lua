@@ -17,7 +17,7 @@ function UF:Construct_FocusTargetFrame(frame)
 	frame.Debuffs = self:Construct_Debuffs(frame)
 	
 	frame:Point('BOTTOM', ElvUF_Focus, 'TOP', 0, 7) --Set to default position
-	E:CreateMover(frame, frame:GetName()..'Mover', 'FocusTarget Frame', nil, -7, nil, 'ALL,SOLO')
+	E:CreateMover(frame, frame:GetName()..'Mover', L['FocusTarget Frame'], nil, -7, nil, 'ALL,SOLO')
 end
 
 function UF:Update_FocusTargetFrame(frame, db)
@@ -261,6 +261,7 @@ function UF:Update_FocusTargetFrame(frame, db)
 	end		
 	
 	if db.customTexts then
+		local customFont = UF.LSM:Fetch("font", UF.db.font)
 		for objectName, _ in pairs(db.customTexts) do
 			if not frame[objectName] then
 				frame[objectName] = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
@@ -269,7 +270,11 @@ function UF:Update_FocusTargetFrame(frame, db)
 			local objectDB = db.customTexts[objectName]
 			UF:CreateCustomTextGroup('focustarget', objectName)
 			
-			frame[objectName]:FontTemplate(UF.LSM:Fetch("font", objectDB.font or UF.db.font), objectDB.size or UF.db.fontSize, objectDB.fontOutline or UF.db.fontOutline)
+			if objectDB.font then
+				customFont = UF.LSM:Fetch("font", objectDB.font)
+			end
+						
+			frame[objectName]:FontTemplate(customFont, objectDB.size or UF.db.fontSize, objectDB.fontOutline or UF.db.fontOutline)
 			frame:Tag(frame[objectName], objectDB.text_format or '')
 			frame[objectName]:SetJustifyH(objectDB.justifyH or 'CENTER')
 			frame[objectName]:ClearAllPoints()

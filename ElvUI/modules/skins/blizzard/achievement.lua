@@ -207,9 +207,18 @@ local function LoadSkin()
 		end
 
 		_G["AchievementFrameAchievementsContainerButton"..i.."Description"]:SetTextColor(0.6, 0.6, 0.6)
-		_G["AchievementFrameAchievementsContainerButton"..i.."Description"].SetTextColor = E.noop
+		hooksecurefunc(_G["AchievementFrameAchievementsContainerButton"..i.."Description"], "SetTextColor", function(self, r, g, b)
+			if r ~= 0.6 or g ~= 0.6 or b ~= 0.6 then
+				self:SetTextColor(0.6, 0.6, 0.6)
+			end
+		end)
+
 		_G["AchievementFrameAchievementsContainerButton"..i.."HiddenDescription"]:SetTextColor(1, 1, 1)
-		_G["AchievementFrameAchievementsContainerButton"..i.."HiddenDescription"].SetTextColor = E.noop
+		hooksecurefunc(_G["AchievementFrameAchievementsContainerButton"..i.."HiddenDescription"], "SetTextColor", function(self, r, g, b)
+			if r ~= 1 or g ~= 1 or b ~= 1 then
+				self:SetTextColor(1, 1, 1)
+			end
+		end)
 		
 		_G["AchievementFrameAchievementsContainerButton"..i.."IconBling"]:Kill()
 		_G["AchievementFrameAchievementsContainerButton"..i.."IconOverlay"]:Kill()
@@ -232,8 +241,12 @@ local function LoadSkin()
 		_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"]:ClearAllPoints()
 		_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"]:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", 5, 5)
 		
-		_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"].ClearAllPoints = E.noop
-		_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"].SetPoint = E.noop
+		hooksecurefunc(_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"], "SetPoint", function(self, point, attachTo, anchorPoint, xOffset, yOffset)
+			if point ~= "BOTTOMLEFT" or attachTo ~= frame or anchorPoint ~= "BOTTOMLEFT" or xOffset ~= 5 or yOffset ~= 5 then
+				self:ClearAllPoints()
+				self:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", 5, 5)			
+			end
+		end)
 	end
 
 	
@@ -251,7 +264,11 @@ local function LoadSkin()
 
 			if _G[frame.."Description"] then
 				_G[frame.."Description"]:SetTextColor(0.6, 0.6, 0.6)
-				_G[frame.."Description"].SetTextColor = E.noop
+				hooksecurefunc(_G[frame.."Description"], "SetTextColor", function(self, r, g, b)
+					if r ~= 0.6 or g ~= 0.6 or b ~= 0.6 then
+						self:SetTextColor(0.6, 0.6, 0.6)
+					end
+				end)				
 			end
 
 			--Initiate fucked up method of creating a backdrop
@@ -390,8 +407,12 @@ local function LoadSkin()
 				if index > 1 then
 					frame:ClearAllPoints()
 					frame:Point("TOP", _G["AchievementFrameProgressBar"..index-1], "BOTTOM", 0, -5)
-					frame.SetPoint = E.noop
-					frame.ClearAllPoints = E.noop
+					hooksecurefunc(frame, "SetPoint", function(self, point, attachTo, anchorPoint, xOffset, yOffset)
+						if point ~= "TOP" or attachTo ~= _G["AchievementFrameProgressBar"..index-1] or xOffset ~= "BOTTOM" or xOffset ~= 0 or yOffset ~= -5 then
+							self:ClearAllPoints()
+							self:Point("TOP", _G["AchievementFrameProgressBar"..index-1], "BOTTOM", 0, -5)					
+						end
+					end)
 				end
 				
 				frame.skinned = true

@@ -20,12 +20,21 @@ NP.RaidTargetReference = {
 
 NP.GUIDIgnoreCast = {};
 
+NP.ComboColors = {
+	[1] = {0.69, 0.31, 0.31},
+	[2] = {0.69, 0.31, 0.31},
+	[3] = {0.65, 0.63, 0.35},
+	[4] = {0.65, 0.63, 0.35},
+	[5] = {0.33, 0.59, 0.33}
+}
+
 local AURA_TYPE_BUFF = 1
 local AURA_TYPE_DEBUFF = 6
 local AURA_TARGET_HOSTILE = 1
 local AURA_TARGET_FRIENDLY = 2
 local AuraList, AuraGUID = {}, {}
-NP.MAX_DISPLAYABLE_DEBUFFS = 5
+NP.MAX_DISPLAYABLE_DEBUFFS = 5;
+NP.MAX_SMALLNP_DISPLAYABLE_DEBUFFS = 2;
 
 local AURA_TYPE = {
 	["Buff"] = 1,
@@ -35,6 +44,10 @@ local AURA_TYPE = {
 	["Poison"] = 5,
 	["Debuff"] = 6,
 }
+
+local band = bit.band
+local ceil = math.ceil
+local twipe = table.wipe
 
 NP.RaidIconCoordinate = {
 	[0]		= { [0]		= "STAR", [0.25]	= "MOON", },
@@ -190,13 +203,18 @@ function NP:CreateAuraIcon(parent)
 	return button
 end
 
+local TimeColors = {
+	[0] = '|cffeeeeee',
+	[1] = '|cffeeeeee',
+	[2] = '|cffeeeeee',
+	[3] = '|cffFFEE00',
+	[4] = '|cfffe0000',
+}
+
 function NP:UpdateAuraTime(frame, expiration)
-	local timeleft = ceil(expiration-GetTime())
-	if timeleft > 60 then 
-		frame.TimeLeft:SetText(ceil(timeleft/60).."m")
-	else
-		frame.TimeLeft:SetText(ceil(timeleft))
-	end
+	local timeleft = expiration-GetTime()
+	local timervalue, formatid = E:GetTimeInfo(timeleft, 4)	
+	frame.TimeLeft:SetFormattedText(("%s%s|r"):format(TimeColors[formatid], E.TimeFormats[3][2]), timervalue)	
 end
 
 function NP:ClearAuraContext(frame)
@@ -271,18 +289,13 @@ end
 function NP:SearchNameplateByIcon(UnitFlags)
 	local UnitIcon
 	for iconname, bitmask in pairs(NP.RaidTargetReference) do
-		if bit.band(UnitFlags, bitmask) > 0  then
+		if band(UnitFlags, bitmask) > 0  then
 			UnitIcon = iconname
 			break
 		end
 	end	
 
-	for frame, _ in pairs(NP.Handled) do
-		frame = _G[frame]:GetChildren()
-		if frame and frame:IsShown() and frame.isMarked and (frame.raidIconType == UnitIcon) then
-			return frame
-		end
-	end	
+	return NP:SearchNameplateByIconName(UnitIcon)
 end
 
 function NP:SearchNameplateByIconName(raidicon)
@@ -310,11 +323,12 @@ function NP:SetAuraInstance(guid, spellid, expiration, stacks, caster, duration,
 	if (self.db.trackauras and caster == UnitGUID('player')) then
 		filter = true;
 	end
-
-	if self.db.trackfilter and #self.db.trackfilter > 1 and E.global['unitframe']['aurafilters'][self.db.trackfilter] then
+	
+	local trackFilter = E.global['unitframe']['aurafilters'][self.db.trackfilter]
+	if self.db.trackfilter and #self.db.trackfilter > 1 and trackFilter then
 		local name = GetSpellInfo(spellid)
-		local spellList = E.global['unitframe']['aurafilters'][self.db.trackfilter].spells
-		local type = E.global['unitframe']['aurafilters'][self.db.trackfilter].type
+		local spellList = trackFilter.spells
+		local type = trackFilter.type
 		if type == 'Blacklist' then
 			if spellList[name] and spellList[name].enable then
 				filter = false;
@@ -418,11 +432,11 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, ...)
 		local FoundPlate = nil;
 
 		if not (castTime > 0) then return end		
-		if bit.band(sourceFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) > 0 then 
-			if bit.band(sourceFlags, COMBATLOG_OBJECT_CONTROL_PLAYER) > 0 then 
+		if band(sourceFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) > 0 then 
+			if band(sourceFlags, COMBATLOG_OBJECT_CONTROL_PLAYER) > 0 then 
 				--	destination plate, by name
 				FoundPlate = NP:SearchNameplateByName(sourceName)
-			elseif bit.band(sourceFlags, COMBATLOG_OBJECT_CONTROL_NPC) > 0 then 
+			elseif band(sourceFlags, COMBATLOG_OBJECT_CONTROL_NPC) > 0 then 
 				--	destination plate, by GUID
 				FoundPlate = NP:SearchNameplateByGUID(sourceGUID)
 				if not FoundPlate then 
@@ -449,11 +463,11 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, ...)
 	elseif event == "SPELL_CAST_FAILED" or event == "SPELL_INTERRUPT" or event == "SPELL_CAST_SUCCESS" or event == "SPELL_HEAL" then
 		local FoundPlate = nil;
 		if sourceGUID == UnitGUID('player') and event == "SPELL_CAST_FAILED" then return; end
-		if bit.band(sourceFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) > 0 then 
-			if bit.band(sourceFlags, COMBATLOG_OBJECT_CONTROL_PLAYER) > 0 then 
+		if band(sourceFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) > 0 then 
+			if band(sourceFlags, COMBATLOG_OBJECT_CONTROL_PLAYER) > 0 then 
 				--	destination plate, by name
 				FoundPlate = NP:SearchNameplateByName(sourceName)
-			elseif bit.band(sourceFlags, COMBATLOG_OBJECT_CONTROL_NPC) > 0 then 
+			elseif band(sourceFlags, COMBATLOG_OBJECT_CONTROL_NPC) > 0 then 
 				--	destination plate, by GUID
 				FoundPlate = NP:SearchNameplateByGUID(sourceGUID)
 				if not FoundPlate then 
@@ -471,11 +485,11 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, ...)
 			NP:StopCastAnimation(FoundPlate)
 		end		
 	else
-		if bit.band(sourceFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) > 0 then 
-			if bit.band(sourceFlags, COMBATLOG_OBJECT_CONTROL_PLAYER) > 0 then 
+		if band(sourceFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) > 0 then 
+			if band(sourceFlags, COMBATLOG_OBJECT_CONTROL_PLAYER) > 0 then 
 				--	destination plate, by name
 				FoundPlate = NP:SearchNameplateByName(sourceName)
-			elseif bit.band(sourceFlags, COMBATLOG_OBJECT_CONTROL_NPC) > 0 then 
+			elseif band(sourceFlags, COMBATLOG_OBJECT_CONTROL_NPC) > 0 then 
 				--	destination plate, by raid icon
 				FoundPlate = NP:SearchNameplateByIcon(sourceRaidFlags) 
 			else 
@@ -491,18 +505,18 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, ...)
 	end
 
 	if event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REFRESH" or event == "SPELL_AURA_APPLIED_DOSE" or event == "SPELL_AURA_REMOVED_DOSE" or event == "SPELL_AURA_BROKEN" or event == "SPELL_AURA_BROKEN_SPELL" or event == "SPELL_AURA_REMOVED" then
-		if (bit.band(destFlags, COMBATLOG_OBJECT_REACTION_FRIENDLY) == 0) and auraType == 'DEBUFF' then		
+		if (band(destFlags, COMBATLOG_OBJECT_REACTION_FRIENDLY) == 0) and auraType == 'DEBUFF' then		
 			NP:UpdateAuraByLookup(destGUID)
 			local name, raidicon
 			-- Cache Unit Name for alternative lookup strategy
-			if bit.band(destFlags, COMBATLOG_OBJECT_CONTROL_PLAYER) > 0 then 
+			if band(destFlags, COMBATLOG_OBJECT_CONTROL_PLAYER) > 0 then 
 				local rawName = strsplit("-", destName)			-- Strip server name from players
 				NP.ByName[rawName] = destGUID
 				name = rawName
 			end
 			-- Cache Raid Icon Data for alternative lookup strategy
 			for iconname, bitmask in pairs(NP.RaidTargetReference) do
-				if bit.band(destRaidFlags, bitmask) > 0  then
+				if band(destRaidFlags, bitmask) > 0  then
 					NP.ByRaidIcon[iconname] = destGUID
 					raidicon = iconname
 					break
@@ -648,16 +662,7 @@ end
 function NP:GetAuraInstance(guid, aura_id)
 	if guid and aura_id then
 		local aura_instance_id = guid..aura_id
-		local spellid, expiration, stacks, caster, duration, texture, auratype
-		spellid = self.Aura_Spellid[aura_instance_id]
-		expiration = self.Aura_Expiration[aura_instance_id]
-		stacks = self.Aura_Stacks[aura_instance_id]
-		caster = self.Aura_Caster[aura_instance_id]
-		duration = self.Aura_Duration[aura_instance_id]
-		texture = self.Aura_Texture[aura_instance_id]
-		auratype  = self.Aura_Type[aura_instance_id]
-		auratarget  = self.Aura_Target[aura_instance_id]
-		return spellid, expiration, stacks, caster, duration, texture, auratype, auratarget
+		return self.Aura_Spellid[aura_instance_id], self.Aura_Expiration[aura_instance_id], self.Aura_Stacks[aura_instance_id], self.Aura_Caster[aura_instance_id], self.Aura_Duration[aura_instance_id], self.Aura_Texture[aura_instance_id], self.Aura_Type[aura_instance_id], self.Aura_Target[aura_instance_id]
 	end
 end
 
@@ -719,12 +724,12 @@ function NP:UpdateIconGrid(frame, guid)
 				self:UpdateIcon(AuraIconFrames[AuraSlotIndex], cachedaura.texture, cachedaura.expiration, cachedaura.stacks) 
 				AuraSlotIndex = AuraSlotIndex + 1
 			end
-			if AuraSlotIndex > NP.MAX_DISPLAYABLE_DEBUFFS then break end
+			if AuraSlotIndex > ((frame.isSmallNP and NP.db.smallPlates) and NP.MAX_SMALLNP_DISPLAYABLE_DEBUFFS or NP.MAX_DISPLAYABLE_DEBUFFS) then break end
 		end
 	end
 	
 	-- Clear Extra Slots
-	for AuraSlotIndex = AuraSlotIndex, NP.MAX_DISPLAYABLE_DEBUFFS do self:UpdateIcon(AuraIconFrames[AuraSlotIndex]) end
+	for AuraSlotIndex = AuraSlotIndex, ((frame.isSmallNP and NP.db.smallPlates) and NP.MAX_SMALLNP_DISPLAYABLE_DEBUFFS or NP.MAX_DISPLAYABLE_DEBUFFS) do self:UpdateIcon(AuraIconFrames[AuraSlotIndex]) end
 	
 	self.DebuffCache = wipe(self.DebuffCache)
 end
@@ -754,8 +759,7 @@ end
 
 function NP:UpdateAurasByUnitID(unit)
 	-- Limit to enemies, for now
-	local unitType
-	if UnitIsFriend("player", unit) then unitType = AURA_TARGET_FRIENDLY else unitType = AURA_TARGET_HOSTILE end	
+	local unitType = UnitIsFriend("player", unit) and AURA_TARGET_FRIENDLY or AURA_TARGET_HOSTILE
 	if unitType == AURA_TARGET_FRIENDLY then return end		-- Filter
 	
 	-- Check the units Debuffs
@@ -868,6 +872,16 @@ function NP:CastBar_OnShow(frame)
 		frame:SetStatusBarColor(1, 208/255, 0)
 	end	
 	
+	local isSmallNP
+	while frame:GetEffectiveScale() < 1 do
+		frame:SetScale(frame:GetScale() + 0.01)
+		isSmallNP = true;
+	end
+	
+	if isSmallNP and NP.db.smallPlates then
+		frame:Width(frame:GetWidth() * frame:GetParent():GetEffectiveScale())
+	end
+		
 	self:SetVirtualBorder(frame, unpack(E["media"].bordercolor))
 	self:SetVirtualBackdrop(frame, unpack(E["media"].backdropcolor))	
 	
@@ -889,5 +903,58 @@ function NP:CastBar_OnValueChanged(frame)
 		NP:StartCastAnimationOnNameplate(frame:GetParent(), spell, spellid, icon, start, finish, nonInt, channel) 
 	else 
 		NP:StopCastAnimation(frame:GetParent()) 
+	end
+end
+
+function NP:ToggleCPoints()
+	if self.db.comboPoints then
+		self:RegisterEvent("UNIT_COMBO_POINTS", "UpdateCPoints")
+	else
+		self:ForEachPlate(NP.HideCPoints)
+		self:UnregisterEvent("UNIT_COMBO_POINTS")
+	end
+end
+
+function NP:HideCPoints(frame)
+	if not frame.cpoints[1]:IsShown() then return end
+	for i=1, MAX_COMBO_POINTS do
+		frame.cpoints[i]:Hide()
+	end
+end
+
+function NP:UpdateCPoints(frame, isMouseover)
+	local unit = "target"
+	if isMouseover == true then
+		unit = "mouseover"
+	end
+	
+	--[[if not UnitExists(unit) then 
+		self:ForEachPlate(self.HideCPoints)
+		return; 
+	end]]
+	
+	if type(frame) ~= "table" then
+		frame = self:GetTargetNameplate()
+		if frame then
+			self:ForEachPlate(self.HideCPoints)
+		end
+	end
+	
+	if not frame then return; end
+
+	local cp
+	if(UnitHasVehicleUI'player') then
+		cp = GetComboPoints('vehicle', unit)
+	else
+		cp = GetComboPoints('player', unit)
+	end
+
+	for i=1, MAX_COMBO_POINTS do
+		if(i <= cp) then
+			frame.cpoints[i]:Show()
+			frame.cpoints[i]:SetVertexColor(unpack(NP.ComboColors[cp]))
+		else
+			frame.cpoints[i]:Hide()
+		end
 	end
 end

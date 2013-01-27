@@ -1,17 +1,9 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 
+local lower = string.lower
+
 E.PopupDialogs = {};
 E.StaticPopup_DisplayedFrames = {};
-
-E.PopupDialogs['YOUR_FUCKED'] = {
-	text = "You're Fucked!",
-	OnAccept = function() end,
-	button1 = ACCEPT,
-	timeout = 0,
-	whileDead = 1,	
-	hideOnEscape = false,		
-}
-
 
 E.PopupDialogs['DISABLE_INCOMPATIBLE_ADDON'] = {
 	text = L['Do you swear not to post in technical support about something not working without first disabling the addon/module combination first?'],
@@ -27,7 +19,7 @@ E.PopupDialogs['DISABLE_INCOMPATIBLE_ADDON'] = {
 E.PopupDialogs['INCOMPATIBLE_ADDON'] = {
 	text = L['INCOMPATIBLE_ADDON'],
 	OnAccept = function(self) DisableAddOn(E.PopupDialogs['INCOMPATIBLE_ADDON'].addon); ReloadUI(); end,
-	OnCancel = function(self) E.private[string.lower(E.PopupDialogs['INCOMPATIBLE_ADDON'].module)].enable = false; ReloadUI(); end,
+	OnCancel = function(self) E.private[lower(E.PopupDialogs['INCOMPATIBLE_ADDON'].module)].enable = false; ReloadUI(); end,
 	button3 = L['Disable Warning'],
 	OnAlt = function ()
 		E:StaticPopup_Hide('INCOMPATIBLE_ADDON')
@@ -57,7 +49,7 @@ E.PopupDialogs['CONFIGAURA_SET'] = {
 }
 
 E.PopupDialogs['TALENT_TAINT'] = {
-	text = L["A taint has occured that is preventing you from using your talents/glyphs, this can happen if you've inspected someone. Unfortunately theres nothing we can do to fix it, please reload your ui and try again."],
+	text = L["A taint has occured that is preventing you from using your talents/glyphs. Please reload your user interface and try again."],
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	OnAccept = function() ReloadUI(); end,
@@ -70,7 +62,7 @@ E.PopupDialogs['FAILED_UISCALE'] = {
 	text = L['You have changed your UIScale, however you still have the AutoScale option enabled in ElvUI. Press accept if you would like to disable the Auto Scale option.'],
 	button1 = ACCEPT,
 	button2 = CANCEL,
-	OnAccept = function() E.db.general.autoscale = false; ReloadUI(); end,
+	OnAccept = function() E.global.general.autoScale = false; ReloadUI(); end,
 	timeout = 0,
 	whileDead = 1,	
 	hideOnEscape = false,

@@ -1,6 +1,9 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local B = E:NewModule('Bags', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
 
+local len, sub, find, format, floor = string.len, string.sub, string.find, string.format, math.floor
+local tinsert = table.insert
+
 B.ProfessionColors = {
 	[0x0008] = {224/255, 187/255, 74/255}, -- Leatherworking
 	[0x0010] = {74/255, 77/255, 224/255}, -- Inscription
@@ -8,7 +11,8 @@ B.ProfessionColors = {
 	[0x0040] = {160/255, 3/255, 168/255}, -- Enchanting
 	[0x0080] = {232/255, 118/255, 46/255}, -- Engineering
 	[0x0200] = {8/255, 180/255, 207/255}, -- Gems
-	[0x0400] = {105/255, 79/255,  7/255} -- Mining
+	[0x0400] = {105/255, 79/255,  7/255}, -- Mining
+	[0x010000] = {222/255, 13/255,  65/255} -- Cooking
 }
 
 function B:GetContainerFrame(arg)
@@ -67,10 +71,10 @@ end
 function B:UpdateSearch()
 	local MIN_REPEAT_CHARACTERS = 3;
 	local searchString = self:GetText();
-	if (string.len(searchString) > MIN_REPEAT_CHARACTERS) then
+	if (len(searchString) > MIN_REPEAT_CHARACTERS) then
 		local repeatChar = true;
 		for i=1, MIN_REPEAT_CHARACTERS, 1 do 
-			if ( string.sub(searchString,(0-i), (0-i)) ~= string.sub(searchString,(-1-i),(-1-i)) ) then
+			if ( sub(searchString,(0-i), (0-i)) ~= sub(searchString,(-1-i),(-1-i)) ) then
 				repeatChar = false;
 				break;
 			end
@@ -240,7 +244,7 @@ function B:Layout(isBank)
 	local buttonSize = isBank and self.db.bankSize or self.db.bagSize;
 	local buttonSpacing = E.PixelMode and 2 or 4;
 	local containerWidth = self.db.alignToChat == true and (E.db.chat.panelWidth - (E.PixelMode and 6 or 10)) or isBank and self.db.bankWidth or self.db.bagWidth
-	local numContainerColumns = math.floor(containerWidth / (buttonSize + buttonSpacing));
+	local numContainerColumns = floor(containerWidth / (buttonSize + buttonSpacing));
 	local holderWidth = ((buttonSize + buttonSpacing) * numContainerColumns) - buttonSpacing;
 	local numContainerRows = 0;
 	local bottomPadding = (containerWidth - holderWidth) / 2;
@@ -512,7 +516,7 @@ function B:VendorGrays(delete, nomsg)
 				local p = select(11, GetItemInfo(l))*select(2, GetContainerItemInfo(b, s))
 				
 				if delete then
-					if string.find(l,"ff9d9d9d") then
+					if find(l,"ff9d9d9d") then
 						PickupContainerItem(b, s)
 						DeleteCursorItem()
 						c = c+p
@@ -530,13 +534,13 @@ function B:VendorGrays(delete, nomsg)
 	end
 
 	if c>0 and not delete then
-		local g, s, c = math.floor(c/10000) or 0, math.floor((c%10000)/100) or 0, c%100
+		local g, s, c = floor(c/10000) or 0, floor((c%10000)/100) or 0, c%100
 		E:Print(L['Vendored gray items for:'].." |cffffffff"..g..L.goldabbrev.." |cffffffff"..s..L.silverabbrev.." |cffffffff"..c..L.copperabbrev..".")
 	elseif not delete and not nomsg then
 		E:Print(L['No gray items to sell.'])
 	elseif count > 0 then
-		local g, s, c = math.floor(c/10000) or 0, math.floor((c%10000)/100) or 0, c%100
-		E:Print(string.format(L['Deleted %d gray items. Total Worth: %s'], count, " |cffffffff"..g..L.goldabbrev.." |cffffffff"..s..L.silverabbrev.." |cffffffff"..c..L.copperabbrev.."."))
+		local g, s, c = floor(c/10000) or 0, floor((c%10000)/100) or 0, c%100
+		E:Print(format(L['Deleted %d gray items. Total Worth: %s'], count, " |cffffffff"..g..L.goldabbrev.." |cffffffff"..s..L.silverabbrev.." |cffffffff"..c..L.copperabbrev.."."))
 	elseif not nomsg then
 		E:Print(L['No gray items to delete.'])
 	end
@@ -817,7 +821,7 @@ function B:ContructContainerFrame(name, isBank)
 	end
 	
 	tinsert(UISpecialFrames, f:GetName()) --Keep an eye on this for taints..
-	table.insert(self.BagFrames, f)
+	tinsert(self.BagFrames, f)
 	return f
 end
 

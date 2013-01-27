@@ -108,7 +108,7 @@ end
 function AB:SetupMicroBar()
 	local microBar = CreateFrame('Frame', 'ElvUI_MicroBar', E.UIParent)
 	microBar:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -48)
-	
+	E.FrameLocks["ElvUI_MicroBar"] = true;
 	for i=1, #MICRO_BUTTONS do
 		self:HandleMicroButton(_G[MICRO_BUTTONS[i]])
 	end
@@ -124,5 +124,5 @@ function AB:SetupMicroBar()
 	self:MainMenuMicroButton_SetNormal()
 	self:UpdateMicroPositionDimensions()
 	
-	E:CreateMover(microBar, 'MicrobarMover', 'Micro Bar', nil, nil, nil, 'ALL,ACTIONBARS');
+	E:CreateMover(microBar, 'MicrobarMover', L['Micro Bar'], nil, nil, nil, 'ALL,ACTIONBARS');
 end

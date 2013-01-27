@@ -3,10 +3,45 @@ local UF = E:GetModule('UnitFrames');
 local _, ns = ...
 local ElvUF = ns.oUF
 
-local selectedSpell;
-local selectedFilter;
-local filters;
+local fillValues = {
+	['fill'] = L['Filled'],
+	['spaced'] = L['Spaced'],
+};
 
+local positionValues = {
+	TOPLEFT = 'TOPLEFT',
+	LEFT = 'LEFT',
+	BOTTOMLEFT = 'BOTTOMLEFT',
+	RIGHT = 'RIGHT',
+	TOPRIGHT = 'TOPRIGHT',
+	BOTTOMRIGHT = 'BOTTOMRIGHT',
+	CENTER = 'CENTER',
+	TOP = 'TOP',
+	BOTTOM = 'BOTTOM',
+};
+
+local auraAnchors = {
+	TOPLEFT = 'TOPLEFT',
+	LEFT = 'LEFT',
+	BOTTOMLEFT = 'BOTTOMLEFT',
+	RIGHT = 'RIGHT',
+	TOPRIGHT = 'TOPRIGHT',
+	BOTTOMRIGHT = 'BOTTOMRIGHT',
+};
+
+local petAnchors = {
+	TOPLEFT = 'TOPLEFT',
+	LEFT = 'LEFT',
+	BOTTOMLEFT = 'BOTTOMLEFT',
+	RIGHT = 'RIGHT',
+	TOPRIGHT = 'TOPRIGHT',
+	BOTTOMRIGHT = 'BOTTOMRIGHT',
+	TOP = 'TOP',
+	BOTTOM = 'BOTTOM',
+};
+
+local filters;
+local tinsert = table.insert
 function UF:CreateCustomTextGroup(unit, objectName)
 	if E.Options.args.unitframe.args[unit].args[objectName] then return end
 	
@@ -115,649 +150,6 @@ function UF:CreateCustomTextGroup(unit, objectName)
 			},		
 		},
 	}		
-end
-
-local function UpdateFilterGroup()
-	if selectedFilter == 'AuraBar Colors' then
-		if not selectedFilter then
-			E.Options.args.unitframe.args.filters.args.filterGroup = nil
-			E.Options.args.unitframe.args.filters.args.spellGroup = nil
-			return
-		end
-	
-		E.Options.args.unitframe.args.filters.args.filterGroup = {
-			type = 'group',
-			name = selectedFilter,
-			guiInline = true,
-			order = 10,
-			args = {
-				addSpell = {
-					order = 1,
-					name = L['Add Spell'],
-					desc = L['Add a spell to the filter.'],
-					type = 'input',
-					get = function(info) return "" end,
-					set = function(info, value) 
-						if not E.global.unitframe.AuraBarColors[value] then
-							E.global.unitframe.AuraBarColors[value] = false
-						end
-						UpdateFilterGroup();
-						UF:Update_AllFrames();
-					end,					
-				},
-				removeSpell = {
-					order = 1,
-					name = L['Remove Spell'],
-					desc = L['Remove a spell from the filter.'],
-					type = 'input',
-					get = function(info) return "" end,
-					set = function(info, value) 
-						if G['unitframe'].AuraBarColors[value] then
-							G['unitframe'].AuraBarColors[value] = false;
-							E:Print(L['You may not remove a spell from a default filter that is not customly added. Setting spell to false instead.'])
-						else
-							E.global.unitframe.AuraBarColors[value] = nil;
-						end
-						selectedSpell = nil;
-						UpdateFilterGroup();
-						UF:Update_AllFrames();
-					end,				
-				},		
-				selectSpell = {
-					name = L["Select Spell"],
-					type = 'select',
-					order = -9,
-					guiInline = true,
-					get = function(info) return selectedSpell end,
-					set = function(info, value) selectedSpell = value; UpdateFilterGroup() end,							
-					values = function()
-						local filters = {}
-						filters[''] = NONE
-						for filter in pairs(E.global.unitframe.AuraBarColors) do
-							filters[filter] = filter
-						end
-
-						return filters
-					end,
-				},			
-			},	
-		}
-	
-		if not selectedSpell or E.global.unitframe.AuraBarColors[selectedSpell] == nil then
-			E.Options.args.unitframe.args.filters.args.spellGroup = nil
-			return
-		end
-		
-		E.Options.args.unitframe.args.filters.args.spellGroup = {
-			type = "group",
-			name = selectedSpell,
-			order = 15,
-			guiInline = true,
-			args = {
-				color = {
-					name = L['Color'],
-					type = 'color',
-					order = 1,
-					get = function(info)
-						local t = E.global.unitframe.AuraBarColors[selectedSpell]
-						if type(t) == 'boolean' then
-							return 0, 0, 0, 1
-						else
-							return t.r, t.g, t.b, t.a
-						end
-					end,
-					set = function(info, r, g, b)
-						if type(E.global.unitframe.AuraBarColors[selectedSpell]) ~= 'table' then
-							E.global.unitframe.AuraBarColors[selectedSpell] = {}
-						end
-						local t = E.global.unitframe.AuraBarColors[selectedSpell]
-						t.r, t.g, t.b = r, g, b
-						UF:Update_AllFrames()
-					end,						
-				},	
-				removeColor = {
-					type = 'execute',
-					order = 2,
-					name = L['Restore Defaults'],
-					func = function(info, value) E.global.unitframe.AuraBarColors[selectedSpell] = false; UF:Update_AllFrames() end,
-				},				
-			},
-		}
-	
-	elseif selectedFilter == 'Blacklist (Strict)' then
-		E.Options.args.unitframe.args.filters.args.filterGroup = {
-			type = 'group',
-			name = selectedFilter,
-			guiInline = true,
-			order = -10,
-			childGroups = "select",
-			args = {
-				addSpellID = {
-					order = 1,
-					name = L['Add SpellID'],
-					desc = L['Add a spell to the filter.'],
-					type = 'input',
-					get = function(info) return "" end,
-					set = function(info, value) 
-						if not tonumber(value) then
-							E:Print(L["Value must be a number"])					
-						elseif not GetSpellInfo(value) then
-							E:Print(L["Not valid spell id"])
-						else	
-							E.global.unitframe.InvalidSpells[tonumber(value)] = true;
-							UpdateFilterGroup();
-							UF:Update_AllFrames();
-						end
-					end,					
-				},
-				removeSpellID = {
-					order = 2,
-					name = L['Remove SpellID'],
-					desc = L['Remove a spell from the filter.'],
-					type = 'input',
-					get = function(info) return "" end,
-					set = function(info, value) 
-						if not tonumber(value) then
-							E:Print(L["Value must be a number"])
-						elseif not GetSpellInfo(value) then
-							E:Print(L["Not valid spell id"])
-						else	
-							local match
-							if not G.unitframe.InvalidSpells[tonumber(value)] then
-								E.global.unitframe.InvalidSpells[tonumber(value)] = nil;
-							end		
-
-							if not G.unitframe.InvalidSpells[value] then
-								E.global.unitframe.InvalidSpells[value] = nil;
-							end									
-						end		
-
-						UpdateFilterGroup();
-						UF:Update_AllFrames();
-					end,				
-				},
-				desc = {
-					order = 3,
-					type = 'description',
-					name = L['This filter is used for both aura bars and aura icons no matter what. Its purpose is to block out specific spellids from being shown. For example a paladin can have two sacred shield buffs at once, we block out the short one.'],
-				},
-				spellGroup = {
-					order = 4,
-					name = L['Spells'],
-					type = 'group',
-					args = {},
-					guiInline = true,
-				},
-			},
-		}
-		
-		for spell, value in pairs(E.global.unitframe.InvalidSpells) do
-			local spellName = GetSpellInfo(spell)
-			if spellName then
-				E.Options.args.unitframe.args.filters.args.filterGroup.args.spellGroup.args[spell] = {
-					type = 'toggle',
-					name = spellName..' ('..spell..')',
-					get = function(info) return E.global.unitframe.InvalidSpells[spell] end,
-					set = function(info, value) E.global.unitframe.InvalidSpells[spell] = value; UF:Update_AllFrames() end,
-				}
-			end
-		end
-	elseif selectedFilter == 'Buff Indicator (Pet)' then
-		local buffs = {};
-		for _, value in pairs(E.global.unitframe.buffwatch.PET) do
-			tinsert(buffs, value);
-		end		
-		
-		if not E.global.unitframe.buffwatch.PET then
-			E.global.unitframe.buffwatch.PET = {};
-		end		
-
-		E.Options.args.unitframe.args.filters.args.filterGroup = {
-			type = 'group',
-			name = selectedFilter,
-			guiInline = true,
-			order = -10,
-			childGroups = "select",
-			args = {
-				addSpellID = {
-					order = 1,
-					name = L['Add SpellID'],
-					desc = L['Add a spell to the filter.'],
-					type = 'input',
-					get = function(info) return "" end,
-					set = function(info, value) 
-						if not tonumber(value) then
-							E:Print(L["Value must be a number"])					
-						elseif not GetSpellInfo(value) then
-							E:Print(L["Not valid spell id"])
-						else	
-							table.insert(E.global.unitframe.buffwatch.PET, {["enabled"] = true, ["id"] = tonumber(value), ["point"] = "TOPRIGHT", ["color"] = {["r"] = 1, ["g"] = 0, ["b"] = 0}, ["anyUnit"] = true})
-							UpdateFilterGroup();
-							UF:Update_AllFrames();
-							selectedSpell = nil;
-						end
-					end,					
-				},
-				removeSpellID = {
-					order = 2,
-					name = L['Remove SpellID'],
-					desc = L['Remove a spell from the filter.'],
-					type = 'input',
-					get = function(info) return "" end,
-					set = function(info, value) 
-						if not tonumber(value) then
-							E:Print(L["Value must be a number"])
-						elseif not GetSpellInfo(value) then
-							E:Print(L["Not valid spell id"])
-						else	
-							local match
-							for x, y in pairs(E.global.unitframe.buffwatch.PET) do
-								if y["id"] == tonumber(value) then
-									match = y
-									E.global.unitframe.buffwatch.PET[x] = nil
-								end
-							end
-							if match == nil then
-								E:Print(L["Spell not found in list."])
-							else
-								UpdateFilterGroup()							
-							end									
-						end		
-						
-						selectedSpell = nil;
-						UpdateFilterGroup();
-						UF:Update_AllFrames();
-					end,				
-				},
-				selectSpell = {
-					name = L["Select Spell"],
-					type = "select",
-					order = 3,
-					values = function()
-						local values = {};
-						buffs = {};
-						for _, value in pairs(E.global.unitframe.buffwatch.PET) do
-							tinsert(buffs, value);
-						end			
-						
-						for _, spell in pairs(buffs) do
-							if spell.id then
-								local name = GetSpellInfo(spell.id)
-								values[spell.id] = name;
-							end
-						end
-						return values
-					end,
-					get = function(info) return selectedSpell end,
-					set = function(info, value) 
-						selectedSpell = value;
-						UpdateFilterGroup()
-					end,
-				},				
-			},
-		}
-		
-		local tableIndex
-		for i, spell in pairs(E.global.unitframe.buffwatch.PET) do
-			if spell.id == selectedSpell then
-				tableIndex = i;
-			end
-		end
-		if selectedSpell and tableIndex then
-			local name = GetSpellInfo(selectedSpell)
-			E.Options.args.unitframe.args.filters.args.filterGroup.args[name] = {
-				name = name..' ('..selectedSpell..')',
-				type = 'group',
-				get = function(info) return E.global.unitframe.buffwatch.PET[tableIndex][ info[#info] ] end,
-				set = function(info, value) E.global.unitframe.buffwatch.PET[tableIndex][ info[#info] ] = value; UF:Update_AllFrames() end,
-				order = -10,
-				args = {
-					enabled = {
-						name = L['Enable'],
-						order = 1,
-						type = 'toggle',
-					},
-					point = {
-						name = L['Anchor Point'],
-						order = 2,
-						type = 'select',
-						values = {
-							['TOPLEFT'] = 'TOPLEFT',
-							['TOPRIGHT'] = 'TOPRIGHT',
-							['BOTTOMLEFT'] = 'BOTTOMLEFT',
-							['BOTTOMRIGHT'] = 'BOTTOMRIGHT',
-							['LEFT'] = 'LEFT',
-							['RIGHT'] = 'RIGHT',
-							['TOP'] = 'TOP',
-							['BOTTOM'] = 'BOTTOM',
-						}
-					},
-					style = {
-						name = L['Style'],
-						order = 3,
-						type = 'select',	
-						values = {
-							['coloredIcon'] = L['Colored Icon'],
-							['texturedIcon'] = L['Textured Icon'],
-							['text'] = L['Text'],
-						},
-					},					
-					color = {
-						name = L['Color'],
-						type = 'color',
-						order = 4,
-						get = function(info)
-							local t = E.global.unitframe.buffwatch.PET[tableIndex][ info[#info] ]
-							return t.r, t.g, t.b, t.a
-						end,
-						set = function(info, r, g, b)
-							local t = E.global.unitframe.buffwatch.PET[tableIndex][ info[#info] ]
-							t.r, t.g, t.b = r, g, b
-							UF:Update_AllFrames()
-						end,						
-					},
-					anyUnit = {
-						name = L['Any Unit'],
-						order = 5,
-						type = 'toggle',	
-					},
-					onlyShowMissing = {
-						name = L['Show Missing'],
-						order = 6,
-						type = 'toggle',	
-						disabled = function() return E.global.unitframe.buffwatch.PET[tableIndex].style == 'text' end,
-					},
-				},			
-			}
-		end
-	
-		buffs = nil;	
-	elseif selectedFilter == 'Buff Indicator' then
-		local buffs = {};
-		for _, value in pairs(E.global.unitframe.buffwatch[E.myclass]) do
-			tinsert(buffs, value);
-		end		
-		
-		if not E.global.unitframe.buffwatch[E.myclass] then
-			E.global.unitframe.buffwatch[E.myclass] = {};
-		end		
-
-		
-		E.Options.args.unitframe.args.filters.args.filterGroup = {
-			type = 'group',
-			name = selectedFilter,
-			guiInline = true,
-			order = -10,
-			childGroups = "select",
-			args = {
-				addSpellID = {
-					order = 1,
-					name = L['Add SpellID'],
-					desc = L['Add a spell to the filter.'],
-					type = 'input',
-					get = function(info) return "" end,
-					set = function(info, value) 
-						if not tonumber(value) then
-							E:Print(L["Value must be a number"])					
-						elseif not GetSpellInfo(value) then
-							E:Print(L["Not valid spell id"])
-						else	
-							table.insert(E.global.unitframe.buffwatch[E.myclass], {["enabled"] = true, ["id"] = tonumber(value), ["point"] = "TOPRIGHT", ["color"] = {["r"] = 1, ["g"] = 0, ["b"] = 0}, ["anyUnit"] = false})
-							UpdateFilterGroup();
-							UF:Update_AllFrames();
-							selectedSpell = nil;
-						end
-					end,					
-				},
-				removeSpellID = {
-					order = 2,
-					name = L['Remove SpellID'],
-					desc = L['Remove a spell from the filter.'],
-					type = 'input',
-					get = function(info) return "" end,
-					set = function(info, value) 
-						if not tonumber(value) then
-							E:Print(L["Value must be a number"])
-						elseif not GetSpellInfo(value) then
-							E:Print(L["Not valid spell id"])
-						else	
-							local match
-							for x, y in pairs(E.global.unitframe.buffwatch[E.myclass]) do
-								if y["id"] == tonumber(value) then
-									match = y
-									E.global.unitframe.buffwatch[E.myclass][x] = nil
-								end
-							end
-							if match == nil then
-								E:Print(L["Spell not found in list."])
-							else
-								UpdateFilterGroup()							
-							end									
-						end		
-						
-						selectedSpell = nil;
-						UpdateFilterGroup();
-						UF:Update_AllFrames();
-					end,				
-				},
-				selectSpell = {
-					name = L["Select Spell"],
-					type = "select",
-					order = 3,
-					values = function()
-						local values = {};
-						buffs = {};
-						for _, value in pairs(E.global.unitframe.buffwatch[E.myclass]) do
-							tinsert(buffs, value);
-						end			
-						
-						for _, spell in pairs(buffs) do
-							if spell.id then
-								local name = GetSpellInfo(spell.id)
-								values[spell.id] = name;
-							end
-						end
-						return values
-					end,
-					get = function(info) return selectedSpell end,
-					set = function(info, value) 
-						selectedSpell = value;
-						UpdateFilterGroup()
-					end,
-				},				
-			},
-		}
-		
-		local tableIndex
-		for i, spell in pairs(E.global.unitframe.buffwatch[E.myclass]) do
-			if spell.id == selectedSpell then
-				tableIndex = i;
-			end
-		end
-		if selectedSpell and tableIndex then
-			local name = GetSpellInfo(selectedSpell)
-			E.Options.args.unitframe.args.filters.args.filterGroup.args[name] = {
-				name = name..' ('..selectedSpell..')',
-				type = 'group',
-				get = function(info) return E.global.unitframe.buffwatch[E.myclass][tableIndex][ info[#info] ] end,
-				set = function(info, value) E.global.unitframe.buffwatch[E.myclass][tableIndex][ info[#info] ] = value; UF:Update_AllFrames() end,
-				order = -10,
-				args = {
-					enabled = {
-						name = L['Enable'],
-						order = 1,
-						type = 'toggle',
-					},
-					point = {
-						name = L['Anchor Point'],
-						order = 2,
-						type = 'select',
-						values = {
-							['TOPLEFT'] = 'TOPLEFT',
-							['TOPRIGHT'] = 'TOPRIGHT',
-							['BOTTOMLEFT'] = 'BOTTOMLEFT',
-							['BOTTOMRIGHT'] = 'BOTTOMRIGHT',
-							['LEFT'] = 'LEFT',
-							['RIGHT'] = 'RIGHT',
-							['TOP'] = 'TOP',
-							['BOTTOM'] = 'BOTTOM',
-						}
-					},
-					style = {
-						name = L['Style'],
-						order = 3,
-						type = 'select',	
-						values = {
-							['coloredIcon'] = L['Colored Icon'],
-							['texturedIcon'] = L['Textured Icon'],
-							['text'] = L['Text'],
-						},
-					},					
-					color = {
-						name = L['Color'],
-						type = 'color',
-						order = 4,
-						get = function(info)
-							local t = E.global.unitframe.buffwatch[E.myclass][tableIndex][ info[#info] ]
-							return t.r, t.g, t.b, t.a
-						end,
-						set = function(info, r, g, b)
-							local t = E.global.unitframe.buffwatch[E.myclass][tableIndex][ info[#info] ]
-							t.r, t.g, t.b = r, g, b
-							UF:Update_AllFrames()
-						end,						
-					},
-					anyUnit = {
-						name = L['Any Unit'],
-						order = 5,
-						type = 'toggle',	
-					},
-					onlyShowMissing = {
-						name = L['Show Missing'],
-						order = 6,
-						type = 'toggle',	
-						disabled = function() return E.global.unitframe.buffwatch[E.myclass][tableIndex].style == 'text' end,
-					},
-				},			
-			}
-		end
-	
-		buffs = nil;
-	else
-		if not selectedFilter or not E.global.unitframe['aurafilters'][selectedFilter] then
-			E.Options.args.unitframe.args.filters.args.filterGroup = nil
-			E.Options.args.unitframe.args.filters.args.spellGroup = nil
-			return
-		end
-	
-		E.Options.args.unitframe.args.filters.args.filterGroup = {
-			type = 'group',
-			name = selectedFilter,
-			guiInline = true,
-			order = 10,
-			args = {
-				addSpell = {
-					order = 1,
-					name = L['Add Spell'],
-					desc = L['Add a spell to the filter.'],
-					type = 'input',
-					get = function(info) return "" end,
-					set = function(info, value) 
-						if not E.global.unitframe['aurafilters'][selectedFilter]['spells'][value] then
-							E.global.unitframe['aurafilters'][selectedFilter]['spells'][value] = { 
-								['enable'] = true,
-								['priority'] = 0,
-							}
-						end
-						UpdateFilterGroup();
-						UF:Update_AllFrames();
-					end,					
-				},
-				removeSpell = {
-					order = 1,
-					name = L['Remove Spell'],
-					desc = L['Remove a spell from the filter.'],
-					type = 'input',
-					get = function(info) return "" end,
-					set = function(info, value) 
-						if G['unitframe']['aurafilters'][selectedFilter] then
-							if G['unitframe']['aurafilters'][selectedFilter]['spells'][value] then
-								E.global.unitframe['aurafilters'][selectedFilter]['spells'][value].enable = false;
-								E:Print(L['You may not remove a spell from a default filter that is not customly added. Setting spell to false instead.'])
-							else
-								E.global.unitframe['aurafilters'][selectedFilter]['spells'][value] = nil;
-							end
-						else
-							E.global.unitframe['aurafilters'][selectedFilter]['spells'][value] = nil;
-						end
-						
-						UpdateFilterGroup();
-						UF:Update_AllFrames();
-					end,				
-				},		
-				filterType = {
-					order = 4,
-					name = L['Filter Type'],
-					desc = L['Set the filter type, blacklisted filters hide any aura on the like and show all else, whitelisted filters show any aura on the filter and hide all else.'],
-					type = 'select',
-					values = {
-						['Whitelist'] = L['Whitelist'],
-						['Blacklist'] = L['Blacklist'],
-					},
-					get = function() return E.global.unitframe['aurafilters'][selectedFilter].type end,
-					set = function(info, value) E.global.unitframe['aurafilters'][selectedFilter].type = value; UF:Update_AllFrames(); end,
-				},	
-				selectSpell = {
-					name = L["Select Spell"],
-					type = 'select',
-					order = -9,
-					guiInline = true,
-					get = function(info) return selectedSpell end,
-					set = function(info, value) selectedSpell = value; UpdateFilterGroup() end,							
-					values = function()
-						local filters = {}
-						filters[''] = NONE
-						for filter in pairs(E.global.unitframe['aurafilters'][selectedFilter]['spells']) do
-							filters[filter] = filter
-						end
-
-						return filters
-					end,
-				},			
-			},	
-		}
-	
-		if not selectedSpell or not E.global.unitframe['aurafilters'][selectedFilter]['spells'][selectedSpell] then
-			E.Options.args.unitframe.args.filters.args.spellGroup = nil
-			return
-		end
-		
-		E.Options.args.unitframe.args.filters.args.spellGroup = {
-			type = "group",
-			name = selectedSpell,
-			order = 15,
-			guiInline = true,
-			args = {
-				enable = {
-					name = L["Enable"],
-					type = "toggle",
-					get = function() return E.global.unitframe['aurafilters'][selectedFilter]['spells'][selectedSpell].enable end,
-					set = function(info, value) E.global.unitframe['aurafilters'][selectedFilter]['spells'][selectedSpell].enable = value; UpdateFilterGroup(); UF:Update_AllFrames(); end
-				},
-				priority = {
-					name = L["Priority"],
-					type = "range",
-					get = function() return E.global.unitframe['aurafilters'][selectedFilter]['spells'][selectedSpell].priority end,
-					set = function(info, value) E.global.unitframe['aurafilters'][selectedFilter]['spells'][selectedSpell].priority = value; UpdateFilterGroup(); UF:Update_AllFrames(); end,
-					min = 0, max = 10, step = 1,
-					desc = L["Set the priority order of the spell, please note that prioritys are only used for the raid debuff module, not the standard buff/debuff module. If you want to disable set to zero."],
-				},			
-			},
-		}
-		
-	end
-	
-	 UF:Update_AllFrames();
 end
 
 E.Options.args.unitframe = {
@@ -1117,103 +509,8 @@ E.Options.args.unitframe = {
 				},
 			},
 		},
-		filters = {
-			type = 'group',
-			name = L['Filters'],
-			order = -10, --Always Last Hehehe
-			args = {
-				createFilter = {
-					order = 1,
-					name = L['Create Filter'],
-					desc = L['Create a filter, once created a filter can be set inside the buffs/debuffs section of each unit.'],
-					type = 'input',
-					get = function(info) return "" end,
-					set = function(info, value) 
-						E.global.unitframe['aurafilters'][value] = {};
-						E.global.unitframe['aurafilters'][value]['spells'] = {};
-					end,					
-				},
-				deleteFilter = {
-					type = 'input',
-					order = 2,
-					name = L['Delete Filter'],
-					desc = L['Delete a created filter, you cannot delete pre-existing filters, only custom ones.'],
-					get = function(info) return "" end,
-					set = function(info, value) 
-						if G['unitframe']['aurafilters'][value] then
-							E:Print(L["You can't remove a pre-existing filter."])
-						else
-							E.global.unitframe['aurafilters'][value] = nil;
-							selectedFilter = nil;
-							selectedSpell = nil;
-							E.Options.args.unitframe.args.filters.args.filterGroup = nil;
-						end
-					end,				
-				},
-				selectFilter = {
-					order = 3,
-					type = 'select',
-					name = L['Select Filter'],
-					get = function(info) return selectedFilter end,
-					set = function(info, value) if value == '' then selectedFilter = nil; selectedSpell = nil; else selectedFilter = value end; UpdateFilterGroup() end,							
-					values = function()
-						filters = {}
-						filters[''] = NONE
-						for filter in pairs(E.global.unitframe['aurafilters']) do
-							filters[filter] = filter
-						end
-						
-						filters['Buff Indicator'] = 'Buff Indicator'
-						filters['Buff Indicator (Pet)'] = 'Buff Indicator (Pet)'
-						filters['AuraBar Colors'] = 'AuraBar Colors'
-						filters['Blacklist (Strict)'] = 'Blacklist (Strict)'
-						return filters
-					end,
-				},
-			},
 		},
-	},
 }
-
-
-local fillValues = {
-	['fill'] = L['Filled'],
-	['spaced'] = L['Spaced'],
-};
-
-local positionValues = {
-	TOPLEFT = 'TOPLEFT',
-	LEFT = 'LEFT',
-	BOTTOMLEFT = 'BOTTOMLEFT',
-	RIGHT = 'RIGHT',
-	TOPRIGHT = 'TOPRIGHT',
-	BOTTOMRIGHT = 'BOTTOMRIGHT',
-	CENTER = 'CENTER',
-	TOP = 'TOP',
-	BOTTOM = 'BOTTOM',
-};
-
-local auraAnchors = {
-	TOPLEFT = 'TOPLEFT',
-	LEFT = 'LEFT',
-	BOTTOMLEFT = 'BOTTOMLEFT',
-	RIGHT = 'RIGHT',
-	TOPRIGHT = 'TOPRIGHT',
-	BOTTOMRIGHT = 'BOTTOMRIGHT',
-};
-
-local petAnchors = {
-	TOPLEFT = 'TOPLEFT',
-	LEFT = 'LEFT',
-	BOTTOMLEFT = 'BOTTOMLEFT',
-	RIGHT = 'RIGHT',
-	TOPRIGHT = 'TOPRIGHT',
-	BOTTOMRIGHT = 'BOTTOMRIGHT',
-	TOP = 'TOP',
-	BOTTOM = 'BOTTOM',
-};
-
-local filters = {};
 
 --Player
 E.Options.args.unitframe.args.player = {
@@ -1596,8 +893,8 @@ E.Options.args.unitframe.args.player = {
 						playerOnly = {
 							order = 10,
 							type = 'toggle',
-							name = L["Allow Personal Auras"],
-							desc = L["Allow Personal Auras"],
+							name = L["Block Non-Personal Auras"],
+							desc = L["Block Non-Personal Auras"],
 						},
 						useBlacklist = {
 							order = 11,
@@ -1608,8 +905,8 @@ E.Options.args.unitframe.args.player = {
 						useWhitelist = {
 							order = 12,
 							type = 'toggle',
-							name = L["Allow Whitelisted Auras"],
-							desc = L["Allow Whitelisted Auras"],
+							name = L["Block Non-Whitelisted Auras"],
+							desc = L["Block Non-Whitelisted Auras"],
 						},
 						noDuration = {
 							order = 13,
@@ -1620,8 +917,8 @@ E.Options.args.unitframe.args.player = {
 						onlyDispellable = {
 							order = 13,
 							type = 'toggle',
-							name = L['Allow Dispellable Auras'],
-							desc = L['Allow Dispellable Auras'],
+							name = L['Block Non-Dispellable Auras'],
+							desc = L['Block Non-Dispellable Auras'],
 						},
 						noConsolidated = {
 							order = 14,
@@ -1728,8 +1025,8 @@ E.Options.args.unitframe.args.player = {
 						playerOnly = {
 							order = 10,
 							type = 'toggle',
-							name = L["Allow Personal Auras"],
-							desc = L["Allow Personal Auras"],
+							name = L["Block Non-Personal Auras"],
+							desc = L["Block Non-Personal Auras"],
 						},
 						useBlacklist = {
 							order = 11,
@@ -1740,8 +1037,8 @@ E.Options.args.unitframe.args.player = {
 						useWhitelist = {
 							order = 12,
 							type = 'toggle',
-							name = L["Allow Whitelisted Auras"],
-							desc = L["Allow Whitelisted Auras"],
+							name = L["Block Non-Whitelisted Auras"],
+							desc = L["Block Non-Whitelisted Auras"],
 						},
 						noDuration = {
 							order = 13,
@@ -1752,8 +1049,8 @@ E.Options.args.unitframe.args.player = {
 						onlyDispellable = {
 							order = 13,
 							type = 'toggle',
-							name = L['Allow Dispellable Auras'],
-							desc = L['Allow Dispellable Auras'],
+							name = L['Block Non-Dispellable Auras'],
+							desc = L['Block Non-Dispellable Auras'],
 						},
 						useFilter = {
 							order = 15,
@@ -1928,8 +1225,8 @@ E.Options.args.unitframe.args.player = {
 						playerOnly = {
 							order = 10,
 							type = 'toggle',
-							name = L["Allow Personal Auras"],
-							desc = L["Allow Personal Auras"],
+							name = L["Block Non-Personal Auras"],
+							desc = L["Block Non-Personal Auras"],
 						},
 						useBlacklist = {
 							order = 11,
@@ -1940,8 +1237,8 @@ E.Options.args.unitframe.args.player = {
 						useWhitelist = {
 							order = 12,
 							type = 'toggle',
-							name = L["Allow Whitelisted Auras"],
-							desc = L["Allow Whitelisted Auras"],
+							name = L["Block Non-Whitelisted Auras"],
+							desc = L["Block Non-Whitelisted Auras"],
 						},
 						noDuration = {
 							order = 13,
@@ -1952,8 +1249,8 @@ E.Options.args.unitframe.args.player = {
 						onlyDispellable = {
 							order = 13,
 							type = 'toggle',
-							name = L['Allow Dispellable Auras'],
-							desc = L['Allow Dispellable Auras'],
+							name = L['Block Non-Dispellable Auras'],
+							desc = L['Block Non-Dispellable Auras'],
 						},
 						noConsolidated = {
 							order = 14,
@@ -1999,26 +1296,6 @@ E.Options.args.unitframe.args.player = {
 				},
 			},
 		},	
-		vengeance = {
-			order = 1400,
-			type = 'group',
-			name = L['Vengeance'],
-			get = function(info) return E.db.unitframe.units['player']['vengeance'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.units['player']['vengeance'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
-			args = {
-				enable = {
-					type = 'toggle',
-					order = 1,
-					name = L['Enable'],
-				},
-				width = {
-					order = 2,
-					name = L['Width'],
-					type = 'range',
-					min = 5, max = 25, step = 1,
-				},			
-			},
-		},		
 		raidicon = {
 			order = 2000,
 			type = 'group',
@@ -2403,7 +1680,7 @@ E.Options.args.unitframe.args.target = {
 							order = 10,
 							guiInline = true,
 							type = 'group',
-							name = L["Allow Personal Auras"],
+							name = L["Block Non-Personal Auras"],
 							args = {
 								friendly = {
 									order = 2,
@@ -2451,7 +1728,7 @@ E.Options.args.unitframe.args.target = {
 							order = 12,
 							guiInline = true,
 							type = 'group',
-							name = L["Allow Whitelisted Auras"],
+							name = L["Block Non-Whitelisted Auras"],
 							args = {
 								friendly = {
 									order = 2,
@@ -2499,7 +1776,7 @@ E.Options.args.unitframe.args.target = {
 							order = 13,
 							guiInline = true,
 							type = 'group',
-							name = L['Allow Dispellable Auras'],
+							name = L['Block Non-Dispellable Auras'],
 							args = {
 								friendly = {
 									order = 2,
@@ -2644,7 +1921,7 @@ E.Options.args.unitframe.args.target = {
 							order = 10,
 							guiInline = true,
 							type = 'group',
-							name = L["Allow Personal Auras"],
+							name = L["Block Non-Personal Auras"],
 							args = {
 								friendly = {
 									order = 2,
@@ -2692,7 +1969,7 @@ E.Options.args.unitframe.args.target = {
 							order = 12,
 							guiInline = true,
 							type = 'group',
-							name = L["Allow Whitelisted Auras"],
+							name = L["Block Non-Whitelisted Auras"],
 							args = {
 								friendly = {
 									order = 2,
@@ -2740,7 +2017,7 @@ E.Options.args.unitframe.args.target = {
 							order = 13,
 							guiInline = true,
 							type = 'group',
-							name = L['Allow Dispellable Auras'],
+							name = L['Block Non-Dispellable Auras'],
 							args = {
 								friendly = {
 									order = 2,
@@ -2920,7 +2197,7 @@ E.Options.args.unitframe.args.target = {
 							order = 10,
 							guiInline = true,
 							type = 'group',
-							name = L["Allow Personal Auras"],
+							name = L["Block Non-Personal Auras"],
 							args = {
 								friendly = {
 									order = 2,
@@ -2968,7 +2245,7 @@ E.Options.args.unitframe.args.target = {
 							order = 12,
 							guiInline = true,
 							type = 'group',
-							name = L["Allow Whitelisted Auras"],
+							name = L["Block Non-Whitelisted Auras"],
 							args = {
 								friendly = {
 									order = 2,
@@ -3016,7 +2293,7 @@ E.Options.args.unitframe.args.target = {
 							order = 13,
 							guiInline = true,
 							type = 'group',
-							name = L['Allow Dispellable Auras'],
+							name = L['Block Non-Dispellable Auras'],
 							args = {
 								friendly = {
 									order = 2,
@@ -3413,7 +2690,7 @@ E.Options.args.unitframe.args.targettarget = {
 							order = 10,
 							guiInline = true,
 							type = 'group',
-							name = L["Allow Personal Auras"],
+							name = L["Block Non-Personal Auras"],
 							args = {
 								friendly = {
 									order = 2,
@@ -3461,7 +2738,7 @@ E.Options.args.unitframe.args.targettarget = {
 							order = 12,
 							guiInline = true,
 							type = 'group',
-							name = L["Allow Whitelisted Auras"],
+							name = L["Block Non-Whitelisted Auras"],
 							args = {
 								friendly = {
 									order = 2,
@@ -3509,7 +2786,7 @@ E.Options.args.unitframe.args.targettarget = {
 							order = 13,
 							guiInline = true,
 							type = 'group',
-							name = L['Allow Dispellable Auras'],
+							name = L['Block Non-Dispellable Auras'],
 							args = {
 								friendly = {
 									order = 2,
@@ -3653,7 +2930,7 @@ E.Options.args.unitframe.args.targettarget = {
 							order = 10,
 							guiInline = true,
 							type = 'group',
-							name = L["Allow Personal Auras"],
+							name = L["Block Non-Personal Auras"],
 							args = {
 								friendly = {
 									order = 2,
@@ -3701,7 +2978,7 @@ E.Options.args.unitframe.args.targettarget = {
 							order = 12,
 							guiInline = true,
 							type = 'group',
-							name = L["Allow Whitelisted Auras"],
+							name = L["Block Non-Whitelisted Auras"],
 							args = {
 								friendly = {
 									order = 2,
@@ -3749,7 +3026,7 @@ E.Options.args.unitframe.args.targettarget = {
 							order = 13,
 							guiInline = true,
 							type = 'group',
-							name = L['Allow Dispellable Auras'],
+							name = L['Block Non-Dispellable Auras'],
 							args = {
 								friendly = {
 									order = 2,
@@ -4119,7 +3396,7 @@ E.Options.args.unitframe.args.focus = {
 							order = 10,
 							guiInline = true,
 							type = 'group',
-							name = L["Allow Personal Auras"],
+							name = L["Block Non-Personal Auras"],
 							args = {
 								friendly = {
 									order = 2,
@@ -4167,7 +3444,7 @@ E.Options.args.unitframe.args.focus = {
 							order = 12,
 							guiInline = true,
 							type = 'group',
-							name = L["Allow Whitelisted Auras"],
+							name = L["Block Non-Whitelisted Auras"],
 							args = {
 								friendly = {
 									order = 2,
@@ -4215,7 +3492,7 @@ E.Options.args.unitframe.args.focus = {
 							order = 13,
 							guiInline = true,
 							type = 'group',
-							name = L['Allow Dispellable Auras'],
+							name = L['Block Non-Dispellable Auras'],
 							args = {
 								friendly = {
 									order = 2,
@@ -4359,7 +3636,7 @@ E.Options.args.unitframe.args.focus = {
 							order = 10,
 							guiInline = true,
 							type = 'group',
-							name = L["Allow Personal Auras"],
+							name = L["Block Non-Personal Auras"],
 							args = {
 								friendly = {
 									order = 2,
@@ -4407,7 +3684,7 @@ E.Options.args.unitframe.args.focus = {
 							order = 12,
 							guiInline = true,
 							type = 'group',
-							name = L["Allow Whitelisted Auras"],
+							name = L["Block Non-Whitelisted Auras"],
 							args = {
 								friendly = {
 									order = 2,
@@ -4455,7 +3732,7 @@ E.Options.args.unitframe.args.focus = {
 							order = 13,
 							guiInline = true,
 							type = 'group',
-							name = L['Allow Dispellable Auras'],
+							name = L['Block Non-Dispellable Auras'],
 							args = {
 								friendly = {
 									order = 2,
@@ -4606,7 +3883,7 @@ E.Options.args.unitframe.args.focus = {
 							order = 10,
 							guiInline = true,
 							type = 'group',
-							name = L["Allow Personal Auras"],
+							name = L["Block Non-Personal Auras"],
 							args = {
 								friendly = {
 									order = 2,
@@ -4654,7 +3931,7 @@ E.Options.args.unitframe.args.focus = {
 							order = 12,
 							guiInline = true,
 							type = 'group',
-							name = L["Allow Whitelisted Auras"],
+							name = L["Block Non-Whitelisted Auras"],
 							args = {
 								friendly = {
 									order = 2,
@@ -4702,7 +3979,7 @@ E.Options.args.unitframe.args.focus = {
 							order = 13,
 							guiInline = true,
 							type = 'group',
-							name = L['Allow Dispellable Auras'],
+							name = L['Block Non-Dispellable Auras'],
 							args = {
 								friendly = {
 									order = 2,
@@ -5100,7 +4377,7 @@ E.Options.args.unitframe.args.focustarget = {
 							order = 10,
 							guiInline = true,
 							type = 'group',
-							name = L["Allow Personal Auras"],
+							name = L["Block Non-Personal Auras"],
 							args = {
 								friendly = {
 									order = 2,
@@ -5148,7 +4425,7 @@ E.Options.args.unitframe.args.focustarget = {
 							order = 12,
 							guiInline = true,
 							type = 'group',
-							name = L["Allow Whitelisted Auras"],
+							name = L["Block Non-Whitelisted Auras"],
 							args = {
 								friendly = {
 									order = 2,
@@ -5196,7 +4473,7 @@ E.Options.args.unitframe.args.focustarget = {
 							order = 13,
 							guiInline = true,
 							type = 'group',
-							name = L['Allow Dispellable Auras'],
+							name = L['Block Non-Dispellable Auras'],
 							args = {
 								friendly = {
 									order = 2,
@@ -5340,7 +4617,7 @@ E.Options.args.unitframe.args.focustarget = {
 							order = 10,
 							guiInline = true,
 							type = 'group',
-							name = L["Allow Personal Auras"],
+							name = L["Block Non-Personal Auras"],
 							args = {
 								friendly = {
 									order = 2,
@@ -5388,7 +4665,7 @@ E.Options.args.unitframe.args.focustarget = {
 							order = 12,
 							guiInline = true,
 							type = 'group',
-							name = L["Allow Whitelisted Auras"],
+							name = L["Block Non-Whitelisted Auras"],
 							args = {
 								friendly = {
 									order = 2,
@@ -5436,7 +4713,7 @@ E.Options.args.unitframe.args.focustarget = {
 							order = 13,
 							guiInline = true,
 							type = 'group',
-							name = L['Allow Dispellable Auras'],
+							name = L['Block Non-Dispellable Auras'],
 							args = {
 								friendly = {
 									order = 2,
@@ -5795,8 +5072,8 @@ E.Options.args.unitframe.args.pet = {
 						playerOnly = {
 							order = 10,
 							type = 'toggle',
-							name = L["Allow Personal Auras"],
-							desc = L["Allow Personal Auras"],
+							name = L["Block Non-Personal Auras"],
+							desc = L["Block Non-Personal Auras"],
 						},
 						useBlacklist = {
 							order = 11,
@@ -5807,8 +5084,8 @@ E.Options.args.unitframe.args.pet = {
 						useWhitelist = {
 							order = 12,
 							type = 'toggle',
-							name = L["Allow Whitelisted Auras"],
-							desc = L["Allow Whitelisted Auras"],
+							name = L["Block Non-Whitelisted Auras"],
+							desc = L["Block Non-Whitelisted Auras"],
 						},
 						noDuration = {
 							order = 13,
@@ -5819,8 +5096,8 @@ E.Options.args.unitframe.args.pet = {
 						onlyDispellable = {
 							order = 13,
 							type = 'toggle',
-							name = L['Allow Dispellable Auras'],
-							desc = L['Allow Dispellable Auras'],
+							name = L['Block Non-Dispellable Auras'],
+							desc = L['Block Non-Dispellable Auras'],
 						},
 						noConsolidated = {
 							order = 14,
@@ -5927,8 +5204,8 @@ E.Options.args.unitframe.args.pet = {
 						playerOnly = {
 							order = 10,
 							type = 'toggle',
-							name = L["Allow Personal Auras"],
-							desc = L["Allow Personal Auras"],
+							name = L["Block Non-Personal Auras"],
+							desc = L["Block Non-Personal Auras"],
 						},
 						useBlacklist = {
 							order = 11,
@@ -5939,8 +5216,8 @@ E.Options.args.unitframe.args.pet = {
 						useWhitelist = {
 							order = 12,
 							type = 'toggle',
-							name = L["Allow Whitelisted Auras"],
-							desc = L["Allow Whitelisted Auras"],
+							name = L["Block Non-Whitelisted Auras"],
+							desc = L["Block Non-Whitelisted Auras"],
 						},
 						noDuration = {
 							order = 13,
@@ -5951,8 +5228,8 @@ E.Options.args.unitframe.args.pet = {
 						onlyDispellable = {
 							order = 13,
 							type = 'toggle',
-							name = L['Allow Dispellable Auras'],
-							desc = L['Allow Dispellable Auras'],
+							name = L['Block Non-Dispellable Auras'],
+							desc = L['Block Non-Dispellable Auras'],
 						},
 						useFilter = {
 							order = 15,
@@ -6277,7 +5554,7 @@ E.Options.args.unitframe.args.pettarget = {
 							order = 10,
 							guiInline = true,
 							type = 'group',
-							name = L["Allow Personal Auras"],
+							name = L["Block Non-Personal Auras"],
 							args = {
 								friendly = {
 									order = 2,
@@ -6325,7 +5602,7 @@ E.Options.args.unitframe.args.pettarget = {
 							order = 12,
 							guiInline = true,
 							type = 'group',
-							name = L["Allow Whitelisted Auras"],
+							name = L["Block Non-Whitelisted Auras"],
 							args = {
 								friendly = {
 									order = 2,
@@ -6373,7 +5650,7 @@ E.Options.args.unitframe.args.pettarget = {
 							order = 13,
 							guiInline = true,
 							type = 'group',
-							name = L['Allow Dispellable Auras'],
+							name = L['Block Non-Dispellable Auras'],
 							args = {
 								friendly = {
 									order = 2,
@@ -6517,7 +5794,7 @@ E.Options.args.unitframe.args.pettarget = {
 							order = 10,
 							guiInline = true,
 							type = 'group',
-							name = L["Allow Personal Auras"],
+							name = L["Block Non-Personal Auras"],
 							args = {
 								friendly = {
 									order = 2,
@@ -6565,7 +5842,7 @@ E.Options.args.unitframe.args.pettarget = {
 							order = 12,
 							guiInline = true,
 							type = 'group',
-							name = L["Allow Whitelisted Auras"],
+							name = L["Block Non-Whitelisted Auras"],
 							args = {
 								friendly = {
 									order = 2,
@@ -6613,7 +5890,7 @@ E.Options.args.unitframe.args.pettarget = {
 							order = 13,
 							guiInline = true,
 							type = 'group',
-							name = L['Allow Dispellable Auras'],
+							name = L['Block Non-Dispellable Auras'],
 							args = {
 								friendly = {
 									order = 2,
@@ -6983,8 +6260,8 @@ E.Options.args.unitframe.args.boss = {
 						playerOnly = {
 							order = 10,
 							type = 'toggle',
-							name = L["Allow Personal Auras"],
-							desc = L["Allow Personal Auras"],
+							name = L["Block Non-Personal Auras"],
+							desc = L["Block Non-Personal Auras"],
 						},
 						useBlacklist = {
 							order = 11,
@@ -6995,8 +6272,8 @@ E.Options.args.unitframe.args.boss = {
 						useWhitelist = {
 							order = 12,
 							type = 'toggle',
-							name = L["Allow Whitelisted Auras"],
-							desc = L["Allow Whitelisted Auras"],
+							name = L["Block Non-Whitelisted Auras"],
+							desc = L["Block Non-Whitelisted Auras"],
 						},
 						noDuration = {
 							order = 13,
@@ -7007,8 +6284,8 @@ E.Options.args.unitframe.args.boss = {
 						onlyDispellable = {
 							order = 13,
 							type = 'toggle',
-							name = L['Allow Dispellable Auras'],
-							desc = L['Allow Dispellable Auras'],
+							name = L['Block Non-Dispellable Auras'],
+							desc = L['Block Non-Dispellable Auras'],
 						},
 						noConsolidated = {
 							order = 14,
@@ -7115,8 +6392,8 @@ E.Options.args.unitframe.args.boss = {
 						playerOnly = {
 							order = 10,
 							type = 'toggle',
-							name = L["Allow Personal Auras"],
-							desc = L["Allow Personal Auras"],
+							name = L["Block Non-Personal Auras"],
+							desc = L["Block Non-Personal Auras"],
 						},
 						useBlacklist = {
 							order = 11,
@@ -7127,8 +6404,8 @@ E.Options.args.unitframe.args.boss = {
 						useWhitelist = {
 							order = 12,
 							type = 'toggle',
-							name = L["Allow Whitelisted Auras"],
-							desc = L["Allow Whitelisted Auras"],
+							name = L["Block Non-Whitelisted Auras"],
+							desc = L["Block Non-Whitelisted Auras"],
 						},
 						noDuration = {
 							order = 13,
@@ -7139,8 +6416,8 @@ E.Options.args.unitframe.args.boss = {
 						onlyDispellable = {
 							order = 13,
 							type = 'toggle',
-							name = L['Allow Dispellable Auras'],
-							desc = L['Allow Dispellable Auras'],
+							name = L['Block Non-Dispellable Auras'],
+							desc = L['Block Non-Dispellable Auras'],
 						},
 						useFilter = {
 							order = 15,
@@ -7548,7 +6825,7 @@ E.Options.args.unitframe.args.arena = {
 							order = 10,
 							guiInline = true,
 							type = 'group',
-							name = L["Allow Personal Auras"],
+							name = L["Block Non-Personal Auras"],
 							args = {
 								friendly = {
 									order = 2,
@@ -7596,7 +6873,7 @@ E.Options.args.unitframe.args.arena = {
 							order = 12,
 							guiInline = true,
 							type = 'group',
-							name = L["Allow Whitelisted Auras"],
+							name = L["Block Non-Whitelisted Auras"],
 							args = {
 								friendly = {
 									order = 2,
@@ -7644,7 +6921,7 @@ E.Options.args.unitframe.args.arena = {
 							order = 13,
 							guiInline = true,
 							type = 'group',
-							name = L['Allow Dispellable Auras'],
+							name = L['Block Non-Dispellable Auras'],
 							args = {
 								friendly = {
 									order = 2,
@@ -7789,7 +7066,7 @@ E.Options.args.unitframe.args.arena = {
 							order = 10,
 							guiInline = true,
 							type = 'group',
-							name = L["Allow Personal Auras"],
+							name = L["Block Non-Personal Auras"],
 							args = {
 								friendly = {
 									order = 2,
@@ -7837,7 +7114,7 @@ E.Options.args.unitframe.args.arena = {
 							order = 12,
 							guiInline = true,
 							type = 'group',
-							name = L["Allow Whitelisted Auras"],
+							name = L["Block Non-Whitelisted Auras"],
 							args = {
 								friendly = {
 									order = 2,
@@ -7885,7 +7162,7 @@ E.Options.args.unitframe.args.arena = {
 							order = 13,
 							guiInline = true,
 							type = 'group',
-							name = L['Allow Dispellable Auras'],
+							name = L['Block Non-Dispellable Auras'],
 							args = {
 								friendly = {
 									order = 2,
@@ -8102,26 +7379,19 @@ E.Options.args.unitframe.args.party = {
 					desc = L['The maximum number of units that will be displayed in a single column.'],
 					min = 1, max = 40, step = 1,
 				},
-				columnSpacing = {
-					order = 8,
-					type = 'range',
-					name = L['Column Spacing'],
-					desc = L['The amount of space (in pixels) between the columns.'],
-					min = 0, max = 10, step = 1,
-				},		
 				xOffset = {
 					order = 9,
 					type = 'range',
 					name = L['xOffset'],
 					desc = L['An X offset (in pixels) to be used when anchoring new frames.'],
-					min = -15, max = 15, step = 1,		
+					min = -50, max = 50, step = 1,		
 				},
 				yOffset = {
 					order = 10,
 					type = 'range',
 					name = L['yOffset'],
 					desc = L['An Y offset (in pixels) to be used when anchoring new frames.'],
-					min = -15, max = 15, step = 1,		
+					min = -50, max = 50, step = 1,		
 				},		
 				showParty = {
 					order = 11,
@@ -8410,8 +7680,8 @@ E.Options.args.unitframe.args.party = {
 						playerOnly = {
 							order = 10,
 							type = 'toggle',
-							name = L["Allow Personal Auras"],
-							desc = L["Allow Personal Auras"],
+							name = L["Block Non-Personal Auras"],
+							desc = L["Block Non-Personal Auras"],
 						},
 						useBlacklist = {
 							order = 11,
@@ -8422,8 +7692,8 @@ E.Options.args.unitframe.args.party = {
 						useWhitelist = {
 							order = 12,
 							type = 'toggle',
-							name = L["Allow Whitelisted Auras"],
-							desc = L["Allow Whitelisted Auras"],
+							name = L["Block Non-Whitelisted Auras"],
+							desc = L["Block Non-Whitelisted Auras"],
 						},
 						noDuration = {
 							order = 13,
@@ -8434,8 +7704,8 @@ E.Options.args.unitframe.args.party = {
 						onlyDispellable = {
 							order = 13,
 							type = 'toggle',
-							name = L['Allow Dispellable Auras'],
-							desc = L['Allow Dispellable Auras'],
+							name = L['Block Non-Dispellable Auras'],
+							desc = L['Block Non-Dispellable Auras'],
 						},
 						noConsolidated = {
 							order = 14,
@@ -8542,8 +7812,8 @@ E.Options.args.unitframe.args.party = {
 						playerOnly = {
 							order = 10,
 							type = 'toggle',
-							name = L["Allow Personal Auras"],
-							desc = L["Allow Personal Auras"],
+							name = L["Block Non-Personal Auras"],
+							desc = L["Block Non-Personal Auras"],
 						},
 						useBlacklist = {
 							order = 11,
@@ -8554,8 +7824,8 @@ E.Options.args.unitframe.args.party = {
 						useWhitelist = {
 							order = 12,
 							type = 'toggle',
-							name = L["Allow Whitelisted Auras"],
-							desc = L["Allow Whitelisted Auras"],
+							name = L["Block Non-Whitelisted Auras"],
+							desc = L["Block Non-Whitelisted Auras"],
 						},
 						noDuration = {
 							order = 13,
@@ -8566,8 +7836,8 @@ E.Options.args.unitframe.args.party = {
 						onlyDispellable = {
 							order = 13,
 							type = 'toggle',
-							name = L['Allow Dispellable Auras'],
-							desc = L['Allow Dispellable Auras'],
+							name = L['Block Non-Dispellable Auras'],
+							desc = L['Block Non-Dispellable Auras'],
 						},
 						useFilter = {
 							order = 15,
@@ -8868,26 +8138,19 @@ for i=10, 40, 15 do
 						desc = L['The maximum number of units that will be displayed in a single column.'],
 						min = 1, max = 40, step = 1,
 					},
-					columnSpacing = {
-						order = 8,
-						type = 'range',
-						name = L['Column Spacing'],
-						desc = L['The amount of space (in pixels) between the columns.'],
-						min = 0, max = 10, step = 1,
-					},		
 					xOffset = {
 						order = 9,
 						type = 'range',
 						name = L['xOffset'],
 						desc = L['An X offset (in pixels) to be used when anchoring new frames.'],
-						min = -15, max = 15, step = 1,		
+						min = -50, max = 50, step = 1,		
 					},
 					yOffset = {
 						order = 10,
 						type = 'range',
 						name = L['yOffset'],
 						desc = L['An Y offset (in pixels) to be used when anchoring new frames.'],
-						min = -15, max = 15, step = 1,		
+						min = -50, max = 50, step = 1,		
 					},		
 					showParty = {
 						order = 11,
@@ -9176,8 +8439,8 @@ for i=10, 40, 15 do
 						playerOnly = {
 							order = 10,
 							type = 'toggle',
-							name = L["Allow Personal Auras"],
-							desc = L["Allow Personal Auras"],
+							name = L["Block Non-Personal Auras"],
+							desc = L["Block Non-Personal Auras"],
 						},
 						useBlacklist = {
 							order = 11,
@@ -9188,8 +8451,8 @@ for i=10, 40, 15 do
 						useWhitelist = {
 							order = 12,
 							type = 'toggle',
-							name = L["Allow Whitelisted Auras"],
-							desc = L["Allow Whitelisted Auras"],
+							name = L["Block Non-Whitelisted Auras"],
+							desc = L["Block Non-Whitelisted Auras"],
 						},
 						noDuration = {
 							order = 13,
@@ -9200,8 +8463,8 @@ for i=10, 40, 15 do
 						onlyDispellable = {
 							order = 13,
 							type = 'toggle',
-							name = L['Allow Dispellable Auras'],
-							desc = L['Allow Dispellable Auras'],
+							name = L['Block Non-Dispellable Auras'],
+							desc = L['Block Non-Dispellable Auras'],
 						},
 						noConsolidated = {
 							order = 14,
@@ -9308,8 +8571,8 @@ for i=10, 40, 15 do
 						playerOnly = {
 							order = 10,
 							type = 'toggle',
-							name = L["Allow Personal Auras"],
-							desc = L["Allow Personal Auras"],
+							name = L["Block Non-Personal Auras"],
+							desc = L["Block Non-Personal Auras"],
 						},
 						useBlacklist = {
 							order = 11,
@@ -9320,8 +8583,8 @@ for i=10, 40, 15 do
 						useWhitelist = {
 							order = 12,
 							type = 'toggle',
-							name = L["Allow Whitelisted Auras"],
-							desc = L["Allow Whitelisted Auras"],
+							name = L["Block Non-Whitelisted Auras"],
+							desc = L["Block Non-Whitelisted Auras"],
 						},
 						noDuration = {
 							order = 13,
@@ -9332,8 +8595,8 @@ for i=10, 40, 15 do
 						onlyDispellable = {
 							order = 13,
 							type = 'toggle',
-							name = L['Allow Dispellable Auras'],
-							desc = L['Allow Dispellable Auras'],
+							name = L['Block Non-Dispellable Auras'],
+							desc = L['Block Non-Dispellable Auras'],
 						},
 						useFilter = {
 							order = 15,
@@ -9446,7 +8709,19 @@ for i=10, 40, 15 do
 						name = L['Font Size'],
 						order = 3,
 						min = 7, max = 22, step = 1,
-					},				
+					},	
+					xOffset = {
+						order = 4,
+						type = 'range',
+						name = L['xOffset'],
+						min = -300, max = 300, step = 1,
+					},
+					yOffset = {
+						order = 5,
+						type = 'range',
+						name = L['yOffset'],
+						min = -300, max = 300, step = 1,
+					},		
 				},
 			},
 			raidicon = {
@@ -9461,7 +8736,7 @@ for i=10, 40, 15 do
 						order = 1,
 						name = L['Enable'],
 					},	
-					position = {
+					attachTo = {
 						type = 'select',
 						order = 2,
 						name = L['Position'],

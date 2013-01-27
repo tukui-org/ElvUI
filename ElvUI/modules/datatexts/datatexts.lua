@@ -2,16 +2,15 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 local DT = E:NewModule('DataTexts', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
 local LDB = LibStub:GetLibrary("LibDataBroker-1.1");
 local LSM = LibStub("LibSharedMedia-3.0")
+local TT = E:GetModule("Tooltip")
+local len = string.len
 
 function DT:Initialize()
 	--if E.db["datatexts"].enable ~= true then return end
 	E.DataTexts = DT
 	
-	if E.db.datatexts.panels.spec1 then
-		E:CopyTable(E.db.datatexts.panels, E.db.datatexts.panels.spec1)
-		E.db.datatexts.panels.spec1 = nil;
-		E.db.datatexts.panels.spec2 = nil;
-	end	
+	self.tooltip = CreateFrame("GameTooltip", "DatatextTooltip", E.UIParent, "GameTooltipTemplate")
+	TT:HookScript(self.tooltip, 'OnShow', 'SetStyle')
 	
 	self:RegisterLDB()
 	self:LoadDataTexts()
@@ -38,8 +37,8 @@ function DT:RegisterLDB()
 		if obj.OnTooltipShow then
 			function OnEnter(self)
 				DT:SetupTooltip(self)
-				obj.OnTooltipShow(GameTooltip)
-				GameTooltip:Show()
+				obj.OnTooltipShow(DT.tooltip)
+				DT.tooltip:Show()
 			end
 		end
 		
@@ -47,14 +46,14 @@ function DT:RegisterLDB()
 			function OnEnter(self)
 				DT:SetupTooltip(self)
 				obj.OnEnter(self)
-				GameTooltip:Show()
+				DT.tooltip:Show()
 			end		
 		end
 
 		if obj.OnLeave then
 			function OnLeave(self)
 				obj.OnLeave(self)
-				GameTooltip:Hide()
+				DT.tooltip:Hide()
 			end		
 		end
 
@@ -63,7 +62,7 @@ function DT:RegisterLDB()
 		end
 
 		local function textUpdate(event, name, key, value, dataobj)
-			if value == nil or (string.len(value) > 5) or value == 'n/a' or name == value then
+			if value == nil or (len(value) > 5) or value == 'n/a' or name == value then
 				curFrame.text:SetText(value ~= 'n/a' and value or name)
 			else
 				curFrame.text:SetText(name..': '..hex..value..'|r')
@@ -114,14 +113,14 @@ function DT:UpdateAllDimensions()
 end
 
 function DT:Data_OnLeave()
-	GameTooltip:Hide()
+	DT.tooltip:Hide()
 end
 
 function DT:SetupTooltip(panel)
 	local parent = panel:GetParent()
-	GameTooltip:Hide()
-	GameTooltip:SetOwner(parent, parent.anchor, parent.xOff, parent.yOff)
-	GameTooltip:ClearLines()
+	self.tooltip:Hide()
+	self.tooltip:SetOwner(parent, parent.anchor, parent.xOff, parent.yOff)
+	self.tooltip:ClearLines()
 end
 
 function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff)
@@ -151,10 +150,20 @@ function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff)
 	DT.UpdateAllDimensions(panel)
 end
 
+
+
 function DT:AssignPanelToDataText(panel, data)	
 	if data['events'] then
 		for _, event in pairs(data['events']) do
-			panel:RegisterEvent(event)
+			-- use new filtered event registration for appropriate events
+			if event == "UNIT_AURA" or event == "UNIT_RESISTANCES"  or event == "UNIT_STATS" or event == "UNIT_ATTACK_POWER" 
+				or event == "UNIT_RANGED_ATTACK_POWER" or event == "UNIT_TARGET" or event == "UNIT_SPELL_HASTE" then
+				panel:RegisterUnitEvent(event, 'player')
+			elseif event == 'COMBAT_LOG_EVENT_UNFILTERED' then
+				panel:RegisterUnitEvent(event, UnitGUID("player"), UnitGUID("pet"))
+			else
+				panel:RegisterEvent(event)
+			end
 		end
 	end
 	
@@ -190,6 +199,7 @@ function DT:LoadDataTexts()
 	end	
 
 	local inInstance, instanceType = IsInInstance()
+	local fontTemplate = LSM:Fetch("font", self.db.font)
 	for panelName, panel in pairs(DT.RegisteredPanels) do
 		--Restore Panels
 		for i=1, panel.numPoints do
@@ -199,7 +209,7 @@ function DT:LoadDataTexts()
 			panel.dataPanels[pointIndex]:SetScript('OnEnter', nil)
 			panel.dataPanels[pointIndex]:SetScript('OnLeave', nil)
 			panel.dataPanels[pointIndex]:SetScript('OnClick', nil)
-			panel.dataPanels[pointIndex].text:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
+			panel.dataPanels[pointIndex].text:FontTemplate(fontTemplate, self.db.fontSize, self.db.fontOutline)
 			panel.dataPanels[pointIndex].text:SetText(nil)
 			panel.dataPanels[pointIndex].pointIndex = pointIndex
 			

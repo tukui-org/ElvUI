@@ -4,7 +4,7 @@ local UF = E:GetModule('UnitFrames');
 local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
-
+local tinsert = table.insert
 function UF:Construct_PartyFrames(unitGroup)
 	self:RegisterForClicks("AnyUp")
 	self:SetScript('OnEnter', UnitFrame_OnEnter)
@@ -35,8 +35,8 @@ function UF:Construct_PartyFrames(unitGroup)
 		self.LFDRole = UF:Construct_RoleIcon(self)
 		self.TargetGlow = UF:Construct_TargetGlow(self)
 		self.RaidRoleFramesAnchor = UF:Construct_RaidRoleFrames(self)
-		table.insert(self.__elements, UF.UpdateThreat)
-		table.insert(self.__elements, UF.UpdateTargetGlow)
+		tinsert(self.__elements, UF.UpdateThreat)
+		tinsert(self.__elements, UF.UpdateTargetGlow)
 		self:RegisterEvent('PLAYER_TARGET_CHANGED', function(...) UF.UpdateThreat(...); UF.UpdateTargetGlow(...) end)
 		self:RegisterEvent('PLAYER_ENTERING_WORLD', UF.UpdateTargetGlow)
 		self:RegisterEvent('GROUP_ROSTER_UPDATE', UF.UpdateTargetGlow)
@@ -76,20 +76,7 @@ function UF:Update_PartyHeader(header, db)
 		self:ChangeVisibility(header, 'custom '..db.visibility)
 	end
 	
-	if db.groupBy == 'CLASS' then
-		header:SetAttribute("groupingOrder", "DEATHKNIGHT,DRUID,HUNTER,MAGE,PALADIN,PRIEST,SHAMAN,WARLOCK,WARRIOR")
-		header:SetAttribute('sortMethod', 'NAME')
-	elseif db.groupBy == 'ROLE' then
-		header:SetAttribute("groupingOrder", "MAINTANK,MAINASSIST,1,2,3,4,5,6,7,8")
-		header:SetAttribute('sortMethod', 'NAME')
-	elseif db.groupBy == 'NAME' then
-		header:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
-		header:SetAttribute('sortMethod', 'NAME')	
-	else
-		header:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
-		header:SetAttribute('sortMethod', 'INDEX')
-	end
-	
+	UF['headerGroupBy'][db.groupBy](header)
 	header:SetAttribute("groupBy", db.groupBy)
 	
 	if not header.isForced then
@@ -98,11 +85,15 @@ function UF:Update_PartyHeader(header, db)
 		header:SetAttribute("showSolo", db.showSolo)
 		header:SetAttribute("showPlayer", db.showPlayer)
 	end
-
+	
 	header:SetAttribute("maxColumns", db.maxColumns)
 	header:SetAttribute("unitsPerColumn", db.unitsPerColumn)
 	
-	header:SetAttribute('columnSpacing', db.columnSpacing)
+	if (db.point == "TOP" or db.point == "BOTTOM") and (db.columnAnchorPoint == "LEFT" or db.columnAnchorPoint == "RIGHT") then
+		header:SetAttribute('columnSpacing', db.xOffset)
+	else
+		header:SetAttribute('columnSpacing', db.yOffset)
+	end
 	header:SetAttribute("xOffset", db.xOffset)	
 	header:SetAttribute("yOffset", db.yOffset)
 
@@ -117,7 +108,7 @@ function UF:Update_PartyHeader(header, db)
 		header:ClearAllPoints()
 		header:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)
 		
-		E:CreateMover(header, header:GetName()..'Mover', 'Party Frames', nil, nil, nil, 'ALL,PARTY,ARENA')
+		E:CreateMover(header, header:GetName()..'Mover', L['Party Frames'], nil, nil, nil, 'ALL,PARTY,ARENA')
 		
 		header:SetAttribute('minHeight', header.dirtyHeight)
 		header:SetAttribute('minWidth', header.dirtyWidth)
@@ -555,6 +546,7 @@ function UF:Update_PartyFrames(frame, db)
 	frame:EnableElement('ReadyCheck')		
 	
 	if db.customTexts then
+		local customFont = UF.LSM:Fetch("font", UF.db.font)
 		for objectName, _ in pairs(db.customTexts) do
 			if not frame[objectName] then
 				frame[objectName] = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
@@ -563,7 +555,11 @@ function UF:Update_PartyFrames(frame, db)
 			local objectDB = db.customTexts[objectName]
 			UF:CreateCustomTextGroup('party', objectName)
 			
-			frame[objectName]:FontTemplate(UF.LSM:Fetch("font", objectDB.font or UF.db.font), objectDB.size or UF.db.fontSize, objectDB.fontOutline or UF.db.fontOutline)
+			if objectDB.font then
+				customFont = UF.LSM:Fetch("font", objectDB.font)
+			end
+						
+			frame[objectName]:FontTemplate(customFont, objectDB.size or UF.db.fontSize, objectDB.fontOutline or UF.db.fontOutline)
 			frame:Tag(frame[objectName], objectDB.text_format or '')
 			frame[objectName]:SetJustifyH(objectDB.justifyH or 'CENTER')
 			frame[objectName]:ClearAllPoints()
