@@ -266,13 +266,13 @@ E.Options.args.nameplate = {
 						trackauras = {
 							type = "toggle",
 							order = 1,
-							name = L["Personal Debuffs"],
-							desc = L["Display your personal debuffs over the nameplate."],
+							name = L["Personal Auras"],
+							desc = L["Always display your personal auras over the nameplate."],
 						},
 						trackfilter = {
 							type = "select",
 							order = 2,
-							name = L['Additional Filter'],
+							name = L['Filter'],
 							desc = L['Select a filter to use. These are imported from the unitframe aura filter.'],
 							values = function()
 								filters = {}
@@ -282,7 +282,16 @@ E.Options.args.nameplate = {
 								end
 								return filters
 							end,
-						},						
+						},	
+						filterType = {
+							type = "select",
+							order = 3,
+							name = L['Filter Type'],
+							values = {
+								['BUFFS'] = L['Buffs'],
+								['DEBUFFS'] = L['Debuffs']
+							},
+						},							
 					},
 				},
 				reactions = {

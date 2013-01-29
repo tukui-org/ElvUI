@@ -104,6 +104,7 @@ P["nameplate"] = {
 	["healthtext"] = 'CURRENT_PERCENT',
 	["trackauras"] = true,
 	["trackfilter"] = 'CCDebuffs',
+	['filterType'] = 'DEBUFFS',
 	['goodscale'] = 1,
 	['badscale'] = 1,
 	['bgMult'] = 0.15,
