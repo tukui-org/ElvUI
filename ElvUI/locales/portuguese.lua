@@ -424,7 +424,7 @@ L["Unhittable:"] = "Inacertável";
 L['Victory Points'] = "Pontos de Vitória";
 L["Waist"] = "Cintura";
 L['When inside a battleground display personal scoreboard information on the main datatext bars.'] = "Exibir informação do placar pessoal nos textos informativos principais quando dentro de um Campo de Batalha";
-L["World Boss(s)"] = "Chefe;
+L["World Boss(s)"] = "Chefe";
 L["Wrist"] = "Pulsos"
 
 --DebugTools
@@ -765,8 +765,8 @@ L["Blacklist"] = "Lista negra";
 L["Block Auras Without Duration"] = "Bloquear Auras sem Duração";
 L["Block Blacklisted Auras"] = "Bloquear Auras da Lista Negra";
 L['Block Non-Dispellable Auras'] = "Bloquear Auras não Dissipáveis";
-L["Block Non-Personal Auras"] = "Bloquear Auras não Pessoais";;
-L["Block Non-Whitelisted Auras"] = "Bloquear Auras fora da Lista Branca";;
+L["Block Non-Personal Auras"] = "Bloquear Auras não Pessoais";
+L["Block Non-Whitelisted Auras"] = "Bloquear Auras fora da Lista Branca";
 L["Block Raid Buffs"] = "Bloquear Bônus de Raid";
 L['Blood'] = "Sangue";
 L["Boss Frames"] = "Quadros dos Chefes";
