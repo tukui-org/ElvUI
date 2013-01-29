@@ -904,14 +904,12 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 			returnValueChanged = true;
 		end
 	end
-	
+
 	if CheckFilter(db.useBlacklist, isFriend) then
 		local blackList = E.global['unitframe']['aurafilters']['Blacklist'].spells[name]
 		if blackList and blackList.enable then
 			returnValue = false;
 			returnValueChanged = true;
-		elseif not returnValueChanged then
-			returnValue = true;			
 		end
 	end
 	
@@ -919,8 +917,7 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 		local whiteList = E.global['unitframe']['aurafilters']['Whitelist'].spells[name]
 		if whiteList and whiteList.enable then
 			returnValue = true;
-			returnValueChanged = true;
-		elseif not returnValueChanged then
+		elseif returnValueChanged then
 			returnValue = false;
 		end
 	end	
@@ -1186,7 +1183,7 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 	
 	--This should be sorted as least priority checked first
 	--most priority last
-
+	
 	if CheckFilter(db.playerOnly, isFriend) then
 		if isPlayer then
 			returnValue = true;
@@ -1215,14 +1212,12 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 			returnValueChanged = true;
 		end
 	end
-	
+
 	if CheckFilter(db.useBlacklist, isFriend) then
 		local blackList = E.global['unitframe']['aurafilters']['Blacklist'].spells[name]
 		if blackList and blackList.enable then
 			returnValue = false;
 			returnValueChanged = true;
-		elseif not returnValueChanged then
-			returnValue = true;			
 		end
 	end
 	
@@ -1230,8 +1225,7 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 		local whiteList = E.global['unitframe']['aurafilters']['Whitelist'].spells[name]
 		if whiteList and whiteList.enable then
 			returnValue = true;
-			returnValueChanged = true;
-		elseif not returnValueChanged then
+		elseif returnValueChanged then
 			returnValue = false;
 		end
 	end	
