@@ -1307,7 +1307,7 @@ function UF:SmartAuraDisplay()
 		local x, y = E:GetXYOffset(db.buffs.anchorPoint)
 		
 		buffs:ClearAllPoints()
-		buffs:Point(E.InversePoints[db.buffs.anchorPoint], self, db.buffs.anchorPoint, x + db.buffs.xOffset, y + db.buffs.yOffset)
+		buffs:Point(E.InversePoints[db.buffs.anchorPoint], self, db.buffs.anchorPoint, x + db.buffs.xOffset, y + db.buffs.yOffset + (E.PixelMode and (db.buffs.anchorPoint:find('TOP') and -1 or 1) or 0))
 		
 		local anchorPoint, anchorTo = 'BOTTOM', 'TOP'
 		if db.aurabar.anchorPoint == 'BELOW' then
