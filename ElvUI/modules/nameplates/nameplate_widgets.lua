@@ -872,14 +872,8 @@ function NP:CastBar_OnShow(frame)
 		frame:SetStatusBarColor(1, 208/255, 0)
 	end	
 	
-	local isSmallNP
 	while frame:GetEffectiveScale() < 1 do
 		frame:SetScale(frame:GetScale() + 0.01)
-		isSmallNP = true;
-	end
-	
-	if isSmallNP and NP.db.smallPlates then
-		frame:Width(frame:GetWidth() * frame:GetParent():GetEffectiveScale())
 	end
 		
 	self:SetVirtualBorder(frame, unpack(E["media"].bordercolor))
