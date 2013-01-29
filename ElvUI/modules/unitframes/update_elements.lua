@@ -864,15 +864,6 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 	
 	db = db[self.type]
 
-	local returnValue = true;
-	local passPlayerOnlyCheck = true;
-	local isPlayer = caster == 'player' or caster == 'vehicle'
-	local isFriend = UnitIsFriend('player', unit) == 1 and true or false
-	
-	icon.isPlayer = isPlayer
-	icon.owner = caster
-	icon.name = name
-	
 	local returnValue = true
 	local passPlayerOnlyCheck = true
 	local anotherFilterExists = false
@@ -880,6 +871,10 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 	local isFriend = UnitIsFriend('player', unit) == 1 and true or false
 	local auraType = isFriend and db.friendlyAuraType or db.enemyAuraType
 	
+	icon.isPlayer = isPlayer
+	icon.owner = caster
+	icon.name = name
+
 	if CheckFilter(db.playerOnly, isFriend) then
 		if isPlayer then
 			returnValue = true;
