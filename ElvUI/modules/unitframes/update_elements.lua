@@ -853,7 +853,7 @@ function UF:UpdateComboDisplay(event, unit)
 	end
 end
 
-function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff)	
+function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, timeLeft, unitCaster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff)	
 	if E.global.unitframe.InvalidSpells[spellID] then
 		return false;
 	end
@@ -872,7 +872,7 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 	local auraType = isFriend and db.friendlyAuraType or db.enemyAuraType
 	
 	icon.isPlayer = isPlayer
-	icon.owner = caster
+	icon.owner = unitCaster
 	icon.name = name
 
 	if CheckFilter(db.playerOnly, isFriend) then
