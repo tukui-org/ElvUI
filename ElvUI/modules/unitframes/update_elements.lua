@@ -920,7 +920,7 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 	
 	if CheckFilter(db.useWhitelist, isFriend) then
 		local whiteList = E.global['unitframe']['aurafilters']['Whitelist'].spells[name]
-		if whiteList and whiteList.enable and passPlayerOnlyCheck then
+		if whiteList and whiteList.enable then
 			returnValue = true;
 		elseif not anotherFilterExists then
 			returnValue = false
@@ -1234,7 +1234,7 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 	
 	if CheckFilter(db.useWhitelist, isFriend) then
 		local whiteList = E.global['unitframe']['aurafilters']['Whitelist'].spells[name]
-		if whiteList and whiteList.enable and passPlayerOnlyCheck then
+		if whiteList and whiteList.enable then
 			returnValue = true;
 		elseif not anotherFilterExists then
 			returnValue = false
