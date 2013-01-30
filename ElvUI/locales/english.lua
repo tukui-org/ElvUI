@@ -731,6 +731,18 @@ L['You can toggle the microbar by using your middle mouse button on the minimap 
 L['You can use the /resetui command to reset all of your movers. You can also use the command to reset a specific mover, /resetui <mover name>.\nExample: /resetui Player Frame'] = true;
 
 --UnitFrames
+L["Don't display auras that are not yours."] = true;
+L["Don't display any auras found on the 'Blacklist' filter."] = true;
+L["If no other filter options are being used then it will block anything not on the 'Whitelist' filter, otherwise it will simply add auras on the whitelist in addition to any other filter settings."] = true;
+L["Don't display auras that have no duration."] = true;
+L["Don't display auras that cannot be purged or dispelled by your class."] = true;
+L["Don't display raid buffs such as Blessing of Kings or Mark of the Wild."] = true;
+L['Select an additional filter to use. If the selected filter is a whitelist and no other filters are being used (with the exception of Block Non-Personal Auras) then it will block anything not on the whitelist, otherwise it will simply add auras on the whitelist in addition to any other filter settings.'] = true;
+
+
+L["If the unit is friendly to you."] = true;
+L["If the unit is an enemy to you."] = true;
+
 L["%s frame(s) has a conflicting anchor point, please change either the buff or debuff anchor point so they are not attached to each other. Forcing the debuffs to be attached to the main unitframe until fixed."] = true;
 L['2D'] = true;
 L['3D'] = true;
@@ -850,8 +862,6 @@ L["Horizontal"] = true; --Also used in bags module
 L["How far away the portrait is from the camera."] = true;
 L["Icon"] = true;
 L['If not set to 0 then override the size of the aura icon to this.'] = true;
-L['If the unit is an enemy then this filter will be checked, otherwise it will be ignored.'] = true;
-L['If the unit is friendly then this filter will be checked, otherwise it will be ignored.'] = true;
 L['Ignore mouse events.'] = true;
 L['Interruptable'] = true;
 L['JustifyH'] = true;
