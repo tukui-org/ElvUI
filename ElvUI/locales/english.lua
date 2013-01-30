@@ -730,6 +730,9 @@ L['You can set your keybinds quickly by typing /kb.'] = true;
 L['You can toggle the microbar by using your middle mouse button on the minimap you can also accomplish this by enabling the actual microbar located in the actionbar settings.'] = true;
 L['You can use the /resetui command to reset all of your movers. You can also use the command to reset a specific mover, /resetui <mover name>.\nExample: /resetui Player Frame'] = true;
 
+--Threat
+L['ABOVE_THREAT_FORMAT'] = '%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]'
+
 --UnitFrames
 L["Don't display auras that are not yours."] = true;
 L["Don't display any auras found on the 'Blacklist' filter."] = true;
