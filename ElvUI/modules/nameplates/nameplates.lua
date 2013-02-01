@@ -684,8 +684,13 @@ function NP:UpdateThreat(frame)
 			else
 				--Set colors to their original, not in combat
 				if not frame.customColor then
-					frame.hp:SetStatusBarColor(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor)
-					frame.hp.hpbg:SetTexture(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor, bgMult)
+					if frame.isBeingTanked and self.db.offtank then
+						frame.hp:SetStatusBarColor(offtank.r, offtank.g, offtank.b)
+						frame.hp.hpbg:SetTexture(offtank.r, offtank.g, offtank.b, bgMult)	
+					else
+						frame.hp:SetStatusBarColor(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor)
+						frame.hp.hpbg:SetTexture(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor, bgMult)
+					end
 				end
 				
 				if not frame.customScale and (goodscale ~= 1 or badscale ~= 1) then
