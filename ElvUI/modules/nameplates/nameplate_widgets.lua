@@ -671,8 +671,8 @@ function NP:AssignOffTank(frame)
 			if guid ~= '' then
 				if guid == frame.guid and self.GroupTanks[unit] then
 					frame.isBeingTanked = true
-				--[[else -- Is this needed is the question..
-					frame.isBeingTanked = nil]]
+				elseif guid == frame.guid then
+					frame.isBeingTanked = nil
 				end
 			end
 		end
