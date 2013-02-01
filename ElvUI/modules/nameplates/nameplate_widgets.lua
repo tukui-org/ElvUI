@@ -17,7 +17,7 @@ NP.TankClasses = {
 	['MONK'] = true,
 	['DEATHKNIGHT'] = true,
 	['DRUID'] = true,
-	--['PRIEST'] = true -- temp
+	['PRIEST'] = true -- temp
 }
 
 NP.RaidTargetReference = {
@@ -685,8 +685,9 @@ end
 function NP:CheckGroupTargets()
 	for unit, _ in pairs(self.GroupTargets) do
 		if UnitExists(unit) then
-			if UnitExists(unit..'target') and UnitExists(unit..'targettarget') then
+			if UnitExists(unit..'target') and UnitExists(unit..'targettarget') and not UnitIsPlayer(unit..'target') then
 				self.GroupTargets[unit] = UnitGUID(unit..'target')
+				--SendChatMessage(UnitName(unit).."'s target's target is: "..UnitName(unit..'targettarget'), 'PARTY')
 			elseif self.GroupTargets[unit] ~= '' then
 				self.GroupTargets[unit] = ''
 			end
