@@ -17,7 +17,7 @@ NP.TankClasses = {
 	['MONK'] = true,
 	['DEATHKNIGHT'] = true,
 	['DRUID'] = true,
-	['PRIEST'] = true -- temp
+	--['PRIEST'] = true -- temp
 }
 
 NP.RaidTargetReference = {
