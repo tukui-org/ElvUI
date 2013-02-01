@@ -171,9 +171,15 @@ E.Options.args.nameplate = {
 					desc = L["Display combo points on nameplates."],
 					set = function(info, value) E.db.nameplate[ info[#info] ] = value; NP:ToggleCPoints() end,
 				},
+				offtank = {
+					type = "toggle",
+					order = 11,
+					name = L["Color Tanked"],
+					desc = L["Color mobs that are currently being tanked. If you are a tank then this will only happen to nameplates being tanked by someone other than you. This is not 100% accurate and should only be used as a referance."],
+				},				
 				lowHealthWarning = {
 					type = 'select',
-					order = 11,
+					order = 12,
 					name = L['Low Health Warning'],
 					desc = L['Color the border of the nameplate yellow when it reaches the threshold point on these types of frames.'],
 					values = {
@@ -184,7 +190,7 @@ E.Options.args.nameplate = {
 				},
 				lowHealthWarningThreshold = {
 					type = 'range',
-					order = 12,
+					order = 13,
 					name = L['Low Health Threshold'],
 					desc = L['Color the border of the nameplate yellow when it reaches this point, it will be colored red when it reaches half this value.'],
 					isPercent = true,
@@ -192,7 +198,7 @@ E.Options.args.nameplate = {
 				},
 				bgMult = {
 					type = 'range',
-					order = 13,
+					order = 14,
 					name = L['Background Multiplier'],
 					desc = L['The backdrop of the nameplates color is scaled to match the color of the nameplate by this percentage. Set to zero to have no color in the nameplate backdrop.'],
 					isPercent = true,
@@ -333,7 +339,14 @@ E.Options.args.nameplate = {
 							order = 4,
 							name = L["Enemy"],
 							hasAlpha = false,
-						},						
+						},		
+						tappedcolor = {
+							type = "color",
+							order = 8,
+							name = L["Tagged Color"],
+							desc = L["Color of a nameplate that is tagged by another person."],
+							hasAlpha = false,								
+						},							
 					},		
 				},				
 				threat = {
@@ -430,6 +443,23 @@ E.Options.args.nameplate = {
 								NP:UpdateAllPlates()
 							end,							
 						},						
+						offtankcolor = {
+							type = "color",
+							order = 8,
+							name = L["Tanked Color"],
+							desc = L["Color of a nameplate that is currently being tanked by another tank in the group."],
+							hasAlpha = false,	
+							get = function(info)
+								local t = E.db.nameplate[ info[#info] ]
+								return t.r, t.g, t.b, t.a
+							end,
+							set = function(info, r, g, b)
+								E.db.nameplate[ info[#info] ] = {}
+								local t = E.db.nameplate[ info[#info] ]
+								t.r, t.g, t.b = r, g, b
+								NP:UpdateAllPlates()
+							end,							
+						},		
 					},
 				},				
 			},

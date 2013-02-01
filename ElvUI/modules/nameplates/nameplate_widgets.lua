@@ -4,9 +4,22 @@ local NP = E:GetModule('NamePlates')
 --[[
 	This file handles functions for the Castbar and Debuff modules of nameplates.
 ]]
+
+NP.GroupTanks = {};
+NP.GroupTargets = {};
 NP.GroupMembers = {};
 NP.CachedAuraDurations = {};
 NP.AurasCache = {}
+
+NP.TankClasses = {
+	['WARRIOR'] = true,
+	['PALADIN'] = true,
+	['MONK'] = true,
+	['DEATHKNIGHT'] = true,
+	['DRUID'] = true,
+	--['PRIEST'] = true -- temp
+}
+
 NP.RaidTargetReference = {
 	["STAR"] = 0x00000001,
 	["CIRCLE"] = 0x00000002,
@@ -596,19 +609,25 @@ end
 
 function NP:UpdateRoster()
 	local groupType, groupSize, unitId, unitName
+	wipe(self.GroupMembers)
+	wipe(self.GroupTargets)
+	wipe(self.GroupTanks)	
+	
 	if IsInRaid() then 
 		groupType = "raid"
-		groupSize = GetNumGroupMembers() - 1
+		groupSize = GetNumGroupMembers()
 	elseif IsInGroup() then 
 		groupType = "party"
-		groupSize = GetNumGroupMembers(LE_PARTY_CATEGORY_HOME) 
+		groupSize = GetNumGroupMembers(LE_PARTY_CATEGORY_HOME) - 1
+		self.GroupTargets['player'] = ''
+		self.GroupTargets['pet'] = ''
 	else 
 		groupType = "solo"
 		groupSize = 1
+		self.GroupTargets['player'] = ''
+		self.GroupTargets['pet'] = ''		
 	end
-	
-	wipe(self.GroupMembers)
-	
+
 	-- Cycle through Group
 	if groupType then
 		for index = 1, groupSize do
@@ -616,10 +635,91 @@ function NP:UpdateRoster()
 			unitName = UnitName(unitId)
 			if unitName then
 				self.GroupMembers[unitName] = unitId
+				self.GroupTargets[unitId] = ''
+
+				if ((UnitGroupRolesAssigned(unitId) == 'TANK') or GetPartyAssignment("MAINTANK", unitId)) and self.TankClasses[select(2, UnitClass(unitId))] then
+					self.GroupTanks[unitId] = UnitGUID(unitId)
+				end
 			end
 		end
-	end	
+	end
+	
+	if groupType == 'party' then
+		local unitId = 'player'
+		local unitName = UnitName(unitId)
+
+		self.GroupMembers[unitName] = unitId
+		
+		if ((UnitGroupRolesAssigned(unitId) == 'TANK') or GetPartyAssignment("MAINTANK", unitId)) and self.TankClasses[select(2, UnitClass(unitId))] then
+			self.GroupTanks[unitId] = UnitGUID(unitId)
+		end		
+	end
+	
+	if groupType ~= 'solo' then
+		if not self.GroupTargetsTimer then
+			self.GroupTargetsTimer = self:ScheduleRepeatingTimer("CheckGroupTargets", 1)
+		end
+	else
+		self:CancelTimer(self.GroupTargetsTimer)
+		self.GroupTargetsTimer = nil;
+	end
 end
+
+function NP:AssignOffTank(frame)
+	if frame.guid then
+		for unit, guid in pairs(self.GroupTargets) do
+			if guid ~= '' then
+				if guid == frame.guid and self.GroupTanks[unit] then
+					frame.isBeingTanked = true
+				elseif guid == frame.guid then
+					frame.isBeingTanked = nil
+				end
+			end
+		end
+	else
+		frame.isBeingTanked = nil
+	end
+	
+end
+
+function NP:CheckGroupTargets()
+	for unit, _ in pairs(self.GroupTargets) do
+		if UnitExists(unit) then
+			if UnitExists(unit..'target') and UnitExists(unit..'targettarget') and not UnitIsPlayer(unit..'target') then
+				self.GroupTargets[unit] = UnitGUID(unit..'target')
+				--SendChatMessage(UnitName(unit).."'s target's target is: "..UnitName(unit..'targettarget'), 'PARTY')
+			elseif self.GroupTargets[unit] ~= '' then
+				self.GroupTargets[unit] = ''
+			end
+		end
+	end
+	
+	NP:ForEachPlate(NP.AssignOffTank)
+end
+
+function NP:UPDATE_MOUSEOVER_UNIT(...)
+	local unit = 'mouseover'
+	
+	if not UnitExists(unit) then return end
+	
+	local frame = NP:SearchNameplateByGUID(UnitGUID(unit))
+	
+	if not frame then return end
+	
+	if UnitExists(unit..'target') then
+		for tankUnit, tankGUID in pairs(self.GroupTanks) do
+			if UnitGUID(unit..'target') == tankGUID then
+				frame.isBeingTanked = true
+				break
+			else
+				frame.isBeingTanked = nil
+			end
+		end
+	end
+	
+	self:UpdateCastInfo(...)
+end
+
 
 function NP:WipeAuraList(guid)
 	if guid and self.Aura_List[guid] then
@@ -784,7 +884,7 @@ function NP:UpdateAurasByUnitID(unit)
 	end
 end
 
-function NP:UNIT_TARGET()
+function NP:UNIT_TARGET(event, unit)	
 	self.TargetOfGroupMembers = wipe(self.TargetOfGroupMembers)
 	
 	for name, unitid in pairs(self.GroupMembers) do
@@ -918,12 +1018,7 @@ function NP:UpdateCPoints(frame, isMouseover)
 	if isMouseover == true then
 		unit = "mouseover"
 	end
-	
-	--[[if not UnitExists(unit) then 
-		self:ForEachPlate(self.HideCPoints)
-		return; 
-	end]]
-	
+
 	if type(frame) ~= "table" then
 		frame = self:GetTargetNameplate()
 		if frame then
