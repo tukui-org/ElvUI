@@ -44,6 +44,7 @@ function NP:Initialize()
 		NP:ForEachPlate(NP.UpdateColoring)	
 
 		if(self.elapsed and self.elapsed > 0.2) then
+			NP:ForEachPlate(NP.UpdateIsBeingTanked)
 			NP:ForEachPlate(NP.UpdateThreat)
 			NP:ForEachPlate(NP.CheckUnit_Guid)
 			NP:ForEachPlate(NP.CheckRaidIcon)
@@ -666,7 +667,7 @@ function NP:UpdateThreat(frame)
 					frame.threatStatus = "BAD"
 				else
 					if not frame.customColor then
-						if frame.isBeingTanked and self.db.offtank then
+						if (not frame.isBeingTanked) and self.db.offtank then
 							frame.hp:SetStatusBarColor(offtank.r, offtank.g, offtank.b)
 							frame.hp.hpbg:SetTexture(offtank.r, offtank.g, offtank.b, bgMult)						
 						else					
@@ -976,7 +977,8 @@ function NP:UpdateAllPlates()
 
 	self:RegisterEvent("GROUP_ROSTER_UPDATE", "UpdateRoster")
 	self:RegisterEvent("PARTY_CONVERTED_TO_RAID", "UpdateRoster")
-	self:RegisterEvent('UPDATE_MOUSEOVER_UNIT')
+	self:RegisterEvent("UNIT_PET", "UpdateRoster")
+	self:RegisterEvent('UPDATE_MOUSEOVER_UNIT', 'UpdateCastInfo')
 	self:RegisterEvent('PLAYER_TARGET_CHANGED', 'UpdateCastInfo')
 	self:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
