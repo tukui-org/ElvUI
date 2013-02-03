@@ -665,6 +665,10 @@ function NP:UpdateRoster()
 	
 	if UnitExists('pet') then
 		self:AddToRoster('pet')
+		
+		if groupType ~= "raid" then
+			self.GroupTanks[UnitGUID('pet')] = true
+		end
 	end
 	
 	if groupType == 'party' then
