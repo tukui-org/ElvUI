@@ -7,6 +7,7 @@ AlertFrameHolder:SetHeight(20)
 AlertFrameHolder:SetPoint("TOP", E.UIParent, "TOP", 0, -18)
 
 local POSITION, ANCHOR_POINT, YOFFSET = "TOP", "BOTTOM", -10
+local FORCE_POSITION = false;
 
 function E:PostAlertMove(screenQuadrant)
 	local _, y = AlertFrameMover:GetCenter();
@@ -60,7 +61,9 @@ function E:PostAlertMove(screenQuadrant)
 	end
 
 	if screenQuadrant then
+		FORCE_POSITION = true
 		AlertFrame_FixAnchors()
+		FORCE_POSITION = false
 	end
 end
 
@@ -73,7 +76,7 @@ function B:AlertFrame_SetLootAnchors(alertAnchor)
 			GroupLootContainer:ClearAllPoints()
 			GroupLootContainer:SetPoint(POSITION, MissingLootFrame, ANCHOR_POINT, 0, YOFFSET)
 		end		
-	elseif ( GroupLootContainer:IsShown() ) then
+	elseif ( GroupLootContainer:IsShown() or FORCE_POSITION) then
 		GroupLootContainer:ClearAllPoints()
 		GroupLootContainer:SetPoint(POSITION, alertAnchor, ANCHOR_POINT)	
 	end
@@ -173,5 +176,4 @@ function B:AlertMovers()
 	
 	UIPARENT_MANAGED_FRAME_POSITIONS["GroupLootContainer"] = nil
 	E:CreateMover(AlertFrameHolder, "AlertFrameMover", L["Loot / Alert Frames"], nil, nil, E.PostAlertMove)
-	E:PostAlertMove()
 end
