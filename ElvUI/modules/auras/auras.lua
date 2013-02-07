@@ -305,7 +305,7 @@ function A:Initialize()
 	
 	self.EnchantHeader = CreateFrame('Frame', 'ElvUITemporaryEnchantFrame', E.UIParent, 'SecureHandlerStateTemplate');
 	self.EnchantHeader:Size((E.private.auras.size + 6) * 2, E.private.auras.size + 4)
-	self.EnchantHeader:Point('TOPRIGHT', MMHolder, 'BOTTOMRIGHT', 0, -4)
+	self.EnchantHeader:Point('RIGHT', AurasHolder, 'RIGHT', 0, 0)
 	self.EnchantHeader:SetAttribute("_onstate-show", [[		
 			if newstate == "hide" then
 				self:Hide();
