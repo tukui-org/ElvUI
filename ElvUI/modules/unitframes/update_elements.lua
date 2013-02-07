@@ -751,6 +751,9 @@ end
 function UF:UpdateThreat(event, unit)
 	if (self.unit ~= unit) or not unit or not E.initialized then return end
 	local status = UnitThreatSituation(unit)
+
+	local db = self.db
+	if not db then return end
 	
 	if status and status > 1 then
 		local r, g, b = GetThreatStatusColor(status)
@@ -760,7 +763,7 @@ function UF:UpdateThreat(event, unit)
 		elseif self.Health.backdrop then
 			self.Health.backdrop:SetBackdropBorderColor(r, g, b)
 			
-			if self.Power and self.Power.backdrop then
+			if self.Power and self.Power.backdrop and db.power.offset == 0 then
 				self.Power.backdrop:SetBackdropBorderColor(r, g, b)
 			end
 		end
