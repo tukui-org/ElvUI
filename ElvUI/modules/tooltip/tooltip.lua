@@ -638,6 +638,11 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 end
 
 function TT:INSPECT_READY(event, GUID)
+	if GUID ~= self.lastGUID or self:IsInspectFrameOpen() then
+		self:UnregisterEvent('INSPECT_READY');
+		return
+	end
+	
 	local ilvl = TT:GetItemLvL('mouseover')
 	local talentSpec = TT:GetTalentSpec('mouseover')
 	local curTime = GetTime()
@@ -677,6 +682,7 @@ function TT:Inspect_OnUpdate(elapsed)
 	if (self.nextUpdate <= 0) then
 		self:Hide();
 		if (UnitGUID("mouseover") == TT.currentGUID) and (not TT:IsInspectFrameOpen()) then
+			TT.lastGUID = TT.currentGUID
 			TT.lastInspectRequest = GetTime();
 			TT:RegisterEvent("INSPECT_READY");
 			NotifyInspect(TT.currentUnit);
