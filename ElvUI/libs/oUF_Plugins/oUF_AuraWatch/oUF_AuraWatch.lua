@@ -204,7 +204,7 @@ local function resetIcon(icon, frame, count, duration, remaining)
 			icon.first = true;
 			icon:SetScript('OnUpdate', updateText)
 		end
-		
+		count = 5
 		if icon.count then
 			icon.count:SetText((count > 1 and count))
 		end

@@ -993,6 +993,17 @@ local counterOffsets = {
 	['BOTTOM'] = {0, 0},
 }
 
+local textCounterOffsets = {
+	['TOPLEFT'] = {"LEFT", "RIGHT", -2, 0},
+	['TOPRIGHT'] = {"RIGHT", "LEFT", 2, 0},
+	['BOTTOMLEFT'] = {"LEFT", "RIGHT", -2, 0},
+	['BOTTOMRIGHT'] = {"RIGHT", "LEFT", 2, 0},
+	['LEFT'] = {"LEFT", "RIGHT", -2, 0},
+	['RIGHT'] = {"RIGHT", "LEFT", 2, 0},
+	['TOP'] = {"RIGHT", "LEFT", 2, 0},
+	['BOTTOM'] = {"RIGHT", "LEFT", 2, 0},
+}
+
 function UF:UpdateAuraWatch(frame)
 	local buffs = {};
 	local auras = frame.AuraWatch;
@@ -1109,6 +1120,13 @@ function UF:UpdateAuraWatch(frame)
 				
 				if not icon.count then
 					icon.count = icon:CreateFontString(nil, "OVERLAY");
+				end
+				
+				icon.count:ClearAllPoints()
+				if icon.style == "text" then
+					local point, anchorPoint, x, y = unpack(textCounterOffsets[buffs[i].point])
+					icon.count:SetPoint(point, icon.text, anchorPoint, x, y)
+				else
 					icon.count:SetPoint("CENTER", unpack(counterOffsets[buffs[i].point]));
 				end
 				
