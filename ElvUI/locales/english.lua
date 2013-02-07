@@ -880,7 +880,6 @@ L['Lunar'] = true;
 L["Main statusbar texture."] = true;
 L["Match Frame Width"] = true;
 L["Max Columns"] = true;
-L["MT, MA First"] = true;
 L["Name"] = true; --Also used in Buffs and Debuffs
 L["Neutral"] = true;
 L['Non-Interruptable'] = true;

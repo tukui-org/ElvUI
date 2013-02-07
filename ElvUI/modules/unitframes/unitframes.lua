@@ -54,8 +54,8 @@ UF['headerGroupBy'] = {
 		header:SetAttribute('sortMethod', 'NAME')
 	end,
 	['ROLE'] = function(header)
-		header:SetAttribute("groupingOrder", "MAINTANK,MAINASSIST,1,2,3,4,5,6,7,8")
-		header:SetAttribute('sortMethod', 'NAME')	
+		header:SetAttribute("groupingOrder", "TANK,HEALER,DAMAGER,NONE")
+		header:SetAttribute('sortMethod', 'INDEX')	
 	end,
 	['NAME'] = function(header)
 		header:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
@@ -337,7 +337,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 
 		if template then
 			self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 
-				'point', self.db['units'][group].point, 
+				'point', db.point, 
 				'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 
 				'template', template, 
 				'columnAnchorPoint', db.columnAnchorPoint,
@@ -351,7 +351,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 				'groupFilter', groupFilter)
 		else
 			self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 
-				'point', self.db['units'][group].point, 
+				'point', db.point, 
 				'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 
 				'columnAnchorPoint', db.columnAnchorPoint,
 				'maxColumns', db.maxColumns,

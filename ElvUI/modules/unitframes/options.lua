@@ -7430,7 +7430,7 @@ E.Options.args.unitframe.args.party = {
 					type = 'select',		
 					values = {
 						['CLASS'] = CLASS,
-						['ROLE'] = L["MT, MA First"],
+						['ROLE'] = ROLE,
 						['NAME'] = NAME,
 						['GROUP'] = GROUP,
 					},
@@ -8189,7 +8189,7 @@ for i=10, 40, 15 do
 						type = 'select',		
 						values = {
 							['CLASS'] = CLASS,
-							['ROLE'] = L["MT, MA First"],
+							['ROLE'] = ROLE,
 							['NAME'] = NAME,
 							['GROUP'] = GROUP,
 						},

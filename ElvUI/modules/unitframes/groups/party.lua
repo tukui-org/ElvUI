@@ -77,7 +77,7 @@ function UF:Update_PartyHeader(header, db)
 	end
 	
 	UF['headerGroupBy'][db.groupBy](header)
-	header:SetAttribute("groupBy", db.groupBy)
+	header:SetAttribute("groupBy", db.groupBy == 'ROLE' and 'ASSIGNEDROLE' or db.groupBy)
 	
 	if not header.isForced then
 		header:SetAttribute("showParty", db.showParty)
