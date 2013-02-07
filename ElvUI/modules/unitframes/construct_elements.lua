@@ -650,27 +650,18 @@ function UF:Construct_HealComm(frame)
 	mhpb:SetFrameLevel(mhpb:GetFrameLevel())	
 	ohpb:Hide()
 	
-	local absorbBar = CreateFrame('StatusBar', nil, frame)
-	absorbBar:SetStatusBarTexture(E["media"].blankTex)
-	absorbBar:SetStatusBarColor(1, 1, 0, 0.25)
-	absorbBar:SetFrameLevel(mhpb:GetFrameLevel())
-	absorbBar:Hide()
-	
 	if frame.Health then
 		ohpb:SetParent(frame.Health)
 		mhpb:SetParent(frame.Health)
-		absorbBar:SetParent(frame.Health)
 	end
 	
 	return {
 		myBar = mhpb,
 		otherBar = ohpb,
-		absorbBar = absorbBar,
 		maxOverflow = 1,
 		PostUpdate = function(self)
 			if self.myBar:GetValue() == 0 then self.myBar:SetAlpha(0) else self.myBar:SetAlpha(1) end
 			if self.otherBar:GetValue() == 0 then self.otherBar:SetAlpha(0) else self.otherBar:SetAlpha(1) end
-			if self.absorbBar:GetValue() == 0 then self.absorbBar:SetAlpha(0) else self.absorbBar:SetAlpha(1) end
 		end
 	}
 end

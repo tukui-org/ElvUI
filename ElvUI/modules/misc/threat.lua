@@ -2,6 +2,9 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 local THREAT = E:NewModule('Threat', 'AceEvent-3.0');
 
 E.Threat = THREAT
+THREAT.list = {};
+
+local twipe = table.wipe
 
 function THREAT:UpdatePosition()
 	if self.db.position == 'RIGHTCHAT' then
@@ -16,18 +19,86 @@ function THREAT:UpdatePosition()
 	self.bar:SetFrameStrata('MEDIUM')
 end
 
-function THREAT:Update()
-	local _, status, percent = UnitDetailedThreatSituation('player', 'target')
+function THREAT:GetLargestThreatOnList(percent)
+	local largestValue, largestUnit = 0, nil
+	for unit, threatPercent in pairs(self.list) do
+		if threatPercent > largestValue then
+			largestValue = threatPercent
+			largestUnit = unit
+		end
+	end
 	
-	if percent and percent > 0 and (IsInGroup() or UnitExists('pet')) then
+	return (percent - largestValue), largestUnit
+end
+
+function THREAT:GetColor(unit)
+	local unitReaction = UnitReaction(unit, 'player')
+	local _, unitClass = UnitClass(unit)
+	if (UnitIsPlayer(unit)) then
+		local class = RAID_CLASS_COLORS[unitClass]
+		if not class then return 194, 194, 194 end
+		return class.r*255, class.g*255, class.b*255
+	elseif (unitReaction) then
+		local reaction = ElvUF['colors'].reaction[unitReaction]
+		return reaction[1]*255, reaction[2]*255, reaction[3]*255
+	else
+		return 194, 194, 194
+	end
+end
+
+function THREAT:Update()
+	local isInGroup, isInRaid, petExists = IsInGroup(), IsInRaid(), UnitExists('pet')
+	local _, status, percent = UnitDetailedThreatSituation('player', 'target')
+	if percent and percent > 0 and (isInGroup or petExists) then
 		local name = UnitName('target')
 		self.bar:Show()
-		self.bar:SetStatusBarColor(GetThreatStatusColor(status))
-		self.bar.text:SetFormattedText('%s: %.0f%%', name, percent)
-		self.bar:SetValue(percent)
+		if percent == 100 then
+			--Build threat list
+			if petExists then
+				self.list['pet'] = select(3, UnitDetailedThreatSituation('pet', 'target'))
+			end
+			
+			if isInRaid then
+				for i=1, 40 do
+					if UnitExists('raid'..i) and not UnitIsUnit('raid'..i, 'player') then
+						self.list['raid'..i] = select(3, UnitDetailedThreatSituation('raid'..i, 'target'))
+					end
+				end
+			else
+				for i=1, 4 do
+					if UnitExists('party'..i) then
+						self.list['party'..i] = select(3, UnitDetailedThreatSituation('party'..i, 'target'))
+					end			
+				end
+			end
+			
+			local leadPercent, largestUnit = self:GetLargestThreatOnList(percent)
+			if leadPercent > 0 and largestUnit ~= nil then
+				local r, g, b = self:GetColor(largestUnit)
+				self.bar.text:SetFormattedText(L['ABOVE_THREAT_FORMAT'], name, percent, leadPercent, r, g, b, UnitName(largestUnit) or UNKNOWN)
+				
+				if E.role == 'Tank' then
+					self.bar:SetStatusBarColor(0, 0.839, 0)
+					self.bar:SetValue(leadPercent)
+				else
+					self.bar:SetStatusBarColor(GetThreatStatusColor(status))
+					self.bar:SetValue(percent)
+				end
+			else
+				self.bar:SetStatusBarColor(GetThreatStatusColor(status))
+				self.bar.text:SetFormattedText('%s: %.0f%%', name, percent)
+				self.bar:SetValue(percent)
+			end
+		else
+			self.bar:SetStatusBarColor(GetThreatStatusColor(status))
+			self.bar.text:SetFormattedText('%s: %.0f%%', name, percent)
+			self.bar:SetValue(percent)
+		end
 	else
 		self.bar:Hide()
 	end
+	
+	twipe(self.list)
 end
 
 function THREAT:ToggleEnable()

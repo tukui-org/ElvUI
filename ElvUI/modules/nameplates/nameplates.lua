@@ -44,6 +44,7 @@ function NP:Initialize()
 		NP:ForEachPlate(NP.UpdateColoring)	
 
 		if(self.elapsed and self.elapsed > 0.2) then
+			NP:ForEachPlate(NP.UpdateIsBeingTanked)
 			NP:ForEachPlate(NP.UpdateThreat)
 			NP:ForEachPlate(NP.CheckUnit_Guid)
 			NP:ForEachPlate(NP.CheckRaidIcon)
@@ -242,7 +243,8 @@ function NP:Colorize(frame, r, g, b)
 	local color
 	
 	if (r + b + b) > 2 then -- tapped
-		r,g,b = 0.6, 0.6, 0.6
+		color = self.db.tappedcolor
+		r,g,b = color.r, color.g, color.b
 		frame.isFriendly = false	
 		frame.isTagged = true;
 	elseif g+b == 0 then -- hostile
@@ -368,6 +370,7 @@ function NP:OnHide(frame)
 	frame.hp.originalg = nil
 	frame.hp.originalb = nil
 	frame.isTagged = nil
+	frame.isBeingTanked = nil
 	frame.hp.shadow:SetAlpha(0)
 	self:SetVirtualBackdrop(frame.hp, unpack(E["media"].backdropcolor))
 	self:SetVirtualBorder(frame.hp, unpack(E["media"].bordercolor))
@@ -565,7 +568,6 @@ function NP:SkinPlate(frame, nameFrame)
 		f._Hide = f.Hide
 		f.Hide = function() NP:ClearAuraContext(f); f:_Hide() end
 		f:SetScript("OnHide", function() for index = 1, 4 do NP.PolledHideIn(AuraIconFrames[index], 0) end end)	
-		f.Filter = DefaultFilterFunction
 		f.UpdateContext = NP.UpdateAuraContext
 		f.Update = NP.UpdateAuraContext
 		f.UpdateTarget = NP.UpdateAuraTarget
@@ -606,16 +608,18 @@ function NP:SkinPlate(frame, nameFrame)
 end
 
 
-local good, bad, transition, transition2, combat, goodscale, badscale
+local good, bad, transition, offtank, transition2, combat, goodscale, badscale
 function NP:UpdateThreat(frame)
 	if frame.hasClass or frame.isTagged then return end
 	combat = InCombatLockdown()
 	good = self.db.goodcolor
 	bad = self.db.badcolor
+	offtank = self.db.offtankcolor
 	goodscale = self.db.goodscale
 	badscale = self.db.badscale
 	transition = self.db.goodtransitioncolor
 	transition2 = self.db.badtransitioncolor
+
 	local bgMult = self.db.bgMult
 	if self.db.enhancethreat ~= true then
 		if(frame.threat:IsShown()) then
@@ -647,8 +651,13 @@ function NP:UpdateThreat(frame)
 				--No Threat
 				if E.role == "Tank" then
 					if not frame.customColor then
-						frame.hp:SetStatusBarColor(bad.r, bad.g, bad.b)
-						frame.hp.hpbg:SetTexture(bad.r, bad.g, bad.b, bgMult)
+						if frame.isBeingTanked and self.db.offtank then
+							frame.hp:SetStatusBarColor(offtank.r, offtank.g, offtank.b)
+							frame.hp.hpbg:SetTexture(offtank.r, offtank.g, offtank.b, bgMult)						
+						else
+							frame.hp:SetStatusBarColor(bad.r, bad.g, bad.b)
+							frame.hp.hpbg:SetTexture(bad.r, bad.g, bad.b, bgMult)
+						end
 					end
 
 					if not frame.customScale and badscale ~= 1 then
@@ -658,8 +667,13 @@ function NP:UpdateThreat(frame)
 					frame.threatStatus = "BAD"
 				else
 					if not frame.customColor then
-						frame.hp:SetStatusBarColor(good.r, good.g, good.b)
-						frame.hp.hpbg:SetTexture(good.r, good.g, good.b, bgMult)
+						if (not frame.isBeingTanked) and self.db.offtank then
+							frame.hp:SetStatusBarColor(offtank.r, offtank.g, offtank.b)
+							frame.hp.hpbg:SetTexture(offtank.r, offtank.g, offtank.b, bgMult)						
+						else					
+							frame.hp:SetStatusBarColor(good.r, good.g, good.b)
+							frame.hp.hpbg:SetTexture(good.r, good.g, good.b, bgMult)
+						end
 					end
 					
 					if not frame.customScale and goodscale ~= 1 then
@@ -671,8 +685,13 @@ function NP:UpdateThreat(frame)
 			else
 				--Set colors to their original, not in combat
 				if not frame.customColor then
-					frame.hp:SetStatusBarColor(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor)
-					frame.hp.hpbg:SetTexture(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor, bgMult)
+					if frame.isBeingTanked and self.db.offtank then
+						frame.hp:SetStatusBarColor(offtank.r, offtank.g, offtank.b)
+						frame.hp.hpbg:SetTexture(offtank.r, offtank.g, offtank.b, bgMult)	
+					else
+						frame.hp:SetStatusBarColor(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor)
+						frame.hp.hpbg:SetTexture(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor, bgMult)
+					end
 				end
 				
 				if not frame.customScale and (goodscale ~= 1 or badscale ~= 1) then
@@ -958,6 +977,7 @@ function NP:UpdateAllPlates()
 
 	self:RegisterEvent("GROUP_ROSTER_UPDATE", "UpdateRoster")
 	self:RegisterEvent("PARTY_CONVERTED_TO_RAID", "UpdateRoster")
+	self:RegisterEvent("UNIT_PET", "UpdateRoster")
 	self:RegisterEvent('UPDATE_MOUSEOVER_UNIT', 'UpdateCastInfo')
 	self:RegisterEvent('PLAYER_TARGET_CHANGED', 'UpdateCastInfo')
 	self:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')

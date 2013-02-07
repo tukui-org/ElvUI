@@ -63,11 +63,11 @@ local function BuildGuildTable()
 	local name, rank, level, zone, note, officernote, connected, memberstatus, class, isMobile
 	for i = 1, GetNumGuildMembers() do
 		name, rank, rankIndex, level, _, zone, note, officernote, connected, memberstatus, class, _, _, isMobile = GetGuildRosterInfo(i)
-		
+
 		statusInfo = isMobile and mobilestatus[memberstatus]() or onlinestatus[memberstatus]()
 		zone = isMobile and '' or zone
 
-		if connected then 
+		if connected or isMobile then 
 			guildTable[#guildTable + 1] = { name, rank, level, zone, note, officernote, connected, statusInfo, class, rankIndex, isMobile }
 		end
 	end
@@ -114,7 +114,6 @@ local eventHandlers = {
 	["PLAYER_ENTERING_WORLD"] = function (self, arg1)
 		if not GuildFrame and IsInGuild() then 
 			LoadAddOn("Blizzard_GuildUI")
-			UpdateGuildMessage() 
 			UpdateGuildXP() 
 			GuildRoster() 
 		end
@@ -122,6 +121,7 @@ local eventHandlers = {
 	-- Guild Roster updated, so rebuild the guild table
 	["GUILD_ROSTER_UPDATE"] = function (self, arg1)
 		BuildGuildTable()
+		UpdateGuildMessage()
 	end,
 	-- our guild xp changed, recalculate it	
 	["GUILD_XP_UPDATE"] = function (self, arg1)
@@ -132,7 +132,7 @@ local eventHandlers = {
 	end,
 	-- our guild message of the day changed
 	["GUILD_MOTD"] = function (self, arg1)
-		UpdateGuildMessage()
+		guildMotD = arg1
 	end,
 	["ELVUI_FORCE_RUN"] = function() end,
 	["ELVUI_COLOR_UPDATE"] = function() end,

@@ -171,9 +171,15 @@ E.Options.args.nameplate = {
 					desc = L["Display combo points on nameplates."],
 					set = function(info, value) E.db.nameplate[ info[#info] ] = value; NP:ToggleCPoints() end,
 				},
+				offtank = {
+					type = "toggle",
+					order = 11,
+					name = L["Color Tanked/Loose"],
+					desc = L["Depending on your role. If you are a tank then it will color mobs being tanked by the offtank. If you are not a tank then it will color mobs not being tanked. This is not 100% accurate and should only be used as a referance."],
+				},				
 				lowHealthWarning = {
 					type = 'select',
-					order = 11,
+					order = 12,
 					name = L['Low Health Warning'],
 					desc = L['Color the border of the nameplate yellow when it reaches the threshold point on these types of frames.'],
 					values = {
@@ -184,7 +190,7 @@ E.Options.args.nameplate = {
 				},
 				lowHealthWarningThreshold = {
 					type = 'range',
-					order = 12,
+					order = 13,
 					name = L['Low Health Threshold'],
 					desc = L['Color the border of the nameplate yellow when it reaches this point, it will be colored red when it reaches half this value.'],
 					isPercent = true,
@@ -192,7 +198,7 @@ E.Options.args.nameplate = {
 				},
 				bgMult = {
 					type = 'range',
-					order = 13,
+					order = 14,
 					name = L['Background Multiplier'],
 					desc = L['The backdrop of the nameplates color is scaled to match the color of the nameplate by this percentage. Set to zero to have no color in the nameplate backdrop.'],
 					isPercent = true,
@@ -266,13 +272,13 @@ E.Options.args.nameplate = {
 						trackauras = {
 							type = "toggle",
 							order = 1,
-							name = L["Personal Debuffs"],
-							desc = L["Display your personal debuffs over the nameplate."],
+							name = L["Personal Auras"],
+							desc = L["Always display your personal auras over the nameplate."],
 						},
 						trackfilter = {
 							type = "select",
 							order = 2,
-							name = L['Additional Filter'],
+							name = L['Filter'],
 							desc = L['Select a filter to use. These are imported from the unitframe aura filter.'],
 							values = function()
 								filters = {}
@@ -282,7 +288,16 @@ E.Options.args.nameplate = {
 								end
 								return filters
 							end,
-						},						
+						},	
+						filterType = {
+							type = "select",
+							order = 3,
+							name = L['Filter Type'],
+							values = {
+								['BUFFS'] = L['Buffs'],
+								['DEBUFFS'] = L['Debuffs']
+							},
+						},							
 					},
 				},
 				reactions = {
@@ -324,7 +339,14 @@ E.Options.args.nameplate = {
 							order = 4,
 							name = L["Enemy"],
 							hasAlpha = false,
-						},						
+						},		
+						tappedcolor = {
+							type = "color",
+							order = 8,
+							name = L["Tagged Color"],
+							desc = L["Color of a nameplate that is tagged by another person."],
+							hasAlpha = false,								
+						},							
 					},		
 				},				
 				threat = {
@@ -421,6 +443,23 @@ E.Options.args.nameplate = {
 								NP:UpdateAllPlates()
 							end,							
 						},						
+						offtankcolor = {
+							type = "color",
+							order = 8,
+							name = L["Tanked/Loose Color"],
+							desc = L["Depending on your role. If you are a tank then its the color of mobs being tanked not by you by an actual tank. If you are not a tank then it is the color of mobs that are not currently being tanked."],
+							hasAlpha = false,	
+							get = function(info)
+								local t = E.db.nameplate[ info[#info] ]
+								return t.r, t.g, t.b, t.a
+							end,
+							set = function(info, r, g, b)
+								E.db.nameplate[ info[#info] ] = {}
+								local t = E.db.nameplate[ info[#info] ]
+								t.r, t.g, t.b = r, g, b
+								NP:UpdateAllPlates()
+							end,							
+						},		
 					},
 				},				
 			},

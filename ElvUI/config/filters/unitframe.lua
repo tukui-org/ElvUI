@@ -193,7 +193,6 @@ G.unitframe.aurafilters['TurtleBuffs'] = {
 			[SpellName(498)] = Defaults(), -- Divine Protection
 			[SpellName(642)] = Defaults(), -- Divine Shield
 			[SpellName(86659)] = Defaults(), -- Guardian of the Ancient Kings (Prot)
-			[SpellName(20925)] = Defaults(), -- Sacred Shield
 			[SpellName(31850)] = Defaults(), -- Ardent Defender
 		--Warrior
 			[SpellName(118038)] = Defaults(), -- Die by the Sword

@@ -1,12 +1,24 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local NP = E:GetModule('NamePlates')
-
+_G["NP"] = NP
 --[[
 	This file handles functions for the Castbar and Debuff modules of nameplates.
 ]]
+
+NP.GroupTanks = {};
 NP.GroupMembers = {};
 NP.CachedAuraDurations = {};
-NP.DebuffCache = {}
+NP.AurasCache = {}
+
+NP.TankClasses = {
+	['WARRIOR'] = true,
+	['PALADIN'] = true,
+	['MONK'] = true,
+	['DEATHKNIGHT'] = true,
+	['DRUID'] = true,
+	--['PRIEST'] = true -- temp
+}
+
 NP.RaidTargetReference = {
 	["STAR"] = 0x00000001,
 	["CIRCLE"] = 0x00000002,
@@ -27,6 +39,26 @@ NP.ComboColors = {
 	[4] = {0.65, 0.63, 0.35},
 	[5] = {0.33, 0.59, 0.33}
 }
+
+NP.RaidIconCoordinate = {
+	[0]		= { [0]		= "STAR", [0.25]	= "MOON", },
+	[0.25]	= { [0]		= "CIRCLE", [0.25]	= "SQUARE",	},
+	[0.5]	= { [0]		= "DIAMOND", [0.25]	= "CROSS", },
+	[0.75]	= { [0]		= "TRIANGLE", [0.25]	= "SKULL", }, 
+}
+
+NP.TargetOfGroupMembers = {}
+NP.ByRaidIcon = {}			-- Raid Icon to GUID 		-- ex.  ByRaidIcon["SKULL"] = GUID
+NP.ByName = {}				-- Name to GUID (PVP)
+NP.Aura_List = {}	-- Two Dimensional
+NP.Aura_Spellid = {}
+NP.Aura_Expiration = {}
+NP.Aura_Stacks = {}
+NP.Aura_Caster = {}
+NP.Aura_Duration = {}
+NP.Aura_Texture = {}
+NP.Aura_Type = {}
+NP.Aura_Target = {}
 
 local AURA_TYPE_BUFF = 1
 local AURA_TYPE_DEBUFF = 6
@@ -49,13 +81,6 @@ local band = bit.band
 local ceil = math.ceil
 local twipe = table.wipe
 
-NP.RaidIconCoordinate = {
-	[0]		= { [0]		= "STAR", [0.25]	= "MOON", },
-	[0.25]	= { [0]		= "CIRCLE", [0.25]	= "SQUARE",	},
-	[0.5]	= { [0]		= "DIAMOND", [0.25]	= "CROSS", },
-	[0.75]	= { [0]		= "TRIANGLE", [0.25]	= "SKULL", }, 
-}
-
 local RaidIconIndex = {
 	"STAR",
 	"CIRCLE",
@@ -66,19 +91,6 @@ local RaidIconIndex = {
 	"CROSS",
 	"SKULL",
 }
-
-NP.TargetOfGroupMembers = {}
-NP.ByRaidIcon = {}			-- Raid Icon to GUID 		-- ex.  ByRaidIcon["SKULL"] = GUID
-NP.ByName = {}				-- Name to GUID (PVP)
-NP.Aura_List = {}	-- Two Dimensional
-NP.Aura_Spellid = {}
-NP.Aura_Expiration = {}
-NP.Aura_Stacks = {}
-NP.Aura_Caster = {}
-NP.Aura_Duration = {}
-NP.Aura_Texture = {}
-NP.Aura_Type = {}
-NP.Aura_Target = {}
 
 do
 	local PolledHideIn
@@ -115,7 +127,6 @@ do
 			frame:Hide()
 			Framelist[frame] = nil
 		else
-			--print("Hiding in", expiration - GetTime())
 			Framelist[frame] = expiration
 			frame:Show()
 			
@@ -127,12 +138,6 @@ do
 	end
 	
 	NP.PolledHideIn = PolledHideIn
-end
-
-local function DefaultFilterFunction(debuff) 
-	if (debuff.duration < 600) then
-		return true
-	end
 end
 
 function NP:CreateAuraIcon(parent)
@@ -246,7 +251,7 @@ function NP:UpdateAuraContext(frame)
 	
 	local frame = NP:SearchForFrame(guid, raidicon, parent.hp.name:GetText())
 	if frame then
-		NP:UpdateDebuffs(frame)
+		NP:UpdateAuras(frame)
 	end
 end
 
@@ -364,7 +369,7 @@ function NP:SetAuraInstance(guid, spellid, expiration, stacks, caster, duration,
 	end
 end
 
-function NP:RemoveAuraInstance()
+function NP:RemoveAuraInstance(guid, spellid)
 	if guid and spellid and NP.Aura_List[guid] then
 		local aura_instance_id = tostring(guid)..tostring(spellid)..(tostring(caster or "UNKNOWN_CASTER"))
 		local aura_id = spellid..(tostring(caster or "UNKNOWN_CASTER"))
@@ -398,6 +403,26 @@ function NP:UpdateAuraByLookup(guid)
 	end
 end
 
+function NP:UpdateIsBeingTanked(frame)
+	local guid = frame.guid
+	if not guid then return end
+	
+	local unit = self.TargetOfGroupMembers[guid]
+ 	if unit then
+		local targetUnit = unit.."target"
+		if UnitExists(targetUnit) then
+			local isTankGUID = self.GroupTanks[UnitGUID(targetUnit)]
+			local isTanking = UnitDetailedThreatSituation(targetUnit, unit)
+
+			if isTankGUID and isTanking then
+				frame.isBeingTanked = true
+			elseif not isTankGUID and isTanking then
+				frame.isBeingTanked = nil
+			end
+		end
+	end
+end
+
 function NP:InvalidCastCheck(frame)
 	if frame.guid and self.GUIDIgnoreCast[frame.guid] then
 		self.GUIDIgnoreCast[frame.guid] = nil;
@@ -406,7 +431,7 @@ end
 
 function NP:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, ...)
 	local _, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellid, spellName, _, auraType, stackCount  = ...
-	
+
 	if event == 'SPELL_AURA_APPLIED' or event == 'SPELL_HEAL' or event == 'SPELL_DAMAGE' or event == 'SPELL_MISS' then
 		self.GUIDIgnoreCast[sourceGUID] = spellName;
 	end
@@ -421,7 +446,7 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, ...)
 		local texture = GetSpellTexture(spellid)
 		NP:SetAuraInstance(destGUID, spellid, GetTime() + (duration or 0), stackCount, sourceGUID, duration, texture, AURA_TYPE_DEBUFF, AURA_TARGET_HOSTILE)
 	elseif event == "SPELL_AURA_BROKEN" or event == "SPELL_AURA_BROKEN_SPELL" or event == "SPELL_AURA_REMOVED" then
-		NP:RemoveAuraInstance(destGUID, spellid, sourceGUID)
+		NP:RemoveAuraInstance(destGUID, spellid)
 	elseif event == "SPELL_CAST_START" then
 		local spell, _, icon, _, _, _, castTime, _, _ = GetSpellInfo(spellid)
 		if self.GUIDIgnoreCast[sourceGUID] == spell then
@@ -504,30 +529,28 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, ...)
 		end			
 	end
 
-	if event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REFRESH" or event == "SPELL_AURA_APPLIED_DOSE" or event == "SPELL_AURA_REMOVED_DOSE" or event == "SPELL_AURA_BROKEN" or event == "SPELL_AURA_BROKEN_SPELL" or event == "SPELL_AURA_REMOVED" then
-		if (band(destFlags, COMBATLOG_OBJECT_REACTION_FRIENDLY) == 0) and auraType == 'DEBUFF' then		
-			NP:UpdateAuraByLookup(destGUID)
-			local name, raidicon
-			-- Cache Unit Name for alternative lookup strategy
-			if band(destFlags, COMBATLOG_OBJECT_CONTROL_PLAYER) > 0 then 
-				local rawName = strsplit("-", destName)			-- Strip server name from players
-				NP.ByName[rawName] = destGUID
-				name = rawName
-			end
-			-- Cache Raid Icon Data for alternative lookup strategy
-			for iconname, bitmask in pairs(NP.RaidTargetReference) do
-				if band(destRaidFlags, bitmask) > 0  then
-					NP.ByRaidIcon[iconname] = destGUID
-					raidicon = iconname
-					break
-				end
-			end
-			
-			local frame = self:SearchForFrame(destGUID, raidicon, name)	
-			if frame then
-				NP:UpdateDebuffs(frame)
-			end				
+	if event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REFRESH" or event == "SPELL_AURA_APPLIED_DOSE" or event == "SPELL_AURA_REMOVED_DOSE" or event == "SPELL_AURA_BROKEN" or event == "SPELL_AURA_BROKEN_SPELL" or event == "SPELL_AURA_REMOVED" then	
+		NP:UpdateAuraByLookup(destGUID)
+		local name, raidicon
+		-- Cache Unit Name for alternative lookup strategy
+		if band(destFlags, COMBATLOG_OBJECT_CONTROL_PLAYER) > 0 then 
+			local rawName = strsplit("-", destName)			-- Strip server name from players
+			NP.ByName[rawName] = destGUID
+			name = rawName
 		end
+		-- Cache Raid Icon Data for alternative lookup strategy
+		for iconname, bitmask in pairs(NP.RaidTargetReference) do
+			if band(destRaidFlags, bitmask) > 0  then
+				NP.ByRaidIcon[iconname] = destGUID
+				raidicon = iconname
+				break
+			end
+		end
+
+		local frame = self:SearchForFrame(destGUID, raidicon, name)	
+		if frame then
+			NP:UpdateAuras(frame)
+		end				
 	end	
 end
 
@@ -603,32 +626,56 @@ function NP:CleanAuraLists()
 	end
 end
 
+function NP:AddToRoster(unitId)
+	local unitName = UnitName(unitId)
+
+	if unitName then
+		local _, unitClass = UnitClass(unitId)
+		local guid = UnitGUID(unitId)
+		self.GroupMembers[unitName] = unitId
+		
+		if ((UnitGroupRolesAssigned(unitId) == 'TANK') or GetPartyAssignment("MAINTANK", unitId)) and self.TankClasses[unitClass] then
+			self.GroupTanks[guid] = true
+		end		
+	end
+end
+
 function NP:UpdateRoster()
 	local groupType, groupSize, unitId, unitName
+	wipe(self.GroupMembers)
+	wipe(self.GroupTanks)	
+	
 	if IsInRaid() then 
 		groupType = "raid"
-		groupSize = GetNumGroupMembers() - 1
+		groupSize = GetNumGroupMembers()
 	elseif IsInGroup() then 
 		groupType = "party"
-		groupSize = GetNumGroupMembers(LE_PARTY_CATEGORY_HOME) 
+		groupSize = GetNumGroupMembers() - 1
 	else 
 		groupType = "solo"
 		groupSize = 1
 	end
-	
-	wipe(self.GroupMembers)
-	
+
 	-- Cycle through Group
 	if groupType then
 		for index = 1, groupSize do
-			unitId = groupType..index	
-			unitName = UnitName(unitId)
-			if unitName then
-				self.GroupMembers[unitName] = unitId
-			end
+			self:AddToRoster(groupType..index)
 		end
-	end	
+	end
+	
+	if UnitExists('pet') then
+		self:AddToRoster('pet')
+		
+		if groupType ~= "raid" then
+			self.GroupTanks[UnitGUID('pet')] = true
+		end
+	end
+	
+	if groupType == 'party' then
+		self:AddToRoster('player')
+	end
 end
+
 
 function NP:WipeAuraList(guid)
 	if guid and self.Aura_List[guid] then
@@ -686,14 +733,14 @@ function NP:UpdateIcon(frame, texture, expiration, stacks)
 end
 
 function NP:UpdateIconGrid(frame, guid)
-	local widget = frame.AuraWidget
+	local widget = frame.AuraWidget 
 	local AuraIconFrames = widget.AuraIconFrames
 	local AurasOnUnit = self:GetAuraList(guid)
 	local AuraSlotIndex = 1
 	local instanceid
 	
-	self.DebuffCache = wipe(self.DebuffCache)
-	local debuffCount = 0
+	self.AurasCache = wipe(self.AurasCache)
+	local aurasCount = 0
 	
 	-- Cache displayable debuffs
 	if AurasOnUnit then
@@ -706,20 +753,19 @@ function NP:UpdateIconGrid(frame, guid)
 			if tonumber(aura.spellid) then
 				aura.name = GetSpellInfo(tonumber(aura.spellid))
 				aura.unit = frame.unit
-				
 				-- Get Order/Priority
 				if aura.expiration > GetTime() then
-					debuffCount = debuffCount + 1
-					self.DebuffCache[debuffCount] = aura
+					aurasCount = aurasCount + 1
+					self.AurasCache[aurasCount] = aura
 				end
 			end
 		end
 	end
 	
 	-- Display Auras
-	if debuffCount > 0 then 
-		for index = 1,  #self.DebuffCache do
-			local cachedaura = self.DebuffCache[index]
+	if aurasCount > 0 then 
+		for index = 1,  #self.AurasCache do
+			local cachedaura = self.AurasCache[index]
 			if cachedaura.spellid and cachedaura.expiration then 
 				self:UpdateIcon(AuraIconFrames[AuraSlotIndex], cachedaura.texture, cachedaura.expiration, cachedaura.stacks) 
 				AuraSlotIndex = AuraSlotIndex + 1
@@ -731,10 +777,10 @@ function NP:UpdateIconGrid(frame, guid)
 	-- Clear Extra Slots
 	for AuraSlotIndex = AuraSlotIndex, ((frame.isSmallNP and NP.db.smallPlates) and NP.MAX_SMALLNP_DISPLAYABLE_DEBUFFS or NP.MAX_DISPLAYABLE_DEBUFFS) do self:UpdateIcon(AuraIconFrames[AuraSlotIndex]) end
 	
-	self.DebuffCache = wipe(self.DebuffCache)
+	self.AurasCache = wipe(self.AurasCache)
 end
 
-function NP:UpdateDebuffs(frame)
+function NP:UpdateAuras(frame)
 	-- Check for ID
 	local guid = frame.guid
 	
@@ -758,40 +804,47 @@ function NP:UpdateDebuffs(frame)
 end
 
 function NP:UpdateAurasByUnitID(unit)
-	-- Limit to enemies, for now
-	local unitType = UnitIsFriend("player", unit) and AURA_TARGET_FRIENDLY or AURA_TARGET_HOSTILE
-	if unitType == AURA_TARGET_FRIENDLY then return end		-- Filter
-	
-	-- Check the units Debuffs
-	local index
+	-- Check the units Auras
 	local guid = UnitGUID(unit)
 	-- Reset Auras for a guid
 	self:WipeAuraList(guid)
-	-- Debuffs
-	for index = 1, 40 do
-		local name , _, texture, count, dispelType, duration, expirationTime, unitCaster, _, _, spellid, _, isBossDebuff = UnitDebuff(unit, index)
-		if not name then break end
-		NP:SetSpellDuration(spellid, duration)			-- Caches the aura data for times when the duration cannot be determined (ie. via combat log)
-		NP:SetAuraInstance(guid, spellid, expirationTime, count, UnitGUID(unitCaster or ""), duration, texture, AURA_TYPE[dispelType or "Debuff"], unitType)
-	end	
-
+	
+	if NP.db.filterType == 'DEBUFFS' then
+		local index = 1
+		local name, _, texture, count, _, duration, expirationTime, unitCaster, _, _, spellid, _, isBossDebuff = UnitDebuff(unit, index)
+		while name do
+			NP:SetSpellDuration(spellid, duration)
+			NP:SetAuraInstance(guid, spellid, expirationTime, count, UnitGUID(unitCaster or ""), duration, texture, AURA_TYPE[dispelType or "Debuff"], unitType)
+			index = index + 1
+			name , _, texture, count, _, duration, expirationTime, unitCaster, _, _, spellid, _, isBossDebuff = UnitDebuff(unit, index)
+		end	
+	else
+		local index = 1
+		local name, _, texture, count, _, duration, expirationTime, unitCaster, _, _, spellid = UnitBuff(unit, index);
+		while name do
+			NP:SetSpellDuration(spellid, duration)
+			NP:SetAuraInstance(guid, spellid, expirationTime, count, UnitGUID(unitCaster or ""), duration, texture, AURA_TYPE[dispelType or "Buff"], unitType)
+			index = index + 1
+			name, _, texture, count, _, duration, expirationTime, unitCaster, _, _, spellId = UnitBuff(unit, index);
+		end		
+	end
+	
 	local raidicon, name
 	if UnitPlayerControlled(unit) then name = UnitName(unit) end
 	raidicon = RaidIconIndex[GetRaidTargetIndex(unit) or ""]
 	if raidicon then self.ByRaidIcon[raidicon] = guid end
 	
 	local frame = self:SearchForFrame(guid, raidicon, name)
-	
 	if frame then
-		NP:UpdateDebuffs(frame)
+		NP:UpdateAuras(frame)
 	end
 end
 
-function NP:UNIT_TARGET()
+function NP:UNIT_TARGET(event, unit)	
 	self.TargetOfGroupMembers = wipe(self.TargetOfGroupMembers)
 	
 	for name, unitid in pairs(self.GroupMembers) do
-		local targetOf = unitid..("target" or "")
+		local targetOf = unitid.."target"
 		if UnitExists(targetOf) then
 			self.TargetOfGroupMembers[UnitGUID(targetOf)] = targetOf
 		end
@@ -872,14 +925,8 @@ function NP:CastBar_OnShow(frame)
 		frame:SetStatusBarColor(1, 208/255, 0)
 	end	
 	
-	local isSmallNP
 	while frame:GetEffectiveScale() < 1 do
 		frame:SetScale(frame:GetScale() + 0.01)
-		isSmallNP = true;
-	end
-	
-	if isSmallNP and NP.db.smallPlates then
-		frame:Width(frame:GetWidth() * frame:GetParent():GetEffectiveScale())
 	end
 		
 	self:SetVirtualBorder(frame, unpack(E["media"].bordercolor))
@@ -927,12 +974,7 @@ function NP:UpdateCPoints(frame, isMouseover)
 	if isMouseover == true then
 		unit = "mouseover"
 	end
-	
-	--[[if not UnitExists(unit) then 
-		self:ForEachPlate(self.HideCPoints)
-		return; 
-	end]]
-	
+
 	if type(frame) ~= "table" then
 		frame = self:GetTargetNameplate()
 		if frame then
