@@ -7313,30 +7313,42 @@ E.Options.args.unitframe.args.party = {
 	get = function(info) return E.db.unitframe.units['party'][ info[#info] ] end,
 	set = function(info, value) E.db.unitframe.units['party'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
 	args = {
-		enable = {
-			type = 'toggle',
-			order = 1,
-			name = L['Enable'],
-		},
-		resetSettings = {
-			type = 'execute',
-			order = 2,
-			name = L['Restore Defaults'],
-			func = function(info, value) UF:ResetUnitSettings('party'); E:ResetMovers('Party Frames') end,
-		},		
 		configureToggle = {
-			order = 4,
+			order = 1,
 			type = 'execute',
 			name = L['Display Frames'],
 			func = function() 
 				UF:HeaderConfig(ElvUF_Party, ElvUF_Party.forceShow ~= true or nil)
 			end,
-		},			
+		},		
+		resetSettings = {
+			type = 'execute',
+			order = 2,
+			name = L['Restore Defaults'],
+			func = function(info, value) UF:ResetUnitSettings('party'); E:ResetMovers('Party Frames') end,
+		},
+		copyFrom = {
+			type = 'select',
+			order = 3,
+			name = L['Copy From'],
+			desc = L['Select a unit to copy settings from.'],
+			values = {
+				['raid10'] = L['Raid-10 Frames'],
+				['raid25'] = L['Raid-25 Frames'],
+				['raid40'] = L['Raid-40 Frames'],
+			},
+			set = function(info, value) UF:MergeUnitSettings(value, 'party', true); end,
+		},				
 		general = {
 			order = 5,
 			type = 'group',
 			name = L['General'],
 			args = {
+				enable = {
+					type = 'toggle',
+					order = 1,
+					name = L['Enable'],
+				},			
 				width = {
 					order = 2,
 					name = L['Width'],
@@ -7416,13 +7428,7 @@ E.Options.args.unitframe.args.party = {
 					type = 'toggle',
 					name = L['Display Player'],
 					desc = L['When true, the header includes the player when not in a raid.'],			
-				},
-				healPrediction = {
-					order = 15,
-					name = L['Heal Prediction'],
-					desc = L['Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals.'],
-					type = 'toggle',
-				},		
+				},	
 				groupBy = {
 					order = 16,
 					name = L['Group By'],
@@ -7453,6 +7459,12 @@ E.Options.args.unitframe.args.party = {
 					get = function(info) return E.db.unitframe.units['party']['power'].hideonnpc end,
 					set = function(info, value) E.db.unitframe.units['party']['power'].hideonnpc = value; UF:CreateAndUpdateHeaderGroup('party'); end,
 				},
+				healPrediction = {
+					order = 19,
+					name = L['Heal Prediction'],
+					desc = L['Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals.'],
+					type = 'toggle',
+				},					
 				customText = {
 					order = 50,
 					name = L['Custom Texts'],
@@ -8082,30 +8094,43 @@ for i=10, 40, 15 do
 		get = function(info) return E.db.unitframe.units['raid'..i][ info[#info] ] end,
 		set = function(info, value) E.db.unitframe.units['raid'..i][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i) end,
 		args = {
-			enable = {
-				type = 'toggle',
+			configureToggle = {
 				order = 1,
-				name = L['Enable'],
-			},
+				type = 'execute',
+				name = L['Display Frames'],
+				func = function() 
+					UF:HeaderConfig(_G['ElvUF_Raid'..i], _G['ElvUF_Raid'..i].forceShow ~= true or nil)
+				end,
+			},			
 			resetSettings = {
 				type = 'execute',
 				order = 2,
 				name = L['Restore Defaults'],
 				func = function(info, value) UF:ResetUnitSettings('raid'..i); E:ResetMovers('Raid 1-'..i..' Frames') end,
 			},	
-			configureToggle = {
-				order = 4,
-				type = 'execute',
-				name = L['Display Frames'],
-				func = function() 
-					UF:HeaderConfig(_G['ElvUF_Raid'..i], _G['ElvUF_Raid'..i].forceShow ~= true or nil)
-				end,
-			},		
+			copyFrom = {
+				type = 'select',
+				order = 3,
+				name = L['Copy From'],
+				desc = L['Select a unit to copy settings from.'],
+				values = {
+					['party'] = L['Party Frames'],
+					['raid10'] = 'raid'..i ~= 'raid10' and L['Raid-10 Frames'] or nil,
+					['raid25'] = 'raid'..i ~= 'raid25' and L['Raid-25 Frames'] or nil,
+					['raid40'] = 'raid'..i ~= 'raid40' and L['Raid-40 Frames'] or nil,
+				},
+				set = function(info, value) UF:MergeUnitSettings(value, 'raid'..i, true); end,
+			},			
 			general = {
 				order = 5,
 				type = 'group',
 				name = L['General'],
 				args = {
+					enable = {
+						type = 'toggle',
+						order = 1,
+						name = L['Enable'],
+					},					
 					width = {
 						order = 2,
 						name = L['Width'],
@@ -8186,12 +8211,6 @@ for i=10, 40, 15 do
 						name = L['Display Player'],
 						desc = L['When true, the header includes the player when not in a raid.'],			
 					},
-					healPrediction = {
-						order = 15,
-						name = L['Heal Prediction'],
-						desc = L['Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals.'],
-						type = 'toggle',
-					},		
 					groupBy = {
 						order = 16,
 						name = L['Group By'],
@@ -8221,7 +8240,13 @@ for i=10, 40, 15 do
 						desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
 						get = function(info) return E.db.unitframe.units['raid'..i]['power'].hideonnpc end,
 						set = function(info, value) E.db.unitframe.units['raid'..i]['power'].hideonnpc = value; UF:CreateAndUpdateHeaderGroup('raid'..i); end,
-					},		
+					},	
+					healPrediction = {
+						order = 19,
+						name = L['Heal Prediction'],
+						desc = L['Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals.'],
+						type = 'toggle',
+					},						
 					customText = {
 						order = 50,
 						name = L['Custom Texts'],

@@ -735,26 +735,34 @@ local ignoreSettings = {
 	['onlyDispellable'] = true,
 	['useFilter'] = true,
 }
-function UF:MergeUnitSettings(fromUnit, toUnit)
+
+local ignoreSettingsGroup = {
+	['visibility'] = true,
+}
+
+function UF:MergeUnitSettings(fromUnit, toUnit, isGroupUnit)
 	local db = self.db['units']
-	
+	local filter = ignoreSettings
+	if isGroupUnit then
+		filter = ignoreSettingsGroup 
+	end
 	if fromUnit ~= toUnit then
 		for option, value in pairs(db[fromUnit]) do
-			if type(value) ~= 'table' and not ignoreSettings[option] then
+			if type(value) ~= 'table' and not filter[option] then
 				if db[toUnit][option] ~= nil then
 					db[toUnit][option] = value
 				end
-			elseif not ignoreSettings[option] then
+			elseif not filter[option] then
 				if type(value) == 'table' then
 					for opt, val in pairs(db[fromUnit][option]) do
-						if type(val) ~= 'table' and not ignoreSettings[opt] then
+						if type(val) ~= 'table' and not filter[opt] then
 							if db[toUnit][option] ~= nil and db[toUnit][option][opt] ~= nil then
 								db[toUnit][option][opt] = val
 							end				
-						elseif not ignoreSettings[opt] then
+						elseif not filter[opt] then
 							if type(val) == 'table' then
 								for o, v in pairs(db[fromUnit][option][opt]) do
-									if not ignoreSettings[o] then
+									if not filter[o] then
 										if db[toUnit][option] ~= nil and db[toUnit][option][opt] ~= nil and db[toUnit][option][opt][o] ~= nil then
 											db[toUnit][option][opt][o] = v	
 										end

@@ -979,7 +979,7 @@ L["Use the custom health backdrop color instead of a multiple of the main health
 L["Value must be a number"] = "Der Wert muss eine Zahl sein"
 L["Vertical"] = "Vertikal" --Also used in bags section
 L["Visibility"] = "Sichtbarkeit"
-L["What each frame should attach itself to, example setting it to TOP every unit will attach its top to the last point bottom."] = "Woran sich jedes Fenster anheften soll. Beispiel: Wenn das Fenster auf OBEN eingestellt ist, dann wird sich jede Einheit mit ihrem oberen Bereich am unteren Bereich der letzten Einheit anheften."
+L["What each frame should attach itself to. For example setting it to TOP every unit will attach its top to the last point bottom."] = "Woran sich jedes Fenster anheften soll. Beispiel: Wenn das Fenster auf OBEN eingestellt ist, dann wird sich jede Einheit mit ihrem oberen Bereich am unteren Bereich der letzten Einheit anheften."
 L["What point to anchor to the frame you set to attach to."] = "Welchen Punkt für das verankern der Fenster möchtest du wählen."
 L["What to attach the buff anchor frame to."] = "Wo die Stärkungszauber angehängt werden sollen."
 L["What to attach the debuff anchor frame to."] = "Wo die Schwächungszauber angehängt werden sollen."

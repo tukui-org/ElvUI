@@ -980,7 +980,7 @@ L["Use the custom health backdrop color instead of a multiple of the main health
 L["Value must be a number"] = "數值必須為一個數字"
 L["Vertical"] = "垂直"
 L["Visibility"] = "可見性"
-L["What each frame should attach itself to, example setting it to TOP every unit will attach its top to the last point bottom."] = "每一個框架都會依附在你設定的位置上, 例如: 你設定依附於TOP那麼每一個單位都將把它單位TOP依附於前一個單位的BOTTOM."
+L["What each frame should attach itself to. For example setting it to TOP every unit will attach its top to the last point bottom."] = "每一個框架都會依附在你設定的位置上, 例如: 你設定依附於TOP那麼每一個單位都將把它單位TOP依附於前一個單位的BOTTOM."
 L["What point to anchor to the frame you set to attach to."] = "增益光環框架於其依附框架的依附位置."
 L["What to attach the buff anchor frame to."] = "Buff 定位附加到的框架."
 L["What to attach the debuff anchor frame to."] = "Debuff 定位附加到的框架."

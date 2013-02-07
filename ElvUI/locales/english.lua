@@ -991,7 +991,7 @@ L["Use the custom health backdrop color instead of a multiple of the main health
 L["Value must be a number"] = true;
 L["Vertical"] = true; --Also used in bags section
 L["Visibility"] = true;
-L["What each frame should attach itself to, example setting it to TOP every unit will attach its top to the last point bottom."] = true;
+L["What each frame should attach itself to. For example setting it to TOP every unit will attach its top to the last point bottom."] = true;
 L["What point to anchor to the frame you set to attach to."] = true;
 L["What to attach the buff anchor frame to."] = true;
 L["What to attach the debuff anchor frame to."] = true;

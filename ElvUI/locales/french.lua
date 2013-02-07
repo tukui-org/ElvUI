@@ -982,7 +982,7 @@ L["Use the custom health backdrop color instead of a multiple of the main health
 L["Value must be a number"] = "La valeur doit être un nombre"
 L["Vertical"] = "Verticale"
 L["Visibility"] = "Visibilité"
-L["What each frame should attach itself to, example setting it to TOP every unit will attach its top to the last point bottom."] = "Le point d'ancrage pour attacher les cadres entre eux, exemple: si le paramètre est sur TOP, tous les cadres d'unité se développeront vers le bas."
+L["What each frame should attach itself to. For example setting it to TOP every unit will attach its top to the last point bottom."] = "Le point d'ancrage pour attacher les cadres entre eux, exemple: si le paramètre est sur TOP, tous les cadres d'unité se développeront vers le bas."
 L["What point to anchor to the frame you set to attach to."] = "Quel point d'ancrage sur le cadre vous choisissez à attacher."
 L["What to attach the buff anchor frame to."] = "Choisissez à quoi vous voulez attacher les améliorations sur le cadre."
 L["What to attach the debuff anchor frame to."] = "Choisissez à quoi vous voulez attacher les affaiblissements sur le cadre."

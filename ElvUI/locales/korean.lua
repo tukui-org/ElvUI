@@ -987,7 +987,7 @@ L["Use the custom health backdrop color instead of a multiple of the main health
 L["Value must be a number"] = true;
 L["Vertical"] = "세로" --Also used in bags section
 L["Visibility"] = "표시"
-L["What each frame should attach itself to, example setting it to TOP every unit will attach its top to the last point bottom."] = "프레임끼리 서로 붙입니다. 모든 유닛을 'TOP\"으로 설정할 경우 가장 마지막 프레임의 아래에 붙입니다."
+L["What each frame should attach itself to. For example setting it to TOP every unit will attach its top to the last point bottom."] = "프레임끼리 서로 붙입니다. 모든 유닛을 'TOP\"으로 설정할 경우 가장 마지막 프레임의 아래에 붙입니다."
 L["What point to anchor to the frame you set to attach to."] = "붙여넣을 프레임의 기준점을 정합니다."
 L["What to attach the buff anchor frame to."] = "버프 기준점을 어디에 붙일지 정한다."
 L["What to attach the debuff anchor frame to."] = true;
