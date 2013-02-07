@@ -252,7 +252,7 @@ P['tooltip'] = {
 P['unitframe'] = {
 	['smoothbars'] = true,
 	['statusbar'] = "Minimalist",
-	['font'] = 'Old Sans Black',
+	['font'] = 'Doris PP',
 	['fontSize'] = 12,
 	['fontOutline'] = 'OUTLINE',
 	['OORAlpha'] = 0.55,
@@ -1466,7 +1466,7 @@ P['unitframe'] = {
 
 --Actionbar
 P["actionbar"] = {
-	['font'] = 'Arial Narrow',
+	['font'] = 'Doris PP',
 	['fontSize'] = 13,
 	['fontOutline'] = 'OUTLINE',
 	

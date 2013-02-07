@@ -1,9 +1,7 @@
 local LSM = LibStub("LibSharedMedia-3.0")
 
 if LSM == nil then return end
-
-LSM:Register("font","Old Sans Black", [[Interface\AddOns\ElvUI\media\fonts\OldSansBlack.ttf]])
-LSM:Register("font","Old Sans Black Underline", [[Interface\AddOns\ElvUI\media\fonts\OldSansBlackUnderline.ttf]])
+LSM:Register("font","Doris PP", [[Interface\AddOns\ElvUI\media\fonts\DORISBR.TTF]])
 LSM:Register("background","ElvUI Blank", [[Interface\BUTTONS\WHITE8X8]])
 LSM:Register("border", "ElvUI GlowBorder", [[Interface\AddOns\ElvUI\media\textures\glowTex.tga]])
 LSM:Register("font", "ElvUI Alt-Font", [[Interface\AddOns\ElvUI\media\fonts\Continuum_Medium.ttf]])
