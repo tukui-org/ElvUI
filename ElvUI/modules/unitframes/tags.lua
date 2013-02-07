@@ -398,3 +398,45 @@ ElvUF.Tags.Methods['classpower:percent'] = function()
 		return E:GetFormattedText('PERCENT', min, max)
 	end
 end
+
+ElvUF.Tags.Events['absorbs'] = 'UNIT_ABSORB_AMOUNT_CHANGED'
+ElvUF.Tags.Methods['absorbs'] = function(unit)
+	local absorb = UnitGetTotalAbsorbs(unit) or 0
+	if absorb == 0 then
+		return ' '
+	else
+		return E:ShortValue(absorb)
+	end
+end
+
+ElvUF.Tags.Events['incomingheals:personal'] = 'UNIT_HEAL_PREDICTION'
+ElvUF.Tags.Methods['incomingheals:personal'] = function(unit)
+	local heal = UnitGetIncomingHeals(unit, 'player') or 0
+	if heal == 0 then
+		return ' '
+	else
+		return E:ShortValue(heal)
+	end
+end
+
+ElvUF.Tags.Events['incomingheals:others'] = 'UNIT_HEAL_PREDICTION'
+ElvUF.Tags.Methods['incomingheals:others'] = function(unit)
+	local heal = UnitGetIncomingHeals(unit) or 0
+	if heal == 0 then
+		return ' '
+	else
+		return E:ShortValue(heal)
+	end
+end
+
+ElvUF.Tags.Events['incomingheals'] = 'UNIT_HEAL_PREDICTION'
+ElvUF.Tags.Methods['incomingheals'] = function(unit)
+	local personal = UnitGetIncomingHeals(unit, 'player') or 0
+	local others = UnitGetIncomingHeals(unit) or 0
+	local heal = personal + others
+	if heal == 0 then
+		return ' '
+	else
+		return E:ShortValue(heal)
+	end
+end
