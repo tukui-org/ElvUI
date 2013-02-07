@@ -466,6 +466,41 @@ function UF:PostCastNotInterruptible(unit)
 	self:SetStatusBarColor(colors.castNoInterrupt[1], colors.castNoInterrupt[2], colors.castNoInterrupt[3])
 end
 
+local function UpdateFillBar(frame, previousTexture, bar, amount)
+	if ( amount == 0 ) then
+		bar:Hide();
+		return previousTexture;
+	end
+	
+	local orientation = frame.Health:GetOrientation()
+	bar:ClearAllPoints()
+	if orientation == 'HORIZONTAL' then
+		bar:SetPoint("TOPLEFT", previousTexture, "TOPRIGHT");
+		bar:SetPoint("BOTTOMLEFT", previousTexture, "BOTTOMRIGHT");
+	else
+		bar:SetPoint("BOTTOMRIGHT", previousTexture, "TOPRIGHT");
+		bar:SetPoint("BOTTOMLEFT", previousTexture, "TOPLEFT");	
+	end
+
+	local totalWidth, totalHeight = frame.Health:GetSize();
+	if orientation == 'HORIZONTAL' then
+		bar:SetWidth(totalWidth);
+	else
+		bar:SetHeight(totalHeight);
+	end
+
+	return bar:GetStatusBarTexture();
+end
+
+function UF:UpdateHealComm(unit, myIncomingHeal, allIncomingHeal, totalAbsorb)
+	local frame = self.parent
+	local previousTexture = frame.Health:GetStatusBarTexture();
+
+	previousTexture = UpdateFillBar(frame, previousTexture, self.myBar, myIncomingHeal);
+	previousTexture = UpdateFillBar(frame, previousTexture, self.otherBar, allIncomingHeal);
+	previousTexture = UpdateFillBar(frame, previousTexture, self.absorbBar, totalAbsorb);
+end
+
 function UF:UpdateHoly(event, unit, powerType)
 	if (self.unit ~= unit or (powerType and powerType ~= 'HOLY_POWER')) then return end
 	local db = self.db

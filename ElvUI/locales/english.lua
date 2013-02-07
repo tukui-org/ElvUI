@@ -740,6 +740,8 @@ L['You can use the /resetui command to reset all of your movers. You can also us
 L['ABOVE_THREAT_FORMAT'] = '%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]'
 
 --UnitFrames
+L['Ascending'] = true;
+L['Descending'] = true;
 L["Don't display auras that are not yours."] = true;
 L["Don't display any auras found on the 'Blacklist' filter."] = true;
 L["If no other filter options are being used then it will block anything not on the 'Whitelist' filter, otherwise it will simply add auras on the whitelist in addition to any other filter settings."] = true;

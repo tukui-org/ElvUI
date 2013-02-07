@@ -974,22 +974,7 @@ function UF:Update_PlayerFrame(frame, db)
 		if db.healPrediction then
 			if not frame:IsElementEnabled('HealPrediction') then
 				frame:EnableElement('HealPrediction')
-			end
-
-			healPrediction.myBar:ClearAllPoints()
-			healPrediction.myBar:Width(db.width - (BORDER*2))
-			healPrediction.myBar:SetPoint('BOTTOMLEFT', frame.Health:GetStatusBarTexture(), 'BOTTOMRIGHT')
-			healPrediction.myBar:SetPoint('TOPLEFT', frame.Health:GetStatusBarTexture(), 'TOPRIGHT')	
-
-			healPrediction.otherBar:ClearAllPoints()
-			healPrediction.otherBar:SetPoint('TOPLEFT', healPrediction.myBar:GetStatusBarTexture(), 'TOPRIGHT')	
-			healPrediction.otherBar:SetPoint('BOTTOMLEFT', healPrediction.myBar:GetStatusBarTexture(), 'BOTTOMRIGHT')	
-			healPrediction.otherBar:Width(db.width - (BORDER*2))
-			
-			healPrediction.absorbBar:ClearAllPoints()
-			healPrediction.absorbBar:SetPoint('TOPLEFT', healPrediction.otherBar:GetStatusBarTexture(), 'TOPRIGHT')	
-			healPrediction.absorbBar:SetPoint('BOTTOMLEFT', healPrediction.otherBar:GetStatusBarTexture(), 'BOTTOMRIGHT')	
-			healPrediction.absorbBar:Width(db.width - (BORDER*2))			
+			end		
 			
 			if not USE_PORTRAIT_OVERLAY then
 				healPrediction.myBar:SetParent(frame)

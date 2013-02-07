@@ -90,7 +90,7 @@ for i=10, 40, 15 do
 		
 		UF['headerGroupBy'][db.groupBy](header)
 		header:SetAttribute("groupBy", db.groupBy == 'ROLE' and 'ASSIGNEDROLE' or db.groupBy)
-		
+		header:SetAttribute('sortDir', db.sortDir)
 		if not header.isForced then
 			header:SetAttribute("showParty", db.showParty)
 			header:SetAttribute("showRaid", db.showRaid)
@@ -443,41 +443,10 @@ for i=10, 40, 15 do
 					frame:EnableElement('HealPrediction')
 				end
 
-				healPrediction.myBar:ClearAllPoints()
 				healPrediction.myBar:SetOrientation(db.health.orientation)
-
-				healPrediction.otherBar:ClearAllPoints()
 				healPrediction.otherBar:SetOrientation(db.health.orientation)
-
-				healPrediction.absorbBar:ClearAllPoints()
 				healPrediction.absorbBar:SetOrientation(db.health.orientation)
 
-				if db.health.orientation == 'HORIZONTAL' then
-					healPrediction.myBar:Width(db.width - (BORDER*2))
-					healPrediction.myBar:SetPoint('BOTTOMLEFT', frame.Health:GetStatusBarTexture(), 'BOTTOMRIGHT')
-					healPrediction.myBar:SetPoint('TOPLEFT', frame.Health:GetStatusBarTexture(), 'TOPRIGHT')	
-
-					healPrediction.otherBar:SetPoint('TOPLEFT', healPrediction.myBar:GetStatusBarTexture(), 'TOPRIGHT')	
-					healPrediction.otherBar:SetPoint('BOTTOMLEFT', healPrediction.myBar:GetStatusBarTexture(), 'BOTTOMRIGHT')	
-					healPrediction.otherBar:Width(db.width - (BORDER*2))
-					
-					healPrediction.absorbBar:SetPoint('TOPLEFT', healPrediction.otherBar:GetStatusBarTexture(), 'TOPRIGHT')	
-					healPrediction.absorbBar:SetPoint('BOTTOMLEFT', healPrediction.otherBar:GetStatusBarTexture(), 'BOTTOMRIGHT')	
-					healPrediction.absorbBar:Width(db.width - (BORDER*2))					
-				else
-					healPrediction.myBar:Height(db.height - (BORDER*2))
-					healPrediction.myBar:SetPoint('BOTTOMLEFT', frame.Health:GetStatusBarTexture(), 'TOPLEFT')
-					healPrediction.myBar:SetPoint('BOTTOMRIGHT', frame.Health:GetStatusBarTexture(), 'TOPRIGHT')				
-
-					healPrediction.otherBar:SetPoint('BOTTOMLEFT', healPrediction.myBar:GetStatusBarTexture(), 'TOPLEFT')
-					healPrediction.otherBar:SetPoint('BOTTOMRIGHT', healPrediction.myBar:GetStatusBarTexture(), 'TOPRIGHT')				
-					healPrediction.otherBar:Height(db.height - (BORDER*2))	
-					
-					healPrediction.absorbBar:SetPoint('BOTTOMLEFT', healPrediction.otherBar:GetStatusBarTexture(), 'TOPLEFT')
-					healPrediction.absorbBar:SetPoint('BOTTOMRIGHT', healPrediction.otherBar:GetStatusBarTexture(), 'TOPRIGHT')				
-					healPrediction.absorbBar:Height(db.height - (BORDER*2))					
-				end
-				
 				if not USE_PORTRAIT_OVERLAY then
 					healPrediction.myBar:SetParent(frame)
 					healPrediction.otherBar:SetParent(frame)

@@ -7435,9 +7435,19 @@ E.Options.args.unitframe.args.party = {
 						['GROUP'] = GROUP,
 					},
 				},
+				sortDir = {
+					order = 17,
+					name = L['Sort Direction'],
+					desc = L['Defines the sort order of the selected sort method.'],
+					type = 'select',
+					values = {
+						['ASC'] = L['Ascending'],
+						['DESC'] = L['Descending']
+					},
+				},
 				hideonnpc = {
 					type = 'toggle',
-					order = 17,
+					order = 18,
 					name = L['Text Toggle On NPC'],
 					desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
 					get = function(info) return E.db.unitframe.units['party']['power'].hideonnpc end,
@@ -8193,10 +8203,20 @@ for i=10, 40, 15 do
 							['NAME'] = NAME,
 							['GROUP'] = GROUP,
 						},
-					},		
+					},
+					sortDir = {
+						order = 17,
+						name = L['Sort Direction'],
+						desc = L['Defines the sort order of the selected sort method.'],
+						type = 'select',
+						values = {
+							['ASC'] = L['Ascending'],
+							['DESC'] = L['Descending']
+						},
+					},					
 					hideonnpc = {
 						type = 'toggle',
-						order = 17,
+						order = 18,
 						name = L['Text Toggle On NPC'],
 						desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
 						get = function(info) return E.db.unitframe.units['raid'..i]['power'].hideonnpc end,

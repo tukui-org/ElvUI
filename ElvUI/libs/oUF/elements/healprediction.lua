@@ -5,6 +5,8 @@ local function Update(self, event, unit)
 	if(self.unit ~= unit) or not unit then return end
 
 	local hp = self.HealPrediction
+	hp.parent = self
+	
 	if(hp.PreUpdate) then hp:PreUpdate(unit) end
 
 	local myIncomingHeal = UnitGetIncomingHeals(unit, 'player') or 0
@@ -59,7 +61,7 @@ local function Update(self, event, unit)
 	end
 
 	if(hp.PostUpdate) then
-		return hp:PostUpdate(unit)
+		return hp:PostUpdate(unit, myIncomingHeal, allIncomingHeal, totalAbsorb)
 	end
 end
 

@@ -667,11 +667,7 @@ function UF:Construct_HealComm(frame)
 		otherBar = ohpb,
 		absorbBar = absorbBar,
 		maxOverflow = 1,
-		PostUpdate = function(self)
-			if self.myBar:GetValue() == 0 then self.myBar:SetAlpha(0) else self.myBar:SetAlpha(1) end
-			if self.otherBar:GetValue() == 0 then self.otherBar:SetAlpha(0) else self.otherBar:SetAlpha(1) end
-			if self.absorbBar:GetValue() == 0 then self.absorbBar:SetAlpha(0) else self.absorbBar:SetAlpha(1) end
-		end
+		PostUpdate = UF.UpdateHealComm
 	}
 end
 
