@@ -75,6 +75,7 @@ local Enable = function(self)
 		end
 
 		GPS.UpdateFrame:SetScript("OnUpdate", Update)
+		GPS:Show()
 		return true
 	end
 end
@@ -83,6 +84,7 @@ local Disable = function(self)
 	local GPS = self.GPS
 	if GPS then
 		GPS.UpdateFrame:SetScript("OnUpdate", nil)
+		GPS:Hide()
 	end
 end
  
