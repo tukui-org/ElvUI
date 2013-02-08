@@ -712,6 +712,14 @@ end
 function UF:ResetUnitSettings(unit)
 	E:CopyTable(self.db['units'][unit], P['unitframe']['units'][unit]); 
 	
+	if self.db['units'][unit].buffs and self.db['units'][unit].buffs.sizeOverride then
+		self.db['units'][unit].buffs.sizeOverride = 0
+	end
+	
+	if self.db['units'][unit].debuffs and self.db['units'][unit].debuffs.sizeOverride then
+		self.db['units'][unit].debuffs.sizeOverride = 0
+	end
+	
 	self:Update_AllFrames()
 end
 
@@ -740,6 +748,10 @@ local ignoreSettingsGroup = {
 	['visibility'] = true,
 }
 
+local allowPass = {
+	['sizeOverride'] = true,
+}
+
 function UF:MergeUnitSettings(fromUnit, toUnit, isGroupUnit)
 	local db = self.db['units']
 	local filter = ignoreSettings
@@ -755,8 +767,9 @@ function UF:MergeUnitSettings(fromUnit, toUnit, isGroupUnit)
 			elseif not filter[option] then
 				if type(value) == 'table' then
 					for opt, val in pairs(db[fromUnit][option]) do
+						--local val = db[fromUnit][option][opt]
 						if type(val) ~= 'table' and not filter[opt] then
-							if db[toUnit][option] ~= nil and db[toUnit][option][opt] ~= nil then
+							if db[toUnit][option] ~= nil and (db[toUnit][option][opt] ~= nil or allowPass[opt]) then
 								db[toUnit][option][opt] = val
 							end				
 						elseif not filter[opt] then
