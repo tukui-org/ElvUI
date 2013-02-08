@@ -25,6 +25,7 @@ RegisterFont("PF Tempesta Seven Bold", "pf_tempesta_seven_bold.ttf")
 RegisterFont("ElvUI Alt-Font", "Continuum_Medium.ttf")
 RegisterFont("ElvUI Alt-Combat", "DieDieDie.ttf")
 RegisterFont("ElvUI Combat", "Action_Man.ttf")
+RegisterFont("DorisPP", "DORISBR.TTF")
 
 RegisterSound("Awww Crap", "awwcrap.mp3")
 RegisterSound("BBQ Ass", "bbqass.mp3")

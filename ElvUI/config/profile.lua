@@ -191,16 +191,16 @@ P['chat'] = {
 	['panelTabBackdrop'] = true,
 	['editBoxPosition'] = 'BELOW_CHAT',
 
-	['tabFont'] = 'PF Tempesta Seven Bold',
-	['tabFontSize'] = 8,
-	['tabFontOutline'] = 'MONOCHROMEOUTLINE',
+	['tabFont'] = 'Friz Quadrata TT',
+	['tabFontSize'] = 11,
+	['tabFontOutline'] = 'NONE',
 }
 
 --Datatexts
 P['datatexts'] = {
-	['font'] = 'PF Tempesta Seven Bold',
-	['fontSize'] = 8,
-	['fontOutline'] = 'MONOCHROMEOUTLINE',
+	['font'] = 'Friz Quadrata TT',
+	['fontSize'] = 11,
+	['fontOutline'] = 'NONE',
 	
 	['panels'] = {
 		['LeftChatDataPanel'] = {
@@ -252,9 +252,9 @@ P['tooltip'] = {
 P['unitframe'] = {
 	['smoothbars'] = true,
 	['statusbar'] = "Minimalist",
-	['font'] = 'PF Tempesta Seven Bold',
-	['fontSize'] = 8,
-	['fontOutline'] = 'MONOCHROMEOUTLINE',
+	['font'] = 'DorisPP',
+	['fontSize'] = 12,
+	['fontOutline'] = 'OUTLINE',
 	['OORAlpha'] = 0.55,
 	['debuffHighlighting'] = false,
 	["smartRaidFilter"] = true,
