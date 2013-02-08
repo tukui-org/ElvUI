@@ -341,7 +341,7 @@ P['unitframe'] = {
 			},
 			['name'] = {
 				['position'] = 'LEFT',
-				['text_format'] = '[namecolor][name:medium] [level]',
+				['text_format'] = '[namecolor][name:medium] [level] |cff3E8AC6(|r|cff77DA73[resting]|r|cFF3E8AC6)|r',
 			},
 			['pvp'] = {
 				['position'] = 'BOTTOM',
