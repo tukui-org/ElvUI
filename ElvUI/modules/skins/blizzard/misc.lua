@@ -1063,6 +1063,13 @@ local function LoadSkin()
 	ReportPlayerNameDialog:SetTemplate("Transparent")
 	S:HandleButton(ReportPlayerNameDialogReportButton)
 	S:HandleButton(ReportPlayerNameDialogCancelButton)	
+	
+	S:HandleCloseButton(SideDressUpModelCloseButton)
+	SideDressUpFrame:StripTextures()
+	SideDressUpFrame.BGTopLeft:Hide()
+	SideDressUpFrame.BGBottomLeft:Hide()
+	S:HandleButton(SideDressUpModelResetButton)
+	SideDressUpFrame:SetTemplate("Transparent")	
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)

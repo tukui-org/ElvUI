@@ -17,6 +17,7 @@ local function LoadSkin()
 		_G[object]:StripTextures()
 	end
 	
+	
 	VoidStoragePurchaseFrame:SetFrameStrata('DIALOG')
 	VoidStorageFrame:SetTemplate("Transparent")
 	VoidStoragePurchaseFrame:SetTemplate("Default")
