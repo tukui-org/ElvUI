@@ -119,7 +119,10 @@ function UF:Update_PartyHeader(header, db)
 		header:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 		header:HookScript("OnEvent", UF.PartySmartVisibility)		
 		header.positioned = true;
-	end		
+	end
+	
+	header.mover.positionOverride = db.positionOverride ~= 'NONE' and db.positionOverride or nil
+	E:UpdatePositionOverride(header:GetName()..'Mover')
 	
 	UF.PartySmartVisibility(header)
 end

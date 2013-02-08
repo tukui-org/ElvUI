@@ -147,32 +147,59 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 		local x, y = self:GetCenter()
 		local point
 		
-		local LEFT = screenWidth / 3
-		local RIGHT = screenWidth * 2 / 3
-		local TOP = screenHeight / 2
-		
-		if y >= TOP then
-			point = "TOP"
-			y = -(screenHeight - self:GetTop())
+		if self.positionOverride then
+		    if self.positionOverride:find("BOTTOM") then
+				y = self:GetBottom()
+			elseif self.positionOverride:find("TOP") then
+				y = self:GetTop()
+			end
+			
+			if self.positionOverride:find("LEFT") then
+				x = self:GetLeft()
+			elseif self.positionOverride:find("RIGHT") then
+				x = self:GetRight()
+			end
+			
+			point = self.positionOverride
 		else
-			point = "BOTTOM"
-			y = self:GetBottom()
+			local LEFT = screenWidth / 3
+			local RIGHT = screenWidth * 2 / 3
+			local TOP = screenHeight / 2
+			
+			if y >= TOP then
+				point = "TOP"
+				y = -(screenHeight - self:GetTop())
+			else
+				point = "BOTTOM"
+				y = self:GetBottom()
+			end
+			
+			if x >= RIGHT then
+				point = point..'RIGHT'
+				x = self:GetRight() - screenWidth
+			elseif x <= LEFT then
+				point = point..'LEFT'
+				x = self:GetLeft()
+			else
+				x = x - screenCenter
+			end
 		end
 		
-		if x >= RIGHT then
-			point = point..'RIGHT'
-			x = self:GetRight() - screenWidth
-		elseif x <= LEFT then
-			point = point..'LEFT'
-			x = self:GetLeft()
-		else
-			x = x - screenCenter
-		end
-
 		self:ClearAllPoints()
-		self:Point(point, E.UIParent, point, x, y)
+		self:Point(point, E.UIParent, 'BOTTOMLEFT', x, y)
+
+		if self.positionOverride then
+			self.parent:ClearAllPoints()
+			self.parent:Point(self.positionOverride, self, self.positionOverride)
+		end
+		
 		E:SaveMoverPosition(name)
-		E:UpdateNudgeFrame(self)
+		
+		
+		if ElvUIMoverNudgeWindow then
+			E:UpdateNudgeFrame(self)
+		end
+		
 		coordFrame.child = nil
 		coordFrame:Hide()		
 			
@@ -226,6 +253,12 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 	end	
 	
 	E.CreatedMovers[name].Created = true;
+end
+
+function E:UpdatePositionOverride(name)
+	if _G[name] and _G[name]:GetScript("OnDragStop") then
+		_G[name]:GetScript("OnDragStop")(_G[name])
+	end
 end
 
 function E:HasMoverBeenMoved(name)

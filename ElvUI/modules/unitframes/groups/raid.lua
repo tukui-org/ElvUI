@@ -131,6 +131,9 @@ for i=10, 40, 15 do
 			header.positioned = true;
 		end
 			
+		header.mover.positionOverride = db.positionOverride ~= 'NONE' and db.positionOverride or nil
+		E:UpdatePositionOverride(header:GetName()..'Mover')
+	
 		UF['Raid'..i..'SmartVisibility'](header)
 	end
 

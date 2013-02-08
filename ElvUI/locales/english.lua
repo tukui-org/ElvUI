@@ -752,7 +752,8 @@ L["Don't display auras that have no duration."] = true;
 L["Don't display auras that cannot be purged or dispelled by your class."] = true;
 L["Don't display raid buffs such as Blessing of Kings or Mark of the Wild."] = true;
 L['Select an additional filter to use. If the selected filter is a whitelist and no other filters are being used (with the exception of Block Non-Personal Auras) then it will block anything not on the whitelist, otherwise it will simply add auras on the whitelist in addition to any other filter settings.'] = true;
-
+L['Position Override'] = true;
+L['This will determine how the party/raid group will grow out when the group is not full. For example setting this to BOTTOMLEFT would cause the first raid frame to spawn from the BOTTOMLEFT corner of where the mover is positioned.'] = true;
 
 L["If the unit is friendly to you."] = true;
 L["If the unit is an enemy to you."] = true;
