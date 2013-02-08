@@ -7,6 +7,14 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 --	Tags
 ------------------------------------------------------------------------
 
+ElvUF.Tags.Methods['resting'] = function(unit)
+	if (unit == 'player' and IsResting()) then
+		return '|cff3E8AC6(|r|cff77DA73zzz|r|cFF3E8AC6)|r'
+	else
+		return ''
+	end
+end
+
 ElvUF.Tags.Events['afk'] = 'PLAYER_FLAGS_CHANGED'
 ElvUF.Tags.Methods['afk'] = function(unit)
 	local isAFK = UnitIsAFK(unit)

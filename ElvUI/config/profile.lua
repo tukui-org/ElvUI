@@ -10,7 +10,7 @@ P['general'] = {
 	["taintLog"] = false,
 	["stickyFrames"] = true,
 	['loginmessage'] = false,
-	["interruptAnnounce"] = "RAID",
+	["interruptAnnounce"] = "NONE",
 	["autoRepair"] = "GUILD",
 	['autoRoll'] = false,
 	['vendorGrays'] = true,
@@ -88,9 +88,9 @@ P["nameplate"] = {
 	['font'] = 'ElvUI Font',
 	['fontSize'] = 10,
 	['fontOutline'] = 'OUTLINE',
-	['auraFont'] = 'ElvUI Font',
-	['auraFontSize'] = 10,
-	['auraFontOutline'] = 'OUTLINE',
+	['auraFont'] = 'ElvUI Pixel',
+	['auraFontSize'] = 12,
+	['auraFontOutline'] = 'MONOCHROMEOUTLINE',
 	["smallPlates"] = true,
 	["comboPoints"] = true,
 	["classIcons"] = true,
@@ -191,16 +191,16 @@ P['chat'] = {
 	['panelTabBackdrop'] = true,
 	['editBoxPosition'] = 'BELOW_CHAT',
 
-	['tabFont'] = 'Friz Quadrata TT',
-	['tabFontSize'] = 11,
-	['tabFontOutline'] = 'NONE',
+	['tabFont'] = 'PF Tempesta Seven Bold',
+	['tabFontSize'] = 8,
+	['tabFontOutline'] = 'MONOCHROMEOUTLINE',
 }
 
 --Datatexts
 P['datatexts'] = {
-	['font'] = 'Friz Quadrata TT',
-	['fontSize'] = 11,
-	['fontOutline'] = 'NONE',
+	['font'] = 'PF Tempesta Seven Bold',
+	['fontSize'] = 8,
+	['fontOutline'] = 'MONOCHROMEOUTLINE',
 	
 	['panels'] = {
 		['LeftChatDataPanel'] = {
@@ -252,9 +252,9 @@ P['tooltip'] = {
 P['unitframe'] = {
 	['smoothbars'] = true,
 	['statusbar'] = "Minimalist",
-	['font'] = 'Doris PP',
-	['fontSize'] = 12,
-	['fontOutline'] = 'OUTLINE',
+	['font'] = 'PF Tempesta Seven Bold',
+	['fontSize'] = 8,
+	['fontOutline'] = 'MONOCHROMEOUTLINE',
 	['OORAlpha'] = 0.55,
 	['debuffHighlighting'] = false,
 	["smartRaidFilter"] = true,
@@ -341,7 +341,7 @@ P['unitframe'] = {
 			},
 			['name'] = {
 				['position'] = 'LEFT',
-				['text_format'] = '[namecolor][name:medium] [level] |cff3E8AC6(|r|cff77DA73[resting]|r|cFF3E8AC6)|r',
+				['text_format'] = '[namecolor][name:medium] [level] [resting]',
 			},
 			['pvp'] = {
 				['position'] = 'BOTTOM',
@@ -371,6 +371,7 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
+				['sizeOverride'] = 0,
 			},
 			['debuffs'] = {
 				['enable'] = false,
@@ -388,6 +389,7 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
+				['sizeOverride'] = 0,
 			},
 			['castbar'] = {
 				['enable'] = true,
@@ -478,6 +480,7 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
+				['sizeOverride'] = 0,
 			},
 			['debuffs'] = {
 				['enable'] = true,
@@ -495,6 +498,7 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
+				['sizeOverride'] = 0,
 			},
 			['castbar'] = {
 				['enable'] = true,
@@ -569,6 +573,7 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
+				['sizeOverride'] = 0,
 			},
 			['debuffs'] = {
 				['enable'] = true,
@@ -586,6 +591,7 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
+				['sizeOverride'] = 0,
 			},	
 			['raidicon'] = {
 				['enable'] = true,
@@ -635,6 +641,7 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
+				['sizeOverride'] = 0,
 			},
 			['debuffs'] = {
 				['enable'] = true,
@@ -652,6 +659,7 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
+				['sizeOverride'] = 0,
 			},	
 			['castbar'] = {
 				['enable'] = true,
@@ -721,6 +729,7 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
+				['sizeOverride'] = 0,
 			},
 			['debuffs'] = {
 				['enable'] = true,
@@ -738,6 +747,7 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
+				['sizeOverride'] = 0,
 			},
 			['raidicon'] = {
 				['enable'] = true,
@@ -786,6 +796,7 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
+				['sizeOverride'] = 0,
 			},
 			['debuffs'] = {
 				['enable'] = false,
@@ -803,11 +814,12 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
+				['sizeOverride'] = 0,
 			},	
 			['buffIndicator'] = {
 				['enable'] = true,
 				['size'] = 8,
-				['fontSize'] = 10,
+				['fontSize'] = 8,
 			},			
 		},
 		['pettarget'] = {
@@ -848,6 +860,7 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
+				['sizeOverride'] = 0,
 			},
 			['debuffs'] = {
 				['enable'] = false,
@@ -865,6 +878,7 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 0,
 				['yOffset'] = 0,
+				['sizeOverride'] = 0,
 			},			
 		},	
 		['boss'] = {
@@ -1101,7 +1115,7 @@ P['unitframe'] = {
 			['buffIndicator'] = {
 				['enable'] = true,
 				['size'] = 8,
-				['fontSize'] = 10,
+				['fontSize'] = 8,
 			},
 			['roleIcon'] = {
 				['enable'] = true,
@@ -1211,11 +1225,11 @@ P['unitframe'] = {
 			['buffIndicator'] = {
 				['enable'] = true,
 				['size'] = 8,
-				['fontSize'] = 10,
+				['fontSize'] = 8,
 			},
 			['rdebuffs'] = {
 				['enable'] = false,
-				['fontSize'] = 10,
+				['fontSize'] = 8,
 				['size'] = 26,
 				['xOffset'] = 0,
 				['yOffset'] = 2,
@@ -1312,12 +1326,14 @@ P['unitframe'] = {
 			['buffIndicator'] = {
 				['enable'] = true,
 				['size'] = 8,
-				['fontSize'] = 10,
+				['fontSize'] = 8,
 			},
 			['rdebuffs'] = {
 				['enable'] = false,
-				['fontSize'] = 10,
+				['fontSize'] = 8,
 				['size'] = 26,
+				['xOffset'] = 0,
+				['yOffset'] = 2,
 			},
 			['roleIcon'] = {
 				['enable'] = true,
@@ -1410,8 +1426,10 @@ P['unitframe'] = {
 			},	
 			['rdebuffs'] = {
 				['enable'] = false,
-				['fontSize'] = 10,
-				['size'] = 22,
+				['fontSize'] = 8,
+				['size'] = 18,
+				['xOffset'] = 0,
+				['yOffset'] = 2,
 			},
 			['roleIcon'] = {
 				['enable'] = true,
@@ -1424,7 +1442,7 @@ P['unitframe'] = {
 			['buffIndicator'] = {
 				['enable'] = true,
 				['size'] = 8,
-				['fontSize'] = 10,
+				['fontSize'] = 8,
 			},	
 			['raidicon'] = {
 				['enable'] = true,
@@ -1466,9 +1484,9 @@ P['unitframe'] = {
 
 --Actionbar
 P["actionbar"] = {
-	['font'] = 'Doris PP',
-	['fontSize'] = 13,
-	['fontOutline'] = 'OUTLINE',
+	['font'] = 'PF Tempesta Seven Bold',
+	['fontSize'] = 8,
+	['fontOutline'] = 'MONOCHROMEOUTLINE',
 	
 	["macrotext"] = true,
 	["hotkeytext"] = true,

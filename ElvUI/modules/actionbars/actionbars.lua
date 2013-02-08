@@ -429,6 +429,10 @@ function AB:StyleButton(button, noBackdrop)
 		hotkey:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 	end
 	
+	if self.db.macrotext and button.buttonType ~= "EXTRAACTIONBUTTON" then
+		macroName:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
+	end
+	
 	--Extra Action Button
 	if button.style then
 		--button.style:SetParent(button.backdrop)

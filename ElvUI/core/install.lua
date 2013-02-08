@@ -45,11 +45,13 @@ local function SetupChat()
 		-- set default Elvui font size
 		FCF_SetChatWindowFontSize(nil, frame, 13)
 		
-		-- rename windows general because moved to chat #3
+		-- rename chat windows
 		if i == 1 then
 			FCF_SetWindowName(frame, "All")
 		elseif i == 2 then
 			FCF_SetWindowName(frame, "Log")
+		elseif i == 5 then
+			FCF_SetWindowName(frame, "Whisp.")
 		end
 	end
 
