@@ -1022,11 +1022,13 @@ function UF:UpdateAuraWatch(frame)
 	if frame.unit == 'pet' then
 		local petWatch = E.global['unitframe'].buffwatch.PET or {}
 		for _, value in pairs(petWatch) do
+			if value.style == 'text' then value.style = 'NONE' end --depreciated
 			tinsert(buffs, value);
 		end	
 	else
 		local buffWatch = E.global['unitframe'].buffwatch[E.myclass] or {}
 		for _, value in pairs(buffWatch) do
+			if value.style == 'text' then value.style = 'NONE' end --depreciated
 			tinsert(buffs, value);
 		end	
 	end
@@ -1069,6 +1071,9 @@ function UF:UpdateAuraWatch(frame)
 				icon.onlyShowMissing = buffs[i].onlyShowMissing;
 				icon.presentAlpha = icon.onlyShowMissing and 0 or 1;
 				icon.missingAlpha = icon.onlyShowMissing and 1 or 0;
+				icon.textThreshold = buffs[i].textThreshold
+				icon.displayText = buffs[i].displayText
+				
 				icon:Width(db.size);
 				icon:Height(db.size);
 				icon:ClearAllPoints()
@@ -1080,7 +1085,9 @@ function UF:UpdateAuraWatch(frame)
 				end
 				
 				if not icon.text then
-					icon.text = icon:CreateFontString(nil, 'BORDER');
+					local f = CreateFrame('Frame', nil, icon)
+					f:SetFrameLevel(icon:GetFrameLevel() + 50)
+					icon.text = f:CreateFontString(nil, 'BORDER');
 				end
 				
 				if not icon.border then
@@ -1091,6 +1098,13 @@ function UF:UpdateAuraWatch(frame)
 					icon.border:SetVertexColor(0, 0, 0);
 				end
 				
+				if not icon.cd then
+					icon.cd = CreateFrame("Cooldown", nil, icon)
+					icon.cd:SetAllPoints(icon)
+					icon.cd:SetReverse(true)
+					icon.cd:SetFrameLevel(icon:GetFrameLevel())
+				end			
+
 				if icon.style == 'coloredIcon' then
 					icon.icon:SetTexture(E["media"].blankTex);
 					
@@ -1099,34 +1113,35 @@ function UF:UpdateAuraWatch(frame)
 					else
 						icon.icon:SetVertexColor(0.8, 0.8, 0.8);
 					end		
-					icon.text:Hide()
+					icon.icon:Show()
 					icon.border:Show()
+					icon.cd:SetAlpha(1)
 				elseif icon.style == 'texturedIcon' then
 					icon.icon:SetVertexColor(1, 1, 1)
 					icon.icon:SetTexCoord(.18, .82, .18, .82);
 					icon.icon:SetTexture(icon.image);
-					icon.text:Hide()
+					icon.icon:Show()
 					icon.border:Show()
+					icon.cd:SetAlpha(1)
 				else
-					icon.icon:SetTexture(nil)
-					icon.text:Show()
-					icon.text:SetTextColor(buffs[i].color.r, buffs[i].color.g, buffs[i].color.b)
 					icon.border:Hide()
+					icon.icon:Hide()
+					icon.cd:SetAlpha(0)
 				end
 				
-				if not icon.cd then
-					icon.cd = CreateFrame("Cooldown", nil, icon)
-					icon.cd:SetAllPoints(icon)
-					icon.cd:SetReverse(true)
-					icon.cd:SetFrameLevel(icon:GetFrameLevel())
+				if icon.displayText then
+					icon.text:Show()
+					icon.text:SetTextColor(buffs[i].textColor.r, buffs[i].textColor.g, buffs[i].textColor.b)
+				else
+					icon.text:Hide()
 				end
-				
+	
 				if not icon.count then
 					icon.count = icon:CreateFontString(nil, "OVERLAY");
 				end
 				
 				icon.count:ClearAllPoints()
-				if icon.style == "text" then
+				if icon.displayText then
 					local point, anchorPoint, x, y = unpack(textCounterOffsets[buffs[i].point])
 					icon.count:SetPoint(point, icon.text, anchorPoint, x, y)
 				else
@@ -1136,7 +1151,7 @@ function UF:UpdateAuraWatch(frame)
 				icon.count:FontTemplate(unitframeFont, db.fontSize, 'OUTLINE');
 				icon.text:FontTemplate(unitframeFont, db.fontSize, 'OUTLINE');
 				icon.text:ClearAllPoints()
-				icon.text:SetPoint(buffs[i].point)
+				icon.text:SetPoint(buffs[i].point, icon, buffs[i].point)
 				
 				if buffs[i].enabled then
 					auras.icons[buffs[i].id] = icon;
