@@ -295,7 +295,7 @@ function UF:Update_PlayerFrame(frame, db)
 		health.Smooth = self.db.smoothbars
 
 		--Text
-		local x, y = self:GetPositionOffset(db.health.position)
+		local x, y = self:GetPositionOffset(db.health.position, 6)
 		health.value:ClearAllPoints()
 		health.value:Point(db.health.position, health, db.health.position, x, y)
 		frame:Tag(health.value, db.health.text_format)
@@ -396,7 +396,7 @@ function UF:Update_PlayerFrame(frame, db)
 			power.Smooth = self.db.smoothbars
 			
 			--Text
-			local x, y = self:GetPositionOffset(db.power.position)
+			local x, y = self:GetPositionOffset(db.power.position, 6)
 			power.value:ClearAllPoints()
 			power.value:Point(db.power.position, frame.Health, db.power.position, x, y)		
 			frame:Tag(power.value, db.power.text_format)
