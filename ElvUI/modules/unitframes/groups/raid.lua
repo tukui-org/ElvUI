@@ -41,6 +41,7 @@ for i=10, 40, 15 do
 		self.RaidIcon = UF:Construct_RaidIcon(self)
 		self.ReadyCheck = UF:Construct_ReadyCheckIcon(self)	
 		self.HealPrediction = UF:Construct_HealComm(self)
+		self.GPS = UF:Construct_GPS(self)
 		
 		UF['Update_Raid'..i..'Frames'](UF, self, E.db['unitframe']['units']['raid'..i])
 		UF:Update_StatusBars()
@@ -462,6 +463,26 @@ for i=10, 40, 15 do
 				end		
 			end
 		end
+		
+		--GPSArrow
+		do
+			local GPS = frame.GPS
+			if db.GPSArrow then
+				if not frame:IsElementEnabled('GPS') then
+					frame:EnableElement('GPS')
+				end
+
+				GPS:Size(db.GPSArrow.size)
+				GPS.onMouseOver = db.GPSArrow.onMouseOver
+				GPS.outOfRange = db.GPSArrow.outOfRange
+				
+				GPS:SetPoint("CENTER", frame, "CENTER", db.GPSArrow.xOffset, db.GPSArrow.yOffset)
+			else
+				if frame:IsElementEnabled('GPS') then
+					frame:DisableElement('GPS')
+				end				
+			end
+		end	
 		
 		--Raid Roles
 		do

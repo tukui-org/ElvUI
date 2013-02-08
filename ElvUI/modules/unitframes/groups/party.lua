@@ -46,6 +46,7 @@ function UF:Construct_PartyFrames(unitGroup)
 		self.RaidIcon = UF:Construct_RaidIcon(self)
 		self.ReadyCheck = UF:Construct_ReadyCheckIcon(self)
 		self.HealPrediction = UF:Construct_HealComm(self)
+		self.GPS = UF:Construct_GPS(self)
 	end
 	
 	
@@ -510,6 +511,26 @@ function UF:Update_PartyFrames(frame, db)
 				if frame:IsElementEnabled('HealPrediction') then
 					frame:DisableElement('HealPrediction')
 				end		
+			end
+		end
+		
+		--GPSArrow
+		do
+			local GPS = frame.GPS
+			if db.GPSArrow then
+				if not frame:IsElementEnabled('GPS') then
+					frame:EnableElement('GPS')
+				end
+
+				GPS:Size(db.GPSArrow.size)
+				GPS.onMouseOver = db.GPSArrow.onMouseOver
+				GPS.outOfRange = db.GPSArrow.outOfRange
+				
+				GPS:SetPoint("CENTER", frame, "CENTER", db.GPSArrow.xOffset, db.GPSArrow.yOffset)
+			else
+				if frame:IsElementEnabled('GPS') then
+					frame:DisableElement('GPS')
+				end				
 			end
 		end
 		

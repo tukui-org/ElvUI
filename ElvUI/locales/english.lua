@@ -740,6 +740,9 @@ L['You can use the /resetui command to reset all of your movers. You can also us
 L['ABOVE_THREAT_FORMAT'] = '%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]'
 
 --UnitFrames
+L['Only show when the unit is not in range.'] = true;
+L['Mouseover'] = true;
+L['Only show when you are mousing over a frame.'] = true;
 L['Ascending'] = true;
 L['Descending'] = true;
 L["Don't display auras that are not yours."] = true;
