@@ -752,3 +752,12 @@ function UF:Construct_GPS(frame)
 
 	return gps
 end
+
+function UF:Construct_Stagger(frame)
+	local stagger = CreateFrame("Statusbar", nil, frame)
+	UF['statusbars'][stagger] = true
+	stagger:CreateBackdrop("Default")
+	stagger:SetOrientation("VERTICAL")
+	stagger.PostUpdate = UF.PostUpdateStagger
+	return stagger
+end

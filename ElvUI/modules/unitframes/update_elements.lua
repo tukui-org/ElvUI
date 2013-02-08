@@ -1404,3 +1404,8 @@ function UF:SmartAuraDisplay()
 		auraBars:SetPoint(anchorPoint..'RIGHT', debuffs, anchorTo..'RIGHT', 0, yOffset)		
 	end
 end
+
+function UF:PostUpdateStagger()
+	local frame = self:GetParent()
+	UF:UpdatePlayerFrameAnchors(frame, (frame.ClassBar and frame.ClassBar:IsShown()))
+end

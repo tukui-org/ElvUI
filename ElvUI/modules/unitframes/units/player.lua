@@ -38,6 +38,7 @@ function UF:Construct_PlayerFrame(frame)
 		frame.DruidAltMana = self:Construct_DruidAltManaBar(frame)
 	elseif E.myclass == "MONK" then
 		frame.Harmony = self:Construct_MonkResourceBar(frame)
+		frame.Stagger = self:Construct_Stagger(frame)
 	elseif E.myclass == "PRIEST" then
 		frame.ShadowOrbs = self:Construct_PriestResourceBar(frame)
 	elseif E.myclass == 'MAGE' then
@@ -64,6 +65,7 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 	local health = frame.Health
 	local threat = frame.Threat
 	local power = frame.Power
+	local stagger = frame.Stagger
 	local PORTRAIT_WIDTH = db.portrait.width
 	local USE_PORTRAIT = db.portrait.enable
 	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
@@ -78,7 +80,9 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 	local SPACING = E.Spacing;
 	local BORDER = E.Border;
 	local SHADOW_SPACING = E.PixelMode and 3 or 4
-
+	local USE_STAGGER = stagger and stagger:IsShown();	
+	local STAGGER_WIDTH = USE_STAGGER and (db.stagger.width + (BORDER*2)) or 0;
+	
 	if not USE_POWERBAR then
 		POWERBAR_HEIGHT = 0
 	end
@@ -91,15 +95,23 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 		CLASSBAR_HEIGHT = CLASSBAR_HEIGHT / 2
 	end
 	
-	if not USE_POWERBAR_OFFSET and not USE_MINI_POWERBAR then
+	if USE_STAGGER then
+		stagger:Point('BOTTOMLEFT', power, 'BOTTOMRIGHT', BORDER*2 + (E.PixelMode and -1 or SPACING), 0)
+		stagger:Point('TOPRIGHT', health, 'TOPRIGHT', STAGGER_WIDTH, 0)
+
+
+		if not USE_POWERBAR_OFFSET and not USE_MINI_POWERBAR then
+			power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -BORDER - STAGGER_WIDTH, BORDER)
+		end	
+	elseif not USE_POWERBAR_OFFSET and not USE_MINI_POWERBAR then
 		power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -BORDER, BORDER)
 	end
 	
 	if isShown then
 		if db.power.offset ~= 0 then
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER+db.power.offset), -(BORDER + CLASSBAR_HEIGHT + SPACING))
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER+db.power.offset) - STAGGER_WIDTH, -(BORDER + CLASSBAR_HEIGHT + SPACING))
 		else
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -(BORDER + CLASSBAR_HEIGHT + SPACING))
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER - STAGGER_WIDTH, -(BORDER + CLASSBAR_HEIGHT + SPACING))
 		end
 		health:Point("TOPLEFT", frame, "TOPLEFT", PORTRAIT_WIDTH + BORDER, -(BORDER + CLASSBAR_HEIGHT + SPACING))	
 
@@ -142,9 +154,9 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 		end
 	else
 		if db.power.offset ~= 0 then
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER + db.power.offset), -BORDER)
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER + db.power.offset) - STAGGER_WIDTH, -BORDER)
 		else
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -BORDER)
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER - STAGGER_WIDTH, -BORDER)
 		end
 		health:Point("TOPLEFT", frame, "TOPLEFT", PORTRAIT_WIDTH + BORDER, -BORDER)	
 
@@ -931,6 +943,22 @@ function UF:Update_PlayerFrame(frame, db)
 		end
 	end
 	
+	--Stagger
+	do
+		if E.myclass == "MONK" then
+			local stagger = frame.Stagger
+			if db.stagger.enable then
+				if not frame:IsElementEnabled('Stagger') then
+					frame:EnableElement('Stagger')
+				end					
+			else
+				if frame:IsElementEnabled('Stagger') then
+					frame:DisableElement('Stagger')
+				end				
+			end
+		end
+	end
+	
 	--Combat Fade
 	do
 		if db.combatfade and not frame:IsElementEnabled('CombatFade') then
@@ -1049,7 +1077,6 @@ function UF:Update_PlayerFrame(frame, db)
 			end		
 		end
 	end
-
 	
 	if db.customTexts then
 		local customFont = UF.LSM:Fetch("font", UF.db.font)
