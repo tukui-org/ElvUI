@@ -594,10 +594,8 @@ local function LoadSkin()
 	S:HandleButton(GuildInviteFrameJoinButton)
 	S:HandleButton(GuildInviteFrameDeclineButton)
 	GuildInviteFrame:Height(225)
-	hooksecurefunc(GuildInviteFrame, "SetHeight", function(self, height)
-		if height ~= 225 then
-			GuildInviteFrame:Height(225)
-		end
+	GuildInviteFrame:HookScript("OnEvent", function()
+		GuildInviteFrame:Height(225)
 	end)
 	GuildInviteFrameWarningText:Kill()
 	
