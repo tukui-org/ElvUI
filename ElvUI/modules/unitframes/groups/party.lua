@@ -334,7 +334,6 @@ function UF:Update_PartyFrames(frame, db)
 			else
 				frame:DisableElement('Power')
 				power:Hide()
-				power.value:Hide()
 			end
 		end
 		

@@ -229,9 +229,8 @@ for i=10, 40, 15 do
 			local power = frame.Power
 			if USE_POWERBAR then
 				frame:EnableElement('Power')
-				power:Show()		
 				power.Smooth = self.db.smoothbars
-				
+				power:Show()	
 				--Text
 				local x, y = self:GetPositionOffset(db.power.position)
 				power.value:ClearAllPoints()
@@ -269,7 +268,6 @@ for i=10, 40, 15 do
 			else
 				frame:DisableElement('Power')
 				power:Hide()
-				power.value:Hide()
 			end
 			
 		end
