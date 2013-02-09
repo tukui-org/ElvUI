@@ -186,11 +186,12 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 		end
 		
 		self:ClearAllPoints()
-		self:Point(point, E.UIParent, 'BOTTOMLEFT', x, y)
-
 		if self.positionOverride then
+			self:Point(point, E.UIParent, "BOTTOMLEFT", x, y)
 			self.parent:ClearAllPoints()
 			self.parent:Point(self.positionOverride, self, self.positionOverride)
+		else
+			self:Point(point, E.UIParent, point, x, y)
 		end
 		
 		E:SaveMoverPosition(name)
@@ -233,6 +234,18 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 		coordFrame.child = self
 		coordFrame:GetScript('OnUpdate')(coordFrame)
 	end)
+	
+	f:SetScript("OnMouseDown", function(self, button)
+		if button == "RightButton" then
+			isDragging = false;
+			if E.db['general'].stickyFrames then
+				Sticky:StopMoving(self)
+			else
+				self:StopMovingOrSizing()
+			end
+		end
+	end)
+	
 	f:SetScript("OnLeave", function(self)
 		if isDragging then return end
 		self.text:SetTextColor(unpack(E["media"].rgbvaluecolor))
