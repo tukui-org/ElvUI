@@ -3,9 +3,9 @@ local S = E:GetModule('Skins')
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.alertframes ~= true then return end
-	local function forceAlpha(self, alpha)
-		if alpha ~= 1 then
-			self:SetAlpha(1)
+	local function forceAlpha(self, alpha, isForced)
+		if alpha ~= 1 and isForced ~= true then
+			self:SetAlpha(1, true)
 		end
 	end
 	
