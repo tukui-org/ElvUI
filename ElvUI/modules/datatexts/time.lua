@@ -143,10 +143,10 @@ local function OnEnter(self)
 			if extended then lockoutColor = lockoutColorExtended else lockoutColor = lockoutColorNormal end
 			
 			if (numEncounters and numEncounters > 0) and (encounterProgress and encounterProgress > 0) then
-				DT.tooltip:AddDoubleLine(format(lockoutInfoFormat, maxPlayers, (difficulty:match("Normal") and "N" or "H"), name, encounterProgress, numEncounters), formatResetTime(reset), 1,1,1, lockoutColor.r,lockoutColor.g,lockoutColor.b)
+				DT.tooltip:AddDoubleLine(format(lockoutInfoFormat, maxPlayers, (difficulty:match("Heroic") and "H" or "N"), name, encounterProgress, numEncounters), formatResetTime(reset), 1,1,1, lockoutColor.r,lockoutColor.g,lockoutColor.b)
 			else
-				DT.tooltip:AddDoubleLine(format(lockoutInfoFormatNoEnc, maxPlayers, (difficulty:match("Normal") and "N" or "H"), name), formatResetTime(reset), 1,1,1, lockoutColor.r,lockoutColor.g,lockoutColor.b)
-			end
+				DT.tooltip:AddDoubleLine(format(lockoutInfoFormatNoEnc, maxPlayers, (difficulty:match("Heroic") and "H" or "N"), name), formatResetTime(reset), 1,1,1, lockoutColor.r,lockoutColor.g,lockoutColor.b)
+			end			
 		end
 	end	
 	
