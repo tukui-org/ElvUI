@@ -2,12 +2,12 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 local ACD = LibStub("AceConfigDialog-3.0")
 local grid
 
-local selectedValue = 'GENERAL'
+local selectedValue = 'ALL'
 local floor = math.floor
 
 E.ConfigModeLayouts = {
-	'GENERAL',
 	'ALL',
+	'GENERAL',
 	'SOLO',
 	'PARTY',
 	'ARENA',
@@ -18,8 +18,8 @@ E.ConfigModeLayouts = {
 }
 
 E.ConfigModeLocalizedStrings = {
-	GENERAL = GENERAL,
 	ALL = ALL,
+	GENERAL = GENERAL,
 	SOLO = SOLO,
 	PARTY = PARTY,
 	ARENA = ARENA,
@@ -85,7 +85,7 @@ function E:ToggleConfigMode(override, configType)
 		configType = nil
 	end
 	
-	self:ToggleMovers(E.ConfigurationMode, configType or 'GENERAL')
+	self:ToggleMovers(E.ConfigurationMode, configType or 'ALL')
 end
 
 function E:Grid_Create() 
@@ -233,10 +233,10 @@ function E:CreateMoverPopup()
 	f:SetWidth(360)
 	f:SetHeight(130)
 	f:SetTemplate('Transparent')
-	f:SetPoint("BOTTOM", UIParent, 'CENTER')
+	f:SetPoint("BOTTOM", UIParent, 'CENTER', 0, 100)
 	f:SetScript('OnHide', function()
 		if ElvUIMoverPopupWindowDropDown then
-			UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, 'GENERAL');
+			UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, 'ALL');
 		end
 	end)
 	f:Hide()
@@ -284,7 +284,7 @@ function E:CreateMoverPopup()
 		local ACD = LibStub("AceConfigDialog-3.0")
 		E:ToggleConfigMode(true)
 		ACD['Open'](ACD, 'ElvUI') 
-		selectedValue = 'GENERAL'
+		selectedValue = 'ALL'
 		UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, selectedValue);
 	end)
 	
