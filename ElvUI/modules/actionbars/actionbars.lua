@@ -188,16 +188,21 @@ function AB:PositionAndSizeBar(barName)
 		if not self.db[barName].mouseover then
 			bar:SetAlpha(self.db[barName].alpha);
 		end
-
-		if AB['barDefaults']['bar'..bar.id].conditions:find("[form]") then
+		
+		local page = self:GetPage(barName, self['barDefaults'][barName].page, self['barDefaults'][barName].conditions)
+		if AB['barDefaults']['bar'..bar.id].conditions:find("[form,noform]") then
 			bar:SetAttribute("hasTempBar", true)
+			
+			local newCondition = page
+			newCondition = gsub(AB['barDefaults']['bar'..bar.id].conditions, " %[form,noform%] 0; ", "")
+			bar:SetAttribute("newCondition", newCondition)
 		else
 			bar:SetAttribute("hasTempBar", false)
 		end
-			
+
 		bar:Show()
 		RegisterStateDriver(bar, "visibility", self.db[barName].visibility); -- this is ghetto
-		RegisterStateDriver(bar, "page", self:GetPage(barName, self['barDefaults'][barName].page, self['barDefaults'][barName].conditions));
+		RegisterStateDriver(bar, "page", page);
 		
 		if not bar.initialized then
 			bar.initialized = true;
@@ -250,6 +255,13 @@ function AB:CreateBar(id)
 		if newstate ~= 0 then
 			self:SetAttribute("state", newstate)
 			control:ChildUpdate("state", newstate)
+		else
+			local newCondition = self:GetAttribute("newCondition")
+			if newCondition then
+				newstate = SecureCmdOptionParse(newCondition)
+				self:SetAttribute("state", newstate)
+				control:ChildUpdate("state", newstate)
+			end
 		end
 	]]);
 	

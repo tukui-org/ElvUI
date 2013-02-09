@@ -194,7 +194,6 @@ local function LoadSkin()
 			--Making all icons the same size and position because otherwise BlizzardUI tries to attach itself to itself when it refreshes
 			object.icon:SetPoint("LEFT", object, "LEFT", 4, 0)
 			hooksecurefunc(object.icon, "SetPoint", function(self, point, attachTo, anchorPoint, xOffset, yOffset, isForced)
-
 				if isForced ~= true then
 					self:SetPoint("LEFT", object, "LEFT", 4, 0, true)
 				end
