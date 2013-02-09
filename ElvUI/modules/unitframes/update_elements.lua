@@ -1380,13 +1380,15 @@ function UF:SmartAuraDisplay()
 		buffs:ClearAllPoints()
 		buffs:Point(E.InversePoints[db.buffs.anchorPoint], self, db.buffs.anchorPoint, x + db.buffs.xOffset, y + db.buffs.yOffset + (E.PixelMode and (db.buffs.anchorPoint:find('TOP') and -1 or 1) or 0))
 		
-		local anchorPoint, anchorTo = 'BOTTOM', 'TOP'
-		if db.aurabar.anchorPoint == 'BELOW' then
-			anchorPoint, anchorTo = 'TOP', 'BOTTOM'
-		end		
-		auraBars:ClearAllPoints()
-		auraBars:SetPoint(anchorPoint..'LEFT', buffs, anchorTo..'LEFT', 0, yOffset)
-		auraBars:SetPoint(anchorPoint..'RIGHT', buffs, anchorTo..'RIGHT', 0, yOffset)
+		if db.aurabar.attachTo ~= 'FRAME' then
+			local anchorPoint, anchorTo = 'BOTTOM', 'TOP'
+			if db.aurabar.anchorPoint == 'BELOW' then
+				anchorPoint, anchorTo = 'TOP', 'BOTTOM'
+			end		
+			auraBars:ClearAllPoints()
+			auraBars:SetPoint(anchorPoint..'LEFT', buffs, anchorTo..'LEFT', 0, yOffset)
+			auraBars:SetPoint(anchorPoint..'RIGHT', buffs, anchorTo..'RIGHT', 0, yOffset)
+		end
 	end
 	
 	if debuffs:IsShown() then
@@ -1394,14 +1396,16 @@ function UF:SmartAuraDisplay()
 		
 		debuffs:ClearAllPoints()
 		debuffs:Point(E.InversePoints[db.debuffs.anchorPoint], self, db.debuffs.anchorPoint, x + db.debuffs.xOffset, y + db.debuffs.yOffset)	
-
-		local anchorPoint, anchorTo = 'BOTTOM', 'TOP'
-		if db.aurabar.anchorPoint == 'BELOW' then
-			anchorPoint, anchorTo = 'TOP', 'BOTTOM'
-		end		
-		auraBars:ClearAllPoints()
-		auraBars:SetPoint(anchorPoint..'LEFT', debuffs, anchorTo..'LEFT', 0, yOffset)
-		auraBars:SetPoint(anchorPoint..'RIGHT', debuffs, anchorTo..'RIGHT', 0, yOffset)		
+		
+		if db.aurabar.attachTo ~= 'FRAME' then
+			local anchorPoint, anchorTo = 'BOTTOM', 'TOP'
+			if db.aurabar.anchorPoint == 'BELOW' then
+				anchorPoint, anchorTo = 'TOP', 'BOTTOM'
+			end		
+			auraBars:ClearAllPoints()
+			auraBars:SetPoint(anchorPoint..'LEFT', debuffs, anchorTo..'LEFT', 0, yOffset)
+			auraBars:SetPoint(anchorPoint..'RIGHT', debuffs, anchorTo..'RIGHT', 0, yOffset)		
+		end
 	end
 end
 
