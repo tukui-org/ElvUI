@@ -475,13 +475,13 @@ local function GetDistance(x1, y1, x2, y2)
 end
 
 ElvUF.Tags.Methods['swiftmendtargets'] = function(unit)
-	local px, py = GetPlayerMapPosition(unit)
+	local px, py, tx, ty
+	px, py = GetPlayerMapPosition(unit)
 	local unitsInRange = 0
 	for groupUnit, _ in pairs(GroupUnits) do
 		if not UnitIsUnit(unit, groupUnit) then
-			local tx, ty = GetPlayerMapPosition(groupUnit)
-			local d = GetDistance(px * 100, py * 100, tx * 100, ty * 100)
-			if d <= 8 then
+			tx, ty = GetPlayerMapPosition(groupUnit)
+			if GetDistance(px * 100, py * 100, tx * 100, ty * 100) <= 8 then
 				unitsInRange = unitsInRange + 1
 			end
 		end
