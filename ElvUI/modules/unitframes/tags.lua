@@ -2,7 +2,8 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
-
+local twipe = table.wipe
+local ceil, sqrt = math.ceil, math.sqrt
 ------------------------------------------------------------------------
 --	Tags
 ------------------------------------------------------------------------
@@ -439,4 +440,52 @@ ElvUF.Tags.Methods['incomingheals'] = function(unit)
 	else
 		return E:ShortValue(heal)
 	end
+end
+
+
+local GroupUnits = {}
+local f = CreateFrame("Frame")
+f:RegisterEvent("GROUP_ROSTER_UPDATE")
+f:SetScript("OnEvent", function()
+	local groupType, groupSize
+	twipe(GroupUnits)
+
+	if IsInRaid() then 
+		groupType = "raid"
+		groupSize = GetNumGroupMembers()
+	elseif IsInGroup() then 
+		groupType = "party"
+		groupSize = GetNumGroupMembers() - 1
+		GroupUnits["player"] = true
+	else 
+		groupType = "solo"
+		groupSize = 1
+	end
+	
+	for index = 1, groupSize do
+		local unit = groupType..index
+		if not UnitIsUnit(unit, "player") then
+			GroupUnits[unit] = true
+		end
+	end	
+end)
+
+local function GetDistance(x1, y1, x2, y2)
+	return ceil(sqrt((x2 - x1)^2 + (y2 - y1)^2) / 0.04249)
+end
+
+ElvUF.Tags.Methods['numswiftmendtargets'] = function(unit)
+	local px, py = GetPlayerMapPosition(unit)
+	local unitsInRange = 0
+	for groupUnit, _ in pairs(GroupUnits) do
+		if not UnitIsUnit(unit, groupUnit) then
+			local tx, ty = GetPlayerMapPosition(groupUnit)
+			local d = GetDistance(px * 100, py * 100, tx * 100, ty * 100)
+			if d <= 8 then
+				unitsInRange = unitsInRange + 1
+			end
+		end
+	end
+	
+	return unitsInRange
 end

@@ -40,7 +40,7 @@ local Update = function(self, elapsed)
 		if unit and GPS.outOfRange then
 			inRange = UnitInRange(unit)
 		end
-		
+
 		if not unit or not (UnitInParty(unit) or UnitInRaid(unit)) or UnitIsUnit(unit, "player") or not UnitIsConnected(unit) or (GPS.onMouseOver and (GetMouseFocus() ~= frame)) or (GPS.outOfRange and inRange) then
 			GPS:Hide()
 			return
@@ -51,7 +51,7 @@ local Update = function(self, elapsed)
 			GPS:Hide()
 			return
 		end
-		
+
 		GPS:Show()
 		
 		if GPS.Texture then
