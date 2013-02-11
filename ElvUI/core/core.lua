@@ -235,7 +235,7 @@ end
 
 function E:UpdateFrameTemplates()
 	for frame, _ in pairs(self["frames"]) do
-		if frame and frame.template  then
+		if frame and frame.template and not frame.ignoreUpdates then
 			frame:SetTemplate(frame.template, frame.glossTex);
 		else
 			self["frames"][frame] = nil;

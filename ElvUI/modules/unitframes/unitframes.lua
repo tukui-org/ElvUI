@@ -819,8 +819,10 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 	if isTransparent then
 		if statusBar.backdrop then
 			statusBar.backdrop:SetTemplate("Transparent")
+			statusBar.backdrop.ignoreUpdates = true
 		elseif statusBar:GetParent().template then
 			statusBar:GetParent():SetTemplate("Transparent")	
+			statusBar:GetParent().ignoreUpdates = true
 		end
 		
 		statusBar:SetStatusBarTexture(0, 0, 0, 0)
@@ -840,8 +842,10 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 	else
 		if statusBar.backdrop then
 			statusBar.backdrop:SetTemplate("Default")
+			statusBar.backdrop.ignoreUpdates = nil
 		elseif statusBar:GetParent().template then
 			statusBar:GetParent():SetTemplate("Default")
+			statusBar:GetParent().ignoreUpdates = nil
 		end
 		statusBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
 		if adjustBackdropPoints then
