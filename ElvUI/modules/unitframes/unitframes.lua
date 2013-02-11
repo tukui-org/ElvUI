@@ -797,6 +797,21 @@ function UF:MergeUnitSettings(fromUnit, toUnit, isGroupUnit)
 	self:Update_AllFrames()
 end
 
+local function updateColor(self, r, g, b)
+	if not self.isTransparent then return end
+	if self.backdrop then
+		local _, _, _, a = self.backdrop:GetBackdropColor()
+		self.backdrop:SetBackdropColor(r * 0.58, g * 0.58, b * 0.58, a)
+	elseif self:GetParent().template then
+		local _, _, _, a = self:GetParent():GetBackdropColor()
+		self:GetParent():SetBackdropColor(r * 0.58, g * 0.58, b * 0.58, a)
+	end
+	
+	if self.bg and self.bg:GetObjectType() == 'Texture' and not self.bg.multiplier then
+		self.bg:SetTexture(r * 0.35, g * 0.35, b * 0.35)
+	end
+end
+
 function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, adjustBackdropPoints, invertBackdropTex)
 	statusBar.isTransparent = isTransparent
 	
@@ -817,7 +832,11 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 		if invertBackdropTex then
 			backdropTex:Show()
 		end
-		backdropTex.multiplier = 0.35
+		hooksecurefunc(statusBar, "SetStatusBarColor", updateColor)
+		
+		if backdropTex.multiplier then
+			backdropTex.multiplier = 0.35
+		end
 	else
 		if statusBar.backdrop then
 			statusBar.backdrop:SetTemplate("Default")
@@ -836,7 +855,9 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 			backdropTex:Hide()
 		end
 		
-		backdropTex.multiplier = 0.25	
+		if backdropTex.multiplier then
+			backdropTex.multiplier = 0.25	
+		end
 	end
 end
 
