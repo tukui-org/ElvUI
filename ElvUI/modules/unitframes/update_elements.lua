@@ -391,7 +391,7 @@ function UF:PostCastStart(unit, name, rank, castid)
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentCastbar, self, self.bg, nil, true)
 	if self.bg:IsShown() then
 		local r,g,b = self:GetStatusBarColor()
-		self.bg:SetTexture(r * 0.35, g * 0.35, b * 0.35)
+		self.bg:SetTexture(r * 0.25, g * 0.25, b * 0.25)
 		
 		local _, _, _, alpha = self.backdrop:GetBackdropColor()
 		self.backdrop:SetBackdropColor(r * 0.58, g * 0.58, b * 0.58, alpha)
@@ -472,7 +472,7 @@ function UF:PostCastInterruptible(unit)
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentCastbar, self, self.bg, nil, true)
 	if self.bg:IsShown() then
 		local r,g,b = self:GetStatusBarColor()
-		self.bg:SetTexture(r * 0.35, g * 0.35, b * 0.35)
+		self.bg:SetTexture(r * 0.25, g * 0.25, b * 0.25)
 		
 		local _, _, _, alpha = self.backdrop:GetBackdropColor()
 		self.backdrop:SetBackdropColor(r * 0.58, g * 0.58, b * 0.58, alpha)		
@@ -1360,10 +1360,10 @@ function UF:ColorizeAuraBars(event, unit)
 		local colors = E.global.unitframe.AuraBarColors[frame.statusBar.aura.name]
 		if colors then
 			frame.statusBar:SetStatusBarColor(colors.r, colors.g, colors.b)
-			frame.statusBar.bg:SetTexture(colors.r * 0.35, colors.g * 0.35, colors.b * 0.35)
+			frame.statusBar.bg:SetTexture(colors.r * 0.25, colors.g * 0.25, colors.b * 0.25)
 		else
 			local r, g, b = frame.statusBar:GetStatusBarColor()
-			frame.statusBar.bg:SetTexture(r * 0.35, g * 0.35, b * 0.35)			
+			frame.statusBar.bg:SetTexture(r * 0.25, g * 0.25, b * 0.25)			
 		end
 
 		if UF.db.colors.transparentAurabars then

@@ -835,7 +835,7 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 		hooksecurefunc(statusBar, "SetStatusBarColor", updateColor)
 		
 		if backdropTex.multiplier then
-			backdropTex.multiplier = 0.35
+			backdropTex.multiplier = 0.25
 		end
 	else
 		if statusBar.backdrop then
