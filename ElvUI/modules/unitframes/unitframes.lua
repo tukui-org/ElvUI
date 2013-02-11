@@ -715,11 +715,11 @@ function UF:ResetUnitSettings(unit)
 	E:CopyTable(self.db['units'][unit], P['unitframe']['units'][unit]); 
 	
 	if self.db['units'][unit].buffs and self.db['units'][unit].buffs.sizeOverride then
-		self.db['units'][unit].buffs.sizeOverride = 0
+		self.db['units'][unit].buffs.sizeOverride = P.unitframe.units[unit].buffs.sizeOverride or 0
 	end
 	
 	if self.db['units'][unit].debuffs and self.db['units'][unit].debuffs.sizeOverride then
-		self.db['units'][unit].debuffs.sizeOverride = 0
+		self.db['units'][unit].debuffs.sizeOverride = P.unitframe.units[unit].debuffs.sizeOverride or 0
 	end
 	
 	self:Update_AllFrames()
