@@ -19,17 +19,9 @@ local OnRangeUpdate = function(self, elapsed)
 				if(object.unit and UnitIsConnected(object.unit)) then
 					local inRange, checkedRange = UnitInRange(object.unit)
 					if(checkedRange and not inRange) then
-						if(range.Override) then
-							range.Override(object, 'outside')
-						else
-							object:SetAlpha(range.outsideAlpha)
-						end
+						object:SetAlpha(range.outsideAlpha)
 					else
-						if(range.Override) then
-							range.Override(object, 'inside')
-						elseif(object:GetAlpha() ~= range.insideAlpha) then
-							object:SetAlpha(range.insideAlpha)
-						end
+						object:SetAlpha(range.insideAlpha)
 					end
 				elseif object.unit and not UnitIsConnected(object.unit) then
 					object:SetAlpha(range.outsideAlpha)

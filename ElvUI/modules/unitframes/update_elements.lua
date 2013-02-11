@@ -1198,6 +1198,7 @@ local roleIconTextures = {
 
 function UF:UpdateRoleIcon()
 	local lfdrole = self.LFDRole
+	if not self.db then return; end
 	local db = self.db.roleIcon;
 	
 	if (not db) or (db and not db.enable) then 

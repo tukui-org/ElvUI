@@ -43,7 +43,7 @@ for i=10, 40, 15 do
 		self.HealPrediction = UF:Construct_HealComm(self)
 		self.GPS = UF:Construct_GPS(self)
 		
-		UF['Update_Raid'..i..'Frames'](UF, self, E.db['unitframe']['units']['raid'..i])
+		--UF['Update_Raid'..i..'Frames'](UF, self, E.db['unitframe']['units']['raid'..i])
 		UF:Update_StatusBars()
 		UF:Update_FontStrings()	
 		
@@ -158,6 +158,10 @@ for i=10, 40, 15 do
 			frame:Size(UNIT_WIDTH, UNIT_HEIGHT)
 		end
 		frame.Range = {insideAlpha = 1, outsideAlpha = E.db.unitframe.OORAlpha}
+		if not frame:IsElementEnabled('Range') then
+			frame:EnableElement('Range')
+		end		
+		
 		
 		--Adjust some variables
 		do

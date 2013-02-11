@@ -50,7 +50,7 @@ function UF:Construct_PartyFrames(unitGroup)
 	end
 	
 	
-	UF:Update_PartyFrames(self, E.db['unitframe']['units']['party'])
+	--UF:Update_PartyFrames(self, E.db['unitframe']['units']['party'])
 	UF:Update_StatusBars()
 	UF:Update_FontStrings()	
 
@@ -160,6 +160,10 @@ function UF:Update_PartyFrames(frame, db)
 	frame.db = db
 	frame.colors = ElvUF.colors
 	frame.Range = {insideAlpha = 1, outsideAlpha = E.db.unitframe.OORAlpha}
+	
+	if not frame:IsElementEnabled('Range') then
+		frame:EnableElement('Range')
+	end
 	
 	--Adjust some variables
 	do

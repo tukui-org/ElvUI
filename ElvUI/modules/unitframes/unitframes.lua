@@ -805,7 +805,7 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 		if statusBar.backdrop then
 			statusBar.backdrop:SetTemplate("Transparent")
 		elseif statusBar:GetParent().template then
-			statusBar:GetParent():SetTemplate("Transparent")
+			statusBar:GetParent():SetTemplate("Transparent")	
 		end
 		
 		statusBar:SetStatusBarTexture(0, 0, 0, 0)
