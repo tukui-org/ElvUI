@@ -387,7 +387,7 @@ function E:SetupLayout(layout, noDataReset)
 		
 		E.db.actionbar.bar2.enabled = E.db.lowresolutionset
 		E.db.movers.ElvAB_2 = "BOTTOMElvUIParentBOTTOM038"
-		if E.db.lowresolutionset then
+		if not E.db.lowresolutionset then
 			E.db.actionbar.bar3.buttons = 6
 			E.db.actionbar.bar5.buttons = 6
 			E.db.actionbar.bar4.enabled = true
