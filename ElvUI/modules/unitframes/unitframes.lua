@@ -225,8 +225,10 @@ end
 function UF:Update_StatusBars()
 	local statusBarTexture = LSM:Fetch("statusbar", self.db.statusbar)
 	for statusbar in pairs(UF['statusbars']) do
-		if statusbar and statusbar:GetObjectType() == 'StatusBar' then
+		if statusbar and statusbar:GetObjectType() == 'StatusBar' and not statusbar.isTransparent then
 			statusbar:SetStatusBarTexture(statusBarTexture)
+		elseif statusBar and statusbar:GetObjectType() == 'Texture' then
+			statusbar:SetTexture(statusBarTexture)
 		end
 	end
 end
@@ -795,5 +797,47 @@ function UF:MergeUnitSettings(fromUnit, toUnit, isGroupUnit)
 	self:Update_AllFrames()
 end
 
+function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, adjustBackdropPoints, invertBackdropTex)
+	statusBar.isTransparent = isTransparent
+	
+	local statusBarTex = statusBar:GetStatusBarTexture()
+	if isTransparent then
+		if statusBar.backdrop then
+			statusBar.backdrop:SetTemplate("Transparent")
+		elseif statusBar:GetParent().template then
+			statusBar:GetParent():SetTemplate("Transparent")
+		end
+		
+		statusBar:SetStatusBarTexture(0, 0, 0, 0)
+		backdropTex:ClearAllPoints()
+		backdropTex:SetPoint("TOPLEFT", statusBarTex, "TOPRIGHT")
+		backdropTex:SetPoint("BOTTOMLEFT", statusBarTex, "BOTTOMRIGHT")
+		backdropTex:SetPoint("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT")
+		
+		if invertBackdropTex then
+			backdropTex:Show()
+		end
+		backdropTex.multiplier = 0.35
+	else
+		if statusBar.backdrop then
+			statusBar.backdrop:SetTemplate("Default")
+		elseif statusBar:GetParent().template then
+			statusBar:GetParent():SetTemplate("Default")
+		end
+		statusBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
+		if adjustBackdropPoints then
+			backdropTex:ClearAllPoints()
+			backdropTex:SetPoint("TOPLEFT", statusBarTex, "TOPRIGHT")
+			backdropTex:SetPoint("BOTTOMLEFT", statusBarTex, "BOTTOMRIGHT")
+			backdropTex:SetPoint("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT")
+		end
+		
+		if invertBackdropTex then
+			backdropTex:Hide()
+		end
+		
+		backdropTex.multiplier = 0.25	
+	end
+end
 
 E:RegisterInitialModule(UF:GetName())

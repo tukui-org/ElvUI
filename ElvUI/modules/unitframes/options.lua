@@ -326,7 +326,15 @@ E.Options.args.unitframe = {
 									desc = L['Color the health backdrop by class or reaction.'],
 									get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
 									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,										
-								},								
+								},	
+								transparentHealth = {
+									order = 6,
+									type = 'toggle',
+									name = L['Transparent'],
+									desc = L['Make textures transparent.'],
+									get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
+									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,										
+								},									
 								health = {
 									order = 10,
 									type = 'color',
@@ -372,29 +380,37 @@ E.Options.args.unitframe = {
 									desc = L['Color power by classcolor or reaction.'],
 									get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
 									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,										
-								},								
-								MANA = {
+								},				
+								transparentPower = {
 									order = 1,
+									type = 'toggle',
+									name = L['Transparent'],
+									desc = L['Make textures transparent.'],
+									get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
+									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,										
+								},									
+								MANA = {
+									order = 2,
 									name = MANA,
 									type = 'color',
 								},
 								RAGE = {
-									order = 2,
+									order = 3,
 									name = RAGE,
 									type = 'color',
 								},	
 								FOCUS = {
-									order = 3,
+									order = 4,
 									name = FOCUS,
 									type = 'color',
 								},	
 								ENERGY = {
-									order = 4,
+									order = 5,
 									name = ENERGY,
 									type = 'color',
 								},		
 								RUNIC_POWER = {
-									order = 5,
+									order = 6,
 									name = RUNIC_POWER,
 									type = 'color',
 								},									
@@ -449,6 +465,14 @@ E.Options.args.unitframe = {
 								UF:Update_AllFrames()
 							end,			
 							args = {
+								transparentCastbar = {
+									order = 0,
+									type = 'toggle',
+									name = L['Transparent'],
+									desc = L['Make textures transparent.'],
+									get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
+									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,										
+								},								
 								castColor = {
 									order = 1,
 									name = L['Interruptable'],
@@ -467,6 +491,14 @@ E.Options.args.unitframe = {
 							guiInline = true,
 							name = L['Aura Bars'],
 							args = {
+								transparentAurabars = {
+									order = 0,
+									type = 'toggle',
+									name = L['Transparent'],
+									desc = L['Make textures transparent.'],
+									get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
+									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,										
+								},								
 								auraBarByType = {
 									order = 1,
 									name = L['By Type'],

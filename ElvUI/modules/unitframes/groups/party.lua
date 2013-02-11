@@ -499,16 +499,6 @@ function UF:Update_PartyFrames(frame, db)
 				healPrediction.myBar:SetOrientation(db.health.orientation)
 				healPrediction.otherBar:SetOrientation(db.health.orientation)
 				healPrediction.absorbBar:SetOrientation(db.health.orientation)
-				
-				if not USE_PORTRAIT_OVERLAY then
-					healPrediction.myBar:SetParent(frame)
-					healPrediction.otherBar:SetParent(frame)
-					healPrediction.absorbBar:SetParent(frame)
-				else	
-					healPrediction.myBar:SetParent(frame.Portrait.overlay)		
-					healPrediction.otherBar:SetParent(frame.Portrait.overlay)	
-					healPrediction.absorbBar:SetParent(frame.Portrait.overlay)
-				end
 			else
 				if frame:IsElementEnabled('HealPrediction') then
 					frame:DisableElement('HealPrediction')
@@ -584,6 +574,11 @@ function UF:Update_PartyFrames(frame, db)
 			frame[objectName]:SetPoint(objectDB.justifyH or 'CENTER', frame, 'CENTER', objectDB.xOffset, objectDB.yOffset)
 		end
 	end	
+
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg)
+	if frame.Power then
+		UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)	
+	end
 	
 	frame:UpdateAllElements()
 end

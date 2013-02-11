@@ -387,6 +387,12 @@ function UF:PostCastStart(unit, name, rank, castid)
 	else
 		self:SetStatusBarColor(colors.castColor[1], colors.castColor[2], colors.castColor[3])
 	end
+
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentCastbar, self, self.bg, nil, true)
+	if self.bg:IsShown() then
+		local r,g,b = self:GetStatusBarColor()
+		self.bg:SetTexture(r * 0.35, g * 0.35, b * 0.35)
+	end
 end
 
 function UF:PostCastStop(unit, name, castid)
@@ -459,6 +465,12 @@ function UF:PostCastInterruptible(unit)
 	else
 		self:SetStatusBarColor(colors.castColor[1], colors.castColor[2], colors.castColor[3])
 	end
+	
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentCastbar, self, self.bg, nil, true)
+	if self.bg:IsShown() then
+		local r,g,b = self:GetStatusBarColor()
+		self.bg:SetTexture(r * 0.35, g * 0.35, b * 0.35)
+	end	
 end
 
 function UF:PostCastNotInterruptible(unit)
@@ -771,10 +783,10 @@ function UF:UpdateThreat(event, unit)
 		if self.Threat and self.Threat:GetBackdrop() then
 			self.Threat:Hide()
 		elseif self.Health.backdrop then
-			self.Health.backdrop:SetTemplate("Default")
+			self.Health.backdrop:SetTemplate(self.Health.backdrop.template)
 			
 			if self.Power and self.Power.backdrop then
-				self.Power.backdrop:SetTemplate("Default")
+				self.Power.backdrop:SetTemplate(self.Health.backdrop.template)
 			end
 		end	
 	end
@@ -1341,7 +1353,17 @@ function UF:ColorizeAuraBars(event, unit)
 		local colors = E.global.unitframe.AuraBarColors[frame.statusBar.aura.name]
 		if colors then
 			frame.statusBar:SetStatusBarColor(colors.r, colors.g, colors.b)
+			frame.statusBar.bg:SetTexture(colors.r * 0.35, colors.g * 0.35, colors.b * 0.35)
+		else
+			local r, g, b = frame.statusBar:GetStatusBarColor()
+			frame.statusBar.bg:SetTexture(r * 0.35, g * 0.35, b * 0.35)			
 		end
+
+		if UF.db.colors.transparentAurabars then
+			UF:ToggleTransparentStatusBar(true, frame.statusBar, frame.statusBar.bg, nil, true)
+		else
+			UF:ToggleTransparentStatusBar(false, frame.statusBar, frame.statusBar.bg, nil, true)
+		end	
 	end
 end
 

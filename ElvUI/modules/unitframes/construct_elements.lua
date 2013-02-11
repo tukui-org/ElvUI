@@ -242,6 +242,9 @@ function UF:Construct_Castbar(self, direction, moverName)
 	castbar.LatencyTexture = castbar:CreateTexture(nil, "OVERLAY")
 	castbar.LatencyTexture:SetTexture(E['media'].blankTex)
 	castbar.LatencyTexture:SetVertexColor(0.69, 0.31, 0.31, 0.75)	
+	
+	castbar.bg = castbar:CreateTexture(nil, 'BORDER')
+	castbar.bg:Hide()	
 
 	local button = CreateFrame("Frame", nil, castbar)
 	local holder = CreateFrame('Frame', nil, castbar)
@@ -707,6 +710,9 @@ function UF:Construct_AuraBars()
 	bar.iconHolder:SetTemplate('Default')
 	bar.icon:SetInside(bar.iconHolder)
 	bar.icon:SetDrawLayer('OVERLAY')
+	
+	bar.bg = bar:CreateTexture(nil, 'BORDER')
+	bar.bg:Hide()
 	
 	
 	bar.iconHolder:RegisterForClicks('RightButtonUp')

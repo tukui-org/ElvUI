@@ -136,6 +136,8 @@ function UF:Update_AssistFrames(frame, db)
 		end
 	end	
 	
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg)
+
 	frame:UpdateAllElements()
 end
 
