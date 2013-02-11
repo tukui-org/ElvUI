@@ -114,7 +114,16 @@ E.Options.args.datatexts = {
 				E:GetModule('Layout'):ToggleChatPanels()
 				E:GetModule('Bags'):PositionBagFrames()
 			end,					
-		},				
+		},			
+		panelTransparency = {
+			order = 8,
+			name = L['Panel Transparency'],
+			type = 'toggle',
+			set = function(info, value) 
+				E.db.datatexts[ info[#info] ] = value
+				E:GetModule('Layout'):SetDataPanelStyle()
+			end,				
+		},
 		panels = {
 			type = 'group',
 			name = L['Panels'],

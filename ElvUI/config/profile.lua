@@ -174,8 +174,9 @@ P['chat'] = {
 	['panelBackdropNameRight'] = '',
 	['panelBackdrop'] = 'SHOWBOTH',
 	['panelTabBackdrop'] = true,
+	['panelTabTransparency'] = true,
 	['editBoxPosition'] = 'BELOW_CHAT',
-	
+
 	['tabFont'] = 'ElvUI Font',
 	['tabFontSize'] = 12,
 	['tabFontOutline'] = 'NONE',
@@ -207,6 +208,7 @@ P['datatexts'] = {
 	['minimapPanels'] = true,
 	['leftChatPanel'] = true,
 	['rightChatPanel'] = true,
+	['panelTransparency'] = true,
 }
 
 --Tooltip
@@ -242,10 +244,10 @@ P['unitframe'] = {
 		['customhealthbackdrop'] = false,
 		['classbackdrop'] = false,
 		['auraBarByType'] = true,
-		['transparentHealth'] = false,
-		['transparentPower'] = false,
-		['transparentCastbar'] = false,
-		['transparentAurabars'] = false,
+		['transparentHealth'] = true,
+		['transparentPower'] = true,
+		['transparentCastbar'] = true,
+		['transparentAurabars'] = true,
 		['castColor'] = { r = .31,g = .31,b = .31 },
 		['castNoInterrupt'] = { r = 0.78, g = 0.25, b = 0.25 },
 		
