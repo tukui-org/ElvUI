@@ -1149,7 +1149,12 @@ function UF:UpdateAuraWatch(frame)
 				
 				if icon.displayText then
 					icon.text:Show()
-					icon.text:SetTextColor(buffs[i].textColor.r, buffs[i].textColor.g, buffs[i].textColor.b)
+					local r, g, b = 1, 1, 1
+					if buffs[i].textColor then
+						r, g, b = buffs[i].textColor.r, buffs[i].textColor.g, buffs[i].textColor.b
+					end
+					
+					icon.text:SetTextColor(r, g, b)
 				else
 					icon.text:Hide()
 				end
