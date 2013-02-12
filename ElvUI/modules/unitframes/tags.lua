@@ -474,7 +474,7 @@ local function GetDistance(x1, y1, x2, y2)
 	return ceil(sqrt((x2 - x1)^2 + (y2 - y1)^2) / 0.04249)
 end
 
-ElvUF.Tags.Methods['swiftmendtargets'] = function(unit)
+ElvUF.Tags.Methods['nearbyplayers'] = function(unit)
 	local px, py, tx, ty
 	px, py = GetPlayerMapPosition(unit)
 	local unitsInRange = 0
