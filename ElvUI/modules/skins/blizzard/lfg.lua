@@ -332,6 +332,13 @@ local function LoadSkin()
 	LFGInvitePopup:SetTemplate("Transparent")
 	S:HandleButton(LFGInvitePopupAcceptButton)
 	S:HandleButton(LFGInvitePopupDeclineButton)
+	
+	S:HandleButton(_G[LFDQueueFrame.PartyBackfill:GetName().."BackfillButton"])
+	S:HandleButton(_G[LFDQueueFrame.PartyBackfill:GetName().."NoBackfillButton"])
+	S:HandleButton(_G[RaidFinderQueueFrame.PartyBackfill:GetName().."BackfillButton"])
+	S:HandleButton(_G[RaidFinderQueueFrame.PartyBackfill:GetName().."NoBackfillButton"])
+	S:HandleButton(_G[ScenarioQueueFrame.PartyBackfill:GetName().."BackfillButton"])
+	S:HandleButton(_G[ScenarioQueueFrame.PartyBackfill:GetName().."NoBackfillButton"])	
 end
 
 S:RegisterSkin("ElvUI", LoadSkin)
