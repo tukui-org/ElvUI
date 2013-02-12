@@ -7492,7 +7492,11 @@ E.Options.args.unitframe.args.party = {
 						['TOPRIGHT'] = 'TOPRIGHT',
 						['NONE'] = NONE,
 					},
-					set = function(info, value) E.db.unitframe.units['party'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party'); end,
+					set = function(info, value) 
+						E.db.unitframe.units['party'][ info[#info] ] = value;
+						ElvUF_PartyMover.positionOverride = value ~= 'NONE' and value or nil
+						E:UpdatePositionOverride('ElvUF_PartyMover')
+					end,
 				},
 				maxColumns = {
 					order = 7,
@@ -8340,7 +8344,11 @@ for i=10, 40, 15 do
 							['TOPRIGHT'] = 'TOPRIGHT',
 							['NONE'] = NONE,
 						},
-						set = function(info, value) E.db.unitframe.units['raid'..i][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i); end,
+						set = function(info, value) 
+							E.db.unitframe.units['raid'..i][ info[#info] ] = value;
+							ElvUF_PartyMover.positionOverride = value ~= 'NONE' and value or nil
+							E:UpdatePositionOverride('ElvUF_Raid..'..i..'Mover')
+						end,
 					},			
 					maxColumns = {
 						order = 7,

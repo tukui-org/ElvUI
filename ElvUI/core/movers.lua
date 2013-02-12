@@ -159,8 +159,6 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 			elseif self.positionOverride:find("RIGHT") then
 				x = self:GetRight()
 			end
-			
-			point = self.positionOverride
 		else
 			local LEFT = screenWidth / 3
 			local RIGHT = screenWidth * 2 / 3
@@ -187,7 +185,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 		
 		self:ClearAllPoints()
 		if self.positionOverride then
-			self:Point(point, E.UIParent, "BOTTOMLEFT", x, y)
+			self:Point(self.positionOverride, E.UIParent, "BOTTOMLEFT", x, y)
 			self.parent:ClearAllPoints()
 			self.parent:Point(self.positionOverride, self, self.positionOverride)
 		else
@@ -195,8 +193,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 		end
 		
 		E:SaveMoverPosition(name)
-		
-		
+
 		if ElvUIMoverNudgeWindow then
 			E:UpdateNudgeFrame(self)
 		end

@@ -113,6 +113,7 @@ function UF:Update_PartyHeader(header, db)
 		header:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)
 		
 		E:CreateMover(header, header:GetName()..'Mover', L['Party Frames'], nil, nil, nil, 'ALL,PARTY,ARENA')
+		header.mover.positionOverride = db.positionOverride ~= 'NONE' and db.positionOverride or nil
 		
 		header:SetAttribute('minHeight', header.dirtyHeight)
 		header:SetAttribute('minWidth', header.dirtyWidth)
@@ -122,10 +123,7 @@ function UF:Update_PartyHeader(header, db)
 		header:HookScript("OnEvent", UF.PartySmartVisibility)		
 		header.positioned = true;
 	end
-	
-	header.mover.positionOverride = db.positionOverride ~= 'NONE' and db.positionOverride or nil
-	E:UpdatePositionOverride(header:GetName()..'Mover')
-	
+
 	UF.PartySmartVisibility(header)
 end
 
