@@ -22,7 +22,7 @@ function UF:Construct_ArenaFrames(frame)
 	
 	frame.Trinket = self:Construct_Trinket(frame)
 	frame.PVPSpecIcon = self:Construct_PVPSpecIcon(frame)
-	
+	frame.Range = UF:Construct_Range(frame)
 	frame:SetAttribute("type2", "focus")
 
 	
@@ -350,6 +350,22 @@ function UF:Update_ArenaFrames(frame, db)
 			frame:DisableElement('PVPSpecIcon')	
 		end					
 	end
+	
+	--Range
+	do
+		local range = frame.Range
+		if db.rangeCheck then
+			if not frame:IsElementEnabled('Range') then
+				frame:EnableElement('Range')
+			end
+
+			range.outsideAlpha = E.db.unitframe.OORAlpha
+		else
+			if frame:IsElementEnabled('Range') then
+				frame:DisableElement('Range')
+			end				
+		end
+	end		
 	
 	if db.customTexts then
 		local customFont = UF.LSM:Fetch("font", UF.db.font)

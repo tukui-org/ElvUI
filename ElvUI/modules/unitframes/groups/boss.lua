@@ -23,7 +23,7 @@ function UF:Construct_BossFrames(frame)
 	frame.Castbar = self:Construct_Castbar(frame, 'RIGHT')
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)
 	frame.AltPowerBar = self:Construct_AltPowerBar(frame)
-	
+	frame.Range = UF:Construct_Range(frame)
 	frame:SetAttribute("type2", "focus")
 	
 	BossHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165) 
@@ -437,6 +437,22 @@ function UF:Update_BossFrames(frame, db)
 			frame[objectName]:SetPoint(objectDB.justifyH or 'CENTER', frame, 'CENTER', objectDB.xOffset, objectDB.yOffset)
 		end
 	end
+	
+	--Range
+	do
+		local range = frame.Range
+		if db.rangeCheck then
+			if not frame:IsElementEnabled('Range') then
+				frame:EnableElement('Range')
+			end
+
+			range.outsideAlpha = E.db.unitframe.OORAlpha
+		else
+			if frame:IsElementEnabled('Range') then
+				frame:DisableElement('Range')
+			end				
+		end
+	end		
 
 	frame:ClearAllPoints()
 	if INDEX == 1 then

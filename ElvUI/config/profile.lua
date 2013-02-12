@@ -416,6 +416,7 @@ P['unitframe'] = {
 			['enable'] = true,
 			['width'] = 270,
 			['height'] = 54,
+			['rangeCheck'] = true,
 			['healPrediction'] = true,
 			['smartAuraDisplay'] = 'DISABLED',
 			['health'] = {
@@ -514,6 +515,7 @@ P['unitframe'] = {
 		},
 		['targettarget'] = {
 			['enable'] = true,
+			['rangeCheck'] = true,
 			['width'] = 130,
 			['height'] = 36,
 			['health'] = {
@@ -578,6 +580,7 @@ P['unitframe'] = {
 		},
 		['focus'] = {
 			['enable'] = true,
+			['rangeCheck'] = true,
 			['width'] = 190,
 			['height'] = 36,
 			['healPrediction'] = true,
@@ -666,6 +669,7 @@ P['unitframe'] = {
 		},	
 		['focustarget'] = {
 			['enable'] = false,
+			['rangeCheck'] = true,
 			['width'] = 190,
 			['height'] = 26,
 			['health'] = {
@@ -730,6 +734,7 @@ P['unitframe'] = {
 		},				
 		['pet'] = {
 			['enable'] = true,
+			['rangeCheck'] = true,
 			['width'] = 130,
 			['height'] = 36,
 			['healPrediction'] = true,
@@ -793,6 +798,7 @@ P['unitframe'] = {
 		},
 		['pettarget'] = {
 			['enable'] = false,
+			['rangeCheck'] = true,
 			['width'] = 130,
 			['height'] = 26,
 			['health'] = {
@@ -850,6 +856,7 @@ P['unitframe'] = {
 		},	
 		['boss'] = {
 			['enable'] = true,
+			['rangeCheck'] = true,
 			['growthDirection'] = 'UP',
 			['width'] = 216,
 			['height'] = 46,
@@ -932,6 +939,7 @@ P['unitframe'] = {
 		},	
 		['arena'] = {
 			['enable'] = true,
+			['rangeCheck'] = true,
 			['growthDirection'] = 'UP',
 			['width'] = 240,
 			['height'] = 47,
@@ -1008,6 +1016,7 @@ P['unitframe'] = {
 		},
 		['party'] = {
 			['enable'] = true,
+			['rangeCheck'] = true,
 			['visibility'] = "[@raid6,exists] hide;show",
 			['point'] = 'TOP', --Requires ReloadUI()
 			['positionOverride'] = "NONE",
@@ -1127,6 +1136,7 @@ P['unitframe'] = {
 		},
 		['raid10'] = {
 			['enable'] = true,
+			['rangeCheck'] = true,
 			['visibility'] = '[@raid6,noexists][@raid11,exists] hide;show',
 			['point'] = 'LEFT',
 			['positionOverride'] = "NONE",
@@ -1236,6 +1246,7 @@ P['unitframe'] = {
 		},			
 		['raid25'] = {
 			['enable'] = true,
+			['rangeCheck'] = true,
 			['visibility'] = '[@raid11,noexists][@raid26,exists] hide;show',
 			['point'] = 'LEFT',
 			['positionOverride'] = "NONE",
@@ -1343,6 +1354,7 @@ P['unitframe'] = {
 		},					
 		['raid40'] = {
 			['enable'] = true,
+			['rangeCheck'] = true,
 			['visibility'] = '[@raid26,noexists] hide;show',
 			['point'] = 'LEFT',
 			['positionOverride'] = "NONE",
@@ -1450,6 +1462,7 @@ P['unitframe'] = {
 		},	
 		['tank'] = {
 			['enable'] = true,
+			['rangeCheck'] = true,
 			['width'] = 120,
 			['height'] = 28,
 			['targetsGroup'] = {
@@ -1463,6 +1476,7 @@ P['unitframe'] = {
 		},	
 		['assist'] = {
 			['enable'] = true,
+			['rangeCheck'] = true,
 			['width'] = 120,
 			['height'] = 28,
 			['targetsGroup'] = {

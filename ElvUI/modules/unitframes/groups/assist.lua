@@ -21,7 +21,7 @@ function UF:Construct_AssistFrames(unitGroup)
 	self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', UF.UpdateThreat)		
 	
 	self.RaidIcon = UF:Construct_RaidIcon(self)
-	
+	self.Range = UF:Construct_Range(self)
 	UF:Update_AssistFrames(self, E.db['unitframe']['units']['assist'])
 	UF:Update_StatusBars()
 	UF:Update_FontStrings()	
@@ -135,6 +135,22 @@ function UF:Update_AssistFrames(frame, db)
 			frame:Tag(name, '[namecolor][name:medium]')
 		end
 	end	
+	
+	--Range
+	do
+		local range = frame.Range
+		if db.rangeCheck then
+			if not frame:IsElementEnabled('Range') then
+				frame:EnableElement('Range')
+			end
+
+			range.outsideAlpha = E.db.unitframe.OORAlpha
+		else
+			if frame:IsElementEnabled('Range') then
+				frame:DisableElement('Range')
+			end				
+		end
+	end		
 	
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg)
 

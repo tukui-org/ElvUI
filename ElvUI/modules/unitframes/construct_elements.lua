@@ -767,3 +767,7 @@ function UF:Construct_Stagger(frame)
 	stagger.PostUpdate = UF.PostUpdateStagger
 	return stagger
 end
+
+function UF:Construct_Range(frame)
+	return {insideAlpha = 1, outsideAlpha = E.db.unitframe.OORAlpha}
+end

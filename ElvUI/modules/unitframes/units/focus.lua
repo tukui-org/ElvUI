@@ -22,7 +22,7 @@ function UF:Construct_FocusFrame(frame)
 	frame.Debuffs = self:Construct_Debuffs(frame)
 	frame.HealPrediction = self:Construct_HealComm(frame)
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
-	
+	frame.Range = UF:Construct_Range(frame)
 	tinsert(frame.__elements, UF.SmartAuraDisplay)
 	frame:RegisterEvent('PLAYER_FOCUS_CHANGED', UF.SmartAuraDisplay)	
 	
@@ -385,6 +385,22 @@ function UF:Update_FocusFrame(frame, db)
 			end		
 		end
 	end
+	
+	--Range
+	do
+		local range = frame.Range
+		if db.rangeCheck then
+			if not frame:IsElementEnabled('Range') then
+				frame:EnableElement('Range')
+			end
+
+			range.outsideAlpha = E.db.unitframe.OORAlpha
+		else
+			if frame:IsElementEnabled('Range') then
+				frame:DisableElement('Range')
+			end				
+		end
+	end		
 	
 	if db.customTexts then
 		local customFont = UF.LSM:Fetch("font", UF.db.font)

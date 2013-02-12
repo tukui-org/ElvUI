@@ -15,7 +15,7 @@ function UF:Construct_FocusTargetFrame(frame)
 	frame.Buffs = self:Construct_Buffs(frame)
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)
 	frame.Debuffs = self:Construct_Debuffs(frame)
-	
+	frame.Range = UF:Construct_Range(frame)
 	frame:Point('BOTTOM', ElvUF_Focus, 'TOP', 0, 7) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', L['FocusTarget Frame'], nil, -7, nil, 'ALL,SOLO')
 end
@@ -257,6 +257,22 @@ function UF:Update_FocusTargetFrame(frame, db)
 		else
 			frame:DisableElement('RaidIcon')	
 			RI:Hide()
+		end
+	end		
+	
+	--Range
+	do
+		local range = frame.Range
+		if db.rangeCheck then
+			if not frame:IsElementEnabled('Range') then
+				frame:EnableElement('Range')
+			end
+
+			range.outsideAlpha = E.db.unitframe.OORAlpha
+		else
+			if frame:IsElementEnabled('Range') then
+				frame:DisableElement('Range')
+			end				
 		end
 	end		
 	

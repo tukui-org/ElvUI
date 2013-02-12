@@ -15,7 +15,7 @@ function UF:Construct_TargetTargetFrame(frame)
 	frame.Buffs = self:Construct_Buffs(frame)
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)
 	frame.Debuffs = self:Construct_Debuffs(frame)
-		
+	frame.Range = UF:Construct_Range(frame)
 	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 75) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', L['TargetTarget Frame'], nil, nil, nil, 'ALL,SOLO')
 end
@@ -242,6 +242,22 @@ function UF:Update_TargetTargetFrame(frame, db)
 		end
 	end
 
+	--Range
+	do
+		local range = frame.Range
+		if db.rangeCheck then
+			if not frame:IsElementEnabled('Range') then
+				frame:EnableElement('Range')
+			end
+
+			range.outsideAlpha = E.db.unitframe.OORAlpha
+		else
+			if frame:IsElementEnabled('Range') then
+				frame:DisableElement('Range')
+			end				
+		end
+	end	
+	
 	--Raid Icon
 	do
 		local RI = frame.RaidIcon

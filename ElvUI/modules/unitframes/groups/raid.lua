@@ -42,6 +42,7 @@ for i=10, 40, 15 do
 		self.ReadyCheck = UF:Construct_ReadyCheckIcon(self)	
 		self.HealPrediction = UF:Construct_HealComm(self)
 		self.GPS = UF:Construct_GPS(self)
+		self.Range = UF:Construct_Range(self)
 		
 		--UF['Update_Raid'..i..'Frames'](UF, self, E.db['unitframe']['units']['raid'..i])
 		UF:Update_StatusBars()
@@ -498,6 +499,22 @@ for i=10, 40, 15 do
 				raidRoleFrameAnchor:Hide()
 				frame:DisableElement('Leader')
 				frame:DisableElement('MasterLooter')
+			end
+		end		
+		
+		--Range
+		do
+			local range = frame.Range
+			if db.rangeCheck then
+				if not frame:IsElementEnabled('Range') then
+					frame:EnableElement('Range')
+				end
+
+				range.outsideAlpha = E.db.unitframe.OORAlpha
+			else
+				if frame:IsElementEnabled('Range') then
+					frame:DisableElement('Range')
+				end				
 			end
 		end		
 		

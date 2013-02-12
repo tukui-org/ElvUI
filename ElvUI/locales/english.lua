@@ -742,6 +742,8 @@ L['You can use the /resetui command to reset all of your movers. You can also us
 L['ABOVE_THREAT_FORMAT'] = '%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]'
 
 --UnitFrames
+L["Range Check"] = true
+L["Check if you are in range to cast spells on this specific unit."] = true;
 L['Transparent'] = true;
 L['Make textures transparent.'] = true;
 L['Stagger Bar'] = true;

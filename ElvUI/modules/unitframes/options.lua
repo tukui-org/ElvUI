@@ -1452,9 +1452,15 @@ E.Options.args.unitframe.args.target = {
 			name = L['Height'],
 			type = 'range',
 			min = 10, max = 250, step = 1,
-		},	
-		healPrediction = {
+		},
+		rangeCheck = {
 			order = 6,
+			name = L["Range Check"],
+			desc = L["Check if you are in range to cast spells on this specific unit."],
+			type = "toggle",
+		},
+		healPrediction = {
+			order = 7,
 			name = L['Heal Prediction'],
 			desc = L['Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals.'],
 			type = 'toggle',
@@ -2524,9 +2530,15 @@ E.Options.args.unitframe.args.targettarget = {
 			type = 'range',
 			min = 10, max = 250, step = 1,
 		},	
+		rangeCheck = {
+			order = 6,
+			name = L["Range Check"],
+			desc = L["Check if you are in range to cast spells on this specific unit."],
+			type = "toggle",
+		},		
 		hideonnpc = {
 			type = 'toggle',
-			order = 6,
+			order = 7,
 			name = L['Text Toggle On NPC'],
 			desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
 			get = function(info) return E.db.unitframe.units['targettarget']['power'].hideonnpc end,
@@ -3212,9 +3224,15 @@ E.Options.args.unitframe.args.focus = {
 			name = L['Height'],
 			type = 'range',
 			min = 10, max = 250, step = 1,
-		},	
-		healPrediction = {
+		},
+		rangeCheck = {
 			order = 6,
+			name = L["Range Check"],
+			desc = L["Check if you are in range to cast spells on this specific unit."],
+			type = "toggle",
+		},				
+		healPrediction = {
+			order = 7,
 			name = L['Heal Prediction'],
 			desc = L['Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals.'],
 			type = 'toggle',
@@ -4210,9 +4228,15 @@ E.Options.args.unitframe.args.focustarget = {
 			type = 'range',
 			min = 10, max = 250, step = 1,
 		},	
+		rangeCheck = {
+			order = 6,
+			name = L["Range Check"],
+			desc = L["Check if you are in range to cast spells on this specific unit."],
+			type = "toggle",
+		},				
 		hideonnpc = {
 			type = 'toggle',
-			order = 6,
+			order = 7,
 			name = L['Text Toggle On NPC'],
 			desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
 			get = function(info) return E.db.unitframe.units['focustarget']['power'].hideonnpc end,
@@ -4900,8 +4924,14 @@ E.Options.args.unitframe.args.pet = {
 			type = 'range',
 			min = 10, max = 250, step = 1,
 		},	
-		healPrediction = {
+		rangeCheck = {
 			order = 6,
+			name = L["Range Check"],
+			desc = L["Check if you are in range to cast spells on this specific unit."],
+			type = "toggle",
+		},				
+		healPrediction = {
+			order = 7,
 			name = L['Heal Prediction'],
 			desc = L['Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals.'],
 			type = 'toggle',
@@ -5387,9 +5417,15 @@ E.Options.args.unitframe.args.pettarget = {
 			type = 'range',
 			min = 10, max = 250, step = 1,
 		},	
+		rangeCheck = {
+			order = 6,
+			name = L["Range Check"],
+			desc = L["Check if you are in range to cast spells on this specific unit."],
+			type = "toggle",
+		},			
 		hideonnpc = {
 			type = 'toggle',
-			order = 6,
+			order = 7,
 			name = L['Text Toggle On NPC'],
 			desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
 			get = function(info) return E.db.unitframe.units['pettarget']['power'].hideonnpc end,
@@ -6042,6 +6078,12 @@ E.Options.args.unitframe.args.boss = {
 			type = 'range',
 			min = 10, max = 250, step = 1,
 		},	
+		rangeCheck = {
+			order = 6,
+			name = L["Range Check"],
+			desc = L["Check if you are in range to cast spells on this specific unit."],
+			type = "toggle",
+		},				
 		hideonnpc = {
 			type = 'toggle',
 			order = 7,
@@ -6642,6 +6684,12 @@ E.Options.args.unitframe.args.arena = {
 			type = 'range',
 			min = 10, max = 250, step = 1,
 		},	
+		rangeCheck = {
+			order = 6,
+			name = L["Range Check"],
+			desc = L["Check if you are in range to cast spells on this specific unit."],
+			type = "toggle",
+		},				
 		hideonnpc = {
 			type = 'toggle',
 			order = 7,
@@ -7528,8 +7576,14 @@ E.Options.args.unitframe.args.party = {
 					get = function(info) return E.db.unitframe.units['party']['power'].hideonnpc end,
 					set = function(info, value) E.db.unitframe.units['party']['power'].hideonnpc = value; UF:CreateAndUpdateHeaderGroup('party'); end,
 				},
-				healPrediction = {
+				rangeCheck = {
 					order = 19,
+					name = L["Range Check"],
+					desc = L["Check if you are in range to cast spells on this specific unit."],
+					type = "toggle",
+				},						
+				healPrediction = {
+					order = 20,
 					name = L['Heal Prediction'],
 					desc = L['Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals.'],
 					type = 'toggle',
@@ -8361,17 +8415,23 @@ for i=10, 40, 15 do
 							['ASC'] = L['Ascending'],
 							['DESC'] = L['Descending']
 						},
-					},					
+					},	
+					rangeCheck = {
+						order = 18,
+						name = L["Range Check"],
+						desc = L["Check if you are in range to cast spells on this specific unit."],
+						type = "toggle",
+					},							
 					hideonnpc = {
 						type = 'toggle',
-						order = 18,
+						order = 19,
 						name = L['Text Toggle On NPC'],
 						desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
 						get = function(info) return E.db.unitframe.units['raid'..i]['power'].hideonnpc end,
 						set = function(info, value) E.db.unitframe.units['raid'..i]['power'].hideonnpc = value; UF:CreateAndUpdateHeaderGroup('raid'..i); end,
 					},	
 					healPrediction = {
-						order = 19,
+						order = 20,
 						name = L['Heal Prediction'],
 						desc = L['Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals.'],
 						type = 'toggle',

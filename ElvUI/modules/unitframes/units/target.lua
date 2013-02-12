@@ -34,7 +34,7 @@ function UF:Construct_TargetFrame(frame)
 	frame:RegisterEvent('PLAYER_TARGET_CHANGED', UF.SmartAuraDisplay)
 	
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
-	
+	frame.Range = UF:Construct_Range(frame)
 	frame:Point('BOTTOMRIGHT', E.UIParent, 'BOTTOM', 413, 68)
 	E:CreateMover(frame, frame:GetName()..'Mover', L['Target Frame'], nil, nil, nil, 'ALL,SOLO')
 end
@@ -570,6 +570,22 @@ function UF:Update_TargetFrame(frame, db)
 			end		
 		end
 	end
+	
+	--Range
+	do
+		local range = frame.Range
+		if db.rangeCheck then
+			if not frame:IsElementEnabled('Range') then
+				frame:EnableElement('Range')
+			end
+
+			range.outsideAlpha = E.db.unitframe.OORAlpha
+		else
+			if frame:IsElementEnabled('Range') then
+				frame:DisableElement('Range')
+			end				
+		end
+	end		
 
 	
 	if db.customTexts then

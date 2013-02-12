@@ -49,6 +49,8 @@ function UF:Construct_PartyFrames(unitGroup)
 		self.GPS = UF:Construct_GPS(self)
 	end
 	
+	self.Range = UF:Construct_Range(self)
+	
 	
 	--UF:Update_PartyFrames(self, E.db['unitframe']['units']['party'])
 	UF:Update_StatusBars()
@@ -159,12 +161,7 @@ function UF:Update_PartyFrames(frame, db)
 	
 	frame.db = db
 	frame.colors = ElvUF.colors
-	frame.Range = {insideAlpha = 1, outsideAlpha = E.db.unitframe.OORAlpha}
-	
-	if not frame:IsElementEnabled('Range') then
-		frame:EnableElement('Range')
-	end
-	
+
 	--Adjust some variables
 	do
 		if not USE_POWERBAR then
@@ -555,7 +552,23 @@ function UF:Update_PartyFrames(frame, db)
 		UF:UpdateAuraWatch(frame)
 	end
 	
-	frame:EnableElement('ReadyCheck')		
+	frame:EnableElement('ReadyCheck')
+
+	--Range
+	do
+		local range = frame.Range
+		if db.rangeCheck then
+			if not frame:IsElementEnabled('Range') then
+				frame:EnableElement('Range')
+			end
+
+			range.outsideAlpha = E.db.unitframe.OORAlpha
+		else
+			if frame:IsElementEnabled('Range') then
+				frame:DisableElement('Range')
+			end				
+		end
+	end
 	
 	if db.customTexts then
 		local customFont = UF.LSM:Fetch("font", UF.db.font)

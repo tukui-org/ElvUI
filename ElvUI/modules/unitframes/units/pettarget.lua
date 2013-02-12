@@ -15,7 +15,7 @@ function UF:Construct_PetTargetFrame(frame)
 	frame.Buffs = self:Construct_Buffs(frame)
 	
 	frame.Debuffs = self:Construct_Debuffs(frame)
-	
+	frame.Range = UF:Construct_Range(frame)
 	frame:Point('BOTTOM', ElvUF_Pet, 'TOP', 0, 7) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', L['PetTarget Frame'], nil, -7, nil, 'ALL,SOLO')
 end
@@ -240,6 +240,22 @@ function UF:Update_PetTargetFrame(frame, db)
 			debuffs:Hide()
 		end
 	end	
+	
+	--Range
+	do
+		local range = frame.Range
+		if db.rangeCheck then
+			if not frame:IsElementEnabled('Range') then
+				frame:EnableElement('Range')
+			end
+
+			range.outsideAlpha = E.db.unitframe.OORAlpha
+		else
+			if frame:IsElementEnabled('Range') then
+				frame:DisableElement('Range')
+			end				
+		end
+	end		
 	
 	if db.customTexts then
 		local customFont = UF.LSM:Fetch("font", UF.db.font)
