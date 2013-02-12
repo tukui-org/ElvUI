@@ -37,6 +37,7 @@ do
 		enemySpells[#enemySpells+1] = GetSpellInfo(5782) -- Fear
 		longEnemySpells[#longEnemySpells+1] = GetSpellInfo(172) -- Corruption
 		longEnemySpells[#longEnemySpells+1] = GetSpellInfo(686) -- Shadow Bolt
+		longEnemySpells[#longEnemySpells+1] = GetSpellInfo(17962) -- Conflag
 		petSpells[#petSpells+1] = GetSpellInfo(755) -- Health Funnel
 		friendlySpells[#friendlySpells+1] = GetSpellInfo(5697) -- Unending Breath
 	elseif class == "MAGE" then
