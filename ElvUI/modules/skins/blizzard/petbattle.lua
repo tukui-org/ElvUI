@@ -375,7 +375,7 @@ end)
 	S:HandleButton(PetBattleQueueReadyFrame.AcceptButton)
 	S:HandleButton(PetBattleQueueReadyFrame.DeclineButton)
 	PetBattleQueueReadyFrame.Art:SetTexture([[Interface\PetBattles\PetBattlesQueue]])
-	StaticPopupSpecial_Show(PetBattleQueueReadyFrame);
+	--StaticPopupSpecial_Show(PetBattleQueueReadyFrame);
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)
