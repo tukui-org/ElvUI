@@ -360,7 +360,11 @@ local function UpdateFilterGroup()
 						order = 6,
 						get = function(info)
 							local t = E.global.unitframe.buffwatch.PET[tableIndex][ info[#info] ]
-							return t.r, t.g, t.b, t.a
+							if t then
+								return t.r, t.g, t.b, t.a
+							else
+								return 1, 1, 1, 1
+							end
 						end,
 						set = function(info, r, g, b)
 							local t = E.global.unitframe.buffwatch.PET[tableIndex][ info[#info] ]
@@ -562,7 +566,11 @@ local function UpdateFilterGroup()
 						order = 6,
 						get = function(info)
 							local t = E.global.unitframe.buffwatch[E.myclass][tableIndex][ info[#info] ]
-							return t.r, t.g, t.b, t.a
+							if t then
+								return t.r, t.g, t.b, t.a
+							else
+								return 1, 1, 1, 1
+							end
 						end,
 						set = function(info, r, g, b)
 							local t = E.global.unitframe.buffwatch[E.myclass][tableIndex][ info[#info] ]
