@@ -217,6 +217,12 @@ ElvUF.Tags.Methods['smartlevel'] = function(unit)
 	end
 end
 
+ElvUF.Tags.Events['name:veryshort'] = 'UNIT_NAME_UPDATE'
+ElvUF.Tags.Methods['name:veryshort'] = function(unit)
+	local name = UnitName(unit)
+	return name ~= nil and E:ShortenString(name, 5) or ''
+end
+
 ElvUF.Tags.Events['name:short'] = 'UNIT_NAME_UPDATE'
 ElvUF.Tags.Methods['name:short'] = function(unit)
 	local name = UnitName(unit)
