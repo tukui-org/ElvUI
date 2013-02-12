@@ -51,7 +51,10 @@ local function LoadSkin()
 		RaidFinderQueueFrameRoleButtonHealer,
 		RaidFinderQueueFrameRoleButtonDPS,
 		RaidFinderQueueFrameRoleButtonLeader,
-		RaidFinderQueueFrameRoleButtonTank
+		RaidFinderQueueFrameRoleButtonTank,
+		LFGInvitePopupRoleButtonTank,
+		LFGInvitePopupRoleButtonHealer,
+		LFGInvitePopupRoleButtonDPS		
 	}
 	
 	for _, roleButton in pairs(roleButtons) do
@@ -322,6 +325,13 @@ local function LoadSkin()
 			LFRQueueFrameSpecificListScrollFrameScrollBar.skinned = true
 		end
 	end)
+	
+	--LFGInvitePopup_Update("Elvz", true, true, true)
+	--StaticPopupSpecial_Show(LFGInvitePopup);
+	LFGInvitePopup:StripTextures()
+	LFGInvitePopup:SetTemplate("Transparent")
+	S:HandleButton(LFGInvitePopupAcceptButton)
+	S:HandleButton(LFGInvitePopupDeclineButton)
 end
 
 S:RegisterSkin("ElvUI", LoadSkin)
