@@ -67,7 +67,7 @@ do
 	end	
 end
 
-function friendlyIsInRange(unit)
+local function friendlyIsInRange(unit)
 	if CheckInteractDistance(unit, 2) then
 		return true
 	end
@@ -91,7 +91,7 @@ function friendlyIsInRange(unit)
 	return false
 end
 
-function petIsInRange(unit)
+local function petIsInRange(unit)
 	if CheckInteractDistance(unit, 2) then
 		return true
 	end
@@ -110,7 +110,7 @@ function petIsInRange(unit)
 	return false
 end
 
-function enemyIsInRange(unit)
+local function enemyIsInRange(unit)
 	if CheckInteractDistance(unit, 2) then
 		return true
 	end
@@ -124,7 +124,7 @@ function enemyIsInRange(unit)
 	return false
 end
 
-function enemyIsInLongRange(unit)
+local function enemyIsInLongRange(unit)
 	for _, name in ipairs(longEnemySpells) do
 		if IsSpellInRange(name, unit) == 1 then
 			return true
