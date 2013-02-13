@@ -27,27 +27,7 @@ local function LoadSkin()
 		button.backdrop:SetOutside(button.Icon)
 		button.backdrop:SetFrameLevel(button:GetFrameLevel())
 		button.Icon:SetParent(button.backdrop)
-		button:StyleButton()
-		
-		button:CreateShadow("Default")
-		button.shadow:SetBackdropBorderColor(unpack(E['media'].rgbvaluecolor))
-		
-		if i == 1 then
-			button.shadow:SetAlpha(1)
-		else
-			button.shadow:SetAlpha(0)
-		end
-		
-		button:HookScript("OnClick", function(self)
-			for j=1, 3 do
-				local b = _G["PVPQueueFrameCategoryButton"..j]
-				if self:GetID() == b:GetID() then
-					b.shadow:SetAlpha(1)
-				else
-					b.shadow:SetAlpha(0)
-				end
-			end
-		end)	
+		button:StyleButton()	
 	end
 	
 	for i=1, 3 do
