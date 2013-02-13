@@ -811,7 +811,7 @@ local function updateColor(self, r, g, b)
 	end
 end
 
-function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, adjustBackdropPoints, invertBackdropTex, ignoreHook)
+function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, adjustBackdropPoints, invertBackdropTex)
 	statusBar.isTransparent = isTransparent
 	
 	local statusBarTex = statusBar:GetStatusBarTexture()
@@ -834,7 +834,7 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 			backdropTex:Show()
 		end
 		
-		if not ignoreHook and not statusBar.hookedColor then
+		if not invertBackdropTex and not statusBar.hookedColor then
 			hooksecurefunc(statusBar, "SetStatusBarColor", updateColor)
 			statusBar.hookedColor = true
 		end

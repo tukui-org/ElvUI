@@ -719,7 +719,7 @@ local function UpdateFilterGroup()
 						end
 					end,
 					set = function(info, value) E.global.unitframe['aurafilters'][selectedFilter]['spells'][selectedSpell].priority = value; UpdateFilterGroup(); UF:Update_AllFrames(); end,
-					min = 0, max = 10, step = 1,
+					min = 0, max = 99, step = 1,
 					desc = L["Set the priority order of the spell, please note that prioritys are only used for the raid debuff module, not the standard buff/debuff module. If you want to disable set to zero."],
 				},			
 			},
