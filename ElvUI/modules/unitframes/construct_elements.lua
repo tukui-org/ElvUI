@@ -19,17 +19,21 @@ function UF:SpawnMenu()
 	end
 end
 
-function UF:Construct_ThreatGlow(frame, glow)
-	local threat
-	if glow then
-		frame:CreateShadow('Default')
-		threat = frame.shadow
-		frame.shadow = nil
-	else
-		threat = CreateFrame('Frame')
-	end
-	threat.Override = self.UpdateThreat
-	threat:SetFrameStrata('BACKGROUND')
+function UF:Construct_Threat(frame, glow)
+	local threat = CreateFrame("Frame", nil, frame)
+	
+	frame:CreateShadow('Default')
+	threat.glow = frame.shadow
+	threat.glow:SetParent(frame)
+	threat.glow:Hide()
+	frame.shadow = nil
+	
+	threat.texIcon = threat:CreateTexture(nil, 'OVERLAY')
+	threat.texIcon:Size(8)
+	threat.texIcon:SetTexture(E['media'].blankTex)
+	threat.texIcon:Hide()
+
+	threat.PostUpdate = self.UpdateThreat
 	return threat
 end
 

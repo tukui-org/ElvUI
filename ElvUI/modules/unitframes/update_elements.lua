@@ -766,35 +766,53 @@ function UF:DruidPostUpdateAltPower(unit, min, max)
 	end
 end
 
-function UF:UpdateThreat(event, unit)
-	if (self.unit ~= unit) or not unit or not E.initialized then return end
-	local status = UnitThreatSituation(unit)
+function UF:UpdateThreat(unit, status, r, g, b)
+	local parent = self:GetParent()
 
-	local db = self.db
+	if (parent.unit ~= unit) or not unit then return end
+	
+	local db = parent.db
 	if not db then return end
 	
 	if status and status > 1 then
-		local r, g, b = GetThreatStatusColor(status)
-		if self.Threat and self.Threat:GetBackdrop() then
-			self.Threat:Show()
-			self.Threat:SetBackdropBorderColor(r, g, b)
-		elseif self.Health.backdrop then
-			self.Health.backdrop:SetBackdropBorderColor(r, g, b)
+		if db.threatStyle == 'GLOW' then
+			self.glow:Show()
+			self.glow:SetBackdropBorderColor(r, g, b)
+		elseif db.threatStyle == 'BORDERS' then
+			parent.Health.backdrop:SetBackdropBorderColor(r, g, b)
 			
-			if self.Power and self.Power.backdrop and db.power.offset == 0 then
-				self.Power.backdrop:SetBackdropBorderColor(r, g, b)
+			if parent.Power and parent.Power.backdrop then
+				parent.Power.backdrop:SetBackdropBorderColor(r, g, b)
 			end
+			
+			if parent.ClassBar and parent.ClassBar.backdrop then
+				parent.ClassBar.backdrop:SetBackdropBorderColor(r, g, b)
+			end
+		elseif db.threatStyle == 'HEALTHBORDER' then
+			parent.Health.backdrop:SetBackdropBorderColor(r, g, b)
+		elseif db.threatStyle ~= 'NONE' and self.texIcon then
+			self.texIcon:Show()
+			self.texIcon:SetVertexColor(r, g, b)
 		end
 	else
-		if self.Threat and self.Threat:GetBackdrop() then
-			self.Threat:Hide()
-		elseif self.Health.backdrop then
-			self.Health.backdrop:SetTemplate(self.Health.backdrop.template)
+		r, g, b = unpack(E.media.bordercolor)
+		if db.threatStyle == 'GLOW' then
+			self.glow:Hide()
+		elseif db.threatStyle == 'BORDERS' then
+			parent.Health.backdrop:SetBackdropBorderColor(r, g, b)
 			
-			if self.Power and self.Power.backdrop then
-				self.Power.backdrop:SetTemplate(self.Health.backdrop.template)
+			if parent.Power and parent.Power.backdrop then
+				parent.Power.backdrop:SetBackdropBorderColor(r, g, b)
 			end
-		end	
+			
+			if parent.ClassBar and parent.ClassBar.backdrop then
+				parent.ClassBar.backdrop:SetBackdropBorderColor(r, g, b)
+			end	
+		elseif db.threatStyle == 'HEALTHBORDER' then
+			parent.Health.backdrop:SetBackdropBorderColor(r, g, b)
+		elseif db.threatStyle ~= 'NONE' and self.texIcon then
+			self.texIcon:Hide()
+		end
 	end
 end
 

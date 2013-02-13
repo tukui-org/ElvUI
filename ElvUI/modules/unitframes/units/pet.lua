@@ -18,7 +18,7 @@ function UF:Construct_PetFrame(frame)
 	frame.Debuffs = self:Construct_Debuffs(frame)
 	
 	frame.Castbar = CreateFrame("StatusBar", nil, frame) -- Dummy Bar
-	
+	frame.Threat = self:Construct_Threat(frame)
 	frame.HealPrediction = self:Construct_HealComm(frame)
 	frame.AuraWatch = UF:Construct_AuraWatch(frame)
 	frame.Range = UF:Construct_Range(frame)
@@ -28,6 +28,7 @@ end
 
 function UF:Update_PetFrame(frame, db)
 	frame.db = db
+	local SHADOW_SPACING = E.PixelMode and 3 or 4
 	local BORDER = E.Border;
 	local SPACING = E.Spacing;
 	local UNIT_WIDTH = db.width
@@ -160,6 +161,41 @@ function UF:Update_PetFrame(frame, db)
 			power:Hide()	
 		end
 	end
+	
+	--Threat
+	do
+		local threat = frame.Threat
+
+		if db.threatStyle ~= 'NONE' and db.threatStyle ~= nil then
+			if not frame:IsElementEnabled('Threat') then
+				frame:EnableElement('Threat')
+			end
+
+			if db.threatStyle == "GLOW" then
+				threat:SetFrameStrata('BACKGROUND')
+				threat.glow:ClearAllPoints()
+				threat.glow:SetBackdropBorderColor(0, 0, 0, 0)
+				threat.glow:Point("TOPLEFT", frame.Health.backdrop, "TOPLEFT", -SHADOW_SPACING, SHADOW_SPACING)
+				threat.glow:Point("TOPRIGHT", frame.Health.backdrop, "TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING)
+				threat.glow:Point("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
+				threat.glow:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)	
+				
+				if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET then
+					threat.glow:Point("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
+					threat.glow:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)	
+				end
+			elseif db.threatStyle == "ICONTOPLEFT" or db.threatStyle == "ICONTOPRIGHT" or db.threatStyle == "ICONBOTTOMLEFT" or db.threatStyle == "ICONBOTTOMRIGHT" or db.threatStyle == "ICONTOP" or db.threatStyle == "ICONBOTTOM" or db.threatStyle == "ICONLEFT" or db.threatStyle == "ICONRIGHT" then
+				threat:SetFrameStrata('HIGH')
+				local point = db.threatStyle
+				point = point:gsub("ICON", "")
+				
+				threat.texIcon:ClearAllPoints()
+				threat.texIcon:SetPoint(point, frame.Health, point)
+			end
+		elseif frame:IsElementEnabled('Threat') then
+			frame:DisableElement('Threat')
+		end
+	end	
 	
 	--Auras Disable/Enable
 	--Only do if both debuffs and buffs aren't being used.

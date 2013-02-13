@@ -40,6 +40,21 @@ local petAnchors = {
 	BOTTOM = 'BOTTOM',
 };
 
+local threatOptions = {
+	['GLOW'] = L['Glow'],
+	['BORDERS'] = L['Borders'],
+	['HEALTHBORDER'] = L['Health Border'],
+	['ICONTOPLEFT'] = L['Icon: TOPLEFT'],
+	['ICONTOPRIGHT'] = L['Icon: TOPRIGHT'],
+	['ICONBOTTOMLEFT'] = L['Icon: BOTTOMLEFT'],
+	['ICONBOTTOMRIGHT'] = L['Icon: BOTTOMRIGHT'],
+	['ICONLEFT'] = L['Icon: LEFT'],
+	['ICONRIGHT'] = L['Icon: RIGHT'],
+	['ICONTOP'] = L['Icon: TOP'],
+	['ICONBOTTOM'] = L['Icon: BOTTOM'],
+	['NONE'] = NONE
+}
+
 local filters;
 local tinsert = table.insert
 function UF:CreateCustomTextGroup(unit, objectName)
@@ -650,6 +665,12 @@ E.Options.args.unitframe.args.player = {
 			get = function(info) return E.db.unitframe.units['player']['power'].hideonnpc end,
 			set = function(info, value) E.db.unitframe.units['player']['power'].hideonnpc = value; UF:CreateAndUpdateUF('player') end,
 		},	
+		threatStyle = {
+			type = 'select',
+			order = 11,
+			name = L['Threat Display Mode'],
+			values = threatOptions,
+		},
 		customText = {
 			order = 50,
 			name = L['Custom Texts'],
@@ -1484,6 +1505,12 @@ E.Options.args.unitframe.args.target = {
 				['SHOW_BUFFS_ON_FRIENDLIES'] = L['Friendlies: Show Buffs'],
 			},
 		},
+		threatStyle = {
+			type = 'select',
+			order = 12,
+			name = L['Threat Display Mode'],
+			values = threatOptions,
+		},		
 		customText = {
 			order = 50,
 			name = L['Custom Texts'],
@@ -2544,6 +2571,12 @@ E.Options.args.unitframe.args.targettarget = {
 			get = function(info) return E.db.unitframe.units['targettarget']['power'].hideonnpc end,
 			set = function(info, value) E.db.unitframe.units['targettarget']['power'].hideonnpc = value; UF:CreateAndUpdateUF('targettarget') end,
 		},
+		threatStyle = {
+			type = 'select',
+			order = 11,
+			name = L['Threat Display Mode'],
+			values = threatOptions,
+		},		
 		customText = {
 			order = 50,
 			name = L['Custom Texts'],
@@ -3256,6 +3289,12 @@ E.Options.args.unitframe.args.focus = {
 				['SHOW_BUFFS_ON_FRIENDLIES'] = L['Friendlies: Show Buffs'],
 			},
 		},
+		threatStyle = {
+			type = 'select',
+			order = 13,
+			name = L['Threat Display Mode'],
+			values = threatOptions,
+		},		
 		customText = {
 			order = 50,
 			name = L['Custom Texts'],
@@ -4242,6 +4281,12 @@ E.Options.args.unitframe.args.focustarget = {
 			get = function(info) return E.db.unitframe.units['focustarget']['power'].hideonnpc end,
 			set = function(info, value) E.db.unitframe.units['focustarget']['power'].hideonnpc = value; UF:CreateAndUpdateUF('focustarget') end,
 		},	
+		threatStyle = {
+			type = 'select',
+			order = 13,
+			name = L['Threat Display Mode'],
+			values = threatOptions,
+		},		
 		customText = {
 			order = 50,
 			name = L['Custom Texts'],
@@ -4944,6 +4989,12 @@ E.Options.args.unitframe.args.pet = {
 			get = function(info) return E.db.unitframe.units['pet']['power'].hideonnpc end,
 			set = function(info, value) E.db.unitframe.units['pet']['power'].hideonnpc = value; UF:CreateAndUpdateUF('pet') end,
 		},	
+		threatStyle = {
+			type = 'select',
+			order = 13,
+			name = L['Threat Display Mode'],
+			values = threatOptions,
+		},			
 		customText = {
 			order = 50,
 			name = L['Custom Texts'],
@@ -5431,6 +5482,12 @@ E.Options.args.unitframe.args.pettarget = {
 			get = function(info) return E.db.unitframe.units['pettarget']['power'].hideonnpc end,
 			set = function(info, value) E.db.unitframe.units['pettarget']['power'].hideonnpc = value; UF:CreateAndUpdateUF('pettarget') end,
 		},		
+		threatStyle = {
+			type = 'select',
+			order = 13,
+			name = L['Threat Display Mode'],
+			values = threatOptions,
+		},			
 		customText = {
 			order = 50,
 			name = L['Custom Texts'],
@@ -6100,6 +6157,12 @@ E.Options.args.unitframe.args.boss = {
 				['UP'] = L['Up'],
 				['DOWN'] = L['Down'],
 			},
+		},	
+		threatStyle = {
+			type = 'select',
+			order = 13,
+			name = L['Threat Display Mode'],
+			values = threatOptions,
 		},			
 		customText = {
 			order = 50,
@@ -6713,6 +6776,12 @@ E.Options.args.unitframe.args.arena = {
 				['DOWN'] = L['Down'],
 			},
 		},
+		threatStyle = {
+			type = 'select',
+			order = 13,
+			name = L['Threat Display Mode'],
+			values = threatOptions,
+		},			
 		customText = {
 			order = 50,
 			name = L['Custom Texts'],
@@ -7591,6 +7660,25 @@ E.Options.args.unitframe.args.party = {
 					name = L['Heal Prediction'],
 					desc = L['Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals.'],
 					type = 'toggle',
+				},		
+				threatStyle = {
+					type = 'select',
+					order = 22,
+					name = L['Threat Display Mode'],
+					values = {
+						['GLOW'] = L['Glow'],
+						['BORDERS'] = L['Borders'],
+						['HEALTHBORDER'] = L['Health Border'],
+						['ICONTOPLEFT'] = L['Icon: TOPLEFT'],
+						['ICONTOPRIGHT'] = L['Icon: TOPRIGHT'],
+						['ICONBOTTOMLEFT'] = L['Icon: BOTTOMLEFT'],
+						['ICONBOTTOMRIGHT'] = L['Icon: BOTTOMRIGHT'],
+						['ICONLEFT'] = L['Icon: LEFT'],
+						['ICONRIGHT'] = L['Icon: RIGHT'],
+						['ICONTOP'] = L['Icon: TOP'],
+						['ICONBOTTOM'] = L['Icon: BOTTOM'],
+						['NONE'] = NONE
+					},
 				},					
 				customText = {
 					order = 50,
@@ -8443,6 +8531,25 @@ for i=10, 40, 15 do
 						name = L['Heal Prediction'],
 						desc = L['Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals.'],
 						type = 'toggle',
+					},			
+					threatStyle = {
+						type = 'select',
+						order = 22,
+						name = L['Threat Display Mode'],
+						values = {
+							['GLOW'] = L['Glow'],
+							['BORDERS'] = L['Borders'],
+							['HEALTHBORDER'] = L['Health Border'],
+							['ICONTOPLEFT'] = L['Icon: TOPLEFT'],
+							['ICONTOPRIGHT'] = L['Icon: TOPRIGHT'],
+							['ICONBOTTOMLEFT'] = L['Icon: BOTTOMLEFT'],
+							['ICONBOTTOMRIGHT'] = L['Icon: BOTTOMRIGHT'],
+							['ICONLEFT'] = L['Icon: LEFT'],
+							['ICONRIGHT'] = L['Icon: RIGHT'],
+							['ICONTOP'] = L['Icon: TOP'],
+							['ICONBOTTOM'] = L['Icon: BOTTOM'],
+							['NONE'] = NONE
+						},
 					},						
 					customText = {
 						order = 50,
