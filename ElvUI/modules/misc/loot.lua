@@ -234,7 +234,7 @@ function M:LOOT_OPENED(event, autoloot)
 				questTexture:Show();
 				ActionButton_ShowOverlayGlow(slot.iconFrame)
 			elseif ( questId or isQuestItem ) then
-				questTexture:Show();	
+				questTexture:Hide();	
 				ActionButton_ShowOverlayGlow(slot.iconFrame)
 			else
 				questTexture:Hide();
