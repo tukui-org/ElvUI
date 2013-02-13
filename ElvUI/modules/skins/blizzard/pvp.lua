@@ -35,25 +35,6 @@ local function LoadSkin()
 		button:SetTemplate('Default')
 		button.Background:Kill()
 		button:StyleButton()
-		button:CreateShadow("Default")
-		button.shadow:SetBackdropBorderColor(unpack(E['media'].rgbvaluecolor))
-		
-		if i == 1 then
-			button.shadow:SetAlpha(1)
-		else
-			button.shadow:SetAlpha(0)
-		end
-		
-		button:HookScript("OnClick", function(self)
-			for j=1, 3 do
-				local b = _G["PVPArenaTeamsFrameTeam"..j]
-				if self:GetID() == b:GetID() then
-					b.shadow:SetAlpha(1)
-				else
-					b.shadow:SetAlpha(0)
-				end
-			end
-		end)
 	end
 	
 	-->>>HONOR FRAME
