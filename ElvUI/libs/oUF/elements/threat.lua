@@ -2,7 +2,7 @@ local parent, ns = ...
 local oUF = ns.oUF
 
 local Update = function(self, event, unit)
-	if(unit ~= self.unit) then return end
+	if(unit ~= self.unit) or not unit or not IsLoggedIn() then return end
 	
 	local threat = self.Threat
 	if(threat.PreUpdate) then threat:PreUpdate(unit) end
@@ -42,8 +42,6 @@ local Enable = function(self)
 
 		self:RegisterEvent("UNIT_THREAT_SITUATION_UPDATE", Path)
 		self:RegisterEvent("UNIT_THREAT_LIST_UPDATE", Path)
-		self:RegisterEvent("UNIT_TARGET", Path)
-		self:RegisterEvent("PLAYER_TARGET_CHANGED", Path)
 		threat:Hide()
 
 		if(threat:IsObjectType"Texture" and not threat:GetTexture()) then
@@ -60,8 +58,6 @@ local Disable = function(self)
 	if(threat) then
 		self:UnregisterEvent("UNIT_THREAT_SITUATION_UPDATE", Path)
 		self:UnregisterEvent("UNIT_THREAT_LIST_UPDATE", Path)
-		self:UnregisterEvent("UNIT_TARGET", Path)
-		self:UnregisterEvent("PLAYER_TARGET_CHANGED", Path)		
 		threat:Hide()
 	end
 end
