@@ -153,7 +153,6 @@ G.unitframe.aurafilters['TurtleBuffs'] = {
 			[SpellName(48792)] = Defaults(), -- Icebound Fortitude
 			[SpellName(49039)] = Defaults(), -- Lichborne
 			[SpellName(87256)] = Defaults(), -- Dancing Rune Weapon
-			[SpellName(49222)] = Defaults(), -- Bone Shield
 			[SpellName(55233)] = Defaults(), -- Vampiric Blood
 			[SpellName(50461)] = Defaults(), -- Anti-Magic Zone
 		--Priest
