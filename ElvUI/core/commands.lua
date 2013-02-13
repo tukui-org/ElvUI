@@ -70,6 +70,14 @@ function E:ElvSays(msg)
 	SendAddonMessage('ElvSays', msg, channel, target)
 end
 
+function E:ElvCommand(msg)
+	if channel == 'WHISPER' and target == nil then
+		E:Print('You need to set a whisper target.')
+		return
+	end
+	SendAddonMessage('ElvCommand', msg, channel, target)
+end
+
 function E:Grid(msg)
 	if msg and type(tonumber(msg))=="number" and tonumber(msg) <= 256 and tonumber(msg) >= 4 then
 		E.db.gridSize = msg
@@ -182,6 +190,7 @@ function E:LoadCommands()
 	self:RegisterChatCommand('farmmode', 'FarmMode')
 	self:RegisterChatCommand('elvsays', 'ElvSays')
 	self:RegisterChatCommand('elvsayschannel', 'ElvSaysChannel')
+	self:RegisterChatCommand('elvcommand', 'ElvCommand')
 	self:RegisterChatCommand('elvsaystarget', 'ElvSaysTarget')
 	self:RegisterChatCommand('cleanguild', 'MassGuildKick')
 	if E.ActionBars then
