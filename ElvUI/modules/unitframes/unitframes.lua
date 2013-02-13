@@ -815,6 +815,7 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 	statusBar.isTransparent = isTransparent
 	
 	local statusBarTex = statusBar:GetStatusBarTexture()
+	local statusBarOrientation = statusBar:GetOrientation()
 	if isTransparent then
 		if statusBar.backdrop then
 			statusBar.backdrop:SetTemplate("Transparent")
@@ -826,9 +827,15 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 		
 		statusBar:SetStatusBarTexture(0, 0, 0, 0)
 		backdropTex:ClearAllPoints()
-		backdropTex:SetPoint("TOPLEFT", statusBarTex, "TOPRIGHT")
-		backdropTex:SetPoint("BOTTOMLEFT", statusBarTex, "BOTTOMRIGHT")
-		backdropTex:SetPoint("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT")
+		if statusBarOrientation == 'VERTICAL' then
+			backdropTex:SetPoint("TOPLEFT", statusBar, "TOPLEFT")
+			backdropTex:SetPoint("BOTTOMLEFT", statusBarTex, "TOPLEFT")
+			backdropTex:SetPoint("BOTTOMRIGHT", statusBarTex, "TOPRIGHT")			
+		else
+			backdropTex:SetPoint("TOPLEFT", statusBarTex, "TOPRIGHT")
+			backdropTex:SetPoint("BOTTOMLEFT", statusBarTex, "BOTTOMRIGHT")
+			backdropTex:SetPoint("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT")
+		end
 		
 		if invertBackdropTex then
 			backdropTex:Show()
@@ -853,9 +860,15 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 		statusBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
 		if adjustBackdropPoints then
 			backdropTex:ClearAllPoints()
-			backdropTex:SetPoint("TOPLEFT", statusBarTex, "TOPRIGHT")
-			backdropTex:SetPoint("BOTTOMLEFT", statusBarTex, "BOTTOMRIGHT")
-			backdropTex:SetPoint("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT")
+			if statusBarOrientation == 'VERTICAL' then
+				backdropTex:SetPoint("TOPLEFT", statusBar, "TOPLEFT")
+				backdropTex:SetPoint("BOTTOMLEFT", statusBarTex, "TOPLEFT")
+				backdropTex:SetPoint("BOTTOMRIGHT", statusBarTex, "TOPRIGHT")				
+			else			
+				backdropTex:SetPoint("TOPLEFT", statusBarTex, "TOPRIGHT")
+				backdropTex:SetPoint("BOTTOMLEFT", statusBarTex, "BOTTOMRIGHT")
+				backdropTex:SetPoint("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT")
+			end
 		end
 		
 		if invertBackdropTex then
