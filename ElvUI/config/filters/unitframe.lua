@@ -146,37 +146,37 @@ G.unitframe.aurafilters['TurtleBuffs'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
 		--Mage
-			[SpellName(45438)] = Defaults(), -- Ice Block
+			[SpellName(45438)] = Defaults(5), -- Ice Block
 			[SpellName(115610)] = Defaults(), -- Temporal Shield
 		--Death Knight
-			[SpellName(48797)] = Defaults(), -- Anti-Magic Shell
+			[SpellName(48797)] = Defaults(5), -- Anti-Magic Shell
 			[SpellName(48792)] = Defaults(), -- Icebound Fortitude
 			[SpellName(49039)] = Defaults(), -- Lichborne
-			[SpellName(87256)] = Defaults(), -- Dancing Rune Weapon
+			[SpellName(87256)] = Defaults(4), -- Dancing Rune Weapon
 			[SpellName(55233)] = Defaults(), -- Vampiric Blood
 			[SpellName(50461)] = Defaults(), -- Anti-Magic Zone
 		--Priest
-			[SpellName(33206)] = Defaults(), -- Pain Suppression
+			[SpellName(33206)] = Defaults(3), -- Pain Suppression
 			[SpellName(47788)] = Defaults(), -- Guardian Spirit
 			[SpellName(62618)] = Defaults(), -- Power Word: Barrier
-			[SpellName(47585)] = Defaults(), -- Dispersion
+			[SpellName(47585)] = Defaults(5), -- Dispersion
 		--Warlock
 			[SpellName(104773)] = Defaults(), -- Unending Resolve
 			[SpellName(110913)] = Defaults(), -- Dark Bargain
 			[SpellName(108359)] = Defaults(), -- Dark Regeneration
 		--Druid
-			[SpellName(22812)] = Defaults(), -- Barkskin
-			[SpellName(102342)] = Defaults(), -- Ironbark
+			[SpellName(22812)] = Defaults(2), -- Barkskin
+			[SpellName(102342)] = Defaults(2), -- Ironbark
 			[SpellName(106922)] = Defaults(), -- Might of Ursoc
 			[SpellName(61336)] = Defaults(), -- Survival Instincts
 		--Hunter
-			[SpellName(19263)] = Defaults(), -- Deterrence
+			[SpellName(19263)] = Defaults(5), -- Deterrence
 			[SpellName(53480)] = Defaults(), -- Roar of Sacrifice (Cunning)
 		--Rogue
 			[SpellName(31224)] = Defaults(), -- Cloak of Shadows
 			[SpellName(74001)] = Defaults(), -- Combat Readiness
 			--[SpellName(74002)] = Defaults(), -- Combat Insight (stacking buff from CR)
-			[SpellName(5277)] = Defaults(), -- Evasion
+			[SpellName(5277)] = Defaults(5), -- Evasion
 			[SpellName(45182)] = Defaults(), -- Cheating Death
 		--Shaman
 			[SpellName(98007)] = Defaults(), -- Spirit Link Totem
@@ -184,26 +184,26 @@ G.unitframe.aurafilters['TurtleBuffs'] = {
 			[SpellName(108271)] = Defaults(), -- Astral Shift
 		--Paladin
 			[SpellName(1044)] = Defaults(), -- Hand of Freedom
-			[SpellName(1022)] = Defaults(), -- Hand of Protection
+			[SpellName(1022)] = Defaults(5), -- Hand of Protection
 			[SpellName(1038)] = Defaults(), -- Hand of Salvation
 			[SpellName(6940)] = Defaults(), -- Hand of Sacrifice
 			[SpellName(114039)] = Defaults(), -- Hand of Purity
-			[SpellName(31821)] = Defaults(), -- Devotion Aura
-			[SpellName(498)] = Defaults(), -- Divine Protection
-			[SpellName(642)] = Defaults(), -- Divine Shield
-			[SpellName(86659)] = Defaults(), -- Guardian of the Ancient Kings (Prot)
-			[SpellName(31850)] = Defaults(), -- Ardent Defender
+			[SpellName(31821)] = Defaults(3), -- Devotion Aura
+			[SpellName(498)] = Defaults(2), -- Divine Protection
+			[SpellName(642)] = Defaults(5), -- Divine Shield
+			[SpellName(86659)] = Defaults(4), -- Guardian of the Ancient Kings (Prot)
+			[SpellName(31850)] = Defaults(4), -- Ardent Defender
 		--Warrior
-			[SpellName(118038)] = Defaults(), -- Die by the Sword
+			[SpellName(118038)] = Defaults(5), -- Die by the Sword
 			[SpellName(55694)] = Defaults(), -- Enraged Regeneration
 			[SpellName(97463)] = Defaults(), -- Rallying Cry
 			[SpellName(12975)] = Defaults(), -- Last Stand
-			[SpellName(114029)] = Defaults(), -- Safeguard
-			[SpellName(871)] = Defaults(), -- Shield Wall
+			[SpellName(114029)] = Defaults(2), -- Safeguard
+			[SpellName(871)] = Defaults(3), -- Shield Wall
 			[SpellName(114030)] = Defaults(), -- Vigilance
 		--Monk
-			[SpellName(120954)] = Defaults(), -- Fortifying Brew
-			[SpellName(131523)] = Defaults(), -- Zen Meditation
+			[SpellName(120954)] = Defaults(2), -- Fortifying Brew
+			[SpellName(131523)] = Defaults(5), -- Zen Meditation
 			[SpellName(122783)] = Defaults(), -- Diffuse Magic
 			[SpellName(122278)] = Defaults(), -- Dampen Harm
 			[SpellName(115213)] = Defaults(), -- Avert Harm

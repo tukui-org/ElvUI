@@ -193,6 +193,7 @@ end
 function UF:Construct_Buffs(frame)
 	local buffs = CreateFrame('Frame', nil, frame)
 	buffs.spacing = E.Spacing
+	buffs.PreSetPosition = self.SortAuras
 	buffs.PostCreateIcon = self.Construct_AuraIcon
 	buffs.PostUpdateIcon = self.PostUpdateAura
 	buffs.CustomFilter = self.AuraFilter
@@ -204,6 +205,7 @@ end
 function UF:Construct_Debuffs(frame)
 	local debuffs = CreateFrame('Frame', nil, frame)
 	debuffs.spacing = E.Spacing
+	debuffs.PreSetPosition = self.SortAuras
 	debuffs.PostCreateIcon = self.Construct_AuraIcon
 	debuffs.PostUpdateIcon = self.PostUpdateAura
 	debuffs.CustomFilter = self.AuraFilter

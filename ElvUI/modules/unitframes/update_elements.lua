@@ -2,6 +2,7 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 local UF = E:GetModule('UnitFrames');
 local LSM = LibStub("LibSharedMedia-3.0");
 
+local tsort = table.sort
 local sub = string.sub
 local abs, random, floor, ceil = math.abs, math.random, math.floor, math.ceil
 local _, ns = ...
@@ -169,6 +170,16 @@ function UF:UpdateAuraTimer(elapsed)
 	self.text:SetFormattedText(("%s%s|r"):format(E.TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
 end
 
+local function SortAurasByPriority(a, b)
+    if (a and b and a.priority and b.priority) then
+        return a.priority > b.priority
+    end
+end
+
+function UF:SortAuras()
+	tsort(self, SortAurasByPriority)
+end
+
 function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, duration, timeLeft)
 	local name, _, _, _, dtype, duration, expiration, _, isStealable = UnitAura(unit, index, button.filter)
 	local db = self:GetParent().db
@@ -219,13 +230,13 @@ function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, durati
 		if not button:GetScript('OnUpdate') then
 			button.expirationTime = expiration
 			button.expiration = expiration - GetTime()
-			button.nextupdate = 0.05
+			button.nextupdate = -1
 			button:SetScript('OnUpdate', UF.UpdateAuraTimer)
 		end
 		if button.expirationTime ~= expiration  then
 			button.expirationTime = expiration
 			button.expiration = expiration - GetTime()
-			button.nextupdate = 0.05
+			button.nextupdate = -1
 		end
 	end	
 	if duration == 0 or expiration == 0 then
@@ -948,7 +959,13 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 	icon.isPlayer = isPlayer
 	icon.owner = unitCaster
 	icon.name = name
+	icon.priority = 0
 
+	local turtleBuff = E.global['unitframe']['aurafilters']['TurtleBuffs'].spells[name]
+	if turtleBuff and turtleBuff.enable then
+		icon.priority = turtleBuff.priority
+	end
+	
 	if CheckFilter(db.playerOnly, isFriend) then
 		if isPlayer then
 			returnValue = true;
@@ -996,6 +1013,7 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 		local whiteList = E.global['unitframe']['aurafilters']['Whitelist'].spells[name]
 		if whiteList and whiteList.enable then
 			returnValue = true;
+			icon.priority = whiteList.priority
 		elseif not anotherFilterExists then
 			returnValue = false
 		end
@@ -1010,6 +1028,7 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 		if type == 'Whitelist' then
 			if spellList[name] and spellList[name].enable and passPlayerOnlyCheck then
 				returnValue = true
+				icon.priority = spellList[name].priority
 			elseif not anotherFilterExists then
 				returnValue = false
 			end
