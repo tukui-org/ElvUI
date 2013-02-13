@@ -338,7 +338,9 @@ local function LoadSkin()
 	S:HandleButton(_G[RaidFinderQueueFrame.PartyBackfill:GetName().."BackfillButton"])
 	S:HandleButton(_G[RaidFinderQueueFrame.PartyBackfill:GetName().."NoBackfillButton"])
 	S:HandleButton(_G[ScenarioQueueFrame.PartyBackfill:GetName().."BackfillButton"])
-	S:HandleButton(_G[ScenarioQueueFrame.PartyBackfill:GetName().."NoBackfillButton"])	
+	S:HandleButton(_G[ScenarioQueueFrame.PartyBackfill:GetName().."NoBackfillButton"])
+	LFDQueueFrameRandomScrollFrameScrollBar:StripTextures()
+	S:HandleScrollBar(LFDQueueFrameRandomScrollFrameScrollBar)
 end
 
 S:RegisterSkin("ElvUI", LoadSkin)
