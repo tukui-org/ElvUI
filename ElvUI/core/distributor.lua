@@ -1,9 +1,7 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local D = E:NewModule('Distributor', "AceEvent-3.0","AceTimer-3.0","AceComm-3.0","AceSerializer-3.0")
 
-local ipairs, pairs = ipairs, pairs
-local remove,wipe = table.remove,table.wipe
-local match,len,format,split,find = string.match,string.len,string.format,string.split,string.find
+local len, format, split = string.len, string.format, string.split
 
 ----------------------------------
 -- CONSTANTS
@@ -54,7 +52,7 @@ function D:Distribute(target, otherServer, isGlobal)
 	
 	local serialData = self:Serialize(data)
 	local length = len(serialData)
-	local message = format("%s:%d", profileKey, length)
+	local message = format("%s:%d:%s", profileKey, length, target)
 
 	Uploads[profileKey] = {
 		serialData = serialData,
@@ -92,33 +90,10 @@ end
 
 function D:OnCommReceived(prefix, msg, dist, sender)
 	if prefix == REQUEST_PREFIX then
-		local profile, length = split(":", msg)
+		local profile, length, sendTo = split(":", msg)
 
-		if dist ~= "WHISPER" then
-			local senderFound = true
-			if IsInRaid() then
-				for i=1, 40 do
-					if UnitExists('raid'..i) and UnitName('raid'..i) == sender then
-						if UnitExists('raid'..i..'target') and UnitGUID('raid'..i..'target') == UnitGUID('player') then
-							senderFound = true
-							break
-						end
-					end
-				end
-			elseif IsInGroup() then
-				for i=1, 4 do
-					if UnitExists('party'..i) and UnitName('party'..i) == sender then
-						if UnitExists('party'..i..'target') and UnitGUID('party'..i..'target') == UnitGUID('player') then
-							senderFound = true
-							break
-						end
-					end
-				end
-			end
-
-			if senderFound ~= true then
-				return
-			end
+		if dist ~= "WHISPER" and sendTo ~= E.myname then
+			return
 		end
 		
 		if self.statusBar:IsShown() then 

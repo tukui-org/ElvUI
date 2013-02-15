@@ -150,7 +150,7 @@ function AddOn:EnhanceOptions(optionTable)
 			type = 'execute',
 			order = 40.5,
 			func = function()
-				if not UnitExists("target") or not UnitIsPlayer("target") or not UnitIsFriend("player", "target") --[[or UnitIsUnit("player", "target")]] then
+				if not UnitExists("target") or not UnitIsPlayer("target") or not UnitIsFriend("player", "target") or UnitIsUnit("player", "target") then
 					self:Print(Locale["You must be targetting a player."])
 					return
 				end
