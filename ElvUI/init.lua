@@ -175,7 +175,7 @@ function AddOn:EnhanceOptions(optionTable)
 				
 				local name, server = UnitName("target")
 				if name and (not server or server == "") then
-					self:GetModule("Distributor"):Distribute(name, "true")
+					self:GetModule("Distributor"):Distribute(name, true)
 				elseif server then
 					self:Print(Locale["Cannot send to players on another server."])
 				end

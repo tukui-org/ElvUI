@@ -9,38 +9,35 @@ local match,len,format,split,find = string.match,string.len,string.format,string
 -- CONSTANTS
 ----------------------------------
 
-local MAIN_PREFIX = "ELVUI_D"
-local TRANSFER_PREFIX = "ELVUI_T"
+local REQUEST_PREFIX = "ELVUI_REQUEST"
+local REPLY_PREFIX = "ELVUI_REPLY"
+local TRANSFER_PREFIX = "ELVUI_TRANSFER"
+local TRANSFER_COMPLETE_PREFIX = "ELVUI_COMPLETE"
 local UL_WAIT = 5
 
-----------------------------------
--- INITIALIZATION
-----------------------------------
-
 function D:Initialize()
-	self:RegisterComm(MAIN_PREFIX)
+	self:RegisterComm(REQUEST_PREFIX)
+	self:RegisterEvent("CHAT_MSG_ADDON")
+	
+	self.statusBar = CreateFrame("StatusBar", "ElvUI_Download", UIParent)
+	self.statusBar:CreateBackdrop('Default')
+	self.statusBar:SetStatusBarTexture(E.media.normTex)
+	self.statusBar:SetStatusBarColor(0.95, 0.15, 0.15)
+	self.statusBar:Size(250, 18)
+	self.statusBar.text = self.statusBar:CreateFontString(nil, 'OVERLAY')
+	self.statusBar.text:FontTemplate()
+	self.statusBar.text:SetPoint("CENTER")
 end
 
-----------------------------------
--- INITIAL DISTRIBUTE
-----------------------------------
+
 -- The active downloads
 local Downloads = {}
-
--- The active uploads
 local Uploads = {}
 
 -- Used to start uploads
-function D:Distribute(target, isGlobal)
-	if E.isSharing then
-		E:Print(L["Already Sharing!"])
-		return
-	end
-	
-	wipe(Uploads)
-	
+function D:Distribute(target, isGlobal)	
 	local profileKey
-	if isGlobal ~= "true" then
+	if not isGlobal then
 		if ElvDB.profileKeys then
 			profileKey = ElvDB.profileKeys[E.myname..' - '..E.myrealm]
 		end
@@ -53,166 +50,163 @@ function D:Distribute(target, isGlobal)
 	end
 
 	if not data or not profileKey then return end
+	
 	local serialData = self:Serialize(data)
 	local length = len(serialData)
-	local message = format("UPDATE:%s:%d:%s", profileKey, length, E.myname..' - '..E.myrealm) -- ex. UPDATE:sartharion:150:800:Sartharion
-	
-	E.isSharing = true
+	local message = format("%s:%d", profileKey, length)
+
 	Uploads[profileKey] = {
 		serialData = serialData,
-		length = length,
 		target = target,
-		isGlobal = isGlobal,
-		name = E.myname..' - '..E.myrealm,
 	}
 	
-	self:SendCommMessage(MAIN_PREFIX, message, "WHISPER", target)
-	self:RegisterComm(TRANSFER_PREFIX)
-	self:ScheduleTimer("StartUpload",UL_WAIT,profileKey)
-	SendChatMessage(L["Sending you my ElvUI settings! Please allow up to one minute for download to complete."], "WHISPER", nil, target)
+	self:SendCommMessage(REQUEST_PREFIX, message, "WHISPER", target)
+	self:RegisterComm(REPLY_PREFIX)
+	E:StaticPopup_Show('DISTRIBUTOR_WAITING')
 end
 
-----------------------------------
--- MAIN
-----------------------------------
-function D:Main(msg, dist, sender)
-	local type,args = match(msg,"(%w+):(.+)")
-
-	-- Someone wants to send an encounter
-	if type == "UPDATE" then
-		local key,length,name = split(":",args)
-		self:StartReceiving(key, sender, length, name)
-	end
-end
-
-----------------------------------
--- UPLOAD/DOWNLOAD HANDLERS
-----------------------------------
-function D:StartUpload(key)
-	local ul = Uploads[key]
-	local message = format("%s~~%s~~%s~~%s","UPLOAD",key,ul.isGlobal,ul.serialData)
-
-	if ul.target then
-		self:SendCommMessage(TRANSFER_PREFIX, message, "WHISPER",ul.target)
+function D:CHAT_MSG_ADDON(event, prefix, message, channel, sender)
+	if prefix ~= TRANSFER_PREFIX or not Downloads[sender] then return end
+	local cur = len(message)
+	local max = Downloads[sender].length
+	Downloads[sender].current = Downloads[sender].current + cur
+	
+	if Downloads[sender].current > max then
+		Downloads[sender].current = max
 	end
 	
-	self:ULCompleted(key)
+	self.statusBar:SetValue(Downloads[sender].current)
 end
 
-function D:StartReceiving(key,sender,length,name)
-	Downloads[key] = {
-		key = key,
-		sender = sender,
-		length = length,
-		name = name,
-	}
-
-	self:RegisterComm(TRANSFER_PREFIX)
-end
-
-----------------------------------
--- TRANSFERS
-----------------------------------
-function D:Transfer(msg, dist, sender)
-	local type,key,isGlobal,serialData = match(msg,"(%w+)~~(.+)~~(.+)~~(.+)")
-	isGlobal = isGlobal == "true" and true or false
-	
-	-- Receiving an upload
-	if type == "UPLOAD" then
-		local length = len(serialData)
-
-		local dl = Downloads[key]
-		if not dl then return end
-
-		local success, data = self:Deserialize(serialData)
-		-- Failed to deserialize
-		if not success then
-			E:Print(format(L["Failed to load %s after downloading! Request another profile from %s"],dl.name,dl.sender))
-			return
-		end
-		-- Do popup if autoaccept disabled
-		local popupkey = format("ELVUI_Confirm_%s",key)
-		local textString = format(L["%s is sharing the profile: [%s]"],sender,dl.name)
-		if isGlobal then
-			textString = format(L["%s is sharing their filter settings. Warning: Hitting accept will cause you to lose your filters."], sender)
+function D:OnCommReceived(prefix, msg, dist, sender)
+	if prefix == REQUEST_PREFIX then
+		local profile, length = split(":", msg)
+		
+		local textString = format(L['%s is attempting to share a profile with you. Would you like to accept the request?'], sender)
+		if profile == "global" then
+			format(L['%s is attempting to share his filters with you. Would you like to accept the request?'], sender)
 		end
 		
-		local STATIC_CONFIRM = {
+		E.PopupDialogs['DISTRIBUTOR_RESPONSE'] = {
 			text = textString,
 			OnAccept = function()
-				self:DLCompleted(key,dl.sender,dl.name,data,isGlobal)
+				self.statusBar:SetMinMaxValues(0, length)
+				self.statusBar:SetValue(0)
+				self.statusBar.text:SetText(format(L["Data From: %s"], sender))
+				E:StaticPopupSpecial_Show(self.statusBar)
+				self:SendCommMessage(REPLY_PREFIX, profile..":YES", "WHISPER", sender)
 			end,
-			OnCancel = function()
-				self:DLRejected(key)
+			OnCancel = function() 
+				self:SendCommMessage(REPLY_PREFIX, profile..":NO", "WHISPER", sender)
 			end,
-			button1 = L["Accept"],
-			button2 = L["Reject"],
+			button1 = ACCEPT,
+			button2 = CANCEL,
+			timeout = 32,
 			whileDead = 1,
 			hideOnEscape = 1,
 		}
-		E.PopupDialogs[popupkey] = STATIC_CONFIRM
-		E:StaticPopup_Show(popupkey)
-	end
-end
+		E:StaticPopup_Show('DISTRIBUTOR_RESPONSE')
+		
+		Downloads[sender] = {
+			current = 0,
+			length = tonumber(length),
+			profile = profile,
+		}
 
-----------------------------------
--- COMPLETIONS
-----------------------------------
-function D:ULCompleted(key)
-	if Uploads[key].isGlobal == "true" then
-		E:Print(format(L["Upload Complete: [%s]"],L["Filters"]))
-	else
-		E:Print(format(L["Upload Complete: [%s]"],Uploads[key].name))
-	end
-	
-	E.isSharing = false
-end
-
-function D:DLCompleted(key,sender,name,data,isGlobal)
-	if not isGlobal then
-		ElvDB.profiles[name] = data
-		local profileName = Downloads[key].name
-		local popupkey = format("ELVUI_ProfileChange_%s",key)
-		local STATIC_CONFIRM = {
-			text = format(L["%s download from %s complete. Would you like to switch to that profile?"],profileName,sender),
-			OnAccept = function()
-				LibStub("AceAddon-3.0"):GetAddon("ElvUI").data:SetProfile(profileName)
-				wipe(Downloads[key])
-				self:UnregisterComm(TRANSFER_PREFIX)
-			end,
-			OnCancel = function() self:DLRejected(key) end,
-			button1 = ACCEPT,
-			button2 = CANCEL,
-			whileDead = 1,
-			hideOnEscape = 1,
-		}		
-		E.PopupDialogs[popupkey] = STATIC_CONFIRM
-		E:StaticPopup_Show(popupkey)
-	else
-		ElvDB.global = data	
-		E:UpdateAll(true)
-	end
-end
-
-function D:DLRejected(key)
-	wipe(Downloads[key])
-	self:UnregisterComm(TRANSFER_PREFIX)
-end
-
-----------------------------------
--- COMM RECEIVED
-----------------------------------
-
-function D:OnCommReceived(prefix, msg, dist, sender)
-	if sender == E.myname then
-		return
-	end
-
-	if prefix == MAIN_PREFIX then
-		self:Main(msg, dist, sender)
+		self:RegisterComm(TRANSFER_PREFIX)
+	elseif prefix == REPLY_PREFIX then
+		self:UnregisterComm(REPLY_PREFIX)
+		E:StaticPopup_Hide('DISTRIBUTOR_WAITING')
+		
+		local profileKey, response = split(":", msg)
+		if response == "YES" then
+			self:RegisterComm(TRANSFER_COMPLETE_PREFIX)
+			self:SendCommMessage(TRANSFER_PREFIX, Uploads[profileKey].serialData, "WHISPER", Uploads[profileKey].target)
+			Uploads[profileKey] = nil
+		else
+			E:StaticPopup_Show('DISTRIBUTOR_REQUEST_DENIED')
+			Uploads[profileKey] = nil
+		end
 	elseif prefix == TRANSFER_PREFIX then
-		self:Transfer(msg, dist, sender)
+		self:UnregisterComm(TRANSFER_PREFIX)
+		E:StaticPopupSpecial_Hide(self.statusBar)
+		
+		local profileKey = Downloads[sender].profile
+		local success, data = self:Deserialize(msg)
+		
+		if success then
+			local textString = format(L['Profile download complete from %s, would you like to load the profile %s now?'], sender, profileKey)
+			if profileKey == "global" then
+				textString = format(L['Filter download complete from %s, would you like to apply changes now? This may cause you to lose your filters.'], sender)
+			else
+				ElvDB.profiles[profileKey] = data
+			end
+			
+			E.PopupDialogs['DISTRIBUTOR_CONFIRM'] = {
+				text = textString,
+				OnAccept = function()
+					if profileKey == "global" then
+						E:CopyTable(ElvDB.global, data)
+						E:UpdateAll(true)
+					else
+						LibStub("AceAddon-3.0"):GetAddon("ElvUI").data:SetProfile(profileKey)					
+					end
+					Downloads[sender] = nil
+				end,
+				OnCancel = function() 
+					Downloads[sender] = nil
+				end,
+				button1 = YES,
+				button2 = NO,
+				whileDead = 1,
+				hideOnEscape = 1,
+			}
+			
+			E:StaticPopup_Show('DISTRIBUTOR_CONFIRM')
+			self:SendCommMessage(TRANSFER_COMPLETE_PREFIX, "COMPLETE", "WHISPER", sender)
+		else
+			E:StaticPopup_Show('DISTRIBUTOR_FAILED')
+			self:SendCommMessage(TRANSFER_COMPLETE_PREFIX, "FAILED", "WHISPER", sender)
+		end
+	elseif prefix == TRANSFER_COMPLETE_PREFIX then
+		self:UnregisterComm(TRANSFER_COMPLETE_PREFIX)
+		if message == "COMPLETE" then
+			E:StaticPopup_Show('DISTRIBUTOR_SUCCESS')
+		else
+			E:StaticPopup_Show('DISTRIBUTOR_FAILED')
+		end
 	end
 end
 
 E:RegisterModule(D:GetName())
+
+E.PopupDialogs['DISTRIBUTOR_SUCCESS'] = {
+	text = L['Your profile was successfully recieved by the player.'],
+	whileDead = 1,
+	hideOnEscape = 1,
+	button1 = OKAY,
+}
+
+E.PopupDialogs['DISTRIBUTOR_WAITING'] = {
+	text = L['Profile request sent. Waiting for response from player.'],
+	whileDead = 1,
+	hideOnEscape = 1,
+	timeout = 35,
+}
+
+E.PopupDialogs['DISTRIBUTOR_REQUEST_DENIED'] = {
+	text = L['Request was denied by user.'],
+	whileDead = 1,
+	hideOnEscape = 1,
+	button1 = OKAY,
+}
+
+E.PopupDialogs['DISTRIBUTOR_FAILED'] = {
+	text = L["Lord! It's a miracle! The download up and vanished like a fart in the wind! Try Again!"],
+	whileDead = 1,
+	hideOnEscape = 1,
+	button1 = OKAY,
+}
+
+E.PopupDialogs['DISTRIBUTOR_RESPONSE'] = {}
+E.PopupDialogs['DISTRIBUTOR_CONFIRM'] = {}

@@ -15,15 +15,15 @@ L["You must be targetting a player."] = true;
 L["Cannot send to players on another server."] = true;
 L["Share Filters"] = true;
 L["Sends your filter settings to your target."] = true;
-L["Already Sharing!"] = true;
-L["Failed to load %s after downloading! Request another profile from %s"] = true;
-L["%s is sharing the profile: [%s]"] = true;
-L["%s is sharing their filter settings. Warning: Hitting accept will cause you to lose your filters."] = true;
-L["Upload Complete: [%s]"] = true;
-L["%s download from %s complete. Would you like to switch to that profile?"] = true;
-L["Accept"] = true;
-L["Reject"] = true;
-L["Sending you my ElvUI settings! Please allow up to one minute for download to complete."] = true;
+L['%s is attempting to share a profile with you. Would you like to accept the request?'] = true;
+L['%s is attempting to share his filters with you. Would you like to accept the request?'] = true;
+L["Data From: %s"] = true;
+L['Profile download complete from %s, would you like to load the profile %s now?'] = true;
+L['Filter download complete from %s, would you like to apply changes now? This may cause you to lose your filters.'] = true;
+L['Your profile was successfully recieved by the player.'] = true;
+L['Profile request sent. Waiting for response from player.'] = true;
+L['Request was denied by user.'] = true;
+L["Lord! It's a miracle! The download up and vanished like a fart in the wind! Try Again!"] = true;
 
 --ActionBars
 L[" |cff00ff00bound to |r"] = true;
