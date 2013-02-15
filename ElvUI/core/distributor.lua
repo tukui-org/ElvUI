@@ -1,6 +1,6 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local D = E:NewModule('Distributor', "AceEvent-3.0","AceTimer-3.0","AceComm-3.0","AceSerializer-3.0")
-_G["DIST"] = D
+
 local ipairs, pairs = ipairs, pairs
 local remove,wipe = table.remove,table.wipe
 local match,len,format,split,find = string.match,string.len,string.format,string.split,string.find
