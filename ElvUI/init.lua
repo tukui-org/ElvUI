@@ -154,7 +154,13 @@ function AddOn:EnhanceOptions(optionTable)
 					self:Print("You must be targetting a player.")
 					return
 				end
-				self:GetModule("Distributor"):Distribute(UnitName("target"))
+				local name, server = UnitName("target")
+				if server then
+					name = name..'-'..server
+				end
+				if name then
+					self:GetModule("Distributor"):Distribute(name)
+				end
 			end,
 		},
 		distributeGlobal = {
@@ -168,7 +174,10 @@ function AddOn:EnhanceOptions(optionTable)
 					return
 				end
 				
-				local name = UnitName("target")
+				local name, server = UnitName("target")
+				if server then
+					name = name..'-'..server
+				end
 				if name then
 					self:GetModule("Distributor"):Distribute(name, "true")
 				end

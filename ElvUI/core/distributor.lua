@@ -128,7 +128,7 @@ function D:Transfer(msg, dist, sender)
 		if not E.PopupDialogs[popupkey] then
 			local textString = format(L["%s is sharing the profile: [%s]"],sender,dl.name)
 			if isGlobal then
-				textString = format(L["%s is sharing their filter settings."], sender)
+				textString = format(L["%s is sharing their filter settings. Warning: Hitting accept will cause you to lose your filters."], sender)
 			end
 			
 			local STATIC_CONFIRM = {
