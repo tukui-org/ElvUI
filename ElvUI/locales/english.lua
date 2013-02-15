@@ -7,6 +7,24 @@ if not L then return; end
 --TEMP
 L["A taint has occured that is preventing you from using your talents/glyphs. Please reload your user interface and try again."] = true;
 
+--Distributor
+L["This feature will allow you to transfer, settings to other characters."] = true;
+L["Share Current Profile"] = true;
+L["Sends your current profile to your target."] = true;
+L["You must be targetting a player."] = true;
+L["Cannot send to players on another server."] = true;
+L["Share Filters"] = true;
+L["Sends your filter settings to your target."] = true;
+L["Already Sharing!"] = true;
+L["Failed to load %s after downloading! Request another profile from %s"] = true;
+L["%s is sharing the profile: [%s]"] = true;
+L["%s is sharing their filter settings. Warning: Hitting accept will cause you to lose your filters."] = true;
+L["Upload Complete: [%s]"] = true;
+L["%s download from %s complete. Would you like to switch to that profile?"] = true;
+L["Accept"] = true;
+L["Reject"] = true;
+L["Sending you my ElvUI settings! Please allow up to one minute for download to complete."] = true;
+
 --ActionBars
 L[" |cff00ff00bound to |r"] = true;
 L["Action Paging"] = true;

@@ -32,6 +32,11 @@ local Uploads = {}
 
 -- Used to start uploads
 function D:Distribute(target, isGlobal)
+	if E.isSharing then
+		E:Print(L["Already Sharing!"])
+		return
+	end
+	
 	wipe(Uploads)
 	
 	local profileKey
@@ -51,7 +56,8 @@ function D:Distribute(target, isGlobal)
 	local serialData = self:Serialize(data)
 	local length = len(serialData)
 	local message = format("UPDATE:%s:%d:%s", profileKey, length, E.myname..' - '..E.myrealm) -- ex. UPDATE:sartharion:150:800:Sartharion
-
+	
+	E.isSharing = true
 	Uploads[profileKey] = {
 		serialData = serialData,
 		length = length,
@@ -59,10 +65,11 @@ function D:Distribute(target, isGlobal)
 		isGlobal = isGlobal,
 		name = E.myname..' - '..E.myrealm,
 	}
-
+	
 	self:SendCommMessage(MAIN_PREFIX, message, "WHISPER", target)
 	self:RegisterComm(TRANSFER_PREFIX)
 	self:ScheduleTimer("StartUpload",UL_WAIT,profileKey)
+	SendChatMessage(L["Sending you my ElvUI settings! Please allow up to one minute for download to complete."], "WHISPER", nil, target)
 end
 
 ----------------------------------
@@ -160,6 +167,8 @@ function D:ULCompleted(key)
 	else
 		E:Print(format(L["Upload Complete: [%s]"],Uploads[key].name))
 	end
+	
+	E.isSharing = false
 end
 
 function D:DLCompleted(key,sender,name,data,isGlobal)
