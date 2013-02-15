@@ -133,6 +133,33 @@ function AddOn:OnProfileReset()
 	ReloadUI()
 end
 
+
+function AddOn:EnhanceOptions(optionTable)
+	if not optionTable.plugins then
+		optionTable.plugins = {}
+	end
+	optionTable.plugins["ElvUI"] = {
+		desc = {
+			name = "test desc",
+			type = 'description',
+			order = 40.4,
+		},
+		distributeProfile = {
+			name = "Share Current Profile",
+			desc = "Sends your current profile to your target.",
+			type = 'execute',
+			order = 40.5,
+			func = function()
+				if not UnitExists("target") or not UnitIsPlayer("target") or not UnitIsFriend("player", "target") then
+					self:Print("You must be targetting a player.")
+					return
+				end
+				self:GetModule("Distributor"):Distribute(UnitName("target"))
+			end,
+		},
+	}
+end
+
 function AddOn:LoadConfig()	
 	AC:RegisterOptionsTable(AddOnName, self.Options)
 	ACD:SetDefaultSize(AddOnName, DEFAULT_WIDTH, DEFAULT_HEIGHT)	
@@ -144,6 +171,7 @@ function AddOn:LoadConfig()
 	
 	LibDualSpec:EnhanceDatabase(self.data, AddOnName)
 	LibDualSpec:EnhanceOptions(self.Options.args.profiles, self.data)
+	self:EnhanceOptions(self.Options.args.profiles)
 end
 
 function AddOn:ToggleConfig() 

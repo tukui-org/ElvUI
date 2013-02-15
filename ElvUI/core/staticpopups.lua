@@ -322,7 +322,7 @@ function E:StaticPopup_OnHide()
 end
 
 function E:StaticPopup_OnUpdate(elapsed)
-	if ( self.timeleft > 0 ) then
+	if ( self.timeleft and self.timeleft > 0 ) then
 		local which = self.which;
 		local timeleft = self.timeleft - elapsed;
 		if ( timeleft <= 0 ) then
