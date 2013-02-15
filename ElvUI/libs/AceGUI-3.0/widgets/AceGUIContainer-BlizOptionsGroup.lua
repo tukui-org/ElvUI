@@ -2,7 +2,7 @@
 BlizOptionsGroup Container
 Simple container widget for the integration of AceGUI into the Blizzard Interface Options
 -------------------------------------------------------------------------------]]
-local Type, Version = "BlizOptionsGroup", 20
+local Type, Version = "BlizOptionsGroup", 21
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
@@ -36,8 +36,12 @@ local function cancel(frame)
 	frame.obj:Fire("cancel")
 end
 
-local function defaults(frame)
-	frame.obj:Fire("defaults")
+local function default(frame)
+	frame.obj:Fire("default")
+end
+
+local function refresh(frame)
+	frame.obj:Fire("refresh")
 end
 
 --[[-----------------------------------------------------------------------------
@@ -101,7 +105,8 @@ local function Constructor()
 	-- support functions for the Blizzard Interface Options
 	frame.okay = okay
 	frame.cancel = cancel
-	frame.defaults = defaults
+	frame.default = default
+	frame.refresh = refresh
 
 	frame:SetScript("OnHide", OnHide)
 	frame:SetScript("OnShow", OnShow)
