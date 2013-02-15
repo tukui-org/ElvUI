@@ -150,7 +150,7 @@ function AddOn:EnhanceOptions(optionTable)
 			type = 'execute',
 			order = 40.5,
 			func = function()
-				if not UnitExists("target") or not UnitIsPlayer("target") or not UnitIsFriend("player", "target") or UnitIsUnit("player", "target") then
+				if not UnitExists("target") or not UnitIsPlayer("target") or not UnitIsFriend("player", "target") --[[or UnitIsUnit("player", "target")]] then
 					self:Print(Locale["You must be targetting a player."])
 					return
 				end
@@ -158,7 +158,7 @@ function AddOn:EnhanceOptions(optionTable)
 				if name and (not server or server == "") then
 					self:GetModule("Distributor"):Distribute(name)
 				elseif server then
-					self:Print(Locale["Cannot send to players on another server."])
+					self:GetModule("Distributor"):Distribute(name, true)
 				end
 			end,
 		},
@@ -175,9 +175,9 @@ function AddOn:EnhanceOptions(optionTable)
 				
 				local name, server = UnitName("target")
 				if name and (not server or server == "") then
-					self:GetModule("Distributor"):Distribute(name, true)
+					self:GetModule("Distributor"):Distribute(name, false, true)
 				elseif server then
-					self:Print(Locale["Cannot send to players on another server."])
+					self:GetModule("Distributor"):Distribute(name, true, true)
 				end
 			end,
 		},		

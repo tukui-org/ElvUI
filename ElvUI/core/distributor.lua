@@ -36,7 +36,7 @@ local Downloads = {}
 local Uploads = {}
 
 -- Used to start uploads
-function D:Distribute(target, isGlobal)	
+function D:Distribute(target, otherServer, isGlobal)	
 	local profileKey
 	if not isGlobal then
 		if ElvDB.profileKeys then
@@ -61,7 +61,18 @@ function D:Distribute(target, isGlobal)
 		target = target,
 	}
 	
-	self:SendCommMessage(REQUEST_PREFIX, message, "WHISPER", target)
+	if otherServer then
+		if IsInRaid() then
+			self:SendCommMessage(REQUEST_PREFIX, message, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "RAID")
+		elseif IsInGroup() then
+			self:SendCommMessage(REQUEST_PREFIX, message, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "PARTY")
+		else
+			E:Print(L["Must be in group with the player if he isn't on the same server as you."])
+			return
+		end		
+	else
+		self:SendCommMessage(REQUEST_PREFIX, message, "WHISPER", target)
+	end
 	self:RegisterComm(REPLY_PREFIX)
 	E:StaticPopup_Show('DISTRIBUTOR_WAITING')
 end
@@ -82,8 +93,36 @@ end
 function D:OnCommReceived(prefix, msg, dist, sender)
 	if prefix == REQUEST_PREFIX then
 		local profile, length = split(":", msg)
+
+		if dist ~= "WHISPER" then
+			local senderFound = true
+			if IsInRaid() then
+				for i=1, 40 do
+					if UnitExists('raid'..i) and UnitName('raid'..i) == sender then
+						if UnitExists('raid'..i..'target') and UnitGUID('raid'..i..'target') == UnitGUID('player') then
+							senderFound = true
+							break
+						end
+					end
+				end
+			elseif IsInGroup() then
+				for i=1, 4 do
+					if UnitExists('party'..i) and UnitName('party'..i) == sender then
+						if UnitExists('party'..i..'target') and UnitGUID('party'..i..'target') == UnitGUID('player') then
+							senderFound = true
+							break
+						end
+					end
+				end
+			end
+
+			if senderFound ~= true then
+				return
+			end
+		end
+		
 		if self.statusBar:IsShown() then 
-			self:SendCommMessage(REPLY_PREFIX, profile..":NO", "WHISPER", sender)
+			self:SendCommMessage(REPLY_PREFIX, profile..":NO", dist, sender)
 			return 
 		end
 
@@ -99,10 +138,10 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 				self.statusBar:SetValue(0)
 				self.statusBar.text:SetText(format(L["Data From: %s"], sender))
 				E:StaticPopupSpecial_Show(self.statusBar)
-				self:SendCommMessage(REPLY_PREFIX, profile..":YES", "WHISPER", sender)
+				self:SendCommMessage(REPLY_PREFIX, profile..":YES", dist, sender)
 			end,
 			OnCancel = function() 
-				self:SendCommMessage(REPLY_PREFIX, profile..":NO", "WHISPER", sender)
+				self:SendCommMessage(REPLY_PREFIX, profile..":NO", dist, sender)
 			end,
 			button1 = ACCEPT,
 			button2 = CANCEL,
@@ -126,7 +165,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 		local profileKey, response = split(":", msg)
 		if response == "YES" then
 			self:RegisterComm(TRANSFER_COMPLETE_PREFIX)
-			self:SendCommMessage(TRANSFER_PREFIX, Uploads[profileKey].serialData, "WHISPER", Uploads[profileKey].target)
+			self:SendCommMessage(TRANSFER_PREFIX, Uploads[profileKey].serialData, dist, Uploads[profileKey].target)
 			Uploads[profileKey] = nil
 		else
 			E:StaticPopup_Show('DISTRIBUTOR_REQUEST_DENIED')
@@ -158,6 +197,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 						OnAccept = function(self)
 							ElvDB.profiles[self.editBox:GetText()] = data
 							LibStub("AceAddon-3.0"):GetAddon("ElvUI").data:SetProfile(self.editBox:GetText())
+							E:UpdateAll(true)
 							Downloads[sender] = nil						
 						end,
 						OnShow = function(self) self.editBox:SetText(profileKey) self.editBox:SetFocus() end,
@@ -169,7 +209,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 					}
 					
 					E:StaticPopup_Show('DISTRIBUTOR_CONFIRM')
-					self:SendCommMessage(TRANSFER_COMPLETE_PREFIX, "COMPLETE", "WHISPER", sender)					
+					self:SendCommMessage(TRANSFER_COMPLETE_PREFIX, "COMPLETE", dist, sender)					
 					return
 				end
 			end
@@ -195,10 +235,10 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 			}
 			
 			E:StaticPopup_Show('DISTRIBUTOR_CONFIRM')
-			self:SendCommMessage(TRANSFER_COMPLETE_PREFIX, "COMPLETE", "WHISPER", sender)
+			self:SendCommMessage(TRANSFER_COMPLETE_PREFIX, "COMPLETE", dist, sender)
 		else
 			E:StaticPopup_Show('DISTRIBUTOR_FAILED')
-			self:SendCommMessage(TRANSFER_COMPLETE_PREFIX, "FAILED", "WHISPER", sender)
+			self:SendCommMessage(TRANSFER_COMPLETE_PREFIX, "FAILED", dist, sender)
 		end
 	elseif prefix == TRANSFER_COMPLETE_PREFIX then
 		self:UnregisterComm(TRANSFER_COMPLETE_PREFIX)
