@@ -132,28 +132,25 @@ function D:Transfer(msg, dist, sender)
 		end
 		-- Do popup if autoaccept disabled
 		local popupkey = format("ELVUI_Confirm_%s",key)
-		if not E.PopupDialogs[popupkey] then
-			local textString = format(L["%s is sharing the profile: [%s]"],sender,dl.name)
-			if isGlobal then
-				textString = format(L["%s is sharing their filter settings. Warning: Hitting accept will cause you to lose your filters."], sender)
-			end
-			
-			local STATIC_CONFIRM = {
-				text = textString,
-				OnAccept = function()
-					self:DLCompleted(key,dl.sender,dl.name,data,isGlobal)
-				end,
-				OnCancel = function()
-					self:DLRejected(key)
-				end,
-				button1 = L["Accept"],
-				button2 = L["Reject"],
-				timeout = 15,
-				whileDead = 1,
-				hideOnEscape = 1,
-			}
-			E.PopupDialogs[popupkey] = STATIC_CONFIRM
+		local textString = format(L["%s is sharing the profile: [%s]"],sender,dl.name)
+		if isGlobal then
+			textString = format(L["%s is sharing their filter settings. Warning: Hitting accept will cause you to lose your filters."], sender)
 		end
+		
+		local STATIC_CONFIRM = {
+			text = textString,
+			OnAccept = function()
+				self:DLCompleted(key,dl.sender,dl.name,data,isGlobal)
+			end,
+			OnCancel = function()
+				self:DLRejected(key)
+			end,
+			button1 = L["Accept"],
+			button2 = L["Reject"],
+			whileDead = 1,
+			hideOnEscape = 1,
+		}
+		E.PopupDialogs[popupkey] = STATIC_CONFIRM
 		E:StaticPopup_Show(popupkey)
 	end
 end
@@ -180,8 +177,10 @@ function D:DLCompleted(key,sender,name,data,isGlobal)
 			text = format(L["%s download from %s complete. Would you like to switch to that profile?"],profileName,sender),
 			OnAccept = function()
 				LibStub("AceAddon-3.0"):GetAddon("ElvUI").data:SetProfile(profileName)
+				wipe(Downloads[key])
+				self:UnregisterComm(TRANSFER_PREFIX)
 			end,
-			OnCancel = function() end,
+			OnCancel = function() self:DLRejected(key) end,
 			button1 = ACCEPT,
 			button2 = CANCEL,
 			whileDead = 1,
@@ -193,14 +192,11 @@ function D:DLCompleted(key,sender,name,data,isGlobal)
 		ElvDB.global = data	
 		E:UpdateAll(true)
 	end
-	
-	self:UnregisterComm(TRANSFER_PREFIX)
-	wipe(Downloads[key])
 end
 
 function D:DLRejected(key)
-	self:UnregisterComm(TRANSFER_PREFIX)
 	wipe(Downloads[key])
+	self:UnregisterComm(TRANSFER_PREFIX)
 end
 
 ----------------------------------
@@ -209,7 +205,7 @@ end
 
 function D:OnCommReceived(prefix, msg, dist, sender)
 	if sender == E.myname then
-		--return
+		return
 	end
 
 	if prefix == MAIN_PREFIX then
