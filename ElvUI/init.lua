@@ -140,13 +140,13 @@ function AddOn:EnhanceOptions(optionTable)
 	end
 	optionTable.plugins["ElvUI"] = {
 		desc = {
-			name = "test desc",
+			name = Locale["This feature will allow you to transfer, settings to other characters."],
 			type = 'description',
 			order = 40.4,
 		},
 		distributeProfile = {
-			name = "Share Current Profile",
-			desc = "Sends your current profile to your target.",
+			name = Locale["Share Current Profile"],
+			desc = Locale["Sends your current profile to your target."],
 			type = 'execute',
 			order = 40.5,
 			func = function()
@@ -157,6 +157,23 @@ function AddOn:EnhanceOptions(optionTable)
 				self:GetModule("Distributor"):Distribute(UnitName("target"))
 			end,
 		},
+		distributeGlobal = {
+			name = Locale["Share Filters"],
+			desc = Locale["Sends your filter settings to your target."],
+			type = 'execute',
+			order = 40.6,
+			func = function()
+				if not UnitExists("target") or not UnitIsPlayer("target") or not UnitIsFriend("player", "target") then
+					self:Print("You must be targetting a player.")
+					return
+				end
+				
+				local name = UnitName("target")
+				if name then
+					self:GetModule("Distributor"):Distribute(name, "true")
+				end
+			end,
+		},		
 	}
 end
 

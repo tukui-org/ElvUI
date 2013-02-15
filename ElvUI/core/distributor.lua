@@ -31,29 +31,32 @@ local Downloads = {}
 local Uploads = {}
 
 -- Used to start uploads
-function D:Distribute(target)
+function D:Distribute(target, isGlobal)
 	wipe(Uploads)
 	
 	local profileKey
-	if ElvDB.profileKeys then
-		profileKey = ElvDB.profileKeys[E.myname..' - '..E.myrealm]
+	if isGlobal ~= "true" then
+		if ElvDB.profileKeys then
+			profileKey = ElvDB.profileKeys[E.myname..' - '..E.myrealm]
+		end
+		
+		data = ElvDB.profiles[profileKey]
+		isGlobal = "false"
+	else
+		profileKey = 'global'
+		data = ElvDB.global
 	end
-	
-	local data = ElvDB.profiles[profileKey]
 
-	if not data or profileKey == "Default" then
-		return
-	end
-
+	if not data or not profileKey then return end
 	local serialData = self:Serialize(data)
 	local length = len(serialData)
-
 	local message = format("UPDATE:%s:%d:%s", profileKey, length, E.myname..' - '..E.myrealm) -- ex. UPDATE:sartharion:150:800:Sartharion
 
 	Uploads[profileKey] = {
 		serialData = serialData,
 		length = length,
 		target = target,
+		isGlobal = isGlobal,
 		name = E.myname..' - '..E.myrealm,
 	}
 
@@ -80,7 +83,7 @@ end
 ----------------------------------
 function D:StartUpload(key)
 	local ul = Uploads[key]
-	local message = format("%s~~%s~~%s","UPLOAD",key,ul.serialData)
+	local message = format("%s~~%s~~%s~~%s","UPLOAD",key,ul.isGlobal,ul.serialData)
 
 	if ul.target then
 		self:SendCommMessage(TRANSFER_PREFIX, message, "WHISPER",ul.target)
@@ -104,7 +107,9 @@ end
 -- TRANSFERS
 ----------------------------------
 function D:Transfer(msg, dist, sender)
-	local type,key,serialData = match(msg,"(%w+)~~(.+)~~(.+)")
+	local type,key,isGlobal,serialData = match(msg,"(%w+)~~(.+)~~(.+)~~(.+)")
+	isGlobal = isGlobal == "true" and true or false
+	
 	-- Receiving an upload
 	if type == "UPLOAD" then
 		local length = len(serialData)
@@ -121,10 +126,15 @@ function D:Transfer(msg, dist, sender)
 		-- Do popup if autoaccept disabled
 		local popupkey = format("ELVUI_Confirm_%s",key)
 		if not E.PopupDialogs[popupkey] then
+			local textString = format(L["%s is sharing the profile: [%s]"],sender,dl.name)
+			if isGlobal then
+				textString = format(L["%s is sharing their filter settings."], sender)
+			end
+			
 			local STATIC_CONFIRM = {
-				text = format(L["%s is sharing the profile: [%s]"],sender,dl.name),
+				text = textString,
 				OnAccept = function()
-					self:DLCompleted(key,dl.sender,dl.name,data)
+					self:DLCompleted(key,dl.sender,dl.name,data,isGlobal)
 				end,
 				OnCancel = function()
 					self:DLRejected(key)
@@ -145,26 +155,36 @@ end
 -- COMPLETIONS
 ----------------------------------
 function D:ULCompleted(key)
-	E:Print(format(L["Upload Complete: [%s]"],Uploads[key].name))
+	if Uploads[key].isGlobal == "true" then
+		E:Print(format(L["Upload Complete: [%s]"],L["Filters"]))
+	else
+		E:Print(format(L["Upload Complete: [%s]"],Uploads[key].name))
+	end
 end
 
-function D:DLCompleted(key,sender,name,data)
-	ElvDB.profiles[name] = data
-	local profileName = Downloads[key].name
-	local popupkey = format("ELVUI_ProfileChange_%s",key)
-	local STATIC_CONFIRM = {
-		text = format(L["%s download from %s complete. Would you like to switch to that profile?"],profileName,sender),
-		OnAccept = function()
-			LibStub("AceAddon-3.0"):GetAddon("ElvUI").data:SetProfile(profileName)
-		end,
-		OnCancel = function() end,
-		button1 = ACCEPT,
-		button2 = CANCEL,
-		whileDead = 1,
-		hideOnEscape = 1,
-	}
-	E.PopupDialogs[popupkey] = STATIC_CONFIRM
-	E:StaticPopup_Show(popupkey)
+function D:DLCompleted(key,sender,name,data,isGlobal)
+	if not isGlobal then
+		ElvDB.profiles[name] = data
+		local profileName = Downloads[key].name
+		local popupkey = format("ELVUI_ProfileChange_%s",key)
+		local STATIC_CONFIRM = {
+			text = format(L["%s download from %s complete. Would you like to switch to that profile?"],profileName,sender),
+			OnAccept = function()
+				LibStub("AceAddon-3.0"):GetAddon("ElvUI").data:SetProfile(profileName)
+			end,
+			OnCancel = function() end,
+			button1 = ACCEPT,
+			button2 = CANCEL,
+			whileDead = 1,
+			hideOnEscape = 1,
+		}		
+		E.PopupDialogs[popupkey] = STATIC_CONFIRM
+		E:StaticPopup_Show(popupkey)
+	else
+		ElvDB.global = data	
+		E:UpdateAll(true)
+	end
+	
 	self:UnregisterComm(TRANSFER_PREFIX)
 	wipe(Downloads[key])
 end
