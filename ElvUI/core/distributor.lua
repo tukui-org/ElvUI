@@ -27,6 +27,7 @@ function D:Initialize()
 	self.statusBar.text = self.statusBar:CreateFontString(nil, 'OVERLAY')
 	self.statusBar.text:FontTemplate()
 	self.statusBar.text:SetPoint("CENTER")
+	self.statusBar:Hide()
 end
 
 
@@ -81,7 +82,11 @@ end
 function D:OnCommReceived(prefix, msg, dist, sender)
 	if prefix == REQUEST_PREFIX then
 		local profile, length = split(":", msg)
-		
+		if self.statusBar:IsShown() then 
+			self:SendCommMessage(REPLY_PREFIX, profile..":NO", "WHISPER", sender)
+			return 
+		end
+
 		local textString = format(L['%s is attempting to share a profile with you. Would you like to accept the request?'], sender)
 		if profile == "global" then
 			format(L['%s is attempting to share his filters with you. Would you like to accept the request?'], sender)
@@ -170,15 +175,13 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 		end
 	elseif prefix == TRANSFER_COMPLETE_PREFIX then
 		self:UnregisterComm(TRANSFER_COMPLETE_PREFIX)
-		if message == "COMPLETE" then
+		if msg == "COMPLETE" then
 			E:StaticPopup_Show('DISTRIBUTOR_SUCCESS')
 		else
 			E:StaticPopup_Show('DISTRIBUTOR_FAILED')
 		end
 	end
 end
-
-E:RegisterModule(D:GetName())
 
 E.PopupDialogs['DISTRIBUTOR_SUCCESS'] = {
 	text = L['Your profile was successfully recieved by the player.'],
@@ -210,3 +213,5 @@ E.PopupDialogs['DISTRIBUTOR_FAILED'] = {
 
 E.PopupDialogs['DISTRIBUTOR_RESPONSE'] = {}
 E.PopupDialogs['DISTRIBUTOR_CONFIRM'] = {}
+
+E:RegisterModule(D:GetName())
