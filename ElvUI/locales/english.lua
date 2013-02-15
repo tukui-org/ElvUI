@@ -20,7 +20,7 @@ L['Profile download complete from %s, but the profile %s already exists. Change 
 L['%s is attempting to share his filters with you. Would you like to accept the request?'] = true;
 L["Data From: %s"] = true;
 L['Profile download complete from %s, would you like to load the profile %s now?'] = true;
-L['Filter download complete from %s, would you like to apply changes now? This may cause you to lose your filters.'] = true;
+L['Filter download complete from %s, would you like to apply changes now?'] = true;
 L['Your profile was successfully recieved by the player.'] = true;
 L['Profile request sent. Waiting for response from player.'] = true;
 L['Request was denied by user.'] = true;

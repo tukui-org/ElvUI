@@ -89,7 +89,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 
 		local textString = format(L['%s is attempting to share the profile %s with you. Would you like to accept the request?'], sender, profile)
 		if profile == "global" then
-			format(L['%s is attempting to share his filters with you. Would you like to accept the request?'], sender)
+			textString = format(L['%s is attempting to share his filters with you. Would you like to accept the request?'], sender)
 		end
 		
 		E.PopupDialogs['DISTRIBUTOR_RESPONSE'] = {
@@ -141,8 +141,9 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 		
 		if success then
 			local textString = format(L['Profile download complete from %s, would you like to load the profile %s now?'], sender, profileKey)
+			
 			if profileKey == "global" then
-				textString = format(L['Filter download complete from %s, would you like to apply changes now? This may cause you to lose your filters.'], sender)
+				textString = format(L['Filter download complete from %s, would you like to apply changes now?'], sender)
 			else
 				if not ElvDB.profiles[profileKey] then
 					ElvDB.profiles[profileKey] = data
