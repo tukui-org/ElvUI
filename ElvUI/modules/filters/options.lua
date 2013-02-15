@@ -26,13 +26,13 @@ local function UpdateFilterGroup()
 					desc = L['Add a spell to the filter.'],
 					type = 'input',
 					get = function(info) return "" end,
-					set = function(info, value) 
+					set = function(info, value)
 						if not E.global.unitframe.AuraBarColors[value] then
 							E.global.unitframe.AuraBarColors[value] = false
 						end
 						UpdateFilterGroup();
 						UF:Update_AllFrames();
-					end,					
+					end,	
 				},
 				removeSpell = {
 					order = 1,

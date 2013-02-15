@@ -7523,13 +7523,13 @@ E.Options.args.unitframe.args.party = {
 					order = 2,
 					name = L['Width'],
 					type = 'range',
-					min = 50, max = 500, step = 1,
+					min = 10, max = 500, step = 1,
 				},			
 				height = {
 					order = 3,
 					name = L['Height'],
 					type = 'range',
-					min = 10, max = 250, step = 1,
+					min = 10, max = 500, step = 1,
 				},	
 				point = {
 					order = 4,
@@ -8394,13 +8394,13 @@ for i=10, 40, 15 do
 						order = 2,
 						name = L['Width'],
 						type = 'range',
-						min = 50, max = 500, step = 1,
+						min = 10, max = 500, step = 1,
 					},			
 					height = {
 						order = 3,
 						name = L['Height'],
 						type = 'range',
-						min = 10, max = 250, step = 1,
+						min = 10, max = 500, step = 1,
 					},	
 					point = {
 						order = 4,

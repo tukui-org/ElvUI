@@ -533,7 +533,7 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, ...)
 		NP:UpdateAuraByLookup(destGUID)
 		local name, raidicon
 		-- Cache Unit Name for alternative lookup strategy
-		if band(destFlags, COMBATLOG_OBJECT_CONTROL_PLAYER) > 0 then 
+		if band(destFlags, COMBATLOG_OBJECT_CONTROL_PLAYER) > 0 and destName then 
 			local rawName = strsplit("-", destName)			-- Strip server name from players
 			NP.ByName[rawName] = destGUID
 			name = rawName
