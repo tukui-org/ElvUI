@@ -87,7 +87,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 			return 
 		end
 
-		local textString = format(L['%s is attempting to share a profile with you. Would you like to accept the request?'], sender)
+		local textString = format(L['%s is attempting to share the profile %s with you. Would you like to accept the request?'], sender, profile)
 		if profile == "global" then
 			format(L['%s is attempting to share his filters with you. Would you like to accept the request?'], sender)
 		end
@@ -144,7 +144,33 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 			if profileKey == "global" then
 				textString = format(L['Filter download complete from %s, would you like to apply changes now? This may cause you to lose your filters.'], sender)
 			else
-				ElvDB.profiles[profileKey] = data
+				if not ElvDB.profiles[profileKey] then
+					ElvDB.profiles[profileKey] = data
+				else
+					textString = format(L['Profile download complete from %s, but the profile %s already exists. Change the name or else it will overwrite the existing profile.'], sender, profileKey)
+					E.PopupDialogs['DISTRIBUTOR_CONFIRM'] = {
+						text = textString,
+						button1 = ACCEPT,
+						hasEditBox = 1,
+						editBoxWidth = 350,
+						maxLetters = 127,
+						OnAccept = function(self)
+							ElvDB.profiles[self.editBox:GetText()] = data
+							LibStub("AceAddon-3.0"):GetAddon("ElvUI").data:SetProfile(self.editBox:GetText())
+							Downloads[sender] = nil						
+						end,
+						OnShow = function(self) self.editBox:SetText(profileKey) self.editBox:SetFocus() end,
+						timeout = 0,
+						exclusive = 1,
+						whileDead = 1,
+						hideOnEscape = 1,
+						preferredIndex = 3						
+					}
+					
+					E:StaticPopup_Show('DISTRIBUTOR_CONFIRM')
+					self:SendCommMessage(TRANSFER_COMPLETE_PREFIX, "COMPLETE", "WHISPER", sender)					
+					return
+				end
 			end
 			
 			E.PopupDialogs['DISTRIBUTOR_CONFIRM'] = {
