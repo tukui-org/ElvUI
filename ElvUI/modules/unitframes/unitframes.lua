@@ -472,7 +472,19 @@ function UF:UpdateAllHeaders(event)
 	if event == 'PLAYER_REGEN_ENABLED' then
 		self:UnregisterEvent('PLAYER_REGEN_ENABLED')
 	end
-
+		
+	local _, instanceType = IsInInstance();
+	local ORD = ns.oUF_RaidDebuffs or oUF_RaidDebuffs
+	if ORD then
+		ORD:ResetDebuffData()
+		
+		if instanceType == "party" or instanceType == "raid" then
+			ORD:RegisterDebuffs(E.global.unitframe.aurafilters.RaidDebuffs.spells)
+		else
+			ORD:RegisterDebuffs(E.global.unitframe.aurafilters.CCDebuffs.spells)
+		end
+	end	
+	
 	for _, header in pairs(UF['headers']) do
 		header:Update()
 	end	
@@ -691,6 +703,12 @@ function UF:Initialize()
 	else
 		CompactUnitFrameProfiles:RegisterEvent('VARIABLES_LOADED')
 	end
+		
+	local ORD = ns.oUF_RaidDebuffs or oUF_RaidDebuffs
+	if not ORD then return end
+	ORD.ShowDispelableDebuff = true
+	ORD.FilterDispellableDebuff = true
+	ORD.MatchBySpellName = true
 end
 
 function UF:ResetUnitSettings(unit)

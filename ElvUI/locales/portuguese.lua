@@ -905,6 +905,7 @@ L['Raid Icon'] = "Icone de Raide";
 L['Raid-10 Frames'] = "Quadros de Raide-10";
 L['Raid-25 Frames'] = "Quadros de Raide-25";
 L['Raid-40 Frames'] = "Quadros de Raide-40";
+L["RaidDebuff Indicator"] = "Indicador das Penalidades da Raide";
 L["Rapidly update the health, uses more memory and cpu. Only recommended for healing."] = "Atualizar rapidamente a vida, usa mais memória e CPU. Apenas recomendado para curandeiros.";
 L["Reactions"] = "Reações";
 L["Remaining"] = "Restante";

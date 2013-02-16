@@ -171,14 +171,12 @@ function UF:UpdateAuraTimer(elapsed)
 end
 
 local function SortAurasByPriority(a, b)
-    return (a.priority or 0) > (b.priority or 0)
+    if (a and b and a.priority and b.priority) then
+        return a.priority > b.priority
+    end
 end
 
-function UF:SortAuras(unit)
-	if not self:GetParent().db then return end
-	
-	local db = self:GetParent().db[self.type]
-	if db and db.perrow == 1 and db.numrows == 1 then return end
+function UF:SortAuras()
 	tsort(self, SortAurasByPriority)
 end
 
@@ -940,13 +938,6 @@ function UF:UpdateComboDisplay(event, unit)
 	end
 end
 
-local priorities = {
-	['Magic']	= 4,
-	['Curse']	= 3,
-	['Disease']	= 2,
-	['Poison']	= 1,
-}
-
 function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, timeLeft, unitCaster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff)	
 	if E.global.unitframe.InvalidSpells[spellID] then
 		return false;
@@ -970,20 +961,9 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 	icon.name = name
 	icon.priority = 0
 
-	if self.type == 'debuffs' then
-		local ccDebuffs = E.global['unitframe']['aurafilters']['CCDebuffs'].spells[name]
-		if ccDebuffs and ccDebuffs.enable then
-			icon.priority = ccDebuffs.priority
-		end	
-		
-		if dtype and E:IsDispellableByMe(dtype) and priorities[dtype] then
-			icon.priority = icon.priority + priorities[dtype]
-		end	
-	else
-		local turtleBuff = E.global['unitframe']['aurafilters']['TurtleBuffs'].spells[name]
-		if turtleBuff and turtleBuff.enable then
-			icon.priority = turtleBuff.priority
-		end	
+	local turtleBuff = E.global['unitframe']['aurafilters']['TurtleBuffs'].spells[name]
+	if turtleBuff and turtleBuff.enable then
+		icon.priority = turtleBuff.priority
 	end
 	
 	if CheckFilter(db.playerOnly, isFriend) then
@@ -998,10 +978,9 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 	end
 	
 	if CheckFilter(db.onlyDispellable, isFriend) then
-		if (self.type == 'buffs' and not isStealable) or (self.type == 'debuffs' and dtype and not E:IsDispellableByMe(dtype)) then
+		if (self.type == 'buffs' and not isStealable) or (self.type == 'debuffs' and dtype and  not E:IsDispellableByMe(dtype)) then
 			returnValue = false;
 		end
-
 		anotherFilterExists = true
 	end
 	
@@ -1058,41 +1037,6 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 		end
 	end		
 	
-	if db.perrow == 1 and db.numrows == 1 then
-		local index = 1
-		if self.type == 'debuffs' then
-			local ccFilter = E.global['unitframe']['aurafilters']['CCDebuffs'].spells
-			local name, _, _, _, dtype = UnitDebuff(unit, index)
-			while name do
-				local priority = 0
-				if ccFilter[name] and ccFilter[name].enable then
-					priority = ccFilter[name].priority
-				end
-				
-				if dtype and E:IsDispellableByMe(dtype) and priorities[dtype] then
-					priority = priority + priorities[dtype]
-				end
-
-				if priority > icon.priority then
-					return false
-				end
-					
-				index = index + 1
-				name, _, _, _, dtype = UnitDebuff(unit, index)
-			end
-		else
-			local turtleBuff = E.global['unitframe']['aurafilters']['TurtleBuffs'].spells
-			local name = UnitBuff(unit, index)
-			while name do
-				if turtleBuff[name] and turtleBuff[name].enable and turtleBuff[name].priority > icon.priority then
-					return false
-				end
-				index = index + 1
-				name = UnitBuff(unit, index)
-			end		
-		end
-	end	
-
 	return returnValue	
 end
 

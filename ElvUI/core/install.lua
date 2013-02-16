@@ -400,65 +400,50 @@ function E:SetupLayout(layout, noDataReset)
 		end
 		
 		if not noDataReset then
-		
-			E.db.unitframe.units.raid10.positionOverride = "BOTTOMRIGHT";
-			E.db.unitframe.units.raid10.height = 45;		
 			E.db.unitframe.units.raid10.xOffset = 9;
+			E.db.unitframe.units.raid10.rdebuffs.enable = false;
 			E.db.unitframe.units.raid10.yOffset = 9;
-			
-			E.db.unitframe.units.raid10.debuffs.perrow = 3
 			E.db.unitframe.units.raid10.debuffs.sizeOverride = 16;
 			E.db.unitframe.units.raid10.debuffs.enable = true
 			E.db.unitframe.units.raid10.debuffs.anchorPoint = "TOPRIGHT";
 			E.db.unitframe.units.raid10.debuffs.xOffset = -4;
 			E.db.unitframe.units.raid10.debuffs.yOffset = -7;
-			E.db.unitframe.units.raid10.debuffs.clickThrough = false;
-			E.db.unitframe.units.raid10.debuffs.noDuration = false;
-			E.db.unitframe.units.raid10.debuffs.onlyDispellable = false
-			E.db.unitframe.units.raid10.debuffs.useFilter = ''
-
+			E.db.unitframe.units.raid10.positionOverride = "BOTTOMRIGHT";
+			E.db.unitframe.units.raid10.height = 45;
 			E.db.unitframe.units.raid10.buffs.noConsolidated = false
-			E.db.unitframe.units.raid10.buffs.xOffset = 0;
-			E.db.unitframe.units.raid10.buffs.yOffset = -7;
-			E.db.unitframe.units.raid10.buffs.anchorPoint = "CENTER"
+			E.db.unitframe.units.raid10.buffs.xOffset = 50;
+			E.db.unitframe.units.raid10.buffs.yOffset = -6;
 			E.db.unitframe.units.raid10.buffs.clickThrough = true
 			E.db.unitframe.units.raid10.buffs.noDuration = false
 			E.db.unitframe.units.raid10.buffs.playerOnly = false;
 			E.db.unitframe.units.raid10.buffs.perrow = 1
 			E.db.unitframe.units.raid10.buffs.useFilter = "TurtleBuffs"
-			E.db.unitframe.units.raid10.buffs.sizeOverride = 26
+			E.db.unitframe.units.raid10.buffs.sizeOverride = 22
 			E.db.unitframe.units.raid10.buffs.useBlacklist = false
 			E.db.unitframe.units.raid10.buffs.enable = true
 			
-			
 			E.db.unitframe.units.raid25.xOffset = 9;
+			E.db.unitframe.units.raid25.rdebuffs.enable = false;
 			E.db.unitframe.units.raid25.yOffset = 9;
-			E.db.unitframe.units.raid25.positionOverride = "BOTTOMRIGHT";
-			E.db.unitframe.units.raid25.height = 45;
-			E.db.unitframe.units.raid25.debuffs.perrow = 3
 			E.db.unitframe.units.raid25.debuffs.sizeOverride = 16;
 			E.db.unitframe.units.raid25.debuffs.enable = true
 			E.db.unitframe.units.raid25.debuffs.anchorPoint = "TOPRIGHT";
 			E.db.unitframe.units.raid25.debuffs.xOffset = -4;
 			E.db.unitframe.units.raid25.debuffs.yOffset = -7;
-			E.db.unitframe.units.raid25.debuffs.clickThrough = false;
-			E.db.unitframe.units.raid25.debuffs.noDuration = false;
-			E.db.unitframe.units.raid25.debuffs.onlyDispellable = false
-			E.db.unitframe.units.raid25.debuffs.useFilter = ''
-
+			E.db.unitframe.units.raid25.positionOverride = "BOTTOMRIGHT";
+			E.db.unitframe.units.raid25.height = 45;
 			E.db.unitframe.units.raid25.buffs.noConsolidated = false
-			E.db.unitframe.units.raid25.buffs.xOffset = 0;
-			E.db.unitframe.units.raid25.buffs.yOffset = -7;
-			E.db.unitframe.units.raid25.buffs.anchorPoint = "CENTER"
+			E.db.unitframe.units.raid25.buffs.xOffset = 50;
+			E.db.unitframe.units.raid25.buffs.yOffset = -6;
 			E.db.unitframe.units.raid25.buffs.clickThrough = true
 			E.db.unitframe.units.raid25.buffs.noDuration = false
 			E.db.unitframe.units.raid25.buffs.playerOnly = false;
 			E.db.unitframe.units.raid25.buffs.perrow = 1
 			E.db.unitframe.units.raid25.buffs.useFilter = "TurtleBuffs"
-			E.db.unitframe.units.raid25.buffs.sizeOverride = 26
+			E.db.unitframe.units.raid25.buffs.sizeOverride = 22
 			E.db.unitframe.units.raid25.buffs.useBlacklist = false
-			E.db.unitframe.units.raid25.buffs.enable = true
-
+			E.db.unitframe.units.raid25.buffs.enable = true			
+			
 			E.db.unitframe.units.party.point = "LEFT"
 			E.db.unitframe.units.party.xOffset = 9;
 			E.db.unitframe.units.party.yOffset = 9;
@@ -470,15 +455,14 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.party.positionOverride = "BOTTOMRIGHT";
 			E.db.unitframe.units.party.height = 45;
 			E.db.unitframe.units.party.buffs.noConsolidated = false
-			E.db.unitframe.units.party.buffs.xOffset = 0;
-			E.db.unitframe.units.party.buffs.yOffset = -7;
-			E.db.unitframe.units.party.buffs.anchorPoint = "CENTER"
+			E.db.unitframe.units.party.buffs.xOffset = 50;
+			E.db.unitframe.units.party.buffs.yOffset = -6;
 			E.db.unitframe.units.party.buffs.clickThrough = true
 			E.db.unitframe.units.party.buffs.noDuration = false
 			E.db.unitframe.units.party.buffs.playerOnly = false;
 			E.db.unitframe.units.party.buffs.perrow = 1
 			E.db.unitframe.units.party.buffs.useFilter = "TurtleBuffs"
-			E.db.unitframe.units.party.buffs.sizeOverride = 26
+			E.db.unitframe.units.party.buffs.sizeOverride = 22
 			E.db.unitframe.units.party.buffs.useBlacklist = false
 			E.db.unitframe.units.party.buffs.enable = true	
 			E.db.unitframe.units.party.roleIcon.position = "BOTTOMRIGHT"
@@ -490,7 +474,9 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.party.name.text_format = "[namecolor][name:short]"
 			E.db.unitframe.units.party.name.position = "TOP"
 			E.db.unitframe.units.party.power.text_format = ""
+			
 
+			
 			E.db.unitframe.units.raid40.positionOverride = "BOTTOMRIGHT"
 			E.db.unitframe.units.raid40.height = 30
 			

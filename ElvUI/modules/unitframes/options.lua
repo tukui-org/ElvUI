@@ -29,7 +29,7 @@ local auraAnchors = {
 	BOTTOMRIGHT = 'BOTTOMRIGHT',
 	BOTTOM = 'BOTTOM',
 	TOP = 'TOP',
-	CENTER = 'CENTER'
+	CENTER = 'CENTER'	
 };
 
 local petAnchors = {
@@ -9083,6 +9083,44 @@ for i=10, 40, 15 do
 					},							
 				},
 			},				
+			rdebuffs = {
+				order = 800,
+				type = 'group',
+				name = L['RaidDebuff Indicator'],
+				get = function(info) return E.db.unitframe.units['raid'..i]['rdebuffs'][ info[#info] ] end,
+				set = function(info, value) E.db.unitframe.units['raid'..i]['rdebuffs'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i) end,
+				args = {
+					enable = {
+						type = 'toggle',
+						name = L['Enable'],
+						order = 1,
+					},	
+					size = {
+						type = 'range',
+						name = L['Size'],
+						order = 2,
+						min = 8, max = 35, step = 1,
+					},				
+					fontSize = {
+						type = 'range',
+						name = L['Font Size'],
+						order = 3,
+						min = 7, max = 22, step = 1,
+					},	
+					xOffset = {
+						order = 4,
+						type = 'range',
+						name = L['xOffset'],
+						min = -300, max = 300, step = 1,
+					},
+					yOffset = {
+						order = 5,
+						type = 'range',
+						name = L['yOffset'],
+						min = -300, max = 300, step = 1,
+					},		
+				},
+			},
 			raidicon = {
 				order = 2000,
 				type = 'group',
