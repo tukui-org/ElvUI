@@ -40,7 +40,6 @@ function D:Distribute(target, otherServer, isGlobal)
 		end
 		
 		data = ElvDB.profiles[profileKey]
-		isGlobal = "false"
 	else
 		profileKey = 'global'
 		data = ElvDB.global
