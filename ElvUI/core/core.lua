@@ -1,7 +1,5 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local LSM = LibStub("LibSharedMedia-3.0")
-local _, ns = ...
-local ElvUF = ns.oUF
 
 local format = string.format
 local find = string.find
@@ -10,12 +8,13 @@ local match = string.match
 local wipe = table.wipe
 
 --Constants
-_, E.myclass = UnitClass("player");
-E.myname, _ = UnitName("player");
+E.myclass = select(2, UnitClass("player"));
+E.myrace = select(2, UnitRace("player"))
+E.myname = UnitName("player");
 E.myguid = UnitGUID('player');
 E.version = GetAddOnMetadata("ElvUI", "Version"); 
 E.myrealm = GetRealmName();
-_, E.wowbuild = GetBuildInfo(); E.wowbuild = tonumber(E.wowbuild);
+E.wowbuild = select(2, GetBuildInfo()); E.wowbuild = tonumber(E.wowbuild);
 E.resolution = GetCVar("gxResolution")
 E.screenheight = tonumber(match(E.resolution, "%d+x(%d+)"))
 E.screenwidth = tonumber(match(E.resolution, "(%d+)x+%d"))
