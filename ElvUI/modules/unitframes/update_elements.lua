@@ -1306,6 +1306,26 @@ local function CheckFilterArguement(option, optionArgs)
 	return optionArgs
 end
 
+local huge = math.huge
+function UF.SortAuraBarReverse(a, b)
+	local compa, compb = a.noTime and huge or a.expirationTime, b.noTime and huge or b.expirationTime
+	return compa < compb
+end
+
+function UF.SortAuraBarDuration(a, b)
+	local compa, compb = a.noTime and huge or a.duration, b.noTime and huge or b.duration
+	return compa > compb
+end
+
+function UF.SortAuraBarDurationReverse(a, b)
+	local compa, compb = a.noTime and huge or a.duration, b.noTime and huge or b.duration
+	return compa > compb
+end
+
+function UF.SortAuraBarName(a, b)
+	return a.name > b.name
+end
+
 function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID)
 	if not self.db then return; end
 	if E.global.unitframe.InvalidSpells[spellID] then

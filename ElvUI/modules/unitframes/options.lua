@@ -40,6 +40,15 @@ local petAnchors = {
 	BOTTOM = 'BOTTOM',
 };
 
+local auraBarsSortValues = {
+	['TIME_REMAINING'] = L['Time Remaining'],
+	['TIME_REMAINING_REVERSE'] = L['Time Remaining Reverse'],
+	['TIME_DURATION'] = L['Duration'],
+	['TIME_DURATION_REVERSE'] = L['Duration Reverse'],
+	['NAME'] = NAME,
+	['NONE'] = NONE,
+}
+
 local threatOptions = {
 	['GLOW'] = L['Glow'],
 	['BORDERS'] = L['Borders'],
@@ -1275,6 +1284,12 @@ E.Options.args.unitframe.args.player = {
 					name = L['Height'],
 					min = 6, max = 40, step = 1,
 				},
+				sort = {
+					type = 'select',
+					order = 5,
+					name = L['Sort Method'],
+					values = auraBarsSortValues,
+				},
 				filters = {
 					name = L["Filters"],
 					guiInline = true,
@@ -2284,6 +2299,12 @@ E.Options.args.unitframe.args.target = {
 					order = 4,
 					name = L['Height'],
 					min = 6, max = 40, step = 1,
+				},			
+				sort = {
+					type = 'select',
+					order = 5,
+					name = L['Sort Method'],
+					values = auraBarsSortValues,
 				},				
 				filters = {
 					name = L["Filters"],
@@ -4000,6 +4021,12 @@ E.Options.args.unitframe.args.focus = {
 					order = 4,
 					name = L['Height'],
 					min = 6, max = 40, step = 1,
+				},
+				sort = {
+					type = 'select',
+					order = 5,
+					name = L['Sort Method'],
+					values = auraBarsSortValues,
 				},				
 				filters = {
 					name = L["Filters"],

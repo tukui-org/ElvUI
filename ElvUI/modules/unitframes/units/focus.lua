@@ -414,6 +414,22 @@ function UF:Update_FocusFrame(frame, db)
 				auraBars.debuffColor = {debuffColor.r, debuffColor.g, debuffColor.b}
 				auraBars.defaultDebuffColor = nil;
 			end
+			
+			if db.aurabar.sort == 'TIME_REMAINING' then
+				auraBars.sort = true --default function
+			elseif db.aurabar.sort == 'TIME_REMAINING_REVERSE' then
+				auraBars.sort = UF.SortAuraBarReverse
+			elseif db.aurabar.sort == 'TIME_DURATION' then
+				auraBars.sort = UF.SortAuraBarDuration
+			elseif db.aurabar.sort == 'TIME_DURATION_REVERSE' then
+				auraBars.sort = UF.SortAuraBarDurationReverse
+			elseif db.aurabar.sort == 'NAME' then
+				auraBars.sort = UF.SortAuraBarName
+			else
+				auraBars.sort = nil
+			end			
+			
+			
 			auraBars.down = db.aurabar.anchorPoint == 'BELOW'
 			auraBars:SetAnchors()
 		else

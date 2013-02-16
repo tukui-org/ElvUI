@@ -400,7 +400,8 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['friendlyAuraType'] = 'HELPFUL',
 				['enemyAuraType'] = 'HARMFUL',
-				['height'] = 20
+				['height'] = 20,
+				['sort'] = 'TIME_REMAINING'
 			},
 			['raidicon'] = {
 				['enable'] = true,
@@ -507,7 +508,8 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['friendlyAuraType'] = 'HELPFUL',
 				['enemyAuraType'] = 'HARMFUL',		
-				['height'] = 20
+				['height'] = 20,
+				['sort'] = 'TIME_REMAINING'
 			},	
 			['raidicon'] = {
 				['enable'] = true,
@@ -664,7 +666,8 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['friendlyAuraType'] = 'HELPFUL',
 				['enemyAuraType'] = 'HARMFUL',
-				['height'] = 20
+				['height'] = 20,
+				['sort'] = 'TIME_REMAINING'
 			},	
 			['raidicon'] = {
 				['enable'] = true,

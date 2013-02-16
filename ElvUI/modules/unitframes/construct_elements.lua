@@ -743,7 +743,6 @@ function UF:Construct_AuraBarHeader(frame)
 	auraBar.gap = (E.PixelMode and -1 or 1)
 	auraBar.spacing = (E.PixelMode and -1 or 1)
 	auraBar.spark = true
-	auraBar.sort = true
 	auraBar.filter = UF.AuraBarFilter
 	auraBar.PostUpdate = UF.ColorizeAuraBars
 

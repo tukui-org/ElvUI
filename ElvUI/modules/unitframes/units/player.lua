@@ -1079,7 +1079,6 @@ function UF:Update_PlayerFrame(frame, db)
 			end
 			
 			auraBars.auraBarHeight = db.aurabar.height
-			
 			auraBars:ClearAllPoints()
 			auraBars:SetPoint(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', (attachTo == frame and anchorTo == 'BOTTOM') and POWERBAR_OFFSET or 0, E.PixelMode and anchorPoint ==  -1 or yOffset)
 			auraBars:SetPoint(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', attachTo == frame and POWERBAR_OFFSET * (anchorTo == 'BOTTOM' and 0 or -1) or 0, E.PixelMode and -1 or yOffset)
@@ -1092,6 +1091,21 @@ function UF:Update_PlayerFrame(frame, db)
 				auraBars.defaultDebuffColor = nil;
 			end
 			auraBars.down = db.aurabar.anchorPoint == 'BELOW'
+			
+			if db.aurabar.sort == 'TIME_REMAINING' then
+				auraBars.sort = true --default function
+			elseif db.aurabar.sort == 'TIME_REMAINING_REVERSE' then
+				auraBars.sort = UF.SortAuraBarReverse
+			elseif db.aurabar.sort == 'TIME_DURATION' then
+				auraBars.sort = UF.SortAuraBarDuration
+			elseif db.aurabar.sort == 'TIME_DURATION_REVERSE' then
+				auraBars.sort = UF.SortAuraBarDurationReverse
+			elseif db.aurabar.sort == 'NAME' then
+				auraBars.sort = UF.SortAuraBarName
+			else
+				auraBars.sort = nil
+			end
+			
 			auraBars:SetAnchors()
 		else
 			if frame:IsElementEnabled('AuraBars') then
