@@ -200,7 +200,7 @@ local filterIcons = function(unit, icons, filter, limit, isDebuff, offset, dontH
 	if(not offset) then offset = 0 end
 	local index = 1
 	local visible = 0
-	while(visible < limit) do
+		while(visible < limit) do
 		local result = updateIcon(unit, icons, index, offset, filter, isDebuff, visible)
 		if(not result) then
 			break
