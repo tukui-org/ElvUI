@@ -468,6 +468,7 @@ function E:UpdateAll(ignoreInstall)
 	local CH = self:GetModule('Chat')
 	CH.db = self.db.chat
 	CH:PositionChat(true); 
+	CH:SetupChat()
 	
 	local AB = self:GetModule('ActionBars')
 	AB.db = self.db.actionbar
