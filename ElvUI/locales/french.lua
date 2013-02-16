@@ -907,7 +907,6 @@ L['Raid Icon'] = "Icône de Raid";
 L['Raid-10 Frames'] = "Cadres de raid 10 joueurs"
 L['Raid-25 Frames'] = "Cadres de raid 25 joueurs"
 L['Raid-40 Frames'] = "Cadres de raid 40 joueurs"
-L["RaidDebuff Indicator"] = "Indicateur d'affaiblissement en Raid"
 L["Rapidly update the health, uses more memory and cpu. Only recommended for healing."] = "Mise à jour rapide de la santé, ce qui augmente la charge de la mémoire et du processeur. Recommandé seulement pour les Soigneurs."
 L["Reactions"] = "Réactions"
 L["Remaining"] = "Restant"

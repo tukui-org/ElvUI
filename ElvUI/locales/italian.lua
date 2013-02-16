@@ -896,7 +896,6 @@ L['Raid Icon'] = true;
 L['Raid-10 Frames'] = true;
 L['Raid-25 Frames'] = true;
 L['Raid-40 Frames'] = true;
-L["RaidDebuff Indicator"] = true;
 L["Rapidly update the health, uses more memory and cpu. Only recommended for healing."] = true;
 L["Reactions"] = true;
 L["Remaining"] = true;

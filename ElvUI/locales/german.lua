@@ -904,7 +904,6 @@ L['Raid Icon'] = 'Schlachtzugssymbol'
 L['Raid-10 Frames'] = '10er Schlachtzugsfenster'
 L['Raid-25 Frames'] = '25er Schachtzugsfenster'
 L['Raid-40 Frames'] = '40er Schlachtzugsfenster'
-L["RaidDebuff Indicator"] = "RaidDebuff Indicator"
 L["Rapidly update the health, uses more memory and cpu. Only recommended for healing."] = "Schnelle Aktualisierung der Lebensleiste. Benutzt mehr Speicher und Prozessorleistung. Nur für Heiler zu empfehlen."
 L["Reactions"] = "Reaktionen"
 L["Remaining"] = "Verbleibend"

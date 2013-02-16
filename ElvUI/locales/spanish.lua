@@ -905,7 +905,6 @@ L['Raid Icon'] = 'Icono de Banda';
 L['Raid-10 Frames'] = "Marco de Banda-10";
 L['Raid-25 Frames'] = "Marco de Banda-25";
 L['Raid-40 Frames'] = "Marco de Banda-40";
-L["RaidDebuff Indicator"] = "Indicador de Perjuicios de Banda";
 L["Rapidly update the health, uses more memory and cpu. Only recommended for healing."] = "Actualizar la salud rápidamente, consume más memoria y cpu. Recomendado sólo para sanadores.";
 L["Reactions"] = "Reacciones";
 L["Remaining"] = "Restante";

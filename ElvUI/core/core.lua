@@ -42,7 +42,8 @@ E.InversePoints = {
 	LEFT = 'RIGHT',
 	RIGHT = 'LEFT',
 	BOTTOMLEFT = 'TOPLEFT',
-	BOTTOMRIGHT = 'TOPRIGHT'
+	BOTTOMRIGHT = 'TOPRIGHT',
+	CENTER = 'CENTER'
 }
 
 E.DispelClasses = {

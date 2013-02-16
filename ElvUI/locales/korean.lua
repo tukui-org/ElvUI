@@ -912,7 +912,6 @@ L['Raid Icon'] = true;
 L['Raid-10 Frames'] = true;
 L['Raid-25 Frames'] = true;
 L['Raid-40 Frames'] = true;
-L["RaidDebuff Indicator"] = "공격대 주요 디버프 표시기"
 L["Rapidly update the health, uses more memory and cpu. Only recommended for healing."] = "체력을 빨리 업데이트하며, 메모리와 CPU를 좀 더 사용합니다. 힐러일 경우에만 추천합니다."
 L["Reactions"] = "관계"
 L["Remaining"] = "남은"
