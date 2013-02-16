@@ -580,6 +580,8 @@ function UF:Update_TargetFrame(frame, db)
 				anchorPoint, anchorTo = 'TOP', 'BOTTOM'
 			end
 			
+			auraBars.auraBarHeight = db.aurabar.height
+			
 			local yOffset = 0;
 			if E.PixelMode then
 				if db.aurabar.anchorPoint == 'BELOW' then

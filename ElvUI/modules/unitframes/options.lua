@@ -1269,6 +1269,12 @@ E.Options.args.unitframe.args.player = {
 						['BUFFS'] = L['Buffs'],
 					},					
 				},
+				height = {
+					type = 'range',
+					order = 4,
+					name = L['Height'],
+					min = 6, max = 40, step = 1,
+				},
 				filters = {
 					name = L["Filters"],
 					guiInline = true,
@@ -2273,6 +2279,12 @@ E.Options.args.unitframe.args.target = {
 						['PLAYER_AURABARS'] = L['Player Frame Aura Bars'],
 					},					
 				},
+				height = {
+					type = 'range',
+					order = 4,
+					name = L['Height'],
+					min = 6, max = 40, step = 1,
+				},				
 				filters = {
 					name = L["Filters"],
 					guiInline = true,
@@ -3983,6 +3995,12 @@ E.Options.args.unitframe.args.focus = {
 						['BUFFS'] = L['Buffs'],
 					},					
 				},
+				height = {
+					type = 'range',
+					order = 4,
+					name = L['Height'],
+					min = 6, max = 40, step = 1,
+				},				
 				filters = {
 					name = L["Filters"],
 					guiInline = true,

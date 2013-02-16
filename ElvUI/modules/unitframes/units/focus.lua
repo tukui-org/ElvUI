@@ -399,6 +399,8 @@ function UF:Update_FocusFrame(frame, db)
 					yOffset = -1;
 				end
 			end
+			
+			auraBars.auraBarHeight = db.aurabar.height
 
 			auraBars:ClearAllPoints()
 			auraBars:SetPoint(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', POWERBAR_OFFSET, yOffset)
