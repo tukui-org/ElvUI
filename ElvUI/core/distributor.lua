@@ -11,7 +11,10 @@ local REQUEST_PREFIX = "ELVUI_REQUEST"
 local REPLY_PREFIX = "ELVUI_REPLY"
 local TRANSFER_PREFIX = "ELVUI_TRANSFER"
 local TRANSFER_COMPLETE_PREFIX = "ELVUI_COMPLETE"
-local UL_WAIT = 5
+
+-- The active downloads
+local Downloads = {}
+local Uploads = {}
 
 function D:Initialize()
 	self:RegisterComm(REQUEST_PREFIX)
@@ -27,11 +30,6 @@ function D:Initialize()
 	self.statusBar.text:SetPoint("CENTER")
 	self.statusBar:Hide()
 end
-
-
--- The active downloads
-local Downloads = {}
-local Uploads = {}
 
 -- Used to start uploads
 function D:Distribute(target, otherServer, isGlobal)	
