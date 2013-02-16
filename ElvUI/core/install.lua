@@ -458,8 +458,7 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.raid25.buffs.sizeOverride = 26
 			E.db.unitframe.units.raid25.buffs.useBlacklist = false
 			E.db.unitframe.units.raid25.buffs.enable = true
-			
-			
+
 			E.db.unitframe.units.party.point = "LEFT"
 			E.db.unitframe.units.party.xOffset = 9;
 			E.db.unitframe.units.party.yOffset = 9;

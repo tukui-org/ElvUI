@@ -966,6 +966,11 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 		icon.priority = turtleBuff.priority
 	end
 	
+	local ccDebuffs = E.global['unitframe']['aurafilters']['CCDebuffs'].spells[name]
+	if ccDebuffs and ccDebuffs.enable then
+		icon.priority = ccDebuffs.priority
+	end	
+	
 	if CheckFilter(db.playerOnly, isFriend) then
 		if isPlayer then
 			returnValue = true;
