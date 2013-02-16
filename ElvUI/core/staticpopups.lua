@@ -114,9 +114,13 @@ E.PopupDialogs["DELETE_GRAYS"] = {
 	button1 = YES,
 	button2 = NO,
 	OnAccept = function() local B = E:GetModule('Bags'); B:VendorGrays(true) end,
+	OnShow = function(self)
+		MoneyFrame_Update(self.moneyFrame, E.PopupDialogs["DELETE_GRAYS"].Money);
+	end,	
 	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
+	hasMoneyFrame = 1,
 }
 
 E.PopupDialogs["BUY_BANK_SLOT"] = {
