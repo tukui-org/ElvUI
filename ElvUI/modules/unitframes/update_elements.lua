@@ -2,6 +2,7 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 local UF = E:GetModule('UnitFrames');
 local LSM = LibStub("LibSharedMedia-3.0");
 
+local tsort = table.sort
 local sub = string.sub
 local abs, random, floor, ceil = math.abs, math.random, math.floor, math.ceil
 local _, ns = ...
@@ -169,6 +170,16 @@ function UF:UpdateAuraTimer(elapsed)
 	self.text:SetFormattedText(("%s%s|r%s%s|r"):format(E.TimeColors[formatid], E.TimeFormats[formatid][3], E.IndicatorColors[formatid], (formatid < 3 and E.TimeFormats[formatid][4]) or ''), timervalue)
 end
 
+local function SortAurasByPriority(a, b)
+    if (a and b and a.priority and b.priority) then
+        return a.priority > b.priority
+    end
+end
+
+function UF:SortAuras()
+	tsort(self, SortAurasByPriority)
+end
+
 function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, duration, timeLeft)
 	local name, _, _, _, dtype, duration, expiration, _, isStealable = UnitAura(unit, index, button.filter)
 	local db = self:GetParent().db
@@ -219,13 +230,13 @@ function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, durati
 		if not button:GetScript('OnUpdate') then
 			button.expirationTime = expiration
 			button.expiration = expiration - GetTime()
-			button.nextupdate = 0.05
+			button.nextupdate = -1
 			button:SetScript('OnUpdate', UF.UpdateAuraTimer)
 		end
 		if button.expirationTime ~= expiration  then
 			button.expirationTime = expiration
 			button.expiration = expiration - GetTime()
-			button.nextupdate = 0.05
+			button.nextupdate = -1
 		end
 	end	
 	if duration == 0 or expiration == 0 then
@@ -387,6 +398,15 @@ function UF:PostCastStart(unit, name, rank, castid)
 	else
 		self:SetStatusBarColor(colors.castColor[1], colors.castColor[2], colors.castColor[3])
 	end
+
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentCastbar, self, self.bg, nil, true)
+	if self.bg:IsShown() then
+		local r,g,b = self:GetStatusBarColor()
+		self.bg:SetTexture(r * 0.25, g * 0.25, b * 0.25)
+		
+		local _, _, _, alpha = self.backdrop:GetBackdropColor()
+		self.backdrop:SetBackdropColor(r * 0.58, g * 0.58, b * 0.58, alpha)
+	end
 end
 
 function UF:PostCastStop(unit, name, castid)
@@ -459,11 +479,55 @@ function UF:PostCastInterruptible(unit)
 	else
 		self:SetStatusBarColor(colors.castColor[1], colors.castColor[2], colors.castColor[3])
 	end
+	
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentCastbar, self, self.bg, nil, true)
+	if self.bg:IsShown() then
+		local r,g,b = self:GetStatusBarColor()
+		self.bg:SetTexture(r * 0.25, g * 0.25, b * 0.25)
+		
+		local _, _, _, alpha = self.backdrop:GetBackdropColor()
+		self.backdrop:SetBackdropColor(r * 0.58, g * 0.58, b * 0.58, alpha)		
+	end	
 end
 
 function UF:PostCastNotInterruptible(unit)
 	local colors = ElvUF.colors
 	self:SetStatusBarColor(colors.castNoInterrupt[1], colors.castNoInterrupt[2], colors.castNoInterrupt[3])
+end
+
+local function UpdateFillBar(frame, previousTexture, bar, amount)
+	if ( amount == 0 ) then
+		bar:Hide();
+		return previousTexture;
+	end
+	
+	local orientation = frame.Health:GetOrientation()
+	bar:ClearAllPoints()
+	if orientation == 'HORIZONTAL' then
+		bar:SetPoint("TOPLEFT", previousTexture, "TOPRIGHT");
+		bar:SetPoint("BOTTOMLEFT", previousTexture, "BOTTOMRIGHT");
+	else
+		bar:SetPoint("BOTTOMRIGHT", previousTexture, "TOPRIGHT");
+		bar:SetPoint("BOTTOMLEFT", previousTexture, "TOPLEFT");	
+	end
+
+	local totalWidth, totalHeight = frame.Health:GetSize();
+	if orientation == 'HORIZONTAL' then
+		bar:SetWidth(totalWidth);
+	else
+		bar:SetHeight(totalHeight);
+	end
+
+	return bar:GetStatusBarTexture();
+end
+
+function UF:UpdateHealComm(unit, myIncomingHeal, allIncomingHeal, totalAbsorb)
+	local frame = self.parent
+	local previousTexture = frame.Health:GetStatusBarTexture();
+
+	previousTexture = UpdateFillBar(frame, previousTexture, self.myBar, myIncomingHeal);
+	previousTexture = UpdateFillBar(frame, previousTexture, self.otherBar, allIncomingHeal);
+	previousTexture = UpdateFillBar(frame, previousTexture, self.absorbBar, totalAbsorb);
 end
 
 function UF:UpdateHoly(event, unit, powerType)
@@ -496,7 +560,7 @@ function UF:UpdateHoly(event, unit, powerType)
 	if USE_MINI_CLASSBAR then
 		CLASSBAR_WIDTH = CLASSBAR_WIDTH * (maxHolyPower - 1) / maxHolyPower
 	end
-	
+
 	self.HolyPower:Width(CLASSBAR_WIDTH)
 	
 	for i = 1, MAX_HOLY_POWER do
@@ -713,32 +777,53 @@ function UF:DruidPostUpdateAltPower(unit, min, max)
 	end
 end
 
-function UF:UpdateThreat(event, unit)
-	if (self.unit ~= unit) or not unit or not E.initialized then return end
-	local status = UnitThreatSituation(unit)
+function UF:UpdateThreat(unit, status, r, g, b)
+	local parent = self:GetParent()
+
+	if (parent.unit ~= unit) or not unit then return end
+	
+	local db = parent.db
+	if not db then return end
 	
 	if status and status > 1 then
-		local r, g, b = GetThreatStatusColor(status)
-		if self.Threat and self.Threat:GetBackdrop() then
-			self.Threat:Show()
-			self.Threat:SetBackdropBorderColor(r, g, b)
-		elseif self.Health.backdrop then
-			self.Health.backdrop:SetBackdropBorderColor(r, g, b)
+		if db.threatStyle == 'GLOW' then
+			self.glow:Show()
+			self.glow:SetBackdropBorderColor(r, g, b)
+		elseif db.threatStyle == 'BORDERS' then
+			parent.Health.backdrop:SetBackdropBorderColor(r, g, b)
 			
-			if self.Power and self.Power.backdrop then
-				self.Power.backdrop:SetBackdropBorderColor(r, g, b)
+			if parent.Power and parent.Power.backdrop then
+				parent.Power.backdrop:SetBackdropBorderColor(r, g, b)
 			end
+			
+			if parent.ClassBar and parent.ClassBar.backdrop then
+				parent.ClassBar.backdrop:SetBackdropBorderColor(r, g, b)
+			end
+		elseif db.threatStyle == 'HEALTHBORDER' then
+			parent.Health.backdrop:SetBackdropBorderColor(r, g, b)
+		elseif db.threatStyle ~= 'NONE' and self.texIcon then
+			self.texIcon:Show()
+			self.texIcon:SetVertexColor(r, g, b)
 		end
 	else
-		if self.Threat and self.Threat:GetBackdrop() then
-			self.Threat:Hide()
-		elseif self.Health.backdrop then
-			self.Health.backdrop:SetTemplate("Default")
+		r, g, b = unpack(E.media.bordercolor)
+		if db.threatStyle == 'GLOW' then
+			self.glow:Hide()
+		elseif db.threatStyle == 'BORDERS' then
+			parent.Health.backdrop:SetBackdropBorderColor(r, g, b)
 			
-			if self.Power and self.Power.backdrop then
-				self.Power.backdrop:SetTemplate("Default")
+			if parent.Power and parent.Power.backdrop then
+				parent.Power.backdrop:SetBackdropBorderColor(r, g, b)
 			end
-		end	
+			
+			if parent.ClassBar and parent.ClassBar.backdrop then
+				parent.ClassBar.backdrop:SetBackdropBorderColor(r, g, b)
+			end	
+		elseif db.threatStyle == 'HEALTHBORDER' then
+			parent.Health.backdrop:SetBackdropBorderColor(r, g, b)
+		elseif db.threatStyle ~= 'NONE' and self.texIcon then
+			self.texIcon:Hide()
+		end
 	end
 end
 
@@ -874,7 +959,13 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 	icon.isPlayer = isPlayer
 	icon.owner = unitCaster
 	icon.name = name
+	icon.priority = 0
 
+	local turtleBuff = E.global['unitframe']['aurafilters']['TurtleBuffs'].spells[name]
+	if turtleBuff and turtleBuff.enable then
+		icon.priority = turtleBuff.priority
+	end
+	
 	if CheckFilter(db.playerOnly, isFriend) then
 		if isPlayer then
 			returnValue = true;
@@ -922,6 +1013,7 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 		local whiteList = E.global['unitframe']['aurafilters']['Whitelist'].spells[name]
 		if whiteList and whiteList.enable then
 			returnValue = true;
+			icon.priority = whiteList.priority
 		elseif not anotherFilterExists then
 			returnValue = false
 		end
@@ -936,6 +1028,7 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 		if type == 'Whitelist' then
 			if spellList[name] and spellList[name].enable and passPlayerOnlyCheck then
 				returnValue = true
+				icon.priority = spellList[name].priority
 			elseif not anotherFilterExists then
 				returnValue = false
 			end
@@ -958,6 +1051,17 @@ local counterOffsets = {
 	['BOTTOM'] = {0, 0},
 }
 
+local textCounterOffsets = {
+	['TOPLEFT'] = {"LEFT", "RIGHT", -2, 0},
+	['TOPRIGHT'] = {"RIGHT", "LEFT", 2, 0},
+	['BOTTOMLEFT'] = {"LEFT", "RIGHT", -2, 0},
+	['BOTTOMRIGHT'] = {"RIGHT", "LEFT", 2, 0},
+	['LEFT'] = {"LEFT", "RIGHT", -2, 0},
+	['RIGHT'] = {"RIGHT", "LEFT", 2, 0},
+	['TOP'] = {"RIGHT", "LEFT", 2, 0},
+	['BOTTOM'] = {"RIGHT", "LEFT", 2, 0},
+}
+
 function UF:UpdateAuraWatch(frame)
 	local buffs = {};
 	local auras = frame.AuraWatch;
@@ -973,11 +1077,13 @@ function UF:UpdateAuraWatch(frame)
 	if frame.unit == 'pet' then
 		local petWatch = E.global['unitframe'].buffwatch.PET or {}
 		for _, value in pairs(petWatch) do
+			if value.style == 'text' then value.style = 'NONE' end --depreciated
 			tinsert(buffs, value);
 		end	
 	else
 		local buffWatch = E.global['unitframe'].buffwatch[E.myclass] or {}
 		for _, value in pairs(buffWatch) do
+			if value.style == 'text' then value.style = 'NONE' end --depreciated
 			tinsert(buffs, value);
 		end	
 	end
@@ -1020,6 +1126,9 @@ function UF:UpdateAuraWatch(frame)
 				icon.onlyShowMissing = buffs[i].onlyShowMissing;
 				icon.presentAlpha = icon.onlyShowMissing and 0 or 1;
 				icon.missingAlpha = icon.onlyShowMissing and 1 or 0;
+				icon.textThreshold = buffs[i].textThreshold
+				icon.displayText = buffs[i].displayText
+				
 				icon:Width(db.size);
 				icon:Height(db.size);
 				icon:ClearAllPoints()
@@ -1031,7 +1140,9 @@ function UF:UpdateAuraWatch(frame)
 				end
 				
 				if not icon.text then
-					icon.text = icon:CreateFontString(nil, 'BORDER');
+					local f = CreateFrame('Frame', nil, icon)
+					f:SetFrameLevel(icon:GetFrameLevel() + 50)
+					icon.text = f:CreateFontString(nil, 'BORDER');
 				end
 				
 				if not icon.border then
@@ -1042,6 +1153,13 @@ function UF:UpdateAuraWatch(frame)
 					icon.border:SetVertexColor(0, 0, 0);
 				end
 				
+				if not icon.cd then
+					icon.cd = CreateFrame("Cooldown", nil, icon)
+					icon.cd:SetAllPoints(icon)
+					icon.cd:SetReverse(true)
+					icon.cd:SetFrameLevel(icon:GetFrameLevel())
+				end			
+
 				if icon.style == 'coloredIcon' then
 					icon.icon:SetTexture(E["media"].blankTex);
 					
@@ -1050,37 +1168,50 @@ function UF:UpdateAuraWatch(frame)
 					else
 						icon.icon:SetVertexColor(0.8, 0.8, 0.8);
 					end		
-					icon.text:Hide()
+					icon.icon:Show()
 					icon.border:Show()
+					icon.cd:SetAlpha(1)
 				elseif icon.style == 'texturedIcon' then
 					icon.icon:SetVertexColor(1, 1, 1)
 					icon.icon:SetTexCoord(.18, .82, .18, .82);
 					icon.icon:SetTexture(icon.image);
-					icon.text:Hide()
+					icon.icon:Show()
 					icon.border:Show()
+					icon.cd:SetAlpha(1)
 				else
-					icon.icon:SetTexture(nil)
-					icon.text:Show()
-					icon.text:SetTextColor(buffs[i].color.r, buffs[i].color.g, buffs[i].color.b)
 					icon.border:Hide()
+					icon.icon:Hide()
+					icon.cd:SetAlpha(0)
 				end
 				
-				if not icon.cd then
-					icon.cd = CreateFrame("Cooldown", nil, icon)
-					icon.cd:SetAllPoints(icon)
-					icon.cd:SetReverse(true)
-					icon.cd:SetFrameLevel(icon:GetFrameLevel())
+				if icon.displayText then
+					icon.text:Show()
+					local r, g, b = 1, 1, 1
+					if buffs[i].textColor then
+						r, g, b = buffs[i].textColor.r, buffs[i].textColor.g, buffs[i].textColor.b
+					end
+					
+					icon.text:SetTextColor(r, g, b)
+				else
+					icon.text:Hide()
 				end
-				
+	
 				if not icon.count then
 					icon.count = icon:CreateFontString(nil, "OVERLAY");
+				end
+				
+				icon.count:ClearAllPoints()
+				if icon.displayText then
+					local point, anchorPoint, x, y = unpack(textCounterOffsets[buffs[i].point])
+					icon.count:SetPoint(point, icon.text, anchorPoint, x, y)
+				else
 					icon.count:SetPoint("CENTER", unpack(counterOffsets[buffs[i].point]));
 				end
 				
 				icon.count:FontTemplate(unitframeFont, db.fontSize, 'OUTLINE');
 				icon.text:FontTemplate(unitframeFont, db.fontSize, 'OUTLINE');
 				icon.text:ClearAllPoints()
-				icon.text:SetPoint(buffs[i].point)
+				icon.text:SetPoint(buffs[i].point, icon, buffs[i].point)
 				
 				if buffs[i].enabled then
 					auras.icons[buffs[i].id] = icon;
@@ -1115,6 +1246,7 @@ local roleIconTextures = {
 
 function UF:UpdateRoleIcon()
 	local lfdrole = self.LFDRole
+	if not self.db then return; end
 	local db = self.db.roleIcon;
 	
 	if (not db) or (db and not db.enable) then 
@@ -1174,6 +1306,26 @@ local function CheckFilterArguement(option, optionArgs)
 	return optionArgs
 end
 
+local huge = math.huge
+function UF.SortAuraBarReverse(a, b)
+	local compa, compb = a.noTime and huge or a.expirationTime, b.noTime and huge or b.expirationTime
+	return compa < compb
+end
+
+function UF.SortAuraBarDuration(a, b)
+	local compa, compb = a.noTime and huge or a.duration, b.noTime and huge or b.duration
+	return compa > compb
+end
+
+function UF.SortAuraBarDurationReverse(a, b)
+	local compa, compb = a.noTime and huge or a.duration, b.noTime and huge or b.duration
+	return compa > compb
+end
+
+function UF.SortAuraBarName(a, b)
+	return a.name > b.name
+end
+
 function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID)
 	if not self.db then return; end
 	if E.global.unitframe.InvalidSpells[spellID] then
@@ -1231,7 +1383,7 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 		
 		anotherFilterExists = true
 	end
-	
+
 	if CheckFilter(db.useWhitelist, isFriend) then
 		local whiteList = E.global['unitframe']['aurafilters']['Whitelist'].spells[name]
 		if whiteList and whiteList.enable then
@@ -1270,7 +1422,24 @@ function UF:ColorizeAuraBars(event, unit)
 		local colors = E.global.unitframe.AuraBarColors[frame.statusBar.aura.name]
 		if colors then
 			frame.statusBar:SetStatusBarColor(colors.r, colors.g, colors.b)
+			frame.statusBar.bg:SetTexture(colors.r * 0.25, colors.g * 0.25, colors.b * 0.25)
+		else
+			local r, g, b = frame.statusBar:GetStatusBarColor()
+			frame.statusBar.bg:SetTexture(r * 0.25, g * 0.25, b * 0.25)			
 		end
+
+		if UF.db.colors.transparentAurabars then
+			UF:ToggleTransparentStatusBar(true, frame.statusBar, frame.statusBar.bg, nil, true)
+			local _, _, _, alpha = frame:GetBackdropColor()
+			if colors then
+				frame:SetBackdropColor(colors.r * 0.58, colors.g * 0.58, colors.b * 0.58, alpha)
+			else
+				local r, g, b = frame.statusBar:GetStatusBarColor()
+				frame:SetBackdropColor(r * 0.58, g * 0.58, b * 0.58, alpha)
+			end			
+		else
+			UF:ToggleTransparentStatusBar(false, frame.statusBar, frame.statusBar.bg, nil, true)
+		end	
 	end
 end
 
@@ -1308,14 +1477,16 @@ function UF:SmartAuraDisplay()
 		
 		buffs:ClearAllPoints()
 		buffs:Point(E.InversePoints[db.buffs.anchorPoint], self, db.buffs.anchorPoint, x + db.buffs.xOffset, y + db.buffs.yOffset + (E.PixelMode and (db.buffs.anchorPoint:find('TOP') and -1 or 1) or 0))
-		
-		local anchorPoint, anchorTo = 'BOTTOM', 'TOP'
-		if db.aurabar.anchorPoint == 'BELOW' then
-			anchorPoint, anchorTo = 'TOP', 'BOTTOM'
-		end		
-		auraBars:ClearAllPoints()
-		auraBars:SetPoint(anchorPoint..'LEFT', buffs, anchorTo..'LEFT', 0, yOffset)
-		auraBars:SetPoint(anchorPoint..'RIGHT', buffs, anchorTo..'RIGHT', 0, yOffset)
+
+		if db.aurabar.attachTo ~= 'FRAME' then
+			local anchorPoint, anchorTo = 'BOTTOM', 'TOP'
+			if db.aurabar.anchorPoint == 'BELOW' then
+				anchorPoint, anchorTo = 'TOP', 'BOTTOM'
+			end		
+			auraBars:ClearAllPoints()
+			auraBars:SetPoint(anchorPoint..'LEFT', buffs, anchorTo..'LEFT', 0, yOffset)
+			auraBars:SetPoint(anchorPoint..'RIGHT', buffs, anchorTo..'RIGHT', 0, yOffset)
+		end
 	end
 	
 	if debuffs:IsShown() then
@@ -1323,13 +1494,20 @@ function UF:SmartAuraDisplay()
 		
 		debuffs:ClearAllPoints()
 		debuffs:Point(E.InversePoints[db.debuffs.anchorPoint], self, db.debuffs.anchorPoint, x + db.debuffs.xOffset, y + db.debuffs.yOffset)	
-
-		local anchorPoint, anchorTo = 'BOTTOM', 'TOP'
-		if db.aurabar.anchorPoint == 'BELOW' then
-			anchorPoint, anchorTo = 'TOP', 'BOTTOM'
-		end		
-		auraBars:ClearAllPoints()
-		auraBars:SetPoint(anchorPoint..'LEFT', debuffs, anchorTo..'LEFT', 0, yOffset)
-		auraBars:SetPoint(anchorPoint..'RIGHT', debuffs, anchorTo..'RIGHT', 0, yOffset)		
+		
+		if db.aurabar.attachTo ~= 'FRAME' then
+			local anchorPoint, anchorTo = 'BOTTOM', 'TOP'
+			if db.aurabar.anchorPoint == 'BELOW' then
+				anchorPoint, anchorTo = 'TOP', 'BOTTOM'
+			end		
+			auraBars:ClearAllPoints()
+			auraBars:SetPoint(anchorPoint..'LEFT', debuffs, anchorTo..'LEFT', 0, yOffset)
+			auraBars:SetPoint(anchorPoint..'RIGHT', debuffs, anchorTo..'RIGHT', 0, yOffset)		
+		end
 	end
+end
+
+function UF:PostUpdateStagger()
+	local frame = self:GetParent()
+	UF:UpdatePlayerFrameAnchors(frame, (frame.ClassBar and frame.ClassBar:IsShown()))
 end

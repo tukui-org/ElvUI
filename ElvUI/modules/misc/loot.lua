@@ -94,6 +94,7 @@ local function createSlot(id)
 	iconFrame:Width(iconsize)
 	iconFrame:SetPoint("RIGHT", frame)
 	iconFrame:SetTemplate("Default")
+	frame.iconFrame = iconFrame
 	E["frames"][iconFrame] = nil;
 
 	local icon = iconFrame:CreateTexture(nil, "ARTWORK")
@@ -123,6 +124,12 @@ local function createSlot(id)
 	drop:SetAllPoints(frame)
 	drop:SetAlpha(.3)
 	frame.drop = drop
+	
+	local questTexture = iconFrame:CreateTexture(nil, 'OVERLAY')
+	questTexture:SetInside()
+	questTexture:SetTexture(TEXTURE_ITEM_QUEST_BANG);
+	questTexture:SetTexCoord(unpack(E.TexCoords))
+	frame.questTexture = questTexture
 
 	lootFrame.slots[id] = frame
 	return frame
@@ -188,7 +195,7 @@ function M:LOOT_OPENED(event, autoloot)
 	if(items > 0) then
 		for i=1, items do
 			local slot = lootFrame.slots[i] or createSlot(i)
-			local texture, item, quantity, quality, locked = GetLootSlotInfo(i)
+			local texture, item, quantity, quality, locked, isQuestItem, questId, isActive = GetLootSlotInfo(i)
 			local color = ITEM_QUALITY_COLORS[quality]
 
 			if texture and texture:find('INV_Misc_Coin') then
@@ -221,6 +228,19 @@ function M:LOOT_OPENED(event, autoloot)
 			end
 			w = max(w, slot.name:GetStringWidth())
 
+			
+			local questTexture = slot.questTexture
+			if ( questId and not isActive ) then
+				questTexture:Show();
+				ActionButton_ShowOverlayGlow(slot.iconFrame)
+			elseif ( questId or isQuestItem ) then
+				questTexture:Hide();	
+				ActionButton_ShowOverlayGlow(slot.iconFrame)
+			else
+				questTexture:Hide();
+				ActionButton_HideOverlayGlow(slot.iconFrame)
+			end			
+			
 			slot:Enable()
 			slot:Show()
 		end

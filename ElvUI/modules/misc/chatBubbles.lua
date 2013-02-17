@@ -28,6 +28,12 @@ function M:SkinBubble(frame)
 	
 	frame.text:FontTemplate(nil, 14)
 	
+	if E.PixelMode then
+		frame.backdrop2:SetTexture(unpack(E["media"].backdropfadecolor))
+	end
+	
+	frame.text:FontTemplate(nil, 14)
+	
 	frame:SetClampedToScreen(false)
 	frame.isBubblePowered = true
 	frame:HookScript('OnShow', M.UpdateBubbleBorder)

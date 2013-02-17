@@ -26,13 +26,13 @@ local function UpdateFilterGroup()
 					desc = L['Add a spell to the filter.'],
 					type = 'input',
 					get = function(info) return "" end,
-					set = function(info, value) 
+					set = function(info, value)
 						if not E.global.unitframe.AuraBarColors[value] then
 							E.global.unitframe.AuraBarColors[value] = false
 						end
 						UpdateFilterGroup();
 						UF:Update_AllFrames();
-					end,					
+					end,	
 				},
 				removeSpell = {
 					order = 1,
@@ -42,7 +42,7 @@ local function UpdateFilterGroup()
 					get = function(info) return "" end,
 					set = function(info, value) 
 						if G['unitframe'].AuraBarColors[value] then
-							G['unitframe'].AuraBarColors[value] = false;
+							E.global.unitframe.AuraBarColors[value] = false;
 							E:Print(L['You may not remove a spell from a default filter that is not customly added. Setting spell to false instead.'])
 						else
 							E.global.unitframe.AuraBarColors[value] = nil;
@@ -151,14 +151,12 @@ local function UpdateFilterGroup()
 						elseif not GetSpellInfo(value) then
 							E:Print(L["Not valid spell id"])
 						else	
-							local match
-							if not G.unitframe.InvalidSpells[tonumber(value)] then
+							if G.unitframe.InvalidSpells[tonumber(value)] then
+								E.global.unitframe.InvalidSpells[tonumber(value)] = false;
+								E:Print(L['You may not remove a spell from a default filter that is not customly added. Setting spell to false instead.'])
+							else
 								E.global.unitframe.InvalidSpells[tonumber(value)] = nil;
-							end		
-
-							if not G.unitframe.InvalidSpells[value] then
-								E.global.unitframe.InvalidSpells[value] = nil;
-							end									
+							end
 						end		
 
 						UpdateFilterGroup();
@@ -243,9 +241,15 @@ local function UpdateFilterGroup()
 							for x, y in pairs(E.global.unitframe.buffwatch.PET) do
 								if y["id"] == tonumber(value) then
 									match = y
-									E.global.unitframe.buffwatch.PET[x] = nil
+									if G.unitframe.buffwatch.PET[x] then
+										E.global.unitframe.buffwatch.PET[x].enabled = false
+										E:Print(L['You may not remove a spell from a default filter that is not customly added. Setting spell to false instead.'])
+									else
+										E.global.unitframe.buffwatch.PET[x] = nil
+									end
 								end
 							end
+
 							if match == nil then
 								E:Print(L["Spell not found in list."])
 							else
@@ -328,7 +332,7 @@ local function UpdateFilterGroup()
 						values = {
 							['coloredIcon'] = L['Colored Icon'],
 							['texturedIcon'] = L['Textured Icon'],
-							['text'] = L['Text'],
+							['NONE'] = NONE,
 						},
 					},					
 					color = {
@@ -345,14 +349,44 @@ local function UpdateFilterGroup()
 							UF:Update_AllFrames()
 						end,						
 					},
+					displayText = {
+						name = L['Display Text'],
+						type = 'toggle',
+						order = 5,
+					},
+					textColor = {
+						name = L['Text Color'],
+						type = 'color',
+						order = 6,
+						get = function(info)
+							local t = E.global.unitframe.buffwatch.PET[tableIndex][ info[#info] ]
+							if t then
+								return t.r, t.g, t.b, t.a
+							else
+								return 1, 1, 1, 1
+							end
+						end,
+						set = function(info, r, g, b)
+							local t = E.global.unitframe.buffwatch.PET[tableIndex][ info[#info] ]
+							t.r, t.g, t.b = r, g, b
+							UF:Update_AllFrames()
+						end,						
+					},					
+					textThreshold = {
+						name = L['Text Threshold'],
+						desc = L['At what point should the text be displayed. Set to -1 to disable.'],
+						type = 'range',
+						order = 6,
+						min = -1, max = 60, step = 1,
+					},
 					anyUnit = {
 						name = L['Show Aura From Other Players'],
-						order = 5,
+						order = 7,
 						type = 'toggle',	
 					},
 					onlyShowMissing = {
 						name = L['Show When Not Active'],
-						order = 6,
+						order = 8,
 						type = 'toggle',	
 						disabled = function() return E.global.unitframe.buffwatch.PET[tableIndex].style == 'text' end,
 					},
@@ -414,7 +448,12 @@ local function UpdateFilterGroup()
 							for x, y in pairs(E.global.unitframe.buffwatch[E.myclass]) do
 								if y["id"] == tonumber(value) then
 									match = y
-									E.global.unitframe.buffwatch[E.myclass][x] = nil
+									if G.unitframe.buffwatch[E.myclass][x] then
+										E.global.unitframe.buffwatch[E.myclass][x].enabled = false
+										E:Print(L['You may not remove a spell from a default filter that is not customly added. Setting spell to false instead.'])
+									else
+										E.global.unitframe.buffwatch[E.myclass][x] = nil
+									end
 								end
 							end
 							if match == nil then
@@ -499,7 +538,7 @@ local function UpdateFilterGroup()
 						values = {
 							['coloredIcon'] = L['Colored Icon'],
 							['texturedIcon'] = L['Textured Icon'],
-							['text'] = L['Text'],
+							['NONE'] = NONE,
 						},
 					},					
 					color = {
@@ -516,14 +555,44 @@ local function UpdateFilterGroup()
 							UF:Update_AllFrames()
 						end,						
 					},
+					displayText = {
+						name = L['Display Text'],
+						type = 'toggle',
+						order = 5,
+					},
+					textColor = {
+						name = L['Text Color'],
+						type = 'color',
+						order = 6,
+						get = function(info)
+							local t = E.global.unitframe.buffwatch[E.myclass][tableIndex][ info[#info] ]
+							if t then
+								return t.r, t.g, t.b, t.a
+							else
+								return 1, 1, 1, 1
+							end
+						end,
+						set = function(info, r, g, b)
+							local t = E.global.unitframe.buffwatch[E.myclass][tableIndex][ info[#info] ]
+							t.r, t.g, t.b = r, g, b
+							UF:Update_AllFrames()
+						end,						
+					},					
+					textThreshold = {
+						name = L['Text Threshold'],
+						desc = L['At what point should the text be displayed. Set to -1 to disable.'],
+						type = 'range',
+						order = 6,
+						min = -1, max = 60, step = 1,
+					},
 					anyUnit = {
 						name = L['Show Aura From Other Players'],
-						order = 5,
+						order = 7,
 						type = 'toggle',	
 					},
 					onlyShowMissing = {
 						name = L['Show When Not Active'],
-						order = 6,
+						order = 8,
 						type = 'toggle',	
 						disabled = function() return E.global.unitframe.buffwatch[E.myclass][tableIndex].style == 'text' end,
 					},
@@ -650,7 +719,7 @@ local function UpdateFilterGroup()
 						end
 					end,
 					set = function(info, value) E.global.unitframe['aurafilters'][selectedFilter]['spells'][selectedSpell].priority = value; UpdateFilterGroup(); UF:Update_AllFrames(); end,
-					min = 0, max = 10, step = 1,
+					min = 0, max = 99, step = 1,
 					desc = L["Set the priority order of the spell, please note that prioritys are only used for the raid debuff module, not the standard buff/debuff module. If you want to disable set to zero."],
 				},			
 			},

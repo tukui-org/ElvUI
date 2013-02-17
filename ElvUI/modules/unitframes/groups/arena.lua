@@ -22,7 +22,7 @@ function UF:Construct_ArenaFrames(frame)
 	
 	frame.Trinket = self:Construct_Trinket(frame)
 	frame.PVPSpecIcon = self:Construct_PVPSpecIcon(frame)
-	
+	frame.Range = UF:Construct_Range(frame)
 	frame:SetAttribute("type2", "focus")
 
 	
@@ -351,6 +351,22 @@ function UF:Update_ArenaFrames(frame, db)
 		end					
 	end
 	
+	--Range
+	do
+		local range = frame.Range
+		if db.rangeCheck then
+			if not frame:IsElementEnabled('Range') then
+				frame:EnableElement('Range')
+			end
+
+			range.outsideAlpha = E.db.unitframe.OORAlpha
+		else
+			if frame:IsElementEnabled('Range') then
+				frame:DisableElement('Range')
+			end				
+		end
+	end		
+	
 	if db.customTexts then
 		local customFont = UF.LSM:Fetch("font", UF.db.font)
 		for objectName, _ in pairs(db.customTexts) do
@@ -390,6 +406,9 @@ function UF:Update_ArenaFrames(frame, db)
 
 	ArenaHeader:Width(UNIT_WIDTH)
 	ArenaHeader:Height(UNIT_HEIGHT + (UNIT_HEIGHT + 12 + db.castbar.height) * 4)
+	
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg)
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)		
 	
 	frame:UpdateAllElements()
 end

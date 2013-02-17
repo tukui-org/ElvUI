@@ -22,7 +22,8 @@ function UF:Construct_FocusFrame(frame)
 	frame.Debuffs = self:Construct_Debuffs(frame)
 	frame.HealPrediction = self:Construct_HealComm(frame)
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
-
+	frame.Range = UF:Construct_Range(frame)
+	frame.Threat = UF:Construct_Threat(frame)
 	tinsert(frame.__elements, UF.SmartAuraDisplay)
 	frame:RegisterEvent('PLAYER_FOCUS_CHANGED', UF.SmartAuraDisplay)	
 	
@@ -36,7 +37,7 @@ function UF:Update_FocusFrame(frame, db)
 	local SPACING = E.Spacing;
 	local UNIT_WIDTH = db.width
 	local UNIT_HEIGHT = db.height
-	
+	local SHADOW_SPACING = E.PixelMode and 3 or 4
 	local USE_POWERBAR = db.power.enable
 	local USE_MINI_POWERBAR = db.power.width ~= 'fill' and USE_POWERBAR
 	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR
@@ -164,6 +165,41 @@ function UF:Update_FocusFrame(frame, db)
 			power:Hide()	
 		end
 	end
+	
+	--Threat
+	do
+		local threat = frame.Threat
+
+		if db.threatStyle ~= 'NONE' and db.threatStyle ~= nil then
+			if not frame:IsElementEnabled('Threat') then
+				frame:EnableElement('Threat')
+			end
+
+			if db.threatStyle == "GLOW" then
+				threat:SetFrameStrata('BACKGROUND')
+				threat.glow:ClearAllPoints()
+				threat.glow:SetBackdropBorderColor(0, 0, 0, 0)
+				threat.glow:Point("TOPLEFT", frame.Health.backdrop, "TOPLEFT", -SHADOW_SPACING, SHADOW_SPACING)
+				threat.glow:Point("TOPRIGHT", frame.Health.backdrop, "TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING)
+				threat.glow:Point("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
+				threat.glow:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)	
+				
+				if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET then
+					threat.glow:Point("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
+					threat.glow:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)	
+				end
+			elseif db.threatStyle == "ICONTOPLEFT" or db.threatStyle == "ICONTOPRIGHT" or db.threatStyle == "ICONBOTTOMLEFT" or db.threatStyle == "ICONBOTTOMRIGHT" or db.threatStyle == "ICONTOP" or db.threatStyle == "ICONBOTTOM" or db.threatStyle == "ICONLEFT" or db.threatStyle == "ICONRIGHT" then
+				threat:SetFrameStrata('HIGH')
+				local point = db.threatStyle
+				point = point:gsub("ICON", "")
+				
+				threat.texIcon:ClearAllPoints()
+				threat.texIcon:SetPoint(point, frame.Health, point)
+			end
+		elseif frame:IsElementEnabled('Threat') then
+			frame:DisableElement('Threat')
+		end
+	end	
 	
 	--Auras Disable/Enable
 	--Only do if both debuffs and buffs aren't being used.
@@ -301,23 +337,13 @@ function UF:Update_FocusFrame(frame, db)
 		if db.healPrediction then
 			if not frame:IsElementEnabled('HealPrediction') then
 				frame:EnableElement('HealPrediction')
-			end
-
-			healPrediction.myBar:ClearAllPoints()
-			healPrediction.myBar:Width(db.width - (BORDER*2))
-			healPrediction.myBar:SetPoint('BOTTOMLEFT', frame.Health:GetStatusBarTexture(), 'BOTTOMRIGHT')
-			healPrediction.myBar:SetPoint('TOPLEFT', frame.Health:GetStatusBarTexture(), 'TOPRIGHT')	
-
-			healPrediction.otherBar:ClearAllPoints()
-			healPrediction.otherBar:SetPoint('TOPLEFT', healPrediction.myBar:GetStatusBarTexture(), 'TOPRIGHT')	
-			healPrediction.otherBar:SetPoint('BOTTOMLEFT', healPrediction.myBar:GetStatusBarTexture(), 'BOTTOMRIGHT')	
-			healPrediction.otherBar:Width(db.width - (BORDER*2))	
+			end	
 		else
 			if frame:IsElementEnabled('HealPrediction') then
 				frame:DisableElement('HealPrediction')
 			end		
 		end
-	end	
+	end
 	
 	--Raid Icon
 	do
@@ -372,6 +398,8 @@ function UF:Update_FocusFrame(frame, db)
 					yOffset = -1;
 				end
 			end
+			
+			auraBars.auraBarHeight = db.aurabar.height
 
 			auraBars:ClearAllPoints()
 			auraBars:SetPoint(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', POWERBAR_OFFSET, yOffset)
@@ -385,6 +413,21 @@ function UF:Update_FocusFrame(frame, db)
 				auraBars.debuffColor = {debuffColor.r, debuffColor.g, debuffColor.b}
 				auraBars.defaultDebuffColor = nil;
 			end
+			
+			if db.aurabar.sort == 'TIME_REMAINING' then
+				auraBars.sort = true --default function
+			elseif db.aurabar.sort == 'TIME_REMAINING_REVERSE' then
+				auraBars.sort = UF.SortAuraBarReverse
+			elseif db.aurabar.sort == 'TIME_DURATION' then
+				auraBars.sort = UF.SortAuraBarDuration
+			elseif db.aurabar.sort == 'TIME_DURATION_REVERSE' then
+				auraBars.sort = UF.SortAuraBarDurationReverse
+			elseif db.aurabar.sort == 'NAME' then
+				auraBars.sort = UF.SortAuraBarName
+			else
+				auraBars.sort = nil
+			end			
+
 			auraBars.down = db.aurabar.anchorPoint == 'BELOW'
 			auraBars:SetAnchors()
 		else
@@ -394,6 +437,22 @@ function UF:Update_FocusFrame(frame, db)
 			end		
 		end
 	end
+	
+	--Range
+	do
+		local range = frame.Range
+		if db.rangeCheck then
+			if not frame:IsElementEnabled('Range') then
+				frame:EnableElement('Range')
+			end
+
+			range.outsideAlpha = E.db.unitframe.OORAlpha
+		else
+			if frame:IsElementEnabled('Range') then
+				frame:DisableElement('Range')
+			end				
+		end
+	end		
 	
 	if db.customTexts then
 		local customFont = UF.LSM:Fetch("font", UF.db.font)
@@ -416,6 +475,9 @@ function UF:Update_FocusFrame(frame, db)
 			frame[objectName]:SetPoint(objectDB.justifyH or 'CENTER', frame, 'CENTER', objectDB.xOffset, objectDB.yOffset)
 		end
 	end
+	
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg)
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)
 		
 	frame:UpdateAllElements()
 end

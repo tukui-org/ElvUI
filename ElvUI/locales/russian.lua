@@ -980,7 +980,7 @@ L["Use the custom health backdrop color instead of a multiple of the main health
 L["Value must be a number"] = "Значение должно быть числом"
 L["Vertical"] = "Вертикально" --Also used in bags section
 L["Visibility"] = "Видимость"
-L["What each frame should attach itself to, example setting it to TOP every unit will attach its top to the last point bottom."] = "К чему должна пристыковываться каждая рамка. Например, значение 'TOP' заставит рамки прикрепляться к нижней границе предыдущей."
+L["What each frame should attach itself to. For example setting it to TOP every unit will attach its top to the last point bottom."] = "К чему должна пристыковываться каждая рамка. Например, значение 'TOP' заставит рамки прикрепляться к нижней границе предыдущей."
 L["What point to anchor to the frame you set to attach to."] = "К какой точке выбранного фиксатора прикрепить ауры."
 L["What to attach the buff anchor frame to."] = "К чему прикреплять баффы."
 L["What to attach the debuff anchor frame to."] = "К чему прикреплять дебаффы."

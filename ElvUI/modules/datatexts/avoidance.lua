@@ -8,6 +8,7 @@ local targetlv, playerlv
 local basemisschance, leveldifference, dodge, parry, block, avoidance, unhittable, avoided, blocked, numAvoidances, unhittableMax
 local chanceString = "%.2f%%"
 local modifierString = join("", "%d (+", chanceString, ")")
+local AVD_DECAY_RATE = 1.5
 
 function IsWearingShield()
 	local slotID = GetInventorySlotInfo("SecondaryHandSlot")
@@ -21,31 +22,27 @@ end
 local function OnEvent(self, event, unit)
 	targetlv, playerlv = UnitLevel("target"), UnitLevel("player")
 			
-	-- the 5 is for base miss chance
+	basemisschance = E.myrace == "NightElf" and 7 or 5
 	if targetlv == -1 then
-		basemisschance = (5 - (3*.2))
 		leveldifference = 3
 	elseif targetlv > playerlv then
-		basemisschance = (5 - ((targetlv - playerlv)*.2))
 		leveldifference = (targetlv - playerlv)
 	elseif targetlv < playerlv and targetlv > 0 then
-		basemisschance = (5 + ((playerlv - targetlv)*.2))
 		leveldifference = (targetlv - playerlv)
 	else
-		basemisschance = 5
 		leveldifference = 0
 	end
-	
-	if select(2, UnitRace("player")) == "NightElf" then basemisschance = basemisschance + 2 end
-	
+
 	if leveldifference >= 0 then
-		dodge = (GetDodgeChance()-leveldifference*.2)
-		parry = (GetParryChance()-leveldifference*.2)
-		block = (GetBlockChance()-leveldifference*.2)
+		dodge = (GetDodgeChance() - leveldifference*AVD_DECAY_RATE)
+		parry = (GetParryChance() - leveldifference*AVD_DECAY_RATE)
+		block = (GetBlockChance() - leveldifference*AVD_DECAY_RATE)
+		basemisschance = (basemisschance - leveldifference*AVD_DECAY_RATE)
 	else
-		dodge = (GetDodgeChance()+abs(leveldifference*.2))
-		parry = (GetParryChance()+abs(leveldifference*.2))
-		block = (GetBlockChance()+abs(leveldifference*.2))
+		dodge = (GetDodgeChance() + abs(leveldifference*AVD_DECAY_RATE))
+		parry = (GetParryChance() + abs(leveldifference*AVD_DECAY_RATE))
+		block = (GetBlockChance() + abs(leveldifference*AVD_DECAY_RATE))
+		basemisschance = (basemisschance+ abs(leveldifference*AVD_DECAY_RATE))
 	end
 	
 	unhittableMax = 100
@@ -64,7 +61,7 @@ local function OnEvent(self, event, unit)
 		numAvoidances = numAvoidances - 1
 	end
 	
-	unhittableMax = unhittableMax + ((0.2 * leveldifference) * numAvoidances)
+	unhittableMax = unhittableMax + ((AVD_DECAY_RATE * leveldifference) * numAvoidances)
 	
 	avoided = (dodge+parry+basemisschance) --First roll on hit table determining if the hit missed
 	blocked = (100 - avoided)*block/100 --If the hit landed then the second roll determines if the his was blocked

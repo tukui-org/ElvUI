@@ -980,7 +980,7 @@ L["Use the custom health backdrop color instead of a multiple of the main health
 L["Value must be a number"] = "El valor debe ser un número";
 L["Vertical"] = "Vertical"; --Also used in bags section
 L["Visibility"] = "Visibilidad";
-L["What each frame should attach itself to, example setting it to TOP every unit will attach its top to the last point bottom."] = "Cada marco debería adjuntarse consigo mismo, por ejemplo estableciendo ARRIBA cada unidad se adjuntara a su último punto de abajo.";
+L["What each frame should attach itself to. For example setting it to TOP every unit will attach its top to the last point bottom."] = "Cada marco debería adjuntarse consigo mismo, por ejemplo estableciendo ARRIBA cada unidad se adjuntara a su último punto de abajo.";
 L["What point to anchor to the frame you set to attach to."] = "Punto de fijación a utilizar del marco que se va a sujetar."
 L["What to attach the buff anchor frame to."] = "Dónde sujetar el fijador del marco de beneficios."
 L["What to attach the debuff anchor frame to."] = "Dónde sujetar el fijador del marco de perjuicios.";

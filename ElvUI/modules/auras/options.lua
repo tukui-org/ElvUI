@@ -20,7 +20,7 @@ E.Options.args.auras = {
 			set = function(info, value) 
 				E.private.auras[ info[#info] ] = value; 
 				E:StaticPopup_Show("PRIVATE_RL")
-			end,		
+			end,
 		},
 		general = {
 			order = 5,

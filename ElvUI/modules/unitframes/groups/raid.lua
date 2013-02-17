@@ -31,18 +31,18 @@ for i=10, 40, 15 do
 		self.LFDRole = UF:Construct_RoleIcon(self)
 		self.RaidRoleFramesAnchor = UF:Construct_RaidRoleFrames(self)
 		self.TargetGlow = UF:Construct_TargetGlow(self)
-		tinsert(self.__elements, UF.UpdateThreat)
 		tinsert(self.__elements, UF.UpdateTargetGlow)
-		self:RegisterEvent('PLAYER_TARGET_CHANGED', function(...) UF.UpdateThreat(...); UF.UpdateTargetGlow(...) end)
+		self:RegisterEvent('PLAYER_TARGET_CHANGED', UF.UpdateTargetGlow)
 		self:RegisterEvent('PLAYER_ENTERING_WORLD', UF.UpdateTargetGlow)
-		self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', UF.UpdateThreat)
-		self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', UF.UpdateThreat)		
 		
+		self.Threat = UF:Construct_Threat(self)
 		self.RaidIcon = UF:Construct_RaidIcon(self)
 		self.ReadyCheck = UF:Construct_ReadyCheckIcon(self)	
 		self.HealPrediction = UF:Construct_HealComm(self)
+		self.GPS = UF:Construct_GPS(self)
+		self.Range = UF:Construct_Range(self)
 		
-		UF['Update_Raid'..i..'Frames'](UF, self, E.db['unitframe']['units']['raid'..i])
+		--UF['Update_Raid'..i..'Frames'](UF, self, E.db['unitframe']['units']['raid'..i])
 		UF:Update_StatusBars()
 		UF:Update_FontStrings()	
 		
@@ -87,10 +87,10 @@ for i=10, 40, 15 do
 		if not header.isForced then	
 			self:ChangeVisibility(header, 'custom '..db.visibility)
 		end
-
-		UF['headerGroupBy'][db.groupBy](header)
-		header:SetAttribute("groupBy", db.groupBy)
 		
+		UF['headerGroupBy'][db.groupBy](header)
+		header:SetAttribute("groupBy", db.groupBy == 'ROLE' and 'ASSIGNEDROLE' or db.groupBy)
+		header:SetAttribute('sortDir', db.sortDir)
 		if not header.isForced then
 			header:SetAttribute("showParty", db.showParty)
 			header:SetAttribute("showRaid", db.showRaid)
@@ -118,8 +118,9 @@ for i=10, 40, 15 do
 
 		if not header.positioned then
 			header:ClearAllPoints()
-			header:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 210)
+			header:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)	
 			E:CreateMover(header, header:GetName()..'Mover', L['Raid 1-']..i..L[' Frames'], nil, nil, nil, 'ALL,RAID'..i)
+			header.mover.positionOverride = db.positionOverride ~= 'NONE' and db.positionOverride or nil
 			
 			header:SetAttribute('minHeight', header.dirtyHeight)
 			header:SetAttribute('minWidth', header.dirtyWidth)
@@ -129,7 +130,7 @@ for i=10, 40, 15 do
 			header:HookScript("OnEvent", UF['Raid'..i..'SmartVisibility'])
 			header.positioned = true;
 		end
-			
+				
 		UF['Raid'..i..'SmartVisibility'](header)
 	end
 
@@ -154,6 +155,10 @@ for i=10, 40, 15 do
 			frame:Size(UNIT_WIDTH, UNIT_HEIGHT)
 		end
 		frame.Range = {insideAlpha = 1, outsideAlpha = E.db.unitframe.OORAlpha}
+		if not frame:IsElementEnabled('Range') then
+			frame:EnableElement('Range')
+		end		
+		
 		
 		--Adjust some variables
 		do
@@ -225,9 +230,8 @@ for i=10, 40, 15 do
 			local power = frame.Power
 			if USE_POWERBAR then
 				frame:EnableElement('Power')
-				power:Show()		
 				power.Smooth = self.db.smoothbars
-				
+				power:Show()	
 				--Text
 				local x, y = self:GetPositionOffset(db.power.position)
 				power.value:ClearAllPoints()
@@ -265,10 +269,48 @@ for i=10, 40, 15 do
 			else
 				frame:DisableElement('Power')
 				power:Hide()
-				power.value:Hide()
 			end
-			
 		end
+		
+		--Threat
+		do
+			local threat = frame.Threat
+
+			if db.threatStyle ~= 'NONE' and db.threatStyle ~= nil then
+				if not frame:IsElementEnabled('Threat') then
+					frame:EnableElement('Threat')
+				end
+
+				if db.threatStyle == "GLOW" then
+					threat:SetFrameStrata('BACKGROUND')
+					threat.glow:ClearAllPoints()
+					threat.glow:SetBackdropBorderColor(0, 0, 0, 0)
+					threat.glow:Point("TOPLEFT", frame.Health.backdrop, "TOPLEFT", -SHADOW_SPACING, SHADOW_SPACING)
+					threat.glow:Point("TOPRIGHT", frame.Health.backdrop, "TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING)
+					threat.glow:Point("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
+					threat.glow:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)	
+					
+					if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET then
+						threat.glow:Point("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
+						threat.glow:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)	
+					end
+					
+					if USE_PORTRAIT and not USE_PORTRAIT_OVERLAY then
+						threat.glow:Point("TOPRIGHT", frame.Portrait.backdrop, "TOPRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
+						threat.glow:Point("BOTTOMRIGHT", frame.Portrait.backdrop, "BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
+					end
+				elseif db.threatStyle == "ICONTOPLEFT" or db.threatStyle == "ICONTOPRIGHT" or db.threatStyle == "ICONBOTTOMLEFT" or db.threatStyle == "ICONBOTTOMRIGHT" or db.threatStyle == "ICONTOP" or db.threatStyle == "ICONBOTTOM" or db.threatStyle == "ICONLEFT" or db.threatStyle == "ICONRIGHT" then
+					threat:SetFrameStrata('HIGH')
+					local point = db.threatStyle
+					point = point:gsub("ICON", "")
+					
+					threat.texIcon:ClearAllPoints()
+					threat.texIcon:SetPoint(point, frame.Health, point)
+				end
+			elseif frame:IsElementEnabled('Threat') then
+				frame:DisableElement('Threat')
+			end
+		end		
 		
 		--Target Glow
 		do
@@ -439,35 +481,39 @@ for i=10, 40, 15 do
 			local healPrediction = frame.HealPrediction
 			
 			if db.healPrediction then
-				frame:EnableElement('HealPrediction')
-				
-				healPrediction.myBar:ClearAllPoints()
-				healPrediction.myBar:SetOrientation(db.health.orientation)
-				healPrediction.otherBar:ClearAllPoints()
-				healPrediction.otherBar:SetOrientation(db.health.orientation)
-				
-				if db.health.orientation == 'HORIZONTAL' then
-					healPrediction.myBar:Width(db.width - (BORDER*2))
-					healPrediction.myBar:SetPoint('BOTTOMLEFT', frame.Health:GetStatusBarTexture(), 'BOTTOMRIGHT')
-					healPrediction.myBar:SetPoint('TOPLEFT', frame.Health:GetStatusBarTexture(), 'TOPRIGHT')	
-
-					healPrediction.otherBar:SetPoint('TOPLEFT', healPrediction.myBar:GetStatusBarTexture(), 'TOPRIGHT')	
-					healPrediction.otherBar:SetPoint('BOTTOMLEFT', healPrediction.myBar:GetStatusBarTexture(), 'BOTTOMRIGHT')	
-					healPrediction.otherBar:Width(db.width - (BORDER*2))
-				else
-					healPrediction.myBar:Height(db.height - (BORDER*2))
-					healPrediction.myBar:SetPoint('BOTTOMLEFT', frame.Health:GetStatusBarTexture(), 'TOPLEFT')
-					healPrediction.myBar:SetPoint('BOTTOMRIGHT', frame.Health:GetStatusBarTexture(), 'TOPRIGHT')				
-
-					healPrediction.otherBar:SetPoint('BOTTOMLEFT', healPrediction.myBar:GetStatusBarTexture(), 'TOPLEFT')
-					healPrediction.otherBar:SetPoint('BOTTOMRIGHT', healPrediction.myBar:GetStatusBarTexture(), 'TOPRIGHT')				
-					healPrediction.otherBar:Height(db.height - (BORDER*2))	
+				if not frame:IsElementEnabled('HealPrediction') then
+					frame:EnableElement('HealPrediction')
 				end
-				
+
+				healPrediction.myBar:SetOrientation(db.health.orientation)
+				healPrediction.otherBar:SetOrientation(db.health.orientation)
+				healPrediction.absorbBar:SetOrientation(db.health.orientation)
 			else
-				frame:DisableElement('HealPrediction')	
+				if frame:IsElementEnabled('HealPrediction') then
+					frame:DisableElement('HealPrediction')
+				end		
 			end
-		end		
+		end
+		
+		--GPSArrow
+		do
+			local GPS = frame.GPS
+			if db.GPSArrow then
+				if not frame:IsElementEnabled('GPS') then
+					frame:EnableElement('GPS')
+				end
+
+				GPS:Size(db.GPSArrow.size)
+				GPS.onMouseOver = db.GPSArrow.onMouseOver
+				GPS.outOfRange = db.GPSArrow.outOfRange
+				
+				GPS:SetPoint("CENTER", frame, "CENTER", db.GPSArrow.xOffset, db.GPSArrow.yOffset)
+			else
+				if frame:IsElementEnabled('GPS') then
+					frame:DisableElement('GPS')
+				end				
+			end
+		end	
 		
 		--Raid Roles
 		do
@@ -488,6 +534,22 @@ for i=10, 40, 15 do
 				raidRoleFrameAnchor:Hide()
 				frame:DisableElement('Leader')
 				frame:DisableElement('MasterLooter')
+			end
+		end		
+		
+		--Range
+		do
+			local range = frame.Range
+			if db.rangeCheck then
+				if not frame:IsElementEnabled('Range') then
+					frame:EnableElement('Range')
+				end
+
+				range.outsideAlpha = E.db.unitframe.OORAlpha
+			else
+				if frame:IsElementEnabled('Range') then
+					frame:DisableElement('Range')
+				end				
 			end
 		end		
 		
@@ -515,7 +577,10 @@ for i=10, 40, 15 do
 				frame[objectName]:ClearAllPoints()
 				frame[objectName]:SetPoint(objectDB.justifyH or 'CENTER', frame, 'CENTER', objectDB.xOffset, objectDB.yOffset)
 			end
-		end		
+		end
+
+		UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg)
+		UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)
 		
 		frame:UpdateAllElements()
 	end

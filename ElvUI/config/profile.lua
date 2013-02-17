@@ -189,6 +189,7 @@ P['chat'] = {
 	['panelBackdropNameRight'] = '',
 	['panelBackdrop'] = 'SHOWBOTH',
 	['panelTabBackdrop'] = true,
+	['panelTabTransparency'] = false,
 	['editBoxPosition'] = 'BELOW_CHAT',
 
 	['tabFont'] = 'Friz Quadrata TT',
@@ -231,6 +232,7 @@ P['datatexts'] = {
 	['minimapPanels'] = true,
 	['leftChatPanel'] = true,
 	['rightChatPanel'] = true,
+	['panelTransparency'] = false,
 }
 
 --Tooltip
@@ -267,6 +269,10 @@ P['unitframe'] = {
 		['classbackdrop'] = false,
 		['auraBarByType'] = true,
 
+		['transparentHealth'] = false,
+		['transparentPower'] = false,
+		['transparentCastbar'] = false,
+		['transparentAurabars'] = false,
 		['castColor'] = { r = .66,g = .66,b = .66 },
 		['castNoInterrupt'] = { r = 0.78, g = 0.25, b = 0.25 },
 		
@@ -326,6 +332,7 @@ P['unitframe'] = {
 			['combatfade'] = false,
 			['healPrediction'] = true,
 			['restIcon'] = false,
+			['threatStyle'] = 'GLOW',
 			['health'] = {
 				['text_format'] = '[healthcolor][health:current-percent]',
 				['position'] = 'TOPRIGHT',
@@ -419,7 +426,20 @@ P['unitframe'] = {
 				['onlyDispellable'] = false,
 				['useFilter'] = '',
 				['friendlyAuraType'] = 'HELPFUL',
-				['enemyAuraType'] = 'HARMFUL'
+				['enemyAuraType'] = 'HARMFUL',
+				['height'] = 20,
+				['sort'] = 'TIME_REMAINING'
+			},
+			['raidicon'] = {
+				['enable'] = true,
+				['size'] = 18,
+				['attachTo'] = 'TOP',
+				['xOffset'] = 0,
+				['yOffset'] = 10,
+			},
+			['stagger'] = {
+				['enable'] = true,
+				['width'] = 10,
 			},
 			['raidicon'] = {
 				['enable'] = true,
@@ -437,6 +457,8 @@ P['unitframe'] = {
 			['enable'] = true,
 			['width'] = 260,
 			['height'] = 54,
+			['threatStyle'] = 'GLOW',
+			['rangeCheck'] = true,
 			['healPrediction'] = true,
 			['smartAuraDisplay'] = 'DISABLED',
 			['health'] = {
@@ -510,7 +532,7 @@ P['unitframe'] = {
 			},	
 			['combobar'] = {
 				['enable'] = true,
-				['fill'] = 'spaced',
+				['fill'] = 'fill',
 				['height'] = 10,
 			},		
 			['aurabar'] = {
@@ -525,7 +547,9 @@ P['unitframe'] = {
 				['onlyDispellable'] = {friendly = false, enemy = false},
 				['useFilter'] = '',
 				['friendlyAuraType'] = 'HELPFUL',
-				['enemyAuraType'] = 'HARMFUL'				
+				['enemyAuraType'] = 'HARMFUL'
+				['height'] = 20,
+				['sort'] = 'TIME_REMAINING'
 			},	
 			['raidicon'] = {
 				['enable'] = true,
@@ -537,6 +561,8 @@ P['unitframe'] = {
 		},
 		['targettarget'] = {
 			['enable'] = true,
+			['rangeCheck'] = true,
+			['threatStyle'] = 'NONE',
 			['width'] = 130,
 			['height'] = 50,
 			['health'] = {
@@ -603,6 +629,8 @@ P['unitframe'] = {
 		},
 		['focus'] = {
 			['enable'] = true,
+			['rangeCheck'] = true,
+			['threatStyle'] = 'GLOW',
 			['width'] = 200,
 			['height'] = 40,
 			['healPrediction'] = true,
@@ -681,7 +709,9 @@ P['unitframe'] = {
 				['noConsolidated'] = {friendly = true, enemy = true},
 				['useFilter'] = '',
 				['friendlyAuraType'] = 'HELPFUL',
-				['enemyAuraType'] = 'HARMFUL'				
+				['enemyAuraType'] = 'HARMFUL'
+				['height'] = 20,
+				['sort'] = 'TIME_REMAINING'
 			},	
 			['raidicon'] = {
 				['enable'] = true,
@@ -693,6 +723,8 @@ P['unitframe'] = {
 		},	
 		['focustarget'] = {
 			['enable'] = true,
+			['rangeCheck'] = true,
+			['threatStyle'] = 'NONE',
 			['width'] = 150,
 			['height'] = 40,
 			['health'] = {
@@ -759,6 +791,8 @@ P['unitframe'] = {
 		},				
 		['pet'] = {
 			['enable'] = true,
+			['rangeCheck'] = true,
+			['threatStyle'] = 'GLOW',
 			['width'] = 130,
 			['height'] = 36,
 			['healPrediction'] = true,
@@ -824,6 +858,8 @@ P['unitframe'] = {
 		},
 		['pettarget'] = {
 			['enable'] = false,
+			['rangeCheck'] = true,
+			['threatStyle'] = 'NONE',
 			['width'] = 130,
 			['height'] = 26,
 			['health'] = {
@@ -883,6 +919,7 @@ P['unitframe'] = {
 		},	
 		['boss'] = {
 			['enable'] = true,
+			['rangeCheck'] = true,
 			['growthDirection'] = 'DOWN',
 			['width'] = 200,
 			['height'] = 46,
@@ -965,6 +1002,7 @@ P['unitframe'] = {
 		},	
 		['arena'] = {
 			['enable'] = true,
+			['rangeCheck'] = true,
 			['growthDirection'] = 'UP',
 			['width'] = 240,
 			['height'] = 47,
@@ -1041,13 +1079,17 @@ P['unitframe'] = {
 		},
 		['party'] = {
 			['enable'] = true,
+			['rangeCheck'] = true,
+			['threatStyle'] = 'GLOW',
 			['visibility'] = "[@raid6,exists] hide;show",
 			['point'] = 'LEFT', --Requires ReloadUI()
+			['positionOverride'] = "NONE",
 			['maxColumns'] = 1,
 			['unitsPerColumn'] = 5,
 			['xOffset'] = 5,
 			['yOffset'] = 3,
 			['groupBy'] = 'GROUP',
+			['sortDir'] = 'ASC',
 			["showParty"] = true,
 			["showRaid"] = true,
 			["showSolo"] = false,
@@ -1148,16 +1190,28 @@ P['unitframe'] = {
 				['xOffset'] = 0,
 				['yOffset'] = 1,
 			},
+			['GPSArrow'] = {
+				['enable'] = true,
+				['size'] = 45,
+				['xOffset'] = 0,
+				['yOffset'] = 0,
+				['onMouseOver'] = true,
+				['outOfRange'] = true
+			},
 		},
 		['raid10'] = {
 			['enable'] = true,
+			['rangeCheck'] = true,
+			['threatStyle'] = 'GLOW',
 			['visibility'] = '[@raid6,noexists][@raid11,exists] hide;show',
 			['point'] = 'LEFT',
+			['positionOverride'] = "NONE",
 			['maxColumns'] = 2,
 			['unitsPerColumn'] = 5,
 			['xOffset'] = 5,
 			['yOffset'] = 3,
 			['groupBy'] = 'GROUP',
+			['sortDir'] = 'ASC',
 			["showParty"] = true,
 			["showRaid"] = true,
 			["showSolo"] = false,
@@ -1248,17 +1302,29 @@ P['unitframe'] = {
 				['attachTo'] = 'LEFT',
 				['xOffset'] = 0,
 				['yOffset'] = 1,
+			},		
+			['GPSArrow'] = {
+				['enable'] = true,
+				['size'] = 40,
+				['xOffset'] = 0,
+				['yOffset'] = 0,
+				['onMouseOver'] = true,
+				['outOfRange'] = true
 			},			
 		},			
 		['raid25'] = {
 			['enable'] = true,
+			['rangeCheck'] = true,
+			['threatStyle'] = 'GLOW',
 			['visibility'] = '[@raid11,noexists][@raid26,exists] hide;show',
 			['point'] = 'LEFT',
+			['positionOverride'] = "NONE",
 			['maxColumns'] = 5,
 			['unitsPerColumn'] = 5,
 			['xOffset'] = 5,
 			['yOffset'] = 3,
 			['groupBy'] = 'GROUP',
+			['sortDir'] = 'ASC',
 			["showParty"] = true,
 			["showRaid"] = true,
 			["showSolo"] = false,
@@ -1349,17 +1415,29 @@ P['unitframe'] = {
 				['attachTo'] = 'LEFT',
 				['xOffset'] = 0,
 				['yOffset'] = 1,
+			},		
+			['GPSArrow'] = {
+				['enable'] = true,
+				['size'] = 40,
+				['xOffset'] = 0,
+				['yOffset'] = 0,
+				['onMouseOver'] = true,
+				['outOfRange'] = true
 			},			
 		},					
 		['raid40'] = {
 			['enable'] = true,
+			['rangeCheck'] = true,
+			['threatStyle'] = 'GLOW',
 			['visibility'] = '[@raid26,noexists] hide;show',
 			['point'] = 'LEFT',
+			['positionOverride'] = "NONE",
 			['maxColumns'] = 8,
 			['unitsPerColumn'] = 5,
 			['xOffset'] = 5,
 			['yOffset'] = 3,
 			['groupBy'] = 'GROUP',
+			['sortDir'] = 'ASC',
 			["showParty"] = true,
 			["showRaid"] = true,
 			["showSolo"] = false,
@@ -1450,10 +1528,20 @@ P['unitframe'] = {
 				['attachTo'] = 'LEFT',
 				['xOffset'] = 0,
 				['yOffset'] = 1,
+			},	
+			['GPSArrow'] = {
+				['enable'] = false,
+				['size'] = 45,
+				['xOffset'] = 0,
+				['yOffset'] = 0,
+				['onMouseOver'] = true,
+				['outOfRange'] = true
 			},			
 		},	
 		['tank'] = {
 			['enable'] = true,
+			['threatStyle'] = 'GLOW',
+			['rangeCheck'] = true,
 			['width'] = 120,
 			['height'] = 28,
 			['targetsGroup'] = {
@@ -1467,6 +1555,8 @@ P['unitframe'] = {
 		},	
 		['assist'] = {
 			['enable'] = true,
+			['threatStyle'] = 'GLOW',
+			['rangeCheck'] = true,
 			['width'] = 120,
 			['height'] = 28,
 			['targetsGroup'] = {
@@ -1581,7 +1671,7 @@ P["actionbar"] = {
 		['buttons'] = 6,
 		['buttonsPerRow'] = 3,
 		['point'] = 'BOTTOMLEFT',
-		['backdrop'] = true,
+		['backdrop'] = false,
 		['heightMult'] = 1,
 		['widthMult'] = 1,
 		["buttonsize"] = 30,

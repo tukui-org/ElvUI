@@ -26,7 +26,7 @@ local function LoadSkin()
 	-- skinning other frames
 	LookingForGuildFrameInset:StripTextures(false)
 	LookingForGuildFrame:StripTextures()
-	LookingForGuildFrame:SetTemplate("Default")
+	LookingForGuildFrame:SetTemplate("Transparent")
 	LookingForGuildBrowseButton_LeftSeparator:Kill()
 	LookingForGuildRequestButton_RightSeparator:Kill()
 	S:HandleScrollBar(LookingForGuildBrowseFrameContainerScrollBar)

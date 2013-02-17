@@ -59,7 +59,7 @@ local function SetupChat()
 	ChatFrame_RemoveMessageGroup(ChatFrame1, "COMBAT_FACTION_CHANGE")
 	ChatFrame_RemoveMessageGroup(ChatFrame1, "LOOT")
 	ChatFrame_RemoveMessageGroup(ChatFrame1, "MONEY")
-	
+
 	-- Setup the Guild chat frame
 	ChatFrame_RemoveAllMessageGroups(ChatFrame3)
 	ChatFrame_AddMessageGroup(ChatFrame3, "GUILD") 
@@ -269,7 +269,6 @@ function E:SetupTheme(theme, noDisplayMsg)
 		E.db.unitframe.colors.healthclass = true
 		E.db.unitframe.colors.castColor = E:GetColor(classColor.r, classColor.b, classColor.g)
 	else
-		E.db.general.bottomPanel = false;
 		E.db.general.bordercolor = E:GetColor(.2, .2, .2)
 		E.db.general.backdropcolor = E:GetColor(.16, .16, .16)
 		E.db.general.backdropfadecolor = E:GetColor(.10, .10, .10, .8)
@@ -304,7 +303,7 @@ function E:SetupResolution(noDataReset)
 	if not noDataReset then
 		E:ResetMovers('')
 	end
-	
+
 	if not noDataReset then
 		E.db.chat.panelWidth = P.chat.panelWidth
 		E.db.chat.panelHeight = P.chat.panelHeight
@@ -336,6 +335,20 @@ function E:SetupLayout(layout, noDataReset)
 	if not noDataReset then
 		E:CopyTable(E.db.unitframe.units, P.unitframe.units)
 	end
+
+	if not noDataReset then
+		E:ResetMovers('')
+		E:SetupPixelPerfect(E.PixelMode, true)		
+		
+		E.db.actionbar.bar2.enabled = E.db.lowresolutionset
+		E.db.movers.ElvAB_2 = "BOTTOMElvUIParentBOTTOM038"
+		if not E.db.lowresolutionset then
+			E.db.actionbar.bar3.buttons = 6
+			E.db.actionbar.bar5.buttons = 6
+			E.db.actionbar.bar4.enabled = true
+		end			
+	end		
+	
 	if layout == 'healer' then
 		if not IsAddOnLoaded('Clique') then
 			E:Print(L['Using the healer layout it is highly recommended you download the addon Clique to work side by side with ElvUI.'])
@@ -431,7 +444,7 @@ function E:SetupLayout(layout, noDataReset)
 			E:SetupPixelPerfect(E.PixelMode, true)
 		end
 	end
-	
+
 	--Datatexts
 	if not noDataReset then
 		E:CopyTable(E.db.datatexts.panels, P.datatexts.panels)

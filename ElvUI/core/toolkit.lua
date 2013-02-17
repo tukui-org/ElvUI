@@ -103,7 +103,12 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates)
 		f.backdropTexture = backdropTexture
 	elseif t == 'Transparent' then
 		f:SetBackdropColor(backdropr, backdropg, backdropb, backdropa)
-		
+
+		if f.backdropTexture then
+			f.backdropTexture:Hide()
+			f.backdropTexture = nil
+		end
+
 		if not f.oborder and not f.iborder and not E.private.general.pixelPerfect then
 			local border = CreateFrame("Frame", nil, f)
 			border:SetInside(f, E.mult, E.mult)

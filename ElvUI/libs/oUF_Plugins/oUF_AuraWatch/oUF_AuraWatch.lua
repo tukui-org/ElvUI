@@ -172,7 +172,7 @@ local function updateText(self, elapsed)
 				self.timeLeft = self.timeLeft - GetTime()
 				self.first = false
 			end
-			if self.timeLeft > 0 then
+			if self.timeLeft > 0 and ((self.timeLeft <= self.textThreshold) or self.textThreshold == -1) then
 				local time = formatTime(self.timeLeft)
 				self.text:SetText(time)
 			else
@@ -191,20 +191,20 @@ local function resetIcon(icon, frame, count, duration, remaining)
 	else
 		icon:Show()
 		if icon.cd then
-			if duration and duration > 0 and icon.style ~= 'text' then
+			if duration and duration > 0 and icon.style ~= 'NONE' then
 				icon.cd:SetCooldown(remaining - duration, duration)
 				icon.cd:Show()
 			else
 				icon.cd:Hide()
 			end
 		end
-		
-		if icon.style == 'text' then
+
+		if icon.displayText then
 			icon.timeLeft = remaining
 			icon.first = true;
 			icon:SetScript('OnUpdate', updateText)
 		end
-		
+
 		if icon.count then
 			icon.count:SetText((count > 1 and count))
 		end

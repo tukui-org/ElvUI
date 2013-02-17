@@ -7,6 +7,25 @@ if not L then return; end
 --TEMP
 L["A taint has occured that is preventing you from using your talents/glyphs. Please reload your user interface and try again."] = true;
 
+--Distributor
+L["This feature will allow you to transfer, settings to other characters."] = true;
+L["Share Current Profile"] = true;
+L["Sends your current profile to your target."] = true;
+L["You must be targetting a player."] = true;
+L["Must be in group with the player if he isn't on the same server as you."] = true;
+L["Share Filters"] = true;
+L["Sends your filter settings to your target."] = true;
+L['%s is attempting to share the profile %s with you. Would you like to accept the request?'] = true;
+L['Profile download complete from %s, but the profile %s already exists. Change the name or else it will overwrite the existing profile.'] = true;
+L['%s is attempting to share his filters with you. Would you like to accept the request?'] = true;
+L["Data From: %s"] = true;
+L['Profile download complete from %s, would you like to load the profile %s now?'] = true;
+L['Filter download complete from %s, would you like to apply changes now?'] = true;
+L['Your profile was successfully recieved by the player.'] = true;
+L['Profile request sent. Waiting for response from player.'] = true;
+L['Request was denied by user.'] = true;
+L["Lord! It's a miracle! The download up and vanished like a fart in the wind! Try Again!"] = true;
+
 --ActionBars
 L[" |cff00ff00bound to |r"] = true;
 L["Action Paging"] = true;
@@ -173,6 +192,7 @@ L['Wrap After'] = true;
 L['Your Auras First'] = true;
 
 --Chat
+L['Tab Panel Transparency'] = true;
 L['Above Chat'] = true;
 L["AFK"] = true; --Also used in datatexts and tooltip
 L["Attempt to create URL links inside the chat."] = true;
@@ -331,6 +351,7 @@ L["ELVUI_CREDITS"] = "I would like to give out a special shout out to the follow
 L["Testing:"] = true;
 
 --DataTexts
+L['Panel Transparency'] = true;
 L["(Hold Shift) Memory Usage"] = true;
 L["24-Hour Time"] = true;
 L['Always Display'] = true;
@@ -740,6 +761,32 @@ L['You can use the /resetui command to reset all of your movers. You can also us
 L['ABOVE_THREAT_FORMAT'] = '%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]'
 
 --UnitFrames
+L['Time Remaining'] = true;
+L['Time Remaining Reverse'] = true;
+L['Duration'] = true;
+L['Duration Reverse'] = true;
+L['Glow'] = true;
+L['Borders'] = true;
+L['Health Border'] = true;
+L['Icon: TOPLEFT'] = true;
+L['Icon: TOPRIGHT'] = true;
+L['Icon: BOTTOMLEFT'] = true;
+L['Icon: BOTTOMRIGHT'] = true;
+L['Icon: LEFT'] = true;
+L['Icon: RIGHT'] = true;
+L['Icon: TOP'] = true;
+L['Icon: BOTTOM'] = true;
+L["Range Check"] = true
+L["Check if you are in range to cast spells on this specific unit."] = true;
+L['Transparent'] = true;
+L['Make textures transparent.'] = true;
+L['Stagger Bar'] = true;
+L['Text Color'] = true;
+L['Only show when the unit is not in range.'] = true;
+L['Mouseover'] = true;
+L['Only show when you are mousing over a frame.'] = true;
+L['Ascending'] = true;
+L['Descending'] = true;
 L["Don't display auras that are not yours."] = true;
 L["Don't display any auras found on the 'Blacklist' filter."] = true;
 L["If no other filter options are being used then it will block anything not on the 'Whitelist' filter, otherwise it will simply add auras on the whitelist in addition to any other filter settings."] = true;
@@ -747,8 +794,11 @@ L["Don't display auras that have no duration."] = true;
 L["Don't display auras that cannot be purged or dispelled by your class."] = true;
 L["Don't display raid buffs such as Blessing of Kings or Mark of the Wild."] = true;
 L['Select an additional filter to use. If the selected filter is a whitelist and no other filters are being used (with the exception of Block Non-Personal Auras) then it will block anything not on the whitelist, otherwise it will simply add auras on the whitelist in addition to any other filter settings.'] = true;
-
-
+L['Position Override'] = true;
+L['This will determine how the party/raid group will grow out when the group is not full. For example setting this to BOTTOMLEFT would cause the first raid frame to spawn from the BOTTOMLEFT corner of where the mover is positioned.'] = true;
+L['Display Text'] = true;
+L['Text Threshold'] = true;
+L['At what point should the text be displayed. Set to -1 to disable.'] = true;
 L["If the unit is friendly to you."] = true;
 L["If the unit is an enemy to you."] = true;
 
@@ -880,7 +930,6 @@ L['Lunar'] = true;
 L["Main statusbar texture."] = true;
 L["Match Frame Width"] = true;
 L["Max Columns"] = true;
-L["MT, MA First"] = true;
 L["Name"] = true; --Also used in Buffs and Debuffs
 L["Neutral"] = true;
 L['Non-Interruptable'] = true;
@@ -990,7 +1039,7 @@ L["Use the custom health backdrop color instead of a multiple of the main health
 L["Value must be a number"] = true;
 L["Vertical"] = true; --Also used in bags section
 L["Visibility"] = true;
-L["What each frame should attach itself to, example setting it to TOP every unit will attach its top to the last point bottom."] = true;
+L["What each frame should attach itself to. For example setting it to TOP every unit will attach its top to the last point bottom."] = true;
 L["What point to anchor to the frame you set to attach to."] = true;
 L["What to attach the buff anchor frame to."] = true;
 L["What to attach the debuff anchor frame to."] = true;

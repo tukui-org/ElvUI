@@ -19,17 +19,21 @@ function UF:SpawnMenu()
 	end
 end
 
-function UF:Construct_ThreatGlow(frame, glow)
-	local threat
-	if glow then
-		frame:CreateShadow('Default')
-		threat = frame.shadow
-		frame.shadow = nil
-	else
-		threat = CreateFrame('Frame')
-	end
-	threat.Override = self.UpdateThreat
-	threat:SetFrameStrata('BACKGROUND')
+function UF:Construct_Threat(frame, glow)
+	local threat = CreateFrame("Frame", nil, frame)
+	
+	frame:CreateShadow('Default')
+	threat.glow = frame.shadow
+	threat.glow:SetParent(frame)
+	threat.glow:Hide()
+	frame.shadow = nil
+	
+	threat.texIcon = threat:CreateTexture(nil, 'OVERLAY')
+	threat.texIcon:Size(8)
+	threat.texIcon:SetTexture(E['media'].blankTex)
+	threat.texIcon:Hide()
+
+	threat.PostUpdate = self.UpdateThreat
 	return threat
 end
 
@@ -189,6 +193,7 @@ end
 function UF:Construct_Buffs(frame)
 	local buffs = CreateFrame('Frame', nil, frame)
 	buffs.spacing = E.Spacing
+	buffs.PreSetPosition = self.SortAuras
 	buffs.PostCreateIcon = self.Construct_AuraIcon
 	buffs.PostUpdateIcon = self.PostUpdateAura
 	buffs.CustomFilter = self.AuraFilter
@@ -200,6 +205,7 @@ end
 function UF:Construct_Debuffs(frame)
 	local debuffs = CreateFrame('Frame', nil, frame)
 	debuffs.spacing = E.Spacing
+	debuffs.PreSetPosition = self.SortAuras
 	debuffs.PostCreateIcon = self.Construct_AuraIcon
 	debuffs.PostUpdateIcon = self.PostUpdateAura
 	debuffs.CustomFilter = self.AuraFilter
@@ -242,6 +248,9 @@ function UF:Construct_Castbar(self, direction, moverName)
 	castbar.LatencyTexture = castbar:CreateTexture(nil, "OVERLAY")
 	castbar.LatencyTexture:SetTexture(E['media'].blankTex)
 	castbar.LatencyTexture:SetVertexColor(0.69, 0.31, 0.31, 0.75)	
+	
+	castbar.bg = castbar:CreateTexture(nil, 'BORDER')
+	castbar.bg:Hide()	
 
 	local button = CreateFrame("Frame", nil, castbar)
 	local holder = CreateFrame('Frame', nil, castbar)
@@ -650,19 +659,24 @@ function UF:Construct_HealComm(frame)
 	mhpb:SetFrameLevel(mhpb:GetFrameLevel())	
 	ohpb:Hide()
 	
+	local absorbBar = CreateFrame('StatusBar', nil, frame)
+	absorbBar:SetStatusBarTexture(E["media"].blankTex)
+	absorbBar:SetStatusBarColor(1, 1, 0, 0.25)
+	absorbBar:SetFrameLevel(mhpb:GetFrameLevel())
+	absorbBar:Hide()
+	
 	if frame.Health then
 		ohpb:SetParent(frame.Health)
 		mhpb:SetParent(frame.Health)
+		absorbBar:SetParent(frame.Health)
 	end
 	
 	return {
 		myBar = mhpb,
 		otherBar = ohpb,
+		absorbBar = absorbBar,
 		maxOverflow = 1,
-		PostUpdate = function(self)
-			if self.myBar:GetValue() == 0 then self.myBar:SetAlpha(0) else self.myBar:SetAlpha(1) end
-			if self.otherBar:GetValue() == 0 then self.otherBar:SetAlpha(0) else self.otherBar:SetAlpha(1) end
-		end
+		PostUpdate = UF.UpdateHealComm
 	}
 end
 
@@ -703,7 +717,9 @@ function UF:Construct_AuraBars()
 	bar.icon:SetInside(bar.iconHolder)
 	bar.icon:SetDrawLayer('OVERLAY')
 	
-	
+	bar.bg = bar:CreateTexture(nil, 'BORDER')
+	bar.bg:Hide()
+
 	bar.iconHolder:RegisterForClicks('RightButtonUp')
 	bar.iconHolder:SetScript('OnClick', function(self)
 		if not IsShiftKeyDown() then return; end
@@ -726,10 +742,35 @@ function UF:Construct_AuraBarHeader(frame)
 	auraBar.gap = (E.PixelMode and -1 or 1)
 	auraBar.spacing = (E.PixelMode and -1 or 1)
 	auraBar.spark = true
-	auraBar.sort = true
 	auraBar.filter = UF.AuraBarFilter
 	auraBar.PostUpdate = UF.ColorizeAuraBars
 
-	
 	return auraBar
+end
+
+function UF:Construct_GPS(frame)
+	local gps = CreateFrame("Frame", nil, frame)
+	gps:SetFrameLevel(frame:GetFrameLevel() + 50)
+	gps:Hide()
+
+	gps.Texture = gps:CreateTexture("OVERLAY")
+	gps.Texture:SetTexture([[Interface\AddOns\ElvUI\media\textures\arrow.tga]])
+	gps.Texture:SetBlendMode("BLEND")
+	gps.Texture:SetVertexColor(214/255, 41/255, 41/255)
+	gps.Texture:SetAllPoints()
+
+	return gps
+end
+
+function UF:Construct_Stagger(frame)
+	local stagger = CreateFrame("Statusbar", nil, frame)
+	UF['statusbars'][stagger] = true
+	stagger:CreateBackdrop("Default")
+	stagger:SetOrientation("VERTICAL")
+	stagger.PostUpdate = UF.PostUpdateStagger
+	return stagger
+end
+
+function UF:Construct_Range(frame)
+	return {insideAlpha = 1, outsideAlpha = E.db.unitframe.OORAlpha}
 end

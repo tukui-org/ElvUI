@@ -9,8 +9,8 @@
 -- make into AceHook.
 -- @class file
 -- @name AceHook-3.0
--- @release $Id: AceHook-3.0.lua 877 2009-11-02 15:56:50Z nevcairiel $
-local ACEHOOK_MAJOR, ACEHOOK_MINOR = "AceHook-3.0", 5
+-- @release $Id: AceHook-3.0.lua 1064 2012-09-04 17:14:01Z nevcairiel $
+local ACEHOOK_MAJOR, ACEHOOK_MINOR = "AceHook-3.0", 6
 local AceHook, oldminor = LibStub:NewLibrary(ACEHOOK_MAJOR, ACEHOOK_MINOR)
 
 if not AceHook then return end -- No upgrade needed
@@ -139,11 +139,11 @@ function hook(self, obj, method, handler, script, secure, raw, forceSecure, usag
 		error(format("%s: 'handler' - Handler specified does not exist at self[handler]", usage), 3)
 	end
 	if script then
-	 	if not secure and obj:IsProtected() and protectedScripts[method] then
-			error(format("Cannot hook secure script %q; Use SecureHookScript(obj, method, [handler]) instead.", method), 3)
-		end
 		if not obj or not obj.GetScript or not obj:HasScript(method) then
 			error(format("%s: You can only hook a script on a frame object", usage), 3)
+		end
+		if not secure and obj:IsProtected() and protectedScripts[method] then
+			error(format("Cannot hook secure script %q; Use SecureHookScript(obj, method, [handler]) instead.", method), 3)
 		end
 	else
 		local issecure 

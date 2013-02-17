@@ -133,6 +133,56 @@ function AddOn:OnProfileReset()
 	ReloadUI()
 end
 
+function AddOn:EnhanceOptions(optionTable)
+	if not optionTable.plugins then
+		optionTable.plugins = {}
+	end
+	optionTable.plugins["ElvUI"] = {
+		desc = {
+			name = Locale["This feature will allow you to transfer, settings to other characters."],
+			type = 'description',
+			order = 40.4,
+		},
+		distributeProfile = {
+			name = Locale["Share Current Profile"],
+			desc = Locale["Sends your current profile to your target."],
+			type = 'execute',
+			order = 40.5,
+			func = function()
+				if not UnitExists("target") or not UnitIsPlayer("target") or not UnitIsFriend("player", "target") or UnitIsUnit("player", "target") then
+					self:Print(Locale["You must be targetting a player."])
+					return
+				end
+				local name, server = UnitName("target")
+				if name and (not server or server == "") then
+					self:GetModule("Distributor"):Distribute(name)
+				elseif server then
+					self:GetModule("Distributor"):Distribute(name, true)
+				end
+			end,
+		},
+		distributeGlobal = {
+			name = Locale["Share Filters"],
+			desc = Locale["Sends your filter settings to your target."],
+			type = 'execute',
+			order = 40.6,
+			func = function()
+				if not UnitExists("target") or not UnitIsPlayer("target") or not UnitIsFriend("player", "target") or UnitIsUnit("player", "target") then
+					self:Print(Locale["You must be targetting a player."])
+					return
+				end
+				
+				local name, server = UnitName("target")
+				if name and (not server or server == "") then
+					self:GetModule("Distributor"):Distribute(name, false, true)
+				elseif server then
+					self:GetModule("Distributor"):Distribute(name, true, true)
+				end
+			end,
+		},		
+	}
+end
+
 function AddOn:LoadConfig()	
 	AC:RegisterOptionsTable(AddOnName, self.Options)
 	ACD:SetDefaultSize(AddOnName, DEFAULT_WIDTH, DEFAULT_HEIGHT)	
@@ -144,6 +194,7 @@ function AddOn:LoadConfig()
 	
 	LibDualSpec:EnhanceDatabase(self.data, AddOnName)
 	LibDualSpec:EnhanceOptions(self.Options.args.profiles, self.data)
+	self:EnhanceOptions(self.Options.args.profiles)
 end
 
 function AddOn:ToggleConfig() 

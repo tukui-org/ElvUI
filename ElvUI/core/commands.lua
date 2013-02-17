@@ -52,22 +52,30 @@ end
 
 local channel = 'PARTY'
 local target = nil;
-function E:ElvSaysChannel(chnl)
+function E:DevChannel(chnl)
 	channel = chnl
-	E:Print(format('ElvSays channel has been changed to %s.', chnl))
+	E:Print(format('Developer channel has been changed to %s.', chnl))
 end
 
-function E:ElvSaysTarget(tgt)
+function E:DevTarget(tgt)
 	target = tgt
-	E:Print(format('ElvSays target has been changed to %s.', tgt))
+	E:Print(format('Developer target has been changed to %s.', tgt))
 end
 
-function E:ElvSays(msg)
+function E:DevSays(msg)
 	if channel == 'WHISPER' and target == nil then
 		E:Print('You need to set a whisper target.')
 		return
 	end
-	SendAddonMessage('ElvSays', msg, channel, target)
+	SendAddonMessage('ELVUI_DEV_SAYS', msg, channel, target)
+end
+
+function E:DevCommand(msg)
+	if channel == 'WHISPER' and target == nil then
+		E:Print('You need to set a whisper target.')
+		return
+	end
+	SendAddonMessage('ELVUI_DEV_CMD', msg, channel, target)
 end
 
 function E:Grid(msg)
@@ -180,9 +188,10 @@ function E:LoadCommands()
 	self:RegisterChatCommand("enable", "EnableAddon")
 	self:RegisterChatCommand("disable", "DisableAddon")
 	self:RegisterChatCommand('farmmode', 'FarmMode')
-	self:RegisterChatCommand('elvsays', 'ElvSays')
-	self:RegisterChatCommand('elvsayschannel', 'ElvSaysChannel')
-	self:RegisterChatCommand('elvsaystarget', 'ElvSaysTarget')
+	self:RegisterChatCommand('devsays', 'DevSays')
+	self:RegisterChatCommand('devchannel', 'DevChannel')
+	self:RegisterChatCommand('devcmd', 'DevCommand')
+	self:RegisterChatCommand('devtarget', 'DevTarget')
 	self:RegisterChatCommand('cleanguild', 'MassGuildKick')
 	if E.ActionBars then
 		self:RegisterChatCommand('kb', E.ActionBars.ActivateBindMode)

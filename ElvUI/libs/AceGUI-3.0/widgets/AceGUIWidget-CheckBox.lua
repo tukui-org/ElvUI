@@ -1,7 +1,7 @@
 --[[-----------------------------------------------------------------------------
 Checkbox Widget
 -------------------------------------------------------------------------------]]
-local Type, Version = "CheckBox", 21
+local Type, Version = "CheckBox", 22
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
@@ -102,6 +102,9 @@ local methods = {
 			self.frame:Disable()
 			self.text:SetTextColor(0.5, 0.5, 0.5)
 			SetDesaturation(self.check, true)
+			if self.desc then
+				self.desc:SetTextColor(0.5, 0.5, 0.5)
+			end
 		else
 			self.frame:Enable()
 			self.text:SetTextColor(1, 1, 1)
@@ -109,6 +112,9 @@ local methods = {
 				SetDesaturation(self.check, true)
 			else
 				SetDesaturation(self.check, false)
+			end
+			if self.desc then
+				self.desc:SetTextColor(1, 1, 1)
 			end
 		end
 	end,

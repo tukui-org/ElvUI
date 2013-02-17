@@ -193,9 +193,9 @@ local function LoadSkin()
 
 			--Making all icons the same size and position because otherwise BlizzardUI tries to attach itself to itself when it refreshes
 			object.icon:SetPoint("LEFT", object, "LEFT", 4, 0)
-			hooksecurefunc(object.icon, "SetPoint", function(self, point, attachTo, anchorPoint, xOffset, yOffset)
-				if point ~= "LEFT" or attachTo ~= object or anchorPoint ~= "LEFT" or xOffset ~= 4 or yOffset ~= 0 then
-					self:SetPoint("LEFT", object, "LEFT", 4, 0)
+			hooksecurefunc(object.icon, "SetPoint", function(self, point, attachTo, anchorPoint, xOffset, yOffset, isForced)
+				if isForced ~= true then
+					self:SetPoint("LEFT", object, "LEFT", 4, 0, true)
 				end
 			end)
 			
@@ -263,7 +263,7 @@ local function LoadSkin()
 						local region = select(i, tab:GetRegions())
 						region:SetTexCoord(0.16, 0.86, 0.16, 0.86)
 						hooksecurefunc(region, "SetTexCoord", function(self, x1, y1, x2, y2)
-							if (x1 ~= 0.16 or y1 ~= 0.86 or x2 ~= 0.16 or y2 ~= 0.86) and x1 ~= nil then
+							if x1 ~= 0.16 then
 								self:SetTexCoord(0.16, 0.86, 0.16, 0.86)
 							end
 						end)
@@ -297,8 +297,8 @@ local function LoadSkin()
 				end
 				
 				_G["ReputationBar"..i.."Background"]:SetTexture(nil)
-				_G["ReputationBar"..i.."LeftLine"]:Kill()
-				_G["ReputationBar"..i.."BottomLine"]:Kill()
+				--_G["ReputationBar"..i.."LeftLine"]:Kill()
+				--_G["ReputationBar"..i.."BottomLine"]:Kill()
 				_G["ReputationBar"..i.."ReputationBarHighlight1"]:SetTexture(nil)
 				_G["ReputationBar"..i.."ReputationBarHighlight2"]:SetTexture(nil)	
 				_G["ReputationBar"..i.."ReputationBarAtWarHighlight1"]:SetTexture(nil)
