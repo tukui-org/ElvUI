@@ -50,8 +50,6 @@ local function SetupChat()
 			FCF_SetWindowName(frame, "All")
 		elseif i == 2 then
 			FCF_SetWindowName(frame, "Log")
-		elseif i == 5 then
-			FCF_SetWindowName(frame, "Whisp.")
 		end
 	end
 
