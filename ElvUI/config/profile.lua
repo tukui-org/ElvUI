@@ -532,7 +532,7 @@ P['unitframe'] = {
 			},	
 			['combobar'] = {
 				['enable'] = true,
-				['fill'] = 'fill',
+				['fill'] = 'spaced',
 				['height'] = 10,
 			},		
 			['aurabar'] = {
@@ -1671,7 +1671,7 @@ P["actionbar"] = {
 		['buttons'] = 6,
 		['buttonsPerRow'] = 3,
 		['point'] = 'BOTTOMLEFT',
-		['backdrop'] = false,
+		['backdrop'] = true,
 		['heightMult'] = 1,
 		['widthMult'] = 1,
 		["buttonsize"] = 30,

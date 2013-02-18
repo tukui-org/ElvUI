@@ -8,9 +8,9 @@ V['general'] = {
 	["normTex"] = "Minimalist",
 	["glossTex"] = "Minimalist",	
 	["dmgfont"] = "ElvUI Combat",
-	["namefont"] = "ElvUI Font",
+	["namefont"] = "Friz Quadrata TT",
 	['bubbles'] = true,
-	['pixelPerfect'] = true,
+	['pixelPerfect'] = false,
 
 	['minimap'] = {
 		['enable'] = true,
@@ -28,7 +28,7 @@ V["nameplate"] = {
 
 V['auras'] = {
 	['enable'] = true,
-	['size'] = 30,
+	['size'] = 26,
 }
 
 V['chat'] = {

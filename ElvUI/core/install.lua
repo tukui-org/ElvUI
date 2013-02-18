@@ -334,19 +334,6 @@ function E:SetupLayout(layout, noDataReset)
 	--Unitframes
 	if not noDataReset then
 		E:CopyTable(E.db.unitframe.units, P.unitframe.units)
-	end
-
-	if not noDataReset then
-		E:ResetMovers('')
-		E:SetupPixelPerfect(E.PixelMode, true)		
-		
-		E.db.actionbar.bar2.enabled = E.db.lowresolutionset
-		E.db.movers.ElvAB_2 = "BOTTOMElvUIParentBOTTOM038"
-		if not E.db.lowresolutionset then
-			E.db.actionbar.bar3.buttons = 6
-			E.db.actionbar.bar5.buttons = 6
-			E.db.actionbar.bar4.enabled = true
-		end			
 	end		
 	
 	if layout == 'healer' then

@@ -144,6 +144,7 @@ function LO:SetDataPanelStyle()
 		RightChatToggleButton:SetTemplate("Transparent")
 		RightMiniPanel:SetTemplate("Transparent")		
 		ElvConfigToggle:SetTemplate("Transparent")
+		Bottom_Datatext_Panel:SetTemplate("Transparent")
 	else
 		LeftChatDataPanel:SetTemplate("Default", true)
 		LeftChatToggleButton:SetTemplate("Default", true)
@@ -151,7 +152,8 @@ function LO:SetDataPanelStyle()
 		RightChatDataPanel:SetTemplate("Default", true)
 		RightChatToggleButton:SetTemplate("Default", true)
 		RightMiniPanel:SetTemplate("Default", true)		
-		ElvConfigToggle:SetTemplate("Default", true)	
+		ElvConfigToggle:SetTemplate("Default", true)
+		Bottom_Datatext_Panel:SetTemplate("Default", true)
 	end
 end
 
@@ -332,7 +334,7 @@ end
 function LO:CreateMinimapPanels()
 	local lminipanel = CreateFrame('Frame', 'LeftMiniPanel', Minimap)
 	lminipanel:Point('TOPLEFT', Minimap, 'BOTTOMLEFT', -E.Border, (E.PixelMode and 0 or -3))
-	lminipanel:Point('BOTTOMRIGHT', Minimap, 'BOTTOM', -E.Spacing, -((E.PixelMode and 0 or 3) + PANEL_HEIGHT))
+	lminipanel:Point('BOTTOMRIGHT', Minimap, 'BOTTOM', -(E.Spacing+20), -((E.PixelMode and 0 or 3) + PANEL_HEIGHT))
 	lminipanel:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
 	E:GetModule('DataTexts'):RegisterPanel(lminipanel, 1, 'ANCHOR_BOTTOMLEFT', lminipanel:GetWidth() * 2, -4)
 	
@@ -393,7 +395,7 @@ function LO:CreateExtraDataBarPanels()
 	E:GetModule('DataTexts'):RegisterPanel(chattab1, 2, 'ANCHOR_BOTTOM', 0, -4)
 	
 	local bottom_bar = CreateFrame('Frame', 'Bottom_Datatext_Panel', E.UIParent)
-	bottom_bar:SetTemplate('Default', true)
+	bottom_bar:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
 	bottom_bar:SetFrameStrata('BACKGROUND')
 	bottom_bar:SetScript('OnShow', function(self)
 		self:Point("TOPLEFT", ElvUI_Bar1, "BOTTOMLEFT", 0, -E.mult); 
