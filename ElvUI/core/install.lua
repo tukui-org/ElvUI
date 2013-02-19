@@ -189,11 +189,6 @@ function E:SetupPixelPerfect(enabled, noMsg)
 		if enabled then
 			if not E.db.movers then E.db.movers = {}; end
 			
-			E.db.movers["ElvUF_PetMover"] = "BOTTOMElvUIParentBOTTOM0104"
-			E.db.movers["ElvUF_TargetTargetMover"] = "BOTTOMElvUIParentBOTTOM064"
-			E.db.movers["ElvUF_PlayerMover"] = "BOTTOMElvUIParentBOTTOM-27865"
-			E.db.movers["ElvUF_TargetMover"] = "BOTTOMElvUIParentBOTTOM27864"
-
 			E.db.actionbar.bar1.backdrop = false;
 			E.db.actionbar.bar3.backdrop = false;
 			E.db.actionbar.bar5.backdrop = false;			
@@ -384,9 +379,14 @@ function E:SetupLayout(layout, noDataReset)
 	if not noDataReset then
 		E:ResetMovers('')
 		E:SetupPixelPerfect(E.PixelMode, true)		
+		if not E.db.movers then E.db.movers = {} end
 		
 		E.db.actionbar.bar2.enabled = E.db.lowresolutionset
-		E.db.movers.ElvAB_2 = "BOTTOMElvUIParentBOTTOM038"
+		if E.PixelMode then
+			E.db.movers.ElvAB_2 = "BOTTOMElvUIParentBOTTOM038"
+		else
+			E.db.movers.ElvAB_2 = "BOTTOMElvUIParentBOTTOM040"
+		end
 		if not E.db.lowresolutionset then
 			E.db.actionbar.bar3.buttons = 6
 			E.db.actionbar.bar5.buttons = 6
@@ -475,8 +475,6 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.party.name.position = "TOP"
 			E.db.unitframe.units.party.power.text_format = ""
 			
-
-			
 			E.db.unitframe.units.raid40.positionOverride = "BOTTOMRIGHT"
 			E.db.unitframe.units.raid40.height = 30
 			
@@ -495,42 +493,83 @@ function E:SetupLayout(layout, noDataReset)
 				E.db.actionbar.bar3.buttons = 12
 				E.db.actionbar.bar5.buttons = 12
 				E.db.actionbar.bar4.enabled = false
+				if not E.PixelMode then
+					E.db.actionbar.bar1.heightMult = 2
+				end				
 			end
 		end
 			
 		if not E.db.movers then E.db.movers = {}; end
 		local xOffset = GetScreenWidth() * 0.34375
-
-		E.db.movers.ElvAB_3 = "BOTTOMElvUIParentBOTTOM3124"
-		E.db.movers.ElvAB_2 = "BOTTOMElvUIParentBOTTOM038"
-		E.db.movers.ElvAB_5 = "BOTTOMElvUIParentBOTTOM-3124"
-		E.db.movers.ElvUF_PartyMover = "BOTTOMRIGHTElvUIParentBOTTOMLEFT"..xOffset.."450"
-		E.db.movers.ElvUF_Raid10Mover = "BOTTOMRIGHTElvUIParentBOTTOMLEFT"..xOffset.."450"
-		E.db.movers.ElvUF_Raid25Mover = "BOTTOMRIGHTElvUIParentBOTTOMLEFT"..xOffset.."450"
-		E.db.movers.ElvUF_Raid40Mover = "BOTTOMRIGHTElvUIParentBOTTOMLEFT"..xOffset.."450"
 		
-		if not E.db.lowresolutionset then
-			E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM278132"
-			E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM-278132"
-			E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM0176"
-			E.db.movers.ElvUF_TargetTargetMover = "BOTTOMElvUIParentBOTTOM0132"
-			E.db.movers.ElvUF_FocusMover = "BOTTOMElvUIParentBOTTOM310432"
-			E.db.movers["BossButton"] = "BOTTOMElvUIParentBOTTOM0275"
+		if E.PixelMode then
+			E.db.movers.ElvAB_3 = "BOTTOMElvUIParentBOTTOM3124"
+			E.db.movers.ElvAB_5 = "BOTTOMElvUIParentBOTTOM-3124"
+			E.db.movers.ElvUF_PartyMover = "BOTTOMRIGHTElvUIParentBOTTOMLEFT"..xOffset.."450"
+			E.db.movers.ElvUF_Raid10Mover = "BOTTOMRIGHTElvUIParentBOTTOMLEFT"..xOffset.."450"
+			E.db.movers.ElvUF_Raid25Mover = "BOTTOMRIGHTElvUIParentBOTTOMLEFT"..xOffset.."450"
+			E.db.movers.ElvUF_Raid40Mover = "BOTTOMRIGHTElvUIParentBOTTOMLEFT"..xOffset.."450"
+			
+			if not E.db.lowresolutionset then
+				E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM278132"
+				E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM-278132"
+				E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM0176"
+				E.db.movers.ElvUF_TargetTargetMover = "BOTTOMElvUIParentBOTTOM0132"
+				E.db.movers.ElvUF_FocusMover = "BOTTOMElvUIParentBOTTOM310432"
+				E.db.movers["BossButton"] = "BOTTOMElvUIParentBOTTOM0275"
+			else
+				E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM-102182"
+				E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM102182"
+				E.db.movers.ElvUF_TargetTargetMover = "BOTTOMElvUIParentBOTTOM102120"
+				E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM-102120"
+				E.db.movers.ElvUF_FocusMover = "BOTTOMElvUIParentBOTTOM310332"		
+				E.db.movers["BossButton"] = "TOPElvUIParentTOP0-138"
+			end
 		else
-			E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM-102182"
-			E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM102182"
-			E.db.movers.ElvUF_TargetTargetMover = "BOTTOMElvUIParentBOTTOM102120"
-			E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM-102120"
-			E.db.movers.ElvUF_FocusMover = "BOTTOMElvUIParentBOTTOM310332"		
-			E.db.movers["BossButton"] = "TOPElvUIParentTOP0-138"
+			E.db.movers.ElvAB_3 = "BOTTOMElvUIParentBOTTOM3324"
+			E.db.movers.ElvAB_5 = "BOTTOMElvUIParentBOTTOM-3324"
+			E.db.movers.ElvUF_PartyMover = "BOTTOMRIGHTElvUIParentBOTTOMLEFT"..xOffset.."450"
+			E.db.movers.ElvUF_Raid10Mover = "BOTTOMRIGHTElvUIParentBOTTOMLEFT"..xOffset.."450"
+			E.db.movers.ElvUF_Raid25Mover = "BOTTOMRIGHTElvUIParentBOTTOMLEFT"..xOffset.."450"
+			E.db.movers.ElvUF_Raid40Mover = "BOTTOMRIGHTElvUIParentBOTTOMLEFT"..xOffset.."450"
+			
+			if not E.db.lowresolutionset then
+				E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM307145"
+				E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM-307145"
+				E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM0186"
+				E.db.movers.ElvUF_TargetTargetMover = "BOTTOMElvUIParentBOTTOM0145"
+				E.db.movers.ElvUF_FocusMover = "BOTTOMElvUIParentBOTTOM310432"
+				E.db.movers["BossButton"] = "BOTTOMElvUIParentBOTTOM0275"
+			else
+				E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM-118182"
+				E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM118182"
+				E.db.movers.ElvUF_TargetTargetMover = "BOTTOMElvUIParentBOTTOM118120"
+				E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM-118120"
+				E.db.movers.ElvUF_FocusMover = "BOTTOMElvUIParentBOTTOM310332"		
+				E.db.movers["BossButton"] = "TOPElvUIParentTOP0-138"
+			end		
 		end
 	elseif E.db.lowresolutionset then
 		if not E.db.movers then E.db.movers = {}; end
-		E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM-102135"
-		E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM102135"
-		E.db.movers.ElvUF_TargetTargetMover = "BOTTOMElvUIParentBOTTOM10280"
-		E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM-10280"
-		E.db.movers.ElvUF_FocusMover = "BOTTOMElvUIParentBOTTOM310332"			
+		if E.PixelMode then
+			E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM-102135"
+			E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM102135"
+			E.db.movers.ElvUF_TargetTargetMover = "BOTTOMElvUIParentBOTTOM10280"
+			E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM-10280"
+			E.db.movers.ElvUF_FocusMover = "BOTTOMElvUIParentBOTTOM310332"			
+		else
+			E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM-118142"
+			E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM118142"
+			E.db.movers.ElvUF_TargetTargetMover = "BOTTOMElvUIParentBOTTOM11884"
+			E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM-11884"
+			E.db.movers.ElvUF_FocusMover = "BOTTOMElvUIParentBOTTOM310332"	
+		end
+		
+		E.db.movers["BossButton"] = "TOPElvUIParentTOP0-138"
+	end
+	
+	if layout ~= 'healer' and not E.db.lowresolutionset then
+		E.db.actionbar.bar1.heightMult = 1
 	end
 	
 	if E.db.lowresolutionset and not noDataReset then
@@ -560,30 +599,59 @@ function E:SetupLayout(layout, noDataReset)
 	
 	if(layout == 'dpsCaster' or layout == 'healer' or (layout == 'dpsMelee' and E.myclass == 'HUNTER')) then
 		if not E.db.movers then E.db.movers = {}; end
-		E.db.unitframe.units.player.castbar.width = 406
+		E.db.unitframe.units.player.castbar.width = E.PixelMode and 406 or 436
 		E.db.unitframe.units.player.castbar.height = 28	
 		local yOffset = 80
 		if not E.db.lowresolutionset then
 			if layout ~= 'healer' then
 				yOffset = 42
-				E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM-278110"
-				E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM278110"
-				E.db.movers.ElvUF_TargetTargetMover = "BOTTOMElvUIParentBOTTOM0110"
-				E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM0150"			
-				E.db.movers["BossButton"] = "BOTTOMElvUIParentBOTTOM0195"				
+				
+				if E.PixelMode then
+					E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM-278110"
+					E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM278110"
+					E.db.movers.ElvUF_TargetTargetMover = "BOTTOMElvUIParentBOTTOM0110"
+					E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM0150"			
+					E.db.movers["BossButton"] = "BOTTOMElvUIParentBOTTOM0195"		
+				else
+					E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM-307110"
+					E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM307110"
+					E.db.movers.ElvUF_TargetTargetMover = "BOTTOMElvUIParentBOTTOM0110"
+					E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM0150"			
+					E.db.movers["BossButton"] = "BOTTOMElvUIParentBOTTOM0195"						
+				end
 			else
 				yOffset = 76
 			end
 		elseif E.db.lowresolutionset then
-			E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM-102182"
-			E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM102182"
-			E.db.movers.ElvUF_TargetTargetMover = "BOTTOMElvUIParentBOTTOM102120"
-			E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM-102120"
-			E.db.movers.ElvUF_FocusMover = "BOTTOMElvUIParentBOTTOM310332"		
-			E.db.movers["BossButton"] = "TOPElvUIParentTOP0-138"		
+			if E.PixelMode then
+				E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM-102182"
+				E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM102182"
+				E.db.movers.ElvUF_TargetTargetMover = "BOTTOMElvUIParentBOTTOM102120"
+				E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM-102120"
+				E.db.movers.ElvUF_FocusMover = "BOTTOMElvUIParentBOTTOM310332"			
+			else
+				E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM-118182"
+				E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM118182"
+				E.db.movers.ElvUF_TargetTargetMover = "BOTTOMElvUIParentBOTTOM118120"
+				E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM-118120"
+				E.db.movers.ElvUF_FocusMover = "BOTTOMElvUIParentBOTTOM310332"						
+			end
+			
+			E.db.movers["BossButton"] = "TOPElvUIParentTOP0-138"
 		end
 		
-		E.db.movers.ElvUF_PlayerCastbarMover = "BOTTOMElvUIParentBOTTOM0"..yOffset
+		if E.PixelMode then
+			E.db.movers.ElvUF_PlayerCastbarMover = "BOTTOMElvUIParentBOTTOM0"..yOffset
+		else
+			E.db.movers.ElvUF_PlayerCastbarMover = "BOTTOMElvUIParentBOTTOM-2"..(yOffset + 5)
+		end
+	elseif (layout == 'dpsMelee' or layout == 'tank') and not E.db.lowresolutionset and not E.PixelMode then
+		E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM-30776"
+		E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM30776"
+		E.db.movers.ElvUF_TargetTargetMover = "BOTTOMElvUIParentBOTTOM076"
+		E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM0115"			
+		E.db.movers["BossButton"] = "BOTTOMElvUIParentBOTTOM0158"		
+			
 	end
 	
 	--Datatexts
