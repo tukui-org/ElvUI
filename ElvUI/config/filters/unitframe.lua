@@ -399,7 +399,8 @@ G.unitframe.aurafilters['Blacklist'] = {
 		[SpellName(95223)] = Defaults(), --group res debuff
 		[SpellName(124275)] = Defaults(), -- Stagger
 		[SpellName(124274)] = Defaults(), -- Stagger
-		[SpellName(124273)] = Defaults() -- Stagger
+		[SpellName(124273)] = Defaults(), -- Stagger
+		[SpellName(117870)] = Defaults() -- Touch of The Titans
 	},
 }
 
