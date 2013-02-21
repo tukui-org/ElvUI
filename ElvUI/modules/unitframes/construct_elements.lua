@@ -47,49 +47,6 @@ function UF:Construct_TargetGlow(frame)
 	return x
 end
 
-function UF:Construct_PowerBar(frame, bg, text, textPos, lowtext)
-	local power = CreateFrame('StatusBar', nil, frame)
-	UF['statusbars'][power] = true
-	
-	--power.frequentUpdates = true
-	power:SetFrameStrata("LOW")
-	power.PostUpdate = self.PostUpdatePower
-
-	if bg then
-		power.bg = power:CreateTexture(nil, 'BORDER')
-		power.bg:SetAllPoints()
-		power.bg:SetTexture(E["media"].blankTex)
-		power.bg.multiplier = 0.2
-	end
-	
-	if text then
-		power.value = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')	
-		UF:Configure_FontString(power.value)
-		power.value:SetParent(frame)
-		
-		local x = -2
-		if textPos == 'LEFT' then
-			x = 2
-		end
-		
-		power.value:Point(textPos, frame.Health, textPos, x, 0)
-	end
-	
-	if lowtext then
-		power.LowManaText = power:CreateFontString(nil, 'OVERLAY')
-		UF:Configure_FontString(power.LowManaText)
-		power.LowManaText:SetParent(frame)
-		power.LowManaText:Point("BOTTOM", frame.Health, "BOTTOM", 0, 7)
-		power.LowManaText:SetTextColor(0.69, 0.31, 0.31)
-	end
-	
-	power.colorDisconnected = false
-	power.colorTapping = false
-	power:CreateBackdrop('Default')
-
-	return power
-end	
-
 function UF:Construct_Portrait(frame, type)
 	local portrait
 	
@@ -113,70 +70,6 @@ function UF:Construct_Portrait(frame, type)
 	portrait.overlay:SetFrameLevel(frame:GetFrameLevel() - 5)
 	
 	return portrait
-end
-
-function UF:Construct_AuraIcon(button)
-	button.text = button.cd:CreateFontString(nil, 'OVERLAY')
-	button.text:Point('CENTER', 1, 1)
-	button.text:SetJustifyH('CENTER')
-	
-	button:SetTemplate('Default')
-
-	button.cd.noOCC = true
-	button.cd.noCooldownCount = true
-	button.cd:SetReverse()
-	button.cd:SetInside()
-	
-	button.icon:SetInside()
-	button.icon:SetTexCoord(unpack(E.TexCoords))
-	button.icon:SetDrawLayer('ARTWORK')
-	
-	button.count:ClearAllPoints()
-	button.count:Point('BOTTOMRIGHT', 1, 1)
-	button.count:SetJustifyH('RIGHT')
-
-	button.overlay:SetTexture(nil)
-	button.stealable:SetTexture(nil)
-
-	button:RegisterForClicks('RightButtonUp')
-	button:SetScript('OnClick', function(self)
-		if not IsShiftKeyDown() then return; end
-		local auraName = self.name
-		
-		if auraName then
-			E:Print(format(L['The spell "%s" has been added to the Blacklist unitframe aura filter.'], auraName))
-			E.global['unitframe']['aurafilters']['Blacklist']['spells'][auraName] = {
-				['enable'] = true,
-				['priority'] = 0,			
-			}
-			
-			UF:Update_AllFrames()
-		end
-	end)	
-end
-
-function UF:Construct_Buffs(frame)
-	local buffs = CreateFrame('Frame', nil, frame)
-	buffs.spacing = E.Spacing
-	buffs.PreSetPosition = self.SortAuras
-	buffs.PostCreateIcon = self.Construct_AuraIcon
-	buffs.PostUpdateIcon = self.PostUpdateAura
-	buffs.CustomFilter = self.AuraFilter
-	buffs.type = 'buffs'
-	
-	return buffs
-end
-
-function UF:Construct_Debuffs(frame)
-	local debuffs = CreateFrame('Frame', nil, frame)
-	debuffs.spacing = E.Spacing
-	debuffs.PreSetPosition = self.SortAuras
-	debuffs.PostCreateIcon = self.Construct_AuraIcon
-	debuffs.PostUpdateIcon = self.PostUpdateAura
-	debuffs.CustomFilter = self.AuraFilter
-	debuffs.type = 'debuffs'
-	
-	return debuffs
 end
 
 function UF:Construct_Castbar(self, direction, moverName)
@@ -460,15 +353,6 @@ function UF:Construct_AltPowerBar(frame)
 	UF:Configure_FontString(altpower.text)
 	
 	return altpower
-end
-
-function UF:Construct_NameText(frame)
-	local parent = frame.RaisedElementParent or frame
-	local name = parent:CreateFontString(nil, 'OVERLAY')
-	UF:Configure_FontString(name)
-	name:SetPoint('CENTER', frame.Health)
-	
-	return name
 end
 
 function UF:Construct_Combobar(frame)

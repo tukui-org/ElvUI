@@ -5,8 +5,6 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
-local CAN_HAVE_CLASSBAR = (E.myclass == "PALADIN" or E.myclass == "DRUID" or E.myclass == "DEATHKNIGHT" or E.myclass == "WARLOCK" or E.myclass == "PRIEST" or E.myclass == "MONK" or E.myclass == 'MAGE')
-
 function UF:Construct_HealthBar(frame, bg, text, textPos)
 	local health = CreateFrame('StatusBar', nil, frame)	
 	UF['statusbars'][health] = true
@@ -39,104 +37,6 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 	health:CreateBackdrop('Default')	
 
 	return health
-end
-
-function UF:UpdateElementSettings_Health(frame, updateElement, isGroupFrame)
-	local db = frame.db
-	local health = frame.Health
-	
-	local SPACING = E.Spacing
-	local BORDER = E.Border
-	local USE_CLASSBAR = db.classbar.enable and CAN_HAVE_CLASSBAR
-	local CLASSBAR_HEIGHT = db.classbar.height
-	local USE_PORTRAIT = db.portrait.enable
-	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
-	local PORTRAIT_WIDTH = (USE_PORTRAIT_OVERLAY or not USE_PORTRAIT) and 0 or db.portrait.width
-	local POWERBAR_OFFSET = db.power.offset
-	local POWERBAR_HEIGHT = db.power.enable and db.power.height or 0
-	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and db.power.enable
-	
-	health.Smooth = self.db.smoothbars
-
-	--Text
-	local x, y = self:GetPositionOffset(db.health.position)
-	health.value:ClearAllPoints()
-	health.value:Point(db.health.position, health, db.health.position, x, y)
-	frame:Tag(health.value, db.health.text_format)
-	
-	--Colors
-	health.colorSmooth = nil
-	health.colorHealth = nil
-	health.colorClass = nil
-	health.colorReaction = nil
-	if self.db['colors'].healthclass ~= true then
-		if self.db['colors'].colorhealthbyvalue == true then
-			health.colorSmooth = true
-		else
-			health.colorHealth = true
-		end		
-	else
-		health.colorClass = true
-		health.colorReaction = true
-	end	
-	
-	--Position
-	health:ClearAllPoints()
-	health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -BORDER)
-	if USE_POWERBAR_OFFSET then
-		health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER+POWERBAR_OFFSET), -BORDER)
-		health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER+POWERBAR_OFFSET)
-	elseif USE_MINI_POWERBAR then
-		health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER + (POWERBAR_HEIGHT/2))
-	else
-		health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER + POWERBAR_HEIGHT)
-	end
-	
-	health.bg:ClearAllPoints()
-	if not USE_PORTRAIT_OVERLAY then
-		health:Point("TOPLEFT", PORTRAIT_WIDTH+BORDER, -BORDER)		
-		health.bg:SetParent(health)
-		health.bg:SetAllPoints()
-	else
-		health.bg:Point('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMRIGHT')
-		health.bg:Point('TOPRIGHT', health)		
-		health.bg:SetParent(frame.Portrait.overlay)			
-	end
-	
-	if USE_CLASSBAR then
-		local DEPTH
-		if USE_MINI_CLASSBAR then
-			DEPTH = -(BORDER+(CLASSBAR_HEIGHT/2))
-		else
-			DEPTH = -(BORDER+CLASSBAR_HEIGHT+SPACING)
-		end
-		
-		if USE_POWERBAR_OFFSET then
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER+POWERBAR_OFFSET), DEPTH)
-		else
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, DEPTH)
-		end
-		
-		health:Point("TOPLEFT", frame, "TOPLEFT", PORTRAIT_WIDTH+BORDER, DEPTH)
-	end
-	
-	if updateElement then
-		frame:UpdateElement('Health')
-		health.value:UpdateTag()
-	end
-	
-	if isGroupFrame and not frame:GetParent().UpdateHealthSettings then
-		frame:GetParent().UpdateHealthSettings = function(parent)
-			for i=1, parent:GetNumChildren() do
-				local child = select(i, parent:GetChildren())
-				if child and child.Health then
-					UF:UpdateElementSettings_Health(child, true, true)
-				end
-			end
-		end
-	elseif not frame.UpdateHealthSettings then
-		frame.UpdateHealthSettings = UF.UpdateElementSettings_Health
-	end
 end
 
 function UF:PostUpdateHealth(unit, min, max)
@@ -184,13 +84,13 @@ function UF:PostUpdateHealth(unit, min, max)
 	end	
 end
 
-function UF:GetOptionsTable_Health(objectName, isGroupFrame)
+function UF:GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUnits)
 	local config = {
 		order = 100,
 		type = 'group',
 		name = L['Health'],
-		get = function(info) return _G[objectName].db.health[ info[#info] ] end,
-		set = function(info, value) _G[objectName].db.health[ info[#info] ] = value; _G[objectName].UpdateHealthSettings(UF, _G[objectName], true) end,
+		get = function(info) return E.db.unitframe.units[groupName]['health'][ info[#info] ] end,
+		set = function(info, value) E.db.unitframe.units[groupName]['health'][ info[#info] ] = value; updateFunc(self, groupName, numUnits) end,
 		args = {
 			position = {
 				type = 'select',
@@ -204,7 +104,7 @@ function UF:GetOptionsTable_Health(objectName, isGroupFrame)
 				type = 'input',
 				width = 'full',
 				desc = L['TEXT_FORMAT_DESC'],
-			},
+			},			
 		},
 	}
 	

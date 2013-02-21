@@ -9,80 +9,6 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
-local function CheckFilter(filterType, isFriend)
-	local FRIENDLY_CHECK, ENEMY_CHECK = false, false
-	if type(filterType) == 'string' then
-		error('Database conversion failed! Report to Elv.')
-	elseif type(filterType) == 'boolean' then
-		FRIENDLY_CHECK = filterType
-		ENEMY_CHECK = filterType
-	elseif filterType then
-		FRIENDLY_CHECK = filterType.friendly
-		ENEMY_CHECK = filterType.enemy
-	end
-	
-	if (FRIENDLY_CHECK and isFriend) or (ENEMY_CHECK and not isFriend) then
-		return true
-	end
-	
-	return false
-end
-
-function UF:PostNamePosition(frame, unit)
-	if not frame.Power.value:IsShown() then return end
-	
-	if UnitIsPlayer(unit) then
-		local db = frame.db
-		
-		local position = db.name.position
-		local x, y = self:GetPositionOffset(position)
-		frame.Power.value:SetAlpha(1)
-		
-		frame.Name:ClearAllPoints()
-		frame.Name:Point(position, frame.Health, position, x, y)	
-	else
-		frame.Power.value:SetAlpha(0)
-		
-		frame.Name:ClearAllPoints()
-		frame.Name:SetPoint(frame.Power.value:GetPoint())
-	end
-end
-
-local tokens = { [0] = "MANA", "RAGE", "FOCUS", "ENERGY", "RUNIC_POWER" }
-function UF:PostUpdatePower(unit, min, max)
-	local pType, _, altR, altG, altB = UnitPowerType(unit)
-	local parent = self:GetParent()
-	
-	if parent.isForced then
-		min = random(1, max)
-		pType = random(0, 4)
-		self:SetValue(min)
-		local color = ElvUF['colors'].power[tokens[pType]]
-		
-		if not self.colorClass then
-			self:SetStatusBarColor(color[1], color[2], color[3])
-			local mu = self.bg.multiplier or 1
-			self.bg:SetVertexColor(color[1] * mu, color[2] * mu, color[3] * mu)
-		end
-	end	
-	
-	local db = parent.db
-	if self.LowManaText and db then
-		if pType == 0 and not UnitIsDeadOrGhost(unit)
-		and (max == 0 and 0 or floor(min / max * 100)) <= db.lowmana then
-			self.LowManaText:SetText(LOW..' '..MANA)
-			E:Flash(self.LowManaText, 0.6)
-		else
-			self.LowManaText:SetText()
-			E:StopFlash(self.LowManaText)
-		end
-	end
-	
-	if db and db.power and db.power.hideonnpc then
-		UF:PostNamePosition(parent, unit)
-	end	
-end
-
 function UF:PortraitUpdate(unit)
 	local db = self:GetParent().db
 	
@@ -104,101 +30,6 @@ function UF:PortraitUpdate(unit)
 
 		self:SetCamDistanceScale(portrait.camDistanceScale - 0.01 >= 0.01 and portrait.camDistanceScale - 0.01 or 0.01) --Blizzard bug fix
 		self:SetCamDistanceScale(portrait.camDistanceScale)
-	end
-end
-
-function UF:UpdateAuraTimer(elapsed)	
-	self.expiration = self.expiration - elapsed
-	if self.nextupdate > 0 then
-		self.nextupdate = self.nextupdate - elapsed
-		return
-	end
-	
-	if(self.expiration <= 0) then
-		self:SetScript('OnUpdate', nil)
-		self.text:SetText('')
-		return
-	end
-
-	local timervalue, formatid
-	timervalue, formatid, self.nextupdate = E:GetTimeInfo(self.expiration, 4)
-	self.text:SetFormattedText(("%s%s|r"):format(E.TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
-end
-
-local function SortAurasByPriority(a, b)
-    if (a and b and a.priority and b.priority) then
-        return a.priority > b.priority
-    end
-end
-
-function UF:SortAuras()
-	tsort(self, SortAurasByPriority)
-end
-
-function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, duration, timeLeft)
-	local name, _, _, _, dtype, duration, expiration, _, isStealable = UnitAura(unit, index, button.filter)
-	local db = self:GetParent().db
-	
-	if db and db[self.type] then
-		local unitframeFont = LSM:Fetch("font", E.db['unitframe'].font)
-	
-		button.text:FontTemplate(unitframeFont, db[self.type].fontSize, 'OUTLINE')
-		button.count:FontTemplate(unitframeFont, db[self.type].countFontSize or db[self.type].fontSize, 'OUTLINE')
-		
-		if db[self.type].clickThrough and button:IsMouseEnabled() then
-			button:EnableMouse(false)
-		elseif not db[self.type].clickThrough and not button:IsMouseEnabled() then
-			button:EnableMouse(true)
-		end
-	end
-	
-	local isFriend = UnitIsFriend('player', unit) == 1 and true or false
-	if button.isDebuff then
-		if(not isFriend and button.owner ~= "player" and button.owner ~= "vehicle") --[[and (not E.isDebuffWhiteList[name])]] then
-			button:SetBackdropBorderColor(0.9, 0.1, 0.1)
-			button.icon:SetDesaturated((unit and not unit:find('arena%d')) and true or false)
-		else
-			local color = DebuffTypeColor[dtype] or DebuffTypeColor.none
-			if (name == "Unstable Affliction" or name == "Vampiric Touch") and E.myclass ~= "WARLOCK" then
-				button:SetBackdropBorderColor(0.05, 0.85, 0.94)
-			else
-				button:SetBackdropBorderColor(color.r * 0.6, color.g * 0.6, color.b * 0.6)
-			end
-			button.icon:SetDesaturated(false)
-		end
-	else
-		if (isStealable) and not isFriend then
-			button:SetBackdropBorderColor(237/255, 234/255, 142/255)
-		else
-			button:SetBackdropBorderColor(unpack(E["media"].bordercolor))		
-		end	
-	end
-
-	local size = button:GetParent().size
-	if size then
-		button:Size(size)
-	end
-	
-	button.spell = name
-	button.isStealable = isStealable
-	if expiration and duration ~= 0 then
-		if not button:GetScript('OnUpdate') then
-			button.expirationTime = expiration
-			button.expiration = expiration - GetTime()
-			button.nextupdate = -1
-			button:SetScript('OnUpdate', UF.UpdateAuraTimer)
-		end
-		if button.expirationTime ~= expiration  then
-			button.expirationTime = expiration
-			button.expiration = expiration - GetTime()
-			button.nextupdate = -1
-		end
-	end	
-	if duration == 0 or expiration == 0 then
-		button:SetScript('OnUpdate', nil)
-		if button.text:GetFont() then
-			button.text:SetText('')
-		end
 	end
 end
 
@@ -893,108 +724,6 @@ function UF:UpdateComboDisplay(event, unit)
 	end
 end
 
-function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, timeLeft, unitCaster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff)	
-	if E.global.unitframe.InvalidSpells[spellID] then
-		return false;
-	end
-
-	local isPlayer, isFriend
-	local db = self:GetParent().db
-	if not db or not db[self.type] then return true; end
-	
-	db = db[self.type]
-
-	local returnValue = true
-	local passPlayerOnlyCheck = true
-	local anotherFilterExists = false
-	local isPlayer = unitCaster == 'player' or unitCaster == 'vehicle'
-	local isFriend = UnitIsFriend('player', unit) == 1 and true or false
-	local auraType = isFriend and db.friendlyAuraType or db.enemyAuraType
-	
-	icon.isPlayer = isPlayer
-	icon.owner = unitCaster
-	icon.name = name
-	icon.priority = 0
-
-	local turtleBuff = E.global['unitframe']['aurafilters']['TurtleBuffs'].spells[name]
-	if turtleBuff and turtleBuff.enable then
-		icon.priority = turtleBuff.priority
-	end
-	
-	if CheckFilter(db.playerOnly, isFriend) then
-		if isPlayer then
-			returnValue = true;
-		else
-			returnValue = false;
-		end
-		
-		passPlayerOnlyCheck = returnValue
-		anotherFilterExists = true
-	end
-	
-	if CheckFilter(db.onlyDispellable, isFriend) then
-		if (self.type == 'buffs' and not isStealable) or (self.type == 'debuffs' and dtype and  not E:IsDispellableByMe(dtype)) then
-			returnValue = false;
-		end
-		anotherFilterExists = true
-	end
-	
-	if CheckFilter(db.noConsolidated, isFriend) then
-		if shouldConsolidate == 1 then
-			returnValue = false;
-		end
-		
-		anotherFilterExists = true
-	end
-	
-	if CheckFilter(db.noDuration, isFriend) then
-		if (duration == 0 or not duration) then
-			returnValue = false;
-		end
-		
-		anotherFilterExists = true
-	end
-
-	if CheckFilter(db.useBlacklist, isFriend) then
-		local blackList = E.global['unitframe']['aurafilters']['Blacklist'].spells[name]
-		if blackList and blackList.enable then
-			returnValue = false;
-		end
-		
-		anotherFilterExists = true
-	end
-	
-	if CheckFilter(db.useWhitelist, isFriend) then
-		local whiteList = E.global['unitframe']['aurafilters']['Whitelist'].spells[name]
-		if whiteList and whiteList.enable then
-			returnValue = true;
-			icon.priority = whiteList.priority
-		elseif not anotherFilterExists then
-			returnValue = false
-		end
-		
-		anotherFilterExists = true
-	end	
-
-	if db.useFilter and E.global['unitframe']['aurafilters'][db.useFilter] then
-		local type = E.global['unitframe']['aurafilters'][db.useFilter].type
-		local spellList = E.global['unitframe']['aurafilters'][db.useFilter].spells
-
-		if type == 'Whitelist' then
-			if spellList[name] and spellList[name].enable and passPlayerOnlyCheck then
-				returnValue = true
-				icon.priority = spellList[name].priority
-			elseif not anotherFilterExists then
-				returnValue = false
-			end
-		elseif type == 'Blacklist' and spellList[name] and spellList[name].enable then
-			returnValue = false				
-		end
-	end		
-	
-	return returnValue	
-end
-
 local counterOffsets = {
 	['TOPLEFT'] = {6, 1},
 	['TOPRIGHT'] = {-6, 1},
@@ -1253,14 +982,6 @@ function UF:RaidRoleUpdate()
 	end
 end
 
-local function CheckFilterArguement(option, optionArgs)
-	if option ~= true then
-		return true
-	end
-
-	return optionArgs
-end
-
 local huge = math.huge
 function UF.SortAuraBarReverse(a, b)
 	local compa, compb = a.noTime and huge or a.expirationTime, b.noTime and huge or b.expirationTime
@@ -1296,7 +1017,7 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 	local isFriend = UnitIsFriend('player', unit) == 1 and true or false
 	local auraType = isFriend and db.friendlyAuraType or db.enemyAuraType
 	
-	if CheckFilter(db.playerOnly, isFriend) then
+	if UF:CheckFilter(db.playerOnly, isFriend) then
 		if isPlayer then
 			returnValue = true;
 		else
@@ -1307,14 +1028,14 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 		anotherFilterExists = true
 	end
 	
-	if CheckFilter(db.onlyDispellable, isFriend) then
+	if UF:CheckFilter(db.onlyDispellable, isFriend) then
 		if (self.type == 'buffs' and not isStealable) or (self.type == 'debuffs' and dtype and  not E:IsDispellableByMe(dtype)) then
 			returnValue = false;
 		end
 		anotherFilterExists = true
 	end
 	
-	if CheckFilter(db.noConsolidated, isFriend) then
+	if UF:CheckFilter(db.noConsolidated, isFriend) then
 		if shouldConsolidate == 1 then
 			returnValue = false;
 		end
@@ -1322,7 +1043,7 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 		anotherFilterExists = true
 	end
 	
-	if CheckFilter(db.noDuration, isFriend) then
+	if UF:CheckFilter(db.noDuration, isFriend) then
 		if (duration == 0 or not duration) then
 			returnValue = false;
 		end
@@ -1330,7 +1051,7 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 		anotherFilterExists = true
 	end
 
-	if CheckFilter(db.useBlacklist, isFriend) then
+	if UF:CheckFilter(db.useBlacklist, isFriend) then
 		local blackList = E.global['unitframe']['aurafilters']['Blacklist'].spells[name]
 		if blackList and blackList.enable then
 			returnValue = false;
@@ -1339,7 +1060,7 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 		anotherFilterExists = true
 	end
 	
-	if CheckFilter(db.useWhitelist, isFriend) then
+	if UF:CheckFilter(db.useWhitelist, isFriend) then
 		local whiteList = E.global['unitframe']['aurafilters']['Whitelist'].spells[name]
 		if whiteList and whiteList.enable then
 			returnValue = true;
@@ -1395,70 +1116,6 @@ function UF:ColorizeAuraBars(event, unit)
 		else
 			UF:ToggleTransparentStatusBar(false, frame.statusBar, frame.statusBar.bg, nil, true)
 		end	
-	end
-end
-
-function UF:SmartAuraDisplay()
-	local db = self.db
-	local unit = self.unit
-	if not db or not db.smartAuraDisplay or db.smartAuraDisplay == 'DISABLED' or not UnitExists(unit) then return; end
-	local buffs = self.Buffs
-	local debuffs = self.Debuffs
-	local auraBars = self.AuraBars
-
-	local isFriend = UnitIsFriend('player', unit) == 1 and true or false
-	
-	if isFriend then
-		if db.smartAuraDisplay == 'SHOW_DEBUFFS_ON_FRIENDLIES' then
-			buffs:Hide()
-			debuffs:Show()
-		else
-			buffs:Show()
-			debuffs:Hide()		
-		end
-	else
-		if db.smartAuraDisplay == 'SHOW_DEBUFFS_ON_FRIENDLIES' then
-			buffs:Show()
-			debuffs:Hide()
-		else
-			buffs:Hide()
-			debuffs:Show()		
-		end
-	end
-	
-	local yOffset = E.PixelMode and (db.aurabar.anchorPoint == 'BELOW' and 1 or -1) or 0;
-	if buffs:IsShown() then
-		local x, y = E:GetXYOffset(db.buffs.anchorPoint)
-		
-		buffs:ClearAllPoints()
-		buffs:Point(E.InversePoints[db.buffs.anchorPoint], self, db.buffs.anchorPoint, x + db.buffs.xOffset, y + db.buffs.yOffset + (E.PixelMode and (db.buffs.anchorPoint:find('TOP') and -1 or 1) or 0))
-		
-		if db.aurabar.attachTo ~= 'FRAME' then
-			local anchorPoint, anchorTo = 'BOTTOM', 'TOP'
-			if db.aurabar.anchorPoint == 'BELOW' then
-				anchorPoint, anchorTo = 'TOP', 'BOTTOM'
-			end		
-			auraBars:ClearAllPoints()
-			auraBars:SetPoint(anchorPoint..'LEFT', buffs, anchorTo..'LEFT', 0, yOffset)
-			auraBars:SetPoint(anchorPoint..'RIGHT', buffs, anchorTo..'RIGHT', 0, yOffset)
-		end
-	end
-	
-	if debuffs:IsShown() then
-		local x, y = E:GetXYOffset(db.debuffs.anchorPoint)
-		
-		debuffs:ClearAllPoints()
-		debuffs:Point(E.InversePoints[db.debuffs.anchorPoint], self, db.debuffs.anchorPoint, x + db.debuffs.xOffset, y + db.debuffs.yOffset)	
-		
-		if db.aurabar.attachTo ~= 'FRAME' then
-			local anchorPoint, anchorTo = 'BOTTOM', 'TOP'
-			if db.aurabar.anchorPoint == 'BELOW' then
-				anchorPoint, anchorTo = 'TOP', 'BOTTOM'
-			end		
-			auraBars:ClearAllPoints()
-			auraBars:SetPoint(anchorPoint..'LEFT', debuffs, anchorTo..'LEFT', 0, yOffset)
-			auraBars:SetPoint(anchorPoint..'RIGHT', debuffs, anchorTo..'RIGHT', 0, yOffset)		
-		end
 	end
 end
 

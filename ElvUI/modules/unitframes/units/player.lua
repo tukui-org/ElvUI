@@ -324,19 +324,75 @@ function UF:Update_PlayerFrame(frame, db)
 	end
 	
 	--Health
-	self:UpdateElementSettings_Health(frame, true)
-	
-	--Name
 	do
-		local name = frame.Name
-		if not db.power.hideonnpc then
-			local x, y = self:GetPositionOffset(db.name.position)
-			name:ClearAllPoints()
-			name:Point(db.name.position, frame.Health, db.name.position, x, y)				
+		local health = frame.Health
+		health.Smooth = self.db.smoothbars
+
+		--Text
+		local x, y = self:GetPositionOffset(db.health.position)
+		health.value:ClearAllPoints()
+		health.value:Point(db.health.position, health, db.health.position, x, y)
+		frame:Tag(health.value, db.health.text_format)
+		
+		--Colors
+		health.colorSmooth = nil
+		health.colorHealth = nil
+		health.colorClass = nil
+		health.colorReaction = nil
+		if self.db['colors'].healthclass ~= true then
+			if self.db['colors'].colorhealthbyvalue == true then
+				health.colorSmooth = true
+			else
+				health.colorHealth = true
+			end		
+		else
+			health.colorClass = true
+			health.colorReaction = true
+		end	
+		
+		--Position
+		health:ClearAllPoints()
+		health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -BORDER)
+		if USE_POWERBAR_OFFSET then
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER+POWERBAR_OFFSET), -BORDER)
+			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER+POWERBAR_OFFSET)
+		elseif USE_MINI_POWERBAR then
+			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER + (POWERBAR_HEIGHT/2))
+		else
+			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER + POWERBAR_HEIGHT)
 		end
 		
-		frame:Tag(name, db.name.text_format)
-	end	
+		health.bg:ClearAllPoints()
+		if not USE_PORTRAIT_OVERLAY then
+			health:Point("TOPLEFT", PORTRAIT_WIDTH+BORDER, -BORDER)		
+			health.bg:SetParent(health)
+			health.bg:SetAllPoints()
+		else
+			health.bg:Point('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMRIGHT')
+			health.bg:Point('TOPRIGHT', health)		
+			health.bg:SetParent(frame.Portrait.overlay)			
+		end
+		
+		if USE_CLASSBAR then
+			local DEPTH
+			if USE_MINI_CLASSBAR then
+				DEPTH = -(BORDER+(CLASSBAR_HEIGHT/2))
+			else
+				DEPTH = -(BORDER+CLASSBAR_HEIGHT+SPACING)
+			end
+			
+			if USE_POWERBAR_OFFSET then
+				health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER+POWERBAR_OFFSET), DEPTH)
+			else
+				health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, DEPTH)
+			end
+			
+			health:Point("TOPLEFT", frame, "TOPLEFT", PORTRAIT_WIDTH+BORDER, DEPTH)
+		end		
+	end
+	
+	--Name
+	UF:UpdateNameSettings(frame)
 	
 	--PvP
 	do
