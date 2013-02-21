@@ -188,7 +188,7 @@ function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, durati
 		local unitframeFont = LSM:Fetch("font", E.db['unitframe'].font)
 	
 		button.text:FontTemplate(unitframeFont, db[self.type].fontSize, 'OUTLINE')
-		button.count:FontTemplate(unitframeFont, db[self.type].fontSize, 'OUTLINE')
+		button.count:FontTemplate(unitframeFont, db[self.type].countFontSize or db[self.type].fontSize, 'OUTLINE')
 		
 		if db[self.type].clickThrough and button:IsMouseEnabled() then
 			button:EnableMouse(false)

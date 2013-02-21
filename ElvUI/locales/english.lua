@@ -761,6 +761,7 @@ L['You can use the /resetui command to reset all of your movers. You can also us
 L['ABOVE_THREAT_FORMAT'] = '%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]'
 
 --UnitFrames
+L["Count Font Size"] = true;
 L['Time Remaining'] = true;
 L['Time Remaining Reverse'] = true;
 L['Duration'] = true;

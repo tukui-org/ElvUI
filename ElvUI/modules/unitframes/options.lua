@@ -7950,6 +7950,12 @@ E.Options.args.unitframe.args.party = {
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},
+				countFontSize = {
+					order = 10,
+					name = L["Count Font Size"],
+					type = "range",
+					min = 6, max = 22, step = 1,				
+				},
 				clickThrough = {
 					order = 15,
 					name = L['Click Through'],
@@ -8082,6 +8088,12 @@ E.Options.args.unitframe.args.party = {
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},
+				countFontSize = {
+					order = 10,
+					name = L["Count Font Size"],
+					type = "range",
+					min = 6, max = 22, step = 1,				
+				},	
 				clickThrough = {
 					order = 15,
 					name = L['Click Through'],
@@ -8821,6 +8833,12 @@ for i=10, 40, 15 do
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},
+				countFontSize = {
+					order = 10,
+					name = L["Count Font Size"],
+					type = "range",
+					min = 6, max = 22, step = 1,				
+				},		
 				clickThrough = {
 					order = 15,
 					name = L['Click Through'],
@@ -8953,6 +8971,12 @@ for i=10, 40, 15 do
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},
+				countFontSize = {
+					order = 10,
+					name = L["Count Font Size"],
+					type = "range",
+					min = 6, max = 22, step = 1,				
+				},	
 				clickThrough = {
 					order = 15,
 					name = L['Click Through'],
