@@ -8,7 +8,7 @@ local fillValues = {
 	['spaced'] = L['Spaced'],
 };
 
-local positionValues = {
+UF.positionValues = {
 	TOPLEFT = 'TOPLEFT',
 	LEFT = 'LEFT',
 	BOTTOMLEFT = 'BOTTOMLEFT',
@@ -722,28 +722,7 @@ E.Options.args.unitframe.args.player = {
 				UF:CreateAndUpdateUF('player')
 			end,
 		},				
-		health = {
-			order = 100,
-			type = 'group',
-			name = L['Health'],
-			get = function(info) return E.db.unitframe.units['player']['health'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.units['player']['health'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
-			args = {
-				position = {
-					type = 'select',
-					order = 2,
-					name = L['Position'],
-					values = positionValues,
-				},
-				text_format = {
-					order = 100,
-					name = L['Text Format'],
-					type = 'input',
-					width = 'full',
-					desc = L['TEXT_FORMAT_DESC'],
-				},			
-			},
-		},
+		health = UF:GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'player'),
 		power = {
 			order = 200,
 			type = 'group',
@@ -786,7 +765,7 @@ E.Options.args.unitframe.args.player = {
 					type = 'select',
 					order = 8,
 					name = L['Position'],
-					values = positionValues,
+					values = UF.positionValues,
 				},		
 			},
 		},	
@@ -801,7 +780,7 @@ E.Options.args.unitframe.args.player = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
-					values = positionValues,
+					values = UF.positionValues,
 				},	
 				text_format = {
 					order = 100,
@@ -823,7 +802,7 @@ E.Options.args.unitframe.args.player = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
-					values = positionValues,
+					values = UF.positionValues,
 				},	
 				text_format = {
 					order = 100,
@@ -1410,7 +1389,7 @@ E.Options.args.unitframe.args.player = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
-					values = positionValues,
+					values = UF.positionValues,
 				},
 				size = {
 					type = 'range',
@@ -1574,28 +1553,7 @@ E.Options.args.unitframe.args.target = {
 				UF:CreateAndUpdateUF('target')
 			end,
 		},				
-		health = {
-			order = 100,
-			type = 'group',
-			name = L['Health'],
-			get = function(info) return E.db.unitframe.units['target']['health'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.units['target']['health'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
-			args = {
-				text_format = {
-					order = 100,
-					name = L['Text Format'],
-					type = 'input',
-					width = 'full',
-					desc = L['TEXT_FORMAT_DESC'],
-				},	
-				position = {
-					type = 'select',
-					order = 3,
-					name = L['Position'],
-					values = positionValues,
-				},					
-			},
-		},
+		health = UF:GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'target'),
 		power = {
 			order = 200,
 			type = 'group',
@@ -1638,7 +1596,7 @@ E.Options.args.unitframe.args.target = {
 					type = 'select',
 					order = 8,
 					name = L['Position'],
-					values = positionValues,
+					values = UF.positionValues,
 				},					
 			},
 		},	
@@ -1653,7 +1611,7 @@ E.Options.args.unitframe.args.target = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
-					values = positionValues,
+					values = UF.positionValues,
 				},
 				text_format = {
 					order = 100,
@@ -2513,7 +2471,7 @@ E.Options.args.unitframe.args.target = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
-					values = positionValues,
+					values = UF.positionValues,
 				},
 				size = {
 					type = 'range',
@@ -2652,28 +2610,7 @@ E.Options.args.unitframe.args.targettarget = {
 				UF:CreateAndUpdateUF('targettarget')
 			end,
 		},			
-		health = {
-			order = 7,
-			type = 'group',
-			name = L['Health'],
-			get = function(info) return E.db.unitframe.units['targettarget']['health'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.units['targettarget']['health'][ info[#info] ] = value; UF:CreateAndUpdateUF('targettarget') end,
-			args = {
-				text_format = {
-					order = 100,
-					name = L['Text Format'],
-					type = 'input',
-					width = 'full',
-					desc = L['TEXT_FORMAT_DESC'],
-				},	
-				position = {
-					type = 'select',
-					order = 3,
-					name = L['Position'],
-					values = positionValues,
-				},					
-			},
-		},
+		health = UF:GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'targettarget'),
 		power = {
 			order = 8,
 			type = 'group',
@@ -2716,7 +2653,7 @@ E.Options.args.unitframe.args.targettarget = {
 					type = 'select',
 					order = 8,
 					name = L['Position'],
-					values = positionValues,
+					values = UF.positionValues,
 				},						
 			},
 		},	
@@ -2731,7 +2668,7 @@ E.Options.args.unitframe.args.targettarget = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
-					values = positionValues,
+					values = UF.positionValues,
 				},		
 				text_format = {
 					order = 100,
@@ -3214,7 +3151,7 @@ E.Options.args.unitframe.args.targettarget = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
-					values = positionValues,
+					values = UF.positionValues,
 				},
 				size = {
 					type = 'range',
@@ -3370,28 +3307,7 @@ E.Options.args.unitframe.args.focus = {
 				UF:CreateAndUpdateUF('focus')
 			end,
 		},				
-		health = {
-			order = 100,
-			type = 'group',
-			name = L['Health'],
-			get = function(info) return E.db.unitframe.units['focus']['health'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.units['focus']['health'][ info[#info] ] = value; UF:CreateAndUpdateUF('focus') end,
-			args = {
-				text_format = {
-					order = 100,
-					name = L['Text Format'],
-					type = 'input',
-					width = 'full',
-					desc = L['TEXT_FORMAT_DESC'],
-				},	
-				position = {
-					type = 'select',
-					order = 3,
-					name = L['Position'],
-					values = positionValues,
-				},					
-			},
-		},
+		health = UF:GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'focus'),
 		power = {
 			order = 200,
 			type = 'group',
@@ -3434,7 +3350,7 @@ E.Options.args.unitframe.args.focus = {
 					type = 'select',
 					order = 8,
 					name = L['Position'],
-					values = positionValues,
+					values = UF.positionValues,
 				},					
 			},
 		},	
@@ -3449,7 +3365,7 @@ E.Options.args.unitframe.args.focus = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
-					values = positionValues,
+					values = UF.positionValues,
 				},				
 				text_format = {
 					order = 100,
@@ -4235,7 +4151,7 @@ E.Options.args.unitframe.args.focus = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
-					values = positionValues,
+					values = UF.positionValues,
 				},
 				size = {
 					type = 'range',
@@ -4375,28 +4291,7 @@ E.Options.args.unitframe.args.focustarget = {
 				UF:CreateAndUpdateUF(unit)
 			end,
 		},				
-		health = {
-			order = 7,
-			type = 'group',
-			name = L['Health'],
-			get = function(info) return E.db.unitframe.units['focustarget']['health'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.units['focustarget']['health'][ info[#info] ] = value; UF:CreateAndUpdateUF('focustarget') end,
-			args = {
-				text_format = {
-					order = 100,
-					name = L['Text Format'],
-					type = 'input',
-					width = 'full',
-					desc = L['TEXT_FORMAT_DESC'],
-				},	
-				position = {
-					type = 'select',
-					order = 3,
-					name = L['Position'],
-					values = positionValues,
-				},					
-			},
-		},
+		health = UF:GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'focustarget'),
 		power = {
 			order = 8,
 			type = 'group',
@@ -4439,7 +4334,7 @@ E.Options.args.unitframe.args.focustarget = {
 					type = 'select',
 					order = 8,
 					name = L['Position'],
-					values = positionValues,
+					values = UF.positionValues,
 				},					
 			},
 		},	
@@ -4454,7 +4349,7 @@ E.Options.args.unitframe.args.focustarget = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
-					values = positionValues,
+					values = UF.positionValues,
 				},
 				text_format = {
 					order = 100,
@@ -4937,7 +4832,7 @@ E.Options.args.unitframe.args.focustarget = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
-					values = positionValues,
+					values = UF.positionValues,
 				},
 				size = {
 					type = 'range',
@@ -5083,28 +4978,7 @@ E.Options.args.unitframe.args.pet = {
 				UF:CreateAndUpdateUF(unit)
 			end,
 		},				
-		health = {
-			order = 100,
-			type = 'group',
-			name = L['Health'],
-			get = function(info) return E.db.unitframe.units['pet']['health'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.units['pet']['health'][ info[#info] ] = value; UF:CreateAndUpdateUF('pet') end,
-			args = {
-				text_format = {
-					order = 100,
-					name = L['Text Format'],
-					type = 'input',
-					width = 'full',
-					desc = L['TEXT_FORMAT_DESC'],
-				},	
-				position = {
-					type = 'select',
-					order = 3,
-					name = L['Position'],
-					values = positionValues,
-				},					
-			},
-		},
+		health = UF:GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'pet'),
 		power = {
 			order = 200,
 			type = 'group',
@@ -5147,7 +5021,7 @@ E.Options.args.unitframe.args.pet = {
 					type = 'select',
 					order = 8,
 					name = L['Position'],
-					values = positionValues,
+					values = UF.positionValues,
 				},					
 			},
 		},	
@@ -5162,7 +5036,7 @@ E.Options.args.unitframe.args.pet = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
-					values = positionValues,
+					values = UF.positionValues,
 				},	
 				text_format = {
 					order = 100,
@@ -5576,28 +5450,7 @@ E.Options.args.unitframe.args.pettarget = {
 				UF:CreateAndUpdateUF(unit)
 			end,
 		},				
-		health = {
-			order = 7,
-			type = 'group',
-			name = L['Health'],
-			get = function(info) return E.db.unitframe.units['pettarget']['health'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.units['pettarget']['health'][ info[#info] ] = value; UF:CreateAndUpdateUF('pettarget') end,
-			args = {
-				text_format = {
-					order = 100,
-					name = L['Text Format'],
-					type = 'input',
-					width = 'full',
-					desc = L['TEXT_FORMAT_DESC'],
-				},	
-				position = {
-					type = 'select',
-					order = 3,
-					name = L['Position'],
-					values = positionValues,
-				},					
-			},
-		},
+		health = UF:GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'pettarget'),
 		power = {
 			order = 8,
 			type = 'group',
@@ -5640,7 +5493,7 @@ E.Options.args.unitframe.args.pettarget = {
 					type = 'select',
 					order = 8,
 					name = L['Position'],
-					values = positionValues,
+					values = UF.positionValues,
 				},					
 			},
 		},	
@@ -5655,7 +5508,7 @@ E.Options.args.unitframe.args.pettarget = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
-					values = positionValues,
+					values = UF.positionValues,
 				},	
 				text_format = {
 					order = 100,
@@ -6252,28 +6105,7 @@ E.Options.args.unitframe.args.boss = {
 				UF:CreateAndUpdateUFGroup(unit, MAX_BOSS_FRAMES)
 			end,
 		},				
-		health = {
-			order = 8,
-			type = 'group',
-			name = L['Health'],
-			get = function(info) return E.db.unitframe.units['boss']['health'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.units['boss']['health'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
-			args = {
-				text_format = {
-					order = 100,
-					name = L['Text Format'],
-					type = 'input',
-					width = 'full',
-					desc = L['TEXT_FORMAT_DESC'],
-				},	
-				position = {
-					type = 'select',
-					order = 3,
-					name = L['Position'],
-					values = positionValues,
-				},					
-			},
-		},
+		health = UF:GetOptionsTable_Health(false, UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
 		power = {
 			order = 9,
 			type = 'group',
@@ -6316,7 +6148,7 @@ E.Options.args.unitframe.args.boss = {
 					type = 'select',
 					order = 8,
 					name = L['Position'],
-					values = positionValues,
+					values = UF.positionValues,
 				},					
 			},
 		},	
@@ -6331,7 +6163,7 @@ E.Options.args.unitframe.args.boss = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
-					values = positionValues,
+					values = UF.positionValues,
 				},		
 				text_format = {
 					order = 100,
@@ -6712,7 +6544,7 @@ E.Options.args.unitframe.args.boss = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
-					values = positionValues,
+					values = UF.positionValues,
 				},
 				size = {
 					type = 'range',
@@ -6870,28 +6702,7 @@ E.Options.args.unitframe.args.arena = {
 				UF:CreateAndUpdateUFGroup(unit, 5)
 			end,
 		},				
-		health = {
-			order = 8,
-			type = 'group',
-			name = L['Health'],
-			get = function(info) return E.db.unitframe.units['arena']['health'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.units['arena']['health'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
-			args = {
-				text_format = {
-					order = 100,
-					name = L['Text Format'],
-					type = 'input',
-					width = 'full',
-					desc = L['TEXT_FORMAT_DESC'],
-				},	
-				position = {
-					type = 'select',
-					order = 3,
-					name = L['Position'],
-					values = positionValues,
-				},					
-			},
-		},
+		health = UF:GetOptionsTable_Health(false, UF.CreateAndUpdateUFGroup, 'arena', 5),
 		power = {
 			order = 9,
 			type = 'group',
@@ -6934,7 +6745,7 @@ E.Options.args.unitframe.args.arena = {
 					type = 'select',
 					order = 8,
 					name = L['Position'],
-					values = positionValues,
+					values = UF.positionValues,
 				},					
 			},
 		},	
@@ -6949,7 +6760,7 @@ E.Options.args.unitframe.args.arena = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
-					values = positionValues,
+					values = UF.positionValues,
 				},	
 				text_format = {
 					order = 100,
@@ -7778,44 +7589,7 @@ E.Options.args.unitframe.args.party = {
 				},				
 			},
 		},			
-		health = {
-			order = 100,
-			type = 'group',
-			name = L['Health'],
-			get = function(info) return E.db.unitframe.units['party']['health'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.units['party']['health'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party'); end,
-			args = {
-				text_format = {
-					order = 100,
-					name = L['Text Format'],
-					type = 'input',
-					width = 'full',
-					desc = L['TEXT_FORMAT_DESC'],
-				},	
-				position = {
-					type = 'select',
-					order = 3,
-					name = L['Position'],
-					values = positionValues,
-				},	
-				frequentUpdates = {
-					type = 'toggle',
-					order = 4,
-					name = L['Frequent Updates'],
-					desc = L['Rapidly update the health, uses more memory and cpu. Only recommended for healing.'],
-				},
-				orientation = {
-					type = 'select',
-					order = 5,
-					name = L['Orientation'],
-					desc = L['Direction the health bar moves when gaining/losing health.'],
-					values = {
-						['HORIZONTAL'] = L['Horizontal'],
-						['VERTICAL'] = L['Vertical'],
-					},
-				},		
-			},
-		},
+		health = UF:GetOptionsTable_Health(true, UF.CreateAndUpdateHeaderGroup, 'party'),
 		power = {
 			order = 200,
 			type = 'group',
@@ -7858,7 +7632,7 @@ E.Options.args.unitframe.args.party = {
 					type = 'select',
 					order = 8,
 					name = L['Position'],
-					values = positionValues,
+					values = UF.positionValues,
 				},					
 			},
 		},	
@@ -7873,7 +7647,7 @@ E.Options.args.unitframe.args.party = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
-					values = positionValues,
+					values = UF.positionValues,
 				},			
 				text_format = {
 					order = 100,
@@ -8197,7 +7971,7 @@ E.Options.args.unitframe.args.party = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
-					values = positionValues,
+					values = UF.positionValues,
 				},							
 			},
 		},
@@ -8334,7 +8108,7 @@ E.Options.args.unitframe.args.party = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
-					values = positionValues,
+					values = UF.positionValues,
 				},
 				size = {
 					type = 'range',
@@ -8661,44 +8435,7 @@ for i=10, 40, 15 do
 					},					
 				},
 			},			
-			health = {
-				order = 100,
-				type = 'group',
-				name = L['Health'],
-				get = function(info) return E.db.unitframe.units['raid'..i]['health'][ info[#info] ] end,
-				set = function(info, value) E.db.unitframe.units['raid'..i]['health'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i); end,
-				args = {
-					text_format = {
-						order = 100,
-						name = L['Text Format'],
-						type = 'input',
-						width = 'full',
-					desc = L['TEXT_FORMAT_DESC'],
-					},	
-					position = {
-						type = 'select',
-						order = 3,
-						name = L['Position'],
-						values = positionValues,
-					},					
-					frequentUpdates = {
-						type = 'toggle',
-						order = 4,
-						name = L['Frequent Updates'],
-						desc = L['Rapidly update the health, uses more memory and cpu. Only recommended for healing.'],
-					},
-					orientation = {
-						type = 'select',
-						order = 5,
-						name = L['Orientation'],
-						desc = L['Direction the health bar moves when gaining/losing health.'],
-						values = {
-							['HORIZONTAL'] = L['Horizontal'],
-							['VERTICAL'] = L['Vertical'],
-						},
-					},	
-				},
-			},
+			health = UF:GetOptionsTable_Health(true, UF.CreateAndUpdateHeaderGroup, 'raid'..i),
 			power = {
 				order = 200,
 				type = 'group',
@@ -8741,7 +8478,7 @@ for i=10, 40, 15 do
 						type = 'select',
 						order = 8,
 						name = L['Position'],
-						values = positionValues,
+						values = UF.positionValues,
 					},					
 				},
 			},	
@@ -8756,7 +8493,7 @@ for i=10, 40, 15 do
 						type = 'select',
 						order = 2,
 						name = L['Position'],
-						values = positionValues,
+						values = UF.positionValues,
 					},	
 					text_format = {
 						order = 100,
@@ -9080,7 +8817,7 @@ for i=10, 40, 15 do
 						type = 'select',
 						order = 2,
 						name = L['Position'],
-						values = positionValues,
+						values = UF.positionValues,
 					},							
 				},
 			},	
@@ -9161,7 +8898,7 @@ for i=10, 40, 15 do
 						type = 'select',
 						order = 2,
 						name = L['Position'],
-						values = positionValues,
+						values = UF.positionValues,
 					},
 					size = {
 						type = 'range',

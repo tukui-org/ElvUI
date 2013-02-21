@@ -47,41 +47,6 @@ function UF:Construct_TargetGlow(frame)
 	return x
 end
 
-function UF:Construct_HealthBar(frame, bg, text, textPos)
-	local health = CreateFrame('StatusBar', nil, frame)	
-	UF['statusbars'][health] = true
-	
-	health:SetFrameStrata("LOW")
-	--health.frequentUpdates = true
-	health.PostUpdate = self.PostUpdateHealth
-	
-	if bg then
-		health.bg = health:CreateTexture(nil, 'BORDER')
-		health.bg:SetAllPoints()
-		health.bg:SetTexture(E["media"].blankTex)
-		health.bg.multiplier = 0.25
-	end
-	
-	if text then
-		health.value = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
-		UF:Configure_FontString(health.value)
-		health.value:SetParent(frame)
-		
-		local x = -2
-		if textPos == 'LEFT' then
-			x = 2
-		end
-		
-		health.value:Point(textPos, health, textPos, x, 0)		
-	end
-	
-	health.colorTapping = true	
-	health.colorDisconnected = true
-	health:CreateBackdrop('Default')	
-
-	return health
-end
-
 function UF:Construct_PowerBar(frame, bg, text, textPos, lowtext)
 	local power = CreateFrame('StatusBar', nil, frame)
 	UF['statusbars'][power] = true
