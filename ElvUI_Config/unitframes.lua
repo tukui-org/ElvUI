@@ -21,7 +21,7 @@ UF.PositionValues = {
 };
 
 local threatValues = {
-	values = threatValues,
+	['GLOW'] = L['Glow'],
 	['BORDERS'] = L['Borders'],
 	['HEALTHBORDER'] = L['Health Border'],
 	['ICONTOPLEFT'] = L['Icon: TOPLEFT'],
