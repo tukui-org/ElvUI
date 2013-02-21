@@ -1,6 +1,15 @@
 ﻿local E, L, V, P, G, _ = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 
 local tsort, tinsert = table.sort, table.insert
+local DEFAULT_WIDTH = 890;
+local DEFAULT_HEIGHT = 651;
+local AC = LibStub("AceConfig-3.0")
+local ACD = LibStub("AceConfigDialog-3.0")
+local ACR = LibStub("AceConfigRegistry-3.0")
+local LibDualSpec = LibStub('LibDualSpec-1.0')
+
+AC:RegisterOptionsTable("ElvUI", E.Options)
+ACD:SetDefaultSize("ElvUI", DEFAULT_WIDTH, DEFAULT_HEIGHT)	
 
 E.Options.args = {
 	ElvUI_Header = {
@@ -675,3 +684,13 @@ E.Options.args.credits = {
 		},
 	},
 }
+
+
+--Create Profiles Table
+E.Options.args.profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(E.data);
+AC:RegisterOptionsTable("ElvProfiles", E.Options.args.profiles)
+E.Options.args.profiles.order = -10
+
+LibDualSpec:EnhanceDatabase(E.data, "ElvUI")
+LibDualSpec:EnhanceOptions(E.Options.args.profiles, E.data)
+E:EnhanceOptions(E.Options.args.profiles)

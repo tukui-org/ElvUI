@@ -14,8 +14,6 @@ BINDING_HEADER_ELVUI = GetAddOnMetadata(..., "Title");
 
 local AddOnName, Engine = ...;
 local AddOn = LibStub("AceAddon-3.0"):NewAddon(AddOnName, "AceConsole-3.0", "AceEvent-3.0", 'AceTimer-3.0', 'AceHook-3.0');
-local DEFAULT_WIDTH = 890;
-local DEFAULT_HEIGHT = 651;
 AddOn.DF = {}; AddOn.DF["profile"] = {}; AddOn.DF["global"] = {}; AddOn.privateVars = {}; AddOn.privateVars["profile"] = {}; -- Defaults
 AddOn.Options = {
 	type = "group",
@@ -24,6 +22,7 @@ AddOn.Options = {
 };
 
 local Locale = LibStub("AceLocale-3.0"):GetLocale(AddOnName, false);
+local ACD = LibStub("AceConfigDialog-3.0")
 
 Engine[1] = AddOn;
 Engine[2] = Locale;
@@ -33,10 +32,6 @@ Engine[5] = AddOn.DF["global"];
 
 _G[AddOnName] = Engine;
 
-local AC = LibStub("AceConfig-3.0")
-local ACD = LibStub("AceConfigDialog-3.0")
-local ACR = LibStub("AceConfigRegistry-3.0")
-local LibDualSpec = LibStub('LibDualSpec-1.0')
 local tcopy = table.copy
 
 function AddOn:OnInitialize()
@@ -184,27 +179,12 @@ function AddOn:EnhanceOptions(optionTable)
 	}
 end
 
-function AddOn:LoadConfig()	
-	AC:RegisterOptionsTable(AddOnName, self.Options)
-	ACD:SetDefaultSize(AddOnName, DEFAULT_WIDTH, DEFAULT_HEIGHT)	
-	
-	--Create Profiles Table
-	self.Options.args.profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.data);
-	AC:RegisterOptionsTable("ElvProfiles", self.Options.args.profiles)
-	self.Options.args.profiles.order = -10
-	
-	LibDualSpec:EnhanceDatabase(self.data, AddOnName)
-	LibDualSpec:EnhanceOptions(self.Options.args.profiles, self.data)
-	self:EnhanceOptions(self.Options.args.profiles)
-end
-
 function AddOn:ToggleConfig() 
 	if InCombatLockdown() then
 		self:Print(ERR_NOT_IN_COMBAT)
 		self:RegisterEvent('PLAYER_REGEN_ENABLED')
 		return;
 	end
-	
 	
 	if not IsAddOnLoaded("ElvUI_Config") then
 		local _, _, _, _, _, reason = GetAddOnInfo("ElvUI_Config")
