@@ -43,29 +43,3 @@ function UF:PostNamePosition(frame, unit)
 end
 
 
-function UF:GetOptionsTable_Name(updateFunc, groupName, numUnits)
-	local config = {
-		order = 400,
-		type = 'group',
-		name = L['Name'],
-		get = function(info) return E.db.unitframe.units[groupName]['name'][ info[#info] ] end,
-		set = function(info, value) E.db.unitframe.units[groupName]['name'][ info[#info] ] = value; updateFunc(self, groupName, numUnits) end,
-		args = {
-			position = {
-				type = 'select',
-				order = 2,
-				name = L['Position'],
-				values = self.PositionValues,
-			},	
-			text_format = {
-				order = 100,
-				name = L['Text Format'],
-				type = 'input',
-				width = 'full',
-				desc = L['TEXT_FORMAT_DESC'],
-			},					
-		},
-	}
-	
-	return config
-end

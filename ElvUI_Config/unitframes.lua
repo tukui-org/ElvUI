@@ -46,7 +46,1009 @@ local petAnchors = {
 	BOTTOM = 'BOTTOM',
 };
 
+-----------------------------------------------------------------------
+-- OPTIONS TABLES
+-----------------------------------------------------------------------
 local filters;
+function UF:GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
+	local config = {
+		order = 1100,
+		type = 'group',
+		name = L['Aura Bars'],
+		get = function(info) return E.db.unitframe.units[groupName]['aurabar'][ info[#info] ] end,
+		set = function(info, value) E.db.unitframe.units[groupName]['aurabar'][ info[#info] ] = value; updateFunc(self, groupName) end,
+		args = {
+			enable = {
+				type = 'toggle',
+				order = 1,
+				name = L['Enable'],
+			},				
+			anchorPoint = {
+				type = 'select',
+				order = 2,
+				name = L['Anchor Point'],
+				desc = L['What point to anchor to the frame you set to attach to.'],
+				values = {
+					['ABOVE'] = L['Above'],
+					['BELOW'] = L['Below'],
+				},
+			},
+			attachTo = {
+				type = 'select',
+				order = 3,
+				name = L['Attach To'],
+				desc = L['The object you want to attach to.'],
+				values = {
+					['FRAME'] = L['Frame'],
+					['DEBUFFS'] = L['Debuffs'],
+					['BUFFS'] = L['Buffs'],
+				},					
+			},
+			height = {
+				type = 'range',
+				order = 4,
+				name = L['Height'],
+				min = 6, max = 40, step = 1,
+			},
+			sort = {
+				type = 'select',
+				order = 5,
+				name = L['Sort Method'],
+				values = auraBarsSortValues,
+			},
+			filters = {
+				name = L["Filters"],
+				guiInline = true,
+				type = 'group',
+				order = 500,
+				args = {},
+			},				
+			friendlyAuraType = {
+				type = 'select',
+				order = 16,
+				name = L['Friendly Aura Type'],
+				desc = L['Set the type of auras to show when a unit is friendly.'],
+				values = {
+					['HARMFUL'] = L['Debuffs'],
+					['HELPFUL'] = L['Buffs'],
+				},						
+			},
+			enemyAuraType = {
+				type = 'select',
+				order = 17,
+				name = L['Enemy Aura Type'],
+				desc = L['Set the type of auras to show when a unit is a foe.'],
+				values = {
+					['HARMFUL'] = L['Debuffs'],
+					['HELPFUL'] = L['Buffs'],
+				},						
+			},
+		},
+	}		
+	
+	if friendlyOnly then
+		config.args.filters.args.playerOnly = {
+			order = 10,
+			type = 'toggle',
+			name = L["Block Non-Personal Auras"],
+			desc = L["Don't display auras that are not yours."],
+		}
+		config.args.filters.args.useBlacklist = {
+			order = 11,
+			type = 'toggle',
+			name = L["Block Blacklisted Auras"],
+			desc = L["Don't display any auras found on the 'Blacklist' filter."],
+		}
+		config.args.filters.args.useWhitelist = {
+			order = 12,
+			type = 'toggle',
+			name = L["Allow Whitelisted Auras"],
+			desc = L["If no other filter options are being used then it will block anything not on the 'Whitelist' filter, otherwise it will simply add auras on the whitelist in addition to any other filter settings."],
+		}
+		config.args.filters.args.noDuration = {
+			order = 13,
+			type = 'toggle',
+			name = L["Block Auras Without Duration"],
+			desc = L["Don't display auras that have no duration."],					
+		}
+		config.args.filters.args.onlyDispellable = {
+			order = 13,
+			type = 'toggle',
+			name = L['Block Non-Dispellable Auras'],
+			desc = L["Don't display auras that cannot be purged or dispelled by your class."],
+		}
+		config.args.filters.args.noConsolidated = {
+			order = 14,
+			type = 'toggle',
+			name = L["Block Raid Buffs"],
+			desc = L["Don't display raid buffs such as Blessing of Kings or Mark of the Wild."],		
+		}				
+		config.args.filters.args.useFilter = {
+			order = 15,
+			name = L['Additional Filter'],
+			desc = L['Select an additional filter to use. If the selected filter is a whitelist and no other filters are being used (with the exception of Block Non-Personal Auras) then it will block anything not on the whitelist, otherwise it will simply add auras on the whitelist in addition to any other filter settings.'],
+			type = 'select',
+			values = function()
+				filters = {}
+				filters[''] = NONE
+				for filter in pairs(E.global.unitframe['aurafilters']) do
+					filters[filter] = filter
+				end
+				return filters
+			end,
+		}		
+	else
+		config.args.filters.args.playerOnly = {
+			order = 10,
+			guiInline = true,
+			type = 'group',
+			name = L["Block Non-Personal Auras"],
+			args = {
+				friendly = {
+					order = 2,
+					type = 'toggle',
+					name = L['Friendly'],
+					desc = L["If the unit is friendly to you."].." "..L["Don't display auras that are not yours."],
+					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].playerOnly.friendly end,
+					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].playerOnly.friendly = value; updateFunc(self, groupName) end,									
+				},
+				enemy = {
+					order = 3,
+					type = 'toggle',
+					name = L['Enemy'],
+					desc = L["If the unit is an enemy to you."].." "..L["Don't display auras that are not yours."],
+					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].playerOnly.enemy end,
+					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].playerOnly.enemy = value; updateFunc(self, groupName) end,										
+				}
+			},
+		}
+		config.args.filters.args.useBlacklist = {
+			order = 11,
+			guiInline = true,
+			type = 'group',
+			name = L["Block Blacklisted Auras"],
+			args = {
+				friendly = {
+					order = 2,
+					type = 'toggle',
+					name = L['Friendly'],
+					desc = L["If the unit is friendly to you."].." "..L["Don't display any auras found on the 'Blacklist' filter."],
+					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].useBlacklist.friendly end,
+					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].useBlacklist.friendly = value; updateFunc(self, groupName) end,									
+				},
+				enemy = {
+					order = 3,
+					type = 'toggle',
+					name = L['Enemy'],
+					desc = L["If the unit is an enemy to you."].." "..L["Don't display any auras found on the 'Blacklist' filter."],
+					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].useBlacklist.enemy end,
+					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].useBlacklist.enemy = value; updateFunc(self, groupName) end,										
+				}
+			},
+		}
+		config.args.filters.args.useWhitelist = {
+			order = 12,
+			guiInline = true,
+			type = 'group',
+			name = L["Allow Whitelisted Auras"],
+			args = {
+				friendly = {
+					order = 2,
+					type = 'toggle',
+					name = L['Friendly'],
+					desc = L["If the unit is friendly to you."].." "..L["If no other filter options are being used then it will block anything not on the 'Whitelist' filter, otherwise it will simply add auras on the whitelist in addition to any other filter settings."],
+					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].useWhitelist.friendly end,
+					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].useWhitelist.friendly = value; updateFunc(self, groupName) end,									
+				},
+				enemy = {
+					order = 3,
+					type = 'toggle',
+					name = L['Enemy'],
+					desc = L["If the unit is an enemy to you."].." "..L["If no other filter options are being used then it will block anything not on the 'Whitelist' filter, otherwise it will simply add auras on the whitelist in addition to any other filter settings."],
+					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].useWhitelist.enemy end,
+					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].useWhitelist.enemy = value; updateFunc(self, groupName) end,										
+				}
+			},
+		}
+		config.args.filters.args.noDuration = {
+			order = 13,
+			guiInline = true,
+			type = 'group',
+			name = L["Block Auras Without Duration"],
+			args = {
+				friendly = {
+					order = 2,
+					type = 'toggle',
+					name = L['Friendly'],
+					desc = L["If the unit is friendly to you."].." "..L["Don't display auras that have no duration."],
+					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].noDuration.friendly end,
+					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].noDuration.friendly = value; updateFunc(self, groupName) end,									
+				},
+				enemy = {
+					order = 3,
+					type = 'toggle',
+					name = L['Enemy'],
+					desc = L["If the unit is an enemy to you."].." "..L["Don't display auras that have no duration."],
+					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].noDuration.enemy end,
+					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].noDuration.enemy = value; updateFunc(self, groupName) end,										
+				}
+			},				
+		}
+		config.args.filters.args.onlyDispellable = {
+			order = 13,
+			guiInline = true,
+			type = 'group',
+			name = L['Block Non-Dispellable Auras'],
+			args = {
+				friendly = {
+					order = 2,
+					type = 'toggle',
+					name = L['Friendly'],
+					desc = L["If the unit is friendly to you."].." "..L["Don't display auras that cannot be purged or dispelled by your class."],
+					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].onlyDispellable.friendly end,
+					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].onlyDispellable.friendly = value; updateFunc(self, groupName) end,									
+				},
+				enemy = {
+					order = 3,
+					type = 'toggle',
+					name = L['Enemy'],
+					desc = L["If the unit is an enemy to you."].." "..L["Don't display auras that cannot be purged or dispelled by your class."],
+					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].onlyDispellable.enemy end,
+					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].onlyDispellable.enemy = value; updateFunc(self, groupName) end,										
+				}
+			},	
+		}
+		config.args.filters.args.noConsolidated = {
+			order = 14,
+			guiInline = true,
+			type = 'group',
+			name = L["Block Raid Buffs"],
+			args = {
+				friendly = {
+					order = 2,
+					type = 'toggle',
+					name = L['Friendly'],
+					desc = L["If the unit is friendly to you."].." "..L["Don't display raid buffs such as Blessing of Kings or Mark of the Wild."],
+					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].noConsolidated.friendly end,
+					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].noConsolidated.friendly = value; updateFunc(self, groupName) end,									
+				},
+				enemy = {
+					order = 3,
+					type = 'toggle',
+					name = L['Enemy'],
+					desc = L["If the unit is an enemy to you."].." "..L["Don't display raid buffs such as Blessing of Kings or Mark of the Wild."],
+					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].noConsolidated.enemy end,
+					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].noConsolidated.enemy = value; updateFunc(self, groupName) end,										
+				}
+			},		
+		}
+		config.args.filters.args.useFilter = {
+			order = 15,
+			name = L['Additional Filter'],
+			desc = L['Select an additional filter to use. If the selected filter is a whitelist and no other filters are being used (with the exception of Block Non-Personal Auras) then it will block anything not on the whitelist, otherwise it will simply add auras on the whitelist in addition to any other filter settings.'],
+			type = 'select',
+			values = function()
+				filters = {}
+				filters[''] = NONE
+				for filter in pairs(E.global.unitframe['aurafilters']) do
+					filters[filter] = filter
+				end
+				return filters
+			end,
+		}										
+	end
+	
+	return config
+end
+
+function UF:GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, updateFunc, groupName, numUnits)
+	local config = {
+		order = auraType == 'buffs' and 600 or 700,
+		type = 'group',
+		name = auraType == 'buffs' and L['Buffs'] or L['Debuffs'],
+		get = function(info) return E.db.unitframe.units[groupName][auraType][ info[#info] ] end,
+		set = function(info, value) E.db.unitframe.units[groupName][auraType][ info[#info] ] = value; updateFunc(self, groupName, numUnits) end,
+		args = {
+			enable = {
+				type = 'toggle',
+				order = 1,
+				name = L['Enable'],
+			},			
+			perrow = {
+				type = 'range',
+				order = 2,
+				name = L['Per Row'],
+				min = 1, max = 20, step = 1,
+			},
+			numrows = {
+				type = 'range',
+				order = 3,
+				name = L['Num Rows'],
+				min = 1, max = 4, step = 1,					
+			},
+			sizeOverride = {
+				type = 'range',
+				order = 3,
+				name = L['Size Override'],
+				desc = L['If not set to 0 then override the size of the aura icon to this.'],
+				min = 0, max = 60, step = 1,
+			},
+			xOffset = {
+				order = 4,
+				type = 'range',
+				name = L['xOffset'],
+				min = -60, max = 60, step = 1,
+			},
+			yOffset = {
+				order = 5,
+				type = 'range',
+				name = L['yOffset'],
+				min = -60, max = 60, step = 1,
+			},					
+			attachTo = {
+				type = 'select',
+				order = 7,
+				name = L['Attach To'],
+				desc = L['What to attach the buff anchor frame to.'],
+				values = {
+					['FRAME'] = L['Frame'],
+					['DEBUFFS'] = L['Debuffs'],
+				},
+			},
+			anchorPoint = {
+				type = 'select',
+				order = 8,
+				name = L['Anchor Point'],
+				desc = L['What point to anchor to the frame you set to attach to.'],
+				values = self.PositionValues,				
+			},
+			fontSize = {
+				order = 9,
+				name = L["Font Size"],
+				type = "range",
+				min = 6, max = 22, step = 1,
+			},	
+			clickThrough = {
+				order = 15,
+				name = L['Click Through'],
+				desc = L['Ignore mouse events.'],
+				type = 'toggle',
+			},
+			filters = {
+				name = L["Filters"],
+				guiInline = true,
+				type = 'group',
+				order = 500,
+				args = {},
+			},		
+		},
+	}
+	
+	if isGroupFrame then
+		config.args.countFontSize = {
+			order = 10,
+			name = L["Count Font Size"],
+			type = "range",
+			min = 6, max = 22, step = 1,				
+		}
+	end
+	
+	if friendlyUnitOnly then
+		config.args.filters.args.playerOnly = {
+			order = 10,
+			type = 'toggle',
+			name = L["Block Non-Personal Auras"],
+			desc = L["Don't display auras that are not yours."],
+		}
+		config.args.filters.args.useBlacklist = {
+			order = 11,
+			type = 'toggle',
+			name = L["Block Blacklisted Auras"],
+			desc = L["Don't display any auras found on the 'Blacklist' filter."],
+		}
+		config.args.filters.args.useWhitelist = {
+			order = 12,
+			type = 'toggle',
+			name = L["Allow Whitelisted Auras"],
+			desc = L["If no other filter options are being used then it will block anything not on the 'Whitelist' filter, otherwise it will simply add auras on the whitelist in addition to any other filter settings."],
+		}
+		config.args.filters.args.noDuration = {
+			order = 13,
+			type = 'toggle',
+			name = L["Block Auras Without Duration"],
+			desc = L["Don't display auras that have no duration."],					
+		}
+		config.args.filters.args.onlyDispellable = {
+			order = 13,
+			type = 'toggle',
+			name = L['Block Non-Dispellable Auras'],
+			desc = L["Don't display auras that cannot be purged or dispelled by your class."],
+		}
+		
+		if auraType == 'buffs' then
+			config.args.filters.args.noConsolidated = {
+				order = 14,
+				type = 'toggle',
+				name = L["Block Raid Buffs"],
+				desc = L["Don't display raid buffs such as Blessing of Kings or Mark of the Wild."],		
+			}
+		end
+		config.args.filters.args.useFilter = {
+			order = 15,
+			name = L['Additional Filter'],
+			desc = L['Select an additional filter to use. If the selected filter is a whitelist and no other filters are being used (with the exception of Block Non-Personal Auras) then it will block anything not on the whitelist, otherwise it will simply add auras on the whitelist in addition to any other filter settings.'],
+			type = 'select',
+			values = function()
+				filters = {}
+				filters[''] = NONE
+				for filter in pairs(E.global.unitframe['aurafilters']) do
+					filters[filter] = filter
+				end
+				return filters
+			end,
+		}	
+	else
+		config.args.filters.args.playerOnly = {
+			order = 10,
+			guiInline = true,
+			type = 'group',
+			name = L["Block Non-Personal Auras"],
+			args = {
+				friendly = {
+					order = 2,
+					type = 'toggle',
+					name = L['Friendly'],
+					desc = L["If the unit is friendly to you."].." "..L["Don't display auras that are not yours."],
+					get = function(info) return E.db.unitframe.units[groupName][auraType].playerOnly.friendly end,
+					set = function(info, value) E.db.unitframe.units[groupName][auraType].playerOnly.friendly = value; updateFunc(self, groupName, numUnits) end,									
+				},
+				enemy = {
+					order = 3,
+					type = 'toggle',
+					name = L['Enemy'],
+					desc = L["If the unit is an enemy to you."].." "..L["Don't display auras that are not yours."],
+					get = function(info) return E.db.unitframe.units[groupName][auraType].playerOnly.enemy end,
+					set = function(info, value) E.db.unitframe.units[groupName][auraType].playerOnly.enemy = value; updateFunc(self, groupName, numUnits) end,										
+				}
+			},
+		}
+		config.args.filters.args.useBlacklist = {
+			order = 11,
+			guiInline = true,
+			type = 'group',
+			name = L["Block Blacklisted Auras"],
+			args = {
+				friendly = {
+					order = 2,
+					type = 'toggle',
+					name = L['Friendly'],
+					desc = L["If the unit is friendly to you."].." "..L["Don't display any auras found on the 'Blacklist' filter."],
+					get = function(info) return E.db.unitframe.units[groupName][auraType].useBlacklist.friendly end,
+					set = function(info, value) E.db.unitframe.units[groupName][auraType].useBlacklist.friendly = value; updateFunc(self, groupName, numUnits) end,									
+				},
+				enemy = {
+					order = 3,
+					type = 'toggle',
+					name = L['Enemy'],
+					desc = L["If the unit is an enemy to you."].." "..L["Don't display any auras found on the 'Blacklist' filter."],
+					get = function(info) return E.db.unitframe.units[groupName][auraType].useBlacklist.enemy end,
+					set = function(info, value) E.db.unitframe.units[groupName][auraType].useBlacklist.enemy = value; updateFunc(self, groupName, numUnits) end,										
+				}
+			},
+		}
+		config.args.filters.args.useWhitelist = {
+			order = 12,
+			guiInline = true,
+			type = 'group',
+			name = L["Allow Whitelisted Auras"],
+			args = {
+				friendly = {
+					order = 2,
+					type = 'toggle',
+					name = L['Friendly'],
+					desc = L["If the unit is friendly to you."].." "..L["If no other filter options are being used then it will block anything not on the 'Whitelist' filter, otherwise it will simply add auras on the whitelist in addition to any other filter settings."],
+					get = function(info) return E.db.unitframe.units[groupName][auraType].useWhitelist.friendly end,
+					set = function(info, value) E.db.unitframe.units[groupName][auraType].useWhitelist.friendly = value; updateFunc(self, groupName, numUnits) end,									
+				},
+				enemy = {
+					order = 3,
+					type = 'toggle',
+					name = L['Enemy'],
+					desc = L["If the unit is an enemy to you."].." "..L["If no other filter options are being used then it will block anything not on the 'Whitelist' filter, otherwise it will simply add auras on the whitelist in addition to any other filter settings."],
+					get = function(info) return E.db.unitframe.units[groupName][auraType].useWhitelist.enemy end,
+					set = function(info, value) E.db.unitframe.units[groupName][auraType].useWhitelist.enemy = value; updateFunc(self, groupName, numUnits) end,										
+				}
+			},
+		}
+		config.args.filters.args.noDuration = {
+			order = 13,
+			guiInline = true,
+			type = 'group',
+			name = L["Block Auras Without Duration"],
+			args = {
+				friendly = {
+					order = 2,
+					type = 'toggle',
+					name = L['Friendly'],
+					desc = L["If the unit is friendly to you."].." "..L["Don't display auras that have no duration."],
+					get = function(info) return E.db.unitframe.units[groupName][auraType].noDuration.friendly end,
+					set = function(info, value) E.db.unitframe.units[groupName][auraType].noDuration.friendly = value; updateFunc(self, groupName, numUnits) end,									
+				},
+				enemy = {
+					order = 3,
+					type = 'toggle',
+					name = L['Enemy'],
+					desc = L["If the unit is an enemy to you."].." "..L["Don't display auras that have no duration."],
+					get = function(info) return E.db.unitframe.units[groupName][auraType].noDuration.enemy end,
+					set = function(info, value) E.db.unitframe.units[groupName][auraType].noDuration.enemy = value; updateFunc(self, groupName, numUnits) end,										
+				}
+			},				
+		}
+		config.args.filters.args.onlyDispellable = {
+			order = 13,
+			guiInline = true,
+			type = 'group',
+			name = L['Block Non-Dispellable Auras'],
+			args = {
+				friendly = {
+					order = 2,
+					type = 'toggle',
+					name = L['Friendly'],
+					desc = L["If the unit is friendly to you."].." "..L["Don't display auras that cannot be purged or dispelled by your class."],
+					get = function(info) return E.db.unitframe.units[groupName][auraType].onlyDispellable.friendly end,
+					set = function(info, value) E.db.unitframe.units[groupName][auraType].onlyDispellable.friendly = value; updateFunc(self, groupName, numUnits) end,									
+				},
+				enemy = {
+					order = 3,
+					type = 'toggle',
+					name = L['Enemy'],
+					desc = L["If the unit is an enemy to you."].." "..L["Don't display auras that cannot be purged or dispelled by your class."],
+					get = function(info) return E.db.unitframe.units[groupName][auraType].onlyDispellable.enemy end,
+					set = function(info, value) E.db.unitframe.units[groupName][auraType].onlyDispellable.enemy = value; updateFunc(self, groupName, numUnits) end,										
+				}
+			},	
+		}
+		if auraType == 'buffs' then
+			config.args.filters.args.noConsolidated = {
+				order = 14,
+				guiInline = true,
+				type = 'group',
+				name = L["Block Raid Buffs"],
+				args = {
+					friendly = {
+						order = 2,
+						type = 'toggle',
+						name = L['Friendly'],
+						desc = L["If the unit is friendly to you."].." "..L["Don't display raid buffs such as Blessing of Kings or Mark of the Wild."],
+						get = function(info) return E.db.unitframe.units[groupName][auraType].noConsolidated.friendly end,
+						set = function(info, value) E.db.unitframe.units[groupName][auraType].noConsolidated.friendly = value; updateFunc(self, groupName, numUnits) end,									
+					},
+					enemy = {
+						order = 3,
+						type = 'toggle',
+						name = L['Enemy'],
+						desc = L["If the unit is an enemy to you."].." "..L["Don't display raid buffs such as Blessing of Kings or Mark of the Wild."],
+						get = function(info) return E.db.unitframe.units[groupName][auraType].noConsolidated.enemy end,
+						set = function(info, value) E.db.unitframe.units[groupName][auraType].noConsolidated.enemy = value; updateFunc(self, groupName, numUnits) end,										
+					}
+				},		
+			}
+		end
+		
+		config.args.filters.args.useFilter = {
+			order = 15,
+			name = L['Additional Filter'],
+			desc = L['Select an additional filter to use. If the selected filter is a whitelist and no other filters are being used (with the exception of Block Non-Personal Auras) then it will block anything not on the whitelist, otherwise it will simply add auras on the whitelist in addition to any other filter settings.'],
+			type = 'select',
+			values = function()
+				filters = {}
+				filters[''] = NONE
+				for filter in pairs(E.global.unitframe['aurafilters']) do
+					filters[filter] = filter
+				end
+				return filters
+			end,
+		}	
+	end
+	
+	return config
+end
+
+function UF:GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits)
+	local config = {
+		order = 800,
+		type = 'group',
+		name = L['Castbar'],
+		get = function(info) return E.db.unitframe.units[groupName]['castbar'][ info[#info] ] end,
+		set = function(info, value) E.db.unitframe.units[groupName]['castbar'][ info[#info] ] = value; updateFunc(self, groupName, numUnits) end,
+		args = {
+			enable = {
+				type = 'toggle',
+				order = 1,
+				name = L['Enable'],
+			},	
+			matchsize = {
+				order = 2,
+				type = 'execute',
+				name = L['Match Frame Width'],
+				func = function() E.db.unitframe.units[groupName]['castbar']['width'] = E.db.unitframe.units[groupName]['width']; updateFunc(self, groupName, numUnits) end,
+			},			
+			forceshow = {
+				order = 3,
+				name = SHOW..' / '..HIDE,
+				func = function() 
+					local castbar = ElvUF_Player.Castbar
+					if not castbar.oldHide then
+						castbar.oldHide = castbar.Hide
+						castbar.Hide = castbar.Show
+						castbar:Show()
+					else
+						castbar.Hide = castbar.oldHide
+						castbar.oldHide = nil
+						castbar:Hide()						
+					end
+				end,
+				type = 'execute',
+			},
+			width = {
+				order = 4,
+				name = L['Width'],
+				type = 'range',
+				min = 50, max = 600, step = 1,
+			},
+			height = {
+				order = 5,
+				name = L['Height'],
+				type = 'range',
+				min = 10, max = 85, step = 1,
+			},		
+			icon = {
+				order = 6,
+				name = L['Icon'],
+				type = 'toggle',
+			},			
+			latency = {
+				order = 9,
+				name = L['Latency'],
+				type = 'toggle',				
+			},
+			format = {
+				order = 12,
+				type = 'select',
+				name = L['Format'],
+				values = {
+					['CURRENTMAX'] = L['Current / Max'],
+					['CURRENT'] = L['Current'],
+					['REMAINING'] = L['Remaining'],
+				},
+			},
+			spark = {
+				order = 14,
+				type = 'toggle',
+				name = L['Spark'],
+				desc = L['Display a spark texture at the end of the castbar statusbar to help show the differance between castbar and backdrop.'],
+			},
+		},
+	}
+	
+	if hasTicks then
+		config.args.ticks = {
+			order = 13,
+			type = 'toggle',
+			name = L['Ticks'],
+			desc = L['Display tick marks on the castbar for channelled spells. This will adjust automatically for spells like Drain Soul and add additional ticks based on haste.'],
+		}	
+	end
+	
+	return config
+end
+
+function UF:GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUnits)
+	local config = {
+		order = 100,
+		type = 'group',
+		name = L['Health'],
+		get = function(info) return E.db.unitframe.units[groupName]['health'][ info[#info] ] end,
+		set = function(info, value) E.db.unitframe.units[groupName]['health'][ info[#info] ] = value; updateFunc(self, groupName, numUnits) end,
+		args = {
+			position = {
+				type = 'select',
+				order = 1,
+				name = L['Position'],
+				values = self.PositionValues,
+			},
+			text_format = {
+				order = 100,
+				name = L['Text Format'],
+				type = 'input',
+				width = 'full',
+				desc = L['TEXT_FORMAT_DESC'],
+			},			
+		},
+	}
+	
+	if isGroupFrame then
+		config.args.frequentUpdates = {
+			type = 'toggle',
+			order = 2,
+			name = L['Frequent Updates'],
+			desc = L['Rapidly update the health, uses more memory and cpu. Only recommended for healing.'],
+		}
+
+		config.args.orientation = {
+			type = 'select',
+			order = 3,
+			name = L['Orientation'],
+			desc = L['Direction the health bar moves when gaining/losing health.'],
+			values = {
+				['HORIZONTAL'] = L['Horizontal'],
+				['VERTICAL'] = L['Vertical'],
+			},
+		}
+	end
+	
+	return config
+end
+function UF:GetOptionsTable_CustomText(updateFunc, groupName, numUnits)
+	local config = {
+		order = 50,
+		name = L['Custom Texts'],
+		type = 'input',
+		width = 'full',
+		desc = L['Create a custom fontstring. Once you enter a name you will be able to select it from the elements dropdown list.'],
+		get = function() return '' end,
+		set = function(info, textName)
+			for object, _ in pairs(E.db.unitframe.units[groupName]) do
+				if object:lower() == textName:lower() then
+					E:Print(L['The name you have selected is already in use by another element.'])
+					return
+				end
+			end
+			
+			if not E.db.unitframe.units[groupName].customTexts then
+				E.db.unitframe.units[groupName].customTexts = {};
+			end
+			
+			if E.db.unitframe.units[groupName].customTexts[textName] then
+				E:Print(L['The name you have selected is already in use by another element.'])
+				return;
+			end
+			
+			E.db.unitframe.units[groupName].customTexts[textName] = {
+				['text_format'] = '',
+				['size'] = E.db.unitframe.fontSize,
+				['font'] = E.db.unitframe.font,
+				['xOffset'] = 0,
+				['yOffset'] = 0,
+				['justifyH'] = 'CENTER',
+				['fontOutline'] = E.db.unitframe.fontOutline
+			};
+
+			UF:CreateCustomTextGroup(groupName, textName)
+			updateFunc(self, groupName, numUnits)
+		end,
+	}
+	
+	return config
+end
+
+function UF:GetOptionsTable_GPS(groupName)
+	local config = {
+		order = 3000,
+		type = 'group',
+		name = L['GPS Arrow'],
+		get = function(info) return E.db.unitframe.units[groupName]['GPSArrow'][ info[#info] ] end,
+		set = function(info, value) E.db.unitframe.units[groupName]['GPSArrow'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup(groupName) end,
+		args = {
+			enable = {
+				type = 'toggle',
+				order = 1,
+				name = L['Enable'],
+			},	
+			onMouseOver = {
+				type = 'toggle',
+				order = 2,
+				name = L['Mouseover'],
+				desc = L['Only show when you are mousing over a frame.'],
+			},
+			outOfRange = {
+				type = 'toggle',
+				order = 3,
+				name = L['Out of Range'],
+				desc = L['Only show when the unit is not in range.'],
+			},				
+			size = {
+				type = 'range',
+				name = L['Size'],
+				order = 4,
+				min = 8, max = 60, step = 1,
+			},				
+			xOffset = {
+				order = 5,
+				type = 'range',
+				name = L['xOffset'],
+				min = -300, max = 300, step = 1,
+			},
+			yOffset = {
+				order = 6,
+				type = 'range',
+				name = L['yOffset'],
+				min = -300, max = 300, step = 1,
+			},			
+		}	
+	}
+	
+	return config
+end
+
+function UF:GetOptionsTable_Name(updateFunc, groupName, numUnits)
+	local config = {
+		order = 400,
+		type = 'group',
+		name = L['Name'],
+		get = function(info) return E.db.unitframe.units[groupName]['name'][ info[#info] ] end,
+		set = function(info, value) E.db.unitframe.units[groupName]['name'][ info[#info] ] = value; updateFunc(self, groupName, numUnits) end,
+		args = {
+			position = {
+				type = 'select',
+				order = 2,
+				name = L['Position'],
+				values = self.PositionValues,
+			},	
+			text_format = {
+				order = 100,
+				name = L['Text Format'],
+				type = 'input',
+				width = 'full',
+				desc = L['TEXT_FORMAT_DESC'],
+			},					
+		},
+	}
+	
+	return config
+end
+
+function UF:GetOptionsTable_Portrait(updateFunc, groupName, numUnits)
+	local config = {
+		order = 400,
+		type = 'group',
+		name = L['Portrait'],
+		get = function(info) return E.db.unitframe.units[groupName]['portrait'][ info[#info] ] end,
+		set = function(info, value) E.db.unitframe.units[groupName]['portrait'][ info[#info] ] = value; updateFunc(self, groupName, numUnits) end,
+		args = {
+			enable = {
+				type = 'toggle',
+				order = 1,
+				name = L['Enable'],
+			},
+			width = {
+				type = 'range',
+				order = 2,
+				name = L['Width'],
+				min = 15, max = 150, step = 1,
+			},
+			overlay = {
+				type = 'toggle',
+				name = L['Overlay'],
+				desc = L['Overlay the healthbar'],
+				order = 3,
+			},
+			camDistanceScale = {
+				type = 'range',
+				name = L['Camera Distance Scale'],
+				desc = L['How far away the portrait is from the camera.'],
+				order = 4,
+				min = 0.01, max = 4, step = 0.01,
+			},
+			style = {
+				type = 'select',
+				name = L['Style'],
+				desc = L['Select the display method of the portrait.'],
+				order = 5,
+				values = {
+					['2D'] = L['2D'],
+					['3D'] = L['3D'],
+				},
+			},
+		},
+	}
+
+	return config
+end
+
+function UF:GetOptionsTable_Power(updateFunc, groupName, numUnits)
+	local config = {
+		order = 200,
+		type = 'group',
+		name = L['Power'],
+		get = function(info) return E.db.unitframe.units[groupName]['power'][ info[#info] ] end,
+		set = function(info, value) E.db.unitframe.units[groupName]['power'][ info[#info] ] = value; updateFunc(self, groupName, numUnits) end,
+		args = {
+			enable = {
+				type = 'toggle',
+				order = 1,
+				name = L['Enable'],
+			},			
+			text_format = {
+				order = 100,
+				name = L['Text Format'],
+				type = 'input',
+				width = 'full',
+				desc = L['TEXT_FORMAT_DESC'],
+			},	
+			width = {
+				type = 'select',
+				order = 4,
+				name = L['Width'],
+				values = self.FillValues,
+			},
+			height = {
+				type = 'range',
+				name = L['Height'],
+				order = 5,
+				min = 2, max = 50, step = 1,
+			},
+			offset = {
+				type = 'range',
+				name = L['Offset'],
+				desc = L['Offset of the powerbar to the healthbar, set to 0 to disable.'],
+				order = 6,
+				min = 0, max = 20, step = 1,
+			},
+			position = {
+				type = 'select',
+				order = 8,
+				name = L['Position'],
+				values = self.PositionValues,
+			},		
+		},
+	}
+	
+	return config
+end
+
+function UF:GetOptionsTable_RaidIcon(updateFunc, groupName, numUnits)
+	local config = {
+		order = 5000,
+		type = 'group',
+		name = L['Raid Icon'],
+		get = function(info) return E.db.unitframe.units[groupName]['raidicon'][ info[#info] ] end,
+		set = function(info, value) E.db.unitframe.units[groupName]['raidicon'][ info[#info] ] = value; updateFunc(self, groupName, numUnits) end,
+		args = {
+			enable = {
+				type = 'toggle',
+				order = 1,
+				name = L['Enable'],
+			},	
+			attachTo = {
+				type = 'select',
+				order = 2,
+				name = L['Position'],
+				values = self.PositionValues,
+			},
+			size = {
+				type = 'range',
+				name = L['Size'],
+				order = 3,
+				min = 8, max = 60, step = 1,
+			},				
+			xOffset = {
+				order = 4,
+				type = 'range',
+				name = L['xOffset'],
+				min = -300, max = 300, step = 1,
+			},
+			yOffset = {
+				order = 5,
+				type = 'range',
+				name = L['yOffset'],
+				min = -300, max = 300, step = 1,
+			},			
+		},
+	}
+	
+	return config
+end
 local tinsert = table.insert
 function UF:CreateCustomTextGroup(unit, objectName)
 	if E.Options.args.unitframe.args[unit].args[objectName] then return end
