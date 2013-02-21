@@ -1,17 +1,6 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local UF = E:GetModule('UnitFrames');
 
-local filters = {};
-
-local auraBarsSortValues = {
-	['TIME_REMAINING'] = L['Time Remaining'],
-	['TIME_REMAINING_REVERSE'] = L['Time Remaining Reverse'],
-	['TIME_DURATION'] = L['Duration'],
-	['TIME_DURATION_REVERSE'] = L['Duration Reverse'],
-	['NAME'] = NAME,
-	['NONE'] = NONE,
-}
-
 function UF:Construct_AuraBars()
 	local bar = self.statusBar
 	
