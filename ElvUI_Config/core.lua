@@ -693,4 +693,52 @@ E.Options.args.profiles.order = -10
 
 LibDualSpec:EnhanceDatabase(E.data, "ElvUI")
 LibDualSpec:EnhanceOptions(E.Options.args.profiles, E.data)
-E:EnhanceOptions(E.Options.args.profiles)
+
+if not E.Options.args.profiles.plugins then
+	E.Options.args.profiles.plugins = {}
+end
+
+E.Options.args.profiles.plugins["ElvUI"] = {
+	desc = {
+		name = L["This feature will allow you to transfer, settings to other characters."],
+		type = 'description',
+		order = 40.4,
+	},
+	distributeProfile = {
+		name = L["Share Current Profile"],
+		desc = L["Sends your current profile to your target."],
+		type = 'execute',
+		order = 40.5,
+		func = function()
+			if not UnitExists("target") or not UnitIsPlayer("target") or not UnitIsFriend("player", "target") or UnitIsUnit("player", "target") then
+				E:Print(L["You must be targetting a player."])
+				return
+			end
+			local name, server = UnitName("target")
+			if name and (not server or server == "") then
+				E:GetModule("Distributor"):Distribute(name)
+			elseif server then
+				E:GetModule("Distributor"):Distribute(name, true)
+			end
+		end,
+	},
+	distributeGlobal = {
+		name = L["Share Filters"],
+		desc = L["Sends your filter settings to your target."],
+		type = 'execute',
+		order = 40.6,
+		func = function()
+			if not UnitExists("target") or not UnitIsPlayer("target") or not UnitIsFriend("player", "target") or UnitIsUnit("player", "target") then
+				E:Print(L["You must be targetting a player."])
+				return
+			end
+			
+			local name, server = UnitName("target")
+			if name and (not server or server == "") then
+				E:GetModule("Distributor"):Distribute(name, false, true)
+			elseif server then
+				E:GetModule("Distributor"):Distribute(name, true, true)
+			end
+		end,
+	},		
+}
