@@ -25,7 +25,7 @@ function UF:Construct_TargetGlow(frame)
 	frame:CreateShadow('Default')
 	local x = frame.shadow
 	frame.shadow = nil
-	x:SetFrameStrata('BACKGROUND')
+	--x:SetFrameStrata('BACKGROUND')
 	x:Hide();
 	
 	return x
