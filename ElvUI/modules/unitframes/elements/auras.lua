@@ -1,11 +1,8 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local UF = E:GetModule('UnitFrames');
 
-local _, ns = ...
-local ElvUF = ns.oUF
-assert(ElvUF, "ElvUI was unable to locate oUF.")
-
 local tsort = table.sort
+local LSM = LibStub("LibSharedMedia-3.0");
 
 function UF:Construct_Buffs(frame)
 	local buffs = CreateFrame('Frame', nil, frame)

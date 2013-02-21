@@ -4,4 +4,6 @@
 	<Script file='name.lua'/>
 	<Script file='threat.lua'/>
 	<Script file='auras.lua'/>
+	<Script file='portrait.lua'/>
+	<Script file='castbar.lua'/>
 </Ui>

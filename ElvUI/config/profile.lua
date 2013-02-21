@@ -377,7 +377,6 @@ P['unitframe'] = {
 				['height'] = 18,
 				['icon'] = true,
 				['latency'] = true,
-				['displayTarget'] = false,
 				['format'] = 'REMAINING',
 				["ticks"] = true,
 				['spark'] = true,

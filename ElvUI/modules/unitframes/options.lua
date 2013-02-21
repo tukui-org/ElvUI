@@ -600,7 +600,7 @@ E.Options.args.unitframe = {
 				},
 			},
 		},
-		},
+	},
 }
 
 --Player
@@ -786,93 +786,7 @@ E.Options.args.unitframe.args.player = {
 		},
 		buffs = UF:GetOptionsTable_Auras(true, 'buffs', false, UF.CreateAndUpdateUF, 'player'),
 		debuffs = UF:GetOptionsTable_Auras(true, 'debuffs', false, UF.CreateAndUpdateUF, 'player'),
-		castbar = {
-			order = 800,
-			type = 'group',
-			name = L['Castbar'],
-			get = function(info) return E.db.unitframe.units['player']['castbar'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.units['player']['castbar'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
-			args = {
-				enable = {
-					type = 'toggle',
-					order = 1,
-					name = L['Enable'],
-				},	
-				matchsize = {
-					order = 2,
-					type = 'execute',
-					name = L['Match Frame Width'],
-					func = function() E.db.unitframe.units['player']['castbar']['width'] = E.db.unitframe.units['player']['width']; UF:CreateAndUpdateUF('player') end,
-				},			
-				forceshow = {
-					order = 3,
-					name = SHOW..' / '..HIDE,
-					func = function() 
-						local castbar = ElvUF_Player.Castbar
-						if not castbar.oldHide then
-							castbar.oldHide = castbar.Hide
-							castbar.Hide = castbar.Show
-							castbar:Show()
-						else
-							castbar.Hide = castbar.oldHide
-							castbar.oldHide = nil
-							castbar:Hide()						
-						end
-					end,
-					type = 'execute',
-				},
-				width = {
-					order = 4,
-					name = L['Width'],
-					type = 'range',
-					min = 50, max = 600, step = 1,
-				},
-				height = {
-					order = 5,
-					name = L['Height'],
-					type = 'range',
-					min = 10, max = 85, step = 1,
-				},		
-				icon = {
-					order = 6,
-					name = L['Icon'],
-					type = 'toggle',
-				},			
-				latency = {
-					order = 9,
-					name = L['Latency'],
-					type = 'toggle',				
-				},
-				format = {
-					order = 12,
-					type = 'select',
-					name = L['Format'],
-					values = {
-						['CURRENTMAX'] = L['Current / Max'],
-						['CURRENT'] = L['Current'],
-						['REMAINING'] = L['Remaining'],
-					},
-				},
-				ticks = {
-					order = 13,
-					type = 'toggle',
-					name = L['Ticks'],
-					desc = L['Display tick marks on the castbar for channelled spells. This will adjust automatically for spells like Drain Soul and add additional ticks based on haste.'],
-				},
-				spark = {
-					order = 14,
-					type = 'toggle',
-					name = L['Spark'],
-					desc = L['Display a spark texture at the end of the castbar statusbar to help show the differance between castbar and backdrop.'],
-				},
-				displayTarget = {
-					order = 15,
-					type = "toggle",
-					name = L["Display Target"],
-					desc = L["Display the target of the cast on the castbar."],
-				},
-			},
-		},
+		castbar = UF:GetOptionsTable_Castbar(true, UF.CreateAndUpdateUF, 'player'),
 		classbar = {
 			order = 1000,
 			type = 'group',
@@ -1235,76 +1149,7 @@ E.Options.args.unitframe.args.target = {
 		},	
 		buffs = UF:GetOptionsTable_Auras(false, 'buffs', false, UF.CreateAndUpdateUF, 'target'),
 		debuffs = UF:GetOptionsTable_Auras(false, 'debuffs', false, UF.CreateAndUpdateUF, 'target'),
-		castbar = {
-			order = 700,
-			type = 'group',
-			name = L['Castbar'],
-			get = function(info) return E.db.unitframe.units['target']['castbar'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.units['target']['castbar'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
-			args = {
-				enable = {
-					type = 'toggle',
-					order = 1,
-					name = L['Enable'],
-				},	
-				matchsize = {
-					order = 2,
-					type = 'execute',
-					name = L['Match Frame Width'],
-					func = function() E.db.unitframe.units['target']['castbar']['width'] = E.db.unitframe.units['target']['width']; UF:CreateAndUpdateUF('target') end,
-				},			
-				forceshow = {
-					order = 3,
-					name = SHOW..' / '..HIDE,
-					func = function() 
-						local castbar = ElvUF_Target.Castbar
-						if not castbar.oldHide then
-							castbar.oldHide = castbar.Hide
-							castbar.Hide = castbar.Show
-							castbar:Show()
-						else
-							castbar.Hide = castbar.oldHide
-							castbar.oldHide = nil
-							castbar:Hide()						
-						end
-					end,
-					type = 'execute',
-				},
-				width = {
-					order = 4,
-					name = L['Width'],
-					type = 'range',
-					min = 50, max = 600, step = 1,
-				},
-				height = {
-					order = 5,
-					name = L['Height'],
-					type = 'range',
-					min = 10, max = 85, step = 1,
-				},		
-				icon = {
-					order = 6,
-					name = L['Icon'],
-					type = 'toggle',
-				},			
-				format = {
-					order = 11,
-					type = 'select',
-					name = L['Format'],
-					values = {
-						['CURRENTMAX'] = L['Current / Max'],
-						['CURRENT'] = L['Current'],
-						['REMAINING'] = L['Remaining'],
-					},
-				},		
-				spark = {
-					order = 12,
-					type = 'toggle',
-					name = L['Spark'],
-					desc = L['Display a spark texture at the end of the castbar statusbar to help show the differance between castbar and backdrop.'],
-				},				
-			},
-		},
+		castbar = UF:GetOptionsTable_Castbar(false, UF.CreateAndUpdateUF, 'target'),
 		combobar = {
 			order = 800,
 			type = 'group',
@@ -1828,76 +1673,7 @@ E.Options.args.unitframe.args.focus = {
 		name = UF:GetOptionsTable_Name(UF.CreateAndUpdateUF, 'focus'),
 		buffs = UF:GetOptionsTable_Auras(false, 'buffs', false, UF.CreateAndUpdateUF, 'focus'),
 		debuffs = UF:GetOptionsTable_Auras(false, 'debuffs', false, UF.CreateAndUpdateUF, 'focus'),
-		castbar = {
-			order = 600,
-			type = 'group',
-			name = L['Castbar'],
-			get = function(info) return E.db.unitframe.units['focus']['castbar'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.units['focus']['castbar'][ info[#info] ] = value; UF:CreateAndUpdateUF('focus') end,
-			args = {
-				enable = {
-					type = 'toggle',
-					order = 1,
-					name = L['Enable'],
-				},	
-				matchsize = {
-					order = 2,
-					type = 'execute',
-					name = L['Match Frame Width'],
-					func = function() E.db.unitframe.units['focus']['castbar']['width'] = E.db.unitframe.units['focus']['width']; UF:CreateAndUpdateUF('focus') end,
-				},			
-				forceshow = {
-					order = 3,
-					name = SHOW..' / '..HIDE,
-					func = function() 
-						local castbar = ElvUF_Focus.Castbar
-						if not castbar.oldHide then
-							castbar.oldHide = castbar.Hide
-							castbar.Hide = castbar.Show
-							castbar:Show()
-						else
-							castbar.Hide = castbar.oldHide
-							castbar.oldHide = nil
-							castbar:Hide()						
-						end
-					end,
-					type = 'execute',
-				},
-				width = {
-					order = 4,
-					name = L['Width'],
-					type = 'range',
-					min = 50, max = 600, step = 1,
-				},
-				height = {
-					order = 5,
-					name = L['Height'],
-					type = 'range',
-					min = 10, max = 85, step = 1,
-				},		
-				icon = {
-					order = 6,
-					name = L['Icon'],
-					type = 'toggle',
-				},			
-				format = {
-					order = 11,
-					type = 'select',
-					name = L['Format'],
-					values = {
-						['CURRENTMAX'] = L['Current / Max'],
-						['CURRENT'] = L['Current'],
-						['REMAINING'] = L['Remaining'],
-					},
-				},	
-				spark = {
-					order = 12,
-					type = 'toggle',
-					name = L['Spark'],
-					desc = L['Display a spark texture at the end of the castbar statusbar to help show the differance between castbar and backdrop.'],
-				},				
-			},
-		},	
+		castbar = UF:GetOptionsTable_Castbar(false, UF.CreateAndUpdateUF, 'focus'),
 		aurabar = {
 			order = 700,
 			type = 'group',
@@ -2631,59 +2407,7 @@ E.Options.args.unitframe.args.boss = {
 		},	
 		buffs = UF:GetOptionsTable_Auras(true, 'buffs', false, UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
 		debuffs = UF:GetOptionsTable_Auras(true, 'debuffs', false, UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
-		castbar = {
-			order = 13,
-			type = 'group',
-			name = L['Castbar'],
-			get = function(info) return E.db.unitframe.units['boss']['castbar'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.units['boss']['castbar'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
-			args = {
-				enable = {
-					type = 'toggle',
-					order = 1,
-					name = L['Enable'],
-				},	
-				matchsize = {
-					order = 2,
-					type = 'execute',
-					name = L['Match Frame Width'],
-					func = function() E.db.unitframe.units['boss']['castbar']['width'] = E.db.unitframe.units['boss']['width']; UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end,
-				},				
-				width = {
-					order = 3,
-					name = L['Width'],
-					type = 'range',
-					min = 50, max = 600, step = 1,
-				},
-				height = {
-					order = 4,
-					name = L['Height'],
-					type = 'range',
-					min = 10, max = 85, step = 1,
-				},		
-				icon = {
-					order = 5,
-					name = L['Icon'],
-					type = 'toggle',
-				},
-				format = {
-					order = 9,
-					type = 'select',
-					name = L['Format'],
-					values = {
-						['CURRENTMAX'] = L['Current / Max'],
-						['CURRENT'] = L['Current'],
-						['REMAINING'] = L['Remaining'],
-					},
-				},		
-				spark = {
-					order = 10,
-					type = 'toggle',
-					name = L['Spark'],
-					desc = L['Display a spark texture at the end of the castbar statusbar to help show the differance between castbar and backdrop.'],
-				},				
-			},
-		},	
+		castbar = UF:GetOptionsTable_Castbar(false, UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
 		raidicon = {
 			order = 2000,
 			type = 'group',
@@ -2824,59 +2548,7 @@ E.Options.args.unitframe.args.arena = {
 		name = UF:GetOptionsTable_Name(UF.CreateAndUpdateUFGroup, 'arena', 5),
 		buffs = UF:GetOptionsTable_Auras(false, 'buffs', false, UF.CreateAndUpdateUFGroup, 'arena', 5),
 		debuffs = UF:GetOptionsTable_Auras(false, 'debuffs', false, UF.CreateAndUpdateUFGroup, 'arena', 5),
-		castbar = {
-			order = 13,
-			type = 'group',
-			name = L['Castbar'],
-			get = function(info) return E.db.unitframe.units['arena']['castbar'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.units['arena']['castbar'][ info[#info] ] = value; UF:CreateAndUpdateUFGroup('arena', 5) end,
-			args = {
-				enable = {
-					type = 'toggle',
-					order = 1,
-					name = L['Enable'],
-				},	
-				matchsize = {
-					order = 2,
-					type = 'execute',
-					name = L['Match Frame Width'],
-					func = function() E.db.unitframe.units['arena']['castbar']['width'] = E.db.unitframe.units['arena']['width']; UF:CreateAndUpdateUFGroup('arena', 5) end,
-				},				
-				width = {
-					order = 3,
-					name = L['Width'],
-					type = 'range',
-					min = 50, max = 600, step = 1,
-				},
-				height = {
-					order = 4,
-					name = L['Height'],
-					type = 'range',
-					min = 10, max = 85, step = 1,
-				},		
-				icon = {
-					order = 5,
-					name = L['Icon'],
-					type = 'toggle',
-				},
-				format = {
-					order = 9,
-					type = 'select',
-					name = L['Format'],
-					values = {
-						['CURRENTMAX'] = L['Current / Max'],
-						['CURRENT'] = L['Current'],
-						['REMAINING'] = L['Remaining'],
-					},
-				},	
-				spark = {
-					order = 10,
-					type = 'toggle',
-					name = L['Spark'],
-					desc = L['Display a spark texture at the end of the castbar statusbar to help show the differance between castbar and backdrop.'],
-				},				
-			},
-		},	
+		castbar = UF:GetOptionsTable_Castbar(false, UF.CreateAndUpdateUFGroup, 'arena', 5),
 		pvpTrinket = {
 			order = 14,
 			type = 'group',

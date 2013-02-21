@@ -884,9 +884,7 @@ L["Display a spark texture at the end of the castbar statusbar to help show the 
 L['Display Frames'] = true;
 L['Display icon on arena frame indicating the units talent specialization or the units faction if inside a battleground.'] = true;
 L["Display Player"] = true;
-L["Display Target"] = true;
 L["Display the rested icon on the unitframe."] = true;
-L["Display the target of the cast on the castbar."] = true;
 L["Display tick marks on the castbar for channelled spells. This will adjust automatically for spells like Drain Soul and add additional ticks based on haste."] = true;
 L["Down"] = true;
 L['Enemy Aura Type'] = true;
