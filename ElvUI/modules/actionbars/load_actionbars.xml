@@ -6,5 +6,4 @@
 	<Script file='bind.lua'/>
 	<Script file='cooldown.lua'/>
 	<Script file='microbar.lua'/>
-	<Script file='options.lua'/>
 </Ui>

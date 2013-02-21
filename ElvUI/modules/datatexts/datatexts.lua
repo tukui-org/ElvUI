@@ -14,7 +14,7 @@ function DT:Initialize()
 	
 	self:RegisterLDB()
 	self:LoadDataTexts()
-	self:PanelLayoutOptions()	
+	
 	self:RegisterEvent('PLAYER_ENTERING_WORLD', 'LoadDataTexts')
 	--self:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'LoadDataTexts') -- is this needed??
 end

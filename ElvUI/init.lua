@@ -204,7 +204,17 @@ function AddOn:ToggleConfig()
 		self:RegisterEvent('PLAYER_REGEN_ENABLED')
 		return;
 	end
-
+	
+	
+	if not IsAddOnLoaded("ElvUI_Config") then
+		local _, _, _, _, _, reason = GetAddOnInfo("ElvUI_Config")
+		if reason ~= "MISSING" then 
+			LoadAddOn("ElvUI_Config") 
+		else 
+			self:Print("|cffff0000Error -- Addon 'ElvUI_Config' not found.|r") 
+		end			
+	end
+	
 	local mode = 'Close'
 	if not ACD.OpenFrames[AddOnName] then
 		mode = 'Open'

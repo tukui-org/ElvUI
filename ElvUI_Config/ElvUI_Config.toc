@@ -1,0 +1,19 @@
+## Interface: 50200
+## Author: Elv
+## Version: 1.00
+## Title: |cff1784d1ElvUI Config|r
+## Notes: Options for ElvUI.
+## RequiredDeps: ElvUI
+## LoadOnDemand: 1
+
+core.lua
+actionbars.lua
+auras.lua
+bags.lua
+chat.lua
+datatexts.lua
+filters.lua
+nameplates.lua
+skins.lua
+tooltip.lua
+unitframes.lua
