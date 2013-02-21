@@ -3,7 +3,7 @@ local UF = E:GetModule('UnitFrames');
 
 local tsort = table.sort
 local LSM = LibStub("LibSharedMedia-3.0");
-
+local filters = {};
 function UF:Construct_Buffs(frame)
 	local buffs = CreateFrame('Frame', nil, frame)
 	buffs.spacing = E.Spacing

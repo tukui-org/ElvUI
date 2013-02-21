@@ -1,10 +1,6 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local UF = E:GetModule('UnitFrames');
 
-local _, ns = ...
-local ElvUF = ns.oUF
-assert(ElvUF, "ElvUI was unable to locate oUF.")
-
 function UF:Construct_NameText(frame)
 	local parent = frame.RaisedElementParent or frame
 	local name = parent:CreateFontString(nil, 'OVERLAY')

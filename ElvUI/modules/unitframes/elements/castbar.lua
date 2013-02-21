@@ -5,6 +5,10 @@ local floor = math.floor
 local sub = string.sub
 local LSM = LibStub("LibSharedMedia-3.0");
 
+local _, ns = ...
+local ElvUF = ns.oUF
+assert(ElvUF, "ElvUI was unable to locate oUF.")
+
 function UF:Construct_Castbar(self, direction, moverName)
 	local castbar = CreateFrame("StatusBar", nil, self)
 	UF['statusbars'][castbar] = true
