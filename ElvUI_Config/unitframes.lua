@@ -66,7 +66,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 		type = 'group',
 		name = L['Aura Bars'],
 		get = function(info) return E.db.unitframe.units[groupName]['aurabar'][ info[#info] ] end,
-		set = function(info, value) E.db.unitframe.units[groupName]['aurabar'][ info[#info] ] = value; updateFunc(groupName) end,
+		set = function(info, value) E.db.unitframe.units[groupName]['aurabar'][ info[#info] ] = value; updateFunc(UF, groupName) end,
 		args = {
 			enable = {
 				type = 'toggle',
@@ -200,7 +200,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 					name = L['Friendly'],
 					desc = L["If the unit is friendly to you."].." "..L["Don't display auras that are not yours."],
 					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].playerOnly.friendly end,
-					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].playerOnly.friendly = value; updateFunc(groupName) end,									
+					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].playerOnly.friendly = value; updateFunc(UF, groupName) end,									
 				},
 				enemy = {
 					order = 3,
@@ -208,7 +208,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 					name = L['Enemy'],
 					desc = L["If the unit is an enemy to you."].." "..L["Don't display auras that are not yours."],
 					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].playerOnly.enemy end,
-					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].playerOnly.enemy = value; updateFunc(groupName) end,										
+					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].playerOnly.enemy = value; updateFunc(UF, groupName) end,										
 				}
 			},
 		}
@@ -224,7 +224,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 					name = L['Friendly'],
 					desc = L["If the unit is friendly to you."].." "..L["Don't display any auras found on the 'Blacklist' filter."],
 					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].useBlacklist.friendly end,
-					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].useBlacklist.friendly = value; updateFunc(groupName) end,									
+					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].useBlacklist.friendly = value; updateFunc(UF, groupName) end,									
 				},
 				enemy = {
 					order = 3,
@@ -232,7 +232,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 					name = L['Enemy'],
 					desc = L["If the unit is an enemy to you."].." "..L["Don't display any auras found on the 'Blacklist' filter."],
 					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].useBlacklist.enemy end,
-					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].useBlacklist.enemy = value; updateFunc(groupName) end,										
+					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].useBlacklist.enemy = value; updateFunc(UF, groupName) end,										
 				}
 			},
 		}
@@ -248,7 +248,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 					name = L['Friendly'],
 					desc = L["If the unit is friendly to you."].." "..L["If no other filter options are being used then it will block anything not on the 'Whitelist' filter, otherwise it will simply add auras on the whitelist in addition to any other filter settings."],
 					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].useWhitelist.friendly end,
-					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].useWhitelist.friendly = value; updateFunc(groupName) end,									
+					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].useWhitelist.friendly = value; updateFunc(UF, groupName) end,									
 				},
 				enemy = {
 					order = 3,
@@ -256,7 +256,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 					name = L['Enemy'],
 					desc = L["If the unit is an enemy to you."].." "..L["If no other filter options are being used then it will block anything not on the 'Whitelist' filter, otherwise it will simply add auras on the whitelist in addition to any other filter settings."],
 					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].useWhitelist.enemy end,
-					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].useWhitelist.enemy = value; updateFunc(groupName) end,										
+					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].useWhitelist.enemy = value; updateFunc(UF, groupName) end,										
 				}
 			},
 		}
@@ -272,7 +272,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 					name = L['Friendly'],
 					desc = L["If the unit is friendly to you."].." "..L["Don't display auras that have no duration."],
 					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].noDuration.friendly end,
-					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].noDuration.friendly = value; updateFunc(groupName) end,									
+					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].noDuration.friendly = value; updateFunc(UF, groupName) end,									
 				},
 				enemy = {
 					order = 3,
@@ -280,7 +280,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 					name = L['Enemy'],
 					desc = L["If the unit is an enemy to you."].." "..L["Don't display auras that have no duration."],
 					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].noDuration.enemy end,
-					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].noDuration.enemy = value; updateFunc(groupName) end,										
+					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].noDuration.enemy = value; updateFunc(UF, groupName) end,										
 				}
 			},				
 		}
@@ -296,7 +296,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 					name = L['Friendly'],
 					desc = L["If the unit is friendly to you."].." "..L["Don't display auras that cannot be purged or dispelled by your class."],
 					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].onlyDispellable.friendly end,
-					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].onlyDispellable.friendly = value; updateFunc(groupName) end,									
+					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].onlyDispellable.friendly = value; updateFunc(UF, groupName) end,									
 				},
 				enemy = {
 					order = 3,
@@ -304,7 +304,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 					name = L['Enemy'],
 					desc = L["If the unit is an enemy to you."].." "..L["Don't display auras that cannot be purged or dispelled by your class."],
 					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].onlyDispellable.enemy end,
-					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].onlyDispellable.enemy = value; updateFunc(groupName) end,										
+					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].onlyDispellable.enemy = value; updateFunc(UF, groupName) end,										
 				}
 			},	
 		}
@@ -320,7 +320,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 					name = L['Friendly'],
 					desc = L["If the unit is friendly to you."].." "..L["Don't display raid buffs such as Blessing of Kings or Mark of the Wild."],
 					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].noConsolidated.friendly end,
-					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].noConsolidated.friendly = value; updateFunc(groupName) end,									
+					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].noConsolidated.friendly = value; updateFunc(UF, groupName) end,									
 				},
 				enemy = {
 					order = 3,
@@ -328,7 +328,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 					name = L['Enemy'],
 					desc = L["If the unit is an enemy to you."].." "..L["Don't display raid buffs such as Blessing of Kings or Mark of the Wild."],
 					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].noConsolidated.enemy end,
-					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].noConsolidated.enemy = value; updateFunc(groupName) end,										
+					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].noConsolidated.enemy = value; updateFunc(UF, groupName) end,										
 				}
 			},		
 		}
@@ -357,7 +357,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 		type = 'group',
 		name = auraType == 'buffs' and L['Buffs'] or L['Debuffs'],
 		get = function(info) return E.db.unitframe.units[groupName][auraType][ info[#info] ] end,
-		set = function(info, value) E.db.unitframe.units[groupName][auraType][ info[#info] ] = value; updateFunc(groupName, numUnits) end,
+		set = function(info, value) E.db.unitframe.units[groupName][auraType][ info[#info] ] = value; updateFunc(UF, groupName, numUnits) end,
 		args = {
 			enable = {
 				type = 'toggle',
@@ -510,7 +510,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 					name = L['Friendly'],
 					desc = L["If the unit is friendly to you."].." "..L["Don't display auras that are not yours."],
 					get = function(info) return E.db.unitframe.units[groupName][auraType].playerOnly.friendly end,
-					set = function(info, value) E.db.unitframe.units[groupName][auraType].playerOnly.friendly = value; updateFunc(groupName, numUnits) end,									
+					set = function(info, value) E.db.unitframe.units[groupName][auraType].playerOnly.friendly = value; updateFunc(UF, groupName, numUnits) end,									
 				},
 				enemy = {
 					order = 3,
@@ -518,7 +518,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 					name = L['Enemy'],
 					desc = L["If the unit is an enemy to you."].." "..L["Don't display auras that are not yours."],
 					get = function(info) return E.db.unitframe.units[groupName][auraType].playerOnly.enemy end,
-					set = function(info, value) E.db.unitframe.units[groupName][auraType].playerOnly.enemy = value; updateFunc(groupName, numUnits) end,										
+					set = function(info, value) E.db.unitframe.units[groupName][auraType].playerOnly.enemy = value; updateFunc(UF, groupName, numUnits) end,										
 				}
 			},
 		}
@@ -534,7 +534,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 					name = L['Friendly'],
 					desc = L["If the unit is friendly to you."].." "..L["Don't display any auras found on the 'Blacklist' filter."],
 					get = function(info) return E.db.unitframe.units[groupName][auraType].useBlacklist.friendly end,
-					set = function(info, value) E.db.unitframe.units[groupName][auraType].useBlacklist.friendly = value; updateFunc(groupName, numUnits) end,									
+					set = function(info, value) E.db.unitframe.units[groupName][auraType].useBlacklist.friendly = value; updateFunc(UF, groupName, numUnits) end,									
 				},
 				enemy = {
 					order = 3,
@@ -542,7 +542,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 					name = L['Enemy'],
 					desc = L["If the unit is an enemy to you."].." "..L["Don't display any auras found on the 'Blacklist' filter."],
 					get = function(info) return E.db.unitframe.units[groupName][auraType].useBlacklist.enemy end,
-					set = function(info, value) E.db.unitframe.units[groupName][auraType].useBlacklist.enemy = value; updateFunc(groupName, numUnits) end,										
+					set = function(info, value) E.db.unitframe.units[groupName][auraType].useBlacklist.enemy = value; updateFunc(UF, groupName, numUnits) end,										
 				}
 			},
 		}
@@ -558,7 +558,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 					name = L['Friendly'],
 					desc = L["If the unit is friendly to you."].." "..L["If no other filter options are being used then it will block anything not on the 'Whitelist' filter, otherwise it will simply add auras on the whitelist in addition to any other filter settings."],
 					get = function(info) return E.db.unitframe.units[groupName][auraType].useWhitelist.friendly end,
-					set = function(info, value) E.db.unitframe.units[groupName][auraType].useWhitelist.friendly = value; updateFunc(groupName, numUnits) end,									
+					set = function(info, value) E.db.unitframe.units[groupName][auraType].useWhitelist.friendly = value; updateFunc(UF, groupName, numUnits) end,									
 				},
 				enemy = {
 					order = 3,
@@ -566,7 +566,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 					name = L['Enemy'],
 					desc = L["If the unit is an enemy to you."].." "..L["If no other filter options are being used then it will block anything not on the 'Whitelist' filter, otherwise it will simply add auras on the whitelist in addition to any other filter settings."],
 					get = function(info) return E.db.unitframe.units[groupName][auraType].useWhitelist.enemy end,
-					set = function(info, value) E.db.unitframe.units[groupName][auraType].useWhitelist.enemy = value; updateFunc(groupName, numUnits) end,										
+					set = function(info, value) E.db.unitframe.units[groupName][auraType].useWhitelist.enemy = value; updateFunc(UF, groupName, numUnits) end,										
 				}
 			},
 		}
@@ -582,7 +582,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 					name = L['Friendly'],
 					desc = L["If the unit is friendly to you."].." "..L["Don't display auras that have no duration."],
 					get = function(info) return E.db.unitframe.units[groupName][auraType].noDuration.friendly end,
-					set = function(info, value) E.db.unitframe.units[groupName][auraType].noDuration.friendly = value; updateFunc(groupName, numUnits) end,									
+					set = function(info, value) E.db.unitframe.units[groupName][auraType].noDuration.friendly = value; updateFunc(UF, groupName, numUnits) end,									
 				},
 				enemy = {
 					order = 3,
@@ -590,7 +590,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 					name = L['Enemy'],
 					desc = L["If the unit is an enemy to you."].." "..L["Don't display auras that have no duration."],
 					get = function(info) return E.db.unitframe.units[groupName][auraType].noDuration.enemy end,
-					set = function(info, value) E.db.unitframe.units[groupName][auraType].noDuration.enemy = value; updateFunc(groupName, numUnits) end,										
+					set = function(info, value) E.db.unitframe.units[groupName][auraType].noDuration.enemy = value; updateFunc(UF, groupName, numUnits) end,										
 				}
 			},				
 		}
@@ -606,7 +606,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 					name = L['Friendly'],
 					desc = L["If the unit is friendly to you."].." "..L["Don't display auras that cannot be purged or dispelled by your class."],
 					get = function(info) return E.db.unitframe.units[groupName][auraType].onlyDispellable.friendly end,
-					set = function(info, value) E.db.unitframe.units[groupName][auraType].onlyDispellable.friendly = value; updateFunc(groupName, numUnits) end,									
+					set = function(info, value) E.db.unitframe.units[groupName][auraType].onlyDispellable.friendly = value; updateFunc(UF, groupName, numUnits) end,									
 				},
 				enemy = {
 					order = 3,
@@ -614,7 +614,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 					name = L['Enemy'],
 					desc = L["If the unit is an enemy to you."].." "..L["Don't display auras that cannot be purged or dispelled by your class."],
 					get = function(info) return E.db.unitframe.units[groupName][auraType].onlyDispellable.enemy end,
-					set = function(info, value) E.db.unitframe.units[groupName][auraType].onlyDispellable.enemy = value; updateFunc(groupName, numUnits) end,										
+					set = function(info, value) E.db.unitframe.units[groupName][auraType].onlyDispellable.enemy = value; updateFunc(UF, groupName, numUnits) end,										
 				}
 			},	
 		}
@@ -631,7 +631,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 						name = L['Friendly'],
 						desc = L["If the unit is friendly to you."].." "..L["Don't display raid buffs such as Blessing of Kings or Mark of the Wild."],
 						get = function(info) return E.db.unitframe.units[groupName][auraType].noConsolidated.friendly end,
-						set = function(info, value) E.db.unitframe.units[groupName][auraType].noConsolidated.friendly = value; updateFunc(groupName, numUnits) end,									
+						set = function(info, value) E.db.unitframe.units[groupName][auraType].noConsolidated.friendly = value; updateFunc(UF, groupName, numUnits) end,									
 					},
 					enemy = {
 						order = 3,
@@ -639,7 +639,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 						name = L['Enemy'],
 						desc = L["If the unit is an enemy to you."].." "..L["Don't display raid buffs such as Blessing of Kings or Mark of the Wild."],
 						get = function(info) return E.db.unitframe.units[groupName][auraType].noConsolidated.enemy end,
-						set = function(info, value) E.db.unitframe.units[groupName][auraType].noConsolidated.enemy = value; updateFunc(groupName, numUnits) end,										
+						set = function(info, value) E.db.unitframe.units[groupName][auraType].noConsolidated.enemy = value; updateFunc(UF, groupName, numUnits) end,										
 					}
 				},		
 			}
@@ -670,7 +670,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 		type = 'group',
 		name = L['Castbar'],
 		get = function(info) return E.db.unitframe.units[groupName]['castbar'][ info[#info] ] end,
-		set = function(info, value) E.db.unitframe.units[groupName]['castbar'][ info[#info] ] = value; updateFunc(groupName, numUnits) end,
+		set = function(info, value) E.db.unitframe.units[groupName]['castbar'][ info[#info] ] = value; updateFunc(UF, groupName, numUnits) end,
 		args = {
 			enable = {
 				type = 'toggle',
@@ -681,7 +681,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				order = 2,
 				type = 'execute',
 				name = L['Match Frame Width'],
-				func = function() E.db.unitframe.units[groupName]['castbar']['width'] = E.db.unitframe.units[groupName]['width']; updateFunc(groupName, numUnits) end,
+				func = function() E.db.unitframe.units[groupName]['castbar']['width'] = E.db.unitframe.units[groupName]['width']; updateFunc(UF, groupName, numUnits) end,
 			},			
 			forceshow = {
 				order = 3,
@@ -759,7 +759,7 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 		type = 'group',
 		name = L['Health'],
 		get = function(info) return E.db.unitframe.units[groupName]['health'][ info[#info] ] end,
-		set = function(info, value) E.db.unitframe.units[groupName]['health'][ info[#info] ] = value; updateFunc(groupName, numUnits) end,
+		set = function(info, value) E.db.unitframe.units[groupName]['health'][ info[#info] ] = value; updateFunc(UF, groupName, numUnits) end,
 		args = {
 			position = {
 				type = 'select',
@@ -835,7 +835,7 @@ local function GetOptionsTable_CustomText(updateFunc, groupName, numUnits)
 			};
 
 			UF:CreateCustomTextGroup(groupName, textName)
-			updateFunc(groupName, numUnits)
+			updateFunc(UF, groupName, numUnits)
 		end,
 	}
 	
@@ -897,7 +897,7 @@ local function GetOptionsTable_Name(updateFunc, groupName, numUnits)
 		type = 'group',
 		name = L['Name'],
 		get = function(info) return E.db.unitframe.units[groupName]['name'][ info[#info] ] end,
-		set = function(info, value) E.db.unitframe.units[groupName]['name'][ info[#info] ] = value; updateFunc(groupName, numUnits) end,
+		set = function(info, value) E.db.unitframe.units[groupName]['name'][ info[#info] ] = value; updateFunc(UF, groupName, numUnits) end,
 		args = {
 			position = {
 				type = 'select',
@@ -924,7 +924,7 @@ local function GetOptionsTable_Portrait(updateFunc, groupName, numUnits)
 		type = 'group',
 		name = L['Portrait'],
 		get = function(info) return E.db.unitframe.units[groupName]['portrait'][ info[#info] ] end,
-		set = function(info, value) E.db.unitframe.units[groupName]['portrait'][ info[#info] ] = value; updateFunc(groupName, numUnits) end,
+		set = function(info, value) E.db.unitframe.units[groupName]['portrait'][ info[#info] ] = value; updateFunc(UF, groupName, numUnits) end,
 		args = {
 			enable = {
 				type = 'toggle',
@@ -972,7 +972,7 @@ local function GetOptionsTable_Power(updateFunc, groupName, numUnits)
 		type = 'group',
 		name = L['Power'],
 		get = function(info) return E.db.unitframe.units[groupName]['power'][ info[#info] ] end,
-		set = function(info, value) E.db.unitframe.units[groupName]['power'][ info[#info] ] = value; updateFunc(groupName, numUnits) end,
+		set = function(info, value) E.db.unitframe.units[groupName]['power'][ info[#info] ] = value; updateFunc(UF, groupName, numUnits) end,
 		args = {
 			enable = {
 				type = 'toggle',
@@ -1023,7 +1023,7 @@ local function GetOptionsTable_RaidIcon(updateFunc, groupName, numUnits)
 		type = 'group',
 		name = L['Raid Icon'],
 		get = function(info) return E.db.unitframe.units[groupName]['raidicon'][ info[#info] ] end,
-		set = function(info, value) E.db.unitframe.units[groupName]['raidicon'][ info[#info] ] = value; updateFunc(groupName, numUnits) end,
+		set = function(info, value) E.db.unitframe.units[groupName]['raidicon'][ info[#info] ] = value; updateFunc(UF, groupName, numUnits) end,
 		args = {
 			enable = {
 				type = 'toggle',
