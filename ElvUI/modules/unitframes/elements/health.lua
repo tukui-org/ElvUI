@@ -41,7 +41,7 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 	return health
 end
 
-function UF:UpdateElementSettings_Health(frame)
+function UF:UpdateElementSettings_Health(frame, updateElement, isGroupFrame)
 	local db = frame.db
 	local health = frame.Health
 	
@@ -119,6 +119,24 @@ function UF:UpdateElementSettings_Health(frame)
 		
 		health:Point("TOPLEFT", frame, "TOPLEFT", PORTRAIT_WIDTH+BORDER, DEPTH)
 	end
+	
+	if updateElement then
+		frame:UpdateElement('Health')
+		health.value:UpdateTag()
+	end
+	
+	if isGroupFrame and not frame:GetParent().UpdateHealthSettings then
+		frame:GetParent().UpdateHealthSettings = function(parent)
+			for i=1, parent:GetNumChildren() do
+				local child = select(i, parent:GetChildren())
+				if child and child.Health then
+					UF:UpdateElementSettings_Health(child, true, true)
+				end
+			end
+		end
+	elseif not frame.UpdateHealthSettings then
+		frame.UpdateHealthSettings = UF.UpdateElementSettings_Health
+	end
 end
 
 function UF:PostUpdateHealth(unit, min, max)
@@ -166,19 +184,19 @@ function UF:PostUpdateHealth(unit, min, max)
 	end	
 end
 
-function UF:GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUnits)
+function UF:GetOptionsTable_Health(objectName, isGroupFrame)
 	local config = {
 		order = 100,
 		type = 'group',
 		name = L['Health'],
-		get = function(info) return E.db.unitframe.units[groupName]['health'][ info[#info] ] end,
-		set = function(info, value) E.db.unitframe.units[groupName]['health'][ info[#info] ] = value; updateFunc(self, groupName, numUnits) end,
+		get = function(info) return _G[objectName].db.health[ info[#info] ] end,
+		set = function(info, value) _G[objectName].db.health[ info[#info] ] = value; _G[objectName].UpdateHealthSettings(UF, _G[objectName], true) end,
 		args = {
 			position = {
 				type = 'select',
 				order = 1,
 				name = L['Position'],
-				values = self.positionValues,
+				values = self.PositionValues,
 			},
 			text_format = {
 				order = 100,
@@ -186,7 +204,7 @@ function UF:GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUnits
 				type = 'input',
 				width = 'full',
 				desc = L['TEXT_FORMAT_DESC'],
-			},			
+			},
 		},
 	}
 	

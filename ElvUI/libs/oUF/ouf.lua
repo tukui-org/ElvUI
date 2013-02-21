@@ -93,6 +93,14 @@ local frame_metatable = {
 Private.frame_metatable = frame_metatable
 
 for k, v in pairs{
+	UpdateElement = function(self, name)
+		local element = elements[name]
+		if(not element or not self:IsElementEnabled(name) or not activeElements[self]) then return end
+		if(element.update) then
+			element.update(self, 'Update')
+		end	
+	end,
+	
 	EnableElement = function(self, name, unit)
 		argcheck(name, 2, 'string')
 		argcheck(unit, 3, 'string', 'nil')

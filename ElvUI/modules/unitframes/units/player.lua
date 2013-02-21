@@ -324,7 +324,7 @@ function UF:Update_PlayerFrame(frame, db)
 	end
 	
 	--Health
-	self:UpdateElementSettings_Health(frame)
+	self:UpdateElementSettings_Health(frame, true)
 	
 	--Name
 	do
