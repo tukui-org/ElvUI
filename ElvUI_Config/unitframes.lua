@@ -3628,3 +3628,12 @@ if P.unitframe.colors.classResources[E.myclass] then
 		end		
 	end
 end
+
+--Custom Texts
+for unit, _ in pairs(E.db.unitframe.units) do
+	if E.db.unitframe.units[unit].customTexts then
+		for objectName, _ in pairs(E.db.unitframe.units[unit].customTexts) do
+			UF:CreateCustomTextGroup(unit, objectName)
+		end
+	end
+end
