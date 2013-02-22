@@ -98,7 +98,7 @@ function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, durati
 	local isFriend = UnitIsFriend('player', unit) == 1 and true or false
 	if button.isDebuff then
 		if(not isFriend and button.owner ~= "player" and button.owner ~= "vehicle") --[[and (not E.isDebuffWhiteList[name])]] then
-			button:SetBackdropBorderColor(0.9, 0.1, 0.1)
+			button:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 			button.icon:SetDesaturated((unit and not unit:find('arena%d')) and true or false)
 		else
 			local color = DebuffTypeColor[dtype] or DebuffTypeColor.none
@@ -159,8 +159,8 @@ function UF:UpdateAuraTimer(elapsed)
 	end
 
 	local timervalue, formatid
-	timervalue, formatid, self.nextupdate = E:GetTimeInfo(self.expiration, 4)
-	self.text:SetFormattedText(("%s%s|r"):format(E.TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
+	timervalue, formatid, self.nextupdate = E:GetTimeInfo(self.expiration, E.db.auras.decimalThreshold)
+	self.text:SetFormattedText(("%s%s|r%s%s|r"):format(E.TimeColors[formatid], E.TimeFormats[formatid][3], E.IndicatorColors[formatid], (formatid < 3 and E.TimeFormats[formatid][4]) or ''), timervalue)
 end
 
 function UF:CheckFilter(filterType, isFriend)
