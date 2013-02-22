@@ -137,10 +137,11 @@ function AddOn:ToggleConfig()
 	
 	if not IsAddOnLoaded("ElvUI_Config") then
 		local _, _, _, _, _, reason = GetAddOnInfo("ElvUI_Config")
-		if reason ~= "MISSING" then 
+		if reason ~= "MISSING" and reason ~= "DISABLED" then 
 			LoadAddOn("ElvUI_Config") 
 		else 
-			self:Print("|cffff0000Error -- Addon 'ElvUI_Config' not found.|r") 
+			self:Print("|cffff0000Error -- Addon 'ElvUI_Config' not found or is disabled.|r") 
+			return
 		end			
 	end
 	
