@@ -387,20 +387,11 @@ function UF:Update_PlayerFrame(frame, db)
 			end
 			
 			health:Point("TOPLEFT", frame, "TOPLEFT", PORTRAIT_WIDTH+BORDER, DEPTH)
-		end
+		end		
 	end
 	
 	--Name
-	do
-		local name = frame.Name
-		if not db.power.hideonnpc then
-			local x, y = self:GetPositionOffset(db.name.position)
-			name:ClearAllPoints()
-			name:Point(db.name.position, frame.Health, db.name.position, x, y)				
-		end
-		
-		frame:Tag(name, db.name.text_format)
-	end	
+	UF:UpdateNameSettings(frame)
 	
 	--PvP
 	do
@@ -1122,8 +1113,7 @@ function UF:Update_PlayerFrame(frame, db)
 			end
 			
 			local objectDB = db.customTexts[objectName]
-			UF:CreateCustomTextGroup('player', objectName)
-			
+
 			if objectDB.font then
 				customFont = UF.LSM:Fetch("font", objectDB.font)
 			end

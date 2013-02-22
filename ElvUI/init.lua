@@ -14,8 +14,6 @@ BINDING_HEADER_ELVUI = GetAddOnMetadata(..., "Title");
 
 local AddOnName, Engine = ...;
 local AddOn = LibStub("AceAddon-3.0"):NewAddon(AddOnName, "AceConsole-3.0", "AceEvent-3.0", 'AceTimer-3.0', 'AceHook-3.0');
-local DEFAULT_WIDTH = 890;
-local DEFAULT_HEIGHT = 651;
 AddOn.DF = {}; AddOn.DF["profile"] = {}; AddOn.DF["global"] = {}; AddOn.privateVars = {}; AddOn.privateVars["profile"] = {}; -- Defaults
 AddOn.Options = {
 	type = "group",
@@ -24,6 +22,7 @@ AddOn.Options = {
 };
 
 local Locale = LibStub("AceLocale-3.0"):GetLocale(AddOnName, false);
+local ACD = LibStub("AceConfigDialog-3.0")
 
 Engine[1] = AddOn;
 Engine[2] = Locale;
@@ -33,10 +32,6 @@ Engine[5] = AddOn.DF["global"];
 
 _G[AddOnName] = Engine;
 
-local AC = LibStub("AceConfig-3.0")
-local ACD = LibStub("AceConfigDialog-3.0")
-local ACR = LibStub("AceConfigRegistry-3.0")
-local LibDualSpec = LibStub('LibDualSpec-1.0')
 local tcopy = table.copy
 
 function AddOn:OnInitialize()
@@ -93,7 +88,7 @@ function AddOn:OnInitialize()
 end
 
 function AddOn:PLAYER_REGEN_ENABLED()
-	ACD:Open(AddOnName);
+	self:ToggleConfig() 
 	self:UnregisterEvent('PLAYER_REGEN_ENABLED');
 end
 
@@ -133,77 +128,23 @@ function AddOn:OnProfileReset()
 	ReloadUI()
 end
 
-function AddOn:EnhanceOptions(optionTable)
-	if not optionTable.plugins then
-		optionTable.plugins = {}
-	end
-	optionTable.plugins["ElvUI"] = {
-		desc = {
-			name = Locale["This feature will allow you to transfer, settings to other characters."],
-			type = 'description',
-			order = 40.4,
-		},
-		distributeProfile = {
-			name = Locale["Share Current Profile"],
-			desc = Locale["Sends your current profile to your target."],
-			type = 'execute',
-			order = 40.5,
-			func = function()
-				if not UnitExists("target") or not UnitIsPlayer("target") or not UnitIsFriend("player", "target") or UnitIsUnit("player", "target") then
-					self:Print(Locale["You must be targetting a player."])
-					return
-				end
-				local name, server = UnitName("target")
-				if name and (not server or server == "") then
-					self:GetModule("Distributor"):Distribute(name)
-				elseif server then
-					self:GetModule("Distributor"):Distribute(name, true)
-				end
-			end,
-		},
-		distributeGlobal = {
-			name = Locale["Share Filters"],
-			desc = Locale["Sends your filter settings to your target."],
-			type = 'execute',
-			order = 40.6,
-			func = function()
-				if not UnitExists("target") or not UnitIsPlayer("target") or not UnitIsFriend("player", "target") or UnitIsUnit("player", "target") then
-					self:Print(Locale["You must be targetting a player."])
-					return
-				end
-				
-				local name, server = UnitName("target")
-				if name and (not server or server == "") then
-					self:GetModule("Distributor"):Distribute(name, false, true)
-				elseif server then
-					self:GetModule("Distributor"):Distribute(name, true, true)
-				end
-			end,
-		},		
-	}
-end
-
-function AddOn:LoadConfig()	
-	AC:RegisterOptionsTable(AddOnName, self.Options)
-	ACD:SetDefaultSize(AddOnName, DEFAULT_WIDTH, DEFAULT_HEIGHT)	
-	
-	--Create Profiles Table
-	self.Options.args.profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.data);
-	AC:RegisterOptionsTable("ElvProfiles", self.Options.args.profiles)
-	self.Options.args.profiles.order = -10
-	
-	LibDualSpec:EnhanceDatabase(self.data, AddOnName)
-	LibDualSpec:EnhanceOptions(self.Options.args.profiles, self.data)
-	self:EnhanceOptions(self.Options.args.profiles)
-end
-
 function AddOn:ToggleConfig() 
 	if InCombatLockdown() then
 		self:Print(ERR_NOT_IN_COMBAT)
 		self:RegisterEvent('PLAYER_REGEN_ENABLED')
 		return;
 	end
-
+	
+	if not IsAddOnLoaded("ElvUI_Config") then
+		local _, _, _, _, _, reason = GetAddOnInfo("ElvUI_Config")
+		if reason ~= "MISSING" and reason ~= "DISABLED" then 
+			LoadAddOn("ElvUI_Config") 
+		else 
+			self:Print("|cffff0000Error -- Addon 'ElvUI_Config' not found or is disabled.|r") 
+			return
+		end			
+	end
+	
 	local mode = 'Close'
 	if not ACD.OpenFrames[AddOnName] then
 		mode = 'Open'

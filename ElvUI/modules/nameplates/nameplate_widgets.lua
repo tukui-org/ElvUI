@@ -645,10 +645,12 @@ function NP:UpdateRoster()
 	wipe(self.GroupMembers)
 	wipe(self.GroupTanks)	
 	
+	local petExists = UnitExists('pet')
+	local inGroup = IsInGroup()
 	if IsInRaid() then 
 		groupType = "raid"
 		groupSize = GetNumGroupMembers()
-	elseif IsInGroup() then 
+	elseif inGroup then 
 		groupType = "party"
 		groupSize = GetNumGroupMembers() - 1
 	else 
@@ -663,7 +665,7 @@ function NP:UpdateRoster()
 		end
 	end
 	
-	if UnitExists('pet') then
+	if petExists then
 		self:AddToRoster('pet')
 		
 		if groupType ~= "raid" then
@@ -674,6 +676,13 @@ function NP:UpdateRoster()
 	if groupType == 'party' then
 		self:AddToRoster('player')
 	end
+	
+	local _, instanceType = IsInInstance()
+	if (inGroup or petExists) and instanceType ~= 'pvp' and instanceType ~= 'arena' then
+		NP.displayLooseMobs = true
+	else
+		NP.displayLooseMobs = nil
+	end	
 end
 
 

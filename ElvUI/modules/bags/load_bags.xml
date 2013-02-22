@@ -2,5 +2,4 @@
 	<Script file='bags.lua'/>
 	<Script file='bagbar.lua'/>
 	<Script file='sort.lua'/>
-	<Script file='options.lua'/>
 </Ui>

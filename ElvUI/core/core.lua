@@ -657,7 +657,6 @@ function E:Initialize()
 	self:CheckRole()
 	self:UIScale('PLAYER_LOGIN');
 
-	self:LoadConfig(); --Load In-Game Config
 	self:LoadCommands(); --Load Commands
 	self:InitializeModules(); --Load Modules	
 	self:LoadMovers(); --Load Movers

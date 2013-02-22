@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Import: Engine, Locales, ProfileDB, GlobalDB
+local E, L, V, P, G, _ = unpack(ElvUI); --Import: Engine, Locales, ProfileDB, GlobalDB
 local A = E:GetModule('Auras')
 
 E.Options.args.auras = {

@@ -761,6 +761,7 @@ L['You can use the /resetui command to reset all of your movers. You can also us
 L['ABOVE_THREAT_FORMAT'] = '%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]'
 
 --UnitFrames
+L["Count Font Size"] = true;
 L['Time Remaining'] = true;
 L['Time Remaining Reverse'] = true;
 L['Duration'] = true;
@@ -883,9 +884,7 @@ L["Display a spark texture at the end of the castbar statusbar to help show the 
 L['Display Frames'] = true;
 L['Display icon on arena frame indicating the units talent specialization or the units faction if inside a battleground.'] = true;
 L["Display Player"] = true;
-L["Display Target"] = true;
 L["Display the rested icon on the unitframe."] = true;
-L["Display the target of the cast on the castbar."] = true;
 L["Display tick marks on the castbar for channelled spells. This will adjust automatically for spells like Drain Soul and add additional ticks based on haste."] = true;
 L["Down"] = true;
 L['Enemy Aura Type'] = true;

@@ -1,6 +1,15 @@
-﻿local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+﻿local E, L, V, P, G, _ = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 
 local tsort, tinsert = table.sort, table.insert
+local DEFAULT_WIDTH = 890;
+local DEFAULT_HEIGHT = 651;
+local AC = LibStub("AceConfig-3.0")
+local ACD = LibStub("AceConfigDialog-3.0")
+local ACR = LibStub("AceConfigRegistry-3.0")
+local LibDualSpec = LibStub('LibDualSpec-1.0')
+
+AC:RegisterOptionsTable("ElvUI", E.Options)
+ACD:SetDefaultSize("ElvUI", DEFAULT_WIDTH, DEFAULT_HEIGHT)	
 
 E.Options.args = {
 	ElvUI_Header = {
@@ -693,4 +702,62 @@ E.Options.args.credits = {
 			name = L['ELVUI_CREDITS']..'\n\n'..L['Coding:']..DEVELOPER_STRING..'\n\n'..L['Testing:']..TESTER_STRING..'\n\n'..L['Donations:']..DONATOR_STRING,
 		},
 	},
+}
+
+
+--Create Profiles Table
+E.Options.args.profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(E.data);
+AC:RegisterOptionsTable("ElvProfiles", E.Options.args.profiles)
+E.Options.args.profiles.order = -10
+
+LibDualSpec:EnhanceDatabase(E.data, "ElvUI")
+LibDualSpec:EnhanceOptions(E.Options.args.profiles, E.data)
+
+if not E.Options.args.profiles.plugins then
+	E.Options.args.profiles.plugins = {}
+end
+
+E.Options.args.profiles.plugins["ElvUI"] = {
+	desc = {
+		name = L["This feature will allow you to transfer, settings to other characters."],
+		type = 'description',
+		order = 40.4,
+	},
+	distributeProfile = {
+		name = L["Share Current Profile"],
+		desc = L["Sends your current profile to your target."],
+		type = 'execute',
+		order = 40.5,
+		func = function()
+			if not UnitExists("target") or not UnitIsPlayer("target") or not UnitIsFriend("player", "target") or UnitIsUnit("player", "target") then
+				E:Print(L["You must be targetting a player."])
+				return
+			end
+			local name, server = UnitName("target")
+			if name and (not server or server == "") then
+				E:GetModule("Distributor"):Distribute(name)
+			elseif server then
+				E:GetModule("Distributor"):Distribute(name, true)
+			end
+		end,
+	},
+	distributeGlobal = {
+		name = L["Share Filters"],
+		desc = L["Sends your filter settings to your target."],
+		type = 'execute',
+		order = 40.6,
+		func = function()
+			if not UnitExists("target") or not UnitIsPlayer("target") or not UnitIsFriend("player", "target") or UnitIsUnit("player", "target") then
+				E:Print(L["You must be targetting a player."])
+				return
+			end
+			
+			local name, server = UnitName("target")
+			if name and (not server or server == "") then
+				E:GetModule("Distributor"):Distribute(name, false, true)
+			elseif server then
+				E:GetModule("Distributor"):Distribute(name, true, true)
+			end
+		end,
+	},		
 }

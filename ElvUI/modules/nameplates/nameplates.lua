@@ -667,7 +667,7 @@ function NP:UpdateThreat(frame)
 					frame.threatStatus = "BAD"
 				else
 					if not frame.customColor then
-						if (not frame.isBeingTanked) and self.db.offtank then
+						if (not frame.isBeingTanked) and self.db.offtank and self.displayLooseMobs then
 							frame.hp:SetStatusBarColor(offtank.r, offtank.g, offtank.b)
 							frame.hp.hpbg:SetTexture(offtank.r, offtank.g, offtank.b, bgMult)						
 						else					
