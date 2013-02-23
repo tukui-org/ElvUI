@@ -37,6 +37,7 @@ P['general'] = {
 		['height'] = 10,
 		['textFormat'] = 'NONE',
 		['textSize'] = 11,
+		['mouseover'] = true,
 	},
 	['reputation'] = {
 		['enable'] = true,
@@ -44,6 +45,7 @@ P['general'] = {
 		['height'] = 10,
 		['textFormat'] = 'NONE',
 		['textSize'] = 11,
+		['mouseover'] = true,
 	},
 	['threat'] = {
 		['enable'] = true,
