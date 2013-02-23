@@ -1845,7 +1845,13 @@ E.Options.args.unitframe.args.target = {
 			name = L['Heal Prediction'],
 			desc = L['Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals.'],
 			type = 'toggle',
-		},		
+		},	
+		middleClickFocus = {
+			order = 8,
+			name = L['Middle Click - Set Focus'],
+			desc = L['Middle clicking the unit frame will cause your focus to match the unit.'],
+			type = 'toggle',
+		},
 		hideonnpc = {
 			type = 'toggle',
 			order = 10,

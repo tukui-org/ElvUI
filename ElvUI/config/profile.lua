@@ -422,6 +422,7 @@ P['unitframe'] = {
 			['rangeCheck'] = true,
 			['healPrediction'] = true,
 			['smartAuraDisplay'] = 'DISABLED',
+			['middleClickFocus'] = true,
 			['health'] = {
 				['text_format'] = '[healthcolor][health:current-percent]',
 				['position'] = 'RIGHT',

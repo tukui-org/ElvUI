@@ -761,6 +761,8 @@ L['You can use the /resetui command to reset all of your movers. You can also us
 L['ABOVE_THREAT_FORMAT'] = '%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]'
 
 --UnitFrames
+L['Middle Click - Set Focus'] = true;
+L['Middle clicking the unit frame will cause your focus to match the unit.'] = true;
 L["Count Font Size"] = true;
 L['Time Remaining'] = true;
 L['Time Remaining Reverse'] = true;

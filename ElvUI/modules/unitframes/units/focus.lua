@@ -62,7 +62,6 @@ function UF:Update_FocusFrame(frame, db)
 		end
 	end
 	
-	
 	--Health
 	do
 		local health = frame.Health
