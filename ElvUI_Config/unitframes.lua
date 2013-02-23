@@ -395,16 +395,6 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 				name = L['yOffset'],
 				min = -60, max = 60, step = 1,
 			},					
-			attachTo = {
-				type = 'select',
-				order = 7,
-				name = L['Attach To'],
-				desc = L['What to attach the buff anchor frame to.'],
-				values = {
-					['FRAME'] = L['Frame'],
-					['DEBUFFS'] = L['Debuffs'],
-				},
-			},
 			anchorPoint = {
 				type = 'select',
 				order = 8,
@@ -433,6 +423,30 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 			},		
 		},
 	}
+	
+	if auraType == "buffs" then
+		config.args.attachTo = {
+			type = 'select',
+			order = 7,
+			name = L['Attach To'],
+			desc = L['What to attach the buff anchor frame to.'],
+			values = {
+				['FRAME'] = L['Frame'],
+				['DEBUFFS'] = L['Debuffs'],
+			},
+		}	
+	else
+		config.args.attachTo = {
+			type = 'select',
+			order = 7,
+			name = L['Attach To'],
+			desc = L['What to attach the buff anchor frame to.'],
+			values = {
+				['FRAME'] = L['Frame'],
+				['BUFFS'] = L['Buffs'],
+			},
+		}		
+	end
 	
 	if isGroupFrame then
 		config.args.countFontSize = {
