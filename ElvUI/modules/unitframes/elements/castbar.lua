@@ -216,19 +216,33 @@ function UF:PostCastStart(unit, name, rank, castid)
 	end	
 	
 	local colors = ElvUF.colors
+	local r, g, b = colors.castColor[1], colors.castColor[2], colors.castColor[3]
+	if UF.db.colors.castClassColor then
+		local t
+		if UnitIsPlayer(unit) then
+			local _, class = UnitClass(unit)
+			t = ElvUF.colors.class[class]
+		elseif UnitReaction(unit, 'player') then
+			t = ElvUF.colors.reaction[UnitReaction(unit, "player")]
+		end
+			
+		if(t) then
+			r, g, b = t[1], t[2], t[3]
+		end		
+	end
+	
 	if self.interrupt and unit ~= "player" then
 		if UnitCanAttack("player", unit) then
 			self:SetStatusBarColor(colors.castNoInterrupt[1], colors.castNoInterrupt[2], colors.castNoInterrupt[3])
 		else
-			self:SetStatusBarColor(colors.castColor[1], colors.castColor[2], colors.castColor[3])			
+			self:SetStatusBarColor(r, g, b)			
 		end
 	else
-		self:SetStatusBarColor(colors.castColor[1], colors.castColor[2], colors.castColor[3])
+		self:SetStatusBarColor(r, g, b)
 	end
 
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentCastbar, self, self.bg, nil, true)
 	if self.bg:IsShown() then
-		local r,g,b = self:GetStatusBarColor()
 		self.bg:SetTexture(r * 0.25, g * 0.25, b * 0.25)
 		
 		local _, _, _, alpha = self.backdrop:GetBackdropColor()
@@ -301,15 +315,29 @@ function UF:PostCastInterruptible(unit)
 	if unit == "vehicle" or unit == "player" then return end
 	
 	local colors = ElvUF.colors
+	local r, g, b = colors.castColor[1], colors.castColor[2], colors.castColor[3]
+	if UF.db.colors.castClassColor then
+		local t
+		if UnitIsPlayer(unit) then
+			local _, class = UnitClass(unit)
+			t = ElvUF.colors.class[class]
+		elseif UnitReaction(unit, 'player') then
+			t = ElvUF.colors.reaction[UnitReaction(unit, "player")]
+		end
+			
+		if(t) then
+			r, g, b = t[1], t[2], t[3]
+		end		
+	end
+	
 	if UnitCanAttack("player", unit) then
 		self:SetStatusBarColor(colors.castNoInterrupt[1], colors.castNoInterrupt[2], colors.castNoInterrupt[3])	
 	else
-		self:SetStatusBarColor(colors.castColor[1], colors.castColor[2], colors.castColor[3])
+		self:SetStatusBarColor(r, g, b)
 	end
 	
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentCastbar, self, self.bg, nil, true)
 	if self.bg:IsShown() then
-		local r,g,b = self:GetStatusBarColor()
 		self.bg:SetTexture(r * 0.25, g * 0.25, b * 0.25)
 		
 		local _, _, _, alpha = self.backdrop:GetBackdropColor()

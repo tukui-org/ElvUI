@@ -250,6 +250,7 @@ P['unitframe'] = {
 		['transparentAurabars'] = false,
 		['castColor'] = { r = .31,g = .31,b = .31 },
 		['castNoInterrupt'] = { r = 0.78, g = 0.25, b = 0.25 },
+		['castClassColor'] = false,
 		
 		['health'] = { r = .31,g = .31,b = .31 },
 		['health_backdrop'] = { r = .8,g = .01,b = .01 },

@@ -1498,8 +1498,16 @@ E.Options.args.unitframe = {
 								UF:Update_AllFrames()
 							end,			
 							args = {
-								transparentCastbar = {
+								castClassColor = {
 									order = 0,
+									type = 'toggle',
+									name = L['Class Castbars'],
+									desc = L['Color castbars by the class or reaction type of the unit.'],
+									get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
+									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,										
+								},								
+								transparentCastbar = {
+									order = 2,
 									type = 'toggle',
 									name = L['Transparent'],
 									desc = L['Make textures transparent.'],
@@ -1507,12 +1515,12 @@ E.Options.args.unitframe = {
 									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,										
 								},								
 								castColor = {
-									order = 1,
+									order = 3,
 									name = L['Interruptable'],
 									type = 'color',
 								},	
 								castNoInterrupt = {
-									order = 2,
+									order = 4,
 									name = L['Non-Interruptable'],
 									type = 'color',
 								},								
