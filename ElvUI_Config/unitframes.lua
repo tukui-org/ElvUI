@@ -3206,9 +3206,7 @@ for i=10, 40, 15 do
 						type = 'select',
 						order = 22,
 						name = L['Threat Display Mode'],
-						values = {
-
-						},
+						values = threatValues,
 					},						
 					customText = GetOptionsTable_CustomText(UF.CreateAndUpdateHeaderGroup, 'raid'..i),
 					visibility = {
