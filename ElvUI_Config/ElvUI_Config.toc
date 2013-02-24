@@ -18,4 +18,3 @@ nameplates.lua
 skins.lua
 tooltip.lua
 unitframes.lua
-distributor.lua
