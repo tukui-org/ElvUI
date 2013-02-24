@@ -576,7 +576,7 @@ E.Options.args.actionbar = {
 					values = {
 						['NONE'] = L['None'],
 						['OUTLINE'] = 'OUTLINE',
-						['MONOCHROME'] = 'MONOCHROME',
+						['MONOCHROME'] = (not E.isMacClient) and 'MONOCHROME' or nil,
 						['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 						['THICKOUTLINE'] = 'THICKOUTLINE',
 					},

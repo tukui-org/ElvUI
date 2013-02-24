@@ -18,6 +18,7 @@ E.wowbuild = select(2, GetBuildInfo()); E.wowbuild = tonumber(E.wowbuild);
 E.resolution = GetCVar("gxResolution")
 E.screenheight = tonumber(match(E.resolution, "%d+x(%d+)"))
 E.screenwidth = tonumber(match(E.resolution, "(%d+)x+%d"))
+E.isMacClient = IsMacClient()
 
 --Tables
 E["media"] = {};
