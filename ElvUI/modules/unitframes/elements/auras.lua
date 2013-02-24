@@ -273,6 +273,11 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 			if spellList[name] and spellList[name].enable and passPlayerOnlyCheck then
 				returnValue = true
 				icon.priority = spellList[name].priority
+				
+				--bit hackish fix to this
+				if db.useFilter == 'TurtleBuffs' and (spellID == 86698 or spellID == 86669) then
+					returnValue = false
+				end
 			elseif not anotherFilterExists then
 				returnValue = false
 			end

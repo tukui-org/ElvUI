@@ -244,10 +244,15 @@ E.Options.args.general = {
 			guiInline = true,
 			args = {
 				enable = {
-					order = 1,
+					order = 0,
 					type = "toggle",
 					name = L["Enable"],
 					set = function(info, value) E.db.general.experience[ info[#info] ] = value; E:GetModule('Misc'):EnableDisable_ExperienceBar() end,
+				},
+				mouseover = {
+					order = 1,
+					type = "toggle",
+					name = L['Mouseover'],
 				},
 				width = {
 					order = 2,
@@ -290,11 +295,16 @@ E.Options.args.general = {
 			guiInline = true,
 			args = {
 				enable = {
-					order = 1,
+					order = 0,
 					type = "toggle",
 					name = L["Enable"],
 					set = function(info, value) E.db.general.reputation[ info[#info] ] = value; E:GetModule('Misc'):EnableDisable_ReputationBar() end,
 				},
+				mouseover = {
+					order = 1,
+					type = "toggle",
+					name = L['Mouseover'],
+				},				
 				width = {
 					order = 2,
 					type = "range",

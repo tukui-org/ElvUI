@@ -69,7 +69,7 @@ end
 
 function UF.SortAuraBarDurationReverse(a, b)
 	local compa, compb = a.noTime and huge or a.duration, b.noTime and huge or b.duration
-	return compa > compb
+	return compa < compb
 end
 
 function UF.SortAuraBarName(a, b)

@@ -729,6 +729,9 @@ G.unitframe.ChannelTicks = {
 	[SpellName(5143)] = 5, -- "Arcane Missiles"
 	[SpellName(10)] = 8, -- "Blizzard"
 	[SpellName(12051)] = 4, -- "Evocation"
+	
+	--Monk
+	[SpellName(115175)] = 9, -- "Smoothing Mist"
 }
 
 G.unitframe.ChannelTicksSize = {

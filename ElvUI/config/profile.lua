@@ -40,6 +40,7 @@ P['general'] = {
 		['height'] = 15,
 		['textFormat'] = 'CURMAX',
 		['textSize'] = 10,
+		['mouseover'] = true,
 	},
 	['reputation'] = {
 		['enable'] = true,
@@ -47,6 +48,7 @@ P['general'] = {
 		['height'] = 15,
 		['textFormat'] = 'CURMAX',
 		['textSize'] = 10,
+		['mouseover'] = true,
 	},
 	['threat'] = {
 		['enable'] = false,
@@ -275,6 +277,7 @@ P['unitframe'] = {
 		['transparentAurabars'] = false,
 		['castColor'] = { r = .66,g = .66,b = .66 },
 		['castNoInterrupt'] = { r = 0.78, g = 0.25, b = 0.25 },
+		['castClassColor'] = false,
 		
 		['health'] = { r = 68/255,g = 68/255,b = 68/255 },
 		['health_backdrop'] = { r = 97/255,g = 97/255,b = 97/255 },
@@ -460,6 +463,7 @@ P['unitframe'] = {
 			['rangeCheck'] = true,
 			['healPrediction'] = true,
 			['smartAuraDisplay'] = 'DISABLED',
+			['middleClickFocus'] = true,
 			['health'] = {
 				['text_format'] = '[healthcolor][health:current-percent]',
 				['position'] = 'TOPRIGHT',

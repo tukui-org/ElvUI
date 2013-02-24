@@ -403,7 +403,7 @@ function UF:UpdateAuraWatch(frame)
 		end
 	end
 	
-	unitframeFont = unitframeFont or LSM:Fetch("font", E.db['unitframe'].font)
+	local unitframeFont = LSM:Fetch("font", E.db['unitframe'].font)
 	
 	for i=1, #buffs do
 		if buffs[i].id then

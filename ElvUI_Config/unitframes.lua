@@ -395,16 +395,6 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 				name = L['yOffset'],
 				min = -60, max = 60, step = 1,
 			},					
-			attachTo = {
-				type = 'select',
-				order = 7,
-				name = L['Attach To'],
-				desc = L['What to attach the buff anchor frame to.'],
-				values = {
-					['FRAME'] = L['Frame'],
-					['DEBUFFS'] = L['Debuffs'],
-				},
-			},
 			anchorPoint = {
 				type = 'select',
 				order = 8,
@@ -433,6 +423,30 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 			},		
 		},
 	}
+	
+	if auraType == "buffs" then
+		config.args.attachTo = {
+			type = 'select',
+			order = 7,
+			name = L['Attach To'],
+			desc = L['What to attach the buff anchor frame to.'],
+			values = {
+				['FRAME'] = L['Frame'],
+				['DEBUFFS'] = L['Debuffs'],
+			},
+		}	
+	else
+		config.args.attachTo = {
+			type = 'select',
+			order = 7,
+			name = L['Attach To'],
+			desc = L['What to attach the buff anchor frame to.'],
+			values = {
+				['FRAME'] = L['Frame'],
+				['BUFFS'] = L['Buffs'],
+			},
+		}		
+	end
 	
 	if isGroupFrame then
 		config.args.countFontSize = {
@@ -1484,8 +1498,16 @@ E.Options.args.unitframe = {
 								UF:Update_AllFrames()
 							end,			
 							args = {
-								transparentCastbar = {
+								castClassColor = {
 									order = 0,
+									type = 'toggle',
+									name = L['Class Castbars'],
+									desc = L['Color castbars by the class or reaction type of the unit.'],
+									get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
+									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,										
+								},								
+								transparentCastbar = {
+									order = 2,
 									type = 'toggle',
 									name = L['Transparent'],
 									desc = L['Make textures transparent.'],
@@ -1493,12 +1515,12 @@ E.Options.args.unitframe = {
 									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,										
 								},								
 								castColor = {
-									order = 1,
+									order = 3,
 									name = L['Interruptable'],
 									type = 'color',
 								},	
 								castNoInterrupt = {
-									order = 2,
+									order = 4,
 									name = L['Non-Interruptable'],
 									type = 'color',
 								},								
@@ -1831,7 +1853,13 @@ E.Options.args.unitframe.args.target = {
 			name = L['Heal Prediction'],
 			desc = L['Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals.'],
 			type = 'toggle',
-		},		
+		},	
+		middleClickFocus = {
+			order = 8,
+			name = L['Middle Click - Set Focus'],
+			desc = L['Middle clicking the unit frame will cause your focus to match the unit.'],
+			type = 'toggle',
+		},
 		hideonnpc = {
 			type = 'toggle',
 			order = 10,
@@ -3192,9 +3220,7 @@ for i=10, 40, 15 do
 						type = 'select',
 						order = 22,
 						name = L['Threat Display Mode'],
-						values = {
-
-						},
+						values = threatValues,
 					},						
 					customText = GetOptionsTable_CustomText(UF.CreateAndUpdateHeaderGroup, 'raid'..i),
 					visibility = {

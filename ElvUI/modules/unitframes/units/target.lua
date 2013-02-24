@@ -76,6 +76,12 @@ function UF:Update_TargetFrame(frame, db)
 	frame:Size(UNIT_WIDTH, UNIT_HEIGHT)
 	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
 	
+	if db.middleClickFocus then
+		frame:SetAttribute("type3", "focus")
+	else
+		frame:SetAttribute("type3", nil)
+	end
+	
 	--Adjust some variables
 	do
 		if not USE_POWERBAR then
