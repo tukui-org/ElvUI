@@ -4,7 +4,6 @@ local S = E:GetModule('Skins')
 --if not ANonBuggyFuckingSkin then return end
 
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
-if not AceGUI then return end
 
 local function SetModifiedBackdrop(self)
 	if self.backdrop then self = self.backdrop end
@@ -91,8 +90,10 @@ local function SkinNextPrevButton(...)
 	S:HandleNextPrevButton(...)
 end
 
-
-local function SkinAce3()
+function S:SkinAce3()
+	if not AceGUI then
+		AceGUI = LibStub("AceGUI-3.0", true)
+	end
 	local oldRegisterAsWidget = AceGUI.RegisterAsWidget
 	AceGUI.RegisterAsWidget = function(self, widget)
 		if not E.private.skins.ace3.enable then
@@ -318,4 +319,6 @@ local function SkinAce3()
 	end
 end
 
-S:RegisterSkin('Ace3', SkinAce3, true)
+if not AceGUI then return end
+E.Ace3SkinLoaded = true
+S:RegisterSkin('Ace3', S.SkinAce3, true)
