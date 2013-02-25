@@ -22,7 +22,6 @@ AddOn.Options = {
 };
 
 local Locale = LibStub("AceLocale-3.0"):GetLocale(AddOnName, false);
-local ACD = LibStub("AceConfigDialog-3.0")
 
 Engine[1] = AddOn;
 Engine[2] = Locale;
@@ -94,10 +93,15 @@ end
 
 function AddOn:PLAYER_REGEN_DISABLED()
 	local err = false;
-	if ACD.OpenFrames[AddOnName] then
-		self:RegisterEvent('PLAYER_REGEN_ENABLED');
-		ACD:Close(AddOnName);
-		err = true;
+	
+	if IsAddOnLoaded("ElvUI_Config") then
+		local ACD = LibStub("AceConfigDialog-3.0")
+		
+		if ACD.OpenFrames[AddOnName] then
+			self:RegisterEvent('PLAYER_REGEN_ENABLED');
+			ACD:Close(AddOnName);
+			err = true;
+		end
 	end
 	
 	if self.CreatedMovers then
@@ -138,13 +142,19 @@ function AddOn:ToggleConfig()
 	if not IsAddOnLoaded("ElvUI_Config") then
 		local _, _, _, _, _, reason = GetAddOnInfo("ElvUI_Config")
 		if reason ~= "MISSING" and reason ~= "DISABLED" then 
-			LoadAddOn("ElvUI_Config") 
+			LoadAddOn("ElvUI_Config")
+			
+			if not self.Ace3SkinLoaded then
+				self:GetModule('Skins'):SkinAce3()
+				self.Ace3SkinLoaded = true
+			end
 		else 
 			self:Print("|cffff0000Error -- Addon 'ElvUI_Config' not found or is disabled.|r") 
 			return
-		end			
+		end
 	end
 	
+	local ACD = LibStub("AceConfigDialog-3.0")
 	local mode = 'Close'
 	if not ACD.OpenFrames[AddOnName] then
 		mode = 'Open'

@@ -1,5 +1,4 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
-local ACD = LibStub("AceConfigDialog-3.0")
 local grid
 
 local selectedValue = 'ALL'
@@ -66,8 +65,10 @@ function E:ToggleConfigMode(override, configType)
 		end
 		
 		ElvUIMoverPopupWindow:Show()
-		ACD['Close'](ACD, 'ElvUI') 
-		GameTooltip:Hide()		
+		if IsAddOnLoaded("ElvUI_Config") then
+			LibStub("AceConfigDialog-3.0"):Close("ElvUI")
+			GameTooltip:Hide()
+		end
 		E.ConfigurationMode = true
 	else
 		if ElvUIMoverPopupWindow then
@@ -281,9 +282,8 @@ function E:CreateMoverPopup()
 	_G[lock:GetName() .. "Text"]:SetText(L["Lock"])
 
 	lock:SetScript("OnClick", function(self)
-		local ACD = LibStub("AceConfigDialog-3.0")
 		E:ToggleConfigMode(true)
-		ACD['Open'](ACD, 'ElvUI') 
+		if IsAddOnLoaded("ElvUI_Config") then LibStub("AceConfigDialog-3.0"):Open('ElvUI') end
 		selectedValue = 'ALL'
 		UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, selectedValue);
 	end)

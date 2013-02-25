@@ -179,7 +179,7 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 			end				
 		end
 
-		if db.portrait.enable and not USE_PORTRAIT_OVERLAY then
+		if db.portrait.enable and not USE_PORTRAIT_OVERLAY and frame.Portrait then
 			local portrait = frame.Portrait
 			portrait.backdrop:ClearAllPoints()
 			portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT")

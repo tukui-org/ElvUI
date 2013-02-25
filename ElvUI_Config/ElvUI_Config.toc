@@ -6,6 +6,7 @@
 ## RequiredDeps: ElvUI
 ## LoadOnDemand: 1
 
+libs\load_libs.xml
 core.lua
 actionbars.lua
 auras.lua

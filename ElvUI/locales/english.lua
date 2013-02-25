@@ -11,7 +11,7 @@ L["A taint has occured that is preventing you from using your talents/glyphs. Pl
 L["This feature will allow you to transfer, settings to other characters."] = true;
 L["Share Current Profile"] = true;
 L["Sends your current profile to your target."] = true;
-L["You must be targetting a player."] = true;
+L["You must be targeting a player."] = true;
 L["Must be in group with the player if he isn't on the same server as you."] = true;
 L["Share Filters"] = true;
 L["Sends your filter settings to your target."] = true;
@@ -738,8 +738,8 @@ L["Targeted By:"] = true;
 L["Tooltip"] = true;
 L["TOOLTIP_DESC"] = "Setup options for the Tooltip."
 L["UF Hide"] = true;
-L["When in a raid group display if anyone in your raid is targetting the current tooltip unit."] = true;
-L["Who's targetting who?"] = true;
+L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."] = true;
+L["Who's targeting who?"] = true;
 
 --Tutorials
 L['A raid marker feature is available by pressing Escape -> Keybinds scroll to the bottom under ElvUI and setting a keybind for the raid marker.'] = true;
@@ -748,7 +748,7 @@ L['For technical support visit us at http://www.tukui.org.'] = true;
 L['If you accidently remove a chat frame you can always go the in-game configuration menu, press install, go to the chat portion and reset them.'] = true
 L['If you are experiencing issues with ElvUI try disabling all your addons except ElvUI, remember ElvUI is a full UI replacement addon, you cannot run two addons that do the same thing.'] = true;
 L['The buff panel to the right of minimap is a list of your consolidated buffs. You can disable it in Buffs and Debuffs options of ElvUI.'] = true;
-L['The focus unit can be set by typing /focus when you are targetting the unit you want to focus. It is recommended you make a macro to do this.'] = true;
+L['The focus unit can be set by typing /focus when you are targeting the unit you want to focus. It is recommended you make a macro to do this.'] = true;
 L['To move abilities on the actionbars by default hold shift + drag. You can change the modifier key from the actionbar options menu.'] = true;
 L['To setup which channels appear in which chat frame, right click the chat tab and go to settings.'] = true;
 L['Using the /farmmode <size> command will spawn a larger minimap on your screen that can be moved around, very useful when farming.'] = true;
