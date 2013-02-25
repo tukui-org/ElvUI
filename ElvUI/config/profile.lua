@@ -443,17 +443,6 @@ P['unitframe'] = {
 				['enable'] = true,
 				['width'] = 10,
 			},
-			['raidicon'] = {
-				['enable'] = true,
-				['size'] = 18,
-				['attachTo'] = 'TOP',
-				['xOffset'] = 0,
-				['yOffset'] = 10,
-			},
-			['vengeance'] = {
-				['enable'] = false,
-				['width'] = 10,
-			},
 		},	
 		['target'] = {
 			['enable'] = true,
