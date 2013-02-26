@@ -47,7 +47,7 @@ UF['classMaxResourceBar'] = {
 	['WARLOCK'] = 4,
 	['PRIEST'] = 3,
 	['MONK'] = 5,
-	['MAGE'] = 6,
+	['MAGE'] = 4,
 }
 
 UF['headerGroupBy'] = {
