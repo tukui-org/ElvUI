@@ -246,6 +246,8 @@ P['unitframe'] = {
 		['customhealthbackdrop'] = false,
 		['classbackdrop'] = false,
 		['auraBarByType'] = true,
+		['auraBarTurtle'] = true,
+		['auraBarTurtleColor'] = {r = 143/255, g = 101/255, b = 158/255},
 		['transparentHealth'] = false,
 		['transparentPower'] = false,
 		['transparentCastbar'] = false,
@@ -253,6 +255,7 @@ P['unitframe'] = {
 		['castColor'] = { r = .31,g = .31,b = .31 },
 		['castNoInterrupt'] = { r = 0.78, g = 0.25, b = 0.25 },
 		['castClassColor'] = false,
+		
 		
 		['health'] = { r = .31,g = .31,b = .31 },
 		['health_backdrop'] = { r = .8,g = .01,b = .01 },

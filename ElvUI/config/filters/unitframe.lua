@@ -183,9 +183,7 @@ G.unitframe.aurafilters['TurtleBuffs'] = {
 			[SpellName(30823)] = Defaults(), -- Shamanistic Rage
 			[SpellName(108271)] = Defaults(), -- Astral Shift
 		--Paladin
-			[SpellName(1044)] = Defaults(), -- Hand of Freedom
 			[SpellName(1022)] = Defaults(5), -- Hand of Protection
-			[SpellName(1038)] = Defaults(), -- Hand of Salvation
 			[SpellName(6940)] = Defaults(), -- Hand of Sacrifice
 			[SpellName(114039)] = Defaults(), -- Hand of Purity
 			[SpellName(31821)] = Defaults(3), -- Devotion Aura
@@ -416,6 +414,10 @@ G.unitframe.aurafilters['Whitelist'] = {
 		[SpellName(32182)] = Defaults(), -- Heroism	
 		[SpellName(80353)] = Defaults(), --Time Warp
 		[SpellName(90355)] = Defaults(), --Ancient Hysteria		
+		[SpellName(47788)] = Defaults(), --Guardian Spirit
+		[SpellName(33206)] = Defaults(), --Pain Suppression
+		[SpellName(116849)] = Defaults(), --Life Cocoon
+		[SpellName(22812)] = Defaults(), --Barkskin
 	},
 }
 
