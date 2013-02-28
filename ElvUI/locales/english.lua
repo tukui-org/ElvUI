@@ -763,7 +763,7 @@ L['ABOVE_THREAT_FORMAT'] = '%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]'
 
 --UnitFrames
 L["Target On Mouse-Down"] = true;
-L["Target units on mouse down rather than mouse up. |cffFF0000Warning: If you are using the addon 'Clique' you may have to adjust your clique settings when changing this."] = true;
+L["Target units on mouse down rather than mouse up. \n\n|cffFF0000Warning: If you are using the addon 'Clique' you may have to adjust your clique settings when changing this."] = true;
 L['Turtle Color'] = true;
 L['Color Turtle Buffs'] = true;
 L["Color all buffs that reduce the unit's incoming damage."] = true;

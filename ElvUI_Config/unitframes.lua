@@ -1244,7 +1244,7 @@ E.Options.args.unitframe = {
 						targetOnMouseDown = {
 							order = 5,
 							name = L["Target On Mouse-Down"],
-							desc = L["Target units on mouse down rather than mouse up. |cffFF0000Warning: If you are using the addon 'Clique' you may have to adjust your clique settings when changing this."],
+							desc = L["Target units on mouse down rather than mouse up. \n\n|cffFF0000Warning: If you are using the addon 'Clique' you may have to adjust your clique settings when changing this."],
 							type = "toggle",
 						},
 					},
