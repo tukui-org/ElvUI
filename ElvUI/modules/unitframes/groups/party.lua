@@ -6,7 +6,6 @@ local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 local tinsert = table.insert
 function UF:Construct_PartyFrames(unitGroup)
-	self:RegisterForClicks("AnyUp")
 	self:SetScript('OnEnter', UnitFrame_OnEnter)
 	self:SetScript('OnLeave', UnitFrame_OnLeave)	
 
@@ -156,7 +155,7 @@ function UF:Update_PartyFrames(frame, db)
 	
 	frame.db = db
 	frame.colors = ElvUF.colors
-
+	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	--Adjust some variables
 	do
 		if not USE_POWERBAR then

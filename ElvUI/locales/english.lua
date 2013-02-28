@@ -762,6 +762,11 @@ L['You can use the /resetui command to reset all of your movers. You can also us
 L['ABOVE_THREAT_FORMAT'] = '%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]'
 
 --UnitFrames
+L["Target On Mouse-Down"] = true;
+L["Target units on mouse down rather than mouse up. \n\n|cffFF0000Warning: If you are using the addon 'Clique' you may have to adjust your clique settings when changing this."] = true;
+L['Turtle Color'] = true;
+L['Color Turtle Buffs'] = true;
+L["Color all buffs that reduce the unit's incoming damage."] = true;
 L['Class Castbars'] = true;
 L['Color castbars by the class or reaction type of the unit.'] = true;
 L['Middle Click - Set Focus'] = true;

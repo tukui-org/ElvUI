@@ -230,12 +230,21 @@ local function Update(self, event, unit)
 	if unit ~= self.unit then return end
 	local _name, _icon, _count, _dtype, _duration, _endTime, _spellId
 	local _priority, priority = 0, 0
+	
+	--store if the unit its charmed, mind controlled units (Imperial Vizier Zor'lok: Convert)
+	local isCharmed = UnitIsCharmed(unit)		
+	
+	--store if we cand attack that unit, if its so the unit its hostile (Amber-Shaper Un'sok: Reshape Life)
+	local canAttack = UnitCanAttack("player", unit)
+	
 	for i = 1, 40 do
 		local name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellId, canApplyAura, isBossDebuff = UnitAura(unit, i, 'HARMFUL')
 		if (not name) then break end
-
-		if addon.ShowDispelableDebuff and debuffType then
-			if addon.FilterDispellableDebuff then
+		
+		--we coudln't dispell if the unit its charmed, or its not friendly
+		if addon.ShowDispelableDebuff and debuffType and (not isCharmed) and (not canAttack) then
+		
+			if addon.FilterDispellableDebuff then						
 				DispellPriority[debuffType] = (DispellPriority[debuffType] or 0) + addon.priority --Make Dispell buffs on top of Boss Debuffs
 				priority = DispellFilter[debuffType] and DispellPriority[debuffType] or 0
 				if priority == 0 then
@@ -243,7 +252,7 @@ local function Update(self, event, unit)
 				end
 			else
 				priority = DispellPriority[debuffType] or 0
-			end
+			end			
 
 			if priority > _priority then
 				_priority, _name, _icon, _count, _dtype, _duration, _endTime, _spellId = priority, name, icon, count, debuffType, duration, expirationTime, spellId
@@ -266,6 +275,7 @@ local function Update(self, event, unit)
 		['Poison']	= 1,
 	}	
 end
+
 
 local function Enable(self)
 	if self.RaidDebuffs then

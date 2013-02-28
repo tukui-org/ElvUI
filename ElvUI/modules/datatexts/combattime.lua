@@ -10,12 +10,8 @@ local startTime = 0
 local floor = math.floor
 local function OnUpdate(self)
 	timer = GetTime() - startTime
-	
-	local dec = (timer - floor(timer)) * 100
-	local min = floor(timer/60)
-	local sec = timer % 60	
-	
-	self.text:SetFormattedText(displayNumberString, L["Combat Time"], format("%02d:%02d:%02d", min, sec, dec))
+
+	self.text:SetFormattedText(displayNumberString, L["Combat Time"], format("%02d:%02d:%02d", floor(timer/60), timer % 60, (timer - floor(timer)) * 100))
 end
 
 local function OnEvent(self, event, unit)

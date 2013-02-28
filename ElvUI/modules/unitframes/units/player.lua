@@ -202,7 +202,7 @@ function UF:Update_PlayerFrame(frame, db)
 		frame.Portrait.backdrop:Hide()
 	end
 	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
-	
+	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	local BORDER = E.Border
 	local SPACING = E.Spacing
 	local SHADOW_SPACING = E.PixelMode and 3 or 4
@@ -769,10 +769,11 @@ function UF:Update_PlayerFrame(frame, db)
 				
 			bars:Width(CLASSBAR_WIDTH)
 			bars:Height(CLASSBAR_HEIGHT - (E.PixelMode and 1 or 4))
-
-			for i = 1, UF['classMaxResourceBar'][E.myclass] do
+			
+			local maxBars = UF['classMaxResourceBar'][E.myclass]
+			for i = 1, maxBars do
 				bars[i]:SetHeight(bars:GetHeight())	
-				bars[i]:SetWidth((bars:GetWidth() - (E.PixelMode and 5 or 2))/UF['classMaxResourceBar'][E.myclass])	
+				bars[i]:SetWidth((bars:GetWidth() - (maxBars - 1)) / maxBars)
 
 				bars[i]:GetStatusBarTexture():SetHorizTile(false)
 				bars[i]:ClearAllPoints()

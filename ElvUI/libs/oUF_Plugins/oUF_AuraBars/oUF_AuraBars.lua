@@ -209,6 +209,7 @@ local function Update(self, event, unit)
 		if (auraBars.filter or DefaultFilter)(self, unit, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID) then
 			lastAuraIndex = lastAuraIndex + 1
 			auras[lastAuraIndex] = {}
+			auras[lastAuraIndex].spellID = spellID
 			auras[lastAuraIndex].name = name
 			auras[lastAuraIndex].rank = rank
 			auras[lastAuraIndex].icon = icon

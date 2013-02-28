@@ -46,7 +46,7 @@ function UF:Update_FocusFrame(frame, db)
 	local POWERBAR_WIDTH = db.width - (BORDER*2)
 	
 	local unit = self.unit
-	
+	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	frame.colors = ElvUF.colors
 	frame:Size(UNIT_WIDTH, UNIT_HEIGHT)
 	_G[frame:GetName()..'Mover']:Size(frame:GetSize())

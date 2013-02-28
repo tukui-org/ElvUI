@@ -1241,6 +1241,12 @@ E.Options.args.unitframe = {
 							type = 'toggle',
 							set = function(info, value) E.db.unitframe[ info[#info] ] = value; UF:UpdateAllHeaders() end
 						},
+						targetOnMouseDown = {
+							order = 5,
+							name = L["Target On Mouse-Down"],
+							desc = L["Target units on mouse down rather than mouse up. \n\n|cffFF0000Warning: If you are using the addon 'Clique' you may have to adjust your clique settings when changing this."],
+							type = "toggle",
+						},
 					},
 				},
 				barGroup = {
@@ -1546,6 +1552,12 @@ E.Options.args.unitframe = {
 									desc = L['Color aurabar debuffs by type.'],
 									type = 'toggle',
 								},
+								auraBarTurtle = {
+									order = 2,
+									name = L['Color Turtle Buffs'],
+									desc = L["Color all buffs that reduce the unit's incoming damage."],
+									type = 'toggle',
+								},								
 								BUFFS = {
 									order = 10,
 									name = L['Buffs'],
@@ -1576,6 +1588,21 @@ E.Options.args.unitframe = {
 										UF:Update_AllFrames()
 									end,										
 								},
+								auraBarTurtleColor = {
+									order = 12,
+									name = L['Turtle Color'],
+									type = 'color',
+									get = function(info)
+										local t = E.db.unitframe.colors.auraBarTurtleColor
+										return t.r, t.g, t.b, t.a
+									end,
+									set = function(info, r, g, b)
+										E.db.general[ info[#info] ] = {}
+										local t = E.db.unitframe.colors.auraBarTurtleColor
+										t.r, t.g, t.b = r, g, b
+										UF:Update_AllFrames()
+									end,	
+								},								
 							},
 						},							
 					},

@@ -6,7 +6,6 @@ local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
 function UF:Construct_AssistFrames(unitGroup)
-	self:RegisterForClicks("AnyUp")
 	self:SetScript('OnEnter', UnitFrame_OnEnter)
 	self:SetScript('OnLeave', UnitFrame_OnLeave)	
 	
@@ -69,7 +68,7 @@ function UF:Update_AssistFrames(frame, db)
 	local SHADOW_SPACING = E.PixelMode and 3 or 4
 	frame.colors = ElvUF.colors
 	frame.Range.outsideAlpha = E.db.unitframe.OORAlpha
-
+	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	if frame.isChild and frame.originalParent then
 		local childDB = db.targetsGroup
 		frame.db = db.targetsGroup

@@ -163,13 +163,21 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 	return returnValue	
 end
 
+local GOTAK_ID = 86659
+local GOTAK = GetSpellInfo(GOTAK_ID)
 function UF:ColorizeAuraBars(event, unit)
 	local bars = self.bars
 	for index = 1, #bars do
 		local frame = bars[index]
 		if not frame:IsVisible() then break end
+		local spellName = frame.statusBar.aura.name
+		local spellID = frame.statusBar.aura.spellID
+		local colors = E.global.unitframe.AuraBarColors[spellName]
 
-		local colors = E.global.unitframe.AuraBarColors[frame.statusBar.aura.name]
+		if E.db.unitframe.colors.auraBarTurtle and E.global.unitframe.aurafilters.TurtleBuffs.spells[spellName] and not colors and (spellName ~= GOTAK or (spellName == GOTAK and frame.statusBar.aura.spellID == GOTAK_ID)) then
+			colors = E.db.unitframe.colors.auraBarTurtleColor
+		end
+		
 		if colors then
 			frame.statusBar:SetStatusBarColor(colors.r, colors.g, colors.b)
 			frame.statusBar.bg:SetTexture(colors.r * 0.25, colors.g * 0.25, colors.b * 0.25)
