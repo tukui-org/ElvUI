@@ -1241,6 +1241,12 @@ E.Options.args.unitframe = {
 							type = 'toggle',
 							set = function(info, value) E.db.unitframe[ info[#info] ] = value; UF:UpdateAllHeaders() end
 						},
+						targetOnMouseDown = {
+							order = 5,
+							name = L["Target On Mouse-Down"],
+							desc = L["Target units on mouse down rather than mouse up. |cffFF0000Warning: If you are using the addon 'Clique' you may have to adjust your clique settings when changing this."],
+							type = "toggle",
+						},
 					},
 				},
 				barGroup = {

@@ -7,7 +7,6 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 local tinsert = table.insert
 for i=10, 40, 15 do
 	UF['Construct_Raid'..i..'Frames'] = function (self, unitGroup)
-		self:RegisterForClicks("AnyUp")
 		self:SetScript('OnEnter', UnitFrame_OnEnter)
 		self:SetScript('OnLeave', UnitFrame_OnLeave)	
 		
@@ -151,6 +150,8 @@ for i=10, 40, 15 do
 		
 		frame.db = db
 		frame.colors = ElvUF.colors
+		frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
+		
 		if not InCombatLockdown() then
 			frame:Size(UNIT_WIDTH, UNIT_HEIGHT)
 		end

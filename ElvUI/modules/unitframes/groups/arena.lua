@@ -75,7 +75,7 @@ function UF:Update_ArenaFrames(frame, db)
 	
 	frame.colors = ElvUF.colors
 	frame:Size(UNIT_WIDTH, UNIT_HEIGHT)
-	
+	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	--Adjust some variables
 	do
 		if not USE_POWERBAR then

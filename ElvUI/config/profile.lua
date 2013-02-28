@@ -238,7 +238,8 @@ P['unitframe'] = {
 	['OORAlpha'] = 0.35,
 	['debuffHighlighting'] = true,
 	["smartRaidFilter"] = true,
-
+	['targetOnMouseDown'] = false,
+	
 	['colors'] = {
 		['healthclass'] = false,
 		['powerclass'] = false,

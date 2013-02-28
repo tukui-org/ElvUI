@@ -39,7 +39,7 @@ function UF:Update_BossFrames(frame, db)
 		frame.Portrait.backdrop:Hide()
 	end
 	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
-	
+	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	local BORDER = E.Border;
 	local SPACING = E.Spacing;
 	local INDEX = frame.index

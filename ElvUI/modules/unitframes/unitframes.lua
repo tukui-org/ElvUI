@@ -74,7 +74,6 @@ local min = math.min
 local tremove, tinsert = table.remove, table.insert
 
 function UF:Construct_UF(frame, unit)
-	frame:RegisterForClicks("AnyUp")
 	frame:SetScript('OnEnter', UnitFrame_OnEnter)
 	frame:SetScript('OnLeave', UnitFrame_OnLeave)	
 	
