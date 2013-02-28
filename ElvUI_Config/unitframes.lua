@@ -782,6 +782,20 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 				name = L['Position'],
 				values = positionValues,
 			},
+			xOffset = {
+				order = 2,
+				type = 'range',
+				name = L['xOffset'],
+				desc = L['Offset position for text.'],
+				min = -300, max = 300, step = 1,
+			},		
+			yOffset = {
+				order = 3,
+				type = 'range',
+				name = L['yOffset'],
+				desc = L['Offset position for text.'],
+				min = -300, max = 300, step = 1,
+			},				
 			text_format = {
 				order = 100,
 				name = L['Text Format'],
@@ -916,10 +930,24 @@ local function GetOptionsTable_Name(updateFunc, groupName, numUnits)
 		args = {
 			position = {
 				type = 'select',
-				order = 2,
+				order = 1,
 				name = L['Position'],
 				values = positionValues,
 			},	
+			xOffset = {
+				order = 2,
+				type = 'range',
+				name = L['xOffset'],
+				desc = L['Offset position for text.'],
+				min = -300, max = 300, step = 1,
+			},		
+			yOffset = {
+				order = 3,
+				type = 'range',
+				name = L['yOffset'],
+				desc = L['Offset position for text.'],
+				min = -300, max = 300, step = 1,
+			},				
 			text_format = {
 				order = 100,
 				name = L['Text Format'],
@@ -993,7 +1021,21 @@ local function GetOptionsTable_Power(updateFunc, groupName, numUnits)
 				type = 'toggle',
 				order = 1,
 				name = L['Enable'],
-			},			
+			},		
+			xOffset = {
+				order = 2,
+				type = 'range',
+				name = L['xOffset'],
+				desc = L['Offset position for text.'],
+				min = -300, max = 300, step = 1,
+			},		
+			yOffset = {
+				order = 3,
+				type = 'range',
+				name = L['yOffset'],
+				desc = L['Offset position for text.'],
+				min = -300, max = 300, step = 1,
+			},				
 			text_format = {
 				order = 100,
 				name = L['Text Format'],

@@ -762,6 +762,7 @@ L['You can use the /resetui command to reset all of your movers. You can also us
 L['ABOVE_THREAT_FORMAT'] = '%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]'
 
 --UnitFrames
+L['Offset position for text.'] = true;
 L['Inset'] = true;
 L["Target On Mouse-Down"] = true;
 L["Target units on mouse down rather than mouse up. \n\n|cffFF0000Warning: If you are using the addon 'Clique' you may have to adjust your clique settings when changing this."] = true;

@@ -182,7 +182,7 @@ for i=10, 40, 15 do
 			--Position this even if disabled because resurrection icon depends on the position
 			local x, y = self:GetPositionOffset(db.health.position)
 			health.value:ClearAllPoints()
-			health.value:Point(db.health.position, health, db.health.position, x, y)
+			health.value:Point(db.health.position, health, db.health.position, x + db.health.xOffset, y + db.health.yOffset)
 			frame:Tag(health.value, db.health.text_format)
 			
 			--Colors
@@ -230,7 +230,7 @@ for i=10, 40, 15 do
 				--Text
 				local x, y = self:GetPositionOffset(db.power.position)
 				power.value:ClearAllPoints()
-				power.value:Point(db.power.position, frame.Health, db.power.position, x, y)		
+				power.value:Point(db.power.position, frame.Health, db.power.position, x + db.power.xOffset, y + db.power.yOffset)		
 				frame:Tag(power.value, db.power.text_format)
 				
 				--Colors
