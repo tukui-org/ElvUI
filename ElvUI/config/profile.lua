@@ -226,6 +226,7 @@ P['tooltip'] = {
 	['talentSpec'] = true,
 	['count'] = true,
 	['spellid'] = true,
+	['style'] = 'none',
 }
 
 --UnitFrame
