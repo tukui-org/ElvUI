@@ -307,12 +307,12 @@ local function UpdateFilterGroup()
 				args = {
 					enabled = {
 						name = L['Enable'],
-						order = 1,
+						order = 0,
 						type = 'toggle',
 					},
 					point = {
 						name = L['Anchor Point'],
-						order = 2,
+						order = 1,
 						type = 'select',
 						values = {
 							['TOPLEFT'] = 'TOPLEFT',
@@ -325,6 +325,18 @@ local function UpdateFilterGroup()
 							['BOTTOM'] = 'BOTTOM',
 						}
 					},
+					xOffset = {
+						order = 2,
+						type = 'range',
+						name = L['xOffset'],
+						min = -300, max = 300, step = 1,
+					},		
+					yOffset = {
+						order = 2,
+						type = 'range',
+						name = L['yOffset'],
+						min = -300, max = 300, step = 1,
+					},						
 					style = {
 						name = L['Style'],
 						order = 3,
@@ -514,12 +526,12 @@ local function UpdateFilterGroup()
 				args = {
 					enabled = {
 						name = L['Enable'],
-						order = 1,
+						order = 0,
 						type = 'toggle',
 					},
 					point = {
 						name = L['Anchor Point'],
-						order = 2,
+						order = 1,
 						type = 'select',
 						values = {
 							['TOPLEFT'] = 'TOPLEFT',
@@ -532,6 +544,18 @@ local function UpdateFilterGroup()
 							['BOTTOM'] = 'BOTTOM',
 						}
 					},
+					xOffset = {
+						order = 2,
+						type = 'range',
+						name = L['xOffset'],
+						min = -300, max = 300, step = 1,
+					},		
+					yOffset = {
+						order = 2,
+						type = 'range',
+						name = L['yOffset'],
+						min = -300, max = 300, step = 1,
+					},						
 					style = {
 						name = L['Style'],
 						order = 3,
