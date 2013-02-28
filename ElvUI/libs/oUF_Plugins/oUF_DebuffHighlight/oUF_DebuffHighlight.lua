@@ -13,6 +13,14 @@ local CanDispel = {
 	DRUID = { Magic = false, Curse = true, Poison = true },
 	MONK = { Magic = false, Poison = true, Disease = true }
 }
+
+local blackList = {
+	[GetSpellInfo(136184)] = true, --Thick Bones
+	[GetSpellInfo(136186)] = true, --Clear mind
+	[GetSpellInfo(136182)] = true, --Improved Synapses
+	[GetSpellInfo(136180)] = true, --Keen Eyesight
+}
+
 local dispellist = CanDispel[playerClass] or {}
 local origColors = {}
 local origBorderColors = {}
@@ -22,9 +30,9 @@ local function GetDebuffType(unit, filter)
 	if not unit or not UnitCanAssist("player", unit) then return nil end
 	local i = 1
 	while true do
-		local _, _, texture, _, debufftype = UnitAura(unit, i, "HARMFUL")
+		local name, _, texture, _, debufftype = UnitAura(unit, i, "HARMFUL")
 		if not texture then break end
-		if debufftype and not filter or (filter and dispellist[debufftype]) then
+		if debufftype and (not filter or (filter and dispellist[debufftype])) and not blackList[name] then
 			return debufftype, texture
 		end
 		i = i + 1
