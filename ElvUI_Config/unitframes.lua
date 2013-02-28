@@ -3,12 +3,13 @@ local UF = E:GetModule('UnitFrames');
 local _, ns = ...
 local ElvUF = ns.oUF
 
-UF.FillValues = {
+local fillValues = {
 	['fill'] = L['Filled'],
 	['spaced'] = L['Spaced'],
+	['inset'] = L['Inset']
 };
 
-UF.PositionValues = {
+local positionValues = {
 	TOPLEFT = 'TOPLEFT',
 	LEFT = 'LEFT',
 	BOTTOMLEFT = 'BOTTOMLEFT',
@@ -400,7 +401,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 				order = 8,
 				name = L['Anchor Point'],
 				desc = L['What point to anchor to the frame you set to attach to.'],
-				values = UF.PositionValues,				
+				values = positionValues,				
 			},
 			fontSize = {
 				order = 9,
@@ -779,7 +780,7 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 				type = 'select',
 				order = 1,
 				name = L['Position'],
-				values = UF.PositionValues,
+				values = positionValues,
 			},
 			text_format = {
 				order = 100,
@@ -917,7 +918,7 @@ local function GetOptionsTable_Name(updateFunc, groupName, numUnits)
 				type = 'select',
 				order = 2,
 				name = L['Position'],
-				values = UF.PositionValues,
+				values = positionValues,
 			},	
 			text_format = {
 				order = 100,
@@ -1003,8 +1004,8 @@ local function GetOptionsTable_Power(updateFunc, groupName, numUnits)
 			width = {
 				type = 'select',
 				order = 4,
-				name = L['Width'],
-				values = UF.FillValues,
+				name = L['Style'],
+				values = fillValues,
 			},
 			height = {
 				type = 'range',
@@ -1023,7 +1024,7 @@ local function GetOptionsTable_Power(updateFunc, groupName, numUnits)
 				type = 'select',
 				order = 8,
 				name = L['Position'],
-				values = UF.PositionValues,
+				values = positionValues,
 			},		
 		},
 	}
@@ -1048,7 +1049,7 @@ local function GetOptionsTable_RaidIcon(updateFunc, groupName, numUnits)
 				type = 'select',
 				order = 2,
 				name = L['Position'],
-				values = UF.PositionValues,
+				values = positionValues,
 			},
 			size = {
 				type = 'range',
@@ -1756,7 +1757,10 @@ E.Options.args.unitframe.args.player = {
 					type = 'select',
 					order = 3,
 					name = L['Fill'],
-					values = UF.FillValues,
+					values = {
+						['fill'] = L['Filled'],
+						['spaced'] = L['Spaced'],
+					},
 				},				
 			},
 		},		
@@ -1771,7 +1775,7 @@ E.Options.args.unitframe.args.player = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
-					values = UF.PositionValues,
+					values = positionValues,
 				},	
 				text_format = {
 					order = 100,
@@ -1934,7 +1938,7 @@ E.Options.args.unitframe.args.target = {
 					type = 'select',
 					order = 3,
 					name = L['Fill'],
-					values = UF.FillValues,
+					values = fillValues,
 				},				
 			},
 		},	
@@ -2923,7 +2927,7 @@ E.Options.args.unitframe.args.party = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
-					values = UF.PositionValues,
+					values = positionValues,
 				},							
 			},
 		},
@@ -3308,7 +3312,7 @@ for i=10, 40, 15 do
 						type = 'select',
 						order = 2,
 						name = L['Position'],
-						values = UF.PositionValues,
+						values = positionValues,
 					},							
 				},
 			},	

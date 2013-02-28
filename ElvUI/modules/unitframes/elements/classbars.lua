@@ -127,7 +127,6 @@ function UF:UpdateHarmony()
 	local PORTRAIT_WIDTH = db.portrait.width
 	local POWERBAR_OFFSET = db.power.offset
 	local USE_POWERBAR = db.power.enable
-	local USE_MINI_POWERBAR = db.power.width ~= 'fill' and USE_POWERBAR
 	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR
 	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and db.classbar.enable
 	
