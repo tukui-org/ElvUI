@@ -762,6 +762,9 @@ L['You can use the /resetui command to reset all of your movers. You can also us
 L['ABOVE_THREAT_FORMAT'] = '%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]'
 
 --UnitFrames
+L['Text xOffset'] = true
+L['Text yOffset'] = true
+L['Text Position'] = true
 L['Offset position for text.'] = true;
 L['Inset'] = true;
 L["Target On Mouse-Down"] = true;
