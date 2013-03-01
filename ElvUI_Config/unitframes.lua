@@ -702,15 +702,34 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				order = 3,
 				name = SHOW..' / '..HIDE,
 				func = function() 
-					local castbar = ElvUF_Player.Castbar
-					if not castbar.oldHide then
-						castbar.oldHide = castbar.Hide
-						castbar.Hide = castbar.Show
-						castbar:Show()
+					local frameName = E:StringTitle(groupName)
+					frameName = "ElvUF_"..frameName
+					frameName = frameName:gsub('t(arget)', 'T%1')
+
+					if numUnits then
+						for i=1, numUnits do
+							local castbar = _G[frameName..i].Castbar
+							if not castbar.oldHide then
+								castbar.oldHide = castbar.Hide
+								castbar.Hide = castbar.Show
+								castbar:Show()
+							else
+								castbar.Hide = castbar.oldHide
+								castbar.oldHide = nil
+								castbar:Hide()						
+							end						
+						end
 					else
-						castbar.Hide = castbar.oldHide
-						castbar.oldHide = nil
-						castbar:Hide()						
+						local castbar = _G[frameName].Castbar
+						if not castbar.oldHide then
+							castbar.oldHide = castbar.Hide
+							castbar.Hide = castbar.Show
+							castbar:Show()
+						else
+							castbar.Hide = castbar.oldHide
+							castbar.oldHide = nil
+							castbar:Hide()						
+						end
 					end
 				end,
 				type = 'execute',
