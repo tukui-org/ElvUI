@@ -1039,7 +1039,7 @@ local function GetOptionsTable_Power(updateFunc, groupName, numUnits)
 				type = 'range',
 				name = L['Height'],
 				order = 2,
-				min = 2, max = 50, step = 1,
+				min = 3, max = 50, step = 1,
 			},
 			offset = {
 				type = 'range',
