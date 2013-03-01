@@ -3,12 +3,13 @@ local UF = E:GetModule('UnitFrames');
 local _, ns = ...
 local ElvUF = ns.oUF
 
-UF.FillValues = {
+local fillValues = {
 	['fill'] = L['Filled'],
 	['spaced'] = L['Spaced'],
+	['inset'] = L['Inset']
 };
 
-UF.PositionValues = {
+local positionValues = {
 	TOPLEFT = 'TOPLEFT',
 	LEFT = 'LEFT',
 	BOTTOMLEFT = 'BOTTOMLEFT',
@@ -400,7 +401,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 				order = 8,
 				name = L['Anchor Point'],
 				desc = L['What point to anchor to the frame you set to attach to.'],
-				values = UF.PositionValues,				
+				values = positionValues,				
 			},
 			fontSize = {
 				order = 9,
@@ -701,15 +702,34 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				order = 3,
 				name = SHOW..' / '..HIDE,
 				func = function() 
-					local castbar = ElvUF_Player.Castbar
-					if not castbar.oldHide then
-						castbar.oldHide = castbar.Hide
-						castbar.Hide = castbar.Show
-						castbar:Show()
+					local frameName = E:StringTitle(groupName)
+					frameName = "ElvUF_"..frameName
+					frameName = frameName:gsub('t(arget)', 'T%1')
+
+					if numUnits then
+						for i=1, numUnits do
+							local castbar = _G[frameName..i].Castbar
+							if not castbar.oldHide then
+								castbar.oldHide = castbar.Hide
+								castbar.Hide = castbar.Show
+								castbar:Show()
+							else
+								castbar.Hide = castbar.oldHide
+								castbar.oldHide = nil
+								castbar:Hide()						
+							end						
+						end
 					else
-						castbar.Hide = castbar.oldHide
-						castbar.oldHide = nil
-						castbar:Hide()						
+						local castbar = _G[frameName].Castbar
+						if not castbar.oldHide then
+							castbar.oldHide = castbar.Hide
+							castbar.Hide = castbar.Show
+							castbar:Show()
+						else
+							castbar.Hide = castbar.oldHide
+							castbar.oldHide = nil
+							castbar:Hide()						
+						end
 					end
 				end,
 				type = 'execute',
@@ -778,9 +798,23 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 			position = {
 				type = 'select',
 				order = 1,
-				name = L['Position'],
-				values = UF.PositionValues,
+				name = L['Text Position'],
+				values = positionValues,
 			},
+			xOffset = {
+				order = 2,
+				type = 'range',
+				name = L['Text xOffset'],
+				desc = L['Offset position for text.'],
+				min = -300, max = 300, step = 1,
+			},		
+			yOffset = {
+				order = 3,
+				type = 'range',
+				name = L['Text yOffset'],
+				desc = L['Offset position for text.'],
+				min = -300, max = 300, step = 1,
+			},				
 			text_format = {
 				order = 100,
 				name = L['Text Format'],
@@ -915,10 +949,24 @@ local function GetOptionsTable_Name(updateFunc, groupName, numUnits)
 		args = {
 			position = {
 				type = 'select',
-				order = 2,
-				name = L['Position'],
-				values = UF.PositionValues,
+				order = 1,
+				name = L['Text Position'],
+				values = positionValues,
 			},	
+			xOffset = {
+				order = 2,
+				type = 'range',
+				name = L['Text xOffset'],
+				desc = L['Offset position for text.'],
+				min = -300, max = 300, step = 1,
+			},		
+			yOffset = {
+				order = 3,
+				type = 'range',
+				name = L['Text yOffset'],
+				desc = L['Offset position for text.'],
+				min = -300, max = 300, step = 1,
+			},				
 			text_format = {
 				order = 100,
 				name = L['Text Format'],
@@ -992,7 +1040,7 @@ local function GetOptionsTable_Power(updateFunc, groupName, numUnits)
 				type = 'toggle',
 				order = 1,
 				name = L['Enable'],
-			},			
+			},				
 			text_format = {
 				order = 100,
 				name = L['Text Format'],
@@ -1002,28 +1050,47 @@ local function GetOptionsTable_Power(updateFunc, groupName, numUnits)
 			},	
 			width = {
 				type = 'select',
-				order = 4,
-				name = L['Width'],
-				values = UF.FillValues,
+				order = 1,
+				name = L['Style'],
+				values = fillValues,
 			},
 			height = {
 				type = 'range',
 				name = L['Height'],
-				order = 5,
-				min = 2, max = 50, step = 1,
+				order = 2,
+				min = 3, max = 50, step = 1,
 			},
 			offset = {
 				type = 'range',
 				name = L['Offset'],
 				desc = L['Offset of the powerbar to the healthbar, set to 0 to disable.'],
-				order = 6,
+				order = 3,
 				min = 0, max = 20, step = 1,
 			},
+			spacer = {
+				type = 'description',
+				name = '',
+				order = 4,
+			},
+			xOffset = {
+				order = 5,
+				type = 'range',
+				name = L['Text xOffset'],
+				desc = L['Offset position for text.'],
+				min = -300, max = 300, step = 1,
+			},		
+			yOffset = {
+				order = 6,
+				type = 'range',
+				name = L['Text yOffset'],
+				desc = L['Offset position for text.'],
+				min = -300, max = 300, step = 1,
+			},					
 			position = {
 				type = 'select',
 				order = 8,
-				name = L['Position'],
-				values = UF.PositionValues,
+				name = L['Text Position'],
+				values = positionValues,
 			},		
 		},
 	}
@@ -1048,7 +1115,7 @@ local function GetOptionsTable_RaidIcon(updateFunc, groupName, numUnits)
 				type = 'select',
 				order = 2,
 				name = L['Position'],
-				values = UF.PositionValues,
+				values = positionValues,
 			},
 			size = {
 				type = 'range',
@@ -1756,7 +1823,10 @@ E.Options.args.unitframe.args.player = {
 					type = 'select',
 					order = 3,
 					name = L['Fill'],
-					values = UF.FillValues,
+					values = {
+						['fill'] = L['Filled'],
+						['spaced'] = L['Spaced'],
+					},
 				},				
 			},
 		},		
@@ -1771,7 +1841,7 @@ E.Options.args.unitframe.args.player = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
-					values = UF.PositionValues,
+					values = positionValues,
 				},	
 				text_format = {
 					order = 100,
@@ -1788,7 +1858,7 @@ E.Options.args.unitframe.args.player = {
 			name = L['Stagger Bar'],
 			get = function(info) return E.db.unitframe.units['player']['stagger'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['player']['stagger'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
-			disabled = E.myclass == "MONK",
+			disabled = E.myclass ~= "MONK",
 			args = {
 				enable = {
 					type = 'toggle',
@@ -1934,7 +2004,7 @@ E.Options.args.unitframe.args.target = {
 					type = 'select',
 					order = 3,
 					name = L['Fill'],
-					values = UF.FillValues,
+					values = fillValues,
 				},				
 			},
 		},	
@@ -2923,7 +2993,7 @@ E.Options.args.unitframe.args.party = {
 					type = 'select',
 					order = 2,
 					name = L['Position'],
-					values = UF.PositionValues,
+					values = positionValues,
 				},							
 			},
 		},
@@ -3308,7 +3378,7 @@ for i=10, 40, 15 do
 						type = 'select',
 						order = 2,
 						name = L['Position'],
-						values = UF.PositionValues,
+						values = positionValues,
 					},							
 				},
 			},	

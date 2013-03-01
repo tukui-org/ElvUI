@@ -16,7 +16,7 @@ function UF:UpdateNameSettings(frame)
 	if not db.power.hideonnpc then
 		local x, y = self:GetPositionOffset(db.name.position)
 		name:ClearAllPoints()
-		name:Point(db.name.position, frame.Health, db.name.position, x, y)				
+		name:Point(db.name.position, frame.Health, db.name.position, x + db.name.xOffset, y + db.name.yOffset)				
 	end
 	
 	frame:Tag(name, db.name.text_format)	
@@ -33,7 +33,7 @@ function UF:PostNamePosition(frame, unit)
 		frame.Power.value:SetAlpha(1)
 		
 		frame.Name:ClearAllPoints()
-		frame.Name:Point(position, frame.Health, position, x, y)	
+		frame.Name:Point(position, frame.Health, position, x + db.name.xOffset, y + db.name.yOffset)	
 	else
 		frame.Power.value:SetAlpha(0)
 		

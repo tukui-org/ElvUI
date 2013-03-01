@@ -49,23 +49,47 @@ function TT:IsInspectFrameOpen()
 end
 
 function TT:SetStatusBarAnchor(pos)
+	GameTooltip.pos = pos
+	if not GameTooltip.backdrop then return end
 	GameTooltipStatusBar:ClearAllPoints()
 	
-	if pos == 'BOTTOM' then
-		GameTooltipStatusBar:Point("TOPLEFT", GameTooltipStatusBar:GetParent(), "BOTTOMLEFT", E.Border, -(E.Border + 3))
-		GameTooltipStatusBar:Point("TOPRIGHT", GameTooltipStatusBar:GetParent(), "BOTTOMRIGHT", -E.Border, -(E.Border + 3))			
-	else	
-		GameTooltipStatusBar:Point("BOTTOMLEFT", GameTooltipStatusBar:GetParent(), "TOPLEFT", E.Border, (E.Border + 3))
-		GameTooltipStatusBar:Point("BOTTOMRIGHT", GameTooltipStatusBar:GetParent(), "TOPRIGHT", -E.Border, (E.Border + 3))			
-	end
-	
-	if not GameTooltipStatusBar.text then return end
-	GameTooltipStatusBar.text:ClearAllPoints()
-	
-	if pos == 'BOTTOM' then
-		GameTooltipStatusBar.text:Point("CENTER", GameTooltipStatusBar, 0, -3)
+	if self.db.style == 'none' then
+		GameTooltip.backdrop:SetAllPoints()
+		if pos == 'BOTTOM' then
+			GameTooltipStatusBar:Point("TOPLEFT", GameTooltipStatusBar:GetParent(), "BOTTOMLEFT", E.Border, -(E.Border + 3))
+			GameTooltipStatusBar:Point("TOPRIGHT", GameTooltipStatusBar:GetParent(), "BOTTOMRIGHT", -E.Border, -(E.Border + 3))			
+		else	
+			GameTooltipStatusBar:Point("BOTTOMLEFT", GameTooltipStatusBar:GetParent(), "TOPLEFT", E.Border, (E.Border + 3))
+			GameTooltipStatusBar:Point("BOTTOMRIGHT", GameTooltipStatusBar:GetParent(), "TOPRIGHT", -E.Border, (E.Border + 3))			
+		end			
 	else
-		GameTooltipStatusBar.text:Point("CENTER", GameTooltipStatusBar, 0, 3)	
+		if pos == 'BOTTOM' then
+			GameTooltip.backdrop:ClearAllPoints()
+			GameTooltip.backdrop:SetPoint("TOPLEFT")
+			GameTooltip.backdrop:SetPoint("TOPRIGHT")
+			GameTooltip.backdrop:SetPoint("BOTTOMLEFT", GameTooltip, "BOTTOMLEFT", 0, -(E.Border + 3 + GameTooltipStatusBar:GetHeight()))
+			GameTooltip.backdrop:SetPoint("BOTTOMRIGHT", GameTooltip, "BOTTOMRIGHT", 0, -(E.Border + 3 + GameTooltipStatusBar:GetHeight()))
+			GameTooltipStatusBar:Point("BOTTOMLEFT", GameTooltip.backdrop, "BOTTOMLEFT", E.Border + 5, E.Border + 5)
+			GameTooltipStatusBar:Point("BOTTOMRIGHT", GameTooltip.backdrop, "BOTTOMRIGHT", -(E.Border + 5), (E.Border + 5))				
+		else
+			GameTooltip.backdrop:ClearAllPoints()
+			GameTooltip.backdrop:SetPoint("BOTTOMLEFT")
+			GameTooltip.backdrop:SetPoint("BOTTOMRIGHT")
+			GameTooltip.backdrop:SetPoint("TOPLEFT", GameTooltip, "TOPLEFT", 0, (E.Border + 3 + GameTooltipStatusBar:GetHeight()))
+			GameTooltip.backdrop:SetPoint("TOPRIGHT", GameTooltip, "TOPRIGHT", 0, (E.Border + 3 + GameTooltipStatusBar:GetHeight()))
+			GameTooltipStatusBar:Point("TOPLEFT", GameTooltip.backdrop, "TOPLEFT", E.Border + 5, -(E.Border + 5))
+			GameTooltipStatusBar:Point("TOPRIGHT", GameTooltip.backdrop, "TOPRIGHT", -(E.Border + 5), -(E.Border + 5))			
+		end
+	end
+
+	if GameTooltipStatusBar.text then
+		GameTooltipStatusBar.text:ClearAllPoints()
+		
+		if pos == 'BOTTOM' then
+			GameTooltipStatusBar.text:Point("CENTER", GameTooltipStatusBar, 0, -3)
+		else
+			GameTooltipStatusBar.text:Point("CENTER", GameTooltipStatusBar, 0, 3)	
+		end	
 	end
 end
 
@@ -256,7 +280,7 @@ function TT:Colorize(tt)
 
 	if (reaction) and (tapped and not tappedbyme or not connected or dead) then
 		r, g, b = 0.55, 0.57, 0.61
-		tt:SetBackdropBorderColor(r, g, b)
+		tt.backdrop:SetBackdropBorderColor(r, g, b)
 		if isGameTooltip then
 			GameTooltipStatusBar.backdrop:SetBackdropBorderColor(r, g, b)
 			GameTooltipStatusBar:ColorBar(r, g, b)
@@ -265,7 +289,7 @@ function TT:Colorize(tt)
 		local class = select(2, UnitClass(unit))
 		if class then
 			local color = RAID_CLASS_COLORS[class]
-			tt:SetBackdropBorderColor(color.r, color.g, color.b)
+			tt.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 			if isGameTooltip then
 				GameTooltipStatusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 				GameTooltipStatusBar:ColorBar(color.r, color.g, color.b)
@@ -273,7 +297,7 @@ function TT:Colorize(tt)
 		end
 	elseif reaction then
 		local color = FACTION_BAR_COLORS[reaction]
-		tt:SetBackdropBorderColor(color.r, color.g, color.b)
+		tt.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 		if isGameTooltip then
 			GameTooltipStatusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 			GameTooltipStatusBar:ColorBar(color.r, color.g, color.b)
@@ -283,10 +307,10 @@ function TT:Colorize(tt)
 		local quality = link and select(3, GetItemInfo(link))
 		if quality and quality >= 2 then
 			local r, g, b = GetItemQualityColor(quality)
-			tt:SetBackdropBorderColor(r, g, b)
+			tt.backdrop:SetBackdropBorderColor(r, g, b)
 		else
 			local r, g, b = unpack(E["media"].bordercolor)
-			tt:SetBackdropBorderColor(r, g, b)
+			tt.backdrop:SetBackdropBorderColor(r, g, b)
 			if E.PixelMode then
 				r, g, b = 0.3, 0.3, 0.3
 			end
@@ -302,13 +326,18 @@ function TT:Colorize(tt)
 end
 
 function TT:SetStyle(tt)
-	if not tt.backdropTexture then
-		tt:SetTemplate("Transparent")
+	if not tt.backdrop then
+		tt:SetBackdrop(nil)
+		tt:CreateBackdrop('Transparent')
+		tt.backdrop:SetAllPoints()
 		tt:SetClampedToScreen(true)
+		if tt == GameTooltip and GameTooltip.pos then
+			TT:SetStatusBarAnchor(GameTooltip.pos)
+		end
 	end
 	
-	tt:SetBackdropBorderColor(unpack(E.media.bordercolor))
-	tt:SetBackdropColor(unpack(E.media.backdropfadecolor))
+	tt.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	tt.backdrop:SetBackdropColor(unpack(E.media.backdropfadecolor))
 	self:Colorize(tt)
 end
 
@@ -607,8 +636,8 @@ end
 
 function TT:GameTooltip_OnUpdate(tt)
 	if (tt.needRefresh and tt:GetAnchorType() == 'ANCHOR_CURSOR' and E.db.tooltip.anchor ~= 'CURSOR') then
-		tt:SetBackdropColor(unpack(E["media"].backdropfadecolor))
-		tt:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+		tt.backdrop:SetBackdropColor(unpack(E["media"].backdropfadecolor))
+		tt.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 		tt.needRefresh = nil
 	end
 end
