@@ -667,7 +667,7 @@ P['unitframe'] = {
 				['perrow'] = 5,
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
-				['anchorPoint'] = 'BOTTOMRIGHT',					
+				['anchorPoint'] = 'TOPRIGHT',					
 				['fontSize'] = 10,
 				['clickThrough'] = false,
 				['playerOnly'] = {friendly = false, enemy = true},
