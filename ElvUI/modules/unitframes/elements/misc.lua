@@ -429,7 +429,7 @@ function UF:UpdateAuraWatch(frame)
 				icon:Width(db.size);
 				icon:Height(db.size);
 				icon:ClearAllPoints()
-				icon:SetPoint(buffs[i].point, frame.Health, buffs[i].point, (E.PixelMode and 0) + buffs[i].xOffset, (E.PixelMode and 0) + buffs[i].yOffset);
+				icon:SetPoint(buffs[i].point, frame.Health, buffs[i].point, (E.PixelMode and 0) + (buffs[i].xOffset or 0), (E.PixelMode and 0) + (buffs[i].xOffset or 0));
 
 				if not icon.icon then
 					icon.icon = icon:CreateTexture(nil, "BORDER");

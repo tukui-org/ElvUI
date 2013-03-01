@@ -101,7 +101,7 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 		stagger:Point('TOPRIGHT', health, 'TOPRIGHT', STAGGER_WIDTH, 0)
 
 
-		if not USE_POWERBAR_OFFSET and not USE_MINI_POWERBAR then
+		if not USE_POWERBAR_OFFSET and not USE_MINI_POWERBAR and not USE_INSET_POWERBAR then
 			power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -BORDER - STAGGER_WIDTH, BORDER)
 		end	
 	elseif not USE_POWERBAR_OFFSET and not USE_MINI_POWERBAR then
