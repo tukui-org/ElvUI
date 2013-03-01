@@ -1055,7 +1055,7 @@ local function GetOptionsTable_Power(updateFunc, groupName, numUnits)
 				values = fillValues,
 				set = function(info, value) 
 					E.db.unitframe.units[groupName]['power'][ info[#info] ] = value;
-					
+
 					local frameName = E:StringTitle(groupName)
 					frameName = "ElvUF_"..frameName
 					frameName = frameName:gsub('t(arget)', 'T%1')
@@ -1063,30 +1063,35 @@ local function GetOptionsTable_Power(updateFunc, groupName, numUnits)
 					if numUnits then
 						for i=1, numUnits do
 							if _G[frameName..i] then
-								_G[frameName..i]:Hide()
+								local v = _G[frameName..i].Power:GetValue()
+								local min, max = _G[frameName..i].Power:GetMinMaxValues()
+								_G[frameName..i].Power:SetMinMaxValues(min, max + 500)
+								_G[frameName..i].Power:SetValue(1)
+								_G[frameName..i].Power:SetValue(0)
 							end
 						end
 					else
-						if _G[frameName] then
-							_G[frameName]:Hide()
+						if _G[frameName] and _G[frameName].Power then
+							local v = _G[frameName].Power:GetValue()
+							local min, max = _G[frameName].Power:GetMinMaxValues()
+							_G[frameName].Power:SetMinMaxValues(min, max + 500)							
+							_G[frameName].Power:SetValue(1)	
+							_G[frameName].Power:SetValue(0)
+						else
+							for i=1, _G[frameName]:GetNumChildren() do
+								local child = select(i, _G[frameName]:GetChildren())
+								if child and child.Power then
+									local v = child.Power:GetValue()
+									local min, max = child.Power:GetMinMaxValues()
+									child.Power:SetMinMaxValues(min, max + 500)											
+									child.Power:SetValue(1)
+									child.Power:SetValue(0)
+								end
+							end
 						end
-					end					
-					
+					end		
 					
 					updateFunc(UF, groupName, numUnits)
-					
-					
-					if numUnits then
-						for i=1, numUnits do
-							if _G[frameName..i] then
-								_G[frameName..i]:Show()
-							end
-						end
-					else
-						if _G[frameName] then
-							_G[frameName]:Show()
-						end
-					end							
 				end,
 			},
 			height = {
