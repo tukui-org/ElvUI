@@ -1053,6 +1053,41 @@ local function GetOptionsTable_Power(updateFunc, groupName, numUnits)
 				order = 1,
 				name = L['Style'],
 				values = fillValues,
+				set = function(info, value) 
+					E.db.unitframe.units[groupName]['power'][ info[#info] ] = value;
+					
+					local frameName = E:StringTitle(groupName)
+					frameName = "ElvUF_"..frameName
+					frameName = frameName:gsub('t(arget)', 'T%1')
+
+					if numUnits then
+						for i=1, numUnits do
+							if _G[frameName..i] then
+								_G[frameName..i]:Hide()
+							end
+						end
+					else
+						if _G[frameName] then
+							_G[frameName]:Hide()
+						end
+					end					
+					
+					
+					updateFunc(UF, groupName, numUnits)
+					
+					
+					if numUnits then
+						for i=1, numUnits do
+							if _G[frameName..i] then
+								_G[frameName..i]:Show()
+							end
+						end
+					else
+						if _G[frameName] then
+							_G[frameName]:Show()
+						end
+					end							
+				end,
 			},
 			height = {
 				type = 'range',
