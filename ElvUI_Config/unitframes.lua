@@ -1834,7 +1834,7 @@ E.Options.args.unitframe.args.player = {
 			name = L['Stagger Bar'],
 			get = function(info) return E.db.unitframe.units['player']['stagger'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['player']['stagger'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
-			disabled = E.myclass == "MONK",
+			disabled = E.myclass ~= "MONK",
 			args = {
 				enable = {
 					type = 'toggle',
