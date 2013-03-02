@@ -667,7 +667,7 @@ function E:MassiveShake()
 		end
 	end
 	
-	E.massiveShakeTimer = E:ScheduleTimer("StopMassiveShake", 180)
+	E.massiveShakeTimer = E:ScheduleTimer("StopMassiveShake", 42.5)
 end
 
 function E:BeginFoolsDayEvent()
