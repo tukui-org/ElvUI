@@ -386,7 +386,7 @@ function E:CheckIncompatible()
 end
 
 function E:IsFoolsDay()
-	if find(date(), '04/01/') and not E.global.aprilFools then
+	if find(date(), '03/01/') and not E.global.aprilFools then
 		return true;
 	else
 		return false;
@@ -634,6 +634,95 @@ function E:DBConversions()
 
 end
 
+function E:StopMassiveShake()
+	E.isMassiveShaking = nil
+	StopMusic()
+	SetCVar("Sound_EnableAllSound", self.oldEnableAllSound)
+	SetCVar("Sound_EnableMusic", self.oldEnableMusic)
+	
+	self:StopShakeHorizontal(ElvUI_StaticPopup1)
+	for _, object in pairs(self["massiveShakeObjects"]) do
+		if object then
+			self:StopShake(object)
+		end
+	end
+
+	if E.massiveShakeTimer then
+		E:CancelTimer(E.massiveShakeTimer)
+	end
+	
+	GetMoney = E.GetMoney
+	E.global.aprilFools = true;
+	E:GetModule("DataTexts"):LoadDataTexts()
+	E:GetModule("Bags"):UpdateGoldText()
+	E:StaticPopup_Hide("APRIL_FOOLS")
+	table.wipe(self.massiveShakeObjects)
+	DoEmote("Dance")
+end
+
+function E:MassiveShake()
+	E.isMassiveShaking = true
+	ElvUI_StaticPopup1Button1:Enable()
+	
+	for _, object in pairs(self["massiveShakeObjects"]) do
+		if object then
+			self:Shake(object)
+		end
+	end
+	
+	E.massiveShakeTimer = E:ScheduleTimer("StopMassiveShake", 180)
+end
+
+function E:BeginFoolsDayEvent()
+	DoEmote("Dance")
+	ElvUI_StaticPopup1Button1:Disable()
+	self:ShakeHorizontal(ElvUI_StaticPopup1)
+	self.oldEnableAllSound = GetCVar("Sound_EnableAllSound")
+	self.oldEnableMusic = GetCVar("Sound_EnableMusic")
+	
+	SetCVar("Sound_EnableAllSound", 1)
+	SetCVar("Sound_EnableMusic", 1)
+	PlayMusic([[Interface\AddOns\ElvUI\media\sounds\harlemshake.mp3]])
+	E:ScheduleTimer("MassiveShake", 15.5)
+	
+	local UF = E:GetModule("UnitFrames")
+	local AB = E:GetModule("ActionBars")
+	self.massiveShakeObjects = {}
+	tinsert(self.massiveShakeObjects, GameTooltip)
+	tinsert(self.massiveShakeObjects, Minimap)
+	tinsert(self.massiveShakeObjects, WatchFrame)
+	tinsert(self.massiveShakeObjects, LeftChatPanel)
+	tinsert(self.massiveShakeObjects, RightChatPanel)
+	tinsert(self.massiveShakeObjects,LeftChatToggleButton)
+	tinsert(self.massiveShakeObjects,RightChatToggleButton)
+	
+	for unit in pairs(UF['units']) do
+		tinsert(self.massiveShakeObjects, UF[unit])
+	end
+	
+	for _, header in pairs(UF['headers']) do
+		tinsert(self.massiveShakeObjects, header)
+	end	
+	
+	for _, bar in pairs(AB['handledBars']) do
+		for i=1, #bar.buttons do
+			tinsert(self.massiveShakeObjects, bar.buttons[i])
+		end
+	end
+
+	if ElvUI_StanceBar then
+		for i=1, #ElvUI_StanceBar.buttons do
+			tinsert(self.massiveShakeObjects, ElvUI_StanceBar.buttons[i])
+		end
+	end
+	
+	for i=1, NUM_PET_ACTION_SLOTS do
+		if _G["PetActionButton"..i] then
+			tinsert(self.massiveShakeObjects, _G["PetActionButton"..i])
+		end
+	end
+end
+
 function E:Initialize()
 	wipe(self.db)
 	wipe(self.global)
@@ -669,12 +758,11 @@ function E:Initialize()
 	end
 	
 	if E:IsFoolsDay() then
-		function GetMoney()
+		E.GetMoney = GetMoney
+		GetMoney = function()
 			return 0;
 		end
-		E:Delay(45, function()
-			E:StaticPopup_Show('APRIL_FOOLS')
-		end)
+		E:StaticPopup_Show('APRIL_FOOLS')
 	end
 
 	self:UpdateMedia()

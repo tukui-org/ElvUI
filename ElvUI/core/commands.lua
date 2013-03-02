@@ -104,15 +104,6 @@ function E:LuaError(msg)
 	end
 end
 
-function E:FoolsHowTo()
-	E:Print('Thank you for using ElvUI and participating in this years april fools day joke. Type "/aprilfools" in chat without quotes to fix your UI back to normal. If you liked this years joke please let us know about it at tukui.org.')
-end
-
-function E:DisableAprilFools()
-	E.global.aprilFools = true;
-	ReloadUI();
-end
-
 function E:BGStats()
 	local DT = E:GetModule('DataTexts')
 	DT.ForceHideBGStats = nil;
@@ -179,7 +170,6 @@ function E:LoadCommands()
 	self:RegisterChatCommand("elvui", "ToggleConfig")
 	
 	self:RegisterChatCommand('bgstats', 'BGStats')
-	self:RegisterChatCommand('moreinfo', 'FoolsHowTo')
 	self:RegisterChatCommand('aprilfools', 'DisableAprilFools')
 	self:RegisterChatCommand('luaerror', 'LuaError')
 	self:RegisterChatCommand('egrid', 'Grid')

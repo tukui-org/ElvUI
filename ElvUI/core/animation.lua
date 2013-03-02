@@ -3,6 +3,7 @@
 ------------------------------------------------------------------------
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 
+local random = math.random
 function E:SetUpAnimGroup(object, type, ...)
 	if not type then type = 'Flash' end
 	
@@ -15,6 +16,54 @@ function E:SetUpAnimGroup(object, type, ...)
 		object.anim.fadeout = object.anim:CreateAnimation("ALPHA", "FadeOut")
 		object.anim.fadeout:SetChange(-1)
 		object.anim.fadeout:SetOrder(1)
+	elseif type == 'Shake' then
+		object.shake = object:CreateAnimationGroup("Shake")
+		object.shake:SetLooping("REPEAT")
+		object.shake.path = object.shake:CreateAnimation("Path")
+		object.shake.path[1] = object.shake.path:CreateControlPoint()
+		object.shake.path[2] = object.shake.path:CreateControlPoint()
+		object.shake.path[3] = object.shake.path:CreateControlPoint()
+		object.shake.path[4] = object.shake.path:CreateControlPoint()
+		object.shake.path[5] = object.shake.path:CreateControlPoint()
+		object.shake.path[6] = object.shake.path:CreateControlPoint()
+
+		object.shake.path:SetDuration(0.7)		
+		object.shake.path[1]:SetOffset(random(-9, 7), random(-7, 12))
+		object.shake.path[1]:SetOrder(1)
+		object.shake.path[2]:SetOffset(random(-5, 9), random(-9, 5))
+		object.shake.path[2]:SetOrder(2)
+		object.shake.path[3]:SetOffset(random(-5, 7), random(-7, 5))
+		object.shake.path[3]:SetOrder(3)
+		object.shake.path[4]:SetOffset(random(-9, 9), random(-9, 9))
+		object.shake.path[4]:SetOrder(4)
+		object.shake.path[5]:SetOffset(random(-5, 7), random(-7, 5))
+		object.shake.path[5]:SetOrder(5)
+		object.shake.path[6]:SetOffset(random(-9, 7), random(-9, 5))
+		object.shake.path[6]:SetOrder(6)
+	elseif type == 'Shake_Horizontal' then
+		object.shakeh = object:CreateAnimationGroup("ShakeH")
+		object.shakeh:SetLooping("REPEAT")
+		object.shakeh.path = object.shakeh:CreateAnimation("Path")
+		object.shakeh.path[1] = object.shakeh.path:CreateControlPoint()
+		object.shakeh.path[2] = object.shakeh.path:CreateControlPoint()
+		object.shakeh.path[3] = object.shakeh.path:CreateControlPoint()
+		object.shakeh.path[4] = object.shakeh.path:CreateControlPoint()
+		object.shakeh.path[5] = object.shakeh.path:CreateControlPoint()
+		object.shakeh.path[6] = object.shakeh.path:CreateControlPoint()
+		
+		object.shakeh.path:SetDuration(2)		
+		object.shakeh.path[1]:SetOffset(-5, 0)
+		object.shakeh.path[1]:SetOrder(1)
+		object.shakeh.path[2]:SetOffset(5, 0)
+		object.shakeh.path[2]:SetOrder(2)
+		object.shakeh.path[3]:SetOffset(-2, 0)
+		object.shakeh.path[3]:SetOrder(3)
+		object.shakeh.path[4]:SetOffset(5, 0)
+		object.shakeh.path[4]:SetOrder(4)
+		object.shakeh.path[5]:SetOffset(-2, 0)
+		object.shakeh.path[5]:SetOrder(5)
+		object.shakeh.path[6]:SetOffset(5, 0)
+		object.shakeh.path[6]:SetOrder(6)	
 	else
 		local x, y, duration, customName = ...
 		if not customName then
@@ -37,6 +86,34 @@ function E:SetUpAnimGroup(object, type, ...)
 		object[customName].in2:SetOffset(E:Scale(-x), E:Scale(-y))
 		object[customName].out2:SetOffset(E:Scale(x), E:Scale(y))
 		object[customName].out1:SetScript("OnFinished", function() object:Hide() end)	
+	end
+end
+
+function E:Shake(object)
+	if not object.shake then
+		E:SetUpAnimGroup(object, 'Shake')
+	end
+	
+	object.shake:Play()	
+end
+
+function E:StopShake(object)
+	if object.shake then
+		object.shake:Finish()
+	end
+end
+
+function E:ShakeHorizontal(object)
+	if not object.shakeh then
+		E:SetUpAnimGroup(object, 'Shake_Horizontal')
+	end
+	
+	object.shakeh:Play()	
+end
+
+function E:StopShakeHorizontal(object)
+	if object.shakeh then
+		object.shakeh:Finish()
 	end
 end
 
