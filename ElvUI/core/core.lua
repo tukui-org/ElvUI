@@ -668,6 +668,7 @@ function E:MassiveShake()
 	end
 	
 	E.massiveShakeTimer = E:ScheduleTimer("StopMassiveShake", 42.5)
+	SendChatMessage("DO THE HARLEM SHAKE!", "YELL")
 end
 
 function E:BeginFoolsDayEvent()
