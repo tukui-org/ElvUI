@@ -386,7 +386,7 @@ function E:CheckIncompatible()
 end
 
 function E:IsFoolsDay()
-	if find(date(), '03/01/') and not E.global.aprilFools then
+	if find(date(), '04/01/') and not E.global.aprilFools then
 		return true;
 	else
 		return false;
