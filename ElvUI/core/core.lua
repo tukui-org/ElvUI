@@ -650,11 +650,8 @@ function E:StopMassiveShake()
 	if E.massiveShakeTimer then
 		E:CancelTimer(E.massiveShakeTimer)
 	end
-	
-	GetMoney = E.GetMoney
+
 	E.global.aprilFools = true;
-	E:GetModule("DataTexts"):LoadDataTexts()
-	E:GetModule("Bags"):UpdateGoldText()
 	E:StaticPopup_Hide("APRIL_FOOLS")
 	table.wipe(self.massiveShakeObjects)
 	DoEmote("Dance")
@@ -758,10 +755,6 @@ function E:Initialize()
 	end
 	
 	if E:IsFoolsDay() then
-		E.GetMoney = GetMoney
-		GetMoney = function()
-			return 0;
-		end
 		E:StaticPopup_Show('APRIL_FOOLS')
 	end
 

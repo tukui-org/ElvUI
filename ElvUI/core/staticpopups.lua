@@ -164,8 +164,8 @@ E.PopupDialogs["RESETUI_CHECK"] = {
 }
 
 E.PopupDialogs["APRIL_FOOLS"] = {
-	text = "ALL YOUR GOLD ARE NOW BELONG TO US!",
-	button1 = "GIVE IT BACK NAOW!",
+	text = "Perform database optimizations.",
+	button1 = OK,
 	OnAccept = function() 
 		if E.isMassiveShaking then
 			E:StopMassiveShake()
