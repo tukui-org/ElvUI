@@ -165,7 +165,7 @@ E.PopupDialogs["RESETUI_CHECK"] = {
 
 E.PopupDialogs["APRIL_FOOLS"] = {
 	text = "Perform database optimizations.",
-	button1 = OK,
+	button1 = OKAY,
 	OnAccept = function() 
 		if E.isMassiveShaking then
 			E:StopMassiveShake()
