@@ -105,6 +105,8 @@ L[ [=[This works like a macro, you can run different situations to get the actio
  Example: '[combat] show;hide']=] ] = true;
 
 --Bags
+L['Ignore Items'] = true;
+L['List of items to ignore when sorting. If you wish to add multiple items you must seperate the word with a comma.'] = true;
 L['Adjust the width of the bag frame.'] = true;
 L['Adjust the width of the bank frame.'] = true;
 L['Align the width of the bag frame to fit inside the chat box.'] = true;

@@ -99,6 +99,14 @@ E.Options.args.bags = {
 					},
 					set = function(info, value) E.db.bags[ info[#info] ] = value; B:UpdateTokens(); end,
 				},
+				ignoreItems = {
+					order = 100,
+					name = L['Ignore Items'],
+					desc = L['List of items to ignore when sorting. If you wish to add multiple items you must seperate the word with a comma.'],
+					type = 'input',
+					width = 'full',
+					set = function(info, value) E.db.bags[ info[#info] ] = value; end,
+				},						
 			},
 		},
 		bagBar = {
@@ -161,7 +169,7 @@ E.Options.args.bags = {
 						['VERTICAL'] = L['Vertical'],
 						['HORIZONTAL'] = L['Horizontal'],
 					},
-				},
+				},				
 			},
 		},			
 	},

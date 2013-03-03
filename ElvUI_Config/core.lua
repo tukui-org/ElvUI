@@ -634,7 +634,8 @@ local DONATORS = {
 	"Cosmo",
 	"Adorno",
 	"Domoaligato",
-	"Smorg"
+	"Smorg",
+	"Pyrokee"
 }
 
 local DEVELOPERS = {
