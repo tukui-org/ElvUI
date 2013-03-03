@@ -428,6 +428,7 @@ local blackListedSlots = {}
 local blackList = {}
 
 local function buildBlacklist(...)
+	twipe(blackList)
 	for index = 1, select('#', ...) do
 		local name = select(index, ...)
 		blackList[name] = true
