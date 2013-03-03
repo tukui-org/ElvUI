@@ -102,10 +102,14 @@ local eventHandlers = {
 	end,
 	-- Guild Roster updated, so rebuild the guild table
 	["GUILD_ROSTER_UPDATE"] = function (self, arg1)
-		BuildGuildTable()
-		UpdateGuildMessage()
-		if GetMouseFocus() == self then
-			self:GetScript("OnEnter")(self, nil, true)
+		if arg1 then
+			GuildRoster()
+		else
+			BuildGuildTable()
+			UpdateGuildMessage()
+			if GetMouseFocus() == self then
+				self:GetScript("OnEnter")(self, nil, true)
+			end
 		end
 	end,
 	-- our guild xp changed, recalculate it	
