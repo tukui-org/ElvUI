@@ -448,10 +448,8 @@ function B.Sort(bags, sorter, invertDirection)
 	for i, bag, slot in B.IterateBags(bags, nil, 'both') do
 		local bagSlot = B:Encode_BagSlot(bag, slot)
 		local link = GetContainerItemLink(bag, slot);
-		if link then
-			if blackList[GetItemInfo(link)] then
-				blackListedSlots[bagSlot] = true
-			end
+		if link and blackList[GetItemInfo(link)] then
+			blackListedSlots[bagSlot] = true
 		end
 		
 		if not blackListedSlots[bagSlot] then
