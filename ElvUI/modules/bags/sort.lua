@@ -431,7 +431,10 @@ local function buildBlacklist(...)
 	twipe(blackList)
 	for index = 1, select('#', ...) do
 		local name = select(index, ...)
-		blackList[name] = true
+		local isLink = GetItemInfo(name)
+		if isLink then
+			blackList[isLink] = true
+		end
 	end
 end
 
