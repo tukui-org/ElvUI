@@ -53,7 +53,7 @@ function TT:SetStatusBarAnchor(pos)
 	if not GameTooltip.backdrop then return end
 	GameTooltipStatusBar:ClearAllPoints()
 	
-	if self.db.style == 'none' then
+	if self.db.style == 'none' or not GameTooltipStatusBar:IsShown() then
 		GameTooltip.backdrop:SetAllPoints()
 		if pos == 'BOTTOM' then
 			GameTooltipStatusBar:Point("TOPLEFT", GameTooltipStatusBar:GetParent(), "BOTTOMLEFT", E.Border, -(E.Border + 3))
@@ -331,11 +331,12 @@ function TT:SetStyle(tt)
 		tt:CreateBackdrop('Transparent')
 		tt.backdrop:SetAllPoints()
 		tt:SetClampedToScreen(true)
-		if tt == GameTooltip and GameTooltip.pos then
-			TT:SetStatusBarAnchor(GameTooltip.pos)
-		end
 	end
 	
+	
+	if tt == GameTooltip and GameTooltip.pos then
+		TT:SetStatusBarAnchor(GameTooltip.pos)
+	end	
 	tt.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 	tt.backdrop:SetBackdropColor(unpack(E.media.backdropfadecolor))
 	self:Colorize(tt)
@@ -752,10 +753,8 @@ function TT:Initialize()
 	if E.private["tooltip"].enable ~= true then return end
 	E.Tooltip = TT
 
-	GameTooltipStatusBar:ClearAllPoints()
+
 	GameTooltipStatusBar:Height(self.db.healthHeight)
-	GameTooltipStatusBar:Point("TOPLEFT", GameTooltipStatusBar:GetParent(), "BOTTOMLEFT", 2, -5)
-	GameTooltipStatusBar:Point("TOPRIGHT", GameTooltipStatusBar:GetParent(), "BOTTOMRIGHT", -2, -5)
 	GameTooltipStatusBar:SetStatusBarTexture(E["media"].normTex)
 	GameTooltipStatusBar:CreateBackdrop('Transparent')
 	GameTooltipStatusBar.ColorBar = GameTooltipStatusBar.SetStatusBarColor
