@@ -721,7 +721,7 @@ E.Options.args.profiles.plugins["ElvUI"] = {
 		order = 40.5,
 		func = function()
 			if not UnitExists("target") or not UnitIsPlayer("target") or not UnitIsFriend("player", "target") or UnitIsUnit("player", "target") then
-				E:Print(L["You must be targetting a player."])
+				E:Print(L["You must be targeting a player."])
 				return
 			end
 			local name, server = UnitName("target")
@@ -739,7 +739,7 @@ E.Options.args.profiles.plugins["ElvUI"] = {
 		order = 40.6,
 		func = function()
 			if not UnitExists("target") or not UnitIsPlayer("target") or not UnitIsFriend("player", "target") or UnitIsUnit("player", "target") then
-				E:Print(L["You must be targetting a player."])
+				E:Print(L["You must be targeting a player."])
 				return
 			end
 			
