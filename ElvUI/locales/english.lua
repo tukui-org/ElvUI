@@ -566,6 +566,7 @@ L["Watch Frame"] = true;
 L["Weapons"] = true;
 
 --NamePlates
+L['Configure Selected Filter'] = true;
 L["Tagged Color"] = true;
 L["Color of a nameplate that is tagged by another person."] = true;
 L["Tanked/Loose Color"] = true;
