@@ -451,7 +451,7 @@ local function SendRecieve(self, event, prefix, message, channel, sender)
 				end			
 			end
 		end
-	elseif event == "ADDON_LOADED" then
+	--[[elseif event == "ADDON_LOADED" then
 		if prefix == "ElvUI" then
 			local _, _, _, _, _, reason = GetAddOnInfo("ElvUI_SLE")
 			local frame = EnumerateFrames()
@@ -469,6 +469,7 @@ local function SendRecieve(self, event, prefix, message, channel, sender)
 				self:UnregisterEvent("ADDON_LOADED")
 			end
 		elseif prefix == "ElvUI_SLE" then
+			local frame = EnumerateFrames()
 			while frame do
 				if frame:IsEventRegistered("CHAT_MSG_ADDON") and not frames[frame] then
 					frame:UnregisterEvent("CHAT_MSG_ADDON")
@@ -478,7 +479,7 @@ local function SendRecieve(self, event, prefix, message, channel, sender)
 			twipe(frames)
 			self:UnregisterEvent("ADDON_LOADED")
 		end
-	else
+	else]]
 		E.SendMSGTimer = E:ScheduleTimer('SendMessage', 12)
 	end
 end
@@ -489,7 +490,7 @@ RegisterAddonMessagePrefix('ELVUI_DEV_CMD')
 
 local f = CreateFrame('Frame')
 f:RegisterEvent("GROUP_ROSTER_UPDATE")
-f:RegisterEvent("ADDON_LOADED")
+--f:RegisterEvent("ADDON_LOADED")
 f:RegisterEvent("CHAT_MSG_ADDON")
 f:SetScript('OnEvent', SendRecieve)
 
