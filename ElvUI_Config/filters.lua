@@ -810,3 +810,10 @@ E.Options.args.filters = {
 		},
 	},
 }
+
+local ACD = LibStub("AceConfigDialog-3.0")
+function E:SetToFilterConfig(filter)
+	selectedFilter = filter or 'Buff Indicator'
+	UpdateFilterGroup()
+	ACD:SelectGroup("ElvUI", "filters")
+end

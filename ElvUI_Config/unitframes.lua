@@ -3,6 +3,7 @@ local UF = E:GetModule('UnitFrames');
 local _, ns = ...
 local ElvUF = ns.oUF
 
+local ACD = LibStub("AceConfigDialog-3.0")
 local fillValues = {
 	['fill'] = L['Filled'],
 	['spaced'] = L['Spaced'],
@@ -73,10 +74,22 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 				type = 'toggle',
 				order = 1,
 				name = L['Enable'],
+			},			
+			configureButton1 = {
+				order = 2,
+				name = L['Coloring'],
+				type = 'execute',
+				func = function() ACD:SelectGroup("ElvUI", "unitframe", "general", "allColorsGroup", "auraBars") end,
+			},		
+			configureButton2 = {
+				order = 3,
+				name = L['Coloring (Specific)'],
+				type = 'execute',
+				func = function() E:SetToFilterConfig('AuraBar Colors') end,
 			},				
 			anchorPoint = {
 				type = 'select',
-				order = 2,
+				order = 4,
 				name = L['Anchor Point'],
 				desc = L['What point to anchor to the frame you set to attach to.'],
 				values = {
@@ -86,7 +99,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 			},
 			attachTo = {
 				type = 'select',
-				order = 3,
+				order = 5,
 				name = L['Attach To'],
 				desc = L['The object you want to attach to.'],
 				values = {
@@ -97,13 +110,13 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 			},
 			height = {
 				type = 'range',
-				order = 4,
+				order = 6,
 				name = L['Height'],
 				min = 6, max = 40, step = 1,
 			},
 			sort = {
 				type = 'select',
-				order = 5,
+				order = 7,
 				name = L['Sort Method'],
 				values = auraBarsSortValues,
 			},
@@ -734,20 +747,26 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				end,
 				type = 'execute',
 			},
-			width = {
+			configureButton = {
 				order = 4,
+				name = L['Coloring'],
+				type = 'execute',
+				func = function() ACD:SelectGroup("ElvUI", "unitframe", "general", "allColorsGroup", "castBars") end,
+			},					
+			width = {
+				order = 5,
 				name = L['Width'],
 				type = 'range',
 				min = 50, max = 600, step = 1,
 			},
 			height = {
-				order = 5,
+				order = 6,
 				name = L['Height'],
 				type = 'range',
 				min = 10, max = 85, step = 1,
 			},		
 			icon = {
-				order = 6,
+				order = 7,
 				name = L['Icon'],
 				type = 'toggle',
 			},			
@@ -821,7 +840,13 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 				type = 'input',
 				width = 'full',
 				desc = L['TEXT_FORMAT_DESC'],
-			},			
+			},
+			configureButton = {
+				order = 5,
+				name = L['Coloring'],
+				type = 'execute',
+				func = function() ACD:SelectGroup("ElvUI", "unitframe", "general", "allColorsGroup", "healthGroup") end,
+			},
 		},
 	}
 	
@@ -1107,31 +1132,38 @@ local function GetOptionsTable_Power(updateFunc, groupName, numUnits)
 				order = 3,
 				min = 0, max = 20, step = 1,
 			},
+			configureButton = {
+				order = 4,
+				name = L['Coloring'],
+				type = 'execute',
+				func = function() ACD:SelectGroup("ElvUI", "unitframe", "general", "allColorsGroup", "powerGroup") end,
+			},				
 			spacer = {
 				type = 'description',
 				name = '',
-				order = 4,
+				order = 5,
 			},
 			xOffset = {
-				order = 5,
+				order = 6,
 				type = 'range',
 				name = L['Text xOffset'],
 				desc = L['Offset position for text.'],
 				min = -300, max = 300, step = 1,
 			},		
 			yOffset = {
-				order = 6,
+				order = 7,
 				type = 'range',
 				name = L['Text yOffset'],
 				desc = L['Offset position for text.'],
 				min = -300, max = 300, step = 1,
-			},					
+			},			
 			position = {
 				type = 'select',
 				order = 8,
 				name = L['Text Position'],
 				values = positionValues,
 			},		
+		
 		},
 	}
 	
@@ -1425,7 +1457,7 @@ E.Options.args.unitframe = {
 					get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
 					set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,					
 					args = {				
-						colorsGroup = {
+						healthGroup = {
 							order = 7,
 							type = 'group',
 							guiInline = true,
@@ -3015,6 +3047,12 @@ E.Options.args.unitframe.args.party = {
 					order = 4,
 					min = 7, max = 22, step = 1,
 				},
+				configureButton = {
+					type = 'execute', 
+					name = L['Configure Auras'],
+					func = function() E:SetToFilterConfig('Buff Indicator') end,
+					order = 5
+				},
 			},
 		},
 		roleIcon = {
@@ -3400,6 +3438,12 @@ for i=10, 40, 15 do
 						order = 4,
 						min = 7, max = 22, step = 1,
 					},
+					configureButton = {
+						type = 'execute', 
+						name = L['Configure Auras'],
+						func = function() E:SetToFilterConfig('Buff Indicator') end,
+						order = 5
+					},					
 				},
 			},	
 			roleIcon = {
@@ -3481,6 +3525,12 @@ for i=10, 40, 15 do
 						name = L['yOffset'],
 						min = -300, max = 300, step = 1,
 					},		
+					configureButton = {
+						type = 'execute', 
+						name = L['Configure Auras'],
+						func = function() E:SetToFilterConfig('RaidDebuffs') end,
+						order = 7
+					},					
 				},
 			},
 			raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'raid'..i),	

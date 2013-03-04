@@ -206,7 +206,7 @@ E.Options.args.nameplate = {
 				},
 		
 				fontGroup = {
-					order = 50,
+					order = 101,
 					type = 'group',
 					guiInline = true,
 					name = L['Fonts'],
@@ -297,7 +297,14 @@ E.Options.args.nameplate = {
 								['BUFFS'] = L['Buffs'],
 								['DEBUFFS'] = L['Debuffs']
 							},
-						},							
+						},
+						configureButton = {
+							order = 4,
+							name = L['Configure Selected Filter'],
+							type = 'execute',
+							width = 'full',
+							func = function() E:SetToFilterConfig(E.db.nameplate.trackfilter) end,
+						},	
 					},
 				},
 				reactions = {
