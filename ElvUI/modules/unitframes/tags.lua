@@ -26,7 +26,7 @@ ElvUF.Tags.Methods['afk'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['healthcolor'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_UNGHOST'
+ElvUF.Tags.Events['healthcolor'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
 ElvUF.Tags.Methods['healthcolor'] = function(unit)
 	if UnitIsDeadOrGhost(unit) or not UnitIsConnected(unit) then
 		return Hex(0.84, 0.75, 0.65)
@@ -36,7 +36,7 @@ ElvUF.Tags.Methods['healthcolor'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['health:current'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_UNGHOST'
+ElvUF.Tags.Events['health:current'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
 ElvUF.Tags.Methods['health:current'] = function(unit)
 	local status = UnitIsDead(unit) and DEAD or UnitIsGhost(unit) and L['Ghost'] or not UnitIsConnected(unit) and L['Offline']
 	if (status) then
@@ -46,7 +46,7 @@ ElvUF.Tags.Methods['health:current'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['health:deficit'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_UNGHOST'
+ElvUF.Tags.Events['health:deficit'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
 ElvUF.Tags.Methods['health:deficit'] = function(unit)
 	local status = UnitIsDead(unit) and DEAD or UnitIsGhost(unit) and L['Ghost'] or not UnitIsConnected(unit) and L['Offline']
 
@@ -57,7 +57,7 @@ ElvUF.Tags.Methods['health:deficit'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['health:current-percent'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_UNGHOST'
+ElvUF.Tags.Events['health:current-percent'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
 ElvUF.Tags.Methods['health:current-percent'] = function(unit)
 	local status = UnitIsDead(unit) and DEAD or UnitIsGhost(unit) and L['Ghost'] or not UnitIsConnected(unit) and L['Offline']
 
@@ -68,7 +68,7 @@ ElvUF.Tags.Methods['health:current-percent'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['health:current-max'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_UNGHOST'
+ElvUF.Tags.Events['health:current-max'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
 ElvUF.Tags.Methods['health:current-max'] = function(unit)
 	local status = UnitIsDead(unit) and DEAD or UnitIsGhost(unit) and L['Ghost'] or not UnitIsConnected(unit) and L['Offline']
 
@@ -79,7 +79,7 @@ ElvUF.Tags.Methods['health:current-max'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['health:current-max-percent'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_UNGHOST'
+ElvUF.Tags.Events['health:current-max-percent'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
 ElvUF.Tags.Methods['health:current-max-percent'] = function(unit)
 	local status = UnitIsDead(unit) and DEAD or UnitIsGhost(unit) and L['Ghost'] or not UnitIsConnected(unit) and L['Offline']
 
@@ -97,7 +97,7 @@ ElvUF.Tags.Methods['health:max'] = function(unit)
 	return E:GetFormattedText('CURRENT', max, max)
 end
 
-ElvUF.Tags.Events['health:percent'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_UNGHOST'
+ElvUF.Tags.Events['health:percent'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
 ElvUF.Tags.Methods['health:percent'] = function(unit)
 	local status = UnitIsDead(unit) and DEAD or UnitIsGhost(unit) and L['Ghost'] or not UnitIsConnected(unit) and L['Offline']
 
@@ -454,54 +454,4 @@ ElvUF.Tags.Methods['incomingheals'] = function(unit)
 	else
 		return E:ShortValue(heal)
 	end
-end
-
-
-local GroupUnits = {}
-local f = CreateFrame("Frame")
-f:RegisterEvent("GROUP_ROSTER_UPDATE")
-f:SetScript("OnEvent", function()
-	local groupType, groupSize
-	twipe(GroupUnits)
-
-	if IsInRaid() then 
-		groupType = "raid"
-		groupSize = GetNumGroupMembers()
-	elseif IsInGroup() then 
-		groupType = "party"
-		groupSize = GetNumGroupMembers() - 1
-		GroupUnits["player"] = true
-	else 
-		groupType = "solo"
-		groupSize = 1
-	end
-	
-	for index = 1, groupSize do
-		local unit = groupType..index
-		if not UnitIsUnit(unit, "player") then
-			GroupUnits[unit] = true
-		end
-	end	
-end)
-
-local function GetDistance(x1, y1, x2, y2)
-	return ceil(sqrt((x2 - x1)^2 + (y2 - y1)^2) / 0.04249)
-end
-
-ElvUF.Tags.Methods['nearbyplayers'] = function(unit)
-	local px, py, tx, ty
-	px, py = GetPlayerMapPosition(unit)
-	local unitsInRange = 0
-	if UnitIsConnected(unit) then
-		for groupUnit, _ in pairs(GroupUnits) do
-			if not UnitIsUnit(unit, groupUnit) and UnitIsConnected(groupUnit) then
-				tx, ty = GetPlayerMapPosition(groupUnit)
-				if GetDistance(px * 100, py * 100, tx * 100, ty * 100) <= 8 then
-					unitsInRange = unitsInRange + 1
-				end
-			end
-		end
-	end
-	
-	return unitsInRange
 end

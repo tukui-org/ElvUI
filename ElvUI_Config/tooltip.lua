@@ -65,8 +65,8 @@ E.Options.args.tooltip = {
 				whostarget = {
 					order = 3,
 					type = 'toggle',
-					name = L["Who's targetting who?"],
-					desc = L["When in a raid group display if anyone in your raid is targetting the current tooltip unit."],
+					name = L["Who's targeting who?"],
+					desc = L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."],
 				},
 				combathide = {
 					order = 4,

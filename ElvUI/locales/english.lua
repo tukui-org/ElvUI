@@ -105,6 +105,8 @@ L[ [=[This works like a macro, you can run different situations to get the actio
  Example: '[combat] show;hide']=] ] = true;
 
 --Bags
+L['Ignore Items'] = true;
+L['List of items to ignore when sorting. If you wish to add multiple items you must seperate the word with a comma.'] = true;
 L['Adjust the width of the bag frame.'] = true;
 L['Adjust the width of the bank frame.'] = true;
 L['Align the width of the bag frame to fit inside the chat box.'] = true;
@@ -564,6 +566,7 @@ L["Watch Frame"] = true;
 L["Weapons"] = true;
 
 --NamePlates
+L['Configure Selected Filter'] = true;
 L["Tagged Color"] = true;
 L["Color of a nameplate that is tagged by another person."] = true;
 L["Tanked/Loose Color"] = true;
@@ -762,6 +765,9 @@ L['You can use the /resetui command to reset all of your movers. You can also us
 L['ABOVE_THREAT_FORMAT'] = '%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]'
 
 --UnitFrames
+L['Coloring (Specific)'] = true
+L['Coloring'] = true
+L['Configure Auras'] = true;
 L['Text xOffset'] = true
 L['Text yOffset'] = true
 L['Text Position'] = true

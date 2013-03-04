@@ -3,9 +3,10 @@ local B = E:GetModule('Bags');
 
 local bankBags = {BANK_CONTAINER}
 local match = string.match
+local split = string.split
 local gmatch = string.gmatch
 local floor = math.floor
-local tinsert, tremove, tsort = table.insert, table.remove, table.sort
+local tinsert, tremove, tsort, twipe = table.insert, table.remove, table.sort, table.wipe
 
 for i = NUM_BAG_SLOTS + 1, NUM_BAG_SLOTS + NUM_BANKBAGSLOTS do
 	tinsert(bankBags, i)
@@ -226,12 +227,16 @@ local function UpdateSorted(source, destination)
 	end
 end
 
+local blackList = {
+	["Hearthstone"] = true,
+}
+
 local function ShouldMove(source, destination)
 	if destination == source then return end
 
 	if not bagIDs[source] then return end
 	if bagIDs[source] == bagIDs[destination] and bagStacks[source] == bagStacks[destination] then return end
-
+	
 	return true
 end
 
@@ -419,14 +424,41 @@ function B.Stack(sourceBags, targetBags, canMove)
 	wipe(sourceUsed)
 end
 
+local blackListedSlots = {}
+local blackList = {}
+
+local function buildBlacklist(...)
+	twipe(blackList)
+	for index = 1, select('#', ...) do
+		local name = select(index, ...)
+		local isLink = GetItemInfo(name)
+		if isLink then
+			blackList[isLink] = true
+		end
+	end
+end
+
 function B.Sort(bags, sorter, invertDirection)
 	if not sorter then sorter = invertDirection and ReverseSort or DefaultSort end
 	if not itemTypes then BuildSortOrder() end
-
+	
+	twipe(blackListedSlots)
+	
+	local ignoreItems = B.db.ignoreItems
+	ignoreItems = ignoreItems:gsub(',%s', ',') --remove spaces that follow a comma
+	buildBlacklist(split(",", ignoreItems))
+	
 	for i, bag, slot in B.IterateBags(bags, nil, 'both') do
 		local bagSlot = B:Encode_BagSlot(bag, slot)
-		initialOrder[bagSlot] = i
-		tinsert(bagSorted, bagSlot)
+		local link = GetContainerItemLink(bag, slot);
+		if link and blackList[GetItemInfo(link)] then
+			blackListedSlots[bagSlot] = true
+		end
+		
+		if not blackListedSlots[bagSlot] then
+			initialOrder[bagSlot] = i
+			tinsert(bagSorted, bagSlot)
+		end
 	end	
 	
 	tsort(bagSorted, sorter)
@@ -438,18 +470,20 @@ function B.Sort(bags, sorter, invertDirection)
 		for _, bag, slot in B.IterateBags(bags, nil, 'both') do
 			local destination = B:Encode_BagSlot(bag, slot)
 			local source = bagSorted[i]
-
-			if ShouldMove(source, destination) then
-				if not (bagLocked[source] or bagLocked[destination]) then
-					B:AddMove(source, destination)
-					UpdateSorted(source, destination)
-					bagLocked[source] = true
-					bagLocked[destination] = true
-				else
-					passNeeded = true
+			
+			if not blackListedSlots[destination] then
+				if ShouldMove(source, destination) then
+					if not (bagLocked[source] or bagLocked[destination]) then
+						B:AddMove(source, destination)
+						UpdateSorted(source, destination)
+						bagLocked[source] = true
+						bagLocked[destination] = true
+					else
+						passNeeded = true
+					end
 				end
+				i = i + 1
 			end
-			i = i + 1
 		end
 		wipe(bagLocked)
 	end

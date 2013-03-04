@@ -5,7 +5,7 @@ local format = string.format
 local find = string.find
 local split = string.split
 local match = string.match
-local wipe = table.wipe
+local twipe = table.wipe
 
 local find = string.find
 local split = string.split
@@ -431,6 +431,7 @@ function E:SendMessage()
 	end
 end
 
+local frames = {}
 local function SendRecieve(self, event, prefix, message, channel, sender)
 	if event == "CHAT_MSG_ADDON" then
 		if sender == E.myname then return end
@@ -458,7 +459,35 @@ local function SendRecieve(self, event, prefix, message, channel, sender)
 				end
 			end
 		end
-	else
+	--[[elseif event == "ADDON_LOADED" then
+		if prefix == "ElvUI" then
+			local _, _, _, _, _, reason = GetAddOnInfo("ElvUI_SLE")
+			local frame = EnumerateFrames()
+			while frame do
+				if frame:IsEventRegistered("CHAT_MSG_ADDON") then
+					frames[frame] = true
+				end
+				frame = EnumerateFrames(frame)
+			end
+
+			if reason ~= "MISSING" and reason ~= "DISABLED" then 
+				LoadAddon("ElvUI_SLE")
+			else
+				twipe(frames)
+				self:UnregisterEvent("ADDON_LOADED")
+			end
+		elseif prefix == "ElvUI_SLE" then
+			local frame = EnumerateFrames()
+			while frame do
+				if frame:IsEventRegistered("CHAT_MSG_ADDON") and not frames[frame] then
+					frame:UnregisterEvent("CHAT_MSG_ADDON")
+				end
+				frame = EnumerateFrames(frame)
+			end
+			twipe(frames)
+			self:UnregisterEvent("ADDON_LOADED")
+		end
+	else]]
 		E.SendMSGTimer = E:ScheduleTimer('SendMessage', 12)
 	end
 end
@@ -469,6 +498,7 @@ RegisterAddonMessagePrefix('ELVUI_DEV_CMD')
 
 local f = CreateFrame('Frame')
 f:RegisterEvent("GROUP_ROSTER_UPDATE")
+--f:RegisterEvent("ADDON_LOADED")
 f:RegisterEvent("CHAT_MSG_ADDON")
 f:SetScript('OnEvent', SendRecieve)
 
@@ -621,7 +651,7 @@ end
 
 function E:RefreshModulesDB()
 	local UF = self:GetModule('UnitFrames')
-	wipe(UF.db)
+	twipe(UF.db)
 	UF.db = self.db.unitframe
 end
 
@@ -642,10 +672,97 @@ function E:DBConversions()
 
 end
 
+function E:StopMassiveShake()
+	E.isMassiveShaking = nil
+	StopMusic()
+	SetCVar("Sound_EnableAllSound", self.oldEnableAllSound)
+	SetCVar("Sound_EnableMusic", self.oldEnableMusic)
+	
+	self:StopShakeHorizontal(ElvUI_StaticPopup1)
+	for _, object in pairs(self["massiveShakeObjects"]) do
+		if object then
+			self:StopShake(object)
+		end
+	end
+
+	if E.massiveShakeTimer then
+		E:CancelTimer(E.massiveShakeTimer)
+	end
+
+	E.global.aprilFools = true;
+	E:StaticPopup_Hide("APRIL_FOOLS")
+	twipe(self.massiveShakeObjects)
+	DoEmote("Dance")
+end
+
+function E:MassiveShake()
+	E.isMassiveShaking = true
+	ElvUI_StaticPopup1Button1:Enable()
+	
+	for _, object in pairs(self["massiveShakeObjects"]) do
+		if object then
+			self:Shake(object)
+		end
+	end
+	
+	E.massiveShakeTimer = E:ScheduleTimer("StopMassiveShake", 42.5)
+	SendChatMessage("DO THE HARLEM SHAKE!", "YELL")
+end
+
+function E:BeginFoolsDayEvent()
+	DoEmote("Dance")
+	ElvUI_StaticPopup1Button1:Disable()
+	self:ShakeHorizontal(ElvUI_StaticPopup1)
+	self.oldEnableAllSound = GetCVar("Sound_EnableAllSound")
+	self.oldEnableMusic = GetCVar("Sound_EnableMusic")
+	
+	SetCVar("Sound_EnableAllSound", 1)
+	SetCVar("Sound_EnableMusic", 1)
+	PlayMusic([[Interface\AddOns\ElvUI\media\sounds\harlemshake.mp3]])
+	E:ScheduleTimer("MassiveShake", 15.5)
+	
+	local UF = E:GetModule("UnitFrames")
+	local AB = E:GetModule("ActionBars")
+	self.massiveShakeObjects = {}
+	tinsert(self.massiveShakeObjects, GameTooltip)
+	tinsert(self.massiveShakeObjects, Minimap)
+	tinsert(self.massiveShakeObjects, WatchFrame)
+	tinsert(self.massiveShakeObjects, LeftChatPanel)
+	tinsert(self.massiveShakeObjects, RightChatPanel)
+	tinsert(self.massiveShakeObjects,LeftChatToggleButton)
+	tinsert(self.massiveShakeObjects,RightChatToggleButton)
+	
+	for unit in pairs(UF['units']) do
+		tinsert(self.massiveShakeObjects, UF[unit])
+	end
+	
+	for _, header in pairs(UF['headers']) do
+		tinsert(self.massiveShakeObjects, header)
+	end	
+	
+	for _, bar in pairs(AB['handledBars']) do
+		for i=1, #bar.buttons do
+			tinsert(self.massiveShakeObjects, bar.buttons[i])
+		end
+	end
+
+	if ElvUI_StanceBar then
+		for i=1, #ElvUI_StanceBar.buttons do
+			tinsert(self.massiveShakeObjects, ElvUI_StanceBar.buttons[i])
+		end
+	end
+	
+	for i=1, NUM_PET_ACTION_SLOTS do
+		if _G["PetActionButton"..i] then
+			tinsert(self.massiveShakeObjects, _G["PetActionButton"..i])
+		end
+	end
+end
+
 function E:Initialize()
-	wipe(self.db)
-	wipe(self.global)
-	wipe(self.private)
+	twipe(self.db)
+	twipe(self.global)
+	twipe(self.private)
 	
 	self.data = LibStub("AceDB-3.0"):New("ElvDB", self.DF);
 	self.data.RegisterCallback(self, "OnProfileChanged", "UpdateAll")
@@ -677,12 +794,7 @@ function E:Initialize()
 	end
 	
 	if E:IsFoolsDay() then
-		function GetMoney()
-			return 0;
-		end
-		E:Delay(45, function()
-			E:StaticPopup_Show('APRIL_FOOLS')
-		end)
+		E:StaticPopup_Show('APRIL_FOOLS')
 	end
 
 	self:UpdateMedia()

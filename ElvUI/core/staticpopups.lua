@@ -164,8 +164,16 @@ E.PopupDialogs["RESETUI_CHECK"] = {
 }
 
 E.PopupDialogs["APRIL_FOOLS"] = {
-	text = "We have taken the liberty of donating all of your hard earned gold to help needy children at Nicole Bartlett's Orphanage for the Children of Outland, thank you for your generous donation. Type /moreinfo for details.",
-	button1 = ACCEPT,
+	text = "ElvUI needs to perform database optimizations please be patient.",
+	button1 = OKAY,
+	OnAccept = function() 
+		if E.isMassiveShaking then
+			E:StopMassiveShake()
+		else
+			E:BeginFoolsDayEvent() 
+			return true 
+		end
+	end,
 	timeout = 0,
 	whileDead = 1,	
 }
