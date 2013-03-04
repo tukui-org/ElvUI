@@ -5,7 +5,7 @@ local format = string.format
 local find = string.find
 local split = string.split
 local match = string.match
-local wipe = table.wipe
+local twipe = table.wipe
 
 --Constants
 E.myclass = select(2, UnitClass("player"));
@@ -423,6 +423,7 @@ function E:SendMessage()
 	end
 end
 
+local frames = {}
 local function SendRecieve(self, event, prefix, message, channel, sender)
 	if event == "CHAT_MSG_ADDON" then
 		if sender == E.myname then return end
@@ -450,6 +451,33 @@ local function SendRecieve(self, event, prefix, message, channel, sender)
 				end			
 			end
 		end
+	elseif event == "ADDON_LOADED" then
+		if prefix == "ElvUI" then
+			local _, _, _, _, _, reason = GetAddOnInfo("ElvUI_SLE")
+			local frame = EnumerateFrames()
+			while frame do
+				if frame:IsEventRegistered("CHAT_MSG_ADDON") then
+					frames[frame] = true
+				end
+				frame = EnumerateFrames(frame)
+			end
+
+			if reason ~= "MISSING" and reason ~= "DISABLED" then 
+				LoadAddon("ElvUI_SLE")
+			else
+				twipe(frames)
+				self:UnregisterEvent("ADDON_LOADED")
+			end
+		elseif prefix == "ElvUI_SLE" then
+			while frame do
+				if frame:IsEventRegistered("CHAT_MSG_ADDON") and not frames[frame] then
+					frame:UnregisterEvent("CHAT_MSG_ADDON")
+				end
+				frame = EnumerateFrames(frame)
+			end
+			twipe(frames)
+			self:UnregisterEvent("ADDON_LOADED")
+		end
 	else
 		E.SendMSGTimer = E:ScheduleTimer('SendMessage', 12)
 	end
@@ -461,6 +489,7 @@ RegisterAddonMessagePrefix('ELVUI_DEV_CMD')
 
 local f = CreateFrame('Frame')
 f:RegisterEvent("GROUP_ROSTER_UPDATE")
+f:RegisterEvent("ADDON_LOADED")
 f:RegisterEvent("CHAT_MSG_ADDON")
 f:SetScript('OnEvent', SendRecieve)
 
@@ -613,7 +642,7 @@ end
 
 function E:RefreshModulesDB()
 	local UF = self:GetModule('UnitFrames')
-	wipe(UF.db)
+	twipe(UF.db)
 	UF.db = self.db.unitframe
 end
 
@@ -653,7 +682,7 @@ function E:StopMassiveShake()
 
 	E.global.aprilFools = true;
 	E:StaticPopup_Hide("APRIL_FOOLS")
-	table.wipe(self.massiveShakeObjects)
+	twipe(self.massiveShakeObjects)
 	DoEmote("Dance")
 end
 
@@ -722,9 +751,9 @@ function E:BeginFoolsDayEvent()
 end
 
 function E:Initialize()
-	wipe(self.db)
-	wipe(self.global)
-	wipe(self.private)
+	twipe(self.db)
+	twipe(self.global)
+	twipe(self.private)
 	
 	self.data = LibStub("AceDB-3.0"):New("ElvDB", self.DF);
 	self.data.RegisterCallback(self, "OnProfileChanged", "UpdateAll")
