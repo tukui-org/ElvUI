@@ -594,10 +594,8 @@ local function LoadSkin()
 	S:HandleButton(GuildInviteFrameJoinButton)
 	S:HandleButton(GuildInviteFrameDeclineButton)
 	GuildInviteFrame:Height(225)
-	hooksecurefunc(GuildInviteFrame, "SetHeight", function(self, height)
-		if height ~= 225 then
-			GuildInviteFrame:Height(225)
-		end
+	GuildInviteFrame:HookScript("OnEvent", function()
+		GuildInviteFrame:Height(225)
 	end)
 	GuildInviteFrameWarningText:Kill()
 	
@@ -1063,6 +1061,13 @@ local function LoadSkin()
 	ReportPlayerNameDialog:SetTemplate("Transparent")
 	S:HandleButton(ReportPlayerNameDialogReportButton)
 	S:HandleButton(ReportPlayerNameDialogCancelButton)	
+	
+	S:HandleCloseButton(SideDressUpModelCloseButton)
+	SideDressUpFrame:StripTextures()
+	SideDressUpFrame.BGTopLeft:Hide()
+	SideDressUpFrame.BGBottomLeft:Hide()
+	S:HandleButton(SideDressUpModelResetButton)
+	SideDressUpFrame:SetTemplate("Transparent")	
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)

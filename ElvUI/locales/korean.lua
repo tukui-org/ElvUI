@@ -725,8 +725,8 @@ L["Targeted By:"] = "선택:"
 L["Tooltip"] = "툴팁"
 L["TOOLTIP_DESC"] = "툴팁을 설정합니다."
 L["UF Hide"] = "유닛프레임 숨김"
-L["When in a raid group display if anyone in your raid is targetting the current tooltip unit."] = "공격대 내에서 현재 툴팁 대상을 누가 대상으로 잡았는지 보여줍니다."
-L["Who's targetting who?"] = "대상을 선택한 사람은 누구?"
+L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."] = "공격대 내에서 현재 툴팁 대상을 누가 대상으로 잡았는지 보여줍니다."
+L["Who's targeting who?"] = "대상을 선택한 사람은 누구?"
 
 --Tutorials
 L['A raid marker feature is available by pressing Escape -> Keybinds scroll to the bottom under ElvUI and setting a keybind for the raid marker.'] = true;
@@ -735,7 +735,7 @@ L['For technical support visit us at http://www.tukui.org.'] = true;
 L['If you accidently remove a chat frame you can always go the in-game configuration menu, press install, go to the chat portion and reset them.'] = true
 L['If you are experiencing issues with ElvUI try disabling all your addons except ElvUI, remember ElvUI is a full UI replacement addon, you cannot run two addons that do the same thing.'] = true;
 L['The buff panel to the right of minimap is a list of your consolidated buffs. You can disable it in Buffs and Debuffs options of ElvUI.'] = true;
-L['The focus unit can be set by typing /focus when you are targetting the unit you want to focus. It is recommended you make a macro to do this.'] = true;
+L['The focus unit can be set by typing /focus when you are targeting the unit you want to focus. It is recommended you make a macro to do this.'] = true;
 L['To move abilities on the actionbars by default hold shift + drag. You can change the modifier key from the actionbar options menu.'] = true;
 L['To setup which channels appear in which chat frame, right click the chat tab and go to settings.'] = true;
 L['Using the /farmmode <size> command will spawn a larger minimap on your screen that can be moved around, very useful when farming.'] = true;
@@ -987,7 +987,7 @@ L["Use the custom health backdrop color instead of a multiple of the main health
 L["Value must be a number"] = true;
 L["Vertical"] = "세로" --Also used in bags section
 L["Visibility"] = "표시"
-L["What each frame should attach itself to, example setting it to TOP every unit will attach its top to the last point bottom."] = "프레임끼리 서로 붙입니다. 모든 유닛을 'TOP\"으로 설정할 경우 가장 마지막 프레임의 아래에 붙입니다."
+L["What each frame should attach itself to. For example setting it to TOP every unit will attach its top to the last point bottom."] = "프레임끼리 서로 붙입니다. 모든 유닛을 'TOP\"으로 설정할 경우 가장 마지막 프레임의 아래에 붙입니다."
 L["What point to anchor to the frame you set to attach to."] = "붙여넣을 프레임의 기준점을 정합니다."
 L["What to attach the buff anchor frame to."] = "버프 기준점을 어디에 붙일지 정한다."
 L["What to attach the debuff anchor frame to."] = true;

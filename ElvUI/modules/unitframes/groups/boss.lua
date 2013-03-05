@@ -23,7 +23,7 @@ function UF:Construct_BossFrames(frame)
 	frame.Castbar = self:Construct_Castbar(frame, 'RIGHT')
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)
 	frame.AltPowerBar = self:Construct_AltPowerBar(frame)
-	
+	frame.Range = UF:Construct_Range(frame)
 	frame:SetAttribute("type2", "focus")
 	
 	BossHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165) 
@@ -39,7 +39,7 @@ function UF:Update_BossFrames(frame, db)
 		frame.Portrait.backdrop:Hide()
 	end
 	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
-	
+	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	local BORDER = E.Border;
 	local SPACING = E.Spacing;
 	local INDEX = frame.index
@@ -47,7 +47,8 @@ function UF:Update_BossFrames(frame, db)
 	local UNIT_HEIGHT = db.height
 	
 	local USE_POWERBAR = db.power.enable
-	local USE_MINI_POWERBAR = db.power.width ~= 'fill' and USE_POWERBAR
+	local USE_MINI_POWERBAR = db.power.width == 'spaced' and USE_POWERBAR
+	local USE_INSET_POWERBAR = db.power.width == 'inset' and USE_POWERBAR
 	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR
 	local POWERBAR_OFFSET = db.power.offset
 	local POWERBAR_HEIGHT = db.power.height
@@ -85,7 +86,7 @@ function UF:Update_BossFrames(frame, db)
 		--Text
 		local x, y = self:GetPositionOffset(db.health.position)
 		health.value:ClearAllPoints()
-		health.value:Point(db.health.position, health, db.health.position, x, y)
+		health.value:Point(db.health.position, health, db.health.position, x + db.health.xOffset, y + db.health.yOffset)
 		frame:Tag(health.value, db.health.text_format)
 		
 		--Colors
@@ -111,6 +112,8 @@ function UF:Update_BossFrames(frame, db)
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER+POWERBAR_OFFSET, BORDER+POWERBAR_OFFSET)
 		elseif USE_MINI_POWERBAR then
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER + (POWERBAR_HEIGHT/2))
+		elseif USE_INSET_POWERBAR then
+			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER)	
 		else
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER + POWERBAR_HEIGHT)
 		end
@@ -128,16 +131,7 @@ function UF:Update_BossFrames(frame, db)
 	end
 	
 	--Name
-	do
-		local name = frame.Name
-		if not db.power.hideonnpc then
-			local x, y = self:GetPositionOffset(db.name.position)
-			name:ClearAllPoints()
-			name:Point(db.name.position, frame.Health, db.name.position, x, y)				
-		end
-		
-		frame:Tag(name, db.name.text_format)
-	end	
+	UF:UpdateNameSettings(frame)
 	
 	--Power
 	do
@@ -153,7 +147,7 @@ function UF:Update_BossFrames(frame, db)
 			--Text
 			local x, y = self:GetPositionOffset(db.power.position)
 			power.value:ClearAllPoints()
-			power.value:Point(db.power.position, frame.Health, db.power.position, x, y)		
+			power.value:Point(db.power.position, frame.Health, db.power.position, x + db.power.xOffset, y + db.power.yOffset)		
 			frame:Tag(power.value, db.power.text_format)
 			
 			--Colors
@@ -180,6 +174,12 @@ function UF:Update_BossFrames(frame, db)
 				power:Point("LEFT", frame, "BOTTOMLEFT", (BORDER*2 + 4), BORDER + (POWERBAR_HEIGHT/2))
 				power:SetFrameStrata("MEDIUM")
 				power:SetFrameLevel(frame:GetFrameLevel() + 3)
+			elseif USE_INSET_POWERBAR then
+				power:Height(POWERBAR_HEIGHT - BORDER*2)
+				power:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", BORDER + (BORDER*2), BORDER + (BORDER*2))
+				power:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", -(BORDER + (BORDER*2)), BORDER + (BORDER*2))
+				power:SetFrameStrata("MEDIUM")
+				power:SetFrameLevel(frame:GetFrameLevel() + 3)						
 			else
 				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(E.PixelMode and 0 or (BORDER + SPACING)))
 				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -(BORDER + PORTRAIT_WIDTH), BORDER)
@@ -209,11 +209,11 @@ function UF:Update_BossFrames(frame, db)
 				portrait:SetAllPoints(frame.Health)
 				portrait:SetAlpha(0.3)
 				portrait:Show()		
-				portrait.backdrop:Show()
+				portrait.backdrop:Hide()
 			else
 				portrait:SetAlpha(1)
 				portrait:Show()
-				portrait.backdrop:Hide()
+				portrait.backdrop:Show()
 				portrait.backdrop:ClearAllPoints()
 				portrait.backdrop:SetPoint("TOPRIGHT", frame, "TOPRIGHT")
 				if db.portrait.style == '3D' then
@@ -221,9 +221,9 @@ function UF:Update_BossFrames(frame, db)
 				end								
 						
 				if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR then
-					portrait.backdrop:Point("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMRIGHT", SPACING, 0)
+					portrait.backdrop:Point("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMRIGHT", E.PixelMode and -1 or SPACING, 0)
 				else
-					portrait.backdrop:Point("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMRIGHT", SPACING, 0)
+					portrait.backdrop:Point("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMRIGHT", E.PixelMode and -1 or SPACING, 0)
 				end	
 							
 				portrait:Point('BOTTOMLEFT', portrait.backdrop, 'BOTTOMLEFT', BORDER, BORDER)		
@@ -424,8 +424,7 @@ function UF:Update_BossFrames(frame, db)
 			end
 			
 			local objectDB = db.customTexts[objectName]
-			UF:CreateCustomTextGroup('boss', objectName)
-			
+
 			if objectDB.font then
 				customFont = UF.LSM:Fetch("font", objectDB.font)
 			end
@@ -437,6 +436,22 @@ function UF:Update_BossFrames(frame, db)
 			frame[objectName]:SetPoint(objectDB.justifyH or 'CENTER', frame, 'CENTER', objectDB.xOffset, objectDB.yOffset)
 		end
 	end
+	
+	--Range
+	do
+		local range = frame.Range
+		if db.rangeCheck then
+			if not frame:IsElementEnabled('Range') then
+				frame:EnableElement('Range')
+			end
+
+			range.outsideAlpha = E.db.unitframe.OORAlpha
+		else
+			if frame:IsElementEnabled('Range') then
+				frame:DisableElement('Range')
+			end				
+		end
+	end		
 
 	frame:ClearAllPoints()
 	if INDEX == 1 then
@@ -455,6 +470,22 @@ function UF:Update_BossFrames(frame, db)
 
 	BossHeader:Width(UNIT_WIDTH)
 	BossHeader:Height(UNIT_HEIGHT + (UNIT_HEIGHT + 12 + db.castbar.height) * 3)
+	
+	
+	if UF.db.colors.transparentHealth then
+		UF:ToggleTransparentStatusBar(true, frame.Health, frame.Health.bg)
+	else
+		UF:ToggleTransparentStatusBar(false, frame.Health, frame.Health.bg, (USE_PORTRAIT and USE_PORTRAIT_OVERLAY) ~= true)
+	end
+	
+	if UF.db.colors.transparentPower then
+		UF:ToggleTransparentStatusBar(true, frame.Power, frame.Power.bg)
+	else
+		UF:ToggleTransparentStatusBar(false, frame.Power, frame.Power.bg, true)
+	end			
+	
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg)
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)		
 	
 	frame:UpdateAllElements()
 end

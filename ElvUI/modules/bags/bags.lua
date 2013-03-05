@@ -501,8 +501,8 @@ function B:UpdateGoldText()
 	self.BagFrame.goldText:SetText(GetCoinTextureString(GetMoney(), 12))
 end
 
-function B:VendorGrays(delete, nomsg)
-	if (not MerchantFrame or not MerchantFrame:IsShown()) and not delete then
+function B:VendorGrays(delete, nomsg, getValue)
+	if (not MerchantFrame or not MerchantFrame:IsShown()) and not delete and not getValue then
 		E:Print(L['You must be at a vendor.'])
 		return
 	end
@@ -517,20 +517,28 @@ function B:VendorGrays(delete, nomsg)
 				
 				if delete then
 					if find(l,"ff9d9d9d") then
-						PickupContainerItem(b, s)
-						DeleteCursorItem()
+						if not getValue then
+							PickupContainerItem(b, s)
+							DeleteCursorItem()
+						end
 						c = c+p
 						count = count + 1
 					end
 				else
 					if select(3, GetItemInfo(l))==0 and p>0 then
-						UseContainerItem(b, s)
-						PickupMerchantItem()
+						if not getValue then
+							UseContainerItem(b, s)
+							PickupMerchantItem()
+						end
 						c = c+p
 					end
 				end
 			end
 		end
+	end
+	
+	if getValue then
+		return c
 	end
 
 	if c>0 and not delete then
@@ -548,6 +556,7 @@ end
 
 function B:VendorGrayCheck()
 	if IsShiftKeyDown() then
+		E.PopupDialogs["DELETE_GRAYS"].Money = self:VendorGrays(false, true, true)
 		E:StaticPopup_Show('DELETE_GRAYS')
 	else
 		self:VendorGrays()

@@ -368,7 +368,14 @@ end)
 		bf.ForfeitButton:ClearAllPoints()
 		bf.ForfeitButton:SetPoint("LEFT", bf.CatchButton, "RIGHT", 10, 0)
 		SkinPetButton(bf.ForfeitButton)
-	end)	
+	end)
+	
+	PetBattleQueueReadyFrame:StripTextures()
+	PetBattleQueueReadyFrame:SetTemplate("Transparent")
+	S:HandleButton(PetBattleQueueReadyFrame.AcceptButton)
+	S:HandleButton(PetBattleQueueReadyFrame.DeclineButton)
+	PetBattleQueueReadyFrame.Art:SetTexture([[Interface\PetBattles\PetBattlesQueue]])
+	--StaticPopupSpecial_Show(PetBattleQueueReadyFrame);
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)

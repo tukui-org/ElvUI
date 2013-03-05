@@ -21,7 +21,7 @@ function UF:Construct_TargetFrame(frame)
 	frame.Buffs = self:Construct_Buffs(frame)
 
 	frame.Debuffs = self:Construct_Debuffs(frame)
-
+	frame.Threat = self:Construct_Threat(frame)
 	frame.Castbar = self:Construct_Castbar(frame, 'RIGHT', L['Target Castbar'])
 	frame.Castbar.SafeZone = nil
 	frame.Castbar.LatencyTexture:Hide()
@@ -34,7 +34,7 @@ function UF:Construct_TargetFrame(frame)
 	frame:RegisterEvent('PLAYER_TARGET_CHANGED', UF.SmartAuraDisplay)
 	
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
-	
+	frame.Range = UF:Construct_Range(frame)
 	frame:Point('BOTTOMRIGHT', E.UIParent, 'BOTTOM', 413, 68)
 	E:CreateMover(frame, frame:GetName()..'Mover', L['Target Frame'], nil, nil, nil, 'ALL,SOLO')
 end
@@ -48,14 +48,15 @@ function UF:Update_TargetFrame(frame, db)
 		frame.Portrait.backdrop:Hide()
 	end
 	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D	
-	
+	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	local BORDER = E.Border;
 	local SPACING = E.Spacing;	
 	local UNIT_WIDTH = db.width
 	local UNIT_HEIGHT = db.height
-	
+	local SHADOW_SPACING = E.PixelMode and 3 or 4
 	local USE_POWERBAR = db.power.enable
-	local USE_MINI_POWERBAR = db.power.width ~= 'fill' and USE_POWERBAR
+	local USE_INSET_POWERBAR = db.power.width == 'inset' and USE_POWERBAR
+	local USE_MINI_POWERBAR = db.power.width == 'spaced' and USE_POWERBAR
 	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR
 	local POWERBAR_OFFSET = db.power.offset
 	local POWERBAR_HEIGHT = db.power.height
@@ -75,6 +76,12 @@ function UF:Update_TargetFrame(frame, db)
 	frame.colors = ElvUF.colors
 	frame:Size(UNIT_WIDTH, UNIT_HEIGHT)
 	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
+	
+	if db.middleClickFocus then
+		frame:SetAttribute("type3", "focus")
+	else
+		frame:SetAttribute("type3", nil)
+	end
 	
 	--Adjust some variables
 	do
@@ -114,7 +121,7 @@ function UF:Update_TargetFrame(frame, db)
 		--Text
 		local x, y = self:GetPositionOffset(db.health.position)
 		health.value:ClearAllPoints()
-		health.value:Point(db.health.position, health, db.health.position, x, y)
+		health.value:Point(db.health.position, health, db.health.position, x + db.health.xOffset, y + db.health.yOffset)
 		frame:Tag(health.value, db.health.text_format)
 		
 		--Colors
@@ -141,6 +148,8 @@ function UF:Update_TargetFrame(frame, db)
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER+POWERBAR_OFFSET, BORDER+POWERBAR_OFFSET)
 		elseif USE_MINI_POWERBAR then
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER + (POWERBAR_HEIGHT/2))
+		elseif USE_INSET_POWERBAR then
+			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER)
 		else
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER + POWERBAR_HEIGHT)
 		end
@@ -158,16 +167,7 @@ function UF:Update_TargetFrame(frame, db)
 	end
 	
 	--Name
-	do
-		local name = frame.Name
-		if not db.power.hideonnpc then
-			local x, y = self:GetPositionOffset(db.name.position)
-			name:ClearAllPoints()
-			name:Point(db.name.position, frame.Health, db.name.position, x, y)				
-		end
-		
-		frame:Tag(name, db.name.text_format)
-	end	
+	UF:UpdateNameSettings(frame)
 	
 	--Power
 	do
@@ -183,7 +183,7 @@ function UF:Update_TargetFrame(frame, db)
 			--Text
 			local x, y = self:GetPositionOffset(db.power.position)
 			power.value:ClearAllPoints()
-			power.value:Point(db.power.position, frame.Health, db.power.position, x, y)		
+			power.value:Point(db.power.position, frame.Health, db.power.position, x + db.power.xOffset, y + db.power.yOffset)		
 			frame:Tag(power.value, db.power.text_format)
 			
 			--Colors
@@ -210,6 +210,12 @@ function UF:Update_TargetFrame(frame, db)
 				power:Point("LEFT", frame, "BOTTOMLEFT", (BORDER*2 + 4), BORDER + (POWERBAR_HEIGHT/2))
 				power:SetFrameStrata("MEDIUM")
 				power:SetFrameLevel(frame:GetFrameLevel() + 3)
+			elseif USE_INSET_POWERBAR then
+				power:Height(POWERBAR_HEIGHT - BORDER*2)
+				power:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", BORDER + (BORDER*2), BORDER + (BORDER*2))
+				power:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", -(BORDER + (BORDER*2)), BORDER + (BORDER*2))
+				power:SetFrameStrata("MEDIUM")
+				power:SetFrameLevel(frame:GetFrameLevel() + 3)						
 			else
 				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(E.PixelMode and 0 or (BORDER + SPACING)))
 				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -(BORDER + PORTRAIT_WIDTH), BORDER)
@@ -251,7 +257,7 @@ function UF:Update_TargetFrame(frame, db)
 					portrait:SetFrameLevel(frame:GetFrameLevel() + 5)
 				end		
 				
-				if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR then
+				if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR or USE_INSET_POWERBAR then
 					portrait.backdrop:Point("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMRIGHT", E.PixelMode and -1 or SPACING, 0)
 				else
 					portrait.backdrop:Point("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMRIGHT", E.PixelMode and -1 or SPACING, 0)
@@ -266,6 +272,46 @@ function UF:Update_TargetFrame(frame, db)
 				portrait:Hide()
 				portrait.backdrop:Hide()
 			end		
+		end
+	end
+	
+	--Threat
+	do
+		local threat = frame.Threat
+
+		if db.threatStyle ~= 'NONE' and db.threatStyle ~= nil then
+			if not frame:IsElementEnabled('Threat') then
+				frame:EnableElement('Threat')
+			end
+
+			if db.threatStyle == "GLOW" then
+				threat:SetFrameStrata('BACKGROUND')
+				threat.glow:ClearAllPoints()
+				threat.glow:SetBackdropBorderColor(0, 0, 0, 0)
+				threat.glow:Point("TOPLEFT", frame.Health.backdrop, "TOPLEFT", -SHADOW_SPACING, SHADOW_SPACING)
+				threat.glow:Point("TOPRIGHT", frame.Health.backdrop, "TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING)
+				threat.glow:Point("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
+				threat.glow:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)	
+				
+				if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or USE_INSET_POWERBAR then
+					threat.glow:Point("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
+					threat.glow:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)	
+				end
+				
+				if USE_PORTRAIT and not USE_PORTRAIT_OVERLAY then
+					threat.glow:Point("TOPRIGHT", frame.Portrait.backdrop, "TOPRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
+					threat.glow:Point("BOTTOMRIGHT", frame.Portrait.backdrop, "BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
+				end
+			elseif db.threatStyle == "ICONTOPLEFT" or db.threatStyle == "ICONTOPRIGHT" or db.threatStyle == "ICONBOTTOMLEFT" or db.threatStyle == "ICONBOTTOMRIGHT" or db.threatStyle == "ICONTOP" or db.threatStyle == "ICONBOTTOM" or db.threatStyle == "ICONLEFT" or db.threatStyle == "ICONRIGHT" then
+				threat:SetFrameStrata('HIGH')
+				local point = db.threatStyle
+				point = point:gsub("ICON", "")
+				
+				threat.texIcon:ClearAllPoints()
+				threat.texIcon:SetPoint(point, frame.Health, point)
+			end
+		elseif frame:IsElementEnabled('Threat') then
+			frame:DisableElement('Threat')
 		end
 	end
 
@@ -478,29 +524,21 @@ function UF:Update_TargetFrame(frame, db)
 				frame:EnableElement('HealPrediction')
 			end
 
-			healPrediction.myBar:ClearAllPoints()
-			healPrediction.myBar:Width(db.width - (BORDER*2))
-			healPrediction.myBar:SetPoint('BOTTOMLEFT', frame.Health:GetStatusBarTexture(), 'BOTTOMRIGHT')
-			healPrediction.myBar:SetPoint('TOPLEFT', frame.Health:GetStatusBarTexture(), 'TOPRIGHT')	
-
-			healPrediction.otherBar:ClearAllPoints()
-			healPrediction.otherBar:SetPoint('TOPLEFT', healPrediction.myBar:GetStatusBarTexture(), 'TOPRIGHT')	
-			healPrediction.otherBar:SetPoint('BOTTOMLEFT', healPrediction.myBar:GetStatusBarTexture(), 'BOTTOMRIGHT')	
-			healPrediction.otherBar:Width(db.width - (BORDER*2))
-			
 			if not USE_PORTRAIT_OVERLAY then
 				healPrediction.myBar:SetParent(frame)
 				healPrediction.otherBar:SetParent(frame)
+				healPrediction.absorbBar:SetParent(frame)
 			else	
 				healPrediction.myBar:SetParent(frame.Portrait.overlay)		
-				healPrediction.otherBar:SetParent(frame.Portrait.overlay)					
-			end			
+				healPrediction.otherBar:SetParent(frame.Portrait.overlay)	
+				healPrediction.absorbBar:SetParent(frame.Portrait.overlay)
+			end
 		else
 			if frame:IsElementEnabled('HealPrediction') then
 				frame:DisableElement('HealPrediction')
 			end		
 		end
-	end	
+	end
 	
 	--Raid Icon
 	do
@@ -548,6 +586,8 @@ function UF:Update_TargetFrame(frame, db)
 				anchorPoint, anchorTo = 'TOP', 'BOTTOM'
 			end
 			
+			auraBars.auraBarHeight = db.aurabar.height
+			
 			local yOffset = 0;
 			if E.PixelMode then
 				if db.aurabar.anchorPoint == 'BELOW' then
@@ -570,6 +610,21 @@ function UF:Update_TargetFrame(frame, db)
 				auraBars.defaultDebuffColor = nil;
 			end
 			auraBars.down = db.aurabar.anchorPoint == 'BELOW'
+			
+			if db.aurabar.sort == 'TIME_REMAINING' then
+				auraBars.sort = true --default function
+			elseif db.aurabar.sort == 'TIME_REMAINING_REVERSE' then
+				auraBars.sort = UF.SortAuraBarReverse
+			elseif db.aurabar.sort == 'TIME_DURATION' then
+				auraBars.sort = UF.SortAuraBarDuration
+			elseif db.aurabar.sort == 'TIME_DURATION_REVERSE' then
+				auraBars.sort = UF.SortAuraBarDurationReverse
+			elseif db.aurabar.sort == 'NAME' then
+				auraBars.sort = UF.SortAuraBarName
+			else
+				auraBars.sort = nil
+			end			
+			
 			auraBars:SetAnchors()
 		else
 			if frame:IsElementEnabled('AuraBars') then
@@ -578,6 +633,22 @@ function UF:Update_TargetFrame(frame, db)
 			end		
 		end
 	end
+	
+	--Range
+	do
+		local range = frame.Range
+		if db.rangeCheck then
+			if not frame:IsElementEnabled('Range') then
+				frame:EnableElement('Range')
+			end
+
+			range.outsideAlpha = E.db.unitframe.OORAlpha
+		else
+			if frame:IsElementEnabled('Range') then
+				frame:DisableElement('Range')
+			end				
+		end
+	end		
 
 	
 	if db.customTexts then
@@ -588,8 +659,7 @@ function UF:Update_TargetFrame(frame, db)
 			end
 			
 			local objectDB = db.customTexts[objectName]
-			UF:CreateCustomTextGroup('target', objectName)
-			
+
 			if objectDB.font then
 				customFont = UF.LSM:Fetch("font", objectDB.font)
 			end
@@ -601,6 +671,18 @@ function UF:Update_TargetFrame(frame, db)
 			frame[objectName]:SetPoint(objectDB.justifyH or 'CENTER', frame, 'CENTER', objectDB.xOffset, objectDB.yOffset)
 		end
 	end
+	
+	if UF.db.colors.transparentHealth then
+		UF:ToggleTransparentStatusBar(true, frame.Health, frame.Health.bg)
+	else
+		UF:ToggleTransparentStatusBar(false, frame.Health, frame.Health.bg, (USE_PORTRAIT and USE_PORTRAIT_OVERLAY) ~= true)
+	end
+	
+	if UF.db.colors.transparentPower then
+		UF:ToggleTransparentStatusBar(true, frame.Power, frame.Power.bg)
+	else
+		UF:ToggleTransparentStatusBar(false, frame.Power, frame.Power.bg, true)
+	end		
 	
 	E:SetMoverSnapOffset(frame:GetName()..'Mover', -(12 + db.castbar.height))
 	frame:UpdateAllElements()

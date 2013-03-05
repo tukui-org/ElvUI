@@ -42,9 +42,7 @@
 	<Script file='unitframes.lua'/>
 	<Script file='config_enviroment.lua'/>
 	<Script file='tags.lua'/>
-	<Script file='construct_elements.lua'/>
-	<Script file='update_elements.lua'/>
+	<Include file='elements\load_elements.xml'/>
 	<Include file='units\load_units.xml'/>
 	<Include file='groups\load_groups.xml'/>
-	<Script file='options.lua'/>
 </Ui>

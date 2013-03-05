@@ -22,7 +22,7 @@ function UF:Construct_ArenaFrames(frame)
 	
 	frame.Trinket = self:Construct_Trinket(frame)
 	frame.PVPSpecIcon = self:Construct_PVPSpecIcon(frame)
-	
+	frame.Range = UF:Construct_Range(frame)
 	frame:SetAttribute("type2", "focus")
 
 	
@@ -65,7 +65,8 @@ function UF:Update_ArenaFrames(frame, db)
 	local PVPINFO_WIDTH = db.pvpSpecIcon and UNIT_HEIGHT or 0
 	
 	local USE_POWERBAR = db.power.enable
-	local USE_MINI_POWERBAR = db.power.width ~= 'fill' and USE_POWERBAR
+	local USE_MINI_POWERBAR = db.power.width == 'spaced' and USE_POWERBAR
+	local USE_INSET_POWERBAR = db.power.width == 'inset' and USE_POWERBAR
 	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR
 	local POWERBAR_OFFSET = db.power.offset
 	local POWERBAR_HEIGHT = db.power.height
@@ -75,7 +76,7 @@ function UF:Update_ArenaFrames(frame, db)
 	
 	frame.colors = ElvUF.colors
 	frame:Size(UNIT_WIDTH, UNIT_HEIGHT)
-	
+	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	--Adjust some variables
 	do
 		if not USE_POWERBAR then
@@ -95,7 +96,7 @@ function UF:Update_ArenaFrames(frame, db)
 		--Text
 		local x, y = self:GetPositionOffset(db.health.position)
 		health.value:ClearAllPoints()
-		health.value:Point(db.health.position, health, db.health.position, x, y)
+		health.value:Point(db.health.position, health, db.health.position, x + db.health.xOffset, y + db.health.yOffset)
 		frame:Tag(health.value, db.health.text_format)
 	
 		--Colors
@@ -122,6 +123,8 @@ function UF:Update_ArenaFrames(frame, db)
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER+POWERBAR_OFFSET, BORDER+POWERBAR_OFFSET)
 		elseif USE_MINI_POWERBAR then
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER + (POWERBAR_HEIGHT/2))
+		elseif USE_INSET_POWERBAR then
+			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER)
 		else
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER + POWERBAR_HEIGHT)
 		end
@@ -132,16 +135,7 @@ function UF:Update_ArenaFrames(frame, db)
 	end
 	
 	--Name
-	do
-		local name = frame.Name
-		if not db.power.hideonnpc then
-			local x, y = self:GetPositionOffset(db.name.position)
-			name:ClearAllPoints()
-			name:Point(db.name.position, frame.Health, db.name.position, x, y)				
-		end
-		
-		frame:Tag(name, db.name.text_format)
-	end	
+	UF:UpdateNameSettings(frame)
 	
 	--Power
 	do
@@ -157,7 +151,7 @@ function UF:Update_ArenaFrames(frame, db)
 			--Text
 			local x, y = self:GetPositionOffset(db.power.position)
 			power.value:ClearAllPoints()
-			power.value:Point(db.power.position, frame.Health, db.power.position, x, y)		
+			power.value:Point(db.power.position, frame.Health, db.power.position, x + db.power.xOffset, y + db.power.yOffset)		
 			frame:Tag(power.value, db.power.text_format)
 			
 			--Colors
@@ -184,6 +178,12 @@ function UF:Update_ArenaFrames(frame, db)
 				power:Point("LEFT", frame, "BOTTOMLEFT", (BORDER*2 + 4), BORDER + (POWERBAR_HEIGHT/2))
 				power:SetFrameStrata("MEDIUM")
 				power:SetFrameLevel(frame:GetFrameLevel() + 3)
+			elseif USE_INSET_POWERBAR then
+				power:Height(POWERBAR_HEIGHT - BORDER*2)
+				power:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", BORDER + (BORDER*2), BORDER + (BORDER*2))
+				power:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", -(BORDER + (BORDER*2)), BORDER + (BORDER*2))
+				power:SetFrameStrata("MEDIUM")
+				power:SetFrameLevel(frame:GetFrameLevel() + 3)						
 			else
 				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(E.PixelMode and 0 or (BORDER + SPACING)))
 				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -(BORDER + PVPINFO_WIDTH), BORDER)
@@ -338,7 +338,7 @@ function UF:Update_ArenaFrames(frame, db)
 	do	
 		local specIcon = frame.PVPSpecIcon
 		specIcon.bg:Point("TOPRIGHT", frame, "TOPRIGHT")
-		if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET then
+		if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or USE_INSET_POWERBAR then
 			specIcon.bg:SetPoint("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMRIGHT", E.PixelMode and -1 or SPACING, 0)
 		else
 			specIcon.bg:SetPoint("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMRIGHT", E.PixelMode and -1 or SPACING, 0)	
@@ -351,6 +351,22 @@ function UF:Update_ArenaFrames(frame, db)
 		end					
 	end
 	
+	--Range
+	do
+		local range = frame.Range
+		if db.rangeCheck then
+			if not frame:IsElementEnabled('Range') then
+				frame:EnableElement('Range')
+			end
+
+			range.outsideAlpha = E.db.unitframe.OORAlpha
+		else
+			if frame:IsElementEnabled('Range') then
+				frame:DisableElement('Range')
+			end				
+		end
+	end		
+	
 	if db.customTexts then
 		local customFont = UF.LSM:Fetch("font", UF.db.font)
 		for objectName, _ in pairs(db.customTexts) do
@@ -359,7 +375,6 @@ function UF:Update_ArenaFrames(frame, db)
 			end
 			
 			local objectDB = db.customTexts[objectName]
-			UF:CreateCustomTextGroup('arena', objectName)
 			
 			if objectDB.font then
 				customFont = UF.LSM:Fetch("font", objectDB.font)
@@ -390,6 +405,9 @@ function UF:Update_ArenaFrames(frame, db)
 
 	ArenaHeader:Width(UNIT_WIDTH)
 	ArenaHeader:Height(UNIT_HEIGHT + (UNIT_HEIGHT + 12 + db.castbar.height) * 4)
+	
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg)
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)		
 	
 	frame:UpdateAllElements()
 end

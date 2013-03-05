@@ -16,6 +16,8 @@ local opposites = {
 local removeMenuOptions = {
 	["SET_FOCUS"] = true,
 	["CLEAR_FOCUS"] = true,
+	["MOVE_FOCUS_FRAME"] = true,
+	["LARGE_FOCUS"] = true,	
 	["MOVE_PLAYER_FRAME"] = true,
 	["MOVE_TARGET_FRAME"] = true,
 	["PVP_REPORT_AFK"] = true,
@@ -45,7 +47,7 @@ UF['classMaxResourceBar'] = {
 	['WARLOCK'] = 4,
 	['PRIEST'] = 3,
 	['MONK'] = 5,
-	['MAGE'] = 6,
+	['MAGE'] = 4,
 }
 
 UF['headerGroupBy'] = {
@@ -54,8 +56,8 @@ UF['headerGroupBy'] = {
 		header:SetAttribute('sortMethod', 'NAME')
 	end,
 	['ROLE'] = function(header)
-		header:SetAttribute("groupingOrder", "MAINTANK,MAINASSIST,1,2,3,4,5,6,7,8")
-		header:SetAttribute('sortMethod', 'NAME')	
+		header:SetAttribute("groupingOrder", "TANK,HEALER,DAMAGER,NONE")
+		header:SetAttribute('sortMethod', 'INDEX')	
 	end,
 	['NAME'] = function(header)
 		header:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
@@ -72,7 +74,6 @@ local min = math.min
 local tremove, tinsert = table.remove, table.insert
 
 function UF:Construct_UF(frame, unit)
-	frame:RegisterForClicks("AnyUp")
 	frame:SetScript('OnEnter', UnitFrame_OnEnter)
 	frame:SetScript('OnLeave', UnitFrame_OnLeave)	
 	
@@ -225,8 +226,10 @@ end
 function UF:Update_StatusBars()
 	local statusBarTexture = LSM:Fetch("statusbar", self.db.statusbar)
 	for statusbar in pairs(UF['statusbars']) do
-		if statusbar and statusbar:GetObjectType() == 'StatusBar' then
+		if statusbar and statusbar:GetObjectType() == 'StatusBar' and not statusbar.isTransparent then
 			statusbar:SetStatusBarTexture(statusBarTexture)
+		elseif statusBar and statusbar:GetObjectType() == 'Texture' then
+			statusbar:SetTexture(statusBarTexture)
 		end
 	end
 end
@@ -322,6 +325,16 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 	end
 end
 
+function UF:HeaderUpdateSpecificElement(group, elementName)
+	assert(self[group], "Invalid group specified.")
+	for i=1, self[group]:GetNumChildren() do
+		local frame = select(i, self[group]:GetChildren())
+		if frame and frame.Health then
+			frame:UpdateElement(elementName)
+		end
+	end
+end
+
 function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return end
 
@@ -337,7 +350,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 
 		if template then
 			self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 
-				'point', self.db['units'][group].point, 
+				'point', db.point, 
 				'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 
 				'template', template, 
 				'columnAnchorPoint', db.columnAnchorPoint,
@@ -351,7 +364,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 				'groupFilter', groupFilter)
 		else
 			self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 
-				'point', self.db['units'][group].point, 
+				'point', db.point, 
 				'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 
 				'columnAnchorPoint', db.columnAnchorPoint,
 				'maxColumns', db.maxColumns,
@@ -712,6 +725,14 @@ end
 function UF:ResetUnitSettings(unit)
 	E:CopyTable(self.db['units'][unit], P['unitframe']['units'][unit]); 
 	
+	if self.db['units'][unit].buffs and self.db['units'][unit].buffs.sizeOverride then
+		self.db['units'][unit].buffs.sizeOverride = P.unitframe.units[unit].buffs.sizeOverride or 0
+	end
+	
+	if self.db['units'][unit].debuffs and self.db['units'][unit].debuffs.sizeOverride then
+		self.db['units'][unit].debuffs.sizeOverride = P.unitframe.units[unit].debuffs.sizeOverride or 0
+	end
+	
 	self:Update_AllFrames()
 end
 
@@ -735,26 +756,39 @@ local ignoreSettings = {
 	['onlyDispellable'] = true,
 	['useFilter'] = true,
 }
-function UF:MergeUnitSettings(fromUnit, toUnit)
+
+local ignoreSettingsGroup = {
+	['visibility'] = true,
+}
+
+local allowPass = {
+	['sizeOverride'] = true,
+}
+
+function UF:MergeUnitSettings(fromUnit, toUnit, isGroupUnit)
 	local db = self.db['units']
-	
+	local filter = ignoreSettings
+	if isGroupUnit then
+		filter = ignoreSettingsGroup 
+	end
 	if fromUnit ~= toUnit then
 		for option, value in pairs(db[fromUnit]) do
-			if type(value) ~= 'table' and not ignoreSettings[option] then
+			if type(value) ~= 'table' and not filter[option] then
 				if db[toUnit][option] ~= nil then
 					db[toUnit][option] = value
 				end
-			elseif not ignoreSettings[option] then
+			elseif not filter[option] then
 				if type(value) == 'table' then
 					for opt, val in pairs(db[fromUnit][option]) do
-						if type(val) ~= 'table' and not ignoreSettings[opt] then
-							if db[toUnit][option] ~= nil and db[toUnit][option][opt] ~= nil then
+						--local val = db[fromUnit][option][opt]
+						if type(val) ~= 'table' and not filter[opt] then
+							if db[toUnit][option] ~= nil and (db[toUnit][option][opt] ~= nil or allowPass[opt]) then
 								db[toUnit][option][opt] = val
 							end				
-						elseif not ignoreSettings[opt] then
+						elseif not filter[opt] then
 							if type(val) == 'table' then
 								for o, v in pairs(db[fromUnit][option][opt]) do
-									if not ignoreSettings[o] then
+									if not filter[o] then
 										if db[toUnit][option] ~= nil and db[toUnit][option][opt] ~= nil and db[toUnit][option][opt][o] ~= nil then
 											db[toUnit][option][opt][o] = v	
 										end
@@ -769,10 +803,93 @@ function UF:MergeUnitSettings(fromUnit, toUnit)
 	else
 		E:Print(L['You cannot copy settings from the same unit.'])
 	end
-	
-	E:SetupTheme(E.private.theme, true)
+
 	self:Update_AllFrames()
 end
 
+local function updateColor(self, r, g, b)
+	if not self.isTransparent then return end
+	if self.backdrop then
+		local _, _, _, a = self.backdrop:GetBackdropColor()
+		self.backdrop:SetBackdropColor(r * 0.58, g * 0.58, b * 0.58, a)
+	elseif self:GetParent().template then
+		local _, _, _, a = self:GetParent():GetBackdropColor()
+		self:GetParent():SetBackdropColor(r * 0.58, g * 0.58, b * 0.58, a)
+	end
+	
+	if self.bg and self.bg:GetObjectType() == 'Texture' and not self.bg.multiplier then
+		self.bg:SetTexture(r * 0.35, g * 0.35, b * 0.35)
+	end
+end
+
+function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, adjustBackdropPoints, invertBackdropTex)
+	statusBar.isTransparent = isTransparent
+	
+	local statusBarTex = statusBar:GetStatusBarTexture()
+	local statusBarOrientation = statusBar:GetOrientation()
+	if isTransparent then
+		if statusBar.backdrop then
+			statusBar.backdrop:SetTemplate("Transparent")
+			statusBar.backdrop.ignoreUpdates = true
+		elseif statusBar:GetParent().template then
+			statusBar:GetParent():SetTemplate("Transparent")	
+			statusBar:GetParent().ignoreUpdates = true
+		end
+		
+		statusBar:SetStatusBarTexture(0, 0, 0, 0)
+		backdropTex:ClearAllPoints()
+		if statusBarOrientation == 'VERTICAL' then
+			backdropTex:SetPoint("TOPLEFT", statusBar, "TOPLEFT")
+			backdropTex:SetPoint("BOTTOMLEFT", statusBarTex, "TOPLEFT")
+			backdropTex:SetPoint("BOTTOMRIGHT", statusBarTex, "TOPRIGHT")			
+		else
+			backdropTex:SetPoint("TOPLEFT", statusBarTex, "TOPRIGHT")
+			backdropTex:SetPoint("BOTTOMLEFT", statusBarTex, "BOTTOMRIGHT")
+			backdropTex:SetPoint("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT")
+		end
+		
+		if invertBackdropTex then
+			backdropTex:Show()
+		end
+		
+		if not invertBackdropTex and not statusBar.hookedColor then
+			hooksecurefunc(statusBar, "SetStatusBarColor", updateColor)
+			statusBar.hookedColor = true
+		end
+		
+		if backdropTex.multiplier then
+			backdropTex.multiplier = 0.25
+		end
+	else
+		if statusBar.backdrop then
+			statusBar.backdrop:SetTemplate("Default")
+			statusBar.backdrop.ignoreUpdates = nil
+		elseif statusBar:GetParent().template then
+			statusBar:GetParent():SetTemplate("Default")
+			statusBar:GetParent().ignoreUpdates = nil
+		end
+		statusBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
+		if adjustBackdropPoints then
+			backdropTex:ClearAllPoints()
+			if statusBarOrientation == 'VERTICAL' then
+				backdropTex:SetPoint("TOPLEFT", statusBar, "TOPLEFT")
+				backdropTex:SetPoint("BOTTOMLEFT", statusBarTex, "TOPLEFT")
+				backdropTex:SetPoint("BOTTOMRIGHT", statusBarTex, "TOPRIGHT")				
+			else			
+				backdropTex:SetPoint("TOPLEFT", statusBarTex, "TOPRIGHT")
+				backdropTex:SetPoint("BOTTOMLEFT", statusBarTex, "BOTTOMRIGHT")
+				backdropTex:SetPoint("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT")
+			end
+		end
+		
+		if invertBackdropTex then
+			backdropTex:Hide()
+		end
+		
+		if backdropTex.multiplier then
+			backdropTex.multiplier = 0.25	
+		end
+	end
+end
 
 E:RegisterInitialModule(UF:GetName())

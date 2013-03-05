@@ -112,7 +112,7 @@ local specialChatIcons = {
 		["Uplift"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\Bathrobe_Chat_Logo.blp:15:15|t",
 		["Affinitii"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\Bathrobe_Chat_Logo.blp:15:15|t",
 		["Affinity"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\Bathrobe_Chat_Logo.blp:15:15|t"
-	},
+	}
 }
 
 CH.Keywords = {};
@@ -923,31 +923,33 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 					pflag = _G["CHAT_FLAG_"..arg6];
 				end
 			else
-				if specialChatIcons[E.myrealm] then
-					for character, texture in pairs(specialChatIcons[E.myrealm]) do
+				local myRealm = E.myrealm
+				myRealm = myRealm:gsub(' ', '')
+				if specialChatIcons[myRealm] then
+					for character, texture in pairs(specialChatIcons[myRealm]) do
 						if arg2 == character then
 							pflag = texture
 						end							
 					end
 					
 					for realm, _ in pairs(specialChatIcons) do
-						if realm ~= E.myrealm then
+						if realm ~= myRealm then
 							for character, texture in pairs(specialChatIcons[realm]) do
-								if arg2 == character.."%-"..realm then
+								if arg2 == character.."-"..realm then
 									pflag = texture
 								end			
 							end
 						end
-					end			
+					end
 				else
 					for realm, _ in pairs(specialChatIcons) do
 						for character, texture in pairs(specialChatIcons[realm]) do
-							if arg2 == character.."%-"..realm then
+							if arg2 == character.."-"..realm then
 								pflag = texture
 							end		
 						end
-					end		
-				end	
+					end					
+				end
 
 				if not pflag then
 					pflag = "";
@@ -1390,7 +1392,7 @@ end
 
 function CH:DisplayChatHistory()	
 	local temp, data = {}
-	for id, _ in pairs(ElvCharacterDB.ChatHistory) do
+	for id, _ in pairs(ElvCharacterDB.ChatLog) do
 		tinsert(temp, tonumber(id))
 	end
 	
@@ -1399,7 +1401,7 @@ function CH:DisplayChatHistory()
 	end)
 	
 	for i = 1, #temp do
-		data = ElvCharacterDB.ChatHistory[tostring(temp[i])]
+		data = ElvCharacterDB.ChatLog[tostring(temp[i])]
 
 		if type(data) == "table" and data[20] ~= nil then
 			CH.timeOverride = temp[i]
@@ -1426,14 +1428,18 @@ function CH:SaveChatHistory(event, ...)
 		end		
 	end
 	
-	local temp = {...}
+	local temp = {}
+	for i = 1, select('#', ...) do	
+		temp[i] = select(i, ...) or false
+	end
+	
 	if #temp > 0 then
 	  temp[20] = event
 	  local timeForMessage = GetTimeForSavedMessage()
-	  ElvCharacterDB.ChatHistory[timeForMessage] = temp
+	  ElvCharacterDB.ChatLog[timeForMessage] = temp
 	  
 		local c, k = 0
-		for id, data in pairs(ElvCharacterDB.ChatHistory) do
+		for id, data in pairs(ElvCharacterDB.ChatLog) do
 			c = c + 1
 			if (not k) or k > id then
 				k = id
@@ -1441,7 +1447,7 @@ function CH:SaveChatHistory(event, ...)
 		end
 		
 		if c > 128 then
-			ElvCharacterDB.ChatHistory[k] = nil
+			ElvCharacterDB.ChatLog[k] = nil
 		end	  
 	end
 end
@@ -1485,6 +1491,10 @@ end
 
 DEFAULT_CHAT_FRAME:UnregisterEvent("GUILD_MOTD")
 function CH:Initialize()
+	if ElvCharacterDB.ChatHistory then
+		ElvCharacterDB.ChatHistory = nil --Depreciated
+	end
+	
 	self.db = E.db.chat
 	local msg = GetGuildRosterMOTD() or ""
 	if E.private.chat.enable ~= true then 
@@ -1496,8 +1506,8 @@ function CH:Initialize()
 		ElvCharacterDB.ChatEditHistory = {};
 	end
 	
-	if not ElvCharacterDB.ChatHistory or not self.db.chatHistory then
-		ElvCharacterDB.ChatHistory = {};
+	if not ElvCharacterDB.ChatLog or not self.db.chatHistory then
+		ElvCharacterDB.ChatLog = {};
 	end
 	
 	self:UpdateChatKeywords()

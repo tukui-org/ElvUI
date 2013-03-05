@@ -52,6 +52,14 @@ local function LoadSkin()
 			icon:SetInside()
 		end
 	end
+
+	TransmogrifyConfirmationPopup:SetParent(UIParent)
+	TransmogrifyConfirmationPopup:StripTextures()
+	TransmogrifyConfirmationPopup:SetTemplate("Transparent")
+	S:HandleButton(TransmogrifyConfirmationPopup.Button1)
+	S:HandleButton(TransmogrifyConfirmationPopup.Button2)
+	S:HandleItemButton(TransmogrifyConfirmationPopupItemFrame1, true)
+	S:HandleItemButton(TransmogrifyConfirmationPopupItemFrame2, true)	
 end
 
 S:RegisterSkin("Blizzard_ItemAlterationUI", LoadSkin)

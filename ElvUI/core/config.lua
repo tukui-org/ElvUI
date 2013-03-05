@@ -1,13 +1,12 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
-local ACD = LibStub("AceConfigDialog-3.0")
 local grid
 
-local selectedValue = 'GENERAL'
+local selectedValue = 'ALL'
 local floor = math.floor
 
 E.ConfigModeLayouts = {
-	'GENERAL',
 	'ALL',
+	'GENERAL',
 	'SOLO',
 	'PARTY',
 	'ARENA',
@@ -18,8 +17,8 @@ E.ConfigModeLayouts = {
 }
 
 E.ConfigModeLocalizedStrings = {
-	GENERAL = GENERAL,
 	ALL = ALL,
+	GENERAL = GENERAL,
 	SOLO = SOLO,
 	PARTY = PARTY,
 	ARENA = ARENA,
@@ -66,8 +65,10 @@ function E:ToggleConfigMode(override, configType)
 		end
 		
 		ElvUIMoverPopupWindow:Show()
-		ACD['Close'](ACD, 'ElvUI') 
-		GameTooltip:Hide()		
+		if IsAddOnLoaded("ElvUI_Config") then
+			LibStub("AceConfigDialog-3.0"):Close("ElvUI")
+			GameTooltip:Hide()
+		end
 		E.ConfigurationMode = true
 	else
 		if ElvUIMoverPopupWindow then
@@ -85,7 +86,7 @@ function E:ToggleConfigMode(override, configType)
 		configType = nil
 	end
 	
-	self:ToggleMovers(E.ConfigurationMode, configType or 'GENERAL')
+	self:ToggleMovers(E.ConfigurationMode, configType or 'ALL')
 end
 
 function E:Grid_Create() 
@@ -233,10 +234,10 @@ function E:CreateMoverPopup()
 	f:SetWidth(360)
 	f:SetHeight(130)
 	f:SetTemplate('Transparent')
-	f:SetPoint("BOTTOM", UIParent, 'CENTER')
+	f:SetPoint("BOTTOM", UIParent, 'CENTER', 0, 100)
 	f:SetScript('OnHide', function()
 		if ElvUIMoverPopupWindowDropDown then
-			UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, 'GENERAL');
+			UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, 'ALL');
 		end
 	end)
 	f:Hide()
@@ -281,10 +282,9 @@ function E:CreateMoverPopup()
 	_G[lock:GetName() .. "Text"]:SetText(L["Lock"])
 
 	lock:SetScript("OnClick", function(self)
-		local ACD = LibStub("AceConfigDialog-3.0")
 		E:ToggleConfigMode(true)
-		ACD['Open'](ACD, 'ElvUI') 
-		selectedValue = 'GENERAL'
+		if IsAddOnLoaded("ElvUI_Config") then LibStub("AceConfigDialog-3.0"):Open('ElvUI') end
+		selectedValue = 'ALL'
 		UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, selectedValue);
 	end)
 	
@@ -353,7 +353,7 @@ function E:CreateMoverPopup()
 	local nudgeFrame = CreateFrame('Frame', 'ElvUIMoverNudgeWindow', E.UIParent)
 	nudgeFrame:SetFrameStrata("DIALOG")
 	nudgeFrame:SetWidth(200)
-	nudgeFrame:SetHeight(100)
+	nudgeFrame:SetHeight(110)
 	nudgeFrame:SetTemplate('Transparent')
 	nudgeFrame:Point('TOP', ElvUIMoverPopupWindow, 'BOTTOM', 0, -15)
 	nudgeFrame:SetFrameLevel(100)
@@ -412,7 +412,7 @@ function E:CreateMoverPopup()
 	xOffset.text = xOffset:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
 	xOffset.text:SetPoint('RIGHT', xOffset, 'LEFT', -4, 0)
 	xOffset.text:SetText('X:')	
-	xOffset:SetPoint('BOTTOMRIGHT', nudgeFrame, 'CENTER', -6, 0)
+	xOffset:SetPoint('BOTTOMRIGHT', nudgeFrame, 'CENTER', -6, 8)
 	nudgeFrame.xOffset = xOffset
 	S:HandleEditBox(xOffset)
 	
@@ -446,9 +446,20 @@ function E:CreateMoverPopup()
 	yOffset.text = yOffset:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
 	yOffset.text:SetPoint('RIGHT', yOffset, 'LEFT', -4, 0)
 	yOffset.text:SetText('Y:')	
-	yOffset:SetPoint('BOTTOMLEFT', nudgeFrame, 'CENTER', 16, 0)
+	yOffset:SetPoint('BOTTOMLEFT', nudgeFrame, 'CENTER', 16, 8)
 	nudgeFrame.yOffset = yOffset
 	S:HandleEditBox(yOffset)	
+	
+	local resetButton = CreateFrame("Button", nudgeFrame:GetName()..'ResetButton', nudgeFrame, "UIPanelButtonTemplate")
+	resetButton:SetText(RESET)
+	resetButton:SetPoint("TOP", nudgeFrame, "CENTER", 0, 2)
+	resetButton:Size(100, 25)
+	resetButton:SetScript("OnClick", function()
+		if ElvUIMoverNudgeWindow.child.textString then
+			E:ResetMovers(ElvUIMoverNudgeWindow.child.textString)
+		end
+	end)
+	S:HandleButton(resetButton)
 	
 	local upButton = CreateFrame('Button', nudgeFrame:GetName()..'UpButton', nudgeFrame, 'UIPanelSquareButton')
 	upButton:SetPoint('BOTTOMRIGHT', nudgeFrame, 'BOTTOM', -6, 4)

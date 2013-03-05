@@ -1,6 +1,6 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local NP = E:GetModule('NamePlates')
-_G["NP"] = NP
+
 --[[
 	This file handles functions for the Castbar and Debuff modules of nameplates.
 ]]
@@ -533,7 +533,7 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, ...)
 		NP:UpdateAuraByLookup(destGUID)
 		local name, raidicon
 		-- Cache Unit Name for alternative lookup strategy
-		if band(destFlags, COMBATLOG_OBJECT_CONTROL_PLAYER) > 0 then 
+		if band(destFlags, COMBATLOG_OBJECT_CONTROL_PLAYER) > 0 and destName then 
 			local rawName = strsplit("-", destName)			-- Strip server name from players
 			NP.ByName[rawName] = destGUID
 			name = rawName
@@ -645,10 +645,12 @@ function NP:UpdateRoster()
 	wipe(self.GroupMembers)
 	wipe(self.GroupTanks)	
 	
+	local petExists = UnitExists('pet')
+	local inGroup = IsInGroup()
 	if IsInRaid() then 
 		groupType = "raid"
 		groupSize = GetNumGroupMembers()
-	elseif IsInGroup() then 
+	elseif inGroup then 
 		groupType = "party"
 		groupSize = GetNumGroupMembers() - 1
 	else 
@@ -663,7 +665,7 @@ function NP:UpdateRoster()
 		end
 	end
 	
-	if UnitExists('pet') then
+	if petExists then
 		self:AddToRoster('pet')
 		
 		if groupType ~= "raid" then
@@ -674,6 +676,13 @@ function NP:UpdateRoster()
 	if groupType == 'party' then
 		self:AddToRoster('player')
 	end
+	
+	local _, instanceType = IsInInstance()
+	if (inGroup or petExists) and instanceType ~= 'pvp' and instanceType ~= 'arena' then
+		NP.displayLooseMobs = true
+	else
+		NP.displayLooseMobs = nil
+	end	
 end
 
 

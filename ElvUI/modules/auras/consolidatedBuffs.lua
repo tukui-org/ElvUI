@@ -18,7 +18,7 @@ A.Stats = {
 A.Stamina = {
 	[90364] = 'HUNTER', -- Qiraji Fortitude
 	[469] = 'WARRIOR', -- Commanding Shout
-	[6307] = 'WARLOCK', -- Imp. Blood Pact
+	[109773] = 'WARLOCK', -- Dark Intent
 	[21562] = 'PRIEST', -- Power Word: Fortitude
 	['DEFAULT'] = 21562
 }

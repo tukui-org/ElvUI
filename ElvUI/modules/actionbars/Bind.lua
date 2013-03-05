@@ -61,7 +61,7 @@ function AB:BindListener(key)
 	local ctrl = IsControlKeyDown() and "CTRL-" or "";
 	local shift = IsShiftKeyDown() and "SHIFT-" or "";
 	
-	if not bind.spellmacro or bind.spellmacro == "PET" or bind.spellmacro == "STANCE" then
+	if not bind.spellmacro or bind.spellmacro == "PET" or bind.spellmacro == "STANCE" or bind.spellmacro == "FLYOUT" then
 		SetBinding(alt..ctrl..shift..key, bind.button.bindstring);
 	else
 		SetBinding(alt..ctrl..shift..key, bind.spellmacro.." "..bind.button.name);
@@ -82,8 +82,37 @@ function AB:BindUpdate(button, spellmacro)
 	bind:Show();
 	
 	ShoppingTooltip1:Hide();
+	
+	local flyoutArrow = button.FlyoutArrow
+	if flyoutArrow and flyoutArrow:IsShown() then
+		bind:EnableMouse(false)
+	elseif not bind:IsMouseEnabled() then
+		bind:EnableMouse(true)
+	end	
 
-	if spellmacro == "SPELL" then
+	if spellmacro == "FLYOUT" then
+		bind.button.name = GetSpellInfo(button.spellID);
+		bind.button.bindstring = "SPELL "..bind.button.name
+
+		GameTooltip:AddLine(L['Trigger']);
+		GameTooltip:Show();
+		GameTooltip:SetScript("OnHide", function(tt)
+			tt:SetOwner(bind, "ANCHOR_TOP");
+			tt:SetPoint("BOTTOM", bind, "TOP", 0, 1);
+			tt:AddLine(bind.button.name, 1, 1, 1);
+			bind.button.bindings = {GetBindingKey(bind.button.bindstring)};
+			if #bind.button.bindings == 0 then
+				tt:AddLine(L["No bindings set."], .6, .6, .6);
+			else
+				tt:AddDoubleLine(L["Binding"], L["Key"], .6, .6, .6, .6, .6, .6);
+				for i = 1, #bind.button.bindings do
+					tt:AddDoubleLine(i, bind.button.bindings[i]);
+				end
+			end
+			tt:Show();
+			tt:SetScript("OnHide", nil);
+		end);	
+	elseif spellmacro == "SPELL" then
 		bind.button.id = SpellBook_GetSpellBookSlot(bind.button);
 		bind.button.name = GetSpellBookItemName(bind.button.id, SpellBookFrame.bookType);
 		
@@ -232,6 +261,24 @@ function AB:Tooltip_OnUpdate(tooltip, e)
 	end
 end
 
+function AB:UpdateFlyouts()
+	for i=1, GetNumFlyouts() do
+		local x = GetFlyoutID(i)
+		local _, _, numSlots, isKnown = GetFlyoutInfo(x)
+		if (isKnown) then
+			for k=1, numSlots do
+				local b = _G["SpellFlyoutButton"..k]
+				if SpellFlyout:IsShown() and b and b:IsShown() then
+					if not b.hookedFlyout then
+						b:HookScript("OnEnter", function(b) AB:BindUpdate(b, "FLYOUT"); end);
+						b.hookedFlyout = true
+					end
+				end
+			end
+		end
+	end
+end
+
 function AB:RegisterMacro(addon)
 	if addon == "Blizzard_MacroUI" then
 		for i=1, 36 do
@@ -243,6 +290,7 @@ end
 
 function AB:LoadKeyBinder()
 	bind:SetFrameStrata("DIALOG");
+	bind:SetFrameLevel(99)
 	bind:EnableMouse(true);
 	bind:EnableKeyboard(true);
 	bind:EnableMouseWheel(true);
@@ -254,7 +302,7 @@ function AB:LoadKeyBinder()
 	self:HookScript(GameTooltip, "OnUpdate", "Tooltip_OnUpdate");
 	hooksecurefunc(GameTooltip, "Hide", function(tooltip) for _, tt in pairs(tooltip.shoppingTooltips) do tt:Hide(); end end);
 	
-	bind:SetScript('OnEnter', function(self) local db = self.button:GetParent().db if db and  db.mouseover then AB:Button_OnEnter(self.button) end end)
+	bind:SetScript('OnEnter', function(self) local db = self.button:GetParent().db if db and db.mouseover then AB:Button_OnEnter(self.button) end end)
 	bind:SetScript("OnLeave", function(self) AB:BindHide(); local db = self.button:GetParent().db if db and db.mouseover then AB:Button_OnLeave(self.button) end end)
 	bind:SetScript("OnKeyUp", function(_, key) self:BindListener(key) end);
 	bind:SetScript("OnMouseUp", function(_, key) self:BindListener(key) end);
@@ -280,4 +328,7 @@ function AB:LoadKeyBinder()
 	else
 		self:RegisterMacro("Blizzard_MacroUI");
 	end	
+	
+	self:SecureHook("ActionButton_UpdateFlyout", "UpdateFlyouts")
+	self:UpdateFlyouts()
 end

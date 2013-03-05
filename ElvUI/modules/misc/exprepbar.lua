@@ -123,6 +123,9 @@ function M:UpdateReputation(event)
 end
 
 local function ExperienceBar_OnEnter(self)
+	if E.db.general.experience.mouseover then
+		E:UIFrameFadeIn(self, 0.4, self:GetAlpha(), 1)
+	end
 	GameTooltip:ClearLines()
 	GameTooltip:SetOwner(self, 'ANCHOR_BOTTOM', 0, -4)
 	
@@ -142,6 +145,9 @@ local function ExperienceBar_OnEnter(self)
 end
 
 local function ReputationBar_OnEnter(self)
+	if E.db.general.reputation.mouseover then
+		E:UIFrameFadeIn(self, 0.4, self:GetAlpha(), 1)
+	end
 	GameTooltip:ClearLines()
 	GameTooltip:SetOwner(self, 'ANCHOR_BOTTOM', 0, -4)
 	
@@ -157,6 +163,9 @@ local function ReputationBar_OnEnter(self)
 end
 
 local function OnLeave(self)
+	if (self == ElvUI_ExperienceBar and E.db.general.experience.mouseover) or (self == ElvUI_ReputationBar and E.db.general.reputation.mouseover) then
+		E:UIFrameFadeOut(self, 1, self:GetAlpha(), 0)
+	end
 	GameTooltip:Hide()
 end
 
@@ -191,6 +200,18 @@ function M:UpdateExpRepDimensions()
 	
 	self.repBar.text:FontTemplate(nil, E.db.general.reputation.textSize)
 	self.expBar.text:FontTemplate(nil, E.db.general.experience.textSize)
+	
+	if E.db.general.experience.mouseover then
+		self.expBar:SetAlpha(0)
+	else
+		self.expBar:SetAlpha(1)
+	end
+	
+	if E.db.general.reputation.mouseover then
+		self.repBar:SetAlpha(0)
+	else
+		self.repBar:SetAlpha(1)
+	end
 end
 
 function M:EnableDisable_ExperienceBar()

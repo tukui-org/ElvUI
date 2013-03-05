@@ -8,7 +8,7 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 local CAN_HAVE_CLASSBAR = (E.myclass == "PALADIN" or E.myclass == "DRUID" or E.myclass == "DEATHKNIGHT" or E.myclass == "WARLOCK" or E.myclass == "PRIEST" or E.myclass == "MONK" or E.myclass == 'MAGE')
 
 function UF:Construct_PlayerFrame(frame)
-	frame.Threat = self:Construct_ThreatGlow(frame, true)
+	frame.Threat = self:Construct_Threat(frame, true)
 	
 	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
 	frame.Health.frequentUpdates = true;
@@ -38,6 +38,7 @@ function UF:Construct_PlayerFrame(frame)
 		frame.DruidAltMana = self:Construct_DruidAltManaBar(frame)
 	elseif E.myclass == "MONK" then
 		frame.Harmony = self:Construct_MonkResourceBar(frame)
+		frame.Stagger = self:Construct_Stagger(frame)
 	elseif E.myclass == "PRIEST" then
 		frame.ShadowOrbs = self:Construct_PriestResourceBar(frame)
 	elseif E.myclass == 'MAGE' then
@@ -64,6 +65,7 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 	local health = frame.Health
 	local threat = frame.Threat
 	local power = frame.Power
+	local stagger = frame.Stagger
 	local PORTRAIT_WIDTH = db.portrait.width
 	local USE_PORTRAIT = db.portrait.enable
 	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
@@ -71,14 +73,17 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 	local USE_CLASSBAR = db.classbar.enable
 	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and USE_CLASSBAR
 	local USE_POWERBAR = db.power.enable
-	local USE_MINI_POWERBAR = db.power.width ~= 'fill' and USE_POWERBAR
+	local USE_INSET_POWERBAR = db.power.width == 'inset' and USE_POWERBAR
+	local USE_MINI_POWERBAR = db.power.width == 'spaced' and USE_POWERBAR
 	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR
 	local POWERBAR_OFFSET = db.power.offset
 	local POWERBAR_HEIGHT = db.power.height
 	local SPACING = E.Spacing;
 	local BORDER = E.Border;
 	local SHADOW_SPACING = E.PixelMode and 3 or 4
-
+	local USE_STAGGER = stagger and stagger:IsShown();	
+	local STAGGER_WIDTH = USE_STAGGER and (db.stagger.width + (BORDER*2)) or 0;
+	
 	if not USE_POWERBAR then
 		POWERBAR_HEIGHT = 0
 	end
@@ -91,15 +96,27 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 		CLASSBAR_HEIGHT = CLASSBAR_HEIGHT / 2
 	end
 	
-	if not USE_POWERBAR_OFFSET and not USE_MINI_POWERBAR then
+	if USE_STAGGER then
+		if not USE_MINI_POWERBAR and not USE_INSET_POWERBAR then
+			stagger:Point('BOTTOMLEFT', power, 'BOTTOMRIGHT', BORDER*2 + (E.PixelMode and -1 or SPACING), 0)
+		else
+			stagger:Point('BOTTOMLEFT', health, 'BOTTOMRIGHT', BORDER*2 + (E.PixelMode and -1 or SPACING), 0)
+		end
+		stagger:Point('TOPRIGHT', health, 'TOPRIGHT', STAGGER_WIDTH, 0)
+
+
+		if not USE_POWERBAR_OFFSET and not USE_MINI_POWERBAR and not USE_INSET_POWERBAR then
+			power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -BORDER - STAGGER_WIDTH, BORDER)
+		end	
+	elseif not USE_POWERBAR_OFFSET and not USE_MINI_POWERBAR and not USE_INSET_POWERBAR then
 		power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -BORDER, BORDER)
 	end
 	
 	if isShown then
 		if db.power.offset ~= 0 then
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER+db.power.offset), -(BORDER + CLASSBAR_HEIGHT + SPACING))
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER+db.power.offset) - STAGGER_WIDTH, -(BORDER + CLASSBAR_HEIGHT + SPACING))
 		else
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -(BORDER + CLASSBAR_HEIGHT + SPACING))
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER - STAGGER_WIDTH, -(BORDER + CLASSBAR_HEIGHT + SPACING))
 		end
 		health:Point("TOPLEFT", frame, "TOPLEFT", PORTRAIT_WIDTH + BORDER, -(BORDER + CLASSBAR_HEIGHT + SPACING))	
 
@@ -108,21 +125,23 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 			mini_classbarY = -(SPACING+(CLASSBAR_HEIGHT))
 		end		
 		
-		threat:Point("TOPLEFT", -SHADOW_SPACING, SHADOW_SPACING+mini_classbarY)
-		threat:Point("TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING+mini_classbarY)
-		
-		if USE_MINI_POWERBAR then
-			threat:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING + (POWERBAR_HEIGHT/2))
-			threat:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING + (POWERBAR_HEIGHT/2))		
-		else
-			threat:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
-			threat:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
+		if db.threatStyle == "GLOW" then
+			threat.glow:Point("TOPLEFT", -SHADOW_SPACING, SHADOW_SPACING+mini_classbarY)
+			threat.glow:Point("TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING+mini_classbarY)
+			
+			if USE_MINI_POWERBAR then
+				threat.glow:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING + (POWERBAR_HEIGHT/2))
+				threat.glow:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING + (POWERBAR_HEIGHT/2))		
+			else
+				threat.glow:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
+				threat.glow:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
+			end		
+			
+			if USE_POWERBAR_OFFSET then
+				threat.glow:Point("TOPRIGHT", SHADOW_SPACING-POWERBAR_OFFSET, SHADOW_SPACING+mini_classbarY)
+				threat.glow:Point("BOTTOMRIGHT", SHADOW_SPACING-POWERBAR_OFFSET, -SHADOW_SPACING)	
+			end				
 		end		
-		
-		if USE_POWERBAR_OFFSET then
-			threat:Point("TOPRIGHT", SHADOW_SPACING-POWERBAR_OFFSET, SHADOW_SPACING+mini_classbarY)
-			threat:Point("BOTTOMRIGHT", SHADOW_SPACING-POWERBAR_OFFSET, -SHADOW_SPACING)	
-		end				
 
 		
 		if db.portrait.enable and not USE_PORTRAIT_OVERLAY then
@@ -134,7 +153,7 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 				portrait.backdrop:SetPoint("TOPLEFT", frame, "TOPLEFT")
 			end		
 			
-			if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR then
+			if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or USE_INSET_POWERBAR or not USE_POWERBAR or USE_INSET_POWERBAR then
 				portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", E.PixelMode and 1 or -SPACING, 0)
 			else
 				portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", E.PixelMode and 1 or -SPACING, 0)
@@ -142,34 +161,36 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 		end
 	else
 		if db.power.offset ~= 0 then
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER + db.power.offset), -BORDER)
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER + db.power.offset) - STAGGER_WIDTH, -BORDER)
 		else
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -BORDER)
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER - STAGGER_WIDTH, -BORDER)
 		end
 		health:Point("TOPLEFT", frame, "TOPLEFT", PORTRAIT_WIDTH + BORDER, -BORDER)	
 
-		threat:Point("TOPLEFT", -SHADOW_SPACING, SHADOW_SPACING)
-		threat:Point("TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING)
-		
-		if USE_MINI_POWERBAR then
-			threat:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING + (POWERBAR_HEIGHT/2))
-			threat:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING + (POWERBAR_HEIGHT/2))		
-		else
-			threat:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
-			threat:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
-		end		
-		
-		if USE_POWERBAR_OFFSET then
-			threat:Point("TOPRIGHT", SHADOW_SPACING-POWERBAR_OFFSET, SHADOW_SPACING)
-			threat:Point("BOTTOMRIGHT", SHADOW_SPACING-POWERBAR_OFFSET, -SHADOW_SPACING)	
-		end				
+		if db.threatStyle == "GLOW" then
+			threat.glow:Point("TOPLEFT", -SHADOW_SPACING, SHADOW_SPACING)
+			threat.glow:Point("TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING)
+			
+			if USE_MINI_POWERBAR then
+				threat.glow:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING + (POWERBAR_HEIGHT/2))
+				threat.glow:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING + (POWERBAR_HEIGHT/2))		
+			else
+				threat.glow:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
+				threat.glow:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
+			end		
+			
+			if USE_POWERBAR_OFFSET then
+				threat.glow:Point("TOPRIGHT", SHADOW_SPACING-POWERBAR_OFFSET, SHADOW_SPACING)
+				threat.glow:Point("BOTTOMRIGHT", SHADOW_SPACING-POWERBAR_OFFSET, -SHADOW_SPACING)	
+			end				
+		end			
 
-		if db.portrait.enable and not USE_PORTRAIT_OVERLAY then
+		if db.portrait.enable and not USE_PORTRAIT_OVERLAY and frame.Portrait then
 			local portrait = frame.Portrait
 			portrait.backdrop:ClearAllPoints()
 			portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT")
 			
-			if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR then
+			if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR or USE_INSET_POWERBAR then
 				portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", E.PixelMode and 1 or -SPACING, 0)
 			else
 				portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", E.PixelMode and 1 or -SPACING, 0)
@@ -187,7 +208,7 @@ function UF:Update_PlayerFrame(frame, db)
 		frame.Portrait.backdrop:Hide()
 	end
 	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
-	
+	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	local BORDER = E.Border
 	local SPACING = E.Spacing
 	local SHADOW_SPACING = E.PixelMode and 3 or 4
@@ -195,7 +216,8 @@ function UF:Update_PlayerFrame(frame, db)
 	local UNIT_HEIGHT = db.height
 
 	local USE_POWERBAR = db.power.enable
-	local USE_MINI_POWERBAR = db.power.width ~= 'fill' and USE_POWERBAR
+	local USE_INSET_POWERBAR = db.power.width == 'inset' and USE_POWERBAR
+	local USE_MINI_POWERBAR = db.power.width == 'spaced' and USE_POWERBAR
 	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR
 	local POWERBAR_OFFSET = db.power.offset
 	local POWERBAR_HEIGHT = db.power.height
@@ -239,41 +261,57 @@ function UF:Update_PlayerFrame(frame, db)
 		end
 	end
 	
+	local mini_classbarY = 0
+	if USE_MINI_CLASSBAR then
+		mini_classbarY = -(SPACING+(CLASSBAR_HEIGHT/2))
+	end	
+	
 	--Threat
 	do
 		local threat = frame.Threat
-		
-		local mini_classbarY = 0
-		if USE_MINI_CLASSBAR then
-			mini_classbarY = -(SPACING+(CLASSBAR_HEIGHT/2))
-		end
-		
-		threat:ClearAllPoints()
-		threat:SetBackdropBorderColor(0, 0, 0, 0)
-		threat:Point("TOPLEFT", -SHADOW_SPACING, SHADOW_SPACING+mini_classbarY)
-		threat:Point("TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING+mini_classbarY)
-		
-		if USE_MINI_POWERBAR then
-			threat:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING + (POWERBAR_HEIGHT/2))
-			threat:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING + (POWERBAR_HEIGHT/2))		
-		else
-			threat:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
-			threat:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
-		end
 
-		if USE_POWERBAR_OFFSET then
-			threat:Point("TOPRIGHT", SHADOW_SPACING-POWERBAR_OFFSET, SHADOW_SPACING+mini_classbarY)
-			threat:Point("BOTTOMRIGHT", SHADOW_SPACING-POWERBAR_OFFSET, -SHADOW_SPACING)	
-		end		
-
-		if USE_POWERBAR_OFFSET == true then
-			if USE_PORTRAIT == true and not USE_PORTRAIT_OVERLAY then
-				threat:Point("BOTTOMLEFT", frame.Portrait.backdrop, "BOTTOMLEFT", -4, -4)
-			else
-				threat:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", -5, -5)
+		if db.threatStyle ~= 'NONE' and db.threatStyle ~= nil then
+			if not frame:IsElementEnabled('Threat') then
+				frame:EnableElement('Threat')
 			end
-			threat:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", 5, -5)
-		end				
+
+			if db.threatStyle == "GLOW" then
+				threat:SetFrameStrata('BACKGROUND')
+				threat.glow:ClearAllPoints()
+				threat.glow:SetBackdropBorderColor(0, 0, 0, 0)
+				threat.glow:Point("TOPLEFT", -SHADOW_SPACING, SHADOW_SPACING+mini_classbarY)
+				threat.glow:Point("TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING+mini_classbarY)
+				
+				if USE_MINI_POWERBAR then
+					threat.glow:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING + (POWERBAR_HEIGHT/2))
+					threat.glow:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING + (POWERBAR_HEIGHT/2))		
+				else
+					threat.glow:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
+					threat.glow:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
+				end
+
+				if USE_POWERBAR_OFFSET then
+					threat.glow:Point("TOPRIGHT", SHADOW_SPACING-POWERBAR_OFFSET, SHADOW_SPACING+mini_classbarY)
+					threat.glow:Point("BOTTOMRIGHT", SHADOW_SPACING-POWERBAR_OFFSET, -SHADOW_SPACING)	
+
+					if USE_PORTRAIT == true and not USE_PORTRAIT_OVERLAY then
+						threat.glow:Point("BOTTOMLEFT", frame.Portrait.backdrop, "BOTTOMLEFT", -4, -4)
+					else
+						threat.glow:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", -5, -5)
+					end
+					threat.glow:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", 5, -5)
+				end
+			elseif db.threatStyle == "ICONTOPLEFT" or db.threatStyle == "ICONTOPRIGHT" or db.threatStyle == "ICONBOTTOMLEFT" or db.threatStyle == "ICONBOTTOMRIGHT" or db.threatStyle == "ICONTOP" or db.threatStyle == "ICONBOTTOM" or db.threatStyle == "ICONLEFT" or db.threatStyle == "ICONRIGHT" then
+				threat:SetFrameStrata('HIGH')
+				local point = db.threatStyle
+				point = point:gsub("ICON", "")
+				
+				threat.texIcon:ClearAllPoints()
+				threat.texIcon:SetPoint(point, frame.Health, point)
+			end
+		elseif frame:IsElementEnabled('Threat') then
+			frame:DisableElement('Threat')
+		end
 	end
 	
 	--Rest Icon
@@ -297,7 +335,7 @@ function UF:Update_PlayerFrame(frame, db)
 		--Text
 		local x, y = self:GetPositionOffset(db.health.position)
 		health.value:ClearAllPoints()
-		health.value:Point(db.health.position, health, db.health.position, x, y)
+		health.value:Point(db.health.position, health, db.health.position, x + db.health.xOffset, y + db.health.yOffset)
 		frame:Tag(health.value, db.health.text_format)
 		
 		--Colors
@@ -319,9 +357,12 @@ function UF:Update_PlayerFrame(frame, db)
 		--Position
 		health:ClearAllPoints()
 		health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -BORDER)
+
 		if USE_POWERBAR_OFFSET then
 			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER+POWERBAR_OFFSET), -BORDER)
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER+POWERBAR_OFFSET)
+		elseif USE_INSET_POWERBAR then
+			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER)
 		elseif USE_MINI_POWERBAR then
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER + (POWERBAR_HEIGHT/2))
 		else
@@ -354,20 +395,11 @@ function UF:Update_PlayerFrame(frame, db)
 			end
 			
 			health:Point("TOPLEFT", frame, "TOPLEFT", PORTRAIT_WIDTH+BORDER, DEPTH)
-		end
+		end		
 	end
 	
 	--Name
-	do
-		local name = frame.Name
-		if not db.power.hideonnpc then
-			local x, y = self:GetPositionOffset(db.name.position)
-			name:ClearAllPoints()
-			name:Point(db.name.position, frame.Health, db.name.position, x, y)				
-		end
-		
-		frame:Tag(name, db.name.text_format)
-	end	
+	UF:UpdateNameSettings(frame)
 	
 	--PvP
 	do
@@ -398,7 +430,7 @@ function UF:Update_PlayerFrame(frame, db)
 			--Text
 			local x, y = self:GetPositionOffset(db.power.position)
 			power.value:ClearAllPoints()
-			power.value:Point(db.power.position, frame.Health, db.power.position, x, y)		
+			power.value:Point(db.power.position, frame.Health, db.power.position, x + db.power.xOffset, y + db.power.yOffset)		
 			frame:Tag(power.value, db.power.text_format)
 			
 			--Colors
@@ -419,6 +451,12 @@ function UF:Update_PlayerFrame(frame, db)
 				power:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", POWERBAR_OFFSET, -POWERBAR_OFFSET)
 				power:SetFrameStrata("LOW")
 				power:SetFrameLevel(2)
+			elseif USE_INSET_POWERBAR then
+				power:Height(POWERBAR_HEIGHT - BORDER*2)
+				power:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", BORDER + (BORDER*2), BORDER + (BORDER*2))
+				power:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", -(BORDER + (BORDER*2)), BORDER + (BORDER*2))
+				power:SetFrameStrata("MEDIUM")
+				power:SetFrameLevel(frame:GetFrameLevel() + 3)			
 			elseif USE_MINI_POWERBAR then
 				power:Width(POWERBAR_WIDTH - BORDER*2)
 				power:Height(POWERBAR_HEIGHT - BORDER*2)
@@ -473,7 +511,7 @@ function UF:Update_PlayerFrame(frame, db)
 					portrait.backdrop:SetPoint("TOPLEFT", frame, "TOPLEFT")
 				end		
 				
-				if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR then
+				if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR or USE_INSET_POWERBAR then
 					portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", E.PixelMode and 1 or -SPACING, 0)
 				else
 					portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", E.PixelMode and 1 or -SPACING, 0)
@@ -745,10 +783,11 @@ function UF:Update_PlayerFrame(frame, db)
 				
 			bars:Width(CLASSBAR_WIDTH)
 			bars:Height(CLASSBAR_HEIGHT - (E.PixelMode and 1 or 4))
-
-			for i = 1, UF['classMaxResourceBar'][E.myclass] do
+			
+			local maxBars = UF['classMaxResourceBar'][E.myclass]
+			for i = 1, maxBars do
 				bars[i]:SetHeight(bars:GetHeight())	
-				bars[i]:SetWidth((bars:GetWidth() - (E.PixelMode and 5 or 2))/UF['classMaxResourceBar'][E.myclass])	
+				bars[i]:SetWidth((bars:GetWidth() - (maxBars - 1)) / maxBars)
 
 				bars[i]:GetStatusBarTexture():SetHorizTile(false)
 				bars[i]:ClearAllPoints()
@@ -931,6 +970,22 @@ function UF:Update_PlayerFrame(frame, db)
 		end
 	end
 	
+	--Stagger
+	do
+		if E.myclass == "MONK" then
+			local stagger = frame.Stagger
+			if db.stagger.enable then
+				if not frame:IsElementEnabled('Stagger') then
+					frame:EnableElement('Stagger')
+				end					
+			else
+				if frame:IsElementEnabled('Stagger') then
+					frame:DisableElement('Stagger')
+				end				
+			end
+		end
+	end
+	
 	--Combat Fade
 	do
 		if db.combatfade and not frame:IsElementEnabled('CombatFade') then
@@ -974,24 +1029,16 @@ function UF:Update_PlayerFrame(frame, db)
 		if db.healPrediction then
 			if not frame:IsElementEnabled('HealPrediction') then
 				frame:EnableElement('HealPrediction')
-			end
-
-			healPrediction.myBar:ClearAllPoints()
-			healPrediction.myBar:Width(db.width - (BORDER*2))
-			healPrediction.myBar:SetPoint('BOTTOMLEFT', frame.Health:GetStatusBarTexture(), 'BOTTOMRIGHT')
-			healPrediction.myBar:SetPoint('TOPLEFT', frame.Health:GetStatusBarTexture(), 'TOPRIGHT')	
-
-			healPrediction.otherBar:ClearAllPoints()
-			healPrediction.otherBar:SetPoint('TOPLEFT', healPrediction.myBar:GetStatusBarTexture(), 'TOPRIGHT')	
-			healPrediction.otherBar:SetPoint('BOTTOMLEFT', healPrediction.myBar:GetStatusBarTexture(), 'BOTTOMRIGHT')	
-			healPrediction.otherBar:Width(db.width - (BORDER*2))
+			end		
 			
 			if not USE_PORTRAIT_OVERLAY then
 				healPrediction.myBar:SetParent(frame)
 				healPrediction.otherBar:SetParent(frame)
+				healPrediction.absorbBar:SetParent(frame)
 			else	
 				healPrediction.myBar:SetParent(frame.Portrait.overlay)		
-				healPrediction.otherBar:SetParent(frame.Portrait.overlay)					
+				healPrediction.otherBar:SetParent(frame.Portrait.overlay)	
+				healPrediction.absorbBar:SetParent(frame.Portrait.overlay)
 			end
 		else
 			if frame:IsElementEnabled('HealPrediction') then
@@ -1035,11 +1082,11 @@ function UF:Update_PlayerFrame(frame, db)
 					yOffset = -1;
 				end
 			end
-
+			
+			auraBars.auraBarHeight = db.aurabar.height
 			auraBars:ClearAllPoints()
 			auraBars:SetPoint(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', (attachTo == frame and anchorTo == 'BOTTOM') and POWERBAR_OFFSET or 0, E.PixelMode and anchorPoint ==  -1 or yOffset)
 			auraBars:SetPoint(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', attachTo == frame and POWERBAR_OFFSET * (anchorTo == 'BOTTOM' and 0 or -1) or 0, E.PixelMode and -1 or yOffset)
-
 			auraBars.buffColor = {buffColor.r, buffColor.g, buffColor.b}
 			if UF.db.colors.auraBarByType then
 				auraBars.debuffColor = nil;
@@ -1049,6 +1096,21 @@ function UF:Update_PlayerFrame(frame, db)
 				auraBars.defaultDebuffColor = nil;
 			end
 			auraBars.down = db.aurabar.anchorPoint == 'BELOW'
+			
+			if db.aurabar.sort == 'TIME_REMAINING' then
+				auraBars.sort = true --default function
+			elseif db.aurabar.sort == 'TIME_REMAINING_REVERSE' then
+				auraBars.sort = UF.SortAuraBarReverse
+			elseif db.aurabar.sort == 'TIME_DURATION' then
+				auraBars.sort = UF.SortAuraBarDuration
+			elseif db.aurabar.sort == 'TIME_DURATION_REVERSE' then
+				auraBars.sort = UF.SortAuraBarDurationReverse
+			elseif db.aurabar.sort == 'NAME' then
+				auraBars.sort = UF.SortAuraBarName
+			else
+				auraBars.sort = nil
+			end
+			
 			auraBars:SetAnchors()
 		else
 			if frame:IsElementEnabled('AuraBars') then
@@ -1057,7 +1119,6 @@ function UF:Update_PlayerFrame(frame, db)
 			end		
 		end
 	end
-
 	
 	if db.customTexts then
 		local customFont = UF.LSM:Fetch("font", UF.db.font)
@@ -1067,8 +1128,7 @@ function UF:Update_PlayerFrame(frame, db)
 			end
 			
 			local objectDB = db.customTexts[objectName]
-			UF:CreateCustomTextGroup('player', objectName)
-			
+
 			if objectDB.font then
 				customFont = UF.LSM:Fetch("font", objectDB.font)
 			end
@@ -1080,6 +1140,18 @@ function UF:Update_PlayerFrame(frame, db)
 			frame[objectName]:SetPoint(objectDB.justifyH or 'CENTER', frame, 'CENTER', objectDB.xOffset, objectDB.yOffset)
 		end
 	end
+	
+	if UF.db.colors.transparentHealth then
+		UF:ToggleTransparentStatusBar(true, frame.Health, frame.Health.bg)
+	else
+		UF:ToggleTransparentStatusBar(false, frame.Health, frame.Health.bg, (USE_PORTRAIT and USE_PORTRAIT_OVERLAY) ~= true)
+	end
+	
+	if UF.db.colors.transparentPower then
+		UF:ToggleTransparentStatusBar(true, frame.Power, frame.Power.bg)
+	else
+		UF:ToggleTransparentStatusBar(false, frame.Power, frame.Power.bg, true)
+	end	
 
 	E:SetMoverSnapOffset(frame:GetName()..'Mover', -(12 + db.castbar.height))
 	frame:UpdateAllElements()

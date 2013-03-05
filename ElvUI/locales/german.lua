@@ -718,8 +718,8 @@ L["Targeted By:"] = "Ziel von:"
 L["Tooltip"] = "Tooltip"
 L["TOOLTIP_DESC"] = "Konfiguriere die Einstellungen für Tooltips."
 L["UF Hide"] = "UF verstecken"
-L["When in a raid group display if anyone in your raid is targetting the current tooltip unit."] = "Zeige ob jemand aus deiner Gruppe/Schlachtzug die Tooltip-Einheit ins Ziel genommen hat."
-L["Who's targetting who?"] = "Wer hat was im Ziel?"
+L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."] = "Zeige ob jemand aus deiner Gruppe/Schlachtzug die Tooltip-Einheit ins Ziel genommen hat."
+L["Who's targeting who?"] = "Wer hat was im Ziel?"
 
 --Tutorials
 L['A raid marker feature is available by pressing Escape -> Keybinds scroll to the bottom under ElvUI and setting a keybind for the raid marker.'] = 'Ein Feature für  Schlachtzugsmarkierung ist verfügbar, wenn du Escape drückst und Tastaturbelegung wählst, scrolle anschließend bis unter die Kategorie ElvUI und wähle eine Tastenbelegung für die Schlachtzugsmarkierung.'
@@ -728,7 +728,7 @@ L['For technical support visit us at http://www.tukui.org.'] = 'Für technische 
 L['If you accidently remove a chat frame you can always go the in-game configuration menu, press install, go to the chat portion and reset them.'] = 'Wenn du ausversehen das Chatfenster entfernen solltest, kannst du ganz einfach in die Ingame-Konfiguration gehen und den Installationsprozess erneut aufrufen. Drücke Installieren und gehe zu den Chateinstellungen und setze diese zurück.'
 L['If you are experiencing issues with ElvUI try disabling all your addons except ElvUI, remember ElvUI is a full UI replacement addon, you cannot run two addons that do the same thing.'] = 'Wenn du Probleme mit ElvUI hast, deaktiviere alle Addons außer ElvUI. Denke auch daran, dass  ElvUI die komplette Benutzeroberfläche ersetzt, d.h. du kannst kein  Addon verwenden, welches die gleichen Funktionen wie ElvUI nutzt.'
 L['The buff panel to the right of minimap is a list of your consolidated buffs. You can disable it in Buffs and Debuffs options of ElvUI.'] = 'Die Stärkungszauberleiste rechts neben der Minimap ist eine Liste der zusammengefassten Stärkungszauber. Du kannst diese in den Stärkungs- und Schwachungszauber-Optionen in ElvUI deaktivieren.'
-L['The focus unit can be set by typing /focus when you are targetting the unit you want to focus. It is recommended you make a macro to do this.'] = 'Du kannst, während du ein Ziel hast, das Fokusfenster durch die Eingabe von /fokus setzen. Es wird empfohlen ein Makro dafür zu nutzen.'
+L['The focus unit can be set by typing /focus when you are targeting the unit you want to focus. It is recommended you make a macro to do this.'] = 'Du kannst, während du ein Ziel hast, das Fokusfenster durch die Eingabe von /fokus setzen. Es wird empfohlen ein Makro dafür zu nutzen.'
 L['To move abilities on the actionbars by default hold shift + drag. You can change the modifier key from the actionbar options menu.'] = 'Um Fähigkeiten auf der Aktionsleiste zu verschieben nutze Shift und bewege zeitgleich die Maus. Du kannst die Modifier-Taste im Aktionsleistenmenü umstellen.'
 L['To setup which channels appear in which chat frame, right click the chat tab and go to settings.'] = 'Um einzustellen welcher Kanal im welchem Chatfenster angezeigt werden soll, klicke rechts auf das Chattab und gehe auf Einstellungen.'
 L['Using the /farmmode <size> command will spawn a larger minimap on your screen that can be moved around, very useful when farming.'] = 'Benutze das /farmmode <Größe> Kommando um eine größere Minimap auf dem Bildschirm erscheinen zu lassen, die sich verschieben lässt. Sehr nützlich zum Farmen.'
@@ -979,7 +979,7 @@ L["Use the custom health backdrop color instead of a multiple of the main health
 L["Value must be a number"] = "Der Wert muss eine Zahl sein"
 L["Vertical"] = "Vertikal" --Also used in bags section
 L["Visibility"] = "Sichtbarkeit"
-L["What each frame should attach itself to, example setting it to TOP every unit will attach its top to the last point bottom."] = "Woran sich jedes Fenster anheften soll. Beispiel: Wenn das Fenster auf OBEN eingestellt ist, dann wird sich jede Einheit mit ihrem oberen Bereich am unteren Bereich der letzten Einheit anheften."
+L["What each frame should attach itself to. For example setting it to TOP every unit will attach its top to the last point bottom."] = "Woran sich jedes Fenster anheften soll. Beispiel: Wenn das Fenster auf OBEN eingestellt ist, dann wird sich jede Einheit mit ihrem oberen Bereich am unteren Bereich der letzten Einheit anheften."
 L["What point to anchor to the frame you set to attach to."] = "Welchen Punkt für das verankern der Fenster möchtest du wählen."
 L["What to attach the buff anchor frame to."] = "Wo die Stärkungszauber angehängt werden sollen."
 L["What to attach the debuff anchor frame to."] = "Wo die Schwächungszauber angehängt werden sollen."

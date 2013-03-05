@@ -17,6 +17,8 @@ local function LoadSkin()
 	PVEFrame.shadows:Hide()
 	S:HandleButton(LFDQueueFramePartyBackfillBackfillButton)
 	S:HandleButton(LFDQueueFramePartyBackfillNoBackfillButton)
+	S:HandleButton(LFDQueueFrameRandomScrollFrameChildFrameBonusRepFrame.ChooseButton)
+	S:HandleButton(ScenarioQueueFrameRandomScrollFrameChildFrameBonusRepFrame.ChooseButton)
 	
 	GroupFinderFrameGroupButton1.icon:SetTexture("Interface\\Icons\\INV_Helmet_08")
 	GroupFinderFrameGroupButton2.icon:SetTexture("Interface\\Icons\\inv_helmet_06")
@@ -49,7 +51,10 @@ local function LoadSkin()
 		RaidFinderQueueFrameRoleButtonHealer,
 		RaidFinderQueueFrameRoleButtonDPS,
 		RaidFinderQueueFrameRoleButtonLeader,
-		RaidFinderQueueFrameRoleButtonTank
+		RaidFinderQueueFrameRoleButtonTank,
+		LFGInvitePopupRoleButtonTank,
+		LFGInvitePopupRoleButtonHealer,
+		LFGInvitePopupRoleButtonDPS		
 	}
 	
 	for _, roleButton in pairs(roleButtons) do
@@ -320,6 +325,22 @@ local function LoadSkin()
 			LFRQueueFrameSpecificListScrollFrameScrollBar.skinned = true
 		end
 	end)
+	
+	--LFGInvitePopup_Update("Elvz", true, true, true)
+	--StaticPopupSpecial_Show(LFGInvitePopup);
+	LFGInvitePopup:StripTextures()
+	LFGInvitePopup:SetTemplate("Transparent")
+	S:HandleButton(LFGInvitePopupAcceptButton)
+	S:HandleButton(LFGInvitePopupDeclineButton)
+	
+	S:HandleButton(_G[LFDQueueFrame.PartyBackfill:GetName().."BackfillButton"])
+	S:HandleButton(_G[LFDQueueFrame.PartyBackfill:GetName().."NoBackfillButton"])
+	S:HandleButton(_G[RaidFinderQueueFrame.PartyBackfill:GetName().."BackfillButton"])
+	S:HandleButton(_G[RaidFinderQueueFrame.PartyBackfill:GetName().."NoBackfillButton"])
+	S:HandleButton(_G[ScenarioQueueFrame.PartyBackfill:GetName().."BackfillButton"])
+	S:HandleButton(_G[ScenarioQueueFrame.PartyBackfill:GetName().."NoBackfillButton"])
+	LFDQueueFrameRandomScrollFrameScrollBar:StripTextures()
+	S:HandleScrollBar(LFDQueueFrameRandomScrollFrameScrollBar)
 end
 
 S:RegisterSkin("ElvUI", LoadSkin)

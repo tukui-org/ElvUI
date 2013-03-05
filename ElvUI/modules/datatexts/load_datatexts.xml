@@ -5,6 +5,7 @@
 	<Script file='avoidance.lua'/>
 	<Script file='bags.lua'/>
 	<Script file='calltoarms.lua'/>
+	<Script file='combattime.lua'/>
 	<Script file='crit.lua'/>
 	<Script file='dps.lua'/>
 	<Script file='durability.lua'/>
@@ -23,5 +24,6 @@
 	<Script file='spellpower.lua'/>
 	<Script file='battleground.lua'/>
 	<Script file='vengeance.lua'/>
-	<Script file='options.lua'/>
+	<Script file='pvpresilience.lua'/>
+	<Script file='pvppower.lua'/>
 </Ui>

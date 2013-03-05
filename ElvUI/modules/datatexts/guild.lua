@@ -26,7 +26,6 @@ local standingString = join("", E:RGBToHex(ttsubh.r, ttsubh.g, ttsubh.b), "%s:|r
 local moreMembersOnlineString = join("", "+ %d ", FRIENDS_LIST_ONLINE, "...")
 local noteString = join("", "|cff999999   ", LABEL_NOTE, ":|r %s")
 local officerNoteString = join("", "|cff999999   ", GUILD_RANK1_DESC, ":|r %s")
-local friendOnline, friendOffline = gsub(ERR_FRIEND_ONLINE_SS,"\124Hplayer:%%s\124h%[%%s%]\124h",""), gsub(ERR_FRIEND_OFFLINE_S,"%%s","")
 local guildTable, guildXP, guildMotD = {}, {}, ""
 local MOBILE_BUSY_ICON = "|TInterface\\ChatFrame\\UI-ChatIcon-ArmoryChat-BusyMobile:14:14:0:0:16:16:0:16:0:16|t";
 local MOBILE_AWAY_ICON = "|TInterface\\ChatFrame\\UI-ChatIcon-ArmoryChat-AwayMobile:14:14:0:0:16:16:0:16:0:16|t";
@@ -61,6 +60,7 @@ local function BuildGuildTable()
 	wipe(guildTable)
 	local statusInfo
 	local name, rank, level, zone, note, officernote, connected, memberstatus, class, isMobile
+
 	for i = 1, GetNumGuildMembers() do
 		name, rank, rankIndex, level, _, zone, note, officernote, connected, memberstatus, class, _, _, isMobile = GetGuildRosterInfo(i)
 
@@ -91,24 +91,6 @@ local function UpdateGuildMessage()
 end
 
 local eventHandlers = {
-	-- special handler to request guild roster updates when guild members come online or go
-	-- offline, since this does not automatically trigger the GuildRoster update from the server
-	-- another check is to make sure your AFK flag in the GuildRoster is updated correctly
-	["CHAT_MSG_SYSTEM"] = function (self, arg1)
-		if find(arg1, friendOnline) or find(arg1, friendOffline) or find(arg1, MARKED_AFK) or find(arg1, CLEARED_AFK) then 
-			GuildRoster()
-		end
-	end,
-	['PLAYER_FLAGS_CHANGED'] = function (self, arg1)
-		local memberstatus = IsChatAFK() and 1 or IsChatDND() and 2 or 0
-
-		for i = 1, #guildTable do
-			if guildTable[i][1] == E.myname then
-				guildTable[i][8] = onlinestatus[memberstatus]()
-				break
-			end
-		end
-	end,
 	-- when we enter the world and guildframe is not available then
 	-- load guild frame, update guild message and guild xp	
 	["PLAYER_ENTERING_WORLD"] = function (self, arg1)
@@ -120,8 +102,15 @@ local eventHandlers = {
 	end,
 	-- Guild Roster updated, so rebuild the guild table
 	["GUILD_ROSTER_UPDATE"] = function (self, arg1)
-		BuildGuildTable()
-		UpdateGuildMessage()
+		if arg1 then
+			GuildRoster()
+		else
+			BuildGuildTable()
+			UpdateGuildMessage()
+			if GetMouseFocus() == self then
+				self:GetScript("OnEnter")(self, nil, true)
+			end
+		end
 	end,
 	-- our guild xp changed, recalculate it	
 	["GUILD_XP_UPDATE"] = function (self, arg1)
@@ -137,6 +126,7 @@ local eventHandlers = {
 	["ELVUI_FORCE_RUN"] = function() end,
 	["ELVUI_COLOR_UPDATE"] = function() end,
 }
+
 
 local function OnEvent(self, event, ...)
 	lastPanel = self
@@ -214,9 +204,9 @@ local function Click(self, btn)
 	end
 end
 
-local function OnEnter(self)
+local function OnEnter(self, _, noUpdate)
 	if not IsInGuild() then return end
-	
+
 	DT:SetupTooltip(self)
 	
 	local total, online = GetNumGuildMembers()
@@ -283,6 +273,10 @@ local function OnEnter(self)
 	end	
 	
 	DT.tooltip:Show()
+	
+	if not noUpdate then
+		GuildRoster()
+	end	
 end
 
 local function ValueColorUpdate(hex, r, g, b)
@@ -307,4 +301,4 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 	onLeaveFunc - function to fire OnLeave, if not provided one will be set for you that hides the tooltip.
 ]]
 
-DT:RegisterDatatext('Guild', {'PLAYER_ENTERING_WORLD', "GUILD_ROSTER_UPDATE", "GUILD_XP_UPDATE", "PLAYER_GUILD_UPDATE", "GUILD_MOTD", "CHAT_MSG_SYSTEM", "PLAYER_FLAGS_CHANGED"}, OnEvent, nil, Click, OnEnter)
+DT:RegisterDatatext('Guild', {'PLAYER_ENTERING_WORLD', "GUILD_ROSTER_UPDATE", "GUILD_XP_UPDATE", "PLAYER_GUILD_UPDATE", "GUILD_MOTD"}, OnEvent, nil, Click, OnEnter)

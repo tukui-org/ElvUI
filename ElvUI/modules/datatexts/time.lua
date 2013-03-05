@@ -143,10 +143,10 @@ local function OnEnter(self)
 			if extended then lockoutColor = lockoutColorExtended else lockoutColor = lockoutColorNormal end
 			
 			if (numEncounters and numEncounters > 0) and (encounterProgress and encounterProgress > 0) then
-				DT.tooltip:AddDoubleLine(format(lockoutInfoFormat, maxPlayers, (difficulty:match("Normal") and "N" or "H"), name, encounterProgress, numEncounters), formatResetTime(reset), 1,1,1, lockoutColor.r,lockoutColor.g,lockoutColor.b)
+				DT.tooltip:AddDoubleLine(format(lockoutInfoFormat, maxPlayers, (difficulty:match("Heroic") and "H" or "N"), name, encounterProgress, numEncounters), formatResetTime(reset), 1,1,1, lockoutColor.r,lockoutColor.g,lockoutColor.b)
 			else
-				DT.tooltip:AddDoubleLine(format(lockoutInfoFormatNoEnc, maxPlayers, (difficulty:match("Normal") and "N" or "H"), name), formatResetTime(reset), 1,1,1, lockoutColor.r,lockoutColor.g,lockoutColor.b)
-			end
+				DT.tooltip:AddDoubleLine(format(lockoutInfoFormatNoEnc, maxPlayers, (difficulty:match("Heroic") and "H" or "N"), name), formatResetTime(reset), 1,1,1, lockoutColor.r,lockoutColor.g,lockoutColor.b)
+			end			
 		end
 	end	
 	
@@ -154,8 +154,9 @@ local function OnEnter(self)
 	DT.tooltip:AddLine(L["World Boss(s)"])	
 	DT.tooltip:AddDoubleLine(L['Sha of Anger']..':', quests[32099] and L['Defeated'] or L['Undefeated'], 1, 1, 1, 0.8, 0.8, 0.8)
 	DT.tooltip:AddDoubleLine(L['Galleon']..':', quests[32098] and L['Defeated'] or L['Undefeated'], 1, 1, 1, 0.8, 0.8, 0.8)
-	
-	
+	DT.tooltip:AddDoubleLine(L['Oondasta']..':', quests[32519] and L['Defeated'] or L['Undefeated'], 1, 1, 1, 0.8, 0.8, 0.8)
+	DT.tooltip:AddDoubleLine(L['Nalak']..':', quests[32518] and L['Defeated'] or L['Undefeated'], 1, 1, 1, 0.8, 0.8, 0.8)
+
 	local timeText
 	local Hr, Min, AmPm = CalculateTimeValues(true)
 

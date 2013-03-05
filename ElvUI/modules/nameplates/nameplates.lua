@@ -667,7 +667,7 @@ function NP:UpdateThreat(frame)
 					frame.threatStatus = "BAD"
 				else
 					if not frame.customColor then
-						if (not frame.isBeingTanked) and self.db.offtank then
+						if (not frame.isBeingTanked) and self.db.offtank and self.displayLooseMobs then
 							frame.hp:SetStatusBarColor(offtank.r, offtank.g, offtank.b)
 							frame.hp.hpbg:SetTexture(offtank.r, offtank.g, offtank.b, bgMult)						
 						else					
@@ -784,7 +784,7 @@ function NP:ScanHealth()
 	local valueHealth = frame.oldhp:GetValue()
 	local d =(valueHealth/maxHealth)*100
 	
-	if NP.db.healthtext ~= '' and valueHealth and maxHealth and maxHealth > 1 then
+	if NP.db.healthtext ~= '' and valueHealth and maxHealth and maxHealth > 1 and not frame.isSmallNP then
 		frame.hp.value:Show()
 		frame.hp.value:SetText(E:GetFormattedText(NP.db.healthtext, valueHealth, maxHealth))
 	else

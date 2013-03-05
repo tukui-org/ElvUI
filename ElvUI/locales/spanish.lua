@@ -719,8 +719,8 @@ L["Targeted By:"] = "Objetivo De:";
 L["Tooltip"] = "Descripción Emergente";
 L["TOOLTIP_DESC"] = "Configuración para las Descripciones Emergentes."
 L["UF Hide"] = "Ocultar en Marcos de Unidad";
-L["When in a raid group display if anyone in your raid is targetting the current tooltip unit."] = "Cuando estás en una banda muestra si alguien en tu banda tiene marcado como objetivo a la unidad actual de la descripción emergente.";
-L["Who's targetting who?"] = "¿Quién tiene como objetivo a quién?";
+L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."] = "Cuando estás en una banda muestra si alguien en tu banda tiene marcado como objetivo a la unidad actual de la descripción emergente.";
+L["Who's targeting who?"] = "¿Quién tiene como objetivo a quién?";
 
 --Tutorials
 L['A raid marker feature is available by pressing Escape -> Keybinds scroll to the bottom under ElvUI and setting a keybind for the raid marker.'] = "La opción de marcador de banda está disponible pulsando Escape -> Asignar teclas -> Recorrer hacia abajo hasta ElvUI y establecer la tecla para el marcador de banda.";
@@ -729,7 +729,7 @@ L['For technical support visit us at http://www.tukui.org.'] = "Para soporte té
 L['If you accidently remove a chat frame you can always go the in-game configuration menu, press install, go to the chat portion and reset them.'] = "Si eliminas un marco de chat accidentalmente, siempre puedes ir a la configuración, pulsar instalar, ir a la parte del chat, y restaurarlo.";
 L['If you are experiencing issues with ElvUI try disabling all your addons except ElvUI, remember ElvUI is a full UI replacement addon, you cannot run two addons that do the same thing.'] = "Si has experimentado errores con ElvUI prueba a desactivar todos tus addons excepto ElvUI, recuerda que ElvUI remplaza por completo la interfaz, no puede haber addons que hagan lo mismo.";
 L['The buff panel to the right of minimap is a list of your consolidated buffs. You can disable it in Buffs and Debuffs options of ElvUI.'] = "El panel de beneficios a la derecha del minimapa es una lista de los beneficios consolidados. Puedes desactivarlo en la pestaña de Beneficios y Perjuicios de ElvUI.";
-L['The focus unit can be set by typing /focus when you are targetting the unit you want to focus. It is recommended you make a macro to do this.'] = "El foco puede establecerse escribiendo /enfoque cuando tienes seleccionado al objetivo al cual quieres hacer foco. Es recomendable que hagas una macro para esto.";
+L['The focus unit can be set by typing /focus when you are targeting the unit you want to focus. It is recommended you make a macro to do this.'] = "El foco puede establecerse escribiendo /enfoque cuando tienes seleccionado al objetivo al cual quieres hacer foco. Es recomendable que hagas una macro para esto.";
 L['To move abilities on the actionbars by default hold shift + drag. You can change the modifier key from the actionbar options menu.'] = "Para mover habilidades a las barras de acción mantener shift + arrastrar. Puedes cambiar la tecla de modificación desde el menú de opciones de la barra de acción.";
 L['To setup which channels appear in which chat frame, right click the chat tab and go to settings.'] = "Para configurar que canales aparecen en el chat, haz clic con el botón derecho en la pestaña del chat y elige opciones.";
 L['Using the /farmmode <size> command will spawn a larger minimap on your screen that can be moved around, very useful when farming.'] = "El comando /farmmode <tamaño> hace aparecer un minimapa más grande en su pantalla que puede moverse, muy útil para recolectar.";
@@ -980,7 +980,7 @@ L["Use the custom health backdrop color instead of a multiple of the main health
 L["Value must be a number"] = "El valor debe ser un número";
 L["Vertical"] = "Vertical"; --Also used in bags section
 L["Visibility"] = "Visibilidad";
-L["What each frame should attach itself to, example setting it to TOP every unit will attach its top to the last point bottom."] = "Cada marco debería adjuntarse consigo mismo, por ejemplo estableciendo ARRIBA cada unidad se adjuntara a su último punto de abajo.";
+L["What each frame should attach itself to. For example setting it to TOP every unit will attach its top to the last point bottom."] = "Cada marco debería adjuntarse consigo mismo, por ejemplo estableciendo ARRIBA cada unidad se adjuntara a su último punto de abajo.";
 L["What point to anchor to the frame you set to attach to."] = "Punto de fijación a utilizar del marco que se va a sujetar."
 L["What to attach the buff anchor frame to."] = "Dónde sujetar el fijador del marco de beneficios."
 L["What to attach the debuff anchor frame to."] = "Dónde sujetar el fijador del marco de perjuicios.";

@@ -101,7 +101,7 @@ function UF:UnshowChildUnits(header, ...)
 	header.isForced = nil
 	for i=1, select("#", ...) do
 		local frame = select(i, ...)
-		frame:RegisterForClicks('AnyUp')
+		frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 		frame.TargetGlow:SetAlpha(1)
 		self:UnforceShow(frame)
 	end

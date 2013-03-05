@@ -47,7 +47,9 @@ local function SetAnchors(self)
 	for index = 1, #bars do
 		local frame = bars[index]
 		local anchor = frame.anchor
-		frame:SetWidth((self.auraBarWidth or self:GetWidth()) - (frame:GetHeight() + (self.gap or 0)))
+		frame:SetHeight(self.auraBarHeight or 20)
+		frame.statusBar.iconHolder:Size(frame:GetHeight())			
+		frame:SetWidth((self.auraBarWidth or self:GetWidth()) - (frame:GetHeight() + (self.gap or 0)))	
 		frame:ClearAllPoints()
 		if self.down == true then
 			if self == anchor then -- Root frame so indent for icon
@@ -207,6 +209,7 @@ local function Update(self, event, unit)
 		if (auraBars.filter or DefaultFilter)(self, unit, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID) then
 			lastAuraIndex = lastAuraIndex + 1
 			auras[lastAuraIndex] = {}
+			auras[lastAuraIndex].spellID = spellID
 			auras[lastAuraIndex].name = name
 			auras[lastAuraIndex].rank = rank
 			auras[lastAuraIndex].icon = icon
@@ -241,7 +244,7 @@ local function Update(self, event, unit)
 			frame = CreateAuraBar(self, index == 1 and auraBars or bars[index - 1])
 			bars[index] = frame
 		end
-		
+
 		if index == lastAuraIndex then
 			if self.AuraBars.down then
 				self.AuraBars:SetHeight(self.AuraBars:GetTop() - frame:GetBottom())

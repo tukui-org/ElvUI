@@ -11,5 +11,5 @@
 	<Script file='movers.lua'/>	
 	<Script file='config.lua'/>
 	<Script file='tutorials.lua'/>
-	<Script file='options.lua'/>
+	<Script file='distributor.lua'/>
 </Ui>

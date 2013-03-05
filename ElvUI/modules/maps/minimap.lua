@@ -46,7 +46,12 @@ local menuList = {
 	{text = calendar_string,
 	func = function() GameTimeFrame:Click() end},
 	{text = PLAYER_V_PLAYER,
-	func = function() ToggleFrame(PVPFrame) end},
+	func = function()
+		if not PVPUIFrame then
+			PVP_LoadUI()
+		end
+		ToggleFrame(PVPUIFrame) 
+	end},
 	{text = ACHIEVEMENTS_GUILD_TAB,
 	func = function()
 		if IsInGuild() then

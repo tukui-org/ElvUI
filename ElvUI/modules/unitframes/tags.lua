@@ -2,7 +2,8 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
-
+local twipe = table.wipe
+local ceil, sqrt = math.ceil, math.sqrt
 ------------------------------------------------------------------------
 --	Tags
 ------------------------------------------------------------------------
@@ -17,7 +18,7 @@ ElvUF.Tags.Methods['afk'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['healthcolor'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION'
+ElvUF.Tags.Events['healthcolor'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
 ElvUF.Tags.Methods['healthcolor'] = function(unit)
 	if UnitIsDeadOrGhost(unit) or not UnitIsConnected(unit) then
 		return Hex(0.84, 0.75, 0.65)
@@ -27,7 +28,7 @@ ElvUF.Tags.Methods['healthcolor'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['health:current'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION'
+ElvUF.Tags.Events['health:current'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
 ElvUF.Tags.Methods['health:current'] = function(unit)
 	local status = UnitIsDead(unit) and DEAD or UnitIsGhost(unit) and L['Ghost'] or not UnitIsConnected(unit) and L['Offline']
 	if (status) then
@@ -37,7 +38,7 @@ ElvUF.Tags.Methods['health:current'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['health:deficit'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION'
+ElvUF.Tags.Events['health:deficit'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
 ElvUF.Tags.Methods['health:deficit'] = function(unit)
 	local status = UnitIsDead(unit) and DEAD or UnitIsGhost(unit) and L['Ghost'] or not UnitIsConnected(unit) and L['Offline']
 
@@ -48,7 +49,7 @@ ElvUF.Tags.Methods['health:deficit'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['health:current-percent'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION'
+ElvUF.Tags.Events['health:current-percent'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
 ElvUF.Tags.Methods['health:current-percent'] = function(unit)
 	local status = UnitIsDead(unit) and DEAD or UnitIsGhost(unit) and L['Ghost'] or not UnitIsConnected(unit) and L['Offline']
 
@@ -59,7 +60,7 @@ ElvUF.Tags.Methods['health:current-percent'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['health:current-max'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION'
+ElvUF.Tags.Events['health:current-max'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
 ElvUF.Tags.Methods['health:current-max'] = function(unit)
 	local status = UnitIsDead(unit) and DEAD or UnitIsGhost(unit) and L['Ghost'] or not UnitIsConnected(unit) and L['Offline']
 
@@ -70,7 +71,7 @@ ElvUF.Tags.Methods['health:current-max'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['health:current-max-percent'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION'
+ElvUF.Tags.Events['health:current-max-percent'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
 ElvUF.Tags.Methods['health:current-max-percent'] = function(unit)
 	local status = UnitIsDead(unit) and DEAD or UnitIsGhost(unit) and L['Ghost'] or not UnitIsConnected(unit) and L['Offline']
 
@@ -88,7 +89,7 @@ ElvUF.Tags.Methods['health:max'] = function(unit)
 	return E:GetFormattedText('CURRENT', max, max)
 end
 
-ElvUF.Tags.Events['health:percent'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION'
+ElvUF.Tags.Events['health:percent'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
 ElvUF.Tags.Methods['health:percent'] = function(unit)
 	local status = UnitIsDead(unit) and DEAD or UnitIsGhost(unit) and L['Ghost'] or not UnitIsConnected(unit) and L['Offline']
 
@@ -214,6 +215,12 @@ ElvUF.Tags.Methods['smartlevel'] = function(unit)
 	else
 		return '??'
 	end
+end
+
+ElvUF.Tags.Events['name:veryshort'] = 'UNIT_NAME_UPDATE'
+ElvUF.Tags.Methods['name:veryshort'] = function(unit)
+	local name = UnitName(unit)
+	return name ~= nil and E:ShortenString(name, 5) or ''
 end
 
 ElvUF.Tags.Events['name:short'] = 'UNIT_NAME_UPDATE'
@@ -396,5 +403,47 @@ ElvUF.Tags.Methods['classpower:percent'] = function()
 		return ' '
 	else
 		return E:GetFormattedText('PERCENT', min, max)
+	end
+end
+
+ElvUF.Tags.Events['absorbs'] = 'UNIT_ABSORB_AMOUNT_CHANGED'
+ElvUF.Tags.Methods['absorbs'] = function(unit)
+	local absorb = UnitGetTotalAbsorbs(unit) or 0
+	if absorb == 0 then
+		return ' '
+	else
+		return E:ShortValue(absorb)
+	end
+end
+
+ElvUF.Tags.Events['incomingheals:personal'] = 'UNIT_HEAL_PREDICTION'
+ElvUF.Tags.Methods['incomingheals:personal'] = function(unit)
+	local heal = UnitGetIncomingHeals(unit, 'player') or 0
+	if heal == 0 then
+		return ' '
+	else
+		return E:ShortValue(heal)
+	end
+end
+
+ElvUF.Tags.Events['incomingheals:others'] = 'UNIT_HEAL_PREDICTION'
+ElvUF.Tags.Methods['incomingheals:others'] = function(unit)
+	local heal = UnitGetIncomingHeals(unit) or 0
+	if heal == 0 then
+		return ' '
+	else
+		return E:ShortValue(heal)
+	end
+end
+
+ElvUF.Tags.Events['incomingheals'] = 'UNIT_HEAL_PREDICTION'
+ElvUF.Tags.Methods['incomingheals'] = function(unit)
+	local personal = UnitGetIncomingHeals(unit, 'player') or 0
+	local others = UnitGetIncomingHeals(unit) or 0
+	local heal = personal + others
+	if heal == 0 then
+		return ' '
+	else
+		return E:ShortValue(heal)
 	end
 end

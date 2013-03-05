@@ -5,7 +5,7 @@ E.TutorialList = {
 	L['You can toggle the microbar by using your middle mouse button on the minimap you can also accomplish this by enabling the actual microbar located in the actionbar settings.'],
 	L['A raid marker feature is available by pressing Escape -> Keybinds scroll to the bottom under ElvUI and setting a keybind for the raid marker.'],
 	L['You can set your keybinds quickly by typing /kb.'],
-	L['The focus unit can be set by typing /focus when you are targetting the unit you want to focus. It is recommended you make a macro to do this.'],
+	L['The focus unit can be set by typing /focus when you are targeting the unit you want to focus. It is recommended you make a macro to do this.'],
 	L['ElvUI has a dual spec feature which allows you to load different profiles based on your current spec on the fly. You can enable this from the profiles tab.'],
 	L['You can access copy chat and chat menu functions by mouse over the top right corner of chat panel and left/right click on the button that will appear.'],
 	L['If you are experiencing issues with ElvUI try disabling all your addons except ElvUI, remember ElvUI is a full UI replacement addon, you cannot run two addons that do the same thing.'],

@@ -14,8 +14,6 @@ BINDING_HEADER_ELVUI = GetAddOnMetadata(..., "Title");
 
 local AddOnName, Engine = ...;
 local AddOn = LibStub("AceAddon-3.0"):NewAddon(AddOnName, "AceConsole-3.0", "AceEvent-3.0", 'AceTimer-3.0', 'AceHook-3.0');
-local DEFAULT_WIDTH = 890;
-local DEFAULT_HEIGHT = 651;
 AddOn.DF = {}; AddOn.DF["profile"] = {}; AddOn.DF["global"] = {}; AddOn.privateVars = {}; AddOn.privateVars["profile"] = {}; -- Defaults
 AddOn.Options = {
 	type = "group",
@@ -33,10 +31,6 @@ Engine[5] = AddOn.DF["global"];
 
 _G[AddOnName] = Engine;
 
-local AC = LibStub("AceConfig-3.0")
-local ACD = LibStub("AceConfigDialog-3.0")
-local ACR = LibStub("AceConfigRegistry-3.0")
-local LibDualSpec = LibStub('LibDualSpec-1.0')
 local tcopy = table.copy
 
 function AddOn:OnInitialize()
@@ -93,16 +87,21 @@ function AddOn:OnInitialize()
 end
 
 function AddOn:PLAYER_REGEN_ENABLED()
-	ACD:Open(AddOnName);
+	self:ToggleConfig() 
 	self:UnregisterEvent('PLAYER_REGEN_ENABLED');
 end
 
 function AddOn:PLAYER_REGEN_DISABLED()
 	local err = false;
-	if ACD.OpenFrames[AddOnName] then
-		self:RegisterEvent('PLAYER_REGEN_ENABLED');
-		ACD:Close(AddOnName);
-		err = true;
+	
+	if IsAddOnLoaded("ElvUI_Config") then
+		local ACD = LibStub("AceConfigDialog-3.0")
+		
+		if ACD.OpenFrames[AddOnName] then
+			self:RegisterEvent('PLAYER_REGEN_ENABLED');
+			ACD:Close(AddOnName);
+			err = true;
+		end
 	end
 	
 	if self.CreatedMovers then
@@ -133,26 +132,29 @@ function AddOn:OnProfileReset()
 	ReloadUI()
 end
 
-function AddOn:LoadConfig()	
-	AC:RegisterOptionsTable(AddOnName, self.Options)
-	ACD:SetDefaultSize(AddOnName, DEFAULT_WIDTH, DEFAULT_HEIGHT)	
-	
-	--Create Profiles Table
-	self.Options.args.profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.data);
-	AC:RegisterOptionsTable("ElvProfiles", self.Options.args.profiles)
-	self.Options.args.profiles.order = -10
-	
-	LibDualSpec:EnhanceDatabase(self.data, AddOnName)
-	LibDualSpec:EnhanceOptions(self.Options.args.profiles, self.data)
-end
-
 function AddOn:ToggleConfig() 
 	if InCombatLockdown() then
 		self:Print(ERR_NOT_IN_COMBAT)
 		self:RegisterEvent('PLAYER_REGEN_ENABLED')
 		return;
 	end
-
+	
+	if not IsAddOnLoaded("ElvUI_Config") then
+		local _, _, _, _, _, reason = GetAddOnInfo("ElvUI_Config")
+		if reason ~= "MISSING" and reason ~= "DISABLED" then 
+			LoadAddOn("ElvUI_Config")
+			
+			if not self.Ace3SkinLoaded then
+				self:GetModule('Skins'):SkinAce3()
+				self.Ace3SkinLoaded = true
+			end
+		else 
+			self:Print("|cffff0000Error -- Addon 'ElvUI_Config' not found or is disabled.|r") 
+			return
+		end
+	end
+	
+	local ACD = LibStub("AceConfigDialog-3.0")
 	local mode = 'Close'
 	if not ACD.OpenFrames[AddOnName] then
 		mode = 'Open'

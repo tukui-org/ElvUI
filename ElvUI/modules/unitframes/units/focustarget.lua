@@ -15,7 +15,8 @@ function UF:Construct_FocusTargetFrame(frame)
 	frame.Buffs = self:Construct_Buffs(frame)
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)
 	frame.Debuffs = self:Construct_Debuffs(frame)
-	
+	frame.Range = UF:Construct_Range(frame)
+	frame.Threat = UF:Construct_Threat(frame)
 	frame:Point('BOTTOM', ElvUF_Focus, 'TOP', 0, 7) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', L['FocusTarget Frame'], nil, -7, nil, 'ALL,SOLO')
 end
@@ -26,16 +27,17 @@ function UF:Update_FocusTargetFrame(frame, db)
 	local SPACING = E.Spacing;
 	local UNIT_WIDTH = db.width
 	local UNIT_HEIGHT = db.height
-	
+	local SHADOW_SPACING = E.PixelMode and 3 or 4
 	local USE_POWERBAR = db.power.enable
-	local USE_MINI_POWERBAR = db.power.width ~= 'fill' and USE_POWERBAR
+	local USE_MINI_POWERBAR = db.power.width == 'spaced' and USE_POWERBAR
+	local USE_INSET_POWERBAR = db.power.width == 'inset' and USE_POWERBAR
 	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR
 	local POWERBAR_OFFSET = db.power.offset
 	local POWERBAR_HEIGHT = db.power.height
 	local POWERBAR_WIDTH = db.width - (BORDER*2)
 	
 	local unit = self.unit
-	
+	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	frame.colors = ElvUF.colors
 	frame:Size(UNIT_WIDTH, UNIT_HEIGHT)
 	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
@@ -60,7 +62,7 @@ function UF:Update_FocusTargetFrame(frame, db)
 		--Text
 		local x, y = self:GetPositionOffset(db.health.position)
 		health.value:ClearAllPoints()
-		health.value:Point(db.health.position, health, db.health.position, x, y)
+		health.value:Point(db.health.position, health, db.health.position, x + db.health.xOffset, y + db.health.yOffset)
 		frame:Tag(health.value, db.health.text_format)
 		
 		--Colors
@@ -87,22 +89,15 @@ function UF:Update_FocusTargetFrame(frame, db)
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER+POWERBAR_OFFSET, BORDER+POWERBAR_OFFSET)
 		elseif USE_MINI_POWERBAR then
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER + (POWERBAR_HEIGHT/2))
+		elseif USE_INSET_POWERBAR then
+			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER)
 		else
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER + POWERBAR_HEIGHT)
 		end
 	end
 	
 	--Name
-	do
-		local name = frame.Name
-		if not db.power.hideonnpc then
-			local x, y = self:GetPositionOffset(db.name.position)
-			name:ClearAllPoints()
-			name:Point(db.name.position, frame.Health, db.name.position, x, y)				
-		end
-		
-		frame:Tag(name, db.name.text_format)
-	end	
+	UF:UpdateNameSettings(frame)
 	
 	--Power
 	do
@@ -118,7 +113,7 @@ function UF:Update_FocusTargetFrame(frame, db)
 			--Text
 			local x, y = self:GetPositionOffset(db.power.position)
 			power.value:ClearAllPoints()
-			power.value:Point(db.power.position, frame.Health, db.power.position, x, y)		
+			power.value:Point(db.power.position, frame.Health, db.power.position, x + db.power.xOffset, y + db.power.yOffset)		
 			frame:Tag(power.value, db.power.text_format)
 			
 			--Colors
@@ -145,6 +140,12 @@ function UF:Update_FocusTargetFrame(frame, db)
 				power:Point("LEFT", frame, "BOTTOMLEFT", (BORDER*2 + 4), BORDER + (POWERBAR_HEIGHT/2))
 				power:SetFrameStrata("MEDIUM")
 				power:SetFrameLevel(frame:GetFrameLevel() + 3)
+			elseif USE_INSET_POWERBAR then
+				power:Height(POWERBAR_HEIGHT - BORDER*2)
+				power:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", BORDER + (BORDER*2), BORDER + (BORDER*2))
+				power:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", -(BORDER + (BORDER*2)), BORDER + (BORDER*2))
+				power:SetFrameStrata("MEDIUM")
+				power:SetFrameLevel(frame:GetFrameLevel() + 3)			
 			else
 				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(E.PixelMode and 0 or (BORDER + SPACING)))
 				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -BORDER, BORDER)
@@ -154,6 +155,41 @@ function UF:Update_FocusTargetFrame(frame, db)
 			power:Hide()	
 		end
 	end
+	
+	--Threat
+	do
+		local threat = frame.Threat
+
+		if db.threatStyle ~= 'NONE' and db.threatStyle ~= nil then
+			if not frame:IsElementEnabled('Threat') then
+				frame:EnableElement('Threat')
+			end
+
+			if db.threatStyle == "GLOW" then
+				threat:SetFrameStrata('BACKGROUND')
+				threat.glow:ClearAllPoints()
+				threat.glow:SetBackdropBorderColor(0, 0, 0, 0)
+				threat.glow:Point("TOPLEFT", frame.Health.backdrop, "TOPLEFT", -SHADOW_SPACING, SHADOW_SPACING)
+				threat.glow:Point("TOPRIGHT", frame.Health.backdrop, "TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING)
+				threat.glow:Point("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
+				threat.glow:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)	
+				
+				if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or USE_INSET_POWERBAR then
+					threat.glow:Point("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
+					threat.glow:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)	
+				end
+			elseif db.threatStyle == "ICONTOPLEFT" or db.threatStyle == "ICONTOPRIGHT" or db.threatStyle == "ICONBOTTOMLEFT" or db.threatStyle == "ICONBOTTOMRIGHT" or db.threatStyle == "ICONTOP" or db.threatStyle == "ICONBOTTOM" or db.threatStyle == "ICONLEFT" or db.threatStyle == "ICONRIGHT" then
+				threat:SetFrameStrata('HIGH')
+				local point = db.threatStyle
+				point = point:gsub("ICON", "")
+				
+				threat.texIcon:ClearAllPoints()
+				threat.texIcon:SetPoint(point, frame.Health, point)
+			end
+		elseif frame:IsElementEnabled('Threat') then
+			frame:DisableElement('Threat')
+		end
+	end		
 	
 	--Auras Disable/Enable
 	--Only do if both debuffs and buffs aren't being used.
@@ -260,6 +296,22 @@ function UF:Update_FocusTargetFrame(frame, db)
 		end
 	end		
 	
+	--Range
+	do
+		local range = frame.Range
+		if db.rangeCheck then
+			if not frame:IsElementEnabled('Range') then
+				frame:EnableElement('Range')
+			end
+
+			range.outsideAlpha = E.db.unitframe.OORAlpha
+		else
+			if frame:IsElementEnabled('Range') then
+				frame:DisableElement('Range')
+			end				
+		end
+	end		
+	
 	if db.customTexts then
 		local customFont = UF.LSM:Fetch("font", UF.db.font)
 		for objectName, _ in pairs(db.customTexts) do
@@ -268,8 +320,7 @@ function UF:Update_FocusTargetFrame(frame, db)
 			end
 			
 			local objectDB = db.customTexts[objectName]
-			UF:CreateCustomTextGroup('focustarget', objectName)
-			
+
 			if objectDB.font then
 				customFont = UF.LSM:Fetch("font", objectDB.font)
 			end
@@ -281,6 +332,9 @@ function UF:Update_FocusTargetFrame(frame, db)
 			frame[objectName]:SetPoint(objectDB.justifyH or 'CENTER', frame, 'CENTER', objectDB.xOffset, objectDB.yOffset)
 		end
 	end
+	
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg)
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)		
 	
 	frame:UpdateAllElements()
 end
