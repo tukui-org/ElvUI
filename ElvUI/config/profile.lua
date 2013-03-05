@@ -72,6 +72,7 @@ P['bags'] = {
 	['bagWidth'] = 350,
 	['bankWidth'] = 350,
 	['currencyFormat'] = 'ICON_TEXT',
+	['ignoreItems'] = '',
 	['bagBar'] = {
 		['growthDirection'] = 'VERTICAL',
 		['sortDirection'] = 'ASCENDING',

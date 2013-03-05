@@ -1,9 +1,7 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local S = E:GetModule('Skins')
 
---if not ANonBuggyFuckingSkin then return end
-
-local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
+local AceGUI = LibStub("AceGUI-3.0", true)
 
 local function SetModifiedBackdrop(self)
 	if self.backdrop then self = self.backdrop end
@@ -319,6 +317,14 @@ function S:SkinAce3()
 	end
 end
 
-if not AceGUI then return end
+if not AceGUI then
+	hooksecurefunc(LibStub, "NewLibrary", function(self, major, minor)
+		if not E.Ace3SkinLoaded then
+			E:Delay(1, S.SkinAce3, S)
+			E.Ace3SkinLoaded = true
+		end
+	end)
+	return 
+end
 E.Ace3SkinLoaded = true
 S:RegisterSkin('Ace3', S.SkinAce3, true)
