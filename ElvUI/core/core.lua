@@ -451,35 +451,7 @@ local function SendRecieve(self, event, prefix, message, channel, sender)
 				end			
 			end
 		end
-	--[[elseif event == "ADDON_LOADED" then
-		if prefix == "ElvUI" then
-			local _, _, _, _, _, reason = GetAddOnInfo("ElvUI_SLE")
-			local frame = EnumerateFrames()
-			while frame do
-				if frame:IsEventRegistered("CHAT_MSG_ADDON") then
-					frames[frame] = true
-				end
-				frame = EnumerateFrames(frame)
-			end
-
-			if reason ~= "MISSING" and reason ~= "DISABLED" then 
-				LoadAddon("ElvUI_SLE")
-			else
-				twipe(frames)
-				self:UnregisterEvent("ADDON_LOADED")
-			end
-		elseif prefix == "ElvUI_SLE" then
-			local frame = EnumerateFrames()
-			while frame do
-				if frame:IsEventRegistered("CHAT_MSG_ADDON") and not frames[frame] then
-					frame:UnregisterEvent("CHAT_MSG_ADDON")
-				end
-				frame = EnumerateFrames(frame)
-			end
-			twipe(frames)
-			self:UnregisterEvent("ADDON_LOADED")
-		end
-	else]]
+	else
 		E.SendMSGTimer = E:ScheduleTimer('SendMessage', 12)
 	end
 end
