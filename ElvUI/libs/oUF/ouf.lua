@@ -94,10 +94,13 @@ Private.frame_metatable = frame_metatable
 
 for k, v in pairs{
 	UpdateElement = function(self, name)
+		local unit = self.unit
+		if(not unit or not UnitExists(unit)) then return end	
+		
 		local element = elements[name]
 		if(not element or not self:IsElementEnabled(name) or not activeElements[self]) then return end
 		if(element.update) then
-			element.update(self, 'Update')
+			element.update(self, 'OnShow', unit)
 		end	
 	end,
 	

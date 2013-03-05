@@ -353,6 +353,8 @@ L["ELVUI_CREDITS"] = "I would like to give out a special shout out to the follow
 L["Testing:"] = true;
 
 --DataTexts
+L['Oondasta'] = true;
+L['Nalak'] = true;
 L["Combat Time"] = true;
 L['Panel Transparency'] = true;
 L["(Hold Shift) Memory Usage"] = true;

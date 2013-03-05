@@ -359,6 +359,16 @@ local textCounterOffsets = {
 	['BOTTOM'] = {"RIGHT", "LEFT", 2, 0},
 }
 
+function UF:UpdateAuraWatchFromHeader(group)
+	assert(self[group], "Invalid group specified.")
+	for i=1, self[group]:GetNumChildren() do
+		local frame = select(i, self[group]:GetChildren())
+		if frame and frame.Health then
+			UF:UpdateAuraWatch(frame)
+		end
+	end
+end
+
 function UF:UpdateAuraWatch(frame)
 	local buffs = {};
 	local auras = frame.AuraWatch;
@@ -429,7 +439,8 @@ function UF:UpdateAuraWatch(frame)
 				icon:Width(db.size);
 				icon:Height(db.size);
 				icon:ClearAllPoints()
-				icon:SetPoint(buffs[i].point, frame.Health, buffs[i].point, (E.PixelMode and (0 + (buffs[i].xOffset or 0))), (E.PixelMode and (0 + (buffs[i].yOffset or 0))));
+				icon:SetPoint(buffs[i].point, frame.Health, buffs[i].point, buffs[i].xOffset, buffs[i].yOffset);
+				
 
 				if not icon.icon then
 					icon.icon = icon:CreateTexture(nil, "BORDER");

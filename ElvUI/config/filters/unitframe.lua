@@ -427,150 +427,6 @@ G.unitframe.aurafilters['Whitelist'] = {
 G.unitframe.aurafilters['RaidDebuffs'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
-		--Blackwing Descent
-			--Magmaw
-			[SpellName(79589)] = Defaults(), -- Constricting Chains
-			[SpellName(78941)] = Defaults(), -- Parasitic Infection
-			[SpellName(89773)] = Defaults(), -- Mangle
-			[SpellName(78199)] = Defaults(), -- Sweltering Armor
-
-			--Omintron Defense System
-			[SpellName(79888)] = Defaults(), --Lightning Conductor
-			[SpellName(79035)] = Defaults(), --Incineration Security Measure
-			[SpellName(120018)] = Defaults(), --Fixate 
-
-			--Maloriak
-			[SpellName(77711)] = Defaults(), -- Flash Freeze
-			[SpellName(77760)] = Defaults(), -- Biting Chill
-
-			--Atramedes
-			[SpellName(76246)] = Defaults(), -- Searing Flame
-			[SpellName(78555)] = Defaults(), -- Roaring Flame
-			[SpellName(78098)] = Defaults(), -- Sonic Breath
-
-			--Chimaeron
-			[SpellName(82881)] = Defaults(), -- Break
-			[SpellName(89084)] = Defaults(), -- Low Health
-
-			--Nefarian
-
-			--Sinestra
-			[SpellName(89435)] = Defaults(), --Wrack
-
-		--The Bastion of Twilight
-			--Valiona & Theralion
-			[SpellName(86825)] = Defaults(), -- Blackout
-			[SpellName(86631)] = Defaults(), -- Engulfing Magic
-			[SpellName(86214)] = Defaults(), -- Twilight Zone
-			[SpellName(88518)] = Defaults(), -- Twilight Meteorite
-
-			--Halfus Wyrmbreaker
-			[SpellName(83908)] = Defaults(), -- Malevolent Strikes
-
-			--Twilight Ascendant Council
-			[SpellName(125988)] = Defaults(), -- Hydro Lance
-			[SpellName(82762)] = Defaults(), -- Waterlogged
-			[SpellName(50635)] = Defaults(), -- Frozen
-			[SpellName(100795)] = Defaults(), -- Flame Torrent
-			[SpellName(105342)] = Defaults(), -- Lightning Rod
-			[SpellName(92075)] = Defaults(), -- Gravity Core
-
-			--Cho'gall
-			[SpellName(86028)] = Defaults(), -- Cho's Blast
-			[SpellName(86029)] = Defaults(), -- Gall's Blast
-
-		--Throne of the Four Winds
-			--Conclave of Wind
-				--Nezir <Lord of the North Wind>
-				[SpellName(86122)] = Defaults(), --Ice Patch
-				--Anshal <Lord of the West Wind>
-				[SpellName(86206)] = Defaults(), --Soothing Breeze
-				[SpellName(86290)] = Defaults(), --Toxic Spores
-				--Rohash <Lord of the East Wind>
-				[SpellName(86182)] = Defaults(), --Slicing Gale
-				
-			--Al'Akir
-			[SpellName(87470)] = Defaults(), -- Ice Storm
-			[SpellName(105342)] = Defaults(), -- Lightning Rod
-			
-		--Firelands	
-			--Beth'tilac
-			[SpellName(99506)] = Defaults(), -- Widows Kiss
-			
-			--Alysrazor
-			[SpellName(100024)] = Defaults(), -- Gushing Wound
-			
-			--Shannox
-			[SpellName(99837)] = Defaults(), -- Crystal Prison
-			[SpellName(99937)] = Defaults(), -- Jagged Tear
-			
-			--Baleroc
-			[SpellName(99257)] = Defaults(), -- Tormented
-			[SpellName(99256)] = Defaults(), -- Torment
-			
-			--Lord Rhyolith
-				--<< NONE KNOWN YET >>
-			
-			--Majordomo Staghelm
-			[SpellName(98450)] = Defaults(), -- Searing Seeds
-			[SpellName(98565)] = Defaults(), -- Burning Orb
-			
-			--Ragnaros
-			[SpellName(99399)] = Defaults(), -- Burning Wound
-				
-			--Trash
-			[SpellName(99532)] = Defaults(), -- Melt Armor	
-			
-		--Baradin Hold
-			--Occu'thar
-			[SpellName(96913)] = Defaults(), -- Searing Shadows
-			--Alizabal
-			[SpellName(104936)] = Defaults(), -- Skewer
-			
-		--Dragon Soul
-			--Morchok
-			[SpellName(103541)] = Defaults(), -- Safe
-			[SpellName(103536)] = Defaults(), -- Warning
-			[SpellName(103534)] = Defaults(), -- Danger
-			[SpellName(103785)] = Defaults(), -- Black Blood of the Earth
-
-			--Warlord Zon'ozz
-			[SpellName(103434)] = Defaults(), -- Disrupting Shadows
-
-			--Yor'sahj the Unsleeping
-			[SpellName(105171)] = Defaults(), -- Deep Corruption
-
-			--Hagara the Stormbinder
-			[SpellName(105465)] = Defaults(), -- Lighting Storm
-			[SpellName(104451)] = Defaults(), -- Ice Tomb
-			[SpellName(109325)] = Defaults(), -- Frostflake
-			[SpellName(105289)] = Defaults(), -- Shattered Ice
-			[SpellName(105285)] = Defaults(), -- Target
-
-			--Ultraxion
-			[SpellName(109075)] = Defaults(), -- Fading Light
-
-			--Warmaster Blackhorn
-			[SpellName(108043)] = Defaults(), -- Sunder Armor
-			[SpellName(107558)] = Defaults(), -- Degeneration
-			[SpellName(107567)] = Defaults(), -- Brutal Strike
-			[SpellName(108046)] = Defaults(), -- Shockwave
-
-			--Spine of Deathwing
-			[SpellName(105479)] = Defaults(), -- Searing Plasma
-			[SpellName(105490)] = Defaults(), -- Fiery Grip
-			[SpellName(106199)] = { 
-				['enable'] = true,
-				['priority'] = 5,
-			}, -- Blood Corruption: Death
-			
-			--Madness of Deathwing
-			[SpellName(105841)] = Defaults(), -- Degenerative Bite
-			[SpellName(106385)] = Defaults(), -- Crush
-			[SpellName(106730)] = Defaults(), -- Tetanus
-			[SpellName(106444)] = Defaults(), -- Impale
-			[SpellName(106794)] = Defaults(), -- Shrapnel (target)			
-	
 	   -- Mogu'shan Vaults
 			-- The Stone Guard
 			[SpellName(116281)] = Defaults(), -- Cobalt Mine Blast
@@ -628,6 +484,52 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 			
 			
 			[SpellName(122151)] = Defaults(), -- Voodoo Doll
+		-- Throne of Thunder
+			--Trash
+			[SpellName(138349)] = Defaults(), -- Static Wound
+			[SpellName(137371)] = Defaults(), -- Thundering Throw
+			
+			--Horridon
+			[SpellName(136767)] = Defaults(), --Triple Puncture
+			
+			--Council of Elders
+			[SpellName(137641)] = Defaults(), --Soul Fragment
+			[SpellName(137359)] = Defaults(), --Shadowed Loa Spirit Fixate
+			[SpellName(137972)] = Defaults(), --Twisted Fate
+			
+			--Tortos
+			[SpellName(136753)] = Defaults(), --Slashing Talons
+			[SpellName(137633)] = Defaults(), --Crystal Shell
+			
+			--Megaera
+			[SpellName(137731)] = Defaults(), --Ignite Flesh
+			
+			--Ji-Kun
+			[SpellName(138309)] = Defaults(), --Slimed
+			
+			--Durumu the Forgotten
+			[SpellName(133767)] = Defaults(), --Serious Wound
+			[SpellName(133768)] = Defaults(), --Arterial Cut
+			
+			--Primordius
+			[SpellName(136050)] = Defaults(), --Malformed Blood
+			
+			--Dark Animus
+			[SpellName(138569)] = Defaults(), --Explosive Slam
+			
+			--Iron Qon
+			[SpellName(134691)] = Defaults(), --Impale
+			
+			--Twin Consorts
+			[SpellName(137440)] = Defaults(), --Icy Shadows
+			[SpellName(137408)] = Defaults(), --Fan of Flames
+			[SpellName(137360)] = Defaults(), --Corrupted Healing
+			
+			--Lei Shen
+			[SpellName(135000)] = Defaults(), --Decapitate
+			
+			--Ra-den
+			
 	},
 }
 

@@ -31,7 +31,9 @@ local function UpdateFilterGroup()
 							E.global.unitframe.AuraBarColors[value] = false
 						end
 						UpdateFilterGroup();
-						UF:Update_AllFrames();
+						UF:CreateAndUpdateUF('player')
+						UF:CreateAndUpdateUF('target')
+						UF:CreateAndUpdateUF('focus')
 					end,	
 				},
 				removeSpell = {
@@ -49,7 +51,9 @@ local function UpdateFilterGroup()
 						end
 						selectedSpell = nil;
 						UpdateFilterGroup();
-						UF:Update_AllFrames();
+						UF:CreateAndUpdateUF('player')
+						UF:CreateAndUpdateUF('target')
+						UF:CreateAndUpdateUF('focus')
 					end,				
 				},		
 				selectSpell = {
@@ -101,18 +105,24 @@ local function UpdateFilterGroup()
 						end
 						local t = E.global.unitframe.AuraBarColors[selectedSpell]
 						t.r, t.g, t.b = r, g, b
-						UF:Update_AllFrames()
+						UF:CreateAndUpdateUF('player')
+						UF:CreateAndUpdateUF('target')
+						UF:CreateAndUpdateUF('focus')
 					end,						
 				},	
 				removeColor = {
 					type = 'execute',
 					order = 2,
 					name = L['Restore Defaults'],
-					func = function(info, value) E.global.unitframe.AuraBarColors[selectedSpell] = false; UF:Update_AllFrames() end,
+					func = function(info, value) 
+						E.global.unitframe.AuraBarColors[selectedSpell] = false; 
+						UF:CreateAndUpdateUF('player')
+						UF:CreateAndUpdateUF('target')
+						UF:CreateAndUpdateUF('focus')						
+					end,
 				},				
 			},
 		}
-	
 	elseif selectedFilter == 'Blacklist (Strict)' then
 		E.Options.args.filters.args.filterGroup = {
 			type = 'group',
@@ -220,7 +230,7 @@ local function UpdateFilterGroup()
 						else	
 							tinsert(E.global.unitframe.buffwatch.PET, {["enabled"] = true, ["id"] = tonumber(value), ["point"] = "TOPRIGHT", ["color"] = {["r"] = 1, ["g"] = 0, ["b"] = 0}, ["anyUnit"] = true})
 							UpdateFilterGroup();
-							UF:Update_AllFrames();
+							UF:CreateAndUpdateUF('pet');
 							selectedSpell = nil;
 						end
 					end,					
@@ -259,7 +269,7 @@ local function UpdateFilterGroup()
 						
 						selectedSpell = nil;
 						UpdateFilterGroup();
-						UF:Update_AllFrames();
+						UF:CreateAndUpdateUF('pet')
 					end,				
 				},
 				selectSpell = {
@@ -302,7 +312,7 @@ local function UpdateFilterGroup()
 				name = name..' ('..selectedSpell..')',
 				type = 'group',
 				get = function(info) return E.global.unitframe.buffwatch.PET[tableIndex][ info[#info] ] end,
-				set = function(info, value) E.global.unitframe.buffwatch.PET[tableIndex][ info[#info] ] = value; UF:Update_AllFrames() end,
+				set = function(info, value) E.global.unitframe.buffwatch.PET[tableIndex][ info[#info] ] = value; UF:CreateAndUpdateUF('pet') end,
 				order = -10,
 				args = {
 					enabled = {
@@ -329,13 +339,13 @@ local function UpdateFilterGroup()
 						order = 2,
 						type = 'range',
 						name = L['xOffset'],
-						min = -300, max = 300, step = 1,
+						min = -75, max = 75, step = 1,
 					},		
 					yOffset = {
 						order = 2,
 						type = 'range',
 						name = L['yOffset'],
-						min = -300, max = 300, step = 1,
+						min = -75, max = 75, step = 1,
 					},						
 					style = {
 						name = L['Style'],
@@ -358,7 +368,7 @@ local function UpdateFilterGroup()
 						set = function(info, r, g, b)
 							local t = E.global.unitframe.buffwatch.PET[tableIndex][ info[#info] ]
 							t.r, t.g, t.b = r, g, b
-							UF:Update_AllFrames()
+							UF:CreateAndUpdateUF('pet')
 						end,						
 					},
 					displayText = {
@@ -381,7 +391,7 @@ local function UpdateFilterGroup()
 						set = function(info, r, g, b)
 							local t = E.global.unitframe.buffwatch.PET[tableIndex][ info[#info] ]
 							t.r, t.g, t.b = r, g, b
-							UF:Update_AllFrames()
+							UF:CreateAndUpdateUF('pet')
 						end,						
 					},					
 					textThreshold = {
@@ -440,7 +450,11 @@ local function UpdateFilterGroup()
 						else	
 							tinsert(E.global.unitframe.buffwatch[E.myclass], {["enabled"] = true, ["id"] = tonumber(value), ["point"] = "TOPRIGHT", ["color"] = {["r"] = 1, ["g"] = 0, ["b"] = 0}, ["anyUnit"] = false})
 							UpdateFilterGroup();
-							UF:Update_AllFrames();
+							
+							for i=10, 40, 15 do
+								UF:UpdateAuraWatchFromHeader('raid'..i)
+							end
+							UF:UpdateAuraWatchFromHeader('party')
 							selectedSpell = nil;
 						end
 					end,					
@@ -478,7 +492,10 @@ local function UpdateFilterGroup()
 						
 						selectedSpell = nil;
 						UpdateFilterGroup();
-						UF:Update_AllFrames();
+						for i=10, 40, 15 do
+							UF:UpdateAuraWatchFromHeader('raid'..i)
+						end
+						UF:UpdateAuraWatchFromHeader('party')
 					end,				
 				},
 				selectSpell = {
@@ -521,7 +538,13 @@ local function UpdateFilterGroup()
 				name = name..' ('..selectedSpell..')',
 				type = 'group',
 				get = function(info) return E.global.unitframe.buffwatch[E.myclass][tableIndex][ info[#info] ] end,
-				set = function(info, value) E.global.unitframe.buffwatch[E.myclass][tableIndex][ info[#info] ] = value; UF:Update_AllFrames() end,
+				set = function(info, value) 
+					E.global.unitframe.buffwatch[E.myclass][tableIndex][ info[#info] ] = value;
+					for i=10, 40, 15 do
+						UF:UpdateAuraWatchFromHeader('raid'..i)
+					end
+					UF:UpdateAuraWatchFromHeader('party')
+				end,
 				order = -10,
 				args = {
 					enabled = {
@@ -548,13 +571,13 @@ local function UpdateFilterGroup()
 						order = 2,
 						type = 'range',
 						name = L['xOffset'],
-						min = -300, max = 300, step = 1,
+						min = -75, max = 75, step = 1,
 					},		
 					yOffset = {
 						order = 2,
 						type = 'range',
 						name = L['yOffset'],
-						min = -300, max = 300, step = 1,
+						min = -75, max = 75, step = 1,
 					},						
 					style = {
 						name = L['Style'],
@@ -577,7 +600,10 @@ local function UpdateFilterGroup()
 						set = function(info, r, g, b)
 							local t = E.global.unitframe.buffwatch[E.myclass][tableIndex][ info[#info] ]
 							t.r, t.g, t.b = r, g, b
-							UF:Update_AllFrames()
+							for i=10, 40, 15 do
+								UF:UpdateAuraWatchFromHeader('raid'..i)
+							end
+							UF:UpdateAuraWatchFromHeader('party')
 						end,						
 					},
 					displayText = {
@@ -600,7 +626,10 @@ local function UpdateFilterGroup()
 						set = function(info, r, g, b)
 							local t = E.global.unitframe.buffwatch[E.myclass][tableIndex][ info[#info] ]
 							t.r, t.g, t.b = r, g, b
-							UF:Update_AllFrames()
+							for i=10, 40, 15 do
+								UF:UpdateAuraWatchFromHeader('raid'..i)
+							end
+							UF:UpdateAuraWatchFromHeader('party')
 						end,						
 					},					
 					textThreshold = {

@@ -325,6 +325,16 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 	end
 end
 
+function UF:HeaderUpdateSpecificElement(group, elementName)
+	assert(self[group], "Invalid group specified.")
+	for i=1, self[group]:GetNumChildren() do
+		local frame = select(i, self[group]:GetChildren())
+		if frame and frame.Health then
+			frame:UpdateElement(elementName)
+		end
+	end
+end
+
 function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return end
 
