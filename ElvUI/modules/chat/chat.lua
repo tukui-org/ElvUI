@@ -1456,6 +1456,11 @@ function CH:SaveChatHistory(event, ...)
 		temp[i] = select(i, ...) or false
 	end
 	
+	local temp = {}
+	for i = 1, select('#', ...) do	
+		temp[i] = select(i, ...) or false
+	end
+	
 	if #temp > 0 then
 	  temp[20] = event
 	  local timeForMessage = GetTimeForSavedMessage()
@@ -1528,7 +1533,7 @@ function CH:Initialize()
 	if not ElvCharacterDB.ChatEditHistory then
 		ElvCharacterDB.ChatEditHistory = {};
 	end
-
+	
 	if not ElvCharacterDB.ChatLog or not self.db.chatHistory then
 		ElvCharacterDB.ChatLog = {};
 	end

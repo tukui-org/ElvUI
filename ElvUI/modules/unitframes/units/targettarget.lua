@@ -292,7 +292,7 @@ function UF:Update_TargetTargetFrame(frame, db)
 				frame:DisableElement('Range')
 			end				
 		end
-	end
+	end	
 	
 	--Raid Icon
 	do

@@ -426,7 +426,8 @@ function UF:Update_FocusFrame(frame, db)
 			else
 				auraBars.sort = nil
 			end			
-
+			
+			
 			auraBars.down = db.aurabar.anchorPoint == 'BELOW'
 			auraBars:SetAnchors()
 		else
@@ -475,7 +476,7 @@ function UF:Update_FocusFrame(frame, db)
 	end
 	
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg)
-	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)		
 		
 	frame:UpdateAllElements()
 end

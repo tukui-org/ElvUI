@@ -32,7 +32,7 @@ for i=10, 40, 15 do
 		self.TargetGlow = UF:Construct_TargetGlow(self)
 		tinsert(self.__elements, UF.UpdateTargetGlow)
 		self:RegisterEvent('PLAYER_TARGET_CHANGED', UF.UpdateTargetGlow)
-		self:RegisterEvent('PLAYER_ENTERING_WORLD', UF.UpdateTargetGlow)
+		self:RegisterEvent('PLAYER_ENTERING_WORLD', UF.UpdateTargetGlow)		
 		
 		self.Threat = UF:Construct_Threat(self)
 		self.RaidIcon = UF:Construct_RaidIcon(self)
@@ -577,10 +577,10 @@ for i=10, 40, 15 do
 				frame[objectName]:ClearAllPoints()
 				frame[objectName]:SetPoint(objectDB.justifyH or 'CENTER', frame, 'CENTER', objectDB.xOffset, objectDB.yOffset)
 			end
-		end
+		end		
 
 		UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg)
-		UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)
+		UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)	
 		
 		frame:UpdateAllElements()
 	end

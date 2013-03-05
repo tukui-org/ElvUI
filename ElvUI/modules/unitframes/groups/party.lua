@@ -47,6 +47,8 @@ function UF:Construct_PartyFrames(unitGroup)
 
 	self.Range = UF:Construct_Range(self)
 	
+	self.Range = UF:Construct_Range(self)
+	
 	
 	--UF:Update_PartyFrames(self, E.db['unitframe']['units']['party'])
 	UF:Update_StatusBars()
@@ -375,7 +377,6 @@ function UF:Update_PartyFrames(frame, db)
 		--Target Glow
 		do
 			local tGlow = frame.TargetGlow
-			local SHADOW_SPACING = E.PixelMode and 3 or 4
 			tGlow:ClearAllPoints()
 			
 			tGlow:Point("TOPLEFT", -SHADOW_SPACING, SHADOW_SPACING)

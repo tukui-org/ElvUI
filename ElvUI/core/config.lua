@@ -460,7 +460,7 @@ function E:CreateMoverPopup()
 		end
 	end)
 	S:HandleButton(resetButton)
-
+	
 	local upButton = CreateFrame('Button', nudgeFrame:GetName()..'UpButton', nudgeFrame, 'UIPanelSquareButton')
 	upButton:SetPoint('BOTTOMRIGHT', nudgeFrame, 'BOTTOM', -6, 4)
 	upButton:SetScript('OnClick', function()

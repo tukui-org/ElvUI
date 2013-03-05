@@ -295,7 +295,7 @@ function UF:Update_FocusTargetFrame(frame, db)
 			RI:Hide()
 		end
 	end		
-
+	
 	--Range
 	do
 		local range = frame.Range
@@ -311,7 +311,7 @@ function UF:Update_FocusTargetFrame(frame, db)
 			end				
 		end
 	end		
-
+	
 	if db.customTexts then
 		local customFont = UF.LSM:Fetch("font", UF.db.font)
 		for objectName, _ in pairs(db.customTexts) do

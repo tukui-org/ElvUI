@@ -113,7 +113,7 @@ E.Options.args.datatexts = {
 				E:GetModule('Chat'):UpdateAnchors()
 				E:GetModule('Layout'):ToggleChatPanels()
 				E:GetModule('Bags'):PositionBagFrames()
-			end,
+			end,					
 		},			
 		panelTransparency = {
 			order = 8,

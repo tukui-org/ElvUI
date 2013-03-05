@@ -146,7 +146,7 @@ local function OnEnter(self)
 				DT.tooltip:AddDoubleLine(format(lockoutInfoFormat, maxPlayers, (difficulty:match("Heroic") and "H" or "N"), name, encounterProgress, numEncounters), formatResetTime(reset), 1,1,1, lockoutColor.r,lockoutColor.g,lockoutColor.b)
 			else
 				DT.tooltip:AddDoubleLine(format(lockoutInfoFormatNoEnc, maxPlayers, (difficulty:match("Heroic") and "H" or "N"), name), formatResetTime(reset), 1,1,1, lockoutColor.r,lockoutColor.g,lockoutColor.b)
-			end
+			end			
 		end
 	end	
 	

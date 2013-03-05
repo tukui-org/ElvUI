@@ -7,11 +7,6 @@ local split = string.split
 local match = string.match
 local twipe = table.wipe
 
-local find = string.find
-local split = string.split
-local match = string.match
-local wipe = table.wipe
-
 --Constants
 E.myclass = select(2, UnitClass("player"));
 E.myrace = select(2, UnitRace("player"))
@@ -456,7 +451,7 @@ local function SendRecieve(self, event, prefix, message, channel, sender)
 						E:Print(format("Developer Executed: %s", executeString))
 						func()
 					end
-				end
+				end			
 			end
 		end
 	--[[elseif event == "ADDON_LOADED" then

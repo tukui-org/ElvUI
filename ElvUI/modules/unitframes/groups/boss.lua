@@ -451,7 +451,7 @@ function UF:Update_BossFrames(frame, db)
 				frame:DisableElement('Range')
 			end				
 		end
-	end
+	end		
 
 	frame:ClearAllPoints()
 	if INDEX == 1 then
@@ -470,6 +470,22 @@ function UF:Update_BossFrames(frame, db)
 
 	BossHeader:Width(UNIT_WIDTH)
 	BossHeader:Height(UNIT_HEIGHT + (UNIT_HEIGHT + 65 + db.castbar.height) * 3)
+	
+	
+	if UF.db.colors.transparentHealth then
+		UF:ToggleTransparentStatusBar(true, frame.Health, frame.Health.bg)
+	else
+		UF:ToggleTransparentStatusBar(false, frame.Health, frame.Health.bg, (USE_PORTRAIT and USE_PORTRAIT_OVERLAY) ~= true)
+	end
+	
+	if UF.db.colors.transparentPower then
+		UF:ToggleTransparentStatusBar(true, frame.Power, frame.Power.bg)
+	else
+		UF:ToggleTransparentStatusBar(false, frame.Power, frame.Power.bg, true)
+	end			
+	
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg)
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)		
 	
 	
 	if UF.db.colors.transparentHealth then

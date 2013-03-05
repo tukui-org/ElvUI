@@ -281,6 +281,8 @@ P['unitframe'] = {
 		['castColor'] = { r = .66,g = .66,b = .66 },
 		['castNoInterrupt'] = { r = 0.78, g = 0.25, b = 0.25 },
 		['castClassColor'] = false,
+		
+		
 		['health'] = { r = .27,g = .27,b = .27 },
 		['health_backdrop'] = { r = .38,g = .38,b = .38 },
 		['tapped'] = { r = 0.55, g = 0.57, b = 0.61},

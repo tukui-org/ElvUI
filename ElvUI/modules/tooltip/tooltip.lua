@@ -672,7 +672,7 @@ function TT:INSPECT_READY(event, GUID)
 		self:UnregisterEvent('INSPECT_READY');
 		return
 	end
-
+	
 	local ilvl = TT:GetItemLvL('mouseover')
 	local talentSpec = TT:GetTalentSpec('mouseover')
 	local curTime = GetTime()

@@ -83,7 +83,7 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 	local SHADOW_SPACING = E.PixelMode and 3 or 4
 	local USE_STAGGER = stagger and stagger:IsShown();	
 	local STAGGER_WIDTH = USE_STAGGER and (db.stagger.width + (BORDER*2)) or 0;
-
+	
 	if not USE_POWERBAR then
 		POWERBAR_HEIGHT = 0
 	end
@@ -95,7 +95,7 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 	if USE_MINI_CLASSBAR then
 		CLASSBAR_HEIGHT = CLASSBAR_HEIGHT / 2
 	end
-
+	
 	if USE_STAGGER then
 		if not USE_MINI_POWERBAR and not USE_INSET_POWERBAR then
 			stagger:Point('BOTTOMLEFT', power, 'BOTTOMRIGHT', BORDER*2 + (E.PixelMode and -1 or SPACING), 0)
@@ -182,7 +182,7 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 				threat.glow:Point("TOPRIGHT", SHADOW_SPACING-POWERBAR_OFFSET, SHADOW_SPACING)
 				threat.glow:Point("BOTTOMRIGHT", SHADOW_SPACING-POWERBAR_OFFSET, -SHADOW_SPACING)	
 			end				
-		end
+		end			
 
 		if db.portrait.enable and not USE_PORTRAIT_OVERLAY and frame.Portrait then
 			local portrait = frame.Portrait

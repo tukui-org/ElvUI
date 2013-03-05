@@ -1,6 +1,6 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local NP = E:GetModule('NamePlates')
-_G["NP"] = NP
+
 --[[
 	This file handles functions for the Castbar and Debuff modules of nameplates.
 ]]
