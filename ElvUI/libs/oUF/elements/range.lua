@@ -49,7 +49,7 @@ do
 		enemySpells[#enemySpells+1] = GetSpellInfo(75) -- Auto Shot
 	elseif class == "DEATHKNIGHT" then
 		enemySpells[#enemySpells+1] = GetSpellInfo(49576) -- Death Grip
-		friendlySpells[#friendlySpells+1] = GetSpellInfo(49016) -- Unholy Frenzy
+		friendlySpells[#friendlySpells+1] = GetSpellInfo(47541) -- Death Coil
 		resSpells[#resSpells+1] = GetSpellInfo(61999) -- Raise Ally 
 	elseif class == "ROGUE" then
 		enemySpells[#enemySpells+1] = GetSpellInfo(2094) -- Blind 
@@ -67,12 +67,30 @@ do
 	end	
 end
 
+local function getUnit(unit)
+	if not unit:find("party") or not unit:find("raid") then
+		for i=1, 4 do
+			if UnitIsUnit(unit, "party"..i) then
+				return "party"..i
+			end
+		end
+
+		for i=1, 40 do
+			if UnitIsUnit(unit, "raid"..i) then
+				return "raid"..i
+			end
+		end
+	else
+		return unit
+	end
+end
+
 local function friendlyIsInRange(unit)
-	if CheckInteractDistance(unit, 2) then
+	if CheckInteractDistance(unit, 1) then
 		return true
 	end
 	
-	if UnitIsDeadOrGhost(unit) then
+	if UnitIsDeadOrGhost(unit) and #resSpells > 0 then
 		for _, name in ipairs(resSpells) do
 			if IsSpellInRange(name, unit) == 1 then
 				return true
@@ -81,10 +99,15 @@ local function friendlyIsInRange(unit)
 
 		return false
 	end
-
-	for _, name in ipairs(friendlySpells) do
-		if IsSpellInRange(name, unit) == 1 then
-			return true
+	
+	if #friendlySpells == 0 and (UnitInRaid(unit) or UnitInParty(unit)) then
+		unit = getUnit(unit)
+		return unit and UnitInRange(unit)
+	else
+		for _, name in ipairs(friendlySpells) do
+			if IsSpellInRange(name, unit) == 1 then
+				return true
+			end
 		end
 	end
 	

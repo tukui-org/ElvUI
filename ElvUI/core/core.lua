@@ -415,9 +415,9 @@ end
 function E:SendMessage()
 	local _, instanceType = IsInInstance()
 	if IsInRaid() then
-		SendAddonMessage("ELVUI_VERSION", E.version, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "RAID")
+		SendAddonMessage("ELVUI_VERSIONCHK", E.version, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "RAID")
 	elseif IsInGroup() then
-		SendAddonMessage("ELVUI_VERSION", E.version, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "PARTY")
+		SendAddonMessage("ELVUI_VERSIONCHK", E.version, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "PARTY")
 	end
 	
 	if E.SendMSGTimer then
@@ -431,7 +431,7 @@ local function SendRecieve(self, event, prefix, message, channel, sender)
 	if event == "CHAT_MSG_ADDON" then
 		if sender == E.myname then return end
 
-		if prefix == "ELVUI_VERSION" and not find(sender, "Elvz") and not E.recievedOutOfDateMessage then
+		if prefix == "ELVUI_VERSIONCHK" and not find(sender, "Elvz") and not E.recievedOutOfDateMessage then
 			if E.version ~= 'BETA' and tonumber(message) ~= nil and tonumber(message) > tonumber(E.version) then
 				E:Print(L["Your version of ElvUI is out of date. You can download the latest version from http://www.tukui.org"])
 				E.recievedOutOfDateMessage = true
@@ -454,40 +454,12 @@ local function SendRecieve(self, event, prefix, message, channel, sender)
 				end			
 			end
 		end
-	--[[elseif event == "ADDON_LOADED" then
-		if prefix == "ElvUI" then
-			local _, _, _, _, _, reason = GetAddOnInfo("ElvUI_SLE")
-			local frame = EnumerateFrames()
-			while frame do
-				if frame:IsEventRegistered("CHAT_MSG_ADDON") then
-					frames[frame] = true
-				end
-				frame = EnumerateFrames(frame)
-			end
-
-			if reason ~= "MISSING" and reason ~= "DISABLED" then 
-				LoadAddon("ElvUI_SLE")
-			else
-				twipe(frames)
-				self:UnregisterEvent("ADDON_LOADED")
-			end
-		elseif prefix == "ElvUI_SLE" then
-			local frame = EnumerateFrames()
-			while frame do
-				if frame:IsEventRegistered("CHAT_MSG_ADDON") and not frames[frame] then
-					frame:UnregisterEvent("CHAT_MSG_ADDON")
-				end
-				frame = EnumerateFrames(frame)
-			end
-			twipe(frames)
-			self:UnregisterEvent("ADDON_LOADED")
-		end
-	else]]
+	else
 		E.SendMSGTimer = E:ScheduleTimer('SendMessage', 12)
 	end
 end
 
-RegisterAddonMessagePrefix('ELVUI_VERSION')
+RegisterAddonMessagePrefix('ELVUI_VERSIONCHK')
 RegisterAddonMessagePrefix('ELVUI_DEV_SAYS')
 RegisterAddonMessagePrefix('ELVUI_DEV_CMD')
 

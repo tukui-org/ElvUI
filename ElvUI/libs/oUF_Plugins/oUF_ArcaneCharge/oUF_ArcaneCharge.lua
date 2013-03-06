@@ -31,20 +31,16 @@ local Update = function(self, event)
 	end
 	
 	local arcaneCharges, maxCharges, duration, expirationTime = 0, 4
-	if bar:IsShown() then
-		local index = 1
-		local count = select(4, UnitDebuff(unit, index))
-		local name, _, _, count, _, start, timeLeft, _, _, _, spellID = UnitDebuff(unit, index)
-		while name do	
+	if bar:IsShown() then		
+		for index=1, 30 do
+			local _, _, _, count, _, start, timeLeft, _, _, _, spellID = UnitDebuff(unit, index)
 			if spellID == 36032 then
 				arcaneCharges = count or 0
 				duration = start
 				expirationTime = timeLeft
-				name = nil
-			else
-				name, _, _, count, _, start, timeLeft, _, _, _, spellID = UnitDebuff(unit, index)
-			end
-		end	
+				break
+			end			
+		end
 
 		for i = 1, maxCharges do
 			if duration and expirationTime then
