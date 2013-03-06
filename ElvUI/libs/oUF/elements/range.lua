@@ -49,9 +49,8 @@ do
 		enemySpells[#enemySpells+1] = GetSpellInfo(75) -- Auto Shot
 	elseif class == "DEATHKNIGHT" then
 		enemySpells[#enemySpells+1] = GetSpellInfo(49576) -- Death Grip
-		--friendlySpells[#friendlySpells+1] = GetSpellInfo(49016) -- Unholy Frenzy
-		--resSpells[#resSpells+1] = GetSpellInfo(61999) -- Raise Ally 
-		friendlySpells[#friendlySpells+1] = GetSpellInfo(61999) -- Raise Ally 
+		friendlySpells[#friendlySpells+1] = GetSpellInfo(47541) -- Death Coil
+		resSpells[#resSpells+1] = GetSpellInfo(61999) -- Raise Ally 
 	elseif class == "ROGUE" then
 		enemySpells[#enemySpells+1] = GetSpellInfo(2094) -- Blind 
 		longEnemySpells[#longEnemySpells+1] = GetSpellInfo(1725) -- Distract
