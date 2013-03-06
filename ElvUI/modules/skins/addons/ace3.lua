@@ -89,9 +89,7 @@ local function SkinNextPrevButton(...)
 end
 
 function S:SkinAce3()
-	if not AceGUI then
-		AceGUI = LibStub("AceGUI-3.0", true)
-	end
+	AceGUI = LibStub("AceGUI-3.0", true)
 	local oldRegisterAsWidget = AceGUI.RegisterAsWidget
 	AceGUI.RegisterAsWidget = function(self, widget)
 		if not E.private.skins.ace3.enable then
