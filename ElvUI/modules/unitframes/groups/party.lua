@@ -543,7 +543,7 @@ function UF:Update_PartyFrames(frame, db)
 		--GPSArrow
 		do
 			local GPS = frame.GPS
-			if db.GPSArrow then
+			if db.GPSArrow.enable then
 				if not frame:IsElementEnabled('GPS') then
 					frame:EnableElement('GPS')
 				end

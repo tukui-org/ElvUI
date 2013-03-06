@@ -499,7 +499,7 @@ for i=10, 40, 15 do
 		--GPSArrow
 		do
 			local GPS = frame.GPS
-			if db.GPSArrow then
+			if db.GPSArrow.enable then
 				if not frame:IsElementEnabled('GPS') then
 					frame:EnableElement('GPS')
 				end
