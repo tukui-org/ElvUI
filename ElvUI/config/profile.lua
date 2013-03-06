@@ -40,7 +40,7 @@ P['general'] = {
 		['height'] = 15,
 		['textFormat'] = 'CURMAX',
 		['textSize'] = 10,
-		['mouseover'] = true,
+		['mouseover'] = false,
 	},
 	['reputation'] = {
 		['enable'] = true,
@@ -48,7 +48,7 @@ P['general'] = {
 		['height'] = 15,
 		['textFormat'] = 'CURMAX',
 		['textSize'] = 10,
-		['mouseover'] = true,
+		['mouseover'] = false,
 	},
 	['threat'] = {
 		['enable'] = false,

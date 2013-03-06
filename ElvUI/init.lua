@@ -143,11 +143,6 @@ function AddOn:ToggleConfig()
 		local _, _, _, _, _, reason = GetAddOnInfo("ElvUI_Config")
 		if reason ~= "MISSING" and reason ~= "DISABLED" then 
 			LoadAddOn("ElvUI_Config")
-			
-			if not self.Ace3SkinLoaded then
-				self:GetModule('Skins'):SkinAce3()
-				self.Ace3SkinLoaded = true
-			end
 		else 
 			self:Print("|cffff0000Error -- Addon 'ElvUI_Config' not found or is disabled.|r") 
 			return

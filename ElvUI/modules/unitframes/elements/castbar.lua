@@ -231,16 +231,11 @@ function UF:PostCastStart(unit, name, rank, castid)
 		end		
 	end
 	
-	if self.interrupt and unit ~= "player" then
-		if UnitCanAttack("player", unit) then
-			self:SetStatusBarColor(colors.castNoInterrupt[1], colors.castNoInterrupt[2], colors.castNoInterrupt[3])
-		else
-			self:SetStatusBarColor(r, g, b)			
-		end
-	else
-		self:SetStatusBarColor(r, g, b)
+	if self.interrupt and unit ~= "player" and UnitCanAttack("player", unit) then
+		r, g, b = colors.castNoInterrupt[1], colors.castNoInterrupt[2], colors.castNoInterrupt[3]
 	end
-
+	
+	self:SetStatusBarColor(r, g, b)
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentCastbar, self, self.bg, nil, true)
 	if self.bg:IsShown() then
 		self.bg:SetTexture(r * 0.25, g * 0.25, b * 0.25)
@@ -331,10 +326,10 @@ function UF:PostCastInterruptible(unit)
 	end
 	
 	if UnitCanAttack("player", unit) then
-		self:SetStatusBarColor(colors.castNoInterrupt[1], colors.castNoInterrupt[2], colors.castNoInterrupt[3])	
-	else
-		self:SetStatusBarColor(r, g, b)
+		r, g, b = colors.castNoInterrupt[1], colors.castNoInterrupt[2], colors.castNoInterrupt[3]
 	end
+	
+	self:SetStatusBarColor(r, g, b)
 	
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentCastbar, self, self.bg, nil, true)
 	if self.bg:IsShown() then

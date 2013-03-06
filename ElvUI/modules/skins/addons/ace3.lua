@@ -89,7 +89,8 @@ local function SkinNextPrevButton(...)
 end
 
 function S:SkinAce3()
-	AceGUI = LibStub("AceGUI-3.0", true)
+	local AceGUI = LibStub("AceGUI-3.0", true)
+	if not AceGUI then return end
 	local oldRegisterAsWidget = AceGUI.RegisterAsWidget
 	AceGUI.RegisterAsWidget = function(self, widget)
 		if not E.private.skins.ace3.enable then
@@ -316,13 +317,14 @@ function S:SkinAce3()
 end
 
 if not AceGUI then
-	hooksecurefunc(LibStub, "NewLibrary", function(self, major, minor)
-		if not E.Ace3SkinLoaded then
-			E:Delay(1, S.SkinAce3, S)
-			E.Ace3SkinLoaded = true
+	local f = CreateFrame("Frame")
+	f:RegisterEvent("ADDON_LOADED")
+	f:SetScript("OnEvent", function(self, event, addon)
+		if LibStub("AceGUI-3.0", true) then
+			S:SkinAce3()
+			self:UnregisterEvent("ADDON_LOADED")
 		end
 	end)
 	return 
 end
-E.Ace3SkinLoaded = true
 S:RegisterSkin('Ace3', S.SkinAce3, true)
