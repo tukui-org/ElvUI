@@ -103,7 +103,7 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 	end
 	
 	if UF:CheckFilter(db.onlyDispellable, isFriend) then
-		if (self.type == 'buffs' and not isStealable) or (self.type == 'debuffs' and dtype and  not E:IsDispellableByMe(dtype)) then
+		if (self.type == 'buffs' and not isStealable) or (self.type == 'debuffs' and dtype and  not E:IsDispellableByMe(dtype)) or dtype == nil then
 			returnValue = false;
 		end
 		anotherFilterExists = true
