@@ -69,9 +69,141 @@ UF['headerGroupBy'] = {
 	end,
 }
 
+local POINT_COLUMN_ANCHOR_TO_DIRECTION = {
+	['TOPTOP'] = 'UP_RIGHT',
+	['BOTTOMBOTTOM'] = 'TOP_RIGHT',
+	['LEFTLEFT'] = 'RIGHT_UP',
+	['RIGHTRIGHT'] = 'LEFT_UP',
+	['RIGHTTOP'] = 'LEFT_DOWN',
+	['LEFTTOP'] = 'RIGHT_DOWN',
+	['LEFTBOTTOM'] = 'RIGHT_UP',
+	['RIGHTBOTTOM'] = 'LEFT_UP',
+	['BOTTOMRIGHT'] = 'UP_LEFT',
+	['BOTTOMLEFT'] = 'UP_RIGHT',
+	['TOPRIGHT'] = 'DOWN_LEFT',
+	['TOPLEFT'] = 'DOWN_RIGHT'
+}
+
+local DIRECTION_TO_POINT = {
+	DOWN_RIGHT = "TOP",
+	DOWN_LEFT = "TOP",
+	UP_RIGHT = "BOTTOM",
+	UP_LEFT = "BOTTOM",
+	RIGHT_DOWN = "LEFT",
+	RIGHT_UP = "LEFT",
+	LEFT_DOWN = "RIGHT",
+	LEFT_UP = "RIGHT"
+}
+
+local DIRECTION_TO_GROUP_ANCHOR_POINT = {
+	DOWN_RIGHT = "TOPLEFT",
+	DOWN_LEFT = "TOPRIGHT",
+	UP_RIGHT = "BOTTOMLEFT",
+	UP_LEFT = "BOTTOMRIGHT",
+	RIGHT_DOWN = "TOPLEFT",
+	RIGHT_UP = "BOTTOMLEFT",
+	LEFT_DOWN = "TOPRIGHT",
+	LEFT_UP = "BOTTOMRIGHT"
+}
+
+local DIRECTION_TO_COLUMN_ANCHOR_POINT = {
+	DOWN_RIGHT = "LEFT",
+	DOWN_LEFT = "RIGHT",
+	UP_RIGHT = "LEFT",
+	UP_LEFT = "RIGHT",
+	RIGHT_DOWN = "TOP",
+	RIGHT_UP = "BOTTOM",
+	LEFT_DOWN = "TOP",
+	LEFT_UP = "BOTTOM"
+}
+
+local DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER = {
+	DOWN_RIGHT = 1,
+	DOWN_LEFT = -1,
+	UP_RIGHT = 1,
+	UP_LEFT = -1,
+	RIGHT_DOWN = 1,
+	RIGHT_UP = 1,
+	LEFT_DOWN = -1,
+	LEFT_UP = -1
+}
+
+local DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER = {
+	DOWN_RIGHT = -1,
+	DOWN_LEFT = -1,
+	UP_RIGHT = 1,
+	UP_LEFT = 1,
+	RIGHT_DOWN = -1,
+	RIGHT_UP = 1,
+	LEFT_DOWN = -1,
+	LEFT_UP = 1
+}
+
 local find, gsub, split, format = string.find, string.gsub, string.split, string.format
-local min = math.min
+local min, abs = math.min, math.abs
 local tremove, tinsert = table.remove, table.insert
+
+
+function UF:ConvertGroupDB(group)
+	local db = group.db
+	if db.point and db.columnAnchorPoint then
+		db.growthDirection = POINT_COLUMN_ANCHOR_TO_DIRECTION[db.point..db.columnAnchorPoint];
+		db.point = nil;
+		db.columnAnchorPoint = nil;
+	end
+	
+	if db.xOffset then
+		db.horizontalSpacing = abs(db.xOffset);
+		db.xOffset = nil;
+	end
+	
+	if db.yOffset then
+		db.verticalSpacing = abs(db.yOffset);
+		db.yOffset = nil;
+	end
+	
+	if db.maxColumns then
+		db.numGroups = db.maxColumns;
+		db.maxColumns = nil;
+	end
+	
+	if db.unitsPerColumn then
+		db.unitsPerGroup = db.unitsPerColumn;
+		db.unitsPerColumn = nil;
+	end
+end
+
+function UF:SetupGroupAnchorPoints(group)
+	local db = group.db
+	local direction = db.growthDirection
+	local point = DIRECTION_TO_POINT[direction]
+	local positionOverride = DIRECTION_TO_GROUP_ANCHOR_POINT[direction]
+	
+	group:SetAttribute("maxColumns", db.numGroups)
+	group:SetAttribute("unitsPerColumn", db.unitsPerGroup)	
+	
+	if point == "LEFT" or point == "RIGHT" then
+		group:SetAttribute("xOffset", db.horizontalSpacing * DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction])
+		group:SetAttribute("yOffset", 0)
+		group:SetAttribute("columnSpacing", db.verticalSpacing)
+	else
+
+		group:SetAttribute("xOffset", 0)
+		group:SetAttribute("yOffset", db.verticalSpacing * DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction])
+		group:SetAttribute("columnSpacing", db.horizontalSpacing)
+	end
+	
+	group:SetAttribute("columnAnchorPoint", DIRECTION_TO_COLUMN_ANCHOR_POINT[direction])
+	UF:ClearChildPoints(group:GetChildren())
+	group:SetAttribute("point", point)	
+	
+	if group.mover then
+		group.mover.positionOverride = positionOverride
+		E:UpdatePositionOverride('ElvUF_PartyMover')
+	end
+
+	return positionOverride
+end
 
 function UF:Construct_UF(frame, unit)
 	frame:SetScript('OnEnter', UnitFrame_OnEnter)

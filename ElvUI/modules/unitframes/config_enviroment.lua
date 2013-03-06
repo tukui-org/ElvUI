@@ -111,7 +111,7 @@ local function OnAttributeChanged(self, name)
 	if not self.forceShow then return; end
 	
 	local maxUnits = MAX_RAID_MEMBERS
-	local startingIndex = -min(self.db.maxColumns * self.db.unitsPerColumn, maxUnits) + 1
+	local startingIndex = -min(self.db.numGroups * self.db.unitsPerGroup, maxUnits) + 1
 	if self:GetAttribute("startingIndex") ~= startingIndex then
 		self:SetAttribute("startingIndex", startingIndex)
 		UF:ShowChildUnits(self, self:GetChildren())	
