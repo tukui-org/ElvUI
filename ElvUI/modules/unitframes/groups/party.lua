@@ -108,7 +108,7 @@ function UF:Update_PartyHeader(header, db)
 		
 	if not header.positioned then
 		header:ClearAllPoints()
-		header:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 210)
+		header:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 205)
 		
 		E:CreateMover(header, header:GetName()..'Mover', L['Party Frames'], nil, nil, nil, 'ALL,PARTY,ARENA')
 		header.mover.positionOverride = db.positionOverride ~= 'NONE' and db.positionOverride or nil
