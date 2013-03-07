@@ -69,8 +69,16 @@ function UF:Construct_AuraIcon(button)
 end
 
 local function SortAurasByPriority(a, b)
-    if (a and b and a.priority and b.priority) then
-        return a.priority > b.priority
+    if (a and b) then
+		if a.isPlayer and not b.isPlayer then
+			return a > b
+		elseif not a.isPlayer and b.isPlayer then
+			return a < b
+		end
+	
+		if (a.priority and b.priority) then
+			return a.priority > b.priority
+		end
     end
 end
 
