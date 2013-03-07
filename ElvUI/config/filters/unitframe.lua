@@ -497,6 +497,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 			[SpellName(137641)] = Defaults(), --Soul Fragment
 			[SpellName(137359)] = Defaults(), --Shadowed Loa Spirit Fixate
 			[SpellName(137972)] = Defaults(), --Twisted Fate
+			[SpellName(136903)] = Defaults(), --Frigid Assault
 			
 			--Tortos
 			[SpellName(136753)] = Defaults(), --Slashing Talons
@@ -625,6 +626,7 @@ G.unitframe.ChannelTicks = {
 	[SpellName(16914)] = 10, -- "Hurricane"
 	--Priest
 	[SpellName(15407)] = 3, -- "Mind Flay"
+	[SpellName(129197)] = 3, -- "Mind Flay (Insanity)"
 	[SpellName(48045)] = 5, -- "Mind Sear"
 	[SpellName(47540)] = 2, -- "Penance"
 	[SpellName(64901)] = 4, -- Hymn of Hope
