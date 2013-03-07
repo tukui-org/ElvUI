@@ -71,9 +71,9 @@ end
 local function SortAurasByPriority(a, b)
     if (a and b) then
 		if a.isPlayer and not b.isPlayer then
-			return a > b
+			return true
 		elseif not a.isPlayer and b.isPlayer then
-			return a < b
+			return false
 		end
 	
 		if (a.priority and b.priority) then

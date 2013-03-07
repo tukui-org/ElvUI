@@ -15,6 +15,7 @@ local CanDispel = {
 }
 
 local blackList = {
+	[GetSpellInfo(140546)] = true, --Fully Mutated
 	[GetSpellInfo(136184)] = true, --Thick Bones
 	[GetSpellInfo(136186)] = true, --Clear mind
 	[GetSpellInfo(136182)] = true, --Improved Synapses
