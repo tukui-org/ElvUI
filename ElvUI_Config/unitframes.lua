@@ -800,7 +800,13 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 			type = 'toggle',
 			name = L['Ticks'],
 			desc = L['Display tick marks on the castbar for channelled spells. This will adjust automatically for spells like Drain Soul and add additional ticks based on haste.'],
-		}	
+		}
+		config.args.displayTarget = {
+			order = 14,
+			type = 'toggle',
+			name = L['Display Target'],
+			desc = L['Display the target of your current cast. Useful for mouseover casts.'],
+		}		
 	end
 	
 	return config

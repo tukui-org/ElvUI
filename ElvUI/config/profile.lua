@@ -397,6 +397,7 @@ P['unitframe'] = {
 				['format'] = 'REMAINING',
 				["ticks"] = true,
 				['spark'] = true,
+				['displayTarget'] = false,
 			},
 			['classbar'] = {
 				['enable'] = true,
