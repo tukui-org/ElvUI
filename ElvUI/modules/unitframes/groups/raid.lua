@@ -13,6 +13,7 @@ for i=10, 40, 15 do
 		self.menu = UF.SpawnMenu
 
 		self.RaisedElementParent = CreateFrame('Frame', nil, self)
+		self.RaisedElementParent:SetFrameStrata("MEDIUM")
 		self.RaisedElementParent:SetFrameLevel(self:GetFrameLevel() + 10)		
 		
 		self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
