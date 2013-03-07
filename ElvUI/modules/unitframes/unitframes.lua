@@ -179,8 +179,6 @@ function UF:SetupGroupAnchorPoints(group)
 	local point = DIRECTION_TO_POINT[direction]
 	local positionOverride = DIRECTION_TO_GROUP_ANCHOR_POINT[direction]
 	
-	group:SetAttribute("maxColumns", db.numGroups)
-	group:SetAttribute("unitsPerColumn", db.unitsPerGroup)	
 	
 	if point == "LEFT" or point == "RIGHT" then
 		group:SetAttribute("xOffset", db.horizontalSpacing * DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction])
@@ -196,6 +194,8 @@ function UF:SetupGroupAnchorPoints(group)
 	group:SetAttribute("columnAnchorPoint", DIRECTION_TO_COLUMN_ANCHOR_POINT[direction])
 	UF:ClearChildPoints(group:GetChildren())
 	group:SetAttribute("point", point)	
+	group:SetAttribute("maxColumns", db.numGroups)
+	group:SetAttribute("unitsPerColumn", db.unitsPerGroup)		
 	
 	if group.mover then
 		group.mover.positionOverride = positionOverride
