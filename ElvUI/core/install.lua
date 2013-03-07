@@ -400,9 +400,9 @@ function E:SetupLayout(layout, noDataReset)
 		end
 		
 		if not noDataReset then
-			E.db.unitframe.units.raid10.xOffset = 9;
+			E.db.unitframe.units.raid10.horizontalSpacing = 9;
 			E.db.unitframe.units.raid10.rdebuffs.enable = false;
-			E.db.unitframe.units.raid10.yOffset = 9;
+			E.db.unitframe.units.raid10.verticalSpacing = 9;
 			E.db.unitframe.units.raid10.debuffs.sizeOverride = 16;
 			E.db.unitframe.units.raid10.debuffs.enable = true
 			E.db.unitframe.units.raid10.debuffs.anchorPoint = "TOPRIGHT";
@@ -421,16 +421,16 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.raid10.buffs.sizeOverride = 22
 			E.db.unitframe.units.raid10.buffs.useBlacklist = false
 			E.db.unitframe.units.raid10.buffs.enable = true
+			E.db.unitframe.units.raid10.growthDirection = "LEFT_UP"
 			
-			E.db.unitframe.units.raid25.xOffset = 9;
+			E.db.unitframe.units.raid25.horizontalSpacing = 9;
 			E.db.unitframe.units.raid25.rdebuffs.enable = false;
-			E.db.unitframe.units.raid25.yOffset = 9;
+			E.db.unitframe.units.raid25.verticalSpacing = 9;
 			E.db.unitframe.units.raid25.debuffs.sizeOverride = 16;
 			E.db.unitframe.units.raid25.debuffs.enable = true
 			E.db.unitframe.units.raid25.debuffs.anchorPoint = "TOPRIGHT";
 			E.db.unitframe.units.raid25.debuffs.xOffset = -4;
 			E.db.unitframe.units.raid25.debuffs.yOffset = -7;
-			E.db.unitframe.units.raid25.positionOverride = "BOTTOMRIGHT";
 			E.db.unitframe.units.raid25.height = 45;
 			E.db.unitframe.units.raid25.buffs.noConsolidated = false
 			E.db.unitframe.units.raid25.buffs.xOffset = 50;
@@ -443,16 +443,16 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.raid25.buffs.sizeOverride = 22
 			E.db.unitframe.units.raid25.buffs.useBlacklist = false
 			E.db.unitframe.units.raid25.buffs.enable = true			
+			E.db.unitframe.units.raid25.growthDirection = "LEFT_UP"
 			
-			E.db.unitframe.units.party.point = "LEFT"
-			E.db.unitframe.units.party.xOffset = 9;
-			E.db.unitframe.units.party.yOffset = 9;
+			E.db.unitframe.units.party.growthDirection = "LEFT_UP"
+			E.db.unitframe.units.party.horizontalSpacing = 9;
+			E.db.unitframe.units.party.verticalSpacing = 9;
 			E.db.unitframe.units.party.debuffs.sizeOverride = 16;
 			E.db.unitframe.units.party.debuffs.enable = true
 			E.db.unitframe.units.party.debuffs.anchorPoint = "TOPRIGHT";
 			E.db.unitframe.units.party.debuffs.xOffset = -4;
 			E.db.unitframe.units.party.debuffs.yOffset = -7;
-			E.db.unitframe.units.party.positionOverride = "BOTTOMRIGHT";
 			E.db.unitframe.units.party.height = 45;
 			E.db.unitframe.units.party.buffs.noConsolidated = false
 			E.db.unitframe.units.party.buffs.xOffset = 50;
@@ -475,8 +475,8 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.party.name.position = "TOP"
 			E.db.unitframe.units.party.power.text_format = ""
 			
-			E.db.unitframe.units.raid40.positionOverride = "BOTTOMRIGHT"
 			E.db.unitframe.units.raid40.height = 30
+			E.db.unitframe.units.raid40.growthDirection = "LEFT_UP"
 			
 			E.db.unitframe.units.party.health.frequentUpdates = true
 			E.db.unitframe.units.raid10.health.frequentUpdates = true
