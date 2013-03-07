@@ -65,14 +65,7 @@ function UF:Update_PartyHeader(header, db)
 	end
 	
 	header.db = db
-	
-	--User Error Check
-	if UF['badHeaderPoints'][db.point] == db.columnAnchorPoint then
-		db.columnAnchorPoint = db.point
-		E:Print(L['You cannot set the Group Point and Column Point so they are opposite of each other.'])
-	end	
-	
-	
+
 	if not header.isForced then	
 		self:ChangeVisibility(header, 'custom '..db.visibility)
 	end
@@ -88,30 +81,14 @@ function UF:Update_PartyHeader(header, db)
 		header:SetAttribute("showPlayer", db.showPlayer)
 	end
 	
-	header:SetAttribute("maxColumns", db.maxColumns)
-	header:SetAttribute("unitsPerColumn", db.unitsPerColumn)
-	
-	if (db.point == "TOP" or db.point == "BOTTOM") and (db.columnAnchorPoint == "LEFT" or db.columnAnchorPoint == "RIGHT") then
-		header:SetAttribute('columnSpacing', db.xOffset)
-	else
-		header:SetAttribute('columnSpacing', db.yOffset)
-	end
-	header:SetAttribute("xOffset", db.xOffset)	
-	header:SetAttribute("yOffset", db.yOffset)
-
-	
-	header:SetAttribute('columnAnchorPoint', db.columnAnchorPoint)
-	
-	UF:ClearChildPoints(header:GetChildren())
-	
-	header:SetAttribute('point', db.point)
-		
+	UF:ConvertGroupDB(header)
+	local positionOverride = UF:SetupGroupAnchorPoints(header)
 	if not header.positioned then
 		header:ClearAllPoints()
 		header:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 205)
 		
 		E:CreateMover(header, header:GetName()..'Mover', L['Party Frames'], nil, nil, nil, 'ALL,PARTY,ARENA')
-		header.mover.positionOverride = db.positionOverride ~= 'NONE' and db.positionOverride or nil
+		header.mover.positionOverride = positionOverride
 		
 		header:SetAttribute('minHeight', header.dirtyHeight)
 		header:SetAttribute('minWidth', header.dirtyWidth)

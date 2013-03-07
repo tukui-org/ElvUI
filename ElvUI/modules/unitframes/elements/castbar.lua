@@ -157,7 +157,11 @@ function UF:PostCastStart(unit, name, rank, castid)
 	
 	if unit == "vehicle" then unit = "player" end
 	
-	self.Text:SetText(sub(name, 0, floor((((32/245) * self:GetWidth()) / E.db['unitframe'].fontSize) * 12)))
+	if db.castbar.displayTarget and self.curTarget then
+		self.Text:SetText(sub(name..' --> '..self.curTarget, 0, floor((((32/245) * self:GetWidth()) / E.db['unitframe'].fontSize) * 12)))
+	else
+		self.Text:SetText(sub(name, 0, floor((((32/245) * self:GetWidth()) / E.db['unitframe'].fontSize) * 12)))
+	end
 
 	self.Spark:Height(self:GetHeight() * 2)
 		

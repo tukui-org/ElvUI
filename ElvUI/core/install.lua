@@ -364,7 +364,7 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.arena.castbar.width = 200;
 			
 			E.db.unitframe.units.party.width = 80;
-			E.db.unitframe.units.party.xOffset = 3;
+			E.db.unitframe.units.party.horizontalSpacing = 3;
 			E.db.unitframe.units.party.healPrediction = true;
 			E.db.unitframe.units.party.health.frequentUpdates = true;
 			E.db.unitframe.units.party.debuffs.useFilter = 'Blacklist';
@@ -375,14 +375,14 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.party.targetsGroup.enable = false;
 
 			E.db.unitframe.units.raid10.width = 80;
-			E.db.unitframe.units.raid10.xOffset = 3;
+			E.db.unitframe.units.raid10.horizontalSpacing = 3;
 			E.db.unitframe.units.raid10.healPrediction = true;
 			E.db.unitframe.units.raid10.health.frequentUpdates = true;
 			E.db.unitframe.units.raid10.debuffs.useFilter = 'Blacklist';
 			E.db.unitframe.units.raid10.debuffs.xOffset = 24;
 
 			E.db.unitframe.units.raid25.width = 80;
-			E.db.unitframe.units.raid25.xOffset = 3;
+			E.db.unitframe.units.raid25.horizontalSpacing = 3;
 			E.db.unitframe.units.raid25.healPrediction = true;
 			E.db.unitframe.units.raid25.health.frequentUpdates = true;
 			E.db.unitframe.units.raid25.debuffs.enable = true;
@@ -390,7 +390,7 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.raid25.debuffs.xOffset = 24;
 			
 			E.db.unitframe.units.raid40.width = 80;
-			E.db.unitframe.units.raid40.xOffset = 3;
+			E.db.unitframe.units.raid40.horizontalSpacing = 3;
 			E.db.unitframe.units.raid40.healPrediction = true;
 			E.db.unitframe.units.raid40.health.frequentUpdates = true;
 			E.db.unitframe.units.raid40.rdebuffs.enable = true;
