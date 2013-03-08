@@ -79,7 +79,7 @@ function UF:Update_TargetFrame(frame, db)
 	
 	if db.middleClickFocus then
 		frame:SetAttribute("type3", "focus")
-	else
+	elseif frame:GetAttribute("type3") == "focus" then
 		frame:SetAttribute("type3", nil)
 	end
 	
