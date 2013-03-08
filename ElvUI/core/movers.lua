@@ -3,12 +3,17 @@ local Sticky = LibStub("LibSimpleSticky-1.0")
 
 local format = string.format
 local split = string.split
-
+local min = math.min
 E.CreatedMovers = {}
 
 local function SizeChanged(frame)
 	if InCombatLockdown() then return; end
-	frame.mover:Size(frame:GetSize())
+
+	if frame.dirtyWidth and frame.dirtyHeight then
+		frame.mover:Size(frame.dirtyWidth, frame.dirtyHeight)
+	else
+		frame.mover:Size(frame:GetSize())
+	end
 end
 
 local function GetPoint(obj)
@@ -148,17 +153,8 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 		local point
 		
 		if self.positionOverride then
-		    if self.positionOverride:find("BOTTOM") then
-				y = self:GetBottom()
-			elseif self.positionOverride:find("TOP") then
-				y = self:GetTop()
-			end
-			
-			if self.positionOverride:find("LEFT") then
-				x = self:GetLeft()
-			elseif self.positionOverride:find("RIGHT") then
-				x = self:GetRight()
-			end
+			y = self:GetBottom()
+			x = self:GetLeft()
 		else
 			local LEFT = screenWidth / 3
 			local RIGHT = screenWidth * 2 / 3
@@ -185,7 +181,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 		
 		self:ClearAllPoints()
 		if self.positionOverride then
-			self:Point(self.positionOverride, E.UIParent, "BOTTOMLEFT", x, y)
+			self:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", x, y)
 			self.parent:ClearAllPoints()
 			self.parent:Point(self.positionOverride, self, self.positionOverride)
 		else

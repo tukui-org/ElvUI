@@ -88,6 +88,7 @@ end
 
 function UF:ShowChildUnits(header, ...)
 	header.isForced = true
+	
 	for i=1, select("#", ...) do
 		local frame = select(i, ...)
 		frame:RegisterForClicks(nil)
@@ -95,6 +96,9 @@ function UF:ShowChildUnits(header, ...)
 		frame.TargetGlow:SetAlpha(0)
 		self:ForceShow(frame)
 	end
+	
+	header.dirtyWidth, header.dirtyHeight = header:GetSize()
+	header.mover:Size(header.dirtyWidth, header.dirtyHeight)
 end
 
 function UF:UnshowChildUnits(header, ...)
@@ -107,14 +111,33 @@ function UF:UnshowChildUnits(header, ...)
 	end
 end
 
+local function GetNumChildrenShown(...)
+	local num = 0
+	for i=1, select("#", ...) do
+		local frame = select(i, ...)
+		if frame:IsShown() then
+			num = num + 1
+		end
+	end
+	
+	return num
+end
+
 local function OnAttributeChanged(self, name)
 	if not self.forceShow then return; end
-	
+
 	local maxUnits = MAX_RAID_MEMBERS
 	local startingIndex = -min(self.db.numGroups * self.db.unitsPerGroup, maxUnits) + 1
+	local numChildren = self:GetNumChildren()
 	if self:GetAttribute("startingIndex") ~= startingIndex then
 		self:SetAttribute("startingIndex", startingIndex)
-		UF:ShowChildUnits(self, self:GetChildren())	
+		self.lastNumChildren = numChildren
+		UF:ShowChildUnits(self, self:GetChildren())
+	elseif GetNumChildrenShown(self:GetChildren()) ~= (self.db.numGroups * self.db.unitsPerGroup) then
+		UF:ShowChildUnits(self, self:GetChildren())
+	elseif self.mover:GetWidth() ~= self:GetWidth() or self.mover:GetHeight() ~= self:GetHeight() then
+		self.dirtyWidth, self.dirtyHeight = self:GetSize()
+		self.mover:Size(self.dirtyWidth, self.dirtyHeight)	
 	end
 end
 
@@ -134,9 +157,8 @@ function UF:HeaderConfig(header, configMode)
 		
 		RegisterAttributeDriver(header, 'state-visibility', 'show')		
 		
-		local maxUnits = MAX_RAID_MEMBERS
 		OnAttributeChanged(header)
-		UF:ShowChildUnits(header, header:GetChildren())
+		--UF:ShowChildUnits(header, header:GetChildren())
 
 		for _, func in pairs(overrideFuncs) do
 			if type(func) == 'function' then
@@ -155,8 +177,9 @@ function UF:HeaderConfig(header, configMode)
 		
 		UF:ChangeVisibility(header, 'custom '..db.visibility)
 		
-		header:SetAttribute("startingIndex", 1)
+		
 		UF:UnshowChildUnits(header, header:GetChildren())
+		header:SetAttribute("startingIndex", 1)
 		
 		for func, env in pairs(originalEnvs) do
 			setfenv(func, env)

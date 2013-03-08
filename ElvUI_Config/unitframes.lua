@@ -2901,18 +2901,21 @@ E.Options.args.unitframe.args.party = {
 					name = L['Size and Positions'],
 					type = 'group',
 					guiInline = true,
+					set = function(info, value) E.db.unitframe.units['party'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party', nil, nil, true) end,
 					args = {
 						width = {
 							order = 1,
 							name = L['Width'],
 							type = 'range',
 							min = 10, max = 500, step = 1,
+							set = function(info, value) E.db.unitframe.units['party'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
 						},			
 						height = {
 							order = 2,
 							name = L['Height'],
 							type = 'range',
 							min = 10, max = 500, step = 1,
+							set = function(info, value) E.db.unitframe.units['party'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
 						},	
 						spacer = {
 							order = 3,
@@ -2941,6 +2944,7 @@ E.Options.args.unitframe.args.party = {
 							type = 'range',
 							name = L['Number of Groups'],
 							min = 1, max = 40, step = 1,
+							set = function(info, value) E.db.unitframe.units['party'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
 						},
 						unitsPerGroup = {
 							order = 6,
@@ -2948,6 +2952,7 @@ E.Options.args.unitframe.args.party = {
 							name = L['Group Size'],
 							desc = L['Number of units in a group.'],
 							min = 1, max = 40, step = 1,
+							set = function(info, value) E.db.unitframe.units['party'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
 						},
 						horizontalSpacing = {
 							order = 7,
@@ -2968,6 +2973,7 @@ E.Options.args.unitframe.args.party = {
 					name = L['Visibility'],
 					type = 'group',
 					guiInline = true,
+					set = function(info, value) E.db.unitframe.units['party'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party', nil, nil, true) end,
 					args = {
 						showParty = {
 							order = 1,
@@ -3008,6 +3014,7 @@ E.Options.args.unitframe.args.party = {
 					type = 'group',
 					guiInline = true,
 					name = L['Sorting'],
+					set = function(info, value) E.db.unitframe.units['party'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party', nil, nil, true) end,
 					args = {
 						groupBy = {
 							order = 1,
@@ -3294,18 +3301,21 @@ for i=10, 40, 15 do
 						name = L['Size and Positions'],
 						type = 'group',
 						guiInline = true,
+						set = function(info, value) E.db.unitframe.units['raid'..i][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i, nil, nil, true) end,
 						args = {
 							width = {
 								order = 1,
 								name = L['Width'],
 								type = 'range',
 								min = 10, max = 500, step = 1,
+								set = function(info, value) E.db.unitframe.units['raid'..i][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i) end,
 							},			
 							height = {
 								order = 2,
 								name = L['Height'],
 								type = 'range',
 								min = 10, max = 500, step = 1,
+								set = function(info, value) E.db.unitframe.units['raid'..i][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i) end,
 							},	
 							spacer = {
 								order = 3,
@@ -3334,6 +3344,7 @@ for i=10, 40, 15 do
 								type = 'range',
 								name = L['Number of Groups'],
 								min = 1, max = 40, step = 1,
+								set = function(info, value) E.db.unitframe.units['raid'..i][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i) end,
 							},
 							unitsPerGroup = {
 								order = 6,
@@ -3341,6 +3352,7 @@ for i=10, 40, 15 do
 								name = L['Group Size'],
 								desc = L['Number of units in a group.'],
 								min = 1, max = 40, step = 1,
+								set = function(info, value) E.db.unitframe.units['raid'..i][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i) end,
 							},
 							horizontalSpacing = {
 								order = 7,
@@ -3361,6 +3373,7 @@ for i=10, 40, 15 do
 						name = L['Visibility'],
 						type = 'group',
 						guiInline = true,
+						set = function(info, value) E.db.unitframe.units['raid'..i][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i, nil, nil, true) end,
 						args = {
 							showParty = {
 								order = 1,
@@ -3401,6 +3414,7 @@ for i=10, 40, 15 do
 						type = 'group',
 						guiInline = true,
 						name = L['Sorting'],
+						set = function(info, value) E.db.unitframe.units['raid'..i][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i, nil, nil, true) end,
 						args = {
 							groupBy = {
 								order = 1,
@@ -3427,7 +3441,7 @@ for i=10, 40, 15 do
 						},
 					},							
 				},
-			},		
+			},	
 			health = GetOptionsTable_Health(true, UF.CreateAndUpdateHeaderGroup, 'raid'..i),
 			power = GetOptionsTable_Power(UF.CreateAndUpdateHeaderGroup, 'raid'..i),	
 			name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'raid'..i),

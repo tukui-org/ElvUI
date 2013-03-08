@@ -174,18 +174,22 @@ function UF:ConvertGroupDB(group)
 end
 
 function UF:SetupGroupAnchorPoints(group)
+	UF:ConvertGroupDB(group)
 	local db = group.db
 	local direction = db.growthDirection
 	local point = DIRECTION_TO_POINT[direction]
 	local positionOverride = DIRECTION_TO_GROUP_ANCHOR_POINT[direction]
 	
+	local maxUnits, startingIndex = MAX_RAID_MEMBERS, -1
+	if (db.numGroups and db.unitsPerGroup) then
+		startingIndex = -min(db.numGroups * db.unitsPerGroup, maxUnits) + 1
+	end
 	
 	if point == "LEFT" or point == "RIGHT" then
 		group:SetAttribute("xOffset", db.horizontalSpacing * DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction])
 		group:SetAttribute("yOffset", 0)
 		group:SetAttribute("columnSpacing", db.verticalSpacing)
 	else
-
 		group:SetAttribute("xOffset", 0)
 		group:SetAttribute("yOffset", db.verticalSpacing * DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction])
 		group:SetAttribute("columnSpacing", db.horizontalSpacing)
@@ -196,10 +200,19 @@ function UF:SetupGroupAnchorPoints(group)
 	group:SetAttribute("point", point)	
 	group:SetAttribute("maxColumns", db.numGroups)
 	group:SetAttribute("unitsPerColumn", db.unitsPerGroup)		
+
+	if not group.isForced then
+		group:SetAttribute("startingIndex", startingIndex)
+		RegisterAttributeDriver(group, 'state-visibility', 'show')	
+		group.dirtyWidth, group.dirtyHeight = group:GetSize()
+		RegisterAttributeDriver(group, 'state-visibility', 'hide')	
+
+		group:SetAttribute('startingIndex', 1)
+	end
 	
 	if group.mover then
 		group.mover.positionOverride = positionOverride
-		E:UpdatePositionOverride('ElvUF_PartyMover')
+		E:UpdatePositionOverride(group.mover:GetName())
 	end
 
 	return positionOverride
@@ -468,7 +481,7 @@ function UF:HeaderUpdateSpecificElement(group, elementName)
 	end
 end
 
-function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
+function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdate)
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return end
 
 	local db = self.db['units'][group]
@@ -476,12 +489,6 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 		ElvUF:RegisterStyle("ElvUF_"..E:StringTitle(group), UF["Construct_"..E:StringTitle(group).."Frames"])
 		ElvUF:SetActiveStyle("ElvUF_"..E:StringTitle(group))
 
-		local maxUnits, startingIndex = MAX_RAID_MEMBERS, -1
-		if (db.maxColumns and db.unitsPerColumn) then
-			startingIndex = -min(db.maxColumns * db.unitsPerColumn, maxUnits) + 1
-		elseif (db.numGroups and db.unitsPerGroup) then
-			startingIndex = -min(db.numGroups * db.unitsPerGroup, maxUnits) + 1
-		end
 
 		if template then
 			self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 
@@ -495,7 +502,6 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 				'columnSpacing', db.columnSpacing,
 				'xOffset', db.xOffset,
 				'yOffset', db.yOffset,
-				'startingIndex', startingIndex,
 				'groupFilter', groupFilter)
 		else
 			self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 
@@ -508,24 +514,10 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 				'columnSpacing', db.columnSpacing,
 				'xOffset', db.xOffset,
 				'yOffset', db.yOffset,
-				'startingIndex', startingIndex,
 				'groupFilter', groupFilter)
 		end
-		
-		if db.numGroups then
-			self[group].db = db
-			UF:SetupGroupAnchorPoints(self[group])
-		end
-		
-		self[group]:SetParent(ElvUF_Parent)
-		RegisterAttributeDriver(self[group], 'state-visibility', 'show')	
-		self[group].dirtyWidth, self[group].dirtyHeight = self[group]:GetSize()
-		RegisterAttributeDriver(self[group], 'state-visibility', 'hide')	
 
-		if not db.maxColumns and not db.numGroups then
-			self[group]:SetAttribute('startingIndex', 1)
-		end
-		
+		self[group]:SetParent(ElvUF_Parent)		
 		self['headers'][group] = self[group]
 		self[group].groupName = group
 	end
@@ -556,7 +548,11 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 		end			
 	end	
 	
-	self[group].Update()
+	if headerUpdate then
+		UF["Update_"..E:StringTitle(group).."Header"](self, self[group], db)
+	else
+		self[group].Update()
+	end
 end
 
 function UF:PLAYER_REGEN_ENABLED()

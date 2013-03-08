@@ -56,13 +56,7 @@ function UF:Construct_PartyFrames(unitGroup)
 	return self
 end
 
-function UF:Update_PartyHeader(header, db)
-	if not header.isForced then
-		header:Hide()
-		header:SetAttribute('oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height))
-		header:SetAttribute('startingIndex', 1)
-	end
-	
+function UF:Update_PartyHeader(header, db)	
 	header.db = db
 
 	if not header.isForced then	
@@ -80,7 +74,6 @@ function UF:Update_PartyHeader(header, db)
 		header:SetAttribute("showPlayer", db.showPlayer)
 	end
 	
-	UF:ConvertGroupDB(header)
 	local positionOverride = UF:SetupGroupAnchorPoints(header)
 	if not header.positioned then
 		header:ClearAllPoints()
