@@ -35,7 +35,7 @@ function UF:Construct_PowerBar(frame, bg, text, textPos, lowtext)
 	if lowtext then
 		power.LowManaText = power:CreateFontString(nil, 'OVERLAY')
 		UF:Configure_FontString(power.LowManaText)
-		power.LowManaText:SetParent(frame)
+		power.LowManaText:SetParent(frame.RaisedElementParent)
 		power.LowManaText:Point("BOTTOM", frame.Health, "BOTTOM", 0, 7)
 		power.LowManaText:SetTextColor(0.69, 0.31, 0.31)
 	end
