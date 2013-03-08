@@ -70,11 +70,7 @@ for i=10, 40, 15 do
 
 	UF['Update_Raid'..i..'Header'] = function (self, header, db)
 		header.db = db
-		
-		if not header.isForced then	
-			self:ChangeVisibility(header, 'custom '..db.visibility)
-		end
-		
+
 		UF['headerGroupBy'][db.groupBy](header)
 		header:SetAttribute("groupBy", db.groupBy == 'ROLE' and 'ASSIGNEDROLE' or db.groupBy)
 		header:SetAttribute('sortDir', db.sortDir)

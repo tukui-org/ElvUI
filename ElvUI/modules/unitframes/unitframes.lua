@@ -205,7 +205,7 @@ function UF:SetupGroupAnchorPoints(group)
 		group:SetAttribute("startingIndex", startingIndex)
 		RegisterAttributeDriver(group, 'state-visibility', 'show')	
 		group.dirtyWidth, group.dirtyHeight = group:GetSize()
-		RegisterAttributeDriver(group, 'state-visibility', 'hide')	
+		self:ChangeVisibility(group, 'custom '..db.visibility)
 
 		group:SetAttribute('startingIndex', 1)
 	end
