@@ -96,6 +96,14 @@ local DIRECTION_TO_POINT = {
 }
 
 local DIRECTION_TO_GROUP_ANCHOR_POINT = {
+	OUT_RIGHT_UP = "BOTTOM",
+	OUT_LEFT_UP = "BOTTOM",
+	OUT_RIGHT_DOWN = "TOP",
+	OUT_LEFT_DOWN = "TOP",
+	OUT_UP_RIGHT = "LEFT",
+	OUT_UP_LEFT = "RIGHT",
+	OUT_DOWN_RIGHT = "LEFT",
+	OUT_DOWN_LEFT = "RIGHT",
 	DOWN_RIGHT = "TOPLEFT",
 	DOWN_LEFT = "TOPRIGHT",
 	UP_RIGHT = "BOTTOMLEFT",
@@ -178,7 +186,7 @@ function UF:SetupGroupAnchorPoints(group)
 	local db = group.db
 	local direction = db.growthDirection
 	local point = DIRECTION_TO_POINT[direction]
-	local positionOverride = DIRECTION_TO_GROUP_ANCHOR_POINT[direction]
+	local positionOverride = DIRECTION_TO_GROUP_ANCHOR_POINT[db.startOutFromCenter and 'OUT_'..direction or direction]
 	
 	local maxUnits, startingIndex = MAX_RAID_MEMBERS, -1
 	if (db.numGroups and db.unitsPerGroup) then

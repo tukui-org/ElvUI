@@ -767,6 +767,8 @@ L['You can use the /resetui command to reset all of your movers. You can also us
 L['ABOVE_THREAT_FORMAT'] = '%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]'
 
 --UnitFrames
+L['Start from Center'] = true;
+L['The initial group will start near the center and grow out. Corrosponding groups will behave normally.'] = true;
 L['Display Target'] = true;
 L['Display the target of your current cast. Useful for mouseover casts.'] = true;
 L['Up'] = true;

@@ -2936,11 +2936,17 @@ E.Options.args.unitframe.args.party = {
 								RIGHT_DOWN = format(L['%s and then %s'], L['Right'], L['Down']),
 								RIGHT_UP = format(L['%s and then %s'], L['Right'], L['Up']),
 								LEFT_DOWN = format(L['%s and then %s'], L['Left'], L['Down']),
-								LEFT_UP = format(L['%s and then %s'], L['Left'], L['Up']),				
+								LEFT_UP = format(L['%s and then %s'], L['Left'], L['Up']),								
 							},
 						},
-						numGroups = {
+						startOutFromCenter = {
 							order = 5,
+							name = L['Start from Center'],
+							desc = L['The initial group will start near the center and grow out. Corrosponding groups will behave normally.'],
+							type = 'toggle',
+						},
+						numGroups = {
+							order = 6,
 							type = 'range',
 							name = L['Number of Groups'],
 							min = 1, max = 40, step = 1,
@@ -3339,8 +3345,14 @@ for i=10, 40, 15 do
 									LEFT_UP = format(L['%s and then %s'], L['Left'], L['Up']),				
 								},
 							},
-							numGroups = {
+							startOutFromCenter = {
 								order = 5,
+								name = L['Start from Center'],
+								desc = L['The initial group will start near the center and grow out. Corrosponding groups will behave normally. This is useful if your unitframes are placed in the center of your screen.'],
+								type = 'toggle',
+							},							
+							numGroups = {
+								order = 6,
 								type = 'range',
 								name = L['Number of Groups'],
 								min = 1, max = 40, step = 1,
