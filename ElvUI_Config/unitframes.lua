@@ -3348,7 +3348,7 @@ for i=10, 40, 15 do
 							startOutFromCenter = {
 								order = 5,
 								name = L['Start from Center'],
-								desc = L['The initial group will start near the center and grow out. Corrosponding groups will behave normally. This is useful if your unitframes are placed in the center of your screen.'],
+								desc = L['The initial group will start near the center and grow out. Corrosponding groups will behave normally.'],
 								type = 'toggle',
 							},							
 							numGroups = {
