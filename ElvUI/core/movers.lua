@@ -181,7 +181,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 		
 		self:ClearAllPoints()
 		if self.positionOverride then
-			self:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", x, y)
+			self:Point("BOTTOMLEFT", UIParent, "BOTTOMLEFT", x, y)
 			self.parent:ClearAllPoints()
 			self.parent:Point(self.positionOverride, self, self.positionOverride)
 		else

@@ -665,7 +665,7 @@ function E:MassiveShake()
 	ElvUI_StaticPopup1Button1:Enable()
 	
 	for _, object in pairs(self["massiveShakeObjects"]) do
-		if object then
+		if object and object:IsShown() then
 			self:Shake(object)
 		end
 	end
