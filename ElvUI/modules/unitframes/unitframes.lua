@@ -487,14 +487,13 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 		ElvUF:RegisterStyle("ElvUF_"..E:StringTitle(group), UF["Construct_"..E:StringTitle(group).."Frames"])
 		ElvUF:SetActiveStyle("ElvUF_"..E:StringTitle(group))
 
-		template = template or 'SecureGroupHeaderTemplate'
 		self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, nil, 
 			'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 
-			'template', template, 
 			'groupFilter', groupFilter,
 			'showParty', true,
 			'showRaid', true,
-			'showSolo', true)
+			'showSolo', true,
+			template and 'template', template)
 
 		self[group]:SetParent(ElvUF_Parent)		
 		self['headers'][group] = self[group]
