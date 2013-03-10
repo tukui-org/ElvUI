@@ -430,12 +430,6 @@ function E:SetupLayout(layout, noDataReset)
 			E:ResetMovers('')
 			E:SetupPixelPerfect(E.PixelMode, true)
 		end
-		
-		E.db.movers["BossButton"] = "TOPElvUIParentTOP0-138"
-	end
-	
-	if layout ~= 'healer' and not E.db.lowresolutionset then
-		E.db.actionbar.bar1.heightMult = 1
 	end
 	
 	--Datatexts
