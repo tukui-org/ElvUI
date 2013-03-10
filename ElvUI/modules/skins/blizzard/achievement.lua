@@ -408,9 +408,10 @@ local function LoadSkin()
 					frame:ClearAllPoints()
 					frame:Point("TOP", _G["AchievementFrameProgressBar"..index-1], "BOTTOM", 0, -5)
 					hooksecurefunc(frame, "SetPoint", function(self, point, attachTo, anchorPoint, xOffset, yOffset, noReset)
+
 						if not noReset then
 							self:ClearAllPoints()
-							self:Point("TOP", _G["AchievementFrameProgressBar"..index-1], "BOTTOM", 0, -5, true)					
+							self:SetPoint("TOP", _G["AchievementFrameProgressBar"..index-1], "BOTTOM", 0, -5, true)					
 						end
 					end)
 				end
