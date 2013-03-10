@@ -48,8 +48,6 @@ function UF:Construct_PartyFrames(unitGroup)
 	
 	self.Range = UF:Construct_Range(self)
 	
-	
-	--UF:Update_PartyFrames(self, E.db['unitframe']['units']['party'])
 	UF:Update_StatusBars()
 	UF:Update_FontStrings()	
 
@@ -62,13 +60,7 @@ function UF:Update_PartyHeader(header, db)
 	UF['headerGroupBy'][db.groupBy](header)
 	header:SetAttribute("groupBy", db.groupBy == 'ROLE' and 'ASSIGNEDROLE' or db.groupBy)
 	header:SetAttribute('sortDir', db.sortDir)
-	
-	if not header.isForced then
-		header:SetAttribute("showParty", db.showParty)
-		header:SetAttribute("showRaid", db.showRaid)
-		header:SetAttribute("showSolo", db.showSolo)
-		header:SetAttribute("showPlayer", db.showPlayer)
-	end
+	header:SetAttribute("showPlayer", db.showPlayer)
 	
 	local positionOverride = UF:SetupGroupAnchorPoints(header)
 	if not header.positioned then
@@ -98,11 +90,10 @@ function UF:PartySmartVisibility(event)
 		if inInstance and instanceType == "raid" then
 			RegisterAttributeDriver(self, 'state-visibility', 'hide')
 		elseif self.db.visibility then
-			UF:ChangeVisibility(self, 'custom '..self.db.visibility)
+			RegisterAttributeDriver(self, 'state-visibility', self.db.visibility)
 		end
 	else
 		self:RegisterEvent("PLAYER_REGEN_ENABLED")
-		return
 	end
 end
 

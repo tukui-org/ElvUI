@@ -152,41 +152,35 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 		local x, y = self:GetCenter()
 		local point
 		
-		if self.positionOverride then
+		local LEFT = screenWidth / 3
+		local RIGHT = screenWidth * 2 / 3
+		local TOP = screenHeight / 2
+		
+		if y >= TOP then
+			point = "TOP"
+			y = -(screenHeight - self:GetTop())
+		else
+			point = "BOTTOM"
 			y = self:GetBottom()
+		end
+		
+		if x >= RIGHT then
+			point = point..'RIGHT'
+			x = self:GetRight() - screenWidth
+		elseif x <= LEFT then
+			point = point..'LEFT'
 			x = self:GetLeft()
 		else
-			local LEFT = screenWidth / 3
-			local RIGHT = screenWidth * 2 / 3
-			local TOP = screenHeight / 2
-			
-			if y >= TOP then
-				point = "TOP"
-				y = -(screenHeight - self:GetTop())
-			else
-				point = "BOTTOM"
-				y = self:GetBottom()
-			end
-			
-			if x >= RIGHT then
-				point = point..'RIGHT'
-				x = self:GetRight() - screenWidth
-			elseif x <= LEFT then
-				point = point..'LEFT'
-				x = self:GetLeft()
-			else
-				x = x - screenCenter
-			end
+			x = x - screenCenter
+		end
+		
+		if self.positionOverride then
+			self.parent:ClearAllPoints()
+			self.parent:Point(self.positionOverride, self, self.positionOverride)
 		end
 		
 		self:ClearAllPoints()
-		if self.positionOverride then
-			self:Point("BOTTOMLEFT", UIParent, "BOTTOMLEFT", x, y)
-			self.parent:ClearAllPoints()
-			self.parent:Point(self.positionOverride, self, self.positionOverride)
-		else
-			self:Point(point, E.UIParent, point, x, y)
-		end
+		self:Point(point, E.UIParent, point, x, y)
 		
 		E:SaveMoverPosition(name)
 

@@ -57,7 +57,7 @@ UF['headerGroupBy'] = {
 	end,
 	['ROLE'] = function(header)
 		header:SetAttribute("groupingOrder", "TANK,HEALER,DAMAGER,NONE")
-		header:SetAttribute('sortMethod', 'INDEX')	
+		header:SetAttribute('sortMethod', 'NAME')	
 	end,
 	['NAME'] = function(header)
 		header:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
@@ -153,7 +153,7 @@ local tremove, tinsert = table.remove, table.insert
 
 
 function UF:ConvertGroupDB(group)
-	local db = group.db
+	local db = self.db.units[group.groupName]
 	if db.point and db.columnAnchorPoint then
 		db.growthDirection = POINT_COLUMN_ANCHOR_TO_DIRECTION[db.point..db.columnAnchorPoint];
 		db.point = nil;
@@ -183,7 +183,7 @@ end
 
 function UF:SetupGroupAnchorPoints(group)
 	UF:ConvertGroupDB(group)
-	local db = group.db
+	local db = self.db.units[group.groupName]
 	local direction = db.growthDirection
 	local point = DIRECTION_TO_POINT[direction]
 	local positionOverride = DIRECTION_TO_GROUP_ANCHOR_POINT[db.startOutFromCenter and 'OUT_'..direction or direction]
@@ -213,8 +213,7 @@ function UF:SetupGroupAnchorPoints(group)
 		group:SetAttribute("startingIndex", startingIndex)
 		RegisterAttributeDriver(group, 'state-visibility', 'show')	
 		group.dirtyWidth, group.dirtyHeight = group:GetSize()
-		self:ChangeVisibility(group, 'custom '..db.visibility)
-
+		RegisterAttributeDriver(group, 'state-visibility', db.visibility)
 		group:SetAttribute('startingIndex', 1)
 	end
 	
@@ -408,15 +407,6 @@ function UF:Configure_FontString(obj)
 	obj:FontTemplate() --This is temporary.
 end
 
-function UF:ChangeVisibility(header, visibility)
-	if(visibility) then
-		local type, list = split(' ', visibility, 2)
-		if(list and type == 'custom') then
-			RegisterAttributeDriver(header, 'state-visibility', list)
-		end
-	end	
-end
-
 function UF:Update_AllFrames()
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return end
 	if E.private["unitframe"].enable ~= true then return; end
@@ -497,33 +487,14 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 		ElvUF:RegisterStyle("ElvUF_"..E:StringTitle(group), UF["Construct_"..E:StringTitle(group).."Frames"])
 		ElvUF:SetActiveStyle("ElvUF_"..E:StringTitle(group))
 
-
-		if template then
-			self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 
-				'point', db.point, 
-				'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 
-				'template', template, 
-				'columnAnchorPoint', db.columnAnchorPoint,
-				'maxColumns', db.maxColumns,
-				'unitsPerColumn', db.unitsPerColumn,
-				'point', db.point,
-				'columnSpacing', db.columnSpacing,
-				'xOffset', db.xOffset,
-				'yOffset', db.yOffset,
-				'groupFilter', groupFilter)
-		else
-			self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 
-				'point', db.point, 
-				'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 
-				'columnAnchorPoint', db.columnAnchorPoint,
-				'maxColumns', db.maxColumns,
-				'unitsPerColumn', db.unitsPerColumn,
-				'point', db.point,
-				'columnSpacing', db.columnSpacing,
-				'xOffset', db.xOffset,
-				'yOffset', db.yOffset,
-				'groupFilter', groupFilter)
-		end
+		template = template or 'SecureGroupHeaderTemplate'
+		self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, nil, 
+			'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 
+			'template', template, 
+			'groupFilter', groupFilter,
+			'showParty', true,
+			'showRaid', true,
+			'showSolo', true)
 
 		self[group]:SetParent(ElvUF_Parent)		
 		self['headers'][group] = self[group]
@@ -535,9 +506,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 	self[group].Update = function()
 		local db = self.db['units'][group]
 		if db.enable ~= true then 
-			self[group]:SetAttribute("showParty", false)
-			self[group]:SetAttribute("showRaid", false)
-			self[group]:SetAttribute("showSolo", false)			
+			RegisterAttributeDriver(self[group], 'state-visibility', 'hide')	
 			return
 		end
 		UF["Update_"..E:StringTitle(group).."Header"](self, self[group], db)

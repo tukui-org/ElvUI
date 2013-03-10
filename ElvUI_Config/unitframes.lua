@@ -2981,32 +2981,14 @@ E.Options.args.unitframe.args.party = {
 					guiInline = true,
 					set = function(info, value) E.db.unitframe.units['party'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party', nil, nil, true) end,
 					args = {
-						showParty = {
-							order = 1,
-							type = 'toggle',
-							name = L['Show Party'],
-							desc = L['When true, the group header is shown when the player is in a party.'],
-						},
-						showRaid = {
-							order = 2,
-							type = 'toggle',
-							name = L['Show Raid'],
-							desc = L['When true, the group header is shown when the player is in a raid.'],
-						},	
-						showSolo = {
-							order = 3,
-							type = 'toggle',
-							name = L['Show Solo'],
-							desc = L['When true, the header is shown when the player is not in any group.'],		
-						},
 						showPlayer = {
-							order = 4,
+							order = 1,
 							type = 'toggle',
 							name = L['Display Player'],
 							desc = L['When true, the header includes the player when not in a raid.'],			
 						},		
 						visibility = {
-							order = 5,
+							order = 2,
 							type = 'input',
 							name = L['Visibility'],
 							desc = L['The following macro must be true in order for the group to be shown, in addition to any filter that may already be set.'],
@@ -3387,32 +3369,14 @@ for i=10, 40, 15 do
 						guiInline = true,
 						set = function(info, value) E.db.unitframe.units['raid'..i][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i, nil, nil, true) end,
 						args = {
-							showParty = {
-								order = 1,
-								type = 'toggle',
-								name = L['Show Party'],
-								desc = L['When true, the group header is shown when the player is in a party.'],
-							},
-							showRaid = {
-								order = 2,
-								type = 'toggle',
-								name = L['Show Raid'],
-								desc = L['When true, the group header is shown when the player is in a raid.'],
-							},	
-							showSolo = {
-								order = 3,
-								type = 'toggle',
-								name = L['Show Solo'],
-								desc = L['When true, the header is shown when the player is not in any group.'],		
-							},
 							showPlayer = {
-								order = 4,
+								order = 1,
 								type = 'toggle',
 								name = L['Display Player'],
 								desc = L['When true, the header includes the player when not in a raid.'],			
 							},		
 							visibility = {
-								order = 5,
+								order = 2,
 								type = 'input',
 								name = L['Visibility'],
 								desc = L['The following macro must be true in order for the group to be shown, in addition to any filter that may already be set.'],

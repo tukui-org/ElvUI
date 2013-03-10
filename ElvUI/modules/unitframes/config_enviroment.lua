@@ -3,7 +3,7 @@ local UF = E:GetModule('UnitFrames');
 local _, ns = ...
 local ElvUF = ns.oUF
 
-local attributeBlacklist = {["showplayer"] = true, ["showraid"] = true, ["showparty"] = true, ["showsolo"] = true}
+local attributeBlacklist = {["showRaid"] = true, ["showParty"] = true, ["showSolo"] = true}
 local configEnv
 local originalEnvs = {}
 local overrideFuncs = {}
@@ -158,7 +158,6 @@ function UF:HeaderConfig(header, configMode)
 		RegisterAttributeDriver(header, 'state-visibility', 'show')		
 		
 		OnAttributeChanged(header)
-		--UF:ShowChildUnits(header, header:GetChildren())
 
 		for _, func in pairs(overrideFuncs) do
 			if type(func) == 'function' then
@@ -169,17 +168,12 @@ function UF:HeaderConfig(header, configMode)
 		
 		header:Update()	
 	else
-		header.forceShowAuras = nil
-		header:SetAttribute("showParty", db.showParty)
-		header:SetAttribute("showRaid", db.showRaid)
-		header:SetAttribute("showSolo", db.showSolo)
-		header:SetAttribute("showPlayer", db.showPlayer)
-		
-		UF:ChangeVisibility(header, 'custom '..db.visibility)
-		
+		for key in pairs(attributeBlacklist) do
+			header:SetAttribute(key, true)
+		end	
+		header.forceShowAuras = nil		
 		
 		UF:UnshowChildUnits(header, header:GetChildren())
-		header:SetAttribute("startingIndex", 1)
 		
 		for func, env in pairs(originalEnvs) do
 			setfenv(func, env)
