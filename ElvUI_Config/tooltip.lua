@@ -28,16 +28,6 @@ E.Options.args.tooltip = {
 			guiInline = true,
 			disabled = function() return not E.Tooltip; end,
 			args = {
-				style = {
-					order = 0,
-					type = 'select',
-					name = L['Style'],
-					values = {
-						['inset'] = L['Inset'],
-						['none'] = NONE,
-					},
-					set = function(info, value) E.db.tooltip[ info[#info] ] = value; TT:SetStatusBarAnchor(GameTooltip.pos) end,
-				},
 				anchor = {
 					order = 1,
 					type = 'select',
