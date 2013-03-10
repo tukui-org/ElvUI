@@ -327,7 +327,11 @@ end
 
 function TT:SetStyle(tt)
 	if not tt.backdrop then
-		tt:SetBackdrop(nil)
+		if tt ~= GameTooltip then
+			tt:SetBackdrop(nil)
+		else
+			GameTooltip:SetTemplate('Default')			
+		end
 		tt:CreateBackdrop('Transparent')
 		tt.backdrop:SetAllPoints()
 		tt:SetClampedToScreen(true)
@@ -340,6 +344,16 @@ function TT:SetStyle(tt)
 	tt.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 	tt.backdrop:SetBackdropColor(unpack(E.media.backdropfadecolor))
 	self:Colorize(tt)
+	if tt == GameTooltip then
+		tt:SetBackdropBorderColor(tt.backdrop:GetBackdropBorderColor())
+		tt:SetBackdropColor(tt.backdrop:GetBackdropColor())
+		for i=1, tt:GetNumRegions() do
+			local r = select(i, tt:GetRegions())
+			if r and r:GetObjectType() == 'Texture' and r:GetTexture() == [[Interface\BUTTONS\WHITE8X8]] then
+				r:SetAlpha(0)
+			end
+		end			
+	end
 end
 
 function TT:PLAYER_ENTERING_WORLD()
@@ -347,7 +361,7 @@ function TT:PLAYER_ENTERING_WORLD()
 		for _, tt in pairs(GameTooltips) do
 			self:HookScript(tt, 'OnShow', 'SetStyle')
 		end
-		
+
 		self:HookScript(ItemRefTooltip, "OnTooltipSetItem", 'SetStyle')
 		FriendsTooltip:SetTemplate("Transparent")
 		
