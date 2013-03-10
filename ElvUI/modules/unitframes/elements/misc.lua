@@ -49,7 +49,7 @@ function UF:Construct_CombatIndicator(frame)
 end
 
 function UF:Construct_PvPIndicator(frame)
-	local pvp = frame:CreateFontString(nil, 'OVERLAY')
+	local pvp = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
 	UF:Configure_FontString(pvp)
 
 	return pvp

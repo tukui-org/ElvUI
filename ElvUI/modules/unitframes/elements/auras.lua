@@ -170,7 +170,7 @@ function UF:UpdateAuraTimer(elapsed)
 	timervalue, formatid, self.nextupdate = E:GetTimeInfo(self.expiration, E.db.auras.decimalThreshold)
 	if self.text:GetFont() then
 		self.text:SetFormattedText(("%s%s|r%s%s|r"):format(E.TimeColors[formatid], E.TimeFormats[formatid][3], E.IndicatorColors[formatid], (formatid < 3 and E.TimeFormats[formatid][4]) or ''), timervalue)
-	else
+	elseif self:GetParent():GetParent().db then
 		self.text:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), self:GetParent():GetParent().db[self:GetParent().type].fontSize, 'OUTLINE')
 		self.text:SetFormattedText(("%s%s|r%s%s|r"):format(E.TimeColors[formatid], E.TimeFormats[formatid][3], E.IndicatorColors[formatid], (formatid < 3 and E.TimeFormats[formatid][4]) or ''), timervalue)
 	end

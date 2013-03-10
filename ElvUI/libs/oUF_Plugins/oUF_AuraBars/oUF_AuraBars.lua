@@ -248,8 +248,10 @@ local function Update(self, event, unit)
 		if index == lastAuraIndex then
 			if self.AuraBars.down then
 				self.AuraBars:SetHeight(self.AuraBars:GetTop() - frame:GetBottom())
-			else
+			elseif frame:GetTop() and self.AuraBars:GetBottom() then
 				self.AuraBars:SetHeight(frame:GetTop() - self.AuraBars:GetBottom())
+			else
+				self.AuraBars:Height(20)
 			end
 		end
 		

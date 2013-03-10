@@ -68,8 +68,8 @@ local function LoadSkin()
 	BlackMarketFrame.HotDeal.Item.hover:SetAllPoints()
 	BlackMarketFrame.HotDeal.Item.pushed:SetAllPoints()
 	
-	S:HandleButton(BlackMarketFrame.HotDeal.BidButton)
-	S:HandleEditBox(BlackMarketHotItemBidPriceGold)
+	--S:HandleButton(BlackMarketFrame.HotDeal.BidButton)
+	--S:HandleEditBox(BlackMarketHotItemBidPriceGold)
 	
 	for i=1, BlackMarketFrame:GetNumRegions() do
 		local region = select(i, BlackMarketFrame:GetRegions())

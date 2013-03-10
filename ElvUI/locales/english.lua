@@ -767,6 +767,8 @@ L['You can use the /resetui command to reset all of your movers. You can also us
 L['ABOVE_THREAT_FORMAT'] = '%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]'
 
 --UnitFrames
+L['Start from Center'] = true;
+L['The initial group will start near the center and grow out. Corrosponding groups will behave normally.'] = true;
 L['Display Target'] = true;
 L['Display the target of your current cast. Useful for mouseover casts.'] = true;
 L['Up'] = true;
@@ -1017,9 +1019,6 @@ L['Shadow Orbs'] = true;
 L["Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."] = true;
 L["Show Aura From Other Players"] = true;
 L['Show Auras'] = true;
-L["Show Party"] = true;
-L["Show Raid"] = true;
-L["Show Solo"] = true;
 L["Show When Not Active"] = true;
 L["Size of the indicator icon."] = true;
 L['Size Override'] = true;
@@ -1065,10 +1064,7 @@ L["What point to anchor to the frame you set to attach to."] = true;
 L["What to attach the buff anchor frame to."] = true;
 L["What to attach the debuff anchor frame to."] = true;
 L['When set the Buffs and Debuffs will toggle being displayed depending on if the unit is friendly or an enemy. This will not effect the aurabars module.'] = true;
-L["When true, the group header is shown when the player is in a party."] = true;
-L["When true, the group header is shown when the player is in a raid."] = true;
 L["When true, the header includes the player when not in a raid."] = true;
-L["When true, the header is shown when the player is not in any group."] = true;
 L["When you mana falls below this point, text will flash on the player frame."] = true;
 L["Whitelist"] = true;
 L["Width"] = true; --Also used in NamePlates module

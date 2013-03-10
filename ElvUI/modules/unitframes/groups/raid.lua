@@ -13,6 +13,7 @@ for i=10, 40, 15 do
 		self.menu = UF.SpawnMenu
 
 		self.RaisedElementParent = CreateFrame('Frame', nil, self)
+		self.RaisedElementParent:SetFrameStrata("MEDIUM")
 		self.RaisedElementParent:SetFrameLevel(self:GetFrameLevel() + 10)		
 		
 		self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
@@ -59,7 +60,7 @@ for i=10, 40, 15 do
 			elseif inInstance and instanceType == "raid" then
 				RegisterAttributeDriver(self, 'state-visibility', 'hide')
 			elseif self.db.visibility then
-				UF:ChangeVisibility(self, 'custom '..self.db.visibility)
+				RegisterAttributeDriver(self, 'state-visibility', self.db.visibility)
 			end
 		else
 			self:RegisterEvent("PLAYER_REGEN_ENABLED")
@@ -68,29 +69,13 @@ for i=10, 40, 15 do
 	end
 
 	UF['Update_Raid'..i..'Header'] = function (self, header, db)
-		if not header.isForced then
-			header:Hide()
-			header:SetAttribute('oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height))
-			header:SetAttribute('startingIndex', 1)
-		end
-		
 		header.db = db
-		
-		if not header.isForced then	
-			self:ChangeVisibility(header, 'custom '..db.visibility)
-		end
-		
+
 		UF['headerGroupBy'][db.groupBy](header)
 		header:SetAttribute("groupBy", db.groupBy == 'ROLE' and 'ASSIGNEDROLE' or db.groupBy)
 		header:SetAttribute('sortDir', db.sortDir)
-		if not header.isForced then
-			header:SetAttribute("showParty", db.showParty)
-			header:SetAttribute("showRaid", db.showRaid)
-			header:SetAttribute("showSolo", db.showSolo)
-			header:SetAttribute("showPlayer", db.showPlayer)
-		end
-
-		UF:ConvertGroupDB(header)
+		header:SetAttribute("showPlayer", db.showPlayer)
+		
 		local positionOverride = UF:SetupGroupAnchorPoints(header)
 		if not header.positioned then
 			header:ClearAllPoints()

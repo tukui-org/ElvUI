@@ -10,6 +10,7 @@ function UF:Construct_PartyFrames(unitGroup)
 	self:SetScript('OnLeave', UnitFrame_OnLeave)	
 
 	self.RaisedElementParent = CreateFrame('Frame', nil, self)
+	self.RaisedElementParent:SetFrameStrata("MEDIUM")
 	self.RaisedElementParent:SetFrameLevel(self:GetFrameLevel() + 10)
 	
 	if self.isChild then
@@ -49,39 +50,20 @@ function UF:Construct_PartyFrames(unitGroup)
 	
 	self.Range = UF:Construct_Range(self)
 	
-	
-	--UF:Update_PartyFrames(self, E.db['unitframe']['units']['party'])
 	UF:Update_StatusBars()
 	UF:Update_FontStrings()	
 
 	return self
 end
 
-function UF:Update_PartyHeader(header, db)
-	if not header.isForced then
-		header:Hide()
-		header:SetAttribute('oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height))
-		header:SetAttribute('startingIndex', 1)
-	end
-	
+function UF:Update_PartyHeader(header, db)	
 	header.db = db
 
-	if not header.isForced then	
-		self:ChangeVisibility(header, 'custom '..db.visibility)
-	end
-	
 	UF['headerGroupBy'][db.groupBy](header)
 	header:SetAttribute("groupBy", db.groupBy == 'ROLE' and 'ASSIGNEDROLE' or db.groupBy)
 	header:SetAttribute('sortDir', db.sortDir)
+	header:SetAttribute("showPlayer", db.showPlayer)
 	
-	if not header.isForced then
-		header:SetAttribute("showParty", db.showParty)
-		header:SetAttribute("showRaid", db.showRaid)
-		header:SetAttribute("showSolo", db.showSolo)
-		header:SetAttribute("showPlayer", db.showPlayer)
-	end
-	
-	UF:ConvertGroupDB(header)
 	local positionOverride = UF:SetupGroupAnchorPoints(header)
 	if not header.positioned then
 		header:ClearAllPoints()
@@ -110,11 +92,10 @@ function UF:PartySmartVisibility(event)
 		if inInstance and instanceType == "raid" then
 			RegisterAttributeDriver(self, 'state-visibility', 'hide')
 		elseif self.db.visibility then
-			UF:ChangeVisibility(self, 'custom '..self.db.visibility)
+			RegisterAttributeDriver(self, 'state-visibility', self.db.visibility)
 		end
 	else
 		self:RegisterEvent("PLAYER_REGEN_ENABLED")
-		return
 	end
 end
 

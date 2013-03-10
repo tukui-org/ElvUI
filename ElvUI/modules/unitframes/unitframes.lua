@@ -57,7 +57,7 @@ UF['headerGroupBy'] = {
 	end,
 	['ROLE'] = function(header)
 		header:SetAttribute("groupingOrder", "TANK,HEALER,DAMAGER,NONE")
-		header:SetAttribute('sortMethod', 'INDEX')	
+		header:SetAttribute('sortMethod', 'NAME')	
 	end,
 	['NAME'] = function(header)
 		header:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
@@ -96,6 +96,14 @@ local DIRECTION_TO_POINT = {
 }
 
 local DIRECTION_TO_GROUP_ANCHOR_POINT = {
+	OUT_RIGHT_UP = "BOTTOM",
+	OUT_LEFT_UP = "BOTTOM",
+	OUT_RIGHT_DOWN = "TOP",
+	OUT_LEFT_DOWN = "TOP",
+	OUT_UP_RIGHT = "LEFT",
+	OUT_UP_LEFT = "RIGHT",
+	OUT_DOWN_RIGHT = "LEFT",
+	OUT_DOWN_LEFT = "RIGHT",
 	DOWN_RIGHT = "TOPLEFT",
 	DOWN_LEFT = "TOPRIGHT",
 	UP_RIGHT = "BOTTOMLEFT",
@@ -145,7 +153,7 @@ local tremove, tinsert = table.remove, table.insert
 
 
 function UF:ConvertGroupDB(group)
-	local db = group.db
+	local db = self.db.units[group.groupName]
 	if db.point and db.columnAnchorPoint then
 		db.growthDirection = POINT_COLUMN_ANCHOR_TO_DIRECTION[db.point..db.columnAnchorPoint];
 		db.point = nil;
@@ -174,18 +182,22 @@ function UF:ConvertGroupDB(group)
 end
 
 function UF:SetupGroupAnchorPoints(group)
-	local db = group.db
+	UF:ConvertGroupDB(group)
+	local db = self.db.units[group.groupName]
 	local direction = db.growthDirection
 	local point = DIRECTION_TO_POINT[direction]
-	local positionOverride = DIRECTION_TO_GROUP_ANCHOR_POINT[direction]
+	local positionOverride = DIRECTION_TO_GROUP_ANCHOR_POINT[db.startOutFromCenter and 'OUT_'..direction or direction]
 	
+	local maxUnits, startingIndex = MAX_RAID_MEMBERS, -1
+	if (db.numGroups and db.unitsPerGroup) then
+		startingIndex = -min(db.numGroups * db.unitsPerGroup, maxUnits) + 1
+	end
 	
 	if point == "LEFT" or point == "RIGHT" then
 		group:SetAttribute("xOffset", db.horizontalSpacing * DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction])
 		group:SetAttribute("yOffset", 0)
 		group:SetAttribute("columnSpacing", db.verticalSpacing)
 	else
-
 		group:SetAttribute("xOffset", 0)
 		group:SetAttribute("yOffset", db.verticalSpacing * DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction])
 		group:SetAttribute("columnSpacing", db.horizontalSpacing)
@@ -196,10 +208,18 @@ function UF:SetupGroupAnchorPoints(group)
 	group:SetAttribute("point", point)	
 	group:SetAttribute("maxColumns", db.numGroups)
 	group:SetAttribute("unitsPerColumn", db.unitsPerGroup)		
+
+	if not group.isForced then
+		group:SetAttribute("startingIndex", startingIndex)
+		RegisterAttributeDriver(group, 'state-visibility', 'show')	
+		group.dirtyWidth, group.dirtyHeight = group:GetSize()
+		RegisterAttributeDriver(group, 'state-visibility', db.visibility)
+		group:SetAttribute('startingIndex', 1)
+	end
 	
 	if group.mover then
 		group.mover.positionOverride = positionOverride
-		E:UpdatePositionOverride('ElvUF_PartyMover')
+		E:UpdatePositionOverride(group.mover:GetName())
 	end
 
 	return positionOverride
@@ -214,6 +234,7 @@ function UF:Construct_UF(frame, unit)
 	frame:SetFrameLevel(5)
 	
 	frame.RaisedElementParent = CreateFrame('Frame', nil, frame)
+	frame.RaisedElementParent:SetFrameStrata("MEDIUM")
 	frame.RaisedElementParent:SetFrameLevel(frame:GetFrameLevel() + 10)	
 	
 	if not self['groupunits'][unit] then
@@ -386,15 +407,6 @@ function UF:Configure_FontString(obj)
 	obj:FontTemplate() --This is temporary.
 end
 
-function UF:ChangeVisibility(header, visibility)
-	if(visibility) then
-		local type, list = split(' ', visibility, 2)
-		if(list and type == 'custom') then
-			RegisterAttributeDriver(header, 'state-visibility', list)
-		end
-	end	
-end
-
 function UF:Update_AllFrames()
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return end
 	if E.private["unitframe"].enable ~= true then return; end
@@ -467,7 +479,7 @@ function UF:HeaderUpdateSpecificElement(group, elementName)
 	end
 end
 
-function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
+function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdate)
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return end
 
 	local db = self.db['units'][group]
@@ -475,56 +487,15 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 		ElvUF:RegisterStyle("ElvUF_"..E:StringTitle(group), UF["Construct_"..E:StringTitle(group).."Frames"])
 		ElvUF:SetActiveStyle("ElvUF_"..E:StringTitle(group))
 
-		local maxUnits, startingIndex = MAX_RAID_MEMBERS, -1
-		if (db.maxColumns and db.unitsPerColumn) then
-			startingIndex = -min(db.maxColumns * db.unitsPerColumn, maxUnits) + 1
-		elseif (db.numGroups and db.unitsPerGroup) then
-			startingIndex = -min(db.numGroups * db.unitsPerGroup, maxUnits) + 1
-		end
+		self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, nil, 
+			'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 
+			'groupFilter', groupFilter,
+			'showParty', true,
+			'showRaid', true,
+			'showSolo', true,
+			template and 'template', template)
 
-		if template then
-			self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 
-				'point', db.point, 
-				'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 
-				'template', template, 
-				'columnAnchorPoint', db.columnAnchorPoint,
-				'maxColumns', db.maxColumns,
-				'unitsPerColumn', db.unitsPerColumn,
-				'point', db.point,
-				'columnSpacing', db.columnSpacing,
-				'xOffset', db.xOffset,
-				'yOffset', db.yOffset,
-				'startingIndex', startingIndex,
-				'groupFilter', groupFilter)
-		else
-			self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 
-				'point', db.point, 
-				'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 
-				'columnAnchorPoint', db.columnAnchorPoint,
-				'maxColumns', db.maxColumns,
-				'unitsPerColumn', db.unitsPerColumn,
-				'point', db.point,
-				'columnSpacing', db.columnSpacing,
-				'xOffset', db.xOffset,
-				'yOffset', db.yOffset,
-				'startingIndex', startingIndex,
-				'groupFilter', groupFilter)
-		end
-		
-		if db.numGroups then
-			self[group].db = db
-			UF:SetupGroupAnchorPoints(self[group])
-		end
-		
-		self[group]:SetParent(ElvUF_Parent)
-		RegisterAttributeDriver(self[group], 'state-visibility', 'show')	
-		self[group].dirtyWidth, self[group].dirtyHeight = self[group]:GetSize()
-		RegisterAttributeDriver(self[group], 'state-visibility', 'hide')	
-
-		if not db.maxColumns and not db.numGroups then
-			self[group]:SetAttribute('startingIndex', 1)
-		end
-		
+		self[group]:SetParent(ElvUF_Parent)		
 		self['headers'][group] = self[group]
 		self[group].groupName = group
 	end
@@ -534,9 +505,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 	self[group].Update = function()
 		local db = self.db['units'][group]
 		if db.enable ~= true then 
-			self[group]:SetAttribute("showParty", false)
-			self[group]:SetAttribute("showRaid", false)
-			self[group]:SetAttribute("showSolo", false)			
+			RegisterAttributeDriver(self[group], 'state-visibility', 'hide')	
 			return
 		end
 		UF["Update_"..E:StringTitle(group).."Header"](self, self[group], db)
@@ -555,7 +524,11 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 		end			
 	end	
 	
-	self[group].Update()
+	if headerUpdate then
+		UF["Update_"..E:StringTitle(group).."Header"](self, self[group], db)
+	else
+		self[group].Update()
+	end
 end
 
 function UF:PLAYER_REGEN_ENABLED()
