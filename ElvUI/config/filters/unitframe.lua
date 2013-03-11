@@ -379,6 +379,7 @@ G.unitframe.aurafilters['Blacklist'] = {
 		[SpellName(36900)] = Defaults(), --Soul Split: Evil!
 		[SpellName(36901)] = Defaults(), --Soul Split: Good
 		[SpellName(36893)] = Defaults(), --Transporter Malfunction
+		[SpellName(36897)] = Defaults(), --Transporter Malfunction
 		[SpellName(36032)] = Defaults(), -- Arcane Charge
 		[SpellName(76691)] = Defaults(), -- Vengeance
 		[SpellName(8733)] = Defaults(), --Blessing of Blackfathom
