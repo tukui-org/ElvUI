@@ -82,7 +82,6 @@ local function UpdateSpellList()
 		AddSpell(resSpells, 115178) -- Resuscitate
 	end	
 end
-UpdateSpellList()
 
 local function getUnit(unit)
 	if not unit:find("party") or not unit:find("raid") then
@@ -224,6 +223,7 @@ local Enable = function(self)
 		if(not OnRangeFrame) then
 			OnRangeFrame = CreateFrame"Frame"
 			OnRangeFrame:RegisterEvent("LEARNED_SPELL_IN_TAB");
+			OnRangeFrame:RegisterEvent("PLAYER_ENTERING_WORLD");
 			OnRangeFrame:SetScript("OnUpdate", OnRangeUpdate)
 			OnRangeFrame:SetScript("OnEvent", UpdateSpellList)
 		end
