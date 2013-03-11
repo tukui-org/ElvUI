@@ -2034,6 +2034,7 @@ E.Options.args.unitframe.args.target = {
 			name = L['Middle Click - Set Focus'],
 			desc = L['Middle clicking the unit frame will cause your focus to match the unit.'],
 			type = 'toggle',
+			disabled = function() return IsAddOnLoaded("Clique") end,
 		},
 		hideonnpc = {
 			type = 'toggle',
