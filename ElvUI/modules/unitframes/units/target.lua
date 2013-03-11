@@ -77,10 +77,12 @@ function UF:Update_TargetFrame(frame, db)
 	frame:Size(UNIT_WIDTH, UNIT_HEIGHT)
 	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
 	
-	if db.middleClickFocus then
-		frame:SetAttribute("type3", "focus")
-	elseif frame:GetAttribute("type3") == "focus" then
-		frame:SetAttribute("type3", nil)
+	if not IsAddOnLoaded("Clique") then
+		if db.middleClickFocus then
+			frame:SetAttribute("type3", "focus")
+		elseif frame:GetAttribute("type3") == "focus" then
+			frame:SetAttribute("type3", nil)
+		end
 	end
 	
 	--Adjust some variables
