@@ -12,7 +12,8 @@ local friendlySpells, resSpells, longEnemySpells, enemySpells, petSpells = {}, {
 local function AddSpell(table, spellID)
 	local name = GetSpellInfo(spellID)
 	if name then
-		if IsUsableSpell(name) then
+		local usable, nomana = IsUsableSpell(name)
+		if usable or nomana then
 			table[#table + 1] = name
 		end
 	end
