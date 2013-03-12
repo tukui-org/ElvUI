@@ -5,6 +5,17 @@ local lower = string.lower
 E.PopupDialogs = {};
 E.StaticPopup_DisplayedFrames = {};
 
+E.PopupDialogs['TUKUI_ELVUI_INCOMPATIBLE'] = {
+	text = L['Oh lord, you have got ElvUI and Tukui both enabled at the same time. Select an addon to disable.'],
+	OnAccept = function() DisableAddOn("ElvUI"); ReloadUI() end,
+	OnCancel = function() DisableAddOn("Tukui"); ReloadUI() end,
+	button1 = 'ElvUI',
+	button2 = 'Tukui',	
+	timeout = 0,
+	whileDead = 1,	
+	hideOnEscape = false,	
+}
+
 E.PopupDialogs['DISABLE_INCOMPATIBLE_ADDON'] = {
 	text = L['Do you swear not to post in technical support about something not working without first disabling the addon/module combination first?'],
 	OnAccept = function() E.global.ignoreIncompatible = true; end,
