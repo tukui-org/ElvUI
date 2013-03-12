@@ -685,7 +685,7 @@ local Tag = function(self, fs, tagstr)
 		if(type(fs.frequentUpdates) == 'number') then
 			timer = fs.frequentUpdates
 		elseif containsOnUpdate then
-			timer = .1
+			timer = .15
 		else
 			timer = .5
 		end

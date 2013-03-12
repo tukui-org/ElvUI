@@ -33,7 +33,7 @@ _G[AddOnName] = Engine;
 
 local tcopy = table.copy
 
-function AddOn:OnInitialize()
+function AddOn:OnInitialize()	
 	if not ElvCharacterDB then
 		ElvCharacterDB = {};
 	end
@@ -84,6 +84,10 @@ function AddOn:OnInitialize()
 	self:RegisterEvent('PLAYER_LOGIN', 'Initialize')
 	self:Contruct_StaticPopups()	
 	self:InitializeInitialModules()
+	
+	if IsAddOnLoaded("Tukui") then
+		self:StaticPopup_Show("TUKUI_ELVUI_INCOMPATIBLE")
+	end	
 end
 
 function AddOn:PLAYER_REGEN_ENABLED()

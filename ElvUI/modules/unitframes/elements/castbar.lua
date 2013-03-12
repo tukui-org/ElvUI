@@ -136,17 +136,29 @@ function UF:SetCastTicks(frame, numTicks, extraTickRatio)
 	extraTickRatio = extraTickRatio or 0
 	UF:HideTicks()
 	if numTicks and numTicks <= 0 then return end;
-	local d = frame:GetWidth() / (numTicks + extraTickRatio)
+	local w = frame:GetWidth()
+	local d = w / (numTicks + extraTickRatio)
+	--local _, _, _, ms = GetNetStats()
 	for i = 1, numTicks do
 		if not ticks[i] then
 			ticks[i] = frame:CreateTexture(nil, 'OVERLAY')
 			ticks[i]:SetTexture(E["media"].normTex)
-			ticks[i]:SetVertexColor(0, 0, 0)
-			ticks[i]:SetWidth(1)
+			ticks[i]:SetVertexColor(0, 0, 0, 0.8)
+			ticks[i]:Width(1)
 			ticks[i]:SetHeight(frame:GetHeight())
 		end
+		
+		--[[if(ms ~= 0) then
+			local perc = (w / frame.max) * (ms / 1e5)
+			if(perc > 1) then perc = 1 end
+
+			ticks[i]:SetWidth((w * perc) / (numTicks + extraTickRatio))
+		else
+			ticks[i]:Width(1)
+		end]]
+		
 		ticks[i]:ClearAllPoints()
-		ticks[i]:SetPoint("CENTER", frame, "LEFT", d * i, 0)
+		ticks[i]:SetPoint("RIGHT", frame, "LEFT", d * i, 0)
 		ticks[i]:Show()
 	end
 end

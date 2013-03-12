@@ -914,6 +914,19 @@ function B:CloseBank()
 	self.BankFrame:Hide()
 end
 
+function B:GUILDBANKFRAME_OPENED()
+	--[[local button = CreateFrame("Button", "GuildSortButton", GuildBankFrame, "UIPanelButtonTemplate")
+	button:StripTextures()
+	button:SetTemplate("Default", true)
+	button:Size(110, 20)
+	button:Point("RIGHT", GuildItemSearchBox, "LEFT", -4, 0)
+	button:SetText(L['Sort Tab'])
+	button:SetScript("OnClick", function() B:CommandDecorator(B.SortBags, 'guild')() end)
+	E.Skins:HandleButton(button, true)]]
+		
+	self:UnregisterEvent("GUILDBANKFRAME_OPENED")
+end
+
 function B:Initialize()
 	self:LoadBagBar();
 
@@ -950,7 +963,8 @@ function B:Initialize()
 	self:RegisterEvent("BANKFRAME_OPENED", "OpenBank")
 	self:RegisterEvent("BANKFRAME_CLOSED", "CloseBank")
 	self:RegisterEvent("PLAYERBANKBAGSLOTS_CHANGED")
-	
+	self:RegisterEvent("GUILDBANKFRAME_OPENED")
+
 	StackSplitFrame:SetFrameStrata('DIALOG')
 end
 
