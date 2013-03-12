@@ -677,7 +677,7 @@ function B:DoMove(move)
 	
 	local sourceGuild = IsGuildBankBag(sourceBag)
 	local targetGuild = IsGuildBankBag(targetBag)
-	print(CursorHasItem() or sourceGuild)
+
 	if CursorHasItem() or sourceGuild then
 		B:PickupItem(targetBag, targetSlot)
 	end	
