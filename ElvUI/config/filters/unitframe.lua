@@ -511,8 +511,6 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 			--Megaera
 			[SpellName(137731)] = Defaults(), --Ignite Flesh
 			
-			--Ji-Kun
-			[SpellName(138309)] = Defaults(), --Slimed
 			
 			--Durumu the Forgotten
 			[SpellName(133767)] = Defaults(), --Serious Wound
