@@ -181,6 +181,10 @@ function UF:ConvertGroupDB(group)
 	end
 end
 
+local function DelayedUpdate(group)
+	group:Show()
+end
+
 function UF:SetupGroupAnchorPoints(group)
 	UF:ConvertGroupDB(group)
 	local db = self.db.units[group.groupName]
@@ -215,6 +219,8 @@ function UF:SetupGroupAnchorPoints(group)
 		group.dirtyWidth, group.dirtyHeight = group:GetSize()
 		RegisterAttributeDriver(group, 'state-visibility', db.visibility)
 		group:SetAttribute('startingIndex', 1)
+		
+		E:Delay(0.25, DelayedUpdate, group)
 	end
 	
 	if group.mover then
