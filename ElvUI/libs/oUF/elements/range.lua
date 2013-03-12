@@ -40,7 +40,7 @@ local function UpdateSpellList()
 		AddSpell(resSpells, 20484) -- Rebirth 
 	elseif class == "PALADIN" then
 		AddSpell(enemySpells, 20271) -- Judgement
-		AddSpell(friendlySpells, 19750) -- Flash of Light
+		AddSpell(friendlySpells, 85673) -- Word of Glory
 		AddSpell(resSpells, 7328) -- Redemption
 		AddSpell(longEnemySpells, 114165) -- Holy Prism
 		AddSpell(longEnemySpells, 114157) -- Execution Sentence
