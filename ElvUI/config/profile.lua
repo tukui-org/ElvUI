@@ -351,6 +351,7 @@ P['unitframe'] = {
 				['width'] = 45,
 				['overlay'] = false,
 				['camDistanceScale'] = 1,
+				['rotation'] = 0,
 				['style'] = '3D'
 			},
 			['buffs'] = {
@@ -468,6 +469,7 @@ P['unitframe'] = {
 				['enable'] = false,
 				['width'] = 45,
 				['overlay'] = false,
+				['rotation'] = 0,
 				['camDistanceScale'] = 1,
 				['style'] = '3D'
 			},
@@ -948,6 +950,7 @@ P['unitframe'] = {
 				['enable'] = false,
 				['width'] = 35,
 				['overlay'] = false,
+				['rotation'] = 0,
 				['camDistanceScale'] = 1,
 				['style'] = '3D'
 			},				

@@ -44,7 +44,9 @@ function UF:PortraitUpdate(unit)
 		if model and model.find and model:find("worgenmale") then
 			self:SetCamera(1)
 		end	
-
+		
+		self:SetFacing(portrait.rotation / 60)
+		
 		self:SetCamDistanceScale(portrait.camDistanceScale - 0.01 >= 0.01 and portrait.camDistanceScale - 0.01 or 0.01) --Blizzard bug fix
 		self:SetCamDistanceScale(portrait.camDistanceScale)
 	end
