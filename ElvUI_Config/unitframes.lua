@@ -2950,7 +2950,7 @@ E.Options.args.unitframe.args.party = {
 							order = 6,
 							type = 'range',
 							name = L['Number of Groups'],
-							min = 1, max = 40, step = 1,
+							min = 1, max = 8, step = 1,
 							set = function(info, value) E.db.unitframe.units['party'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
 						},
 						unitsPerGroup = {
@@ -3338,7 +3338,7 @@ for i=10, 40, 15 do
 								order = 6,
 								type = 'range',
 								name = L['Number of Groups'],
-								min = 1, max = 40, step = 1,
+								min = 1, max = 8, step = 1,
 								set = function(info, value) E.db.unitframe.units['raid'..i][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i) end,
 							},
 							unitsPerGroup = {
