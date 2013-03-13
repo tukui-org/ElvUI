@@ -5,11 +5,12 @@ local numChildren = -1
 
 function M:UpdateBubbleBorder()
 	if not self.text then return end
-	NP:SetVirtualBorder(self, self.text:GetTextColor())
+	self:SetBackdropBorderColor(self.text:GetTextColor())
+	--NP:SetVirtualBorder(self, self.text:GetTextColor())
 end
 
 function M:SkinBubble(frame)
-	local noscalemult = E.mult * (GetCVar('uiScale') or UIParent:GetScale())
+	local mult = E.mult * (GetCVar('uiScale') or UIParent:GetScale())
 	for i=1, frame:GetNumRegions() do
 		local region = select(i, frame:GetRegions())
 		if region:GetObjectType() == "Texture" then
@@ -18,15 +19,51 @@ function M:SkinBubble(frame)
 			frame.text = region
 		end
 	end
-	NP:CreateVirtualFrame(frame)	
-	NP:SetVirtualBorder(frame, frame.text:GetTextColor())	
-	
+
 	if E.PixelMode then
-		frame.backdrop2:SetTexture(unpack(E["media"].backdropfadecolor))
+		frame:SetBackdrop({
+		  bgFile = E["media"].blankTex, 
+		  edgeFile = E["media"].blankTex, 
+		  tile = false, tileSize = 0, edgeSize = mult, 
+		  insets = { left = 0, right = 0, top = 0, bottom = 0}
+		})	
+	else
+		frame:SetBackdrop({
+		  bgFile = E["media"].blankTex, 
+		  edgeFile = E["media"].blankTex, 
+		  tile = false, tileSize = 0, edgeSize = mult, 
+		  insets = { left = -mult, right = -mult, top = -mult, bottom = -mult}
+		})
 	end
+
+	frame:SetBackdropColor(unpack(E.media.backdropfadecolor))
 	
+	if not frame.oborder and not frame.iborder and not E.PixelMode then
+		local border = CreateFrame("Frame", nil, frame)
+		border:SetInside(frame, mult, mult)
+		border:SetBackdrop({
+			edgeFile = E["media"].blankTex, 
+			edgeSize = mult, 
+			insets = { left = mult, right = mult, top = mult, bottom = mult }
+		})
+		border:SetBackdropBorderColor(0, 0, 0, 1)
+		frame.iborder = border
+
+		border = CreateFrame("Frame", nil, frame)
+		border:SetOutside(frame, mult, mult)
+		border:SetFrameLevel(frame:GetFrameLevel() + 1)
+		border:SetBackdrop({
+			edgeFile = E["media"].blankTex, 
+			edgeSize = mult, 
+			insets = { left = mult, right = mult, top = mult, bottom = mult }
+		})
+		border:SetBackdropBorderColor(0, 0, 0, 1)
+		frame.oborder = border				
+	end
+
+	frame:SetBackdropBorderColor(frame.text:GetTextColor())
 	frame.text:FontTemplate(nil, 14)
-	
+
 	frame:SetClampedToScreen(false)
 	frame.isBubblePowered = true
 	frame:HookScript('OnShow', M.UpdateBubbleBorder)
