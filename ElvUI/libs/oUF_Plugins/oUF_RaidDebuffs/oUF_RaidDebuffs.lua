@@ -224,6 +224,8 @@ end
 local blackList = {
 	[105171] = true, -- Deep Corruption
 	[108220] = true, -- Deep Corruption
+	[116095] = true, -- Disable, Slow
+	[137637] = true, -- Warbringer, Slow	
 }
 
 local function Update(self, event, unit)

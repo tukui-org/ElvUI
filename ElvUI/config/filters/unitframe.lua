@@ -27,6 +27,7 @@ G.unitframe.aurafilters['CCDebuffs'] = {
 			[SpellName(91807)] = Defaults(), --Shambling Rush (Pet)
 			[SpellName(91797)] = Defaults(), --Monstrous Blow (Pet)
 			[SpellName(108194)] = Defaults(), --Asphyxiate
+			[SpellName(115001)] = Defaults(), --Remorseless Winter
 		-- Druid
 			[SpellName(33786)] = Defaults(), --Cyclone
 			[SpellName(2637)] = Defaults(), --Hibernate
@@ -38,6 +39,10 @@ G.unitframe.aurafilters['CCDebuffs'] = {
 			[SpellName(102359)] = Defaults(), --Mass Entanglement
 			[SpellName(99)] = Defaults(), --Disorienting Roar
 			[SpellName(127797)] = Defaults(), --Ursol's Vortex
+			[SpellName(45334)] = Defaults(), --Immobilized
+			[SpellName(102795)] = Defaults(), --Bear Hug
+			[SpellName(114238)] = Defaults(), --Fae Silence
+			[SpellName(113004)] = Defaults(), --Intimidating Roar (Warrior Symbiosis)
 		-- Hunter
 			[SpellName(3355)] = Defaults(), --Freezing Trap
 			[SpellName(1513)] = Defaults(), --Scare Beast
@@ -47,6 +52,7 @@ G.unitframe.aurafilters['CCDebuffs'] = {
 			[SpellName(64803)] = Defaults(), --Entrapment
 			[SpellName(19386)] = Defaults(), --Wyvern Sting
 			[SpellName(117405)] = Defaults(), --Binding Shot
+			[SpellName(128405)] = Defaults(), --Narrow Escape
 			[SpellName(50519)] = Defaults(), --Sonic Blast (Bat)
 			[SpellName(91644)] = Defaults(), --Snatch (Bird of Prey)
 			[SpellName(90337)] = Defaults(), --Bad Manner (Monkey)
@@ -57,6 +63,7 @@ G.unitframe.aurafilters['CCDebuffs'] = {
 			[SpellName(50245)] = Defaults(), --Pin (Crab)
 			[SpellName(50541)] = Defaults(), --Clench (Scorpid)
 			[SpellName(96201)] = Defaults(), --Web Wrap (Shale Spider)
+			[SpellName(96201)] = Defaults(), --Lullaby (Crane)
 		-- Mage
 			[SpellName(31661)] = Defaults(), --Dragon's Breath
 			[SpellName(118)] = Defaults(), --Polymorph
@@ -73,6 +80,7 @@ G.unitframe.aurafilters['CCDebuffs'] = {
 			[SpellName(853)] = Defaults(), --Hammer of Justice
 			[SpellName(105593)] = Defaults(), --Fist of Justice
 			[SpellName(31935)] = Defaults(), --Avenger's Shield
+			[SpellName(105421)] = Defaults(), --Blinding Light
 		-- Priest
 			[SpellName(605)] = Defaults(), --Dominate Mind
 			[SpellName(64044)] = Defaults(), --Psychic Horror
@@ -83,6 +91,7 @@ G.unitframe.aurafilters['CCDebuffs'] = {
 			[SpellName(114404)] = Defaults(), --Void Tendrils
 			[SpellName(88625)] = Defaults(), --Holy Word: Chastise
 			[SpellName(113792)] = Defaults(), --Psychic Terror (Psyfiend)
+			[SpellName(87194)] = Defaults(), --Sin and Punishment
 		-- Rogue
 			[SpellName(2094)] = Defaults(), --Blind
 			[SpellName(1776)] = Defaults(), --Gouge
@@ -100,6 +109,7 @@ G.unitframe.aurafilters['CCDebuffs'] = {
 			[SpellName(63685)] = Defaults(), --Freeze (Frozen Power)
 			[SpellName(76780)] = Defaults(), --Bind Elemental
 			[SpellName(118905)] = Defaults(), --Static Charge
+			[SpellName(118345)] = Defaults(), --Pulverize (Earth Elemental)
 		-- Warlock
 			[SpellName(710)] = Defaults(), --Banish
 			[SpellName(6789)] = Defaults(), --Mortal Coil
@@ -112,6 +122,8 @@ G.unitframe.aurafilters['CCDebuffs'] = {
 			[SpellName(115268)] = Defaults(), --Mesmerize (Shivarra)
 			[SpellName(118093)] = Defaults(), --Disarm (Voidwalker)
 			[SpellName(89766)] = Defaults(), --Axe Toss (Felguard)
+			[SpellName(137143)] = Defaults(), --Blood Horror
+			[SpellName(31117)] = Defaults(), --Unstable Affliction (Dispel Silence)
 		-- Warrior
 			[SpellName(20511)] = Defaults(), --Intimidating Shout
 			[SpellName(7922)] = Defaults(), --Charge Stun
@@ -132,12 +144,14 @@ G.unitframe.aurafilters['CCDebuffs'] = {
 			[SpellName(120086)] = Defaults(), --Fists of Fury
 			[SpellName(116709)] = Defaults(), --Spear Hand Strike
 			[SpellName(123407)] = Defaults(), --Spinning Fire Blossom
+			[SpellName(140023)] = Defaults(), --Ring of Peace
 		-- Racial
 			[SpellName(25046)] = Defaults(), --Arcane Torrent
 			[SpellName(20549)] = Defaults(), --War Stomp
 			[SpellName(107079)] = Defaults(), --Quaking Palm
 	},
 }
+
 
 --[[
 	These are buffs that can be considered "protection" buffs
@@ -662,5 +676,6 @@ G.unitframe.AuraBarColors = {
 }
 
 G.unitframe.InvalidSpells = {
-	[65148] = true,
+	[65148] = true, --Sacred Shield
+	[30108] = true, --Unstable Affliction	
 }
