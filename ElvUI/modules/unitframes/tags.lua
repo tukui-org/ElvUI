@@ -496,7 +496,7 @@ ElvUF.Tags.Methods['nearbyplayers'] = function(unit)
 	return unitsInRange
 end
 
-ElvUF.Tags.Methods['nearbyplayers'] = function(unit)
+ElvUF.Tags.Methods['nearbyplayers:8'] = function(unit)
 	local px, py, tx, ty, d
 	px, py = GetPlayerMapPosition(unit)
 	local unitsInRange = 0
@@ -506,6 +506,44 @@ ElvUF.Tags.Methods['nearbyplayers'] = function(unit)
 				tx, ty = GetPlayerMapPosition(groupUnit)
 				d = E:GetDistance(px, py, tx, ty)
 				if d and d <= 8 then
+					unitsInRange = unitsInRange + 1
+				end
+			end
+		end
+	end
+	
+	return unitsInRange
+end
+
+ElvUF.Tags.Methods['nearbyplayers:10'] = function(unit)
+	local px, py, tx, ty, d
+	px, py = GetPlayerMapPosition(unit)
+	local unitsInRange = 0
+	if UnitIsConnected(unit) then
+		for groupUnit, _ in pairs(GroupUnits) do
+			if not UnitIsUnit(unit, groupUnit) and UnitIsConnected(groupUnit) then
+				tx, ty = GetPlayerMapPosition(groupUnit)
+				d = E:GetDistance(px, py, tx, ty)
+				if d and d <= 10 then
+					unitsInRange = unitsInRange + 1
+				end
+			end
+		end
+	end
+	
+	return unitsInRange
+end
+
+ElvUF.Tags.Methods['nearbyplayers:30'] = function(unit)
+	local px, py, tx, ty, d
+	px, py = GetPlayerMapPosition(unit)
+	local unitsInRange = 0
+	if UnitIsConnected(unit) then
+		for groupUnit, _ in pairs(GroupUnits) do
+			if not UnitIsUnit(unit, groupUnit) and UnitIsConnected(groupUnit) then
+				tx, ty = GetPlayerMapPosition(groupUnit)
+				d = E:GetDistance(px, py, tx, ty)
+				if d and d <= 30 then
 					unitsInRange = unitsInRange + 1
 				end
 			end
