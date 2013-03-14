@@ -87,7 +87,7 @@ end
 
 function lib:GetPluginOptions()
 	ElvUI[1].Options.args.plugins = {
-        order = 10000,
+        order = -10,
         type = "group",
         name = HDR_CONFIG,
         guiInline = false,
