@@ -1101,6 +1101,11 @@ L["Bottom_Datatext_Panel"] = "Bottom Datatext Panel"
 L["ChatTab_Datatext_Panel"] = "Right Chat Tab"
 L["Chat Bubble Color"] = "Chat Bubble Color"
 L["Backdrop color of chat bubbles"] = "Backdrop color of chat bubbles"
+L["Isle of Thunder"] = "Isle of Thunder"
+L['Trove of the Thunder King'] = 'Trove of the Thunder King'
+L['Key to the Palace of Lei Shen'] = 'Key to the Palace of Lei Shen'
+L['Looted'] = 'Looted'
+L['Not Looted'] = 'Not Looted'
 
 --Changes to Aura Timers
 L["Decimal Threshold"] = "Decimal Threshold"

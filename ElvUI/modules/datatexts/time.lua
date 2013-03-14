@@ -156,7 +156,12 @@ local function OnEnter(self)
 	DT.tooltip:AddDoubleLine(L['Galleon']..':', quests[32098] and L['Defeated'] or L['Undefeated'], 1, 1, 1, 0.8, 0.8, 0.8)
 	DT.tooltip:AddDoubleLine(L['Oondasta']..':', quests[32519] and L['Defeated'] or L['Undefeated'], 1, 1, 1, 0.8, 0.8, 0.8)
 	DT.tooltip:AddDoubleLine(L['Nalak']..':', quests[32518] and L['Defeated'] or L['Undefeated'], 1, 1, 1, 0.8, 0.8, 0.8)
-
+	
+	DT.tooltip:AddLine(" ")
+	DT.tooltip:AddLine(L["Isle of Thunder"])
+	DT.tooltip:AddDoubleLine(L['Trove of the Thunder King']..':', quests[32609] and L['Looted'] or L['Not Looted'], 1, 1, 1, 0.8, 0.8, 0.8)
+	DT.tooltip:AddDoubleLine(L['Key to the Palace of Lei Shen']..':', quests[32626] and L['Looted'] or L['Not Looted'], 1, 1, 1, 0.8, 0.8, 0.8)
+	
 	local timeText
 	local Hr, Min, AmPm = CalculateTimeValues(true)
 
