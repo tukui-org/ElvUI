@@ -44,11 +44,7 @@ function DT:UPDATE_BATTLEFIELD_SCORE()
 	for i=1, GetNumBattlefieldScores() do
 		name = GetBattlefieldScore(i)
 		if name == E.myname then
-			if index == 10 or index == 11 then
-				self.text:SetFormattedText(displayString, dataStrings[pointIndex], E:ShortValue(select(pointIndex, GetBattlefieldScore(i))))
-			else
-				self.text:SetFormattedText(displayString, dataStrings[pointIndex], select(pointIndex, GetBattlefieldScore(i)))
-			end
+			self.text:SetFormattedText(displayString, dataStrings[pointIndex], E:ShortValue(select(pointIndex, GetBattlefieldScore(i))))
 			break	
 		end
 	end
