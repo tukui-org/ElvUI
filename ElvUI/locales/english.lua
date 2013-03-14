@@ -5,7 +5,7 @@ local L = AceLocale:NewLocale("ElvUI", "enUS", true, true);
 if not L then return; end
 
 --TEMP
-L["A taint has occured that is preventing you from using your talents/glyphs. Please reload your user interface and try again."] = true;
+L["A taint has occured that is preventing you from using the queue system. Please reload your user interface and try again."] = true;
 
 --Distributor
 L["This feature will allow you to transfer, settings to other characters."] = true;

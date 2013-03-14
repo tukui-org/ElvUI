@@ -59,8 +59,8 @@ E.PopupDialogs['CONFIGAURA_SET'] = {
 	hideOnEscape = false,	
 }
 
-E.PopupDialogs['TALENT_TAINT'] = {
-	text = L["A taint has occured that is preventing you from using your talents/glyphs. Please reload your user interface and try again."],
+E.PopupDialogs['QUEUE_TAINT'] = {
+	text = L["A taint has occured that is preventing you from using the queue system. Please reload your user interface and try again."],
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	OnAccept = function() ReloadUI(); end,
