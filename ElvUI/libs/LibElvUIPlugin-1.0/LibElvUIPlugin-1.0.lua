@@ -1,12 +1,14 @@
 if not ElvUI then return end
 
-local MAJOR, MINOR = "LibElvUIPlugin-1.0", 10
+local MAJOR, MINOR = "LibElvUIPlugin-1.0", 12
 local lib, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
 
 if not lib then return end
+
 lib.plugins = {}
 lib.index = 0
+lib.prefix = "ElvUIPluginVC"
 --
 -- GLOBALS:
 --
@@ -52,6 +54,16 @@ function lib:RegisterPlugin(name,callback)
 	lib.plugins[name] = plugin
 	local enabled, loadable = select(4,GetAddOnInfo("ElvUI_Config"))
 	local loaded = IsAddOnLoaded("ElvUI_Config")
+
+	if not lib.vcframe then
+		RegisterAddonMessagePrefix(lib.prefix)
+		local f = CreateFrame('Frame')
+		f:RegisterEvent("GROUP_ROSTER_UPDATE")
+		f:RegisterEvent("CHAT_MSG_ADDON")
+		f:SetScript('OnEvent', lib.VersionCheck)
+		lib.vcframe = f
+	end
+
 	if enabled and loadable and not loaded then
 		if not lib.ConfigFrame then
 			local configFrame = CreateFrame("Frame")
@@ -75,52 +87,7 @@ function lib:RegisterPlugin(name,callback)
 		callback()
 	end
 
-	lib:SetupVersionCheck(plugin)
-	lib.index = lib.index + 1
-	
 	return plugin
-end
-
-function lib:SetupVersionCheck(plugin)
-	local prefix = "EPVC"..lib.index
-	E["Send"..plugin.name.."VersionCheck"] = function()
-		local _, instanceType = IsInInstance()
-		if IsInRaid() then
-			SendAddonMessage(prefix, plugin.version, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "RAID")
-		elseif IsInGroup() then
-			SendAddonMessage(prefix, plugin.version, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "PARTY")
-		end
-		
-		if E["Send"..plugin.name.."MSGTimer"] then
-			E:CancelTimer(E["Send"..plugin.name.."MSGTimer"])
-			E["Send"..plugin.name.."MSGTimer"] = nil
-		end
-	end
-	RegisterAddonMessagePrefix(prefix)
-	local function SendRecieve(prefix)
-		return function(self, event, mprefix, message, channel, sender)
-			if event == "CHAT_MSG_ADDON" then
-				if sender == E.myname or not sender or mprefix ~= prefix  or plugin.name == MAJOR then return end
-				
-				if not E[plugin.name.."recievedOutOfDateMessage"] then
-					if plugin.version ~= 'BETA' and tonumber(message) ~= nil and tonumber(plugin.version) ~= nil and tonumber(message) > tonumber(plugin.version) then
-						plugin.old = true
-						plugin.newversion = tonumber(message)
-						local Pname = GetAddOnMetadata(plugin.name, "Title")
-						E:Print(format(MSG_OUTDATED,Pname,plugin.newversion))
-						E[plugin.name.."recievedOutOfDateMessage"] = true
-					end
-				end
-			else
-				E["Send"..plugin.name.."MSGTimer"] = E:ScheduleTimer("Send"..plugin.name.."VersionCheck", 12)
-			end
-		end
-	end
-
-	local f = CreateFrame('Frame')
-	f:RegisterEvent("GROUP_ROSTER_UPDATE")
-	f:RegisterEvent("CHAT_MSG_ADDON")
-	f:SetScript('OnEvent', SendRecieve(prefix))
 end
 
 function lib:GetPluginOptions()
@@ -144,6 +111,38 @@ function lib:GetPluginOptions()
     }
 end
 
+function lib:GenerateVersionCheckMessage()
+	list = ""
+	for _, plugin in pairs(lib.plugins) do
+		if plugin.name ~= MAJOR then
+			list = list..plugin.name.."="..plugin.version..";"
+		end
+	end
+	return list
+end
+
+function lib:VersionCheck(event, prefix, message, channel, sender)
+	if event == "CHAT_MSG_ADDON" then
+		if sender == E.myname or not sender or prefix ~= lib.prefix then return end
+		if not E["pluginRecievedOutOfDateMessage"] then
+			for _, p in pairs({strsplit(";",message)}) do
+				local name, version = p:match("([%w_]+)=([%d%p]+)")
+				if lib.plugins[name] then
+					local plugin = lib.plugins[name]
+					if plugin.version ~= 'BETA' and version ~= nil and tonumber(version) ~= nil and plugin.version ~= nil and tonumber(plugin.version) ~= nil and tonumber(version) > tonumber(plugin.version) then
+						plugin.old = true
+						plugin.newversion = tonumber(version)
+						local Pname = GetAddOnMetadata(plugin.name, "Title")
+						E:Print(format(MSG_OUTDATED,Pname,plugin.newversion))
+						E["pluginRecievedOutOfDateMessage"] = true
+					end
+				end
+			end
+		end
+	else
+		E["ElvUIPluginSendMSGTimer"] = E:ScheduleTimer("SendPluginVersionCheck", 2)
+	end 
+end
 
 function lib:GeneratePluginList()
 	list = ""
@@ -164,6 +163,42 @@ function lib:GeneratePluginList()
 		end
 	end
 	return list
+end
+
+function lib:SendPluginVersionCheck(message)
+	local plist = {strsplit(";",message)}
+	local m = ""
+	local delay = 1
+	for _, p in pairs(plist) do
+		if(#(m .. p .. ";") < 230) then
+			m = m .. p .. ";"
+		else
+			local _, instanceType = IsInInstance()
+			if IsInRaid() then
+				E:Delay(delay,SendAddonMessage(lib.prefix, m, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "RAID"))
+			elseif IsInGroup() then
+				E:Delay(delay,SendAddonMessage(lib.prefix, m, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "PARTY"))
+			end
+			m = p .. ";"
+			delay = delay + 1
+		end
+	end
+	-- Send the last message
+	local _, instanceType = IsInInstance()
+	if IsInRaid() then
+		E:Delay(delay+1,SendAddonMessage(lib.prefix, m, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "RAID"))
+	elseif IsInGroup() then
+		E:Delay(delay+1,SendAddonMessage(lib.prefix, m, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "PARTY"))
+	end
+end
+
+function E:SendPluginVersionCheck()
+	lib:SendPluginVersionCheck(lib:GenerateVersionCheckMessage())
+	
+	if E["ElvUIPluginSendMSGTimer"] then
+		E:CancelTimer(E["ElvUIPluginSendMSGTimer"])
+		E["ElvUIPluginSendMSGTimer"] = nil
+	end
 end
 
 lib:RegisterPlugin(MAJOR, lib.GetPluginOptions)
