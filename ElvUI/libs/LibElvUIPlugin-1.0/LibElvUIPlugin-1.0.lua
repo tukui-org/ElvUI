@@ -1,5 +1,3 @@
-if not ElvUI then return end
-
 local MAJOR, MINOR = "LibElvUIPlugin-1.0", 12
 local lib, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
@@ -12,9 +10,6 @@ lib.prefix = "ElvUIPluginVC"
 --
 -- GLOBALS:
 --
-
-local E = ElvUI[1]
-local _
 
 -- MULTI Language Support (Default Language: English)
 local MSG_OUTDATED = "Your version of %s is out of date (latest is version %d). You can download the latest version from http://www.tukui.org"
@@ -82,7 +77,7 @@ function lib:RegisterPlugin(name,callback)
 	else
 		-- Need to update plugins list
 		if name ~= MAJOR then
-			E.Options.args.plugins.args.plugins.name = lib:GeneratePluginList()
+			ElvUI[1].Options.args.plugins.args.plugins.name = lib:GeneratePluginList()
 		end
 		callback()
 	end
@@ -91,7 +86,7 @@ function lib:RegisterPlugin(name,callback)
 end
 
 function lib:GetPluginOptions()
-	E.Options.args.plugins = {
+	ElvUI[1].Options.args.plugins = {
         order = 10000,
         type = "group",
         name = HDR_CONFIG,
@@ -121,7 +116,17 @@ function lib:GenerateVersionCheckMessage()
 	return list
 end
 
+local function SendPluginVersionCheck(self)
+	lib:SendPluginVersionCheck(lib:GenerateVersionCheckMessage())
+	
+	if self["ElvUIPluginSendMSGTimer"] then
+		self:CancelTimer(self["ElvUIPluginSendMSGTimer"])
+		self["ElvUIPluginSendMSGTimer"] = nil
+	end
+end
+
 function lib:VersionCheck(event, prefix, message, channel, sender)
+	local E = ElvUI[1]
 	if event == "CHAT_MSG_ADDON" then
 		if sender == E.myname or not sender or prefix ~= lib.prefix then return end
 		if not E["pluginRecievedOutOfDateMessage"] then
@@ -140,12 +145,14 @@ function lib:VersionCheck(event, prefix, message, channel, sender)
 			end
 		end
 	else
+		E.SendPluginVersionCheck = E.SendPluginVersionCheck or SendPluginVersionCheck
 		E["ElvUIPluginSendMSGTimer"] = E:ScheduleTimer("SendPluginVersionCheck", 2)
 	end 
 end
 
 function lib:GeneratePluginList()
-	list = ""
+	local list = ""
+	local E = ElvUI[1]
 	for _, plugin in pairs(lib.plugins) do
 		if plugin.name ~= MAJOR then
 			local author = GetAddOnMetadata(plugin.name, "Author")
@@ -169,6 +176,7 @@ function lib:SendPluginVersionCheck(message)
 	local plist = {strsplit(";",message)}
 	local m = ""
 	local delay = 1
+	local E = ElvUI[1]
 	for _, p in pairs(plist) do
 		if(#(m .. p .. ";") < 230) then
 			m = m .. p .. ";"
@@ -189,15 +197,6 @@ function lib:SendPluginVersionCheck(message)
 		E:Delay(delay+1,SendAddonMessage(lib.prefix, m, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "RAID"))
 	elseif IsInGroup() then
 		E:Delay(delay+1,SendAddonMessage(lib.prefix, m, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "PARTY"))
-	end
-end
-
-function E:SendPluginVersionCheck()
-	lib:SendPluginVersionCheck(lib:GenerateVersionCheckMessage())
-	
-	if E["ElvUIPluginSendMSGTimer"] then
-		E:CancelTimer(E["ElvUIPluginSendMSGTimer"])
-		E["ElvUIPluginSendMSGTimer"] = nil
 	end
 end
 
