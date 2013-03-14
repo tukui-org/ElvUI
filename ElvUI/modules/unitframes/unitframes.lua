@@ -182,6 +182,7 @@ function UF:ConvertGroupDB(group)
 end
 
 local function DelayedUpdate(group)
+	if InCombatLockdown() then return end
 	group:Show()
 end
 
