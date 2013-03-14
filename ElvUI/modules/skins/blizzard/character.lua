@@ -263,8 +263,8 @@ local function LoadSkin()
 						local region = select(i, tab:GetRegions())
 						region:SetTexCoord(0.16, 0.86, 0.16, 0.86)
 						hooksecurefunc(region, "SetTexCoord", function(self, x1, y1, x2, y2)
-							if x1 ~= 0.16 then
-								self:SetTexCoord(0.16, 0.86, 0.16, 0.86)
+							if x1 ~= 0.16001 then
+								self:SetTexCoord(0.16001, 0.86, 0.16, 0.86)
 							end
 						end)
 					end
