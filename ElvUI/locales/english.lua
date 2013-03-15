@@ -5,7 +5,7 @@ local L = AceLocale:NewLocale("ElvUI", "enUS", true, true);
 if not L then return; end
 
 --TEMP
-L["A taint has occured that is preventing you from using your talents/glyphs. Please reload your user interface and try again."] = true;
+L["A taint has occured that is preventing you from using the queue system. Please reload your user interface and try again."] = true;
 
 --Distributor
 L["This feature will allow you to transfer, settings to other characters."] = true;
@@ -768,6 +768,7 @@ L['You can use the /resetui command to reset all of your movers. You can also us
 L['ABOVE_THREAT_FORMAT'] = '%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]'
 
 --UnitFrames
+L['Model Rotation'] = true;
 L['Start from Center'] = true;
 L['The initial group will start near the center and grow out. Corrosponding groups will behave normally.'] = true;
 L['Display Target'] = true;

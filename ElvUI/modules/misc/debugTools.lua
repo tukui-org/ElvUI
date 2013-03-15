@@ -124,15 +124,14 @@ function D:PLAYER_REGEN_DISABLED()
 end
 
 function D:TaintError(event, addonName, addonFunc)
-	local inInstance, instanceType = IsInInstance();
-	if PlayerTalentFrame and PlayerTalentFrame:IsShown() then
+	if PVPQueueFrame and PVPQueueFrame:IsShown() then
 		for i = 1, 4, 1 do
 			if _G['StaticPopup'..i] then
 				_G['StaticPopup'..i]:Hide()
 			end
 		end
 		
-		E:StaticPopup_Show('TALENT_TAINT')
+		E:StaticPopup_Show('QUEUE_TAINT')
 	end
 	
 	if GetCVarBool('scriptErrors') ~= 1 or E.db.general.taintLog ~= true then return end

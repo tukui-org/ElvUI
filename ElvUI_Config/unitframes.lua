@@ -1036,18 +1036,24 @@ local function GetOptionsTable_Portrait(updateFunc, groupName, numUnits)
 				desc = L['Overlay the healthbar'],
 				order = 3,
 			},
+			rotation = {
+				type = 'range',
+				name = L['Model Rotation'],
+				order = 4,
+				min = 0, max = 360, step = 1,
+			},
 			camDistanceScale = {
 				type = 'range',
 				name = L['Camera Distance Scale'],
 				desc = L['How far away the portrait is from the camera.'],
-				order = 4,
+				order = 5,
 				min = 0.01, max = 4, step = 0.01,
 			},
 			style = {
 				type = 'select',
 				name = L['Style'],
 				desc = L['Select the display method of the portrait.'],
-				order = 5,
+				order = 6,
 				values = {
 					['2D'] = L['2D'],
 					['3D'] = L['3D'],
