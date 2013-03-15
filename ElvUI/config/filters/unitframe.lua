@@ -682,5 +682,4 @@ G.unitframe.AuraBarColors = {
 
 G.unitframe.InvalidSpells = {
 	[65148] = true, --Sacred Shield
-	[30108] = true, --Unstable Affliction	
 }
