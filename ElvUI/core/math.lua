@@ -268,35 +268,31 @@ function E:GetTimeInfo(s, threshhold)
 	end
 end
 
-local canCalculate, distance
-local unit1Pos, unit2Pos, unitCoords = {}, {}, {}
 local ninetyDegreeAngleInRadians = (3.141592653589793 / 2) 
-
 local function GetPosition(unit)
+	local m, f, x, y
 	if unit == "player" or UnitIsUnit("player", unit) then
-		--print(Astrolabe:GetCurrentPlayerPosition())
-		unitCoords = {Astrolabe:GetCurrentPlayerPosition()}
+		m, f, x, y = Astrolabe:GetCurrentPlayerPosition()
 	else
-
-		unitCoords = {Astrolabe:GetUnitPosition(unit, false)}
+		m, f, x, y = Astrolabe:GetUnitPosition(unit, false)
 	end
 
-	if not (unitCoords[1] and unitCoords[4]) then
+	if not (m and y) then
 		return false
 	else
-		return true, unitCoords
+		return true, m, f, x, y
 	end
 end
 
 function E:GetDistance(unit1, unit2)
-	canCalculate, unit1Pos = GetPosition(unit1)
+	local canCalculate, m1, f1, x1, y1 = GetPosition(unit1)
 
 	if not canCalculate then return end
 
-	canCalculate, unit2Pos = GetPosition(unit2)
+	local canCalculate, m2, f2, x2, y2 = GetPosition(unit2)
 
 	if not canCalculate then return end
 
-	distance = {Astrolabe:ComputeDistance(unit1Pos[1], unit1Pos[2], unit1Pos[3], unit1Pos[4], unit2Pos[1], unit2Pos[2], unit2Pos[3], unit2Pos[4])}
-	return distance[1], -ninetyDegreeAngleInRadians -GetPlayerFacing() - atan2(distance[3], distance[2]) 
+	local distance, xDelta, yDelta = Astrolabe:ComputeDistance(m1, f1, x1, y1, m2, f2, x2, y2)
+	return distance, -ninetyDegreeAngleInRadians -GetPlayerFacing() - atan2(yDelta, xDelta) 
 end
