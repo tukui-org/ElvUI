@@ -1,15 +1,15 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 
-local MapData = LibStub("LibMapData-1.0")
+local Astrolabe = DongleStub("Astrolabe-1.0") 
 local format = string.format
 local sub = string.sub
 local upper = string.upper
 
+local atan2 = math.atan2
 local modf = math.modf
 local ceil = math.ceil
 local floor = math.floor
-local mapFile, mapFloor
 
 --Return short value of a number
 function E:ShortValue(v)
@@ -268,13 +268,35 @@ function E:GetTimeInfo(s, threshhold)
 	end
 end
 
-MapData:RegisterCallback("MapChanged", function (event, map, floor, w, h)
-	mapFile = map
-	mapFloor = floor
-end)
+local canCalculate, distance
+local unit1Pos, unit2Pos, unitCoords = {}, {}, {}
+local ninetyDegreeAngleInRadians = (3.141592653589793 / 2) 
 
-function E:GetDistance(x1, y1, x2, y2)
-	if (x1 == 0 and y1 == 0) or (x2 == 0 and y2 == 0) then return end
-	
-	return MapData:Distance(mapFile, mapFloor, x1, y1, x2, y2)
+local function GetPosition(unit)
+	if unit == "player" or UnitIsUnit("player", unit) then
+		--print(Astrolabe:GetCurrentPlayerPosition())
+		unitCoords = {Astrolabe:GetCurrentPlayerPosition()}
+	else
+
+		unitCoords = {Astrolabe:GetUnitPosition(unit, false)}
+	end
+
+	if not (unitCoords[1] and unitCoords[4]) then
+		return false
+	else
+		return true, unitCoords
+	end
+end
+
+function E:GetDistance(unit1, unit2)
+	canCalculate, unit1Pos = GetPosition(unit1)
+
+	if not canCalculate then return end
+
+	canCalculate, unit2Pos = GetPosition(unit2)
+
+	if not canCalculate then return end
+
+	distance = {Astrolabe:ComputeDistance(unit1Pos[1], unit1Pos[2], unit1Pos[3], unit1Pos[4], unit2Pos[1], unit2Pos[2], unit2Pos[3], unit2Pos[4])}
+	return distance[1], -ninetyDegreeAngleInRadians -GetPlayerFacing() - atan2(distance[3], distance[2]) 
 end
