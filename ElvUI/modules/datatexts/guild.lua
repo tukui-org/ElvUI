@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
 -- localized references for global functions (about 50% faster)
@@ -59,7 +59,7 @@ local mobilestatus = {
 local function BuildGuildTable()
 	wipe(guildTable)
 	local statusInfo
-	local name, rank, level, zone, note, officernote, connected, memberstatus, class, isMobile
+	local _, name, rank, level, zone, note, officernote, connected, memberstatus, class, isMobile
 
 	for i = 1, GetNumGuildMembers() do
 		name, rank, rankIndex, level, _, zone, note, officernote, connected, memberstatus, class, _, _, isMobile = GetGuildRosterInfo(i)

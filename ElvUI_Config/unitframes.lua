@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 local _, ns = ...
 local ElvUF = ns.oUF
@@ -1755,7 +1755,40 @@ E.Options.args.unitframe = {
 									end,	
 								},								
 							},
-						},							
+						},
+						healPrediction = {
+							order = 10,
+							name = L['Heal Prediction'],
+							type = 'group',
+							get = function(info)
+								local t = E.db.unitframe.colors.healPrediction[ info[#info] ]
+								return t.r, t.g, t.b, t.a
+							end,
+							set = function(info, r, g, b, a)
+								local t = E.db.unitframe.colors.healPrediction[ info[#info] ]
+								t.r, t.g, t.b, t.a = r, g, b, a
+								UF:Update_AllFrames()
+							end,	
+							args = {
+								personal = {
+									order = 1,
+									name = L["Personal"],
+									type = 'color',
+									hasAlpha = true,
+								},
+								others = {
+									order = 2,
+									name = L["Others"],
+									type = 'color',
+									hasAlpha = true,								},
+								absorbs = {
+									order = 2,
+									name = L["Absorbs"],
+									type = 'color',
+									hasAlpha = true,	
+								}
+							},
+						},
 					},
 				},
 			},

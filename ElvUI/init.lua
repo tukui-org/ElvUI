@@ -3,11 +3,11 @@
 
 To load the AddOn engine add this to the top of your file:
 	
-	local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+	local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 	
 To load the AddOn engine inside another addon add this to the top of your file:
 	
-	local E, L, V, P, G, _ = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+	local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 ]]
 
 BINDING_HEADER_ELVUI = GetAddOnMetadata(..., "Title");
@@ -41,7 +41,7 @@ function AddOn:OnInitialize()
 	ElvCharacterData = nil; --Depreciated
 	ElvPrivateData = nil; --Depreciated
 	ElvData = nil; --Depreciated
-	
+
 	self.db = tcopy(self.DF.profile, true);
 	self.global = tcopy(self.DF.global, true);
 	if ElvDB then
@@ -154,6 +154,7 @@ function AddOn:ToggleConfig()
 	end
 	
 	local ACD = LibStub("AceConfigDialog-3.0")
+
 	local mode = 'Close'
 	if not ACD.OpenFrames[AddOnName] then
 		mode = 'Open'

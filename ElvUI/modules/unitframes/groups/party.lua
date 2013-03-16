@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
 local _, ns = ...
@@ -482,7 +482,7 @@ function UF:Update_PartyFrames(frame, db)
 		--OverHealing
 		do
 			local healPrediction = frame.HealPrediction
-			
+			local c = UF.db.colors.healPrediction
 			if db.healPrediction then
 				if not frame:IsElementEnabled('HealPrediction') then
 					frame:EnableElement('HealPrediction')
@@ -491,6 +491,10 @@ function UF:Update_PartyFrames(frame, db)
 				healPrediction.myBar:SetOrientation(db.health.orientation)
 				healPrediction.otherBar:SetOrientation(db.health.orientation)
 				healPrediction.absorbBar:SetOrientation(db.health.orientation)
+
+				healPrediction.myBar:SetStatusBarColor(c.personal.r, c.personal.g, c.personal.b, c.personal.a)
+				healPrediction.otherBar:SetStatusBarColor(c.others.r, c.others.g, c.others.b, c.others.a)
+				healPrediction.absorbBar:SetStatusBarColor(c.absorbs.r, c.absorbs.g, c.absorbs.b, c.absorbs.a)				
 			else
 				if frame:IsElementEnabled('HealPrediction') then
 					frame:DisableElement('HealPrediction')
