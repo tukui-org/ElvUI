@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
 local format = string.format
@@ -22,7 +22,7 @@ local curHr, curMin, curAmPm
 local enteredFrame = false;
 
 local Update, lastPanel; -- UpValue
-local localizedName, isActive, canQueue, startTime, canEnter
+local localizedName, isActive, canQueue, startTime, canEnter, _
 local name, reset, locked, extended, isRaid, maxPlayers, difficulty, numEncounters, encounterProgress
 local quests = {}
 local updateQuestTable = false
