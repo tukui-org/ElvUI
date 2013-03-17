@@ -9,7 +9,8 @@ local calendar_string = gsub(SLASH_CALENDAR1, "/", "")
 calendar_string = gsub(calendar_string, "^%l", upper)
 
 
-local menuFrame = CreateFrame("Frame", "MinimapRightClickMenu", E.UIParent, "UIDropDownMenuTemplate")
+local menuFrame = CreateFrame("Frame", "MinimapRightClickMenu", E.UIParent)
+
 local menuList = {
 	{text = CHARACTER_BUTTON,
 	func = function() ToggleCharacter("PaperDollFrame") end},
@@ -49,7 +50,7 @@ local menuList = {
 	func = function()
 		if not PVPUIFrame then
 			PVP_LoadUI()
-		end
+		end	
 		ToggleFrame(PVPUIFrame) 
 	end},
 	{text = ACHIEVEMENTS_GUILD_TAB,
@@ -67,7 +68,7 @@ local menuList = {
 	func = function() PVEFrame_ToggleFrame(); end},
 	{text = ENCOUNTER_JOURNAL, 
 	func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then EncounterJournal_LoadUI(); end ToggleFrame(EncounterJournal) end},	
-	{text = L_CALENDAR,
+	{text = L['Calendar'],
 	func = function()
 	if(not CalendarFrame) then Calendar_LoadUI() end
 		Calendar_Toggle()
@@ -112,9 +113,9 @@ function M:Minimap_OnMouseUp(btn)
 	local position = self:GetPoint()
 	if btn == "MiddleButton" or (btn == "RightButton" and IsShiftKeyDown()) then
 		if position:match("LEFT") then
-			EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
+			E:DropDown(menuList, menuFrame)
 		else
-			EasyMenu(menuList, menuFrame, "cursor", -160, 0, "MENU", 2)
+			E:DropDown(menuList, menuFrame, -160, 0)
 		end	
 	elseif btn == "RightButton" then
 		local xoff = -1
@@ -233,6 +234,7 @@ function M:UpdateSettings()
 end
 
 function M:Initialize()	
+	menuFrame:SetTemplate("Transparent", true)
 	self:UpdateSettings()
 	if not E.private.general.minimap.enable then 
 		Minimap:SetMaskTexture('Textures\\MinimapMask')

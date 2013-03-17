@@ -522,6 +522,7 @@ L["This texture will get used on objects like chat windows and dropdown menus."]
 L["Value Color"] = true;
 
 --Misc
+L['Calendar'] = true;
 L["Can't Roll"] = true;
 L["Empty Slot"] = true;
 L["Enable"] = true; --Doesn't fit a section since it's used a lot of places
