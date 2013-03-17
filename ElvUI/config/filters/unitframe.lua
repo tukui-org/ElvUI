@@ -437,6 +437,8 @@ G.unitframe.aurafilters['Whitelist'] = {
 		[SpellName(33206)] = Defaults(), --Pain Suppression
 		[SpellName(116849)] = Defaults(), --Life Cocoon
 		[SpellName(22812)] = Defaults(), --Barkskin
+		[SpellName(123059)] = Defaults(), --Destabilize (Amber-Shaper Un'sok)
+		[SpellName(136431)] = Defaults(), --Shell Concussion (Tortos)
 	},
 }
 
