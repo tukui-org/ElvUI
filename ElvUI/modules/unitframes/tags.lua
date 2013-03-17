@@ -456,7 +456,6 @@ ElvUF.Tags.Methods['incomingheals'] = function(unit)
 	end
 end
 
-local MapData = LibStub("LibMapData-1.0")
 local GroupUnits = {}
 local f = CreateFrame("Frame")
 
@@ -505,14 +504,11 @@ ElvUF.Tags.Methods['nearbyplayers'] = function(unit)
 end
 
 ElvUF.Tags.Methods['nearbyplayers:8'] = function(unit)
-	local px, py, tx, ty, d
-	px, py = GetPlayerMapPosition(unit)
-	local unitsInRange = 0
+	local unitsInRange, d = 0
 	if UnitIsConnected(unit) then
 		for groupUnit, _ in pairs(GroupUnits) do
 			if not UnitIsUnit(unit, groupUnit) and UnitIsConnected(groupUnit) then
-				tx, ty = GetPlayerMapPosition(groupUnit)
-				d = E:GetDistance(px, py, tx, ty)
+				d = E:GetDistance(unit, groupUnit)
 				if d and d <= 8 then
 					unitsInRange = unitsInRange + 1
 				end
@@ -524,14 +520,11 @@ ElvUF.Tags.Methods['nearbyplayers:8'] = function(unit)
 end
 
 ElvUF.Tags.Methods['nearbyplayers:10'] = function(unit)
-	local px, py, tx, ty, d
-	px, py = GetPlayerMapPosition(unit)
-	local unitsInRange = 0
+	local unitsInRange, d = 0
 	if UnitIsConnected(unit) then
 		for groupUnit, _ in pairs(GroupUnits) do
 			if not UnitIsUnit(unit, groupUnit) and UnitIsConnected(groupUnit) then
-				tx, ty = GetPlayerMapPosition(groupUnit)
-				d = E:GetDistance(px, py, tx, ty)
+				d = E:GetDistance(unit, groupUnit)
 				if d and d <= 10 then
 					unitsInRange = unitsInRange + 1
 				end
@@ -543,14 +536,11 @@ ElvUF.Tags.Methods['nearbyplayers:10'] = function(unit)
 end
 
 ElvUF.Tags.Methods['nearbyplayers:30'] = function(unit)
-	local px, py, tx, ty, d
-	px, py = GetPlayerMapPosition(unit)
-	local unitsInRange = 0
+	local unitsInRange, d = 0
 	if UnitIsConnected(unit) then
 		for groupUnit, _ in pairs(GroupUnits) do
 			if not UnitIsUnit(unit, groupUnit) and UnitIsConnected(groupUnit) then
-				tx, ty = GetPlayerMapPosition(groupUnit)
-				d = E:GetDistance(px, py, tx, ty)
+				d = E:GetDistance(unit, groupUnit)
 				if d and d <= 30 then
 					unitsInRange = unitsInRange + 1
 				end
@@ -562,12 +552,10 @@ ElvUF.Tags.Methods['nearbyplayers:30'] = function(unit)
 end
 
 ElvUF.Tags.Methods['distance'] = function(unit)
-	local px, py, tx, ty, d
-	px, py = GetPlayerMapPosition('player')
-
+	local d
 	if UnitIsConnected(unit) and not UnitIsUnit(unit, 'player') then
-		tx, ty = GetPlayerMapPosition(unit)
-		d = E:GetDistance(px, py, tx, ty)
+		d = E:GetDistance('player', unit)
+
 		if d then
 			d = format("%.1f", d)
 		end

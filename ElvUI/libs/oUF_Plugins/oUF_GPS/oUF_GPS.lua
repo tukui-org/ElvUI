@@ -4,16 +4,8 @@ assert(oUF, 'oUF not loaded')
 
 --Credit: Omega1970
 
-local atan2, cos, sin, sqrt2 = math.atan2, math.cos, math.sin, math.sqrt(2)
+local cos, sin, sqrt2 = math.cos, math.sin, math.sqrt(2)
 
-local function GetBearing(unit)
-  local tx, ty = GetPlayerMapPosition(unit)
-  if tx == 0 and ty == 0 then
-    return 999
-  end
-  local px, py = GetPlayerMapPosition("player")
-  return -GetPlayerFacing() - atan2(tx - px, py - ty), px, py, tx, ty
-end
 
 local function CalculateCorner(r)
 	return 0.5 + cos(r) / sqrt2, 0.5 + sin(r) / sqrt2;
@@ -46,8 +38,8 @@ local Update = function(self, elapsed)
 			return
 		end
 
-		local angle, px, py, tx, ty = GetBearing(unit)
-		if angle == 999 then
+		local _, angle = ElvUI[1]:GetDistance("player", unit)
+		if not angle then
 			GPS:Hide()
 			return
 		end

@@ -123,17 +123,7 @@ function D:PLAYER_REGEN_DISABLED()
 	ScriptErrorsFrame:SetParent(self.HideFrame)
 end
 
-function D:TaintError(event, addonName, addonFunc)
-	if PVPQueueFrame and PVPQueueFrame:IsShown() then
-		for i = 1, 4, 1 do
-			if _G['StaticPopup'..i] then
-				_G['StaticPopup'..i]:Hide()
-			end
-		end
-		
-		E:StaticPopup_Show('QUEUE_TAINT')
-	end
-	
+function D:TaintError(event, addonName, addonFunc)	
 	if GetCVarBool('scriptErrors') ~= 1 or E.db.general.taintLog ~= true then return end
 	ScriptErrorsFrame_OnError(L["%s: %s tried to call the protected function '%s'."]:format(event, addonName or "<name>", addonFunc or "<func>"), false)
 end
