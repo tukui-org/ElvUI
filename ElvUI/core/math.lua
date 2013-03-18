@@ -282,7 +282,7 @@ local function GetPosition(unit)
 	if unit == "player" or UnitIsUnit("player", unit) then
 		m, f, x, y = Astrolabe:GetCurrentPlayerPosition()
 	else
-		m, f, x, y = Astrolabe:GetUnitPosition(unit, false)
+		m, f, x, y = Astrolabe:GetUnitPosition(unit, true)
 	end
 
 	if not (m and y) then
@@ -302,5 +302,9 @@ function E:GetDistance(unit1, unit2)
 	if not canCalculate then return end
 
 	local distance, xDelta, yDelta = Astrolabe:ComputeDistance(m1, f1, x1, y1, m2, f2, x2, y2)
-	return distance, -ninetyDegreeAngleInRadians -GetPlayerFacing() - atan2(yDelta, xDelta) 
+	if distance and xDelta and yDelta then
+		return distance, -ninetyDegreeAngleInRadians -GetPlayerFacing() - atan2(yDelta, xDelta) 
+	elseif distance then
+		return distance
+	end
 end

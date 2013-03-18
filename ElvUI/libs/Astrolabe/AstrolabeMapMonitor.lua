@@ -1,7 +1,7 @@
 --[[
 Name: AstrolabeMapMonitor
-Revision: $Rev: 44 $
-$Date: 2007-03-30 11:56:21 -0700 (Fri, 30 Mar 2007) $
+Revision: $Rev$
+$Date$
 Author(s): Esamynn (esamynn@wowinterface.com)
 Inspired By: Gatherer by Norganna
              MapLibrary by Kristofer Karlsson (krka@kth.se)
@@ -43,7 +43,7 @@ Note:
 -- DO NOT MAKE CHANGES TO THIS LIBRARY WITHOUT FIRST CHANGING THE LIBRARY_VERSION_MAJOR
 -- STRING (to something unique) OR ELSE YOU MAY BREAK OTHER ADDONS THAT USE THIS LIBRARY!!!
 local LIBRARY_VERSION_MAJOR = "AstrolabeMapMonitor"
-local LIBRARY_VERSION_MINOR = tonumber(string.match("$Revision: 44 $", "(%d+)") or 1)
+local LIBRARY_VERSION_MINOR = tonumber(string.match("$Revision$", "(%d+)") or 1)
 
 if not DongleStub then error(LIBRARY_VERSION_MAJOR .. " requires DongleStub.") end
 if not DongleStub:IsNewerVersion(LIBRARY_VERSION_MAJOR, LIBRARY_VERSION_MINOR) then return end
