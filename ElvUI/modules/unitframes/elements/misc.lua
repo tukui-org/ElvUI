@@ -433,7 +433,7 @@ function UF:UpdateAuraWatch(frame)
 				icon.onlyShowMissing = buffs[i].onlyShowMissing;
 				icon.presentAlpha = icon.onlyShowMissing and 0 or 1;
 				icon.missingAlpha = icon.onlyShowMissing and 1 or 0;
-				icon.textThreshold = buffs[i].textThreshold
+				icon.textThreshold = buffs[i].textThreshold or -1
 				icon.displayText = buffs[i].displayText
 				
 				icon:Width(db.size);
