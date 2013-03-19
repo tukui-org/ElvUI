@@ -20,53 +20,59 @@ function M:SkinBubble(frame)
 		end
 	end
 
-	if E.PixelMode then
-		frame:SetBackdrop({
-		  bgFile = E["media"].blankTex, 
-		  edgeFile = E["media"].blankTex, 
-		  tile = false, tileSize = 0, edgeSize = mult, 
-		  insets = { left = 0, right = 0, top = 0, bottom = 0}
-		})	
-	else
-		frame:SetBackdrop({
-		  bgFile = E["media"].blankTex, 
-		  edgeFile = E["media"].blankTex, 
-		  tile = false, tileSize = 0, edgeSize = mult, 
-		  insets = { left = -mult, right = -mult, top = -mult, bottom = -mult}
-		})
+	if E.private.general.chatBubbles == 'backdrop' then
+		if E.PixelMode then
+			frame:SetBackdrop({
+			  bgFile = E["media"].blankTex, 
+			  edgeFile = E["media"].blankTex, 
+			  tile = false, tileSize = 0, edgeSize = mult, 
+			  insets = { left = 0, right = 0, top = 0, bottom = 0}
+			})	
+		else
+			frame:SetBackdrop({
+			  bgFile = E["media"].blankTex, 
+			  edgeFile = E["media"].blankTex, 
+			  tile = false, tileSize = 0, edgeSize = mult, 
+			  insets = { left = -mult, right = -mult, top = -mult, bottom = -mult}
+			})
+		end
+
+		frame:SetBackdropColor(unpack(E.media.backdropfadecolor))
+		
+		if not frame.oborder and not frame.iborder and not E.PixelMode then
+			local border = CreateFrame("Frame", nil, frame)
+			border:SetInside(frame, mult, mult)
+			border:SetBackdrop({
+				edgeFile = E["media"].blankTex, 
+				edgeSize = mult, 
+				insets = { left = mult, right = mult, top = mult, bottom = mult }
+			})
+			border:SetBackdropBorderColor(0, 0, 0, 1)
+			frame.iborder = border
+
+			border = CreateFrame("Frame", nil, frame)
+			border:SetOutside(frame, mult, mult)
+			border:SetFrameLevel(frame:GetFrameLevel() + 1)
+			border:SetBackdrop({
+				edgeFile = E["media"].blankTex, 
+				edgeSize = mult, 
+				insets = { left = mult, right = mult, top = mult, bottom = mult }
+			})
+			border:SetBackdropBorderColor(0, 0, 0, 1)
+			frame.oborder = border				
+		end
+
+		frame:SetBackdropBorderColor(frame.text:GetTextColor())
+		frame.text:FontTemplate(nil, 14)
+
+		frame:SetClampedToScreen(false)
+		frame:HookScript('OnShow', M.UpdateBubbleBorder)
+	elseif E.private.general.chatBubbles == 'nobackdrop' then
+		frame:SetBackdrop(nil)
+		frame.text:FontTemplate(nil, 14)
+		frame:SetClampedToScreen(false)
 	end
-
-	frame:SetBackdropColor(unpack(E.media.backdropfadecolor))
-	
-	if not frame.oborder and not frame.iborder and not E.PixelMode then
-		local border = CreateFrame("Frame", nil, frame)
-		border:SetInside(frame, mult, mult)
-		border:SetBackdrop({
-			edgeFile = E["media"].blankTex, 
-			edgeSize = mult, 
-			insets = { left = mult, right = mult, top = mult, bottom = mult }
-		})
-		border:SetBackdropBorderColor(0, 0, 0, 1)
-		frame.iborder = border
-
-		border = CreateFrame("Frame", nil, frame)
-		border:SetOutside(frame, mult, mult)
-		border:SetFrameLevel(frame:GetFrameLevel() + 1)
-		border:SetBackdrop({
-			edgeFile = E["media"].blankTex, 
-			edgeSize = mult, 
-			insets = { left = mult, right = mult, top = mult, bottom = mult }
-		})
-		border:SetBackdropBorderColor(0, 0, 0, 1)
-		frame.oborder = border				
-	end
-
-	frame:SetBackdropBorderColor(frame.text:GetTextColor())
-	frame.text:FontTemplate(nil, 14)
-
-	frame:SetClampedToScreen(false)
 	frame.isBubblePowered = true
-	frame:HookScript('OnShow', M.UpdateBubbleBorder)
 end
 
 function M:IsChatBubble(frame)
@@ -85,7 +91,12 @@ function M:HookBubbles(...)
 end
 
 function M:LoadChatBubbles()
-	if not E.private.general.bubbles then return end
+	if E.private.general.bubbles == false then
+		E.private.general.chatBubbles = 'disabled'
+		E.private.general.bubbles = nil
+	end
+	
+	if E.private.general.chatBubbles == 'disabled' then return end
 	
 	local frame = CreateFrame('Frame')
 	frame.lastupdate = -2 -- wait 2 seconds before hooking frames

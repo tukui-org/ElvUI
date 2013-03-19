@@ -110,14 +110,27 @@ E.Options.args.general = {
 					isPercent = true,
 					min = 0, max = 1, step = 0.01,
 				},		
-				autoAcceptInvite = {
+				chatBubbles = {
 					order = 5,
+					type = "select",
+					name = L['Chat Bubbles Style'],
+					desc = L['Skin the blizzard chat bubbles.'],
+					get = function(info) return E.private.general.chatBubbles end,
+					set = function(info, value) E.private.general.chatBubbles = value; E:StaticPopup_Show("PRIVATE_RL") end,
+					values = {
+						['backdrop'] = L['Skin Backdrop'],
+						['nobackdrop'] = L['Remove Backdrop'],
+						['disabled'] = L['Disabled']
+					}
+				},					
+				autoAcceptInvite = {
+					order = 6,
 					name = L['Accept Invites'],
 					desc = L['Automatically accept invites from guild/friends.'],
 					type = 'toggle',
 				},
 				vendorGrays = {
-					order = 6,
+					order = 7,
 					name = L['Vendor Grays'],
 					desc = L['Automatically vendor gray items when visiting a vendor.'],
 					type = 'toggle',				
@@ -154,14 +167,7 @@ E.Options.args.general = {
 					set = function(info, value) E.global.general[ info[#info] ] = value; E:StaticPopup_Show("GLOBAL_RL") end
 				},	
 
-				bubbles = {
-					order = 12,
-					type = "toggle",
-					name = L['Chat Bubbles'],
-					desc = L['Skin the blizzard chat bubbles.'],
-					get = function(info) return E.private.general.bubbles end,
-					set = function(info, value) E.private.general.bubbles = value; E:StaticPopup_Show("PRIVATE_RL") end
-				},	
+
 				taintLog = {
 					order = 13,
 					type = "toggle",
