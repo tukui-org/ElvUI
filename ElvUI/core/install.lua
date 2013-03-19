@@ -139,6 +139,8 @@ local function SetupChat()
 end
 
 local function SetupCVars()
+	SetCVar("alternateResourceText", 1)
+	SetCVar("statusTextDisplay", "BOTH")
 	SetCVar("scriptErrors", 1)
 	SetCVar("buffDurations", 1)
 	SetCVar("consolidateBuffs", 0)

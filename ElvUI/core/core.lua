@@ -67,7 +67,8 @@ E.DispelClasses = {
 	['DRUID'] = {
 		['Magic'] = false,
 		['Curse'] = true,
-		['Poison'] = true
+		['Poison'] = true,
+		['Disease'] = false,
 	},
 	['MONK'] = {
 		['Magic'] = false,
@@ -318,6 +319,14 @@ end
 function E:IsDispellableByMe(debuffType)
 	if not self.DispelClasses[self.myclass] then return; end
 	
+	if self.myclass == "DRUID" then
+		if IsUsableSpell(110806) then
+			self.DispelClasses["DRUID"].Disease = true
+		else
+			self.DispelClasses["DRUID"].Disease = false
+		end
+	end
+
 	if self.DispelClasses[self.myclass][debuffType] then
 		return true;
 	end

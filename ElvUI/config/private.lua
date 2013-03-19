@@ -9,7 +9,7 @@ V['general'] = {
 	["glossTex"] = "Minimalist",	
 	["dmgfont"] = "ElvUI Combat",
 	["namefont"] = "Friz Quadrata TT",
-	['bubbles'] = true,
+	['bubbles'] = 'backdrop',
 	['pixelPerfect'] = false,
 
 	['minimap'] = {

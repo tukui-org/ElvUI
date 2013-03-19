@@ -451,6 +451,9 @@ L["No locals to dump"] = true;
 L['|cFFE30000Lua error recieved. You can view the error message when you exit combat.'] = true;
 
 --General
+L['Skin Backdrop'] = true;
+L['Remove Backdrop'] = true;
+
 L["Accept Invites"] = true;
 L['Adjust the position of the threat bar to either the left or right datatext panels.'] = true;
 L['Adjust the size of the minimap.'] = true;
@@ -465,7 +468,7 @@ L["Automatically scale the User Interface based on your screen resolution"] = tr
 L['Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level.'] = true;
 L["Automatically vendor gray items when visiting a vendor."] = true;
 L['Bottom Panel'] = true;
-L["Chat Bubbles"] = true;
+L['Chat Bubbles Style'] = true;
 L["Controls what the transparency of the worldmap will be set to when you are moving."] = true;
 L["Disband Group"] = true;
 L['Display a panel across the bottom of the screen. This is for cosmetic only.'] = true;
@@ -569,6 +572,9 @@ L["Watch Frame"] = true;
 L["Weapons"] = true;
 
 --NamePlates
+L["Name X-Offset"] = true;
+L["Name Y-Offset"] = true;
+L['Name Alignment'] = true;
 L['Configure Selected Filter'] = true;
 L["Tagged Color"] = true;
 L["Color of a nameplate that is tagged by another person."] = true;
