@@ -10,7 +10,7 @@ local CanDispel = {
 	SHAMAN = { Magic = false, Curse = true },
 	PALADIN = { Magic = false, Poison = true, Disease = true },
 	MAGE = { Curse = true },
-	DRUID = { Magic = false, Curse = true, Poison = true },
+	DRUID = { Magic = false, Curse = true, Poison = true, Disease = false },
 	MONK = { Magic = false, Poison = true, Disease = true }
 }
 
@@ -81,6 +81,15 @@ end
  
 local function Update(object, event, unit)
 	if unit ~= object.unit then return; end
+
+	if playerClass == "DRUID" then
+		if IsUsableSpell(110806) then
+			dispellist.Disease = true
+		else
+			dispellist.Disease = false
+		end
+	end
+
 	local debuffType, texture  = GetDebuffType(unit, object.DebuffHighlightFilter)
 	if debuffType then
 		local color = DebuffTypeColor[debuffType]
