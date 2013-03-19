@@ -859,6 +859,8 @@ local function LoadSkin()
         -- Mouse
         "MousePanelClickMoveStyleDropDown",
         "LanguagesPanelLocaleDropDown",
+        -- Status Text
+        "StatusTextPanelDisplayDropDown"
     }
     for i = 1, getn(interfacedropdown) do
         local idropdown = _G["InterfaceOptions"..interfacedropdown[i]]
