@@ -572,6 +572,9 @@ L["Watch Frame"] = true;
 L["Weapons"] = true;
 
 --NamePlates
+L["Name X-Offset"] = true;
+L["Name Y-Offset"] = true;
+L['Name Alignment'] = true;
 L['Configure Selected Filter'] = true;
 L["Tagged Color"] = true;
 L["Color of a nameplate that is tagged by another person."] = true;
