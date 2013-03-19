@@ -904,8 +904,9 @@ function NP:CheckFilter(frame, ...)
 end
 
 function NP:CheckBGHealers()
+	local name, _, faction, talentSpec
 	for i = 1, GetNumBattlefieldScores() do
-		local name, _, _, _, _, faction, _, _, _, _, _, _, _, _, _, talentSpec = GetBattlefieldScore(i);
+		name, _, _, _, _, faction, _, _, _, _, _, _, _, _, _, talentSpec = GetBattlefieldScore(i);
 		if name then
 			name = name:match("(.+)%-.+") or name
 			if name and self.HealerSpecs[talentSpec] and self.factionOpposites[self.PlayerFaction] == faction then
