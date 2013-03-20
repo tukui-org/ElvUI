@@ -41,14 +41,17 @@ function UF:PortraitUpdate(unit)
 	
 	if self:GetObjectType() ~= 'Texture' then
 		local model = self:GetModel()
-		if model and model.find and model:find("worgenmale") then
+		if model and model.find and model:find("worgenmale") and self:GetCamera() ~= 1 then
 			self:SetCamera(1)
 		end	
 		
-		self:SetFacing(portrait.rotation / 60)
-		
-		self:SetCamDistanceScale(portrait.camDistanceScale - 0.01 >= 0.01 and portrait.camDistanceScale - 0.01 or 0.01) --Blizzard bug fix
-		self:SetCamDistanceScale(portrait.camDistanceScale)
+		if self:GetFacing() ~= (portrait.rotation / 60) then
+			self:SetFacing(portrait.rotation / 60)
+		end
+
+		if self:GetCamDistanceScale() ~= portrait.camDistanceScale then
+			self:SetCamDistanceScale(portrait.camDistanceScale)
+		end
 	end
 end
 
