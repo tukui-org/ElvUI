@@ -940,7 +940,7 @@ function NP:PLAYER_ENTERING_WORLD()
 	if InCombatLockdown() and self.db.combat then 
 		SetCVar("nameplateShowEnemies", 1) 
 	elseif self.db.combat then
-		SetCVar("nameplateShowEnemies", 0) 
+		SetCVar("nameplateShowEnemies", 0)
 	end
 	
 	self:UpdateRoster()
