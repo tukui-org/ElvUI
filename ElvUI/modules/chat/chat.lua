@@ -215,8 +215,10 @@ function CH:StyleChat(frame)
 	end
 
 	hooksecurefunc(tab, "SetAlpha", function(t, alpha)
-		if alpha ~= 1 then
-			tab:SetAlpha(1)
+		if alpha ~= 1 and (not t.isDocked or GeneralDockManager.selected:GetID() == t:GetID()) then
+			t:SetAlpha(1)
+		elseif alpha < 0.6 then
+			t:SetAlpha(0.6)
 		end
 	end)
 
@@ -484,6 +486,7 @@ function CH:PositionChat(override)
 		tab = _G[format("ChatFrame%sTab", i)]
 		point = GetChatWindowSavedPosition(id)
 		isDocked = chat.isDocked
+		tab.isDocked = chat.isDocked
 		
 		if id > NUM_CHAT_WINDOWS then
 			point = point or select(1, chat:GetPoint());
@@ -704,6 +707,20 @@ function CH:ConcatenateTimeStamp(msg)
 	-- end
 
 	return msg
+end
+
+
+
+local function GetBNFriendColor(name, id)
+	local _, _, game, _, _, _, _, class = BNGetToonInfo(id)
+	if game ~= BNET_CLIENT_WOW or not class then
+		return name
+	else
+		for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
+		for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
+
+		return "|c"..RAID_CLASS_COLORS[class].colorStr..name.."|r"
+	end
 end
 
 function CH:ChatFrame_MessageEventHandler(event, ...)
@@ -1020,6 +1037,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			if ( type ~= "BN_WHISPER" and type ~= "BN_WHISPER_INFORM" and type ~= "BN_CONVERSATION" ) then
 				playerLink = "|Hplayer:"..arg2..":"..arg11..":"..chatGroup..(chatTarget and ":"..chatTarget or "").."|h";
 			else
+				coloredName = GetBNFriendColor(arg2, arg13)
 				playerLink = "|HBNplayer:"..arg2..":"..arg13..":"..arg11..":"..chatGroup..(chatTarget and ":"..chatTarget or "").."|h";
 			end
 			
@@ -1056,7 +1074,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			-- Add Channel
 			arg4 = gsub(arg4, "%s%-%s.*", "");
 			if( chatGroup  == "BN_CONVERSATION" ) then
-				body = format(CHAT_BN_CONVERSATION_GET_LINK, arg8, MAX_WOW_CHAT_CHANNELS + arg8)..body;
+				body = format(CHAT_BN_CONVERSATION_GET_LINK, MAX_WOW_CHAT_CHANNELS + arg8, MAX_WOW_CHAT_CHANNELS + arg8)..body;
 			elseif(channelLength > 0) then
 				body = "|Hchannel:channel:"..arg8.."|h["..arg4.."]|h "..body;
 			end
@@ -1071,7 +1089,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				body = body:gsub("^(.-|h) "..L['yells'], "%1")
 				body = body:gsub("<"..AFK..">", "[|cffFF0000"..L['AFK'].."|r] ")
 				body = body:gsub("<"..DND..">", "[|cffE7E716"..L['DND'].."|r] ")
-				body = body:gsub("%[BN_CONVERSATION:", '%['..L["BN:"])			
+				body = body:gsub("%[BN_CONVERSATION:", '%['.."")			
 				body = body:gsub("^%["..RAID_WARNING.."%]", '['..L['RW']..']')	
 			end
 			self:AddMessage(CH:ConcatenateTimeStamp(body), info.r, info.g, info.b, info.id, false, accessID, typeID);
@@ -1296,35 +1314,32 @@ function CH:ThrottleSound()
 end
 
 function CH:CheckKeyword(message)
-	local replaceWords = {};
-
-	for i=1, #{string.split(' ', message)} do
-		local word = select(i, string.split(' ', message));
-		if not word:find('|') then
-			for keyword, _ in pairs(CH.Keywords) do
-				if word:lower() == keyword:lower() then
-					replaceWords[word] = E.media.hexvaluecolor..word..'|r'
-					if self.db.keywordSound ~= 'None' and not self.SoundPlayed  then
-						PlaySoundFile(LSM:Fetch("sound", self.db.keywordSound), "Master")
-						self.SoundPlayed = true
-						self.SoundTimer = CH:ScheduleTimer('ThrottleSound', 1)			
-					end
-				end	
+	local rebuiltString, lowerCaseWord
+	local isFirstWord = true
+	for word in message:gmatch("[^%s]+") do
+		lowerCaseWord = word:lower()
+		lowerCaseWord = lowerCaseWord:gsub("%p", "")
+		for keyword, _ in pairs(CH.Keywords) do
+			if lowerCaseWord == keyword:lower() then
+				local tempWord = word:gsub("%p", "")
+				word = word:gsub(tempWord, E.media.hexvaluecolor..tempWord..'|r')
+				if self.db.keywordSound ~= 'None' and not self.SoundPlayed  then
+					PlaySoundFile(LSM:Fetch("sound", self.db.keywordSound), "Master")
+					self.SoundPlayed = true
+					self.SoundTimer = CH:ScheduleTimer('ThrottleSound', 1)			
+				end				
 			end
 		end
-	end
-	
-	for word, replaceWord in pairs(replaceWords) do
-		if message == word then
-			message = message:gsub(word, replaceWord)
-		elseif message:find(' '..word) then
-			message = message:gsub(' '..word, ' '..replaceWord)
-		elseif message:find(word..' ') then
-			message = message:gsub(word..' ', replaceWord..' ')
+
+		if isFirstWord then
+			rebuiltString = word
+			isFirstWord = false
+		else
+			rebuiltString = format("%s %s", rebuiltString, word)
 		end
 	end
-	
-	return message
+
+	return rebuiltString
 end
 
 function CH:AddLines(lines, ...)
