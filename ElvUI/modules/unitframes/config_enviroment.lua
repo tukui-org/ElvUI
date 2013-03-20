@@ -87,7 +87,10 @@ function UF:ForceShow(frame)
 		frame.oldUnit = frame.unit
 		frame.unit = 'player'
 		frame.isForced = true;
+		frame.oldOnUpdate = frame:GetScript("OnUpdate")
 	end
+
+	frame:SetScript("OnUpdate", nil)
 	frame.forceShowAuras = true
 	UnregisterUnitWatch(frame)
 	RegisterUnitWatch(frame, true)	
@@ -109,6 +112,11 @@ function UF:UnforceShow(frame)
 	-- Ask the SecureStateDriver to show/hide the frame for us
 	UnregisterUnitWatch(frame)
 	RegisterUnitWatch(frame)
+
+	if frame.oldOnUpdate then
+		frame:SetScript("OnUpdate", frame.oldOnUpdate)
+		frame.oldOnUpdate = nil
+	end
 	
 	frame.unit = frame.oldUnit or frame.unit
 	-- If we're visible force an update so everything is properly in a
