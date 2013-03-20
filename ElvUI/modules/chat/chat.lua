@@ -341,15 +341,16 @@ function CH:StyleChat(frame)
 end
 
 function CH:GetLines(...)
-	local ct = 1
+	local index = 1
 	for i = select("#", ...), 1, -1 do
 		local region = select(i, ...)
 		if region:GetObjectType() == "FontString" then
-			lines[ct] = tostring(region:GetText())
-			ct = ct + 1
+			local line = tostring(region:GetText())
+			lines[index] = gsub(line, "(|TInterface(.*)|t)", "")
+			index = index + 1
 		end
 	end
-	return ct - 1
+	return index - 1
 end
 
 function CH:CopyChat(frame)
@@ -1177,15 +1178,6 @@ function CH:SetupChat(event, ...)
 	end
 end
 
-local sizes = {
-	":14:14",
-	":15:15",
-	":16:16",
-	":13:22",
-	":14",
-	":16",
-}
-
 local function PrepareMessage(author, message)
 	return author:upper() .. message
 end
@@ -1504,19 +1496,47 @@ function CH:FCF_SetWindowAlpha(frame, alpha, doNotSave)
 	frame.oldAlpha = alpha or 1;
 end
 
-DEFAULT_CHAT_FRAME:UnregisterEvent("GUILD_MOTD")
+local stopScript = false
+hooksecurefunc(DEFAULT_CHAT_FRAME, "RegisterEvent", function(self, event)
+	if event == "GUILD_MOTD" and not stopScript then
+		self:UnregisterEvent("GUILD_MOTD")
+	end
+end)
+
+local cachedMsg = GetGuildRosterMOTD()
+if cachedMsg == "" then cachedMsg = nil end
+function CH:DelayGMOTD()
+	stopScript = true
+	DEFAULT_CHAT_FRAME:RegisterEvent("GUILD_MOTD")
+	local msg = cachedMsg or GetGuildRosterMOTD()
+	if msg == "" then msg = nil end
+
+	if msg then
+		ChatFrame_SystemEventHandler(DEFAULT_CHAT_FRAME, "GUILD_MOTD", msg)
+	end
+end
+
 function CH:Initialize()
 	if ElvCharacterDB.ChatHistory then
 		ElvCharacterDB.ChatHistory = nil --Depreciated
 	end
 	
 	self.db = E.db.chat
-	local msg = GetGuildRosterMOTD() or ""
+
 	if E.private.chat.enable ~= true then 
+		stopScript = true
 		DEFAULT_CHAT_FRAME:RegisterEvent("GUILD_MOTD")
-		ChatFrame_SystemEventHandler(DEFAULT_CHAT_FRAME, "GUILD_MOTD", msg)
+
+		local msg = GetGuildRosterMOTD()
+		if msg == "" then msg = nil end		
+		if msg then
+			ChatFrame_SystemEventHandler(DEFAULT_CHAT_FRAME, "GUILD_MOTD", msg)
+		end
+
 		return 
 	end
+
+
 	if not ElvCharacterDB.ChatEditHistory then
 		ElvCharacterDB.ChatEditHistory = {};
 	end
@@ -1540,9 +1560,11 @@ function CH:Initialize()
     end
 
 	self:SecureHook('FCF_SetChatWindowFontSize', 'SetChatFont')
+	self:RegisterEvent('PLAYER_ENTERING_WORLD', 'DelayGMOTD')
 	self:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
 	self:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
 	self:RegisterEvent('PET_BATTLE_CLOSE')
+
 	self:SetupChat()
 	self:UpdateAnchors()
 	
@@ -1630,22 +1652,13 @@ function CH:Initialize()
 		self.SoundPlayed = true;
 		self:DisplayChatHistory()
 		self.SoundPlayed = nil;
-		local f = CreateFrame('Frame')
-		local OnUpdate = function(self)
-			local msg = GetGuildRosterMOTD()
-			if (msg and msg:len() > 0) then
-				ChatFrame_SystemEventHandler(DEFAULT_CHAT_FRAME, "GUILD_MOTD", msg)		
-				DEFAULT_CHAT_FRAME:RegisterEvent("GUILD_MOTD")
-				self:SetScript('OnUpdate', nil)
-			end		
-		end
-		f:SetScript('OnUpdate', OnUpdate)
 	end
 		
 	
 	local S = E:GetModule('Skins')
 	S:HandleNextPrevButton(CombatLogQuickButtonFrame_CustomAdditionalFilterButton, true)
 	local frame = CreateFrame("Frame", "CopyChatFrame", E.UIParent)
+	tinsert(UISpecialFrames, "CopyChatFrame")
 	frame:SetTemplate('Transparent')
 	frame:Size(700, 200)
 	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 3)
@@ -1667,23 +1680,8 @@ function CH:Initialize()
 	editBox:SetFontObject(ChatFontNormal)
 	editBox:Width(scrollArea:GetWidth())
 	editBox:Height(200)
-	editBox:SetScript("OnEscapePressed", function() frame:Hide() end)
 	scrollArea:SetScrollChild(editBox)
 	
-	--EXTREME HACK..
-	editBox:SetScript("OnTextSet", function(self)
-		local text = self:GetText()
-		
-		for _, size in pairs(sizes) do
-			if find(text, size) and not find(text, size.."]") then
-				if size == ':13:22' then
-					self:SetText(gsub(text, size, ":12:20"))
-				else
-					self:SetText(gsub(text, size, ":12:12"))
-				end
-			end		
-		end
-	end)
 
 	local close = CreateFrame("Button", "CopyChatFrameCloseButton", frame, "UIPanelCloseButton")
 	close:SetPoint("TOPRIGHT")
