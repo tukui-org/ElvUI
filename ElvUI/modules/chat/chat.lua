@@ -1276,35 +1276,32 @@ function CH:ThrottleSound()
 end
 
 function CH:CheckKeyword(message)
-	local replaceWords = {};
-
-	for i=1, #{string.split(' ', message)} do
-		local word = select(i, string.split(' ', message));
-		if not word:find('|') then
-			for keyword, _ in pairs(CH.Keywords) do
-				if word:lower() == keyword:lower() then
-					replaceWords[word] = E.media.hexvaluecolor..word..'|r'
-					if self.db.keywordSound ~= 'None' and not self.SoundPlayed  then
-						PlaySoundFile(LSM:Fetch("sound", self.db.keywordSound), "Master")
-						self.SoundPlayed = true
-						self.SoundTimer = CH:ScheduleTimer('ThrottleSound', 1)			
-					end
-				end	
+	local rebuiltString, lowerCaseWord
+	local isFirstWord = true
+	for word in message:gmatch("[^%s]+") do
+		lowerCaseWord = word:lower()
+		lowerCaseWord = lowerCaseWord:gsub("%p", "")
+		for keyword, _ in pairs(CH.Keywords) do
+			if lowerCaseWord == keyword:lower() then
+				local tempWord = word:gsub("%p", "")
+				word = word:gsub(tempWord, E.media.hexvaluecolor..tempWord..'|r')
+				if self.db.keywordSound ~= 'None' and not self.SoundPlayed  then
+					PlaySoundFile(LSM:Fetch("sound", self.db.keywordSound), "Master")
+					self.SoundPlayed = true
+					self.SoundTimer = CH:ScheduleTimer('ThrottleSound', 1)			
+				end				
 			end
 		end
-	end
-	
-	for word, replaceWord in pairs(replaceWords) do
-		if message == word then
-			message = message:gsub(word, replaceWord)
-		elseif message:find(' '..word) then
-			message = message:gsub(' '..word, ' '..replaceWord)
-		elseif message:find(word..' ') then
-			message = message:gsub(word..' ', replaceWord..' ')
+
+		if isFirstWord then
+			rebuiltString = word
+			isFirstWord = false
+		else
+			rebuiltString = format("%s %s", rebuiltString, word)
 		end
 	end
-	
-	return message
+
+	return rebuiltString
 end
 
 function CH:AddLines(lines, ...)
