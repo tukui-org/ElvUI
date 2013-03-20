@@ -215,8 +215,10 @@ function CH:StyleChat(frame)
 	end
 
 	hooksecurefunc(tab, "SetAlpha", function(t, alpha)
-		if alpha ~= 1 then
-			tab:SetAlpha(1)
+		if alpha ~= 1 and (not t.isDocked or GeneralDockManager.selected:GetID() == t:GetID()) then
+			t:SetAlpha(1)
+		elseif alpha < 0.6 then
+			t:SetAlpha(0.6)
 		end
 	end)
 
@@ -457,6 +459,7 @@ function CH:PositionChat(override)
 		tab = _G[format("ChatFrame%sTab", i)]
 		point = GetChatWindowSavedPosition(id)
 		isDocked = chat.isDocked
+		tab.isDocked = chat.isDocked
 		
 		if id > NUM_CHAT_WINDOWS then
 			point = point or select(1, chat:GetPoint());
