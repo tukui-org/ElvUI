@@ -14,7 +14,7 @@ local function createConfigEnv()
 	if( configEnv ) then return end
 	configEnv = setmetatable({
 		UnitPower = function (unit, displayType)
-			return random(1, UnitPowerMax(unit, displayType))
+			return random(1, UnitPowerMax(unit, displayType) or 1)
 		end,
 		UnitHealth = function(unit)
 			return random(1, UnitHealthMax(unit))
