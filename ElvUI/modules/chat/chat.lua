@@ -682,6 +682,20 @@ function CH:ConcatenateTimeStamp(msg)
 	return msg
 end
 
+
+
+local function GetBNFriendColor(name, id)
+	local _, _, game, _, _, _, _, class = BNGetToonInfo(id)
+	if game ~= BNET_CLIENT_WOW or not class then
+		return name
+	else
+		for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
+		for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
+
+		return "|c"..RAID_CLASS_COLORS[class].colorStr..name.."|r"
+	end
+end
+
 function CH:ChatFrame_MessageEventHandler(event, ...)
 	if ( strsub(event, 1, 8) == "CHAT_MSG" ) then
 		local arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14 = ...;
@@ -1000,6 +1014,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			if ( type ~= "BN_WHISPER" and type ~= "BN_WHISPER_INFORM" and type ~= "BN_CONVERSATION" ) then
 				playerLink = "|Hplayer:"..arg2..":"..arg11..":"..chatGroup..(chatTarget and ":"..chatTarget or "").."|h";
 			else
+				coloredName = GetBNFriendColor(arg2, arg13)
 				playerLink = "|HBNplayer:"..arg2..":"..arg13..":"..arg11..":"..chatGroup..(chatTarget and ":"..chatTarget or "").."|h";
 			end
 			
@@ -1036,7 +1051,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			-- Add Channel
 			arg4 = gsub(arg4, "%s%-%s.*", "");
 			if( chatGroup  == "BN_CONVERSATION" ) then
-				body = format(CHAT_BN_CONVERSATION_GET_LINK, arg8, MAX_WOW_CHAT_CHANNELS + arg8)..body;
+				body = format(CHAT_BN_CONVERSATION_GET_LINK, MAX_WOW_CHAT_CHANNELS + arg8, MAX_WOW_CHAT_CHANNELS + arg8)..body;
 			elseif(channelLength > 0) then
 				body = "|Hchannel:channel:"..arg8.."|h["..arg4.."]|h "..body;
 			end
@@ -1051,7 +1066,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				body = body:gsub("^(.-|h) "..L['yells'], "%1")
 				body = body:gsub("<"..AFK..">", "[|cffFF0000"..L['AFK'].."|r] ")
 				body = body:gsub("<"..DND..">", "[|cffE7E716"..L['DND'].."|r] ")
-				body = body:gsub("%[BN_CONVERSATION:", '%['..L["BN:"])			
+				body = body:gsub("%[BN_CONVERSATION:", '%['.."")			
 				body = body:gsub("^%["..RAID_WARNING.."%]", '['..L['RW']..']')	
 			end
 			self:AddMessage(CH:ConcatenateTimeStamp(body), info.r, info.g, info.b, info.id, false, accessID, typeID);
