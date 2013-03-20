@@ -123,7 +123,6 @@ G.unitframe.aurafilters['CCDebuffs'] = {
 			[SpellName(118093)] = Defaults(), --Disarm (Voidwalker)
 			[SpellName(89766)] = Defaults(), --Axe Toss (Felguard)
 			[SpellName(137143)] = Defaults(), --Blood Horror
-			[SpellName(31117)] = Defaults(), --Unstable Affliction (Dispel Silence)
 		-- Warrior
 			[SpellName(20511)] = Defaults(), --Intimidating Shout
 			[SpellName(7922)] = Defaults(), --Charge Stun
