@@ -14,12 +14,11 @@ tooltiptext:SetText("")
 local join = string.join
 local match = string.match
 
-local function calculate(self, event, ...)
-
+local function OnEvent(self, event, ...)
 	if VengeanceTooltip and not VengeanceTooltip:IsShown() then
-	tooltiptext = _G[tooltip:GetName().."TextLeft2"]
-	tooltip:SetOwner(E.UIParent, "ANCHOR_NONE")
-	tooltiptext:SetText("")
+		tooltiptext = _G[tooltip:GetName().."TextLeft2"]
+		tooltip:SetOwner(E.UIParent, "ANCHOR_NONE")
+		tooltiptext:SetText("")
 	end
 	
 	local name = UnitAura("player", vengeance, nil, "PLAYER|HELPFUL")
@@ -33,6 +32,7 @@ local function calculate(self, event, ...)
 	end
 	
 	self.text:SetFormattedText(displayString, vengeance, value);
+	lastPanel = self
 end
 
 local function ValueColorUpdate(hex, r, g, b)
@@ -55,4 +55,4 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 	onEnterFunc - function to fire OnEnter
 	onLeaveFunc - function to fire OnLeave, if not provided one will be set for you that hides the tooltip.
 ]]
-DT:RegisterDatatext("Vengeance", {"UNIT_AURA", "PLAYER_ENTERING_WORLD", "CLOSE_WORLD_MAP"}, calculate)
+DT:RegisterDatatext("Vengeance", {"UNIT_AURA", "PLAYER_ENTERING_WORLD", "CLOSE_WORLD_MAP"}, OnEvent)
