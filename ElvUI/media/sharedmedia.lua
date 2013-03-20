@@ -40,5 +40,8 @@ RegisterSound("Whisper Alert", "whisper.mp3")
 RegisterStatusbar("ElvUI Gloss", "normTex.tga")
 RegisterStatusbar("ElvUI Norm", "normTex2.tga")
 RegisterStatusbar("Minimalist", "Minimalist.tga")
+RegisterStatusbar("Melli", "Melli.tga")
+RegisterStatusbar("Melli Dark", "MelliDark.tga")
+RegisterStatusbar("Melli Dark Rough", "MelliDarkRough.tga")
 
 RegisterBorder("ElvUI GlowBorder", "glowTex.tga")
