@@ -485,6 +485,7 @@ function NP:SkinPlate(frame, nameFrame)
 	frame.hp.name:FontTemplate(font, self.db.fontSize, self.db.fontOutline)
 	frame.hp.name:SetPoint('BOTTOM', frame.hp, 'TOP', 0 + self.db.nameXOffset, 4 + self.db.nameYOffset)
 	frame.hp.name:SetJustifyH(self.db.nameJustifyH)
+	frame.hp.name:SetHeight(self.db.fontSize)
 
 	--Health Text
 	if not frame.hp.value then
