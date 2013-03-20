@@ -132,7 +132,7 @@ end
 
 --Basically check if another class border is being used on a class that doesn't match. And then return true if a match is found.
 local function CheckClassColor(r, g, b)
-	if E.private.theme ~= 'class' then return end
+	r, g, b = floor(r*100+.5)/100, floor(g*100+.5)/100, floor(b*100+.5)/100
 	local matchFound = false;
 	for class, _ in pairs(RAID_CLASS_COLORS) do
 		if class ~= E.myclass then
@@ -191,6 +191,7 @@ function E:UpdateMedia()
 	
 	--Value Color
 	local value = self.db['general'].valuecolor
+
 	if CheckClassColor(value.r, value.g, value.b) then
 		value = RAID_CLASS_COLORS[E.myclass]
 		self.db['general'].valuecolor.r = RAID_CLASS_COLORS[E.myclass].r
