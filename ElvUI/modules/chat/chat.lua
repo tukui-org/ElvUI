@@ -1514,6 +1514,7 @@ function CH:DelayGMOTD()
 	if msg then
 		ChatFrame_SystemEventHandler(DEFAULT_CHAT_FRAME, "GUILD_MOTD", msg)
 	end
+	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 end
 
 function CH:Initialize()
