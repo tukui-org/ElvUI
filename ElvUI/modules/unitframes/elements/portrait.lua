@@ -49,9 +49,7 @@ function UF:PortraitUpdate(unit)
 			self:SetFacing(portrait.rotation / 60)
 		end
 
-		if self:GetCamDistanceScale() ~= portrait.camDistanceScale then
-			self:SetCamDistanceScale(portrait.camDistanceScale)
-		end
+		self:SetCamDistanceScale(portrait.camDistanceScale)
 	end
 end
 
