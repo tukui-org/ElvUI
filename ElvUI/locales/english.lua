@@ -704,6 +704,7 @@ L['Void Storage'] = true;
 L["World Map"] = true;
 
 --Static Popups
+L["Are you sure you want to reset all the settings on this profile?"] = true;
 L['Oh lord, you have got ElvUI and Tukui both enabled at the same time. Select an addon to disable.'] = true;
 L["A setting you have changed will change an option for this character only. This setting that you have changed will be uneffected by changing user profiles. Changing this setting requires that you reload your User Interface."] = true;
 L["Are you sure you want to delete all your gray items?"] = true;
