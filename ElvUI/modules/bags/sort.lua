@@ -55,7 +55,8 @@ local targetSlots = {};
 local specialtyBags = {};
 local emptySlots = {};
 
-local movesUnderway, lastItemID, lockStop
+local moveRetries = 0
+local movesUnderway, lastItemID, lockStop, lastDestination, lastMove
 local moveTracker = {}
 
 local inventorySlots = {
@@ -293,6 +294,15 @@ end
 function B.IterateBags(bagList, reverse, role)
 	bagRole = role
 	return (reverse and IterateBackwards or IterateForwards), bagList, 0
+end
+
+function B:GetItemID(bag, slot)
+	if IsGuildBankBag(bag) then
+		local link = self:GetItemLink(bag, slot)
+		return link and tonumber(string.match(link, "item:(%d+)"))
+	else
+		return GetContainerItemID(bag, slot)
+	end
 end
 
 function B:GetItemInfo(bag, slot)
@@ -635,7 +645,7 @@ end
 function B:StopStacking(message)
 	wipe(moves)
 	wipe(moveTracker)
-	lastItemID, lockStop = nil, nil
+	moveRetries, lastItemID, lockStop, lastDestination, lastMove = 0, nil, nil, nil, nil
 
 	self.SortUpdateTimer:Hide()
 	if message then
@@ -644,26 +654,24 @@ function B:StopStacking(message)
 end
 
 function B:DoMove(move)
-	if CursorHasItem() then
+	if GetCursorInfo() == "item" then
 		return false, 'cursorhasitem'
 	end
 	
 	local source, target = B:DecodeMove(move)
 	local sourceBag, sourceSlot = B:Decode_BagSlot(source)
 	local targetBag, targetSlot = B:Decode_BagSlot(target)
-	local sourceGuild = IsGuildBankBag(sourceBag)
-	local targetGuild = IsGuildBankBag(targetBag)
 	
 	local _, sourceCount, sourceLocked = B:GetItemInfo(sourceBag, sourceSlot)
 	local _, targetCount, targetLocked = B:GetItemInfo(targetBag, targetSlot)
 	
 	if sourceLocked or targetLocked then
-		return false, 'source/target_locked', nil, nil, nil, sourceGuild or targetGuild
+		return false, 'source/target_locked'
 	end
 
 	local sourceLink = B:GetItemLink(sourceBag, sourceSlot)
-	local sourceItemID = ConvertLinkToID(sourceLink)
-	local targetItemID = ConvertLinkToID(B:GetItemLink(targetBag, targetSlot))
+	local sourceItemID = self:GetItemID(sourceBag, sourceSlot)
+	local targetItemID = self:GetItemID(targetBag, targetSlot)
 	
 	if not sourceItemID then
 		if moveTracker[source] then
@@ -680,8 +688,18 @@ function B:DoMove(move)
 		B:PickupItem(sourceBag, sourceSlot)
 	end
 	
-	if CursorHasItem() or sourceGuild then
+	if GetCursorInfo() == "item" then
 		B:PickupItem(targetBag, targetSlot)
+	end	
+
+	local sourceGuild = IsGuildBankBag(sourceBag)
+	local targetGuild = IsGuildBankBag(targetBag)
+
+	if sourceGuild then
+		QueryGuildBankTab(sourceBag - 50)
+	end
+	if targetGuild then
+		QueryGuildBankTab(targetBag - 50)
 	end	
 	
 	return true, sourceItemID, source, targetItemID, target, sourceGuild or targetGuild
@@ -692,22 +710,51 @@ function B:DoMoves()
 		return B:StopStacking(L['Confused.. Try Again!'])
 	end
 	
-	if CursorHasItem() then
-		local itemID = ConvertLinkToID(select(3, GetCursorInfo()))
-		if lastItemID ~= itemID then
+	local cursorType, cursorItemID = GetCursorInfo()
+	if cursorType == "item" and cursorItemID then
+		if lastItemID ~= cursorItemID then
 			return B:StopStacking(L['Confused.. Try Again!'])
 		end
+		
+		if moveRetries < 100 then
+			local targetBag, targetSlot = self:Decode_BagSlot(lastDestination)
+			local _, _, targetLocked = self:GetItemInfo(targetBag, targetSlot)
+			if not targetLocked then
+				self:PickupItem(targetBag, targetSlot)
+				WAIT_TIME = 0.1
+				lockStop = GetTime()
+				moveRetries = moveRetries + 1
+				return
+			end
+		end		
 	end
 	
 	if lockStop then
 		for slot, itemID in pairs(moveTracker) do
-			local bag, slot = B:Decode_BagSlot(slot)
-			if ConvertLinkToID(B:GetItemLink(bag, slot)) ~= itemID then
+			local actualItemID = self:GetItemID(self:Decode_BagSlot(slot))
+			if actualItemID  ~= itemid then
 				WAIT_TIME = 0.1
 				if (GetTime() - lockStop) > MAX_MOVE_TIME then
+					if lastMove and moveRetries < 100 then
+						local success, moveID, moveSource, targetID, moveTarget, wasGuild = self:DoMove(lastMove)
+						WAIT_TIME = wasGuild and 0.5 or 0.1
+
+						if not success then
+							lockStop = GetTime()
+							moveRetries = moveRetries + 1
+							return
+						end
+
+						moveTracker[moveSource] = targetID
+						moveTracker[moveTarget] = moveID
+						lastDestination = moveTarget
+						lastMove = moves[i]
+						lastItemID = moveID
+						tremove(moves, i)
+						return
+					end
+
 					B:StopStacking()
-					print("restarted")
-					self.lastRun() --Restart
 					return 
 				end
 				return --give processing time to happen
@@ -716,7 +763,7 @@ function B:DoMoves()
 		end
 	end
 	
-	lastItemID, lockStop = nil, nil
+	lastItemID, lockStop, lastDestination, lastMove = nil, nil, nil, nil
 	wipe(moveTracker)
 
 	local start, success, moveID, targetID, moveSource, moveTarget, wasGuild
@@ -725,17 +772,19 @@ function B:DoMoves()
 		for i = #moves, 1, -1 do
 			success, moveID, moveSource, targetID, moveTarget, wasGuild = B:DoMove(moves[i])
 			if not success then
-				WAIT_TIME = wasGuild and 0.5 or 0.1
+				WAIT_TIME = wasGuild and 0.3 or 0.1
 				lockStop = GetTime()
 				return
 			end
 			moveTracker[moveSource] = targetID
 			moveTracker[moveTarget] = moveID
+			lastDestination = moveTarget
+			lastMove = moves[i]
 			lastItemID = moveID
 			tremove(moves, i)
 
 			if moves[i-1] then
-				WAIT_TIME = wasGuild and 0.5 or 0;
+				WAIT_TIME = wasGuild and 0.3 or 0;
 				return
 			end
 		end 
@@ -783,8 +832,6 @@ function B:CommandDecorator(func, groupsDefaults)
 		end
 		
 		B:ScanBags()
-		self.lastRun = function() B:CommandDecorator(func, groupsDefaults)(); end
-		self.lastGroup = groupsDefaults
 		if func(unpack(bagGroups)) == false then
 			return
 		end
