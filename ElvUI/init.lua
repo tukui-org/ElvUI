@@ -122,7 +122,7 @@ function AddOn:PLAYER_REGEN_DISABLED()
 	end		
 end
 
-function AddOn:OnProfileReset()
+function AddOn:ResetProfile()
 	local profileKey
 	if ElvPrivateDB.profileKeys then
 		profileKey = ElvPrivateDB.profileKeys[self.myname..' - '..self.myrealm]
@@ -134,6 +134,10 @@ function AddOn:OnProfileReset()
 		
 	ElvCharacterDB = nil;
 	ReloadUI()
+end
+
+function AddOn:OnProfileReset()
+	self:StaticPopup_Show("RESET_PROFILE_PROMPT")
 end
 
 function AddOn:ToggleConfig() 

@@ -207,6 +207,17 @@ E.PopupDialogs["CONFIRM_LOOT_DISTRIBUTION"] = {
 	hideOnEscape = 1,
 }
 
+E.PopupDialogs["RESET_PROFILE_PROMPT"] = {
+	text = L["Are you sure you want to reset all the settings on this profile?"],
+	button1 = YES,
+	button2 = NO,
+	timeout = 0,
+	hideOnEscape = 1,
+	OnAccept = function() E:ResetProfile() end,
+}
+
+
+
 
 local MAX_STATIC_POPUPS = 4
 

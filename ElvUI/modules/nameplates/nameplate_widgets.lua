@@ -860,6 +860,14 @@ function NP:UNIT_TARGET(event, unit)
 	end
 end
 
+function NP:UPDATE_MOUSEOVER_UNIT()
+	self:UpdateCastInfo()
+
+	if UnitExists("mouseover") then
+		self.TargetOfGroupMembers[UnitGUID("mouseover")] = "mouseover"
+	end
+end
+
 function NP:UNIT_AURA(event, unit)
 	if unit == "target" then
 		self:UpdateAurasByUnitID("target")

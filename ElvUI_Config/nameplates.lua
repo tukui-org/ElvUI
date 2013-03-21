@@ -163,7 +163,14 @@ E.Options.args.nameplate = {
 					type = "toggle",
 					order = 9,
 					name = L["Combat Toggle"],
-					desc = L["Toggles the nameplates off when not in combat."],							
+					desc = L["Toggles the nameplates off when not in combat."],	
+					set = function(info, value) 
+						E.db.nameplate[ info[#info] ] = value; 
+						NP:UpdateAllPlates() 
+						if value == false then
+							SetCVar("nameplateShowEnemies", 1)
+						end
+					end,						
 				},	
 				markHealers = {
 					type = 'toggle',
