@@ -41,7 +41,7 @@ function UF:PortraitUpdate(unit)
 	
 	if self:GetObjectType() ~= 'Texture' then
 		local model = self:GetModel()
-		if model and model.find and model:find("worgenmale") and self:GetCamera() ~= 1 then
+		if model and model.find and model:find("worgenmale") then
 			self:SetCamera(1)
 		end	
 		
