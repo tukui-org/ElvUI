@@ -1720,9 +1720,16 @@ E.Options.args.unitframe = {
 										return t.r, t.g, t.b, t.a
 									end,
 									set = function(info, r, g, b)
-										E.db.general[ info[#info] ] = {}
-										local t = E.db.unitframe.colors.auraBarBuff
+										if E:CheckClassColor(r, g, b) then
+											local classColor = E.myclass == 'PRIEST' and E.PriestColors or RAID_CLASS_COLORS[E.myclass]
+											r = classColor.r
+											g = classColor.g
+											b = classColor.b			
+										end			
+										
+										local t = E.db.unitframe.colors.auraBarBuff										
 										t.r, t.g, t.b = r, g, b
+
 										UF:Update_AllFrames()
 									end,										
 								},	

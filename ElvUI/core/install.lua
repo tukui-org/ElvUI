@@ -226,7 +226,7 @@ function E:SetupPixelPerfect(enabled, noMsg)
 end
 
 function E:SetupTheme(theme, noDisplayMsg)
-	local classColor = RAID_CLASS_COLORS[E.myclass]
+	local classColor = E.myclass == 'PRIEST' and E.PriestColors or RAID_CLASS_COLORS[E.myclass]
 	E.private.theme = theme
 
 
@@ -240,6 +240,7 @@ function E:SetupTheme(theme, noDisplayMsg)
 		E.db.unitframe.colors.health = E:GetColor(.31, .31, .31)
 		E.db.unitframe.colors.auraBarBuff = E:GetColor(.31, .31, .31)
 		E.db.unitframe.colors.castColor = E:GetColor(.31, .31, .31)
+		E.db.unitframe.colors.castClassColor = false
 		
 	elseif theme == "class" then
 		E.db.general.bordercolor = E:GetColor(.31, .31, .31)
@@ -247,7 +248,7 @@ function E:SetupTheme(theme, noDisplayMsg)
 		E.db.general.backdropfadecolor = E:GetColor(.06, .06, .06, .8)
 		E.db.unitframe.colors.auraBarBuff = E:GetColor(classColor.r, classColor.b, classColor.g)
 		E.db.unitframe.colors.healthclass = true
-		E.db.unitframe.colors.castColor = E:GetColor(classColor.r, classColor.b, classColor.g)
+		E.db.unitframe.colors.castClassColor = true
 	else
 		E.db.general.bordercolor = E:GetColor(.1, .1, .1)
 		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
@@ -256,6 +257,7 @@ function E:SetupTheme(theme, noDisplayMsg)
 		E.db.unitframe.colors.healthclass = false
 		E.db.unitframe.colors.health = E:GetColor(.1, .1, .1)
 		E.db.unitframe.colors.castColor = E:GetColor(.1, .1, .1)
+		E.db.unitframe.colors.castClassColor = false
 	end
 	
 	--Value Color
