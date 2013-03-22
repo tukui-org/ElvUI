@@ -75,6 +75,7 @@ local UNIT_SPELLCAST_START = function(self, event, unit, spell)
 	if(castbar.PostCastStart) then
 		castbar:PostCastStart(unit, name, castid)
 	end
+
 	castbar:Show()
 end
 
@@ -309,6 +310,7 @@ local onUpdate = function(self, elapsed)
 
 	if(self.casting) then
 		local duration = self.duration + self.lastUpdate
+
 		if(duration >= self.max) then
 			self.casting = nil
 			self:Hide()
