@@ -65,7 +65,7 @@ local function BuildGuildTable()
 		name, rank, rankIndex, level, _, zone, note, officernote, connected, memberstatus, class, _, _, isMobile = GetGuildRosterInfo(i)
 
 		statusInfo = isMobile and mobilestatus[memberstatus]() or onlinestatus[memberstatus]()
-		zone = isMobile and '' or zone
+		zone = (isMobile and not connected) and REMOTE_CHAT or zone
 
 		if connected or isMobile then 
 			guildTable[#guildTable + 1] = { name, rank, level, zone, note, officernote, connected, statusInfo, class, rankIndex, isMobile }
@@ -134,9 +134,7 @@ local function OnEvent(self, event, ...)
 	if IsInGuild() then
 		eventHandlers[event](self, select(1, ...))
 
-		-- update datatext information
-		local _, online = GetNumGuildMembers()	
-		self.text:SetFormattedText(displayString, online)
+		self.text:SetFormattedText(displayString, #guildTable)
 	else
 		self.text:SetText(noGuildString)
 	end	
