@@ -14,6 +14,7 @@ P['general'] = {
 	['vendorGrays'] = false,
 	['autoAcceptInvite'] = false,
 	['bottomPanel'] = true,
+	['hideErrorFrame'] = true,
 
 	["fontSize"] = 12,
 	["font"] = "ElvUI Font",

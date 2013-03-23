@@ -166,8 +166,12 @@ E.Options.args.general = {
 					get = function(info) return E.global.general.autoScale end,
 					set = function(info, value) E.global.general[ info[#info] ] = value; E:StaticPopup_Show("GLOBAL_RL") end
 				},	
-
-
+				hideErrorFrame = {
+					order = 12,
+					name = L["Hide Error Text"],
+					desc = L["Hides the red error text at the top of the screen while in combat."],
+					type = "toggle"
+				},
 				taintLog = {
 					order = 13,
 					type = "toggle",

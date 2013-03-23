@@ -8,6 +8,7 @@ local floor = math.floor
 local format = string.format
 
 function M:ErrorFrameToggle(event)
+	if not E.db.general.hideErrorFrame then return end
 	if event == 'PLAYER_REGEN_DISABLED' then
 		UIErrorsFrame:UnregisterEvent('UI_ERROR_MESSAGE')
 	else

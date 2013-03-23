@@ -450,6 +450,8 @@ L["No locals to dump"] = true;
 L['|cFFE30000Lua error recieved. You can view the error message when you exit combat.'] = true;
 
 --General
+L["Hide Error Text"] = true;
+L["Hides the red error text at the top of the screen while in combat."] = true;
 L['Skin Backdrop'] = true;
 L['Remove Backdrop'] = true;
 
