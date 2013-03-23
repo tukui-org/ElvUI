@@ -158,7 +158,7 @@ function E:GetFormattedText(style, min, max)
 		s = s:gsub(".0%%", "%%")
 		return s
 	elseif style == 'CURRENT_MAX_PERCENT' then
-		local s = format(useStyle, E:ShortValue(min), format("%.1f", min / max * 100))
+		local s = format(useStyle, E:ShortValue(min), E:ShortValue(max), format("%.1f", min / max * 100))
 		s = s:gsub(".0%%", "%%")
 		return s
 	end
