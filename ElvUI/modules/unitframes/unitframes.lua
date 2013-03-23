@@ -95,6 +95,7 @@ local DIRECTION_TO_POINT = {
 	LEFT_UP = "RIGHT"
 }
 
+
 local DIRECTION_TO_GROUP_ANCHOR_POINT = {
 	OUT_RIGHT_UP = "BOTTOM",
 	OUT_LEFT_UP = "BOTTOM",
@@ -123,6 +124,17 @@ local DIRECTION_TO_COLUMN_ANCHOR_POINT = {
 	RIGHT_UP = "BOTTOM",
 	LEFT_DOWN = "TOP",
 	LEFT_UP = "BOTTOM"
+}
+
+local INVERTED_DIRECTION_TO_COLUMN_ANCHOR_POINT = {
+	DOWN_RIGHT = "RIGHT",
+	DOWN_LEFT = "LEFT",
+	UP_RIGHT = "RIGHT",
+	UP_LEFT = "LEFT",
+	RIGHT_DOWN = "BOTTOM",
+	RIGHT_UP = "TOP",
+	LEFT_DOWN = "BOTTOM",
+	LEFT_UP = "TOP"	
 }
 
 local DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER = {
@@ -208,7 +220,7 @@ function UF:SetupGroupAnchorPoints(group)
 		group:SetAttribute("columnSpacing", db.horizontalSpacing)
 	end
 	
-	group:SetAttribute("columnAnchorPoint", DIRECTION_TO_COLUMN_ANCHOR_POINT[direction])
+	group:SetAttribute("columnAnchorPoint", db.invertGroupingOrder and INVERTED_DIRECTION_TO_COLUMN_ANCHOR_POINT[direction] or DIRECTION_TO_COLUMN_ANCHOR_POINT[direction])
 	UF:ClearChildPoints(group:GetChildren())
 	group:SetAttribute("point", point)	
 	group:SetAttribute("maxColumns", db.numGroups)

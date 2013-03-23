@@ -2990,19 +2990,25 @@ E.Options.args.unitframe.args.party = {
 						},
 						startOutFromCenter = {
 							order = 5,
-							name = L['Start from Center'],
+							name = L['Start near Center'],
 							desc = L['The initial group will start near the center and grow out. Corrosponding groups will behave normally.'],
 							type = 'toggle',
 						},
-						numGroups = {
+						invertGroupingOrder = {
 							order = 6,
+							name = L['Invert Grouping Order'],
+							desc = L['Reverses the grouping order. For example if your group is to grow right than up by default the first group is always at the bottom. With this option set then the first group will start at the bottom but as the number of groups grow it will always be near the top.'],
+							type = 'toggle',
+						},
+						numGroups = {
+							order = 7,
 							type = 'range',
 							name = L['Number of Groups'],
 							min = 1, max = 8, step = 1,
 							set = function(info, value) E.db.unitframe.units['party'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
 						},
 						unitsPerGroup = {
-							order = 6,
+							order = 8,
 							type = 'range',
 							name = L['Group Size'],
 							desc = L['Number of units in a group.'],
@@ -3010,13 +3016,13 @@ E.Options.args.unitframe.args.party = {
 							set = function(info, value) E.db.unitframe.units['party'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
 						},
 						horizontalSpacing = {
-							order = 7,
+							order = 9,
 							type = 'range',
 							name = L['Horizontal Spacing'],
 							min = 0, max = 50, step = 1,		
 						},
 						verticalSpacing = {
-							order = 8,
+							order = 10,
 							type = 'range',
 							name = L['Vertical Spacing'],
 							min = 0, max = 50, step = 1,		
@@ -3378,19 +3384,25 @@ for i=10, 40, 15 do
 							},
 							startOutFromCenter = {
 								order = 5,
-								name = L['Start from Center'],
+								name = L['Start near Center'],
 								desc = L['The initial group will start near the center and grow out. Corrosponding groups will behave normally.'],
 								type = 'toggle',
-							},							
-							numGroups = {
+							},	
+							invertGroupingOrder = {
 								order = 6,
+								name = L['Invert Grouping Order'],
+								desc = L['Reverses the grouping order. For example if your group is to grow right than up by default the first group is always at the bottom. With this option set then the first group will start at the bottom but as the number of groups grow it will always be near the top.'],
+								type = 'toggle',
+							},										
+							numGroups = {
+								order = 7,
 								type = 'range',
 								name = L['Number of Groups'],
 								min = 1, max = 8, step = 1,
 								set = function(info, value) E.db.unitframe.units['raid'..i][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i) end,
 							},
 							unitsPerGroup = {
-								order = 6,
+								order = 8,
 								type = 'range',
 								name = L['Group Size'],
 								desc = L['Number of units in a group.'],
@@ -3398,13 +3410,13 @@ for i=10, 40, 15 do
 								set = function(info, value) E.db.unitframe.units['raid'..i][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i) end,
 							},
 							horizontalSpacing = {
-								order = 7,
+								order = 9,
 								type = 'range',
 								name = L['Horizontal Spacing'],
 								min = 0, max = 50, step = 1,		
 							},
 							verticalSpacing = {
-								order = 8,
+								order = 10,
 								type = 'range',
 								name = L['Vertical Spacing'],
 								min = 0, max = 50, step = 1,		
