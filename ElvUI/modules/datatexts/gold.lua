@@ -72,7 +72,7 @@ local function OnEnter(self)
 	if Profit < Spent then
 		DT.tooltip:AddDoubleLine(L["Deficit:"], FormatMoney(Profit-Spent), 1, 0, 0, 1, 1, 1)
 	elseif (Profit-Spent)>0 then
-		DT.tooltip:AddDoubleLine(L["Profit:"	], FormatMoney(Profit-Spent), 0, 1, 0, 1, 1, 1)
+		DT.tooltip:AddDoubleLine(L["Profit:"], FormatMoney(Profit-Spent), 0, 1, 0, 1, 1, 1)
 	end
 	DT.tooltip:AddLine' '
 

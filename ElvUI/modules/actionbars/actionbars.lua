@@ -651,8 +651,6 @@ function AB:FixKeybindText(button)
 		text = gsub(text, 'INSERT', L['KEY_INSERT']);
 		text = gsub(text, 'HOME', L['KEY_HOME']);
 		text = gsub(text, 'DELETE', L['KEY_DELETE']);
-		text = gsub(text, 'MOUSEWHEELUP', L['KEY_MOUSEWHEELUP']);
-		text = gsub(text, 'MOUSEWHEELDOWN', L['KEY_MOUSEWHEELDOWN']);
 		text = gsub(text, 'NMULTIPLY', "*");
 		text = gsub(text, 'NMINUS', "N-");
 		text = gsub(text, 'NPLUS', "N+");

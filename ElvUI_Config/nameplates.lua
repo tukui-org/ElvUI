@@ -198,13 +198,7 @@ E.Options.args.nameplate = {
 					name = L["Combo Points"],
 					desc = L["Display combo points on nameplates."],
 					set = function(info, value) E.db.nameplate[ info[#info] ] = value; NP:ToggleCPoints() end,
-				},
-				offtank = {
-					type = "toggle",
-					order = 14,
-					name = L["Color Tanked/Loose"],
-					desc = L["Depending on your role. If you are a tank then it will color mobs being tanked by the offtank. If you are not a tank then it will color mobs not being tanked. This is not 100% accurate and should only be used as a referance."],
-				},				
+				},		
 				lowHealthWarning = {
 					type = 'select',
 					order = 15,
@@ -396,23 +390,29 @@ E.Options.args.nameplate = {
 							name = L["Enhance Threat"],
 							desc = L["Color the nameplate's healthbar by your current threat, Example: good threat color is used if your a tank when you have threat, opposite for DPS."],
 						},
+						offtank = {
+							type = "toggle",
+							order = 2,
+							name = L["Color Tanked/Loose"],
+							desc = L["Depending on your role. If you are a tank then it will color mobs being tanked by the offtank. If you are not a tank then it will color mobs not being tanked. This is not 100% accurate and should only be used as a referance."],
+						},								
 						goodscale = {
 							type = 'range',
-							order = 2,
+							order = 3,
 							name = L['Good Scale'],
 							desc = L['Set the scale of the nameplate.'],
 							min = 0.67, max = 2, step = 0.01,					
 						},	
 						badscale = {
 							type = 'range',
-							order = 3,
+							order = 4,
 							name = L['Bad Scale'],
 							desc = L['Set the scale of the nameplate.'],
 							min = 0.67, max = 2, step = 0.01,					
 						},							
 						goodcolor = {
 							type = "color",
-							order = 4,
+							order = 5,
 							name = L["Good Color"],
 							desc = L["This is displayed when you have threat as a tank, if you don't have threat it is displayed as a DPS/Healer"],
 							hasAlpha = false,
@@ -429,7 +429,7 @@ E.Options.args.nameplate = {
 						},		
 						badcolor = {
 							type = "color",
-							order = 5,
+							order = 6,
 							name = L["Bad Color"],
 							desc = L["This is displayed when you don't have threat as a tank, if you do have threat it is displayed as a DPS/Healer"],
 							hasAlpha = false,
@@ -446,7 +446,7 @@ E.Options.args.nameplate = {
 						},
 						goodtransitioncolor = {
 							type = "color",
-							order = 6,
+							order = 7,
 							name = L["Good Transition Color"],
 							desc = L["This color is displayed when gaining/losing threat, for a tank it would be displayed when gaining threat, for a dps/healer it would be displayed when losing threat"],
 							hasAlpha = false,	
@@ -463,7 +463,7 @@ E.Options.args.nameplate = {
 						},
 						badtransitioncolor = {
 							type = "color",
-							order = 7,
+							order = 8,
 							name = L["Bad Transition Color"],
 							desc = L["This color is displayed when gaining/losing threat, for a tank it would be displayed when losing threat, for a dps/healer it would be displayed when gaining threat"],
 							hasAlpha = false,	
@@ -480,7 +480,7 @@ E.Options.args.nameplate = {
 						},						
 						offtankcolor = {
 							type = "color",
-							order = 8,
+							order = 9,
 							name = L["Tanked/Loose Color"],
 							desc = L["Depending on your role. If you are a tank then its the color of mobs being tanked not by you by an actual tank. If you are not a tank then it is the color of mobs that are not currently being tanked."],
 							hasAlpha = false,	

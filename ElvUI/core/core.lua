@@ -130,13 +130,22 @@ function E:Print(msg)
 	print(self["media"].hexvaluecolor..'ElvUI:|r', msg)
 end
 
+--Workaround for people wanting to use white and it reverting to their class color.
+E.PriestColors = {
+	r = 0.99,
+	g = 0.99,
+	b = 0.99,
+	colorStr = 'fcfcfc'
+}
+
 --Basically check if another class border is being used on a class that doesn't match. And then return true if a match is found.
-local function CheckClassColor(r, g, b)
+function E:CheckClassColor(r, g, b)
 	r, g, b = floor(r*100+.5)/100, floor(g*100+.5)/100, floor(b*100+.5)/100
 	local matchFound = false;
 	for class, _ in pairs(RAID_CLASS_COLORS) do
 		if class ~= E.myclass then
-			if RAID_CLASS_COLORS[class].r == r and RAID_CLASS_COLORS[class].g == g and RAID_CLASS_COLORS[class].b == b then
+			local colorTable = class == 'PRIEST' and E.PriestColors or RAID_CLASS_COLORS[class]
+			if colorTable.r == r and colorTable.g == g and colorTable.b == b then
 				matchFound = true;
 			end
 		end
@@ -170,11 +179,11 @@ function E:UpdateMedia()
 
 	--Border Color
 	local border = E.db['general'].bordercolor
-	if CheckClassColor(border.r, border.g, border.b) then
-		border = RAID_CLASS_COLORS[E.myclass]
-		E.db['general'].bordercolor.r = RAID_CLASS_COLORS[E.myclass].r
-		E.db['general'].bordercolor.g = RAID_CLASS_COLORS[E.myclass].g
-		E.db['general'].bordercolor.b = RAID_CLASS_COLORS[E.myclass].b	
+	if self:CheckClassColor(border.r, border.g, border.b) then
+		classColor = E.myclass == 'PRIEST' and E.PriestColors or RAID_CLASS_COLORS[E.myclass]
+		E.db['general'].bordercolor.r = classColor.r
+		E.db['general'].bordercolor.g = classColor.g
+		E.db['general'].bordercolor.b = classColor.b	
 	elseif E.PixelMode then
 		border = {r = 0, g = 0, b = 0}
 	end
@@ -192,11 +201,11 @@ function E:UpdateMedia()
 	--Value Color
 	local value = self.db['general'].valuecolor
 
-	if CheckClassColor(value.r, value.g, value.b) then
-		value = RAID_CLASS_COLORS[E.myclass]
-		self.db['general'].valuecolor.r = RAID_CLASS_COLORS[E.myclass].r
-		self.db['general'].valuecolor.g = RAID_CLASS_COLORS[E.myclass].g
-		self.db['general'].valuecolor.b = RAID_CLASS_COLORS[E.myclass].b		
+	if self:CheckClassColor(value.r, value.g, value.b) then
+		value = E.myclass == 'PRIEST' and E.PriestColors or RAID_CLASS_COLORS[E.myclass]
+		self.db['general'].valuecolor.r = value.r
+		self.db['general'].valuecolor.g = value.g
+		self.db['general'].valuecolor.b = value.b		
 	end
 	self["media"].hexvaluecolor = self:RGBToHex(value.r, value.g, value.b)
 	self["media"].rgbvaluecolor = {value.r, value.g, value.b}

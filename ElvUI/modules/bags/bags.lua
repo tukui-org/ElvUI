@@ -667,7 +667,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.transferButton:Size(55, 10)
 		f.transferButton:SetTemplate('Default', true)
 		f.transferButton.backdropTexture:SetVertexColor(unpack(buttonColor))
-		f.transferButton.ttText = L['Stack Bags to Bank'];
+		f.transferButton.ttText = L['Stack Bank to Bags'];
 		f.transferButton:SetScript("OnEnter", self.Tooltip_Show)
 		f.transferButton:SetScript("OnLeave", self.Tooltip_Hide)
 		f.transferButton:SetScript('OnClick', function() B:CommandDecorator(B.Stack, 'bank bags')(); end)

@@ -146,15 +146,21 @@ function E:GetFormattedText(style, min, max)
 			return format(useStyle, E:ShortValue(deficit))
 		end
 	elseif style == 'PERCENT' then
-		return format(useStyle, format("%.1f", min / max * 100))
+		local s = format(useStyle, format("%.1f", min / max * 100))
+		s = s:gsub(".0%%", "%%")
+		return s
 	elseif style == 'CURRENT' or ((style == 'CURRENT_MAX' or style == 'CURRENT_MAX_PERCENT' or style == 'CURRENT_PERCENT') and min == max) then
 		return format(styles['CURRENT'],  E:ShortValue(min))
 	elseif style == 'CURRENT_MAX' then
 		return format(useStyle,  E:ShortValue(min), E:ShortValue(max))
 	elseif style == 'CURRENT_PERCENT' then
-		return format(useStyle, E:ShortValue(min), format("%.1f", min / max * 100))
+		local s = format(useStyle, E:ShortValue(min), format("%.1f", min / max * 100))
+		s = s:gsub(".0%%", "%%")
+		return s
 	elseif style == 'CURRENT_MAX_PERCENT' then
-		return format(useStyle, E:ShortValue(min), E:ShortValue(max), format("%.1f", min / max * 100))
+		local s = format(useStyle, E:ShortValue(min), E:ShortValue(max), format("%.1f", min / max * 100))
+		s = s:gsub(".0%%", "%%")
+		return s
 	end
 end
 
