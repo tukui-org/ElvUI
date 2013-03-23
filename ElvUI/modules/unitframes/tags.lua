@@ -271,6 +271,7 @@ ElvUF.Tags.Methods['threatcolor'] = function(unit)
 	end
 end
 
+ElvUF.Tags.OnUpdateThrottle['pvptimer'] = 1
 ElvUF.Tags.Methods['pvptimer'] = function(unit)	
 	if (UnitIsPVPFreeForAll(unit) or UnitIsPVP(unit)) then
 		local timer = GetPVPTimer()
@@ -495,6 +496,7 @@ ElvUF.Tags.Methods['nearbyplayers'] = function(unit)
 	return unitsInRange
 end
 
+ElvUF.Tags.OnUpdateThrottle['nearbyplayers:8'] = 0.25
 ElvUF.Tags.Methods['nearbyplayers:8'] = function(unit)
 	local unitsInRange, d = 0
 	if UnitIsConnected(unit) then
@@ -511,6 +513,7 @@ ElvUF.Tags.Methods['nearbyplayers:8'] = function(unit)
 	return unitsInRange
 end
 
+ElvUF.Tags.OnUpdateThrottle['nearbyplayers:10'] = 0.25
 ElvUF.Tags.Methods['nearbyplayers:10'] = function(unit)
 	local unitsInRange, d = 0
 	if UnitIsConnected(unit) then
@@ -527,6 +530,7 @@ ElvUF.Tags.Methods['nearbyplayers:10'] = function(unit)
 	return unitsInRange
 end
 
+ElvUF.Tags.OnUpdateThrottle['nearbyplayers:30'] = 0.25
 ElvUF.Tags.Methods['nearbyplayers:30'] = function(unit)
 	local unitsInRange, d = 0
 	if UnitIsConnected(unit) then
@@ -543,6 +547,7 @@ ElvUF.Tags.Methods['nearbyplayers:30'] = function(unit)
 	return unitsInRange
 end
 
+ElvUF.Tags.OnUpdateThrottle['distance'] = 0.1
 ElvUF.Tags.Methods['distance'] = function(unit)
 	local d
 	if UnitIsConnected(unit) and not UnitIsUnit(unit, 'player') then
