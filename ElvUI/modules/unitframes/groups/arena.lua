@@ -7,6 +7,35 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 
 local ArenaHeader = CreateFrame('Frame', 'ArenaHeader', UIParent)
 
+
+function UF:UpdatePrep(event, unit, status)
+	if (event == "ARENA_OPPONENT_UPDATE" or event == "UNIT_NAME_UPDATE") and unit ~= self.unit then return end
+
+
+	local _, instanceType = IsInInstance();
+	if not UF.db.units.arena.enable or instanceType ~= "arena" or (UnitExists(self.unit) and status ~= "unseen") then
+		self:Hide()
+		return
+	end
+
+	local s = GetArenaOpponentSpec(UF[self.unit]:GetID())
+	local _, spec, texture, class
+
+	if s and s > 0 then
+		_, spec, _, texture, _, _, class = GetSpecializationInfoByID(s)
+	end
+
+	if class and spec then
+		local color = RAID_CLASS_COLORS[class]
+		self.SpecClass:SetText(spec.."  -  "..LOCALIZED_CLASS_NAMES_MALE[class])
+		self.Health:SetStatusBarColor(color.r, color.g, color.b)
+		self.Icon:SetTexture(texture or [[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]])
+		self:Show()
+	else
+		self:Hide()
+	end
+end
+
 function UF:Construct_ArenaFrames(frame)	
 	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
 	
@@ -20,6 +49,7 @@ function UF:Construct_ArenaFrames(frame)
 	
 	frame.Castbar = self:Construct_Castbar(frame, 'RIGHT')
 	
+	frame.HealPrediction = UF:Construct_HealComm(frame)
 	frame.Trinket = self:Construct_Trinket(frame)
 	frame.PVPSpecIcon = self:Construct_PVPSpecIcon(frame)
 	frame.Range = UF:Construct_Range(frame)
@@ -30,11 +60,20 @@ function UF:Construct_ArenaFrames(frame)
 		frame.prepFrame = CreateFrame('Frame', frame:GetName()..'PrepFrame', UIParent)
 		frame.prepFrame:SetFrameStrata('BACKGROUND')
 		frame.prepFrame:SetAllPoints(frame)
+		frame.prepFrame:SetID(frame:GetID())
+		frame.prepFrame:SetScript("OnEvent", UF.UpdatePrep)
+		frame.prepFrame.unit = frame.unit
+
+		frame.prepFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
+		frame.prepFrame:RegisterEvent("ARENA_OPPONENT_UPDATE")
+		frame.prepFrame:RegisterEvent("UNIT_NAME_UPDATE")
+		frame.prepFrame:RegisterEvent("ARENA_PREP_OPPONENT_SPECIALIZATIONS")
+
 		frame.prepFrame.Health = CreateFrame('StatusBar', nil, frame.prepFrame)
 		frame.prepFrame.Health:Point('BOTTOMLEFT', frame.prepFrame, 'BOTTOMLEFT', E.Border, E.Border)
 		frame.prepFrame.Health:Point('TOPRIGHT', frame.prepFrame, 'TOPRIGHT', -(E.Border + E.db.unitframe.units.arena.height), -E.Border)
 		frame.prepFrame.Health:CreateBackdrop()
-		
+
 		frame.prepFrame.Icon = frame.prepFrame:CreateTexture(nil, 'OVERLAY')
 		frame.prepFrame.Icon.bg = CreateFrame('Frame', nil, frame.prepFrame)
 		frame.prepFrame.Icon.bg:Point('TOPLEFT', frame.prepFrame.Health.backdrop, 'TOPRIGHT', E.PixelMode and -1 or 1, 0)
@@ -365,6 +404,25 @@ function UF:Update_ArenaFrames(frame, db)
 				frame:DisableElement('Range')
 			end				
 		end
+	end	
+
+	--Heal Prediction
+	do
+		local healPrediction = frame.HealPrediction
+		local c = UF.db.colors.healPrediction
+		if db.healPrediction then
+			if not frame:IsElementEnabled('HealPrediction') then
+				frame:EnableElement('HealPrediction')
+			end
+
+			healPrediction.myBar:SetStatusBarColor(c.personal.r, c.personal.g, c.personal.b, c.personal.a)
+			healPrediction.otherBar:SetStatusBarColor(c.others.r, c.others.g, c.others.b, c.others.a)
+			healPrediction.absorbBar:SetStatusBarColor(c.absorbs.r, c.absorbs.g, c.absorbs.b, c.absorbs.a)				
+		else
+			if frame:IsElementEnabled('HealPrediction') then
+				frame:DisableElement('HealPrediction')
+			end		
+		end
 	end		
 	
 	if db.customTexts then
@@ -410,48 +468,6 @@ function UF:Update_ArenaFrames(frame, db)
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)		
 	
 	frame:UpdateAllElements()
-end
-
-function UF:UpdatePrep(event)
-	if event == "ARENA_OPPONENT_UPDATE" then
-		for i=1, 5 do
-			local f = _G["ElvUF_PrepArena"..i]
-			if f then
-				f:Hide()
-			end
-		end
-	else
-		local numOpps = GetNumArenaOpponentSpecs()
-
-		if numOpps > 0 then
-			for i=1, 5 do
-				if not _G["ElvUF_Arena"..i] then return; end
-				local s = GetArenaOpponentSpec(i)
-				local _, spec, class, texture = nil, "UNKNOWN", "UNKNOWN", [[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]]
-
-				if s and s > 0 then
-					_, spec, _, texture, _, _, class = GetSpecializationInfoByID(s)
-				end
-
-				if (i <= numOpps) then
-					if class and spec then
-						local color = RAID_CLASS_COLORS[class]
-						_G["ElvUF_Arena"..i].prepFrame.SpecClass:SetText(spec.."  -  "..LOCALIZED_CLASS_NAMES_MALE[class])
-						_G["ElvUF_Arena"..i].prepFrame.Health:SetStatusBarColor(color.r, color.g, color.b)
-						_G["ElvUF_Arena"..i].prepFrame.Icon:SetTexture(texture)
-						_G["ElvUF_Arena"..i].prepFrame:Show()
-					end
-				else
-					_G["ElvUF_Arena"..i].prepFrame:Hide()
-				end
-			end
-		else
-			for i=1, 5 do
-				if not _G["ElvUF_Arena"..i] then return; end
-				_G["ElvUF_Arena"..i].prepFrame:Hide()
-			end
-		end
-	end
 end
 
 UF['unitgroupstoload']['arena'] = 5

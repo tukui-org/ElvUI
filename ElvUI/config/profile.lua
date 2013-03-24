@@ -1067,6 +1067,7 @@ P['unitframe'] = {
 			['width'] = 240,
 			['height'] = 47,
 			['pvpSpecIcon'] = true,
+			['healPrediction'] = true,
 			['health'] = {
 				['text_format'] = '[healthcolor][health:current-percent]',
 				['position'] = 'TOPRIGHT',

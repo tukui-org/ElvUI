@@ -763,7 +763,6 @@ end
 
 function UF:PLAYER_ENTERING_WORLD(event)
 	self:Update_AllFrames()
-	self:UpdatePrep(event)
 end
 
 function UF:UnitFrameThreatIndicator_Initialize(_, unitFrame)
@@ -811,8 +810,6 @@ function UF:Initialize()
 	
 	self:LoadUnits()
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
-	self:RegisterEvent('ARENA_PREP_OPPONENT_SPECIALIZATIONS', 'UpdatePrep')
-	self:RegisterEvent('ARENA_OPPONENT_UPDATE', 'UpdatePrep')
 
 	if E.private["unitframe"].disableBlizzard then
 		self:DisableBlizzard()	
