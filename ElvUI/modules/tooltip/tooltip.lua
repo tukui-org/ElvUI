@@ -759,27 +759,51 @@ function TT:Initialize()
 	
 	--SpellIDs
 	hooksecurefunc(GameTooltip, "SetUnitBuff", function(self,...)
-		local id = select(11,UnitBuff(...))
+		local _, _, _, _, _, _, _, caster, _, _, id = UnitBuff(...)
 		if id and TT.db.spellid then
-			self:AddLine(("|cFFCA3C3C%s|r %d"):format(ID, id))
+			if caster then
+				local name = UnitName(caster)
+				local _, class = UnitClass(caster)
+				local color = RAID_CLASS_COLORS[class]
+				self:AddDoubleLine(("|cFFCA3C3C%s|r %d"):format(ID, id), format("|c%s%s|r", color.colorStr, name))
+			else
+				self:AddLine(("|cFFCA3C3C%s|r %d"):format(ID, id))
+			end
+
 			self:Show()
 		end
 	end)
 
 	hooksecurefunc(GameTooltip, "SetUnitDebuff", function(self,...)
-		local id = select(11,UnitDebuff(...))
+		local _, _, _, _, _, _, _, caster, _, _, id = UnitDebuff(...)
 		if id and TT.db.spellid then
-			self:AddLine(("|cFFCA3C3C%s|r %d"):format(ID, id))
+			if caster then
+				local name = UnitName(caster)
+				local _, class = UnitClass(caster)
+				local color = RAID_CLASS_COLORS[class]
+				self:AddDoubleLine(("|cFFCA3C3C%s|r %d"):format(ID, id), format("|c%s%s|r", color.colorStr, name))
+			else
+				self:AddLine(("|cFFCA3C3C%s|r %d"):format(ID, id))
+			end
+
 			self:Show()
-		end
+		end	
 	end)
 
 	hooksecurefunc(GameTooltip, "SetUnitAura", function(self,...)
-		local id = select(11,UnitAura(...))
+		local _, _, _, _, _, _, _, caster, _, _, id = UnitAura(...)
 		if id and TT.db.spellid then
-			self:AddLine(("|cFFCA3C3C%s|r %d"):format(ID, id))
+			if caster then
+				local name = UnitName(caster)
+				local _, class = UnitClass(caster)
+				local color = RAID_CLASS_COLORS[class]
+				self:AddDoubleLine(("|cFFCA3C3C%s|r %d"):format(ID, id), format("|c%s%s|r", color.colorStr, name))
+			else
+				self:AddLine(("|cFFCA3C3C%s|r %d"):format(ID, id))
+			end
+
 			self:Show()
-		end
+		end	
 	end)
 
 	hooksecurefunc("SetItemRef", function(link, text, button, chatFrame)
