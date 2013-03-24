@@ -23,7 +23,7 @@ end
 
 
 local minThrottle = 0.02
-local numArrows, inRange, unit, angle, GPS, _
+local numArrows, inRange, unit, angle, GPS, distance
 local Update = function(self, elapsed)
 	if self.elapsed and self.elapsed > (self.throttle or minThrottle) then
 		numArrows = 0
@@ -41,7 +41,7 @@ local Update = function(self, elapsed)
 					if not unit or not (UnitInParty(unit) or UnitInRaid(unit)) or UnitIsUnit(unit, "player") or not UnitIsConnected(unit) or (GPS.onMouseOver and (GetMouseFocus() ~= object)) or (GPS.outOfRange and inRange) then
 						GPS:Hide()
 					else
-						_, angle = ElvUI[1]:GetDistance("player", unit)
+						distance, angle = ElvUI[1]:GetDistance("player", unit)
 						if not angle then 
 							GPS:Hide()
 						else
@@ -49,9 +49,13 @@ local Update = function(self, elapsed)
 							
 							if GPS.Texture then
 								RotateTexture(GPS.Texture, angle)
-							end							
+							end
 
-							if(GPS.PostUpdate) then GPS:PostUpdate(frame) end
+							if GPS.Text then
+								GPS.Text:SetText(distance)
+							end
+
+							if(GPS.PostUpdate) then GPS:PostUpdate(frame, distance, angle) end
 							numArrows = numArrows + 1
 						end
 					end				
