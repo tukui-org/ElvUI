@@ -272,6 +272,9 @@ local function LoadSkin()
 			bu.specIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 			bu.specIcon:SetSize(50, 50)
 			bu.specIcon:Point("LEFT", bu, "LEFT", 15, 0)
+
+			bu.SelectedTexture = bu:CreateTexture(nil, 'ARTWORK')
+			bu.SelectedTexture:SetTexture(1, 1, 0, 0.1) 			
 		end
 		
 		PlayerTalentFramePetSpecializationSpellScrollFrameScrollChild.Seperator:SetTexture(1, 1, 1)
