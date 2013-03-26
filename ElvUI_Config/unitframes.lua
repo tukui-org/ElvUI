@@ -3068,7 +3068,10 @@ E.Options.args.unitframe.args.party = {
 								['CLASS'] = CLASS,
 								['ROLE'] = ROLE,
 								['NAME'] = NAME,
+								['NAME_ENTIRE_GROUP'] = L['Name (Entire Group)'],
+								['MTMA'] = L['Main Tanks / Main Assist'],
 								['GROUP'] = GROUP,
+								['NONE'] = NONE,
 							},
 						},
 						sortDir = {
@@ -3462,7 +3465,10 @@ for i=10, 40, 15 do
 									['CLASS'] = CLASS,
 									['ROLE'] = ROLE,
 									['NAME'] = NAME,
+									['NAME_ENTIRE_GROUP'] = L['Name (Entire Group)'],
+									['MTMA'] = L['Main Tanks / Main Assist'],
 									['GROUP'] = GROUP,
+									['NONE'] = NONE,
 								},
 							},
 							sortDir = {
