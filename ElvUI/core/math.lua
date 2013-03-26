@@ -280,7 +280,7 @@ local function GetPosition(unit)
 	if unit == "player" or UnitIsUnit("player", unit) then
 		m, f, x, y = Astrolabe:GetCurrentPlayerPosition()
 	else
-		m, f, x, y = Astrolabe:GetUnitPosition(unit, true)
+		m, f, x, y = Astrolabe:GetUnitPosition(unit)
 	end
 
 	if not (m and y) then
