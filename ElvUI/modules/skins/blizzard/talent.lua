@@ -113,17 +113,20 @@ local function LoadSkin()
 			local ic = _G["PlayerTalentFrameTalentsTalentRow"..i.."Talent"..j.."IconTexture"]
 
 			bu:StripTextures()
-			bu:SetFrameLevel(bu:GetFrameLevel() + 2)
+			bu:SetFrameLevel(bu:GetFrameLevel() + 5)
 			bu:CreateBackdrop("Default")
 			bu.backdrop:SetOutside(ic)
-			ic:SetDrawLayer("ARTWORK")
+			ic:SetDrawLayer("OVERLAY")
 			ic:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 
 			bu.bg = CreateFrame("Frame", nil, bu)
 			bu.bg:CreateBackdrop("Overlay")
-			bu.bg:SetFrameLevel(bu:GetFrameLevel() - 1)
+			bu.bg:SetFrameLevel(bu:GetFrameLevel() -2)
 			bu.bg:Point("TOPLEFT", 15, -1)
-			bu.bg:Point("BOTTOMRIGHT", -10, 1)	
+			bu.bg:Point("BOTTOMRIGHT", -10, 1)
+			bu.bg.SelectedTexture = bu.bg:CreateTexture(nil, 'ARTWORK')
+			bu.bg.SelectedTexture:Point("TOPLEFT", bu, "TOPLEFT", 15, -1)
+			bu.bg.SelectedTexture:Point("BOTTOMRIGHT", bu, "BOTTOMRIGHT", -10, 1)
 		end
 	end
 
@@ -132,15 +135,14 @@ local function LoadSkin()
 			for j = 1, NUM_TALENT_COLUMNS do
 				local bu = _G["PlayerTalentFrameTalentsTalentRow"..i.."Talent"..j]
 				if bu.knownSelection:IsShown() then
-					bu.backdrop:SetBackdropBorderColor(0, 1, 0, 1)
-					bu.bg.backdrop:SetBackdropBorderColor(0, 1, 0, 1)
+					bu.bg.SelectedTexture:Show()
+					bu.bg.SelectedTexture:SetTexture(0, 1, 0, 0.1)
 				else
-					bu.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-					bu.bg.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+					bu.bg.SelectedTexture:Hide()
 				end
 				if bu.learnSelection:IsShown() then
-					bu.backdrop:SetBackdropBorderColor(1, 0.82, 0, 1)
-					bu.bg.backdrop:SetBackdropBorderColor(1, 0.82, 0, 1)
+					bu.bg.SelectedTexture:Show()
+					bu.bg.SelectedTexture:SetTexture(1, 1, 0, 0.1)
 				end
 			end
 		end
