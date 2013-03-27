@@ -72,7 +72,6 @@ for i=10, 40, 15 do
 		header.db = db
 
 		UF['headerGroupBy'][db.groupBy](header)
-		header:SetAttribute("groupBy", db.groupBy == 'ROLE' and 'ASSIGNEDROLE' or db.groupBy)
 		header:SetAttribute('sortDir', db.sortDir)
 		header:SetAttribute("showPlayer", db.showPlayer)
 		

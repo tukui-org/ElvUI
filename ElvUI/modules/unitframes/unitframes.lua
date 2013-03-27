@@ -54,18 +54,32 @@ UF['headerGroupBy'] = {
 	['CLASS'] = function(header)
 		header:SetAttribute("groupingOrder", "DEATHKNIGHT,DRUID,HUNTER,MAGE,PALADIN,PRIEST,SHAMAN,WARLOCK,WARRIOR")
 		header:SetAttribute('sortMethod', 'NAME')
+		header:SetAttribute("groupBy", 'CLASS')
+	end,
+	['MTMA'] = function(header)
+		header:SetAttribute("groupingOrder", "MAINTANK,MAINASSIST,NONE")
+		header:SetAttribute('sortMethod', 'NAME')
+		header:SetAttribute("groupBy", 'ROLE')
 	end,
 	['ROLE'] = function(header)
 		header:SetAttribute("groupingOrder", "TANK,HEALER,DAMAGER,NONE")
-		header:SetAttribute('sortMethod', 'NAME')	
+		header:SetAttribute('sortMethod', 'NAME')
+		header:SetAttribute("groupBy", 'ASSIGNEDROLE')
 	end,
 	['NAME'] = function(header)
 		header:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
-		header:SetAttribute('sortMethod', 'NAME')	
+		header:SetAttribute('sortMethod', 'NAME')
+		header:SetAttribute("groupBy", 'GROUP')
 	end,
+	['NAME_ENTIRE_GROUP'] = function(header)
+		header:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
+		header:SetAttribute('sortMethod', 'NAME')
+		header:SetAttribute("groupBy", nil)
+	end, 
 	['GROUP'] = function(header)
 		header:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
 		header:SetAttribute('sortMethod', 'INDEX')
+		header:SetAttribute("groupBy", 'GROUP')
 	end,
 }
 

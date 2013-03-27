@@ -50,7 +50,7 @@ local function CheckTalentTree(tree)
 end
  
 local function CheckSpec(self, event, levels)
-	-- Not interested in gained points from leveling	
+	-- Not interested in gained points from leveling
 	if event == "CHARACTER_POINTS_CHANGED" and levels > 0 then return end
 	
 	--Check for certain talents to see if we can dispel magic or not
@@ -131,6 +131,8 @@ local function Enable(object)
 	object:RegisterEvent("UNIT_AURA", Update)
 	object:RegisterEvent("PLAYER_TALENT_UPDATE", CheckSpec)
 	object:RegisterEvent("CHARACTER_POINTS_CHANGED", CheckSpec)
+	CheckSpec(object)
+
 	object:RegisterUnitEvent("UNIT_AURA", object.unit)
 	if playerClass == "DRUID" then
 		object:RegisterEvent("SPELLS_CHANGED", CheckSymbiosis)
@@ -153,6 +155,7 @@ local function Disable(object)
 	object:UnregisterEvent("UNIT_AURA", Update)
 	object:UnregisterEvent("PLAYER_TALENT_UPDATE", CheckSpec)
 	object:UnregisterEvent("CHARACTER_POINTS_CHANGED", CheckSpec)
+
 	if playerClass == "DRUID" then
 		object:UnregisterEvent("SPELLS_CHANGED", CheckSymbiosis)
 	end

@@ -12,7 +12,7 @@ lib.prefix = "ElvUIPluginVC"
 --
 
 -- MULTI Language Support (Default Language: English)
-local MSG_OUTDATED = "Your version of %s is out of date (latest is version %d). You can download the latest version from http://www.tukui.org"
+local MSG_OUTDATED = "Your version of %s is out of date (latest is version %s). You can download the latest version from http://www.tukui.org"
 local HDR_CONFIG = "Plugins"
 local HDR_INFORMATION = "LibElvUIPlugin-1.0.%d - Plugins Loaded  (Green means you have current version, Red means out of date)"
 local INFO_BY = "by"

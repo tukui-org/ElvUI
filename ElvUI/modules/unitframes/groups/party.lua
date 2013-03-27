@@ -60,7 +60,6 @@ function UF:Update_PartyHeader(header, db)
 	header.db = db
 
 	UF['headerGroupBy'][db.groupBy](header)
-	header:SetAttribute("groupBy", db.groupBy == 'ROLE' and 'ASSIGNEDROLE' or db.groupBy)
 	header:SetAttribute('sortDir', db.sortDir)
 	header:SetAttribute("showPlayer", db.showPlayer)
 	
