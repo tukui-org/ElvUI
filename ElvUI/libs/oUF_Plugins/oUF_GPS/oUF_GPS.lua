@@ -41,7 +41,7 @@ local Update = function(self, elapsed)
 					if not unit or not (UnitInParty(unit) or UnitInRaid(unit)) or UnitIsUnit(unit, "player") or not UnitIsConnected(unit) or (GPS.onMouseOver and (GetMouseFocus() ~= object)) or (GPS.outOfRange and inRange) then
 						GPS:Hide()
 					else
-						distance, angle = ElvUI[1]:GetDistance("player", unit)
+						distance, angle = ElvUI[1]:GetDistance("player", unit, GPS.onMouseOver == false)
 						if not angle then 
 							GPS:Hide()
 						else
