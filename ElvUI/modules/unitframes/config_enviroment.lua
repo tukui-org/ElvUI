@@ -58,6 +58,7 @@ local function createConfigEnv()
 	})
 	
 	overrideFuncs['namecolor'] = ElvUF.Tags.Methods['namecolor']
+	overrideFuncs['name:veryshort'] = ElvUF.Tags.Methods['name:veryshort']
 	overrideFuncs['name:short'] = ElvUF.Tags.Methods['name:short']
 	overrideFuncs['name:medium'] = ElvUF.Tags.Methods['name:medium']
 	overrideFuncs['name:long'] = ElvUF.Tags.Methods['name:long']
