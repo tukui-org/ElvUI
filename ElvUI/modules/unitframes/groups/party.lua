@@ -152,7 +152,7 @@ function UF:Update_PartyFrames(frame, db)
 			local health = frame.Health
 			health.Smooth = self.db.smoothbars
 			health.frequentUpdates = db.health.frequentUpdates
-			
+
 			--Colors
 			health.colorSmooth = nil
 			health.colorHealth = nil
@@ -199,6 +199,7 @@ function UF:Update_PartyFrames(frame, db)
 			frame:Tag(health.value, db.health.text_format)
 			
 			health.frequentUpdates = db.health.frequentUpdates
+
 			--Colors
 			health.colorSmooth = nil
 			health.colorHealth = nil

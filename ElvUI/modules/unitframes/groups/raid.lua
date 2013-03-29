@@ -139,7 +139,7 @@ for i=10, 40, 15 do
 			local health = frame.Health
 			health.Smooth = self.db.smoothbars
 			health.frequentUpdates = db.health.frequentUpdates
-			
+
 			--Position this even if disabled because resurrection icon depends on the position
 			local x, y = self:GetPositionOffset(db.health.position)
 			health.value:ClearAllPoints()
