@@ -6,19 +6,39 @@ local format = string.format
 
 
 local LSM = LibStub("LibSharedMedia-3.0");
-function UF:SpawnMenu()
-	local unit = E:StringTitle(self.unit)
-	if self.unit:find("targettarget") then return; end
-	if _G[unit.."FrameDropDown"] then
-		ToggleDropDownMenu(1, nil, _G[unit.."FrameDropDown"], "cursor")
-	elseif (self.unit:match("party")) then
-		ToggleDropDownMenu(1, nil, _G["PartyMemberFrame"..self.id.."DropDown"], "cursor")
-	else
-		FriendsDropDown.unit = self.unit
-		FriendsDropDown.id = self.id
-		FriendsDropDown.initialize = RaidFrameDropDown_Initialize
-		ToggleDropDownMenu(1, nil, FriendsDropDown, "cursor")
+
+local dropdown = CreateFrame("Frame", "ElvUF_DropDown", UIParent, "UIDropDownMenuTemplate")
+
+local initdropdown = function(self)
+	local unit = self:GetParent().unit or 'player'
+	local menu, name, id
+
+	if(not unit) then
+		return
 	end
+
+	if(UnitIsPlayer(unit)) then
+		id = UnitInRaid(unit)
+		if(id) then
+			menu = "RAID_PLAYER"
+			name = GetRaidRosterInfo(id)
+		elseif(UnitInParty(unit)) then
+			menu = "PARTY"
+		end
+	end
+
+	if(menu) then
+		UnitPopup_ShowMenu(self, menu, unit, name, id)
+	end
+end
+
+
+UIDropDownMenu_Initialize(dropdown, initdropdown, "MENU")
+
+
+function UF:SpawnMenu()
+	dropdown:SetParent(self)
+	return ToggleDropDownMenu(nil, nil, dropdown, "cursor", 0, 0)
 end
 
 function UF:Construct_TargetGlow(frame)
