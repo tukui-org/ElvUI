@@ -154,23 +154,35 @@ function UF:Update_PartyFrames(frame, db)
 			local health = frame.Health
 			health.Smooth = self.db.smoothbars
 			health.frequentUpdates = db.health.frequentUpdates
-			
+
 			--Colors
 			health.colorSmooth = nil
 			health.colorHealth = nil
 			health.colorClass = nil
 			health.colorReaction = nil
-			if self.db['colors'].healthclass ~= true then
+
+			if db.colorOverride == "FORCE_ON" then
+				health.colorClass = true
+				health.colorReaction = true
+			elseif db.colorOverride == "FORCE_OFF" then
 				if self.db['colors'].colorhealthbyvalue == true then
 					health.colorSmooth = true
 				else
 					health.colorHealth = true
 				end		
 			else
-				health.colorClass = true
-				health.colorReaction = true
-			end	
-			
+				if self.db['colors'].healthclass ~= true then
+					if self.db['colors'].colorhealthbyvalue == true then
+						health.colorSmooth = true
+					else
+						health.colorHealth = true
+					end		
+				else
+					health.colorClass = true
+					health.colorReaction = true
+				end				
+			end
+
 			--Position
 			health:ClearAllPoints()
 			health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -BORDER)
@@ -201,6 +213,7 @@ function UF:Update_PartyFrames(frame, db)
 			frame:Tag(health.value, db.health.text_format)
 			
 			health.frequentUpdates = db.health.frequentUpdates
+
 			--Colors
 			health.colorSmooth = nil
 			health.colorHealth = nil

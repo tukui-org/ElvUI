@@ -2814,7 +2814,18 @@ E.Options.args.unitframe.args.arena = {
 				['UP'] = L['Up'],
 				['DOWN'] = L['Down'],
 			},
-		},	
+		},
+		colorOverride = {
+			order = 11,
+			name = L['Class Color Override'],
+			desc = L['Override the default class color setting.'],
+			type = 'select',
+			values = {
+				['USE_DEFAULT'] = L['Use Default'],
+				['FORCE_ON'] = L['Force On'],
+				['FORCE_OFF'] = L['Force Off'],
+			},
+		},
 		pvpTrinket = {
 			order = 14,
 			type = 'group',
@@ -2944,7 +2955,18 @@ E.Options.args.unitframe.args.party = {
 					order = 5,
 					name = L['Threat Display Mode'],
 					values = threatValues,
-				},					
+				},	
+				colorOverride = {
+					order = 6,
+					name = L['Class Color Override'],
+					desc = L['Override the default class color setting.'],
+					type = 'select',
+					values = {
+						['USE_DEFAULT'] = L['Use Default'],
+						['FORCE_ON'] = L['Force On'],
+						['FORCE_OFF'] = L['Force Off'],
+					},
+				},								
 				positionsGroup = {
 					order = 100,
 					name = L['Size and Positions'],
@@ -3340,7 +3362,18 @@ for i=10, 40, 15 do
 						order = 5,
 						name = L['Threat Display Mode'],
 						values = threatValues,
-					},					
+					},	
+					colorOverride = {
+						order = 6,
+						name = L['Class Color Override'],
+						desc = L['Override the default class color setting.'],
+						type = 'select',
+						values = {
+							['USE_DEFAULT'] = L['Use Default'],
+							['FORCE_ON'] = L['Force On'],
+							['FORCE_OFF'] = L['Force Off'],
+						},
+					},									
 					positionsGroup = {
 						order = 100,
 						name = L['Size and Positions'],

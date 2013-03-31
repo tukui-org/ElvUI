@@ -6,6 +6,7 @@ local format = string.format
 
 
 local LSM = LibStub("LibSharedMedia-3.0");
+
 function UF:SpawnMenu()
 	local unit = E:StringTitle(self.unit)
 	if self.unit:find("targettarget") then return; end
