@@ -296,6 +296,10 @@ function AB:ReassignBindings(event)
 		self:UpdateStanceBindings();
 	end
 
+	if event == "PLAYER_REGEN_DISABLED" then
+		self:UnregisterEvent(event)
+	end
+
 	if InCombatLockdown() then return end	
 	for _, bar in pairs(self["handledBars"]) do
 		if not bar then return end
@@ -321,6 +325,8 @@ function AB:RemoveBindings()
 		
 		ClearOverrideBindings(bar)
 	end
+
+	self:RegisterEvent("PLAYER_REGEN_DISABLED", "ReassignBindings")
 end
 
 function AB:UpdateBar1Paging()
