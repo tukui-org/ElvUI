@@ -165,7 +165,7 @@ end
 
 function UF:PostCastStart(unit, name, rank, castid)
 	local db = self:GetParent().db
-	if not db then return; end
+	if not db or not db.castbar then return; end
 	
 	if unit == "vehicle" then unit = "player" end
 	
