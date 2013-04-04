@@ -582,13 +582,17 @@ function E:RemoveNonPetBattleFrames()
 	for object, _ in pairs(E.FrameLocks) do
 		_G[object]:SetParent(E.HiddenFrame)
 	end
+
+	self:RegisterEvent("PLAYER_REGEN_DISABLED", "AddNonPetBattleFrames")
 end
 
-function E:AddNonPetBattleFrames()
+function E:AddNonPetBattleFrames(event)
 	if InCombatLockdown() then return end
 	for object, _ in pairs(E.FrameLocks) do
 		_G[object]:SetParent(UIParent)
 	end
+
+	self:UnregisterEvent("PLAYER_REGEN_DISABLED")
 end
 
 function E:ResetAllUI()

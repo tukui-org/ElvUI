@@ -10,6 +10,8 @@ function M:RaidMarkCanMark()
 	if GetNumGroupMembers() > 0 then
 		if UnitIsGroupLeader('player') or UnitIsGroupAssistant("player") then
 			return true;
+		elseif IsInGroup() and not IsInRaid() then
+			return true;
 		else
 			UIErrorsFrame:AddMessage(L["You don't have permission to mark targets."], 1.0, 0.1, 0.1, 1.0, UIERRORS_HOLD_TIME);
 			return false;
