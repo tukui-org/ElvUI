@@ -589,9 +589,7 @@ function E:AddNonPetBattleFrames(event)
 		_G[object]:SetParent(UIParent)
 	end
 
-	if event == "PLAYER_REGEN_DISABLED" then
-		self:UnregisterEvent(event)
-	end
+	self:UnregisterEvent("PLAYER_REGEN_DISABLED")
 end
 
 function E:ResetAllUI()

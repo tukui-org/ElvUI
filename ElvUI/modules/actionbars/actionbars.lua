@@ -296,9 +296,7 @@ function AB:ReassignBindings(event)
 		self:UpdateStanceBindings();
 	end
 
-	if event == "PLAYER_REGEN_DISABLED" then
-		self:UnregisterEvent(event)
-	end
+	self:UnregisterEvent("PLAYER_REGEN_DISABLED")
 
 	if InCombatLockdown() then return end	
 	for _, bar in pairs(self["handledBars"]) do
