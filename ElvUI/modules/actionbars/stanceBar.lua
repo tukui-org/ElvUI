@@ -10,6 +10,7 @@ function AB:StyleShapeShift()
 	local texture, name, isActive, isCastable;
 	local buttonName, button, icon, cooldown;
 	local start, duration, enable;
+	local stance = GetShapeshiftForm();
 	
 	for i = 1, NUM_STANCE_SLOTS do
 		buttonName = "ElvUI_StanceBarButton"..i;
@@ -38,7 +39,7 @@ function AB:StyleShapeShift()
 					button:SetChecked(0);
 				end
 			else
-				if numForms == 1 then
+				if numForms == 1 or stance == 0 then
 					button:SetChecked(0);
 				else
 					button:SetChecked(1);
