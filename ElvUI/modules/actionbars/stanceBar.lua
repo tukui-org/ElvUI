@@ -32,15 +32,23 @@ function AB:StyleShapeShift()
 			
 			if isActive then
 				StanceBarFrame.lastSelected = button:GetID();
-				button:SetChecked(0);
+				if numForms == 1 then
+					button:SetChecked(1);
+				else
+					button:SetChecked(0);
+				end
 			else
-				button:SetChecked(1);
-				if button.SetCheckedTexture and not button.tex then
-					local tex = button:CreateTexture(nil, "OVERLAY")
-					tex:SetTexture(0, 0, 0, 0.8)
-					tex:SetInside()
-					button.tex = tex
-					button:SetCheckedTexture(tex)
+				if numForms == 1 then
+					button:SetChecked(0);
+				else
+					button:SetChecked(1);
+					if button.SetCheckedTexture and not button.tex then
+						local tex = button:CreateTexture(nil, "OVERLAY")
+						tex:SetTexture(0, 0, 0, 0.7)
+						tex:SetInside()
+						button.tex = tex
+						button:SetCheckedTexture(tex)
+					end
 				end
 			end
 
