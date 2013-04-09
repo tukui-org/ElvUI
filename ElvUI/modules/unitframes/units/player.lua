@@ -68,6 +68,7 @@ function UF:Construct_PlayerFrame(frame)
 end
 
 function UF:UpdatePlayerFrameAnchors(frame, isShown)
+	frame = frame or ElvUF_Player
 	local db = E.db['unitframe']['units'].player
 	local health = frame.Health
 	local threat = frame.Threat
@@ -706,7 +707,7 @@ function UF:Update_PlayerFrame(frame, db)
 
 				if not bars.mover then
 					bars:Width(CLASSBAR_WIDTH)
-					bars:Height(CLASSBAR_HEIGHT - (BORDER*2))					
+					bars:Height(E.myclass == 'DRUID' and (CLASSBAR_HEIGHT - (BORDER*2)) or (CLASSBAR_HEIGHT - (E.PixelMode and 1 or 4)))
 					bars:ClearAllPoints()
 					bars:Point("BOTTOM", E.UIParent, "BOTTOM", 0, 150)
 					E:CreateMover(bars, 'ClassBarMover', L['Classbar'], nil, nil, nil, 'ALL,SOLO')
@@ -721,7 +722,7 @@ function UF:Update_PlayerFrame(frame, db)
 			end			
 
 			bars:Width(CLASSBAR_WIDTH)
-			bars:Height(CLASSBAR_HEIGHT - (BORDER*2))	
+			bars:Height(E.myclass == 'DRUID' and (CLASSBAR_HEIGHT - (BORDER*2)) or (CLASSBAR_HEIGHT - (E.PixelMode and 1 or 4)))	
 
 			if E.myclass ~= 'MONK' and E.myclass ~= 'WARLOCK' and E.myclass ~= 'DRUID' then
 				for i = 1, MAX_CLASS_BAR do
