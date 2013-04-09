@@ -186,7 +186,7 @@ end
 
 function UF:PostUpdateStagger()
 	local frame = self:GetParent()
-	UF:UpdatePlayerFrameAnchors(frame, (frame.ClassBar and frame.ClassBar:IsShown()))
+	UF:UpdatePlayerFrameAnchors(frame, (frame[frame.ClassBar] and frame[frame.ClassBar]:IsShown()))
 end
 
 -------------------------------------------------------------
