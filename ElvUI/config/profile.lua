@@ -415,6 +415,8 @@ P['unitframe'] = {
 				['enable'] = true,
 				['fill'] = 'fill',
 				['height'] = 10,
+				['detatchFromFrame'] = false,
+				['detatchedWidth'] = 250,
 			},
 			['aurabar'] = {
 				['enable'] = true,
@@ -531,6 +533,8 @@ P['unitframe'] = {
 				['enable'] = true,
 				['fill'] = 'fill',
 				['height'] = 10,
+				['detatchFromFrame'] = false,
+				['detatchedWidth'] = 250,				
 			},		
 			['aurabar'] = {
 				['enable'] = true,

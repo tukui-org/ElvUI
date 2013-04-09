@@ -320,6 +320,10 @@ function UF:UpdateComboDisplay(event, unit)
 	if USE_PORTRAIT_OVERLAY or not USE_PORTRAIT then
 		PORTRAIT_WIDTH = 0
 	end
+
+	if db.combobar.detatchFromFrame then
+		COMBOBAR_HEIGHT = 0
+	end	
 	
 	if cpoints[1]:GetAlpha() == 1 then
 		cpoints:Show()
