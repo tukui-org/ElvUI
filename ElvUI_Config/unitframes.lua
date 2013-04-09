@@ -2147,15 +2147,20 @@ E.Options.args.unitframe.args.target = {
 						['fill'] = L['Filled'],
 						['spaced'] = L['Spaced'],
 					},
-				},				
+				},		
+				autoHide = {
+					type = 'toggle',
+					name = L['Auto-Hide'],
+					order = 4,
+				},		
 				DetachFromFrame = {
 					type = 'toggle',
-					order = 4,
+					order = 5,
 					name = L['Detach From Frame'],
 				},	
 				DetachedWidth = {
 					type = 'range',
-					order = 5,
+					order = 6,
 					name = L['Detached Width'],
 					disabled = function() return not E.db.unitframe.units['target']['combobar'].DetachFromFrame end,
 					min = 15, max = 450, step = 1,

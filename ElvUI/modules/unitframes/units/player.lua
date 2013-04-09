@@ -732,14 +732,14 @@ function UF:Update_PlayerFrame(frame, db)
 					if i == 1 then
 						bars[i]:SetPoint("LEFT", bars)
 					else
-						if USE_MINI_CLASSBAR then
+						if db.classbar.fill == "spaced" then
 							bars[i]:Point("LEFT", bars[i-1], "RIGHT", SPACING+(BORDER*2)+2, 0)
 						else
 							bars[i]:Point("LEFT", bars[i-1], "RIGHT", 1, 0)
 						end
 					end
 					
-					if not USE_MINI_CLASSBAR then
+					if db.classbar.fill ~= "spaced" then
 						bars[i].backdrop:Hide()
 					else
 						bars[i].backdrop:Show()
@@ -764,7 +764,7 @@ function UF:Update_PlayerFrame(frame, db)
 			end
 
 			if E.myclass ~= 'DRUID' then
-				if not USE_MINI_CLASSBAR then
+				if db.classbar.fill ~= "spaced" then
 					bars.backdrop:Show()
 				else
 					bars.backdrop:Hide()			

@@ -36,7 +36,7 @@ function UF:UpdateHoly(event, unit, powerType)
 	local numHolyPower = UnitPower('player', SPELL_POWER_HOLY_POWER);
 	local maxHolyPower = UnitPowerMax('player', SPELL_POWER_HOLY_POWER);	
 	local MAX_HOLY_POWER = UF['classMaxResourceBar'][E.myclass]
-	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and db.classbar.enable and not db.classbar.DetachFromFrame
+	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and db.classbar.enable
 	local USE_PORTRAIT = db.portrait.enable
 	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
 	local PORTRAIT_WIDTH = db.portrait.width
@@ -131,7 +131,7 @@ function UF:UpdateHarmony()
 	local POWERBAR_OFFSET = db.power.offset
 	local USE_POWERBAR = db.power.enable
 	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR
-	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and db.classbar.enable and not db.classbar.DetachFromFrame
+	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and db.classbar.enable
 	
 	if USE_PORTRAIT_OVERLAY or not USE_PORTRAIT then
 		PORTRAIT_WIDTH = 0	

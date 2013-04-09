@@ -451,6 +451,13 @@ function UF:Update_TargetFrame(frame, db)
 	do
 		local CPoints = frame.CPoints
 		CPoints:ClearAllPoints()
+
+		if db.combobar.autoHide then
+			CPoints:SetParent(frame)
+		else
+			CPoints:SetParent(E.UIParent)	
+		end
+
 		if USE_MINI_COMBOBAR and not db.combobar.DetachFromFrame then
 			CPoints:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), -SPACING)
 			CPoints:SetFrameStrata("MEDIUM")
@@ -490,7 +497,7 @@ function UF:Update_TargetFrame(frame, db)
 		for i = 1, MAX_COMBO_POINTS do
 			CPoints[i]:SetHeight(CPoints:GetHeight())
 			CPoints[i]:SetWidth(E:Scale(CPoints:GetWidth() - (MAX_COMBO_POINTS - 1)) / MAX_COMBO_POINTS)	
-			if USE_MINI_COMBOBAR then
+			if db.combobar.fill == "spaced" then
 				CPoints[i].backdrop:Show()
 			else
 				CPoints[i].backdrop:Hide()	
@@ -500,21 +507,21 @@ function UF:Update_TargetFrame(frame, db)
 			if i == 1 then
 				CPoints[i]:SetPoint("LEFT", CPoints)
 			else
-				if USE_MINI_COMBOBAR then
+				if db.combobar.fill == "spaced" then
 					CPoints[i]:Point("LEFT", CPoints[i-1], "RIGHT", SPACING+(BORDER*2)+2, 0)
 				else
 					CPoints[i]:Point("LEFT", CPoints[i-1], "RIGHT", 1, 0)
 				end
 			end	
 			
-			if not USE_MINI_COMBOBAR then
+			if db.combobar.fill ~= "spaced" then
 				CPoints[i].backdrop:Hide()
 			else
 				CPoints[i].backdrop:Show()
 			end					
 		end
 		
-		if not USE_MINI_COMBOBAR then
+		if db.combobar.fill ~= "spaced" then
 			CPoints.backdrop:Show()
 		else
 			CPoints.backdrop:Hide()
