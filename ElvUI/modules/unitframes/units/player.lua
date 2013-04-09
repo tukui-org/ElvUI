@@ -675,107 +675,109 @@ function UF:Update_PlayerFrame(frame, db)
 	do
 		local bars = frame[frame.ClassBar]
 
-		local MAX_CLASS_BAR = UF.classMaxResourceBar[E.myclass]
-		if USE_MINI_CLASSBAR and not db.classbar.DetachFromFrame then
-			bars:ClearAllPoints()
-			if E.myclass == 'DRUID' then
-				CLASSBAR_WIDTH = CLASSBAR_WIDTH * 2/3
-				bars:Point("LEFT", frame.Health.backdrop, "TOPLEFT", (BORDER*2 + 4), 0)
+		if bars then
+			local MAX_CLASS_BAR = UF.classMaxResourceBar[E.myclass]
+			if USE_MINI_CLASSBAR and not db.classbar.DetachFromFrame then
+				bars:ClearAllPoints()
+				if E.myclass == 'DRUID' then
+					CLASSBAR_WIDTH = CLASSBAR_WIDTH * 2/3
+					bars:Point("LEFT", frame.Health.backdrop, "TOPLEFT", (BORDER*2 + 4), 0)
+				else
+					CLASSBAR_WIDTH = CLASSBAR_WIDTH * (MAX_CLASS_BAR - 1) / MAX_CLASS_BAR	
+					bars:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), 0)
+				end
+				bars:SetFrameStrata("MEDIUM")
+
+				if bars.mover then
+					bars.mover:SetScale(0.000001)
+					bars.mover:SetAlpha(0)
+				end
+			elseif not db.classbar.DetachFromFrame then
+				bars:ClearAllPoints()
+				bars:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, (E.PixelMode and 0 or (BORDER + SPACING)))
+				bars:SetFrameStrata("LOW")
+
+				if bars.mover then
+					bars.mover:SetScale(0.000001)
+					bars.mover:SetAlpha(0)
+				end			
 			else
-				CLASSBAR_WIDTH = CLASSBAR_WIDTH * (MAX_CLASS_BAR - 1) / MAX_CLASS_BAR	
-				bars:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), 0)
-			end
-			bars:SetFrameStrata("MEDIUM")
+				CLASSBAR_WIDTH = db.classbar.DetachedWidth
 
-			if bars.mover then
-				bars.mover:SetScale(0.000001)
-				bars.mover:SetAlpha(0)
-			end
-		elseif not db.classbar.DetachFromFrame then
-			bars:ClearAllPoints()
-			bars:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, (E.PixelMode and 0 or (BORDER + SPACING)))
-			bars:SetFrameStrata("LOW")
+				if not bars.mover then
+					bars:Width(CLASSBAR_WIDTH)
+					bars:Height(CLASSBAR_HEIGHT - (BORDER*2))					
+					bars:ClearAllPoints()
+					bars:Point("BOTTOM", E.UIParent, "BOTTOM", 0, 150)
+					E:CreateMover(bars, 'ClassBarMover', L['Classbar'], nil, nil, nil, 'ALL,SOLO')
+				else
+					bars:ClearAllPoints()
+					bars:SetPoint("BOTTOMLEFT", bars.mover, "BOTTOMLEFT")
+					bars.mover:SetScale(1)
+					bars.mover:SetAlpha(1)		
+				end
 
-			if bars.mover then
-				bars.mover:SetScale(0.000001)
-				bars.mover:SetAlpha(0)
+				bars:SetFrameStrata("LOW")
 			end			
-		else
-			CLASSBAR_WIDTH = db.classbar.DetachedWidth
 
-			if not bars.mover then
-				bars:Width(CLASSBAR_WIDTH)
-				bars:Height(CLASSBAR_HEIGHT - (BORDER*2))					
-				bars:ClearAllPoints()
-				bars:Point("BOTTOM", E.UIParent, "BOTTOM", 0, 150)
-				E:CreateMover(bars, 'ClassBarMover', L['Classbar'], nil, nil, nil, 'ALL,SOLO')
-			else
-				bars:ClearAllPoints()
-				bars:SetPoint("BOTTOMLEFT", bars.mover, "BOTTOMLEFT")
-				bars.mover:SetScale(1)
-				bars.mover:SetAlpha(1)		
-			end
+			bars:Width(CLASSBAR_WIDTH)
+			bars:Height(CLASSBAR_HEIGHT - (BORDER*2))	
 
-			bars:SetFrameStrata("LOW")
-		end			
-
-		bars:Width(CLASSBAR_WIDTH)
-		bars:Height(CLASSBAR_HEIGHT - (BORDER*2))	
-
-		if E.myclass ~= 'MONK' and E.myclass ~= 'WARLOCK' and E.myclass ~= 'DRUID' then
-			for i = 1, MAX_CLASS_BAR do
-				bars[i]:SetHeight(bars:GetHeight())	
-				bars[i]:SetWidth(E:Scale(bars:GetWidth() - (MAX_CLASS_BAR - 1))/MAX_CLASS_BAR)	
-				bars[i]:GetStatusBarTexture():SetHorizTile(false)
-				bars[i]:ClearAllPoints()
-				if i == 1 then
-					bars[i]:SetPoint("LEFT", bars)
-				else
-					if USE_MINI_CLASSBAR then
-						bars[i]:Point("LEFT", bars[i-1], "RIGHT", SPACING+(BORDER*2)+2, 0)
+			if E.myclass ~= 'MONK' and E.myclass ~= 'WARLOCK' and E.myclass ~= 'DRUID' then
+				for i = 1, MAX_CLASS_BAR do
+					bars[i]:SetHeight(bars:GetHeight())	
+					bars[i]:SetWidth(E:Scale(bars:GetWidth() - (MAX_CLASS_BAR - 1))/MAX_CLASS_BAR)	
+					bars[i]:GetStatusBarTexture():SetHorizTile(false)
+					bars[i]:ClearAllPoints()
+					if i == 1 then
+						bars[i]:SetPoint("LEFT", bars)
 					else
-						bars[i]:Point("LEFT", bars[i-1], "RIGHT", 1, 0)
+						if USE_MINI_CLASSBAR then
+							bars[i]:Point("LEFT", bars[i-1], "RIGHT", SPACING+(BORDER*2)+2, 0)
+						else
+							bars[i]:Point("LEFT", bars[i-1], "RIGHT", 1, 0)
+						end
+					end
+					
+					if not USE_MINI_CLASSBAR then
+						bars[i].backdrop:Hide()
+					else
+						bars[i].backdrop:Show()
+					end
+
+					if E.myclass ~= 'DEATHKNIGHT' then
+						bars[i]:SetStatusBarColor(unpack(ElvUF.colors[frame.ClassBar]))
+
+						if bars[i].bg then
+							bars[i].bg:SetTexture(unpack(ElvUF.colors[frame.ClassBar]))
+						end
 					end
 				end
-				
-				if not USE_MINI_CLASSBAR then
-					bars[i].backdrop:Hide()
-				else
-					bars[i].backdrop:Show()
-				end
-
-				if E.myclass ~= 'DEATHKNIGHT' then
-					bars[i]:SetStatusBarColor(unpack(ElvUF.colors[frame.ClassBar]))
-
-					if bars[i].bg then
-						bars[i].bg:SetTexture(unpack(ElvUF.colors[frame.ClassBar]))
-					end
-				end
+			elseif E.myclass == 'DRUID' then
+				--?? Apparent bug fix for the width after in-game settings change
+				bars.LunarBar:SetMinMaxValues(0, 0)
+				bars.SolarBar:SetMinMaxValues(0, 0)
+				bars.LunarBar:SetStatusBarColor(unpack(ElvUF.colors.EclipseBar[1]))
+				bars.SolarBar:SetStatusBarColor(unpack(ElvUF.colors.EclipseBar[2]))
+				bars.LunarBar:Size(CLASSBAR_WIDTH, CLASSBAR_HEIGHT - (BORDER*2))			
+				bars.SolarBar:Size(CLASSBAR_WIDTH, CLASSBAR_HEIGHT - (BORDER*2))				
 			end
-		elseif E.myclass == 'DRUID' then
-			--?? Apparent bug fix for the width after in-game settings change
-			bars.LunarBar:SetMinMaxValues(0, 0)
-			bars.SolarBar:SetMinMaxValues(0, 0)
-			bars.LunarBar:SetStatusBarColor(unpack(ElvUF.colors.EclipseBar[1]))
-			bars.SolarBar:SetStatusBarColor(unpack(ElvUF.colors.EclipseBar[2]))
-			bars.LunarBar:Size(CLASSBAR_WIDTH, CLASSBAR_HEIGHT - (BORDER*2))			
-			bars.SolarBar:Size(CLASSBAR_WIDTH, CLASSBAR_HEIGHT - (BORDER*2))				
-		end
 
-		if E.myclass ~= 'DRUID' then
-			if not USE_MINI_CLASSBAR then
-				bars.backdrop:Show()
-			else
-				bars.backdrop:Hide()			
-			end		
-		end
+			if E.myclass ~= 'DRUID' then
+				if not USE_MINI_CLASSBAR then
+					bars.backdrop:Show()
+				else
+					bars.backdrop:Hide()			
+				end		
+			end
 
-		if USE_CLASSBAR and not frame:IsElementEnabled(frame.ClassBar) then
-			frame:EnableElement(frame.ClassBar)
-			bars:Show()
-		elseif not USE_CLASSBAR and frame:IsElementEnabled(frame.ClassBar) then
-			frame:DisableElement(frame.ClassBar)	
-			bars:Hide()
+			if USE_CLASSBAR and not frame:IsElementEnabled(frame.ClassBar) then
+				frame:EnableElement(frame.ClassBar)
+				bars:Show()
+			elseif not USE_CLASSBAR and frame:IsElementEnabled(frame.ClassBar) then
+				frame:DisableElement(frame.ClassBar)	
+				bars:Hide()
+			end
 		end		
 	end
 	
