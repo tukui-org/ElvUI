@@ -63,7 +63,7 @@ function UF:Update_TargetFrame(frame, db)
 	local POWERBAR_WIDTH = db.width - (BORDER*2)
 	
 	local USE_COMBOBAR = db.combobar.enable
-	local USE_MINI_COMBOBAR = db.combobar.fill == "spaced" and USE_COMBOBAR and not db.combobar.detatchFromFrame
+	local USE_MINI_COMBOBAR = db.combobar.fill == "spaced" and USE_COMBOBAR and not db.combobar.DetachFromFrame
 	local COMBOBAR_HEIGHT = db.combobar.height
 	local COMBOBAR_WIDTH = db.width - (BORDER*2)
 	
@@ -451,14 +451,14 @@ function UF:Update_TargetFrame(frame, db)
 	do
 		local CPoints = frame.CPoints
 		CPoints:ClearAllPoints()
-		if USE_MINI_COMBOBAR and not db.combobar.detatchFromFrame then
+		if USE_MINI_COMBOBAR and not db.combobar.DetachFromFrame then
 			CPoints:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), -SPACING)
 			CPoints:SetFrameStrata("MEDIUM")
 			if CPoints.mover then
 				CPoints.mover:SetScale(0.000001)
 				CPoints.mover:SetAlpha(0)
 			end					
-		elseif not db.combobar.detatchFromFrame then
+		elseif not db.combobar.DetachFromFrame then
 			CPoints:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, (E.PixelMode and 0 or (BORDER + SPACING)))
 			CPoints:SetFrameStrata("LOW")
 			if CPoints.mover then
@@ -466,7 +466,7 @@ function UF:Update_TargetFrame(frame, db)
 				CPoints.mover:SetAlpha(0)
 			end				
 		else
-			COMBOBAR_WIDTH = db.combobar.detatchedWidth
+			COMBOBAR_WIDTH = db.combobar.DetachedWidth
 
 			if not CPoints.mover then
 				CPoints:Width(COMBOBAR_WIDTH)

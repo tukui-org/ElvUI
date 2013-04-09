@@ -36,7 +36,7 @@ function UF:UpdateHoly(event, unit, powerType)
 	local numHolyPower = UnitPower('player', SPELL_POWER_HOLY_POWER);
 	local maxHolyPower = UnitPowerMax('player', SPELL_POWER_HOLY_POWER);	
 	local MAX_HOLY_POWER = UF['classMaxResourceBar'][E.myclass]
-	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and db.classbar.enable and not db.combobar.detatchFromFrame
+	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and db.classbar.enable and not db.combobar.DetachFromFrame
 	local USE_PORTRAIT = db.portrait.enable
 	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
 	local PORTRAIT_WIDTH = db.portrait.width
@@ -59,8 +59,8 @@ function UF:UpdateHoly(event, unit, powerType)
 		CLASSBAR_WIDTH = CLASSBAR_WIDTH * (maxHolyPower - 1) / maxHolyPower
 	end
 
-	if db.classbar.detatchFromFrame then
-		CLASSBAR_WIDTH = db.classbar.detatchedWidth
+	if db.classbar.DetachFromFrame then
+		CLASSBAR_WIDTH = db.classbar.DetachedWidth
 	end
 	
 	self.HolyPower:Width(CLASSBAR_WIDTH)
@@ -149,8 +149,8 @@ function UF:UpdateHarmony()
 		CLASSBAR_WIDTH = CLASSBAR_WIDTH * (maxBars - 1) / maxBars
 	end
 
-	if db.classbar.detatchFromFrame then
-		CLASSBAR_WIDTH = db.classbar.detatchedWidth
+	if db.classbar.DetachFromFrame then
+		CLASSBAR_WIDTH = db.classbar.DetachedWidth
 	end	
 	
 	for i=1, UF['classMaxResourceBar'][E.myclass] do
@@ -280,7 +280,7 @@ function UF:UpdateShardBar(spec)
 		end
 	end
 
-	if not db.classbar.detatchFromFrame then
+	if not db.classbar.DetachFromFrame then
 		if db.classbar.fill == 'spaced' and maxBars == 1 then
 			self:ClearAllPoints()
 			self:Point("LEFT", frame.Health.backdrop, "TOPLEFT", 8, 0)
@@ -333,7 +333,7 @@ function UF:UpdateShadowOrbs(event, unit, powerType)
 	local db = frame.db
 		
 	local point, _, anchorPoint, x, y = frame.Health:GetPoint()
-	if self:IsShown() and point and not db.classbar.detatchFromFrame then
+	if self:IsShown() and point and not db.classbar.DetachFromFrame then
 		if db.classbar.fill == 'spaced' then
 			frame.Health:SetPoint(point, frame, anchorPoint, x, -7)
 		else

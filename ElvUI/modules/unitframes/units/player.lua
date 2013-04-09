@@ -103,7 +103,7 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 		CLASSBAR_HEIGHT = CLASSBAR_HEIGHT / 2
 	end
 
-	if db.classbar.detatchFromFrame then
+	if db.classbar.DetachFromFrame then
 		CLASSBAR_HEIGHT = 0
 	end
 	
@@ -235,7 +235,7 @@ function UF:Update_PlayerFrame(frame, db)
 	local POWERBAR_WIDTH = db.width - (BORDER*2)
 	
 	local USE_CLASSBAR = db.classbar.enable and CAN_HAVE_CLASSBAR
-	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and USE_CLASSBAR and db.classbar.detatchFromFrame ~= true
+	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and USE_CLASSBAR and db.classbar.DetachFromFrame ~= true
 	local CLASSBAR_HEIGHT = db.classbar.height
 	local CLASSBAR_WIDTH = db.width - (BORDER*2)
 	
@@ -391,7 +391,7 @@ function UF:Update_PlayerFrame(frame, db)
 			health.bg:SetParent(frame.Portrait.overlay)			
 		end
 		
-		if USE_CLASSBAR and not db.classbar.detatchFromFrame then
+		if USE_CLASSBAR and not db.classbar.DetachFromFrame then
 			local DEPTH
 			if USE_MINI_CLASSBAR then
 				DEPTH = -(BORDER+(CLASSBAR_HEIGHT/2))
@@ -516,7 +516,7 @@ function UF:Update_PlayerFrame(frame, db)
 				if db.portrait.style == '3D' then
 					portrait:SetFrameLevel(frame:GetFrameLevel() + 5)
 				end				
-				if USE_MINI_CLASSBAR and USE_CLASSBAR and not db.classbar.detatchFromFrame then
+				if USE_MINI_CLASSBAR and USE_CLASSBAR and not db.classbar.DetachFromFrame then
 					portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT", 0, -((CLASSBAR_HEIGHT/2)))
 				else
 					portrait.backdrop:SetPoint("TOPLEFT", frame, "TOPLEFT")
@@ -676,7 +676,7 @@ function UF:Update_PlayerFrame(frame, db)
 		local bars = frame[frame.ClassBar]
 
 		local MAX_CLASS_BAR = UF.classMaxResourceBar[E.myclass]
-		if USE_MINI_CLASSBAR and not db.classbar.detatchFromFrame then
+		if USE_MINI_CLASSBAR and not db.classbar.DetachFromFrame then
 			bars:ClearAllPoints()
 			if E.myclass == 'DRUID' then
 				CLASSBAR_WIDTH = CLASSBAR_WIDTH * 2/3
@@ -691,7 +691,7 @@ function UF:Update_PlayerFrame(frame, db)
 				bars.mover:SetScale(0.000001)
 				bars.mover:SetAlpha(0)
 			end
-		elseif not db.classbar.detatchFromFrame then
+		elseif not db.classbar.DetachFromFrame then
 			bars:ClearAllPoints()
 			bars:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, (E.PixelMode and 0 or (BORDER + SPACING)))
 			bars:SetFrameStrata("LOW")
@@ -701,7 +701,7 @@ function UF:Update_PlayerFrame(frame, db)
 				bars.mover:SetAlpha(0)
 			end			
 		else
-			CLASSBAR_WIDTH = db.classbar.detatchedWidth
+			CLASSBAR_WIDTH = db.classbar.DetachedWidth
 
 			if not bars.mover then
 				bars:Width(CLASSBAR_WIDTH)

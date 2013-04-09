@@ -1954,16 +1954,16 @@ E.Options.args.unitframe.args.player = {
 						['spaced'] = L['Spaced'],
 					},
 				},		
-				detatchFromFrame = {
+				DetachFromFrame = {
 					type = 'toggle',
 					order = 4,
-					name = L['Detatch From Frame'],
+					name = L['Detach From Frame'],
 				},	
-				detatchedWidth = {
+				DetachedWidth = {
 					type = 'range',
 					order = 5,
-					name = L['Detatched Width'],
-					disabled = function() return not E.db.unitframe.units['player']['classbar'].detatchFromFrame end,
+					name = L['Detached Width'],
+					disabled = function() return not E.db.unitframe.units['player']['classbar'].DetachFromFrame end,
 					min = 15, max = 450, step = 1,
 				},
 			},
@@ -2148,16 +2148,16 @@ E.Options.args.unitframe.args.target = {
 						['spaced'] = L['Spaced'],
 					},
 				},				
-				detatchFromFrame = {
+				DetachFromFrame = {
 					type = 'toggle',
 					order = 4,
-					name = L['Detatch From Frame'],
+					name = L['Detach From Frame'],
 				},	
-				detatchedWidth = {
+				DetachedWidth = {
 					type = 'range',
 					order = 5,
-					name = L['Detatched Width'],
-					disabled = function() return not E.db.unitframe.units['target']['combobar'].detatchFromFrame end,
+					name = L['Detached Width'],
+					disabled = function() return not E.db.unitframe.units['target']['combobar'].DetachFromFrame end,
 					min = 15, max = 450, step = 1,
 				},				
 			},

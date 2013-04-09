@@ -321,7 +321,7 @@ function UF:UpdateComboDisplay(event, unit)
 		PORTRAIT_WIDTH = 0
 	end
 
-	if db.combobar.detatchFromFrame then
+	if db.combobar.DetachFromFrame then
 		COMBOBAR_HEIGHT = 0
 	end	
 	
