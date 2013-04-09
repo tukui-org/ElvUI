@@ -743,10 +743,13 @@ function UF:Update_PlayerFrame(frame, db)
 				else
 					bars[i].backdrop:Show()
 				end
-				bars[i]:SetStatusBarColor(unpack(ElvUF.colors[frame.ClassBar]))
 
-				if bars[i].bg then
-					bars[i].bg:SetTexture(unpack(ElvUF.colors[frame.ClassBar]))
+				if E.myclass ~= 'DEATHKNIGHT' then
+					bars[i]:SetStatusBarColor(unpack(ElvUF.colors[frame.ClassBar]))
+
+					if bars[i].bg then
+						bars[i].bg:SetTexture(unpack(ElvUF.colors[frame.ClassBar]))
+					end
 				end
 			end
 		elseif E.myclass == 'DRUID' then

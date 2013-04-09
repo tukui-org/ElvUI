@@ -62,7 +62,7 @@ local function Enable(self, unit)
 				hb[i]:SetStatusBarTexture([=[Interface\TargetingFrame\UI-StatusBar]=])
 			end
 			
-			hb[i]:SetStatusBarColor(unpack(oUF.colors.harmony[i]))
+			hb[i]:SetStatusBarColor(unpack(oUF.colors.Harmony[i]))
 			hb[i]:SetFrameLevel(hb:GetFrameLevel() + 1)
 			hb[i]:GetStatusBarTexture():SetHorizTile(false)
 		end
