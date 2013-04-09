@@ -724,6 +724,7 @@ function ElvUF:DisableBlizzard(unit)
 		-- User placed frames don't animate
 		PlayerFrame:SetUserPlaced(true)
 		PlayerFrame:SetDontSavePosition(true)
+		RuneFrame:SetParent(PlayerFrame)
 	elseif(unit == 'pet') then
 		HandleFrame(PetFrame)
 	elseif(unit == 'target') then
