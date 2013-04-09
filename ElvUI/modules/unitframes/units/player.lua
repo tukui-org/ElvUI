@@ -68,7 +68,6 @@ function UF:Construct_PlayerFrame(frame)
 end
 
 function UF:UpdatePlayerFrameAnchors(frame, isShown)
-	frame = frame or ElvUF_Player
 	local db = E.db['unitframe']['units'].player
 	local health = frame.Health
 	local threat = frame.Threat
@@ -156,7 +155,7 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 		end		
 
 		
-		if db.portrait.enable and not USE_PORTRAIT_OVERLAY then
+		if db.portrait.enable and not USE_PORTRAIT_OVERLAY and frame.Portrait then
 			local portrait = frame.Portrait
 			portrait.backdrop:ClearAllPoints()
 			if USE_MINI_CLASSBAR and USE_CLASSBAR then

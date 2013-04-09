@@ -193,8 +193,7 @@ function UF:Construct_Stagger(frame)
 end
 
 function UF:PostUpdateStagger()
-	local frame = self:GetParent()
-	UF:UpdatePlayerFrameAnchors(frame, (frame.Harmony and frame.Harmony:IsShown()))
+	UF:UpdatePlayerFrameAnchors(ElvUF_Player, (ElvUF_Player.Harmony and ElvUF_Player.Harmony:IsShown()))
 end
 
 -------------------------------------------------------------
