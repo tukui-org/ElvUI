@@ -131,7 +131,7 @@ function UF:UpdateHarmony()
 	local POWERBAR_OFFSET = db.power.offset
 	local USE_POWERBAR = db.power.enable
 	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR
-	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and db.classbar.enable
+	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and db.classbar.enable and not db.classbar.DetachFromFrame
 	
 	if USE_PORTRAIT_OVERLAY or not USE_PORTRAIT then
 		PORTRAIT_WIDTH = 0	
