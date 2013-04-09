@@ -36,7 +36,7 @@ function UF:UpdateHoly(event, unit, powerType)
 	local numHolyPower = UnitPower('player', SPELL_POWER_HOLY_POWER);
 	local maxHolyPower = UnitPowerMax('player', SPELL_POWER_HOLY_POWER);	
 	local MAX_HOLY_POWER = UF['classMaxResourceBar'][E.myclass]
-	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and db.classbar.enable and not db.combobar.DetachFromFrame
+	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and db.classbar.enable and not db.classbar.DetachFromFrame
 	local USE_PORTRAIT = db.portrait.enable
 	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
 	local PORTRAIT_WIDTH = db.portrait.width
