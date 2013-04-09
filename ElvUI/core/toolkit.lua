@@ -263,7 +263,7 @@ local function StyleButton(button, noHover, noPushed, noChecked)
 	
 	if button.SetCheckedTexture and not button.checked and not noChecked then
 		local checked = button:CreateTexture("frame", nil, self)
-		checked:SetTexture(unpack(E["media"].rgbvaluecolor))
+		checked:SetTexture(1, 1, 1)
 		checked:SetInside()
 		checked:SetAlpha(0.3)
 		button.checked = checked
