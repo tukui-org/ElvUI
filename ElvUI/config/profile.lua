@@ -42,6 +42,7 @@ P['general'] = {
 		['textFormat'] = 'CURMAX',
 		['textSize'] = 10,
 		['mouseover'] = false,
+		['orientation'] = 'HORIZONTAL',
 	},
 	['reputation'] = {
 		['enable'] = true,
@@ -50,6 +51,7 @@ P['general'] = {
 		['textFormat'] = 'CURMAX',
 		['textSize'] = 10,
 		['mouseover'] = false,
+		['orientation'] = 'HORIZONTAL',
 	},
 	['threat'] = {
 		['enable'] = false,
@@ -439,6 +441,8 @@ P['unitframe'] = {
 				['enable'] = true,
 				['fill'] = 'spaced',
 				['height'] = 6,
+				['DetachFromFrame'] = false,
+				['DetachedWidth'] = 250,
 			},
 			['aurabar'] = {
 				['enable'] = false,
@@ -557,6 +561,9 @@ P['unitframe'] = {
 				['enable'] = true,
 				['fill'] = 'spaced',
 				['height'] = 10,
+				['DetachFromFrame'] = false,
+				['DetachedWidth'] = 250,		
+				['autoHide'] = true,		
 			},		
 			['aurabar'] = {
 				['enable'] = false,

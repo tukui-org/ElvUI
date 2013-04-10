@@ -29,20 +29,27 @@ function UF:Construct_PlayerFrame(frame)
 	
 	if E.myclass == "PALADIN" then
 		frame.HolyPower = self:Construct_PaladinResourceBar(frame)
+		frame.ClassBar = 'HolyPower'
 	elseif E.myclass == "WARLOCK" then
 		frame.ShardBar = self:Construct_WarlockResourceBar(frame)
+		frame.ClassBar = 'ShardBar'
 	elseif E.myclass == "DEATHKNIGHT" then
 		frame.Runes = self:Construct_DeathKnightResourceBar(frame)
+		frame.ClassBar = 'Runes'
 	elseif E.myclass == "DRUID" then
 		frame.EclipseBar = self:Construct_DruidResourceBar(frame)
 		frame.DruidAltMana = self:Construct_DruidAltManaBar(frame)
+		frame.ClassBar = 'EclipseBar'
 	elseif E.myclass == "MONK" then
 		frame.Harmony = self:Construct_MonkResourceBar(frame)
 		frame.Stagger = self:Construct_Stagger(frame)
+		frame.ClassBar = 'Harmony'
 	elseif E.myclass == "PRIEST" then
 		frame.ShadowOrbs = self:Construct_PriestResourceBar(frame)
+		frame.ClassBar = 'ShadowOrbs'
 	elseif E.myclass == 'MAGE' then
 		frame.ArcaneChargeBar = self:Construct_MageResourceBar(frame)
+		frame.ClassBar = 'ArcaneChargeBar'
 	end
 	
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)
@@ -95,6 +102,10 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 	if USE_MINI_CLASSBAR then
 		CLASSBAR_HEIGHT = CLASSBAR_HEIGHT / 2
 	end
+
+	if db.classbar.DetachFromFrame then
+		CLASSBAR_HEIGHT = 0
+	end
 	
 	if USE_STAGGER then
 		if not USE_MINI_POWERBAR and not USE_INSET_POWERBAR then
@@ -142,8 +153,8 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 				threat.glow:Point("BOTTOMRIGHT", SHADOW_SPACING-POWERBAR_OFFSET, -SHADOW_SPACING)	
 			end				
 		end
-
-		if db.portrait.enable and not USE_PORTRAIT_OVERLAY then
+		
+		if db.portrait.enable and not USE_PORTRAIT_OVERLAY and frame.Portrait then
 			local portrait = frame.Portrait
 			portrait.backdrop:ClearAllPoints()
 			if USE_MINI_CLASSBAR and USE_CLASSBAR then
@@ -223,7 +234,7 @@ function UF:Update_PlayerFrame(frame, db)
 	local POWERBAR_WIDTH = db.width - (BORDER*2)
 	
 	local USE_CLASSBAR = db.classbar.enable and CAN_HAVE_CLASSBAR
-	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and USE_CLASSBAR
+	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and USE_CLASSBAR and db.classbar.DetachFromFrame ~= true
 	local CLASSBAR_HEIGHT = db.classbar.height
 	local CLASSBAR_WIDTH = db.width - (BORDER*2)
 	
@@ -379,7 +390,7 @@ function UF:Update_PlayerFrame(frame, db)
 			health.bg:SetParent(frame.Portrait.overlay)			
 		end
 		
-		if USE_CLASSBAR then
+		if USE_CLASSBAR and not db.classbar.DetachFromFrame then
 			local DEPTH
 			if USE_MINI_CLASSBAR then
 				DEPTH = -(BORDER+(CLASSBAR_HEIGHT/2))
@@ -504,7 +515,7 @@ function UF:Update_PlayerFrame(frame, db)
 				if db.portrait.style == '3D' then
 					portrait:SetFrameLevel(frame:GetFrameLevel() + 5)
 				end				
-				if USE_MINI_CLASSBAR and USE_CLASSBAR then
+				if USE_MINI_CLASSBAR and USE_CLASSBAR and not db.classbar.DetachFromFrame then
 					portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT", 0, -((CLASSBAR_HEIGHT/2)))
 				else
 					portrait.backdrop:SetPoint("TOPLEFT", frame, "TOPLEFT")
@@ -661,312 +672,112 @@ function UF:Update_PlayerFrame(frame, db)
 	
 	--Resource Bars
 	do
-		if E.myclass == "PALADIN" then
-			local bars = frame.HolyPower
-			frame.ClassBar = bars
-			bars:ClearAllPoints()
-			
-			local MAX_HOLY_POWER = 5
-			
-			if USE_MINI_CLASSBAR then
-				CLASSBAR_WIDTH = CLASSBAR_WIDTH * (MAX_HOLY_POWER - 1) / MAX_HOLY_POWER		
-				bars:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), 0)
+		local bars = frame[frame.ClassBar]
+
+		if bars then
+			local MAX_CLASS_BAR = UF.classMaxResourceBar[E.myclass]
+			if USE_MINI_CLASSBAR and not db.classbar.DetachFromFrame then
+				bars:ClearAllPoints()
+				if E.myclass == 'DRUID' then
+					CLASSBAR_WIDTH = CLASSBAR_WIDTH * 2/3
+					bars:Point("LEFT", frame.Health.backdrop, "TOPLEFT", (BORDER*2 + 4), 0)
+				else
+					CLASSBAR_WIDTH = CLASSBAR_WIDTH * (MAX_CLASS_BAR - 1) / MAX_CLASS_BAR	
+					bars:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), 0)
+				end
 				bars:SetFrameStrata("MEDIUM")
-			else
+
+				if bars.mover then
+					bars.mover:SetScale(0.000001)
+					bars.mover:SetAlpha(0)
+				end
+			elseif not db.classbar.DetachFromFrame then
+				bars:ClearAllPoints()
 				bars:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, (E.PixelMode and 0 or (BORDER + SPACING)))
 				bars:SetFrameStrata("LOW")
-			end
 
-			bars:Width(CLASSBAR_WIDTH)
-			bars:Height(CLASSBAR_HEIGHT - (E.PixelMode and 1 or 4))			
+				if bars.mover then
+					bars.mover:SetScale(0.000001)
+					bars.mover:SetAlpha(0)
+				end			
+			else
+				CLASSBAR_WIDTH = db.classbar.DetachedWidth
 
-			for i = 1, MAX_HOLY_POWER do
-				bars[i]:SetHeight(bars:GetHeight())	
-				bars[i]:SetWidth(E:Scale(bars:GetWidth() - (E.PixelMode and 4 or 2))/MAX_HOLY_POWER)	
-				bars[i]:GetStatusBarTexture():SetHorizTile(false)
-				bars[i]:ClearAllPoints()
-				if i == 1 then
-					bars[i]:SetPoint("LEFT", bars)
+				if not bars.mover then
+					bars:Width(CLASSBAR_WIDTH)
+					bars:Height(E.myclass == 'DRUID' and (CLASSBAR_HEIGHT - (BORDER*2)) or (CLASSBAR_HEIGHT - (E.PixelMode and 1 or 4)))
+					bars:ClearAllPoints()
+					bars:Point("BOTTOM", E.UIParent, "BOTTOM", 0, 150)
+					E:CreateMover(bars, 'ClassBarMover', L['Classbar'], nil, nil, nil, 'ALL,SOLO')
 				else
-					if USE_MINI_CLASSBAR then
-						bars[i]:Point("LEFT", bars[i-1], "RIGHT", SPACING+(BORDER*2)+2, 0)
-					else
-						bars[i]:Point("LEFT", bars[i-1], "RIGHT", 1, 0)
-					end
+					bars:ClearAllPoints()
+					bars:SetPoint("BOTTOMLEFT", bars.mover, "BOTTOMLEFT")
+					bars.mover:SetScale(1)
+					bars.mover:SetAlpha(1)		
 				end
-				
-				if not USE_MINI_CLASSBAR then
-					bars[i].backdrop:Hide()
-				else
-					bars[i].backdrop:Show()
-				end
-				bars[i]:SetStatusBarColor(unpack(ElvUF.colors.holyPower))
-			end
-			
-			if not USE_MINI_CLASSBAR then
-				bars.backdrop:Show()
-			else
-				bars.backdrop:Hide()			
-			end		
-			
-			if USE_CLASSBAR and not frame:IsElementEnabled('HolyPower') then
-				frame:EnableElement('HolyPower')
-				bars:Show()
-			elseif not USE_CLASSBAR and frame:IsElementEnabled('HolyPower') then
-				frame:DisableElement('HolyPower')	
-				bars:Hide()
-			end		
-		elseif E.myclass == 'PRIEST' then
-			local bars = frame.ShadowOrbs
-			frame.ClassBar = bars
-			bars:ClearAllPoints()
-			if USE_MINI_CLASSBAR then
-				CLASSBAR_WIDTH = CLASSBAR_WIDTH * (PRIEST_BAR_NUM_ORBS - 1) / PRIEST_BAR_NUM_ORBS
-				bars:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), 0)
-				bars:SetFrameStrata("MEDIUM")
-			else
-				bars:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, (E.PixelMode and 0 or (BORDER + SPACING)))
+
 				bars:SetFrameStrata("LOW")
-			end
-				
-			bars:Width(CLASSBAR_WIDTH)
-			bars:Height(CLASSBAR_HEIGHT - (E.PixelMode and 1 or 4))
-
-			for i = 1, PRIEST_BAR_NUM_ORBS do
-				bars[i]:SetHeight(bars:GetHeight())	
-				bars[i]:SetWidth((bars:GetWidth() - 2)/PRIEST_BAR_NUM_ORBS)	
-				bars[i]:GetStatusBarTexture():SetHorizTile(false)
-				bars[i]:ClearAllPoints()
-				if i == 1 then
-					bars[i]:SetPoint("LEFT", bars)
-				else
-					if USE_MINI_CLASSBAR then
-						bars[i]:Point("LEFT", bars[i-1], "RIGHT", SPACING+(BORDER*2)+8, 0)
-					else
-						bars[i]:Point("LEFT", bars[i-1], "RIGHT", 1, 0)
-					end
-				end
-				
-				if not USE_MINI_CLASSBAR then
-					bars[i].backdrop:Hide()
-				else
-					bars[i].backdrop:Show()
-				end
-				bars[i]:SetStatusBarColor(unpack(ElvUF.colors.shadowOrbs))
-			end
-			
-			if not USE_MINI_CLASSBAR then
-				bars.backdrop:Show()
-			else
-				bars.backdrop:Hide()			
-			end		
-			
-			if USE_CLASSBAR and not frame:IsElementEnabled('ShadowOrbs') then
-				frame:EnableElement('ShadowOrbs')
-			elseif not USE_CLASSBAR and frame:IsElementEnabled('ShadowOrbs') then
-				frame:DisableElement('ShadowOrbs')	
-				bars:Hide()
-			end
-		elseif E.myclass == 'MAGE' then
-			local bars = frame.ArcaneChargeBar
-			frame.ClassBar = bars
-			bars:ClearAllPoints()
-			if USE_MINI_CLASSBAR then
-				CLASSBAR_WIDTH = CLASSBAR_WIDTH * (UF['classMaxResourceBar'][E.myclass] - 1) / UF['classMaxResourceBar'][E.myclass]
-				bars:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 12), 0)
-				bars:SetFrameStrata("MEDIUM")
-			else
-				bars:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, (E.PixelMode and 0 or (BORDER + SPACING)))
-				bars:SetFrameStrata("LOW")
-			end
-				
-			bars:Width(CLASSBAR_WIDTH)
-			bars:Height(CLASSBAR_HEIGHT - (E.PixelMode and 1 or 4))
-			
-			local maxBars = UF['classMaxResourceBar'][E.myclass]
-			for i = 1, maxBars do
-				bars[i]:SetHeight(bars:GetHeight())	
-				bars[i]:SetWidth((bars:GetWidth() - (maxBars - 1)) / maxBars)
-
-				bars[i]:GetStatusBarTexture():SetHorizTile(false)
-				bars[i]:ClearAllPoints()
-				if i == 1 then
-					bars[i]:SetPoint("LEFT", bars)
-				else
-					if USE_MINI_CLASSBAR then
-						bars[i]:Point("LEFT", bars[i-1], "RIGHT", SPACING+(BORDER*2)+2, 0)
-					else
-						bars[i]:Point("LEFT", bars[i-1], "RIGHT", 1, 0)
-					end
-				end
-				
-				bars[i]:SetStatusBarColor(unpack(ElvUF.colors.arcaneCharges))
-				bars[i].bg:SetTexture(unpack(ElvUF.colors.arcaneCharges))			
-				
-				if not USE_MINI_CLASSBAR then
-					bars[i].backdrop:Hide()
-				else
-					bars[i].backdrop:Show()
-				end
-			end
-			
-			if not USE_MINI_CLASSBAR then
-				bars.backdrop:Show()
-			else
-				bars.backdrop:Hide()			
-			end		
-
-			if USE_CLASSBAR and not frame:IsElementEnabled('ArcaneChargeBar') then
-				frame:EnableElement('ArcaneChargeBar')
-			elseif not USE_CLASSBAR and frame:IsElementEnabled('ArcaneChargeBar') then
-				frame:DisableElement('ArcaneChargeBar')	
-			end		
-		elseif E.myclass == "WARLOCK" then
-			local bars = frame.ShardBar
-			frame.ClassBar = bars
-			bars:ClearAllPoints()
-			if USE_MINI_CLASSBAR then
-				CLASSBAR_WIDTH = CLASSBAR_WIDTH * 2 / 3
-				bars:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), 0)
-				bars:SetFrameStrata("MEDIUM")
-			else
-				bars:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, (E.PixelMode and 0 or (BORDER + SPACING)))
-				bars:SetFrameStrata("LOW")
-			end
-			bars:Width(CLASSBAR_WIDTH)
-			bars:Height(CLASSBAR_HEIGHT - (E.PixelMode and 1 or 4))
-			
-			if not USE_MINI_CLASSBAR then
-				bars.backdrop:Show()
-			else
-				bars.backdrop:Hide()			
-			end
-			
-			if USE_CLASSBAR and not frame:IsElementEnabled('ShardBar') then
-				frame:EnableElement('ShardBar')
-			elseif not USE_CLASSBAR and frame:IsElementEnabled('ShardBar') then
-				frame:DisableElement('ShardBar')
-				bars:Hide()
-			end					
-		elseif E.myclass == 'MONK' then
-			local bars = frame.Harmony
-			frame.ClassBar = bars
-			bars:ClearAllPoints()
-			if USE_MINI_CLASSBAR then
-				bars:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), 0)
-				bars:SetFrameStrata("MEDIUM")			
-			else
-				bars:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, (E.PixelMode and 0 or (BORDER + SPACING)))
-				bars:SetFrameStrata("LOW")
-			end
-			bars:Width(CLASSBAR_WIDTH)
-			bars:Height(CLASSBAR_HEIGHT - (E.PixelMode and 1 or 4))
-			
-			if not USE_MINI_CLASSBAR then
-				bars.backdrop:Show()
-			else
-				bars.backdrop:Hide()			
-			end
-			
-			if USE_CLASSBAR and not frame:IsElementEnabled('Harmony') then
-				frame:EnableElement('Harmony')
-				bars:Show()
-			elseif not USE_CLASSBAR and frame:IsElementEnabled('Harmony') then
-				frame:DisableElement('Harmony')
-				bars:Hide()
-			end				
-		elseif E.myclass == "DEATHKNIGHT" then
-			local runes = frame.Runes
-			frame.ClassBar = runes
-			runes:ClearAllPoints()
-			if USE_MINI_CLASSBAR then
-				CLASSBAR_WIDTH = CLASSBAR_WIDTH * 4/5
-				runes:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 8), 0)
-				runes:SetFrameStrata("MEDIUM")
-			else
-				runes:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, (E.PixelMode and 0 or (BORDER + SPACING)))
-				runes:SetFrameStrata("LOW")
-			end
-			runes:Width(CLASSBAR_WIDTH)
-			runes:Height(CLASSBAR_HEIGHT - (BORDER*2))			
-			
-			for i = 1, 6 do
-				runes[i]:SetHeight(runes:GetHeight())
-				runes[i]:SetWidth(E:Scale(runes:GetWidth() - 5) / 6)	
-				if USE_MINI_CLASSBAR then
-					runes[i].backdrop:Show()
-				else
-					runes[i].backdrop:Hide()	
-				end
-				
-				runes[i]:ClearAllPoints()
-				if i == 1 then
-					runes[i]:SetPoint("LEFT", runes)
-				else
-					if USE_MINI_CLASSBAR then
-						runes[i]:Point("LEFT", runes[i-1], "RIGHT", 1+(BORDER*2)+2, 0)
-					else
-						runes[i]:Point("LEFT", runes[i-1], "RIGHT", 1, 0)
-					end
-				end	
-				
-				if not USE_MINI_CLASSBAR then
-					runes[i].backdrop:Hide()
-				else
-					runes[i].backdrop:Show()
-				end					
-			end
-			
-			if not USE_MINI_CLASSBAR then
-				runes.backdrop:Show()
-			else
-				runes.backdrop:Hide()
-			end		
-
-			if USE_CLASSBAR and not frame:IsElementEnabled('Runes') then
-				frame:EnableElement('Runes')
-				runes:Show()
-			elseif not USE_CLASSBAR and frame:IsElementEnabled('Runes') then
-				frame:DisableElement('Runes')	
-				runes:Hide()
-				RuneFrame.Show = RuneFrame.Hide
-				RuneFrame:Hide()				
 			end			
-			if runes.UpdateAllRuneTypes then
-				runes.UpdateAllRuneTypes(frame) --colors update
-			end
-		elseif E.myclass == "DRUID" then
-			local eclipseBar = frame.EclipseBar
-			frame.ClassBar = eclipseBar
-			eclipseBar:ClearAllPoints()
-			if not USE_MINI_CLASSBAR then
-				eclipseBar:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, (E.PixelMode and 0 or (BORDER + SPACING)))
-				eclipseBar:SetFrameStrata("LOW")
-			else		
-				CLASSBAR_WIDTH = CLASSBAR_WIDTH * 2/3			
-				eclipseBar:Point("LEFT", frame.Health.backdrop, "TOPLEFT", (BORDER*2 + 4), 0)
-				eclipseBar:SetFrameStrata("MEDIUM")						
+
+			bars:Width(CLASSBAR_WIDTH)
+			bars:Height(E.myclass == 'DRUID' and (CLASSBAR_HEIGHT - (BORDER*2)) or (CLASSBAR_HEIGHT - (E.PixelMode and 1 or 4)))	
+
+			if E.myclass ~= 'MONK' and E.myclass ~= 'WARLOCK' and E.myclass ~= 'DRUID' then
+				for i = 1, MAX_CLASS_BAR do
+					bars[i]:SetHeight(bars:GetHeight())	
+					bars[i]:SetWidth(E:Scale(bars:GetWidth() - (MAX_CLASS_BAR - 1))/MAX_CLASS_BAR)	
+					bars[i]:GetStatusBarTexture():SetHorizTile(false)
+					bars[i]:ClearAllPoints()
+					if i == 1 then
+						bars[i]:SetPoint("LEFT", bars)
+					else
+						if db.classbar.fill == "spaced" then
+							bars[i]:Point("LEFT", bars[i-1], "RIGHT", SPACING+(BORDER*2)+2, 0)
+						else
+							bars[i]:Point("LEFT", bars[i-1], "RIGHT", 1, 0)
+						end
+					end
+					
+					if db.classbar.fill ~= "spaced" then
+						bars[i].backdrop:Hide()
+					else
+						bars[i].backdrop:Show()
+					end
+
+					if E.myclass ~= 'DEATHKNIGHT' then
+						bars[i]:SetStatusBarColor(unpack(ElvUF.colors[frame.ClassBar]))
+
+						if bars[i].bg then
+							bars[i].bg:SetTexture(unpack(ElvUF.colors[frame.ClassBar]))
+						end
+					end
+				end
+			elseif E.myclass == 'DRUID' then
+				--?? Apparent bug fix for the width after in-game settings change
+				bars.LunarBar:SetMinMaxValues(0, 0)
+				bars.SolarBar:SetMinMaxValues(0, 0)
+				bars.LunarBar:SetStatusBarColor(unpack(ElvUF.colors.EclipseBar[1]))
+				bars.SolarBar:SetStatusBarColor(unpack(ElvUF.colors.EclipseBar[2]))
+				bars.LunarBar:Size(CLASSBAR_WIDTH, CLASSBAR_HEIGHT - (BORDER*2))			
+				bars.SolarBar:Size(CLASSBAR_WIDTH, CLASSBAR_HEIGHT - (BORDER*2))				
 			end
 
-			eclipseBar:Width(CLASSBAR_WIDTH)
-			eclipseBar:Height(CLASSBAR_HEIGHT - (BORDER*2))	
-			
-			--?? Apparent bug fix for the width after in-game settings change
-			eclipseBar.LunarBar:SetMinMaxValues(0, 0)
-			eclipseBar.SolarBar:SetMinMaxValues(0, 0)
-			eclipseBar.LunarBar:SetStatusBarColor(unpack(ElvUF.colors.eclipseBar[1]))
-			eclipseBar.SolarBar:SetStatusBarColor(unpack(ElvUF.colors.eclipseBar[2]))
-			eclipseBar.LunarBar:Size(CLASSBAR_WIDTH, CLASSBAR_HEIGHT - (BORDER*2))			
-			eclipseBar.SolarBar:Size(CLASSBAR_WIDTH, CLASSBAR_HEIGHT - (BORDER*2))	
-			
-			if USE_CLASSBAR and not frame:IsElementEnabled('EclipseBar') then
-				frame:EnableElement('EclipseBar')
-				eclipseBar:Show()
-			elseif not USE_CLASSBAR and frame:IsElementEnabled('EclipseBar') then
-				frame:DisableElement('EclipseBar')	
-				eclipseBar:Hide()
-			end					
-		end
+			if E.myclass ~= 'DRUID' then
+				if db.classbar.fill ~= "spaced" then
+					bars.backdrop:Show()
+				else
+					bars.backdrop:Hide()			
+				end		
+			end
+
+			if USE_CLASSBAR and not frame:IsElementEnabled(frame.ClassBar) then
+				frame:EnableElement(frame.ClassBar)
+				bars:Show()
+			elseif not USE_CLASSBAR and frame:IsElementEnabled(frame.ClassBar) then
+				frame:DisableElement(frame.ClassBar)	
+				bars:Hide()
+			end
+		end		
 	end
 	
 	--Stagger

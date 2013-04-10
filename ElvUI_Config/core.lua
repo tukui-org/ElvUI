@@ -263,20 +263,34 @@ E.Options.args.general = {
 					type = "toggle",
 					name = L['Mouseover'],
 				},
-				width = {
+				spacer = {
 					order = 2,
-					type = "range",
-					name = L["Width"],
-					min = 100, max = 800, step = 1,
-				},
-				height = {
+					type = 'description',
+					name = ' '
+				},				
+				width = {
 					order = 3,
 					type = "range",
+					name = L["Width"],
+					min = 5, max = 800, step = 1,
+				},
+				height = {
+					order = 4,
+					type = "range",
 					name = L["Height"],
-					min = 5, max = 30, step = 1,
+					min = 5, max = 800, step = 1,
+				},
+				orientation = {
+					order = 5,
+					type = "select",
+					name = L['Orientation'],
+					values = {
+						['HORIZONTAL'] = L['Horizontal'],
+						['VERTICAL'] = L['Vertical']
+					}
 				},
 				textFormat = {
-					order = 4,
+					order = 6,
 					type = 'select',
 					name = L["Text Format"],
 					values = {
@@ -288,7 +302,7 @@ E.Options.args.general = {
 					set = function(info, value) E.db.general.experience[ info[#info] ] = value; E:GetModule('Misc'):UpdateExperience() end,
 				},		
 				textSize = {
-					order = 5,
+					order = 7,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,		
@@ -314,20 +328,34 @@ E.Options.args.general = {
 					type = "toggle",
 					name = L['Mouseover'],
 				},				
-				width = {
+				spacer = {
 					order = 2,
-					type = "range",
-					name = L["Width"],
-					min = 100, max = 800, step = 1,
+					type = 'description',
+					name = ' '
 				},
-				height = {
+				width = {
 					order = 3,
 					type = "range",
-					name = L["Height"],
-					min = 5, max = 30, step = 1,
+					name = L["Width"],
+					min = 5, max = 800, step = 1,
 				},
-				textFormat = {
+				height = {
 					order = 4,
+					type = "range",
+					name = L["Height"],
+					min = 5, max = 800, step = 1,
+				},
+				orientation = {
+					order = 5,
+					type = "select",
+					name = L['Orientation'],
+					values = {
+						['HORIZONTAL'] = L['Horizontal'],
+						['VERTICAL'] = L['Vertical']
+					}
+				},				
+				textFormat = {
+					order = 6,
 					type = 'select',
 					name = L["Text Format"],
 					values = {
@@ -339,7 +367,7 @@ E.Options.args.general = {
 					set = function(info, value) E.db.general.reputation[ info[#info] ] = value; E:GetModule('Misc'):UpdateReputation() end,
 				},		
 				textSize = {
-					order = 5,
+					order = 7,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,		

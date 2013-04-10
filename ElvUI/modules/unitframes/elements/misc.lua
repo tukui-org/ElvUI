@@ -84,7 +84,7 @@ function UF:Construct_Combobar(frame)
 		UF['statusbars'][CPoints[i]] = true
 		CPoints[i]:SetStatusBarTexture(E['media'].blankTex)
 		CPoints[i]:GetStatusBarTexture():SetHorizTile(false)
-		
+		CPoints[i]:SetAlpha(0.15)
 		CPoints[i]:CreateBackdrop('Default')
 		CPoints[i].backdrop:SetParent(CPoints)
 	end
@@ -297,7 +297,6 @@ function UF:UpdateComboDisplay(event, unit)
 	local cpoints = self.CPoints
 	local cp = (UnitHasVehicleUI("player") or UnitHasVehicleUI("vehicle")) and GetComboPoints('vehicle', 'target') or GetComboPoints('player', 'target')
 
-
 	for i=1, MAX_COMBO_POINTS do
 		if(i <= cp) then
 			cpoints[i]:SetAlpha(1)
@@ -310,7 +309,7 @@ function UF:UpdateComboDisplay(event, unit)
 	local SPACING = E.Spacing;
 	local db = E.db['unitframe']['units'].target
 	local USE_COMBOBAR = db.combobar.enable
-	local USE_MINI_COMBOBAR = db.combobar.fill == "spaced" and USE_COMBOBAR
+	local USE_MINI_COMBOBAR = db.combobar.fill == "spaced" and USE_COMBOBAR and not db.combobar.DetachFromFrame
 	local COMBOBAR_HEIGHT = db.combobar.height
 	local USE_PORTRAIT = db.portrait.enable
 	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
@@ -320,8 +319,12 @@ function UF:UpdateComboDisplay(event, unit)
 	if USE_PORTRAIT_OVERLAY or not USE_PORTRAIT then
 		PORTRAIT_WIDTH = 0
 	end
+
+	if db.combobar.DetachFromFrame then
+		COMBOBAR_HEIGHT = 0
+	end	
 	
-	if cpoints[1]:GetAlpha() == 1 then
+	if cpoints[1]:GetAlpha() == 1 or not db.combobar.autoHide then
 		cpoints:Show()
 		if USE_MINI_COMBOBAR then
 			self.Portrait.backdrop:SetPoint("TOPRIGHT", self, "TOPRIGHT", 0, -((COMBOBAR_HEIGHT/2) + SPACING - BORDER))
