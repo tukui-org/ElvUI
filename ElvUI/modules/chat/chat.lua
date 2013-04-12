@@ -558,6 +558,7 @@ end
 
 function CH:FindURL(event, msg, ...)
 	if (event == "CHAT_MSG_WHISPER" or event == "CHAT_MSG_BN_WHISPER") and CH.db.whisperSound ~= 'None' and not CH.SoundPlayed then
+		if (msg:sub(1,3) == "OQ,") then return false, msg, ... end
 		PlaySoundFile(LSM:Fetch("sound", CH.db.whisperSound), "Master")
 		CH.SoundPlayed = true
 		CH.SoundTimer = CH:ScheduleTimer('ThrottleSound', 1)
