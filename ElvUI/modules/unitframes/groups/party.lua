@@ -19,7 +19,6 @@ function UF:Construct_PartyFrames(unitGroup)
 		self.Name = UF:Construct_NameText(self)
 		self.originalParent = self:GetParent()
 	else
-		self.menu = UF.SpawnMenu
 		
 		self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
 

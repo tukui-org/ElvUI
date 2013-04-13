@@ -251,8 +251,6 @@ function UF:Construct_UF(frame, unit)
 	frame:SetScript('OnEnter', UnitFrame_OnEnter)
 	frame:SetScript('OnLeave', UnitFrame_OnLeave)	
 	
-	frame.menu = self.SpawnMenu
-	
 	frame:SetFrameLevel(5)
 	
 	frame.RaisedElementParent = CreateFrame('Frame', nil, frame)

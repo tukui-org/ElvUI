@@ -9,8 +9,7 @@ for i=10, 40, 15 do
 	UF['Construct_Raid'..i..'Frames'] = function (self, unitGroup)
 		self:SetScript('OnEnter', UnitFrame_OnEnter)
 		self:SetScript('OnLeave', UnitFrame_OnLeave)	
-		
-		self.menu = UF.SpawnMenu
+
 
 		self.RaisedElementParent = CreateFrame('Frame', nil, self)
 		self.RaisedElementParent:SetFrameStrata("MEDIUM")
