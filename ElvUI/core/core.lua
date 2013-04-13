@@ -395,15 +395,23 @@ function E:CheckIncompatible()
 	if E.global.ignoreIncompatible then return; end
 	if IsAddOnLoaded('Prat-3.0') and E.private.chat.enable then
 		E:IncompatibleAddOn('Prat-3.0', 'Chat')
-	elseif IsAddOnLoaded('Chatter') and E.private.chat.enable then
+	end
+
+	if IsAddOnLoaded('Chatter') and E.private.chat.enable then
 		E:IncompatibleAddOn('Chatter', 'Chat')
 	end
 	
 	if IsAddOnLoaded('TidyPlates') and E.private.nameplate.enable then
 		E:IncompatibleAddOn('TidyPlates', 'NamePlate')
-	elseif IsAddOnLoaded('Aloft') and E.private.nameplate.enable then
+	end
+		
+	if IsAddOnLoaded('Aloft') and E.private.nameplate.enable then
 		E:IncompatibleAddOn('Aloft', 'NamePlate')
 	end	
+
+	if IsAddOnLoaded('Healers-Have-To-Die') and E.private.nameplate.enable then
+		E:IncompatibleAddOn('Healers-Have-To-Die', 'NamePlate')
+	end
 end
 
 function E:IsFoolsDay()
