@@ -423,19 +423,11 @@ function NP:UpdateIsBeingTanked(frame)
 	end
 end
 
-function NP:InvalidCastCheck(frame)
-	if frame.guid and self.GUIDIgnoreCast[frame.guid] then
-		self.GUIDIgnoreCast[frame.guid] = nil;
-	end
-end
 
 function NP:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, ...)
 	local _, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellid, spellName, _, auraType, stackCount  = ...
 
-	if event == 'SPELL_AURA_APPLIED' or event == 'SPELL_HEAL' or event == 'SPELL_DAMAGE' or event == 'SPELL_MISS' then
-		self.GUIDIgnoreCast[sourceGUID] = spellName;
-	end
-	
+
 	if event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REFRESH" then
 		local duration = NP:GetSpellDuration(spellid)
 		local texture = GetSpellTexture(spellid)
@@ -447,68 +439,6 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, ...)
 		NP:SetAuraInstance(destGUID, spellid, GetTime() + (duration or 0), stackCount, sourceGUID, duration, texture, AURA_TYPE_DEBUFF, AURA_TARGET_HOSTILE)
 	elseif event == "SPELL_AURA_BROKEN" or event == "SPELL_AURA_BROKEN_SPELL" or event == "SPELL_AURA_REMOVED" then
 		NP:RemoveAuraInstance(destGUID, spellid)
-	elseif event == "SPELL_CAST_START" then
-		local spell, _, icon, _, _, _, castTime, _, _ = GetSpellInfo(spellid)
-		if self.GUIDIgnoreCast[sourceGUID] == spell then
-			self.GUIDIgnoreCast[sourceGUID] = nil;
-			return
-		end
-	
-		local FoundPlate = nil;
-
-		if not (castTime > 0) then return end		
-		if band(sourceFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) > 0 then 
-			if band(sourceFlags, COMBATLOG_OBJECT_CONTROL_PLAYER) > 0 then 
-				--	destination plate, by name
-				FoundPlate = NP:SearchNameplateByName(sourceName)
-			elseif band(sourceFlags, COMBATLOG_OBJECT_CONTROL_NPC) > 0 then 
-				--	destination plate, by GUID
-				FoundPlate = NP:SearchNameplateByGUID(sourceGUID)
-				if not FoundPlate then 
-					FoundPlate = NP:SearchNameplateByIcon(sourceRaidFlags) 
-				end
-			else 
-				return	
-			end
-		else 
-			return 
-		end	
-		
-		if not FoundPlate or not FoundPlate:IsShown() then return; end
-		
-		if FoundPlate.unit == 'mouseover' then
-			NP:UpdateCastInfo('UPDATE_MOUSEOVER_UNIT', true)	
-		elseif FoundPlate.unit == 'target' then
-			NP:UpdateCastInfo('PLAYER_TARGET_CHANGED')
-		else
-			FoundPlate.guid = sourceGUID
-			local currentTime = GetTime() * 1e3
-			NP:StartCastAnimationOnNameplate(FoundPlate, spell, spellid, icon, currentTime, currentTime + castTime, false, false)
-		end		
-	elseif event == "SPELL_CAST_FAILED" or event == "SPELL_INTERRUPT" or event == "SPELL_CAST_SUCCESS" or event == "SPELL_HEAL" then
-		local FoundPlate = nil;
-		if sourceGUID == UnitGUID('player') and event == "SPELL_CAST_FAILED" then return; end
-		if band(sourceFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) > 0 then 
-			if band(sourceFlags, COMBATLOG_OBJECT_CONTROL_PLAYER) > 0 then 
-				--	destination plate, by name
-				FoundPlate = NP:SearchNameplateByName(sourceName)
-			elseif band(sourceFlags, COMBATLOG_OBJECT_CONTROL_NPC) > 0 then 
-				--	destination plate, by GUID
-				FoundPlate = NP:SearchNameplateByGUID(sourceGUID)
-				if not FoundPlate then 
-					FoundPlate = NP:SearchNameplateByIcon(sourceRaidFlags) 
-				end
-			else 
-				return	
-			end
-		else 
-			return 
-		end	
-
-		if FoundPlate and FoundPlate:IsShown() then 
-			FoundPlate.guid = sourceGUID
-			NP:StopCastAnimation(FoundPlate)
-		end		
 	else
 		if band(sourceFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) > 0 then 
 			if band(sourceFlags, COMBATLOG_OBJECT_CONTROL_PLAYER) > 0 then 
@@ -565,39 +495,6 @@ end
 function NP:PLAYER_REGEN_DISABLED()
 	if self.db.combat then
 		SetCVar("nameplateShowEnemies", 1)
-	end
-end
-
-function NP:UpdateCastInfo(event, ignoreInt)
-	local unit = 'target'
-	if event == 'UPDATE_MOUSEOVER_UNIT' then
-		unit = 'mouseover'
-	end
-	
-	local GUID = UnitGUID(unit)
-	if not GUID then return; end
-
-	if not ignoreInt then
-		NP:UpdateAurasByUnitID(unit)
-	end
-	
-	local targetPlate = NP:SearchNameplateByGUID(GUID)
-	local channel
-	local spell, _, name, icon, start, finish, _, spellid, nonInt = UnitCastingInfo(unit)
-	
-	if not spell then 
-		spell, _, name, icon, start, finish, spellid, nonInt = UnitChannelInfo(unit); 
-		channel = true 
-	end	
-	
-	if event == 'UPDATE_MOUSEOVER_UNIT' then
-		nonInt = false
-	end
-
-	if spell and targetPlate then 
-		NP:StartCastAnimationOnNameplate(targetPlate, spell, spellid, icon, start, finish, nonInt, channel) 
-	elseif targetPlate then
-		NP:StopCastAnimation(targetPlate) 
 	end
 end
 
@@ -861,8 +758,6 @@ function NP:UNIT_TARGET(event, unit)
 end
 
 function NP:UPDATE_MOUSEOVER_UNIT()
-	self:UpdateCastInfo()
-
 	if UnitExists("mouseover") then
 		self.TargetOfGroupMembers[UnitGUID("mouseover")] = "mouseover"
 	end
@@ -876,59 +771,13 @@ function NP:UNIT_AURA(event, unit)
 	end
 end
 
-function NP:StopCastAnimation(frame)
-	frame.cb:Hide()	
-	frame.cb:SetScript("OnUpdate", nil)
+function NP:CastBar_OnValueChanged(frame, curValue)
+	frame.time:SetFormattedText("%.1f ", curValue)
+	frame:SetSize(frame:GetParent().hp:GetWidth(), self.db.cbheight)
+
+	frame:ClearAllPoints()
+	frame:SetPoint('TOP', frame:GetParent().hp, 'BOTTOM', 0, -8)
 end
-
-function NP:UpdateCastAnimation()
-	local duration = GetTime() - self.startTime
-	if duration > self.max then
-		NP:StopCastAnimation(self:GetParent())
-	else 
-		self:SetValue(duration)
-		self.time:SetFormattedText("%.1f ", (self.endTime - self.startTime) - duration)
-	end
-end
-
-function NP:UpdateChannelAnimation()
-	local duration = self.endTime - GetTime()
-	if duration < 0 then
-		NP:StopCastAnimation(self:GetParent())
-	else 
-		self:SetValue(duration) 
-		self.time:SetFormattedText("%.1f ", duration)
-	end
-end
-
-function NP:StartCastAnimationOnNameplate(frame, spellName, spellID, icon, startTime, endTime, notInterruptible, channel)
-	if not (tonumber(GetCVar("showVKeyCastbar")) == 1) or not spellName then return; end
-	local castbar = frame.cb
-
-	castbar.name:SetText(spellName)
-	castbar.icon:SetTexture(icon)
-	castbar.endTime = endTime / 1e3
-	castbar.startTime = startTime / 1e3
-	castbar.max = (castbar.endTime - castbar.startTime)
-	castbar:SetMinMaxValues(0, castbar.max)
-	
-	castbar:Show();
-	
-	if notInterruptible then 
-		castbar.shield:Show()
-		castbar:SetStatusBarColor(0.78, 0.25, 0.25, 1)
-	else 
-		castbar.shield:Hide()
-		castbar:SetStatusBarColor(1, 208/255, 0)
-	end
-	
-	if channel then 
-		castbar:SetScript("OnUpdate", NP.UpdateChannelAnimation)	
-	else 
-		castbar:SetScript("OnUpdate", NP.UpdateCastAnimation)	
-	end	
-end
-
 
 function NP:CastBar_OnShow(frame)
 	frame:ClearAllPoints()
@@ -952,22 +801,6 @@ function NP:CastBar_OnShow(frame)
 	frame.icon:Size(self.db.cbheight + frame:GetParent().hp:GetHeight() + 8)
 	self:SetVirtualBorder(frame.icon, unpack(E["media"].bordercolor))
 	self:SetVirtualBackdrop(frame.icon, unpack(E["media"].backdropcolor))		
-end
-
-function NP:CastBar_OnValueChanged(frame)
-	local channel
-	local spell, _, name, icon, start, finish, _, spellid, nonInt = UnitCastingInfo("target")
-	
-	if not spell then 
-		spell, _, name, icon, start, finish, spellid, nonInt = UnitChannelInfo("target"); 
-		channel = true 
-	end	
-	
-	if spell then 
-		NP:StartCastAnimationOnNameplate(frame:GetParent(), spell, spellid, icon, start, finish, nonInt, channel) 
-	else 
-		NP:StopCastAnimation(frame:GetParent()) 
-	end
 end
 
 function NP:ToggleCPoints()

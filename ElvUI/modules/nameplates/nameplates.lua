@@ -34,8 +34,7 @@ function NP:Initialize()
 			numChildren = count
 			NP:HookFrames(WorldFrame:GetChildren())
 		end	
-		
-		NP:ForEachPlate(NP.InvalidCastCheck)
+
 		NP:ForEachPlate(NP.CheckFilter)
 		NP:ForEachPlate(NP.UpdateColoring)	
 
@@ -383,9 +382,10 @@ function NP:OnHide(frame)
 end
 
 function NP:SkinPlate(frame, nameFrame)
-	local oldhp, oldcb = frame:GetChildren()
+	local oldhp, cb = frame:GetChildren()
 	
-	local _, cbborder, cbshield, cbicon = oldcb:GetRegions()
+	
+	local _, cbborder, cbshield, cbicon, cbtext, cbshadow = cb:GetRegions()
 	local threat, hpborder, overlay, oldlevel, bossicon, raidicon, elite = frame:GetRegions()
 	local oldname = nameFrame:GetRegions()
 	local font = LSM:Fetch("font", self.db.font)
@@ -492,41 +492,31 @@ function NP:SkinPlate(frame, nameFrame)
 	
 	--Cast Bar
 	if not frame.cb then
-		frame.oldcb = oldcb
-		frame.cb = CreateFrame("Statusbar", nil, frame)
-		frame.cb:SetFrameLevel(oldcb:GetFrameLevel())
-		frame.cb:SetFrameStrata(oldcb:GetFrameStrata())
-		self:CreateVirtualFrame(frame.cb)	
-		frame.cb:Hide()
-	end
+		cb.shield = cbshield
+		frame.cb = cb
 
-	--Cast Time
-	if not frame.cb.time then
-		frame.cb.time = frame.cb:CreateFontString(nil, "ARTWORK")
-		frame.cb.time:SetPoint("RIGHT", frame.cb, "LEFT", -1, 0)
-	end
-	frame.cb.time:FontTemplate(font, self.db.fontSize, self.db.fontOutline)
-	
-	--Cast Name
-	if not frame.cb.name then
-		frame.cb.name = frame.cb:CreateFontString(nil, "ARTWORK")
+		cb:SetFrameLevel(1)
+		cb:SetStatusBarTexture(TEXTURE)
+		self:CreateVirtualFrame(cb)
+		
+		--Create Cast Time Text
+		cb.time = cb:CreateFontString(nil, "ARTWORK")
+		cb.time:SetPoint("RIGHT", cb, "LEFT", -1, 0)
+
+		--Create Cast Name Text
+		frame.cb.name = cbtext
 		frame.cb.name:SetPoint("TOP", frame.cb, "BOTTOM", 0, -3)
-	end
-	frame.cb.name:FontTemplate(font, self.db.fontSize, self.db.fontOutline)
-	
-	--Cast Icon
-	if not frame.cb.icon then
-		oldcb:SetAlpha(0)
-		oldcb:SetScale(0.000001)
+		
+		--Setup CastBar Icon
 		cbicon:ClearAllPoints()
 		cbicon:SetPoint("TOPLEFT", frame.hp, "TOPRIGHT", 8, 0)		
 		cbicon:SetTexCoord(.07, .93, .07, .93)
 		cbicon:SetDrawLayer("OVERLAY")
-		cbicon:SetParent(frame.cb)
-		frame.cb.icon = cbicon
-		frame.cb.shield = cbshield
-		self:CreateVirtualFrame(frame.cb, frame.cb.icon)
+		cb.icon = cbicon
+		self:CreateVirtualFrame(cb, cb.icon)		
 	end
+	frame.cb.name:FontTemplate(font, self.db.fontSize, self.db.fontOutline)
+	frame.cb.time:FontTemplate(font, self.db.fontSize, self.db.fontOutline)
 
 	--Raid Icon
 	if not frame.raidicon then
@@ -593,10 +583,10 @@ function NP:SkinPlate(frame, nameFrame)
 	self:QueueObject(frame, elite)
 	
 	self.HealthBar_OnShow(self, frame.hp)
-	self:CastBar_OnShow(frame.cb)
+	self:CastBar_OnShow(cb)
 	if not self.hooks[frame] then
-		self:HookScript(frame.cb, 'OnShow', 'CastBar_OnShow')
-		self:HookScript(oldcb, 'OnValueChanged', 'CastBar_OnValueChanged')				
+		self:HookScript(cb, 'OnShow', 'CastBar_OnShow')		
+		self:HookScript(cb, 'OnValueChanged', 'CastBar_OnValueChanged')			
 		self:HookScript(frame.hp, 'OnShow', 'HealthBar_OnShow')		
 		self:HookScript(oldhp, 'OnValueChanged', 'HealthBar_ValueChanged')
 		self:HookScript(frame, "OnHide", "OnHide")	
@@ -975,8 +965,6 @@ function NP:UpdateAllPlates()
 	self:RegisterEvent("GROUP_ROSTER_UPDATE", "UpdateRoster")
 	self:RegisterEvent("PARTY_CONVERTED_TO_RAID", "UpdateRoster")
 	self:RegisterEvent("UNIT_PET", "UpdateRoster")
-	self:RegisterEvent('UPDATE_MOUSEOVER_UNIT', 'UpdateCastInfo')
-	self:RegisterEvent('PLAYER_TARGET_CHANGED', 'UpdateCastInfo')
 	self:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 	self:RegisterEvent('PLAYER_REGEN_ENABLED')
