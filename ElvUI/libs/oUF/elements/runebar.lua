@@ -45,7 +45,7 @@ local parent, ns = ...
 local oUF = ns.oUF
 local floor = math.floor
 
-oUF.colors.runes = {
+oUF.colors.Runes = {
 	{1, 0, 0},   -- blood
 	{0, .5, 0},  -- unholy
 	{0, 1, 1},   -- frost
@@ -71,9 +71,8 @@ local UpdateType = function(self, event, rid, alt)
 	local runeType = GetRuneType(rid) or alt
 	if isUsable and runeType == 1 then runeType = 4; end
 	if not runeType then return; end
-	local colors = oUF.colors.runes[runeType]
+	local colors = oUF.colors.Runes[runeType]
 	local r, g, b = colors[1], colors[2], colors[3]
-
 	rune:SetStatusBarColor(r, g, b)
 
 	if(rune.bg) then

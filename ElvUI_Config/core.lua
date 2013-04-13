@@ -1,4 +1,4 @@
-﻿local E, L, V, P, G, _ = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+﻿local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 local tsort, tinsert = table.sort, table.insert
 local DEFAULT_WIDTH = 890;
@@ -6,7 +6,6 @@ local DEFAULT_HEIGHT = 651;
 local AC = LibStub("AceConfig-3.0")
 local ACD = LibStub("AceConfigDialog-3.0")
 local ACR = LibStub("AceConfigRegistry-3.0")
-local LibDualSpec = LibStub('LibDualSpec-1.0')
 
 AC:RegisterOptionsTable("ElvUI", E.Options)
 ACD:SetDefaultSize("ElvUI", DEFAULT_WIDTH, DEFAULT_HEIGHT)	
@@ -111,14 +110,27 @@ E.Options.args.general = {
 					isPercent = true,
 					min = 0, max = 1, step = 0.01,
 				},		
-				autoAcceptInvite = {
+				chatBubbles = {
 					order = 5,
+					type = "select",
+					name = L['Chat Bubbles Style'],
+					desc = L['Skin the blizzard chat bubbles.'],
+					get = function(info) return E.private.general.chatBubbles end,
+					set = function(info, value) E.private.general.chatBubbles = value; E:StaticPopup_Show("PRIVATE_RL") end,
+					values = {
+						['backdrop'] = L['Skin Backdrop'],
+						['nobackdrop'] = L['Remove Backdrop'],
+						['disabled'] = L['Disabled']
+					}
+				},					
+				autoAcceptInvite = {
+					order = 6,
 					name = L['Accept Invites'],
 					desc = L['Automatically accept invites from guild/friends.'],
 					type = 'toggle',
 				},
 				vendorGrays = {
-					order = 6,
+					order = 7,
 					name = L['Vendor Grays'],
 					desc = L['Automatically vendor gray items when visiting a vendor.'],
 					type = 'toggle',				
@@ -154,15 +166,12 @@ E.Options.args.general = {
 					get = function(info) return E.global.general.autoScale end,
 					set = function(info, value) E.global.general[ info[#info] ] = value; E:StaticPopup_Show("GLOBAL_RL") end
 				},	
-
-				bubbles = {
+				hideErrorFrame = {
 					order = 12,
-					type = "toggle",
-					name = L['Chat Bubbles'],
-					desc = L['Skin the blizzard chat bubbles.'],
-					get = function(info) return E.private.general.bubbles end,
-					set = function(info, value) E.private.general.bubbles = value; E:StaticPopup_Show("PRIVATE_RL") end
-				},	
+					name = L["Hide Error Text"],
+					desc = L["Hides the red error text at the top of the screen while in combat."],
+					type = "toggle"
+				},
 				taintLog = {
 					order = 13,
 					type = "toggle",
@@ -254,20 +263,34 @@ E.Options.args.general = {
 					type = "toggle",
 					name = L['Mouseover'],
 				},
-				width = {
+				spacer = {
 					order = 2,
-					type = "range",
-					name = L["Width"],
-					min = 100, max = 800, step = 1,
-				},
-				height = {
+					type = 'description',
+					name = ' '
+				},				
+				width = {
 					order = 3,
 					type = "range",
+					name = L["Width"],
+					min = 5, max = 800, step = 1,
+				},
+				height = {
+					order = 4,
+					type = "range",
 					name = L["Height"],
-					min = 5, max = 30, step = 1,
+					min = 5, max = 800, step = 1,
+				},
+				orientation = {
+					order = 5,
+					type = "select",
+					name = L['Orientation'],
+					values = {
+						['HORIZONTAL'] = L['Horizontal'],
+						['VERTICAL'] = L['Vertical']
+					}
 				},
 				textFormat = {
-					order = 4,
+					order = 6,
 					type = 'select',
 					name = L["Text Format"],
 					values = {
@@ -279,7 +302,7 @@ E.Options.args.general = {
 					set = function(info, value) E.db.general.experience[ info[#info] ] = value; E:GetModule('Misc'):UpdateExperience() end,
 				},		
 				textSize = {
-					order = 5,
+					order = 7,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,		
@@ -305,20 +328,34 @@ E.Options.args.general = {
 					type = "toggle",
 					name = L['Mouseover'],
 				},				
-				width = {
+				spacer = {
 					order = 2,
-					type = "range",
-					name = L["Width"],
-					min = 100, max = 800, step = 1,
+					type = 'description',
+					name = ' '
 				},
-				height = {
+				width = {
 					order = 3,
 					type = "range",
-					name = L["Height"],
-					min = 5, max = 30, step = 1,
+					name = L["Width"],
+					min = 5, max = 800, step = 1,
 				},
-				textFormat = {
+				height = {
 					order = 4,
+					type = "range",
+					name = L["Height"],
+					min = 5, max = 800, step = 1,
+				},
+				orientation = {
+					order = 5,
+					type = "select",
+					name = L['Orientation'],
+					values = {
+						['HORIZONTAL'] = L['Horizontal'],
+						['VERTICAL'] = L['Vertical']
+					}
+				},				
+				textFormat = {
+					order = 6,
 					type = 'select',
 					name = L["Text Format"],
 					values = {
@@ -330,7 +367,7 @@ E.Options.args.general = {
 					set = function(info, value) E.db.general.reputation[ info[#info] ] = value; E:GetModule('Misc'):UpdateReputation() end,
 				},		
 				textSize = {
-					order = 5,
+					order = 7,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,		
@@ -702,8 +739,7 @@ E.Options.args.profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(E.data);
 AC:RegisterOptionsTable("ElvProfiles", E.Options.args.profiles)
 E.Options.args.profiles.order = -10
 
-LibDualSpec:EnhanceDatabase(E.data, "ElvUI")
-LibDualSpec:EnhanceOptions(E.Options.args.profiles, E.data)
+LibStub('LibDualSpec-1.0'):EnhanceOptions(E.Options.args.profiles, E.data)
 
 if not E.Options.args.profiles.plugins then
 	E.Options.args.profiles.plugins = {}

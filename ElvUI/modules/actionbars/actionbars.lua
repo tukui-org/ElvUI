@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:NewModule('ActionBars', 'AceHook-3.0', 'AceEvent-3.0');
 --/run E, C, L = unpack(ElvUI); AB = E:GetModule('ActionBars'); AB:ToggleMovers()
 
@@ -296,6 +296,8 @@ function AB:ReassignBindings(event)
 		self:UpdateStanceBindings();
 	end
 
+	self:UnregisterEvent("PLAYER_REGEN_DISABLED")
+
 	if InCombatLockdown() then return end	
 	for _, bar in pairs(self["handledBars"]) do
 		if not bar then return end
@@ -321,6 +323,8 @@ function AB:RemoveBindings()
 		
 		ClearOverrideBindings(bar)
 	end
+
+	self:RegisterEvent("PLAYER_REGEN_DISABLED", "ReassignBindings")
 end
 
 function AB:UpdateBar1Paging()
@@ -587,17 +591,16 @@ function AB:DisableBlizzard()
 	
 	InterfaceOptionsCombatPanelActionButtonUseKeyDown:SetScale(0.0001)
 	InterfaceOptionsCombatPanelActionButtonUseKeyDown:SetAlpha(0)
-	InterfaceOptionsActionBarsPanelSecureAbilityToggle:SetScale(0.0001)
-	InterfaceOptionsActionBarsPanelAlwaysShowActionBars:SetScale(0.0001)
+	InterfaceOptionsActionBarsPanelAlwaysShowActionBars:EnableMouse(false)
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton:SetScale(0.0001)
 	InterfaceOptionsActionBarsPanelLockActionBars:SetScale(0.0001)
-	InterfaceOptionsActionBarsPanelSecureAbilityToggle:SetAlpha(0)
 	InterfaceOptionsActionBarsPanelAlwaysShowActionBars:SetAlpha(0)
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton:SetAlpha(0)
 	InterfaceOptionsActionBarsPanelLockActionBars:SetAlpha(0)
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetAlpha(0)
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetScale(0.00001)
-
+	InterfaceOptionsStatusTextPanelXP:SetAlpha(0)
+	InterfaceOptionsStatusTextPanelXP:SetScale(0.00001)
 	self:SecureHook('BlizzardOptionsPanel_OnEvent')
 	--InterfaceOptionsFrameCategoriesButton6:SetScale(0.00001)
 	if PlayerTalentFrame then
@@ -649,8 +652,6 @@ function AB:FixKeybindText(button)
 		text = gsub(text, 'INSERT', L['KEY_INSERT']);
 		text = gsub(text, 'HOME', L['KEY_HOME']);
 		text = gsub(text, 'DELETE', L['KEY_DELETE']);
-		text = gsub(text, 'MOUSEWHEELUP', L['KEY_MOUSEWHEELUP']);
-		text = gsub(text, 'MOUSEWHEELDOWN', L['KEY_MOUSEWHEELDOWN']);
 		text = gsub(text, 'NMULTIPLY', "*");
 		text = gsub(text, 'NMINUS', "N-");
 		text = gsub(text, 'NPLUS', "N+");

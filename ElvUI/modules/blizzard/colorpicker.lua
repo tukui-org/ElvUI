@@ -191,7 +191,7 @@ function B:EnhanceColorPicker()
 	b:Point('TOPLEFT', 'ColorPPCopy', 'TOPRIGHT', 2, 0)
 	
 	b:SetScript('OnClick', function()
-		local color = RAID_CLASS_COLORS[E.myclass];
+		local color = E.myclass == 'PRIEST' and E.PriestColors or RAID_CLASS_COLORS[E.myclass];
 		ColorPickerFrame:SetColorRGB(color.r, color.g, color.b)
 		ColorSwatch:SetTexture(color.r, color.g, color.b)
 		if ColorPickerFrame.hasOpacity then

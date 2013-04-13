@@ -12,7 +12,7 @@ local SPEC_WARLOCK_DESTRUCTION = SPEC_WARLOCK_DESTRUCTION
 local SPEC_WARLOCK_AFFLICTION = SPEC_WARLOCK_AFFLICTION
 local SPEC_WARLOCK_DEMONOLOGY = SPEC_WARLOCK_DEMONOLOGY
 
-oUF.colors.WarlockResource = {
+oUF.colors.ShardBar = {
 	[1] = {148/255, 130/255, 201/255},
 	[2] = {148/255, 130/255, 201/255},
 	[3] = {230/255, 95/255,  95/255}
@@ -36,9 +36,9 @@ local Update = function(self, event, unit, powerType)
 
 		for i = 1, 4 do
 			wsb[i]:Show()
-			wsb[i]:SetStatusBarColor(unpack(oUF.colors.WarlockResource[spec]))
+			wsb[i]:SetStatusBarColor(unpack(oUF.colors.ShardBar[spec]))
 			if wsb[i].bg then
-				wsb[i].bg:SetTexture(unpack(oUF.colors.WarlockResource[spec]))
+				wsb[i].bg:SetTexture(unpack(oUF.colors.ShardBar[spec]))
 			end
 		end
 

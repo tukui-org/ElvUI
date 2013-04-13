@@ -2,6 +2,7 @@ local E, L, DF = unpack(select(2, ...))
 local B = E:GetModule('Blizzard');
 
 function B:PositionDurabilityFrame()
+	DurabilityFrame:SetFrameStrata("HIGH")
 	hooksecurefunc(DurabilityFrame,"SetPoint",function(self,_,parent)
 		if (parent == "MinimapCluster") or (parent == _G["MinimapCluster"]) then
 			DurabilityFrame:ClearAllPoints()

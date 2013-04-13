@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
 -- localized references for global functions (about 50% faster)
@@ -59,13 +59,13 @@ local mobilestatus = {
 local function BuildGuildTable()
 	wipe(guildTable)
 	local statusInfo
-	local name, rank, level, zone, note, officernote, connected, memberstatus, class, isMobile
+	local _, name, rank, level, zone, note, officernote, connected, memberstatus, class, isMobile
 
 	for i = 1, GetNumGuildMembers() do
 		name, rank, rankIndex, level, _, zone, note, officernote, connected, memberstatus, class, _, _, isMobile = GetGuildRosterInfo(i)
 
 		statusInfo = isMobile and mobilestatus[memberstatus]() or onlinestatus[memberstatus]()
-		zone = isMobile and '' or zone
+		zone = (isMobile and not connected) and REMOTE_CHAT or zone
 
 		if connected or isMobile then 
 			guildTable[#guildTable + 1] = { name, rank, level, zone, note, officernote, connected, statusInfo, class, rankIndex, isMobile }
@@ -134,9 +134,7 @@ local function OnEvent(self, event, ...)
 	if IsInGuild() then
 		eventHandlers[event](self, select(1, ...))
 
-		-- update datatext information
-		local _, online = GetNumGuildMembers()	
-		self.text:SetFormattedText(displayString, online)
+		self.text:SetFormattedText(displayString, #guildTable)
 	else
 		self.text:SetText(noGuildString)
 	end	

@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local M = E:NewModule('WorldMap', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
 E.WorldMap = M
 
@@ -173,8 +173,8 @@ function M:Initialize()
 	CoordsHolder:SetFrameStrata(WorldMapDetailFrame:GetFrameStrata())
 	CoordsHolder.playerCoords = CoordsHolder:CreateFontString(nil, 'OVERLAY')
 	CoordsHolder.mouseCoords = CoordsHolder:CreateFontString(nil, 'OVERLAY')
-	CoordsHolder.playerCoords:SetTextColor(WorldMapQuestShowObjectivesText:GetTextColor())
-	CoordsHolder.mouseCoords:SetTextColor(WorldMapQuestShowObjectivesText:GetTextColor())
+	CoordsHolder.playerCoords:SetTextColor(1, 1 ,0)
+	CoordsHolder.mouseCoords:SetTextColor(1, 1 ,0)
 	CoordsHolder.playerCoords:SetFontObject(NumberFontNormal)
 	CoordsHolder.mouseCoords:SetFontObject(NumberFontNormal)
 	CoordsHolder.playerCoords:SetPoint("BOTTOMLEFT", WorldMapDetailFrame, "BOTTOMLEFT", 5, 5)

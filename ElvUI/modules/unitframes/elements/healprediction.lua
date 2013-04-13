@@ -1,22 +1,19 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
 function UF:Construct_HealComm(frame)
 	local mhpb = CreateFrame('StatusBar', nil, frame)
 	mhpb:SetStatusBarTexture(E["media"].blankTex)
-	mhpb:SetStatusBarColor(0, 1, 0.5, 0.25)
 	mhpb:SetFrameLevel(frame.Health:GetFrameLevel() - 2)
 	mhpb:Hide()
 	
 	local ohpb = CreateFrame('StatusBar', nil, frame)
 	ohpb:SetStatusBarTexture(E["media"].blankTex)
-	ohpb:SetStatusBarColor(0, 1, 0, 0.25)
 	mhpb:SetFrameLevel(mhpb:GetFrameLevel())	
 	ohpb:Hide()
 	
 	local absorbBar = CreateFrame('StatusBar', nil, frame)
 	absorbBar:SetStatusBarTexture(E["media"].blankTex)
-	absorbBar:SetStatusBarColor(1, 1, 0, 0.25)
 	absorbBar:SetFrameLevel(mhpb:GetFrameLevel())
 	absorbBar:Hide()
 	

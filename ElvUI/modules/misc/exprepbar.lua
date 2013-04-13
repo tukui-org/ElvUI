@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local M = E:GetModule('Misc');
 
 FACTION_STANDING_LABEL100 = UNKNOWN
@@ -201,6 +201,9 @@ function M:UpdateExpRepDimensions()
 	self.repBar.text:FontTemplate(nil, E.db.general.reputation.textSize)
 	self.expBar.text:FontTemplate(nil, E.db.general.experience.textSize)
 	
+	self.expBar.statusBar:SetOrientation(E.db.general.experience.orientation)
+	self.repBar.statusBar:SetOrientation(E.db.general.reputation.orientation)
+
 	if E.db.general.experience.mouseover then
 		self.expBar:SetAlpha(0)
 	else

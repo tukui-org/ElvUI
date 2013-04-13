@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
 
 --[[
@@ -857,6 +857,14 @@ function NP:UNIT_TARGET(event, unit)
 		if UnitExists(targetOf) then
 			self.TargetOfGroupMembers[UnitGUID(targetOf)] = targetOf
 		end
+	end
+end
+
+function NP:UPDATE_MOUSEOVER_UNIT()
+	self:UpdateCastInfo()
+
+	if UnitExists("mouseover") then
+		self.TargetOfGroupMembers[UnitGUID("mouseover")] = "mouseover"
 	end
 end
 

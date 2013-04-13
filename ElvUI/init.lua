@@ -3,11 +3,11 @@
 
 To load the AddOn engine add this to the top of your file:
 	
-	local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+	local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 	
 To load the AddOn engine inside another addon add this to the top of your file:
 	
-	local E, L, V, P, G, _ = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+	local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 ]]
 
 BINDING_HEADER_ELVUI = GetAddOnMetadata(..., "Title");
@@ -33,7 +33,7 @@ _G[AddOnName] = Engine;
 
 local tcopy = table.copy
 
-function AddOn:OnInitialize()
+function AddOn:OnInitialize()	
 	if not ElvCharacterDB then
 		ElvCharacterDB = {};
 	end
@@ -41,7 +41,7 @@ function AddOn:OnInitialize()
 	ElvCharacterData = nil; --Depreciated
 	ElvPrivateData = nil; --Depreciated
 	ElvData = nil; --Depreciated
-	
+
 	self.db = tcopy(self.DF.profile, true);
 	self.global = tcopy(self.DF.global, true);
 	if ElvDB then
@@ -84,6 +84,10 @@ function AddOn:OnInitialize()
 	self:RegisterEvent('PLAYER_LOGIN', 'Initialize')
 	self:Contruct_StaticPopups()	
 	self:InitializeInitialModules()
+	
+	if IsAddOnLoaded("Tukui") then
+		self:StaticPopup_Show("TUKUI_ELVUI_INCOMPATIBLE")
+	end	
 end
 
 function AddOn:PLAYER_REGEN_ENABLED()
@@ -118,7 +122,7 @@ function AddOn:PLAYER_REGEN_DISABLED()
 	end		
 end
 
-function AddOn:OnProfileReset()
+function AddOn:ResetProfile()
 	local profileKey
 	if ElvPrivateDB.profileKeys then
 		profileKey = ElvPrivateDB.profileKeys[self.myname..' - '..self.myrealm]
@@ -132,6 +136,10 @@ function AddOn:OnProfileReset()
 	ReloadUI()
 end
 
+function AddOn:OnProfileReset()
+	self:StaticPopup_Show("RESET_PROFILE_PROMPT")
+end
+
 function AddOn:ToggleConfig() 
 	if InCombatLockdown() then
 		self:Print(ERR_NOT_IN_COMBAT)
@@ -143,11 +151,6 @@ function AddOn:ToggleConfig()
 		local _, _, _, _, _, reason = GetAddOnInfo("ElvUI_Config")
 		if reason ~= "MISSING" and reason ~= "DISABLED" then 
 			LoadAddOn("ElvUI_Config")
-			
-			if not self.Ace3SkinLoaded then
-				self:GetModule('Skins'):SkinAce3()
-				self.Ace3SkinLoaded = true
-			end
 		else 
 			self:Print("|cffff0000Error -- Addon 'ElvUI_Config' not found or is disabled.|r") 
 			return
@@ -155,6 +158,7 @@ function AddOn:ToggleConfig()
 	end
 	
 	local ACD = LibStub("AceConfigDialog-3.0")
+
 	local mode = 'Close'
 	if not ACD.OpenFrames[AddOnName] then
 		mode = 'Open'

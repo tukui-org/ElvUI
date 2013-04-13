@@ -12,4 +12,5 @@
 	<Script file='config.lua'/>
 	<Script file='tutorials.lua'/>
 	<Script file='distributor.lua'/>
+	<Script file='dropdown.lua'/>
 </Ui>

@@ -1,9 +1,7 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---if not ANonBuggyFuckingSkin then return end
-
-local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
+local AceGUI = LibStub("AceGUI-3.0", true)
 
 local function SetModifiedBackdrop(self)
 	if self.backdrop then self = self.backdrop end
@@ -91,9 +89,8 @@ local function SkinNextPrevButton(...)
 end
 
 function S:SkinAce3()
-	if not AceGUI then
-		AceGUI = LibStub("AceGUI-3.0", true)
-	end
+	local AceGUI = LibStub("AceGUI-3.0", true)
+	if not AceGUI then return end
 	local oldRegisterAsWidget = AceGUI.RegisterAsWidget
 	AceGUI.RegisterAsWidget = function(self, widget)
 		if not E.private.skins.ace3.enable then
@@ -319,6 +316,15 @@ function S:SkinAce3()
 	end
 end
 
-if not AceGUI then return end
-E.Ace3SkinLoaded = true
+if not AceGUI then
+	local f = CreateFrame("Frame")
+	f:RegisterEvent("ADDON_LOADED")
+	f:SetScript("OnEvent", function(self, event, addon)
+		if LibStub("AceGUI-3.0", true) then
+			S:SkinAce3()
+			self:UnregisterEvent("ADDON_LOADED")
+		end
+	end)
+	return 
+end
 S:RegisterSkin('Ace3', S.SkinAce3, true)

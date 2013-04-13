@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local M = E:NewModule('Misc', 'AceEvent-3.0', 'AceTimer-3.0');
 
 E.Misc = M;
@@ -8,6 +8,7 @@ local floor = math.floor
 local format = string.format
 
 function M:ErrorFrameToggle(event)
+	if not E.db.general.hideErrorFrame then return end
 	if event == 'PLAYER_REGEN_DISABLED' then
 		UIErrorsFrame:UnregisterEvent('UI_ERROR_MESSAGE')
 	else

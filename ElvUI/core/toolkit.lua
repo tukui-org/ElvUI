@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local LSM = LibStub("LibSharedMedia-3.0")
 
 local floor = math.floor
@@ -244,8 +244,8 @@ local function FontTemplate(fs, font, fontSize, fontStyle)
 	E["texts"][fs] = true
 end
 
-local function StyleButton(button)
-	if button.SetHighlightTexture and not button.hover then
+local function StyleButton(button, noHover, noPushed, noChecked)
+	if button.SetHighlightTexture and not button.hover and not noHover then
 		local hover = button:CreateTexture("frame", nil, self)
 		hover:SetTexture(1, 1, 1, 0.3)
 		hover:SetInside()
@@ -253,7 +253,7 @@ local function StyleButton(button)
 		button:SetHighlightTexture(hover)
 	end
 	
-	if button.SetPushedTexture and not button.pushed then
+	if button.SetPushedTexture and not button.pushed and not noPushed then
 		local pushed = button:CreateTexture("frame", nil, self)
 		pushed:SetTexture(0.9, 0.8, 0.1, 0.3)
 		pushed:SetInside()
@@ -261,9 +261,9 @@ local function StyleButton(button)
 		button:SetPushedTexture(pushed)
 	end
 	
-	if button.SetCheckedTexture and not button.checked then
+	if button.SetCheckedTexture and not button.checked and not noChecked then
 		local checked = button:CreateTexture("frame", nil, self)
-		checked:SetTexture(unpack(E["media"].rgbvaluecolor))
+		checked:SetTexture(1, 1, 1)
 		checked:SetInside()
 		checked:SetAlpha(0.3)
 		button.checked = checked

@@ -109,6 +109,16 @@ local function Disable(self)
 		self:UnregisterEvent('UNIT_MAXHEALTH', Path)
 		self:UnregisterEvent('UNIT_HEALTH', Path)
 		self:UnregisterEvent('UNIT_ABSORB_AMOUNT_CHANGED', Path)
+
+		if hp.myBar then
+			hp.myBar:Hide()
+		end
+		if hp.otherBar then
+			hp.otherBar:Hide()
+		end
+		if hp.absorbBar then
+			hp.absorbBar:Hide()
+		end				
 	end
 end
 

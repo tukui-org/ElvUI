@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local function SkinTab(tab)
@@ -68,8 +68,8 @@ local function LoadSkin()
 	BlackMarketFrame.HotDeal.Item.hover:SetAllPoints()
 	BlackMarketFrame.HotDeal.Item.pushed:SetAllPoints()
 	
-	S:HandleButton(BlackMarketFrame.HotDeal.BidButton)
-	S:HandleEditBox(BlackMarketHotItemBidPriceGold)
+	--S:HandleButton(BlackMarketFrame.HotDeal.BidButton)
+	--S:HandleEditBox(BlackMarketHotItemBidPriceGold)
 	
 	for i=1, BlackMarketFrame:GetNumRegions() do
 		local region = select(i, BlackMarketFrame:GetRegions())

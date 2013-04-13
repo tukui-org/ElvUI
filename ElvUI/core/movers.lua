@@ -1,14 +1,19 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local Sticky = LibStub("LibSimpleSticky-1.0")
 
 local format = string.format
 local split = string.split
-
+local min = math.min
 E.CreatedMovers = {}
 
 local function SizeChanged(frame)
 	if InCombatLockdown() then return; end
-	frame.mover:Size(frame:GetSize())
+
+	if frame.dirtyWidth and frame.dirtyHeight then
+		frame.mover:Size(frame.dirtyWidth, frame.dirtyHeight)
+	else
+		frame.mover:Size(frame:GetSize())
+	end
 end
 
 local function GetPoint(obj)
@@ -147,50 +152,35 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 		local x, y = self:GetCenter()
 		local point
 		
-		if self.positionOverride then
-		    if self.positionOverride:find("BOTTOM") then
-				y = self:GetBottom()
-			elseif self.positionOverride:find("TOP") then
-				y = self:GetTop()
-			end
-			
-			if self.positionOverride:find("LEFT") then
-				x = self:GetLeft()
-			elseif self.positionOverride:find("RIGHT") then
-				x = self:GetRight()
-			end
+		local LEFT = screenWidth / 3
+		local RIGHT = screenWidth * 2 / 3
+		local TOP = screenHeight / 2
+		
+		if y >= TOP then
+			point = "TOP"
+			y = -(screenHeight - self:GetTop())
 		else
-			local LEFT = screenWidth / 3
-			local RIGHT = screenWidth * 2 / 3
-			local TOP = screenHeight / 2
-			
-			if y >= TOP then
-				point = "TOP"
-				y = -(screenHeight - self:GetTop())
-			else
-				point = "BOTTOM"
-				y = self:GetBottom()
-			end
-			
-			if x >= RIGHT then
-				point = point..'RIGHT'
-				x = self:GetRight() - screenWidth
-			elseif x <= LEFT then
-				point = point..'LEFT'
-				x = self:GetLeft()
-			else
-				x = x - screenCenter
-			end
+			point = "BOTTOM"
+			y = self:GetBottom()
+		end
+		
+		if x >= RIGHT then
+			point = point..'RIGHT'
+			x = self:GetRight() - screenWidth
+		elseif x <= LEFT then
+			point = point..'LEFT'
+			x = self:GetLeft()
+		else
+			x = x - screenCenter
+		end
+		
+		if self.positionOverride then
+			self.parent:ClearAllPoints()
+			self.parent:Point(self.positionOverride, self, self.positionOverride)
 		end
 		
 		self:ClearAllPoints()
-		if self.positionOverride then
-			self:Point(self.positionOverride, E.UIParent, "BOTTOMLEFT", x, y)
-			self.parent:ClearAllPoints()
-			self.parent:Point(self.positionOverride, self, self.positionOverride)
-		else
-			self:Point(point, E.UIParent, point, x, y)
-		end
+		self:Point(point, E.UIParent, point, x, y)
 		
 		E:SaveMoverPosition(name)
 

@@ -23,6 +23,11 @@ local updateSafeZone = function(self)
 	end
 end
 
+local UNIT_SPELLCAST_SENT = function (self, event, unit, spell, rank, target)
+	local castbar = self.Castbar
+	castbar.curTarget = (target and target ~= "") and target or nil
+end
+
 local UNIT_SPELLCAST_START = function(self, event, unit, spell)
 	if(self.unit ~= unit) or not unit then return end
 
@@ -70,6 +75,7 @@ local UNIT_SPELLCAST_START = function(self, event, unit, spell)
 	if(castbar.PostCastStart) then
 		castbar:PostCastStart(unit, name, castid)
 	end
+
 	castbar:Show()
 end
 
@@ -304,6 +310,7 @@ local onUpdate = function(self, elapsed)
 
 	if(self.casting) then
 		local duration = self.duration + self.lastUpdate
+
 		if(duration >= self.max) then
 			self.casting = nil
 			self:Hide()
@@ -353,6 +360,7 @@ local Enable = function(object, unit)
 		castbar.ForceUpdate = ForceUpdate
 
 		if(not (unit and unit:match'%wtarget$')) then
+			object:RegisterEvent("UNIT_SPELLCAST_SENT", UNIT_SPELLCAST_SENT)
 			object:RegisterEvent("UNIT_SPELLCAST_START", UNIT_SPELLCAST_START)
 			object:RegisterEvent("UNIT_SPELLCAST_FAILED", UNIT_SPELLCAST_FAILED)
 			object:RegisterEvent("UNIT_SPELLCAST_STOP", UNIT_SPELLCAST_STOP)
@@ -406,6 +414,7 @@ local Disable = function(object, unit)
 	local castbar = object.Castbar
 
 	if(castbar) then
+		object:UnregisterEvent("UNIT_SPELLCAST_SENT", UNIT_SPELLCAST_SENT)
 		object:UnregisterEvent("UNIT_SPELLCAST_START", UNIT_SPELLCAST_START)
 		object:UnregisterEvent("UNIT_SPELLCAST_FAILED", UNIT_SPELLCAST_FAILED)
 		object:UnregisterEvent("UNIT_SPELLCAST_STOP", UNIT_SPELLCAST_STOP)

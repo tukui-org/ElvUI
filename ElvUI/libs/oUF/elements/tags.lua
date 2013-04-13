@@ -340,6 +340,7 @@ local tags = setmetatable(
 
 _ENV._TAGS = tags
 
+local onUpdateDelay = {}
 local tagEvents = {
 	["curhp"]               = "UNIT_HEALTH",
 	["dead"]                = "UNIT_HEALTH",
@@ -412,7 +413,7 @@ local createOnUpdate = function(timer)
 		frame:SetScript('OnUpdate', function(self, elapsed)
 			if(total >= timer) then
 				for k, fs in next, strings do
-					if(fs.parent:IsShown() and UnitExists(fs.parent.unit)) then
+					if(fs.parent:IsVisible() and UnitExists(fs.parent.unit)) then
 						fs:UpdateTag()
 					end
 				end
@@ -544,7 +545,7 @@ local Tag = function(self, fs, tagstr)
 	local containsOnUpdate
 	for tag in tagstr:gmatch(_PATTERN) do
 		if not tagEvents[tag:sub(2, -2)] then
-			containsOnUpdate = true;
+			containsOnUpdate = onUpdateDelay[tag:sub(2, -2)] or 0.15;
 		end	
 	end
 	
@@ -685,7 +686,7 @@ local Tag = function(self, fs, tagstr)
 		if(type(fs.frequentUpdates) == 'number') then
 			timer = fs.frequentUpdates
 		elseif containsOnUpdate then
-			timer = .1
+			timer = containsOnUpdate
 		else
 			timer = .5
 		end
@@ -726,7 +727,7 @@ oUF.Tags = {
 	Methods = tags,
 	Events = tagEvents,
 	SharedEvents = unitlessEvents,
-
+	OnUpdateThrottle = onUpdateDelay,
 }
 oUF:RegisterMetaFunction('Tag', Tag)
 oUF:RegisterMetaFunction('Untag', Untag)

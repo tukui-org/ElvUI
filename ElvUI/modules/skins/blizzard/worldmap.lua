@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
@@ -28,9 +28,7 @@ local function LoadSkin()
 	S:HandleButton(WorldMapZoomOutButton)
 	
 	S:HandleCheckBox(WorldMapTrackQuest)
-	S:HandleCheckBox(WorldMapQuestShowObjectives)
-	S:HandleCheckBox(WorldMapShowDigSites)
-	
+
 	--Mini
 	local function SmallSkin()
 		WorldMapFrame.backdrop:ClearAllPoints()

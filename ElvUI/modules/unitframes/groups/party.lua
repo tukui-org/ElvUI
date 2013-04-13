@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
 local _, ns = ...
@@ -10,6 +10,7 @@ function UF:Construct_PartyFrames(unitGroup)
 	self:SetScript('OnLeave', UnitFrame_OnLeave)	
 
 	self.RaisedElementParent = CreateFrame('Frame', nil, self)
+	self.RaisedElementParent:SetFrameStrata("MEDIUM")
 	self.RaisedElementParent:SetFrameLevel(self:GetFrameLevel() + 10)
 	
 	if self.isChild then
@@ -47,69 +48,26 @@ function UF:Construct_PartyFrames(unitGroup)
 	
 	self.Range = UF:Construct_Range(self)
 	
-	
-	--UF:Update_PartyFrames(self, E.db['unitframe']['units']['party'])
 	UF:Update_StatusBars()
 	UF:Update_FontStrings()	
 
 	return self
 end
 
-function UF:Update_PartyHeader(header, db)
-	if not header.isForced then
-		header:Hide()
-		header:SetAttribute('oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height))
-		header:SetAttribute('startingIndex', 1)
-	end
-	
+function UF:Update_PartyHeader(header, db)	
 	header.db = db
-	
-	--User Error Check
-	if UF['badHeaderPoints'][db.point] == db.columnAnchorPoint then
-		db.columnAnchorPoint = db.point
-		E:Print(L['You cannot set the Group Point and Column Point so they are opposite of each other.'])
-	end	
-	
-	
-	if not header.isForced then	
-		self:ChangeVisibility(header, 'custom '..db.visibility)
-	end
-	
-	UF['headerGroupBy'][db.groupBy](header)
-	header:SetAttribute("groupBy", db.groupBy == 'ROLE' and 'ASSIGNEDROLE' or db.groupBy)
-	header:SetAttribute('sortDir', db.sortDir)
-	
-	if not header.isForced then
-		header:SetAttribute("showParty", db.showParty)
-		header:SetAttribute("showRaid", db.showRaid)
-		header:SetAttribute("showSolo", db.showSolo)
-		header:SetAttribute("showPlayer", db.showPlayer)
-	end
-	
-	header:SetAttribute("maxColumns", db.maxColumns)
-	header:SetAttribute("unitsPerColumn", db.unitsPerColumn)
-	
-	if (db.point == "TOP" or db.point == "BOTTOM") and (db.columnAnchorPoint == "LEFT" or db.columnAnchorPoint == "RIGHT") then
-		header:SetAttribute('columnSpacing', db.xOffset)
-	else
-		header:SetAttribute('columnSpacing', db.yOffset)
-	end
-	header:SetAttribute("xOffset", db.xOffset)	
-	header:SetAttribute("yOffset", db.yOffset)
 
+	UF['headerGroupBy'][db.groupBy](header)
+	header:SetAttribute('sortDir', db.sortDir)
+	header:SetAttribute("showPlayer", db.showPlayer)
 	
-	header:SetAttribute('columnAnchorPoint', db.columnAnchorPoint)
-	
-	UF:ClearChildPoints(header:GetChildren())
-	
-	header:SetAttribute('point', db.point)
-		
+	local positionOverride = UF:SetupGroupAnchorPoints(header)
 	if not header.positioned then
 		header:ClearAllPoints()
 		header:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)
 		
 		E:CreateMover(header, header:GetName()..'Mover', L['Party Frames'], nil, nil, nil, 'ALL,PARTY,ARENA')
-		header.mover.positionOverride = db.positionOverride ~= 'NONE' and db.positionOverride or nil
+		header.mover.positionOverride = positionOverride
 		
 		header:SetAttribute('minHeight', header.dirtyHeight)
 		header:SetAttribute('minWidth', header.dirtyWidth)
@@ -131,11 +89,10 @@ function UF:PartySmartVisibility(event)
 		if inInstance and instanceType == "raid" then
 			RegisterAttributeDriver(self, 'state-visibility', 'hide')
 		elseif self.db.visibility then
-			UF:ChangeVisibility(self, 'custom '..self.db.visibility)
+			RegisterAttributeDriver(self, 'state-visibility', self.db.visibility)
 		end
 	else
 		self:RegisterEvent("PLAYER_REGEN_ENABLED")
-		return
 	end
 end
 
@@ -195,23 +152,35 @@ function UF:Update_PartyFrames(frame, db)
 			local health = frame.Health
 			health.Smooth = self.db.smoothbars
 			health.frequentUpdates = db.health.frequentUpdates
-			
+
 			--Colors
 			health.colorSmooth = nil
 			health.colorHealth = nil
 			health.colorClass = nil
 			health.colorReaction = nil
-			if self.db['colors'].healthclass ~= true then
+
+			if db.colorOverride == "FORCE_ON" then
+				health.colorClass = true
+				health.colorReaction = true
+			elseif db.colorOverride == "FORCE_OFF" then
 				if self.db['colors'].colorhealthbyvalue == true then
 					health.colorSmooth = true
 				else
 					health.colorHealth = true
 				end		
 			else
-				health.colorClass = true
-				health.colorReaction = true
-			end	
-			
+				if self.db['colors'].healthclass ~= true then
+					if self.db['colors'].colorhealthbyvalue == true then
+						health.colorSmooth = true
+					else
+						health.colorHealth = true
+					end		
+				else
+					health.colorClass = true
+					health.colorReaction = true
+				end				
+			end
+
 			--Position
 			health:ClearAllPoints()
 			health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -BORDER)
@@ -242,6 +211,7 @@ function UF:Update_PartyFrames(frame, db)
 			frame:Tag(health.value, db.health.text_format)
 			
 			health.frequentUpdates = db.health.frequentUpdates
+
 			--Colors
 			health.colorSmooth = nil
 			health.colorHealth = nil
@@ -524,7 +494,7 @@ function UF:Update_PartyFrames(frame, db)
 		--OverHealing
 		do
 			local healPrediction = frame.HealPrediction
-			
+			local c = UF.db.colors.healPrediction
 			if db.healPrediction then
 				if not frame:IsElementEnabled('HealPrediction') then
 					frame:EnableElement('HealPrediction')
@@ -533,6 +503,10 @@ function UF:Update_PartyFrames(frame, db)
 				healPrediction.myBar:SetOrientation(db.health.orientation)
 				healPrediction.otherBar:SetOrientation(db.health.orientation)
 				healPrediction.absorbBar:SetOrientation(db.health.orientation)
+
+				healPrediction.myBar:SetStatusBarColor(c.personal.r, c.personal.g, c.personal.b, c.personal.a)
+				healPrediction.otherBar:SetStatusBarColor(c.others.r, c.others.g, c.others.b, c.others.a)
+				healPrediction.absorbBar:SetStatusBarColor(c.absorbs.r, c.absorbs.g, c.absorbs.b, c.absorbs.a)				
 			else
 				if frame:IsElementEnabled('HealPrediction') then
 					frame:DisableElement('HealPrediction')
@@ -543,7 +517,7 @@ function UF:Update_PartyFrames(frame, db)
 		--GPSArrow
 		do
 			local GPS = frame.GPS
-			if db.GPSArrow then
+			if db.GPSArrow.enable then
 				if not frame:IsElementEnabled('GPS') then
 					frame:EnableElement('GPS')
 				end

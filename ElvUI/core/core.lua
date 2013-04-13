@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local LSM = LibStub("LibSharedMedia-3.0")
 
 local format = string.format
@@ -67,7 +67,8 @@ E.DispelClasses = {
 	['DRUID'] = {
 		['Magic'] = false,
 		['Curse'] = true,
-		['Poison'] = true
+		['Poison'] = true,
+		['Disease'] = false,
 	},
 	['MONK'] = {
 		['Magic'] = false,
@@ -129,13 +130,22 @@ function E:Print(msg)
 	print(self["media"].hexvaluecolor..'ElvUI:|r', msg)
 end
 
+--Workaround for people wanting to use white and it reverting to their class color.
+E.PriestColors = {
+	r = 0.99,
+	g = 0.99,
+	b = 0.99,
+	colorStr = 'fcfcfc'
+}
+
 --Basically check if another class border is being used on a class that doesn't match. And then return true if a match is found.
-local function CheckClassColor(r, g, b)
-	if E.private.theme ~= 'class' then return end
+function E:CheckClassColor(r, g, b)
+	r, g, b = floor(r*100+.5)/100, floor(g*100+.5)/100, floor(b*100+.5)/100
 	local matchFound = false;
 	for class, _ in pairs(RAID_CLASS_COLORS) do
 		if class ~= E.myclass then
-			if RAID_CLASS_COLORS[class].r == r and RAID_CLASS_COLORS[class].g == g and RAID_CLASS_COLORS[class].b == b then
+			local colorTable = class == 'PRIEST' and E.PriestColors or RAID_CLASS_COLORS[class]
+			if colorTable.r == r and colorTable.g == g and colorTable.b == b then
 				matchFound = true;
 			end
 		end
@@ -169,11 +179,11 @@ function E:UpdateMedia()
 
 	--Border Color
 	local border = E.db['general'].bordercolor
-	if CheckClassColor(border.r, border.g, border.b) then
-		border = RAID_CLASS_COLORS[E.myclass]
-		E.db['general'].bordercolor.r = RAID_CLASS_COLORS[E.myclass].r
-		E.db['general'].bordercolor.g = RAID_CLASS_COLORS[E.myclass].g
-		E.db['general'].bordercolor.b = RAID_CLASS_COLORS[E.myclass].b	
+	if self:CheckClassColor(border.r, border.g, border.b) then
+		classColor = E.myclass == 'PRIEST' and E.PriestColors or RAID_CLASS_COLORS[E.myclass]
+		E.db['general'].bordercolor.r = classColor.r
+		E.db['general'].bordercolor.g = classColor.g
+		E.db['general'].bordercolor.b = classColor.b	
 	elseif E.PixelMode then
 		border = {r = 0, g = 0, b = 0}
 	end
@@ -187,11 +197,12 @@ function E:UpdateMedia()
 	
 	--Value Color
 	local value = self.db['general'].valuecolor
-	if CheckClassColor(value.r, value.g, value.b) then
-		value = RAID_CLASS_COLORS[E.myclass]
-		self.db['general'].valuecolor.r = RAID_CLASS_COLORS[E.myclass].r
-		self.db['general'].valuecolor.g = RAID_CLASS_COLORS[E.myclass].g
-		self.db['general'].valuecolor.b = RAID_CLASS_COLORS[E.myclass].b		
+
+	if self:CheckClassColor(value.r, value.g, value.b) then
+		value = E.myclass == 'PRIEST' and E.PriestColors or RAID_CLASS_COLORS[E.myclass]
+		self.db['general'].valuecolor.r = value.r
+		self.db['general'].valuecolor.g = value.g
+		self.db['general'].valuecolor.b = value.b		
 	end
 	self["media"].hexvaluecolor = self:RGBToHex(value.r, value.g, value.b)
 	self["media"].rgbvaluecolor = {value.r, value.g, value.b}
@@ -320,6 +331,16 @@ function E:IsDispellableByMe(debuffType)
 	end
 end
 
+local SymbiosisName = GetSpellInfo(110309)
+local CleanseName = GetSpellInfo(4987)
+function E:SPELLS_CHANGED()
+	if GetSpellInfo(SymbiosisName) == CleanseName then
+		self.DispelClasses["DRUID"].Disease = true
+	else
+		self.DispelClasses["DRUID"].Disease = false
+	end
+end
+
 function E:CheckRole()
 	local talentTree = GetSpecialization()
 	local IsInPvPGear = false;
@@ -374,15 +395,23 @@ function E:CheckIncompatible()
 	if E.global.ignoreIncompatible then return; end
 	if IsAddOnLoaded('Prat-3.0') and E.private.chat.enable then
 		E:IncompatibleAddOn('Prat-3.0', 'Chat')
-	elseif IsAddOnLoaded('Chatter') and E.private.chat.enable then
+	end
+
+	if IsAddOnLoaded('Chatter') and E.private.chat.enable then
 		E:IncompatibleAddOn('Chatter', 'Chat')
 	end
 	
 	if IsAddOnLoaded('TidyPlates') and E.private.nameplate.enable then
 		E:IncompatibleAddOn('TidyPlates', 'NamePlate')
-	elseif IsAddOnLoaded('Aloft') and E.private.nameplate.enable then
+	end
+		
+	if IsAddOnLoaded('Aloft') and E.private.nameplate.enable then
 		E:IncompatibleAddOn('Aloft', 'NamePlate')
 	end	
+
+	if IsAddOnLoaded('Healers-Have-To-Die') and E.private.nameplate.enable then
+		E:IncompatibleAddOn('Healers-Have-To-Die', 'NamePlate')
+	end
 end
 
 function E:IsFoolsDay()
@@ -412,9 +441,9 @@ end
 function E:SendMessage()
 	local _, instanceType = IsInInstance()
 	if IsInRaid() then
-		SendAddonMessage("ELVUI_VERSION", E.version, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "RAID")
+		SendAddonMessage("ELVUI_VERSIONCHK", E.version, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "RAID")
 	elseif IsInGroup() then
-		SendAddonMessage("ELVUI_VERSION", E.version, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "PARTY")
+		SendAddonMessage("ELVUI_VERSIONCHK", E.version, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "PARTY")
 	end
 	
 	if E.SendMSGTimer then
@@ -428,7 +457,7 @@ local function SendRecieve(self, event, prefix, message, channel, sender)
 	if event == "CHAT_MSG_ADDON" then
 		if sender == E.myname then return end
 
-		if prefix == "ELVUI_VERSION" and not find(sender, "Elvz") and not E.recievedOutOfDateMessage then
+		if prefix == "ELVUI_VERSIONCHK" and not find(sender, "Elvz") and not E.recievedOutOfDateMessage then
 			if E.version ~= 'BETA' and tonumber(message) ~= nil and tonumber(message) > tonumber(E.version) then
 				E:Print(L["Your version of ElvUI is out of date. You can download the latest version from http://www.tukui.org"])
 				E.recievedOutOfDateMessage = true
@@ -451,40 +480,12 @@ local function SendRecieve(self, event, prefix, message, channel, sender)
 				end			
 			end
 		end
-	--[[elseif event == "ADDON_LOADED" then
-		if prefix == "ElvUI" then
-			local _, _, _, _, _, reason = GetAddOnInfo("ElvUI_SLE")
-			local frame = EnumerateFrames()
-			while frame do
-				if frame:IsEventRegistered("CHAT_MSG_ADDON") then
-					frames[frame] = true
-				end
-				frame = EnumerateFrames(frame)
-			end
-
-			if reason ~= "MISSING" and reason ~= "DISABLED" then 
-				LoadAddon("ElvUI_SLE")
-			else
-				twipe(frames)
-				self:UnregisterEvent("ADDON_LOADED")
-			end
-		elseif prefix == "ElvUI_SLE" then
-			local frame = EnumerateFrames()
-			while frame do
-				if frame:IsEventRegistered("CHAT_MSG_ADDON") and not frames[frame] then
-					frame:UnregisterEvent("CHAT_MSG_ADDON")
-				end
-				frame = EnumerateFrames(frame)
-			end
-			twipe(frames)
-			self:UnregisterEvent("ADDON_LOADED")
-		end
-	else]]
+	else
 		E.SendMSGTimer = E:ScheduleTimer('SendMessage', 12)
 	end
 end
 
-RegisterAddonMessagePrefix('ELVUI_VERSION')
+RegisterAddonMessagePrefix('ELVUI_VERSIONCHK')
 RegisterAddonMessagePrefix('ELVUI_DEV_SAYS')
 RegisterAddonMessagePrefix('ELVUI_DEV_CMD')
 
@@ -499,6 +500,7 @@ function E:UpdateAll(ignoreInstall)
 	self.data.RegisterCallback(self, "OnProfileChanged", "UpdateAll")
 	self.data.RegisterCallback(self, "OnProfileCopied", "UpdateAll")
 	self.data.RegisterCallback(self, "OnProfileReset", "OnProfileReset")
+	LibStub('LibDualSpec-1.0'):EnhanceDatabase(self.data, "ElvUI")
 	self.db = self.data.profile;
 	self.global = self.data.global;
 	
@@ -585,13 +587,17 @@ function E:RemoveNonPetBattleFrames()
 	for object, _ in pairs(E.FrameLocks) do
 		_G[object]:SetParent(E.HiddenFrame)
 	end
+
+	self:RegisterEvent("PLAYER_REGEN_DISABLED", "AddNonPetBattleFrames")
 end
 
-function E:AddNonPetBattleFrames()
+function E:AddNonPetBattleFrames(event)
 	if InCombatLockdown() then return end
 	for object, _ in pairs(E.FrameLocks) do
 		_G[object]:SetParent(UIParent)
 	end
+
+	self:UnregisterEvent("PLAYER_REGEN_DISABLED")
 end
 
 function E:ResetAllUI()
@@ -692,7 +698,7 @@ function E:MassiveShake()
 	ElvUI_StaticPopup1Button1:Enable()
 	
 	for _, object in pairs(self["massiveShakeObjects"]) do
-		if object then
+		if object and object:IsShown() then
 			self:Shake(object)
 		end
 	end
@@ -760,7 +766,7 @@ function E:Initialize()
 	self.data.RegisterCallback(self, "OnProfileChanged", "UpdateAll")
 	self.data.RegisterCallback(self, "OnProfileCopied", "UpdateAll")
 	self.data.RegisterCallback(self, "OnProfileReset", "OnProfileReset")
-	
+	LibStub('LibDualSpec-1.0'):EnhanceDatabase(self.data, "ElvUI")
 	self.charSettings = LibStub("AceDB-3.0"):New("ElvPrivateDB", self.privateVars);	
 	self.private = self.charSettings.profile
 	self.db = self.data.profile;
@@ -801,6 +807,10 @@ function E:Initialize()
 	self:RegisterEvent("PET_BATTLE_CLOSE", 'AddNonPetBattleFrames')
 	self:RegisterEvent('PET_BATTLE_OPENING_START', "RemoveNonPetBattleFrames")	
 	
+	if self.myclass == "DRUID" then
+		self:RegisterEvent("SPELLS_CHANGED")
+	end
+
 	self:Tutorials()
 	self:GetModule('Minimap'):UpdateSettings()
 	self:RefreshModulesDB()

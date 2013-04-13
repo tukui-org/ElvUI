@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
 local _, ns = ...
@@ -28,38 +28,30 @@ end
 
 function UF:Update_TankHeader(header, db)
 	header:Hide()
-	header:SetAttribute('oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height))
 	header.db = db
 	
 	UF:ClearChildPoints(header:GetChildren())
 	
-	if not header.mover then
-		self:ChangeVisibility(header, 'custom show') --fucking retarded bug fix
-	end
+	header:SetAttribute("startingIndex", -1)
+	RegisterAttributeDriver(header, 'state-visibility', 'show')	
+	header.dirtyWidth, header.dirtyHeight = header:GetSize()	
+	RegisterAttributeDriver(header, 'state-visibility', '[@raid1,exists] show;hide')
+	header:SetAttribute("startingIndex", 1)
 	
-	self:ChangeVisibility(header, 'raid')
-
-	header:SetAttribute("showRaid", true)
-	header:SetAttribute('groupFilter', 'MAINTANK')
 	header:SetAttribute('point', 'BOTTOM')
+	header:SetAttribute('columnAnchorPoint', 'LEFT')
 	
-	header:SetAttribute('columnAnchorPoint', 'TOP')
-
 	UF:ClearChildPoints(header:GetChildren())
 	header:SetAttribute("yOffset", 7)
 
-	header:SetAttribute('columnAnchorPoint', 'TOP')
-	header:SetAttribute('point', 'BOTTOM')
-
 	if not header.positioned then
 		header:ClearAllPoints()
-		header:Point("LEFT", E.UIParent, "LEFT", 6, 250)
-		
-		E:CreateMover(header, header:GetName()..'Mover', L['MT Frames'], nil, nil, nil, 'ALL,RAID10,RAID25,RAID40')
+		header:Point("TOPLEFT", E.UIParent, "TOPLEFT", 4, -240)
 
+		E:CreateMover(header, header:GetName()..'Mover', L['MT Frames'], nil, nil, nil, 'ALL,RAID10,RAID25,RAID40')
+		header.mover.positionOverride = "TOPLEFT"
 		header:SetAttribute('minHeight', header.dirtyHeight)
 		header:SetAttribute('minWidth', header.dirtyWidth)
-
 		header.positioned = true;
 	end
 end

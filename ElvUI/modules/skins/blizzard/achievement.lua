@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
@@ -407,10 +407,11 @@ local function LoadSkin()
 				if index > 1 then
 					frame:ClearAllPoints()
 					frame:Point("TOP", _G["AchievementFrameProgressBar"..index-1], "BOTTOM", 0, -5)
-					hooksecurefunc(frame, "SetPoint", function(self, point, attachTo, anchorPoint, xOffset, yOffset)
-						if point ~= "TOP" or attachTo ~= _G["AchievementFrameProgressBar"..index-1] or xOffset ~= "BOTTOM" or xOffset ~= 0 or yOffset ~= -5 then
+					hooksecurefunc(frame, "SetPoint", function(self, point, attachTo, anchorPoint, xOffset, yOffset, noReset)
+
+						if not noReset then
 							self:ClearAllPoints()
-							self:Point("TOP", _G["AchievementFrameProgressBar"..index-1], "BOTTOM", 0, -5)					
+							self:SetPoint("TOP", _G["AchievementFrameProgressBar"..index-1], "BOTTOM", 0, -5, true)					
 						end
 					end)
 				end

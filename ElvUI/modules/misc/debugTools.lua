@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local D = E:NewModule('DebugTools', 'AceEvent-3.0', 'AceHook-3.0');
 
 E.DebugTools = D
@@ -123,18 +123,7 @@ function D:PLAYER_REGEN_DISABLED()
 	ScriptErrorsFrame:SetParent(self.HideFrame)
 end
 
-function D:TaintError(event, addonName, addonFunc)
-	local inInstance, instanceType = IsInInstance();
-	if PlayerTalentFrame and PlayerTalentFrame:IsShown() then
-		for i = 1, 4, 1 do
-			if _G['StaticPopup'..i] then
-				_G['StaticPopup'..i]:Hide()
-			end
-		end
-		
-		E:StaticPopup_Show('TALENT_TAINT')
-	end
-	
+function D:TaintError(event, addonName, addonFunc)	
 	if GetCVarBool('scriptErrors') ~= 1 or E.db.general.taintLog ~= true then return end
 	ScriptErrorsFrame_OnError(L["%s: %s tried to call the protected function '%s'."]:format(event, addonName or "<name>", addonFunc or "<func>"), false)
 end

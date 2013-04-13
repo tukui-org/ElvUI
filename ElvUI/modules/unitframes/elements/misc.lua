@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
 local random, floor, ceil = math.random, math.floor, math.ceil
@@ -6,6 +6,7 @@ local format = string.format
 
 
 local LSM = LibStub("LibSharedMedia-3.0");
+
 function UF:SpawnMenu()
 	local unit = E:StringTitle(self.unit)
 	if self.unit:find("targettarget") then return; end
@@ -49,7 +50,7 @@ function UF:Construct_CombatIndicator(frame)
 end
 
 function UF:Construct_PvPIndicator(frame)
-	local pvp = frame:CreateFontString(nil, 'OVERLAY')
+	local pvp = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
 	UF:Configure_FontString(pvp)
 
 	return pvp
@@ -83,7 +84,7 @@ function UF:Construct_Combobar(frame)
 		UF['statusbars'][CPoints[i]] = true
 		CPoints[i]:SetStatusBarTexture(E['media'].blankTex)
 		CPoints[i]:GetStatusBarTexture():SetHorizTile(false)
-		
+		CPoints[i]:SetAlpha(0.15)
 		CPoints[i]:CreateBackdrop('Default')
 		CPoints[i].backdrop:SetParent(CPoints)
 	end
@@ -296,7 +297,6 @@ function UF:UpdateComboDisplay(event, unit)
 	local cpoints = self.CPoints
 	local cp = (UnitHasVehicleUI("player") or UnitHasVehicleUI("vehicle")) and GetComboPoints('vehicle', 'target') or GetComboPoints('player', 'target')
 
-
 	for i=1, MAX_COMBO_POINTS do
 		if(i <= cp) then
 			cpoints[i]:SetAlpha(1)
@@ -309,7 +309,7 @@ function UF:UpdateComboDisplay(event, unit)
 	local SPACING = E.Spacing;
 	local db = E.db['unitframe']['units'].target
 	local USE_COMBOBAR = db.combobar.enable
-	local USE_MINI_COMBOBAR = db.combobar.fill == "spaced" and USE_COMBOBAR
+	local USE_MINI_COMBOBAR = db.combobar.fill == "spaced" and USE_COMBOBAR and not db.combobar.DetachFromFrame
 	local COMBOBAR_HEIGHT = db.combobar.height
 	local USE_PORTRAIT = db.portrait.enable
 	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
@@ -319,8 +319,12 @@ function UF:UpdateComboDisplay(event, unit)
 	if USE_PORTRAIT_OVERLAY or not USE_PORTRAIT then
 		PORTRAIT_WIDTH = 0
 	end
+
+	if db.combobar.DetachFromFrame then
+		COMBOBAR_HEIGHT = 0
+	end	
 	
-	if cpoints[1]:GetAlpha() == 1 then
+	if cpoints[1]:GetAlpha() == 1 or not db.combobar.autoHide then
 		cpoints:Show()
 		if USE_MINI_COMBOBAR then
 			self.Portrait.backdrop:SetPoint("TOPRIGHT", self, "TOPRIGHT", 0, -((COMBOBAR_HEIGHT/2) + SPACING - BORDER))
@@ -433,7 +437,7 @@ function UF:UpdateAuraWatch(frame)
 				icon.onlyShowMissing = buffs[i].onlyShowMissing;
 				icon.presentAlpha = icon.onlyShowMissing and 0 or 1;
 				icon.missingAlpha = icon.onlyShowMissing and 1 or 0;
-				icon.textThreshold = buffs[i].textThreshold
+				icon.textThreshold = buffs[i].textThreshold or -1
 				icon.displayText = buffs[i].displayText
 				
 				icon:Width(db.size);

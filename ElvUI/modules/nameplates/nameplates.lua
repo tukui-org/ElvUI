@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
 local LSM = LibStub("LibSharedMedia-3.0")
 
@@ -10,10 +10,6 @@ local backdrop
 NP.Handled = {} --Skinned Nameplates
 NP.Healers = {};
 
-NP.factionOpposites = {
-	[0] = 1,
-	[1] = 0,
-}
 NP.HealerSpecs = {
 	[L['Restoration']] = true,
 	[L['Holy']] = true,
@@ -289,7 +285,8 @@ function NP:HealthBar_OnShow(frame)
 	frame.hp:Size(self.db.width, self.db.height)	
 	frame.hp:SetPoint('BOTTOM', frame, 'BOTTOM', 0, 5)
 	frame.hp:GetStatusBarTexture():SetHorizTile(true)
-	
+	frame.hp.name:SetWidth(frame.hp:GetWidth())
+
 	self:HealthBar_ValueChanged(frame.oldhp)
 	
 	if not E.PixelMode and frame.hp.backdrop then
@@ -479,12 +476,13 @@ function NP:SkinPlate(frame, nameFrame)
 	--Name Text
 	if not frame.hp.name then
 		frame.hp.name = frame.hp:CreateFontString(nil, 'OVERLAY')
-		frame.hp.name:SetPoint('BOTTOMLEFT', frame.hp, 'TOPLEFT', -10, 3)
-		frame.hp.name:SetPoint('BOTTOMRIGHT', frame.hp, 'TOPRIGHT', 10, 3)
 		frame.hp.oldname = oldname
 	end
 	frame.hp.name:FontTemplate(font, self.db.fontSize, self.db.fontOutline)
-	
+	frame.hp.name:SetPoint('BOTTOM', frame.hp, 'TOP', 0 + self.db.nameXOffset, 4 + self.db.nameYOffset)
+	frame.hp.name:SetJustifyH(self.db.nameJustifyH)
+	frame.hp.name:SetHeight(self.db.fontSize)
+
 	--Health Text
 	if not frame.hp.value then
 		frame.hp.value = frame.hp:CreateFontString(nil, "OVERLAY")	
@@ -904,11 +902,12 @@ function NP:CheckFilter(frame, ...)
 end
 
 function NP:CheckBGHealers()
+	local name, _, talentSpec
 	for i = 1, GetNumBattlefieldScores() do
-		local name, _, _, _, _, faction, _, _, _, _, _, _, _, _, _, talentSpec = GetBattlefieldScore(i);
+		name, _, _, _, _, _, _, _, _, _, _, _, _, _, _, talentSpec = GetBattlefieldScore(i);
 		if name then
 			name = name:match("(.+)%-.+") or name
-			if name and self.HealerSpecs[talentSpec] and self.factionOpposites[self.PlayerFaction] == faction then
+			if name and self.HealerSpecs[talentSpec] then
 				self.Healers[name] = talentSpec
 			elseif name and self.Healers[name] then
 				self.Healers[name] = nil;
@@ -937,13 +936,11 @@ function NP:CheckArenaHealers()
 	end
 end
 
-function NP:PLAYER_ENTERING_WORLD()
-	self.PlayerFaction = GetBattlefieldArenaFaction()
-	
+function NP:PLAYER_ENTERING_WORLD()	
 	if InCombatLockdown() and self.db.combat then 
 		SetCVar("nameplateShowEnemies", 1) 
 	elseif self.db.combat then
-		SetCVar("nameplateShowEnemies", 0) 
+		SetCVar("nameplateShowEnemies", 0)
 	end
 	
 	self:UpdateRoster()

@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
@@ -113,17 +113,20 @@ local function LoadSkin()
 			local ic = _G["PlayerTalentFrameTalentsTalentRow"..i.."Talent"..j.."IconTexture"]
 
 			bu:StripTextures()
-			bu:SetFrameLevel(bu:GetFrameLevel() + 2)
+			bu:SetFrameLevel(bu:GetFrameLevel() + 5)
 			bu:CreateBackdrop("Default")
 			bu.backdrop:SetOutside(ic)
-			ic:SetDrawLayer("ARTWORK")
+			ic:SetDrawLayer("OVERLAY")
 			ic:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 
 			bu.bg = CreateFrame("Frame", nil, bu)
 			bu.bg:CreateBackdrop("Overlay")
-			bu.bg:SetFrameLevel(bu:GetFrameLevel() - 1)
+			bu.bg:SetFrameLevel(bu:GetFrameLevel() -2)
 			bu.bg:Point("TOPLEFT", 15, -1)
-			bu.bg:Point("BOTTOMRIGHT", -10, 1)	
+			bu.bg:Point("BOTTOMRIGHT", -10, 1)
+			bu.bg.SelectedTexture = bu.bg:CreateTexture(nil, 'ARTWORK')
+			bu.bg.SelectedTexture:Point("TOPLEFT", bu, "TOPLEFT", 15, -1)
+			bu.bg.SelectedTexture:Point("BOTTOMRIGHT", bu, "BOTTOMRIGHT", -10, 1)
 		end
 	end
 
@@ -132,15 +135,14 @@ local function LoadSkin()
 			for j = 1, NUM_TALENT_COLUMNS do
 				local bu = _G["PlayerTalentFrameTalentsTalentRow"..i.."Talent"..j]
 				if bu.knownSelection:IsShown() then
-					bu.backdrop:SetBackdropBorderColor(0, 1, 0, 1)
-					bu.bg.backdrop:SetBackdropBorderColor(0, 1, 0, 1)
+					bu.bg.SelectedTexture:Show()
+					bu.bg.SelectedTexture:SetTexture(0, 1, 0, 0.1)
 				else
-					bu.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-					bu.bg.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+					bu.bg.SelectedTexture:Hide()
 				end
 				if bu.learnSelection:IsShown() then
-					bu.backdrop:SetBackdropBorderColor(1, 0.82, 0, 1)
-					bu.bg.backdrop:SetBackdropBorderColor(1, 0.82, 0, 1)
+					bu.bg.SelectedTexture:Show()
+					bu.bg.SelectedTexture:SetTexture(1, 1, 0, 0.1)
 				end
 			end
 		end
@@ -199,12 +201,11 @@ local function LoadSkin()
 
 		for i = 1, GetNumSpecializations(nil, self.isPet) do
 			local bu = self["specButton"..i]
+			bu.SelectedTexture:SetInside(bu.backdrop)
 			if bu.selected then
-				bu.backdrop:SetBackdropBorderColor(1, 0.82, 0, 1)
-				bu.border.backdrop:SetBackdropBorderColor(1, 0.82, 0, 1)
+				bu.SelectedTexture:Show()
 			else
-				bu.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-				bu.border.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				bu.SelectedTexture:Hide()
 			end
 		end
 	end)
@@ -219,6 +220,8 @@ local function LoadSkin()
 		bu.specIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 		bu.specIcon:SetSize(50, 50)
 		bu.specIcon:Point("LEFT", bu, "LEFT", 15, 0)
+		bu.SelectedTexture = bu:CreateTexture(nil, 'ARTWORK')
+		bu.SelectedTexture:SetTexture(1, 1, 0, 0.1)
 	end
 
 	local buttons = {"PlayerTalentFrameSpecializationSpecButton", "PlayerTalentFramePetSpecializationSpecButton"}
@@ -228,7 +231,9 @@ local function LoadSkin()
 			local bu = _G[name..i]
 			_G["PlayerTalentFrameSpecializationSpecButton"..i.."Glow"]:Kill()
 
-			bu:SetHighlightTexture("")
+			local tex = bu:CreateTexture(nil, 'ARTWORK')
+			tex:SetTexture(1, 1, 1, 0.1)
+			bu:SetHighlightTexture(tex)
 			bu.bg:SetAlpha(0)
 			bu.learnedTex:SetAlpha(0)
 			bu.selectedTex:SetAlpha(0)
@@ -236,6 +241,7 @@ local function LoadSkin()
 			bu:CreateBackdrop("Overlay")
 			bu.backdrop:Point("TOPLEFT", 8, 2)
 			bu.backdrop:Point("BOTTOMRIGHT", 10, -2)
+			bu:GetHighlightTexture():SetInside(bu.backdrop)
 			
 			bu.border = CreateFrame("Frame", nil, bu)
 			bu.border:CreateBackdrop("Default")
@@ -268,6 +274,9 @@ local function LoadSkin()
 			bu.specIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 			bu.specIcon:SetSize(50, 50)
 			bu.specIcon:Point("LEFT", bu, "LEFT", 15, 0)
+
+			bu.SelectedTexture = bu:CreateTexture(nil, 'ARTWORK')
+			bu.SelectedTexture:SetTexture(1, 1, 0, 0.1) 			
 		end
 		
 		PlayerTalentFramePetSpecializationSpellScrollFrameScrollChild.Seperator:SetTexture(1, 1, 1)

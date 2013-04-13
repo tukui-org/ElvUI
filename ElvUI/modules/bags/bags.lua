@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:NewModule('Bags', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
 
 local len, sub, find, format, floor = string.len, string.sub, string.find, string.format, math.floor
@@ -127,7 +127,7 @@ function B:UpdateSlot(bagID, slotID)
 		return; 
 	end
 
-	local slot = self.Bags[bagID][slotID];
+	local slot, _ = self.Bags[bagID][slotID], nil;
 	local bagType = self.Bags[bagID].type;
 	local texture, count, locked = GetContainerItemInfo(bagID, slotID);
 	local clink = GetContainerItemLink(bagID, slotID);
@@ -667,7 +667,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.transferButton:Size(55, 10)
 		f.transferButton:SetTemplate('Default', true)
 		f.transferButton.backdropTexture:SetVertexColor(unpack(buttonColor))
-		f.transferButton.ttText = L['Stack Bags to Bank'];
+		f.transferButton.ttText = L['Stack Bank to Bags'];
 		f.transferButton:SetScript("OnEnter", self.Tooltip_Show)
 		f.transferButton:SetScript("OnLeave", self.Tooltip_Hide)
 		f.transferButton:SetScript('OnClick', function() B:CommandDecorator(B.Stack, 'bank bags')(); end)
@@ -914,6 +914,19 @@ function B:CloseBank()
 	self.BankFrame:Hide()
 end
 
+function B:GUILDBANKFRAME_OPENED()
+	--[[local button = CreateFrame("Button", "GuildSortButton", GuildBankFrame, "UIPanelButtonTemplate")
+	button:StripTextures()
+	button:SetTemplate("Default", true)
+	button:Size(110, 20)
+	button:Point("RIGHT", GuildItemSearchBox, "LEFT", -4, 0)
+	button:SetText(L['Sort Tab'])
+	button:SetScript("OnClick", function() B:CommandDecorator(B.SortBags, 'guild')() end)
+	E.Skins:HandleButton(button, true)]]
+		
+	self:UnregisterEvent("GUILDBANKFRAME_OPENED")
+end
+
 function B:Initialize()
 	self:LoadBagBar();
 
@@ -950,7 +963,8 @@ function B:Initialize()
 	self:RegisterEvent("BANKFRAME_OPENED", "OpenBank")
 	self:RegisterEvent("BANKFRAME_CLOSED", "CloseBank")
 	self:RegisterEvent("PLAYERBANKBAGSLOTS_CHANGED")
-	
+	self:RegisterEvent("GUILDBANKFRAME_OPENED")
+
 	StackSplitFrame:SetFrameStrata('DIALOG')
 end
 

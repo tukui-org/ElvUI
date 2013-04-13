@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:NewModule('Skins', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
 
 E.Skins = S
@@ -240,10 +240,10 @@ function S:HandleDropDownBox(frame, width)
 	
 	button:ClearAllPoints()
 	button:Point("RIGHT", frame, "RIGHT", -10, 3)
-	hooksecurefunc(button, "SetPoint", function(self, point, attachTo, anchorPoint, xOffset, yOffset)
-		if point ~= "RIGHT" or attachTo ~= frame or anchorPoint ~= "RIGHT" or xOffset ~= -10 or yOffset ~= 3 then
+	hooksecurefunc(button, "SetPoint", function(self, point, attachTo, anchorPoint, xOffset, yOffset, noReset)
+		if not noReset then
 			button:ClearAllPoints()
-			button:Point("RIGHT", frame, "RIGHT", -10, 3)		
+			button:Point("RIGHT", frame, "RIGHT", -10, 3, true)		
 		end
 	end)
 	
@@ -255,6 +255,7 @@ function S:HandleDropDownBox(frame, width)
 end
 
 function S:HandleCheckBox(frame)
+	assert(frame, 'does not exist.')
 	frame:StripTextures()
 	frame:CreateBackdrop("Default")
 	frame.backdrop:SetInside(nil, 4, 4)

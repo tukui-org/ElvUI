@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
@@ -271,6 +271,7 @@ ElvUF.Tags.Methods['threatcolor'] = function(unit)
 	end
 end
 
+ElvUF.Tags.OnUpdateThrottle['pvptimer'] = 1
 ElvUF.Tags.Methods['pvptimer'] = function(unit)	
 	if (UnitIsPVPFreeForAll(unit) or UnitIsPVP(unit)) then
 		local timer = GetPVPTimer()
@@ -446,4 +447,97 @@ ElvUF.Tags.Methods['incomingheals'] = function(unit)
 	else
 		return E:ShortValue(heal)
 	end
+end
+
+local GroupUnits = {}
+local f = CreateFrame("Frame")
+
+f:RegisterEvent("GROUP_ROSTER_UPDATE")
+f:SetScript("OnEvent", function()
+	local groupType, groupSize
+	twipe(GroupUnits)
+
+	if IsInRaid() then
+		groupType = "raid"
+		groupSize = GetNumGroupMembers()
+	elseif IsInGroup() then
+		groupType = "party"
+		groupSize = GetNumGroupMembers() - 1
+		GroupUnits["player"] = true
+	else
+		groupType = "solo"
+		groupSize = 1
+	end
+
+	for index = 1, groupSize do
+		local unit = groupType..index
+		if not UnitIsUnit(unit, "player") then
+			GroupUnits[unit] = true
+		end
+	end
+end)
+
+ElvUF.Tags.OnUpdateThrottle['nearbyplayers:8'] = 0.25
+ElvUF.Tags.Methods['nearbyplayers:8'] = function(unit)
+	local unitsInRange, d = 0
+	if UnitIsConnected(unit) then
+		for groupUnit, _ in pairs(GroupUnits) do
+			if not UnitIsUnit(unit, groupUnit) and UnitIsConnected(groupUnit) then
+				d = E:GetDistance(unit, groupUnit, true)
+				if d and d <= 8 then
+					unitsInRange = unitsInRange + 1
+				end
+			end
+		end
+	end
+	
+	return unitsInRange
+end
+
+ElvUF.Tags.OnUpdateThrottle['nearbyplayers:10'] = 0.25
+ElvUF.Tags.Methods['nearbyplayers:10'] = function(unit)
+	local unitsInRange, d = 0
+	if UnitIsConnected(unit) then
+		for groupUnit, _ in pairs(GroupUnits) do
+			if not UnitIsUnit(unit, groupUnit) and UnitIsConnected(groupUnit) then
+				d = E:GetDistance(unit, groupUnit, true)
+				if d and d <= 10 then
+					unitsInRange = unitsInRange + 1
+				end
+			end
+		end
+	end
+	
+	return unitsInRange
+end
+
+ElvUF.Tags.OnUpdateThrottle['nearbyplayers:30'] = 0.25
+ElvUF.Tags.Methods['nearbyplayers:30'] = function(unit)
+	local unitsInRange, d = 0
+	if UnitIsConnected(unit) then
+		for groupUnit, _ in pairs(GroupUnits) do
+			if not UnitIsUnit(unit, groupUnit) and UnitIsConnected(groupUnit) then
+				d = E:GetDistance(unit, groupUnit, true)
+				if d and d <= 30 then
+					unitsInRange = unitsInRange + 1
+				end
+			end
+		end
+	end
+	
+	return unitsInRange
+end
+
+ElvUF.Tags.OnUpdateThrottle['distance'] = 0.1
+ElvUF.Tags.Methods['distance'] = function(unit)
+	local d
+	if UnitIsConnected(unit) and not UnitIsUnit(unit, 'player') then
+		d = E:GetDistance('player', unit, true)
+
+		if d then
+			d = format("%.1f", d)
+		end
+	end
+	
+	return d or ''
 end

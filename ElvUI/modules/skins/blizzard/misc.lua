@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local ceil = math.ceil
@@ -581,8 +581,8 @@ local function LoadSkin()
 	--DROPDOWN MENU
 	hooksecurefunc("UIDropDownMenu_InitializeHelper", function(frame)
 		for i = 1, UIDROPDOWNMENU_MAXLEVELS do
-			_G["DropDownList"..i.."Backdrop"]:SetTemplate("Default", true)
-			_G["DropDownList"..i.."MenuBackdrop"]:SetTemplate("Default", true)
+			_G["DropDownList"..i.."Backdrop"]:SetTemplate("Transparent")
+			_G["DropDownList"..i.."MenuBackdrop"]:SetTemplate("Transparent")
 		end
 	end)	
 	
@@ -859,6 +859,8 @@ local function LoadSkin()
         -- Mouse
         "MousePanelClickMoveStyleDropDown",
         "LanguagesPanelLocaleDropDown",
+        -- Status Text
+        "StatusTextPanelDisplayDropDown"
     }
     for i = 1, getn(interfacedropdown) do
         local idropdown = _G["InterfaceOptions"..interfacedropdown[i]]

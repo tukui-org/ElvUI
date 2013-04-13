@@ -5,7 +5,7 @@ local L = AceLocale:NewLocale("ElvUI", "enUS", true, true);
 if not L then return; end
 
 --TEMP
-L["A taint has occured that is preventing you from using your talents/glyphs. Please reload your user interface and try again."] = true;
+L["A taint has occured that is preventing you from using the queue system. Please reload your user interface and try again."] = true;
 
 --Distributor
 L["This feature will allow you to transfer, settings to other characters."] = true;
@@ -200,7 +200,6 @@ L["AFK"] = true; --Also used in datatexts and tooltip
 L["Attempt to create URL links inside the chat."] = true;
 L['Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish.'] = true;
 L['Below Chat'] = true;
-L["BN:"] = true;
 L['Chat EditBox Position'] = true;
 L['Chat History'] = true;
 L["Chat"] = true;
@@ -451,6 +450,11 @@ L["No locals to dump"] = true;
 L['|cFFE30000Lua error recieved. You can view the error message when you exit combat.'] = true;
 
 --General
+L["Hide Error Text"] = true;
+L["Hides the red error text at the top of the screen while in combat."] = true;
+L['Skin Backdrop'] = true;
+L['Remove Backdrop'] = true;
+
 L["Accept Invites"] = true;
 L['Adjust the position of the threat bar to either the left or right datatext panels.'] = true;
 L['Adjust the size of the minimap.'] = true;
@@ -465,7 +469,7 @@ L["Automatically scale the User Interface based on your screen resolution"] = tr
 L['Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level.'] = true;
 L["Automatically vendor gray items when visiting a vendor."] = true;
 L['Bottom Panel'] = true;
-L["Chat Bubbles"] = true;
+L['Chat Bubbles Style'] = true;
 L["Controls what the transparency of the worldmap will be set to when you are moving."] = true;
 L["Disband Group"] = true;
 L['Display a panel across the bottom of the screen. This is for cosmetic only.'] = true;
@@ -522,6 +526,7 @@ L["This texture will get used on objects like chat windows and dropdown menus."]
 L["Value Color"] = true;
 
 --Misc
+L['Calendar'] = true;
 L["Can't Roll"] = true;
 L["Empty Slot"] = true;
 L["Enable"] = true; --Doesn't fit a section since it's used a lot of places
@@ -568,6 +573,9 @@ L["Watch Frame"] = true;
 L["Weapons"] = true;
 
 --NamePlates
+L["Name X-Offset"] = true;
+L["Name Y-Offset"] = true;
+L['Name Alignment'] = true;
 L['Configure Selected Filter'] = true;
 L["Tagged Color"] = true;
 L["Color of a nameplate that is tagged by another person."] = true;
@@ -698,6 +706,8 @@ L['Void Storage'] = true;
 L["World Map"] = true;
 
 --Static Popups
+L["Are you sure you want to reset all the settings on this profile?"] = true;
+L['Oh lord, you have got ElvUI and Tukui both enabled at the same time. Select an addon to disable.'] = true;
 L["A setting you have changed will change an option for this character only. This setting that you have changed will be uneffected by changing user profiles. Changing this setting requires that you reload your User Interface."] = true;
 L["Are you sure you want to delete all your gray items?"] = true;
 L["Are you sure you want to disband the group?"] = true;
@@ -767,8 +777,37 @@ L['You can use the /resetui command to reset all of your movers. You can also us
 L['ABOVE_THREAT_FORMAT'] = '%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]'
 
 --UnitFrames
-L['Coloring (Specific)'] = true
-L['Coloring'] = true
+L['Auto-Hide'] = true;
+L['Detach From Frame'] = true;
+L['Detached Width'] = true;
+L['Class Color Override'] = true;
+L['Override the default class color setting.'] = true;
+L['Use Default'] = true;
+L['Force On'] = true;
+L['Force Off'] = true;
+L['Main Tanks / Main Assist'] = true;
+L['Name (Entire Group)'] = true;
+L['Invert Grouping Order'] = true;
+L['Reverses the grouping order. For example if your group is to grow right than up by default the first group is always at the bottom. With this option set then the first group will start at the bottom but as the number of groups grow it will always be near the top.'] = true;
+L["Personal"] = true;
+L["Others"] = true;
+L["Absorbs"] = true;
+L['Model Rotation'] = true;
+L['Start near Center'] = true;
+L['The initial group will start near the center and grow out. Corrosponding groups will behave normally.'] = true;
+L['Display Target'] = true;
+L['Display the target of your current cast. Useful for mouseover casts.'] = true;
+L['Up'] = true;
+L['Down'] = true;
+L['Growth direction from the first unitframe.'] = true;
+L['%s and then %s'] = true;
+L['Horizontal Spacing'] = true;
+L['Vertical Spacing'] = true;
+L['Group Size'] = true;
+L['Number of units in a group.'] = true;
+L['Number of Groups'] = true;
+L['Coloring (Specific)'] = true;
+L['Coloring'] = true;
 L['Configure Auras'] = true;
 L['Text xOffset'] = true
 L['Text yOffset'] = true
@@ -818,8 +857,6 @@ L["Don't display auras that have no duration."] = true;
 L["Don't display auras that cannot be purged or dispelled by your class."] = true;
 L["Don't display raid buffs such as Blessing of Kings or Mark of the Wild."] = true;
 L['Select an additional filter to use. If the selected filter is a whitelist and no other filters are being used (with the exception of Block Non-Personal Auras) then it will block anything not on the whitelist, otherwise it will simply add auras on the whitelist in addition to any other filter settings.'] = true;
-L['Position Override'] = true;
-L['This will determine how the party/raid group will grow out when the group is not full. For example setting this to BOTTOMLEFT would cause the first raid frame to spawn from the BOTTOMLEFT corner of where the mover is positioned.'] = true;
 L['Display Text'] = true;
 L['Text Threshold'] = true;
 L['At what point should the text be displayed. Set to -1 to disable.'] = true;
@@ -835,8 +872,6 @@ L["Add Spell"] = true;
 L["Add SpellID"] = true;
 L["Additional Filter"] = true;
 L["Affliction"] = true;
-L["An X offset (in pixels) to be used when anchoring new frames."] = true;
-L["An Y offset (in pixels) to be used when anchoring new frames."] = true;
 L['Arcane Charges'] = true;
 L["Arena Frames"] = true;
 L["Assist Frames"] = true;
@@ -876,7 +911,6 @@ L["Color the health backdrop by class or reaction."] = true;
 L["Color the unit healthbar if there is a debuff that can be dispelled by you."] = true;
 L["Color"] = true;
 L['Colored Icon'] = true;
-L["Column Point"] = true;
 L["Combat Fade"] = true;
 L["Combobar"] = true;
 L["Copy From"] = true;
@@ -929,7 +963,6 @@ L['Frost'] = true;
 L["Ghost"] = true;
 L["Good"] = true;
 L["Group By"] = true;
-L["Group Point"] = true;
 L['Growth Direction'] = true;
 L['Harmony'] = true;
 L["Heal Prediction"] = true;
@@ -951,7 +984,6 @@ L["Low Mana Threshold"] = true;
 L['Lunar'] = true;
 L["Main statusbar texture."] = true;
 L["Match Frame Width"] = true;
-L["Max Columns"] = true;
 L["Name"] = true; --Also used in Buffs and Debuffs
 L["Neutral"] = true;
 L['Non-Interruptable'] = true;
@@ -1013,9 +1045,6 @@ L['Shadow Orbs'] = true;
 L["Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."] = true;
 L["Show Aura From Other Players"] = true;
 L['Show Auras'] = true;
-L["Show Party"] = true;
-L["Show Raid"] = true;
-L["Show Solo"] = true;
 L["Show When Not Active"] = true;
 L["Size of the indicator icon."] = true;
 L['Size Override'] = true;
@@ -1041,11 +1070,8 @@ L["Text Toggle On NPC"] = true;
 L['Text'] = true;
 L['Textured Icon'] = true;
 L["The alpha to set units that are out of range to."] = true;
-L["The anchor point for each new column. A value of LEFT will cause the columns to grow to the right."] = true;
 L["The following macro must be true in order for the group to be shown, in addition to any filter that may already be set."] = true;
 L["The font that the unitframes will use."] = true;
-L["The maximum number of columns that the header will create."] = true;
-L["The maximum number of units that will be displayed in a single column."] = true;
 L['The name you have selected is already in use by another element.'] = true;
 L['The object you want to attach to.'] = true;
 L['The point of which you are anchoring to in relation to the attach to object.'] = true;
@@ -1055,21 +1081,16 @@ L["Ticks"] = true;
 L["Toggles health text display"] = true;
 L['Unholy'] = true;
 L["UnitFrames"] = true;
-L["Units Per Column"] = true;
 L["Up"] = true;
 L["Use the custom health backdrop color instead of a multiple of the main health color."] = true;
 L["Value must be a number"] = true;
 L["Vertical"] = true; --Also used in bags section
 L["Visibility"] = true;
-L["What each frame should attach itself to. For example setting it to TOP every unit will attach its top to the last point bottom."] = true;
 L["What point to anchor to the frame you set to attach to."] = true;
 L["What to attach the buff anchor frame to."] = true;
 L["What to attach the debuff anchor frame to."] = true;
 L['When set the Buffs and Debuffs will toggle being displayed depending on if the unit is friendly or an enemy. This will not effect the aurabars module.'] = true;
-L["When true, the group header is shown when the player is in a party."] = true;
-L["When true, the group header is shown when the player is in a raid."] = true;
 L["When true, the header includes the player when not in a raid."] = true;
-L["When true, the header is shown when the player is not in any group."] = true;
 L["When you mana falls below this point, text will flash on the player frame."] = true;
 L["Whitelist"] = true;
 L["Width"] = true; --Also used in NamePlates module
@@ -1077,7 +1098,6 @@ L["xOffset"] = true;
 L["yOffset"] = true;
 L["You can't remove a pre-existing filter."] = true;
 L["You cannot copy settings from the same unit."] = true;
-L["You cannot set the Group Point and Column Point so they are opposite of each other."] = true;
 L["You may not remove a spell from a default filter that is not customly added. Setting spell to false instead."] = true;
 L['TEXT_FORMAT_DESC'] = [=[Provide a string to change the text format.
 

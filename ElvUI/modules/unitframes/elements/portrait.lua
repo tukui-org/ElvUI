@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
 function UF:Construct_Portrait(frame, type)
@@ -44,8 +44,11 @@ function UF:PortraitUpdate(unit)
 		if model and model.find and model:find("worgenmale") then
 			self:SetCamera(1)
 		end	
+		
+		if self:GetFacing() ~= (portrait.rotation / 60) then
+			self:SetFacing(portrait.rotation / 60)
+		end
 
-		self:SetCamDistanceScale(portrait.camDistanceScale - 0.01 >= 0.01 and portrait.camDistanceScale - 0.01 or 0.01) --Blizzard bug fix
 		self:SetCamDistanceScale(portrait.camDistanceScale)
 	end
 end

@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
 local tsort = table.sort
@@ -7,10 +7,11 @@ local LSM = LibStub("LibSharedMedia-3.0");
 function UF:Construct_Buffs(frame)
 	local buffs = CreateFrame('Frame', nil, frame)
 	buffs.spacing = E.Spacing
-	buffs.PreSetPosition = self.SortAuras
+	--buffs.PreSetPosition = (not frame:GetScript("OnUpdate")) and self.SortAuras or nil
 	buffs.PostCreateIcon = self.Construct_AuraIcon
 	buffs.PostUpdateIcon = self.PostUpdateAura
 	buffs.CustomFilter = self.AuraFilter
+	buffs:SetFrameLevel(10)
 	buffs.type = 'buffs'
 	
 	return buffs
@@ -19,11 +20,12 @@ end
 function UF:Construct_Debuffs(frame)
 	local debuffs = CreateFrame('Frame', nil, frame)
 	debuffs.spacing = E.Spacing
-	debuffs.PreSetPosition = self.SortAuras
+	--debuffs.PreSetPosition = (not frame:GetScript("OnUpdate")) and self.SortAuras or nil
 	debuffs.PostCreateIcon = self.Construct_AuraIcon
 	debuffs.PostUpdateIcon = self.PostUpdateAura
 	debuffs.CustomFilter = self.AuraFilter
 	debuffs.type = 'debuffs'
+	debuffs:SetFrameLevel(10)
 	
 	return debuffs
 end
@@ -69,8 +71,16 @@ function UF:Construct_AuraIcon(button)
 end
 
 local function SortAurasByPriority(a, b)
-    if (a and b and a.priority and b.priority) then
-        return a.priority > b.priority
+    if (a and b) then
+		if a.isPlayer and not b.isPlayer then
+			return true
+		elseif not a.isPlayer and b.isPlayer then
+			return false
+		end
+	
+		if (a.priority and b.priority) then
+			return a.priority > b.priority
+		end
     end
 end
 
@@ -160,7 +170,12 @@ function UF:UpdateAuraTimer(elapsed)
 
 	local timervalue, formatid
 	timervalue, formatid, self.nextupdate = E:GetTimeInfo(self.expiration, 4)
-	self.text:SetFormattedText(("%s%s|r"):format(E.TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
+	if self.text:GetFont() then
+		self.text:SetFormattedText(("%s%s|r"):format(E.TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
+	elseif self:GetParent():GetParent().db then
+		self.text:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), self:GetParent():GetParent().db[self:GetParent().type].fontSize, 'OUTLINE')
+		self.text:SetFormattedText(("%s%s|r"):format(E.TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
+	end
 end
 
 function UF:CheckFilter(filterType, isFriend)
@@ -222,7 +237,7 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 	end
 	
 	if UF:CheckFilter(db.onlyDispellable, isFriend) then
-		if (self.type == 'buffs' and not isStealable) or (self.type == 'debuffs' and dtype and  not E:IsDispellableByMe(dtype)) then
+		if (self.type == 'buffs' and not isStealable) or (self.type == 'debuffs' and dtype and  not E:IsDispellableByMe(dtype)) or dtype == nil then
 			returnValue = false;
 		end
 		anotherFilterExists = true

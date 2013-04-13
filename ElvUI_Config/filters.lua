@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
 local selectedSpell;
@@ -624,6 +624,7 @@ local function UpdateFilterGroup()
 							end
 						end,
 						set = function(info, r, g, b)
+							E.global.unitframe.buffwatch[E.myclass][tableIndex][ info[#info] ] = E.global.unitframe.buffwatch[E.myclass][tableIndex][ info[#info] ] or {}
 							local t = E.global.unitframe.buffwatch[E.myclass][tableIndex][ info[#info] ]
 							t.r, t.g, t.b = r, g, b
 							for i=10, 40, 15 do

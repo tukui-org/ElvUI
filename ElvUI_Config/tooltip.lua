@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local TT = E:GetModule('Tooltip')
 
 
@@ -28,16 +28,6 @@ E.Options.args.tooltip = {
 			guiInline = true,
 			disabled = function() return not E.Tooltip; end,
 			args = {
-				style = {
-					order = 0,
-					type = 'select',
-					name = L['Style'],
-					values = {
-						['inset'] = L['Inset'],
-						['none'] = NONE,
-					},
-					set = function(info, value) E.db.tooltip[ info[#info] ] = value; TT:SetStatusBarAnchor(GameTooltip.pos) end,
-				},
 				anchor = {
 					order = 1,
 					type = 'select',

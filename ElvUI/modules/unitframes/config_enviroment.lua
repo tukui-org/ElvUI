@@ -1,9 +1,9 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 local _, ns = ...
 local ElvUF = ns.oUF
 
-local attributeBlacklist = {["showplayer"] = true, ["showraid"] = true, ["showparty"] = true, ["showsolo"] = true}
+local attributeBlacklist = {["showRaid"] = true, ["showParty"] = true, ["showSolo"] = true}
 local configEnv
 local originalEnvs = {}
 local overrideFuncs = {}
@@ -13,6 +13,20 @@ local min, random = math.min, math.random
 local function createConfigEnv()
 	if( configEnv ) then return end
 	configEnv = setmetatable({
+		UnitPower = function (unit, displayType)
+			if unit:find('target') or unit:find('focus') then
+				return UnitPower(unit, displayType)
+			end
+
+			return random(1, UnitPowerMax(unit, displayType) or 1)
+		end,
+		UnitHealth = function(unit)
+			if unit:find('target') or unit:find('focus') then
+				return UnitHealth(unit)
+			end
+
+			return random(1, UnitHealthMax(unit))
+		end,
 		UnitName = function(unit)
 			if unit:find('target') or unit:find('focus') then
 				return UnitName(unit)
@@ -44,9 +58,28 @@ local function createConfigEnv()
 	})
 	
 	overrideFuncs['namecolor'] = ElvUF.Tags.Methods['namecolor']
+	overrideFuncs['name:veryshort'] = ElvUF.Tags.Methods['name:veryshort']
 	overrideFuncs['name:short'] = ElvUF.Tags.Methods['name:short']
 	overrideFuncs['name:medium'] = ElvUF.Tags.Methods['name:medium']
 	overrideFuncs['name:long'] = ElvUF.Tags.Methods['name:long']
+
+	overrideFuncs['healthcolor'] = ElvUF.Tags.Methods['healthcolor']
+	overrideFuncs['health:current'] = ElvUF.Tags.Methods['health:current']
+	overrideFuncs['health:deficit'] = ElvUF.Tags.Methods['health:deficit']
+	overrideFuncs['health:current-percent'] = ElvUF.Tags.Methods['health:current-percent']	
+	overrideFuncs['health:current-max'] = ElvUF.Tags.Methods['health:current-max']	
+	overrideFuncs['health:current-max-percent'] = ElvUF.Tags.Methods['health:current-max-percent']	
+	overrideFuncs['health:max'] = ElvUF.Tags.Methods['health:max']	
+	overrideFuncs['health:percent'] = ElvUF.Tags.Methods['health:percent']	
+
+	overrideFuncs['powercolor'] = ElvUF.Tags.Methods['powercolor']
+	overrideFuncs['power:current'] = ElvUF.Tags.Methods['power:current']
+	overrideFuncs['power:deficit'] = ElvUF.Tags.Methods['power:deficit']
+	overrideFuncs['power:current-percent'] = ElvUF.Tags.Methods['power:current-percent']	
+	overrideFuncs['power:current-max'] = ElvUF.Tags.Methods['power:current-max']	
+	overrideFuncs['power:current-max-percent'] = ElvUF.Tags.Methods['power:current-max-percent']	
+	overrideFuncs['power:max'] = ElvUF.Tags.Methods['power:max']	
+	overrideFuncs['power:percent'] = ElvUF.Tags.Methods['power:percent']		
 end
 
 function UF:ForceShow(frame)
@@ -55,7 +88,10 @@ function UF:ForceShow(frame)
 		frame.oldUnit = frame.unit
 		frame.unit = 'player'
 		frame.isForced = true;
+		frame.oldOnUpdate = frame:GetScript("OnUpdate")
 	end
+
+	frame:SetScript("OnUpdate", nil)
 	frame.forceShowAuras = true
 	UnregisterUnitWatch(frame)
 	RegisterUnitWatch(frame, true)	
@@ -77,6 +113,11 @@ function UF:UnforceShow(frame)
 	-- Ask the SecureStateDriver to show/hide the frame for us
 	UnregisterUnitWatch(frame)
 	RegisterUnitWatch(frame)
+
+	if frame.oldOnUpdate then
+		frame:SetScript("OnUpdate", frame.oldOnUpdate)
+		frame.oldOnUpdate = nil
+	end
 	
 	frame.unit = frame.oldUnit or frame.unit
 	-- If we're visible force an update so everything is properly in a
@@ -88,6 +129,7 @@ end
 
 function UF:ShowChildUnits(header, ...)
 	header.isForced = true
+	
 	for i=1, select("#", ...) do
 		local frame = select(i, ...)
 		frame:RegisterForClicks(nil)
@@ -95,6 +137,9 @@ function UF:ShowChildUnits(header, ...)
 		frame.TargetGlow:SetAlpha(0)
 		self:ForceShow(frame)
 	end
+	
+	header.dirtyWidth, header.dirtyHeight = header:GetSize()
+	header.mover:Size(header.dirtyWidth, header.dirtyHeight)
 end
 
 function UF:UnshowChildUnits(header, ...)
@@ -107,14 +152,33 @@ function UF:UnshowChildUnits(header, ...)
 	end
 end
 
+local function GetNumChildrenShown(...)
+	local num = 0
+	for i=1, select("#", ...) do
+		local frame = select(i, ...)
+		if frame:IsShown() then
+			num = num + 1
+		end
+	end
+	
+	return num
+end
+
 local function OnAttributeChanged(self, name)
 	if not self.forceShow then return; end
-	
+
 	local maxUnits = MAX_RAID_MEMBERS
-	local startingIndex = -min(self.db.maxColumns * self.db.unitsPerColumn, maxUnits) + 1
+	local startingIndex = -min(self.db.numGroups * self.db.unitsPerGroup, maxUnits) + 1
+	local numChildren = self:GetNumChildren()
 	if self:GetAttribute("startingIndex") ~= startingIndex then
 		self:SetAttribute("startingIndex", startingIndex)
-		UF:ShowChildUnits(self, self:GetChildren())	
+		self.lastNumChildren = numChildren
+		UF:ShowChildUnits(self, self:GetChildren())
+	elseif GetNumChildrenShown(self:GetChildren()) ~= (self.db.numGroups * self.db.unitsPerGroup) then
+		UF:ShowChildUnits(self, self:GetChildren())
+	elseif self.mover:GetWidth() ~= self:GetWidth() or self.mover:GetHeight() ~= self:GetHeight() then
+		self.dirtyWidth, self.dirtyHeight = self:GetSize()
+		self.mover:Size(self.dirtyWidth, self.dirtyHeight)	
 	end
 end
 
@@ -134,9 +198,7 @@ function UF:HeaderConfig(header, configMode)
 		
 		RegisterAttributeDriver(header, 'state-visibility', 'show')		
 		
-		local maxUnits = MAX_RAID_MEMBERS
 		OnAttributeChanged(header)
-		UF:ShowChildUnits(header, header:GetChildren())
 
 		for _, func in pairs(overrideFuncs) do
 			if type(func) == 'function' then
@@ -147,15 +209,11 @@ function UF:HeaderConfig(header, configMode)
 		
 		header:Update()	
 	else
-		header.forceShowAuras = nil
-		header:SetAttribute("showParty", db.showParty)
-		header:SetAttribute("showRaid", db.showRaid)
-		header:SetAttribute("showSolo", db.showSolo)
-		header:SetAttribute("showPlayer", db.showPlayer)
+		for key in pairs(attributeBlacklist) do
+			header:SetAttribute(key, true)
+		end	
+		header.forceShowAuras = nil		
 		
-		UF:ChangeVisibility(header, 'custom '..db.visibility)
-		
-		header:SetAttribute("startingIndex", 1)
 		UF:UnshowChildUnits(header, header:GetChildren())
 		
 		for func, env in pairs(originalEnvs) do

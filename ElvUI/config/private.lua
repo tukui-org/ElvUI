@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 --Locked Settings, These settings are stored for your character only regardless of profile options.
 
@@ -9,7 +9,7 @@ V['general'] = {
 	["glossTex"] = "Minimalist",	
 	["dmgfont"] = "ElvUI Combat",
 	["namefont"] = "ElvUI Font",
-	['bubbles'] = true,
+	['chatBubbles'] = 'backdrop',
 	['pixelPerfect'] = true,
 
 	['minimap'] = {

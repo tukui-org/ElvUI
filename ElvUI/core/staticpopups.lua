@@ -1,9 +1,20 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 local lower = string.lower
 
 E.PopupDialogs = {};
 E.StaticPopup_DisplayedFrames = {};
+
+E.PopupDialogs['TUKUI_ELVUI_INCOMPATIBLE'] = {
+	text = L['Oh lord, you have got ElvUI and Tukui both enabled at the same time. Select an addon to disable.'],
+	OnAccept = function() DisableAddOn("ElvUI"); ReloadUI() end,
+	OnCancel = function() DisableAddOn("Tukui"); ReloadUI() end,
+	button1 = 'ElvUI',
+	button2 = 'Tukui',	
+	timeout = 0,
+	whileDead = 1,	
+	hideOnEscape = false,	
+}
 
 E.PopupDialogs['DISABLE_INCOMPATIBLE_ADDON'] = {
 	text = L['Do you swear not to post in technical support about something not working without first disabling the addon/module combination first?'],
@@ -48,8 +59,8 @@ E.PopupDialogs['CONFIGAURA_SET'] = {
 	hideOnEscape = false,	
 }
 
-E.PopupDialogs['TALENT_TAINT'] = {
-	text = L["A taint has occured that is preventing you from using your talents/glyphs. Please reload your user interface and try again."],
+E.PopupDialogs['QUEUE_TAINT'] = {
+	text = L["A taint has occured that is preventing you from using the queue system. Please reload your user interface and try again."],
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	OnAccept = function() ReloadUI(); end,
@@ -195,6 +206,17 @@ E.PopupDialogs["CONFIRM_LOOT_DISTRIBUTION"] = {
 	timeout = 0,
 	hideOnEscape = 1,
 }
+
+E.PopupDialogs["RESET_PROFILE_PROMPT"] = {
+	text = L["Are you sure you want to reset all the settings on this profile?"],
+	button1 = YES,
+	button2 = NO,
+	timeout = 0,
+	hideOnEscape = 1,
+	OnAccept = function() E:ResetProfile() end,
+}
+
+
 
 
 local MAX_STATIC_POPUPS = 4

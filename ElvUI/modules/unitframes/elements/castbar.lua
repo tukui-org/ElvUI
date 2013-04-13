@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
 local floor = math.floor
@@ -136,28 +136,44 @@ function UF:SetCastTicks(frame, numTicks, extraTickRatio)
 	extraTickRatio = extraTickRatio or 0
 	UF:HideTicks()
 	if numTicks and numTicks <= 0 then return end;
-	local d = frame:GetWidth() / (numTicks + extraTickRatio)
+	local w = frame:GetWidth()
+	local d = w / (numTicks + extraTickRatio)
+	--local _, _, _, ms = GetNetStats()
 	for i = 1, numTicks do
 		if not ticks[i] then
 			ticks[i] = frame:CreateTexture(nil, 'OVERLAY')
 			ticks[i]:SetTexture(E["media"].normTex)
-			ticks[i]:SetVertexColor(0, 0, 0)
-			ticks[i]:SetWidth(1)
+			ticks[i]:SetVertexColor(0, 0, 0, 0.8)
+			ticks[i]:Width(1)
 			ticks[i]:SetHeight(frame:GetHeight())
 		end
+		
+		--[[if(ms ~= 0) then
+			local perc = (w / frame.max) * (ms / 1e5)
+			if(perc > 1) then perc = 1 end
+
+			ticks[i]:SetWidth((w * perc) / (numTicks + extraTickRatio))
+		else
+			ticks[i]:Width(1)
+		end]]
+		
 		ticks[i]:ClearAllPoints()
-		ticks[i]:SetPoint("CENTER", frame, "LEFT", d * i, 0)
+		ticks[i]:SetPoint("RIGHT", frame, "LEFT", d * i, 0)
 		ticks[i]:Show()
 	end
 end
 
 function UF:PostCastStart(unit, name, rank, castid)
 	local db = self:GetParent().db
-	if not db then return; end
+	if not db or not db.castbar then return; end
 	
 	if unit == "vehicle" then unit = "player" end
 	
-	self.Text:SetText(sub(name, 0, floor((((32/245) * self:GetWidth()) / E.db['unitframe'].fontSize) * 12)))
+	if db.castbar.displayTarget and self.curTarget then
+		self.Text:SetText(sub(name..' --> '..self.curTarget, 0, floor((((32/245) * self:GetWidth()) / E.db['unitframe'].fontSize) * 12)))
+	else
+		self.Text:SetText(sub(name, 0, floor((((32/245) * self:GetWidth()) / E.db['unitframe'].fontSize) * 12)))
+	end
 
 	self.Spark:Height(self:GetHeight() * 2)
 		
@@ -231,16 +247,11 @@ function UF:PostCastStart(unit, name, rank, castid)
 		end		
 	end
 	
-	if self.interrupt and unit ~= "player" then
-		if UnitCanAttack("player", unit) then
-			self:SetStatusBarColor(colors.castNoInterrupt[1], colors.castNoInterrupt[2], colors.castNoInterrupt[3])
-		else
-			self:SetStatusBarColor(r, g, b)			
-		end
-	else
-		self:SetStatusBarColor(r, g, b)
+	if self.interrupt and unit ~= "player" and UnitCanAttack("player", unit) then
+		r, g, b = colors.castNoInterrupt[1], colors.castNoInterrupt[2], colors.castNoInterrupt[3]
 	end
-
+	
+	self:SetStatusBarColor(r, g, b)
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentCastbar, self, self.bg, nil, true)
 	if self.bg:IsShown() then
 		self.bg:SetTexture(r * 0.25, g * 0.25, b * 0.25)
@@ -331,10 +342,10 @@ function UF:PostCastInterruptible(unit)
 	end
 	
 	if UnitCanAttack("player", unit) then
-		self:SetStatusBarColor(colors.castNoInterrupt[1], colors.castNoInterrupt[2], colors.castNoInterrupt[3])	
-	else
-		self:SetStatusBarColor(r, g, b)
+		r, g, b = colors.castNoInterrupt[1], colors.castNoInterrupt[2], colors.castNoInterrupt[3]
 	end
+	
+	self:SetStatusBarColor(r, g, b)
 	
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentCastbar, self, self.bg, nil, true)
 	if self.bg:IsShown() then

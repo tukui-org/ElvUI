@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:NewModule('UnitFrames', 'AceTimer-3.0', 'AceEvent-3.0', 'AceHook-3.0');
 local LSM = LibStub("LibSharedMedia-3.0");
 UF.LSM = LSM
@@ -11,17 +11,6 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 local opposites = {
 	['DEBUFFS'] = 'BUFFS',
 	['BUFFS'] = 'DEBUFFS'
-}
-
-local removeMenuOptions = {
-	["SET_FOCUS"] = true,
-	["CLEAR_FOCUS"] = true,
-	["MOVE_FOCUS_FRAME"] = true,
-	["LARGE_FOCUS"] = true,	
-	["MOVE_PLAYER_FRAME"] = true,
-	["MOVE_TARGET_FRAME"] = true,
-	["PVP_REPORT_AFK"] = true,
-	["PET_DISMISS"] = E.myclass == 'HUNTER',
 }
 
 UF['headerstoload'] = {}
@@ -54,24 +43,209 @@ UF['headerGroupBy'] = {
 	['CLASS'] = function(header)
 		header:SetAttribute("groupingOrder", "DEATHKNIGHT,DRUID,HUNTER,MAGE,PALADIN,PRIEST,SHAMAN,WARLOCK,WARRIOR")
 		header:SetAttribute('sortMethod', 'NAME')
+		header:SetAttribute("groupBy", 'CLASS')
+	end,
+	['MTMA'] = function(header)
+		header:SetAttribute("groupingOrder", "MAINTANK,MAINASSIST,NONE")
+		header:SetAttribute('sortMethod', 'NAME')
+		header:SetAttribute("groupBy", 'ROLE')
 	end,
 	['ROLE'] = function(header)
 		header:SetAttribute("groupingOrder", "TANK,HEALER,DAMAGER,NONE")
-		header:SetAttribute('sortMethod', 'INDEX')	
+		header:SetAttribute('sortMethod', 'NAME')
+		header:SetAttribute("groupBy", 'ASSIGNEDROLE')
 	end,
 	['NAME'] = function(header)
 		header:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
-		header:SetAttribute('sortMethod', 'NAME')	
+		header:SetAttribute('sortMethod', 'NAME')
+		header:SetAttribute("groupBy", 'GROUP')
 	end,
+	['NAME_ENTIRE_GROUP'] = function(header)
+		header:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
+		header:SetAttribute('sortMethod', 'NAME')
+		header:SetAttribute("groupBy", nil)
+	end, 
 	['GROUP'] = function(header)
 		header:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
 		header:SetAttribute('sortMethod', 'INDEX')
+		header:SetAttribute("groupBy", 'GROUP')
 	end,
 }
 
+local POINT_COLUMN_ANCHOR_TO_DIRECTION = {
+	['TOPTOP'] = 'UP_RIGHT',
+	['BOTTOMBOTTOM'] = 'TOP_RIGHT',
+	['LEFTLEFT'] = 'RIGHT_UP',
+	['RIGHTRIGHT'] = 'LEFT_UP',
+	['RIGHTTOP'] = 'LEFT_DOWN',
+	['LEFTTOP'] = 'RIGHT_DOWN',
+	['LEFTBOTTOM'] = 'RIGHT_UP',
+	['RIGHTBOTTOM'] = 'LEFT_UP',
+	['BOTTOMRIGHT'] = 'UP_LEFT',
+	['BOTTOMLEFT'] = 'UP_RIGHT',
+	['TOPRIGHT'] = 'DOWN_LEFT',
+	['TOPLEFT'] = 'DOWN_RIGHT'
+}
+
+local DIRECTION_TO_POINT = {
+	DOWN_RIGHT = "TOP",
+	DOWN_LEFT = "TOP",
+	UP_RIGHT = "BOTTOM",
+	UP_LEFT = "BOTTOM",
+	RIGHT_DOWN = "LEFT",
+	RIGHT_UP = "LEFT",
+	LEFT_DOWN = "RIGHT",
+	LEFT_UP = "RIGHT"
+}
+
+
+local DIRECTION_TO_GROUP_ANCHOR_POINT = {
+	OUT_RIGHT_UP = "BOTTOM",
+	OUT_LEFT_UP = "BOTTOM",
+	OUT_RIGHT_DOWN = "TOP",
+	OUT_LEFT_DOWN = "TOP",
+	OUT_UP_RIGHT = "LEFT",
+	OUT_UP_LEFT = "RIGHT",
+	OUT_DOWN_RIGHT = "LEFT",
+	OUT_DOWN_LEFT = "RIGHT",
+	DOWN_RIGHT = "TOPLEFT",
+	DOWN_LEFT = "TOPRIGHT",
+	UP_RIGHT = "BOTTOMLEFT",
+	UP_LEFT = "BOTTOMRIGHT",
+	RIGHT_DOWN = "TOPLEFT",
+	RIGHT_UP = "BOTTOMLEFT",
+	LEFT_DOWN = "TOPRIGHT",
+	LEFT_UP = "BOTTOMRIGHT"
+}
+
+local DIRECTION_TO_COLUMN_ANCHOR_POINT = {
+	DOWN_RIGHT = "LEFT",
+	DOWN_LEFT = "RIGHT",
+	UP_RIGHT = "LEFT",
+	UP_LEFT = "RIGHT",
+	RIGHT_DOWN = "TOP",
+	RIGHT_UP = "BOTTOM",
+	LEFT_DOWN = "TOP",
+	LEFT_UP = "BOTTOM"
+}
+
+local INVERTED_DIRECTION_TO_COLUMN_ANCHOR_POINT = {
+	DOWN_RIGHT = "RIGHT",
+	DOWN_LEFT = "LEFT",
+	UP_RIGHT = "RIGHT",
+	UP_LEFT = "LEFT",
+	RIGHT_DOWN = "BOTTOM",
+	RIGHT_UP = "TOP",
+	LEFT_DOWN = "BOTTOM",
+	LEFT_UP = "TOP"	
+}
+
+local DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER = {
+	DOWN_RIGHT = 1,
+	DOWN_LEFT = -1,
+	UP_RIGHT = 1,
+	UP_LEFT = -1,
+	RIGHT_DOWN = 1,
+	RIGHT_UP = 1,
+	LEFT_DOWN = -1,
+	LEFT_UP = -1
+}
+
+local DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER = {
+	DOWN_RIGHT = -1,
+	DOWN_LEFT = -1,
+	UP_RIGHT = 1,
+	UP_LEFT = 1,
+	RIGHT_DOWN = -1,
+	RIGHT_UP = 1,
+	LEFT_DOWN = -1,
+	LEFT_UP = 1
+}
+
 local find, gsub, split, format = string.find, string.gsub, string.split, string.format
-local min = math.min
+local min, abs = math.min, math.abs
 local tremove, tinsert = table.remove, table.insert
+
+
+function UF:ConvertGroupDB(group)
+	local db = self.db.units[group.groupName]
+	if db.point and db.columnAnchorPoint then
+		db.growthDirection = POINT_COLUMN_ANCHOR_TO_DIRECTION[db.point..db.columnAnchorPoint];
+		db.point = nil;
+		db.columnAnchorPoint = nil;
+	end
+	
+	if db.xOffset then
+		db.horizontalSpacing = abs(db.xOffset);
+		db.xOffset = nil;
+	end
+	
+	if db.yOffset then
+		db.verticalSpacing = abs(db.yOffset);
+		db.yOffset = nil;
+	end
+	
+	if db.maxColumns then
+		db.numGroups = db.maxColumns;
+		db.maxColumns = nil;
+	end
+	
+	if db.unitsPerColumn then
+		db.unitsPerGroup = db.unitsPerColumn;
+		db.unitsPerColumn = nil;
+	end
+end
+
+local function DelayedUpdate(group)
+	if InCombatLockdown() then return end
+	group:Show()
+end
+
+function UF:SetupGroupAnchorPoints(group)
+	UF:ConvertGroupDB(group)
+	local db = self.db.units[group.groupName]
+	local direction = db.growthDirection
+	local point = DIRECTION_TO_POINT[direction]
+	local positionOverride = DIRECTION_TO_GROUP_ANCHOR_POINT[db.startOutFromCenter and 'OUT_'..direction or direction]
+	
+	local maxUnits, startingIndex = MAX_RAID_MEMBERS, -1
+	if (db.numGroups and db.unitsPerGroup) then
+		startingIndex = -min(db.numGroups * db.unitsPerGroup, maxUnits) + 1
+	end
+	
+	if point == "LEFT" or point == "RIGHT" then
+		group:SetAttribute("xOffset", db.horizontalSpacing * DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction])
+		group:SetAttribute("yOffset", 0)
+		group:SetAttribute("columnSpacing", db.verticalSpacing)
+	else
+		group:SetAttribute("xOffset", 0)
+		group:SetAttribute("yOffset", db.verticalSpacing * DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction])
+		group:SetAttribute("columnSpacing", db.horizontalSpacing)
+	end
+	
+	group:SetAttribute("columnAnchorPoint", db.invertGroupingOrder and INVERTED_DIRECTION_TO_COLUMN_ANCHOR_POINT[direction] or DIRECTION_TO_COLUMN_ANCHOR_POINT[direction])
+	UF:ClearChildPoints(group:GetChildren())
+	group:SetAttribute("point", point)	
+	group:SetAttribute("maxColumns", db.numGroups)
+	group:SetAttribute("unitsPerColumn", db.unitsPerGroup)		
+
+	if not group.isForced then
+		group:SetAttribute("startingIndex", startingIndex)
+		RegisterAttributeDriver(group, 'state-visibility', 'show')	
+		group.dirtyWidth, group.dirtyHeight = group:GetSize()
+		RegisterAttributeDriver(group, 'state-visibility', db.visibility)
+		group:SetAttribute('startingIndex', 1)
+		
+		E:Delay(0.25, DelayedUpdate, group)
+	end
+	
+	if group.mover then
+		group.mover.positionOverride = positionOverride
+		E:UpdatePositionOverride(group.mover:GetName())
+	end
+
+	return positionOverride
+end
 
 function UF:Construct_UF(frame, unit)
 	frame:SetScript('OnEnter', UnitFrame_OnEnter)
@@ -82,6 +256,7 @@ function UF:Construct_UF(frame, unit)
 	frame:SetFrameLevel(5)
 	
 	frame.RaisedElementParent = CreateFrame('Frame', nil, frame)
+	frame.RaisedElementParent:SetFrameStrata("MEDIUM")
 	frame.RaisedElementParent:SetFrameLevel(frame:GetFrameLevel() + 10)	
 	
 	if not self['groupunits'][unit] then
@@ -179,33 +354,33 @@ function UF:UpdateColors()
 	ElvUF.colors.power.ENERGY = E:GetColorTable(db.power.ENERGY);
 	ElvUF.colors.power.RUNIC_POWER = E:GetColorTable(db.power.RUNIC_POWER);
 	
-	ElvUF.colors.runes = {}
-	ElvUF.colors.runes[1] = E:GetColorTable(db.classResources.DEATHKNIGHT[1])
-	ElvUF.colors.runes[2] = E:GetColorTable(db.classResources.DEATHKNIGHT[2])
-	ElvUF.colors.runes[3] = E:GetColorTable(db.classResources.DEATHKNIGHT[3])
-	ElvUF.colors.runes[4] = E:GetColorTable(db.classResources.DEATHKNIGHT[4])
+	ElvUF.colors.Runes = {}
+	ElvUF.colors.Runes[1] = E:GetColorTable(db.classResources.DEATHKNIGHT[1])
+	ElvUF.colors.Runes[2] = E:GetColorTable(db.classResources.DEATHKNIGHT[2])
+	ElvUF.colors.Runes[3] = E:GetColorTable(db.classResources.DEATHKNIGHT[3])
+	ElvUF.colors.Runes[4] = E:GetColorTable(db.classResources.DEATHKNIGHT[4])
 	
-	ElvUF.colors.holyPower = E:GetColorTable(db.classResources.PALADIN);
+	ElvUF.colors.HolyPower = E:GetColorTable(db.classResources.PALADIN);
 	
-	ElvUF.colors.arcaneCharges = E:GetColorTable(db.classResources.MAGE);
+	ElvUF.colors.ArcaneChargeBar = E:GetColorTable(db.classResources.MAGE);
 	
-	ElvUF.colors.shadowOrbs = E:GetColorTable(db.classResources.PRIEST);
+	ElvUF.colors.ShadowOrbs = E:GetColorTable(db.classResources.PRIEST);
 	
-	ElvUF.colors.eclipseBar = {}
-	ElvUF.colors.eclipseBar[1] = E:GetColorTable(db.classResources.DRUID[1])
-	ElvUF.colors.eclipseBar[2] = E:GetColorTable(db.classResources.DRUID[2])
+	ElvUF.colors.EclipseBar = {}
+	ElvUF.colors.EclipseBar[1] = E:GetColorTable(db.classResources.DRUID[1])
+	ElvUF.colors.EclipseBar[2] = E:GetColorTable(db.classResources.DRUID[2])
 	
-	ElvUF.colors.harmony = {}
-	ElvUF.colors.harmony[1] = E:GetColorTable(db.classResources.MONK[1])
-	ElvUF.colors.harmony[2] = E:GetColorTable(db.classResources.MONK[2])
-	ElvUF.colors.harmony[3] = E:GetColorTable(db.classResources.MONK[3])
-	ElvUF.colors.harmony[4] = E:GetColorTable(db.classResources.MONK[4])
-	ElvUF.colors.harmony[5] = E:GetColorTable(db.classResources.MONK[5])
+	ElvUF.colors.Harmony = {}
+	ElvUF.colors.Harmony[1] = E:GetColorTable(db.classResources.MONK[1])
+	ElvUF.colors.Harmony[2] = E:GetColorTable(db.classResources.MONK[2])
+	ElvUF.colors.Harmony[3] = E:GetColorTable(db.classResources.MONK[3])
+	ElvUF.colors.Harmony[4] = E:GetColorTable(db.classResources.MONK[4])
+	ElvUF.colors.Harmony[5] = E:GetColorTable(db.classResources.MONK[5])
 	
-	ElvUF.colors.WarlockResource = {}
-	ElvUF.colors.WarlockResource[1] = E:GetColorTable(db.classResources.WARLOCK[1])
-	ElvUF.colors.WarlockResource[2] = E:GetColorTable(db.classResources.WARLOCK[2])
-	ElvUF.colors.WarlockResource[3] = E:GetColorTable(db.classResources.WARLOCK[3])
+	ElvUF.colors.ShardBar = {}
+	ElvUF.colors.ShardBar[1] = E:GetColorTable(db.classResources.WARLOCK[1])
+	ElvUF.colors.ShardBar[2] = E:GetColorTable(db.classResources.WARLOCK[2])
+	ElvUF.colors.ShardBar[3] = E:GetColorTable(db.classResources.WARLOCK[3])
 	
 	ElvUF.colors.reaction[1] = bad
 	ElvUF.colors.reaction[2] = bad
@@ -252,15 +427,6 @@ end
 function UF:Configure_FontString(obj)
 	UF['fontstrings'][obj] = true
 	obj:FontTemplate() --This is temporary.
-end
-
-function UF:ChangeVisibility(header, visibility)
-	if(visibility) then
-		local type, list = split(' ', visibility, 2)
-		if(list and type == 'custom') then
-			RegisterAttributeDriver(header, 'state-visibility', list)
-		end
-	end	
 end
 
 function UF:Update_AllFrames()
@@ -335,7 +501,7 @@ function UF:HeaderUpdateSpecificElement(group, elementName)
 	end
 end
 
-function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
+function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdate)
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return end
 
 	local db = self.db['units'][group]
@@ -343,49 +509,15 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 		ElvUF:RegisterStyle("ElvUF_"..E:StringTitle(group), UF["Construct_"..E:StringTitle(group).."Frames"])
 		ElvUF:SetActiveStyle("ElvUF_"..E:StringTitle(group))
 
-		local maxUnits, startingIndex = MAX_RAID_MEMBERS, -1
-		if db.maxColumns and db.unitsPerColumn then
-			startingIndex = -min(db.maxColumns * db.unitsPerColumn, maxUnits) + 1			
-		end
+		self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, nil, 
+			'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 
+			'groupFilter', groupFilter,
+			'showParty', true,
+			'showRaid', true,
+			'showSolo', true,
+			template and 'template', template)
 
-		if template then
-			self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 
-				'point', db.point, 
-				'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 
-				'template', template, 
-				'columnAnchorPoint', db.columnAnchorPoint,
-				'maxColumns', db.maxColumns,
-				'unitsPerColumn', db.unitsPerColumn,
-				'point', db.point,
-				'columnSpacing', db.columnSpacing,
-				'xOffset', db.xOffset,
-				'yOffset', db.yOffset,
-				'startingIndex', startingIndex,
-				'groupFilter', groupFilter)
-		else
-			self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, 'raid', 
-				'point', db.point, 
-				'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 
-				'columnAnchorPoint', db.columnAnchorPoint,
-				'maxColumns', db.maxColumns,
-				'unitsPerColumn', db.unitsPerColumn,
-				'point', db.point,
-				'columnSpacing', db.columnSpacing,
-				'xOffset', db.xOffset,
-				'yOffset', db.yOffset,
-				'startingIndex', startingIndex,
-				'groupFilter', groupFilter)
-		end
-		
-		self[group]:SetParent(ElvUF_Parent)
-		RegisterAttributeDriver(self[group], 'state-visibility', 'show')	
-		self[group].dirtyWidth, self[group].dirtyHeight = self[group]:GetSize()
-		RegisterAttributeDriver(self[group], 'state-visibility', 'hide')	
-
-		if not db.maxColumns then
-			self[group]:SetAttribute('startingIndex', 1)
-		end
-		
+		self[group]:SetParent(ElvUF_Parent)		
 		self['headers'][group] = self[group]
 		self[group].groupName = group
 	end
@@ -395,9 +527,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 	self[group].Update = function()
 		local db = self.db['units'][group]
 		if db.enable ~= true then 
-			self[group]:SetAttribute("showParty", false)
-			self[group]:SetAttribute("showRaid", false)
-			self[group]:SetAttribute("showSolo", false)			
+			RegisterAttributeDriver(self[group], 'state-visibility', 'hide')	
 			return
 		end
 		UF["Update_"..E:StringTitle(group).."Header"](self, self[group], db)
@@ -416,7 +546,11 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template)
 		end			
 	end	
 	
-	self[group].Update()
+	if headerUpdate then
+		UF["Update_"..E:StringTitle(group).."Header"](self, self[group], db)
+	else
+		self[group].Update()
+	end
 end
 
 function UF:PLAYER_REGEN_ENABLED()
@@ -579,6 +713,7 @@ function ElvUF:DisableBlizzard(unit)
 		-- User placed frames don't animate
 		PlayerFrame:SetUserPlaced(true)
 		PlayerFrame:SetDontSavePosition(true)
+		RuneFrame:SetParent(PlayerFrame)
 	elseif(unit == 'pet') then
 		HandleFrame(PetFrame)
 	elseif(unit == 'target') then
@@ -632,25 +767,10 @@ end
 
 function UF:PLAYER_ENTERING_WORLD(event)
 	self:Update_AllFrames()
-	self:UpdatePrep(event)
 end
 
 function UF:UnitFrameThreatIndicator_Initialize(_, unitFrame)
 	unitFrame:UnregisterAllEvents() --Arena Taint Fix
-end
-
-function UF:RemoveDismissPet()
-	--This *should* make it so if you are in the Kara Event you can still use the dismiss pet from right click menu
-	--Otherwise hunters need to use the spell Dismiss Pet
-	if not PetCanBeAbandoned() then
-		if UnitPopupMenus["PET"][4] ~= "PET_DISMISS" then
-			tinsert(UnitPopupMenus["PET"], 4, "PET_DISMISS")
-		end		
-	else
-		if UnitPopupMenus["PET"][4] == "PET_DISMISS" then
-			tremove(UnitPopupMenus["PET"], 4)
-		end		
-	end
 end
 
 CompactUnitFrameProfiles:UnregisterEvent('VARIABLES_LOADED') 	--Re-Register this event only if disableblizzard is turned off.
@@ -680,15 +800,29 @@ function UF:Initialize()
 	
 	self:LoadUnits()
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
-	self:RegisterEvent('ARENA_PREP_OPPONENT_SPECIALIZATIONS', 'UpdatePrep')
-	self:RegisterEvent('ARENA_OPPONENT_UPDATE', 'UpdatePrep')
 
 	if E.private["unitframe"].disableBlizzard then
 		self:DisableBlizzard()	
 		self:SecureHook('UnitFrameThreatIndicator_Initialize')
-		InterfaceOptionsFrameCategoriesButton9:SetScale(0.0001)
+		--InterfaceOptionsFrameCategoriesButton9:SetScale(0.0001)
 		InterfaceOptionsFrameCategoriesButton10:SetScale(0.0001)
 		InterfaceOptionsFrameCategoriesButton11:SetScale(0.0001)
+		InterfaceOptionsStatusTextPanelPlayer:SetScale(0.0001)
+		InterfaceOptionsStatusTextPanelTarget:SetScale(0.0001)
+		InterfaceOptionsStatusTextPanelParty:SetScale(0.0001)
+		InterfaceOptionsStatusTextPanelPet:SetScale(0.0001)
+		InterfaceOptionsStatusTextPanelPlayer:SetAlpha(0)
+		InterfaceOptionsStatusTextPanelTarget:SetAlpha(0)
+		InterfaceOptionsStatusTextPanelParty:SetAlpha(0)
+		InterfaceOptionsStatusTextPanelPet:SetAlpha(0)
+		InterfaceOptionsCombatPanelEnemyCastBarsOnPortrait:SetAlpha(0)
+		InterfaceOptionsCombatPanelEnemyCastBarsOnPortrait:EnableMouse(false)
+		InterfaceOptionsCombatPanelTargetOfTarget:SetScale(0.0001)
+		InterfaceOptionsCombatPanelTargetOfTarget:SetAlpha(0)
+		InterfaceOptionsCombatPanelEnemyCastBarsOnNameplates:ClearAllPoints()
+		InterfaceOptionsCombatPanelEnemyCastBarsOnNameplates:SetPoint(InterfaceOptionsCombatPanelEnemyCastBarsOnPortrait:GetPoint())
+		InterfaceOptionsDisplayPanelShowAggroPercentage:SetScale(0.0001)
+		InterfaceOptionsDisplayPanelShowAggroPercentage:SetAlpha(0)
 
 		if not IsAddOnLoaded('Blizzard_ArenaUI') then
 			self:RegisterEvent('ADDON_LOADED')
@@ -696,19 +830,6 @@ function UF:Initialize()
 			ElvUF:DisableBlizzard('arena')
 		end
 		
-		if E.myclass == "HUNTER" then
-			self:RegisterEvent("UPDATE_POSSESS_BAR", "RemoveDismissPet")
-		end
-		
-		--index #4 is PET_DISMISS for PET UnitPopupMenus
-		for name, menu in pairs(UnitPopupMenus) do
-			for index = #menu, 1, -1 do
-				if removeMenuOptions[menu[index]] then
-					tremove(menu, index)
-				end
-			end
-		end				
-
 		self:RegisterEvent('GROUP_ROSTER_UPDATE', 'DisableBlizzard')
 		UIParent:UnregisterEvent('GROUP_ROSTER_UPDATE') --This may fuck shit up.. we'll see...
 	else

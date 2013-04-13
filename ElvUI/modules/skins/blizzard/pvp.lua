@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
@@ -27,7 +27,7 @@ local function LoadSkin()
 		button.backdrop:SetOutside(button.Icon)
 		button.backdrop:SetFrameLevel(button:GetFrameLevel())
 		button.Icon:SetParent(button.backdrop)
-		button:StyleButton()	
+		button:StyleButton(nil, true)	
 	end
 	
 	for i=1, 3 do
@@ -48,6 +48,37 @@ local function LoadSkin()
 	S:HandleButton(HonorFrameGroupQueueButton, true)
 	HonorFrame.BonusFrame:StripTextures()
 	HonorFrame.BonusFrame.ShadowOverlay:StripTextures()
+	HonorFrame.BonusFrame.RandomBGButton:StripTextures()
+	HonorFrame.BonusFrame.RandomBGButton:SetTemplate()
+	HonorFrame.BonusFrame.RandomBGButton:StyleButton(nil, true)
+	HonorFrame.BonusFrame.RandomBGButton.SelectedTexture:SetInside()
+	HonorFrame.BonusFrame.RandomBGButton.SelectedTexture:SetTexture(1, 1, 0, 0.1)
+	HonorFrame.BonusFrame.CallToArmsButton:StripTextures()
+	HonorFrame.BonusFrame.CallToArmsButton:SetTemplate()
+	HonorFrame.BonusFrame.CallToArmsButton:StyleButton(nil, true)
+	HonorFrame.BonusFrame.CallToArmsButton.SelectedTexture:SetInside()
+	HonorFrame.BonusFrame.CallToArmsButton.SelectedTexture:SetTexture(1, 1, 0, 0.1)
+	HonorFrame.BonusFrame.CallToArmsButton:ClearAllPoints()
+	HonorFrame.BonusFrame.CallToArmsButton:SetPoint("TOP", HonorFrame.BonusFrame.RandomBGButton, "BOTTOM", 0, -E.Border)
+
+	HonorFrame.BonusFrame.DiceButton:DisableDrawLayer("ARTWORK")
+	HonorFrame.BonusFrame.DiceButton:SetHighlightTexture("")
+
+	for i = 1, 2 do
+		local b = HonorFrame.BonusFrame["WorldPVP"..i.."Button"]
+		b:StripTextures()
+		b:SetTemplate()
+		b:StyleButton(nil, true)
+		b.SelectedTexture:SetInside()
+		b.SelectedTexture:SetTexture(1, 1, 0, 0.1)
+
+		if i == 2 then
+			b:ClearAllPoints()
+			b:SetPoint("TOP", HonorFrame.BonusFrame["WorldPVP"..(i-1).."Button"], "BOTTOM", 0, -E.Border)
+		end
+	end
+
+
 	-->>>CONQUEST FRAME
 	ConquestFrame.Inset:StripTextures()
 	--ConquestFrame.Inset:SetTemplate("Transparent")
@@ -64,7 +95,12 @@ local function LoadSkin()
 	ConquestFrame:StripTextures()
 	ConquestFrame.ShadowOverlay:StripTextures()
 	S:HandleButton(ConquestJoinButton, true)
-	
+	ConquestFrame.RatedBG:StripTextures()
+	ConquestFrame.RatedBG:SetTemplate()
+	ConquestFrame.RatedBG:StyleButton(nil, true)
+	ConquestFrame.RatedBG.SelectedTexture:SetInside()
+	ConquestFrame.RatedBG.SelectedTexture:SetTexture(1, 1, 0, 0.1)
+
 	-->>>WARGRAMES FRAME
 	WarGamesFrame:StripTextures()
 	WarGamesFrame.RightInset:StripTextures()
@@ -89,6 +125,20 @@ local function LoadSkin()
 		_G["ArenaTeamFrameHeader"..i]:SetHighlightTexture(nil)
 	end
 	
+	for i=1, 3 do
+		local b = ARENA_BUTTONS[i]
+		b:StripTextures()
+		b:SetTemplate()
+		b:StyleButton(nil, true)
+		b.SelectedTexture:SetInside()
+		b.SelectedTexture:SetTexture(1, 1, 0, 0.1)
+
+		if i > 1 then
+			b:ClearAllPoints()
+			b:SetPoint("TOP", ARENA_BUTTONS[i-1], "BOTTOM", 0, -E.Border)
+		end
+	end
+
 	S:HandleButton(ArenaTeamFrame.AddMemberButton, true)
 	
 	-->>>PVP BANNERS

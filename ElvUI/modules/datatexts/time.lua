@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
 local format = string.format
@@ -22,10 +22,8 @@ local curHr, curMin, curAmPm
 local enteredFrame = false;
 
 local Update, lastPanel; -- UpValue
-local localizedName, isActive, canQueue, startTime, canEnter
+local localizedName, isActive, canQueue, startTime, canEnter, _
 local name, reset, locked, extended, isRaid, maxPlayers, difficulty, numEncounters, encounterProgress
-local quests = {}
-local updateQuestTable = false
 
 local function ValueColorUpdate(hex, r, g, b)
 	europeDisplayFormat = join("", "%02d", hex, ":|r%02d")
@@ -87,16 +85,6 @@ local function formatResetTime(sec)
 	end
 end
 
-local function OnEvent(self, event)
-	if event == "QUEST_COMPLETE" then
-		updateQuestTable = true
-	elseif (event == "QUEST_LOG_UPDATE" and updateQuestTable) or event == "ELVUI_FORCE_RUN" then
-		wipe(quests)
-		quests = GetQuestsCompleted()
-		updateQuestTable = false
-	end
-end
-
 local function Click()
 	GameTimeFrame:Click();
 end
@@ -150,12 +138,17 @@ local function OnEnter(self)
 		end
 	end	
 	
+	local Sha = IsQuestFlaggedCompleted(32099)
+	local Galleon = IsQuestFlaggedCompleted(32098)
+	--local Oondasta = IsQuestFlaggedCompleted(32519)
+	--local Nalak = IsQuestFlaggedCompleted(32518)
+
 	DT.tooltip:AddLine(" ")
 	DT.tooltip:AddLine(L["World Boss(s)"])	
-	DT.tooltip:AddDoubleLine(L['Sha of Anger']..':', quests[32099] and L['Defeated'] or L['Undefeated'], 1, 1, 1, 0.8, 0.8, 0.8)
-	DT.tooltip:AddDoubleLine(L['Galleon']..':', quests[32098] and L['Defeated'] or L['Undefeated'], 1, 1, 1, 0.8, 0.8, 0.8)
-	DT.tooltip:AddDoubleLine(L['Oondasta']..':', quests[32519] and L['Defeated'] or L['Undefeated'], 1, 1, 1, 0.8, 0.8, 0.8)
-	DT.tooltip:AddDoubleLine(L['Nalak']..':', quests[32518] and L['Defeated'] or L['Undefeated'], 1, 1, 1, 0.8, 0.8, 0.8)
+	DT.tooltip:AddDoubleLine(L['Sha of Anger']..':', Sha and L['Defeated'] or L['Undefeated'], 1, 1, 1, 0.8, 0.8, 0.8)
+	DT.tooltip:AddDoubleLine(L['Galleon']..':', Galleon and L['Defeated'] or L['Undefeated'], 1, 1, 1, 0.8, 0.8, 0.8)
+	--DT.tooltip:AddDoubleLine(L['Oondasta']..':', Oondasta and L['Defeated'] or L['Undefeated'], 1, 1, 1, 0.8, 0.8, 0.8)
+	--DT.tooltip:AddDoubleLine(L['Nalak']..':', Nalak and L['Defeated'] or L['Undefeated'], 1, 1, 1, 0.8, 0.8, 0.8)
 
 	local timeText
 	local Hr, Min, AmPm = CalculateTimeValues(true)
@@ -220,4 +213,4 @@ end
 	onEnterFunc - function to fire OnEnter
 	onLeaveFunc - function to fire OnLeave, if not provided one will be set for you that hides the tooltip.
 ]]
-DT:RegisterDatatext('Time', { "QUEST_COMPLETE", "QUEST_LOG_UPDATE" }, OnEvent, Update, Click, OnEnter, OnLeave)
+DT:RegisterDatatext('Time', nil, nil, Update, Click, OnEnter, OnLeave)

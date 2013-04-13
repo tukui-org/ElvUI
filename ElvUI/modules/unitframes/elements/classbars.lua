@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
 local _, ns = ...
@@ -58,6 +58,10 @@ function UF:UpdateHoly(event, unit, powerType)
 	if USE_MINI_CLASSBAR then
 		CLASSBAR_WIDTH = CLASSBAR_WIDTH * (maxHolyPower - 1) / maxHolyPower
 	end
+
+	if db.classbar.DetachFromFrame then
+		CLASSBAR_WIDTH = db.classbar.DetachedWidth
+	end
 	
 	self.HolyPower:Width(CLASSBAR_WIDTH)
 	
@@ -67,8 +71,7 @@ function UF:UpdateHoly(event, unit, powerType)
 		else
 			self.HolyPower[i]:SetAlpha(.2)
 		end
-		
-		self.HolyPower[i]:SetWidth(E:Scale(self.HolyPower:GetWidth() - (E.PixelMode and 4 or 2))/maxHolyPower)	
+		self.HolyPower[i]:SetWidth((self.HolyPower:GetWidth() - (maxHolyPower - 1)) / maxHolyPower)	
 		self.HolyPower[i]:ClearAllPoints()
 		if i == 1 then
 			self.HolyPower[i]:SetPoint("LEFT", self.HolyPower)
@@ -145,6 +148,10 @@ function UF:UpdateHarmony()
 	if db.classbar.fill == 'spaced' then	
 		CLASSBAR_WIDTH = CLASSBAR_WIDTH * (maxBars - 1) / maxBars
 	end
+
+	if db.classbar.DetachFromFrame then
+		CLASSBAR_WIDTH = db.classbar.DetachedWidth
+	end	
 	
 	for i=1, UF['classMaxResourceBar'][E.myclass] do
 		if self[i]:IsShown() and db.classbar.fill == 'spaced' then
@@ -156,7 +163,7 @@ function UF:UpdateHarmony()
 	
 	self:SetWidth(CLASSBAR_WIDTH)
 	
-	local colors = ElvUF.colors.harmony
+	local colors = ElvUF.colors.Harmony
 	for i = 1, maxBars do		
 		self[i]:SetHeight(self:GetHeight())	
 		self[i]:SetWidth((self:GetWidth() - (maxBars - 1)) / maxBars)	
@@ -186,8 +193,7 @@ function UF:Construct_Stagger(frame)
 end
 
 function UF:PostUpdateStagger()
-	local frame = self:GetParent()
-	UF:UpdatePlayerFrameAnchors(frame, (frame.ClassBar and frame.ClassBar:IsShown()))
+	UF:UpdatePlayerFrameAnchors(ElvUF_Player, (ElvUF_Player.Harmony and ElvUF_Player.Harmony:IsShown()))
 end
 
 -------------------------------------------------------------
@@ -273,14 +279,16 @@ function UF:UpdateShardBar(spec)
 		end
 	end
 
-	if db.classbar.fill == 'spaced' and maxBars == 1 then
-		self:ClearAllPoints()
-		self:Point("LEFT", frame.Health.backdrop, "TOPLEFT", 8, 0)
-	elseif db.classbar.fill == 'spaced' then
-		self:ClearAllPoints()
-		self:Point("CENTER", frame.Health.backdrop, "TOP", -12, -2)
+	if not db.classbar.DetachFromFrame then
+		if db.classbar.fill == 'spaced' and maxBars == 1 then
+			self:ClearAllPoints()
+			self:Point("LEFT", frame.Health.backdrop, "TOPLEFT", 8, 0)
+		elseif db.classbar.fill == 'spaced' then
+			self:ClearAllPoints()
+			self:Point("CENTER", frame.Health.backdrop, "TOP", -12, -2)
+		end
 	end
-	
+
 	local SPACING = db.classbar.fill == 'spaced' and 11 or 1
 	for i = 1, maxBars do
 		self[i]:SetHeight(self:GetHeight())	
@@ -324,7 +332,7 @@ function UF:UpdateShadowOrbs(event, unit, powerType)
 	local db = frame.db
 		
 	local point, _, anchorPoint, x, y = frame.Health:GetPoint()
-	if self:IsShown() and point then
+	if self:IsShown() and point and not db.classbar.DetachFromFrame then
 		if db.classbar.fill == 'spaced' then
 			frame.Health:SetPoint(point, frame, anchorPoint, x, -7)
 		else
@@ -386,7 +394,7 @@ function UF:Construct_DruidResourceBar(frame)
 	eclipseBar.SolarBar = solarBar
 	
 	eclipseBar.Text = lunarBar:CreateFontString(nil, 'OVERLAY')
-	UF:Configure_FontString(eclipseBar.Text)
+	eclipseBar.Text:FontTemplate(nil, 20)
 	eclipseBar.Text:SetPoint("CENTER", lunarBar:GetStatusBarTexture(), "RIGHT")
 	
 	return eclipseBar
