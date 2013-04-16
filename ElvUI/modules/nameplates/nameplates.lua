@@ -169,10 +169,12 @@ function NP:HideObjects(frame)
 		objectType = object:GetObjectType()  
 		if objectType == "Texture" then
 			object.OldTexture = object:GetTexture()
-			object:SetTexture(nil)
+			object:SetTexture('')
 			object:SetTexCoord(0, 0, 0, 0)
 		elseif objectType == 'FontString' then
 			object:SetWidth(0.001)
+		elseif objectType == 'StatusBar' then
+			object:SetStatusBarTexture('')
 		else
 			object:Hide()
 		end
@@ -276,18 +278,18 @@ function NP:UpdateColoring(frame)
 	end
 end
 
-function NP:HealthBar_OnShow(frame)
-	frame = frame:GetParent()
+function NP:HealthBar_OnShow()
+	frame = self:GetParent()
 	
 	local noscalemult = E.mult * UIParent:GetScale()
 	--Have to reposition this here so it doesnt resize after being hidden
 	frame.hp:ClearAllPoints()
-	frame.hp:Size(self.db.width, self.db.height)	
+	frame.hp:Size(NP.db.width, NP.db.height)	
 	frame.hp:SetPoint('BOTTOM', frame, 'BOTTOM', 0, 5)
 	frame.hp:GetStatusBarTexture():SetHorizTile(true)
 	frame.hp.name:SetWidth(frame.hp:GetWidth())
 
-	self:HealthBar_ValueChanged(frame.oldhp)
+	NP.HealthBar_ValueChanged(frame.oldhp)
 	
 	if not E.PixelMode and frame.hp.backdrop then
 		frame.hp.backdrop:SetPoint('TOPLEFT', -noscalemult*3, noscalemult*3)
@@ -299,7 +301,7 @@ function NP:HealthBar_OnShow(frame)
 	frame.hp.hpbg:SetTexture(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor, 0.25)
 	
 	
-	if frame.hasClass and self.db.classIcons then
+	if frame.hasClass and NP.db.classIcons then
 		local tCoords = CLASS_BUTTONS[frame.hasClass]
 		frame.classIcon:SetTexCoord(tCoords[1], tCoords[2], tCoords[3], tCoords[4])
 		frame.classIcon:Show()
@@ -330,17 +332,18 @@ function NP:HealthBar_OnShow(frame)
 	frame.isElite = frame.hp.elite:IsShown()
 	NP:Update_LevelText(frame)
 	
-	self:HideObjects(frame)
+	NP:HideObjects(frame)
 end
 
-function NP:HealthBar_ValueChanged(frame)
-	local frame = frame:GetParent()
+function NP:HealthBar_ValueChanged()
+	local frame = self:GetParent()
 	frame.hp:SetMinMaxValues(frame.oldhp:GetMinMaxValues())
 	frame.hp:SetValue(frame.oldhp:GetValue() - 1) --Blizzard bug fix
 	frame.hp:SetValue(frame.oldhp:GetValue())
 end
 
-function NP:OnHide(frame)
+function NP:OnHide()
+	local frame = self
 	frame.hp:SetStatusBarColor(frame.hp.rcolor, frame.hp.gcolor, frame.hp.bcolor)
 	frame.hp.name:SetTextColor(1, 1, 1)
 	frame.hp:SetScale(1)
@@ -369,8 +372,8 @@ function NP:OnHide(frame)
 	frame.isTagged = nil
 	frame.isBeingTanked = nil
 	frame.hp.shadow:SetAlpha(0)
-	self:SetVirtualBackdrop(frame.hp, unpack(E["media"].backdropcolor))
-	self:SetVirtualBorder(frame.hp, unpack(E["media"].bordercolor))
+	NP:SetVirtualBackdrop(frame.hp, unpack(E["media"].backdropcolor))
+	NP:SetVirtualBorder(frame.hp, unpack(E["media"].bordercolor))
 	if frame.icons then
 		for _,icon in ipairs(frame.icons) do
 			icon:Hide()
@@ -414,6 +417,7 @@ function NP:SkinPlate(frame, nameFrame)
 		frame.hp.hpbg = frame.hp:CreateTexture(nil, 'BORDER')
 		frame.hp.hpbg:SetAllPoints(frame.hp)
 		frame.hp.hpbg:SetTexture(1,1,1,0.25) 	
+		oldhp:SetAllPoints(frame.hp)
 	end
 	frame.hp:SetStatusBarTexture(E["media"].normTex)
 	self:SetVirtualBackdrop(frame.hp, unpack(E["media"].backdropcolor))
@@ -441,8 +445,7 @@ function NP:SkinPlate(frame, nameFrame)
 		
 	if not frame.overlay then
 		overlay:SetTexture(1, 1, 1, 0.35)
-		overlay:SetParent(frame.hp)
-		overlay:SetAllPoints()
+		overlay:SetAllPoints(frame.hp)
 		frame.overlay = overlay
 	end	
 	
@@ -592,15 +595,14 @@ function NP:SkinPlate(frame, nameFrame)
 	self:QueueObject(frame, bossicon)
 	self:QueueObject(frame, elite)
 	
-	self.HealthBar_OnShow(self, frame.hp)
-	self:CastBar_OnShow(frame.cb)
-	if not self.hooks[frame] then
-		self:HookScript(frame.cb, 'OnShow', 'CastBar_OnShow')
-		self:HookScript(oldcb, 'OnValueChanged', 'CastBar_OnValueChanged')				
-		self:HookScript(frame.hp, 'OnShow', 'HealthBar_OnShow')		
-		self:HookScript(oldhp, 'OnValueChanged', 'HealthBar_ValueChanged')
-		self:HookScript(frame, "OnHide", "OnHide")	
-	end
+	self.HealthBar_OnShow(frame.hp)
+	self.CastBar_OnShow(frame.cb)
+
+	frame.cb:HookScript('OnShow', self.CastBar_OnShow)	
+	oldcb:HookScript('OnValueChanged', self.CastBar_OnValueChanged)			
+	frame.hp:HookScript('OnShow', self.HealthBar_OnShow)		
+	oldhp:HookScript('OnValueChanged', self.HealthBar_ValueChanged)
+	frame:HookScript("OnHide", self.OnHide)
 	
 	NP.Handled[frame:GetParent():GetName()] = true
 end

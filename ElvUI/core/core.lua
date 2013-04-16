@@ -408,10 +408,6 @@ function E:CheckIncompatible()
 	if IsAddOnLoaded('Aloft') and E.private.nameplate.enable then
 		E:IncompatibleAddOn('Aloft', 'NamePlate')
 	end	
-
-	if IsAddOnLoaded('Healers-Have-To-Die') and E.private.nameplate.enable then
-		E:IncompatibleAddOn('Healers-Have-To-Die', 'NamePlate')
-	end
 end
 
 function E:IsFoolsDay()

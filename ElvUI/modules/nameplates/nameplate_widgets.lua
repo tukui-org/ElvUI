@@ -930,9 +930,10 @@ function NP:StartCastAnimationOnNameplate(frame, spellName, spellID, icon, start
 end
 
 
-function NP:CastBar_OnShow(frame)
+function NP:CastBar_OnShow()
+	local frame = self
 	frame:ClearAllPoints()
-	frame:SetSize(frame:GetParent().hp:GetWidth(), self.db.cbheight)
+	frame:SetSize(frame:GetParent().hp:GetWidth(), NP.db.cbheight)
 	frame:SetPoint('TOP', frame:GetParent().hp, 'BOTTOM', 0, -8)
 	frame:SetStatusBarTexture(E["media"].normTex)
 	frame:GetStatusBarTexture():SetHorizTile(true)
@@ -946,15 +947,15 @@ function NP:CastBar_OnShow(frame)
 		frame:SetScale(frame:GetScale() + 0.01)
 	end
 		
-	self:SetVirtualBorder(frame, unpack(E["media"].bordercolor))
-	self:SetVirtualBackdrop(frame, unpack(E["media"].backdropcolor))	
+	NP:SetVirtualBorder(frame, unpack(E["media"].bordercolor))
+	NP:SetVirtualBackdrop(frame, unpack(E["media"].backdropcolor))	
 	
-	frame.icon:Size(self.db.cbheight + frame:GetParent().hp:GetHeight() + 8)
-	self:SetVirtualBorder(frame.icon, unpack(E["media"].bordercolor))
-	self:SetVirtualBackdrop(frame.icon, unpack(E["media"].backdropcolor))		
+	frame.icon:Size(NP.db.cbheight + frame:GetParent().hp:GetHeight() + 8)
+	NP:SetVirtualBorder(frame.icon, unpack(E["media"].bordercolor))
+	NP:SetVirtualBackdrop(frame.icon, unpack(E["media"].backdropcolor))		
 end
 
-function NP:CastBar_OnValueChanged(frame)
+function NP:CastBar_OnValueChanged()
 	local channel
 	local spell, _, name, icon, start, finish, _, spellid, nonInt = UnitCastingInfo("target")
 	
@@ -964,9 +965,9 @@ function NP:CastBar_OnValueChanged(frame)
 	end	
 	
 	if spell then 
-		NP:StartCastAnimationOnNameplate(frame:GetParent(), spell, spellid, icon, start, finish, nonInt, channel) 
+		NP:StartCastAnimationOnNameplate(self:GetParent(), spell, spellid, icon, start, finish, nonInt, channel) 
 	else 
-		NP:StopCastAnimation(frame:GetParent()) 
+		NP:StopCastAnimation(self:GetParent()) 
 	end
 end
 
