@@ -621,7 +621,7 @@ function NP:HealthBar_OnShow()
 	frame.hp:GetStatusBarTexture():SetHorizTile(true)
 	frame.hp.name:SetWidth(frame.hp:GetWidth())
 
-	NP.HealthBar_ValueChanged(frame.oldhp)
+	NP.HealthBar_ValueChanged(frame.oldhp, frame.oldhp:GetValue())
 	
 	if not E.PixelMode and frame.hp.backdrop then
 		frame.hp.backdrop:SetPoint('TOPLEFT', -noscalemult*3, noscalemult*3)
@@ -644,10 +644,10 @@ function NP:HealthBar_OnShow()
 	--Set the name text
 	frame.hp.name:SetText(frame.hp.oldname:GetText())
 	local isSmallNP
-	while frame.hp:GetEffectiveScale() < 1 do
-		frame.hp:SetScale(frame.hp:GetScale() + 0.01)
-		isSmallNP = true;
-	end
+	if frame.hp:GetEffectiveScale() < 1 then
+		frame.hp:SetScale(2.5 / frame.hp:GetScale())
+ 		isSmallNP = true;
+ 	end
 	
 	frame.isSmallNP = isSmallNP and NP.db.smallPlates
 	
@@ -657,7 +657,7 @@ function NP:HealthBar_OnShow()
 	
 	frame.AuraWidget:SetScale(frame.hp:GetScale())
 	
-	NP.ScanHealth(frame.oldhp)
+	NP.ScanHealth(frame.oldhp, frame.oldhp:GetValue())
 	NP:CheckFilter(frame)
 	
 	frame.isBoss = frame.hp.boss:IsShown()
@@ -1736,9 +1736,9 @@ function NP:CastBar_OnShow()
 		self:SetStatusBarColor(1, 208/255, 0)
 	end	
 	
-	while self:GetEffectiveScale() < 1 do
-		self:SetScale(self:GetScale() + 0.01)
-	end
+	if self:GetEffectiveScale() < 1 then
+		self:SetScale(2.5 / self:GetScale())
+ 	end
 		
 	NP:SetVirtualBorder(self, unpack(E["media"].bordercolor))
 	NP:SetVirtualBackdrop(self, unpack(E["media"].backdropcolor))	
