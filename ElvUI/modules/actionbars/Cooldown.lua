@@ -4,7 +4,7 @@ local AB = E:GetModule('ActionBars');
 local MIN_SCALE = 0.5
 local MIN_DURATION = 2.5
 local ICON_SIZE = 36 --the normal size for an icon (don't change this)
-local FONT_SIZE = 20 --the base font size to use at a scale of 1
+local FONT_SIZE = 18 --the base font size to use at a scale of 1
 local MIN_SCALE = 0.5 --the minimum scale we want to show cooldown counts at, anything below this will be hidden
 local MIN_DURATION = 2.5 --the minimum duration to show cooldown text for
 
@@ -15,6 +15,7 @@ local GetTime = GetTime
 local cooldown = getmetatable(ActionButton1Cooldown).__index
 local hooked, active = {}, {};
 local threshold
+local mmSSthreshold
 
 local TimeColors = {
 	[0] = '|cffeeeeee',
@@ -22,6 +23,7 @@ local TimeColors = {
 	[2] = '|cffeeeeee',
 	[3] = '|cffeeeeee',
 	[4] = '|cfffe0000',
+	[5] = '|cffeeeeee',
 }
 
 local function Cooldown_OnUpdate(cd, elapsed)
@@ -37,8 +39,8 @@ local function Cooldown_OnUpdate(cd, elapsed)
 			cd.nextUpdate = 500
 		else
 			local timervalue, formatid
-			timervalue, formatid, cd.nextUpdate = E:GetTimeInfo(remain, threshold)		
-			cd.text:SetFormattedText(("%s%s|r"):format(TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
+			timervalue, formatid, cd.nextUpdate, timervalue2 = E:GetTimeInfo(remain, threshold, mmSSthreshold)		
+			cd.text:SetFormattedText(("%s%s|r"):format(TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue, timervalue2)
 		end
 	else
 		AB:Cooldown_StopTimer(cd)
@@ -183,6 +185,7 @@ end
 
 function AB:UpdateCooldownSettings()
 	threshold = self.db.treshold
+	mmSSthreshold = self.db.mmSSthreshold
 	
 	local color = E.db.actionbar.expiringcolor
 	TimeColors[4] = E:RGBToHex(color.r, color.g, color.b) -- color for timers that are soon to expire

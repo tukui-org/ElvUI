@@ -359,6 +359,13 @@ local function BuildABConfig()
 				min = -1, max = 20, step = 1,	
 				order = 2, 					
 			},
+			mmSSthreshold = {
+				type = 'range',
+				name = L['MM:SS Threshold'],
+				desc = L['Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to never change to this format.'],
+				min = -1, max = 300, step = 1,	
+				order = 3, 					
+			},
 			restoreColors = {
 				type = 'execute',
 				name = L["Restore Defaults"],
