@@ -38,7 +38,7 @@ local function Cooldown_OnUpdate(cd, elapsed)
 			cd.text:SetText('')
 			cd.nextUpdate = 500
 		else
-			local timervalue, formatid
+			local timervalue, timervalue2, formatid
 			timervalue, formatid, cd.nextUpdate, timervalue2 = E:GetTimeInfo(remain, threshold, mmSSthreshold)		
 			cd.text:SetFormattedText(("%s%s|r"):format(TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue, timervalue2)
 		end
