@@ -27,6 +27,7 @@ L['Request was denied by user.'] = true;
 L["Lord! It's a miracle! The download up and vanished like a fart in the wind! Try Again!"] = true;
 
 --ActionBars
+L["Enabling/Disabling Bar #6 will toggle a paging option from your main actionbar to prevent duplicating bars, are you sure you want to do this?"] = true;
 L[" |cff00ff00bound to |r"] = true;
 L["Action Paging"] = true;
 L["ActionBars"] = true;
