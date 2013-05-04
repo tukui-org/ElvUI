@@ -254,14 +254,22 @@ function S:HandleDropDownBox(frame, width)
 	frame.backdrop:Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", 2, -2)
 end
 
-function S:HandleCheckBox(frame)
+function S:HandleCheckBox(frame, noBackdrop)
 	assert(frame, 'does not exist.')
 	frame:StripTextures()
-	frame:CreateBackdrop("Default")
-	frame.backdrop:SetInside(nil, 4, 4)
-	
+	if noBackdrop then
+		frame:SetTemplate("Default")
+		frame:Size(16)
+	else
+		frame:CreateBackdrop('Default')
+		frame.backdrop:SetInside(nil, 4, 4)
+	end
+
 	if frame.SetCheckedTexture then
 		frame:SetCheckedTexture("Interface\\Buttons\\UI-CheckBox-Check")
+		if noBackdrop then
+			frame:GetCheckedTexture():SetInside(nil, -4, -4)
+		end
 	end
 	
 	if frame.SetDisabledTexture then
