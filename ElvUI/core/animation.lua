@@ -130,7 +130,7 @@ function E:Flash(object, duration)
 end
 
 function E:StopFlash(object)
-	if object.anim then
+	if object.anim and object.anim:IsPlaying() then
 		object.anim:Stop()
 	end
 end
