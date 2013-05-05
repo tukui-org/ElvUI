@@ -129,7 +129,7 @@ end
 
 function E:StopFlash(object)
 	if object.anim then
-		object.anim:Finish()
+		object.anim:Stop()
 	end
 end
 
