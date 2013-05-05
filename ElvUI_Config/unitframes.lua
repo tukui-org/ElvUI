@@ -1973,12 +1973,12 @@ E.Options.args.unitframe.args.player = {
 						['spaced'] = L['Spaced'],
 					},
 				},		
-				DetachFromFrame = {
+				detachFromFrame = {
 					type = 'toggle',
 					order = 4,
 					name = L['Detach From Frame'],
 				},	
-				DetachedWidth = {
+				detachedWidth = {
 					type = 'range',
 					order = 5,
 					name = L['Detached Width'],
@@ -2172,12 +2172,12 @@ E.Options.args.unitframe.args.target = {
 					name = L['Auto-Hide'],
 					order = 4,
 				},		
-				DetachFromFrame = {
+				detachFromFrame = {
 					type = 'toggle',
 					order = 5,
 					name = L['Detach From Frame'],
 				},	
-				DetachedWidth = {
+				detachedWidth = {
 					type = 'range',
 					order = 6,
 					name = L['Detached Width'],
