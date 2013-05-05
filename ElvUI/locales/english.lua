@@ -778,6 +778,7 @@ L['You can use the /resetui command to reset all of your movers. You can also us
 L['ABOVE_THREAT_FORMAT'] = '%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]'
 
 --UnitFrames
+L['Attach Text to Power'] = true;
 L['Auto-Hide'] = true;
 L['Detach From Frame'] = true;
 L['Detached Width'] = true;

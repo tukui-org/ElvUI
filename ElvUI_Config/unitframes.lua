@@ -1067,7 +1067,7 @@ local function GetOptionsTable_Portrait(updateFunc, groupName, numUnits)
 	return config
 end
 
-local function GetOptionsTable_Power(updateFunc, groupName, numUnits)
+local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, numUnits)
 	local config = {
 		order = 200,
 		type = 'group',
@@ -1177,9 +1177,28 @@ local function GetOptionsTable_Power(updateFunc, groupName, numUnits)
 				name = L['Text Position'],
 				values = positionValues,
 			},		
-		
 		},
 	}
+
+	if hasDetatchOption then
+			config.args.attachTextToPower = {
+				type = 'toggle',
+				order = 9,
+				name = L['Attach Text to Power'],
+			}		
+			config.args.detachFromFrame = {
+				type = 'toggle',
+				order = 10,
+				name = L['Detach From Frame'],
+			}
+			config.args.detachedWidth = {
+				type = 'range',
+				order = 11,
+				name = L['Detached Width'],
+				disabled = function() return not E.db.unitframe.units[groupName].power.detachFromFrame end,
+				min = 15, max = 450, step = 1,
+			}
+	end
 	
 	return config
 end
@@ -1919,7 +1938,7 @@ E.Options.args.unitframe.args.player = {
 		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'player'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'player'),
-		power = GetOptionsTable_Power(UF.CreateAndUpdateUF, 'player'),	
+		power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'player'),	
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'player'),	
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'player'),
 		buffs = GetOptionsTable_Auras(true, 'buffs', false, UF.CreateAndUpdateUF, 'player'),
@@ -1963,7 +1982,7 @@ E.Options.args.unitframe.args.player = {
 					type = 'range',
 					order = 5,
 					name = L['Detached Width'],
-					disabled = function() return not E.db.unitframe.units['player']['classbar'].DetachFromFrame end,
+					disabled = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
 					min = 15, max = 450, step = 1,
 				},
 			},
@@ -2162,14 +2181,14 @@ E.Options.args.unitframe.args.target = {
 					type = 'range',
 					order = 6,
 					name = L['Detached Width'],
-					disabled = function() return not E.db.unitframe.units['target']['combobar'].DetachFromFrame end,
+					disabled = function() return not E.db.unitframe.units['target']['combobar'].detachFromFrame end,
 					min = 15, max = 450, step = 1,
 				},				
 			},
 		},	
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'target'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'target'),
-		power = GetOptionsTable_Power(UF.CreateAndUpdateUF, 'target'),	
+		power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'target'),	
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'target'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'target'),
 		buffs = GetOptionsTable_Auras(false, 'buffs', false, UF.CreateAndUpdateUF, 'target'),
