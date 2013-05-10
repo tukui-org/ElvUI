@@ -58,7 +58,7 @@ function UF:Update_TargetFrame(frame, db)
 	local USE_INSET_POWERBAR = db.power.width == 'inset' and USE_POWERBAR
 	local USE_MINI_POWERBAR = db.power.width == 'spaced' and USE_POWERBAR
 	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR
-	local POWERBAR_DETACHED = db.power.detachedFromFrame
+	local POWERBAR_DETACHED = db.power.detachFromFrame
 	local POWERBAR_OFFSET = db.power.offset
 	local POWERBAR_HEIGHT = db.power.height
 	local POWERBAR_WIDTH = POWERBAR_DETACHED and db.power.detachedWidth or (db.width - (BORDER*2))
@@ -208,6 +208,7 @@ function UF:Update_TargetFrame(frame, db)
 			
 			--Position
 			power:ClearAllPoints()
+
 			if POWERBAR_DETACHED then
 				power:Width(POWERBAR_WIDTH)
 				power:Height(POWERBAR_HEIGHT)				
