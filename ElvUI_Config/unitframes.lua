@@ -57,7 +57,6 @@ local auraBarsSortValues = {
 	['NONE'] = NONE,
 }
 
-
 -----------------------------------------------------------------------
 -- OPTIONS TABLES
 -----------------------------------------------------------------------
@@ -3039,11 +3038,14 @@ E.Options.args.unitframe.args.party = {
 							min = 10, max = 500, step = 1,
 							set = function(info, value) E.db.unitframe.units['party'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
 						},	
-						spacer = {
+						groupStyle = {
 							order = 3,
-							name = '',
-							type = 'description',
-							width = 'full',
+							name = L['Grouping Style'],
+							type = 'select',
+							values = {
+								['grid'] = L['Grid'],
+								['vertical'] = L['Vertical']
+							},
 						},
 						growthDirection = {
 							order = 4,
@@ -3067,26 +3069,15 @@ E.Options.args.unitframe.args.party = {
 							desc = L['The initial group will start near the center and grow out. Corrosponding groups will behave normally.'],
 							type = 'toggle',
 						},
-						invertGroupingOrder = {
-							order = 6,
-							name = L['Invert Grouping Order'],
-							desc = L['Reverses the grouping order. For example if your group is to grow right than up by default the first group is always at the bottom. With this option set then the first group will start at the bottom but as the number of groups grow it will always be near the top.'],
-							type = 'toggle',
-						},
 						numGroups = {
 							order = 7,
 							type = 'range',
 							name = L['Number of Groups'],
 							min = 1, max = 8, step = 1,
-							set = function(info, value) E.db.unitframe.units['party'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
-						},
-						unitsPerGroup = {
-							order = 8,
-							type = 'range',
-							name = L['Group Size'],
-							desc = L['Number of units in a group.'],
-							min = 1, max = 40, step = 1,
-							set = function(info, value) E.db.unitframe.units['party'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
+								set = function(info, value) 
+									E.db.unitframe.units['party'][ info[#info] ] = value; 
+									UF:CreateAndUpdateHeaderGroup('party')
+								end,
 						},
 						horizontalSpacing = {
 							order = 9,
@@ -3446,11 +3437,14 @@ for i=10, 40, 15 do
 								min = 10, max = 500, step = 1,
 								set = function(info, value) E.db.unitframe.units['raid'..i][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i) end,
 							},	
-							spacer = {
+							groupStyle = {
 								order = 3,
-								name = '',
-								type = 'description',
-								width = 'full',
+								name = L['Grouping Style'],
+								type = 'select',
+								values = {
+									['grid'] = L['Grid'],
+									['vertical'] = L['Vertical']
+								},
 							},
 							growthDirection = {
 								order = 4,
@@ -3473,27 +3467,16 @@ for i=10, 40, 15 do
 								name = L['Start near Center'],
 								desc = L['The initial group will start near the center and grow out. Corrosponding groups will behave normally.'],
 								type = 'toggle',
-							},	
-							invertGroupingOrder = {
-								order = 6,
-								name = L['Invert Grouping Order'],
-								desc = L['Reverses the grouping order. For example if your group is to grow right than up by default the first group is always at the bottom. With this option set then the first group will start at the bottom but as the number of groups grow it will always be near the top.'],
-								type = 'toggle',
-							},										
+							},									
 							numGroups = {
 								order = 7,
 								type = 'range',
 								name = L['Number of Groups'],
 								min = 1, max = 8, step = 1,
-								set = function(info, value) E.db.unitframe.units['raid'..i][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i) end,
-							},
-							unitsPerGroup = {
-								order = 8,
-								type = 'range',
-								name = L['Group Size'],
-								desc = L['Number of units in a group.'],
-								min = 1, max = 40, step = 1,
-								set = function(info, value) E.db.unitframe.units['raid'..i][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i) end,
+								set = function(info, value) 
+									E.db.unitframe.units['raid'..i][ info[#info] ] = value; 
+									UF:CreateAndUpdateHeaderGroup('raid'..i)
+								end,
 							},
 							horizontalSpacing = {
 								order = 9,

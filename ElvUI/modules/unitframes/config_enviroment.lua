@@ -137,13 +137,11 @@ function UF:ShowChildUnits(header, ...)
 		frame.TargetGlow:SetAlpha(0)
 		self:ForceShow(frame)
 	end
-	
-	header.dirtyWidth, header.dirtyHeight = header:GetSize()
-	header.mover:Size(header.dirtyWidth, header.dirtyHeight)
 end
 
 function UF:UnshowChildUnits(header, ...)
 	header.isForced = nil
+
 	for i=1, select("#", ...) do
 		local frame = select(i, ...)
 		frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
@@ -165,20 +163,14 @@ local function GetNumChildrenShown(...)
 end
 
 local function OnAttributeChanged(self, name)
-	if not self.forceShow then return; end
+	if not self:GetParent().forceShow then return; end
 
-	local maxUnits = MAX_RAID_MEMBERS
-	local startingIndex = -min(self.db.numGroups * self.db.unitsPerGroup, maxUnits) + 1
-	local numChildren = self:GetNumChildren()
+	local db = self:GetParent().db
+
+	local startingIndex = -4
 	if self:GetAttribute("startingIndex") ~= startingIndex then
 		self:SetAttribute("startingIndex", startingIndex)
-		self.lastNumChildren = numChildren
 		UF:ShowChildUnits(self, self:GetChildren())
-	elseif GetNumChildrenShown(self:GetChildren()) ~= (self.db.numGroups * self.db.unitsPerGroup) then
-		UF:ShowChildUnits(self, self:GetChildren())
-	elseif self.mover:GetWidth() ~= self:GetWidth() or self.mover:GetHeight() ~= self:GetHeight() then
-		self.dirtyWidth, self.dirtyHeight = self:GetSize()
-		self.mover:Size(self.dirtyWidth, self.dirtyHeight)	
 	end
 end
 
@@ -186,42 +178,46 @@ function UF:HeaderConfig(header, configMode)
 	if InCombatLockdown() then return; end
 	
 	createConfigEnv()
-	local db = header.db
 	header.forceShow = configMode
-	header:HookScript('OnAttributeChanged', OnAttributeChanged)
-	if configMode then		
-		header.forceShowAuras = true
-
-		for key in pairs(attributeBlacklist) do
-			header:SetAttribute(key, nil)
-		end
+	header.forceShowAuras = configMode
+	for i=1, #header.groups do
+		local group = header.groups[i]
+		local db = group.db
 		
-		RegisterAttributeDriver(header, 'state-visibility', 'show')		
-		
-		OnAttributeChanged(header)
-
-		for _, func in pairs(overrideFuncs) do
-			if type(func) == 'function' then
-				originalEnvs[func] = getfenv(func)
-				setfenv(func, configEnv)		
+		group:HookScript('OnAttributeChanged', OnAttributeChanged)
+		group.forceShow = header.forceShow
+		group.forceShowAuras = header.forceShowAuras
+		if configMode then		
+			for key in pairs(attributeBlacklist) do
+				group:SetAttribute(key, nil)
 			end
+			
+			RegisterAttributeDriver(group, 'state-visibility', 'show')		
+			
+			OnAttributeChanged(group)
+
+			for _, func in pairs(overrideFuncs) do
+				if type(func) == 'function' then
+					originalEnvs[func] = getfenv(func)
+					setfenv(func, configEnv)		
+				end
+			end
+			
+			group:Update()	
+		else
+			for key in pairs(attributeBlacklist) do
+				group:SetAttribute(key, true)
+			end	
+
+			UF:UnshowChildUnits(group, group:GetChildren())
+			
+			for func, env in pairs(originalEnvs) do
+				setfenv(func, env)
+				originalEnvs[func] = nil
+			end		
+			
+			group:Update()
 		end
-		
-		header:Update()	
-	else
-		for key in pairs(attributeBlacklist) do
-			header:SetAttribute(key, true)
-		end	
-		header.forceShowAuras = nil		
-		
-		UF:UnshowChildUnits(header, header:GetChildren())
-		
-		for func, env in pairs(originalEnvs) do
-			setfenv(func, env)
-			originalEnvs[func] = nil
-		end		
-		
-		header:Update()
 	end
 end
 

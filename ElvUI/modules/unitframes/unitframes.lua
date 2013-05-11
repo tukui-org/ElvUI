@@ -17,6 +17,8 @@ UF['headerstoload'] = {}
 UF['unitgroupstoload'] = {}
 UF['unitstoload'] = {}
 
+UF['groupPrototype'] = {}
+UF['headerPrototype'] = {}
 UF['headers'] = {}
 UF['groupunits'] = {}
 UF['units'] = {}
@@ -199,52 +201,6 @@ end
 local function DelayedUpdate(group)
 	if InCombatLockdown() then return end
 	group:Show()
-end
-
-function UF:SetupGroupAnchorPoints(group)
-	UF:ConvertGroupDB(group)
-	local db = self.db.units[group.groupName]
-	local direction = db.growthDirection
-	local point = DIRECTION_TO_POINT[direction]
-	local positionOverride = DIRECTION_TO_GROUP_ANCHOR_POINT[db.startOutFromCenter and 'OUT_'..direction or direction]
-	
-	local maxUnits, startingIndex = MAX_RAID_MEMBERS, -1
-	if (db.numGroups and db.unitsPerGroup) then
-		startingIndex = -min(db.numGroups * db.unitsPerGroup, maxUnits) + 1
-	end
-	
-	if point == "LEFT" or point == "RIGHT" then
-		group:SetAttribute("xOffset", db.horizontalSpacing * DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction])
-		group:SetAttribute("yOffset", 0)
-		group:SetAttribute("columnSpacing", db.verticalSpacing)
-	else
-		group:SetAttribute("xOffset", 0)
-		group:SetAttribute("yOffset", db.verticalSpacing * DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction])
-		group:SetAttribute("columnSpacing", db.horizontalSpacing)
-	end
-	
-	group:SetAttribute("columnAnchorPoint", db.invertGroupingOrder and INVERTED_DIRECTION_TO_COLUMN_ANCHOR_POINT[direction] or DIRECTION_TO_COLUMN_ANCHOR_POINT[direction])
-	UF:ClearChildPoints(group:GetChildren())
-	group:SetAttribute("point", point)	
-	group:SetAttribute("maxColumns", db.numGroups)
-	group:SetAttribute("unitsPerColumn", db.unitsPerGroup)		
-
-	if not group.isForced then
-		group:SetAttribute("startingIndex", startingIndex)
-		RegisterAttributeDriver(group, 'state-visibility', 'show')	
-		group.dirtyWidth, group.dirtyHeight = group:GetSize()
-		RegisterAttributeDriver(group, 'state-visibility', db.visibility)
-		group:SetAttribute('startingIndex', 1)
-		
-		E:Delay(0.25, DelayedUpdate, group)
-	end
-	
-	if group.mover then
-		group.mover.positionOverride = positionOverride
-		E:UpdatePositionOverride(group.mover:GetName())
-	end
-
-	return positionOverride
 end
 
 function UF:Construct_UF(frame, unit)
@@ -499,55 +455,222 @@ function UF:HeaderUpdateSpecificElement(group, elementName)
 	end
 end
 
-function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdate)
-	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return end
+function UF.groupPrototype:SetAttribute(name, value)
+	for i=1, #self.groups do
+		local group = self.groups[i]
+		if name == "point" or name == "columnAnchorPoint" or name == "unitsPerColumn" then
+			local count = 1
+			local uframe = group:GetAttribute("child" .. count)
+			while uframe do
+				uframe:ClearAllPoints()
+				count = count + 1
+				uframe = self:GetAttribute("child" .. count)
+			end
+		end
+		group:SetAttribute(name, value)
+	end
+end
 
-	local db = self.db['units'][group]
-	if not self[group] then
-		ElvUF:RegisterStyle("ElvUF_"..E:StringTitle(group), UF["Construct_"..E:StringTitle(group).."Frames"])
-		ElvUF:SetActiveStyle("ElvUF_"..E:StringTitle(group))
+function UF.groupPrototype:GetAttribute(name)
+	return self.groups[1]:GetAttribute(name)
+end
 
-		self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, nil, 
-			'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 
+function UF.groupPrototype:Configure_Groups()
+	local db = UF.db.units[self.groupName]
+
+	local width, height = 0, 0
+	for i=1, #self.groups do
+		local group = self.groups[i]
+		UF:ConvertGroupDB(group)
+		local direction = db.growthDirection
+		local point = DIRECTION_TO_POINT[direction]
+		local positionOverride = DIRECTION_TO_GROUP_ANCHOR_POINT[db.startOutFromCenter and 'OUT_'..direction or direction]
+
+		if point == "LEFT" or point == "RIGHT" then
+			group:SetAttribute("xOffset", db.horizontalSpacing * DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction])
+			group:SetAttribute("yOffset", 0)
+			group:SetAttribute("columnSpacing", db.verticalSpacing)
+		else
+			group:SetAttribute("xOffset", 0)
+			group:SetAttribute("yOffset", db.verticalSpacing * DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction])
+			group:SetAttribute("columnSpacing", db.horizontalSpacing)
+		end
+		
+		if not group.isForced then
+			if not group.initialized then
+				group:SetAttribute("startingIndex", -4)
+				group.initialized = true
+			end
+			group:SetAttribute('startingIndex', 1)
+		end
+
+		
+		group:ClearAllPoints()
+		group:SetAttribute("columnAnchorPoint", db.invertGroupingOrder and INVERTED_DIRECTION_TO_COLUMN_ANCHOR_POINT[direction] or DIRECTION_TO_COLUMN_ANCHOR_POINT[direction])
+		group:ClearChildPoints()
+		group:SetAttribute("point", point)	
+		group:SetAttribute("maxColumns", 1)
+		group:SetAttribute("unitsPerColumn", 5)		
+		UF.headerGroupBy[db.groupBy](group)
+		group:SetAttribute('sortDir', db.sortDir)
+		group:SetAttribute("showPlayer", db.showPlayer)	
+		
+		if i == 1 then
+			local point = DIRECTION_TO_GROUP_ANCHOR_POINT[db.startOutFromCenter and 'OUT_'..direction or direction]
+
+			group:SetPoint(point)
+			if db.groupStyle == 'vertical' then
+				width = db.width
+				height = db.height + ((db.height + db.verticalSpacing) * 4)
+			elseif DIRECTION_TO_POINT[direction] == "LEFT" or DIRECTION_TO_POINT[direction] == "RIGHT" then
+				width = (db.width + db.horizontalSpacing) * 5
+				height = db.height
+			else
+				height = (db.height + db.verticalSpacing) * 5
+				width = db.width
+			end
+		else
+			local point = DIRECTION_TO_GROUP_ANCHOR_POINT[direction]
+			local xMult, yMult = DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction], DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction]
+
+
+			if db.groupStyle == 'vertical' then
+				group:SetPoint('BOTTOM', self.groups[i-1], 'TOP', 0, db.verticalSpacing)
+				height = height + ((db.height + db.verticalSpacing) * 5)
+			elseif DIRECTION_TO_POINT[direction] == "LEFT" or DIRECTION_TO_POINT[direction] == "RIGHT" then
+				group:SetPoint(point, self, point, 0, height * yMult)
+				height = height + (db.height + db.verticalSpacing)
+			else
+				group:SetPoint(point, self, point, width * xMult, 0)
+				width = width + (db.width + db.horizontalSpacing)
+			end
+		end
+
+	end
+
+	self:SetSize(width, height)
+end
+
+function UF.groupPrototype:Update()
+	local group = self.groupName
+	UF[group].db = UF.db['units'][group]
+	for i=1, #self.groups do
+		self.groups[i].db = UF.db['units'][group]
+		self.groups[i]:Update()
+	end
+end
+
+
+function UF.headerPrototype:ClearChildPoints()
+	for i=1, self:GetNumChildren() do
+		local child = select(i, self:GetChildren())
+		child:ClearAllPoints()
+	end
+end
+
+function UF.headerPrototype:Reset()
+	self:Hide()
+
+	self:SetAttribute("showSolo", true)
+	self:SetAttribute("showParty", true)
+	self:SetAttribute("showRaid", true)
+
+	self:SetAttribute("columnSpacing", nil)
+	self:SetAttribute("columnAnchorPoint", nil)
+	self:SetAttribute("maxColumns", nil)
+	self:SetAttribute("nameList", nil)
+	self:SetAttribute("point", nil)
+	self:SetAttribute("strictFiltering", nil)
+	self:SetAttribute("unitsPerColumn", nil)
+	self:SetAttribute("xOffset", nil)
+	self:SetAttribute("yOffset", nil)
+end
+
+function UF.headerPrototype:Update()
+	local group = self.groupName
+	local db = UF.db['units'][group]
+	UF["Update_"..E:StringTitle(group).."Header"](UF, self, db)
+	
+	local i = 1
+	local child = self:GetAttribute("child" .. i)
+
+	while child do
+		UF["Update_"..E:StringTitle(group).."Frames"](UF, child, db)
+
+		if _G[child:GetName()..'Pet'] then
+			UF["Update_"..E:StringTitle(group).."Frames"](UF, _G[child:GetName()..'Pet'], db)
+		end
+		
+		if _G[child:GetName()..'Target'] then
+			UF["Update_"..E:StringTitle(group).."Frames"](UF, _G[child:GetName()..'Target'], db)
+		end
+
+		i = i + 1	
+		child = self:GetAttribute("child" .. i)
+	end		
+end
+
+function UF:CreateHeader(parent, groupFilter, overrideName, template)
+	local group = parent.groupName
+	local db = UF.db['units'][group]
+	ElvUF:SetActiveStyle("ElvUF_"..E:StringTitle(group))
+	local header = ElvUF:SpawnHeader(overrideName, nil, nil, 
+			'oUF-initialConfigFunction', ("self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)"):format(db.width, db.height), 
 			'groupFilter', groupFilter,
 			'showParty', true,
 			'showRaid', true,
 			'showSolo', true,
 			template and 'template', template)
-
-		self[group]:SetParent(ElvUF_Parent)		
-		self['headers'][group] = self[group]
-		self[group].groupName = group
+	
+	header.groupName = group
+	header:SetParent(parent)
+	header:Show()
+	for k, v in pairs(self.headerPrototype) do
+		header[k] = v
 	end
-	
-	self[group].db = db
-	
-	self[group].Update = function()
-		local db = self.db['units'][group]
-		if db.enable ~= true then 
-			RegisterAttributeDriver(self[group], 'state-visibility', 'hide')	
-			return
-		end
-		UF["Update_"..E:StringTitle(group).."Header"](self, self[group], db)
-		
-		for i=1, self[group]:GetNumChildren() do
-			local child = select(i, self[group]:GetChildren())
-			UF["Update_"..E:StringTitle(group).."Frames"](self, child, self.db['units'][group])
 
-			if _G[child:GetName()..'Pet'] then
-				UF["Update_"..E:StringTitle(group).."Frames"](self, _G[child:GetName()..'Pet'], self.db['units'][group])
-			end
-			
-			if _G[child:GetName()..'Target'] then
-				UF["Update_"..E:StringTitle(group).."Frames"](self, _G[child:GetName()..'Target'], self.db['units'][group])
-			end			
-		end			
-	end	
-	
-	if headerUpdate then
-		UF["Update_"..E:StringTitle(group).."Header"](self, self[group], db)
+	return header
+end
+
+function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdate)
+	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return end
+
+	local db = self.db['units'][group]
+	if not self[group] then
+		local stringTitle = E:StringTitle(group)
+		ElvUF:RegisterStyle("ElvUF_"..stringTitle, UF["Construct_"..stringTitle.."Frames"])
+		ElvUF:SetActiveStyle("ElvUF_"..stringTitle)		
+
+		
+		self[group] = CreateFrame('Frame', 'ElvUF_'..stringTitle, ElvUF_Parent, 'SecureHandlerStateTemplate');
+		self[group].groups = {}
+		self[group].db = db
+		self[group].groupName = group
+		self['headers'][group] = self[group]
+
+		for k, v in pairs(self.groupPrototype) do
+			self[group][k] = v
+		end
+	end
+
+	RegisterStateDriver(self[group], "visibility", db.visibility)
+
+	while db.numGroups > #self[group].groups do
+		local index = tostring(#self[group].groups + 1)
+		tinsert(self[group].groups, self:CreateHeader(self[group], index, "ElvUF_"..E:StringTitle(self[group].groupName)..'Group'..index))
+	end
+
+	for i=1, #self[group].groups do
+		self[group].groups[i]:Reset()
+		if i <= db.numGroups then
+			self[group].groups[i]:Show()
+		end
+	end
+
+	if headerUpdate or not self[group].mover then
+		self[group]:Configure_Groups()
 	else
-		self[group].Update()
+		self[group]:Update()
 	end
 end
 
@@ -780,17 +903,8 @@ function UF:Initialize()
 	E.UnitFrames = UF;
 	
 	local ElvUF_Parent = CreateFrame('Frame', 'ElvUF_Parent', E.UIParent, 'SecureHandlerStateTemplate');
-	ElvUF_Parent:SetAllPoints(E.UIParent)
-	ElvUF_Parent:SetAttribute("_onstate-show", [[		
-		if newstate == "hide" then
-			self:Hide();
-		else
-			self:Show();
-		end	
-	]]);
+	RegisterStateDriver(ElvUF_Parent, "visibility", "[petbattle] hide; show")
 
-	RegisterStateDriver(ElvUF_Parent, "show", '[petbattle] hide;show');	
-	
 	self:UpdateColors()
 	ElvUF:RegisterStyle('ElvUF', function(frame, unit)
 		self:Construct_UF(frame, unit)

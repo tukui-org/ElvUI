@@ -318,7 +318,6 @@ function CH:StyleChat(frame)
 	--copy chat button
 	frame.button = CreateFrame('Frame', format("CopyChatButton%d", id), frame)
 	frame.button:SetAlpha(0.35)
-	frame.button:SetTemplate('Default', true)
 	frame.button:Size(20, 22)
 	frame.button:SetPoint('TOPRIGHT')
 	

@@ -561,5 +561,5 @@ for i=10, 40, 15 do
 		frame:UpdateAllElements()
 	end
 
-	UF['headerstoload']['raid'..i] = true
+	--UF['headerstoload']['raid'..i] = true
 end

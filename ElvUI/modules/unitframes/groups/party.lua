@@ -54,30 +54,16 @@ function UF:Construct_PartyFrames(unitGroup)
 end
 
 function UF:Update_PartyHeader(header, db)	
-	header.db = db
+	header:GetParent().db = db
 
-	UF['headerGroupBy'][db.groupBy](header)
-	header:SetAttribute('sortDir', db.sortDir)
-	header:SetAttribute("showPlayer", db.showPlayer)
-	
-	local positionOverride = UF:SetupGroupAnchorPoints(header)
-	if not header.positioned then
-		header:ClearAllPoints()
-		header:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)
+	local headerHolder = header:GetParent()
+	if not headerHolder.positioned then
+		headerHolder:ClearAllPoints()
+		headerHolder:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)
 		
-		E:CreateMover(header, header:GetName()..'Mover', L['Party Frames'], nil, nil, nil, 'ALL,PARTY,ARENA')
-		header.mover.positionOverride = positionOverride
-		
-		header:SetAttribute('minHeight', header.dirtyHeight)
-		header:SetAttribute('minWidth', header.dirtyWidth)
-	
-		header:RegisterEvent("PLAYER_ENTERING_WORLD")
-		header:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-		header:HookScript("OnEvent", UF.PartySmartVisibility)		
-		header.positioned = true;
+		E:CreateMover(headerHolder, headerHolder:GetName()..'Mover', L['Party Frames'], nil, nil, nil, 'ALL,PARTY,ARENA')
+		headerHolder.positioned = true;
 	end
-
-	UF.PartySmartVisibility(header)
 end
 
 function UF:PartySmartVisibility(event)
