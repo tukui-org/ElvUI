@@ -486,66 +486,74 @@ function UF.groupPrototype:Configure_Groups()
 		local point = DIRECTION_TO_POINT[direction]
 		local positionOverride = DIRECTION_TO_GROUP_ANCHOR_POINT[db.startOutFromCenter and 'OUT_'..direction or direction]
 
-		if point == "LEFT" or point == "RIGHT" then
-			group:SetAttribute("xOffset", db.horizontalSpacing * DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction])
-			group:SetAttribute("yOffset", 0)
-			group:SetAttribute("columnSpacing", db.verticalSpacing)
-		else
-			group:SetAttribute("xOffset", 0)
-			group:SetAttribute("yOffset", db.verticalSpacing * DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction])
-			group:SetAttribute("columnSpacing", db.horizontalSpacing)
-		end
-		
-		if not group.isForced then
-			if not group.initialized then
-				group:SetAttribute("startingIndex", -4)
-				group.initialized = true
-			end
-			group:SetAttribute('startingIndex', 1)
-		end
-
-		
-		group:ClearAllPoints()
-		group:SetAttribute("columnAnchorPoint", db.invertGroupingOrder and INVERTED_DIRECTION_TO_COLUMN_ANCHOR_POINT[direction] or DIRECTION_TO_COLUMN_ANCHOR_POINT[direction])
-		group:ClearChildPoints()
-		group:SetAttribute("point", point)	
-		group:SetAttribute("maxColumns", 1)
-		group:SetAttribute("unitsPerColumn", 5)		
-		UF.headerGroupBy[db.groupBy](group)
-		group:SetAttribute('sortDir', db.sortDir)
-		group:SetAttribute("showPlayer", db.showPlayer)	
-		
-		if i == 1 then
-			local point = DIRECTION_TO_GROUP_ANCHOR_POINT[db.startOutFromCenter and 'OUT_'..direction or direction]
-
-			group:SetPoint(point)
-			if db.groupStyle == 'vertical' then
-				width = db.width
-				height = db.height + ((db.height + db.verticalSpacing) * 4)
-			elseif DIRECTION_TO_POINT[direction] == "LEFT" or DIRECTION_TO_POINT[direction] == "RIGHT" then
-				width = (db.width + db.horizontalSpacing) * 5
-				height = db.height
+		if group:IsShown() then
+			if point == "LEFT" or point == "RIGHT" then
+				group:SetAttribute("xOffset", db.horizontalSpacing * DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction])
+				group:SetAttribute("yOffset", 0)
+				group:SetAttribute("columnSpacing", db.verticalSpacing)
 			else
-				height = (db.height + db.verticalSpacing) * 5
-				width = db.width
+				group:SetAttribute("xOffset", 0)
+				group:SetAttribute("yOffset", db.verticalSpacing * DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction])
+				group:SetAttribute("columnSpacing", db.horizontalSpacing)
 			end
-		else
-			local point = DIRECTION_TO_GROUP_ANCHOR_POINT[direction]
-			local xMult, yMult = DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction], DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction]
+			
+			if not group.isForced then
+				if not group.initialized then
+					group:SetAttribute("startingIndex", -4)
+					group:Show()
+					group.initialized = true
+				end
+				group:SetAttribute('startingIndex', 1)
+			end
 
+			
+			group:ClearAllPoints()
+			group:SetAttribute("columnAnchorPoint", db.invertGroupingOrder and INVERTED_DIRECTION_TO_COLUMN_ANCHOR_POINT[direction] or DIRECTION_TO_COLUMN_ANCHOR_POINT[direction])
+			group:ClearChildPoints()
+			group:SetAttribute("point", point)	
+		
+			
+			
 
-			if db.groupStyle == 'vertical' then
-				group:SetPoint('BOTTOM', self.groups[i-1], 'TOP', 0, db.verticalSpacing)
-				height = height + ((db.height + db.verticalSpacing) * 5)
-			elseif DIRECTION_TO_POINT[direction] == "LEFT" or DIRECTION_TO_POINT[direction] == "RIGHT" then
-				group:SetPoint(point, self, point, 0, height * yMult)
-				height = height + (db.height + db.verticalSpacing)
+			if not group.isForced then
+				group:SetAttribute("maxColumns", 1)
+				group:SetAttribute("unitsPerColumn", 5)				
+				UF.headerGroupBy[db.groupBy](group)
+				group:SetAttribute('sortDir', db.sortDir)
+				group:SetAttribute("showPlayer", db.showPlayer)	
+			end
+
+			if i == 1 then
+				local point = DIRECTION_TO_GROUP_ANCHOR_POINT[db.startOutFromCenter and 'OUT_'..direction or direction]
+
+				group:SetPoint(point)
+				if db.groupStyle == 'vertical' then
+					width = db.width
+					height = db.height + ((db.height + db.verticalSpacing) * 4)
+				elseif DIRECTION_TO_POINT[direction] == "LEFT" or DIRECTION_TO_POINT[direction] == "RIGHT" then
+					width = (db.width + db.horizontalSpacing) * 5
+					height = (db.height + db.verticalSpacing)
+				else
+					height = (db.height + db.verticalSpacing) * 5
+					width = (db.width + db.horizontalSpacing)
+				end
 			else
-				group:SetPoint(point, self, point, width * xMult, 0)
-				width = width + (db.width + db.horizontalSpacing)
+				local point = DIRECTION_TO_GROUP_ANCHOR_POINT[direction]
+				local xMult, yMult = DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction], DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction]
+
+
+				if db.groupStyle == 'vertical' then
+					group:SetPoint('BOTTOM', self.groups[i-1], 'TOP', 0, db.verticalSpacing)
+					height = height + ((db.height + db.verticalSpacing) * 5)
+				elseif DIRECTION_TO_POINT[direction] == "LEFT" or DIRECTION_TO_POINT[direction] == "RIGHT" then
+					group:SetPoint(point, self, point, 0, height * yMult)
+					height = height + (db.height + db.verticalSpacing)
+				else
+					group:SetPoint(point, self, point, width * xMult, 0)
+					width = width + (db.width + db.horizontalSpacing)
+				end
 			end
 		end
-
 	end
 
 	self:SetSize(width, height)
@@ -560,6 +568,23 @@ function UF.groupPrototype:Update()
 	end
 end
 
+function UF.groupPrototype:AdjustVisibility()
+	if not self.isForced then
+		for i=1, #self.groups do
+			if i <= self.db.numGroups then
+				self.groups[i]:Show()
+			else
+				self.groups[i]:Hide()
+
+				if self.groups[i].forceShow then
+					UF:UnshowChildUnits(group, group:GetChildren())
+					group:SetAttribute('startingIndex', 1)
+				end
+			end
+		end
+	end
+end
+
 
 function UF.headerPrototype:ClearChildPoints()
 	for i=1, self:GetNumChildren() do
@@ -568,23 +593,6 @@ function UF.headerPrototype:ClearChildPoints()
 	end
 end
 
-function UF.headerPrototype:Reset()
-	self:Hide()
-
-	self:SetAttribute("showSolo", true)
-	self:SetAttribute("showParty", true)
-	self:SetAttribute("showRaid", true)
-
-	self:SetAttribute("columnSpacing", nil)
-	self:SetAttribute("columnAnchorPoint", nil)
-	self:SetAttribute("maxColumns", nil)
-	self:SetAttribute("nameList", nil)
-	self:SetAttribute("point", nil)
-	self:SetAttribute("strictFiltering", nil)
-	self:SetAttribute("unitsPerColumn", nil)
-	self:SetAttribute("xOffset", nil)
-	self:SetAttribute("yOffset", nil)
-end
 
 function UF.headerPrototype:Update()
 	local group = self.groupName
@@ -621,10 +629,11 @@ function UF:CreateHeader(parent, groupFilter, overrideName, template)
 			'showRaid', true,
 			'showSolo', true,
 			template and 'template', template)
-	
+
 	header.groupName = group
 	header:SetParent(parent)
 	header:Show()
+
 	for k, v in pairs(self.headerPrototype) do
 		header[k] = v
 	end
@@ -651,25 +660,24 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 		for k, v in pairs(self.groupPrototype) do
 			self[group][k] = v
 		end
-	end
 
-	RegisterStateDriver(self[group], "visibility", db.visibility)
+		self[group]:Show()
+	end
 
 	while db.numGroups > #self[group].groups do
 		local index = tostring(#self[group].groups + 1)
 		tinsert(self[group].groups, self:CreateHeader(self[group], index, "ElvUF_"..E:StringTitle(self[group].groupName)..'Group'..index))
 	end
 
-	for i=1, #self[group].groups do
-		self[group].groups[i]:Reset()
-		if i <= db.numGroups then
-			self[group].groups[i]:Show()
-		end
-	end
+	self[group]:AdjustVisibility()
 
 	if headerUpdate or not self[group].mover then
 		self[group]:Configure_Groups()
+		if not self[group].isForced and not self[group].blockVisibilityChanges then
+			RegisterStateDriver(self[group], "visibility", db.visibility)		
+		end
 	else
+		self[group]:Configure_Groups()
 		self[group]:Update()
 	end
 end

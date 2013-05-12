@@ -3077,6 +3077,10 @@ E.Options.args.unitframe.args.party = {
 								set = function(info, value) 
 									E.db.unitframe.units['party'][ info[#info] ] = value; 
 									UF:CreateAndUpdateHeaderGroup('party')
+									if ElvUF_Party.isForced then
+										UF:HeaderConfig(ElvUF_Party)
+										UF:HeaderConfig(ElvUF_Party, true)
+									end
 								end,
 						},
 						horizontalSpacing = {
@@ -3476,6 +3480,10 @@ for i=10, 40, 15 do
 								set = function(info, value) 
 									E.db.unitframe.units['raid'..i][ info[#info] ] = value; 
 									UF:CreateAndUpdateHeaderGroup('raid'..i)
+									if _G['ElvUF_Raid'..i].isForced then
+										UF:HeaderConfig(_G['ElvUF_Raid'..i])
+										UF:HeaderConfig(_G['ElvUF_Raid'..i], true)
+									end									
 								end,
 							},
 							horizontalSpacing = {

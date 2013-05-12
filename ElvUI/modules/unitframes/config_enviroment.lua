@@ -150,24 +150,13 @@ function UF:UnshowChildUnits(header, ...)
 	end
 end
 
-local function GetNumChildrenShown(...)
-	local num = 0
-	for i=1, select("#", ...) do
-		local frame = select(i, ...)
-		if frame:IsShown() then
-			num = num + 1
-		end
-	end
-	
-	return num
-end
-
-local function OnAttributeChanged(self, name)
+local function OnAttributeChanged(self, name, value)
 	if not self:GetParent().forceShow then return; end
 
 	local db = self:GetParent().db
 
 	local startingIndex = -4
+	
 	if self:GetAttribute("startingIndex") ~= startingIndex then
 		self:SetAttribute("startingIndex", startingIndex)
 		UF:ShowChildUnits(self, self:GetChildren())
@@ -180,45 +169,60 @@ function UF:HeaderConfig(header, configMode)
 	createConfigEnv()
 	header.forceShow = configMode
 	header.forceShowAuras = configMode
+	header.isForced = configMode
+
 	for i=1, #header.groups do
 		local group = header.groups[i]
 		local db = group.db
-		
-		group:HookScript('OnAttributeChanged', OnAttributeChanged)
+
 		group.forceShow = header.forceShow
 		group.forceShowAuras = header.forceShowAuras
+		group:HookScript("OnAttributeChanged", OnAttributeChanged)
 		if configMode then		
 			for key in pairs(attributeBlacklist) do
 				group:SetAttribute(key, nil)
 			end
-			
-			RegisterAttributeDriver(group, 'state-visibility', 'show')		
-			
+
 			OnAttributeChanged(group)
 
-			for _, func in pairs(overrideFuncs) do
+			--[[for _, func in pairs(overrideFuncs) do
 				if type(func) == 'function' then
-					originalEnvs[func] = getfenv(func)
+					originalEnvs[i] = originalEnvs[i] or {}
+					originalEnvs[i][func] = getfenv(func)
 					setfenv(func, configEnv)		
 				end
-			end
-			
+			end]]
+
 			group:Update()	
 		else
 			for key in pairs(attributeBlacklist) do
 				group:SetAttribute(key, true)
 			end	
 
+			
 			UF:UnshowChildUnits(group, group:GetChildren())
-			
-			for func, env in pairs(originalEnvs) do
-				setfenv(func, env)
-				originalEnvs[func] = nil
-			end		
-			
+			group:SetAttribute('startingIndex', 1)
+
+			--[[if i == #header.groups then
+				for func, env in pairs(originalEnvs[i]) do
+					setfenv(func, env)
+					originalEnvs[i][func] = nil
+				end		
+			end]]
+
+
 			group:Update()
 		end
 	end
+
+	header:AdjustVisibility()
+
+	if configMode then	
+		RegisterStateDriver(header, 'visibility', 'show')
+	else
+		RegisterStateDriver(header, "visibility", header.db.visibility)
+		header:GetScript("OnEvent")(header, "PLAYER_ENTERING_WORLD")
+	end	
 end
 
 function UF:PLAYER_REGEN_DISABLED()
