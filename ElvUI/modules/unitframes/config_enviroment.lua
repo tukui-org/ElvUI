@@ -171,6 +171,28 @@ function UF:HeaderConfig(header, configMode)
 	header.forceShowAuras = configMode
 	header.isForced = configMode
 
+	if configMode then	
+		for _, func in pairs(overrideFuncs) do
+			if type(func) == 'function' then
+				if not originalEnvs[func] then
+					originalEnvs[func] = getfenv(func)
+					setfenv(func, configEnv)		
+				end
+			end
+		end
+
+		RegisterStateDriver(header, 'visibility', 'show')
+
+	else
+		for func, env in pairs(originalEnvs) do
+			setfenv(func, env)
+			originalEnvs[func] = nil
+		end		
+
+		RegisterStateDriver(header, "visibility", header.db.visibility)
+		header:GetScript("OnEvent")(header, "PLAYER_ENTERING_WORLD")
+	end	
+
 	for i=1, #header.groups do
 		local group = header.groups[i]
 		local db = group.db
@@ -185,13 +207,6 @@ function UF:HeaderConfig(header, configMode)
 
 			OnAttributeChanged(group)
 
-			--[[for _, func in pairs(overrideFuncs) do
-				if type(func) == 'function' then
-					originalEnvs[i] = originalEnvs[i] or {}
-					originalEnvs[i][func] = getfenv(func)
-					setfenv(func, configEnv)		
-				end
-			end]]
 
 			group:Update()	
 		else
@@ -203,26 +218,11 @@ function UF:HeaderConfig(header, configMode)
 			UF:UnshowChildUnits(group, group:GetChildren())
 			group:SetAttribute('startingIndex', 1)
 
-			--[[if i == #header.groups then
-				for func, env in pairs(originalEnvs[i]) do
-					setfenv(func, env)
-					originalEnvs[i][func] = nil
-				end		
-			end]]
-
-
 			group:Update()
 		end
 	end
 
 	header:AdjustVisibility()
-
-	if configMode then	
-		RegisterStateDriver(header, 'visibility', 'show')
-	else
-		RegisterStateDriver(header, "visibility", header.db.visibility)
-		header:GetScript("OnEvent")(header, "PLAYER_ENTERING_WORLD")
-	end	
 end
 
 function UF:PLAYER_REGEN_DISABLED()

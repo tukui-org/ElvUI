@@ -478,15 +478,16 @@ end
 function UF.groupPrototype:Configure_Groups()
 	local db = UF.db.units[self.groupName]
 
-	local width, height = 0, 0
+	local width, height, numShown = 0, 0, 0
+	local direction = db.growthDirection
 	for i=1, #self.groups do
 		local group = self.groups[i]
 		UF:ConvertGroupDB(group)
-		local direction = db.growthDirection
 		local point = DIRECTION_TO_POINT[direction]
 		local positionOverride = DIRECTION_TO_GROUP_ANCHOR_POINT[db.startOutFromCenter and 'OUT_'..direction or direction]
 
 		if group:IsShown() then
+			numShown = numShown + 1
 			if point == "LEFT" or point == "RIGHT" then
 				group:SetAttribute("xOffset", db.horizontalSpacing * DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction])
 				group:SetAttribute("yOffset", 0)
@@ -511,9 +512,6 @@ function UF.groupPrototype:Configure_Groups()
 			group:SetAttribute("columnAnchorPoint", db.invertGroupingOrder and INVERTED_DIRECTION_TO_COLUMN_ANCHOR_POINT[direction] or DIRECTION_TO_COLUMN_ANCHOR_POINT[direction])
 			group:ClearChildPoints()
 			group:SetAttribute("point", point)	
-		
-			
-			
 
 			if not group.isForced then
 				group:SetAttribute("maxColumns", 1)
@@ -531,28 +529,38 @@ function UF.groupPrototype:Configure_Groups()
 					width = db.width
 					height = db.height + ((db.height + db.verticalSpacing) * 4)
 				elseif DIRECTION_TO_POINT[direction] == "LEFT" or DIRECTION_TO_POINT[direction] == "RIGHT" then
-					width = (db.width + db.horizontalSpacing) * 5
-					height = (db.height + db.verticalSpacing)
+					width = db.width + ((db.width + db.horizontalSpacing) * 4)
+					height = db.height
 				else
-					height = (db.height + db.verticalSpacing) * 5
-					width = (db.width + db.horizontalSpacing)
+					height = db.height + ((db.height + db.verticalSpacing) * 4)
+					width = db.width
 				end
 			else
 				local point = DIRECTION_TO_GROUP_ANCHOR_POINT[direction]
 				local xMult, yMult = DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction], DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction]
 
-
 				if db.groupStyle == 'vertical' then
+					if i == 2 then height = height + db.verticalSpacing end
 					group:SetPoint('BOTTOM', self.groups[i-1], 'TOP', 0, db.verticalSpacing)
 					height = height + ((db.height + db.verticalSpacing) * 5)
 				elseif DIRECTION_TO_POINT[direction] == "LEFT" or DIRECTION_TO_POINT[direction] == "RIGHT" then
+					if i == 2 then height = height + db.verticalSpacing end
 					group:SetPoint(point, self, point, 0, height * yMult)
 					height = height + (db.height + db.verticalSpacing)
 				else
+					if i == 2 then width = width + db.horizontalSpacing end
 					group:SetPoint(point, self, point, width * xMult, 0)
 					width = width + (db.width + db.horizontalSpacing)
 				end
 			end
+		end
+	end
+
+	if numShown > 1 then
+		if (DIRECTION_TO_POINT[direction] == "LEFT" or DIRECTION_TO_POINT[direction] == "RIGHT") or db.groupStyle == 'vertical' then
+			height = height - db.verticalSpacing
+		else
+			width = width - db.horizontalSpacing
 		end
 	end
 
