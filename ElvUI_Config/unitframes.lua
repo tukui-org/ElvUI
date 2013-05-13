@@ -3038,15 +3038,12 @@ E.Options.args.unitframe.args.party = {
 							min = 10, max = 500, step = 1,
 							set = function(info, value) E.db.unitframe.units['party'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
 						},	
-						groupStyle = {
+						spacer = {
 							order = 3,
-							name = L['Grouping Style'],
-							type = 'select',
-							values = {
-								['grid'] = L['Grid'],
-								['vertical'] = L['Vertical']
-							},
-						},
+							name = '',
+							type = 'description',
+							width = 'full',
+						},						
 						growthDirection = {
 							order = 4,
 							name = L['Growth Direction'],
@@ -3060,7 +3057,8 @@ E.Options.args.unitframe.args.party = {
 								RIGHT_DOWN = format(L['%s and then %s'], L['Right'], L['Down']),
 								RIGHT_UP = format(L['%s and then %s'], L['Right'], L['Up']),
 								LEFT_DOWN = format(L['%s and then %s'], L['Left'], L['Down']),
-								LEFT_UP = format(L['%s and then %s'], L['Left'], L['Up']),								
+								LEFT_UP = format(L['%s and then %s'], L['Left'], L['Up']),
+								UP = L['Vertical'],						
 							},
 						},
 						startOutFromCenter = {
@@ -3440,14 +3438,11 @@ for i=10, 40, 15 do
 								min = 10, max = 500, step = 1,
 								set = function(info, value) E.db.unitframe.units['raid'..i][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i) end,
 							},	
-							groupStyle = {
+							spacer = {
 								order = 3,
-								name = L['Grouping Style'],
-								type = 'select',
-								values = {
-									['grid'] = L['Grid'],
-									['vertical'] = L['Vertical']
-								},
+								name = '',
+								type = 'description',
+								width = 'full',
 							},
 							growthDirection = {
 								order = 4,
@@ -3462,7 +3457,8 @@ for i=10, 40, 15 do
 									RIGHT_DOWN = format(L['%s and then %s'], L['Right'], L['Down']),
 									RIGHT_UP = format(L['%s and then %s'], L['Right'], L['Up']),
 									LEFT_DOWN = format(L['%s and then %s'], L['Left'], L['Down']),
-									LEFT_UP = format(L['%s and then %s'], L['Left'], L['Up']),				
+									LEFT_UP = format(L['%s and then %s'], L['Left'], L['Up']),
+									UP = L['Vertical'],				
 								},
 							},
 							startOutFromCenter = {
