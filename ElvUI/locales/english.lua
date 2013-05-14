@@ -335,7 +335,7 @@ L["This will change the layout of your unitframes, raidframes, and datatexts."] 
 L["Toggle Anchors"] = true;
 L['Toggle Configuration'] = true;
 L["Unlock various elements of the UI to be repositioned."] = true;
-L["Using the healer layout it is highly recommended you download the addon Clique to work side by side with ElvUI."] = true;
+L["Using the healer layout it is highly recommended you download the addon Clique if you wish to have the click-to-heal function."] = true;
 L['Using this option will cause your borders around frames to be 1 pixel wide instead of 3 pixel. You may have to finish the installation to notice a differance. By default this is enabled.'] = true;
 L["Version"] = true;
 L["You are now finished with the installation process. If you are in need of technical support please visit us at http://www.tukui.org."] = true;

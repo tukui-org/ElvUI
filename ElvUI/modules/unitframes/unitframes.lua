@@ -62,11 +62,6 @@ UF['headerGroupBy'] = {
 		header:SetAttribute('sortMethod', 'NAME')
 		header:SetAttribute("groupBy", 'GROUP')
 	end,
-	['NAME_ENTIRE_GROUP'] = function(header)
-		header:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
-		header:SetAttribute('sortMethod', 'NAME')
-		header:SetAttribute("groupBy", nil)
-	end, 
 	['GROUP'] = function(header)
 		header:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
 		header:SetAttribute('sortMethod', 'INDEX')
@@ -98,7 +93,8 @@ local DIRECTION_TO_POINT = {
 	RIGHT_UP = "LEFT",
 	LEFT_DOWN = "RIGHT",
 	LEFT_UP = "RIGHT",
-	UP = "BOTTOM"
+	UP = "BOTTOM",
+	DOWN = "TOP"
 }
 
 
@@ -120,7 +116,9 @@ local DIRECTION_TO_GROUP_ANCHOR_POINT = {
 	LEFT_DOWN = "TOPRIGHT",
 	LEFT_UP = "BOTTOMRIGHT",
 	OUT_UP = "BOTTOMLEFT",
-	UP = "BOTTOMLEFT"
+	OUT_DOWN = "TOPLEFT",
+	UP = "BOTTOMLEFT",
+	DOWN = "TOPLEFT"
 }
 
 local DIRECTION_TO_COLUMN_ANCHOR_POINT = {
@@ -132,7 +130,8 @@ local DIRECTION_TO_COLUMN_ANCHOR_POINT = {
 	RIGHT_UP = "BOTTOM",
 	LEFT_DOWN = "TOP",
 	LEFT_UP = "BOTTOM",
-	UP = "BOTTOM"
+	UP = "BOTTOM",
+	DOWN = "TOP"
 }
 
 local INVERTED_DIRECTION_TO_COLUMN_ANCHOR_POINT = {
@@ -144,7 +143,8 @@ local INVERTED_DIRECTION_TO_COLUMN_ANCHOR_POINT = {
 	RIGHT_UP = "TOP",
 	LEFT_DOWN = "BOTTOM",
 	LEFT_UP = "TOP",
-	UP = "TOP"
+	UP = "TOP",
+	DOWN = "BOTTOM"
 }
 
 local DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER = {
@@ -157,6 +157,7 @@ local DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER = {
 	LEFT_DOWN = -1,
 	LEFT_UP = -1,
 	UP = 1,
+	DOWN = 1
 }
 
 local DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER = {
@@ -169,6 +170,7 @@ local DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER = {
 	LEFT_DOWN = -1,
 	LEFT_UP = 1,
 	UP = 1,
+	DOWN = -1
 }
 
 local find, gsub, split, format = string.find, string.gsub, string.split, string.format
@@ -532,7 +534,7 @@ function UF.groupPrototype:Configure_Groups()
 				local point = DIRECTION_TO_GROUP_ANCHOR_POINT[db.startOutFromCenter and 'OUT_'..direction or direction]
 
 				group:SetPoint(point)
-				if direction == 'UP' then
+				if direction == 'UP' or direction == 'DOWN' then
 					width = db.width
 					height = db.height + ((db.height + db.verticalSpacing) * 4)
 				elseif DIRECTION_TO_POINT[direction] == "LEFT" or DIRECTION_TO_POINT[direction] == "RIGHT" then
@@ -546,9 +548,9 @@ function UF.groupPrototype:Configure_Groups()
 				local point = DIRECTION_TO_GROUP_ANCHOR_POINT[direction]
 				local xMult, yMult = DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction], DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction]
 
-				if direction == 'UP' then
+				if direction == 'UP' or direction == 'DOWN' then
 					if i == 2 then height = height + db.verticalSpacing end
-					group:SetPoint('BOTTOM', self.groups[i-1], 'TOP', 0, db.verticalSpacing)
+					group:SetPoint(DIRECTION_TO_COLUMN_ANCHOR_POINT[direction], self.groups[i-1], INVERTED_DIRECTION_TO_COLUMN_ANCHOR_POINT[direction], 0, db.verticalSpacing * yMult)
 					height = height + ((db.height + db.verticalSpacing) * 5)
 				elseif DIRECTION_TO_POINT[direction] == "LEFT" or DIRECTION_TO_POINT[direction] == "RIGHT" then
 					if i == 2 then height = height + db.verticalSpacing end
@@ -564,7 +566,7 @@ function UF.groupPrototype:Configure_Groups()
 	end
 
 	if numShown > 1 then
-		if (DIRECTION_TO_POINT[direction] == "LEFT" or DIRECTION_TO_POINT[direction] == "RIGHT") or direction == 'UP' then
+		if (DIRECTION_TO_POINT[direction] == "LEFT" or DIRECTION_TO_POINT[direction] == "RIGHT") or direction == 'UP' or direction == 'DOWN' then
 			height = height - db.verticalSpacing
 		else
 			width = width - db.horizontalSpacing

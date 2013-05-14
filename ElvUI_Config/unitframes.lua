@@ -3058,7 +3058,8 @@ E.Options.args.unitframe.args.party = {
 								RIGHT_UP = format(L['%s and then %s'], L['Right'], L['Up']),
 								LEFT_DOWN = format(L['%s and then %s'], L['Left'], L['Down']),
 								LEFT_UP = format(L['%s and then %s'], L['Left'], L['Up']),
-								UP = L['Vertical'],						
+								UP = L['Up'],
+								DOWN = L['Down']					
 							},
 						},
 						startOutFromCenter = {
@@ -3458,7 +3459,8 @@ for i=10, 40, 15 do
 									RIGHT_UP = format(L['%s and then %s'], L['Right'], L['Up']),
 									LEFT_DOWN = format(L['%s and then %s'], L['Left'], L['Down']),
 									LEFT_UP = format(L['%s and then %s'], L['Left'], L['Up']),
-									UP = L['Vertical'],				
+									UP = L['Up'],
+									DOWN = L['Down']			
 								},
 							},
 							startOutFromCenter = {

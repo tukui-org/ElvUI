@@ -1,6 +1,7 @@
 local parent, ns = ...
 local oUF = ns.oUF
 
+local updateFrequentUpdates
 oUF.colors.power = {}
 for power, color in next, PowerBarColor do
 	if(type(power) == 'string') then
@@ -39,6 +40,10 @@ local Update = function(self, event, unit)
 	end
 
 	power.disconnected = disconnected
+	if power.frequentUpdates ~= power.__frequentUpdates then
+		power.__frequentUpdates = power.frequentUpdates
+		updateFrequentUpdates(self)
+	end
 
 	local r, g, b, t
 	if(power.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapped(unit) and not UnitIsTappedByPlayer(unit) and not UnitIsTappedByAllThreatList(unit)) then
@@ -90,17 +95,31 @@ local ForceUpdate = function(element)
 	return Path(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
+function updateFrequentUpdates(self)
+	local power = self.Power
+	if power.frequentUpdates and not self:IsEventRegistered('UNIT_POWER_FREQUENT') then
+		self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
+
+		if self:IsEventRegistered('UNIT_POWER') then
+			self:UnregisterEvent('UNIT_POWER', Path)
+		end
+	elseif not self:IsEventRegistered('UNIT_POWER') then
+		self:RegisterEvent('UNIT_POWER', Path)
+
+		if self:IsEventRegistered('UNIT_POWER_FREQUENT') then
+			self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
+		end		
+	end
+end
+
 local Enable = function(self, unit)
 	local power = self.Power
 	if(power) then
 		power.__owner = self
 		power.ForceUpdate = ForceUpdate
 
-		if(power.frequentUpdates and (unit == 'player' or unit == 'pet')) then
-			self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
-		else
-			self:RegisterEvent('UNIT_POWER', Path)
-		end
+		power.__frequentUpdates = power.frequentUpdates
+		updateFrequentUpdates(self)
 
 		self:RegisterEvent('UNIT_POWER_BAR_SHOW', Path)
 		self:RegisterEvent('UNIT_POWER_BAR_HIDE', Path)

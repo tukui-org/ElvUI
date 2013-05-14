@@ -5,6 +5,13 @@ local lower = string.lower
 E.PopupDialogs = {};
 E.StaticPopup_DisplayedFrames = {};
 
+E.PopupDialogs['CLIQUE_ADVERT'] = {
+	text = L["Using the healer layout it is highly recommended you download the addon Clique if you wish to have the click-to-heal function."],
+	button1 = YES,
+	OnAccept = E.noop,
+	showAlert = 1,
+}
+
 E.PopupDialogs["BAR6_CONFIRMATION"] = {
 	text = L["Enabling/Disabling Bar #6 will toggle a paging option from your main actionbar to prevent duplicating bars, are you sure you want to do this?"],
 	button1 = YES,
