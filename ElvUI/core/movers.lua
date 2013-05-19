@@ -131,23 +131,6 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 		else
 			self:StopMovingOrSizing()
 		end
-
-		--[[
-			okay i'm too drunk to figure this out in my head, i need to adjust this so moving a mover to the topleft topright or bottomright corners of the screen calculates the point from their respective areas
-			instead of the bottomleft always, this way moving a raid group to the topleft corner of the screen will cause the raid group to spawn to the right and down
-			
-			GetLeft(), GetTop(), GetRight(), GetBottom() all return values based on on the bottomleft corner of the screen
-			
-			top:
-				need to calculate the distance from this point to the very top of the screen then make it negative
-				-(screenHeight - 846)
-				OMG YAY IT WORKS!!! NOW LETS TRY FOR THE RIGHT SIDE
-				
-			right:
-				need to calculate the distance from this point to the far right of the screen then make it negative
-				YAY SAME FORMULAR WORKS!@!
-				
-		]]
 		
 		local screenWidth, screenHeight, screenCenter = E.UIParent:GetRight(), E.UIParent:GetTop(), E.UIParent:GetCenter()
 		local x, y = self:GetCenter()

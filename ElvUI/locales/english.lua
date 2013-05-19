@@ -27,6 +27,7 @@ L['Request was denied by user.'] = true;
 L["Lord! It's a miracle! The download up and vanished like a fart in the wind! Try Again!"] = true;
 
 --ActionBars
+L["Enabling/Disabling Bar #6 will toggle a paging option from your main actionbar to prevent duplicating bars, are you sure you want to do this?"] = true;
 L[" |cff00ff00bound to |r"] = true;
 L["Action Paging"] = true;
 L["ActionBars"] = true;
@@ -334,7 +335,7 @@ L["This will change the layout of your unitframes, raidframes, and datatexts."] 
 L["Toggle Anchors"] = true;
 L['Toggle Configuration'] = true;
 L["Unlock various elements of the UI to be repositioned."] = true;
-L["Using the healer layout it is highly recommended you download the addon Clique to work side by side with ElvUI."] = true;
+L["Using the healer layout it is highly recommended you download the addon Clique if you wish to have the click-to-heal function."] = true;
 L['Using this option will cause your borders around frames to be 1 pixel wide instead of 3 pixel. You may have to finish the installation to notice a differance. By default this is enabled.'] = true;
 L["Version"] = true;
 L["You are now finished with the installation process. If you are in need of technical support please visit us at http://www.tukui.org."] = true;
@@ -777,6 +778,7 @@ L['You can use the /resetui command to reset all of your movers. You can also us
 L['ABOVE_THREAT_FORMAT'] = '%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]'
 
 --UnitFrames
+L['Attach Text to Power'] = true;
 L['Auto-Hide'] = true;
 L['Detach From Frame'] = true;
 L['Detached Width'] = true;

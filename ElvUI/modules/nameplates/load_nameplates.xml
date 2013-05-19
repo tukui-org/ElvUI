@@ -1,4 +1,3 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">	
 	<Script file='nameplates.lua'/>
-	<Script file='nameplate_widgets.lua'/>
 </Ui>
