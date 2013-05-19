@@ -7,11 +7,11 @@ local bar = CreateFrame('Frame', 'ElvUI_StanceBar', E.UIParent, 'SecureHandlerSt
 
 function AB:StyleShapeShift()
 	local numForms = GetNumShapeshiftForms();
-	local texture, name, isActive, isCastable;
+	local texture, name, isActive, isCastable, _;
 	local buttonName, button, icon, cooldown;
 	local start, duration, enable;
 	local stance = GetShapeshiftForm();
-	
+
 	for i = 1, NUM_STANCE_SLOTS do
 		buttonName = "ElvUI_StanceBarButton"..i;
 		button = _G[buttonName];
@@ -20,8 +20,13 @@ function AB:StyleShapeShift()
 		
 		if i <= numForms then
 			texture, name, isActive, isCastable = GetShapeshiftFormInfo(i);
-			icon:SetTexture(texture);
+
+			if texture == "Interface\\Icons\\Spell_Nature_WispSplode" then
+				_, _, texture = GetSpellInfo(name)
+			end
 			
+			icon:SetTexture(texture);
+
 			if texture then
 				cooldown:SetAlpha(1);
 			else
@@ -198,7 +203,7 @@ function AB:PositionAndSizeBarShapeShift()
 			button:SetAlpha(bar.db.alpha);
 		end
 		
-		self:StyleButton(button);
+		self:StyleButton(button, nil, true);
 	end
 end
 

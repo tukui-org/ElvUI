@@ -1,6 +1,6 @@
-## Interface: 50200
+## Interface: 50300
 ## Author: Elv
-## Version: 5.99
+## Version: 6.01
 ## Title: |cff1784d1ElvUI|r
 ## Notes: User Interface replacement AddOn for World of Warcraft.
 ## SavedVariables: ElvDB, ElvPrivateDB
@@ -18,6 +18,6 @@ core\load_core.xml
 layout\load_layout.xml
 modules\load_modules.xml
  
- 
+
 ## X-Tukui-ProjectID: -2
 ## X-Tukui-ProjectFolders: ElvUI_Config, ElvUI

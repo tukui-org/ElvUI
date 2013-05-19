@@ -114,23 +114,24 @@ local function LoadSkin()
 	local function SkinItemFlyouts()
 		EquipmentFlyoutFrameButtons:StripTextures()
 
+		local i = 1
+		local button = _G["EquipmentFlyoutFrameButton"..i]
 		
-		for i=1, EQUIPMENTFLYOUT_MAXITEMS do
-			local button = _G["EquipmentFlyoutFrameButton"..i]
+		while button do
 			local icon = _G["EquipmentFlyoutFrameButton"..i.."IconTexture"]
-			if button then
-				button:StyleButton(false)
-				
-				icon:SetTexCoord(unpack(E.TexCoords))
-				button:GetNormalTexture():SetTexture(nil)
+			button:StyleButton(false)
+			
+			icon:SetTexCoord(unpack(E.TexCoords))
+			button:GetNormalTexture():SetTexture(nil)
 
-				icon:SetInside()
-				button:SetFrameLevel(button:GetFrameLevel() + 2)
-				if not button.backdrop then
-					button:CreateBackdrop("Default")
-					button.backdrop:SetAllPoints()			
-				end
+			icon:SetInside()
+			button:SetFrameLevel(button:GetFrameLevel() + 2)
+			if not button.backdrop then
+				button:CreateBackdrop("Default")
+				button.backdrop:SetAllPoints()			
 			end
+			i = i + 1
+			button = _G["EquipmentFlyoutFrameButton"..i]
 		end	
 	end
 	

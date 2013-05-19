@@ -58,12 +58,13 @@ function UF:Update_TargetFrame(frame, db)
 	local USE_INSET_POWERBAR = db.power.width == 'inset' and USE_POWERBAR
 	local USE_MINI_POWERBAR = db.power.width == 'spaced' and USE_POWERBAR
 	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR
+	local POWERBAR_DETACHED = db.power.detachFromFrame
 	local POWERBAR_OFFSET = db.power.offset
 	local POWERBAR_HEIGHT = db.power.height
-	local POWERBAR_WIDTH = db.width - (BORDER*2)
+	local POWERBAR_WIDTH = POWERBAR_DETACHED and db.power.detachedWidth or (db.width - (BORDER*2))
 	
 	local USE_COMBOBAR = db.combobar.enable
-	local USE_MINI_COMBOBAR = db.combobar.fill == "spaced" and USE_COMBOBAR and not db.combobar.DetachFromFrame
+	local USE_MINI_COMBOBAR = db.combobar.fill == "spaced" and USE_COMBOBAR and not db.combobar.detachFromFrame
 	local COMBOBAR_HEIGHT = db.combobar.height
 	local COMBOBAR_WIDTH = db.width - (BORDER*2)
 	
@@ -150,7 +151,7 @@ function UF:Update_TargetFrame(frame, db)
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER+POWERBAR_OFFSET, BORDER+POWERBAR_OFFSET)
 		elseif USE_MINI_POWERBAR then
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER + (POWERBAR_HEIGHT/2))
-		elseif USE_INSET_POWERBAR then
+		elseif USE_INSET_POWERBAR or POWERBAR_DETACHED then
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER)
 		else
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER + POWERBAR_HEIGHT)
@@ -185,8 +186,14 @@ function UF:Update_TargetFrame(frame, db)
 			--Text
 			local x, y = self:GetPositionOffset(db.power.position, 6)
 			power.value:ClearAllPoints()
-			power.value:Point(db.power.position, frame.Health, db.power.position, x + db.power.xOffset, y + db.power.yOffset)		
+			power.value:Point(db.power.position, db.power.attachTextToPower and power or frame.Health, db.power.position, x + db.power.xOffset, y + db.power.yOffset)		
 			frame:Tag(power.value, db.power.text_format)
+
+			if db.power.attachTextToPower then
+				power.value:SetParent(power)
+			else
+				power.value:SetParent(frame.RaisedElementParent)
+			end
 			
 			--Colors
 			power.colorClass = nil
@@ -201,7 +208,24 @@ function UF:Update_TargetFrame(frame, db)
 			
 			--Position
 			power:ClearAllPoints()
-			if USE_POWERBAR_OFFSET then
+
+			if POWERBAR_DETACHED then
+				power:Width(POWERBAR_WIDTH)
+				power:Height(POWERBAR_HEIGHT)				
+				if not power.mover then
+					power:ClearAllPoints()
+					power:Point("BOTTOM", frame, "BOTTOM", 0, -20)
+					E:CreateMover(power, 'TargetPowerBarMover', 'Target Powerbar', nil, nil, nil, 'ALL,SOLO')
+				else
+					power:ClearAllPoints()
+					power:SetPoint("BOTTOMLEFT", power.mover, "BOTTOMLEFT")
+					power.mover:SetScale(1)
+					power.mover:SetAlpha(1)		
+				end
+
+				power:SetFrameStrata("MEDIUM")
+				power:SetFrameLevel(frame:GetFrameLevel() + 3)
+			elseif USE_POWERBAR_OFFSET then
 				power:Point("TOPLEFT", frame.Health, "TOPLEFT", -POWERBAR_OFFSET, -POWERBAR_OFFSET)
 				power:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", -POWERBAR_OFFSET, -POWERBAR_OFFSET)
 				power:SetFrameStrata("LOW")
@@ -458,14 +482,14 @@ function UF:Update_TargetFrame(frame, db)
 			CPoints:SetParent(E.UIParent)	
 		end
 
-		if USE_MINI_COMBOBAR and not db.combobar.DetachFromFrame then
+		if USE_MINI_COMBOBAR and not db.combobar.detachFromFrame then
 			CPoints:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), -SPACING)
 			CPoints:SetFrameStrata("MEDIUM")
 			if CPoints.mover then
 				CPoints.mover:SetScale(0.000001)
 				CPoints.mover:SetAlpha(0)
 			end					
-		elseif not db.combobar.DetachFromFrame then
+		elseif not db.combobar.detachFromFrame then
 			CPoints:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, (E.PixelMode and 0 or (BORDER + SPACING)))
 			CPoints:SetFrameStrata("LOW")
 			if CPoints.mover then
@@ -473,7 +497,7 @@ function UF:Update_TargetFrame(frame, db)
 				CPoints.mover:SetAlpha(0)
 			end				
 		else
-			COMBOBAR_WIDTH = db.combobar.DetachedWidth
+			COMBOBAR_WIDTH = db.combobar.detachedWidth
 
 			if not CPoints.mover then
 				CPoints:Width(COMBOBAR_WIDTH)

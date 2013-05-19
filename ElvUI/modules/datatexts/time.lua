@@ -180,11 +180,11 @@ function Update(self, t)
 		OnEnter(self)
 	end
 	
-	--[[if GameTimeFrame.flashInvite then
+	if GameTimeFrame.flashInvite then
 		E:Flash(self, 0.53)
 	else
 		E:StopFlash(self)
-	end]]
+	end
 	
 	if int > 0 then return end
 	

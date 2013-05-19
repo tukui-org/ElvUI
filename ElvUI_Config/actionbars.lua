@@ -10,7 +10,7 @@ local points = {
 }
 
 local function BuildABConfig()
-	for i=1, 5 do
+	for i=1, 6 do
 		local name = L['Bar ']..i
 		group['bar'..i] = {
 			order = i,
@@ -26,6 +26,14 @@ local function BuildABConfig()
 					order = 1,
 					type = 'toggle',
 					name = L['Enable'],
+					set = function(info, value)
+						if i == 6 then
+							E:StaticPopup_Show("BAR6_CONFIRMATION")						
+						else
+							E.db.actionbar['bar'..i][ info[#info] ] = value; 
+							AB:PositionAndSizeBar('bar'..i)
+						end
+					end,
 				},
 				restorePosition = {
 					order = 2,

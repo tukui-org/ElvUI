@@ -5,6 +5,56 @@ local lower = string.lower
 E.PopupDialogs = {};
 E.StaticPopup_DisplayedFrames = {};
 
+E.PopupDialogs['CLIQUE_ADVERT'] = {
+	text = L["Using the healer layout it is highly recommended you download the addon Clique if you wish to have the click-to-heal function."],
+	button1 = YES,
+	OnAccept = E.noop,
+	showAlert = 1,
+}
+
+E.PopupDialogs["BAR6_CONFIRMATION"] = {
+	text = L["Enabling/Disabling Bar #6 will toggle a paging option from your main actionbar to prevent duplicating bars, are you sure you want to do this?"],
+	button1 = YES,
+	button2 = NO,
+	OnAccept = function(self)
+		if E.db.actionbar['bar6'].enabled ~= true then
+			E.db.actionbar['bar6'].enabled = true
+			E.ActionBars:UpdateBar1Paging()
+			E.ActionBars:PositionAndSizeBar('bar1')	
+			E.ActionBars:PositionAndSizeBar('bar6')	
+		else
+			E.db.actionbar['bar6'].enabled = false	
+			E.ActionBars:UpdateBar1Paging()
+			E.ActionBars:PositionAndSizeBar('bar1')	
+			E.ActionBars:PositionAndSizeBar('bar6')	
+		end
+	end,
+	OnCancel = E.noop,
+	timeout = 0,
+	whileDead = 1,
+	showAlert = 1,	
+}
+
+E.PopupDialogs["CONFIRM_LOSE_BINDING_CHANGES"] = {
+	text = CONFIRM_LOSE_BINDING_CHANGES,
+	button1 = OKAY,
+	button2 = CANCEL,
+	OnAccept = function(self)
+		E:GetModule('ActionBars'):ChangeBindingProfile()
+		E:GetModule('ActionBars').bindingsChanged = nil;
+	end,
+	OnCancel = function(self)
+		if ( ElvUIBindPopupWindowCheckButton:GetChecked() ) then
+			ElvUIBindPopupWindowCheckButton:SetChecked();
+		else
+			ElvUIBindPopupWindowCheckButton:SetChecked(1);
+		end
+	end,
+	timeout = 0,
+	whileDead = 1,
+	showAlert = 1,
+};
+
 E.PopupDialogs['TUKUI_ELVUI_INCOMPATIBLE'] = {
 	text = L['Oh lord, you have got ElvUI and Tukui both enabled at the same time. Select an addon to disable.'],
 	OnAccept = function() DisableAddOn("ElvUI"); ReloadUI() end,

@@ -28,9 +28,7 @@ local function LoadSkin()
 	S:HandleButton(WorldMapZoomOutButton)
 	
 	S:HandleCheckBox(WorldMapTrackQuest)
-	S:HandleCheckBox(WorldMapQuestShowObjectives)
-	S:HandleCheckBox(WorldMapShowDigSites)
-	
+
 	--Mini
 	local function SmallSkin()
 		WorldMapFrame.backdrop:ClearAllPoints()

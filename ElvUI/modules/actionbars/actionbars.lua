@@ -44,7 +44,13 @@ AB["barDefaults"] = {
 		['bindButtons'] = "MULTIACTIONBAR3BUTTON",
 		['conditions'] = "",
 		['position'] = "BOTTOMRIGHT,ElvUI_Bar1,BOTTOMLEFT,-3,0",
-	},	
+	},
+	["bar6"] = {
+		['page'] = 2,
+		['bindButtons'] = "ELVUIBAR6BUTTON",
+		['conditions'] = "",
+		['position'] = "BOTTOM,ElvUI_Bar2,TOP,0,2",	
+	},
 }
 
 AB.customExitButton = {
@@ -327,6 +333,12 @@ function AB:RemoveBindings()
 end
 
 function AB:UpdateBar1Paging()
+	if self.db.bar6.enabled then
+		E.ActionBars.barDefaults.bar1.conditions = format("[vehicleui] %d; [possessbar] %d; [overridebar] %d; [form,noform] 0; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;", GetVehicleBarIndex(), GetVehicleBarIndex(), GetOverrideBarIndex())
+	else
+		E.ActionBars.barDefaults.bar1.conditions = format("[vehicleui] %d; [possessbar] %d; [overridebar] %d; [form,noform] 0; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;", GetVehicleBarIndex(), GetVehicleBarIndex(), GetOverrideBarIndex())
+	end
+
 	if (E.private.actionbar.enable ~= true or InCombatLockdown()) or not self.isInitialized then return; end
 	local bar2Option = InterfaceOptionsActionBarsPanelBottomRight
 	local bar3Option = InterfaceOptionsActionBarsPanelBottomLeft
@@ -376,7 +388,7 @@ function AB:UpdateButtonSettings()
 		end
 	end
 	
-	for i=1, 5 do
+	for i=1, 6 do
 		self:PositionAndSizeBar('bar'..i)
 	end	
 	self:PositionAndSizeBarPet()
@@ -399,7 +411,7 @@ function AB:GetPage(bar, defaultPage, condition)
 	return condition
 end
 
-function AB:StyleButton(button, noBackdrop)	
+function AB:StyleButton(button, noBackdrop, adjustChecked)	
 	local name = button:GetName();
 	local icon = _G[name.."Icon"];
 	local count = _G[name.."Count"];
@@ -458,6 +470,7 @@ function AB:StyleButton(button, noBackdrop)
 	button.FlyoutUpdateFunc = AB.StyleFlyout
 	self:FixKeybindText(button);
 	button:StyleButton();
+
 	self["handledbuttons"][button] = true;
 end
 
@@ -817,8 +830,9 @@ function AB:Initialize()
 	
 	self:SetupExtraButton()
 	self:SetupMicroBar()
-	
-	for i=1, 5 do
+	self:UpdateBar1Paging()
+
+	for i=1, 6 do
 		self:CreateBar(i)
 	end
 	self:CreateBarPet()

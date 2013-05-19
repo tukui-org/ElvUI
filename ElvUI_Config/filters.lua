@@ -640,39 +640,6 @@ local function UpdateFilterGroup()
 						order = 6,
 						min = -1, max = 60, step = 1,
 					},
-					displayText = {
-						name = L['Display Text'],
-						type = 'toggle',
-						order = 5,
-					},
-					textColor = {
-						name = L['Text Color'],
-						type = 'color',
-						order = 6,
-						get = function(info)
-							local t = E.global.unitframe.buffwatch[E.myclass][tableIndex][ info[#info] ]
-							if t then
-								return t.r, t.g, t.b, t.a
-							else
-								return 1, 1, 1, 1
-							end
-						end,
-						set = function(info, r, g, b)
-							local t = E.global.unitframe.buffwatch[E.myclass][tableIndex][ info[#info] ]
-							t.r, t.g, t.b = r, g, b
-							for i=10, 40, 15 do
-								UF:UpdateAuraWatchFromHeader('raid'..i)
-							end
-							UF:UpdateAuraWatchFromHeader('party')
-						end,						
-					},					
-					textThreshold = {
-						name = L['Text Threshold'],
-						desc = L['At what point should the text be displayed. Set to -1 to disable.'],
-						type = 'range',
-						order = 6,
-						min = -1, max = 60, step = 1,
-					},
 					anyUnit = {
 						name = L['Show Aura From Other Players'],
 						order = 7,

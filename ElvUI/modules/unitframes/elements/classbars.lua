@@ -59,8 +59,8 @@ function UF:UpdateHoly(event, unit, powerType)
 		CLASSBAR_WIDTH = CLASSBAR_WIDTH * (maxHolyPower - 1) / maxHolyPower
 	end
 
-	if db.classbar.DetachFromFrame then
-		CLASSBAR_WIDTH = db.classbar.DetachedWidth
+	if db.classbar.detachFromFrame then
+		CLASSBAR_WIDTH = db.classbar.detachedWidth
 	end
 	
 	self.HolyPower:Width(CLASSBAR_WIDTH)
@@ -149,8 +149,8 @@ function UF:UpdateHarmony()
 		CLASSBAR_WIDTH = CLASSBAR_WIDTH * (maxBars - 1) / maxBars
 	end
 
-	if db.classbar.DetachFromFrame then
-		CLASSBAR_WIDTH = db.classbar.DetachedWidth
+	if db.classbar.detachFromFrame then
+		CLASSBAR_WIDTH = db.classbar.detachedWidth
 	end	
 	
 	for i=1, UF['classMaxResourceBar'][E.myclass] do
@@ -279,7 +279,7 @@ function UF:UpdateShardBar(spec)
 		end
 	end
 
-	if not db.classbar.DetachFromFrame then
+	if not db.classbar.detachFromFrame then
 		if db.classbar.fill == 'spaced' and maxBars == 1 then
 			self:ClearAllPoints()
 			self:Point("LEFT", frame.Health.backdrop, "TOPLEFT", 8, 0)
@@ -332,7 +332,7 @@ function UF:UpdateShadowOrbs(event, unit, powerType)
 	local db = frame.db
 		
 	local point, _, anchorPoint, x, y = frame.Health:GetPoint()
-	if self:IsShown() and point and not db.classbar.DetachFromFrame then
+	if self:IsShown() and point and not db.classbar.detachFromFrame then
 		if db.classbar.fill == 'spaced' then
 			frame.Health:SetPoint(point, frame, anchorPoint, x, -7)
 		else
