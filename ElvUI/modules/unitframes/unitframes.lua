@@ -464,7 +464,7 @@ function UF:HeaderUpdateSpecificElement(group, elementName)
 	end
 end
 
-function UF.groupPrototype:SetAttribute(name, value)
+function UF.groupPrototype:__SetAttribute(name, value)
 	for i=1, #self.groups do
 		local group = self.groups[i]
 		if name == "point" or name == "columnAnchorPoint" or name == "unitsPerColumn" then
