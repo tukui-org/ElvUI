@@ -464,22 +464,6 @@ function UF:HeaderUpdateSpecificElement(group, elementName)
 	end
 end
 
-function UF.groupPrototype:__SetAttribute(name, value)
-	for i=1, #self.groups do
-		local group = self.groups[i]
-		if name == "point" or name == "columnAnchorPoint" or name == "unitsPerColumn" then
-			local count = 1
-			local uframe = group:GetAttribute("child" .. count)
-			while uframe do
-				uframe:ClearAllPoints()
-				count = count + 1
-				uframe = self:GetAttribute("child" .. count)
-			end
-		end
-		group:SetAttribute(name, value)
-	end
-end
-
 function UF.groupPrototype:GetAttribute(name)
 	return self.groups[1]:GetAttribute(name)
 end
