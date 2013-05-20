@@ -665,6 +665,12 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 		self[group]:Show()
 	end
 
+	if db.enable ~= true then
+		UnregisterStateDriver(self[group], "visibility")
+		self[group]:Hide()
+		return
+	end
+
 	while db.numGroups > #self[group].groups do
 		local index = tostring(#self[group].groups + 1)
 		tinsert(self[group].groups, self:CreateHeader(self[group], index, "ElvUF_"..E:StringTitle(self[group].groupName)..'Group'..index))

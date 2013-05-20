@@ -55,9 +55,11 @@ for i=10, 40, 15 do
 		if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
 		if not InCombatLockdown() then		
 			if inInstance and instanceType == "raid" and maxPlayers == i then
-				RegisterAttributeDriver(self, 'state-visibility', "show")
+				UnregisterStateDriver(self, "visibility")
+				self:Show()
 			elseif inInstance and instanceType == "raid" then
-				RegisterAttributeDriver(self, 'state-visibility', "hide")
+				UnregisterStateDriver(self, "visibility")
+				self:Hide()
 			elseif self.db.visibility then
 				RegisterAttributeDriver(self, 'state-visibility', self.db.visibility)
 			end
