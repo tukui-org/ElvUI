@@ -3,6 +3,6 @@
 	<Script file='raid.lua'/>
 	<Script file='arena.lua'/>
 	<Script file='boss.lua'/>
-	<!--<Script file='tank.lua'/>
-	<Script file='assist.lua'/>-->
+	<Script file='tank.lua'/>
+	<Script file='assist.lua'/>
 </Ui>
