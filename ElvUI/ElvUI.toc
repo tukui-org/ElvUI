@@ -1,6 +1,6 @@
 ## Interface: 50300
 ## Author: Elv
-## Version: 6.02
+## Version: 6.03
 ## Title: |cff1784d1ElvUI|r
 ## Notes: User Interface replacement AddOn for World of Warcraft.
 ## SavedVariables: ElvDB, ElvPrivateDB
