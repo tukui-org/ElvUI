@@ -317,8 +317,7 @@ function CH:StyleChat(frame)
 		
 	--copy chat button
 	frame.button = CreateFrame('Frame', format("CopyChatButton%d", id), frame)
-	frame.button:SetAlpha(0)
-	frame.button:SetTemplate('Default', true)
+	frame.button:SetAlpha(0.35)
 	frame.button:Size(20, 22)
 	frame.button:SetPoint('TOPRIGHT')
 	
@@ -335,7 +334,14 @@ function CH:StyleChat(frame)
 	end)
 	
 	frame.button:SetScript("OnEnter", function(self) self:SetAlpha(1) end)
-	frame.button:SetScript("OnLeave", function(self) self:SetAlpha(0) end)	
+	frame.button:SetScript("OnLeave", function(self)
+		if _G[self:GetParent():GetName().."TabText"]:IsShown() then
+			self:SetAlpha(0.35)
+		else
+			self:SetAlpha(0)
+		end
+
+	end)	
 		
 	CreatedFrames = id
 	frame.styled = true
@@ -397,11 +403,18 @@ function CH:SetupChatTabs(frame, hook)
 	if not hook then
 		_G[frame:GetName().."Text"]:Show()
 		
+		if frame.owner.button and GetMouseFocus() ~= frame.owner.button then
+			frame.owner.button:SetAlpha(0.35)
+		end
 		if frame.conversationIcon then
 			frame.conversationIcon:Show()
 		end
 	elseif GetMouseFocus() ~= frame then
 		_G[frame:GetName().."Text"]:Hide()
+
+		if frame.owner.button and GetMouseFocus() ~= frame.owner.button then
+			frame.owner.button:SetAlpha(0)
+		end
 		
 		if frame.conversationIcon then 
 			frame.conversationIcon:Hide()
@@ -462,7 +475,7 @@ function CH:PositionChat(override)
 		point = GetChatWindowSavedPosition(id)
 		isDocked = chat.isDocked
 		tab.isDocked = chat.isDocked
-		
+		tab.owner = chat
 		if id > NUM_CHAT_WINDOWS then
 			point = point or select(1, chat:GetPoint());
 			if select(2, tab:GetPoint()):GetName() ~= bg then
@@ -1683,6 +1696,7 @@ function CH:Initialize()
 	editBox:SetFontObject(ChatFontNormal)
 	editBox:Width(scrollArea:GetWidth())
 	editBox:Height(200)
+	editBox:SetScript("OnEscapePressed", function() CopyChatFrame:Hide() end)
 	scrollArea:SetScrollChild(editBox)
 	
 
@@ -1698,12 +1712,6 @@ function CH:Initialize()
 	InterfaceOptionsSocialPanelTimestampsButton:SetScale(0.000001)
 	InterfaceOptionsSocialPanelTimestamps:SetAlpha(0)
 	InterfaceOptionsSocialPanelTimestamps:SetScale(0.000001)
-	--[[InterfaceOptionsSocialPanelWhisperMode:SetScale(0.000001)
-	InterfaceOptionsSocialPanelWhisperMode:SetAlpha(0)
-	InterfaceOptionsSocialPanelBnWhisperMode:SetScale(0.000001)
-	InterfaceOptionsSocialPanelBnWhisperMode:SetAlpha(0)
-	InterfaceOptionsSocialPanelConversationMode:SetScale(0.000001)
-	InterfaceOptionsSocialPanelConversationMode:SetAlpha(0)]]
 	
 	InterfaceOptionsSocialPanelChatStyle:EnableMouse(false)
 	InterfaceOptionsSocialPanelChatStyleButton:Hide()
@@ -1711,20 +1719,6 @@ function CH:Initialize()
 
  	CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Size(20, 22)
  	CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Point("TOPRIGHT", CombatLogQuickButtonFrame_Custom, "TOPRIGHT", 0, -1)
-	
-	--[[if GetCVar("conversationMode") ~= "inline" then
-		SetCVar("conversationMode", "inline")
-	end
-
-	for cvar, _ in pairs(cvars) do
-		if GetCVar(cvar) ~= "inline" then
-			SetCVar(cvar, "inline")
-		end
-	end
-	
-	if GetCVar("showTimestamps") ~= "none" then
-		SetCVar("showTimestamps", "none")
-	end]]
 end
 
 E:RegisterModule(CH:GetName())

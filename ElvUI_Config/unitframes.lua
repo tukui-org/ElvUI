@@ -57,7 +57,6 @@ local auraBarsSortValues = {
 	['NONE'] = NONE,
 }
 
-
 -----------------------------------------------------------------------
 -- OPTIONS TABLES
 -----------------------------------------------------------------------
@@ -1067,7 +1066,7 @@ local function GetOptionsTable_Portrait(updateFunc, groupName, numUnits)
 	return config
 end
 
-local function GetOptionsTable_Power(updateFunc, groupName, numUnits)
+local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, numUnits)
 	local config = {
 		order = 200,
 		type = 'group',
@@ -1177,9 +1176,28 @@ local function GetOptionsTable_Power(updateFunc, groupName, numUnits)
 				name = L['Text Position'],
 				values = positionValues,
 			},		
-		
 		},
 	}
+
+	if hasDetatchOption then
+			config.args.attachTextToPower = {
+				type = 'toggle',
+				order = 9,
+				name = L['Attach Text to Power'],
+			}		
+			config.args.detachFromFrame = {
+				type = 'toggle',
+				order = 10,
+				name = L['Detach From Frame'],
+			}
+			config.args.detachedWidth = {
+				type = 'range',
+				order = 11,
+				name = L['Detached Width'],
+				disabled = function() return not E.db.unitframe.units[groupName].power.detachFromFrame end,
+				min = 15, max = 450, step = 1,
+			}
+	end
 	
 	return config
 end
@@ -1919,7 +1937,7 @@ E.Options.args.unitframe.args.player = {
 		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'player'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'player'),
-		power = GetOptionsTable_Power(UF.CreateAndUpdateUF, 'player'),	
+		power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'player'),	
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'player'),	
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'player'),
 		buffs = GetOptionsTable_Auras(true, 'buffs', false, UF.CreateAndUpdateUF, 'player'),
@@ -1954,16 +1972,16 @@ E.Options.args.unitframe.args.player = {
 						['spaced'] = L['Spaced'],
 					},
 				},		
-				DetachFromFrame = {
+				detachFromFrame = {
 					type = 'toggle',
 					order = 4,
 					name = L['Detach From Frame'],
 				},	
-				DetachedWidth = {
+				detachedWidth = {
 					type = 'range',
 					order = 5,
 					name = L['Detached Width'],
-					disabled = function() return not E.db.unitframe.units['player']['classbar'].DetachFromFrame end,
+					disabled = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
 					min = 15, max = 450, step = 1,
 				},
 			},
@@ -2153,23 +2171,23 @@ E.Options.args.unitframe.args.target = {
 					name = L['Auto-Hide'],
 					order = 4,
 				},		
-				DetachFromFrame = {
+				detachFromFrame = {
 					type = 'toggle',
 					order = 5,
 					name = L['Detach From Frame'],
 				},	
-				DetachedWidth = {
+				detachedWidth = {
 					type = 'range',
 					order = 6,
 					name = L['Detached Width'],
-					disabled = function() return not E.db.unitframe.units['target']['combobar'].DetachFromFrame end,
+					disabled = function() return not E.db.unitframe.units['target']['combobar'].detachFromFrame end,
 					min = 15, max = 450, step = 1,
 				},				
 			},
 		},	
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'target'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'target'),
-		power = GetOptionsTable_Power(UF.CreateAndUpdateUF, 'target'),	
+		power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'target'),	
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'target'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'target'),
 		buffs = GetOptionsTable_Auras(false, 'buffs', false, UF.CreateAndUpdateUF, 'target'),
@@ -2257,7 +2275,7 @@ E.Options.args.unitframe.args.targettarget = {
 		},		
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'targettarget'),		
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'targettarget'),
-		power = GetOptionsTable_Power(UF.CreateAndUpdateUF, 'targettarget'),	
+		power = GetOptionsTable_Power(nil, UF.CreateAndUpdateUF, 'targettarget'),	
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'targettarget'),
 		buffs = GetOptionsTable_Auras(false, 'buffs', false, UF.CreateAndUpdateUF, 'targettarget'),
 		debuffs = GetOptionsTable_Auras(false, 'debuffs', false, UF.CreateAndUpdateUF, 'targettarget'),
@@ -2359,7 +2377,7 @@ E.Options.args.unitframe.args.focus = {
 		},		
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'focus'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'focus'),
-		power = GetOptionsTable_Power(UF.CreateAndUpdateUF, 'focus'),	
+		power = GetOptionsTable_Power(nil, UF.CreateAndUpdateUF, 'focus'),	
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'focus'),
 		buffs = GetOptionsTable_Auras(false, 'buffs', false, UF.CreateAndUpdateUF, 'focus'),
 		debuffs = GetOptionsTable_Auras(false, 'debuffs', false, UF.CreateAndUpdateUF, 'focus'),
@@ -2446,7 +2464,7 @@ E.Options.args.unitframe.args.focustarget = {
 		},		
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'focustarget'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'focustarget'),
-		power = GetOptionsTable_Power(UF.CreateAndUpdateUF, 'focustarget'),	
+		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUF, 'focustarget'),	
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'focustarget'),
 		buffs = GetOptionsTable_Auras(false, 'buffs', false, UF.CreateAndUpdateUF, 'focustarget'),
 		debuffs = GetOptionsTable_Auras(false, 'debuffs', false, UF.CreateAndUpdateUF, 'focustarget'),
@@ -2564,7 +2582,7 @@ E.Options.args.unitframe.args.pet = {
 		},	
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'pet'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'pet'),
-		power = GetOptionsTable_Power(UF.CreateAndUpdateUF, 'pet'),	
+		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUF, 'pet'),	
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'pet'),
 		buffs = GetOptionsTable_Auras(true, 'buffs', false, UF.CreateAndUpdateUF, 'pet'),
 		debuffs = GetOptionsTable_Auras(true, 'debuffs', false, UF.CreateAndUpdateUF, 'pet'),		
@@ -2648,7 +2666,7 @@ E.Options.args.unitframe.args.pettarget = {
 		},			
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'pettarget'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'pettarget'),
-		power = GetOptionsTable_Power(UF.CreateAndUpdateUF, 'pettarget'),	
+		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUF, 'pettarget'),	
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'pettarget'),
 		buffs = GetOptionsTable_Auras(false, 'buffs', false, UF.CreateAndUpdateUF, 'pettarget'),
 		debuffs = GetOptionsTable_Auras(false, 'debuffs', false, UF.CreateAndUpdateUF, 'pettarget'),
@@ -2744,7 +2762,7 @@ E.Options.args.unitframe.args.boss = {
 		},			
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
-		power = GetOptionsTable_Power(UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),		
+		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),		
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),	
 		buffs = GetOptionsTable_Auras(true, 'buffs', false, UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
@@ -2901,7 +2919,7 @@ E.Options.args.unitframe.args.arena = {
 		},		
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUFGroup, 'arena', 5),		
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUFGroup, 'arena', 5),
-		power = GetOptionsTable_Power(UF.CreateAndUpdateUFGroup, 'arena', 5),	
+		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUFGroup, 'arena', 5),	
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUFGroup, 'arena', 5),
 		buffs = GetOptionsTable_Auras(false, 'buffs', false, UF.CreateAndUpdateUFGroup, 'arena', 5),
 		debuffs = GetOptionsTable_Auras(false, 'debuffs', false, UF.CreateAndUpdateUFGroup, 'arena', 5),
@@ -3025,7 +3043,7 @@ E.Options.args.unitframe.args.party = {
 							name = '',
 							type = 'description',
 							width = 'full',
-						},
+						},						
 						growthDirection = {
 							order = 4,
 							name = L['Growth Direction'],
@@ -3039,7 +3057,9 @@ E.Options.args.unitframe.args.party = {
 								RIGHT_DOWN = format(L['%s and then %s'], L['Right'], L['Down']),
 								RIGHT_UP = format(L['%s and then %s'], L['Right'], L['Up']),
 								LEFT_DOWN = format(L['%s and then %s'], L['Left'], L['Down']),
-								LEFT_UP = format(L['%s and then %s'], L['Left'], L['Up']),								
+								LEFT_UP = format(L['%s and then %s'], L['Left'], L['Up']),
+								UP = L['Up'],
+								DOWN = L['Down']					
 							},
 						},
 						startOutFromCenter = {
@@ -3048,26 +3068,19 @@ E.Options.args.unitframe.args.party = {
 							desc = L['The initial group will start near the center and grow out. Corrosponding groups will behave normally.'],
 							type = 'toggle',
 						},
-						invertGroupingOrder = {
-							order = 6,
-							name = L['Invert Grouping Order'],
-							desc = L['Reverses the grouping order. For example if your group is to grow right than up by default the first group is always at the bottom. With this option set then the first group will start at the bottom but as the number of groups grow it will always be near the top.'],
-							type = 'toggle',
-						},
 						numGroups = {
 							order = 7,
 							type = 'range',
 							name = L['Number of Groups'],
 							min = 1, max = 8, step = 1,
-							set = function(info, value) E.db.unitframe.units['party'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
-						},
-						unitsPerGroup = {
-							order = 8,
-							type = 'range',
-							name = L['Group Size'],
-							desc = L['Number of units in a group.'],
-							min = 1, max = 40, step = 1,
-							set = function(info, value) E.db.unitframe.units['party'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
+								set = function(info, value) 
+									E.db.unitframe.units['party'][ info[#info] ] = value; 
+									UF:CreateAndUpdateHeaderGroup('party')
+									if ElvUF_Party.isForced then
+										UF:HeaderConfig(ElvUF_Party)
+										UF:HeaderConfig(ElvUF_Party, true)
+									end
+								end,
 						},
 						horizontalSpacing = {
 							order = 9,
@@ -3122,7 +3135,6 @@ E.Options.args.unitframe.args.party = {
 								['CLASS'] = CLASS,
 								['ROLE'] = ROLE,
 								['NAME'] = NAME,
-								['NAME_ENTIRE_GROUP'] = L['Name (Entire Group)'],
 								['MTMA'] = L['Main Tanks / Main Assist'],
 								['GROUP'] = GROUP,
 							},
@@ -3218,7 +3230,7 @@ E.Options.args.unitframe.args.party = {
 			},
 		},		
 		health = GetOptionsTable_Health(true, UF.CreateAndUpdateHeaderGroup, 'party'),
-		power = GetOptionsTable_Power(UF.CreateAndUpdateHeaderGroup, 'party'),	
+		power = GetOptionsTable_Power(false, UF.CreateAndUpdateHeaderGroup, 'party'),	
 		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'party'),
 		buffs = GetOptionsTable_Auras(true, 'buffs', true, UF.CreateAndUpdateHeaderGroup, 'party'),
 		debuffs = GetOptionsTable_Auras(true, 'debuffs', true, UF.CreateAndUpdateHeaderGroup, 'party'),		
@@ -3446,7 +3458,9 @@ for i=10, 40, 15 do
 									RIGHT_DOWN = format(L['%s and then %s'], L['Right'], L['Down']),
 									RIGHT_UP = format(L['%s and then %s'], L['Right'], L['Up']),
 									LEFT_DOWN = format(L['%s and then %s'], L['Left'], L['Down']),
-									LEFT_UP = format(L['%s and then %s'], L['Left'], L['Up']),				
+									LEFT_UP = format(L['%s and then %s'], L['Left'], L['Up']),
+									UP = L['Up'],
+									DOWN = L['Down']			
 								},
 							},
 							startOutFromCenter = {
@@ -3454,27 +3468,20 @@ for i=10, 40, 15 do
 								name = L['Start near Center'],
 								desc = L['The initial group will start near the center and grow out. Corrosponding groups will behave normally.'],
 								type = 'toggle',
-							},	
-							invertGroupingOrder = {
-								order = 6,
-								name = L['Invert Grouping Order'],
-								desc = L['Reverses the grouping order. For example if your group is to grow right than up by default the first group is always at the bottom. With this option set then the first group will start at the bottom but as the number of groups grow it will always be near the top.'],
-								type = 'toggle',
-							},										
+							},									
 							numGroups = {
 								order = 7,
 								type = 'range',
 								name = L['Number of Groups'],
 								min = 1, max = 8, step = 1,
-								set = function(info, value) E.db.unitframe.units['raid'..i][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i) end,
-							},
-							unitsPerGroup = {
-								order = 8,
-								type = 'range',
-								name = L['Group Size'],
-								desc = L['Number of units in a group.'],
-								min = 1, max = 40, step = 1,
-								set = function(info, value) E.db.unitframe.units['raid'..i][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i) end,
+								set = function(info, value) 
+									E.db.unitframe.units['raid'..i][ info[#info] ] = value; 
+									UF:CreateAndUpdateHeaderGroup('raid'..i)
+									if _G['ElvUF_Raid'..i].isForced then
+										UF:HeaderConfig(_G['ElvUF_Raid'..i])
+										UF:HeaderConfig(_G['ElvUF_Raid'..i], true)
+									end									
+								end,
 							},
 							horizontalSpacing = {
 								order = 9,
@@ -3529,7 +3536,6 @@ for i=10, 40, 15 do
 									['CLASS'] = CLASS,
 									['ROLE'] = ROLE,
 									['NAME'] = NAME,
-									['NAME_ENTIRE_GROUP'] = L['Name (Entire Group)'],
 									['MTMA'] = L['Main Tanks / Main Assist'],
 									['GROUP'] = GROUP,
 								},
@@ -3549,7 +3555,7 @@ for i=10, 40, 15 do
 				},
 			},	
 			health = GetOptionsTable_Health(true, UF.CreateAndUpdateHeaderGroup, 'raid'..i),
-			power = GetOptionsTable_Power(UF.CreateAndUpdateHeaderGroup, 'raid'..i),	
+			power = GetOptionsTable_Power(false, UF.CreateAndUpdateHeaderGroup, 'raid'..i),	
 			name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'raid'..i),
 			buffs = GetOptionsTable_Auras(true, 'buffs', true, UF.CreateAndUpdateHeaderGroup, 'raid'..i),
 			debuffs = GetOptionsTable_Auras(true, 'debuffs', true, UF.CreateAndUpdateHeaderGroup, 'raid'..i),

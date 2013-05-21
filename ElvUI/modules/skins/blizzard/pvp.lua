@@ -58,11 +58,38 @@ local function LoadSkin()
 	HonorFrame.BonusFrame.CallToArmsButton:StyleButton(nil, true)
 	HonorFrame.BonusFrame.CallToArmsButton.SelectedTexture:SetInside()
 	HonorFrame.BonusFrame.CallToArmsButton.SelectedTexture:SetTexture(1, 1, 0, 0.1)
-	HonorFrame.BonusFrame.CallToArmsButton:ClearAllPoints()
-	HonorFrame.BonusFrame.CallToArmsButton:SetPoint("TOP", HonorFrame.BonusFrame.RandomBGButton, "BOTTOM", 0, -E.Border)
 
 	HonorFrame.BonusFrame.DiceButton:DisableDrawLayer("ARTWORK")
 	HonorFrame.BonusFrame.DiceButton:SetHighlightTexture("")
+
+	HonorFrame.RoleInset:StripTextures()
+	S:HandleCheckBox(HonorFrame.RoleInset.DPSIcon.checkButton, true)
+	S:HandleCheckBox(HonorFrame.RoleInset.TankIcon.checkButton, true)
+	S:HandleCheckBox(HonorFrame.RoleInset.HealerIcon.checkButton, true)
+	
+	HonorFrame.RoleInset.TankIcon:GetNormalTexture():SetAlpha(0)
+	HonorFrame.RoleInset.TankIcon.background = HonorFrame.RoleInset.TankIcon:CreateTexture(nil, 'BACKGROUND')
+	HonorFrame.RoleInset.TankIcon.background:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+	HonorFrame.RoleInset.TankIcon.background:SetTexCoord(LFDQueueFrameRoleButtonTank.background:GetTexCoord())
+	HonorFrame.RoleInset.TankIcon.background:SetPoint('CENTER')
+	HonorFrame.RoleInset.TankIcon.background:Size(80)
+	HonorFrame.RoleInset.TankIcon.background:SetAlpha(0.5)
+
+	HonorFrame.RoleInset.HealerIcon:GetNormalTexture():SetAlpha(0)
+	HonorFrame.RoleInset.HealerIcon.background = HonorFrame.RoleInset.HealerIcon:CreateTexture(nil, 'BACKGROUND')
+	HonorFrame.RoleInset.HealerIcon.background:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+	HonorFrame.RoleInset.HealerIcon.background:SetTexCoord(LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
+	HonorFrame.RoleInset.HealerIcon.background:SetPoint('CENTER')
+	HonorFrame.RoleInset.HealerIcon.background:Size(80)
+	HonorFrame.RoleInset.HealerIcon.background:SetAlpha(0.5)
+
+	HonorFrame.RoleInset.DPSIcon:GetNormalTexture():SetAlpha(0)
+	HonorFrame.RoleInset.DPSIcon.background = HonorFrame.RoleInset.DPSIcon:CreateTexture(nil, 'BACKGROUND')
+	HonorFrame.RoleInset.DPSIcon.background:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+	HonorFrame.RoleInset.DPSIcon.background:SetTexCoord(LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
+	HonorFrame.RoleInset.DPSIcon.background:SetPoint('CENTER')
+	HonorFrame.RoleInset.DPSIcon.background:Size(80)
+	HonorFrame.RoleInset.DPSIcon.background:SetAlpha(0.5)
 
 	for i = 1, 2 do
 		local b = HonorFrame.BonusFrame["WorldPVP"..i.."Button"]
@@ -71,17 +98,11 @@ local function LoadSkin()
 		b:StyleButton(nil, true)
 		b.SelectedTexture:SetInside()
 		b.SelectedTexture:SetTexture(1, 1, 0, 0.1)
-
-		if i == 2 then
-			b:ClearAllPoints()
-			b:SetPoint("TOP", HonorFrame.BonusFrame["WorldPVP"..(i-1).."Button"], "BOTTOM", 0, -E.Border)
-		end
 	end
 
 
 	-->>>CONQUEST FRAME
 	ConquestFrame.Inset:StripTextures()
-	--ConquestFrame.Inset:SetTemplate("Transparent")
 	
 	--CapProgressBar_Update(ConquestFrame.ConquestBar, 0, 0, nil, nil, 1000, 2200);
 	ConquestPointsBarLeft:Kill()

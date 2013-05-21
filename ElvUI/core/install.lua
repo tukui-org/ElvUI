@@ -400,7 +400,7 @@ function E:SetupLayout(layout, noDataReset)
 	
 	if layout == 'healer' then
 		if not IsAddOnLoaded('Clique') then
-			E:Print(L['Using the healer layout it is highly recommended you download the addon Clique to work side by side with ElvUI.'])
+			E:StaticPopup_Show("CLIQUE_ADVERT")
 		end
 		
 		if not noDataReset then

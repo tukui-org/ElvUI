@@ -6,22 +6,6 @@ local format = string.format
 
 
 local LSM = LibStub("LibSharedMedia-3.0");
-
-function UF:SpawnMenu()
-	local unit = E:StringTitle(self.unit)
-	if self.unit:find("targettarget") then return; end
-	if _G[unit.."FrameDropDown"] then
-		ToggleDropDownMenu(1, nil, _G[unit.."FrameDropDown"], "cursor")
-	elseif (self.unit:match("party")) then
-		ToggleDropDownMenu(1, nil, _G["PartyMemberFrame"..self.id.."DropDown"], "cursor")
-	else
-		FriendsDropDown.unit = self.unit
-		FriendsDropDown.id = self.id
-		FriendsDropDown.initialize = RaidFrameDropDown_Initialize
-		ToggleDropDownMenu(1, nil, FriendsDropDown, "cursor")
-	end
-end
-
 function UF:Construct_TargetGlow(frame)
 	frame:CreateShadow('Default')
 	local x = frame.shadow
@@ -309,7 +293,7 @@ function UF:UpdateComboDisplay(event, unit)
 	local SPACING = E.Spacing;
 	local db = E.db['unitframe']['units'].target
 	local USE_COMBOBAR = db.combobar.enable
-	local USE_MINI_COMBOBAR = db.combobar.fill == "spaced" and USE_COMBOBAR and not db.combobar.DetachFromFrame
+	local USE_MINI_COMBOBAR = db.combobar.fill == "spaced" and USE_COMBOBAR and not db.combobar.detachFromFrame
 	local COMBOBAR_HEIGHT = db.combobar.height
 	local USE_PORTRAIT = db.portrait.enable
 	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
@@ -320,7 +304,7 @@ function UF:UpdateComboDisplay(event, unit)
 		PORTRAIT_WIDTH = 0
 	end
 
-	if db.combobar.DetachFromFrame then
+	if db.combobar.detachFromFrame then
 		COMBOBAR_HEIGHT = 0
 	end	
 	

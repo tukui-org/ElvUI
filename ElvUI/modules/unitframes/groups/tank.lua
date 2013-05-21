@@ -8,8 +8,6 @@ local tinsert = table.insert
 function UF:Construct_TankFrames(unitGroup)
 	self:SetScript('OnEnter', UnitFrame_OnEnter)
 	self:SetScript('OnLeave', UnitFrame_OnLeave)	
-	
-	self.menu = UF.SpawnMenu
 
 	self.Health = UF:Construct_HealthBar(self, true)
 	self.Name = UF:Construct_NameText(self)

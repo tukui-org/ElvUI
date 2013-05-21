@@ -19,7 +19,6 @@ function UF:Construct_PartyFrames(unitGroup)
 		self.Name = UF:Construct_NameText(self)
 		self.originalParent = self:GetParent()
 	else
-		self.menu = UF.SpawnMenu
 		
 		self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
 
@@ -57,39 +56,33 @@ end
 function UF:Update_PartyHeader(header, db)	
 	header.db = db
 
-	UF['headerGroupBy'][db.groupBy](header)
-	header:SetAttribute('sortDir', db.sortDir)
-	header:SetAttribute("showPlayer", db.showPlayer)
-	
-	local positionOverride = UF:SetupGroupAnchorPoints(header)
-	if not header.positioned then
-		header:ClearAllPoints()
-		header:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)
+	local headerHolder = header:GetParent()
+	headerHolder.db = db
+	if not headerHolder.positioned then
+		headerHolder:ClearAllPoints()
+		headerHolder:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)
 		
-		E:CreateMover(header, header:GetName()..'Mover', L['Party Frames'], nil, nil, nil, 'ALL,PARTY,ARENA')
-		header.mover.positionOverride = positionOverride
-		
-		header:SetAttribute('minHeight', header.dirtyHeight)
-		header:SetAttribute('minWidth', header.dirtyWidth)
-	
-		header:RegisterEvent("PLAYER_ENTERING_WORLD")
-		header:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-		header:HookScript("OnEvent", UF.PartySmartVisibility)		
-		header.positioned = true;
+		E:CreateMover(headerHolder, headerHolder:GetName()..'Mover', L['Party Frames'], nil, nil, nil, 'ALL,PARTY,ARENA')
+		headerHolder.positioned = true;
+
+		headerHolder:RegisterEvent("PLAYER_ENTERING_WORLD")
+		headerHolder:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+		headerHolder:SetScript("OnEvent", UF['PartySmartVisibility'])		
 	end
 
-	UF.PartySmartVisibility(header)
+	UF.PartySmartVisibility(headerHolder)	
 end
 
 function UF:PartySmartVisibility(event)
-	if not self.db or not self.SetAttribute or (self.db and not self.db.enable) or (UF.db and not UF.db.smartRaidFilter) or self.isForced then return; end
+	if not self.db or (self.db and not self.db.enable) or (UF.db and not UF.db.smartRaidFilter) or self.isForced then return; end
 	local inInstance, instanceType = IsInInstance()
 	if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
 	if not InCombatLockdown() then		
 		if inInstance and instanceType == "raid" then
-			RegisterAttributeDriver(self, 'state-visibility', 'hide')
+			UnregisterStateDriver(self, "visibility")
+			self:Hide()
 		elseif self.db.visibility then
-			RegisterAttributeDriver(self, 'state-visibility', self.db.visibility)
+			RegisterStateDriver(self, "visibility", self.db.visibility)
 		end
 	else
 		self:RegisterEvent("PLAYER_REGEN_ENABLED")

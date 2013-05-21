@@ -9,8 +9,7 @@ for i=10, 40, 15 do
 	UF['Construct_Raid'..i..'Frames'] = function (self, unitGroup)
 		self:SetScript('OnEnter', UnitFrame_OnEnter)
 		self:SetScript('OnLeave', UnitFrame_OnLeave)	
-		
-		self.menu = UF.SpawnMenu
+
 
 		self.RaisedElementParent = CreateFrame('Frame', nil, self)
 		self.RaisedElementParent:SetFrameStrata("MEDIUM")
@@ -50,15 +49,17 @@ for i=10, 40, 15 do
 	end
 
 	UF['Raid'..i..'SmartVisibility'] = function (self, event)	
-		if not self.db or not self.SetAttribute or (self.db and not self.db.enable) or (UF.db and not UF.db.smartRaidFilter) or self.isForced then return; end
+		if not self.db or (self.db and not self.db.enable) or (UF.db and not UF.db.smartRaidFilter) or self.isForced then return; end
 		local inInstance, instanceType = IsInInstance()
 		local _, _, _, _, maxPlayers, _, _ = GetInstanceInfo()
 		if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
 		if not InCombatLockdown() then		
 			if inInstance and instanceType == "raid" and maxPlayers == i then
-				RegisterAttributeDriver(self, 'state-visibility', 'show')
+				UnregisterStateDriver(self, "visibility")
+				self:Show()
 			elseif inInstance and instanceType == "raid" then
-				RegisterAttributeDriver(self, 'state-visibility', 'hide')
+				UnregisterStateDriver(self, "visibility")
+				self:Hide()
 			elseif self.db.visibility then
 				RegisterAttributeDriver(self, 'state-visibility', self.db.visibility)
 			end
@@ -69,29 +70,22 @@ for i=10, 40, 15 do
 	end
 
 	UF['Update_Raid'..i..'Header'] = function (self, header, db)
-		header.db = db
+		header:GetParent().db = db
 
-		UF['headerGroupBy'][db.groupBy](header)
-		header:SetAttribute('sortDir', db.sortDir)
-		header:SetAttribute("showPlayer", db.showPlayer)
-		
-		local positionOverride = UF:SetupGroupAnchorPoints(header)
-		if not header.positioned then
-			header:ClearAllPoints()
-			header:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)	
-			E:CreateMover(header, header:GetName()..'Mover', L['Raid 1-']..i..L[' Frames'], nil, nil, nil, 'ALL,RAID'..i)
-			header.mover.positionOverride = positionOverride
-			
-			header:SetAttribute('minHeight', header.dirtyHeight)
-			header:SetAttribute('minWidth', header.dirtyWidth)
-			
-			header:RegisterEvent("PLAYER_ENTERING_WORLD")
-			header:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-			header:HookScript("OnEvent", UF['Raid'..i..'SmartVisibility'])
-			header.positioned = true;
+		local headerHolder = header:GetParent()
+		if not headerHolder.positioned then
+			headerHolder:ClearAllPoints()
+			headerHolder:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)	
+
+			E:CreateMover(headerHolder, headerHolder:GetName()..'Mover', L['Raid 1-']..i..L[' Frames'], nil, nil, nil, 'ALL,RAID'..i)
+
+			headerHolder:RegisterEvent("PLAYER_ENTERING_WORLD")
+			headerHolder:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+			headerHolder:SetScript("OnEvent", UF['Raid'..i..'SmartVisibility'])
+			headerHolder.positioned = true;
 		end
 				
-		UF['Raid'..i..'SmartVisibility'](header)
+		UF['Raid'..i..'SmartVisibility'](headerHolder)
 	end
 
 	UF['Update_Raid'..i..'Frames'] = function (self, frame, db)

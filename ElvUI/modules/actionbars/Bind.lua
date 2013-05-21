@@ -7,7 +7,7 @@ local _G = getfenv(0);
 
 function AB:ActivateBindMode()
 	bind.active = true;
-	E:StaticPopup_Show("KEYBIND_MODE");
+	E:StaticPopupSpecial_Show(ElvUIBindPopupWindow)
 	AB:RegisterEvent('PLAYER_REGEN_DISABLED', 'DeactivateBindMode', false);
 end
 
@@ -22,7 +22,8 @@ function AB:DeactivateBindMode(save)
 	bind.active = false;
 	self:BindHide();
 	self:UnregisterEvent("PLAYER_REGEN_DISABLED");
-	StaticPopup_Hide("KEYBIND_MODE");
+	E:StaticPopupSpecial_Hide(ElvUIBindPopupWindow)
+	AB.bindingsChanged = false
 end
 
 function AB:BindHide()
@@ -32,6 +33,7 @@ function AB:BindHide()
 end
 
 function AB:BindListener(key)
+	AB.bindingsChanged = true
 	if key == "ESCAPE" or key == "RightButton" then
 		for i = 1, #bind.button.bindings do
 			SetBinding(bind.button.bindings[i]);
@@ -288,6 +290,16 @@ function AB:RegisterMacro(addon)
 	end
 end
 
+function AB:ChangeBindingProfile()
+	if ( ElvUIBindPopupWindowCheckButton:GetChecked() ) then
+		LoadBindings(2);
+		SaveBindings(2);
+	else
+		LoadBindings(1);
+		SaveBindings(1);
+	end
+end
+
 function AB:LoadKeyBinder()
 	bind:SetFrameStrata("DIALOG");
 	bind:SetFrameLevel(99)
@@ -331,4 +343,87 @@ function AB:LoadKeyBinder()
 	
 	self:SecureHook("ActionButton_UpdateFlyout", "UpdateFlyouts")
 	self:UpdateFlyouts()
+
+	--Special Popup
+	local f = CreateFrame("Frame", "ElvUIBindPopupWindow", UIParent)
+	f:SetFrameStrata("DIALOG")
+	f:SetToplevel(true)
+	f:EnableMouse(true)
+	f:SetMovable(true)
+	f:SetFrameLevel(99)
+	f:SetClampedToScreen(true)
+	f:SetWidth(360)
+	f:SetHeight(130)
+	f:SetTemplate('Transparent')
+	f:Hide()
+
+	local header = CreateFrame('Button', nil, f)
+	header:SetTemplate('Default', true)
+	header:SetWidth(100); header:SetHeight(25)
+	header:SetPoint("CENTER", f, 'TOP')
+	header:SetFrameLevel(header:GetFrameLevel() + 2)
+	header:EnableMouse(true)
+	header:RegisterForClicks('AnyUp', 'AnyDown')
+	header:SetScript('OnMouseDown', function() f:StartMoving() end)
+	header:SetScript('OnMouseUp', function() f:StopMovingOrSizing() end)
+	
+	local title = header:CreateFontString("OVERLAY")
+	title:FontTemplate()
+	title:SetPoint("CENTER", header, "CENTER")
+	title:SetText('Key Binds')
+		
+	local desc = f:CreateFontString("ARTWORK")
+	desc:SetFontObject("GameFontHighlight")
+	desc:SetJustifyV("TOP")
+	desc:SetJustifyH("LEFT")
+	desc:SetPoint("TOPLEFT", 18, -32)
+	desc:SetPoint("BOTTOMRIGHT", -18, 48)
+	desc:SetText(L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."])
+
+	local perCharCheck = CreateFrame("CheckButton", f:GetName()..'CheckButton', f, "OptionsCheckButtonTemplate")
+	_G[perCharCheck:GetName() .. "Text"]:SetText(CHARACTER_SPECIFIC_KEYBINDINGS)
+
+	perCharCheck:SetScript("OnShow", function(self)
+		self:SetChecked(GetCurrentBindingSet() == 2)
+	end)
+
+	perCharCheck:SetScript("OnClick", function(self)
+		if ( AB.bindingsChanged ) then
+			E:StaticPopup_Show("CONFIRM_LOSE_BINDING_CHANGES");
+		else
+			AB:ChangeBindingProfile();
+		end
+	end)
+
+	perCharCheck:SetScript("OnEnter", function(self)
+		GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+		GameTooltip:SetText(CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP, nil, nil, nil, nil, 1);
+	end)
+
+	perCharCheck:SetScript("OnLeave", GameTooltip_Hide)	
+
+	local save = CreateFrame("Button", f:GetName()..'SaveButton', f, "OptionsButtonTemplate")
+	_G[save:GetName() .. "Text"]:SetText(L["Save"])
+	save:Width(150)
+	save:SetScript("OnClick", function(self)
+		AB:DeactivateBindMode(true)
+	end)
+
+	local discard = CreateFrame("Button", f:GetName()..'DiscardButton', f, "OptionsButtonTemplate")
+	discard:Width(150)
+	_G[discard:GetName() .. "Text"]:SetText(L["Discard"])
+
+	discard:SetScript("OnClick", function(self)
+		AB:DeactivateBindMode(false)
+	end)	
+	
+	--position buttons
+	perCharCheck:SetPoint("BOTTOMLEFT", discard, "TOPLEFT", 0, 2)
+	save:SetPoint("BOTTOMRIGHT", -14, 10)
+	discard:SetPoint("BOTTOMLEFT", 14, 10)
+	
+	local S = E:GetModule('Skins')
+	S:HandleCheckBox(perCharCheck)
+	S:HandleButton(save)
+	S:HandleButton(discard)
 end

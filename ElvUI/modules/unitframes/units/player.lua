@@ -85,6 +85,7 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR
 	local POWERBAR_OFFSET = db.power.offset
 	local POWERBAR_HEIGHT = db.power.height
+	local POWERBAR_DETACHED = db.power.detachedFromFrame
 	local SPACING = E.Spacing;
 	local BORDER = E.Border;
 	local SHADOW_SPACING = E.PixelMode and 3 or 4
@@ -103,7 +104,7 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 		CLASSBAR_HEIGHT = CLASSBAR_HEIGHT / 2
 	end
 
-	if db.classbar.DetachFromFrame then
+	if db.classbar.detachFromFrame then
 		CLASSBAR_HEIGHT = 0
 	end
 	
@@ -116,10 +117,10 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 		stagger:Point('TOPRIGHT', health, 'TOPRIGHT', STAGGER_WIDTH, 0)
 
 
-		if not USE_POWERBAR_OFFSET and not USE_MINI_POWERBAR and not USE_INSET_POWERBAR then
+		if not USE_POWERBAR_OFFSET and not USE_MINI_POWERBAR and not USE_INSET_POWERBAR and not POWERBAR_DETACHED then
 			power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -BORDER - STAGGER_WIDTH, BORDER)
 		end	
-	elseif not USE_POWERBAR_OFFSET and not USE_MINI_POWERBAR and not USE_INSET_POWERBAR then
+	elseif not USE_POWERBAR_OFFSET and not USE_MINI_POWERBAR and not USE_INSET_POWERBAR and not POWERBAR_DETACHED then
 		power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -BORDER, BORDER)
 	end
 	
@@ -230,12 +231,13 @@ function UF:Update_PlayerFrame(frame, db)
 	local USE_INSET_POWERBAR = db.power.width == 'inset' and USE_POWERBAR
 	local USE_MINI_POWERBAR = db.power.width == 'spaced' and USE_POWERBAR
 	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR
+	local POWERBAR_DETACHED = db.power.detachFromFrame
 	local POWERBAR_OFFSET = db.power.offset
 	local POWERBAR_HEIGHT = db.power.height
-	local POWERBAR_WIDTH = db.width - (BORDER*2)
-	
+	local POWERBAR_WIDTH = POWERBAR_DETACHED and db.power.detachedWidth or (db.width - (BORDER*2))
+
 	local USE_CLASSBAR = db.classbar.enable and CAN_HAVE_CLASSBAR
-	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and USE_CLASSBAR and db.classbar.DetachFromFrame ~= true
+	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and USE_CLASSBAR and db.classbar.detachFromFrame ~= true
 	local CLASSBAR_HEIGHT = db.classbar.height
 	local CLASSBAR_WIDTH = db.width - (BORDER*2)
 	
@@ -372,7 +374,7 @@ function UF:Update_PlayerFrame(frame, db)
 		if USE_POWERBAR_OFFSET then
 			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER+POWERBAR_OFFSET), -BORDER)
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER+POWERBAR_OFFSET)
-		elseif USE_INSET_POWERBAR then
+		elseif USE_INSET_POWERBAR or POWERBAR_DETACHED then
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER)
 		elseif USE_MINI_POWERBAR then
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER + (POWERBAR_HEIGHT/2))
@@ -391,7 +393,7 @@ function UF:Update_PlayerFrame(frame, db)
 			health.bg:SetParent(frame.Portrait.overlay)			
 		end
 		
-		if USE_CLASSBAR and not db.classbar.DetachFromFrame then
+		if USE_CLASSBAR and not db.classbar.detachFromFrame then
 			local DEPTH
 			if USE_MINI_CLASSBAR then
 				DEPTH = -(BORDER+(CLASSBAR_HEIGHT/2))
@@ -441,9 +443,16 @@ function UF:Update_PlayerFrame(frame, db)
 			--Text
 			local x, y = self:GetPositionOffset(db.power.position)
 			power.value:ClearAllPoints()
-			power.value:Point(db.power.position, frame.Health, db.power.position, x + db.power.xOffset, y + db.power.yOffset)		
+			power.value:Point(db.power.position, db.power.attachTextToPower and power or frame.Health, db.power.position, x + db.power.xOffset, y + db.power.yOffset)		
 			frame:Tag(power.value, db.power.text_format)
-			
+	
+
+			if db.power.attachTextToPower then
+				power.value:SetParent(power)
+			else
+				power.value:SetParent(frame.RaisedElementParent)
+			end
+
 			--Colors
 			power.colorClass = nil
 			power.colorReaction = nil	
@@ -457,7 +466,23 @@ function UF:Update_PlayerFrame(frame, db)
 			
 			--Position
 			power:ClearAllPoints()
-			if USE_POWERBAR_OFFSET then
+			if POWERBAR_DETACHED then
+				power:Width(POWERBAR_WIDTH)
+				power:Height(POWERBAR_HEIGHT)
+				if not power.mover then
+					power:ClearAllPoints()
+					power:Point("BOTTOM", frame, "BOTTOM", 0, -20)
+					E:CreateMover(power, 'PlayerPowerBarMover', 'Player Powerbar', nil, nil, nil, 'ALL,SOLO')
+				else
+					power:ClearAllPoints()
+					power:SetPoint("BOTTOMLEFT", power.mover, "BOTTOMLEFT")
+					power.mover:SetScale(1)
+					power.mover:SetAlpha(1)		
+				end
+
+				power:SetFrameStrata("MEDIUM")
+				power:SetFrameLevel(frame:GetFrameLevel() + 3)
+			elseif USE_POWERBAR_OFFSET then
 				power:Point("TOPRIGHT", frame.Health, "TOPRIGHT", POWERBAR_OFFSET, -POWERBAR_OFFSET)
 				power:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", POWERBAR_OFFSET, -POWERBAR_OFFSET)
 				power:SetFrameStrata("LOW")
@@ -516,7 +541,7 @@ function UF:Update_PlayerFrame(frame, db)
 				if db.portrait.style == '3D' then
 					portrait:SetFrameLevel(frame:GetFrameLevel() + 5)
 				end				
-				if USE_MINI_CLASSBAR and USE_CLASSBAR and not db.classbar.DetachFromFrame then
+				if USE_MINI_CLASSBAR and USE_CLASSBAR and not db.classbar.detachFromFrame then
 					portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT", 0, -((CLASSBAR_HEIGHT/2)))
 				else
 					portrait.backdrop:SetPoint("TOPLEFT", frame, "TOPLEFT")
@@ -677,7 +702,7 @@ function UF:Update_PlayerFrame(frame, db)
 
 		if bars then
 			local MAX_CLASS_BAR = UF.classMaxResourceBar[E.myclass]
-			if USE_MINI_CLASSBAR and not db.classbar.DetachFromFrame then
+			if USE_MINI_CLASSBAR and not db.classbar.detachFromFrame then
 				bars:ClearAllPoints()
 				if E.myclass == 'DRUID' then
 					CLASSBAR_WIDTH = CLASSBAR_WIDTH * 2/3
@@ -692,7 +717,7 @@ function UF:Update_PlayerFrame(frame, db)
 					bars.mover:SetScale(0.000001)
 					bars.mover:SetAlpha(0)
 				end
-			elseif not db.classbar.DetachFromFrame then
+			elseif not db.classbar.detachFromFrame then
 				bars:ClearAllPoints()
 				bars:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, (E.PixelMode and 0 or (BORDER + SPACING)))
 				bars:SetFrameStrata("LOW")
@@ -702,7 +727,7 @@ function UF:Update_PlayerFrame(frame, db)
 					bars.mover:SetAlpha(0)
 				end			
 			else
-				CLASSBAR_WIDTH = db.classbar.DetachedWidth
+				CLASSBAR_WIDTH = db.classbar.detachedWidth
 
 				if not bars.mover then
 					bars:Width(CLASSBAR_WIDTH)

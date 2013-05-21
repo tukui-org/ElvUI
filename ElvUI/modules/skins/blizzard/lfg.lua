@@ -56,12 +56,26 @@ local function LoadSkin()
 		LFGInvitePopupRoleButtonHealer,
 		LFGInvitePopupRoleButtonDPS		
 	}
+
+
 	
 	for _, roleButton in pairs(roleButtons) do
-		S:HandleCheckBox(roleButton.checkButton)
-		roleButton:GetChildren():SetFrameLevel(roleButton:GetChildren():GetFrameLevel() + 1)
+		S:HandleCheckBox(roleButton.checkButton, true)
+		roleButton:GetNormalTexture():SetAlpha(0)	
 	end
-	
+
+	LFDQueueFrameRoleButtonLeader.leadIcon = LFDQueueFrameRoleButtonLeader:CreateTexture(nil, 'BACKGROUND')
+	LFDQueueFrameRoleButtonLeader.leadIcon:SetTexture([[Interface\GroupFrame\UI-Group-LeaderIcon]])
+	LFDQueueFrameRoleButtonLeader.leadIcon:SetPoint(LFDQueueFrameRoleButtonLeader:GetNormalTexture():GetPoint())
+	LFDQueueFrameRoleButtonLeader.leadIcon:Size(50)
+	LFDQueueFrameRoleButtonLeader.leadIcon:SetAlpha(0.4)		
+
+	RaidFinderQueueFrameRoleButtonLeader.leadIcon = RaidFinderQueueFrameRoleButtonLeader:CreateTexture(nil, 'BACKGROUND')
+	RaidFinderQueueFrameRoleButtonLeader.leadIcon:SetTexture([[Interface\GroupFrame\UI-Group-LeaderIcon]])
+	RaidFinderQueueFrameRoleButtonLeader.leadIcon:SetPoint(RaidFinderQueueFrameRoleButtonLeader:GetNormalTexture():GetPoint())
+	RaidFinderQueueFrameRoleButtonLeader.leadIcon:Size(50)
+	RaidFinderQueueFrameRoleButtonLeader.leadIcon:SetAlpha(0.4)	
+
 	hooksecurefunc('LFG_DisableRoleButton', function(button)
 		if button.checkButton:GetChecked() then
 			button.checkButton:SetAlpha(1)

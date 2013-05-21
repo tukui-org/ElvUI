@@ -13,21 +13,12 @@ local opposites = {
 	['BUFFS'] = 'DEBUFFS'
 }
 
-local removeMenuOptions = {
-	["SET_FOCUS"] = true,
-	["CLEAR_FOCUS"] = true,
-	["MOVE_FOCUS_FRAME"] = true,
-	["LARGE_FOCUS"] = true,	
-	["MOVE_PLAYER_FRAME"] = true,
-	["MOVE_TARGET_FRAME"] = true,
-	["PVP_REPORT_AFK"] = true,
-	["PET_DISMISS"] = E.myclass == 'HUNTER',
-}
-
 UF['headerstoload'] = {}
 UF['unitgroupstoload'] = {}
 UF['unitstoload'] = {}
 
+UF['groupPrototype'] = {}
+UF['headerPrototype'] = {}
 UF['headers'] = {}
 UF['groupunits'] = {}
 UF['units'] = {}
@@ -71,11 +62,6 @@ UF['headerGroupBy'] = {
 		header:SetAttribute('sortMethod', 'NAME')
 		header:SetAttribute("groupBy", 'GROUP')
 	end,
-	['NAME_ENTIRE_GROUP'] = function(header)
-		header:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
-		header:SetAttribute('sortMethod', 'NAME')
-		header:SetAttribute("groupBy", nil)
-	end, 
 	['GROUP'] = function(header)
 		header:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
 		header:SetAttribute('sortMethod', 'INDEX')
@@ -106,7 +92,9 @@ local DIRECTION_TO_POINT = {
 	RIGHT_DOWN = "LEFT",
 	RIGHT_UP = "LEFT",
 	LEFT_DOWN = "RIGHT",
-	LEFT_UP = "RIGHT"
+	LEFT_UP = "RIGHT",
+	UP = "BOTTOM",
+	DOWN = "TOP"
 }
 
 
@@ -126,7 +114,11 @@ local DIRECTION_TO_GROUP_ANCHOR_POINT = {
 	RIGHT_DOWN = "TOPLEFT",
 	RIGHT_UP = "BOTTOMLEFT",
 	LEFT_DOWN = "TOPRIGHT",
-	LEFT_UP = "BOTTOMRIGHT"
+	LEFT_UP = "BOTTOMRIGHT",
+	OUT_UP = "BOTTOMLEFT",
+	OUT_DOWN = "TOPLEFT",
+	UP = "BOTTOMLEFT",
+	DOWN = "TOPLEFT"
 }
 
 local DIRECTION_TO_COLUMN_ANCHOR_POINT = {
@@ -137,7 +129,9 @@ local DIRECTION_TO_COLUMN_ANCHOR_POINT = {
 	RIGHT_DOWN = "TOP",
 	RIGHT_UP = "BOTTOM",
 	LEFT_DOWN = "TOP",
-	LEFT_UP = "BOTTOM"
+	LEFT_UP = "BOTTOM",
+	UP = "BOTTOM",
+	DOWN = "TOP"
 }
 
 local INVERTED_DIRECTION_TO_COLUMN_ANCHOR_POINT = {
@@ -148,7 +142,9 @@ local INVERTED_DIRECTION_TO_COLUMN_ANCHOR_POINT = {
 	RIGHT_DOWN = "BOTTOM",
 	RIGHT_UP = "TOP",
 	LEFT_DOWN = "BOTTOM",
-	LEFT_UP = "TOP"	
+	LEFT_UP = "TOP",
+	UP = "TOP",
+	DOWN = "BOTTOM"
 }
 
 local DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER = {
@@ -159,7 +155,9 @@ local DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER = {
 	RIGHT_DOWN = 1,
 	RIGHT_UP = 1,
 	LEFT_DOWN = -1,
-	LEFT_UP = -1
+	LEFT_UP = -1,
+	UP = 1,
+	DOWN = 1
 }
 
 local DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER = {
@@ -170,7 +168,9 @@ local DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER = {
 	RIGHT_DOWN = -1,
 	RIGHT_UP = 1,
 	LEFT_DOWN = -1,
-	LEFT_UP = 1
+	LEFT_UP = 1,
+	UP = 1,
+	DOWN = -1
 }
 
 local find, gsub, split, format = string.find, string.gsub, string.split, string.format
@@ -212,57 +212,9 @@ local function DelayedUpdate(group)
 	group:Show()
 end
 
-function UF:SetupGroupAnchorPoints(group)
-	UF:ConvertGroupDB(group)
-	local db = self.db.units[group.groupName]
-	local direction = db.growthDirection
-	local point = DIRECTION_TO_POINT[direction]
-	local positionOverride = DIRECTION_TO_GROUP_ANCHOR_POINT[db.startOutFromCenter and 'OUT_'..direction or direction]
-	
-	local maxUnits, startingIndex = MAX_RAID_MEMBERS, -1
-	if (db.numGroups and db.unitsPerGroup) then
-		startingIndex = -min(db.numGroups * db.unitsPerGroup, maxUnits) + 1
-	end
-	
-	if point == "LEFT" or point == "RIGHT" then
-		group:SetAttribute("xOffset", db.horizontalSpacing * DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction])
-		group:SetAttribute("yOffset", 0)
-		group:SetAttribute("columnSpacing", db.verticalSpacing)
-	else
-		group:SetAttribute("xOffset", 0)
-		group:SetAttribute("yOffset", db.verticalSpacing * DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction])
-		group:SetAttribute("columnSpacing", db.horizontalSpacing)
-	end
-	
-	group:SetAttribute("columnAnchorPoint", db.invertGroupingOrder and INVERTED_DIRECTION_TO_COLUMN_ANCHOR_POINT[direction] or DIRECTION_TO_COLUMN_ANCHOR_POINT[direction])
-	UF:ClearChildPoints(group:GetChildren())
-	group:SetAttribute("point", point)	
-	group:SetAttribute("maxColumns", db.numGroups)
-	group:SetAttribute("unitsPerColumn", db.unitsPerGroup)		
-
-	if not group.isForced then
-		group:SetAttribute("startingIndex", startingIndex)
-		RegisterAttributeDriver(group, 'state-visibility', 'show')	
-		group.dirtyWidth, group.dirtyHeight = group:GetSize()
-		RegisterAttributeDriver(group, 'state-visibility', db.visibility)
-		group:SetAttribute('startingIndex', 1)
-		
-		E:Delay(0.25, DelayedUpdate, group)
-	end
-	
-	if group.mover then
-		group.mover.positionOverride = positionOverride
-		E:UpdatePositionOverride(group.mover:GetName())
-	end
-
-	return positionOverride
-end
-
 function UF:Construct_UF(frame, unit)
 	frame:SetScript('OnEnter', UnitFrame_OnEnter)
 	frame:SetScript('OnLeave', UnitFrame_OnLeave)	
-	
-	frame.menu = self.SpawnMenu
 	
 	frame:SetFrameLevel(5)
 	
@@ -512,55 +464,228 @@ function UF:HeaderUpdateSpecificElement(group, elementName)
 	end
 end
 
-function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdate)
-	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return end
+function UF.groupPrototype:GetAttribute(name)
+	return self.groups[1]:GetAttribute(name)
+end
 
-	local db = self.db['units'][group]
-	if not self[group] then
-		ElvUF:RegisterStyle("ElvUF_"..E:StringTitle(group), UF["Construct_"..E:StringTitle(group).."Frames"])
-		ElvUF:SetActiveStyle("ElvUF_"..E:StringTitle(group))
+function UF.groupPrototype:Configure_Groups()
+	local db = UF.db.units[self.groupName]
 
-		self[group] = ElvUF:SpawnHeader("ElvUF_"..E:StringTitle(group), nil, nil, 
-			'oUF-initialConfigFunction', ([[self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)]]):format(db.width, db.height), 
+	local width, height, numShown = 0, 0, 0
+	local direction = db.growthDirection
+	for i=1, #self.groups do
+		local group = self.groups[i]
+		UF:ConvertGroupDB(group)
+		local point = DIRECTION_TO_POINT[direction]
+		local positionOverride = DIRECTION_TO_GROUP_ANCHOR_POINT[db.startOutFromCenter and 'OUT_'..direction or direction]
+
+		if group:IsShown() then
+			numShown = numShown + 1
+			if point == "LEFT" or point == "RIGHT" then
+				group:SetAttribute("xOffset", db.horizontalSpacing * DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction])
+				group:SetAttribute("yOffset", 0)
+				group:SetAttribute("columnSpacing", db.verticalSpacing)
+			else
+				group:SetAttribute("xOffset", 0)
+				group:SetAttribute("yOffset", db.verticalSpacing * DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction])
+				group:SetAttribute("columnSpacing", db.horizontalSpacing)
+			end
+			
+			if not group.isForced then
+				if not group.initialized then
+					group:SetAttribute("startingIndex", -4)
+					group:Show()
+					group.initialized = true
+				end
+				group:SetAttribute('startingIndex', 1)
+			end
+
+			
+			group:ClearAllPoints()
+			group:SetAttribute("columnAnchorPoint", db.invertGroupingOrder and INVERTED_DIRECTION_TO_COLUMN_ANCHOR_POINT[direction] or DIRECTION_TO_COLUMN_ANCHOR_POINT[direction])
+			group:ClearChildPoints()
+			group:SetAttribute("point", point)	
+
+			if not group.isForced then
+				group:SetAttribute("maxColumns", 1)
+				group:SetAttribute("unitsPerColumn", 5)				
+				UF.headerGroupBy[db.groupBy](group)
+				group:SetAttribute('sortDir', db.sortDir)
+				group:SetAttribute("showPlayer", db.showPlayer)	
+			end
+
+			if i == 1 then
+				local point = DIRECTION_TO_GROUP_ANCHOR_POINT[db.startOutFromCenter and 'OUT_'..direction or direction]
+
+				group:SetPoint(point)
+				if direction == 'UP' or direction == 'DOWN' then
+					width = db.width
+					height = db.height + ((db.height + db.verticalSpacing) * 4)
+				elseif DIRECTION_TO_POINT[direction] == "LEFT" or DIRECTION_TO_POINT[direction] == "RIGHT" then
+					width = db.width + ((db.width + db.horizontalSpacing) * 4)
+					height = db.height
+				else
+					height = db.height + ((db.height + db.verticalSpacing) * 4)
+					width = db.width
+				end
+			else
+				local point = DIRECTION_TO_GROUP_ANCHOR_POINT[direction]
+				local xMult, yMult = DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction], DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction]
+
+				if direction == 'UP' or direction == 'DOWN' then
+					if i == 2 then height = height + db.verticalSpacing end
+					group:SetPoint(DIRECTION_TO_COLUMN_ANCHOR_POINT[direction], self.groups[i-1], INVERTED_DIRECTION_TO_COLUMN_ANCHOR_POINT[direction], 0, db.verticalSpacing * yMult)
+					height = height + ((db.height + db.verticalSpacing) * 5)
+				elseif DIRECTION_TO_POINT[direction] == "LEFT" or DIRECTION_TO_POINT[direction] == "RIGHT" then
+					if i == 2 then height = height + db.verticalSpacing end
+					group:SetPoint(point, self, point, 0, height * yMult)
+					height = height + (db.height + db.verticalSpacing)
+				else
+					if i == 2 then width = width + db.horizontalSpacing end
+					group:SetPoint(point, self, point, width * xMult, 0)
+					width = width + (db.width + db.horizontalSpacing)
+				end
+			end
+		end
+	end
+
+	if numShown > 1 then
+		if (DIRECTION_TO_POINT[direction] == "LEFT" or DIRECTION_TO_POINT[direction] == "RIGHT") or direction == 'UP' or direction == 'DOWN' then
+			height = height - db.verticalSpacing
+		else
+			width = width - db.horizontalSpacing
+		end
+	end
+
+	self:SetSize(width, height)
+end
+
+function UF.groupPrototype:Update()
+	local group = self.groupName
+	UF[group].db = UF.db['units'][group]
+	for i=1, #self.groups do
+		self.groups[i].db = UF.db['units'][group]
+		self.groups[i]:Update()
+	end
+end
+
+function UF.groupPrototype:AdjustVisibility()
+	if not self.isForced then
+		for i=1, #self.groups do
+			if i <= self.db.numGroups then
+				self.groups[i]:Show()
+			else
+				self.groups[i]:Hide()
+
+				if self.groups[i].forceShow then
+					UF:UnshowChildUnits(group, group:GetChildren())
+					group:SetAttribute('startingIndex', 1)
+				end
+			end
+		end
+	end
+end
+
+
+function UF.headerPrototype:ClearChildPoints()
+	for i=1, self:GetNumChildren() do
+		local child = select(i, self:GetChildren())
+		child:ClearAllPoints()
+	end
+end
+
+
+function UF.headerPrototype:Update()
+	local group = self.groupName
+	local db = UF.db['units'][group]
+	UF["Update_"..E:StringTitle(group).."Header"](UF, self, db)
+	
+	local i = 1
+	local child = self:GetAttribute("child" .. i)
+
+	while child do
+		UF["Update_"..E:StringTitle(group).."Frames"](UF, child, db)
+
+		if _G[child:GetName()..'Pet'] then
+			UF["Update_"..E:StringTitle(group).."Frames"](UF, _G[child:GetName()..'Pet'], db)
+		end
+		
+		if _G[child:GetName()..'Target'] then
+			UF["Update_"..E:StringTitle(group).."Frames"](UF, _G[child:GetName()..'Target'], db)
+		end
+
+		i = i + 1	
+		child = self:GetAttribute("child" .. i)
+	end		
+end
+
+function UF:CreateHeader(parent, groupFilter, overrideName, template)
+	local group = parent.groupName
+	local db = UF.db['units'][group]
+	ElvUF:SetActiveStyle("ElvUF_"..E:StringTitle(group))
+	local header = ElvUF:SpawnHeader(overrideName, nil, nil, 
+			'oUF-initialConfigFunction', ("self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)"):format(db.width, db.height), 
 			'groupFilter', groupFilter,
 			'showParty', true,
 			'showRaid', true,
 			'showSolo', true,
 			template and 'template', template)
 
-		self[group]:SetParent(ElvUF_Parent)		
-		self['headers'][group] = self[group]
-		self[group].groupName = group
-	end
-	
-	self[group].db = db
-	
-	self[group].Update = function()
-		local db = self.db['units'][group]
-		if db.enable ~= true then 
-			RegisterAttributeDriver(self[group], 'state-visibility', 'hide')	
-			return
-		end
-		UF["Update_"..E:StringTitle(group).."Header"](self, self[group], db)
-		
-		for i=1, self[group]:GetNumChildren() do
-			local child = select(i, self[group]:GetChildren())
-			UF["Update_"..E:StringTitle(group).."Frames"](self, child, self.db['units'][group])
+	header.groupName = group
+	header:SetParent(parent)
+	header:Show()
 
-			if _G[child:GetName()..'Pet'] then
-				UF["Update_"..E:StringTitle(group).."Frames"](self, _G[child:GetName()..'Pet'], self.db['units'][group])
-			end
-			
-			if _G[child:GetName()..'Target'] then
-				UF["Update_"..E:StringTitle(group).."Frames"](self, _G[child:GetName()..'Target'], self.db['units'][group])
-			end			
-		end			
-	end	
-	
-	if headerUpdate then
-		UF["Update_"..E:StringTitle(group).."Header"](self, self[group], db)
+	for k, v in pairs(self.headerPrototype) do
+		header[k] = v
+	end
+
+	return header
+end
+
+function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdate)
+	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return end
+
+	local db = self.db['units'][group]
+	if not self[group] then
+		local stringTitle = E:StringTitle(group)
+		ElvUF:RegisterStyle("ElvUF_"..stringTitle, UF["Construct_"..stringTitle.."Frames"])
+		ElvUF:SetActiveStyle("ElvUF_"..stringTitle)		
+
+		
+		self[group] = CreateFrame('Frame', 'ElvUF_'..stringTitle, ElvUF_Parent, 'SecureHandlerStateTemplate');
+		self[group].groups = {}
+		self[group].db = db
+		self[group].groupName = group
+		self['headers'][group] = self[group]
+
+		for k, v in pairs(self.groupPrototype) do
+			self[group][k] = v
+		end
+
+		self[group]:Show()
+	end
+
+	if db.enable ~= true then
+		UnregisterStateDriver(self[group], "visibility")
+		self[group]:Hide()
+		return
+	end
+
+	while db.numGroups > #self[group].groups do
+		local index = tostring(#self[group].groups + 1)
+		tinsert(self[group].groups, self:CreateHeader(self[group], index, "ElvUF_"..E:StringTitle(self[group].groupName)..'Group'..index))
+	end
+
+	self[group]:AdjustVisibility()
+
+	if headerUpdate or not self[group].mover then
+		self[group]:Configure_Groups()
+		if not self[group].isForced and not self[group].blockVisibilityChanges then
+			RegisterStateDriver(self[group], "visibility", db.visibility)		
+		end
 	else
-		self[group].Update()
+		self[group]:Configure_Groups()
+		self[group]:Update()
 	end
 end
 
@@ -784,20 +909,6 @@ function UF:UnitFrameThreatIndicator_Initialize(_, unitFrame)
 	unitFrame:UnregisterAllEvents() --Arena Taint Fix
 end
 
-function UF:RemoveDismissPet()
-	--This *should* make it so if you are in the Kara Event you can still use the dismiss pet from right click menu
-	--Otherwise hunters need to use the spell Dismiss Pet
-	if not PetCanBeAbandoned() then
-		if UnitPopupMenus["PET"][4] ~= "PET_DISMISS" then
-			tinsert(UnitPopupMenus["PET"], 4, "PET_DISMISS")
-		end		
-	else
-		if UnitPopupMenus["PET"][4] == "PET_DISMISS" then
-			tremove(UnitPopupMenus["PET"], 4)
-		end		
-	end
-end
-
 CompactUnitFrameProfiles:UnregisterEvent('VARIABLES_LOADED') 	--Re-Register this event only if disableblizzard is turned off.
 function UF:Initialize()	
 	self.db = E.db["unitframe"]
@@ -807,17 +918,8 @@ function UF:Initialize()
 	E.UnitFrames = UF;
 	
 	local ElvUF_Parent = CreateFrame('Frame', 'ElvUF_Parent', E.UIParent, 'SecureHandlerStateTemplate');
-	ElvUF_Parent:SetAllPoints(E.UIParent)
-	ElvUF_Parent:SetAttribute("_onstate-show", [[		
-		if newstate == "hide" then
-			self:Hide();
-		else
-			self:Show();
-		end	
-	]]);
+	RegisterStateDriver(ElvUF_Parent, "visibility", "[petbattle] hide; show")
 
-	RegisterStateDriver(ElvUF_Parent, "show", '[petbattle] hide;show');	
-	
 	self:UpdateColors()
 	ElvUF:RegisterStyle('ElvUF', function(frame, unit)
 		self:Construct_UF(frame, unit)
@@ -855,19 +957,6 @@ function UF:Initialize()
 			ElvUF:DisableBlizzard('arena')
 		end
 		
-		if E.myclass == "HUNTER" then
-			self:RegisterEvent("UPDATE_POSSESS_BAR", "RemoveDismissPet")
-		end
-		
-		--index #4 is PET_DISMISS for PET UnitPopupMenus
-		for name, menu in pairs(UnitPopupMenus) do
-			for index = #menu, 1, -1 do
-				if removeMenuOptions[menu[index]] then
-					tremove(menu, index)
-				end
-			end
-		end				
-
 		self:RegisterEvent('GROUP_ROSTER_UPDATE', 'DisableBlizzard')
 		UIParent:UnregisterEvent('GROUP_ROSTER_UPDATE') --This may fuck shit up.. we'll see...
 	else
