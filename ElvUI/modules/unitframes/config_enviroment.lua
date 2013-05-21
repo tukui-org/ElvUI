@@ -137,9 +137,6 @@ function UF:ShowChildUnits(header, ...)
 		frame.TargetGlow:SetAlpha(0)
 		self:ForceShow(frame)
 	end
-	
-	header.dirtyWidth, header.dirtyHeight = header:GetSize()
-	header.mover:Size(header.dirtyWidth, header.dirtyHeight)
 end
 
 function UF:UnshowChildUnits(header, ...)

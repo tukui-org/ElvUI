@@ -3043,7 +3043,7 @@ E.Options.args.unitframe.args.party = {
 							name = '',
 							type = 'description',
 							width = 'full',
-						},
+						},						
 						growthDirection = {
 							order = 4,
 							name = L['Growth Direction'],
@@ -3059,7 +3059,7 @@ E.Options.args.unitframe.args.party = {
 								LEFT_DOWN = format(L['%s and then %s'], L['Left'], L['Down']),
 								LEFT_UP = format(L['%s and then %s'], L['Left'], L['Up']),
 								UP = L['Up'],
-								DOWN = L['Down']
+								DOWN = L['Down']					
 							},
 						},
 						startOutFromCenter = {
@@ -3460,7 +3460,7 @@ for i=10, 40, 15 do
 									LEFT_DOWN = format(L['%s and then %s'], L['Left'], L['Down']),
 									LEFT_UP = format(L['%s and then %s'], L['Left'], L['Up']),
 									UP = L['Up'],
-									DOWN = L['Down']
+									DOWN = L['Down']			
 								},
 							},
 							startOutFromCenter = {
@@ -3468,7 +3468,7 @@ for i=10, 40, 15 do
 								name = L['Start near Center'],
 								desc = L['The initial group will start near the center and grow out. Corrosponding groups will behave normally.'],
 								type = 'toggle',
-							},
+							},									
 							numGroups = {
 								order = 7,
 								type = 'range',

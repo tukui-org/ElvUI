@@ -18,7 +18,7 @@ function M:UpdateBubbleBorder()
 end
 
 function M:SkinBubble(frame)
-	local mult = E.mult * (GetCVar('uiScale') or UIParent:GetScale())
+	local mult = E.mult * UIParent:GetScale()
 	for i=1, frame:GetNumRegions() do
 		local region = select(i, frame:GetRegions())
 		if region:GetObjectType() == "Texture" then

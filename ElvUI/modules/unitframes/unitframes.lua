@@ -62,11 +62,6 @@ UF['headerGroupBy'] = {
 		header:SetAttribute('sortMethod', 'NAME')
 		header:SetAttribute("groupBy", 'GROUP')
 	end,
-	['NAME_ENTIRE_GROUP'] = function(header)
-		header:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
-		header:SetAttribute('sortMethod', 'NAME')
-		header:SetAttribute("groupBy", nil)
-	end, 
 	['GROUP'] = function(header)
 		header:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
 		header:SetAttribute('sortMethod', 'INDEX')
@@ -468,22 +463,6 @@ function UF:HeaderUpdateSpecificElement(group, elementName)
 	end
 end
 
-function UF.groupPrototype:SetAttribute(name, value)
-	for i=1, #self.groups do
-		local group = self.groups[i]
-		if name == "point" or name == "columnAnchorPoint" or name == "unitsPerColumn" then
-			local count = 1
-			local uframe = group:GetAttribute("child" .. count)
-			while uframe do
-				uframe:ClearAllPoints()
-				count = count + 1
-				uframe = self:GetAttribute("child" .. count)
-			end
-		end
-		group:SetAttribute(name, value)
-	end
-end
-
 function UF.groupPrototype:GetAttribute(name)
 	return self.groups[1]:GetAttribute(name)
 end
@@ -614,7 +593,6 @@ function UF.headerPrototype:ClearChildPoints()
 	end
 end
 
-
 function UF.headerPrototype:Update()
 	local group = self.groupName
 	local db = UF.db['units'][group]
@@ -683,6 +661,12 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 		end
 
 		self[group]:Show()
+	end
+
+	if db.enable ~= true then
+		UnregisterStateDriver(self[group], "visibility")
+		self[group]:Hide()
+		return
 	end
 
 	while db.numGroups > #self[group].groups do

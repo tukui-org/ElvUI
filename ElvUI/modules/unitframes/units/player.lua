@@ -391,7 +391,7 @@ function UF:Update_PlayerFrame(frame, db)
 			health.bg:Point('TOPRIGHT', health)		
 			health.bg:SetParent(frame.Portrait.overlay)			
 		end
-
+		
 		if USE_CLASSBAR and not db.classbar.detachFromFrame then
 			local DEPTH
 			if USE_MINI_CLASSBAR then

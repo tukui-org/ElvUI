@@ -55,9 +55,11 @@ for i=10, 40, 15 do
 		if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
 		if not InCombatLockdown() then		
 			if inInstance and instanceType == "raid" and maxPlayers == i then
-				RegisterAttributeDriver(self, 'state-visibility', "show")
+				UnregisterStateDriver(self, "visibility")
+				self:Show()
 			elseif inInstance and instanceType == "raid" then
-				RegisterAttributeDriver(self, 'state-visibility', "hide")
+				UnregisterStateDriver(self, "visibility")
+				self:Hide()
 			elseif self.db.visibility then
 				RegisterAttributeDriver(self, 'state-visibility', self.db.visibility)
 			end
@@ -73,7 +75,7 @@ for i=10, 40, 15 do
 		local headerHolder = header:GetParent()
 		if not headerHolder.positioned then
 			headerHolder:ClearAllPoints()
-			headerHolder:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 205)	
+			headerHolder:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 205)
 
 			E:CreateMover(headerHolder, headerHolder:GetName()..'Mover', L['Raid 1-']..i..L[' Frames'], nil, nil, nil, 'ALL,RAID'..i)
 

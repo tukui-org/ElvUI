@@ -338,7 +338,14 @@ function CH:StyleChat(frame)
 	end)
 	
 	frame.button:SetScript("OnEnter", function(self) self:SetAlpha(1) end)
-	frame.button:SetScript("OnLeave", function(self) self:SetAlpha(0.35) end)	
+	frame.button:SetScript("OnLeave", function(self)
+		if _G[self:GetParent():GetName().."TabText"]:IsShown() then
+			self:SetAlpha(0.35)
+		else
+			self:SetAlpha(0)
+		end
+
+	end)
 		
 	CreatedFrames = id
 	frame.styled = true
@@ -423,11 +430,18 @@ function CH:SetupChatTabs(frame, hook)
 	if not hook then
 		_G[frame:GetName().."Text"]:Show()
 		
+		if frame.owner.button and GetMouseFocus() ~= frame.owner.button then
+			frame.owner.button:SetAlpha(0.35)
+		end
 		if frame.conversationIcon then
 			frame.conversationIcon:Show()
 		end
 	elseif GetMouseFocus() ~= frame then
 		_G[frame:GetName().."Text"]:Hide()
+
+		if frame.owner.button and GetMouseFocus() ~= frame.owner.button then
+			frame.owner.button:SetAlpha(0)
+		end
 		
 		if frame.conversationIcon then 
 			frame.conversationIcon:Hide()
@@ -488,7 +502,7 @@ function CH:PositionChat(override)
 		point = GetChatWindowSavedPosition(id)
 		isDocked = chat.isDocked
 		tab.isDocked = chat.isDocked
-		
+		tab.owner = chat
 		if id > NUM_CHAT_WINDOWS then
 			point = point or select(1, chat:GetPoint());
 			if select(2, tab:GetPoint()):GetName() ~= bg then

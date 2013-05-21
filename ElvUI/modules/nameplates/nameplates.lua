@@ -197,7 +197,7 @@ function NP:SkinPlate(frame, nameFrame)
 	if not frame.hp then
 		frame.oldhp = oldhp
 		
-		local SHADOW_SPACING = E.PixelMode and (((noscalemult * 5) - UIParent:GetScale() / 3)) or 5
+		local SHADOW_SPACING = E.PixelMode and (((noscalemult * 5) - UIParent:GetScale() / 3)) or 4
 		frame.hp = CreateFrame("Statusbar", nil, frame)
 		frame.hp:SetFrameLevel(oldhp:GetFrameLevel() + 1)
 		frame.hp:SetFrameStrata(oldhp:GetFrameStrata())
