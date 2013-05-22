@@ -38,7 +38,26 @@ local function LoadSkin()
 			self:SetTemplate("Transparent")
 		end
 	end)
-	
+
+	LFDQueueFrameRoleButtonTankIncentiveIcon:SetAlpha(0)
+	LFDQueueFrameRoleButtonHealerIncentiveIcon:SetAlpha(0)
+	LFDQueueFrameRoleButtonDPSIncentiveIcon:SetAlpha(0)
+
+	local function OnShow(self)
+		ActionButton_ShowOverlayGlow(self:GetParent().checkButton)
+	end
+	local function OnHide(self)
+		ActionButton_HideOverlayGlow(self:GetParent().checkButton)
+	end	
+	LFDQueueFrameRoleButtonTankIncentiveIcon:HookScript("OnShow", OnShow)
+	LFDQueueFrameRoleButtonHealerIncentiveIcon:HookScript("OnShow", OnShow)
+	LFDQueueFrameRoleButtonDPSIncentiveIcon:HookScript("OnShow", OnShow)
+	LFDQueueFrameRoleButtonTankIncentiveIcon:HookScript("OnHide", OnHide)
+	LFDQueueFrameRoleButtonHealerIncentiveIcon:HookScript("OnHide", OnHide)
+	LFDQueueFrameRoleButtonDPSIncentiveIcon:HookScript("OnHide", OnHide)	
+	LFDQueueFrameRoleButtonTank.shortageBorder:Kill()
+	LFDQueueFrameRoleButtonDPS.shortageBorder:Kill()
+	LFDQueueFrameRoleButtonHealer.shortageBorder:Kill()
 	LFGDungeonReadyDialog.filigree:SetAlpha(0)
 	LFGDungeonReadyDialog.bottomArt:SetAlpha(0)	
 	S:HandleCloseButton(LFGDungeonReadyStatusCloseButton)

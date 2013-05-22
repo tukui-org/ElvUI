@@ -729,6 +729,7 @@ end
 
 local function GetBNFriendColor(name, id)
 	local _, _, game, _, _, _, _, class = BNGetToonInfo(id)
+
 	if game ~= BNET_CLIENT_WOW or not class then
 		return name
 	else

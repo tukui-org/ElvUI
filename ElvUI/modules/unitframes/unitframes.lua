@@ -617,8 +617,8 @@ function UF.headerPrototype:Update()
 	end		
 end
 
-function UF:CreateHeader(parent, groupFilter, overrideName, template)
-	local group = parent.groupName
+function UF:CreateHeader(parent, groupFilter, overrideName, template, groupName)
+	local group = parent.groupName or groupName
 	local db = UF.db['units'][group]
 	ElvUF:SetActiveStyle("ElvUF_"..E:StringTitle(group))
 	local header = ElvUF:SpawnHeader(overrideName, nil, nil, 
@@ -649,41 +649,72 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 		ElvUF:RegisterStyle("ElvUF_"..stringTitle, UF["Construct_"..stringTitle.."Frames"])
 		ElvUF:SetActiveStyle("ElvUF_"..stringTitle)		
 
-		
-		self[group] = CreateFrame('Frame', 'ElvUF_'..stringTitle, ElvUF_Parent, 'SecureHandlerStateTemplate');
-		self[group].groups = {}
-		self[group].db = db
-		self[group].groupName = group
-		self['headers'][group] = self[group]
 
-		for k, v in pairs(self.groupPrototype) do
-			self[group][k] = v
+		if db.numGroups then
+			self[group] = CreateFrame('Frame', 'ElvUF_'..stringTitle, ElvUF_Parent, 'SecureHandlerStateTemplate');
+			self[group].groups = {}
+			self[group].groupName = group
+			for k, v in pairs(self.groupPrototype) do
+				self[group][k] = v
+			end			
+		else
+			self[group] = self:CreateHeader(ElvUF_Parent, groupFilter, "ElvUF_"..E:StringTitle(group), template, group)
 		end
 
+		self[group].db = db
+		self['headers'][group] = self[group]
 		self[group]:Show()
 	end
 
-	if db.enable ~= true then
-		UnregisterStateDriver(self[group], "visibility")
-		self[group]:Hide()
-		return
-	end
+	if db.numGroups then
+		if db.enable ~= true then
+			UnregisterStateDriver(self[group], "visibility")
+			self[group]:Hide()
+			return
+		end
 
-	while db.numGroups > #self[group].groups do
-		local index = tostring(#self[group].groups + 1)
-		tinsert(self[group].groups, self:CreateHeader(self[group], index, "ElvUF_"..E:StringTitle(self[group].groupName)..'Group'..index))
-	end
+		while db.numGroups > #self[group].groups do
+			local index = tostring(#self[group].groups + 1)
+			tinsert(self[group].groups, self:CreateHeader(self[group], index, "ElvUF_"..E:StringTitle(self[group].groupName)..'Group'..index))
+		end
 
-	self[group]:AdjustVisibility()
+		self[group]:AdjustVisibility()
 
-	if headerUpdate or not self[group].mover then
-		self[group]:Configure_Groups()
-		if not self[group].isForced and not self[group].blockVisibilityChanges then
-			RegisterStateDriver(self[group], "visibility", db.visibility)		
+		if headerUpdate or not self[group].mover then
+			self[group]:Configure_Groups()
+			if not self[group].isForced and not self[group].blockVisibilityChanges then
+				RegisterStateDriver(self[group], "visibility", db.visibility)		
+			end
+		else
+			self[group]:Configure_Groups()
+			self[group]:Update()
 		end
 	else
-		self[group]:Configure_Groups()
-		self[group]:Update()
+		self[group].db = db
+		
+		self[group].Update = function()
+			local db = self.db['units'][group]
+			if db.enable ~= true then 
+				RegisterAttributeDriver(self[group], 'state-visibility', 'hide')	
+				return
+			end
+			UF["Update_"..E:StringTitle(group).."Header"](self, self[group], db)
+			
+			for i=1, self[group]:GetNumChildren() do
+				local child = select(i, self[group]:GetChildren())
+				UF["Update_"..E:StringTitle(group).."Frames"](self, child, self.db['units'][group])
+
+				if _G[child:GetName()..'Target'] then
+					UF["Update_"..E:StringTitle(group).."Frames"](self, _G[child:GetName()..'Target'], self.db['units'][group])
+				end			
+			end			
+		end		
+			
+		if headerUpdate then
+			UF["Update_"..E:StringTitle(group).."Header"](self, self[group], db)
+		else
+			self[group].Update()
+		end			
 	end
 end
 
