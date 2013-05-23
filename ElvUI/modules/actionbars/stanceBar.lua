@@ -49,7 +49,7 @@ function AB:StyleShapeShift()
 					button:SetChecked(1);
 					if button.SetCheckedTexture and not button.tex then
 						local tex = button:CreateTexture(nil, "OVERLAY")
-						tex:SetTexture(0, 0, 0, 0.5)
+						tex:SetTexture(0, 0, 0, 0.7)
 						tex:SetInside()
 						button.tex = tex
 						button:SetCheckedTexture(tex)
