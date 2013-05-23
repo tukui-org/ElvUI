@@ -220,6 +220,10 @@ local function LoadSkin()
 			PVPReadyDialogRoleIcon.texture:SetTexCoord(LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
 		end
 
+		if queueType == "ARENA" then
+			self:SetHeight(100)
+		end
+
 		self.background:Hide()
 	end)
 
