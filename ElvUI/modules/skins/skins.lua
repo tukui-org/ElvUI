@@ -274,6 +274,9 @@ function S:HandleCheckBox(frame, noBackdrop)
 	
 	if frame.SetDisabledTexture then
 		frame:SetDisabledTexture("Interface\\Buttons\\UI-CheckBox-Check-Disabled")
+		if noBackdrop then
+			frame:GetDisabledTexture():SetInside(nil, -4, -4)
+		end		
 	end
 	
 	frame:HookScript('OnDisable', function(self)

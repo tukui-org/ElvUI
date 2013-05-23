@@ -32,6 +32,20 @@ local function LoadSkin()
 	LFGDungeonReadyDialog:SetTemplate("Transparent")
 	LFGDungeonReadyStatus:StripTextures()
 	LFGDungeonReadyStatus:SetTemplate("Transparent")
+	LFGDungeonReadyDialogRoleIconTexture:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+	LFGDungeonReadyDialogRoleIconTexture:SetAlpha(0.5)
+	hooksecurefunc("LFGDungeonReadyPopup_Update", function()
+		local proposalExists, id, typeID, subtypeID, name, texture, role, hasResponded, totalEncounters, completedEncounters, numMembers, isLeader = GetLFGProposal();
+		if LFGDungeonReadyDialogRoleIcon:IsShown() then
+			if role == "DAMAGER" then
+				LFGDungeonReadyDialogRoleIconTexture:SetTexCoord(LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
+			elseif role == "TANK" then
+				LFGDungeonReadyDialogRoleIconTexture:SetTexCoord(LFDQueueFrameRoleButtonTank.background:GetTexCoord())
+			elseif role == "HEALER" then
+				LFGDungeonReadyDialogRoleIconTexture:SetTexCoord(LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
+			end
+		end
+	end)
 
 	hooksecurefunc(LFGDungeonReadyDialog, "SetBackdrop", function(self, backdrop)
 		if backdrop.bgFile ~= E["media"].blankTex then
@@ -80,7 +94,8 @@ local function LoadSkin()
 	
 	for _, roleButton in pairs(roleButtons) do
 		S:HandleCheckBox(roleButton.checkButton, true)
-		roleButton:GetNormalTexture():SetAlpha(0)	
+		roleButton:DisableDrawLayer("ARTWORK")
+		roleButton:DisableDrawLayer("OVERLAY")
 	end
 
 	LFDQueueFrameRoleButtonLeader.leadIcon = LFDQueueFrameRoleButtonLeader:CreateTexture(nil, 'BACKGROUND')
@@ -101,12 +116,23 @@ local function LoadSkin()
 		else
 			button.checkButton:SetAlpha(0)
 		end
+
+		if button.background then
+			button.background:Show()
+		end
 	end)
-	
+
 	hooksecurefunc('LFG_EnableRoleButton', function(button)
 		button.checkButton:SetAlpha(1)
 	end)
 		
+
+	hooksecurefunc("LFG_PermanentlyDisableRoleButton", function(self)
+		if self.background then
+			self.background:Show()
+			self.background:SetDesaturated(true)
+		end
+	end)
 	
 	for i = 1, 3 do
 		local bu = GroupFinderFrame["groupButton"..i]
@@ -373,7 +399,12 @@ local function LoadSkin()
 	S:HandleButton(_G[ScenarioQueueFrame.PartyBackfill:GetName().."BackfillButton"])
 	S:HandleButton(_G[ScenarioQueueFrame.PartyBackfill:GetName().."NoBackfillButton"])
 	LFDQueueFrameRandomScrollFrameScrollBar:StripTextures()
+	ScenarioQueueFrameSpecificScrollFrame:StripTextures()
 	S:HandleScrollBar(LFDQueueFrameRandomScrollFrameScrollBar)
+	S:HandleScrollBar(ScenarioQueueFrameSpecificScrollFrameScrollBar)
+
+
+
 end
 
 S:RegisterSkin("ElvUI", LoadSkin)

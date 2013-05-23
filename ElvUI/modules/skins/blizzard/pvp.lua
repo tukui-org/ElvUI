@@ -67,30 +67,39 @@ local function LoadSkin()
 	S:HandleCheckBox(HonorFrame.RoleInset.TankIcon.checkButton, true)
 	S:HandleCheckBox(HonorFrame.RoleInset.HealerIcon.checkButton, true)
 	
-	HonorFrame.RoleInset.TankIcon:GetNormalTexture():SetAlpha(0)
-	HonorFrame.RoleInset.TankIcon.background = HonorFrame.RoleInset.TankIcon:CreateTexture(nil, 'BACKGROUND')
-	HonorFrame.RoleInset.TankIcon.background:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
-	HonorFrame.RoleInset.TankIcon.background:SetTexCoord(LFDQueueFrameRoleButtonTank.background:GetTexCoord())
-	HonorFrame.RoleInset.TankIcon.background:SetPoint('CENTER')
-	HonorFrame.RoleInset.TankIcon.background:Size(80)
-	HonorFrame.RoleInset.TankIcon.background:SetAlpha(0.5)
+	HonorFrame.RoleInset.TankIcon:DisableDrawLayer("ARTWORK")
+	HonorFrame.RoleInset.TankIcon:DisableDrawLayer("OVERLAY")
+	HonorFrame.RoleInset.TankIcon.bg = HonorFrame.RoleInset.TankIcon:CreateTexture(nil, 'BACKGROUND')
+	HonorFrame.RoleInset.TankIcon.bg:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+	HonorFrame.RoleInset.TankIcon.bg:SetTexCoord(LFDQueueFrameRoleButtonTank.background:GetTexCoord())
+	HonorFrame.RoleInset.TankIcon.bg:SetPoint('CENTER')
+	HonorFrame.RoleInset.TankIcon.bg:Size(80)
+	HonorFrame.RoleInset.TankIcon.bg:SetAlpha(0.5)
 
-	HonorFrame.RoleInset.HealerIcon:GetNormalTexture():SetAlpha(0)
-	HonorFrame.RoleInset.HealerIcon.background = HonorFrame.RoleInset.HealerIcon:CreateTexture(nil, 'BACKGROUND')
-	HonorFrame.RoleInset.HealerIcon.background:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
-	HonorFrame.RoleInset.HealerIcon.background:SetTexCoord(LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
-	HonorFrame.RoleInset.HealerIcon.background:SetPoint('CENTER')
-	HonorFrame.RoleInset.HealerIcon.background:Size(80)
-	HonorFrame.RoleInset.HealerIcon.background:SetAlpha(0.5)
+	HonorFrame.RoleInset.HealerIcon:DisableDrawLayer("ARTWORK")
+	HonorFrame.RoleInset.HealerIcon:DisableDrawLayer("OVERLAY")
+	HonorFrame.RoleInset.HealerIcon.bg = HonorFrame.RoleInset.HealerIcon:CreateTexture(nil, 'BACKGROUND')
+	HonorFrame.RoleInset.HealerIcon.bg:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+	HonorFrame.RoleInset.HealerIcon.bg:SetTexCoord(LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
+	HonorFrame.RoleInset.HealerIcon.bg:SetPoint('CENTER')
+	HonorFrame.RoleInset.HealerIcon.bg:Size(80)
+	HonorFrame.RoleInset.HealerIcon.bg:SetAlpha(0.5)
 
-	HonorFrame.RoleInset.DPSIcon:GetNormalTexture():SetAlpha(0)
-	HonorFrame.RoleInset.DPSIcon.background = HonorFrame.RoleInset.DPSIcon:CreateTexture(nil, 'BACKGROUND')
-	HonorFrame.RoleInset.DPSIcon.background:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
-	HonorFrame.RoleInset.DPSIcon.background:SetTexCoord(LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
-	HonorFrame.RoleInset.DPSIcon.background:SetPoint('CENTER')
-	HonorFrame.RoleInset.DPSIcon.background:Size(80)
-	HonorFrame.RoleInset.DPSIcon.background:SetAlpha(0.5)
 
+	HonorFrame.RoleInset.DPSIcon:DisableDrawLayer("ARTWORK")
+	HonorFrame.RoleInset.DPSIcon:DisableDrawLayer("OVERLAY")
+	HonorFrame.RoleInset.DPSIcon.bg = HonorFrame.RoleInset.DPSIcon:CreateTexture(nil, 'BACKGROUND')
+	HonorFrame.RoleInset.DPSIcon.bg:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+	HonorFrame.RoleInset.DPSIcon.bg:SetTexCoord(LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
+	HonorFrame.RoleInset.DPSIcon.bg:SetPoint('CENTER')
+	HonorFrame.RoleInset.DPSIcon.bg:Size(80)
+	HonorFrame.RoleInset.DPSIcon.bg:SetAlpha(0.5)
+
+	hooksecurefunc("LFG_PermanentlyDisableRoleButton", function(self)
+		if self.bg then
+			self.bg:SetDesaturated(true)
+		end
+	end)
 	for i = 1, 2 do
 		local b = HonorFrame.BonusFrame["WorldPVP"..i.."Button"]
 		b:StripTextures()
@@ -194,5 +203,29 @@ local function LoadSkin()
 		S:HandleNextPrevButton(_G["PVPBannerFrameCustomization"..i.."LeftButton"])
 	end
 
+	PVPReadyDialog:StripTextures()
+	PVPReadyDialog:SetTemplate("Transparent")
+	S:HandleButton(PVPReadyDialogEnterBattleButton)
+	S:HandleButton(PVPReadyDialogLeaveQueueButton)
+	S:HandleCloseButton(PVPReadyDialogCloseButton)
+	PVPReadyDialogRoleIcon.texture:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+	PVPReadyDialogRoleIcon.texture:SetAlpha(0.5)
+
+	hooksecurefunc("PVPReadyDialog_Display", function(self, index, displayName, isRated, queueType, gameType, role)
+		if role == "DAMAGER" then
+			PVPReadyDialogRoleIcon.texture:SetTexCoord(LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
+		elseif role == "TANK" then
+			PVPReadyDialogRoleIcon.texture:SetTexCoord(LFDQueueFrameRoleButtonTank.background:GetTexCoord())
+		elseif role == "HEALER" then
+			PVPReadyDialogRoleIcon.texture:SetTexCoord(LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
+		end
+
+		self.background:Hide()
+	end)
+
+
+
+
+	S:HandleButton(PVPBannerFrameCancelButton)
 end
 S:RegisterSkin('Blizzard_PVPUI', LoadSkin)
