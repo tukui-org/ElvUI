@@ -430,7 +430,7 @@ function CH:SetupChatTabs(frame, hook)
 	if not hook then
 		_G[frame:GetName().."Text"]:Show()
 		
-		if frame.owner.button and GetMouseFocus() ~= frame.owner.button then
+		if frame.owner and frame.owner.button and GetMouseFocus() ~= frame.owner.button then
 			frame.owner.button:SetAlpha(0.35)
 		end
 		if frame.conversationIcon then
@@ -439,7 +439,7 @@ function CH:SetupChatTabs(frame, hook)
 	elseif GetMouseFocus() ~= frame then
 		_G[frame:GetName().."Text"]:Hide()
 
-		if frame.owner.button and GetMouseFocus() ~= frame.owner.button then
+		if frame.owner and frame.owner.button and GetMouseFocus() ~= frame.owner.button then
 			frame.owner.button:SetAlpha(0)
 		end
 		
