@@ -37,6 +37,24 @@ local linkTypes = {
 	glyph = true
 }
 
+local levelAdjust = {
+	["0"]=0,["1"]=8,
+	["373"]=4,["374"]=8,
+	["375"]=4,
+	["376"]=4,
+	["377"]=4,
+	["379"]=4,
+	["380"]=4,
+	["445"]=0,["446"]=4,["447"]=8,
+	["451"]=0,["452"]=8,
+	["453"]=0,["454"]=4,["455"]=8,
+	["456"]=0,["457"]=8,
+	["458"]=0,["459"]=4,["460"]=8,["461"]=12,["462"]=16,
+	["465"]=0,["466"]=4,["467"]=8,
+	["476"]=0, ["479"]=0,
+}
+
+
 local classification = {
 	worldboss = format("|cffAF5050 %s|r", BOSS),
 	rareelite = format("|cffAF5050+ %s|r", ITEM_QUALITY3_DESC),
@@ -371,9 +389,10 @@ function TT:GetItemLvL(unit)
 		local slot = GetInventoryItemLink(unit, GetInventorySlotInfo(("%sSlot"):format(SlotName[i])))
 		if (slot ~= nil) then
 			local _, _, _, ilvl = GetItemInfo(slot)
+			local upgrade = slot:match(":(%d+)\124h%[")
 			if ilvl ~= nil then
 				item = item + 1
-				total = total + ilvl
+				total = total + ilvl + (upgrade and levelAdjust[upgrade] or 0)
 			end
 		end
 	end
