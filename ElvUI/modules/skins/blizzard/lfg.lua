@@ -160,7 +160,7 @@ local function LoadSkin()
 	for i=1, 2 do
 		S:HandleTab(_G['PVEFrameTab'..i])
 	end
-	PVEFrameTab1:SetPoint('BOTTOMLEFT', PVEFrame, 'BOTTOMLEFT', 19, -32)
+	PVEFrameTab1:SetPoint('BOTTOMLEFT', PVEFrame, 'BOTTOMLEFT', 19, E.PixelMode and -31 or -32)
 	
 	S:HandleCloseButton(PVEFrameCloseButton)
 
@@ -196,6 +196,13 @@ local function LoadSkin()
 					icon:SetParent(button.border)
 					count:SetParent(button.border)
 					button.reskinned = true
+
+					for j=1, 3 do
+						local roleIcon = _G["LFDQueueFrameRandomScrollFrameChildFrameItem"..i.."RoleIcon"..j]
+						if roleIcon then
+							roleIcon:SetParent(button.border)
+						end
+					end
 				end
 			end
 		end
