@@ -686,6 +686,7 @@ local function LoadSkin()
         "ControlsPanelAutoOpenLootHistory",
         -- Combat
         "CombatPanelEnemyCastBarsOnOnlyTargetNameplates",
+        "CombatPanelEnemyCastBarsNameplateSpellNames",
         "CombatPanelAttackOnAssist",
         "CombatPanelStopAutoAttack",
         "CombatPanelNameplateClassColors",
