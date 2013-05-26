@@ -779,8 +779,8 @@ function UF:UpdateAllHeaders(event)
 	if InCombatLockdown() then
 		self:RegisterEvent('PLAYER_REGEN_ENABLED', 'UpdateAllHeaders')
 		return
-	end
-	
+	end	
+
 	if event == 'PLAYER_REGEN_ENABLED' then
 		self:UnregisterEvent('PLAYER_REGEN_ENABLED')
 	end
@@ -799,6 +799,9 @@ function UF:UpdateAllHeaders(event)
 	
 	for _, header in pairs(UF['headers']) do
 		header:Update()
+		if header.Configure_Groups then
+			header:Configure_Groups()
+		end		
 	end	
 	
 	if E.private.unitframe.disableBlizzard then
