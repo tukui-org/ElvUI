@@ -940,11 +940,9 @@ function UF:UnitFrameThreatIndicator_Initialize(_, unitFrame)
 	unitFrame:UnregisterAllEvents() --Arena Taint Fix
 end
 
-CompactUnitFrameProfiles:UnregisterEvent('VARIABLES_LOADED') 	--Re-Register this event only if disableblizzard is turned off.
 function UF:Initialize()	
 	self.db = E.db["unitframe"]
 	
-	CompactUnitFrameProfiles:RegisterEvent('VARIABLES_LOADED')
 	if E.private["unitframe"].enable ~= true then return; end
 	E.UnitFrames = UF;
 	
