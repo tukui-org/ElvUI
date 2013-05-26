@@ -186,6 +186,7 @@ G.unitframe.aurafilters['TurtleBuffs'] = {
 			[SpellName(19263)] = Defaults(5), -- Deterrence
 			[SpellName(53480)] = Defaults(), -- Roar of Sacrifice (Cunning)
 		--Rogue
+			[SpellName(1966)] = Defaults(), -- Feint
 			[SpellName(31224)] = Defaults(), -- Cloak of Shadows
 			[SpellName(74001)] = Defaults(), -- Combat Readiness
 			--[SpellName(74002)] = Defaults(), -- Combat Insight (stacking buff from CR)

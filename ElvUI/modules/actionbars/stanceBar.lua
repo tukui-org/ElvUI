@@ -20,7 +20,7 @@ function AB:StyleShapeShift()
 		if i <= numForms then
 			texture, name, isActive, isCastable = GetShapeshiftFormInfo(i);
 
-			if texture == "Interface\\Icons\\Spell_Nature_WispSplode" then
+			if texture == "Interface\\Icons\\Spell_Nature_WispSplode" and self.db.stanceBar.style == 'darkenInactive' then
 				_, _, texture = GetSpellInfo(name)
 			end
 			
@@ -38,22 +38,22 @@ function AB:StyleShapeShift()
 			if isActive then
 				StanceBarFrame.lastSelected = button:GetID();
 				if numForms == 1 then
-					button:SetChecked(1);
+					button:SetChecked(self.db.stanceBar.style == 'darkenInactive');
 				else
-					button:SetChecked(0);
+					button:SetChecked(self.db.stanceBar.style ~= 'darkenInactive');
 				end
 			else
 				if numForms == 1 or stance == 0 then
-					button:SetChecked(0);
+					button:SetChecked(self.db.stanceBar.style ~= 'darkenInactive');
 				else
-					button:SetChecked(1);
-					if button.SetCheckedTexture and not button.tex then
-						local tex = button:CreateTexture(nil, "OVERLAY")
-						tex:SetTexture(0, 0, 0, 0.7)
-						tex:SetInside()
-						button.tex = tex
-						button:SetCheckedTexture(tex)
+					button:SetChecked(self.db.stanceBar.style == 'darkenInactive');
+					button.checked:SetAlpha(1)
+					if self.db.stanceBar.style == 'darkenInactive' then
+						button.checked:SetTexture(0, 0, 0, 0.5)
+					else
+						button.checked:SetTexture(1, 1, 1, 0.5)
 					end
+					--button:SetCheckedTexture(button.tex)
 				end
 			end
 
