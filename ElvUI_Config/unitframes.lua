@@ -3082,6 +3082,20 @@ E.Options.args.unitframe.args.party = {
 									end
 								end,
 						},
+						--[[groupsPerRowCol = {
+							order = 8,
+							type = 'range',
+							name = L['Groups Per Row/Column'],
+							min = 1, max = 8, step = 1,
+							set = function(info, value) 
+								E.db.unitframe.units['party'][ info[#info] ] = value; 
+								UF:CreateAndUpdateHeaderGroup('party')
+								if ElvUF_Party.isForced then
+									UF:HeaderConfig(ElvUF_Party)
+									UF:HeaderConfig(ElvUF_Party, true)
+								end
+							end,
+						},]]			
 						horizontalSpacing = {
 							order = 9,
 							type = 'range',

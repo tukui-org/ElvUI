@@ -37,6 +37,8 @@ Name Formats:
 To disable leave the field blank, if you need more information visit http://www.tukui.org]=];
 
 --ActionBars
+L['Darken Inactive'] = true;
+L["This setting will be updated upon changing stances."] = true;
 L["Action Paging"] = true;
 L["ActionBars"] = true;
 L['Alpha'] = true;
