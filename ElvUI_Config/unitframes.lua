@@ -3082,7 +3082,7 @@ E.Options.args.unitframe.args.party = {
 									end
 								end,
 						},
-						groupsPerRowCol = {
+						--[[groupsPerRowCol = {
 							order = 8,
 							type = 'range',
 							name = L['Groups Per Row/Column'],
@@ -3095,7 +3095,7 @@ E.Options.args.unitframe.args.party = {
 									UF:HeaderConfig(ElvUF_Party, true)
 								end
 							end,
-						},						
+						},]]			
 						horizontalSpacing = {
 							order = 9,
 							type = 'range',
