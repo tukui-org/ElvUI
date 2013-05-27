@@ -50,7 +50,7 @@ function AB:StyleShapeShift()
 					button:SetChecked(self.db.stanceBar.style == 'darkenInactive');
 					button.checked:SetAlpha(1)
 					if self.db.stanceBar.style == 'darkenInactive' then
-						button.checked:SetTexture(0, 0, 0, 0.5)
+						button.checked:SetTexture(0, 0, 0, 0.7)
 					else
 						button.checked:SetTexture(1, 1, 1, 0.5)
 					end
