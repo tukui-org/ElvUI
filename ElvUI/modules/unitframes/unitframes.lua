@@ -145,7 +145,6 @@ local find, gsub, split, format = string.find, string.gsub, string.split, string
 local min, abs = math.min, math.abs
 local tremove, tinsert = table.remove, table.insert
 
-
 function UF:ConvertGroupDB(group)
 	local db = self.db.units[group.groupName]
 	if db.point and db.columnAnchorPoint then
@@ -181,11 +180,6 @@ function UF:ConvertGroupDB(group)
 	if db.growthDirection == "DOWN" then
 		db.growthDirection = "DOWN_RIGHT"
 	end	
-end
-
-local function DelayedUpdate(group)
-	if InCombatLockdown() then return end
-	group:Show()
 end
 
 function UF:Construct_UF(frame, unit)
@@ -911,10 +905,6 @@ function UF:ADDON_LOADED(event, addon)
 end
 
 function UF:PLAYER_ENTERING_WORLD(event)
-	if not self.initialLoad then 
-		self.initialLoad = true
-		return
-	end
 	self:Update_AllFrames()
 end
 
