@@ -97,16 +97,7 @@ local DIRECTION_TO_POINT = {
 	DOWN = "TOP"
 }
 
-
 local DIRECTION_TO_GROUP_ANCHOR_POINT = {
-	OUT_RIGHT_UP = "BOTTOM",
-	OUT_LEFT_UP = "BOTTOM",
-	OUT_RIGHT_DOWN = "TOP",
-	OUT_LEFT_DOWN = "TOP",
-	OUT_UP_RIGHT = "LEFT",
-	OUT_UP_LEFT = "RIGHT",
-	OUT_DOWN_RIGHT = "LEFT",
-	OUT_DOWN_LEFT = "RIGHT",
 	DOWN_RIGHT = "TOPLEFT",
 	DOWN_LEFT = "TOPRIGHT",
 	UP_RIGHT = "BOTTOMLEFT",
@@ -115,10 +106,6 @@ local DIRECTION_TO_GROUP_ANCHOR_POINT = {
 	RIGHT_UP = "BOTTOMLEFT",
 	LEFT_DOWN = "TOPRIGHT",
 	LEFT_UP = "BOTTOMRIGHT",
-	OUT_UP = "BOTTOMLEFT",
-	OUT_DOWN = "TOPLEFT",
-	UP = "BOTTOMLEFT",
-	DOWN = "TOPLEFT"
 }
 
 local DIRECTION_TO_COLUMN_ANCHOR_POINT = {
@@ -130,21 +117,6 @@ local DIRECTION_TO_COLUMN_ANCHOR_POINT = {
 	RIGHT_UP = "BOTTOM",
 	LEFT_DOWN = "TOP",
 	LEFT_UP = "BOTTOM",
-	UP = "BOTTOM",
-	DOWN = "TOP"
-}
-
-local INVERTED_DIRECTION_TO_COLUMN_ANCHOR_POINT = {
-	DOWN_RIGHT = "RIGHT",
-	DOWN_LEFT = "LEFT",
-	UP_RIGHT = "RIGHT",
-	UP_LEFT = "LEFT",
-	RIGHT_DOWN = "BOTTOM",
-	RIGHT_UP = "TOP",
-	LEFT_DOWN = "BOTTOM",
-	LEFT_UP = "TOP",
-	UP = "TOP",
-	DOWN = "BOTTOM"
 }
 
 local DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER = {
@@ -156,8 +128,6 @@ local DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER = {
 	RIGHT_UP = 1,
 	LEFT_DOWN = -1,
 	LEFT_UP = -1,
-	UP = 1,
-	DOWN = 1
 }
 
 local DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER = {
@@ -169,8 +139,6 @@ local DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER = {
 	RIGHT_UP = 1,
 	LEFT_DOWN = -1,
 	LEFT_UP = 1,
-	UP = 1,
-	DOWN = -1
 }
 
 local find, gsub, split, format = string.find, string.gsub, string.split, string.format
@@ -205,6 +173,14 @@ function UF:ConvertGroupDB(group)
 		db.unitsPerGroup = db.unitsPerColumn;
 		db.unitsPerColumn = nil;
 	end
+
+	if db.growthDirection == "UP" then
+		db.growthDirection = "UP_RIGHT"
+	end
+
+	if db.growthDirection == "DOWN" then
+		db.growthDirection = "DOWN_RIGHT"
+	end	
 end
 
 local function DelayedUpdate(group)
@@ -471,16 +447,16 @@ end
 function UF.groupPrototype:Configure_Groups()
 	local db = UF.db.units[self.groupName]
 
-	local width, height, numShown = 0, 0, 0
+	local point
+	local width, height, newCols, newRows = 0, 0, 0, 0
 	local direction = db.growthDirection
+	local xMult, yMult = DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction], DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction]
 	for i=1, #self.groups do
 		local group = self.groups[i]
 		UF:ConvertGroupDB(group)
-		local point = DIRECTION_TO_POINT[direction]
-		local positionOverride = DIRECTION_TO_GROUP_ANCHOR_POINT[db.startOutFromCenter and 'OUT_'..direction or direction]
+		point = DIRECTION_TO_POINT[direction]
 
 		if group:IsShown() then
-			numShown = numShown + 1
 			if point == "LEFT" or point == "RIGHT" then
 				group:SetAttribute("xOffset", db.horizontalSpacing * DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction])
 				group:SetAttribute("yOffset", 0)
@@ -502,7 +478,7 @@ function UF.groupPrototype:Configure_Groups()
 
 			
 			group:ClearAllPoints()
-			group:SetAttribute("columnAnchorPoint", db.invertGroupingOrder and INVERTED_DIRECTION_TO_COLUMN_ANCHOR_POINT[direction] or DIRECTION_TO_COLUMN_ANCHOR_POINT[direction])
+			group:SetAttribute("columnAnchorPoint", DIRECTION_TO_COLUMN_ANCHOR_POINT[direction])
 			group:ClearChildPoints()
 			group:SetAttribute("point", point)	
 
@@ -514,50 +490,49 @@ function UF.groupPrototype:Configure_Groups()
 				group:SetAttribute("showPlayer", db.showPlayer)	
 			end
 
-			if i == 1 then
-				local point = DIRECTION_TO_GROUP_ANCHOR_POINT[db.startOutFromCenter and 'OUT_'..direction or direction]
-
-				group:SetPoint(point)
-				if direction == 'UP' or direction == 'DOWN' then
-					width = db.width
-					height = db.height + ((db.height + db.verticalSpacing) * 4)
-				elseif DIRECTION_TO_POINT[direction] == "LEFT" or DIRECTION_TO_POINT[direction] == "RIGHT" then
-					width = db.width + ((db.width + db.horizontalSpacing) * 4)
-					height = db.height
-				else
-					height = db.height + ((db.height + db.verticalSpacing) * 4)
-					width = db.width
-				end
-			else
-				local point = DIRECTION_TO_GROUP_ANCHOR_POINT[direction]
-				local xMult, yMult = DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction], DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction]
-
-				if direction == 'UP' or direction == 'DOWN' then
-					if i == 2 then height = height + db.verticalSpacing end
-					group:SetPoint(DIRECTION_TO_COLUMN_ANCHOR_POINT[direction], self.groups[i-1], INVERTED_DIRECTION_TO_COLUMN_ANCHOR_POINT[direction], 0, db.verticalSpacing * yMult)
-					height = height + ((db.height + db.verticalSpacing) * 5)
-				elseif DIRECTION_TO_POINT[direction] == "LEFT" or DIRECTION_TO_POINT[direction] == "RIGHT" then
-					if i == 2 then height = height + db.verticalSpacing end
+			--MATH!! WOOT
+			point = DIRECTION_TO_GROUP_ANCHOR_POINT[direction]
+			if (i - 1) % db.groupsPerRowCol == 0 then
+				if DIRECTION_TO_POINT[direction] == "LEFT" or DIRECTION_TO_POINT == "RIGHT" then
 					group:SetPoint(point, self, point, 0, height * yMult)
 					height = height + (db.height + db.verticalSpacing)
+
+					newRows = newRows + 1
 				else
-					if i == 2 then width = width + db.horizontalSpacing end
 					group:SetPoint(point, self, point, width * xMult, 0)
 					width = width + (db.width + db.horizontalSpacing)
+
+					newCols = newCols + 1
 				end
+			else
+				if DIRECTION_TO_POINT[direction] == "LEFT" or DIRECTION_TO_POINT == "RIGHT" then
+					if newRows == 1 then
+						group:SetPoint(point, self, point, width * xMult, 0)
+						width = width + ((db.width + db.horizontalSpacing) * 5)
+						newCols = newCols + 1
+					else
+						group:SetPoint(point, self, point, (((db.width + db.horizontalSpacing) * 5) * ((i-1) % db.groupsPerRowCol)) * xMult, ((db.height + db.verticalSpacing) * (newRows - 1)) * yMult)
+					end
+				else
+					if newCols == 1 then
+						group:SetPoint(point, self, point, 0, height * yMult)
+						height = height + ((db.height + db.verticalSpacing) * 5)
+						newRows = newRows + 1
+					else
+						group:SetPoint(point, self, point, ((db.width + db.horizontalSpacing) * (newCols - 1)) * xMult, (((db.height + db.verticalSpacing) * 5) * ((i-1) % db.groupsPerRowCol)) * yMult)
+					end
+				end
+			end
+
+			if height == 0 then
+				height = height + ((db.height + db.verticalSpacing) * 5)
+			elseif width == 0 then
+				width = width + ((db.width + db.horizontalSpacing) * 5)
 			end
 		end
 	end
 
-	if numShown > 1 then
-		if (DIRECTION_TO_POINT[direction] == "LEFT" or DIRECTION_TO_POINT[direction] == "RIGHT") or direction == 'UP' or direction == 'DOWN' then
-			height = height - db.verticalSpacing
-		else
-			width = width - db.horizontalSpacing
-		end
-	end
-
-	self:SetSize(width, height)
+	self:SetSize(width - db.horizontalSpacing, height - db.verticalSpacing)
 end
 
 function UF.groupPrototype:Update()
@@ -936,6 +911,10 @@ function UF:ADDON_LOADED(event, addon)
 end
 
 function UF:PLAYER_ENTERING_WORLD(event)
+	if not self.initialLoad then 
+		self.initialLoad = true
+		return
+	end
 	self:Update_AllFrames()
 end
 

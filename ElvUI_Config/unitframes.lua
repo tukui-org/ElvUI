@@ -3057,16 +3057,8 @@ E.Options.args.unitframe.args.party = {
 								RIGHT_DOWN = format(L['%s and then %s'], L['Right'], L['Down']),
 								RIGHT_UP = format(L['%s and then %s'], L['Right'], L['Up']),
 								LEFT_DOWN = format(L['%s and then %s'], L['Left'], L['Down']),
-								LEFT_UP = format(L['%s and then %s'], L['Left'], L['Up']),
-								UP = L['Up'],
-								DOWN = L['Down']					
+								LEFT_UP = format(L['%s and then %s'], L['Left'], L['Up']),				
 							},
-						},
-						startOutFromCenter = {
-							order = 5,
-							name = L['Start near Center'],
-							desc = L['The initial group will start near the center and grow out. Corrosponding groups will behave normally.'],
-							type = 'toggle',
 						},
 						numGroups = {
 							order = 7,
@@ -3082,7 +3074,7 @@ E.Options.args.unitframe.args.party = {
 									end
 								end,
 						},
-						--[[groupsPerRowCol = {
+						groupsPerRowCol = {
 							order = 8,
 							type = 'range',
 							name = L['Groups Per Row/Column'],
@@ -3095,7 +3087,7 @@ E.Options.args.unitframe.args.party = {
 									UF:HeaderConfig(ElvUF_Party, true)
 								end
 							end,
-						},]]			
+						},		
 						horizontalSpacing = {
 							order = 9,
 							type = 'range',
@@ -3472,17 +3464,9 @@ for i=10, 40, 15 do
 									RIGHT_DOWN = format(L['%s and then %s'], L['Right'], L['Down']),
 									RIGHT_UP = format(L['%s and then %s'], L['Right'], L['Up']),
 									LEFT_DOWN = format(L['%s and then %s'], L['Left'], L['Down']),
-									LEFT_UP = format(L['%s and then %s'], L['Left'], L['Up']),
-									UP = L['Up'],
-									DOWN = L['Down']			
+									LEFT_UP = format(L['%s and then %s'], L['Left'], L['Up']),		
 								},
-							},
-							startOutFromCenter = {
-								order = 5,
-								name = L['Start near Center'],
-								desc = L['The initial group will start near the center and grow out. Corrosponding groups will behave normally.'],
-								type = 'toggle',
-							},									
+							},								
 							numGroups = {
 								order = 7,
 								type = 'range',
@@ -3497,6 +3481,20 @@ for i=10, 40, 15 do
 									end									
 								end,
 							},
+							groupsPerRowCol = {
+								order = 8,
+								type = 'range',
+								name = L['Groups Per Row/Column'],
+								min = 1, max = 8, step = 1,
+								set = function(info, value) 
+									E.db.unitframe.units['raid'..i][ info[#info] ] = value; 
+									UF:CreateAndUpdateHeaderGroup('raid'..i)
+									if _G['ElvUF_Raid'..i].isForced then
+										UF:HeaderConfig(_G['ElvUF_Raid'..i])
+										UF:HeaderConfig(_G['ElvUF_Raid'..i], true)
+									end			
+								end,
+							},								
 							horizontalSpacing = {
 								order = 9,
 								type = 'range',
