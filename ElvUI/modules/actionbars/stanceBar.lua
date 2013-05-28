@@ -38,13 +38,13 @@ function AB:StyleShapeShift()
 			if isActive then
 				StanceBarFrame.lastSelected = button:GetID();
 				if numForms == 1 then
-					button:SetChecked(self.db.stanceBar.style == 'darkenInactive');
+					button:SetChecked(1);
 				else
 					button:SetChecked(self.db.stanceBar.style ~= 'darkenInactive');
 				end
 			else
 				if numForms == 1 or stance == 0 then
-					button:SetChecked(self.db.stanceBar.style ~= 'darkenInactive');
+					button:SetChecked(0);
 				else
 					button:SetChecked(self.db.stanceBar.style == 'darkenInactive');
 					button.checked:SetAlpha(1)
