@@ -487,7 +487,7 @@ function UF.groupPrototype:Configure_Groups()
 			--MATH!! WOOT
 			point = DIRECTION_TO_GROUP_ANCHOR_POINT[direction]
 			if (i - 1) % db.groupsPerRowCol == 0 then
-				if DIRECTION_TO_POINT[direction] == "LEFT" or DIRECTION_TO_POINT == "RIGHT" then
+				if DIRECTION_TO_POINT[direction] == "LEFT" or DIRECTION_TO_POINT[direction] == "RIGHT" then
 					group:SetPoint(point, self, point, 0, height * yMult)
 					height = height + (db.height + db.verticalSpacing)
 
@@ -499,7 +499,7 @@ function UF.groupPrototype:Configure_Groups()
 					newCols = newCols + 1
 				end
 			else
-				if DIRECTION_TO_POINT[direction] == "LEFT" or DIRECTION_TO_POINT == "RIGHT" then
+				if DIRECTION_TO_POINT[direction] == "LEFT" or DIRECTION_TO_POINT[direction] == "RIGHT" then
 					if newRows == 1 then
 						group:SetPoint(point, self, point, width * xMult, 0)
 						width = width + ((db.width + db.horizontalSpacing) * 5)
