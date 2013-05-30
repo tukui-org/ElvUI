@@ -26,5 +26,4 @@
 	<Script file='vengeance.lua'/>
 	<Script file='pvpresilience.lua'/>
 	<Script file='pvppower.lua'/>
-	<Script file='lootSpecialization.lua'/>
 </Ui>
