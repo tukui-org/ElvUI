@@ -181,20 +181,28 @@ function UF:HeaderConfig(header, configMode)
 			end
 		end
 
-		RegisterStateDriver(header, 'visibility', 'show')
-
+		if header.db.rideWideSorting then
+			RegisterAttributeDriver(group, 'state-visibility', 'show')
+		else
+			RegisterStateDriver(header, 'visibility', 'show')
+		end	
 	else
 		for func, env in pairs(originalEnvs) do
 			setfenv(func, env)
 			originalEnvs[func] = nil
 		end		
 
-		RegisterStateDriver(header, "visibility", header.db.visibility)
+		if header.db.rideWideSorting then
+			RegisterAttributeDriver(group, 'state-visibility', header.db.visibility)
+		else
+			RegisterStateDriver(header, "visibility", header.db.visibility)
+		end
+
 		header:GetScript("OnEvent")(header, "PLAYER_ENTERING_WORLD")
 	end	
 
-	for i=1, #header.groups do
-		local group = header.groups[i]
+	if header.db.rideWideSorting then
+		local group = header
 		local db = group.db
 
 		group.forceShow = header.forceShow
@@ -220,9 +228,38 @@ function UF:HeaderConfig(header, configMode)
 
 			group:Update()
 		end
-	end
+	else
+		for i=1, #header.groups do
+			local group = header.groups[i]
+			local db = group.db
 
-	header:AdjustVisibility()
+			group.forceShow = header.forceShow
+			group.forceShowAuras = header.forceShowAuras
+			group:HookScript("OnAttributeChanged", OnAttributeChanged)
+			if configMode then		
+				for key in pairs(attributeBlacklist) do
+					group:SetAttribute(key, nil)
+				end
+
+				OnAttributeChanged(group)
+
+
+				group:Update()	
+			else
+				for key in pairs(attributeBlacklist) do
+					group:SetAttribute(key, true)
+				end	
+
+				
+				UF:UnshowChildUnits(group, group:GetChildren())
+				group:SetAttribute('startingIndex', 1)
+
+				group:Update()
+			end
+		end
+
+		header:AdjustVisibility()
+	end
 end
 
 function UF:PLAYER_REGEN_DISABLED()

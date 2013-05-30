@@ -588,6 +588,52 @@ function UF.headerPrototype:Update()
 	end		
 end
 
+function UF:SetupGroupAnchorPoints(group)
+	UF:ConvertGroupDB(group)
+	local db = self.db.units[group.groupName]
+	local direction = db.growthDirection
+	local point = DIRECTION_TO_POINT[direction]
+	local positionOverride = DIRECTION_TO_GROUP_ANCHOR_POINT[db.startOutFromCenter and 'OUT_'..direction or direction]
+	
+	local maxUnits, startingIndex = MAX_RAID_MEMBERS, -1
+	if (db.numGroups and db.unitsPerGroup) then
+		startingIndex = -min(db.numGroups * db.unitsPerGroup, maxUnits) + 1
+	end
+	
+	if point == "LEFT" or point == "RIGHT" then
+		group:SetAttribute("xOffset", db.horizontalSpacing * DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction])
+		group:SetAttribute("yOffset", 0)
+		group:SetAttribute("columnSpacing", db.verticalSpacing)
+	else
+		group:SetAttribute("xOffset", 0)
+		group:SetAttribute("yOffset", db.verticalSpacing * DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction])
+		group:SetAttribute("columnSpacing", db.horizontalSpacing)
+	end
+	
+	group:SetAttribute("columnAnchorPoint", db.invertGroupingOrder and INVERTED_DIRECTION_TO_COLUMN_ANCHOR_POINT[direction] or DIRECTION_TO_COLUMN_ANCHOR_POINT[direction])
+	UF:ClearChildPoints(group:GetChildren())
+	group:SetAttribute("point", point)	
+	group:SetAttribute("maxColumns", db.numGroups)
+	group:SetAttribute("unitsPerColumn", db.unitsPerGroup)		
+
+	if not group.isForced then
+		group:SetAttribute("startingIndex", startingIndex)
+		RegisterAttributeDriver(group, 'state-visibility', 'show')	
+		group.dirtyWidth, group.dirtyHeight = group:GetSize()
+		RegisterAttributeDriver(group, 'state-visibility', db.visibility)
+		group:SetAttribute('startingIndex', 1)
+		
+		E:Delay(0.25, DelayedUpdate, group)
+	end
+	
+	if group.mover then
+		group.mover.positionOverride = positionOverride
+		E:UpdatePositionOverride(group.mover:GetName())
+	end
+
+	return positionOverride
+end
+
 function UF:CreateHeader(parent, groupFilter, overrideName, template, groupName)
 	local group = parent.groupName or groupName
 	local db = UF.db['units'][group]
@@ -621,7 +667,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 		ElvUF:SetActiveStyle("ElvUF_"..stringTitle)		
 
 
-		if db.numGroups then
+		if db.numGroups and not db.rideWideSorting then
 			self[group] = CreateFrame('Frame', 'ElvUF_'..stringTitle, ElvUF_Parent, 'SecureHandlerStateTemplate');
 			self[group].groups = {}
 			self[group].groupName = group
@@ -637,7 +683,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 		self[group]:Show()
 	end
 
-	if db.numGroups then
+	if db.numGroups and not db.rideWideSorting then
 		if db.enable ~= true then
 			UnregisterStateDriver(self[group], "visibility")
 			self[group]:Hide()
@@ -678,6 +724,10 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 				if _G[child:GetName()..'Target'] then
 					UF["Update_"..E:StringTitle(group).."Frames"](self, _G[child:GetName()..'Target'], self.db['units'][group])
 				end			
+
+				if _G[child:GetName()..'Pet'] then
+					UF["Update_"..E:StringTitle(group).."Frames"](self, _G[child:GetName()..'Pet'], self.db['units'][group])
+				end						
 			end			
 		end		
 			
