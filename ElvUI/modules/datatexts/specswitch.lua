@@ -93,6 +93,7 @@ local function OnClick(self, button)
 	if button == "LeftButton" then
 		SetActiveSpecGroup(active == 1 and 2 or 1)
 	else
+		DT.tooltip:Hide()
 		local specID, specName = GetSpecializationInfo(specIndex);
 		menuList[2].text = format(LOOT_SPECIALIZATION_DEFAULT, specName);
 
