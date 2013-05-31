@@ -56,7 +56,7 @@ end
 function UF:Update_PartyHeader(header, db)	
 	header.db = db
 
-	local headerHolder = header:GetParent()
+	local headerHolder = header.db.rideWideSorting and header or header:GetParent()
 	headerHolder.db = db
 	if not headerHolder.positioned then
 		headerHolder:ClearAllPoints()
