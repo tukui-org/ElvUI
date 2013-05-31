@@ -1,6 +1,8 @@
 ﻿local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local _, myclasscolor = UnitClass("player");
-local valuer, valueg, valueb = RAID_CLASS_COLORS[myclasscolor].r, RAID_CLASS_COLORS[myclasscolor].g, RAID_CLASS_COLORS[myclasscolor].b
+local _, ns = ...
+local ElvUF = ns.oUF
+local _, unitClass = UnitClass("player");
+local valueR, valueG, valueB = ElvUF.colors.class[unitClass][1], ElvUF.colors.class[unitClass][2], ElvUF.colors.class[unitClass][3]
 
 P.gridSize = 64
 P.farmSize = 340
@@ -25,7 +27,7 @@ P['general'] = {
 	["backdropcolor"] = { r = .16,g = .16,b = .16 },
 	["backdropfadecolor"] = { r = .10,g = .10,b = .10, a = 0.8 },
 	['bubblefadecolor'] = { r = .10,g = .10,b = .10, a = 0.5 },
-	["valuecolor"] = {r = valuer,g = valueg,b = valueb},
+	["valuecolor"] = {r = valueR,g = valueG,b = valueB},
 
 	['mapAlpha'] = 1,
 	['tinyWorldMap'] = true,

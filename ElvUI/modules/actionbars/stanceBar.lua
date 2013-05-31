@@ -39,18 +39,19 @@ function AB:StyleShapeShift()
 			if isActive then
 				StanceBarFrame.lastSelected = button:GetID();
 				if numForms == 1 then
-					button:SetChecked(self.db.stanceBar.style == 'darkenInactive');
+					button.checked:SetTexture(1, 1, 1, 0.5) -- Workaround for when you go from a spec with multiple stances to a spec with only 1.
+					button:SetChecked(1);
 				else
 					button:SetChecked(self.db.stanceBar.style ~= 'darkenInactive');
 				end
 			else
 				if numForms == 1 or stance == 0 then
-					button:SetChecked(self.db.stanceBar.style ~= 'darkenInactive');
+					button:SetChecked(0);
 				else
 					button:SetChecked(self.db.stanceBar.style == 'darkenInactive');
 					button.checked:SetAlpha(1)
 					if self.db.stanceBar.style == 'darkenInactive' then
-						button.checked:SetTexture(0, 0, 0, 0.7)
+						button.checked:SetTexture(0, 0, 0, 0.5)
 					else
 						button.checked:SetTexture(1, 1, 1, 0.5)
 					end
