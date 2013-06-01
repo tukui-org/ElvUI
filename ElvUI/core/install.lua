@@ -362,9 +362,9 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.focus.castbar.yOffset = 0;
 			
 			E.db.unitframe.units.focustarget.buffs.anchorPoint = 'TOPLEFT';
-			E.db.unitframe.units.focustarget.buffs..yOffset = 1;
+			E.db.unitframe.units.focustarget.buffs.yOffset = 1;
 			E.db.unitframe.units.focustarget.debuffs.anchorPoint = 'TOPLEFT';
-			E.db.unitframe.units.focustarget.debuffs..yOffset = 1;
+			E.db.unitframe.units.focustarget.debuffs.yOffset = 1;
 			
 			E.db.unitframe.units.boss.growthDirection = 'UP';
 			
