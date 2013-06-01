@@ -233,7 +233,7 @@ P['datatexts'] = {
 		},
 		['Bottom_Datatext_Panel'] = {
 			['left'] = 'Friends',
-			['middle'] = 'Spec Switch',
+			['middle'] = 'Talent/Loot Specialization',
 			['right'] = 'Guild',
 		},
 	},
