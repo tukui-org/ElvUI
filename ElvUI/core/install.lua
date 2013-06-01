@@ -345,7 +345,7 @@ function E:SetupLayout(layout, noDataReset)
 		if not noDataReset then
 			E.db.unitframe.units.target.buffs.numrows = 1;
 			E.db.unitframe.units.target.buffs.anchorPoint = 'TOPRIGHT';
-			E.db.unitframe.units.target.buffs.yOffset = 1;
+			E.db.unitframe.units.target.buffs.yOffset = 2;
 			E.db.unitframe.units.target.debuffs.numrows = 1;
 			E.db.unitframe.units.target.debuffs.anchorPoint = 'TOPRIGHT';
 			E.db.unitframe.units.target.debuffs.yOffset = 1;
@@ -356,13 +356,13 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.targettarget.debuffs.yOffset = 1;
 			
 			E.db.unitframe.units.focus.buffs.anchorPoint = 'TOPLEFT';
-			E.db.unitframe.units.focus.buffs.yOffset = 1;
+			E.db.unitframe.units.focus.buffs.yOffset = 2;
 			E.db.unitframe.units.focus.debuffs.anchorPoint = 'TOPLEFT';
 			E.db.unitframe.units.focus.debuffs.yOffset = 1;
 			E.db.unitframe.units.focus.castbar.yOffset = 0;
 			
 			E.db.unitframe.units.focustarget.buffs.anchorPoint = 'TOPLEFT';
-			E.db.unitframe.units.focustarget.buffs.yOffset = 1;
+			E.db.unitframe.units.focustarget.buffs.yOffset = 2;
 			E.db.unitframe.units.focustarget.debuffs.anchorPoint = 'TOPLEFT';
 			E.db.unitframe.units.focustarget.debuffs.yOffset = 1;
 			
