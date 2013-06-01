@@ -536,7 +536,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = {friendly = false, enemy = false},
 				['useFilter'] = '',
 				['xOffset'] = 0,
-				['yOffset'] = -1,
+				['yOffset'] = -2,
 				['sizeOverride'] = 0,
 			},
 			['debuffs'] = {
@@ -718,7 +718,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = {friendly = false, enemy = false},
 				['useFilter'] = '',
 				['xOffset'] = 0,
-				['yOffset'] = -1,
+				['yOffset'] = -2,
 				['sizeOverride'] = 0,
 			},
 			['debuffs'] = {
@@ -816,7 +816,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = {friendly = false, enemy = false},
 				['useFilter'] = '',
 				['xOffset'] = 0,
-				['yOffset'] = -1,
+				['yOffset'] = -2,
 				['sizeOverride'] = 0,
 			},
 			['debuffs'] = {
@@ -1038,7 +1038,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = false,
 				['useFilter'] = '',
 				['xOffset'] = 0,
-				['yOffset'] = 1,
+				['yOffset'] = 2,
 				['sizeOverride'] = 0,
 			},
 			['debuffs'] = {
