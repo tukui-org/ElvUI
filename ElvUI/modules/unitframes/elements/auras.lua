@@ -6,7 +6,7 @@ local LSM = LibStub("LibSharedMedia-3.0");
 
 function UF:Construct_Buffs(frame)
 	local buffs = CreateFrame('Frame', nil, frame)
-	buffs.spacing = E.Spacing
+	buffs.spacing = 1
 	--buffs.PreSetPosition = (not frame:GetScript("OnUpdate")) and self.SortAuras or nil
 	buffs.PostCreateIcon = self.Construct_AuraIcon
 	buffs.PostUpdateIcon = self.PostUpdateAura
@@ -19,7 +19,7 @@ end
 
 function UF:Construct_Debuffs(frame)
 	local debuffs = CreateFrame('Frame', nil, frame)
-	debuffs.spacing = E.Spacing
+	debuffs.spacing = 1
 	--debuffs.PreSetPosition = (not frame:GetScript("OnUpdate")) and self.SortAuras or nil
 	debuffs.PostCreateIcon = self.Construct_AuraIcon
 	debuffs.PostUpdateIcon = self.PostUpdateAura
@@ -127,10 +127,12 @@ function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, durati
 		end	
 	end
 
+	--[[ I don't care, I want my space!
 	local size = button:GetParent().size
 	if size then
 		button:Size(size)
 	end
+	]]
 	
 	button.spell = name
 	button.isStealable = isStealable

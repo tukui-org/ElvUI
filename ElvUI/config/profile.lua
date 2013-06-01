@@ -524,7 +524,7 @@ P['unitframe'] = {
 				['enable'] = true,
 				['perrow'] = 8,
 				['numrows'] = 2,
-				['attachTo'] = 'FRAME',
+				['attachTo'] = 'DEBUFFS',
 				['anchorPoint'] = 'BOTTOMLEFT',
 				['fontSize'] = 10,
 				['clickThrough'] = false,
@@ -536,14 +536,14 @@ P['unitframe'] = {
 				['onlyDispellable'] = {friendly = false, enemy = false},
 				['useFilter'] = '',
 				['xOffset'] = 0,
-				['yOffset'] = 0,
+				['yOffset'] = -1,
 				['sizeOverride'] = 0,
 			},
 			['debuffs'] = {
 				['enable'] = true,
 				['perrow'] = 8,
 				['numrows'] = 2,
-				['attachTo'] = 'BUFFS',
+				['attachTo'] = 'FRAME',
 				['anchorPoint'] = 'BOTTOMLEFT',					
 				['fontSize'] = 10,
 				['clickThrough'] = false,
@@ -554,7 +554,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = {friendly = false, enemy = false},
 				['useFilter'] = '',
 				['xOffset'] = 0,
-				['yOffset'] = 0,
+				['yOffset'] = -1,
 				['sizeOverride'] = 0,
 			},
 			['castbar'] = {
@@ -660,7 +660,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = {friendly = false, enemy = false},
 				['useFilter'] = '',
 				['xOffset'] = 0,
-				['yOffset'] = 0,
+				['yOffset'] = -1,
 				['sizeOverride'] = 0,
 			},	
 			['raidicon'] = {
@@ -718,7 +718,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = {friendly = false, enemy = false},
 				['useFilter'] = '',
 				['xOffset'] = 0,
-				['yOffset'] = 0,
+				['yOffset'] = -1,
 				['sizeOverride'] = 0,
 			},
 			['debuffs'] = {
@@ -736,7 +736,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = {friendly = false, enemy = false},
 				['useFilter'] = '',
 				['xOffset'] = 0,
-				['yOffset'] = 0,
+				['yOffset'] = -1,
 				['sizeOverride'] = 0,
 			},	
 			['castbar'] = {
@@ -816,7 +816,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = {friendly = false, enemy = false},
 				['useFilter'] = '',
 				['xOffset'] = 0,
-				['yOffset'] = 0,
+				['yOffset'] = -1,
 				['sizeOverride'] = 0,
 			},
 			['debuffs'] = {
@@ -834,7 +834,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = {friendly = false, enemy = false},
 				['useFilter'] = '',
 				['xOffset'] = 0,
-				['yOffset'] = 0,
+				['yOffset'] = -1,
 				['sizeOverride'] = 0,
 			},
 			['raidicon'] = {
@@ -1038,7 +1038,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = false,
 				['useFilter'] = '',
 				['xOffset'] = 0,
-				['yOffset'] = 0,
+				['yOffset'] = 1,
 				['sizeOverride'] = 0,
 			},
 			['debuffs'] = {
@@ -1056,7 +1056,7 @@ P['unitframe'] = {
 				['onlyDispellable'] = false,
 				['useFilter'] = '',
 				['xOffset'] = 0,
-				['yOffset'] = 0,
+				['yOffset'] = 1,
 				['sizeOverride'] = 0,
 			},
 			['castbar'] = {
