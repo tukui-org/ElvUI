@@ -56,14 +56,27 @@ end
 function UF:Update_PartyHeader(header, db)	
 	header.db = db
 
-	local headerHolder = header.db.rideWideSorting and header or header:GetParent()
+	local headerHolder = header.db.raidWideSorting and header or header:GetParent()
 	headerHolder.db = db
+
+	if db.raidWideSorting then
+		UF:SetupGroupAnchorPoints(header)
+	end
+
 	if not headerHolder.positioned then
 		headerHolder:ClearAllPoints()
 		headerHolder:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)
 		
 		E:CreateMover(headerHolder, headerHolder:GetName()..'Mover', L['Party Frames'], nil, nil, nil, 'ALL,PARTY,ARENA')
 		headerHolder.positioned = true;
+
+
+		if db.raidWideSorting then
+			header.mover.positionOverride = positionOverride
+			
+			header:SetAttribute('minHeight', header.dirtyHeight)
+			header:SetAttribute('minWidth', header.dirtyWidth)
+		end
 
 		headerHolder:RegisterEvent("PLAYER_ENTERING_WORLD")
 		headerHolder:RegisterEvent("ZONE_CHANGED_NEW_AREA")
@@ -77,12 +90,17 @@ function UF:PartySmartVisibility(event)
 	if not self.db or (self.db and not self.db.enable) or (UF.db and not UF.db.smartRaidFilter) or self.isForced then return; end
 	local inInstance, instanceType = IsInInstance()
 	if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
+
+	local register, unregister, state = RegisterStateDriver, UnregisterStateDriver, "visibility"
+	if self.db.raidWideSorting then
+		register, unregister, state = RegisterAttributeDriver, UnregisterAttributeDriver, "state-visibility"
+	end
 	if not InCombatLockdown() then		
 		if inInstance and instanceType == "raid" then
-			UnregisterStateDriver(self, "visibility")
+			unregister(self, state)
 			self:Hide()
 		elseif self.db.visibility then
-			RegisterStateDriver(self, "visibility", self.db.visibility)
+			register(self, state, self.db.visibility)
 		end
 	else
 		self:RegisterEvent("PLAYER_REGEN_ENABLED")

@@ -151,12 +151,13 @@ function UF:UnshowChildUnits(header, ...)
 end
 
 local function OnAttributeChanged(self, name, value)
-	if not self:GetParent().forceShow then return; end
+	if not self:GetParent().forceShow and not self.forceShow then return; end
 
-	local db = self:GetParent().db
+	local db = self.db or self:GetParent().db
+	local maxUnits = MAX_RAID_MEMBERS
 
-	local startingIndex = -4
-	
+	local startingIndex = db.raidWideSorting and -(min(self.db.numGroups * (self.db.groupsPerRowCol * 5), maxUnits) + 1) or -4
+	print(startingIndex)
 	if self:GetAttribute("startingIndex") ~= startingIndex then
 		self:SetAttribute("startingIndex", startingIndex)
 		UF:ShowChildUnits(self, self:GetChildren())
@@ -181,8 +182,8 @@ function UF:HeaderConfig(header, configMode)
 			end
 		end
 
-		if header.db.rideWideSorting then
-			RegisterAttributeDriver(group, 'state-visibility', 'show')
+		if header.db.raidWideSorting then
+			RegisterAttributeDriver(header, 'state-visibility', 'show')
 		else
 			RegisterStateDriver(header, 'visibility', 'show')
 		end	
@@ -192,8 +193,8 @@ function UF:HeaderConfig(header, configMode)
 			originalEnvs[func] = nil
 		end		
 
-		if header.db.rideWideSorting then
-			RegisterAttributeDriver(group, 'state-visibility', header.db.visibility)
+		if header.db.raidWideSorting then
+			RegisterAttributeDriver(header, 'state-visibility', header.db.visibility)
 		else
 			RegisterStateDriver(header, "visibility", header.db.visibility)
 		end
@@ -201,7 +202,7 @@ function UF:HeaderConfig(header, configMode)
 		header:GetScript("OnEvent")(header, "PLAYER_ENTERING_WORLD")
 	end	
 
-	if header.db.rideWideSorting then
+	if header.db.raidWideSorting then
 		local group = header
 		local db = group.db
 

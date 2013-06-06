@@ -43,7 +43,7 @@ UF['classMaxResourceBar'] = {
 
 UF['headerGroupBy'] = {
 	['CLASS'] = function(header)
-		header:SetAttribute("groupingOrder", "DEATHKNIGHT,DRUID,HUNTER,MAGE,PALADIN,PRIEST,SHAMAN,WARLOCK,WARRIOR")
+		header:SetAttribute("groupingOrder", "DEATHKNIGHT,DRUID,HUNTER,MAGE,PALADIN,PRIEST,SHAMAN,WARLOCK,WARRIOR,MONK")
 		header:SetAttribute('sortMethod', 'NAME')
 		header:SetAttribute("groupBy", 'CLASS')
 	end,
@@ -60,7 +60,7 @@ UF['headerGroupBy'] = {
 	['NAME'] = function(header)
 		header:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
 		header:SetAttribute('sortMethod', 'NAME')
-		header:SetAttribute("groupBy", 'GROUP')
+		header:SetAttribute("groupBy", nil)
 	end,
 	['GROUP'] = function(header)
 		header:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
@@ -151,26 +151,6 @@ function UF:ConvertGroupDB(group)
 		db.growthDirection = POINT_COLUMN_ANCHOR_TO_DIRECTION[db.point..db.columnAnchorPoint];
 		db.point = nil;
 		db.columnAnchorPoint = nil;
-	end
-	
-	if db.xOffset then
-		db.horizontalSpacing = abs(db.xOffset);
-		db.xOffset = nil;
-	end
-	
-	if db.yOffset then
-		db.verticalSpacing = abs(db.yOffset);
-		db.yOffset = nil;
-	end
-	
-	if db.maxColumns then
-		db.numGroups = db.maxColumns;
-		db.maxColumns = nil;
-	end
-	
-	if db.unitsPerColumn then
-		db.unitsPerGroup = db.unitsPerColumn;
-		db.unitsPerColumn = nil;
 	end
 
 	if db.growthDirection == "UP" then
@@ -593,11 +573,11 @@ function UF:SetupGroupAnchorPoints(group)
 	local db = self.db.units[group.groupName]
 	local direction = db.growthDirection
 	local point = DIRECTION_TO_POINT[direction]
-	local positionOverride = DIRECTION_TO_GROUP_ANCHOR_POINT[db.startOutFromCenter and 'OUT_'..direction or direction]
+	local positionOverride = DIRECTION_TO_GROUP_ANCHOR_POINT[direction]
 	
 	local maxUnits, startingIndex = MAX_RAID_MEMBERS, -1
-	if (db.numGroups and db.unitsPerGroup) then
-		startingIndex = -min(db.numGroups * db.unitsPerGroup, maxUnits) + 1
+	if (db.numGroups and db.groupsPerRowCol) then
+		startingIndex = -min(db.numGroups * (db.groupsPerRowCol * 5), maxUnits) + 1
 	end
 	
 	if point == "LEFT" or point == "RIGHT" then
@@ -613,8 +593,12 @@ function UF:SetupGroupAnchorPoints(group)
 	group:SetAttribute("columnAnchorPoint", db.invertGroupingOrder and INVERTED_DIRECTION_TO_COLUMN_ANCHOR_POINT[direction] or DIRECTION_TO_COLUMN_ANCHOR_POINT[direction])
 	UF:ClearChildPoints(group:GetChildren())
 	group:SetAttribute("point", point)	
-	group:SetAttribute("maxColumns", db.numGroups)
-	group:SetAttribute("unitsPerColumn", db.unitsPerGroup)		
+	group:SetAttribute("maxColumns", db.numGroups or 1)
+	group:SetAttribute("unitsPerColumn", db.groupsPerRowCol and (db.groupsPerRowCol * 5) or 5)				
+
+	UF.headerGroupBy[db.groupBy](group)
+	group:SetAttribute('sortDir', db.sortDir)
+	group:SetAttribute("showPlayer", db.showPlayer)	
 
 	if not group.isForced then
 		group:SetAttribute("startingIndex", startingIndex)
@@ -625,7 +609,7 @@ function UF:SetupGroupAnchorPoints(group)
 		
 		E:Delay(0.25, DelayedUpdate, group)
 	end
-	
+
 	if group.mover then
 		group.mover.positionOverride = positionOverride
 		E:UpdatePositionOverride(group.mover:GetName())
@@ -667,7 +651,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 		ElvUF:SetActiveStyle("ElvUF_"..stringTitle)		
 
 
-		if db.numGroups and not db.rideWideSorting then
+		if db.numGroups and not db.raidWideSorting then
 			self[group] = CreateFrame('Frame', 'ElvUF_'..stringTitle, ElvUF_Parent, 'SecureHandlerStateTemplate');
 			self[group].groups = {}
 			self[group].groupName = group
@@ -683,7 +667,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 		self[group]:Show()
 	end
 
-	if db.numGroups and not db.rideWideSorting then
+	if db.numGroups and not db.raidWideSorting then
 		if db.enable ~= true then
 			UnregisterStateDriver(self[group], "visibility")
 			self[group]:Hide()
@@ -712,7 +696,8 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 		self[group].Update = function()
 			local db = self.db['units'][group]
 			if db.enable ~= true then 
-				RegisterAttributeDriver(self[group], 'state-visibility', 'hide')	
+				UnregisterAttributeDriver(self[group], "state-visibility")
+				self[group]:Hide()
 				return
 			end
 			UF["Update_"..E:StringTitle(group).."Header"](self, self[group], db)

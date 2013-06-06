@@ -53,15 +53,20 @@ for i=10, 40, 15 do
 		local inInstance, instanceType = IsInInstance()
 		local _, _, _, _, maxPlayers, _, _ = GetInstanceInfo()
 		if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
+		local register, unregister, state = RegisterStateDriver, UnregisterStateDriver, "visibility"
+		if self.db.raidWideSorting then
+			register, unregister, state = RegisterAttributeDriver, UnregisterAttributeDriver, "state-visibility"
+		end
+
 		if not InCombatLockdown() then		
 			if inInstance and instanceType == "raid" and maxPlayers == i then
-				UnregisterStateDriver(self, "visibility")
+				unregister(self, state)
 				self:Show()
 			elseif inInstance and instanceType == "raid" then
-				UnregisterStateDriver(self, "visibility")
+				unregister(self, state)
 				self:Hide()
 			elseif self.db.visibility then
-				RegisterAttributeDriver(self, 'state-visibility', self.db.visibility)
+				register(self, state, self.db.visibility)
 			end
 		else
 			self:RegisterEvent("PLAYER_REGEN_ENABLED")
@@ -72,12 +77,25 @@ for i=10, 40, 15 do
 	UF['Update_Raid'..i..'Header'] = function (self, header, db)
 		header:GetParent().db = db
 
-		local headerHolder = header:GetParent()
+		local headerHolder = header.db.raidWideSorting and header or header:GetParent()
+		headerHolder.db = db
+
+		if db.raidWideSorting then
+			UF:SetupGroupAnchorPoints(header)
+		end
+
 		if not headerHolder.positioned then
 			headerHolder:ClearAllPoints()
 			headerHolder:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)	
 
 			E:CreateMover(headerHolder, headerHolder:GetName()..'Mover', L['Raid 1-']..i..L[' Frames'], nil, nil, nil, 'ALL,RAID'..i)
+
+			if db.raidWideSorting then
+				header.mover.positionOverride = positionOverride
+				
+				header:SetAttribute('minHeight', header.dirtyHeight)
+				header:SetAttribute('minWidth', header.dirtyWidth)
+			end
 
 			headerHolder:RegisterEvent("PLAYER_ENTERING_WORLD")
 			headerHolder:RegisterEvent("ZONE_CHANGED_NEW_AREA")
