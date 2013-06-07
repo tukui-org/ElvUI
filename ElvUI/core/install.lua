@@ -375,7 +375,7 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.party.horizontalSpacing = 3;
 			E.db.unitframe.units.party.healPrediction = true;
 			E.db.unitframe.units.party.health.frequentUpdates = true;
-			E.db.unitframe.units.party.startOutFromCenter = true;
+			E.db.unitframe.units.party.startFromCenter = true;
 			E.db.unitframe.units.party.debuffs.useFilter = 'Blacklist';
 			E.db.unitframe.units.party.debuffs.xOffset = 24;
 			E.db.unitframe.units.party.petsGroup.enable = true;
@@ -387,7 +387,7 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.raid10.horizontalSpacing = 3;
 			E.db.unitframe.units.raid10.healPrediction = true;
 			E.db.unitframe.units.raid10.health.frequentUpdates = true;
-			E.db.unitframe.units.raid10.startOutFromCenter = true;
+			E.db.unitframe.units.raid10.startFromCenter = true;
 			E.db.unitframe.units.raid10.debuffs.useFilter = 'Blacklist';
 			E.db.unitframe.units.raid10.debuffs.xOffset = 24;
 
@@ -395,7 +395,7 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.raid25.horizontalSpacing = 3;
 			E.db.unitframe.units.raid25.healPrediction = true;
 			E.db.unitframe.units.raid25.health.frequentUpdates = true;
-			E.db.unitframe.units.raid25.startOutFromCenter = true;
+			E.db.unitframe.units.raid25.startFromCenter = true;
 			E.db.unitframe.units.raid25.debuffs.enable = true;
 			E.db.unitframe.units.raid25.debuffs.useFilter = 'Blacklist';
 			E.db.unitframe.units.raid25.debuffs.xOffset = 24;
@@ -404,7 +404,7 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.raid40.horizontalSpacing = 3;
 			E.db.unitframe.units.raid40.healPrediction = true;
 			E.db.unitframe.units.raid40.health.frequentUpdates = true;
-			E.db.unitframe.units.raid40.startOutFromCenter = true;
+			E.db.unitframe.units.raid40.startFromCenter = true;
 			E.db.unitframe.units.raid40.rdebuffs.enable = true;
 			E.db.unitframe.units.raid40.rdebuffs.size = 18;
 		end
