@@ -56,8 +56,9 @@ end
 function UF:Update_PartyHeader(header, db)	
 	header.db = db
 
-	local headerHolder = header.db.rideWideSorting and header or header:GetParent()
+	local headerHolder = header:GetParent()
 	headerHolder.db = db
+
 	if not headerHolder.positioned then
 		headerHolder:ClearAllPoints()
 		headerHolder:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 205)
@@ -77,6 +78,7 @@ function UF:PartySmartVisibility(event)
 	if not self.db or (self.db and not self.db.enable) or (UF.db and not UF.db.smartRaidFilter) or self.isForced then return; end
 	local inInstance, instanceType = IsInInstance()
 	if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
+
 	if not InCombatLockdown() then		
 		if inInstance and instanceType == "raid" then
 			UnregisterStateDriver(self, "visibility")
