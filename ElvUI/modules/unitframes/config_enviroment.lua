@@ -152,12 +152,12 @@ end
 
 local function OnAttributeChanged(self, name, value)
 	if not self:GetParent().forceShow and not self.forceShow then return; end
-
+	if not self:IsShown() then return end
+	
 	local db = self.db or self:GetParent().db
 	local maxUnits = MAX_RAID_MEMBERS
 
-	local startingIndex = db.raidWideSorting and -(min(self.db.numGroups * (self.db.groupsPerRowCol * 5), maxUnits) + 1) or -4
-	print(startingIndex)
+	local startingIndex = db.raidWideSorting and -(min(db.numGroups * (db.groupsPerRowCol * 5), maxUnits) + 1) or -4
 	if self:GetAttribute("startingIndex") ~= startingIndex then
 		self:SetAttribute("startingIndex", startingIndex)
 		UF:ShowChildUnits(self, self:GetChildren())
@@ -182,58 +182,23 @@ function UF:HeaderConfig(header, configMode)
 			end
 		end
 
-		if header.db.raidWideSorting then
-			RegisterAttributeDriver(header, 'state-visibility', 'show')
-		else
-			RegisterStateDriver(header, 'visibility', 'show')
-		end	
+		RegisterStateDriver(header, 'visibility', 'show')
 	else
 		for func, env in pairs(originalEnvs) do
 			setfenv(func, env)
 			originalEnvs[func] = nil
 		end		
 
-		if header.db.raidWideSorting then
-			RegisterAttributeDriver(header, 'state-visibility', header.db.visibility)
-		else
-			RegisterStateDriver(header, "visibility", header.db.visibility)
-		end
+		RegisterStateDriver(header, "visibility", header.db.visibility)
 
 		header:GetScript("OnEvent")(header, "PLAYER_ENTERING_WORLD")
 	end	
 
-	if header.db.raidWideSorting then
-		local group = header
+	for i=1, #header.groups do
+		local group = header.groups[i]
 		local db = group.db
 
-		group.forceShow = header.forceShow
-		group.forceShowAuras = header.forceShowAuras
-		group:HookScript("OnAttributeChanged", OnAttributeChanged)
-		if configMode then		
-			for key in pairs(attributeBlacklist) do
-				group:SetAttribute(key, nil)
-			end
-
-			OnAttributeChanged(group)
-
-
-			group:Update()	
-		else
-			for key in pairs(attributeBlacklist) do
-				group:SetAttribute(key, true)
-			end	
-
-			
-			UF:UnshowChildUnits(group, group:GetChildren())
-			group:SetAttribute('startingIndex', 1)
-
-			group:Update()
-		end
-	else
-		for i=1, #header.groups do
-			local group = header.groups[i]
-			local db = group.db
-
+		if group:IsShown() then
 			group.forceShow = header.forceShow
 			group.forceShowAuras = header.forceShowAuras
 			group:HookScript("OnAttributeChanged", OnAttributeChanged)
@@ -258,9 +223,9 @@ function UF:HeaderConfig(header, configMode)
 				group:Update()
 			end
 		end
-
-		header:AdjustVisibility()
 	end
+
+	header:AdjustVisibility()
 end
 
 function UF:PLAYER_REGEN_DISABLED()
