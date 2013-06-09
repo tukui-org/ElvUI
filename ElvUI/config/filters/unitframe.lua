@@ -419,6 +419,7 @@ G.unitframe.aurafilters['Blacklist'] = {
 		[SpellName(124273)] = Defaults(), -- Stagger
 		[SpellName(117870)] = Defaults(), -- Touch of The Titans
 		[SpellName(123981)] = Defaults(), -- Perdition
+		[SpellName(15007)] = Defaults(), -- Ress Sickness
 	},
 }
 
