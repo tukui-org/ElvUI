@@ -38,6 +38,7 @@ function AB:StyleShapeShift()
 			if isActive then
 				StanceBarFrame.lastSelected = button:GetID();
 				if numForms == 1 then
+					button.checked:SetTexture(1, 1, 1, 0.5) 
 					button:SetChecked(1);
 				else
 					button:SetChecked(self.db.stanceBar.style ~= 'darkenInactive');
