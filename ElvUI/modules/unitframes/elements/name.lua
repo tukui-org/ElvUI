@@ -35,7 +35,7 @@ function UF:PostNamePosition(frame, unit)
 		frame.Name:ClearAllPoints()
 		frame.Name:Point(position, frame.Health, position, x + db.name.xOffset, y + db.name.yOffset)	
 	else
-		frame.Power.value:SetAlpha(0)
+		frame.Power.value:SetAlpha(db.power.hideonnpc and 0 or 1)
 		
 		frame.Name:ClearAllPoints()
 		frame.Name:SetPoint(frame.Power.value:GetPoint())
