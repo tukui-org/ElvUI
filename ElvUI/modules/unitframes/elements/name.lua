@@ -24,10 +24,8 @@ end
 
 function UF:PostNamePosition(frame, unit)
 	if not frame.Power.value:IsShown() then return end
-	
+	local db = frame.db
 	if UnitIsPlayer(unit) then
-		local db = frame.db
-		
 		local position = db.name.position
 		local x, y = self:GetPositionOffset(position)
 		frame.Power.value:SetAlpha(1)

@@ -699,7 +699,9 @@ function UF:Update_PlayerFrame(frame, db)
 	--Resource Bars
 	do
 		local bars = frame[frame.ClassBar]
-
+		if bars.UpdateAllRuneTypes then
+			bars.UpdateAllRuneTypes(frame)
+		end
 		if bars then
 			local MAX_CLASS_BAR = UF.classMaxResourceBar[E.myclass]
 			if USE_MINI_CLASSBAR and not db.classbar.detachFromFrame then
