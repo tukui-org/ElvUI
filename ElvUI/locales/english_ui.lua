@@ -66,6 +66,9 @@ L['whispers'] = true;
 L['yells'] = true;
 
 --DataTexts
+L['Spec'] = true
+L['|cffFFFFFFLeft Click:|r Change Talent Specialization'] = true
+L['|cffFFFFFFRight Click:|r Change Loot Specialization'] = true
 L['(Hold Shift) Memory Usage'] = true;
 L['AP'] = true;
 L['AVD: '] = true;

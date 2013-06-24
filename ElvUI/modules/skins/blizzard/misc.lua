@@ -674,6 +674,7 @@ local function LoadSkin()
     InterfaceOptionsFrameCancel:SetPoint("TOPRIGHT",InterfaceOptionsFramePanelContainer,"BOTTOMRIGHT",0,-6)
     local interfacecheckbox = {
         -- Controls
+        "ControlsPanelBlockChatChannelInvites",
         "ControlsPanelStickyTargeting",
         "ControlsPanelAutoDismount",
         "ControlsPanelAutoClearAFK",
@@ -684,6 +685,8 @@ local function LoadSkin()
         "ControlsPanelInteractOnLeftClick",
         "ControlsPanelAutoOpenLootHistory",
         -- Combat
+        "CombatPanelEnemyCastBarsOnOnlyTargetNameplates",
+        "CombatPanelEnemyCastBarsNameplateSpellNames",
         "CombatPanelAttackOnAssist",
         "CombatPanelStopAutoAttack",
         "CombatPanelNameplateClassColors",

@@ -40,8 +40,7 @@ for i=10, 40, 15 do
 		self.HealPrediction = UF:Construct_HealComm(self)
 		self.GPS = UF:Construct_GPS(self)
 		self.Range = UF:Construct_Range(self)
-		
-		--UF['Update_Raid'..i..'Frames'](UF, self, E.db['unitframe']['units']['raid'..i])
+
 		UF:Update_StatusBars()
 		UF:Update_FontStrings()	
 		
@@ -53,6 +52,7 @@ for i=10, 40, 15 do
 		local inInstance, instanceType = IsInInstance()
 		local _, _, _, _, maxPlayers, _, _ = GetInstanceInfo()
 		if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
+
 		if not InCombatLockdown() then		
 			if inInstance and instanceType == "raid" and maxPlayers == i then
 				UnregisterStateDriver(self, "visibility")
@@ -61,7 +61,7 @@ for i=10, 40, 15 do
 				UnregisterStateDriver(self, "visibility")
 				self:Hide()
 			elseif self.db.visibility then
-				RegisterAttributeDriver(self, 'state-visibility', self.db.visibility)
+				RegisterStateDriver(self, "visibility", self.db.visibility)
 			end
 		else
 			self:RegisterEvent("PLAYER_REGEN_ENABLED")
@@ -73,6 +73,8 @@ for i=10, 40, 15 do
 		header:GetParent().db = db
 
 		local headerHolder = header:GetParent()
+		headerHolder.db = db
+
 		if not headerHolder.positioned then
 			headerHolder:ClearAllPoints()
 			headerHolder:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)	

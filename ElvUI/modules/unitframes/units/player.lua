@@ -165,7 +165,7 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 				portrait.backdrop:SetPoint("TOPLEFT", frame, "TOPLEFT")
 			end		
 			
-			if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or USE_INSET_POWERBAR or not USE_POWERBAR or USE_INSET_POWERBAR then
+			if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or USE_INSET_POWERBAR or not USE_POWERBAR or USE_INSET_POWERBAR or POWERBAR_DETACHED then
 				portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", E.PixelMode and 1 or -SPACING, 0)
 			else
 				portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", E.PixelMode and 1 or -SPACING, 0)
@@ -202,7 +202,7 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 			portrait.backdrop:ClearAllPoints()
 			portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT")
 			
-			if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR or USE_INSET_POWERBAR then
+			if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR or USE_INSET_POWERBAR or POWERBAR_DETACHED then
 				portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", E.PixelMode and 1 or -SPACING, 0)
 			else
 				portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", E.PixelMode and 1 or -SPACING, 0)
@@ -430,11 +430,7 @@ function UF:Update_PlayerFrame(frame, db)
 		if USE_POWERBAR then
 			if not frame:IsElementEnabled('Power') then
 				frame:EnableElement('Power')
-				
-				if frame.DruidAltMana then
-					frame:EnableElement('DruidAltMana')
-				end
-				
+
 				power:Show()
 			end		
 		
@@ -506,12 +502,16 @@ function UF:Update_PlayerFrame(frame, db)
 		elseif frame:IsElementEnabled('Power') then
 			frame:DisableElement('Power')
 			power:Hide()
-			
-			if frame.DruidAltMana then
+		end
+
+		if frame.DruidAltMana then
+			if db.power.druidMana then
+				frame:EnableElement('DruidAltMana')
+			else
 				frame:DisableElement('DruidAltMana')
 				frame.DruidAltMana:Hide()
 			end
-		end
+		end		
 	end
 	
 	--Portrait
@@ -547,7 +547,7 @@ function UF:Update_PlayerFrame(frame, db)
 					portrait.backdrop:SetPoint("TOPLEFT", frame, "TOPLEFT")
 				end		
 				
-				if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR or USE_INSET_POWERBAR then
+				if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR or USE_INSET_POWERBAR or POWERBAR_DETACHED then
 					portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", E.PixelMode and 1 or -SPACING, 0)
 				else
 					portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", E.PixelMode and 1 or -SPACING, 0)
@@ -699,8 +699,11 @@ function UF:Update_PlayerFrame(frame, db)
 	--Resource Bars
 	do
 		local bars = frame[frame.ClassBar]
-
 		if bars then
+			if bars.UpdateAllRuneTypes then
+				bars.UpdateAllRuneTypes(frame)
+			end
+			
 			local MAX_CLASS_BAR = UF.classMaxResourceBar[E.myclass]
 			if USE_MINI_CLASSBAR and not db.classbar.detachFromFrame then
 				bars:ClearAllPoints()

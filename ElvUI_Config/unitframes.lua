@@ -1198,6 +1198,16 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 				min = 15, max = 450, step = 1,
 			}
 	end
+
+	if groupName == 'player' and E.myclass == 'DRUID' then
+		config.args.druidMana = {
+			type = 'toggle',
+			order = 12,
+			name = L['Druid Mana'],
+			desc = L['Display druid mana bar when in cat or bear form and when mana is not 100%.']
+		}
+
+	end
 	
 	return config
 end
@@ -3057,16 +3067,8 @@ E.Options.args.unitframe.args.party = {
 								RIGHT_DOWN = format(L['%s and then %s'], L['Right'], L['Down']),
 								RIGHT_UP = format(L['%s and then %s'], L['Right'], L['Up']),
 								LEFT_DOWN = format(L['%s and then %s'], L['Left'], L['Down']),
-								LEFT_UP = format(L['%s and then %s'], L['Left'], L['Up']),
-								UP = L['Up'],
-								DOWN = L['Down']					
+								LEFT_UP = format(L['%s and then %s'], L['Left'], L['Up']),				
 							},
-						},
-						startOutFromCenter = {
-							order = 5,
-							name = L['Start near Center'],
-							desc = L['The initial group will start near the center and grow out. Corrosponding groups will behave normally.'],
-							type = 'toggle',
 						},
 						numGroups = {
 							order = 7,
@@ -3082,6 +3084,20 @@ E.Options.args.unitframe.args.party = {
 									end
 								end,
 						},
+						groupsPerRowCol = {
+							order = 8,
+							type = 'range',
+							name = L['Groups Per Row/Column'],
+							min = 1, max = 8, step = 1,
+							set = function(info, value) 
+								E.db.unitframe.units['party'][ info[#info] ] = value; 
+								UF:CreateAndUpdateHeaderGroup('party')
+								if ElvUF_Party.isForced then
+									UF:HeaderConfig(ElvUF_Party)
+									UF:HeaderConfig(ElvUF_Party, true)
+								end
+							end,
+						},		
 						horizontalSpacing = {
 							order = 9,
 							type = 'range',
@@ -3123,7 +3139,7 @@ E.Options.args.unitframe.args.party = {
 					order = 300,
 					type = 'group',
 					guiInline = true,
-					name = L['Sorting'],
+					name = L['Grouping & Sorting'],
 					set = function(info, value) E.db.unitframe.units['party'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party', nil, nil, true) end,
 					args = {
 						groupBy = {
@@ -3148,7 +3164,33 @@ E.Options.args.unitframe.args.party = {
 								['ASC'] = L['Ascending'],
 								['DESC'] = L['Descending']
 							},
-						},					
+						},
+						spacer = {
+							order = 3,
+							type = 'description',
+							width = 'full',
+							name = ' '
+						},
+						raidWideSorting = {
+							order = 4,
+							name = L['Raid-Wide Sorting'],
+							desc = L['Enabling this allows raid-wide sorting however you will not be able to distinguish between groups.'],
+							type = 'toggle',
+						},
+						invertGroupingOrder = {
+							order = 5,
+							name = L['Invert Grouping Order'],
+							desc = L['Enabling this inverts the grouping order when the raid is not full, this will reverse the direction it starts from.'],
+							disabled = function() return not E.db.unitframe.units['party'].raidWideSorting end,
+							type = 'toggle',
+						},	
+						startFromCenter = {
+							order = 6,
+							name = L['Start Near Center'],
+							desc = L['The initial group will start near the center and grow out.'],
+							disabled = function() return not E.db.unitframe.units['party'].raidWideSorting end,
+							type = 'toggle',
+						},							
 					},
 				},							
 			},
@@ -3458,17 +3500,9 @@ for i=10, 40, 15 do
 									RIGHT_DOWN = format(L['%s and then %s'], L['Right'], L['Down']),
 									RIGHT_UP = format(L['%s and then %s'], L['Right'], L['Up']),
 									LEFT_DOWN = format(L['%s and then %s'], L['Left'], L['Down']),
-									LEFT_UP = format(L['%s and then %s'], L['Left'], L['Up']),
-									UP = L['Up'],
-									DOWN = L['Down']			
+									LEFT_UP = format(L['%s and then %s'], L['Left'], L['Up']),		
 								},
-							},
-							startOutFromCenter = {
-								order = 5,
-								name = L['Start near Center'],
-								desc = L['The initial group will start near the center and grow out. Corrosponding groups will behave normally.'],
-								type = 'toggle',
-							},									
+							},								
 							numGroups = {
 								order = 7,
 								type = 'range',
@@ -3483,6 +3517,20 @@ for i=10, 40, 15 do
 									end									
 								end,
 							},
+							groupsPerRowCol = {
+								order = 8,
+								type = 'range',
+								name = L['Groups Per Row/Column'],
+								min = 1, max = 8, step = 1,
+								set = function(info, value) 
+									E.db.unitframe.units['raid'..i][ info[#info] ] = value; 
+									UF:CreateAndUpdateHeaderGroup('raid'..i)
+									if _G['ElvUF_Raid'..i].isForced then
+										UF:HeaderConfig(_G['ElvUF_Raid'..i])
+										UF:HeaderConfig(_G['ElvUF_Raid'..i], true)
+									end			
+								end,
+							},								
 							horizontalSpacing = {
 								order = 9,
 								type = 'range',
@@ -3549,7 +3597,33 @@ for i=10, 40, 15 do
 									['ASC'] = L['Ascending'],
 									['DESC'] = L['Descending']
 								},
-							},					
+							},	
+							spacer = {
+								order = 3,
+								type = 'description',
+								width = 'full',
+								name = ' '
+							},
+							raidWideSorting = {
+								order = 4,
+								name = L['Raid-Wide Sorting'],
+								desc = L['Enabling this allows raid-wide sorting however you will not be able to distinguish between groups.'],
+								type = 'toggle',
+							},
+							invertGroupingOrder = {
+								order = 5,
+								name = L['Invert Grouping Order'],
+								desc = L['Enabling this inverts the grouping order when the raid is not full, this will reverse the direction it starts from.'],
+								disabled = function() return not E.db.unitframe.units['raid'..i].raidWideSorting end,
+								type = 'toggle',
+							},	
+							startFromCenter = {
+								order = 6,
+								name = L['Start Near Center'],
+								desc = L['The initial group will start near the center and grow out.'],
+								disabled = function() return not E.db.unitframe.units['raid'..i].raidWideSorting end,
+								type = 'toggle',
+							},														
 						},
 					},							
 				},

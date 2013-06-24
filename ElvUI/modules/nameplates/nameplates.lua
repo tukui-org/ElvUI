@@ -1723,6 +1723,12 @@ function NP:CastBar_OnValueChanged(curValue)
 
 	self:ClearAllPoints()
 	self:SetPoint('TOP', self:GetParent().hp, 'BOTTOM', 0, -8)
+
+	if(self.shield:IsShown()) then
+		self:SetStatusBarColor(0.78, 0.25, 0.25, 1)
+	else
+		self:SetStatusBarColor(1, 208/255, 0)
+	end		
 end
 
 function NP:CastBar_OnShow()
@@ -1731,12 +1737,7 @@ function NP:CastBar_OnShow()
 	self:SetPoint('TOP', self:GetParent().hp, 'BOTTOM', 0, -8)
 	self:SetStatusBarTexture(E["media"].normTex)
 	self:GetStatusBarTexture():SetHorizTile(true)
-	if(self.shield:IsShown()) then
-		self:SetStatusBarColor(0.78, 0.25, 0.25, 1)
-	else
-		self:SetStatusBarColor(1, 208/255, 0)
-	end	
-	
+
 	if self:GetEffectiveScale() < 1 then
 		self:SetScale(2.5 / self:GetScale())
  	end

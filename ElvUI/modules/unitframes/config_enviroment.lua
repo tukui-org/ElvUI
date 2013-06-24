@@ -151,12 +151,13 @@ function UF:UnshowChildUnits(header, ...)
 end
 
 local function OnAttributeChanged(self, name, value)
-	if not self:GetParent().forceShow then return; end
-
-	local db = self:GetParent().db
-
-	local startingIndex = -4
+	if not self:GetParent().forceShow and not self.forceShow then return; end
+	if not self:IsShown() then return end
 	
+	local db = self.db or self:GetParent().db
+	local maxUnits = MAX_RAID_MEMBERS
+
+	local startingIndex = db.raidWideSorting and -(min(db.numGroups * (db.groupsPerRowCol * 5), maxUnits) + 1) or -4
 	if self:GetAttribute("startingIndex") ~= startingIndex then
 		self:SetAttribute("startingIndex", startingIndex)
 		UF:ShowChildUnits(self, self:GetChildren())
@@ -182,7 +183,6 @@ function UF:HeaderConfig(header, configMode)
 		end
 
 		RegisterStateDriver(header, 'visibility', 'show')
-
 	else
 		for func, env in pairs(originalEnvs) do
 			setfenv(func, env)
@@ -190,6 +190,7 @@ function UF:HeaderConfig(header, configMode)
 		end		
 
 		RegisterStateDriver(header, "visibility", header.db.visibility)
+
 		header:GetScript("OnEvent")(header, "PLAYER_ENTERING_WORLD")
 	end	
 
@@ -197,28 +198,30 @@ function UF:HeaderConfig(header, configMode)
 		local group = header.groups[i]
 		local db = group.db
 
-		group.forceShow = header.forceShow
-		group.forceShowAuras = header.forceShowAuras
-		group:HookScript("OnAttributeChanged", OnAttributeChanged)
-		if configMode then		
-			for key in pairs(attributeBlacklist) do
-				group:SetAttribute(key, nil)
+		if group:IsShown() then
+			group.forceShow = header.forceShow
+			group.forceShowAuras = header.forceShowAuras
+			group:HookScript("OnAttributeChanged", OnAttributeChanged)
+			if configMode then		
+				for key in pairs(attributeBlacklist) do
+					group:SetAttribute(key, nil)
+				end
+
+				OnAttributeChanged(group)
+
+
+				group:Update()	
+			else
+				for key in pairs(attributeBlacklist) do
+					group:SetAttribute(key, true)
+				end	
+
+				
+				UF:UnshowChildUnits(group, group:GetChildren())
+				group:SetAttribute('startingIndex', 1)
+
+				group:Update()
 			end
-
-			OnAttributeChanged(group)
-
-
-			group:Update()	
-		else
-			for key in pairs(attributeBlacklist) do
-				group:SetAttribute(key, true)
-			end	
-
-			
-			UF:UnshowChildUnits(group, group:GetChildren())
-			group:SetAttribute('startingIndex', 1)
-
-			group:Update()
 		end
 	end
 

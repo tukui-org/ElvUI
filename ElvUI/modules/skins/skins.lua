@@ -130,7 +130,7 @@ end
 
 function S:HandleNextPrevButton(btn, buttonOverride)
 	local norm, pushed, disabled
-	local inverseDirection = btn:GetName() and (find(btn:GetName(), 'Left') or find(btn:GetName(), 'Prev') or find(btn:GetName(), 'Decrement'))
+	local inverseDirection = btn:GetName() and (find(btn:GetName():lower(), 'left') or find(btn:GetName():lower(), 'prev') or find(btn:GetName():lower(), 'decrement'))
 	
 	btn:StripTextures()
 	btn:SetNormalTexture(nil)
@@ -274,6 +274,9 @@ function S:HandleCheckBox(frame, noBackdrop)
 	
 	if frame.SetDisabledTexture then
 		frame:SetDisabledTexture("Interface\\Buttons\\UI-CheckBox-Check-Disabled")
+		if noBackdrop then
+			frame:GetDisabledTexture():SetInside(nil, -4, -4)
+		end		
 	end
 	
 	frame:HookScript('OnDisable', function(self)

@@ -74,7 +74,7 @@ function lib:RegisterPlugin(name,callback)
 			end)
 			lib.ConfigFrame = configFrame
 		end
-	else
+	elseif enabled and loadable then
 		-- Need to update plugins list
 		if name ~= MAJOR then
 			ElvUI[1].Options.args.plugins.args.plugins.name = lib:GeneratePluginList()
