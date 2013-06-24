@@ -30,12 +30,12 @@ local function LoadSkin()
 		button:StyleButton(nil, true)	
 	end
 	
-	for i=1, 3 do
+	--[[for i=1, 3 do
 		local button = _G["PVPArenaTeamsFrameTeam"..i]
 		button:SetTemplate('Default')
 		button.Background:Kill()
 		button:StyleButton()
-	end
+	end]]
 	
 	-->>>HONOR FRAME
 	S:HandleDropDownBox(HonorFrameTypeDropDown)
@@ -139,7 +139,7 @@ local function LoadSkin()
 	WarGamesFrame.HorizontalBar:StripTextures()
 	
 	-->>>ARENATEAMS
-	PVPArenaTeamsFrame:StripTextures()
+	--[[PVPArenaTeamsFrame:StripTextures()
 	ArenaTeamFrame.TopInset:StripTextures()
 	ArenaTeamFrame.BottomInset:StripTextures()
 	ArenaTeamFrame.WeeklyDisplay:StripTextures()
@@ -169,7 +169,7 @@ local function LoadSkin()
 		end
 	end
 
-	S:HandleButton(ArenaTeamFrame.AddMemberButton, true)
+	S:HandleButton(ArenaTeamFrame.AddMemberButton, true)]]
 	
 	-->>>PVP BANNERS
 	PVPBannerFrame:StripTextures()
