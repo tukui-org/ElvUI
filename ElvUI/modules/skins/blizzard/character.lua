@@ -208,7 +208,7 @@ local function LoadSkin()
 			end)
 			
 			if not object.icon.bordertop then
-				E:GetModule("NamePlates"):CreateVirtualFrame(object, object.icon)
+				E:GetModule("NamePlates"):CreateBackdrop(object, object.icon)
 			end			
 		end
 		GearManagerDialogPopup:StripTextures()
