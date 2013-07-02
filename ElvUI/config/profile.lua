@@ -101,9 +101,10 @@ P["nameplate"] = {
 		['font'] = 'ElvUI Pixel',
 		['fontSize'] = 7,
 		['fontOutline'] = 'MONOCHROMEOUTLINE',
-		['maxAuras'] = 6,
-		['width'] = 36,
-		['height'] = 28,
+		['width'] = 28,
+		['height'] = 20,
+		['additionalFilter'] = 'CCDebuffs',
+		['filterType'] = 'DEBUFFS'
 	},
 	['healthBar'] = {
 		['width'] = 112,
@@ -155,7 +156,7 @@ P["nameplate"] = {
 	},
 	['raidIcon'] = {
 		['xOffset'] = -4,
-		['yOffset'] = 5,
+		['yOffset'] = 12,
 		['size'] = 36,
 		['attachTo'] = 'LEFT',
 	},
