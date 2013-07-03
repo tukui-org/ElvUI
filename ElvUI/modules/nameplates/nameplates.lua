@@ -2,6 +2,16 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local NP = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
 local LSM = LibStub("LibSharedMedia-3.0")
 
+
+--TODO:
+--[[
+	- Performance Tweaks
+	- Cleanup Auras Code
+	- Raid Icon aura check appears faulty
+	- Assure all variables are voided out on nameplate hide
+	- Rewrite configuration GUI
+]]
+
 local numChildren = -1
 local twipe = table.wipe
 local band = bit.band
@@ -399,6 +409,10 @@ function NP:OnHide()
 	self.threatReaction = nil
 	self.unitType = nil
 	self.guid = nil
+	self.unit = nil
+	self.raidIconType = nil
+
+	--TODO: Hide All Auras
 end
 
 function NP:HealthBar_OnValueChanged(value)
@@ -419,6 +433,7 @@ function NP:CastBar_OnValueChanged(value)
 	if(self.shield:IsShown()) then
 		color = NP.db.castBar.noInterrupt
 	else
+		--Color the castbar green slightly before it ends cast.
 		if value > 0 and (value/max) >= 0.98 then
 			color = green
 		else
@@ -567,7 +582,6 @@ function NP:CreatePlate(frame)
 	f.AuraIconFrames = {}
 	local AuraIconFrames = f.AuraIconFrames
 	for index = 1, NP.MAX_DISPLAYABLE_DEBUFFS do AuraIconFrames[index] = NP:CreateAuraIcon(f);  end
-	local FirstRowCount = min(NP.MAX_DISPLAYABLE_DEBUFFS/2)
 	-- Set Anchors	
 	AuraIconFrames[1]:SetPoint("LEFT", f, -1, 0)
 	for index = 2, NP.MAX_DISPLAYABLE_DEBUFFS do AuraIconFrames[index]:SetPoint("LEFT", AuraIconFrames[index-1], "RIGHT", 1, 0) end
@@ -575,10 +589,7 @@ function NP:CreatePlate(frame)
 	f._Hide = f.Hide
 	f.Hide = function() NP:ClearAuraContext(f); f:_Hide() end
 	f:SetScript("OnHide", function() for index = 1, 4 do NP.PolledHideIn(AuraIconFrames[index], 0) end end)	
-	f.UpdateContext = NP.UpdateAuraContext
-	f.Update = NP.UpdateAuraContext
-	f.UpdateTarget = NP.UpdateAuraTarget
-	
+
 	frame.AuraWidget = f	
 
 	--Script Handlers
@@ -853,7 +864,6 @@ function NP:ClearAuraContext(frame)
 end
 
 function NP:UpdateAuraContext(frame)
-	print(frame:GetName())
 	local parent = frame:GetParent()
 	local guid = parent.guid
 	frame.unit = parent.unit
@@ -876,10 +886,6 @@ function NP:UpdateAuraContext(frame)
 	if frame then
 		NP:UpdateAuras(frame)
 	end
-end
-
-function NP:UpdateAuraTarget()
-	NP:UpdateIconGrid(self, UnitGUID("target"))
 end
 
 function NP:RemoveAuraInstance(guid, spellid)
@@ -965,40 +971,24 @@ function NP:UNIT_AURA(event, unit)
 	end
 end
 
-local FoundPlate
 function NP:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, ...)
 	local _, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellid, spellName, _, auraType, stackCount  = ...
-	if band(sourceFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) > 0 then 
-		if band(sourceFlags, COMBATLOG_OBJECT_CONTROL_PLAYER) > 0 then 
-			FoundPlate = NP:SearchNameplateByName(sourceName)
-		elseif band(sourceFlags, COMBATLOG_OBJECT_CONTROL_NPC) > 0 then 
-			FoundPlate = NP:SearchNameplateByIcon(sourceRaidFlags) 
-		else 
-			return	
-		end
-	else 
-		return 
-	end	
-
-	if FoundPlate and FoundPlate:IsShown() and FoundPlate.unit ~= "target" then 
-		FoundPlate.guid = sourceGUID
-	end		
-
-	if event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REFRESH" then
-		local duration = NP.CachedAuraDurations[spellid]
-		local texture = GetSpellTexture(spellid)
-		NP:SetAuraInstance(destGUID, spellid, GetTime() + (duration or 0), 1, sourceGUID, duration, texture, AURA_TYPE_DEBUFF, AURA_TARGET_HOSTILE)
-	elseif event == "SPELL_AURA_APPLIED_DOSE" or event == "SPELL_AURA_REMOVED_DOSE" then
-		local duration = NP.CachedAuraDurations[spellid]
-		local texture = GetSpellTexture(spellid)
-		NP:SetAuraInstance(destGUID, spellid, GetTime() + (duration or 0), stackCount, sourceGUID, duration, texture, AURA_TYPE_DEBUFF, AURA_TARGET_HOSTILE)
-	elseif event == "SPELL_AURA_BROKEN" or event == "SPELL_AURA_BROKEN_SPELL" or event == "SPELL_AURA_REMOVED" then
-		NP:RemoveAuraInstance(destGUID, spellid)
-	end
 
 	if event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REFRESH" or event == "SPELL_AURA_APPLIED_DOSE" or event == "SPELL_AURA_REMOVED_DOSE" or event == "SPELL_AURA_BROKEN" or event == "SPELL_AURA_BROKEN_SPELL" or event == "SPELL_AURA_REMOVED" then	
-		NP:UpdateAuraByLookup(destGUID)
-		local name, raidicon
+		if event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REFRESH" then
+			local duration = NP:GetSpellDuration(spellid)
+			local texture = GetSpellTexture(spellid)
+			NP:SetAuraInstance(destGUID, spellid, GetTime() + (duration or 0), 1, sourceGUID, duration, texture, AURA_TYPE_DEBUFF, AURA_TARGET_HOSTILE)
+		elseif event == "SPELL_AURA_APPLIED_DOSE" or event == "SPELL_AURA_REMOVED_DOSE" then
+			local duration = NP:GetSpellDuration(spellid)
+			local texture = GetSpellTexture(spellid)
+			NP:SetAuraInstance(destGUID, spellid, GetTime() + (duration or 0), stackCount, sourceGUID, duration, texture, AURA_TYPE_DEBUFF, AURA_TARGET_HOSTILE)
+		elseif event == "SPELL_AURA_BROKEN" or event == "SPELL_AURA_BROKEN_SPELL" or event == "SPELL_AURA_REMOVED" then
+			NP:RemoveAuraInstance(destGUID, spellid)
+		end	
+
+		--NP:UpdateAuraByLookup(destGUID)
+		local name, raidIcon
 		-- Cache Unit Name for alternative lookup strategy
 		if band(destFlags, COMBATLOG_OBJECT_CONTROL_PLAYER) > 0 and destName then 
 			local rawName = strsplit("-", destName)			-- Strip server name from players
@@ -1007,19 +997,19 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, ...)
 		end
 
 		-- Cache Raid Icon Data for alternative lookup strategy
-		for iconname, bitmask in pairs(NP.RaidTargetReference) do
+		for iconName, bitmask in pairs(NP.RaidTargetReference) do
 			if band(destRaidFlags, bitmask) > 0  then
-				NP.ByRaidIcon[iconname] = destGUID
-				raidicon = iconname
+				NP.ByRaidIcon[iconName] = destGUID
+				raidIcon = iconName
 				break
 			end
 		end
 
-		local frame = self:SearchForFrame(destGUID, raidicon, name)	
+		local frame = self:SearchForFrame(destGUID, raidIcon, name)
 		if frame then
 			NP:UpdateAuras(frame)
-		end				
-	end		
+		end
+	end	
 end
 
 function NP:WipeAuraList(guid)
@@ -1071,21 +1061,22 @@ function NP:UpdateAurasByUnitID(unit)
 	if raidicon then self.ByRaidIcon[raidicon] = guid end
 	
 	local frame = self:SearchForFrame(guid, raidicon, name)
-
 	if frame then
 		NP:UpdateAuras(frame)
 	end
 end
 
 function NP:UpdateIcon(frame, texture, expiration, stacks)
-
 	if frame and texture and expiration then
 		-- Icon
 		frame.Icon:SetTexture(texture)
 		
 		-- Stacks
-		if stacks > 1 then frame.Stacks:SetText(stacks)
-		else frame.Stacks:SetText("") end
+		if stacks > 1 then 
+			frame.Stacks:SetText(stacks)
+		else 
+			frame.Stacks:SetText("") 
+		end
 		
 		-- Expiration
 		NP:UpdateAuraTime(frame, expiration)
@@ -1102,7 +1093,7 @@ function NP:UpdateIconGrid(frame, guid)
 	local AurasOnUnit = self:GetAuraList(guid)
 	local AuraSlotIndex = 1
 	local instanceid
-	
+
 	self.AurasCache = wipe(self.AurasCache)
 	local aurasCount = 0
 	
@@ -1110,8 +1101,6 @@ function NP:UpdateIconGrid(frame, guid)
 	if AurasOnUnit then
 		widget:Show()
 		for instanceid in pairs(AurasOnUnit) do
-			
-			--for i,v in pairs(aura) do aura[i] = nil end
 			local aura = {}
 			aura.spellid, aura.expiration, aura.stacks, aura.caster, aura.duration, aura.texture, aura.type, aura.target = self:GetAuraInstance(guid, instanceid)
 			if tonumber(aura.spellid) then
@@ -1172,20 +1161,12 @@ function NP:UpdateAuraByLookup(guid)
 		NP:UpdateAurasByUnitID("target")
 	elseif guid == UnitGUID("mouseover") then
 		NP:UpdateAurasByUnitID("mouseover")
-	--[[elseif self.TargetOfGroupMembers[guid] then
-		local unit = self.TargetOfGroupMembers[guid]
-		if unit then
-			local unittarget = UnitGUID(unit.."target")
-			if guid == unittarget then
-				NP:UpdateAurasByUnitID(unittarget)
-			end
-		end]]
 	end
 end
 
 function NP:CheckRaidIcon(frame)
 	if frame.raidIcon:IsShown() then
-		local ux, uy = frame.raidicon:GetTexCoord()
+		local ux, uy = frame.raidIcon:GetTexCoord()
 		frame.raidIconType = NP.RaidIconCoordinate[ux][uy]	
 	else
 		frame.raidIconType = nil;
@@ -1210,32 +1191,21 @@ function NP:SearchNameplateByName(sourceName)
 	end
 end
 
-function NP:SearchNameplateByIcon(UnitFlags)
-	local UnitIcon
-	for iconname, bitmask in pairs(NP.RaidTargetReference) do
-		if band(UnitFlags, bitmask) > 0  then
-			UnitIcon = iconname
-			break
-		end
-	end	
-
-	return NP:SearchNameplateByIconName(UnitIcon)
-end
-
-function NP:SearchNameplateByIconName(raidicon)
+function NP:SearchNameplateByIconName(raidIcon)
 	for frame, _ in pairs(NP.CreatedPlates) do
+		NP:CheckRaidIcon(frame)
 		if frame and frame:IsShown() and frame.raidIcon:IsShown() and (frame.raidIconType == raidIcon) then
 			return frame
 		end
 	end		
 end
 
-function NP:SearchForFrame(guid, raidicon, name)
+function NP:SearchForFrame(guid, raidIcon, name)
 	local frame
 
 	if guid then frame = self:SearchNameplateByGUID(guid) end
 	if (not frame) and name then frame = self:SearchNameplateByName(name) end
-	if (not frame) and raidicon then frame = self:SearchNameplateByIconName(raidicon) end
+	if (not frame) and raidIcon then frame = self:SearchNameplateByIconName(raidIcon) end
 	
 	return frame
 end
