@@ -10,26 +10,30 @@ local LSM = LibStub("LibSharedMedia-3.0")
 	- Raid Icon aura check appears faulty
 	- Assure all variables are voided out on nameplate hide
 	- Rewrite configuration GUI
+	- Add health text
+	- Add health threshold coloring via glow texture.
 ]]
 
 local numChildren = -1
 local twipe = table.wipe
 local band = bit.band
+
+NP.NumTransparentPlates = 0
 NP.CreatedPlates = {};
 NP.Healers = {};
 
 NP.ByRaidIcon = {}			-- Raid Icon to GUID 		-- ex.  ByRaidIcon["SKULL"] = GUID
 NP.ByName = {}				-- Name to GUID (PVP)
-NP.Aura_List = {}	-- Two Dimensional
-NP.Aura_Spellid = {}
-NP.Aura_Expiration = {}
-NP.Aura_Stacks = {}
-NP.Aura_Caster = {}
-NP.Aura_Duration = {}
-NP.Aura_Texture = {}
-NP.Aura_Type = {}
-NP.Aura_Target = {}
-NP.CachedAuraDurations = {};
+NP.AuraList = {}	-- Two Dimensional
+NP.AuraSpellID = {}
+NP.AuraExpiration = {}
+NP.AuraStacks = {}
+NP.AuraCaster = {}
+NP.AuraDuration = {}
+NP.AuraTexture = {}
+NP.AuraType = {}
+NP.AuraTarget = {}
+NP.CachedAuraDurations = {}
 NP.AurasCache = {}
 
 NP.HealerSpecs = {
@@ -108,6 +112,7 @@ function NP:OnUpdate(elapsed)
 	end
 
 	if(self.elapsed and self.elapsed > 0.2) then
+		NP.NumTransparentPlates = 0
 		NP:ForEachPlate('SetAlpha')
 		NP:ForEachPlate('SetUnitInfo')
 		NP:ForEachPlate('ColorizeAndScale')
@@ -303,6 +308,7 @@ function NP:SetAlpha()
 	local myPlate = NP.CreatedPlates[self]
 	if self:GetAlpha() < 1 then
 		myPlate:SetAlpha(NP.db.nonTargetAlpha)
+		NP.NumTransparentPlates = NP.NumTransparentPlates + 1
 	else
 		myPlate:SetAlpha(1)
 	end
@@ -311,7 +317,7 @@ end
 function NP:SetUnitInfo()
 	local myPlate = NP.CreatedPlates[self]
 
-	if self:GetAlpha() == 1 and UnitExists("target") and UnitName("target") == self.name:GetText() then
+	if self:GetAlpha() == 1 and UnitExists("target") and UnitName("target") == self.name:GetText() and NP.NumTransparentPlates > 0 then
 		self.guid = UnitGUID("target")
 		self.unit = "target"
 		NP:UpdateAurasByUnitID("target")
@@ -328,6 +334,8 @@ function NP:SetUnitInfo()
 		myPlate:SetFrameLevel(0)
 		myPlate.overlay:Hide()
 	end	
+
+	myPlate.healthBar.text:SetText(self.guid)
 end
 
 function NP:PLAYER_ENTERING_WORLD()
@@ -368,12 +376,9 @@ end
 
 function NP:UpdateAllPlates()
 	if E.private["nameplate"].enable ~= true then return end
-	for frame, _ in pairs(self.CreatedPlates) do
-		self:SkinPlate(frame:GetChildren())
-	end
+	NP:ForEachPlate("UpdateSettings")
 end
 
---Run a function for all visible nameplates
 function NP:ForEachPlate(functionToRun, ...)
 	for blizzPlate, _ in pairs(self.CreatedPlates) do
 		if blizzPlate and blizzPlate:IsShown() then
@@ -419,6 +424,11 @@ function NP:HealthBar_OnValueChanged(value)
 	local myPlate = NP.CreatedPlates[self:GetParent():GetParent()]
 	myPlate.healthBar:SetMinMaxValues(self:GetMinMaxValues())
 	myPlate.healthBar:SetValue(value)
+
+	--TODO: Health Text
+
+
+	--TODO: Health Threshold
 end
 
 local green =  {r = 0, g = 1, b = 0}
@@ -725,7 +735,7 @@ end
 ---------------------------------------------
 do
 	local PolledHideIn
-	local Framelist = {}			-- Key = Frame, Value = Expiration Time
+	local Framelist = {}
 	local Watcherframe = CreateFrame("Frame")
 	local WatcherframeActive = false
 	local select = select
@@ -735,26 +745,26 @@ do
 		local curTime = GetTime()
 		if curTime < timeToUpdate then return end
 		local framecount = 0
-		timeToUpdate = curTime + 0.01
-		-- Cycle through the watchlist, hiding frames which are timed-out
+		timeToUpdate = curTime + 0.1
+
 		for frame, expiration in pairs(Framelist) do
-			-- If expired...
-			if expiration < curTime then frame:Hide(); Framelist[frame] = nil
-			-- If active...
+			if expiration < curTime then 
+				frame:Hide(); 
+				Framelist[frame] = nil
 			else 
-				-- Update the frame
 				if frame.Poll then frame.Poll(NP, frame, expiration) end
 				framecount = framecount + 1 
 			end
 		end
-		-- If no more frames to watch, unregister the OnUpdate script
-		if framecount == 0 then Watcherframe:SetScript("OnUpdate", nil); WatcherframeActive = false end
+
+		if framecount == 0 then 
+			Watcherframe:SetScript("OnUpdate", nil); 
+			WatcherframeActive = false 
+		end
 	end
 	
 	function PolledHideIn(frame, expiration)
-	
 		if expiration == 0 then 
-			
 			frame:Hide()
 			Framelist[frame] = nil
 		else
@@ -889,31 +899,31 @@ function NP:UpdateAuraContext(frame)
 end
 
 function NP:RemoveAuraInstance(guid, spellid)
-	if guid and spellid and NP.Aura_List[guid] then
+	if guid and spellid and NP.AuraList[guid] then
 		local aura_instance_id = tostring(guid)..tostring(spellid)..(tostring(caster or "UNKNOWN_CASTER"))
 		local aura_id = spellid..(tostring(caster or "UNKNOWN_CASTER"))
-		if NP.Aura_List[guid][aura_id] then
-			NP.Aura_Spellid[aura_instance_id] = nil
-			NP.Aura_Expiration[aura_instance_id] = nil
-			NP.Aura_Stacks[aura_instance_id] = nil
-			NP.Aura_Caster[aura_instance_id] = nil
-			NP.Aura_Duration[aura_instance_id] = nil
-			NP.Aura_Texture[aura_instance_id] = nil
-			NP.Aura_Type[aura_instance_id] = nil
-			NP.Aura_Target[aura_instance_id] = nil
-			NP.Aura_List[guid][aura_id] = nil
+		if NP.AuraList[guid][aura_id] then
+			NP.AuraSpellID[aura_instance_id] = nil
+			NP.AuraExpiration[aura_instance_id] = nil
+			NP.AuraStacks[aura_instance_id] = nil
+			NP.AuraCaster[aura_instance_id] = nil
+			NP.AuraDuration[aura_instance_id] = nil
+			NP.AuraTexture[aura_instance_id] = nil
+			NP.AuraType[aura_instance_id] = nil
+			NP.AuraTarget[aura_instance_id] = nil
+			NP.AuraList[guid][aura_id] = nil
 		end
 	end
 end
 
 function NP:GetAuraList(guid)
-	if guid and self.Aura_List[guid] then return self.Aura_List[guid] end
+	if guid and self.AuraList[guid] then return self.AuraList[guid] end
 end
 
 function NP:GetAuraInstance(guid, aura_id)
 	if guid and aura_id then
 		local aura_instance_id = guid..aura_id
-		return self.Aura_Spellid[aura_instance_id], self.Aura_Expiration[aura_instance_id], self.Aura_Stacks[aura_instance_id], self.Aura_Caster[aura_instance_id], self.Aura_Duration[aura_instance_id], self.Aura_Texture[aura_instance_id], self.Aura_Type[aura_instance_id], self.Aura_Target[aura_instance_id]
+		return self.AuraSpellID[aura_instance_id], self.AuraExpiration[aura_instance_id], self.AuraStacks[aura_instance_id], self.AuraCaster[aura_instance_id], self.AuraDuration[aura_instance_id], self.AuraTexture[aura_instance_id], self.AuraType[aura_instance_id], self.AuraTarget[aura_instance_id]
 	end
 end
 
@@ -950,16 +960,16 @@ function NP:SetAuraInstance(guid, spellid, expiration, stacks, caster, duration,
 	if guid and spellid and caster and texture then
 		local aura_id = spellid..(tostring(caster or "UNKNOWN_CASTER"))
 		local aura_instance_id = guid..aura_id
-		NP.Aura_List[guid] = NP.Aura_List[guid] or {}
-		NP.Aura_List[guid][aura_id] = aura_instance_id
-		NP.Aura_Spellid[aura_instance_id] = spellid
-		NP.Aura_Expiration[aura_instance_id] = expiration
-		NP.Aura_Stacks[aura_instance_id] = stacks
-		NP.Aura_Caster[aura_instance_id] = caster
-		NP.Aura_Duration[aura_instance_id] = duration
-		NP.Aura_Texture[aura_instance_id] = texture
-		NP.Aura_Type[aura_instance_id] = auratype
-		NP.Aura_Target[aura_instance_id] = auratarget
+		NP.AuraList[guid] = NP.AuraList[guid] or {}
+		NP.AuraList[guid][aura_id] = aura_instance_id
+		NP.AuraSpellID[aura_instance_id] = spellid
+		NP.AuraExpiration[aura_instance_id] = expiration
+		NP.AuraStacks[aura_instance_id] = stacks
+		NP.AuraCaster[aura_instance_id] = caster
+		NP.AuraDuration[aura_instance_id] = duration
+		NP.AuraTexture[aura_instance_id] = texture
+		NP.AuraType[aura_instance_id] = auratype
+		NP.AuraTarget[aura_instance_id] = auratarget
 	end
 end
 
@@ -1013,17 +1023,17 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, ...)
 end
 
 function NP:WipeAuraList(guid)
-	if guid and self.Aura_List[guid] then
-		local unit_aura_list = self.Aura_List[guid]
+	if guid and self.AuraList[guid] then
+		local unit_aura_list = self.AuraList[guid]
 		for aura_id, aura_instance_id in pairs(unit_aura_list) do
-			self.Aura_Spellid[aura_instance_id] = nil
-			self.Aura_Expiration[aura_instance_id] = nil
-			self.Aura_Stacks[aura_instance_id] = nil
-			self.Aura_Caster[aura_instance_id] = nil
-			self.Aura_Duration[aura_instance_id] = nil
-			self.Aura_Texture[aura_instance_id] = nil
-			self.Aura_Type[aura_instance_id] = nil
-			self.Aura_Target[aura_instance_id] = nil
+			self.AuraSpellID[aura_instance_id] = nil
+			self.AuraExpiration[aura_instance_id] = nil
+			self.AuraStacks[aura_instance_id] = nil
+			self.AuraCaster[aura_instance_id] = nil
+			self.AuraDuration[aura_instance_id] = nil
+			self.AuraTexture[aura_instance_id] = nil
+			self.AuraType[aura_instance_id] = nil
+			self.AuraTarget[aura_instance_id] = nil
 			unit_aura_list[aura_id] = nil
 		end
 	end
