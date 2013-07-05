@@ -108,19 +108,19 @@ P["nameplate"] = {
 	},
 	['healthBar'] = {
 		['width'] = 112,
-		['height'] = 8,		
+		['height'] = 9,		
 		['lowThreshold'] =  0.40,
 		['text'] = {
-			['enable'] = false,
+			['enable'] = true,
 			['format'] = 'CURRENT',
 			['xOffset'] = 0,
-			['yOffset'] = 0,
+			['yOffset'] = 1,
 			['attachTo'] = 'CENTER',
 			['justifyH'] = 'CENTER',			
 		}		
 	},
 	['castBar'] = {
-		['height'] = 6,
+		['height'] = 4,
 		['color'] = { r = 1,g = 208/255,b = 0 },
 		['noInterrupt'] = { r = 0.78, g = 0.25, b = 0.25 },		
 		['name'] = {

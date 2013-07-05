@@ -61,9 +61,10 @@ NP.RaidIconCoordinate = {
 	[0.75]	= { [0]		= "TRIANGLE", [0.25]	= "SKULL", }, 
 }
 
-NP.MAX_DISPLAYABLE_DEBUFFS = 5;
+NP.MAX_DISPLAYABLE_DEBUFFS = 4;
 NP.MAX_SMALLNP_DISPLAYABLE_DEBUFFS = 2;
 
+local AURA_UPDATE_INTERVAL = 0.1
 local AURA_TYPE_BUFF = 1
 local AURA_TYPE_DEBUFF = 6
 local AURA_TARGET_HOSTILE = 1
@@ -96,7 +97,6 @@ local TimeColors = {
 }
 
 function NP:OnUpdate(elapsed)
-	NP.PlateParent:Hide()
 	local count = WorldFrame:GetNumChildren()
 	if(count ~= numChildren) then
 		numChildren = count
@@ -104,10 +104,11 @@ function NP:OnUpdate(elapsed)
 	end
 
 	for blizzPlate, plate in pairs(NP.CreatedPlates) do
-		plate:Hide()
 		if blizzPlate:IsShown() then
 			plate:SetPoint("CENTER", WorldFrame, "BOTTOMLEFT", blizzPlate:GetCenter())
 			plate:Show()
+		else
+			plate:Hide()
 		end
 	end
 
@@ -123,8 +124,6 @@ function NP:OnUpdate(elapsed)
 	else
 		self.elapsed = (self.elapsed or 0) + elapsed
 	end	
-
-	NP.PlateParent:Show()
 end
 
 function NP:CheckFilter()
@@ -217,7 +216,7 @@ function NP:GetReaction(frame)
 		end
 	end
 
-	if (r + b + b) > 2 then
+	if (r + b + b) == 1.59 then
 		return 'TAPPED_NPC'
 	elseif g + b == 0 then
 		return 'HOSTILE_NPC'
@@ -320,22 +319,22 @@ function NP:SetUnitInfo()
 	if self:GetAlpha() == 1 and UnitExists("target") and UnitName("target") == self.name:GetText() and NP.NumTransparentPlates > 0 then
 		self.guid = UnitGUID("target")
 		self.unit = "target"
-		NP:UpdateAurasByUnitID("target")
 		myPlate:SetFrameLevel(2)
 		myPlate.overlay:Hide()
 	elseif self.highlight:IsShown() and UnitExists("mouseover") and UnitName("mouseover") == self.name:GetText() then
 		self.guid = UnitGUID("mouseover")
 		self.unit = "mouseover"
 		myPlate:SetFrameLevel(1)
-		NP:UpdateAurasByUnitID("mouseover")
+
+		if not NP.AuraList[self.guid] then
+			NP:UpdateAurasByUnitID("mouseover")
+		end
 		myPlate.overlay:Show()
 	else
 		self.unit = nil
 		myPlate:SetFrameLevel(0)
 		myPlate.overlay:Hide()
 	end	
-
-	myPlate.healthBar.text:SetText(self.guid)
 end
 
 function NP:PLAYER_ENTERING_WORLD()
@@ -391,7 +390,6 @@ function NP:RoundColors(r, g, b)
 	return floor(r*100+.5)/100, floor(g*100+.5)/100, floor(b*100+.5)/100
 end
 
-
 function NP:OnShow()
 	local objectType
 	for object in pairs(self.queue) do		
@@ -408,27 +406,48 @@ function NP:OnShow()
 			object:Hide()
 		end
 	end
+	
+	NP.HealthBar_OnValueChanged(self.healthBar, self.healthBar:GetValue())
 end
 
 function NP:OnHide()
+	local myPlate = NP.CreatedPlates[self]
 	self.threatReaction = nil
 	self.unitType = nil
 	self.guid = nil
 	self.unit = nil
 	self.raidIconType = nil
+	myPlate.lowHealth:Hide()
 
 	--TODO: Hide All Auras
 end
 
 function NP:HealthBar_OnValueChanged(value)
 	local myPlate = NP.CreatedPlates[self:GetParent():GetParent()]
-	myPlate.healthBar:SetMinMaxValues(self:GetMinMaxValues())
+	local minValue, maxValue = self:GetMinMaxValues()
+	myPlate.healthBar:SetMinMaxValues(minValue, maxValue)
 	myPlate.healthBar:SetValue(value)
 
-	--TODO: Health Text
+	--Health Text
+	if NP.db.healthBar.text.enable and value and maxValue and maxValue > 1 and self:GetScale() == 1 then
+		myPlate.healthBar.text:Show()
+		myPlate.healthBar.text:SetText(E:GetFormattedText(NP.db.healthBar.text.format, value, maxValue))
+	elseif myPlate.healthBar.text:IsShown() then
+		myPlate.healthBar.text:Hide()
+	end
 
-
-	--TODO: Health Threshold
+	--Health Threshold
+	local percentValue = (value/maxValue)
+	if percentValue < NP.db.healthBar.lowThreshold then
+		myPlate.lowHealth:Show()
+		if percentValue < (NP.db.healthBar.lowThreshold / 2) then
+			myPlate.lowHealth:SetBackdropBorderColor(1, 0, 0, 0.9)
+		else
+			myPlate.lowHealth:SetBackdropBorderColor(1, 1, 0, 0.9)
+		end
+	else
+		myPlate.lowHealth:Hide()
+	end
 end
 
 local green =  {r = 0, g = 1, b = 0}
@@ -583,7 +602,7 @@ function NP:CreatePlate(frame)
 	myPlate.overlay:Hide()
 
 	--Auras
-	local f = CreateFrame("Frame", nil, frame)
+	local f = CreateFrame("Frame", nil, myPlate)
 	f:SetHeight(32); f:Show()
 	f:SetPoint('BOTTOMRIGHT', myPlate.healthBar, 'TOPRIGHT', 0, 10)
 	f:SetPoint('BOTTOMLEFT', myPlate.healthBar, 'TOPLEFT', 0, 10)
@@ -591,17 +610,36 @@ function NP:CreatePlate(frame)
 	f.PollFunction = NP.UpdateAuraTime
 	f.AuraIconFrames = {}
 	local AuraIconFrames = f.AuraIconFrames
-	for index = 1, NP.MAX_DISPLAYABLE_DEBUFFS do AuraIconFrames[index] = NP:CreateAuraIcon(f);  end
-	-- Set Anchors	
+	for index = 1, NP.MAX_DISPLAYABLE_DEBUFFS do 
+		AuraIconFrames[index] = NP:CreateAuraIcon(f, myPlate);  
+	end
+
 	AuraIconFrames[1]:SetPoint("LEFT", f, -1, 0)
-	for index = 2, NP.MAX_DISPLAYABLE_DEBUFFS do AuraIconFrames[index]:SetPoint("LEFT", AuraIconFrames[index-1], "RIGHT", 1, 0) end
+	for index = 2, NP.MAX_DISPLAYABLE_DEBUFFS do 
+		AuraIconFrames[index]:SetPoint("LEFT", AuraIconFrames[index-1], "RIGHT", 1, 0) 
+	end
 
-	f._Hide = f.Hide
-	f.Hide = function() NP:ClearAuraContext(f); f:_Hide() end
-	f:SetScript("OnHide", function() for index = 1, 4 do NP.PolledHideIn(AuraIconFrames[index], 0) end end)	
-
+	f:SetScript("OnHide", function(self) 
+		NP:ClearAuraContext(self)
+		for index = 1, 4 do 
+			NP.PolledHideIn(AuraIconFrames[index], 0) 
+		end 
+	end)	
 	frame.AuraWidget = f	
-
+	
+	--Low-Health Indicator
+	myPlate.lowHealth = CreateFrame("Frame", nil, myPlate)
+	myPlate.lowHealth:SetFrameLevel(0)
+	myPlate.lowHealth:SetOutside(myPlate.healthBar, 3, 3)
+	myPlate.lowHealth:SetBackdrop( { 
+		edgeFile = LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = 3,
+		insets = {left = 5, right = 5, top = 5, bottom = 5},
+	})
+	myPlate.lowHealth:SetBackdropColor(0, 0, 0, 0)
+	myPlate.lowHealth:SetBackdropBorderColor(1, 1, 0, 0.9)
+	myPlate.lowHealth:SetScale(E.PixelMode and 1.5 or 2)
+	myPlate.lowHealth:Hide()
+	
 	--Script Handlers
 	frame:HookScript("OnShow", NP.OnShow)
 	frame:HookScript("OnHide", NP.OnHide)
@@ -660,10 +698,10 @@ function NP:CreateBackdrop(parent, point)
 	if point.bordertop then return end
 
 	
-	point.backdrop2 = parent:CreateTexture(nil, "BORDER")
-	point.backdrop2:SetDrawLayer("BORDER", -4)
-	point.backdrop2:SetAllPoints(point)
-	point.backdrop2:SetTexture(unpack(E["media"].backdropfadecolor))		
+	point.backdrop = parent:CreateTexture(nil, "BORDER")
+	point.backdrop:SetDrawLayer("BORDER", -4)
+	point.backdrop:SetAllPoints(point)
+	point.backdrop:SetTexture(unpack(E["media"].backdropfadecolor))		
 	
 	if E.PixelMode then 
 		point.bordertop = parent:CreateTexture(nil, "BORDER")
@@ -694,39 +732,61 @@ function NP:CreateBackdrop(parent, point)
 		point.borderright:SetTexture(unpack(E["media"].bordercolor))	
 		point.borderright:SetDrawLayer("BORDER", 1)			
 	else
-		point.backdrop = parent:CreateTexture(nil, "BORDER")
-		point.backdrop:SetDrawLayer("BORDER", -1)
-		point.backdrop:SetPoint("TOPLEFT", point, "TOPLEFT", -noscalemult*3, noscalemult*3)
-		point.backdrop:SetPoint("BOTTOMRIGHT", point, "BOTTOMRIGHT", noscalemult*3, -noscalemult*3)
-		point.backdrop:SetTexture(0, 0, 0, 1)
-
-		point.bordertop = parent:CreateTexture(nil, "BORDER")
+		point.bordertop = parent:CreateTexture(nil, "ARTWORK")
 		point.bordertop:SetPoint("TOPLEFT", point, "TOPLEFT", -noscalemult*2, noscalemult*2)
 		point.bordertop:SetPoint("TOPRIGHT", point, "TOPRIGHT", noscalemult*2, noscalemult*2)
 		point.bordertop:SetHeight(noscalemult)
-		point.bordertop:SetTexture(unpack(E["media"].bordercolor))	
-		point.bordertop:SetDrawLayer("BORDER", -7)
+		point.bordertop:SetTexture(unpack(E.media.bordercolor))	
+		point.bordertop:SetDrawLayer("ARTWORK", -6)
 		
-		point.borderbottom = parent:CreateTexture(nil, "BORDER")
+		point.bordertop.backdrop = parent:CreateTexture(nil, "ARTWORK")
+		point.bordertop.backdrop:SetPoint("TOPLEFT", point.bordertop, "TOPLEFT", -noscalemult, noscalemult)
+		point.bordertop.backdrop:SetPoint("TOPRIGHT", point.bordertop, "TOPRIGHT", noscalemult, noscalemult)
+		point.bordertop.backdrop:SetHeight(noscalemult * 3)
+		point.bordertop.backdrop:SetTexture(0, 0, 0)	
+		point.bordertop.backdrop:SetDrawLayer("ARTWORK", -7) 
+
+		point.borderbottom = parent:CreateTexture(nil, "ARTWORK")
 		point.borderbottom:SetPoint("BOTTOMLEFT", point, "BOTTOMLEFT", -noscalemult*2, -noscalemult*2)
 		point.borderbottom:SetPoint("BOTTOMRIGHT", point, "BOTTOMRIGHT", noscalemult*2, -noscalemult*2)
 		point.borderbottom:SetHeight(noscalemult)
-		point.borderbottom:SetTexture(unpack(E["media"].bordercolor))	
-		point.borderbottom:SetDrawLayer("BORDER", -7)
+		point.borderbottom:SetTexture(unpack(E.media.bordercolor))	
+		point.borderbottom:SetDrawLayer("ARTWORK", -6)
+
+		point.borderbottom.backdrop = parent:CreateTexture(nil, "ARTWORK")
+		point.borderbottom.backdrop:SetPoint("BOTTOMLEFT", point.borderbottom, "BOTTOMLEFT", -noscalemult, -noscalemult)
+		point.borderbottom.backdrop:SetPoint("BOTTOMRIGHT", point.borderbottom, "BOTTOMRIGHT", noscalemult, -noscalemult)
+		point.borderbottom.backdrop:SetHeight(noscalemult * 3)
+		point.borderbottom.backdrop:SetTexture(0, 0, 0)	
+		point.borderbottom.backdrop:SetDrawLayer("ARTWORK", -7)			
 		
-		point.borderleft = parent:CreateTexture(nil, "BORDER")
+		point.borderleft = parent:CreateTexture(nil, "ARTWORK")
 		point.borderleft:SetPoint("TOPLEFT", point, "TOPLEFT", -noscalemult*2, noscalemult*2)
 		point.borderleft:SetPoint("BOTTOMLEFT", point, "BOTTOMLEFT", noscalemult*2, -noscalemult*2)
 		point.borderleft:SetWidth(noscalemult)
-		point.borderleft:SetTexture(unpack(E["media"].bordercolor))	
-		point.borderleft:SetDrawLayer("BORDER", -7)
+		point.borderleft:SetTexture(unpack(E.media.bordercolor))	
+		point.borderleft:SetDrawLayer("ARTWORK", -6)
+
+		point.borderleft.backdrop = parent:CreateTexture(nil, "ARTWORK")
+		point.borderleft.backdrop:SetPoint("TOPLEFT", point.borderleft, "TOPLEFT", -noscalemult, noscalemult)
+		point.borderleft.backdrop:SetPoint("BOTTOMLEFT", point.borderleft, "BOTTOMLEFT", -noscalemult, -noscalemult)
+		point.borderleft.backdrop:SetWidth(noscalemult * 3)
+		point.borderleft.backdrop:SetTexture(0, 0, 0)	
+		point.borderleft.backdrop:SetDrawLayer("ARTWORK", -7)					
 		
-		point.borderright = parent:CreateTexture(nil, "BORDER")
+		point.borderright = parent:CreateTexture(nil, "ARTWORK")
 		point.borderright:SetPoint("TOPRIGHT", point, "TOPRIGHT", noscalemult*2, noscalemult*2)
 		point.borderright:SetPoint("BOTTOMRIGHT", point, "BOTTOMRIGHT", -noscalemult*2, -noscalemult*2)
 		point.borderright:SetWidth(noscalemult)
-		point.borderright:SetTexture(unpack(E["media"].bordercolor))	
-		point.borderright:SetDrawLayer("BORDER", -7)
+		point.borderright:SetTexture(unpack(E.media.bordercolor))	
+		point.borderright:SetDrawLayer("ARTWORK", -6)	
+
+		point.borderright.backdrop = parent:CreateTexture(nil, "ARTWORK")
+		point.borderright.backdrop:SetPoint("TOPRIGHT", point.borderright, "TOPRIGHT", noscalemult, noscalemult)
+		point.borderright.backdrop:SetPoint("BOTTOMRIGHT", point.borderright, "BOTTOMRIGHT", noscalemult, -noscalemult)
+		point.borderright.backdrop:SetWidth(noscalemult * 3)
+		point.borderright.backdrop:SetTexture(0, 0, 0)	
+		point.borderright.backdrop:SetDrawLayer("ARTWORK", -7)
 	end
 end
 
@@ -745,14 +805,16 @@ do
 		local curTime = GetTime()
 		if curTime < timeToUpdate then return end
 		local framecount = 0
-		timeToUpdate = curTime + 0.1
+		timeToUpdate = curTime + AURA_UPDATE_INTERVAL
 
 		for frame, expiration in pairs(Framelist) do
 			if expiration < curTime then 
 				frame:Hide(); 
 				Framelist[frame] = nil
 			else 
-				if frame.Poll then frame.Poll(NP, frame, expiration) end
+				if frame.Poll then 
+					frame.Poll(NP, frame, expiration) 
+				end
 				framecount = framecount + 1 
 			end
 		end
@@ -781,22 +843,22 @@ do
 	NP.PolledHideIn = PolledHideIn
 end
 
-function NP:GetSpellDuration(spellid)
-	if spellid then return NP.CachedAuraDurations[spellid] end
+function NP:GetSpellDuration(spellID)
+	if spellID then return NP.CachedAuraDurations[spellID] end
 end
 
-function NP:SetSpellDuration(spellid, duration)
-	if spellid then NP.CachedAuraDurations[spellid] = duration end
+function NP:SetSpellDuration(spellID, duration)
+	if spellID then NP.CachedAuraDurations[spellID] = duration end
 end
 
-function NP:CreateAuraIcon(parent)
+function NP:CreateAuraIcon(frame, parent)
 	local noscalemult = E.mult * UIParent:GetScale()
-	local button = CreateFrame("Frame",nil,parent)
+	local button = CreateFrame("Frame",nil,frame)
 	button:SetWidth(NP.db.auras.width)
 	button:SetHeight(NP.db.auras.height)
 	button:SetScript('OnHide', function()
-		if parent:GetParent().guid then
-			NP:UpdateIconGrid(parent:GetParent(), parent:GetParent().guid)
+		if parent.guid then
+			NP:UpdateIconGrid(parent, parent.guid)
 		end
 	end)
 	
@@ -849,7 +911,7 @@ function NP:CreateAuraIcon(parent)
 		Type = "",
 	}			
 
-	button.Poll = parent.PollFunction
+	button.Poll = frame.PollFunction
 	button:Hide()
 	
 	return button
@@ -866,52 +928,23 @@ function NP:UpdateAuraTime(frame, expiration)
 end
 
 function NP:ClearAuraContext(frame)
-	if frame.guidcache then 
-		AuraGUID[frame.guidcache] = nil 
-		frame.unit = nil
-	end
 	AuraList[frame] = nil
 end
 
-function NP:UpdateAuraContext(frame)
-	local parent = frame:GetParent()
-	local guid = parent.guid
-	frame.unit = parent.unit
-	frame.guidcache = guid
-	
-	AuraList[frame] = true
-	if guid then AuraGUID[guid] = frame end
-	
-	if parent.unit == 'target' then UpdateAurasByUnitID("target")
-	elseif parent.unit == 'mouseover' then UpdateAurasByUnitID("mouseover") end
-	
-	local raidicon, name
-	if parent.raidIcon:IsShown() then
-		raidicon = parent.raidIconType
-		if guid and raidicon then ByRaidIcon[raidicon] = guid end
-	end
-	
-	
-	local frame = NP:SearchForFrame(guid, raidicon, parent.name:GetText())
-	if frame then
-		NP:UpdateAuras(frame)
-	end
-end
-
-function NP:RemoveAuraInstance(guid, spellid)
-	if guid and spellid and NP.AuraList[guid] then
-		local aura_instance_id = tostring(guid)..tostring(spellid)..(tostring(caster or "UNKNOWN_CASTER"))
-		local aura_id = spellid..(tostring(caster or "UNKNOWN_CASTER"))
-		if NP.AuraList[guid][aura_id] then
-			NP.AuraSpellID[aura_instance_id] = nil
-			NP.AuraExpiration[aura_instance_id] = nil
-			NP.AuraStacks[aura_instance_id] = nil
-			NP.AuraCaster[aura_instance_id] = nil
-			NP.AuraDuration[aura_instance_id] = nil
-			NP.AuraTexture[aura_instance_id] = nil
-			NP.AuraType[aura_instance_id] = nil
-			NP.AuraTarget[aura_instance_id] = nil
-			NP.AuraList[guid][aura_id] = nil
+function NP:RemoveAuraInstance(guid, spellID)
+	if guid and spellID and NP.AuraList[guid] then
+		local instanceID = tostring(guid)..tostring(spellID)..(tostring(caster or "UNKNOWN_CASTER"))
+		local auraID = spellID..(tostring(caster or "UNKNOWN_CASTER"))
+		if NP.AuraList[guid][auraID] then
+			NP.AuraSpellID[instanceID] = nil
+			NP.AuraExpiration[instanceID] = nil
+			NP.AuraStacks[instanceID] = nil
+			NP.AuraCaster[instanceID] = nil
+			NP.AuraDuration[instanceID] = nil
+			NP.AuraTexture[instanceID] = nil
+			NP.AuraType[instanceID] = nil
+			NP.AuraTarget[instanceID] = nil
+			NP.AuraList[guid][auraID] = nil
 		end
 	end
 end
@@ -920,14 +953,14 @@ function NP:GetAuraList(guid)
 	if guid and self.AuraList[guid] then return self.AuraList[guid] end
 end
 
-function NP:GetAuraInstance(guid, aura_id)
-	if guid and aura_id then
-		local aura_instance_id = guid..aura_id
-		return self.AuraSpellID[aura_instance_id], self.AuraExpiration[aura_instance_id], self.AuraStacks[aura_instance_id], self.AuraCaster[aura_instance_id], self.AuraDuration[aura_instance_id], self.AuraTexture[aura_instance_id], self.AuraType[aura_instance_id], self.AuraTarget[aura_instance_id]
+function NP:GetAuraInstance(guid, auraID)
+	if guid and auraID then
+		local instanceID = guid..auraID
+		return self.AuraSpellID[instanceID], self.AuraExpiration[instanceID], self.AuraStacks[instanceID], self.AuraCaster[instanceID], self.AuraDuration[instanceID], self.AuraTexture[instanceID], self.AuraType[instanceID], self.AuraTarget[instanceID]
 	end
 end
 
-function NP:SetAuraInstance(guid, spellid, expiration, stacks, caster, duration, texture, auratype, auratarget)
+function NP:SetAuraInstance(guid, spellID, expiration, stacks, caster, duration, texture, auratype, auratarget)
 	local filter = false
 	if (self.db.auras.enable and caster == UnitGUID('player')) then
 		filter = true;
@@ -935,7 +968,7 @@ function NP:SetAuraInstance(guid, spellid, expiration, stacks, caster, duration,
 	
 	local trackFilter = E.global['unitframe']['aurafilters'][self.db.auras.additionalFilter]
 	if self.db.auras.additionalFilter and #self.db.auras.additionalFilter > 1 and trackFilter then
-		local name = GetSpellInfo(spellid)
+		local name = GetSpellInfo(spellID)
 		local spellList = trackFilter.spells
 		local type = trackFilter.type
 		if type == 'Blacklist' then
@@ -949,7 +982,7 @@ function NP:SetAuraInstance(guid, spellid, expiration, stacks, caster, duration,
 		end
 	end
 	
-	if E.global.unitframe.InvalidSpells[spellid] then
+	if E.global.unitframe.InvalidSpells[spellID] then
 		filter = false;
 	end
 
@@ -957,19 +990,19 @@ function NP:SetAuraInstance(guid, spellid, expiration, stacks, caster, duration,
 		return;
 	end
 
-	if guid and spellid and caster and texture then
-		local aura_id = spellid..(tostring(caster or "UNKNOWN_CASTER"))
-		local aura_instance_id = guid..aura_id
+	if guid and spellID and caster and texture then
+		local auraID = spellID..(tostring(caster or "UNKNOWN_CASTER"))
+		local instanceID = guid..auraID
 		NP.AuraList[guid] = NP.AuraList[guid] or {}
-		NP.AuraList[guid][aura_id] = aura_instance_id
-		NP.AuraSpellID[aura_instance_id] = spellid
-		NP.AuraExpiration[aura_instance_id] = expiration
-		NP.AuraStacks[aura_instance_id] = stacks
-		NP.AuraCaster[aura_instance_id] = caster
-		NP.AuraDuration[aura_instance_id] = duration
-		NP.AuraTexture[aura_instance_id] = texture
-		NP.AuraType[aura_instance_id] = auratype
-		NP.AuraTarget[aura_instance_id] = auratarget
+		NP.AuraList[guid][auraID] = instanceID
+		NP.AuraSpellID[instanceID] = spellID
+		NP.AuraExpiration[instanceID] = expiration
+		NP.AuraStacks[instanceID] = stacks
+		NP.AuraCaster[instanceID] = caster
+		NP.AuraDuration[instanceID] = duration
+		NP.AuraTexture[instanceID] = texture
+		NP.AuraType[instanceID] = auratype
+		NP.AuraTarget[instanceID] = auratarget
 	end
 end
 
@@ -982,19 +1015,19 @@ function NP:UNIT_AURA(event, unit)
 end
 
 function NP:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, ...)
-	local _, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellid, spellName, _, auraType, stackCount  = ...
+	local _, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellID, spellName, _, auraType, stackCount  = ...
 
 	if event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REFRESH" or event == "SPELL_AURA_APPLIED_DOSE" or event == "SPELL_AURA_REMOVED_DOSE" or event == "SPELL_AURA_BROKEN" or event == "SPELL_AURA_BROKEN_SPELL" or event == "SPELL_AURA_REMOVED" then	
 		if event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REFRESH" then
-			local duration = NP:GetSpellDuration(spellid)
-			local texture = GetSpellTexture(spellid)
-			NP:SetAuraInstance(destGUID, spellid, GetTime() + (duration or 0), 1, sourceGUID, duration, texture, AURA_TYPE_DEBUFF, AURA_TARGET_HOSTILE)
+			local duration = NP:GetSpellDuration(spellID)
+			local texture = GetSpellTexture(spellID)
+			NP:SetAuraInstance(destGUID, spellID, GetTime() + (duration or 0), 1, sourceGUID, duration, texture, AURA_TYPE_DEBUFF, AURA_TARGET_HOSTILE)
 		elseif event == "SPELL_AURA_APPLIED_DOSE" or event == "SPELL_AURA_REMOVED_DOSE" then
-			local duration = NP:GetSpellDuration(spellid)
-			local texture = GetSpellTexture(spellid)
-			NP:SetAuraInstance(destGUID, spellid, GetTime() + (duration or 0), stackCount, sourceGUID, duration, texture, AURA_TYPE_DEBUFF, AURA_TARGET_HOSTILE)
+			local duration = NP:GetSpellDuration(spellID)
+			local texture = GetSpellTexture(spellID)
+			NP:SetAuraInstance(destGUID, spellID, GetTime() + (duration or 0), stackCount, sourceGUID, duration, texture, AURA_TYPE_DEBUFF, AURA_TARGET_HOSTILE)
 		elseif event == "SPELL_AURA_BROKEN" or event == "SPELL_AURA_BROKEN_SPELL" or event == "SPELL_AURA_REMOVED" then
-			NP:RemoveAuraInstance(destGUID, spellid)
+			NP:RemoveAuraInstance(destGUID, spellID)
 		end	
 
 		--NP:UpdateAuraByLookup(destGUID)
@@ -1024,53 +1057,51 @@ end
 
 function NP:WipeAuraList(guid)
 	if guid and self.AuraList[guid] then
-		local unit_aura_list = self.AuraList[guid]
-		for aura_id, aura_instance_id in pairs(unit_aura_list) do
-			self.AuraSpellID[aura_instance_id] = nil
-			self.AuraExpiration[aura_instance_id] = nil
-			self.AuraStacks[aura_instance_id] = nil
-			self.AuraCaster[aura_instance_id] = nil
-			self.AuraDuration[aura_instance_id] = nil
-			self.AuraTexture[aura_instance_id] = nil
-			self.AuraType[aura_instance_id] = nil
-			self.AuraTarget[aura_instance_id] = nil
-			unit_aura_list[aura_id] = nil
+		local unitAuraList = self.AuraList[guid]
+		for auraID, instanceID in pairs(unitAuraList) do
+			self.AuraSpellID[instanceID] = nil
+			self.AuraExpiration[instanceID] = nil
+			self.AuraStacks[instanceID] = nil
+			self.AuraCaster[instanceID] = nil
+			self.AuraDuration[instanceID] = nil
+			self.AuraTexture[instanceID] = nil
+			self.AuraType[instanceID] = nil
+			self.AuraTarget[instanceID] = nil
+			unitAuraList[auraID] = nil
 		end
 	end
 end
 
 function NP:UpdateAurasByUnitID(unit)
-	-- Check the units Auras
 	local guid = UnitGUID(unit)
-	-- Reset Auras for a guid
 	self:WipeAuraList(guid)
 
 	if NP.db.auras.filterType == 'DEBUFFS' then
 		local index = 1
-		local name, _, texture, count, _, duration, expirationTime, unitCaster, _, _, spellid, _, isBossDebuff = UnitDebuff(unit, index)
+		local name, _, texture, count, _, duration, expirationTime, unitCaster, _, _, spellID, _, isBossDebuff = UnitDebuff(unit, index)
 		while name do
-			NP:SetSpellDuration(spellid, duration)
-			NP:SetAuraInstance(guid, spellid, expirationTime, count, UnitGUID(unitCaster or ""), duration, texture, AURA_TYPE[dispelType or "Debuff"], unitType)
+			NP:SetSpellDuration(spellID, duration)
+			NP:SetAuraInstance(guid, spellID, expirationTime, count, UnitGUID(unitCaster or ""), duration, texture, AURA_TYPE[dispelType or "Debuff"], unitType)
 			index = index + 1
-			name , _, texture, count, _, duration, expirationTime, unitCaster, _, _, spellid, _, isBossDebuff = UnitDebuff(unit, index)
+			name , _, texture, count, _, duration, expirationTime, unitCaster, _, _, spellID, _, isBossDebuff = UnitDebuff(unit, index)
 		end	
 	else
 		local index = 1
-		local name, _, texture, count, _, duration, expirationTime, unitCaster, _, _, spellid = UnitBuff(unit, index);
+		local name, _, texture, count, _, duration, expirationTime, unitCaster, _, _, spellID = UnitBuff(unit, index);
 		while name do
-			NP:SetSpellDuration(spellid, duration)
-			NP:SetAuraInstance(guid, spellid, expirationTime, count, UnitGUID(unitCaster or ""), duration, texture, AURA_TYPE[dispelType or "Buff"], unitType)
+			NP:SetSpellDuration(spellID, duration)
+			NP:SetAuraInstance(guid, spellID, expirationTime, count, UnitGUID(unitCaster or ""), duration, texture, AURA_TYPE[dispelType or "Buff"], unitType)
 			index = index + 1
-			name, _, texture, count, _, duration, expirationTime, unitCaster, _, _, spellId = UnitBuff(unit, index);
+			name, _, texture, count, _, duration, expirationTime, unitCaster, _, _, spellID = UnitBuff(unit, index);
 		end		
 	end
 	
-	local raidicon, name
+	local raidIcon, name
 	if UnitPlayerControlled(unit) then name = UnitName(unit) end
-	raidicon = RaidIconIndex[GetRaidTargetIndex(unit) or ""]
-	if raidicon then self.ByRaidIcon[raidicon] = guid end
+	raidIcon = RaidIconIndex[GetRaidTargetIndex(unit) or ""]
+	if raidIcon then self.ByRaidIcon[raidIcon] = guid end
 	
-	local frame = self:SearchForFrame(guid, raidicon, name)
+	local frame = self:SearchForFrame(guid, raidIcon, name)
 	if frame then
 		NP:UpdateAuras(frame)
 	end
@@ -1089,7 +1120,6 @@ function NP:UpdateIcon(frame, texture, expiration, stacks)
 		end
 		
 		-- Expiration
-		NP:UpdateAuraTime(frame, expiration)
 		frame:Show()
 		NP.PolledHideIn(frame, expiration)
 	else 
@@ -1112,9 +1142,9 @@ function NP:UpdateIconGrid(frame, guid)
 		widget:Show()
 		for instanceid in pairs(AurasOnUnit) do
 			local aura = {}
-			aura.spellid, aura.expiration, aura.stacks, aura.caster, aura.duration, aura.texture, aura.type, aura.target = self:GetAuraInstance(guid, instanceid)
-			if tonumber(aura.spellid) then
-				aura.name = GetSpellInfo(tonumber(aura.spellid))
+			aura.spellID, aura.expiration, aura.stacks, aura.caster, aura.duration, aura.texture, aura.type, aura.target = self:GetAuraInstance(guid, instanceid)
+			if tonumber(aura.spellID) then
+				aura.name = GetSpellInfo(tonumber(aura.spellID))
 				aura.unit = frame.unit
 				-- Get Order/Priority
 				if aura.expiration > GetTime() then
@@ -1129,7 +1159,7 @@ function NP:UpdateIconGrid(frame, guid)
 	if aurasCount > 0 then 
 		for index = 1,  #self.AurasCache do
 			local cachedaura = self.AurasCache[index]
-			if cachedaura.spellid and cachedaura.expiration then 
+			if cachedaura.spellID and cachedaura.expiration then 
 				self:UpdateIcon(AuraIconFrames[AuraSlotIndex], cachedaura.texture, cachedaura.expiration, cachedaura.stacks) 
 				AuraSlotIndex = AuraSlotIndex + 1
 			end
@@ -1146,7 +1176,7 @@ end
 function NP:UpdateAuras(frame)
 	-- Check for ID
 	local guid = frame.guid
-	
+
 	if not guid then
 		-- Attempt to ID widget via Name or Raid Icon
 		if RAID_CLASS_COLORS[frame.unitType] then 
