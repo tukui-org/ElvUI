@@ -1198,6 +1198,16 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 				min = 15, max = 450, step = 1,
 			}
 	end
+
+	if groupName == 'player' and E.myclass == 'DRUID' then
+		config.args.druidMana = {
+			type = 'toggle',
+			order = 12,
+			name = L['Druid Mana'],
+			desc = L['Display druid mana bar when in cat or bear form and when mana is not 100%.']
+		}
+
+	end
 	
 	return config
 end

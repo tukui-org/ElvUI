@@ -67,12 +67,7 @@ local menuList = {
 	{text = LFG_TITLE,
 	func = function() PVEFrame_ToggleFrame(); end},
 	{text = ENCOUNTER_JOURNAL, 
-	func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then EncounterJournal_LoadUI(); end ToggleFrame(EncounterJournal) end},	
-	{text = L['Calendar'],
-	func = function()
-	if(not CalendarFrame) then Calendar_LoadUI() end
-		Calendar_Toggle()
-	end},			
+	func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then EncounterJournal_LoadUI(); end ToggleFrame(EncounterJournal) end},		
 	{text = HELP_BUTTON,
 	func = function() ToggleHelpFrame() end},
 }

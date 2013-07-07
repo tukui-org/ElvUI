@@ -490,6 +490,8 @@ L["When in a raid group display if anyone in your raid is targeting the current 
 L["Who's targeting who?"] = true;
 
 --UnitFrames
+L['Druid Mana'] = true;
+L['Display druid mana bar when in cat or bear form and when mana is not 100%.'] = true;
 L['%s and then %s'] = true;
 L['2D'] = true;
 L['3D'] = true;

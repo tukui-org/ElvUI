@@ -429,11 +429,7 @@ function UF:Update_PlayerFrame(frame, db)
 		if USE_POWERBAR then
 			if not frame:IsElementEnabled('Power') then
 				frame:EnableElement('Power')
-				
-				if frame.DruidAltMana then
-					frame:EnableElement('DruidAltMana')
-				end
-				
+
 				power:Show()
 			end		
 		
@@ -505,12 +501,16 @@ function UF:Update_PlayerFrame(frame, db)
 		elseif frame:IsElementEnabled('Power') then
 			frame:DisableElement('Power')
 			power:Hide()
-			
-			if frame.DruidAltMana then
+		end
+
+		if frame.DruidAltMana then
+			if db.power.druidMana then
+				frame:EnableElement('DruidAltMana')
+			else
 				frame:DisableElement('DruidAltMana')
 				frame.DruidAltMana:Hide()
 			end
-		end
+		end		
 	end
 	
 	--Portrait
@@ -698,8 +698,11 @@ function UF:Update_PlayerFrame(frame, db)
 	--Resource Bars
 	do
 		local bars = frame[frame.ClassBar]
-
 		if bars then
+			if bars.UpdateAllRuneTypes then
+				bars.UpdateAllRuneTypes(frame)
+			end
+			
 			local MAX_CLASS_BAR = UF.classMaxResourceBar[E.myclass]
 			if USE_MINI_CLASSBAR and not db.classbar.detachFromFrame then
 				bars:ClearAllPoints()

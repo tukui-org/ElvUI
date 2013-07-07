@@ -372,7 +372,8 @@ P['unitframe'] = {
 				['yOffset'] = 5,
 				['detachFromFrame'] = false,
 				['detachedWidth'] = 250,
-				['attachTextToPower'] = false,						
+				['attachTextToPower'] = false,
+				['druidMana'] = true,					
 			},
 			['name'] = {
 				['position'] = 'LEFT',
