@@ -325,10 +325,6 @@ function NP:SetUnitInfo()
 		self.guid = UnitGUID("mouseover")
 		self.unit = "mouseover"
 		myPlate:SetFrameLevel(1)
-
-		if not NP.AuraList[self.guid] then
-			NP:UpdateAurasByUnitID("mouseover")
-		end
 		myPlate.overlay:Show()
 	else
 		self.unit = nil
@@ -358,6 +354,17 @@ function NP:PLAYER_ENTERING_WORLD()
 end
 
 
+function NP:PLAYER_TARGET_CHANGED()
+	if UnitExists('target') then
+		self:UpdateAurasByUnitID("target")
+	end
+end
+
+function NP:UPDATE_MOUSEOVER_UNIT()
+	if UnitExists('mouseover') then
+		self:UpdateAurasByUnitID("mouseover")
+	end
+end
 
 function NP:Initialize()
 	self.db = E.db["nameplate"]
@@ -371,6 +378,8 @@ function NP:Initialize()
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 	self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 	self:RegisterEvent("UNIT_AURA")
+	self:RegisterEvent("PLAYER_TARGET_CHANGED")
+	self:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
 end
 
 function NP:UpdateAllPlates()
