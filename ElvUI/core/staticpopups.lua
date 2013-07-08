@@ -5,6 +5,13 @@ local lower = string.lower
 E.PopupDialogs = {};
 E.StaticPopup_DisplayedFrames = {};
 
+E.PopupDialogs['CLIENT_UPDATE_REQUEST'] = {
+	text = L["Detected that your ElvUI Config addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI Config addon up to date will result in missing options."],
+	button1 = OKAY,
+	OnAccept = E.noop,
+	showAlert = 1,
+}
+
 E.PopupDialogs['CLIQUE_ADVERT'] = {
 	text = L["Using the healer layout it is highly recommended you download the addon Clique if you wish to have the click-to-heal function."],
 	button1 = YES,
