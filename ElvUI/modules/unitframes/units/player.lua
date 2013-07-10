@@ -85,7 +85,7 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR
 	local POWERBAR_OFFSET = db.power.offset
 	local POWERBAR_HEIGHT = db.power.height
-	local POWERBAR_DETACHED = db.power.detachedFromFrame
+	local POWERBAR_DETACHED = db.power.detachFromFrame
 	local SPACING = E.Spacing;
 	local BORDER = E.Border;
 	local SHADOW_SPACING = E.PixelMode and 3 or 4

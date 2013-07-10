@@ -22,7 +22,6 @@ AddOn.Options = {
 };
 
 local Locale = LibStub("AceLocale-3.0"):GetLocale(AddOnName, false);
-
 Engine[1] = AddOn;
 Engine[2] = Locale;
 Engine[3] = AddOn.privateVars["profile"];
@@ -32,7 +31,6 @@ Engine[5] = AddOn.DF["global"];
 _G[AddOnName] = Engine;
 
 local tcopy = table.copy
-
 function AddOn:OnInitialize()	
 	if not ElvCharacterDB then
 		ElvCharacterDB = {};
