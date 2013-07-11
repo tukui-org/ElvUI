@@ -37,7 +37,7 @@ function DT:PanelLayoutOptions()
 				name = L[pointLoc] or pointLoc,
 				values = datatexts,
 				get = function(info) return E.db.datatexts.panels[pointLoc] end,
-				set = function(info, value) E.db.datatexts.panels[pointLoc] = value; DT:LoadDataTexts() end,	
+				set = function(info, value) E.db.datatexts.panels[pointLoc] = value; DT:LoadDataTexts() end,
 			}						
 		end
 	end
