@@ -93,19 +93,7 @@ P["nameplate"] = {
 	['fontOutline'] = 'MONOCHROMEOUTLINE',
 	["smallPlates"] = true,
 	["comboPoints"] = true,
-	["classIcons"] = true,
-	["markHealers"] = true,
 	['nonTargetAlpha'] = 0.25,
-	['auras'] = {
-		['enable'] = true,
-		['font'] = 'ElvUI Pixel',
-		['fontSize'] = 7,
-		['fontOutline'] = 'MONOCHROMEOUTLINE',
-		['width'] = 28,
-		['height'] = 20,
-		['additionalFilter'] = 'CCDebuffs',
-		['filterType'] = 'DEBUFFS'
-	},
 	['healthBar'] = {
 		['width'] = 112,
 		['height'] = 9,		
@@ -154,7 +142,8 @@ P["nameplate"] = {
 		['attachTo'] = 'TOPRIGHT',
 		['justifyH'] = 'RIGHT'
 	},
-	['raidIcon'] = {
+	['raidHealIcon'] = {
+		["markHealers"] = true,
 		['xOffset'] = -4,
 		['yOffset'] = 12,
 		['size'] = 36,
@@ -167,8 +156,18 @@ P["nameplate"] = {
 		["badColor"] = {r = 0.78, g = 0.25, b = 0.25},
 		["goodTransitionColor"] = {r = 218/255, g = 197/255, b = 92/255},
 		["badTransitionColor"] = {r = 240/255, g = 154/255, b = 17/255},
-		["offTankColor"] = {r = 180/255, g = 118/255, b = 184/255},	
 	},
+	['auras'] = {
+		['enable'] = true,
+		['font'] = 'ElvUI Pixel',
+		['fontSize'] = 7,
+		['fontOutline'] = 'MONOCHROMEOUTLINE',
+		['width'] = 28,
+		['height'] = 20,
+		['stretchTexture'] = true,
+		['additionalFilter'] = 'CCDebuffs',
+		['filterType'] = 'DEBUFFS'
+	},	
 	['reactions'] = {
 		["tapped"] = {r = 0.6, g = 0.6, b = 0.6},
 		["friendlyNPC"] = {r = 0.31, g = 0.45, b = 0.63},

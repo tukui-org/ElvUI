@@ -18,6 +18,8 @@ local numChildren = -1
 local twipe = table.wipe
 local band = bit.band
 
+NP.NumTargetAuraChecks = -1
+NP.NumMouseoverAuraChecks = -1
 NP.NumTransparentPlates = 0
 NP.CreatedPlates = {};
 NP.Healers = {};
@@ -252,7 +254,8 @@ local color, scale
 function NP:ColorizeAndScale()
 	local myPlate = NP.CreatedPlates[self]
 	local unitType = NP:GetReaction(self)
-	
+	local scale = 1
+
 	self.unitType = unitType
 	if RAID_CLASS_COLORS[unitType] then
 		color = RAID_CLASS_COLORS[unitType]
@@ -264,8 +267,10 @@ function NP:ColorizeAndScale()
 		if threatReaction == 'FULL_THREAT' then
 			if classRole == 'Tank' then
 				color = NP.db.threat.goodColor
+				scale = NP.db.threat.goodScale
 			else
 				color = NP.db.threat.badColor
+				scale = NP.db.threat.badScale
 			end
 		elseif threatReaction == 'GAINING_THREAT' then
 			if classRole == 'Tank' then
@@ -282,8 +287,10 @@ function NP:ColorizeAndScale()
 		elseif InCombatLockdown() then
 			if classRole == 'Tank' then
 				color = NP.db.threat.badColor
+				scale = NP.db.threat.badScale
 			else
 				color = NP.db.threat.goodColor
+				scale = NP.db.threat.goodScale
 			end
 		else
 			color = NP.db.reactions.enemy
@@ -301,6 +308,10 @@ function NP:ColorizeAndScale()
 	end
 
 	myPlate.healthBar:SetStatusBarColor(color.r, color.g, color.b)
+	if myPlate.healthBar:GetWidth() ~= (NP.db.healthBar.width * scale) then
+		myPlate.healthBar:SetSize(NP.db.healthBar.width * scale, NP.db.healthBar.height * scale)
+		self.castBar.icon:Size(NP.db.castBar.height + (NP.db.healthBar.height * scale) + 5)
+	end
 end
 
 function NP:SetAlpha()
@@ -321,11 +332,29 @@ function NP:SetUnitInfo()
 		self.unit = "target"
 		myPlate:SetFrameLevel(2)
 		myPlate.overlay:Hide()
+
+		if NP.NumTargetAuraChecks > -1 then
+			NP:UpdateAurasByUnitID('target')
+			NP.NumTargetAuraChecks = NP.NumTargetAuraChecks + 1
+			
+			if NP.NumTargetAuraChecks > 1 then
+				NP.NumTargetAuraChecks = -1
+			end
+		end
 	elseif self.highlight:IsShown() and UnitExists("mouseover") and UnitName("mouseover") == self.name:GetText() then
 		self.guid = UnitGUID("mouseover")
 		self.unit = "mouseover"
 		myPlate:SetFrameLevel(1)
 		myPlate.overlay:Show()
+
+		if NP.NumMouseoverAuraChecks > -1 then
+			NP:UpdateAurasByUnitID('mouseover')
+			NP.NumMouseoverAuraChecks = NP.NumMouseoverAuraChecks + 1
+
+			if NP.NumMouseoverAuraChecks > 1 then
+				NP.NumMouseoverAuraChecks = -1
+			end
+		end		
 	else
 		self.unit = nil
 		myPlate:SetFrameLevel(0)
@@ -336,10 +365,10 @@ end
 function NP:PLAYER_ENTERING_WORLD()
 	twipe(self.Healers)
 	local inInstance, instanceType = IsInInstance()
-	if inInstance and instanceType == 'pvp' and self.db.markHealers then
+	if inInstance and instanceType == 'pvp' and self.db.raidHealIcon.markHealers then
 		self.CheckHealerTimer = self:ScheduleRepeatingTimer("CheckBGHealers", 3)
 		self:CheckBGHealers()
-	elseif inInstance and instanceType == 'arena' and self.db.markHealers then
+	elseif inInstance and instanceType == 'arena' and self.db.raidHealIcon.markHealers then
 		self:RegisterEvent('UNIT_NAME_UPDATE', 'CheckArenaHealers')
 		self:RegisterEvent("ARENA_OPPONENT_UPDATE", 'CheckArenaHealers');
 		self:CheckArenaHealers()	
@@ -356,13 +385,13 @@ end
 
 function NP:PLAYER_TARGET_CHANGED()
 	if UnitExists('target') then
-		self:UpdateAurasByUnitID("target")
+		NP.NumTargetAuraChecks = 0
 	end
 end
 
 function NP:UPDATE_MOUSEOVER_UNIT()
 	if UnitExists('mouseover') then
-		self:UpdateAurasByUnitID("mouseover")
+		NP.NumMouseoverAuraChecks = 0
 	end
 end
 
@@ -417,6 +446,12 @@ function NP:OnShow()
 	end
 	
 	NP.HealthBar_OnValueChanged(self.healthBar, self.healthBar:GetValue())
+
+	--Check to see if its possible to update auras via raid icon or class color when a plate is shown.
+	if self.raidIcon:IsShown() then
+		NP:CheckRaidIcon(self)
+		NP:UpdateAuras(self)
+	end
 end
 
 function NP:OnHide()
@@ -428,7 +463,11 @@ function NP:OnHide()
 	self.raidIconType = nil
 	myPlate.lowHealth:Hide()
 
-	--TODO: Hide All Auras
+	if self.AuraWidget then
+		for index = 1, NP.MAX_DISPLAYABLE_DEBUFFS do 
+			NP.PolledHideIn(self.AuraWidget.AuraIconFrames[index], 0)
+		end		
+	end
 end
 
 function NP:HealthBar_OnValueChanged(value)
@@ -492,64 +531,75 @@ function NP:CastBar_OnHide()
 	myPlate.castBar:Hide()
 end
 
-function NP:UpdateSettings(frame)
-	local myPlate = self.CreatedPlates[frame]
-	local font = LSM:Fetch("font", self.db.font)
-	local fontSize, fontOutline = self.db.fontSize, self.db.fontOutline
+function NP:UpdateSettings()
+	local myPlate = NP.CreatedPlates[self]
+	local font = LSM:Fetch("font", NP.db.font)
+	local fontSize, fontOutline = NP.db.fontSize, NP.db.fontOutline
 
 	--Name
-	frame.name:FontTemplate(font, fontSize, fontOutline)
-	frame.name:ClearAllPoints()
-	frame.name:SetPoint(E.InversePoints[self.db.name.attachTo], myPlate.healthBar, self.db.name.attachTo, self.db.name.xOffset, self.db.name.yOffset)
-	frame.name:SetJustifyH(self.db.name.justifyH)
-	frame.name:SetWidth(self.db.name.width)
+	self.name:FontTemplate(font, fontSize, fontOutline)
+	self.name:ClearAllPoints()
+	self.name:SetPoint(E.InversePoints[NP.db.name.attachTo], myPlate.healthBar, NP.db.name.attachTo, NP.db.name.xOffset, NP.db.name.yOffset)
+	self.name:SetJustifyH(NP.db.name.justifyH)
+	self.name:SetWidth(NP.db.name.width)
+	self.name:SetHeight(NP.db.fontSize)
 
 	--Level
 	myPlate.level:FontTemplate(font, fontSize, fontOutline)
 	myPlate.level:ClearAllPoints()
-	myPlate.level:SetPoint(E.InversePoints[self.db.level.attachTo], myPlate.healthBar, self.db.level.attachTo, self.db.level.xOffset, self.db.level.yOffset)
-	myPlate.level:SetJustifyH(self.db.level.justifyH)
+	myPlate.level:SetPoint(E.InversePoints[NP.db.level.attachTo], myPlate.healthBar, NP.db.level.attachTo, NP.db.level.xOffset, NP.db.level.yOffset)
+	myPlate.level:SetJustifyH(NP.db.level.justifyH)
 
 	--HealthBar
-	myPlate.healthBar:SetSize(self.db.healthBar.width, self.db.healthBar.height)
+	myPlate.healthBar:SetSize(NP.db.healthBar.width, NP.db.healthBar.height)
 	myPlate.healthBar:SetStatusBarTexture(E.media.normTex)
 
 	myPlate.healthBar.text:FontTemplate(font, fontSize, fontOutline)
 	myPlate.healthBar.text:ClearAllPoints()
-	myPlate.healthBar.text:SetPoint(E.InversePoints[self.db.healthBar.text.attachTo], myPlate.healthBar, self.db.healthBar.text.attachTo, self.db.healthBar.text.xOffset, self.db.healthBar.text.yOffset)
-	myPlate.healthBar.text:SetJustifyH(self.db.healthBar.text.justifyH)
+	myPlate.healthBar.text:SetPoint(E.InversePoints[NP.db.healthBar.text.attachTo], myPlate.healthBar, NP.db.healthBar.text.attachTo, NP.db.healthBar.text.xOffset, NP.db.healthBar.text.yOffset)
+	myPlate.healthBar.text:SetJustifyH(NP.db.healthBar.text.justifyH)
 
 	--CastBar
-	myPlate.castBar:SetSize(self.db.healthBar.width, self.db.castBar.height)
+	myPlate.castBar:SetSize(NP.db.healthBar.width, NP.db.castBar.height)
 	myPlate.castBar:SetStatusBarTexture(E.media.normTex)
 	
 	myPlate.castBar.time:ClearAllPoints()
-	myPlate.castBar.time:SetPoint(E.InversePoints[self.db.castBar.time.attachTo], myPlate.castBar, self.db.castBar.time.attachTo, self.db.castBar.time.xOffset, self.db.castBar.time.yOffset)
-	myPlate.castBar.time:SetJustifyH(self.db.castBar.time.justifyH)	
+	myPlate.castBar.time:SetPoint(E.InversePoints[NP.db.castBar.time.attachTo], myPlate.castBar, NP.db.castBar.time.attachTo, NP.db.castBar.time.xOffset, NP.db.castBar.time.yOffset)
+	myPlate.castBar.time:SetJustifyH(NP.db.castBar.time.justifyH)	
 	myPlate.castBar.time:FontTemplate(font, fontSize, fontOutline)
 	
-	frame.castBar.name:ClearAllPoints()
-	frame.castBar.name:SetPoint(E.InversePoints[self.db.castBar.name.attachTo], myPlate.castBar, self.db.castBar.name.attachTo, self.db.castBar.name.xOffset, self.db.castBar.name.yOffset)
-	frame.castBar.name:SetJustifyH(self.db.castBar.name.justifyH)		
-	frame.castBar.name:FontTemplate(font, fontSize, fontOutline)
-	frame.castBar.name:SetWidth(self.db.castBar.name.width)
+	self.castBar.name:ClearAllPoints()
+	self.castBar.name:SetPoint(E.InversePoints[NP.db.castBar.name.attachTo], myPlate.castBar, NP.db.castBar.name.attachTo, NP.db.castBar.name.xOffset, NP.db.castBar.name.yOffset)
+	self.castBar.name:SetJustifyH(NP.db.castBar.name.justifyH)		
+	self.castBar.name:FontTemplate(font, fontSize, fontOutline)
+	self.castBar.name:SetWidth(NP.db.castBar.name.width)
+	self.castBar.name:SetHeight(NP.db.fontSize)
 
-	frame.castBar.icon:Size(self.db.castBar.height + self.db.healthBar.height + 5)	
+	self.castBar.icon:Size(NP.db.castBar.height + NP.db.healthBar.height + 5)	
 
 	--Raid Icon
-	frame.raidIcon:ClearAllPoints()
-	frame.raidIcon:SetPoint(E.InversePoints[self.db.raidIcon.attachTo], myPlate.healthBar, self.db.raidIcon.attachTo, self.db.raidIcon.xOffset, self.db.raidIcon.yOffset)	
+	self.raidIcon:ClearAllPoints()
+	self.raidIcon:SetPoint(E.InversePoints[NP.db.raidHealIcon.attachTo], myPlate.healthBar, NP.db.raidHealIcon.attachTo, NP.db.raidHealIcon.xOffset, NP.db.raidHealIcon.yOffset)	
+	self.raidIcon:SetSize(NP.db.raidHealIcon.size, NP.db.raidHealIcon.size)
 
-	--Healer Icon (Position From Raid-Icon)
+	--Healer Icon
 	myPlate.healerIcon:ClearAllPoints()
-	myPlate.healerIcon:SetPoint(E.InversePoints[self.db.raidIcon.attachTo], myPlate.healthBar, self.db.raidIcon.attachTo, self.db.raidIcon.xOffset, self.db.raidIcon.yOffset)
+	myPlate.healerIcon:SetPoint(E.InversePoints[NP.db.raidHealIcon.attachTo], myPlate.healthBar, NP.db.raidHealIcon.attachTo, NP.db.raidHealIcon.xOffset, NP.db.raidHealIcon.yOffset)
+	myPlate.healerIcon:SetSize(NP.db.raidHealIcon.size, NP.db.raidHealIcon.size)
 
 	--Auras
-	for index = 1, NP.MAX_DISPLAYABLE_DEBUFFS do 
-		if frame.AuraWidget.AuraIconFrames and frame.AuraWidget.AuraIconFrames[index] then
-			local auraFont = LSM:Fetch("font", self.db.auras.font)
-			frame.AuraWidget.AuraIconFrames[index].TimeLeft:FontTemplate(auraFont, self.db.auras.fontSize, self.db.auras.fontOutline)
-			frame.AuraWidget.AuraIconFrames[index].Stacks:FontTemplate(auraFont, self.db.auras.fontSize, self.db.auras.fontOutline)
+	for index = 1, #self.AuraWidget.AuraIconFrames do 
+		if self.AuraWidget.AuraIconFrames and self.AuraWidget.AuraIconFrames[index] then
+			local auraFont = LSM:Fetch("font", NP.db.auras.font)
+			self.AuraWidget.AuraIconFrames[index].TimeLeft:FontTemplate(auraFont, NP.db.auras.fontSize, NP.db.auras.fontOutline)
+			self.AuraWidget.AuraIconFrames[index].Stacks:FontTemplate(auraFont, NP.db.auras.fontSize, NP.db.auras.fontOutline)
+			self.AuraWidget.AuraIconFrames[index]:SetSize(NP.db.auras.width, NP.db.auras.height)
+
+			if NP.db.auras.stretchTexture then
+				self.AuraWidget.AuraIconFrames[index].Icon:SetTexCoord(.07, 0.93, .23, 0.77)
+			else
+				self.AuraWidget.AuraIconFrames[index].Icon:SetTexCoord(.07, .93, .07, .93)
+			end
 		end
 	end	
 end
@@ -576,7 +626,8 @@ function NP:CreatePlate(frame)
 
 	--CastBar
 	myPlate.castBar = CreateFrame("StatusBar", nil, myPlate)
-	myPlate.castBar:SetPoint('TOP', myPlate.healthBar, 'BOTTOM', 0, -5)	
+	myPlate.castBar:SetPoint('TOPLEFT', myPlate.healthBar, 'BOTTOMLEFT', 0, -5)	
+	myPlate.castBar:SetPoint('TOPRIGHT', myPlate.healthBar, 'BOTTOMRIGHT', 0, -5)	
 	myPlate.castBar:SetFrameStrata("BACKGROUND")
 	myPlate.castBar:SetFrameLevel(0)
 	NP:CreateBackdrop(myPlate.castBar)
@@ -611,30 +662,23 @@ function NP:CreatePlate(frame)
 	myPlate.overlay:Hide()
 
 	--Auras
-	local f = CreateFrame("Frame", nil, myPlate)
-	f:SetHeight(32); f:Show()
-	f:SetPoint('BOTTOMRIGHT', myPlate.healthBar, 'TOPRIGHT', 0, 10)
-	f:SetPoint('BOTTOMLEFT', myPlate.healthBar, 'TOPLEFT', 0, 10)
+	local auraHeader = CreateFrame("Frame", nil, myPlate)
+	auraHeader:SetHeight(32); auraHeader:Show()
+	auraHeader:SetPoint('BOTTOMRIGHT', myPlate.healthBar, 'TOPRIGHT', 0, 10)
+	auraHeader:SetPoint('BOTTOMLEFT', myPlate.healthBar, 'TOPLEFT', 0, 10)
 	
-	f.PollFunction = NP.UpdateAuraTime
-	f.AuraIconFrames = {}
-	local AuraIconFrames = f.AuraIconFrames
+	auraHeader.PollFunction = NP.UpdateAuraTime
+	auraHeader.AuraIconFrames = {}
 	for index = 1, NP.MAX_DISPLAYABLE_DEBUFFS do 
-		AuraIconFrames[index] = NP:CreateAuraIcon(f, myPlate);  
+		auraHeader.AuraIconFrames[index] = NP:CreateAuraIcon(auraHeader, myPlate);  
 	end
 
-	AuraIconFrames[1]:SetPoint("LEFT", f, -1, 0)
+	auraHeader.AuraIconFrames[1]:SetPoint("LEFT", auraHeader, -1, 0)
 	for index = 2, NP.MAX_DISPLAYABLE_DEBUFFS do 
-		AuraIconFrames[index]:SetPoint("LEFT", AuraIconFrames[index-1], "RIGHT", 1, 0) 
+		auraHeader.AuraIconFrames[index]:SetPoint("LEFT", auraHeader.AuraIconFrames[index-1], "RIGHT", 1, 0) 
 	end
 
-	f:SetScript("OnHide", function(self) 
-		NP:ClearAuraContext(self)
-		for index = 1, 4 do 
-			NP.PolledHideIn(AuraIconFrames[index], 0) 
-		end 
-	end)	
-	frame.AuraWidget = f	
+	frame.AuraWidget = auraHeader	
 	
 	--Low-Health Indicator
 	myPlate.lowHealth = CreateFrame("Frame", nil, myPlate)
@@ -670,7 +714,7 @@ function NP:CreatePlate(frame)
 	NP:QueueObject(frame, frame.eliteIcon)
 
 	self.CreatedPlates[frame] = myPlate
-	NP:UpdateSettings(frame)
+	NP.UpdateSettings(frame)
 	NP.OnShow(frame)
 
 	if not frame.castBar:IsShown() then
@@ -706,7 +750,6 @@ function NP:CreateBackdrop(parent, point)
 	
 	if point.bordertop then return end
 
-	
 	point.backdrop = parent:CreateTexture(nil, "BORDER")
 	point.backdrop:SetDrawLayer("BORDER", -4)
 	point.backdrop:SetAllPoints(point)
@@ -881,7 +924,12 @@ function NP:CreateAuraIcon(frame, parent)
 		button.Icon = button:CreateTexture(nil, "BORDER")
 		button.Icon:SetPoint("TOPLEFT",button,"TOPLEFT", noscalemult*2,-noscalemult*2)
 		button.Icon:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",-noscalemult*2,noscalemult*2)
-		button.Icon:SetTexCoord(.07, 1-.07, .23, 1-.23)		
+
+		if NP.db.auras.stretchTexture then
+			button.Icon:SetTexCoord(.07, 0.93, .23, 0.77)
+		else
+			button.Icon:SetTexCoord(.07, .93, .07, .93)
+		end			
 	else
 		button.bg = button:CreateTexture(nil, "BACKGROUND")
 		button.bg:SetTexture(0, 0, 0, 1)
@@ -902,7 +950,11 @@ function NP:CreateAuraIcon(frame, parent)
 		button.Icon = button:CreateTexture(nil, "BORDER")
 		button.Icon:SetPoint("TOPLEFT",button,"TOPLEFT", noscalemult*3,-noscalemult*3)
 		button.Icon:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",-noscalemult*3,noscalemult*3)
-		button.Icon:SetTexCoord(.07, 1-.07, .23, 1-.23)		
+		if NP.db.auras.stretchTexture then
+			button.Icon:SetTexCoord(.07, 0.93, .23, 0.77)
+		else
+			button.Icon:SetTexCoord(.07, .93, .07, .93)
+		end			
 	end
 	
 	button.TimeLeft = button:CreateFontString(nil, 'OVERLAY')
@@ -911,17 +963,9 @@ function NP:CreateAuraIcon(frame, parent)
 	
 	button.Stacks = button:CreateFontString(nil,"OVERLAY")
 	button.Stacks:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 2, -2)
-	
-	button.AuraInfo = {	
-		Name = "",
-		Icon = "",
-		Stacks = 0,
-		Expiration = 0,
-		Type = "",
-	}			
 
 	button.Poll = frame.PollFunction
-	button:Hide()
+	button:Hide() 
 	
 	return button
 end
@@ -1039,7 +1083,6 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, ...)
 			NP:RemoveAuraInstance(destGUID, spellID)
 		end	
 
-		--NP:UpdateAuraByLookup(destGUID)
 		local name, raidIcon
 		-- Cache Unit Name for alternative lookup strategy
 		if band(destFlags, COMBATLOG_OBJECT_CONTROL_PLAYER) > 0 and destName then 
@@ -1177,8 +1220,10 @@ function NP:UpdateIconGrid(frame, guid)
 	end
 	
 	-- Clear Extra Slots
-	for AuraSlotIndex = AuraSlotIndex, ((frame.isSmallNP and NP.db.smallPlates) and NP.MAX_SMALLNP_DISPLAYABLE_DEBUFFS or NP.MAX_DISPLAYABLE_DEBUFFS) do self:UpdateIcon(AuraIconFrames[AuraSlotIndex]) end
-	
+	if AuraIconFrames[AuraSlotIndex] then
+		NP.PolledHideIn(AuraIconFrames[AuraSlotIndex], 0)
+	end
+
 	self.AurasCache = wipe(self.AurasCache)
 end
 
