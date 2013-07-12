@@ -67,6 +67,12 @@ UF['headerGroupBy'] = {
 		header:SetAttribute('sortMethod', 'INDEX')
 		header:SetAttribute("groupBy", 'GROUP')
 	end,
+	['PETNAME'] = function(header)
+		header:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
+		header:SetAttribute('sortMethod', 'NAME')
+		header:SetAttribute("groupBy", nil)
+		header:SetAttribute("filterOnPet", true) --This is the line that matters. Without this, it sorts based on the owners name
+	end,	
 }
 
 local POINT_COLUMN_ANCHOR_TO_DIRECTION = {
@@ -690,11 +696,11 @@ function UF:SetupGroupAnchorPoints(group)
 	return positionOverride
 end
 
-function UF:CreateHeader(parent, groupFilter, overrideName, template, groupName)
+function UF:CreateHeader(parent, groupFilter, overrideName, template, groupName, headerTemplate)
 	local group = parent.groupName or groupName
 	local db = UF.db['units'][group]
 	ElvUF:SetActiveStyle("ElvUF_"..E:StringTitle(group))
-	local header = ElvUF:SpawnHeader(overrideName, nil, nil, 
+	local header = ElvUF:SpawnHeader(overrideName, headerTemplate, nil, 
 			'oUF-initialConfigFunction', ("self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)"):format(db.width, db.height), 
 			'groupFilter', groupFilter,
 			'showParty', true,
@@ -713,7 +719,7 @@ function UF:CreateHeader(parent, groupFilter, overrideName, template, groupName)
 	return header
 end
 
-function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdate)
+function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdate, headerTemplate)
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return end
 
 	local db = self.db['units'][group]
@@ -748,12 +754,12 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 
 		if db.raidWideSorting then
 			if not self[group].groups[1] then
-				self[group].groups[1] = self:CreateHeader(self[group], index, "ElvUF_"..E:StringTitle(self[group].groupName)..'Group1', template)
+				self[group].groups[1] = self:CreateHeader(self[group], index, "ElvUF_"..E:StringTitle(self[group].groupName)..'Group1', template, nil, headerTemplate)
 			end
 		else
 			while db.numGroups > #self[group].groups do
 				local index = tostring(#self[group].groups + 1)
-				tinsert(self[group].groups, self:CreateHeader(self[group], index, "ElvUF_"..E:StringTitle(self[group].groupName)..'Group'..index, template))
+				 tinsert(self[group].groups, self:CreateHeader(self[group], index, "ElvUF_"..E:StringTitle(self[group].groupName)..'Group'..index, template, nil, headerTemplate))
 			end
 		end
 
@@ -847,12 +853,12 @@ function UF:LoadUnits()
 	self['unitgroupstoload'] = nil
 	
 	for group, groupOptions in pairs(self['headerstoload']) do
-		local groupFilter, template
+		local groupFilter, template, headerTemplate
 		if type(groupOptions) == 'table' then
-			groupFilter, template = unpack(groupOptions)
+			groupFilter, template, headerTemplate = unpack(groupOptions)
 		end
 
-		self:CreateAndUpdateHeaderGroup(group, groupFilter, template)
+		self:CreateAndUpdateHeaderGroup(group, groupFilter, template, nil, headerTemplate)
 	end
 	self['headerstoload'] = nil
 end

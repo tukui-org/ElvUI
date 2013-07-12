@@ -455,6 +455,7 @@ local function UpdateFilterGroup()
 								UF:UpdateAuraWatchFromHeader('raid'..i)
 							end
 							UF:UpdateAuraWatchFromHeader('party')
+							UF:UpdateAuraWatchFromHeader('raidpet', true)
 							selectedSpell = nil;
 						end
 					end,					
@@ -496,6 +497,7 @@ local function UpdateFilterGroup()
 							UF:UpdateAuraWatchFromHeader('raid'..i)
 						end
 						UF:UpdateAuraWatchFromHeader('party')
+						UF:UpdateAuraWatchFromHeader('raidpet', true)
 					end,				
 				},
 				selectSpell = {
@@ -544,6 +546,7 @@ local function UpdateFilterGroup()
 						UF:UpdateAuraWatchFromHeader('raid'..i)
 					end
 					UF:UpdateAuraWatchFromHeader('party')
+					UF:UpdateAuraWatchFromHeader('raidpet', true)
 				end,
 				order = -10,
 				args = {
@@ -604,6 +607,7 @@ local function UpdateFilterGroup()
 								UF:UpdateAuraWatchFromHeader('raid'..i)
 							end
 							UF:UpdateAuraWatchFromHeader('party')
+							UF:UpdateAuraWatchFromHeader('raidpet', true)
 						end,						
 					},
 					displayText = {
@@ -631,6 +635,7 @@ local function UpdateFilterGroup()
 								UF:UpdateAuraWatchFromHeader('raid'..i)
 							end
 							UF:UpdateAuraWatchFromHeader('party')
+							UF:UpdateAuraWatchFromHeader('raidpet', true)
 						end,						
 					},					
 					textThreshold = {

@@ -13,7 +13,7 @@ end
 function UF:UpdateNameSettings(frame)
 	local db = frame.db
 	local name = frame.Name
-	if not db.power.hideonnpc then
+	if not db.power or not db.power.hideonnpc then
 		local x, y = self:GetPositionOffset(db.name.position)
 		name:ClearAllPoints()
 		name:Point(db.name.position, frame.Health, db.name.position, x + db.name.xOffset, y + db.name.yOffset)				
