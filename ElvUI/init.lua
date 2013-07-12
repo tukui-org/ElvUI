@@ -22,7 +22,6 @@ AddOn.Options = {
 };
 
 local Locale = LibStub("AceLocale-3.0"):GetLocale(AddOnName, false);
-
 Engine[1] = AddOn;
 Engine[2] = Locale;
 Engine[3] = AddOn.privateVars["profile"];
@@ -32,7 +31,6 @@ Engine[5] = AddOn.DF["global"];
 _G[AddOnName] = Engine;
 
 local tcopy = table.copy
-
 function AddOn:OnInitialize()	
 	if not ElvCharacterDB then
 		ElvCharacterDB = {};
@@ -151,6 +149,9 @@ function AddOn:ToggleConfig()
 		local _, _, _, _, _, reason = GetAddOnInfo("ElvUI_Config")
 		if reason ~= "MISSING" and reason ~= "DISABLED" then 
 			LoadAddOn("ElvUI_Config")
+			if GetAddOnMetadata("ElvUI_Config", "Version") ~= "1.01" then
+				self:StaticPopup_Show("CLIENT_UPDATE_REQUEST")
+			end
 		else 
 			self:Print("|cffff0000Error -- Addon 'ElvUI_Config' not found or is disabled.|r") 
 			return
