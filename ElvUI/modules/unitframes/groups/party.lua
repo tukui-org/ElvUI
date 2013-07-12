@@ -234,6 +234,7 @@ function UF:Update_PartyFrames(frame, db)
 					health.colorReaction = true
 				end				
 			end
+			
 			--Position
 			health:ClearAllPoints()
 			health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -BORDER)
