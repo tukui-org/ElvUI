@@ -553,7 +553,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	else
 		for i = 2, lines do			
 			local line = _G[("GameTooltipTextLeft%d"):format(i)]
-			if line and line:GetText() and ((line:GetText():find(("(%s)"):format(PLAYER))) or (crtype and line:GetText():find(("^%s"):format(crtype)))) then
+			if line and line:GetText() and ((line:GetText():find(("(%s)"):format(PLAYER))) or crtype and line:GetText():find((LEVEL.." %d"))) then
 				line:SetFormattedText("|cff%02x%02x%02x%s|r%s %s", r*255, g*255, b*255, classif ~= "worldboss" and level > 0 and level or "??", classification[classif] or "", crtype or "")
 				break
 			end
