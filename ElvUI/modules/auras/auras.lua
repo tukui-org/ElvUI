@@ -77,7 +77,6 @@ end
 
 function A:CreateIcon(button)
 	local font = LSM:Fetch("font", self.db.font)
-	
 
 	button:SetTemplate('Default')
 	button.texture = button:CreateTexture(nil, "BORDER")
@@ -229,7 +228,7 @@ function A:UpdateHeader(header)
 		end
 		
 		--Blizzard bug fix, icons arent being hidden when you reduce the amount of maximum buttons
-		if(index > (db.maxWraps * db.wrapAfter)) then
+		if(index > (db.maxWraps * db.wrapAfter) and child:IsShown()) then
 			child:Hide()
 		end
 
