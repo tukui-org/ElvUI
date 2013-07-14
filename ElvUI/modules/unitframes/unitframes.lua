@@ -737,7 +737,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 				self[group][k] = v
 			end			
 		else
-			self[group] = self:CreateHeader(ElvUF_Parent, groupFilter, "ElvUF_"..E:StringTitle(group), template, group)
+			self[group] = self:CreateHeader(ElvUF_Parent, groupFilter, "ElvUF_"..E:StringTitle(group), template, group, headerTemplate)
 		end
 
 		self[group].db = db
@@ -746,7 +746,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 	end
 
 	if db.numGroups then
-		if db.enable ~= true then
+		if db.enable ~= true and group ~= 'raidpet' then
 			UnregisterStateDriver(self[group], "visibility")
 			self[group]:Hide()
 			return
@@ -773,6 +773,12 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 		else
 			self[group]:Configure_Groups()
 			self[group]:Update()
+		end
+
+		if db.enable ~= true and group == 'raidpet' then
+			UnregisterStateDriver(self[group], "visibility")
+			self[group]:Hide()
+			return			
 		end
 	else
 		self[group].db = db

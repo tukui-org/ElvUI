@@ -115,7 +115,7 @@ P["nameplate"] = {
 	['raidHealIcon'] = {
 		["markHealers"] = true,
 		['xOffset'] = -4,
-		['yOffset'] = 12,
+		['yOffset'] = 6,
 		['size'] = 36,
 		['attachTo'] = 'LEFT',
 	},
