@@ -182,25 +182,17 @@ function NP:SetLevel()
 	local myPlate = NP.CreatedPlates[self]
 
 	if self.level:IsShown() then
-		if NP.db.level.enable then
-			local level, elite, boss, mylevel = self.level:GetObjectType() == 'FontString' and tonumber(self.level:GetText()) or nil, self.eliteIcon:IsShown(), self.bossIcon:IsShown(), UnitLevel("player")
-			if boss then
-				myPlate.level:SetText("??")
-				myPlate.level:SetTextColor(0.8, 0.05, 0)
-				myPlate.level:Show()
-			elseif level then
-				myPlate.level:SetText(level..(elite and "+" or ""))
-				myPlate.level:SetTextColor(self.level:GetTextColor())
-				myPlate.level:Show()
-			end
-		else
-			myPlate.level:Hide()
-			myPlate.level:SetText(nil)
+		local level, elite, boss, mylevel = self.level:GetObjectType() == 'FontString' and tonumber(self.level:GetText()) or nil, self.eliteIcon:IsShown(), self.bossIcon:IsShown(), UnitLevel("player")
+		if boss then
+			myPlate.level:SetText("??")
+			myPlate.level:SetTextColor(0.8, 0.05, 0)
+		elseif level then
+			myPlate.level:SetText(level..(elite and "+" or ""))
+			myPlate.level:SetTextColor(self.level:GetTextColor())
 		end
-	elseif self.bossIcon:IsShown() and NP.db.level.enable and myPlate.level:GetText() ~= '??' then
+	elseif self.bossIcon:IsShown() and myPlate.level:GetText() ~= '??' then
 		myPlate.level:SetText("??")
 		myPlate.level:SetTextColor(0.8, 0.05, 0)
-		myPlate.level:Show()
 	end
 end
 
@@ -261,8 +253,8 @@ function NP:ColorizeAndScale()
 		color = RAID_CLASS_COLORS[unitType]
 	elseif unitType == "TAPPED_NPC" then
 		color = NP.db.reactions.tapped
-	elseif unitType == "HOSTILE_NPC" then
-		local classRole = E.Role
+	elseif unitType == "HOSTILE_NPC" or unitType == "NEUTRAL_NPC" then
+		local classRole = E.role
 		local threatReaction = NP:GetThreatReaction(self)
 		if threatReaction == 'FULL_THREAT' then
 			if classRole == 'Tank' then
@@ -293,12 +285,14 @@ function NP:ColorizeAndScale()
 				scale = NP.db.threat.goodScale
 			end
 		else
-			color = NP.db.reactions.enemy
+			if unitType == "NEUTRAL_NPC" then
+				color = NP.db.reactions.neutral
+			else
+				color = NP.db.reactions.enemy
+			end
 		end
 
 		self.threatReaction = threatReaction
-	elseif unitType == "NEUTRAL_NPC" then
-		color = NP.db.reactions.neutral
 	elseif unitType == "FRIENDLY_NPC" then
 		color = NP.db.reactions.friendlyNPC
 	elseif unitType == "FRIENDLY_PLAYER" then
@@ -463,6 +457,9 @@ function NP:OnHide()
 	self.raidIconType = nil
 	myPlate.lowHealth:Hide()
 
+	myPlate.healthBar:SetSize(NP.db.healthBar.width, NP.db.healthBar.height)
+	self.castBar.icon:Size(NP.db.castBar.height + NP.db.healthBar.height + 5)
+
 	if self.AuraWidget then
 		for index = 1, NP.MAX_DISPLAYABLE_DEBUFFS do 
 			NP.PolledHideIn(self.AuraWidget.AuraIconFrames[index], 0)
@@ -538,17 +535,9 @@ function NP:UpdateSettings()
 
 	--Name
 	self.name:FontTemplate(font, fontSize, fontOutline)
-	self.name:ClearAllPoints()
-	self.name:SetPoint(E.InversePoints[NP.db.name.attachTo], myPlate.healthBar, NP.db.name.attachTo, NP.db.name.xOffset, NP.db.name.yOffset)
-	self.name:SetJustifyH(NP.db.name.justifyH)
-	self.name:SetWidth(NP.db.name.width)
-	self.name:SetHeight(NP.db.fontSize)
 
 	--Level
 	myPlate.level:FontTemplate(font, fontSize, fontOutline)
-	myPlate.level:ClearAllPoints()
-	myPlate.level:SetPoint(E.InversePoints[NP.db.level.attachTo], myPlate.healthBar, NP.db.level.attachTo, NP.db.level.xOffset, NP.db.level.yOffset)
-	myPlate.level:SetJustifyH(NP.db.level.justifyH)
 
 	--HealthBar
 	myPlate.healthBar:SetSize(NP.db.healthBar.width, NP.db.healthBar.height)
@@ -562,19 +551,8 @@ function NP:UpdateSettings()
 	--CastBar
 	myPlate.castBar:SetSize(NP.db.healthBar.width, NP.db.castBar.height)
 	myPlate.castBar:SetStatusBarTexture(E.media.normTex)
-	
-	myPlate.castBar.time:ClearAllPoints()
-	myPlate.castBar.time:SetPoint(E.InversePoints[NP.db.castBar.time.attachTo], myPlate.castBar, NP.db.castBar.time.attachTo, NP.db.castBar.time.xOffset, NP.db.castBar.time.yOffset)
-	myPlate.castBar.time:SetJustifyH(NP.db.castBar.time.justifyH)	
 	myPlate.castBar.time:FontTemplate(font, fontSize, fontOutline)
-	
-	self.castBar.name:ClearAllPoints()
-	self.castBar.name:SetPoint(E.InversePoints[NP.db.castBar.name.attachTo], myPlate.castBar, NP.db.castBar.name.attachTo, NP.db.castBar.name.xOffset, NP.db.castBar.name.yOffset)
-	self.castBar.name:SetJustifyH(NP.db.castBar.name.justifyH)		
 	self.castBar.name:FontTemplate(font, fontSize, fontOutline)
-	self.castBar.name:SetWidth(NP.db.castBar.name.width)
-	self.castBar.name:SetHeight(NP.db.fontSize)
-
 	self.castBar.icon:Size(NP.db.castBar.height + NP.db.healthBar.height + 5)	
 
 	--Raid Icon
@@ -631,8 +609,17 @@ function NP:CreatePlate(frame)
 	myPlate.castBar:SetFrameStrata("BACKGROUND")
 	myPlate.castBar:SetFrameLevel(0)
 	NP:CreateBackdrop(myPlate.castBar)
+
 	myPlate.castBar.time = myPlate.castBar:CreateFontString(nil, 'OVERLAY')
+	myPlate.castBar.time:SetPoint("TOPRIGHT", myPlate.castBar, "BOTTOMRIGHT", 6, -2)
+	myPlate.castBar.time:SetJustifyH("RIGHT")
+
 	frame.castBar.name:SetParent(myPlate.castBar)
+	frame.castBar.name:ClearAllPoints()
+	frame.castBar.name:SetPoint("TOPLEFT", myPlate.castBar, "BOTTOMLEFT", 0, -2)
+	frame.castBar.name:SetPoint("TOPRIGHT", myPlate.castBar.time, "TOPLEFT", 0, -2)
+	frame.castBar.name:SetJustifyH("LEFT")
+
 	frame.castBar.icon:SetParent(myPlate.castBar)
 	frame.castBar.icon:SetTexCoord(.07, .93, .07, .93)
 	frame.castBar.icon:SetDrawLayer("OVERLAY")
@@ -640,11 +627,17 @@ function NP:CreatePlate(frame)
 	frame.castBar.icon:SetPoint("TOPLEFT", myPlate.healthBar, "TOPRIGHT", 5, 0)
 	NP:CreateBackdrop(myPlate.castBar, frame.castBar.icon)
 
-	--Name
-	frame.name:SetParent(myPlate)
-
 	--Level
 	myPlate.level = myPlate:CreateFontString(nil, 'OVERLAY')
+	myPlate.level:SetPoint("BOTTOMRIGHT", myPlate.healthBar, "TOPRIGHT", 3, 3)
+	myPlate.level:SetJustifyH("RIGHT")
+
+	--Name
+	frame.name:SetParent(myPlate)
+	frame.name:ClearAllPoints()
+	frame.name:SetPoint("BOTTOMLEFT", myPlate.healthBar, "TOPLEFT", 0, 3)
+	frame.name:SetPoint("BOTTOMRIGHT", myPlate.level, "BOTTOMLEFT", -2, 0)
+	frame.name:SetJustifyH("LEFT")
 
 	--Raid Icon
 	frame.raidIcon:SetParent(myPlate)

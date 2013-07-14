@@ -95,7 +95,7 @@ P["nameplate"] = {
 	["comboPoints"] = true,
 	['nonTargetAlpha'] = 0.25,
 	['healthBar'] = {
-		['width'] = 112,
+		['width'] = 108,
 		['height'] = 9,		
 		['lowThreshold'] =  0.40,
 		['text'] = {
@@ -108,39 +108,9 @@ P["nameplate"] = {
 		}		
 	},
 	['castBar'] = {
-		['height'] = 4,
+		['height'] = 6,
 		['color'] = { r = 1,g = 208/255,b = 0 },
 		['noInterrupt'] = { r = 0.78, g = 0.25, b = 0.25 },		
-		['name'] = {
-			['enable'] = true,
-			['xOffset'] = 0,
-			['yOffset'] = -2,
-			['attachTo'] = 'BOTTOMLEFT',
-			['justifyH'] = 'LEFT',		
-			['width'] = 112,	
-		},
-		['time'] = {
-			['enable'] = true,
-			['xOffset'] = 6,
-			['yOffset'] = -2,
-			['attachTo'] = 'BOTTOMRIGHT',
-			['justifyH'] = 'RIGHT',	
-		},
-	},
-	['name'] = {
-		['enable'] = true,
-		['xOffset'] = 0,
-		['yOffset'] = 3,
-		['attachTo'] = 'TOPLEFT',
-		['justifyH'] = 'LEFT',
-		['width'] = 112,
-	},
-	['level'] = {
-		['enable'] = true,
-		['xOffset'] = 3,
-		['yOffset'] = 3,
-		['attachTo'] = 'TOPRIGHT',
-		['justifyH'] = 'RIGHT'
 	},
 	['raidHealIcon'] = {
 		["markHealers"] = true,
@@ -150,8 +120,8 @@ P["nameplate"] = {
 		['attachTo'] = 'LEFT',
 	},
 	['threat'] = {
-		['goodScale'] = 1,
-		['badScale'] = 1,
+		['goodScale'] = 0.85,
+		['badScale'] = 1.25,
 		["goodColor"] = {r = 75/255,  g = 175/255, b = 76/255},
 		["badColor"] = {r = 0.78, g = 0.25, b = 0.25},
 		["goodTransitionColor"] = {r = 218/255, g = 197/255, b = 92/255},
@@ -186,7 +156,7 @@ P['auras'] = {
 	['countXOffset'] = 0,
 	['timeYOffset'] = 0,
 	['timeXOffset'] = 0,
-	
+
 	['consolidatedBuffs'] = {
 		['enable'] = true,
 		['filter'] = true,
