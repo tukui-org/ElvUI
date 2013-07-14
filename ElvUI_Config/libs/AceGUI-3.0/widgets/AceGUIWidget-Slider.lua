@@ -24,9 +24,9 @@ Support functions
 local function UpdateText(self)
 	local value = self.value or 0
 	if self.ispercent then
-		self.editbox:SetText(("%s%%"):format(floor(value * 1000 + 0.5) / 10))
+		self.editbox:SetText(("%s%%"):format(floor((value * 100) + 0.5)))
 	else
-		self.editbox:SetText(floor(value * 100 + 0.5) / 100)
+		self.editbox:SetText(floor(value+0.5))
 	end
 end
 
