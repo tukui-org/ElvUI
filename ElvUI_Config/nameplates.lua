@@ -28,7 +28,7 @@ local function UpdateFilterGroup()
 		guiInline = true,
 		order = -10,
 		get = function(info) return E.global["nameplate"]['filter'][selectedFilter][ info[#info] ] end,
-		set = function(info, value) E.global["nameplate"]['filter'][selectedFilter][ info[#info] ] = value; NP:UpdateAllPlates(); UpdateFilterGroup() end,		
+		set = function(info, value) E.global["nameplate"]['filter'][selectedFilter][ info[#info] ] = value; NP:ForEachPlate("CheckFilter"); NP:UpdateAllPlates(); UpdateFilterGroup() end,		
 		args = {
 			enable = {
 				type = 'toggle',
@@ -64,6 +64,8 @@ local function UpdateFilterGroup()
 					if t then
 						t.r, t.g, t.b = r, g, b
 						UpdateFilterGroup()
+						NP:ForEachPlate("CheckFilter")
+						NP:UpdateAllPlates()
 					end
 				end,
 			},
@@ -71,9 +73,7 @@ local function UpdateFilterGroup()
 				type = 'range',
 				name = L['Custom Scale'],
 				desc = L['Set the scale of the nameplate.'],
-				min = 0.67, max = 2, step = 0.01,
-				get = function(info) return E.global["nameplate"]['filter'][selectedFilter][ info[#info] ] end,
-				set = function(info, value) E.global["nameplate"]['filter'][selectedFilter][ info[#info] ] = value; UpdateFilterGroup() end,						
+				min = 0.67, max = 2, step = 0.01,			
 			},
 		},	
 	}
@@ -340,20 +340,13 @@ E.Options.args.nameplate = {
 					type = "toggle",
 					name = L["Enable"],
 				},	
-				width = {
+				numAuras = {
 					type = "range",
 					order = 2,
-					name = L["Width"],
+					name = L["Number of Auras"],
 					type = "range",
-					min = 10, max = 40, step = 1,		
+					min = 2, max = 8, step = 1,		
 				},	
-				height = {
-					type = "range",
-					order = 3,
-					name = L["Height"],
-					type = "range",
-					min = 10, max = 40, step = 1,					
-				},
 				stretchTexture = {
 					type = "toggle",
 					name = L["Stretch Texture"],

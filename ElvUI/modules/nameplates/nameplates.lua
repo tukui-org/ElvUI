@@ -20,7 +20,7 @@ local band = bit.band
 
 NP.NumTargetAuraChecks = -1
 NP.NumMouseoverAuraChecks = -1
-NP.NumTransparentPlates = 0
+NP.NumNonTransparentPlates = 0
 NP.CreatedPlates = {};
 NP.Healers = {};
 
@@ -62,9 +62,6 @@ NP.RaidIconCoordinate = {
 	[0.5]	= { [0]		= "DIAMOND", [0.25]	= "CROSS", },
 	[0.75]	= { [0]		= "TRIANGLE", [0.25]	= "SKULL", }, 
 }
-
-NP.MAX_DISPLAYABLE_DEBUFFS = 4;
-NP.MAX_SMALLNP_DISPLAYABLE_DEBUFFS = 2;
 
 local AURA_UPDATE_INTERVAL = 0.1
 local AURA_TYPE_BUFF = 1
@@ -108,19 +105,17 @@ function NP:OnUpdate(elapsed)
 	for blizzPlate, plate in pairs(NP.CreatedPlates) do
 		if blizzPlate:IsShown() then
 			plate:SetPoint("CENTER", WorldFrame, "BOTTOMLEFT", blizzPlate:GetCenter())
-			plate:Show()
 		else
 			plate:Hide()
 		end
 	end
 
 	if(self.elapsed and self.elapsed > 0.2) then
-		NP.NumTransparentPlates = 0
+		NP.NumNonTransparentPlates = 0
 		NP:ForEachPlate('SetAlpha')
 		NP:ForEachPlate('SetUnitInfo')
 		NP:ForEachPlate('ColorizeAndScale')
 		NP:ForEachPlate('SetLevel')
-		NP:ForEachPlate('CheckFilter')
 
 		self.elapsed = 0
 	else
@@ -128,9 +123,36 @@ function NP:OnUpdate(elapsed)
 	end	
 end
 
-function NP:CheckFilter()
-	local myPlate = NP.CreatedPlates[self]
-	local name = self.name:GetText()
+function NP:CheckFilterAndHealers(frame)
+	local myPlate = NP.CreatedPlates[frame]
+	local name = frame.name:GetText()
+	local db = E.global.nameplate["filter"][name]
+
+	if db and db.enable then
+		if db.hide then
+			myPlate:Hide()
+		else
+			myPlate:Show()
+			
+			if db.customColor then
+				frame.customColor = true
+				myPlate.healthBar:SetStatusBarColor(db.color.r, db.color.g, db.color.b)
+			else
+				frame.customColor = nil	
+			end
+			
+			if db.customScale and db.customScale ~= 1 then
+				myPlate.healthBar:Height(NP.db.healthBar.height * db.customScale)
+				myPlate.healthBar:Width(NP.db.healthBar.width * db.customScale)
+				frame.customScale = true
+			else
+				frame.customScale = nil
+			end
+		end
+	else
+		myPlate:Show()
+	end
+
 	if NP.Healers[name] then
 		myPlate.healerIcon:Show()
 	else
@@ -193,6 +215,13 @@ function NP:SetLevel()
 	elseif self.bossIcon:IsShown() and myPlate.level:GetText() ~= '??' then
 		myPlate.level:SetText("??")
 		myPlate.level:SetTextColor(0.8, 0.05, 0)
+	end
+
+	if self.isSmall then
+		myPlate.level:SetText("")
+		myPlate.level:Hide()
+	elseif not myPlate.level:IsShown() then
+		myPlate.level:Show()
 	end
 end
 
@@ -301,8 +330,11 @@ function NP:ColorizeAndScale()
 		color = NP.db.reactions.enemy
 	end
 
-	myPlate.healthBar:SetStatusBarColor(color.r, color.g, color.b)
-	if myPlate.healthBar:GetWidth() ~= (NP.db.healthBar.width * scale) then
+	if(not self.customColor) then
+		myPlate.healthBar:SetStatusBarColor(color.r, color.g, color.b)
+	end
+	
+	if(not self.customScale and not self.isSmall and myPlate.healthBar:GetWidth() ~= (NP.db.healthBar.width * scale)) then
 		myPlate.healthBar:SetSize(NP.db.healthBar.width * scale, NP.db.healthBar.height * scale)
 		self.castBar.icon:Size(NP.db.castBar.height + (NP.db.healthBar.height * scale) + 5)
 	end
@@ -312,8 +344,8 @@ function NP:SetAlpha()
 	local myPlate = NP.CreatedPlates[self]
 	if self:GetAlpha() < 1 then
 		myPlate:SetAlpha(NP.db.nonTargetAlpha)
-		NP.NumTransparentPlates = NP.NumTransparentPlates + 1
 	else
+		NP.NumNonTransparentPlates = NP.NumNonTransparentPlates + 1
 		myPlate:SetAlpha(1)
 	end
 end
@@ -321,7 +353,7 @@ end
 function NP:SetUnitInfo()
 	local myPlate = NP.CreatedPlates[self]
 
-	if self:GetAlpha() == 1 and UnitExists("target") and UnitName("target") == self.name:GetText() and NP.NumTransparentPlates > 0 then
+	if self:GetAlpha() == 1 and UnitExists("target") and UnitName("target") == self.name:GetText() and NP.NumNonTransparentPlates == 1 then
 		self.guid = UnitGUID("target")
 		self.unit = "target"
 		myPlate:SetFrameLevel(2)
@@ -353,7 +385,7 @@ function NP:SetUnitInfo()
 		self.unit = nil
 		myPlate:SetFrameLevel(0)
 		myPlate.overlay:Hide()
-	end	
+	end
 end
 
 function NP:PLAYER_ENTERING_WORLD()
@@ -423,6 +455,15 @@ function NP:RoundColors(r, g, b)
 end
 
 function NP:OnShow()
+	local myPlate = NP.CreatedPlates[self]
+	self.isSmall = (self.healthBar:GetEffectiveScale() < 1 and NP.db.smallPlates)
+
+	if(self.isSmall) then
+		myPlate.healthBar:SetSize(self.healthBar:GetWidth() * (self.healthBar:GetEffectiveScale() * 1.25), NP.db.healthBar.height)
+	end
+
+	NP:CheckFilterAndHealers(self)
+
 	local objectType
 	for object in pairs(self.queue) do		
 		objectType = object:GetObjectType()  
@@ -455,16 +496,53 @@ function NP:OnHide()
 	self.guid = nil
 	self.unit = nil
 	self.raidIconType = nil
+	self.customColor = nil
+	self.customScale = nil
+	self.isSmall = nil
+
 	myPlate.lowHealth:Hide()
+	myPlate.healerIcon:Hide()
 
 	myPlate.healthBar:SetSize(NP.db.healthBar.width, NP.db.healthBar.height)
 	self.castBar.icon:Size(NP.db.castBar.height + NP.db.healthBar.height + 5)
 
-	if self.AuraWidget then
-		for index = 1, NP.MAX_DISPLAYABLE_DEBUFFS do 
-			NP.PolledHideIn(self.AuraWidget.AuraIconFrames[index], 0)
+	if myPlate.AuraWidget then
+		for index = 1, #myPlate.AuraWidget.AuraIconFrames do 
+			NP.PolledHideIn(myPlate.AuraWidget.AuraIconFrames[index], 0)
 		end		
 	end
+end
+
+function NP:HealthBar_OnSizeChanged(width, height)
+	--Adjust aura width/height ratio based on the healthBar width
+	width = floor(width + 0.5)
+	local auraHeader = self:GetParent().AuraWidget
+	local baseSpacing = 1
+	local numAuras = NP.db.auras.numAuras
+	local auraWidth = ((width - (baseSpacing * (numAuras - 1))) / numAuras)
+	local auraHeight = (NP.db.auras.stretchTexture and (auraWidth * 0.72) or auraWidth)
+
+	for index = 1, numAuras do
+		if not auraHeader.AuraIconFrames[index] then
+			auraHeader.AuraIconFrames[index] = NP:CreateAuraIcon(auraHeader, myPlate); 
+		end
+		
+		auraHeader.AuraIconFrames[index]:SetWidth(auraWidth)
+		auraHeader.AuraIconFrames[index]:SetHeight(auraHeight)
+		if(index == 1) then
+			auraHeader.AuraIconFrames[index]:SetPoint("LEFT", auraHeader, 0, 0)
+		else
+			auraHeader.AuraIconFrames[index]:SetPoint("LEFT", auraHeader.AuraIconFrames[index-1], "RIGHT", baseSpacing, 0) 
+		end
+	end
+
+	if(numAuras > #auraHeader.AuraIconFrames) then
+		for index = (numAuras + 1), #auraHeader.AuraIconFrames do
+			NP.PolledHideIn(auraHeader.AuraIconFrames[index], 0)
+		end
+	end
+
+	auraHeader.numAuras = numAuras
 end
 
 function NP:HealthBar_OnValueChanged(value)
@@ -540,7 +618,10 @@ function NP:UpdateSettings()
 	myPlate.level:FontTemplate(font, fontSize, fontOutline)
 
 	--HealthBar
-	myPlate.healthBar:SetSize(NP.db.healthBar.width, NP.db.healthBar.height)
+	if not self.customScale and not self.isSmall then
+		myPlate.healthBar:SetSize(NP.db.healthBar.width, NP.db.healthBar.height)
+	end
+	
 	myPlate.healthBar:SetStatusBarTexture(E.media.normTex)
 
 	myPlate.healthBar.text:FontTemplate(font, fontSize, fontOutline)
@@ -566,20 +647,22 @@ function NP:UpdateSettings()
 	myPlate.healerIcon:SetSize(NP.db.raidHealIcon.size, NP.db.raidHealIcon.size)
 
 	--Auras
-	for index = 1, #self.AuraWidget.AuraIconFrames do 
-		if self.AuraWidget.AuraIconFrames and self.AuraWidget.AuraIconFrames[index] then
+	for index = 1, #myPlate.AuraWidget.AuraIconFrames do 
+		if myPlate.AuraWidget.AuraIconFrames and myPlate.AuraWidget.AuraIconFrames[index] then
 			local auraFont = LSM:Fetch("font", NP.db.auras.font)
-			self.AuraWidget.AuraIconFrames[index].TimeLeft:FontTemplate(auraFont, NP.db.auras.fontSize, NP.db.auras.fontOutline)
-			self.AuraWidget.AuraIconFrames[index].Stacks:FontTemplate(auraFont, NP.db.auras.fontSize, NP.db.auras.fontOutline)
-			self.AuraWidget.AuraIconFrames[index]:SetSize(NP.db.auras.width, NP.db.auras.height)
+			myPlate.AuraWidget.AuraIconFrames[index].TimeLeft:FontTemplate(auraFont, NP.db.auras.fontSize, NP.db.auras.fontOutline)
+			myPlate.AuraWidget.AuraIconFrames[index].Stacks:FontTemplate(auraFont, NP.db.auras.fontSize, NP.db.auras.fontOutline)
 
 			if NP.db.auras.stretchTexture then
-				self.AuraWidget.AuraIconFrames[index].Icon:SetTexCoord(.07, 0.93, .23, 0.77)
+				myPlate.AuraWidget.AuraIconFrames[index].Icon:SetTexCoord(.07, 0.93, .23, 0.77)
 			else
-				self.AuraWidget.AuraIconFrames[index].Icon:SetTexCoord(.07, .93, .07, .93)
+				myPlate.AuraWidget.AuraIconFrames[index].Icon:SetTexCoord(.07, .93, .07, .93)
 			end
 		end
-	end	
+	end
+
+	NP.OnShow(self)
+	NP.HealthBar_OnSizeChanged(myPlate.healthBar, myPlate.healthBar:GetSize())
 end
 
 function NP:CreatePlate(frame)
@@ -598,6 +681,7 @@ function NP:CreatePlate(frame)
 	myPlate.healthBar:SetPoint('BOTTOM', myPlate, 'BOTTOM', 0, 5)
 	myPlate.healthBar:SetFrameStrata("BACKGROUND")
 	myPlate.healthBar:SetFrameLevel(0)
+	myPlate.healthBar:SetScript("OnSizeChanged", NP.HealthBar_OnSizeChanged)
 	NP:CreateBackdrop(myPlate.healthBar)
 
 	myPlate.healthBar.text = myPlate.healthBar:CreateFontString(nil, 'OVERLAY')
@@ -662,16 +746,7 @@ function NP:CreatePlate(frame)
 	
 	auraHeader.PollFunction = NP.UpdateAuraTime
 	auraHeader.AuraIconFrames = {}
-	for index = 1, NP.MAX_DISPLAYABLE_DEBUFFS do 
-		auraHeader.AuraIconFrames[index] = NP:CreateAuraIcon(auraHeader, myPlate);  
-	end
-
-	auraHeader.AuraIconFrames[1]:SetPoint("LEFT", auraHeader, -1, 0)
-	for index = 2, NP.MAX_DISPLAYABLE_DEBUFFS do 
-		auraHeader.AuraIconFrames[index]:SetPoint("LEFT", auraHeader.AuraIconFrames[index-1], "RIGHT", 1, 0) 
-	end
-
-	frame.AuraWidget = auraHeader	
+	myPlate.AuraWidget = auraHeader	
 	
 	--Low-Health Indicator
 	myPlate.lowHealth = CreateFrame("Frame", nil, myPlate)
@@ -708,8 +783,7 @@ function NP:CreatePlate(frame)
 
 	self.CreatedPlates[frame] = myPlate
 	NP.UpdateSettings(frame)
-	NP.OnShow(frame)
-
+	
 	if not frame.castBar:IsShown() then
 		myPlate.castBar:Hide()
 	else
@@ -899,11 +973,9 @@ end
 function NP:CreateAuraIcon(frame, parent)
 	local noscalemult = E.mult * UIParent:GetScale()
 	local button = CreateFrame("Frame",nil,frame)
-	button:SetWidth(NP.db.auras.width)
-	button:SetHeight(NP.db.auras.height)
 	button:SetScript('OnHide', function()
-		if parent.guid then
-			NP:UpdateIconGrid(parent, parent.guid)
+		if frame.guid then
+			NP:UpdateIconGrid(parent, frame.guid)
 		end
 	end)
 	
@@ -950,11 +1022,14 @@ function NP:CreateAuraIcon(frame, parent)
 		end			
 	end
 	
+	local font = LSM:Fetch("font", NP.db.auras.font)
 	button.TimeLeft = button:CreateFontString(nil, 'OVERLAY')
+	button.TimeLeft:SetFont(font, NP.db.auras.fontSize, NP.db.auras.fontOutline)
 	button.TimeLeft:Point('TOPLEFT', 2, 2)
 	button.TimeLeft:SetJustifyH('CENTER')	
 	
 	button.Stacks = button:CreateFontString(nil,"OVERLAY")
+	button.Stacks:SetFont(font, NP.db.auras.fontSize, NP.db.auras.fontOutline)
 	button.Stacks:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 2, -2)
 
 	button.Poll = frame.PollFunction
@@ -1173,7 +1248,8 @@ function NP:UpdateIcon(frame, texture, expiration, stacks)
 end
 
 function NP:UpdateIconGrid(frame, guid)
-	local widget = frame.AuraWidget 
+	local myPlate = NP.CreatedPlates[frame]
+	local widget = myPlate.AuraWidget 
 	local AuraIconFrames = widget.AuraIconFrames
 	local AurasOnUnit = self:GetAuraList(guid)
 	local AuraSlotIndex = 1
@@ -1208,7 +1284,10 @@ function NP:UpdateIconGrid(frame, guid)
 				self:UpdateIcon(AuraIconFrames[AuraSlotIndex], cachedaura.texture, cachedaura.expiration, cachedaura.stacks) 
 				AuraSlotIndex = AuraSlotIndex + 1
 			end
-			if AuraSlotIndex > ((frame.isSmallNP and NP.db.smallPlates) and NP.MAX_SMALLNP_DISPLAYABLE_DEBUFFS or NP.MAX_DISPLAYABLE_DEBUFFS) then break end
+
+			if(AuraSlotIndex > widget.numAuras) then 
+				break 
+			end
 		end
 	end
 	
@@ -1223,6 +1302,7 @@ end
 function NP:UpdateAuras(frame)
 	-- Check for ID
 	local guid = frame.guid
+	local myPlate = NP.CreatedPlates[frame]
 
 	if not guid then
 		-- Attempt to ID widget via Name or Raid Icon
@@ -1235,7 +1315,7 @@ function NP:UpdateAuras(frame)
 		if guid then
 			frame.guid = guid
 		else
-			frame.AuraWidget:Hide()
+			myPlate.AuraWidget:Hide()
 			return
 		end
 	end

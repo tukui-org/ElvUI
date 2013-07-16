@@ -121,7 +121,7 @@ P["nameplate"] = {
 	},
 	['threat'] = {
 		['goodScale'] = 0.85,
-		['badScale'] = 1.25,
+		['badScale'] = 1.15,
 		["goodColor"] = {r = 75/255,  g = 175/255, b = 76/255},
 		["badColor"] = {r = 0.78, g = 0.25, b = 0.25},
 		["goodTransitionColor"] = {r = 218/255, g = 197/255, b = 92/255},
@@ -132,8 +132,7 @@ P["nameplate"] = {
 		['font'] = 'ElvUI Pixel',
 		['fontSize'] = 7,
 		['fontOutline'] = 'MONOCHROMEOUTLINE',
-		['width'] = 28,
-		['height'] = 20,
+		['numAuras'] = 4,
 		['stretchTexture'] = true,
 		['additionalFilter'] = 'CCDebuffs',
 		['filterType'] = 'DEBUFFS'
