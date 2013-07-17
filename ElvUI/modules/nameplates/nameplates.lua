@@ -368,7 +368,7 @@ function NP:SetUnitInfo()
 		myPlate:SetFrameLevel(2)
 		myPlate.overlay:Hide()
 
-		if NP.NumTargetChecks > -1 then
+		if((NP.NumTargetChecks > -1) or self.allowCheck) then
 			NP.NumTargetChecks = NP.NumTargetChecks + 1
 			if NP.NumTargetChecks > 1 then
 				NP.NumTargetChecks = -1
@@ -376,6 +376,7 @@ function NP:SetUnitInfo()
 
 			NP:UpdateAurasByUnitID('target')
 			NP:UpdateComboPointsByUnitID('target')
+			self.allowCheck = nil
 		end
 	elseif self.highlight:IsShown() and UnitExists("mouseover") and UnitName("mouseover") == self.name:GetText() then
 		self.guid = UnitGUID("mouseover")
@@ -383,7 +384,7 @@ function NP:SetUnitInfo()
 		myPlate:SetFrameLevel(1)
 		myPlate.overlay:Show()
 
-		if NP.NumMouseoverChecks > -1 then
+		if((NP.NumMouseoverChecks > -1) or self.allowCheck) then
 			NP.NumMouseoverChecks = NP.NumMouseoverChecks + 1
 			if NP.NumMouseoverChecks > 1 then
 				NP.NumMouseoverChecks = -1
@@ -391,6 +392,7 @@ function NP:SetUnitInfo()
 
 			NP:UpdateAurasByUnitID('mouseover')
 			NP:UpdateComboPointsByUnitID('mouseover')
+			self.allowCheck = nil
 		end		
 	else
 		self.unit = nil
@@ -401,6 +403,7 @@ end
 
 function NP:PLAYER_ENTERING_WORLD()
 	twipe(self.Healers)
+	twipe(self.ComboPoints)
 	local inInstance, instanceType = IsInInstance()
 	if inInstance and instanceType == 'pvp' and self.db.raidHealIcon.markHealers then
 		self.CheckHealerTimer = self:ScheduleRepeatingTimer("CheckBGHealers", 3)
@@ -495,10 +498,12 @@ function NP:OnShow()
 	NP.HealthBar_OnValueChanged(self.healthBar, self.healthBar:GetValue())
 
 	--Check to see if its possible to update auras/comboPoints via raid icon or class color when a plate is shown.
-	if self.raidIcon:IsShown() then
+	if(self.raidIcon:IsShown()) then
 		NP:CheckRaidIcon(self)
 		NP:UpdateAuras(self)
 		NP:UpdateComboPoints(self)
+	else
+		self.allowCheck = true
 	end
 end
 
@@ -512,6 +517,7 @@ function NP:OnHide()
 	self.customColor = nil
 	self.customScale = nil
 	self.isSmall = nil
+	self.allowCheck = nil
 
 	myPlate.lowHealth:Hide()
 	myPlate.healerIcon:Hide()
@@ -788,7 +794,7 @@ function NP:CreatePlate(frame)
 		myPlate.cPoints[i]:SetTexture([[Interface\AddOns\ElvUI\media\textures\bubbleTex.tga]])
 		myPlate.cPoints[i]:SetSize(12, 12)
 		myPlate.cPoints[i]:SetVertexColor(unpack(NP.ComboColors[i]))
-		
+
 		if(i == 1) then
 			myPlate.cPoints[i]:SetPoint("LEFT", myPlate.cPoints, "TOPLEFT")
 		else
