@@ -787,6 +787,7 @@ function NP:CreatePlate(frame)
 		myPlate.cPoints[i] = myPlate.cPoints:CreateTexture(nil, 'OVERLAY')
 		myPlate.cPoints[i]:SetTexture([[Interface\AddOns\ElvUI\media\textures\bubbleTex.tga]])
 		myPlate.cPoints[i]:SetSize(12, 12)
+		myPlate.cPoints[i]:SetVertexColor(unpack(NP.ComboColors[i]))
 		
 		if(i == 1) then
 			myPlate.cPoints[i]:SetPoint("LEFT", myPlate.cPoints, "TOPLEFT")
@@ -962,7 +963,6 @@ function NP:UpdateComboPoints(frame)
 	for i=1, MAX_COMBO_POINTS do
 		if(i <= numPoints) then
 			myPlate.cPoints[i]:Show()
-			myPlate.cPoints[i]:SetVertexColor(unpack(NP.ComboColors[i]))
 		else
 			myPlate.cPoints[i]:Hide()
 		end
