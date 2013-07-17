@@ -684,6 +684,14 @@ function NP:UpdateSettings()
 		end
 	end
 
+	--ComboPoints
+	if(NP.db.comboPoints and not myPlate.cPoints:IsShown()) then
+		myPlate.cPoints:Show()	
+	elseif(myPlate.cPoints:IsShown()) then
+		myPlate.cPoints:Hide()	
+	end
+	
+
 	NP.OnShow(self)
 	NP.HealthBar_OnSizeChanged(myPlate.healthBar, myPlate.healthBar:GetSize())
 end
@@ -788,7 +796,8 @@ function NP:CreatePlate(frame)
 	myPlate.cPoints = CreateFrame("Frame", nil, myPlate.healthBar)
 	myPlate.cPoints:Point("CENTER", myPlate.healthBar, "BOTTOM")
 	myPlate.cPoints:SetSize(68, 1)
-	
+	myPlate.cPoints:Hide()
+
 	for i = 1, MAX_COMBO_POINTS do
 		myPlate.cPoints[i] = myPlate.cPoints:CreateTexture(nil, 'OVERLAY')
 		myPlate.cPoints[i]:SetTexture([[Interface\AddOns\ElvUI\media\textures\bubbleTex.tga]])

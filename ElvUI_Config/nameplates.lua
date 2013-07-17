@@ -115,7 +115,6 @@ E.Options.args.nameplate = {
 					order = 3,
 					name = L["Combo Points"],
 					desc = L["Display combo points on nameplates."],
-					set = function(info, value) E.db.nameplate[ info[#info] ] = value; NP:ToggleCPoints() end,
 				},				
 				nonTargetAlpha = {
 					type = 'range',
