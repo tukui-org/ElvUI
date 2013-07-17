@@ -18,12 +18,12 @@ local numChildren = -1
 local twipe = table.wipe
 local band = bit.band
 
-NP.NumTargetAuraChecks = -1
-NP.NumMouseoverAuraChecks = -1
+NP.NumTargetChecks = -1
+NP.NumMouseoverChecks = -1
 NP.NumNonTransparentPlates = 0
 NP.CreatedPlates = {};
 NP.Healers = {};
-
+NP.ComboPoints = {};
 NP.ByRaidIcon = {}			-- Raid Icon to GUID 		-- ex.  ByRaidIcon["SKULL"] = GUID
 NP.ByName = {}				-- Name to GUID (PVP)
 NP.AuraList = {}	-- Two Dimensional
@@ -62,6 +62,15 @@ NP.RaidIconCoordinate = {
 	[0.5]	= { [0]		= "DIAMOND", [0.25]	= "CROSS", },
 	[0.75]	= { [0]		= "TRIANGLE", [0.25]	= "SKULL", }, 
 }
+
+NP.ComboColors = {
+	[1] = {0.69, 0.31, 0.31},
+	[2] = {0.69, 0.31, 0.31},
+	[3] = {0.65, 0.63, 0.35},
+	[4] = {0.65, 0.63, 0.35},
+	[5] = {0.33, 0.59, 0.33}
+}
+
 
 local AURA_UPDATE_INTERVAL = 0.1
 local AURA_TYPE_BUFF = 1
@@ -359,13 +368,14 @@ function NP:SetUnitInfo()
 		myPlate:SetFrameLevel(2)
 		myPlate.overlay:Hide()
 
-		if NP.NumTargetAuraChecks > -1 then
-			NP:UpdateAurasByUnitID('target')
-			NP.NumTargetAuraChecks = NP.NumTargetAuraChecks + 1
-			
-			if NP.NumTargetAuraChecks > 1 then
-				NP.NumTargetAuraChecks = -1
+		if NP.NumTargetChecks > -1 then
+			NP.NumTargetChecks = NP.NumTargetChecks + 1
+			if NP.NumTargetChecks > 1 then
+				NP.NumTargetChecks = -1
 			end
+
+			NP:UpdateAurasByUnitID('target')
+			NP:UpdateComboPointsByUnitID('target')
 		end
 	elseif self.highlight:IsShown() and UnitExists("mouseover") and UnitName("mouseover") == self.name:GetText() then
 		self.guid = UnitGUID("mouseover")
@@ -373,13 +383,14 @@ function NP:SetUnitInfo()
 		myPlate:SetFrameLevel(1)
 		myPlate.overlay:Show()
 
-		if NP.NumMouseoverAuraChecks > -1 then
-			NP:UpdateAurasByUnitID('mouseover')
-			NP.NumMouseoverAuraChecks = NP.NumMouseoverAuraChecks + 1
-
-			if NP.NumMouseoverAuraChecks > 1 then
-				NP.NumMouseoverAuraChecks = -1
+		if NP.NumMouseoverChecks > -1 then
+			NP.NumMouseoverChecks = NP.NumMouseoverChecks + 1
+			if NP.NumMouseoverChecks > 1 then
+				NP.NumMouseoverChecks = -1
 			end
+
+			NP:UpdateAurasByUnitID('mouseover')
+			NP:UpdateComboPointsByUnitID('mouseover')
 		end		
 	else
 		self.unit = nil
@@ -411,13 +422,13 @@ end
 
 function NP:PLAYER_TARGET_CHANGED()
 	if UnitExists('target') then
-		NP.NumTargetAuraChecks = 0
+		NP.NumTargetChecks = 0
 	end
 end
 
 function NP:UPDATE_MOUSEOVER_UNIT()
 	if UnitExists('mouseover') then
-		NP.NumMouseoverAuraChecks = 0
+		NP.NumMouseoverChecks = 0
 	end
 end
 
@@ -435,6 +446,7 @@ function NP:Initialize()
 	self:RegisterEvent("UNIT_AURA")
 	self:RegisterEvent("PLAYER_TARGET_CHANGED")
 	self:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
+	self:RegisterEvent("UNIT_COMBO_POINTS")
 end
 
 function NP:UpdateAllPlates()
@@ -482,10 +494,11 @@ function NP:OnShow()
 	
 	NP.HealthBar_OnValueChanged(self.healthBar, self.healthBar:GetValue())
 
-	--Check to see if its possible to update auras via raid icon or class color when a plate is shown.
+	--Check to see if its possible to update auras/comboPoints via raid icon or class color when a plate is shown.
 	if self.raidIcon:IsShown() then
 		NP:CheckRaidIcon(self)
 		NP:UpdateAuras(self)
+		NP:UpdateComboPoints(self)
 	end
 end
 
@@ -511,6 +524,10 @@ function NP:OnHide()
 			NP.PolledHideIn(myPlate.AuraWidget.AuraIconFrames[index], 0)
 		end		
 	end
+
+	for i=1, MAX_COMBO_POINTS do
+		myPlate.cPoints[i]:Hide()
+	end	
 end
 
 function NP:HealthBar_OnSizeChanged(width, height)
@@ -760,6 +777,25 @@ function NP:CreatePlate(frame)
 	myPlate.lowHealth:SetBackdropBorderColor(1, 1, 0, 0.9)
 	myPlate.lowHealth:SetScale(E.PixelMode and 1.5 or 2)
 	myPlate.lowHealth:Hide()
+
+	--Combo Points
+	myPlate.cPoints = CreateFrame("Frame", nil, myPlate.healthBar)
+	myPlate.cPoints:Point("CENTER", myPlate.healthBar, "BOTTOM")
+	myPlate.cPoints:SetSize(68, 1)
+	
+	for i = 1, MAX_COMBO_POINTS do
+		myPlate.cPoints[i] = myPlate.cPoints:CreateTexture(nil, 'OVERLAY')
+		myPlate.cPoints[i]:SetTexture([[Interface\AddOns\ElvUI\media\textures\bubbleTex.tga]])
+		myPlate.cPoints[i]:SetSize(12, 12)
+		
+		if(i == 1) then
+			myPlate.cPoints[i]:SetPoint("LEFT", myPlate.cPoints, "TOPLEFT")
+		else
+			myPlate.cPoints[i]:SetPoint("LEFT", myPlate.cPoints[i-1], "RIGHT", 2, 0)
+		end
+		
+		myPlate.cPoints[i]:Hide()
+	end	
 	
 	--Script Handlers
 	frame:HookScript("OnShow", NP.OnShow)
@@ -906,6 +942,47 @@ function NP:CreateBackdrop(parent, point)
 		point.borderright.backdrop:SetWidth(noscalemult * 3)
 		point.borderright.backdrop:SetTexture(0, 0, 0)	
 		point.borderright.backdrop:SetDrawLayer("ARTWORK", -7)
+	end
+end
+
+---------------------------------------------
+--Combo Points
+---------------------------------------------
+
+function NP:UpdateComboPoints(frame)
+	local myPlate = NP.CreatedPlates[frame]
+	local numPoints = NP.ComboPoints[frame.guid]
+	if(not numPoints) then
+		for i=1, MAX_COMBO_POINTS do
+			myPlate.cPoints[i]:Hide()
+		end			
+		return 
+	end
+	
+	for i=1, MAX_COMBO_POINTS do
+		if(i <= numPoints) then
+			myPlate.cPoints[i]:Show()
+			myPlate.cPoints[i]:SetVertexColor(unpack(NP.ComboColors[i]))
+		else
+			myPlate.cPoints[i]:Hide()
+		end
+	end	
+end
+
+function NP:UpdateComboPointsByUnitID(unitID)
+	local guid = UnitGUID(unitID)
+
+	NP.ComboPoints[guid] = GetComboPoints(UnitHasVehicleUI('player') and 'vehicle' or 'player', unitID)
+
+	local frame = NP:SearchForFrame(guid)
+	if(frame) then
+		NP:UpdateComboPoints(frame)
+	end	
+end
+
+function NP:UNIT_COMBO_POINTS(event, unit)
+	if(unit == "player" or unit == "vehicle") then
+		self:UpdateComboPointsByUnitID("target")
 	end
 end
 
