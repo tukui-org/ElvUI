@@ -139,7 +139,7 @@ E.Options.args.auras = {
 					values = {
 						['NONE'] = L['None'],
 						['OUTLINE'] = 'OUTLINE',
-						['MONOCHROME'] = (not E.isMacClient) and 'MONOCHROME' or nil,
+						
 						['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 						['THICKOUTLINE'] = 'THICKOUTLINE',
 					},
@@ -186,7 +186,7 @@ E.Options.args.auras = {
 					set = function(info, value) 
 						E.db.auras.consolidatedBuffs[ info[#info] ] = value
 						E:GetModule('Minimap'):UpdateSettings()
-						A:UpdateAllHeaders()
+						A:UpdateHeader(ElvUIPlayerBuffs)
 					end,	
 					desc = L['Display the consolidated buffs bar.'],
 				},
@@ -221,7 +221,7 @@ E.Options.args.auras = {
 					values = {
 						['NONE'] = L['None'],
 						['OUTLINE'] = 'OUTLINE',
-						['MONOCHROME'] = (not E.isMacClient) and 'MONOCHROME' or nil,
+						
 						['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 						['THICKOUTLINE'] = 'THICKOUTLINE',
 					},
