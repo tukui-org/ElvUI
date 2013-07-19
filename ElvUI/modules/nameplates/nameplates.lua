@@ -986,7 +986,8 @@ end
 
 function NP:UpdateComboPointsByUnitID(unitID)
 	local guid = UnitGUID(unitID)
-
+	if(not guid) then return end
+	
 	NP.ComboPoints[guid] = GetComboPoints(UnitHasVehicleUI('player') and 'vehicle' or 'player', unitID)
 
 	local frame = NP:SearchForFrame(guid)
