@@ -71,11 +71,11 @@ function TT:SetStatusBarAnchor(pos)
 	GameTooltipStatusBar:ClearAllPoints()
 
 	if pos == 'BOTTOM' then
-		GameTooltipStatusBar:Point("TOPLEFT", GameTooltipStatusBar:GetParent(), "BOTTOMLEFT", E.Border, -(E.Border + 3))
-		GameTooltipStatusBar:Point("TOPRIGHT", GameTooltipStatusBar:GetParent(), "BOTTOMRIGHT", -E.Border, -(E.Border + 3))			
+		GameTooltipStatusBar:Point("TOPLEFT", GameTooltipStatusBar:GetParent(), "BOTTOMLEFT", E.Border, -(E.Spacing * 3))
+		GameTooltipStatusBar:Point("TOPRIGHT", GameTooltipStatusBar:GetParent(), "BOTTOMRIGHT", -E.Border, -(E.Spacing * 3))			
 	else	
-		GameTooltipStatusBar:Point("BOTTOMLEFT", GameTooltipStatusBar:GetParent(), "TOPLEFT", E.Border, (E.Border + 3))
-		GameTooltipStatusBar:Point("BOTTOMRIGHT", GameTooltipStatusBar:GetParent(), "TOPRIGHT", -E.Border, (E.Border + 3))			
+		GameTooltipStatusBar:Point("BOTTOMLEFT", GameTooltipStatusBar:GetParent(), "TOPLEFT", E.Border, (E.Spacing * 3))
+		GameTooltipStatusBar:Point("BOTTOMRIGHT", GameTooltipStatusBar:GetParent(), "TOPRIGHT", -E.Border, (E.Spacing * 3))			
 	end	
 	
 	if GameTooltipStatusBar.text then
@@ -273,46 +273,36 @@ function TT:Colorize(tt)
 	local connected = unit and UnitIsConnected(unit)
 	local dead = unit and UnitIsDead(unit)
 	local r, g, b;
-
+	
+	tt:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 	if (reaction) and (tapped and not tappedbyme or not connected or dead) then
 		r, g, b = 0.55, 0.57, 0.61
-		tt:SetBackdropBorderColor(r, g, b)
 		if isGameTooltip then
-			GameTooltipStatusBar.backdrop:SetBackdropBorderColor(r, g, b)
 			GameTooltipStatusBar:ColorBar(r, g, b)
 		end
 	elseif player then
 		local class = select(2, UnitClass(unit))
 		if class then
 			local color = RAID_CLASS_COLORS[class]
-			tt:SetBackdropBorderColor(color.r, color.g, color.b)
 			if isGameTooltip then
-				GameTooltipStatusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 				GameTooltipStatusBar:ColorBar(color.r, color.g, color.b)
 			end
 		end
 	elseif reaction then
 		local color = FACTION_BAR_COLORS[reaction]
-		tt:SetBackdropBorderColor(color.r, color.g, color.b)
 		if isGameTooltip then
-			GameTooltipStatusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 			GameTooltipStatusBar:ColorBar(color.r, color.g, color.b)
 		end
 	else
 		local _, link = tt:GetItem()
 		local quality = link and select(3, GetItemInfo(link))
-		if quality and quality >= 2 then
-			local r, g, b = GetItemQualityColor(quality)
-			tt:SetBackdropBorderColor(r, g, b)
-		else
+		if not (quality and quality >= 2) then
 			local r, g, b = unpack(E["media"].bordercolor)
-			tt:SetBackdropBorderColor(r, g, b)
 			if E.PixelMode then
 				r, g, b = 0.3, 0.3, 0.3
 			end
 			
 			if isGameTooltip then
-				GameTooltipStatusBar.backdrop:SetBackdropBorderColor(r, g, b)
 				GameTooltipStatusBar:ColorBar(r, g, b)	
 			end
 		end

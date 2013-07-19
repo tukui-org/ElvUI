@@ -16,8 +16,8 @@ P['general'] = {
 	['bottomPanel'] = true,
 	['hideErrorFrame'] = true,
 
-	["fontSize"] = 12,
-	["font"] = "ElvUI Font",
+	["fontSize"] = 10,
+	["font"] = "ElvUI Pixel",
 
 	["bordercolor"] = { r = 0.1,g = 0.1,b = 0.1 },
 	["backdropcolor"] = { r = 0.1,g = 0.1,b = 0.1 },
@@ -175,7 +175,7 @@ P['auras'] = {
 		['sortMethod'] = "TIME",
 		['sortDir'] = '-',
 		['seperateOwn'] = 1,
-		['size'] = 30,
+		['size'] = 32,
 	},
 	['debuffs'] = {
 		['growthDirection'] = 'LEFT_DOWN',
@@ -186,7 +186,7 @@ P['auras'] = {
 		['sortMethod'] = "TIME",
 		['sortDir'] = '-',
 		['seperateOwn'] = 1,
-		['size'] = 30,
+		['size'] = 32,
 	},
 }
 
@@ -217,15 +217,15 @@ P['chat'] = {
 	['panelTabTransparency'] = false,
 	['editBoxPosition'] = 'BELOW_CHAT',
 
-	['tabFont'] = 'ElvUI Font',
-	['tabFontSize'] = 12,
+	['tabFont'] = 'ElvUI Pixel',
+	['tabFontSize'] = 10,
 	['tabFontOutline'] = 'NONE',
 }
 
 --Datatexts
 P['datatexts'] = {
-	['font'] = 'ElvUI Font',
-	['fontSize'] = 12,
+	['font'] = 'ElvUI Pixel',
+	['fontSize'] = 10,
 	['fontOutline'] = 'NONE',
 	
 	['panels'] = {
@@ -255,7 +255,7 @@ P['datatexts'] = {
 P['tooltip'] = {
 	['anchor'] = 'SMART',
 	['health'] = true,
-	['healthHeight'] = 5,
+	['healthHeight'] = 8,
 	['ufhide'] = 'NONE',
 	['whostarget'] = true,
 	['combathide'] = false,
