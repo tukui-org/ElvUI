@@ -746,7 +746,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 	end
 
 	if db.numGroups then
-		if db.enable ~= true then
+		if db.enable ~= true and group ~= 'raidpet' then
 			UnregisterStateDriver(self[group], "visibility")
 			self[group]:Hide()
 			return
@@ -773,6 +773,12 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 		else
 			self[group]:Configure_Groups()
 			self[group]:Update()
+		end
+
+		if db.enable ~= true and group == 'raidpet' then
+			UnregisterStateDriver(self[group], "visibility")
+			self[group]:Hide()
+			return			
 		end
 	else
 		self[group].db = db
