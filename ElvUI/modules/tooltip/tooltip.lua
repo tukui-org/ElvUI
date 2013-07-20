@@ -273,7 +273,7 @@ function TT:Colorize(tt)
 	local connected = unit and UnitIsConnected(unit)
 	local dead = unit and UnitIsDead(unit)
 	local r, g, b;
-	
+
 	tt:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 	if (reaction) and (tapped and not tappedbyme or not connected or dead) then
 		r, g, b = 0.55, 0.57, 0.61
@@ -742,7 +742,7 @@ function TT:Initialize()
 	GameTooltipStatusBar.SetStatusBarColor = E.noop
 	GameTooltipStatusBar.text = GameTooltipStatusBar:CreateFontString(nil, "OVERLAY")
 	GameTooltipStatusBar.text:Point("CENTER", GameTooltipStatusBar, 0, -3)
-	GameTooltipStatusBar.text:FontTemplate(nil, nil, 'OUTLINE')
+	GameTooltipStatusBar.text:FontTemplate('ElvUI Pixel', 10, 'MONOCHROMEOUTLINE')
 	
 	local GameTooltipAnchor = CreateFrame('Frame', 'GameTooltipAnchor', E.UIParent)
 	GameTooltipAnchor:Point('BOTTOMRIGHT', RightChatToggleButton, 'BOTTOMRIGHT')

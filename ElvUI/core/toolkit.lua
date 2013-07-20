@@ -224,6 +224,7 @@ local function FontTemplate(fs, font, fontSize, fontStyle)
 	fs.fontSize = fontSize
 	fs.fontStyle = fontStyle
 	
+	if font == 'ElvUI Pixel' then font = LSM:Fetch("font", 'ElvUI Pixel') end
 	if not font then font = LSM:Fetch("font", E.db['general'].font) end
 	if not fontSize then fontSize = E.db.general.fontSize end
 	if fontStyle == 'OUTLINE' and E.db.general.font:lower():find('pixel') then

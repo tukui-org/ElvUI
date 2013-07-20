@@ -496,7 +496,8 @@ function NP:OnShow()
 	end
 	
 	NP.HealthBar_OnValueChanged(self.healthBar, self.healthBar:GetValue())
-
+	NP.ColorizeAndScale(self)
+	
 	--Check to see if its possible to update auras/comboPoints via raid icon or class color when a plate is shown.
 	if(self.raidIcon:IsShown()) then
 		NP:CheckRaidIcon(self)
