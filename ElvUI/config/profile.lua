@@ -16,8 +16,8 @@ P['general'] = {
 	['bottomPanel'] = true,
 	['hideErrorFrame'] = true,
 
-	["fontSize"] = 10,
-	["font"] = "ElvUI Pixel",
+	["fontSize"] = 12,
+	["font"] = "ElvUI Font",
 
 	["bordercolor"] = { r = 0.1,g = 0.1,b = 0.1 },
 	["backdropcolor"] = { r = 0.1,g = 0.1,b = 0.1 },

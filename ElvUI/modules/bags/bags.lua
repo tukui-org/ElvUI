@@ -334,7 +334,11 @@ function B:Layout(isBank)
 					f.Bags[bagID][slotID]:SetTemplate('Default', true);
 					f.Bags[bagID][slotID]:SetNormalTexture(nil);
 					f.Bags[bagID][slotID]:SetCheckedTexture(nil);
-					
+	
+					if(_G[f.Bags[bagID][slotID]:GetName()..'NewItemTexture']) then
+						_G[f.Bags[bagID][slotID]:GetName()..'NewItemTexture']:Hide()
+					end
+
 					f.Bags[bagID][slotID].count:ClearAllPoints();
 					f.Bags[bagID][slotID].count:Point('BOTTOMRIGHT', 0, 2);
 					

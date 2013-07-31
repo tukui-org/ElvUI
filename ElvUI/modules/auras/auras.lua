@@ -79,6 +79,7 @@ function A:CreateIcon(button)
 	local font = LSM:Fetch("font", self.db.font)
 
 	button:SetTemplate('Default')
+
 	button.texture = button:CreateTexture(nil, "BORDER")
 	button.texture:SetInside()
 	button.texture:SetTexCoord(unpack(E.TexCoords))
