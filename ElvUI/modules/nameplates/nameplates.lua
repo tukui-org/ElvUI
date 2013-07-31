@@ -496,8 +496,7 @@ function NP:OnShow()
 	end
 	
 	NP.HealthBar_OnValueChanged(self.healthBar, self.healthBar:GetValue())
-	NP.ColorizeAndScale(self)
-	
+
 	--Check to see if its possible to update auras/comboPoints via raid icon or class color when a plate is shown.
 	if(self.raidIcon:IsShown()) then
 		NP:CheckRaidIcon(self)
@@ -506,6 +505,8 @@ function NP:OnShow()
 	else
 		self.allowCheck = true
 	end
+
+	NP.ColorizeAndScale(self)
 end
 
 function NP:OnHide()
@@ -535,6 +536,8 @@ function NP:OnHide()
 	for i=1, MAX_COMBO_POINTS do
 		myPlate.cPoints[i]:Hide()
 	end	
+
+	myPlate:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT")
 end
 
 function NP:HealthBar_OnSizeChanged(width, height)
@@ -987,8 +990,7 @@ end
 
 function NP:UpdateComboPointsByUnitID(unitID)
 	local guid = UnitGUID(unitID)
-	if(not guid) then return end
-	
+	if (not guid) then return end
 	NP.ComboPoints[guid] = GetComboPoints(UnitHasVehicleUI('player') and 'vehicle' or 'player', unitID)
 
 	local frame = NP:SearchForFrame(guid)
