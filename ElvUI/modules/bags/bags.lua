@@ -168,6 +168,12 @@ function B:UpdateSlot(bagID, slotID)
 	else
 		slot:SetBackdropBorderColor(unpack(E.media.bordercolor));
 	end
+
+	if(C_NewItems.IsNewItem(bagID, slotID)) then
+		ActionButton_ShowOverlayGlow(slot)
+	else
+		ActionButton_HideOverlayGlow(slot)
+	end
 	
 	SetItemButtonTexture(slot, texture);
 	SetItemButtonCount(slot, count);
@@ -334,7 +340,7 @@ function B:Layout(isBank)
 					f.Bags[bagID][slotID]:SetTemplate('Default', true);
 					f.Bags[bagID][slotID]:SetNormalTexture(nil);
 					f.Bags[bagID][slotID]:SetCheckedTexture(nil);
-	
+
 					if(_G[f.Bags[bagID][slotID]:GetName()..'NewItemTexture']) then
 						_G[f.Bags[bagID][slotID]:GetName()..'NewItemTexture']:Hide()
 					end
@@ -946,6 +952,7 @@ function B:Initialize()
 	self.BagFrame = self:ContructContainerFrame('ElvUI_ContainerFrame');
 	
 	--Hook onto Blizzard Functions
+	--self:SecureHook('UpdateNewItemList', 'ClearNewItems')
 	self:SecureHook('OpenAllBags', 'OpenBags');
 	self:SecureHook('CloseAllBags', 'CloseBags');
 	self:SecureHook('ToggleBag', 'ToggleBags')
