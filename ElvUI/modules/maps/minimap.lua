@@ -68,8 +68,10 @@ local menuList = {
 	func = function() PVEFrame_ToggleFrame(); end},
 	{text = ENCOUNTER_JOURNAL, 
 	func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then EncounterJournal_LoadUI(); end ToggleFrame(EncounterJournal) end},		
+	{text = BLIZZARD_STORE,
+	func = function() StoreMicroButton:Click() end},	
 	{text = HELP_BUTTON,
-	func = function() ToggleHelpFrame() end},
+	func = function() ToggleHelpFrame() end}
 }
 
 --Support for other mods
