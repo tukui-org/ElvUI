@@ -15,7 +15,6 @@ local GetTime = GetTime
 local cooldown = getmetatable(ActionButton1Cooldown).__index
 local hooked, active = {}, {};
 local threshold
-local mmSSthreshold
 
 local TimeColors = {
 	[0] = '|cffeeeeee',
@@ -23,7 +22,6 @@ local TimeColors = {
 	[2] = '|cffeeeeee',
 	[3] = '|cffeeeeee',
 	[4] = '|cfffe0000',
-	[5] = '|cffeeeeee',
 }
 
 local function Cooldown_OnUpdate(cd, elapsed)
@@ -38,10 +36,9 @@ local function Cooldown_OnUpdate(cd, elapsed)
 			cd.text:SetText('')
 			cd.nextUpdate = 500
 		else
-			local timervalue, timervalue2, formatid
-			timervalue, formatid, cd.nextUpdate, timervalue2 = E:GetTimeInfo(remain, threshold, mmSSthreshold)		
-			cd.text:SetFormattedText(("%s%s|r"):format(TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue, timervalue2)
-			if (remain - cd.nextUpdate) < mmSSthreshold then cd.nextUpdate = remain - mmSSthreshold end
+			local timervalue, formatid
+			timervalue, formatid, cd.nextUpdate = E:GetTimeInfo(remain, threshold)
+			cd.text:SetFormattedText(("%s%s|r"):format(TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
 		end
 	else
 		AB:Cooldown_StopTimer(cd)
@@ -185,7 +182,6 @@ function AB:DisableCooldown()
 end
 
 function AB:UpdateCooldownSettings()
-	threshold = self.db.treshold
 	mmSSthreshold = self.db.mmSSthreshold
 	
 	local color = E.db.actionbar.expiringcolor

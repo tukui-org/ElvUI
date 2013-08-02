@@ -811,7 +811,3 @@ L['Indicator (s, m, h, d)'] = 'Indicator (s, m, h, d)'
 L['Numbers'] = 'Numbers'
 L['Threshold before text changes red, goes into decimal form, and the icon will fade. Set to -1 to disable.'] = 'Threshold before the icon will fade. Set to -1 to disable.'
 L['Threshold before the timer changes color and goes into decimal form. Set to -1 to disable.'] = 'Threshold before the timer changes color and goes into decimal form. Set to -1 to disable.'
-
---Add actionbar MM:SS format option
-L['MM:SS Threshold'] = 'MM:SS Threshold'
-L['Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to never change to this format.'] = 'Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to never change to this format.'

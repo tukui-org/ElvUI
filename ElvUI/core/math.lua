@@ -247,7 +247,6 @@ E.TimeFormats = {
 	[2] = { '%dm', '%dm', '%d', 'm' },
 	[3] = { '%ds', '%d', '%d', 's' },
 	[4] = { '%.1fs', '%.1f', '%.1f', 's' },
-	[5] = { '%d:%02d', '%d:%02d', '%d:%02d', '' },
 }
 
 -- Colors for time indicators: d (days), h (hours), m (minutes), s (seconds), s (seconds, below fade/decimal threshold)
@@ -264,7 +263,7 @@ local DAYISH, HOURISH, MINUTEISH = 3600 * 23.5, 60 * 59.5, 59.5 --used for caclc
 local HALFDAYISH, HALFHOURISH, HALFMINUTEISH = DAY/2 + 0.5, HOUR/2 + 0.5, MINUTE/2 + 0.5 --used for calculating next update times
 
 -- will return the the value to display, the formatter id to use and calculates the next update for the Aura
-function E:GetTimeInfo(s, threshhold, mmSSthreshold)
+function E:GetTimeInfo(s, threshhold)
 	if s < MINUTE then
 		if s >= threshhold then
 			return floor(s), 3, 0.51
@@ -272,12 +271,8 @@ function E:GetTimeInfo(s, threshhold, mmSSthreshold)
 			return s, 4, 0.051
 		end
 	elseif s < HOUR then
-		if mmSSthreshold and s < mmSSthreshold then
-			return s/MINUTE, 5, 0.51, s%MINUTE
-		else
-			local minutes = tonumber(E:Round(s/MINUTE))
-			return ceil(s / MINUTE), 2, minutes > 1 and (s - (minutes*MINUTE - HALFMINUTEISH)) or (s - MINUTEISH)
-		end
+		local minutes = tonumber(E:Round(s/MINUTE))
+		return ceil(s / MINUTE), 2, minutes > 1 and (s - (minutes*MINUTE - HALFMINUTEISH)) or (s - MINUTEISH)
 	elseif s < DAY then
 		local hours = tonumber(E:Round(s/HOUR))
 		return ceil(s / HOUR), 1, hours > 1 and (s - (hours*HOUR - HALFHOURISH)) or (s - HOURISH)
