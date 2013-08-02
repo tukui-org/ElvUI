@@ -41,6 +41,7 @@ local function Cooldown_OnUpdate(cd, elapsed)
 			local timervalue, timervalue2, formatid
 			timervalue, formatid, cd.nextUpdate, timervalue2 = E:GetTimeInfo(remain, threshold, mmSSthreshold)		
 			cd.text:SetFormattedText(("%s%s|r"):format(TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue, timervalue2)
+			if (remain - cd.nextUpdate) < mmSSthreshold then cd.nextUpdate = remain - mmSSthreshold end
 		end
 	else
 		AB:Cooldown_StopTimer(cd)
