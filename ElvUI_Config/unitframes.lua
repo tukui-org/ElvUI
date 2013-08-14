@@ -388,7 +388,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 				order = 3,
 				name = L['Num Rows'],
 				min = 1, max = 4, step = 1,					
-			},
+			},	
 			sizeOverride = {
 				type = 'range',
 				order = 3,
