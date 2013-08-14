@@ -748,14 +748,14 @@ function NP:CreatePlate(frame)
 
 	--Level
 	myPlate.level = myPlate:CreateFontString(nil, 'OVERLAY')
-	myPlate.level:SetPoint("BOTTOMRIGHT", myPlate.healthBar, "TOPRIGHT", 3, 3)
+	myPlate.level:SetPoint("BOTTOMLEFT", myPlate.healthBar, "TOPLEFT", 0, 3)
 	myPlate.level:SetJustifyH("RIGHT")
 
 	--Name
 	frame.name:SetParent(myPlate)
 	frame.name:ClearAllPoints()
-	frame.name:SetPoint("BOTTOMLEFT", myPlate.healthBar, "TOPLEFT", 0, 3)
-	frame.name:SetPoint("BOTTOMRIGHT", myPlate.level, "BOTTOMLEFT", -2, 0)
+	frame.name:SetPoint("BOTTOMLEFT", myPlate.level, "BOTTOMRIGHT", -1, 0)
+	frame.name:SetPoint("BOTTOMRIGHT", myPlate.healthBar, "TOPRIGHT", 2, 0)
 	frame.name:SetJustifyH("LEFT")
 
 	--Raid Icon
