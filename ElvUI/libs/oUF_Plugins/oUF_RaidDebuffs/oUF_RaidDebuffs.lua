@@ -118,9 +118,9 @@ local function CheckSpec(self, event, levels)
 	--Check for certain talents to see if we can dispel magic or not
 	if playerClass == "PRIEST" then
 		if CheckTalentTree(3) then
-			dispellist.Disease = false
+			DispellFilter.Disease = false
 		else
-			dispellist.Disease = true	
+			DispellFilter.Disease = true	
 		end		
 	elseif playerClass == "PALADIN" then
 		if CheckTalentTree(1) then
