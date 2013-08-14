@@ -778,6 +778,8 @@ function NP:CreatePlate(frame)
 	auraHeader:SetHeight(32); auraHeader:Show()
 	auraHeader:SetPoint('BOTTOMRIGHT', myPlate.healthBar, 'TOPRIGHT', 0, 10)
 	auraHeader:SetPoint('BOTTOMLEFT', myPlate.healthBar, 'TOPLEFT', 0, 10)
+	auraHeader:SetFrameStrata("BACKGROUND")
+	auraHeader:SetFrameLevel(0)	
 	
 	auraHeader.PollFunction = NP.UpdateAuraTime
 	auraHeader.AuraIconFrames = {}
