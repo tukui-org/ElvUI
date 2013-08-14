@@ -19,6 +19,7 @@ local function LoadSkin()
 	S:HandleButton(LFDQueueFramePartyBackfillNoBackfillButton)
 	S:HandleButton(LFDQueueFrameRandomScrollFrameChildFrameBonusRepFrame.ChooseButton)
 	S:HandleButton(ScenarioQueueFrameRandomScrollFrameChildFrameBonusRepFrame.ChooseButton)
+	S:HandleScrollBar(ScenarioQueueFrameRandomScrollFrameScrollBar);
 	
 	GroupFinderFrameGroupButton1.icon:SetTexture("Interface\\Icons\\INV_Helmet_08")
 	GroupFinderFrameGroupButton2.icon:SetTexture("Interface\\Icons\\inv_helmet_06")
