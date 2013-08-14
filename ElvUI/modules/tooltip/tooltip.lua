@@ -467,6 +467,8 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	local iLevel, talentSpec, lastUpdate = 0, "", 30
 	local r, g, b = GetQuestDifficultyColor(level).r, GetQuestDifficultyColor(level).g, GetQuestDifficultyColor(level).b
 
+	if(not name) then return end
+
 	local color = TT:GetColor(unit)	
 	if not color then color = "|CFFFFFFFF" end
 	if E.db.tooltip.titles then
