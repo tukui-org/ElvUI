@@ -391,7 +391,6 @@ G.unitframe.aurafilters['Blacklist'] = {
 	['type'] = 'Blacklist',
 	['spells'] = {
 		[SpellName(36032)] = Defaults(), -- Arcane Charge
-		[SpellName(76691)] = Defaults(), -- Vengeance
 		[SpellName(8733)] = Defaults(), --Blessing of Blackfathom
 		[SpellName(57724)] = Defaults(), --Sated
 		[SpellName(25771)] = Defaults(), --forbearance
