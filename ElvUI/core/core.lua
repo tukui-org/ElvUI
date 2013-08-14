@@ -380,6 +380,12 @@ function E:CheckRole()
 		else
 			self.DispelClasses[self.myclass].Magic = false;
 		end
+	elseif self.myclass == "PRIEST" then
+		if self:CheckTalentTree(3) then
+			self.DispelClasses[self.myclass].Disease = false;
+		else
+			self.DispelClasses[self.myclass].Disease = true;
+		end
 	end
 end
 
