@@ -345,7 +345,7 @@ function NP:ColorizeAndScale(myPlate)
 	
 	if(not self.customScale and not self.isSmall and myPlate.healthBar:GetWidth() ~= (NP.db.healthBar.width * scale)) then
 		myPlate.healthBar:SetSize(NP.db.healthBar.width * scale, NP.db.healthBar.height * scale)
-		self.castBar.icon:Size(NP.db.castBar.height + (NP.db.healthBar.height * scale) + 5)
+		self.castBar.icon:SetSize(NP.db.castBar.height + (NP.db.healthBar.height * scale) + 5, NP.db.castBar.height + (NP.db.healthBar.height * scale) + 5)
 	end
 end
 

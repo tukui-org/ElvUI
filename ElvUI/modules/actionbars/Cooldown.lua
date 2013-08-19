@@ -46,7 +46,7 @@ local function Cooldown_OnUpdate(cd, elapsed)
 end
 
 function AB:Cooldown_OnSizeChanged(cd, width, height)
-	local fontScale = E:Round(width) / ICON_SIZE
+	local fontScale = floor(width +.5) / ICON_SIZE
 	local override = cd:GetParent():GetParent().SizeOverride
 	if override then 
 		fontScale = override / FONT_SIZE  

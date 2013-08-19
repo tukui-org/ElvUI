@@ -110,6 +110,5 @@ end
 
 -- pixel perfect script of custom ui scale.
 function E:Scale(x)
-	if not self.mult then self:UIScale() end
     return self.mult*floor(x/self.mult+.5);
 end

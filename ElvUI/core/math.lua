@@ -48,14 +48,17 @@ function E:ColorGradient(perc, ...)
 end
 
 --Return rounded number
-function E:Round(v, decimals)
-    return (("%%.%df"):format(decimals or 0)):format(v)
+function E:Round(num, idp)
+	if(idp and idp > 0) then
+		local mult = 10 ^ idp
+		return floor(num * mult + 0.5) / mult
+	end
+	return floor(num + 0.5)
 end
 
 --Truncate a number off to n places
 function E:Truncate(v, decimals)
-	if not decimals then decimals = 0 end
-    return v - (v % (0.1 ^ decimals))
+    return v - (v % (0.1 ^ (decimals or 0)))
 end
 
 --RGB to Hex
@@ -263,13 +266,13 @@ function E:GetTimeInfo(s, threshhold)
 			return s, 4, 0.051
 		end
 	elseif s < HOUR then
-		local minutes = floor((s/MINUTE)*100+.5) / 100
+		local minutes = floor((s/MINUTE)+.5)
 		return ceil(s / MINUTE), 2, minutes > 1 and (s - (minutes*MINUTE - HALFMINUTEISH)) or (s - MINUTEISH)
 	elseif s < DAY then
-		local hours = floor((s/HOUR)*100+.5) / 100
+		local hours = floor((s/HOUR)+.5)
 		return ceil(s / HOUR), 1, hours > 1 and (s - (hours*HOUR - HALFHOURISH)) or (s - HOURISH)
 	else
-		local days = floor((s/DAY)*100+.5) / 100
+		local days = floor((s/DAY)+.5)
 		return ceil(s / DAY), 0,  days > 1 and (s - (days*DAY - HALFDAYISH)) or (s - DAYISH)
 	end
 end

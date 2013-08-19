@@ -764,6 +764,42 @@ function E:BeginFoolsDayEvent()
 	end
 end
 
+local CPU_USAGE = {}
+local function CompareCPUDiff(module, minCalls)
+	local greatestUsage, greatestCalls, greatestName
+	local greatestDiff = 0;
+	local mod = E:GetModule(module, true) or E
+
+	for name, oldUsage in pairs(CPU_USAGE) do
+		local newUsage, calls = GetFunctionCPUUsage(mod[name], true)
+		local differance = newUsage - oldUsage
+		
+		if differance > greatestDiff and calls > (minCalls or 15) then
+			greatestName = name
+			greatestUsage = newUsage
+			greatestCalls = calls
+			greatestDiff = differance
+		end
+	end
+
+	if(greatestName) then
+		E:Print(greatestName.. " had the CPU usage of: "..greatestUsage.."ms. And has been called ".. greatestCalls.." times.")
+	end
+end
+
+function E:GetTopCPUFunc(module, delay, minCalls)
+	twipe(CPU_USAGE)
+	local mod = self:GetModule(module, true) or self
+	for name, func in pairs(mod) do
+		if type(mod[name]) == "function" then
+			CPU_USAGE[name] = GetFunctionCPUUsage(mod[name], true)
+		end
+	end
+
+	self:Delay(delay or 5, CompareCPUDiff, module, minCalls)
+	self:Print("Calculating CPU Usage..")
+end
+
 function E:Initialize()
 	twipe(self.db)
 	twipe(self.global)
