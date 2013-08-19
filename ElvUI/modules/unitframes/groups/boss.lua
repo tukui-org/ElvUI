@@ -19,6 +19,7 @@ function UF:Construct_BossFrames(frame)
 	frame.Buffs = self:Construct_Buffs(frame)
 	
 	frame.Debuffs = self:Construct_Debuffs(frame)
+	frame.DebuffHighlight = self:Construct_DebuffHighlight(frame)
 	
 	frame.Castbar = self:Construct_Castbar(frame, 'RIGHT')
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)
@@ -415,6 +416,20 @@ function UF:Update_BossFrames(frame, db)
 			altpower:Hide()
 		end
 	end
+
+	--Debuff Highlight
+	do
+		local dbh = frame.DebuffHighlight
+		if E.db.unitframe.debuffHighlighting then
+			if not frame:IsElementEnabled('DebuffHighlight') then
+				frame:EnableElement('DebuffHighlight')
+			end
+		else
+			if frame:IsElementEnabled('DebuffHighlight') then
+				frame:DisableElement('DebuffHighlight')
+			end		
+		end
+	end	
 	
 	if db.customTexts then
 		local customFont = UF.LSM:Fetch("font", UF.db.font)
