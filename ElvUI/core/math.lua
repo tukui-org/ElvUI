@@ -263,13 +263,13 @@ function E:GetTimeInfo(s, threshhold)
 			return s, 4, 0.051
 		end
 	elseif s < HOUR then
-		local minutes = tonumber(E:Round(s/MINUTE))
+		local minutes = floor((s/MINUTE)*100+.5) / 100
 		return ceil(s / MINUTE), 2, minutes > 1 and (s - (minutes*MINUTE - HALFMINUTEISH)) or (s - MINUTEISH)
 	elseif s < DAY then
-		local hours = tonumber(E:Round(s/HOUR))
+		local hours = floor((s/HOUR)*100+.5) / 100
 		return ceil(s / HOUR), 1, hours > 1 and (s - (hours*HOUR - HALFHOURISH)) or (s - HOURISH)
 	else
-		local days = tonumber(E:Round(s/DAY))
+		local days = floor((s/DAY)*100+.5) / 100
 		return ceil(s / DAY), 0,  days > 1 and (s - (days*DAY - HALFDAYISH)) or (s - DAYISH)
 	end
 end
