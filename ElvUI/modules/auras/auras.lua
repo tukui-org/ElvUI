@@ -153,8 +153,10 @@ function A:UpdateTempEnchant(button, index)
 		offset = 5
 	end
 	
-	button:SetBackdropBorderColor(GetItemQualityColor(quality))
-
+	if(quality) then
+		button:SetBackdropBorderColor(GetItemQualityColor(quality))
+	end
+	
 	local expirationTime = select(offset, GetWeaponEnchantInfo())
 	if(expirationTime) then
 		button.offset = offset
@@ -264,7 +266,8 @@ end
 
 function A:Initialize()
 	if self.db then return; end --IDK WHY BUT THIS IS GETTING CALLED TWICE FROM SOMEWHERE...
-	
+	if(not E.private.auras.enable) then return end
+
 	self.db = E.db.auras
 	
 	BuffFrame:Kill()
