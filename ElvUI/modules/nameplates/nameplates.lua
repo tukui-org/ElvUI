@@ -111,15 +111,6 @@ function NP:OnUpdate(elapsed)
 		NP:ScanFrames(WorldFrame:GetChildren())
 	end
 
-	--[[for blizzPlate, plate in pairs(NP.CreatedPlates) do
-		if blizzPlate:IsShown() then
-			local x, y = select(2, blizzPlate.healthBar:GetPoint()):GetCenter()
-			plate:SetPoint("CENTER", WorldFrame, "BOTTOMLEFT", x - 20, y)
-		else
-			plate:Hide()
-		end
-	end]]
-
 	if(self.elapsed and self.elapsed > 0.2) then
 		NP.NumNonTransparentPlates = 0
 		for blizzPlate, plate in pairs(NP.CreatedPlates) do
