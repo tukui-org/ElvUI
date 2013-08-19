@@ -251,7 +251,7 @@ E.TimeFormats = {
 
 
 local DAY, HOUR, MINUTE = 86400, 3600, 60 --used for calculating aura time text
-local DAYISH, HOURISH, MINUTEISH = 3600 * 23.5, 60 * 59.5, 59.5 --used for caclculating aura time at transition points
+local DAYISH, HOURISH, MINUTEISH = HOUR * 23.5, MINUTE * 59.5, 59.5 --used for caclculating aura time at transition points
 local HALFDAYISH, HALFHOURISH, HALFMINUTEISH = DAY/2 + 0.5, HOUR/2 + 0.5, MINUTE/2 + 0.5 --used for calculating next update times
 
 -- will return the the value to display, the formatter id to use and calculates the next update for the Aura
