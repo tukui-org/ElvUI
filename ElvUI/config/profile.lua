@@ -120,8 +120,8 @@ P["nameplate"] = {
 		['attachTo'] = 'LEFT',
 	},
 	['threat'] = {
-		['goodScale'] = 0.85,
-		['badScale'] = 1.15,
+		['goodScale'] = 1,
+		['badScale'] = 1,
 		["goodColor"] = {r = 75/255,  g = 175/255, b = 76/255},
 		["badColor"] = {r = 0.78, g = 0.25, b = 0.25},
 		["goodTransitionColor"] = {r = 218/255, g = 197/255, b = 92/255},
@@ -269,7 +269,7 @@ P['tooltip'] = {
 
 --UnitFrame
 P['unitframe'] = {
-	['smoothbars'] = true,
+	['smoothbars'] = false,
 	['statusbar'] = "ElvUI Norm",
 	['font'] = 'ElvUI Pixel',
 	['fontSize'] = 10,
@@ -1754,7 +1754,6 @@ P["actionbar"] = {
 	
 	["macrotext"] = false,
 	["hotkeytext"] = true,
-	["enablecd"] = true,
 	['showGrid'] = true,
 	["treshold"] = 3,
 	["expiringcolor"] = { r = 1, g = 0, b = 0 },

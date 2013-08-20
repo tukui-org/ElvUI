@@ -6,7 +6,7 @@ V['general'] = {
 	['loot'] = true,
 	['lootRoll'] = true,
 	["normTex"] = "ElvUI Norm",
-	["glossTex"] = "ElvUI Gloss",	
+	["glossTex"] = "ElvUI Norm",	
 	["dmgfont"] = "ElvUI Combat",
 	["namefont"] = "ElvUI Font",
 	['chatBubbles'] = 'backdrop',
@@ -108,4 +108,5 @@ V['unitframe'] = {
 
 V["actionbar"] = {
 	["enable"] = true,
+	["enablecd"] = true,
 }

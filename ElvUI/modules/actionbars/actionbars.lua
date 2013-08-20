@@ -412,7 +412,7 @@ function AB:GetPage(bar, defaultPage, condition)
 	return condition
 end
 
-function AB:StyleButton(button, noBackdrop, adjustChecked)	
+function AB:StyleButton(button, noBackdrop, adjustChecked)
 	local name = button:GetName();
 	local icon = _G[name.."Icon"];
 	local count = _G[name.."Count"];
@@ -468,7 +468,13 @@ function AB:StyleButton(button, noBackdrop, adjustChecked)
 	self:FixKeybindText(button);
 	button:StyleButton();
 
-	self["handledbuttons"][button] = true;
+	if(not self.handledbuttons[button]) then
+		if(E.private.actionbar.enablecd) then
+			self:RegisterCooldown(button.cooldown)
+		end
+		
+		self.handledbuttons[button] = true;
+	end
 end
 
 function AB:Bar_OnEnter(bar)

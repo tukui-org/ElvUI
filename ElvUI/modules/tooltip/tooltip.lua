@@ -71,20 +71,20 @@ function TT:SetStatusBarAnchor(pos)
 	GameTooltipStatusBar:ClearAllPoints()
 
 	if pos == 'BOTTOM' then
-		GameTooltipStatusBar:Point("TOPLEFT", GameTooltipStatusBar:GetParent(), "BOTTOMLEFT", E.Border, -(E.Spacing * 3))
-		GameTooltipStatusBar:Point("TOPRIGHT", GameTooltipStatusBar:GetParent(), "BOTTOMRIGHT", -E.Border, -(E.Spacing * 3))			
+		GameTooltipStatusBar:SetPoint("TOPLEFT", GameTooltipStatusBar:GetParent(), "BOTTOMLEFT", E.Border, -(E.Spacing * 3))
+		GameTooltipStatusBar:SetPoint("TOPRIGHT", GameTooltipStatusBar:GetParent(), "BOTTOMRIGHT", -E.Border, -(E.Spacing * 3))			
 	else	
-		GameTooltipStatusBar:Point("BOTTOMLEFT", GameTooltipStatusBar:GetParent(), "TOPLEFT", E.Border, (E.Spacing * 3))
-		GameTooltipStatusBar:Point("BOTTOMRIGHT", GameTooltipStatusBar:GetParent(), "TOPRIGHT", -E.Border, (E.Spacing * 3))			
+		GameTooltipStatusBar:SetPoint("BOTTOMLEFT", GameTooltipStatusBar:GetParent(), "TOPLEFT", E.Border, (E.Spacing * 3))
+		GameTooltipStatusBar:SetPoint("BOTTOMRIGHT", GameTooltipStatusBar:GetParent(), "TOPRIGHT", -E.Border, (E.Spacing * 3))			
 	end	
 	
 	if GameTooltipStatusBar.text then
 		GameTooltipStatusBar.text:ClearAllPoints()
 		
 		if pos == 'BOTTOM' then
-			GameTooltipStatusBar.text:Point("CENTER", GameTooltipStatusBar, 0, -3)
+			GameTooltipStatusBar.text:SetPoint("CENTER", GameTooltipStatusBar, 0, -3)
 		else
-			GameTooltipStatusBar.text:Point("CENTER", GameTooltipStatusBar, 0, 3)	
+			GameTooltipStatusBar.text:SetPoint("CENTER", GameTooltipStatusBar, 0, 3)	
 		end
 	end
 end
@@ -112,11 +112,11 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 			tt:ClearAllPoints()
 			
 			if ElvUI_ContainerFrame and ElvUI_ContainerFrame:IsShown() then
-				tt:Point('BOTTOMRIGHT', ElvUI_ContainerFrame, 'TOPRIGHT', 0, 18)	
+				tt:SetPoint('BOTTOMRIGHT', ElvUI_ContainerFrame, 'TOPRIGHT', 0, 18)	
 			elseif RightChatPanel:GetAlpha() == 1 and RightChatPanel:IsShown() then
-				tt:Point('BOTTOMRIGHT', RightChatPanel, 'TOPRIGHT', 0, 18)		
+				tt:SetPoint('BOTTOMRIGHT', RightChatPanel, 'TOPRIGHT', 0, 18)		
 			else
-				tt:Point('BOTTOMRIGHT', RightChatPanel, 'BOTTOMRIGHT', 0, 18)
+				tt:SetPoint('BOTTOMRIGHT', RightChatPanel, 'BOTTOMRIGHT', 0, 18)
 			end
 			
 			TT:SetStatusBarAnchor('BOTTOM')
@@ -133,13 +133,13 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 			
 			local point = E:GetScreenQuadrant(TooltipMover)
 			if point == "TOPLEFT" then
-				tt:Point("TOPLEFT", TooltipMover, "BOTTOMLEFT", 1, -4)
+				tt:SetPoint("TOPLEFT", TooltipMover, "BOTTOMLEFT", 1, -4)
 			elseif point == "TOPRIGHT" then
-				tt:Point("TOPRIGHT", TooltipMover, "BOTTOMRIGHT", -1, -4)
+				tt:SetPoint("TOPRIGHT", TooltipMover, "BOTTOMRIGHT", -1, -4)
 			elseif point == "BOTTOMLEFT" or point == "LEFT" then
-				tt:Point("BOTTOMLEFT", TooltipMover, "TOPLEFT", 1, 18)
+				tt:SetPoint("BOTTOMLEFT", TooltipMover, "TOPLEFT", 1, 18)
 			else
-				tt:Point("BOTTOMRIGHT", TooltipMover, "TOPRIGHT", -1, 18)
+				tt:SetPoint("BOTTOMRIGHT", TooltipMover, "TOPRIGHT", -1, 18)
 			end			
 			
 			TT:SetStatusBarAnchor('BOTTOM')

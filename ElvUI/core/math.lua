@@ -12,6 +12,7 @@ local ceil = math.ceil
 local floor = math.floor
 
 --Return short value of a number
+
 function E:ShortValue(v)
 	if v >= 1e9 then
 		return ("%.1fb"):format(v / 1e9):gsub("%.?0+([kmb])$", "%1")
@@ -168,9 +169,6 @@ function E:GetFormattedText(style, min, max)
 end
 
 function E:ShortenString(string, numChars, dots)
-	assert(string, 'You need to provide a string to shorten. Usage: E:ShortenString(string, numChars, includeDots)')
-	assert(numChars, 'You need to provide a length to shorten the string to. Usage: E:ShortenString(string, numChars, includeDots)')
-	
 	local bytes = string:len()
 	if (bytes <= numChars) then
 		return string

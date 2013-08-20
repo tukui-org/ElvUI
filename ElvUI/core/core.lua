@@ -787,11 +787,17 @@ local function CompareCPUDiff(module, minCalls)
 	end
 end
 
-function E:GetTopCPUFunc(module, delay, minCalls)
+function E:GetTopCPUFunc(msg)
+	local module, delay, minCalls = msg:match("^([^%s]+)%s+(.*)$")
+
+	module = module == "nil" and nil or module
+	delay = delay == "nil" and nil or tonumber(delay)
+	minCalls = minCalls == "nil" and nil or tonumber(minCalls)
+
 	twipe(CPU_USAGE)
 	local mod = self:GetModule(module, true) or self
 	for name, func in pairs(mod) do
-		if type(mod[name]) == "function" then
+		if type(mod[name]) == "function" and name ~= "GetModule" then
 			CPU_USAGE[name] = GetFunctionCPUUsage(mod[name], true)
 		end
 	end

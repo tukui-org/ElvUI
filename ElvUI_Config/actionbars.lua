@@ -369,6 +369,8 @@ local function BuildABConfig()
 				name = L['Enable'],
 				desc = L['Display cooldown text on anything with the cooldown spiril.'],
 				disabled = function() return not E.private.actionbar.enable end,
+				get = function(info) return E.private.actionbar[ info[#info] ] end,
+				set = function(info, value) E.private.actionbar[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end				
 			},			
 			treshold = {
 				type = 'range',

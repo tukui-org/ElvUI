@@ -172,6 +172,7 @@ function E:LoadCommands()
 	self:RegisterChatCommand("ec", "ToggleConfig")
 	self:RegisterChatCommand("elvui", "ToggleConfig")
 	
+	self:RegisterChatCommand('cpuusage', 'GetTopCPUFunc')
 	self:RegisterChatCommand('bgstats', 'BGStats')
 	self:RegisterChatCommand('aprilfools', 'DisableAprilFools')
 	self:RegisterChatCommand('luaerror', 'LuaError')
