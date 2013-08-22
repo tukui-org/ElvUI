@@ -481,25 +481,28 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		self.currentGUID = GUID
 		self.currentName = name
 		self.currentUnit = unit
-		if (UnitIsUnit(unit,"player")) then
-			iLevel = TT:GetItemLvL('player') or 0
-			talentSpec = TT:GetTalentSpec() or ''
-		else
-			for index, _ in pairs(self.InspectCache) do
-				local inspectCache = self.InspectCache[index]
-				if inspectCache.GUID == GUID then
-					iLevel = inspectCache.ItemLevel or 0
-					talentSpec = inspectCache.TalentSpec or ""
-					lastUpdate = inspectCache.LastUpdate and abs(inspectCache.LastUpdate - floor(GetTime())) or 30
-				end
-			end	
-			
-			-- Queue an inspect request
-			if unit and (CanInspect(unit)) and (not self:IsInspectFrameOpen()) then
-				local lastInspectTime = (GetTime() - self.lastInspectRequest);
-				self.UpdateInspect.nextUpdate = (lastInspectTime > INSPECT_FREQ) and INSPECT_DELAY or (INSPECT_FREQ - lastInspectTime + INSPECT_DELAY);
-				self.UpdateInspect:Show();
-			end			
+
+		if IsShiftKeyDown() then
+			if (UnitIsUnit(unit,"player")) then
+				iLevel = TT:GetItemLvL('player') or 0
+				talentSpec = TT:GetTalentSpec() or ''
+			else
+				for index, _ in pairs(self.InspectCache) do
+					local inspectCache = self.InspectCache[index]
+					if inspectCache.GUID == GUID then
+						iLevel = inspectCache.ItemLevel or 0
+						talentSpec = inspectCache.TalentSpec or ""
+						lastUpdate = inspectCache.LastUpdate and abs(inspectCache.LastUpdate - floor(GetTime())) or 30
+					end
+				end	
+				
+				-- Queue an inspect request
+				if unit and (CanInspect(unit)) and (not self:IsInspectFrameOpen()) then
+					local lastInspectTime = (GetTime() - self.lastInspectRequest);
+					self.UpdateInspect.nextUpdate = (lastInspectTime > INSPECT_FREQ) and INSPECT_DELAY or (INSPECT_FREQ - lastInspectTime + INSPECT_DELAY);
+					self.UpdateInspect:Show();
+				end			
+			end
 		end
 		
 		if UnitIsAFK(unit) then
@@ -578,6 +581,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	end
 	
 	if E.db.tooltip.whostarget then token = unit TT:AddTargetedBy() end
+
 
 	GameTooltip:Show()
 	GameTooltip.forceRefresh = true

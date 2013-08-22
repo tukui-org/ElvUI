@@ -2,18 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local NP = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
 local LSM = LibStub("LibSharedMedia-3.0")
 
-
---TODO:
---[[
-	- Performance Tweaks
-	- Cleanup Auras Code
-	- Raid Icon aura check appears faulty
-	- Assure all variables are voided out on nameplate hide
-	- Rewrite configuration GUI
-	- Add health text
-	- Add health threshold coloring via glow texture.
-]]
-
 local numChildren = -1
 local twipe = table.wipe
 local band = bit.band
@@ -111,13 +99,25 @@ function NP:OnUpdate(elapsed)
 		NP:ScanFrames(WorldFrame:GetChildren())
 	end
 
+	NP.PlateParent:Hide()
+	NP.NumNonTransparentPlates = 0
+	for blizzPlate, plate in pairs(NP.CreatedPlates) do
+		plate:Hide()
+		if(blizzPlate:IsShown()) then
+          plate:SetPoint("CENTER", WorldFrame, "BOTTOMLEFT", blizzPlate:GetCenter())
+          NP.SetAlpha(blizzPlate, plate)
+          plate:Show()
+		end
+	end
+	NP.PlateParent:Show()
+
 	if(self.elapsed and self.elapsed > 0.2) then
-		NP.NumNonTransparentPlates = 0
 		for blizzPlate, plate in pairs(NP.CreatedPlates) do
-			NP.SetAlpha(blizzPlate, plate)
-			NP.SetUnitInfo(blizzPlate, plate)
-			NP.ColorizeAndScale(blizzPlate, plate)
-			NP.SetLevel(blizzPlate, plate)
+			if(blizzPlate:IsShown()) then
+				NP.SetUnitInfo(blizzPlate, plate)
+				NP.ColorizeAndScale(blizzPlate, plate)
+				NP.SetLevel(blizzPlate, plate)
+			end
 		end
 
 		self.elapsed = 0
@@ -135,7 +135,9 @@ function NP:CheckFilterAndHealers(frame)
 		if db.hide then
 			myPlate:Hide()
 		else
-			myPlate:Show()
+			if(not myPlate:IsShown()) then
+				myPlate:Show()
+			end
 			
 			if db.customColor then
 				frame.customColor = true
@@ -152,7 +154,7 @@ function NP:CheckFilterAndHealers(frame)
 				frame.customScale = nil
 			end
 		end
-	else
+	elseif(not myPlate:IsShown()) then
 		myPlate:Show()
 	end
 
@@ -412,13 +414,13 @@ end
 
 
 function NP:PLAYER_TARGET_CHANGED()
-	if UnitExists('target') then
+	if(UnitExists("target")) then
 		NP.NumTargetChecks = 0
 	end
 end
 
 function NP:UPDATE_MOUSEOVER_UNIT()
-	if UnitExists('mouseover') then
+	if(UnitExists("mouseover")) then
 		NP.NumMouseoverChecks = 0
 	end
 end
@@ -446,9 +448,9 @@ function NP:UpdateAllPlates()
 end
 
 function NP:ForEachPlate(functionToRun, ...)
-	for blizzPlate, _ in pairs(self.CreatedPlates) do
+	for blizzPlate, plate in pairs(self.CreatedPlates) do
 		if blizzPlate and blizzPlate:IsShown() then
-			self[functionToRun](blizzPlate, ...)
+			self[functionToRun](blizzPlate, plate, ...)
 		end
 	end
 end
@@ -460,11 +462,15 @@ end
 function NP:OnShow()
 	local myPlate = NP.CreatedPlates[self]
 	self.isSmall = (self.healthBar:GetEffectiveScale() < 1 and NP.db.smallPlates)
+	myPlate:SetSize(self:GetSize())
 
-	myPlate.healthBar:SetPoint('BOTTOM', self, 'BOTTOM', -5, 5)
-
+	self.name:ClearAllPoints()
 	if(self.isSmall) then
 		myPlate.healthBar:SetSize(self.healthBar:GetWidth() * (self.healthBar:GetEffectiveScale() * 1.25), NP.db.healthBar.height)
+		self.name:SetPoint("BOTTOM", myPlate.healthBar, "TOP", 0, 3)
+	else
+		self.name:SetPoint("BOTTOMLEFT", myPlate.healthBar, "TOPLEFT", 0, 3)
+		self.name:SetPoint("BOTTOMRIGHT", myPlate.level, "BOTTOMLEFT", -2, 0)
 	end
 
 	NP:CheckFilterAndHealers(self)
@@ -488,7 +494,7 @@ function NP:OnShow()
 	NP.HealthBar_OnValueChanged(self.healthBar, self.healthBar:GetValue())
 
 	--Check to see if its possible to update auras/comboPoints via raid icon or class color when a plate is shown.
-	if(self.raidIcon:IsShown()) then
+	if(self.raidIcon:IsShown() and not self.isSmall) then
 		NP:CheckRaidIcon(self)
 		NP:UpdateAuras(self)
 		NP:UpdateComboPoints(self)
@@ -527,7 +533,8 @@ function NP:OnHide()
 		myPlate.cPoints[i]:Hide()
 	end	
 
-	myPlate:Hide();
+	--UIFrameFadeOut(myPlate, 0.1, myPlate:GetAlpha(), 0)
+	--myPlate:Hide()
 	--myPlate:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT")
 end
 
@@ -586,7 +593,7 @@ function NP:HealthBar_OnValueChanged(value)
 		else
 			myPlate.lowHealth:SetBackdropBorderColor(1, 1, 0, 0.9)
 		end
-	else
+	elseif myPlate.lowHealth:IsShown() then
 		myPlate.lowHealth:Hide()
 	end
 end
@@ -700,7 +707,6 @@ function NP:CreatePlate(frame)
 	frame.castBar.texture, frame.castBar.border, frame.castBar.shield, frame.castBar.icon, frame.castBar.name, frame.castBar.shadow = frame.castBar:GetRegions()
 
 	local myPlate = CreateFrame("Frame", nil, self.PlateParent)
-	myPlate:SetSize(frame:GetSize())
 
 	--HealthBar
 	myPlate.healthBar = CreateFrame("StatusBar", nil, myPlate)
@@ -744,9 +750,6 @@ function NP:CreatePlate(frame)
 
 	--Name
 	frame.name:SetParent(myPlate)
-	frame.name:ClearAllPoints()
-	frame.name:SetPoint("BOTTOMLEFT", myPlate.healthBar, "TOPLEFT", 0, 3)
-	frame.name:SetPoint("BOTTOMRIGHT", myPlate.level, "BOTTOMLEFT", -2, 0)
 	frame.name:SetJustifyH("LEFT")
 
 	--Raid Icon
@@ -1258,7 +1261,7 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, ...)
 		end
 
 		local frame = self:SearchForFrame(destGUID, raidIcon, name)
-		if frame then
+		if(frame and not frame.isSmall) then
 			NP:UpdateAuras(frame)
 		end
 	end	
@@ -1311,7 +1314,7 @@ function NP:UpdateAurasByUnitID(unit)
 	if raidIcon then self.ByRaidIcon[raidIcon] = guid end
 	
 	local frame = self:SearchForFrame(guid, raidIcon, name)
-	if frame then
+	if frame and not frame.isSmall then
 		NP:UpdateAuras(frame)
 	end
 end

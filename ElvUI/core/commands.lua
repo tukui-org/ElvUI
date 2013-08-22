@@ -167,11 +167,39 @@ function E:MassGuildKick(msg)
 	SendChatMessage("Guild Cleanup Results: Removed all guild members below rank "..GuildControlGetRankName(minRankIndex)..", that have a minimal level of "..minLevel..", and have not been online for at least: "..minDays.." days.", "GUILD")
 end
 
+local num_frames = 0
+local function OnUpdate()
+	num_frames = num_frames + 1
+end
+local f = CreateFrame("Frame")
+f:Hide()
+f:SetScript("OnUpdate", OnUpdate)
+
+local toggleMode = false
+function E:GetCPUImpact()
+	if(not toggleMode) then
+		ResetCPUUsage()
+		num_frames = 0;
+		debugprofilestart()
+		f:Show()
+		toggleMode = true
+		self:Print("CPU Impact being calculated, type /cpuimpact to get results when you are ready.")
+	else
+		f:Hide()
+		local ms_passed = debugprofilestop()
+		UpdateAddOnCPUUsage()
+
+		self:Print("Consumed "..(GetAddOnCPUUsage("ElvUI") / num_frames).." milliseconds per frame. Each frame took "..(ms_passed / num_frames).." to render.");
+		toggleMode = false
+	end
+end
+
 function E:LoadCommands()
 	self:RegisterChatCommand("in", "DelayScriptCall")
 	self:RegisterChatCommand("ec", "ToggleConfig")
 	self:RegisterChatCommand("elvui", "ToggleConfig")
 	
+	self:RegisterChatCommand('cpuimpact', 'GetCPUImpact')
 	self:RegisterChatCommand('cpuusage', 'GetTopCPUFunc')
 	self:RegisterChatCommand('bgstats', 'BGStats')
 	self:RegisterChatCommand('aprilfools', 'DisableAprilFools')

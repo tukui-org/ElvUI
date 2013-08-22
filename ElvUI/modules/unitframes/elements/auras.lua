@@ -69,7 +69,7 @@ function UF:Construct_AuraIcon(button)
 		end
 	end)
 
-	UF:UpdateAuraIconSettings(button:GetParent())
+	UF:UpdateAuraIconSettings(button, true)
 end
 
 local function SortAurasByPriority(a, b)
@@ -90,24 +90,41 @@ function UF:SortAuras()
 	tsort(self, SortAurasByPriority)
 end
 
-function UF:UpdateAuraIconSettings(auras)
-	if(not auras:GetParent().db) then return end
+function UF:UpdateAuraIconSettings(auras, noCycle)
+	local frame = auras:GetParent()
+	local type = auras.type
+	if(noCycle) then
+		frame = auras:GetParent():GetParent()
+		type = auras:GetParent().type
+	end
+	if(not frame.db) then return end
 	
-	local db = auras:GetParent().db[auras.type]
+	local db = frame.db[type]
 	local unitframeFont = LSM:Fetch("font", E.db['unitframe'].font)
 	local index = 1
 	if(db) then
-		while(auras[index]) do
-			local button = auras[index]
-			button.text:FontTemplate(unitframeFont, db.fontSize, 'OUTLINE')
-			button.count:FontTemplate(unitframeFont, db.countFontSize or db.fontSize, 'OUTLINE')
+		if(not noCycle) then
+			while(auras[index]) do
+				local button = auras[index]
+				button.text:FontTemplate(unitframeFont, db.fontSize, 'OUTLINE')
+				button.count:FontTemplate(unitframeFont, db.countFontSize or db.fontSize, 'OUTLINE')
 
-			if db.clickThrough and button:IsMouseEnabled() then
-				button:EnableMouse(false)
-			elseif not db.clickThrough and not button:IsMouseEnabled() then
-				button:EnableMouse(true)
+				if db.clickThrough and button:IsMouseEnabled() then
+					button:EnableMouse(false)
+				elseif not db.clickThrough and not button:IsMouseEnabled() then
+					button:EnableMouse(true)
+				end
+				index = index + 1
 			end
-			index = index + 1
+		else
+			auras.text:FontTemplate(unitframeFont, db.fontSize, 'OUTLINE')
+			auras.count:FontTemplate(unitframeFont, db.countFontSize or db.fontSize, 'OUTLINE')
+
+			if db.clickThrough and auras:IsMouseEnabled() then
+				auras:EnableMouse(false)
+			elseif not db.clickThrough and not auras:IsMouseEnabled() then
+				auras:EnableMouse(true)
+			end
 		end
 	end
 end
@@ -160,7 +177,9 @@ function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, durati
 	end	
 	if duration == 0 or expiration == 0 then
 		button:SetScript('OnUpdate', nil)
-		button.text:SetText('')
+		if(button.text:GetFont()) then
+			button.text:SetText('')
+		end
 	end
 end
 
