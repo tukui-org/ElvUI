@@ -220,6 +220,8 @@ local function StripTextures(object, kill)
 end
 
 local function FontTemplate(fs, font, fontSize, fontStyle)
+	if LSM:Fetch("font", font) ~= [[Fonts\FRIZQT__.TTF]] then font = LSM:Fetch("font", font) end
+
 	fs.font = font
 	fs.fontSize = fontSize
 	fs.fontStyle = fontStyle

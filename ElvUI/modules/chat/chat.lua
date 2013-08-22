@@ -122,17 +122,13 @@ local function ChatFrame_OnMouseScroll(frame, delta)
 		if IsShiftKeyDown() then
 			frame:ScrollToBottom()
 		else
-			for i = 1, 3 do
-				frame:ScrollDown()
-			end
+			frame:ScrollDown()
 		end
 	elseif delta > 0 then
 		if IsShiftKeyDown() then
 			frame:ScrollToTop()
 		else
-			for i = 1, 3 do
-				frame:ScrollUp()
-			end
+			frame:ScrollUp()
 		end
 		
 		if CH.db.scrollDownInterval ~= 0 then
