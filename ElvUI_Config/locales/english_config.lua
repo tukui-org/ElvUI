@@ -333,6 +333,8 @@ L["Unlock various elements of the UI to be repositioned."] = true;
 L["Version"] = true;
 
 --NamePlates
+L["Combat Toggle"] = true;
+L["Toggle the nameplates to be visible outside of combat and visible inside combat."] = true;
 L["Add Name"] = true;
 L["Adjust nameplate size on smaller mobs to scale down. This will only adjust the health bar width not the actual nameplate hitbox you click on."] = true;
 L["All"] = true;

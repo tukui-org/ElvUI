@@ -109,7 +109,14 @@ E.Options.args.nameplate = {
 					order = 1,
 					name = L["Small Plates"],
 					desc = L["Adjust nameplate size on smaller mobs to scale down. This will only adjust the health bar width not the actual nameplate hitbox you click on."],
-				},				
+				},
+				combatHide = {
+					type = "toggle",
+					order = 2,
+					name = L["Combat Toggle"],
+					desc = L["Toggle the nameplates to be visible outside of combat and visible inside combat."],
+					set = function(info, value) E.db.nameplate[ info[#info] ] = value; NP:CombatToggle() end,
+				},
 				comboPoints = {
 					type = "toggle",
 					order = 3,

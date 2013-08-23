@@ -94,6 +94,7 @@ P["nameplate"] = {
 	["smallPlates"] = true,
 	["comboPoints"] = true,
 	['nonTargetAlpha'] = 0.25,
+	['combatHide'] = false,
 	['healthBar'] = {
 		['width'] = 108,
 		['height'] = 9,		
@@ -120,8 +121,8 @@ P["nameplate"] = {
 		['attachTo'] = 'LEFT',
 	},
 	['threat'] = {
-		['goodScale'] = 0.85,
-		['badScale'] = 1.15,
+		['goodScale'] = 1,
+		['badScale'] = 1,
 		["goodColor"] = {r = 75/255,  g = 175/255, b = 76/255},
 		["badColor"] = {r = 0.78, g = 0.25, b = 0.25},
 		["goodTransitionColor"] = {r = 218/255, g = 197/255, b = 92/255},
