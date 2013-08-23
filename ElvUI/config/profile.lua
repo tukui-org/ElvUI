@@ -101,11 +101,7 @@ P["nameplate"] = {
 		['lowThreshold'] =  0.40,
 		['text'] = {
 			['enable'] = false,
-			['format'] = 'CURRENT',
-			['xOffset'] = 0,
-			['yOffset'] = 1,
-			['attachTo'] = 'CENTER',
-			['justifyH'] = 'CENTER',			
+			['format'] = 'CURRENT',			
 		}		
 	},
 	['castBar'] = {
@@ -146,6 +142,7 @@ P["nameplate"] = {
 		["enemy"] = { r = 0.78, g = 0.25, b = 0.25 },	
 	},
 };
+
 --Auras
 P['auras'] = {
 	['font'] = 'ElvUI Pixel',
