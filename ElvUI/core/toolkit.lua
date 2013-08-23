@@ -220,14 +220,13 @@ local function StripTextures(object, kill)
 end
 
 local function FontTemplate(fs, font, fontSize, fontStyle)
-	if LSM:Fetch("font", font) ~= [[Fonts\FRIZQT__.TTF]] then font = LSM:Fetch("font", font) end
-
 	fs.font = font
 	fs.fontSize = fontSize
 	fs.fontStyle = fontStyle
 	
-	if not font then font = LSM:Fetch("font", E.db['general'].font) end
-	if not fontSize then fontSize = E.db.general.fontSize end
+	font = font or LSM:Fetch("font", E.db['general'].font)
+	fontSize = fontSize or E.db.general.fontSize
+
 	if fontStyle == 'OUTLINE' and E.db.general.font:lower():find('pixel') then
 		if (fontSize > 10 and not fs.fontSize) then
 			fontStyle = 'MONOCHROMEOUTLINE'
