@@ -425,6 +425,26 @@ function NP:UPDATE_MOUSEOVER_UNIT()
 	end
 end
 
+function NP:PLAYER_REGEN_DISABLED()
+	SetCVar("nameplateShowEnemies", 1)
+end
+
+function NP:PLAYER_REGEN_ENABLED()
+	SetCVar("nameplateShowEnemies", 0)
+end
+
+function NP:CombatToggle()
+	if(self.db.combatHide) then
+		self:RegisterEvent("PLAYER_REGEN_DISABLED")
+		self:RegisterEvent("PLAYER_REGEN_ENABLED")
+		SetCVar("nameplateShowEnemies", 0)
+	else
+		self:UnregisterEvent("PLAYER_REGEN_DISABLED")
+		self:UnregisterEvent("PLAYER_REGEN_ENABLED")
+		SetCVar("nameplateShowEnemies", 1)
+	end
+end
+
 function NP:Initialize()
 	self.db = E.db["nameplate"]
 	if E.private["nameplate"].enable ~= true then return end
@@ -440,6 +460,8 @@ function NP:Initialize()
 	self:RegisterEvent("PLAYER_TARGET_CHANGED")
 	self:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
 	self:RegisterEvent("UNIT_COMBO_POINTS")
+
+	self:CombatToggle()
 end
 
 function NP:UpdateAllPlates()
@@ -650,9 +672,6 @@ function NP:UpdateSettings()
 	myPlate.healthBar:SetStatusBarTexture(E.media.normTex)
 
 	myPlate.healthBar.text:FontTemplate(font, fontSize, fontOutline)
-	myPlate.healthBar.text:ClearAllPoints()
-	myPlate.healthBar.text:SetPoint(E.InversePoints[NP.db.healthBar.text.attachTo], myPlate.healthBar, NP.db.healthBar.text.attachTo, NP.db.healthBar.text.xOffset, NP.db.healthBar.text.yOffset)
-	myPlate.healthBar.text:SetJustifyH(NP.db.healthBar.text.justifyH)
 
 	--CastBar
 	myPlate.castBar:SetSize(NP.db.healthBar.width, NP.db.castBar.height)
@@ -717,6 +736,8 @@ function NP:CreatePlate(frame)
 	NP:CreateBackdrop(myPlate.healthBar)
 
 	myPlate.healthBar.text = myPlate.healthBar:CreateFontString(nil, 'OVERLAY')
+	myPlate.healthBar.text:SetPoint("CENTER", myPlate.healthBar, NP.db.healthBar.text.attachTo, "CENTER")
+	myPlate.healthBar.text:SetJustifyH("CENTER")
 
 	--CastBar
 	myPlate.castBar = CreateFrame("StatusBar", nil, myPlate)

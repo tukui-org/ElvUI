@@ -99,17 +99,14 @@ P["nameplate"] = {
 	["smallPlates"] = true,
 	["comboPoints"] = true,
 	['nonTargetAlpha'] = 0.25,
+	['combatHide'] = false,
 	['healthBar'] = {
 		['width'] = 114,
 		['height'] = 8,		
 		['lowThreshold'] =  0.40,
 		['text'] = {
 			['enable'] = false,
-			['format'] = 'CURRENT_PERCENT',
-			['xOffset'] = 0,
-			['yOffset'] = 1,
-			['attachTo'] = 'CENTER',
-			['justifyH'] = 'CENTER',			
+			['format'] = 'CURRENT_PERCENT',			
 		}		
 	},
 	['castBar'] = {
@@ -150,6 +147,7 @@ P["nameplate"] = {
 		["enemy"] = { r = 0.78, g = 0.25, b = 0.25 },	
 	},
 };
+
 --Auras
 P['auras'] = {
 	['font'] = 'ElvUI Pixel',
@@ -264,18 +262,23 @@ P['datatexts'] = {
 
 --Tooltip
 P['tooltip'] = {
-	['anchor'] = 'SMART',
-	['health'] = true,
-	['healthHeight'] = 5,
-	['ufhide'] = 'NONE',
-	['whostarget'] = true,
-	['combathide'] = false,
-	['titles'] = true,
-	['guildranks'] = true,
-	['talentSpec'] = true,
-	['count'] = true,
-	['spellid'] = true,
-	['style'] = 'none',
+	['cursorAnchor'] = false,
+	['targetInfo'] = true,
+	['playerTitles'] = false,
+	['guildRanks'] = true,
+	['talentInfo'] = true,
+	['itemCount'] = true,
+	['spellID'] = true,
+	['visibility'] = {
+		['unitFrames'] = 'NONE',
+		['combat'] = false
+	},
+	['healthBar'] = {
+		['text'] = true,
+		['height'] = 7,
+		['font'] = 'ElvUI Pixel',
+		['fontSize'] = 10,
+	}
 }
 
 --UnitFrame
