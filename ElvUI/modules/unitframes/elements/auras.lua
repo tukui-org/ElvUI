@@ -32,7 +32,7 @@ end
 
 function UF:Construct_AuraIcon(button)
 	button.text = button.cd:CreateFontString(nil, 'OVERLAY')
-	button.text:Point('CENTER', 1, 1)
+	button.text:Point('CENTER', -3, 3)
 	button.text:SetJustifyH('CENTER')
 	
 	button:SetTemplate('Default')
@@ -47,7 +47,7 @@ function UF:Construct_AuraIcon(button)
 	button.icon:SetDrawLayer('ARTWORK')
 	
 	button.count:ClearAllPoints()
-	button.count:Point('BOTTOMRIGHT', 1, 1)
+	button.count:Point('BOTTOMRIGHT', 2, 0)
 	button.count:SetJustifyH('RIGHT')
 
 	button.overlay:SetTexture(nil)

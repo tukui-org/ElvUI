@@ -26,6 +26,7 @@ RegisterFont("ElvUI Alt-Font", "Continuum_Medium.ttf")
 RegisterFont("ElvUI Alt-Combat", "DieDieDie.ttf")
 RegisterFont("ElvUI Combat", "Action_Man.ttf")
 RegisterFont("DorisPP", "DORISBR.TTF")
+RegisterFont("AgencyFB Bold", "agencyfb-bold.ttf")
 
 RegisterSound("Awww Crap", "awwcrap.mp3")
 RegisterSound("BBQ Ass", "bbqass.mp3")

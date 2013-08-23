@@ -389,7 +389,7 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.raid10.health.frequentUpdates = true;
 			E.db.unitframe.units.raid10.startFromCenter = true;
 			E.db.unitframe.units.raid10.debuffs.useFilter = 'Blacklist';
-			E.db.unitframe.units.raid10.debuffs.xOffset = 24;
+			E.db.unitframe.units.raid10.debuffs.xOffset = -9;
 
 			E.db.unitframe.units.raid25.width = 80;
 			E.db.unitframe.units.raid25.horizontalSpacing = 3;
