@@ -174,7 +174,7 @@ E.Options.args.nameplate = {
 					end,
 					set = function(info, r, g, b)
 						E.db.nameplate.reactions[ info[#info] ] = {}
-						local t = E.db.nameplate.threat[ info[#info] ]
+						local t = E.db.nameplate.reactions[ info[#info] ]
 						t.r, t.g, t.b = r, g, b
 						NP:UpdateAllPlates()
 					end,				
