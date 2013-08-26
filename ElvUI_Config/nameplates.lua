@@ -334,7 +334,7 @@ E.Options.args.nameplate = {
 					order = 1,
 					name = L['Healer Icon'],
 					desc = L['Display a healer icon over known healers inside battlegrounds or arenas.'],
-					set = function(info, value) E.db.nameplate[ info[#info] ] = value; NP:PLAYER_ENTERING_WORLD(); NP:UpdateAllPlates() end,
+					set = function(info, value) E.db.nameplate.raidHealIcon[ info[#info] ] = value; NP:PLAYER_ENTERING_WORLD(); NP:UpdateAllPlates() end,
 				},			
 				size = {
 					order = 2,
