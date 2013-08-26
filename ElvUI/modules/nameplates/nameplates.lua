@@ -107,15 +107,15 @@ function NP:OnUpdate(elapsed)
 		if(blizzPlate:IsShown()) then
           plate:SetPoint("CENTER", WorldFrame, "BOTTOMLEFT", blizzPlate:GetCenter())
           NP.SetAlpha(blizzPlate, plate)
+          NP.SetUnitInfo(blizzPlate, plate)
           plate:Show()
 		end
 	end
 	NP.PlateParent:Show()
 
-	if(self.elapsed and self.elapsed > 0.4) then
+	if(self.elapsed and self.elapsed > 0.2) then
 		for blizzPlate, plate in pairs(NP.CreatedPlates) do
 			if(blizzPlate:IsShown()) then
-				NP.SetUnitInfo(blizzPlate, plate)
 				NP.ColorizeAndScale(blizzPlate, plate)
 				NP.SetLevel(blizzPlate, plate)
 			end
@@ -361,7 +361,7 @@ function NP:SetUnitInfo(myPlate)
 
 		if((NP.NumTargetChecks > -1) or self.allowCheck) then
 			NP.NumTargetChecks = NP.NumTargetChecks + 1
-			if NP.NumTargetChecks > 1 then
+			if NP.NumTargetChecks > 0 then
 				NP.NumTargetChecks = -1
 			end
 
@@ -369,7 +369,7 @@ function NP:SetUnitInfo(myPlate)
 			NP:UpdateComboPointsByUnitID('target')
 			self.allowCheck = nil
 		end
-	elseif self.highlight:IsShown() and UnitExists("mouseover") and UnitName("mouseover") == self.name:GetText() then
+	elseif self.highlight:IsShown() and UnitExists("mouseover") and UnitName("mouseover") == myPlate.name then
 		self.guid = UnitGUID("mouseover")
 		self.unit = "mouseover"
 		myPlate:SetFrameLevel(1)
@@ -377,10 +377,10 @@ function NP:SetUnitInfo(myPlate)
 
 		if((NP.NumMouseoverChecks > -1) or self.allowCheck) then
 			NP.NumMouseoverChecks = NP.NumMouseoverChecks + 1
-			if NP.NumMouseoverChecks > 1 then
+			if NP.NumMouseoverChecks > 0 then
 				NP.NumMouseoverChecks = -1
 			end
-
+			
 			NP:UpdateAurasByUnitID('mouseover')
 			NP:UpdateComboPointsByUnitID('mouseover')
 			self.allowCheck = nil
@@ -837,7 +837,7 @@ function NP:CreatePlate(frame)
 	
 	--Script Handlers
 	frame:HookScript("OnShow", NP.OnShow)
-	frame:HookScript("OnHide", NP.OnHide)
+	frame:HookScript("OnHide", NP.OnHide)	
 	frame.healthBar:HookScript("OnValueChanged", NP.HealthBar_OnValueChanged)
 	frame.castBar:HookScript("OnShow", NP.CastBar_OnShow)
 	frame.castBar:HookScript("OnHide", NP.CastBar_OnHide)
@@ -863,10 +863,7 @@ function NP:CreatePlate(frame)
 		NP.CastBar_OnShow(frame.castBar)
 	end
 
-	NP.OnShow(frame)
-	NP.SetUnitInfo(frame, myPlate)
-	NP.ColorizeAndScale(frame, myPlate)
-	NP.SetLevel(frame, myPlate)	
+
 end
 
 function NP:QueueObject(frame, object)
