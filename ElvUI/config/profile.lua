@@ -148,7 +148,11 @@ P['auras'] = {
 	['font'] = 'ElvUI Pixel',
 	['fontSize'] = 10,
 	['fontOutline'] = 'MONOCHROMEOUTLINE',
-		
+	['countYOffset'] = 0,
+	['countXOffset'] = 0,
+	['timeYOffset'] = 0,
+	['timeXOffset'] = 0,
+
 	['consolidatedBuffs'] = {
 		['enable'] = true,
 		['filter'] = true,
@@ -158,21 +162,30 @@ P['auras'] = {
 		['fontOutline'] = 'MONOCHROMEOUTLINE',
 	},
 	
-	['wrapAfter'] = 12,
 	['fadeThreshold'] = 5,
 	['buffs'] = {
+		['growthDirection'] = 'LEFT_DOWN',
+		['wrapAfter'] = 12,
+		['maxWraps'] = 3,
+		['horizontalSpacing'] = 6,
+		['verticalSpacing'] = 16,
 		['sortMethod'] = "TIME",
 		['sortDir'] = '-',
-		['maxWraps'] = 3,
 		['seperateOwn'] = 1,
+		['size'] = 32,
 	},
 	['debuffs'] = {
+		['growthDirection'] = 'LEFT_DOWN',
+		['wrapAfter'] = 12,
+		['maxWraps'] = 1,
+		['horizontalSpacing'] = 6,
+		['verticalSpacing'] = 16,		
 		['sortMethod'] = "TIME",
 		['sortDir'] = '-',
-		['maxWraps'] = 1,
+		['seperateOwn'] = 1,
+		['size'] = 32,
 	},
 }
-
 --Chat
 P['chat'] = {
 	['lockPositions'] = true,
@@ -238,9 +251,9 @@ P['datatexts'] = {
 P['tooltip'] = {
 	['cursorAnchor'] = false,
 	['targetInfo'] = true,
-	['playerTitles'] = false,
+	['playerTitles'] = true,
 	['guildRanks'] = true,
-	['talentInfo'] = true,
+	['inspectInfo'] = true,
 	['itemCount'] = true,
 	['spellID'] = true,
 	['visibility'] = {
