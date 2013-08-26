@@ -25,24 +25,63 @@ E.Options.args.tooltip = {
 			order = 3,
 			type = "group",
 			name = L["General"],
-			guiInline = true,
 			disabled = function() return not E.Tooltip; end,
 			args = {
-				anchor = {
+				cursorAnchor = {
+					order = 1,
+					type = 'toggle',
+					name = L['Cursor Anchor'],
+					desc = L['Should tooltip be anchored to mouse cursor'],
+				},
+				targetInfo = {
+					order = 2,
+					type = 'toggle',
+					name = L["Target Info"],
+					desc = L["When in a raid group display if anyone in your raid is targeting the current tooltip unit. (Requires Shift)"],
+				},	
+				playerTitles = {
+					order = 3,
+					type = 'toggle',
+					name = L['Player Titles'],
+					desc = L['Display player titles.'],
+				},				
+				guildRanks = {
+					order = 4,
+					type = 'toggle',
+					name = L['Guild Ranks'],
+					desc = L['Display guild ranks if a unit is guilded.'],
+				},
+				inspectInfo = {
+					order = 5,
+					type = 'toggle',
+					name = L['Inspect Info'],
+					desc = L['Displays information regarding talent spec and item level when you hold down shift.'],
+				},
+				itemCount = {
+					order = 6,
+					type = 'toggle',
+					name = L['Item Count'],
+					desc = L['Display how many of a certain item you have in your possession.'],				
+				},				
+				spellID = {
+					order = 7,
+					type = 'toggle',
+					name = L['Spell/Item IDs'],
+					desc = L['Display the spell or item ID when mousing over a spell or item tooltip.'],				
+				},
+			},
+		},
+		visibility = {
+			order = 100,
+			type = "group",
+			name = L["Visibility"],
+			get = function(info) return E.db.tooltip.visibility[ info[#info] ] end,
+			set = function(info, value) E.db.tooltip.visibility[ info[#info] ] = value; end,
+			args = {
+				unitFrames = {
 					order = 1,
 					type = 'select',
-					name = L['Anchor Mode'],
-					desc = L['Set the type of anchor mode the tooltip should use.'],
-					values = {
-						['SMART'] = L['Smart'],
-						['CURSOR'] = L['Cursor'],
-						['ANCHOR'] = L['Anchor'],
-					},
-				},
-				ufhide = {
-					order = 2,
-					type = 'select',
-					name = L['UF Hide'],
+					name = L['Unitframes'],
 					desc = L["Don't display the tooltip when mousing over a unitframe."],
 					values = {
 						['ALL'] = L['Always Hide'],
@@ -52,64 +91,63 @@ E.Options.args.tooltip = {
 						['CTRL'] = CTRL_KEY					
 					},
 				},
-				whostarget = {
-					order = 3,
+				combat = {
+					order = 2,
 					type = 'toggle',
-					name = L["Who's targeting who?"],
-					desc = L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."],
-				},
-				combathide = {
-					order = 4,
-					type = 'toggle',
-					name = L["Combat Hide"],
+					name = COMBAT,
 					desc = L["Hide tooltip while in combat."],
-				},
-				guildranks = {
-					order = 5,
-					type = 'toggle',
-					name = L['Guild Ranks'],
-					desc = L['Display guild ranks if a unit is guilded.'],
-				},
-				titles = {
-					order = 6,
-					type = 'toggle',
-					name = L['Player Titles'],
-					desc = L['Display player titles.'],
-				},
-				talentSpec = {
-					order = 7,
-					type = 'toggle',
-					name = L['Talent Spec'],
-					desc = L['Display the players talent spec in the tooltip, this may not immediately update when mousing over a unit.'],
-				},
-				spellid = {
-					order = 8,
-					type = 'toggle',
-					name = L['Spell/Item IDs'],
-					desc = L['Display the spell or item ID when mousing over a spell or item tooltip.'],				
-				},
-				count = {
-					order = 9,
-					type = 'toggle',
-					name = L['Item Count'],
-					desc = L['Display how many of a certain item you have in your possession.'],				
-				},		
-				health = {
-					order = 10,
-					type = 'toggle',
-					name = L['Health Text'],
-					desc = L['Display the health text on the tooltip.'],
-					set = function(info, value) E.db.tooltip[ info[#info] ] = value; if value then GameTooltipStatusBar.text:Show(); else GameTooltipStatusBar.text:Hide() end  end,
-				},
-				healthHeight = {
-					order = 11,
-					type = 'range',
-					name = L['Health Height'],
-					desc = L['Set the height of the tooltip healthbar.'],
-					min = 1, max = 15, step = 1,
-					set = function(info, value) E.db.tooltip[ info[#info] ] = value; GameTooltipStatusBar:Height(value); end,
-				},				
+				},						
 			},
 		},
+		healthBar = {
+			order = 200,
+			type = "group",
+			name = L["Health Bar"],
+			get = function(info) return E.db.tooltip.healthBar[ info[#info] ] end,
+			set = function(info, value) E.db.tooltip.healthBar[ info[#info] ] = value; end,			
+			args = {
+				height = {
+					order = 1,
+					name = L['Height'],
+					type = 'range',
+					min = 1, max = 15, step = 1,
+					set = function(info, value) E.db.tooltip.healthBar.height = value; GameTooltipStatusBar:Height(value); end,
+				},
+				fontGroup = {
+					order = 2,
+					name = L["Fonts"],
+					type = "group",
+					guiInline = true,
+					args = {
+						text = {
+							order = 1,
+							type = "toggle",
+							name = L["Text"],
+							set = function(info, value) E.db.tooltip.healthBar.text = value; if value then GameTooltipStatusBar.text:Show(); else GameTooltipStatusBar.text:Hide() end  end,
+						},
+						font = {
+							type = "select", dialogControl = 'LSM30_Font',
+							order = 2,
+							name = L["Font"],
+							values = AceGUIWidgetLSMlists.font,
+							set = function(info, value) 
+								E.db.tooltip.healthBar.font = value; 
+								GameTooltipStatusBar.text:FontTemplate(E.LSM:Fetch("font", E.db.tooltip.healthBar.font), E.db.tooltip.healthBar.fontSize, "OUTLINE")
+							end,
+						},
+						fontSize = {
+							order = 3,
+							name = L["Font Size"],
+							type = "range",
+							min = 6, max = 22, step = 1,
+							set = function(info, value) 
+								E.db.tooltip.healthBar.fontSize = value; 
+								GameTooltipStatusBar.text:FontTemplate(E.LSM:Fetch("font", E.db.tooltip.healthBar.font), E.db.tooltip.healthBar.fontSize, "OUTLINE")
+							end,								
+						},
+					},
+				},
+			},
+		},		
 	},
 }

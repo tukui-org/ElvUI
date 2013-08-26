@@ -10,6 +10,7 @@ local twipe = table.wipe
 --Constants
 E.myclass = select(2, UnitClass("player"));
 E.myrace = select(2, UnitRace("player"))
+E.myfaction = select(2, UnitFactionGroup('player'))
 E.myname = UnitName("player");
 E.myguid = UnitGUID('player');
 E.version = GetAddOnMetadata("ElvUI", "Version"); 
@@ -19,6 +20,7 @@ E.resolution = GetCVar("gxResolution")
 E.screenheight = tonumber(match(E.resolution, "%d+x(%d+)"))
 E.screenwidth = tonumber(match(E.resolution, "(%d+)x+%d"))
 E.isMacClient = IsMacClient()
+E.LSM = LSM
 
 --Tables
 E["media"] = {};

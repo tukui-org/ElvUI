@@ -109,7 +109,14 @@ E.Options.args.nameplate = {
 					order = 1,
 					name = L["Small Plates"],
 					desc = L["Adjust nameplate size on smaller mobs to scale down. This will only adjust the health bar width not the actual nameplate hitbox you click on."],
-				},				
+				},		
+				combatHide = {
+					type = "toggle",
+					order = 2,
+					name = L["Combat Toggle"],
+					desc = L["Toggle the nameplates to be visible outside of combat and visible inside combat."],
+					set = function(info, value) E.db.nameplate[ info[#info] ] = value; NP:CombatToggle() end,
+				},						
 				comboPoints = {
 					type = "toggle",
 					order = 3,
@@ -232,12 +239,40 @@ E.Options.args.nameplate = {
 				},
 				lowThreshold = {
 					type = 'range',
-					order = 16,
+					order = 3,
 					name = L['Low Health Threshold'],
 					desc = L['Color the border of the nameplate yellow when it reaches this point, it will be colored red when it reaches half this value.'],
 					isPercent = true,
 					min = 0, max = 1, step = 0.01, 			
 				},
+				fontGroup = {
+					order = 4,
+					type = "group",
+					name = L["Fonts"],
+					guiInline = true,
+					get = function(info) return E.db.nameplate.healthBar.text[ info[#info] ] end,
+					set = function(info, value) E.db.nameplate.healthBar.text[ info[#info] ] = value; NP:UpdateAllPlates() end,			
+					args = {
+						enable = {
+							type = "toggle",
+							name = L["Enable"],
+							order = 1,
+						},
+						format = {
+							type = "select",
+							order = 2,
+							name = L['Format'],
+							values = {
+								['CURRENT_MAX_PERCENT'] = L['Current - Max | Percent'],
+								['CURRENT_PERCENT'] = L['Current - Percent'],
+								['CURRENT_MAX'] = L['Current - Max'],
+								['CURRENT'] = L['Current'],
+								['PERCENT'] = L['Percent'],
+								['DEFICIT'] = L['Deficit'],
+							},
+						},
+					},
+				}
 			},
 		},
 		castBar = {

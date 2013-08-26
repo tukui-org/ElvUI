@@ -94,17 +94,14 @@ P["nameplate"] = {
 	["smallPlates"] = true,
 	["comboPoints"] = true,
 	['nonTargetAlpha'] = 0.50,
+	['combatHide'] = false,
 	['healthBar'] = {
 		['width'] = 108,
 		['height'] = 9,		
 		['lowThreshold'] =  0.40,
 		['text'] = {
 			['enable'] = false,
-			['format'] = 'CURRENT',
-			['xOffset'] = 0,
-			['yOffset'] = 1,
-			['attachTo'] = 'CENTER',
-			['justifyH'] = 'CENTER',			
+			['format'] = 'CURRENT',		
 		}		
 	},
 	['castBar'] = {
@@ -253,20 +250,24 @@ P['datatexts'] = {
 
 --Tooltip
 P['tooltip'] = {
-	['anchor'] = 'SMART',
-	['health'] = true,
-	['healthHeight'] = 8,
-	['ufhide'] = 'NONE',
-	['whostarget'] = true,
-	['combathide'] = false,
-	['titles'] = true,
-	['guildranks'] = true,
-	['talentSpec'] = true,
-	['count'] = true,
-	['spellid'] = true,
-	['style'] = 'none',
+	['cursorAnchor'] = false,
+	['targetInfo'] = true,
+	['playerTitles'] = true,
+	['guildRanks'] = true,
+	['inspectInfo'] = true,
+	['itemCount'] = true,
+	['spellID'] = true,
+	['visibility'] = {
+		['unitFrames'] = 'NONE',
+		['combat'] = false
+	},
+	['healthBar'] = {
+		['text'] = true,
+		['height'] = 7,
+		['font'] = 'ElvUI Pixel',
+		['fontSize'] = 10,
+	}
 }
-
 --UnitFrame
 P['unitframe'] = {
 	['smoothbars'] = false,

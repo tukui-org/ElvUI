@@ -5,6 +5,7 @@ local LSM = LibStub("LibSharedMedia-3.0")
 local numChildren = -1
 local twipe = table.wipe
 local band = bit.band
+local gsub = string.gsub
 
 NP.NumTargetChecks = -1
 NP.NumMouseoverChecks = -1
@@ -111,7 +112,7 @@ function NP:OnUpdate(elapsed)
 	end
 	NP.PlateParent:Show()
 
-	if(self.elapsed and self.elapsed > 0.2) then
+	if(self.elapsed and self.elapsed > 0.4) then
 		for blizzPlate, plate in pairs(NP.CreatedPlates) do
 			if(blizzPlate:IsShown()) then
 				NP.SetUnitInfo(blizzPlate, plate)
@@ -128,7 +129,7 @@ end
 
 function NP:CheckFilterAndHealers(frame)
 	local myPlate = NP.CreatedPlates[frame]
-	local name = frame.name:GetText()
+	local name = myPlate.name
 	local db = E.global.nameplate["filter"][name]
 
 	if db and db.enable then
@@ -352,7 +353,7 @@ function NP:SetAlpha(myPlate)
 end
 
 function NP:SetUnitInfo(myPlate)
-	if self:GetAlpha() == 1 and UnitExists("target") and UnitName("target") == self.name:GetText() and NP.NumNonTransparentPlates == 1 then
+	if self:GetAlpha() == 1 and UnitExists("target") and UnitName("target") == myPlate.name and NP.NumNonTransparentPlates == 1 then
 		self.guid = UnitGUID("target")
 		self.unit = "target"
 		myPlate:SetFrameLevel(2)
@@ -425,6 +426,26 @@ function NP:UPDATE_MOUSEOVER_UNIT()
 	end
 end
 
+function NP:PLAYER_REGEN_DISABLED()
+	SetCVar("nameplateShowEnemies", 1)
+end
+
+function NP:PLAYER_REGEN_ENABLED()
+	SetCVar("nameplateShowEnemies", 0)
+end
+
+function NP:CombatToggle()
+	if(self.db.combatHide) then
+		self:RegisterEvent("PLAYER_REGEN_DISABLED")
+		self:RegisterEvent("PLAYER_REGEN_ENABLED")
+		SetCVar("nameplateShowEnemies", 0)
+	else
+		self:UnregisterEvent("PLAYER_REGEN_DISABLED")
+		self:UnregisterEvent("PLAYER_REGEN_ENABLED")
+		SetCVar("nameplateShowEnemies", 1)
+	end
+end
+
 function NP:Initialize()
 	self.db = E.db["nameplate"]
 	if E.private["nameplate"].enable ~= true then return end
@@ -440,6 +461,8 @@ function NP:Initialize()
 	self:RegisterEvent("PLAYER_TARGET_CHANGED")
 	self:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
 	self:RegisterEvent("UNIT_COMBO_POINTS")
+
+	self:CombatToggle()
 end
 
 function NP:UpdateAllPlates()
@@ -502,7 +525,7 @@ function NP:OnShow()
 		self.allowCheck = true
 	end
 
-	NP.ColorizeAndScale(self, myPlate)
+	myPlate.name = gsub(self.name:GetText(), '%s%(%*%)','')
 end
 
 function NP:OnHide()
@@ -650,9 +673,6 @@ function NP:UpdateSettings()
 	myPlate.healthBar:SetStatusBarTexture(E.media.normTex)
 
 	myPlate.healthBar.text:FontTemplate(font, fontSize, fontOutline)
-	myPlate.healthBar.text:ClearAllPoints()
-	myPlate.healthBar.text:SetPoint(E.InversePoints[NP.db.healthBar.text.attachTo], myPlate.healthBar, NP.db.healthBar.text.attachTo, NP.db.healthBar.text.xOffset, NP.db.healthBar.text.yOffset)
-	myPlate.healthBar.text:SetJustifyH(NP.db.healthBar.text.justifyH)
 
 	--CastBar
 	myPlate.castBar:SetSize(NP.db.healthBar.width, NP.db.castBar.height)
@@ -717,6 +737,8 @@ function NP:CreatePlate(frame)
 	NP:CreateBackdrop(myPlate.healthBar)
 
 	myPlate.healthBar.text = myPlate.healthBar:CreateFontString(nil, 'OVERLAY')
+	myPlate.healthBar.text:SetPoint("CENTER", myPlate.healthBar, NP.db.healthBar.text.attachTo, "CENTER")
+	myPlate.healthBar.text:SetJustifyH("CENTER")
 
 	--CastBar
 	myPlate.castBar = CreateFrame("StatusBar", nil, myPlate)
@@ -820,7 +842,7 @@ function NP:CreatePlate(frame)
 	frame.castBar:HookScript("OnShow", NP.CastBar_OnShow)
 	frame.castBar:HookScript("OnHide", NP.CastBar_OnHide)
 	frame.castBar:HookScript("OnValueChanged", NP.CastBar_OnValueChanged)
-	
+
 	--Hide Elements
 	NP:QueueObject(frame, frame.healthBar)
 	NP:QueueObject(frame, frame.castBar)
@@ -835,12 +857,16 @@ function NP:CreatePlate(frame)
 
 	self.CreatedPlates[frame] = myPlate
 	NP.UpdateSettings(frame)
-	
 	if not frame.castBar:IsShown() then
 		myPlate.castBar:Hide()
 	else
 		NP.CastBar_OnShow(frame.castBar)
 	end
+
+	NP.OnShow(frame)
+	NP.SetUnitInfo(frame, myPlate)
+	NP.ColorizeAndScale(frame, myPlate)
+	NP.SetLevel(frame, myPlate)	
 end
 
 function NP:QueueObject(frame, object)
@@ -1399,7 +1425,7 @@ function NP:UpdateAuras(frame)
 	if not guid then
 		-- Attempt to ID widget via Name or Raid Icon
 		if RAID_CLASS_COLORS[frame.unitType] then 
-			guid = NP.ByName[frame.name:GetText()]
+			guid = NP.ByName[myPlate.name]
 		elseif frame.raidIcon:IsShown() then 
 			guid = NP.ByRaidIcon[frame.raidIconType] 
 		end
@@ -1443,8 +1469,8 @@ end
 function NP:SearchNameplateByName(sourceName)
 	if not sourceName then return; end
 	local SearchFor = strsplit("-", sourceName)
-	for frame, _ in pairs(NP.CreatedPlates) do
-		if frame and frame:IsShown() and frame.name:GetText() == SearchFor and RAID_CLASS_COLORS[frame.unitType] then
+	for frame, myPlate in pairs(NP.CreatedPlates) do
+		if frame and frame:IsShown() and myPlate.name == SearchFor and RAID_CLASS_COLORS[frame.unitType] then
 			return frame
 		end
 	end
