@@ -233,6 +233,15 @@ end
 
 function TT:GameTooltip_OnTooltipSetUnit(tt)
 	local unit = select(2, tt:GetUnit())
+	if((tt:GetOwner() ~= UIParent) and self.db.visibility.unitFrames ~= 'NONE') then 
+		local modifier = self.db.visibility.unitFrames
+		
+		if(modifier == 'ALL' or not ((modifier == 'SHIFT' and IsShiftKeyDown()) or (modifier == 'CTRL' and IsControlKeyDown()) or (modifier == 'ALT' and IsAltKeyDown()))) then
+			tt:Hide() 
+			return
+		end
+	end
+
 	if(not unit) then
 		local GMF = GetMouseFocus()
 		if(GMF and GMF:GetAttribute("unit")) then
