@@ -8,8 +8,6 @@ local band = bit.band
 local gsub = string.gsub
 
 NP.NumTargetChecks = -1
-NP.NumMouseoverChecks = -1
-NP.NumNonTransparentPlates = 0
 NP.CreatedPlates = {};
 NP.Healers = {};
 NP.ComboPoints = {};
@@ -101,7 +99,6 @@ function NP:OnUpdate(elapsed)
 	end
 
 	NP.PlateParent:Hide()
-	NP.NumNonTransparentPlates = 0
 	for blizzPlate, plate in pairs(NP.CreatedPlates) do
 		plate:Hide()
 		if(blizzPlate:IsShown()) then
@@ -109,7 +106,6 @@ function NP:OnUpdate(elapsed)
 				plate:SetPoint("CENTER", WorldFrame, "BOTTOMLEFT", blizzPlate:GetCenter())
 			end
 			NP.SetAlpha(blizzPlate, plate)
-			NP.SetUnitInfo(blizzPlate, plate)
 			plate:Show()
 		end
 	end
@@ -118,6 +114,7 @@ function NP:OnUpdate(elapsed)
 	if(self.elapsed and self.elapsed > 0.2) then
 		for blizzPlate, plate in pairs(NP.CreatedPlates) do
 			if(blizzPlate:IsShown()) then
+				NP.SetUnitInfo(blizzPlate, plate)
 				NP.ColorizeAndScale(blizzPlate, plate)
 				NP.SetLevel(blizzPlate, plate)
 			end
@@ -349,18 +346,16 @@ function NP:SetAlpha(myPlate)
 	if self:GetAlpha() < 1 then
 		myPlate:SetAlpha(NP.db.nonTargetAlpha)
 	else
-		NP.NumNonTransparentPlates = NP.NumNonTransparentPlates + 1
 		myPlate:SetAlpha(1)
 	end
 end
 
 function NP:SetUnitInfo(myPlate)
-	if self:GetAlpha() == 1 and UnitExists("target") and UnitName("target") == myPlate.name and NP.NumNonTransparentPlates == 1 then
+	if self:GetAlpha() == 1 and NP.targetName and NP.targetName == myPlate.name then
 		self.guid = UnitGUID("target")
 		self.unit = "target"
 		myPlate:SetFrameLevel(2)
 		myPlate.overlay:Hide()
-
 		if((NP.NumTargetChecks > -1) or self.allowCheck) then
 			NP.NumTargetChecks = NP.NumTargetChecks + 1
 			if NP.NumTargetChecks > 0 then
@@ -372,25 +367,20 @@ function NP:SetUnitInfo(myPlate)
 			self.allowCheck = nil
 		end
 	elseif self.highlight:IsShown() and UnitExists("mouseover") and UnitName("mouseover") == myPlate.name then
-		self.guid = UnitGUID("mouseover")
-		self.unit = "mouseover"
-		myPlate:SetFrameLevel(1)
-		myPlate.overlay:Show()
+		if(self.unit ~= "mouseover" or self.allowCheck) then
+			myPlate:SetFrameLevel(1)
+			myPlate.overlay:Show()			
 
-		if((NP.NumMouseoverChecks > -1) or self.allowCheck) then
-			NP.NumMouseoverChecks = NP.NumMouseoverChecks + 1
-			if NP.NumMouseoverChecks > 0 then
-				NP.NumMouseoverChecks = -1
-			end
-			
 			NP:UpdateAurasByUnitID('mouseover')
 			NP:UpdateComboPointsByUnitID('mouseover')
 			self.allowCheck = nil
-		end		
+		end
+		self.guid = UnitGUID("mouseover")
+		self.unit = "mouseover"		
 	else
-		self.unit = nil
 		myPlate:SetFrameLevel(0)
 		myPlate.overlay:Hide()
+		self.unit = nil
 	end
 end
 
@@ -418,13 +408,11 @@ end
 
 function NP:PLAYER_TARGET_CHANGED()
 	if(UnitExists("target")) then
+		self.targetName = UnitName("target")
+		WorldFrame.elapsed = 0
 		NP.NumTargetChecks = 0
-	end
-end
-
-function NP:UPDATE_MOUSEOVER_UNIT()
-	if(UnitExists("mouseover")) then
-		NP.NumMouseoverChecks = 0
+	else
+		self.targetName = nil
 	end
 end
 
@@ -461,7 +449,6 @@ function NP:Initialize()
 	self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 	self:RegisterEvent("UNIT_AURA")
 	self:RegisterEvent("PLAYER_TARGET_CHANGED")
-	self:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
 	self:RegisterEvent("UNIT_COMBO_POINTS")
 
 	self.viewPort = IsAddOnLoaded("SunnArt");
