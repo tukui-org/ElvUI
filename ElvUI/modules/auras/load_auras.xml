@@ -6,6 +6,8 @@
 		</Attributes>
 		<Scripts>
 			<OnLoad>
+				ElvUI[1]:GetModule('Auras'):CreateIcon(self)
+
 				self:RegisterForClicks('RightButtonUp')
 			</OnLoad>
 			<OnEnter>
@@ -55,6 +57,25 @@
 		<Size x='30' y='30'/>
 	</Button>		
 
+	<Button name='ElvUIAuraTemplate32' inherits='ElvUIAuraTemplate' virtual='true'>
+		<Size x='32' y='32'/>
+	</Button>		
+
+	<Button name='ElvUIAuraTemplate34' inherits='ElvUIAuraTemplate' virtual='true'>
+		<Size x='34' y='34'/>
+	</Button>		
+
+	<Button name='ElvUIAuraTemplate36' inherits='ElvUIAuraTemplate' virtual='true'>
+		<Size x='36' y='36'/>
+	</Button>		
+
+	<Button name='ElvUIAuraTemplate38' inherits='ElvUIAuraTemplate' virtual='true'>
+		<Size x='38' y='38'/>
+	</Button>		
+
+	<Button name='ElvUIAuraTemplate40' inherits='ElvUIAuraTemplate' virtual='true'>
+		<Size x='40' y='40'/>
+	</Button>						
 
 	<Script file='auras.lua'/>
 	<Script file='consolidatedBuffs.lua'/>
