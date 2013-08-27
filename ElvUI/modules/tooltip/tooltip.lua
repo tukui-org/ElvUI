@@ -376,11 +376,11 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		local localeClass, class = UnitClass(unit)
 		local name, realm = UnitName(unit)
 		local guildName, guildRankName, _, guildRealm = GetGuildInfo(unit)
-
+		local pvpName = UnitPVPName(unit)
 		color = RAID_CLASS_COLORS[class]
 
-		if(self.db.playerTitles) then
-			name = UnitPVPName(unit)
+		if(self.db.playerTitles and pvpName) then
+			name = pvpName
 		end
 
 		if(realm) then
