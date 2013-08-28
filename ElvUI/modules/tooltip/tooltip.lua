@@ -477,8 +477,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		GameTooltip:AddDoubleLine(format("%s:", TARGET), format("|cff%02x%02x%02x%s|r", targetColor.r * 255, targetColor.g * 255, targetColor.b * 255, UnitName(unitTarget)))
 	end
 
-	--High CPU usage, restricting it to shift key down only.
-	if(self.db.targetInfo and isShiftKeyDown and IsInGroup()) then
+	if(self.db.targetInfo and IsInGroup()) then
 		for i = 1, GetNumGroupMembers() do
 			local groupUnit = (IsInRaid() and "raid"..i or "party"..i);
 			if (UnitIsUnit(groupUnit.."target", unit)) and (not UnitIsUnit(groupUnit,"player")) then
