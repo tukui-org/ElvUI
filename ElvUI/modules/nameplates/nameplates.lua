@@ -116,7 +116,7 @@ function NP:OnUpdate(elapsed)
 			if(blizzPlate:IsShown()) then
 				NP.SetUnitInfo(blizzPlate, plate)
 				NP.ColorizeAndScale(blizzPlate, plate)
-				NP.SetLevel(blizzPlate, plate)
+				NP.UpdateLevelAndName(blizzPlate, plate)
 			end
 		end
 
@@ -200,7 +200,7 @@ function NP:CheckArenaHealers()
 	end
 end
 
-function NP:SetLevel(myPlate)
+function NP:UpdateLevelAndName(myPlate)
 	local region = select(4, self:GetRegions())
 	if region and region:GetObjectType() == 'FontString' then
 		self.level = region
@@ -226,6 +226,8 @@ function NP:SetLevel(myPlate)
 	elseif not myPlate.level:IsShown() then
 		myPlate.level:Show()
 	end
+
+	myPlate.name:SetText(self.name:GetText())
 end
 
 function NP:GetReaction(frame)
@@ -488,13 +490,13 @@ function NP:OnShow()
 	self.isSmall = (self.healthBar:GetEffectiveScale() < 1 and NP.db.smallPlates)
 	myPlate:SetSize(self:GetSize())
 
-	self.name:ClearAllPoints()
+	myPlate.name:ClearAllPoints()
 	if(self.isSmall) then
 		myPlate.healthBar:SetSize(self.healthBar:GetWidth() * (self.healthBar:GetEffectiveScale() * 1.25), NP.db.healthBar.height)
-		self.name:SetPoint("BOTTOM", myPlate.healthBar, "TOP", 0, 3)
+		myPlate.name:SetPoint("BOTTOM", myPlate.healthBar, "TOP", 0, 3)
 	else
-		self.name:SetPoint("BOTTOMLEFT", myPlate.healthBar, "TOPLEFT", 0, 3)
-		self.name:SetPoint("BOTTOMRIGHT", myPlate.level, "BOTTOMLEFT", -2, 0)
+		myPlate.name:SetPoint("BOTTOMLEFT", myPlate.healthBar, "TOPLEFT", 0, 3)
+		myPlate.name:SetPoint("BOTTOMRIGHT", myPlate.level, "BOTTOMLEFT", -2, 0)
 	end
 
 	NP:CheckFilterAndHealers(self)
@@ -515,6 +517,10 @@ function NP:OnShow()
 		end
 	end
 	
+	NP.UpdateLevelAndName(self, myPlate)
+	NP.ColorizeAndScale(self, myPlate)	
+	NP.SetUnitInfo(self, myPlate)
+	
 	NP.HealthBar_OnValueChanged(self.healthBar, self.healthBar:GetValue())
 
 	--Check to see if its possible to update auras/comboPoints via raid icon or class color when a plate is shown.
@@ -526,7 +532,7 @@ function NP:OnShow()
 		self.allowCheck = true
 	end
 
-	myPlate.name = gsub(self.name:GetText(), '%s%(%*%)','')
+	myPlate.nameText = gsub(self.name:GetText(), '%s%(%*%)','')
 end
 
 function NP:OnHide()
@@ -661,7 +667,7 @@ function NP:UpdateSettings()
 	local fontSize, fontOutline = NP.db.fontSize, NP.db.fontOutline
 
 	--Name
-	self.name:FontTemplate(font, fontSize, fontOutline)
+	myPlate.name:FontTemplate(font, fontSize, fontOutline)
 
 	--Level
 	myPlate.level:FontTemplate(font, fontSize, fontOutline)
@@ -774,8 +780,8 @@ function NP:CreatePlate(frame)
 	myPlate.level:SetJustifyH("RIGHT")
 
 	--Name
-	frame.name:SetParent(myPlate)
-	frame.name:SetJustifyH("LEFT")
+	myPlate.name = myPlate:CreateFontString(nil, 'OVERLAY')
+	myPlate.name:SetJustifyH("LEFT")
 
 	--Raid Icon
 	frame.raidIcon:SetParent(myPlate)
@@ -850,6 +856,7 @@ function NP:CreatePlate(frame)
 	NP:QueueObject(frame, frame.healthBar)
 	NP:QueueObject(frame, frame.castBar)
 	NP:QueueObject(frame, frame.level)
+	NP:QueueObject(frame, frame.name)
 	NP:QueueObject(frame, frame.threat)
 	NP:QueueObject(frame, frame.border)
 	NP:QueueObject(frame, frame.castBar.shield)
@@ -1470,7 +1477,7 @@ function NP:SearchNameplateByName(sourceName)
 	if not sourceName then return; end
 	local SearchFor = strsplit("-", sourceName)
 	for frame, myPlate in pairs(NP.CreatedPlates) do
-		if frame and frame:IsShown() and myPlate.name == SearchFor and RAID_CLASS_COLORS[frame.unitType] then
+		if frame and frame:IsShown() and myPlate.nameText == SearchFor and RAID_CLASS_COLORS[frame.unitType] then
 			return frame
 		end
 	end
