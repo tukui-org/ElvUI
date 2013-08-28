@@ -14,16 +14,16 @@ local function Round(number, decimalPlaces)
 	return floor(num + .5)
 end
 
-local function FormatTime(timeInSec)
-	local h = floor(timeInSec / 3600)
-	local m = floor((timeInSec - (3600 * h)) / 60)
-	local s = floor(timeInSec - ((3600 * h) + (60 * m)))
-	if h > 0 then
-		return h .. ":" .. m .. "h"
-	elseif m > 0 then
-		return m .. "m"
+local DAY, HOUR, MINUTE = 86400, 3600, 60
+local function FormatTime(s)
+	if s < MINUTE then
+		return ("%.1fs"):format(s)
+	elseif s < HOUR then
+		return ("%dm %ds"):format(s/60%60, s%60)
+	elseif s < DAY then
+		return ("%dh %dm"):format(s/(60*60), s/60%60)
 	else
-		return s .. "s"
+		return ("%dd %dh"):format(s/DAY, (s / HOUR) - (floor(s/DAY) * 24))
 	end
 end
 

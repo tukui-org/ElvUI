@@ -130,12 +130,12 @@ P["nameplate"] = {
 		["badTransitionColor"] = {r = 240/255, g = 154/255, b = 17/255},
 	},
 	['auras'] = {
-		['enable'] = true,
 		['font'] = 'ElvUI Pixel',
 		['fontSize'] = 14,
 		['fontOutline'] = 'MONOCHROMEOUTLINE',
 		['numAuras'] = 4,
-		['stretchTexture'] = false,
+		['stretchTexture'] = true,
+		['showPersonal'] = true,
 		['additionalFilter'] = 'CCDebuffs',
 		['filterType'] = 'DEBUFFS'
 	},	
@@ -165,6 +165,11 @@ P['auras'] = {
 	["dayscolor"] = { r = 0.93, g = 0.93, b = 0.93 },
 	["indicatordayscolor"] = { r = 0.93, g = 0.93, b = 0.93 },
 
+	['countYOffset'] = 0,
+	['countXOffset'] = 0,
+	['timeYOffset'] = 0,
+	['timeXOffset'] = 0,
+
 	['consolidatedBuffs'] = {
 		['enable'] = true,
 		['filter'] = true,
@@ -173,23 +178,32 @@ P['auras'] = {
 		['fontSize'] = 10,
 		['fontOutline'] = 'MONOCHROMEOUTLINE',
 	},
-
-	['wrapAfter'] = 12,
+	
 	['fadeThreshold'] = -1,
 	['decimalThreshold'] = 4,
 	['buffs'] = {
+		['growthDirection'] = 'LEFT_DOWN',
+		['wrapAfter'] = 12,
+		['maxWraps'] = 3,
+		['horizontalSpacing'] = 6,
+		['verticalSpacing'] = 16,
 		['sortMethod'] = "TIME",
 		['sortDir'] = '-',
-		['maxWraps'] = 3,
 		['seperateOwn'] = 1,
+		['size'] = 32,
 	},
 	['debuffs'] = {
+		['growthDirection'] = 'LEFT_DOWN',
+		['wrapAfter'] = 12,
+		['maxWraps'] = 1,
+		['horizontalSpacing'] = 6,
+		['verticalSpacing'] = 16,		
 		['sortMethod'] = "TIME",
 		['sortDir'] = '-',
-		['maxWraps'] = 1,
+		['seperateOwn'] = 1,
+		['size'] = 32,
 	},
 }
-
 --Chat
 P['chat'] = {
 	['lockPositions'] = true,
@@ -264,9 +278,9 @@ P['datatexts'] = {
 P['tooltip'] = {
 	['cursorAnchor'] = false,
 	['targetInfo'] = true,
-	['playerTitles'] = false,
+	['playerTitles'] = true,
 	['guildRanks'] = true,
-	['talentInfo'] = true,
+	['inspectInfo'] = true,
 	['itemCount'] = true,
 	['spellID'] = true,
 	['visibility'] = {

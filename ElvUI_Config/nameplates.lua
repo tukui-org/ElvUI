@@ -174,7 +174,7 @@ E.Options.args.nameplate = {
 					end,
 					set = function(info, r, g, b)
 						E.db.nameplate.reactions[ info[#info] ] = {}
-						local t = E.db.nameplate.threat[ info[#info] ]
+						local t = E.db.nameplate.reactions[ info[#info] ]
 						t.r, t.g, t.b = r, g, b
 						NP:UpdateAllPlates()
 					end,				
@@ -334,7 +334,7 @@ E.Options.args.nameplate = {
 					order = 1,
 					name = L['Healer Icon'],
 					desc = L['Display a healer icon over known healers inside battlegrounds or arenas.'],
-					set = function(info, value) E.db.nameplate[ info[#info] ] = value; NP:PLAYER_ENTERING_WORLD(); NP:UpdateAllPlates() end,
+					set = function(info, value) E.db.nameplate.raidHealIcon[ info[#info] ] = value; NP:PLAYER_ENTERING_WORLD(); NP:UpdateAllPlates() end,
 				},			
 				size = {
 					order = 2,
@@ -369,14 +369,9 @@ E.Options.args.nameplate = {
 			get = function(info) return E.db.nameplate.auras[ info[#info] ] end,
 			set = function(info, value) E.db.nameplate.auras[ info[#info] ] = value; NP:UpdateAllPlates() end,	
 			args = {
-				enable = {
-					order = 1,
-					type = "toggle",
-					name = L["Enable"],
-				},	
 				numAuras = {
 					type = "range",
-					order = 2,
+					order = 1,
 					name = L["Number of Auras"],
 					type = "range",
 					min = 2, max = 8, step = 1,		
@@ -385,8 +380,13 @@ E.Options.args.nameplate = {
 					type = "toggle",
 					name = L["Stretch Texture"],
 					desc = L["Stretch the icon texture, intended for icons that don't have the same width/height."],
-					order = 4,
+					order = 2,
 				},
+				showPersonal = {
+					order = 3,
+					type = "toggle",
+					name = L["Show Personal Auras"],
+				},					
 				additionalFilter = {
 					type = "select",
 					order = 5,

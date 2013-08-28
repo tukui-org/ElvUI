@@ -560,10 +560,12 @@ function E:UpdateAll(ignoreInstall)
 	T:UpdatePosition()
 	T:ToggleEnable()
 	
-	self:GetModule('Auras').db = self.db.auras
+	local A = E:GetModule('Auras')
+	A.db = self.db.auras
+	A:UpdateHeader(ElvUIPlayerBuffs)
+	A:UpdateHeader(ElvUIPlayerDebuffs)
+
 	self:GetModule('Tooltip').db = self.db.tooltip
-	
-	E:GetModule('Auras'):UpdateAllHeaders()
 	
 	if self.private.install_complete == nil or (self.private.install_complete and type(self.private.install_complete) == 'boolean') or (self.private.install_complete and type(tonumber(self.private.install_complete)) == 'number' and tonumber(self.private.install_complete) <= 3.83) then
 		if not ignoreInstall then
@@ -575,7 +577,7 @@ function E:UpdateAll(ignoreInstall)
 	
 	self:UpdateBorderColors()
 	self:UpdateBackdropColors()
-	self:UpdateFrameTemplates()
+	--self:UpdateFrameTemplates()
 	
 	local LO = E:GetModule('Layout')
 	LO:ToggleChatPanels()	

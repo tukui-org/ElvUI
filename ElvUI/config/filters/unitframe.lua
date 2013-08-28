@@ -603,8 +603,9 @@ G.unitframe.buffwatch = {
 		ClassBuff(1044, "BOTTOMRIGHT", {0.89, 0.45, 0}, true),	-- Hand of Freedom
 		ClassBuff(1038, "BOTTOMRIGHT", {0.93, 0.75, 0}, true),	-- Hand of Salvation
 		ClassBuff(6940, "BOTTOMRIGHT", {0.89, 0.1, 0.1}, true),	-- Hand of Sacrifice
-		ClassBuff(114039, "BOTTOMRIGHT", {164/255, 105/255, 184/255}), -- Hand of Purity
+		ClassBuff(114039, "BOTTOMRIGHT", {0.64, 0.41, 0.72}, true), -- Hand of Purity
 		ClassBuff(20925, 'TOPLEFT', {0.93, 0.75, 0}), -- Sacred Shield
+		ClassBuff(114163, 'BOTTOMLEFT', {0.87, 0.7, 0.03}), -- Eternal Flame
 	},
 	SHAMAN = {
 		ClassBuff(61295, "TOPRIGHT", {0.7, 0.3, 0.7}),	 -- Riptide
