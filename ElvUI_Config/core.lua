@@ -410,7 +410,7 @@ E.Options.args.general = {
 		totems = {
 			order = 5,
 			type = "group",
-			name = TUTORIAL_TITLE47,
+			name = L["Class Bar"],
 			guiInline = true,
 			get = function(info) return E.db.general.totems[ info[#info] ] end,
 			set = function(info, value) E.db.general.totems[ info[#info] ] = value; E:GetModule('Totems'):PositionAndSize() end,
@@ -425,21 +425,18 @@ E.Options.args.general = {
 					order = 2,
 					type = 'range',
 					name = L["Button Size"],
-					desc = L['Set the size of your bag buttons.'],
 					min = 24, max = 60, step = 1,
 				},
 				spacing = {
 					order = 3,
 					type = 'range',
 					name = L['Button Spacing'],
-					desc = L['The spacing between buttons.'],
 					min = 1, max = 10, step = 1,			
 				},
 				sortDirection = {
 					order = 4,
 					type = 'select',
 					name = L["Sort Direction"],
-					desc = L['The direction that the bag frames will grow from the anchor.'],
 					values = {
 						['ASCENDING'] = L['Ascending'],
 						['DESCENDING'] = L['Descending'],
@@ -449,7 +446,6 @@ E.Options.args.general = {
 					order = 5,
 					type = 'select',
 					name = L['Bar Direction'],
-					desc = L['The direction that the bag frames be (Horizontal or Vertical).'],
 					values = {
 						['VERTICAL'] = L['Vertical'],
 						['HORIZONTAL'] = L['Horizontal'],
