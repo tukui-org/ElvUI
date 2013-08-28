@@ -235,7 +235,6 @@ end
 
 function TT:GetItemLvL(unit)
 	local total, item = 0, 0
-	unit = unit or "player"
 
 	for i = 1, #SlotName do
 		local slot = GetInventoryItemLink(unit, GetInventorySlotInfo(("%sSlot"):format(SlotName[i])))
@@ -249,8 +248,8 @@ function TT:GetItemLvL(unit)
 		end
 	end
 
-	if (total < 1 or item < 1) then
-		return 0
+	if (total < 6 or item < 2) then
+		return
 	end
 	
 	return floor(total / item);
@@ -277,15 +276,15 @@ function TT:GetLevelLine(tt, offset)
 	end
 end
 
-function TT:GetTalentSpec(unit)
+function TT:GetTalentSpec(unit, isPlayer)
 	local spec
-	if not unit then
+	if(isPlayer) then
 		spec = GetSpecialization()
 	else
 		spec = GetInspectSpecialization(unit)
 	end
 	if(spec ~= nil and spec > 0) then
-		if unit ~= nil then 
+		if(not isPlayer) then 
 			local role = GetSpecializationRoleByID(spec);
 			if(role ~= nil) then
 				local _, name = GetSpecializationInfoByID(spec);
@@ -300,63 +299,59 @@ function TT:GetTalentSpec(unit)
 end
 
 function TT:INSPECT_READY(event, GUID)
-	if GUID ~= self.lastGUID then return end
+	if(self.lastGUID ~= GUID) then return end
 	
 	local unit = "mouseover"
 	if(GUID == playerGUID) then
-		unit = nil
+		unit = "player"
 	end
 
-	local itemLevel = self:GetItemLvL(unit)
-	local talentName = self:GetTalentSpec(unit)
-	inspectCache[GUID] = {time = GetTime()}
-	if(talentName) then
-		inspectCache[GUID].talent = talentName
-	end
+	if(UnitExists(unit)) then
+		local itemLevel = self:GetItemLvL(unit)
+		local talentName = self:GetTalentSpec(unit, unit == "player")
+		inspectCache[GUID] = {time = GetTime()}
 
-	if(itemLevel) then
-		inspectCache[GUID].itemLevel = itemLevel
-	end
+		if(talentName) then
+			inspectCache[GUID].talent = talentName
+		end
 
-	if InspectFrame and (not InspectFrame:IsShown()) then
-		ClearInspectPlayer()
-	end
+		if(itemLevel) then
+			inspectCache[GUID].itemLevel = itemLevel
+		end
 
+		GameTooltip:SetUnit(unit)
+	end
 	self:UnregisterEvent("INSPECT_READY")
-	GameTooltip:SetUnit("mouseover")
 end
 
-function TT:ShowInspectInfo(tt, unit, level, r, g, b)
+function TT:ShowInspectInfo(tt, unit, level, r, g, b, numTries)
 	local canInspect = CanInspect(unit)
-	if(not canInspect or level < 10) then return end
+	if(not canInspect or level < 10 or numTries > 1) then return end
 
 	local GUID = UnitGUID(unit)
 	if(inspectCache[GUID]) then
-		if((GetTime() - inspectCache[GUID].time) > 900) then
-			inspectCache[GUID] = nil
-
-			return self:ShowInspectInfo(tt, unit, level, r, g, b)
-		end
-
 		local talent = inspectCache[GUID].talent
 		local itemLevel = inspectCache[GUID].itemLevel
-		if(talent) then
-			tt:AddDoubleLine(L["Talent Specialization:"], talent, nil, nil, nil, r, g, b)
+
+		if(((GetTime() - inspectCache[GUID].time) > 900) or not talent or not itemLevel) then
+			inspectCache[GUID] = nil
+
+			numTries = numTries + 1
+			return self:ShowInspectInfo(tt, unit, level, r, g, b, numTries)
 		end
-		if(itemLevel and itemLevel > 0) then
-			tt:AddDoubleLine(L["Item Level:"], itemLevel, nil, nil, nil, 1, 1, 1)
-		end
+
+		tt:AddDoubleLine(L["Talent Specialization:"], talent, nil, nil, nil, r, g, b)
+		tt:AddDoubleLine(L["Item Level:"], itemLevel, nil, nil, nil, 1, 1, 1)
 	else
-		if((not canInspect) or (InspectFrame and InspectFrame:IsShown()) or self.lastGUID == GUID) then return end
+		if(not canInspect) or (InspectFrame and InspectFrame:IsShown()) then return end
 		self.lastGUID = GUID
 
 		if(UnitIsUnit(unit, "player")) then
 			self:INSPECT_READY("INSPECT_READY", GUID)
 		else
+			NotifyInspect(unit)
 			self:RegisterEvent("INSPECT_READY")
 		end
-		
-		NotifyInspect(unit)
 	end	
 end
 
@@ -433,7 +428,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 
 		--High CPU usage, restricting it to shift key down only.
 		if(self.db.inspectInfo and isShiftKeyDown) then
-			self:ShowInspectInfo(tt, unit, level, color.r, color.g, color.b)
+			self:ShowInspectInfo(tt, unit, level, color.r, color.g, color.b, 0)
 		end		
 	else
 		if(UnitIsTapped(unit) and not UnitIsTappedByPlayer(unit)) then
