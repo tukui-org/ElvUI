@@ -422,6 +422,8 @@ G.unitframe.aurafilters['Blacklist'] = {
 		[SpellName(123981)] = Defaults(), -- Perdition
 		[SpellName(15007)] = Defaults(), -- Ress Sickness
 		[SpellName(123981)] = Defaults(), -- Perdition
+		[SpellName(113942)] = Defaults(), -- Demonic: Gateway
+		[SpellName(89140)] = Defaults(), -- Demonic Rebirth: Cooldown
 	},
 }
 
