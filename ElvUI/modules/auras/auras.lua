@@ -267,6 +267,8 @@ end
 function A:Initialize()
 	if self.db then return; end --IDK WHY BUT THIS IS GETTING CALLED TWICE FROM SOMEWHERE...
 
+	self:Construct_ConsolidatedBuffs()
+
 	if(E.private.auras.disableBlizzard) then
 		BuffFrame:Kill()
 		ConsolidatedBuffs:Kill()
@@ -277,9 +279,7 @@ function A:Initialize()
 	if(not E.private.auras.enable) then return end
 
 	self.db = E.db.auras
-
-	self:Construct_ConsolidatedBuffs()
-
+	
 	self.BuffFrame = self:CreateAuraHeader("HELPFUL")
 	self.BuffFrame:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", -8, 0)
 	E:CreateMover(self.BuffFrame, "BuffsMover", L["Player Buffs"])
