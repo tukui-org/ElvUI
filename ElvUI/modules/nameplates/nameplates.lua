@@ -1191,7 +1191,7 @@ end
 
 function NP:SetAuraInstance(guid, spellID, expiration, stacks, caster, duration, texture, auratype, auratarget)
 	local filter = false
-	if (self.db.auras.enable and caster == UnitGUID('player')) then
+	if (self.db.auras.showPersonal and caster == UnitGUID('player')) then
 		filter = true;
 	end
 	

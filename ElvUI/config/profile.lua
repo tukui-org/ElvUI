@@ -125,12 +125,12 @@ P["nameplate"] = {
 		["badTransitionColor"] = {r = 240/255, g = 154/255, b = 17/255},
 	},
 	['auras'] = {
-		['enable'] = true,
 		['font'] = 'ElvUI Pixel',
 		['fontSize'] = 7,
 		['fontOutline'] = 'MONOCHROMEOUTLINE',
 		['numAuras'] = 4,
 		['stretchTexture'] = true,
+		['showPersonal'] = true,
 		['additionalFilter'] = 'CCDebuffs',
 		['filterType'] = 'DEBUFFS'
 	},	
