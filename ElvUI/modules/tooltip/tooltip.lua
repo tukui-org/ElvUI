@@ -345,7 +345,6 @@ function TT:ShowInspectInfo(tt, unit, level, r, g, b)
 	end	
 end
 
-
 function TT:GameTooltip_OnTooltipSetUnit(tt)
 	local unit = select(2, tt:GetUnit())
 	if((tt:GetOwner() ~= UIParent) and self.db.visibility.unitFrames ~= 'NONE') then 
@@ -477,8 +476,9 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 				tinsert(targetList, format("|c%s%s|r", RAID_CLASS_COLORS[class].colorStr, UnitName(groupUnit)))
 			end
 		end
-		if (#targetList > 0) then
-			GameTooltip:AddLine(format("%s %s", L['Targeted By:'], tconcat(targetList, ", ")));
+		local numList = #targetList
+		if (numList > 0) then
+			GameTooltip:AddLine(format("%s (|cffffffff%d|r): %s", L['Targeted By:'], numList, tconcat(targetList, ", ")), nil, nil, nil, true);
 			twipe(targetList);
 		end	
 	end
