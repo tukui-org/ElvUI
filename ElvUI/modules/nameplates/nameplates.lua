@@ -128,7 +128,7 @@ end
 
 function NP:CheckFilterAndHealers(frame)
 	local myPlate = NP.CreatedPlates[frame]
-	local name = myPlate.name
+	local name = frame.name:GetText()
 	local db = E.global.nameplate["filter"][name]
 
 	if db and db.enable then
@@ -351,7 +351,8 @@ function NP:SetAlpha(myPlate)
 end
 
 function NP:SetUnitInfo(myPlate)
-	if self:GetAlpha() == 1 and NP.targetName and NP.targetName == myPlate.name then
+	local plateName = gsub(self.name:GetText(), '%s%(%*%)','')
+	if self:GetAlpha() == 1 and NP.targetName and (NP.targetName == plateName) then
 		self.guid = UnitGUID("target")
 		self.unit = "target"
 		myPlate:SetFrameLevel(2)
@@ -366,7 +367,7 @@ function NP:SetUnitInfo(myPlate)
 			NP:UpdateComboPointsByUnitID('target')
 			self.allowCheck = nil
 		end
-	elseif self.highlight:IsShown() and UnitExists("mouseover") and UnitName("mouseover") == myPlate.name then
+	elseif self.highlight:IsShown() and UnitExists("mouseover") and (UnitName("mouseover") == plateName) then
 		if(self.unit ~= "mouseover" or self.allowCheck) then
 			myPlate:SetFrameLevel(1)
 			myPlate.overlay:Show()			
@@ -548,7 +549,7 @@ function NP:OnHide()
 
 	--UIFrameFadeOut(myPlate, 0.1, myPlate:GetAlpha(), 0)
 	--myPlate:Hide()
-	--myPlate:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT")
+	myPlate:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT") --Prevent nameplate being in random location on screen when first shown
 end
 
 function NP:HealthBar_OnSizeChanged(width, height)
@@ -1414,7 +1415,7 @@ function NP:UpdateAuras(frame)
 	if not guid then
 		-- Attempt to ID widget via Name or Raid Icon
 		if RAID_CLASS_COLORS[frame.unitType] then 
-			guid = NP.ByName[myPlate.name]
+			guid = NP.ByName[frame.name:GetText()]
 		elseif frame.raidIcon:IsShown() then 
 			guid = NP.ByRaidIcon[frame.raidIconType] 
 		end
