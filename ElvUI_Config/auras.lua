@@ -6,7 +6,7 @@ local auraOptions = {
 		type = 'range',
 		name = L['Size'],
 		desc = L['Set the size of the individual auras.'],
-		min = 16, max = 40, step = 2,
+		min = 16, max = 60, step = 2,
 		order = 1,
 	},				
 	growthDirection = {

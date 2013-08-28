@@ -519,9 +519,9 @@ function NP:OnShow()
 	
 	NP.UpdateLevelAndName(self, myPlate)
 	NP.ColorizeAndScale(self, myPlate)	
-	NP.SetUnitInfo(self, myPlate)
-	
+
 	NP.HealthBar_OnValueChanged(self.healthBar, self.healthBar:GetValue())
+	myPlate.nameText = gsub(self.name:GetText(), '%s%(%*%)','')
 
 	--Check to see if its possible to update auras/comboPoints via raid icon or class color when a plate is shown.
 	if(self.raidIcon:IsShown() and not self.isSmall) then
@@ -531,8 +531,6 @@ function NP:OnShow()
 	else
 		self.allowCheck = true
 	end
-
-	myPlate.nameText = gsub(self.name:GetText(), '%s%(%*%)','')
 end
 
 function NP:OnHide()
