@@ -414,11 +414,15 @@ function NP:PLAYER_ENTERING_WORLD()
 	end
 end
 
+function NP:UPDATE_MOUSEOVER_UNIT()
+	WorldFrame.elapsed = 0.1
+end
+
 
 function NP:PLAYER_TARGET_CHANGED()
 	if(UnitExists("target")) then
 		self.targetName = UnitName("target")
-		WorldFrame.elapsed = 0
+		WorldFrame.elapsed = 0.1
 		NP.NumTargetChecks = 0
 	else
 		self.targetName = nil
@@ -462,6 +466,7 @@ function NP:Initialize()
 	self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 	self:RegisterEvent("UNIT_AURA")
 	self:RegisterEvent("PLAYER_TARGET_CHANGED")
+	self:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
 	self:RegisterEvent("UNIT_COMBO_POINTS")
 
 	self.viewPort = IsAddOnLoaded("SunnArt");
