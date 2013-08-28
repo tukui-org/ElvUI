@@ -66,7 +66,7 @@ function A:UpdateTime(elapsed)
 
 	local timerValue, formatID
 	timerValue, formatID, self.nextUpdate = E:GetTimeInfo(self.timeLeft, E.db.auras.decimalThreshold)
-	self.time:SetFormattedText(("%s%s|r%s%s|r"):format(E.TimeColors[formatID], E.TimeFormats[formatID][3]), E.IndicatorColors[formatID], E.TimeFormats[formatID][4]), timerValue)	
+	self.time:SetFormattedText(("%s%s|r%s%s|r"):format(E.TimeColors[formatID], E.TimeFormats[formatID][3], E.IndicatorColors[formatID], E.TimeFormats[formatID][4]), timerValue)	
 
 	if self.timeLeft > E.db.auras.fadeThreshold then
 		E:StopFlash(self)

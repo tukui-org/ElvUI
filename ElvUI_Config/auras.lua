@@ -190,7 +190,6 @@ E.Options.args.auras = {
 		colors = {
 			order = 6,
 			type = 'group',
-			guiInline = true,
 			name = L['Colors'],
 			args = {
 				numbers = {
@@ -210,7 +209,6 @@ E.Options.args.auras = {
 								E.db.auras.hourscolor = P['auras'].hourscolor;
 								E.db.auras.dayscolor = P['auras'].dayscolor;
 								A:UpdateTimerSettings()
-								A:UpdateAllHeaders()
 							end,
 						},
 						expiringcolor = {
@@ -227,7 +225,6 @@ E.Options.args.auras = {
 								local t = E.db.auras[ info[#info] ]
 								t.r, t.g, t.b = r, g, b
 								A:UpdateTimerSettings()
-								A:UpdateAllHeaders()
 							end,					
 						},
 						secondscolor = {
@@ -244,7 +241,6 @@ E.Options.args.auras = {
 								local t = E.db.auras[ info[#info] ]
 								t.r, t.g, t.b = r, g, b
 								A:UpdateTimerSettings()
-								A:UpdateAllHeaders()
 							end,				
 						},
 						minutescolor = {
@@ -261,7 +257,6 @@ E.Options.args.auras = {
 								local t = E.db.auras[ info[#info] ]
 								t.r, t.g, t.b = r, g, b
 								A:UpdateTimerSettings()
-								A:UpdateAllHeaders()
 							end,				
 						},
 						hourscolor = {
@@ -278,7 +273,6 @@ E.Options.args.auras = {
 								local t = E.db.auras[ info[#info] ]
 								t.r, t.g, t.b = r, g, b
 								A:UpdateTimerSettings()
-								A:UpdateAllHeaders()
 							end,				
 						},	
 						dayscolor = {
@@ -295,7 +289,6 @@ E.Options.args.auras = {
 								local t = E.db.auras[ info[#info] ]
 								t.r, t.g, t.b = r, g, b
 								A:UpdateTimerSettings()
-								A:UpdateAllHeaders()
 							end,				
 						},
 					},
@@ -317,7 +310,6 @@ E.Options.args.auras = {
 								E.db.auras.indicatorhourscolor = P['auras'].indicatorhourscolor;
 								E.db.auras.indicatordayscolor = P['auras'].indicatordayscolor;
 								A:UpdateTimerSettings()
-								A:UpdateAllHeaders()
 							end,
 						},
 						indicatorexpiringcolor = {
@@ -334,7 +326,6 @@ E.Options.args.auras = {
 								local t = E.db.auras[ info[#info] ]
 								t.r, t.g, t.b = r, g, b
 								A:UpdateTimerSettings()
-								A:UpdateAllHeaders()
 							end,					
 						},
 						indicatorsecondscolor = {
@@ -351,7 +342,6 @@ E.Options.args.auras = {
 								local t = E.db.auras[ info[#info] ]
 								t.r, t.g, t.b = r, g, b
 								A:UpdateTimerSettings()
-								A:UpdateAllHeaders()
 							end,				
 						},
 						indicatorminutescolor = {
@@ -368,7 +358,6 @@ E.Options.args.auras = {
 								local t = E.db.auras[ info[#info] ]
 								t.r, t.g, t.b = r, g, b
 								A:UpdateTimerSettings()
-								A:UpdateAllHeaders()
 							end,				
 						},
 						indicatorhourscolor = {
@@ -385,7 +374,6 @@ E.Options.args.auras = {
 								local t = E.db.auras[ info[#info] ]
 								t.r, t.g, t.b = r, g, b
 								A:UpdateTimerSettings()
-								A:UpdateAllHeaders()
 							end,				
 						},	
 						indicatordayscolor = {
@@ -402,7 +390,6 @@ E.Options.args.auras = {
 								local t = E.db.auras[ info[#info] ]
 								t.r, t.g, t.b = r, g, b
 								A:UpdateTimerSettings()
-								A:UpdateAllHeaders()
 							end,				
 						},
 					},
