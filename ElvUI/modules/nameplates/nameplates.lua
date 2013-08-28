@@ -287,7 +287,13 @@ function NP:ColorizeAndScale(myPlate)
 	elseif unitType == "HOSTILE_NPC" or unitType == "NEUTRAL_NPC" then
 		local classRole = E.role
 		local threatReaction = NP:GetThreatReaction(self)
-		if threatReaction == 'FULL_THREAT' then
+		if(not NP.db.threat.enable) then
+			if unitType == "NEUTRAL_NPC" then
+				color = NP.db.reactions.neutral
+			else
+				color = NP.db.reactions.enemy
+			end			
+		elseif threatReaction == 'FULL_THREAT' then
 			if classRole == 'Tank' then
 				color = NP.db.threat.goodColor
 				scale = NP.db.threat.goodScale
@@ -425,15 +431,19 @@ function NP:PLAYER_REGEN_ENABLED()
 	SetCVar("nameplateShowEnemies", 0)
 end
 
-function NP:CombatToggle()
+function NP:CombatToggle(noToggle)
 	if(self.db.combatHide) then
 		self:RegisterEvent("PLAYER_REGEN_DISABLED")
 		self:RegisterEvent("PLAYER_REGEN_ENABLED")
-		SetCVar("nameplateShowEnemies", 0)
+		if(not noToggle) then
+			SetCVar("nameplateShowEnemies", 0)
+		end
 	else
 		self:UnregisterEvent("PLAYER_REGEN_DISABLED")
 		self:UnregisterEvent("PLAYER_REGEN_ENABLED")
-		SetCVar("nameplateShowEnemies", 1)
+		if(not noToggle) then
+			SetCVar("nameplateShowEnemies", 1)
+		end
 	end
 end
 
@@ -453,7 +463,7 @@ function NP:Initialize()
 	self:RegisterEvent("UNIT_COMBO_POINTS")
 
 	self.viewPort = IsAddOnLoaded("SunnArt");
-	self:CombatToggle()
+	self:CombatToggle(true)
 end
 
 function NP:UpdateAllPlates()
