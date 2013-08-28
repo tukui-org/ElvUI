@@ -190,7 +190,7 @@ P['auras'] = {
 		['sortMethod'] = "TIME",
 		['sortDir'] = '-',
 		['seperateOwn'] = 1,
-		['size'] = 32,
+		['size'] = 26,
 	},
 	['debuffs'] = {
 		['growthDirection'] = 'LEFT_DOWN',
@@ -201,7 +201,7 @@ P['auras'] = {
 		['sortMethod'] = "TIME",
 		['sortDir'] = '-',
 		['seperateOwn'] = 1,
-		['size'] = 32,
+		['size'] = 26,
 	},
 }
 --Chat
