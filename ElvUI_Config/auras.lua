@@ -88,6 +88,7 @@ local auraOptions = {
 E.Options.args.auras = {
 	type = 'group',
 	name = BUFFOPTIONS_LABEL,
+	childGroups = "select",
 	get = function(info) return E.db.auras[ info[#info] ] end,
 	set = function(info, value) E.db.auras[ info[#info] ] = value; A:UpdateHeader(ElvUIPlayerBuffs); A:UpdateHeader(ElvUIPlayerDebuffs) end,
 	args = {
@@ -106,10 +107,19 @@ E.Options.args.auras = {
 				E:StaticPopup_Show("PRIVATE_RL")
 			end,		
 		},	
+		disableBlizzard = {
+			order = 3,
+			type = 'toggle',
+			name = L['Disabled Blizzard'],
+			get = function(info) return E.private.auras[ info[#info] ] end,
+			set = function(info, value) 
+				E.private.auras[ info[#info] ] = value; 
+				E:StaticPopup_Show("PRIVATE_RL")
+			end,		
+		},			
 		general = {
 			order = 5,
 			type = 'group',
-			guiInline = true,
 			name = L['General'],
 			args = {
 				fadeThreshold = {
@@ -173,7 +183,6 @@ E.Options.args.auras = {
 		consolidatedBuffs = {
 			order = 9,
 			type = 'group',
-			guiInline = true,
 			name = L['Consolidated Buffs'],	
 			disabled = function() return not E.private.general.minimap.enable end,				
 			get = function(info) return E.db.auras.consolidatedBuffs[ info[#info] ] end,
@@ -231,7 +240,6 @@ E.Options.args.auras = {
 		buffs = {
 			order = 10,
 			type = 'group',
-			guiInline = true,
 			name = L['Buffs'],
 			get = function(info) return E.db.auras.buffs[ info[#info] ] end,
 			set = function(info, value) E.db.auras.buffs[ info[#info] ] = value; A:UpdateHeader(ElvUIPlayerBuffs) end,			
@@ -240,7 +248,6 @@ E.Options.args.auras = {
 		debuffs = {
 			order = 20,
 			type = 'group',
-			guiInline = true,
 			name = L['Debuffs'],
 			get = function(info) return E.db.auras.debuffs[ info[#info] ] end,
 			set = function(info, value) E.db.auras.debuffs[ info[#info] ] = value; A:UpdateHeader(ElvUIPlayerDebuffs) end,				
