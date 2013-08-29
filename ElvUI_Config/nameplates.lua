@@ -458,11 +458,16 @@ E.Options.args.nameplate = {
 			get = function(info) return E.db.nameplate.threat[ info[#info] ] end,
 			set = function(info, value) E.db.nameplate.threat[ info[#info] ] = value; NP:UpdateAllPlates() end,	
 			args = {
+				enable = {
+					type = "toggle",
+					order = 1,
+					name = L["Enable"],
+				},
 				scaling = {
 					type = 'group',
 					name = L['Scaling'],
 					guiInline = true,
-					order = 1,
+					order = 2,
 					args = {
 						goodScale = {
 							type = 'range',
@@ -479,7 +484,7 @@ E.Options.args.nameplate = {
 					},
 				},
 				colors = {
-					order = 2,
+					order = 3,
 					type = "group",
 					name = L["Colors"],
 					guiInline = true,

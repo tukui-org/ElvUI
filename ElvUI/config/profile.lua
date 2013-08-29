@@ -122,6 +122,7 @@ P["nameplate"] = {
 		['attachTo'] = 'LEFT',
 	},
 	['threat'] = {
+		['enable'] = true,
 		['goodScale'] = 1,
 		['badScale'] = 1,
 		["goodColor"] = {r = 75/255,  g = 175/255, b = 76/255},
