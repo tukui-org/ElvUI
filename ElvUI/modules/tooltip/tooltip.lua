@@ -7,7 +7,6 @@ local find, format = string.find, string.format
 local floor = math.floor
 local twipe, tinsert, tconcat = table.wipe, table.insert, table.concat
 
-local playerGUID = UnitGUID("player")
 local targetList, inspectCache = {}, {}
 local NIL_COLOR = { r=1, g=1, b=1 }
 local TAPPED_COLOR = { r=.6, g=.6, b=.6 }
@@ -248,7 +247,7 @@ function TT:GetItemLvL(unit)
 		end
 	end
 
-	if (total < 6 or item < 2) then
+	if (total < 1 or item < 15) then
 		return
 	end
 	
@@ -302,13 +301,9 @@ function TT:INSPECT_READY(event, GUID)
 	if(self.lastGUID ~= GUID) then return end
 	
 	local unit = "mouseover"
-	if(GUID == playerGUID) then
-		unit = "player"
-	end
-
 	if(UnitExists(unit)) then
 		local itemLevel = self:GetItemLvL(unit)
-		local talentName = self:GetTalentSpec(unit, unit == "player")
+		local talentName = self:GetTalentSpec(unit)
 		inspectCache[GUID] = {time = GetTime()}
 
 		if(talentName) then
@@ -336,8 +331,7 @@ function TT:ShowInspectInfo(tt, unit, level, r, g, b, numTries)
 		if(((GetTime() - inspectCache[GUID].time) > 900) or not talent or not itemLevel) then
 			inspectCache[GUID] = nil
 
-			numTries = numTries + 1
-			return self:ShowInspectInfo(tt, unit, level, r, g, b, numTries)
+			return self:ShowInspectInfo(tt, unit, level, r, g, b, numTries + 1)
 		end
 
 		tt:AddDoubleLine(L["Talent Specialization:"], talent, nil, nil, nil, r, g, b)
@@ -347,7 +341,13 @@ function TT:ShowInspectInfo(tt, unit, level, r, g, b, numTries)
 		self.lastGUID = GUID
 
 		if(UnitIsUnit(unit, "player")) then
-			self:INSPECT_READY("INSPECT_READY", GUID)
+			inspectCache[GUID] = {
+				time = GetTime(), 
+				itemLevel = floor(select(2, GetAverageItemLevel())), 
+				talent = self:GetTalentSpec(unit, true)
+			}
+
+			self:ShowInspectInfo(tt, unit, level, r, g, b, numTries + 1)
 		else
 			NotifyInspect(unit)
 			self:RegisterEvent("INSPECT_READY")
