@@ -365,6 +365,7 @@ function NP:SetUnitInfo(myPlate)
 		self.unit = "target"
 		myPlate:SetFrameLevel(2)
 		myPlate.overlay:Hide()
+		myPlate.targetIndicator:Show()
 		if((NP.NumTargetChecks > -1) or self.allowCheck) then
 			NP.NumTargetChecks = NP.NumTargetChecks + 1
 			if NP.NumTargetChecks > 0 then
@@ -379,7 +380,7 @@ function NP:SetUnitInfo(myPlate)
 		if(self.unit ~= "mouseover" or self.allowCheck) then
 			myPlate:SetFrameLevel(1)
 			myPlate.overlay:Show()			
-
+			myPlate.targetIndicator:Hide()
 			NP:UpdateAurasByUnitID('mouseover')
 			NP:UpdateComboPointsByUnitID('mouseover')
 			self.allowCheck = nil
@@ -389,6 +390,7 @@ function NP:SetUnitInfo(myPlate)
 	else
 		myPlate:SetFrameLevel(0)
 		myPlate.overlay:Hide()
+		myPlate.targetIndicator:Hide()
 		self.unit = nil
 	end
 end
@@ -550,7 +552,7 @@ function NP:OnHide()
 	self.isSmall = nil
 	self.allowCheck = nil
 
-	myPlate.lowHealth:Hide()
+	myPlate.targetIndicator:Hide()
 	myPlate.healerIcon:Hide()
 
 	myPlate.healthBar:SetSize(NP.db.healthBar.width, NP.db.healthBar.height)
@@ -617,17 +619,8 @@ function NP:HealthBar_OnValueChanged(value)
 		myPlate.healthBar.text:Hide()
 	end
 
-	--Health Threshold
-	local percentValue = (value/maxValue)
-	if percentValue < NP.db.healthBar.lowThreshold then
-		myPlate.lowHealth:Show()
-		if percentValue < (NP.db.healthBar.lowThreshold / 2) then
-			myPlate.lowHealth:SetBackdropBorderColor(1, 0, 0, 0.9)
-		else
-			myPlate.lowHealth:SetBackdropBorderColor(1, 1, 0, 0.9)
-		end
-	elseif myPlate.lowHealth:IsShown() then
-		myPlate.lowHealth:Hide()
+	if(NP.db.colorNameByValue) then
+		myPlate.name:SetTextColor(E:ColorGradient(value/maxValue, 1,0,0, 1,1,0, 1,1,1))
 	end
 end
 
@@ -671,6 +664,7 @@ function NP:UpdateSettings()
 
 	--Name
 	myPlate.name:FontTemplate(font, fontSize, fontOutline)
+	myPlate.name:SetTextColor(1, 1, 1)
 
 	--Level
 	myPlate.level:FontTemplate(font, fontSize, fontOutline)
@@ -813,18 +807,18 @@ function NP:CreatePlate(frame)
 	auraHeader.AuraIconFrames = {}
 	myPlate.AuraWidget = auraHeader	
 	
-	--Low-Health Indicator
-	myPlate.lowHealth = CreateFrame("Frame", nil, myPlate)
-	myPlate.lowHealth:SetFrameLevel(0)
-	myPlate.lowHealth:SetOutside(myPlate.healthBar, 3, 3)
-	myPlate.lowHealth:SetBackdrop( { 
+	--Target Indicator
+	myPlate.targetIndicator = CreateFrame("Frame", nil, myPlate)
+	myPlate.targetIndicator:SetFrameLevel(0)
+	myPlate.targetIndicator:SetOutside(myPlate.healthBar, 3, 3)
+	myPlate.targetIndicator:SetBackdrop( { 
 		edgeFile = LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = 3,
 		insets = {left = 5, right = 5, top = 5, bottom = 5},
 	})
-	myPlate.lowHealth:SetBackdropColor(0, 0, 0, 0)
-	myPlate.lowHealth:SetBackdropBorderColor(1, 1, 0, 0.9)
-	myPlate.lowHealth:SetScale(E.PixelMode and 1.5 or 2)
-	myPlate.lowHealth:Hide()
+	myPlate.targetIndicator:SetBackdropColor(0, 0, 0, 0)
+	myPlate.targetIndicator:SetBackdropBorderColor(1, 1, 1)
+	myPlate.targetIndicator:SetScale(E.PixelMode and 2.2 or 2.5)
+	myPlate.targetIndicator:Hide()
 
 	--Combo Points
 	myPlate.cPoints = CreateFrame("Frame", nil, myPlate.healthBar)
