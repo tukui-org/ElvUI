@@ -181,6 +181,7 @@ end
 
 function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 	if E.private.tooltip.enable ~= true then return end
+	if(tt:GetAnchorType() ~= "ANCHOR_NONE") then return end
 	if InCombatLockdown() and self.db.visibility.combat then
 		tt:Hide()
 		return
@@ -189,10 +190,24 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 	if(parent) then
 		if(self.db.cursorAnchor) then
 			tt:SetOwner(parent, "ANCHOR_CURSOR")	
+			if(not GameTooltipStatusBar.anchoredToTop) then
+				GameTooltipStatusBar:ClearAllPoints()
+				GameTooltipStatusBar:SetPoint("BOTTOMLEFT", GameTooltip, "TOPLEFT", E.Border, (E.Spacing * 3))
+				GameTooltipStatusBar:SetPoint("BOTTOMRIGHT", GameTooltip, "TOPRIGHT", -E.Border, (E.Spacing * 3))
+				GameTooltipStatusBar.text:Point("CENTER", GameTooltipStatusBar, 0, 3)
+				GameTooltipStatusBar.anchoredToTop = true
+			end
 			return
 		else
 			tt:SetOwner(parent, "ANCHOR_NONE")
 			tt:ClearAllPoints()
+			if(GameTooltipStatusBar.anchoredToTop) then
+				GameTooltipStatusBar:ClearAllPoints()
+				GameTooltipStatusBar:SetPoint("TOPLEFT", GameTooltip, "BOTTOMLEFT", E.Border, -(E.Spacing * 3))
+				GameTooltipStatusBar:SetPoint("TOPRIGHT", GameTooltip, "BOTTOMRIGHT", -E.Border, -(E.Spacing * 3))
+				GameTooltipStatusBar.text:Point("CENTER", GameTooltipStatusBar, 0, -3)
+				GameTooltipStatusBar.anchoredToTop = nil
+			end			
 		end
 	end
 
@@ -220,7 +235,6 @@ end
 
 function TT:GetItemLvL(unit)
 	local total, item = 0, 0
-	unit = unit or "player"
 
 	for i = 1, #SlotName do
 		local slot = GetInventoryItemLink(unit, GetInventorySlotInfo(("%sSlot"):format(SlotName[i])))
@@ -234,8 +248,8 @@ function TT:GetItemLvL(unit)
 		end
 	end
 
-	if (total < 1 or item < 1) then
-		return 0
+	if (total < 1 or item < 15) then
+		return
 	end
 	
 	return floor(total / item);
@@ -262,15 +276,15 @@ function TT:GetLevelLine(tt, offset)
 	end
 end
 
-function TT:GetTalentSpec(unit)
+function TT:GetTalentSpec(unit, isPlayer)
 	local spec
-	if not unit then
+	if(isPlayer) then
 		spec = GetSpecialization()
 	else
 		spec = GetInspectSpecialization(unit)
 	end
 	if(spec ~= nil and spec > 0) then
-		if unit ~= nil then 
+		if(not isPlayer) then 
 			local role = GetSpecializationRoleByID(spec);
 			if(role ~= nil) then
 				local _, name = GetSpecializationInfoByID(spec);
@@ -285,66 +299,54 @@ function TT:GetTalentSpec(unit)
 end
 
 function TT:INSPECT_READY(event, GUID)
-	if GUID ~= self.lastGUID then return end
+	if(self.lastGUID ~= GUID) then return end
 	
 	local unit = "mouseover"
-	if(GUID == playerGUID) then
-		unit = nil
-	end
+	if(UnitExists(unit)) then
+		local itemLevel = self:GetItemLvL(unit)
+		local talentName = self:GetTalentSpec(unit)
+		inspectCache[GUID] = {time = GetTime()}
 
-	local itemLevel = self:GetItemLvL(unit)
-	local talentName = self:GetTalentSpec(unit)
-	inspectCache[GUID] = {time = GetTime()}
-	if(talentName) then
-		inspectCache[GUID].talent = talentName
-	end
+		if(talentName) then
+			inspectCache[GUID].talent = talentName
+		end
 
-	if(itemLevel) then
-		inspectCache[GUID].itemLevel = itemLevel
-	end
+		if(itemLevel) then
+			inspectCache[GUID].itemLevel = itemLevel
+		end
 
-	if InspectFrame and (not InspectFrame:IsShown()) then
-		ClearInspectPlayer()
+		GameTooltip:SetUnit(unit)
 	end
-
 	self:UnregisterEvent("INSPECT_READY")
-	GameTooltip:SetUnit("mouseover")
 end
 
-function TT:ShowInspectInfo(tt, unit, level, r, g, b)
+function TT:ShowInspectInfo(tt, unit, level, r, g, b, numTries)
 	local canInspect = CanInspect(unit)
-	if(not canInspect or level < 10) then return end
+	if(not canInspect or level < 10 or numTries > 1) then return end
 
 	local GUID = UnitGUID(unit)
-	if(inspectCache[GUID]) then
-		if((GetTime() - inspectCache[GUID].time) > 900) then
-			inspectCache[GUID] = nil
-
-			return self:ShowInspectInfo(tt, unit, level, r, g, b)
-		end
-
+	if(GUID == playerGUID) then
+		tt:AddDoubleLine(L["Talent Specialization:"], self:GetTalentSpec(unit, true), nil, nil, nil, r, g, b)
+		tt:AddDoubleLine(L["Item Level:"], floor(select(2, GetAverageItemLevel())), nil, nil, nil, 1, 1, 1)		
+	elseif(inspectCache[GUID]) then
 		local talent = inspectCache[GUID].talent
 		local itemLevel = inspectCache[GUID].itemLevel
-		if(talent) then
-			tt:AddDoubleLine(L["Talent Specialization:"], talent, nil, nil, nil, r, g, b)
-		end
-		if(itemLevel and itemLevel > 0) then
-			tt:AddDoubleLine(L["Item Level:"], itemLevel, nil, nil, nil, 1, 1, 1)
-		end
-	else
-		if((not canInspect) or (InspectFrame and InspectFrame:IsShown()) or self.lastGUID == GUID) then return end
-		self.lastGUID = GUID
 
-		if(UnitIsUnit(unit, "player")) then
-			self:INSPECT_READY("INSPECT_READY", GUID)
-		else
-			self:RegisterEvent("INSPECT_READY")
+		if(((GetTime() - inspectCache[GUID].time) > 900) or not talent or not itemLevel) then
+			inspectCache[GUID] = nil
+
+			return self:ShowInspectInfo(tt, unit, level, r, g, b, numTries + 1)
 		end
-		
+
+		tt:AddDoubleLine(L["Talent Specialization:"], talent, nil, nil, nil, r, g, b)
+		tt:AddDoubleLine(L["Item Level:"], itemLevel, nil, nil, nil, 1, 1, 1)
+	else
+		if(not canInspect) or (InspectFrame and InspectFrame:IsShown()) then return end
+		self.lastGUID = GUID
 		NotifyInspect(unit)
+		self:RegisterEvent("INSPECT_READY")
 	end	
 end
-
 
 function TT:GameTooltip_OnTooltipSetUnit(tt)
 	local unit = select(2, tt:GetUnit())
@@ -360,7 +362,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	if(not unit) then
 		local GMF = GetMouseFocus()
 		if(GMF and GMF:GetAttribute("unit")) then
-			unit = GMF
+			unit = GMF:GetAttribute("unit")
 		end
 		if(not unit or not UnitExists(unit)) then
 			return
@@ -376,15 +378,15 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		local localeClass, class = UnitClass(unit)
 		local name, realm = UnitName(unit)
 		local guildName, guildRankName, _, guildRealm = GetGuildInfo(unit)
+		local pvpName = UnitPVPName(unit)
 		local relationship = UnitRealmRelationship(unit);
-
 		color = RAID_CLASS_COLORS[class]
 
-		if(self.db.playerTitles) then
-			name = UnitPVPName(unit)
+		if(self.db.playerTitles and pvpName) then
+			name = pvpName
 		end
 
-		if(realm) then
+		if(realm and realm ~= "") then
 			if(isShiftKeyDown) then
 				name = name.."-"..realm
 			elseif(relationship == LE_REALM_RELATION_COALESCED) then
@@ -422,7 +424,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 
 		--High CPU usage, restricting it to shift key down only.
 		if(self.db.inspectInfo and isShiftKeyDown) then
-			self:ShowInspectInfo(tt, unit, level, color.r, color.g, color.b)
+			self:ShowInspectInfo(tt, unit, level, color.r, color.g, color.b, 0)
 		end		
 	else
 		if(UnitIsTapped(unit) and not UnitIsTappedByPlayer(unit)) then
@@ -471,8 +473,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		GameTooltip:AddDoubleLine(format("%s:", TARGET), format("|cff%02x%02x%02x%s|r", targetColor.r * 255, targetColor.g * 255, targetColor.b * 255, UnitName(unitTarget)))
 	end
 
-	--High CPU usage, restricting it to shift key down only.
-	if(self.db.targetInfo and isShiftKeyDown and IsInGroup()) then
+	if(self.db.targetInfo and IsInGroup()) then
 		for i = 1, GetNumGroupMembers() do
 			local groupUnit = (IsInRaid() and "raid"..i or "party"..i);
 			if (UnitIsUnit(groupUnit.."target", unit)) and (not UnitIsUnit(groupUnit,"player")) then
@@ -480,8 +481,9 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 				tinsert(targetList, format("|c%s%s|r", RAID_CLASS_COLORS[class].colorStr, UnitName(groupUnit)))
 			end
 		end
-		if (#targetList > 0) then
-			GameTooltip:AddLine(format("%s %s", L['Targeted By:'], tconcat(targetList, ", ")));
+		local numList = #targetList
+		if (numList > 0) then
+			GameTooltip:AddLine(format("%s (|cffffffff%d|r): %s", L['Targeted By:'], numList, tconcat(targetList, ", ")), nil, nil, nil, true);
 			twipe(targetList);
 		end	
 	end
@@ -495,7 +497,7 @@ function TT:GameTooltipStatusBar_OnValueChanged(tt, value)
 	if(not unit) then
 		local GMF = GetMouseFocus()
 		if(GMF and GMF:GetAttribute("unit")) then
-			unit = GMF
+			unit = GMF:GetAttribute("unit")
 		end
 	end
 
@@ -626,7 +628,7 @@ function TT:Initialize()
 	GameTooltipStatusBar:SetScript("OnValueChanged", self.OnValueChanged)
 	GameTooltipStatusBar:ClearAllPoints()
 	GameTooltipStatusBar:SetPoint("TOPLEFT", GameTooltip, "BOTTOMLEFT", E.Border, -(E.Spacing * 3))
-	GameTooltipStatusBar:SetPoint("TOPRIGHT", GameTooltip, "BOTTOMRIGHT", -E.Border, -(E.Spacing * 3))		
+	GameTooltipStatusBar:SetPoint("TOPRIGHT", GameTooltip, "BOTTOMRIGHT", -E.Border, -(E.Spacing * 3))
 	GameTooltipStatusBar.text = GameTooltipStatusBar:CreateFontString(nil, "OVERLAY")
 	GameTooltipStatusBar.text:Point("CENTER", GameTooltipStatusBar, 0, -3)
 	GameTooltipStatusBar.text:FontTemplate(E.LSM:Fetch("font", self.db.healthBar.font), self.db.healthBar.fontSize, "OUTLINE")

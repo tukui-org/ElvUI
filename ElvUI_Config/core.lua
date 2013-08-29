@@ -57,6 +57,7 @@ E.Options.args.general = {
 	type = "group",
 	name = L["General"],
 	order = 1,
+	childGroups = "select",
 	get = function(info) return E.db.general[ info[#info] ] end,
 	set = function(info, value) E.db.general[ info[#info] ] = value end,
 	args = {
@@ -69,7 +70,6 @@ E.Options.args.general = {
 			order = 2,
 			type = "group",
 			name = L["General"],
-			guiInline = true,
 			args = {
 				pixelPerfect = {
 					order = 1,
@@ -204,12 +204,181 @@ E.Options.args.general = {
 				},				
 			},
 		},	
-		minimap = {
+		media = {
 			order = 2,
+			type = "group",
+			name = L["Media"],
+			get = function(info) return E.db.general[ info[#info] ] end,
+			set = function(info, value) E.db.general[ info[#info] ] = value end,	
+			args = {
+				fonts = {
+					order = 1,
+					type = "group",
+					name = L["Fonts"],
+					guiInline = true,
+					args = {
+						fontSize = {
+							order = 1,
+							name = L["Font Size"],
+							desc = L["Set the font size for everything in UI. Note: This doesn't effect somethings that have their own seperate options (UnitFrame Font, Datatext Font, ect..)"],
+							type = "range",
+							min = 6, max = 22, step = 1,
+							set = function(info, value) E.db.general[ info[#info] ] = value; E:UpdateMedia(); E:UpdateFontTemplates(); end,
+						},	
+						font = {
+							type = "select", dialogControl = 'LSM30_Font',
+							order = 2,
+							name = L["Default Font"],
+							desc = L["The font that the core of the UI will use."],
+							values = AceGUIWidgetLSMlists.font,	
+							set = function(info, value) E.db.general[ info[#info] ] = value; E:UpdateMedia(); E:UpdateFontTemplates(); end,
+						},
+						dmgfont = {
+							type = "select", dialogControl = 'LSM30_Font',
+							order = 3,
+							name = L["CombatText Font"],
+							desc = L["The font that combat text will use. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"],
+							values = AceGUIWidgetLSMlists.font,
+							get = function(info) return E.private.general[ info[#info] ] end,							
+							set = function(info, value) E.private.general[ info[#info] ] = value; E:UpdateMedia(); E:UpdateFontTemplates(); E:StaticPopup_Show("PRIVATE_RL"); end,
+						},
+						namefont = {
+							type = "select", dialogControl = 'LSM30_Font',
+							order = 3,
+							name = L["Name Font"],
+							desc = L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"],
+							values = AceGUIWidgetLSMlists.font,
+							get = function(info) return E.private.general[ info[#info] ] end,							
+							set = function(info, value) E.private.general[ info[#info] ] = value; E:UpdateMedia(); E:UpdateFontTemplates(); E:StaticPopup_Show("PRIVATE_RL"); end,
+						}
+					},
+				},	
+				textures = {
+					order = 2,
+					type = "group",
+					name = L["Textures"],
+					guiInline = true,
+					args = {
+						normTex = {
+							type = "select", dialogControl = 'LSM30_Statusbar',
+							order = 1,
+							name = L["Primary Texture"],
+							desc = L["The texture that will be used mainly for statusbars."],
+							values = AceGUIWidgetLSMlists.statusbar,
+							get = function(info) return E.private.general[ info[#info] ] end,
+							set = function(info, value) E.private.general[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end							
+						},
+						glossTex = {
+							type = "select", dialogControl = 'LSM30_Statusbar',
+							order = 2,
+							name = L["Secondary Texture"],
+							desc = L["This texture will get used on objects like chat windows and dropdown menus."],
+							values = AceGUIWidgetLSMlists.statusbar,	
+							get = function(info) return E.private.general[ info[#info] ] end,
+							set = function(info, value) E.private.general[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end
+						},				
+					},
+				},
+				colors = {
+					order = 3,
+					type = "group",
+					name = L["Colors"],
+					guiInline = true,
+					args = {
+						bordercolor = {
+							type = "color",
+							order = 1,
+							name = L["Border Color"],
+							desc = L["Main border color of the UI. |cffFF0000This is disabled if you are using the pixel perfect theme.|r"],
+							hasAlpha = false,
+							get = function(info)
+								local t = E.db.general[ info[#info] ]
+								return t.r, t.g, t.b, t.a
+							end,
+							set = function(info, r, g, b)
+								E.db.general[ info[#info] ] = {}
+								local t = E.db.general[ info[#info] ]
+								t.r, t.g, t.b = r, g, b
+								E:UpdateMedia()
+								E:UpdateBorderColors()
+							end,	
+							disabled = function() return E.PixelMode end,
+						},
+						backdropcolor = {
+							type = "color",
+							order = 2,
+							name = L["Backdrop Color"],
+							desc = L["Main backdrop color of the UI."],
+							hasAlpha = false,
+							get = function(info)
+								local t = E.db.general[ info[#info] ]
+								return t.r, t.g, t.b, t.a
+							end,
+							set = function(info, r, g, b)
+								E.db.general[ info[#info] ] = {}
+								local t = E.db.general[ info[#info] ]
+								t.r, t.g, t.b = r, g, b
+								E:UpdateMedia()
+								E:UpdateBackdropColors()
+							end,						
+						},
+						backdropfadecolor = {
+							type = "color",
+							order = 3,
+							name = L["Backdrop Faded Color"],
+							desc = L["Backdrop color of transparent frames"],
+							hasAlpha = true,
+							get = function(info)
+								local t = E.db.general[ info[#info] ]
+								return t.r, t.g, t.b, t.a
+							end,
+							set = function(info, r, g, b, a)
+								E.db.general[ info[#info] ] = {}
+								local t = E.db.general[ info[#info] ]	
+								t.r, t.g, t.b, t.a = r, g, b, a
+								E:UpdateMedia()
+								E:UpdateBackdropColors()
+							end,						
+						},
+						valuecolor = {
+							type = "color",
+							order = 4,
+							name = L["Value Color"],
+							desc = L["Color some texts use."],
+							hasAlpha = false,
+							get = function(info)
+								local t = E.db.general[ info[#info] ]
+								return t.r, t.g, t.b, t.a
+							end,
+							set = function(info, r, g, b, a)
+								E.db.general[ info[#info] ] = {}
+								local t = E.db.general[ info[#info] ]	
+								t.r, t.g, t.b, t.a = r, g, b, a
+								E:UpdateMedia()
+							end,						
+						},						
+						resetbutton = {
+							type = "execute",
+							order = 5,
+							name = L["Restore Defaults"],
+							func = function() 
+								E.db.general.backdropcolor = P.general.backdropcolor
+								E.db.general.backdropfadecolor = P.general.backdropfadecolor
+								E.db.general.bordercolor = P.general.bordercolor
+								E.db.general.valuecolor = P.general.valuecolor
+								E:UpdateMedia()
+								E:UpdateFrameTemplates()								
+							end,
+						},
+					},
+				},
+			},
+		},
+		minimap = {
+			order = 4,
 			get = function(info) return E.db.general.minimap[ info[#info] ] end,	
 			type = "group",
 			name = MINIMAP_LABEL,
-			guiInline = true,
 			args = {
 				enable = {
 					order = 1,
@@ -245,12 +414,11 @@ E.Options.args.general = {
 			},		
 		},
 		experience = {
-			order = 3,
+			order = 5,
 			get = function(info) return E.db.general.experience[ info[#info] ] end,
 			set = function(info, value) E.db.general.experience[ info[#info] ] = value; E:GetModule('Misc'):UpdateExpRepDimensions() end,		
 			type = "group",
 			name = XPBAR_LABEL,
-			guiInline = true,
 			args = {
 				enable = {
 					order = 0,
@@ -310,12 +478,11 @@ E.Options.args.general = {
 			},
 		},
 		reputation = {
-			order = 4,
+			order = 6,
 			get = function(info) return E.db.general.reputation[ info[#info] ] end,
 			set = function(info, value) E.db.general.reputation[ info[#info] ] = value; E:GetModule('Misc'):UpdateExpRepDimensions() end,		
 			type = "group",
 			name = REPUTATION,
-			guiInline = true,
 			args = {
 				enable = {
 					order = 0,
@@ -375,12 +542,11 @@ E.Options.args.general = {
 			},
 		},	
 		threat = {
-			order = 4,
+			order = 7,
 			get = function(info) return E.db.general.threat[ info[#info] ] end,
 			set = function(info, value) E.db.general.threat[ info[#info] ] = value; E:GetModule('Threat'):ToggleEnable()end,		
 			type = "group",
 			name = L['Threat'],
-			guiInline = true,
 			args = {
 				enable = {
 					order = 1,
@@ -408,10 +574,9 @@ E.Options.args.general = {
 			},
 		},	
 		totems = {
-			order = 5,
+			order = 8,
 			type = "group",
-			name = TUTORIAL_TITLE47,
-			guiInline = true,
+			name = L["Class Bar"],
 			get = function(info) return E.db.general.totems[ info[#info] ] end,
 			set = function(info, value) E.db.general.totems[ info[#info] ] = value; E:GetModule('Totems'):PositionAndSize() end,
 			args = {
@@ -425,21 +590,18 @@ E.Options.args.general = {
 					order = 2,
 					type = 'range',
 					name = L["Button Size"],
-					desc = L['Set the size of your bag buttons.'],
 					min = 24, max = 60, step = 1,
 				},
 				spacing = {
 					order = 3,
 					type = 'range',
 					name = L['Button Spacing'],
-					desc = L['The spacing between buttons.'],
 					min = 1, max = 10, step = 1,			
 				},
 				sortDirection = {
 					order = 4,
 					type = 'select',
 					name = L["Sort Direction"],
-					desc = L['The direction that the bag frames will grow from the anchor.'],
 					values = {
 						['ASCENDING'] = L['Ascending'],
 						['DESCENDING'] = L['Descending'],
@@ -449,7 +611,6 @@ E.Options.args.general = {
 					order = 5,
 					type = 'select',
 					name = L['Bar Direction'],
-					desc = L['The direction that the bag frames be (Horizontal or Vertical).'],
 					values = {
 						['VERTICAL'] = L['Vertical'],
 						['HORIZONTAL'] = L['Horizontal'],
@@ -460,176 +621,6 @@ E.Options.args.general = {
 	},
 }
 
-E.Options.args.media = {
-	order = 2,
-	type = "group",
-	name = L["Media"],
-	get = function(info) return E.db.general[ info[#info] ] end,
-	set = function(info, value) E.db.general[ info[#info] ] = value end,	
-	args = {
-		fonts = {
-			order = 1,
-			type = "group",
-			name = L["Fonts"],
-			guiInline = true,
-			args = {
-				fontSize = {
-					order = 1,
-					name = L["Font Size"],
-					desc = L["Set the font size for everything in UI. Note: This doesn't effect somethings that have their own seperate options (UnitFrame Font, Datatext Font, ect..)"],
-					type = "range",
-					min = 6, max = 22, step = 1,
-					set = function(info, value) E.db.general[ info[#info] ] = value; E:UpdateMedia(); E:UpdateFontTemplates(); end,
-				},	
-				font = {
-					type = "select", dialogControl = 'LSM30_Font',
-					order = 2,
-					name = L["Default Font"],
-					desc = L["The font that the core of the UI will use."],
-					values = AceGUIWidgetLSMlists.font,	
-					set = function(info, value) E.db.general[ info[#info] ] = value; E:UpdateMedia(); E:UpdateFontTemplates(); end,
-				},
-				dmgfont = {
-					type = "select", dialogControl = 'LSM30_Font',
-					order = 3,
-					name = L["CombatText Font"],
-					desc = L["The font that combat text will use. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"],
-					values = AceGUIWidgetLSMlists.font,
-					get = function(info) return E.private.general[ info[#info] ] end,							
-					set = function(info, value) E.private.general[ info[#info] ] = value; E:UpdateMedia(); E:UpdateFontTemplates(); E:StaticPopup_Show("PRIVATE_RL"); end,
-				},
-				namefont = {
-					type = "select", dialogControl = 'LSM30_Font',
-					order = 3,
-					name = L["Name Font"],
-					desc = L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"],
-					values = AceGUIWidgetLSMlists.font,
-					get = function(info) return E.private.general[ info[#info] ] end,							
-					set = function(info, value) E.private.general[ info[#info] ] = value; E:UpdateMedia(); E:UpdateFontTemplates(); E:StaticPopup_Show("PRIVATE_RL"); end,
-				}
-			},
-		},	
-		textures = {
-			order = 2,
-			type = "group",
-			name = L["Textures"],
-			guiInline = true,
-			args = {
-				normTex = {
-					type = "select", dialogControl = 'LSM30_Statusbar',
-					order = 1,
-					name = L["Primary Texture"],
-					desc = L["The texture that will be used mainly for statusbars."],
-					values = AceGUIWidgetLSMlists.statusbar,
-					get = function(info) return E.private.general[ info[#info] ] end,
-					set = function(info, value) E.private.general[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end							
-				},
-				glossTex = {
-					type = "select", dialogControl = 'LSM30_Statusbar',
-					order = 2,
-					name = L["Secondary Texture"],
-					desc = L["This texture will get used on objects like chat windows and dropdown menus."],
-					values = AceGUIWidgetLSMlists.statusbar,	
-					get = function(info) return E.private.general[ info[#info] ] end,
-					set = function(info, value) E.private.general[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end
-				},				
-			},
-		},
-		colors = {
-			order = 3,
-			type = "group",
-			name = L["Colors"],
-			guiInline = true,
-			args = {
-				bordercolor = {
-					type = "color",
-					order = 1,
-					name = L["Border Color"],
-					desc = L["Main border color of the UI. |cffFF0000This is disabled if you are using the pixel perfect theme.|r"],
-					hasAlpha = false,
-					get = function(info)
-						local t = E.db.general[ info[#info] ]
-						return t.r, t.g, t.b, t.a
-					end,
-					set = function(info, r, g, b)
-						E.db.general[ info[#info] ] = {}
-						local t = E.db.general[ info[#info] ]
-						t.r, t.g, t.b = r, g, b
-						E:UpdateMedia()
-						E:UpdateBorderColors()
-					end,	
-					disabled = function() return E.PixelMode end,
-				},
-				backdropcolor = {
-					type = "color",
-					order = 2,
-					name = L["Backdrop Color"],
-					desc = L["Main backdrop color of the UI."],
-					hasAlpha = false,
-					get = function(info)
-						local t = E.db.general[ info[#info] ]
-						return t.r, t.g, t.b, t.a
-					end,
-					set = function(info, r, g, b)
-						E.db.general[ info[#info] ] = {}
-						local t = E.db.general[ info[#info] ]
-						t.r, t.g, t.b = r, g, b
-						E:UpdateMedia()
-						E:UpdateBackdropColors()
-					end,						
-				},
-				backdropfadecolor = {
-					type = "color",
-					order = 3,
-					name = L["Backdrop Faded Color"],
-					desc = L["Backdrop color of transparent frames"],
-					hasAlpha = true,
-					get = function(info)
-						local t = E.db.general[ info[#info] ]
-						return t.r, t.g, t.b, t.a
-					end,
-					set = function(info, r, g, b, a)
-						E.db.general[ info[#info] ] = {}
-						local t = E.db.general[ info[#info] ]	
-						t.r, t.g, t.b, t.a = r, g, b, a
-						E:UpdateMedia()
-						E:UpdateBackdropColors()
-					end,						
-				},
-				valuecolor = {
-					type = "color",
-					order = 4,
-					name = L["Value Color"],
-					desc = L["Color some texts use."],
-					hasAlpha = false,
-					get = function(info)
-						local t = E.db.general[ info[#info] ]
-						return t.r, t.g, t.b, t.a
-					end,
-					set = function(info, r, g, b, a)
-						E.db.general[ info[#info] ] = {}
-						local t = E.db.general[ info[#info] ]	
-						t.r, t.g, t.b, t.a = r, g, b, a
-						E:UpdateMedia()
-					end,						
-				},						
-				resetbutton = {
-					type = "execute",
-					order = 5,
-					name = L["Restore Defaults"],
-					func = function() 
-						E.db.general.backdropcolor = P.general.backdropcolor
-						E.db.general.backdropfadecolor = P.general.backdropfadecolor
-						E.db.general.bordercolor = P.general.bordercolor
-						E.db.general.valuecolor = P.general.valuecolor
-						E:UpdateMedia()
-						E:UpdateFrameTemplates()								
-					end,
-				},
-			},
-		},
-	},
-}
 
 local DONATOR_STRING = ""
 local DEVELOPER_STRING = ""

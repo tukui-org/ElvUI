@@ -1705,8 +1705,7 @@ function CH:Initialize()
 		for i=1, max do
 			ScrollFrameTemplate_OnMouseWheel(CopyChatScrollFrame, -1)
 		end
-	end)	
-	
+	end)		
 
 	local close = CreateFrame("Button", "CopyChatFrameCloseButton", frame, "UIPanelCloseButton")
 	close:SetPoint("TOPRIGHT")

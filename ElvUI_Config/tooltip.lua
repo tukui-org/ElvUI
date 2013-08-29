@@ -37,7 +37,7 @@ E.Options.args.tooltip = {
 					order = 2,
 					type = 'toggle',
 					name = L["Target Info"],
-					desc = L["When in a raid group display if anyone in your raid is targeting the current tooltip unit. (Requires Shift)"],
+					desc = L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."],
 				},	
 				playerTitles = {
 					order = 3,
@@ -51,11 +51,11 @@ E.Options.args.tooltip = {
 					name = L['Guild Ranks'],
 					desc = L['Display guild ranks if a unit is guilded.'],
 				},
-				inspectInfo = {
+				talentInfo = {
 					order = 5,
 					type = 'toggle',
-					name = L['Inspect Info'],
-					desc = L['Displays information regarding talent spec and item level when you hold down shift.'],
+					name = L['Talent Spec'],
+					desc = L['Display the players talent spec in the tooltip, this may not immediately update when mousing over a unit.'],
 				},
 				itemCount = {
 					order = 6,

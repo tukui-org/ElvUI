@@ -28,6 +28,7 @@ V["nameplate"] = {
 
 V['auras'] = {
 	['enable'] = true,
+	['disableBlizzard'] = true,
 }
 
 V['chat'] = {

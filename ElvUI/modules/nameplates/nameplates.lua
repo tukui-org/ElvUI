@@ -8,8 +8,6 @@ local band = bit.band
 local gsub = string.gsub
 
 NP.NumTargetChecks = -1
-NP.NumMouseoverChecks = -1
-NP.NumNonTransparentPlates = 0
 NP.CreatedPlates = {};
 NP.Healers = {};
 NP.ComboPoints = {};
@@ -101,14 +99,14 @@ function NP:OnUpdate(elapsed)
 	end
 
 	NP.PlateParent:Hide()
-	NP.NumNonTransparentPlates = 0
 	for blizzPlate, plate in pairs(NP.CreatedPlates) do
 		plate:Hide()
 		if(blizzPlate:IsShown()) then
-          plate:SetPoint("CENTER", WorldFrame, "BOTTOMLEFT", blizzPlate:GetCenter())
-          NP.SetAlpha(blizzPlate, plate)
-          NP.SetUnitInfo(blizzPlate, plate)
-          plate:Show()
+			if(not self.viewPort) then
+				plate:SetPoint("CENTER", WorldFrame, "BOTTOMLEFT", blizzPlate:GetCenter())
+			end
+			NP.SetAlpha(blizzPlate, plate)
+			plate:Show()
 		end
 	end
 	NP.PlateParent:Show()
@@ -116,8 +114,9 @@ function NP:OnUpdate(elapsed)
 	if(self.elapsed and self.elapsed > 0.2) then
 		for blizzPlate, plate in pairs(NP.CreatedPlates) do
 			if(blizzPlate:IsShown()) then
+				NP.SetUnitInfo(blizzPlate, plate)
 				NP.ColorizeAndScale(blizzPlate, plate)
-				NP.SetLevel(blizzPlate, plate)
+				NP.UpdateLevelAndName(blizzPlate, plate)
 			end
 		end
 
@@ -129,7 +128,7 @@ end
 
 function NP:CheckFilterAndHealers(frame)
 	local myPlate = NP.CreatedPlates[frame]
-	local name = myPlate.name
+	local name = frame.name:GetText()
 	local db = E.global.nameplate["filter"][name]
 
 	if db and db.enable then
@@ -201,7 +200,7 @@ function NP:CheckArenaHealers()
 	end
 end
 
-function NP:SetLevel(myPlate)
+function NP:UpdateLevelAndName(myPlate)
 	local region = select(4, self:GetRegions())
 	if region and region:GetObjectType() == 'FontString' then
 		self.level = region
@@ -227,6 +226,8 @@ function NP:SetLevel(myPlate)
 	elseif not myPlate.level:IsShown() then
 		myPlate.level:Show()
 	end
+
+	myPlate.name:SetText(self.name:GetText())
 end
 
 function NP:GetReaction(frame)
@@ -288,7 +289,13 @@ function NP:ColorizeAndScale(myPlate)
 	elseif unitType == "HOSTILE_NPC" or unitType == "NEUTRAL_NPC" then
 		local classRole = E.role
 		local threatReaction = NP:GetThreatReaction(self)
-		if threatReaction == 'FULL_THREAT' then
+		if(not NP.db.threat.enable) then
+			if unitType == "NEUTRAL_NPC" then
+				color = NP.db.reactions.neutral
+			else
+				color = NP.db.reactions.enemy
+			end			
+		elseif threatReaction == 'FULL_THREAT' then
 			if classRole == 'Tank' then
 				color = NP.db.threat.goodColor
 				scale = NP.db.threat.goodScale
@@ -347,18 +354,18 @@ function NP:SetAlpha(myPlate)
 	if self:GetAlpha() < 1 then
 		myPlate:SetAlpha(NP.db.nonTargetAlpha)
 	else
-		NP.NumNonTransparentPlates = NP.NumNonTransparentPlates + 1
 		myPlate:SetAlpha(1)
 	end
 end
 
 function NP:SetUnitInfo(myPlate)
-	if self:GetAlpha() == 1 and UnitExists("target") and UnitName("target") == myPlate.name and NP.NumNonTransparentPlates == 1 then
+	local plateName = gsub(self.name:GetText(), '%s%(%*%)','')
+	if self:GetAlpha() == 1 and NP.targetName and (NP.targetName == plateName) then
 		self.guid = UnitGUID("target")
 		self.unit = "target"
 		myPlate:SetFrameLevel(2)
 		myPlate.overlay:Hide()
-
+		myPlate.targetIndicator:Show()
 		if((NP.NumTargetChecks > -1) or self.allowCheck) then
 			NP.NumTargetChecks = NP.NumTargetChecks + 1
 			if NP.NumTargetChecks > 0 then
@@ -369,26 +376,22 @@ function NP:SetUnitInfo(myPlate)
 			NP:UpdateComboPointsByUnitID('target')
 			self.allowCheck = nil
 		end
-	elseif self.highlight:IsShown() and UnitExists("mouseover") and UnitName("mouseover") == myPlate.name then
-		self.guid = UnitGUID("mouseover")
-		self.unit = "mouseover"
-		myPlate:SetFrameLevel(1)
-		myPlate.overlay:Show()
-
-		if((NP.NumMouseoverChecks > -1) or self.allowCheck) then
-			NP.NumMouseoverChecks = NP.NumMouseoverChecks + 1
-			if NP.NumMouseoverChecks > 0 then
-				NP.NumMouseoverChecks = -1
-			end
-			
+	elseif self.highlight:IsShown() and UnitExists("mouseover") and (UnitName("mouseover") == plateName) then
+		if(self.unit ~= "mouseover" or self.allowCheck) then
+			myPlate:SetFrameLevel(1)
+			myPlate.overlay:Show()			
+			myPlate.targetIndicator:Hide()
 			NP:UpdateAurasByUnitID('mouseover')
 			NP:UpdateComboPointsByUnitID('mouseover')
 			self.allowCheck = nil
-		end		
+		end
+		self.guid = UnitGUID("mouseover")
+		self.unit = "mouseover"		
 	else
-		self.unit = nil
 		myPlate:SetFrameLevel(0)
 		myPlate.overlay:Hide()
+		myPlate.targetIndicator:Hide()
+		self.unit = nil
 	end
 end
 
@@ -413,16 +416,18 @@ function NP:PLAYER_ENTERING_WORLD()
 	end
 end
 
+function NP:UPDATE_MOUSEOVER_UNIT()
+	WorldFrame.elapsed = 0.1
+end
+
 
 function NP:PLAYER_TARGET_CHANGED()
 	if(UnitExists("target")) then
+		self.targetName = UnitName("target")
+		WorldFrame.elapsed = 0.1
 		NP.NumTargetChecks = 0
-	end
-end
-
-function NP:UPDATE_MOUSEOVER_UNIT()
-	if(UnitExists("mouseover")) then
-		NP.NumMouseoverChecks = 0
+	else
+		self.targetName = nil
 	end
 end
 
@@ -434,15 +439,19 @@ function NP:PLAYER_REGEN_ENABLED()
 	SetCVar("nameplateShowEnemies", 0)
 end
 
-function NP:CombatToggle()
+function NP:CombatToggle(noToggle)
 	if(self.db.combatHide) then
 		self:RegisterEvent("PLAYER_REGEN_DISABLED")
 		self:RegisterEvent("PLAYER_REGEN_ENABLED")
-		SetCVar("nameplateShowEnemies", 0)
+		if(not noToggle) then
+			SetCVar("nameplateShowEnemies", 0)
+		end
 	else
 		self:UnregisterEvent("PLAYER_REGEN_DISABLED")
 		self:UnregisterEvent("PLAYER_REGEN_ENABLED")
-		SetCVar("nameplateShowEnemies", 1)
+		if(not noToggle) then
+			SetCVar("nameplateShowEnemies", 1)
+		end
 	end
 end
 
@@ -462,7 +471,8 @@ function NP:Initialize()
 	self:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
 	self:RegisterEvent("UNIT_COMBO_POINTS")
 
-	self:CombatToggle()
+	self.viewPort = IsAddOnLoaded("SunnArt");
+	self:CombatToggle(true)
 end
 
 function NP:UpdateAllPlates()
@@ -487,13 +497,13 @@ function NP:OnShow()
 	self.isSmall = (self.healthBar:GetEffectiveScale() < 1 and NP.db.smallPlates)
 	myPlate:SetSize(self:GetSize())
 
-	self.name:ClearAllPoints()
+	myPlate.name:ClearAllPoints()
 	if(self.isSmall) then
 		myPlate.healthBar:SetSize(self.healthBar:GetWidth() * (self.healthBar:GetEffectiveScale() * 1.25), NP.db.healthBar.height)
-		self.name:SetPoint("BOTTOM", myPlate.healthBar, "TOP", 0, 3)
+		myPlate.name:SetPoint("BOTTOM", myPlate.healthBar, "TOP", 0, 3)
 	else
-		self.name:SetPoint("BOTTOMLEFT", myPlate.healthBar, "TOPLEFT", 0, 3)
-		self.name:SetPoint("BOTTOMRIGHT", myPlate.level, "BOTTOMLEFT", -2, 0)
+		myPlate.name:SetPoint("BOTTOMLEFT", myPlate.healthBar, "TOPLEFT", 0, 3)
+		myPlate.name:SetPoint("BOTTOMRIGHT", myPlate.level, "BOTTOMLEFT", -2, 0)
 	end
 
 	NP:CheckFilterAndHealers(self)
@@ -514,7 +524,11 @@ function NP:OnShow()
 		end
 	end
 	
+	NP.UpdateLevelAndName(self, myPlate)
+	NP.ColorizeAndScale(self, myPlate)	
+
 	NP.HealthBar_OnValueChanged(self.healthBar, self.healthBar:GetValue())
+	myPlate.nameText = gsub(self.name:GetText(), '%s%(%*%)','')
 
 	--Check to see if its possible to update auras/comboPoints via raid icon or class color when a plate is shown.
 	if(self.raidIcon:IsShown() and not self.isSmall) then
@@ -524,8 +538,6 @@ function NP:OnShow()
 	else
 		self.allowCheck = true
 	end
-
-	myPlate.name = gsub(self.name:GetText(), '%s%(%*%)','')
 end
 
 function NP:OnHide()
@@ -540,7 +552,7 @@ function NP:OnHide()
 	self.isSmall = nil
 	self.allowCheck = nil
 
-	myPlate.lowHealth:Hide()
+	myPlate.targetIndicator:Hide()
 	myPlate.healerIcon:Hide()
 
 	myPlate.healthBar:SetSize(NP.db.healthBar.width, NP.db.healthBar.height)
@@ -558,7 +570,7 @@ function NP:OnHide()
 
 	--UIFrameFadeOut(myPlate, 0.1, myPlate:GetAlpha(), 0)
 	--myPlate:Hide()
-	--myPlate:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT")
+	myPlate:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT") --Prevent nameplate being in random location on screen when first shown
 end
 
 function NP:HealthBar_OnSizeChanged(width, height)
@@ -607,17 +619,8 @@ function NP:HealthBar_OnValueChanged(value)
 		myPlate.healthBar.text:Hide()
 	end
 
-	--Health Threshold
-	local percentValue = (value/maxValue)
-	if percentValue < NP.db.healthBar.lowThreshold then
-		myPlate.lowHealth:Show()
-		if percentValue < (NP.db.healthBar.lowThreshold / 2) then
-			myPlate.lowHealth:SetBackdropBorderColor(1, 0, 0, 0.9)
-		else
-			myPlate.lowHealth:SetBackdropBorderColor(1, 1, 0, 0.9)
-		end
-	elseif myPlate.lowHealth:IsShown() then
-		myPlate.lowHealth:Hide()
+	if(NP.db.colorNameByValue) then
+		myPlate.name:SetTextColor(E:ColorGradient(value/maxValue, 1,0,0, 1,1,0, 1,1,1))
 	end
 end
 
@@ -660,7 +663,8 @@ function NP:UpdateSettings()
 	local fontSize, fontOutline = NP.db.fontSize, NP.db.fontOutline
 
 	--Name
-	self.name:FontTemplate(font, fontSize, fontOutline)
+	myPlate.name:FontTemplate(font, fontSize, fontOutline)
+	myPlate.name:SetTextColor(1, 1, 1)
 
 	--Level
 	myPlate.level:FontTemplate(font, fontSize, fontOutline)
@@ -727,7 +731,9 @@ function NP:CreatePlate(frame)
 	frame.castBar.texture, frame.castBar.border, frame.castBar.shield, frame.castBar.icon, frame.castBar.name, frame.castBar.shadow = frame.castBar:GetRegions()
 
 	local myPlate = CreateFrame("Frame", nil, self.PlateParent)
-
+	if(self.viewPort) then
+		myPlate:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT")
+	end
 	--HealthBar
 	myPlate.healthBar = CreateFrame("StatusBar", nil, myPlate)
 	myPlate.healthBar:SetPoint('BOTTOM', myPlate, 'BOTTOM', 0, 5)
@@ -771,8 +777,8 @@ function NP:CreatePlate(frame)
 	myPlate.level:SetJustifyH("RIGHT")
 
 	--Name
-	frame.name:SetParent(myPlate)
-	frame.name:SetJustifyH("LEFT")
+	myPlate.name = myPlate:CreateFontString(nil, 'OVERLAY')
+	myPlate.name:SetJustifyH("LEFT")
 
 	--Raid Icon
 	frame.raidIcon:SetParent(myPlate)
@@ -801,18 +807,18 @@ function NP:CreatePlate(frame)
 	auraHeader.AuraIconFrames = {}
 	myPlate.AuraWidget = auraHeader	
 	
-	--Low-Health Indicator
-	myPlate.lowHealth = CreateFrame("Frame", nil, myPlate)
-	myPlate.lowHealth:SetFrameLevel(0)
-	myPlate.lowHealth:SetOutside(myPlate.healthBar, 3, 3)
-	myPlate.lowHealth:SetBackdrop( { 
+	--Target Indicator
+	myPlate.targetIndicator = CreateFrame("Frame", nil, myPlate)
+	myPlate.targetIndicator:SetFrameLevel(0)
+	myPlate.targetIndicator:SetOutside(myPlate.healthBar, 3, 3)
+	myPlate.targetIndicator:SetBackdrop( { 
 		edgeFile = LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = 3,
 		insets = {left = 5, right = 5, top = 5, bottom = 5},
 	})
-	myPlate.lowHealth:SetBackdropColor(0, 0, 0, 0)
-	myPlate.lowHealth:SetBackdropBorderColor(1, 1, 0, 0.9)
-	myPlate.lowHealth:SetScale(E.PixelMode and 1.5 or 2)
-	myPlate.lowHealth:Hide()
+	myPlate.targetIndicator:SetBackdropColor(0, 0, 0, 0)
+	myPlate.targetIndicator:SetBackdropBorderColor(1, 1, 1)
+	myPlate.targetIndicator:SetScale(E.PixelMode and 2.2 or 2.5)
+	myPlate.targetIndicator:Hide()
 
 	--Combo Points
 	myPlate.cPoints = CreateFrame("Frame", nil, myPlate.healthBar)
@@ -847,6 +853,7 @@ function NP:CreatePlate(frame)
 	NP:QueueObject(frame, frame.healthBar)
 	NP:QueueObject(frame, frame.castBar)
 	NP:QueueObject(frame, frame.level)
+	NP:QueueObject(frame, frame.name)
 	NP:QueueObject(frame, frame.threat)
 	NP:QueueObject(frame, frame.border)
 	NP:QueueObject(frame, frame.castBar.shield)
@@ -1198,7 +1205,7 @@ end
 
 function NP:SetAuraInstance(guid, spellID, expiration, stacks, caster, duration, texture, auratype, auratarget)
 	local filter = false
-	if (self.db.auras.enable and caster == UnitGUID('player')) then
+	if (self.db.auras.showPersonal and caster == UnitGUID('player')) then
 		filter = true;
 	end
 	
@@ -1422,7 +1429,7 @@ function NP:UpdateAuras(frame)
 	if not guid then
 		-- Attempt to ID widget via Name or Raid Icon
 		if RAID_CLASS_COLORS[frame.unitType] then 
-			guid = NP.ByName[myPlate.name]
+			guid = NP.ByName[frame.name:GetText()]
 		elseif frame.raidIcon:IsShown() then 
 			guid = NP.ByRaidIcon[frame.raidIconType] 
 		end
@@ -1467,7 +1474,7 @@ function NP:SearchNameplateByName(sourceName)
 	if not sourceName then return; end
 	local SearchFor = strsplit("-", sourceName)
 	for frame, myPlate in pairs(NP.CreatedPlates) do
-		if frame and frame:IsShown() and myPlate.name == SearchFor and RAID_CLASS_COLORS[frame.unitType] then
+		if frame and frame:IsShown() and myPlate.nameText == SearchFor and RAID_CLASS_COLORS[frame.unitType] then
 			return frame
 		end
 	end
