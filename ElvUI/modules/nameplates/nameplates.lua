@@ -105,6 +105,8 @@ function NP:OnUpdate(elapsed)
 				plate:SetPoint("CENTER", WorldFrame, "BOTTOMLEFT", blizzPlate:GetCenter())
 			end
 			NP.SetAlpha(blizzPlate, plate)
+		else
+			plate:Hide()
 		end
 	end
 	NP.PlateParent:Show()
