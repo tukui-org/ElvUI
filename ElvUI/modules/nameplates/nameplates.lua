@@ -100,20 +100,18 @@ function NP:OnUpdate(elapsed)
 
 	NP.PlateParent:Hide()
 	for blizzPlate, plate in pairs(NP.CreatedPlates) do
-		plate:Hide()
 		if(blizzPlate:IsShown()) then
 			if(not self.viewPort) then
 				plate:SetPoint("CENTER", WorldFrame, "BOTTOMLEFT", blizzPlate:GetCenter())
 			end
 			NP.SetAlpha(blizzPlate, plate)
-			plate:Show()
 		end
 	end
 	NP.PlateParent:Show()
 
 	if(self.elapsed and self.elapsed > 0.2) then
 		for blizzPlate, plate in pairs(NP.CreatedPlates) do
-			if(blizzPlate:IsShown()) then
+			if(blizzPlate:IsShown() and plate:IsShown()) then
 				NP.SetUnitInfo(blizzPlate, plate)
 				NP.ColorizeAndScale(blizzPlate, plate)
 				NP.UpdateLevelAndName(blizzPlate, plate)
@@ -126,32 +124,32 @@ function NP:OnUpdate(elapsed)
 	end	
 end
 
-function NP:CheckFilterAndHealers(frame)
-	local myPlate = NP.CreatedPlates[frame]
-	local name = frame.name:GetText()
+function NP:CheckFilterAndHealers(myPlate)
+	local name = self.name:GetText()
 	local db = E.global.nameplate["filter"][name]
 
 	if db and db.enable then
 		if db.hide then
 			myPlate:Hide()
+			return
 		else
 			if(not myPlate:IsShown()) then
 				myPlate:Show()
 			end
 			
 			if db.customColor then
-				frame.customColor = true
+				self.customColor = true
 				myPlate.healthBar:SetStatusBarColor(db.color.r, db.color.g, db.color.b)
 			else
-				frame.customColor = nil	
+				self.customColor = nil	
 			end
 			
 			if db.customScale and db.customScale ~= 1 then
 				myPlate.healthBar:Height(NP.db.healthBar.height * db.customScale)
 				myPlate.healthBar:Width(NP.db.healthBar.width * db.customScale)
-				frame.customScale = true
+				self.customScale = true
 			else
-				frame.customScale = nil
+				self.customScale = nil
 			end
 		end
 	elseif(not myPlate:IsShown()) then
@@ -163,6 +161,8 @@ function NP:CheckFilterAndHealers(frame)
 	else
 		myPlate.healerIcon:Hide()
 	end
+
+	return true
 end
 
 function NP:CheckBGHealers()
@@ -494,6 +494,7 @@ end
 
 function NP:OnShow()
 	local myPlate = NP.CreatedPlates[self]
+	if(not NP.CheckFilterAndHealers(self, myPlate)) then return end
 	self.isSmall = (self.healthBar:GetEffectiveScale() < 1 and NP.db.smallPlates)
 	myPlate:SetSize(self:GetSize())
 
@@ -505,8 +506,6 @@ function NP:OnShow()
 		myPlate.name:SetPoint("BOTTOMLEFT", myPlate.healthBar, "TOPLEFT", 0, 3)
 		myPlate.name:SetPoint("BOTTOMRIGHT", myPlate.level, "BOTTOMLEFT", -2, 0)
 	end
-
-	NP:CheckFilterAndHealers(self)
 
 	local objectType
 	for object in pairs(self.queue) do		

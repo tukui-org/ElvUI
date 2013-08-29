@@ -28,7 +28,7 @@ local function UpdateFilterGroup()
 		guiInline = true,
 		order = -10,
 		get = function(info) return E.global["nameplate"]['filter'][selectedFilter][ info[#info] ] end,
-		set = function(info, value) E.global["nameplate"]['filter'][selectedFilter][ info[#info] ] = value; NP:ForEachPlate("CheckFilter"); NP:UpdateAllPlates(); UpdateFilterGroup() end,		
+		set = function(info, value) E.global["nameplate"]['filter'][selectedFilter][ info[#info] ] = value; NP:ForEachPlate("CheckFilterAndHealers"); NP:UpdateAllPlates(); UpdateFilterGroup() end,		
 		args = {
 			enable = {
 				type = 'toggle',
