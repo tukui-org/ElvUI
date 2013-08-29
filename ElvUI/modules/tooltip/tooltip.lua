@@ -7,6 +7,7 @@ local find, format = string.find, string.format
 local floor = math.floor
 local twipe, tinsert, tconcat = table.wipe, table.insert, table.concat
 
+local playerGUID = UnitGUID("player")
 local targetList, inspectCache = {}, {}
 local NIL_COLOR = { r=1, g=1, b=1 }
 local TAPPED_COLOR = { r=.6, g=.6, b=.6 }
@@ -324,7 +325,10 @@ function TT:ShowInspectInfo(tt, unit, level, r, g, b, numTries)
 	if(not canInspect or level < 10 or numTries > 1) then return end
 
 	local GUID = UnitGUID(unit)
-	if(inspectCache[GUID]) then
+	if(GUID == playerGUID) then
+		tt:AddDoubleLine(L["Talent Specialization:"], self:GetTalentSpec(unit, true), nil, nil, nil, r, g, b)
+		tt:AddDoubleLine(L["Item Level:"], floor(select(2, GetAverageItemLevel())), nil, nil, nil, 1, 1, 1)		
+	elseif(inspectCache[GUID]) then
 		local talent = inspectCache[GUID].talent
 		local itemLevel = inspectCache[GUID].itemLevel
 
@@ -339,19 +343,8 @@ function TT:ShowInspectInfo(tt, unit, level, r, g, b, numTries)
 	else
 		if(not canInspect) or (InspectFrame and InspectFrame:IsShown()) then return end
 		self.lastGUID = GUID
-
-		if(UnitIsUnit(unit, "player")) then
-			inspectCache[GUID] = {
-				time = GetTime(), 
-				itemLevel = floor(select(2, GetAverageItemLevel())), 
-				talent = self:GetTalentSpec(unit, true)
-			}
-
-			self:ShowInspectInfo(tt, unit, level, r, g, b, numTries + 1)
-		else
-			NotifyInspect(unit)
-			self:RegisterEvent("INSPECT_READY")
-		end
+		NotifyInspect(unit)
+		self:RegisterEvent("INSPECT_READY")
 	end	
 end
 
@@ -392,7 +385,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 			name = pvpName
 		end
 
-		if(realm) then
+		if(realm and realm ~= "") then
 			if(isShiftKeyDown) then
 				name = name.."-"..realm
 			else
