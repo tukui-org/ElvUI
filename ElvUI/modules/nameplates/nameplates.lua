@@ -100,20 +100,20 @@ function NP:OnUpdate(elapsed)
 
 	NP.PlateParent:Hide()
 	for blizzPlate, plate in pairs(NP.CreatedPlates) do
-		plate:Hide()
 		if(blizzPlate:IsShown()) then
 			if(not self.viewPort) then
 				plate:SetPoint("CENTER", WorldFrame, "BOTTOMLEFT", blizzPlate:GetCenter())
 			end
 			NP.SetAlpha(blizzPlate, plate)
-			plate:Show()
+		else
+			plate:Hide()
 		end
 	end
 	NP.PlateParent:Show()
 
 	if(self.elapsed and self.elapsed > 0.2) then
 		for blizzPlate, plate in pairs(NP.CreatedPlates) do
-			if(blizzPlate:IsShown()) then
+			if(blizzPlate:IsShown() and plate:IsShown()) then
 				NP.SetUnitInfo(blizzPlate, plate)
 				NP.ColorizeAndScale(blizzPlate, plate)
 				NP.UpdateLevelAndName(blizzPlate, plate)
@@ -126,32 +126,32 @@ function NP:OnUpdate(elapsed)
 	end	
 end
 
-function NP:CheckFilterAndHealers(frame)
-	local myPlate = NP.CreatedPlates[frame]
-	local name = frame.name:GetText()
+function NP:CheckFilterAndHealers(myPlate)
+	local name = self.name:GetText()
 	local db = E.global.nameplate["filter"][name]
 
 	if db and db.enable then
 		if db.hide then
 			myPlate:Hide()
+			return
 		else
 			if(not myPlate:IsShown()) then
 				myPlate:Show()
 			end
 			
 			if db.customColor then
-				frame.customColor = true
+				self.customColor = true
 				myPlate.healthBar:SetStatusBarColor(db.color.r, db.color.g, db.color.b)
 			else
-				frame.customColor = nil	
+				self.customColor = nil	
 			end
 			
 			if db.customScale and db.customScale ~= 1 then
 				myPlate.healthBar:Height(NP.db.healthBar.height * db.customScale)
 				myPlate.healthBar:Width(NP.db.healthBar.width * db.customScale)
-				frame.customScale = true
+				self.customScale = true
 			else
-				frame.customScale = nil
+				self.customScale = nil
 			end
 		end
 	elseif(not myPlate:IsShown()) then
@@ -163,6 +163,8 @@ function NP:CheckFilterAndHealers(frame)
 	else
 		myPlate.healerIcon:Hide()
 	end
+
+	return true
 end
 
 function NP:CheckBGHealers()
@@ -365,6 +367,7 @@ function NP:SetUnitInfo(myPlate)
 		self.unit = "target"
 		myPlate:SetFrameLevel(2)
 		myPlate.overlay:Hide()
+		myPlate.targetIndicator:Show()
 		if((NP.NumTargetChecks > -1) or self.allowCheck) then
 			NP.NumTargetChecks = NP.NumTargetChecks + 1
 			if NP.NumTargetChecks > 0 then
@@ -379,7 +382,7 @@ function NP:SetUnitInfo(myPlate)
 		if(self.unit ~= "mouseover" or self.allowCheck) then
 			myPlate:SetFrameLevel(1)
 			myPlate.overlay:Show()			
-
+			myPlate.targetIndicator:Hide()
 			NP:UpdateAurasByUnitID('mouseover')
 			NP:UpdateComboPointsByUnitID('mouseover')
 			self.allowCheck = nil
@@ -389,6 +392,7 @@ function NP:SetUnitInfo(myPlate)
 	else
 		myPlate:SetFrameLevel(0)
 		myPlate.overlay:Hide()
+		myPlate.targetIndicator:Hide()
 		self.unit = nil
 	end
 end
@@ -492,6 +496,7 @@ end
 
 function NP:OnShow()
 	local myPlate = NP.CreatedPlates[self]
+	if(not NP.CheckFilterAndHealers(self, myPlate)) then return end
 	self.isSmall = (self.healthBar:GetEffectiveScale() < 1 and NP.db.smallPlates)
 	myPlate:SetSize(self:GetSize())
 
@@ -503,8 +508,6 @@ function NP:OnShow()
 		myPlate.name:SetPoint("BOTTOMLEFT", myPlate.healthBar, "TOPLEFT", 0, 3)
 		myPlate.name:SetPoint("BOTTOMRIGHT", myPlate.level, "BOTTOMLEFT", -2, 0)
 	end
-
-	NP:CheckFilterAndHealers(self)
 
 	local objectType
 	for object in pairs(self.queue) do		
@@ -550,7 +553,7 @@ function NP:OnHide()
 	self.isSmall = nil
 	self.allowCheck = nil
 
-	myPlate.lowHealth:Hide()
+	myPlate.targetIndicator:Hide()
 	myPlate.healerIcon:Hide()
 
 	myPlate.healthBar:SetSize(NP.db.healthBar.width, NP.db.healthBar.height)
@@ -617,17 +620,8 @@ function NP:HealthBar_OnValueChanged(value)
 		myPlate.healthBar.text:Hide()
 	end
 
-	--Health Threshold
-	local percentValue = (value/maxValue)
-	if percentValue < NP.db.healthBar.lowThreshold then
-		myPlate.lowHealth:Show()
-		if percentValue < (NP.db.healthBar.lowThreshold / 2) then
-			myPlate.lowHealth:SetBackdropBorderColor(1, 0, 0, 0.9)
-		else
-			myPlate.lowHealth:SetBackdropBorderColor(1, 1, 0, 0.9)
-		end
-	elseif myPlate.lowHealth:IsShown() then
-		myPlate.lowHealth:Hide()
+	if(NP.db.colorNameByValue) then
+		myPlate.name:SetTextColor(E:ColorGradient(value/maxValue, 1,0,0, 1,1,0, 1,1,1))
 	end
 end
 
@@ -671,6 +665,7 @@ function NP:UpdateSettings()
 
 	--Name
 	myPlate.name:FontTemplate(font, fontSize, fontOutline)
+	myPlate.name:SetTextColor(1, 1, 1)
 
 	--Level
 	myPlate.level:FontTemplate(font, fontSize, fontOutline)
@@ -813,18 +808,18 @@ function NP:CreatePlate(frame)
 	auraHeader.AuraIconFrames = {}
 	myPlate.AuraWidget = auraHeader	
 	
-	--Low-Health Indicator
-	myPlate.lowHealth = CreateFrame("Frame", nil, myPlate)
-	myPlate.lowHealth:SetFrameLevel(0)
-	myPlate.lowHealth:SetOutside(myPlate.healthBar, 3, 3)
-	myPlate.lowHealth:SetBackdrop( { 
+	--Target Indicator
+	myPlate.targetIndicator = CreateFrame("Frame", nil, myPlate)
+	myPlate.targetIndicator:SetFrameLevel(0)
+	myPlate.targetIndicator:SetOutside(myPlate.healthBar, 3, 3)
+	myPlate.targetIndicator:SetBackdrop( { 
 		edgeFile = LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = 3,
 		insets = {left = 5, right = 5, top = 5, bottom = 5},
 	})
-	myPlate.lowHealth:SetBackdropColor(0, 0, 0, 0)
-	myPlate.lowHealth:SetBackdropBorderColor(1, 1, 0, 0.9)
-	myPlate.lowHealth:SetScale(E.PixelMode and 1.5 or 2)
-	myPlate.lowHealth:Hide()
+	myPlate.targetIndicator:SetBackdropColor(0, 0, 0, 0)
+	myPlate.targetIndicator:SetBackdropBorderColor(1, 1, 1)
+	myPlate.targetIndicator:SetScale(E.PixelMode and 2.2 or 2.5)
+	myPlate.targetIndicator:Hide()
 
 	--Combo Points
 	myPlate.cPoints = CreateFrame("Frame", nil, myPlate.healthBar)

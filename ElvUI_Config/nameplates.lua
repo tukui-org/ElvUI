@@ -28,7 +28,7 @@ local function UpdateFilterGroup()
 		guiInline = true,
 		order = -10,
 		get = function(info) return E.global["nameplate"]['filter'][selectedFilter][ info[#info] ] end,
-		set = function(info, value) E.global["nameplate"]['filter'][selectedFilter][ info[#info] ] = value; NP:ForEachPlate("CheckFilter"); NP:UpdateAllPlates(); UpdateFilterGroup() end,		
+		set = function(info, value) E.global["nameplate"]['filter'][selectedFilter][ info[#info] ] = value; NP:ForEachPlate("CheckFilterAndHealers"); NP:UpdateAllPlates(); UpdateFilterGroup() end,		
 		args = {
 			enable = {
 				type = 'toggle',
@@ -130,6 +130,11 @@ E.Options.args.nameplate = {
 					desc = L['Alpha of nameplates that are not your current target.'],
 					min = 0, max = 1, step = 0.01, isPercent = true,
 				},
+				colorNameByValue = {
+					type = 'toggle',
+					order = 5,
+					name = L['Color Name By Health Value'],		
+				},				
 				fontGroup = {
 					order = 100,
 					type = 'group',
@@ -236,14 +241,6 @@ E.Options.args.nameplate = {
 					desc = L["Controls the height of the nameplate"],
 					type = "range",
 					min = 4, max = 30, step = 1,					
-				},
-				lowThreshold = {
-					type = 'range',
-					order = 3,
-					name = L['Low Health Threshold'],
-					desc = L['Color the border of the nameplate yellow when it reaches this point, it will be colored red when it reaches half this value.'],
-					isPercent = true,
-					min = 0, max = 1, step = 0.01, 			
 				},
 				fontGroup = {
 					order = 4,
