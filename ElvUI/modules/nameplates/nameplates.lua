@@ -737,8 +737,6 @@ function NP:CreatePlate(frame)
 	frame.castBar.texture, frame.castBar.border, frame.castBar.shield, frame.castBar.icon, frame.castBar.name, frame.castBar.shadow = frame.castBar:GetRegions()
 
 	local myPlate = CreateFrame("Frame", nil, self.PlateParent)
-	myPlate:SetTemplate("Transparent")
-	frame:SetTemplate("Transparent")
 	if(self.viewPort) then
 		myPlate:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT")
 	end
