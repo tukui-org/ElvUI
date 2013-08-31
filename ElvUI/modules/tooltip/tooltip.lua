@@ -485,7 +485,11 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		end	
 	end
 
-	GameTooltipStatusBar:SetStatusBarColor(color.r, color.g, color.b)
+	if(color) then
+		GameTooltipStatusBar:SetStatusBarColor(color.r, color.g, color.b)
+	else
+		GameTooltipStatusBar:SetStatusBarColor(0.6, 0.6, 0.6)
+	end
 end
 
 function TT:GameTooltipStatusBar_OnValueChanged(tt, value)
