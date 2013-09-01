@@ -494,6 +494,11 @@ function NP:RoundColors(r, g, b)
 	return floor(r*100+.5)/100, floor(g*100+.5)/100, floor(b*100+.5)/100
 end
 
+function NP:OnSizeChanged(width, height)
+	local myPlate = NP.CreatedPlates[self]
+	myPlate:SetSize(width, height)
+end
+
 function NP:OnShow()
 	local myPlate = NP.CreatedPlates[self]
 	if(not NP.CheckFilterAndHealers(self, myPlate)) then return end
@@ -844,7 +849,8 @@ function NP:CreatePlate(frame)
 	
 	--Script Handlers
 	frame:HookScript("OnShow", NP.OnShow)
-	frame:HookScript("OnHide", NP.OnHide)	
+	frame:HookScript("OnHide", NP.OnHide)
+	frame:HookScript("OnSizeChanged", NP.OnSizeChanged)
 	frame.healthBar:HookScript("OnValueChanged", NP.HealthBar_OnValueChanged)
 	frame.castBar:HookScript("OnShow", NP.CastBar_OnShow)
 	frame.castBar:HookScript("OnHide", NP.CastBar_OnHide)
