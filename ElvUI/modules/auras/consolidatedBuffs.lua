@@ -2,10 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local A = E:GetModule('Auras');
 local LSM = LibStub("LibSharedMedia-3.0")
 
-local max = math.max
 local format = string.format
-local join = string.join
-local wipe = table.wipe
 
 A.Stats = {
 	[90363] = 'HUNTER', -- Embrace of the Shale Spider
@@ -87,22 +84,20 @@ A.IndexTable = {
 }
 
 function A:CheckFilterForActiveBuff(filter)
-	local spellName, texture
+	local spellName, texture, _
 	for spell, _ in pairs(filter) do
 		if spell ~= 'DEFAULT' then
 			spellName, _, texture = GetSpellInfo(spell)
-			
 			assert(spellName, format('%s: ID is not correct.', spell))
-			
-			if UnitAura("player", spellName) then
-				return spellName, texture
+
+			hasBuff, _, _, _, _, duration, expirationTime = UnitBuff('player', spellName)
+			if(hasBuff) then
+				return spellName, texture, duration, expirationTime
 			end
 		end
-		
-		texture =  select(3, GetSpellInfo(filter['DEFAULT']))
 	end
 
-	return false, texture
+	return false, select(3, GetSpellInfo(filter['DEFAULT']))
 end
 
 function A:UpdateConsolidatedTime(elapsed)
@@ -168,31 +163,13 @@ function A:UpdateReminder(event, unit)
 		A.IndexTable[7] = A.CriticalStrike;
 		A.IndexTable[8] = A.Mastery;	
 	end
-	
-	-- cache player buffs
-	local buffs = {}
-	
-	local count = 1
-	local spellName, _, _, _, _, duration, expirationTime = UnitBuff('player', count)
-	while spellName do
-		buffs[#buffs + 1] = { spellName, duration, expirationTime }
-		count = count + 1
-		spellName, _, _, _, _, duration, expirationTime = UnitBuff('player', count)
-	end
-	
+
 	for i = 1, E.db.auras.consolidatedBuffs.filter and 6 or 8 do
-		local hasBuff, texture = self:CheckFilterForActiveBuff(self.IndexTable[i])
+		local spellName, texture, duration, expirationTime = self:CheckFilterForActiveBuff(self.IndexTable[i])
 		local button = frame[("spell%d"):format(i)]
 		button.t:SetTexture(texture)
 		
-		if hasBuff then
-			for j = 1, #buffs do
-				if buffs[j][1] == hasBuff then
-					spellName, duration, expirationTime = buffs[j][1], buffs[j][2], buffs[j][3]
-					break
-				end
-			end
-			
+		if(spellName) then
 			button.expiration = expirationTime - GetTime()
 			button.duration = duration
 			button.nextupdate = 0
@@ -207,18 +184,15 @@ function A:UpdateReminder(event, unit)
 				button.t:SetAlpha(1)
 				button:SetScript('OnUpdate', A.UpdateConsolidatedTime)
 			end
-			button.hasBuff = hasBuff
+			button.spellName = spellName
 		else
 			CooldownFrame_SetTimer(button.cd, 0, 0, 0)
-			button.hasBuff = nil
+			button.spellName = nil
 			button.t:SetAlpha(1)
 			button:SetScript('OnUpdate', nil)
 			button.timer:SetText(nil)
 		end
 	end
-	
-	wipe(buffs)
-	buffs = nil
 end
 
 function A:Button_OnEnter()
@@ -266,7 +240,7 @@ function A:Button_OnEnter()
 			local spellName = GetSpellInfo(spellID)
 			local color = RAID_CLASS_COLORS[buffProvider]
 			
-			if self:GetParent().hasBuff == spellName then
+			if self:GetParent().spellName == spellName then
 				GameTooltip:AddLine(("%s - %s"):format(spellName, ACTIVE_PETS), color.r, color.g, color.b)
 			else
 				GameTooltip:AddLine(spellName, color.r, color.g, color.b)
@@ -303,9 +277,10 @@ end
 function A:EnableCB()
 	ElvUI_ConsolidatedBuffs:Show()
 	BuffFrame:RegisterUnitEvent('UNIT_AURA', "player")
-	self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED", 'UpdateReminder')
 	self:RegisterEvent("UNIT_INVENTORY_CHANGED", 'UpdateReminder')
 	self:RegisterEvent("UNIT_AURA", 'UpdateReminder')
+	self:RegisterEvent("GROUP_ROSTER_UPDATE", 'UpdateReminder');
+	self:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED", 'UpdateReminder');	
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", 'UpdateReminder')
 	self:RegisterEvent("PLAYER_REGEN_DISABLED", 'UpdateReminder')
 	self:RegisterEvent("PLAYER_ENTERING_WORLD", 'UpdateReminder')
@@ -318,9 +293,10 @@ end
 function A:DisableCB()
 	ElvUI_ConsolidatedBuffs:Hide()
 	BuffFrame:UnregisterEvent('UNIT_AURA', "player")
-	self:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 	self:UnregisterEvent("UNIT_INVENTORY_CHANGED")
 	self:UnregisterEvent("UNIT_AURA")
+	self:UnregisterEvent("GROUP_ROSTER_UPDATE");
+	self:UnregisterEvent("PLAYER_SPECIALIZATION_CHANGED");		
 	self:UnregisterEvent("PLAYER_REGEN_ENABLED")
 	self:UnregisterEvent("PLAYER_REGEN_DISABLED")
 	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
