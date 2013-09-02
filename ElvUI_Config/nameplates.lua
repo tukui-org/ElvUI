@@ -242,6 +242,14 @@ E.Options.args.nameplate = {
 					type = "range",
 					min = 4, max = 30, step = 1,					
 				},
+				lowThreshold = {
+					type = 'range',
+					order = 3,
+					name = L['Low Health Threshold'],
+					desc = L['Color the border of the nameplate yellow when it reaches this point, it will be colored red when it reaches half this value.'],
+					isPercent = true,
+					min = 0, max = 1, step = 0.01,
+				},				
 				fontGroup = {
 					order = 4,
 					type = "group",
