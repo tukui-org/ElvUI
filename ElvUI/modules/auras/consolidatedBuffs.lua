@@ -95,7 +95,6 @@ function A:Button_OnEnter()
 		GameTooltip:AddLine(_G[("RAID_BUFF_%d"):format(id)])
 	end
 	
-
 	GameTooltip:Show()
 end
 
@@ -168,6 +167,10 @@ function A:Update_ConsolidatedBuffsSettings(isCallback)
 		else
 			button:Point("TOP", frame[ignoreIcons[i - 1] or (i - 1)], "BOTTOM", 0, (E.PixelMode and 1 or -1))
 		end
+
+		if i == NUM_LE_RAID_BUFF_TYPES then
+			button:Point("BOTTOM", ElvUI_ConsolidatedBuffs, "BOTTOM", 0, (E.PixelMode and 0 or 2)) --2 needs to be 0
+		end		
 
 		if(ignoreIcons[i]) then
 			button:Hide()
