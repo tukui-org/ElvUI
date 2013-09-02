@@ -365,9 +365,12 @@ function M:Initialize()
 	end)
 	
 	FarmModeMap:SetScript('OnHide', function() 
-		if not E:HasMoverBeenMoved('AurasMover') then
-			E:ResetMovers('Auras Frame')
+		if not E:HasMoverBeenMoved('BuffsMover') then
+			E:ResetMovers(L['Player Buffs'])
 		end	
+		if not E:HasMoverBeenMoved('DebuffsMover') then
+			E:ResetMovers(L['Player Debuffs'])
+		end			
 		MinimapCluster:ClearAllPoints()
 		MinimapCluster:SetAllPoints(Minimap)	
 		if IsAddOnLoaded('Routes') then
