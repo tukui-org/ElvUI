@@ -96,7 +96,16 @@ P["nameplate"] = {
 	['nonTargetAlpha'] = 0.25,
 	['combatHide'] = false,
 	['colorNameByValue'] =  true,
+	['targetIndicator'] = {
+		['enable'] = true,
+		['colorMatchHealthBar'] = true,
+		['color'] = {r= 1, g = 1, b = 1},
+		['width'] = 50,
+		['height'] = 56,
+		['yOffset'] = 0,
+	},
 	['healthBar'] = {
+		['lowThreshold'] =  0.40,
 		['width'] = 108,
 		['height'] = 9,		
 		['text'] = {
