@@ -100,9 +100,9 @@ P["nameplate"] = {
 	["comboPoints"] = true,
 	['nonTargetAlpha'] = 0.35,
 	['combatHide'] = false,
-	['colorNameByValue'] =  true,
+	['colorNameByValue'] =  false,
 	['targetIndicator'] = {
-		['enable'] = true,
+		['enable'] = false,
 		['colorMatchHealthBar'] = true,
 		['color'] = {r= 1, g = 1, b = 1},
 		['width'] = 50,
