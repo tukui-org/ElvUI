@@ -105,6 +105,8 @@ function NP:OnUpdate(elapsed)
 				plate:SetPoint("CENTER", WorldFrame, "BOTTOMLEFT", blizzPlate:GetCenter())
 			end
 			NP.SetAlpha(blizzPlate, plate)
+		else
+			plate:Hide()
 		end
 	end
 	NP.PlateParent:Show()
@@ -140,6 +142,10 @@ function NP:CheckFilterAndHealers(myPlate)
 			if db.customColor then
 				self.customColor = true
 				myPlate.healthBar:SetStatusBarColor(db.color.r, db.color.g, db.color.b)
+
+				if(NP.db.targetIndicator.enable and NP.db.targetIndicator.colorMatchHealthBar) then
+					myPlate.targetIndicator:SetVertexColor(db.color.r, db.color.g, db.color.b)	
+				end				
 			else
 				self.customColor = nil	
 			end
@@ -342,6 +348,10 @@ function NP:ColorizeAndScale(myPlate)
 
 	if(not self.customColor) then
 		myPlate.healthBar:SetStatusBarColor(color.r, color.g, color.b)
+
+		if(NP.db.targetIndicator.enable and NP.db.targetIndicator.colorMatchHealthBar) then
+			myPlate.targetIndicator:SetVertexColor(color.r, color.g, color.b)	
+		end	
 	end
 	
 	if(not self.customScale and not self.isSmall and myPlate.healthBar:GetWidth() ~= (NP.db.healthBar.width * scale)) then
@@ -365,7 +375,11 @@ function NP:SetUnitInfo(myPlate)
 		self.unit = "target"
 		myPlate:SetFrameLevel(2)
 		myPlate.overlay:Hide()
-		myPlate.targetIndicator:Show()
+
+		if(NP.db.targetIndicator.enable) then
+			myPlate.targetIndicator:Show()
+		end
+
 		if((NP.NumTargetChecks > -1) or self.allowCheck) then
 			NP.NumTargetChecks = NP.NumTargetChecks + 1
 			if NP.NumTargetChecks > 0 then
@@ -492,6 +506,11 @@ function NP:RoundColors(r, g, b)
 	return floor(r*100+.5)/100, floor(g*100+.5)/100, floor(b*100+.5)/100
 end
 
+function NP:OnSizeChanged(width, height)
+	local myPlate = NP.CreatedPlates[self]
+	myPlate:SetSize(width, height)
+end
+
 function NP:OnShow()
 	local myPlate = NP.CreatedPlates[self]
 	if(not NP.CheckFilterAndHealers(self, myPlate)) then return end
@@ -537,6 +556,10 @@ function NP:OnShow()
 	else
 		self.allowCheck = true
 	end
+
+	if(not NP.db.targetIndicator.colorMatchHealthBar) then
+		myPlate.targetIndicator:SetVertexColor(NP.db.targetIndicator.color.r, NP.db.targetIndicator.color.g, NP.db.targetIndicator.color.b)
+	end	
 end
 
 function NP:OnHide()
@@ -551,6 +574,7 @@ function NP:OnHide()
 	self.isSmall = nil
 	self.allowCheck = nil
 
+	myPlate.lowHealth:Hide()
 	myPlate.targetIndicator:Hide()
 	myPlate.healerIcon:Hide()
 
@@ -610,6 +634,19 @@ function NP:HealthBar_OnValueChanged(value)
 	myPlate.healthBar:SetMinMaxValues(minValue, maxValue)
 	myPlate.healthBar:SetValue(value)
 
+	--Health Threshold
+	local percentValue = (value/maxValue)
+	if percentValue < NP.db.healthBar.lowThreshold then
+		myPlate.lowHealth:Show()
+		if percentValue < (NP.db.healthBar.lowThreshold / 2) then
+			myPlate.lowHealth:SetBackdropBorderColor(1, 0, 0, 0.9)
+		else
+			myPlate.lowHealth:SetBackdropBorderColor(1, 1, 0, 0.9)
+		end
+	elseif myPlate.lowHealth:IsShown() then
+		myPlate.lowHealth:Hide()
+	end
+
 	--Health Text
 	if NP.db.healthBar.text.enable and value and maxValue and maxValue > 1 and self:GetScale() == 1 then
 		myPlate.healthBar.text:Show()
@@ -619,7 +656,7 @@ function NP:HealthBar_OnValueChanged(value)
 	end
 
 	if(NP.db.colorNameByValue) then
-		myPlate.name:SetTextColor(E:ColorGradient(value/maxValue, 1,0,0, 1,1,0, 1,1,1))
+		myPlate.name:SetTextColor(E:ColorGradient(percentValue, 1,0,0, 1,1,0, 1,1,1))
 	end
 end
 
@@ -627,6 +664,7 @@ local green =  {r = 0, g = 1, b = 0}
 function NP:CastBar_OnValueChanged(value)
 	local myPlate = NP.CreatedPlates[self:GetParent():GetParent()]
 	local min, max = self:GetMinMaxValues()
+	local isChannel = value < myPlate.castBar:GetValue()
 	myPlate.castBar:SetMinMaxValues(min, max)
 	myPlate.castBar:SetValue(value)
 	myPlate.castBar.time:SetFormattedText("%.1f ", value)
@@ -636,7 +674,7 @@ function NP:CastBar_OnValueChanged(value)
 		color = NP.db.castBar.noInterrupt
 	else
 		--Color the castbar green slightly before it ends cast.
-		if value > 0 and (value/max) >= 0.98 then
+		if value > 0 and (isChannel and (value/max) <= 0.02 or (value/max) >= 0.98) then
 			color = green
 		else
 			color = NP.db.castBar.color
@@ -716,6 +754,9 @@ function NP:UpdateSettings()
 		myPlate.cPoints:Hide()	
 	end
 	
+	myPlate.targetIndicator:SetHeight(NP.db.targetIndicator.height)
+	myPlate.targetIndicator:SetWidth(NP.db.targetIndicator.width)
+	myPlate.targetIndicator:SetPoint("BOTTOM", myPlate.healthBar, "TOP", 0, 30 + NP.db.targetIndicator.yOffset)
 
 	NP.OnShow(self)
 	NP.HealthBar_OnSizeChanged(myPlate.healthBar, myPlate.healthBar:GetSize())
@@ -805,19 +846,25 @@ function NP:CreatePlate(frame)
 	auraHeader.PollFunction = NP.UpdateAuraTime
 	auraHeader.AuraIconFrames = {}
 	myPlate.AuraWidget = auraHeader	
-	
-	--Target Indicator
-	myPlate.targetIndicator = CreateFrame("Frame", nil, myPlate)
-	myPlate.targetIndicator:SetFrameLevel(0)
-	myPlate.targetIndicator:SetOutside(myPlate.healthBar, 3, 3)
-	myPlate.targetIndicator:SetBackdrop( { 
-		edgeFile = LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = 3,
-		insets = {left = 5, right = 5, top = 5, bottom = 5},
-	})
-	myPlate.targetIndicator:SetBackdropColor(0, 0, 0, 0)
-	myPlate.targetIndicator:SetBackdropBorderColor(1, 1, 1)
-	myPlate.targetIndicator:SetScale(E.PixelMode and 2.2 or 2.5)
+
+	--Low-Health Indicator
+	myPlate.lowHealth = CreateFrame("Frame", nil, myPlate)
+	myPlate.lowHealth:SetFrameLevel(0)
+	myPlate.lowHealth:SetOutside(myPlate.healthBar, 3, 3)
+	myPlate.lowHealth:SetBackdrop( {	
+ 		edgeFile = LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = 3,
+ 		insets = {left = 5, right = 5, top = 5, bottom = 5},
+ 	})		
+	myPlate.lowHealth:SetBackdropColor(0, 0, 0, 0)
+	myPlate.lowHealth:SetBackdropBorderColor(1, 1, 0, 0.9)
+	myPlate.lowHealth:SetScale(E.PixelMode and 1.5 or 2)
+	myPlate.lowHealth:Hide()
+
+	--Target Indicators
+	myPlate.targetIndicator = myPlate:CreateTexture(nil, 'BORDER', -1)
+	myPlate.targetIndicator:SetTexture([[Interface\AddOns\ElvUI\media\textures\nameplateTargetIndicator.tga]])
 	myPlate.targetIndicator:Hide()
+
 
 	--Combo Points
 	myPlate.cPoints = CreateFrame("Frame", nil, myPlate.healthBar)
@@ -842,7 +889,8 @@ function NP:CreatePlate(frame)
 	
 	--Script Handlers
 	frame:HookScript("OnShow", NP.OnShow)
-	frame:HookScript("OnHide", NP.OnHide)	
+	frame:HookScript("OnHide", NP.OnHide)
+	frame:HookScript("OnSizeChanged", NP.OnSizeChanged)
 	frame.healthBar:HookScript("OnValueChanged", NP.HealthBar_OnValueChanged)
 	frame.castBar:HookScript("OnShow", NP.CastBar_OnShow)
 	frame.castBar:HookScript("OnHide", NP.CastBar_OnHide)
@@ -868,8 +916,6 @@ function NP:CreatePlate(frame)
 	else
 		NP.CastBar_OnShow(frame.castBar)
 	end
-
-
 end
 
 function NP:QueueObject(frame, object)

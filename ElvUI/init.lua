@@ -14,6 +14,8 @@ BINDING_HEADER_ELVUI = GetAddOnMetadata(..., "Title");
 
 local AddOnName, Engine = ...;
 local AddOn = LibStub("AceAddon-3.0"):NewAddon(AddOnName, "AceConsole-3.0", "AceEvent-3.0", 'AceTimer-3.0', 'AceHook-3.0');
+AddOn.callbacks = AddOn.callbacks or 
+  LibStub("CallbackHandler-1.0"):New(AddOn)
 AddOn.DF = {}; AddOn.DF["profile"] = {}; AddOn.DF["global"] = {}; AddOn.privateVars = {}; AddOn.privateVars["profile"] = {}; -- Defaults
 AddOn.Options = {
 	type = "group",
@@ -22,7 +24,6 @@ AddOn.Options = {
 };
 
 local Locale = LibStub("AceLocale-3.0"):GetLocale(AddOnName, false);
-
 Engine[1] = AddOn;
 Engine[2] = Locale;
 Engine[3] = AddOn.privateVars["profile"];
@@ -32,7 +33,6 @@ Engine[5] = AddOn.DF["global"];
 _G[AddOnName] = Engine;
 
 local tcopy = table.copy
-
 function AddOn:OnInitialize()	
 	if not ElvCharacterDB then
 		ElvCharacterDB = {};
@@ -151,7 +151,6 @@ function AddOn:ToggleConfig()
 		local _, _, _, _, _, reason = GetAddOnInfo("ElvUI_Config")
 		if reason ~= "MISSING" and reason ~= "DISABLED" then 
 			LoadAddOn("ElvUI_Config")
-
 			if GetAddOnMetadata("ElvUI_Config", "Version") ~= "1.01" then
 				self:StaticPopup_Show("CLIENT_UPDATE_REQUEST")
 			end

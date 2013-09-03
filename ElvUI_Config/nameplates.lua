@@ -242,6 +242,14 @@ E.Options.args.nameplate = {
 					type = "range",
 					min = 4, max = 30, step = 1,					
 				},
+				lowThreshold = {
+					type = 'range',
+					order = 3,
+					name = L['Low Health Threshold'],
+					desc = L['Color the border of the nameplate yellow when it reaches this point, it will be colored red when it reaches half this value.'],
+					isPercent = true,
+					min = 0, max = 1, step = 0.01,
+				},				
 				fontGroup = {
 					order = 4,
 					type = "group",
@@ -317,6 +325,60 @@ E.Options.args.nameplate = {
 						},						
 					},		
 				},				
+			},
+		},
+		targetIndicator = {
+			type = "group",
+			order = 4,
+			name = L["Target Indicator"],
+			get = function(info) return E.db.nameplate.targetIndicator[ info[#info] ] end,
+			set = function(info, value) E.db.nameplate.targetIndicator[ info[#info] ] = value; NP:UpdateAllPlates() end,				
+			args = {
+				enable = {
+					order = 1,
+					type = "toggle",
+					name = L["Enable"],
+				},
+				width = {
+					order = 2,
+					name = L["Width"],
+					type = "range",
+					min = 0, max = 220, step = 1,
+				},
+				height = {
+					order = 3,
+					name = L["Height"],
+					type = "range",
+					min = 0, max = 220, step = 1,
+				},				
+				yOffset = {
+					order = 4,
+					name = L['Y-Offset'],
+					type = 'range',
+					min = -100, max = 100, step = 1,
+				},
+				colorMatchHealthBar = {
+					order = 5,
+					type = "toggle",
+					name = L["Color By Healthbar"],
+					desc = L["Match the color of the healthbar."],
+				},
+				color = {
+					type = "color",
+					name = L["Color"],
+					order = 6,
+					disabled = function() return E.db.nameplate.targetIndicator.colorMatchHealthBar end,
+					get = function(info)
+						local t = E.db.nameplate.targetIndicator[ info[#info] ]
+						return t.r, t.g, t.b, t.a
+					end,
+					set = function(info, r, g, b)
+						E.db.nameplate.targetIndicator[ info[#info] ] = {}
+						local t = E.db.nameplate.targetIndicator[ info[#info] ]
+						t.r, t.g, t.b = r, g, b
+						NP:UpdateAllPlates()
+					end,					
+				},
 			},
 		},
 		raidHealIcon = {

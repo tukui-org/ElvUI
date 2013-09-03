@@ -346,34 +346,39 @@ end
 function E:CheckRole()
 	local talentTree = GetSpecialization()
 	local IsInPvPGear = false;
+	local role
 	local resilperc = GetCombatRatingBonus(COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN)
 	if resilperc > GetDodgeChance() and resilperc > GetParryChance() and UnitLevel('player') == MAX_PLAYER_LEVEL then
 		IsInPvPGear = true;
 	end
 	
-	self.role = nil;
-	
+
 	if type(self.ClassRole[self.myclass]) == "string" then
-		self.role = self.ClassRole[self.myclass]
+		role = self.ClassRole[self.myclass]
 	elseif talentTree then
-		self.role = self.ClassRole[self.myclass][talentTree]
+		role = self.ClassRole[self.myclass][talentTree]
 	end
 	
-	if self.role == "Tank" and IsInPvPGear then
-		self.role = "Melee"
+	if role == "Tank" and IsInPvPGear then
+		role = "Melee"
 	end
 	
-	if not self.role then
+	if not role then
 		local playerint = select(2, UnitStat("player", 4));
 		local playeragi	= select(2, UnitStat("player", 2));
 		local base, posBuff, negBuff = UnitAttackPower("player");
 		local playerap = base + posBuff + negBuff;
 
 		if (playerap > playerint) or (playeragi > playerint) then
-			self.role = "Melee";
+			role = "Melee";
 		else
-			self.role = "Caster";
+			role = "Caster";
 		end		
+	end
+
+	if(self.role ~= role) then
+		self.role = role
+		self.callbacks:Fire("RoleChanged")
 	end
 
 	if self.HealingClasses[self.myclass] ~= nil and self.myclass ~= 'PRIEST' then
@@ -381,12 +386,6 @@ function E:CheckRole()
 			self.DispelClasses[self.myclass].Magic = true;
 		else
 			self.DispelClasses[self.myclass].Magic = false;
-		end
-	elseif self.myclass == "PRIEST" then
-		if self:CheckTalentTree(3) then
-			self.DispelClasses[self.myclass].Disease = false;
-		else
-			self.DispelClasses[self.myclass].Disease = true;
 		end
 	end
 end
