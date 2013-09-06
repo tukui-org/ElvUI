@@ -386,6 +386,15 @@ E.Options.args.nameplate = {
 					type = "toggle",
 					name = L["Color By Healthbar"],
 					desc = L["Match the color of the healthbar."],
+					set = function(info, value) 
+						E.db.nameplate.targetIndicator.colorMatchHealthBar = value; 
+						if(not value) then
+							local color = E.db.nameplate.targetIndicator.color
+							NP:ColorTargetIndicator(color.r, color.g, color.b)
+						else
+							WorldFrame.elapsed = 3
+						end
+					end,	
 				},
 				color = {
 					type = "color",

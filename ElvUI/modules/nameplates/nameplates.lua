@@ -141,6 +141,8 @@ function NP:SetTargetIndicator()
 		self.doubleArrowIndicator:Hide()
 	elseif(self.db.targetIndicator.style == 'doubleArrow' or self.db.targetIndicator.style == 'doubleArrowInverted') then
 		targetIndicator = self.doubleArrowIndicator
+		targetIndicator.left:ClearAllPoints()
+		targetIndicator.right:ClearAllPoints()		
 		self.arrowIndicator:Hide()
 		self.glowIndicator:Hide()
 	elseif(self.db.targetIndicator.style == 'glow') then
@@ -201,12 +203,8 @@ function NP:CheckFilterAndHealers(myPlate)
 			end
 			
 			if db.customColor then
-				self.customColor = true
-				myPlate.healthBar:SetStatusBarColor(db.color.r, db.color.g, db.color.b)
-
-				if(NP.db.targetIndicator.enable and NP.db.targetIndicator.colorMatchHealthBar) then
-					NP:ColorTargetIndicator(db.color.r, db.color.g, db.color.b)	
-				end				
+				self.customColor = db.color
+				myPlate.healthBar:SetStatusBarColor(db.color.r, db.color.g, db.color.b)	
 			else
 				self.customColor = nil	
 			end
@@ -410,9 +408,11 @@ function NP:ColorizeAndScale(myPlate)
 	if(not self.customColor) then
 		myPlate.healthBar:SetStatusBarColor(color.r, color.g, color.b)
 
-		if(NP.db.targetIndicator.enable and NP.db.targetIndicator.colorMatchHealthBar) then
+		if(NP.db.targetIndicator.enable and NP.db.targetIndicator.colorMatchHealthBar and self.unit == "target") then
 			NP:ColorTargetIndicator(color.r, color.g, color.b)	
-		end	
+		end
+	elseif(self.unit == "target" and NP.db.targetIndicator.colorMatchHealthBar and NP.db.targetIndicator.enable) then
+		NP:ColorTargetIndicator(self.customColor.r, self.customColor.g, self.customColor.b)			
 	end
 	
 	if(not self.customScale and not self.isSmall and myPlate.healthBar:GetWidth() ~= (NP.db.healthBar.width * scale)) then
