@@ -6,6 +6,7 @@ local numChildren = -1
 local twipe = table.wipe
 local band = bit.band
 local gsub = string.gsub
+local targetIndicator
 
 NP.NumTargetChecks = -1
 NP.CreatedPlates = {};
@@ -58,7 +59,6 @@ NP.ComboColors = {
 	[5] = {0.33, 0.59, 0.33}
 }
 
-
 local AURA_UPDATE_INTERVAL = 0.1
 local AURA_TYPE_BUFF = 1
 local AURA_TYPE_DEBUFF = 6
@@ -90,6 +90,64 @@ local TimeColors = {
 	[3] = '|cffFFEE00',
 	[4] = '|cfffe0000',
 }
+
+function NP:SetTargetIndicatorDimensions()
+	if(self.db.targetIndicator.style == 'arrow') then
+		targetIndicator:SetHeight(self.db.targetIndicator.height)
+		targetIndicator:SetWidth(self.db.targetIndicator.width)		
+	elseif(self.db.targetIndicator.style == 'doubleArrow') then
+		targetIndicator.left:SetHeight(self.db.targetIndicator.height)
+		targetIndicator.left:SetWidth(self.db.targetIndicator.width)
+		targetIndicator.right:SetWidth(self.db.targetIndicator.width)	
+		targetIndicator.right:SetHeight(self.db.targetIndicator.height)
+	end
+end
+
+function NP:PositionTargetIndicator(myPlate)
+	targetIndicator:SetParent(myPlate)
+	if(self.db.targetIndicator.style == 'arrow') then
+		targetIndicator:ClearAllPoints()
+		targetIndicator:SetPoint("BOTTOM", myPlate.healthBar, "TOP", 0, 30 + self.db.targetIndicator.yOffset)
+	elseif(self.db.targetIndicator.style == 'doubleArrow') then
+		targetIndicator.left:SetPoint("RIGHT", myPlate.healthBar, "LEFT", -self.db.targetIndicator.xOffset, 0)
+		targetIndicator.right:SetPoint("LEFT", myPlate.healthBar, "RIGHT", self.db.targetIndicator.xOffset, 0)
+	elseif(self.db.targetIndicator.style == 'glow') then
+		targetIndicator:SetOutside(myPlate.healthBar, 3, 3)
+		targetIndicator:SetFrameLevel(0)
+		targetIndicator:SetFrameStrata("BACKGROUND")
+	end
+
+	targetIndicator:Show()
+end
+
+function NP:ColorTargetIndicator(r, g, b)
+	if(self.db.targetIndicator.style == 'arrow') then
+		targetIndicator:SetVertexColor(r, g, b)
+	elseif(self.db.targetIndicator.style == 'doubleArrow') then
+		targetIndicator.left:SetVertexColor(r, g, b)
+		targetIndicator.right:SetVertexColor(r, g, b)
+	elseif(self.db.targetIndicator.style == 'glow') then
+		targetIndicator:SetBackdropBorderColor(r, g, b)	
+	end
+end
+
+function NP:SetTargetIndicator()
+	if(self.db.targetIndicator.style == 'arrow') then
+		targetIndicator = self.arrowIndicator
+		self.glowIndicator:Hide()
+		self.doubleArrowIndicator:Hide()
+	elseif(self.db.targetIndicator.style == 'doubleArrow') then
+		targetIndicator = self.doubleArrowIndicator
+		self.arrowIndicator:Hide()
+		self.glowIndicator:Hide()
+	elseif(self.db.targetIndicator.style == 'glow') then
+		targetIndicator = self.glowIndicator
+		self.arrowIndicator:Hide()
+		self.doubleArrowIndicator:Hide()
+	end
+
+	self:SetTargetIndicatorDimensions()
+end
 
 function NP:OnUpdate(elapsed)
 	local count = WorldFrame:GetNumChildren()
@@ -144,7 +202,7 @@ function NP:CheckFilterAndHealers(myPlate)
 				myPlate.healthBar:SetStatusBarColor(db.color.r, db.color.g, db.color.b)
 
 				if(NP.db.targetIndicator.enable and NP.db.targetIndicator.colorMatchHealthBar) then
-					myPlate.targetIndicator:SetVertexColor(db.color.r, db.color.g, db.color.b)	
+					NP:ColorTargetIndicator(db.color.r, db.color.g, db.color.b)	
 				end				
 			else
 				self.customColor = nil	
@@ -350,7 +408,7 @@ function NP:ColorizeAndScale(myPlate)
 		myPlate.healthBar:SetStatusBarColor(color.r, color.g, color.b)
 
 		if(NP.db.targetIndicator.enable and NP.db.targetIndicator.colorMatchHealthBar) then
-			myPlate.targetIndicator:SetVertexColor(color.r, color.g, color.b)	
+			NP:ColorTargetIndicator(color.r, color.g, color.b)	
 		end	
 	end
 	
@@ -377,7 +435,7 @@ function NP:SetUnitInfo(myPlate)
 		myPlate.overlay:Hide()
 
 		if(NP.db.targetIndicator.enable) then
-			myPlate.targetIndicator:Show()
+			NP:PositionTargetIndicator(myPlate)
 		end
 
 		if((NP.NumTargetChecks > -1) or self.allowCheck) then
@@ -394,7 +452,6 @@ function NP:SetUnitInfo(myPlate)
 		if(self.unit ~= "mouseover" or self.allowCheck) then
 			myPlate:SetFrameLevel(1)
 			myPlate.overlay:Show()			
-			myPlate.targetIndicator:Hide()
 			NP:UpdateAurasByUnitID('mouseover')
 			NP:UpdateComboPointsByUnitID('mouseover')
 			self.allowCheck = nil
@@ -404,7 +461,6 @@ function NP:SetUnitInfo(myPlate)
 	else
 		myPlate:SetFrameLevel(0)
 		myPlate.overlay:Hide()
-		myPlate.targetIndicator:Hide()
 		self.unit = nil
 	end
 end
@@ -441,6 +497,7 @@ function NP:PLAYER_TARGET_CHANGED()
 		WorldFrame.elapsed = 0.1
 		NP.NumTargetChecks = 0
 	else
+		targetIndicator:Hide()
 		self.targetName = nil
 	end
 end
@@ -485,6 +542,32 @@ function NP:Initialize()
 	self:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
 	self:RegisterEvent("UNIT_COMBO_POINTS")
 
+
+	self.arrowIndicator = WorldFrame:CreateTexture(nil, 'BORDER', -1)
+	self.arrowIndicator:SetTexture([[Interface\AddOns\ElvUI\media\textures\nameplateTargetIndicator.tga]])
+	self.arrowIndicator:Hide()
+
+
+	self.doubleArrowIndicator = CreateFrame("Frame", nil, WorldFrame)
+	self.doubleArrowIndicator.left = self.doubleArrowIndicator:CreateTexture(nil, 'BORDER', -1)
+	self.doubleArrowIndicator.left:SetTexture([[Interface\AddOns\ElvUI\media\textures\nameplateTargetIndicatorLeft.tga]])
+	self.doubleArrowIndicator.right = self.doubleArrowIndicator:CreateTexture(nil, 'BORDER', -1)
+	self.doubleArrowIndicator.right:SetTexture([[Interface\AddOns\ElvUI\media\textures\nameplateTargetIndicatorRight.tga]])
+	self.doubleArrowIndicator:Hide()
+
+	self.glowIndicator = CreateFrame("Frame", nil, WorldFrame)
+	self.glowIndicator:SetFrameLevel(0)
+	self.glowIndicator:SetFrameStrata("BACKGROUND")
+	self.glowIndicator:SetBackdrop( {	
+ 		edgeFile = LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = 3,
+ 		insets = {left = 5, right = 5, top = 5, bottom = 5},
+ 	})		
+	self.glowIndicator:SetBackdropColor(0, 0, 0, 0)
+	self.glowIndicator:SetScale(E.PixelMode and 2.5 or 3)
+	self.glowIndicator:Hide()
+
+
+	self:SetTargetIndicator()
 	self.viewPort = IsAddOnLoaded("SunnArt");
 	self:CombatToggle(true)
 end
@@ -558,7 +641,7 @@ function NP:OnShow()
 	end
 
 	if(not NP.db.targetIndicator.colorMatchHealthBar) then
-		myPlate.targetIndicator:SetVertexColor(NP.db.targetIndicator.color.r, NP.db.targetIndicator.color.g, NP.db.targetIndicator.color.b)
+		NP:ColorTargetIndicator(NP.db.targetIndicator.color.r, NP.db.targetIndicator.color.g, NP.db.targetIndicator.color.b)
 	end	
 end
 
@@ -574,8 +657,11 @@ function NP:OnHide()
 	self.isSmall = nil
 	self.allowCheck = nil
 
+	if(targetIndicator:GetParent() == myPlate) then
+		targetIndicator:Hide()
+	end
+
 	myPlate.lowHealth:Hide()
-	myPlate.targetIndicator:Hide()
 	myPlate.healerIcon:Hide()
 
 	myPlate.healthBar:SetSize(NP.db.healthBar.width, NP.db.healthBar.height)
@@ -664,6 +750,7 @@ local green =  {r = 0, g = 1, b = 0}
 function NP:CastBar_OnValueChanged(value)
 	local myPlate = NP.CreatedPlates[self:GetParent():GetParent()]
 	local min, max = self:GetMinMaxValues()
+	local isChannel = value < myPlate.castBar:GetValue()
 	myPlate.castBar:SetMinMaxValues(min, max)
 	myPlate.castBar:SetValue(value)
 	myPlate.castBar.time:SetFormattedText("%.1f ", value)
@@ -673,7 +760,7 @@ function NP:CastBar_OnValueChanged(value)
 		color = NP.db.castBar.noInterrupt
 	else
 		--Color the castbar green slightly before it ends cast.
-		if value > 0 and (value/max) >= 0.98 then
+		if value > 0 and (isChannel and (value/max) <= 0.02 or (value/max) >= 0.98) then
 			color = green
 		else
 			color = NP.db.castBar.color
@@ -752,10 +839,6 @@ function NP:UpdateSettings()
 	elseif(myPlate.cPoints:IsShown()) then
 		myPlate.cPoints:Hide()	
 	end
-	
-	myPlate.targetIndicator:SetHeight(NP.db.targetIndicator.height)
-	myPlate.targetIndicator:SetWidth(NP.db.targetIndicator.width)
-	myPlate.targetIndicator:SetPoint("BOTTOM", myPlate.healthBar, "TOP", 0, 30 + NP.db.targetIndicator.yOffset)
 
 	NP.OnShow(self)
 	NP.HealthBar_OnSizeChanged(myPlate.healthBar, myPlate.healthBar:GetSize())
@@ -858,12 +941,6 @@ function NP:CreatePlate(frame)
 	myPlate.lowHealth:SetBackdropBorderColor(1, 1, 0, 0.9)
 	myPlate.lowHealth:SetScale(E.PixelMode and 1.5 or 2)
 	myPlate.lowHealth:Hide()
-
-	--Target Indicators
-	myPlate.targetIndicator = myPlate:CreateTexture(nil, 'BORDER', -1)
-	myPlate.targetIndicator:SetTexture([[Interface\AddOns\ElvUI\media\textures\nameplateTargetIndicator.tga]])
-	myPlate.targetIndicator:Hide()
-
 
 	--Combo Points
 	myPlate.cPoints = CreateFrame("Frame", nil, myPlate.healthBar)
