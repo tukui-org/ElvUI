@@ -332,7 +332,7 @@ E.Options.args.nameplate = {
 			order = 4,
 			name = L["Target Indicator"],
 			get = function(info) return E.db.nameplate.targetIndicator[ info[#info] ] end,
-			set = function(info, value) E.db.nameplate.targetIndicator[ info[#info] ] = value; NP:UpdateAllPlates() end,				
+			set = function(info, value) E.db.nameplate.targetIndicator[ info[#info] ] = value; WorldFrame.elapsed = 3; NP:UpdateAllPlates() end,				
 			args = {
 				enable = {
 					order = 1,
@@ -344,29 +344,62 @@ E.Options.args.nameplate = {
 					name = L["Width"],
 					type = "range",
 					min = 0, max = 220, step = 1,
+					disabled = function() return (NP.db.targetIndicator.style == "glow") end,
+					set = function(info, value) E.db.nameplate.targetIndicator[ info[#info] ] = value; NP:SetTargetIndicatorDimensions() end,	
 				},
 				height = {
 					order = 3,
 					name = L["Height"],
 					type = "range",
 					min = 0, max = 220, step = 1,
-				},				
-				yOffset = {
+					disabled = function() return (NP.db.targetIndicator.style == "glow") end,
+					set = function(info, value) E.db.nameplate.targetIndicator[ info[#info] ] = value; NP:SetTargetIndicatorDimensions() end,	
+				},			
+				style = {
 					order = 4,
+					name = L["Style"],
+					type = "select",
+					values = {
+						arrow = L["Vertical Arrow"],
+						doubleArrow = L["Horrizontal Arrows"],
+						doubleArrowInverted = L["Horrizontal Arrows (Inverted)"],
+						glow = L["Glow"]
+					},
+					set = function(info, value) E.db.nameplate.targetIndicator[ info[#info] ] = value; NP:SetTargetIndicator(); NP:UpdateAllPlates() end,	
+				},
+				xOffset = {
+					order = 5,
+					name = L['X-Offset'],
+					type = 'range',
+					min = -100, max = 100, step = 1,
+					disabled = function() return (NP.db.targetIndicator.style ~= "doubleArrow" and NP.db.targetIndicator.style ~= "doubleArrowInverted") end
+				},					
+				yOffset = {
+					order = 6,
 					name = L['Y-Offset'],
 					type = 'range',
 					min = -100, max = 100, step = 1,
+					disabled = function() return (NP.db.targetIndicator.style ~= "arrow") end
 				},
 				colorMatchHealthBar = {
-					order = 5,
+					order = 10,
 					type = "toggle",
 					name = L["Color By Healthbar"],
 					desc = L["Match the color of the healthbar."],
+					set = function(info, value) 
+						E.db.nameplate.targetIndicator.colorMatchHealthBar = value; 
+						if(not value) then
+							local color = E.db.nameplate.targetIndicator.color
+							NP:ColorTargetIndicator(color.r, color.g, color.b)
+						else
+							WorldFrame.elapsed = 3
+						end
+					end,	
 				},
 				color = {
 					type = "color",
 					name = L["Color"],
-					order = 6,
+					order = 11,
 					disabled = function() return E.db.nameplate.targetIndicator.colorMatchHealthBar end,
 					get = function(info)
 						local t = E.db.nameplate.targetIndicator[ info[#info] ]
