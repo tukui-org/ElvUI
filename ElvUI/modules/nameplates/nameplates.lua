@@ -95,7 +95,7 @@ function NP:SetTargetIndicatorDimensions()
 	if(self.db.targetIndicator.style == 'arrow') then
 		targetIndicator:SetHeight(self.db.targetIndicator.height)
 		targetIndicator:SetWidth(self.db.targetIndicator.width)		
-	elseif(self.db.targetIndicator.style == 'doubleArrow') then
+	elseif(self.db.targetIndicator.style == 'doubleArrow' or self.db.targetIndicator.style == 'doubleArrowInverted') then
 		targetIndicator.left:SetHeight(self.db.targetIndicator.height)
 		targetIndicator.left:SetWidth(self.db.targetIndicator.width)
 		targetIndicator.right:SetWidth(self.db.targetIndicator.width)	
@@ -111,6 +111,9 @@ function NP:PositionTargetIndicator(myPlate)
 	elseif(self.db.targetIndicator.style == 'doubleArrow') then
 		targetIndicator.left:SetPoint("RIGHT", myPlate.healthBar, "LEFT", -self.db.targetIndicator.xOffset, 0)
 		targetIndicator.right:SetPoint("LEFT", myPlate.healthBar, "RIGHT", self.db.targetIndicator.xOffset, 0)
+	elseif(self.db.targetIndicator.style == 'doubleArrowInverted') then
+		targetIndicator.right:SetPoint("RIGHT", myPlate.healthBar, "LEFT", -self.db.targetIndicator.xOffset, 0)
+		targetIndicator.left:SetPoint("LEFT", myPlate.healthBar, "RIGHT", self.db.targetIndicator.xOffset, 0)
 	elseif(self.db.targetIndicator.style == 'glow') then
 		targetIndicator:SetOutside(myPlate.healthBar, 3, 3)
 		targetIndicator:SetFrameLevel(0)
@@ -123,7 +126,7 @@ end
 function NP:ColorTargetIndicator(r, g, b)
 	if(self.db.targetIndicator.style == 'arrow') then
 		targetIndicator:SetVertexColor(r, g, b)
-	elseif(self.db.targetIndicator.style == 'doubleArrow') then
+	elseif(self.db.targetIndicator.style == 'doubleArrow' or self.db.targetIndicator.style == 'doubleArrowInverted') then
 		targetIndicator.left:SetVertexColor(r, g, b)
 		targetIndicator.right:SetVertexColor(r, g, b)
 	elseif(self.db.targetIndicator.style == 'glow') then
@@ -136,7 +139,7 @@ function NP:SetTargetIndicator()
 		targetIndicator = self.arrowIndicator
 		self.glowIndicator:Hide()
 		self.doubleArrowIndicator:Hide()
-	elseif(self.db.targetIndicator.style == 'doubleArrow') then
+	elseif(self.db.targetIndicator.style == 'doubleArrow' or self.db.targetIndicator.style == 'doubleArrowInverted') then
 		targetIndicator = self.doubleArrowIndicator
 		self.arrowIndicator:Hide()
 		self.glowIndicator:Hide()
@@ -542,11 +545,9 @@ function NP:Initialize()
 	self:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
 	self:RegisterEvent("UNIT_COMBO_POINTS")
 
-
 	self.arrowIndicator = WorldFrame:CreateTexture(nil, 'BORDER', -1)
 	self.arrowIndicator:SetTexture([[Interface\AddOns\ElvUI\media\textures\nameplateTargetIndicator.tga]])
 	self.arrowIndicator:Hide()
-
 
 	self.doubleArrowIndicator = CreateFrame("Frame", nil, WorldFrame)
 	self.doubleArrowIndicator.left = self.doubleArrowIndicator:CreateTexture(nil, 'BORDER', -1)
@@ -565,7 +566,6 @@ function NP:Initialize()
 	self.glowIndicator:SetBackdropColor(0, 0, 0, 0)
 	self.glowIndicator:SetScale(E.PixelMode and 2.5 or 3)
 	self.glowIndicator:Hide()
-
 
 	self:SetTargetIndicator()
 	self.viewPort = IsAddOnLoaded("SunnArt");

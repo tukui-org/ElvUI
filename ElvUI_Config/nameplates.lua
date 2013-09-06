@@ -362,6 +362,7 @@ E.Options.args.nameplate = {
 					values = {
 						arrow = L["Vertical Arrow"],
 						doubleArrow = L["Horrizontal Arrows"],
+						doubleArrowInverted = L["Horrizontal Arrows (Inverted)"],
 						glow = L["Glow"]
 					},
 					set = function(info, value) E.db.nameplate.targetIndicator[ info[#info] ] = value; NP:SetTargetIndicator(); NP:UpdateAllPlates() end,	
