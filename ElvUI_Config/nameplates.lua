@@ -372,7 +372,7 @@ E.Options.args.nameplate = {
 					name = L['X-Offset'],
 					type = 'range',
 					min = -100, max = 100, step = 1,
-					disabled = function() return (NP.db.targetIndicator.style ~= "doubleArrow") end
+					disabled = function() return (NP.db.targetIndicator.style ~= "doubleArrow" and NP.db.targetIndicator.style ~= "doubleArrowInverted") end
 				},					
 				yOffset = {
 					order = 6,
