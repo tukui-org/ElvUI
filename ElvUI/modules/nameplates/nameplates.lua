@@ -111,9 +111,13 @@ function NP:PositionTargetIndicator(myPlate)
 	elseif(self.db.targetIndicator.style == 'doubleArrow') then
 		targetIndicator.left:SetPoint("RIGHT", myPlate.healthBar, "LEFT", -self.db.targetIndicator.xOffset, 0)
 		targetIndicator.right:SetPoint("LEFT", myPlate.healthBar, "RIGHT", self.db.targetIndicator.xOffset, 0)
+		targetIndicator:SetFrameLevel(0)
+		targetIndicator:SetFrameStrata("BACKGROUND")		
 	elseif(self.db.targetIndicator.style == 'doubleArrowInverted') then
 		targetIndicator.right:SetPoint("RIGHT", myPlate.healthBar, "LEFT", -self.db.targetIndicator.xOffset, 0)
 		targetIndicator.left:SetPoint("LEFT", myPlate.healthBar, "RIGHT", self.db.targetIndicator.xOffset, 0)
+		targetIndicator:SetFrameLevel(0)
+		targetIndicator:SetFrameStrata("BACKGROUND")		
 	elseif(self.db.targetIndicator.style == 'glow') then
 		targetIndicator:SetOutside(myPlate.healthBar, 3, 3)
 		targetIndicator:SetFrameLevel(0)
