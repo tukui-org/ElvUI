@@ -1,5 +1,5 @@
 --[[
-~AddOn Engine~
+ ~AddOn Engine~
 
 To load the AddOn engine add this to the top of your file:
 	
