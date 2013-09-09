@@ -98,11 +98,13 @@ P["nameplate"] = {
 	['colorNameByValue'] =  true,
 	['targetIndicator'] = {
 		['enable'] = true,
-		['colorMatchHealthBar'] = true,
+		['style'] = 'glow',
+		['colorMatchHealthBar'] = false,
 		['color'] = {r= 1, g = 1, b = 1},
 		['width'] = 50,
-		['height'] = 56,
+		['height'] = 50,
 		['yOffset'] = 0,
+		['xOffset'] = 0
 	},
 	['healthBar'] = {
 		['lowThreshold'] =  0.40,

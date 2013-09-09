@@ -564,8 +564,12 @@ function TT:MODIFIER_STATE_CHANGED(event, key)
 	end
 end
 
-function TT:SetUnitAura(tt, ...)
-	local _, _, _, _, _, _, _, caster, _, _, id = UnitAura(...)
+function TT:SetUnitAura(tt, unit, index, filter, ...)
+	if(not filter and index <= NUM_LE_RAID_BUFF_TYPES) then
+		index = GetRaidBuffTrayAuraInfo(index)
+	end
+
+	local _, _, _, _, _, _, _, caster, _, _, id = UnitAura(unit, index, filter)
 	if id and self.db.spellID then
 		if caster then
 			local name = UnitName(caster)
@@ -650,6 +654,7 @@ function TT:Initialize()
 	self:SecureHook(GameTooltip, "SetUnitAura")
 	self:SecureHook(GameTooltip, "SetUnitBuff", "SetUnitAura")
 	self:SecureHook(GameTooltip, "SetUnitDebuff", "SetUnitAura")
+	self:SecureHook(GameTooltip, "SetUnitConsolidatedBuff", "SetUnitAura", true)
 	self:HookScript(GameTooltip, "OnTooltipSetSpell", "GameTooltip_OnTooltipSetSpell")
 	self:HookScript(GameTooltip, 'OnTooltipCleared', 'GameTooltip_OnTooltipCleared')
 	self:HookScript(GameTooltip, 'OnTooltipSetItem', 'GameTooltip_OnTooltipSetItem')
