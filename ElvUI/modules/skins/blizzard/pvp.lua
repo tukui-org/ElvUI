@@ -30,12 +30,12 @@ local function LoadSkin()
 		button:StyleButton(nil, true)	
 	end
 	
-	for i=1, 3 do
+	--[[for i=1, 3 do
 		local button = _G["PVPArenaTeamsFrameTeam"..i]
 		button:SetTemplate('Default')
 		button.Background:Kill()
 		button:StyleButton()
-	end
+	end]]
 	
 	-->>>HONOR FRAME
 	S:HandleDropDownBox(HonorFrameTypeDropDown)
@@ -137,71 +137,6 @@ local function LoadSkin()
 	S:HandleButton(WarGameStartButton, true)
 	S:HandleScrollBar(WarGamesFrameScrollFrameScrollBar)
 	WarGamesFrame.HorizontalBar:StripTextures()
-	
-	-->>>ARENATEAMS
-	PVPArenaTeamsFrame:StripTextures()
-	ArenaTeamFrame.TopInset:StripTextures()
-	ArenaTeamFrame.BottomInset:StripTextures()
-	ArenaTeamFrame.WeeklyDisplay:StripTextures()
-	S:HandleNextPrevButton(ArenaTeamFrame.weeklyToggleRight)
-	S:HandleNextPrevButton(ArenaTeamFrame.weeklyToggleLeft)
-	ArenaTeamFrame:StripTextures()
-	ArenaTeamFrame.TopShadowOverlay:StripTextures()
-	
-	for i=1, 4 do
-		_G["ArenaTeamFrameHeader"..i.."Left"]:Kill()
-		_G["ArenaTeamFrameHeader"..i.."Middle"]:Kill()
-		_G["ArenaTeamFrameHeader"..i.."Right"]:Kill()
-		_G["ArenaTeamFrameHeader"..i]:SetHighlightTexture(nil)
-	end
-	
-	for i=1, 3 do
-		local b = ARENA_BUTTONS[i]
-		b:StripTextures()
-		b:SetTemplate()
-		b:StyleButton(nil, true)
-		b.SelectedTexture:SetInside()
-		b.SelectedTexture:SetTexture(1, 1, 0, 0.1)
-
-		if i > 1 then
-			b:ClearAllPoints()
-			b:SetPoint("TOP", ARENA_BUTTONS[i-1], "BOTTOM", 0, -E.Border)
-		end
-	end
-
-	S:HandleButton(ArenaTeamFrame.AddMemberButton, true)
-	
-	-->>>PVP BANNERS
-	PVPBannerFrame:StripTextures()
-	PVPBannerFramePortrait:SetAlpha(0)
-	PVPBannerFrame:SetTemplate("Transparent")
-	S:HandleCloseButton(PVPBannerFrameCloseButton)
-	S:HandleEditBox(PVPBannerFrameEditBox)
-	PVPBannerFrameEditBox.backdrop:SetOutside(PVPBannerFrameEditBox, 2, -5) ---<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<CHECK THIS WITH NON-PIXELPERFECT
-	PVPBannerFrame.Inset:StripTextures()
-	
-	S:HandleButton(PVPBannerFrameAcceptButton, true)
-	
-	--Duplicate button name workaround
-	for i=1, PVPBannerFrame:GetNumChildren() do
-		local child = select(i, PVPBannerFrame:GetChildren())
-		if child and child:GetObjectType() == "Button" and child:GetWidth() == 80 then
-			S:HandleButton(child, true)
-		end
-	end
-	
-	for i=1, 3 do
-		S:HandleButton(_G["PVPColorPickerButton"..i])
-		_G["PVPColorPickerButton"..i]:SetHeight(_G["PVPColorPickerButton"..i]:GetHeight() - 2)
-	end
-	
-	PVPBannerFrameCustomizationFrame:StripTextures()
-	
-	for i=1, 2 do
-		_G["PVPBannerFrameCustomization"..i]:StripTextures()
-		S:HandleNextPrevButton(_G["PVPBannerFrameCustomization"..i.."RightButton"])
-		S:HandleNextPrevButton(_G["PVPBannerFrameCustomization"..i.."LeftButton"])
-	end
 
 	PVPReadyDialog:StripTextures()
 	PVPReadyDialog:SetTemplate("Transparent")
@@ -226,10 +161,5 @@ local function LoadSkin()
 
 		self.background:Hide()
 	end)
-
-
-
-
-	S:HandleButton(PVPBannerFrameCancelButton)
 end
 S:RegisterSkin('Blizzard_PVPUI', LoadSkin)

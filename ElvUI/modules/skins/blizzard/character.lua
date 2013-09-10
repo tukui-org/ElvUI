@@ -107,6 +107,7 @@ local function LoadSkin()
 	S:HandleCheckBox(ReputationDetailAtWarCheckBox)
 	S:HandleCheckBox(ReputationDetailMainScreenCheckBox)
 	S:HandleCheckBox(ReputationDetailInactiveCheckBox)
+	S:HandleCheckBox(ReputationDetailLFGBonusReputationCheckBox)
 	S:HandleCheckBox(TokenFramePopupInactiveCheckBox)
 	S:HandleCheckBox(TokenFramePopupBackpackCheckBox)
 

@@ -369,6 +369,8 @@ local function BuildABConfig()
 				name = L['Enable'],
 				desc = L['Display cooldown text on anything with the cooldown spiril.'],
 				disabled = function() return not E.private.actionbar.enable end,
+				get = function(info) return E.private.actionbar[ info[#info] ] end,
+				set = function(info, value) E.private.actionbar[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end				
 			},			
 			treshold = {
 				type = 'range',
@@ -594,7 +596,7 @@ E.Options.args.actionbar = {
 					values = {
 						['NONE'] = L['None'],
 						['OUTLINE'] = 'OUTLINE',
-						['MONOCHROME'] = (not E.isMacClient) and 'MONOCHROME' or nil,
+						
 						['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 						['THICKOUTLINE'] = 'THICKOUTLINE',
 					},
@@ -631,7 +633,7 @@ E.Options.args.actionbar = {
 					type = 'range',
 					name = L['Buttons Per Row'],
 					desc = L['The amount of buttons to display per row.'],
-					min = 1, max = #MICRO_BUTTONS, step = 1,					
+					min = 1, max = #MICRO_BUTTONS - 1, step = 1,					
 				},				
 			},
 		},

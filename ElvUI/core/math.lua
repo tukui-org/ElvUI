@@ -12,6 +12,7 @@ local ceil = math.ceil
 local floor = math.floor
 
 --Return short value of a number
+
 function E:ShortValue(v)
 	if v >= 1e9 then
 		return ("%.1fb"):format(v / 1e9):gsub("%.?0+([kmb])$", "%1")
@@ -48,14 +49,17 @@ function E:ColorGradient(perc, ...)
 end
 
 --Return rounded number
-function E:Round(v, decimals)
-    return (("%%.%df"):format(decimals or 0)):format(v)
+function E:Round(num, idp)
+	if(idp and idp > 0) then
+		local mult = 10 ^ idp
+		return floor(num * mult + 0.5) / mult
+	end
+	return floor(num + 0.5)
 end
 
 --Truncate a number off to n places
 function E:Truncate(v, decimals)
-	if not decimals then decimals = 0 end
-    return v - (v % (0.1 ^ decimals))
+    return v - (v % (0.1 ^ (decimals or 0)))
 end
 
 --RGB to Hex
@@ -165,9 +169,6 @@ function E:GetFormattedText(style, min, max)
 end
 
 function E:ShortenString(string, numChars, dots)
-	assert(string, 'You need to provide a string to shorten. Usage: E:ShortenString(string, numChars, includeDots)')
-	assert(numChars, 'You need to provide a length to shorten the string to. Usage: E:ShortenString(string, numChars, includeDots)')
-	
 	local bytes = string:len()
 	if (bytes <= numChars) then
 		return string
@@ -251,7 +252,7 @@ E.TimeFormats = {
 
 
 local DAY, HOUR, MINUTE = 86400, 3600, 60 --used for calculating aura time text
-local DAYISH, HOURISH, MINUTEISH = 3600 * 23.5, 60 * 59.5, 59.5 --used for caclculating aura time at transition points
+local DAYISH, HOURISH, MINUTEISH = HOUR * 23.5, MINUTE * 59.5, 59.5 --used for caclculating aura time at transition points
 local HALFDAYISH, HALFHOURISH, HALFMINUTEISH = DAY/2 + 0.5, HOUR/2 + 0.5, MINUTE/2 + 0.5 --used for calculating next update times
 
 -- will return the the value to display, the formatter id to use and calculates the next update for the Aura
@@ -263,13 +264,13 @@ function E:GetTimeInfo(s, threshhold)
 			return s, 4, 0.051
 		end
 	elseif s < HOUR then
-		local minutes = tonumber(E:Round(s/MINUTE))
+		local minutes = floor((s/MINUTE)+.5)
 		return ceil(s / MINUTE), 2, minutes > 1 and (s - (minutes*MINUTE - HALFMINUTEISH)) or (s - MINUTEISH)
 	elseif s < DAY then
-		local hours = tonumber(E:Round(s/HOUR))
+		local hours = floor((s/HOUR)+.5)
 		return ceil(s / HOUR), 1, hours > 1 and (s - (hours*HOUR - HALFHOURISH)) or (s - HOURISH)
 	else
-		local days = tonumber(E:Round(s/DAY))
+		local days = floor((s/DAY)+.5)
 		return ceil(s / DAY), 0,  days > 1 and (s - (days*DAY - HALFDAYISH)) or (s - DAYISH)
 	end
 end

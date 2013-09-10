@@ -90,6 +90,7 @@ end
 
 local function Click()
 	collectgarbage("collect");
+	ResetCPUUsage();
 end
 
 local function OnEnter(self)

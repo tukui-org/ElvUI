@@ -391,7 +391,7 @@ G.unitframe.aurafilters['Blacklist'] = {
 	['type'] = 'Blacklist',
 	['spells'] = {
 		[SpellName(36032)] = Defaults(), -- Arcane Charge
-		[SpellName(76691)] = Defaults(), -- Vengeance
+		[SpellName(132365)] = Defaults(), -- Vengeance
 		[SpellName(8733)] = Defaults(), --Blessing of Blackfathom
 		[SpellName(57724)] = Defaults(), --Sated
 		[SpellName(25771)] = Defaults(), --forbearance
@@ -590,7 +590,7 @@ G.unitframe.buffwatch = {
 		ClassBuff(1044, "BOTTOMRIGHT", {0.89, 0.45, 0}, true),	-- Hand of Freedom
 		ClassBuff(1038, "BOTTOMRIGHT", {0.93, 0.75, 0}, true),	-- Hand of Salvation
 		ClassBuff(6940, "BOTTOMRIGHT", {0.89, 0.1, 0.1}, true),	-- Hand of Sacrifice
-		ClassBuff(114039, "BOTTOMRIGHT", {0.64, 0.41, 0.72}, true), -- Hand of Purity
+		ClassBuff(114039, "BOTTOMRIGHT", {164/255, 105/255, 184/255}), -- Hand of Purity
 		ClassBuff(20925, 'TOPLEFT', {0.93, 0.75, 0}), -- Sacred Shield
 		ClassBuff(114163, 'BOTTOMLEFT', {0.87, 0.7, 0.03}), -- Eternal Flame
 	},

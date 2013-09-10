@@ -4,7 +4,9 @@ local AB = E:GetModule('ActionBars');
 local ceil = math.ceil;
 local bar = CreateFrame('Frame', 'ElvUI_BarPet', E.UIParent, 'SecureHandlerStateTemplate');
 
-function AB:UpdatePet()
+function AB:UpdatePet(event, unit)
+	if(event == "UNIT_AURA" and unit ~= "pet") then return end
+	
 	for i=1, NUM_PET_ACTION_SLOTS, 1 do
 		local buttonName = "PetActionButton"..i;
 		local button = _G[buttonName];

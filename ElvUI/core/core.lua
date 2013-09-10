@@ -10,6 +10,7 @@ local twipe = table.wipe
 --Constants
 E.myclass = select(2, UnitClass("player"));
 E.myrace = select(2, UnitRace("player"))
+E.myfaction = select(2, UnitFactionGroup('player'))
 E.myname = UnitName("player");
 E.myguid = UnitGUID('player');
 E.version = GetAddOnMetadata("ElvUI", "Version"); 
@@ -562,13 +563,12 @@ function E:UpdateAll(ignoreInstall)
 	T:UpdatePosition()
 	T:ToggleEnable()
 	
-	local A = E:GetModule('Auras')
-	A.db = self.db.auras
-	A:UpdateHeader(ElvUIPlayerBuffs)
-	A:UpdateHeader(ElvUIPlayerDebuffs)
-
+	self:GetModule('Auras').db = self.db.auras
 	self:GetModule('Tooltip').db = self.db.tooltip
 	
+	E:GetModule('Auras'):UpdateHeader(ElvUIPlayerBuffs)
+	E:GetModule('Auras'):UpdateHeader(ElvUIPlayerDebuffs)
+
 	if self.private.install_complete == nil or (self.private.install_complete and type(self.private.install_complete) == 'boolean') or (self.private.install_complete and type(tonumber(self.private.install_complete)) == 'number' and tonumber(self.private.install_complete) <= 3.83) then
 		if not ignoreInstall then
 			self:Install()
@@ -763,6 +763,48 @@ function E:BeginFoolsDayEvent()
 			tinsert(self.massiveShakeObjects, _G["PetActionButton"..i])
 		end
 	end
+end
+
+local CPU_USAGE = {}
+local function CompareCPUDiff(module, minCalls)
+	local greatestUsage, greatestCalls, greatestName
+	local greatestDiff = 0;
+	local mod = E:GetModule(module, true) or E
+
+	for name, oldUsage in pairs(CPU_USAGE) do
+		local newUsage, calls = GetFunctionCPUUsage(mod[name], true)
+		local differance = newUsage - oldUsage
+		
+		if differance > greatestDiff and calls > (minCalls or 15) then
+			greatestName = name
+			greatestUsage = newUsage
+			greatestCalls = calls
+			greatestDiff = differance
+		end
+	end
+
+	if(greatestName) then
+		E:Print(greatestName.. " had the CPU usage of: "..greatestUsage.."ms. And has been called ".. greatestCalls.." times.")
+	end
+end
+
+function E:GetTopCPUFunc(msg)
+	local module, delay, minCalls = msg:match("^([^%s]+)%s+(.*)$")
+
+	module = module == "nil" and nil or module
+	delay = delay == "nil" and nil or tonumber(delay)
+	minCalls = minCalls == "nil" and nil or tonumber(minCalls)
+
+	twipe(CPU_USAGE)
+	local mod = self:GetModule(module, true) or self
+	for name, func in pairs(mod) do
+		if type(mod[name]) == "function" and name ~= "GetModule" then
+			CPU_USAGE[name] = GetFunctionCPUUsage(mod[name], true)
+		end
+	end
+
+	self:Delay(delay or 5, CompareCPUDiff, module, minCalls)
+	self:Print("Calculating CPU Usage..")
 end
 
 function E:Initialize()

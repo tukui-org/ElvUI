@@ -68,8 +68,10 @@ local menuList = {
 	func = function() PVEFrame_ToggleFrame(); end},
 	{text = ENCOUNTER_JOURNAL, 
 	func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then EncounterJournal_LoadUI(); end ToggleFrame(EncounterJournal) end},		
+	{text = BLIZZARD_STORE,
+	func = function() StoreMicroButton:Click() end},	
 	{text = HELP_BUTTON,
-	func = function() ToggleHelpFrame() end},
+	func = function() ToggleHelpFrame() end}
 }
 
 --Support for other mods
@@ -206,7 +208,7 @@ function M:UpdateSettings()
 		if AurasMover and not E:HasMoverBeenMoved('AurasMover') and not E:HasMoverBeenMoved('MinimapMover') then
 			AurasMover:ClearAllPoints()
 			AurasMover:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -((E.MinimapSize + 4) + E.ConsolidatedBuffsWidth + 7), -3)
-			E:SaveMoverDefaultPosition('AurasMover')
+			--E:SaveMoverDefaultPosition('AurasMover')
 		end
 		
 		if AurasMover then
@@ -365,12 +367,9 @@ function M:Initialize()
 	end)
 	
 	FarmModeMap:SetScript('OnHide', function() 
-		if not E:HasMoverBeenMoved('BuffsMover') then
-			E:ResetMovers(L['Player Buffs'])
+		if not E:HasMoverBeenMoved('AurasMover') then
+			E:ResetMovers('Auras Frame')
 		end	
-		if not E:HasMoverBeenMoved('DebuffsMover') then
-			E:ResetMovers(L['Player Debuffs'])
-		end			
 		MinimapCluster:ClearAllPoints()
 		MinimapCluster:SetAllPoints(Minimap)	
 		if IsAddOnLoaded('Routes') then

@@ -70,27 +70,15 @@ function A:UpdateReminder(event, unit)
 	end
 end
 
-function A:GetAuraIndex(consolidatedName)
-	local index = 1
-	local buffName = UnitBuff("player", index)
-	while(buffName) do
-		if(buffName == consolidatedName) then
-			return index
-		end
-		index = index + 1
-		buffName = UnitBuff("player", index)
-	end
-end
-
 function A:Button_OnEnter()
 	GameTooltip:Hide()
 	GameTooltip:SetOwner(self, "ANCHOR_BOTTOMLEFT", -3, self:GetHeight() + 2)
 	GameTooltip:ClearLines()
 	
-	local id = self:GetParent():GetID()
-	local consolidatedName = GetRaidBuffTrayAuraInfo(id)
-	if(consolidatedName) then
-		GameTooltip:SetUnitAura("player", A:GetAuraIndex(consolidatedName), "HELPFUL")
+	local parent = self:GetParent()
+	local id = parent:GetID()
+	if(parent.spellName) then
+		GameTooltip:SetUnitConsolidatedBuff("player", id)
 	else
 		GameTooltip:AddLine(_G[("RAID_BUFF_%d"):format(id)])
 	end

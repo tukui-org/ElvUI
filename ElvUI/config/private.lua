@@ -5,8 +5,8 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 V['general'] = {
 	['loot'] = true,
 	['lootRoll'] = true,
-	["normTex"] = "Minimalist",
-	["glossTex"] = "Minimalist",	
+	["normTex"] = "ElvUI Norm",
+	["glossTex"] = "ElvUI Norm",	
 	["dmgfont"] = "ElvUI Combat",
 	["namefont"] = "ElvUI Font",
 	['chatBubbles'] = 'backdrop',
@@ -28,7 +28,6 @@ V["nameplate"] = {
 
 V['auras'] = {
 	['enable'] = true,
-	['size'] = 30,
 	['disableBlizzard'] = true,
 }
 
@@ -110,4 +109,5 @@ V['unitframe'] = {
 
 V["actionbar"] = {
 	["enable"] = true,
+	["enablecd"] = true,
 }

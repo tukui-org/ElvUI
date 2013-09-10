@@ -146,6 +146,14 @@ function B:AlertFrame_SetDungeonCompletionAnchors(alertAnchor)
 	end
 end
 
+function B:AlertFrame_SetStorePurchaseAnchors(alertAnchor)
+	local frame = StorePurchaseAlertFrame;
+	if ( frame:IsShown() ) then
+		frame:ClearAllPoints();
+		frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
+	end
+end
+
 function B:AlertFrame_SetScenarioAnchors(alertAnchor)
 	local frame = ScenarioAlertFrame1;
 	if ( frame:IsShown() ) then
@@ -173,6 +181,7 @@ function B:AlertMovers()
 	self:SecureHook('AlertFrame_SetDungeonCompletionAnchors')
 	self:SecureHook('AlertFrame_SetScenarioAnchors')
 	self:SecureHook('AlertFrame_SetGuildChallengeAnchors')
+	self:SecureHook('AlertFrame_SetStorePurchaseAnchors')
 	
 	UIPARENT_MANAGED_FRAME_POSITIONS["GroupLootContainer"] = nil
 	E:CreateMover(AlertFrameHolder, "AlertFrameMover", L["Loot / Alert Frames"], nil, nil, E.PostAlertMove)
