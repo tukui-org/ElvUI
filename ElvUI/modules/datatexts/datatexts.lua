@@ -127,6 +127,7 @@ function DT:SetupTooltip(panel)
 	self.tooltip:Hide()
 	self.tooltip:SetOwner(parent, parent.anchor, parent.xOff, parent.yOff)
 	self.tooltip:ClearLines()
+	GameTooltip:Hide() -- WHY??? BECAUSE FUCK GAMETOOLTIP, THATS WHY!!
 end
 
 function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff)

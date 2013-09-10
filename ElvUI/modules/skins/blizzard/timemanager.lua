@@ -14,14 +14,8 @@ local function LoadSkin()
 	
 	S:HandleEditBox(TimeManagerAlarmMessageEditBox)
 	
-	S:HandleButton(TimeManagerAlarmEnabledButton, true)
-	TimeManagerAlarmEnabledButton:HookScript("OnClick", function(self)
-		S:HandleButton(self)
-	end)
+	S:HandleCheckBox(TimeManagerAlarmEnabledButton)
 
-	TimeManagerFrame:HookScript("OnShow", function(self)
-		S:HandleButton(TimeManagerAlarmEnabledButton)
-	end)		
 	
 	S:HandleCheckBox(TimeManagerMilitaryTimeCheck)
 	S:HandleCheckBox(TimeManagerLocalTimeCheck)

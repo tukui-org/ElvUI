@@ -28,9 +28,9 @@
 -- end
 -- @class file
 -- @name AceAddon-3.0.lua
--- @release $Id: AceAddon-3.0.lua 1036 2011-08-16 22:45:05Z nevcairiel $
+-- @release $Id: AceAddon-3.0.lua 1084 2013-04-27 20:14:11Z nevcairiel $
 
-local MAJOR, MINOR = "AceAddon-3.0", 11
+local MAJOR, MINOR = "AceAddon-3.0", 12
 local AceAddon, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not AceAddon then return end -- No Upgrade needed.
@@ -107,6 +107,16 @@ local Enable, Disable, EnableModule, DisableModule, Embed, NewModule, GetModule,
 
 -- used in the addon metatable
 local function addontostring( self ) return self.name end 
+
+-- Check if the addon is queued for initialization
+local function queuedForInitialization(addon)
+	for i = 1, #AceAddon.initializequeue do
+		if AceAddon.initializequeue[i] == addon then
+			return true
+		end
+	end
+	return false
+end
 
 --- Create a new AceAddon-3.0 addon.
 -- Any libraries you specified will be embeded, and the addon will be scheduled for 
@@ -314,7 +324,12 @@ end
 -- MyModule:Enable()
 function Enable(self)
 	self:SetEnabledState(true)
-	return AceAddon:EnableAddon(self)
+
+	-- nevcairiel 2013-04-27: don't enable an addon/module if its queued for init still
+	-- it'll be enabled after the init process
+	if not queuedForInitialization(self) then
+		return AceAddon:EnableAddon(self)
+	end
 end
 
 --- Disables the Addon, if possible, return true or false depending on success.

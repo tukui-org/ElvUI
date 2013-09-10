@@ -5,7 +5,19 @@ local ceil = math.ceil;
 
 local bar = CreateFrame('Frame', 'ElvUI_StanceBar', E.UIParent, 'SecureHandlerStateTemplate');
 
-function AB:StyleShapeShift()
+function AB:UPDATE_SHAPESHIFT_COOLDOWN()
+	local numForms = GetNumShapeshiftForms();
+	local start, duration, enable, cooldown
+	for i = 1, NUM_STANCE_SLOTS do
+		if i <= numForms then
+			cooldown = _G["ElvUI_StanceBarButton"..i.."Cooldown"];
+			start, duration, enable = GetShapeshiftFormCooldown(i);
+			CooldownFrame_SetTimer(cooldown, start, duration, enable);
+		end
+	end
+end
+
+function AB:StyleShapeShift(event)
 	local numForms = GetNumShapeshiftForms();
 	local texture, name, isActive, isCastable, _;
 	local buttonName, button, icon, cooldown;
@@ -32,10 +44,7 @@ function AB:StyleShapeShift()
 			else
 				cooldown:SetAlpha(0);
 			end
-			
-			start, duration, enable = GetShapeshiftFormCooldown(i);
-			CooldownFrame_SetTimer(cooldown, start, duration, enable);
-			
+
 			if isActive then
 				StanceBarFrame.lastSelected = button:GetID();
 				if numForms == 1 then
@@ -55,7 +64,6 @@ function AB:StyleShapeShift()
 					else
 						button.checked:SetTexture(1, 1, 1, 0.5)
 					end
-					--button:SetCheckedTexture(button.tex)
 				end
 			end
 
@@ -67,7 +75,7 @@ function AB:StyleShapeShift()
 		end
 	end
 	
-	self:AdjustMaxStanceButtons()
+	--self:AdjustMaxStanceButtons()
 end
 
 function AB:PositionAndSizeBarShapeShift()
@@ -204,7 +212,9 @@ function AB:PositionAndSizeBarShapeShift()
 			button:SetAlpha(bar.db.alpha);
 		end
 		
-		self:StyleButton(button, nil, true);
+		if(not button.FlyoutUpdateFunc) then
+			self:StyleButton(button, nil, true);
+		end
 	end
 end
 
@@ -275,8 +285,8 @@ function AB:CreateBarShapeShift()
 	]]);
 	
 	self:RegisterEvent('UPDATE_SHAPESHIFT_FORMS', 'AdjustMaxStanceButtons');
+	self:RegisterEvent('UPDATE_SHAPESHIFT_COOLDOWN');
 	self:RegisterEvent('UPDATE_SHAPESHIFT_USABLE', 'StyleShapeShift');
-	self:RegisterEvent('UPDATE_SHAPESHIFT_COOLDOWN', 'StyleShapeShift');
 	self:RegisterEvent('UPDATE_SHAPESHIFT_FORM', 'StyleShapeShift');
 	self:RegisterEvent('ACTIONBAR_PAGE_CHANGED', 'StyleShapeShift');
 	

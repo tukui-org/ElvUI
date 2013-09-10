@@ -15,9 +15,9 @@
 -- make into AceTimer.
 -- @class file
 -- @name AceTimer-3.0
--- @release $Id: AceTimer-3.0.lua 1076 2013-01-21 14:31:01Z funkydude $
+-- @release $Id: AceTimer-3.0.lua 1079 2013-02-17 19:56:06Z funkydude $
 
-local MAJOR, MINOR = "AceTimer-3.0", 15 -- Bump minor on changes
+local MAJOR, MINOR = "AceTimer-3.0", 16 -- Bump minor on changes
 local AceTimer, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not AceTimer then return end -- No upgrade needed
@@ -27,7 +27,7 @@ AceTimer.inactiveTimers = AceTimer.inactiveTimers or {}                    -- Ti
 AceTimer.activeTimers = AceTimer.activeTimers or {}                        -- Active timer list
 
 -- Lua APIs
-local type, unpack, next, error, pairs, tostring = type, unpack, next, error, pairs, tostring
+local type, unpack, next, error, pairs, tostring, select = type, unpack, next, error, pairs, tostring, select
 
 -- Upvalue our private data
 local inactiveTimers = AceTimer.inactiveTimers
@@ -36,9 +36,11 @@ local activeTimers = AceTimer.activeTimers
 local function OnFinished(self)
 	local id = self.id
 	if type(self.func) == "string" then
-		self.object[self.func](self.object, unpack(self.args))
+		-- We manually set the unpack count to prevent issues with an arg set that contains nil and ends with nil
+		-- e.g. local t = {1, 2, nil, 3, nil} print(#t) will result in 2, instead of 5. This fixes said issue.
+		self.object[self.func](self.object, unpack(self.args, 1, self.argsCount))
 	else
-		self.func(unpack(self.args))
+		self.func(unpack(self.args, 1, self.argsCount))
 	end
 
 	-- If the id is different it means that the timer was already cancelled
@@ -70,6 +72,7 @@ local function new(self, loop, func, delay, ...)
 	timer.func = func
 	timer.looping = loop
 	timer.args = {...}
+	timer.argsCount = select("#", ...)
 
 	local anim = timer:GetParent()
 	if loop then

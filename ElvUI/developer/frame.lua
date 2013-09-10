@@ -11,24 +11,6 @@
 	Point
 ]]
 
-SLASH_CPUUSAGE1 = "/cpuusage"
-SlashCmdList["CPUUSAGE"] = function(module)
-	
-	if(module and ElvUI[1]:GetModule(module, true)) then
-		for funcName, func in pairs(ElvUI[1]:GetModule(module, true)) do 
-			if type(func) == 'function' and GetFunctionCPUUsage(func) > 200 then 
-				print(funcName.." "..GetFunctionCPUUsage(func));
-			end 
-		end	
-	else
-		for funcName, func in pairs(ElvUI[1]) do 
-			if type(func) == 'function' and GetFunctionCPUUsage(func) > 200 then 
-				print(funcName.." "..GetFunctionCPUUsage(func));
-			end 
-		end
-	end
-end
-
 SLASH_FRAME1 = "/frame"
 SlashCmdList["FRAME"] = function(arg)
 	if arg ~= "" then

@@ -16,6 +16,15 @@ ElvUF.Tags.Methods['resting'] = function(unit)
 	end
 end
 
+local function UnitName(unit)
+	local name = _G.UnitName(unit);
+	if name == UNKNOWN and E.myclass == "MONK" and UnitIsUnit(unit, "pet") then
+		name = ("%s\'s Spirit"):format(_G.UnitName("player"))
+	else
+		return name
+	end
+end
+
 ElvUF.Tags.Events['afk'] = 'PLAYER_FLAGS_CHANGED'
 ElvUF.Tags.Methods['afk'] = function(unit)
 	local isAFK = UnitIsAFK(unit)

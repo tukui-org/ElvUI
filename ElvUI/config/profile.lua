@@ -216,6 +216,7 @@ P['auras'] = {
 		['size'] = 26,
 	},
 }
+
 --Chat
 P['chat'] = {
 	['lockPositions'] = true,
@@ -239,7 +240,7 @@ P['chat'] = {
 	['panelBackdropNameLeft'] = '',
 	['panelBackdropNameRight'] = '',
 	['panelBackdrop'] = 'SHOWBOTH',
-	['panelTabBackdrop'] = true,
+	['panelTabBackdrop'] = false,
 	['panelTabTransparency'] = false,
 	['editBoxPosition'] = 'BELOW_CHAT',
 
@@ -306,10 +307,9 @@ P['tooltip'] = {
 		['fontSize'] = 12,
 	}
 }
-
 --UnitFrame
 P['unitframe'] = {
-	['smoothbars'] = true,
+	['smoothbars'] = false,
 	['statusbar'] = "Melli Dark",
 	['font'] = 'AgencyFB Bold',
 	['fontSize'] = 14,
@@ -1784,7 +1784,7 @@ P['unitframe'] = {
 				['xOffset'] = 0,
 				['yOffset'] = 10,
 			},				
-		},				
+		},		
 		['tank'] = {
 			['enable'] = true,
 			['threatStyle'] = 'GLOW',
@@ -1827,7 +1827,6 @@ P["actionbar"] = {
 	
 	["macrotext"] = true,
 	["hotkeytext"] = true,
-	["enablecd"] = true,
 	['showGrid'] = true,
 	["treshold"] = 3,
 	["expiringcolor"] = { r = 1, g = 0, b = 0 },

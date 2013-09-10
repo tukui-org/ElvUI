@@ -5,10 +5,6 @@ E.Skins = S
 S.addonsToLoad = {}
 S.nonAddonsToLoad = {}
 S.allowBypass = {}
-S.EmbeddableAddons = {
-	['Recount'] = true,
-	['Omen'] = true,
-}
 
 local find = string.find
 

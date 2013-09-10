@@ -751,6 +751,8 @@ local function LoadSkin()
         "CombatTextPanelPeriodicDamage",
         "CombatTextPanelPetDamage",
         "CombatTextPanelHealing",
+        "CombatTextPanelHealingAbsorbTarget",
+        "CombatTextPanelHealingAbsorbSelf",
         "CombatTextPanelTargetEffects",
         "CombatTextPanelOtherTargetEffects",
         "CombatTextPanelEnableFCT",

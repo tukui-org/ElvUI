@@ -388,6 +388,7 @@ function UF:Update_TargetFrame(frame, db)
 
 		if db.buffs.enable then			
 			buffs:Show()
+			UF:UpdateAuraIconSettings(buffs)
 		else
 			buffs:Hide()
 		end
@@ -423,6 +424,7 @@ function UF:Update_TargetFrame(frame, db)
 
 		if db.debuffs.enable then			
 			debuffs:Show()
+			UF:UpdateAuraIconSettings(debuffs)
 		else
 			debuffs:Hide()
 		end

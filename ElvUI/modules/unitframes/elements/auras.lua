@@ -67,7 +67,9 @@ function UF:Construct_AuraIcon(button)
 			
 			UF:Update_AllFrames()
 		end
-	end)	
+	end)
+
+	UF:UpdateAuraIconSettings(button, true)
 end
 
 local function SortAurasByPriority(a, b)
@@ -88,22 +90,48 @@ function UF:SortAuras()
 	tsort(self, SortAurasByPriority)
 end
 
-function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, duration, timeLeft)
-	local name, _, _, _, dtype, duration, expiration, _, isStealable = UnitAura(unit, index, button.filter)
-	local db = self:GetParent().db
+function UF:UpdateAuraIconSettings(auras, noCycle)
+	local frame = auras:GetParent()
+	local type = auras.type
+	if(noCycle) then
+		frame = auras:GetParent():GetParent()
+		type = auras:GetParent().type
+	end
+	if(not frame.db) then return end
 	
-	if db and db[self.type] then
-		local unitframeFont = LSM:Fetch("font", E.db['unitframe'].font)
-	
-		button.text:FontTemplate(unitframeFont, db[self.type].fontSize, 'OUTLINE')
-		button.count:FontTemplate(unitframeFont, db[self.type].countFontSize or db[self.type].fontSize, 'OUTLINE')
-		
-		if db[self.type].clickThrough and button:IsMouseEnabled() then
-			button:EnableMouse(false)
-		elseif not db[self.type].clickThrough and not button:IsMouseEnabled() then
-			button:EnableMouse(true)
+	local db = frame.db[type]
+	local unitframeFont = LSM:Fetch("font", E.db['unitframe'].font)
+	local index = 1
+	if(db) then
+		if(not noCycle) then
+			while(auras[index]) do
+				local button = auras[index]
+				button.text:FontTemplate(unitframeFont, db.fontSize, 'OUTLINE')
+				button.count:FontTemplate(unitframeFont, db.countFontSize or db.fontSize, 'OUTLINE')
+
+				if db.clickThrough and button:IsMouseEnabled() then
+					button:EnableMouse(false)
+				elseif not db.clickThrough and not button:IsMouseEnabled() then
+					button:EnableMouse(true)
+				end
+				index = index + 1
+			end
+		else
+			auras.text:FontTemplate(unitframeFont, db.fontSize, 'OUTLINE')
+			auras.count:FontTemplate(unitframeFont, db.countFontSize or db.fontSize, 'OUTLINE')
+
+			if db.clickThrough and auras:IsMouseEnabled() then
+				auras:EnableMouse(false)
+			elseif not db.clickThrough and not auras:IsMouseEnabled() then
+				auras:EnableMouse(true)
+			end
 		end
 	end
+end
+
+function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, duration, timeLeft)
+	local name, _, _, _, dtype, duration, expiration, _, isStealable = UnitAura(unit, index, button.filter)
+
 	
 	local isFriend = UnitIsFriend('player', unit) == 1 and true or false
 	if button.isDebuff then
@@ -151,7 +179,7 @@ function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, durati
 	end	
 	if duration == 0 or expiration == 0 then
 		button:SetScript('OnUpdate', nil)
-		if button.text:GetFont() then
+		if(button.text:GetFont()) then
 			button.text:SetText('')
 		end
 	end

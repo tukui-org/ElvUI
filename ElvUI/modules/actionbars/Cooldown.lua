@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local AB = E:GetModule('ActionBars');
 
 local MIN_SCALE = 0.5
-local MIN_DURATION = 2.5
 local ICON_SIZE = 36 --the normal size for an icon (don't change this)
 local FONT_SIZE = 18 --the base font size to use at a scale of 1
 local MIN_SCALE = 0.5 --the minimum scale we want to show cooldown counts at, anything below this will be hidden
@@ -12,8 +11,6 @@ local floor = math.floor
 local min = math.min
 local GetTime = GetTime
 
-local cooldown = getmetatable(ActionButton1Cooldown).__index
-local hooked, active = {}, {};
 local threshold
 
 local TimeColors = {
@@ -31,6 +28,7 @@ local function Cooldown_OnUpdate(cd, elapsed)
 	end
 
 	local remain = cd.duration - (GetTime() - cd.start)
+
 	if remain > 0.05 then
 		if (cd.fontScale * cd:GetEffectiveScale() / UIParent:GetScale()) < MIN_SCALE then
 			cd.text:SetText('')
@@ -46,7 +44,7 @@ local function Cooldown_OnUpdate(cd, elapsed)
 end
 
 function AB:Cooldown_OnSizeChanged(cd, width, height)
-	local fontScale = E:Round(width) / ICON_SIZE
+	local fontScale = floor(width +.5) / ICON_SIZE
 	local override = cd:GetParent():GetParent().SizeOverride
 	if override then 
 		fontScale = override / FONT_SIZE  
@@ -98,87 +96,36 @@ function AB:CreateCooldownTimer(parent)
 	return timer
 end
 
-local HiddenFrame = CreateFrame('Frame')
-HiddenFrame:Hide()
-function AB:OnSetCooldown(cd, start, duration)
-	if cd.noOCC then return end
-	
-	local button = cd:GetParent()
-	if not button then return; end
+function AB:OnSetCooldown(start, duration, charges, maxCharges)
+	if(self.noOCC) then return end
+	local button = self:GetParent()
 
-
-	--start timer
 	if start > 0 and duration > MIN_DURATION then
-		local timer = cd.timer or self:CreateCooldownTimer(cd)
+		local timer = self.timer or AB:CreateCooldownTimer(self)
 		timer.start = start
 		timer.duration = duration
 		timer.enabled = true
 		timer.nextUpdate = 0
 		if timer.fontScale >= MIN_SCALE then timer:Show() end
-	--stop timer
 	else
-		local timer = cd.timer
+		local timer = self.timer
 		if timer then
-			self:Cooldown_StopTimer(timer)
+			AB:Cooldown_StopTimer(timer)
 		end
 	end
 	
-	local action = button._state_action or button.action
-	if cd.timer then
-		if action and type(action) == 'number' then
-			local charges = GetActionCharges(action)
-			
-			if charges > 0 then
-				cd.timer:SetAlpha(0)
-				return
-			end
+
+	if self.timer then
+		if charges and charges > 0 then
+			self.timer:SetAlpha(0)
+		else
+			self.timer:SetAlpha(1)	
 		end
-		
-		cd.timer:SetAlpha(1)	
 	end
 end
 
-function AB:UpdateCooldown(cd)
-	local button = cd:GetParent()
-	local start, duration, enable = GetActionCooldown(button.action)
-	
-	self:OnSetCooldown(cd, start, duration)
-end
-
-function AB:ACTIONBAR_UPDATE_COOLDOWN()		
-	for cooldown in pairs(active) do
-		self:UpdateCooldown(cooldown)
-	end
-end
-
-function AB:RegisterCooldown(frame)
-	if not hooked[frame.cooldown] then
-		frame.cooldown:HookScript("OnShow", function(cd) active[cd] = true; end)
-		frame.cooldown:HookScript("OnHide", function(cd) active[cd] = nil; end)
-		hooked[frame.cooldown] = true
-	end
-end
-
-function AB:EnableCooldown()
-	self:RegisterEvent('ACTIONBAR_UPDATE_COOLDOWN')
-	
-	if ActionBarButtonEventsFrame.frames then
-		for i, frame in pairs(ActionBarButtonEventsFrame.frames) do
-			self:RegisterCooldown(frame)
-		end
-	end	
-	
-	if not self.hooks[cooldown] then
-		self:SecureHook(cooldown, 'SetCooldown', 'OnSetCooldown')
-	end		
-end
-
-function AB:DisableCooldown()
-	self:UnregisterEvent('ACTIONBAR_UPDATE_COOLDOWN')
-	if self.hooks[cooldown] then
-		self:Unhook(cooldown, 'SetCooldown')
-		self.hooks[cooldown] = nil
-	end		
+function AB:RegisterCooldown(cooldown)
+	hooksecurefunc(cooldown, "SetCooldown", AB.OnSetCooldown)
 end
 
 function AB:UpdateCooldownSettings()
@@ -198,10 +145,4 @@ function AB:UpdateCooldownSettings()
 	
 	color = E.db.actionbar.dayscolor
 	TimeColors[0] = E:RGBToHex(color.r, color.g, color.b) -- color for timers that have days remaining	
-	
-	if self.db.enablecd then
-		self:EnableCooldown()
-	else
-		self:DisableCooldown()
-	end
 end

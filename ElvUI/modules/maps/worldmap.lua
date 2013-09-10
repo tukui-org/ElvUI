@@ -82,6 +82,7 @@ function M:PLAYER_REGEN_DISABLED()
 end
 
 function M:UpdateCoords()
+	if(not WorldMapFrame:IsShown()) then return end
 	local inInstance, _ = IsInInstance()
 	local x, y = GetPlayerMapPosition("player")
 	x = E:Round(100 * x, 2)
