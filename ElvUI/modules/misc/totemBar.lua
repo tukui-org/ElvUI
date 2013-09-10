@@ -108,6 +108,7 @@ function TOTEMS:Initialize()
 		frame.cooldown = CreateFrame('Cooldown', frame:GetName()..'Cooldown', frame, 'CooldownFrameTemplate')
 		frame.cooldown:SetReverse(true)
 		frame.cooldown:SetInside()
+		E:GetModule('ActionBars'):RegisterCooldown(frame.cooldown)
 		self.bar[i] = frame;
 	end
 	
