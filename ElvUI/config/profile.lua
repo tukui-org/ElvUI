@@ -240,7 +240,7 @@ P['chat'] = {
 	['panelBackdropNameLeft'] = '',
 	['panelBackdropNameRight'] = '',
 	['panelBackdrop'] = 'SHOWBOTH',
-	['panelTabBackdrop'] = false,
+	['panelTabBackdrop'] = true,
 	['panelTabTransparency'] = false,
 	['editBoxPosition'] = 'BELOW_CHAT',
 
