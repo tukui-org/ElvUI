@@ -543,7 +543,53 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 			[SpellName(135000)] = Defaults(), --Decapitate
 			
 			--Ra-den
+		--Siege of Orgrimmar
+			--Immerseus
+				[SpellName(143436)] = Defaults(), -- Corrosive Blast
+				[SpellName(143579)] = Defaults() --Sha Corruption(Heroic)
 			
+			--Fallen Protectors
+				[SpellName(147383)] = Defaults() --Debilitation
+				
+			--Norushen
+				[SpellName(146124)] = Defaults() --Self Doubt
+				[SpellName(144851)] = Defaults() --Test of Confidence
+				
+			--Sha of Pride
+				[SpellName(144358)] = Defaults() --Wounded Pride
+				[SpellName(144774)] = Defaults() --Reaching Attacks
+				[SpellName(147207)] = Defaults() --Weakened Resolve(Heroic)
+			
+			--Galakras
+			
+			--Iron Juggernaut
+			
+			--Kor'kron Dark Shaman
+				[SpellName(144215)] = Defaults() --Froststorm Strike
+				[SpellName(143990)] = Defaults() --Foul Geyser
+				[SpellName(144330)] = Defaults() --Iron Prison(Heroic)
+				
+			--General Nazgrim
+				[SpellName(143494)] = Defaults() --Sundering Blow
+				
+			--Malkorok
+				[SpellName(142990)] = Defaults() --Fatal Strike
+				[SpellName(143919)] = Defaults() --Languish(Heroic)
+				
+			--Thok the Bloodthirsty
+				[SpellName(143766)] = Defaults() --Panic
+				[SpellName(143773)] = Defaults() --Freezing Breath
+				[SpellName(146589)] = Defaults() --Skeleton Key
+				[SpellName(143777)] = Defaults() --Frozen Solid
+				
+			--Siegecrafter Blackfuse
+				[SpellName(143385)] = Defaults() --Electrostatic Charge
+				
+			--Paragons of the Klaxxi
+				[SpellName(143974)] = Defaults() --Shield Bash
+				
+			--Garrosh Hellscream
+				[SpellName(145183)] = Defaults() --Gripping Despair
 	},
 }
 
