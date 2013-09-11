@@ -31,13 +31,18 @@ local function LoadSkin()
 	}
 	for _, slot in pairs(slots) do
 		local icon = _G["Character"..slot.."IconTexture"]
-		local slot = _G["Character"..slot]
+		local cooldown = _G["Character"..slot.."Cooldown"]
+		slot = _G["Character"..slot]
 		slot:StripTextures()
 		slot:StyleButton(false)
 		slot.ignoreTexture:SetTexture([[Interface\PaperDollInfoFrame\UI-GearManager-LeaveItem-Transparent]])
 		slot:SetTemplate("Default", true)
 		icon:SetTexCoord(unpack(E.TexCoords))
 		icon:SetInside()
+		
+		if(cooldown) then
+			E:GetModule("ActionBars"):RegisterCooldown(cooldown)
+		end
 	end	
 	-- a request by diftraku to color item by rarity on character frame.
 	local function ColorItemBorder()

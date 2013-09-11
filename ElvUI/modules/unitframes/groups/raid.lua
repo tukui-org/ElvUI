@@ -348,6 +348,7 @@ for i=10, 40, 15 do
 
 			if db.buffs.enable then			
 				buffs:Show()
+				UF:UpdateAuraIconSettings(buffs)
 			else
 				buffs:Hide()
 			end
@@ -383,6 +384,7 @@ for i=10, 40, 15 do
 
 			if db.debuffs.enable then			
 				debuffs:Show()
+				UF:UpdateAuraIconSettings(debuffs)
 			else
 				debuffs:Hide()
 			end

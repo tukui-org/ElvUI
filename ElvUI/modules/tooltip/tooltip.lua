@@ -564,12 +564,25 @@ function TT:MODIFIER_STATE_CHANGED(event, key)
 	end
 end
 
-function TT:SetUnitAura(tt, unit, index, filter, ...)
-	if(not filter and index <= NUM_LE_RAID_BUFF_TYPES) then
-		index = GetRaidBuffTrayAuraInfo(index)
-	end
-
+function TT:SetUnitAura(tt, unit, index, filter)
 	local _, _, _, _, _, _, _, caster, _, _, id = UnitAura(unit, index, filter)
+	if id and self.db.spellID then
+		if caster then
+			local name = UnitName(caster)
+			local _, class = UnitClass(caster)
+			local color = RAID_CLASS_COLORS[class]
+			tt:AddDoubleLine(("|cFFCA3C3C%s|r %d"):format(ID, id), format("|c%s%s|r", color.colorStr, name))
+		else
+			tt:AddLine(("|cFFCA3C3C%s|r %d"):format(ID, id))
+		end
+
+		tt:Show()
+	end	
+end
+
+function TT:SetConsolidatedUnitAura(tt, unit, index)
+	local name = GetRaidBuffTrayAuraInfo(index)
+	local _, _, _, _, _, _, _, caster, _, _, id = UnitAura(unit, name)
 	if id and self.db.spellID then
 		if caster then
 			local name = UnitName(caster)
@@ -654,7 +667,7 @@ function TT:Initialize()
 	self:SecureHook(GameTooltip, "SetUnitAura")
 	self:SecureHook(GameTooltip, "SetUnitBuff", "SetUnitAura")
 	self:SecureHook(GameTooltip, "SetUnitDebuff", "SetUnitAura")
-	self:SecureHook(GameTooltip, "SetUnitConsolidatedBuff", "SetUnitAura", true)
+	self:SecureHook(GameTooltip, "SetUnitConsolidatedBuff", "SetConsolidatedUnitAura")
 	self:HookScript(GameTooltip, "OnTooltipSetSpell", "GameTooltip_OnTooltipSetSpell")
 	self:HookScript(GameTooltip, 'OnTooltipCleared', 'GameTooltip_OnTooltipCleared')
 	self:HookScript(GameTooltip, 'OnTooltipSetItem', 'GameTooltip_OnTooltipSetItem')
