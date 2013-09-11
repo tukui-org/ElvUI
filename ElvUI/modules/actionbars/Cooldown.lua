@@ -97,7 +97,6 @@ function AB:CreateCooldownTimer(parent)
 end
 
 function AB:OnSetCooldown(start, duration, charges, maxCharges)
-	if(self.noOCC) then return end
 	local button = self:GetParent()
 
 	if start > 0 and duration > MIN_DURATION then
@@ -125,6 +124,8 @@ function AB:OnSetCooldown(start, duration, charges, maxCharges)
 end
 
 function AB:RegisterCooldown(cooldown)
+	if(not E.private.actionbar.enablecd) then return end
+	
 	hooksecurefunc(cooldown, "SetCooldown", AB.OnSetCooldown)
 end
 
