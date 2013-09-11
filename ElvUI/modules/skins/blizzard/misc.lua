@@ -609,6 +609,7 @@ local function LoadSkin()
 				_G["WatchFrameItem"..i.."NormalTexture"]:SetAlpha(0)
 				_G["WatchFrameItem"..i.."IconTexture"]:SetInside()
 				_G["WatchFrameItem"..i.."IconTexture"]:SetTexCoord(unpack(E.TexCoords))
+				E:GetModule("ActionBars"):RegisterCooldown(_G["WatchFrameItem"..i.."Cooldown"])
 				button.skinned = true
 			end
 		end	
