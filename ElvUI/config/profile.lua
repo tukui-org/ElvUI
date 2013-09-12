@@ -309,7 +309,7 @@ P['tooltip'] = {
 }
 --UnitFrame
 P['unitframe'] = {
-	['smoothbars'] = false,
+	['smoothbars'] = true,
 	['statusbar'] = "Melli Dark",
 	['font'] = 'AgencyFB Bold',
 	['fontSize'] = 14,
