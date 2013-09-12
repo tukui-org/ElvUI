@@ -510,12 +510,13 @@ function E:UpdateAll(ignoreInstall)
 	LibStub('LibDualSpec-1.0'):EnhanceDatabase(self.data, "ElvUI")
 	self.db = self.data.profile;
 	self.global = self.data.global;
-	
+	self:DBConversions()
 	self.db.theme = nil;
 	self.db.install_complete = nil;	
 	
 	self:SetMoversPositions()
 	self:UpdateMedia()
+	self:UpdateCooldownSettings()
 	
 	local UF = self:GetModule('UnitFrames')
 	UF.db = self.db.unitframe
@@ -586,7 +587,6 @@ function E:UpdateAll(ignoreInstall)
 	LO:BottomPanelVisibility()
 	LO:TopPanelVisibility()
 	
-
 	collectgarbage('collect');
 end
 
@@ -675,7 +675,40 @@ end
 
 --DATABASE CONVERSIONS
 function E:DBConversions()
+	if(self.private.actionbar.enablecd ~= nil) then
+		self.private.cooldown.enable = self.private.actionbar.enablecd
+		self.private.actionbar.enablecd = nil
+	end
+	
+	if(self.db.actionbar.treshold ~= nil) then
+		self.db.cooldown.threshold = self.db.actionbar.treshold
+		self.db.actionbar.treshold = nil
+	end
+	
+	if(self.db.actionbar.expiringcolor ~= nil) then
+		self.db.cooldown.expiringColor = self.db.actionbar.expiringcolor
+		self.db.actionbar.expiringcolor = nil
+	end
 
+	if(self.db.actionbar.secondscolor ~= nil) then
+		self.db.cooldown.secondsColor = self.db.actionbar.secondscolor
+		self.db.actionbar.secondscolor = nil
+	end	
+	
+	if(self.db.actionbar.minutescolor ~= nil) then
+		self.db.cooldown.minutesColor = self.db.actionbar.minutescolor
+		self.db.actionbar.minutescolor = nil
+	end		
+	
+	if(self.db.actionbar.hourscolor ~= nil) then
+		self.db.cooldown.hoursColor = self.db.actionbar.hourscolor
+		self.db.actionbar.hourscolor = nil
+	end	
+	
+	if(self.db.actionbar.dayscolor ~= nil) then
+		self.db.cooldown.daysColor = self.db.actionbar.dayscolor
+		self.db.actionbar.dayscolor = nil
+	end		
 end
 
 function E:StopMassiveShake()
@@ -830,7 +863,7 @@ function E:Initialize()
 	self:LoadCommands(); --Load Commands
 	self:InitializeModules(); --Load Modules	
 	self:LoadMovers(); --Load Movers
-
+	self:UpdateCooldownSettings()
 	self.initialized = true
 	
 	if self.private.install_complete == nil then

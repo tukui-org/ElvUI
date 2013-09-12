@@ -11,6 +11,8 @@ local gsub = string.gsub
 local format = string.format
 local split = string.split
 
+AB.RegisterCooldown = E.RegisterCooldown
+
 E.ActionBars = AB
 AB["handledBars"] = {} --List of all bars
 AB["handledbuttons"] = {} --List of all buttons that have been modified.
@@ -469,9 +471,7 @@ function AB:StyleButton(button, noBackdrop, adjustChecked)
 	button:StyleButton();
 
 	if(not self.handledbuttons[button]) then
-		if(E.private.actionbar.enablecd) then
-			self:RegisterCooldown(button.cooldown)
-		end
+		E:RegisterCooldown(button.cooldown)
 		
 		self.handledbuttons[button] = true;
 	end
@@ -847,7 +847,6 @@ function AB:Initialize()
 	self:UpdateButtonSettings()
 	
 	self:LoadKeyBinder()
-	self:UpdateCooldownSettings()
 	self:RegisterEvent("UPDATE_BINDINGS", "ReassignBindings")
 	self:RegisterEvent("PET_BATTLE_CLOSE", "ReassignBindings")
 	self:RegisterEvent('PET_BATTLE_OPENING_DONE', 'RemoveBindings')

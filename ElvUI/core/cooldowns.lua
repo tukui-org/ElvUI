@@ -1,5 +1,4 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local AB = E:GetModule('ActionBars');
 
 local MIN_SCALE = 0.5
 local ICON_SIZE = 36 --the normal size for an icon (don't change this)
@@ -39,15 +38,15 @@ local function Cooldown_OnUpdate(cd, elapsed)
 			cd.text:SetFormattedText(("%s%s|r"):format(TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
 		end
 	else
-		AB:Cooldown_StopTimer(cd)
+		E:Cooldown_StopTimer(cd)
 	end
 end
 
-function AB:Cooldown_OnSizeChanged(cd, width, height)
+function E:Cooldown_OnSizeChanged(cd, width, height)
 	local fontScale = floor(width +.5) / ICON_SIZE
 	local override = cd:GetParent():GetParent().SizeOverride
 	if override then 
-		fontScale = override / FONT_SIZE  
+		fontScale = override / FONT_SIZE
 	end
 	
 	if fontScale == cd.fontScale then
@@ -66,17 +65,17 @@ function AB:Cooldown_OnSizeChanged(cd, width, height)
 	end
 end
 
-function AB:Cooldown_ForceUpdate(cd)
+function E:Cooldown_ForceUpdate(cd)
 	cd.nextUpdate = 0
 	cd:Show()
 end
 
-function AB:Cooldown_StopTimer(cd)
+function E:Cooldown_StopTimer(cd)
 	cd.enabled = nil
 	cd:Hide()
 end
 
-function AB:CreateCooldownTimer(parent)
+function E:CreateCooldownTimer(parent)
 	local scaler = CreateFrame('Frame', nil, parent)
 	scaler:SetAllPoints()
 
@@ -96,11 +95,11 @@ function AB:CreateCooldownTimer(parent)
 	return timer
 end
 
-function AB:OnSetCooldown(start, duration, charges, maxCharges)
+function E:OnSetCooldown(start, duration, charges, maxCharges)
 	local button = self:GetParent()
-
+	
 	if start > 0 and duration > MIN_DURATION then
-		local timer = self.timer or AB:CreateCooldownTimer(self)
+		local timer = self.timer or E:CreateCooldownTimer(self)
 		timer.start = start
 		timer.duration = duration
 		timer.enabled = true
@@ -109,11 +108,10 @@ function AB:OnSetCooldown(start, duration, charges, maxCharges)
 	else
 		local timer = self.timer
 		if timer then
-			AB:Cooldown_StopTimer(timer)
+			E:Cooldown_StopTimer(timer)
 		end
 	end
 	
-
 	if self.timer then
 		if charges and charges > 0 then
 			self.timer:SetAlpha(0)
@@ -123,27 +121,26 @@ function AB:OnSetCooldown(start, duration, charges, maxCharges)
 	end
 end
 
-function AB:RegisterCooldown(cooldown)
-	if(not E.private.actionbar.enablecd) then return end
-	
-	hooksecurefunc(cooldown, "SetCooldown", AB.OnSetCooldown)
+function E:RegisterCooldown(cooldown)
+	if(not E.private.cooldown.enable) then return end
+	hooksecurefunc(cooldown, "SetCooldown", E.OnSetCooldown)
 end
 
-function AB:UpdateCooldownSettings()
-	threshold = self.db.treshold
+function E:UpdateCooldownSettings()
+	threshold = self.db.cooldown.threshold
 	
-	local color = E.db.actionbar.expiringcolor
+	local color = self.db.cooldown.expiringColor
 	TimeColors[4] = E:RGBToHex(color.r, color.g, color.b) -- color for timers that are soon to expire
 	
-	color = E.db.actionbar.secondscolor
+	color = self.db.cooldown.secondsColor
 	TimeColors[3] = E:RGBToHex(color.r, color.g, color.b) -- color for timers that have seconds remaining
 	
-	color = E.db.actionbar.minutescolor
+	color = self.db.cooldown.minutesColor
 	TimeColors[2] = E:RGBToHex(color.r, color.g, color.b) -- color for timers that have minutes remaining
 	
-	color = E.db.actionbar.hourscolor
+	color = self.db.cooldown.hoursColor
 	TimeColors[1] = E:RGBToHex(color.r, color.g, color.b) -- color for timers that have hours remaining
 	
-	color = E.db.actionbar.dayscolor
+	color = self.db.cooldown.daysColor
 	TimeColors[0] = E:RGBToHex(color.r, color.g, color.b) -- color for timers that have days remaining	
 end

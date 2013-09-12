@@ -4,6 +4,5 @@
 	<Script file='petBar.lua'/>
 	<Script file='stanceBar.lua'/>
 	<Script file='bind.lua'/>
-	<Script file='cooldown.lua'/>
 	<Script file='microbar.lua'/>
 </Ui>
