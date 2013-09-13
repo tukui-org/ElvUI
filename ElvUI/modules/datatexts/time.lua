@@ -138,12 +138,14 @@ local function OnEnter(self)
 		end
 	end	
 	
+	local chest = IsQuestFlaggedCompleted(32609)
+	local key = IsQuestFlaggedCompleted(32626)
 	local Sha = IsQuestFlaggedCompleted(32099)
 	local Galleon = IsQuestFlaggedCompleted(32098)
 	local Oondasta = IsQuestFlaggedCompleted(32519)
 	local Nalak = IsQuestFlaggedCompleted(32518)
-	local chest = IsQuestFlaggedCompleted(32609)
-	local key = IsQuestFlaggedCompleted(32626)
+	local Celestials = IsQuestFlaggedCompleted(33117)
+	local Ordos = IsQuestFlaggedCompleted(33118)
 
 	DT.tooltip:AddLine(" ")
 	DT.tooltip:AddLine(L["World Boss(s)"])	
@@ -151,6 +153,8 @@ local function OnEnter(self)
 	DT.tooltip:AddDoubleLine(L['Galleon']..':', Galleon and L['Defeated'] or L['Undefeated'], 1, 1, 1, 0.8, 0.8, 0.8)
 	DT.tooltip:AddDoubleLine(L['Oondasta']..':', Oondasta and L['Defeated'] or L['Undefeated'], 1, 1, 1, 0.8, 0.8, 0.8)
 	DT.tooltip:AddDoubleLine(L['Nalak']..':', Nalak and L['Defeated'] or L['Undefeated'], 1, 1, 1, 0.8, 0.8, 0.8)
+	DT.tooltip:AddDoubleLine(L['Celestials']..':', Celestials and L['Defeated'] or L['Undefeated'], 1, 1, 1, 0.8, 0.8, 0.8)
+	DT.tooltip:AddDoubleLine(L['Ordos']..':', Ordos and L['Defeated'] or L['Undefeated'], 1, 1, 1, 0.8, 0.8, 0.8)
 
 	DT.tooltip:AddLine(" ")
 	DT.tooltip:AddLine(L["Isle of Thunder"])

@@ -41,7 +41,7 @@ local function LoadSkin()
 		icon:SetInside()
 		
 		if(cooldown) then
-			E:GetModule("ActionBars"):RegisterCooldown(cooldown)
+			E:RegisterCooldown(cooldown)
 		end
 	end	
 	-- a request by diftraku to color item by rarity on character frame.

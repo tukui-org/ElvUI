@@ -109,5 +109,8 @@ V['unitframe'] = {
 
 V["actionbar"] = {
 	["enable"] = true,
-	["enablecd"] = true,
+}
+
+V["cooldown"] = {
+	enable = true
 }

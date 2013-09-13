@@ -1818,6 +1818,15 @@ P['unitframe'] = {
 	},
 }
 
+P["cooldown"] = {
+	threshold = 3,
+	expiringColor = { r = 1, g = 0, b = 0 },
+	secondsColor = { r = 1, g = 1, b = 0 },
+	minutesColor = { r = 1, g = 1, b = 1 },
+	hoursColor = { r = 0.4, g = 1, b = 1 },
+	daysColor = { r = 0.4, g = 0.4, b = 1 },
+}
+
 
 --Actionbar
 P["actionbar"] = {
@@ -1828,12 +1837,7 @@ P["actionbar"] = {
 	["macrotext"] = true,
 	["hotkeytext"] = true,
 	['showGrid'] = true,
-	["treshold"] = 3,
-	["expiringcolor"] = { r = 1, g = 0, b = 0 },
-	["secondscolor"] = { r = 1, g = 1, b = 0 },
-	["minutescolor"] = { r = 1, g = 1, b = 1 },
-	["hourscolor"] = { r = 0.4, g = 1, b = 1 },
-	["dayscolor"] = { r = 0.4, g = 0.4, b = 1 },
+
 	['noRangeColor'] = { r = 0.8, g = 0.1, b = 0.1 },
 	['noPowerColor'] = { r = 0.5, g = 0.5, b = 1 },
 	

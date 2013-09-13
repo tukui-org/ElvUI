@@ -899,7 +899,7 @@ local function GetOptionsTable_CustomText(updateFunc, groupName, numUnits, order
 				E.db.unitframe.units[groupName].customTexts = {};
 			end
 			
-			if E.db.unitframe.units[groupName].customTexts[textName] then
+			if E.db.unitframe.units[groupName].customTexts[textName] or (_G[groupName] and _G[groupName][textName] or _G[groupName.."Group1UnitButton1"] and _G[groupName.."Group1UnitButton1"][textName]) then
 				E:Print(L['The name you have selected is already in use by another element.'])
 				return;
 			end

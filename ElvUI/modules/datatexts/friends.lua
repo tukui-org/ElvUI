@@ -282,6 +282,7 @@ local function OnEnter(self)
 					if info[6] then
 						if info[5] == wowString then
 							if (info[7] == true) then status = 1 elseif (info[8] == true) then status = 2 else status = 3 end
+							--print(info[13], info[15] == '') -- next time this error pops i think this is the cause
 							classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[13]], GetQuestDifficultyColor(info[15])
 							
 							classc = classc or GetQuestDifficultyColor(info[15])

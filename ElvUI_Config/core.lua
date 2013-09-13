@@ -635,7 +635,87 @@ E.Options.args.general = {
 					},
 				},
 			},
-		},					
+		},
+		cooldown = {
+			type = "group",
+			order = 10,
+			name = L['Cooldown Text'],
+			get = function(info)
+				local t = E.db.cooldown[ info[#info] ]
+				return t.r, t.g, t.b, t.a
+			end,
+			set = function(info, r, g, b)
+				E.db.cooldown[ info[#info] ] = {}
+				local t = E.db.cooldown[ info[#info] ]
+				t.r, t.g, t.b = r, g, b
+				E:UpdateCooldownSettings();
+			end,	
+			args = {
+				enable = {
+					type = "toggle",
+					order = 1,
+					name = L['Enable'],
+					desc = L['Display cooldown text on anything with the cooldown spiril.'],
+					get = function(info) return E.private.cooldown[ info[#info] ] end,
+					set = function(info, value) E.private.cooldown[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end				
+				},			
+				threshold = {
+					type = 'range',
+					name = L['Low Threshold'],
+					desc = L['Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red'],
+					min = -1, max = 20, step = 1,	
+					order = 2,
+					get = function(info) return E.db.cooldown[ info[#info] ] end,
+					set = function(info, value)
+						E.db.cooldown[ info[#info] ] = value
+						E:UpdateCooldownSettings();
+					end,				
+				},
+				restoreColors = {
+					type = 'execute',
+					name = L["Restore Defaults"],
+					order = 3,
+					func = function() 
+						E.db.cooldown.expiringColor = P['cooldown'].expiringColor;
+						E.db.cooldown.secondsColor = P['cooldown'].secondsColor;
+						E.db.cooldown.minutesColor = P['cooldown'].minutesColor;
+						E.db.cooldown.hoursColor = P['cooldown'].hoursColor;
+						E.db.cooldown.daysColor = P['cooldown'].daysColor;
+						E:UpdateCooldownSettings();
+					end,
+				},
+				expiringColor = {
+					type = 'color',
+					order = 4,
+					name = L['Expiring'],
+					desc = L['Color when the text is about to expire'],					
+				},
+				secondsColor = {
+					type = 'color',
+					order = 5,
+					name = L['Seconds'],
+					desc = L['Color when the text is in the seconds format.'],			
+				},
+				minutesColor = {
+					type = 'color',
+					order = 6,
+					name = L['Minutes'],
+					desc = L['Color when the text is in the minutes format.'],		
+				},
+				hoursColor = {
+					type = 'color',
+					order = 7,
+					name = L['Hours'],
+					desc = L['Color when the text is in the hours format.'],				
+				},	
+				daysColor = {
+					type = 'color',
+					order = 8,
+					name = L['Days'],
+					desc = L['Color when the text is in the days format.'],			
+				},				
+			},
+		},
 	},
 }
 

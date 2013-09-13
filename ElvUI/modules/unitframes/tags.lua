@@ -25,6 +25,92 @@ local function UnitName(unit)
 	end
 end
 
+ElvUF.Tags.Events['altpower:percent'] = "UNIT_POWER UNIT_MAXPOWER"
+ElvUF.Tags.Methods['altpower:percent'] = function(u)
+	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
+	if cur > 0 then
+		local max = UnitPowerMax(u, ALTERNATE_POWER_INDEX)
+
+		return E:GetFormattedText('PERCENT', cur, max)
+	else
+		return ''
+	end
+end
+
+ElvUF.Tags.Events['altpower:current'] = "UNIT_POWER"
+ElvUF.Tags.Methods['altpower:current'] = function(u)
+	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
+	if cur > 0 then
+		return cur
+	else
+		return ''
+	end
+end
+
+ElvUF.Tags.Events['altpower:current-percent'] = "UNIT_POWER UNIT_MAXPOWER"
+ElvUF.Tags.Methods['altpower:current-percent'] = function(u)
+	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
+	if cur > 0 then
+		local max = UnitPowerMax(u, ALTERNATE_POWER_INDEX)
+
+		return E:GetFormattedText('CURRENT_PERCENT', cur, max)
+	else
+		return ''
+	end
+end
+
+ElvUF.Tags.Events['altpower:deficit'] = "UNIT_POWER UNIT_MAXPOWER"
+ElvUF.Tags.Methods['altpower:deficit'] = function(u)
+	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
+	if cur > 0 then
+		local max = UnitPowerMax(u, ALTERNATE_POWER_INDEX)
+
+		return E:GetFormattedText('DEFICIT', cur, max)
+	else
+		return ''
+	end
+end
+
+ElvUF.Tags.Events['altpower:current-max'] = "UNIT_POWER UNIT_MAXPOWER"
+ElvUF.Tags.Methods['altpower:current-max'] = function(u)
+	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
+	if cur > 0 then
+		local max = UnitPowerMax(u, ALTERNATE_POWER_INDEX)
+
+		return E:GetFormattedText('CURRENT_MAX', cur, max)
+	else
+		return ''
+	end
+end
+
+ElvUF.Tags.Events['altpower:current-max-percent'] = "UNIT_POWER UNIT_MAXPOWER"
+ElvUF.Tags.Methods['altpower:current-max-percent'] = function(u)
+	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
+	if cur > 0 then
+		local max = UnitPowerMax(u, ALTERNATE_POWER_INDEX)
+
+		E:GetFormattedText('CURRENT_MAX_PERCENT', cur, max)
+	else
+		return ''
+	end
+end
+
+ElvUF.Tags.Events['altpowercolor'] = "UNIT_POWER UNIT_MAXPOWER"
+ElvUF.Tags.Methods['altpowercolor'] = function(u)
+	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
+	if cur > 0 then
+		local tPath, r, g, b = UnitAlternatePowerTextureInfo(u, 2)
+
+		if not r then
+			r, g, b = 1, 1, 1
+		end
+
+		return Hex(r,g,b)
+	else
+		return ''
+	end
+end
+
 ElvUF.Tags.Events['afk'] = 'PLAYER_FLAGS_CHANGED'
 ElvUF.Tags.Methods['afk'] = function(unit)
 	local isAFK = UnitIsAFK(unit)
