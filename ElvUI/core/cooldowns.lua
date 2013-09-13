@@ -128,7 +128,6 @@ end
 
 function E:UpdateCooldownSettings()
 	threshold = self.db.cooldown.threshold
-	mmSSthreshold = self.db.mmSSthreshold
 	
 	local color = self.db.cooldown.expiringColor
 	TimeColors[4] = E:RGBToHex(color.r, color.g, color.b) -- color for timers that are soon to expire
