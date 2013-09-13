@@ -62,12 +62,12 @@ function AB:UpdateMicroButtonsParent(parent)
 	end
 end
 
-local __buttons = {
-	[10] = "StoreMicroButton",
-}
-
-for i=10, #MICRO_BUTTONS do
-	__buttons[i + 1] = MICRO_BUTTONS[i]
+local __buttons = {}
+if(C_StorePublic.IsEnabled()) then
+	__buttons[10] = "StoreMicroButton"
+	for i=10, #MICRO_BUTTONS do
+		__buttons[i + 1] = MICRO_BUTTONS[i]
+	end
 end
 
 function AB:UpdateMicroPositionDimensions()
