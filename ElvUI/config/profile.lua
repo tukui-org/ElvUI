@@ -116,7 +116,7 @@ P["nameplate"] = {
 		['width'] = 114,
 		['height'] = 8,
 		['text'] = {
-			['enable'] = false,
+			['enable'] = true,
 			['format'] = 'CURRENT_PERCENT',			
 		}		
 	},
