@@ -149,9 +149,6 @@ local function LoadSkin()
 	
 	S:HandleCloseButton(CalendarMassInviteCloseButton)
 	S:HandleButton(CalendarMassInviteGuildAcceptButton)
-	S:HandleButton(CalendarMassInviteArenaButton2)
-	S:HandleButton(CalendarMassInviteArenaButton3)
-	S:HandleButton(CalendarMassInviteArenaButton5)
 	S:HandleDropDownBox(CalendarMassInviteGuildRankMenu, 130)
 	
 	S:HandleEditBox(CalendarMassInviteGuildMinLevelEdit)
