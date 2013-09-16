@@ -6,6 +6,28 @@ local displayModifierString = ''
 local lastPanel;
 local join = string.join
 
+local function OnEnter(self)
+	DT:SetupTooltip(self)
+	
+	local text, tooltip;
+	if E.role == "Caster" then
+		text = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, SPELL_CRIT_CHANCE).." "..format("%.2F%%", GetSpellCritChance(1))..FONT_COLOR_CODE_CLOSE
+		tooltip = format(CR_CRIT_SPELL_TOOLTIP, BreakUpLargeNumbers(GetCombatRating(CR_CRIT_SPELL)), GetCombatRatingBonus(CR_CRIT_SPELL))
+	else
+		if E.myclass == "HUNTER" then
+			text = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, RANGED_CRIT_CHANCE).." "..format("%.2F%%", GetRangedCritChance())..FONT_COLOR_CODE_CLOSE;
+			tooltip = format(CR_CRIT_RANGED_TOOLTIP, BreakUpLargeNumbers(GetCombatRating(CR_CRIT_RANGED)), GetCombatRatingBonus(CR_CRIT_RANGED));
+		else
+			text = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, MELEE_CRIT_CHANCE).." "..format("%.2F%%", GetCritChance())..FONT_COLOR_CODE_CLOSE;
+			tooltip = format(CR_CRIT_MELEE_TOOLTIP, BreakUpLargeNumbers(GetCombatRating(CR_CRIT_MELEE)), GetCombatRatingBonus(CR_CRIT_MELEE));
+		end
+	end
+	
+	DT.tooltip:AddDoubleLine(text, nil, 1, 1, 1);
+	DT.tooltip:AddLine(tooltip, nil, nil, nil, true);
+	DT.tooltip:Show()
+end
+
 local function OnEvent(self, event, unit)
 	if E.role == "Caster" then
 		critRating = GetSpellCritChance(1)
@@ -41,5 +63,5 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 	onEnterFunc - function to fire OnEnter
 	onLeaveFunc - function to fire OnLeave, if not provided one will be set for you that hides the tooltip.
 ]]
-DT:RegisterDatatext('Crit Chance', {"UNIT_STATS", "UNIT_AURA", "FORGE_MASTER_ITEM_CHANGED", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE"}, OnEvent)
+DT:RegisterDatatext('Crit Chance', {"UNIT_STATS", "UNIT_AURA", "FORGE_MASTER_ITEM_CHANGED", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE"}, OnEvent, nil, nil, OnEnter)
 

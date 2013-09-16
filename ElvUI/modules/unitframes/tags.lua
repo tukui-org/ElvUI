@@ -11,7 +11,7 @@ local ceil, sqrt = math.ceil, math.sqrt
 local function UnitName(unit)
 	local name = _G.UnitName(unit);
 	if name == UNKNOWN and E.myclass == "MONK" and UnitIsUnit(unit, "pet") then
-		name = ("%s\'s Spirit"):format(_G.UnitName("player"))
+		name = UNITNAME_SUMMON_TITLE17:format(_G.UnitName("player"))
 	else
 		return name
 	end
