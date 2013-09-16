@@ -194,7 +194,7 @@ function NP:OnUpdate(elapsed)
 end
 
 function NP:CheckFilterAndHealers(myPlate)
-	local name = self.name:GetText()
+	local name = gsub(self.name:GetText(), '%s%(%*%)','')
 	local db = E.global.nameplate["filter"][name]
 
 	if db and db.enable then

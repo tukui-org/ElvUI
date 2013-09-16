@@ -282,11 +282,14 @@ local function OnEnter(self)
 					if info[6] then
 						if info[5] == wowString then
 							if (info[7] == true) then status = 1 elseif (info[8] == true) then status = 2 else status = 3 end
-							--print(info[13], info[15] == '') -- next time this error pops i think this is the cause
-							classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[13]], GetQuestDifficultyColor(info[15])
-							
-							classc = classc or GetQuestDifficultyColor(info[15])
-							
+							classc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[13]]
+							if info[15] ~= '' then
+								levelc = GetQuestDifficultyColor(info[15])
+							else
+								levelc = RAID_CLASS_COLORS["PRIEST"]
+								classc = RAID_CLASS_COLORS["PRIEST"]
+							end
+
 							if UnitInParty(info[4]) or UnitInRaid(info[4]) then grouped = 1 else grouped = 2 end
 							DT.tooltip:AddDoubleLine(format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[15],classc.r*255,classc.g*255,classc.b*255,info[3],groupedTable[grouped], 255, 0, 0, statusTable[status]),info[2],238,238,238,238,238,238)
 							if IsShiftKeyDown() then
