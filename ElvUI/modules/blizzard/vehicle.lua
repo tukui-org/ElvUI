@@ -9,7 +9,7 @@ function B:PositionVehicleFrame()
 			if VehicleSeatMover then
 				VehicleSeatIndicator:Point("TOPLEFT", VehicleSeatMover, "TOPLEFT", 0, 0)
 			else
-				VehicleSeatIndicator:Point("TOPRIGHT", AurasHolder, "BOTTOMRIGHT", 0, -10)
+				VehicleSeatIndicator:Point("TOPRIGHT", ElvUIPlayerDebuffs, "BOTTOMRIGHT", 0, -10)
 				E:CreateMover(VehicleSeatIndicator, "VehicleSeatMover", L["Vehicle Seat Frame"])	
 			end
 			

@@ -3,7 +3,7 @@ local B = E:GetModule('Blizzard');
 
 function B:PositionGMFrames()
 	TicketStatusFrame:ClearAllPoints()
-	TicketStatusFrame:SetPoint("TOPRIGHT", AurasHolder, "BOTTOMRIGHT", 0, -10)
+	TicketStatusFrame:SetPoint("TOPRIGHT", ElvUIPlayerDebuffs, "BOTTOMRIGHT", 0, -10)
 
 	E:CreateMover(TicketStatusFrame, "GMMover", L["GM Ticket Frame"])
 
