@@ -25,6 +25,7 @@ function AB:SetupExtraButton()
 			tex:SetTexture(0.9, 0.8, 0.1, 0.3)
 			tex:SetInside()
 			_G["ExtraActionButton"..i]:SetCheckedTexture(tex)
+			E:RegisterCooldown(_G["ExtraActionButton"..i.."Cooldown"])
 		end
 	end
 	
