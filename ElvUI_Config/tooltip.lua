@@ -51,11 +51,11 @@ E.Options.args.tooltip = {
 					name = L['Guild Ranks'],
 					desc = L['Display guild ranks if a unit is guilded.'],
 				},
-				talentInfo = {
+				inspectInfo = {
 					order = 5,
 					type = 'toggle',
-					name = L['Talent Spec'],
-					desc = L['Display the players talent spec in the tooltip, this may not immediately update when mousing over a unit.'],
+					name = L['Inspect Info'],
+					desc = L['Display the players talent spec and item level in the tooltip, this may not immediately update when mousing over a unit.'],
 				},
 				itemCount = {
 					order = 6,
