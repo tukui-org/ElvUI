@@ -39,6 +39,10 @@ local function LoadSkin()
 				_G[button:GetName().."IconQuestTexture"]:SetTexCoord(unpack(E.TexCoords))
 				_G[button:GetName().."IconQuestTexture"]:SetInside(button)
 			end
+
+			if _G[button:GetName().."Cooldown"] then
+				E:RegisterCooldown(_G[button:GetName().."Cooldown"])
+			end
 			
 			button.skinned = true
 		end	
