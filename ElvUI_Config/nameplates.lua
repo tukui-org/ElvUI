@@ -454,12 +454,12 @@ E.Options.args.nameplate = {
 				},									
 			},	
 		},
-		auras = {
+		buffs = {
 			type = "group",
 			order = 4,
-			name = L["Auras"],
-			get = function(info) return E.db.nameplate.auras[ info[#info] ] end,
-			set = function(info, value) E.db.nameplate.auras[ info[#info] ] = value; NP:UpdateAllPlates() end,	
+			name = L["Buffs"],
+			get = function(info) return E.db.nameplate.buffs[ info[#info] ] end,
+			set = function(info, value) E.db.nameplate.buffs[ info[#info] ] = value; NP:UpdateAllPlates() end,	
 			args = {
 				numAuras = {
 					type = "range",
@@ -492,21 +492,12 @@ E.Options.args.nameplate = {
 						return filters
 					end,
 				},	
-				filterType = {
-					type = "select",
-					order = 6,
-					name = L['Filter Type'],
-					values = {
-						['BUFFS'] = L['Buffs'],
-						['DEBUFFS'] = L['Debuffs']
-					},
-				},	
 				configureButton = {
 					order = 7,
 					name = L['Configure Selected Filter'],
 					type = 'execute',
 					width = 'full',
-					func = function() E:SetToFilterConfig(E.db.nameplate.auras.additionalFilter) end,
+					func = function() E:SetToFilterConfig(E.db.nameplate.buffs.additionalFilter) end,
 				},	
 				fontGroup = {
 					order = 100,
@@ -542,7 +533,87 @@ E.Options.args.nameplate = {
 					},
 				},					
 			},
-		},	
+		},
+		debuffs = {
+			type = "group",
+			order = 4,
+			name = L["Debuffs"],
+			get = function(info) return E.db.nameplate.debuffs[ info[#info] ] end,
+			set = function(info, value) E.db.nameplate.debuffs[ info[#info] ] = value; NP:UpdateAllPlates() end,	
+			args = {
+				numAuras = {
+					type = "range",
+					order = 1,
+					name = L["Number of Auras"],
+					type = "range",
+					min = 2, max = 8, step = 1,		
+				},	
+				stretchTexture = {
+					type = "toggle",
+					name = L["Stretch Texture"],
+					desc = L["Stretch the icon texture, intended for icons that don't have the same width/height."],
+					order = 2,
+				},
+				showPersonal = {
+					order = 3,
+					type = "toggle",
+					name = L["Show Personal Auras"],
+				},					
+				additionalFilter = {
+					type = "select",
+					order = 5,
+					name = L['Additional Filter'],
+					values = function()
+						filters = {}
+						filters[''] = NONE
+						for filter in pairs(E.global['unitframe']['aurafilters']) do
+							filters[filter] = filter
+						end
+						return filters
+					end,
+				},	
+				configureButton = {
+					order = 7,
+					name = L['Configure Selected Filter'],
+					type = 'execute',
+					width = 'full',
+					func = function() E:SetToFilterConfig(E.db.nameplate.debuffs.additionalFilter) end,
+				},	
+				fontGroup = {
+					order = 100,
+					type = 'group',
+					guiInline = true,
+					name = L['Fonts'],
+					args = {
+						font = {
+							type = "select", dialogControl = 'LSM30_Font',
+							order = 4,
+							name = L["Font"],
+							values = AceGUIWidgetLSMlists.font,
+						},
+						fontSize = {
+							order = 5,
+							name = L["Font Size"],
+							type = "range",
+							min = 6, max = 22, step = 1,
+						},	
+						fontOutline = {
+							order = 6,
+							name = L["Font Outline"],
+							desc = L["Set the font outline."],
+							type = "select",
+							values = {
+								['NONE'] = L['None'],
+								['OUTLINE'] = 'OUTLINE',
+								
+								['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
+								['THICKOUTLINE'] = 'THICKOUTLINE',
+							},
+						},							
+					},
+				},					
+			},
+		},				
 		threat = {
 			type = "group",
 			order = 6,
