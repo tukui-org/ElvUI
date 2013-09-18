@@ -416,8 +416,9 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		if(levelLine) then
 			local diffColor = GetQuestDifficultyColor(level)
 			local race, englishRace = UnitRace(unit)
-			if(englishRace == "Pandaren") then
-				race = select(2, UnitFactionGroup(unit)).." "..race
+			local _, factionGroup = UnitFactionGroup(unit)
+			if(factionGroup and englishRace == "Pandaren") then
+				race = factionGroup.." "..race
 			end			
 			levelLine:SetFormattedText("|cff%02x%02x%02x%s|r %s |c%s%s|r", diffColor.r * 255, diffColor.g * 255, diffColor.b * 255, level > 0 and level or "??", race, color.colorStr, localeClass)
 		end
