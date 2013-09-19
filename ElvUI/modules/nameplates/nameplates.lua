@@ -4,8 +4,10 @@ local LSM = LibStub("LibSharedMedia-3.0")
 
 local numChildren = -1
 local twipe = table.wipe
+local tinsert = table.insert
 local band = bit.band
 local gsub = string.gsub
+local tolower = string.lower
 local targetIndicator
 
 NP.NumTargetChecks = -1
@@ -24,7 +26,8 @@ NP.AuraTexture = {}
 NP.AuraType = {}
 NP.AuraTarget = {}
 NP.CachedAuraDurations = {}
-NP.AurasCache = {}
+NP.BuffCache = {}
+NP.DebuffCache = {}
 
 NP.HealerSpecs = {
 	[L['Restoration']] = true,
@@ -60,19 +63,10 @@ NP.ComboColors = {
 }
 
 local AURA_UPDATE_INTERVAL = 0.1
-local AURA_TYPE_BUFF = 1
-local AURA_TYPE_DEBUFF = 6
 local AURA_TARGET_HOSTILE = 1
 local AURA_TARGET_FRIENDLY = 2
 local AuraList, AuraGUID = {}, {}
-local AURA_TYPE = {
-	["Buff"] = 1,
-	["Curse"] = 2,
-	["Disease"] = 3,
-	["Magic"] = 4,
-	["Poison"] = 5,
-	["Debuff"] = 6,
-}
+
 local RaidIconIndex = {
 	"STAR",
 	"CIRCLE",
@@ -442,6 +436,7 @@ function NP:SetUnitInfo(myPlate)
 		myPlate.overlay:Hide()
 
 		if(NP.db.targetIndicator.enable) then
+			targetIndicator:Show()
 			NP:PositionTargetIndicator(myPlate)
 		end
 
@@ -470,6 +465,7 @@ function NP:SetUnitInfo(myPlate)
 		myPlate.overlay:Hide()
 		self.unit = nil
 	end
+
 end
 
 function NP:PLAYER_ENTERING_WORLD()
@@ -499,6 +495,7 @@ end
 
 
 function NP:PLAYER_TARGET_CHANGED()
+	targetIndicator:Hide()
 	if(UnitExists("target")) then
 		self.targetName = UnitName("target")
 		WorldFrame.elapsed = 0.1
@@ -636,7 +633,7 @@ function NP:OnShow()
 	myPlate.nameText = gsub(self.name:GetText(), '%s%(%*%)','')
 
 	--Check to see if its possible to update auras/comboPoints via raid icon or class color when a plate is shown.
-	if(self.raidIcon:IsShown() and not self.isSmall) then
+	if(not self.isSmall) then
 		NP:CheckRaidIcon(self)
 		NP:UpdateAuras(self)
 		NP:UpdateComboPoints(self)
@@ -671,9 +668,15 @@ function NP:OnHide()
 	myPlate.healthBar:SetSize(NP.db.healthBar.width, NP.db.healthBar.height)
 	self.castBar.icon:Size(NP.db.castBar.height + NP.db.healthBar.height + 5)
 
-	if myPlate.AuraWidget then
-		for index = 1, #myPlate.AuraWidget.AuraIconFrames do 
-			NP.PolledHideIn(myPlate.AuraWidget.AuraIconFrames[index], 0)
+	if myPlate.BuffWidget then
+		for index = 1, #myPlate.BuffWidget.icons do 
+			NP.PolledHideIn(myPlate.BuffWidget.icons[index], 0)
+		end		
+	end
+
+	if myPlate.DebuffWidget then
+		for index = 1, #myPlate.DebuffWidget.icons do 
+			NP.PolledHideIn(myPlate.DebuffWidget.icons[index], 0)
 		end		
 	end
 
@@ -686,36 +689,51 @@ function NP:OnHide()
 	myPlate:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT") --Prevent nameplate being in random location on screen when first shown
 end
 
-function NP:HealthBar_OnSizeChanged(width, height)
-	--Adjust aura width/height ratio based on the healthBar width
-	width = floor(width + 0.5)
-	local auraHeader = self:GetParent().AuraWidget
+function NP:SizeAuraHeader(myPlate, width, auraHeader, dbTable)
+	local db = NP.db[dbTable]
 	local baseSpacing = 1
-	local numAuras = NP.db.auras.numAuras
+	local numAuras = db.numAuras
 	local auraWidth = ((width - (baseSpacing * (numAuras - 1))) / numAuras)
-	local auraHeight = (NP.db.auras.stretchTexture and (auraWidth * 0.72) or auraWidth)
+	local auraHeight = (db.stretchTexture and (auraWidth * 0.72) or auraWidth)
 
 	for index = 1, numAuras do
-		if not auraHeader.AuraIconFrames[index] then
-			auraHeader.AuraIconFrames[index] = NP:CreateAuraIcon(auraHeader, myPlate); 
+		if not auraHeader.icons[index] then
+			auraHeader.icons[index] = NP:CreateAuraIcon(auraHeader, myPlate, dbTable); 
 		end
 		
-		auraHeader.AuraIconFrames[index]:SetWidth(auraWidth)
-		auraHeader.AuraIconFrames[index]:SetHeight(auraHeight)
-		if(index == 1) then
-			auraHeader.AuraIconFrames[index]:SetPoint("LEFT", auraHeader, 0, 0)
+
+		auraHeader.icons[index]:SetWidth(auraWidth)
+		auraHeader.icons[index]:SetHeight(auraHeight)
+		auraHeader.icons[index]:ClearAllPoints()
+		if(dbTable == 'debuffs') then
+			if(index == 1) then
+				auraHeader.icons[index]:SetPoint("LEFT", auraHeader, 0, 0)
+			else
+				auraHeader.icons[index]:SetPoint("LEFT", auraHeader.icons[index-1], "RIGHT", baseSpacing, 0) 
+			end
 		else
-			auraHeader.AuraIconFrames[index]:SetPoint("LEFT", auraHeader.AuraIconFrames[index-1], "RIGHT", baseSpacing, 0) 
+			if(index == 1) then
+				auraHeader.icons[index]:SetPoint("RIGHT", auraHeader, 0, 0)
+			else
+				auraHeader.icons[index]:SetPoint("RIGHT", auraHeader.icons[index-1], "LEFT", -baseSpacing, 0) 
+			end
 		end
 	end
 
-	if(numAuras > #auraHeader.AuraIconFrames) then
-		for index = (numAuras + 1), #auraHeader.AuraIconFrames do
-			NP.PolledHideIn(auraHeader.AuraIconFrames[index], 0)
+	if(numAuras > #auraHeader.icons) then
+		for index = (numAuras + 1), #auraHeader.icons do
+			NP.PolledHideIn(auraHeader.icons[index], 0)
 		end
 	end
 
 	auraHeader.numAuras = numAuras
+end
+
+function NP:HealthBar_OnSizeChanged(width, height)
+	--Adjust aura width/height ratio based on the healthBar width
+	width = floor(width + 0.5)
+	NP:SizeAuraHeader(self, width, self:GetParent().BuffWidget, 'buffs')
+	NP:SizeAuraHeader(self, width, self:GetParent().DebuffWidget, 'debuffs')
 end
 
 function NP:HealthBar_OnValueChanged(value)
@@ -822,20 +840,39 @@ function NP:UpdateSettings()
 	myPlate.healerIcon:SetPoint(E.InversePoints[NP.db.raidHealIcon.attachTo], myPlate.healthBar, NP.db.raidHealIcon.attachTo, NP.db.raidHealIcon.xOffset, NP.db.raidHealIcon.yOffset)
 	myPlate.healerIcon:SetSize(NP.db.raidHealIcon.size, NP.db.raidHealIcon.size)
 
-	--Auras
-	for index = 1, #myPlate.AuraWidget.AuraIconFrames do 
-		if myPlate.AuraWidget.AuraIconFrames and myPlate.AuraWidget.AuraIconFrames[index] then
-			local auraFont = LSM:Fetch("font", NP.db.auras.font)
-			myPlate.AuraWidget.AuraIconFrames[index].TimeLeft:FontTemplate(auraFont, NP.db.auras.fontSize, NP.db.auras.fontOutline)
-			myPlate.AuraWidget.AuraIconFrames[index].Stacks:FontTemplate(auraFont, NP.db.auras.fontSize, NP.db.auras.fontOutline)
+	--Buffs
+	local auraFont = LSM:Fetch("font", NP.db.buffs.font)
+	for index = 1, #myPlate.BuffWidget.icons do 
+		if myPlate.BuffWidget.icons and myPlate.BuffWidget.icons[index] then
+			myPlate.BuffWidget.icons[index].TimeLeft:FontTemplate(auraFont, NP.db.buffs.fontSize, NP.db.buffs.fontOutline)
+			myPlate.BuffWidget.icons[index].Stacks:FontTemplate(auraFont, NP.db.buffs.fontSize, NP.db.buffs.fontOutline)
 
-			if NP.db.auras.stretchTexture then
-				myPlate.AuraWidget.AuraIconFrames[index].Icon:SetTexCoord(.07, 0.93, .23, 0.77)
+			if NP.db.buffs.stretchTexture then
+				myPlate.BuffWidget.icons[index].Icon:SetTexCoord(.07, 0.93, .23, 0.77)
 			else
-				myPlate.AuraWidget.AuraIconFrames[index].Icon:SetTexCoord(.07, .93, .07, .93)
+				myPlate.BuffWidget.icons[index].Icon:SetTexCoord(.07, .93, .07, .93)
 			end
 		end
 	end
+
+	local yOffset = NP.db.debuffs.stretchTexture and -8 or -2
+	myPlate.BuffWidget:SetPoint('BOTTOMRIGHT', myPlate.DebuffWidget, 'TOPRIGHT', 0, yOffset)
+	myPlate.BuffWidget:SetPoint('BOTTOMLEFT', myPlate.DebuffWidget, 'TOPLEFT', 0, yOffset)	
+
+	--Debuffs
+	auraFont = LSM:Fetch("font", NP.db.debuffs.font)
+	for index = 1, #myPlate.DebuffWidget.icons do 
+		if myPlate.DebuffWidget.icons and myPlate.DebuffWidget.icons[index] then
+			myPlate.DebuffWidget.icons[index].TimeLeft:FontTemplate(auraFont, NP.db.debuffs.fontSize, NP.db.debuffs.fontOutline)
+			myPlate.DebuffWidget.icons[index].Stacks:FontTemplate(auraFont, NP.db.debuffs.fontSize, NP.db.debuffs.fontOutline)
+
+			if NP.db.debuffs.stretchTexture then
+				myPlate.DebuffWidget.icons[index].Icon:SetTexCoord(.07, 0.93, .23, 0.77)
+			else
+				myPlate.DebuffWidget.icons[index].Icon:SetTexCoord(.07, .93, .07, .93)
+			end
+		end
+	end	
 
 	--ComboPoints
 	if(NP.db.comboPoints and not myPlate.cPoints:IsShown()) then
@@ -921,17 +958,24 @@ function NP:CreatePlate(frame)
 	myPlate.overlay:SetTexture(1, 1, 1, 0.3)
 	myPlate.overlay:Hide()
 
-	--Auras
-	local auraHeader = CreateFrame("Frame", nil, myPlate)
-	auraHeader:SetHeight(32); auraHeader:Show()
-	auraHeader:SetPoint('BOTTOMRIGHT', myPlate.healthBar, 'TOPRIGHT', 0, 10)
-	auraHeader:SetPoint('BOTTOMLEFT', myPlate.healthBar, 'TOPLEFT', 0, 10)
-	auraHeader:SetFrameStrata("BACKGROUND")
-	auraHeader:SetFrameLevel(0)	
-	
-	auraHeader.PollFunction = NP.UpdateAuraTime
-	auraHeader.AuraIconFrames = {}
-	myPlate.AuraWidget = auraHeader	
+	local debuffHeader = CreateFrame("Frame", nil, myPlate)
+	debuffHeader:SetHeight(32); debuffHeader:Show()
+	debuffHeader:SetPoint('BOTTOMRIGHT', myPlate.healthBar, 'TOPRIGHT', 0, 10)
+	debuffHeader:SetPoint('BOTTOMLEFT', myPlate.healthBar, 'TOPLEFT', 0, 10)
+	debuffHeader:SetFrameStrata("BACKGROUND")
+	debuffHeader:SetFrameLevel(0)	
+	debuffHeader.PollFunction = NP.UpdateAuraTime
+	debuffHeader.icons = {}
+	myPlate.DebuffWidget = debuffHeader		
+
+	--Buffs
+	local buffHeader = CreateFrame("Frame", nil, myPlate)
+	buffHeader:SetHeight(32); buffHeader:Show()
+	buffHeader:SetFrameStrata("BACKGROUND")
+	buffHeader:SetFrameLevel(0)	
+	buffHeader.PollFunction = NP.UpdateAuraTime
+	buffHeader.icons = {}
+	myPlate.BuffWidget = buffHeader		
 
 	--Low-Health Indicator
 	myPlate.lowHealth = CreateFrame("Frame", nil, myPlate)
@@ -1192,6 +1236,7 @@ do
 	end
 	
 	function PolledHideIn(frame, expiration)
+		if(not frame) then return end
 		if expiration == 0 then 
 			frame:Hide()
 			Framelist[frame] = nil
@@ -1217,7 +1262,7 @@ function NP:SetSpellDuration(spellID, duration)
 	if spellID then NP.CachedAuraDurations[spellID] = duration end
 end
 
-function NP:CreateAuraIcon(frame, parent)
+function NP:CreateAuraIcon(frame, parent, dbTable)
 	local noscalemult = E.mult * UIParent:GetScale()
 	local button = CreateFrame("Frame",nil,frame)
 	button:SetScript('OnHide', function()
@@ -1225,7 +1270,7 @@ function NP:CreateAuraIcon(frame, parent)
 			NP:UpdateIconGrid(parent, frame.guid)
 		end
 	end)
-	
+	local db = NP.db[dbTable]
 	if E.PixelMode then
 		button.bord = button:CreateTexture(nil, "BACKGROUND")
 		button.bord:SetDrawLayer('BACKGROUND', 2)
@@ -1237,7 +1282,7 @@ function NP:CreateAuraIcon(frame, parent)
 		button.Icon:SetPoint("TOPLEFT",button,"TOPLEFT", noscalemult*2,-noscalemult*2)
 		button.Icon:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",-noscalemult*2,noscalemult*2)
 
-		if NP.db.auras.stretchTexture then
+		if db.stretchTexture then
 			button.Icon:SetTexCoord(.07, 0.93, .23, 0.77)
 		else
 			button.Icon:SetTexCoord(.07, .93, .07, .93)
@@ -1262,21 +1307,21 @@ function NP:CreateAuraIcon(frame, parent)
 		button.Icon = button:CreateTexture(nil, "BORDER")
 		button.Icon:SetPoint("TOPLEFT",button,"TOPLEFT", noscalemult*3,-noscalemult*3)
 		button.Icon:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",-noscalemult*3,noscalemult*3)
-		if NP.db.auras.stretchTexture then
+		if db.stretchTexture then
 			button.Icon:SetTexCoord(.07, 0.93, .23, 0.77)
 		else
 			button.Icon:SetTexCoord(.07, .93, .07, .93)
 		end			
 	end
 	
-	local font = LSM:Fetch("font", NP.db.auras.font)
+	local font = LSM:Fetch("font", db.font)
 	button.TimeLeft = button:CreateFontString(nil, 'OVERLAY')
-	button.TimeLeft:SetFont(font, NP.db.auras.fontSize, NP.db.auras.fontOutline)
+	button.TimeLeft:SetFont(font, db.fontSize, db.fontOutline)
 	button.TimeLeft:Point('TOPLEFT', 2, 2)
 	button.TimeLeft:SetJustifyH('CENTER')	
 	
 	button.Stacks = button:CreateFontString(nil,"OVERLAY")
-	button.Stacks:SetFont(font, NP.db.auras.fontSize, NP.db.auras.fontOutline)
+	button.Stacks:SetFont(font, db.fontSize, db.fontOutline)
 	button.Stacks:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 2, -2)
 
 	button.Poll = frame.PollFunction
@@ -1328,14 +1373,19 @@ function NP:GetAuraInstance(guid, auraID)
 	end
 end
 
-function NP:SetAuraInstance(guid, spellID, expiration, stacks, caster, duration, texture, auratype, auratarget)
+function NP:SetAuraInstance(guid, spellID, expiration, stacks, caster, duration, texture, auraType, auraTarget)
 	local filter = false
-	if (self.db.auras.showPersonal and caster == UnitGUID('player')) then
+	local db = self.db.buffs
+	if(auraType == AURA_TYPE_DEBUFF) then
+		db = self.db.debuffs
+	end
+
+	if (db.showPersonal and caster == UnitGUID('player')) then
 		filter = true;
 	end
 	
-	local trackFilter = E.global['unitframe']['aurafilters'][self.db.auras.additionalFilter]
-	if self.db.auras.additionalFilter and #self.db.auras.additionalFilter > 1 and trackFilter then
+	local trackFilter = E.global['unitframe']['aurafilters'][db.additionalFilter]
+	if db.additionalFilter and trackFilter then
 		local name = GetSpellInfo(spellID)
 		local spellList = trackFilter.spells
 		local type = trackFilter.type
@@ -1369,8 +1419,8 @@ function NP:SetAuraInstance(guid, spellID, expiration, stacks, caster, duration,
 		NP.AuraCaster[instanceID] = caster
 		NP.AuraDuration[instanceID] = duration
 		NP.AuraTexture[instanceID] = texture
-		NP.AuraType[instanceID] = auratype
-		NP.AuraTarget[instanceID] = auratarget
+		NP.AuraType[instanceID] = auraType
+		NP.AuraTarget[instanceID] = auraTarget
 	end
 end
 
@@ -1389,24 +1439,22 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, ...)
 		if event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REFRESH" then
 			local duration = NP:GetSpellDuration(spellID)
 			local texture = GetSpellTexture(spellID)
-			NP:SetAuraInstance(destGUID, spellID, GetTime() + (duration or 0), 1, sourceGUID, duration, texture, AURA_TYPE_DEBUFF, AURA_TARGET_HOSTILE)
+			NP:SetAuraInstance(destGUID, spellID, GetTime() + (duration or 0), 1, sourceGUID, duration, texture, auraType, AURA_TARGET_HOSTILE)
 		elseif event == "SPELL_AURA_APPLIED_DOSE" or event == "SPELL_AURA_REMOVED_DOSE" then
 			local duration = NP:GetSpellDuration(spellID)
 			local texture = GetSpellTexture(spellID)
-			NP:SetAuraInstance(destGUID, spellID, GetTime() + (duration or 0), stackCount, sourceGUID, duration, texture, AURA_TYPE_DEBUFF, AURA_TARGET_HOSTILE)
+			NP:SetAuraInstance(destGUID, spellID, GetTime() + (duration or 0), stackCount, sourceGUID, duration, texture, auraType, AURA_TARGET_HOSTILE)
 		elseif event == "SPELL_AURA_BROKEN" or event == "SPELL_AURA_BROKEN_SPELL" or event == "SPELL_AURA_REMOVED" then
 			NP:RemoveAuraInstance(destGUID, spellID)
 		end	
 
 		local name, raidIcon
-		-- Cache Unit Name for alternative lookup strategy
 		if band(destFlags, COMBATLOG_OBJECT_CONTROL_PLAYER) > 0 and destName then 
 			local rawName = strsplit("-", destName)			-- Strip server name from players
 			NP.ByName[rawName] = destGUID
 			name = rawName
 		end
 
-		-- Cache Raid Icon Data for alternative lookup strategy
 		for iconName, bitmask in pairs(NP.RaidTargetReference) do
 			if band(destRaidFlags, bitmask) > 0  then
 				NP.ByRaidIcon[iconName] = destGUID
@@ -1443,25 +1491,24 @@ function NP:UpdateAurasByUnitID(unit)
 	local guid = UnitGUID(unit)
 	self:WipeAuraList(guid)
 
-	if NP.db.auras.filterType == 'DEBUFFS' then
-		local index = 1
-		local name, _, texture, count, _, duration, expirationTime, unitCaster, _, _, spellID, _, isBossDebuff = UnitDebuff(unit, index)
-		while name do
-			NP:SetSpellDuration(spellID, duration)
-			NP:SetAuraInstance(guid, spellID, expirationTime, count, UnitGUID(unitCaster or ""), duration, texture, AURA_TYPE[dispelType or "Debuff"], unitType)
-			index = index + 1
-			name , _, texture, count, _, duration, expirationTime, unitCaster, _, _, spellID, _, isBossDebuff = UnitDebuff(unit, index)
-		end	
-	else
-		local index = 1
-		local name, _, texture, count, _, duration, expirationTime, unitCaster, _, _, spellID = UnitBuff(unit, index);
-		while name do
-			NP:SetSpellDuration(spellID, duration)
-			NP:SetAuraInstance(guid, spellID, expirationTime, count, UnitGUID(unitCaster or ""), duration, texture, AURA_TYPE[dispelType or "Buff"], unitType)
-			index = index + 1
-			name, _, texture, count, _, duration, expirationTime, unitCaster, _, _, spellID = UnitBuff(unit, index);
-		end		
-	end
+
+	local index = 1
+	local name, _, texture, count, _, duration, expirationTime, unitCaster, _, _, spellID, _, isBossDebuff = UnitDebuff(unit, index)
+	while name do
+		NP:SetSpellDuration(spellID, duration)
+		NP:SetAuraInstance(guid, spellID, expirationTime, count, UnitGUID(unitCaster or ""), duration, texture, AURA_TYPE_DEBUFF)
+		index = index + 1
+		name , _, texture, count, _, duration, expirationTime, unitCaster, _, _, spellID, _, isBossDebuff = UnitDebuff(unit, index)
+	end	
+
+	index = 1
+	local name, _, texture, count, _, duration, expirationTime, unitCaster, _, _, spellID = UnitBuff(unit, index);
+	while name do
+		NP:SetSpellDuration(spellID, duration)
+		NP:SetAuraInstance(guid, spellID, expirationTime, count, UnitGUID(unitCaster or ""), duration, texture, AURA_TYPE_BUFF)
+		index = index + 1
+		name, _, texture, count, _, duration, expirationTime, unitCaster, _, _, spellID = UnitBuff(unit, index);
+	end	
 	
 	local raidIcon, name
 	if UnitPlayerControlled(unit) then name = UnitName(unit) end
@@ -1496,54 +1543,70 @@ end
 
 function NP:UpdateIconGrid(frame, guid)
 	local myPlate = NP.CreatedPlates[frame]
-	local widget = myPlate.AuraWidget 
-	local AuraIconFrames = widget.AuraIconFrames
+	local buffs = myPlate.BuffWidget 
+	local debuffs = myPlate.DebuffWidget 
 	local AurasOnUnit = self:GetAuraList(guid)
-	local AuraSlotIndex = 1
+	local BuffSlotIndex = 1
+	local DebuffSlotIndex = 1
 	local instanceid
 
-	self.AurasCache = wipe(self.AurasCache)
-	local aurasCount = 0
-	
-	-- Cache displayable debuffs
+	-- Cache displayable auras
 	if AurasOnUnit then
-		widget:Show()
+		buffs:Show()
+		debuffs:Show()
 		for instanceid in pairs(AurasOnUnit) do
-			local aura = {}
+			local aura = {} --THIS IS BAD, FIX IT
 			aura.spellID, aura.expiration, aura.stacks, aura.caster, aura.duration, aura.texture, aura.type, aura.target = self:GetAuraInstance(guid, instanceid)
 			if tonumber(aura.spellID) then
 				aura.name = GetSpellInfo(tonumber(aura.spellID))
 				aura.unit = frame.unit
 				-- Get Order/Priority
 				if aura.expiration > GetTime() then
-					aurasCount = aurasCount + 1
-					self.AurasCache[aurasCount] = aura
+					if(aura.type == "BUFF") then
+						tinsert(self.BuffCache, aura)
+					else
+						tinsert(self.DebuffCache, aura)
+					end
 				end
 			end
 		end
 	end
-	
-	-- Display Auras
-	if aurasCount > 0 then 
-		for index = 1,  #self.AurasCache do
-			local cachedaura = self.AurasCache[index]
-			if cachedaura.spellID and cachedaura.expiration then 
-				self:UpdateIcon(AuraIconFrames[AuraSlotIndex], cachedaura.texture, cachedaura.expiration, cachedaura.stacks) 
-				AuraSlotIndex = AuraSlotIndex + 1
-			end
 
-			if(AuraSlotIndex > widget.numAuras) then 
-				break 
-			end
+	for index = 1,  #self.BuffCache do
+		local cachedaura = self.BuffCache[index]
+		if cachedaura.spellID and cachedaura.expiration then 
+			self:UpdateIcon(buffs.icons[BuffSlotIndex], cachedaura.texture, cachedaura.expiration, cachedaura.stacks) 
+			BuffSlotIndex = BuffSlotIndex + 1
+		end
+
+		if(BuffSlotIndex > buffs.numAuras) then 
+			break 
 		end
 	end
-	
+
+	for index = 1,  #self.DebuffCache do
+		local cachedaura = self.DebuffCache[index]
+		if cachedaura.spellID and cachedaura.expiration then 
+			self:UpdateIcon(debuffs.icons[DebuffSlotIndex], cachedaura.texture, cachedaura.expiration, cachedaura.stacks) 
+			DebuffSlotIndex = DebuffSlotIndex + 1
+		end
+
+		if(DebuffSlotIndex > debuffs.numAuras) then 
+			break 
+		end
+	end		
+
 	-- Clear Extra Slots
-	if AuraIconFrames[AuraSlotIndex] then
-		NP.PolledHideIn(AuraIconFrames[AuraSlotIndex], 0)
+	if buffs.icons[BuffSlotIndex] then
+		NP.PolledHideIn(buffs.icons[BuffSlotIndex], 0)
 	end
 
-	self.AurasCache = wipe(self.AurasCache)
+	if debuffs.icons[DebuffSlotIndex] then
+		NP.PolledHideIn(debuffs.icons[DebuffSlotIndex], 0)
+	end
+
+	self.BuffCache = wipe(self.BuffCache)
+	self.DebuffCache = wipe(self.DebuffCache)	
 end
 
 function NP:UpdateAuras(frame)
@@ -1554,7 +1617,8 @@ function NP:UpdateAuras(frame)
 	if not guid then
 		-- Attempt to ID widget via Name or Raid Icon
 		if RAID_CLASS_COLORS[frame.unitType] then 
-			guid = NP.ByName[frame.name:GetText()]
+			local name = gsub(frame.name:GetText(), '%s%(%*%)','')
+			guid = NP.ByName[name]
 		elseif frame.raidIcon:IsShown() then 
 			guid = NP.ByRaidIcon[frame.raidIconType] 
 		end
@@ -1562,11 +1626,12 @@ function NP:UpdateAuras(frame)
 		if guid then
 			frame.guid = guid
 		else
-			myPlate.AuraWidget:Hide()
+			myPlate.DebuffWidget:Hide()
+			myPlate.BuffWidget:Hide()
 			return
 		end
 	end
-	
+
 	self:UpdateIconGrid(frame, guid)
 end
 

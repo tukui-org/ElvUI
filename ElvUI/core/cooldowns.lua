@@ -96,6 +96,7 @@ function E:CreateCooldownTimer(parent)
 end
 
 function E:OnSetCooldown(start, duration, charges, maxCharges)
+	if(self.noOCC) then return end
 	local button = self:GetParent()
 	
 	if start > 0 and duration > MIN_DURATION then
@@ -109,6 +110,7 @@ function E:OnSetCooldown(start, duration, charges, maxCharges)
 		local timer = self.timer
 		if timer then
 			E:Cooldown_StopTimer(timer)
+			return
 		end
 	end
 	
@@ -122,8 +124,9 @@ function E:OnSetCooldown(start, duration, charges, maxCharges)
 end
 
 function E:RegisterCooldown(cooldown)
-	if(not E.private.cooldown.enable) then return end
+	if(not E.private.cooldown.enable or cooldown.isHooked) then return end
 	hooksecurefunc(cooldown, "SetCooldown", E.OnSetCooldown)
+	cooldown.isHooked = true
 end
 
 function E:UpdateCooldownSettings()
