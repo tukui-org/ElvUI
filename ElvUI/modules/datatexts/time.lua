@@ -69,10 +69,20 @@ local function OnLeave(self)
 	enteredFrame = false;
 end
 
+local function OnEvent()
+	if event == "UPDATE_INSTANCE_INFO" and enteredFrame then
+		RequestRaidInfo()
+	end
+end
+
 local function OnEnter(self)
 	DT:SetupTooltip(self)
-	enteredFrame = true;
-	
+
+	if(not enteredFrame) then
+		enteredFrame = true;
+		RequestRaidInfo()
+	end
+
 	DT.tooltip:AddLine(VOICE_CHAT_BATTLEGROUND);
 	for i = 1, GetNumWorldPVPAreas() do
 		_, localizedName, isActive, canQueue, startTime, canEnter = GetWorldPVPAreaInfo(i)
@@ -146,6 +156,12 @@ function Update(self, t)
 		
 	if int > 0 then return end
 	
+	if GameTimeFrame.flashInvite then
+		E:Flash(self, 0.53)
+	else
+		E:StopFlash(self)
+	end	
+
 	if enteredFrame then
 		OnEnter(self)
 	end
@@ -157,12 +173,6 @@ function Update(self, t)
 		int = 5
 		return
 	end
-
-	if GameTimeFrame.flashInvite then
-		E:Flash(self, 0.53)
-	else
-		E:StopFlash(self)
-	end	
 	
 	curHr = Hr
 	curMin = Min
@@ -188,4 +198,4 @@ end
 	onEnterFunc - function to fire OnEnter
 	onLeaveFunc - function to fire OnLeave, if not provided one will be set for you that hides the tooltip.
 ]]
-DT:RegisterDatatext('Time', nil, nil, Update, Click, OnEnter, OnLeave)
+DT:RegisterDatatext('Time', {"UPDATE_INSTANCE_INFO"}, OnEvent, Update, Click, OnEnter, OnLeave)
