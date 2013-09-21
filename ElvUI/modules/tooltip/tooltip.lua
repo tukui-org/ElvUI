@@ -413,7 +413,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 			if(factionGroup and englishRace == "Pandaren") then
 				race = factionGroup.." "..race
 			end			
-			levelLine:SetFormattedText("|cff%02x%02x%02x%s|r %s |c%s%s|r", diffColor.r * 255, diffColor.g * 255, diffColor.b * 255, level > 0 and level or "??", race, color.colorStr, localeClass)
+			levelLine:SetFormattedText("|cff%02x%02x%02x%s|r %s |c%s%s|r", diffColor.r * 255, diffColor.g * 255, diffColor.b * 255, level > 0 and level or "??", race or '', color.colorStr, localeClass)
 		end
 
 		--High CPU usage, restricting it to shift key down only.
