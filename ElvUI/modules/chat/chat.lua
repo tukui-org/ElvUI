@@ -730,13 +730,17 @@ end
 local function GetBNFriendColor(name, id)
 	local _, _, game, _, _, _, _, class = BNGetToonInfo(id)
 
-	if game ~= BNET_CLIENT_WOW or not class or not RAID_CLASS_COLORS[class] then
+	if game ~= BNET_CLIENT_WOW or not class then
 		return name
 	else
 		for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
 		for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
 
-		return "|c"..RAID_CLASS_COLORS[class].colorStr..name.."|r"
+		if RAID_CLASS_COLORS[class] then
+			return "|c"..RAID_CLASS_COLORS[class].colorStr..name.."|r"
+		else
+			return name
+		end
 	end
 end
 
