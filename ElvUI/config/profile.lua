@@ -682,7 +682,7 @@ P['unitframe'] = {
 			},
 			['buffs'] = {
 				['enable'] = false,
-				['perrow'] = 7,
+				['perrow'] = 5,
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
 				['anchorPoint'] = 'BOTTOMLEFT',					

@@ -421,7 +421,6 @@ G.unitframe.aurafilters['Blacklist'] = {
 		[SpellName(117870)] = Defaults(), -- Touch of The Titans
 		[SpellName(123981)] = Defaults(), -- Perdition
 		[SpellName(15007)] = Defaults(), -- Ress Sickness
-		[SpellName(123981)] = Defaults(), -- Perdition
 		[SpellName(113942)] = Defaults(), -- Demonic: Gateway
 		[SpellName(89140)] = Defaults(), -- Demonic Rebirth: Cooldown
 	},
@@ -443,9 +442,16 @@ G.unitframe.aurafilters['Whitelist'] = {
 		[SpellName(33206)] = Defaults(), --Pain Suppression
 		[SpellName(116849)] = Defaults(), --Life Cocoon
 		[SpellName(22812)] = Defaults(), --Barkskin
+		[SpellName(1490)] = Defaults(), --Curse of the Elements (5% magic damage taken debuff)
+		[SpellName(116202)] = Defaults(), --Aura of the Elements (5% magic damage taken debuff)
 		[SpellName(123059)] = Defaults(), --Destabilize (Amber-Shaper Un'sok)
 		[SpellName(136431)] = Defaults(), --Shell Concussion (Tortos)
+		[SpellName(137332)] = Defaults(), --Beast of Nightmares (Twin Consorts)
+		[SpellName(137375)] = Defaults(), --Beast of Nightmares (Twin Consorts)
 		[SpellName(144351)] = Defaults(), --Mark of Arrogance (Norushen)
+		[SpellName(142863)] = Defaults(), --Weak Ancient Barrier (Malkorok)
+		[SpellName(142864)] = Defaults(), --Ancient Barrier (Malkorok)
+		[SpellName(142865)] = Defaults(), --Strong Ancient Barrier (Malkorok)
 	},
 }
 
