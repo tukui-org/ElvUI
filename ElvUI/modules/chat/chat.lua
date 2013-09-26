@@ -717,6 +717,8 @@ local function GetBNFriendColor(name, id)
 	end
 end
 
+
+E.NameReplacements = {}
 function CH:ChatFrame_MessageEventHandler(event, ...)
 	if ( strsub(event, 1, 8) == "CHAT_MSG" ) then
 		local arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14 = ...;
@@ -736,6 +738,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			end
 		end
 		
+		arg2 = E.NameReplacements[arg2] or arg2
 		local coloredName = GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14);
 		
 		local channelLength = strlen(arg4);

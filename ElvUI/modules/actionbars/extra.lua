@@ -1,6 +1,11 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars');
 
+local function FixExtraActionCD(cd)
+	local start, duration = GetActionCooldown(cd:GetParent().action)
+	E.OnSetCooldown(cd, start, duration, 0, 0)
+end
+
 function AB:SetupExtraButton()
 	local holder = CreateFrame('Frame', nil, E.UIParent)
 	holder:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 150)
@@ -13,24 +18,29 @@ function AB:SetupExtraButton()
 	ExtraActionBarFrame.ignoreFramePositionManager  = true
 	
 	for i=1, ExtraActionBarFrame:GetNumChildren() do
-		if _G["ExtraActionButton"..i] then
-			_G["ExtraActionButton"..i].noResize = true;
-			_G["ExtraActionButton"..i].pushed = true
-			_G["ExtraActionButton"..i].checked = true
+		local button = _G["ExtraActionButton"..i]
+		if button then
+			button.noResize = true;
+			button.pushed = true
+			button.checked = true
 			
-			self:StyleButton(_G["ExtraActionButton"..i], true)
-			_G["ExtraActionButton"..i]:SetTemplate()
+			self:StyleButton(button, true)
+			button:SetTemplate()
 			_G["ExtraActionButton"..i..'Icon']:SetDrawLayer('ARTWORK')
-			local tex = _G["ExtraActionButton"..i]:CreateTexture(nil, 'OVERLAY')
+			local tex = button:CreateTexture(nil, 'OVERLAY')
 			tex:SetTexture(0.9, 0.8, 0.1, 0.3)
 			tex:SetInside()
-			_G["ExtraActionButton"..i]:SetCheckedTexture(tex)
-			E:RegisterCooldown(_G["ExtraActionButton"..i.."Cooldown"])
+			button:SetCheckedTexture(tex)
+
+			if(button.cooldown) then
+				E:RegisterCooldown(button.cooldown)
+				button.cooldown:HookScript("OnShow", FixExtraActionCD)
+			end
 		end
 	end
-	
+
 	if HasExtraActionBar() then
-		ExtraActionBarFrame:Show();
+		ExtraActionBarFrame:Show();	
 	end
 	
 	E:CreateMover(holder, 'BossButton', L['Boss Button'], nil, nil, nil, 'ALL,ACTIONBARS');
