@@ -79,19 +79,29 @@ E.Options.args.chat = {
 						E.db.chat[ info[#info] ] = value 
 					end,
 				},	
-				chatHistory = {
+				lfgIcons = {
 					order = 6,
+					type = 'toggle',
+					name = L['LFG Icons'],
+					desc = L['Display LFG Icons in group chat.'],
+					set = function(self, value)
+						E.db.chat.lfgIcons = value;
+						CH:CheckLFGRoles()
+					end,
+				},				
+				chatHistory = {
+					order = 7,
 					type = 'toggle',
 					name = L['Chat History'],
 					desc = L['Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session.'],
 				},
 				spacer = {
-					order = 7,
+					order = 8,
 					type = 'description',
 					name = '',
-				},				
+				},									
 				throttleInterval = {
-					order = 8,
+					order = 9,
 					type = 'range',
 					name = L['Spam Interval'],
 					desc = L['Prevent the same messages from displaying in chat more than once within this set amount of seconds, set to zero to disable.'],
@@ -104,7 +114,7 @@ E.Options.args.chat = {
 					end,					
 				},
 				scrollDownInterval = {
-					order = 9,
+					order = 10,
 					type = 'range',
 					name = L['Scroll Interval'],
 					desc = L['Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely.'],
@@ -114,7 +124,7 @@ E.Options.args.chat = {
 					end,					
 				},					
 				timeStampFormat = {
-					order = 10,
+					order = 11,
 					type = 'select',
 					name = TIMESTAMPS_LABEL,
 					desc = OPTION_TOOLTIP_TIMESTAMPS,
@@ -129,7 +139,7 @@ E.Options.args.chat = {
 					},
 				},
 				editBoxPosition = {
-					order = 11,
+					order = 12,
 					type = 'select',
 					name = L['Chat EditBox Position'],
 					desc = L['Position of the Chat EditBox, if datatexts are disabled this will be forced to be above chat.'],
@@ -141,7 +151,7 @@ E.Options.args.chat = {
 					disabled = function() return not E.db.datatexts.leftChatPanel end,
 				},				
 				whisperSound = {
-					order = 12,
+					order = 13,
 					type = 'select', dialogControl = 'LSM30_Sound',
 					name = L["Whisper Alert"],
 					disabled = function() return not E.db.chat.whisperSound end,
@@ -149,7 +159,7 @@ E.Options.args.chat = {
 					set = function(info, value) E.db.chat.whisperSound = value; end,
 				},	
 				keywordSound = {
-					order = 13,
+					order = 14,
 					type = 'select', dialogControl = 'LSM30_Sound',
 					name = L["Keyword Alert"],
 					disabled = function() return not E.db.chat.keywordSound end,
@@ -157,7 +167,7 @@ E.Options.args.chat = {
 					set = function(info, value) E.db.chat.keywordSound = value; end,
 				},
 				lockPositions = {
-					order = 14,
+					order = 15,
 					type = 'toggle',
 					name = L['Lock Positions'],
 					desc = L['Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish.'],	

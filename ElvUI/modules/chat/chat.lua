@@ -3,6 +3,7 @@ local CH = E:NewModule('Chat', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
 local LSM = LibStub("LibSharedMedia-3.0")
 local CreatedFrames = 0;
 local lines = {};
+local lfgRoles = {};
 local msgList, msgCount, msgTime = {}, {}, {}
 local good, maybe, filter, login = {}, {}, {}, false
 local chatFilters = {};
@@ -45,6 +46,7 @@ local tabTexs = {
 	'Selected',
 	'Highlight'
 }
+
 
 local smileyPack = {
 	["Angry"] = [[Interface\AddOns\ElvUI\media\textures\smileys\angry.blp]],
@@ -102,6 +104,13 @@ local smileyKeys = {
 	["<3"]="Heart",
 	["</3"]="BrokenHeart",
 };
+
+
+local rolePaths = {
+	TANK = [[|TInterface\AddOns\ElvUI\media\textures\tank.tga:15:15:0:0:64:64:2:56:2:56|t]],
+	HEALER = [[|TInterface\AddOns\ElvUI\media\textures\healer.tga:15:15:0:0:64:64:2:56:2:56|t]],
+	DAMAGER = [[|TInterface\AddOns\ElvUI\media\textures\dps.tga:15:15|t]]
+}
 
 local specialChatIcons = {
 	["Spirestone"] = {
@@ -992,9 +1001,11 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 					end					
 				end
 
-				if not pflag then
-					pflag = "";
+				if(not pflag and lfgRoles[arg2] and (type == "PARTY_LEADER" or type == "PARTY" or type == "RAID" or type == "RAID_LEADER" or type == "INSTANCE_CHAT" or type == "INSTANCE_CHAT_LEADER")) then
+					pflag = lfgRoles[arg2]
 				end
+
+				pflag = pflag or ""
 			end
 			if ( type == "WHISPER_INFORM" and GMChatFrame_IsGM and GMChatFrame_IsGM(arg2) ) then
 				return;
@@ -1540,6 +1551,33 @@ function CH:DelayGMOTD()
 	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 end
 
+function CH:CheckLFGRoles()
+	local isInGroup, isInRaid = IsInGroup(), IsInRaid()
+	local unit = isInRaid and "raid" or "party"
+
+	twipe(lfgRoles)
+	if(not isInGroup or not self.db.lfgIcons) then return end
+
+	local role = UnitGroupRolesAssigned("player")
+	if(role) then
+		lfgRoles[E.myname] = rolePaths[role]
+	end
+
+	for i=1, GetNumGroupMembers() do
+		if(UnitExists(unit..i) and not UnitIsUnit(unit..i, "player")) then
+			role = UnitGroupRolesAssigned(unit..i)
+			local name, realm = UnitName(unit..i)
+			if(role) then
+				if(realm ~= E.myrealm) then
+					lfgRoles[name.."-"..realm] = rolePaths[role]
+				else
+					lfgRoles[name] = rolePaths[role]
+				end
+			end
+		end
+	end
+end
+
 function CH:Initialize()
 	if ElvCharacterDB.ChatHistory then
 		ElvCharacterDB.ChatHistory = nil --Depreciated
@@ -1592,6 +1630,8 @@ function CH:Initialize()
 	self:SetupChat()
 	self:UpdateAnchors()
 	
+	self:RegisterEvent("GROUP_ROSTER_UPDATE", "CheckLFGRoles")
+
 	self:RegisterEvent('CHAT_MSG_INSTANCE_CHAT', 'SaveChatHistory')
 	self:RegisterEvent('CHAT_MSG_INSTANCE_CHAT_LEADER', 'SaveChatHistory')
 	self:RegisterEvent("CHAT_MSG_BN_WHISPER", 'SaveChatHistory')
