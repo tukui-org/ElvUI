@@ -1568,7 +1568,7 @@ function CH:CheckLFGRoles()
 			role = UnitGroupRolesAssigned(unit..i)
 			local name, realm = UnitName(unit..i)
 			if(role) then
-				if(realm ~= E.myrealm) then
+				if(realm and realm ~= E.myrealm) then
 					lfgRoles[name.."-"..realm] = rolePaths[role]
 				else
 					lfgRoles[name] = rolePaths[role]
