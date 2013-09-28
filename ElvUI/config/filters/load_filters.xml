@@ -1,4 +1,0 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/">	
-	<Script file='unitframe.lua'/>
-	<Script file="nameplate.lua"/>
-</Ui>

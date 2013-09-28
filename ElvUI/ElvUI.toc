@@ -1,23 +1,19 @@
 ## Interface: 50400
 ## Author: Elv
-## Version: 6.4
-## Title: |cff1784d1ElvUI|r
+## Version: 7.0b
+## Title: |cffA11313E|r|cffC4C4C4lvUI|r
 ## Notes: User Interface replacement AddOn for World of Warcraft.
-## SavedVariables: ElvDB, ElvPrivateDB
-## SavedVariablesPerCharacter: ElvCharacterDB
-## OptionalDeps: Blizzard_DebugTools, Blizzard_PetJournal, SharedMedia, Tukui, SunnArt
-## X-oUF: ElvUF
+## SavedVariables: ElvUIVars
+## SavedVariablesPerCharacter: __ElvUIVars
 
-developer\load_developer.xml
 libs\load_libs.xml
 locales\load_locales.xml
 media\load_media.xml
-init.lua
-config\load_config.xml
-core\load_core.xml
-layout\load_layout.xml
+
+core.lua
+defaults.lua
 modules\load_modules.xml
- 
+
 
 ## X-Tukui-ProjectID: -2
 ## X-Tukui-ProjectFolders: ElvUI_Config, ElvUI

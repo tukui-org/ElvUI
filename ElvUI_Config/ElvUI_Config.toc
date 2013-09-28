@@ -1,21 +1,11 @@
 ## Interface: 50400
 ## Author: Elv
-## Version: 1.01
-## Title: |cff1784d1ElvUI Config|r
+## Title: |cffA11313E|r|cffC4C4C4lvUI|r |cffA11313C|r|cffC4C4C4onfig|r
 ## Notes: Options for ElvUI.
 ## RequiredDeps: ElvUI
 ## LoadOnDemand: 1
 
-libs\load_libs.xml
 locales\load_locales.xml
+libs\load_libs.xml
 core.lua
-actionbars.lua
-auras.lua
-bags.lua
-chat.lua
-datatexts.lua
-filters.lua
-nameplates.lua
-skins.lua
-tooltip.lua
-unitframes.lua
+disableBlizzard.lua
