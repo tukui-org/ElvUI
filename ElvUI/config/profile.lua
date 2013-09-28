@@ -241,6 +241,7 @@ P['chat'] = {
 	['keywordSound'] = 'Whisper Alert',
 	['whisperSound'] = 'Whisper Alert',
 	['chatHistory'] = false,
+	['lfgIcons'] = true,
 	['timeStampFormat'] = '%H:%M:%S ',
 	['keywords'] = '%MYNAME%, ElvUI, Blaze, Blazii, Blæs',
 	['panelWidth'] = 385,
