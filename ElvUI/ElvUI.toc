@@ -11,6 +11,7 @@ locales\load_locales.xml
 media\load_media.xml
 
 core.lua
+api.lua
 defaults.lua
 modules\load_modules.xml
 

@@ -1,6 +1,6 @@
 local addonName, addon = ...
 local format, len, sub = string.format, string.len, string.sub
-local ACEDB, ACEL = LibStub("AceDB-3.0"), LibStub("AceLocale-3.0")
+local ACEDB, ACEL, LSM = LibStub("AceDB-3.0"), LibStub("AceLocale-3.0"), LibStub("LibSharedMedia-3.0")
 local configName = format("%s_Config", addonName)
 _G[addonName] = addon
 
@@ -16,6 +16,9 @@ addon.CURRENT_VERSION = GetAddOnMetadata(addonName, "Version");
 addon.GAME_BUILD = GetBuildInfo();
 addon.SAVED_VARIABLES = format("%sVars", addonName);
 addon.SAVED_VARIABLES_PER_CHAR = format("__%sVars", addonName);
+
+--Multiple for pixel perfect
+addon.pixelPerfect = 1
 
 --UI Frames
 --Parent frames to this need to be permanently hidden
@@ -147,10 +150,32 @@ function addon:GetLocales()
 	return ACEL:GetLocale(addonName)
 end
 
+--@usage - return the r g b a values of a table
+--@param1 - a table containing r g b and/or a values
+function addon:UnpackColor(color)
+	return color.r, color.g, color.b, color.a
+end
+
+function addon:UpdateMedia()
+	self.primaryFont = LSM:Fetch("font", self.db.core.primaryFont)
+	self.primaryFontSize = self.db.core.primaryFontSize
+	self.primaryFontOutline = self.db.core.primaryFontOutline
+
+	self.secondaryFont = LSM:Fetch("font", self.db.core.secondaryFont)
+	self.secondaryFontSize = self.db.core.secondaryFontSize
+	self.secondaryFontOutline = self.db.core.secondaryFontOutline
+
+	self.statusbarTexture = LSM:Fetch("statusbar", self.db.core.statusbarTexture)
+	self.blankTexture = LSM:Fetch("background", "Blank")
+	self.glowTex = LSM:Fetch("border", "Glow")
+end
+
 function addon:OnInitialize()
 	self.private = (ACEDB:New(self.SAVED_VARIABLES_PER_CHAR, __defaults)).profile;
 
 	local data = ACEDB:New(self.SAVED_VARIABLES, defaults);
 	self.db = data.profile
 	self.global = data.global
+
+	self:UpdateMedia()
 end
