@@ -60,8 +60,9 @@ local function BuildGuildTable()
 	wipe(guildTable)
 	local statusInfo
 	local _, name, rank, level, zone, note, officernote, connected, memberstatus, class, isMobile
-
-	for i = 1, GetNumGuildMembers() do
+	
+	local _, _ totalGuild = GetNumGuildMembers()
+	for i = 1, totalGuild do
 		name, rank, rankIndex, level, _, zone, note, officernote, connected, memberstatus, class, _, _, isMobile = GetGuildRosterInfo(i)
 
 		statusInfo = isMobile and mobilestatus[memberstatus]() or onlinestatus[memberstatus]()
