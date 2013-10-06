@@ -55,6 +55,7 @@ local Enable = function(self)
 		if not self.Trinket.cooldownFrame then
 			self.Trinket.cooldownFrame = CreateFrame("Cooldown", nil, self.Trinket)
 			self.Trinket.cooldownFrame:SetAllPoints(self.Trinket)
+			ElvUI[1]:RegisterCooldown(self.Trinket.cooldownFrame)
 		end
 		
 		if not self.Trinket.Icon then

@@ -11,6 +11,8 @@ local playerGUID = UnitGUID("player")
 local targetList, inspectCache = {}, {}
 local NIL_COLOR = { r=1, g=1, b=1 }
 local TAPPED_COLOR = { r=.6, g=.6, b=.6 }
+local AFK_LABEL = " |cffFFFFFF[|r|cffFF0000"..L["AFK"].."|r|cffFFFFFF]|r"
+local DND_LABEL = " |cffFFFFFF[|r|cffFFFF00"..L["DND"].."|r|cffFFFFFF]|r"
 
 local tooltips = {
 	GameTooltip,
@@ -388,6 +390,14 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 				name = name..INTERACTIVE_SERVER_LABEL
 			end
 		end
+
+		if(UnitIsAFK(unit)) then
+			name = name..AFK_LABEL
+		elseif(UnitIsDND(unit)) then
+			name = name..DND_LABEL
+		end
+
+
 		GameTooltipTextLeft1:SetFormattedText("|c%s%s|r", color.colorStr, name)
 		
 		local lineOffset = 2

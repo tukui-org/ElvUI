@@ -55,6 +55,11 @@ function UF:Construct_ArenaFrames(frame)
 	frame.Range = UF:Construct_Range(frame)
 	frame:SetAttribute("type2", "focus")
 
+	frame.TargetGlow = UF:Construct_TargetGlow(frame)
+	tinsert(frame.__elements, UF.UpdateTargetGlow)
+	frame:RegisterEvent('PLAYER_TARGET_CHANGED', UF.UpdateTargetGlow)
+	frame:RegisterEvent('PLAYER_ENTERING_WORLD', UF.UpdateTargetGlow)
+	frame:RegisterEvent('GROUP_ROSTER_UPDATE', UF.UpdateTargetGlow)
 	
 	if not frame.PrepFrame then
 		frame.prepFrame = CreateFrame('Frame', frame:GetName()..'PrepFrame', UIParent)
@@ -243,6 +248,31 @@ function UF:Update_ArenaFrames(frame, db)
 			power:Hide()
 		end
 	end
+
+	--Target Glow
+	do
+		local SHADOW_SPACING = E.PixelMode and 3 or 4
+		local tGlow = frame.TargetGlow
+		tGlow:ClearAllPoints()
+		
+		tGlow:Point("TOPLEFT", -SHADOW_SPACING, SHADOW_SPACING)
+		tGlow:Point("TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING)
+		
+		if USE_MINI_POWERBAR then
+			tGlow:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING + (POWERBAR_HEIGHT/2))
+			tGlow:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING + (POWERBAR_HEIGHT/2))		
+		else
+			tGlow:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
+			tGlow:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
+		end
+		
+		if USE_POWERBAR_OFFSET then
+			tGlow:Point("TOPLEFT", -SHADOW_SPACING+POWERBAR_OFFSET, SHADOW_SPACING)
+			tGlow:Point("TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING)
+			tGlow:Point("BOTTOMLEFT", -SHADOW_SPACING+POWERBAR_OFFSET, -SHADOW_SPACING+POWERBAR_OFFSET)
+			tGlow:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING+POWERBAR_OFFSET)				
+		end				
+	end	
 
 	--Auras Disable/Enable
 	--Only do if both debuffs and buffs aren't being used.

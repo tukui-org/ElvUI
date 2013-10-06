@@ -20,7 +20,12 @@ function UF:Construct_BossFrames(frame)
 	
 	frame.Debuffs = self:Construct_Debuffs(frame)
 	frame.DebuffHighlight = self:Construct_DebuffHighlight(frame)
-	
+	frame.TargetGlow = UF:Construct_TargetGlow(frame)
+	tinsert(frame.__elements, UF.UpdateTargetGlow)
+	frame:RegisterEvent('PLAYER_TARGET_CHANGED', UF.UpdateTargetGlow)
+	frame:RegisterEvent('PLAYER_ENTERING_WORLD', UF.UpdateTargetGlow)
+	frame:RegisterEvent('GROUP_ROSTER_UPDATE', UF.UpdateTargetGlow)
+
 	frame.Castbar = self:Construct_Castbar(frame, 'RIGHT')
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)
 	frame.AltPowerBar = self:Construct_AltPowerBar(frame)
@@ -46,7 +51,7 @@ function UF:Update_BossFrames(frame, db)
 	local INDEX = frame.index
 	local UNIT_WIDTH = db.width
 	local UNIT_HEIGHT = db.height
-	
+	local SHADOW_SPACING = E.PixelMode and 3 or 4
 	local USE_POWERBAR = db.power.enable
 	local USE_MINI_POWERBAR = db.power.width == 'spaced' and USE_POWERBAR
 	local USE_INSET_POWERBAR = db.power.width == 'inset' and USE_POWERBAR
@@ -238,6 +243,30 @@ function UF:Update_BossFrames(frame, db)
 			end		
 		end
 	end
+
+	--Target Glow
+	do
+		local tGlow = frame.TargetGlow
+		tGlow:ClearAllPoints()
+		
+		tGlow:Point("TOPLEFT", -SHADOW_SPACING, SHADOW_SPACING)
+		tGlow:Point("TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING)
+		
+		if USE_MINI_POWERBAR then
+			tGlow:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING + (POWERBAR_HEIGHT/2))
+			tGlow:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING + (POWERBAR_HEIGHT/2))		
+		else
+			tGlow:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
+			tGlow:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
+		end
+		
+		if USE_POWERBAR_OFFSET then
+			tGlow:Point("TOPLEFT", -SHADOW_SPACING+POWERBAR_OFFSET, SHADOW_SPACING)
+			tGlow:Point("TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING)
+			tGlow:Point("BOTTOMLEFT", -SHADOW_SPACING+POWERBAR_OFFSET, -SHADOW_SPACING+POWERBAR_OFFSET)
+			tGlow:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING+POWERBAR_OFFSET)				
+		end				
+	end		
 
 	--Auras Disable/Enable
 	--Only do if both debuffs and buffs aren't being used.
