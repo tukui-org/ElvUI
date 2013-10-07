@@ -580,7 +580,7 @@ end
 
 function NP:ForEachPlate(functionToRun, ...)
 	for blizzPlate, plate in pairs(self.CreatedPlates) do
-		if blizzPlate and blizzPlate:IsShown() then
+		if(blizzPlate) then
 			self[functionToRun](blizzPlate, plate, ...)
 		end
 	end
@@ -597,19 +597,6 @@ end
 
 function NP:OnShow()
 	local myPlate = NP.CreatedPlates[self]
-	if(not NP.CheckFilterAndHealers(self, myPlate)) then return end
-	self.isSmall = (self.healthBar:GetEffectiveScale() < 1 and NP.db.smallPlates)
-	myPlate:SetSize(self:GetSize())
-
-	myPlate.name:ClearAllPoints()
-	if(self.isSmall) then
-		myPlate.healthBar:SetSize(self.healthBar:GetWidth() * (self.healthBar:GetEffectiveScale() * 1.25), NP.db.healthBar.height)
-		myPlate.name:SetPoint("BOTTOM", myPlate.healthBar, "TOP", 0, 3)
-	else
-		myPlate.name:SetPoint("BOTTOMLEFT", myPlate.healthBar, "TOPLEFT", 0, 3)
-		myPlate.name:SetPoint("BOTTOMRIGHT", myPlate.level, "BOTTOMLEFT", -2, 0)
-	end
-
 	local objectType
 	for object in pairs(self.queue) do		
 		objectType = object:GetObjectType()  
@@ -625,6 +612,20 @@ function NP:OnShow()
 			object:Hide()
 		end
 	end
+	
+	if(not NP.CheckFilterAndHealers(self, myPlate)) then return end
+	self.isSmall = (self.healthBar:GetEffectiveScale() < 1 and NP.db.smallPlates)
+	myPlate:SetSize(self:GetSize())
+
+	myPlate.name:ClearAllPoints()
+	if(self.isSmall) then
+		myPlate.healthBar:SetSize(self.healthBar:GetWidth() * (self.healthBar:GetEffectiveScale() * 1.25), NP.db.healthBar.height)
+		myPlate.name:SetPoint("BOTTOM", myPlate.healthBar, "TOP", 0, 3)
+	else
+		myPlate.name:SetPoint("BOTTOMLEFT", myPlate.healthBar, "TOPLEFT", 0, 3)
+		myPlate.name:SetPoint("BOTTOMRIGHT", myPlate.level, "BOTTOMLEFT", -2, 0)
+	end
+
 	
 	NP.UpdateLevelAndName(self, myPlate)
 	NP.ColorizeAndScale(self, myPlate)	
@@ -1579,7 +1580,7 @@ function NP:UpdateIconGrid(frame, guid)
 			BuffSlotIndex = BuffSlotIndex + 1
 		end
 
-		if(BuffSlotIndex > buffs.numAuras) then 
+		if(BuffSlotIndex > NP.db.buffs.numAuras) then 
 			break 
 		end
 	end
@@ -1591,7 +1592,7 @@ function NP:UpdateIconGrid(frame, guid)
 			DebuffSlotIndex = DebuffSlotIndex + 1
 		end
 
-		if(DebuffSlotIndex > debuffs.numAuras) then 
+		if(DebuffSlotIndex > NP.db.debuffs.numAuras) then 
 			break 
 		end
 	end		
