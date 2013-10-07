@@ -20,11 +20,6 @@ function E:UpdateBlizzardFonts()
 	UIDROPDOWNMENU_DEFAULT_TEXT_HEIGHT = 12
 	CHAT_FONT_HEIGHTS = {12, 13, 14, 15, 16, 17, 18, 19, 20}
 
-	UNIT_NAME_FONT     = NAMEFONT
-	NAMEPLATE_FONT     = NAMEFONT
-	DAMAGE_TEXT_FONT   = COMBAT
-	STANDARD_TEXT_FONT = NORMAL
-
 	if self.db.general.font:lower():find('pixel') then
 		MONOCHROME = 'MONOCHROME'
 	end
@@ -44,6 +39,11 @@ function E:UpdateBlizzardFonts()
 		local INVISIBLE = [=[Interface\Addons\ElvUI\media\fonts\Invisible.ttf]=]
 		COMBAT = INVISIBLE
 	end
+
+	UNIT_NAME_FONT     = NAMEFONT
+	NAMEPLATE_FONT     = NAMEFONT
+	DAMAGE_TEXT_FONT   = COMBAT
+	STANDARD_TEXT_FONT = NORMAL
 
 	-- Base fonts
 	--SetFont(NumberFontNormal,					LSM:Fetch('font', 'ElvUI Pixel'), 10, 'MONOCHROMEOUTLINE', 1, 1, 1, 0, 0, 0)
