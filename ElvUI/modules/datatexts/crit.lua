@@ -38,6 +38,7 @@ local function OnEvent(self, event, unit)
 			critRating = GetCritChance()
 		end
 	end
+
 	self.text:SetFormattedText(displayModifierString, CRIT_ABBR, critRating)
 
 	lastPanel = self
@@ -63,5 +64,7 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 	onEnterFunc - function to fire OnEnter
 	onLeaveFunc - function to fire OnLeave, if not provided one will be set for you that hides the tooltip.
 ]]
-DT:RegisterDatatext('Crit Chance', {"UNIT_STATS", "UNIT_AURA", "FORGE_MASTER_ITEM_CHANGED", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE"}, OnEvent, nil, nil, OnEnter)
+
+
+DT:RegisterDatatext('Crit Chance', {"UNIT_STATS", "UNIT_AURA", "FORGE_MASTER_ITEM_CHANGED", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE", "PLAYER_DAMAGE_DONE_MODS"}, OnEvent, nil, nil, OnEnter)
 
