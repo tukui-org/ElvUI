@@ -180,10 +180,10 @@ function M:UpdateSettings()
 	end	
 	
 	if MMHolder then
-		MMHolder:Width((Minimap:GetWidth() + (E.PixelMode and 3 or 4)) + E.ConsolidatedBuffsWidth)
+		MMHolder:Width((Minimap:GetWidth() + (E.PixelMode and 2 or 4)) + E.ConsolidatedBuffsWidth)
 		
 		if E.db.datatexts.minimapPanels then
-			MMHolder:Height(Minimap:GetHeight() + (E.PixelMode and 22 or 27))
+			MMHolder:Height(Minimap:GetHeight() + (E.PixelMode and 24 or 27))
 		else
 			MMHolder:Height(Minimap:GetHeight() + (E.PixelMode and 2 or 5))	
 		end
