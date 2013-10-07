@@ -554,7 +554,7 @@ for i=10, 40, 15 do
 			end
 		end		
 
-		UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg)
+		UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg, true)
 		UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)	
 		
 		frame:UpdateAllElements()
