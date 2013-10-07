@@ -111,7 +111,7 @@ function UF:Update_TargetFrame(frame, db)
 			COMBOBAR_WIDTH = COMBOBAR_WIDTH * 4/5
 		end	
 		
-		if USE_MINI_POWERBAR then
+		if USE_MINI_POWERBAR and not POWERBAR_DETACHED then
 			POWERBAR_WIDTH = POWERBAR_WIDTH / 2
 		end
 	end
@@ -147,12 +147,12 @@ function UF:Update_TargetFrame(frame, db)
 		health:ClearAllPoints()
 		health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -BORDER)
 		
-		if USE_POWERBAR_OFFSET then			
+		if USE_INSET_POWERBAR or POWERBAR_DETACHED then
+			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER)
+		elseif USE_POWERBAR_OFFSET then			
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER+POWERBAR_OFFSET, BORDER+POWERBAR_OFFSET)
 		elseif USE_MINI_POWERBAR then
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER + (POWERBAR_HEIGHT/2))
-		elseif USE_INSET_POWERBAR or POWERBAR_DETACHED then
-			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER)
 		else
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER + POWERBAR_HEIGHT)
 		end

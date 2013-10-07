@@ -40,7 +40,8 @@ function UF:UpdateHoly(event, unit, powerType)
 	local USE_PORTRAIT = db.portrait.enable
 	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
 	local PORTRAIT_WIDTH = db.portrait.width
-	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and db.power.enable
+	local POWERBAR_DETACHED = db.power.detachFromFrame
+	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR and not POWERBAR_DETACHED
 	
 	if USE_PORTRAIT_OVERLAY or not USE_PORTRAIT then
 		PORTRAIT_WIDTH = 0		
@@ -130,7 +131,8 @@ function UF:UpdateHarmony()
 	local PORTRAIT_WIDTH = db.portrait.width
 	local POWERBAR_OFFSET = db.power.offset
 	local USE_POWERBAR = db.power.enable
-	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR
+	local POWERBAR_DETACHED = db.power.detachFromFrame
+	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR and not POWERBAR_DETACHED
 	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and db.classbar.enable
 	
 	if USE_PORTRAIT_OVERLAY or not USE_PORTRAIT then
