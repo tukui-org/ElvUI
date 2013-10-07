@@ -907,6 +907,14 @@ function UF:Update_PlayerFrame(frame, db)
 			local debuffColor = UF.db.colors.auraBarDebuff
 			local attachTo = frame
 			
+			if(E:CheckClassColor(buffColor.r, buffColor.g, buffColor.b)) then
+				buffColor = E.myclass == 'PRIEST' and E.PriestColors or RAID_CLASS_COLORS[E.myclass]
+			end
+
+			if(E:CheckClassColor(debuffColor.r, debuffColor.g, debuffColor.b)) then
+				debuffColor = E.myclass == 'PRIEST' and E.PriestColors or RAID_CLASS_COLORS[E.myclass]
+			end
+
 			if db.aurabar.attachTo == 'BUFFS' then
 				attachTo = frame.Buffs
 			elseif db.aurabar.attachTo == 'DEBUFFS' then
