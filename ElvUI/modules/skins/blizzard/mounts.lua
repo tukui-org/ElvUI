@@ -119,6 +119,7 @@ local function LoadSkin()
 	PetJournalAchievementStatus:DisableDrawLayer('BACKGROUND')
 	
 	S:HandleItemButton(PetJournalHealPetButton, true)
+	E:RegisterCooldown(PetJournalHealPetButtonCooldown)
 	PetJournalHealPetButton.texture:SetTexture([[Interface\Icons\spell_magic_polymorphrabbit]])
 	PetJournalLoadoutBorder:StripTextures()
 	for i=1, 3 do
