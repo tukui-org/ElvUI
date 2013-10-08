@@ -546,7 +546,7 @@ function UF:Update_BossFrames(frame, db)
 		UF:ToggleTransparentStatusBar(false, frame.Power, frame.Power.bg, true)
 	end			
 	
-	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg)
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg, true)
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)		
 	
 	frame:UpdateAllElements()

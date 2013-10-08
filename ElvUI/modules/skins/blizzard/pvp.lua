@@ -125,11 +125,23 @@ local function LoadSkin()
 	ConquestFrame:StripTextures()
 	ConquestFrame.ShadowOverlay:StripTextures()
 	S:HandleButton(ConquestJoinButton, true)
-	ConquestFrame.RatedBG:StripTextures()
-	ConquestFrame.RatedBG:SetTemplate()
-	ConquestFrame.RatedBG:StyleButton(nil, true)
-	ConquestFrame.RatedBG.SelectedTexture:SetInside()
-	ConquestFrame.RatedBG.SelectedTexture:SetTexture(1, 1, 0, 0.1)
+
+
+	local function handleButton(button)
+		button:StripTextures()
+		button:SetTemplate()
+		button:StyleButton(nil, true)
+		button.SelectedTexture:SetInside()
+		button.SelectedTexture:SetTexture(1, 1, 0, 0.1)
+	end
+
+	handleButton(ConquestFrame.RatedBG)
+	handleButton(ConquestFrame.Arena2v2)
+	handleButton(ConquestFrame.Arena3v3)
+	handleButton(ConquestFrame.Arena5v5)
+
+	ConquestFrame.Arena3v3:SetPoint("TOP", ConquestFrame.Arena2v2, "BOTTOM", 0, -2)
+	ConquestFrame.Arena5v5:SetPoint("TOP", ConquestFrame.Arena3v3, "BOTTOM", 0, -2)
 
 	-->>>WARGRAMES FRAME
 	WarGamesFrame:StripTextures()
@@ -138,28 +150,6 @@ local function LoadSkin()
 	S:HandleScrollBar(WarGamesFrameScrollFrameScrollBar)
 	WarGamesFrame.HorizontalBar:StripTextures()
 
-	PVPReadyDialog:StripTextures()
-	PVPReadyDialog:SetTemplate("Transparent")
-	S:HandleButton(PVPReadyDialogEnterBattleButton)
-	S:HandleButton(PVPReadyDialogLeaveQueueButton)
-	S:HandleCloseButton(PVPReadyDialogCloseButton)
-	PVPReadyDialogRoleIcon.texture:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
-	PVPReadyDialogRoleIcon.texture:SetAlpha(0.5)
-
-	hooksecurefunc("PVPReadyDialog_Display", function(self, index, displayName, isRated, queueType, gameType, role)
-		if role == "DAMAGER" then
-			PVPReadyDialogRoleIcon.texture:SetTexCoord(LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
-		elseif role == "TANK" then
-			PVPReadyDialogRoleIcon.texture:SetTexCoord(LFDQueueFrameRoleButtonTank.background:GetTexCoord())
-		elseif role == "HEALER" then
-			PVPReadyDialogRoleIcon.texture:SetTexCoord(LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
-		end
-
-		if queueType == "ARENA" then
-			self:SetHeight(100)
-		end
-
-		self.background:Hide()
-	end)
+	ConquestTooltip:SetTemplate("Transparent")
 end
 S:RegisterSkin('Blizzard_PVPUI', LoadSkin)

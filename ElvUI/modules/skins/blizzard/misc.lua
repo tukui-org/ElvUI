@@ -269,6 +269,31 @@ local function LoadSkin()
 		MacOptionsFrameDefaults:SetHeight(22)
 
 	end
+
+	--PVP QUEUE FRAME
+	PVPReadyDialog:StripTextures()
+	PVPReadyDialog:SetTemplate("Transparent")
+	S:HandleButton(PVPReadyDialogEnterBattleButton)
+	S:HandleButton(PVPReadyDialogLeaveQueueButton)
+	S:HandleCloseButton(PVPReadyDialogCloseButton)
+	PVPReadyDialogRoleIcon.texture:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+	PVPReadyDialogRoleIcon.texture:SetAlpha(0.5)
+
+	hooksecurefunc("PVPReadyDialog_Display", function(self, index, displayName, isRated, queueType, gameType, role)
+		if role == "DAMAGER" then
+			PVPReadyDialogRoleIcon.texture:SetTexCoord(LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
+		elseif role == "TANK" then
+			PVPReadyDialogRoleIcon.texture:SetTexCoord(LFDQueueFrameRoleButtonTank.background:GetTexCoord())
+		elseif role == "HEALER" then
+			PVPReadyDialogRoleIcon.texture:SetTexCoord(LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
+		end
+
+		if queueType == "ARENA" then
+			self:SetHeight(100)
+		end
+
+		self.background:Hide()
+	end)	
 	
 	OpacityFrame:StripTextures()
 	OpacityFrame:SetTemplate("Transparent")	

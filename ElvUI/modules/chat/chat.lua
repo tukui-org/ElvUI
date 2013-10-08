@@ -383,13 +383,22 @@ function CH:AddMessage(text, ...)
 	self.OldAddMessage(self, text, ...)
 end
 
+local function removeIconFromLine(text)
+	for i=1, 8 do
+		text = gsub(text, "|TInterface\\TargetingFrame\\UI%-RaidTargetingIcon_"..i..":0|t", "{"..strlower(_G["RAID_TARGET_"..i]).."}")
+	end
+	text = gsub(text, "(|TInterface(.*)|t)", "")
+
+	return text
+end
+
 function CH:GetLines(...)
 	local index = 1
 	for i = select("#", ...), 1, -1 do
 		local region = select(i, ...)
 		if region:GetObjectType() == "FontString" then
 			local line = tostring(region:GetText())
-			lines[index] = gsub(line, "(|TInterface(.*)|t)", "")
+			lines[index] = removeIconFromLine(line)
 			index = index + 1
 		end
 	end

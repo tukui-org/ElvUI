@@ -381,6 +381,14 @@ function UF:Update_FocusFrame(frame, db)
 			
 			local buffColor = UF.db.colors.auraBarBuff
 			local debuffColor = UF.db.colors.auraBarDebuff
+
+			if(E:CheckClassColor(buffColor.r, buffColor.g, buffColor.b)) then
+				buffColor = E.myclass == 'PRIEST' and E.PriestColors or RAID_CLASS_COLORS[E.myclass]
+			end
+
+			if(E:CheckClassColor(debuffColor.r, debuffColor.g, debuffColor.b)) then
+				debuffColor = E.myclass == 'PRIEST' and E.PriestColors or RAID_CLASS_COLORS[E.myclass]
+			end
 			
 			local attachTo = frame
 			

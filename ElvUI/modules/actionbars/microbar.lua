@@ -101,7 +101,7 @@ function AB:UpdateMicroPositionDimensions()
 		ElvUI_MicroBar:SetAlpha(self.db.microbar.alpha)
 	end	
 		
-	ElvUI_MicroBar:SetWidth((((CharacterMicroButton:GetWidth() - 0.5) * (#MICRO_BUTTONS - 1)) - 3) / numRows)
+	ElvUI_MicroBar:SetWidth((((CharacterMicroButton:GetWidth() - 0.5) * (#MICRO_BUTTONS - (C_StorePublic.IsEnabled() and 1 or 2))) - 3) / numRows)
 	ElvUI_MicroBar:Height((CharacterMicroButton:GetHeight() - 27) * numRows)
 
 	if self.db.microbar.enabled then
