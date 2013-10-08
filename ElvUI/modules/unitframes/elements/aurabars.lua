@@ -195,7 +195,7 @@ function UF:ColorizeAuraBars(event, unit)
 				local r, g, b = frame.statusBar:GetStatusBarColor()
 				frame:SetBackdropColor(r * 0.58, g * 0.58, b * 0.58, alpha)
 			end			
-		elseif(frame.statusBar.isTransparent) then
+		elseif(frame.statusBar.isTransparent and not UF.db.colors.transparentAurabars) then
 			UF:ToggleTransparentStatusBar(false, frame.statusBar, frame.statusBar.bg, nil, true)
 		end	
 	end
