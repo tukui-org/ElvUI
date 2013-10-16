@@ -39,6 +39,8 @@ local menuList = {
 			HideUIPanel(PlayerTalentFrame)
 		end
 	end},
+	{text = L["Farm Mode"],
+	func = FarmMode},
 	{text = TIMEMANAGER_TITLE,
 	func = function() ToggleFrame(TimeManagerFrame) end},		
 	{text = ACHIEVEMENT_BUTTON,
