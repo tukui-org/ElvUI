@@ -88,6 +88,7 @@ local InitializeEventHandler, OnEvent, ForAllButtons, OnUpdate
 
 local SPELL_POWER_HOLY_POWER = SPELL_POWER_HOLY_POWER;
 local HAND_OF_LIGHT = GetSpellInfo(90174);
+local DIVINE_CRUSADER = GetSpellInfo(144595)
 local PLAYERCLASS = select(2, UnitClass('player'))
 local HOLY_POWER_SPELLS = {
 	[85256] = GetSpellInfo(85256), --Templar's Verdict
@@ -1054,7 +1055,7 @@ function UpdateUsable(self)
 	else
 		local isUsable, notEnoughMana = self:IsUsable()
 		local action = self._state_action
-		if PLAYERCLASS == 'PALADIN' and IsHolyPowerAbility(action) and not(UnitPower('player', SPELL_POWER_HOLY_POWER) >= 3 or UnitBuff('player', HAND_OF_LIGHT)) then
+		if PLAYERCLASS == 'PALADIN' and IsHolyPowerAbility(action) and not(UnitPower('player', SPELL_POWER_HOLY_POWER) >= 3 or UnitBuff('player', HAND_OF_LIGHT) or UnitBuff('player', DIVINE_CRUSADER)) then
 			self.icon:SetVertexColor(unpack(self.config.colors.hp))
 		elseif isUsable then
 			self.icon:SetVertexColor(1.0, 1.0, 1.0)
