@@ -2293,6 +2293,91 @@ E.Options.args.unitframe.args.targettarget = {
 	},
 }
 
+--TargetTargetTarget
+E.Options.args.unitframe.args.targettargettarget = {
+	name = L['TargetTargetTarget Frame'],
+	type = 'group',
+	order = 500,
+	childGroups = "select",
+	get = function(info) return E.db.unitframe.units['targettargettarget'][ info[#info] ] end,
+	set = function(info, value) E.db.unitframe.units['targettargettarget'][ info[#info] ] = value; UF:CreateAndUpdateUF('targettargettarget') end,
+	args = {
+		enable = {
+			type = 'toggle',
+			order = 1,
+			name = L['Enable'],
+		},
+		copyFrom = {
+			type = 'select',
+			order = 2,
+			name = L['Copy From'],
+			desc = L['Select a unit to copy settings from.'],
+			values = UF['units'],
+			set = function(info, value) UF:MergeUnitSettings(value, 'targettargettarget'); end,
+		},
+		resetSettings = {
+			type = 'execute',
+			order = 3,
+			name = L['Restore Defaults'],
+			func = function(info, value) UF:ResetUnitSettings('targettargettarget'); E:ResetMovers('TargetTargetTarget Frame') end,
+		},	
+		showAuras = {
+			order = 4,
+			type = 'execute',
+			name = L['Show Auras'],
+			func = function() 
+				local frame = ElvUF_TargetTargetTarget
+				if frame.forceShowAuras then
+					frame.forceShowAuras = nil; 
+				else
+					frame.forceShowAuras = true; 
+				end
+				
+				UF:CreateAndUpdateUF('targettargettarget') 
+			end,
+		},			
+		width = {
+			order = 4,
+			name = L['Width'],
+			type = 'range',
+			min = 50, max = 500, step = 1,
+		},
+		height = {
+			order = 5,
+			name = L['Height'],
+			type = 'range',
+			min = 10, max = 250, step = 1,
+		},	
+		rangeCheck = {
+			order = 6,
+			name = L["Range Check"],
+			desc = L["Check if you are in range to cast spells on this specific unit."],
+			type = "toggle",
+		},		
+		hideonnpc = {
+			type = 'toggle',
+			order = 7,
+			name = L['Text Toggle On NPC'],
+			desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
+			get = function(info) return E.db.unitframe.units['targettargettarget']['power'].hideonnpc end,
+			set = function(info, value) E.db.unitframe.units['targettargettarget']['power'].hideonnpc = value; UF:CreateAndUpdateUF('targettargettarget') end,
+		},
+		threatStyle = {
+			type = 'select',
+			order = 11,
+			name = L['Threat Display Mode'],
+			values = threatValues,
+		},		
+		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'targettargettarget'),		
+		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'targettargettarget'),
+		power = GetOptionsTable_Power(nil, UF.CreateAndUpdateUF, 'targettargettarget'),	
+		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'targettargettarget'),
+		buffs = GetOptionsTable_Auras(false, 'buffs', false, UF.CreateAndUpdateUF, 'targettargettarget'),
+		debuffs = GetOptionsTable_Auras(false, 'debuffs', false, UF.CreateAndUpdateUF, 'targettargettarget'),
+		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'targettargettarget'),	
+	},
+}
+
 --Focus
 E.Options.args.unitframe.args.focus = {
 	name = L['Focus Frame'],
