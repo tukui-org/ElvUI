@@ -6,23 +6,42 @@ local lastPanel;
 local join = string.join
 local timer = 0
 local startTime = 0
+local timerText = L["Combat Time"]
 
 local floor = math.floor
 local function OnUpdate(self)
 	timer = GetTime() - startTime
 
-	self.text:SetFormattedText(displayNumberString, L["Combat Time"], format("%02d:%02d:%02d", floor(timer/60), timer % 60, (timer - floor(timer)) * 100))
+	self.text:SetFormattedText(displayNumberString, timerText, format("%02d:%02d:%02d", floor(timer/60), timer % 60, (timer - floor(timer)) * 100))
 end
 
-local function OnEvent(self, event, unit)
-	if event == "PLAYER_REGEN_DISABLED" then
-		timer = 0
+local function DelayOnUpdate(self, elapsed)
+	startTime = startTime - elapsed
+
+	if(startTime <= 0) then
 		startTime = GetTime()
+		timer = 0
 		self:SetScript("OnUpdate", OnUpdate)
-	elseif event == "PLAYER_REGEN_ENABLED" then
+	end
+end
+
+local function OnEvent(self, event, timerType, timeSeconds, totalTime)
+	local inInstance, instanceType = IsInInstance()
+	if(event == "START_TIMER" and instanceType == "arena") then
+		startTime = timeSeconds
+		timer = 0
+		timerText = L["Arena Time"]
+		self.text:SetFormattedText(displayNumberString, timerText, "00:00:00")
+		self:SetScript("OnUpdate", DelayOnUpdate)
+	elseif(event == "PLAYER_ENTERING_WORLD" or (event == "PLAYER_REGEN_ENABLED" and instanceType ~= "arena")) then
 		self:SetScript("OnUpdate", nil)
-	else
-		self.text:SetFormattedText(displayNumberString, L["Combat Time"], "00:00:00")
+	elseif(event == "PLAYER_REGEN_DISABLED" and instanceType ~= "arena") then
+		startTime = GetTime()
+		timer = 0
+		timerText = L["Combat Time"]
+		self:SetScript("OnUpdate", OnUpdate)
+	elseif(not self.text:GetText()) then
+		self.text:SetFormattedText(displayNumberString, timerText, format("%02d:%02d:%02d", floor(timer/60), timer % 60, (timer - floor(timer)) * 100))
 	end
 
 	lastPanel = self
@@ -48,4 +67,4 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 	onEnterFunc - function to fire OnEnter
 	onLeaveFunc - function to fire OnLeave, if not provided one will be set for you that hides the tooltip.
 ]]
-DT:RegisterDatatext('Combat Time', {"PLAYER_REGEN_ENABLED", "PLAYER_REGEN_DISABLED"}, OnEvent)
+DT:RegisterDatatext('Combat Time', {"START_TIMER", "PLAYER_ENTERING_WORLD", "PLAYER_REGEN_DISABLED", "PLAYER_REGEN_ENABLED"}, OnEvent)
