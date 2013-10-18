@@ -15,12 +15,12 @@ function M:UpdateExpRepAnchors()
 	expBar:ClearAllPoints()
 	
 	if self.expBar:IsShown() and self.repBar:IsShown() then
-		expBar:Point('TOP', MMHolder, 'BOTTOM', (E.PixelMode and 0 or 1), -(E.PixelMode and 3 or 1))
-		repBar:Point('TOP', self.expBar, 'BOTTOM', 0, -1)
+		expBar:SetPoint('TOP', MMHolder, 'BOTTOM', 1, -1)
+		repBar:SetPoint('TOP', self.expBar, 'BOTTOM', 0, -1)
 	elseif self.expBar:IsShown() then
-		expBar:Point('TOP', MMHolder, 'BOTTOM', (E.PixelMode and 0 or 1), -(E.PixelMode and 3 or 1))
+		expBar:SetPoint('TOP', MMHolder, 'BOTTOM', 1, -1)
 	else
-		repBar:Point('TOP', MMHolder, 'BOTTOM', (E.PixelMode and 0 or 1), -(E.PixelMode and 3 or 1))
+		repBar:SetPoint('TOP', MMHolder, 'BOTTOM', 1, -1)
 	end
 end
 
