@@ -185,9 +185,9 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 			type = 'toggle',
 			name = L["Block Raid Buffs"],
 			desc = L["Don't display raid buffs such as Blessing of Kings or Mark of the Wild."],		
-		}				
+		}							
 		config.args.filters.args.useFilter = {
-			order = 15,
+			order = 16,
 			name = L['Additional Filter'],
 			desc = L['Select an additional filter to use. If the selected filter is a whitelist and no other filters are being used (with the exception of Block Non-Personal Auras) then it will block anything not on the whitelist, otherwise it will simply add auras on the whitelist in addition to any other filter settings.'],
 			type = 'select',
@@ -344,9 +344,9 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].noConsolidated.enemy = value; updateFunc(UF, groupName) end,										
 				}
 			},		
-		}
+		}		
 		config.args.filters.args.useFilter = {
-			order = 15,
+			order = 16,
 			name = L['Additional Filter'],
 			desc = L['Select an additional filter to use. If the selected filter is a whitelist and no other filters are being used (with the exception of Block Non-Personal Auras) then it will block anything not on the whitelist, otherwise it will simply add auras on the whitelist in addition to any other filter settings.'],
 			type = 'select',
@@ -510,6 +510,14 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 				desc = L["Don't display raid buffs such as Blessing of Kings or Mark of the Wild."],		
 			}
 		end
+
+		config.args.filters.args.bossAuras = {
+			order = 15,
+			type = 'toggle',
+			name = L["Allow Boss Encounter Auras"],
+			desc = L["Allow auras considered to be part of a boss encounter."],
+		}		
+
 		config.args.filters.args.useFilter = {
 			order = 15,
 			name = L['Additional Filter'],
@@ -671,9 +679,33 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 				},		
 			}
 		end
-		
-		config.args.filters.args.useFilter = {
+
+		config.args.filters.args.bossAuras = {
 			order = 15,
+			type = 'group',
+			guiInline = true,
+			name = L["Allow Boss Encounter Auras"],
+			args = {
+				friendly = {
+					order = 1,
+					type = 'toggle',
+					name = L['Friendly'],
+					desc = L["If the unit is friendly to you."].." "..L["Allow auras considered to be part of a boss encounter."],
+					get = function(info) return E.db.unitframe.units[groupName][auraType].bossAuras.friendly end,
+					set = function(info, value) E.db.unitframe.units[groupName][auraType].bossAuras.friendly = value; updateFunc(UF, groupName) end,									
+				},
+				enemy = {
+					order = 2,
+					type = 'toggle',
+					name = L['Enemy'],
+					desc = L["If the unit is an enemy to you."].." "..L["Allow auras considered to be part of a boss encounter."],
+					get = function(info) return E.db.unitframe.units[groupName][auraType].bossAuras.enemy end,
+					set = function(info, value) E.db.unitframe.units[groupName][auraType].bossAuras.enemy = value; updateFunc(UF, groupName) end,										
+				}
+			},
+		}			
+		config.args.filters.args.useFilter = {
+			order = 16,
 			name = L['Additional Filter'],
 			desc = L['Select an additional filter to use. If the selected filter is a whitelist and no other filters are being used (with the exception of Block Non-Personal Auras) then it will block anything not on the whitelist, otherwise it will simply add auras on the whitelist in addition to any other filter settings.'],
 			type = 'select',
