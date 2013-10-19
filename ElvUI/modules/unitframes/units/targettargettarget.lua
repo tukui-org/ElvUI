@@ -17,7 +17,7 @@ function UF:Construct_TargetTargetTargetFrame(frame)
 	frame.Debuffs = self:Construct_Debuffs(frame)
 	frame.Range = UF:Construct_Range(frame)
 	frame.Threat = UF:Construct_Threat(frame)
-	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 75) --Set to default position
+	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 160) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', L['TargetTargetTarget Frame'], nil, nil, nil, 'ALL,SOLO')
 end
 
