@@ -514,6 +514,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 		config.args.filters.args.bossAuras = {
 			order = 15,
 			type = 'toggle',
+			disabled = true,
 			name = L["Allow Boss Encounter Auras"],
 			desc = L["Allow auras considered to be part of a boss encounter."],
 		}		
@@ -685,6 +686,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 			type = 'group',
 			guiInline = true,
 			name = L["Allow Boss Encounter Auras"],
+			disabled = true,
 			args = {
 				friendly = {
 					order = 1,
