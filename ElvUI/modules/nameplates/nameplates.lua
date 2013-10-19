@@ -4,6 +4,7 @@ local LSM = LibStub("LibSharedMedia-3.0")
 
 local numChildren = -1
 local twipe = table.wipe
+local tsort = table.sort
 local tinsert = table.insert
 local band = bit.band
 local gsub = string.gsub
@@ -1542,6 +1543,10 @@ function NP:UpdateIcon(frame, texture, expiration, stacks)
 	end
 end
 
+local function sortByExpiration(a, b) 
+	return a.expiration < b.expiration
+end
+
 function NP:UpdateIconGrid(frame, guid)
 	local myPlate = NP.CreatedPlates[frame]
 	local buffs = myPlate.BuffWidget 
@@ -1572,6 +1577,9 @@ function NP:UpdateIconGrid(frame, guid)
 			end
 		end
 	end
+
+	tsort(self.BuffCache, sortByExpiration)
+	tsort(self.DebuffCache, sortByExpiration)	
 
 	for index = 1,  #self.BuffCache do
 		local cachedaura = self.BuffCache[index]
