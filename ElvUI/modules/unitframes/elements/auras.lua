@@ -210,9 +210,7 @@ end
 
 function UF:CheckFilter(filterType, isFriend)
 	local FRIENDLY_CHECK, ENEMY_CHECK = false, false
-	if type(filterType) == 'string' then
-		error('Database conversion failed! Report to Elv.')
-	elseif type(filterType) == 'boolean' then
+	if type(filterType) == 'boolean' then
 		FRIENDLY_CHECK = filterType
 		ENEMY_CHECK = filterType
 	elseif filterType then
@@ -227,7 +225,7 @@ function UF:CheckFilter(filterType, isFriend)
 	return false
 end
 
-function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, timeLeft, unitCaster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff)	
+function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, timeLeft, unitCaster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura)	
 	if E.global.unitframe.InvalidSpells[spellID] then
 		return false;
 	end
@@ -272,7 +270,8 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 		end
 		anotherFilterExists = true
 	end
-	
+
+
 	if UF:CheckFilter(db.noConsolidated, isFriend) then
 		if shouldConsolidate == 1 then
 			returnValue = false;
@@ -287,6 +286,14 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 		end
 		
 		anotherFilterExists = true
+	end
+
+	if UF:CheckFilter(db.bossAuras, isFriend) then
+		if(isBossAura) then
+			returnValue = true
+		elseif(not anotherFilterExists) then
+			returnValue = false
+		end
 	end
 
 	if UF:CheckFilter(db.useBlacklist, isFriend) then

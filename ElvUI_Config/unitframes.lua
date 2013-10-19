@@ -185,9 +185,9 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 			type = 'toggle',
 			name = L["Block Raid Buffs"],
 			desc = L["Don't display raid buffs such as Blessing of Kings or Mark of the Wild."],		
-		}				
+		}							
 		config.args.filters.args.useFilter = {
-			order = 15,
+			order = 16,
 			name = L['Additional Filter'],
 			desc = L['Select an additional filter to use. If the selected filter is a whitelist and no other filters are being used (with the exception of Block Non-Personal Auras) then it will block anything not on the whitelist, otherwise it will simply add auras on the whitelist in addition to any other filter settings.'],
 			type = 'select',
@@ -344,9 +344,9 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].noConsolidated.enemy = value; updateFunc(UF, groupName) end,										
 				}
 			},		
-		}
+		}		
 		config.args.filters.args.useFilter = {
-			order = 15,
+			order = 16,
 			name = L['Additional Filter'],
 			desc = L['Select an additional filter to use. If the selected filter is a whitelist and no other filters are being used (with the exception of Block Non-Personal Auras) then it will block anything not on the whitelist, otherwise it will simply add auras on the whitelist in addition to any other filter settings.'],
 			type = 'select',
@@ -510,6 +510,14 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 				desc = L["Don't display raid buffs such as Blessing of Kings or Mark of the Wild."],		
 			}
 		end
+
+		config.args.filters.args.bossAuras = {
+			order = 15,
+			type = 'toggle',
+			name = L["Allow Boss Encounter Auras"],
+			desc = L["Allow auras considered to be part of a boss encounter."],
+		}		
+
 		config.args.filters.args.useFilter = {
 			order = 15,
 			name = L['Additional Filter'],
@@ -671,9 +679,33 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 				},		
 			}
 		end
-		
-		config.args.filters.args.useFilter = {
+
+		config.args.filters.args.bossAuras = {
 			order = 15,
+			type = 'group',
+			guiInline = true,
+			name = L["Allow Boss Encounter Auras"],
+			args = {
+				friendly = {
+					order = 1,
+					type = 'toggle',
+					name = L['Friendly'],
+					desc = L["If the unit is friendly to you."].." "..L["Allow auras considered to be part of a boss encounter."],
+					get = function(info) return E.db.unitframe.units[groupName][auraType].bossAuras.friendly end,
+					set = function(info, value) E.db.unitframe.units[groupName][auraType].bossAuras.friendly = value; updateFunc(UF, groupName) end,									
+				},
+				enemy = {
+					order = 2,
+					type = 'toggle',
+					name = L['Enemy'],
+					desc = L["If the unit is an enemy to you."].." "..L["Allow auras considered to be part of a boss encounter."],
+					get = function(info) return E.db.unitframe.units[groupName][auraType].bossAuras.enemy end,
+					set = function(info, value) E.db.unitframe.units[groupName][auraType].bossAuras.enemy = value; updateFunc(UF, groupName) end,										
+				}
+			},
+		}			
+		config.args.filters.args.useFilter = {
+			order = 16,
 			name = L['Additional Filter'],
 			desc = L['Select an additional filter to use. If the selected filter is a whitelist and no other filters are being used (with the exception of Block Non-Personal Auras) then it will block anything not on the whitelist, otherwise it will simply add auras on the whitelist in addition to any other filter settings.'],
 			type = 'select',
@@ -2290,6 +2322,91 @@ E.Options.args.unitframe.args.targettarget = {
 		buffs = GetOptionsTable_Auras(false, 'buffs', false, UF.CreateAndUpdateUF, 'targettarget'),
 		debuffs = GetOptionsTable_Auras(false, 'debuffs', false, UF.CreateAndUpdateUF, 'targettarget'),
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'targettarget'),	
+	},
+}
+
+--TargetTargetTarget
+E.Options.args.unitframe.args.targettargettarget = {
+	name = L['TargetTargetTarget Frame'],
+	type = 'group',
+	order = 500,
+	childGroups = "select",
+	get = function(info) return E.db.unitframe.units['targettargettarget'][ info[#info] ] end,
+	set = function(info, value) E.db.unitframe.units['targettargettarget'][ info[#info] ] = value; UF:CreateAndUpdateUF('targettargettarget') end,
+	args = {
+		enable = {
+			type = 'toggle',
+			order = 1,
+			name = L['Enable'],
+		},
+		copyFrom = {
+			type = 'select',
+			order = 2,
+			name = L['Copy From'],
+			desc = L['Select a unit to copy settings from.'],
+			values = UF['units'],
+			set = function(info, value) UF:MergeUnitSettings(value, 'targettargettarget'); end,
+		},
+		resetSettings = {
+			type = 'execute',
+			order = 3,
+			name = L['Restore Defaults'],
+			func = function(info, value) UF:ResetUnitSettings('targettargettarget'); E:ResetMovers('TargetTargetTarget Frame') end,
+		},	
+		showAuras = {
+			order = 4,
+			type = 'execute',
+			name = L['Show Auras'],
+			func = function() 
+				local frame = ElvUF_TargetTargetTarget
+				if frame.forceShowAuras then
+					frame.forceShowAuras = nil; 
+				else
+					frame.forceShowAuras = true; 
+				end
+				
+				UF:CreateAndUpdateUF('targettargettarget') 
+			end,
+		},			
+		width = {
+			order = 4,
+			name = L['Width'],
+			type = 'range',
+			min = 50, max = 500, step = 1,
+		},
+		height = {
+			order = 5,
+			name = L['Height'],
+			type = 'range',
+			min = 10, max = 250, step = 1,
+		},	
+		rangeCheck = {
+			order = 6,
+			name = L["Range Check"],
+			desc = L["Check if you are in range to cast spells on this specific unit."],
+			type = "toggle",
+		},		
+		hideonnpc = {
+			type = 'toggle',
+			order = 7,
+			name = L['Text Toggle On NPC'],
+			desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
+			get = function(info) return E.db.unitframe.units['targettargettarget']['power'].hideonnpc end,
+			set = function(info, value) E.db.unitframe.units['targettargettarget']['power'].hideonnpc = value; UF:CreateAndUpdateUF('targettargettarget') end,
+		},
+		threatStyle = {
+			type = 'select',
+			order = 11,
+			name = L['Threat Display Mode'],
+			values = threatValues,
+		},		
+		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'targettargettarget'),		
+		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'targettargettarget'),
+		power = GetOptionsTable_Power(nil, UF.CreateAndUpdateUF, 'targettargettarget'),	
+		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'targettargettarget'),
+		buffs = GetOptionsTable_Auras(false, 'buffs', false, UF.CreateAndUpdateUF, 'targettargettarget'),
+		debuffs = GetOptionsTable_Auras(false, 'debuffs', false, UF.CreateAndUpdateUF, 'targettargettarget'),
+		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'targettargettarget'),	
 	},
 }
 
