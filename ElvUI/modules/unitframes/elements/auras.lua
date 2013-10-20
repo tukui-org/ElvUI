@@ -288,13 +288,13 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 		anotherFilterExists = true
 	end
 
-	if UF:CheckFilter(db.bossAuras, isFriend) then
+	--[[if UF:CheckFilter(db.bossAuras, isFriend) then
 		if(isBossAura) then
 			returnValue = true
 		elseif(not anotherFilterExists) then
 			returnValue = false
 		end
-	end
+	end]]
 
 	if UF:CheckFilter(db.useBlacklist, isFriend) then
 		local blackList = E.global['unitframe']['aurafilters']['Blacklist'].spells[name]
