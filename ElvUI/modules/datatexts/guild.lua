@@ -8,6 +8,7 @@ local find			= string.find
 local gsub			= string.gsub
 local sort			= table.sort
 local ceil			= math.ceil
+local split 		= string.split
 
 local tthead, ttsubh, ttoff = {r=0.4, g=0.78, b=1}, {r=0.75, g=0.9, b=1}, {r=.3,g=1,b=.3}
 local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
@@ -61,8 +62,8 @@ local function BuildGuildTable()
 	local statusInfo
 	local _, name, rank, level, zone, note, officernote, connected, memberstatus, class, isMobile
 	
-	local _, _ totalGuild = GetNumGuildMembers()
-	for i = 1, totalGuild do
+	local totalMembers, onlineMembers, onlineAndMobileMembers = GetNumGuildMembers()
+	for i = 1, onlineAndMobileMembers do
 		name, rank, rankIndex, level, _, zone, note, officernote, connected, memberstatus, class, _, _, isMobile = GetGuildRosterInfo(i)
 
 		statusInfo = isMobile and mobilestatus[memberstatus]() or onlinestatus[memberstatus]()
@@ -91,7 +92,14 @@ local function UpdateGuildMessage()
 	guildMotD = GetGuildRosterMOTD()
 end
 
+local FRIEND_ONLINE = select(2, split(" ", ERR_FRIEND_ONLINE_SS))
+local resendRequest = false
 local eventHandlers = {
+	['CHAT_MSG_SYSTEM'] = function(self, arg1)
+		if(arg1:find(FRIEND_ONLINE)) then
+			resendRequest = true
+		end
+	end,
 	-- when we enter the world and guildframe is not available then
 	-- load guild frame, update guild message and guild xp	
 	["PLAYER_ENTERING_WORLD"] = function (self, arg1)
@@ -102,9 +110,10 @@ local eventHandlers = {
 		end
 	end,
 	-- Guild Roster updated, so rebuild the guild table
-	["GUILD_ROSTER_UPDATE"] = function (self, arg1)
-		if arg1 then
-			GuildRoster()
+	["GUILD_ROSTER_UPDATE"] = function (self)
+		if(resendRequest) then
+			resendRequest = false;
+			return GuildRoster()
 		else
 			BuildGuildTable()
 			UpdateGuildMessage()
@@ -300,4 +309,4 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 	onLeaveFunc - function to fire OnLeave, if not provided one will be set for you that hides the tooltip.
 ]]
 
-DT:RegisterDatatext('Guild', {'PLAYER_ENTERING_WORLD', "GUILD_ROSTER_UPDATE", "GUILD_XP_UPDATE", "PLAYER_GUILD_UPDATE", "GUILD_MOTD"}, OnEvent, nil, Click, OnEnter)
+DT:RegisterDatatext('Guild', {'PLAYER_ENTERING_WORLD', 'CHAT_MSG_SYSTEM', "GUILD_ROSTER_UPDATE", "GUILD_XP_UPDATE", "PLAYER_GUILD_UPDATE", "GUILD_MOTD"}, OnEvent, nil, Click, OnEnter)
