@@ -62,8 +62,8 @@ local function BuildGuildTable()
 	local statusInfo
 	local _, name, rank, level, zone, note, officernote, connected, memberstatus, class, isMobile
 	
-	local totalMembers, onlineMembers, onlineAndMobileMembers = GetNumGuildMembers()
-	for i = 1, onlineAndMobileMembers do
+	local totalMembers = GetNumGuildMembers()
+	for i = 1, totalMembers do
 		name, rank, rankIndex, level, _, zone, note, officernote, connected, memberstatus, class, _, _, isMobile = GetGuildRosterInfo(i)
 
 		statusInfo = isMobile and mobilestatus[memberstatus]() or onlinestatus[memberstatus]()
@@ -217,7 +217,7 @@ local function OnEnter(self, _, noUpdate)
 
 	DT:SetupTooltip(self)
 	
-	local total, online = GetNumGuildMembers()
+	local total, _, online = GetNumGuildMembers()
 	if #guildTable == 0 then BuildGuildTable() end
 
 	SortGuildTable(IsShiftKeyDown())
