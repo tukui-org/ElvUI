@@ -424,6 +424,7 @@ G.unitframe.aurafilters['Blacklist'] = {
 G.unitframe.aurafilters['Whitelist'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
+		[SpellName(31821)] = Defaults(), -- Devotion Aura
 		[SpellName(2825)] = Defaults(), -- Bloodlust
 		[SpellName(32182)] = Defaults(), -- Heroism	
 		[SpellName(80353)] = Defaults(), --Time Warp
