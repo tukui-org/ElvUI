@@ -108,10 +108,6 @@ local function LoadSkin()
 		WorldMapZoneInfo:FontTemplate(nil, 27, "OUTLINE")
 		WorldMapZoneInfo:SetShadowOffset(2, -2)		
 		
-		if InCombatLockdown() then return end
-		WorldMapFrame:SetFrameLevel(3)
-		WorldMapDetailFrame:SetFrameLevel(WorldMapFrame:GetFrameLevel() + 1)
-		WorldMapFrame:SetFrameStrata('HIGH')			
 	end
 	
 	WorldMapFrame:HookScript("OnShow", FixSkin)
