@@ -452,6 +452,7 @@ G.unitframe.aurafilters['Whitelist'] = {
 		[SpellName(142863)] = Defaults(), --Weak Ancient Barrier (Malkorok)
 		[SpellName(142864)] = Defaults(), --Ancient Barrier (Malkorok)
 		[SpellName(142865)] = Defaults(), --Strong Ancient Barrier (Malkorok)
+		[SpellName(143198)] = Defaults(), --Garrote (Fallen Protectors)
 	},
 }
 
