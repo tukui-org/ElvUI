@@ -96,7 +96,7 @@ local FRIEND_ONLINE = select(2, split(" ", ERR_FRIEND_ONLINE_SS, 2))
 local resendRequest = false
 local eventHandlers = {
 	['CHAT_MSG_SYSTEM'] = function(self, arg1)
-		if(arg1:find(FRIEND_ONLINE)) then
+		if(arg1 and arg1:find(FRIEND_ONLINE)) then
 			resendRequest = true
 		end
 	end,
