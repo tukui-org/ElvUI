@@ -13,11 +13,7 @@ function M:AdjustMapSize()
 		elseif WORLDMAP_SETTINGS.size == WORLDMAP_QUESTLIST_SIZE then
 			self:SetQuestWorldMap()
 		end
-	end
-	
-	WorldMapFrame:SetFrameLevel(3)
-	WorldMapDetailFrame:SetFrameLevel(WorldMapFrame:GetFrameLevel() + 1)
-	WorldMapFrame:SetFrameStrata('HIGH')		
+	end	
 end
 
 function M:SetLargeWorldMap()
@@ -116,13 +112,6 @@ function M:ResetDropDownListPosition(frame)
 	DropDownList1:Point("TOPRIGHT", frame, "BOTTOMRIGHT", -17, -4)
 end
 
-function M:WorldMapFrame_OnShow()
-	if InCombatLockdown() then return; end
-	WorldMapFrame:SetFrameLevel(3)
-	WorldMapDetailFrame:SetFrameLevel(WorldMapFrame:GetFrameLevel() + 1)
-	WorldMapFrame:SetFrameStrata('HIGH')	
-end
-
 function M:ToggleTinyWorldMapSetting()
 	if InCombatLockdown() then return; end
 	if E.db.general.tinyWorldMap then
@@ -159,11 +148,7 @@ function M:Initialize()
 	WorldMapZoomOutButton:Point("LEFT", WorldMapZoneDropDown, "RIGHT", 0, 4)
 	WorldMapLevelUpButton:Point("TOPLEFT", WorldMapLevelDropDown, "TOPRIGHT", -2, 8)
 	WorldMapLevelDownButton:Point("BOTTOMLEFT", WorldMapLevelDropDown, "BOTTOMRIGHT", -2, 2)
-	WorldMapFrame:SetFrameLevel(3)
-	WorldMapDetailFrame:SetFrameLevel(WorldMapFrame:GetFrameLevel() + 1)
-	WorldMapFrame:SetFrameStrata('HIGH')	
 	
-	self:HookScript(WorldMapFrame, 'OnShow', 'WorldMapFrame_OnShow')
 	self:HookScript(WorldMapZoneDropDownButton, 'OnClick', 'ResetDropDownListPosition')
 	self:SecureHook("WorldMap_ToggleSizeDown", 'SetSmallWorldMap')	
 	self:RegisterEvent('PLAYER_REGEN_ENABLED')

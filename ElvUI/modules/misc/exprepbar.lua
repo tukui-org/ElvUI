@@ -79,6 +79,7 @@ function M:UpdateExperience(event)
 	self:UpdateExpRepAnchors()
 end
 
+local backupColor = FACTION_BAR_COLORS[1]
 function M:UpdateReputation(event)
 	local bar = self.repBar
 	
@@ -93,7 +94,7 @@ function M:UpdateReputation(event)
 
 		local text = ''
 		local textFormat = E.db.general.reputation.textFormat		
-		local color = FACTION_BAR_COLORS[reaction]
+		local color = FACTION_BAR_COLORS[reaction] or backupColor
 		bar.statusBar:SetStatusBarColor(color.r, color.g, color.b)	
 
 		bar.statusBar:SetMinMaxValues(min, max)
@@ -105,8 +106,6 @@ function M:UpdateReputation(event)
 				ID = standingID
 			end
 		end
-		
-		
 		
 		if textFormat == 'PERCENT' then
 			text = format('%s: %d%% [%s]', name, ((value - min) / (max - min) * 100), _G['FACTION_STANDING_LABEL'..ID])

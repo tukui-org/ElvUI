@@ -360,6 +360,15 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 			end,
 		}										
 	end
+
+
+	config.args.filters.args.maxDuration = {
+		order = 17,
+		type = 'range',
+		name = L["Maximum Duration"],
+		desc = L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."],
+		min = 0, max = 3600, step = 1,
+	}	
 	
 	return config
 end

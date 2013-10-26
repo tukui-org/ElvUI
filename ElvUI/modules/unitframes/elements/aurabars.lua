@@ -125,6 +125,14 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 		anotherFilterExists = true
 	end
 
+	if db.maxDuration > 0 then
+		if(duration and (duration > db.maxDuration)) then
+			returnValue = false;
+		end
+
+		anotherFilterExists = true
+	end
+
 	if UF:CheckFilter(db.useBlacklist, isFriend) then
 		local blackList = E.global['unitframe']['aurafilters']['Blacklist'].spells[name]
 		if blackList and blackList.enable then
