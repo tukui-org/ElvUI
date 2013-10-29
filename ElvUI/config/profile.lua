@@ -612,7 +612,7 @@ P['unitframe'] = {
 				['noDuration'] = {friendly = true, enemy = true},
 				['noConsolidated'] = {friendly = true, enemy = true},
 				['onlyDispellable'] = {friendly = false, enemy = false},
-				['maxDuration'] = 120,
+				['maxDuration'] = 300,
 				['useFilter'] = '',
 				['friendlyAuraType'] = 'HELPFUL',
 				['enemyAuraType'] = 'HARMFUL',		

@@ -12,7 +12,7 @@ for i=10, 40, 15 do
 
 
 		self.RaisedElementParent = CreateFrame('Frame', nil, self)
-		self.RaisedElementParent:SetFrameStrata("MEDIUM")
+		self.RaisedElementParent:SetFrameStrata("LOW")
 		self.RaisedElementParent:SetFrameLevel(self:GetFrameLevel() + 10)		
 		
 		self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')

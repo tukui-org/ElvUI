@@ -20,6 +20,9 @@ function UF:Construct_TargetFrame(frame)
 	
 	frame.Buffs = self:Construct_Buffs(frame)
 
+	frame.BGParent = CreateFrame("Frame", nil, frame.RaisedElementParent)
+	frame.BGParent:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() - 5)
+
 	frame.Debuffs = self:Construct_Debuffs(frame)
 	frame.Threat = self:Construct_Threat(frame)
 	frame.Castbar = self:Construct_Castbar(frame, 'RIGHT', L['Target Castbar'])
@@ -164,8 +167,8 @@ function UF:Update_TargetFrame(frame, db)
 			health.bg:SetAllPoints()
 		else
 			health.bg:Point('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMRIGHT')
-			health.bg:Point('TOPRIGHT', health)		
-			health.bg:SetParent(frame.Portrait.overlay)			
+			health.bg:Point('TOPRIGHT', health)	
+			health.bg:SetParent(frame.BGParent)			
 		end
 	end
 	
@@ -266,7 +269,7 @@ function UF:Update_TargetFrame(frame, db)
 			
 			if USE_PORTRAIT_OVERLAY then
 				if db.portrait.style == '3D' then
-					portrait:SetFrameLevel(frame.Health:GetFrameLevel() + 1)
+					portrait:SetFrameLevel(6)
 				end
 				portrait:SetAllPoints(frame.Health)
 				portrait:SetAlpha(0.3)

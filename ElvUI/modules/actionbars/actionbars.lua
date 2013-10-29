@@ -232,6 +232,7 @@ function AB:CreateBar(id)
 	bar:Point(point, anchor, attachTo, x, y)
 	bar.id = id
 	bar:CreateBackdrop('Default');
+	bar:SetFrameStrata("LOW")
 	bar.backdrop:SetAllPoints();
 	bar.buttons = {}
 	bar.bindButtons = self['barDefaults']['bar'..id].bindButtons
