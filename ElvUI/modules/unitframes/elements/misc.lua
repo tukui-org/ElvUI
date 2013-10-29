@@ -17,7 +17,7 @@ function UF:Construct_TargetGlow(frame)
 end
 
 function UF:Construct_RestingIndicator(frame)
-	local resting = frame:CreateTexture(nil, "OVERLAY")
+	local resting = frame.RaisedElementParent:CreateTexture(nil, "OVERLAY")
 	resting:Size(22)
 	resting:Point("CENTER", frame.Health, "TOPLEFT", -3, 6)
 	
