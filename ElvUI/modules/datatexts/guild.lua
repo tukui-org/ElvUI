@@ -169,12 +169,13 @@ end
 
 local function ToggleGuildFrame()
 	if IsInGuild() then
-		if not GuildFrame then LoadAddOn("Blizzard_GuildUI") end
+		if not GuildFrame then GuildFrame_LoadUI() end
 		GuildFrame_Toggle()
-		GuildFrame_TabClicked(GuildFrameTab2)
 	else
-		if not LookingForGuildFrame then LoadAddOn("Blizzard_LookingForGuildUI") end
-		if LookingForGuildFrame then LookingForGuildFrame_Toggle() end
+		if not LookingForGuildFrame then LookingForGuildFrame_LoadUI() end
+		if LookingForGuildFrame then 
+			LookingForGuildFrame_Toggle()
+		end
 	end
 end
 
