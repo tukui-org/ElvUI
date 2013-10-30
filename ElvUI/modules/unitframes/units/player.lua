@@ -479,20 +479,25 @@ function UF:Update_PlayerFrame(frame, db)
 					power.mover:SetAlpha(1)		
 				end
 
+				power:SetFrameLevel(99)
 			elseif USE_POWERBAR_OFFSET then
 				power:Point("TOPRIGHT", frame.Health, "TOPRIGHT", POWERBAR_OFFSET, -POWERBAR_OFFSET)
 				power:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", POWERBAR_OFFSET, -POWERBAR_OFFSET)
+				power:SetFrameLevel(0)
 			elseif USE_INSET_POWERBAR then
 				power:Height(POWERBAR_HEIGHT - BORDER*2)
 				power:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", BORDER + (BORDER*2), BORDER + (BORDER*2))
 				power:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", -(BORDER + (BORDER*2)), BORDER + (BORDER*2))		
+				power:SetFrameLevel(99)
 			elseif USE_MINI_POWERBAR then
 				power:Width(POWERBAR_WIDTH - BORDER*2)
 				power:Height(POWERBAR_HEIGHT - BORDER*2)
 				power:Point("RIGHT", frame, "BOTTOMRIGHT", -(BORDER*2 + 4), BORDER + (POWERBAR_HEIGHT/2))
+				power:SetFrameLevel(99)
 			else
 				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(E.PixelMode and 0 or (BORDER + SPACING)))
 				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -BORDER, BORDER)
+				power:SetFrameLevel(99)
 			end
 		elseif frame:IsElementEnabled('Power') then
 			frame:DisableElement('Power')
