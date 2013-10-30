@@ -20,6 +20,9 @@ function UF:Construct_TargetFrame(frame)
 	
 	frame.Buffs = self:Construct_Buffs(frame)
 
+	frame.BGParent = CreateFrame("Frame", nil, frame.RaisedElementParent)
+	frame.BGParent:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() - 5)
+
 	frame.Debuffs = self:Construct_Debuffs(frame)
 	frame.Threat = self:Construct_Threat(frame)
 	frame.Castbar = self:Construct_Castbar(frame, 'RIGHT', L['Target Castbar'])
@@ -164,8 +167,8 @@ function UF:Update_TargetFrame(frame, db)
 			health.bg:SetAllPoints()
 		else
 			health.bg:Point('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMRIGHT')
-			health.bg:Point('TOPRIGHT', health)		
-			health.bg:SetParent(frame.Portrait.overlay)			
+			health.bg:Point('TOPRIGHT', health)	
+			health.bg:SetParent(frame.BGParent)			
 		end
 	end
 	
@@ -208,7 +211,6 @@ function UF:Update_TargetFrame(frame, db)
 			
 			--Position
 			power:ClearAllPoints()
-
 			if POWERBAR_DETACHED then
 				power:Width(POWERBAR_WIDTH)
 				power:Height(POWERBAR_HEIGHT)				
@@ -222,29 +224,25 @@ function UF:Update_TargetFrame(frame, db)
 					power.mover:SetScale(1)
 					power.mover:SetAlpha(1)		
 				end
-
-				power:SetFrameStrata("MEDIUM")
-				power:SetFrameLevel(frame:GetFrameLevel() + 3)
+				power:SetFrameLevel(99)
 			elseif USE_POWERBAR_OFFSET then
 				power:Point("TOPLEFT", frame.Health, "TOPLEFT", -POWERBAR_OFFSET, -POWERBAR_OFFSET)
 				power:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", -POWERBAR_OFFSET, -POWERBAR_OFFSET)
-				power:SetFrameStrata("LOW")
-				power:SetFrameLevel(2)
+				power:SetFrameLevel(0)
 			elseif USE_MINI_POWERBAR then
 				power:Width(POWERBAR_WIDTH - BORDER*2)
 				power:Height(POWERBAR_HEIGHT - BORDER*2)
 				power:Point("LEFT", frame, "BOTTOMLEFT", (BORDER*2 + 4), BORDER + (POWERBAR_HEIGHT/2))
-				power:SetFrameStrata("MEDIUM")
-				power:SetFrameLevel(frame:GetFrameLevel() + 3)
+				power:SetFrameLevel(99)
 			elseif USE_INSET_POWERBAR then
 				power:Height(POWERBAR_HEIGHT - BORDER*2)
 				power:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", BORDER + (BORDER*2), BORDER + (BORDER*2))
-				power:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", -(BORDER + (BORDER*2)), BORDER + (BORDER*2))
-				power:SetFrameStrata("MEDIUM")
-				power:SetFrameLevel(frame:GetFrameLevel() + 3)						
+				power:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", -(BORDER + (BORDER*2)), BORDER + (BORDER*2))		
+				power:SetFrameLevel(99)	
 			else
 				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(E.PixelMode and 0 or (BORDER + SPACING)))
 				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -(BORDER + PORTRAIT_WIDTH), BORDER)
+				power:SetFrameLevel(99)
 			end
 		elseif frame:IsElementEnabled('Power') then
 			frame:DisableElement('Power')
@@ -266,7 +264,7 @@ function UF:Update_TargetFrame(frame, db)
 			
 			if USE_PORTRAIT_OVERLAY then
 				if db.portrait.style == '3D' then
-					portrait:SetFrameLevel(frame.Health:GetFrameLevel() + 1)
+					portrait:SetFrameLevel(6)
 				end
 				portrait:SetAllPoints(frame.Health)
 				portrait:SetAlpha(0.3)

@@ -7,6 +7,7 @@ local AstrolabeMapMonitor = DongleStub("AstrolabeMapMonitor")
 
 local gsub = string.gsub
 local upper = string.upper
+local tinsert = table.insert
 
 local calendar_string = gsub(SLASH_CALENDAR1, "/", "")
 calendar_string = gsub(calendar_string, "^%l", upper)
@@ -48,7 +49,7 @@ local menuList = {
 	{text = QUESTLOG_BUTTON,
 	func = function() ToggleFrame(QuestLogFrame) end},
 	{text = SOCIAL_BUTTON,
-	func = function() ToggleFriendsFrame(1) end},
+	func = function() ToggleFriendsFrame() end},
 	{text = calendar_string,
 	func = function() GameTimeFrame:Click() end},
 	{text = PLAYER_V_PLAYER,
@@ -72,12 +73,13 @@ local menuList = {
 	{text = LFG_TITLE,
 	func = function() PVEFrame_ToggleFrame(); end},
 	{text = ENCOUNTER_JOURNAL, 
-	func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then EncounterJournal_LoadUI(); end ToggleFrame(EncounterJournal) end},		
-	{text = BLIZZARD_STORE,
-	func = function() StoreMicroButton:Click() end},	
-	{text = HELP_BUTTON,
-	func = function() ToggleHelpFrame() end}
+	func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then EncounterJournal_LoadUI(); end ToggleFrame(EncounterJournal) end}
 }
+
+if(C_StorePublic.IsEnabled()) then
+	tinsert(menuList, {text = BLIZZARD_STORE, func = function() StoreMicroButton:Click() end})
+end
+tinsert(menuList, 	{text = HELP_BUTTON, func = function() ToggleHelpFrame() end})
 
 --Support for other mods
 function GetMinimapShape() 

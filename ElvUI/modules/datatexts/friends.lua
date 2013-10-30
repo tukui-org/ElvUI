@@ -216,7 +216,7 @@ local function Click(self, btn)
 
 		EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)	
 	else
-		ToggleFriendsFrame(1)
+		ToggleFriendsFrame()
 	end
 end
 
