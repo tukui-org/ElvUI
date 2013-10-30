@@ -125,7 +125,7 @@ function M:ToggleTinyWorldMapSetting()
 			self:SetSmallWorldMap()
 		elseif WORLDMAP_SETTINGS.size == WORLDMAP_QUESTLIST_SIZE then
 			self:SetQuestWorldMap()
-		end			
+		end		
 	else
 		self:Unhook("WorldMap_ToggleSizeUp")
 		self:Unhook("WorldMapFrame_SetFullMapView")
@@ -144,6 +144,8 @@ function M:ToggleTinyWorldMapSetting()
 end
 
 function M:Initialize()
+	setfenv(WorldMapFrame_OnShow, setmetatable({ UpdateMicroButtons = function() end }, { __index = _G })) --blizzard taint fix
+	
 	WorldMapShowDropDown:Point('BOTTOMRIGHT', WorldMapPositioningGuide, 'BOTTOMRIGHT', -2, -4)
 	WorldMapZoomOutButton:Point("LEFT", WorldMapZoneDropDown, "RIGHT", 0, 4)
 	WorldMapLevelUpButton:Point("TOPLEFT", WorldMapLevelDropDown, "TOPRIGHT", -2, 8)
