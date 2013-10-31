@@ -129,7 +129,7 @@ function D:TaintError(event, addonName, addonFunc)
 end
 
 function D:StaticPopup_Show(name)
-	if(name == "ADDON_ACTION_FORBIDDEN" and E.db.general.taintLog ~= true) then
+	if(name == "ADDON_ACTION_FORBIDDEN") then
 		StaticPopup_Hide(name);
 	end
 end
