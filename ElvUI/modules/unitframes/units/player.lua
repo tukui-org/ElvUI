@@ -22,10 +22,7 @@ function UF:Construct_PlayerFrame(frame)
 	frame.Portrait2D = self:Construct_Portrait(frame, 'texture')
 	
 	frame.Buffs = self:Construct_Buffs(frame)
-
-	frame.BGParent = CreateFrame("Frame", nil, frame.RaisedElementParent)
-	frame.BGParent:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() - 5)
-
+	
 	frame.Debuffs = self:Construct_Debuffs(frame)
 	
 	frame.Castbar = self:Construct_Castbar(frame, 'LEFT', L['Player Castbar'])
@@ -392,8 +389,8 @@ function UF:Update_PlayerFrame(frame, db)
 			health.bg:SetAllPoints()
 		else
 			health.bg:Point('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMRIGHT')
-			health.bg:Point('TOPRIGHT', health)	
-			health.bg:SetParent(frame.BGParent)			
+			health.bg:Point('TOPRIGHT', health)		
+			health.bg:SetParent(frame.Portrait.overlay)			
 		end
 		
 		if USE_CLASSBAR and not db.classbar.detachFromFrame then
@@ -479,25 +476,28 @@ function UF:Update_PlayerFrame(frame, db)
 					power.mover:SetAlpha(1)		
 				end
 
-				power:SetFrameLevel(99)
+				power:SetFrameStrata("MEDIUM")
+				power:SetFrameLevel(frame:GetFrameLevel() + 3)
 			elseif USE_POWERBAR_OFFSET then
 				power:Point("TOPRIGHT", frame.Health, "TOPRIGHT", POWERBAR_OFFSET, -POWERBAR_OFFSET)
 				power:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", POWERBAR_OFFSET, -POWERBAR_OFFSET)
-				power:SetFrameLevel(0)
+				power:SetFrameStrata("LOW")
+				power:SetFrameLevel(2)
 			elseif USE_INSET_POWERBAR then
 				power:Height(POWERBAR_HEIGHT - BORDER*2)
 				power:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", BORDER + (BORDER*2), BORDER + (BORDER*2))
-				power:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", -(BORDER + (BORDER*2)), BORDER + (BORDER*2))		
-				power:SetFrameLevel(99)
+				power:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", -(BORDER + (BORDER*2)), BORDER + (BORDER*2))
+				power:SetFrameStrata("MEDIUM")
+				power:SetFrameLevel(frame:GetFrameLevel() + 3)			
 			elseif USE_MINI_POWERBAR then
 				power:Width(POWERBAR_WIDTH - BORDER*2)
 				power:Height(POWERBAR_HEIGHT - BORDER*2)
 				power:Point("RIGHT", frame, "BOTTOMRIGHT", -(BORDER*2 + 4), BORDER + (POWERBAR_HEIGHT/2))
-				power:SetFrameLevel(99)
+				power:SetFrameStrata("MEDIUM")
+				power:SetFrameLevel(frame:GetFrameLevel() + 3)
 			else
 				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(E.PixelMode and 0 or (BORDER + SPACING)))
 				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -BORDER, BORDER)
-				power:SetFrameLevel(99)
 			end
 		elseif frame:IsElementEnabled('Power') then
 			frame:DisableElement('Power')
@@ -528,7 +528,7 @@ function UF:Update_PlayerFrame(frame, db)
 			
 			if USE_PORTRAIT_OVERLAY then
 				if db.portrait.style == '3D' then
-					portrait:SetFrameLevel(6)
+					portrait:SetFrameLevel(frame.Health:GetFrameLevel() + 1)
 				end
 				portrait:SetAllPoints(frame.Health)
 				portrait:SetAlpha(0.3)

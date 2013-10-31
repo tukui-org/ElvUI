@@ -14,6 +14,10 @@ function M:AdjustMapSize()
 			self:SetQuestWorldMap()
 		end
 	end	
+
+	WorldMapFrame:SetFrameLevel(3)
+	WorldMapDetailFrame:SetFrameLevel(WorldMapFrame:GetFrameLevel() + 1)
+	WorldMapFrame:SetFrameStrata('HIGH')		
 end
 
 function M:SetLargeWorldMap()
@@ -143,6 +147,13 @@ function M:ToggleTinyWorldMapSetting()
 	end
 end
 
+function M:WorldMapFrame_OnShow()
+	if InCombatLockdown() then return; end
+	WorldMapFrame:SetFrameLevel(3)
+	WorldMapDetailFrame:SetFrameLevel(WorldMapFrame:GetFrameLevel() + 1)
+	WorldMapFrame:SetFrameStrata('HIGH')
+end
+
 function M:Initialize()
 	setfenv(WorldMapFrame_OnShow, setmetatable({ UpdateMicroButtons = function() end }, { __index = _G })) --blizzard taint fix
 	
@@ -150,7 +161,12 @@ function M:Initialize()
 	WorldMapZoomOutButton:Point("LEFT", WorldMapZoneDropDown, "RIGHT", 0, 4)
 	WorldMapLevelUpButton:Point("TOPLEFT", WorldMapLevelDropDown, "TOPRIGHT", -2, 8)
 	WorldMapLevelDownButton:Point("BOTTOMLEFT", WorldMapLevelDropDown, "BOTTOMRIGHT", -2, 2)
+	WorldMapFrame:SetFrameLevel(3)
+	WorldMapDetailFrame:SetFrameLevel(WorldMapFrame:GetFrameLevel() + 1)
+	WorldMapFrame:SetFrameStrata('HIGH')
+	WorldMapPing:SetParent(WorldMapFrame)
 	
+	self:HookScript(WorldMapFrame, 'OnShow', 'WorldMapFrame_OnShow')
 	self:HookScript(WorldMapZoneDropDownButton, 'OnClick', 'ResetDropDownListPosition')
 	self:SecureHook("WorldMap_ToggleSizeDown", 'SetSmallWorldMap')	
 	self:RegisterEvent('PLAYER_REGEN_ENABLED')

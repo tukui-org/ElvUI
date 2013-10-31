@@ -45,8 +45,6 @@ end
 
 function UF:Construct_AuraBarHeader(frame)
 	local auraBar = CreateFrame('Frame', nil, frame)
-	auraBar:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel())
-	auraBar:SetFrameStrata(frame.RaisedElementParent:GetFrameStrata())
 	auraBar.PostCreateBar = UF.Construct_AuraBars
 	auraBar.gap = (E.PixelMode and -1 or 1)
 	auraBar.spacing = (E.PixelMode and -1 or 1)

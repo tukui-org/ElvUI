@@ -11,8 +11,7 @@ function UF:Construct_Buffs(frame)
 	buffs.PostCreateIcon = self.Construct_AuraIcon
 	buffs.PostUpdateIcon = self.PostUpdateAura
 	buffs.CustomFilter = self.AuraFilter
-	buffs:SetFrameStrata("LOW")
-	buffs:SetFrameLevel(20)
+	buffs:SetFrameLevel(10)
 	buffs.type = 'buffs'
 	
 	return buffs
@@ -26,8 +25,7 @@ function UF:Construct_Debuffs(frame)
 	debuffs.PostUpdateIcon = self.PostUpdateAura
 	debuffs.CustomFilter = self.AuraFilter
 	debuffs.type = 'debuffs'
-	debuffs:SetFrameStrata("LOW")
-	debuffs:SetFrameLevel(20)
+	debuffs:SetFrameLevel(10)
 	
 	return debuffs
 end
@@ -194,9 +192,7 @@ function UF:UpdateAuraTimer(elapsed)
 	
 	if(self.expiration <= 0) then
 		self:SetScript('OnUpdate', nil)
-		if(self.text:GetText()) then
-			self.text:SetText('')
-		end
+		self.text:SetText('')
 		return
 	end
 

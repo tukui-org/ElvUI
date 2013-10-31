@@ -17,7 +17,7 @@ function UF:Construct_TargetGlow(frame)
 end
 
 function UF:Construct_RestingIndicator(frame)
-	local resting = frame.RaisedElementParent:CreateTexture(nil, "OVERLAY")
+	local resting = frame:CreateTexture(nil, "OVERLAY")
 	resting:Size(22)
 	resting:Point("CENTER", frame.Health, "TOPLEFT", -3, 6)
 	
@@ -150,9 +150,7 @@ end
 
 
 function UF:Construct_ReadyCheckIcon(frame)
-	local anchor = CreateFrame("Frame", nil, frame.RaisedElementParent)
-	anchor:SetFrameLevel(25)
-	local tex = anchor:CreateTexture(nil, "OVERLAY")
+	local tex = frame.RaisedElementParent:CreateTexture(nil, "OVERLAY", nil, 7)
 	tex:Size(12)
 	tex:Point("BOTTOM", frame.Health, "BOTTOM", 0, 2)
 	
@@ -182,8 +180,6 @@ end
 
 function UF:Construct_RaidRoleFrames(frame)
 	local anchor = CreateFrame('Frame', nil, frame)
-	anchor:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel())
-	anchor:SetFrameStrata(frame.RaisedElementParent:GetFrameStrata())
 	frame.Leader = anchor:CreateTexture(nil, 'OVERLAY')
 	frame.MasterLooter = anchor:CreateTexture(nil, 'OVERLAY')
 	
@@ -599,7 +595,7 @@ function UF:RaidRoleUpdate()
 end
 
 function UF:Construct_RoleIcon(frame)
-	local f = CreateFrame('Frame', nil, frame.RaisedElementParent)
+	local f = CreateFrame('Frame', nil, frame)
 	
 	local tex = f:CreateTexture(nil, "ARTWORK")
 	tex:Size(17)

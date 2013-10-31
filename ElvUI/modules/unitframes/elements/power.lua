@@ -11,7 +11,7 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 
 	power:SetFrameStrata("LOW")
 	power.PostUpdate = self.PostUpdatePower
-	power:SetFrameLevel(frame:GetFrameLevel() + 3)
+
 	if bg then
 		power.bg = power:CreateTexture(nil, 'BORDER')
 		power.bg:SetAllPoints()
@@ -22,7 +22,8 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 	if text then
 		power.value = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')	
 		UF:Configure_FontString(power.value)
-
+		power.value:SetParent(frame)
+		
 		local x = -2
 		if textPos == 'LEFT' then
 			x = 2
