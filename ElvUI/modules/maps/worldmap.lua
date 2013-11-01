@@ -17,7 +17,8 @@ function M:AdjustMapSize()
 
 	WorldMapFrame:SetFrameLevel(3)
 	WorldMapDetailFrame:SetFrameLevel(WorldMapFrame:GetFrameLevel() + 1)
-	WorldMapFrame:SetFrameStrata('HIGH')		
+	WorldMapFrame:SetFrameStrata('HIGH')	
+	WorldMapPing:SetFrameStrata("TOOLTIP")	
 end
 
 function M:SetLargeWorldMap()
@@ -152,6 +153,7 @@ function M:WorldMapFrame_OnShow()
 	WorldMapFrame:SetFrameLevel(3)
 	WorldMapDetailFrame:SetFrameLevel(WorldMapFrame:GetFrameLevel() + 1)
 	WorldMapFrame:SetFrameStrata('HIGH')
+	WorldMapPing:SetFrameStrata("TOOLTIP")
 end
 
 function M:Initialize()
@@ -164,7 +166,6 @@ function M:Initialize()
 	WorldMapFrame:SetFrameLevel(3)
 	WorldMapDetailFrame:SetFrameLevel(WorldMapFrame:GetFrameLevel() + 1)
 	WorldMapFrame:SetFrameStrata('HIGH')
-	WorldMapPing:SetParent(WorldMapFrame)
 	
 	self:HookScript(WorldMapFrame, 'OnShow', 'WorldMapFrame_OnShow')
 	self:HookScript(WorldMapZoneDropDownButton, 'OnClick', 'ResetDropDownListPosition')
