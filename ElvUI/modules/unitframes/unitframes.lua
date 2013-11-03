@@ -196,7 +196,7 @@ function UF:Construct_UF(frame, unit)
 	frame:SetFrameLevel(5)
 	
 	frame.RaisedElementParent = CreateFrame('Frame', nil, frame)
-	frame.RaisedElementParent:SetFrameStrata("LOW")
+	frame.RaisedElementParent:SetFrameStrata("MEDIUM")
 	frame.RaisedElementParent:SetFrameLevel(frame:GetFrameLevel() + 10)	
 	
 	if not self['groupunits'][unit] then

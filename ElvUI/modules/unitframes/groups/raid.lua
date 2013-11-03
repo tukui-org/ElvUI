@@ -12,7 +12,7 @@ for i=10, 40, 15 do
 
 
 		self.RaisedElementParent = CreateFrame('Frame', nil, self)
-		self.RaisedElementParent:SetFrameStrata("LOW")
+		self.RaisedElementParent:SetFrameStrata("MEDIUM")
 		self.RaisedElementParent:SetFrameLevel(self:GetFrameLevel() + 10)		
 		
 		self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
@@ -218,21 +218,23 @@ for i=10, 40, 15 do
 				if USE_POWERBAR_OFFSET then
 					power:Point("TOPLEFT", frame.Health, "TOPLEFT", -POWERBAR_OFFSET, -POWERBAR_OFFSET)
 					power:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", -POWERBAR_OFFSET, -POWERBAR_OFFSET)
-					power:SetFrameLevel(0)
+					power:SetFrameStrata("LOW")
+					power:SetFrameLevel(2)
 				elseif USE_MINI_POWERBAR then
 					power:Width(POWERBAR_WIDTH - BORDER*2)
 					power:Height(POWERBAR_HEIGHT - BORDER*2)
 					power:Point("LEFT", frame, "BOTTOMLEFT", (BORDER*2 + 4), BORDER + (POWERBAR_HEIGHT/2))
-					power:SetFrameLevel(99)
+					power:SetFrameStrata("MEDIUM")
+					power:SetFrameLevel(frame:GetFrameLevel() + 3)
 				elseif USE_INSET_POWERBAR then
 					power:Height(POWERBAR_HEIGHT - BORDER*2)
 					power:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", BORDER + (BORDER*2), BORDER + (BORDER*2))
-					power:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", -(BORDER + (BORDER*2)), BORDER + (BORDER*2))						
-					power:SetFrameLevel(99)
+					power:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", -(BORDER + (BORDER*2)), BORDER + (BORDER*2))
+					power:SetFrameStrata("MEDIUM")
+					power:SetFrameLevel(frame:GetFrameLevel() + 3)							
 				else
 					power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(E.PixelMode and 0 or (BORDER + SPACING)))
 					power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -(BORDER), BORDER)
-					power:SetFrameLevel(99)
 				end
 			else
 				frame:DisableElement('Power')

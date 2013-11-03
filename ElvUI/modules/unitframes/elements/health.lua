@@ -22,7 +22,8 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 	if text then
 		health.value = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
 		UF:Configure_FontString(health.value)
-
+		health.value:SetParent(frame)
+		
 		local x = -2
 		if textPos == 'LEFT' then
 			x = 2

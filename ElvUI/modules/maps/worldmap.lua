@@ -14,6 +14,11 @@ function M:AdjustMapSize()
 			self:SetQuestWorldMap()
 		end
 	end	
+
+	WorldMapFrame:SetFrameLevel(3)
+	WorldMapDetailFrame:SetFrameLevel(WorldMapFrame:GetFrameLevel() + 1)
+	WorldMapFrame:SetFrameStrata('HIGH')	
+	WorldMapPing:SetFrameStrata("TOOLTIP")	
 end
 
 function M:SetLargeWorldMap()
@@ -125,7 +130,7 @@ function M:ToggleTinyWorldMapSetting()
 			self:SetSmallWorldMap()
 		elseif WORLDMAP_SETTINGS.size == WORLDMAP_QUESTLIST_SIZE then
 			self:SetQuestWorldMap()
-		end			
+		end		
 	else
 		self:Unhook("WorldMap_ToggleSizeUp")
 		self:Unhook("WorldMapFrame_SetFullMapView")
@@ -143,12 +148,26 @@ function M:ToggleTinyWorldMapSetting()
 	end
 end
 
+function M:WorldMapFrame_OnShow()
+	if InCombatLockdown() then return; end
+	WorldMapFrame:SetFrameLevel(3)
+	WorldMapDetailFrame:SetFrameLevel(WorldMapFrame:GetFrameLevel() + 1)
+	WorldMapFrame:SetFrameStrata('HIGH')
+	WorldMapPing:SetFrameStrata("TOOLTIP")
+end
+
 function M:Initialize()
+	setfenv(WorldMapFrame_OnShow, setmetatable({ UpdateMicroButtons = function() end }, { __index = _G })) --blizzard taint fix
+	
 	WorldMapShowDropDown:Point('BOTTOMRIGHT', WorldMapPositioningGuide, 'BOTTOMRIGHT', -2, -4)
 	WorldMapZoomOutButton:Point("LEFT", WorldMapZoneDropDown, "RIGHT", 0, 4)
 	WorldMapLevelUpButton:Point("TOPLEFT", WorldMapLevelDropDown, "TOPRIGHT", -2, 8)
 	WorldMapLevelDownButton:Point("BOTTOMLEFT", WorldMapLevelDropDown, "BOTTOMRIGHT", -2, 2)
+	WorldMapFrame:SetFrameLevel(3)
+	WorldMapDetailFrame:SetFrameLevel(WorldMapFrame:GetFrameLevel() + 1)
+	WorldMapFrame:SetFrameStrata('HIGH')
 	
+	self:HookScript(WorldMapFrame, 'OnShow', 'WorldMapFrame_OnShow')
 	self:HookScript(WorldMapZoneDropDownButton, 'OnClick', 'ResetDropDownListPosition')
 	self:SecureHook("WorldMap_ToggleSizeDown", 'SetSmallWorldMap')	
 	self:RegisterEvent('PLAYER_REGEN_ENABLED')

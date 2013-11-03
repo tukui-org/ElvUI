@@ -128,6 +128,12 @@ function D:TaintError(event, addonName, addonFunc)
 	ScriptErrorsFrame_OnError(L["%s: %s tried to call the protected function '%s'."]:format(event, addonName or "<name>", addonFunc or "<func>"), false)
 end
 
+function D:StaticPopup_Show(name)
+	if(name == "ADDON_ACTION_FORBIDDEN") then
+		StaticPopup_Hide(name);
+	end
+end
+
 function D:Initialize()
 	self.HideFrame = CreateFrame('Frame')
 	self.HideFrame:Hide()
@@ -139,10 +145,11 @@ function D:Initialize()
 	self:ModifyErrorFrame()
 	self:SecureHook('ScriptErrorsFrame_UpdateButtons')
 	self:SecureHook('ScriptErrorsFrame_OnError')
+	self:SecureHook('StaticPopup_Show')
 	self:RegisterEvent('PLAYER_REGEN_DISABLED')
 	self:RegisterEvent('PLAYER_REGEN_ENABLED')
 	self:RegisterEvent("ADDON_ACTION_BLOCKED", "TaintError")
-	self:RegisterEvent("ADDON_ACTION_FORBIDDEN", "TaintError")	
+	self:RegisterEvent("ADDON_ACTION_FORBIDDEN", "TaintError")
 end
 
 E:RegisterModule(D:GetName())
