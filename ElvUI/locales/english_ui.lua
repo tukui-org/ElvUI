@@ -367,10 +367,3 @@ L['You can use the /resetui command to reset all of your movers. You can also us
 --UnitFrames
 L['Ghost'] = true;
 L['Offline'] = true;
-
---Personal Locale Strings
-L["Isle of Thunder"] = "Isle of Thunder"
-L['Trove of the Thunder King'] = 'Trove of the Thunder King'
-L['Key to the Palace of Lei Shen'] = 'Key to the Palace of Lei Shen'
-L['Looted'] = 'Looted'
-L['Not Looted'] = 'Not Looted'
