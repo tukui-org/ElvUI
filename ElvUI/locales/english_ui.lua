@@ -49,8 +49,8 @@ L['Toggle Bags'] = true;
 L['Vendor Grays'] = true;
 
 --Chat
-L['AFK'] = true; --Also used in datatexts and tooltip
-L['DND'] = true; --Also used in datatexts and tooltip
+L['AFK'] = true; --Also used in datatexts
+L['DND'] = true; --Also used in datatexts
 L['G'] = true;
 L['I'] = true;
 L['IL'] = true;
@@ -66,20 +66,19 @@ L['whispers'] = true;
 L['yells'] = true;
 
 --DataTexts
-L['Spec'] = true
-L['|cffFFFFFFLeft Click:|r Change Talent Specialization'] = true
-L['|cffFFFFFFRight Click:|r Change Loot Specialization'] = true
 L['(Hold Shift) Memory Usage'] = true;
 L['AP'] = true;
+L["Arena"] = true;
 L['AVD: '] = true;
 L["Avoidance Breakdown"] = true;
 L['Bandwidth'] = true;
 L['Bases Assaulted'] = true;
 L['Bases Defended'] = true;
 L['Carts Controlled'] = true;
+L['Celestials'] = true;
 L["Character: "] = true
 L['Chest'] = true;
-L["Combat Time"] = true;
+L["Combat"] = true;
 L["copperabbrev"] = "|cffeda55fc|r" --Also used in Bags
 L['Defeated'] = true;
 L["Deficit:"] = true;
@@ -112,6 +111,7 @@ L['No Guild'] = true;
 L['Offhand'] = true;
 L['Oondasta'] = true;
 L['Orb Possessions'] = true;
+L['Ordos'] = true;
 L["Profit:"] = true;
 L["Reset Data: Hold Shift + Right Click"] = true;
 L["Saved Raid(s)"] = true;
@@ -121,6 +121,7 @@ L['Sha of Anger'] = true;
 L['Shoulder'] = true;
 L["silverabbrev"] = "|cffc7c7cfs|r" --Also used in Bags
 L['SP'] = true;
+L['Spec'] = true;
 L["Spent:"] = true;
 L['Stats For:'] = true;
 L['Total CPU:'] = true;
@@ -134,6 +135,8 @@ L['Victory Points'] = true;
 L['Waist'] = true;
 L["World Boss(s)"] = true;
 L['Wrist'] = true;
+L['|cffFFFFFFLeft Click:|r Change Talent Specialization'] = true;
+L['|cffFFFFFFRight Click:|r Change Loot Specialization'] = true;
 
 --DebugTools
 L["%s: %s tried to call the protected function '%s'."] = true;
@@ -228,6 +231,7 @@ L['Disband Group'] = true;
 L['Empty Slot'] = true;
 L["Enable"] = true; --Doesn't fit a section since it's used a lot of places
 L['Experience'] = true;
+L["Farm Mode"] = true; -- Minimap middle click menu
 L['Fishy Loot'] = true;
 L['Left Click:'] = true; --layout\layout.lua
 L['Raid Menu'] = true;
@@ -245,12 +249,12 @@ L['ABOVE_THREAT_FORMAT'] = '%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]'
 L[' Frames'] = true;
 L['Alternative Power'] = true;
 L['Arena Frames'] = true; --Also used in UnitFrames
-L["Auras Frame"] = true;
 L['Bags'] = true; --Also in DataTexts
 L['Bar '] = true; --Also in ActionBars
 L['BNet Frame'] = true;
 L['Boss Button'] = true;
 L['Boss Frames'] = true; --Also used in UnitFrames
+L['Class Bar'] = true;
 L["Experience Bar"] = true;
 L['Focus Castbar'] = true;
 L['Focus Frame'] = true; --Also used in UnitFrames
@@ -268,20 +272,22 @@ L['Party Frames'] = true; --Also used in UnitFrames
 L['Pet Bar'] = true; --Also in ActionBars
 L['Pet Frame'] = true; --Also used in UnitFrames
 L['PetTarget Frame'] = true; --Also used in UnitFrames
+L["Player Buffs"] = true;
 L['Player Castbar'] = true;
+L["Player Debuffs"] = true;
 L['Player Frame'] = true; --Also used in UnitFrames
 L['Raid 1-'] = true;
+L['Raid Pet Frames'] = true;
 L["Reputation Bar"] = true;
 L["Right Chat"] = true;
 L['Stance Bar'] = true; --Also in ActionBars
 L['Target Castbar'] = true;
 L['Target Frame'] = true; --Also used in UnitFrames
 L['TargetTarget Frame'] = true; --Also used in UnitFrames
+L['TargetTargetTarget Frame'] = true; --Also used in UnitFrames
 L['Tooltip'] = true;
-L['Totems'] = true;
 L["Vehicle Seat Frame"] = true;
 L['Watch Frame'] = true;
-L['Weapons'] = true;
 
 --NamePlates
 L['Discipline'] = true;
@@ -312,16 +318,18 @@ L["Your version of ElvUI is out of date. You can download the latest version fro
 L['|cFFE30000Lua error recieved. You can view the error message when you exit combat.'] = true;
 
 --Static Popups
-L["Detected that your ElvUI Config addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI Config addon up to date will result in missing options."] = true;
 L["A setting you have changed will change an option for this character only. This setting that you have changed will be uneffected by changing user profiles. Changing this setting requires that you reload your User Interface."] = true;
 L["Are you sure you want to delete all your gray items?"] = true;
 L["Are you sure you want to disband the group?"] = true;
+L["Are you sure you want to reset all the settings on this profile?"] = true;
 L["Are you sure you want to reset every mover back to it's default position?"] = true;
 L["Because of the mass confusion caused by the new aura system I've implemented a new step to the installation process. This is optional. If you like how your auras are setup go to the last step and click finished to not be prompted again. If for some reason you are prompted repeatedly please restart your game."] = true;
 L["Can't buy anymore slots!"] = true;
+L["Detected that your ElvUI Config addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI Config addon up to date will result in missing options."] = true;
 L['Disable Warning'] = true;
 L['Discard'] = true;
 L['Do you swear not to post in technical support about something not working without first disabling the addon/module combination first?'] = true;
+L["Enabling/Disabling Bar #6 will toggle a paging option from your main actionbar to prevent duplicating bars, are you sure you want to do this?"] = true;
 L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."] = true;
 L['I Swear'] = true;
 L['Oh lord, you have got ElvUI and Tukui both enabled at the same time. Select an addon to disable.'] = true;
@@ -335,6 +343,8 @@ L['You must purchase a bank slot first!'] = true;
 
 --Tooltip
 L['Count'] = true;
+L["Item Level:"] = true;
+L["Talent Specialization:"] = true;
 L['Targeted By:'] = true;
 
 --Tutorials
