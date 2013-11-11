@@ -55,6 +55,16 @@ local function LoadSkin()
 	ArchaeologyFrameArtifactPageIcon:SetDrawLayer("OVERLAY")	
 
 	S:HandleCloseButton(ArchaeologyFrameCloseButton)
+
+	ArcheologyDigsiteProgressBar:StripTextures()
+	ArcheologyDigsiteProgressBar:CreateBackdrop("Transparent")
+
+	ArcheologyDigsiteProgressBar.FillBar:StripTextures()
+	ArcheologyDigsiteProgressBar.FillBar:SetStatusBarTexture(E["media"].normTex)
+	ArcheologyDigsiteProgressBar.FillBar:SetStatusBarColor(0.7, 0.2, 0)
+	ArcheologyDigsiteProgressBar.FillBar:SetFrameLevel(ArchaeologyFrameArtifactPageSolveFrameStatusBar:GetFrameLevel() + 2)
+	ArcheologyDigsiteProgressBar.FillBar:CreateBackdrop("Default")
+
 end
 
 S:RegisterSkin("Blizzard_ArchaeologyUI", LoadSkin)
