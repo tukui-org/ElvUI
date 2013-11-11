@@ -2,7 +2,7 @@
 TabGroup Container
 Container that uses tabs on top to switch between groups.
 -------------------------------------------------------------------------------]]
-local Type, Version = "TabGroup", 30
+local Type, Version = "TabGroup", 35
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
@@ -39,7 +39,7 @@ end
 local function Tab_SetText(frame, text)
 	frame:_SetText(text)
 	local width = frame.obj.frame.width or frame.obj.frame:GetWidth() or 0
-	PanelTemplates_TabResize(frame, 0, nil, width)
+	PanelTemplates_TabResize(frame, 0, nil, nil, width, frame:GetFontString():GetStringWidth())
 end
 
 local function Tab_SetSelected(frame, selected)
@@ -248,13 +248,15 @@ local methods = {
 			
 			-- equal padding for each tab to fill the available width,
 			-- if the used space is above 75% already
+			-- the 18 pixel is the typical width of a scrollbar, so we can have a tab group inside a scrolling frame, 
+			-- and not have the tabs jump around funny when switching between tabs that need scrolling and those that don't
 			local padding = 0
-			if not (numrows == 1 and rowwidths[1] < width*0.75) then
+			if not (numrows == 1 and rowwidths[1] < width*0.75 - 18) then
 				padding = (width - rowwidths[row]) / (endtab - starttab+1)
 			end
 			
 			for i = starttab, endtab do
-				PanelTemplates_TabResize(tabs[i], padding + 4, nil, width)
+				PanelTemplates_TabResize(tabs[i], padding + 4, nil, nil, width, tabs[i]:GetFontString():GetStringWidth())
 			end
 			starttab = endtab + 1
 		end

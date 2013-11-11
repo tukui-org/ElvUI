@@ -1,4 +1,4 @@
---[[ $Id: AceGUIWidget-DropDown.lua 1029 2011-06-10 23:10:58Z nevcairiel $ ]]--
+--[[ $Id: AceGUIWidget-DropDown.lua 1101 2013-10-25 12:46:47Z nevcairiel $ ]]--
 local AceGUI = LibStub("AceGUI-3.0")
 
 -- Lua APIs
@@ -356,17 +356,19 @@ end
 
 do
 	local widgetType = "Dropdown"
-	local widgetVersion = 25
+	local widgetVersion = 29
 	
 	--[[ Static data ]]--
 	
 	--[[ UI event handler ]]--
 	
 	local function Control_OnEnter(this)
+		this.obj.button:LockHighlight()
 		this.obj:Fire("OnEnter")
 	end
 	
 	local function Control_OnLeave(this)
+		this.obj.button:UnlockHighlight()
 		this.obj:Fire("OnLeave")
 	end
 
@@ -386,7 +388,7 @@ do
 			AceGUI:ClearFocus()
 		else
 			self.open = true
-			self.pullout:SetWidth(self.frame:GetWidth())
+			self.pullout:SetWidth(self.pulloutWidth or self.frame:GetWidth())
 			self.pullout:Open("TOPLEFT", self.frame, "BOTTOMLEFT", 0, self.label:IsShown() and -2 or 0)
 			AceGUI:SetFocus(self)
 		end
@@ -403,6 +405,7 @@ do
 		end
 		
 		self.open = true
+		self:Fire("OnOpened")
 	end
 
 	local function OnPulloutClose(this)
@@ -461,6 +464,7 @@ do
 		self:SetHeight(44)
 		self:SetWidth(200)
 		self:SetLabel()
+		self:SetPulloutWidth(nil)
 	end
 	
 	-- exported, AceGUI callback
@@ -515,9 +519,9 @@ do
 		if text and text ~= "" then
 			self.label:SetText(text)
 			self.label:Show()
-			self.dropdown:SetPoint("TOPLEFT",self.frame,"TOPLEFT",-15,-18)
-			self:SetHeight(44)
-			self.alignoffset = 30
+			self.dropdown:SetPoint("TOPLEFT",self.frame,"TOPLEFT",-15,-14)
+			self:SetHeight(40)
+			self.alignoffset = 26
 		else
 			self.label:SetText("")
 			self.label:Hide()
@@ -635,6 +639,10 @@ do
 		return self.multiselect
 	end
 	
+	local function SetPulloutWidth(self, width)
+		self.pulloutWidth = width
+	end
+	
 	--[[ Constructor ]]--
 	
 	local function Constructor()
@@ -666,8 +674,9 @@ do
 		self.GetMultiselect = GetMultiselect
 		self.SetItemValue = SetItemValue
 		self.SetItemDisabled = SetItemDisabled
+		self.SetPulloutWidth = SetPulloutWidth
 		
-		self.alignoffset = 30
+		self.alignoffset = 26
 		
 		frame:SetScript("OnHide",Dropdown_OnHide)
 
@@ -693,6 +702,14 @@ do
 		button:SetScript("OnEnter",Control_OnEnter)
 		button:SetScript("OnLeave",Control_OnLeave)
 		button:SetScript("OnClick",Dropdown_TogglePullout)
+		
+		local button_cover = CreateFrame("BUTTON",nil,self.frame)
+		button_cover.obj = self
+		button_cover:SetPoint("TOPLEFT",self.frame,"BOTTOMLEFT",0,25)
+		button_cover:SetPoint("BOTTOMRIGHT",self.frame,"BOTTOMRIGHT")
+		button_cover:SetScript("OnEnter",Control_OnEnter)
+		button_cover:SetScript("OnLeave",Control_OnLeave)
+		button_cover:SetScript("OnClick",Dropdown_TogglePullout)
 		
 		local text = _G[dropdown:GetName() .. "Text"]
 		self.text = text

@@ -1,4 +1,4 @@
---[[ $Id: AceGUIWidget-DropDown.lua 991 2010-11-12 16:51:38Z nevcairiel $ ]]--
+--[[ $Id: AceGUIWidget-DropDown.lua 1029 2011-06-10 23:10:58Z nevcairiel $ ]]--
 local AceGUI = LibStub("AceGUI-3.0")
 
 -- Lua APIs
@@ -356,7 +356,7 @@ end
 
 do
 	local widgetType = "Dropdown"
-	local widgetVersion = 23
+	local widgetVersion = 25
 	
 	--[[ Static data ]]--
 	
@@ -460,6 +460,7 @@ do
 		
 		self:SetHeight(44)
 		self:SetWidth(200)
+		self:SetLabel()
 	end
 	
 	-- exported, AceGUI callback
@@ -471,7 +472,6 @@ do
 		self.pullout = nil
 		
 		self:SetText("")
-		self:SetLabel("")
 		self:SetDisabled(false)
 		self:SetMultiselect(false)
 		
@@ -516,12 +516,14 @@ do
 			self.label:SetText(text)
 			self.label:Show()
 			self.dropdown:SetPoint("TOPLEFT",self.frame,"TOPLEFT",-15,-18)
-			self.frame:SetHeight(44)
+			self:SetHeight(44)
+			self.alignoffset = 30
 		else
 			self.label:SetText("")
 			self.label:Hide()
 			self.dropdown:SetPoint("TOPLEFT",self.frame,"TOPLEFT",-15,0)
-			self.frame:SetHeight(26)
+			self:SetHeight(26)
+			self.alignoffset = 12
 		end
 	end
 	
@@ -560,8 +562,12 @@ do
 		end
 	end
 	
-	local function AddListItem(self, value, text)
-		local item = AceGUI:Create("Dropdown-Item-Toggle")
+	local function AddListItem(self, value, text, itemType)
+		if not itemType then itemType = "Dropdown-Item-Toggle" end
+		local exists = AceGUI:GetWidgetVersion(itemType)
+		if not exists then error(("The given item type, %q, does not exist within AceGUI-3.0"):format(tostring(itemType)), 2) end
+
+		local item = AceGUI:Create(itemType)
 		item:SetText(text)
 		item.userdata.obj = self
 		item.userdata.value = value
@@ -580,7 +586,7 @@ do
 	
 	-- exported
 	local sortlist = {}
-	local function SetList(self, list,order)
+	local function SetList(self, list, order, itemType)
 		self.list = list
 		self.pullout:Clear()
 		self.hasClose = nil
@@ -593,12 +599,12 @@ do
 			tsort(sortlist)
 			
 			for i, key in ipairs(sortlist) do
-				AddListItem(self, key, list[key])
+				AddListItem(self, key, list[key], itemType)
 				sortlist[i] = nil
 			end
 		else
 			for i, key in ipairs(order) do
-				AddListItem(self, key, list[key])
+				AddListItem(self, key, list[key], itemType)
 			end
 		end
 		if self.multiselect then
@@ -608,10 +614,10 @@ do
 	end
 	
 	-- exported
-	local function AddItem(self, value, text)
+	local function AddItem(self, value, text, itemType)
 		if self.list then
 			self.list[value] = text
-			AddListItem(self, value, text)
+			AddListItem(self, value, text, itemType)
 		end
 	end
 	
@@ -661,10 +667,8 @@ do
 		self.SetItemValue = SetItemValue
 		self.SetItemDisabled = SetItemDisabled
 		
-		self.alignoffset = 31
+		self.alignoffset = 30
 		
-		frame:SetHeight(44)
-		frame:SetWidth(200)
 		frame:SetScript("OnHide",Dropdown_OnHide)
 
 		dropdown:ClearAllPoints()

@@ -2,7 +2,7 @@
 Button Widget
 Graphical Button.
 -------------------------------------------------------------------------------]]
-local Type, Version = "Button", 22
+local Type, Version = "Button", 23
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
@@ -45,6 +45,7 @@ local methods = {
 		self:SetHeight(24)
 		self:SetWidth(200)
 		self:SetDisabled(false)
+		self:SetAutoWidth(false)
 		self:SetText()
 	end,
 
@@ -52,6 +53,16 @@ local methods = {
 
 	["SetText"] = function(self, text)
 		self.text:SetText(text)
+		if self.autoWidth then
+			self:SetWidth(self.text:GetStringWidth() + 30)
+		end
+	end,
+	
+	["SetAutoWidth"] = function(self, autoWidth)
+		self.autoWidth = autoWidth
+		if self.autoWidth then
+			self:SetWidth(self.text:GetStringWidth() + 30)
+		end
 	end,
 
 	["SetDisabled"] = function(self, disabled)

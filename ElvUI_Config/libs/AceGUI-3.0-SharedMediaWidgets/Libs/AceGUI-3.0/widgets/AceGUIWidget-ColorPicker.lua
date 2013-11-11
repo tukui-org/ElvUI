@@ -1,7 +1,7 @@
 --[[-----------------------------------------------------------------------------
 ColorPicker Widget
 -------------------------------------------------------------------------------]]
-local Type, Version = "ColorPicker", 20
+local Type, Version = "ColorPicker", 21
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
@@ -51,6 +51,7 @@ local function ColorSwatch_OnClick(frame)
 	local self = frame.obj
 	if not self.disabled then
 		ColorPickerFrame:SetFrameStrata("FULLSCREEN_DIALOG")
+		ColorPickerFrame:SetClampedToScreen(true)
 
 		ColorPickerFrame.func = function()
 			local r, g, b = ColorPickerFrame:GetColorRGB()
