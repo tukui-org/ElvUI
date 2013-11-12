@@ -121,7 +121,11 @@ end
 
 function A:DisableCB()
 	ElvUI_ConsolidatedBuffs:Hide()
-	BuffFrame:UnregisterEvent('UNIT_AURA')
+	if(not E.private.auras.disableBlizzard) then
+		BuffFrame:RegisterUnitEvent('UNIT_AURA', "player")
+	else
+		BuffFrame:UnregisterEvent('UNIT_AURA')
+	end
 	self:UnregisterEvent("UNIT_AURA")
 	self:UnregisterEvent("GROUP_ROSTER_UPDATE");
 	self:UnregisterEvent("PLAYER_SPECIALIZATION_CHANGED");
@@ -185,7 +189,7 @@ function A:Update_ConsolidatedBuffsSettings(isCallback)
 	end
 	
 	if(not isCallback) then
-		if E.db.auras.consolidatedBuffs.enable and E.private.general.minimap.enable then
+		if(E.db.auras.consolidatedBuffs.enable and E.private.general.minimap.enable and E.private.auras.disableBlizzard) then
 			E:GetModule('Auras'):EnableCB()
 		else
 			E:GetModule('Auras'):DisableCB()

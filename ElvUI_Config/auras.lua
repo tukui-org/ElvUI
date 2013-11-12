@@ -184,7 +184,7 @@ E.Options.args.auras = {
 			order = 9,
 			type = 'group',
 			name = L['Consolidated Buffs'],	
-			disabled = function() return not E.private.general.minimap.enable end,				
+			disabled = function() return (E.private.general.minimap.enable ~= true or E.private.auras.disableBlizzard ~= true) end,				
 			get = function(info) return E.db.auras.consolidatedBuffs[ info[#info] ] end,
 			set = function(info, value) E.db.auras.consolidatedBuffs[ info[#info] ] = value; E:GetModule('Minimap'):UpdateSettings() end,			
 			args = {
