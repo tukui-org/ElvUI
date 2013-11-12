@@ -39,8 +39,8 @@
 -- end
 -- @class file
 -- @name AceDB-3.0.lua
--- @release $Id: AceDB-3.0.lua 1035 2011-07-09 03:20:13Z kaelten $
-local ACEDB_MAJOR, ACEDB_MINOR = "AceDB-3.0", 22
+-- @release $Id: AceDB-3.0.lua 1096 2013-09-13 15:05:40Z nevcairiel $
+local ACEDB_MAJOR, ACEDB_MINOR = "AceDB-3.0", 23
 local AceDB, oldminor = LibStub:NewLibrary(ACEDB_MAJOR, ACEDB_MINOR)
 
 if not AceDB then return end -- No upgrade needed
@@ -522,6 +522,15 @@ function DBObjectLib:DeleteProfile(name, silent)
 	if self.children then
 		for _, db in pairs(self.children) do
 			DBObjectLib.DeleteProfile(db, name, true)
+		end
+	end
+
+	-- switch all characters that use this profile back to the default
+	if self.sv.profileKeys then
+		for key, profile in pairs(self.sv.profileKeys) do
+			if profile == name then
+				self.sv.profileKeys[key] = nil
+			end
 		end
 	end
 

@@ -180,6 +180,7 @@ function A:OnAttributeChanged(attribute, value)
 end
 	
 function A:UpdateHeader(header)
+	if(not E.private.auras.enable) then return end
 	local db = self.db.debuffs
 	if header:GetAttribute('filter') == 'HELPFUL' then
 		db = self.db.buffs

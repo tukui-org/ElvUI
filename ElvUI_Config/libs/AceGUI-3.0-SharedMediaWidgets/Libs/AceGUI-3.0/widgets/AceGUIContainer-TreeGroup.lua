@@ -2,14 +2,14 @@
 TreeGroup Container
 Container that uses a tree control to switch between groups.
 -------------------------------------------------------------------------------]]
-local Type, Version = "TreeGroup", 32
+local Type, Version = "TreeGroup", 34
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
 -- Lua APIs
 local next, pairs, ipairs, assert, type = next, pairs, ipairs, assert, type
 local math_min, math_max, floor = math.min, math.max, floor
-local select, tremove, unpack = select, table.remove, unpack
+local select, tremove, unpack, tconcat = select, table.remove, unpack, table.concat
 
 -- WoW APIs
 local CreateFrame, UIParent = CreateFrame, UIParent
@@ -385,7 +385,7 @@ local methods = {
 		end
 	end,
 
-	["RefreshTree"] = function(self)
+	["RefreshTree"] = function(self,scrollToSelection)
 		local buttons = self.buttons 
 		local lines = self.lines
 
@@ -407,6 +407,8 @@ local methods = {
 		local tree = self.tree
 
 		local treeframe = self.treeframe
+		
+		status.scrollToSelection = status.scrollToSelection or scrollToSelection	-- needs to be cached in case the control hasn't been drawn yet (code bails out below)
 
 		self:BuildLevel(tree, 1)
 
@@ -416,6 +418,9 @@ local methods = {
 		if maxlines <= 0 then return end
 
 		local first, last
+		
+		scrollToSelection = status.scrollToSelection
+		status.scrollToSelection = nil
 
 		if numlines <= maxlines then
 			--the whole tree fits in the frame
@@ -431,11 +436,33 @@ local methods = {
 			if numlines - status.scrollvalue < maxlines then
 				status.scrollvalue = numlines - maxlines
 			end
+			self.noupdate = nil
+			first, last = status.scrollvalue+1, status.scrollvalue + maxlines
+			--show selection?
+			if scrollToSelection and status.selected then
+				local show
+				for i,line in ipairs(lines) do	-- find the line number
+					if line.uniquevalue==status.selected then
+						show=i
+					end
+				end
+				if not show then
+					-- selection was deleted or something?
+				elseif show>=first and show<=last then
+					-- all good
+				else
+					-- scrolling needed!
+					if show<first then
+						status.scrollvalue = show-1
+					else
+						status.scrollvalue = show-maxlines
+					end
+					first, last = status.scrollvalue+1, status.scrollvalue + maxlines
+				end
+			end
 			if self.scrollbar:GetValue() ~= status.scrollvalue then
 				self.scrollbar:SetValue(status.scrollvalue)
 			end
-			self.noupdate = nil
-			first, last = status.scrollvalue+1, status.scrollvalue + maxlines
 		end
 
 		local buttonnum = 1
@@ -467,6 +494,7 @@ local methods = {
 			button:Show()
 			buttonnum = buttonnum + 1
 		end
+		
 	end,
 	
 	["SetSelected"] = function(self, value)
@@ -481,11 +509,12 @@ local methods = {
 		self.filter = false
 		local status = self.status or self.localstatus
 		local groups = status.groups
-		for i = 1, select('#', ...) do
-			groups[BuildUniqueValue(select(i, ...))] = true
+		local path = {...}
+		for i = 1, #path do
+			groups[tconcat(path, "\001", 1, i)] = true
 		end
 		status.selected = uniquevalue
-		self:RefreshTree()
+		self:RefreshTree(true)
 		self:Fire("OnGroupSelected", uniquevalue)
 	end,
 
@@ -566,6 +595,11 @@ local methods = {
 		if status.fullwidth then
 			self:OnWidthSet(status.fullwidth)
 		end
+	end,
+
+	["GetTreeWidth"] = function(self)
+		local status = self.status or self.localstatus
+		return status.treewidth or DEFAULT_TREE_WIDTH
 	end,
 
 	["LayoutFinished"] = function(self, width, height)

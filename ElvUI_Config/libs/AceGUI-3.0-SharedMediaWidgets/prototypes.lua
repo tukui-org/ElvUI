@@ -3,7 +3,7 @@
 local DataVersion = 9001 -- dev version always overwrites everything else :)
 --@end-debug@]===]
 --@non-debug@
-local DataVersion = 37
+local DataVersion = 47
 --@end-non-debug@
 local AGSMW = LibStub:NewLibrary("AceGUISharedMediaWidgets-1.0", DataVersion)
 
@@ -74,6 +74,7 @@ do
 			DLeft:SetTexture([[Interface\Glues\CharacterCreate\CharacterCreate-LabelFrame]])
 			DLeft:SetTexCoord(0, 0.1953125, 0, 1)
 		frame.DLeft = DLeft
+
 		local DRight = frame:CreateTexture(nil, "ARTWORK")
 			DRight:SetWidth(25)
 			DRight:SetHeight(64)
@@ -82,6 +83,7 @@ do
 			DRight:SetTexture([[Interface\Glues\CharacterCreate\CharacterCreate-LabelFrame]])
 			DRight:SetTexCoord(0.8046875, 1, 0, 1)
 		frame.DRight = DRight
+
 		local DMiddle = frame:CreateTexture(nil, "ARTWORK")
 			DMiddle:SetHeight(64)
 			DMiddle:SetPoint("TOP", DLeft, "TOP")
@@ -162,10 +164,9 @@ do
 
 	local function AddFrame(self, frame)
 		frame:SetParent(self.contentframe)
-		local strata = self:GetFrameStrata()
-		frame:SetFrameStrata(strata)
-		local level =  self:GetFrameLevel() + 100
-		frame:SetFrameLevel(level)
+		frame:SetFrameStrata(self:GetFrameStrata())
+		frame:SetFrameLevel(self:GetFrameLevel() + 100)
+
 		if next(self.contentRepo) then
 			frame:SetPoint("TOPLEFT", self.contentRepo[#self.contentRepo], "BOTTOMLEFT", 0, 0)
 			frame:SetPoint("RIGHT", self.contentframe, "RIGHT", 0, 0)
@@ -177,15 +178,16 @@ do
 			frame:SetPoint("RIGHT", self.contentframe, "RIGHT", 0, 0)
 			self.contentRepo[1] = frame
 		end
+
 		if self.contentframe:GetHeight() > UIParent:GetHeight()*2/5 - 20 then
-			self.scrollframe:SetWidth(146)
+			self.scrollframe:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -28, 12)
 			self:SetHeight(UIParent:GetHeight()*2/5)
 			self.slider:Show()
 			self:SetScript("OnMouseWheel", OnMouseWheel)
 			self.scrollframe:UpdateScrollChildRect()
 			self.slider:SetMinMaxValues(0, self.contentframe:GetHeight()-self.scrollframe:GetHeight())
 		else
-			self.scrollframe:SetWidth(160)
+			self.scrollframe:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -14, 12)
 			self:SetHeight(self.contentframe:GetHeight()+25)
 			self.slider:Hide()
 			self:SetScript("OnMouseWheel", nil)
@@ -223,12 +225,17 @@ do
 				contentframe:SetWidth(160)
 				contentframe:SetHeight(0)
 			frame.contentframe = contentframe
+
 			local scrollframe = CreateFrame("ScrollFrame", nil, frame)
-				scrollframe:SetPoint("TOPLEFT", frame, "TOPLEFT", 14, -13)
-				scrollframe:SetPoint("BOTTOM", frame, "BOTTOM", 0, 12)
 				scrollframe:SetWidth(160)
+				scrollframe:SetPoint("TOPLEFT", frame, "TOPLEFT", 14, -13)
+				scrollframe:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -14, 12)
 				scrollframe:SetScrollChild(contentframe)
 			frame.scrollframe = scrollframe
+
+			contentframe:SetPoint("TOPLEFT", scrollframe)
+			contentframe:SetPoint("TOPRIGHT", scrollframe)
+
 			local bgTex = frame:CreateTexture(nil, "ARTWORK")
 				bgTex:SetAllPoints(scrollframe)
 			frame.bgTex = bgTex
@@ -236,6 +243,7 @@ do
 			frame.AddFrame = AddFrame
 			frame.ClearFrames = ClearFrames
 			frame.contentRepo = {} -- store all our frames in here so we can get rid of them later
+
 			local slider = CreateFrame("Slider", nil, scrollframe)
 				slider:SetOrientation("VERTICAL")
 				slider:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -14, -10)

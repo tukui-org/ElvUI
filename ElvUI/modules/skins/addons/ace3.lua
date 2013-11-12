@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 local AceGUI = LibStub("AceGUI-3.0", true)
-
+local RegisterAsWidget, RegisterAsContainer
 local function SetModifiedBackdrop(self)
 	if self.backdrop then self = self.backdrop end
 	self:SetBackdropBorderColor(unpack(E['media'].rgbvaluecolor))
@@ -92,12 +92,12 @@ function S:SkinAce3()
 	local AceGUI = LibStub("AceGUI-3.0", true)
 	if not AceGUI then return end
 	local oldRegisterAsWidget = AceGUI.RegisterAsWidget
-	AceGUI.RegisterAsWidget = function(self, widget)
+
+	RegisterAsWidget = function(self, widget)
 		if not E.private.skins.ace3.enable then
 			return oldRegisterAsWidget(self, widget)
 		end
 		local TYPE = widget.type
-		--print(TYPE)
 		if TYPE == 'MultiLineEditBox' then
 			local frame = widget.frame
 			
@@ -234,15 +234,14 @@ function S:SkinAce3()
 		end
 		return oldRegisterAsWidget(self, widget)
 	end
+	AceGUI.RegisterAsWidget = RegisterAsWidget
 
 	local oldRegisterAsContainer = AceGUI.RegisterAsContainer
-
-	AceGUI.RegisterAsContainer = function(self, widget)
+	RegisterAsContainer = function(self, widget)
 		if not E.private.skins.ace3.enable then
 			return oldRegisterAsContainer(self, widget)
 		end	
 		local TYPE = widget.type
-
 		if TYPE == "ScrollFrame" then
 			local frame = widget.scrollbar
 			SkinScrollBar(frame)
@@ -314,17 +313,19 @@ function S:SkinAce3()
 
 		return oldRegisterAsContainer(self, widget)
 	end
+	AceGUI.RegisterAsContainer = RegisterAsContainer
 end
 
-if not AceGUI then
-	local f = CreateFrame("Frame")
-	f:RegisterEvent("ADDON_LOADED")
-	f:SetScript("OnEvent", function(self, event, addon)
-		if LibStub("AceGUI-3.0", true) then
-			S:SkinAce3()
-			self:UnregisterEvent("ADDON_LOADED")
-		end
-	end)
-	return 
+local function attemptSkin()
+	local AceGUI = LibStub("AceGUI-3.0", true)
+	if AceGUI and (AceGUI.RegisterAsContainer ~= RegisterAsContainer or AceGUI.RegisterAsWidget ~= RegisterAsWidget) then
+		S:SkinAce3()
+	end
 end
+
+local f = CreateFrame("Frame")
+f:RegisterEvent("ADDON_LOADED")
+f:SetScript("OnEvent", attemptSkin)
+attemptSkin()
+
 S:RegisterSkin('Ace3', S.SkinAce3, true)
