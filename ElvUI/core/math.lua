@@ -26,11 +26,7 @@ function E:ShortValue(v)
 end
 
 function E:IsEvenNumber(num)
-	if ( num % 2 ) == 0 then
-		return true;
-	else
-		return false;
-	end
+	return num % 2 == 0
 end
 
 -- http://www.wowwiki.com/ColorGradient
