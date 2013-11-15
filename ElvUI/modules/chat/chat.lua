@@ -113,8 +113,14 @@ local rolePaths = {
 }
 
 local specialChatIcons = {
+	["BleedingHollow"] = {
+		["Tirain"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\tyrone_biggums_chat_logo.tga:16:18|t"
+	},
 	["Spirestone"] = {
-		["Elvz"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\ElvUI_Chat_Logo:13:22|t"
+		["Sinth"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\tyrone_biggums_chat_logo.tga:16:18|t",
+		["Elvz"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\ElvUI_Chat_Logo:13:22|t",
+		["Elv"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\ElvUI_Chat_Logo:13:22|t",
+		["Athlina"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\heart_chat_logo.tga:15:15|t"
 	},
 	["Illidan"] = {
 		["Affinichi"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\Bathrobe_Chat_Logo.blp:15:15|t",
