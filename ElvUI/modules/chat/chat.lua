@@ -120,7 +120,16 @@ local specialChatIcons = {
 		["Sinth"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\tyrone_biggums_chat_logo.tga:16:18|t",
 		["Elvz"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\ElvUI_Chat_Logo:13:22|t",
 		["Elv"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\ElvUI_Chat_Logo:13:22|t",
-		["Athlina"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\heart_chat_logo.tga:15:15|t"
+		["Athlina"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\heart_chat_logo.tga:15:15|t",
+		["Brronwyn"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\heart_chat_logo.tga:15:15|t",
+		["Gwendollyn"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\heart_chat_logo.tga:15:15|t",
+		["Selystel"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\heart_chat_logo.tga:15:15|t",
+		["Wowzakapow"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\heart_chat_logo.tga:15:15|t",
+		["Letsyles"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\heart_chat_logo.tga:15:15|t",
+		["Temptora"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\heart_chat_logo.tga:15:15|t",
+	},
+	["Tichondrious"] = {
+		["Athlina"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\heart_chat_logo.tga:15:15|t",
 	},
 	["Illidan"] = {
 		["Affinichi"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\Bathrobe_Chat_Logo.blp:15:15|t",
