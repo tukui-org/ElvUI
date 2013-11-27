@@ -70,7 +70,7 @@ function AddOn:OnInitialize()
 			self:CopyTable(self.private, ElvPrivateDB.profiles[profileKey])
 		end
 	end	
-
+ 
 	if self.private.general.pixelPerfect then
 		self.Border = 1;
 		self.Spacing = 0;
