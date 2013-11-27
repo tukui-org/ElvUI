@@ -102,6 +102,7 @@ function A:CreateButton()
 	button.cd = CreateFrame('Cooldown', nil, button, 'CooldownFrameTemplate')
 	button.cd:SetInside()
 	button.cd.noOCC = true;
+	button.cd.noCooldownCount = true;
 	
 	button.timer = button.cd:CreateFontString(nil, 'OVERLAY')
 	button.timer:SetPoint('CENTER')
