@@ -194,7 +194,11 @@ function UF:UpdateAuraTimer(elapsed)
 	
 	if(self.expiration <= 0) then
 		self:SetScript('OnUpdate', nil)
-		self.text:SetText('')
+		
+		if(self.text:GetFont()) then
+			self.text:SetText('')
+		end
+
 		return
 	end
 

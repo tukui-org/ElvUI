@@ -330,6 +330,15 @@ local function LoadSkin()
 	S:HandleDropDownBox(ScenarioQueueFrameTypeDropDown)
 
 	-- Looking for raid
+	LFRBrowseFrameListScrollFrame:StripTextures()
+
+	LFRBrowseFrame:HookScript('OnShow', function()
+		if not LFRBrowseFrameListScrollFrameScrollBar.skinned then
+			S:HandleScrollBar(LFRBrowseFrameListScrollFrameScrollBar)
+			LFRBrowseFrameListScrollFrameScrollBar.skinned = true
+		end
+	end)
+
 	LFRBrowseFrameRoleInset:DisableDrawLayer("BORDER")
 	RaidBrowserFrameBg:Hide()
 	LFRQueueFrameSpecificListScrollFrameScrollBackgroundTopLeft:Hide()
