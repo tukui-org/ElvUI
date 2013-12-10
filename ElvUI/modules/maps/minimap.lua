@@ -73,7 +73,7 @@ local menuList = {
 	{text = LFG_TITLE,
 	func = function() PVEFrame_ToggleFrame(); end},
 	{text = L["Raid Browser"],
-	func function() ToggleFrame(RaidBrowserFrame) end}
+	func = function() ToggleFrame(RaidBrowserFrame); end},
 	{text = ENCOUNTER_JOURNAL, 
 	func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then EncounterJournal_LoadUI(); end ToggleFrame(EncounterJournal) end}
 }
