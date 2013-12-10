@@ -76,9 +76,9 @@ local menuList = {
 	func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then EncounterJournal_LoadUI(); end ToggleFrame(EncounterJournal) end}
 }
 
-if(C_StorePublic.IsEnabled()) then
+--if(C_StorePublic.IsEnabled()) then
 	tinsert(menuList, {text = BLIZZARD_STORE, func = function() StoreMicroButton:Click() end})
-end
+--end
 tinsert(menuList, 	{text = HELP_BUTTON, func = function() ToggleHelpFrame() end})
 
 --Support for other mods
