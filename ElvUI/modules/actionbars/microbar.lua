@@ -63,12 +63,12 @@ function AB:UpdateMicroButtonsParent(parent)
 end
 
 local __buttons = {}
-if(C_StorePublic.IsEnabled()) then
+--if(C_StorePublic.IsEnabled()) then
 	__buttons[10] = "StoreMicroButton"
 	for i=10, #MICRO_BUTTONS do
 		__buttons[i + 1] = MICRO_BUTTONS[i]
 	end
-end
+--end
 
 function AB:UpdateMicroPositionDimensions()
 	if not ElvUI_MicroBar then return; end
