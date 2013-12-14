@@ -344,6 +344,8 @@ local function LoadSkin()
 	LFRQueueFrameSpecificListScrollFrameScrollBackgroundTopLeft:Hide()
 	LFRQueueFrameSpecificListScrollFrameScrollBackgroundBottomRight:Hide()
 	LFRBrowseFrameRoleInsetBg:Hide()
+	LFRQueueFrameCommentScrollFrame:CreateBackdrop()
+	LFRBrowseFrameColumnHeader1:SetWidth(88) --Fix the columns being slightly off
 
 	for i = 1, 14 do
 		if i ~= 6 and i ~= 8 then
@@ -371,6 +373,7 @@ local function LoadSkin()
 			
 			LFRBrowseFrame:StripTextures()			
 			for _, roleButton in pairs(roleButtons) do
+				roleButton:SetNormalTexture("")
 				S:HandleCheckBox(roleButton.checkButton)
 				roleButton:GetChildren():SetFrameLevel(roleButton:GetChildren():GetFrameLevel() + 1)
 			end
