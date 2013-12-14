@@ -321,11 +321,12 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 	
 	if UF:CheckFilter(db.useWhitelist, isFriend) then
 		local whiteList = E.global['unitframe']['aurafilters']['Whitelist (Strict)'].spells[name]
-		if whiteList and whiteList.enable and (whitelist.spellID and whitelist.spellID == spellID) then
-			returnValue = true;
-		else
-			returnValue = false;
-		end
+		if whiteList and whiteList.enable then
+			if whitelist.spellID and whitelist.spellID == spellID then
+				returnValue = true;
+			else
+				returnValue = false;
+			end
 			icon.priority = whiteList.priority
 		elseif not anotherFilterExists then
 			returnValue = false
