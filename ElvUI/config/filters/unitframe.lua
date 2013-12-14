@@ -13,6 +13,10 @@ end
 local function Defaults(priorityOverride)
 	return {['enable'] = true, ['priority'] = priorityOverride or 0}
 end
+
+local function DefaultsID(spellID, priorityOverride)
+	return {['enable'] = true, ['spellID'] = spellID, ['priority'] = priorityOverride or 0}
+end
 G.unitframe.aurafilters = {};
 
 --[[
@@ -433,6 +437,13 @@ G.unitframe.aurafilters['Whitelist'] = {
 		[SpellName(33206)] = Defaults(), --Pain Suppression
 		[SpellName(116849)] = Defaults(), --Life Cocoon
 		[SpellName(22812)] = Defaults(), --Barkskin
+	},
+}
+
+G.unitframe.aurafilters['Whitelist (Strict)'] = {
+	['type'] = 'Whitelist',
+	['spells'] = {
+		[SpellName(143198)] = DefaultsID(143198), --Garrote (Fallen Protectors)
 	},
 }
 
