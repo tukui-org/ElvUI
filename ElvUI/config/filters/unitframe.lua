@@ -464,6 +464,14 @@ G.unitframe.aurafilters['Whitelist'] = {
 G.unitframe.aurafilters['Whitelist (Strict)'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
+		[SpellName(123059)] = DefaultsID(123059), --Destabilize (Amber-Shaper Un'sok)
+		[SpellName(136431)] = DefaultsID(136431), --Shell Concussion (Tortos)
+		[SpellName(137332)] = DefaultsID(137332), --Beast of Nightmares (Twin Consorts)
+		[SpellName(137375)] = DefaultsID(137375), --Beast of Nightmares (Twin Consorts)
+		[SpellName(144351)] = DefaultsID(144351), --Mark of Arrogance (Norushen)
+		[SpellName(142863)] = DefaultsID(142863), --Weak Ancient Barrier (Malkorok)
+		[SpellName(142864)] = DefaultsID(142864), --Ancient Barrier (Malkorok)
+		[SpellName(142865)] = DefaultsID(142865), --Strong Ancient Barrier (Malkorok)
 		[SpellName(143198)] = DefaultsID(143198), --Garrote (Fallen Protectors)
 	},
 }
