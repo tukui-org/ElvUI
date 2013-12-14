@@ -13,6 +13,10 @@ end
 local function Defaults(priorityOverride)
 	return {['enable'] = true, ['priority'] = priorityOverride or 0}
 end
+
+local function DefaultsID(spellID, priorityOverride)
+	return {['enable'] = true, ['spellID'] = spellID, ['priority'] = priorityOverride or 0}
+end
 G.unitframe.aurafilters = {};
 
 --[[
@@ -454,6 +458,13 @@ G.unitframe.aurafilters['Whitelist'] = {
 		[SpellName(142864)] = Defaults(), --Ancient Barrier (Malkorok)
 		[SpellName(142865)] = Defaults(), --Strong Ancient Barrier (Malkorok)
 		[SpellName(143198)] = Defaults(), --Garrote (Fallen Protectors)
+	},
+}
+
+G.unitframe.aurafilters['Whitelist (Strict)'] = {
+	['type'] = 'Whitelist',
+	['spells'] = {
+		[SpellName(143198)] = DefaultsID(143198), --Garrote (Fallen Protectors)
 	},
 }
 

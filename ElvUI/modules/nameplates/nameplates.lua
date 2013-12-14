@@ -1399,6 +1399,9 @@ function NP:SetAuraInstance(guid, spellID, expiration, stacks, caster, duration,
 			if spellList[name] and spellList[name].enable then
 				filter = true;
 			end
+			if trackFilter == 'Whitelist (Strict)' and spellList[name].id and not spellList[name].id == spellID then
+				filter = false;
+			end
 		end
 	end
 	
