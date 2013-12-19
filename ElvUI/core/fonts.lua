@@ -36,8 +36,7 @@ function E:UpdateBlizzardFonts()
 		SetCVar("CombatHealing",0)
 
 		-- set an invisible font for xp, honor kill, etc
-		local INVISIBLE = [=[Interface\Addons\ElvUI\media\fonts\Invisible.ttf]=]
-		COMBAT = INVISIBLE
+		COMBAT = [=[Interface\Addons\ElvUI\media\fonts\Invisible.ttf]=]
 	end
 
 	UNIT_NAME_FONT     = NAMEFONT
