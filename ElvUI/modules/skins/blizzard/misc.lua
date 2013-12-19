@@ -93,6 +93,7 @@ local function LoadSkin()
 		"Quit", 
 		"Continue", 
 		"MacOptions",
+		"Store",
 		"Help"
 	}
 	
