@@ -880,21 +880,21 @@ function AB:FixABPositions()
 	if ABdb.bar3.enabled == true then
 		if ABdb.bar2.enabled == true and ABdb.bar1.heightMult == 2 then
 			ElvAB_2:ClearAllPoints()
-			ElvAB_2:Point("BOTTOM",ElvUI_Bar1,"TOP",0,-38)
+			ElvAB_2:Point("TOP",ElvUI_Bar1,"TOP")
 			E:SaveMoverPosition("ElvAB_2")
 			ElvAB_3:ClearAllPoints()
 			ElvAB_3:Point("BOTTOM",ElvUI_Bar1,"TOP",0,2)
 			E:SaveMoverPosition("ElvAB_3")
 		elseif ABdb.bar2.enabled == true and ABdb.bar1.heightMult == 3 then
 			ElvAB_2:ClearAllPoints()
-			ElvAB_2:Point("BOTTOM",ElvUI_Bar1,"TOP",0,-72)
+			ElvAB_2:Point("LEFT",ElvUI_Bar1,"LEFT")
 			E:SaveMoverPosition("ElvAB_2")
 			ElvAB_3:ClearAllPoints()
-			ElvAB_3:Point("BOTTOM",ElvUI_Bar1,"TOP",0,-38)
+			ElvAB_3:Point("TOP",ElvUI_Bar1,"TOP")
 			E:SaveMoverPosition("ElvAB_3")
 		elseif ABdb.bar2.enabled ~= true and ABdb.bar1.heightMult == 2 then
 			ElvAB_3:ClearAllPoints()
-			ElvAB_3:Point("BOTTOM",ElvUI_Bar1,"TOP",0,-38)
+			ElvAB_3:Point("TOP",ElvUI_Bar1,"TOP")
 			E:SaveMoverPosition("ElvAB_3")
 		end
 		E:Print("ActionBar 2 and 3 have been repositioned")
