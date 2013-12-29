@@ -11,6 +11,7 @@ V['general'] = {
 	["namefont"] = "ElvUI Font",
 	['chatBubbles'] = 'backdrop',
 	['pixelPerfect'] = true,
+	['lfrEnhancement'] = true,
 
 	['minimap'] = {
 		['enable'] = true,
