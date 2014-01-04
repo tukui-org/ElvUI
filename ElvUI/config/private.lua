@@ -11,6 +11,7 @@ V['general'] = {
 	["namefont"] = "Friz Quadrata TT",
 	['chatBubbles'] = 'backdrop',
 	['pixelPerfect'] = false,
+	['lfrEnhancement'] = true,
 
 	['minimap'] = {
 		['enable'] = true,
