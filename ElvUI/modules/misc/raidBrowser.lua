@@ -203,6 +203,7 @@ function mod:Initialize()
 	for i=1, NUM_LFR_LIST_BUTTONS do
 		local button = _G["LFRBrowseFrameListButton"..i];
 		button:SetScript("OnEnter", self.Button_OnEnter);
+		button.level:SetWidth(22)
 	end
 
 	for i = 1, 7 do
