@@ -44,13 +44,13 @@ function mod:Button_OnEnter()
 		local groupMembers = 0;		
 		local displayedMembersLabel = false;
 		local classTextColor;
+
 		for i=0, partyMembers do
 			local memberName, level, relationship, className, areaName, comment, isLeader, isTank, isHealer, isDamage, bossKills, specID, isGroupLeader, armor, spellDamage, plusHealing, CritMelee, CritRanged, critSpell, mp5, mp5Combat, attackPower, agility, maxHealth, maxMana, gearRating, avgILevel, defenseRating, dodgeRating, BlockRating, ParryRating, HasteRating, expertise = SearchLFGGetPartyResults(self.index, i);
 			if (avgILevel and avgILevel > 0) then
 				groupILevel = groupILevel + avgILevel;
 				groupMembers = groupMembers + 1
 			end
-
 			if (isTank or isHealer) then
 				if ( not displayedMembersLabel ) then
 					displayedMembersLabel = true;
@@ -129,7 +129,7 @@ function mod:Button_OnEnter()
 end
 
 function mod:LFRBrowseFrameListButton_SetData(button, index)
-	local name, level, areaName, className, comment, partyMembers, status, class, encountersTotal, encountersComplete, isIneligible, isLeader, isTank, isHealer, isDamage, bossKills, specID, isGroupLeader, _, _, _, _, _, _, _, _, _, _, _, _, gearRating, avgILevel  = SearchLFGGetResults(index);
+	local name, level, areaName, className, comment, partyMembers, status, class, encountersTotal, encountersComplete, isIneligible, isLeader, isTank, isHealer, isDamage, bossKills, specID, isGroupLeader, _, _, _, _, _, _, _, _, _, _, _, _, _, avgILevel  = SearchLFGGetResults(index);
 
 	local classTextColor;
 	if ( class ) then
