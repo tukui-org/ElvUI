@@ -301,10 +301,9 @@ function CH:StyleChat(frame)
 		
 		if text:len() < 5 then
 			if text:sub(1, 4) == "/tt " then
-				local unitname, realm
-				unitname, realm = UnitName("target")
+				local unitname, realm = UnitName("target")
 				if unitname then unitname = gsub(unitname, " ", "") end
-				if unitname and not UnitIsSameServer("player", "target") then
+				if unitname and UnitRealmRelationship("target") ~= LE_REALM_RELATION_SAME then
 					unitname = unitname .. "-" .. gsub(realm, " ", "")
 				end
 				ChatFrame_SendTell((unitname or L['Invalid Target']), ChatFrame1)
