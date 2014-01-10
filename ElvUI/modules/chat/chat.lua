@@ -242,20 +242,49 @@ function CH:StyleChat(frame)
 	end
 
 	hooksecurefunc(tab, "SetAlpha", function(t, alpha)
-		if alpha ~= 1 and (not t.isDocked or GeneralDockManager.selected:GetID() == t:GetID()) then
+		if alpha ~= 1 then
 			t:SetAlpha(1)
-		elseif alpha < 0.6 then
-			t:SetAlpha(0.6)
 		end
 	end)
+	
+	local selectedString = "|cffffd900>|r %s |cffffd900<|r"
 
 	tab.text = _G[name.."TabText"]
+	if GeneralDockManager.selected:GetID() == tab:GetID() then
+		tab.text:SetText(format(selectedString, tab.text:GetText()))
+	end
 	tab.text:SetTextColor(unpack(E["media"].rgbvaluecolor))
 	hooksecurefunc(tab.text, "SetTextColor", function(t, r, g, b, a)
 		local rR, gG, bB = unpack(E["media"].rgbvaluecolor)
 
 		if r ~= rR or g ~= gG or b ~= bB then
 			t:SetTextColor(rR, gG, bB)
+		end
+	end)
+
+	hooksecurefunc(tab, "SetText", function(t)
+		if t.isDocked and GeneralDockManager.selected:GetID() == t:GetID() then
+			t.text:SetText(format(selectedString, t.text:GetText()))
+		end
+	end)
+
+	hooksecurefunc(tab, "SetWidth", function(t)
+		t.text:ClearAllPoints()
+		t.text:SetPoint("CENTER", t, "CENTER", 0, -5)
+	end)
+
+	tab:HookScript("OnClick", function(t)
+		local selectedId = GeneralDockManager.selected:GetID()
+		if t.isDocked and selectedId == t:GetID() then
+			t.text:SetText(format(selectedString, (GetChatWindowInfo(t:GetID()))))
+
+			for i=1, CreatedFrames do
+				t = _G[format("ChatFrame%sTab", i)]
+				if t.isDocked and selectedId ~= t:GetID() then
+					t.text:SetText((GetChatWindowInfo(t:GetID())))
+				end
+				PanelTemplates_TabResize(t, 0, nil, 40, 100);
+			end
 		end
 	end)
 	
@@ -346,7 +375,7 @@ function CH:StyleChat(frame)
 		
 	--copy chat button
 	frame.button = CreateFrame('Frame', format("CopyChatButton%d", id), frame)
-	frame.button:SetAlpha(0.35)
+	frame.button:SetAlpha(0)
 	frame.button:Size(20, 22)
 	frame.button:SetPoint('TOPRIGHT')
 	
@@ -363,14 +392,7 @@ function CH:StyleChat(frame)
 	end)
 	
 	frame.button:SetScript("OnEnter", function(self) self:SetAlpha(1) end)
-	frame.button:SetScript("OnLeave", function(self)
-		if _G[self:GetParent():GetName().."TabText"]:IsShown() then
-			self:SetAlpha(0.35)
-		else
-			self:SetAlpha(0)
-		end
-
-	end)
+	frame.button:SetScript("OnLeave", function(self) self:SetAlpha(0) end)
 		
 	CreatedFrames = id
 	frame.styled = true
@@ -466,7 +488,7 @@ function CH:SetupChatTabs(frame, hook)
 		_G[frame:GetName().."Text"]:Show()
 		
 		if frame.owner and frame.owner.button and GetMouseFocus() ~= frame.owner.button then
-			frame.owner.button:SetAlpha(0.35)
+			frame.owner.button:SetAlpha(0)
 		end
 		if frame.conversationIcon then
 			frame.conversationIcon:Show()
