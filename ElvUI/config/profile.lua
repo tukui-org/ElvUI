@@ -1,8 +1,5 @@
 ﻿local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local _, ns = ...
-local ElvUF = ns.oUF
-local _, unitClass = UnitClass("player");
-local valueR, valueG, valueB = ElvUF.colors.class[unitClass][1], ElvUF.colors.class[unitClass][2], ElvUF.colors.class[unitClass][3]
 
 P.gridSize = 64
 P.farmSize = 340
@@ -23,11 +20,11 @@ P['general'] = {
 	["fontSize"] = 11,
 	["font"] = "Friz Quadrata TT",
 
-	["bordercolor"] = { r = .20,g = .20,b = .20 },
-	["backdropcolor"] = { r = .16,g = .16,b = .16 },
-	["backdropfadecolor"] = { r = .10,g = .10,b = .10, a = 0.8 },
-	['bubblefadecolor'] = { r = .10,g = .10,b = .10, a = 0.5 },
-	["valuecolor"] = {r = valueR,g = valueG,b = valueB},
+	["bordercolor"] = {r = .20, g = .20, b = .20},
+	["backdropcolor"] = {r = .16, g = .16, b = .16},
+	["backdropfadecolor"] = {r = .10, g = .10, b = .10, a = 0.8},
+	['bubblefadecolor'] = {r = .10, g = .10, b = .10, a = 0.5},
+	["valuecolor"] = {r = 0, g = 180/255, b = 1},
 
 	['mapAlpha'] = 1,
 	['tinyWorldMap'] = true,
@@ -319,7 +316,7 @@ P['tooltip'] = {
 --UnitFrame
 P['unitframe'] = {
 	['smoothbars'] = true,
-	['statusbar'] = "Melli Dark",
+	['statusbar'] = "Perl",
 	['font'] = 'AgencyFB Bold',
 	['fontSize'] = 14,
 	['fontOutline'] = 'OUTLINE',
@@ -341,13 +338,13 @@ P['unitframe'] = {
 		['transparentPower'] = false,
 		['transparentCastbar'] = false,
 		['transparentAurabars'] = false,
-		['castColor'] = { r = .66,g = .66,b = .66 },
+		['castColor'] = { r = 168/255,g = 168/255,b = 168/255 },
 		['castNoInterrupt'] = { r = 0.78, g = 0.25, b = 0.25 },
 		['castClassColor'] = false,
 		
 		
-		['health'] = { r = .27,g = .27,b = .27 },
-		['health_backdrop'] = { r = .38,g = .38,b = .38 },
+		['health'] = { r = 44/255,g = 44/255,b = 44/255 },
+		['health_backdrop'] = { r = 52/255,g = 52/255,b = 52/255 },
 		['tapped'] = { r = 0.55, g = 0.57, b = 0.61},
 		['disconnected'] = { r = 0, g = 0, b = 0},
 		['auraBarBuff'] = { r = .31,g = .31,b = .31 },
