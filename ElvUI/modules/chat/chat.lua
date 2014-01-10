@@ -119,6 +119,8 @@ local specialChatIcons = {
 	["Spirestone"] = {
 		["Sinth"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\tyrone_biggums_chat_logo.tga:16:18|t",
 		["Elvz"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\ElvUI_Chat_Logo:13:22|t",
+		["Sarah"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chipmonk_head.tga:18:22|t",
+		["Itzjonny"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\hulk_head:18:22|t",
 		["Elv"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\ElvUI_Chat_Logo:13:22|t",
 		["Athlina"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\heart_chat_logo.tga:15:15|t",
 		["Brronwyn"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\heart_chat_logo.tga:15:15|t",
@@ -299,10 +301,9 @@ function CH:StyleChat(frame)
 		
 		if text:len() < 5 then
 			if text:sub(1, 4) == "/tt " then
-				local unitname, realm
-				unitname, realm = UnitName("target")
+				local unitname, realm = UnitName("target")
 				if unitname then unitname = gsub(unitname, " ", "") end
-				if unitname and not UnitIsSameServer("player", "target") then
+				if unitname and UnitRealmRelationship("target") ~= LE_REALM_RELATION_SAME then
 					unitname = unitname .. "-" .. gsub(realm, " ", "")
 				end
 				ChatFrame_SendTell((unitname or L['Invalid Target']), ChatFrame1)
@@ -1281,83 +1282,55 @@ end
 
 local locale = GetLocale()
 function CH:CHAT_MSG_CHANNEL(event, message, author, ...)
-	
-	local isSpam = nil
-	if locale == 'enUS' or locale == 'enGB' then
-		isSpam = CH.SpamFilter(self, event, message, author, ...)
+	local blockFlag = false
+	local msg = PrepareMessage(author, message)
+
+	-- ignore player messages
+	if author == UnitName("player") then return CH.FindURL(self, event, message, author, ...) end
+	if msgList[msg] and CH.db.throttleInterval ~= 0 then
+		if difftime(time(), msgTime[msg]) <= CH.db.throttleInterval then
+			blockFlag = true
+		end
 	end
 	
-	if isSpam then
+	if blockFlag then
 		return true;
 	else
-		local blockFlag = false
-		local msg = PrepareMessage(author, message)
-
-		-- ignore player messages
-		if author == UnitName("player") then return CH.FindURL(self, event, message, author, ...) end
-		if msgList[msg] and CH.db.throttleInterval ~= 0 then
-			if difftime(time(), msgTime[msg]) <= CH.db.throttleInterval then
-				blockFlag = true
-			end
+		if CH.db.throttleInterval ~= 0 then
+			msgTime[msg] = time()
 		end
 		
-		if blockFlag then
-			return true;
-		else
-			if CH.db.throttleInterval ~= 0 then
-				msgTime[msg] = time()
-			end
-			
-			return CH.FindURL(self, event, message, author, ...)
-		end
+		return CH.FindURL(self, event, message, author, ...)
 	end
 end
 
 function CH:CHAT_MSG_YELL(event, message, author, ...)
-	local isSpam = nil
-	if locale == 'enUS' or locale == 'enGB' then
-		isSpam = CH.SpamFilter(self, event, message, author, ...)
+	local blockFlag = false
+	local msg = PrepareMessage(author, message)
+	
+	if msg == nil then return CH.FindURL(self, event, message, author, ...) end	
+
+	-- ignore player messages
+	if author == UnitName("player") then return CH.FindURL(self, event, message, author, ...) end
+	if msgList[msg] and msgCount[msg] > 1 and CH.db.throttleInterval ~= 0 then
+		if difftime(time(), msgTime[msg]) <= CH.db.throttleInterval then
+			blockFlag = true
+		end
 	end
 	
-	if isSpam then
+	if blockFlag then
 		return true;
 	else
-		local blockFlag = false
-		local msg = PrepareMessage(author, message)
-		
-		if msg == nil then return CH.FindURL(self, event, message, author, ...) end	
-
-		-- ignore player messages
-		if author == UnitName("player") then return CH.FindURL(self, event, message, author, ...) end
-		if msgList[msg] and msgCount[msg] > 1 and CH.db.throttleInterval ~= 0 then
-			if difftime(time(), msgTime[msg]) <= CH.db.throttleInterval then
-				blockFlag = true
-			end
+		if CH.db.throttleInterval ~= 0 then
+			msgTime[msg] = time()
 		end
 		
-		if blockFlag then
-			return true;
-		else
-			if CH.db.throttleInterval ~= 0 then
-				msgTime[msg] = time()
-			end
-			
-			return CH.FindURL(self, event, message, author, ...)
-		end
+		return CH.FindURL(self, event, message, author, ...)
 	end
 end
 
 function CH:CHAT_MSG_SAY(event, message, author, ...)
-	local isSpam = nil
-	if locale == 'enUS' or locale == 'enGB' then
-		isSpam = CH.SpamFilter(self, event, message, author, ...)
-	end
-	
-	if isSpam then
-		return true;
-	else
-		return CH.FindURL(self, event, message, author, ...)
-	end
+	return CH.FindURL(self, event, message, author, ...)
 end
 
 function CH:ThrottleSound()

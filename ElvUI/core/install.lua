@@ -343,13 +343,10 @@ function E:SetupLayout(layout, noDataReset)
 		end
 		
 		if not noDataReset then
-			E.db.unitframe.units.target.buffs.numrows = 1;
 			E.db.unitframe.units.target.buffs.anchorPoint = 'TOPRIGHT';
 			E.db.unitframe.units.target.buffs.yOffset = 2;
-			E.db.unitframe.units.target.debuffs.numrows = 1;
 			E.db.unitframe.units.target.debuffs.anchorPoint = 'TOPRIGHT';
 			E.db.unitframe.units.target.debuffs.yOffset = 1;
-			E.db.unitframe.units.target.castbar.yOffset = 0;
 			
 			E.db.unitframe.units.targettarget.height = 35;
 			E.db.unitframe.units.targettarget.debuffs.anchorPoint = 'TOPRIGHT';
@@ -376,8 +373,6 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.party.healPrediction = true;
 			E.db.unitframe.units.party.health.frequentUpdates = true;
 			E.db.unitframe.units.party.startFromCenter = true;
-			E.db.unitframe.units.party.debuffs.useFilter = 'Blacklist';
-			E.db.unitframe.units.party.debuffs.xOffset = 24;
 			E.db.unitframe.units.party.petsGroup.enable = true;
 			E.db.unitframe.units.party.petsGroup.width = 80;
 			E.db.unitframe.units.party.petsGroup.yOffset = 3;
@@ -388,17 +383,12 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.raid10.healPrediction = true;
 			E.db.unitframe.units.raid10.health.frequentUpdates = true;
 			E.db.unitframe.units.raid10.startFromCenter = true;
-			E.db.unitframe.units.raid10.debuffs.useFilter = 'Blacklist';
-			E.db.unitframe.units.raid10.debuffs.xOffset = -9;
 
 			E.db.unitframe.units.raid25.width = 80;
 			E.db.unitframe.units.raid25.horizontalSpacing = 3;
 			E.db.unitframe.units.raid25.healPrediction = true;
 			E.db.unitframe.units.raid25.health.frequentUpdates = true;
 			E.db.unitframe.units.raid25.startFromCenter = true;
-			E.db.unitframe.units.raid25.debuffs.enable = true;
-			E.db.unitframe.units.raid25.debuffs.useFilter = 'Blacklist';
-			E.db.unitframe.units.raid25.debuffs.xOffset = 24;
 			
 			E.db.unitframe.units.raid40.width = 80;
 			E.db.unitframe.units.raid40.horizontalSpacing = 3;

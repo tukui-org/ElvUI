@@ -44,5 +44,6 @@ RegisterStatusbar("Minimalist", "Minimalist.tga")
 RegisterStatusbar("Melli", "Melli.tga")
 RegisterStatusbar("Melli Dark", "MelliDark.tga")
 RegisterStatusbar("Melli Dark Rough", "MelliDarkRough.tga")
+RegisterStatusbar("Perl", "Perl.tga")
 
 RegisterBorder("ElvUI GlowBorder", "glowTex.tga")
