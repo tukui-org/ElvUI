@@ -5,6 +5,7 @@
 --]]
 local parent, ns = ...
 local oUF = ns.oUF
+local tradeskillCurrent, tradeskillTotal, mergeTradeskill = 0, 0, false
 
 local updateSafeZone = function(self)
 	local sz = self.SafeZone
@@ -32,7 +33,7 @@ local UNIT_SPELLCAST_START = function(self, event, unit, spell)
 	if(self.unit ~= unit) or not unit then return end
 
 	local castbar = self.Castbar
-	local name, _, text, texture, startTime, endTime, _, castid, interrupt = UnitCastingInfo(unit)
+	local name, _, text, texture, startTime, endTime, isTradeSkill, castid, interrupt = UnitCastingInfo(unit)
 	if(not name) then
 		castbar:Hide()
 		return
@@ -48,9 +49,21 @@ local UNIT_SPELLCAST_START = function(self, event, unit, spell)
 	castbar.delay = 0
 	castbar.casting = true
 	castbar.interrupt = interrupt
+	castbar.isTradeSkill = isTradeSkill
 
-	castbar:SetMinMaxValues(0, max)
-	castbar:SetValue(0)
+	if(mergeTradeskill and isTradeSkill and UnitIsUnit(unit, "player")) then
+		castbar.duration = castbar.duration + (castbar.max * tradeskillCurrent);
+		castbar.max = max * tradeskillTotal;
+
+		if(unit == "player") then
+			tradeskillCurrent = tradeskillCurrent + 1;
+		end
+		castbar:SetValue(castbar.duration)
+	else
+		castbar:SetValue(0)		
+	end	
+
+	castbar:SetMinMaxValues(0, castbar.max)
 
 	if(castbar.Text) then castbar.Text:SetText(text) end
 	if(castbar.Icon) then castbar.Icon:SetTexture(texture) end
@@ -166,10 +179,16 @@ local UNIT_SPELLCAST_STOP = function(self, event, unit, spellname, _, castid)
 	local castbar = self.Castbar
 	if (castbar.castid ~= castid) then return end
 
-	castbar.casting = nil
-	castbar.interrupt = nil
-	castbar:SetValue(0)
-	castbar:Hide()
+	if(mergeTradeskill and UnitIsUnit(unit, "player")) then
+		if(tradeskillCurrent == tradeskillTotal) then
+			mergeTradeskill = false;
+		end
+	else
+		castbar.casting = nil
+		castbar.interrupt = nil
+		castbar:SetValue(0)
+		castbar:Hide()
+	end
 
 	if(castbar.PostCastStop) then
 		return castbar:PostCastStop(unit, spellname, castid)
@@ -320,7 +339,6 @@ local onUpdate = function(self, elapsed)
 		end
 
 		UpdateCastingTimeInfo(self, duration)
-
 		self.duration = duration
 		self:SetValue(duration)
 	elseif(self.channeling) then
@@ -429,5 +447,11 @@ local Disable = function(object, unit)
 		castbar:SetScript("OnUpdate", nil)
 	end
 end
+
+hooksecurefunc("DoTradeSkill", function(index, num, ...)
+	tradeskillCurrent = 0
+	tradeskillTotal = tonumber(num) or 1
+	mergeTradeskill = true
+end)
 
 oUF:AddElement('Castbar', Update, Enable, Disable)
