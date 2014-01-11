@@ -270,7 +270,7 @@ function CH:StyleChat(frame)
 
 	hooksecurefunc(tab, "SetWidth", function(t)
 		t.text:ClearAllPoints()
-		t.text:SetPoint("CENTER", t, "CENTER", 0, -5)
+		t.text:SetPoint("CENTER", t, "CENTER", 0, -4)
 	end)
 
 	tab:HookScript("OnClick", function(t)
