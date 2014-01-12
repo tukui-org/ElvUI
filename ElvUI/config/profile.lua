@@ -1391,7 +1391,7 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 14,
 				['yOffset'] = -15,
-				['sizeOverride'] = 12,
+				['sizeOverride'] = 15,
 			},	
 			['buffIndicator'] = {
 				['enable'] = true,
@@ -1522,7 +1522,7 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 14,
 				['yOffset'] = -15,
-				['sizeOverride'] = 12,
+				['sizeOverride'] = 15,
 			},	
 			['buffIndicator'] = {
 				['enable'] = true,
@@ -1644,7 +1644,7 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 14,
 				['yOffset'] = -15,
-				['sizeOverride'] = 12,
+				['sizeOverride'] = 15,
 			},	
 			['buffIndicator'] = {
 				['enable'] = true,
@@ -1766,7 +1766,7 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 20,
 				['yOffset'] = 24,
-				['sizeOverride'] = 16,
+				['sizeOverride'] = 15,
 			},	
 			['rdebuffs'] = {
 				['enable'] = false,
