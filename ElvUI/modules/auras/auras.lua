@@ -190,7 +190,7 @@ function A:UpdateHeader(header)
 
 	header:SetAttribute("separateOwn", db.seperateOwn)
 	header:SetAttribute("sortMethod", db.sortMethod)
-	header:SetAttribute("sortDir", db.sortDir)
+	header:SetAttribute("sortDirection", db.sortDir)
 	header:SetAttribute("maxWraps", db.maxWraps)
 	header:SetAttribute("wrapAfter", db.wrapAfter)
 
