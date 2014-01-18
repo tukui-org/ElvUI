@@ -7,6 +7,7 @@ local lfgRoles = {};
 local msgList, msgCount, msgTime = {}, {}, {}
 local good, maybe, filter, login = {}, {}, {}, false
 local chatFilters = {};
+local SELECTED_STRING = "|cffFFFFFF>|r %s |cffFFFFFF<|r"
 local cvars = {
 	["bnWhisperMode"] = true,
 	["conversationMode"] = true,
@@ -250,6 +251,9 @@ function CH:StyleChat(frame)
 	end)
 
 	tab.text = _G[name.."TabText"]
+	if GeneralDockManager.selected:GetID() == tab:GetID() then
+		tab.text:SetText(format(SELECTED_STRING, tab.text:GetText()))
+	end
 	tab.text:SetTextColor(unpack(E["media"].rgbvaluecolor))
 	hooksecurefunc(tab.text, "SetTextColor", function(t, r, g, b, a)
 		local rR, gG, bB = unpack(E["media"].rgbvaluecolor)
@@ -258,7 +262,33 @@ function CH:StyleChat(frame)
 			t:SetTextColor(rR, gG, bB)
 		end
 	end)
+
+	hooksecurefunc(tab, "SetText", function(t)
+		if t.isDocked and GeneralDockManager.selected:GetID() == t:GetID() then
+			t.text:SetText(format(SELECTED_STRING, t.text:GetText()))
+		end
+	end)
 	
+	hooksecurefunc(tab, "SetWidth", function(t)
+		t.text:ClearAllPoints()
+		t.text:SetPoint("CENTER", t, "CENTER", 0, -4)
+	end)
+
+	tab:HookScript("OnClick", function(t)
+		local selectedId = GeneralDockManager.selected:GetID()
+		if t.isDocked and selectedId == t:GetID() then
+			t.text:SetText(format(SELECTED_STRING, (GetChatWindowInfo(t:GetID()))))
+
+			for i=1, CreatedFrames do
+				t = _G[format("ChatFrame%sTab", i)]
+				if t.isDocked and selectedId ~= t:GetID() then
+					t.text:SetText((GetChatWindowInfo(t:GetID())))
+				end
+				PanelTemplates_TabResize(t, 0, nil, 40, 100);
+			end
+		end
+	end)
+
 	if tab.conversationIcon then
 		tab.conversationIcon:ClearAllPoints()
 		tab.conversationIcon:Point('RIGHT', tab.text, 'LEFT', -1, 0)
