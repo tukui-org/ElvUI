@@ -65,8 +65,8 @@ function A:UpdateTime(elapsed)
 	end
 
 	local timerValue, formatID
-	timerValue, formatID, self.nextUpdate = E:GetTimeInfo(self.timeLeft, E.db.auras.decimalThreshold)
-	self.time:SetFormattedText(("%s%s|r%s%s|r"):format(E.TimeColors[formatID], E.TimeFormats[formatID][3], E.IndicatorColors[formatID], E.TimeFormats[formatID][4]), timerValue)	
+	timerValue, formatID, self.nextUpdate = E:GetTimeInfo(self.timeLeft, A.db.fadeThreshold)
+	self.time:SetFormattedText(("%s%s|r"):format(E.TimeColors[formatID], E.TimeFormats[formatID][1]), timerValue)
 
 	if self.timeLeft > E.db.auras.fadeThreshold then
 		E:StopFlash(self)
@@ -265,48 +265,6 @@ function A:CreateAuraHeader(filter)
 	return header
 end
 
-function A:UpdateTimerSettings()
-	-- color for timers that are soon to expire
-	local color = E.db.auras.expiringcolor
-	E.TimeColors[4] = E:RGBToHex(color.r, color.g, color.b)
-	
-	-- color for timers that have seconds remaining
-	color = E.db.auras.secondscolor
-	E.TimeColors[3] = E:RGBToHex(color.r, color.g, color.b)
-	
-	-- color for timers that have minutes remaining
-	color = E.db.auras.minutescolor
-	E.TimeColors[2] = E:RGBToHex(color.r, color.g, color.b)
-	
-	-- color for timers that have hours remaining
-	color = E.db.auras.hourscolor
-	E.TimeColors[1] = E:RGBToHex(color.r, color.g, color.b)
-
-	-- color for timers that have days remaining
-	color = E.db.auras.dayscolor
-	E.TimeColors[0] = E:RGBToHex(color.r, color.g, color.b)
-	
-	-- Color for time indicator (s, m, h, d) on auras that are soon to expire
-	color = E.db.auras.indicatorexpiringcolor
-	E.IndicatorColors[4] = E:RGBToHex(color.r, color.g, color.b) 
-	
-	-- Color for time indicator (s, m, h, d) on auras that have seconds remaining
-	color = E.db.auras.indicatorsecondscolor
-	E.IndicatorColors[3] = E:RGBToHex(color.r, color.g, color.b)
-	
-	-- Color for time indicator (s, m, h, d) on auras that have minutes remaining
-	color = E.db.auras.indicatorminutescolor
-	E.IndicatorColors[2] = E:RGBToHex(color.r, color.g, color.b)
-	
-	-- Color for time indicator (s, m, h, d) on auras that have hours remaining
-	color = E.db.auras.indicatorhourscolor
-	E.IndicatorColors[1] = E:RGBToHex(color.r, color.g, color.b)
-	
-	-- Color for time indicator (s, m, h, d) on auras that have days remaining
-	color = E.db.auras.indicatordayscolor
-	E.IndicatorColors[0] = E:RGBToHex(color.r, color.g, color.b)
-end
-
 function A:Initialize()
 	if self.db then return; end --IDK WHY BUT THIS IS GETTING CALLED TWICE FROM SOMEWHERE...
 
@@ -330,8 +288,6 @@ function A:Initialize()
 	self.DebuffFrame = self:CreateAuraHeader("HARMFUL")
 	self.DebuffFrame:SetPoint("BOTTOMRIGHT", LeftMiniPanel, "BOTTOMLEFT", -(6 + E.Border), 0)
 	E:CreateMover(self.DebuffFrame, "DebuffsMover", L["Player Debuffs"])
-
-	A:UpdateTimerSettings()
 end
 
 E:RegisterModule(A:GetName())

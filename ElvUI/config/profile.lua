@@ -74,8 +74,8 @@ P['bags'] = {
 	['bagSize'] = 32,
 	['bankSize'] = 32,
 	['alignToChat'] = false,
-	['bagWidth'] = 383,
-	['bankWidth'] = 383,
+	['bagWidth'] = 385,
+	['bankWidth'] = 385,
 	['currencyFormat'] = 'ICON_TEXT',
 	['ignoreItems'] = '',
 	['bagBar'] = {
@@ -171,17 +171,6 @@ P['auras'] = {
 	['fontSize'] = 12,
 	['fontOutline'] = 'MONOCHROMEOUTLINE',
 
-	["expiringcolor"] = { r = 1, g = 0, b = 0 },
-	["indicatorexpiringcolor"] = { r = 0.93, g = 0.93, b = 0.93 },
-	["secondscolor"] = { r = 0.93, g = 0.93, b = 0.93 },
-	["indicatorsecondscolor"] = { r = 0.93, g = 0.93, b = 0.93 },
-	["minutescolor"] = { r = 0.93, g = 0.93, b = 0.93 },
-	["indicatorminutescolor"] = { r = 0.93, g = 0.93, b = 0.93 },
-	["hourscolor"] = { r = 0.93, g = 0.93, b = 0.93 },
-	["indicatorhourscolor"] = { r = 0.93, g = 0.93, b = 0.93 },
-	["dayscolor"] = { r = 0.93, g = 0.93, b = 0.93 },
-	["indicatordayscolor"] = { r = 0.93, g = 0.93, b = 0.93 },
-
 	['countYOffset'] = 0,
 	['countXOffset'] = 0,
 	['timeYOffset'] = 0,
@@ -197,7 +186,6 @@ P['auras'] = {
 	},
 	
 	['fadeThreshold'] = -1,
-	['decimalThreshold'] = 4,
 	['buffs'] = {
 		['growthDirection'] = 'LEFT_DOWN',
 		['wrapAfter'] = 12,
@@ -1391,7 +1379,7 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 14,
 				['yOffset'] = -15,
-				['sizeOverride'] = 15,
+				['sizeOverride'] = 12,
 			},	
 			['buffIndicator'] = {
 				['enable'] = true,
@@ -1522,7 +1510,7 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 14,
 				['yOffset'] = -15,
-				['sizeOverride'] = 15,
+				['sizeOverride'] = 12,
 			},	
 			['buffIndicator'] = {
 				['enable'] = true,
@@ -1644,7 +1632,7 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 14,
 				['yOffset'] = -15,
-				['sizeOverride'] = 15,
+				['sizeOverride'] = 12,
 			},	
 			['buffIndicator'] = {
 				['enable'] = true,
@@ -1766,7 +1754,7 @@ P['unitframe'] = {
 				['useFilter'] = '',
 				['xOffset'] = 20,
 				['yOffset'] = 24,
-				['sizeOverride'] = 15,
+				['sizeOverride'] = 16,
 			},	
 			['rdebuffs'] = {
 				['enable'] = false,

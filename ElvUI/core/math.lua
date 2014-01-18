@@ -239,20 +239,11 @@ E.TimeColors = {
 
 -- short and long aura time formats
 E.TimeFormats = {
-	[0] = { '%dd', '%dd', '%d', 'd' },
-	[1] = { '%dh', '%dh', '%d', 'h' },
-	[2] = { '%dm', '%dm', '%d', 'm' },
-	[3] = { '%ds', '%d', '%d', 's' },
-	[4] = { '%.1fs', '%.1f', '%.1f', 's' },
-}
-
--- Colors for time indicators: d (days), h (hours), m (minutes), s (seconds), s (seconds, below fade/decimal threshold)
-E.IndicatorColors = {
-	[0] = '|cff343fb3',
-	[1] = '|cff343fb3',
-	[2] = '|cff343fb3',
-	[3] = '|cff343fb3',
-	[4] = '|cff343fb3',
+	[0] = { '%dd', '%dd' },
+	[1] = { '%dh', '%dh' },
+	[2] = { '%dm', '%dm' },
+	[3] = { '%ds', '%d' },
+	[4] = { '%.1fs', '%.1f' },
 }
 
 local DAY, HOUR, MINUTE = 86400, 3600, 60 --used for calculating aura time text

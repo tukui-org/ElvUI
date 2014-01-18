@@ -128,28 +128,21 @@ E.Options.args.auras = {
 					desc = L['Threshold before text changes red, goes into decimal form, and the icon will fade. Set to -1 to disable.'],
 					min = -1, max = 30, step = 1,
 					order = 1,
-				},	
-				decimalThreshold = {
-					type = 'range',
-					order = 2,
-					name = L["Decimal Threshold"],
-					desc = L['Threshold before the timer changes color and goes into decimal form. Set to -1 to disable.'],
-					min = -1, max = 30, step = 1,
 				},
 				font = {
 					type = "select", dialogControl = 'LSM30_Font',
-					order = 3,
+					order = 2,
 					name = L["Font"],
 					values = AceGUIWidgetLSMlists.font,
 				},
 				fontSize = {
-					order = 4,
+					order = 3,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},	
 				fontOutline = {
-					order = 5,
+					order = 4,
 					name = L["Font Outline"],
 					desc = L["Set the font outline."],
 					type = "select",
@@ -162,238 +155,29 @@ E.Options.args.auras = {
 					},
 				},	
 				timeXOffset = {
-					order = 6,
+					order = 5,
 					name = L['Time xOffset'],
 					type = 'range',
 					min = -60, max = 60, step = 1,
 				},		
 				timeYOffset = {
-					order = 7,
+					order = 6,
 					name = L['Time yOffset'],
 					type = 'range',
 					min = -60, max = 60, step = 1,
 				},	
 				countXOffset = {
-					order = 8,
+					order = 7,
 					name = L['Count xOffset'],
 					type = 'range',
 					min = -60, max = 60, step = 1,
 				},		
 				countYOffset = {
-					order = 9,
+					order = 8,
 					name = L['Count yOffset'],
 					type = 'range',
 					min = -60, max = 60, step = 1,
 				},															
-			},
-		},	
-		colors = {
-			order = 6,
-			type = 'group',
-			name = L['Colors'],
-			args = {
-				numbers = {
-					order = 1,
-					type = 'group',
-					guiInline = true,
-					name = L['Numbers'],
-					args = {
-						restoreColors = {
-							order = 1,
-							type = 'execute',
-							name = L['Restore Defaults'],
-							func = function()
-								E.db.auras.expiringcolor = P['auras'].expiringcolor;
-								E.db.auras.secondscolor = P['auras'].secondscolor;
-								E.db.auras.minutescolor = P['auras'].minutescolor;
-								E.db.auras.hourscolor = P['auras'].hourscolor;
-								E.db.auras.dayscolor = P['auras'].dayscolor;
-								A:UpdateTimerSettings()
-							end,
-						},
-						expiringcolor = {
-							type = 'color',
-							order = 2,
-							name = L['Expiring'],
-							desc = L['Color when the text is about to expire'],
-							get = function(info)
-								local t = E.db.auras[ info[#info] ]
-								return t.r, t.g, t.b, t.a
-							end,
-							set = function(info, r, g, b)
-								E.db.auras[ info[#info] ] = {}
-								local t = E.db.auras[ info[#info] ]
-								t.r, t.g, t.b = r, g, b
-								A:UpdateTimerSettings()
-							end,					
-						},
-						secondscolor = {
-							type = 'color',
-							order = 3,
-							name = L['Seconds'],
-							desc = L['Color when the text is in the seconds format.'],
-							get = function(info)
-								local t = E.db.auras[ info[#info] ]
-								return t.r, t.g, t.b, t.a
-							end,
-							set = function(info, r, g, b)
-								E.db.auras[ info[#info] ] = {}
-								local t = E.db.auras[ info[#info] ]
-								t.r, t.g, t.b = r, g, b
-								A:UpdateTimerSettings()
-							end,				
-						},
-						minutescolor = {
-							type = 'color',
-							order = 4,
-							name = L['Minutes'],
-							desc = L['Color when the text is in the minutes format.'],
-							get = function(info)
-								local t = E.db.auras[ info[#info] ]
-								return t.r, t.g, t.b, t.a
-							end,
-							set = function(info, r, g, b)
-								E.db.auras[ info[#info] ] = {}
-								local t = E.db.auras[ info[#info] ]
-								t.r, t.g, t.b = r, g, b
-								A:UpdateTimerSettings()
-							end,				
-						},
-						hourscolor = {
-							type = 'color',
-							order = 5,
-							name = L['Hours'],
-							desc = L['Color when the text is in the hours format.'],
-							get = function(info)
-								local t = E.db.auras[ info[#info] ]
-								return t.r, t.g, t.b, t.a
-							end,
-							set = function(info, r, g, b)
-								E.db.auras[ info[#info] ] = {}
-								local t = E.db.auras[ info[#info] ]
-								t.r, t.g, t.b = r, g, b
-								A:UpdateTimerSettings()
-							end,				
-						},	
-						dayscolor = {
-							type = 'color',
-							order = 6,
-							name = L['Days'],
-							desc = L['Color when the text is in the days format.'],
-							get = function(info)
-								local t = E.db.auras[ info[#info] ]
-								return t.r, t.g, t.b, t.a
-							end,
-							set = function(info, r, g, b)
-								E.db.auras[ info[#info] ] = {}
-								local t = E.db.auras[ info[#info] ]
-								t.r, t.g, t.b = r, g, b
-								A:UpdateTimerSettings()
-							end,				
-						},
-					},
-				},
-				dateIndicator = {
-					order = 2,
-					type = 'group',
-					guiInline = true,
-					name = L['Indicator (s, m, h, d)'],
-					args = {
-						restoreColors = {
-							order = 1,
-							type = 'execute',
-							name = L['Restore Defaults'],
-							func = function()
-								E.db.auras.indicatorexpiringcolor = P['auras'].indicatorexpiringcolor;
-								E.db.auras.indicatorsecondscolor = P['auras'].indicatorsecondscolor;
-								E.db.auras.indicatorminutescolor = P['auras'].indicatorminutescolor;
-								E.db.auras.indicatorhourscolor = P['auras'].indicatorhourscolor;
-								E.db.auras.indicatordayscolor = P['auras'].indicatordayscolor;
-								A:UpdateTimerSettings()
-							end,
-						},
-						indicatorexpiringcolor = {
-							type = 'color',
-							order = 2,
-							name = L['Expiring'],
-							desc = L['Color when the text is about to expire'],
-							get = function(info)
-								local t = E.db.auras[ info[#info] ]
-								return t.r, t.g, t.b, t.a
-							end,
-							set = function(info, r, g, b)
-								E.db.auras[ info[#info] ] = {}
-								local t = E.db.auras[ info[#info] ]
-								t.r, t.g, t.b = r, g, b
-								A:UpdateTimerSettings()
-							end,					
-						},
-						indicatorsecondscolor = {
-							type = 'color',
-							order = 3,
-							name = L['Seconds'],
-							desc = L['Color when the text is in the seconds format.'],
-							get = function(info)
-								local t = E.db.auras[ info[#info] ]
-								return t.r, t.g, t.b, t.a
-							end,
-							set = function(info, r, g, b)
-								E.db.auras[ info[#info] ] = {}
-								local t = E.db.auras[ info[#info] ]
-								t.r, t.g, t.b = r, g, b
-								A:UpdateTimerSettings()
-							end,				
-						},
-						indicatorminutescolor = {
-							type = 'color',
-							order = 4,
-							name = L['Minutes'],
-							desc = L['Color when the text is in the minutes format.'],
-							get = function(info)
-								local t = E.db.auras[ info[#info] ]
-								return t.r, t.g, t.b, t.a
-							end,
-							set = function(info, r, g, b)
-								E.db.auras[ info[#info] ] = {}
-								local t = E.db.auras[ info[#info] ]
-								t.r, t.g, t.b = r, g, b
-								A:UpdateTimerSettings()
-							end,				
-						},
-						indicatorhourscolor = {
-							type = 'color',
-							order = 5,
-							name = L['Hours'],
-							desc = L['Color when the text is in the hours format.'],
-							get = function(info)
-								local t = E.db.auras[ info[#info] ]
-								return t.r, t.g, t.b, t.a
-							end,
-							set = function(info, r, g, b)
-								E.db.auras[ info[#info] ] = {}
-								local t = E.db.auras[ info[#info] ]
-								t.r, t.g, t.b = r, g, b
-								A:UpdateTimerSettings()
-							end,				
-						},	
-						indicatordayscolor = {
-							type = 'color',
-							order = 6,
-							name = L['Days'],
-							desc = L['Color when the text is in the days format.'],
-							get = function(info)
-								local t = E.db.auras[ info[#info] ]
-								return t.r, t.g, t.b, t.a
-							end,
-							set = function(info, r, g, b)
-								E.db.auras[ info[#info] ] = {}
-								local t = E.db.auras[ info[#info] ]
-								t.r, t.g, t.b = r, g, b
-								A:UpdateTimerSettings()
-							end,				
-						},
-					},
-				},
 			},
 		},
 		consolidatedBuffs = {
