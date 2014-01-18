@@ -319,6 +319,20 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 		anotherFilterExists = true
 	end	
 
+	if UF:CheckFilter(db.useWhitelist, isFriend) then
+		local whiteList = E.global['unitframe']['aurafilters']['Whitelist (Strict)'].spells[name]
+		if whiteList and whiteList.enable then
+			if whiteList.spellID and whiteList.spellID == spellID then
+				returnValue = true;
+			else
+				returnValue = false;
+			end
+			icon.priority = whiteList.priority
+		elseif not anotherFilterExists then
+			returnValue = false
+		end
+	end
+
 	if db.useFilter and E.global['unitframe']['aurafilters'][db.useFilter] then
 		local type = E.global['unitframe']['aurafilters'][db.useFilter].type
 		local spellList = E.global['unitframe']['aurafilters'][db.useFilter].spells
@@ -330,6 +344,10 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 				
 				--bit hackish fix to this
 				if db.useFilter == 'TurtleBuffs' and (spellID == 86698 or spellID == 86669) then
+					returnValue = false
+				end
+
+				if db.useFilter == 'Whitelist (Strict)' and spellList[name].spellID and not spellList[name].spellID == spellID then
 					returnValue = false
 				end
 			elseif not anotherFilterExists then

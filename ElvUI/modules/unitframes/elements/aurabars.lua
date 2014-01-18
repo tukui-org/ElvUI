@@ -153,6 +153,19 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 		anotherFilterExists = true
 	end	
 
+	if UF:CheckFilter(db.useWhitelist, isFriend) then
+		local whiteList = E.global['unitframe']['aurafilters']['Whitelist (Strict)'].spells[name]
+		if whiteList and whiteList.enable then
+			if whiteList.spellID and whiteList.spellID == spellID then
+				returnValue = true;
+			else
+				returnValue = false
+			end
+		elseif not anotherFilterExists then
+			returnValue = false
+		end
+	end
+
 	if db.useFilter and E.global['unitframe']['aurafilters'][db.useFilter] then
 		local type = E.global['unitframe']['aurafilters'][db.useFilter].type
 		local spellList = E.global['unitframe']['aurafilters'][db.useFilter].spells
@@ -160,6 +173,9 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 		if type == 'Whitelist' then
 			if spellList[name] and spellList[name].enable and passPlayerOnlyCheck then
 				returnValue = true
+				if db.useFilter == 'Whitelist (Strict)' and spellList[name].spellID and not spellList[name].spellID == spellID then
+						returnValue = false
+					end
 			elseif not anotherFilterExists then
 				returnValue = false
 			end
