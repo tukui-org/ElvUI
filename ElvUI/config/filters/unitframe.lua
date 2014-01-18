@@ -17,24 +17,7 @@ end
 local function DefaultsID(spellID, priorityOverride)
 	return {['enable'] = true, ['spellID'] = spellID, ['priority'] = priorityOverride or 0}
 end
-
 G.unitframe.aurafilters = {};
-
-
-G.unitframe.aurafilters['Whitelist (Strict)'] = {
-	['type'] = 'Whitelist',
-	['spells'] = {
-		[SpellName(123059)] = DefaultsID(123059), --Destabilize (Amber-Shaper Un'sok)
-		[SpellName(136431)] = DefaultsID(136431), --Shell Concussion (Tortos)
-		[SpellName(137332)] = DefaultsID(137332), --Beast of Nightmares (Twin Consorts)
-		[SpellName(137375)] = DefaultsID(137375), --Beast of Nightmares (Twin Consorts)
-		[SpellName(144351)] = DefaultsID(144351), --Mark of Arrogance (Norushen)
-		[SpellName(142863)] = DefaultsID(142863), --Weak Ancient Barrier (Malkorok)
-		[SpellName(142864)] = DefaultsID(142864), --Ancient Barrier (Malkorok)
-		[SpellName(142865)] = DefaultsID(142865), --Strong Ancient Barrier (Malkorok)
-		[SpellName(143198)] = DefaultsID(143198), --Garrote (Fallen Protectors)
-	},
-}
 
 --[[
 	These are debuffs that are some form of CC
@@ -411,6 +394,11 @@ G.unitframe.aurafilters['PlayerBuffs'] = {
 G.unitframe.aurafilters['Blacklist'] = {
 	['type'] = 'Blacklist',
 	['spells'] = {
+		[SpellName(36900)] = Defaults(), --Soul Split: Evil!
+		[SpellName(36901)] = Defaults(), --Soul Split: Good
+		[SpellName(36893)] = Defaults(), --Transporter Malfunction
+		[SpellName(114216)] = Defaults(), --Angelic Bulwark
+		[SpellName(97821)] = Defaults(), --Void-Touched
 		[SpellName(36032)] = Defaults(), -- Arcane Charge
 		[SpellName(132365)] = Defaults(), -- Vengeance
 		[SpellName(8733)] = Defaults(), --Blessing of Blackfathom
@@ -429,11 +417,16 @@ G.unitframe.aurafilters['Blacklist'] = {
 		[SpellName(24755)] = Defaults(), --gay homosexual tricked or treated debuff
 		[SpellName(25163)] = Defaults(), --fucking annoying pet debuff oozeling disgusting aura
 		[SpellName(80354)] = Defaults(), --timewarp debuff
+		[SpellName(95809)] = Defaults(), --Insanity debuff (Hunter Pet heroism)
 		[SpellName(95223)] = Defaults(), --group res debuff
 		[SpellName(124275)] = Defaults(), -- Stagger
 		[SpellName(124274)] = Defaults(), -- Stagger
 		[SpellName(124273)] = Defaults(), -- Stagger
-		[SpellName(117870)] = Defaults() -- Touch of The Titans
+		[SpellName(117870)] = Defaults(), -- Touch of The Titans
+		[SpellName(123981)] = Defaults(), -- Perdition
+		[SpellName(15007)] = Defaults(), -- Ress Sickness
+		[SpellName(113942)] = Defaults(), -- Demonic: Gateway
+		[SpellName(89140)] = Defaults(), -- Demonic Rebirth: Cooldown
 	},
 }
 
@@ -454,6 +447,32 @@ G.unitframe.aurafilters['Whitelist'] = {
 		[SpellName(33206)] = Defaults(), --Pain Suppression
 		[SpellName(116849)] = Defaults(), --Life Cocoon
 		[SpellName(22812)] = Defaults(), --Barkskin
+		[SpellName(1490)] = Defaults(), --Curse of the Elements (5% magic damage taken debuff)
+		[SpellName(116202)] = Defaults(), --Aura of the Elements (5% magic damage taken debuff)
+		[SpellName(123059)] = Defaults(), --Destabilize (Amber-Shaper Un'sok)
+		[SpellName(136431)] = Defaults(), --Shell Concussion (Tortos)
+		[SpellName(137332)] = Defaults(), --Beast of Nightmares (Twin Consorts)
+		[SpellName(137375)] = Defaults(), --Beast of Nightmares (Twin Consorts)
+		[SpellName(144351)] = Defaults(), --Mark of Arrogance (Norushen)
+		[SpellName(142863)] = Defaults(), --Weak Ancient Barrier (Malkorok)
+		[SpellName(142864)] = Defaults(), --Ancient Barrier (Malkorok)
+		[SpellName(142865)] = Defaults(), --Strong Ancient Barrier (Malkorok)
+		[SpellName(143198)] = Defaults(), --Garrote (Fallen Protectors)
+	},
+}
+
+G.unitframe.aurafilters['Whitelist (Strict)'] = {
+	['type'] = 'Whitelist',
+	['spells'] = {
+		[SpellName(123059)] = DefaultsID(123059), --Destabilize (Amber-Shaper Un'sok)
+		[SpellName(136431)] = DefaultsID(136431), --Shell Concussion (Tortos)
+		[SpellName(137332)] = DefaultsID(137332), --Beast of Nightmares (Twin Consorts)
+		[SpellName(137375)] = DefaultsID(137375), --Beast of Nightmares (Twin Consorts)
+		[SpellName(144351)] = DefaultsID(144351), --Mark of Arrogance (Norushen)
+		[SpellName(142863)] = DefaultsID(142863), --Weak Ancient Barrier (Malkorok)
+		[SpellName(142864)] = DefaultsID(142864), --Ancient Barrier (Malkorok)
+		[SpellName(142865)] = DefaultsID(142865), --Strong Ancient Barrier (Malkorok)
+		[SpellName(143198)] = DefaultsID(143198), --Garrote (Fallen Protectors)
 	},
 }
 
