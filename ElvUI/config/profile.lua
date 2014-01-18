@@ -174,7 +174,7 @@ P['auras'] = {
 	['countYOffset'] = 0,
 	['countXOffset'] = 0,
 	['timeYOffset'] = 0,
-	['timeXOffset'] = 0,
+	['timeXOffset'] = 1,
 
 	['consolidatedBuffs'] = {
 		['enable'] = true,
@@ -193,8 +193,8 @@ P['auras'] = {
 		['horizontalSpacing'] = 6,
 		['verticalSpacing'] = 20,
 		['sortMethod'] = "TIME",
-		['sortDir'] = '-',
-		['seperateOwn'] = 1,
+		['sortDir'] = '+',
+		['seperateOwn'] = 0,
 		['size'] = 26,
 	},
 	['debuffs'] = {
@@ -205,7 +205,7 @@ P['auras'] = {
 		['verticalSpacing'] = 16,		
 		['sortMethod'] = "TIME",
 		['sortDir'] = '-',
-		['seperateOwn'] = 1,
+		['seperateOwn'] = 0,
 		['size'] = 26,
 	},
 }
