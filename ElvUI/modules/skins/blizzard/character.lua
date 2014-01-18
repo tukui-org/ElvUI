@@ -171,7 +171,7 @@ local function LoadSkin()
 			object.BgBottom:SetTexture(nil)
 			object.BgMiddle:SetTexture(nil)
 
-			object.Check:SetTexture(nil)
+			--object.Check:SetTexture(nil)
 			object.text:FontTemplate()
 			hooksecurefunc(object.text, "SetFont", function(self, font, fontSize, fontStyle)
 				if font ~= E["media"].normFont then
@@ -195,7 +195,7 @@ local function LoadSkin()
 			object.BgBottom:SetTexture(nil)
 			object.BgMiddle:SetTexture(nil)
 			object.icon:Size(36, 36)
-			object.Check:SetTexture(nil)
+			--object.Check:SetTexture(nil)
 			object.icon:SetTexCoord(unpack(E.TexCoords))
 
 			--Making all icons the same size and position because otherwise BlizzardUI tries to attach itself to itself when it refreshes
