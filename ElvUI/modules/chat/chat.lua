@@ -7,6 +7,7 @@ local lfgRoles = {};
 local msgList, msgCount, msgTime = {}, {}, {}
 local good, maybe, filter, login = {}, {}, {}, false
 local chatFilters = {};
+local SELECTED_STRING = "|cffffd900>|r %s |cffffd900<|r"
 local cvars = {
 	["bnWhisperMode"] = true,
 	["conversationMode"] = true,
@@ -221,6 +222,38 @@ function CH:GetSmileyReplacementText(msg)
 	return outstr;
 end
 
+--TODO: Update selected tab on FCF_OpenNewWindow or FCF_OpenTemporaryWindow when a new frame gets focused
+function CH:SetSelectedTab(t)
+	local selectedId = GeneralDockManager.selected:GetID()
+	if t.isDocked and selectedId == t:GetID() then
+		if not t.isTemporary then
+			t.text:SetText(format(SELECTED_STRING, (FCF_GetChatWindowInfo(t:GetID()))))
+		else
+			local matchFound = (FCF_GetChatWindowInfo(t:GetID())):find("\|.*>\|r") --Already bracketed
+			if not matchFound then
+				t.text:SetText(format(SELECTED_STRING, (FCF_GetChatWindowInfo(t:GetID()))))
+			else
+				t.text:SetText((FCF_GetChatWindowInfo(t:GetID())))
+			end
+		end
+	end
+
+	for i=1, CreatedFrames do
+		t = _G[format("ChatFrame%sTab", i)]
+		if t.isDocked and selectedId ~= t:GetID() then
+			local tabText = (FCF_GetChatWindowInfo(t:GetID()))
+			if not t.isTemporary then
+				t.text:SetText(tabText)
+			else
+				local tabTextStripped = gsub(tabText, "\|.*>\|r (.*) \|.*<\|r", "%1") --Remove brackets
+				t.text:SetText(tabTextStripped)
+			end
+		end
+		--Prevent chat tabs changing width on each click.
+		--TODO: See if you can force this on login/reload. Initially width is fucked until you click any tab once.
+		PanelTemplates_TabResize(t, 0, nil, nil, nil, t.textWidth);
+	end
+end
 
 function CH:StyleChat(frame)
 	local name = frame:GetName()
@@ -246,12 +279,10 @@ function CH:StyleChat(frame)
 			t:SetAlpha(1)
 		end
 	end)
-	
-	local selectedString = "|cffffd900>|r %s |cffffd900<|r"
 
 	tab.text = _G[name.."TabText"]
 	if GeneralDockManager.selected:GetID() == tab:GetID() then
-		tab.text:SetText(format(selectedString, tab.text:GetText()))
+		tab.text:SetText(format(SELECTED_STRING, tab.text:GetText()))
 	end
 	tab.text:SetTextColor(unpack(E["media"].rgbvaluecolor))
 	hooksecurefunc(tab.text, "SetTextColor", function(t, r, g, b, a)
@@ -264,7 +295,7 @@ function CH:StyleChat(frame)
 
 	hooksecurefunc(tab, "SetText", function(t)
 		if t.isDocked and GeneralDockManager.selected:GetID() == t:GetID() then
-			t.text:SetText(format(selectedString, t.text:GetText()))
+			t.text:SetText(format(SELECTED_STRING, t.text:GetText()))
 		end
 	end)
 
@@ -272,20 +303,11 @@ function CH:StyleChat(frame)
 		t.text:ClearAllPoints()
 		t.text:SetPoint("CENTER", t, "CENTER", 0, -4)
 	end)
+	
+	tab.isTemporary = frame.isTemporary
 
 	tab:HookScript("OnClick", function(t)
-		local selectedId = GeneralDockManager.selected:GetID()
-		if t.isDocked and selectedId == t:GetID() then
-			t.text:SetText(format(selectedString, (GetChatWindowInfo(t:GetID()))))
-
-			for i=1, CreatedFrames do
-				t = _G[format("ChatFrame%sTab", i)]
-				if t.isDocked and selectedId ~= t:GetID() then
-					t.text:SetText((GetChatWindowInfo(t:GetID())))
-				end
-				PanelTemplates_TabResize(t, 0, nil, 40, 100);
-			end
-		end
+		CH:SetSelectedTab(t)
 	end)
 	
 	if tab.conversationIcon then
@@ -1726,8 +1748,7 @@ function CH:Initialize()
 	self:SecureHook("ChatFrame_RemoveMessageEventFilter");
 	
 	self:SecureHook("FCF_SetWindowAlpha")
-	
-	
+
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_CHANNEL", CH.CHAT_MSG_CHANNEL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_YELL", CH.CHAT_MSG_YELL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_SAY", CH.CHAT_MSG_SAY)
