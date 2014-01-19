@@ -259,11 +259,6 @@ function CH:StyleChat(frame)
 		end
 	end)
 
-	hooksecurefunc(tab, "SetWidth", function(t)
-		t.text:ClearAllPoints()
-		t.text:SetPoint("CENTER", t, "CENTER", 0, -4)
-	end)
-
 	if tab.conversationIcon then
 		tab.conversationIcon:ClearAllPoints()
 		tab.conversationIcon:Point('RIGHT', tab.text, 'LEFT', -1, 0)
