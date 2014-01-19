@@ -333,7 +333,7 @@ local function UpdateFilterGroup()
 					},			
 				},
 			}
-		end
+		end		
 	elseif selectedFilter == 'Buff Indicator (Pet)' then
 		local buffs = {};
 		for _, value in pairs(E.global.unitframe.buffwatch.PET) do
