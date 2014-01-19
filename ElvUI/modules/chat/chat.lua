@@ -251,7 +251,7 @@ function CH:SetSelectedTab(t)
 		end
 		--Prevent chat tabs changing width on each click.
 		--TODO: See if you can force this on login/reload. Initially width is fucked until you click any tab once.
-		PanelTemplates_TabResize(t, 0, nil, nil, nil, t.textWidth);
+		PanelTemplates_TabResize(t, 10, nil, nil, nil, t.textWidth);
 	end
 end
 
