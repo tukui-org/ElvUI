@@ -129,6 +129,7 @@ local specialChatIcons = {
 		["Wowzakapow"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\heart_chat_logo.tga:15:15|t",
 		["Letsyles"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\heart_chat_logo.tga:15:15|t",
 		["Temptora"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\heart_chat_logo.tga:15:15|t",
+		["Incisìon"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\short_bus.tga:16:16|t",
 	},
 	["Tichondrious"] = {
 		["Athlina"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\heart_chat_logo.tga:15:15|t",

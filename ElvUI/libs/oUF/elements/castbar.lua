@@ -314,8 +314,6 @@ local UpdateCastingTimeInfo = function(self, duration)
 end
 
 local onUpdate = function(self, elapsed)
-	self.lastUpdate = (self.lastUpdate or 0) + elapsed
-
 	if not (self.casting or self.channeling) then
 		self.unitName = nil
 		self.casting = nil
@@ -324,11 +322,8 @@ local onUpdate = function(self, elapsed)
 
 		self:SetValue(1)
 		self:Hide()
-		return
-	end
-
-	if(self.casting) then
-		local duration = self.duration + self.lastUpdate
+	elseif(self.casting) then
+		local duration = self.duration + elapsed
 
 		if(duration >= self.max) then
 			self.casting = nil
@@ -342,7 +337,7 @@ local onUpdate = function(self, elapsed)
 		self.duration = duration
 		self:SetValue(duration)
 	elseif(self.channeling) then
-		local duration = self.duration - self.lastUpdate
+		local duration = self.duration - elapsed
 
 		if(duration <= 0) then
 			self.channeling = nil
@@ -357,8 +352,6 @@ local onUpdate = function(self, elapsed)
 		self.duration = duration
 		self:SetValue(duration)
 	end
-	
-	self.lastUpdate = 0
 end
 
 local Update = function(self, ...)
