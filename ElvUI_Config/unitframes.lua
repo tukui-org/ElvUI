@@ -771,8 +771,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 							else
 								castbar.Hide = castbar.oldHide
 								castbar.oldHide = nil
-								castbar:Hide()			
-								castbar.lastUpdate = 0				
+								castbar:Hide()						
 							end						
 						end
 					else
@@ -784,8 +783,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 						else
 							castbar.Hide = castbar.oldHide
 							castbar.oldHide = nil
-							castbar:Hide()
-							castbar.lastUpdate = 0			
+							castbar:Hide()		
 						end
 					end
 				end,
