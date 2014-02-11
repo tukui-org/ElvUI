@@ -682,6 +682,8 @@ function AB:FixKeybindText(button)
 		hotkey:SetText(text);
 	end
 	
+	hotkey:SetVertexColor(1,1,1,1)
+	hotkey.SetVertexColor = E.noop
 	hotkey:ClearAllPoints()
 	hotkey:Point("TOPRIGHT", 0, -3);  
 end
