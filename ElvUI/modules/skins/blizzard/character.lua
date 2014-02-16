@@ -256,7 +256,7 @@ local function LoadSkin()
 	local function FixSidebarTabCoords()
 		for i=1, #PAPERDOLL_SIDEBARS do
 			local tab = _G["PaperDollSidebarTab"..i]
-			if tab then
+			if tab and not tab.backdrop then
 				tab.Highlight:SetTexture(1, 1, 1, 0.3)
 				tab.Highlight:Point("TOPLEFT", 3, -4)
 				tab.Highlight:Point("BOTTOMRIGHT", -1, 0)
