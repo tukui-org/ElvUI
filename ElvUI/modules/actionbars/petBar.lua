@@ -255,6 +255,7 @@ function AB:CreateBarPet()
 	PetActionBarFrame.showgrid = 1;
 	PetActionBar_ShowGrid();
 	
+	self:RegisterEvent('SPELLS_CHANGED', 'UpdatePet') 
 	self:RegisterEvent('PLAYER_CONTROL_GAINED', 'UpdatePet');
 	self:RegisterEvent('PLAYER_ENTERING_WORLD', 'UpdatePet');
 	self:RegisterEvent('PLAYER_CONTROL_LOST', 'UpdatePet');
