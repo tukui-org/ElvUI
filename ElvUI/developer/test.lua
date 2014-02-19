@@ -21,3 +21,6 @@ f:RegisterEvent("BN_FRIEND_INVITE_ADDED")
 f:RegisterEvent("BN_FRIEND_INVITE_LIST_INITIALIZED")
 f:RegisterEvent("BN_CONNECTED")
 f:RegisterEvent("PLAYER_ENTERING_WORLD")
+
+
+

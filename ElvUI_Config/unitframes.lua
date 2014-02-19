@@ -4405,6 +4405,12 @@ if P.unitframe.colors.classResources[E.myclass] then
 		args = {}
 	}
 	
+	E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args.bgColor = {
+		type = 'color',
+		name = L['Backdrop Color'],
+		hasAlpha = false,
+	}	
+	
 	if E.myclass == 'PALADIN' then
 		E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args[E.myclass] = {
 			type = 'color',

@@ -231,7 +231,7 @@ E.PopupDialogs["RESETUI_CHECK"] = {
 	whileDead = 1,
 }
 
-E.PopupDialogs["APRIL_FOOLS"] = {
+E.PopupDialogs["APRIL_FOOLS2013"] = {
 	text = "ElvUI needs to perform database optimizations please be patient.",
 	button1 = OKAY,
 	OnAccept = function() 
@@ -241,6 +241,30 @@ E.PopupDialogs["APRIL_FOOLS"] = {
 			E:BeginFoolsDayEvent() 
 			return true 
 		end
+	end,
+	timeout = 0,
+	whileDead = 1,	
+}
+
+E.PopupDialogs["APRIL_FOOLS"] = {
+	text = "ElvUI needs to perform database optimizations please be patient.",
+	button1 = OKAY,
+	OnAccept = function() 
+		E:SetupAprilFools2014()
+	end,
+	timeout = 0,
+	whileDead = 1,	
+}
+
+E.PopupDialogs["APRIL_FOOLS_END"] = {
+	text = "Do you enjoy the new ElvUI?",
+	button1 = L["Yes, Keep Changes!"],
+	button2 = L["No, Revert Changes!"],
+	OnAccept = function() 
+		E:Print(L["Type /aprilfools to revert to old settings."])
+	end,
+	OnCancel = function()
+		E:RestoreAprilFools()
 	end,
 	timeout = 0,
 	whileDead = 1,	

@@ -705,7 +705,13 @@ function UF:Update_PlayerFrame(frame, db)
 			if bars.UpdateAllRuneTypes then
 				bars.UpdateAllRuneTypes(frame)
 			end
-			
+			local c = UF.db.colors.classResources.bgColor
+			bars.backdrop.ignoreUpdates = true
+			bars.backdrop.backdropTexture:SetVertexColor(c.r, c.g, c.b)
+			if(not E.PixelMode) then
+				c = E.db.general.bordercolor
+				bars.backdrop:SetBackdropBorderColor(c.r, c.g, c.b)
+			end
 			local MAX_CLASS_BAR = UF.classMaxResourceBar[E.myclass]
 			if USE_MINI_CLASSBAR and not db.classbar.detachFromFrame then
 				bars:ClearAllPoints()
@@ -755,6 +761,12 @@ function UF:Update_PlayerFrame(frame, db)
 
 			if E.myclass ~= 'MONK' and E.myclass ~= 'WARLOCK' and E.myclass ~= 'DRUID' then
 				for i = 1, MAX_CLASS_BAR do
+					bars[i].backdrop.ignoreUpdates = true
+					bars[i].backdrop.backdropTexture:SetVertexColor(c.r, c.g, c.b)
+					if(not E.PixelMode) then
+						c = E.db.general.bordercolor
+						bars[i].backdrop:SetBackdropBorderColor(c.r, c.g, c.b)
+					end					
 					bars[i]:SetHeight(bars:GetHeight())	
 					bars[i]:SetWidth(E:Scale(bars:GetWidth() - (MAX_CLASS_BAR - 1))/MAX_CLASS_BAR)	
 					bars[i]:GetStatusBarTexture():SetHorizTile(false)
@@ -790,7 +802,7 @@ function UF:Update_PlayerFrame(frame, db)
 				bars.LunarBar:SetStatusBarColor(unpack(ElvUF.colors.EclipseBar[1]))
 				bars.SolarBar:SetStatusBarColor(unpack(ElvUF.colors.EclipseBar[2]))
 				bars.LunarBar:Size(CLASSBAR_WIDTH, CLASSBAR_HEIGHT - (BORDER*2))			
-				bars.SolarBar:Size(CLASSBAR_WIDTH, CLASSBAR_HEIGHT - (BORDER*2))				
+				bars.SolarBar:Size(CLASSBAR_WIDTH, CLASSBAR_HEIGHT - (BORDER*2))	
 			end
 
 			if E.myclass ~= 'DRUID' then
