@@ -118,6 +118,7 @@ local specialChatIcons = {
 		["Tirain"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\tyrone_biggums_chat_logo.tga:16:18|t"
 	},
 	["Spirestone"] = {
+		["Aeriane"] = true,
 		["Sinth"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\tyrone_biggums_chat_logo.tga:16:18|t",
 		["Elvz"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\ElvUI_Chat_Logo:13:22|t",
 		["Sarah"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\mr_hankey.tga:18:22|t",
@@ -1069,32 +1070,20 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			else
 				local myRealm = E.myrealm
 				myRealm = myRealm:gsub(' ', '')
-				if specialChatIcons[myRealm] then
-					for character, texture in pairs(specialChatIcons[myRealm]) do
-						if arg2 == character then
-							pflag = texture
-						end							
-					end
-					
-					for realm, _ in pairs(specialChatIcons) do
-						if realm ~= myRealm then
-							for character, texture in pairs(specialChatIcons[realm]) do
-								if arg2 == character.."-"..realm then
-									pflag = texture
-								end			
-							end
-						end
-					end
-				else
+				if(specialChatIcons[myRealm] == nil or (specialChatIcons[myRealm] and specialChatIcons[myRealm][E.myname] ~= true)) then
 					for realm, _ in pairs(specialChatIcons) do
 						for character, texture in pairs(specialChatIcons[realm]) do
 							if arg2 == character.."-"..realm then
 								pflag = texture
 							end		
 						end
-					end					
+					end		
 				end
-
+				
+				if(pflag == true) then
+					pflag = nil
+				end
+				
 				if(not pflag and lfgRoles[arg2] and (type == "PARTY_LEADER" or type == "PARTY" or type == "RAID" or type == "RAID_LEADER" or type == "INSTANCE_CHAT" or type == "INSTANCE_CHAT_LEADER")) then
 					pflag = lfgRoles[arg2]
 				end

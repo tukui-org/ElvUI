@@ -180,13 +180,15 @@ function A:Update_ConsolidatedBuffsSettings(isCallback)
 		local font = LSM:Fetch("font", E.db.auras.consolidatedBuffs.font)
 		button.timer:FontTemplate(font, E.db.auras.consolidatedBuffs.fontSize, E.db.auras.consolidatedBuffs.fontOutline)	
 		
-		local buffIcon = _G[("ConsolidatedBuffsTooltipBuff%d"):format(i)]
-		buffIcon:ClearAllPoints()
-		buffIcon:SetAllPoints(frame[i])
-		buffIcon:SetParent(frame[i])
-		buffIcon:SetAlpha(0)
-		buffIcon:SetScript("OnEnter", A.Button_OnEnter)
-		buffIcon:SetScript("OnLeave", A.Button_OnLeave)		
+		if(E.private.auras.disableBlizzard) then
+			local buffIcon = _G[("ConsolidatedBuffsTooltipBuff%d"):format(i)]
+			buffIcon:ClearAllPoints()
+			buffIcon:SetAllPoints(frame[i])
+			buffIcon:SetParent(frame[i])
+			buffIcon:SetAlpha(0)
+			buffIcon:SetScript("OnEnter", A.Button_OnEnter)
+			buffIcon:SetScript("OnLeave", A.Button_OnLeave)		
+		end
 	end
 	
 	if(not isCallback) then
