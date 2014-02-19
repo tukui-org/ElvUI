@@ -1003,32 +1003,14 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			else
 				local myRealm = E.myrealm
 				myRealm = myRealm:gsub(' ', '')
-				if specialChatIcons[myRealm] then
-					if(specialChatIcons[myRealm][E.myname] ~= true) then
-						for character, texture in pairs(specialChatIcons[myRealm]) do
-							if arg2 == character then
-								pflag = texture
-							end							
-						end
-						
-						for realm, _ in pairs(specialChatIcons) do
-							if realm ~= myRealm then
-								for character, texture in pairs(specialChatIcons[realm]) do
-									if arg2 == character.."-"..realm then
-										pflag = texture
-									end			
-								end
-							end
-						end
-					end
-				else
+				if(specialChatIcons[myRealm][E.myname] ~= true) then
 					for realm, _ in pairs(specialChatIcons) do
 						for character, texture in pairs(specialChatIcons[realm]) do
 							if arg2 == character.."-"..realm then
 								pflag = texture
 							end		
 						end
-					end					
+					end		
 				end
 				
 				if(pflag == true) then
