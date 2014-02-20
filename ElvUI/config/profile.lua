@@ -61,7 +61,8 @@ P['general'] = {
 		['sortDirection'] = 'ASCENDING',
 		['size'] = 40,
 		['spacing'] = 4,
-	}
+	},
+	['kittys'] = false
 };
 
 --Bags
