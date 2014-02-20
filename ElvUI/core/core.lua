@@ -919,6 +919,7 @@ end
 
 function E:RestoreAprilFools()
 	--Store old settings
+	self.db.general.kittys = false
 	if not(self.db.tempSettings) then return end
 	local c = self.db.tempSettings.backdropcolor
 	self.db.general.backdropcolor = {r = c.r, g = c.g, b = c.b}
@@ -951,7 +952,7 @@ function E:RestoreAprilFools()
 		HelloKittyRight:Hide()
 	end	
 	self.db.tempSettings = nil
-	self.db.general.kittys = false
+	
 	self:UpdateAll()
 end
 
