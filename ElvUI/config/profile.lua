@@ -63,7 +63,8 @@ P['general'] = {
 		['sortDirection'] = 'ASCENDING',
 		['size'] = 40,
 		['spacing'] = 4,
-	}
+	},
+	['kittys'] = false
 };
 
 --Bags
@@ -355,6 +356,7 @@ P['unitframe'] = {
 			['absorbs'] = {r = 1, g = 1, b = 0, a = 0.25}
 		},
 		['classResources'] = {
+			['bgColor'] = {r = 0.1,g = 0.1,b = 0.1, a = 1},
 			['DEATHKNIGHT'] = {
 				[1] = {r = 1, g = 0, b = 0},
 				[2] = {r = 0, g = 1, b = 0},

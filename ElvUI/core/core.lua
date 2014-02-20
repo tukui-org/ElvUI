@@ -594,7 +594,7 @@ function E:UpdateAll(ignoreInstall)
 	LO:ToggleChatPanels()	
 	LO:BottomPanelVisibility()
 	LO:TopPanelVisibility()
-	
+		
 	collectgarbage('collect');
 end
 
@@ -739,7 +739,7 @@ function E:StopMassiveShake()
 	end
 
 	E.global.aprilFools = true;
-	E:StaticPopup_Hide("APRIL_FOOLS")
+	E:StaticPopup_Hide("APRIL_FOOLS2013")
 	twipe(self.massiveShakeObjects)
 	DoEmote("Dance")
 end
@@ -850,6 +850,197 @@ function E:GetTopCPUFunc(msg)
 	self:Print("Calculating CPU Usage..")
 end
 
+function E:SetupAprilFools2014()
+	if not self.db.tempSettings then
+		self.db.tempSettings = {}
+	end
+	
+	self.oldEnableAllSound = GetCVar("Sound_EnableAllSound")
+	self.oldEnableMusic = GetCVar("Sound_EnableMusic")
+	
+	--Store old settings
+	local t = self.db.tempSettings
+	local c = self.db.general.backdropcolor
+	t.backdropcolor = {r = c.r, g = c.g, b = c.b}
+	c = self.db.general.backdropfadecolor
+	t.backdropfadecolor = {r = c.r, g = c.g, b = c.b, a = c.a}
+	c = self.db.general.bordercolor
+	t.bordercolor = {r = c.r, g = c.g, b = c.b}	
+	c = self.db.general.valuecolor
+	t.valuecolor = {r = c.r, g = c.g, b = c.b}		
+	
+	t.panelBackdropNameLeft = self.db.chat.panelBackdropNameLeft
+	t.panelBackdropNameRight = self.db.chat.panelBackdropNameRight
+	
+	c = self.db.unitframe.colors.health
+	t.health = {r = c.r, g = c.g, b = c.b}		
+	
+	c = self.db.unitframe.colors.castColor
+	t.castColor = {r = c.r, g = c.g, b = c.b}	
+	t.transparentCastbar = self.db.unitframe.colors.transparentCastbar
+	
+	c = self.db.unitframe.colors.auraBarBuff
+	t.auraBarBuff = {r = c.r, g = c.g, b = c.b}	
+	t.transparentAurabars = self.db.unitframe.colors.transparentAurabars	
+	
+	--Apply new settings
+	self.db.general.backdropfadecolor = {r =131/255, g =36/255, b = 130/255, a = 0.36}
+	self.db.general.backdropcolor = {r = 223/255, g = 76/255, b = 188/255}
+	self.db.general.bordercolor = {r = 223/255, g = 217/255, b = 47/255}
+	self.db.general.valuecolor = {r = 223/255, g = 217/255, b = 47/255}
+	
+	self.db.chat.panelBackdropNameLeft = [[Interface\AddOns\ElvUI\media\textures\helloKittyChat1.tga]]
+	self.db.chat.panelBackdropNameRight = [[Interface\AddOns\ElvUI\media\textures\helloKittyChat1.tga]]
+	
+	self.db.unitframe.colors.castColor = {r = 223/255, g = 76/255, b = 188/255}
+	self.db.unitframe.colors.transparentCastbar = true
+	
+	self.db.unitframe.colors.auraBarBuff = {r = 223/255, g = 76/255, b = 188/255}
+	self.db.unitframe.colors.transparentAurabars = true
+	
+	self.db.unitframe.colors.health = {r = 223/255, g = 76/255, b = 188/255}
+	
+	SetCVar("Sound_EnableAllSound", 1)
+	SetCVar("Sound_EnableMusic", 1)
+	PlayMusic([[Interface\AddOns\ElvUI\media\sounds\helloKitty.mp3]])		
+	self:ScheduleTimer('EndAprilFoolsDay2014', 59)
+	
+	self.db.general.kittys = true
+	self:CreateKittys()
+	
+	self:UpdateAll()
+end
+
+function E:EndAprilFoolsDay2014()
+	StopMusic()
+	SetCVar("Sound_EnableAllSound", self.oldEnableAllSound)
+	SetCVar("Sound_EnableMusic", self.oldEnableMusic)
+
+	E.global.aprilFools = true;
+	E:StaticPopup_Show("APRIL_FOOLS_END")
+end
+
+function E:RestoreAprilFools()
+	--Store old settings
+	self.db.general.kittys = false
+	if(HelloKittyLeft) then
+		HelloKittyLeft:Hide()
+		HelloKittyRight:Hide()
+	end		
+	
+	if not(self.db.tempSettings) then return end
+	local c = self.db.tempSettings.backdropcolor
+	self.db.general.backdropcolor = {r = c.r, g = c.g, b = c.b}
+	
+	c = self.db.tempSettings.backdropfadecolor
+	self.db.general.backdropfadecolor = {r = c.r, g = c.g, b = c.b}
+
+	c = self.db.tempSettings.bordercolor
+	self.db.general.bordercolor = {r = c.r, g = c.g, b = c.b}	
+	
+	c = self.db.tempSettings.valuecolor
+	self.db.general.valuecolor = {r = c.r, g = c.g, b = c.b}
+		
+	self.db.chat.panelBackdropNameLeft = self.db.tempSettings.panelBackdropNameLeft
+	self.db.chat.panelBackdropNameRight = self.db.tempSettings.panelBackdropNameRight
+	
+	c = self.db.tempSettings.health
+	self.db.unitframe.colors.health = {r = c.r, g = c.g, b = c.b}	
+	
+	c = self.db.tempSettings.castColor
+	self.db.unitframe.colors.castColor = {r = c.r, g = c.g, b = c.b}
+	self.db.unitframe.colors.transparentCastbar = self.db.tempSettings.transparentCastbar
+	
+	c = self.db.tempSettings.auraBarBuff
+	self.db.unitframe.colors.auraBarBuff = {r = c.r, g = c.g, b = c.b}
+	self.db.unitframe.colors.transparentAurabars = self.db.tempSettings.transparentAurabars
+	
+
+	self.db.tempSettings = nil
+	
+	self:UpdateAll()
+end
+
+function E:AprilFoolsToggle()
+	if(HelloKittyLeft and HelloKittyLeft:IsShown()) then
+		self:RestoreAprilFools()
+	else
+		self:StaticPopup_Show("APRIL_FOOLS")
+	end
+end
+
+local function OnDragStart(self)
+	self:StartMoving()
+end
+
+local function OnDragStop(self)
+	self:StopMovingOrSizing()
+end
+
+local function OnUpdate(self, elapsed)
+	if(self.elapsed and self.elapsed > 0.1) then
+		self.tex:SetTexCoord((self.curFrame - 1) * 0.1, 0, (self.curFrame - 1) * 0.1, 1, self.curFrame * 0.1, 0, self.curFrame * 0.1, 1)
+
+		if(self.countUp) then
+			self.curFrame = self.curFrame + 1
+		else
+			self.curFrame = self.curFrame - 1
+		end
+		
+		if(self.curFrame > 10) then
+			self.countUp = false
+			self.curFrame = 9
+		elseif(self.curFrame < 1) then
+			self.countUp = true
+			self.curFrame = 2
+		end
+		self.elapsed = 0
+	else
+		self.elapsed = (self.elapsed or 0) + elapsed
+	end	
+end
+
+function E:CreateKittys()
+	if(HelloKittyLeft) then
+		HelloKittyLeft:Show()
+		HelloKittyRight:Show()
+		return
+	end
+	local helloKittyLeft = CreateFrame("Frame", "HelloKittyLeft", UIParent)
+	helloKittyLeft:SetSize(120, 128)
+	helloKittyLeft:SetMovable(true)
+	helloKittyLeft:EnableMouse(true)
+	helloKittyLeft:RegisterForDrag("LeftButton")
+	helloKittyLeft:SetPoint("BOTTOMLEFT", LeftChatPanel, "BOTTOMRIGHT", 2, -4)
+	helloKittyLeft.tex = helloKittyLeft:CreateTexture(nil, "OVERLAY")
+	helloKittyLeft.tex:SetAllPoints()
+	helloKittyLeft.tex:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\hello_kitty.tga")
+	helloKittyLeft.tex:SetTexCoord(0, 0, 0, 1, 0, 0, 0, 1)
+	helloKittyLeft.curFrame = 1
+	helloKittyLeft.countUp = true
+	helloKittyLeft:SetClampedToScreen(true)
+	helloKittyLeft:SetScript("OnDragStart", OnDragStart)
+	helloKittyLeft:SetScript("OnDragStop", OnDragStop)
+	helloKittyLeft:SetScript("OnUpdate", OnUpdate)
+
+	local helloKittyRight = CreateFrame("Frame", "HelloKittyRight", UIParent)
+	helloKittyRight:SetSize(120, 128)
+	helloKittyRight:SetMovable(true)
+	helloKittyRight:EnableMouse(true)
+	helloKittyRight:RegisterForDrag("LeftButton")
+	helloKittyRight:SetPoint("BOTTOMRIGHT", RightChatPanel, "BOTTOMLEFT", -2, -4)
+	helloKittyRight.tex = helloKittyRight:CreateTexture(nil, "OVERLAY")
+	helloKittyRight.tex:SetAllPoints()
+	helloKittyRight.tex:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\hello_kitty.tga")
+	helloKittyRight.tex:SetTexCoord(0, 0, 0, 1, 0, 0, 0, 1)
+	helloKittyRight.curFrame = 10
+	helloKittyRight.countUp = false
+	helloKittyRight:SetClampedToScreen(true)
+	helloKittyRight:SetScript("OnDragStart", OnDragStart)
+	helloKittyRight:SetScript("OnDragStop", OnDragStop)
+	helloKittyRight:SetScript("OnUpdate", OnUpdate)
+end
+
 function E:Initialize()
 	twipe(self.db)
 	twipe(self.global)
@@ -887,7 +1078,7 @@ function E:Initialize()
 	if E:IsFoolsDay() then
 		E:StaticPopup_Show('APRIL_FOOLS')
 	end
-
+	
 	self:UpdateMedia()
 	self:UpdateFrameTemplates()
 	self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED", "CheckRole");
@@ -903,7 +1094,12 @@ function E:Initialize()
 	if self.myclass == "DRUID" then
 		self:RegisterEvent("SPELLS_CHANGED")
 	end
-
+	
+	if self.db.general.kittys then
+		self:CreateKittys()
+		self:Delay(5, self.Print, self, L["Type /aprilfools to revert to old settings."])
+	end	
+	
 	self:Tutorials()
 	self:GetModule('Minimap'):UpdateSettings()
 	self:RefreshModulesDB()
