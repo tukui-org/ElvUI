@@ -951,13 +951,13 @@ function E:RestoreAprilFools()
 		HelloKittyRight:Hide()
 	end	
 	self.db.tempSettings = nil
+	self.db.general.kittys = false
 	self:UpdateAll()
 end
 
 function E:AprilFoolsToggle()
 	if(HelloKittyLeft and HelloKittyLeft:IsShown()) then
 		self:RestoreAprilFools()
-		self.db.general.kittys = nil
 	else
 		self:StaticPopup_Show("APRIL_FOOLS")
 	end
