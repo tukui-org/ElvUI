@@ -920,6 +920,11 @@ end
 function E:RestoreAprilFools()
 	--Store old settings
 	self.db.general.kittys = false
+	if(HelloKittyLeft) then
+		HelloKittyLeft:Hide()
+		HelloKittyRight:Hide()
+	end		
+	
 	if not(self.db.tempSettings) then return end
 	local c = self.db.tempSettings.backdropcolor
 	self.db.general.backdropcolor = {r = c.r, g = c.g, b = c.b}
@@ -947,10 +952,7 @@ function E:RestoreAprilFools()
 	self.db.unitframe.colors.auraBarBuff = {r = c.r, g = c.g, b = c.b}
 	self.db.unitframe.colors.transparentAurabars = self.db.tempSettings.transparentAurabars
 	
-	if(HelloKittyLeft) then
-		HelloKittyLeft:Hide()
-		HelloKittyRight:Hide()
-	end	
+
 	self.db.tempSettings = nil
 	
 	self:UpdateAll()
