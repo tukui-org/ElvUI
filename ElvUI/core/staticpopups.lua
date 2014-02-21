@@ -261,9 +261,11 @@ E.PopupDialogs["APRIL_FOOLS_END"] = {
 	button1 = L["Yes, Keep Changes!"],
 	button2 = L["No, Revert Changes!"],
 	OnAccept = function() 
+		E.global.aprilFools = true;
 		E:Print(L["Type /aprilfools to revert to old settings."])
 	end,
 	OnCancel = function()
+		E.global.aprilFools = true;
 		E:RestoreAprilFools()
 	end,
 	timeout = 0,
