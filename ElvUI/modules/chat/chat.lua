@@ -1523,11 +1523,6 @@ function CH:SaveChatHistory(event, ...)
 			end
 		end		
 	end
-
-	local temp = {}
-	for i = 1, select('#', ...) do	
-		temp[i] = select(i, ...) or false
-	end
 	
 	local temp = {}
 	for i = 1, select('#', ...) do	
