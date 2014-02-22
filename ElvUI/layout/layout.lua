@@ -322,7 +322,7 @@ function LO:CreateChatPanels()
 	--Right Chat Tab Separator
 	local rtabseparator = CreateFrame('Frame', 'RightChatTabSeparator', LeftChatPanel)
 	rtabseparator:SetFrameStrata('BACKGROUND')
-	rtabseparator:SetFrameLevel(LeftChatPanel:GetFrameLevel() + 2)
+	rtabseparator:SetFrameLevel(rchat:GetFrameLevel() + 2)
 	rtabseparator:Size(E.db.chat.panelWidth - 10, 1)
 	rtabseparator:Point('TOP', RightChatPanel, 0, -24)
 	rtabseparator:SetTemplate('Transparent')
@@ -336,7 +336,7 @@ function LO:CreateChatPanels()
 	end
 	E:GetModule('DataTexts'):RegisterPanel(rchatdp, 3, 'ANCHOR_TOPRIGHT', 17, 4)
 	
-	--Left Chat Data Panel Separator
+	--Right Chat Data Panel Separator
 	local rdataseparator = CreateFrame('Frame', 'RightDataPanelSeparator', LeftChatPanel)
 	rdataseparator:SetFrameStrata('BACKGROUND')
 	rdataseparator:SetFrameLevel(rchat:GetFrameLevel() + 2)
