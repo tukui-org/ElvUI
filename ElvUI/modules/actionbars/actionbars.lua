@@ -230,7 +230,7 @@ function AB:CreateBar(id)
 	local point, anchor, attachTo, x, y = split(',', self['barDefaults']['bar'..id].position)
 	bar:Point(point, anchor, attachTo, x, y)
 	bar.id = id
-	bar:CreateBackdrop('Default');
+	bar:CreateBackdrop('Transparent');
 	bar:SetFrameStrata("LOW")
 	bar.backdrop:SetAllPoints();
 	bar.buttons = {}
