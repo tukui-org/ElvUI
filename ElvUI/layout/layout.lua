@@ -138,10 +138,18 @@ end
 function LO:SetDataPanelStyle()
 	if E.db.datatexts.panelTransparency then
 		LeftChatDataPanel:SetTemplate("Transparent")
+		LeftChatDataPanel:SetBackdropColor(0,0,0,0)
+		LeftChatDataPanel:SetBackdropBorderColor(0,0,0,0)
 		LeftChatToggleButton:SetTemplate("Transparent")
+		LeftChatToggleButton:SetBackdropColor(0,0,0,0)
+		LeftChatToggleButton:SetBackdropBorderColor(0,0,0,0)
 		LeftMiniPanel:SetTemplate("Transparent")
 		RightChatDataPanel:SetTemplate("Transparent")
+		RightChatDataPanel:SetBackdropColor(0,0,0,0)
+		RightChatDataPanel:SetBackdropBorderColor(0,0,0,0)
 		RightChatToggleButton:SetTemplate("Transparent")
+		RightChatToggleButton:SetBackdropColor(0,0,0,0)
+		RightChatToggleButton:SetBackdropBorderColor(0,0,0,0)
 		RightMiniPanel:SetTemplate("Transparent")		
 		ElvConfigToggle:SetTemplate("Transparent")
 		Bottom_Datatext_Panel:SetTemplate("Transparent")
@@ -234,7 +242,6 @@ function LO:CreateChatPanels()
 	lchat.backdrop:SetAllPoints()
 	E:CreateMover(lchat, "LeftChatMover", L["Left Chat"])
 	
-	
 	--Background Texture
 	lchat.tex = lchat:CreateTexture(nil, 'OVERLAY')
 	lchat.tex:SetInside()
@@ -247,13 +254,30 @@ function LO:CreateChatPanels()
 	lchattab:Point('BOTTOMRIGHT', lchat, 'TOPRIGHT', -SPACING, -(SPACING + PANEL_HEIGHT))
 	lchattab:SetTemplate(E.db.chat.panelTabTransparency == true and 'Transparent' or 'Default', true)
 	
+	--Left Chat Tab Separator
+	local ltabseparator = CreateFrame('Frame', 'LeftChatTabSeparator', LeftChatPanel)
+	ltabseparator:SetFrameStrata('BACKGROUND')
+	ltabseparator:SetFrameLevel(lchat:GetFrameLevel() + 2)
+	ltabseparator:Size(E.db.chat.panelWidth - 10, 1)
+	ltabseparator:Point('TOP', LeftChatPanel, 0, -24)
+	ltabseparator:SetTemplate('Transparent')
+	
 	--Left Chat Data Panel
 	local lchatdp = CreateFrame('Frame', 'LeftChatDataPanel', LeftChatPanel)
 	lchatdp:Point('BOTTOMLEFT', lchat, 'BOTTOMLEFT', SPACING + SIDE_BUTTON_WIDTH, SPACING)
 	lchatdp:Point('TOPRIGHT', lchat, 'BOTTOMRIGHT', -SPACING, (SPACING + PANEL_HEIGHT))
-	lchatdp:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
-	
+	if not E.db.datatexts.panelTransparency then
+		lchatdp:SetTemplate('Default', true)
+	end
 	E:GetModule('DataTexts'):RegisterPanel(lchatdp, 3, 'ANCHOR_TOPLEFT', -17, 4)
+	
+	--Left Chat Data Panel Separator
+	local ldataseparator = CreateFrame('Frame', 'LeftDataPanelSeparator', LeftChatPanel)
+	ldataseparator:SetFrameStrata('BACKGROUND')
+	ldataseparator:SetFrameLevel(lchat:GetFrameLevel() + 2)
+	ldataseparator:Size(E.db.chat.panelWidth - 10, 1)
+	ldataseparator:Point('BOTTOM', LeftChatPanel, 0, 24)
+	ldataseparator:SetTemplate('Transparent')
 	
 	--Left Chat Toggle Button
 	local lchattb = CreateFrame('Button', 'LeftChatToggleButton', E.UIParent)
@@ -261,7 +285,9 @@ function LO:CreateChatPanels()
 	LeftChatPanel.fadeFunc = ChatPanelLeft_OnFade
 	lchattb:Point('TOPRIGHT', lchatdp, 'TOPLEFT', -(E.PixelMode and -1 or 1), 0)
 	lchattb:Point('BOTTOMLEFT', lchat, 'BOTTOMLEFT', SPACING, SPACING)
-	lchattb:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
+	if not E.db.datatexts.panelTransparency then
+		lchattb:SetTemplate('Default', true)
+	end
 	lchattb:SetScript('OnEnter', ChatButton_OnEnter)
 	lchattb:SetScript('OnLeave', ChatButton_OnLeave)
 	lchattb:SetScript('OnClick', ChatButton_OnClick)
@@ -269,7 +295,7 @@ function LO:CreateChatPanels()
 	lchattb.text:FontTemplate()
 	lchattb.text:SetPoint('CENTER')
 	lchattb.text:SetJustifyH('CENTER')
-	lchattb.text:SetText('<')
+	lchattb.text:SetText('L')
 	
 	--Right Chat
 	local rchat = CreateFrame('Frame', 'RightChatPanel', E.UIParent)
@@ -293,12 +319,30 @@ function LO:CreateChatPanels()
 	rchattab:Point('BOTTOMLEFT', rchat, 'TOPLEFT', SPACING, -(SPACING + PANEL_HEIGHT))
 	rchattab:SetTemplate(E.db.chat.panelTabTransparency == true and 'Transparent' or 'Default', true)
 	
+	--Right Chat Tab Separator
+	local rtabseparator = CreateFrame('Frame', 'RightChatTabSeparator', LeftChatPanel)
+	rtabseparator:SetFrameStrata('BACKGROUND')
+	rtabseparator:SetFrameLevel(LeftChatPanel:GetFrameLevel() + 2)
+	rtabseparator:Size(E.db.chat.panelWidth - 10, 1)
+	rtabseparator:Point('TOP', RightChatPanel, 0, -24)
+	rtabseparator:SetTemplate('Transparent')
+	
 	--Right Chat Data Panel
 	local rchatdp = CreateFrame('Frame', 'RightChatDataPanel', RightChatPanel)
 	rchatdp:Point('BOTTOMLEFT', rchat, 'BOTTOMLEFT', SPACING, SPACING)
 	rchatdp:Point('TOPRIGHT', rchat, 'BOTTOMRIGHT', -(SPACING + SIDE_BUTTON_WIDTH), SPACING + PANEL_HEIGHT)
-	rchatdp:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
+	if not E.db.datatexts.panelTransparency then
+		rchatdp:SetTemplate('Default', true)
+	end
 	E:GetModule('DataTexts'):RegisterPanel(rchatdp, 3, 'ANCHOR_TOPRIGHT', 17, 4)
+	
+	--Left Chat Data Panel Separator
+	local rdataseparator = CreateFrame('Frame', 'RightDataPanelSeparator', LeftChatPanel)
+	rdataseparator:SetFrameStrata('BACKGROUND')
+	rdataseparator:SetFrameLevel(rchat:GetFrameLevel() + 2)
+	rdataseparator:Size(E.db.chat.panelWidth - 10, 1)
+	rdataseparator:Point('BOTTOM', RightChatPanel, 0, 24)
+	rdataseparator:SetTemplate('Transparent')
 	
 	--Right Chat Toggle Button
 	local rchattb = CreateFrame('Button', 'RightChatToggleButton', E.UIParent)
@@ -306,7 +350,9 @@ function LO:CreateChatPanels()
 	RightChatPanel.fadeFunc = ChatPanelRight_OnFade
 	rchattb:Point('TOPLEFT', rchatdp, 'TOPRIGHT', (E.PixelMode and -1 or 1), 0)
 	rchattb:Point('BOTTOMRIGHT', rchat, 'BOTTOMRIGHT', -SPACING, SPACING)
-	rchattb:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
+	if not E.db.datatexts.panelTransparency then
+		rchattb:SetTemplate('Default', true)
+	end
 	rchattb:RegisterForClicks('AnyUp')
 	rchattb:SetScript('OnEnter', ChatButton_OnEnter)
 	rchattb:SetScript('OnLeave', ChatButton_OnLeave)
@@ -315,7 +361,7 @@ function LO:CreateChatPanels()
 	rchattb.text:FontTemplate()
 	rchattb.text:SetPoint('CENTER')
 	rchattb.text:SetJustifyH('CENTER')
-	rchattb.text:SetText('>')
+	rchattb.text:SetText('R')
 	
 	--Load Settings
 	if E.db['LeftChatPanelFaded'] then
