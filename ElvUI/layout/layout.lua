@@ -389,10 +389,10 @@ function LO:CreateExtraDataBarPanels()
 	local chattab1 = CreateFrame('Frame', 'ChatTab_Datatext_Panel', E.UIParent)
 	chattab1:SetScript('OnShow', function(self)
 		chattab1:Point("TOPRIGHT", RightChatTab, "TOPRIGHT", 0, 0)
-		chattab1:Point("BOTTOMLEFT", RightChatTab, "BOTTOMLEFT", (E.db.chat.panelWidth / 3), 0)
+		chattab1:Point("BOTTOMLEFT", RightChatTab, "BOTTOMLEFT", 0, 0)
 	end)
 	chattab1:Hide()
-	E:GetModule('DataTexts'):RegisterPanel(chattab1, 2, 'ANCHOR_BOTTOM', 0, -4)
+	E:GetModule('DataTexts'):RegisterPanel(chattab1, 3, 'ANCHOR_TOPLEFT', -3, 4)
 	
 	local bottom_bar = CreateFrame('Frame', 'Bottom_Datatext_Panel', E.UIParent)
 	bottom_bar:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
@@ -403,7 +403,7 @@ function LO:CreateExtraDataBarPanels()
 		E:CreateMover(self, "BottomBarMover", "Bottom Datatext Frame") 
 	end)
 	E.FrameLocks['Bottom_Datatext_Panel'] = true
-	E:GetModule('DataTexts'):RegisterPanel(Bottom_Datatext_Panel, 3, 'ANCHOR_BOTTOM', 0, -4)
+	E:GetModule('DataTexts'):RegisterPanel(Bottom_Datatext_Panel, 3, 'ANCHOR_TOPLEFT', 0, 1)
 	bottom_bar:Hide()
 end
 

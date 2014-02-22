@@ -264,8 +264,9 @@ P['datatexts'] = {
 		['LeftMiniPanel'] = 'Time',
 		['RightMiniPanel'] = 'System',
 		['ChatTab_Datatext_Panel'] = {
-			['left'] = 'Call to Arms',
-			['middle'] = 'Bags',
+			['left'] = '',	-- Keep empty to allow for Loot chat tab
+			['middle'] = 'Call to Arms',
+			['right'] = 'Bags',
 		},
 		['Bottom_Datatext_Panel'] = {
 			['left'] = 'Friends',
