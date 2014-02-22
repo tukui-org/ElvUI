@@ -257,15 +257,15 @@ P['datatexts'] = {
 			['right'] = 'Mastery',
 		},
 		['RightChatDataPanel'] = {
-			['left'] = 'DPS',
-			['middle'] = 'Durability',
-			['right'] = 'Gold',
+			['left'] = 'Durability',
+			['middle'] = '',
+			['right'] = 'Scrooge',
 		},
 		['LeftMiniPanel'] = 'Time',
 		['RightMiniPanel'] = 'System',
 		['ChatTab_Datatext_Panel'] = {
-			['left'] = '',	-- Keep empty to allow for Loot chat tab
-			['middle'] = 'Call to Arms',
+			['left'] = 'Skada',
+			['middle'] = 'BagSyncLDB',
 			['right'] = 'Bags',
 		},
 		['Bottom_Datatext_Panel'] = {
