@@ -168,14 +168,14 @@ P["nameplate"] = {
 
 --Auras
 P['auras'] = {
-	['font'] = 'ElvUI Pixel',
-	['fontSize'] = 12,
-	['fontOutline'] = 'MONOCHROMEOUTLINE',
+	['font'] = 'PF Tempesta Seven Bold',
+	['fontSize'] = 8,
+	['fontOutline'] = 'OUTLINE',
 
 	['countYOffset'] = 0,
 	['countXOffset'] = 0,
-	['timeYOffset'] = 0,
-	['timeXOffset'] = 1,
+	['timeYOffset'] = -8,
+	['timeXOffset'] = 0,
 
 	['consolidatedBuffs'] = {
 		['enable'] = true,
@@ -221,12 +221,12 @@ P['chat'] = {
 	['scrollDownInterval'] = 0,
 	['fade'] = false,
 	['font'] = 'Arial Narrow',
-	['fontOutline'] = 'NONE',
+	['fontOutline'] = 'OUTLINE',
 	['sticky'] = true,
 	['emotionIcons'] = false,
 	['keywordSound'] = 'Whisper Alert',
 	['whisperSound'] = 'Whisper Alert',
-	['chatHistory'] = false,
+	['chatHistory'] = true,
 	['lfgIcons'] = false,
 	['timeStampFormat'] = '%H:%M:%S ',
 	['keywords'] = '%MYNAME%, ElvUI, Blaze, Blazii, Blæs',
@@ -235,20 +235,20 @@ P['chat'] = {
 	['panelBackdropNameLeft'] = '',
 	['panelBackdropNameRight'] = '',
 	['panelBackdrop'] = 'SHOWBOTH',
-	['panelTabBackdrop'] = true,
+	['panelTabBackdrop'] = false,
 	['panelTabTransparency'] = true,
-	['editBoxPosition'] = 'BELOW_CHAT',
+	['editBoxPosition'] = 'ABOVE_CHAT',
 
-	['tabFont'] = 'Friz Quadrata TT',
-	['tabFontSize'] = 11,
-	['tabFontOutline'] = 'NONE',
+	['tabFont'] = 'PF Tempesta Seven Bold',
+	['tabFontSize'] = 8,
+	['tabFontOutline'] = 'OUTLINE',
 }
 
 --Datatexts
 P['datatexts'] = {
-	['font'] = 'Friz Quadrata TT',
-	['fontSize'] = 11,
-	['fontOutline'] = 'NONE',
+	['font'] = 'PF Tempesta Seven Bold',
+	['fontSize'] = 8,
+	['fontOutline'] = 'OUTLINE',
 	
 	['panels'] = {
 		['LeftChatDataPanel'] = {
