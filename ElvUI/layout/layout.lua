@@ -405,14 +405,6 @@ function LO:CreateExtraDataBarPanels()
 	E.FrameLocks['Bottom_Datatext_Panel'] = true
 	E:GetModule('DataTexts'):RegisterPanel(Bottom_Datatext_Panel, 3, 'ANCHOR_BOTTOM', 0, -4)
 	bottom_bar:Hide()
-	
-	RightChatTab:HookScript("OnHide", function() 
-		chattab1:Hide() 
-	end)
-	RightChatTab:HookScript("OnShow", function() 
-		chattab1:Show() 
-		chattab1:SetAlpha(RightChatTab:GetAlpha())
-	end)
 end
 
 function ExtraDataBarSetup()
