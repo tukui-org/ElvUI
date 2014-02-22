@@ -236,7 +236,7 @@ P['chat'] = {
 	['panelBackdropNameRight'] = '',
 	['panelBackdrop'] = 'SHOWBOTH',
 	['panelTabBackdrop'] = true,
-	['panelTabTransparency'] = false,
+	['panelTabTransparency'] = true,
 	['editBoxPosition'] = 'BELOW_CHAT',
 
 	['tabFont'] = 'Friz Quadrata TT',
@@ -279,7 +279,7 @@ P['datatexts'] = {
 	['minimapPanels'] = true,
 	['leftChatPanel'] = true,
 	['rightChatPanel'] = true,
-	['panelTransparency'] = false,
+	['panelTransparency'] = true,
 }
 
 --Tooltip
