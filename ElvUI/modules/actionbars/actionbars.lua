@@ -443,7 +443,7 @@ function AB:StyleButton(button, noBackdrop, adjustChecked)
 	end
 
 	if not button.noBackdrop and not button.backdrop then
-		button:CreateBackdrop('Default', true)
+		button:CreateBackdrop('Transparent')
 		button.backdrop:SetAllPoints()
 	end
 	
