@@ -223,7 +223,7 @@ function E:SetupTheme(theme, noDisplayMsg)
 	if theme == "classic" then
 		E.db.general.bordercolor = E:GetColor(.31, .31, .31)
 		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
-		E.db.general.backdropfadecolor = E:GetColor(.06, .06, .06, .8)
+		E.db.general.backdropfadecolor = E:GetColor(.06, .06, .06, .7)
 		
 		E.db.unitframe.colors.healthclass = false
 		E.db.unitframe.colors.health = E:GetColor(44/255, 44/255, 44/255)
@@ -234,14 +234,14 @@ function E:SetupTheme(theme, noDisplayMsg)
 	elseif theme == "class" then
 		E.db.general.bordercolor = E:GetColor(.31, .31, .31)
 		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
-		E.db.general.backdropfadecolor = E:GetColor(.06, .06, .06, .8)
+		E.db.general.backdropfadecolor = E:GetColor(.06, .06, .06, .7)
 		E.db.unitframe.colors.auraBarBuff = E:GetColor(classColor.r, classColor.b, classColor.g)
 		E.db.unitframe.colors.healthclass = true
 		E.db.unitframe.colors.castClassColor = true
 	else
 		E.db.general.bordercolor = E:GetColor(.2, .2, .2)
 		E.db.general.backdropcolor = E:GetColor(.16, .16, .16)
-		E.db.general.backdropfadecolor = E:GetColor(.10, .10, .10, .8)
+		E.db.general.backdropfadecolor = E:GetColor(.10, .10, .10, .7)
 		E.db.unitframe.colors.auraBarBuff = E:GetColor(.2, .2, .2)
 		E.db.unitframe.colors.healthclass = false
 		E.db.unitframe.colors.health = E:GetColor(.267, .267, .267)
