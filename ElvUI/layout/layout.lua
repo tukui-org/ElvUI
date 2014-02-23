@@ -435,7 +435,7 @@ function LO:CreateMinimapPanels()
 end
 
 function LO:CreateExtraDataBarPanels()
-	local chattab1 = CreateFrame('Frame', 'ChatTab_Datatext_Panel', E.UIParent)
+	local chattab1 = CreateFrame('Frame', 'ChatTab_Datatext_Panel', RightChatPanel)
 	chattab1:SetScript('OnShow', function(self)
 		chattab1:Point("TOPRIGHT", RightChatTab, "TOPRIGHT", 0, 0)
 		chattab1:Point("BOTTOMLEFT", RightChatTab, "BOTTOMLEFT", 50, 0)
