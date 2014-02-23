@@ -1,5 +1,8 @@
 ﻿local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local _, ns = ...
+local ElvUF = ns.oUF
+local _, unitClass = UnitClass("player");
+local classColor = unitClass == 'PRIEST' and {r = 0, g = 179/255, b = 1} or RAID_CLASS_COLORS[unitClass]
 
 P.gridSize = 64
 P.farmSize = 340
@@ -24,7 +27,7 @@ P['general'] = {
 	["backdropcolor"] = {r = .16, g = .16, b = .16},
 	["backdropfadecolor"] = {r = .10, g = .10, b = .10, a = 0.8},
 	['bubblefadecolor'] = {r = .10, g = .10, b = .10, a = 0.5},
-	["valuecolor"] = {r = 0, g = 180/255, b = 1},
+	["valuecolor"] = {r = classColor.r, g = classColor.g, b = classColor.b},
 
 	['mapAlpha'] = 1,
 	['tinyWorldMap'] = true,
