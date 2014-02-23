@@ -134,10 +134,10 @@ end
 
 --Workaround for people wanting to use white and it reverting to their class color.
 E.PriestColors = {
-	r = 0.99,
-	g = 0.99,
-	b = 0.99,
-	colorStr = 'fcfcfc'
+	r = 0,
+	g = 179/255,
+	b = 1,
+	colorStr = '00b3ff'
 }
 
 --Basically check if another class border is being used on a class that doesn't match. And then return true if a match is found.
