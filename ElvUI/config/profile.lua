@@ -24,7 +24,7 @@ P['general'] = {
 
 	["bordercolor"] = {r = .20, g = .20, b = .20},
 	["backdropcolor"] = {r = .16, g = .16, b = .16},
-	["backdropfadecolor"] = {r = .10, g = .10, b = .10, a = 0.8},
+	["backdropfadecolor"] = {r = .10, g = .10, b = .10, a = 0.7},
 	['bubblefadecolor'] = {r = .10, g = .10, b = .10, a = 0.5},
 	["valuecolor"] = {r = classColor.r, g = classColor.g, b = classColor.b},
 
