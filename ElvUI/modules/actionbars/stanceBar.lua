@@ -272,7 +272,7 @@ function AB:UpdateStanceBindings()
 end
 
 function AB:CreateBarShapeShift()
-	bar:CreateBackdrop('Default');
+	bar:CreateBackdrop('Transparent');
 	bar.backdrop:SetAllPoints();
 	bar:Point('TOPLEFT', LeftChatPanel, 'TOPRIGHT', -1, 3);
 	bar.buttons = {};

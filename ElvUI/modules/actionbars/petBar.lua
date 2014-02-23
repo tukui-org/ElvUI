@@ -236,7 +236,7 @@ function AB:UpdatePetBindings()
 end
 
 function AB:CreateBarPet()
-	bar:CreateBackdrop('Default');
+	bar:CreateBackdrop('Transparent');
 	bar.backdrop:SetAllPoints();
 	bar:Point('RIGHT', E.UIParent, 'RIGHT', -4, 0);
 
