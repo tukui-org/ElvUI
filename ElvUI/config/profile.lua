@@ -1,6 +1,5 @@
 ﻿local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local _, ns = ...
-local ElvUF = ns.oUF
 local _, unitClass = UnitClass("player");
 local classColor = unitClass == 'PRIEST' and {r = 0, g = 179/255, b = 1} or RAID_CLASS_COLORS[unitClass]
 
