@@ -27,7 +27,7 @@ AB["barDefaults"] = {
 		['page'] = 5,
 		['bindButtons'] = "MULTIACTIONBAR2BUTTON",
 		['conditions'] = "",
-		['position'] = "BOTTOM,ElvUI_Bar1,TOP,0,-38",
+		['position'] = "TOP,ElvUI_Bar1,TOP,0,0",
 	},
 	["bar3"] = {
 		['page'] = 6,
