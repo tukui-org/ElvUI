@@ -204,37 +204,6 @@ function E:SetupPixelPerfect(enabled, noMsg)
 		E:StaticPopup_Show('PIXELPERFECT_CHANGED')
 	end
 	
-	if not noMsg then
-		E.db.general.bottomPanel = enabled
-		E:GetModule('Layout'):BottomPanelVisibility()
-	end
-
-	if noMsg then
-		if enabled then
-			E.db.actionbar.bar1.backdrop = false;
-			E.db.actionbar.bar3.backdrop = false;
-			E.db.actionbar.bar5.backdrop = false;			
-			E.db.actionbar.bar1.buttonspacing = 2;
-			E.db.actionbar.bar2.buttonspacing = 2;
-			E.db.actionbar.bar3.buttonspacing = 2;
-			E.db.actionbar.bar4.buttonspacing = 2;
-			E.db.actionbar.bar5.buttonspacing = 2;
-			E.db.actionbar.barPet.buttonspacing = 2;
-			E.db.actionbar.stanceBar.buttonspacing = 2;			
-		else
-			E.db.actionbar.bar1.backdrop = true;
-			E.db.actionbar.bar3.backdrop = true;
-			E.db.actionbar.bar5.backdrop = true;
-			E.db.actionbar.bar1.buttonspacing = 4;
-			E.db.actionbar.bar2.buttonspacing = 4;
-			E.db.actionbar.bar3.buttonspacing = 4;
-			E.db.actionbar.bar4.buttonspacing = 4;
-			E.db.actionbar.bar5.buttonspacing = 4;
-			E.db.actionbar.barPet.buttonspacing = 4;
-			E.db.actionbar.stanceBar.buttonspacing = 4;
-		end
-	end	
-	
 	if InstallStepComplete and not noMsg then
 		InstallStepComplete.message = L["Pixel Perfect Set"]
 		InstallStepComplete:Show()	
