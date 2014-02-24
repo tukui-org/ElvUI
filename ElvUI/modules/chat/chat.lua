@@ -1702,6 +1702,7 @@ function CH:Initialize()
 	f:SetScript("OnEvent", function() CH:ScheduleTimer('SetTabWidth', 0.1) end)
 	hooksecurefunc("FCF_OpenNewWindow", CH.DelaySetSelectedTab)
 	hooksecurefunc("FCF_OpenTemporaryWindow", CH.DelaySetSelectedTab)
+	hooksecurefunc("FCFDockOverflowListButton_OnClick", CH.SetSelectedTab)
 	hooksecurefunc("FCF_Close", CH.SetSelectedTab)
 	
 	self:RegisterEvent("GROUP_ROSTER_UPDATE", "CheckLFGRoles")
