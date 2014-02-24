@@ -224,36 +224,47 @@ function CH:GetSmileyReplacementText(msg)
 	return outstr;
 end
 
---TODO: Update selected tab on FCF_OpenNewWindow or FCF_OpenTemporaryWindow when a new frame gets focused
-function CH:SetSelectedTab(t)
+function CH:SetSelectedTab()
 	local selectedId = GeneralDockManager.selected:GetID()
-	if t.isDocked and selectedId == t:GetID() then
-		if not t.isTemporary then
-			t.text:SetText(format(SELECTED_STRING, (FCF_GetChatWindowInfo(t:GetID()))))
-		else
-			local matchFound = (FCF_GetChatWindowInfo(t:GetID())):find("\|.*>\|r") --Already bracketed
-			if not matchFound then
-				t.text:SetText(format(SELECTED_STRING, (FCF_GetChatWindowInfo(t:GetID()))))
-			else
-				t.text:SetText((FCF_GetChatWindowInfo(t:GetID())))
-			end
-		end
-	end
 
+	--Set/Remove brackets
 	for i=1, CreatedFrames do
-		t = _G[format("ChatFrame%sTab", i)]
-		if t.isDocked and selectedId ~= t:GetID() then
-			local tabText = (FCF_GetChatWindowInfo(t:GetID()))
-			if not t.isTemporary then
-				t.text:SetText(tabText)
+		local tab = _G[format("ChatFrame%sTab", i)]
+		if tab.isDocked then
+			if selectedId == tab:GetID() then
+				if not tab.isTemporary then
+					tab.text:SetText(format(SELECTED_STRING, (FCF_GetChatWindowInfo(tab:GetID()))))
+				else
+					local matchFound = (FCF_GetChatWindowInfo(tab:GetID())):find("\|.*>\|r") --Already bracketed
+					if not matchFound then
+						tab.text:SetText(format(SELECTED_STRING, (FCF_GetChatWindowInfo(tab:GetID()))))
+					else
+						tab.text:SetText((FCF_GetChatWindowInfo(tab:GetID())))
+					end
+				end
 			else
-				local tabTextStripped = gsub(tabText, "\|.*>\|r (.*) \|.*<\|r", "%1") --Remove brackets
-				t.text:SetText(tabTextStripped)
+				local tabText = (FCF_GetChatWindowInfo(tab:GetID()))
+				if not tab.isTemporary then
+					tab.text:SetText(tabText)
+				else
+					local tabTextStripped = gsub(tabText, "\|.*>\|r (.*) \|.*<\|r", "%1") --Remove brackets
+					tab.text:SetText(tabTextStripped)
+				end
 			end
 		end
 		--Prevent chat tabs changing width on each click.
-		--TODO: See if you can force this on login/reload. Initially width is fucked until you click any tab once.
-		PanelTemplates_TabResize(t, 10, nil, nil, nil, t.textWidth);
+		PanelTemplates_TabResize(tab, 5, nil, nil, nil, tab.textWidth);
+	end
+end
+
+function CH:DelaySetSelectedTab()
+	CH:ScheduleTimer('SetSelectedTab', 1)
+end
+
+function CH:SetTabWidth()
+	for i=1, CreatedFrames do
+		local tab = _G[format("ChatFrame%sTab", i)]
+		PanelTemplates_TabResize(tab, 5, nil, nil, nil, tab.textWidth);
 	end
 end
 
@@ -283,9 +294,6 @@ function CH:StyleChat(frame)
 	end)
 
 	tab.text = _G[name.."TabText"]
-	if GeneralDockManager.selected:GetID() == tab:GetID() then
-		tab.text:SetText(format(SELECTED_STRING, tab.text:GetText()))
-	end
 	tab.text:SetTextColor(unpack(E["media"].rgbvaluecolor))
 	hooksecurefunc(tab.text, "SetTextColor", function(t, r, g, b, a)
 		local rR, gG, bB = unpack(E["media"].rgbvaluecolor)
@@ -294,22 +302,31 @@ function CH:StyleChat(frame)
 			t:SetTextColor(rR, gG, bB)
 		end
 	end)
+	
+	--Mark current selected tab on initial load
+	if GeneralDockManager.selected:GetID() == tab:GetID() then
+		tab.text:SetText(format(SELECTED_STRING, tab.text:GetText()))
+	end
 
+	--Mark current selected tab if renamed
 	hooksecurefunc(tab, "SetText", function(t)
 		if t.isDocked and GeneralDockManager.selected:GetID() == t:GetID() then
 			t.text:SetText(format(SELECTED_STRING, t.text:GetText()))
 		end
 	end)
 
+	--Prevent text from jumping from left to right when tab is clicked.
 	hooksecurefunc(tab, "SetWidth", function(t)
 		t.text:ClearAllPoints()
 		t.text:SetPoint("CENTER", t, "CENTER", 0, -4)
 	end)
 	
+	--Store variable for each tab
 	tab.isTemporary = frame.isTemporary
 
-	tab:HookScript("OnClick", function(t)
-		CH:SetSelectedTab(t)
+	--Mark current selected tab when clicked
+	tab:HookScript("OnClick", function()
+		CH:SetSelectedTab()
 	end)
 	
 	if tab.conversationIcon then
@@ -1649,7 +1666,6 @@ function CH:Initialize()
 		return 
 	end
 
-
 	if not ElvCharacterDB.ChatEditHistory then
 		ElvCharacterDB.ChatEditHistory = {};
 	end
@@ -1666,7 +1682,6 @@ function CH:Initialize()
 	FriendsMicroButton:Kill()
 	ChatFrameMenuButton:Kill()
 
-		
     if WIM then
       WIM.RegisterWidgetTrigger("chat_display", "whisper,chat,w2w,demo", "OnHyperlinkClick", function(self) CH.clickedframe = self end);
 	  WIM.RegisterItemRefHandler('url', WIM_URLLink)
@@ -1680,6 +1695,14 @@ function CH:Initialize()
 
 	self:SetupChat()
 	self:UpdateAnchors()
+	
+	--Bracket selected chat tab
+	local f = CreateFrame("Frame")
+	f:RegisterEvent("PLAYER_ENTERING_WORLD")
+	f:SetScript("OnEvent", function() CH:ScheduleTimer('SetTabWidth', 0.1) end)
+	hooksecurefunc("FCF_OpenNewWindow", CH.DelaySetSelectedTab)
+	hooksecurefunc("FCF_OpenTemporaryWindow", CH.DelaySetSelectedTab)
+	hooksecurefunc("FCF_Close", CH.SetSelectedTab)
 	
 	self:RegisterEvent("GROUP_ROSTER_UPDATE", "CheckLFGRoles")
 
@@ -1751,7 +1774,6 @@ function CH:Initialize()
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER_INFORM", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_INLINE_TOAST_BROADCAST", CH.FindURL)
-	
 
 	GeneralDockManagerOverflowButton:ClearAllPoints()
 	GeneralDockManagerOverflowButton:Point('BOTTOMRIGHT', LeftChatTab, 'BOTTOMRIGHT', -2, 2)
@@ -1761,14 +1783,13 @@ function CH:Initialize()
 			self:SetPoint(point, anchor, attachTo, -2, -6)
 		end
 	end)	
-	
+
 	if self.db.chatHistory then
 		self.SoundPlayed = true;
 		self:DisplayChatHistory()
 		self.SoundPlayed = nil;
 	end
-		
-	
+
 	local S = E:GetModule('Skins')
 	S:HandleNextPrevButton(CombatLogQuickButtonFrame_CustomAdditionalFilterButton, true)
 	local frame = CreateFrame("Frame", "CopyChatFrame", E.UIParent)
@@ -1779,7 +1800,6 @@ function CH:Initialize()
 	frame:Hide()
 	frame:EnableMouse(true)
 	frame:SetFrameStrata("DIALOG")
-
 
 	local scrollArea = CreateFrame("ScrollFrame", "CopyChatScrollFrame", frame, "UIPanelScrollFrameTemplate")
 	scrollArea:Point("TOPLEFT", frame, "TOPLEFT", 8, -30)
