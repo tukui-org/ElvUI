@@ -141,11 +141,15 @@ function LO:SetDataPanelStyle()
 		LeftChatDataPanel:SetBackdropColor(0,0,0,0)
 		LeftChatDataPanel:SetBackdropBorderColor(0,0,0,0)
 		LeftChatToggleButton:SetTemplate("Transparent")
+		LeftChatToggleButton:SetBackdropColor(0,0,0,0)
+		LeftChatToggleButton:SetBackdropBorderColor(0,0,0,0)
 		LeftMiniPanel:SetTemplate("Transparent")
 		RightChatDataPanel:SetTemplate("Transparent")
 		RightChatDataPanel:SetBackdropColor(0,0,0,0)
 		RightChatDataPanel:SetBackdropBorderColor(0,0,0,0)
 		RightChatToggleButton:SetTemplate("Transparent")
+		RightChatToggleButton:SetBackdropColor(0,0,0,0)
+		RightChatToggleButton:SetBackdropBorderColor(0,0,0,0)
 		RightMiniPanel:SetTemplate("Transparent")		
 		ElvConfigToggle:SetTemplate("Transparent")
 	else
@@ -265,7 +269,9 @@ function LO:CreateChatPanels()
 	LeftChatPanel.fadeFunc = ChatPanelLeft_OnFade
 	lchattb:Point('TOPRIGHT', lchatdp, 'TOPLEFT', -(E.PixelMode and -1 or 1), 0)
 	lchattb:Point('BOTTOMLEFT', lchat, 'BOTTOMLEFT', SPACING, SPACING)
-	lchattb:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
+	if not E.db.datatexts.panelTransparency then
+		lchattb:SetTemplate('Default', true)
+	end
 	lchattb:SetScript('OnEnter', ChatButton_OnEnter)
 	lchattb:SetScript('OnLeave', ChatButton_OnLeave)
 	lchattb:SetScript('OnClick', ChatButton_OnClick)
@@ -312,7 +318,9 @@ function LO:CreateChatPanels()
 	RightChatPanel.fadeFunc = ChatPanelRight_OnFade
 	rchattb:Point('TOPLEFT', rchatdp, 'TOPRIGHT', (E.PixelMode and -1 or 1), 0)
 	rchattb:Point('BOTTOMRIGHT', rchat, 'BOTTOMRIGHT', -SPACING, SPACING)
-	rchattb:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
+	if not E.db.datatexts.panelTransparency then
+		rchattb:SetTemplate('Default', true)
+	end
 	rchattb:RegisterForClicks('AnyUp')
 	rchattb:SetScript('OnEnter', ChatButton_OnEnter)
 	rchattb:SetScript('OnLeave', ChatButton_OnLeave)
