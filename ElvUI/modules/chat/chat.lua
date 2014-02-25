@@ -247,7 +247,7 @@ function CH:SetSelectedTab()
 				if not tab.isTemporary then
 					tab.text:SetText(tabText)
 				else
-					local tabTextStripped = gsub(tabText, "\|.*>\|r (.*) \|.*<\|r", "%1") --Remove brackets
+					local tabTextStripped = gsub(tabText, "\|.*>\|r%s*(%S*)%s*\|.*<\|r", "%1") --Remove brackets
 					tab.text:SetText(tabTextStripped)
 				end
 			end
