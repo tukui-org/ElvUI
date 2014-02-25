@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local LO = E:NewModule('Layout', 'AceEvent-3.0');
+local LSM = LibStub("LibSharedMedia-3.0")
 
 local PANEL_HEIGHT = 22;
 local SIDE_BUTTON_WIDTH = 16;
@@ -276,10 +277,11 @@ function LO:CreateChatPanels()
 	lchattb:SetScript('OnLeave', ChatButton_OnLeave)
 	lchattb:SetScript('OnClick', ChatButton_OnClick)
 	lchattb.text = lchattb:CreateFontString(nil, 'OVERLAY')
-	lchattb.text:FontTemplate()
+	lchattb.text:FontTemplate(LSM:Fetch('font', 'PF Tempesta Seven Bold'), 8, 'OUTLINE')
 	lchattb.text:SetPoint('CENTER')
 	lchattb.text:SetJustifyH('CENTER')
-	lchattb.text:SetText('<')
+	lchattb.text:SetText('L')
+	lchattb.text:SetTextColor(unpack(E["media"].rgbvaluecolor))
 	
 	--Right Chat
 	local rchat = CreateFrame('Frame', 'RightChatPanel', E.UIParent)
@@ -326,10 +328,11 @@ function LO:CreateChatPanels()
 	rchattb:SetScript('OnLeave', ChatButton_OnLeave)
 	rchattb:SetScript('OnClick', ChatButton_OnClick)
 	rchattb.text = rchattb:CreateFontString(nil, 'OVERLAY')
-	rchattb.text:FontTemplate()
+	rchattb.text:FontTemplate(LSM:Fetch('font', 'PF Tempesta Seven Bold'), 8, 'OUTLINE')
 	rchattb.text:SetPoint('CENTER')
 	rchattb.text:SetJustifyH('CENTER')
-	rchattb.text:SetText('>')
+	rchattb.text:SetText('R')
+	rchattb.text:SetTextColor(unpack(E["media"].rgbvaluecolor))
 	
 	--Load Settings
 	if E.db['LeftChatPanelFaded'] then
