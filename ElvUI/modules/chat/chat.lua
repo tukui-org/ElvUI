@@ -412,7 +412,7 @@ function CH:StyleChat(frame)
 		
 	--copy chat button
 	frame.button = CreateFrame('Frame', format("CopyChatButton%d", id), frame)
-	frame.button:SetAlpha(0.35)
+	frame.button:SetAlpha(0)
 	frame.button:Size(20, 22)
 	frame.button:SetPoint('TOPRIGHT')
 	
@@ -429,14 +429,7 @@ function CH:StyleChat(frame)
 	end)
 	
 	frame.button:SetScript("OnEnter", function(self) self:SetAlpha(1) end)
-	frame.button:SetScript("OnLeave", function(self)
-		if _G[self:GetParent():GetName().."TabText"]:IsShown() then
-			self:SetAlpha(0.35)
-		else
-			self:SetAlpha(0)
-		end
-
-	end)	
+	frame.button:SetScript("OnLeave", function(self) self:SetAlpha(0) end)
 		
 	CreatedFrames = id
 	frame.styled = true
@@ -509,7 +502,7 @@ function CH:SetupChatTabs(frame, hook)
 		_G[frame:GetName().."Text"]:Show()
 		
 		if frame.owner and frame.owner.button and GetMouseFocus() ~= frame.owner.button then
-			frame.owner.button:SetAlpha(0.35)
+			frame.owner.button:SetAlpha(0)
 		end
 		if frame.conversationIcon then
 			frame.conversationIcon:Show()
