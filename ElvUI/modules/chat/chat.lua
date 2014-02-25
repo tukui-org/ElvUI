@@ -288,10 +288,8 @@ function CH:StyleChat(frame)
 	end
 
 	hooksecurefunc(tab, "SetAlpha", function(t, alpha)
-		if alpha ~= 1 and (not t.isDocked or GeneralDockManager.selected:GetID() == t:GetID()) then
+		if alpha ~= 1 then
 			t:SetAlpha(1)
-		elseif alpha < 0.6 then
-			t:SetAlpha(0.6)
 		end
 	end)
 
