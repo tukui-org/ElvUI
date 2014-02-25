@@ -138,9 +138,13 @@ end
 function LO:SetDataPanelStyle()
 	if E.db.datatexts.panelTransparency then
 		LeftChatDataPanel:SetTemplate("Transparent")
+		LeftChatDataPanel:SetBackdropColor(0,0,0,0)
+		LeftChatDataPanel:SetBackdropBorderColor(0,0,0,0)
 		LeftChatToggleButton:SetTemplate("Transparent")
 		LeftMiniPanel:SetTemplate("Transparent")
 		RightChatDataPanel:SetTemplate("Transparent")
+		RightChatDataPanel:SetBackdropColor(0,0,0,0)
+		RightChatDataPanel:SetBackdropBorderColor(0,0,0,0)
 		RightChatToggleButton:SetTemplate("Transparent")
 		RightMiniPanel:SetTemplate("Transparent")		
 		ElvConfigToggle:SetTemplate("Transparent")
@@ -249,7 +253,9 @@ function LO:CreateChatPanels()
 	local lchatdp = CreateFrame('Frame', 'LeftChatDataPanel', LeftChatPanel)
 	lchatdp:Point('BOTTOMLEFT', lchat, 'BOTTOMLEFT', SPACING + SIDE_BUTTON_WIDTH, SPACING)
 	lchatdp:Point('TOPRIGHT', lchat, 'BOTTOMRIGHT', -SPACING, (SPACING + PANEL_HEIGHT))
-	lchatdp:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
+	if not E.db.datatexts.panelTransparency then
+		lchatdp:SetTemplate('Default', true)
+	end
 	
 	E:GetModule('DataTexts'):RegisterPanel(lchatdp, 3, 'ANCHOR_TOPLEFT', -17, 4)
 	
@@ -295,7 +301,9 @@ function LO:CreateChatPanels()
 	local rchatdp = CreateFrame('Frame', 'RightChatDataPanel', RightChatPanel)
 	rchatdp:Point('BOTTOMLEFT', rchat, 'BOTTOMLEFT', SPACING, SPACING)
 	rchatdp:Point('TOPRIGHT', rchat, 'BOTTOMRIGHT', -(SPACING + SIDE_BUTTON_WIDTH), SPACING + PANEL_HEIGHT)
-	rchatdp:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
+	if not E.db.datatexts.panelTransparency then
+		rchatdp:SetTemplate('Default', true)
+	end
 	E:GetModule('DataTexts'):RegisterPanel(rchatdp, 3, 'ANCHOR_TOPRIGHT', 17, 4)
 	
 	--Right Chat Toggle Button
