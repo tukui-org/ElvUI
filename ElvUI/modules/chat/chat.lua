@@ -7,6 +7,7 @@ local lfgRoles = {};
 local msgList, msgCount, msgTime = {}, {}, {}
 local good, maybe, filter, login = {}, {}, {}, false
 local chatFilters = {};
+local SELECTED_STRING = "|cffffffff>|r %s |cffffffff<|r"
 local cvars = {
 	["bnWhisperMode"] = true,
 	["conversationMode"] = true,
@@ -223,6 +224,49 @@ function CH:GetSmileyReplacementText(msg)
 	return outstr;
 end
 
+function CH:SetSelectedTab()
+	local selectedId = GeneralDockManager.selected:GetID()
+
+	--Set/Remove brackets
+	for i=1, CreatedFrames do
+		local tab = _G[format("ChatFrame%sTab", i)]
+		if tab.isDocked then
+			if selectedId == tab:GetID() then
+				if not tab.isTemporary then
+					tab.text:SetText(format(SELECTED_STRING, (FCF_GetChatWindowInfo(tab:GetID()))))
+				else
+					local matchFound = (FCF_GetChatWindowInfo(tab:GetID())):find("\|.*>\|r") --Already bracketed
+					if not matchFound then
+						tab.text:SetText(format(SELECTED_STRING, (FCF_GetChatWindowInfo(tab:GetID()))))
+					else
+						tab.text:SetText((FCF_GetChatWindowInfo(tab:GetID())))
+					end
+				end
+			else
+				local tabText = (FCF_GetChatWindowInfo(tab:GetID()))
+				if not tab.isTemporary then
+					tab.text:SetText(tabText)
+				else
+					local tabTextStripped = gsub(tabText, "\|.*>\|r (.*) \|.*<\|r", "%1") --Remove brackets
+					tab.text:SetText(tabTextStripped)
+				end
+			end
+		end
+		--Prevent chat tabs changing width on each click.
+		PanelTemplates_TabResize(tab, 10, nil, nil, nil, tab.textWidth);
+	end
+end
+
+function CH:DelaySetSelectedTab()
+	CH:ScheduleTimer('SetSelectedTab', 1)
+end
+
+function CH:SetTabWidth()
+	for i=1, CreatedFrames do
+		local tab = _G[format("ChatFrame%sTab", i)]
+		PanelTemplates_TabResize(tab, 10, nil, nil, nil, tab.textWidth);
+	end
+end
 
 function CH:StyleChat(frame)
 	local name = frame:GetName()
@@ -260,7 +304,33 @@ function CH:StyleChat(frame)
 			t:SetTextColor(rR, gG, bB)
 		end
 	end)
+	
+	--Mark current selected tab on initial load
+	if GeneralDockManager.selected:GetID() == tab:GetID() then
+		tab.text:SetText(format(SELECTED_STRING, tab.text:GetText()))
+	end
 
+	--Mark current selected tab if renamed
+	hooksecurefunc(tab, "SetText", function(t)
+		if t.isDocked and GeneralDockManager.selected:GetID() == t:GetID() then
+			t.text:SetText(format(SELECTED_STRING, t.text:GetText()))
+		end
+	end)
+
+	--Prevent text from jumping from left to right when tab is clicked.
+	hooksecurefunc(tab, "SetWidth", function(t)
+		t.text:ClearAllPoints()
+		t.text:SetPoint("CENTER", t, "CENTER", 0, -4)
+	end)
+	
+	--Store variable for each tab
+	tab.isTemporary = frame.isTemporary
+
+	--Mark current selected tab when clicked
+	tab:HookScript("OnClick", function()
+		CH:SetSelectedTab()
+	end)
+	
 	if tab.conversationIcon then
 		tab.conversationIcon:ClearAllPoints()
 		tab.conversationIcon:Point('RIGHT', tab.text, 'LEFT', -1, 0)
@@ -1613,6 +1683,15 @@ function CH:Initialize()
 
 	self:SetupChat()
 	self:UpdateAnchors()
+	
+	--Bracket selected chat tab
+	local f = CreateFrame("Frame")
+	f:RegisterEvent("PLAYER_ENTERING_WORLD")
+	f:SetScript("OnEvent", function() CH:ScheduleTimer('SetTabWidth', 0.1) end)
+	hooksecurefunc("FCF_OpenNewWindow", CH.DelaySetSelectedTab)
+	hooksecurefunc("FCF_OpenTemporaryWindow", CH.DelaySetSelectedTab)
+	hooksecurefunc("FCFDockOverflowListButton_OnClick", CH.SetSelectedTab)
+	hooksecurefunc("FCF_Close", CH.SetSelectedTab)
 	
 	self:RegisterEvent("GROUP_ROSTER_UPDATE", "CheckLFGRoles")
 
