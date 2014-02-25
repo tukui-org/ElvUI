@@ -254,6 +254,14 @@ function LO:CreateChatPanels()
 	lchattab:Point('BOTTOMRIGHT', lchat, 'TOPRIGHT', -SPACING, -(SPACING + PANEL_HEIGHT))
 	lchattab:SetTemplate(E.db.chat.panelTabTransparency == true and 'Transparent' or 'Default', true)
 	
+	--Left Chat Tab Separator
+	local ltabseparator = CreateFrame('Frame', 'LeftChatTabSeparator', LeftChatPanel)
+	ltabseparator:SetFrameStrata('BACKGROUND')
+	ltabseparator:SetFrameLevel(lchat:GetFrameLevel() + 2)
+	ltabseparator:Size(E.db.chat.panelWidth - 10, 1)
+	ltabseparator:Point('TOP', LeftChatPanel, 0, -24)
+	ltabseparator:SetTemplate('Transparent')
+	
 	--Left Chat Data Panel
 	local lchatdp = CreateFrame('Frame', 'LeftChatDataPanel', LeftChatPanel)
 	lchatdp:Point('BOTTOMLEFT', lchat, 'BOTTOMLEFT', SPACING + SIDE_BUTTON_WIDTH, SPACING)
@@ -261,9 +269,16 @@ function LO:CreateChatPanels()
 	if not E.db.datatexts.panelTransparency then
 		lchatdp:SetTemplate('Default', true)
 	end
-	
 	E:GetModule('DataTexts'):RegisterPanel(lchatdp, 3, 'ANCHOR_TOPLEFT', -17, 4)
 	
+	--Left Chat Data Panel Separator
+	local ldataseparator = CreateFrame('Frame', 'LeftDataPanelSeparator', LeftChatPanel)
+	ldataseparator:SetFrameStrata('BACKGROUND')
+	ldataseparator:SetFrameLevel(lchat:GetFrameLevel() + 2)
+	ldataseparator:Size(E.db.chat.panelWidth - 10, 1)
+	ldataseparator:Point('BOTTOM', LeftChatPanel, 0, 24)
+	ldataseparator:SetTemplate('Transparent')
+
 	--Left Chat Toggle Button
 	local lchattb = CreateFrame('Button', 'LeftChatToggleButton', E.UIParent)
 	lchattb.parent = LeftChatPanel
@@ -305,6 +320,14 @@ function LO:CreateChatPanels()
 	rchattab:Point('BOTTOMLEFT', rchat, 'TOPLEFT', SPACING, -(SPACING + PANEL_HEIGHT))
 	rchattab:SetTemplate(E.db.chat.panelTabTransparency == true and 'Transparent' or 'Default', true)
 	
+	--Right Chat Tab Separator
+	local rtabseparator = CreateFrame('Frame', 'RightChatTabSeparator', RightChatPanel)
+	rtabseparator:SetFrameStrata('BACKGROUND')
+	rtabseparator:SetFrameLevel(rchat:GetFrameLevel() + 2)
+	rtabseparator:Size(E.db.chat.panelWidth - 10, 1)
+	rtabseparator:Point('TOP', RightChatPanel, 0, -24)
+	rtabseparator:SetTemplate('Transparent')
+	
 	--Right Chat Data Panel
 	local rchatdp = CreateFrame('Frame', 'RightChatDataPanel', RightChatPanel)
 	rchatdp:Point('BOTTOMLEFT', rchat, 'BOTTOMLEFT', SPACING, SPACING)
@@ -313,6 +336,14 @@ function LO:CreateChatPanels()
 		rchatdp:SetTemplate('Default', true)
 	end
 	E:GetModule('DataTexts'):RegisterPanel(rchatdp, 3, 'ANCHOR_TOPRIGHT', 17, 4)
+	
+	--Right Chat Data Panel Separator
+	local rdataseparator = CreateFrame('Frame', 'RightDataPanelSeparator', RightChatPanel)
+	rdataseparator:SetFrameStrata('BACKGROUND')
+	rdataseparator:SetFrameLevel(rchat:GetFrameLevel() + 2)
+	rdataseparator:Size(E.db.chat.panelWidth - 10, 1)
+	rdataseparator:Point('BOTTOM', RightChatPanel, 0, 24)
+	rdataseparator:SetTemplate('Transparent')
 	
 	--Right Chat Toggle Button
 	local rchattb = CreateFrame('Button', 'RightChatToggleButton', E.UIParent)
