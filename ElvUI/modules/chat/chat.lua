@@ -232,23 +232,15 @@ function CH:SetSelectedTab()
 		local tab = _G[format("ChatFrame%sTab", i)]
 		if tab.isDocked then
 			if selectedId == tab:GetID() then
-				if not tab.isTemporary then
+				if tab.hasBracket ~= true then
 					tab.text:SetText(format(SELECTED_STRING, (FCF_GetChatWindowInfo(tab:GetID()))))
-				else
-					local matchFound = (FCF_GetChatWindowInfo(tab:GetID())):find("\|.*>\|r") --Already bracketed
-					if not matchFound then
-						tab.text:SetText(format(SELECTED_STRING, (FCF_GetChatWindowInfo(tab:GetID()))))
-					else
-						tab.text:SetText((FCF_GetChatWindowInfo(tab:GetID())))
-					end
+					tab.hasBracket = true
 				end
 			else
-				local tabText = (FCF_GetChatWindowInfo(tab:GetID()))
-				if not tab.isTemporary then
+				if tab.hasBracket == true then
+					local tabText = tab.isTemporary and tab.origText or (FCF_GetChatWindowInfo(tab:GetID()))
 					tab.text:SetText(tabText)
-				else
-					local tabTextStripped = gsub(tabText, "\|.*>\|r%s*(%S*)%s*\|.*<\|r", "%1") --Remove brackets
-					tab.text:SetText(tabTextStripped)
+					tab.hasBracket = false
 				end
 			end
 		end
@@ -303,15 +295,21 @@ function CH:StyleChat(frame)
 		end
 	end)
 	
+	--Store variables for each tab
+	tab.isTemporary = frame.isTemporary
+	tab.origText = (FCF_GetChatWindowInfo(tab:GetID()))
+	
 	--Mark current selected tab on initial load
-	if GeneralDockManager.selected:GetID() == tab:GetID() then
+	if GeneralDockManager.selected:GetID() == tab:GetID() and not tab.isTemporary then
 		tab.text:SetText(format(SELECTED_STRING, tab.text:GetText()))
+		tab.hasBracket = true
 	end
 
 	--Mark current selected tab if renamed
 	hooksecurefunc(tab, "SetText", function(t)
-		if t.isDocked and GeneralDockManager.selected:GetID() == t:GetID() then
+		if t.isDocked and GeneralDockManager.selected:GetID() == t:GetID() and not t.isTemporary then
 			t.text:SetText(format(SELECTED_STRING, t.text:GetText()))
+			t.hasBracket = true
 		end
 	end)
 
@@ -320,9 +318,6 @@ function CH:StyleChat(frame)
 		t.text:ClearAllPoints()
 		t.text:SetPoint("CENTER", t, "CENTER", 0, -4)
 	end)
-	
-	--Store variable for each tab
-	tab.isTemporary = frame.isTemporary
 
 	--Mark current selected tab when clicked
 	tab:HookScript("OnClick", function()
