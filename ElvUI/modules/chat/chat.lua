@@ -249,6 +249,13 @@ function CH:SetSelectedTab()
 	end
 end
 
+function CH:OpenTemporaryWindow()
+	local chatID = FCF_GetCurrentChatFrameID()
+	local tab = _G[format("ChatFrame%sTab", chatID)]
+	tab.origText = (FCF_GetChatWindowInfo(tab:GetID()))
+	CH:ScheduleTimer('SetSelectedTab', 1)
+end
+
 function CH:DelaySetSelectedTab()
 	CH:ScheduleTimer('SetSelectedTab', 1)
 end
@@ -297,7 +304,6 @@ function CH:StyleChat(frame)
 	
 	--Store variables for each tab
 	tab.isTemporary = frame.isTemporary
-	tab.origText = (FCF_GetChatWindowInfo(tab:GetID()))
 	
 	--Mark current selected tab on initial load
 	if GeneralDockManager.selected:GetID() == tab:GetID() and not tab.isTemporary then
@@ -1696,7 +1702,7 @@ function CH:Initialize()
 	f:RegisterEvent("PLAYER_ENTERING_WORLD")
 	f:SetScript("OnEvent", function() CH:ScheduleTimer('SetTabWidth', 0.1) end)
 	hooksecurefunc("FCF_OpenNewWindow", CH.DelaySetSelectedTab)
-	hooksecurefunc("FCF_OpenTemporaryWindow", CH.DelaySetSelectedTab)
+	hooksecurefunc("FCF_OpenTemporaryWindow", CH.OpenTemporaryWindow)
 	hooksecurefunc("FCFDockOverflowListButton_OnClick", CH.SetSelectedTab)
 	hooksecurefunc("FCF_Close", CH.SetSelectedTab)
 	
