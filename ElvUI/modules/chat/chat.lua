@@ -245,7 +245,7 @@ function CH:SetSelectedTab()
 			end
 		end
 		--Prevent chat tabs changing width on each click.
-		PanelTemplates_TabResize(tab, 10, nil, nil, nil, tab.textWidth);
+		PanelTemplates_TabResize(tab, tab.isTemporary and 20 or 10, nil, nil, nil, tab.textWidth);
 	end
 end
 
@@ -256,7 +256,7 @@ end
 function CH:SetTabWidth()
 	for i=1, CreatedFrames do
 		local tab = _G[format("ChatFrame%sTab", i)]
-		PanelTemplates_TabResize(tab, 10, nil, nil, nil, tab.textWidth);
+		PanelTemplates_TabResize(tab, tab.isTemporary and 20 or 10, nil, nil, nil, tab.textWidth);
 	end
 end
 
