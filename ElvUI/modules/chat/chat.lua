@@ -253,7 +253,7 @@ function CH:OpenTemporaryWindow()
 	local chatID = FCF_GetCurrentChatFrameID()
 	local tab = _G[format("ChatFrame%sTab", chatID)]
 	tab.origText = (FCF_GetChatWindowInfo(tab:GetID()))
-	CH:ScheduleTimer('SetSelectedTab', 1)
+	CH:SetSelectedTab()
 end
 
 function CH:DelaySetSelectedTab()
