@@ -1647,6 +1647,7 @@ function CH:CheckLFGRoles()
 	end
 end
 
+--From Tukui
 function CH:RemoveCurrentRealmName(self, event, msg, author, ...)
 	local realmName = string.gsub(GetRealmName(), " ", "")
 	
