@@ -1705,6 +1705,7 @@ function CH:Initialize()
 	hooksecurefunc("FCF_OpenTemporaryWindow", CH.OpenTemporaryWindow)
 	hooksecurefunc("FCFDockOverflowListButton_OnClick", CH.SetSelectedTab)
 	hooksecurefunc("FCF_Close", CH.SetSelectedTab)
+	hooksecurefunc("FCF_DockUpdate", CH.SetTabWidth)
 	
 	self:RegisterEvent("GROUP_ROSTER_UPDATE", "CheckLFGRoles")
 
