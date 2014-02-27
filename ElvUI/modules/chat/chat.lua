@@ -1647,6 +1647,14 @@ function CH:CheckLFGRoles()
 	end
 end
 
+function CH:RemoveCurrentRealmName(self, event, msg, author, ...)
+	local realmName = string.gsub(GetRealmName(), " ", "")
+	
+	if msg:find("-" .. realmName) then
+		return false, gsub(msg, "%-"..realmName, ""), author, ...
+	end
+end
+
 function CH:Initialize()
 	if ElvCharacterDB.ChatHistory then
 		ElvCharacterDB.ChatHistory = nil --Depreciated
@@ -1777,6 +1785,7 @@ function CH:Initialize()
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER_INFORM", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_INLINE_TOAST_BROADCAST", CH.FindURL)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_SYSTEM", CH.RemoveCurrentRealmName)
 
 	GeneralDockManagerOverflowButton:ClearAllPoints()
 	GeneralDockManagerOverflowButton:Point('BOTTOMRIGHT', LeftChatTab, 'BOTTOMRIGHT', -2, 2)
