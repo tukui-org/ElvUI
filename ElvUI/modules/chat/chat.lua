@@ -458,6 +458,23 @@ function CH:AddMessage(text, ...)
 		end
 		
 		CH.timeOverride = nil;
+		
+		--[[	
+			Strip Realm Name From Achievement Messages
+			By Phanx: http://www.wowinterface.com/forums/showpost.php?p=289356&postcount=3
+		--]]	
+		local realmName = string.gsub(GetRealmName(), " ", "")
+		-- Find the formatted player link:
+		local link, data, name = strmatch(text, "(|Hplayer:(.-)|h%[(.-)%]|h)")
+		if link then
+			-- Found it!
+			-- Strip the server name from the display name only:
+			name = gsub(name, "%-"..realmName, "")
+			-- Make a new link:
+			local newlink = "|Hplayer:" .. data .. "|h[" .. name .. "]|h"
+			-- Replace the original link in the message with the new one:
+			text = gsub(text, link, newlink, 1)
+		end
 	end
 
 	self.OldAddMessage(self, text, ...)
@@ -1787,8 +1804,6 @@ function CH:Initialize()
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER_INFORM", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_INLINE_TOAST_BROADCAST", CH.FindURL)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_SYSTEM", CH.RemoveCurrentRealmName)
-	-- ChatFrame_AddMessageEventFilter("CHAT_MSG_ACHIEVEMENT", CH.RemoveCurrentRealmName)
-	-- ChatFrame_AddMessageEventFilter("CHAT_MSG_GUILD_ACHIEVEMENT", CH.RemoveCurrentRealmName)
 
 	GeneralDockManagerOverflowButton:ClearAllPoints()
 	GeneralDockManagerOverflowButton:Point('BOTTOMRIGHT', LeftChatTab, 'BOTTOMRIGHT', -2, 2)
