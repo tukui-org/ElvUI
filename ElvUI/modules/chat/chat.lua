@@ -1707,9 +1707,6 @@ function CH:Initialize()
 	self:UpdateAnchors()
 	
 	--Bracket selected chat tab
-	local f = CreateFrame("Frame")
-	f:RegisterEvent("PLAYER_ENTERING_WORLD")
-	f:SetScript("OnEvent", function() CH:ScheduleTimer('SetTabWidth', 0.1) end)
 	hooksecurefunc("FCF_OpenNewWindow", CH.DelaySetSelectedTab)
 	hooksecurefunc("FCF_OpenTemporaryWindow", CH.OpenTemporaryWindow)
 	hooksecurefunc("FCFDockOverflowListButton_OnClick", CH.SetSelectedTab)
