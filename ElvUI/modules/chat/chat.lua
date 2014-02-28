@@ -458,23 +458,6 @@ function CH:AddMessage(text, ...)
 		end
 		
 		CH.timeOverride = nil;
-		
-		--[[	
-			Strip Realm Name From Achievement Messages
-			By Phanx: http://www.wowinterface.com/forums/showpost.php?p=289356&postcount=3
-		--]]	
-		local realmName = string.gsub(GetRealmName(), " ", "")
-		-- Find the formatted player link:
-		local link, data, name = strmatch(text, "(|Hplayer:(.-)|h%[(.-)%]|h)")
-		if link then
-			-- Found it!
-			-- Strip the server name from the display name only:
-			name = gsub(name, "%-"..realmName, "")
-			-- Make a new link:
-			local newlink = "|Hplayer:" .. data .. "|h[" .. name .. "]|h"
-			-- Replace the original link in the message with the new one:
-			text = gsub(text, link, newlink, 1)
-		end
 	end
 
 	self.OldAddMessage(self, text, ...)
