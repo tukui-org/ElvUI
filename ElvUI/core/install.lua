@@ -402,17 +402,20 @@ function E:SetupLayout(layout, noDataReset)
 	if not noDataReset then
 		E:CopyTable(E.db.datatexts.panels, P.datatexts.panels)
 		if layout == 'tank' then
-			E.db.datatexts.panels.LeftChatDataPanel.left = 'Armor';
-			E.db.datatexts.panels.LeftChatDataPanel.middle = 'Attack Power';
+			E.db.datatexts.panels.Bottom_Datatext_Panel.middle = 'Attack Power';
+			E.db.datatexts.panels.LeftChatDataPanel.left = 'Haste';
+			E.db.datatexts.panels.LeftChatDataPanel.middle = 'Armor';
 			E.db.datatexts.panels.LeftChatDataPanel.right = 'Avoidance';
 		elseif layout == 'healer' or layout == 'dpsCaster' then
-			E.db.datatexts.panels.LeftChatDataPanel.left = 'Spell/Heal Power';
-			E.db.datatexts.panels.LeftChatDataPanel.middle = 'Haste';
+			E.db.datatexts.panels.Bottom_Datatext_Panel.middle = 'Spell/Heal Power';
+			E.db.datatexts.panels.LeftChatDataPanel.left = 'Haste';
+			E.db.datatexts.panels.LeftChatDataPanel.middle = 'Crit Chance';
 			E.db.datatexts.panels.LeftChatDataPanel.right = 'Mastery';
 		else
-			E.db.datatexts.panels.LeftChatDataPanel.left = 'Attack Power';
-			E.db.datatexts.panels.LeftChatDataPanel.middle = 'Haste';
-			E.db.datatexts.panels.LeftChatDataPanel.right = 'Crit Chance';
+			E.db.datatexts.panels.Bottom_Datatext_Panel.middle = 'Attack Power';
+			E.db.datatexts.panels.LeftChatDataPanel.left = 'Haste';
+			E.db.datatexts.panels.LeftChatDataPanel.middle = 'Crit Chance';
+			E.db.datatexts.panels.LeftChatDataPanel.right = 'Mastery';
 		end
 
 		if InstallStepComplete then

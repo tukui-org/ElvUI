@@ -254,25 +254,25 @@ P['datatexts'] = {
 	
 	['panels'] = {
 		['LeftChatDataPanel'] = {
-			['left'] = 'Spell/Heal Power',
-			['middle'] = 'Haste',
+			['left'] = 'Haste',
+			['middle'] = 'Crit Chance',
 			['right'] = 'Mastery',
 		},
 		['RightChatDataPanel'] = {
-			['left'] = 'Durability',
-			['middle'] = '',
+			['left'] = 'Skada',
+			['middle'] = 'Durability',
 			['right'] = 'Scrooge',
 		},
 		['LeftMiniPanel'] = 'Time',
 		['RightMiniPanel'] = 'System',
 		['ChatTab_Datatext_Panel'] = {
-			['left'] = 'Skada',
+			['left'] = 'Talent/Loot Specialization',
 			['middle'] = 'BagSyncLDB',
 			['right'] = 'Bags',
 		},
 		['Bottom_Datatext_Panel'] = {
 			['left'] = 'Friends',
-			['middle'] = 'Talent/Loot Specialization',
+			['middle'] = 'Spell/Heal Power',
 			['right'] = 'Guild',
 		},
 	},
