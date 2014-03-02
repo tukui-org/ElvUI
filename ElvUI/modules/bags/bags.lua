@@ -625,7 +625,7 @@ function B:ContructContainerFrame(name, isBank)
 	f.ContainerHolder:Point('BOTTOMLEFT', f, 'TOPLEFT', 0, 1)
 	f.ContainerHolder:SetTemplate('Transparent')
 	f.ContainerHolder:Hide()
-	local buttonColor = E.PixelMode and {0.31, 0.31, 0.31} or E.media.bordercolor
+	local buttonColor = E.media.backdropcolor
 	
 	if isBank then
 		f.purchaseBagButton = CreateFrame('Button', nil, f)
