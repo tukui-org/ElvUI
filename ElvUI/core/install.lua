@@ -10,20 +10,18 @@ local function SetupChat()
 	FCF_SetLocked(ChatFrame1, 1)
 	FCF_DockFrame(ChatFrame2)
 	FCF_SetLocked(ChatFrame2, 1)
-	FCF_OpenNewWindow(GUILD)
+	FCF_OpenNewWindow("G")
 	FCF_DockFrame(ChatFrame3)
 	FCF_SetLocked(ChatFrame3, 1)
-	FCF_OpenNewWindow(PARTY)
+	FCF_OpenNewWindow("P")
 	FCF_DockFrame(ChatFrame4)
 	FCF_SetLocked(ChatFrame4, 1)
-	FCF_OpenNewWindow(WHISPER)
+	FCF_OpenNewWindow("W")
 	FCF_DockFrame(ChatFrame5)
 	FCF_SetLocked(ChatFrame5, 1)
-
 	FCF_OpenNewWindow(LOOT)
-	FCF_UnDockFrame(ChatFrame6)
+	FCF_DockFrame(ChatFrame6)
 	FCF_SetLocked(ChatFrame6, 1)
-	ChatFrame6:Show()
 			
 	for i = 1, NUM_CHAT_WINDOWS do
 		local frame = _G[format("ChatFrame%s", i)]
@@ -33,10 +31,7 @@ local function SetupChat()
 		-- move general bottom left
 		if i == 1 then
 			frame:ClearAllPoints()
-			frame:Point("BOTTOMLEFT", LeftChatToggleButton, "TOPLEFT", 1, 3)			
-		elseif i == 6 then
-			frame:ClearAllPoints()
-			frame:Point("BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 1, 3)
+			frame:Point("BOTTOMLEFT", LeftChatToggleButton, "TOPLEFT", 1, 3)
 		end
 		
 		FCF_SavePositionAndDimensions(frame)
