@@ -10,7 +10,7 @@ V['general'] = {
 	["dmgfont"] = "ElvUI Combat",
 	["namefont"] = "Friz Quadrata TT",
 	['chatBubbles'] = 'backdrop',
-	['pixelPerfect'] = false,
+	['pixelPerfect'] = true,
 	['lfrEnhancement'] = true,
 
 	['minimap'] = {
