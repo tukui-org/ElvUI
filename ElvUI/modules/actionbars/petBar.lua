@@ -238,7 +238,11 @@ end
 function AB:CreateBarPet()
 	bar:CreateBackdrop('Transparent');
 	bar.backdrop:SetAllPoints();
-	bar:Point('RIGHT', E.UIParent, 'RIGHT', -4, 0);
+	if self.db['bar4'].enabled then
+		bar:Point('RIGHT', ElvUI_Bar4, 'LEFT', -4, 0);
+	else
+		bar:Point('RIGHT', E.UIParent, 'RIGHT', -4, 0);
+	end
 
 	bar:SetAttribute("_onstate-show", [[		
 		if newstate == "hide" then

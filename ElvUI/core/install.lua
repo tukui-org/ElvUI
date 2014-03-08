@@ -298,6 +298,8 @@ end
 function E:SetupLayout(layout, noDataReset)
 	--Unitframes
 	if not noDataReset then
+		E:ResetMovers('')
+		E:SetupPixelPerfect(E.PixelMode, true)
 		E:CopyTable(E.db.unitframe.units, P.unitframe.units)
 	end		
 	
@@ -362,23 +364,27 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.raid40.rdebuffs.enable = true;
 			E.db.unitframe.units.raid40.rdebuffs.size = 18;
 		end
-			
+
 		if not E.db.movers then E.db.movers = {}; end
-		E.db.movers.ElvUF_PlayerMover = "BOTTOMLEFTElvUIParentBOTTOMLEFT490170"
-		E.db.movers.ElvUF_TargetMover = "BOTTOMRIGHTElvUIParentBOTTOMRIGHT-490170"
-		E.db.movers.ElvUF_Raid40Mover = "BOTTOMElvUIParentBOTTOM0170"
+		E.db.movers.ElvUF_PlayerMover = "BOTTOMLEFTElvUIParentBOTTOMLEFT490300"
+		E.db.movers.ElvUF_PlayerCastbarMover = "BOTTOMElvUIParentBOTTOM0130"
+		E.db.movers.ClassBarMover = "BOTTOMElvUIParentBOTTOM0266"
+		E.db.movers.ElvUF_PetMover = "BOTTOMLEFTElvUIParentBOTTOMLEFT490262"
+		E.db.movers.ElvUF_TargetMover = "BOTTOMRIGHTElvUIParentBOTTOMRIGHT-490300"
+		E.db.movers.ElvUF_TargetTargetMover = "BOTTOMRIGHTElvUIParentBOTTOMRIGHT-490262"
+		E.db.movers.ElvUF_FocusMover = "BOTTOMLEFTElvUIParentBOTTOMLEFT490400"
+		E.db.movers.ElvUF_FocusTargetMover = "BOTTOMElvUIParentBOTTOM-269400"
+		E.db.movers.ElvUF_TankMover = "TOPLEFTElvUIParentTOPLEFT4-350"
+		E.db.movers.ElvUF_AssistMover = "TOPLEFTElvUIParentTOPLEFT4-450"
+		E.db.movers.ElvUF_PartyMover = "BOTTOMElvUIParentBOTTOM0300"
+		E.db.movers.ElvUF_Raid10Mover = "BOTTOMElvUIParentBOTTOM0265"
 		E.db.movers.ElvUF_Raid25Mover = "BOTTOMElvUIParentBOTTOM0170"
-		E.db.movers.ElvUF_Raid10Mover = "BOTTOMElvUIParentBOTTOM0170"
-		E.db.movers.ElvUF_TargetTargetMover = "BOTTOMRIGHTElvUF_TargetBOTTOMRIGHT0150"
-		E.db.movers.ElvUF_PartyMover = "BOTTOMElvUIParentBOTTOM0170"
-		E.db.movers.ElvUF_PetMover = "BOTTOMLEFTElvUIParentBOTTOMLEFT490120"
-		E.db.movers.ElvUF_FocusMover = "BOTTOMLEFTElvUF_PlayerBOTTOMLEFT0150"
-		E.db.movers.ElvUF_FocusTargetMover = "BOTTOMLEFTElvUF_FocusBOTTOMLEFT0150"
-		E.db.movers.ElvUF_TankMover = "LEFTElvUIParentLEFT4350"
-		E.db.movers.ElvUF_AssistMover = "LEFTElvUIParentLEFT4250"
+		E.db.movers.ElvUF_Raid40Mover = "BOTTOMElvUIParentBOTTOM0170"
+		E.db.movers.ElvUF_RaidpetMover = "TOPLEFTElvUIParentTOPLEFT4-375"
+		
 		if BossHeaderMover then
 			BossHeaderMover:ClearAllPoints()
-			BossHeaderMover:SetPoint("BOTTOMLEFT",E.UIParent,"BOTTOMLEFT",4,250)
+			BossHeaderMover:SetPoint("TOPLEFT",E.UIParent,"TOPLEFT",270,-260)
 			E:SaveMoverPosition("BossHeaderMover")
 		end
 		if BossButton then
@@ -391,11 +397,59 @@ function E:SetupLayout(layout, noDataReset)
 			AltPowerBarMover:SetPoint("BOTTOM",E.UIParent,"BOTTOM",425,20)
 			E:SaveMoverPosition("AltPowerBarMover")
 		end
-	else
-		if not noDataReset then
-			E:ResetMovers('')
-			E:SetupPixelPerfect(E.PixelMode, true)
+		
+		E.db.movers.BuffsMover = "TOPRIGHTElvUIParentTOPRIGHT-225-11"
+		
+		E.db.movers.ElvAB_1 = "BOTTOMElvUIParentBOTTOM0160"
+		E.db.movers.ElvAB_2 = "LEFTElvUI_Bar1LEFT00"
+		E.db.movers.ElvAB_3 = "TOPElvUI_Bar1TOP00"
+		E.db.movers.ElvAB_4 = "RIGHTElvUIParentRIGHT-40"
+		E.db.movers.ElvAB_5 = "RIGHTElvUIParentRIGHT-40"
+		E.db.movers.ElvAB_6 = "RIGHTElvUIParentRIGHT-40"
+		E.db.movers.MicrobarMover = "TOPLEFTElvUIParentTOPLEFT435-4"
+	else --DPS/Tank layout
+		if not E.db.movers then E.db.movers = {}; end
+		E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM-240330"
+		E.db.movers.ElvUF_PlayerCastbarMover = "BOTTOMElvUIParentBOTTOM0275"
+		E.db.movers.ClassBarMover = "BOTTOMElvUIParentBOTTOM0266"
+		E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM-305292"
+		E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM240330"
+		E.db.movers.ElvUF_TargetTargetMover = "BOTTOMElvUIParentBOTTOM305292"
+		E.db.movers.ElvUF_FocusMover = "BOTTOMElvUIParentBOTTOM-301430"
+		E.db.movers.ElvUF_FocusTargetMover = "BOTTOMElvUIParentBOTTOM-169430"
+		E.db.movers.ElvUF_TankMover = "TOPLEFTElvUIParentTOPLEFT4-350"
+		E.db.movers.ElvUF_AssistMover = "TOPLEFTElvUIParentTOPLEFT4-450"
+		E.db.movers.ElvUF_PartyMover = "BOTTOMElvUIParentBOTTOM060"
+		E.db.movers.ElvUF_Raid10Mover = "BOTTOMElvUIParentBOTTOM060"
+		E.db.movers.ElvUF_Raid25Mover = "TOPLEFTElvUIParentTOPLEFT4-4"
+		E.db.movers.ElvUF_Raid40Mover = "TOPLEFTElvUIParentTOPLEFT4-4"
+		E.db.movers.ElvUF_RaidpetMover = "TOPLEFTElvUIParentTOPLEFT4-375"
+		
+		if BossHeaderMover then
+			BossHeaderMover:ClearAllPoints()
+			BossHeaderMover:SetPoint("BOTTOMLEFT",E.UIParent,"BOTTOMLEFT",395,300)
+			E:SaveMoverPosition("BossHeaderMover")
 		end
+		if BossButton then
+			BossButton:ClearAllPoints()
+			BossButton:SetPoint("BOTTOMLEFT",E.UIParent,"BOTTOMLEFT",465,160)
+			E:SaveMoverPosition("BossButton")
+		end
+		if AltPowerBarMover then
+			AltPowerBarMover:ClearAllPoints()
+			AltPowerBarMover:SetPoint("BOTTOMLEFT",E.UIParent,"BOTTOMLEFT",435,235)
+			E:SaveMoverPosition("AltPowerBarMover")
+		end
+		
+		E.db.movers.BuffsMover = "TOPRIGHTElvUIParentTOPRIGHT-225-11"
+		
+		E.db.movers.ElvAB_1 = "BOTTOMElvUIParentBOTTOM0160"
+		E.db.movers.ElvAB_2 = "LEFTElvUI_Bar1LEFT00"
+		E.db.movers.ElvAB_3 = "TOPElvUI_Bar1TOP00"
+		E.db.movers.ElvAB_4 = "RIGHTElvUIParentRIGHT-40"
+		E.db.movers.ElvAB_5 = "RIGHTElvUIParentRIGHT-40"
+		E.db.movers.ElvAB_6 = "RIGHTElvUIParentRIGHT-40"
+		E.db.movers.MicrobarMover = "TOPLEFTElvUIParentTOPLEFT435-4"
 	end
 	
 	--Datatexts
