@@ -170,11 +170,11 @@ P["nameplate"] = {
 
 --Auras
 P['auras'] = {
-	['font'] = 'PF Tempesta Seven Bold',
+	['font'] = 'PF T 7 Ext. Bold',
 	['fontSize'] = 8,
-	['fontOutline'] = 'OUTLINE',
+	['fontOutline'] = 'MONOCHROMEOUTLINE',
 
-	['countYOffset'] = 0,
+	['countYOffset'] = 4,
 	['countXOffset'] = 0,
 	['timeYOffset'] = -8,
 	['timeXOffset'] = 0,
@@ -183,8 +183,8 @@ P['auras'] = {
 		['enable'] = true,
 		['filter'] = true,
 		['durations'] = true,
-		['font'] = 'ElvUI Pixel',
-		['fontSize'] = 10,
+		['font'] = 'PF T 7',
+		['fontSize'] = 8,
 		['fontOutline'] = 'MONOCHROMEOUTLINE',
 	},
 	
@@ -198,18 +198,18 @@ P['auras'] = {
 		['sortMethod'] = "TIME",
 		['sortDir'] = '+',
 		['seperateOwn'] = 0,
-		['size'] = 26,
+		['size'] = 30,
 	},
 	['debuffs'] = {
 		['growthDirection'] = 'LEFT_DOWN',
 		['wrapAfter'] = 12,
 		['maxWraps'] = 1,
-		['horizontalSpacing'] = 6,
+		['horizontalSpacing'] = 4,
 		['verticalSpacing'] = 16,		
 		['sortMethod'] = "TIME",
 		['sortDir'] = '-',
 		['seperateOwn'] = 0,
-		['size'] = 26,
+		['size'] = 30,
 	},
 }
 
@@ -241,16 +241,16 @@ P['chat'] = {
 	['panelTabTransparency'] = true,
 	['editBoxPosition'] = 'ABOVE_CHAT',
 
-	['tabFont'] = 'PF Tempesta Seven Bold',
+	['tabFont'] = 'PF T 7 Bold',
 	['tabFontSize'] = 8,
-	['tabFontOutline'] = 'OUTLINE',
+	['tabFontOutline'] = 'MONOCHROMEOUTLINE',
 }
 
 --Datatexts
 P['datatexts'] = {
-	['font'] = 'PF Tempesta Seven Bold',
+	['font'] = 'PF T 7 Bold',
 	['fontSize'] = 8,
-	['fontOutline'] = 'OUTLINE',
+	['fontOutline'] = 'MONOCHROMEOUTLINE',
 	
 	['panels'] = {
 		['LeftChatDataPanel'] = {
@@ -301,8 +301,8 @@ P['tooltip'] = {
 	['healthBar'] = {
 		['text'] = true,
 		['height'] = 7,
-		['font'] = 'AgencyFB Bold',
-		['fontSize'] = 12,
+		['font'] = 'PF T 7 Ext. Bold',
+		['fontSize'] = 8,
 	}
 }
 --UnitFrame
@@ -1306,7 +1306,7 @@ P['unitframe'] = {
 			['threatStyle'] = 'GLOW',
 			['visibility'] = "[@raid6,exists][nogroup] hide;show",
 			['growthDirection'] = 'RIGHT_UP',
-			['horizontalSpacing'] = 2,
+			['horizontalSpacing'] = 6,
 			['verticalSpacing'] = 2,
 			['numGroups'] = 1,
 			['groupsPerRowCol'] = 1,
@@ -1314,7 +1314,7 @@ P['unitframe'] = {
 			['sortDir'] = 'ASC',
 			['raidWideSorting'] = true,
 			['invertGroupingOrder'] = true,
-			['startFromCenter'] = false,
+			['startFromCenter'] = true,
 			["showPlayer"] = true,
 			['healPrediction'] = false,
 			['colorOverride'] = 'USE_DEFAULT',
@@ -1341,17 +1341,17 @@ P['unitframe'] = {
 			},			
 			['name'] = {
 				['position'] = 'CENTER',
-				['text_format'] = '[namecolor][name:short]',
-				['yOffset'] = 5,
-				['xOffset'] = 0,
+				['text_format'] = '',
+				['yOffset'] = 8,
+				['xOffset'] = 1,
 			},
 			['buffs'] = {
 				['enable'] = false,
-				['perrow'] = 4,
+				['perrow'] = 3,
 				['numrows'] = 1,
 				['attachTo'] = 'DEBUFFS',
 				['anchorPoint'] = 'TOPRIGHT',					
-				['fontSize'] = 10,
+				['fontSize'] = 8,
 				['countFontSize'] = 8,
 				['clickThrough'] = false,
 				['playerOnly'] = true,
@@ -1372,8 +1372,8 @@ P['unitframe'] = {
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
 				['anchorPoint'] = 'CENTER',					
-				['fontSize'] = 12,
-				['countFontSize'] = 12,
+				['fontSize'] = 8,
+				['countFontSize'] = 8,
 				['clickThrough'] = false,
 				['playerOnly'] = false,
 				['useBlacklist'] = true,
@@ -1400,20 +1400,20 @@ P['unitframe'] = {
 				['position'] = 'TOPLEFT',
 			},					
 			['petsGroup'] = {
-				['enable'] = true,
-				['width'] = 73,
-				['height'] = 22,
-				['anchorPoint'] = 'TOP',
+				['enable'] = false,
+				['width'] = 75,
+				['height'] = 15,
+				['anchorPoint'] = 'BOTTOM',
 				['xOffset'] = 0,
-				['yOffset'] = 28,
+				['yOffset'] = -2,
 			},
 			['targetsGroup'] = {
-				['enable'] = true,
-				['width'] = 73,
-				['height'] = 22,
+				['enable'] = false,
+				['width'] = 75,
+				['height'] = 15,
 				['anchorPoint'] = 'TOP',
 				['xOffset'] = 0,
-				['yOffset'] = 3,
+				['yOffset'] = 2,
 			},				
 			['raidicon'] = {
 				['enable'] = true,
@@ -1429,6 +1429,17 @@ P['unitframe'] = {
 				['yOffset'] = 0,
 				['onMouseOver'] = true,
 				['outOfRange'] = true
+			},
+			["customTexts"] = {
+				["Custom Name"] = {
+					["font"] = "PF T 7 Cond. Bold",
+					["justifyH"] = "CENTER",
+					["fontOutline"] = "MONOCHROMEOUTLINE",
+					["xOffset"] = 1,
+					["yOffset"] = 8,
+					["text_format"] = "[namecolor][name:short]",
+					["size"] = 8,
+				},
 			},
 		},
 		['raid10'] = {
@@ -1472,17 +1483,17 @@ P['unitframe'] = {
 			},			
 			['name'] = {
 				['position'] = 'CENTER',
-				['text_format'] = '[namecolor][name:short]',
+				['text_format'] = '',
 				['yOffset'] = 8,				
-				['xOffset'] = 2,				
+				['xOffset'] = 1,				
 			},
 			['buffs'] = {
 				['enable'] = false,
-				['perrow'] = 2,
+				['perrow'] = 3,
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
 				['anchorPoint'] = 'TOPRIGHT',					
-				['fontSize'] = 10,
+				['fontSize'] = 8,
 				['countFontSize'] = 8,
 				['clickThrough'] = false,
 				['playerOnly'] = true,
@@ -1554,7 +1565,7 @@ P['unitframe'] = {
 			},
 			["customTexts"] = {
 				["Group#"] = {
-					["font"] = "PF T 7 Bold",
+					["font"] = "PF T 7 Ext. Bold",
 					["justifyH"] = "CENTER",
 					["fontOutline"] = "MONOCHROMEOUTLINE",
 					["xOffset"] = -12,
@@ -1566,7 +1577,7 @@ P['unitframe'] = {
 					["font"] = "PF T 7 Cond. Bold",
 					["justifyH"] = "CENTER",
 					["fontOutline"] = "MONOCHROMEOUTLINE",
-					["xOffset"] = 2,
+					["xOffset"] = 1,
 					["yOffset"] = 8,
 					["text_format"] = "[namecolor][name:short]",
 					["size"] = 8,
@@ -1578,7 +1589,7 @@ P['unitframe'] = {
 			['rangeCheck'] = true,
 			['threatStyle'] = 'GLOW',
 			['visibility'] = '[@raid11,noexists][@raid26,exists] hide;show',
-			['growthDirection'] = 'RIGHT_UP',
+			['growthDirection'] = 'RIGHT_DOWN',
 			['horizontalSpacing'] = 2,
 			['verticalSpacing'] = 2,
 			['numGroups'] = 5,
@@ -1614,13 +1625,13 @@ P['unitframe'] = {
 			},			
 			['name'] = {
 				['position'] = 'CENTER',
-				['text_format'] = '[namecolor][name:short]',
-				['yOffset'] = 5,				
-				['xOffset'] = 0,				
+				['text_format'] = '',
+				['yOffset'] = 8,				
+				['xOffset'] = 1,				
 			},
 			['buffs'] = {
 				['enable'] = false,
-				['perrow'] = 2,
+				['perrow'] = 3,
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
 				['anchorPoint'] = 'TOPRIGHT',					
@@ -1645,8 +1656,8 @@ P['unitframe'] = {
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
 				['anchorPoint'] = 'CENTER',					
-				['fontSize'] = 12,
-				['countFontSize'] = 12,
+				['fontSize'] = 8,
+				['countFontSize'] = 8,
 				['clickThrough'] = false,
 				['playerOnly'] = false,
 				['useBlacklist'] = true,
@@ -1655,9 +1666,9 @@ P['unitframe'] = {
 				['onlyDispellable'] = false,
 				['bossAuras'] = true,
 				['useFilter'] = '',
-				['xOffset'] = 14,
-				['yOffset'] = -15,
-				['sizeOverride'] = 15,
+				['xOffset'] = 21,
+				['yOffset'] = -10,
+				['sizeOverride'] = 20,
 			},	
 			['buffIndicator'] = {
 				['enable'] = true,
@@ -1694,13 +1705,33 @@ P['unitframe'] = {
 				['onMouseOver'] = true,
 				['outOfRange'] = true
 			},			
+			["customTexts"] = {
+				["Group#"] = {
+					["font"] = "PF T 7 Ext. Bold",
+					["justifyH"] = "CENTER",
+					["fontOutline"] = "MONOCHROMEOUTLINE",
+					["xOffset"] = -12,
+					["yOffset"] = 20,
+					["text_format"] = "[group]",
+					["size"] = 8,
+				},
+				["Custom Name"] = {
+					["font"] = "PF T 7 Cond. Bold",
+					["justifyH"] = "CENTER",
+					["fontOutline"] = "MONOCHROMEOUTLINE",
+					["xOffset"] = 1,
+					["yOffset"] = 8,
+					["text_format"] = "[namecolor][name:short]",
+					["size"] = 8,
+				},
+			},
 		},					
 		['raid40'] = {
 			['enable'] = true,
 			['rangeCheck'] = true,
 			['threatStyle'] = 'GLOW',
 			['visibility'] = '[@raid26,noexists] hide;show',
-			['growthDirection'] = 'RIGHT_UP',
+			['growthDirection'] = 'RIGHT_DOWN',
 			['horizontalSpacing'] = 2,
 			['verticalSpacing'] = 2,
 			['numGroups'] = 8,
@@ -1736,7 +1767,7 @@ P['unitframe'] = {
 			},			
 			['name'] = {
 				['position'] = 'CENTER',
-				['text_format'] = '[namecolor][name:short]',
+				['text_format'] = '',
 				['yOffset'] = -2,				
 				['xOffset'] = 0,				
 			},
@@ -1767,7 +1798,7 @@ P['unitframe'] = {
 				['numrows'] = 1,
 				['attachTo'] = 'FRAME',
 				['anchorPoint'] = 'BOTTOMLEFT',					
-				['fontSize'] = 10,
+				['fontSize'] = 8,
 				['countFontSize'] = 8,
 				['clickThrough'] = false,
 				['playerOnly'] = false,
@@ -1816,6 +1847,17 @@ P['unitframe'] = {
 				['onMouseOver'] = true,
 				['outOfRange'] = true
 			},			
+			["customTexts"] = {
+				["Custom Name"] = {
+					["font"] = "PF T 7 Cond. Bold",
+					["justifyH"] = "CENTER",
+					["fontOutline"] = "MONOCHROMEOUTLINE",
+					["xOffset"] = 1,
+					["yOffset"] = -2,
+					["text_format"] = "[namecolor][name:short]",
+					["size"] = 8,
+				},
+			},
 		},	
 		['raidpet'] = {
 			['enable'] = false,
@@ -1910,7 +1952,7 @@ P['unitframe'] = {
 			},				
 		},		
 		['tank'] = {
-			['enable'] = true,
+			['enable'] = false,
 			['threatStyle'] = 'GLOW',
 			['rangeCheck'] = true,
 			['width'] = 120,
@@ -1925,7 +1967,7 @@ P['unitframe'] = {
 			},		
 		},	
 		['assist'] = {
-			['enable'] = true,
+			['enable'] = false,
 			['threatStyle'] = 'GLOW',
 			['rangeCheck'] = true,
 			['width'] = 120,
@@ -1954,7 +1996,7 @@ P["cooldown"] = {
 
 --Actionbar
 P["actionbar"] = {
-	['font'] = 'PF Tempesta Seven Bold',
+	['font'] = 'PF T 7 Bold',
 	['fontSize'] = 8,
 	['fontOutline'] = 'MONOCHROMEOUTLINE',
 	
@@ -1981,7 +2023,7 @@ P["actionbar"] = {
 		['buttonsPerRow'] = 12,
 		['point'] = 'BOTTOMLEFT',
 		['backdrop'] = true,
-		['heightMult'] = 2,
+		['heightMult'] = 3,
 		['widthMult'] = 1,
 		["buttonsize"] = 30,
 		["buttonspacing"] = 3,		
@@ -2010,7 +2052,7 @@ P["actionbar"] = {
 		['visibility'] = "[vehicleui] hide; [overridebar] hide; [petbattle] hide; show",
 	},
 	['bar3'] = {
-		['enabled'] = false,
+		['enabled'] = true,
 		['mouseover'] = false,
 		['buttons'] = 12,
 		['buttonsPerRow'] = 12,
@@ -2025,9 +2067,9 @@ P["actionbar"] = {
 		['visibility'] = "[vehicleui] hide; [overridebar] hide; [petbattle] hide; show",
 	},
 	['bar4'] = {
-		['enabled'] = true,
+		['enabled'] = false,
 		['mouseover'] = true,
-		['buttons'] = 6,
+		['buttons'] = 9,
 		['buttonsPerRow'] = 3,
 		['point'] = 'BOTTOMLEFT',
 		['backdrop'] = true,
@@ -2042,7 +2084,7 @@ P["actionbar"] = {
 	['bar5'] = {
 		['enabled'] = true,
 		['mouseover'] = true,
-		['buttons'] = 6,
+		['buttons'] = 9,
 		['buttonsPerRow'] = 3,
 		['point'] = 'BOTTOMLEFT',
 		['backdrop'] = true,
