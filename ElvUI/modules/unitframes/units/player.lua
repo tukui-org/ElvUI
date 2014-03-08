@@ -737,7 +737,7 @@ function UF:Update_PlayerFrame(frame, db)
 					bars.mover:SetAlpha(0)
 				end			
 			else
-				CLASSBAR_WIDTH = db.classbar.detachedWidth
+				CLASSBAR_WIDTH = db.classbar.detachedWidth - (BORDER*2)
 
 				if not bars.mover then
 					bars:Width(CLASSBAR_WIDTH)
@@ -767,7 +767,11 @@ function UF:Update_PlayerFrame(frame, db)
 						bars[i].backdrop:SetBackdropBorderColor(c.r, c.g, c.b)
 					end					
 					bars[i]:SetHeight(bars:GetHeight())	
-					bars[i]:SetWidth(E:Scale(bars:GetWidth() - (MAX_CLASS_BAR - 1))/MAX_CLASS_BAR)	
+					if db.classbar.fill == "spaced" then
+						bars[i]:SetWidth(E:Scale(bars:GetWidth() - ((SPACING+(BORDER*2)+2)*(MAX_CLASS_BAR - 1)))/MAX_CLASS_BAR)
+					else
+						bars[i]:SetWidth(E:Scale(bars:GetWidth() - (MAX_CLASS_BAR - 1))/MAX_CLASS_BAR)	
+					end
 					bars[i]:GetStatusBarTexture():SetHorizTile(false)
 					bars[i]:ClearAllPoints()
 					if i == 1 then
