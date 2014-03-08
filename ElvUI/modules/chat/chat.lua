@@ -1338,7 +1338,7 @@ function CH:CHAT_MSG_CHANNEL(event, message, author, ...)
 	local msg = PrepareMessage(author, message)
 
 	-- ignore player messages
-	if author == UnitName("player") then return CH.FindURL(self, event, message, author, ...) end
+	if author == E.myname..'-'..gsub(E.myrealm,'%s','') then return CH.FindURL(self, event, message, author, ...) end
 	if msgList[msg] and CH.db.throttleInterval ~= 0 then
 		if difftime(time(), msgTime[msg]) <= CH.db.throttleInterval then
 			blockFlag = true
@@ -1363,7 +1363,7 @@ function CH:CHAT_MSG_YELL(event, message, author, ...)
 	if msg == nil then return CH.FindURL(self, event, message, author, ...) end	
 
 	-- ignore player messages
-	if author == UnitName("player") then return CH.FindURL(self, event, message, author, ...) end
+	if author == UnitName("player")..'-'..GetRealmName() then return CH.FindURL(self, event, message, author, ...) end
 	if msgList[msg] and msgCount[msg] > 1 and CH.db.throttleInterval ~= 0 then
 		if difftime(time(), msgTime[msg]) <= CH.db.throttleInterval then
 			blockFlag = true
@@ -1627,20 +1627,23 @@ end
 function CH:CheckLFGRoles()
 	local isInGroup, isInRaid = IsInGroup(), IsInRaid()
 	local unit = isInRaid and "raid" or "party"
-
+	local myrealm = gsub(E.myrealm,'%s','')
+	local name, realm 
 	twipe(lfgRoles)
 	if(not isInGroup or not self.db.lfgIcons) then return end
 
 	local role = UnitGroupRolesAssigned("player")
 	if(role) then
-		lfgRoles[E.myname] = rolePaths[role]
+		lfgRoles[E.myname..'-'..myrealm] = rolePaths[role]
 	end
 
 	for i=1, GetNumGroupMembers() do
 		if(UnitExists(unit..i) and not UnitIsUnit(unit..i, "player")) then
 			role = UnitGroupRolesAssigned(unit..i)
-			local name = GetUnitName(unit..i, true)
+			name, realm = UnitName(unit..i)
+			
 			if(role and name) then
+				name = realm and name..'-'..realm or name..'-'..myrealm;
 				lfgRoles[name] = rolePaths[role]
 			end
 		end
