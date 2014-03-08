@@ -308,38 +308,15 @@ function E:SetupLayout(layout, noDataReset)
 			E:StaticPopup_Show("CLIQUE_ADVERT")
 		end
 		
-		if not noDataReset then
-			E.db.unitframe.units.target.buffs.anchorPoint = 'TOPRIGHT';
-			E.db.unitframe.units.target.buffs.yOffset = 2;
-			E.db.unitframe.units.target.debuffs.anchorPoint = 'TOPRIGHT';
-			E.db.unitframe.units.target.debuffs.yOffset = 1;
-			
-			E.db.unitframe.units.targettarget.height = 35;
-			E.db.unitframe.units.targettarget.debuffs.anchorPoint = 'TOPRIGHT';
-			E.db.unitframe.units.targettarget.debuffs.yOffset = 1;
-			
-			E.db.unitframe.units.focus.buffs.anchorPoint = 'TOPLEFT';
-			E.db.unitframe.units.focus.buffs.yOffset = 2;
-			E.db.unitframe.units.focus.debuffs.anchorPoint = 'TOPLEFT';
-			E.db.unitframe.units.focus.debuffs.yOffset = 1;
-			E.db.unitframe.units.focus.castbar.yOffset = 0;
-			
-			E.db.unitframe.units.focustarget.buffs.anchorPoint = 'TOPLEFT';
-			E.db.unitframe.units.focustarget.buffs.yOffset = 2;
-			E.db.unitframe.units.focustarget.debuffs.anchorPoint = 'TOPLEFT';
-			E.db.unitframe.units.focustarget.debuffs.yOffset = 1;
-			
-			E.db.unitframe.units.boss.growthDirection = 'UP';
-			
-			E.db.unitframe.units.arena.width = 200;
-			E.db.unitframe.units.arena.castbar.width = 200;
+		if not noDataReset then			
+			E.db.unitframe.units.boss.width = 160;
 			
 			E.db.unitframe.units.party.width = 80;
 			E.db.unitframe.units.party.horizontalSpacing = 3;
 			E.db.unitframe.units.party.healPrediction = true;
 			E.db.unitframe.units.party.health.frequentUpdates = true;
-			E.db.unitframe.units.party.startFromCenter = true;
 			E.db.unitframe.units.party.petsGroup.enable = true;
+			E.db.unitframe.units.party.petsGroup.anchorPoint = 'TOP';
 			E.db.unitframe.units.party.petsGroup.width = 80;
 			E.db.unitframe.units.party.petsGroup.yOffset = 3;
 			E.db.unitframe.units.party.targetsGroup.enable = false;
@@ -348,7 +325,6 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.raid10.horizontalSpacing = 3;
 			E.db.unitframe.units.raid10.healPrediction = true;
 			E.db.unitframe.units.raid10.health.frequentUpdates = true;
-			E.db.unitframe.units.raid10.startFromCenter = true;
 
 			E.db.unitframe.units.raid25.width = 80;
 			E.db.unitframe.units.raid25.horizontalSpacing = 3;
@@ -374,7 +350,7 @@ function E:SetupLayout(layout, noDataReset)
 		E.db.movers.ElvUF_TargetTargetMover = "BOTTOMRIGHTElvUIParentBOTTOMRIGHT-490262"
 		E.db.movers.ElvUF_FocusMover = "BOTTOMLEFTElvUIParentBOTTOMLEFT490400"
 		E.db.movers.ElvUF_FocusTargetMover = "BOTTOMElvUIParentBOTTOM-269400"
-		E.db.movers.ElvUF_TankMover = "TOPLEFTElvUIParentTOPLEFT4-350"
+		E.db.movers.ElvUF_TankMover = "LEFTElvUIParentLEFT4350"
 		E.db.movers.ElvUF_AssistMover = "TOPLEFTElvUIParentTOPLEFT4-450"
 		E.db.movers.ElvUF_PartyMover = "BOTTOMElvUIParentBOTTOM0300"
 		E.db.movers.ElvUF_Raid10Mover = "BOTTOMElvUIParentBOTTOM0265"
@@ -400,7 +376,7 @@ function E:SetupLayout(layout, noDataReset)
 		
 		E.db.movers.BuffsMover = "TOPRIGHTElvUIParentTOPRIGHT-225-11"
 		
-		E.db.movers.ElvAB_1 = "BOTTOMElvUIParentBOTTOM0160"
+		E.db.movers.ElvAB_1 = "BOTTOMElvUIParentBOTTOM027"
 		E.db.movers.ElvAB_2 = "LEFTElvUI_Bar1LEFT00"
 		E.db.movers.ElvAB_3 = "TOPElvUI_Bar1TOP00"
 		E.db.movers.ElvAB_4 = "RIGHTElvUIParentRIGHT-40"
