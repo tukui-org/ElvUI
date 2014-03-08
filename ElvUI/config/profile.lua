@@ -104,7 +104,7 @@ P["nameplate"] = {
 	['targetIndicator'] = {
 		['enable'] = true,
 		['style'] = 'glow',
-		['colorMatchHealthBar'] = true,
+		['colorMatchHealthBar'] = false,
 		['color'] = {r= 1, g = 1, b = 1},
 		['width'] = 50,
 		['height'] = 50,
@@ -183,7 +183,7 @@ P['auras'] = {
 		['enable'] = true,
 		['filter'] = true,
 		['durations'] = true,
-		['font'] = 'PF T 7',
+		['font'] = 'PF T 7 Bold',
 		['fontSize'] = 8,
 		['fontOutline'] = 'MONOCHROMEOUTLINE',
 	},
