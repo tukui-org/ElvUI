@@ -373,7 +373,7 @@ function E:SetupLayout(layout, noDataReset)
 			E:SaveMoverPosition("AltPowerBarMover")
 		end
 		
-		E.db.movers.MinimapMover = "TOPRIGHTElvUIParentMinimapMover-10-10"
+		E.db.movers.MinimapMover = "TOPRIGHTElvUIParentTOPRIGHT-10-10"
 		E.db.movers.BuffsMover = "TOPRIGHTMinimapTOPLEFT-81"
 		E.db.movers.GMMover = "TOPRIGHTElvUIPlayerDebuffsBOTTOMRIGHT0-10"
 		E.db.movers.VehicleSeatMover = "TOPLEFTElvUIPlayerDebuffsTOPLEFT00"
@@ -420,7 +420,7 @@ function E:SetupLayout(layout, noDataReset)
 			E:SaveMoverPosition("AltPowerBarMover")
 		end
 		
-		E.db.movers.MinimapMover = "TOPRIGHTElvUIParentMinimapMover-10-10"
+		E.db.movers.MinimapMover = "TOPRIGHTElvUIParentTOPRIGHT-10-10"
 		E.db.movers.BuffsMover = "TOPRIGHTMinimapTOPLEFT-81"
 		E.db.movers.GMMover = "TOPRIGHTElvUIPlayerDebuffsBOTTOMRIGHT0-10"
 		E.db.movers.VehicleSeatMover = "TOPLEFTElvUIPlayerDebuffsTOPLEFT00"
