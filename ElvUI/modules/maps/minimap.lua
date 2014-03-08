@@ -248,7 +248,7 @@ function M:Initialize()
 	end	
 	
 	local mmholder = CreateFrame('Frame', 'MMHolder', Minimap)
-	mmholder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -10, -10)
+	mmholder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -3, -3)
 	mmholder:Width((Minimap:GetWidth() + 29) + E.ConsolidatedBuffsWidth)
 	mmholder:Height(Minimap:GetHeight() + 53)
 	

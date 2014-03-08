@@ -27,7 +27,7 @@ function UF:Construct_FocusFrame(frame)
 	tinsert(frame.__elements, UF.SmartAuraDisplay)
 	frame:RegisterEvent('PLAYER_FOCUS_CHANGED', UF.SmartAuraDisplay)	
 	
-	frame:Point('TOPLEFT', ElvUF_Player, 'BOTTOMLEFT', 0, -150)
+	frame:Point('BOTTOMRIGHT', ElvUF_Target, 'TOPRIGHT', 0, 220)
 	E:CreateMover(frame, frame:GetName()..'Mover', L['Focus Frame'], nil, nil, nil, 'ALL,SOLO')
 end
 

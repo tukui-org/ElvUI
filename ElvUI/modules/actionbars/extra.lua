@@ -8,7 +8,7 @@ end
 
 function AB:SetupExtraButton()
 	local holder = CreateFrame('Frame', nil, E.UIParent)
-	holder:Point('BOTTOM', E.UIParent, 'BOTTOM', -100, 195)
+	holder:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 150)
 	holder:Size(ExtraActionBarFrame:GetSize())
 	
 	ExtraActionBarFrame:SetParent(holder)

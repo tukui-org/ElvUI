@@ -22,7 +22,7 @@ function UF:Construct_PetFrame(frame)
 	frame.HealPrediction = self:Construct_HealComm(frame)
 	frame.AuraWatch = UF:Construct_AuraWatch(frame)
 	frame.Range = UF:Construct_Range(frame)
-	frame:Point('TOPLEFT', ElvUF_Player, 'BOTTOMLEFT', 0, -30)
+	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 118)
 	E:CreateMover(frame, frame:GetName()..'Mover', L['Pet Frame'], nil, nil, nil, 'ALL,SOLO')
 end
 

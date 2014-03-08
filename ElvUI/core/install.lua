@@ -356,7 +356,6 @@ function E:SetupLayout(layout, noDataReset)
 		E.db.movers.ElvUF_Raid10Mover = "BOTTOMElvUIParentBOTTOM0265"
 		E.db.movers.ElvUF_Raid25Mover = "BOTTOMElvUIParentBOTTOM0170"
 		E.db.movers.ElvUF_Raid40Mover = "BOTTOMElvUIParentBOTTOM0170"
-		E.db.movers.ElvUF_RaidpetMover = "TOPLEFTElvUIParentTOPLEFT4-375"
 		
 		if BossHeaderMover then
 			BossHeaderMover:ClearAllPoints()
@@ -374,7 +373,10 @@ function E:SetupLayout(layout, noDataReset)
 			E:SaveMoverPosition("AltPowerBarMover")
 		end
 		
-		E.db.movers.BuffsMover = "TOPRIGHTElvUIParentTOPRIGHT-225-11"
+		E.db.movers.MinimapMover = "TOPRIGHTElvUIParentMinimapMover-10-10"
+		E.db.movers.BuffsMover = "TOPRIGHTMinimapTOPLEFT-81"
+		E.db.movers.GMMover = "TOPRIGHTElvUIPlayerDebuffsBOTTOMRIGHT0-10"
+		E.db.movers.VehicleSeatMover = "TOPLEFTElvUIPlayerDebuffsTOPLEFT00"
 		
 		E.db.movers.ElvAB_1 = "BOTTOMElvUIParentBOTTOM027"
 		E.db.movers.ElvAB_2 = "LEFTElvUI_Bar1LEFT00"
@@ -383,6 +385,8 @@ function E:SetupLayout(layout, noDataReset)
 		E.db.movers.ElvAB_5 = "RIGHTElvUIParentRIGHT-40"
 		E.db.movers.ElvAB_6 = "RIGHTElvUIParentRIGHT-40"
 		E.db.movers.MicrobarMover = "TOPLEFTElvUIParentTOPLEFT435-4"
+		E.db.movers.ShiftAB = "TOPLEFTLeftChatPanelTOPRIGHT-13"
+		E.db.movers.TotemBarMover = "BOTTOMLEFTLeftChatPanelBOTTOMRIGHT0-4"
 	else --DPS/Tank layout
 		if not E.db.movers then E.db.movers = {}; end
 		E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM-240330"
@@ -399,7 +403,6 @@ function E:SetupLayout(layout, noDataReset)
 		E.db.movers.ElvUF_Raid10Mover = "BOTTOMElvUIParentBOTTOM060"
 		E.db.movers.ElvUF_Raid25Mover = "TOPLEFTElvUIParentTOPLEFT4-4"
 		E.db.movers.ElvUF_Raid40Mover = "TOPLEFTElvUIParentTOPLEFT4-4"
-		E.db.movers.ElvUF_RaidpetMover = "TOPLEFTElvUIParentTOPLEFT4-375"
 		
 		if BossHeaderMover then
 			BossHeaderMover:ClearAllPoints()
@@ -408,16 +411,19 @@ function E:SetupLayout(layout, noDataReset)
 		end
 		if BossButton then
 			BossButton:ClearAllPoints()
-			BossButton:SetPoint("BOTTOMLEFT",E.UIParent,"BOTTOMLEFT",465,160)
+			BossButton:SetPoint("BOTTOMLEFT",E.UIParent,"BOTTOMLEFT",475,150)
 			E:SaveMoverPosition("BossButton")
 		end
 		if AltPowerBarMover then
 			AltPowerBarMover:ClearAllPoints()
-			AltPowerBarMover:SetPoint("BOTTOMLEFT",E.UIParent,"BOTTOMLEFT",435,235)
+			AltPowerBarMover:SetPoint("BOTTOMLEFT",E.UIParent,"BOTTOMLEFT",445,225)
 			E:SaveMoverPosition("AltPowerBarMover")
 		end
 		
-		E.db.movers.BuffsMover = "TOPRIGHTElvUIParentTOPRIGHT-225-11"
+		E.db.movers.MinimapMover = "TOPRIGHTElvUIParentMinimapMover-10-10"
+		E.db.movers.BuffsMover = "TOPRIGHTMinimapTOPLEFT-81"
+		E.db.movers.GMMover = "TOPRIGHTElvUIPlayerDebuffsBOTTOMRIGHT0-10"
+		E.db.movers.VehicleSeatMover = "TOPLEFTElvUIPlayerDebuffsTOPLEFT00"
 		
 		E.db.movers.ElvAB_1 = "BOTTOMElvUIParentBOTTOM0160"
 		E.db.movers.ElvAB_2 = "LEFTElvUI_Bar1LEFT00"
@@ -426,6 +432,8 @@ function E:SetupLayout(layout, noDataReset)
 		E.db.movers.ElvAB_5 = "RIGHTElvUIParentRIGHT-40"
 		E.db.movers.ElvAB_6 = "RIGHTElvUIParentRIGHT-40"
 		E.db.movers.MicrobarMover = "TOPLEFTElvUIParentTOPLEFT435-4"
+		E.db.movers.ShiftAB = "TOPLEFTLeftChatPanelTOPRIGHT-13"
+		E.db.movers.TotemBarMover = "BOTTOMLEFTLeftChatPanelBOTTOMRIGHT0-4"
 	end
 	
 	--Datatexts

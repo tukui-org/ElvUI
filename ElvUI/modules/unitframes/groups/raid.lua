@@ -77,7 +77,7 @@ for i=10, 40, 15 do
 
 		if not headerHolder.positioned then
 			headerHolder:ClearAllPoints()
-			headerHolder:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 205)
+			headerHolder:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)	
 
 			E:CreateMover(headerHolder, headerHolder:GetName()..'Mover', L['Raid 1-']..i..L[' Frames'], nil, nil, nil, 'ALL,RAID'..i)
 

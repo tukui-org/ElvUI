@@ -14,13 +14,12 @@ function M:UpdateExpRepAnchors()
 	repBar:ClearAllPoints()
 	expBar:ClearAllPoints()
 	
-	if self.expBar:IsShown() and self.repBar:IsShown() then
+	if self.expBar:IsShown() then
 		expBar:SetPoint('TOP', MMHolder, 'BOTTOM', 1, -1)
 		repBar:SetPoint('TOP', self.expBar, 'BOTTOM', 0, -1)
-	elseif self.expBar:IsShown() then
-		expBar:SetPoint('TOP', MMHolder, 'BOTTOM', 1, -1)
 	else
 		repBar:SetPoint('TOP', MMHolder, 'BOTTOM', 1, -1)
+		expBar:SetPoint('TOP', self.repBar, 'BOTTOM', 0, -1)
 	end
 end
 

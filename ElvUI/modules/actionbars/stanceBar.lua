@@ -274,7 +274,7 @@ end
 function AB:CreateBarShapeShift()
 	bar:CreateBackdrop('Transparent');
 	bar.backdrop:SetAllPoints();
-	bar:Point('TOPLEFT', LeftChatPanel, 'TOPRIGHT', -1, 3);
+	bar:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -4);
 	bar.buttons = {};
 	bar:SetAttribute("_onstate-show", [[		
 		if newstate == "hide" then
