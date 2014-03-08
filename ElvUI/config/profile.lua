@@ -335,7 +335,7 @@ P['unitframe'] = {
 		['castClassColor'] = false,
 		
 		
-		['health'] = {r = 44/255, g = 44/255, b = 44/255},
+		['health'] = {r = 40/255, g = 40/255, b = 40/255},
 		['health_backdrop'] = {r = 0, g = 0, b = 0},
 		['tapped'] = {r = 0.55, g = 0.57, b = 0.61},
 		['disconnected'] = {r = 0, g = 0, b = 0},

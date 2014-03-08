@@ -239,8 +239,8 @@ function E:SetupTheme(theme, noDisplayMsg)
 		E.db.general.backdropfadecolor = E:GetColor(26/255, 26/255, 26/255, .8)
 		E.db.unitframe.colors.auraBarBuff = E:GetColor(40/255, 40/255, 40/255)
 		E.db.unitframe.colors.healthclass = false
-		E.db.unitframe.colors.health = E:GetColor(.267, .267, .267)
-		E.db.unitframe.colors.castColor = E:GetColor(.66, .66, .66)
+		E.db.unitframe.colors.health = E:GetColor(40/255, 40/255, 40/255)
+		E.db.unitframe.colors.castColor = E:GetColor(168/255, 168/255, 168/255)
 	end
 	
 	--Value Color
