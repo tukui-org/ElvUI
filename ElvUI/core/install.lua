@@ -309,6 +309,8 @@ function E:SetupLayout(layout, noDataReset)
 		end
 		
 		if not noDataReset then			
+			E.db.unitframe.units.player.classbar.detachFromFrame = false
+
 			E.db.unitframe.units.boss.width = 160;
 			
 			E.db.unitframe.units.party.width = 80;
