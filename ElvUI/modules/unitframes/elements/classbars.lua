@@ -61,7 +61,7 @@ function UF:UpdateHoly(event, unit, powerType)
 	end
 
 	if db.classbar.detachFromFrame then
-		CLASSBAR_WIDTH = db.classbar.detachedWidth
+		CLASSBAR_WIDTH = db.classbar.detachedWidth - (BORDER*2)
 	end
 	
 	self.HolyPower:Width(CLASSBAR_WIDTH)
@@ -72,7 +72,12 @@ function UF:UpdateHoly(event, unit, powerType)
 		else
 			self.HolyPower[i]:SetAlpha(.2)
 		end
-		self.HolyPower[i]:SetWidth((self.HolyPower:GetWidth() - (maxHolyPower - 1)) / maxHolyPower)	
+		if db.classbar.fill == "spaced" then
+			self.HolyPower[i]:SetWidth((self.HolyPower:GetWidth() - ((maxHolyPower == 5 and 7 or 13)*(maxHolyPower - 1))) / maxHolyPower)
+		else
+			self.HolyPower[i]:SetWidth((self.HolyPower:GetWidth() - (maxHolyPower - 1)) / maxHolyPower)	
+		end
+		
 		self.HolyPower[i]:ClearAllPoints()
 		if i == 1 then
 			self.HolyPower[i]:SetPoint("LEFT", self.HolyPower)
@@ -152,7 +157,7 @@ function UF:UpdateHarmony()
 	end
 
 	if db.classbar.detachFromFrame then
-		CLASSBAR_WIDTH = db.classbar.detachedWidth
+		CLASSBAR_WIDTH = db.classbar.detachedWidth - (BORDER*2)
 	end	
 	
 	for i=1, UF['classMaxResourceBar'][E.myclass] do
@@ -168,7 +173,11 @@ function UF:UpdateHarmony()
 	local colors = ElvUF.colors.Harmony
 	for i = 1, maxBars do		
 		self[i]:SetHeight(self:GetHeight())	
-		self[i]:SetWidth((self:GetWidth() - (maxBars - 1)) / maxBars)	
+		if db.classbar.fill == "spaced" then
+			self[i]:SetWidth((self:GetWidth() - ((E.PixelMode and (maxBars == 5 and 4 or 7) or (maxBars == 5 and 6 or 9))*(maxBars - 1))) / maxBars)
+		else
+			self[i]:SetWidth((self:GetWidth() - (maxBars - 1)) / maxBars)	
+		end
 		self[i]:ClearAllPoints()
 		
 		if i == 1 then
@@ -294,7 +303,7 @@ function UF:UpdateShardBar(spec)
 	local SPACING = db.classbar.fill == 'spaced' and 11 or 1
 	for i = 1, maxBars do
 		self[i]:SetHeight(self:GetHeight())	
-		self[i]:SetWidth((self:GetWidth() - (maxBars - 1)) / maxBars)
+		self[i]:SetWidth((self:GetWidth() - (SPACING*(maxBars - 1))) / maxBars)
 		self[i]:ClearAllPoints()
 		if i == 1 then
 			self[i]:SetPoint("LEFT", self)

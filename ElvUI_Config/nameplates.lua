@@ -64,7 +64,7 @@ local function UpdateFilterGroup()
 					if t then
 						t.r, t.g, t.b = r, g, b
 						UpdateFilterGroup()
-						NP:ForEachPlate("CheckFilter")
+						NP:ForEachPlate("CheckFilterAndHealers")
 						NP:UpdateAllPlates()
 					end
 				end,
