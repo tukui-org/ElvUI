@@ -12,7 +12,7 @@ To load the AddOn engine inside another addon add this to the top of your file:
 
 BINDING_HEADER_ELVUI = GetAddOnMetadata(..., "Title");
 
-local AddOnName, Engine = ...;
+local AddOnName, Engine = ...;  
 local AddOn = LibStub("AceAddon-3.0"):NewAddon(AddOnName, "AceConsole-3.0", "AceEvent-3.0", 'AceTimer-3.0', 'AceHook-3.0');
 AddOn.callbacks = AddOn.callbacks or 
   LibStub("CallbackHandler-1.0"):New(AddOn)
