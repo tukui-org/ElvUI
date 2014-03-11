@@ -4,7 +4,6 @@
 	So I can test stuff.
 ]]
 
-
 --Remove PVPBank.com spam from friends request
 local function RemoveSpam()
     for i=1, BNGetNumFriendInvites() do
