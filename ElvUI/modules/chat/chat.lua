@@ -16,6 +16,9 @@ local cvars = {
 local len, gsub, find, sub, gmatch, format, random = string.len, string.gsub, string.find, string.sub, string.gmatch, string.format, math.random
 local tinsert, tremove, tsort, twipe, tconcat = table.insert, table.remove, table.sort, table.wipe, table.concat
 
+local PLAYER_NAME = E.myname.."-"..gsub(E.myrealm, '[%s%-]', '')
+local PLAYER_REALM = gsub(E.myrealm,'[%s%-]','')
+
 local TIMESTAMP_FORMAT
 local DEFAULT_STRINGS = {
 	GUILD = L['G'],
@@ -991,9 +994,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 					pflag = _G["CHAT_FLAG_"..arg6];
 				end
 			else
-				local myRealm = E.myrealm
-				myRealm = myRealm:gsub(' ', '')
-				if(specialChatIcons[myRealm] == nil or (specialChatIcons[myRealm] and specialChatIcons[myRealm][E.myname] ~= true)) then
+				if(specialChatIcons[PLAYER_REALM] == nil or (specialChatIcons[PLAYER_REALM] and specialChatIcons[PLAYER_REALM][E.myname] ~= true)) then
 					for realm, _ in pairs(specialChatIcons) do
 						for character, texture in pairs(specialChatIcons[realm]) do
 							if arg2 == character.."-"..realm then
@@ -1243,7 +1244,7 @@ function CH:CHAT_MSG_CHANNEL(event, message, author, ...)
 	local msg = PrepareMessage(author, message)
 
 	-- ignore player messages
-	if author == E.myname..'-'..gsub(E.myrealm,'%s','') then return CH.FindURL(self, event, message, author, ...) end
+	if author == PLAYER_NAME then return CH.FindURL(self, event, message, author, ...) end
 	if msgList[msg] and CH.db.throttleInterval ~= 0 then
 		if difftime(time(), msgTime[msg]) <= CH.db.throttleInterval then
 			blockFlag = true
@@ -1268,7 +1269,7 @@ function CH:CHAT_MSG_YELL(event, message, author, ...)
 	if msg == nil then return CH.FindURL(self, event, message, author, ...) end	
 
 	-- ignore player messages
-	if author == UnitName("player")..'-'..GetRealmName() then return CH.FindURL(self, event, message, author, ...) end
+	if author == PLAYER_NAME then return CH.FindURL(self, event, message, author, ...) end
 	if msgList[msg] and msgCount[msg] > 1 and CH.db.throttleInterval ~= 0 then
 		if difftime(time(), msgTime[msg]) <= CH.db.throttleInterval then
 			blockFlag = true
@@ -1435,12 +1436,12 @@ local function GetTimeForSavedMessage()
 end
 
 function CH:SaveChatHistory(event, ...)
-	if self.db.throttleInterval ~= 0 and (event == 'CHAT_MESSAGE_SAY' or event == 'CHAT_MESSAGE_YELL' or event == 'CHAT_MSG_CHANNEL') then	
+	if self.db.throttleInterval ~= 0 and (event == 'CHAT_MSG_SAY' or event == 'CHAT_MSG_YELL' or event == 'CHAT_MSG_CHANNEL') then	
 		self:ChatThrottleHandler(event, ...)		
 		
 		local message, author = ...
 		local msg = PrepareMessage(author, message)
-		if author ~= UnitName("player") and msgList[msg] then
+		if author ~= PLAYER_NAME and msgList[msg] then
 			if difftime(time(), msgTime[msg]) <= CH.db.throttleInterval then
 				return;
 			end
@@ -1532,14 +1533,13 @@ end
 function CH:CheckLFGRoles()
 	local isInGroup, isInRaid = IsInGroup(), IsInRaid()
 	local unit = isInRaid and "raid" or "party"
-	local myrealm = gsub(E.myrealm,'%s','')
 	local name, realm 
 	twipe(lfgRoles)
 	if(not isInGroup or not self.db.lfgIcons) then return end
 
 	local role = UnitGroupRolesAssigned("player")
 	if(role) then
-		lfgRoles[E.myname..'-'..myrealm] = rolePaths[role]
+		lfgRoles[PLAYER_NAME] = rolePaths[role]
 	end
 
 	for i=1, GetNumGroupMembers() do
@@ -1548,7 +1548,7 @@ function CH:CheckLFGRoles()
 			name, realm = UnitName(unit..i)
 			
 			if(role and name) then
-				name = realm and name..'-'..realm or name..'-'..myrealm;
+				name = realm and name..'-'..realm or PLAYER_NAME;
 				lfgRoles[name] = rolePaths[role]
 			end
 		end
