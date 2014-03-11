@@ -14,7 +14,7 @@ locales\load_locales.xml
 media\load_media.xml
 init.lua
 config\load_config.xml
-core\load_core.xml
+core\load_core.xml 
 layout\load_layout.xml
 modules\load_modules.xml
 
