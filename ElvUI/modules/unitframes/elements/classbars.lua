@@ -77,6 +77,7 @@ function UF:UpdateHoly(event, unit, powerType)
 		else
 			self.HolyPower[i]:SetWidth((self.HolyPower:GetWidth() - (maxHolyPower - 1)) / maxHolyPower)	
 		end
+		
 		self.HolyPower[i]:ClearAllPoints()
 		if i == 1 then
 			self.HolyPower[i]:SetPoint("LEFT", self.HolyPower)

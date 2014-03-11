@@ -3,32 +3,20 @@
 	
 	So I can test stuff.
 ]]
-local BlazeGrip = CreateFrame("Button", "BlazeGripButton", UIParent, "SecureActionButtonTemplate, ActionButtonTemplate")
-BlazeGrip:SetPoint("CENTER")
-BlazeGrip:SetWidth(60)
-BlazeGrip:SetHeight(60)
-BlazeGrip:Hide()
 
-BlazeGrip.Tex = BlazeGrip:CreateTexture(nil, "OVERLAY")
-BlazeGrip.Tex:SetAllPoints()
-BlazeGrip.Tex:SetTexture("INTERFACE\\ICONS\\priest_spell_leapoffaith_a")
+--Remove PVPBank.com spam from friends request
+local function RemoveSpam()
+    for i=1, BNGetNumFriendInvites() do
+        local id, _ ,_ , t = BNGetFriendInviteInfo(i)
+        if t and t:lower():find("pvpbank") then
+            BNDeclineFriendInvite(id)
+        end
+    end
+end
 
-local Check = CreateFrame("Frame")
-Check:RegisterEvent("CHAT_MSG_WHISPER")
-Check:RegisterEvent("CHAT_MSG_BN_WHISPER")
-Check:SetScript("OnEvent", function(self, event, msg, sender)
-	if string.find(string.lower(msg), "!grip") then
-		local InRange = UnitInRange(sender)
-		local _, timeLeft = GetSpellCooldown(73325)
-		
-		if timeLeft ~= 0 then
-			SendChatMessage("Leap of Faith is currently on cooldown, sorry!", "WHISPER", nil, sender)
-		elseif InRange then
-			BlazeGrip:SetAttribute("type1", "macro")
-			BlazeGrip:SetAttribute("macrotext", "/tar "..sender.."\n/cast Leap of Faith\n/run BlazeGripButton:Hide()")
-			BlazeGrip:Show()
-		else
-			SendChatMessage("You're not in range for Leap of Faith, get closer!", "WHISPER", nil, sender)
-		end
-	end
-end)
+local f = CreateFrame("Frame")
+f:SetScript("OnEvent", RemoveSpam)
+f:RegisterEvent("BN_FRIEND_INVITE_ADDED")
+f:RegisterEvent("BN_FRIEND_INVITE_LIST_INITIALIZED")
+f:RegisterEvent("BN_CONNECTED")
+f:RegisterEvent("PLAYER_ENTERING_WORLD")

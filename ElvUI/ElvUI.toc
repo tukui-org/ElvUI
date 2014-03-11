@@ -1,6 +1,6 @@
 ## Interface: 50400
 ## Author: Elv
-## Version: 6.992
+## Version: 6.994 
 ## Title: |cff1784d1ElvUI|r
 ## Notes: User Interface replacement AddOn for World of Warcraft.
 ## SavedVariables: ElvDB, ElvPrivateDB
@@ -14,7 +14,7 @@ locales\load_locales.xml
 media\load_media.xml
 init.lua
 config\load_config.xml
-core\load_core.xml
+core\load_core.xml 
 layout\load_layout.xml
 modules\load_modules.xml
 

@@ -15,7 +15,7 @@ local function LoadSkin()
 			
 			if frame then
 				frame:SetAlpha(1)
-				hooksecurefunc(frame, "SetAlpha", forceAlpha)
+				if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
 				if not frame.backdrop then
 					frame:CreateBackdrop("Transparent")
 					frame.backdrop:Point("TOPLEFT", _G[frame:GetName().."Background"], "TOPLEFT", -2, -6)
@@ -56,7 +56,7 @@ local function LoadSkin()
 			local frame = _G["DungeonCompletionAlertFrame"..i]
 			if frame then
 				frame:SetAlpha(1)
-				hooksecurefunc(frame, "SetAlpha", forceAlpha)
+				if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
 				if not frame.backdrop then
 					frame:CreateBackdrop("Transparent")
 					frame.backdrop:Point("TOPLEFT", frame, "TOPLEFT", -2, -6)
@@ -95,7 +95,7 @@ local function LoadSkin()
 
 		if frame then
 			frame:SetAlpha(1)
-			hooksecurefunc(frame, "SetAlpha", forceAlpha)
+			if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
 
 			if not frame.backdrop then
 				frame:CreateBackdrop("Transparent")
@@ -133,7 +133,7 @@ local function LoadSkin()
 		
 		if frame then
 			frame:SetAlpha(1)
-			hooksecurefunc(frame, "SetAlpha", forceAlpha)
+			if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
 
 			if not frame.backdrop then
 				frame:CreateBackdrop("Transparent")
@@ -176,7 +176,7 @@ local function LoadSkin()
 
 		if frame then
 			frame:SetAlpha(1)
-			hooksecurefunc(frame, "SetAlpha", forceAlpha)
+			if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
 
 			if not frame.backdrop then
 				frame:CreateBackdrop("Transparent")
@@ -218,7 +218,7 @@ local function LoadSkin()
 			local frame = _G['CriteriaAlertFrame'..i]
 			if frame then
 				frame:SetAlpha(1)
-				hooksecurefunc(frame, "SetAlpha", forceAlpha)
+				if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
 
 				if not frame.backdrop then
 					frame:CreateBackdrop("Transparent")
@@ -252,7 +252,7 @@ local function LoadSkin()
 			local frame = LOOT_WON_ALERT_FRAMES[i];
 			if frame then
 				frame:SetAlpha(1)
-				hooksecurefunc(frame, "SetAlpha", forceAlpha)
+				if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
 				
 				frame.Background:Kill()
 				frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
@@ -282,7 +282,7 @@ local function LoadSkin()
 			local frame = MONEY_WON_ALERT_FRAMES[i];
 			if frame then
 				frame:SetAlpha(1)
-				hooksecurefunc(frame, "SetAlpha", forceAlpha)
+				if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
 
 				frame.Background:Kill()
 				frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
