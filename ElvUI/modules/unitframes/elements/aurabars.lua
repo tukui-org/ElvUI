@@ -151,21 +151,6 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 		end
 		
 		anotherFilterExists = true
-	end
-	
-	if UF:CheckFilter(db.useWhitelist, isFriend) then
-		local whiteList = E.global['unitframe']['aurafilters']['Whitelist (Strict)'].spells[name]
-		if whiteList and whiteList.enable then
-			if whiteList.spellID and whiteList.spellID == spellID then
-				returnValue = true;
-			else
-				returnValue = false;
-			end
-		elseif not anotherFilterExists then
-			returnValue = false
-		end
-		
-		anotherFilterExists = true
 	end	
 
 	if UF:CheckFilter(db.useWhitelist, isFriend) then

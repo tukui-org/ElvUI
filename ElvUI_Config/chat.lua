@@ -68,7 +68,7 @@ E.Options.args.chat = {
 					set = function(info, value)
 						E.db.chat[ info[#info] ] = value
 						CH:UpdateFading()
-					end,
+					end,					
 				},
 				emotionIcons = {
 					order = 5,

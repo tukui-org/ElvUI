@@ -38,7 +38,7 @@ local function OnEvent(self, event)
 		
 		if specIndex then
 			local specID, _, _, texture = GetSpecializationInfo(specIndex);
-			loot = format('|T%s:14:14:0:0:64:64:4:60:4:60|t', texture)
+			loot = format('|T%s:14:14:0:0:64:64:4:60:4:60|t**', texture)
 		else
 			loot = 'N/A'
 		end

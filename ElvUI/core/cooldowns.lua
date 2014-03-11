@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 
 local MIN_SCALE = 0.5
 local ICON_SIZE = 36 --the normal size for an icon (don't change this)
-local FONT_SIZE = 18 --the base font size to use at a scale of 1
+local FONT_SIZE = 20 --the base font size to use at a scale of 1
 local MIN_SCALE = 0.5 --the minimum scale we want to show cooldown counts at, anything below this will be hidden
 local MIN_DURATION = 1.5 --the minimum duration to show cooldown text for
 
@@ -13,10 +13,10 @@ local GetTime = GetTime
 local threshold
 
 local TimeColors = {
-	[0] = '|cffeeeeee',
-	[1] = '|cffeeeeee',
-	[2] = '|cffeeeeee',
-	[3] = '|cffeeeeee',
+	[0] = '|cfffefefe',
+	[1] = '|cfffefefe',
+	[2] = '|cfffefefe',
+	[3] = '|cfffefefe',
 	[4] = '|cfffe0000',
 }
 
@@ -34,7 +34,7 @@ local function Cooldown_OnUpdate(cd, elapsed)
 			cd.nextUpdate = 500
 		else
 			local timervalue, formatid
-			timervalue, formatid, cd.nextUpdate = E:GetTimeInfo(remain, threshold)
+			timervalue, formatid, cd.nextUpdate = E:GetTimeInfo(remain, threshold)		
 			cd.text:SetFormattedText(("%s%s|r"):format(TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
 		end
 	else

@@ -44,9 +44,9 @@ function UF:Construct_PartyFrames(unitGroup)
 		self.HealPrediction = UF:Construct_HealComm(self)
 		self.GPS = UF:Construct_GPS(self)
 	end
-
+	
 	self.Range = UF:Construct_Range(self)
-
+	
 	UF:Update_StatusBars()
 	UF:Update_FontStrings()	
 

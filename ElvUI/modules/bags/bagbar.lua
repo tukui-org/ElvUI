@@ -19,7 +19,7 @@ function B:SkinBag(bag)
 	bag.oldTex = icon:GetTexture()
 	
 	bag:StripTextures()
-	bag:SetTemplate("Transparent")
+	bag:SetTemplate("Default", true)
 	bag:StyleButton(true)
 	icon:SetTexture(bag.oldTex)
 	icon:SetInside()

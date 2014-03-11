@@ -334,15 +334,22 @@ function S:HandleItemButton(b, shrinkIcon)
 end
 
 function S:HandleCloseButton(f, point, text)
-	for i=1, f:GetNumRegions() do
-		local region = select(i, f:GetRegions())
-		if region:GetObjectType() == "Texture" then
-			region:SetDesaturated(1)
-			
-			if region:GetTexture() == "Interface\\DialogFrame\\UI-DialogBox-Corner" then
-				region:Kill()
-			end
-		end
+	f:StripTextures()
+	
+	if not f.backdrop then
+		f:CreateBackdrop('Default', true)
+		f.backdrop:Point('TOPLEFT', 7, -8)
+		f.backdrop:Point('BOTTOMRIGHT', -8, 8)
+		f:HookScript('OnEnter', SetModifiedBackdrop)
+		f:HookScript('OnLeave', SetOriginalBackdrop)	
+	end
+	if not text then text = 'x' end
+	if not f.text then
+		f.text = f:CreateFontString(nil, 'OVERLAY')
+		f.text:SetFont([[Interface\AddOns\ElvUI\media\fonts\PT_Sans_Narrow.ttf]], 16, 'OUTLINE')
+		f.text:SetText(text)
+		f.text:SetJustifyH('CENTER')
+		f.text:SetPoint('CENTER', f, 'CENTER')
 	end
 	
 	if point then

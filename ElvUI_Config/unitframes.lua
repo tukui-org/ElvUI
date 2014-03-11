@@ -3696,7 +3696,7 @@ for i=10, 40, 15 do
 						order = 300,
 						type = 'group',
 						guiInline = true,
-						name = L['Grouping & Sorting'],
+						name = L['Sorting'],
 						set = function(info, value) E.db.unitframe.units['raid'..i][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i, nil, nil, true) end,
 						args = {
 							groupBy = {

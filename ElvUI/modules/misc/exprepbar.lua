@@ -14,12 +14,13 @@ function M:UpdateExpRepAnchors()
 	repBar:ClearAllPoints()
 	expBar:ClearAllPoints()
 	
-	if self.expBar:IsShown() then
-		expBar:SetPoint('TOP', MMHolder, 'BOTTOM', 1, -1)
-		repBar:SetPoint('TOP', self.expBar, 'BOTTOM', 0, -1)
+	if self.expBar:IsShown() and self.repBar:IsShown() then
+		expBar:Point('TOP', E.UIParent, 'TOP', 0, -1)
+		repBar:Point('TOP', self.expBar, 'BOTTOM', 0, -1)
+	elseif self.expBar:IsShown() then
+		expBar:Point('TOP', E.UIParent, 'TOP', 0, -1)
 	else
-		repBar:SetPoint('TOP', MMHolder, 'BOTTOM', 1, -1)
-		expBar:SetPoint('TOP', self.repBar, 'BOTTOM', 0, -1)
+		repBar:Point('TOP', E.UIParent, 'TOP', 0, -1)
 	end
 end
 
@@ -198,18 +199,10 @@ function M:CreateBar(name, onEnter, ...)
 end
 
 function M:UpdateExpRepDimensions()
-	if E:HasMoverBeenMoved('ExperienceBarMover') then
-		self.expBar:Width(E.db.general.experience.width)
-	else
-		self.expBar:Width(E.db.general.minimap.size + E.ConsolidatedBuffsWidth + (E.PixelMode and 1 or 5))
-	end
+	self.expBar:Width(E.db.general.experience.width)
 	self.expBar:Height(E.db.general.experience.height)
 	
-	if E:HasMoverBeenMoved('ReputationBarMover') then
-		self.repBar:Width(E.db.general.reputation.width)
-	else
-		self.repBar:Width(E.db.general.minimap.size + E.ConsolidatedBuffsWidth + (E.PixelMode and 1 or 5))
-	end
+	self.repBar:Width(E.db.general.reputation.width)
 	self.repBar:Height(E.db.general.reputation.height)
 	
 	self.repBar.text:FontTemplate(nil, E.db.general.reputation.textSize)
@@ -263,7 +256,7 @@ function M:EnableDisable_ReputationBar()
 end
 
 function M:LoadExpRepBar()
-	self.expBar = self:CreateBar('ElvUI_ExperienceBar', ExperienceBar_OnEnter, 'TOP', MMHolder, 'BOTTOM', 1, -1)
+	self.expBar = self:CreateBar('ElvUI_ExperienceBar', ExperienceBar_OnEnter, 'TOP', E.UIParent, 'TOP', 0, -1)
 	self.expBar.statusBar:SetStatusBarColor(0, 0.4, 1, .8)
 	self.expBar.rested = CreateFrame('StatusBar', nil, self.expBar)
 	self.expBar.rested:SetInside()
@@ -279,6 +272,6 @@ function M:LoadExpRepBar()
 
 	E:CreateMover(self.expBar, "ExperienceBarMover", L["Experience Bar"])
 	E:CreateMover(self.repBar, "ReputationBarMover", L["Reputation Bar"])
-
+	
 	self:UpdateExpRepAnchors()
 end

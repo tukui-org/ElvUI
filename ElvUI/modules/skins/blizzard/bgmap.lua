@@ -17,6 +17,8 @@ local function LoadSkin()
 	BattlefieldMinimapCloseButton:ClearAllPoints()
 	BattlefieldMinimapCloseButton:SetPoint("TOPRIGHT", -4, 0)	
 	S:HandleCloseButton(BattlefieldMinimapCloseButton)
+	BattlefieldMinimapCloseButton.text:ClearAllPoints()
+	BattlefieldMinimapCloseButton.text:SetPoint('CENTER', BattlefieldMinimapCloseButton, 'CENTER', 0, 1)
 	BattlefieldMinimapCloseButton:SetFrameStrata('MEDIUM')
 	
 	BattlefieldMinimap:EnableMouse(true)

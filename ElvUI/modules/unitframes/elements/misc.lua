@@ -6,7 +6,6 @@ local format = string.format
 
 
 local LSM = LibStub("LibSharedMedia-3.0");
-
 function UF:Construct_TargetGlow(frame)
 	frame:CreateShadow('Default')
 	local x = frame.shadow

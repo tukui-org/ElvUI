@@ -221,7 +221,8 @@ function AB:PositionAndSizeBar(barName)
 		bar:Hide()
 		UnregisterStateDriver(bar, "visibility");
 	end 
-
+	
+	
 	E:SetMoverSnapOffset('ElvAB_'..bar.id, bar.db.buttonspacing / 2)
 end
 
@@ -230,7 +231,7 @@ function AB:CreateBar(id)
 	local point, anchor, attachTo, x, y = split(',', self['barDefaults']['bar'..id].position)
 	bar:Point(point, anchor, attachTo, x, y)
 	bar.id = id
-	bar:CreateBackdrop('Transparent');
+	bar:CreateBackdrop('Default');
 	bar:SetFrameStrata("LOW")
 	bar.backdrop:SetAllPoints();
 	bar.buttons = {}
@@ -443,7 +444,7 @@ function AB:StyleButton(button, noBackdrop, adjustChecked)
 	end
 
 	if not button.noBackdrop and not button.backdrop then
-		button:CreateBackdrop('Transparent')
+		button:CreateBackdrop('Default', true)
 		button.backdrop:SetAllPoints()
 	end
 	
@@ -458,10 +459,6 @@ function AB:StyleButton(button, noBackdrop, adjustChecked)
 	
 	if self.db.hotkeytext then
 		hotkey:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
-	end
-	
-	if self.db.macrotext and button.buttonType ~= "EXTRAACTIONBUTTON" then
-		macroName:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 	end
 	
 	--Extra Action Button
@@ -568,7 +565,7 @@ function AB:DisableBlizzard()
 	MainMenuExpBar:UnregisterAllEvents()
 	MainMenuExpBar:Hide()
 	MainMenuExpBar:SetParent(UIHider)
-
+	
 	for i=1, MainMenuBar:GetNumChildren() do
 		local child = select(i, MainMenuBar:GetChildren())
 		if child then
@@ -682,8 +679,6 @@ function AB:FixKeybindText(button)
 		hotkey:SetText(text);
 	end
 	
-	hotkey:SetVertexColor(1,1,1,1)
-	hotkey.SetVertexColor = E.noop
 	hotkey:ClearAllPoints()
 	hotkey:Point("TOPRIGHT", 0, -3);  
 end
@@ -872,35 +867,6 @@ function AB:Initialize()
 	end	
 	
 	SpellFlyout:HookScript("OnShow", SetupFlyoutButton)
-	
-	AB:FixABPositions()
-end
-
-function AB:FixABPositions()
-	if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT); return; end
-	local ABdb = E.db.actionbar
-	if ABdb.bar3.enabled == true then
-		if ABdb.bar2.enabled == true and ABdb.bar1.heightMult == 2 then
-			ElvAB_2:ClearAllPoints()
-			ElvAB_2:Point("TOP",ElvUI_Bar1,"TOP")
-			E:SaveMoverPosition("ElvAB_2")
-			ElvAB_3:ClearAllPoints()
-			ElvAB_3:Point("BOTTOM",ElvUI_Bar1,"TOP",0,2)
-			E:SaveMoverPosition("ElvAB_3")
-		elseif ABdb.bar2.enabled == true and ABdb.bar1.heightMult == 3 then
-			ElvAB_2:ClearAllPoints()
-			ElvAB_2:Point("LEFT",ElvUI_Bar1,"LEFT")
-			E:SaveMoverPosition("ElvAB_2")
-			ElvAB_3:ClearAllPoints()
-			ElvAB_3:Point("TOP",ElvUI_Bar1,"TOP")
-			E:SaveMoverPosition("ElvAB_3")
-		elseif ABdb.bar2.enabled ~= true and ABdb.bar1.heightMult == 2 then
-			ElvAB_3:ClearAllPoints()
-			ElvAB_3:Point("TOP",ElvUI_Bar1,"TOP")
-			E:SaveMoverPosition("ElvAB_3")
-		end
-		E:Print("ActionBar 2 and 3 have been repositioned")
-	end
 end
 
 E:RegisterModule(AB:GetName())

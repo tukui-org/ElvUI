@@ -4,11 +4,11 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 
 V['general'] = {
 	['loot'] = true,
-	['lootRoll'] = false,
+	['lootRoll'] = true,
 	["normTex"] = "ElvUI Norm",
 	["glossTex"] = "ElvUI Norm",	
 	["dmgfont"] = "ElvUI Combat",
-	["namefont"] = "Friz Quadrata TT",
+	["namefont"] = "ElvUI Font",
 	['chatBubbles'] = 'backdrop',
 	['pixelPerfect'] = true,
 	['lfrEnhancement'] = true,

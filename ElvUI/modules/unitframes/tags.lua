@@ -8,14 +8,6 @@ local ceil, sqrt = math.ceil, math.sqrt
 --	Tags
 ------------------------------------------------------------------------
 
-ElvUF.Tags.Methods['resting'] = function(unit)
-	if (unit == 'player' and IsResting()) then
-		return '|cff3E8AC6(|r|cff77DA73zzz|r|cFF3E8AC6)|r'
-	else
-		return ''
-	end
-end
-
 local function UnitName(unit)
 	local name = _G.UnitName(unit);
 	if name == UNKNOWN and E.myclass == "MONK" and UnitIsUnit(unit, "pet") then

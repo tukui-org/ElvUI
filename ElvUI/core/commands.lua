@@ -217,6 +217,5 @@ function E:LoadCommands()
 	self:RegisterChatCommand('cleanguild', 'MassGuildKick')
 	if E.ActionBars then
 		self:RegisterChatCommand('kb', E.ActionBars.ActivateBindMode)
-		self:RegisterChatCommand('fixpos', E.ActionBars.FixABPositions)
 	end
 end

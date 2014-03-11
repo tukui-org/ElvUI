@@ -121,7 +121,7 @@ local function OnEnter(self)
 			end			
 		end
 	end	
-
+	
 	local addedLine = false
 	for i = 1, GetNumSavedWorldBosses() do
 		name, instanceID, reset = GetSavedWorldBossInfo(i)
@@ -134,7 +134,7 @@ local function OnEnter(self)
 			DT.tooltip:AddDoubleLine(name, SecondsToTime(reset, true, nil, 3), 1, 1, 1, 0.8, 0.8, 0.8)		
 		end
 	end
-
+	
 	local timeText
 	local Hr, Min, AmPm = CalculateTimeValues(true)
 

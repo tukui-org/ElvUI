@@ -122,7 +122,7 @@ function UF:Update_TargetFrame(frame, db)
 		health.Smooth = self.db.smoothbars
 
 		--Text
-		local x, y = self:GetPositionOffset(db.health.position, 6)
+		local x, y = self:GetPositionOffset(db.health.position)
 		health.value:ClearAllPoints()
 		health.value:Point(db.health.position, health, db.health.position, x + db.health.xOffset, y + db.health.yOffset)
 		frame:Tag(health.value, db.health.text_format)
@@ -184,7 +184,7 @@ function UF:Update_TargetFrame(frame, db)
 			power.Smooth = self.db.smoothbars
 			
 			--Text
-			local x, y = self:GetPositionOffset(db.power.position, 6)
+			local x, y = self:GetPositionOffset(db.power.position)
 			power.value:ClearAllPoints()
 			power.value:Point(db.power.position, db.power.attachTextToPower and power or frame.Health, db.power.position, x + db.power.xOffset, y + db.power.yOffset)		
 			frame:Tag(power.value, db.power.text_format)
@@ -434,7 +434,7 @@ function UF:Update_TargetFrame(frame, db)
 		local castbar = frame.Castbar
 		castbar:Width(db.castbar.width - (E.PixelMode and 2 or (BORDER * 2)))
 		castbar:Height(db.castbar.height)
-		castbar.Holder:Width(db.castbar.width)
+		castbar.Holder:Width(db.castbar.width + (E.PixelMode and 0 or (BORDER * 2)))
 		castbar.Holder:Height(db.castbar.height + (E.PixelMode and 2 or (BORDER * 2)))
 		castbar.Holder:GetScript('OnSizeChanged')(castbar.Holder)
 		
