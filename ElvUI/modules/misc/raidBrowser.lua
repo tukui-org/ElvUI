@@ -60,7 +60,9 @@ function mod:Button_OnEnter()
 				if ( className ) then
 					for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if className == v then className = k end end
 					classTextColor = RAID_CLASS_COLORS[className];
-				else
+				end
+				
+				if not classTextColor then
 					classTextColor = NORMAL_FONT_COLOR;
 				end
 
