@@ -9,7 +9,7 @@ To load the AddOn engine inside another addon add this to the top of your file:
 	
 	local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 ]]
-
+--bullshit
 BINDING_HEADER_ELVUI = GetAddOnMetadata(..., "Title");
 
 local AddOnName, Engine = ...;  
