@@ -337,7 +337,7 @@ function B:Layout(isBank)
 				if not f.Bags[bagID][slotID] then
 					f.Bags[bagID][slotID] = CreateFrame('CheckButton', f.Bags[bagID]:GetName()..'Slot'..slotID, f.Bags[bagID], bagID == -1 and 'BankItemButtonGenericTemplate' or 'ContainerFrameItemButtonTemplate');
 					f.Bags[bagID][slotID]:StyleButton();
-					f.Bags[bagID][slotID]:SetTemplate('Default', true);
+					f.Bags[bagID][slotID]:SetTemplate('Transparent');
 					f.Bags[bagID][slotID]:SetNormalTexture(nil);
 					f.Bags[bagID][slotID]:SetCheckedTexture(nil);
 
@@ -625,7 +625,7 @@ function B:ContructContainerFrame(name, isBank)
 	f.ContainerHolder:Point('BOTTOMLEFT', f, 'TOPLEFT', 0, 1)
 	f.ContainerHolder:SetTemplate('Transparent')
 	f.ContainerHolder:Hide()
-	local buttonColor = E.PixelMode and {0.31, 0.31, 0.31} or E.media.bordercolor
+	local buttonColor = E.media.backdropcolor
 	
 	if isBank then
 		f.purchaseBagButton = CreateFrame('Button', nil, f)

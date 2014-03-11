@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local LO = E:NewModule('Layout', 'AceEvent-3.0');
+local LSM = LibStub("LibSharedMedia-3.0")
 
 local PANEL_HEIGHT = 22;
 local SIDE_BUTTON_WIDTH = 16;
@@ -14,7 +15,7 @@ end
 function LO:Initialize()
 	self:CreateChatPanels()
 	self:CreateMinimapPanels()
-	
+	self:CreateExtraDataBarPanels()
 	
 	self.BottomPanel = CreateFrame('Frame', 'ElvUI_BottomPanel', E.UIParent)
 	self.BottomPanel:SetTemplate('Transparent')
@@ -138,12 +139,21 @@ end
 function LO:SetDataPanelStyle()
 	if E.db.datatexts.panelTransparency then
 		LeftChatDataPanel:SetTemplate("Transparent")
+		LeftChatDataPanel:SetBackdropColor(0,0,0,0)
+		LeftChatDataPanel:SetBackdropBorderColor(0,0,0,0)
 		LeftChatToggleButton:SetTemplate("Transparent")
+		LeftChatToggleButton:SetBackdropColor(0,0,0,0)
+		LeftChatToggleButton:SetBackdropBorderColor(0,0,0,0)
 		LeftMiniPanel:SetTemplate("Transparent")
 		RightChatDataPanel:SetTemplate("Transparent")
+		RightChatDataPanel:SetBackdropColor(0,0,0,0)
+		RightChatDataPanel:SetBackdropBorderColor(0,0,0,0)
 		RightChatToggleButton:SetTemplate("Transparent")
+		RightChatToggleButton:SetBackdropColor(0,0,0,0)
+		RightChatToggleButton:SetBackdropBorderColor(0,0,0,0)
 		RightMiniPanel:SetTemplate("Transparent")		
 		ElvConfigToggle:SetTemplate("Transparent")
+		Bottom_Datatext_Panel:SetTemplate("Transparent")
 	else
 		LeftChatDataPanel:SetTemplate("Default", true)
 		LeftChatToggleButton:SetTemplate("Default", true)
@@ -151,7 +161,8 @@ function LO:SetDataPanelStyle()
 		RightChatDataPanel:SetTemplate("Default", true)
 		RightChatToggleButton:SetTemplate("Default", true)
 		RightMiniPanel:SetTemplate("Default", true)		
-		ElvConfigToggle:SetTemplate("Default", true)	
+		ElvConfigToggle:SetTemplate("Default", true)
+		Bottom_Datatext_Panel:SetTemplate("Default", true)
 	end
 end
 
@@ -232,7 +243,6 @@ function LO:CreateChatPanels()
 	lchat.backdrop:SetAllPoints()
 	E:CreateMover(lchat, "LeftChatMover", L["Left Chat"])
 	
-	
 	--Background Texture
 	lchat.tex = lchat:CreateTexture(nil, 'OVERLAY')
 	lchat.tex:SetInside()
@@ -245,29 +255,49 @@ function LO:CreateChatPanels()
 	lchattab:Point('BOTTOMRIGHT', lchat, 'TOPRIGHT', -SPACING, -(SPACING + PANEL_HEIGHT))
 	lchattab:SetTemplate(E.db.chat.panelTabTransparency == true and 'Transparent' or 'Default', true)
 	
+	--Left Chat Tab Separator
+	local ltabseparator = CreateFrame('Frame', 'LeftChatTabSeparator', LeftChatPanel)
+	ltabseparator:SetFrameStrata('BACKGROUND')
+	ltabseparator:SetFrameLevel(lchat:GetFrameLevel() + 2)
+	ltabseparator:Size(E.db.chat.panelWidth - 10, 1)
+	ltabseparator:Point('TOP', LeftChatPanel, 0, -24)
+	ltabseparator:SetTemplate('Transparent')
+	
 	--Left Chat Data Panel
 	local lchatdp = CreateFrame('Frame', 'LeftChatDataPanel', LeftChatPanel)
 	lchatdp:Point('BOTTOMLEFT', lchat, 'BOTTOMLEFT', SPACING + SIDE_BUTTON_WIDTH, SPACING)
 	lchatdp:Point('TOPRIGHT', lchat, 'BOTTOMRIGHT', -SPACING, (SPACING + PANEL_HEIGHT))
-	lchatdp:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
-	
+	if not E.db.datatexts.panelTransparency then
+		lchatdp:SetTemplate('Default', true)
+	end
 	E:GetModule('DataTexts'):RegisterPanel(lchatdp, 3, 'ANCHOR_TOPLEFT', -17, 4)
 	
+	--Left Chat Data Panel Separator
+	local ldataseparator = CreateFrame('Frame', 'LeftDataPanelSeparator', LeftChatPanel)
+	ldataseparator:SetFrameStrata('BACKGROUND')
+	ldataseparator:SetFrameLevel(lchat:GetFrameLevel() + 2)
+	ldataseparator:Size(E.db.chat.panelWidth - 10, 1)
+	ldataseparator:Point('BOTTOM', LeftChatPanel, 0, 24)
+	ldataseparator:SetTemplate('Transparent')
+
 	--Left Chat Toggle Button
 	local lchattb = CreateFrame('Button', 'LeftChatToggleButton', E.UIParent)
 	lchattb.parent = LeftChatPanel
 	LeftChatPanel.fadeFunc = ChatPanelLeft_OnFade
 	lchattb:Point('TOPRIGHT', lchatdp, 'TOPLEFT', -(E.PixelMode and -1 or 1), 0)
 	lchattb:Point('BOTTOMLEFT', lchat, 'BOTTOMLEFT', SPACING, SPACING)
-	lchattb:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
+	if not E.db.datatexts.panelTransparency then
+		lchattb:SetTemplate('Default', true)
+	end
 	lchattb:SetScript('OnEnter', ChatButton_OnEnter)
 	lchattb:SetScript('OnLeave', ChatButton_OnLeave)
 	lchattb:SetScript('OnClick', ChatButton_OnClick)
 	lchattb.text = lchattb:CreateFontString(nil, 'OVERLAY')
-	lchattb.text:FontTemplate()
+	lchattb.text:FontTemplate(LSM:Fetch("font", E.db.datatexts.font), E.db.datatexts.fontSize, E.db.datatexts.fontOutline)
 	lchattb.text:SetPoint('CENTER')
 	lchattb.text:SetJustifyH('CENTER')
-	lchattb.text:SetText('<')
+	lchattb.text:SetText('L')
+	lchattb.text:SetTextColor(unpack(E["media"].rgbvaluecolor))
 	
 	--Right Chat
 	local rchat = CreateFrame('Frame', 'RightChatPanel', E.UIParent)
@@ -291,12 +321,30 @@ function LO:CreateChatPanels()
 	rchattab:Point('BOTTOMLEFT', rchat, 'TOPLEFT', SPACING, -(SPACING + PANEL_HEIGHT))
 	rchattab:SetTemplate(E.db.chat.panelTabTransparency == true and 'Transparent' or 'Default', true)
 	
+	--Right Chat Tab Separator
+	local rtabseparator = CreateFrame('Frame', 'RightChatTabSeparator', RightChatPanel)
+	rtabseparator:SetFrameStrata('BACKGROUND')
+	rtabseparator:SetFrameLevel(rchat:GetFrameLevel() + 2)
+	rtabseparator:Size(E.db.chat.panelWidth - 10, 1)
+	rtabseparator:Point('TOP', RightChatPanel, 0, -24)
+	rtabseparator:SetTemplate('Transparent')
+	
 	--Right Chat Data Panel
 	local rchatdp = CreateFrame('Frame', 'RightChatDataPanel', RightChatPanel)
 	rchatdp:Point('BOTTOMLEFT', rchat, 'BOTTOMLEFT', SPACING, SPACING)
 	rchatdp:Point('TOPRIGHT', rchat, 'BOTTOMRIGHT', -(SPACING + SIDE_BUTTON_WIDTH), SPACING + PANEL_HEIGHT)
-	rchatdp:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
+	if not E.db.datatexts.panelTransparency then
+		rchatdp:SetTemplate('Default', true)
+	end
 	E:GetModule('DataTexts'):RegisterPanel(rchatdp, 3, 'ANCHOR_TOPRIGHT', 17, 4)
+	
+	--Right Chat Data Panel Separator
+	local rdataseparator = CreateFrame('Frame', 'RightDataPanelSeparator', RightChatPanel)
+	rdataseparator:SetFrameStrata('BACKGROUND')
+	rdataseparator:SetFrameLevel(rchat:GetFrameLevel() + 2)
+	rdataseparator:Size(E.db.chat.panelWidth - 10, 1)
+	rdataseparator:Point('BOTTOM', RightChatPanel, 0, 24)
+	rdataseparator:SetTemplate('Transparent')
 	
 	--Right Chat Toggle Button
 	local rchattb = CreateFrame('Button', 'RightChatToggleButton', E.UIParent)
@@ -304,16 +352,19 @@ function LO:CreateChatPanels()
 	RightChatPanel.fadeFunc = ChatPanelRight_OnFade
 	rchattb:Point('TOPLEFT', rchatdp, 'TOPRIGHT', (E.PixelMode and -1 or 1), 0)
 	rchattb:Point('BOTTOMRIGHT', rchat, 'BOTTOMRIGHT', -SPACING, SPACING)
-	rchattb:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
+	if not E.db.datatexts.panelTransparency then
+		rchattb:SetTemplate('Default', true)
+	end
 	rchattb:RegisterForClicks('AnyUp')
 	rchattb:SetScript('OnEnter', ChatButton_OnEnter)
 	rchattb:SetScript('OnLeave', ChatButton_OnLeave)
 	rchattb:SetScript('OnClick', ChatButton_OnClick)
 	rchattb.text = rchattb:CreateFontString(nil, 'OVERLAY')
-	rchattb.text:FontTemplate()
+	rchattb.text:FontTemplate(LSM:Fetch("font", E.db.datatexts.font), E.db.datatexts.fontSize, E.db.datatexts.fontOutline)
 	rchattb.text:SetPoint('CENTER')
 	rchattb.text:SetJustifyH('CENTER')
-	rchattb.text:SetText('>')
+	rchattb.text:SetText('R')
+	rchattb.text:SetTextColor(unpack(E["media"].rgbvaluecolor))
 	
 	--Load Settings
 	if E.db['LeftChatPanelFaded'] then
@@ -332,7 +383,7 @@ end
 function LO:CreateMinimapPanels()
 	local lminipanel = CreateFrame('Frame', 'LeftMiniPanel', Minimap)
 	lminipanel:Point('TOPLEFT', Minimap, 'BOTTOMLEFT', -E.Border, (E.PixelMode and 0 or -3))
-	lminipanel:Point('BOTTOMRIGHT', Minimap, 'BOTTOM', -E.Spacing, -((E.PixelMode and 0 or 3) + PANEL_HEIGHT))
+	lminipanel:Point('BOTTOMRIGHT', Minimap, 'BOTTOM', -(E.Spacing+30), -((E.PixelMode and 0 or 3) + PANEL_HEIGHT))
 	lminipanel:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
 	E:GetModule('DataTexts'):RegisterPanel(lminipanel, 1, 'ANCHOR_BOTTOMLEFT', lminipanel:GetWidth() * 2, -4)
 	
@@ -357,7 +408,7 @@ function LO:CreateMinimapPanels()
 	configtoggle:Width(E.ConsolidatedBuffsWidth)
 	configtoggle:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
 	configtoggle.text = configtoggle:CreateFontString(nil, 'OVERLAY')
-	configtoggle.text:FontTemplate()
+	configtoggle.text:FontTemplate(LSM:Fetch("font", E.db.datatexts.font), E.db.datatexts.fontSize, E.db.datatexts.fontOutline)
 	configtoggle.text:SetText('C')
 	configtoggle.text:SetPoint('CENTER')
 	configtoggle.text:SetJustifyH('CENTER')
@@ -383,4 +434,39 @@ function LO:CreateMinimapPanels()
 	end)
 end
 
+function LO:CreateExtraDataBarPanels()
+	local chattab1 = CreateFrame('Frame', 'ChatTab_Datatext_Panel', RightChatPanel)
+	chattab1:SetScript('OnShow', function(self)
+		chattab1:Point("TOPRIGHT", RightChatTab, "TOPRIGHT", 0, 0)
+		chattab1:Point("BOTTOMLEFT", RightChatTab, "BOTTOMLEFT", 0, 0)
+	end)
+	chattab1:Hide()
+	E:GetModule('DataTexts'):RegisterPanel(chattab1, 3, 'ANCHOR_TOPLEFT', -3, 4)
+	
+	local bottom_bar = CreateFrame('Frame', 'Bottom_Datatext_Panel', E.UIParent)
+	bottom_bar:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
+	bottom_bar:SetFrameStrata('BACKGROUND')
+	bottom_bar:SetScript('OnShow', function(self)
+		self:Point("TOPLEFT", ElvUI_Bar1, "BOTTOMLEFT", 0, -E.mult); 
+		self:Size(ElvUI_Bar1:GetWidth(), PANEL_HEIGHT); 
+		E:CreateMover(self, "BottomBarMover", "Bottom Datatext Frame") 
+	end)
+	E.FrameLocks['Bottom_Datatext_Panel'] = true
+	E:GetModule('DataTexts'):RegisterPanel(Bottom_Datatext_Panel, 3, 'ANCHOR_LEFT', -1, -22)
+	bottom_bar:Hide()
+end
+
+function ExtraDataBarSetup()
+	ChatTab_Datatext_Panel:Show()
+	if E.private.actionbar.enable then
+		Bottom_Datatext_Panel:Show()
+	end
+end
+
+function LO:PLAYER_ENTERING_WORLD(...)
+	ExtraDataBarSetup()
+	self:UnregisterEvent("PLAYER_ENTERING_WORLD");
+end
+
+LO:RegisterEvent('PLAYER_ENTERING_WORLD')
 E:RegisterModule(LO:GetName())

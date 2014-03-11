@@ -839,3 +839,9 @@ L["yOffset"] = true;
 L["You can't remove a pre-existing filter."] = true;
 L["You cannot copy settings from the same unit."] = true;
 L["You may not remove a spell from a default filter that is not customly added. Setting spell to false instead."] = true;
+
+--Personal Locale Strings
+L["Bottom_Datatext_Panel"] = "Bottom Datatext Panel"
+L["ChatTab_Datatext_Panel"] = "Right Chat Tab"
+L["Chat Bubble Color"] = "Chat Bubble Color"
+L["Backdrop color of chat bubbles"] = "Backdrop color of chat bubbles"

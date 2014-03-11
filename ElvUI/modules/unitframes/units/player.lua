@@ -63,7 +63,7 @@ function UF:Construct_PlayerFrame(frame)
 		
 	frame.CombatFade = true
 
-	frame:Point('BOTTOMLEFT', E.UIParent, 'BOTTOM', -413, 68) --Set to default position	
+	frame:Point('BOTTOMLEFT', E.UIParent, 'BOTTOM', -413, 68) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', L['Player Frame'], nil, nil, nil, 'ALL,SOLO')
 end
 
@@ -136,7 +136,7 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 		if USE_MINI_CLASSBAR then
 			mini_classbarY = -(SPACING+(CLASSBAR_HEIGHT))
 		end		
-		
+
 		if db.threatStyle == "GLOW" then
 			threat.glow:Point("TOPLEFT", -SHADOW_SPACING, SHADOW_SPACING+mini_classbarY)
 			threat.glow:Point("TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING+mini_classbarY)
@@ -153,8 +153,7 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 				threat.glow:Point("TOPRIGHT", SHADOW_SPACING-POWERBAR_OFFSET, SHADOW_SPACING+mini_classbarY)
 				threat.glow:Point("BOTTOMRIGHT", SHADOW_SPACING-POWERBAR_OFFSET, -SHADOW_SPACING)	
 			end				
-		end		
-
+		end
 		
 		if db.portrait.enable and not USE_PORTRAIT_OVERLAY and frame.Portrait then
 			local portrait = frame.Portrait
@@ -346,7 +345,7 @@ function UF:Update_PlayerFrame(frame, db)
 		health.Smooth = self.db.smoothbars
 
 		--Text
-		local x, y = self:GetPositionOffset(db.health.position)
+		local x, y = self:GetPositionOffset(db.health.position, 6)
 		health.value:ClearAllPoints()
 		health.value:Point(db.health.position, health, db.health.position, x + db.health.xOffset, y + db.health.yOffset)
 		frame:Tag(health.value, db.health.text_format)
@@ -437,7 +436,7 @@ function UF:Update_PlayerFrame(frame, db)
 			power.Smooth = self.db.smoothbars
 			
 			--Text
-			local x, y = self:GetPositionOffset(db.power.position)
+			local x, y = self:GetPositionOffset(db.power.position, 6)
 			power.value:ClearAllPoints()
 			power.value:Point(db.power.position, db.power.attachTextToPower and power or frame.Health, db.power.position, x + db.power.xOffset, y + db.power.yOffset)		
 			frame:Tag(power.value, db.power.text_format)
@@ -659,7 +658,7 @@ function UF:Update_PlayerFrame(frame, db)
 		local castbar = frame.Castbar
 		castbar:Width(db.castbar.width - (E.PixelMode and 2 or (BORDER * 2)))
 		castbar:Height(db.castbar.height)
-		castbar.Holder:Width(db.castbar.width + (E.PixelMode and 0 or (BORDER * 2)))
+		castbar.Holder:Width(db.castbar.width)
 		castbar.Holder:Height(db.castbar.height + (E.PixelMode and 2 or (BORDER * 2)))
 		castbar.Holder:GetScript('OnSizeChanged')(castbar.Holder)
 		

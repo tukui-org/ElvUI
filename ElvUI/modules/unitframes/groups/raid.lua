@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
-
+local LSM = LibStub("LibSharedMedia-3.0")
 local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
@@ -398,8 +398,8 @@ for i=10, 40, 15 do
 
 				rdebuffs:Size(db.rdebuffs.size)
 				rdebuffs:Point('BOTTOM', frame, 'BOTTOM', db.rdebuffs.xOffset, db.rdebuffs.yOffset)
-				rdebuffs.count:FontTemplate(nil, db.rdebuffs.fontSize, 'OUTLINE')
-				rdebuffs.time:FontTemplate(nil, db.rdebuffs.fontSize, 'OUTLINE')
+				rdebuffs.count:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), db.rdebuffs.fontSize, 'OUTLINE')
+				rdebuffs.time:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), db.rdebuffs.fontSize, 'OUTLINE')
 			else
 				frame:DisableElement('RaidDebuffs')
 				rdebuffs:Hide()				

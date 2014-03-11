@@ -88,6 +88,12 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 function DT:GetDataPanelPoint(panel, i, numPoints)
 	if numPoints == 1 then
 		return 'CENTER', panel, 'CENTER'
+	elseif numPoints == 2 then
+		if i == 1 then
+			return 'RIGHT', panel, 'RIGHT', -4, 0
+		elseif i == 2 then
+			return 'LEFT', panel, 'LEFT', 4, 0
+		end
 	else
 		if i == 1 then
 			return 'CENTER', panel, 'CENTER'

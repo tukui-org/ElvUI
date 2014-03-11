@@ -128,7 +128,7 @@ E.Options.args.auras = {
 					desc = L['Threshold before text changes red, goes into decimal form, and the icon will fade. Set to -1 to disable.'],
 					min = -1, max = 30, step = 1,
 					order = 1,
-				},	
+				},
 				font = {
 					type = "select", dialogControl = 'LSM30_Font',
 					order = 2,
@@ -179,7 +179,7 @@ E.Options.args.auras = {
 					min = -60, max = 60, step = 1,
 				},															
 			},
-		},	
+		},
 		consolidatedBuffs = {
 			order = 9,
 			type = 'group',

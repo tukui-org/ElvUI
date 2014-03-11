@@ -23,6 +23,7 @@ function AB:StyleShapeShift(event)
 	local buttonName, button, icon, cooldown;
 	local start, duration, enable;
 	local stance = GetShapeshiftForm();
+
 	for i = 1, NUM_STANCE_SLOTS do
 		buttonName = "ElvUI_StanceBarButton"..i;
 		button = _G[buttonName];
@@ -47,7 +48,7 @@ function AB:StyleShapeShift(event)
 			if isActive then
 				StanceBarFrame.lastSelected = button:GetID();
 				if numForms == 1 then
-					button.checked:SetTexture(1, 1, 1, 0.5) 
+					button.checked:SetTexture(1, 1, 1, 0.5)
 					button:SetChecked(1);
 				else
 					button:SetChecked(self.db.stanceBar.style ~= 'darkenInactive');
@@ -271,7 +272,7 @@ function AB:UpdateStanceBindings()
 end
 
 function AB:CreateBarShapeShift()
-	bar:CreateBackdrop('Default');
+	bar:CreateBackdrop('Transparent');
 	bar.backdrop:SetAllPoints();
 	bar:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -4);
 	bar.buttons = {};

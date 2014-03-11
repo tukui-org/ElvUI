@@ -6,7 +6,7 @@ local LSM = LibStub("LibSharedMedia-3.0");
 
 function UF:Construct_Buffs(frame)
 	local buffs = CreateFrame('Frame', nil, frame)
-	buffs.spacing = E.Spacing
+	buffs.spacing = 1
 	--buffs.PreSetPosition = (not frame:GetScript("OnUpdate")) and self.SortAuras or nil
 	buffs.PostCreateIcon = self.Construct_AuraIcon
 	buffs.PostUpdateIcon = self.PostUpdateAura
@@ -19,7 +19,7 @@ end
 
 function UF:Construct_Debuffs(frame)
 	local debuffs = CreateFrame('Frame', nil, frame)
-	debuffs.spacing = E.Spacing
+	debuffs.spacing = 1
 	--debuffs.PreSetPosition = (not frame:GetScript("OnUpdate")) and self.SortAuras or nil
 	debuffs.PostCreateIcon = self.Construct_AuraIcon
 	debuffs.PostUpdateIcon = self.PostUpdateAura
@@ -32,7 +32,7 @@ end
 
 function UF:Construct_AuraIcon(button)
 	button.text = button.cd:CreateFontString(nil, 'OVERLAY')
-	button.text:Point('CENTER', 1, 1)
+	button.text:Point('CENTER', -3, 3)
 	button.text:SetJustifyH('CENTER')
 	
 	button:SetTemplate('Default')
@@ -47,7 +47,7 @@ function UF:Construct_AuraIcon(button)
 	button.icon:SetDrawLayer('ARTWORK')
 	
 	button.count:ClearAllPoints()
-	button.count:Point('BOTTOMRIGHT', 1, 1)
+	button.count:Point('BOTTOMRIGHT', 2, 0)
 	button.count:SetJustifyH('RIGHT')
 
 	button.overlay:SetTexture(nil)
@@ -136,7 +136,7 @@ function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, durati
 	local isFriend = UnitIsFriend('player', unit) == 1 and true or false
 	if button.isDebuff then
 		if(not isFriend and button.owner ~= "player" and button.owner ~= "vehicle") --[[and (not E.isDebuffWhiteList[name])]] then
-			button:SetBackdropBorderColor(0.9, 0.1, 0.1)
+			button:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 			button.icon:SetDesaturated((unit and not unit:find('arena%d')) and true or false)
 		else
 			local color = DebuffTypeColor[dtype] or DebuffTypeColor.none
@@ -155,10 +155,12 @@ function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, durati
 		end	
 	end
 
+	--[[ I don't care, I want my space!
 	local size = button:GetParent().size
 	if size then
 		button:Size(size)
 	end
+	]]
 	
 	button.spell = name
 	button.isStealable = isStealable
@@ -311,6 +313,22 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 		local whiteList = E.global['unitframe']['aurafilters']['Whitelist'].spells[name]
 		if whiteList and whiteList.enable then
 			returnValue = true;
+			icon.priority = whiteList.priority
+		elseif not anotherFilterExists then
+			returnValue = false
+		end
+		
+		anotherFilterExists = true
+	end
+	
+	if UF:CheckFilter(db.useWhitelist, isFriend) then
+		local whiteList = E.global['unitframe']['aurafilters']['Whitelist (Strict)'].spells[name]
+		if whiteList and whiteList.enable then
+			if whiteList.spellID and whiteList.spellID == spellID then
+				returnValue = true;
+			else
+				returnValue = false;
+			end
 			icon.priority = whiteList.priority
 		elseif not anotherFilterExists then
 			returnValue = false

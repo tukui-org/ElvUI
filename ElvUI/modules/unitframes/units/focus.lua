@@ -293,7 +293,7 @@ function UF:Update_FocusFrame(frame, db)
 		local castbar = frame.Castbar
 		castbar:Width(db.castbar.width - (E.PixelMode and 2 or (BORDER * 2)))
 		castbar:Height(db.castbar.height)
-		castbar.Holder:Width(db.castbar.width + (E.PixelMode and 0 or (BORDER * 2)))
+		castbar.Holder:Width(db.castbar.width)
 		castbar.Holder:Height(db.castbar.height + (E.PixelMode and 2 or (BORDER * 2)))
 		castbar.Holder:GetScript('OnSizeChanged')(castbar.Holder)
 		
@@ -311,7 +311,6 @@ function UF:Update_FocusFrame(frame, db)
 			castbar.Icon = castbar.ButtonIcon
 			castbar.Icon.bg:Width(db.castbar.height + (E.Border * 2))
 			castbar.Icon.bg:Height(db.castbar.height + (E.Border * 2))
-			
 			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - (E.PixelMode and 1 or 5))
 			castbar.Icon.bg:Show()
 		else

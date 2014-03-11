@@ -595,7 +595,6 @@ function UF.headerPrototype:ClearChildPoints()
 	end
 end
 
-
 function UF.headerPrototype:Update()
 	local group = self.groupName
 	local db = UF.db['units'][group]

@@ -31,7 +31,7 @@ function UF:Construct_BossFrames(frame)
 	frame.AltPowerBar = self:Construct_AltPowerBar(frame)
 	frame.Range = UF:Construct_Range(frame)
 	frame:SetAttribute("type2", "focus")
-	
+
 	BossHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165) 
 	E:CreateMover(BossHeader, BossHeader:GetName()..'Mover', L['Boss Frames'], nil, nil, nil, 'ALL,PARTY,RAID10,RAID25,RAID40')
 end
@@ -365,7 +365,7 @@ function UF:Update_BossFrames(frame, db)
 	--Castbar
 	do
 		local castbar = frame.Castbar
-		castbar:Width(db.castbar.width - (E.PixelMode and BORDER or (BORDER * 2)))
+		castbar:Width(db.castbar.width - (BORDER * 2))
 		castbar:Height(db.castbar.height)
 		
 		--Icon
@@ -512,14 +512,30 @@ function UF:Update_BossFrames(frame, db)
 		end
 	else
 		if db.growthDirection == 'UP' then
-			frame:Point('BOTTOMRIGHT', _G['ElvUF_Boss'..INDEX-1], 'TOPRIGHT', 0, 12 + db.castbar.height)
+			frame:Point('BOTTOMRIGHT', _G['ElvUF_Boss'..INDEX-1], 'TOPRIGHT', 0, 65 + db.castbar.height)
 		else
-			frame:Point('TOPRIGHT', _G['ElvUF_Boss'..INDEX-1], 'BOTTOMRIGHT', 0, -(12 + db.castbar.height))
+			frame:Point('TOPRIGHT', _G['ElvUF_Boss'..INDEX-1], 'BOTTOMRIGHT', 0, -(65 + db.castbar.height))
 		end
 	end	
 
 	BossHeader:Width(UNIT_WIDTH)
-	BossHeader:Height(UNIT_HEIGHT + (UNIT_HEIGHT + 12 + db.castbar.height) * 3)
+	BossHeader:Height(UNIT_HEIGHT + (UNIT_HEIGHT + 65 + db.castbar.height) * 3)
+	
+	
+	if UF.db.colors.transparentHealth then
+		UF:ToggleTransparentStatusBar(true, frame.Health, frame.Health.bg)
+	else
+		UF:ToggleTransparentStatusBar(false, frame.Health, frame.Health.bg, (USE_PORTRAIT and USE_PORTRAIT_OVERLAY) ~= true)
+	end
+	
+	if UF.db.colors.transparentPower then
+		UF:ToggleTransparentStatusBar(true, frame.Power, frame.Power.bg)
+	else
+		UF:ToggleTransparentStatusBar(false, frame.Power, frame.Power.bg, true)
+	end			
+	
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg)
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)		
 	
 	
 	if UF.db.colors.transparentHealth then

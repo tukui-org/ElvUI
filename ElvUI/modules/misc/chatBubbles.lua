@@ -44,7 +44,7 @@ function M:SkinBubble(frame)
 		if not E.PixelMode then
 			frame.backdrop = frame:CreateTexture(nil, 'ARTWORK')
 			frame.backdrop:SetAllPoints(frame)
-			frame.backdrop:SetTexture(unpack(E.media.backdropfadecolor))
+			frame.backdrop:SetTexture(unpack(E.media.bubblefadecolor))
 			frame.backdrop:SetDrawLayer("ARTWORK", -8)
 
 			frame.bordertop = frame:CreateTexture(nil, "ARTWORK")
@@ -103,7 +103,7 @@ function M:SkinBubble(frame)
 			frame.borderright.backdrop:SetTexture(0, 0, 0)	
 			frame.borderright.backdrop:SetDrawLayer("ARTWORK", -7)
 		else
-			frame:SetBackdropColor(unpack(E.media.backdropfadecolor))
+			frame:SetBackdropColor(unpack(E.media.bubblefadecolor))
 			frame:SetBackdropBorderColor(r, g, b)
 		end
 
