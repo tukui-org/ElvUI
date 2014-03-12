@@ -9,7 +9,8 @@ To load the AddOn engine inside another addon add this to the top of your file:
 	
 	local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 ]]
---bullshit
+
+--moo
 BINDING_HEADER_ELVUI = GetAddOnMetadata(..., "Title");
 
 local AddOnName, Engine = ...;  
@@ -21,7 +22,7 @@ AddOn.Options = {
 	type = "group",
 	name = AddOnName,
 	args = {},
-};
+}
 
 local Locale = LibStub("AceLocale-3.0"):GetLocale(AddOnName, false);
 Engine[1] = AddOn;
