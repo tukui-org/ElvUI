@@ -318,7 +318,7 @@ E.Options.args.nameplate = {
 							hasAlpha = false,
 						},
 						noInterrupt = {
-							name = "No Interrupt",
+							name = L["No Interrupt"],
 							order = 2,
 							type = 'color',
 							hasAlpha = false,
