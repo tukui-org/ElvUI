@@ -604,6 +604,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 			--Galakras
 			
 			--Iron Juggernaut
+				[SpellName(144467)] = Defaults(), --Ignite Armor
 			
 			--Kor'kron Dark Shaman
 				[SpellName(144215)] = Defaults(), --Froststorm Strike
@@ -631,6 +632,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 				
 			--Garrosh Hellscream
 				[SpellName(145183)] = Defaults(), --Gripping Despair
+				[SpellName(145195)] = Defaults(), --Empowered Gripping Despair
 	},
 }
 
