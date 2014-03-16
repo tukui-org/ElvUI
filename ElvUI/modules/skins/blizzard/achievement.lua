@@ -135,6 +135,11 @@ local function LoadSkin()
 			_G["AchievementFrameSummaryAchievement"..i.."Highlight"]:Kill()
 			frame:StripTextures()
 			
+			if i ~= 1 then
+				frame:ClearAllPoints()
+				frame:SetPoint("TOPLEFT", _G["AchievementFrameSummaryAchievement"..i-1], "BOTTOMLEFT", 0, 1)
+				frame:SetPoint("TOPRIGHT", _G["AchievementFrameSummaryAchievement"..i-1], "BOTTOMRIGHT", 0, 1)
+			end
 			
 			_G["AchievementFrameSummaryAchievement"..i.."Description"]:SetTextColor(0.6, 0.6, 0.6)
 
