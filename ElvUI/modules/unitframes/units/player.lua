@@ -715,12 +715,11 @@ function UF:Update_PlayerFrame(frame, db)
 			local MAX_CLASS_BAR = UF.classMaxResourceBar[E.myclass]
 			if USE_MINI_CLASSBAR and not db.classbar.detachFromFrame then
 				bars:ClearAllPoints()
+				bars:Point("CENTER", frame.Health.backdrop, "TOP", 0, 0)
 				if E.myclass == 'DRUID' then
 					CLASSBAR_WIDTH = CLASSBAR_WIDTH * 2/3
-					bars:Point("LEFT", frame.Health.backdrop, "TOPLEFT", (BORDER*2 + 4), 0)
 				else
-					CLASSBAR_WIDTH = CLASSBAR_WIDTH * (MAX_CLASS_BAR - 1) / MAX_CLASS_BAR	
-					bars:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), 0)
+					CLASSBAR_WIDTH = CLASSBAR_WIDTH * (MAX_CLASS_BAR - 1) / MAX_CLASS_BAR
 				end
 				bars:SetFrameStrata("MEDIUM")
 
