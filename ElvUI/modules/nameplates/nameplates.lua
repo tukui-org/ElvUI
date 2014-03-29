@@ -404,6 +404,13 @@ function NP:ColorizeAndScale(myPlate)
 		color = NP.db.reactions.enemy
 	end
 
+	if (NP.db.healthBar.lowHPScale.enable and 
+		NP.db.healthBar.lowHPScale.changeColor and 
+		myPlate.lowHealth:IsShown() and 
+		(color == NP.db.reactions.enemy or color == NP.db.reactions.neutral)) then
+	   		color = NP.db.healthBar.lowHPScale.color
+	end
+
 	if(not self.customColor) then
 		myPlate.healthBar:SetStatusBarColor(color.r, color.g, color.b)
 
@@ -414,9 +421,24 @@ function NP:ColorizeAndScale(myPlate)
 		NP:ColorTargetIndicator(self.customColor.r, self.customColor.g, self.customColor.b)			
 	end
 	
-	if(not self.customScale and not self.isSmall and myPlate.healthBar:GetWidth() ~= (NP.db.healthBar.width * scale)) then
-		myPlate.healthBar:SetSize(NP.db.healthBar.width * scale, NP.db.healthBar.height * scale)
-		self.castBar.icon:SetSize(NP.db.castBar.height + (NP.db.healthBar.height * scale) + 5, NP.db.castBar.height + (NP.db.healthBar.height * scale) + 5)
+	local w = NP.db.healthBar.width * scale
+	local h = NP.db.healthBar.height * scale
+	if NP.db.healthBar.lowHPScale.enable then
+		if myPlate.lowHealth:IsShown() then
+			w = NP.db.healthBar.lowHPScale.width * scale
+			h = NP.db.healthBar.lowHPScale.height * scale
+			if NP.db.healthBar.lowHPScale.toFront then
+				myPlate:SetFrameStrata("HIGH")
+			end
+		else
+			if NP.db.healthBar.lowHPScale.toFront then
+				myPlate:SetFrameStrata("BACKGROUND")
+			end
+		end
+	end
+	if(not self.customScale and not self.isSmall and myPlate.healthBar:GetWidth() ~= w) then
+		myPlate.healthBar:SetSize(w, h)
+		self.castBar.icon:SetSize(NP.db.castBar.height + h + 5, NP.db.castBar.height + h + 5)
 	end
 end
 
