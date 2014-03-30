@@ -291,9 +291,9 @@ function UF:Update_FocusFrame(frame, db)
 	
 	do
 		local castbar = frame.Castbar
-		castbar:Width(db.castbar.width - (E.PixelMode and 2 or (BORDER * 2)))
+		castbar:Width(db.castbar.width - (BORDER * 2))
 		castbar:Height(db.castbar.height)
-		castbar.Holder:Width(db.castbar.width + (E.PixelMode and 0 or (BORDER * 2)))
+		castbar.Holder:Width(db.castbar.width)
 		castbar.Holder:Height(db.castbar.height + (E.PixelMode and 2 or (BORDER * 2)))
 		castbar.Holder:GetScript('OnSizeChanged')(castbar.Holder)
 		
