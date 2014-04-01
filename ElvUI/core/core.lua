@@ -422,7 +422,7 @@ function E:CheckIncompatible()
 end
 
 function E:IsFoolsDay()
-	if find(date(), '03/31/') and not E.global.aprilFools then
+	if find(date(), '04/01/') and not E.global.aprilFools then
 		return true;
 	else
 		return false;
@@ -1125,7 +1125,7 @@ function E:Initialize()
 		self:Install()
 	end
 	
-	if not find(date(), '03/31/') then	
+	if not find(date(), '04/01/') then	
 		E.global.aprilFools = nil;
 	end
 	
