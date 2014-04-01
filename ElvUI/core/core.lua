@@ -847,9 +847,9 @@ function E:GetTopCPUFunc(msg)
 	self:Print("Calculating CPU Usage..")
 end
 
-function E:CheckForFoolsDayFuckup()
+function E:CheckForFoolsDayFuckup(secondCheck)
 	local t = self.db.tempSettings
-	if(not t) then t = self.db.general end
+	if(not t and not secondCheck) then t = self.db.general end
 	if(t and t.backdropcolor)then
 		return self:Round(t.backdropcolor.r, 2) == 0.87 and self:Round(t.backdropcolor.g, 2) == 0.3 and self:Round(t.backdropcolor.b, 2) == 0.74
 	end
@@ -883,8 +883,13 @@ function E:AprilFoolsFuckupFix()
 	self.db.unitframe.colors.transparentAurabars = false
 	
 
+	if(HelloKittyLeft) then
+		HelloKittyLeft:Hide()
+		HelloKittyRight:Hide()
+		return
+	end	
+	
 	self.db.tempSettings = nil	
-	E.global.aprilFools = true
 	self:UpdateAll()
 end
 
@@ -972,6 +977,11 @@ function E:RestoreAprilFools()
 	end		
 	
 	if not(self.db.tempSettings) then return end
+	if(self:CheckForFoolsDayFuckup()) then
+		self:AprilFoolsFuckupFix()
+		self.db.tempSettings = nil
+		return
+	end
 	local c = self.db.tempSettings.backdropcolor
 	self.db.general.backdropcolor = {r = c.r, g = c.g, b = c.b}
 	
@@ -1007,6 +1017,7 @@ end
 function E:AprilFoolsToggle()
 	if(HelloKittyLeft and HelloKittyLeft:IsShown()) then
 		self:RestoreAprilFools()
+		self.global.aprilFools = true
 	else
 		self:StaticPopup_Show("APRIL_FOOLS")
 	end
@@ -1120,7 +1131,7 @@ function E:Initialize()
 	
 	if(self:CheckForFoolsDayFuckup()) then
 		E:AprilFoolsFuckupFix()
-	elseif E:IsFoolsDay() then
+	elseif E:IsFoolsDay() and not self.db.general.kittys then
 		E:StaticPopup_Show('APRIL_FOOLS')
 	end
 	
@@ -1142,7 +1153,11 @@ function E:Initialize()
 	
 	if self.db.general.kittys then
 		self:CreateKittys()
-		self:Delay(5, self.Print, self, L["Type /aprilfools to revert to old settings."])
+		if(self:IsFoolsDay() and self:CheckForFoolsDayFuckup()) then
+			self:AprilFoolsFuckupFix()
+		else
+			self:Delay(5, self.Print, self, L["Type /aprilfools to revert to old settings."])
+		end
 	end	
 	
 	self:Tutorials()
