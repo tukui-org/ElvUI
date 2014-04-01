@@ -422,7 +422,7 @@ function E:CheckIncompatible()
 end
 
 function E:IsFoolsDay()
-	if find(date(), '04/01/') and not E.global.aprilFools then
+	if find(date(), '03/31/') and not E.global.aprilFools then
 		return true;
 	else
 		return false;
@@ -847,65 +847,111 @@ function E:GetTopCPUFunc(msg)
 	self:Print("Calculating CPU Usage..")
 end
 
+function E:CheckForFoolsDayFuckup()
+	local t = self.db.tempSettings
+	if(not t) then t = self.db.general end
+	if(t and t.backdropcolor)then
+		return self:Round(t.backdropcolor.r, 2) == 0.87 and self:Round(t.backdropcolor.g, 2) == 0.3 and self:Round(t.backdropcolor.b, 2) == 0.74
+	end
+end
+
+function E:AprilFoolsFuckupFix()
+	local c = P.general.backdropcolor
+	self.db.general.backdropcolor = {r = c.r, g = c.g, b = c.b}
+	
+	c = P.general.backdropfadecolor
+	self.db.general.backdropfadecolor = {r = c.r, g = c.g, b = c.b}
+
+	c = P.general.bordercolor
+	self.db.general.bordercolor = {r = c.r, g = c.g, b = c.b}	
+	
+	c = P.general.valuecolor
+	self.db.general.valuecolor = {r = c.r, g = c.g, b = c.b}
+		
+	self.db.chat.panelBackdropNameLeft = ""
+	self.db.chat.panelBackdropNameRight = ""
+	
+	c = P.unitframe.colors.health
+	self.db.unitframe.colors.health = {r = c.r, g = c.g, b = c.b}	
+	
+	c = P.unitframe.colors.castColor
+	self.db.unitframe.colors.castColor = {r = c.r, g = c.g, b = c.b}
+	self.db.unitframe.colors.transparentCastbar = false
+	
+	c = P.unitframe.colors.castColor
+	self.db.unitframe.colors.auraBarBuff = {r = c.r, g = c.g, b = c.b}
+	self.db.unitframe.colors.transparentAurabars = false
+	
+
+	self.db.tempSettings = nil	
+	E.global.aprilFools = true
+	self:UpdateAll()
+end
+
 function E:SetupAprilFools2014()
 	if not self.db.tempSettings then
 		self.db.tempSettings = {}
 	end
 	
-	self.oldEnableAllSound = GetCVar("Sound_EnableAllSound")
-	self.oldEnableMusic = GetCVar("Sound_EnableMusic")
-	
+
 	--Store old settings
 	local t = self.db.tempSettings
 	local c = self.db.general.backdropcolor
-	t.backdropcolor = {r = c.r, g = c.g, b = c.b}
-	c = self.db.general.backdropfadecolor
-	t.backdropfadecolor = {r = c.r, g = c.g, b = c.b, a = c.a}
-	c = self.db.general.bordercolor
-	t.bordercolor = {r = c.r, g = c.g, b = c.b}	
-	c = self.db.general.valuecolor
-	t.valuecolor = {r = c.r, g = c.g, b = c.b}		
+	if(self:CheckForFoolsDayFuckup()) then
+		E:AprilFoolsFuckupFix()
+	else
+		self.oldEnableAllSound = GetCVar("Sound_EnableAllSound")
+		self.oldEnableMusic = GetCVar("Sound_EnableMusic")
 	
-	t.panelBackdropNameLeft = self.db.chat.panelBackdropNameLeft
-	t.panelBackdropNameRight = self.db.chat.panelBackdropNameRight
-	
-	c = self.db.unitframe.colors.health
-	t.health = {r = c.r, g = c.g, b = c.b}		
-	
-	c = self.db.unitframe.colors.castColor
-	t.castColor = {r = c.r, g = c.g, b = c.b}	
-	t.transparentCastbar = self.db.unitframe.colors.transparentCastbar
-	
-	c = self.db.unitframe.colors.auraBarBuff
-	t.auraBarBuff = {r = c.r, g = c.g, b = c.b}	
-	t.transparentAurabars = self.db.unitframe.colors.transparentAurabars	
-	
-	--Apply new settings
-	self.db.general.backdropfadecolor = {r =131/255, g =36/255, b = 130/255, a = 0.36}
-	self.db.general.backdropcolor = {r = 223/255, g = 76/255, b = 188/255}
-	self.db.general.bordercolor = {r = 223/255, g = 217/255, b = 47/255}
-	self.db.general.valuecolor = {r = 223/255, g = 217/255, b = 47/255}
-	
-	self.db.chat.panelBackdropNameLeft = [[Interface\AddOns\ElvUI\media\textures\helloKittyChat1.tga]]
-	self.db.chat.panelBackdropNameRight = [[Interface\AddOns\ElvUI\media\textures\helloKittyChat1.tga]]
-	
-	self.db.unitframe.colors.castColor = {r = 223/255, g = 76/255, b = 188/255}
-	self.db.unitframe.colors.transparentCastbar = true
-	
-	self.db.unitframe.colors.auraBarBuff = {r = 223/255, g = 76/255, b = 188/255}
-	self.db.unitframe.colors.transparentAurabars = true
-	
-	self.db.unitframe.colors.health = {r = 223/255, g = 76/255, b = 188/255}
-	
-	SetCVar("Sound_EnableAllSound", 1)
-	SetCVar("Sound_EnableMusic", 1)
-	PlayMusic([[Interface\AddOns\ElvUI\media\sounds\helloKitty.mp3]])		
-	self:ScheduleTimer('EndAprilFoolsDay2014', 59)
-	
-	self.db.general.kittys = true
-	self:CreateKittys()
-	
-	self:UpdateAll()
+		t.backdropcolor = {r = c.r, g = c.g, b = c.b}
+		c = self.db.general.backdropfadecolor
+		t.backdropfadecolor = {r = c.r, g = c.g, b = c.b, a = c.a}
+		c = self.db.general.bordercolor
+		t.bordercolor = {r = c.r, g = c.g, b = c.b}	
+		c = self.db.general.valuecolor
+		t.valuecolor = {r = c.r, g = c.g, b = c.b}		
+		
+		t.panelBackdropNameLeft = self.db.chat.panelBackdropNameLeft
+		t.panelBackdropNameRight = self.db.chat.panelBackdropNameRight
+		
+		c = self.db.unitframe.colors.health
+		t.health = {r = c.r, g = c.g, b = c.b}		
+		
+		c = self.db.unitframe.colors.castColor
+		t.castColor = {r = c.r, g = c.g, b = c.b}	
+		t.transparentCastbar = self.db.unitframe.colors.transparentCastbar
+		
+		c = self.db.unitframe.colors.auraBarBuff
+		t.auraBarBuff = {r = c.r, g = c.g, b = c.b}	
+		t.transparentAurabars = self.db.unitframe.colors.transparentAurabars	
+		
+		--Apply new settings
+		self.db.general.backdropfadecolor = {r =131/255, g =36/255, b = 130/255, a = 0.36}
+		self.db.general.backdropcolor = {r = 223/255, g = 76/255, b = 188/255}
+		self.db.general.bordercolor = {r = 223/255, g = 217/255, b = 47/255}
+		self.db.general.valuecolor = {r = 223/255, g = 217/255, b = 47/255}
+		
+		self.db.chat.panelBackdropNameLeft = [[Interface\AddOns\ElvUI\media\textures\helloKittyChat1.tga]]
+		self.db.chat.panelBackdropNameRight = [[Interface\AddOns\ElvUI\media\textures\helloKittyChat1.tga]]
+		
+		self.db.unitframe.colors.castColor = {r = 223/255, g = 76/255, b = 188/255}
+		self.db.unitframe.colors.transparentCastbar = true
+		
+		self.db.unitframe.colors.auraBarBuff = {r = 223/255, g = 76/255, b = 188/255}
+		self.db.unitframe.colors.transparentAurabars = true
+		
+		self.db.unitframe.colors.health = {r = 223/255, g = 76/255, b = 188/255}
+		
+		SetCVar("Sound_EnableAllSound", 1)
+		SetCVar("Sound_EnableMusic", 1)
+		PlayMusic([[Interface\AddOns\ElvUI\media\sounds\helloKitty.mp3]])		
+		self:ScheduleTimer('EndAprilFoolsDay2014', 59)
+		
+		self.db.general.kittys = true
+		self:CreateKittys()
+		
+		self:UpdateAll()
+	end
 end
 
 function E:EndAprilFoolsDay2014()
@@ -1068,11 +1114,13 @@ function E:Initialize()
 		self:Install()
 	end
 	
-	if not find(date(), '04/01/') then	
+	if not find(date(), '03/31/') then	
 		E.global.aprilFools = nil;
 	end
 	
-	if E:IsFoolsDay() then
+	if(self:CheckForFoolsDayFuckup()) then
+		E:AprilFoolsFuckupFix()
+	elseif E:IsFoolsDay() then
 		E:StaticPopup_Show('APRIL_FOOLS')
 	end
 	
