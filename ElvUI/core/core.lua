@@ -1153,11 +1153,7 @@ function E:Initialize()
 	
 	if self.db.general.kittys then
 		self:CreateKittys()
-		if(self:IsFoolsDay() and self:CheckForFoolsDayFuckup()) then
-			self:AprilFoolsFuckupFix()
-		else
-			self:Delay(5, self.Print, self, L["Type /aprilfools to revert to old settings."])
-		end
+		self:Delay(5, self.Print, self, L["Type /aprilfools to revert to old settings."])
 	end	
 	
 	self:Tutorials()
