@@ -239,7 +239,7 @@ function S:HandleDropDownBox(frame, width)
 	hooksecurefunc(button, "SetPoint", function(self, point, attachTo, anchorPoint, xOffset, yOffset, noReset)
 		if not noReset then
 			button:ClearAllPoints()
-			button:Point("RIGHT", frame, "RIGHT", -10, 3, true)		
+			button:SetPoint("RIGHT", frame, "RIGHT", -10, 3, true)		
 		end
 	end)
 	
