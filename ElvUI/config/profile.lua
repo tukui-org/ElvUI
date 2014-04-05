@@ -110,11 +110,18 @@ P["nameplate"] = {
 	['healthBar'] = {
 		['lowThreshold'] =  0.40,
 		['width'] = 108,
-		['height'] = 9,		
+		['height'] = 9,
+		['lowHPScale'] = {
+			['enable'] = false,
+			['width'] = 108,
+			['height'] = 9,
+			['changeColor'] = true,
+			['color'] = {r= 1, g = 0, b = 0},
+		},
 		['text'] = {
 			['enable'] = false,
 			['format'] = 'CURRENT',			
-		}		
+		}
 	},
 	['castBar'] = {
 		['height'] = 6,

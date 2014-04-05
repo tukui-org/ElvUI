@@ -250,8 +250,68 @@ E.Options.args.nameplate = {
 					isPercent = true,
 					min = 0, max = 1, step = 0.01,
 				},				
-				fontGroup = {
+				lowHPScale = {
+					type = "group",
 					order = 4,
+					name = L["Scale if Low Health"],
+					guiInline = true,
+					get = function(info) return E.db.nameplate.healthBar.lowHPScale[ info[#info] ] end,
+					set = function(info, value) E.db.nameplate.healthBar.lowHPScale[ info[#info] ] = value; NP:UpdateAllPlates() end,			
+					args = {
+						enable = {
+							type = "toggle",
+							name = L["Enable"],
+							order = 1,
+							desc = L["Adjust nameplate size on low health"],
+						},
+						width = {
+							type = "range",
+							order = 2,
+							name = L["Low HP Width"],
+							desc = L["Controls the width of the nameplate on low health"],
+							type = "range",
+							min = 50, max = 125, step = 1,		
+						},	
+						height = {
+							type = "range",
+							order = 3,
+							name = L["Low HP Height"],
+							desc = L["Controls the height of the nameplate on low health"],
+							type = "range",
+							min = 4, max = 30, step = 1,					
+						},
+						toFront = {
+							type = "toggle",
+							order = 4,
+							name = L["Bring to front on low health"],
+							desc = L["Bring nameplate to front on low health"],
+						},
+						changeColor = {
+							type = "toggle",
+							order = 5,
+							name = L["Change color on low health"],
+							desc = L["Change color on low health"],
+						},
+						color = {
+							get = function(info)
+								local t = E.db.nameplate.healthBar.lowHPScale.color
+								return t.r, t.g, t.b, t.a
+							end,
+							set = function(info, r, g, b)
+								E.db.nameplate.healthBar.lowHPScale.color = {}
+								local t = E.db.nameplate.healthBar.lowHPScale.color
+								t.r, t.g, t.b = r, g, b
+								NP:UpdateAllPlates()
+							end,				
+							name = L["Color on low health"],
+							order = 6,
+							type = 'color',
+							hasAlpha = false,
+						},
+					},
+				},
+				fontGroup = {
+					order = 5,
 					type = "group",
 					name = L["Fonts"],
 					guiInline = true,
