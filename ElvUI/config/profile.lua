@@ -115,6 +115,7 @@ P["nameplate"] = {
 			['enable'] = false,
 			['width'] = 108,
 			['height'] = 9,
+			['toFront'] = true,
 			['changeColor'] = true,
 			['color'] = {r= 1, g = 0, b = 0},
 		},
