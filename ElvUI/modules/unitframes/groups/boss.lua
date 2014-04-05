@@ -365,7 +365,7 @@ function UF:Update_BossFrames(frame, db)
 	--Castbar
 	do
 		local castbar = frame.Castbar
-		castbar:Width(db.castbar.width - (E.PixelMode and BORDER or (BORDER * 2)))
+		castbar:Width(db.castbar.width - (BORDER * 2))
 		castbar:Height(db.castbar.height)
 		
 		--Icon
