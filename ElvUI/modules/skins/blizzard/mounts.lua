@@ -72,6 +72,8 @@ local function LoadSkin()
 	S:HandleEditBox(PetJournalSearchBox)
 	PetJournalFilterButton:StripTextures(true)
 	S:HandleButton(PetJournalFilterButton)
+	PetJournalFilterButton:ClearAllPoints()
+	PetJournalFilterButton:SetPoint("TOPRIGHT", PetJournalLeftInset, "TOPRIGHT", -5, -8)
 	PetJournalListScrollFrame:StripTextures()
 	S:HandleScrollBar(PetJournalListScrollFrameScrollBar)
 	
