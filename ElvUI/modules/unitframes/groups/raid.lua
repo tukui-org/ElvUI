@@ -442,6 +442,7 @@ for i=10, 40, 15 do
 				local x, y = self:GetPositionOffset(db.roleIcon.position, 1)
 				role:ClearAllPoints()
 				role:Point(db.roleIcon.position, frame.Health, db.roleIcon.position, x, y)
+				role:Size(db.roleIcon.size)
 			else
 				frame:DisableElement('LFDRole')	
 				role:Hide()

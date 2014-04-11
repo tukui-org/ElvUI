@@ -3370,7 +3370,13 @@ E.Options.args.unitframe.args.party = {
 					order = 2,
 					name = L['Position'],
 					values = positionValues,
-				},							
+				},				
+				size = {
+					type = 'range',
+					order = 3,
+					name = L['Size'],
+					min = 4, max = 100, step = 1,
+				},
 			},
 		},
 		raidRoleIcons = {
@@ -3807,7 +3813,13 @@ for i=10, 40, 15 do
 						order = 2,
 						name = L['Position'],
 						values = positionValues,
-					},							
+					},		
+					size = {
+						type = 'range',
+						order = 3,
+						name = L['Size'],
+						min = 4, max = 100, step = 1,
+					},					
 				},
 			},	
 			raidRoleIcons = {

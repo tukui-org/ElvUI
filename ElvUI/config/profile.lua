@@ -1372,6 +1372,7 @@ P['unitframe'] = {
 			['roleIcon'] = {
 				['enable'] = true,
 				['position'] = 'CENTER',
+				['size'] = 15,
 			},		
 			['raidRoleIcons'] = {
 				['enable'] = true,
@@ -1505,6 +1506,7 @@ P['unitframe'] = {
 			['roleIcon'] = {
 				['enable'] = true,
 				['position'] = 'BOTTOMRIGHT',
+				['size'] = 15,
 			},		
 			['raidRoleIcons'] = {
 				['enable'] = true,
@@ -1620,6 +1622,7 @@ P['unitframe'] = {
 			['roleIcon'] = {
 				['enable'] = true,
 				['position'] = 'BOTTOMRIGHT',
+				['size'] = 15,
 			},				
 			['raidRoleIcons'] = {
 				['enable'] = true,
@@ -1731,6 +1734,7 @@ P['unitframe'] = {
 			['roleIcon'] = {
 				['enable'] = false,
 				['position'] = 'BOTTOMRIGHT',
+				['size'] = 15,
 			},		
 			['raidRoleIcons'] = {
 				['enable'] = true,
