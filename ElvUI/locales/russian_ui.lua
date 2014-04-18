@@ -68,6 +68,7 @@ L['yells'] = "кричит"
 --DataTexts
 L['(Hold Shift) Memory Usage'] = "(Зажать Shift) Использование памяти"
 L['AP'] = "Сила Ат."
+L['App'] = true;
 L["Arena"] = "Арена"
 L['AVD: '] = "Защита: "
 L["Avoidance Breakdown"] = "Распределение защиты"

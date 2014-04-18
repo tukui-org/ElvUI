@@ -68,6 +68,7 @@ L['yells'] = 'schreien'
 --DataTexts
 L['(Hold Shift) Memory Usage'] = "(Shift gedrückt) Speichernutzung"
 L['AP'] = "AP"
+L['App'] = true;
 L["Arena"] = 'Arena';
 L['AVD: '] = "AVD: "
 L["Avoidance Breakdown"] = "Vermeidung Aufgliederung"

@@ -68,6 +68,7 @@ L["yells"] = true
 --DataTexts
 L["(Hold Shift) Memory Usage"] = "(Shift 고정시) 메모리 사용량"
 L["AP"] = "전투력"
+L['App'] = true;
 L["Arena"] = true;
 L["AVD: "] = "완방: "
 L["Avoidance Breakdown"] = "방어합 수치"

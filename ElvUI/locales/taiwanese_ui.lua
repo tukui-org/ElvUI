@@ -68,6 +68,7 @@ L['yells'] = "大喊"
 --DataTexts
 L['(Hold Shift) Memory Usage'] = "(按住Shift) 記憶體使用量"
 L['AP'] = "攻擊強度"
+L['App'] = true;
 L["Arena"] = true;
 L['AVD: '] = "免傷: "
 L["Avoidance Breakdown"] = "免傷統計"

@@ -68,6 +68,7 @@ L['yells'] = true;
 --DataTexts
 L['(Hold Shift) Memory Usage'] = true;
 L['AP'] = true;
+L['App'] = true;
 L["Arena"] = true;
 L['AVD: '] = true;
 L["Avoidance Breakdown"] = true;
