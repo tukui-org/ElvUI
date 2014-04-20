@@ -225,6 +225,7 @@ L["You may need to further alter these settings depending how low you resolution
 L["Your current resolution is %s, this is considered a %s resolution."] = "Ваше текущее разрешение - %s, это считается %s разрешением."
 
 --Misc
+L['Average Group iLvl:'] = true;
 L['Bars'] = "Полосы" --Also used in UnitFrames
 L['Calendar'] = "Календарь"
 L["Can't Roll"] = "Не могу бросить кости"
@@ -235,6 +236,7 @@ L['Experience'] = "Опыт"
 L["Farm Mode"] = "Режим фарма" -- Minimap middle click menu
 L['Fishy Loot'] = "Улов"
 L["iLvl"] = true --Column header in raidbrowser
+L['Important Group Members:'] = true;
 L['Left Click:'] = "ЛКМ:" --layout\layout.lua
 L["Raid Browser"] = "Поиск рейдов" -- Minimap middle click menu
 L['Raid Menu'] = "Рейдовое меню"

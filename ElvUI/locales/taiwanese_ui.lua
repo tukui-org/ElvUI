@@ -225,6 +225,7 @@ L["You may need to further alter these settings depending how low you resolution
 L["Your current resolution is %s, this is considered a %s resolution."] = "你當前的解析度是%s, 這被認為是個%s 解析度."
 
 --Misc
+L['Average Group iLvl:'] = true;
 L['Bars'] = "條" --Also used in UnitFrames
 L['Calendar'] = "日曆"
 L["Can't Roll"] = "無法需求此裝備"
@@ -235,6 +236,7 @@ L['Experience'] = "經驗/聲望條"
 L["Farm Mode"] = true; -- Minimap middle click menu
 L['Fishy Loot'] = "貪婪"
 L["iLvl"] = true; --Column header in raidbrowser
+L['Important Group Members:'] = true;
 L['Left Click:'] = "滑鼠左鍵：" --layout\layout.lua
 L["Raid Browser"] = true; -- Minimap middle click menu
 L['Raid Menu'] = "團隊選單"

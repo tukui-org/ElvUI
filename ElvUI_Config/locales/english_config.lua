@@ -820,6 +820,7 @@ L['The initial group will start near the center and grow out.'] = true;
 L['The name you have selected is already in use by another element.'] = true;
 L['The object you want to attach to.'] = true;
 L['The point of which you are anchoring to in relation to the attach to object.'] = true;
+L['This filter is meant to be used when you only want to whitelist specific spellIDs which share names with unwanted spells.'] = true;
 L['This filter is used for both aura bars and aura icons no matter what. Its purpose is to block out specific spellids from being shown. For example a paladin can have two sacred shield buffs at once, we block out the short one.'] = true;
 L['Threat Display Mode'] = true;
 L["Ticks"] = true;

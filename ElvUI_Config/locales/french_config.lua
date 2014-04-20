@@ -831,6 +831,7 @@ L['The initial group will start near the center and grow out.'] = "Le premier gr
 L['The name you have selected is already in use by another element.'] = "Le nom que vous avez sélectionné est déjà utilisé par un autre élément."
 L['The object you want to attach to.'] = "L'objet que vous souhaitez attacher à."
 L['The point of which you are anchoring to in relation to the attach to object.'] = "Le point d'ancrage en relation avec l'attache de cet objet."
+L['This filter is meant to be used when you only want to whitelist specific spellIDs which share names with unwanted spells.'] = true;
 L['This filter is used for both aura bars and aura icons no matter what. Its purpose is to block out specific spellids from being shown. For example a paladin can have two sacred shield buffs at once, we block out the short one.'] = "Ce filtre est utilisé pour les deux barres d'auras: icônes et aura, quoi qu'il arrive. Son but est de bloquer les spellids spécifiques . Par exemple, un paladin peut avoir deux buffs bouclier sacré à la fois, nous bloquerons sur le  plus court."
 L['Threat Display Mode'] = "Affichage du Mode de Menace."
 L["Ticks"] = "Ticks"

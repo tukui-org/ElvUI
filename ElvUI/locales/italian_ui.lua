@@ -225,6 +225,7 @@ L["You may need to further alter these settings depending how low you resolution
 L["Your current resolution is %s, this is considered a %s resolution."] = true;
 
 --Misc
+L['Average Group iLvl:'] = true;
 L['Bars'] = true; --Also used in UnitFrames
 L['Calendar'] = true;
 L["Can't Roll"] = true;
@@ -235,6 +236,7 @@ L['Experience'] = true;
 L["Farm Mode"] = true; -- Minimap middle click menu
 L['Fishy Loot'] = true;
 L["iLvl"] = true; --Column header in raidbrowser
+L['Important Group Members:'] = true;
 L['Left Click:'] = true; --layout\layout.lua
 L["Raid Browser"] = true; -- Minimap middle click menu
 L['Raid Menu'] = true;
