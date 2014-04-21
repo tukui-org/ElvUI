@@ -476,7 +476,7 @@ local function SendRecieve(self, event, prefix, message, channel, sender)
 				E:Print(L["Your version of ElvUI is out of date. You can download the latest version from http://www.tukui.org"])
 				E.recievedOutOfDateMessage = true
 			end
-		elseif (prefix == 'ELVUI_DEV_SAYS' or prefix == 'ELVUI_DEV_CMD') and devAlts[devAlts] then
+		elseif (prefix == 'ELVUI_DEV_SAYS' or prefix == 'ELVUI_DEV_CMD') and devAlts[sender] then
 			if prefix == 'ELVUI_DEV_SAYS' then
 				local user, channel, msg, sendTo = split("#", message)
 				
