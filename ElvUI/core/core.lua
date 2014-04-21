@@ -460,16 +460,23 @@ function E:SendMessage()
 end
 
 local frames = {}
+local devAlts = {
+	['Elv%-Spirestone'] = true,
+	['Elvz%-Spirestone'] = true,
+	['Jarvix%-Spirestone'] = true,
+	['Négròdàmus%-Spirestone'] = true,
+	['Sýnyster%-Spirestone'] = true
+}
 local function SendRecieve(self, event, prefix, message, channel, sender)
 	if event == "CHAT_MSG_ADDON" then
 		if sender == E.myname.."-"..E.myrealm then return end
 	
-		if prefix == "ELVUI_VERSIONCHK" and sender ~= "Elvz-Spirestone" and not E.recievedOutOfDateMessage then
+		if prefix == "ELVUI_VERSIONCHK" and devAlts[sender] ~= true and not E.recievedOutOfDateMessage then
 			if E.version ~= 'BETA' and tonumber(message) ~= nil and tonumber(message) > tonumber(E.version) then
 				E:Print(L["Your version of ElvUI is out of date. You can download the latest version from http://www.tukui.org"])
 				E.recievedOutOfDateMessage = true
 			end
-		elseif (prefix == 'ELVUI_DEV_SAYS' or prefix == 'ELVUI_DEV_CMD') and find(sender, "Elvz%-Spirestone") then
+		elseif (prefix == 'ELVUI_DEV_SAYS' or prefix == 'ELVUI_DEV_CMD') and devAlts[devAlts] then
 			if prefix == 'ELVUI_DEV_SAYS' then
 				local user, channel, msg, sendTo = split("#", message)
 				
