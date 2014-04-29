@@ -146,6 +146,7 @@ local specialChatIcons = {
 	},
 	["Proudmoore"] = {
 		["Suisen"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\helloKittyChatLogo.tga:18:20|t",
+		["Sarah"] =  "|TInterface\\AddOns\\ElvUI\\media\\textures\\helloKittyChatLogo.tga:18:20|t",
 	},
 }
 
