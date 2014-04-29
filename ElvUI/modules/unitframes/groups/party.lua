@@ -43,6 +43,9 @@ function UF:Construct_PartyFrames(unitGroup)
 		self.ReadyCheck = UF:Construct_ReadyCheckIcon(self)
 		self.HealPrediction = UF:Construct_HealComm(self)
 		self.GPS = UF:Construct_GPS(self)
+		
+		self.Sparkle = CreateFrame("Frame", nil, self)
+		self.Sparkle:SetAllPoints(self.Health)
 	end
 	
 	self.Range = UF:Construct_Range(self)

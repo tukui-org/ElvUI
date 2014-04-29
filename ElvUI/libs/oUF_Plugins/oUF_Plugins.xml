@@ -10,4 +10,5 @@
 	<Script file="oUF_ArcaneCharge\oUF_ArcaneCharge.lua"/>
 	<Script file='oUF_PVPSpecIcons\oUF_PVPSpecIcons.lua'/>
 	<Script file='oUF_GPS\oUF_GPS.lua'/>
+	<Script file='oUF_Sparkles\oUF_Sparkles.lua'/>
 </Ui>
