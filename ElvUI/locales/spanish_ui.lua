@@ -68,6 +68,7 @@ L["yells"] = "grita"
 --DataTexts
 L["(Hold Shift) Memory Usage"] = "(Mantén Shift) Uso de Memoria"
 L["AP"] = "PA"
+L['App'] = true;
 L["Arena"] = true;
 L["AVD: "] = "EVA: "
 L["Avoidance Breakdown"] = "Desglose de Evasión"
@@ -224,6 +225,7 @@ L["You may need to further alter these settings depending how low you resolution
 L["Your current resolution is %s, this is considered a %s resolution."] = "Tu resolución actual es %s, esto se considera una resolución %s."
 
 --Misc
+L['Average Group iLvl:'] = true;
 L["Bars"] = "Barras"
 L["Calendar"] = "Calendario"
 L["Can't Roll"] = "No puede tirar dados"
@@ -234,6 +236,7 @@ L["Experience"] = "Experiencia"
 L["Farm Mode"] = true; -- Minimap middle click menu
 L["Fishy Loot"] = "Botín Sospechoso"
 L["iLvl"] = true; --Column header in raidbrowser
+L['Important Group Members:'] = true;
 L["Left Click:"] = "Click Izquierdo"
 L["Raid Browser"] = true; -- Minimap middle click menu
 L["Raid Menu"] = "Menú de Banda"

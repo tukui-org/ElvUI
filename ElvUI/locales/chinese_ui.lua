@@ -68,6 +68,7 @@ L['yells'] = "大喊"
 --DataTexts
 L['(Hold Shift) Memory Usage'] = "(按住Shift) 内存占用"
 L['AP'] = "攻击强度"
+L['App'] = true;
 L["Arena"] = true;
 L['AVD: '] = "免伤: "
 L["Avoidance Breakdown"] = "免伤统计"
@@ -224,6 +225,7 @@ L["You may need to further alter these settings depending how low you resolution
 L["Your current resolution is %s, this is considered a %s resolution."] = "你当前的分辨率是 %s, 这被认为是个 %s 分辨率。"
 
 --Misc
+L['Average Group iLvl:'] = true;
 L['Bars'] = "条"
 L['Calendar'] = "日历"
 L["Can't Roll"] = "无法需求此装备"
@@ -234,6 +236,7 @@ L['Experience'] = "经验/声望条"
 L["Farm Mode"] = true; -- Minimap middle click menu
 L['Fishy Loot'] = "贪婪"
 L["iLvl"] = true; --Column header in raidbrowser
+L['Important Group Members:'] = true;
 L['Left Click:'] = "鼠标左键："
 L["Raid Browser"] = true; -- Minimap middle click menu
 L['Raid Menu'] = "团队选单"

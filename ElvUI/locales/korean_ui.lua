@@ -68,6 +68,7 @@ L["yells"] = true
 --DataTexts
 L["(Hold Shift) Memory Usage"] = "(Shift 고정시) 메모리 사용량"
 L["AP"] = "전투력"
+L['App'] = true;
 L["Arena"] = true;
 L["AVD: "] = "완방: "
 L["Avoidance Breakdown"] = "방어합 수치"
@@ -224,6 +225,7 @@ L["You may need to further alter these settings depending how low you resolution
 L["Your current resolution is %s, this is considered a %s resolution."] = "당신의 현재 해상도는 %s 이며, 이것은 %s 해상도로 간주됩니다."
 
 --Misc
+L['Average Group iLvl:'] = true;
 L["Bars"] = true
 L["Calendar"] = true
 L["Can't Roll"] = "주사위를 굴릴 수 없습니다."
@@ -234,6 +236,7 @@ L["Experience"] = "현재 경험치"
 L["Farm Mode"] = true; -- Minimap middle click menu
 L["Fishy Loot"] = "낚시 전리품"
 L["iLvl"] = true; --Column header in raidbrowser
+L['Important Group Members:'] = true;
 L["Left Click:"] = "왼쪽 클릭 :"
 L["Raid Browser"] = true; -- Minimap middle click menu
 L["Raid Menu"] = "공격대 메뉴"

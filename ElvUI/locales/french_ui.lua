@@ -68,6 +68,7 @@ L['yells'] = "crie"
 --DataTexts
 L['(Hold Shift) Memory Usage'] = "(Maintenir MAJ) Utilisation de la Mémoire."
 L['AP'] = "PA"
+L['App'] = true;
 L["Arena"] = true;
 L['AVD: '] = "AVD: "
 L["Avoidance Breakdown"] = "Répartition de l'évitement"
@@ -224,6 +225,7 @@ L["You may need to further alter these settings depending how low you resolution
 L["Your current resolution is %s, this is considered a %s resolution."] = "Votre résolution actuelle est %s, elle est donc considérée comme une %s Résolution."
 
 --Misc
+L['Average Group iLvl:'] = true;
 L['Bars'] = "Barres" --Also used in UnitFrames
 L['Calendar'] = 'Calendrier'
 L["Can't Roll"] = "Ne peut pas jeter les dés"
@@ -234,6 +236,7 @@ L['Experience'] = "Expérience"
 L["Farm Mode"] = true; -- Minimap middle click menu
 L['Fishy Loot'] = "Butin de pêche"
 L["iLvl"] = true; --Column header in raidbrowser
+L['Important Group Members:'] = true;
 L['Left Click:'] = "Clic Gauche:" --layout\layout.lua
 L["Raid Browser"] = true; -- Minimap middle click menu
 L['Raid Menu'] = "Menu Raid"
