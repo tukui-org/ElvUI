@@ -87,6 +87,7 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 	local returnValue = true
 	local passPlayerOnlyCheck = true
 	local anotherFilterExists = false
+	local playerOnlyFilter = false
 	local isPlayer = unitCaster == 'player' or unitCaster == 'vehicle'
 	local isFriend = UnitIsFriend('player', unit) == 1 and true or false
 	local auraType = isFriend and db.friendlyAuraType or db.enemyAuraType
@@ -99,7 +100,7 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 		end
 		
 		passPlayerOnlyCheck = returnValue
-		anotherFilterExists = true
+		playerOnlyFilter = true
 	end
 	
 	if UF:CheckFilter(db.onlyDispellable, isFriend) then
@@ -146,7 +147,7 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 		local whiteList = E.global['unitframe']['aurafilters']['Whitelist'].spells[name]
 		if whiteList and whiteList.enable then
 			returnValue = true;
-		elseif not anotherFilterExists then
+		elseif not anotherFilterExists and not playerOnlyFilter then
 			returnValue = false
 		end
 		
@@ -161,7 +162,7 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 			else
 				returnValue = false
 			end
-		elseif not anotherFilterExists then
+		elseif not anotherFilterExists and not playerOnlyFilter then
 			returnValue = false
 		end
 	end

@@ -241,6 +241,7 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 	local returnValue = true
 	local passPlayerOnlyCheck = true
 	local anotherFilterExists = false
+	local playerOnlyFilter = false
 	local isPlayer = unitCaster == 'player' or unitCaster == 'vehicle'
 	local isFriend = UnitIsFriend('player', unit) == 1 and true or false
 	local auraType = isFriend and db.friendlyAuraType or db.enemyAuraType
@@ -263,7 +264,7 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 		end
 		
 		passPlayerOnlyCheck = returnValue
-		anotherFilterExists = true
+		playerOnlyFilter = true
 	end
 	
 	if UF:CheckFilter(db.onlyDispellable, isFriend) then
@@ -312,7 +313,7 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 		if whiteList and whiteList.enable then
 			returnValue = true;
 			icon.priority = whiteList.priority
-		elseif not anotherFilterExists then
+		elseif not anotherFilterExists and not playerOnlyFilter then
 			returnValue = false
 		end
 		
@@ -328,7 +329,7 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 				returnValue = false;
 			end
 			icon.priority = whiteList.priority
-		elseif not anotherFilterExists then
+		elseif not anotherFilterExists and not playerOnlyFilter then
 			returnValue = false
 		end
 	end
