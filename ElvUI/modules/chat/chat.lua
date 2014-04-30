@@ -1028,6 +1028,11 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 
 				pflag = pflag or ""
 			end
+			
+			if E.myname == "Sarah" then
+				arg1 = "Chocolate Rain, ".. arg1 .." Chocolate Rain!"
+			end
+			
 			if ( type == "WHISPER_INFORM" and GMChatFrame_IsGM and GMChatFrame_IsGM(arg2) ) then
 				return;
 			end
