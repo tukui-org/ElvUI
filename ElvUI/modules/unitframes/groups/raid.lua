@@ -551,7 +551,7 @@ for i=10, 40, 15 do
 				frame:Tag(frame[objectName], objectDB.text_format or '')
 				frame[objectName]:SetJustifyH(objectDB.justifyH or 'CENTER')
 				frame[objectName]:ClearAllPoints()
-				frame[objectName]:SetPoint(objectDB.justifyH or 'CENTER', frame, 'CENTER', objectDB.xOffset, objectDB.yOffset)
+				frame[objectName]:SetPoint(objectDB.justifyH or 'CENTER', frame, objectDB.justifyH 'CENTER', objectDB.xOffset, objectDB.yOffset)
 			end
 		end		
 
