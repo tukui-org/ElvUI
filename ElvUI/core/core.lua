@@ -473,7 +473,8 @@ local function SendRecieve(self, event, prefix, message, channel, sender)
 
 		if prefix == "ELVUI_VERSIONCHK" and devAlts[sender] ~= true and not E.recievedOutOfDateMessage then
 			if E.version ~= 'BETA' and tonumber(message) ~= nil and tonumber(message) > tonumber(E.version) then
-				E:Print(L["Your version of ElvUI is out of date. You can download the latest version from http://www.tukui.org"])
+				E:Print(L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"])
+				E:StaticPopup_Show("ELVUI_UPDATE_AVAILABLE")
 				E.recievedOutOfDateMessage = true
 			end
 		elseif (prefix == 'ELVUI_DEV_SAYS' or prefix == 'ELVUI_DEV_CMD') and devAlts[sender] then

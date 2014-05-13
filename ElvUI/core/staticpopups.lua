@@ -5,6 +5,34 @@ local lower = string.lower
 E.PopupDialogs = {};
 E.StaticPopup_DisplayedFrames = {};
 
+E.PopupDialogs['ELVUI_UPDATE_AVAILABLE'] = {
+	text = L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"],
+	hasEditBox = 1,
+	OnShow = function(self)
+		self.editBox.width = self.editBox:GetWidth()
+		self.editBox:SetWidth(220)
+		self.editBox:SetText("http://www.tukui.org/dl.php")
+		self.editBox:HighlightText()
+		self.editBox:ClearFocus()
+	end,	
+	OnHide = function(self)
+		self.editBox:SetWidth(self.editBox.width or 50)
+		self.editBox.width = nil
+	end,
+	hideOnEscape = 1,
+	button1 = OKAY,
+	OnAccept = E.noop,
+	EditBoxOnEnterPressed = function(self)
+		ChatEdit_FocusActiveWindow();
+		self:GetParent():Hide();
+	end,	
+	EditBoxOnEscapePressed = function(self)
+		ChatEdit_FocusActiveWindow();
+		self:GetParent():Hide();
+	end,	
+	showAlert = 1,
+}
+
 E.PopupDialogs['CLIENT_UPDATE_REQUEST'] = {
 	text = L["Detected that your ElvUI Config addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI Config addon up to date will result in missing options."],
 	button1 = OKAY,
