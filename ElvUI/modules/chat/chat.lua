@@ -145,6 +145,8 @@ local specialChatIcons = {
 		["Affinity"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\Bathrobe_Chat_Logo.blp:15:15|t"
 	},
 	["Proudmoore"] = {
+		["Elv"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\ElvUI_Chat_Logo:13:22|t",
+		["Waffles"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\helloKittyChatLogo.tga:18:20|t",
 		["Suisen"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\helloKittyChatLogo.tga:18:20|t",
 		["Sarah"] =  "|TInterface\\AddOns\\ElvUI\\media\\textures\\helloKittyChatLogo.tga:18:20|t",
 		["Dribskram"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\beiber_chat.tga:18:20|t",

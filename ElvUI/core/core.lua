@@ -461,6 +461,7 @@ end
 
 local frames = {}
 local devAlts = {
+	['Elv-Proudmoore'] = true,
 	['Elv-Spirestone'] = true,
 	['Elvz-Spirestone'] = true,
 	['Jarvix-Spirestone'] = true,
