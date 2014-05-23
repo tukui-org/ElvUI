@@ -150,6 +150,13 @@ local specialChatIcons = {
 		["Waffles"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\helloKittyChatLogo.tga:18:20|t",
 		["Suisen"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\helloKittyChatLogo.tga:18:20|t",
 		["Sarah"] =  "|TInterface\\AddOns\\ElvUI\\media\\textures\\helloKittyChatLogo.tga:18:20|t",
+		["Dribskram"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\canada_flag.tga:18:20|t",
+		["Marksbird"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\canada_flag.tga:18:20|t",
+		["Chuey"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\canada_flag.tga:18:20|t",
+		["Azazlol"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\canada_flag.tga:18:20|t",
+		["Owen"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\canada_flag.tga:18:20|t",
+		["Seleri"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\canada_flag.tga:18:20|t",
+		["Dunkington"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\canada_flag.tga:18:20|t",		
 	},
 }
 
