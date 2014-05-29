@@ -3,6 +3,7 @@
 --Global Settings
 G['general'] = {
 	["autoScale"] = true,
+	["eyefinity"] = false,
 }
 
 G['classtimer'] = {}

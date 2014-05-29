@@ -166,20 +166,28 @@ E.Options.args.general = {
 					get = function(info) return E.global.general.autoScale end,
 					set = function(info, value) E.global.general[ info[#info] ] = value; E:StaticPopup_Show("GLOBAL_RL") end
 				},	
-				hideErrorFrame = {
+				eyefinity = {
 					order = 12,
+					name = L["Multi-Monitor Support"],
+					desc = L["Attempt to support eyefinity/nvidia surround."],
+					type = "toggle",	
+					get = function(info) return E.global.general.eyefinity end,
+					set = function(info, value) E.global.general[ info[#info] ] = value; E:StaticPopup_Show("GLOBAL_RL") end
+				},					
+				hideErrorFrame = {
+					order = 13,
 					name = L["Hide Error Text"],
 					desc = L["Hides the red error text at the top of the screen while in combat."],
 					type = "toggle"
 				},
 				taintLog = {
-					order = 13,
+					order = 14,
 					type = "toggle",
 					name = L["Log Taints"],
 					desc = L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."],
 				},
 				tinyWorldMap = {
-					order = 14,
+					order = 15,
 					type = "toggle",
 					name = L["Tiny Map"],
 					desc = L["Don't scale the large world map to block out sides of the screen."],
@@ -187,7 +195,7 @@ E.Options.args.general = {
 					set = function(info, value) E.db.general.tinyWorldMap = value; E:GetModule('WorldMap'):ToggleTinyWorldMapSetting() end,
 				},	
 				bottomPanel = {
-					order = 15,
+					order = 16,
 					type = 'toggle',
 					name = L['Bottom Panel'],
 					desc = L['Display a panel across the bottom of the screen. This is for cosmetic only.'],
@@ -195,7 +203,7 @@ E.Options.args.general = {
 					set = function(info, value) E.db.general.bottomPanel = value; E:GetModule('Layout'):BottomPanelVisibility() end						
 				},
 				topPanel = {
-					order = 16,
+					order = 17,
 					type = 'toggle',
 					name = L['Top Panel'],
 					desc = L['Display a panel across the top of the screen. This is for cosmetic only.'],
@@ -203,7 +211,7 @@ E.Options.args.general = {
 					set = function(info, value) E.db.general.topPanel = value; E:GetModule('Layout'):TopPanelVisibility() end						
 				},			
 				lfrEnhancement = {
-					order = 17,
+					order = 18,
 					type = "toggle",
 					name = L['Enhance Raid Browser'],
 					desc = L['Enhance the raid browser frame by adding item level and talent spec information, also add average item level of group information to tooltips.'],
