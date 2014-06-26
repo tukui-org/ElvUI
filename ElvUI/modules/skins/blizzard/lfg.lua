@@ -97,6 +97,17 @@ local function LoadSkin()
 		S:HandleCheckBox(roleButton.checkButton, true)
 		roleButton:DisableDrawLayer("ARTWORK")
 		roleButton:DisableDrawLayer("OVERLAY")
+
+		if(not roleButton.background) then
+			roleButton.background = roleButton:CreateTexture(nil, "BACKGROUND")
+			roleButton.background:SetSize(80, 80)
+			roleButton.background:SetPoint("CENTER")
+			roleButton.background:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+			roleButton.background:SetAlpha(0.65)
+
+			local buttonName = roleButton:GetName()
+			roleButton.background:SetTexCoord(GetBackgroundTexCoordsForRole((buttonName:find("Tank") and "TANK") or (buttonName:find("Healer") and "HEALER") or "DAMAGER"))
+		end
 	end
 
 	LFDQueueFrameRoleButtonLeader.leadIcon = LFDQueueFrameRoleButtonLeader:CreateTexture(nil, 'BACKGROUND')
@@ -415,8 +426,8 @@ local function LoadSkin()
 		end
 	end)
 	
-	--LFGInvitePopup_Update("Elvz", true, true, true)
-	--StaticPopupSpecial_Show(LFGInvitePopup);
+	--[[LFGInvitePopup_Update("Elvz", true, true, true)
+	StaticPopupSpecial_Show(LFGInvitePopup);]]
 	LFGInvitePopup:StripTextures()
 	LFGInvitePopup:SetTemplate("Transparent")
 	S:HandleButton(LFGInvitePopupAcceptButton)
