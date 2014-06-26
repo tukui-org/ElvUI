@@ -741,7 +741,7 @@ function UF:Update_PlayerFrame(frame, db)
 
 				if not bars.mover then
 					bars:Width(CLASSBAR_WIDTH)
-					bars:Height(E.myclass == 'DRUID' and (CLASSBAR_HEIGHT - (BORDER*2)) or (CLASSBAR_HEIGHT - (E.PixelMode and 1 or 4)))
+					bars:Height(CLASSBAR_HEIGHT - (E.PixelMode and 1 or 4))
 					bars:ClearAllPoints()
 					bars:Point("BOTTOM", E.UIParent, "BOTTOM", 0, 150)
 					E:CreateMover(bars, 'ClassBarMover', L['Classbar'], nil, nil, nil, 'ALL,SOLO')
@@ -756,7 +756,7 @@ function UF:Update_PlayerFrame(frame, db)
 			end			
 
 			bars:Width(CLASSBAR_WIDTH)
-			bars:Height(E.myclass == 'DRUID' and (CLASSBAR_HEIGHT - (BORDER*2)) or (CLASSBAR_HEIGHT - (E.PixelMode and 1 or 4)))	
+			bars:Height(CLASSBAR_HEIGHT - (E.PixelMode and 1 or 4))
 
 			if E.myclass ~= 'MONK' and E.myclass ~= 'WARLOCK' and E.myclass ~= 'DRUID' then
 				for i = 1, MAX_CLASS_BAR do
@@ -805,8 +805,8 @@ function UF:Update_PlayerFrame(frame, db)
 				bars.SolarBar:SetMinMaxValues(0, 0)
 				bars.LunarBar:SetStatusBarColor(unpack(ElvUF.colors.EclipseBar[1]))
 				bars.SolarBar:SetStatusBarColor(unpack(ElvUF.colors.EclipseBar[2]))
-				bars.LunarBar:Size(CLASSBAR_WIDTH, CLASSBAR_HEIGHT - (BORDER*2))			
-				bars.SolarBar:Size(CLASSBAR_WIDTH, CLASSBAR_HEIGHT - (BORDER*2))	
+				bars.LunarBar:Size(CLASSBAR_WIDTH, CLASSBAR_HEIGHT - (E.PixelMode and 1 or 4))		
+				bars.SolarBar:Size(CLASSBAR_WIDTH, CLASSBAR_HEIGHT - (E.PixelMode and 1 or 4))
 			end
 
 			if E.myclass ~= 'DRUID' then
