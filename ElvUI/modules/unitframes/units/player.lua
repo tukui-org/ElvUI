@@ -1015,11 +1015,7 @@ function UF:Update_PlayerFrame(frame, db)
 		UF:ToggleTransparentStatusBar(false, frame.Health, frame.Health.bg, (USE_PORTRAIT and USE_PORTRAIT_OVERLAY) ~= true)
 	end
 	
-	if UF.db.colors.transparentPower then
-		UF:ToggleTransparentStatusBar(true, frame.Power, frame.Power.bg)
-	else
-		UF:ToggleTransparentStatusBar(false, frame.Power, frame.Power.bg, true)
-	end	
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)
 
 	E:SetMoverSnapOffset(frame:GetName()..'Mover', -(12 + db.castbar.height))
 	frame:UpdateAllElements()
