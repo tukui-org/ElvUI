@@ -257,9 +257,9 @@ P['datatexts'] = {
 	
 	['panels'] = {
 		['LeftChatDataPanel'] = {
-			['left'] = 'Armor',
+			['left'] = 'Talent/Loot Specialization',
 			['middle'] = 'Durability',
-			['right'] = 'Avoidance',
+			['right'] = 'Combat/Arena Time',
 		},
 		['RightChatDataPanel'] = {
 			['left'] = 'System',

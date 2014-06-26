@@ -659,23 +659,9 @@ function E:SetupLayout(layout, noDataReset)
 	end
 	
 	--Datatexts
-	if not noDataReset then
-		E:CopyTable(E.db.datatexts.panels, P.datatexts.panels)
-		if layout == 'tank' then
-			E.db.datatexts.panels.LeftChatDataPanel.left = 'Avoidance';
-			E.db.datatexts.panels.LeftChatDataPanel.right = 'Vengeance';
-		elseif layout == 'healer' or layout == 'dpsCaster' then
-			E.db.datatexts.panels.LeftChatDataPanel.left = 'Spell/Heal Power';
-			E.db.datatexts.panels.LeftChatDataPanel.right = 'Haste';
-		else
-			E.db.datatexts.panels.LeftChatDataPanel.left = 'Attack Power';
-			E.db.datatexts.panels.LeftChatDataPanel.right = 'Haste';
-		end
-
-		if InstallStepComplete then
-			InstallStepComplete.message = L["Layout Set"]
-			InstallStepComplete:Show()	
-		end		
+	if not noDataReset and InstallStepComplete then
+		InstallStepComplete.message = L["Layout Set"]
+		InstallStepComplete:Show()	
 	end
 	
 	E.db.layoutSet = layout
@@ -685,8 +671,6 @@ function E:SetupLayout(layout, noDataReset)
 	end	
 	
 	E:UpdateAll(true)
-	local DT = E:GetModule('DataTexts')
-	DT:LoadDataTexts()
 end
 
 
@@ -857,7 +841,7 @@ local function SetPage(PageNum)
 	elseif PageNum == 7 then
 		f.SubTitle:SetText(L["Layout"])
 		f.Desc1:SetText(L["You can now choose what layout you wish to use based on your combat role."])
-		f.Desc2:SetText(L["This will change the layout of your unitframes, raidframes, and datatexts."])
+		f.Desc2:SetText(L["This will change the layout of your unitframes and actionbars."])
 		f.Desc3:SetText(L["Importance: |cffD3CF00Medium|r"])
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('tank') end)
