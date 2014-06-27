@@ -98,7 +98,7 @@ local function LoadSkin()
 		roleButton:DisableDrawLayer("ARTWORK")
 		roleButton:DisableDrawLayer("OVERLAY")
 
-		if(not roleButton.background) then
+		if(not roleButton.background and not roleButton:GetName():find("Leader")) then
 			roleButton.background = roleButton:CreateTexture(nil, "BACKGROUND")
 			roleButton.background:SetSize(80, 80)
 			roleButton.background:SetPoint("CENTER")
