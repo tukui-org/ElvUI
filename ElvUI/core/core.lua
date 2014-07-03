@@ -725,6 +725,18 @@ function E:DBConversions()
 			self.db.actionbar.dayscolor = nil
 		end		
 	end
+	
+	if E.global.unitframe.aurafilters['Whitelist (Strict)'].spells then
+		for k, v in pairs(E.global.unitframe.aurafilters['Whitelist (Strict)'].spells) do
+			if type(v) == 'table' then
+				for k_,v_ in pairs(v) do
+					if k_ == 'spellID' and type(v_) ~= 'number' then
+						E.global.unitframe.aurafilters['Whitelist (Strict)']['spells'][k][k_] = tonumber(v_)
+					end
+				end
+			end
+		end
+	end
 end
 
 function E:StopMassiveShake()
