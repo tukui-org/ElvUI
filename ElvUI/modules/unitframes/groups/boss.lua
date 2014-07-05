@@ -540,4 +540,4 @@ function UF:Update_BossFrames(frame, db)
 	frame:UpdateAllElements()
 end
 
-UF['unitgroupstoload']['boss'] = MAX_BOSS_FRAMES
+UF['unitgroupstoload']['boss'] = {MAX_BOSS_FRAMES}

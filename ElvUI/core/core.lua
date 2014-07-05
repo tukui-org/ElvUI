@@ -466,7 +466,9 @@ local devAlts = {
 	['Elvz-Spirestone'] = true,
 	['Jarvix-Spirestone'] = true,
 	['Elvilas-Spirestone'] = true,
-	['Watermelon-Spirestone'] = true
+	['Watermelon-Spirestone'] = true,
+	['Elvz-Darkspear'] = true,
+	['Ophelia-Darkspear'] = true,
 }
 local function SendRecieve(self, event, prefix, message, channel, sender)
 	if event == "CHAT_MSG_ADDON" then
