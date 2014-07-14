@@ -260,7 +260,7 @@ E.PopupDialogs["RESETUI_CHECK"] = {
 }
 
 E.PopupDialogs["APRIL_FOOLS2013"] = {
-	text = "ElvUI needs to perform database optimizations please be patient.",
+	text = L["ElvUI needs to perform database optimizations please be patient."],
 	button1 = OKAY,
 	OnAccept = function() 
 		if E.isMassiveShaking then
@@ -275,7 +275,7 @@ E.PopupDialogs["APRIL_FOOLS2013"] = {
 }
 
 E.PopupDialogs["APRIL_FOOLS"] = {
-	text = "ElvUI needs to perform database optimizations please be patient.",
+	text = L["ElvUI needs to perform database optimizations please be patient."],
 	button1 = OKAY,
 	OnAccept = function() 
 		E:SetupAprilFools2014()
@@ -285,7 +285,7 @@ E.PopupDialogs["APRIL_FOOLS"] = {
 }
 
 E.PopupDialogs["APRIL_FOOLS_END"] = {
-	text = "Do you enjoy the new ElvUI?",
+	text = L["Do you enjoy the new ElvUI?"],
 	button1 = L["Yes, Keep Changes!"],
 	button2 = L["No, Revert Changes!"],
 	OnAccept = function() 
