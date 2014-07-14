@@ -322,7 +322,6 @@ L["You don't have enough money to repair."] = "Você não tem dinheiro suficient
 L["You must be at a vendor."] = "Tem de estar num vendedor."
 L["Your items have been repaired for: "] = "Seus itens foram reparadas por: "
 L["Your items have been repaired using guild bank funds for: "] = "Seus itens foram reparados usando fundos do banco da guilda por: "
-L["Your version of ElvUI is out of date. You can download the latest version from http://www.tukui.org"] = "A sua versão da ElvUI está desatualizada. Pode baixar a versão mais recente no site http://www.tukui.org."
 L["|cFFE30000Lua error recieved. You can view the error message when you exit combat."] = "|cFFE30000Erro Lua recebido. Pode ver a mensagem de erro quando sair de combate"
 
 --Static Popups
@@ -336,9 +335,8 @@ L["Can't buy anymore slots!"] = "Não é possível comprar mais espaços!"
 L["Detected that your ElvUI Config addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI Config addon up to date will result in missing options."] = true;
 L["Disable Warning"] = "Desativar Aviso"
 L["Discard"] = "Descartar"
-L["Do you enjoy the new ElvUI?"] = true;
 L["Do you swear not to post in technical support about something not working without first disabling the addon/module combination first?"] = "Você jura não postar no suporte técnico sobre alguma coisa não funcionando sem antes desabilitar a combinação addon/módulo?"
-L["ElvUI needs to perform database optimizations please be patient."] = true;
+L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = true;
 L["Enabling/Disabling Bar #6 will toggle a paging option from your main actionbar to prevent duplicating bars, are you sure you want to do this?"] = "Habilitar/Desabilitar a Barra #6 fará o mesmo com a opção de paginação da sua barra de acção principal para previnir a dublicação de barras, está certo de que deseja isso?";
 L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."] = "Paire com o seu rato (mouse) sobre qualquer botão de ação ou botão do grimório para fazer uma Ligação. Pressione a tecla Escape ou clique com o botão direito para limpar o atalho atual."
 L["I Swear"] = "Eu Juro"

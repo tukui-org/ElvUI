@@ -827,6 +827,7 @@ L["Vertical"] = "세로"
 L["Visibility"] = "표시"
 L["What point to anchor to the frame you set to attach to."] = "첫 번째 버튼을 기준으로 나머지 아이콘들이 나열됩니다."
 L["What to attach the buff anchor frame to."] = "첫 번째 버튼 위치가 어느 프레임을 기준으로 할지를 결정합니다."
+L["What to attach the debuff anchor frame to."] = true
 L["When set the Buffs and Debuffs will toggle being displayed depending on if the unit is friendly or an enemy. This will not effect the aurabars module."] = "대상의 유형에 따라서 버프나 디버프의 표시 방법을 변경합니다. 클래스타이머에는 영향이 없습니다."
 L["When true, the header includes the player when not in a raid."] = "활성화시, 공격대에 속해있지 않아도 플레이어를 표시합니다."
 L["When you mana falls below this point, text will flash on the player frame."] = "마나가 이 값의 %보다 낮으면 프레임에 마나 적음 경고를 표시합니다."

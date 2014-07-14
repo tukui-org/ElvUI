@@ -322,7 +322,6 @@ L["You don't have enough money to repair."] = "No tienes suficiente dinero para 
 L["You must be at a vendor."] = "Debes estar cerca de un vendedor."
 L["Your items have been repaired for: "] = "Tus objetos han sido reparados por:"
 L["Your items have been repaired using guild bank funds for: "] = "Tus objetos han sido reparados con fondos del banco de hermandad por:"
-L["Your version of ElvUI is out of date. You can download the latest version from http://www.tukui.org"] = "Tu versión de ElvUI no está actualizada. Puedes descargar la última versión de http://www.tukui.org"
 L["|cFFE30000Lua error recieved. You can view the error message when you exit combat."] = "|cFFE30000Error de Lua recibido. Podrás ver el error cuando salgas de combate."
 
 --Static Popups
@@ -336,9 +335,8 @@ L["Can't buy anymore slots!"] = "¡No puedes comprar más huecos!"
 L["Detected that your ElvUI Config addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI Config addon up to date will result in missing options."] = true;
 L["Disable Warning"] = "Deshabilitar Advertencia"
 L["Discard"] = "Descartar"
-L["Do you enjoy the new ElvUI?"] = true;
 L["Do you swear not to post in technical support about something not working without first disabling the addon/module combination first?"] = "¿Juras no escribir a Soporte Técnico acerca de algo que no funciona sin antes deshabilitar la combinación addon/módulo primero?"
-L["ElvUI needs to perform database optimizations please be patient."] = true;
+L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = true;
 L["Enabling/Disabling Bar #6 will toggle a paging option from your main actionbar to prevent duplicating bars, are you sure you want to do this?"] = true;
 L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."] = "Pasa tu ratón por encima de un botón de acción o de un botón del libro de hechizos para ligarlo. Pulsa escape o botón derecho para limpiar la asignación actual del botón de acción."
 L["I Swear"] = "Lo Juro"

@@ -322,7 +322,6 @@ L["You don't have enough money to repair."] = "Du hast nicht genügend Gold für
 L['You must be at a vendor.'] = "Du musst bei einem Händler sein."
 L['Your items have been repaired for: '] = "Deine Gegenstände wurden repariert für: "
 L['Your items have been repaired using guild bank funds for: '] = "Deine Gegenstände wurden repariert. Die Gildenbank kostete das: "
-L["Your version of ElvUI is out of date. You can download the latest version from http://www.tukui.org"] = "Deine Version von ElvUI ist veraltet. Du kannst die aktuelle Version von http://www.tukui.org laden"
 L['|cFFE30000Lua error recieved. You can view the error message when you exit combat.'] = '|cFFE30000Lua Fehler erhalten. Du kannst die Fehlermeldung ansehen, wenn du den Kampf verlässt.'
 
 --Static Popups
@@ -336,9 +335,8 @@ L["Can't buy anymore slots!"] = "Kann keine Slots mehr kaufen"
 L["Detected that your ElvUI Config addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI Config addon up to date will result in missing options."] = "Es wurde erkannt dass dein ElvUI Konfigurations-Addon veraltet ist. Dies kann das Ergebnis eines veralteten Tukui Clients sein. Bitte besuche unsere Downloadseite und update deinen Tukui Client, dann installiere ElvUI neu. Das nicht auf dem neuesten Stand haben des ElvUI Konfigurations-Addons wird in fehlenden Optionen resultieren."
 L['Disable Warning'] = 'Deaktiviere Warnung'
 L['Discard'] = "Verwerfen"
-L["Do you enjoy the new ElvUI?"] = true;
 L['Do you swear not to post in technical support about something not working without first disabling the addon/module combination first?'] = 'Schwörst du, dass du keinen Beitrag im Supportforum posten wirst, ohne vorher alle anderen Addons/Module zu deaktivieren?'
-L["ElvUI needs to perform database optimizations please be patient."] = true;
+L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = true;
 L["Enabling/Disabling Bar #6 will toggle a paging option from your main actionbar to prevent duplicating bars, are you sure you want to do this?"] = "Aktivieren/Deaktivieren der Leiste #6 wird eine Option für die Seitennummerierung deine Hauptaktionsleiste hervorrufen um doppelte Leisten zu verhindern, bist du dir sich das du das tun willst?"
 L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."] = "Bewege deine Maus über einen Aktionsbutton oder dein Zauberbuch um ihn mit einem Hotkey zu belegen. Drücke Escape oder rechte Maustaste um die aktuelle Tastenbelegung des Buttons zu löschen."
 L['I Swear'] = 'Ich schwöre'

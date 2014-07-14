@@ -322,7 +322,6 @@ L["You don't have enough money to repair."] = "У вас недостаточн�
 L['You must be at a vendor.'] = "Вы должны находиться у торговца"
 L['Your items have been repaired for: '] = "Ваши предметы отремонтированы на: "
 L['Your items have been repaired using guild bank funds for: '] = "Ваши предметы отремонтированы за счет гильдии на: "
-L["Your version of ElvUI is out of date. You can download the latest version from http://www.tukui.org"] = "Ваша версия ElvUI устарела. Вы можете скачать последнюю версию на http://www.tukui.org"
 L['|cFFE30000Lua error recieved. You can view the error message when you exit combat.'] = "|cFFE30000Обнаружена ошибка lua. Вы получите отчет о ней после завершения боя."
 
 --Static Popups
@@ -336,9 +335,8 @@ L["Can't buy anymore slots!"] = "Невозможно приобрести бо�
 L["Detected that your ElvUI Config addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI Config addon up to date will result in missing options."] = "Мы обнаружили, что ElvUI Config устарел. Это может быть результатом устаревшей версии Tukui Client. Пожалуйста, посетите нашу страницу загрузок и обновите Tukui Client, а затем переустановите ElvUI. Устаревший ElvUI Config может привести к отсутствия некоторых опций."
 L['Disable Warning'] = "Отключить предупреждение"
 L['Discard'] = "Отменить"
-L["Do you enjoy the new ElvUI?"] = true;
 L['Do you swear not to post in technical support about something not working without first disabling the addon/module combination first?'] = "Клянетесь ли Вы не постить на форуме технической поддержки, что что-то не работает, до того, как отключите другие аддоны/модули?"
-L["ElvUI needs to perform database optimizations please be patient."] = true;
+L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = true;
 L["Enabling/Disabling Bar #6 will toggle a paging option from your main actionbar to prevent duplicating bars, are you sure you want to do this?"] = "Включение/отключение 6й панели переключит пролистывание для вашей основной панели для предотвращения дублирования панелей. Вы уверены, что хотите это сделать?"
 L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."] = "Наведите курсор на любую кнопку на панели или в книге заклинаний, чтобы назначит ей клавишу. Нажмите правую кнопку мыши или 'Escape', чтобы сбросить назначение для этой кнопки."
 L['I Swear'] = "Я клянусь!"
