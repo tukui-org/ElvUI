@@ -48,3 +48,11 @@ SlashCmdList["FRAME"] = function(arg)
 		ChatFrame1:AddMessage("Could not find frame info")
 	end
 end
+
+function TextureList(frame)
+	for key, obj in pairs(frame) do
+		if type(obj) == "table" and obj.GetObjectType and obj:GetObjectType() == "Texture" then
+			print(key, obj:GetTexture())
+		end
+	end
+end
