@@ -134,11 +134,12 @@ function B:UpdateSlot(bagID, slotID)
 	local specialType = select(2, GetContainerNumFreeSlots(bagID))
 	
 	slot:Show();
-	--slot.questIcon:Hide();
+	slot.questIcon:Hide();
+
 	slot.name, slot.rarity = nil, nil;
 	
 	local start, duration, enable = GetContainerItemCooldown(bagID, slotID)
-	--CooldownFrame_SetTimer(slot.cooldown, start, duration, enable)
+	CooldownFrame_SetTimer(slot.cooldown, start, duration, enable)
 	if ( duration > 0 and enable == 0 ) then
 		SetItemButtonTextureVertexColor(slot, 0.4, 0.4, 0.4);
 	else
@@ -156,7 +157,7 @@ function B:UpdateSlot(bagID, slotID)
 		-- color slot according to item quality
 		if questId and not isActive then
 			slot:SetBackdropBorderColor(1.0, 0.3, 0.3);
-			--slot.questIcon:Show();
+			slot.questIcon:Show();
 		elseif questId or isQuestItem then
 			slot:SetBackdropBorderColor(1.0, 0.3, 0.3);
 		elseif slot.rarity and slot.rarity > 1 then
@@ -345,8 +346,9 @@ function B:Layout(isBank)
 						_G[f.Bags[bagID][slotID]:GetName()..'NewItemTexture']:Hide()
 					end
 
-					--[[f.Bags[bagID][slotID].count:ClearAllPoints();
-					f.Bags[bagID][slotID].count:Point('BOTTOMRIGHT', 0, 2);
+					f.Bags[bagID][slotID].Count:ClearAllPoints();
+					f.Bags[bagID][slotID].Count:Point('BOTTOMRIGHT', 0, 2);
+					
 					
 					f.Bags[bagID][slotID].questIcon = _G[f.Bags[bagID][slotID]:GetName()..'IconQuestTexture'];
 					f.Bags[bagID][slotID].questIcon:SetTexture(TEXTURE_ITEM_QUEST_BANG);
@@ -361,7 +363,9 @@ function B:Layout(isBank)
 					f.Bags[bagID][slotID].cooldown = _G[f.Bags[bagID][slotID]:GetName()..'Cooldown'];
 					E:RegisterCooldown(f.Bags[bagID][slotID].cooldown)
 					f.Bags[bagID][slotID].bagID = bagID
-					f.Bags[bagID][slotID].slotID = slotID]]
+					f.Bags[bagID][slotID].slotID = slotID
+
+					f.Bags[bagID][slotID].BattlepayItemTexture:Hide()
 				end
 				
 				f.Bags[bagID][slotID]:SetID(slotID);
