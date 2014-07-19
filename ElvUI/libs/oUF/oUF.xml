@@ -1,0 +1,96 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+	<Script file='init.lua' />
+	<Script file='private.lua' />
+	<Script file='ouf.lua' />
+	<Script file='events.lua'/>
+	<Script file='factory.lua' />
+	<Script file='blizzard.lua' />
+	<Script file='units.lua' />
+	<Script file='colors.lua' />
+	<Script file='finalize.lua' />
+
+	<Script file='elements\power.lua' />
+	<Script file='elements\aura.lua' />
+	<Script file='elements\health.lua' />
+	<Script file='elements\cpoints.lua' />
+	<Script file='elements\ricons.lua' />
+	<Script file='elements\leader.lua' />
+	<Script file='elements\combat.lua' />
+	<Script file='elements\resting.lua' />
+	<Script file='elements\pvp.lua' />
+	<Script file='elements\portraits.lua' />
+	<Script file='elements\range.lua' />
+	<Script file='elements\castbar.lua' />
+	<Script file='elements\threat.lua' />
+	<Script file='elements\tags.lua' />
+	<Script file='elements\masterlooter.lua' />
+	<Script file='elements\assistant.lua' />
+	<Script file='elements\runebar.lua' />
+	<Script file='elements\lfdrole.lua' />
+	<Script file='elements\healprediction.lua' />
+	<Script file='elements\holypower.lua' />
+	<Script file='elements\shardbar.lua' />
+	<Script file='elements\picon.lua' />
+	<Script file='elements\readycheck.lua' />
+	<Script file='elements\qicon.lua' />
+	<Script file='elements\eclipsebar.lua' />
+	<Script file='elements\altpowerbar.lua' />
+	<Script file='elements\harmony.lua' />
+	<Script file='elements\totems.lua' />
+	<Script file='elements\resurrect.lua' />
+	<Script file='elements\shadoworbs.lua' />
+	<Script file='elements\maintank.lua' />
+	<Script file='elements\druidmana.lua' />
+	<Script file='elements\stagger.lua' />
+
+	<!-- Clique support -->
+	<Button name="oUF_ClickCastUnitTemplate" virtual="true" inherits="SecureUnitButtonTemplate,SecureHandlerEnterLeaveTemplate">
+		<Attributes>
+			<Attribute name="_onenter" type="string" value="local snippet = self:GetAttribute('clickcast_onenter'); if snippet then self:Run(snippet) end"/>
+			<Attribute name="_onleave" type="string" value="local snippet = self:GetAttribute('clickcast_onleave'); if snippet then self:Run(snippet) end"/>
+		</Attributes>
+	</Button>
+
+	<!--
+		Sub-object as a child of the parent unit frame:
+	<Button name="oUF_HeaderTargetTemplate" inherits="SecureUnitButtonTemplate" hidden="true" virtual="true">
+		<Frames>
+			<Button name="$parentTarget" inherits="SecureUnitButtonTemplate">
+				<Attributes>
+					<Attribute name="unitsuffix" type="string" value="target"/>
+					<Attribute name="useparent-unit" type="boolean" value="true"/>
+				</Attributes>
+			</Button>
+		</Frames>
+	</Button>
+
+		Separate unit template example:
+	<Button name="oUF_HeaderSeparateSubOjectsTemplate" inherits="SecureUnitButtonTemplate" hidden="true" virtual="true">
+		<Attributes>
+			<Attribute name="oUF-onlyProcessChildren" type="boolean" value="true"/>
+		</Attributes>
+
+		<Frames>
+			<Button name="$parentUnit" inherits="SecureUnitButtonTemplate">
+				<Attributes>
+					<Attribute name="useparent-unit" type="boolean" value="true"/>
+				</Attributes>
+			</Button>
+
+			<Button name="$parentPet" inherits="SecureUnitButtonTemplate">
+				<Attributes>
+					<Attribute name="unitsuffix" type="string" value="pet"/>
+					<Attribute name="useparent-unit" type="boolean" value="true"/>
+				</Attributes>
+			</Button>
+
+			<Button name="$parentTarget" inherits="SecureUnitButtonTemplate">
+				<Attributes>
+					<Attribute name="unitsuffix" type="string" value="target"/>
+					<Attribute name="useparent-unit" type="boolean" value="true"/>
+				</Attributes>
+			</Button>
+		</Frames>
+	</Button>
+	-->
+</Ui>

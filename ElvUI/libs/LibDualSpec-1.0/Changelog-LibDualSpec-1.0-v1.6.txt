@@ -1,0 +1,12 @@
+tag v1.6
+37ef0f09d05b7a574f207335be94a5ca0a428b5d
+Adirelle <adirelle@tagada-team.net>
+2011-02-11 22:42:25 +0100
+
+Tagging as v1.6.
+
+
+--------------------
+
+Adirelle:
+	- Locales updated.

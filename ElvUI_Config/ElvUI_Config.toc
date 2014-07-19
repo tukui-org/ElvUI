@@ -1,11 +1,21 @@
-## Interface: 50400
+## Interface: 60000
 ## Author: Elv
-## Title: |cffA11313E|r|cffC4C4C4lvUI|r |cffA11313C|r|cffC4C4C4onfig|r
+## Version: 1.01
+## Title: |cff1784d1ElvUI Config|r
 ## Notes: Options for ElvUI.
 ## RequiredDeps: ElvUI
 ## LoadOnDemand: 1
 
-locales\load_locales.xml
 libs\load_libs.xml
+locales\load_locales.xml
 core.lua
-disableBlizzard.lua
+actionbars.lua
+auras.lua
+bags.lua
+chat.lua
+datatexts.lua
+filters.lua
+nameplates.lua
+skins.lua
+tooltip.lua
+unitframes.lua
