@@ -352,6 +352,72 @@ function UF:UpdateShadowOrbs(event, unit, powerType)
 	elseif point then
 		frame.Health:SetPoint(point, frame, anchorPoint, x, -2)
 	end
+
+	local BORDER = E.Border
+	local numShadowOrbs = UnitPower("player", SPELL_POWER_SHADOW_ORBS);
+	local maxShadowOrbs = IsSpellKnown(SHADOW_ORB_MINOR_TALENT_ID) and 5 or 3	
+	local MAX_SHADOW_ORBS = UF['classMaxResourceBar'][E.myclass]
+	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and db.classbar.enable
+	local USE_PORTRAIT = db.portrait.enable
+	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
+	local PORTRAIT_WIDTH = db.portrait.width
+	local POWERBAR_DETACHED = db.power.detachFromFrame
+	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR and not POWERBAR_DETACHED
+	
+	if USE_PORTRAIT_OVERLAY or not USE_PORTRAIT then
+		PORTRAIT_WIDTH = 0		
+	end	
+	
+	local CLASSBAR_WIDTH = db.width - (E.Border * 2)
+	if USE_PORTRAIT then
+		CLASSBAR_WIDTH = ceil((db.width - (BORDER*2)) - PORTRAIT_WIDTH)
+	end
+	
+	if USE_POWERBAR_OFFSET then
+		CLASSBAR_WIDTH = CLASSBAR_WIDTH - db.power.offset
+	end
+		
+	if USE_MINI_CLASSBAR then
+		CLASSBAR_WIDTH = CLASSBAR_WIDTH * (maxHolyPower - 1) / maxHolyPower
+	end
+
+	if db.classbar.detachFromFrame then
+		CLASSBAR_WIDTH = db.classbar.detachedWidth - (BORDER*2)
+	end
+	
+	self:Width(CLASSBAR_WIDTH)
+	
+	for i = 1, MAX_SHADOW_ORBS do
+		if(i <= numShadowOrbs) then
+			self[i]:SetAlpha(1)
+		else
+			self[i]:SetAlpha(.2)
+		end
+		if db.classbar.fill == "spaced" then
+			self[i]:SetWidth((self:GetWidth() - ((maxShadowOrbs == 5 and 7 or 13)*(maxShadowOrbs - 1))) / maxShadowOrbs)
+		else
+			self[i]:SetWidth((self:GetWidth() - (maxShadowOrbs - 1)) / maxShadowOrbs)	
+		end
+		
+		self[i]:ClearAllPoints()
+		if i == 1 then
+			self[i]:SetPoint("LEFT", self)
+		else
+			if USE_MINI_CLASSBAR then
+				self[i]:Point("LEFT", self[i-1], "RIGHT", maxShadowOrbs == 5 and 7 or 13, 0)
+			else
+				self[i]:Point("LEFT", self[i-1], "RIGHT", 1, 0)
+			end
+		end
+
+		if i > maxShadowOrbs then
+			self[i]:Hide()
+			self[i].backdrop:SetAlpha(0)
+		else
+			self[i]:Show()
+			self[i].backdrop:SetAlpha(1)
+		end		
+	end	
 	
 	UF:UpdatePlayerFrameAnchors(frame, self:IsShown())
 end	
