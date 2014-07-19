@@ -301,7 +301,7 @@ P['tooltip'] = {
 --UnitFrame
 P['unitframe'] = {
 	['smoothbars'] = false,
-	['statusbar'] = "ElvUI Norm",
+	['statusbar'] = "Blizzard",
 	['font'] = 'ElvUI Pixel',
 	['fontSize'] = 10,
 	['fontOutline'] = 'MONOCHROMEOUTLINE',
