@@ -50,9 +50,20 @@ SlashCmdList["FRAME"] = function(arg)
 end
 
 function TextureList(frame)
-	for key, obj in pairs(frame) do
+	frame = _G[frame] or FRAME
+	--[[for key, obj in pairs(frame) do
 		if type(obj) == "table" and obj.GetObjectType and obj:GetObjectType() == "Texture" then
 			print(key, obj:GetTexture())
 		end
+	end]]
+
+	for i=1, frame:GetNumRegions() do
+		local region = select(i, frame:GetRegions())
+		if(region:GetObjectType() == "Texture") then
+			print(region:GetTexture(), region:GetName())
+		end
 	end
 end
+
+SLASH_TEXLIST1 = "/texlist"
+SlashCmdList["TEXLIST"] = TextureList

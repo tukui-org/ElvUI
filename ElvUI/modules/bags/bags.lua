@@ -32,7 +32,7 @@ function B:GetContainerFrame(arg)
 end
 
 function B:Tooltip_Show()
-	GameTooltip:SetOwner(self:GetParent(), "ANCHOR_TOP", 0, 4)
+	GameTooltip:SetOwner(self);
 	GameTooltip:ClearLines()
 	GameTooltip:AddLine(self.ttText)
 
@@ -42,17 +42,9 @@ function B:Tooltip_Show()
 	end
 
 	GameTooltip:Show()
-
-	if self.backdropTexture then
-		self:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
-	end
 end
 
 function B:Tooltip_Hide()
-	if self.backdropTexture then
-		self:SetBackdropBorderColor(unpack(E.media.bordercolor))
-	end
-
 	GameTooltip:Hide()
 end
 
@@ -84,6 +76,10 @@ function B:UpdateSearch()
 			return;
 		end
 	end
+
+	if searchString == SEARCH then
+		searchString = ''
+	end
 	
 	SetItemSearch(searchString);
 end
@@ -96,8 +92,8 @@ function B:OpenEditbox()
 end
 
 function B:ResetAndClear()
-	self:GetParent().detail:Show();
-	
+	self:GetParent().editBox:SetText(SEARCH)
+
 	self:ClearFocus();
 	B:SearchReset();
 end
@@ -110,10 +106,10 @@ function B:INVENTORY_SEARCH_UPDATE()
 				local button = bagFrame.Bags[bagID][slotID];
 				if button:IsShown() then
 					if ( isFiltered ) then
-						SetItemButtonDesaturated(button, 1, 1, 1, 1);
+						SetItemButtonDesaturated(button, 1);
 						button:SetAlpha(0.4);
 					else
-						SetItemButtonDesaturated(button, 0, 1, 1, 1);
+						SetItemButtonDesaturated(button);
 						button:SetAlpha(1);
 					end		
 				end
@@ -134,7 +130,9 @@ function B:UpdateSlot(bagID, slotID)
 	local specialType = select(2, GetContainerNumFreeSlots(bagID))
 	
 	slot:Show();
-	slot.questIcon:Hide();
+	if(slot.questIcon) then
+		slot.questIcon:Hide();
+	end
 
 	slot.name, slot.rarity = nil, nil;
 	
@@ -349,13 +347,14 @@ function B:Layout(isBank)
 					f.Bags[bagID][slotID].Count:ClearAllPoints();
 					f.Bags[bagID][slotID].Count:Point('BOTTOMRIGHT', 0, 2);
 					
-					
-					f.Bags[bagID][slotID].questIcon = _G[f.Bags[bagID][slotID]:GetName()..'IconQuestTexture'];
-					f.Bags[bagID][slotID].questIcon:SetTexture(TEXTURE_ITEM_QUEST_BANG);
-					f.Bags[bagID][slotID].questIcon:SetInside(f.Bags[bagID][slotID]);
-					f.Bags[bagID][slotID].questIcon:SetTexCoord(unpack(E.TexCoords));
-					f.Bags[bagID][slotID].questIcon:Hide();
-					
+					if(f.Bags[bagID][slotID].questIcon) then
+						f.Bags[bagID][slotID].questIcon = _G[f.Bags[bagID][slotID]:GetName()..'IconQuestTexture'];
+						f.Bags[bagID][slotID].questIcon:SetTexture(TEXTURE_ITEM_QUEST_BANG);
+						f.Bags[bagID][slotID].questIcon:SetInside(f.Bags[bagID][slotID]);
+						f.Bags[bagID][slotID].questIcon:SetTexCoord(unpack(E.TexCoords));
+						f.Bags[bagID][slotID].questIcon:Hide();
+					end
+
 					f.Bags[bagID][slotID].iconTexture = _G[f.Bags[bagID][slotID]:GetName()..'IconTexture'];
 					f.Bags[bagID][slotID].iconTexture:SetInside(f.Bags[bagID][slotID]);
 					f.Bags[bagID][slotID].iconTexture:SetTexCoord(unpack(E.TexCoords));
@@ -365,7 +364,9 @@ function B:Layout(isBank)
 					f.Bags[bagID][slotID].bagID = bagID
 					f.Bags[bagID][slotID].slotID = slotID
 
-					f.Bags[bagID][slotID].BattlepayItemTexture:Hide()
+					if(f.Bags[bagID][slotID].BattlepayItemTexture) then
+						f.Bags[bagID][slotID].BattlepayItemTexture:Hide()
+					end
 				end
 				
 				f.Bags[bagID][slotID]:SetID(slotID);
@@ -713,50 +714,71 @@ function B:ContructContainerFrame(name, isBank)
 		f.goldText:Point('BOTTOMRIGHT', f.holderFrame, 'TOPRIGHT', -2, 4)
 		f.goldText:SetJustifyH("RIGHT")
 		
+
+		--Sort Button
+		f.sortButton = CreateFrame("Button", name..'SortButton', f);
+		f.sortButton:SetSize(16 + E.Border, 16 + E.Border)
+		f.sortButton:SetTemplate()
+		f.sortButton:SetPoint("RIGHT", f.goldText, "LEFT", -5, E.Border * 2)
+		f.sortButton:SetNormalTexture("Interface\\ICONS\\INV_Pet_Broom")
+		f.sortButton:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
+		f.sortButton:GetNormalTexture():SetInside()
+		f.sortButton:SetPushedTexture("Interface\\ICONS\\INV_Pet_Broom")
+		f.sortButton:GetPushedTexture():SetTexCoord(unpack(E.TexCoords))
+		f.sortButton:GetPushedTexture():SetInside()		
+		f.sortButton:StyleButton(nil, true)
+		f.sortButton:SetScript("OnEnter", BagItemAutoSortButton:GetScript("OnEnter"))
+		f.sortButton:SetScript('OnClick', function() B:CommandDecorator(B.SortBags, 'bags')(); end)
+
+
+		--Bags Button
+		f.bagsButton = CreateFrame("Button", name..'BagsButton', f);
+		f.bagsButton:SetSize(16 + E.Border, 16 + E.Border)
+		f.bagsButton:SetTemplate()
+		f.bagsButton:SetPoint("RIGHT", f.sortButton, "LEFT", -5, 0)
+		f.bagsButton:SetNormalTexture("Interface\\Buttons\\Button-Backpack-Up")
+		f.bagsButton:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
+		f.bagsButton:GetNormalTexture():SetInside()
+		f.bagsButton:SetPushedTexture("Interface\\Buttons\\Button-Backpack-Up")
+		f.bagsButton:GetPushedTexture():SetTexCoord(unpack(E.TexCoords))
+		f.bagsButton:GetPushedTexture():SetInside()		
+		f.bagsButton:StyleButton(nil, true)
+		f.bagsButton.ttText = L['Toggle Bags']
+		f.bagsButton:SetScript("OnEnter", self.Tooltip_Show)
+		f.bagsButton:SetScript("OnLeave", self.Tooltip_Hide)
+		f.bagsButton:SetScript('OnClick', function() ToggleFrame(f.ContainerHolder) end)
+
 		--Search
 		f.editBox = CreateFrame('EditBox', name..'EditBox', f);
 		f.editBox:SetFrameLevel(f.editBox:GetFrameLevel() + 2);
-		f.editBox:CreateBackdrop('Default', true);
+		f.editBox:CreateBackdrop('Default');
+		f.editBox.backdrop:SetPoint("TOPLEFT", f.editBox, "TOPLEFT", -20, 2)
 		f.editBox:Height(15);
-		f.editBox:Hide();
-		f.editBox:Point('BOTTOMLEFT', f.holderFrame, 'TOPLEFT', 2, 4);
-		f.editBox:Point('RIGHT', f.goldText, 'LEFT', -5, 0);
-		f.editBox:SetAutoFocus(true);
+		f.editBox:Point('BOTTOMLEFT', f.holderFrame, 'TOPLEFT', (E.Border * 2) + 18, E.Border * 2 + 2);
+		f.editBox:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0);
+		f.editBox:SetAutoFocus(false);
 		f.editBox:SetScript("OnEscapePressed", self.ResetAndClear);
 		f.editBox:SetScript("OnEnterPressed", self.ResetAndClear);
-		f.editBox:SetScript("OnEditFocusLost", f.editBox.Hide);
+		f.editBox:SetScript("OnEditFocusLost", self.ResetAndClear);
 		f.editBox:SetScript("OnEditFocusGained", f.editBox.HighlightText);
 		f.editBox:SetScript("OnTextChanged", self.UpdateSearch);
 		f.editBox:SetScript('OnChar', self.UpdateSearch);
 		f.editBox:SetText(SEARCH);
 		f.editBox:FontTemplate();
 
-		f.detail = f:CreateFontString(nil, "ARTWORK");
-		f.detail:FontTemplate();
-		f.detail:SetAllPoints(f.editBox);
-		f.detail:SetJustifyH("LEFT");
-		f.detail:SetText("|cff9999ff" .. SEARCH);
-		
-		local button = CreateFrame("Button", nil, f)
-		button:RegisterForClicks("LeftButtonUp", "RightButtonUp");
-		button:SetAllPoints(f.detail);
-		button:SetScript("OnClick", function(f, btn)
-			if btn == "RightButton" then
-				self:OpenEditbox();
-			else
-				if f:GetParent().editBox:IsShown() then
-					f:GetParent().editBox:Hide();
-					f:GetParent().editBox:ClearFocus();
-					f:GetParent().detail:Show();
-					self:SearchReset();
-				else
-					self:OpenEditbox();
-				end
-			end
-		end)
-		
+		f.editBox.searchIcon = f.editBox:CreateTexture(nil, 'OVERLAY')
+		f.editBox.searchIcon:SetTexture("Interface\\Common\\UI-Searchbox-Icon")
+		f.editBox.searchIcon:SetPoint("LEFT", f.editBox.backdrop, "LEFT", E.Border + 1, -1)
+		f.editBox.searchIcon:SetSize(15, 15)
+
+
+
+
+		--Interface\ContainerFrame\Bags
+		--Interface\Common\UI-Searchbox-Icon
+
 		--Sort Button
-		f.sortButton = CreateFrame('Button', nil, f)
+		--[[f.sortButton = CreateFrame('Button', nil, f)
 		f.sortButton:Point('TOP', f, 'TOP', 0, -4)
 		f.sortButton:Size(55, 10)
 		f.sortButton:SetTemplate('Default', true)
@@ -815,7 +837,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.transferButton.ttText = L['Stack Bags to Bank'];
 		f.transferButton:SetScript("OnEnter", self.Tooltip_Show)
 		f.transferButton:SetScript("OnLeave", self.Tooltip_Hide)
-		f.transferButton:SetScript('OnClick', function() B:CommandDecorator(B.Stack, 'bags bank')(); end)
+		f.transferButton:SetScript('OnClick', function() B:CommandDecorator(B.Stack, 'bags bank')(); end)]]
 		
 		--Currency
 		f.currencyButton = CreateFrame('Frame', nil, f);
