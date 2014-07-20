@@ -50,7 +50,7 @@ for i=10, 40, 15 do
 	UF['Raid'..i..'SmartVisibility'] = function (self, event)	
 		if not self.db or (self.db and not self.db.enable) or (UF.db and not UF.db.smartRaidFilter) or self.isForced then return; end
 		local inInstance, instanceType = IsInInstance()
-		local _, _, _, _, maxPlayers, _, _ = GetInstanceInfo()
+		local maxPlayers = select(9, GetInstanceInfo())
 		if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
 
 		if not InCombatLockdown() then		
