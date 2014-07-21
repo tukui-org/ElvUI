@@ -307,7 +307,7 @@ P['unitframe'] = {
 	['fontOutline'] = 'MONOCHROMEOUTLINE',
 	['OORAlpha'] = 0.35,
 	['debuffHighlighting'] = true,
-	["smartRaidFilter"] = false,
+	["smartRaidFilter"] = false, 
 	['targetOnMouseDown'] = false,
 	
 	['colors'] = {
