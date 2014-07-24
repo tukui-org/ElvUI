@@ -3507,393 +3507,388 @@ E.Options.args.unitframe.args.party = {
 }
 
 --Raid Frames
-for i=10, 40, 15 do
-	E.Options.args.unitframe.args['raid'..i] = {
-		name = L['Raid-'..i..' Frames'],
-		type = 'group',
-		order = 1100,
-		childGroups = "select",
-		get = function(info) return E.db.unitframe.units['raid'..i][ info[#info] ] end,
-		set = function(info, value) E.db.unitframe.units['raid'..i][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i) end,
-		args = {
-			configureToggle = {
-				order = 1,
-				type = 'execute',
-				name = L['Display Frames'],
-				func = function() 
-					UF:HeaderConfig(_G['ElvUF_Raid'..i], _G['ElvUF_Raid'..i].forceShow ~= true or nil)
-				end,
-			},			
-			resetSettings = {
-				type = 'execute',
-				order = 2,
-				name = L['Restore Defaults'],
-				func = function(info, value) UF:ResetUnitSettings('raid'..i); E:ResetMovers('Raid 1-'..i..' Frames') end,
-			},	
-			copyFrom = {
-				type = 'select',
-				order = 3,
-				name = L['Copy From'],
-				desc = L['Select a unit to copy settings from.'],
-				values = {
-					['party'] = L['Party Frames'],
-					['raid10'] = 'raid'..i ~= 'raid10' and L['Raid-10 Frames'] or nil,
-					['raid25'] = 'raid'..i ~= 'raid25' and L['Raid-25 Frames'] or nil,
-					['raid40'] = 'raid'..i ~= 'raid40' and L['Raid-40 Frames'] or nil,
-				},
-				set = function(info, value) UF:MergeUnitSettings(value, 'raid'..i, true); end,
+E.Options.args.unitframe.args['raid'] = {
+	name = L['Raid Frames'],
+	type = 'group',
+	order = 1100,
+	childGroups = "select",
+	get = function(info) return E.db.unitframe.units['raid'][ info[#info] ] end,
+	set = function(info, value) E.db.unitframe.units['raid'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid') end,
+	args = {
+		configureToggle = {
+			order = 1,
+			type = 'execute',
+			name = L['Display Frames'],
+			func = function() 
+				UF:HeaderConfig(_G['ElvUF_Raid'], _G['ElvUF_Raid'].forceShow ~= true or nil)
+			end,
+		},			
+		resetSettings = {
+			type = 'execute',
+			order = 2,
+			name = L['Restore Defaults'],
+			func = function(info, value) UF:ResetUnitSettings('raid'); E:ResetMovers('Raid Frames') end,
+		},	
+		copyFrom = {
+			type = 'select',
+			order = 3,
+			name = L['Copy From'],
+			desc = L['Select a unit to copy settings from.'],
+			values = {
+				['party'] = L['Party Frames'],
 			},
-			customText = GetOptionsTable_CustomText(UF.CreateAndUpdateHeaderGroup, 'raid'..i, nil, 4),			
-			general = {
-				order = 5,
-				type = 'group',
-				name = L['General'],
-				args = {
-					enable = {
-						type = 'toggle',
-						order = 1,
-						name = L['Enable'],
-					},
-					hideonnpc = {
-						type = 'toggle',
-						order = 2,
-						name = L['Text Toggle On NPC'],
-						desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
-						get = function(info) return E.db.unitframe.units['raid'..i]['power'].hideonnpc end,
-						set = function(info, value) E.db.unitframe.units['raid'..i]['power'].hideonnpc = value; UF:CreateAndUpdateHeaderGroup('raid'..i); end,
-					},
-					rangeCheck = {
-						order = 3,
-						name = L["Range Check"],
-						desc = L["Check if you are in range to cast spells on this specific unit."],
-						type = "toggle",
-					},						
-					healPrediction = {
-						order = 4,
-						name = L['Heal Prediction'],
-						desc = L['Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals.'],
-						type = 'toggle',
-					},		
-					threatStyle = {
-						type = 'select',
-						order = 5,
-						name = L['Threat Display Mode'],
-						values = threatValues,
-					},	
-					colorOverride = {
-						order = 6,
-						name = L['Class Color Override'],
-						desc = L['Override the default class color setting.'],
-						type = 'select',
-						values = {
-							['USE_DEFAULT'] = L['Use Default'],
-							['FORCE_ON'] = L['Force On'],
-							['FORCE_OFF'] = L['Force Off'],
-						},
-					},									
-					positionsGroup = {
-						order = 100,
-						name = L['Size and Positions'],
-						type = 'group',
-						guiInline = true,
-						set = function(info, value) E.db.unitframe.units['raid'..i][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i, nil, nil, true) end,
-						args = {
-							width = {
-								order = 1,
-								name = L['Width'],
-								type = 'range',
-								min = 10, max = 500, step = 1,
-								set = function(info, value) E.db.unitframe.units['raid'..i][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i) end,
-							},			
-							height = {
-								order = 2,
-								name = L['Height'],
-								type = 'range',
-								min = 10, max = 500, step = 1,
-								set = function(info, value) E.db.unitframe.units['raid'..i][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i) end,
-							},	
-							spacer = {
-								order = 3,
-								name = '',
-								type = 'description',
-								width = 'full',
-							},
-							growthDirection = {
-								order = 4,
-								name = L['Growth Direction'],
-								desc = L['Growth direction from the first unitframe.'],
-								type = 'select',
-								values = {
-									DOWN_RIGHT = format(L['%s and then %s'], L['Down'], L['Right']),
-									DOWN_LEFT = format(L['%s and then %s'], L['Down'], L['Left']),
-									UP_RIGHT = format(L['%s and then %s'], L['Up'], L['Right']),
-									UP_LEFT = format(L['%s and then %s'], L['Up'], L['Left']),
-									RIGHT_DOWN = format(L['%s and then %s'], L['Right'], L['Down']),
-									RIGHT_UP = format(L['%s and then %s'], L['Right'], L['Up']),
-									LEFT_DOWN = format(L['%s and then %s'], L['Left'], L['Down']),
-									LEFT_UP = format(L['%s and then %s'], L['Left'], L['Up']),		
-								},
-							},								
-							numGroups = {
-								order = 7,
-								type = 'range',
-								name = L['Number of Groups'],
-								min = 1, max = 8, step = 1,
-								set = function(info, value) 
-									E.db.unitframe.units['raid'..i][ info[#info] ] = value; 
-									UF:CreateAndUpdateHeaderGroup('raid'..i)
-									if _G['ElvUF_Raid'..i].isForced then
-										UF:HeaderConfig(_G['ElvUF_Raid'..i])
-										UF:HeaderConfig(_G['ElvUF_Raid'..i], true)
-									end									
-								end,
-							},
-							groupsPerRowCol = {
-								order = 8,
-								type = 'range',
-								name = L['Groups Per Row/Column'],
-								min = 1, max = 8, step = 1,
-								set = function(info, value) 
-									E.db.unitframe.units['raid'..i][ info[#info] ] = value; 
-									UF:CreateAndUpdateHeaderGroup('raid'..i)
-									if _G['ElvUF_Raid'..i].isForced then
-										UF:HeaderConfig(_G['ElvUF_Raid'..i])
-										UF:HeaderConfig(_G['ElvUF_Raid'..i], true)
-									end			
-								end,
-							},								
-							horizontalSpacing = {
-								order = 9,
-								type = 'range',
-								name = L['Horizontal Spacing'],
-								min = 0, max = 50, step = 1,		
-							},
-							verticalSpacing = {
-								order = 10,
-								type = 'range',
-								name = L['Vertical Spacing'],
-								min = 0, max = 50, step = 1,		
-							},					
-						},
-					},
-					visibilityGroup = {
-						order = 200,
-						name = L['Visibility'],
-						type = 'group',
-						guiInline = true,
-						set = function(info, value) E.db.unitframe.units['raid'..i][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i, nil, nil, true) end,
-						args = {
-							showPlayer = {
-								order = 1,
-								type = 'toggle',
-								name = L['Display Player'],
-								desc = L['When true, the header includes the player when not in a raid.'],			
-							},		
-							visibility = {
-								order = 2,
-								type = 'input',
-								name = L['Visibility'],
-								desc = L['The following macro must be true in order for the group to be shown, in addition to any filter that may already be set.'],
-								width = 'full',
-							},							
-						},
-					},
-					sortingGroup = {
-						order = 300,
-						type = 'group',
-						guiInline = true,
-						name = L['Grouping & Sorting'],
-						set = function(info, value) E.db.unitframe.units['raid'..i][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i, nil, nil, true) end,
-						args = {
-							groupBy = {
-								order = 1,
-								name = L['Group By'],
-								desc = L['Set the order that the group will sort.'],
-								type = 'select',		
-								values = {
-									['CLASS'] = CLASS,
-									['ROLE'] = ROLE,
-									['NAME'] = NAME,
-									['MTMA'] = L['Main Tanks / Main Assist'],
-									['GROUP'] = GROUP,
-								},
-							},
-							sortDir = {
-								order = 2,
-								name = L['Sort Direction'],
-								desc = L['Defines the sort order of the selected sort method.'],
-								type = 'select',
-								values = {
-									['ASC'] = L['Ascending'],
-									['DESC'] = L['Descending']
-								},
-							},	
-							spacer = {
-								order = 3,
-								type = 'description',
-								width = 'full',
-								name = ' '
-							},
-							raidWideSorting = {
-								order = 4,
-								name = L['Raid-Wide Sorting'],
-								desc = L['Enabling this allows raid-wide sorting however you will not be able to distinguish between groups.'],
-								type = 'toggle',
-							},
-							invertGroupingOrder = {
-								order = 5,
-								name = L['Invert Grouping Order'],
-								desc = L['Enabling this inverts the grouping order when the raid is not full, this will reverse the direction it starts from.'],
-								disabled = function() return not E.db.unitframe.units['raid'..i].raidWideSorting end,
-								type = 'toggle',
-							},	
-							startFromCenter = {
-								order = 6,
-								name = L['Start Near Center'],
-								desc = L['The initial group will start near the center and grow out.'],
-								disabled = function() return not E.db.unitframe.units['raid'..i].raidWideSorting end,
-								type = 'toggle',
-							},														
-						},
-					},							
-				},
-			},	
-			health = GetOptionsTable_Health(true, UF.CreateAndUpdateHeaderGroup, 'raid'..i),
-			power = GetOptionsTable_Power(false, UF.CreateAndUpdateHeaderGroup, 'raid'..i),	
-			name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'raid'..i),
-			buffs = GetOptionsTable_Auras(true, 'buffs', true, UF.CreateAndUpdateHeaderGroup, 'raid'..i),
-			debuffs = GetOptionsTable_Auras(true, 'debuffs', true, UF.CreateAndUpdateHeaderGroup, 'raid'..i),
-			buffIndicator = {
-				order = 600,
-				type = 'group',
-				name = L['Buff Indicator'],
-				get = function(info) return E.db.unitframe.units['raid'..i]['buffIndicator'][ info[#info] ] end,
-				set = function(info, value) E.db.unitframe.units['raid'..i]['buffIndicator'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i) end,
-				args = {
-					enable = {
-						type = 'toggle',
-						name = L['Enable'],
-						order = 1,
-					},
-					size = {
-						type = 'range',
-						name = L['Size'],
-						desc = L['Size of the indicator icon.'],
-						order = 3,
-						min = 4, max = 15, step = 1,
-					},
-					fontSize = {
-						type = 'range',
-						name = L['Font Size'],
-						order = 4,
-						min = 7, max = 22, step = 1,
-					},
-					configureButton = {
-						type = 'execute', 
-						name = L['Configure Auras'],
-						func = function() E:SetToFilterConfig('Buff Indicator') end,
-						order = 5
-					},					
-				},
-			},	
-			roleIcon = {
-				order = 700,
-				type = 'group',
-				name = L['Role Icon'],
-				get = function(info) return E.db.unitframe.units['raid'..i]['roleIcon'][ info[#info] ] end,
-				set = function(info, value) E.db.unitframe.units['raid'..i]['roleIcon'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i) end,	
-				args = {
-					enable = {
-						type = 'toggle',
-						name = L['Enable'],
-						order = 1,
-					},
-					position = {
-						type = 'select',
-						order = 2,
-						name = L['Position'],
-						values = positionValues,
-					},		
-					size = {
-						type = 'range',
-						order = 3,
-						name = L['Size'],
-						min = 4, max = 100, step = 1,
-					},					
-				},
-			},	
-			raidRoleIcons = {
-				order = 750,
-				type = 'group',
-				name = L['RL / ML Icons'],
-				get = function(info) return E.db.unitframe.units['raid'..i]['raidRoleIcons'][ info[#info] ] end,
-				set = function(info, value) E.db.unitframe.units['raid'..i]['raidRoleIcons'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i) end,	
-				args = {
-					enable = {
-						type = 'toggle',
-						name = L['Enable'],
-						order = 1,
-					},
-					position = {
-						type = 'select',
-						order = 2,
-						name = L['Position'],
-						values = {
-							['TOPLEFT'] = 'TOPLEFT',
-							['TOPRIGHT'] = 'TOPRIGHT',
-						},
-					},							
-				},
-			},				
-			rdebuffs = {
-				order = 800,
-				type = 'group',
-				name = L['RaidDebuff Indicator'],
-				get = function(info) return E.db.unitframe.units['raid'..i]['rdebuffs'][ info[#info] ] end,
-				set = function(info, value) E.db.unitframe.units['raid'..i]['rdebuffs'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid'..i) end,
-				args = {
-					enable = {
-						type = 'toggle',
-						name = L['Enable'],
-						order = 1,
-					},	
-					size = {
-						type = 'range',
-						name = L['Size'],
-						order = 2,
-						min = 8, max = 35, step = 1,
-					},				
-					fontSize = {
-						type = 'range',
-						name = L['Font Size'],
-						order = 3,
-						min = 7, max = 22, step = 1,
-					},	
-					xOffset = {
-						order = 4,
-						type = 'range',
-						name = L['xOffset'],
-						min = -300, max = 300, step = 1,
-					},
-					yOffset = {
-						order = 5,
-						type = 'range',
-						name = L['yOffset'],
-						min = -300, max = 300, step = 1,
-					},		
-					configureButton = {
-						type = 'execute', 
-						name = L['Configure Auras'],
-						func = function() E:SetToFilterConfig('RaidDebuffs') end,
-						order = 7
-					},					
-				},
-			},
-			raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'raid'..i),	
-			GPSArrow = GetOptionsTable_GPS('raid'..i)	
+			set = function(info, value) UF:MergeUnitSettings(value, 'raid', true); end,
 		},
-	}
-end
+		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateHeaderGroup, 'raid', nil, 4),			
+		general = {
+			order = 5,
+			type = 'group',
+			name = L['General'],
+			args = {
+				enable = {
+					type = 'toggle',
+					order = 1,
+					name = L['Enable'],
+				},
+				hideonnpc = {
+					type = 'toggle',
+					order = 2,
+					name = L['Text Toggle On NPC'],
+					desc = L['Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point.'],
+					get = function(info) return E.db.unitframe.units['raid']['power'].hideonnpc end,
+					set = function(info, value) E.db.unitframe.units['raid']['power'].hideonnpc = value; UF:CreateAndUpdateHeaderGroup('raid'); end,
+				},
+				rangeCheck = {
+					order = 3,
+					name = L["Range Check"],
+					desc = L["Check if you are in range to cast spells on this specific unit."],
+					type = "toggle",
+				},						
+				healPrediction = {
+					order = 4,
+					name = L['Heal Prediction'],
+					desc = L['Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals.'],
+					type = 'toggle',
+				},		
+				threatStyle = {
+					type = 'select',
+					order = 5,
+					name = L['Threat Display Mode'],
+					values = threatValues,
+				},	
+				colorOverride = {
+					order = 6,
+					name = L['Class Color Override'],
+					desc = L['Override the default class color setting.'],
+					type = 'select',
+					values = {
+						['USE_DEFAULT'] = L['Use Default'],
+						['FORCE_ON'] = L['Force On'],
+						['FORCE_OFF'] = L['Force Off'],
+					},
+				},									
+				positionsGroup = {
+					order = 100,
+					name = L['Size and Positions'],
+					type = 'group',
+					guiInline = true,
+					set = function(info, value) E.db.unitframe.units['raid'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid', nil, nil, true) end,
+					args = {
+						width = {
+							order = 1,
+							name = L['Width'],
+							type = 'range',
+							min = 10, max = 500, step = 1,
+							set = function(info, value) E.db.unitframe.units['raid'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid') end,
+						},			
+						height = {
+							order = 2,
+							name = L['Height'],
+							type = 'range',
+							min = 10, max = 500, step = 1,
+							set = function(info, value) E.db.unitframe.units['raid'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid') end,
+						},	
+						spacer = {
+							order = 3,
+							name = '',
+							type = 'description',
+							width = 'full',
+						},
+						growthDirection = {
+							order = 4,
+							name = L['Growth Direction'],
+							desc = L['Growth direction from the first unitframe.'],
+							type = 'select',
+							values = {
+								DOWN_RIGHT = format(L['%s and then %s'], L['Down'], L['Right']),
+								DOWN_LEFT = format(L['%s and then %s'], L['Down'], L['Left']),
+								UP_RIGHT = format(L['%s and then %s'], L['Up'], L['Right']),
+								UP_LEFT = format(L['%s and then %s'], L['Up'], L['Left']),
+								RIGHT_DOWN = format(L['%s and then %s'], L['Right'], L['Down']),
+								RIGHT_UP = format(L['%s and then %s'], L['Right'], L['Up']),
+								LEFT_DOWN = format(L['%s and then %s'], L['Left'], L['Down']),
+								LEFT_UP = format(L['%s and then %s'], L['Left'], L['Up']),		
+							},
+						},								
+						numGroups = {
+							order = 7,
+							type = 'range',
+							name = L['Number of Groups'],
+							min = 1, max = 8, step = 1,
+							set = function(info, value) 
+								E.db.unitframe.units['raid'][ info[#info] ] = value; 
+								UF:CreateAndUpdateHeaderGroup('raid')
+								if _G['ElvUF_Raid'].isForced then
+									UF:HeaderConfig(_G['ElvUF_Raid'])
+									UF:HeaderConfig(_G['ElvUF_Raid'], true)
+								end									
+							end,
+						},
+						groupsPerRowCol = {
+							order = 8,
+							type = 'range',
+							name = L['Groups Per Row/Column'],
+							min = 1, max = 8, step = 1,
+							set = function(info, value) 
+								E.db.unitframe.units['raid'][ info[#info] ] = value; 
+								UF:CreateAndUpdateHeaderGroup('raid')
+								if _G['ElvUF_Raid'].isForced then
+									UF:HeaderConfig(_G['ElvUF_Raid'])
+									UF:HeaderConfig(_G['ElvUF_Raid'], true)
+								end			
+							end,
+						},								
+						horizontalSpacing = {
+							order = 9,
+							type = 'range',
+							name = L['Horizontal Spacing'],
+							min = 0, max = 50, step = 1,		
+						},
+						verticalSpacing = {
+							order = 10,
+							type = 'range',
+							name = L['Vertical Spacing'],
+							min = 0, max = 50, step = 1,		
+						},					
+					},
+				},
+				visibilityGroup = {
+					order = 200,
+					name = L['Visibility'],
+					type = 'group',
+					guiInline = true,
+					set = function(info, value) E.db.unitframe.units['raid'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid', nil, nil, true) end,
+					args = {
+						showPlayer = {
+							order = 1,
+							type = 'toggle',
+							name = L['Display Player'],
+							desc = L['When true, the header includes the player when not in a raid.'],			
+						},		
+						visibility = {
+							order = 2,
+							type = 'input',
+							name = L['Visibility'],
+							desc = L['The following macro must be true in order for the group to be shown, in addition to any filter that may already be set.'],
+							width = 'full',
+						},							
+					},
+				},
+				sortingGroup = {
+					order = 300,
+					type = 'group',
+					guiInline = true,
+					name = L['Grouping & Sorting'],
+					set = function(info, value) E.db.unitframe.units['raid'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid', nil, nil, true) end,
+					args = {
+						groupBy = {
+							order = 1,
+							name = L['Group By'],
+							desc = L['Set the order that the group will sort.'],
+							type = 'select',		
+							values = {
+								['CLASS'] = CLASS,
+								['ROLE'] = ROLE,
+								['NAME'] = NAME,
+								['MTMA'] = L['Main Tanks / Main Assist'],
+								['GROUP'] = GROUP,
+							},
+						},
+						sortDir = {
+							order = 2,
+							name = L['Sort Direction'],
+							desc = L['Defines the sort order of the selected sort method.'],
+							type = 'select',
+							values = {
+								['ASC'] = L['Ascending'],
+								['DESC'] = L['Descending']
+							},
+						},	
+						spacer = {
+							order = 3,
+							type = 'description',
+							width = 'full',
+							name = ' '
+						},
+						raidWideSorting = {
+							order = 4,
+							name = L['Raid-Wide Sorting'],
+							desc = L['Enabling this allows raid-wide sorting however you will not be able to distinguish between groups.'],
+							type = 'toggle',
+						},
+						invertGroupingOrder = {
+							order = 5,
+							name = L['Invert Grouping Order'],
+							desc = L['Enabling this inverts the grouping order when the raid is not full, this will reverse the direction it starts from.'],
+							disabled = function() return not E.db.unitframe.units['raid'].raidWideSorting end,
+							type = 'toggle',
+						},	
+						startFromCenter = {
+							order = 6,
+							name = L['Start Near Center'],
+							desc = L['The initial group will start near the center and grow out.'],
+							disabled = function() return not E.db.unitframe.units['raid'].raidWideSorting end,
+							type = 'toggle',
+						},														
+					},
+				},							
+			},
+		},	
+		health = GetOptionsTable_Health(true, UF.CreateAndUpdateHeaderGroup, 'raid'),
+		power = GetOptionsTable_Power(false, UF.CreateAndUpdateHeaderGroup, 'raid'),	
+		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'raid'),
+		buffs = GetOptionsTable_Auras(true, 'buffs', true, UF.CreateAndUpdateHeaderGroup, 'raid'),
+		debuffs = GetOptionsTable_Auras(true, 'debuffs', true, UF.CreateAndUpdateHeaderGroup, 'raid'),
+		buffIndicator = {
+			order = 600,
+			type = 'group',
+			name = L['Buff Indicator'],
+			get = function(info) return E.db.unitframe.units['raid']['buffIndicator'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['raid']['buffIndicator'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid') end,
+			args = {
+				enable = {
+					type = 'toggle',
+					name = L['Enable'],
+					order = 1,
+				},
+				size = {
+					type = 'range',
+					name = L['Size'],
+					desc = L['Size of the indicator icon.'],
+					order = 3,
+					min = 4, max = 15, step = 1,
+				},
+				fontSize = {
+					type = 'range',
+					name = L['Font Size'],
+					order = 4,
+					min = 7, max = 22, step = 1,
+				},
+				configureButton = {
+					type = 'execute', 
+					name = L['Configure Auras'],
+					func = function() E:SetToFilterConfig('Buff Indicator') end,
+					order = 5
+				},					
+			},
+		},	
+		roleIcon = {
+			order = 700,
+			type = 'group',
+			name = L['Role Icon'],
+			get = function(info) return E.db.unitframe.units['raid']['roleIcon'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['raid']['roleIcon'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid') end,	
+			args = {
+				enable = {
+					type = 'toggle',
+					name = L['Enable'],
+					order = 1,
+				},
+				position = {
+					type = 'select',
+					order = 2,
+					name = L['Position'],
+					values = positionValues,
+				},		
+				size = {
+					type = 'range',
+					order = 3,
+					name = L['Size'],
+					min = 4, max = 100, step = 1,
+				},					
+			},
+		},	
+		raidRoleIcons = {
+			order = 750,
+			type = 'group',
+			name = L['RL / ML Icons'],
+			get = function(info) return E.db.unitframe.units['raid']['raidRoleIcons'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['raid']['raidRoleIcons'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid') end,	
+			args = {
+				enable = {
+					type = 'toggle',
+					name = L['Enable'],
+					order = 1,
+				},
+				position = {
+					type = 'select',
+					order = 2,
+					name = L['Position'],
+					values = {
+						['TOPLEFT'] = 'TOPLEFT',
+						['TOPRIGHT'] = 'TOPRIGHT',
+					},
+				},							
+			},
+		},				
+		rdebuffs = {
+			order = 800,
+			type = 'group',
+			name = L['RaidDebuff Indicator'],
+			get = function(info) return E.db.unitframe.units['raid']['rdebuffs'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['raid']['rdebuffs'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('raid') end,
+			args = {
+				enable = {
+					type = 'toggle',
+					name = L['Enable'],
+					order = 1,
+				},	
+				size = {
+					type = 'range',
+					name = L['Size'],
+					order = 2,
+					min = 8, max = 35, step = 1,
+				},				
+				fontSize = {
+					type = 'range',
+					name = L['Font Size'],
+					order = 3,
+					min = 7, max = 22, step = 1,
+				},	
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L['xOffset'],
+					min = -300, max = 300, step = 1,
+				},
+				yOffset = {
+					order = 5,
+					type = 'range',
+					name = L['yOffset'],
+					min = -300, max = 300, step = 1,
+				},		
+				configureButton = {
+					type = 'execute', 
+					name = L['Configure Auras'],
+					func = function() E:SetToFilterConfig('RaidDebuffs') end,
+					order = 7
+				},					
+			},
+		},
+		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'raid'),	
+		GPSArrow = GetOptionsTable_GPS('raid')	
+	},
+}
 
 --Raid Pet Frames
 E.Options.args.unitframe.args.raidpet = {
