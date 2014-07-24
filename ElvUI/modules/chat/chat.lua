@@ -177,9 +177,9 @@ local specialChatIcons = {
 		["Seleri"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\canada_flag.tga:18:20|t",
 		["Dunkington"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\canada_flag.tga:18:20|t",		
 	},
-	["Darkspear"] = {
+	["Stormreaver"] = {
 		["Elvz"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\ElvUI_Chat_Logo:13:22|t",
-		["Ophelia"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\ElvUI_Chat_Logo:13:22|t",
+		["Meuna"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\ElvUI_Chat_Logo:13:22|t",
 	},
 }
 
