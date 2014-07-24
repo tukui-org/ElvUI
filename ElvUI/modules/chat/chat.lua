@@ -791,6 +791,10 @@ local function GetBNFriendColor(name, id)
 end
 
 
+function CH:GetPluginReplacementIcon(nameRealm)
+	return 
+end
+
 E.NameReplacements = {}
 function CH:ChatFrame_MessageEventHandler(event, ...)
 	if ( strsub(event, 1, 8) == "CHAT_MSG" ) then
@@ -1042,9 +1046,14 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 								pflag = texture
 							end		
 						end
-					end		
+					end
+				else
+					local pluginIcon = CH:GetPluginReplacementIcon(arg2)
+					if(pluginIcon) then
+						pflag = pluginIcon
+					end
 				end
-				
+
 				if(pflag == true) then
 					pflag = nil
 				end
