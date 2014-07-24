@@ -2,8 +2,8 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local M = E:NewModule('Minimap', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
 E.Minimap = M
 
---local Astrolabe = DongleStub("Astrolabe-1.0")
---local AstrolabeMapMonitor = DongleStub("AstrolabeMapMonitor")
+local Astrolabe = DongleStub("Astrolabe-1.0")
+local AstrolabeMapMonitor = DongleStub("AstrolabeMapMonitor")
 
 local gsub = string.gsub
 local upper = string.upper
@@ -50,13 +50,6 @@ local menuList = {
 	func = function() ToggleFriendsFrame() end},
 	{text = calendar_string,
 	func = function() GameTimeFrame:Click() end},
-	{text = PLAYER_V_PLAYER,
-	func = function()
-		if not PVPUIFrame then
-			PVP_LoadUI()
-		end	
-		ToggleFrame(PVPUIFrame) 
-	end},
 	{text = ACHIEVEMENTS_GUILD_TAB,
 	func = function()
 		if IsInGuild() then
@@ -354,7 +347,7 @@ function M:Initialize()
 	fm:SetMovable(true)
 	fm:SetScript("OnDragStart", function(self) self:StartMoving() end)
 	fm:SetScript("OnDragStop", function(self) self:StopMovingOrSizing() end)
-	--AstrolabeMapMonitor:MonitorWorldMap(fm)
+	AstrolabeMapMonitor:MonitorWorldMap(fm)
 	fm:Hide()
 	E.FrameLocks['FarmModeMap'] = true;
 	
@@ -376,7 +369,7 @@ function M:Initialize()
 		if IsAddOnLoaded('GatherMate2') then
 			LibStub('AceAddon-3.0'):GetAddon('GatherMate2'):GetModule('Display'):ReparentMinimapPins(FarmModeMap)
 		end		
-		--Astrolabe:SetTargetMinimap(FarmModeMap)
+		Astrolabe:SetTargetMinimap(FarmModeMap)
 	end)
 	
 	FarmModeMap:SetScript('OnHide', function() 
@@ -395,7 +388,7 @@ function M:Initialize()
 		if IsAddOnLoaded('GatherMate2') then
 			LibStub('AceAddon-3.0'):GetAddon('GatherMate2'):GetModule('Display'):ReparentMinimapPins(Minimap)
 		end	
-		--Astrolabe:SetTargetMinimap(Minimap)
+		Astrolabe:SetTargetMinimap(Minimap)
 	end)
 
 	

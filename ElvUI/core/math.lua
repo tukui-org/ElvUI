@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 
---local Astrolabe = DongleStub("Astrolabe-1.0") 
+local Astrolabe = DongleStub("Astrolabe-1.0") 
 local format = string.format
 local sub = string.sub
 local upper = string.upper
@@ -273,9 +273,7 @@ end
 
 local ninetyDegreeAngleInRadians = (3.141592653589793 / 2) 
 local function GetPosition(unit, mapScan)
-	return;
-
-	--[[local m, f, x, y
+	local m, f, x, y
 	if unit == "player" or UnitIsUnit("player", unit) then
 		m, f, x, y = Astrolabe:GetCurrentPlayerPosition()
 	else
@@ -286,7 +284,7 @@ local function GetPosition(unit, mapScan)
 		return false
 	else
 		return true, m, f, x, y
-	end]]
+	end
 end
 
 function E:GetDistance(unit1, unit2, mapScan)
