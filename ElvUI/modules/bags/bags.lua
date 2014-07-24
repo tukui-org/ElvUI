@@ -216,7 +216,7 @@ function B:UpdateCooldowns()
 	for _, bagID in ipairs(self.BagIDs) do
 		for slotID = 1, GetContainerNumSlots(bagID) do
 			local start, duration, enable = GetContainerItemCooldown(bagID, slotID)
-			--CooldownFrame_SetTimer(self.Bags[bagID][slotID].cooldown, start, duration, enable)
+			CooldownFrame_SetTimer(self.Bags[bagID][slotID].cooldown, start, duration, enable)
 			if ( duration > 0 and enable == 0 ) then
 				SetItemButtonTextureVertexColor(self.Bags[bagID][slotID], 0.4, 0.4, 0.4);
 			else
