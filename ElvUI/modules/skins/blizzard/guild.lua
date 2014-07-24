@@ -13,7 +13,6 @@ local function LoadSkin()
 	S:HandleCloseButton(GuildFrameCloseButton)
 	
 	local striptextures = {
-		"GuildNewPerksFrame",
 		"GuildFrameInset",
 		"GuildFrameBottomInset",
 		"GuildAllPerksFrame",
@@ -40,7 +39,7 @@ local function LoadSkin()
 	GuildRewardsFrameVisitText:ClearAllPoints()
 	GuildRewardsFrameVisitText:SetPoint("TOP", GuildRewardsFrame, "TOP", 0, 30)
 	for _, frame in pairs(striptextures) do
-		--_G[frame]:StripTextures()
+		_G[frame]:StripTextures()
 	end
 	
 	GuildNewsBossModel:CreateBackdrop("Transparent")
@@ -49,7 +48,6 @@ local function LoadSkin()
 	GuildNewsBossModel:Point("TOPLEFT", GuildFrame, "TOPRIGHT", 4, -43)
 	
 	local buttons = {
-		"GuildPerksToggleButton",
 		"GuildMemberRemoveButton",
 		"GuildMemberGroupInviteButton",
 		"GuildAddMemberButton",
@@ -62,13 +60,13 @@ local function LoadSkin()
 		"GuildRecruitmentDeclineButton",
 	}
 	
-	--[[for i, button in pairs(buttons) do
+	for i, button in pairs(buttons) do
 		if i == 1 then
 			S:HandleButton(_G[button])
 		else
 			S:HandleButton(_G[button], true)
 		end
-	end]]
+	end
 
 	local checkbuttons = {
 		"Quest", 

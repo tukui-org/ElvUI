@@ -127,7 +127,7 @@ local function LoadSkin()
 	S:HandleScrollBar(EncounterJournalEncounterFrameInstanceFrameLoreScrollFrameScrollBar, 4)
 	S:HandleScrollBar(EncounterJournalEncounterFrameInfoBossesScrollFrameScrollBar, 4)
 	
-	EncounterJournalEncounterFrameInfoBossTab:GetNormalTexture():SetTexture(nil)
+	--[[EncounterJournalEncounterFrameInfoBossTab:GetNormalTexture():SetTexture(nil)
 	EncounterJournalEncounterFrameInfoBossTab:GetPushedTexture():SetTexture(nil)
 	EncounterJournalEncounterFrameInfoBossTab:GetDisabledTexture():SetTexture(nil)
 	EncounterJournalEncounterFrameInfoBossTab:GetHighlightTexture():SetTexture(nil)
@@ -161,7 +161,7 @@ local function LoadSkin()
 	
 	EncounterJournalEncounterFrameInfoBossTab.backdrop.backdropTexture:SetVertexColor(189/255, 159/255, 88/255)
 	EncounterJournalEncounterFrameInfoLootTab.backdrop.backdropTexture:SetVertexColor(189/255, 159/255, 88/255)
-	EncounterJournalEncounterFrameInfoModelTab.backdrop.backdropTexture:SetVertexColor(189/255, 159/255, 88/255)
+	EncounterJournalEncounterFrameInfoModelTab.backdrop.backdropTexture:SetVertexColor(189/255, 159/255, 88/255)]]
 end
 
 S:RegisterSkin('Blizzard_EncounterJournal', LoadSkin)
