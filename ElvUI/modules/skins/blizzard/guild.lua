@@ -7,7 +7,7 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.guild ~= true then return end
 	GuildFrame:StripTextures(true)
 	GuildFrame:SetTemplate("Transparent")
-	GuildLevelFrame:Kill()
+	--GuildLevelFrame:Kill()
 	
 	S:HandleCloseButton(GuildMemberDetailCloseButton)
 	S:HandleCloseButton(GuildFrameCloseButton)
@@ -40,7 +40,7 @@ local function LoadSkin()
 	GuildRewardsFrameVisitText:ClearAllPoints()
 	GuildRewardsFrameVisitText:SetPoint("TOP", GuildRewardsFrame, "TOP", 0, 30)
 	for _, frame in pairs(striptextures) do
-		_G[frame]:StripTextures()
+		--_G[frame]:StripTextures()
 	end
 	
 	GuildNewsBossModel:CreateBackdrop("Transparent")
@@ -62,13 +62,13 @@ local function LoadSkin()
 		"GuildRecruitmentDeclineButton",
 	}
 	
-	for i, button in pairs(buttons) do
+	--[[for i, button in pairs(buttons) do
 		if i == 1 then
 			S:HandleButton(_G[button])
 		else
 			S:HandleButton(_G[button], true)
 		end
-	end
+	end]]
 
 	local checkbuttons = {
 		"Quest", 
@@ -93,9 +93,7 @@ local function LoadSkin()
 	for i=1,5 do
 		S:HandleTab(_G["GuildFrameTab"..i])
 	end
-	GuildXPFrame:ClearAllPoints()
-	GuildXPFrame:Point("TOP", GuildFrame, "TOP", 0, -40)
-	
+
 	S:HandleScrollBar(GuildPerksContainerScrollBar, 4)
 	
 	GuildFactionBar:StripTextures()
@@ -103,42 +101,8 @@ local function LoadSkin()
 	GuildFactionBar:CreateBackdrop("Default")
 	GuildFactionBar.backdrop:Point("TOPLEFT", GuildFactionBar.progress, "TOPLEFT", -E.Border, E.Border)
 	GuildFactionBar.backdrop:Point("BOTTOMRIGHT", GuildFactionBar, "BOTTOMRIGHT", E.Spacing, E.PixelMode and 1 or 0)
-	
-	GuildXPBar:StripTextures()
-	GuildXPBar.progress:SetTexture(E["media"].normTex)
-	GuildXPBar:CreateBackdrop("Default")
-	GuildXPBar.backdrop:Point("TOPLEFT", GuildXPBar, "TOPLEFT", -E.Spacing, -(E.PixelMode and 3 or 2))
-	GuildXPBar.backdrop:Point("BOTTOMRIGHT", GuildXPBar, "BOTTOMRIGHT", 0, E.PixelMode and 1 or 0)
-	
-	GuildLatestPerkButton:StripTextures()
-	GuildLatestPerkButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
-	GuildLatestPerkButtonIconTexture:ClearAllPoints()
-	GuildLatestPerkButtonIconTexture:Point("TOPLEFT", 2, -2)
-	GuildLatestPerkButton:CreateBackdrop("Default")
-	GuildLatestPerkButton.backdrop:SetOutside(GuildLatestPerkButtonIconTexture)
-	
-	GuildNextPerkButton:StripTextures()
-	GuildNextPerkButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
-	GuildNextPerkButtonIconTexture:ClearAllPoints()
-	GuildNextPerkButtonIconTexture:Point("TOPLEFT", 2, -2)
-	GuildNextPerkButton:CreateBackdrop("Default")
-	GuildNextPerkButton.backdrop:SetOutside(GuildNextPerkButtonIconTexture)
-	
-	--Guild Perk buttons list
-	for i=1, 8 do
-		local button = _G["GuildPerksContainerButton"..i]
-		button:StripTextures()
-		
-		if button.icon then
-			button.icon:SetTexCoord(unpack(E.TexCoords))
-			button.icon:ClearAllPoints()
-			button.icon:Point("TOPLEFT", 2, -2)
-			button:CreateBackdrop("Default")
-			button.backdrop:SetOutside(button.icon)
-			button.icon:SetParent(button.backdrop)
-		end
-	end
-	
+
+
 	--Roster
 	S:HandleScrollBar(GuildRosterContainerScrollBar, 5)
 	S:HandleCheckBox(GuildRosterShowOfflineButton)
