@@ -221,6 +221,18 @@ function S:HandleEditBox(frame)
 			frame.backdrop:Point("BOTTOMRIGHT", -12, -2)
 		end		
 	end
+
+	if(frame.Left) then
+		frame.Left:Kill()
+	end
+
+	if(frame.Right) then
+		frame.Right:Kill()
+	end
+
+	if(frame.Middle) then
+		frame.Middle:Kill()
+	end
 end
 
 function S:HandleDropDownBox(frame, width)
