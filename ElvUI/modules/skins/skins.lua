@@ -315,19 +315,33 @@ function S:HandleCheckBox(frame, noBackdrop)
 	end)		
 end
 
+function S:HandleIcon(icon, parent)
+	parent = parent or icon:GetParent();
+
+	icon:SetTexCoord(unpack(E.TexCoords))
+	parent:CreateBackdrop('Default')
+	icon:SetParent(parent.backdrop)
+	parent.backdrop:SetOutside(icon)
+end
+
 function S:HandleItemButton(b, shrinkIcon)
 	if b.isSkinned then return; end
 
-	b:StripTextures()
-	b:CreateBackdrop('Default', true)
-	b:StyleButton()
-	
 	local icon = b.icon or b.IconTexture
+	local texture
 	if b:GetName() and _G[b:GetName()..'IconTexture'] then
 		icon = _G[b:GetName()..'IconTexture']
 	elseif b:GetName() and _G[b:GetName()..'Icon'] then
 		icon = _G[b:GetName()..'Icon']
 	end
+
+	if(icon and icon:GetTexture()) then
+		texture = icon:GetTexture()
+	end
+
+	b:StripTextures()
+	b:CreateBackdrop('Default', true)
+	b:StyleButton()
 	
 	if icon then
 		icon:SetTexCoord(unpack(E.TexCoords))
@@ -341,6 +355,10 @@ function S:HandleItemButton(b, shrinkIcon)
 			b.backdrop:SetOutside(icon)
 		end
 		icon:SetParent(b.backdrop)
+
+		if(texture) then
+			icon:SetTexture(texture)
+		end
 	end
 	b.isSkinned = true
 end

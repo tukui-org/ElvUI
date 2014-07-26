@@ -7,10 +7,17 @@ local function LoadSkin()
 	PetJournalParent:StripTextures()
 	PetJournalParent:SetTemplate('Transparent')
 	PetJournalParentPortrait:Hide()
-	S:HandleTab(PetJournalParentTab1)
-	S:HandleTab(PetJournalParentTab2)
-	S:HandleCloseButton(PetJournalParentCloseButton)
 
+	for i=1, 3 do
+		S:HandleTab(_G['PetJournalParentTab'..i])
+	end
+	
+	S:HandleCloseButton(PetJournalParentCloseButton)
+	S:HandleItemButton(MountJournalSummonRandomFavoriteButton)
+	S:HandleButton(MountJournalFilterButton)
+
+	MountJournalFilterButton:ClearAllPoints()
+	MountJournalFilterButton:SetPoint("LEFT", MountJournalSearchBox, "RIGHT", 5, 0)
 	-------------------------------
 	--[[ mount journal (tab 1) ]]--
 	-------------------------------
@@ -21,6 +28,9 @@ local function LoadSkin()
 	MountJournal.MountDisplay:StripTextures()
 	MountJournal.MountDisplay.ShadowOverlay:StripTextures()
 	MountJournal.MountCount:StripTextures()
+
+	S:HandleIcon(MountJournal.MountDisplay.InfoButton.Icon)
+
 	S:HandleButton(MountJournalMountButton, true)
 	S:HandleEditBox(MountJournalSearchBox)
 	S:HandleScrollBar(MountJournalListScrollFrameScrollBar)
@@ -86,6 +96,7 @@ local function LoadSkin()
 		b.dragButton.favorite:SetParent(b.backdrop)
 		b.dragButton.levelBG:SetAlpha(0)
 		b.dragButton.level:SetParent(b.backdrop)
+		b.dragButton.ActiveTexture:Kill()
 	end
 
 
@@ -214,6 +225,37 @@ local function LoadSkin()
 	PetJournalPetCardXPBar:StripTextures()
 	PetJournalPetCardXPBar:CreateBackdrop('Default')	
 	PetJournalPetCardXPBar:SetStatusBarTexture(E.media.normTex)
+
+
+	--Toy Box
+	S:HandleButton(ToyBoxFilterButton)
+	S:HandleEditBox(ToyBoxSearchBox)
+
+	ToyBoxFilterButton:SetPoint("TOPRIGHT", ToyBox, "TOPRIGHT", -15, -34)
+
+	S:HandleNextPrevButton(ToyBoxNextPageButton)
+	S:HandleNextPrevButton(ToyBoxPrevPageButton)
+
+	ToyBoxIconsFrame:StripTextures()
+
+	for i=1, 18 do
+		S:HandleItemButton(_G["ToySpellButton"..i])
+		_G["ToySpellButton"..i].hover:SetAllPoints(_G["ToySpellButton"..i.."IconTexture"])
+		_G["ToySpellButton"..i].checked:SetAllPoints(_G["ToySpellButton"..i.."IconTexture"])
+		_G["ToySpellButton"..i].pushed:SetAllPoints(_G["ToySpellButton"..i.."IconTexture"])
+		_G["ToySpellButton"..i.."Cooldown"]:SetAllPoints(_G["ToySpellButton"..i.."IconTexture"])
+		E:RegisterCooldown(_G["ToySpellButton"..i.."Cooldown"])
+	end
+
+	hooksecurefunc("ToySpellButton_UpdateButton", function(self)
+		if (PlayerHasToy(self.itemID)) then
+			_G[self:GetName().."ToyName"]:SetTextColor(1, 1, 1)
+		else
+			_G[self:GetName().."ToyName"]:SetTextColor(0.6, 0.6, 0.6)
+		end
+	end)
+
+	ToyBoxProgressBar:StripTextures()
 end
 
 S:RegisterSkin("Blizzard_PetJournal", LoadSkin)
