@@ -132,7 +132,11 @@ local function LoadSkin()
 			local navButton = self.navList[i]
 			local lastNav = self.navList[i-1]
 			if navButton and lastNav then
-				navButton:SetFrameLevel(lastNav:GetFrameLevel() - 2)
+				if lastNav:GetFrameLevel() > 2 then
+					navButton:SetFrameLevel(lastNav:GetFrameLevel() - 2)
+				else
+					navButton:SetFrameLevel(0)
+				end
 			end
 		end			
 	end
@@ -145,12 +149,12 @@ local function LoadSkin()
 			S:HandleButton(navButton, true)
 			navButton.skinned = true
 			
-			navButton:HookScript("OnClick", function()
+			--[[navButton:HookScript("OnClick", function()
 				navButtonFrameLevel(self)
-			end)
+			end)]]
 		end
 		
-		navButtonFrameLevel(self)
+		--navButtonFrameLevel(self)
 	end)
 	
 	S:HandleButton(HelpFrameGM_ResponseNeedMoreHelp)
