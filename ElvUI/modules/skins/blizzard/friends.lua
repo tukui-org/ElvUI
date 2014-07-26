@@ -57,15 +57,11 @@ local function LoadSkin()
 	local KillTextures = {
 		"FriendsFrameBroadcastInputLeft",
 		"FriendsFrameBroadcastInputRight",
-		"FriendsFrameBroadcastInputMiddle",
-		"ChannelFrameDaughterFrameChannelNameLeft",
-		"ChannelFrameDaughterFrameChannelNameRight",
-		"ChannelFrameDaughterFrameChannelNameMiddle",
-		"ChannelFrameDaughterFrameChannelPasswordLeft",
-		"ChannelFrameDaughterFrameChannelPasswordRight",				
-		"ChannelFrameDaughterFrameChannelPasswordMiddle",			
+		"FriendsFrameBroadcastInputMiddle",		
 	}
 
+	S:HandleEditBox(ChannelFrameDaughterFrameChannelName)
+	S:HandleEditBox(ChannelFrameDaughterFrameChannelPassword)
 	FriendsFrameInset:StripTextures()
 	WhoFrameListInset:StripTextures()
 	WhoFrameEditBoxInset:StripTextures()
