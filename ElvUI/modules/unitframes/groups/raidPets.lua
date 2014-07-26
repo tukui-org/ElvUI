@@ -65,7 +65,7 @@ function UF:Update_RaidpetHeader(header, db)
 	
 	if not headerHolder.positioned then
 		headerHolder:ClearAllPoints()
-		headerHolder:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 433)
+		headerHolder:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 574)
 		
 		E:CreateMover(headerHolder, headerHolder:GetName()..'Mover', L['Raid Pet Frames'], nil, nil, nil, 'ALL,RAID10,RAID25,RAID40')
 		headerHolder.positioned = true;
