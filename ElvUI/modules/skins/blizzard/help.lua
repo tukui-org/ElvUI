@@ -147,14 +147,12 @@ local function LoadSkin()
 		
 		if not navButton.skinned then
 			S:HandleButton(navButton, true)
+
+			if(navButton.MenuArrowButton) then
+				S:HandleNextPrevButton(navButton.MenuArrowButton, true)
+			end
 			navButton.skinned = true
-			
-			--[[navButton:HookScript("OnClick", function()
-				navButtonFrameLevel(self)
-			end)]]
 		end
-		
-		--navButtonFrameLevel(self)
 	end)
 	
 	S:HandleButton(HelpFrameGM_ResponseNeedMoreHelp)
