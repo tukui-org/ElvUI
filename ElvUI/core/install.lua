@@ -404,50 +404,28 @@ function E:SetupLayout(layout, noDataReset)
 		end
 		
 		if not noDataReset then
-			E.db.unitframe.units.raid10.horizontalSpacing = 9;
-			E.db.unitframe.units.raid10.rdebuffs.enable = false;
-			E.db.unitframe.units.raid10.verticalSpacing = 9;
-			E.db.unitframe.units.raid10.debuffs.sizeOverride = 16;
-			E.db.unitframe.units.raid10.debuffs.enable = true
-			E.db.unitframe.units.raid10.debuffs.anchorPoint = "TOPRIGHT";
-			E.db.unitframe.units.raid10.debuffs.xOffset = -4;
-			E.db.unitframe.units.raid10.debuffs.yOffset = -7;
-			E.db.unitframe.units.raid10.positionOverride = "BOTTOMRIGHT";
-			E.db.unitframe.units.raid10.height = 45;
-			E.db.unitframe.units.raid10.buffs.noConsolidated = false
-			E.db.unitframe.units.raid10.buffs.xOffset = 50;
-			E.db.unitframe.units.raid10.buffs.yOffset = -6;
-			E.db.unitframe.units.raid10.buffs.clickThrough = true
-			E.db.unitframe.units.raid10.buffs.noDuration = false
-			E.db.unitframe.units.raid10.buffs.playerOnly = false;
-			E.db.unitframe.units.raid10.buffs.perrow = 1
-			E.db.unitframe.units.raid10.buffs.useFilter = "TurtleBuffs"
-			E.db.unitframe.units.raid10.buffs.sizeOverride = 22
-			E.db.unitframe.units.raid10.buffs.useBlacklist = false
-			E.db.unitframe.units.raid10.buffs.enable = true
-			E.db.unitframe.units.raid10.growthDirection = "LEFT_UP"
-			
-			E.db.unitframe.units.raid25.horizontalSpacing = 9;
-			E.db.unitframe.units.raid25.rdebuffs.enable = false;
-			E.db.unitframe.units.raid25.verticalSpacing = 9;
-			E.db.unitframe.units.raid25.debuffs.sizeOverride = 16;
-			E.db.unitframe.units.raid25.debuffs.enable = true
-			E.db.unitframe.units.raid25.debuffs.anchorPoint = "TOPRIGHT";
-			E.db.unitframe.units.raid25.debuffs.xOffset = -4;
-			E.db.unitframe.units.raid25.debuffs.yOffset = -7;
-			E.db.unitframe.units.raid25.height = 45;
-			E.db.unitframe.units.raid25.buffs.noConsolidated = false
-			E.db.unitframe.units.raid25.buffs.xOffset = 50;
-			E.db.unitframe.units.raid25.buffs.yOffset = -6;
-			E.db.unitframe.units.raid25.buffs.clickThrough = true
-			E.db.unitframe.units.raid25.buffs.noDuration = false
-			E.db.unitframe.units.raid25.buffs.playerOnly = false;
-			E.db.unitframe.units.raid25.buffs.perrow = 1
-			E.db.unitframe.units.raid25.buffs.useFilter = "TurtleBuffs"
-			E.db.unitframe.units.raid25.buffs.sizeOverride = 22
-			E.db.unitframe.units.raid25.buffs.useBlacklist = false
-			E.db.unitframe.units.raid25.buffs.enable = true			
-			E.db.unitframe.units.raid25.growthDirection = "LEFT_UP"
+
+			E.db.unitframe.units.raid.horizontalSpacing = 9;
+			E.db.unitframe.units.raid.rdebuffs.enable = false;
+			E.db.unitframe.units.raid.verticalSpacing = 9;
+			E.db.unitframe.units.raid.debuffs.sizeOverride = 16;
+			E.db.unitframe.units.raid.debuffs.enable = true
+			E.db.unitframe.units.raid.debuffs.anchorPoint = "TOPRIGHT";
+			E.db.unitframe.units.raid.debuffs.xOffset = -4;
+			E.db.unitframe.units.raid.debuffs.yOffset = -7;
+			E.db.unitframe.units.raid.height = 45;
+			E.db.unitframe.units.raid.buffs.noConsolidated = false
+			E.db.unitframe.units.raid.buffs.xOffset = 50;
+			E.db.unitframe.units.raid.buffs.yOffset = -6;
+			E.db.unitframe.units.raid.buffs.clickThrough = true
+			E.db.unitframe.units.raid.buffs.noDuration = false
+			E.db.unitframe.units.raid.buffs.playerOnly = false;
+			E.db.unitframe.units.raid.buffs.perrow = 1
+			E.db.unitframe.units.raid.buffs.useFilter = "TurtleBuffs"
+			E.db.unitframe.units.raid.buffs.sizeOverride = 22
+			E.db.unitframe.units.raid.buffs.useBlacklist = false
+			E.db.unitframe.units.raid.buffs.enable = true			
+			E.db.unitframe.units.raid.growthDirection = "LEFT_UP"
 			
 			E.db.unitframe.units.party.growthDirection = "LEFT_UP"
 			E.db.unitframe.units.party.horizontalSpacing = 9;
@@ -479,19 +457,13 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.party.name.position = "TOP"
 			E.db.unitframe.units.party.power.text_format = ""
 			
-			E.db.unitframe.units.raid40.height = 30
-			E.db.unitframe.units.raid40.growthDirection = "LEFT_UP"
-			
+
 			E.db.unitframe.units.party.health.frequentUpdates = true
-			E.db.unitframe.units.raid10.health.frequentUpdates = true
-			E.db.unitframe.units.raid25.health.frequentUpdates = true
-			E.db.unitframe.units.raid40.health.frequentUpdates = true
+			E.db.unitframe.units.raid.health.frequentUpdates = true
 			
 			E.db.unitframe.units.party.healPrediction = true;
-			E.db.unitframe.units.raid10.healPrediction = true;
-			E.db.unitframe.units.raid25.healPrediction = true;
-			E.db.unitframe.units.raid40.healPrediction = true;	
-			
+			E.db.unitframe.units.raid.healPrediction = true;
+
 			E.db.actionbar.bar2.enabled = true
 			if not E.db.lowresolutionset then
 				E.db.actionbar.bar3.buttons = 12
@@ -510,9 +482,7 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.movers.ElvAB_3 = "BOTTOMElvUIParentBOTTOM3124"
 			E.db.movers.ElvAB_5 = "BOTTOMElvUIParentBOTTOM-3124"
 			E.db.movers.ElvUF_PartyMover = "BOTTOMRIGHTElvUIParentBOTTOMLEFT"..xOffset.."450"
-			E.db.movers.ElvUF_Raid10Mover = "BOTTOMRIGHTElvUIParentBOTTOMLEFT"..xOffset.."450"
-			E.db.movers.ElvUF_Raid25Mover = "BOTTOMRIGHTElvUIParentBOTTOMLEFT"..xOffset.."450"
-			E.db.movers.ElvUF_Raid40Mover = "BOTTOMRIGHTElvUIParentBOTTOMLEFT"..xOffset.."450"
+			E.db.movers.ElvUF_RaidMover = "BOTTOMRIGHTElvUIParentBOTTOMLEFT"..xOffset.."450"
 			
 			if not E.db.lowresolutionset then
 				E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM278132"
@@ -533,9 +503,7 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.movers.ElvAB_3 = "BOTTOMElvUIParentBOTTOM3324"
 			E.db.movers.ElvAB_5 = "BOTTOMElvUIParentBOTTOM-3324"
 			E.db.movers.ElvUF_PartyMover = "BOTTOMRIGHTElvUIParentBOTTOMLEFT"..xOffset.."450"
-			E.db.movers.ElvUF_Raid10Mover = "BOTTOMRIGHTElvUIParentBOTTOMLEFT"..xOffset.."450"
-			E.db.movers.ElvUF_Raid25Mover = "BOTTOMRIGHTElvUIParentBOTTOMLEFT"..xOffset.."450"
-			E.db.movers.ElvUF_Raid40Mover = "BOTTOMRIGHTElvUIParentBOTTOMLEFT"..xOffset.."450"
+			E.db.movers.ElvUF_RaidMover = "BOTTOMRIGHTElvUIParentBOTTOMLEFT"..xOffset.."450"
 			
 			if not E.db.lowresolutionset then
 				E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM307145"
