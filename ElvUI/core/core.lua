@@ -461,14 +461,14 @@ end
 
 local frames = {}
 local devAlts = {
+	['Elv-ShatteredHand'] = true,
+	['Sarah-ShatteredHand'] = true,
 	['Elv-Proudmoore'] = true,
 	['Elv-Spirestone'] = true,
 	['Elvz-Spirestone'] = true,
 	['Jarvix-Spirestone'] = true,
 	['Elvilas-Spirestone'] = true,
 	['Watermelon-Spirestone'] = true,
-	['Elvz-Stormreaver'] = true,
-	['Meuna-Stormreaver'] = true,
 }
 local function SendRecieve(self, event, prefix, message, channel, sender)
 	if event == "CHAT_MSG_ADDON" then
@@ -745,7 +745,7 @@ function E:StopMassiveShake()
 	if E.massiveShakeTimer then
 		E:CancelTimer(E.massiveShakeTimer)
 	end
-
+	
 	E.global.aprilFools = true;
 	E:StaticPopup_Hide("APRIL_FOOLS2013")
 	twipe(self.massiveShakeObjects)
