@@ -151,7 +151,7 @@ end
 local function SetupCVars()
 	SetCVar("alternateResourceText", 1)
 	SetCVar("statusTextDisplay", "BOTH")
-	SetCVar("mapQuestDifficulty", 1)
+	--SetCVar("mapQuestDifficulty", 1) --WoD Broken/Not Needed
 	SetCVar("ShowClassColorInNameplate", 1)
 	SetCVar("screenshotQuality", 10)
 	SetCVar("chatMouseScroll", 1)
