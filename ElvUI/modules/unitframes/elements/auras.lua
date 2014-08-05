@@ -41,6 +41,7 @@ function UF:Construct_AuraIcon(button)
 	button.cd.noCooldownCount = true
 	button.cd:SetReverse()
 	button.cd:SetInside()
+	button.cd:SetHideCountdownNumbers(true)
 	
 	button.icon:SetInside()
 	button.icon:SetTexCoord(unpack(E.TexCoords))
