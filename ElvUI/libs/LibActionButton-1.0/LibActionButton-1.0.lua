@@ -790,7 +790,8 @@ function OnUpdate(_, elapsed)
 			if rangeTimer <= 0 then
 				local inRange = button:IsInRange()
 				local oldRange = button.outOfRange
-				button.outOfRange = (inRange == 0)
+				button.outOfRange = (inRange == false)
+
 				if oldRange ~= button.outOfRange then
 					if button.config.outOfRangeColoring == "button" then
 						UpdateUsable(button)
@@ -803,7 +804,7 @@ function OnUpdate(_, elapsed)
 								hotkey:Hide()
 							end
 						end
-						if inRange == 0 then
+						if button.outOfRange then
 							hotkey:SetVertexColor(unpack(button.config.colors.range))
 						else
 							hotkey:SetVertexColor(0.6, 0.6, 0.6)
@@ -1050,7 +1051,9 @@ end
 function UpdateUsable(self)
 	-- TODO: make the colors configurable
 	-- TODO: allow disabling of the whole recoloring
+
 	if self.config.outOfRangeColoring == "button" and self.outOfRange then
+		
 		self.icon:SetVertexColor(unpack(self.config.colors.range))
 	else
 		local isUsable, notEnoughMana = self:IsUsable()
