@@ -169,7 +169,6 @@ function UF:UpdateHarmony()
 	end
 	
 	self:SetWidth(CLASSBAR_WIDTH)
-	
 	local colors = ElvUF.colors.Harmony
 	for i = 1, maxBars do		
 		self[i]:SetHeight(self:GetHeight())	
@@ -189,7 +188,7 @@ function UF:UpdateHarmony()
 				self[i]:Point("LEFT", self[i-1], "RIGHT", 1, 0)
 			end
 		end	
-				
+
 		self[i]:SetStatusBarColor(colors[i][1], colors[i][2], colors[i][3])
 	end	
 end

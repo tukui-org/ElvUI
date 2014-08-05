@@ -37,7 +37,7 @@ UF['classMaxResourceBar'] = {
 	['PALADIN'] = 5,
 	['WARLOCK'] = 4,
 	['PRIEST'] = 5,
-	['MONK'] = 5,
+	['MONK'] = 6,
 	['MAGE'] = 4,
 }
 
@@ -316,6 +316,7 @@ function UF:UpdateColors()
 	ElvUF.colors.Harmony[3] = E:GetColorTable(db.classResources.MONK[3])
 	ElvUF.colors.Harmony[4] = E:GetColorTable(db.classResources.MONK[4])
 	ElvUF.colors.Harmony[5] = E:GetColorTable(db.classResources.MONK[5])
+	ElvUF.colors.Harmony[6] = E:GetColorTable(db.classResources.MONK[6])
 	
 	ElvUF.colors.ShardBar = {}
 	ElvUF.colors.ShardBar[1] = E:GetColorTable(db.classResources.WARLOCK[1])
