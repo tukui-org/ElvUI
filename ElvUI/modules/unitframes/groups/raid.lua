@@ -51,16 +51,18 @@ end
 function UF:SmartVisibility(event)
 	if not self.db or (self.db and not self.db.enable) or (UF.db and not UF.db.smartRaidFilter) or self.isForced then return; end
 	local inInstance, instanceType = IsInInstance()
-	local maxPlayers = select(9, GetInstanceInfo())
+	
 	if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
 
 	if not InCombatLockdown() then		
-		if inInstance and instanceType == "raid" and maxPlayers == i then
+		if(inInstance and (instanceType == 'raid' or instanceType == 'pvp')) then
+			local isDynamic, _, maxPlayers = select(7, GetInstanceInfo())
 			UnregisterStateDriver(self, "visibility")
-			self:Show()
-		elseif inInstance and instanceType == "raid" then
-			UnregisterStateDriver(self, "visibility")
-			self:Hide()
+			self:Show()	
+
+			if(maxPlayers and not isDynamic and ElvUF_Raid.numGroups ~= (maxPlayers / 5)) then
+				ElvUF_Raid:Configure_Groups()		
+			end
 		elseif self.db.visibility then
 			RegisterStateDriver(self, "visibility", self.db.visibility)
 		end

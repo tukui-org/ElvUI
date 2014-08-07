@@ -453,7 +453,22 @@ function UF.groupPrototype:Configure_Groups()
 	local width, height, newCols, newRows = 0, 0, 0, 0
 	local direction = db.growthDirection
 	local xMult, yMult = DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction], DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction]
-	for i=1, db.numGroups do
+
+	local raidFilter = UF.db.smartRaidFilter
+	local numGroups = db.numGroups
+	if(raidFilter) then
+		local inInstance, instanceType = IsInInstance()
+		if(inInstance and (instanceType == 'raid' or instanceType == 'pvp')) then
+			local isDynamic, _, maxPlayers = select(7, GetInstanceInfo())
+			if(not isDynamic and maxPlayers) then
+				numGroups = (maxPlayers / 5)
+			end
+		end
+	end
+
+	self.numGroups = numGroups
+
+	for i=1, numGroups do
 		local group = self.groups[i]
 		
 		point = DIRECTION_TO_POINT[direction]
@@ -472,7 +487,7 @@ function UF.groupPrototype:Configure_Groups()
 			
 			if not group.isForced then
 				if not group.initialized then
-					group:SetAttribute("startingIndex", db.raidWideSorting and (-min(db.numGroups * (db.groupsPerRowCol * 5), MAX_RAID_MEMBERS) + 1) or -4)
+					group:SetAttribute("startingIndex", db.raidWideSorting and (-min(numGroups * (db.groupsPerRowCol * 5), MAX_RAID_MEMBERS) + 1) or -4)
 					group:Show()
 					group.initialized = true
 				end
@@ -492,7 +507,7 @@ function UF.groupPrototype:Configure_Groups()
 			group:SetAttribute("point", point)	
 
 			if not group.isForced then
-				group:SetAttribute("maxColumns", db.raidWideSorting and db.numGroups or 1)
+				group:SetAttribute("maxColumns", db.raidWideSorting and numGroups or 1)
 				group:SetAttribute("unitsPerColumn", db.raidWideSorting and (db.groupsPerRowCol * 5) or 5)				
 				UF.headerGroupBy[db.groupBy](group)
 				group:SetAttribute('sortDir', db.sortDir)
