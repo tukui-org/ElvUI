@@ -667,6 +667,24 @@ function B:UpdateGoldText()
 	self.BagFrame.goldText:SetText(GetCoinTextureString(GetMoney(), 12))
 end
 
+function B:GetGraysValue()
+	local c = 0
+
+	for b=0,4 do
+		for s=1,GetContainerNumSlots(b) do
+			local l = GetContainerItemLink(b, s)
+			if l and select(11, GetItemInfo(l)) then
+				local p = select(11, GetItemInfo(l))*select(2, GetContainerItemInfo(b, s))
+				if select(3, GetItemInfo(l))==0 and p>0 then
+					c = c+p
+				end
+			end
+		end
+	end
+
+	return c
+end
+
 function B:VendorGrays(delete, nomsg, getValue)
 	if (not MerchantFrame or not MerchantFrame:IsShown()) and not delete and not getValue then
 		E:Print(L['You must be at a vendor.'])
@@ -710,22 +728,19 @@ function B:VendorGrays(delete, nomsg, getValue)
 	if c>0 and not delete then
 		local g, s, c = floor(c/10000) or 0, floor((c%10000)/100) or 0, c%100
 		E:Print(L['Vendored gray items for:'].." |cffffffff"..g..L.goldabbrev.." |cffffffff"..s..L.silverabbrev.." |cffffffff"..c..L.copperabbrev..".")
-	elseif not delete and not nomsg then
-		E:Print(L['No gray items to sell.'])
-	elseif count > 0 then
-		local g, s, c = floor(c/10000) or 0, floor((c%10000)/100) or 0, c%100
-		E:Print(format(L['Deleted %d gray items. Total Worth: %s'], count, " |cffffffff"..g..L.goldabbrev.." |cffffffff"..s..L.silverabbrev.." |cffffffff"..c..L.copperabbrev.."."))
-	elseif not nomsg then
-		E:Print(L['No gray items to delete.'])
 	end
 end
 
 function B:VendorGrayCheck()
-	if IsShiftKeyDown() then
-		E.PopupDialogs["DELETE_GRAYS"].Money = self:VendorGrays(false, true, true)
+	local value = B:GetGraysValue()
+
+	if(value == 0) then
+		E:Print(L['No gray items to delete.'])
+	elseif(not MerchantFrame or not MerchantFrame:IsShown()) then
+		E.PopupDialogs["DELETE_GRAYS"].Money = value
 		E:StaticPopup_Show('DELETE_GRAYS')
 	else
-		self:VendorGrays()
+		B:VendorGrays()
 	end
 end
 
@@ -1018,6 +1033,23 @@ function B:ContructContainerFrame(name, isBank)
 		f.bagsButton:SetScript("OnLeave", self.Tooltip_Hide)
 		f.bagsButton:SetScript('OnClick', function() ToggleFrame(f.ContainerHolder) end)
 
+		--Vendor Grays
+		f.vendorGraysButton = CreateFrame('Button', nil, f.holderFrame)
+		f.vendorGraysButton:SetSize(16 + E.Border, 16 + E.Border)
+		f.vendorGraysButton:SetTemplate()
+		f.vendorGraysButton:SetPoint("RIGHT", f.bagsButton, "LEFT", -5, 0)
+		f.vendorGraysButton:SetNormalTexture("Interface\\ICONS\\INV_Misc_Coin_01")
+		f.vendorGraysButton:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
+		f.vendorGraysButton:GetNormalTexture():SetInside()
+		f.vendorGraysButton:SetPushedTexture("Interface\\ICONS\\INV_Misc_Coin_01")
+		f.vendorGraysButton:GetPushedTexture():SetTexCoord(unpack(E.TexCoords))
+		f.vendorGraysButton:GetPushedTexture():SetInside()		
+		f.vendorGraysButton:StyleButton(nil, true)
+		f.vendorGraysButton.ttText = L['Vendor Grays']
+		f.vendorGraysButton:SetScript("OnEnter", self.Tooltip_Show)
+		f.vendorGraysButton:SetScript("OnLeave", self.Tooltip_Hide)
+		f.vendorGraysButton:SetScript("OnClick", B.VendorGrayCheck)	
+
 		--Search
 		f.editBox = CreateFrame('EditBox', name..'EditBox', f);
 		f.editBox:SetFrameLevel(f.editBox:GetFrameLevel() + 2);
@@ -1025,7 +1057,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.editBox.backdrop:SetPoint("TOPLEFT", f.editBox, "TOPLEFT", -20, 2)
 		f.editBox:Height(15);
 		f.editBox:Point('BOTTOMLEFT', f.holderFrame, 'TOPLEFT', (E.Border * 2) + 18, E.Border * 2 + 2);
-		f.editBox:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0);
+		f.editBox:Point('RIGHT', f.vendorGraysButton, 'LEFT', -5, 0);
 		f.editBox:SetAutoFocus(false);
 		f.editBox:SetScript("OnEscapePressed", self.ResetAndClear);
 		f.editBox:SetScript("OnEnterPressed", self.ResetAndClear);
