@@ -3099,9 +3099,7 @@ E.Options.args.unitframe.args.party = {
 			name = L['Copy From'],
 			desc = L['Select a unit to copy settings from.'],
 			values = {
-				['raid10'] = L['Raid-10 Frames'],
-				['raid25'] = L['Raid-25 Frames'],
-				['raid40'] = L['Raid-40 Frames'],
+				['raid'] = L['Raid Frames'],
 			},
 			set = function(info, value) UF:MergeUnitSettings(value, 'party', true); end,
 		},			

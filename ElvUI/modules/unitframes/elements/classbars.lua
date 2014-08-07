@@ -188,7 +188,7 @@ function UF:UpdateHarmony()
 				self[i]:Point("LEFT", self[i-1], "RIGHT", 1, 0)
 			end
 		end	
-
+		
 		self[i]:SetStatusBarColor(colors[i][1], colors[i][2], colors[i][3])
 	end	
 end
