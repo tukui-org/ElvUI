@@ -28,53 +28,25 @@ function AB:StyleShapeShift(event)
 		button = _G[buttonName];
 		icon = _G[buttonName.."Icon"];
 		cooldown = _G[buttonName.."Cooldown"];
-		
+
 		if i <= numForms then
 			texture, name, isActive, isCastable = GetShapeshiftFormInfo(i);
 
-			if texture == "Interface\\Icons\\Spell_Nature_WispSplode" and self.db.stanceBar.style == 'darkenInactive' then
+			if(isActive) then
+				texture = "Interface\\Icons\\Spell_Nature_WispSplode"
+			else
 				_, _, texture = GetSpellInfo(name)
-			end
-			
+			end			
+
 			icon:SetTexture(texture);
 
-			if texture then
-				cooldown:SetAlpha(1);
+			if(isCastable) then
+				icon:SetDesaturated(false);
 			else
-				cooldown:SetAlpha(0);
-			end
-
-			if isActive then
-				StanceBarFrame.lastSelected = button:GetID();
-				if numForms == 1 then
-					button.checked:SetTexture(1, 1, 1, 0.5) 
-					button:SetChecked(1);
-				else
-					button:SetChecked(self.db.stanceBar.style ~= 'darkenInactive');
-				end
-			else
-				if numForms == 1 or stance == 0 then
-					button:SetChecked(0);
-				else
-					button:SetChecked(self.db.stanceBar.style == 'darkenInactive');
-					button.checked:SetAlpha(1)
-					if self.db.stanceBar.style == 'darkenInactive' then
-						button.checked:SetTexture(0, 0, 0, 0.5)
-					else
-						button.checked:SetTexture(1, 1, 1, 0.5)
-					end
-				end
-			end
-
-			if isCastable then
-				icon:SetVertexColor(1.0, 1.0, 1.0);
-			else
-				icon:SetVertexColor(0.4, 0.4, 0.4);
-			end
+				icon:SetDesaturated(true);
+			end			
 		end
 	end
-	
-	--self:AdjustMaxStanceButtons()
 end
 
 function AB:PositionAndSizeBarShapeShift()
@@ -261,14 +233,14 @@ function AB:UpdateStanceBindings()
 	for i = 1, NUM_STANCE_SLOTS do
 		if self.db.hotkeytext then
 			_G["ElvUI_StanceBarButton"..i.."HotKey"]:Show()
-			local key = GetBindingKey("CLICK ElvUI_StanceBarButton"..i..":LeftButton")
-			_G["ElvUI_StanceBarButton"..i.."HotKey"]:SetText(key)	
+			_G["ElvUI_StanceBarButton"..i.."HotKey"]:SetText(GetBindingKey("CLICK ElvUI_StanceBarButton"..i..":LeftButton"))	
 			self:FixKeybindText(_G["ElvUI_StanceBarButton"..i])
 		else
 			_G["ElvUI_StanceBarButton"..i.."HotKey"]:Hide()
 		end		
 	end
 end
+
 
 function AB:CreateBarShapeShift()
 	bar:CreateBackdrop('Default');
