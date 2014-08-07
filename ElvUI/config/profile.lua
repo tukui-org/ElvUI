@@ -1795,7 +1795,6 @@ P["actionbar"] = {
 	},
 	['stanceBar'] = {
 		['enabled'] = true,
-		['style'] = 'darkenInactive',
 		['mouseover'] = false,
 		['buttonsPerRow'] = NUM_STANCE_SLOTS,
 		['buttons'] = NUM_STANCE_SLOTS,

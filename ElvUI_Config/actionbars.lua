@@ -342,17 +342,7 @@ local function BuildABConfig()
 				name = L['Alpha'],
 				isPercent = true,
 				min = 0, max = 1, step = 0.01,
-			},
-			style = {
-				order = 13,
-				type = 'select',
-				name = L['Style'],
-				desc = L["This setting will be updated upon changing stances."],
-				values = {
-					['darkenInactive'] = L['Darken Inactive'],
-					['classic'] = L['Classic']
-				},
-			},		
+			},	
 		},
 	}
 end
