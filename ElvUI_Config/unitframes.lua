@@ -3918,9 +3918,7 @@ E.Options.args.unitframe.args.raidpet = {
 			desc = L['Select a unit to copy settings from.'],
 			values = {
 				['party'] = L['Party Frames'],
-				['raid10'] = L['Raid-10 Frames'],
-				['raid25'] = L['Raid-25 Frames'],
-				['raid40'] = L['Raid-40 Frames'],
+				['raid'] = L['Raid Frames'],
 			},
 			set = function(info, value) UF:MergeUnitSettings(value, 'raidpet', true); end,
 		},
