@@ -298,9 +298,11 @@ local function LoadSkin()
 		self.background:Hide()
 	end)	
 	
+
 	OpacityFrame:StripTextures()
 	OpacityFrame:SetTemplate("Transparent")	
-	WatchFrameCollapseExpandButton:StripTextures()
+	
+	--[[WatchFrameCollapseExpandButton:StripTextures()
 	S:HandleCloseButton(WatchFrameCollapseExpandButton)
 	WatchFrameCollapseExpandButton:Size(30)
 	WatchFrameCollapseExpandButton.text:SetText('-')
@@ -312,7 +314,7 @@ local function LoadSkin()
 	
 	hooksecurefunc('WatchFrame_Collapse', function()
 		WatchFrameCollapseExpandButton.text:SetText('+')
-	end)	
+	end)]]
 	
 	--Chat Config
 	local StripAllTextures = {
@@ -342,7 +344,7 @@ local function LoadSkin()
 	for _, object in pairs(StripAllTextures) do
 		_G[object]:StripTextures()
 	end
-			
+	
 	ChatConfigFrame:SetTemplate("Transparent")
 	ChatConfigBackgroundFrame:SetTemplate("Transparent")
 	ChatConfigCategoryFrame:SetTemplate("Transparent")
@@ -614,7 +616,7 @@ local function LoadSkin()
 		end
 	end)	
 	
-	GuildInviteFrame:StripTextures()
+	--[[GuildInviteFrame:StripTextures()
 	GuildInviteFrame:SetTemplate('Transparent')
 	GuildInviteFrameLevel:StripTextures()
 	GuildInviteFrameLevel:ClearAllPoints()
@@ -625,9 +627,9 @@ local function LoadSkin()
 	GuildInviteFrame:HookScript("OnEvent", function()
 		GuildInviteFrame:Height(225)
 	end)
-	GuildInviteFrameWarningText:Kill()
+	GuildInviteFrameWarningText:Kill()]]
 	
-	local function SkinWatchFrameItems()
+	--[[local function SkinWatchFrameItems()
 		for i=1, WATCHFRAME_NUM_ITEMS do
 			local button = _G["WatchFrameItem"..i]
 			if not button.skinned then
@@ -643,7 +645,7 @@ local function LoadSkin()
 		end	
 	end
 	
-	WatchFrame:HookScript("OnEvent", SkinWatchFrameItems)
+	WatchFrame:HookScript("OnEvent", SkinWatchFrameItems)]]
 	
 	BattleTagInviteFrame:StripTextures()
 	BattleTagInviteFrame:SetTemplate('Transparent')
@@ -701,6 +703,7 @@ local function LoadSkin()
     VideoOptionsFrameDefaults:SetPoint("TOPLEFT",VideoOptionsFrameCategoryFrame,"BOTTOMLEFT",-1,-5)
     InterfaceOptionsFrameDefaults:SetPoint("TOPLEFT",InterfaceOptionsFrameCategories,"BOTTOMLEFT",-1,-5)
     InterfaceOptionsFrameCancel:SetPoint("TOPRIGHT",InterfaceOptionsFramePanelContainer,"BOTTOMRIGHT",0,-6)
+
     local interfacecheckbox = {
         -- Controls
         "ControlsPanelBlockChatChannelInvites",
@@ -762,6 +765,7 @@ local function LoadSkin()
         "ActionBarsPanelBottomRight",
         "ActionBarsPanelRight",
         "ActionBarsPanelRightTwo",
+        "ActionBarsPanelCountdownCooldowns",
         -- Names
         "NamesPanelMyName",
         "NamesPanelFriendlyPlayerNames",
@@ -784,6 +788,9 @@ local function LoadSkin()
         "NamesPanelUnitNameplatesEnemies",
         "NamesPanelUnitNameplatesEnemyGuardians",
         "NamesPanelUnitNameplatesEnemyTotems",
+        "NamesPanelMinus",
+        "NamesPanelUnitNameplatesEnemyMinus",
+
         -- Combat Text
         "CombatTextPanelTargetDamage",
         "CombatTextPanelPeriodicDamage",
@@ -806,6 +813,7 @@ local function LoadSkin()
         "CombatTextPanelPeriodicEnergyGains",
         "CombatTextPanelHonorGains",
         "CombatTextPanelAuras",
+        "CombatTextPanelPetBattle",
         -- Buffs & Debuffs
         "BuffsPanelBuffDurations",
         "BuffsPanelDispellableDebuffs",

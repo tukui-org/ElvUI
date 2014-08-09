@@ -94,8 +94,8 @@ local function LoadSkin()
 	GarrisonBuildingFrame.BuildingList:SetTemplate("Transparent")
 	GarrisonBuildingFrame.InfoBox:StripTextures()
 	GarrisonBuildingFrame.InfoBox:SetTemplate("Transparent")
-	GarrisonBuildingFrame.BuildingList.MoneyFrame:StripTextures()
-	GarrisonBuildingFrame.BuildingList.MoneyFrame:SetTemplate("Transparent")
+	--GarrisonBuildingFrame.BuildingList.MoneyFrame:StripTextures()
+	--GarrisonBuildingFrame.BuildingList.MoneyFrame:SetTemplate("Transparent")
 	
 	local function SkinFakeTabs()
 		GarrisonBuildingFrame.BuildingList.Tab1:StripTextures()
@@ -105,7 +105,7 @@ local function LoadSkin()
 		GarrisonBuildingFrame.BuildingList.Tab2:SetTemplate("Transparent")
 		GarrisonBuildingFrame.BuildingList.Tab3:SetTemplate("Transparent")
 	end
-	GarrisonBuildingFrame.BuildingList.Tab1:HookScript("OnUpdate", SkinFakeTabs)
+	GarrisonBuildingFrame.BuildingList.Tab1:HookScript("OnShow", SkinFakeTabs)
 	
 	--Monument
 	GarrisonMonumentFrame:StripTextures()
