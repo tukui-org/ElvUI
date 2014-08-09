@@ -716,12 +716,13 @@ local function LoadSkin()
         "ControlsPanelAutoLootCorpse",
         "ControlsPanelInteractOnLeftClick",
         "ControlsPanelAutoOpenLootHistory",
+        "ControlsPanelReverseCleanUpBags",
+        "ControlsPanelReverseNewLoot",
         -- Combat
         "CombatPanelEnemyCastBarsOnOnlyTargetNameplates",
         "CombatPanelEnemyCastBarsNameplateSpellNames",
         "CombatPanelAttackOnAssist",
         "CombatPanelStopAutoAttack",
-        "CombatPanelNameplateClassColors",
         "CombatPanelTargetOfTarget",
         "CombatPanelShowSpellAlerts",
         "CombatPanelReducedLagTolerance",
@@ -735,20 +736,14 @@ local function LoadSkin()
         "DisplayPanelShowHelm",
         "DisplayPanelShowAggroPercentage",
         "DisplayPanelPlayAggroSounds",
-        "DisplayPanelDetailedLootInfo",
         "DisplayPanelShowSpellPointsAvg",
-        "DisplayPanelemphasizeMySpellEffects",
         "DisplayPanelShowFreeBagSpace",
         "DisplayPanelCinematicSubtitles",
         "DisplayPanelRotateMinimap",
-        "DisplayPanelScreenEdgeFlash",
         "DisplayPanelShowAccountAchievments",
         --Objectives
         "ObjectivesPanelAutoQuestTracking",
-        "ObjectivesPanelAutoQuestProgress",
-        "ObjectivesPanelMapQuestDifficulty",
-        "ObjectivesPanelAdvancedWorldMap",
-        "ObjectivesPanelWatchFrameWidth",
+        "ObjectivesPanelMapFade",
         -- Social
         "SocialPanelProfanityFilter",
         "SocialPanelSpamFilter",
@@ -815,7 +810,6 @@ local function LoadSkin()
         "CombatTextPanelAuras",
         "CombatTextPanelPetBattle",
         -- Buffs & Debuffs
-        "BuffsPanelBuffDurations",
         "BuffsPanelDispellableDebuffs",
         "BuffsPanelCastableBuffs",
         "BuffsPanelConsolidateBuffs",
@@ -831,9 +825,7 @@ local function LoadSkin()
         "MousePanelWoWMouse",
         -- Help
         "HelpPanelShowTutorials",
-        "HelpPanelLoadingScreenTips",
         "HelpPanelEnhancedTooltips",
-        "HelpPanelBeginnerTooltips",
         "HelpPanelShowLuaErrors",
         "HelpPanelColorblindMode",
         "HelpPanelMovePad",
@@ -849,10 +841,8 @@ local function LoadSkin()
         "StatusTextPanelParty",
         "StatusTextPanelTarget",
         "StatusTextPanelAlternateResource",
-        "StatusTextPanelPercentages",
         "StatusTextPanelXP",
         -- Unit Frames
-        "UnitFramePanelPartyBackground",
         "UnitFramePanelPartyPets",
         "UnitFramePanelArenaEnemyFrames",
         "UnitFramePanelArenaEnemyCastBar",
@@ -866,6 +856,8 @@ local function LoadSkin()
         local icheckbox = _G["InterfaceOptions"..interfacecheckbox[i]]
         if icheckbox then
             S:HandleCheckBox(icheckbox)
+         else
+         	print(interfacecheckbox[i])
         end
     end
     local interfacedropdown ={
@@ -881,8 +873,9 @@ local function LoadSkin()
 	  "CombatPanelLossOfControlDisarmDropDown",
 	  "CombatPanelLossOfControlRootDropDown",
         -- Display
-        "DisplayPanelAggroWarningDisplay",
-        "DisplayPanelWorldPVPObjectiveDisplay",
+        "DisplayPanelOutlineDropDown",
+        --Objectives
+        "ObjectivesPanelQuestSorting",
         -- Social
         "SocialPanelChatStyle",
         "SocialPanelWhisperMode",
@@ -896,6 +889,7 @@ local function LoadSkin()
         "NamesPanelUnitNameplatesMotionDropDown",
         -- Combat Text
         "CombatTextPanelFCTDropDown",
+        "CombatTextPanelTargetModeDropDown",
         -- Camera
         "CameraPanelStyleDropDown",
         -- Mouse
@@ -913,10 +907,15 @@ local function LoadSkin()
     end
     S:HandleButton(InterfaceOptionsHelpPanelResetTutorials)
     local optioncheckbox = {
+    	-- Display
+    	"Display_RaidSettingsEnabledCheckBox",
         -- Advanced
         "Advanced_MaxFPSCheckBox",
         "Advanced_MaxFPSBKCheckBox",
         "Advanced_UseUIScale",
+        "Advanced_ShowHDModels",
+        --Network
+        "NetworkOptionsPanelAdvancedCombatLogging",
         -- Audio
         "AudioOptionsSoundPanelEnableSound",
         "AudioOptionsSoundPanelSoundEffects",
@@ -947,12 +946,12 @@ local function LoadSkin()
     end
     local optiondropdown = {
         -- Graphics
-        "Graphics_DisplayModeDropDown",
-        "Graphics_ResolutionDropDown",
-        "Graphics_RefreshDropDown",
-        "Graphics_PrimaryMonitorDropDown",
-        "Graphics_MultiSampleDropDown",
-        "Graphics_VerticalSyncDropDown",
+        "Display_DisplayModeDropDown",
+        "Display_ResolutionDropDown",
+        "Display_RefreshDropDown",
+        "Display_PrimaryMonitorDropDown",
+        "Display_AntiAliasingDropDown",
+        "Display_VerticalSyncDropDown",
         "Graphics_TextureResolutionDropDown",
         "Graphics_FilteringDropDown",
         "Graphics_ProjectedTexturesDropDown",
@@ -964,6 +963,21 @@ local function LoadSkin()
         "Graphics_SunshaftsDropDown",
         "Graphics_ParticleDensityDropDown",
         "Graphics_SSAODropDown",
+        "Graphics_RefractionDropDown",
+
+        "RaidGraphics_TextureResolutionDropDown",
+        "RaidGraphics_FilteringDropDown",
+        "RaidGraphics_ProjectedTexturesDropDown",
+        "RaidGraphics_ViewDistanceDropDown",
+        "RaidGraphics_EnvironmentalDetailDropDown",
+        "RaidGraphics_GroundClutterDropDown",
+        "RaidGraphics_ShadowsDropDown",
+        "RaidGraphics_LiquidDetailDropDown",
+        "RaidGraphics_SunshaftsDropDown",
+        "RaidGraphics_ParticleDensityDropDown",
+        "RaidGraphics_SSAODropDown",
+        "RaidGraphics_RefractionDropDown",        
+
         -- Advanced
         "Advanced_BufferingDropDown",
         "Advanced_LagDropDown",
@@ -1001,6 +1015,8 @@ local function LoadSkin()
     AudioOptionsVoicePanelChatMode1KeyBindingButton:Point("CENTER", AudioOptionsVoicePanelBinding, "CENTER", 0, -10)
     S:HandleCheckBox(CompactUnitFrameProfilesRaidStylePartyFrames)
     S:HandleButton(CompactUnitFrameProfilesGeneralOptionsFrameResetPositionButton)
+    GraphicsButton:StripTextures()
+    RaidButton:StripTextures()
     local raidcheckbox = {
         "KeepGroupsTogether",
         "DisplayIncomingHeals",
@@ -1034,6 +1050,7 @@ local function LoadSkin()
 	
 	local sliders = {
 		"Graphics_Quality",
+		"RaidGraphics_Quality",
 		"Advanced_UIScaleSlider",
 		"Advanced_MaxFPSSlider",
 		"Advanced_MaxFPSBKSlider",
@@ -1047,6 +1064,7 @@ local function LoadSkin()
 		"AudioOptionsVoicePanelSoundFade",
 		"AudioOptionsVoicePanelMusicFade",
 		"AudioOptionsVoicePanelAmbienceFade",
+		"AudioOptionsSoundPanelDialogVolume",
 		"InterfaceOptionsCombatPanelSpellAlertOpacitySlider",
 		"InterfaceOptionsCombatPanelMaxSpellStartRecoveryOffset",
 		"InterfaceOptionsBattlenetPanelToastDurationSlider",
@@ -1057,6 +1075,7 @@ local function LoadSkin()
 		"OpacityFrameSlider",
 	}
 	Graphics_RightQuality:Kill()
+	RaidGraphics_RightQuality:Kill()
 	for _, slider in pairs(sliders) do
 		S:HandleSliderFrame(_G[slider])
 	end
@@ -1111,7 +1130,27 @@ local function LoadSkin()
 	SideDressUpFrame.BGTopLeft:Hide()
 	SideDressUpFrame.BGBottomLeft:Hide()
 	S:HandleButton(SideDressUpModelResetButton)
-	SideDressUpFrame:SetTemplate("Transparent")	
+	SideDressUpFrame:SetTemplate("Transparent")
+
+	--Addon List
+	AddonList:StripTextures()
+	AddonList:SetTemplate("Transparent")
+	AddonListInset:StripTextures()	
+
+	S:HandleButton(AddonListEnableAllButton, true)
+	S:HandleButton(AddonListDisableAllButton, true)
+	S:HandleButton(AddonListOkayButton, true)
+	S:HandleButton(AddonListCancelButton, true)
+
+	S:HandleCheckBox(AddonListForceLoad)
+	AddonListForceLoad:SetSize(26, 26)
+	S:HandleDropDownBox(AddonCharacterDropDown)
+
+	S:HandleCloseButton(AddonListCloseButton)
+
+	for i=1, MAX_ADDONS_DISPLAYED do
+		S:HandleCheckBox(_G["AddonListEntry"..i.."Enabled"])
+	end
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)

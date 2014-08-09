@@ -34,14 +34,14 @@ local function LoadSkin()
 	-- skin main frames
 	for i = 1, #frames do
 		_G[frames[i]]:StripTextures(true)
-		_G[frames[i]]:CreateBackdrop("Default")
+		_G[frames[i]]:CreateBackdrop("Transparent")
 	end
 	
 	HelpFrameHeader:SetFrameLevel(HelpFrameHeader:GetFrameLevel() + 2)
 	HelpFrameKnowledgebaseErrorFrame:SetFrameLevel(HelpFrameKnowledgebaseErrorFrame:GetFrameLevel() + 2)
 	
 	HelpFrameReportBugScrollFrame:StripTextures()
-	HelpFrameReportBugScrollFrame:CreateBackdrop("Default")
+	HelpFrameReportBugScrollFrame:CreateBackdrop("Transparent")
 	HelpFrameReportBugScrollFrame.backdrop:Point("TOPLEFT", -4, 4)
 	HelpFrameReportBugScrollFrame.backdrop:Point("BOTTOMRIGHT", 6, -4)
 	for i=1, HelpFrameReportBug:GetNumChildren() do
@@ -54,7 +54,7 @@ local function LoadSkin()
 	S:HandleScrollBar(HelpFrameReportBugScrollFrameScrollBar)
 	
 	HelpFrameSubmitSuggestionScrollFrame:StripTextures()
-	HelpFrameSubmitSuggestionScrollFrame:CreateBackdrop("Default")
+	HelpFrameSubmitSuggestionScrollFrame:CreateBackdrop("Transparent")
 	HelpFrameSubmitSuggestionScrollFrame.backdrop:Point("TOPLEFT", -4, 4)
 	HelpFrameSubmitSuggestionScrollFrame.backdrop:Point("BOTTOMRIGHT", 6, -4)
 	for i=1, HelpFrameSubmitSuggestion:GetNumChildren() do
@@ -67,7 +67,7 @@ local function LoadSkin()
 	S:HandleScrollBar(HelpFrameSubmitSuggestionScrollFrameScrollBar)
 
 	HelpFrameTicketScrollFrame:StripTextures()
-	HelpFrameTicketScrollFrame:CreateBackdrop("Default")
+	HelpFrameTicketScrollFrame:CreateBackdrop("Transparent")
 	HelpFrameTicketScrollFrame.backdrop:Point("TOPLEFT", -4, 4)
 	HelpFrameTicketScrollFrame.backdrop:Point("BOTTOMRIGHT", 6, -4)
 	for i=1, HelpFrameTicket:GetNumChildren() do
