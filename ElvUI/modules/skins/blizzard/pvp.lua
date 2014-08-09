@@ -136,7 +136,7 @@ local function LoadSkin()
 	S:HandleButton(WarGameStartButton, true)
 	S:HandleScrollBar(WarGamesFrameScrollFrameScrollBar)
 	WarGamesFrame.HorizontalBar:StripTextures()
-
+	S:HandleCheckBox(WarGameTournamentModeCheckButton)
 	ConquestTooltip:SetTemplate("Transparent")
 end
 S:RegisterSkin('Blizzard_PVPUI', LoadSkin)
