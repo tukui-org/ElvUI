@@ -55,4 +55,5 @@
 	<Script file='blackmarket.lua'/>
 	<Script file='itemupgrade.lua'/>
 	<Script file='losscontrol.lua'/>
+	<Script file='loot.lua'/>
 </Ui>

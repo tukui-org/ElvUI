@@ -102,14 +102,6 @@ E.Options.args.general = {
 						['PLAYER'] = PLAYER,
 					},				
 				},
-				mapAlpha = {
-					order = 4,
-					name = L['Map Alpha While Moving'],
-					desc = L['Controls what the transparency of the worldmap will be set to when you are moving.'],
-					type = 'range',
-					isPercent = true,
-					min = 0, max = 1, step = 0.01,
-				},		
 				chatBubbles = {
 					order = 5,
 					type = "select",

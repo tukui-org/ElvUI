@@ -23,8 +23,7 @@ P['general'] = {
 	["backdropcolor"] = { r = 0.1,g = 0.1,b = 0.1 },
 	["backdropfadecolor"] = { r = .06,g = .06,b = .06, a = 0.8 },
 	["valuecolor"] = {r = 23/255,g = 132/255,b = 209/255},
-	
-	['mapAlpha'] = 1,
+
 	['tinyWorldMap'] = true,
 	
 	['minimap'] = {

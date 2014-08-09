@@ -295,7 +295,7 @@ function M:Initialize()
 	MiniMapMailIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\mail")
 
 	GarrisonLandingPageMinimapButton:ClearAllPoints()
-	GarrisonLandingPageMinimapButton:SetPoint("TOPLEFT", Minimap, 0, -4)
+	GarrisonLandingPageMinimapButton:SetPoint("TOPLEFT", Minimap)
 
 	QueueStatusMinimapButton:ClearAllPoints()
 	QueueStatusMinimapButton:Point("BOTTOMRIGHT", Minimap, 3, 0)
