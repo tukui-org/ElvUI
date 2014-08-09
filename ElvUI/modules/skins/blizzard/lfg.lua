@@ -464,6 +464,57 @@ local function LoadSkin()
 	LFGListFrame.CategorySelection.Inset:StripTextures()
 	S:HandleButton(LFGListFrame.CategorySelection.StartGroupButton, true)
 	S:HandleButton(LFGListFrame.CategorySelection.FindGroupButton, true)
+
+	LFGListFrame.EntryCreation.Inset:StripTextures()
+	S:HandleButton(LFGListFrame.EntryCreation.CancelButton, true)
+	S:HandleButton(LFGListFrame.EntryCreation.ListGroupButton, true)
+	S:HandleEditBox(LFGListEntryCreationDescription)
+
+	S:HandleEditBox(LFGListFrame.EntryCreation.Name)
+	S:HandleEditBox(LFGListFrame.EntryCreation.ItemLevel.EditBox)
+	S:HandleEditBox(LFGListFrame.EntryCreation.VoiceChat.EditBox)
+
+	S:HandleDropDownBox(LFGListEntryCreationActivityDropDown)
+	S:HandleDropDownBox(LFGListEntryCreationGroupDropDown)
+	S:HandleDropDownBox(LFGListEntryCreationCategoryDropDown, 330)
+
+	S:HandleCheckBox(LFGListFrame.EntryCreation.ItemLevel.CheckButton)
+	S:HandleCheckBox(LFGListFrame.EntryCreation.VoiceChat.CheckButton)
+
+	LFGListFrame.EntryCreation.ActivityFinder.Dialog:StripTextures()
+	LFGListFrame.EntryCreation.ActivityFinder.Dialog:SetTemplate("Transparent")
+	LFGListFrame.EntryCreation.ActivityFinder.Dialog.BorderFrame:StripTextures()
+	LFGListFrame.EntryCreation.ActivityFinder.Dialog.BorderFrame:SetTemplate("Transparent")
+
+	S:HandleEditBox(LFGListFrame.EntryCreation.ActivityFinder.Dialog.EntryBox)
+	S:HandleScrollBar(LFGListEntryCreationSearchScrollFrameScrollBar)
+	S:HandleButton(LFGListFrame.EntryCreation.ActivityFinder.Dialog.SelectButton)
+	S:HandleButton(LFGListFrame.EntryCreation.ActivityFinder.Dialog.CancelButton)
+
+	S:HandleEditBox(LFGListFrame.SearchPanel.SearchBox)
+
+	local columns = {
+		['Name'] = true,
+		['Tank'] = true,
+		['Healer'] = true,
+		['Damager'] = true
+	}
+
+	for x, _ in pairs(columns) do
+		LFGListFrame.SearchPanel[x.."ColumnHeader"].Left:Hide()
+		LFGListFrame.SearchPanel[x.."ColumnHeader"].Middle:Hide()
+		LFGListFrame.SearchPanel[x.."ColumnHeader"].Right:Hide()
+	end
+
+	S:HandleButton(LFGListFrame.SearchPanel.BackButton, true)
+	S:HandleButton(LFGListFrame.SearchPanel.SignUpButton, true)
+	LFGListFrame.SearchPanel.ResultsInset:StripTextures()
+	S:HandleScrollBar(LFGListSearchPanelScrollFrameScrollBar)
+	LFGListFrame.SearchPanel.AutoCompleteFrame:StripTextures()
+	LFGListFrame.SearchPanel.AutoCompleteFrame:SetTemplate("Transparent")
+
+	S:HandleButton(LFGListFrame.SearchPanel.RefreshButton)
+	LFGListFrame.SearchPanel.RefreshButton:Size(26)
 end
 
 S:RegisterSkin("ElvUI", LoadSkin)
