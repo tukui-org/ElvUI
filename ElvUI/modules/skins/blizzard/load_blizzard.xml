@@ -25,7 +25,6 @@
 	<Script file='trainer.lua'/>
 	<Script file='socket.lua'/>
 	<Script file='alerts.lua'/>
-	<Script file='loot.lua'/>
 	<Script file='bgscore.lua'/>
 	<Script file='merchant.lua'/>
 	<Script file='mail.lua'/>

@@ -113,6 +113,52 @@ local function LoadSkin()
 	BonusRollFrame.PromptFrame.IconBackdrop:SetTemplate()	
 	BonusRollFrame.PromptFrame.Timer.Bar:SetTexture(1, 1, 1)
 	BonusRollFrame.PromptFrame.Timer.Bar:SetVertexColor(1, 1, 1)
+
+	LootFrame:StripTextures()
+	LootFrameInset:StripTextures()
+	LootFrame:SetHeight(LootFrame:GetHeight() - 30)
+	S:HandleCloseButton(LootFrameCloseButton)
+
+	LootFrame:SetTemplate("Transparent")
+	LootFramePortraitOverlay:SetParent(E.HiddenFrame)
+
+	for i=1, LootFrame:GetNumRegions() do
+		local region = select(i, LootFrame:GetRegions());
+		if(region:GetObjectType() == "FontString") then
+			if(region:GetText() == ITEMS) then
+				LootFrame.Title = region
+			end
+		end
+	end
+
+	LootFrame.Title:ClearAllPoints()
+	LootFrame.Title:SetPoint("TOPLEFT", LootFrame, "TOPLEFT", 4, -4)
+	LootFrame.Title:SetJustifyH("LEFT")
+
+	for i=1, LOOTFRAME_NUMBUTTONS do
+		local button = _G["LootButton"..i]
+		_G["LootButton"..i.."NameFrame"]:Hide()
+		S:HandleItemButton(button, true)
+		
+		local point, attachTo, point2, x, y = button:GetPoint()
+		button:ClearAllPoints()
+		button:SetPoint(point, attachTo, point2, x, y+30)
+	end
+
+	LootFrame:HookScript("OnShow", function(self)
+		if(IsFishingLoot()) then
+			self.Title:SetText(L['Fishy Loot'])
+		elseif(not UnitIsFriend("player", "target") and UnitIsDead"target") then
+			self.Title:SetText(UnitName("target"))
+		else
+			self.Title:SetText(LOOT)
+		end
+	end)
+
+	S:HandleNextPrevButton(LootFrameDownButton)
+	S:HandleNextPrevButton(LootFrameUpButton)
+	SquareButton_SetIcon(LootFrameUpButton, 'UP')
+	SquareButton_SetIcon(LootFrameDownButton, 'DOWN')
 end
 
 S:RegisterSkin("ElvUI", LoadSkin)
