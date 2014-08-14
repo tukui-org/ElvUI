@@ -459,6 +459,8 @@ function E:SendMessage()
 	end
 end
 
+local myName = E.myname.."-"..E.myrealm;
+myName = myName:gsub("%s+", "")
 local frames = {}
 local devAlts = {
 	['Elv-ShatteredHand'] = true,
@@ -467,7 +469,7 @@ local devAlts = {
 }
 local function SendRecieve(self, event, prefix, message, channel, sender)
 	if event == "CHAT_MSG_ADDON" then
-		if(sender == E.myname.."-"..E.myrealm) then return end
+		if(sender == myName) then return end
 
 		if prefix == "ELVUI_VERSIONCHK" and devAlts[sender] ~= true and not E.recievedOutOfDateMessage then
 			if E.version ~= 'BETA' and tonumber(message) ~= nil and tonumber(message) > tonumber(E.version) then
@@ -475,7 +477,7 @@ local function SendRecieve(self, event, prefix, message, channel, sender)
 				E:StaticPopup_Show("ELVUI_UPDATE_AVAILABLE")
 				E.recievedOutOfDateMessage = true
 			end
-		elseif (prefix == 'ELVUI_DEV_SAYS' or prefix == 'ELVUI_DEV_CMD') and devAlts[sender] and not devAlts[E.myname.."-"..E.myrealm] then
+		elseif (prefix == 'ELVUI_DEV_SAYS' or prefix == 'ELVUI_DEV_CMD') and devAlts[sender] and not devAlts[myName] then
 			if prefix == 'ELVUI_DEV_SAYS' then
 				local user, channel, msg, sendTo = split("#", message)
 				
