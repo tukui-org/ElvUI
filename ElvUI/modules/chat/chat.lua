@@ -136,9 +136,9 @@ local specialChatIcons = {
 		["Sarah"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\ElvUI_Chat_Logo:13:22|t",
 		["Sara"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\helloKittyChatLogo.tga:18:20|t",
 
-		["Vinceypoo"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\logo_illuminati.tga:18:20|t",
-		["Vincey"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\logo_illuminati.tga:18:20|t",
-		["Vinceanity"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\logo_illuminati.tga:18:20|t",
+		["Vinceypoo"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\logo_illuminati.tga:18:18|t",
+		["Vincey"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\logo_illuminati.tga:18:18|t",
+		["Vinceanity"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\logo_illuminati.tga:18:18|t",
 	},
 }
 
