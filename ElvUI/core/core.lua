@@ -465,7 +465,7 @@ local frames = {}
 local devAlts = {
 	['Elv-ShatteredHand'] = true,
 	['Sarah-ShatteredHand'] = true,
-	--['Sara-ShatteredHand'] = true,
+	['Sara-ShatteredHand'] = true,
 }
 local function SendRecieve(self, event, prefix, message, channel, sender)
 	if event == "CHAT_MSG_ADDON" then
