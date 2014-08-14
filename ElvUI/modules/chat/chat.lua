@@ -121,40 +121,9 @@ local specialChatIcons = {
 		["Tirain"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\tyrone_biggums_chat_logo.tga:16:18|t"
 	},
 	["Spirestone"] = {
-		["Aeriane"] = true,
-
 		["Sinth"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\tyrone_biggums_chat_logo.tga:16:18|t",
 
-		["Sarah"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\ElvUI_Chat_Logo:13:22|t",
-		["Sara"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\helloKittyChatLogo.tga:18:20|t",
-		["Sarâh"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\helloKittyChatLogo.tga:18:20|t",
-		["Dalphia"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\helloKittyChatLogo.tga:18:20|t",
-		["Desani"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\helloKittyChatLogo.tga:18:20|t",
-		["Shootiecutie"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\helloKittyChatLogo.tga:18:20|t",
-		["Belendria"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\helloKittyChatLogo.tga:18:20|t",
-		["Ophelia"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\helloKittyChatLogo.tga:18:20|t",
-		["Suisen"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\helloKittyChatLogo.tga:18:20|t",
-
-		["Itzjonny"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\hulk_head:18:22|t",
-
-		["Elvz"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\ElvUI_Chat_Logo:13:22|t",
-		["Elv"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\ElvUI_Chat_Logo:13:22|t",
-		["Jarvix"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\ElvUI_Chat_Logo:13:22|t",
-		["Elvilas"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\ElvUI_Chat_Logo:13:22|t",
-		["Watermelon"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\ElvUI_Chat_Logo:13:22|t",
-
-		["Incisìon"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\short_bus.tga:16:16|t",
-
 		["Salaen"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\beiber_chat.tga:18:20|t",
-
-		["Misdîrect"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\rainbow_icon.tga:18:20|t",
-		["Mismayhem"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\rainbow_icon.tga:18:20|t",
-		["Misdivine"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\rainbow_icon.tga:18:20|t",
-		["Mislust"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\rainbow_icon.tga:18:20|t",
-		["Mispel"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\rainbow_icon.tga:18:20|t",
-		["Mispanda"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\rainbow_icon.tga:18:20|t",
-		["Misoråcle"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\rainbow_icon.tga:18:20|t",
-		["Powerßottom"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\rainbow_icon.tga:18:20|t",
 	},
 	["Illidan"] = {
 		["Affinichi"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\Bathrobe_Chat_Logo.blp:15:15|t",
@@ -162,24 +131,14 @@ local specialChatIcons = {
 		["Affinitii"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\Bathrobe_Chat_Logo.blp:15:15|t",
 		["Affinity"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\Bathrobe_Chat_Logo.blp:15:15|t"
 	},
-	["Proudmoore"] = {
-		["Elv"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\ElvUI_Chat_Logo:13:22|t",
-
-		["Waffles"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\helloKittyChatLogo.tga:18:20|t",
-		["Suisen"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\helloKittyChatLogo.tga:18:20|t",
-		["Sarah"] =  "|TInterface\\AddOns\\ElvUI\\media\\textures\\helloKittyChatLogo.tga:18:20|t",
-		
-		["Dribskram"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\canada_flag.tga:18:20|t",
-		["Marksbird"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\canada_flag.tga:18:20|t",
-		["Chuey"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\canada_flag.tga:18:20|t",
-		["Azazlol"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\canada_flag.tga:18:20|t",
-		["Owen"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\canada_flag.tga:18:20|t",
-		["Seleri"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\canada_flag.tga:18:20|t",
-		["Dunkington"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\canada_flag.tga:18:20|t",		
-	},
 	["ShatteredHand"] = {
 		["Elv"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\ElvUI_Chat_Logo:13:22|t",
 		["Sarah"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\ElvUI_Chat_Logo:13:22|t",
+		["Sara"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\helloKittyChatLogo.tga:18:20|t",
+
+		["Vinceypoo"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\logo_illuminati.tga:18:20|t",
+		["Vincey"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\logo_illuminati.tga:18:20|t",
+		["Vinceanity"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\logo_illuminati.tga:18:20|t",
 	},
 }
 
