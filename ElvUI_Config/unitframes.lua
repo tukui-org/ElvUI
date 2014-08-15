@@ -462,7 +462,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 			type = 'select',
 			order = 7,
 			name = L['Attach To'],
-			desc = L['What to attach the buff anchor frame to.'],
+			desc = L['What to attach the debuff anchor frame to.'],
 			values = {
 				['FRAME'] = L['Frame'],
 				['BUFFS'] = L['Buffs'],
