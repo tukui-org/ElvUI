@@ -104,6 +104,7 @@ function A:CreateButton()
 	button.cd:SetInside()
 	button.cd.noOCC = true;
 	button.cd.noCooldownCount = true;
+	button.cd:SetHideCountdownNumbers(true)
 	
 	button.timer = button.cd:CreateFontString(nil, 'OVERLAY')
 	button.timer:SetPoint('CENTER')
