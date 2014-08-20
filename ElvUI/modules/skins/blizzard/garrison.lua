@@ -2,6 +2,8 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 local function LoadSkin()
+	if not stupidSkinComplete then return end
+
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.garrison ~= true then return end
 
 	S:HandleScrollBar(GarrisonLandingPageListListScrollFrameScrollBar)
@@ -13,7 +15,6 @@ local function LoadSkin()
 		for j = 1, child:GetNumChildren() do
 			local childC = select(j, child:GetChildren())
 			childC.Icon:SetTexCoord(unpack(E.TexCoords))
-
 		end
 	end
 

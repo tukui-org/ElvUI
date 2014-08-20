@@ -136,15 +136,41 @@ local function LoadSkin()
 	QuestNPCModelTextFrame:StripTextures()
 	QuestNPCModelTextFrame:CreateBackdrop("Default")
 	QuestNPCModelTextFrame.backdrop:Point("TOPLEFT", QuestNPCModel.backdrop, "BOTTOMLEFT", 0, -2)
-	QuestLogDetailFrame:StripTextures()
-	QuestLogDetailFrame:SetTemplate("Transparent")
-	QuestLogDetailScrollFrame:StripTextures()
-	S:HandleCloseButton(QuestLogDetailFrameCloseButton)
+	--QuestLogDetailFrame:StripTextures()
+	--QuestLogDetailFrame:SetTemplate("Transparent")
+	--QuestLogDetailScrollFrame:StripTextures()
+	--S:HandleCloseButton(QuestLogDetailFrameCloseButton)
 	
 	hooksecurefunc("QuestFrame_ShowQuestPortrait", function(parentFrame, portrait, text, name, x, y)
 		QuestNPCModel:ClearAllPoints();
 		QuestNPCModel:SetPoint("TOPLEFT", parentFrame, "TOPRIGHT", x + 18, y);			
 	end)	
+	
+	QuestLogPopupDetailFrame:StripTextures()
+	QuestLogPopupDetailFrameInset:StripTextures()
+	S:HandleButton(QuestLogPopupDetailFrameAbandonButton)
+	S:HandleButton(QuestLogPopupDetailFrameShareButton)
+	S:HandleButton(QuestLogPopupDetailFrameTrackButton)
+	QuestLogPopupDetailFrameScrollFrame:StripTextures()
+	S:HandleScrollBar(QuestLogPopupDetailFrameScrollFrameScrollBar)
+	QuestLogPopupDetailFrame:SetTemplate("Transparent")
+
+	QuestLogPopupDetailFrameScrollFrame:HookScript('OnShow', function(self)
+		if not QuestLogPopupDetailFrameScrollFrame.backdrop then
+			QuestLogPopupDetailFrameScrollFrame:CreateBackdrop("Default")
+			StyleScrollFrame(QuestLogPopupDetailFrameScrollFrame, 509, 630, false)
+			QuestLogPopupDetailFrameScrollFrame:Height(self:GetHeight() - 2)
+		end
+		QuestLogPopupDetailFrameScrollFrame.spellTex:Height(self:GetHeight() + 217)
+	end)	
+
+	S:HandleCloseButton(QuestLogPopupDetailFrameCloseButton)
+
+	QuestLogPopupDetailFrame.ShowMapButton:StripTextures()
+	S:HandleButton(QuestLogPopupDetailFrame.ShowMapButton)
+	QuestLogPopupDetailFrame.ShowMapButton.Text:ClearAllPoints()
+	QuestLogPopupDetailFrame.ShowMapButton.Text:SetPoint("CENTER")
+	QuestLogPopupDetailFrame.ShowMapButton:Size(QuestLogPopupDetailFrame.ShowMapButton:GetWidth() - 30, QuestLogPopupDetailFrame.ShowMapButton:GetHeight(), - 40)
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)

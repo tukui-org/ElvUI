@@ -493,7 +493,7 @@ local function LoadSkin()
 
 	S:HandleEditBox(LFGListFrame.SearchPanel.SearchBox)
 
-	local columns = {
+	--[[local columns = {
 		['Name'] = true,
 		['Tank'] = true,
 		['Healer'] = true,
@@ -504,7 +504,7 @@ local function LoadSkin()
 		LFGListFrame.SearchPanel[x.."ColumnHeader"].Left:Hide()
 		LFGListFrame.SearchPanel[x.."ColumnHeader"].Middle:Hide()
 		LFGListFrame.SearchPanel[x.."ColumnHeader"].Right:Hide()
-	end
+	end]]
 
 	S:HandleButton(LFGListFrame.SearchPanel.BackButton, true)
 	S:HandleButton(LFGListFrame.SearchPanel.SignUpButton, true)

@@ -33,7 +33,7 @@ local function LoadSkin()
 	S:HandleButton(QuestMapFrame.DetailsFrame.TrackButton)
 
 	S:HandleCloseButton(WorldMapFrameCloseButton)
-	WorldMapFrameSizeUpButton:Kill() -- Change later maybe..
+	--WorldMapFrameSizeUpButton:Kill() -- Change later maybe..
 
 	local rewardFrames = {
 		['MoneyFrame'] = true,

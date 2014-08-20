@@ -159,7 +159,7 @@ end
 function M:Initialize()
 	setfenv(WorldMapFrame_OnShow, setmetatable({ UpdateMicroButtons = function() end }, { __index = _G })) --blizzard taint fix
 	
-	WorldMapShowDropDown:Point('BOTTOMRIGHT', WorldMapPositioningGuide, 'BOTTOMRIGHT', -2, -4)
+	--[[WorldMapShowDropDown:Point('BOTTOMRIGHT', WorldMapPositioningGuide, 'BOTTOMRIGHT', -2, -4)
 	WorldMapZoomOutButton:Point("LEFT", WorldMapZoneDropDown, "RIGHT", 0, 4)
 	WorldMapLevelUpButton:Point("TOPLEFT", WorldMapLevelDropDown, "TOPRIGHT", -2, 8)
 	WorldMapLevelDownButton:Point("BOTTOMLEFT", WorldMapLevelDropDown, "BOTTOMRIGHT", -2, 2)
@@ -171,7 +171,7 @@ function M:Initialize()
 	self:HookScript(WorldMapZoneDropDownButton, 'OnClick', 'ResetDropDownListPosition')
 	self:SecureHook("WorldMap_ToggleSizeDown", 'SetSmallWorldMap')	
 	self:RegisterEvent('PLAYER_REGEN_ENABLED')
-	self:RegisterEvent('PLAYER_REGEN_DISABLED')
+	self:RegisterEvent('PLAYER_REGEN_DISABLED')]]
 	
 	local CoordsHolder = CreateFrame('Frame', 'CoordsHolder', WorldMapFrame)
 	CoordsHolder:SetFrameLevel(WorldMapDetailFrame:GetFrameLevel() + 1)
@@ -188,7 +188,7 @@ function M:Initialize()
 	CoordsHolder.mouseCoords:SetText(MOUSE_LABEL..":   0, 0")
 	
 	self:ScheduleRepeatingTimer('UpdateCoords', 0.05)
-	self:ToggleTinyWorldMapSetting()
+	--self:ToggleTinyWorldMapSetting()
 	
 	
 	DropDownList1:HookScript('OnShow', function(self)
