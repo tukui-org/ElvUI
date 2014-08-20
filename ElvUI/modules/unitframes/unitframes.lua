@@ -460,8 +460,8 @@ function UF.groupPrototype:Configure_Groups()
 		local inInstance, instanceType = IsInInstance()
 		if(inInstance and (instanceType == 'raid' or instanceType == 'pvp')) then
 			local isDynamic, _, maxPlayers = select(7, GetInstanceInfo())
-			if(not isDynamic and maxPlayers) then
-				numGroups = (maxPlayers / 5)
+			if(maxPlayers) then
+				numGroups = E:Round(maxPlayers/5)
 			end
 		end
 	end

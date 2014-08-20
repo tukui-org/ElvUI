@@ -60,7 +60,7 @@ function UF:SmartVisibility(event)
 			UnregisterStateDriver(self, "visibility")
 			self:Show()	
 
-			if(maxPlayers and not isDynamic and ElvUF_Raid.numGroups ~= (maxPlayers / 5)) then
+			if(maxPlayers and ElvUF_Raid.numGroups ~= E:Round(maxPlayers/5)) then
 				ElvUF_Raid:Configure_Groups()		
 			end
 		elseif self.db.visibility then
