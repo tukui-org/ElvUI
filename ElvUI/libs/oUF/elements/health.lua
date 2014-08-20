@@ -158,8 +158,8 @@ end
 function updateFrequentUpdates(self)
 	local health = self.Health
 	if health.frequentUpdates and not self:IsEventRegistered("UNIT_HEALTH_FREQUENT") then
-		if GetCVarBool("predictedHealth") ~= 1 then
-			SetCVar("predictedHealth", 1)
+		if GetCVarBool("predictedHealth") ~= true then
+			SetCVar("predictedHealth", true)
 		end
 
 		self:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)
