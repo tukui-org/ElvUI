@@ -449,13 +449,13 @@ function S:Initialize()
 	self.db = E.private.skins
 	for addon, loadFunc in pairs(self.addonsToLoad) do
 		if IsAddOnLoaded(addon) then
-			pcall(loadFunc);
 			self.addonsToLoad[addon] = nil;
+			loadFunc()
 		end
 	end
 	
 	for _, loadFunc in pairs(self.nonAddonsToLoad) do
-		pcall(loadFunc);
+		loadFunc()
 	end
 	wipe(self.nonAddonsToLoad)
 end
