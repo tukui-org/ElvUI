@@ -103,8 +103,6 @@ local function LoadSkin()
 	S:HandleNextPrevButton(WorldMapFrame.UIElementsFrame.OpenQuestPanelButton)
 	S:HandleNextPrevButton(WorldMapFrame.UIElementsFrame.CloseQuestPanelButton)
 	SquareButton_SetIcon(WorldMapFrame.UIElementsFrame.CloseQuestPanelButton, 'LEFT')
-
-
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)
