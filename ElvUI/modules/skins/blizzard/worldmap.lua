@@ -2,20 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 
-local cos, sin, rad = math.cos, math.sin, math.rad;
-function SetAngledTexture(t, A, B, C, D, E, F)
-	local det = A*E - B*D;
-	local ULx, ULy, LLx, LLy, URx, URy, LRx, LRy;
-	
-	ULx, ULy = ( B*F - C*E ) / det, ( -(A*F) + C*D ) / det;
-	LLx, LLy = ( -B + B*F - C*E ) / det, ( A - A*F + C*D ) / det;
-	URx, URy = ( E + B*F - C*E ) / det, ( -D - A*F + C*D ) / det;
-	LRx, LRy = ( E - B + B*F - C*E ) / det, ( -D + A -(A*F) + C*D ) / det;
-
-	t:SetTexCoord(ULx, ULy, LLx, LLy, URx, URy, LRx, LRy);
-end
-
-
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.worldmap ~= true then return end
 	
@@ -55,17 +41,16 @@ local function LoadSkin()
 	WorldMapFrameSizeDownButton:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
 	WorldMapFrameSizeDownButton:SetHighlightTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
 
-
-	local angle = rad(180);
 	S:HandleButton(WorldMapFrameSizeUpButton, true)
 	WorldMapFrameSizeUpButton:SetSize(16, 16)
 	WorldMapFrameSizeUpButton:SetPoint("RIGHT", WorldMapFrameCloseButton, "LEFT", 4, 0)
 	WorldMapFrameSizeUpButton:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
 	WorldMapFrameSizeUpButton:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
 	WorldMapFrameSizeUpButton:SetHighlightTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
-	SetAngledTexture(WorldMapFrameSizeUpButton:GetNormalTexture(), cos(angle), sin(angle), 1, -sin(angle), cos(angle), 1);
-	SetAngledTexture(WorldMapFrameSizeUpButton:GetPushedTexture(), cos(angle), sin(angle), 1, -sin(angle), cos(angle), 1);
-	SetAngledTexture(WorldMapFrameSizeUpButton:GetHighlightTexture(), cos(angle), sin(angle), 1, -sin(angle), cos(angle), 1);
+	WorldMapFrameSizeUpButton:GetNormalTexture():SetTexCoord(1, 1, 1, -1.2246467991474e-016, 1.1102230246252e-016, 1, 0, -1.144237745222e-017)
+	WorldMapFrameSizeUpButton:GetPushedTexture():SetTexCoord(1, 1, 1, -1.2246467991474e-016, 1.1102230246252e-016, 1, 0, -1.144237745222e-017)
+	WorldMapFrameSizeUpButton:GetHighlightTexture():SetTexCoord(1, 1, 1, -1.2246467991474e-016, 1.1102230246252e-016, 1, 0, -1.144237745222e-017)
+
 
 	local rewardFrames = {
 		['MoneyFrame'] = true,
