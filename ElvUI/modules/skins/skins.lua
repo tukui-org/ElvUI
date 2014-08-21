@@ -450,12 +450,18 @@ function S:Initialize()
 	for addon, loadFunc in pairs(self.addonsToLoad) do
 		if IsAddOnLoaded(addon) then
 			self.addonsToLoad[addon] = nil;
-			loadFunc()
+			local _, catch = pcall(loadFunc)
+			if(catch and GetCVarBool('scriptErrors') == true) then
+				ScriptErrorsFrame_OnError(catch, false)
+			end
 		end
 	end
 	
 	for _, loadFunc in pairs(self.nonAddonsToLoad) do
-		loadFunc()
+		local _, catch = pcall(loadFunc)
+		if(catch and GetCVarBool('scriptErrors') == true) then
+			ScriptErrorsFrame_OnError(catch, false)
+		end
 	end
 	wipe(self.nonAddonsToLoad)
 end
