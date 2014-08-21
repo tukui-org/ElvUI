@@ -178,14 +178,6 @@ E.Options.args.general = {
 					name = L["Log Taints"],
 					desc = L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."],
 				},
-				tinyWorldMap = {
-					order = 15,
-					type = "toggle",
-					name = L["Tiny Map"],
-					desc = L["Don't scale the large world map to block out sides of the screen."],
-					get = function(info) return E.db.general.tinyWorldMap end,
-					set = function(info, value) E.db.general.tinyWorldMap = value; E:GetModule('WorldMap'):ToggleTinyWorldMapSetting() end,
-				},	
 				bottomPanel = {
 					order = 16,
 					type = 'toggle',
