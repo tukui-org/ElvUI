@@ -131,7 +131,7 @@ local function Enable(object)
 		return
 	end
  
-	object:RegisterEvent("UNIT_AURA", object.unit)
+	object:RegisterEvent("UNIT_AURA", Update)
 	if playerClass == "DRUID" then
 		object:RegisterEvent("SPELLS_CHANGED", CheckSymbiosis)
 	end
