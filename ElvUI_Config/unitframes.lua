@@ -2173,17 +2173,6 @@ E.Options.args.unitframe.args.target = {
 			get = function(info) return E.db.unitframe.units['target']['power'].hideonnpc end,
 			set = function(info, value) E.db.unitframe.units['target']['power'].hideonnpc = value; UF:CreateAndUpdateUF('target') end,
 		},
-		smartAuraDisplay = {
-			type = 'select',
-			name = L['Smart Auras'],
-			desc = L['When set the Buffs and Debuffs will toggle being displayed depending on if the unit is friendly or an enemy. This will not effect the aurabars module.'],
-			order = 11,
-			values = {
-				['DISABLED'] = L['Disabled'],
-				['SHOW_DEBUFFS_ON_FRIENDLIES'] = L['Friendlies: Show Debuffs'],
-				['SHOW_BUFFS_ON_FRIENDLIES'] = L['Friendlies: Show Buffs'],
-			},
-		},
 		threatStyle = {
 			type = 'select',
 			order = 12,
@@ -2494,17 +2483,6 @@ E.Options.args.unitframe.args.focus = {
 			get = function(info) return E.db.unitframe.units['focus']['power'].hideonnpc end,
 			set = function(info, value) E.db.unitframe.units['focus']['power'].hideonnpc = value; UF:CreateAndUpdateUF('focus') end,
 		},	
-		smartAuraDisplay = {
-			type = 'select',
-			name = L['Smart Auras'],
-			desc = L['When set the Buffs and Debuffs will toggle being displayed depending on if the unit is friendly or an enemy. This will not effect the aurabars module.'],
-			order = 11,
-			values = {
-				['DISABLED'] = L['Disabled'],
-				['SHOW_DEBUFFS_ON_FRIENDLIES'] = L['Friendlies: Show Debuffs'],
-				['SHOW_BUFFS_ON_FRIENDLIES'] = L['Friendlies: Show Buffs'],
-			},
-		},
 		threatStyle = {
 			type = 'select',
 			order = 13,
