@@ -15,14 +15,15 @@ function AB:UPDATE_SHAPESHIFT_COOLDOWN()
 			CooldownFrame_SetTimer(cooldown, start, duration, enable);
 		end
 	end
+
+	self:StyleShapeShift("UPDATE_SHAPESHIFT_COOLDOWN")
 end
 
 function AB:StyleShapeShift(event)
 	local numForms = GetNumShapeshiftForms();
 	local texture, name, isActive, isCastable, _;
 	local buttonName, button, icon, cooldown;
-	local start, duration, enable;
-	local stance = GetShapeshiftForm();
+
 	for i = 1, NUM_STANCE_SLOTS do
 		buttonName = "ElvUI_StanceBarButton"..i;
 		button = _G[buttonName];
