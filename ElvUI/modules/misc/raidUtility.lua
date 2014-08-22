@@ -221,9 +221,16 @@ function RU:Initialize()
 
 		for i, button in pairs(buttons) do
 			local f = _G[button]
-			_G[button.."Left"]:SetAlpha(0)
-			_G[button.."Middle"]:SetAlpha(0)	
-			_G[button.."Right"]:SetAlpha(0)
+			f.BottomLeft:SetAlpha(0)
+			f.BottomRight:SetAlpha(0)
+			f.BottomMiddle:SetAlpha(0)
+			f.TopMiddle:SetAlpha(0)
+			f.TopLeft:SetAlpha(0)
+			f.TopRight:SetAlpha(0)
+			f.MiddleLeft:SetAlpha(0)
+			f.MiddleRight:SetAlpha(0)
+			f.MiddleMiddle:SetAlpha(0)
+
 			f:SetHighlightTexture("")
 			f:SetDisabledTexture("")
 			f:HookScript("OnEnter", ButtonEnter)
