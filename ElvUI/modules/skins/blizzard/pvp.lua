@@ -5,7 +5,7 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.pvp ~= true then return end
 	
 	PVPUIFrame:StripTextures()
-	PVPUIFrame.Shadows:StripTextures()
+	--PVPUIFrame.Shadows:StripTextures()
 
 	for i=1, 2 do
 		S:HandleTab(_G["PVPUIFrameTab"..i])
