@@ -34,7 +34,7 @@ function RU:CreateUtilButton(name, parent, template, width, height, point, relat
 	b:Point(point, relativeto, point2, xOfs, yOfs)
 	b:HookScript("OnEnter", ButtonEnter)
 	b:HookScript("OnLeave", ButtonLeave)
-	b:SetTemplate("Default")
+	b:SetTemplate("Transparent")
 	
 	if text then
 		local t = b:CreateFontString(nil,"OVERLAY",b)

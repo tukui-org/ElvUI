@@ -454,9 +454,10 @@ function UF:UpdateAuraWatch(frame, petOverride)
 				end
 				
 				if not icon.cd then
-					icon.cd = CreateFrame("Cooldown", nil, icon)
+					icon.cd = CreateFrame("Cooldown", nil, icon, "CooldownFrameTemplate")
 					icon.cd:SetAllPoints(icon)
 					icon.cd:SetReverse(true)
+					icon.cd:SetHideCountdownNumbers(true)
 					icon.cd:SetFrameLevel(icon:GetFrameLevel())
 				end			
 
