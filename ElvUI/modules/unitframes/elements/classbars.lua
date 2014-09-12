@@ -377,7 +377,7 @@ function UF:UpdateShadowOrbs(event, unit, powerType)
 	end
 		
 	if USE_MINI_CLASSBAR then
-		CLASSBAR_WIDTH = CLASSBAR_WIDTH * (maxHolyPower - 1) / maxHolyPower
+		CLASSBAR_WIDTH = CLASSBAR_WIDTH * (maxShadowOrbs - 1) / maxShadowOrbs
 	end
 
 	if db.classbar.detachFromFrame then
