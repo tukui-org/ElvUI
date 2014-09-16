@@ -184,7 +184,6 @@ G.unitframe.aurafilters['TurtleBuffs'] = {
 		--Druid
 			[SpellName(22812)] = Defaults(2), -- Barkskin
 			[SpellName(102342)] = Defaults(2), -- Ironbark
-			[SpellName(106922)] = Defaults(), -- Might of Ursoc
 			[SpellName(61336)] = Defaults(), -- Survival Instincts
 		--Hunter
 			[SpellName(19263)] = Defaults(5), -- Deterrence
@@ -277,7 +276,6 @@ G.unitframe.aurafilters['PlayerBuffs'] = {
 		--Druid
 			[SpellName(22812)] = Defaults(), -- Barkskin
 			[SpellName(102342)] = Defaults(), -- Ironbark
-			[SpellName(106922)] = Defaults(), -- Might of Ursoc
 			[SpellName(61336)] = Defaults(), -- Survival Instincts
 			[SpellName(117679)] = Defaults(), -- Incarnation (Tree of Life)
 			[SpellName(102543)] = Defaults(), -- Incarnation: King of the Jungle
