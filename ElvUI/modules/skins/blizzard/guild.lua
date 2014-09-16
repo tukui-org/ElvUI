@@ -11,7 +11,7 @@ local function LoadSkin()
 	
 	S:HandleCloseButton(GuildMemberDetailCloseButton)
 	S:HandleCloseButton(GuildFrameCloseButton)
-	
+	S:HandleScrollBar(GuildInfoFrameApplicantsContainerScrollBar)
 	local striptextures = {
 		"GuildFrameInset",
 		"GuildFrameBottomInset",
@@ -118,8 +118,8 @@ local function LoadSkin()
 	
 	--Detail Frame
 	GuildMemberDetailFrame:SetTemplate("Transparent")
-	GuildMemberNoteBackground:SetTemplate("Default")
-	GuildMemberOfficerNoteBackground:SetTemplate("Default")
+	GuildMemberNoteBackground:SetTemplate("Transparent")
+	GuildMemberOfficerNoteBackground:SetTemplate("Transparent")
 	GuildMemberRankDropdown:SetFrameLevel(GuildMemberRankDropdown:GetFrameLevel() + 5)
 	S:HandleDropDownBox(GuildMemberRankDropdown, 175)
 
@@ -150,24 +150,24 @@ local function LoadSkin()
 	end
 	
 	local backdrop1 = CreateFrame("Frame", nil, GuildInfoFrameInfo)
-	backdrop1:SetTemplate("Default")
+	backdrop1:SetTemplate("Transparent")
 	backdrop1:SetFrameLevel(GuildInfoFrameInfo:GetFrameLevel() - 1)
 	backdrop1:Point("TOPLEFT", GuildInfoFrameInfo, "TOPLEFT", 2, -22)
 	backdrop1:Point("BOTTOMRIGHT", GuildInfoFrameInfo, "BOTTOMRIGHT", 0, 200)
 	
 	local backdrop2 = CreateFrame("Frame", nil, GuildInfoFrameInfo)
-	backdrop2:SetTemplate("Default")
+	backdrop2:SetTemplate("Transparent")
 	backdrop2:SetFrameLevel(GuildInfoFrameInfo:GetFrameLevel() - 1)
 	backdrop2:Point("TOPLEFT", GuildInfoFrameInfo, "TOPLEFT", 2, -158)
 	backdrop2:Point("BOTTOMRIGHT", GuildInfoFrameInfo, "BOTTOMRIGHT", 0, 118)	
 
 	local backdrop3 = CreateFrame("Frame", nil, GuildInfoFrameInfo)
-	backdrop3:SetTemplate("Default")
+	backdrop3:SetTemplate("Transparent")
 	backdrop3:SetFrameLevel(GuildInfoFrameInfo:GetFrameLevel() - 1)
 	backdrop3:Point("TOPLEFT", GuildInfoFrameInfo, "TOPLEFT", 2, -233)
 	backdrop3:Point("BOTTOMRIGHT", GuildInfoFrameInfo, "BOTTOMRIGHT", 0, 3)	
 	
-	GuildRecruitmentCommentInputFrame:SetTemplate("Default")
+	GuildRecruitmentCommentInputFrame:SetTemplate("Transparent")
 	
 	for _, button in next, GuildInfoFrameApplicantsContainer.buttons do
 		button.selectedTex:Kill()
@@ -178,7 +178,7 @@ local function LoadSkin()
 	--Text Edit Frame
 	GuildTextEditFrame:SetTemplate("Transparent")
 	S:HandleScrollBar(GuildTextEditScrollFrameScrollBar, 5)
-	GuildTextEditContainer:SetTemplate("Default")
+	GuildTextEditContainer:SetTemplate("Transparent")
 	for i=1, GuildTextEditFrame:GetNumChildren() do
 		local child = select(i, GuildTextEditFrame:GetChildren())
 		if child:GetName() == "GuildTextEditFrameCloseButton" and child:GetWidth() < 33 then
@@ -202,6 +202,17 @@ local function LoadSkin()
 		end
 	end
 	
+	--Perks
+	for i=1, 9 do
+		local button = _G["GuildPerksContainerButton"..i]
+		button:DisableDrawLayer("BACKGROUND")
+		button:DisableDrawLayer("BORDER")
+
+		button.icon:SetTexCoord(unpack(E.TexCoords))
+		button:CreateBackdrop()
+		button.backdrop:SetOutside(button.icon)
+	end
+
 	--Rewards
 	S:HandleScrollBar(GuildRewardsContainerScrollBar, 5)
 	
