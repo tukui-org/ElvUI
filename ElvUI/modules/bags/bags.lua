@@ -162,7 +162,13 @@ function B:UpdateSlot(bagID, slotID)
 		slot.name, _, slot.rarity, _, _, iType = GetItemInfo(clink);
 		
 		local isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID);
-	
+		local r, g, b
+
+		if(slot.rarity) then
+			r, g, b = GetItemQualityColor(slot.rarity);
+			slot.shadow:SetBackdropBorderColor(r, g, b, 0.9)
+		end
+
 		-- color slot according to item quality
 		if questId and not isActive then
 			slot:SetBackdropBorderColor(1.0, 0.3, 0.3);
@@ -172,7 +178,6 @@ function B:UpdateSlot(bagID, slotID)
 		elseif questId or isQuestItem then
 			slot:SetBackdropBorderColor(1.0, 0.3, 0.3);
 		elseif slot.rarity and slot.rarity > 1 then
-			local r, g, b = GetItemQualityColor(slot.rarity);
 			slot:SetBackdropBorderColor(r, g, b);
 		else
 			slot:SetBackdropBorderColor(unpack(E.media.bordercolor));
@@ -182,9 +187,11 @@ function B:UpdateSlot(bagID, slotID)
 	end
 
 	if(C_NewItems.IsNewItem(bagID, slotID)) then
-		ActionButton_ShowOverlayGlow(slot)
+		slot.shadow:Show()
+		E:Flash(slot.shadow, 1, true)
 	else
-		ActionButton_HideOverlayGlow(slot)
+		slot.shadow:Hide()
+		E:StopFlash(slot.shadow)
 	end
 	
 	SetItemButtonTexture(slot, texture);
@@ -400,6 +407,8 @@ function B:Layout(isBank)
 					if(f.Bags[bagID][slotID].BattlepayItemTexture) then
 						f.Bags[bagID][slotID].BattlepayItemTexture:Hide()
 					end
+
+					f.Bags[bagID][slotID]:CreateShadow()
 				end
 				
 				f.Bags[bagID][slotID]:SetID(slotID);
@@ -531,7 +540,13 @@ function B:UpdateReagentSlot(slotID)
 		slot.name, _, slot.rarity, _, _, iType = GetItemInfo(clink);
 		
 		local isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID);
-	
+		local r, g, b
+
+		if(slot.rarity) then
+			r, g, b = GetItemQualityColor(slot.rarity);
+			slot.shadow:SetBackdropBorderColor(r, g, b, 0.9);
+		end
+
 		-- color slot according to item quality
 		if questId and not isActive then
 			slot:SetBackdropBorderColor(1.0, 0.3, 0.3);
@@ -539,7 +554,6 @@ function B:UpdateReagentSlot(slotID)
 		elseif questId or isQuestItem then
 			slot:SetBackdropBorderColor(1.0, 0.3, 0.3);
 		elseif slot.rarity and slot.rarity > 1 then
-			local r, g, b = GetItemQualityColor(slot.rarity);
 			slot:SetBackdropBorderColor(r, g, b);
 		else
 			slot:SetBackdropBorderColor(unpack(E.media.bordercolor));
@@ -549,9 +563,11 @@ function B:UpdateReagentSlot(slotID)
 	end
 
 	if(C_NewItems.IsNewItem(bagID, slotID)) then
-		ActionButton_ShowOverlayGlow(slot)
+		slot.shadow:Show()
+		E:Flash(slot.shadow, 1, true)
 	else
-		ActionButton_HideOverlayGlow(slot)
+		slot.shadow:Hide()
+		E:StopFlash(slot.shadow)
 	end
 	
 	SetItemButtonTexture(slot, texture);
