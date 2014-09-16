@@ -166,7 +166,7 @@ function B:UpdateSlot(bagID, slotID)
 
 		if(slot.rarity) then
 			r, g, b = GetItemQualityColor(slot.rarity);
-			slot.shadow:SetBackdropBorderColor(r, g, b, 0.9)
+			slot.shadow:SetBackdropBorderColor(r, g, b)
 		end
 
 		-- color slot according to item quality
@@ -544,7 +544,7 @@ function B:UpdateReagentSlot(slotID)
 
 		if(slot.rarity) then
 			r, g, b = GetItemQualityColor(slot.rarity);
-			slot.shadow:SetBackdropBorderColor(r, g, b, 0.9);
+			slot.shadow:SetBackdropBorderColor(r, g, b);
 		end
 
 		-- color slot according to item quality

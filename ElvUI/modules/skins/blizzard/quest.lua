@@ -47,7 +47,17 @@ local function LoadSkin()
 	
 	hooksecurefunc("QuestInfoItem_OnClick", function(self)
 		QuestInfoItemHighlight:ClearAllPoints()
-		QuestInfoItemHighlight:SetAllPoints(self)
+		QuestInfoItemHighlight:SetOutside(self.Icon)
+
+		self.Name:SetTextColor(1, 1, 0)
+
+		local parent = self:GetParent()
+		for i=1, #parent.RewardButtons do
+			local questItem = QuestInfoRewardsFrame.RewardButtons[i]
+			if(questItem ~= self) then
+				questItem.Name:SetTextColor(1, 1, 1)
+			end
+		end
 	end)
 
 	QuestRewardScrollFrame:HookScript('OnShow', function(self)
