@@ -488,6 +488,8 @@ function B:Layout(isBank)
 				f.reagentFrame.slots[i].iconTexture:SetTexCoord(unpack(E.TexCoords));
 				f.reagentFrame.slots[i].IconBorder:SetAlpha(0)	
 				f.reagentFrame.slots[i]:SetScript("OnClick", BankFrameItemButtonGeneric_OnClick)
+				f.reagentFrame.slots[i]:CreateShadow()
+				f.reagentFrame.slots[i].shadow:Hide()
 			end
 
 			f.reagentFrame.slots[i]:ClearAllPoints()

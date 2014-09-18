@@ -82,6 +82,8 @@ local function LoadSkin()
 		else
 		    questItem:Point(point, relativeTo, relativePoint, 4, 0)
 		end
+
+		questItem.Name:SetTextColor(1, 1, 1)
 	  end
     end)
 
