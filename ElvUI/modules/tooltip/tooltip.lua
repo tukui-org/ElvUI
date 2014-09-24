@@ -167,6 +167,7 @@ end
 
 function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 	if E.private.tooltip.enable ~= true then return end
+
 	if(tt:GetAnchorType() ~= "ANCHOR_NONE") then return end
 	if InCombatLockdown() and self.db.visibility.combat then
 		tt:Hide()
@@ -655,21 +656,15 @@ function TT:RepositionBNET(frame, point, anchor, anchorPoint, xOffset, yOffset)
 	end
 end
 
-function TT:CheckBackdropColor(self, elapsed)
-	if(self.elapsed and self.elapsed > 0.35) then
-		local r, g, b = self:GetBackdropColor()
-		r = E:Round(r, 1)
-		g = E:Round(g, 1)
-		b = E:Round(b, 1)
-		local red, green, blue = unpack(E.media.backdropcolor)
-		if(r ~= red or g ~= green or b ~= blue) then
-			self:SetTemplate("Transparent");
-		end
-
-		self.elapsed = 0
-	else
-		self.elapsed = (self.elapsed or 0) + elapsed
-	end	
+function TT:CheckBackdropColor()
+	local r, g, b = GameTooltip:GetBackdropColor()
+	r = E:Round(r, 1)
+	g = E:Round(g, 1)
+	b = E:Round(b, 1)
+	local red, green, blue = unpack(E.media.backdropcolor)
+	if(r ~= red or g ~= green or b ~= blue) then
+		GameTooltip:SetTemplate("Transparent");
+	end
 end
 
 function TT:Initialize()
@@ -711,6 +706,7 @@ function TT:Initialize()
 	self:HookScript(GameTooltip, 'OnTooltipCleared', 'GameTooltip_OnTooltipCleared')
 	self:HookScript(GameTooltip, 'OnTooltipSetItem', 'GameTooltip_OnTooltipSetItem')
 	self:HookScript(GameTooltip, 'OnTooltipSetUnit', 'GameTooltip_OnTooltipSetUnit')
+	hooksecurefunc(GameTooltip, "SetOwner", TT.CheckBackdropColor)
 	self:HookScript(GameTooltipStatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
 	
 	self:RegisterEvent("MODIFIER_STATE_CHANGED")
@@ -718,7 +714,6 @@ function TT:Initialize()
 	E.Skins:HandleCloseButton(ItemRefCloseButton)
 	for _, tt in pairs(tooltips) do
 		self:HookScript(tt, 'OnShow', 'SetStyle')
-		self:HookScript(tt, "OnUpdate", "CheckBackdropColor");
 	end
 end
 
