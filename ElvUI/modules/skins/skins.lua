@@ -19,6 +19,7 @@ local function SetOriginalBackdrop(self)
 end
 
 function S:HandleButton(f, strip)
+	assert(f, "doesn't exist!")
 	if f.Left then f.Left:SetAlpha(0) end
 	if f.Middle then f.Middle:SetAlpha(0) end
 	if f.Right then f.Right:SetAlpha(0) end
@@ -388,6 +389,7 @@ function S:HandleCloseButton(f, point, text)
 end
 
 function S:HandleSliderFrame(frame)
+	assert(frame)
 	local orientation = frame:GetOrientation()
 	local SIZE = 12
 	frame:StripTextures()

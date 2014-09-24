@@ -20,9 +20,17 @@ local menuList = {
 	func = function() ToggleCharacter("PaperDollFrame") end},
 	{text = SPELLBOOK_ABILITIES_BUTTON,
 	func = function() if not SpellBookFrame:IsShown() then ShowUIPanel(SpellBookFrame) else HideUIPanel(SpellBookFrame) end end},
-	{text = MOUNTS_AND_PETS,
+	{text = MOUNTS,
 	func = function()
-		TogglePetJournal();
+		TogglePetJournal(1);
+	end},
+	{text = PETS,
+	func = function()
+		TogglePetJournal(2)
+	end},
+	{text = TOY_BOX,
+	func = function() 
+		TogglePetJournal(3)
 	end},
 	{text = TALENTS_BUTTON,
 	func = function()
