@@ -706,7 +706,7 @@ function TT:Initialize()
 	self:HookScript(GameTooltip, 'OnTooltipCleared', 'GameTooltip_OnTooltipCleared')
 	self:HookScript(GameTooltip, 'OnTooltipSetItem', 'GameTooltip_OnTooltipSetItem')
 	self:HookScript(GameTooltip, 'OnTooltipSetUnit', 'GameTooltip_OnTooltipSetUnit')
-	hooksecurefunc(GameTooltip, "SetOwner", TT.CheckBackdropColor)
+	hooksecurefunc(GameTooltip, "SetAnchorType", TT.CheckBackdropColor)
 	self:HookScript(GameTooltipStatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
 	
 	self:RegisterEvent("MODIFIER_STATE_CHANGED")
