@@ -1,0 +1,8 @@
+## Interface: 50001
+## Title: oUF Anticipation Charge
+## Notes: Adds support for rogue anticipation indicators to oUF.
+## Author: Elv
+## Version: 1.0.0
+## Dependencies: oUF
+
+oUF_ArcaneCharge.lua

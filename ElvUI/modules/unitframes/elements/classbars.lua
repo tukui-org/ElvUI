@@ -251,6 +251,50 @@ function UF:UpdateArcaneCharges(event, unit, arcaneCharges, maxCharges)
 end	
 
 -------------------------------------------------------------
+-- ROGUE
+-------------------------------------------------------------
+
+function UF:Construct_RogueResourceBar(frame)
+	local bars = CreateFrame("Frame", nil, frame)
+	bars:CreateBackdrop('Default')
+
+	for i = 1, UF['classMaxResourceBar'][E.myclass] do					
+		bars[i] = CreateFrame("StatusBar", nil, bars)
+		bars[i]:SetStatusBarTexture(E['media'].blankTex) --Dummy really, this needs to be set so we can change the color
+		bars[i]:GetStatusBarTexture():SetHorizTile(false)
+		
+		bars[i].bg = bars[i]:CreateTexture(nil, 'ARTWORK')
+		
+		UF['statusbars'][bars[i]] = true
+
+		bars[i]:CreateBackdrop('Default')
+		bars[i].backdrop:SetParent(bars)
+	end
+	
+	bars.PostUpdate = UF.UpdateAnticipationCharges
+	
+	return bars
+end
+
+function UF:UpdateAnticipationCharges(event, unit, numCharges, maxCharges)
+	local frame = self:GetParent()
+	local db = frame.db
+		
+	local point, _, anchorPoint, x, y = frame.Health:GetPoint()
+	if self:IsShown() and point then
+		if db.classbar.fill == 'spaced' then
+			frame.Health:SetPoint(point, frame, anchorPoint, x, -7)
+		else
+			frame.Health:SetPoint(point, frame, anchorPoint, x, -13)
+		end
+	elseif point then
+		frame.Health:SetPoint(point, frame, anchorPoint, x, -2)
+	end
+	
+	UF:UpdatePlayerFrameAnchors(frame, self:IsShown())
+end	
+
+-------------------------------------------------------------
 -- WARLOCK
 -------------------------------------------------------------
 

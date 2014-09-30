@@ -4402,6 +4402,23 @@ if P.unitframe.colors.classResources[E.myclass] then
 			type = 'color',
 			name = L['Arcane Charges'],
 		}
+	elseif E.myclass == 'ROGUE' then
+		for i = 1, 5 do
+			E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args['resource'..i] = {
+				type = 'color',
+				name = L['Anticipation']..' #'..i,
+				get = function(info)
+					local t = E.db.unitframe.colors.classResources.ROGUE[i]
+					return t.r, t.g, t.b, t.a
+				end,
+				set = function(info, r, g, b)
+					E.db.unitframe.colors.classResources.ROGUE[i] = {}
+					local t = E.db.unitframe.colors.classResources.ROGUE[i]
+					t.r, t.g, t.b = r, g, b
+					UF:Update_AllFrames()
+				end,			
+			}
+		end		
 	elseif E.myclass == 'PRIEST' then
 		E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args[E.myclass] = {
 			type = 'color',
