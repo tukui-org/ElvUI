@@ -4,6 +4,8 @@ if not oUF then return end
 
 if select(2, UnitClass('player')) ~= "MAGE" then return end
 
+local ARCANE_DEBUFF = GetSpellInfo(36032)
+
 local function UpdateBar(self, elapsed)
 	if not self.expirationTime then return end
 	self.elapsed = (self.elapsed or 0) + elapsed
@@ -22,35 +24,30 @@ local Update = function(self, event)
 	local bar = self.ArcaneChargeBar
 	if(bar.PreUpdate) then bar:PreUpdate(event) end
 
-	local talentSpecialization = GetSpecialization()
-	
-	if talentSpecialization == 1 then
-		bar:Show()
-	else
-		bar:Hide()
+	local name, _, _, count, _, start, timeLeft = UnitDebuff(unit, ARCANE_DEBUFF)
+	local charges, maxCharges = 0, 4
+	if(name) then
+		charges = count or 0
+		duration = start
+		expirationTime = timeLeft
 	end
-	
-	local arcaneCharges, maxCharges, duration, expirationTime = 0, 4
-	if bar:IsShown() then		
-		for index=1, 30 do
-			local _, _, _, count, _, start, timeLeft, _, _, _, spellID = UnitDebuff(unit, index)
-			if spellID == 36032 then
-				arcaneCharges = count or 0
-				duration = start
-				expirationTime = timeLeft
-				break
-			end			
-		end
 
+	if(charges < 1) then
+		bar:Hide()
+	else
+		bar:Show()
+	end
+
+	if bar:IsShown() then		
 		for i = 1, maxCharges do
-			if duration and expirationTime then
-				bar[i]:SetMinMaxValues(0, duration)
-				bar[i].duration = duration
-				bar[i].expirationTime = expirationTime
+			if start and timeLeft then
+				bar[i]:SetMinMaxValues(0, start)
+				bar[i].duration = start
+				bar[i].expirationTime = timeLeft
 			end
 			
-			if i <= arcaneCharges then
-				bar[i]:SetValue(duration)
+			if i <= charges then
+				bar[i]:SetValue(start)
 				bar[i]:SetScript('OnUpdate', UpdateBar)
 			else
 				bar[i]:SetValue(0)
@@ -60,7 +57,7 @@ local Update = function(self, event)
 	end
 	
 	if(bar.PostUpdate) then
-		return bar:PostUpdate(event, arcaneCharges, maxCharges)
+		return bar:PostUpdate(event, charges, maxCharges)
 	end
 end
 
@@ -78,7 +75,6 @@ local function Enable(self, unit)
 
 	if(bar) then
 		self:RegisterEvent("UNIT_AURA", Path)
-		self:RegisterEvent("PLAYER_TALENT_UPDATE", Path)
 		self:RegisterEvent("PLAYER_ENTERING_WORLD", Path)
 		bar.__owner = self
 		bar.ForceUpdate = ForceUpdate
@@ -108,7 +104,6 @@ local function Disable(self,unit)
 
 	if(bar) then
 		self:UnregisterEvent("UNIT_AURA", Path)
-		self:UnregisterEvent("PLAYER_TALENT_UPDATE", Path)
 		self:UnregisterEvent("PLAYER_ENTERING_WORLD", Path)
 		bar:Hide()
 	end

@@ -4,6 +4,8 @@ if not oUF then return end
 
 if select(2, UnitClass('player')) ~= "ROGUE" then return end
 
+local ANTICIPATION = GetSpellInfo(115189)
+
 local function UpdateBar(self, elapsed)
 	if not self.expirationTime then return end
 	self.elapsed = (self.elapsed or 0) + elapsed
@@ -22,16 +24,12 @@ local Update = function(self, event)
 	local bar = self.Anticipation
 	if(bar.PreUpdate) then bar:PreUpdate(event) end
 
-
-	local charges, maxCharges, duration, expirationTime = 0, 5
-	for index=1, 40 do
-		local _, _, _, count, _, start, timeLeft, _, _, _, spellID = UnitBuff(unit, index)
-		if spellID == 115189 then
-			charges = count or 0
-			duration = start
-			expirationTime = timeLeft
-			break
-		end			
+	local name, _, _, count, _, start, timeLeft = UnitBuff(unit, ANTICIPATION)
+	local charges, maxCharges = 0, 5
+	if(name) then
+		charges = count or 0
+		duration = start
+		expirationTime = timeLeft
 	end
 
 	if(charges < 1) then
@@ -42,14 +40,14 @@ local Update = function(self, event)
 
 	if bar:IsShown() then		
 		for i = 1, maxCharges do
-			if duration and expirationTime then
-				bar[i]:SetMinMaxValues(0, duration)
-				bar[i].duration = duration
-				bar[i].expirationTime = expirationTime
+			if start and timeLeft then
+				bar[i]:SetMinMaxValues(0, start)
+				bar[i].duration = start
+				bar[i].expirationTime = timeLeft
 			end
 			
 			if i <= charges then
-				bar[i]:SetValue(duration)
+				bar[i]:SetValue(start)
 				bar[i]:SetScript('OnUpdate', UpdateBar)
 			else
 				bar[i]:SetValue(0)
