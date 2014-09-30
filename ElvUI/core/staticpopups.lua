@@ -47,29 +47,6 @@ E.PopupDialogs['CLIQUE_ADVERT'] = {
 	showAlert = 1,
 }
 
-E.PopupDialogs["BAR6_CONFIRMATION"] = {
-	text = L["Enabling/Disabling Bar #6 will toggle a paging option from your main actionbar to prevent duplicating bars, are you sure you want to do this?"],
-	button1 = YES,
-	button2 = NO,
-	OnAccept = function(self)
-		if E.db.actionbar['bar6'].enabled ~= true then
-			E.db.actionbar['bar6'].enabled = true
-			E.ActionBars:UpdateBar1Paging()
-			E.ActionBars:PositionAndSizeBar('bar1')	
-			E.ActionBars:PositionAndSizeBar('bar6')	
-		else
-			E.db.actionbar['bar6'].enabled = false	
-			E.ActionBars:UpdateBar1Paging()
-			E.ActionBars:PositionAndSizeBar('bar1')	
-			E.ActionBars:PositionAndSizeBar('bar6')	
-		end
-	end,
-	OnCancel = E.noop,
-	timeout = 0,
-	whileDead = 1,
-	showAlert = 1,	
-}
-
 E.PopupDialogs["CONFIRM_LOSE_BINDING_CHANGES"] = {
 	text = CONFIRM_LOSE_BINDING_CHANGES,
 	button1 = OKAY,
