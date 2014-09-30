@@ -20,18 +20,6 @@ local menuList = {
 	func = function() ToggleCharacter("PaperDollFrame") end},
 	{text = SPELLBOOK_ABILITIES_BUTTON,
 	func = function() if not SpellBookFrame:IsShown() then ShowUIPanel(SpellBookFrame) else HideUIPanel(SpellBookFrame) end end},
-	{text = MOUNTS,
-	func = function()
-		TogglePetJournal(1);
-	end},
-	{text = PETS,
-	func = function()
-		TogglePetJournal(2)
-	end},
-	{text = TOY_BOX,
-	func = function() 
-		TogglePetJournal(3)
-	end},
 	{text = TALENTS_BUTTON,
 	func = function()
 		if not PlayerTalentFrame then
@@ -47,6 +35,18 @@ local menuList = {
 		else
 			HideUIPanel(PlayerTalentFrame)
 		end
+	end},	
+	{text = MOUNTS,
+	func = function()
+		TogglePetJournal(1);
+	end},
+	{text = PETS,
+	func = function()
+		TogglePetJournal(2)
+	end},
+	{text = TOY_BOX,
+	func = function() 
+		TogglePetJournal(3)
 	end},
 	{text = L["Farm Mode"],
 	func = FarmMode},
