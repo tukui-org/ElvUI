@@ -153,7 +153,7 @@ function A:Update_ConsolidatedBuffsSettings(isCallback)
 		local button = frame[i]
 		button.t:SetAlpha(1)
 		button:ClearAllPoints()
-		button:Size(E.ConsolidatedBuffsWidth - (E.PixelMode and 1 or 4)) -- 4 needs to be 1
+		button:Size(E.ConsolidatedBuffsWidth - (E.PixelMode and 0 or 4)) -- 4 needs to be 1
 		
 		if i == 1 then
 			button:Point("TOP", ElvUI_ConsolidatedBuffs, "TOP", 0, -(E.PixelMode and 0 or 2))
