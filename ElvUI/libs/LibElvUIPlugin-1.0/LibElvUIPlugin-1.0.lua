@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "LibElvUIPlugin-1.0", 12
+local MAJOR, MINOR = "LibElvUIPlugin-1.0", 13
 local lib, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
 
