@@ -148,7 +148,7 @@ function AddOn:ToggleConfig()
 	end
 	
 	if not IsAddOnLoaded("ElvUI_Config") then
-		local _, _, _, _, _, reason = GetAddOnInfo("ElvUI_Config")
+		local _, _, _, _, reason = GetAddOnInfo("ElvUI_Config")
 		if reason ~= "MISSING" and reason ~= "DISABLED" then 
 			LoadAddOn("ElvUI_Config")
 			if GetAddOnMetadata("ElvUI_Config", "Version") ~= "1.01" then
