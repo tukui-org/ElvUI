@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "LibElvUIPlugin-1.0", 12
+local MAJOR, MINOR = "LibElvUIPlugin-1.0", 13
 local lib, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
 
@@ -47,8 +47,12 @@ function lib:RegisterPlugin(name,callback)
 	plugin.version = name == MAJOR and MINOR or GetAddOnMetadata(name, "Version")
 	plugin.callback = callback
 	lib.plugins[name] = plugin
-	local enabled, loadable = select(4,GetAddOnInfo("ElvUI_Config"))
+	local reason = select(5,GetAddOnInfo("ElvUI_Config"))
 	local loaded = IsAddOnLoaded("ElvUI_Config")
+
+	local enabled, loadable
+	enabled = reason ~= "MISSING"
+	loadable = reason == "DEMAND_LOADED" or reason == "DEP_DEMAND_LOADED"
 
 	if not lib.vcframe then
 		RegisterAddonMessagePrefix(lib.prefix)
