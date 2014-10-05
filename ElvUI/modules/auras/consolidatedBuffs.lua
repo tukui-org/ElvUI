@@ -138,7 +138,7 @@ end
 local ignoreIcons = {}
 function A:Update_ConsolidatedBuffsSettings(isCallback)
 	local frame = self.frame
-	frame:Width(E.ConsolidatedBuffsWidth)
+	frame:SetWidth(E.ConsolidatedBuffsWidth)
 
 	twipe(ignoreIcons)
 	if E.db.auras.consolidatedBuffs.filter then
@@ -153,12 +153,12 @@ function A:Update_ConsolidatedBuffsSettings(isCallback)
 		local button = frame[i]
 		button.t:SetAlpha(1)
 		button:ClearAllPoints()
-		button:Size(E.ConsolidatedBuffsWidth - (E.PixelMode and 0 or 4)) -- 4 needs to be 1
+		button:SetSize(E.ConsolidatedBuffsWidth - (E.PixelMode and 0 or 4), E.ConsolidatedBuffsWidth - (E.PixelMode and 0 or 4)) -- 4 needs to be 1
 		
 		if i == 1 then
-			button:Point("TOP", ElvUI_ConsolidatedBuffs, "TOP", 0, -(E.PixelMode and 0 or 2))
+			button:SetPoint("TOP", ElvUI_ConsolidatedBuffs, "TOP", 0, -(E.PixelMode and 0 or 2))
 		else
-			button:Point("TOP", frame[ignoreIcons[i - 1] or (i - 1)], "BOTTOM", 0, (E.PixelMode and 1 or -1))
+			button:SetPoint("TOP", frame[ignoreIcons[i - 1] or (i - 1)], "BOTTOM", 0, (E.PixelMode and 1 or -1))
 		end
 
 		if i == NUM_LE_RAID_BUFF_TYPES then

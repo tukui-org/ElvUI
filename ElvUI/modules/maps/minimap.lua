@@ -165,7 +165,7 @@ function M:UpdateSettings()
 	E.MinimapSize = E.private.general.minimap.enable and E.db.general.minimap.size or Minimap:GetWidth() + 10
 	
 	if E.db.auras.consolidatedBuffs.enable and E.private.auras.disableBlizzard then
-		E.ConsolidatedBuffsWidth = ((E.MinimapSize - (E.db.auras.consolidatedBuffs.filter and 8 or 9)) / (E.db.auras.consolidatedBuffs.filter and 8 or 9)) + (E.PixelMode and 3 or 4)-- 4 needs to be 3
+		E.ConsolidatedBuffsWidth = (E.MinimapSize + (E.db.auras.consolidatedBuffs.filter and 8 or 9)) / (E.db.auras.consolidatedBuffs.filter and 8 or 9)
 	else
 		E.ConsolidatedBuffsWidth = 0;
 	end
