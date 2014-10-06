@@ -42,14 +42,11 @@ end
 --
 
 function lib:RegisterPlugin(name,callback)
-	local plugin = {}
+    local plugin = {}
 	plugin.name = name
 	plugin.version = name == MAJOR and MINOR or GetAddOnMetadata(name, "Version")
 	plugin.callback = callback
 	lib.plugins[name] = plugin
-	local reason = select(5,GetAddOnInfo("ElvUI_Config"))
-	local enabled = GetAddOnEnableState(UnitName('player'), "ElvUI_Config") == 2
-	local loadable = reason == "DEMAND_LOADED" or reason == "DEP_DEMAND_LOADED"
 	local loaded = IsAddOnLoaded("ElvUI_Config")
 
 	if not lib.vcframe then
@@ -61,7 +58,7 @@ function lib:RegisterPlugin(name,callback)
 		lib.vcframe = f
 	end
 
-	if enabled and loadable and not loaded then
+	if not loaded then
 		if not lib.ConfigFrame then
 			local configFrame = CreateFrame("Frame")
 			configFrame:RegisterEvent("ADDON_LOADED")
@@ -76,7 +73,7 @@ function lib:RegisterPlugin(name,callback)
 			end)
 			lib.ConfigFrame = configFrame
 		end
-	elseif enabled and loadable then
+	elseif loaded then
 		-- Need to update plugins list
 		if name ~= MAJOR then
 			ElvUI[1].Options.args.plugins.args.plugins.name = lib:GeneratePluginList()
