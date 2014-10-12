@@ -358,7 +358,7 @@ local function Enable(self)
 		self.AuraBars.bars = self.AuraBars.bars or {}
 		self.AuraBars.SetAnchors = SetAnchors
 		self.AuraBars:SetScript('OnUpdate', UpdateBars)
-		self.AuraBars.maxBars = self.AuraBars.maxBars or 99
+		self.AuraBars.maxBars = self.AuraBars.maxBars or 40
 		return true
 	end
 end
