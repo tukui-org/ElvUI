@@ -869,7 +869,7 @@ P['unitframe'] = {
 			['aurabar'] = {
 				['enable'] = false,
 				['anchorPoint'] = 'ABOVE',
-				['attachTo'] = 'FRAME',
+				['attachTo'] = 'DEBUFFS',
 				['maxBars'] = 3,
 				['playerOnly'] = {friendly = false, enemy = true},
 				['useBlacklist'] = {friendly = true, enemy = true},
