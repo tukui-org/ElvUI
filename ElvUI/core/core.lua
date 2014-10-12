@@ -725,6 +725,10 @@ function E:DBConversions()
 			self.db.actionbar.dayscolor = nil
 		end		
 	end
+
+	self.db.unitframe.units.raid10 = nil
+	self.db.unitframe.units.raid25 = nil
+	self.db.unitframe.units.raid40 = nil
 end
 
 function E:StopMassiveShake()
