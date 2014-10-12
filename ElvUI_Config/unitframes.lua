@@ -1298,7 +1298,7 @@ end
 
 local tinsert = table.insert
 function UF:CreateCustomTextGroup(unit, objectName)
-	if E.Options.args.unitframe.args[unit].args[objectName] then return end
+	if E.Options.args.unitframe.args[unit].args[objectName] or not E.Options.args.unitframe.args[unit] then return end
 	
 	E.Options.args.unitframe.args[unit].args[objectName] = {
 		order = -1,
