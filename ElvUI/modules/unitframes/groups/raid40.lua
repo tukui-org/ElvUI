@@ -6,7 +6,7 @@ local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 local tinsert = table.insert
 
-function UF:Construct_RaidFrames(unitGroup)
+function UF:Construct_Raid40Frames(unitGroup)
 	self:SetScript('OnEnter', UnitFrame_OnEnter)
 	self:SetScript('OnLeave', UnitFrame_OnLeave)	
 
@@ -48,7 +48,7 @@ function UF:Construct_RaidFrames(unitGroup)
 end
 
 
-function UF:RaidSmartVisibility(event)
+function UF:Raid40SmartVisibility(event)
 	if not self.db or (self.db and not self.db.enable) or (UF.db and not UF.db.smartRaidFilter) or self.isForced then return; end
 	local inInstance, instanceType = IsInInstance()
 	
@@ -60,8 +60,8 @@ function UF:RaidSmartVisibility(event)
 			UnregisterStateDriver(self, "visibility")
 			self:Show()	
 
-			if(maxPlayers and ElvUF_Raid.numGroups ~= E:Round(maxPlayers/5)) then
-				ElvUF_Raid:Configure_Groups()		
+			if(maxPlayers and ElvUF_Raid40.numGroups ~= E:Round(maxPlayers/5)) then
+				ElvUF_Raid40:Configure_Groups()		
 			end
 		elseif self.db.visibility then
 			RegisterStateDriver(self, "visibility", self.db.visibility)
@@ -72,7 +72,7 @@ function UF:RaidSmartVisibility(event)
 	end
 end
 
-function UF:Update_RaidHeader(header, db)
+function UF:Update_Raid40Header(header, db)
 	header:GetParent().db = db
 
 	local headerHolder = header:GetParent()
@@ -86,14 +86,14 @@ function UF:Update_RaidHeader(header, db)
 
 		headerHolder:RegisterEvent("PLAYER_ENTERING_WORLD")
 		headerHolder:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-		headerHolder:SetScript("OnEvent", UF['RaidSmartVisibility'])
+		headerHolder:SetScript("OnEvent", UF['Raid40SmartVisibility'])
 		headerHolder.positioned = true;
 	end
 	
-	UF.RaidSmartVisibility(headerHolder)
+	UF.Raid40SmartVisibility(headerHolder)
 end
 
-function UF:Update_RaidFrames(frame, db)
+function UF:Update_Raid40Frames(frame, db)
 	frame.db = db
 	local BORDER = E.Border;
 	local SPACING = E.Spacing;
@@ -564,4 +564,4 @@ function UF:Update_RaidFrames(frame, db)
 	frame:UpdateAllElements()
 end
 
-UF['headerstoload']['raid'] = true
+UF['headerstoload']['raid40'] = true

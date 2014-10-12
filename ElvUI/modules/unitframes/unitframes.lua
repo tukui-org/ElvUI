@@ -586,6 +586,7 @@ end
 
 function UF.groupPrototype:Update()
 	local group = self.groupName
+
 	UF[group].db = UF.db['units'][group]
 	for i=1, #self.groups do
 		self.groups[i].db = UF.db['units'][group]

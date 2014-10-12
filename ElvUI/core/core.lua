@@ -728,7 +728,6 @@ function E:DBConversions()
 
 	self.db.unitframe.units.raid10 = nil
 	self.db.unitframe.units.raid25 = nil
-	self.db.unitframe.units.raid40 = nil
 end
 
 function E:StopMassiveShake()
