@@ -515,6 +515,7 @@ function B:Layout(isBank)
 end
 
 function B:UpdateReagentSlot(slotID)
+	assert(slotID)
 	local bagID = REAGENTBANK_CONTAINER
 	local texture, count, locked = GetContainerItemInfo(bagID, slotID);
 	local clink = GetContainerItemLink(bagID, slotID);
