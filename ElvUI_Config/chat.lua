@@ -89,12 +89,12 @@ E.Options.args.chat = {
 						CH:CheckLFGRoles()
 					end,
 				},				
-				chatHistory = {
+				--[[chatHistory = {
 					order = 7,
 					type = 'toggle',
 					name = L['Chat History'],
 					desc = L['Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session.'],
-				},
+				},]]
 				spacer = {
 					order = 8,
 					type = 'description',
