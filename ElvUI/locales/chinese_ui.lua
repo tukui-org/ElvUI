@@ -239,7 +239,6 @@ L["You don't have permission to mark targets."] = "你没有标记目标的权�
 L['ABOVE_THREAT_FORMAT'] = '%s: %.0f%% [%.0f%% 以上 |cff%02x%02x%02x%s|r]'
 
 --Movers
-L[' Frames'] = "框架"
 L['Alternative Power'] = "特殊能量条"
 L["Archeology Progress Bar"] = true;
 L['Arena Frames'] = "竞技场框架"
@@ -271,7 +270,8 @@ L["Player Buffs"] = true;
 L["Player Castbar"] = "玩家施法条"
 L["Player Debuffs"] = true;
 L["Player Frame"] = "玩家框架"
-L["Raid 1-"] = "团队 1-"
+L["Raid 40 Frames"] = true;
+L["Raid Frames"] = true;
 L['Raid Pet Frames'] = true;
 L["Reputation Bar"] = "声望条"
 L["Right Chat"] = "右侧对话框"

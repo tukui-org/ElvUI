@@ -239,7 +239,6 @@ L["You don't have permission to mark targets."] = true;
 L['ABOVE_THREAT_FORMAT'] = '%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]'
 
 --Movers
-L[' Frames'] = true;
 L['Alternative Power'] = true;
 L["Archeology Progress Bar"] = true;
 L['Arena Frames'] = true; --Also used in UnitFrames
@@ -271,7 +270,8 @@ L["Player Buffs"] = true;
 L['Player Castbar'] = true;
 L["Player Debuffs"] = true;
 L['Player Frame'] = true; --Also used in UnitFrames
-L['Raid 1-'] = true;
+L["Raid 40 Frames"] = true;
+L["Raid Frames"] = true;
 L['Raid Pet Frames'] = true;
 L["Reputation Bar"] = true;
 L["Right Chat"] = true;

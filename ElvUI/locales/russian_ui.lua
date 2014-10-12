@@ -239,7 +239,6 @@ L["You don't have permission to mark targets."] = "У вас нет разреш
 L['ABOVE_THREAT_FORMAT'] = '%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]'
 
 --Movers
-L[' Frames'] = " " --Empty cause in ru that will need to be before actual "raid 1-" stuff
 L['Alternative Power'] = "Альтернативный ресурс"
 L["Archeology Progress Bar"] = "Прогресс археологии"
 L['Arena Frames'] = "Арена" --Also used in UnitFrames
@@ -271,7 +270,8 @@ L["Player Buffs"] = "Баффы игрока"
 L['Player Castbar'] = "Полоса заклинаний игрока"
 L["Player Debuffs"] = "Дебаффы игрока"
 L['Player Frame'] = "Игрок" --Also used in UnitFrames
-L['Raid 1-'] = "Рейд 1-"
+L["Raid 40 Frames"] = true;
+L["Raid Frames"] = true;
 L['Raid Pet Frames'] = "Питомцы рейда"
 L["Reputation Bar"] = "Полоса репутации"
 L["Right Chat"] = "Правый чат"

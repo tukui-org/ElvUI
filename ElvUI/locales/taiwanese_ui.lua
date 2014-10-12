@@ -239,7 +239,6 @@ L["You don't have permission to mark targets."] = "你沒有標記目標的權�
 L['ABOVE_THREAT_FORMAT'] = '%s: %.0f%% [%.0f%% 以上 |cff%02x%02x%02x%s|r]'
 
 --Movers
-L[' Frames'] = "框架"
 L['Alternative Power'] = "特殊能量條框架"
 L["Archeology Progress Bar"] = true;
 L['Arena Frames'] = "競技場框架" --Also used in UnitFrames
@@ -271,7 +270,8 @@ L["Player Buffs"] = true;
 L['Player Castbar'] = "玩家施法條"
 L["Player Debuffs"] = true;
 L['Player Frame'] = "玩家框架" --Also used in UnitFrames
-L['Raid 1-'] = "團隊 1-"
+L["Raid 40 Frames"] = true;
+L["Raid Frames"] = true;
 L['Raid Pet Frames'] = true;
 L["Reputation Bar"] = "聲望條"
 L["Right Chat"] = "右側對話框"

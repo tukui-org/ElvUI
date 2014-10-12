@@ -239,7 +239,6 @@ L["You don't have permission to mark targets."] = "Du hast keine Rechte um ein Z
 L['ABOVE_THREAT_FORMAT'] = '%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]'
 
 --Movers
-L[' Frames'] = " Fenster"
 L['Alternative Power'] = "Alternative Energie"
 L["Archeology Progress Bar"] = 'Archeologie Fortschrittsbar';
 L['Arena Frames'] = "Arena Fenster" --Also used in UnitFrames
@@ -271,7 +270,8 @@ L["Player Buffs"] = "Spieler Buffs"
 L['Player Castbar'] = "Spieler Zauberbalken"
 L["Player Debuffs"] = "Spieler Debuffs"
 L['Player Frame'] = "Spielerfenster" --Also used in UnitFrames
-L['Raid 1-'] = "Schlachtzug 1-"
+L["Raid 40 Frames"] = true;
+L["Raid Frames"] = true;
 L['Raid Pet Frames'] = "Schlachtzugspets Fenster"
 L["Reputation Bar"] = "Rufleiste"
 L["Right Chat"] = "Rechter Chat"

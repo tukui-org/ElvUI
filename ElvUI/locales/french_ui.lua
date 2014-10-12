@@ -239,7 +239,6 @@ L["You don't have permission to mark targets."] = "Vous n'avez pas la permission
 L['ABOVE_THREAT_FORMAT'] = '%s: %.0f%% [%.0f%% excès |cff%02x%02x%02x%s|r]'
 
 --Movers
-L[' Frames'] = "Fenêtres"
 L['Alternative Power'] = "Puissance Alternative"
 L["Archeology Progress Bar"] = true;
 L['Arena Frames'] = "Cadre d'arène" --Also used in UnitFrames
@@ -271,7 +270,8 @@ L["Player Buffs"] = true;
 L['Player Castbar'] = "Barre d'incantation du joueur"
 L["Player Debuffs"] = true;
 L['Player Frame'] = "Cadre du joueur" --Also used in UnitFrames
-L['Raid 1-'] = "Raid 1-"
+L["Raid 40 Frames"] = true;
+L["Raid Frames"] = true;
 L['Raid Pet Frames'] = true;
 L["Reputation Bar"] = "Barre de réputation"
 L["Right Chat"] = "Chat de droite"

@@ -239,7 +239,6 @@ L["You don't have permission to mark targets."] = "No tienes permiso para marcar
 L["ABOVE_THREAT_FORMAT"] = "%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]"
 
 --Movers
-L[" Frames"] = " Marcos"
 L["Alternative Power"] = "Poder Alternativo"
 L["Archeology Progress Bar"] = true;
 L["Arena Frames"] = "Marcos de Arena"
@@ -271,7 +270,8 @@ L["Player Buffs"] = true;
 L["Player Castbar"] = "Barra de Lanzamiento del Jugador"
 L["Player Debuffs"] = true;
 L["Player Frame"] = "Marco de Jugador"
-L["Raid 1-"] = "Banda 1-"
+L["Raid 40 Frames"] = true;
+L["Raid Frames"] = true;
 L['Raid Pet Frames'] = true;
 L["Reputation Bar"] = "Barra de Reputación"
 L["Right Chat"] = "Chat Derecho"

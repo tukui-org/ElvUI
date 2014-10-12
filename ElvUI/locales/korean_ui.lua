@@ -239,7 +239,6 @@ L["You don't have permission to mark targets."] = "레이드 아이콘을 지정
 L["ABOVE_THREAT_FORMAT"] = "%s: %.0f%% [%.0f%% 정도 |cff%02x%02x%02x%s|r보다 많음]"
 
 --Movers
-L[" Frames"] = "인 레이드 프레임"
 L["Alternative Power"] = "특수상황 진행 바"
 L["Archeology Progress Bar"] = "고고학 진척도 바"
 L["Arena Frames"] = "투기장 프레임"
@@ -271,7 +270,8 @@ L["Player Buffs"] = "플레이어 버프"
 L["Player Castbar"] = "플레이어 시전바"
 L["Player Debuffs"] = "플레이어 디버프"
 L["Player Frame"] = "플레이어 프레임"
-L["Raid 1-"] = ""
+L["Raid 40 Frames"] = true;
+L["Raid Frames"] = true;
 L['Raid Pet Frames'] = "레이드 소환수 프레임"
 L["Reputation Bar"] = "평판 바"
 L["Right Chat"] = "우측 패널"
