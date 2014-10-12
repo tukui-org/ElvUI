@@ -113,9 +113,15 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 				name = L['Height'],
 				min = 6, max = 40, step = 1,
 			},
+			maxBars = {
+				type = 'range',
+				order = 7,
+				name = L['Max Bars'],
+				min = 1, max = 40, step = 1,
+			},
 			sort = {
 				type = 'select',
-				order = 7,
+				order = 8,
 				name = L['Sort Method'],
 				values = auraBarsSortValues,
 			},

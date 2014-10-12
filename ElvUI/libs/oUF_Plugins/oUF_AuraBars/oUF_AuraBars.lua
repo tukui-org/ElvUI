@@ -5,6 +5,8 @@ assert(oUF, 'oUF_AuraBars was unable to locate oUF install.')
 local format = string.format
 local floor, huge, min = math.floor, math.huge, math.min
 local tsort = table.sort
+local tremove = table.remove
+local random = math.random
 
 local function Round(number, decimalPlaces)
 	if decimalPlaces and decimalPlaces > 0 then
@@ -202,11 +204,12 @@ local function Update(self, event, unit)
 	-- Create a table of auras to display
 	local auras = {}
 	local lastAuraIndex = 0
-	for index = 1, 40 do
-		local name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID = UnitAura(unit, index, helpOrHarm)
-		if not name then break end
-		
-		if (auraBars.filter or DefaultFilter)(self, unit, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID) then
+	local counter = 0
+	if(auraBars.forceShow) then
+		for index = 1, auraBars.maxBars do
+			local spellID = 47540
+			local name, rank, icon = GetSpellInfo(spellID)
+			local count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, canApplyAura, isBossDebuff = 5, 'Magic', 0, 0, 'player', nil, nil, nil, nil
 			lastAuraIndex = lastAuraIndex + 1
 			auras[lastAuraIndex] = {}
 			auras[lastAuraIndex].spellID = spellID
@@ -223,10 +226,42 @@ local function Update(self, event, unit)
 			auras[lastAuraIndex].filter = helpOrHarm
 			auras[lastAuraIndex].shouldConsolidate = shouldConsolidate
 		end
+	else
+		for index = 1, 40 do
+			local name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID = UnitAura(unit, index, helpOrHarm)
+			if not name then break end
+			
+			if (auraBars.filter or DefaultFilter)(self, unit, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID) then
+				lastAuraIndex = lastAuraIndex + 1
+				auras[lastAuraIndex] = {}
+				auras[lastAuraIndex].spellID = spellID
+				auras[lastAuraIndex].name = name
+				auras[lastAuraIndex].rank = rank
+				auras[lastAuraIndex].icon = icon
+				auras[lastAuraIndex].count = count
+				auras[lastAuraIndex].debuffType = debuffType
+				auras[lastAuraIndex].duration = duration
+				auras[lastAuraIndex].expirationTime = expirationTime
+				auras[lastAuraIndex].unitCaster = unitCaster
+				auras[lastAuraIndex].isStealable = isStealable
+				auras[lastAuraIndex].noTime = (duration == 0 and expirationTime == 0)
+				auras[lastAuraIndex].filter = helpOrHarm
+				auras[lastAuraIndex].shouldConsolidate = shouldConsolidate
+			end
+		end
 	end
 
-	if auraBars.sort then
+
+	if(auraBars.sort and not auraBars.forceShow) then
 		tsort(auras, type(auraBars.sort) == 'function' and auraBars.sort or sort)
+	end
+
+	for i=1, #auras do
+		if(i > auraBars.maxBars) then
+			tremove(auras, i)
+		else
+			lastAuraIndex = i
+		end
 	end
 
 	-- Show and configure bars for buffs/debuffs.
@@ -236,7 +271,7 @@ local function Update(self, event, unit)
 	end
 	
 	for index = 1 , lastAuraIndex do
-		if auraBars:GetWidth() == 0 then break; end
+		if (auraBars:GetWidth() == 0) then break; end
 		local aura = auras[index]
 		local frame = bars[index]
 		
@@ -323,6 +358,7 @@ local function Enable(self)
 		self.AuraBars.bars = self.AuraBars.bars or {}
 		self.AuraBars.SetAnchors = SetAnchors
 		self.AuraBars:SetScript('OnUpdate', UpdateBars)
+		self.AuraBars.maxBars = self.AuraBars.maxBars or 99
 		return true
 	end
 end

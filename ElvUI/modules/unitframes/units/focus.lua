@@ -442,6 +442,8 @@ function UF:Update_FocusFrame(frame, db)
 			
 			
 			auraBars.down = db.aurabar.anchorPoint == 'BELOW'
+			auraBars.maxBars = db.aurabar.maxBars
+			auraBars.forceShow = frame.forceShowAuras
 			auraBars:SetAnchors()
 		else
 			if frame:IsElementEnabled('AuraBars') then

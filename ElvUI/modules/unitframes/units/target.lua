@@ -692,7 +692,9 @@ function UF:Update_TargetFrame(frame, db)
 			else
 				auraBars.sort = nil
 			end			
-			
+
+			auraBars.maxBars = db.aurabar.maxBars
+			auraBars.forceShow = frame.forceShowAuras
 			auraBars:SetAnchors()
 		else
 			if frame:IsElementEnabled('AuraBars') then
