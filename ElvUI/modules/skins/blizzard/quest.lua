@@ -75,14 +75,16 @@ local function LoadSkin()
 		if not questItem:IsShown() then break end
 
 		local point, relativeTo, relativePoint, x, y = questItem:GetPoint()
-		if i == 1 then
-		    questItem:Point(point, relativeTo, relativePoint, 0, y)
-		elseif relativePoint == "BOTTOMLEFT" then
-		    questItem:Point(point, relativeTo, relativePoint, 0, -4)
-		else
-		    questItem:Point(point, relativeTo, relativePoint, 4, 0)
+		if point and relativeTo and relativePoint then
+			if i == 1 then
+			    questItem:Point(point, relativeTo, relativePoint, 0, y)
+			elseif relativePoint == "BOTTOMLEFT" then
+			    questItem:Point(point, relativeTo, relativePoint, 0, -4)
+			else
+			    questItem:Point(point, relativeTo, relativePoint, 4, 0)
+			end
 		end
-
+		
 		questItem.Name:SetTextColor(1, 1, 1)
 	  end
     end)

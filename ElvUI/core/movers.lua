@@ -18,6 +18,8 @@ end
 
 local function GetPoint(obj)
 	local point, anchor, secondaryPoint, x, y = obj:GetPoint()
+
+
 	if not anchor then anchor = ElvUIParent end
 
 	return format('%s\031%s\031%s\031%d\031%d', point, anchor:GetName(), secondaryPoint, E:Round(x), E:Round(y))
