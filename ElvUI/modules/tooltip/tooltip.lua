@@ -516,6 +516,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	else
 		GameTooltipStatusBar:SetStatusBarColor(0.6, 0.6, 0.6)
 	end
+
 end
 
 function TT:GameTooltipStatusBar_OnValueChanged(tt, value)
@@ -661,9 +662,10 @@ function TT:CheckBackdropColor()
 	r = E:Round(r, 1)
 	g = E:Round(g, 1)
 	b = E:Round(b, 1)
-	local red, green, blue = unpack(E.media.backdropcolor)
+	local red, green, blue, alpha = unpack(E.media.backdropfadecolor)
+
 	if(r ~= red or g ~= green or b ~= blue) then
-		GameTooltip:SetTemplate("Transparent");
+		GameTooltip:SetBackdropColor(red, green, blue, alpha)
 	end
 end
 
@@ -706,11 +708,12 @@ function TT:Initialize()
 	self:HookScript(GameTooltip, 'OnTooltipCleared', 'GameTooltip_OnTooltipCleared')
 	self:HookScript(GameTooltip, 'OnTooltipSetItem', 'GameTooltip_OnTooltipSetItem')
 	self:HookScript(GameTooltip, 'OnTooltipSetUnit', 'GameTooltip_OnTooltipSetUnit')
-	hooksecurefunc(GameTooltip, "SetAnchorType", TT.CheckBackdropColor)
+	self:HookScript(GameTooltip, "OnSizeChanged", "CheckBackdropColor")
+
 	self:HookScript(GameTooltipStatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
 	
 	self:RegisterEvent("MODIFIER_STATE_CHANGED")
-
+	self:RegisterEvent("CURSOR_UPDATE", "CheckBackdropColor")
 	E.Skins:HandleCloseButton(ItemRefCloseButton)
 	for _, tt in pairs(tooltips) do
 		self:HookScript(tt, 'OnShow', 'SetStyle')

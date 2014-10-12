@@ -42,7 +42,7 @@ local function Update(self, event, unit)
 		if totalOrbs == 5 and not pb[4]:IsShown() then
 			pb[4]:Show()
 			pb[5]:Show()
-		elseif pb[4]:IsShown() then
+		elseif totalOrbs ~= 5 and pb[4]:IsShown() then
 			pb[4]:Hide()
 			pb[5]:Hide()
 		end		
