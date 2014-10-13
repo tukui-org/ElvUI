@@ -21,7 +21,7 @@
 	<Script file='attackpower.lua'/>
 	<Script file='spellpower.lua'/>
 	<Script file='battleground.lua'/>
-	<Script file='vengeance.lua'/>
+	<Script file='resolve.lua'/>
 	<Script file='pvpresilience.lua'/>
 	<Script file='pvppower.lua'/>
 </Ui>

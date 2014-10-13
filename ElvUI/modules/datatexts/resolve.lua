@@ -4,7 +4,7 @@ local DT = E:GetModule('DataTexts')
 local displayString = '';
 local lastPanel;
 local self = lastPanel
-local vengeance = GetSpellInfo(93098) or GetSpellInfo(76691)
+local resolve = GetSpellInfo(158300)
 local value, tooltip, tooltiptext
 tooltip = CreateFrame("GameTooltip", "VengeanceTooltip", E.UIParent, "GameTooltipTemplate")
 tooltiptext = _G[tooltip:GetName().."TextLeft2"]
@@ -21,7 +21,7 @@ local function OnEvent(self, event, ...)
 		tooltiptext:SetText("")
 	end
 	
-	local name = UnitAura("player", vengeance, nil, "PLAYER|HELPFUL")
+	local name = UnitAura("player", resolve, nil, "PLAYER|HELPFUL")
 	
 	if name then
 		tooltip:ClearLines()
@@ -31,7 +31,7 @@ local function OnEvent(self, event, ...)
 		value = 0
 	end
 	
-	self.text:SetFormattedText(displayString, vengeance, value);
+	self.text:SetFormattedText(displayString, resolve, value);
 	lastPanel = self
 end
 
@@ -55,4 +55,4 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 	onEnterFunc - function to fire OnEnter
 	onLeaveFunc - function to fire OnLeave, if not provided one will be set for you that hides the tooltip.
 ]]
-DT:RegisterDatatext("Vengeance", {"UNIT_AURA", "PLAYER_ENTERING_WORLD", "CLOSE_WORLD_MAP"}, OnEvent)
+DT:RegisterDatatext("Resolve", {"UNIT_AURA", "PLAYER_ENTERING_WORLD", "CLOSE_WORLD_MAP"}, OnEvent)
