@@ -9,11 +9,9 @@
 	<Script file='crit.lua'/>
 	<Script file='dps.lua'/>
 	<Script file='durability.lua'/>
-	<Script file='expertise.lua'/>
 	<Script file='friends.lua'/>
 	<Script file='guild.lua'/>
 	<Script file='haste.lua'/>
-	<Script file='hit.lua'/>
 	<Script file='hps.lua'/>
 	<Script file='mastery.lua'/>
 	<Script file='regen.lua'/>
