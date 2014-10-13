@@ -706,7 +706,6 @@ L["Power"] = "Ресурс"
 L["Powers"] = "Ресурсы"
 L["Priority"] = "Приоритет"
 L['PVP Trinket'] = "ПвП Аксессуар"
-L['Raid Frames'] = true;
 L['Raid Icon'] = "Рейдовая иконка"
 L['Raid-Wide Sorting'] = "Общерейдовая сортировка"
 L["RaidDebuff Indicator"] = "Индикатор рейдовых дебаффов"

@@ -729,7 +729,6 @@ L["Power"] = "자원"
 L["Powers"] = "자원 (마나, 분노, 기력...)"
 L["Priority"] = "우선도"
 L["PVP Trinket"] = "PvP 장신구"
-L['Raid Frames'] = true;
 L["Raid Icon"] = "레이드 아이콘"
 L["Raid-Wide Sorting"] = "빈칸없이 나열"
 L["RaidDebuff Indicator"] = "공격대 주요 디버프 표시기"

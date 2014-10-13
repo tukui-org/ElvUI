@@ -706,7 +706,6 @@ L["Power"] = "能量"
 L["Powers"] = "能量"
 L["Priority"] = "优先级"
 L['PVP Trinket'] = "PVP 饰品"
-L['Raid Frames'] = true;
 L['Raid Icon'] = "团队图标"
 L['Raid-Wide Sorting'] = true;
 L["RaidDebuff Indicator"] = "团队副本减益光环标示"

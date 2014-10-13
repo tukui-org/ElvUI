@@ -695,7 +695,6 @@ L["Power"] = true;
 L["Powers"] = true;
 L["Priority"] = true;
 L['PVP Trinket'] = true;
-L['Raid Frames'] = true;
 L['Raid Icon'] = true;
 L['Raid-Wide Sorting'] = true;
 L["RaidDebuff Indicator"] = true;

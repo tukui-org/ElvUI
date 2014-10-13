@@ -706,7 +706,6 @@ L["Power"] = "Énergie"
 L["Powers"] = "Énergies"
 L["Priority"] = "Priorité"
 L['PVP Trinket'] = 'Bijou PVP'
-L['Raid Frames'] = true;
 L['Raid Icon'] = "Icône de Raid"
 L['Raid-Wide Sorting'] = "Tri du Raid-Large";
 L["RaidDebuff Indicator"] = "Indicateur d'affaiblissement en Raid"

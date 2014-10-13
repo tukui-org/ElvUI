@@ -706,7 +706,6 @@ L["Power"] = "Poder"
 L["Powers"] = "Poderes"
 L["Priority"] = "Prioridad"
 L["PVP Trinket"] = "Abalorio JcJ"
-L['Raid Frames'] = true;
 L["Raid Icon"] = "Icono de Banda"
 L['Raid-Wide Sorting'] = true;
 L["RaidDebuff Indicator"] = "Indicador de Perjuicios de Banda"

@@ -704,7 +704,6 @@ L["Power"] = "Kraft"
 L["Powers"] = "Kräfte"
 L["Priority"] = "Priorität"
 L['PVP Trinket'] = 'PVP Schmuck'
-L['Raid Frames'] = true;
 L['Raid Icon'] = 'Schlachtzugssymbol'
 L['Raid-Wide Sorting'] = "Raidweite Sortierung"
 L["RaidDebuff Indicator"] = "RaidDebuff Indikator"
