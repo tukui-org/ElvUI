@@ -88,7 +88,7 @@ function TOTEMS:Initialize()
 	
 	local bar = CreateFrame('Frame', 'ElvUI_TotemBar', E.UIParent)
 	bar = CreateFrame('Frame', 'ElvUI_TotemBar', E.UIParent)
-	bar:SetPoint('TOPLEFT', LeftChatPanel, 'TOPRIGHT', 4, 0)
+	bar:SetPoint('TOPLEFT', LeftChatPanel, 'TOPRIGHT', 14, 0)
 	self.bar = bar;
 	
 	for i=1, MAX_TOTEMS do

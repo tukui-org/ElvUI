@@ -169,7 +169,7 @@ local function LoadSkin()
 	end
 
 	PVEFrame:CreateBackdrop("Transparent")
-	for i=1, 2 do
+	for i=1, 3 do
 		S:HandleTab(_G['PVEFrameTab'..i])
 	end
 	PVEFrameTab1:SetPoint('BOTTOMLEFT', PVEFrame, 'BOTTOMLEFT', 19, E.PixelMode and -31 or -32)
@@ -182,6 +182,8 @@ local function LoadSkin()
 	LFDParentFrame:StripTextures()
 	LFDParentFrameInset:StripTextures()
 	
+
+
 	local function ReskinRewards()
 		LFDQueueFrame:StripTextures()
 
@@ -222,6 +224,23 @@ local function LoadSkin()
 
 	hooksecurefunc("LFDQueueFrameRandom_UpdateFrame", ReskinRewards)
 
+	function HandleGoldIcon(button)
+		_G[button.."IconTexture"]:SetTexCoord(unpack(E.TexCoords))
+		_G[button.."IconTexture"]:SetDrawLayer("OVERLAY")
+		_G[button.."Count"]:SetDrawLayer("OVERLAY")
+		_G[button.."NameFrame"]:SetTexture()
+		_G[button.."NameFrame"]:SetSize(118, 39)
+
+		_G[button].border = CreateFrame("Frame", nil, _G[button])
+		_G[button].border:SetTemplate()
+		_G[button].border:SetOutside(_G[button.."IconTexture"])
+		_G[button.."IconTexture"]:SetParent(_G[button].border)
+		_G[button.."Count"]:SetParent(_G[button].border)
+	end
+	HandleGoldIcon("LFDQueueFrameRandomScrollFrameChildFrameMoneyReward")
+	HandleGoldIcon("RaidFinderQueueFrameScrollFrameChildFrameMoneyReward")
+	HandleGoldIcon("ScenarioQueueFrameRandomScrollFrameChildFrameMoneyReward")
+
 	for i = 1, NUM_LFD_CHOICE_BUTTONS do
 		S:HandleCheckBox(_G["LFDQueueFrameSpecificListButton"..i].enableButton)
 	end
@@ -244,16 +263,10 @@ local function LoadSkin()
 	end
 
 	S:HandleDropDownBox(LFDQueueFrameTypeDropDown)
+	ScenarioQueueFrame:StripTextures()
+	ScenarioFinderFrameInset:StripTextures()
+	S:HandleButton(ScenarioQueueFrameFindGroupButton)
 
-	--Flex Raid
-	FlexRaidFrameScrollFrame:StripTextures()
-	FlexRaidFrameBottomInset:StripTextures()
-	hooksecurefunc("FlexRaidFrame_Update", function()
-		FlexRaidFrame.ScrollFrame.Background:SetTexture(nil)
-	end)
-	
-	S:HandleDropDownBox(FlexRaidFrameSelectionDropDown)
-	S:HandleButton(FlexRaidFrameStartRaidButton, true)
 
 	-- Raid Finder
 	RaidFinderFrame:StripTextures()
@@ -338,6 +351,8 @@ local function LoadSkin()
 	
 	ScenarioQueueFrameFindGroupButton:StripTextures()
 	S:HandleButton(ScenarioQueueFrameFindGroupButton)
+
+	
 	S:HandleDropDownBox(ScenarioQueueFrameTypeDropDown)
 
 	-- Looking for raid
@@ -445,7 +460,61 @@ local function LoadSkin()
 	S:HandleScrollBar(ScenarioQueueFrameSpecificScrollFrameScrollBar)
 
 
+	--LFGListFrame
+	LFGListFrame.CategorySelection.Inset:StripTextures()
+	S:HandleButton(LFGListFrame.CategorySelection.StartGroupButton, true)
+	S:HandleButton(LFGListFrame.CategorySelection.FindGroupButton, true)
 
+	LFGListFrame.EntryCreation.Inset:StripTextures()
+	S:HandleButton(LFGListFrame.EntryCreation.CancelButton, true)
+	S:HandleButton(LFGListFrame.EntryCreation.ListGroupButton, true)
+	S:HandleEditBox(LFGListEntryCreationDescription)
+
+	S:HandleEditBox(LFGListFrame.EntryCreation.Name)
+	S:HandleEditBox(LFGListFrame.EntryCreation.ItemLevel.EditBox)
+	S:HandleEditBox(LFGListFrame.EntryCreation.VoiceChat.EditBox)
+
+	S:HandleDropDownBox(LFGListEntryCreationActivityDropDown)
+	S:HandleDropDownBox(LFGListEntryCreationGroupDropDown)
+	S:HandleDropDownBox(LFGListEntryCreationCategoryDropDown, 330)
+
+	S:HandleCheckBox(LFGListFrame.EntryCreation.ItemLevel.CheckButton)
+	S:HandleCheckBox(LFGListFrame.EntryCreation.VoiceChat.CheckButton)
+
+	LFGListFrame.EntryCreation.ActivityFinder.Dialog:StripTextures()
+	LFGListFrame.EntryCreation.ActivityFinder.Dialog:SetTemplate("Transparent")
+	LFGListFrame.EntryCreation.ActivityFinder.Dialog.BorderFrame:StripTextures()
+	LFGListFrame.EntryCreation.ActivityFinder.Dialog.BorderFrame:SetTemplate("Transparent")
+
+	S:HandleEditBox(LFGListFrame.EntryCreation.ActivityFinder.Dialog.EntryBox)
+	S:HandleScrollBar(LFGListEntryCreationSearchScrollFrameScrollBar)
+	S:HandleButton(LFGListFrame.EntryCreation.ActivityFinder.Dialog.SelectButton)
+	S:HandleButton(LFGListFrame.EntryCreation.ActivityFinder.Dialog.CancelButton)
+
+	S:HandleEditBox(LFGListFrame.SearchPanel.SearchBox)
+
+	--[[local columns = {
+		['Name'] = true,
+		['Tank'] = true,
+		['Healer'] = true,
+		['Damager'] = true
+	}
+
+	for x, _ in pairs(columns) do
+		LFGListFrame.SearchPanel[x.."ColumnHeader"].Left:Hide()
+		LFGListFrame.SearchPanel[x.."ColumnHeader"].Middle:Hide()
+		LFGListFrame.SearchPanel[x.."ColumnHeader"].Right:Hide()
+	end]]
+
+	S:HandleButton(LFGListFrame.SearchPanel.BackButton, true)
+	S:HandleButton(LFGListFrame.SearchPanel.SignUpButton, true)
+	LFGListFrame.SearchPanel.ResultsInset:StripTextures()
+	S:HandleScrollBar(LFGListSearchPanelScrollFrameScrollBar)
+	LFGListFrame.SearchPanel.AutoCompleteFrame:StripTextures()
+	LFGListFrame.SearchPanel.AutoCompleteFrame:SetTemplate("Transparent")
+
+	S:HandleButton(LFGListFrame.SearchPanel.RefreshButton)
+	LFGListFrame.SearchPanel.RefreshButton:Size(26)
 end
 
 S:RegisterSkin("ElvUI", LoadSkin)
@@ -463,7 +532,7 @@ local function LoadSecondarySkin()
 	select(11, ChallengesFrameDetails:GetRegions()):Hide()
 	ChallengesFrameDungeonButton1:SetPoint("TOPLEFT", ChallengesFrame, "TOPLEFT", 8, -83)
 
-	for i = 1, 9 do
+	for i = 1, 8 do
 		local bu = ChallengesFrame["button"..i]
 		S:HandleButton(bu)
 		bu:StyleButton()

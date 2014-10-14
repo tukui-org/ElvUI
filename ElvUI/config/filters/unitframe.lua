@@ -34,47 +34,47 @@ G.unitframe.aurafilters['CCDebuffs'] = {
 			[SpellName(115001)] = Defaults(), --Remorseless Winter
 		-- Druid
 			[SpellName(33786)] = Defaults(), --Cyclone
-			[SpellName(2637)] = Defaults(), --Hibernate
+			--[SpellName(2637)] = Defaults(), --Hibernate
 			[SpellName(339)] = Defaults(), --Entangling Roots
 			[SpellName(78675)] = Defaults(), --Solar Beam
 			[SpellName(22570)] = Defaults(), --Maim
 			[SpellName(5211)] = Defaults(), --Mighty Bash
-			[SpellName(9005)] = Defaults(), --Pounce
+			--[SpellName(9005)] = Defaults(), --Pounce
 			[SpellName(102359)] = Defaults(), --Mass Entanglement
 			[SpellName(99)] = Defaults(), --Disorienting Roar
 			[SpellName(127797)] = Defaults(), --Ursol's Vortex
 			[SpellName(45334)] = Defaults(), --Immobilized
-			[SpellName(102795)] = Defaults(), --Bear Hug
+			--[SpellName(102795)] = Defaults(), --Bear Hug
 			[SpellName(114238)] = Defaults(), --Fae Silence
-			[SpellName(113004)] = Defaults(), --Intimidating Roar (Warrior Symbiosis)
+			--[SpellName(113004)] = Defaults(), --Intimidating Roar (Warrior Symbiosis)
 		-- Hunter
 			[SpellName(3355)] = Defaults(), --Freezing Trap
-			[SpellName(1513)] = Defaults(), --Scare Beast
-			[SpellName(19503)] = Defaults(), --Scatter Shot
-			[SpellName(34490)] = Defaults(), --Silencing Shot
+			--[SpellName(1513)] = Defaults(), --Scare Beast
+			--[SpellName(19503)] = Defaults(), --Scatter Shot
+			--[SpellName(34490)] = Defaults(), --Silencing Shot
 			[SpellName(24394)] = Defaults(), --Intimidation
 			[SpellName(64803)] = Defaults(), --Entrapment
 			[SpellName(19386)] = Defaults(), --Wyvern Sting
 			[SpellName(117405)] = Defaults(), --Binding Shot
 			[SpellName(128405)] = Defaults(), --Narrow Escape
-			[SpellName(50519)] = Defaults(), --Sonic Blast (Bat)
-			[SpellName(91644)] = Defaults(), --Snatch (Bird of Prey)
-			[SpellName(90337)] = Defaults(), --Bad Manner (Monkey)
-			[SpellName(54706)] = Defaults(), --Venom Web Spray (Silithid)
-			[SpellName(4167)] = Defaults(), --Web (Spider)
-			[SpellName(90327)] = Defaults(), --Lock Jaw (Dog)
-			[SpellName(56626)] = Defaults(), --Sting (Wasp)
-			[SpellName(50245)] = Defaults(), --Pin (Crab)
-			[SpellName(50541)] = Defaults(), --Clench (Scorpid)
-			[SpellName(96201)] = Defaults(), --Web Wrap (Shale Spider)
-			[SpellName(96201)] = Defaults(), --Lullaby (Crane)
+			--[SpellName(50519)] = Defaults(), --Sonic Blast (Bat)
+			--[SpellName(91644)] = Defaults(), --Snatch (Bird of Prey)
+			--[SpellName(90337)] = Defaults(), --Bad Manner (Monkey)
+			--[SpellName(54706)] = Defaults(), --Venom Web Spray (Silithid)
+			--[SpellName(4167)] = Defaults(), --Web (Spider)
+			--[SpellName(90327)] = Defaults(), --Lock Jaw (Dog)
+			--[SpellName(56626)] = Defaults(), --Sting (Wasp)
+			--[SpellName(50245)] = Defaults(), --Pin (Crab)
+			--[SpellName(50541)] = Defaults(), --Clench (Scorpid)
+			--[SpellName(96201)] = Defaults(), --Web Wrap (Shale Spider)
+			--[SpellName(96201)] = Defaults(), --Lullaby (Crane)
 		-- Mage
 			[SpellName(31661)] = Defaults(), --Dragon's Breath
 			[SpellName(118)] = Defaults(), --Polymorph
-			[SpellName(55021)] = Defaults(), --Silenced - Improved Counterspell
+			--[SpellName(55021)] = Defaults(), --Silenced - Improved Counterspell
 			[SpellName(122)] = Defaults(), --Frost Nova
 			[SpellName(82691)] = Defaults(), --Ring of Frost
-			[SpellName(118271)] = Defaults(), --Combustion Impact
+			--[SpellName(118271)] = Defaults(), --Combustion Impact
 			[SpellName(44572)] = Defaults(), --Deep Freeze
 			[SpellName(33395)] = Defaults(), --Freeze (Water Ele)
 			[SpellName(102051)] = Defaults(), --Frostjaw
@@ -94,24 +94,24 @@ G.unitframe.aurafilters['CCDebuffs'] = {
 			[SpellName(15487)] = Defaults(), --Silence
 			[SpellName(114404)] = Defaults(), --Void Tendrils
 			[SpellName(88625)] = Defaults(), --Holy Word: Chastise
-			[SpellName(113792)] = Defaults(), --Psychic Terror (Psyfiend)
+			--[SpellName(113792)] = Defaults(), --Psychic Terror (Psyfiend)
 			[SpellName(87194)] = Defaults(), --Sin and Punishment
 		-- Rogue
 			[SpellName(2094)] = Defaults(), --Blind
 			[SpellName(1776)] = Defaults(), --Gouge
 			[SpellName(6770)] = Defaults(), --Sap
 			[SpellName(1833)] = Defaults(), --Cheap Shot
-			[SpellName(51722)] = Defaults(), --Dismantle
+			--[SpellName(51722)] = Defaults(), --Dismantle
 			[SpellName(1330)] = Defaults(), --Garrote - Silence
 			[SpellName(408)] = Defaults(), --Kidney Shot
 			[SpellName(88611)] = Defaults(), --Smoke Bomb
-			[SpellName(115197)] = Defaults(), --Partial Paralytic
-			[SpellName(113953)] = Defaults(), --Paralysis
+			--[SpellName(115197)] = Defaults(), --Partial Paralytic
+			--[SpellName(113953)] = Defaults(), --Paralysis
 		-- Shaman
 			[SpellName(51514)] = Defaults(), --Hex
 			[SpellName(64695)] = Defaults(), --Earthgrab
 			[SpellName(63685)] = Defaults(), --Freeze (Frozen Power)
-			[SpellName(76780)] = Defaults(), --Bind Elemental
+			--[SpellName(76780)] = Defaults(), --Bind Elemental
 			[SpellName(118905)] = Defaults(), --Static Charge
 			[SpellName(118345)] = Defaults(), --Pulverize (Earth Elemental)
 		-- Warlock
@@ -121,16 +121,16 @@ G.unitframe.aurafilters['CCDebuffs'] = {
 			[SpellName(5484)] = Defaults(), --Howl of Terror
 			[SpellName(6358)] = Defaults(), --Seduction
 			[SpellName(30283)] = Defaults(), --Shadowfury
-			[SpellName(24259)] = Defaults(), --Spell Lock (Felhunter)
-			[SpellName(115782)] = Defaults(), --Optical Blast (Observer)
+			--[SpellName(24259)] = Defaults(), --Spell Lock (Felhunter)
+			--[SpellName(115782)] = Defaults(), --Optical Blast (Observer)
 			[SpellName(115268)] = Defaults(), --Mesmerize (Shivarra)
-			[SpellName(118093)] = Defaults(), --Disarm (Voidwalker)
+			--[SpellName(118093)] = Defaults(), --Disarm (Voidwalker)
 			[SpellName(89766)] = Defaults(), --Axe Toss (Felguard)
 			[SpellName(137143)] = Defaults(), --Blood Horror
 		-- Warrior
-			[SpellName(20511)] = Defaults(), --Intimidating Shout
+			--[SpellName(20511)] = Defaults(), --Intimidating Shout
 			[SpellName(7922)] = Defaults(), --Charge Stun
-			[SpellName(676)] = Defaults(), --Disarm
+			--[SpellName(676)] = Defaults(), --Disarm
 			[SpellName(105771)] = Defaults(), --Warbringer
 			[SpellName(107566)] = Defaults(), --Staggering Shout
 			[SpellName(132168)] = Defaults(), --Shockwave
@@ -139,14 +139,14 @@ G.unitframe.aurafilters['CCDebuffs'] = {
 			[SpellName(18498)] = Defaults(), --Gag Order
 		-- Monk
 			[SpellName(116706)] = Defaults(), --Disable
-			[SpellName(117368)] = Defaults(), --Grapple Weapon
+			--[SpellName(117368)] = Defaults(), --Grapple Weapon
 			[SpellName(115078)] = Defaults(), --Paralysis
-			[SpellName(122242)] = Defaults(), --Clash
+			--[SpellName(122242)] = Defaults(), --Clash
 			[SpellName(119392)] = Defaults(), --Charging Ox Wave
 			[SpellName(119381)] = Defaults(), --Leg Sweep
 			[SpellName(120086)] = Defaults(), --Fists of Fury
-			[SpellName(116709)] = Defaults(), --Spear Hand Strike
-			[SpellName(123407)] = Defaults(), --Spinning Fire Blossom
+			--[SpellName(116709)] = Defaults(), --Spear Hand Strike
+			--[SpellName(123407)] = Defaults(), --Spinning Fire Blossom
 			[SpellName(140023)] = Defaults(), --Ring of Peace
 		-- Racial
 			[SpellName(25046)] = Defaults(), --Arcane Torrent
@@ -184,7 +184,6 @@ G.unitframe.aurafilters['TurtleBuffs'] = {
 		--Druid
 			[SpellName(22812)] = Defaults(2), -- Barkskin
 			[SpellName(102342)] = Defaults(2), -- Ironbark
-			[SpellName(106922)] = Defaults(), -- Might of Ursoc
 			[SpellName(61336)] = Defaults(), -- Survival Instincts
 		--Hunter
 			[SpellName(19263)] = Defaults(5), -- Deterrence
@@ -219,10 +218,10 @@ G.unitframe.aurafilters['TurtleBuffs'] = {
 			[SpellName(114030)] = Defaults(), -- Vigilance
 		--Monk
 			[SpellName(120954)] = Defaults(2), -- Fortifying Brew
-			[SpellName(131523)] = Defaults(5), -- Zen Meditation
+			--[SpellName(131523)] = Defaults(5), -- Zen Meditation
 			[SpellName(122783)] = Defaults(), -- Diffuse Magic
 			[SpellName(122278)] = Defaults(), -- Dampen Harm
-			[SpellName(115213)] = Defaults(), -- Avert Harm
+			--[SpellName(115213)] = Defaults(), -- Avert Harm
 			[SpellName(116849)] = Defaults(), -- Life Cocoon
 		--Racial
 			[SpellName(20594)] = Defaults(), -- Stoneform
@@ -253,7 +252,7 @@ G.unitframe.aurafilters['PlayerBuffs'] = {
 			[SpellName(49222)] = Defaults(), -- Bone Shield
 			[SpellName(55233)] = Defaults(), -- Vampiric Blood
 			[SpellName(50461)] = Defaults(), -- Anti-Magic Zone
-			[SpellName(49016)] = Defaults(), -- Unholy Frenzy
+			--[SpellName(49016)] = Defaults(), -- Unholy Frenzy
 			[SpellName(51271)] = Defaults(), -- Pillar of Frost
 			[SpellName(96268)] = Defaults(), -- Death's Advance
 		--Priest
@@ -277,18 +276,17 @@ G.unitframe.aurafilters['PlayerBuffs'] = {
 		--Druid
 			[SpellName(22812)] = Defaults(), -- Barkskin
 			[SpellName(102342)] = Defaults(), -- Ironbark
-			[SpellName(106922)] = Defaults(), -- Might of Ursoc
 			[SpellName(61336)] = Defaults(), -- Survival Instincts
 			[SpellName(117679)] = Defaults(), -- Incarnation (Tree of Life)
 			[SpellName(102543)] = Defaults(), -- Incarnation: King of the Jungle
 			[SpellName(102558)] = Defaults(), -- Incarnation: Son of Ursoc
 			[SpellName(102560)] = Defaults(), -- Incarnation: Chosen of Elune
-			[SpellName(16689)] = Defaults(), -- Nature's Grasp
+			--[SpellName(16689)] = Defaults(), -- Nature's Grasp
 			[SpellName(132158)] = Defaults(), -- Nature's Swiftness
 			[SpellName(106898)] = Defaults(), -- Stampeding Roar
 			[SpellName(1850)] = Defaults(), -- Dash
 			[SpellName(106951)] = Defaults(), -- Berserk
-			[SpellName(29166)] = Defaults(), -- Innervate
+			--[SpellName(29166)] = Defaults(), -- Innervate
 			[SpellName(52610)] = Defaults(), -- Savage Roar
 			[SpellName(69369)] = Defaults(), -- Predatory Swiftness
 			[SpellName(112071)] = Defaults(), -- Celestial Alignment
@@ -298,7 +296,7 @@ G.unitframe.aurafilters['PlayerBuffs'] = {
 			[SpellName(53480)] = Defaults(), -- Roar of Sacrifice (Cunning)
 			[SpellName(51755)] = Defaults(), -- Camouflage
 			[SpellName(54216)] = Defaults(), -- Master's Call
-			[SpellName(34471)] = Defaults(), -- The Beast Within
+			--[SpellName(34471)] = Defaults(), -- The Beast Within
 			[SpellName(3045)] = Defaults(), -- Rapid Fire
 			[SpellName(3584)] = Defaults(), -- Feign Death
 			[SpellName(131894)] = Defaults(), -- A Murder of Crows
@@ -313,7 +311,7 @@ G.unitframe.aurafilters['PlayerBuffs'] = {
 			[SpellName(51713)] = Defaults(), -- Shadow Dance
 			[SpellName(114018)] = Defaults(), -- Shroud of Concealment
 			[SpellName(2983)] = Defaults(), -- Sprint
-			[SpellName(121471)] = Defaults(), -- Shadow Blades
+			--[SpellName(121471)] = Defaults(), -- Shadow Blades
 			[SpellName(11327)] = Defaults(), -- Vanish
 			[SpellName(108212)] = Defaults(), -- Burst of Speed
 			[SpellName(57933)] = Defaults(), -- Tricks of the Trade
@@ -326,7 +324,7 @@ G.unitframe.aurafilters['PlayerBuffs'] = {
 			[SpellName(16188)] = Defaults(), -- Ancestral Swiftness
 			[SpellName(2825)] = Defaults(), -- Bloodlust
 			[SpellName(79206)] = Defaults(), -- Spiritwalker's Grace
-			[SpellName(16191)] = Defaults(), -- Mana Tide
+			--[SpellName(16191)] = Defaults(), -- Mana Tide
 			[SpellName(8178)] = Defaults(), -- Grounding Totem Effect
 			[SpellName(58875)] = Defaults(), -- Spirit Walk
 			[SpellName(108281)] = Defaults(), -- Ancestral Guidance
@@ -348,7 +346,7 @@ G.unitframe.aurafilters['PlayerBuffs'] = {
 			[SpellName(31884)] = Defaults(), -- Avenging Wrath
 			[SpellName(53563)] = Defaults(), -- Beacon of Light
 			[SpellName(31842)] = Defaults(), -- Divine Favor
-			[SpellName(54428)] = Defaults(), -- Divine Plea
+			--[SpellName(54428)] = Defaults(), -- Divine Plea
 			[SpellName(105809)] = Defaults(), -- Holy Avenger
 			[SpellName(85499)] = Defaults(), -- Speed of Light
 		--Warrior
@@ -369,10 +367,10 @@ G.unitframe.aurafilters['PlayerBuffs'] = {
 			[SpellName(107574)] = Defaults(), -- Avatar
 		--Monk
 			[SpellName(120954)] = Defaults(), -- Fortifying Brew
-			[SpellName(131523)] = Defaults(), -- Zen Meditation
+			--[SpellName(131523)] = Defaults(), -- Zen Meditation
 			[SpellName(122783)] = Defaults(), -- Diffuse Magic
 			[SpellName(122278)] = Defaults(), -- Dampen Harm
-			[SpellName(115213)] = Defaults(), -- Avert Harm
+			--[SpellName(115213)] = Defaults(), -- Avert Harm
 			[SpellName(116849)] = Defaults(), -- Life Cocoon
 			[SpellName(125174)] = Defaults(), -- Touch of Karma
 			[SpellName(116841)] = Defaults(), -- Tiger's Lust
@@ -400,7 +398,7 @@ G.unitframe.aurafilters['Blacklist'] = {
 		[SpellName(114216)] = Defaults(), --Angelic Bulwark
 		[SpellName(97821)] = Defaults(), --Void-Touched
 		[SpellName(36032)] = Defaults(), -- Arcane Charge
-		[SpellName(132365)] = Defaults(), -- Vengeance
+		--[SpellName(132365)] = Defaults(), -- Vengeance
 		[SpellName(8733)] = Defaults(), --Blessing of Blackfathom
 		[SpellName(57724)] = Defaults(), --Sated
 		[SpellName(25771)] = Defaults(), --forbearance
@@ -447,8 +445,8 @@ G.unitframe.aurafilters['Whitelist'] = {
 		[SpellName(33206)] = Defaults(), --Pain Suppression
 		[SpellName(116849)] = Defaults(), --Life Cocoon
 		[SpellName(22812)] = Defaults(), --Barkskin
-		[SpellName(1490)] = Defaults(), --Curse of the Elements (5% magic damage taken debuff)
-		[SpellName(116202)] = Defaults(), --Aura of the Elements (5% magic damage taken debuff)
+		--[SpellName(1490)] = Defaults(), --Curse of the Elements (5% magic damage taken debuff)
+		--[SpellName(116202)] = Defaults(), --Aura of the Elements (5% magic damage taken debuff)
 		[SpellName(123059)] = Defaults(), --Destabilize (Amber-Shaper Un'sok)
 		[SpellName(136431)] = Defaults(), --Shell Concussion (Tortos)
 		[SpellName(137332)] = Defaults(), --Beast of Nightmares (Twin Consorts)
@@ -717,21 +715,21 @@ G.unitframe.buffwatch = {
 --List of spells to display ticks
 G.unitframe.ChannelTicks = {
 	--Warlock
-	[SpellName(1120)] = 6, --"Drain Soul"
+	--[SpellName(1120)] = 6, --"Drain Soul"
 	[SpellName(689)] = 6, -- "Drain Life"
 	[SpellName(108371)] = 6, -- "Harvest Life"
 	[SpellName(5740)] = 4, -- "Rain of Fire"
 	[SpellName(755)] = 6, -- Health Funnel
 	[SpellName(103103)] = 4, --Malefic Grasp
 	--Druid
-	[SpellName(44203)] = 4, -- "Tranquility"
+	--[SpellName(44203)] = 4, -- "Tranquility"
 	[SpellName(16914)] = 10, -- "Hurricane"
 	--Priest
 	[SpellName(15407)] = 3, -- "Mind Flay"
 	[SpellName(129197)] = 3, -- "Mind Flay (Insanity)"
 	[SpellName(48045)] = 5, -- "Mind Sear"
 	[SpellName(47540)] = 2, -- "Penance"
-	[SpellName(64901)] = 4, -- Hymn of Hope
+	--[SpellName(64901)] = 4, -- Hymn of Hope
 	[SpellName(64843)] = 4, -- Divine Hymn
 	--Mage
 	[SpellName(5143)] = 5, -- "Arcane Missiles"
@@ -744,7 +742,7 @@ G.unitframe.ChannelTicks = {
 
 G.unitframe.ChannelTicksSize = {
     --Warlock
-    [SpellName(1120)] = 2, --"Drain Soul"
+   --[SpellName(1120)] = 2, --"Drain Soul"
     [SpellName(689)] = 1, -- "Drain Life"
 	[SpellName(108371)] = 1, -- "Harvest Life"
 	[SpellName(103103)] = 1, -- "Malefic Grasp"
@@ -752,7 +750,7 @@ G.unitframe.ChannelTicksSize = {
 
 --Spells Effected By Haste
 G.unitframe.HastedChannelTicks = {
-	[SpellName(64901)] = true, -- Hymn of Hope
+	--[SpellName(64901)] = true, -- Hymn of Hope
 	[SpellName(64843)] = true, -- Divine Hymn
 }
 
@@ -762,7 +760,6 @@ G.unitframe.AuraBarColors = {
 	[SpellName(32182)] = {r = 250/255, g = 146/255, b = 27/255}, --Heroism
 	[SpellName(80353)] = {r = 250/255, g = 146/255, b = 27/255}, --Time Warp
 	[SpellName(90355)] = {r = 250/255, g = 146/255, b = 27/255}, --Ancient Hysteria
-	[SpellName(84963)] = {r = 250/255, g = 146/255, b = 27/255}, --Inquisition
 }
 
 G.unitframe.InvalidSpells = {

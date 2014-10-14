@@ -127,6 +127,7 @@ function E:RegisterCooldown(cooldown)
 	if(not E.private.cooldown.enable or cooldown.isHooked) then return end
 	hooksecurefunc(cooldown, "SetCooldown", E.OnSetCooldown)
 	cooldown.isHooked = true
+	cooldown:SetHideCountdownNumbers(true)
 end
 
 function E:UpdateCooldownSettings()

@@ -30,7 +30,7 @@ local createAuraIcon = function(icons, index)
 	button:SetWidth(icons.size or 16)
 	button:SetHeight(icons.size or 16)
 
-	local cd = CreateFrame("Cooldown", nil, button)
+	local cd = CreateFrame("Cooldown", nil, button, "CooldownFrameTemplate")
 	cd:SetAllPoints(button)
 
 	local icon = button:CreateTexture(nil, "BORDER")

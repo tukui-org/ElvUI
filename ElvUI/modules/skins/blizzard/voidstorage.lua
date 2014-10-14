@@ -18,6 +18,19 @@ local function LoadSkin()
 	end
 	
 	
+	for i=1, 2 do
+		local tab = VoidStorageFrame["Page"..i]
+		local normTex = tab:GetNormalTexture()
+		local texture = normTex:GetTexture()
+		tab:StripTextures()
+
+		tab:StyleButton(nil, true)
+		tab:SetNormalTexture(texture)
+		normTex:SetTexCoord(unpack(E.TexCoords))
+		normTex:SetInside()
+		tab:SetTemplate()
+	end
+
 	VoidStoragePurchaseFrame:SetFrameStrata('DIALOG')
 	VoidStorageFrame:SetTemplate("Transparent")
 	VoidStoragePurchaseFrame:SetTemplate("Default")

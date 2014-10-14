@@ -19,6 +19,7 @@ local function SetOriginalBackdrop(self)
 end
 
 function S:HandleButton(f, strip)
+	assert(f, "doesn't exist!")
 	if f.Left then f.Left:SetAlpha(0) end
 	if f.Middle then f.Middle:SetAlpha(0) end
 	if f.Right then f.Right:SetAlpha(0) end
@@ -221,6 +222,18 @@ function S:HandleEditBox(frame)
 			frame.backdrop:Point("BOTTOMRIGHT", -12, -2)
 		end		
 	end
+
+	if(frame.Left) then
+		frame.Left:Kill()
+	end
+
+	if(frame.Right) then
+		frame.Right:Kill()
+	end
+
+	if(frame.Middle) then
+		frame.Middle:Kill()
+	end
 end
 
 function S:HandleDropDownBox(frame, width)
@@ -303,19 +316,33 @@ function S:HandleCheckBox(frame, noBackdrop)
 	end)		
 end
 
+function S:HandleIcon(icon, parent)
+	parent = parent or icon:GetParent();
+
+	icon:SetTexCoord(unpack(E.TexCoords))
+	parent:CreateBackdrop('Default')
+	icon:SetParent(parent.backdrop)
+	parent.backdrop:SetOutside(icon)
+end
+
 function S:HandleItemButton(b, shrinkIcon)
 	if b.isSkinned then return; end
 
-	b:StripTextures()
-	b:CreateBackdrop('Default', true)
-	b:StyleButton()
-	
 	local icon = b.icon or b.IconTexture
+	local texture
 	if b:GetName() and _G[b:GetName()..'IconTexture'] then
 		icon = _G[b:GetName()..'IconTexture']
 	elseif b:GetName() and _G[b:GetName()..'Icon'] then
 		icon = _G[b:GetName()..'Icon']
 	end
+
+	if(icon and icon:GetTexture()) then
+		texture = icon:GetTexture()
+	end
+
+	b:StripTextures()
+	b:CreateBackdrop('Default', true)
+	b:StyleButton()
 	
 	if icon then
 		icon:SetTexCoord(unpack(E.TexCoords))
@@ -329,6 +356,10 @@ function S:HandleItemButton(b, shrinkIcon)
 			b.backdrop:SetOutside(icon)
 		end
 		icon:SetParent(b.backdrop)
+
+		if(texture) then
+			icon:SetTexture(texture)
+		end
 	end
 	b.isSkinned = true
 end
@@ -358,6 +389,7 @@ function S:HandleCloseButton(f, point, text)
 end
 
 function S:HandleSliderFrame(frame)
+	assert(frame)
 	local orientation = frame:GetOrientation()
 	local SIZE = 12
 	frame:StripTextures()
@@ -419,13 +451,19 @@ function S:Initialize()
 	self.db = E.private.skins
 	for addon, loadFunc in pairs(self.addonsToLoad) do
 		if IsAddOnLoaded(addon) then
-			loadFunc();
 			self.addonsToLoad[addon] = nil;
+			local _, catch = pcall(loadFunc)
+			if(catch and GetCVarBool('scriptErrors') == true) then
+				ScriptErrorsFrame_OnError(catch, false)
+			end
 		end
 	end
 	
 	for _, loadFunc in pairs(self.nonAddonsToLoad) do
-		loadFunc();
+		local _, catch = pcall(loadFunc)
+		if(catch and GetCVarBool('scriptErrors') == true) then
+			ScriptErrorsFrame_OnError(catch, false)
+		end
 	end
 	wipe(self.nonAddonsToLoad)
 end

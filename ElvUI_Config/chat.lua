@@ -89,12 +89,12 @@ E.Options.args.chat = {
 						CH:CheckLFGRoles()
 					end,
 				},				
-				chatHistory = {
+				--[[chatHistory = {
 					order = 7,
 					type = 'toggle',
 					name = L['Chat History'],
 					desc = L['Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session.'],
-				},
+				},]]
 				spacer = {
 					order = 8,
 					type = 'description',
@@ -210,7 +210,7 @@ E.Options.args.chat = {
 					name = L['Panel Height'],
 					desc = L['PANEL_DESC'],
 					set = function(info, value) E.db.chat.panelHeight = value; E:GetModule('Chat'):PositionChat(true); end,
-					min = 150, max = 600, step = 1,
+					min = 50, max = 600, step = 1,
 				},				
 				panelWidth = {
 					order = 102,
@@ -218,7 +218,7 @@ E.Options.args.chat = {
 					name = L['Panel Width'],
 					desc = L['PANEL_DESC'],
 					set = function(info, value) E.db.chat.panelWidth = value; E:GetModule('Chat'):PositionChat(true); local bags = E:GetModule('Bags'); bags:Layout(); bags:Layout(true); end,
-					min = 150, max = 700, step = 1,
+					min = 50, max = 700, step = 1,
 				},
 				keywords = {
 					order = 105,

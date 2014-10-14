@@ -121,11 +121,10 @@ function M:SkinBubble(frame)
 end
 
 function M:IsChatBubble(frame)
-	for i = 1, frame:GetNumRegions() do
-		local region = select(i, frame:GetRegions())
-		if (region.GetTexture and region:GetTexture() and type(region:GetTexture() == "string") and strlower(region:GetTexture()) == [[interface\tooltips\chatbubble-background]]) then return true end;
-	end
-	return false
+	if frame:GetName() then return end
+	if not frame:GetRegions() then return end
+	local region = frame:GetRegions()
+	return region:GetTexture() == [[Interface\Tooltips\ChatBubble-Background]]	
 end
 
 function M:HookBubbles(...)

@@ -68,6 +68,7 @@ V['skins'] = {
 		["bgscore"] = true,
 		["merchant"] = true,
 		["mail"] = true,
+		["garrison"] = true,
 		["help"] = true,
 		["trade"] = true,
 		["gossip"] = true,

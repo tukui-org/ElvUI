@@ -5,18 +5,13 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.pvp ~= true then return end
 	
 	PVPUIFrame:StripTextures()
-	PVPUIFrame:SetTemplate("Transparent")
-	PVPUIFrame.LeftInset:StripTextures()
-	--PVPUIFrame.LeftInset:SetTemplate("Transparent")
-	PVPUIFrame.Shadows:StripTextures()
-	
-	S:HandleCloseButton(PVPUIFrameCloseButton)
-	
+	--PVPUIFrame.Shadows:StripTextures()
+
 	for i=1, 2 do
 		S:HandleTab(_G["PVPUIFrameTab"..i])
 	end
 	
-	for i=1, 3 do
+	for i=1, 4 do
 		local button = _G["PVPQueueFrameCategoryButton"..i]
 		button:SetTemplate('Default')
 		button.Background:Kill()
@@ -29,13 +24,7 @@ local function LoadSkin()
 		button.Icon:SetParent(button.backdrop)
 		button:StyleButton(nil, true)	
 	end
-	
-	--[[for i=1, 3 do
-		local button = _G["PVPArenaTeamsFrameTeam"..i]
-		button:SetTemplate('Default')
-		button.Background:Kill()
-		button:StyleButton()
-	end]]
+
 	
 	-->>>HONOR FRAME
 	S:HandleDropDownBox(HonorFrameTypeDropDown)
@@ -53,11 +42,18 @@ local function LoadSkin()
 	HonorFrame.BonusFrame.RandomBGButton:StyleButton(nil, true)
 	HonorFrame.BonusFrame.RandomBGButton.SelectedTexture:SetInside()
 	HonorFrame.BonusFrame.RandomBGButton.SelectedTexture:SetTexture(1, 1, 0, 0.1)
-	HonorFrame.BonusFrame.CallToArmsButton:StripTextures()
-	HonorFrame.BonusFrame.CallToArmsButton:SetTemplate()
-	HonorFrame.BonusFrame.CallToArmsButton:StyleButton(nil, true)
-	HonorFrame.BonusFrame.CallToArmsButton.SelectedTexture:SetInside()
-	HonorFrame.BonusFrame.CallToArmsButton.SelectedTexture:SetTexture(1, 1, 0, 0.1)
+
+	HonorFrame.BonusFrame.Arena1Button:StripTextures()
+	HonorFrame.BonusFrame.Arena1Button:SetTemplate()
+	HonorFrame.BonusFrame.Arena1Button:StyleButton(nil, true)
+	HonorFrame.BonusFrame.Arena1Button.SelectedTexture:SetInside()
+	HonorFrame.BonusFrame.Arena1Button.SelectedTexture:SetTexture(1, 1, 0, 0.1)	
+
+	HonorFrame.BonusFrame.Arena2Button:StripTextures()
+	HonorFrame.BonusFrame.Arena2Button:SetTemplate()
+	HonorFrame.BonusFrame.Arena2Button:StyleButton(nil, true)
+	HonorFrame.BonusFrame.Arena2Button.SelectedTexture:SetInside()
+	HonorFrame.BonusFrame.Arena2Button.SelectedTexture:SetTexture(1, 1, 0, 0.1)		
 
 	HonorFrame.BonusFrame.DiceButton:DisableDrawLayer("ARTWORK")
 	HonorFrame.BonusFrame.DiceButton:SetHighlightTexture("")
@@ -100,15 +96,6 @@ local function LoadSkin()
 			self.bg:SetDesaturated(true)
 		end
 	end)
-	for i = 1, 2 do
-		local b = HonorFrame.BonusFrame["WorldPVP"..i.."Button"]
-		b:StripTextures()
-		b:SetTemplate()
-		b:StyleButton(nil, true)
-		b.SelectedTexture:SetInside()
-		b.SelectedTexture:SetTexture(1, 1, 0, 0.1)
-	end
-
 
 	-->>>CONQUEST FRAME
 	ConquestFrame.Inset:StripTextures()
@@ -149,7 +136,7 @@ local function LoadSkin()
 	S:HandleButton(WarGameStartButton, true)
 	S:HandleScrollBar(WarGamesFrameScrollFrameScrollBar)
 	WarGamesFrame.HorizontalBar:StripTextures()
-
+	S:HandleCheckBox(WarGameTournamentModeCheckButton)
 	ConquestTooltip:SetTemplate("Transparent")
 end
 S:RegisterSkin('Blizzard_PVPUI', LoadSkin)

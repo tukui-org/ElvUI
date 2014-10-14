@@ -36,9 +36,10 @@ UF['classMaxResourceBar'] = {
 	['DEATHKNIGHT'] = 6,
 	['PALADIN'] = 5,
 	['WARLOCK'] = 4,
-	['PRIEST'] = 3,
-	['MONK'] = 5,
+	['PRIEST'] = 5,
+	['MONK'] = 6,
 	['MAGE'] = 4,
+	['ROGUE'] = 5,
 }
 
 UF['headerGroupBy'] = {
@@ -303,6 +304,13 @@ function UF:UpdateColors()
 	ElvUF.colors.HolyPower = E:GetColorTable(db.classResources.PALADIN);
 	
 	ElvUF.colors.ArcaneChargeBar = E:GetColorTable(db.classResources.MAGE);
+
+	ElvUF.colors.Anticipation = {}
+	ElvUF.colors.Anticipation[1] = E:GetColorTable(db.classResources.ROGUE[1])
+	ElvUF.colors.Anticipation[2] = E:GetColorTable(db.classResources.ROGUE[2])
+	ElvUF.colors.Anticipation[3] = E:GetColorTable(db.classResources.ROGUE[3])
+	ElvUF.colors.Anticipation[4] = E:GetColorTable(db.classResources.ROGUE[4])
+	ElvUF.colors.Anticipation[5] = E:GetColorTable(db.classResources.ROGUE[5])
 	
 	ElvUF.colors.ShadowOrbs = E:GetColorTable(db.classResources.PRIEST);
 	
@@ -316,6 +324,7 @@ function UF:UpdateColors()
 	ElvUF.colors.Harmony[3] = E:GetColorTable(db.classResources.MONK[3])
 	ElvUF.colors.Harmony[4] = E:GetColorTable(db.classResources.MONK[4])
 	ElvUF.colors.Harmony[5] = E:GetColorTable(db.classResources.MONK[5])
+	ElvUF.colors.Harmony[6] = E:GetColorTable(db.classResources.MONK[6])
 	
 	ElvUF.colors.ShardBar = {}
 	ElvUF.colors.ShardBar[1] = E:GetColorTable(db.classResources.WARLOCK[1])
@@ -452,7 +461,22 @@ function UF.groupPrototype:Configure_Groups()
 	local width, height, newCols, newRows = 0, 0, 0, 0
 	local direction = db.growthDirection
 	local xMult, yMult = DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction], DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction]
-	for i=1, db.numGroups do
+
+	local raidFilter = UF.db.smartRaidFilter
+	local numGroups = db.numGroups
+	if(raidFilter) then
+		local inInstance, instanceType = IsInInstance()
+		if(inInstance and (instanceType == 'raid' or instanceType == 'pvp')) then
+			local isDynamic, _, maxPlayers = select(7, GetInstanceInfo())
+			if(maxPlayers) then
+				numGroups = E:Round(maxPlayers/5)
+			end
+		end
+	end
+
+	self.numGroups = numGroups
+
+	for i=1, numGroups do
 		local group = self.groups[i]
 		
 		point = DIRECTION_TO_POINT[direction]
@@ -471,7 +495,7 @@ function UF.groupPrototype:Configure_Groups()
 			
 			if not group.isForced then
 				if not group.initialized then
-					group:SetAttribute("startingIndex", db.raidWideSorting and (-min(db.numGroups * (db.groupsPerRowCol * 5), MAX_RAID_MEMBERS) + 1) or -4)
+					group:SetAttribute("startingIndex", db.raidWideSorting and (-min(numGroups * (db.groupsPerRowCol * 5), MAX_RAID_MEMBERS) + 1) or -4)
 					group:Show()
 					group.initialized = true
 				end
@@ -491,7 +515,7 @@ function UF.groupPrototype:Configure_Groups()
 			group:SetAttribute("point", point)	
 
 			if not group.isForced then
-				group:SetAttribute("maxColumns", db.raidWideSorting and db.numGroups or 1)
+				group:SetAttribute("maxColumns", db.raidWideSorting and numGroups or 1)
 				group:SetAttribute("unitsPerColumn", db.raidWideSorting and (db.groupsPerRowCol * 5) or 5)				
 				UF.headerGroupBy[db.groupBy](group)
 				group:SetAttribute('sortDir', db.sortDir)
@@ -562,6 +586,7 @@ end
 
 function UF.groupPrototype:Update()
 	local group = self.groupName
+
 	UF[group].db = UF.db['units'][group]
 	for i=1, #self.groups do
 		self.groups[i].db = UF.db['units'][group]

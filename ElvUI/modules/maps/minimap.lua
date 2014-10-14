@@ -20,10 +20,6 @@ local menuList = {
 	func = function() ToggleCharacter("PaperDollFrame") end},
 	{text = SPELLBOOK_ABILITIES_BUTTON,
 	func = function() if not SpellBookFrame:IsShown() then ShowUIPanel(SpellBookFrame) else HideUIPanel(SpellBookFrame) end end},
-	{text = MOUNTS_AND_PETS,
-	func = function()
-		TogglePetJournal();
-	end},
 	{text = TALENTS_BUTTON,
 	func = function()
 		if not PlayerTalentFrame then
@@ -39,6 +35,18 @@ local menuList = {
 		else
 			HideUIPanel(PlayerTalentFrame)
 		end
+	end},	
+	{text = MOUNTS,
+	func = function()
+		TogglePetJournal(1);
+	end},
+	{text = PETS,
+	func = function()
+		TogglePetJournal(2)
+	end},
+	{text = TOY_BOX,
+	func = function() 
+		TogglePetJournal(3)
 	end},
 	{text = L["Farm Mode"],
 	func = FarmMode},
@@ -46,19 +54,10 @@ local menuList = {
 	func = function() ToggleFrame(TimeManagerFrame) end},		
 	{text = ACHIEVEMENT_BUTTON,
 	func = function() ToggleAchievementFrame() end},
-	{text = QUESTLOG_BUTTON,
-	func = function() ToggleFrame(QuestLogFrame) end},
 	{text = SOCIAL_BUTTON,
 	func = function() ToggleFriendsFrame() end},
 	{text = calendar_string,
 	func = function() GameTimeFrame:Click() end},
-	{text = PLAYER_V_PLAYER,
-	func = function()
-		if not PVPUIFrame then
-			PVP_LoadUI()
-		end	
-		ToggleFrame(PVPUIFrame) 
-	end},
 	{text = ACHIEVEMENTS_GUILD_TAB,
 	func = function()
 		if IsInGuild() then
@@ -72,8 +71,8 @@ local menuList = {
 	end},
 	{text = LFG_TITLE,
 	func = function() PVEFrame_ToggleFrame(); end},
-	{text = L["Raid Browser"],
-	func = function() ToggleFrame(RaidBrowserFrame); end},
+	--[[{text = L["Raid Browser"],
+	func = function() ToggleFrame(RaidBrowserFrame); end},]]
 	{text = ENCOUNTER_JOURNAL, 
 	func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then EncounterJournal_LoadUI(); end ToggleFrame(EncounterJournal) end}
 }
@@ -166,7 +165,7 @@ function M:UpdateSettings()
 	E.MinimapSize = E.private.general.minimap.enable and E.db.general.minimap.size or Minimap:GetWidth() + 10
 	
 	if E.db.auras.consolidatedBuffs.enable and E.private.auras.disableBlizzard then
-		E.ConsolidatedBuffsWidth = ((E.MinimapSize - (E.db.auras.consolidatedBuffs.filter and 6 or 8)) / (E.db.auras.consolidatedBuffs.filter and 6 or 8)) + (E.PixelMode and 3 or 4)-- 4 needs to be 3
+		E.ConsolidatedBuffsWidth = ((E.MinimapSize - (E.db.auras.consolidatedBuffs.filter and 8 or 9)) / (E.db.auras.consolidatedBuffs.filter and 8 or 9)) + (E.PixelMode and 3 or 4)-- 4 needs to be 3
 	else
 		E.ConsolidatedBuffsWidth = 0;
 	end
@@ -302,6 +301,9 @@ function M:Initialize()
 	MiniMapMailFrame:Point("TOPRIGHT", Minimap, 3, 4)
 	MiniMapMailBorder:Hide()
 	MiniMapMailIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\mail")
+
+	GarrisonLandingPageMinimapButton:ClearAllPoints()
+	GarrisonLandingPageMinimapButton:SetPoint("TOPLEFT", Minimap)
 
 	QueueStatusMinimapButton:ClearAllPoints()
 	QueueStatusMinimapButton:Point("BOTTOMRIGHT", Minimap, 3, 0)

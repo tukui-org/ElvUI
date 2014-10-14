@@ -83,7 +83,7 @@ function UF:PartySmartVisibility(event)
 	if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
 
 	if not InCombatLockdown() then		
-		if inInstance and instanceType == "raid" then
+		if inInstance and (instanceType == "raid" or instanceType == "pvp") then
 			UnregisterStateDriver(self, "visibility")
 			self:Hide()
 		elseif self.db.visibility then

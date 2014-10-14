@@ -11,6 +11,7 @@
 	<Script file='archaeology.lua'/>
 	<Script file='guildcontrol.lua'/>
 	<Script file='guild.lua'/>
+	<Script file='garrison.lua'/>
 	<Script file='tradeskill.lua'/>
 	<Script file='raid.lua'/>
 	<Script file='petbattle.lua'/>
@@ -24,7 +25,6 @@
 	<Script file='trainer.lua'/>
 	<Script file='socket.lua'/>
 	<Script file='alerts.lua'/>
-	<Script file='loot.lua'/>
 	<Script file='bgscore.lua'/>
 	<Script file='merchant.lua'/>
 	<Script file='mail.lua'/>
@@ -54,4 +54,5 @@
 	<Script file='blackmarket.lua'/>
 	<Script file='itemupgrade.lua'/>
 	<Script file='losscontrol.lua'/>
+	<Script file='loot.lua'/>
 </Ui>

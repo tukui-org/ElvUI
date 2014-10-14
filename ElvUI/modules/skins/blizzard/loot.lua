@@ -113,6 +113,101 @@ local function LoadSkin()
 	BonusRollFrame.PromptFrame.IconBackdrop:SetTemplate()	
 	BonusRollFrame.PromptFrame.Timer.Bar:SetTexture(1, 1, 1)
 	BonusRollFrame.PromptFrame.Timer.Bar:SetVertexColor(1, 1, 1)
+
+	LootFrame:StripTextures()
+	LootFrameInset:StripTextures()
+	LootFrame:SetHeight(LootFrame:GetHeight() - 30)
+	S:HandleCloseButton(LootFrameCloseButton)
+
+	LootFrame:SetTemplate("Transparent")
+	LootFramePortraitOverlay:SetParent(E.HiddenFrame)
+
+	for i=1, LootFrame:GetNumRegions() do
+		local region = select(i, LootFrame:GetRegions());
+		if(region:GetObjectType() == "FontString") then
+			if(region:GetText() == ITEMS) then
+				LootFrame.Title = region
+			end
+		end
+	end
+
+	LootFrame.Title:ClearAllPoints()
+	LootFrame.Title:SetPoint("TOPLEFT", LootFrame, "TOPLEFT", 4, -4)
+	LootFrame.Title:SetJustifyH("LEFT")
+
+	for i=1, LOOTFRAME_NUMBUTTONS do
+		local button = _G["LootButton"..i]
+		_G["LootButton"..i.."NameFrame"]:Hide()
+		S:HandleItemButton(button, true)
+		
+		_G["LootButton"..i.."IconQuestTexture"]:SetParent(E.HiddenFrame)
+
+		local point, attachTo, point2, x, y = button:GetPoint()
+		button:ClearAllPoints()
+		button:SetPoint(point, attachTo, point2, x, y+30)
+	end
+
+	hooksecurefunc("LootFrame_UpdateButton", function(index)
+		local numLootItems = LootFrame.numLootItems;
+		--Logic to determine how many items to show per page
+		local numLootToShow = LOOTFRAME_NUMBUTTONS;
+		local self = LootFrame;
+		if( self.AutoLootTable ) then
+			numLootItems = #self.AutoLootTable;
+		end
+		if ( numLootItems > LOOTFRAME_NUMBUTTONS ) then
+			numLootToShow = numLootToShow - 1; -- make space for the page buttons
+		end
+		
+		local button = _G["LootButton"..index];
+		local slot = (numLootToShow * (LootFrame.page - 1)) + index;
+		if(button and button:IsShown()) then
+			local texture, item, quantity, quality, locked, isQuestItem, questId, isActive;
+			if(LootFrame.AutoLootTablLootFramee)then
+				local entry = LootFrame.AutoLootTable[slot];
+				if( entry.hide ) then
+					button:Hide();
+					return;
+				else
+					texture = entry.texture;
+					item = entry.item;
+					quantity = entry.quantity;
+					quality = entry.quality;
+					locked = entry.locked;
+					isQuestItem = entry.isQuestItem;
+					questId = entry.questId;
+					isActive = entry.isActive;
+				end
+			else
+				texture, item, quantity, quality, locked, isQuestItem, questId, isActive = GetLootSlotInfo(slot);
+			end
+
+			if(texture) then
+				if ( questId and not isActive ) then
+					ActionButton_ShowOverlayGlow(button)
+				elseif ( questId or isQuestItem ) then
+					ActionButton_ShowOverlayGlow(button)		
+				else
+					ActionButton_HideOverlayGlow(button)
+				end
+			end
+		end
+	end)
+
+	LootFrame:HookScript("OnShow", function(self)
+		if(IsFishingLoot()) then
+			self.Title:SetText(L['Fishy Loot'])
+		elseif(not UnitIsFriend("player", "target") and UnitIsDead"target") then
+			self.Title:SetText(UnitName("target"))
+		else
+			self.Title:SetText(LOOT)
+		end
+	end)
+
+	S:HandleNextPrevButton(LootFrameDownButton)
+	S:HandleNextPrevButton(LootFrameUpButton)
+	SquareButton_SetIcon(LootFrameUpButton, 'UP')
+	SquareButton_SetIcon(LootFrameDownButton, 'DOWN')
 end
 
 S:RegisterSkin("ElvUI", LoadSkin)

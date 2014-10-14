@@ -87,15 +87,6 @@ function M:DisbandRaidGroup()
 	LeaveParty()
 end
 
-function M:CheckMovement()
-	if E.db.general.mapAlpha == 100 or not WorldMapFrame:IsShown() then return end
-	
-	if GetUnitSpeed('player') ~= 0 then
-		WorldMapFrame:SetAlpha(E.db.general.mapAlpha)
-	else
-		WorldMapFrame:SetAlpha(1)
-	end
-end
 
 function M:PVPMessageEnhancement(_, msg)
 	local _, instanceType = IsInInstance()
@@ -168,7 +159,6 @@ function M:Initialize()
 	self:LoadRaidMarker()
 	self:LoadExpRepBar()
 	self:LoadMirrorBars()
-	self:LoadLoot()
 	self:LoadLootRoll()
 	self:LoadChatBubbles()
 	self:RegisterEvent('MERCHANT_SHOW')
@@ -182,8 +172,7 @@ function M:Initialize()
 	self:RegisterEvent('GROUP_ROSTER_UPDATE', 'AutoInvite')
 	self:RegisterEvent('CVAR_UPDATE', 'ForceCVars')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
-	
-	self.MovingTimer = self:ScheduleRepeatingTimer("CheckMovement", 0.2)
+
 end
 
 E:RegisterModule(M:GetName())

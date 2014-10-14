@@ -13,7 +13,7 @@ L["NAMEPLATE_DESC"] = "Modifier la configuration des noms d'unités"
 L["PANEL_DESC"] = "Ajuste la largeur et la hauteur des fenêtres de chat, cela ajuste aussi les sacs."
 L["SKINS_DESC"] = "Ajuste les paramètres d'habillage."
 L["TOGGLESKIN_DESC"] = "Active ou désactive l'habillage ElvUI des éléments ci-dessous."
-L["TOOLTIP_DESC"] = "Configuration des Info-bulles."
+L["TOOLTIP_DESC"] = "Configuration des Infobulles."
 L['TEXT_FORMAT_DESC'] = [=[Entrer une séquence pour changer le format du texte.
 
 Exemples:
@@ -167,7 +167,7 @@ L['Chat EditBox Position'] = "Postitoin de la fenêtre de saisie du Chat"
 L['Chat History'] = "historique de la discussion"
 L["Copy Text"] = "Copier le texte"
 L['Display LFG Icons in group chat.'] = true;
-L["Display the hyperlink tooltip while hovering over a hyperlink."] = "Afficher une info-bulle pendant le survol d'un lien d'objet, sort, etc...."
+L["Display the hyperlink tooltip while hovering over a hyperlink."] = "Afficher une infobulle pendant le survol d'un lien d'objet, sort, etc...."
 L['Fade Chat'] = "Estomper la discussion"
 L['Fade the chat text when there is no activity.'] = "Estomper la discussion quand il n'y a pas d'activité"
 L["Font Outline"] = "Contours extérieurs de la police" --Also used in UnitFrames section
@@ -231,7 +231,7 @@ Ou pour la majorité des utilsateurs, il serait plus simple de mettre le fichier
 L["Coding:"] = "Codage: "
 L["Credits"] = "Crédits"
 L["Donations:"] = "Donateurs: "
-L["ELVUI_CREDITS"] = "Je voudrais remercier tout spécialement ceux qui m'ont aidé à maintenir cet addon avec les codeurs, testeurs et les personnes qui m’ont aussi aidé via les dons. Veuillez noter que pour les dons, je n’affiche seulement les noms des personnes qui m’ont envoyés un message privé sur le forum. Si votre nom est absent et que vous désirez que je l'ajoute, merci de m’envoyer un message privé."
+L["ELVUI_CREDITS"] = "Je voudrais remercier tout spécialement ceux qui m'ont aidé à maintenir cet add-on avec les codeurs, testeurs et les personnes qui m’ont aussi aidé via les dons. Veuillez noter que pour les dons, je n’affiche seulement les noms des personnes qui m’ont envoyés un message privé sur le forum. Si votre nom est absent et que vous désirez que je l'ajoute, merci de m’envoyer un message privé."
 L["Testing:"] = "Testeurs: "
 
 --DataTexts
@@ -287,11 +287,9 @@ L['Automatically select greed or disenchant (when available) on green quality it
 L["Automatically vendor gray items when visiting a vendor."] = "Vendre automatiquement les objets gris quand vous rendez visite à un marchand."
 L['Bottom Panel'] = "Bandeau en bas"
 L['Chat Bubbles Style'] = 'Style des bulles de discussion'
-L["Controls what the transparency of the worldmap will be set to when you are moving."] = "Contrôle le niveau de transparence de la carte du monde lorsque vous bougez."
 L['Display a panel across the bottom of the screen. This is for cosmetic only.'] = "Affiche un bandeau au bas de l'écran. Option purement cosmétique."
 L['Display a panel across the top of the screen. This is for cosmetic only.'] = "Affiche un bandeau en haut de l'écran. Option purement cosmétique."
 L['Display emotion icons in chat.'] = "Afficher les émoticônes dans le Chat"
-L["Don't scale the large world map to block out sides of the screen."] = "Ne pas mettre à l'échelle la grande carte du monde pour bloquer les bords de l'écran."
 L['Emotion Icons'] = "Emoticônes"
 L["Enable/Disable the loot frame."] = "Activer / désactiver le cadre de butin."
 L["Enable/Disable the loot roll frame."] = "Activer / désactiver le cadre du tirage au sort du butin."
@@ -306,7 +304,6 @@ L["Log Taints"] = "Journal  des corruptions"
 L["Login Message"] = "Message de connexion"
 L["Loot Roll"] = "Cadre de butin"
 L["Loot"] = "Butin"
-L["Map Alpha While Moving"] = "Transparence de la carte en mouvement"
 L["Multi-Monitor Support"] = true;
 L["Name Font"] = "Nom de la police"
 L['Remove Backdrop'] = 'Supprimer le fond'
@@ -317,7 +314,6 @@ L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are les
 L['Skin Backdrop'] = 'Skinner le fond'
 L["Skin the blizzard chat bubbles."] = "Habillage des bulles de Chat."
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "Police qui apparait sur le texte au dessus de la tête des joueurs. |cffFF0000ATTENTION: requiert un redémarrage du jeu ou une reconnexion pour que les changements soient pris en compte.|r"
-L["Tiny Map"] = "Petite Carte"
 L['Toggle Tutorials'] = "Afficher les tutoriels"
 L['Top Panel'] = "Bandeau en haut"
 
@@ -484,11 +480,11 @@ L['Display guild ranks if a unit is guilded.'] = "Affiche le rang de la guilde s
 L['Display how many of a certain item you have in your possession.'] = "Affiche combien vous avez d'objets de ce type en votre possession."
 L['Display player titles.'] = "Affiche le titre du joueur"
 L['Display the players talent spec and item level in the tooltip, this may not immediately update when mousing over a unit.'] = true;
-L['Display the spell or item ID when mousing over a spell or item tooltip.'] = "Affiche le sort ou l'ID de l'objet dans une info-bulle quand vous passez votre souris sur le sort ou l'objet."
-L["Don't display the tooltip when mousing over a unitframe."] = "Ne pas afficher l'info-bulle au survol d'un Portrait d'unité."
+L['Display the spell or item ID when mousing over a spell or item tooltip.'] = "Affiche le sort ou l'ID de l'objet dans une infobulle quand vous passez votre souris sur le sort ou l'objet."
+L["Don't display the tooltip when mousing over a unitframe."] = "Ne pas afficher l'infobulle au survol d'un Portrait d'unité."
 L['Guild Ranks'] = "Rangs de la guilde"
 L["Health Bar"] = true;
-L["Hide tooltip while in combat."] = "Masquer toutes les infos-bulle quand vous êtes en combat."
+L["Hide tooltip while in combat."] = "Masquer toutes les infobulles quand vous êtes en combat."
 L['Inspect Info'] = true;
 L['Item Count'] = "Nombre d'objet"
 L['Never Hide'] = "jamais caché"
@@ -497,7 +493,7 @@ L['Should tooltip be anchored to mouse cursor'] = true;
 L['Spell/Item IDs'] = "Sort/ID de l'objet"
 L["Target Info"] = true;
 L["Unitframes"] = true;
-L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."] = "Dans un groupe de raid ,affiche l'info-bulle d une personne ciblée par une autre."
+L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."] = "Dans un groupe de raid ,affiche l'infobulle d une personne ciblée par une autre."
 
 --UnitFrames
 L['%s and then %s'] = "%s et alors %s" --Nedd review
@@ -624,8 +620,6 @@ L['Force the frames to show, they will act as if they are the player frame.'] = 
 L["Format"] = "Format"
 L["Frame"] = "Fenêtre"
 L["Frequent Updates"] = "Mise à Jours fréquentes"
-L['Friendlies: Show Buffs'] = "Amicaux: afficher les améliorations"
-L['Friendlies: Show Debuffs'] = "Amicaux: afficher les affaiblissements"
 L['Friendly Aura Type'] = "Type d'Aura amical"
 L['Friendly'] = "Amical"
 L['Frost'] = "Givre"
@@ -713,9 +707,6 @@ L["Powers"] = "Énergies"
 L["Priority"] = "Priorité"
 L['PVP Trinket'] = 'Bijou PVP'
 L['Raid Icon'] = "Icône de Raid"
-L['Raid-10 Frames'] = "Cadres de raid 10 joueurs"
-L['Raid-25 Frames'] = "Cadres de raid 25 joueurs"
-L['Raid-40 Frames'] = "Cadres de raid 40 joueurs"
 L['Raid-Wide Sorting'] = "Tri du Raid-Large";
 L["RaidDebuff Indicator"] = "Indicateur d'affaiblissement en Raid"
 L["Range Check"] = "Verifie la portée"
@@ -751,7 +742,6 @@ L["Size and Positions"] = true;
 L["Size of the indicator icon."] = "Taille de l'indicateur de l'icône."
 L['Size Override'] = "Forcer la taille"
 L["Size"] = "Taille"
-L['Smart Auras'] = "Auras intelligents"
 L["Smart Raid Filter"] = "Filtre intelligent de Raid"
 L["Smooth Bars"] = "Barres fluides"
 L['Solar'] = "Solaire"
@@ -805,7 +795,6 @@ L["Visibility"] = "Visibilité"
 L["What point to anchor to the frame you set to attach to."] = "Quel point d'ancrage sur le cadre vous choisissez à attacher."
 L["What to attach the buff anchor frame to."] = "Choisissez à quoi vous voulez attacher les améliorations sur le cadre."
 L["What to attach the debuff anchor frame to."] = "Choisissez à quoi vous voulez attacher les affaiblissements sur le cadre."
-L['When set the Buffs and Debuffs will toggle being displayed depending on if the unit is friendly or an enemy. This will not effect the aurabars module.'] = "Une fois activé, les améliorations et affaiblissements seront, soit affichés ou cachés en fonction du statut de l'unité (Amicale ou Ennemie). Ceci n'affectera pas le module aurabars."
 L["When true, the header includes the player when not in a raid."] = "Quand coché, l'en-tête est affiché lorsque le joueur n'est pas dans un raid."
 L["When you mana falls below this point, text will flash on the player frame."] = "Quand votre mana tombe sous le seuil minimal, un texte clignotant apparaitra sur le cadre joueur."
 L["Whitelist"] = "Liste blanche"

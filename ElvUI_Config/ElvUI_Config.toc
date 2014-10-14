@@ -1,4 +1,4 @@
-## Interface: 50400
+## Interface: 60000
 ## Author: Elv
 ## Version: 1.01
 ## Title: |cff1784d1ElvUI Config|r
@@ -13,7 +13,7 @@ actionbars.lua
 auras.lua
 bags.lua
 chat.lua
-datatexts.lua
+datatexts.lua 
 filters.lua
 nameplates.lua
 skins.lua

@@ -12,7 +12,7 @@ function B:Initialize()
 	self:PositionGMFrames()
 	self:SkinBlizzTimers()
 	self:PositionVehicleFrame()
-	self:MoveWatchFrame()
+	self:MoveObjectiveFrame()
 	self:PositionAltPowerBar()
 
 	E:CreateMover(LossOfControlFrame, 'LossControlMover', L['Loss Control Icon'])

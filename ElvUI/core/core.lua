@@ -472,7 +472,7 @@ local function SendRecieve(self, event, prefix, message, channel, sender)
 		if(sender == myName) then return end
 
 		if prefix == "ELVUI_VERSIONCHK" and devAlts[myName] ~= true and not E.recievedOutOfDateMessage then
-			if E.version ~= 'BETA' and tonumber(message) ~= nil and tonumber(message) > tonumber(E.version) then
+			if(tonumber(message) ~= nil and tonumber(message) > tonumber(E.version)) then
 				E:Print(L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"])
 				E:StaticPopup_Show("ELVUI_UPDATE_AVAILABLE")
 				E.recievedOutOfDateMessage = true
@@ -661,7 +661,7 @@ function E:InitializeInitialModules()
 		local module = self:GetModule(module, true)
 		if module and module.Initialize then
 			local _, catch = pcall(module.Initialize, module)
-			if catch and GetCVarBool('scriptErrors') == 1 then
+			if catch and GetCVarBool('scriptErrors') == true then
 				ScriptErrorsFrame_OnError(catch, false)
 			end
 		end
@@ -679,7 +679,8 @@ function E:InitializeModules()
 		local module = self:GetModule(module)
 		if module.Initialize then
 			local _, catch = pcall(module.Initialize, module)
-			if catch and GetCVarBool('scriptErrors') == 1 then
+
+			if catch and GetCVarBool('scriptErrors') == true then
 				ScriptErrorsFrame_OnError(catch, false)
 			end
 		end
@@ -724,18 +725,9 @@ function E:DBConversions()
 			self.db.actionbar.dayscolor = nil
 		end		
 	end
-	
-	if E.global.unitframe.aurafilters['Whitelist (Strict)'].spells then
-		for k, v in pairs(E.global.unitframe.aurafilters['Whitelist (Strict)'].spells) do
-			if type(v) == 'table' then
-				for k_,v_ in pairs(v) do
-					if k_ == 'spellID' and type(v_) ~= 'number' then
-						E.global.unitframe.aurafilters['Whitelist (Strict)']['spells'][k][k_] = tonumber(v_)
-					end
-				end
-			end
-		end
-	end
+
+	self.db.unitframe.units.raid10 = nil
+	self.db.unitframe.units.raid25 = nil
 end
 
 function E:StopMassiveShake()
@@ -754,7 +746,7 @@ function E:StopMassiveShake()
 	if E.massiveShakeTimer then
 		E:CancelTimer(E.massiveShakeTimer)
 	end
-	
+
 	E.global.aprilFools = true;
 	E:StaticPopup_Hide("APRIL_FOOLS2013")
 	twipe(self.massiveShakeObjects)

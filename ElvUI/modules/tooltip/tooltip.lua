@@ -167,6 +167,7 @@ end
 
 function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 	if E.private.tooltip.enable ~= true then return end
+
 	if(tt:GetAnchorType() ~= "ANCHOR_NONE") then return end
 	if InCombatLockdown() and self.db.visibility.combat then
 		tt:Hide()
@@ -515,6 +516,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	else
 		GameTooltipStatusBar:SetStatusBarColor(0.6, 0.6, 0.6)
 	end
+
 end
 
 function TT:GameTooltipStatusBar_OnValueChanged(tt, value)
@@ -655,6 +657,18 @@ function TT:RepositionBNET(frame, point, anchor, anchorPoint, xOffset, yOffset)
 	end
 end
 
+function TT:CheckBackdropColor()
+	local r, g, b = GameTooltip:GetBackdropColor()
+	r = E:Round(r, 1)
+	g = E:Round(g, 1)
+	b = E:Round(b, 1)
+	local red, green, blue, alpha = unpack(E.media.backdropfadecolor)
+
+	if(r ~= red or g ~= green or b ~= blue) then
+		GameTooltip:SetBackdropColor(red, green, blue, alpha)
+	end
+end
+
 function TT:Initialize()
 	self.db = E.db.tooltip
 
@@ -685,7 +699,7 @@ function TT:Initialize()
 	self:SecureHook('GameTooltip_SetDefaultAnchor')
 	self:SecureHook('GameTooltip_ShowStatusBar')
 	self:SecureHook("SetItemRef")
-	self:SecureHook("GameTooltip_ShowCompareItem")
+	--self:SecureHook("GameTooltip_ShowCompareItem")
 	self:SecureHook(GameTooltip, "SetUnitAura")
 	self:SecureHook(GameTooltip, "SetUnitBuff", "SetUnitAura")
 	self:SecureHook(GameTooltip, "SetUnitDebuff", "SetUnitAura")
@@ -694,10 +708,12 @@ function TT:Initialize()
 	self:HookScript(GameTooltip, 'OnTooltipCleared', 'GameTooltip_OnTooltipCleared')
 	self:HookScript(GameTooltip, 'OnTooltipSetItem', 'GameTooltip_OnTooltipSetItem')
 	self:HookScript(GameTooltip, 'OnTooltipSetUnit', 'GameTooltip_OnTooltipSetUnit')
+	self:HookScript(GameTooltip, "OnSizeChanged", "CheckBackdropColor")
+
 	self:HookScript(GameTooltipStatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
 	
 	self:RegisterEvent("MODIFIER_STATE_CHANGED")
-
+	self:RegisterEvent("CURSOR_UPDATE", "CheckBackdropColor")
 	E.Skins:HandleCloseButton(ItemRefCloseButton)
 	for _, tt in pairs(tooltips) do
 		self:HookScript(tt, 'OnShow', 'SetStyle')

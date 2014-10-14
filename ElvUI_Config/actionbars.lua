@@ -27,12 +27,8 @@ local function BuildABConfig()
 					type = 'toggle',
 					name = L['Enable'],
 					set = function(info, value)
-						if i == 6 then
-							E:StaticPopup_Show("BAR6_CONFIRMATION")						
-						else
-							E.db.actionbar['bar'..i][ info[#info] ] = value; 
-							AB:PositionAndSizeBar('bar'..i)
-						end
+						E.db.actionbar['bar'..i][ info[#info] ] = value; 
+						AB:PositionAndSizeBar('bar'..i)
 					end,
 				},
 				restorePosition = {
@@ -342,17 +338,7 @@ local function BuildABConfig()
 				name = L['Alpha'],
 				isPercent = true,
 				min = 0, max = 1, step = 0.01,
-			},
-			style = {
-				order = 13,
-				type = 'select',
-				name = L['Style'],
-				desc = L["This setting will be updated upon changing stances."],
-				values = {
-					['darkenInactive'] = L['Darken Inactive'],
-					['classic'] = L['Classic']
-				},
-			},		
+			},	
 		},
 	}
 end

@@ -7,7 +7,7 @@ if not L then return; end
 L["A taint has occured that is preventing you from using the queue system. Please reload your user interface and try again."] = "Une altération s'est produite et vous empêche d'utiliser la file d'attente. Veuillez recharger votre interface utilisateur et essayer à nouveau."
 
 --*_ADDON locales
-L["INCOMPATIBLE_ADDON"] = "L'addon %s n'est pas compatible avec le module %s d'ElvUI. S'il vous plait, sélectionnez soit l'addon ou le module d'ElvUI pour le désactiver."
+L["INCOMPATIBLE_ADDON"] = "L'add-on %s n'est pas compatible avec le module %s d'ElvUI. S'il vous plait, sélectionnez soit l'add-on ou le module d'ElvUI pour le désactiver."
 
 --*_MSG locales
 L['LOGIN_MSG'] = "Bienvenue sur %sElvUI|r version %s%s|r, tapez /ec afin d'accéder au menu de configuration en jeu. Si vous avez besoin d'un support technique, vous pouvez nous rejoindre sur http://www.tukui.org"
@@ -33,17 +33,16 @@ L['Remove Bar %d Action Page'] = "Retirer la pagination de la barre d'action"
 L['Trigger'] = "Déclencheur"
 
 --Bags
-L['Delete Grays'] = "Détruire les objets gris."
+L["Bank"] = true;
+L['Deposit Reagents'] = true;
 L['Hold Control + Right Click:'] = "Contrôle enfoncée + Clic droit"
 L['Hold Shift + Drag:'] = "Majuscule enfoncée + Déplacer"
-L['Hold Shift:'] = "Maintenir MAJ:"
+L['Purchase Bags'] = true;
 L['Purchase'] = "Acheter"
+L["Reagent Bank"] = true;
 L['Reset Position'] = "Réinitialiser la position"
-L['Sort Bags'] = "Trier les sacs"
+L['Show/Hide Reagents'] = true;
 L['Sort Tab'] = 'Organiser les onglets' --Not used, yet?
-L['Stack Bags to Bank'] = "Empiler des Sacs vers la Banque"
-L['Stack Bank to Bags'] = "Empiler de la Banque vers les Sacs"
-L['Stack Items'] = "Empilement des objets"
 L['Temporary Move'] = "Bouger temporairement";
 L['Toggle Bags'] = "Afficher les sacs"
 L['Vendor Grays'] = "Vendre les objets gris"
@@ -148,8 +147,8 @@ L['Request was denied by user.'] = "La requête a ete refusée par l'utilisateur
 L['Your profile was successfully recieved by the player.'] = "Votre profil a été reçu avec succès par le joueur."
 
 --Install
+L["Aura Bars & Icons"] = true;
 L["Auras Set"] = "Configuration des Auras"
-L["Auras System"] = "Système d'Auras"
 L['Caster DPS'] = "DPS Distance"
 L["Chat Set"] = "Chat configuré"
 L["Chat"] = "Discussion"
@@ -173,7 +172,6 @@ L["Importance: |cff07D400High|r"] = "Importance: |cff07D400Haute|r"
 L["Importance: |cffD3CF00Medium|r"] = "Importance: |cffD3CF00Moyenne|r"
 L["Importance: |cffFF0000Low|r"] = "Importance: |cffFF0000Faible|r"
 L["Installation Complete"] = "Installation terminée"
-L['Integrated'] = "Intégré"
 L["Layout Set"] = "Disposition configurée"
 L["Layout"] = "Disposition"
 L["Lock"] = "Verrouiller"
@@ -182,14 +180,13 @@ L["low"] = "Faible"
 L["Movers unlocked. Move them now and click Lock when you are done."] = "Cadres déverrouillés. Déplacez-les et cliquez sur Verrouiller une fois terminé."
 L['Nudge'] = 'Pousser'
 L['Physical DPS'] = "DPS Physique"
-L["Pixel Perfect Set"] = "Réglage Pixel Parfait"
 L["Pixel Perfect"] = "Pixel Parfait"
 L["Please click the button below so you can setup variables and ReloadUI."] = "Pour configurer les variables et recharger l'interface, cliquez sur le bouton ci-dessous."
 L["Please click the button below to setup your CVars."] = "Pour configurer les CVars, cliquez sur le bouton ci-dessous."
 L["Please press the continue button to go onto the next step."] = "Pour passer à l'étape suivante, cliquez sur le bouton Continuer."
 L["Resolution Style Set"] = "Paramètre de résolution configuré"
 L["Resolution"] = "Résolution"
-L["Select the type of aura system you want to use with ElvUI's unitframes. The integrated system utilizes both aura-bars and aura-icons. The icons only system will display only icons and aurabars won't be used. The classic system will configure your auras to be default."] = "Sélectionnez le type de système aura que vous souhaitez utiliser avec UnitFrames ElvUI. Le système intégré utilise à la fois les barres d'Auras et les icônes d'Auras. Le système icône seul va afficher uniquement les icônes et barres d'auras ne sera pas utilisé. Le système classique permet de configurer vos Auras par défaut."
+L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons."] = true;
 L["Setup Chat"] = "Configurer le Chat."
 L["Setup CVars"] = "Configurer les CVars"
 L["Skip Process"] = "Passer cette étape"
@@ -208,7 +205,6 @@ L["This resolution doesn't require that you change settings for the UI to fit on
 L["This resolution requires that you change some settings to get everything to fit on your screen."] = "Cette résolution nécessite que vous modifiez les paramètres de l'interface utilisateur pour s'adapter sur votre écran."
 L["This will change the layout of your unitframes, raidframes, and datatexts."] = "Ceci changera la disposition des cadres d'unités, des cadres de Raid et des Textes d'informations."
 L['Trade'] = "Métiers"
-L['Using this option will cause your borders around frames to be 1 pixel wide instead of 3 pixel. You may have to finish the installation to notice a differance. By default this is enabled.'] = "L'utilisation de cette option modifiera vos bordures d'images à 1 pixel de large au lieu de 3 pixels. Vous devez terminer l'installation pour constater une différence. Par défaut cette option est activée."
 L["Welcome to ElvUI version %s!"] = "Bienvenue sur la version %s d'ElvUI!"
 L["You are now finished with the installation process. If you are in need of technical support please visit us at http://www.tukui.org."] = "Vous avez maintenant terminé le processus d'installation. Si vous avez besoin d'un support technique, merci de vous rendre sur http://www.tukui.org"
 L['You can always change fonts and colors of any element of elvui from the in-game configuration.'] = "Vous pouvez toujours modifier les polices et les couleurs de n'importe quel élément d'Elvui dans la configuration du jeu."
@@ -222,7 +218,6 @@ L['Bars'] = "Barres" --Also used in UnitFrames
 L['Calendar'] = 'Calendrier'
 L["Can't Roll"] = "Ne peut pas jeter les dés"
 L['Disband Group'] = "Dissoudre le groupe"
-L['Empty Slot'] = "Emplacement libre"
 L["Enable"] = "Activer" --Doesn't fit a section since it's used a lot of places
 L['Experience'] = "Expérience"
 L["Farm Mode"] = true; -- Minimap middle click menu
@@ -244,7 +239,6 @@ L["You don't have permission to mark targets."] = "Vous n'avez pas la permission
 L['ABOVE_THREAT_FORMAT'] = '%s: %.0f%% [%.0f%% excès |cff%02x%02x%02x%s|r]'
 
 --Movers
-L[' Frames'] = "Fenêtres"
 L['Alternative Power'] = "Puissance Alternative"
 L["Archeology Progress Bar"] = true;
 L['Arena Frames'] = "Cadre d'arène" --Also used in UnitFrames
@@ -262,12 +256,12 @@ L['FocusTarget Frame'] = "Cadre de la cible de votre focalisation" --Also used i
 L["GM Ticket Frame"] = "Fenêtre du ticket MJ"
 L["Left Chat"] = "Chat de gauche"
 L["Loot / Alert Frames"] = "Butin / Fenêtre d'alerte"
-L["Loot Frame"] = "Fenêtre du butin"
 L['Loss Control Icon'] = "Icône de la perte de contrôle"
 L['MA Frames'] = "Fenêtre du second Tank"
 L['Micro Bar'] = "Micro Barre" --Also in ActionBars
 L['Minimap'] = "Minicarte"
 L['MT Frames'] = "Fenêtre du Tank"
+L['Objective Frame'] = true;
 L['Party Frames'] = "Cadre de groupe" --Also used in UnitFrames
 L['Pet Bar'] = "Barre de familier" --Also in ActionBars
 L['Pet Frame'] = "Cadre du familier" --Also used in UnitFrames
@@ -276,7 +270,8 @@ L["Player Buffs"] = true;
 L['Player Castbar'] = "Barre d'incantation du joueur"
 L["Player Debuffs"] = true;
 L['Player Frame'] = "Cadre du joueur" --Also used in UnitFrames
-L['Raid 1-'] = "Raid 1-"
+L["Raid-40 Frames"] = true;
+L["Raid Frames"] = true;
 L['Raid Pet Frames'] = true;
 L["Reputation Bar"] = "Barre de réputation"
 L["Right Chat"] = "Chat de droite"
@@ -285,9 +280,8 @@ L['Target Castbar'] = "Barre d'incantation de la cible"
 L['Target Frame'] = "Cadre de la cible" --Also used in UnitFrames
 L['TargetTarget Frame'] = "Cadre de la cible de votre cible" --Also used in UnitFrames
 L['TargetTargetTarget Frame'] = true;
-L['Tooltip'] = "Info-bulle"
+L['Tooltip'] = "Infobulle"
 L["Vehicle Seat Frame"] = "Fenêtre de l'assise du véhicule"
-L['Watch Frame'] = "Fenêtre des quêtes"
 
 --NamePlates
 L['Discipline'] = "Discipline"
@@ -305,9 +299,7 @@ L['Battleground datatexts will now show again if you are inside a battleground.'
 L['Binds Discarded'] = "Raccourcis annulés"
 L['Binds Saved'] = "Raccourcis sauvegardés"
 L['Confused.. Try Again!'] = "Confus...Essayez à nouveau!"
-L['Deleted %d gray items. Total Worth: %s'] = "%d Objet(s) gris détruit(s). Valeur totale perdue :%s"
 L['No gray items to delete.'] = "Aucun objet gris à détruire."
-L['No gray items to sell.'] = "Aucun objet gris à vendre."
 L['The spell "%s" has been added to the Blacklist unitframe aura filter.'] = "Le sort '%s' a bien été ajouté à la liste noire des filtres des cadres d'unités."
 L['Vendored gray items for:'] = "Objets gris vendus pour:"
 L["You don't have enough money to repair."] = "Vous n'avez pas assez d'argent pour réparer votre équipement."
@@ -337,7 +329,7 @@ L["I Swear"] = "Je le jure"
 L["No, Revert Changes!"] = true;
 L["Oh lord, you have got ElvUI and Tukui both enabled at the same time. Select an addon to disable."] = "Oh seigneur, vous avez ElvUI et Tukui d'activé en même temps. Sélectionnez un add-on à désactiver."
 L["One or more of the changes you have made require a ReloadUI."] = "Une ou plusieurs modifications que vous avez effectuées necessitent un rechargement de l'interface."
-L["One or more of the changes you have made will effect all characters using this addon. You will have to reload the user interface to see the changes you have made."] = "Un ou plusieurs changement(s) que vous avez effectués a une incidence sur tous les personnages qui utilise cet addon. Vous devriez recharger l'interface utilisateur pour voir le(s) changement(s) apporté(s)."
+L["One or more of the changes you have made will effect all characters using this addon. You will have to reload the user interface to see the changes you have made."] = "Un ou plusieurs changement(s) que vous avez effectués a une incidence sur tous les personnages qui utilise cet add-on. Vous devriez recharger l'interface utilisateur pour voir le(s) changement(s) apporté(s)."
 L["Save"] = "Sauvegarder"
 L["Using the healer layout it is highly recommended you download the addon Clique if you wish to have the click-to-heal function."] = "Si vous utilisé l'agencement Soigneur, il est hautement recommandé de télécharger l'add-on Clique si vous souhaitez avoir la fonction clicker-pour-soigner."
 L["Yes, Keep Changes!"] = true;
@@ -356,7 +348,7 @@ L["A raid marker feature is available by pressing Escape -> Keybinds scroll to t
 L["ElvUI has a dual spec feature which allows you to load different profiles based on your current spec on the fly. You can enable this from the profiles tab."] = "ElvUI dispose d'une fonction double spécialisation qui vous permet de charger à la volée des profils différents en fonction de votre spécialisation actuelle."
 L["For technical support visit us at http://www.tukui.org."] = "Pour tout support technique, merci de nous visiter à http://www.tukui.org."
 L["If you accidently remove a chat frame you can always go the in-game configuration menu, press install, go to the chat portion and reset them."] = "Si vous supprimez accidentellement un cadre de discussion, vous pouvez toujours aller dans le menu de configuration d'ElvUI. Cliquez ensuite sur Installation puis passez à l'étape concernant les fenêtres de discussion pour remettre à zéro les paramètres."
-L["If you are experiencing issues with ElvUI try disabling all your addons except ElvUI, remember ElvUI is a full UI replacement addon, you cannot run two addons that do the same thing."] = "Si vous rencontrez des problèmes avec ElvUI, essayez de désactiver tous vos addons sauf ElvUI. Rappelez-vous que'ElvUi est une interface utilisateur complète et que vous ne pouvez pas exécuter deux addons qui font la même chose."
+L["If you are experiencing issues with ElvUI try disabling all your addons except ElvUI, remember ElvUI is a full UI replacement addon, you cannot run two addons that do the same thing."] = "Si vous rencontrez des problèmes avec ElvUI, essayez de désactiver tous vos add-ons sauf ElvUI. Rappelez-vous que'ElvUi est une interface utilisateur complète et que vous ne pouvez pas exécuter deux add-ons qui font la même chose."
 L["The buff panel to the right of minimap is a list of your consolidated buffs. You can disable it in Buffs and Debuffs options of ElvUI."] = "Le panneau d'améliorations à droite de la minicarte est une liste de vos améliorations groupées. Vous pouvez la désactiver dans la section Améliorations et Affaiblissement d'ElvUI."
 L["The focus unit can be set by typing /focus when you are targeting the unit you want to focus. It is recommended you make a macro to do this."] = "La cadre de focus peut être défini en tapent /focus quand vous êtes en train de cibler une unité que vous voulez focus. Il est recommandé de faire une macro pour cela."
 L["To move abilities on the actionbars by default hold shift + drag. You can change the modifier key from the actionbar options menu."] = "Pour déplacer par défaut les capacités des barres d'actions, maintenant MAJ + déplacer. Vous pouvez modifier la touche de modification dans le menu des barres d'actions."

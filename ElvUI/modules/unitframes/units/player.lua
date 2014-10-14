@@ -5,7 +5,7 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
-local CAN_HAVE_CLASSBAR = (E.myclass == "PALADIN" or E.myclass == "DRUID" or E.myclass == "DEATHKNIGHT" or E.myclass == "WARLOCK" or E.myclass == "PRIEST" or E.myclass == "MONK" or E.myclass == 'MAGE')
+local CAN_HAVE_CLASSBAR = (E.myclass == "PALADIN" or E.myclass == "DRUID" or E.myclass == "DEATHKNIGHT" or E.myclass == "WARLOCK" or E.myclass == "PRIEST" or E.myclass == "MONK" or E.myclass == 'MAGE' or E.myclass == 'ROGUE')
 
 function UF:Construct_PlayerFrame(frame)
 	frame.Threat = self:Construct_Threat(frame, true)
@@ -50,6 +50,9 @@ function UF:Construct_PlayerFrame(frame)
 	elseif E.myclass == 'MAGE' then
 		frame.ArcaneChargeBar = self:Construct_MageResourceBar(frame)
 		frame.ClassBar = 'ArcaneChargeBar'
+	elseif E.myclass == 'ROGUE' then
+		frame.Anticipation = self:Construct_RogueResourceBar(frame)
+		frame.ClassBar = 'Anticipation'		
 	end
 	
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)
@@ -791,7 +794,13 @@ function UF:Update_PlayerFrame(frame, db)
 						bars[i].backdrop:Show()
 					end
 
-					if E.myclass ~= 'DEATHKNIGHT' then
+					if E.myclass == 'ROGUE' then
+						bars[i]:SetStatusBarColor(unpack(ElvUF.colors[frame.ClassBar][i]))
+
+						if bars[i].bg then
+							bars[i].bg:SetTexture(unpack(ElvUF.colors[frame.ClassBar][i]))
+						end						
+					elseif E.myclass ~= 'DEATHKNIGHT' then
 						bars[i]:SetStatusBarColor(unpack(ElvUF.colors[frame.ClassBar]))
 
 						if bars[i].bg then
@@ -979,6 +988,8 @@ function UF:Update_PlayerFrame(frame, db)
 				auraBars.sort = nil
 			end
 			
+			auraBars.maxBars = db.aurabar.maxBars
+			auraBars.forceShow = frame.forceShowAuras
 			auraBars:SetAnchors()
 		else
 			if frame:IsElementEnabled('AuraBars') then

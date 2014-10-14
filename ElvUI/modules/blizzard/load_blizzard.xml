@@ -2,7 +2,7 @@
 	<Script file='blizzard.lua'/>
 	<Script file='colorpicker.lua'/>
 	<Script file='kill.lua'/>
-	<Script file='watchframe.lua'/>
+	<Script file='objectiveFrame.lua'/>
 	<Script file='vehicle.lua'/>
 	<Script file='timerTracker.lua'/>
 	<Script file='gm.lua'/>

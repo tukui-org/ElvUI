@@ -18,7 +18,6 @@ local function LoadSkin()
 	local buttons = {
 		"RaidFrameConvertToRaidButton",
 		"RaidFrameRaidInfoButton",
-		"RaidFrameNotInRaidRaidBrowserButton",
 		"RaidInfoExtendButton",
 		"RaidInfoCancelButton",
 	}
@@ -32,9 +31,7 @@ local function LoadSkin()
 	end
 
 	for i = 1, #buttons do
-		if _G[buttons[i]] then
-			S:HandleButton(_G[buttons[i]])
-		end
+		S:HandleButton(_G[buttons[i]])
 	end
 	RaidInfoScrollFrame:StripTextures()
 	RaidInfoFrame:CreateBackdrop("Transparent")
@@ -42,7 +39,6 @@ local function LoadSkin()
 	RaidInfoFrame.backdrop:Point( "BOTTOMRIGHT", RaidInfoFrame, "BOTTOMRIGHT")
 	S:HandleCloseButton(RaidInfoCloseButton,RaidInfoFrame)
 	S:HandleScrollBar(RaidInfoScrollFrameScrollBar)
-	S:HandleButton(RaidFrameRaidBrowserButton)
 	S:HandleCheckBox(RaidFrameAllAssistCheckButton)	
 end
 

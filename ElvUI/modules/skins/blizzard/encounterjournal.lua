@@ -141,11 +141,16 @@ local function LoadSkin()
 	EncounterJournalEncounterFrameInfoModelTab:GetPushedTexture():SetTexture(nil)
 	EncounterJournalEncounterFrameInfoModelTab:GetDisabledTexture():SetTexture(nil)
 	EncounterJournalEncounterFrameInfoModelTab:GetHighlightTexture():SetTexture(nil)		
+
+	EncounterJournalEncounterFrameInfoOverviewTab:GetNormalTexture():SetTexture(nil)
+	EncounterJournalEncounterFrameInfoOverviewTab:GetPushedTexture():SetTexture(nil)
+	EncounterJournalEncounterFrameInfoOverviewTab:GetDisabledTexture():SetTexture(nil)
+	EncounterJournalEncounterFrameInfoOverviewTab:GetHighlightTexture():SetTexture(nil)	
 		
-	EncounterJournalEncounterFrameInfoBossTab:Point('TOPLEFT', EncounterJournalEncounterFrameInfo, 'TOPRIGHT', E.PixelMode and -3 or 0, -35)
-	hooksecurefunc(EncounterJournalEncounterFrameInfoBossTab, "SetPoint", function(self, point, attachTo, anchorPoint, xOffset, yOffset)
+	EncounterJournalEncounterFrameInfoOverviewTab:Point('TOPLEFT', EncounterJournalEncounterFrameInfo, 'TOPRIGHT', E.PixelMode and -3 or 0, -35)
+	hooksecurefunc(EncounterJournalEncounterFrameInfoOverviewTab, "SetPoint", function(self, point, attachTo, anchorPoint, xOffset, yOffset)
 		if point ~= "TOPLEFT" or attachTo ~= EncounterJournalEncounterFrameInfo or anchorPoint ~= "TOPRIGHT" or xOffset ~= (E.PixelMode and -3 or 0) or yOffset ~= -35 then
-			EncounterJournalEncounterFrameInfoBossTab:Point('TOPLEFT', EncounterJournalEncounterFrameInfo, 'TOPRIGHT', E.PixelMode and -3 or 0, -35)
+			EncounterJournalEncounterFrameInfoOverviewTab:Point('TOPLEFT', EncounterJournalEncounterFrameInfo, 'TOPRIGHT', E.PixelMode and -3 or 0, -35)
 		end
 	end)
 	
@@ -158,10 +163,14 @@ local function LoadSkin()
 	EncounterJournalEncounterFrameInfoModelTab:CreateBackdrop('Default')
 	EncounterJournalEncounterFrameInfoModelTab.backdrop:Point('TOPLEFT', 11, -8)
 	EncounterJournalEncounterFrameInfoModelTab.backdrop:Point('BOTTOMRIGHT', -6, 8)		
+	EncounterJournalEncounterFrameInfoOverviewTab:CreateBackdrop('Default')
+	EncounterJournalEncounterFrameInfoOverviewTab.backdrop:Point('TOPLEFT', 11, -8)
+	EncounterJournalEncounterFrameInfoOverviewTab.backdrop:Point('BOTTOMRIGHT', -6, 8)			
 	
 	EncounterJournalEncounterFrameInfoBossTab.backdrop.backdropTexture:SetVertexColor(189/255, 159/255, 88/255)
 	EncounterJournalEncounterFrameInfoLootTab.backdrop.backdropTexture:SetVertexColor(189/255, 159/255, 88/255)
 	EncounterJournalEncounterFrameInfoModelTab.backdrop.backdropTexture:SetVertexColor(189/255, 159/255, 88/255)
+	EncounterJournalEncounterFrameInfoOverviewTab.backdrop.backdropTexture:SetVertexColor(189/255, 159/255, 88/255)
 end
 
 S:RegisterSkin('Blizzard_EncounterJournal', LoadSkin)

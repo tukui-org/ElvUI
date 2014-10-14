@@ -229,7 +229,7 @@ local function UpdateFilterGroup()
 							if not E.global.unitframe['aurafilters'][selectedFilter]['spells'][name] then
 								E.global.unitframe['aurafilters'][selectedFilter]['spells'][name] = {
 									['enable'] = true,
-									['spellID'] = tonumber(value),
+									['spellID'] = value,
 									['priority'] = 0,
 								}
 								UpdateFilterGroup();
@@ -586,9 +586,8 @@ local function UpdateFilterGroup()
 							tinsert(E.global.unitframe.buffwatch[E.myclass], {["enabled"] = true, ["id"] = tonumber(value), ["point"] = "TOPRIGHT", ["color"] = {["r"] = 1, ["g"] = 0, ["b"] = 0}, ["anyUnit"] = false})
 							UpdateFilterGroup();
 							
-							for i=10, 40, 15 do
-								UF:UpdateAuraWatchFromHeader('raid'..i)
-							end
+							UF:UpdateAuraWatchFromHeader('raid')
+							UF:UpdateAuraWatchFromHeader('raid40')
 							UF:UpdateAuraWatchFromHeader('party')
 							UF:UpdateAuraWatchFromHeader('raidpet', true)
 							selectedSpell = nil;
@@ -628,9 +627,8 @@ local function UpdateFilterGroup()
 						
 						selectedSpell = nil;
 						UpdateFilterGroup();
-						for i=10, 40, 15 do
-							UF:UpdateAuraWatchFromHeader('raid'..i)
-						end
+						UF:UpdateAuraWatchFromHeader('raid')
+						UF:UpdateAuraWatchFromHeader('raid40')
 						UF:UpdateAuraWatchFromHeader('party')
 						UF:UpdateAuraWatchFromHeader('raidpet', true)
 					end,				
@@ -677,9 +675,9 @@ local function UpdateFilterGroup()
 				get = function(info) return E.global.unitframe.buffwatch[E.myclass][tableIndex][ info[#info] ] end,
 				set = function(info, value) 
 					E.global.unitframe.buffwatch[E.myclass][tableIndex][ info[#info] ] = value;
-					for i=10, 40, 15 do
-						UF:UpdateAuraWatchFromHeader('raid'..i)
-					end
+
+					UF:UpdateAuraWatchFromHeader('raid')
+					UF:UpdateAuraWatchFromHeader('raid40')
 					UF:UpdateAuraWatchFromHeader('party')
 					UF:UpdateAuraWatchFromHeader('raidpet', true)
 				end,
@@ -738,9 +736,8 @@ local function UpdateFilterGroup()
 						set = function(info, r, g, b)
 							local t = E.global.unitframe.buffwatch[E.myclass][tableIndex][ info[#info] ]
 							t.r, t.g, t.b = r, g, b
-							for i=10, 40, 15 do
-								UF:UpdateAuraWatchFromHeader('raid'..i)
-							end
+							UF:UpdateAuraWatchFromHeader('raid')
+							UF:UpdateAuraWatchFromHeader('raid40')
 							UF:UpdateAuraWatchFromHeader('party')
 							UF:UpdateAuraWatchFromHeader('raidpet', true)
 						end,						
@@ -766,9 +763,8 @@ local function UpdateFilterGroup()
 							E.global.unitframe.buffwatch[E.myclass][tableIndex][ info[#info] ] = E.global.unitframe.buffwatch[E.myclass][tableIndex][ info[#info] ] or {}
 							local t = E.global.unitframe.buffwatch[E.myclass][tableIndex][ info[#info] ]
 							t.r, t.g, t.b = r, g, b
-							for i=10, 40, 15 do
-								UF:UpdateAuraWatchFromHeader('raid'..i)
-							end
+							UF:UpdateAuraWatchFromHeader('raid')
+							UF:UpdateAuraWatchFromHeader('raid40')
 							UF:UpdateAuraWatchFromHeader('party')
 							UF:UpdateAuraWatchFromHeader('raidpet', true)
 						end,						

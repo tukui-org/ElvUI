@@ -12,6 +12,8 @@ oUF.colors.Harmony = {
 	[3] = {.37, .63, .35, 1},
 	[4] = {.27, .63, .33, 1},
 	[5] = {.17, .63, .33, 1},
+	[5] = {.17, .63, .33, 1},
+	[6] = {12/255, 145/255, 58/255, 1},
 }
 
 local function Update(self, event, unit)
@@ -36,14 +38,14 @@ local function Update(self, event, unit)
 		hb:Show()
 	end
 	
-	if hb.numPoints ~= numPoints then
-		if numPoints == 4 then
-			hb[5]:Hide()
+	for i=1, #hb do
+		if numPoints >= i then
+			hb[i]:Show()
 		else
-			hb[5]:Show()
+			hb[i]:Hide()
 		end
 	end
-	
+
 	hb.numPoints = numPoints
 	
 	if(hb.PostUpdate) then hb:PostUpdate(event) end
@@ -57,7 +59,7 @@ local function Enable(self, unit)
 		self:RegisterEvent("UNIT_DISPLAYPOWER", Update)
 		self:RegisterEvent("PLAYER_LEVEL_UP", Update)
 		
-		for i = 1, 5 do
+		for i = 1, 6 do
 			if not hb[i]:GetStatusBarTexture() then
 				hb[i]:SetStatusBarTexture([=[Interface\TargetingFrame\UI-StatusBar]=])
 			end

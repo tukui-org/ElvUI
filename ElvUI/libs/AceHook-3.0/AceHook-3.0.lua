@@ -9,8 +9,8 @@
 -- make into AceHook.
 -- @class file
 -- @name AceHook-3.0
--- @release $Id: AceHook-3.0.lua 1090 2013-09-13 14:37:43Z nevcairiel $
-local ACEHOOK_MAJOR, ACEHOOK_MINOR = "AceHook-3.0", 7
+-- @release $Id: AceHook-3.0.lua 1118 2014-10-12 08:21:54Z nevcairiel $
+local ACEHOOK_MAJOR, ACEHOOK_MINOR = "AceHook-3.0", 8
 local AceHook, oldminor = LibStub:NewLibrary(ACEHOOK_MAJOR, ACEHOOK_MINOR)
 
 if not AceHook then return end -- No upgrade needed
@@ -223,12 +223,9 @@ function hook(self, obj, method, handler, script, secure, raw, forceSecure, usag
 		end
 		
 		if script then
-			-- If the script is empty before, HookScript will not work, so use SetScript instead
-			-- This will make the hook insecure, but shouldnt matter, since it was empty before. 
-			-- It does not taint the full frame.
-			if not secure or orig == donothing then
+			if not secure then
 				obj:SetScript(method, uid)
-			elseif secure then
+			else
 				obj:HookScript(method, uid)
 			end
 		else

@@ -34,14 +34,14 @@ local function LoadSkin()
 	-- skin main frames
 	for i = 1, #frames do
 		_G[frames[i]]:StripTextures(true)
-		_G[frames[i]]:CreateBackdrop("Default")
+		_G[frames[i]]:CreateBackdrop("Transparent")
 	end
 	
 	HelpFrameHeader:SetFrameLevel(HelpFrameHeader:GetFrameLevel() + 2)
 	HelpFrameKnowledgebaseErrorFrame:SetFrameLevel(HelpFrameKnowledgebaseErrorFrame:GetFrameLevel() + 2)
 	
 	HelpFrameReportBugScrollFrame:StripTextures()
-	HelpFrameReportBugScrollFrame:CreateBackdrop("Default")
+	HelpFrameReportBugScrollFrame:CreateBackdrop("Transparent")
 	HelpFrameReportBugScrollFrame.backdrop:Point("TOPLEFT", -4, 4)
 	HelpFrameReportBugScrollFrame.backdrop:Point("BOTTOMRIGHT", 6, -4)
 	for i=1, HelpFrameReportBug:GetNumChildren() do
@@ -54,7 +54,7 @@ local function LoadSkin()
 	S:HandleScrollBar(HelpFrameReportBugScrollFrameScrollBar)
 	
 	HelpFrameSubmitSuggestionScrollFrame:StripTextures()
-	HelpFrameSubmitSuggestionScrollFrame:CreateBackdrop("Default")
+	HelpFrameSubmitSuggestionScrollFrame:CreateBackdrop("Transparent")
 	HelpFrameSubmitSuggestionScrollFrame.backdrop:Point("TOPLEFT", -4, 4)
 	HelpFrameSubmitSuggestionScrollFrame.backdrop:Point("BOTTOMRIGHT", 6, -4)
 	for i=1, HelpFrameSubmitSuggestion:GetNumChildren() do
@@ -67,7 +67,7 @@ local function LoadSkin()
 	S:HandleScrollBar(HelpFrameSubmitSuggestionScrollFrameScrollBar)
 
 	HelpFrameTicketScrollFrame:StripTextures()
-	HelpFrameTicketScrollFrame:CreateBackdrop("Default")
+	HelpFrameTicketScrollFrame:CreateBackdrop("Transparent")
 	HelpFrameTicketScrollFrame.backdrop:Point("TOPLEFT", -4, 4)
 	HelpFrameTicketScrollFrame.backdrop:Point("BOTTOMRIGHT", 6, -4)
 	for i=1, HelpFrameTicket:GetNumChildren() do
@@ -132,7 +132,11 @@ local function LoadSkin()
 			local navButton = self.navList[i]
 			local lastNav = self.navList[i-1]
 			if navButton and lastNav then
-				navButton:SetFrameLevel(lastNav:GetFrameLevel() - 2)
+				if lastNav:GetFrameLevel() > 2 then
+					navButton:SetFrameLevel(lastNav:GetFrameLevel() - 2)
+				else
+					navButton:SetFrameLevel(0)
+				end
 			end
 		end			
 	end
@@ -143,14 +147,12 @@ local function LoadSkin()
 		
 		if not navButton.skinned then
 			S:HandleButton(navButton, true)
+
+			if(navButton.MenuArrowButton) then
+				S:HandleNextPrevButton(navButton.MenuArrowButton, true)
+			end
 			navButton.skinned = true
-			
-			navButton:HookScript("OnClick", function()
-				navButtonFrameLevel(self)
-			end)
 		end
-		
-		navButtonFrameLevel(self)
 	end)
 	
 	S:HandleButton(HelpFrameGM_ResponseNeedMoreHelp)
