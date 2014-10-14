@@ -726,6 +726,18 @@ function E:DBConversions()
 		end		
 	end
 
+	if E.global.unitframe.aurafilters['Whitelist (Strict)'].spells then
+		for k, v in pairs(E.global.unitframe.aurafilters['Whitelist (Strict)'].spells) do
+			if type(v) == 'table' then
+				for k_,v_ in pairs(v) do
+					if k_ == 'spellID' and type(v_) ~= 'number' then
+						E.global.unitframe.aurafilters['Whitelist (Strict)']['spells'][k][k_] = tonumber(v_)
+					end
+				end
+			end
+		end
+	end
+
 	self.db.unitframe.units.raid10 = nil
 	self.db.unitframe.units.raid25 = nil
 end
