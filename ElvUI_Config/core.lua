@@ -756,6 +756,7 @@ local DEVELOPERS = {
 
 local TESTERS = {
 	"Tukui Community",
+	"|cffF76ADBSarah|r - For Sarahing",
 	"Affinity",
 	"Modarch",
 	"Bladesdruid",
