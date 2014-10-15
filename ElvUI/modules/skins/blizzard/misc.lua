@@ -1140,6 +1140,8 @@ local function LoadSkin()
 	S:HandleButton(AddonListDisableAllButton, true)
 	S:HandleButton(AddonListOkayButton, true)
 	S:HandleButton(AddonListCancelButton, true)
+	
+	S:HandleScrollBar(AddonListScrollFrameScrollBar, 5)
 
 	S:HandleCheckBox(AddonListForceLoad)
 	AddonListForceLoad:SetSize(26, 26)
