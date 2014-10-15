@@ -743,7 +743,8 @@ local DONATORS = {
 	"Adorno",
 	"Domoaligato",
 	"Smorg",
-	"Pyrokee"
+	"Pyrokee",
+	"Portable"
 }
 
 local DEVELOPERS = {
