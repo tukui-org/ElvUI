@@ -161,6 +161,7 @@ function M:Initialize()
 	self:LoadMirrorBars()
 	self:LoadLootRoll()
 	self:LoadChatBubbles()
+	self:LoadLoot()
 	self:RegisterEvent('MERCHANT_SHOW')
 	self:RegisterEvent('PLAYER_REGEN_DISABLED', 'ErrorFrameToggle')
 	self:RegisterEvent('PLAYER_REGEN_ENABLED', 'ErrorFrameToggle')
@@ -172,7 +173,6 @@ function M:Initialize()
 	self:RegisterEvent('GROUP_ROSTER_UPDATE', 'AutoInvite')
 	self:RegisterEvent('CVAR_UPDATE', 'ForceCVars')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
-
 end
 
 E:RegisterModule(M:GetName())
