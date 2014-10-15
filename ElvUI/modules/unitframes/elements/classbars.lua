@@ -516,7 +516,7 @@ function UF:Construct_DruidResourceBar(frame)
 	eclipseBar.Text = lunarBar:CreateFontString(nil, 'OVERLAY')
 	eclipseBar.Text:FontTemplate(nil, 20)
 	eclipseBar.Text:SetPoint("CENTER", lunarBar:GetStatusBarTexture(), "RIGHT")
-	
+
 	return eclipseBar
 end
 
