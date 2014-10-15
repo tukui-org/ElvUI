@@ -59,7 +59,7 @@ function UF:Raid40SmartVisibility(event)
 			local _, _, _, raidType, _, _, isDynamic, _, maxPlayers = GetInstanceInfo()
 			UnregisterStateDriver(self, "visibility")
 
-			if(raidType == 'Mythic') then
+			if(maxPlayers < 40) then
 				self:Hide()	
 			else
 				self:Show()
