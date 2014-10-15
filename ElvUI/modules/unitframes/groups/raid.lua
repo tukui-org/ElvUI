@@ -59,7 +59,7 @@ function UF:RaidSmartVisibility(event)
 			local _, _, _, raidType, _, _, isDynamic, _, maxPlayers = GetInstanceInfo()
 			UnregisterStateDriver(self, "visibility")
 
-			if(raidType == 'Mythic') then
+			if(maxPlayers < 26) then
 				self:Show()	
 				
 				if(maxPlayers and ElvUF_Raid.numGroups ~= E:Round(maxPlayers/5)) then
