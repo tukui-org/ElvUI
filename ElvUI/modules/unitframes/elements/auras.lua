@@ -39,7 +39,7 @@ function UF:Construct_AuraIcon(button)
 
 	button.cd.noOCC = true
 	button.cd.noCooldownCount = true
-	button.cd:SetReverse()
+	button.cd:SetReverse(true)
 	button.cd:SetInside()
 	button.cd:SetHideCountdownNumbers(true)
 	
