@@ -105,7 +105,7 @@ local function createSlot(id)
 	local count = iconFrame:CreateFontString(nil, "OVERLAY")
 	count:SetJustifyH"RIGHT"
 	count:Point("BOTTOMRIGHT", iconFrame, -2, 2)
-	count:FontTemplate(E.LSM:Fetch("font", "ElvUI Pixel"), 10, 'MONOCHROMEOUTLINE')
+	count:FontTemplate(nil, nil, 'OUTLINE')
 	count:SetText(1)
 	frame.count = count
 
@@ -114,7 +114,7 @@ local function createSlot(id)
 	name:SetPoint("LEFT", frame)
 	name:SetPoint("RIGHT", icon, "LEFT")
 	name:SetNonSpaceWrap(true)
-	name:FontTemplate(E.LSM:Fetch("font", "ElvUI Pixel"), 10, 'MONOCHROMEOUTLINE')
+	name:FontTemplate(nil, nil, 'OUTLINE')
 	frame.name = name
 
 	local drop = frame:CreateTexture(nil, "ARTWORK")
@@ -287,7 +287,7 @@ function M:LoadLoot()
 	lootFrame:SetFrameStrata"FULLSCREEN"
 	lootFrame:SetToplevel(true)	
 	lootFrame.title = lootFrame:CreateFontString(nil, 'OVERLAY')
-	lootFrame.title:FontTemplate(E.LSM:Fetch("font", "ElvUI Pixel"), 10, 'MONOCHROMEOUTLINE')
+	lootFrame.title:FontTemplate(nil, nil, 'OUTLINE')
 	lootFrame.title:Point('BOTTOMLEFT', lootFrame, 'TOPLEFT', 0,  1)
 	lootFrame.slots = {}
 	lootFrame:SetScript("OnHide", function(self)
