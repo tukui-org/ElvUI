@@ -49,11 +49,6 @@ E.Options.args.skins = {
 					name = L["Encounter Journal"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
-				reforge = {
-					type = "toggle",
-					name = L["Reforge Frame"],
-					desc = L["TOGGLESKIN_DESC"],
-				},
 				calendar = {
 					type = "toggle",
 					name = L["Calendar Frame"],

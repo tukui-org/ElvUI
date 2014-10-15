@@ -1,7 +1,6 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">	
 	<Script file='misc.lua'/>
 	<Script file='bgmap.lua'/>
-	<Script file='reforge.lua'/>
 	<Script file='calendar.lua'/>
 	<Script file='achievement.lua'/>
 	<Script file='lfguild.lua'/>
