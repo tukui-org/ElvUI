@@ -56,12 +56,17 @@ function UF:RaidSmartVisibility(event)
 
 	if not InCombatLockdown() then		
 		if(inInstance and (instanceType == 'raid' or instanceType == 'pvp')) then
-			local isDynamic, _, maxPlayers = select(7, GetInstanceInfo())
+			local _, _, _, raidType, _, _, isDynamic, _, maxPlayers = GetInstanceInfo()
 			UnregisterStateDriver(self, "visibility")
-			self:Show()	
 
-			if(maxPlayers and ElvUF_Raid.numGroups ~= E:Round(maxPlayers/5)) then
-				ElvUF_Raid:Configure_Groups()		
+			if(raidType == 'Mythic') then
+				self:Show()	
+				
+				if(maxPlayers and ElvUF_Raid.numGroups ~= E:Round(maxPlayers/5)) then
+					ElvUF_Raid:Configure_Groups()		
+				end				
+			else
+				self:Hide()
 			end
 		elseif self.db.visibility then
 			RegisterStateDriver(self, "visibility", self.db.visibility)
