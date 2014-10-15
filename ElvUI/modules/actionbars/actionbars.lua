@@ -415,6 +415,7 @@ function AB:GetPage(bar, defaultPage, condition)
 		condition = condition.." "..page
 	end
 	condition = condition.." "..defaultPage
+
 	return condition
 end
 
