@@ -322,7 +322,7 @@ function B:Layout(isBank)
 
 				
 				if isBank then
-					f.ContainerHolder[i]:SetID(bagID)
+					f.ContainerHolder[i]:SetID(bagID - 4)
 					if not f.ContainerHolder[i].tooltipText then
 						f.ContainerHolder[i].tooltipText = ""
 					end			
