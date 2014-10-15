@@ -1,6 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
+local lower = string.lower
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.lfg ~= true then return end
 	PVEFrame:StripTextures()
@@ -88,25 +90,29 @@ local function LoadSkin()
 		RaidFinderQueueFrameRoleButtonTank,
 		LFGInvitePopupRoleButtonTank,
 		LFGInvitePopupRoleButtonHealer,
-		LFGInvitePopupRoleButtonDPS		
+		LFGInvitePopupRoleButtonDPS,
+		LFGListApplicationDialog.TankButton,
+		LFGListApplicationDialog.HealerButton,
+		LFGListApplicationDialog.DamagerButton,		
 	}
 
-
-	
 	for _, roleButton in pairs(roleButtons) do
-		S:HandleCheckBox(roleButton.checkButton, true)
+		S:HandleCheckBox(roleButton.checkButton or roleButton.CheckButton, true)
 		roleButton:DisableDrawLayer("ARTWORK")
 		roleButton:DisableDrawLayer("OVERLAY")
 
-		if(not roleButton.background and not roleButton:GetName():find("Leader")) then
-			roleButton.background = roleButton:CreateTexture(nil, "BACKGROUND")
-			roleButton.background:SetSize(80, 80)
-			roleButton.background:SetPoint("CENTER")
-			roleButton.background:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
-			roleButton.background:SetAlpha(0.65)
+		if(not roleButton.background) then
+			local isLeader = roleButton:GetName() ~= nil and roleButton:GetName():find("Leader") or false
+			if(not isLeader) then
+				roleButton.background = roleButton:CreateTexture(nil, "BACKGROUND")
+				roleButton.background:SetSize(80, 80)
+				roleButton.background:SetPoint("CENTER")
+				roleButton.background:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+				roleButton.background:SetAlpha(0.65)
 
-			local buttonName = roleButton:GetName()
-			roleButton.background:SetTexCoord(GetBackgroundTexCoordsForRole((buttonName:find("Tank") and "TANK") or (buttonName:find("Healer") and "HEALER") or "DAMAGER"))
+				local buttonName = roleButton:GetName() ~= nil and roleButton:GetName() or roleButton.role
+				roleButton.background:SetTexCoord(GetBackgroundTexCoordsForRole((lower(buttonName):find("tank") and "TANK") or (lower(buttonName):find("healer") and "HEALER") or "DAMAGER"))
+			end
 		end
 	end
 
@@ -490,6 +496,12 @@ local function LoadSkin()
 	S:HandleScrollBar(LFGListEntryCreationSearchScrollFrameScrollBar)
 	S:HandleButton(LFGListFrame.EntryCreation.ActivityFinder.Dialog.SelectButton)
 	S:HandleButton(LFGListFrame.EntryCreation.ActivityFinder.Dialog.CancelButton)
+	
+	LFGListApplicationDialog:StripTextures()
+	LFGListApplicationDialog:SetTemplate("Transparent")
+	S:HandleButton(LFGListApplicationDialog.SignUpButton)
+	S:HandleButton(LFGListApplicationDialog.CancelButton)
+	S:HandleEditBox(LFGListApplicationDialogDescription)
 
 	S:HandleEditBox(LFGListFrame.SearchPanel.SearchBox)
 
@@ -508,6 +520,7 @@ local function LoadSkin()
 
 	S:HandleButton(LFGListFrame.SearchPanel.BackButton, true)
 	S:HandleButton(LFGListFrame.SearchPanel.SignUpButton, true)
+	S:HandleButton(LFGListSearchPanelScrollFrame.StartGroupButton,  true)
 	LFGListFrame.SearchPanel.ResultsInset:StripTextures()
 	S:HandleScrollBar(LFGListSearchPanelScrollFrameScrollBar)
 	LFGListFrame.SearchPanel.AutoCompleteFrame:StripTextures()
