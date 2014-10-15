@@ -28,15 +28,15 @@ function AB:UpdatePet(event, unit)
 		button.tooltipSubtext = subtext;	
 		
 		if isActive and name ~= "PET_ACTION_FOLLOW" then
-			button:GetCheckedTexture():SetTexture(1, 1, 1)
-			--button:SetChecked(1);
+			--button:GetCheckedTexture():SetTexture(1, 1, 1)
+			button:SetChecked(true);
 			
 			if IsPetAttackAction(i) then
 				PetActionButton_StartFlash(button);
 			end
 		else
-			button:SetCheckedTexture("")
-			--button:SetChecked(0);
+			--button:SetCheckedTexture("")
+			button:SetChecked(false);
 			if IsPetAttackAction(i) then
 				PetActionButton_StopFlash(button);
 			end			
@@ -210,7 +210,6 @@ function AB:PositionAndSizeBarPet()
 		end
 		
 		self:StyleButton(button);
-		
 
 		--wtf lol
 		if not button.CheckFixed then 
