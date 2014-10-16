@@ -56,7 +56,7 @@ function UF:Raid40SmartVisibility(event)
 
 	if not InCombatLockdown() then		
 		if(inInstance and (instanceType == 'raid')) then
-			local _, _, _, raidType, maxPlayers, _, isDynamic, _, maxPlayersInstance = GetInstanceInfo()
+			local _, _, _, _, maxPlayers = GetInstanceInfo()
 			UnregisterStateDriver(self, "visibility")
 
 			if(maxPlayers == 40) then
