@@ -466,7 +466,7 @@ function UF.groupPrototype:Configure_Groups()
 	local numGroups = db.numGroups
 	if(raidFilter) then
 		local inInstance, instanceType = IsInInstance()
-		if(inInstance and (instanceType == 'raid' or instanceType == 'pvp')) then
+		if(inInstance and (instanceType == 'raid')) then
 			local maxPlayers, _, _, _, maxPlayersInstance = select(5, GetInstanceInfo())
 			if(maxPlayersInstance > 0) then
 				maxPlayers = maxPlayersInstance
@@ -474,6 +474,7 @@ function UF.groupPrototype:Configure_Groups()
 
 			if(maxPlayers > 0) then
 				numGroups = E:Round(maxPlayers/5)
+				print("Forcing max raid groups to:", numGroups)
 			end
 		end
 	end

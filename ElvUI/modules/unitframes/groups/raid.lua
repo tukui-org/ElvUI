@@ -55,7 +55,7 @@ function UF:RaidSmartVisibility(event)
 	if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
 
 	if not InCombatLockdown() then		
-		if(inInstance and (instanceType == 'raid' or instanceType == 'pvp')) then
+		if(inInstance and (instanceType == 'raid')) then
 			local _, _, _, raidType, maxPlayers, _, isDynamic, _, maxPlayersInstance = GetInstanceInfo()
 			UnregisterStateDriver(self, "visibility")
 			
@@ -98,7 +98,6 @@ function UF:Update_RaidHeader(header, db)
 
 		headerHolder:RegisterEvent("PLAYER_ENTERING_WORLD")
 		headerHolder:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-		headerHolder:RegisterEvent("UPDATE_BATTLEFIELD_SCORE")
 		headerHolder:SetScript("OnEvent", UF['RaidSmartVisibility'])
 		headerHolder.positioned = true;
 	end
