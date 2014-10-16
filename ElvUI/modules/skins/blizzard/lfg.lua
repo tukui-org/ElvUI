@@ -502,6 +502,12 @@ local function LoadSkin()
 	S:HandleButton(LFGListApplicationDialog.SignUpButton)
 	S:HandleButton(LFGListApplicationDialog.CancelButton)
 	S:HandleEditBox(LFGListApplicationDialogDescription)
+	
+	-- LFGListInviteDialog:StripTextures() -- Removes role icon, need to find a way to skin role icon the way it's done everywhere else
+	LFGListInviteDialog:SetTemplate("Transparent")
+	S:HandleButton(LFGListInviteDialog.AcceptButton)
+	S:HandleButton(LFGListInviteDialog.DeclineButton)
+	
 
 	S:HandleEditBox(LFGListFrame.SearchPanel.SearchBox)
 
