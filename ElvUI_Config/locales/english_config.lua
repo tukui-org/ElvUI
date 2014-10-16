@@ -276,6 +276,7 @@ L['Automatically select greed or disenchant (when available) on green quality it
 L["Automatically vendor gray items when visiting a vendor."] = true;
 L['Bottom Panel'] = true;
 L['Chat Bubbles Style'] = true;
+L['Direction the bar moves on gains/losses'] = true;
 L['Display a panel across the bottom of the screen. This is for cosmetic only.'] = true;
 L['Display a panel across the top of the screen. This is for cosmetic only.'] = true;
 L['Display emotion icons in chat.'] = true;

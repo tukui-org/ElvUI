@@ -310,6 +310,7 @@ L["Automatically select greed or disenchant (when available) on green quality it
 L["Automatically vendor gray items when visiting a vendor."] = "상점이 열리면 잡동사니를 자동으로 판매합니다."
 L["Bottom Panel"] = "하단 패널 표시"
 L["Chat Bubbles Style"] = "말풍선 디자인"
+L['Direction the bar moves on gains/losses'] = true;
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = "화면 하단에 꾸미기 용도의 바를 생성합니다."
 L["Display a panel across the top of the screen. This is for cosmetic only."] = "화면 상단에 꾸미기 용도의 바를 생성합니다."
 L["Display emotion icons in chat."] = "메시지 안에 이모티콘이 있으면 그림으로 바꿔 보여줍니다."

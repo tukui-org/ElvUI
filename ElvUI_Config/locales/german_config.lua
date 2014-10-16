@@ -285,6 +285,7 @@ L['Automatically select greed or disenchant (when available) on green quality it
 L["Automatically vendor gray items when visiting a vendor."] = "Automatischer Verkauf von grauen Gegenständen bei einem Händlerbesuch."
 L['Bottom Panel'] = 'Untere Leiste'
 L['Chat Bubbles Style'] = 'Chat-Blasen Stil';
+L['Direction the bar moves on gains/losses'] = true;
 L['Display a panel across the bottom of the screen. This is for cosmetic only.'] = 'Zeige eine Leiste am unterem Bildschirmrand. Das ist rein kosmetisch.'
 L['Display a panel across the top of the screen. This is for cosmetic only.'] = 'Zeige eine Leiste am oberen Bildschirmrand. Das ist rein kosmetisch.'
 L['Display emotion icons in chat.'] = 'Zeige Emoticons im Chat.'

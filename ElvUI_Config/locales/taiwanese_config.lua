@@ -287,6 +287,7 @@ L['Automatically select greed or disenchant (when available) on green quality it
 L["Automatically vendor gray items when visiting a vendor."] = "當訪問商人時自動出售灰色物品."
 L['Bottom Panel'] = '底部面板'
 L['Chat Bubbles Style'] = true;
+L['Direction the bar moves on gains/losses'] = true;
 L['Display a panel across the bottom of the screen. This is for cosmetic only.'] = '顯示跨越屏幕底部的面板,僅僅是用于裝飾.'
 L['Display a panel across the top of the screen. This is for cosmetic only.'] = '顯示跨越屏幕頂部的面板,僅僅是用于裝飾.'
 L['Display emotion icons in chat.'] = "在對話中顯示表情圖示."
