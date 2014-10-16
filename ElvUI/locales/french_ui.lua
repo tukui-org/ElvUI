@@ -34,7 +34,7 @@ L['Trigger'] = "Déclencheur"
 
 --Bags
 L["Bank"] = "Banque";
-L['Deposit Reagents'] "Déposer les composants";
+L['Deposit Reagents'] = "Déposer les composants";
 L['Hold Control + Right Click:'] = "Contrôle enfoncée + Clic droit"
 L['Hold Shift + Drag:'] = "Majuscule enfoncée + Déplacer"
 L['Purchase Bags'] = "Acheter des emplacements";
