@@ -56,9 +56,12 @@ function UF:RaidSmartVisibility(event)
 
 	if not InCombatLockdown() then		
 		if(inInstance and (instanceType == 'raid' or instanceType == 'pvp')) then
-			local _, _, _, raidType, _, _, isDynamic, _, maxPlayers = GetInstanceInfo()
+			local _, _, _, raidType, maxPlayers, _, isDynamic, _, maxPlayersInstance = GetInstanceInfo()
 			UnregisterStateDriver(self, "visibility")
-
+			
+			if(maxPlayersInstance > 0) then
+				maxPlayers = maxPlayersInstance
+			end
 			if(maxPlayers < 40) then
 				self:Show()	
 				
@@ -70,12 +73,16 @@ function UF:RaidSmartVisibility(event)
 			end
 		elseif self.db.visibility then
 			RegisterStateDriver(self, "visibility", self.db.visibility)
+			if(ElvUF_Raid.numGroups ~= self.db.numGroups) then
+				ElvUF_Raid:Configure_Groups()
+			end
 		end
 	else
 		self:RegisterEvent("PLAYER_REGEN_ENABLED")
 		return
 	end
 end
+
 
 function UF:Update_RaidHeader(header, db)
 	header:GetParent().db = db
@@ -91,6 +98,7 @@ function UF:Update_RaidHeader(header, db)
 
 		headerHolder:RegisterEvent("PLAYER_ENTERING_WORLD")
 		headerHolder:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+		headerHolder:RegisterEvent("UPDATE_BATTLEFIELD_SCORE")
 		headerHolder:SetScript("OnEvent", UF['RaidSmartVisibility'])
 		headerHolder.positioned = true;
 	end
