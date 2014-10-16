@@ -400,11 +400,16 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.party.power.text_format = ""
 			
 
+			E.db.unitframe.units.raid40.height = 30
+			E.db.unitframe.units.raid40.growthDirection = "LEFT_UP"
+
 			E.db.unitframe.units.party.health.frequentUpdates = true
 			E.db.unitframe.units.raid.health.frequentUpdates = true
-			
+			E.db.unitframe.units.raid40.health.frequentUpdates = true
+
 			E.db.unitframe.units.party.healPrediction = true;
 			E.db.unitframe.units.raid.healPrediction = true;
+			E.db.unitframe.units.raid40.healPrediction = true
 
 			E.db.actionbar.bar2.enabled = true
 			if not E.db.lowresolutionset then
@@ -425,7 +430,8 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.movers.ElvAB_5 = "BOTTOMElvUIParentBOTTOM-3124"
 			E.db.movers.ElvUF_PartyMover = "BOTTOMRIGHTElvUIParentBOTTOMLEFT"..xOffset.."450"
 			E.db.movers.ElvUF_RaidMover = "BOTTOMRIGHTElvUIParentBOTTOMLEFT"..xOffset.."450"
-			
+			E.db.movers.ElvUF_Raid40Mover = "BOTTOMRIGHTElvUIParentBOTTOMLEFT"..xOffset.."450"
+
 			if not E.db.lowresolutionset then
 				E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM278132"
 				E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM-278132"
@@ -446,6 +452,7 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.movers.ElvAB_5 = "BOTTOMElvUIParentBOTTOM-3324"
 			E.db.movers.ElvUF_PartyMover = "BOTTOMRIGHTElvUIParentBOTTOMLEFT"..xOffset.."450"
 			E.db.movers.ElvUF_RaidMover = "BOTTOMRIGHTElvUIParentBOTTOMLEFT"..xOffset.."450"
+			E.db.movers.ElvUF_Raid40Mover = "BOTTOMRIGHTElvUIParentBOTTOMLEFT"..xOffset.."450"
 			
 			if not E.db.lowresolutionset then
 				E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM307145"
