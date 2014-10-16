@@ -244,7 +244,7 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 	local anotherFilterExists = false
 	local playerOnlyFilter = false
 	local isPlayer = unitCaster == 'player' or unitCaster == 'vehicle'
-	local isFriend = UnitIsFriend('player', unit) == 1 and true or false
+	local isFriend = UnitIsFriend('player', unit)
 	local auraType = isFriend and db.friendlyAuraType or db.enemyAuraType
 	
 	icon.isPlayer = isPlayer

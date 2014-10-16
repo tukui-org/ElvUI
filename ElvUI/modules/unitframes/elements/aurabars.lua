@@ -89,7 +89,7 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 	local anotherFilterExists = false
 	local playerOnlyFilter = false
 	local isPlayer = unitCaster == 'player' or unitCaster == 'vehicle'
-	local isFriend = UnitIsFriend('player', unit) == 1 and true or false
+	local isFriend = UnitIsFriend('player', unit)
 	local auraType = isFriend and db.friendlyAuraType or db.enemyAuraType
 	
 	if UF:CheckFilter(db.playerOnly, isFriend) then
