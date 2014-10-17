@@ -9,10 +9,6 @@ local gsub = string.gsub
 local upper = string.upper
 local tinsert = table.insert
 
-local calendar_string = gsub(SLASH_CALENDAR1, "/", "")
-calendar_string = gsub(calendar_string, "^%l", upper)
-
-
 local menuFrame = CreateFrame("Frame", "MinimapRightClickMenu", E.UIParent)
 
 local menuList = {
@@ -56,7 +52,7 @@ local menuList = {
 	func = function() ToggleAchievementFrame() end},
 	{text = SOCIAL_BUTTON,
 	func = function() ToggleFriendsFrame() end},
-	{text = calendar_string,
+	{text = L["Calendar"],
 	func = function() GameTimeFrame:Click() end},
 	{text = ACHIEVEMENTS_GUILD_TAB,
 	func = function()
