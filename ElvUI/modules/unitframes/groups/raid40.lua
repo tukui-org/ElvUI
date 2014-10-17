@@ -62,7 +62,7 @@ function UF:Raid40SmartVisibility(event)
 			if(maxPlayers == 40) then
 				self:Show()
 				if(maxPlayers and ElvUF_Raid40.numGroups ~= E:Round(maxPlayers/5)) then
-					UF:CreateAndUpdateHeaderGroup("raid40")		
+					ElvUF_Raid40:Configure_Groups()		
 				end					
 			else
 				self:Hide()	
@@ -70,7 +70,7 @@ function UF:Raid40SmartVisibility(event)
 		elseif self.db.visibility then
 			RegisterStateDriver(self, "visibility", self.db.visibility)
 			if(ElvUF_Raid40.numGroups ~= self.db.numGroups) then
-				UF:CreateAndUpdateHeaderGroup("raid40")
+				ElvUF_Raid40:Configure_Groups()
 			end
 		end
 	else
