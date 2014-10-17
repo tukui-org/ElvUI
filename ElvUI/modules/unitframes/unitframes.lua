@@ -461,21 +461,7 @@ function UF.groupPrototype:Configure_Groups()
 	local width, height, newCols, newRows = 0, 0, 0, 0
 	local direction = db.growthDirection
 	local xMult, yMult = DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction], DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction]
-
-	local raidFilter = UF.db.smartRaidFilter
-	local numGroups = db.numGroups
-	if(raidFilter) then
-		local inInstance, instanceType = IsInInstance()
-		if(inInstance and (instanceType == 'raid')) then
-			local maxPlayers = select(5, GetInstanceInfo())
-
-			if(maxPlayers > 0) then
-				numGroups = E:Round(maxPlayers/5)
-			end
-		end
-	end
-
-	self.numGroups = numGroups
+	local numGroups = self.numGroups
 
 	for i=1, numGroups do
 		local group = self.groups[i]
@@ -598,7 +584,7 @@ end
 function UF.groupPrototype:AdjustVisibility()
 	if not self.isForced then
 		for i=1, #self.groups do
-			if (i <= self.db.numGroups) and ((self.db.raidWideSorting and i <= 1) or not self.db.raidWideSorting) then
+			if (i <= self.numGroups) and ((self.db.raidWideSorting and i <= 1) or not self.db.raidWideSorting) then
 				self.groups[i]:Show()
 			else
 				if self.groups[i].forceShow then
@@ -680,8 +666,8 @@ function UF:SetupGroupAnchorPoints(group)
 	local positionOverride = DIRECTION_TO_GROUP_ANCHOR_POINT[direction]
 	
 	local maxUnits, startingIndex = MAX_RAID_MEMBERS, -1
-	if (db.numGroups and db.groupsPerRowCol) then
-		startingIndex = -min(db.numGroups * (db.groupsPerRowCol * 5), maxUnits) + 1
+	if (group.numGroups and db.groupsPerRowCol) then
+		startingIndex = -min(group.numGroups * (db.groupsPerRowCol * 5), maxUnits) + 1
 	end
 	
 	if point == "LEFT" or point == "RIGHT" then
@@ -697,7 +683,7 @@ function UF:SetupGroupAnchorPoints(group)
 	group:SetAttribute("columnAnchorPoint", db.invertGroupingOrder and INVERTED_DIRECTION_TO_COLUMN_ANCHOR_POINT[direction] or DIRECTION_TO_COLUMN_ANCHOR_POINT[direction])
 	UF:ClearChildPoints(group:GetChildren())
 	group:SetAttribute("point", point)	
-	group:SetAttribute("maxColumns", db.numGroups or 1)
+	group:SetAttribute("maxColumns", group.numGroups or 1)
 	group:SetAttribute("unitsPerColumn", db.groupsPerRowCol and (db.groupsPerRowCol * 5) or 5)				
 
 	UF.headerGroupBy[db.groupBy](group)
@@ -749,15 +735,30 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return end
 
 	local db = self.db['units'][group]
+	local raidFilter = UF.db.smartRaidFilter
+	local numGroups = db.numGroups
+	if(raidFilter and numGroups) then
+		local inInstance, instanceType = IsInInstance()
+		if(inInstance and (instanceType == 'raid')) then
+			local maxPlayers = select(5, GetInstanceInfo())
+
+			if(maxPlayers > 0) then
+				numGroups = E:Round(maxPlayers/5)
+			end
+		end
+	end
+
+
 	if not self[group] then
 		local stringTitle = E:StringTitle(group)
 		ElvUF:RegisterStyle("ElvUF_"..stringTitle, UF["Construct_"..stringTitle.."Frames"])
 		ElvUF:SetActiveStyle("ElvUF_"..stringTitle)		
 
 
-		if db.numGroups then
+		if numGroups then
 			self[group] = CreateFrame('Frame', 'ElvUF_'..stringTitle, ElvUF_Parent, 'SecureHandlerStateTemplate');
 			self[group].groups = {}
+			self[group].numGroups = numGroups
 			self[group].groupName = group
 			for k, v in pairs(self.groupPrototype) do
 				self[group][k] = v
@@ -771,7 +772,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 		self[group]:Show()
 	end
 
-	if db.numGroups then
+	if numGroups then
 		if db.enable ~= true and group ~= 'raidpet' then
 			UnregisterStateDriver(self[group], "visibility")
 			self[group]:Hide()
@@ -783,7 +784,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 				self[group].groups[1] = self:CreateHeader(self[group], index, "ElvUF_"..E:StringTitle(self[group].groupName)..'Group1', template, nil, headerTemplate)
 			end
 		else
-			while db.numGroups > #self[group].groups do
+			while numGroups > #self[group].groups do
 				local index = tostring(#self[group].groups + 1)
 				 tinsert(self[group].groups, self:CreateHeader(self[group], index, "ElvUF_"..E:StringTitle(self[group].groupName)..'Group'..index, template, nil, headerTemplate))
 			end

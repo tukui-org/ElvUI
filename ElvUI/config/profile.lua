@@ -1,4 +1,4 @@
-﻿local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 P.gridSize = 64
 P.farmSize = 340
@@ -90,6 +90,7 @@ P["nameplate"] = {
 	['fontSize'] = 7,
 	['fontOutline'] = 'MONOCHROMEOUTLINE',
 	["smallPlates"] = true,
+	
 	['nonTargetAlpha'] = 0.6,
 	['combatHide'] = false,
 	['colorNameByValue'] =  true,
