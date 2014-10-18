@@ -520,6 +520,7 @@ function B:UpdateReagentSlot(slotID)
 	local texture, count, locked = GetContainerItemInfo(bagID, slotID);
 	local clink = GetContainerItemLink(bagID, slotID);
 	local slot = _G["ElvUIReagentBankFrameItem"..slotID]
+	if not slot then return; end
 
 	slot:Show();
 	if(slot.questIcon) then
