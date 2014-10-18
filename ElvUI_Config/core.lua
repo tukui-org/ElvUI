@@ -639,7 +639,7 @@ E.Options.args.general = {
 					type = "toggle",
 					order = 1,
 					name = L['Enable'],
-					desc = L['Display cooldown text on anything with the cooldown spiril.'],
+					desc = L['Display cooldown text on anything with the cooldown spiral.'],
 					get = function(info) return E.private.cooldown[ info[#info] ] end,
 					set = function(info, value) E.private.cooldown[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end				
 				},			
