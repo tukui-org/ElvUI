@@ -804,6 +804,9 @@ function B:ContructContainerFrame(name, isBank)
 	
 	f.closeButton = CreateFrame('Button', name..'CloseButton', f, 'UIPanelCloseButton');
 	f.closeButton:Point('TOPRIGHT', -4, -4);
+	f.closeButton:HookScript("OnClick", function()
+		ToggleBackpack() --Fix issue #221: Bags require double tap on open key if closed with the closebutton
+	end)
 
 	E:GetModule('Skins'):HandleCloseButton(f.closeButton);
 	
