@@ -1160,7 +1160,7 @@ function B:ToggleBackpack()
 		return;
 	end
 	
-	if not self.BagFrame:IsShown() then
+	if IsBagOpen(0) then
 		self:OpenBags()
 	else
 		self:CloseBags()
