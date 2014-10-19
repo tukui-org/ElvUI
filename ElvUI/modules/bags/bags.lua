@@ -1118,7 +1118,7 @@ function B:ContructContainerFrame(name, isBank)
 			f.currencyButton[i]:Hide();
 		end	
 		
-		f:SetScript('OnHide', function() CloseBackpack() end)
+		f:SetScript('OnHide', CloseBackpack)
 	end
 	
 	tinsert(UISpecialFrames, f:GetName()) --Keep an eye on this for taints..
@@ -1179,7 +1179,6 @@ function B:CloseBags()
 	
 	if self.BankFrame then
 		self.BankFrame:Hide();
-		-- BankFrame:Hide() --Is this needed? It seems to cause multiple redundant function calls
 	end
 	
 	E:GetModule('Tooltip'):GameTooltip_SetDefaultAnchor(GameTooltip)
@@ -1192,7 +1191,6 @@ function B:OpenBank()
 	end
 	
 	self:Layout(true)
-	-- BankFrame:Show() --Is this needed? It seems to cause multiple redundant function calls
 	self.BankFrame:Show();
 	self.BankFrame:UpdateAllSlots();
 	self.BagFrame:Show();
@@ -1205,8 +1203,7 @@ end
 
 function B:CloseBank()
 	if not self.BankFrame then return; end -- WHY???, WHO KNOWS!
-	self.BankFrame:Hide() --Technically this isn't needed since the BagFrame OnHide closes bank frame too.
-	-- BankFrame:Hide() --Is this needed? It seems to cause multiple redundant function calls
+	self.BankFrame:Hide()
 	self.BagFrame:Hide()
 end
 
