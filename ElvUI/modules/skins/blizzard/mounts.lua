@@ -38,7 +38,11 @@ local function LoadSkin()
 	S:HandleRotateButton(MountJournal.MountDisplay.ModelFrame.RotateRightButton)
 
 	for i = 1, #MountJournal.ListScrollFrame.buttons do
-		S:HandleItemButton(_G["MountJournalListScrollFrameButton"..i])
+		local b = _G["MountJournalListScrollFrameButton"..i];
+		S:HandleItemButton(b)
+		b.favorite:SetTexture("Interface\\COMMON\\FavoritesIcon")
+		b.favorite:SetPoint("TOPLEFT",b.DragButton,"TOPLEFT",-8,8)
+		b.favorite:SetSize(32,32)
 	end
 
 	-- Color in green icon border on selected mount
@@ -112,19 +116,21 @@ local function LoadSkin()
 			local t = _G["PetJournalListScrollFrameButton"..i.."Name"]
 			local petID, speciesID, isOwned, customName, level, favorite, isRevoked, name, icon, petType, creatureID, sourceText, description, isWildPet, canBattle = C_PetJournal.GetPetInfoByIndex(index, isWild);
 
+			if b.selectedTexture:IsShown() then
+				t:SetTextColor(1,1,0)
+			else
+				t:SetTextColor(1,1,1)
+			end
 			if petID ~= nil then
 				local health, maxHealth, attack, speed, rarity = C_PetJournal.GetPetStats(petID);
-				if b.selectedTexture:IsShown() then
-					t:SetTextColor(1,1,0)
-				else
-					t:SetTextColor(1, 1, 1)
-				end
 				if rarity then
 					local color = ITEM_QUALITY_COLORS[rarity-1]
 					b.backdrop:SetBackdropBorderColor(color.r, color.g, color.b);
 				else
-					b.backdrop:SetBackdropBorderColor(1, 1, 0)
+					b.backdrop:SetBackdropBorderColor(0,0,0)
 				end
+			else
+				b.backdrop:SetBackdropBorderColor(0,0,0)
 			end
 		end
 	end	
