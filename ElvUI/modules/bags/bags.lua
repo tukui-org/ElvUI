@@ -1118,7 +1118,7 @@ function B:ContructContainerFrame(name, isBank)
 			f.currencyButton[i]:Hide();
 		end	
 		
-		f:SetScript('OnHide', CloseAllBags)
+		f:SetScript('OnHide', function() CloseBackpack(); CloseBankFrame(); end)
 	end
 	
 	tinsert(UISpecialFrames, f:GetName()) --Keep an eye on this for taints..
