@@ -277,7 +277,7 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 
 
 	if UF:CheckFilter(db.noConsolidated, isFriend) then
-		if shouldConsolidate == 1 then
+		if shouldConsolidate == true then
 			returnValue = false;
 		end
 		

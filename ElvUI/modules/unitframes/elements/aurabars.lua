@@ -111,7 +111,7 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 	end
 	
 	if UF:CheckFilter(db.noConsolidated, isFriend) then
-		if shouldConsolidate == 1 then
+		if shouldConsolidate == true then
 			returnValue = false;
 		end
 		
