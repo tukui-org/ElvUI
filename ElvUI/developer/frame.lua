@@ -95,7 +95,7 @@ function TextureList(frame)
 	for i=1, frame:GetNumRegions() do
 		local region = select(i, frame:GetRegions())
 		if(region:GetObjectType() == "Texture") then
-			print(region:GetTexture(), region:GetName())
+			print(region:GetTexture(), region:GetName(), region:GetDrawLayer())
 		end
 	end
 end
