@@ -190,7 +190,7 @@ L["Select the type of aura system you want to use with ElvUI's unitframes. Set t
 L["Setup Chat"] = "Configurer le Chat."
 L["Setup CVars"] = "Configurer les CVars"
 L["Skip Process"] = "Passer cette étape"
-L["Sticky Frames"] = "Cadres aimantés" --test
+L["Sticky Frames"] = "Cadres aimantés"
 L['Tank'] = "Tank"
 L["The chat windows function the same as Blizzard standard chat windows, you can right click the tabs and drag them around, rename, etc. Please click the button below to setup your chat windows."] = "La fenêtre de chat d'ElvUi utilise les même fonctions que celle Blizzard, vous pouvez faire un clic droit sur un onglet pour le déplacer, le renommer, etc."
 L["The in-game configuration menu can be accesses by typing the /ec command or by clicking the 'C' button on the minimap. Press the button below if you wish to skip the installation process."] = "Le menu de configuration est accessible en tapant la commande /ec ou en cliquant sur le bouton 'C' sur la Minicarte. Cliquez sur le bouton ci-dessous si vous voulez passer le processus d'installation."
