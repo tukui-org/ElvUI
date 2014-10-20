@@ -194,14 +194,6 @@ E.Options.args.general = {
 					get = function(info) return E.db.general.topPanel end,
 					set = function(info, value) E.db.general.topPanel = value; E:GetModule('Layout'):TopPanelVisibility() end						
 				},			
-				lfrEnhancement = {
-					order = 18,
-					type = "toggle",
-					name = L['Enhance Raid Browser'],
-					desc = L['Enhance the raid browser frame by adding item level and talent spec information, also add average item level of group information to tooltips.'],
-					get = function(info) return E.private.general.lfrEnhancement end,
-					set = function(info, value) E.private.general.lfrEnhancement = value; E:StaticPopup_Show("PRIVATE_RL") end
-				},
 			},
 		},	
 		media = {
