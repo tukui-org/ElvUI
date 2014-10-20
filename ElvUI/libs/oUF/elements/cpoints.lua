@@ -3,7 +3,6 @@ local oUF = ns.oUF
 
 local GetComboPoints = GetComboPoints
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
-local ANTICIPATION = GetSpellInfo(115189)
 
 local Update = function(self, event, unit)
 	if(unit ~= 'player' and unit ~= 'vehicle') then return end
@@ -27,8 +26,6 @@ local Update = function(self, event, unit)
 			cpoints[i]:Hide()
 		end
 	end
-
-	local anticipation = select(4, UnitBuff(unit, ANTICIPATION))
 
 	if(cpoints.PostUpdate) then
 		return cpoints:PostUpdate(cp, anticipation)

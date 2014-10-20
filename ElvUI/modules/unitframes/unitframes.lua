@@ -304,13 +304,6 @@ function UF:UpdateColors()
 	ElvUF.colors.HolyPower = E:GetColorTable(db.classResources.PALADIN);
 	
 	ElvUF.colors.ArcaneChargeBar = E:GetColorTable(db.classResources.MAGE);
-
-	ElvUF.colors.Anticipation = {}
-	ElvUF.colors.Anticipation[1] = E:GetColorTable(db.classResources.ROGUE[1])
-	ElvUF.colors.Anticipation[2] = E:GetColorTable(db.classResources.ROGUE[2])
-	ElvUF.colors.Anticipation[3] = E:GetColorTable(db.classResources.ROGUE[3])
-	ElvUF.colors.Anticipation[4] = E:GetColorTable(db.classResources.ROGUE[4])
-	ElvUF.colors.Anticipation[5] = E:GetColorTable(db.classResources.ROGUE[5])
 	
 	ElvUF.colors.ShadowOrbs = E:GetColorTable(db.classResources.PRIEST);
 	
