@@ -463,23 +463,14 @@ function NP:SetUnitInfo(myPlate)
 			NP:PositionTargetIndicator(myPlate)
 		end
 
-		if((NP.NumTargetChecks > -1) or self.allowCheck) then
-			NP.NumTargetChecks = NP.NumTargetChecks + 1
-			if NP.NumTargetChecks > 0 then
-				NP.NumTargetChecks = -1
-			end
-
-			NP:UpdateAurasByUnitID('target')
-			NP:UpdateComboPointsByUnitID('target')
-			self.allowCheck = nil
-		end
+		NP:UpdateComboPointsByUnitID('target')
+		NP:UpdateAurasByUnitID('target')
 	elseif self.highlight:IsShown() and UnitExists("mouseover") and (UnitName("mouseover") == plateName) then
-		if(self.unit ~= "mouseover" or self.allowCheck) then
+		if(self.unit ~= "mouseover") then
 			myPlate:SetFrameLevel(1)
 			myPlate.overlay:Show()			
 			NP:UpdateAurasByUnitID('mouseover')
 			NP:UpdateComboPointsByUnitID('mouseover')
-			self.allowCheck = nil
 		end
 		self.guid = UnitGUID("mouseover")
 		self.unit = "mouseover"		
@@ -661,8 +652,6 @@ function NP:OnShow()
 		NP:CheckRaidIcon(self)
 		NP:UpdateAuras(self)
 		NP:UpdateComboPoints(self)
-	else
-		self.allowCheck = true
 	end
 
 	if(not NP.db.targetIndicator.colorMatchHealthBar) then
@@ -680,7 +669,6 @@ function NP:OnHide()
 	self.customColor = nil
 	self.customScale = nil
 	self.isSmall = nil
-	self.allowCheck = nil
 
 	if(targetIndicator:GetParent() == myPlate) then
 		targetIndicator:Hide()
