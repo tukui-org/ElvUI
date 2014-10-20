@@ -4,26 +4,6 @@ local format = string.format
 local lower = string.lower
 local split = string.split
 
-function E:EnableAddon(addon)
-	local _, _, _, _, _, reason, _ = GetAddOnInfo(addon)
-	if reason ~= "MISSING" then 
-		EnableAddOn(addon) 
-		ReloadUI() 
-	else 
-		print("|cffff0000Error, Addon '"..addon.."' not found.|r") 
-	end	
-end
-
-function E:DisableAddon(addon)
-	local _, _, _, _, _, reason, _ = GetAddOnInfo(addon)
-	if reason ~= "MISSING" then 
-		DisableAddOn(addon) 
-		ReloadUI() 
-	else 
-		print("|cffff0000Error, Addon '"..addon.."' not found.|r") 
-	end
-end
-
 function FarmMode()
 	if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT); return; end
 	if E.private.general.minimap.enable ~= true then return; end
@@ -48,34 +28,6 @@ function E:FarmMode(msg)
 	end
 	
 	FarmMode()
-end
-
-local channel = 'PARTY'
-local target = nil;
-function E:DevChannel(chnl)
-	channel = chnl
-	E:Print(format('Developer channel has been changed to %s.', chnl))
-end
-
-function E:DevTarget(tgt)
-	target = tgt
-	E:Print(format('Developer target has been changed to %s.', tgt))
-end
-
-function E:DevSays(msg)
-	if channel == 'WHISPER' and target == nil then
-		E:Print('You need to set a whisper target.')
-		return
-	end
-	SendAddonMessage('ELVUI_DEV_SAYS', msg, channel, target)
-end
-
-function E:DevCommand(msg)
-	if channel == 'WHISPER' and target == nil then
-		E:Print('You need to set a whisper target.')
-		return
-	end
-	SendAddonMessage('ELVUI_DEV_CMD', msg, channel, target)
 end
 
 function E:Grid(msg)
@@ -210,10 +162,6 @@ function E:LoadCommands()
 	self:RegisterChatCommand("enable", "EnableAddon")
 	self:RegisterChatCommand("disable", "DisableAddon")
 	self:RegisterChatCommand('farmmode', 'FarmMode')
-	self:RegisterChatCommand('devsays', 'DevSays')
-	self:RegisterChatCommand('devchannel', 'DevChannel')
-	self:RegisterChatCommand('devcmd', 'DevCommand')
-	self:RegisterChatCommand('devtarget', 'DevTarget')
 	self:RegisterChatCommand('cleanguild', 'MassGuildKick')
 	if E.ActionBars then
 		self:RegisterChatCommand('kb', E.ActionBars.ActivateBindMode)
