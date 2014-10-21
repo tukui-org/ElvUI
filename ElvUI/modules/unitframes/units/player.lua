@@ -905,10 +905,10 @@ function UF:Update_PlayerFrame(frame, db)
 
 		local COMBOBAR_WIDTH = CLASSBAR_WIDTH
 		local COMBOBAR_HEIGHT = CLASSBAR_HEIGHT or db.classbar.height
-		if USE_MINI_CLASSBAR and not db.classbar.detachFromFrame then
+		if db.classbar.fill == "spaced" and not db.classbar.detachFromFrame then
 			comboBar:ClearAllPoints()
 			comboBar:Point("CENTER", frame.Health.backdrop, "TOP", 0, 0)
-			CLASSBAR_WIDTH = CLASSBAR_WIDTH * (MAX_COMBO_POINTS - 1) / MAX_COMBO_POINTS
+			COMBOBAR_WIDTH = COMBOBAR_WIDTH * (MAX_COMBO_POINTS - 1) / MAX_COMBO_POINTS
 			comboBar:SetFrameStrata("MEDIUM")
 
 			if comboBar.mover then
@@ -925,14 +925,14 @@ function UF:Update_PlayerFrame(frame, db)
 				comboBar.mover:SetAlpha(0)
 			end			
 		else
-			CLASSBAR_WIDTH = db.classbar.detachedWidth - (BORDER*2)
+			COMBOBAR_WIDTH = db.classbar.detachedWidth - (BORDER*2)
 
 			if(frame.ClassBar and frame[frame.ClassBar] and frame[frame.ClassBar].mover) then
 				comboBar.mover = frame[frame.ClassBar].mover
 			end
 
 			if not frame.classBar and not comboBar.mover then
-				comboBar:Width(CLASSBAR_WIDTH)
+				comboBar:Width(COMBOBAR_WIDTH)
 				comboBar:Height(CLASSBAR_HEIGHT - (E.PixelMode and 1 or 4))
 				comboBar:ClearAllPoints()
 				comboBar:Point("BOTTOM", E.UIParent, "BOTTOM", 0, 150)
@@ -967,7 +967,6 @@ function UF:Update_PlayerFrame(frame, db)
 			comboBar[i].anticipation:SetSize(comboBar[i]:GetWidth() + 10, comboBar[i]:GetHeight() + 1)	
 			c = UF.db.colors.classResources.comboBar[i]
 			comboBar[i]:SetStatusBarColor(c.r, c.g, c.b)
-			comboBar[i]:GetStatusBarTexture():SetHorizTile(false)
 			comboBar[i]:ClearAllPoints()
 			if i == 1 then
 				comboBar[i]:SetPoint("LEFT", comboBar)
@@ -985,6 +984,12 @@ function UF:Update_PlayerFrame(frame, db)
 				comboBar[i].backdrop:Show()
 			end
 		end
+
+		if db.classbar.fill == "spaced" then
+			comboBar.backdrop:Hide()
+		else
+			comboBar.backdrop:Show()
+		end		
 
 		if db.classbar.enable and frame:IsElementEnabled("CPoints") then
 			frame:EnableElement("CPoints")
