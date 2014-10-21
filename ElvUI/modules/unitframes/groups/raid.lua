@@ -53,17 +53,23 @@ function UF:RaidSmartVisibility(event)
 	local inInstance, instanceType = IsInInstance()
 	
 	if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
+	if event == "UPDATE_BATTLEFIELD_SCORE" then self:UnregisterEvent("UPDATE_BATTLEFIELD_SCORE") end
 
 	if not InCombatLockdown() then		
 		if(inInstance and (instanceType == 'raid' or instanceType == 'pvp')) then
 			local _, _, _, _, maxPlayers = GetInstanceInfo()
+			if(maxPlayer == 0) then
+				self:RegisterEvent("UPDATE_BATTLEFIELD_SCORE")
+				return
+			end
+
 			UnregisterStateDriver(self, "visibility")
 			
 			if(maxPlayers < 40) then
 				self:Show()	
-				print(maxPlayers)
+				
 				if(maxPlayers and ElvUF_Raid.numGroups ~= E:Round(maxPlayers/5)) then	
-					UF:CreateAndUpdateHeaderGroup('raid', nil, nil, nil, nil, true)
+					UF:CreateAndUpdateHeaderGroup('raid')
 				end				
 			else
 				self:Hide()
@@ -93,15 +99,11 @@ function UF:Update_RaidHeader(header, db, isForced)
 
 		E:CreateMover(headerHolder, headerHolder:GetName()..'Mover', L['Raid Frames'], nil, nil, nil, 'ALL,RAID')
 
+		headerHolder:RegisterEvent("")
 		headerHolder:RegisterEvent("PLAYER_ENTERING_WORLD")
 		headerHolder:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 		headerHolder:SetScript("OnEvent", UF['RaidSmartVisibility'])
 		headerHolder.positioned = true;
-	end
-	
-	--prevent infinite loop
-	if(not isForced) then
-		UF.RaidSmartVisibility(headerHolder)
 	end
 end
 

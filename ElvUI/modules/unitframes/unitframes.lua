@@ -735,7 +735,7 @@ function UF:CreateHeader(parent, groupFilter, overrideName, template, groupName,
 	return header
 end
 
-function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdate, headerTemplate, isForced)
+function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdate, headerTemplate)
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return end
 	local db = self.db['units'][group]
 	local raidFilter = UF.db.smartRaidFilter
@@ -802,7 +802,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 			end
 		else
 			self[group]:Configure_Groups()
-			self[group]:Update(isForced)
+			self[group]:Update()
 		end
 
 		if db.enable ~= true and group == 'raidpet' then
