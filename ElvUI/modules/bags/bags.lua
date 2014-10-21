@@ -1191,6 +1191,7 @@ function B:OpenBank()
 	end
 	
 	self:Layout(true)
+	BankFrame:Show()
 	self.BankFrame:Show();
 	self.BankFrame:UpdateAllSlots();
 	self.BagFrame:Show();
@@ -1204,6 +1205,7 @@ end
 function B:CloseBank()
 	if not self.BankFrame then return; end -- WHY???, WHO KNOWS!
 	self.BankFrame:Hide()
+	BankFrame:Hide()
 	self.BagFrame:Hide()
 end
 
