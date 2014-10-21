@@ -123,8 +123,10 @@ L['The size of the individual buttons on the bag frame.'] = true;
 L['The size of the individual buttons on the bank frame.'] = true;
 L["The spacing between buttons."] = true;
 L["Top to Bottom"] = true;
-L["X Offset"] = true;
-L["Y Offset"] = true;
+L["X Offset Bags"] = true;
+L["X Offset Bank"] = true;
+L["Y Offset Bags"] = true;
+L["Y Offset Bank"] = true;
 
 --Buffs and Debuffs
 L['Begin a new row or column after this many auras.'] = true;

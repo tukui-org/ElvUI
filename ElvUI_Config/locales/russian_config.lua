@@ -125,8 +125,10 @@ L['The size of the individual buttons on the bag frame.'] = "Размер каж
 L['The size of the individual buttons on the bank frame.'] = "Размер каждого слота в банке"
 L["The spacing between buttons."] = "Расстояние между кнопками"
 L["Top to Bottom"] = "Сверху вниз"
-L["X Offset"] = "Отступ по Х"
-L["Y Offset"] = "Отступ по Y"
+L["X Offset Bags"] = true;
+L["X Offset Bank"] = true;
+L["Y Offset Bags"] = true;
+L["Y Offset Bank"] = true;
 
 --Buffs and Debuffs
 L['Begin a new row or column after this many auras.'] = "Начинать новый ряд/столбец после этого количества аур."

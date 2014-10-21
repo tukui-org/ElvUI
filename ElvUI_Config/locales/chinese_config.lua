@@ -125,8 +125,10 @@ L['The size of the individual buttons on the bag frame.'] = '背包框架单个�
 L['The size of the individual buttons on the bank frame.'] = '银行框架单个格子的尺寸.'
 L["The spacing between buttons."] = "两个按钮间的距离"
 L["Top to Bottom"] = '顶部到底部'
-L["X Offset"] = "X轴偏移"
-L["Y Offset"] = "Y轴偏移"
+L["X Offset Bags"] = true;
+L["X Offset Bank"] = true;
+L["Y Offset Bags"] = true;
+L["Y Offset Bank"] = true;
 
 --Buffs and Debuffs
 L['Begin a new row or column after this many auras.'] = "在这些光环旁开始新的行或列."

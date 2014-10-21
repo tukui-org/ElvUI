@@ -145,8 +145,10 @@ L["The size of the individual buttons on the bag frame."] = "통합가방 프레
 L["The size of the individual buttons on the bank frame."] = "통합은행 프레임의 슬롯크기를 결정합니다."
 L["The spacing between buttons."] = "버튼 사이의 간격을 설정합니다."
 L["Top to Bottom"] = "위에서 아래로"
-L["X Offset"] = "X 축 기준 좌표"
-L["Y Offset"] = "Y 축 기준 좌표"
+L["X Offset Bags"] = true;
+L["X Offset Bank"] = true;
+L["Y Offset Bags"] = true;
+L["Y Offset Bank"] = true;
 
 --Buffs and Debuffs
 L["Begin a new row or column after this many auras."] = "한 줄에 아이콘이 이 값보다 많으면 다음 줄에 배치합니다."
