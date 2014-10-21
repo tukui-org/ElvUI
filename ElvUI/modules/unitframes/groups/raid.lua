@@ -99,7 +99,6 @@ function UF:Update_RaidHeader(header, db, isForced)
 
 		E:CreateMover(headerHolder, headerHolder:GetName()..'Mover', L['Raid Frames'], nil, nil, nil, 'ALL,RAID')
 
-		headerHolder:RegisterEvent("")
 		headerHolder:RegisterEvent("PLAYER_ENTERING_WORLD")
 		headerHolder:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 		headerHolder:SetScript("OnEvent", UF['RaidSmartVisibility'])
