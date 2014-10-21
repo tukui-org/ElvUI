@@ -42,6 +42,20 @@ UF['classMaxResourceBar'] = {
 	['ROGUE'] = 5,
 }
 
+UF['mapIDs'] = {
+	[727] = 10, --Silvershard mines
+	[489] = 10, -- WSG
+	[628] = 40, -- Isle of Conquest
+	[607] = 15, -- Strand of the Ancients
+	[726] = 10, -- Twin Peaks
+	[30] = 40, -- AV
+	[529] = 15, -- AB
+	[998] = 10, -- Temple of Kotmogu
+	[1105] = 15, -- Deepwind Gourge
+	[761] = 10, -- Gilneas
+	[566] = 15, -- EOTS
+}
+
 UF['headerGroupBy'] = {
 	['CLASS'] = function(header)
 		header:SetAttribute("groupingOrder", "DEATHKNIGHT,DRUID,HUNTER,MAGE,PALADIN,PRIEST,SHAMAN,WARLOCK,WARRIOR,MONK")
@@ -735,21 +749,28 @@ function UF:CreateHeader(parent, groupFilter, overrideName, template, groupName,
 	return header
 end
 
+
+
 function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdate, headerTemplate)
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return end
 	local db = self.db['units'][group]
 	local raidFilter = UF.db.smartRaidFilter
 	local numGroups = db.numGroups
-	if(raidFilter) then
+	if(raidFilter and numGroups) then
 		local inInstance, instanceType = IsInInstance()
 		if(inInstance and (instanceType == 'raid' or instanceType == 'pvp')) then
-			local _, _, _, _, maxPlayers, _, _, _, maxPlayersInstance = GetInstanceInfo()
+			local _, _, _, _, maxPlayers, _, _, mapID, maxPlayersInstance = GetInstanceInfo()
 			if(maxPlayersInstance and maxPlayersInstance > 0) then
 				maxPlayers = maxPlayersInstance
+			end
+
+			if mapID and UF.mapIDs[mapID] then
+				maxPlayers = UF.mapIDs[mapID]
 			end
 			
 			if(maxPlayers > 0) then
 				numGroups = E:Round(maxPlayers/5)
+				E:Print("Forcing maxGroups to: "..numGroups.." because maxPlayers is: "..maxPlayers)
 			end
 		end
 	end
@@ -790,7 +811,6 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 				self[group].groups[1] = self:CreateHeader(self[group], index, "ElvUF_"..E:StringTitle(self[group].groupName)..'Group1', template, nil, headerTemplate)
 			end
 		else
-			print(#self[group].groups)
 			while numGroups > #self[group].groups do
 				local index = tostring(#self[group].groups + 1)
 				 tinsert(self[group].groups, self:CreateHeader(self[group], index, "ElvUF_"..E:StringTitle(self[group].groupName)..'Group'..index, template, nil, headerTemplate))

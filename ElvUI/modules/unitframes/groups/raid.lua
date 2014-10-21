@@ -53,17 +53,17 @@ function UF:RaidSmartVisibility(event)
 	local inInstance, instanceType = IsInInstance()
 	
 	if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
-	if event == "UPDATE_BATTLEFIELD_SCORE" then self:UnregisterEvent("UPDATE_BATTLEFIELD_SCORE") end
 
 	if not InCombatLockdown() then		
 		if(inInstance and (instanceType == 'raid' or instanceType == 'pvp')) then
-			local _, _, _, _, maxPlayers, _, _, _, maxPlayersInstance = GetInstanceInfo()
+			local _, _, _, _, maxPlayers, _, _, mapID, maxPlayersInstance = GetInstanceInfo()
 			if(maxPlayersInstance and maxPlayersInstance > 0) then
 				maxPlayers = maxPlayersInstance
 			end
-			if(maxPlayer == 0) then
-				self:RegisterEvent("UPDATE_BATTLEFIELD_SCORE")
-				return
+
+			if mapID and UF.mapIDs[mapID] then
+				maxPlayers = UF.mapIDs[mapID]
+				print(maxPlayers)
 			end
 
 			UnregisterStateDriver(self, "visibility")
