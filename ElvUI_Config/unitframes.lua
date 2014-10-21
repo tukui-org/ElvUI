@@ -2193,6 +2193,52 @@ E.Options.args.unitframe.args.target = {
 			name = L['Threat Display Mode'],
 			values = threatValues,
 		},		
+		combobar = {
+			order = 800,
+			type = 'group',
+			name = L['Combobar'],
+			get = function(info) return E.db.unitframe.units['target']['combobar'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['target']['combobar'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
+			args = {
+				enable = {
+					type = 'toggle',
+					order = 1,
+					name = L['Enable'],
+				},
+				height = {
+					type = 'range',
+					order = 2,
+					name = L['Height'],
+					min = 5, max = 15, step = 1,
+				},	
+				fill = {
+					type = 'select',
+					order = 3,
+					name = L['Fill'],
+					values = {
+						['fill'] = L['Filled'],
+						['spaced'] = L['Spaced'],
+					},
+				},		
+				autoHide = {
+					type = 'toggle',
+					name = L['Auto-Hide'],
+					order = 4,
+				},		
+				detachFromFrame = {
+					type = 'toggle',
+					order = 5,
+					name = L['Detach From Frame'],
+				},	
+				detachedWidth = {
+					type = 'range',
+					order = 6,
+					name = L['Detached Width'],
+					disabled = function() return not E.db.unitframe.units['target']['combobar'].detachFromFrame end,
+					min = 15, max = 450, step = 1,
+				},				
+			},
+		},	
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'target'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'target'),
 		power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'target'),	
@@ -4722,49 +4768,31 @@ E.Options.args.unitframe.args.assist = {
 
 
 --MORE COLORING STUFF YAY
-E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup = {
-	order = -1,
-	type = 'group',
-	guiInline = true,
-	name = L['Class Resources'],
-	get = function(info)
-		local t = E.db.unitframe.colors.classResources[ info[#info] ]
-		return t.r, t.g, t.b, t.a
-	end,
-	set = function(info, r, g, b)
-		E.db.unitframe.colors.classResources[ info[#info] ] = {}
-		local t = E.db.unitframe.colors.classResources[ info[#info] ]
-		t.r, t.g, t.b = r, g, b
-		UF:Update_AllFrames()
-	end,
-	args = {}
-}
-
-E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args.bgColor = {
-	type = 'color',
-	name = L['Backdrop Color'],
-	hasAlpha = false,
-}	
-
-
-for i = 1, 5 do
-	E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args["comboBar"..i] = {
-		type = 'color',
-		name = L['ComboBar']..' #'..i,
+if P.unitframe.colors.classResources[E.myclass] then
+	E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup = {
+		order = -1,
+		type = 'group',
+		guiInline = true,
+		name = L['Class Resources'],
 		get = function(info)
-			local t = E.db.unitframe.colors.classResources.comboBar[i]
+			local t = E.db.unitframe.colors.classResources[ info[#info] ]
 			return t.r, t.g, t.b, t.a
 		end,
 		set = function(info, r, g, b)
-			E.db.unitframe.colors.classResources.comboBar[i] = {}
-			local t = E.db.unitframe.colors.classResources.comboBar[i]
+			E.db.unitframe.colors.classResources[ info[#info] ] = {}
+			local t = E.db.unitframe.colors.classResources[ info[#info] ]
 			t.r, t.g, t.b = r, g, b
 			UF:Update_AllFrames()
-		end,			
+		end,
+		args = {}
 	}
-end		
-
-if P.unitframe.colors.classResources[E.myclass] then
+	
+	E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args.bgColor = {
+		type = 'color',
+		name = L['Backdrop Color'],
+		hasAlpha = false,
+	}	
+	
 	if E.myclass == 'PALADIN' then
 		E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args[E.myclass] = {
 			type = 'color',
@@ -4775,6 +4803,23 @@ if P.unitframe.colors.classResources[E.myclass] then
 			type = 'color',
 			name = L['Arcane Charges'],
 		}
+	elseif E.myclass == 'ROGUE' then
+		for i = 1, 5 do
+			E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args['resource'..i] = {
+				type = 'color',
+				name = L['Anticipation']..' #'..i,
+				get = function(info)
+					local t = E.db.unitframe.colors.classResources.ROGUE[i]
+					return t.r, t.g, t.b, t.a
+				end,
+				set = function(info, r, g, b)
+					E.db.unitframe.colors.classResources.ROGUE[i] = {}
+					local t = E.db.unitframe.colors.classResources.ROGUE[i]
+					t.r, t.g, t.b = r, g, b
+					UF:Update_AllFrames()
+				end,			
+			}
+		end		
 	elseif E.myclass == 'PRIEST' then
 		E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args[E.myclass] = {
 			type = 'color',

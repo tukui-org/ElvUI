@@ -51,10 +51,10 @@ function UF:Construct_PlayerFrame(frame)
 		frame.ArcaneChargeBar = self:Construct_MageResourceBar(frame)
 		frame.ClassBar = 'ArcaneChargeBar'
 	elseif E.myclass == 'ROGUE' then
+		frame.Anticipation = self:Construct_RogueResourceBar(frame)
 		frame.ClassBar = 'Anticipation'		
 	end
 	
-	frame.CPoints = self:Construct_Combobar(frame)
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)
 	frame.Resting = self:Construct_RestingIndicator(frame)
 	frame.Combat = self:Construct_CombatIndicator(frame)
@@ -76,18 +76,12 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 	local threat = frame.Threat
 	local power = frame.Power
 	local stagger = frame.Stagger
-
-	local COMBOBAR_VISIBLE = frame.CPoints:IsShown()
-	local ALTPOWER_VISIBLE = frame.DruidAltMana and frame.DruidAltMana:IsShown()
 	local PORTRAIT_WIDTH = db.portrait.width
 	local USE_PORTRAIT = db.portrait.enable
 	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
-
-	local CLASSBAR_WIDTH
 	local CLASSBAR_HEIGHT = db.classbar.height
 	local USE_CLASSBAR = db.classbar.enable
 	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and USE_CLASSBAR
-
 	local USE_POWERBAR = db.power.enable
 	local USE_INSET_POWERBAR = db.power.width == 'inset' and USE_POWERBAR
 	local USE_MINI_POWERBAR = db.power.width == 'spaced' and USE_POWERBAR
@@ -95,7 +89,6 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR and not POWERBAR_DETACHED
 	local POWERBAR_OFFSET = db.power.offset
 	local POWERBAR_HEIGHT = db.power.height
-
 	local SPACING = E.Spacing;
 	local BORDER = E.Border;
 	local SHADOW_SPACING = E.PixelMode and 3 or 4
@@ -135,7 +128,6 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 	end
 	
 	if isShown then
-		frame.CPoints:Hide()
 		if db.power.offset ~= 0 then
 			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER+db.power.offset) - STAGGER_WIDTH, -(BORDER + CLASSBAR_HEIGHT + SPACING))
 		else
@@ -183,94 +175,42 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 			end				
 		end
 	else
-		if COMBOBAR_VISIBLE then
-			if(frame.DruidAltMana) then
-				frame.DruidAltMana:Hide()
-			end
-			if db.power.offset ~= 0 then
-				health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER+db.power.offset) - STAGGER_WIDTH, -(BORDER + CLASSBAR_HEIGHT + SPACING))
-			else
-				health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER - STAGGER_WIDTH, -(BORDER + CLASSBAR_HEIGHT + SPACING))
-			end
-			health:Point("TOPLEFT", frame, "TOPLEFT", PORTRAIT_WIDTH + BORDER, -(BORDER + CLASSBAR_HEIGHT + SPACING))	
-
-			local mini_classbarY = 0
-			if USE_MINI_CLASSBAR then
-				mini_classbarY = -(SPACING+(CLASSBAR_HEIGHT))
-			end		
-			
-			if db.threatStyle == "GLOW" then
-				threat.glow:Point("TOPLEFT", -SHADOW_SPACING, SHADOW_SPACING+mini_classbarY)
-				threat.glow:Point("TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING+mini_classbarY)
-				
-				if USE_MINI_POWERBAR then
-					threat.glow:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING + (POWERBAR_HEIGHT/2))
-					threat.glow:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING + (POWERBAR_HEIGHT/2))		
-				else
-					threat.glow:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
-					threat.glow:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
-				end		
-				
-				if USE_POWERBAR_OFFSET then
-					threat.glow:Point("TOPRIGHT", SHADOW_SPACING-POWERBAR_OFFSET, SHADOW_SPACING+mini_classbarY)
-					threat.glow:Point("BOTTOMRIGHT", SHADOW_SPACING-POWERBAR_OFFSET, -SHADOW_SPACING)	
-				end				
-			end		
-
-			
-			if db.portrait.enable and not USE_PORTRAIT_OVERLAY and frame.Portrait then
-				local portrait = frame.Portrait
-				portrait.backdrop:ClearAllPoints()
-				if USE_MINI_CLASSBAR and USE_CLASSBAR then
-					portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT", 0, -(CLASSBAR_HEIGHT + SPACING))
-				else
-					portrait.backdrop:SetPoint("TOPLEFT", frame, "TOPLEFT")
-				end		
-				
-				if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or USE_INSET_POWERBAR or not USE_POWERBAR or USE_INSET_POWERBAR or POWERBAR_DETACHED then
-					portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", E.PixelMode and 1 or -SPACING, 0)
-				else
-					portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", E.PixelMode and 1 or -SPACING, 0)
-				end				
-			end
+		if db.power.offset ~= 0 then
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER + db.power.offset) - STAGGER_WIDTH, -BORDER)
 		else
-			if db.power.offset ~= 0 then
-				health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER + db.power.offset) - STAGGER_WIDTH, -BORDER)
-			else
-				health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER - STAGGER_WIDTH, -BORDER)
-			end
-			health:Point("TOPLEFT", frame, "TOPLEFT", PORTRAIT_WIDTH + BORDER, -BORDER)	
-
-			if db.threatStyle == "GLOW" then
-				threat.glow:Point("TOPLEFT", -SHADOW_SPACING, SHADOW_SPACING)
-				threat.glow:Point("TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING)
-				
-				if USE_MINI_POWERBAR then
-					threat.glow:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING + (POWERBAR_HEIGHT/2))
-					threat.glow:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING + (POWERBAR_HEIGHT/2))		
-				else
-					threat.glow:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
-					threat.glow:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
-				end		
-				
-				if USE_POWERBAR_OFFSET then
-					threat.glow:Point("TOPRIGHT", SHADOW_SPACING-POWERBAR_OFFSET, SHADOW_SPACING)
-					threat.glow:Point("BOTTOMRIGHT", SHADOW_SPACING-POWERBAR_OFFSET, -SHADOW_SPACING)	
-				end				
-			end			
-
-			if db.portrait.enable and not USE_PORTRAIT_OVERLAY and frame.Portrait then
-				local portrait = frame.Portrait
-				portrait.backdrop:ClearAllPoints()
-				portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT")
-				
-				if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR or USE_INSET_POWERBAR or POWERBAR_DETACHED then
-					portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", E.PixelMode and 1 or -SPACING, 0)
-				else
-					portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", E.PixelMode and 1 or -SPACING, 0)
-				end				
-			end		
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER - STAGGER_WIDTH, -BORDER)
 		end
+		health:Point("TOPLEFT", frame, "TOPLEFT", PORTRAIT_WIDTH + BORDER, -BORDER)	
+
+		if db.threatStyle == "GLOW" then
+			threat.glow:Point("TOPLEFT", -SHADOW_SPACING, SHADOW_SPACING)
+			threat.glow:Point("TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING)
+			
+			if USE_MINI_POWERBAR then
+				threat.glow:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING + (POWERBAR_HEIGHT/2))
+				threat.glow:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING + (POWERBAR_HEIGHT/2))		
+			else
+				threat.glow:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
+				threat.glow:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
+			end		
+			
+			if USE_POWERBAR_OFFSET then
+				threat.glow:Point("TOPRIGHT", SHADOW_SPACING-POWERBAR_OFFSET, SHADOW_SPACING)
+				threat.glow:Point("BOTTOMRIGHT", SHADOW_SPACING-POWERBAR_OFFSET, -SHADOW_SPACING)	
+			end				
+		end			
+
+		if db.portrait.enable and not USE_PORTRAIT_OVERLAY and frame.Portrait then
+			local portrait = frame.Portrait
+			portrait.backdrop:ClearAllPoints()
+			portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT")
+			
+			if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR or USE_INSET_POWERBAR or POWERBAR_DETACHED then
+				portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", E.PixelMode and 1 or -SPACING, 0)
+			else
+				portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", E.PixelMode and 1 or -SPACING, 0)
+			end				
+		end		
 	end
 end
 
@@ -298,16 +238,16 @@ function UF:Update_PlayerFrame(frame, db)
 	local POWERBAR_OFFSET = db.power.offset
 	local POWERBAR_HEIGHT = db.power.height
 	local POWERBAR_WIDTH = POWERBAR_DETACHED and db.power.detachedWidth or (db.width - (BORDER*2))
+
+	local USE_CLASSBAR = db.classbar.enable and CAN_HAVE_CLASSBAR
+	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and USE_CLASSBAR and db.classbar.detachFromFrame ~= true
+	local CLASSBAR_HEIGHT = db.classbar.height
+	local CLASSBAR_WIDTH = db.width - (BORDER*2)
 	
 	local USE_PORTRAIT = db.portrait.enable
 	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
 	local PORTRAIT_WIDTH = db.portrait.width
 	
-	local USE_CLASSBAR = db.classbar.enable and CAN_HAVE_CLASSBAR
-	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and USE_CLASSBAR and db.classbar.detachFromFrame ~= true
-	local CLASSBAR_HEIGHT = db.classbar.height
-	local CLASSBAR_WIDTH = db.width - (BORDER*2)
-
 	local unit = self.unit
 	
 	frame.colors = ElvUF.colors
@@ -336,7 +276,7 @@ function UF:Update_PlayerFrame(frame, db)
 			POWERBAR_WIDTH = POWERBAR_WIDTH / 2
 		end
 	end
-
+	
 	local mini_classbarY = 0
 	if USE_MINI_CLASSBAR then
 		mini_classbarY = -(SPACING+(CLASSBAR_HEIGHT/2))
@@ -761,8 +701,6 @@ function UF:Update_PlayerFrame(frame, db)
 		end			
 	end
 	
-
-
 	--Resource Bars
 	do
 		local bars = frame[frame.ClassBar]
@@ -856,7 +794,13 @@ function UF:Update_PlayerFrame(frame, db)
 						bars[i].backdrop:Show()
 					end
 
-					if E.myclass ~= 'DEATHKNIGHT' then
+					if E.myclass == 'ROGUE' then
+						bars[i]:SetStatusBarColor(unpack(ElvUF.colors[frame.ClassBar][i]))
+
+						if bars[i].bg then
+							bars[i].bg:SetTexture(unpack(ElvUF.colors[frame.ClassBar][i]))
+						end						
+					elseif E.myclass ~= 'DEATHKNIGHT' then
 						bars[i]:SetStatusBarColor(unpack(ElvUF.colors[frame.ClassBar]))
 
 						if bars[i].bg then
@@ -892,109 +836,6 @@ function UF:Update_PlayerFrame(frame, db)
 		end		
 	end
 	
-	--Combo Bar
-	do
-		local comboBar = frame.CPoints
-		local c = UF.db.colors.classResources.bgColor
-		comboBar.backdrop.ignoreUpdates = true
-		comboBar.backdrop.backdropTexture:SetVertexColor(c.r, c.g, c.b)
-		if(not E.PixelMode) then
-			c = E.db.general.bordercolor
-			comboBar.backdrop:SetBackdropBorderColor(c.r, c.g, c.b)
-		end
-
-		local COMBOBAR_WIDTH = CLASSBAR_WIDTH
-		local COMBOBAR_HEIGHT = CLASSBAR_HEIGHT or db.classbar.height
-		if USE_MINI_CLASSBAR and not db.classbar.detachFromFrame then
-			comboBar:ClearAllPoints()
-			comboBar:Point("CENTER", frame.Health.backdrop, "TOP", 0, 0)
-			CLASSBAR_WIDTH = CLASSBAR_WIDTH * (MAX_COMBO_POINTS - 1) / MAX_COMBO_POINTS
-			comboBar:SetFrameStrata("MEDIUM")
-
-			if comboBar.mover then
-				comboBar.mover:SetScale(0.000001)
-				comboBar.mover:SetAlpha(0)
-			end
-		elseif not db.classbar.detachFromFrame then
-			comboBar:ClearAllPoints()
-			comboBar:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, (E.PixelMode and 0 or (BORDER + SPACING)))
-			comboBar:SetFrameStrata("LOW")
-
-			if comboBar.mover then
-				comboBar.mover:SetScale(0.000001)
-				comboBar.mover:SetAlpha(0)
-			end			
-		else
-			CLASSBAR_WIDTH = db.classbar.detachedWidth - (BORDER*2)
-
-			if(frame.ClassBar and frame[frame.ClassBar] and frame[frame.ClassBar].mover) then
-				comboBar.mover = frame[frame.ClassBar].mover
-			end
-
-			if not frame.classBar and not comboBar.mover then
-				comboBar:Width(CLASSBAR_WIDTH)
-				comboBar:Height(CLASSBAR_HEIGHT - (E.PixelMode and 1 or 4))
-				comboBar:ClearAllPoints()
-				comboBar:Point("BOTTOM", E.UIParent, "BOTTOM", 0, 150)
-				E:CreateMover(comboBar, 'ClassBarMover', L['Classbar'], nil, nil, nil, 'ALL,SOLO')
-			else
-				comboBar:ClearAllPoints()
-				comboBar:SetPoint("BOTTOMLEFT", comboBar.mover, "BOTTOMLEFT")
-				comboBar.mover:SetScale(1)
-				comboBar.mover:SetAlpha(1)		
-			end
-
-			comboBar:SetFrameStrata("LOW")
-		end				
-
-		comboBar:Width(COMBOBAR_WIDTH)
-		comboBar:Height(COMBOBAR_HEIGHT - (E.PixelMode and 1 or 4))
-
-		for i = 1, MAX_COMBO_POINTS do
-			comboBar[i].backdrop.ignoreUpdates = true
-			comboBar[i].backdrop.backdropTexture:SetVertexColor(c.r, c.g, c.b)
-			if(not E.PixelMode) then
-				c = E.db.general.bordercolor
-				comboBar[i].backdrop:SetBackdropBorderColor(c.r, c.g, c.b)
-			end					
-			comboBar[i]:SetHeight(comboBar:GetHeight())	
-			if db.classbar.fill == "spaced" then
-				comboBar[i]:SetWidth(E:Scale(comboBar:GetWidth() - ((SPACING+(BORDER*2)+2)*(MAX_COMBO_POINTS - 1)))/MAX_COMBO_POINTS)
-			else
-				comboBar[i]:SetWidth(E:Scale(comboBar:GetWidth() - (MAX_COMBO_POINTS - 1))/MAX_COMBO_POINTS)	
-			end
-
-			comboBar[i].anticipation:SetSize(comboBar[i]:GetWidth() + 10, comboBar[i]:GetHeight() + 1)	
-			c = UF.db.colors.classResources.comboBar[i]
-			comboBar[i]:SetStatusBarColor(c.r, c.g, c.b)
-			comboBar[i]:GetStatusBarTexture():SetHorizTile(false)
-			comboBar[i]:ClearAllPoints()
-			if i == 1 then
-				comboBar[i]:SetPoint("LEFT", comboBar)
-			else
-				if db.classbar.fill == "spaced" then
-					comboBar[i]:Point("LEFT", comboBar[i-1], "RIGHT", SPACING+(BORDER*2)+2, 0)
-				else
-					comboBar[i]:Point("LEFT", comboBar[i-1], "RIGHT", 1, 0)
-				end
-			end
-			
-			if db.classbar.fill ~= "spaced" then
-				comboBar[i].backdrop:Hide()
-			else
-				comboBar[i].backdrop:Show()
-			end
-		end
-
-		if db.classbar.enable and frame:IsElementEnabled("CPoints") then
-			frame:EnableElement("CPoints")
-			comboBar:Show()
-		elseif not db.classbar.enable and frame:IsElementEnabled("CPoints") then
-			frame:DisableElement("CPoints")	
-			comboBar:Hide()
-		end
-	end
-
 	--Stagger
 	do
 		if E.myclass == "MONK" then
