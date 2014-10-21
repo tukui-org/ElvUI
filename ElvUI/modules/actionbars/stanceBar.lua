@@ -34,7 +34,7 @@ function AB:StyleShapeShift(event)
 		if i <= numForms then
 			texture, name, isActive, isCastable = GetShapeshiftFormInfo(i);
 
-			if (lower(texture) == "interface\\icons\\spell_nature_wispsplode" or lower(texture) == "interface\\icons\\ability_rogue_envelopingshadows") and self.db.stanceBar.style == 'darkenInactive' then
+			if (texture and type(texture) == "string" and (lower(texture) == "interface\\icons\\spell_nature_wispsplode" or lower(texture) == "interface\\icons\\ability_rogue_envelopingshadows")) and self.db.stanceBar.style == 'darkenInactive' then
 				_, _, texture = GetSpellInfo(name)
 			end
 			
@@ -52,6 +52,7 @@ function AB:StyleShapeShift(event)
 					button.checked:SetTexture(1, 1, 1, 0.5) 
 					button:SetChecked(true);
 				else
+					button.checked:SetTexture(1, 1, 1, 0.5)
 					button:SetChecked(self.db.stanceBar.style ~= 'darkenInactive');
 				end
 			else
