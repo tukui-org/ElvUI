@@ -259,6 +259,25 @@ function UF:UpdateComboDisplay(event, unit)
 		end	
 	end
 
+	local BORDER = E.Border;
+	local SPACING = E.Spacing;
+	local db = E.db['unitframe']['units'].player
+	local USE_COMBOBAR = db.classbar.enable
+	local USE_MINI_COMBOBAR = db.classbar.fill == "spaced" and USE_COMBOBAR and not db.classbar.detachFromFrame
+	local COMBOBAR_HEIGHT = db.classbar.height
+	local USE_PORTRAIT = db.portrait.enable
+	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
+	local PORTRAIT_WIDTH = db.portrait.width
+	
+
+	if USE_PORTRAIT_OVERLAY or not USE_PORTRAIT then
+		PORTRAIT_WIDTH = 0
+	end
+
+	if db.classbar.detachFromFrame then
+		COMBOBAR_HEIGHT = 0
+	end	
+	
 	if cpoints[1]:GetAlpha() == 1 then
 		cpoints:Show()
 	else
