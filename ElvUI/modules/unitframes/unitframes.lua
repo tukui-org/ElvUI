@@ -743,7 +743,10 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 	if(raidFilter) then
 		local inInstance, instanceType = IsInInstance()
 		if(inInstance and (instanceType == 'raid' or instanceType == 'pvp')) then
-			local maxPlayers = select(5, GetInstanceInfo())
+			local _, _, _, _, maxPlayers, _, _, _, maxPlayersInstance = GetInstanceInfo()
+			if(maxPlayersInstance and maxPlayersInstance ~= 0) then
+				maxPlayers = maxPlayersInstance
+			end
 			
 			if(maxPlayers > 0) then
 				numGroups = E:Round(maxPlayers/5)
