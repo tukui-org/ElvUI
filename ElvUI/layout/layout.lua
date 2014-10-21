@@ -351,8 +351,13 @@ function LO:CreateMinimapPanels()
 	end
 	
 	local configtoggle = CreateFrame('Button', 'ElvConfigToggle', Minimap)
-	configtoggle:Point('TOPLEFT', rminipanel, 'TOPRIGHT', (E.PixelMode and -1 or 1), 0)
-	configtoggle:Point('BOTTOMLEFT', rminipanel, 'BOTTOMRIGHT', (E.PixelMode and -1 or 1), 0)
+	if E.db.auras.consolidatedBuffs.position == "LEFT" then
+		configtoggle:Point('TOPRIGHT', lminipanel, 'TOPLEFT', (E.PixelMode and 1 or -1), 0)
+		configtoggle:Point('BOTTOMRIGHT', lminipanel, 'BOTTOMLEFT', (E.PixelMode and 1 or -1), 0)
+	else
+		configtoggle:Point('TOPLEFT', rminipanel, 'TOPRIGHT', (E.PixelMode and -1 or 1), 0)
+		configtoggle:Point('BOTTOMLEFT', rminipanel, 'BOTTOMRIGHT', (E.PixelMode and -1 or 1), 0)
+	end
 	configtoggle:RegisterForClicks('AnyUp')
 	configtoggle:Width(E.ConsolidatedBuffsWidth)
 	configtoggle:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)

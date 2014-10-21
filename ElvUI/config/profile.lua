@@ -185,6 +185,7 @@ P['auras'] = {
 		['enable'] = true,
 		['filter'] = true,
 		['durations'] = true,
+		['position'] = "RIGHT",
 		['font'] = 'ElvUI Pixel',
 		['fontSize'] = 10,
 		['fontOutline'] = 'MONOCHROMEOUTLINE',

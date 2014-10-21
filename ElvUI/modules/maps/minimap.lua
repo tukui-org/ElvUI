@@ -248,7 +248,11 @@ function M:Initialize()
 	mmholder:Height(Minimap:GetHeight() + 53)
 	
 	Minimap:ClearAllPoints()
-	Minimap:Point("TOPLEFT", mmholder, "TOPLEFT", 2, -2)
+	if E.db.auras.consolidatedBuffs.position == "LEFT" then
+		Minimap:Point("TOPRIGHT", mmholder, "TOPRIGHT", -2, -2)
+	else
+		Minimap:Point("TOPLEFT", mmholder, "TOPLEFT", 2, -2)
+	end
 	Minimap:SetMaskTexture('Interface\\ChatFrame\\ChatFrameBackground')
 	Minimap:SetQuestBlobRingAlpha(0) 
 	Minimap:SetArchBlobRingAlpha(0)	

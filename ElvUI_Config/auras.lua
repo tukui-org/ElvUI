@@ -210,20 +210,30 @@ E.Options.args.auras = {
 					type = 'toggle',
 					name = L['Remaining Time']
 				},
+				position = {
+					order = 4,
+					type = 'select',
+					name = L["Position"],
+					set = function(info, value) E.db.auras.consolidatedBuffs[ info[#info] ] = value; E:StaticPopup_Show('CONFIG_RL') end,
+					values = {
+						["LEFT"] = L["Left"],
+						["RIGHT"] = L["Right"],
+					}
+				},
 				font = {
 					type = "select", dialogControl = 'LSM30_Font',
-					order = 4,
+					order = 5,
 					name = L["Font"],
 					values = AceGUIWidgetLSMlists.font,
 				},
 				fontSize = {
-					order = 5,
+					order = 6,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},	
 				fontOutline = {
-					order = 6,
+					order = 7,
 					name = L["Font Outline"],
 					desc = L["Set the font outline."],
 					type = "select",
