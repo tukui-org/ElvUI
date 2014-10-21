@@ -744,7 +744,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 		local inInstance, instanceType = IsInInstance()
 		if(inInstance and (instanceType == 'raid' or instanceType == 'pvp')) then
 			local _, _, _, _, maxPlayers, _, _, _, maxPlayersInstance = GetInstanceInfo()
-			if(maxPlayersInstance and maxPlayersInstance ~= 0) then
+			if(maxPlayersInstance and maxPlayersInstance > 0) then
 				maxPlayers = maxPlayersInstance
 			end
 			
@@ -790,6 +790,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 				self[group].groups[1] = self:CreateHeader(self[group], index, "ElvUF_"..E:StringTitle(self[group].groupName)..'Group1', template, nil, headerTemplate)
 			end
 		else
+			print(#self[group].groups)
 			while numGroups > #self[group].groups do
 				local index = tostring(#self[group].groups + 1)
 				 tinsert(self[group].groups, self:CreateHeader(self[group], index, "ElvUF_"..E:StringTitle(self[group].groupName)..'Group'..index, template, nil, headerTemplate))

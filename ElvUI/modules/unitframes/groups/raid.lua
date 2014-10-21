@@ -58,7 +58,7 @@ function UF:RaidSmartVisibility(event)
 	if not InCombatLockdown() then		
 		if(inInstance and (instanceType == 'raid' or instanceType == 'pvp')) then
 			local _, _, _, _, maxPlayers, _, _, _, maxPlayersInstance = GetInstanceInfo()
-			if(maxPlayersInstance and maxPlayersInstance ~= 0) then
+			if(maxPlayersInstance and maxPlayersInstance > 0) then
 				maxPlayers = maxPlayersInstance
 			end
 			if(maxPlayer == 0) then
