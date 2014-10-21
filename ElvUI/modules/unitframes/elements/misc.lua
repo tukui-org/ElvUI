@@ -283,7 +283,7 @@ function UF:UpdateComboDisplay(event, unit)
 	if (unit == 'pet') then return end
 	local db = UF.player.db
 	local cpoints = self.CPoints
-	local cp = (UnitHasVehicleUI("player") or UnitHasVehicleUI("vehicle")) and GetComboPoints('vehicle', 'target') or GetComboPoints('player', 'target')
+	local cp = (UnitHasVehicleUI("player") or UnitHasVehicleUI("vehicle")) and UnitPower('vehicle', 4) or UnitPower('player', 4)
 
 	for i=1, MAX_COMBO_POINTS do
 		if(i <= cp) then

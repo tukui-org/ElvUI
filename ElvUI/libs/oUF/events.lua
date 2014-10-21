@@ -71,6 +71,7 @@ do
 		UNIT_PET = true,
 	}
 
+
 	eventFrame:SetScript('OnEvent', function(_, event, arg1, ...)
 		local listeners = registry[event]
 		if arg1 and not sharedUnitEvents[event] then
@@ -84,7 +85,7 @@ do
 			end
 		else
 			for frame in next, listeners do
-				if frame:IsVisible() then
+				if frame:IsVisible() or event == 'UNIT_COMBO_POINTS' then
 					frame[event](frame, event, arg1, ...)
 				end
 			end
