@@ -16,6 +16,8 @@ P['general'] = {
 	['bottomPanel'] = true,
 	['hideErrorFrame'] = true,
 
+	['afk'] = true,
+	
 	["fontSize"] = 12,
 	["font"] = "ElvUI Font",
 
