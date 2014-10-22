@@ -721,7 +721,7 @@ function E:DBConversions()
 		if E.db.bags.xOffset ~= P['bags']['xOffset'] then
 			E.db.bags.xOffsetBank = E.db.bags.xOffset
 			E.db.bags.yOffsetBank = E.db.bags.yOffset
-			E.db.bags.xOffset = abs(E.db.bags.xOffset) --Change negative value to positive value
+			E.db.bags.xOffset = E.db.bags.xOffset * (-1) --Change positive value to negative or vice versa
 		end
 		E.db.bagsOffsetFixed = true
 	end
