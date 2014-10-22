@@ -10,6 +10,7 @@ function AFK:UpdateTimer()
 end
 
 function AFK:SetAFK(status)
+	if(InCombatLockdown()) then return end
 	if(status) then
 		SaveView(5);
 		MoveViewLeftStart(CAMERA_SPEED);
@@ -34,7 +35,7 @@ function AFK:SetAFK(status)
 		self.timer = self:ScheduleRepeatingTimer('UpdateTimer', 1)
 
 		self.isAFK = true
-	else
+	elseif(self.isAFK) then
 		UIParent:Show()
 		self.AFKMode:Hide()
 		MoveViewLeftStop();
@@ -47,7 +48,17 @@ function AFK:SetAFK(status)
 	end
 end
 
-function AFK:PLAYER_FLAGS_CHANGED()
+function AFK:OnEvent(event)
+	if(event == "PLAYER_REGEN_DISABLED") then
+		self:SetAFK(false)
+		self:RegisterEvent("PLAYER_REGEN_ENABLED", "OnEvent")
+		return
+	end
+
+	if(event == "PLAYER_REGEN_ENABLED") then
+		self:UnregisterEvent("PLAYER_REGEN_ENABLED")
+	end
+
 	if(UnitIsAFK("player")) then
 		self:SetAFK(true)
 	else
@@ -58,27 +69,29 @@ end
 
 function AFK:Toggle()
 	if(E.db.general.afk) then
-		self:RegisterEvent("PLAYER_FLAGS_CHANGED")
+		self:RegisterEvent("PLAYER_FLAGS_CHANGED", "OnEvent")
+		self:RegisterEvent("PLAYER_REGEN_DISABLED", "OnEvent")
 		SetCVar("autoClearAFK", "1")
 	else
 		self:UnregisterEvent("PLAYER_FLAGS_CHANGED")
+		self:UnregisterEvent("PLAYER_REGEN_DISABLED")
 	end
 end
 
 local function OnKeyDown(self, key)
 	if(key == 'LALT') then return end
 	AFK:SetAFK(false)
-	AFK:ScheduleTimer('PLAYER_FLAGS_CHANGED', 60)
+	AFK:ScheduleTimer('OnEvent', 60)
 end
 
 function AFK:LoopAnimations()
 	if(ElvUIAFKPlayerModel.curAnimation == "wave") then
-			ElvUIAFKPlayerModel:SetAnimation(69)
-			ElvUIAFKPlayerModel.curAnimation = "dance"
-			ElvUIAFKPlayerModel.startTime = GetTime()
-			ElvUIAFKPlayerModel.duration = 300
-			ElvUIAFKPlayerModel.isIdle = false
-			ElvUIAFKPlayerModel.idleDuration = 120
+		ElvUIAFKPlayerModel:SetAnimation(69)
+		ElvUIAFKPlayerModel.curAnimation = "dance"
+		ElvUIAFKPlayerModel.startTime = GetTime()
+		ElvUIAFKPlayerModel.duration = 300
+		ElvUIAFKPlayerModel.isIdle = false
+		ElvUIAFKPlayerModel.idleDuration = 120
 	end
 end
 
@@ -91,30 +104,6 @@ function AFK:Initialize()
 	self.AFKMode:Hide()
 	self.AFKMode:EnableKeyboard(true)
 	self.AFKMode:SetScript("OnKeyDown", OnKeyDown)
-
-	--[[self.AFKMode.top = CreateFrame("Frame", nil, self.AFKMode)
-	self.AFKMode.top:SetTemplate("Transparent")
-	self.AFKMode.top:SetPoint("TOP", self.AFKMode, "TOP", 0, 2)
-	self.AFKMode.top:SetWidth(GetScreenWidth())
-	self.AFKMode.top:SetHeight(GetScreenHeight() * (1 / 10))
-
-	self.AFKMode.top.logo = self.AFKMode.top:CreateTexture(nil, 'OVERLAY')
-	self.AFKMode.top.logo:SetSize(384, 192)
-	self.AFKMode.top.logo:SetPoint("CENTER", self.AFKMode.top, "CENTER", 0, -50)
-	self.AFKMode.top.logo:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\logo.tga")
-	
-
-	local factionGroup = UnitFactionGroup("player");
-	--factionGroup = "Alliance"
-	self.AFKMode.top.factionRight = self.AFKMode.top:CreateTexture(nil, 'OVERLAY')
-	self.AFKMode.top.factionRight:SetPoint("BOTTOMRIGHT", self.AFKMode.top, "BOTTOMRIGHT", -10, -16)
-	self.AFKMode.top.factionRight:SetTexture("Interface\\Timer\\"..factionGroup.."-Logo")
-	self.AFKMode.top.factionRight:SetSize(140, 140)
-
-	self.AFKMode.top.factionLeft = self.AFKMode.top:CreateTexture(nil, 'OVERLAY')
-	self.AFKMode.top.factionLeft:SetPoint("BOTTOMLEFT", self.AFKMode.top, "BOTTOMLEFT", 10, -16)
-	self.AFKMode.top.factionLeft:SetTexture("Interface\\Timer\\"..factionGroup.."-Logo")
-	self.AFKMode.top.factionLeft:SetSize(140, 140)]]
 
 	self.AFKMode.bottom = CreateFrame("Frame", nil, self.AFKMode)
 	self.AFKMode.bottom:SetTemplate("Transparent")
