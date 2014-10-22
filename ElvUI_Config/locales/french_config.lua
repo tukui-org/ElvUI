@@ -125,10 +125,10 @@ L['The size of the individual buttons on the bag frame.'] = "La taille des bouto
 L['The size of the individual buttons on the bank frame.'] = "La taille des boutons individuels sur la fenêtre de la banque."
 L["The spacing between buttons."] = "Espacement entre deux boutons."
 L["Top to Bottom"] = "Du haut vers le bas"
-L["X Offset Bags"] = true;
-L["X Offset Bank"] = true;
-L["Y Offset Bags"] = true;
-L["Y Offset Bank"] = true;
+L["X Offset Bags"] = "Décalage X des sacs";
+L["X Offset Bank"] = "Décalage Y des sacs";
+L["Y Offset Bags"] = "Décalage X de la banque";
+L["Y Offset Bank"] = "Décalage Y de la banque";
 
 --Buffs and Debuffs
 L['Begin a new row or column after this many auras.'] = "Commencer une nouvelle ligne ou colonne après cette limite d'auras."
