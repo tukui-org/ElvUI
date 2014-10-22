@@ -63,7 +63,6 @@ function UF:RaidSmartVisibility(event)
 
 			if mapID and UF.mapIDs[mapID] then
 				maxPlayers = UF.mapIDs[mapID]
-				print(maxPlayers)
 			end
 
 			UnregisterStateDriver(self, "visibility")
@@ -71,7 +70,7 @@ function UF:RaidSmartVisibility(event)
 			if(maxPlayers < 40) then
 				self:Show()	
 				
-				if(maxPlayers and ElvUF_Raid.numGroups ~= E:Round(maxPlayers/5)) then	
+				if(maxPlayers and ElvUF_Raid.numGroups ~= E:Round(maxPlayers/5) and event) then	
 					UF:CreateAndUpdateHeaderGroup('raid')
 				end				
 			else
@@ -88,7 +87,6 @@ function UF:RaidSmartVisibility(event)
 		return
 	end
 end
-
 
 function UF:Update_RaidHeader(header, db, isForced)
 	header:GetParent().db = db
@@ -107,6 +105,8 @@ function UF:Update_RaidHeader(header, db, isForced)
 		headerHolder:SetScript("OnEvent", UF['RaidSmartVisibility'])
 		headerHolder.positioned = true;
 	end
+
+	UF.RaidSmartVisibility(headerHolder)
 end
 
 function UF:Update_RaidFrames(frame, db)

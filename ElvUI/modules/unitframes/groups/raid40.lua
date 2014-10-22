@@ -69,7 +69,7 @@ function UF:Raid40SmartVisibility(event)
 
 			if(maxPlayers == 40) then
 				self:Show()
-				if(maxPlayers and ElvUF_Raid40.numGroups ~= E:Round(maxPlayers/5)) then
+				if(maxPlayers and ElvUF_Raid40.numGroups ~= E:Round(maxPlayers/5) and event) then
 					UF:CreateAndUpdateHeaderGroup('raid40')	
 				end					
 			else
@@ -104,6 +104,8 @@ function UF:Update_Raid40Header(header, db, isForced)
 		headerHolder:SetScript("OnEvent", UF['Raid40SmartVisibility'])
 		headerHolder.positioned = true;
 	end
+
+	UF.Raid40SmartVisibility(headerHolder)
 end
 
 function UF:Update_Raid40Frames(frame, db)

@@ -629,7 +629,7 @@ function UF.headerPrototype:Update(isForced)
 	local group = self.groupName
 	local db = UF.db['units'][group]
 	UF["Update_"..E:StringTitle(group).."Header"](UF, self, db, isForced)
-	
+
 	local i = 1
 	local child = self:GetAttribute("child" .. i)
 
