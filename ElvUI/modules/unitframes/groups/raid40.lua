@@ -78,7 +78,7 @@ function UF:Raid40SmartVisibility(event)
 		elseif self.db.visibility then
 			RegisterStateDriver(self, "visibility", self.db.visibility)
 			if(ElvUF_Raid40.numGroups ~= self.db.numGroups) then
-				ElvUF_Raid40:Configure_Groups()
+				UF:CreateAndUpdateHeaderGroup('raid40')	
 			end
 		end
 	else
