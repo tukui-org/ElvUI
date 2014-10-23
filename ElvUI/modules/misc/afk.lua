@@ -12,7 +12,7 @@ end
 function AFK:SetAFK(status)
 	if(InCombatLockdown()) then return end
 	if(status) then
-		SaveView(5);
+		--SaveView(5);
 		MoveViewLeftStart(CAMERA_SPEED);
 		self.AFKMode:Show()
 		UIParent:Hide()
@@ -39,7 +39,7 @@ function AFK:SetAFK(status)
 		UIParent:Show()
 		self.AFKMode:Hide()
 		MoveViewLeftStop();
-		ResetView(5);
+		--ResetView(5);
 		self:CancelTimer(self.timer)
 		self:CancelTimer(self.animTimer)
 		self.AFKMode.bottom.time:SetText("00:00")
@@ -135,27 +135,35 @@ function AFK:Initialize()
 	self.AFKMode.bottom.logo:SetPoint("CENTER", self.AFKMode.bottom, "CENTER", 0, 50)
 	self.AFKMode.bottom.logo:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\logo.tga")
 
+	local factionGroup = UnitFactionGroup("player");
+	--factionGroup = "Alliance"
+	self.AFKMode.bottom.faction = self.AFKMode.bottom:CreateTexture(nil, 'OVERLAY')
+	self.AFKMode.bottom.faction:SetPoint("BOTTOMLEFT", self.AFKMode.bottom, "BOTTOMLEFT", -20, -16)
+	self.AFKMode.bottom.faction:SetTexture("Interface\\Timer\\"..factionGroup.."-Logo")
+	self.AFKMode.bottom.faction:SetSize(140, 140)
+
 	self.AFKMode.bottom.name = self.AFKMode.bottom:CreateFontString(nil, 'OVERLAY')
-	self.AFKMode.bottom.name:SetFont(E.LSM:Fetch("font", "ElvUI Pixel"), 20, "MONOCHROMEOUTLINE")
+	self.AFKMode.bottom.name:FontTemplate(nil, 20)
 	self.AFKMode.bottom.name:SetText(E.myname.."-"..E.myrealm)
-	self.AFKMode.bottom.name:SetPoint("TOPLEFT", self.AFKMode.bottom, "TOPLEFT", 20, -12)
+	self.AFKMode.bottom.name:SetPoint("TOPLEFT", self.AFKMode.bottom.faction, "TOPRIGHT", -10, -28)
 	self.AFKMode.bottom.name:SetTextColor(classColor.r, classColor.g, classColor.b)
 
 	self.AFKMode.bottom.guild = self.AFKMode.bottom:CreateFontString(nil, 'OVERLAY')
-	self.AFKMode.bottom.guild:SetFont(E.LSM:Fetch("font", "ElvUI Pixel"), 20, "MONOCHROMEOUTLINE")
+	self.AFKMode.bottom.guild:FontTemplate(nil, 20)
 	self.AFKMode.bottom.guild:SetText(L["No Guild"])
 	self.AFKMode.bottom.guild:SetPoint("TOPLEFT", self.AFKMode.bottom.name, "BOTTOMLEFT", 0, -6)
 	self.AFKMode.bottom.guild:SetTextColor(0.7, 0.7, 0.7)
 
 	self.AFKMode.bottom.time = self.AFKMode.bottom:CreateFontString(nil, 'OVERLAY')
-	self.AFKMode.bottom.time:SetFont(E.LSM:Fetch("font", "ElvUI Pixel"), 20, "MONOCHROMEOUTLINE")
+	self.AFKMode.bottom.time:FontTemplate(nil, 20)
 	self.AFKMode.bottom.time:SetText("00:00")
 	self.AFKMode.bottom.time:SetPoint("TOPLEFT", self.AFKMode.bottom.guild, "BOTTOMLEFT", 0, -6)
 	self.AFKMode.bottom.time:SetTextColor(0.7, 0.7, 0.7)
 
 	self.AFKMode.bottom.model = CreateFrame("PlayerModel", "ElvUIAFKPlayerModel", self.AFKMode.bottom)
-	self.AFKMode.bottom.model:SetPoint("BOTTOMRIGHT", self.AFKMode.bottom, "BOTTOMRIGHT", 90, -80)
-	self.AFKMode.bottom.model:SetSize(700, 700)
+	self.AFKMode.bottom.model:SetPoint("BOTTOMRIGHT", self.AFKMode.bottom, "BOTTOMRIGHT", 120, -100)
+	self.AFKMode.bottom.model:SetSize(800, 800)
+	self.AFKMode.bottom.model:SetCamDistanceScale(1.15)
 	self.AFKMode.bottom.model:SetFacing(6)
 	self.AFKMode.bottom.model:SetScript("OnUpdateModel", function(self) 
 		local timePassed = GetTime() - self.startTime
