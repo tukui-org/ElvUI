@@ -39,7 +39,7 @@ function AFK:SetAFK(status)
 		UIParent:Show()
 		self.AFKMode:Hide()
 		MoveViewLeftStop();
-		SetView(5);
+		ResetView(5);
 		self:CancelTimer(self.timer)
 		self:CancelTimer(self.animTimer)
 		self.AFKMode.bottom.time:SetText("00:00")
