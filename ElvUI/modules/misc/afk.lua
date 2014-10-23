@@ -44,14 +44,29 @@ function AFK:SetAFK(status)
 		self:CancelTimer(self.animTimer)
 		self.AFKMode.bottom.time:SetText("00:00")
 
+		if(PVEFrame:IsShown()) then --odd bug, frame is blank
+			PVEFrame_ToggleFrame()
+			PVEFrame_ToggleFrame()
+		end
+
 		self.isAFK = false
 	end
 end
 
-function AFK:OnEvent(event)
-	if(event == "PLAYER_REGEN_DISABLED") then
-		self:SetAFK(false)
-		self:RegisterEvent("PLAYER_REGEN_ENABLED", "OnEvent")
+function AFK:OnEvent(event, ...)
+	if(event == "PLAYER_REGEN_DISABLED" or event == "LFG_PROPOSAL_SHOW" or event == "UPDATE_BATTLEFIELD_STATUS") then
+		if(event == "UPDATE_BATTLEFIELD_STATUS") then
+			local status = GetBattlefieldStatus(...);
+			if ( status == "confirm" ) then
+				self:SetAFK(false)
+			end
+		else
+			self:SetAFK(false)
+		end
+
+		if(event == "PLAYER_REGEN_DISABLED") then
+			self:RegisterEvent("PLAYER_REGEN_ENABLED", "OnEvent")
+		end
 		return
 	end
 
@@ -71,10 +86,14 @@ function AFK:Toggle()
 	if(E.db.general.afk) then
 		self:RegisterEvent("PLAYER_FLAGS_CHANGED", "OnEvent")
 		self:RegisterEvent("PLAYER_REGEN_DISABLED", "OnEvent")
+		self:RegisterEvent("LFG_PROPOSAL_SHOW", "OnEvent")
+		self:RegisterEvent("UPDATE_BATTLEFIELD_STATUS", "OnEvent")
 		SetCVar("autoClearAFK", "1")
 	else
 		self:UnregisterEvent("PLAYER_FLAGS_CHANGED")
 		self:UnregisterEvent("PLAYER_REGEN_DISABLED")
+		self:UnregisterEvent("LFG_PROPOSAL_SHOW")
+		self:UnregisterEvent("UPDATE_BATTLEFIELD_STATUS")
 	end
 end
 
