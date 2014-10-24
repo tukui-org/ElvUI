@@ -121,6 +121,7 @@ L["Set the size of your bag buttons."] = "Установите размер кн
 L['Short (Whole Numbers)'] = true;
 L['Short'] = true;
 L['Show Coints'] = true;
+L["Size and Position"] = true;
 L['Smart'] = true;
 L["Sort Direction"] = "Направление сортировки" --Also used in Buffs and Debuffs
 L['Sort Inverted'] = "Инвертированная сортировка"

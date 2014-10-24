@@ -121,6 +121,7 @@ L["Set the size of your bag buttons."] = "Establece el tamaño de tus botones de
 L['Short (Whole Numbers)'] = true;
 L['Short'] = true;
 L['Show Coints'] = true;
+L["Size and Position"] = true;
 L['Smart'] = true;
 L["Sort Direction"] = "Dirección de Ordenado"
 L["Sort Inverted"] = "Ordenado Invertido"

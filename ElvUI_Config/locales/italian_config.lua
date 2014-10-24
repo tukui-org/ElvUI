@@ -119,6 +119,7 @@ L["Set the size of your bag buttons."] = true;
 L['Short (Whole Numbers)'] = true;
 L['Short'] = true;
 L['Show Coints'] = true;
+L["Size and Position"] = true;
 L['Smart'] = true;
 L["Sort Direction"] = true; --Also used in Buffs and Debuffs
 L['Sort Inverted'] = true;
