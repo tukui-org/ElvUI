@@ -55,7 +55,7 @@ E.Options.args.bags = {
 				moneyCoins = {
 					order = 3,
 					type = 'toggle',
-					name = L['Show Coints'],
+					name = L['Show Coins'],
 					desc = L['Use coin icons instead of colored text.'],
 					set = function(info, value) E.db.bags[ info[#info] ] = value; B:UpdateGoldText(); end,
 				},
