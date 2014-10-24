@@ -149,6 +149,7 @@ L['Your profile was successfully recieved by the player.'] = 'Dein Profil wurde 
 --Install
 L["Aura Bars & Icons"] = true;
 L["Auras Set"] = "Auren gesetzt"
+L["Auras"] = true;
 L['Caster DPS'] = "Fernkampf DD"
 L["Chat Set"] = "Chat gesetzt"
 L["Chat"] = "Chat"
@@ -203,7 +204,6 @@ L["This part of the installation process sets up your chat windows names, positi
 L["This part of the installation process sets up your World of Warcraft default options it is recommended you should do this step for everything to behave properly."] = "Dieser Installationsprozess richtet alle wichtigen Cvars deines World of Warcrafts ein, um eine problemlose Nutzung zu ermöglichen."
 L["This resolution doesn't require that you change settings for the UI to fit on your screen."] = "Diese Auflösung benötigt keine Änderungen um mit der Benutzeroberfläche zu funktionieren."
 L["This resolution requires that you change some settings to get everything to fit on your screen."] = "Diese Auflösung benötigt Änderungen um mit der Benutzeroberfläche zu funktionieren."
-L["This will change the layout of your unitframes, raidframes, and datatexts."] = "Dies wird das Layout der Einheitenfenster, Schlachtzugsfenster und Infotexte ändern."
 L["This will change the layout of your unitframes and actionbars."] = "Dies wird das Layout der Einheitenfenster und Aktionsleisten ändern."
 L['Trade'] = 'Handel'
 L["Welcome to ElvUI version %s!"] = "Willkommen bei ElvUI Version %s!"

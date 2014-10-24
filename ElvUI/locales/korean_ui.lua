@@ -149,6 +149,7 @@ L["Your profile was successfully recieved by the player."] = "상대에게 데�
 --Install
 L["Aura Bars & Icons"] = true;
 L["Auras Set"] = "오라설정 적용"
+L["Auras"] = true;
 L["Caster DPS"] = "원거리 딜러"
 L["Chat Set"] = "대화창 설정"
 L["Chat"] = "대화창"

@@ -149,6 +149,7 @@ L['Your profile was successfully recieved by the player.'] = "Ваш профи�
 --Install
 L["Aura Bars & Icons"] = "Полосы аур и иконки"
 L["Auras Set"] = "Ауры установлены"
+L["Auras"] = true;
 L['Caster DPS'] = "Заклинатель"
 L["Chat Set"] = "Чат настроен"
 L["Chat"] = "Чат"
@@ -203,7 +204,7 @@ L["This part of the installation process sets up your chat windows names, positi
 L["This part of the installation process sets up your World of Warcraft default options it is recommended you should do this step for everything to behave properly."] = "Эта часть установки сбросит настройки World of Warcraft на конфигурацию по умолчанию. Рекомендуется выполнить этот шаг для надлежащей работы интерфейса."
 L["This resolution doesn't require that you change settings for the UI to fit on your screen."] = "Для соответствия интерфейса вашему экрану не требуется изменения настроек."
 L["This resolution requires that you change some settings to get everything to fit on your screen."] = "Для соответствия интерфейса вашему экрану требуется изменение некоторых настроек."
-L["This will change the layout of your unitframes, raidframes, and datatexts."] = "Это изменит расположение ваших рамок юнитов, рейда и информационных текстов"
+L["This will change the layout of your unitframes and actionbars."] = true;
 L['Trade'] = "Торговля"
 L["Welcome to ElvUI version %s!"] = "Добро пожаловать в ElvUI версии %s!"
 L["You are now finished with the installation process. If you are in need of technical support please visit us at http://www.tukui.org."] = "Вы завершили процесс установки. Если Вам требуется техническая поддержка, посетите сайт http://www.tukui.org."
