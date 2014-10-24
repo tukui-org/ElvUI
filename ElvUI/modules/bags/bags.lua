@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:NewModule('Bags', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
 
-local len, sub, find, format, floor = string.len, string.sub, string.find, string.format, math.floor
+local len, sub, find, format, floor, abs = string.len, string.sub, string.find, string.format, math.floor, math.abs
 local tinsert = table.insert
 
 B.ProfessionColors = {
@@ -589,8 +589,6 @@ function B:UpdateAll()
 	end
 end
 
-
-
 function B:OnEvent(event, ...)
 	if event == 'ITEM_LOCK_CHANGED' or event == 'ITEM_UNLOCKED' then
 		local bag, slot = ...
@@ -683,8 +681,77 @@ function B:Token_OnClick()
 	end
 end
 
+--Money text formatting, code taken from Scrooge by thelibrarian ( http://www.wowace.com/addons/scrooge/ )
+local COLOR_COPPER = "|cffeda55f"
+local COLOR_SILVER = "|cffc7c7cf"
+local COLOR_GOLD = "|cffffd700"
+local ICON_COPPER = "|TInterface\\MoneyFrame\\UI-CopperIcon:12:12|t"
+local ICON_SILVER = "|TInterface\\MoneyFrame\\UI-SilverIcon:12:12|t"
+local ICON_GOLD = "|TInterface\\MoneyFrame\\UI-GoldIcon:12:12|t"
+function B:FormatMoney(amount, style, textonly)
+	local coppername = textonly and L.copperabbrev or ICON_COPPER
+	local silvername = textonly and L.silverabbrev or ICON_SILVER
+	local goldname = textonly and L.goldabbrev or ICON_GOLD
+
+	local value = abs(amount)
+	local gold = floor(value / 10000)
+	local silver = floor(mod(value / 100, 100))
+	local copper = floor(mod(value, 100))
+
+	if not style or style == "SMART" then
+		local str = "";
+		if gold > 0 then
+			str = format("%d%s%s", gold, goldname, (silver > 0 or copper > 0) and " " or "")
+		end
+		if silver > 0 then
+			str = format("%s%d%s%s", str, silver, silvername, copper > 0 and " " or "")
+		end
+		if copper > 0 or value == 0 then
+			str = format("%s%d%s", str, copper, coppername)
+		end
+		return str
+	end
+
+	if style == "FULL" then
+		if gold > 0 then
+			return format("%d%s %d%s %d%s", gold, goldname, silver, silvername, copper, coppername)
+		elseif silver > 0 then
+			return format("%d%s %d%s", silver, silvername, copper, coppername)
+		else
+			return format("%d%s", copper, coppername)
+		end
+	elseif style == "SHORT" then
+		if gold > 0 then
+			return format("%.1f%s", amount / 10000, goldname)
+		elseif silver > 0 then
+			return format("%.1f%s", amount / 100, silvername)
+		else
+			return format("%d%s", amount, coppername)
+		end
+	elseif style == "SHORTINT" then
+		if gold > 0 then
+			return format("%d%s", gold, goldname)
+		elseif silver > 0 then
+			return format("%d%s", silver, silvername)
+		else
+			return format("%d%s", copper, coppername)
+		end
+	elseif style == "CONDENSED" then
+		if gold > 0 then
+			return format("%s%d|r.%s%02d|r.%s%02d|r", COLOR_GOLD, gold, COLOR_SILVER, silver, COLOR_COPPER, copper)
+		elseif silver > 0 then
+			return format("%s%d|r.%s%02d|r", COLOR_SILVER, silver, COLOR_COPPER, copper)
+		else
+			return format("%s%d|r", COLOR_COPPER, copper)
+		end
+	end
+
+	-- Shouldn't be here; punt
+	return self:FormatMoney(amount, "SMART")
+end
+
 function B:UpdateGoldText()
-	self.BagFrame.goldText:SetText(GetCoinTextureString(GetMoney(), 12))
+	self.BagFrame.goldText:SetText(B:FormatMoney(GetMoney(), E.db['bags'].moneyFormat, not E.db['bags'].moneyCoins))
 end
 
 function B:GetGraysValue()
