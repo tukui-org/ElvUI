@@ -548,22 +548,28 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 	if not tt.itemCleared then
 		local item, link = tt:GetItem()
 		local num = GetItemCount(link)
+		local numall = GetItemCount(link,true)
 		local left = ""
 		local right = ""
-		
+		local bankCount = ""
+
 		if link ~= nil and self.db.spellID then
-			left = (("|cFFCA3C3C%s|r %s"):format(ID, link)):match(":(%w+)")
+				left = (("|cFFCA3C3C%s|r %s"):format(ID, link)):match(":(%w+)")
 		end
-		
-		if num > 1 and self.db.itemCount then
-			right = ("|cFFCA3C3C%s|r %d"):format(L['Count'], num)
+
+		if self.db.itemCountBank then
+			bankCount = ("|cFFCA3C3C%s|r %d"):format(L['Bank'],(numall - num))
 		end
-		
-		if left ~= "" or right ~= "" then
-			tt:AddLine(" ")
-			tt:AddDoubleLine(left, right)
+
+		if (num > 1 and self.db.itemCount) or bankCount ~= "" then
+				right = ("|cFFCA3C3C%s|r %d"):format(L['Count'], num)
 		end
-		
+
+		if left ~= "" or right ~= "" or bankCount ~= "" then
+				tt:AddLine(" ")
+				tt:AddDoubleLine(left, right)
+				tt:AddDoubleLine(" ", bankCount)
+		end
 		tt.itemCleared = true
 	end
 end
