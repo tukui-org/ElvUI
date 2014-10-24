@@ -43,42 +43,44 @@ function E:UpdateBlizzardFonts()
 	--NAMEPLATE_FONT     = NAMEFONT
 	DAMAGE_TEXT_FONT   = COMBAT
 	STANDARD_TEXT_FONT = NORMAL
-
-	-- Base fonts
-	--SetFont(NumberFontNormal,					LSM:Fetch('font', 'ElvUI Pixel'), 10, 'MONOCHROMEOUTLINE', 1, 1, 1, 0, 0, 0)
-	SetFont(GameTooltipHeader,                  NORMAL, self.db.general.fontSize)
-	SetFont(NumberFont_OutlineThick_Mono_Small, NUMBER, self.db.general.fontSize, "OUTLINE")
-	SetFont(SystemFont_Shadow_Large_Outline,	NUMBER, 20, "OUTLINE")
-	SetFont(NumberFont_Outline_Huge,            NUMBER, 28, MONOCHROME.."THICKOUTLINE", 28)
-	SetFont(NumberFont_Outline_Large,           NUMBER, 15, MONOCHROME.."OUTLINE")
-	SetFont(NumberFont_Outline_Med,             NUMBER, self.db.general.fontSize*1.1, "OUTLINE")
-	SetFont(NumberFont_Shadow_Med,              NORMAL, self.db.general.fontSize) --chat editbox uses this
-	SetFont(NumberFont_Shadow_Small,            NORMAL, self.db.general.fontSize)
-	SetFont(QuestFont,                          NORMAL, self.db.general.fontSize)
-	SetFont(QuestFont_Large,                    NORMAL, 14)
-	SetFont(SystemFont_Large,                   NORMAL, 15)
-	SetFont(GameFontNormalMed3,					NORMAL, 15)
-	SetFont(SystemFont_Shadow_Huge1,			NORMAL, 20, MONOCHROME.."OUTLINE") -- Raid Warning, Boss emote frame too
-	SetFont(SystemFont_Med1,                    NORMAL, self.db.general.fontSize)
-	SetFont(SystemFont_Med3,                    NORMAL, self.db.general.fontSize*1.1)
-	SetFont(SystemFont_OutlineThick_Huge2,      NORMAL, 20, MONOCHROME.."THICKOUTLINE")
-	SetFont(SystemFont_Outline_Small,           NUMBER, self.db.general.fontSize, "OUTLINE")
-	SetFont(SystemFont_Shadow_Large,            NORMAL, 15)
-	SetFont(SystemFont_Shadow_Med1,             NORMAL, self.db.general.fontSize)
-	SetFont(SystemFont_Shadow_Med3,             NORMAL, self.db.general.fontSize*1.1)
-	SetFont(SystemFont_Shadow_Outline_Huge2,    NORMAL, 20, MONOCHROME.."OUTLINE")
-	SetFont(SystemFont_Shadow_Small,            NORMAL, self.db.general.fontSize*0.9)
-	SetFont(SystemFont_Small,                   NORMAL, self.db.general.fontSize)
-	SetFont(SystemFont_Tiny,                    NORMAL, self.db.general.fontSize)
-	SetFont(Tooltip_Med,                        NORMAL, self.db.general.fontSize)
-	SetFont(Tooltip_Small,                      NORMAL, self.db.general.fontSize)
-	SetFont(ZoneTextString,						NORMAL, 32, MONOCHROME.."OUTLINE")
-	SetFont(SubZoneTextString,					NORMAL, 25, MONOCHROME.."OUTLINE")
-	SetFont(PVPInfoTextString,					NORMAL, 22, MONOCHROME.."OUTLINE")
-	SetFont(PVPArenaTextString,					NORMAL, 22, MONOCHROME.."OUTLINE")
-	SetFont(CombatTextFont,                     COMBAT, 100, "OUTLINE") -- number here just increase the font quality.
-	SetFont(FriendsFont_Normal, NORMAL, self.db.general.fontSize)
-	SetFont(FriendsFont_Small, NORMAL, self.db.general.fontSize)
-	SetFont(FriendsFont_Large, NORMAL, self.db.general.fontSize)
-	SetFont(FriendsFont_UserText, NORMAL, self.db.general.fontSize)
+	
+	if self.private.general.replaceBlizzFonts then
+		-- Base fonts
+		--SetFont(NumberFontNormal,					LSM:Fetch('font', 'ElvUI Pixel'), 10, 'MONOCHROMEOUTLINE', 1, 1, 1, 0, 0, 0)
+		SetFont(GameTooltipHeader,                  NORMAL, self.db.general.fontSize)
+		SetFont(NumberFont_OutlineThick_Mono_Small, NUMBER, self.db.general.fontSize, "OUTLINE")
+		SetFont(SystemFont_Shadow_Large_Outline,	NUMBER, 20, "OUTLINE")
+		SetFont(NumberFont_Outline_Huge,            NUMBER, 28, MONOCHROME.."THICKOUTLINE", 28)
+		SetFont(NumberFont_Outline_Large,           NUMBER, 15, MONOCHROME.."OUTLINE")
+		SetFont(NumberFont_Outline_Med,             NUMBER, self.db.general.fontSize*1.1, "OUTLINE")
+		SetFont(NumberFont_Shadow_Med,              NORMAL, self.db.general.fontSize) --chat editbox uses this
+		SetFont(NumberFont_Shadow_Small,            NORMAL, self.db.general.fontSize)
+		SetFont(QuestFont,                          NORMAL, self.db.general.fontSize)
+		SetFont(QuestFont_Large,                    NORMAL, 14)
+		SetFont(SystemFont_Large,                   NORMAL, 15)
+		SetFont(GameFontNormalMed3,					NORMAL, 15)
+		SetFont(SystemFont_Shadow_Huge1,			NORMAL, 20, MONOCHROME.."OUTLINE") -- Raid Warning, Boss emote frame too
+		SetFont(SystemFont_Med1,                    NORMAL, self.db.general.fontSize)
+		SetFont(SystemFont_Med3,                    NORMAL, self.db.general.fontSize*1.1)
+		SetFont(SystemFont_OutlineThick_Huge2,      NORMAL, 20, MONOCHROME.."THICKOUTLINE")
+		SetFont(SystemFont_Outline_Small,           NUMBER, self.db.general.fontSize, "OUTLINE")
+		SetFont(SystemFont_Shadow_Large,            NORMAL, 15)
+		SetFont(SystemFont_Shadow_Med1,             NORMAL, self.db.general.fontSize)
+		SetFont(SystemFont_Shadow_Med3,             NORMAL, self.db.general.fontSize*1.1)
+		SetFont(SystemFont_Shadow_Outline_Huge2,    NORMAL, 20, MONOCHROME.."OUTLINE")
+		SetFont(SystemFont_Shadow_Small,            NORMAL, self.db.general.fontSize*0.9)
+		SetFont(SystemFont_Small,                   NORMAL, self.db.general.fontSize)
+		SetFont(SystemFont_Tiny,                    NORMAL, self.db.general.fontSize)
+		SetFont(Tooltip_Med,                        NORMAL, self.db.general.fontSize)
+		SetFont(Tooltip_Small,                      NORMAL, self.db.general.fontSize)
+		SetFont(ZoneTextString,						NORMAL, 32, MONOCHROME.."OUTLINE")
+		SetFont(SubZoneTextString,					NORMAL, 25, MONOCHROME.."OUTLINE")
+		SetFont(PVPInfoTextString,					NORMAL, 22, MONOCHROME.."OUTLINE")
+		SetFont(PVPArenaTextString,					NORMAL, 22, MONOCHROME.."OUTLINE")
+		SetFont(CombatTextFont,                     COMBAT, 100, "OUTLINE") -- number here just increase the font quality.
+		SetFont(FriendsFont_Normal, NORMAL, self.db.general.fontSize)
+		SetFont(FriendsFont_Small, NORMAL, self.db.general.fontSize)
+		SetFont(FriendsFont_Large, NORMAL, self.db.general.fontSize)
+		SetFont(FriendsFont_UserText, NORMAL, self.db.general.fontSize)
+	end
 end

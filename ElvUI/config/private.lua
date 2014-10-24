@@ -12,6 +12,7 @@ V['general'] = {
 	['chatBubbles'] = 'backdrop',
 	['pixelPerfect'] = true,
 	['lfrEnhancement'] = true,
+	['replaceBlizzFonts'] = true,
 
 	['minimap'] = {
 		['enable'] = true,
