@@ -549,9 +549,9 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 		local item, link = tt:GetItem()
 		local num = GetItemCount(link)
 		local numall = GetItemCount(link,true)
-		local left = ""
-		local right = ""
-		local bankCount = ""
+		local left = " "
+		local right = " "
+		local bankCount = " "
 
 		if link ~= nil and self.db.spellID then
 				left = (("|cFFCA3C3C%s|r %s"):format(ID, link)):match(":(%w+)")
@@ -565,7 +565,7 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 				right = ("|cFFCA3C3C%s|r %d"):format(L['Count'], num)
 		end
 
-		if left ~= "" or right ~= "" or bankCount ~= "" then
+		if left ~= " " or right ~= " " or bankCount ~= " " then
 				tt:AddLine(" ")
 				tt:AddDoubleLine(left, right)
 				tt:AddDoubleLine(" ", bankCount)
