@@ -1394,6 +1394,7 @@ function NP:SetAuraInstance(guid, spellID, expiration, stacks, caster, duration,
 
 	if (db.showPersonal and caster == UnitGUID('player')) then
 		filter = true;
+		print("The aura: ", name, " was allowed because you are the caster")
 	end
 	
 	local trackFilter = E.global['unitframe']['aurafilters'][db.additionalFilter]
@@ -1404,19 +1405,23 @@ function NP:SetAuraInstance(guid, spellID, expiration, stacks, caster, duration,
 		if type == 'Blacklist' then
 			if spellList[name] and spellList[name].enable then
 				filter = false;
+				print("The aura: ", name, " was filtered out because of a blacklist filter")
 			end
 		else
 			if spellList[name] and spellList[name].enable then
 				filter = true;
+				print("The aura: ", name, " was allowed because of a whitelist filter")
 			end
 			if trackFilter == 'Whitelist (Strict)' and spellList[name].spellID and not spellList[name].spellID == spellID then
 				filter = false;
+				print("The aura: ", name, " was filtered out because of a strict whitelist filter")
 			end
 		end
 	end
 	
 	if E.global.unitframe.InvalidSpells[spellID] then
 		filter = false;
+		print("The aura: ", name, " was filtered out because of a global blacklist filter")
 	end
 
 	if filter ~= true then
