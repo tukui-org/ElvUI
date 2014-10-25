@@ -124,6 +124,26 @@ E.Options.args.datatexts = {
 				E:GetModule('Layout'):SetDataPanelStyle()
 			end,				
 		},
+		goldFormat = {
+			order = 9,
+			type = 'select',
+			name = L["Gold Format"],
+			desc = L["The display format of the money text that is shown in the gold datatext and its tooltip."],
+			values = {
+				['SMART'] = L['Smart'],
+				['FULL'] = L['Full'],
+				['SHORT'] = L['Short'],
+				['SHORTINT'] = L['Short (Whole Numbers)'],
+				['CONDENSED'] = L['Condensed'],
+				['BLIZZARD'] = L['Blizzard Style'],
+			},
+		},
+		goldCoins = {
+			order = 10,
+			type = 'toggle',
+			name = L['Show Coins'],
+			desc = L['Use coin icons instead of colored text.'],
+		},
 		panels = {
 			type = 'group',
 			name = L['Panels'],

@@ -1,35 +1,11 @@
 local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
-local abs = math.abs
-local floor = math.floor
 local join = string.join
-local format = string.format
 
-local defaultColor = { 1, 1, 1 }
 local Profit	= 0
 local Spent		= 0
-local copperFormatter = join("", "%d", L.copperabbrev)
-local silverFormatter = join("", "%d", L.silverabbrev, " %.2d", L.copperabbrev)
-local goldFormatter =  join("", "%s", L.goldabbrev, " %.2d", L.silverabbrev, " %.2d", L.copperabbrev)
 local resetInfoFormatter = join("", "|cffaaaaaa", L["Reset Data: Hold Shift + Right Click"], "|r")
-
-local function FormatMoney(money)
-	local gold, silver, copper = floor(abs(money / 10000)), abs(mod(money / 100, 100)), abs(mod(money, 100))
-	if gold ~= 0 then
-		return format(goldFormatter, BreakUpLargeNumbers(gold), silver, copper)
-	elseif silver ~= 0 then
-		return format(silverFormatter, silver, copper)
-	else
-		return format(copperFormatter, copper)
-	end
-end
-
-local function FormatTooltipMoney(money)
-	if not money then return end
-	local gold, silver, copper = floor(abs(money / 10000)), abs(mod(money / 100, 100)), abs(mod(money, 100))
-	return format(goldFormatter, BreakUpLargeNumbers(gold), silver, copper)
-end
 
 local function OnEvent(self, event, ...)
 	if not IsLoggedIn() then return end
@@ -48,7 +24,7 @@ local function OnEvent(self, event, ...)
 		Profit = Profit + Change
 	end
 
-	self.text:SetText(FormatMoney(NewMoney))
+	self.text:SetText(E:FormatMoney(NewMoney, E.db.datatexts.goldFormat or "BLIZZARD", not E.db.datatexts.goldCoins))
 
 	ElvDB['gold'][E.myrealm][E.myname] = NewMoney
 end
@@ -65,14 +41,16 @@ end
 
 local function OnEnter(self)
 	DT:SetupTooltip(self)
-
+	local textOnly = not E.db.datatexts.goldCoins and true or false
+	local style = E.db.datatexts.goldFormat or "BLIZZARD"
+	
 	DT.tooltip:AddLine(L['Session:'])
-	DT.tooltip:AddDoubleLine(L["Earned:"], FormatMoney(Profit), 1, 1, 1, 1, 1, 1)
-	DT.tooltip:AddDoubleLine(L["Spent:"], FormatMoney(Spent), 1, 1, 1, 1, 1, 1)
+	DT.tooltip:AddDoubleLine(L["Earned:"], E:FormatMoney(Profit, style, textOnly), 1, 1, 1, 1, 1, 1)
+	DT.tooltip:AddDoubleLine(L["Spent:"], E:FormatMoney(Spent, style, textOnly), 1, 1, 1, 1, 1, 1)
 	if Profit < Spent then
-		DT.tooltip:AddDoubleLine(L["Deficit:"], FormatMoney(Profit-Spent), 1, 0, 0, 1, 1, 1)
+		DT.tooltip:AddDoubleLine(L["Deficit:"], E:FormatMoney(Profit-Spent, style, textOnly), 1, 0, 0, 1, 1, 1)
 	elseif (Profit-Spent)>0 then
-		DT.tooltip:AddDoubleLine(L["Profit:"], FormatMoney(Profit-Spent), 0, 1, 0, 1, 1, 1)
+		DT.tooltip:AddDoubleLine(L["Profit:"], E:FormatMoney(Profit-Spent, style, textOnly), 0, 1, 0, 1, 1, 1)
 	end
 	DT.tooltip:AddLine' '
 
@@ -81,14 +59,14 @@ local function OnEnter(self)
 
 	for k,_ in pairs(ElvDB['gold'][E.myrealm]) do
 		if ElvDB['gold'][E.myrealm][k] then
-			DT.tooltip:AddDoubleLine(k, FormatTooltipMoney(ElvDB['gold'][E.myrealm][k]), 1, 1, 1, 1, 1, 1)
+			DT.tooltip:AddDoubleLine(k, E:FormatMoney(ElvDB['gold'][E.myrealm][k], style, textOnly), 1, 1, 1, 1, 1, 1)
 			totalGold=totalGold+ElvDB['gold'][E.myrealm][k]
 		end
 	end
 
 	DT.tooltip:AddLine' '
 	DT.tooltip:AddLine(L["Server: "])
-	DT.tooltip:AddDoubleLine(L["Total: "], FormatTooltipMoney(totalGold), 1, 1, 1, 1, 1, 1)
+	DT.tooltip:AddDoubleLine(L["Total: "], E:FormatMoney(totalGold, style, textOnly), 1, 1, 1, 1, 1, 1)
 
 	for i = 1, MAX_WATCHED_TOKENS do
 		local name, count, extraCurrencyType, icon, itemID = GetBackpackCurrencyInfo(i)
