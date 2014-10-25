@@ -337,6 +337,7 @@ L["Skin the blizzard chat bubbles."] = "美化暴雪對話泡泡."
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "玩家頭頂姓名的字體. |cffFF0000警告: 你需要重新開啟遊戲或重新登錄才能使用此功能.|r"
 L['Toggle Tutorials'] = "教學開關"
 L['Top Panel'] = '頂部面板'
+L["When you go AFK display the AFK screen."] = true;
 
 --Media
 L["Backdrop color of transparent frames"] = "透明框架的背景顏色"
@@ -693,6 +694,7 @@ L["Main statusbar texture."] = "主狀態條材質"
 L['Main Tanks / Main Assist'] = "主坦克 / 主助理"
 L['Make textures transparent.'] = "材質透明"
 L["Match Frame Width"] = "匹配視窗寬度"
+L['Max Bars'] = true;
 L["Maximum Duration"] = true;
 L['Middle Click - Set Focus'] = "鼠標中鍵 - 設置焦點"
 L['Middle clicking the unit frame will cause your focus to match the unit.'] = "鼠標中鍵點擊單位框架設置焦點."
@@ -734,6 +736,7 @@ L["Priority"] = "優先級"
 L['PVP Trinket'] = "PVP 飾品"
 L['Raid Icon'] = "團隊圖示"
 L['Raid-Wide Sorting'] = true;
+L["Raid40 Frames"] = true;
 L["RaidDebuff Indicator"] = "團隊副本減益光環標示"
 L["Range Check"] = "距離檢查"
 L["Rapidly update the health, uses more memory and cpu. Only recommended for healing."] = "實時更新生命值會佔用更多的內存的和CPU, 只推薦治療角色開啟."

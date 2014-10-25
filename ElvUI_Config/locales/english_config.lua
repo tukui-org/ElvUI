@@ -326,6 +326,7 @@ L["Skin the blizzard chat bubbles."] = true;
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = true;
 L['Toggle Tutorials'] = true;
 L['Top Panel'] = true;
+L["When you go AFK display the AFK screen."] = true;
 
 --Media
 L["Backdrop color of transparent frames"] = true;
@@ -682,6 +683,7 @@ L["Main statusbar texture."] = true;
 L['Main Tanks / Main Assist'] = true;
 L['Make textures transparent.'] = true;
 L["Match Frame Width"] = true;
+L['Max Bars'] = true;
 L["Maximum Duration"] = true;
 L['Middle Click - Set Focus'] = true;
 L['Middle clicking the unit frame will cause your focus to match the unit.'] = true;
@@ -723,6 +725,7 @@ L["Priority"] = true;
 L['PVP Trinket'] = true;
 L['Raid Icon'] = true;
 L['Raid-Wide Sorting'] = true;
+L["Raid40 Frames"] = true;
 L["RaidDebuff Indicator"] = true;
 L["Range Check"] = true
 L["Rapidly update the health, uses more memory and cpu. Only recommended for healing."] = true;
