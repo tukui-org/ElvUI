@@ -362,6 +362,7 @@ L["Skin the blizzard chat bubbles."] = "말풍선에 디자인을 변경해 스�
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "화면상에서 캐릭터 위에 표시되는 이름, 길드, 칭호 등의 글꼴을 변경합니다.|n|n|cffff0000WARNING|r|n이 설정은 리로드가 아닌 캐릭터에 재접속하야 적용됩니다."
 L["Toggle Tutorials"] = "애드온 튜토리얼 확인"
 L["Top Panel"] = "상단 패널 표시"
+L["When you go AFK display the AFK screen."] = true;
 
 --Media
 L["Backdrop color of transparent frames"] = "ElvUI에서 생성하는 모든 반투명한 프레임의 배경 색상과 투명도를 결정합니다."
@@ -718,6 +719,7 @@ L["Main statusbar texture."] = "시전바, 클래스타이머 등의 텍스쳐�
 L["Main Tanks / Main Assist"] = "방어/지원 담당자"
 L["Make textures transparent."] = "색상을 반투명하게 합니다."
 L["Match Frame Width"] = "프레임 너비와 맞춤"
+L['Max Bars'] = true;
 L["Maximum Duration"] = "지속시간 제한"
 L["Middle Click - Set Focus"] = "휠클릭으로 주시 설정"
 L["Middle clicking the unit frame will cause your focus to match the unit."] = "마우스 휠로 이 프레임을 클릭하면 유닛을 주시 대상으로 잡습니다."
@@ -759,6 +761,7 @@ L["Priority"] = "우선도"
 L["PVP Trinket"] = "PvP 장신구"
 L["Raid Icon"] = "레이드 아이콘"
 L["Raid-Wide Sorting"] = "빈칸없이 나열"
+L["Raid40 Frames"] = true;
 L["RaidDebuff Indicator"] = "공격대 주요 디버프 표시기"
 L["Range Check"] = "거리에 따른 투명도 적용"
 L["Rapidly update the health, uses more memory and cpu. Only recommended for healing."] = "생명력 수치 업데이트를 평소보다 더 빠르게 하지만 메모리와 CPU점유율이 더 증가하는 기능입니다. 힐러일 경우에만 추천합니다."

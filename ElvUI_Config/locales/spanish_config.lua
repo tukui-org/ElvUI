@@ -337,6 +337,7 @@ L["Skin the blizzard chat bubbles."] = "Modificar la apariencia de las Burbujas 
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "Cambia la fuente del texto que aparece encima de las cabezas de los jugadores. |cffFF0000AVISO: Esto requiere que reinicies el juego o reconectes."
 L["Toggle Tutorials"] = "Mostrar/Ocultar Tutoriales"
 L["Top Panel"] = "Panel Superior"
+L["When you go AFK display the AFK screen."] = true;
 
 --Media
 L["Backdrop color of transparent frames"] = "Color de fondo de los marcos transparentes."
@@ -693,6 +694,7 @@ L["Main statusbar texture."] = "Textura de la barra de estado principal."
 L["Main Tanks / Main Assist"] = "Tanques Principales/Ayudante Principal"
 L["Make textures transparent."] = "Hacer las texturas transparentes."
 L["Match Frame Width"] = "Coincidir con la Anchura del Marco"
+L['Max Bars'] = true;
 L["Maximum Duration"] = true;
 L["Middle Click - Set Focus"] = "Clic Intermedio - Establecer Foco"
 L["Middle clicking the unit frame will cause your focus to match the unit."] = "Hacer clic intermedio en el marco de unidad causará que tu foco sea la unidad."
@@ -734,6 +736,7 @@ L["Priority"] = "Prioridad"
 L["PVP Trinket"] = "Abalorio JcJ"
 L["Raid Icon"] = "Icono de Banda"
 L['Raid-Wide Sorting'] = true;
+L["Raid40 Frames"] = true;
 L["RaidDebuff Indicator"] = "Indicador de Perjuicios de Banda"
 L["Range Check"] = "Verificación de Rango"
 L["Rapidly update the health, uses more memory and cpu. Only recommended for healing."] = "Actualizar la salud rápidamente, consume más memoria y cpu. Recomendado sólo para sanadores."

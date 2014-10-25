@@ -335,6 +335,7 @@ L["Skin the blizzard chat bubbles."] = "Skin die Blizzard Chat Sprechblasen."
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "Die Schrift, die über den Köpfen der Spieler auftaucht. |cffFF0000WARNUNG: Das benötigt einen Neustart des Spiels oder einen Relog um in Effekt zu treten.|r"
 L['Toggle Tutorials'] = 'Tutorial starten'
 L['Top Panel'] = 'Obere Leiste'
+L["When you go AFK display the AFK screen."] = true;
 
 --Media
 L["Backdrop color of transparent frames"] = "Hintergrundfarbe von transparenten Fenstern"
@@ -691,6 +692,7 @@ L["Main statusbar texture."] = "Haupt-Statusleisten Textur"
 L['Main Tanks / Main Assist'] = 'Haupt Tank / Haupt Assistent';
 L['Make textures transparent.'] = 'Mache Texturen transparent.'
 L["Match Frame Width"] = "Passende Fensterbreite"
+L['Max Bars'] = true;
 L["Maximum Duration"] = "Maximale Dauer"
 L['Middle Click - Set Focus'] = 'Mittelklick - Setze Fokus'
 L['Middle clicking the unit frame will cause your focus to match the unit.'] = 'Mittelklicken des Einheitenfensters passt deinen Fokus an die Einheit an.'
@@ -732,6 +734,7 @@ L["Priority"] = "Priorität"
 L['PVP Trinket'] = 'PVP Schmuck'
 L['Raid Icon'] = 'Schlachtzugssymbol'
 L['Raid-Wide Sorting'] = "Raidweite Sortierung"
+L["Raid40 Frames"] = true;
 L["RaidDebuff Indicator"] = "RaidDebuff Indikator"
 L["Range Check"] = "Entfernungcheck"
 L["Rapidly update the health, uses more memory and cpu. Only recommended for healing."] = "Schnelle Aktualisierung der Lebensleiste. Benutzt mehr Speicher und Prozessorleistung. Nur für Heiler zu empfehlen."

@@ -337,6 +337,7 @@ L["Skin the blizzard chat bubbles."] = "Стилизовать облачка с
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "Шрифт, которым будет написан текст над головами игроков. |cffFF0000ВНИМАНИЕ: Необходим перезапуск игры или релог для начала действия этой настройки.|r"
 L['Toggle Tutorials'] = "Показать помощь"
 L['Top Panel'] = "Верхняя панель"
+L["When you go AFK display the AFK screen."] = true;
 
 --Media
 L["Backdrop color of transparent frames"] = "Цвет фона прозрачных фреймов"
@@ -693,6 +694,7 @@ L["Main statusbar texture."] = "Основная текстура полос с�
 L['Main Tanks / Main Assist'] = "Танки/помощники"
 L['Make textures transparent.'] = "Сделать текстуры прозрачными"
 L["Match Frame Width"] = "По ширине рамки"
+L['Max Bars'] = true;
 L["Maximum Duration"] = "Максимальная длительность"
 L['Middle Click - Set Focus'] = "Средний клик - фокус"
 L['Middle clicking the unit frame will cause your focus to match the unit.'] = "Нажатие средней кнопкой мыши на фрейм юнита запомнит его в фокус."
@@ -734,6 +736,7 @@ L["Priority"] = "Приоритет"
 L['PVP Trinket'] = "ПвП Аксессуар"
 L['Raid Icon'] = "Рейдовая иконка"
 L['Raid-Wide Sorting'] = "Общерейдовая сортировка"
+L["Raid40 Frames"] = true;
 L["RaidDebuff Indicator"] = "Индикатор рейдовых дебаффов"
 L["Range Check"] = "Проверка дистанции"
 L["Rapidly update the health, uses more memory and cpu. Only recommended for healing."] = "Более частое обновление состояния здоровья, использует больше памяти и ресурсов процессора. Рекомендуется только для целителей."
