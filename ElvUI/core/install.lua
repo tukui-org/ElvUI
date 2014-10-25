@@ -239,6 +239,8 @@ function E:SetupResolution(noDataReset)
 		if not noDataReset then
 			E.db.chat.panelWidth = 400
 			E.db.chat.panelHeight = 180
+			E.db.chat.panelWidthRight = 400
+			E.db.chat.panelHeightRight = 180
 			
 			E:CopyTable(E.db.actionbar, P.actionbar)
 					

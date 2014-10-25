@@ -272,7 +272,7 @@ function LO:CreateChatPanels()
 	--Right Chat
 	local rchat = CreateFrame('Frame', 'RightChatPanel', E.UIParent)
 	rchat:SetFrameStrata('BACKGROUND')
-	rchat:Size(E.db.chat.panelWidth, E.db.chat.panelHeight)
+	rchat:Size(E.db.chat.separateSizes and E.db.chat.panelWidthRight or E.db.chat.panelWidth, E.db.chat.separateSizes and E.db.chat.panelHeightRight or E.db.chat.panelHeight)
 	rchat:Point('BOTTOMRIGHT', E.UIParent, -4, 4)
 	rchat:SetFrameLevel(lchat:GetFrameLevel() + 2)
 	rchat:CreateBackdrop('Transparent')

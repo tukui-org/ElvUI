@@ -92,7 +92,6 @@ L[ [=[This works like a macro, you can run different situations to get the actio
  Example: '[combat] show;hide']=] ] = true;
 
 --Bags
-L['Adjust the width of the bag frame.'] = true;
 L['Adjust the width of the bank frame.'] = true;
 L['Align the width of the bag frame to fit inside the chat box.'] = true;
 L['Align To Chat'] = true;
@@ -170,6 +169,9 @@ L['Your Auras First'] = true;
 
 --Chat
 L['Above Chat'] = true;
+L['Adjust the height of your right chat panel.'] = true;
+L['Adjust the width of the bag frame.'] = true;
+L['Adjust the width of your right chat panel.'] = true;
 L["Attempt to create URL links inside the chat."] = true;
 L['Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish.'] = true;
 L['Below Chat'] = true;
@@ -178,6 +180,7 @@ L['Chat History'] = true;
 L["Copy Text"] = true;
 L['Display LFG Icons in group chat.'] = true;
 L["Display the hyperlink tooltip while hovering over a hyperlink."] = true;
+L["Enable the use of separate size options for the right chat panel."] = true;
 L['Fade Chat'] = true;
 L['Fade the chat text when there is no activity.'] = true;
 L["Font Outline"] = true; --Also used in UnitFrames section
@@ -200,7 +203,10 @@ L['Panel Width'] = true;
 L['Position of the Chat EditBox, if datatexts are disabled this will be forced to be above chat.'] = true;
 L["Prevent the same messages from displaying in chat more than once within this set amount of seconds, set to zero to disable."] = true;
 L['Right Only'] = true;
+L['Right Panel Height'] = true;
+L['Right Panel Width'] = true;
 L["Scroll Interval"] = true;
+L["Separate Panel Sizes"] = true;
 L["Set the font outline."] = true; --Also used in UnitFrames section
 L["Short Channels"] = true;
 L["Shorten the channel names in chat."] = true;
