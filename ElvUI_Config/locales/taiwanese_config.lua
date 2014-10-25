@@ -173,7 +173,6 @@ L['Your Auras First'] = "自身光環優先"
 --Chat
 L['Above Chat'] = '對話框上方'
 L['Adjust the height of your right chat panel.'] = true;
-L['Adjust the width of the bag frame.'] = true;
 L['Adjust the width of your right chat panel.'] = true;
 L["Attempt to create URL links inside the chat."] = "對話視窗出現網址時建立連結."
 L['Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish.'] = "鎖定左右對話框架的位置.禁用此選項將允許你移動對話框架到任意位置."

@@ -173,7 +173,6 @@ L["Your Auras First"] = "Suas auras primeiro"
 --Chat
 L["Above Chat"] = "Acima do Bate-papo"
 L['Adjust the height of your right chat panel.'] = true;
-L['Adjust the width of the bag frame.'] = true;
 L['Adjust the width of your right chat panel.'] = true;
 L["Attempt to create URL links inside the chat."] = "Tentar criar links URL dentro do bate-papo."
 L["Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish."] = "Tentar bloquear a posição dos painéis do bate-papo esquerdo e direito. Desativar esta opção permitirá mover os painéis de bate-papo para qualquer lugar que desejar."

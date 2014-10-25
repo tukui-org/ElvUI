@@ -92,6 +92,7 @@ L[ [=[This works like a macro, you can run different situations to get the actio
  Example: '[combat] show;hide']=] ] = true;
 
 --Bags
+L['Adjust the width of the bag frame.'] = true;
 L['Adjust the width of the bank frame.'] = true;
 L['Align the width of the bag frame to fit inside the chat box.'] = true;
 L['Align To Chat'] = true;
@@ -170,7 +171,6 @@ L['Your Auras First'] = true;
 --Chat
 L['Above Chat'] = true;
 L['Adjust the height of your right chat panel.'] = true;
-L['Adjust the width of the bag frame.'] = true;
 L['Adjust the width of your right chat panel.'] = true;
 L["Attempt to create URL links inside the chat."] = true;
 L['Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish.'] = true;
