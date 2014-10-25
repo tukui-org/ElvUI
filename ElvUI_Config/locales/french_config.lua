@@ -121,7 +121,6 @@ L["Set the size of your bag buttons."] = "Définissez la taille de vos boutons d
 L['Short (Whole Numbers)'] = "Court (nombres entiers)";
 L['Short'] = "Cours";
 L['Show Coins'] = "Afficher les pièces";
-L["Size and Position"] = "Taillet et position";
 L['Smart'] = "Intelligent";
 L["Sort Direction"] = "Type de direction" --Also used in Buffs and Debuffs
 L['Sort Inverted'] = "Tri inversé"

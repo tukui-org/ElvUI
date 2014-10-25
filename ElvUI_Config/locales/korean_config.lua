@@ -141,7 +141,6 @@ L["Set the size of your bag buttons."] = "가방바에서 슬롯의 크기를 �
 L['Short (Whole Numbers)'] = true;
 L['Short'] = true;
 L['Show Coins'] = true;
-L["Size and Position"] = true;
 L['Smart'] = true;
 L["Sort Direction"] = "정렬 방법"
 L["Sort Inverted"] = "아래로 정렬"
