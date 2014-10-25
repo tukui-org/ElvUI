@@ -295,6 +295,7 @@ L["You must be targeting a player."] = "Debes enfocar a un jugador."
 L["Accept Invites"] = "Aceptar Invitaciones"
 L["Adjust the position of the threat bar to either the left or right datatext panels."] = "Ajusta la posición de la barra de amenaza a la izquierda o derecha de los paneles de texto de datos."
 L["Adjust the size of the minimap."] = "Ajusta el tamaño del minimapa."
+L['AFK Mode'] = true;
 L["Announce Interrupts"] = "Anunciar Interrupciones"
 L["Announce when you interrupt a spell to the specified chat channel."] = "Anunciar cuando interrumpas un hechizo en el canal especificado."
 L["Attempt to support eyefinity/nvidia surround."] = true;

@@ -318,6 +318,7 @@ L["You must be targeting a player."] = "유저를 대상으로 잡은 후에 시
 L["Accept Invites"] = "지인의 초대 자동수락"
 L["Adjust the position of the threat bar to either the left or right datatext panels."] = "위협수치 바를 어느 패널의 정보문자 탭에 배치할지 결정합니다."
 L["Adjust the size of the minimap."] = "미니맵의 크기를 결정합니다."
+L['AFK Mode'] = true;
 L["Announce Interrupts"] = "차단 성공시 알림"
 L["Announce when you interrupt a spell to the specified chat channel."] = "주문 차단에 성공하면 여기에서 설정한 채널로 차단성공을 알립니다."
 L["Attempt to support eyefinity/nvidia surround."] = "다중모니터 기술인 아이피니티 기능이나 nvidia 서라운드 기능 지원을 적용합니다."
