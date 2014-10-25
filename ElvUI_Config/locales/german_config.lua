@@ -172,6 +172,7 @@ L['Your Auras First'] = 'Deine Auren zuerst'
 L['Above Chat'] = 'Über dem Chat'
 L['Adjust the height of your right chat panel.'] = true;
 L['Adjust the width of your right chat panel.'] = true;
+L["Alerts"] = true;
 L["Attempt to create URL links inside the chat."] = "Eine Möglichkeit um Internet-Links im Chat anzuzeigen."
 L['Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish.'] = 'Fixiere das rechte und linke Chatfenster. Deaktiviere diese Option um das Hauptchatfenster nach Belieben zu verschieben.'
 L['Below Chat'] = 'Unter dem Chat'
