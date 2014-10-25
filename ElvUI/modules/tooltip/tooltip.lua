@@ -561,7 +561,7 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 			bankCount = ("|cFFCA3C3C%s|r %d"):format(L['Bank'],(numall - num))
 		end
 
-		if (num > 1 and self.db.itemCount) or bankCount ~= "" then
+		if (num > 1 and self.db.itemCount) or bankCount ~= " " then
 				right = ("|cFFCA3C3C%s|r %d"):format(L['Count'], num)
 		end
 
