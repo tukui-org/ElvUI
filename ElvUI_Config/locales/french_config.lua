@@ -173,7 +173,6 @@ L['Your Auras First'] = "Vos Auras en premier"
 --Chat
 L['Above Chat'] = "Au-dessus du Chat"
 L['Adjust the height of your right chat panel.'] = true;
-L['Adjust the width of the bag frame.'] = true;
 L['Adjust the width of your right chat panel.'] = true;
 L["Attempt to create URL links inside the chat."] = "Tentative pour créer un lien URL dans les fenêtres de discussion."
 L['Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish.'] = "Tentative pour verrouiller les positions gauche et droite du cadre de discussion. La désactivation de cette option vous permet de déplacer la fenêtre de discussion principal où vous le souhaitez."

@@ -171,7 +171,6 @@ L['Your Auras First'] = true;
 --Chat
 L['Above Chat'] = true;
 L['Adjust the height of your right chat panel.'] = true;
-L['Adjust the width of the bag frame.'] = true;
 L['Adjust the width of your right chat panel.'] = true;
 L["Attempt to create URL links inside the chat."] = true;
 L['Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish.'] = true;
