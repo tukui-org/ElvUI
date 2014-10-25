@@ -194,6 +194,7 @@ L["Your Auras First"] = "내가 걸은 효과 먼저"
 L["Above Chat"] = "채팅창 위에 배치"
 L['Adjust the height of your right chat panel.'] = true;
 L['Adjust the width of your right chat panel.'] = true;
+L["Alerts"] = true;
 L["Attempt to create URL links inside the chat."] = "대화 내역에 URL 주소가 있으면 강조하고 클릭 시 복사할 수 있게끔 합니다."
 L["Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish."] = "좌우측 패널에 채팅창 고정 여부를 결정합니다. 체크 해제 시 좌측에 고정된 기본 채팅창도 움직일 수 있습니다."
 L["Below Chat"] = "채팅창 아래에 배치"

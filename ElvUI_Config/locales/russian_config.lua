@@ -174,6 +174,7 @@ L['Your Auras First'] = "Сначала свои"
 L['Above Chat'] = "Над чатом"
 L['Adjust the height of your right chat panel.'] = "Настроить высоту правой панели чата"
 L['Adjust the width of your right chat panel.'] = "Настроить ширину правой панели чата."
+L["Alerts"] = true;
 L["Attempt to create URL links inside the chat."] = "Пытаться создавать интернет-ссылки в чате."
 L['Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish.'] = "Закрепляет позиции левого и правого чата к соответственным панелям. Отключение этой опции позволит перемещать чат независимо от них."
 L['Below Chat'] = "Под чатом"
