@@ -138,8 +138,68 @@ E.Options.args.chat = {
 						["%H:%M:%S "] =	"15:27:32"					
 					},
 				},
+				
+			},
+		},
+		alerts = {
+			order = 4,
+			type = 'group',
+			name = L["Alerts"],
+			guiInline = true,
+			args = {
+				whisperSound = {
+					order = 1,
+					type = 'select', dialogControl = 'LSM30_Sound',
+					name = L["Whisper Alert"],
+					disabled = function() return not E.db.chat.whisperSound end,
+					values = AceGUIWidgetLSMlists.sound,
+					set = function(info, value) E.db.chat.whisperSound = value; end,
+				},	
+				keywordSound = {
+					order = 2,
+					type = 'select', dialogControl = 'LSM30_Sound',
+					name = L["Keyword Alert"],
+					disabled = function() return not E.db.chat.keywordSound end,
+					values = AceGUIWidgetLSMlists.sound,
+					set = function(info, value) E.db.chat.keywordSound = value; end,
+				},
+				keywords = {
+					order = 3,
+					name = L['Keywords'],
+					desc = L['List of words to color in chat if found in a message. If you wish to add multiple words you must seperate the word with a comma. To search for your current name you can use %MYNAME%.\n\nExample:\n%MYNAME%, ElvUI, RBGs, Tank'],
+					type = 'input',
+					width = 'full',
+					set = function(info, value) E.db.chat[ info[#info] ] = value; CH:UpdateChatKeywords() end,
+				},
+			},
+		},
+		panels = {
+			order = 5,
+			type = 'group',
+			name = L["Panels"],
+			guiInline = true,
+			args = {
+				lockPositions = {
+					order = 1,
+					type = 'toggle',
+					name = L['Lock Positions'],
+					desc = L['Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish.'],	
+				},
+				panelTabTransparency = {
+					order = 2,
+					type = 'toggle',
+					name = L['Tab Panel Transparency'],
+					set = function(info, value) E.db.chat.panelTabTransparency = value; E:GetModule('Layout'):SetChatTabStyle(); end,					
+				},
+				panelTabBackdrop = {
+					order = 3,
+					type = 'toggle',
+					name = L['Tab Panel'],
+					desc = L['Toggle the chat tab panel backdrop.'],
+					set = function(info, value) E.db.chat.panelTabBackdrop = value; E:GetModule('Layout'):ToggleChatPanels(); end,
+				},
 				editBoxPosition = {
-					order = 12,
+					order = 4,
 					type = 'select',
 					name = L['Chat EditBox Position'],
 					desc = L['Position of the Chat EditBox, if datatexts are disabled this will be forced to be above chat.'],
@@ -149,50 +209,9 @@ E.Options.args.chat = {
 					},
 					set = function(info, value) E.db.chat[ info[#info] ] = value; CH:UpdateAnchors() end,
 					disabled = function() return not E.db.datatexts.leftChatPanel end,
-				},				
-				whisperSound = {
-					order = 13,
-					type = 'select', dialogControl = 'LSM30_Sound',
-					name = L["Whisper Alert"],
-					disabled = function() return not E.db.chat.whisperSound end,
-					values = AceGUIWidgetLSMlists.sound,
-					set = function(info, value) E.db.chat.whisperSound = value; end,
-				},	
-				keywordSound = {
-					order = 14,
-					type = 'select', dialogControl = 'LSM30_Sound',
-					name = L["Keyword Alert"],
-					disabled = function() return not E.db.chat.keywordSound end,
-					values = AceGUIWidgetLSMlists.sound,
-					set = function(info, value) E.db.chat.keywordSound = value; end,
-				},
-				lockPositions = {
-					order = 15,
-					type = 'toggle',
-					name = L['Lock Positions'],
-					desc = L['Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish.'],	
-				},
-		
-				spacer2 = {
-					order = 95,
-					type = 'description',
-					name = '',
-				},
-				panelTabTransparency = {
-					order = 98,
-					type = 'toggle',
-					name = L['Tab Panel Transparency'],
-					set = function(info, value) E.db.chat.panelTabTransparency = value; E:GetModule('Layout'):SetChatTabStyle(); end,					
-				},
-				panelTabBackdrop = {
-					order = 99,
-					type = 'toggle',
-					name = L['Tab Panel'],
-					desc = L['Toggle the chat tab panel backdrop.'],
-					set = function(info, value) E.db.chat.panelTabBackdrop = value; E:GetModule('Layout'):ToggleChatPanels(); end,
 				},
 				panelBackdrop = {
-					order = 100,
+					order = 5,
 					type = 'select',
 					name = L['Panel Backdrop'],
 					desc = L['Toggle showing of the left and right chat panels.'],
@@ -203,9 +222,25 @@ E.Options.args.chat = {
 						['LEFT'] = L['Left Only'],
 						['RIGHT'] = L['Right Only'],
 					},
-				},	
+				},
+				separateSizes = {
+					order = 6,
+					type = 'toggle',
+					name = L["Separate Panel Sizes"],
+					desc = L["Enable the use of separate size options for the right chat panel."],
+					set = function(info, value)
+						E.db.chat.separateSizes = value;
+						E:GetModule('Chat'):PositionChat(true);
+						E:GetModule('Bags'):Layout();
+					end,
+				},
+				spacer1 = {
+					order = 7,
+					type = 'description',
+					name = '',
+				},
 				panelHeight = {
-					order = 101,
+					order = 8,
 					type = 'range',
 					name = L['Panel Height'],
 					desc = L['PANEL_DESC'],
@@ -213,23 +248,52 @@ E.Options.args.chat = {
 					min = 50, max = 600, step = 1,
 				},				
 				panelWidth = {
-					order = 102,
+					order = 9,
 					type = 'range',
 					name = L['Panel Width'],
 					desc = L['PANEL_DESC'],
-					set = function(info, value) E.db.chat.panelWidth = value; E:GetModule('Chat'):PositionChat(true); local bags = E:GetModule('Bags'); bags:Layout(); bags:Layout(true); end,
+					set = function(info, value)
+						E.db.chat.panelWidth = value;
+						E:GetModule('Chat'):PositionChat(true);
+						local bags = E:GetModule('Bags');
+						if not E.db.chat.separateSizes then
+							bags:Layout();
+						end
+						bags:Layout(true);
+					end,
 					min = 50, max = 700, step = 1,
 				},
-				keywords = {
-					order = 105,
-					name = L['Keywords'],
-					desc = L['List of words to color in chat if found in a message. If you wish to add multiple words you must seperate the word with a comma. To search for your current name you can use %MYNAME%.\n\nExample:\n%MYNAME%, ElvUI, RBGs, Tank'],
-					type = 'input',
-					width = 'full',
-					set = function(info, value) E.db.chat[ info[#info] ] = value; CH:UpdateChatKeywords() end,
+				spacer2 = {
+					order = 10,
+					type = 'description',
+					name = '',
+				},
+				panelHeightRight = {
+					order = 11,
+					type = 'range',
+					name = L['Right Panel Height'],
+					desc = L['Adjust the height of your right chat panel.'],
+					disabled = function() return not E.db.chat.separateSizes end,
+					hidden = function() return not E.db.chat.separateSizes end,
+					set = function(info, value) E.db.chat.panelHeightRight = value; E:GetModule('Chat'):PositionChat(true); end,
+					min = 50, max = 600, step = 1,
 				},				
+				panelWidthRight = {
+					order = 12,
+					type = 'range',
+					name = L['Right Panel Width'],
+					desc = L['Adjust the width of your right chat panel.'],
+					disabled = function() return not E.db.chat.separateSizes end,
+					hidden = function() return not E.db.chat.separateSizes end,
+					set = function(info, value)
+						E.db.chat.panelWidthRight = value;
+						E:GetModule('Chat'):PositionChat(true);
+						E:GetModule('Bags'):Layout();
+					end,
+					min = 50, max = 700, step = 1,
+				},
 				panelBackdropNameLeft = {
-					order = 106,
+					order = 13,
 					type = 'input',
 					width = 'full',
 					name = L['Panel Texture (Left)'],
@@ -240,7 +304,7 @@ E.Options.args.chat = {
 					end,
 				},
 				panelBackdropNameRight = {
-					order = 107,
+					order = 14,
 					type = 'input',
 					width = 'full',
 					name = L['Panel Texture (Right)'],
@@ -249,7 +313,7 @@ E.Options.args.chat = {
 						E.db.chat[ info[#info] ] = value
 						E:UpdateMedia()
 					end,
-				},					
+				},
 			},
 		},
 		fontGroup = {
