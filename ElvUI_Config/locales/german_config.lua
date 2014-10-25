@@ -293,6 +293,7 @@ L["You must be targeting a player."] = "Du musst einen Spieler anvisiert haben."
 L["Accept Invites"] = "Einladungen akzeptieren"
 L['Adjust the position of the threat bar to either the left or right datatext panels.'] = 'Bestimme die Position der Bedrohungsleiste in den rechten oder linken Infotextleisten.'
 L['Adjust the size of the minimap.'] = 'Stelle die Größe der Minimap ein.'
+L['AFK Mode'] = true;
 L["Announce Interrupts"] = "Unterbrechungen ankündigen"
 L["Announce when you interrupt a spell to the specified chat channel."] = "Melde über den angegebenen Chatkanal einen unterbrochenen Zauber."
 L["Attempt to support eyefinity/nvidia surround."] = "Versucht Eyefinity/NVIDIA Surround zu unterstützen"

@@ -295,6 +295,7 @@ L["You must be targeting a player."] = "Целью должен быть игр�
 L["Accept Invites"] = "Принимать приглашения"
 L['Adjust the position of the threat bar to either the left or right datatext panels.'] = "Изменяет позицию полосы угрозы"
 L['Adjust the size of the minimap.'] = "Изменяет размер миникарты"
+L['AFK Mode'] = true;
 L["Announce Interrupts"] = "Объявлять о прерываниях"
 L["Announce when you interrupt a spell to the specified chat channel."] = "Объявлять о прерванных Вами заклинаниях в указанный канал чата."
 L["Attempt to support eyefinity/nvidia surround."] = "Пытаться поддерживать eyefinity/nvidia surround"

@@ -295,6 +295,7 @@ L["You must be targeting a player."] = "你必须以一名玩家为目标."
 L["Accept Invites"] = "接受邀请"
 L['Adjust the position of the threat bar to either the left or right datatext panels.'] = "调整仇恨条的位置于左侧或右侧资讯面板"
 L['Adjust the size of the minimap.'] = "调整小地图尺寸。"
+L['AFK Mode'] = true;
 L["Announce Interrupts"] = "打断通告"
 L["Announce when you interrupt a spell to the specified chat channel."] = "在指定对话频道通知打断信息."
 L["Attempt to support eyefinity/nvidia surround."] = true;
