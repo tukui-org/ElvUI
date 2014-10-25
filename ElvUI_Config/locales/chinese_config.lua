@@ -121,7 +121,6 @@ L["Set the size of your bag buttons."] = "设置背包按钮尺寸."
 L['Short (Whole Numbers)'] = true;
 L['Short'] = true;
 L['Show Coins'] = true;
-L["Size and Position"] = true;
 L['Smart'] = true;
 L["Sort Direction"] = "排列方向"
 L['Sort Inverted'] = "倒序"

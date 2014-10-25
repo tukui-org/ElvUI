@@ -119,7 +119,6 @@ L["Set the size of your bag buttons."] = "Setze die Größe der Taschenbuttons."
 L['Short (Whole Numbers)'] = true;
 L['Short'] = true;
 L['Show Coins'] = true;
-L["Size and Position"] = true;
 L['Smart'] = true;
 L["Sort Direction"] = "Sortierrichtung" --Also used in Buffs and Debuffs
 L['Sort Inverted'] = 'Umgekehrtes sortieren'
