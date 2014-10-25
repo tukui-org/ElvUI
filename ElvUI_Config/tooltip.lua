@@ -65,15 +65,15 @@ E.Options.args.tooltip = {
 				},
 				itemCount = {
 					order = 7,
-					type = 'toggle',
+					type = 'select',
 					name = L['Item Count'],
-					desc = L['Display how many of a certain item you have in your possession.'],				
-				},
-				itemCountBank = {
-					order = 8,
-					type = 'toggle',
-					name = L['Item Count (Bank)'],
-					desc = L['Display how many of a certain item you have in your bank (includes reagent bank).'],				
+					desc = L['Display how many of a certain item you have in your possession.'],
+					values = {
+						["BAGS_ONLY"] = L["Bags Only"],
+						["BANK_ONLY"] = L["Bank Only"],
+						["BOTH"] = L["Both"],
+						["NONE"] = L["None"],
+					},
 				},
 			},
 		},

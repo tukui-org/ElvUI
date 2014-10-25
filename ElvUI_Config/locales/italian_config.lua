@@ -477,9 +477,11 @@ L["World Map"] = true;
 
 --Tooltip
 L['Always Hide'] = true;
+L["Bags Only"] = true;
+L["Bank Only"] = true;
+L["Both"] = true;
 L['Cursor Anchor'] = true;
 L['Display guild ranks if a unit is guilded.'] = true;
-L['Display how many of a certain item you have in your bank (includes reagent bank).'] = true;
 L['Display how many of a certain item you have in your possession.'] = true;
 L['Display player titles.'] = true;
 L['Display the players talent spec and item level in the tooltip, this may not immediately update when mousing over a unit.'] = true;
@@ -489,7 +491,6 @@ L['Guild Ranks'] = true;
 L["Health Bar"] = true;
 L["Hide tooltip while in combat."] = true;
 L['Inspect Info'] = true;
-L['Item Count (Bank)'] = true;
 L['Item Count'] = true;
 L['Never Hide'] = true;
 L['Player Titles'] = true;

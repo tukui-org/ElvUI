@@ -554,22 +554,26 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 		local bankCount = " "
 
 		if link ~= nil and self.db.spellID then
-				left = (("|cFFCA3C3C%s|r %s"):format(ID, link)):match(":(%w+)")
+			left = (("|cFFCA3C3C%s|r %s"):format(ID, link)):match(":(%w+)")
 		end
 
-		if self.db.itemCountBank then
+		if self.db.itemCount == "BAGS_ONLY" then
+			right = ("|cFFCA3C3C%s|r %d"):format(L['Count'], num)
+		elseif self.db.itemCount == "BANK_ONLY" then
+			bankCount = ("|cFFCA3C3C%s|r %d"):format(L['Bank'],(numall - num))
+		elseif self.db.itemCount == "BOTH" then
+			right = ("|cFFCA3C3C%s|r %d"):format(L['Count'], num)
 			bankCount = ("|cFFCA3C3C%s|r %d"):format(L['Bank'],(numall - num))
 		end
 
-		if (num > 1 and self.db.itemCount) or bankCount ~= " " then
-				right = ("|cFFCA3C3C%s|r %d"):format(L['Count'], num)
+		if left ~= " " or right ~= " " then
+			tt:AddLine(" ")
+			tt:AddDoubleLine(left, right)
+		end
+		if bankCount ~= " " then
+			tt:AddDoubleLine(" ", bankCount)
 		end
 
-		if left ~= " " or right ~= " " or bankCount ~= " " then
-				tt:AddLine(" ")
-				tt:AddDoubleLine(left, right)
-				tt:AddDoubleLine(" ", bankCount)
-		end
 		tt.itemCleared = true
 	end
 end

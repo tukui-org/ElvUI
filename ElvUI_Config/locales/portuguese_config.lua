@@ -488,9 +488,11 @@ L["World Map"] = "Mapa-múndi"
 
 --Tooltip
 L["Always Hide"] = "Sempre Ocultar"
+L["Bags Only"] = true;
+L["Bank Only"] = true;
+L["Both"] = true;
 L['Cursor Anchor'] = true;
 L["Display guild ranks if a unit is guilded."] = "Mostrar o Posto da guilda se a unidade possuir uma."
-L['Display how many of a certain item you have in your bank (includes reagent bank).'] = true;
 L["Display how many of a certain item you have in your possession."] = "Mostra quantos de certo item você possui."
 L["Display player titles."] = "Mostrar títulos dos jogadores."
 L['Display the players talent spec and item level in the tooltip, this may not immediately update when mousing over a unit.'] = true;
@@ -500,7 +502,6 @@ L["Guild Ranks"] = "Posto na Guilda"
 L["Health Bar"] = true;
 L["Hide tooltip while in combat."] = "Esconder tooltip em combate"
 L['Inspect Info'] = true;
-L['Item Count (Bank)'] = true;
 L["Item Count"] = "Contador de Item"
 L["Never Hide"] = "Nunca Esconder"
 L["Player Titles"] = "Títulos dos Jogadores"
