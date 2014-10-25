@@ -488,9 +488,11 @@ L["World Map"] = "Карта мира"
 
 --Tooltip
 L['Always Hide'] = "Всегда скрывать"
+L["Bags Only"] = true;
+L["Bank Only"] = true;
+L["Both"] = true;
 L['Cursor Anchor'] = "Около курсора"
 L['Display guild ranks if a unit is guilded.'] = "Отображать рагн в гильдии."
-L['Display how many of a certain item you have in your bank (includes reagent bank).'] = true;
 L['Display how many of a certain item you have in your possession.'] = "Отображать количество предметов в сумках"
 L['Display player titles.'] = "Отображать звания"
 L['Display the players talent spec and item level in the tooltip, this may not immediately update when mousing over a unit.'] = "Показывать специализацию и уровень предметов в подсказке. Может обновиться не сразу после наведения курсора."
@@ -500,7 +502,6 @@ L['Guild Ranks'] = "Ранги гильдии"
 L["Health Bar"] = "Полоса здоровья"
 L["Hide tooltip while in combat."] = "Скрывать подсказку в бою"
 L['Inspect Info'] = "Информация осмотра"
-L['Item Count (Bank)'] = true;
 L['Item Count'] = "Кол-во предметов"
 L['Never Hide'] = "Никогда не скрывать"
 L['Player Titles'] = "Звания игроков"

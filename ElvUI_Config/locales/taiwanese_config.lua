@@ -488,9 +488,11 @@ L["World Map"] = "世界地圖"
 
 --Tooltip
 L['Always Hide'] = "總是隱藏"
+L["Bags Only"] = true;
+L["Bank Only"] = true;
+L["Both"] = true;
 L['Cursor Anchor'] = true;
 L['Display guild ranks if a unit is guilded.'] = "当目标有公會時顯示其在公會內的會階."
-L['Display how many of a certain item you have in your bank (includes reagent bank).'] = true;
 L['Display how many of a certain item you have in your possession.'] = '顯示當前物品在你身上的數量'
 L['Display player titles.'] = "顯示玩家稱號."
 L['Display the players talent spec and item level in the tooltip, this may not immediately update when mousing over a unit.'] = true;
@@ -500,7 +502,6 @@ L['Guild Ranks'] = "公會會階"
 L["Health Bar"] = true;
 L["Hide tooltip while in combat."] = "戰鬥時不顯示提示."
 L['Inspect Info'] = true;
-L['Item Count (Bank)'] = true;
 L['Item Count'] = '物品數量'
 L['Never Hide'] = "从不隐藏"
 L['Player Titles'] = "玩家稱號"
