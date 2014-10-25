@@ -283,6 +283,8 @@ P['datatexts'] = {
 	['leftChatPanel'] = true,
 	['rightChatPanel'] = true,
 	['panelTransparency'] = false,
+	['goldFormat'] = 'BLIZZARD',
+	['goldCoins'] = false,
 }
 
 --Tooltip
