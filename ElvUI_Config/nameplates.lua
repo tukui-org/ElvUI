@@ -141,6 +141,21 @@ E.Options.args.nameplate = {
 					guiInline = true,
 					name = L['Fonts'],
 					args = {
+						showName = {
+							type = 'toggle',
+							order = 1,
+							name = L['Show Name'],		
+						},
+						showLevel = {
+							type = 'toggle',
+							order = 2,
+							name = L['Show Level'],		
+						},
+						spacer = {
+							order = 3,
+							type = 'description',
+							name = '',
+						},
 						font = {
 							type = "select", dialogControl = 'LSM30_Font',
 							order = 4,
@@ -161,7 +176,6 @@ E.Options.args.nameplate = {
 							values = {
 								['NONE'] = L['None'],
 								['OUTLINE'] = 'OUTLINE',
-								
 								['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 								['THICKOUTLINE'] = 'THICKOUTLINE',
 							},
