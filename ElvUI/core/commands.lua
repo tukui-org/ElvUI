@@ -159,8 +159,6 @@ function E:LoadCommands()
 	self:RegisterChatCommand('egrid', 'Grid')
 	self:RegisterChatCommand("moveui", "ToggleConfigMode")
 	self:RegisterChatCommand("resetui", "ResetUI")
-	self:RegisterChatCommand("enable", "EnableAddon")
-	self:RegisterChatCommand("disable", "DisableAddon")
 	self:RegisterChatCommand('farmmode', 'FarmMode')
 	self:RegisterChatCommand('cleanguild', 'MassGuildKick')
 	if E.ActionBars then
