@@ -323,7 +323,7 @@ L['Disable Warning'] = 'Deaktiviere Warnung'
 L['Discard'] = "Verwerfen"
 L["Do you enjoy the new ElvUI?"] = "Gefällt dir das neue ElvUI?"
 L['Do you swear not to post in technical support about something not working without first disabling the addon/module combination first?'] = 'Schwörst du, dass du keinen Beitrag im Supportforum posten wirst, ohne vorher alle anderen Addons/Module zu deaktivieren?'
-L["ElvUI is five or more revisions out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"]
+L["ElvUI is five or more revisions out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = true;
 L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "ElvUI ist nicht aktuell. Du kannst die neuste Version bei www.tukui.org herunterladen. Hol dir die Premium-Mitgliedschaft und ElvUI wird durch den Tukui-Client automatisch aktualisiert!"
 L["ElvUI needs to perform database optimizations please be patient."] = "ElvUI muss eine Datenbank Optimierung durchführen. Bitte warte eine Moment."
 L["Enabling/Disabling Bar #6 will toggle a paging option from your main actionbar to prevent duplicating bars, are you sure you want to do this?"] = "Aktivieren/Deaktivieren der Leiste #6 wird eine Option für die Seitennummerierung deine Hauptaktionsleiste hervorrufen um doppelte Leisten zu verhindern, bist du dir sich das du das tun willst?"
