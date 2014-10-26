@@ -12,7 +12,7 @@ local function LoadSkin()
 	S:HandleScrollBar(WorldStateScoreScrollFrameScrollBar)
 	WorldStateScoreFrameInset:SetAlpha(0)
 	S:HandleButton(WorldStateScoreFrameLeaveButton)
-	
+	S:HandleButton(WorldStateScoreFrameQueueButton)
 	for i = 1, 3 do 
 		S:HandleTab(_G["WorldStateScoreFrameTab"..i])
 	end
