@@ -470,7 +470,7 @@ local function SendRecieve(self, event, prefix, message, channel, sender)
 			if(tonumber(message) ~= nil and tonumber(message) > tonumber(E.version)) then
 				E:Print(L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"])
 				
-				if((tonumber(message) - tonumber(E.version)) > 0.1) then
+				if((tonumber(message) - tonumber(E.version)) > 0.05) then
 					E:StaticPopup_Show("ELVUI_UPDATE_AVAILABLE")
 				end
 
