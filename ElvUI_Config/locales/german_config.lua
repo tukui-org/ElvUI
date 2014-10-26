@@ -335,7 +335,7 @@ L["Skin the blizzard chat bubbles."] = "Skin die Blizzard Chat Sprechblasen."
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "Die Schrift, die über den Köpfen der Spieler auftaucht. |cffFF0000WARNUNG: Das benötigt einen Neustart des Spiels oder einen Relog um in Effekt zu treten.|r"
 L['Toggle Tutorials'] = 'Tutorial starten'
 L['Top Panel'] = 'Obere Leiste'
-L["When you go AFK display the AFK screen."] = true;
+L["When you go AFK display the AFK screen."] = 'AFK Bildschirm anzeigen wenn du AFK bist.'
 
 --Media
 L["Backdrop color of transparent frames"] = "Hintergrundfarbe von transparenten Fenstern"
@@ -364,6 +364,7 @@ L["This texture will get used on objects like chat windows and dropdown menus."]
 L["Value Color"] = "Farbwert"
 
 --Misc
+L["Enable"] = "Eingeschaltet"
 L["Install"] = "Installation"
 L["Run the installation process."] = "Startet den Installationsprozess."
 L["Toggle Anchors"] = "Ankerpunkte umschalten"
@@ -425,8 +426,8 @@ L["Remove Name"] = "Name entfernen"
 L['Scale if Low Health'] = "Skaliere bei niedriger Gesundheit"
 L["Scaling"] = "Skalierung"
 L["Set the scale of the nameplate."] = "Bestimme die Skalierung der Namensplaketten."
-L['Show Level'] = true;
-L['Show Name'] = true;
+L['Show Level'] = 'Stufe anzeigen'
+L['Show Name'] = 'Name anzeigen'
 L["Show Personal Auras"] = "Persönliche Auren anzeigen"
 L["Small Plates"] = "Kleine Namensplaketten"
 L["Stretch Texture"] = "Textur strecken"
@@ -545,7 +546,7 @@ L['At what point should the text be displayed. Set to -1 to disable.'] = 'An wel
 L['Attach Text to Power'] = 'Text an die Energie anfügen'
 L["Attach To"] = "Anpassen an"
 L['Aura Bars'] = 'Auren Leisten'
-L["Aura Spacing"] = true;
+L["Aura Spacing"] = 'Auren Abstand'
 L['Auto-Hide'] = "Automatisch verstecken"
 L["Bad"] = "Schlecht"
 L["Bars will transition smoothly."] = "Sanfter Übergang der Leisten."
@@ -695,7 +696,7 @@ L["Main statusbar texture."] = "Haupt-Statusleisten Textur"
 L['Main Tanks / Main Assist'] = 'Haupt Tank / Haupt Assistent'
 L['Make textures transparent.'] = 'Mache Texturen transparent.'
 L["Match Frame Width"] = "Passende Fensterbreite"
-L['Max Bars'] = true;
+L['Max Bars'] = 'Leisten Anzahl'
 L["Maximum Duration"] = "Maximale Dauer"
 L['Middle Click - Set Focus'] = 'Mittelklick - Setze Fokus'
 L['Middle clicking the unit frame will cause your focus to match the unit.'] = 'Mittelklicken des Einheitenfensters passt deinen Fokus an die Einheit an.'
@@ -737,7 +738,7 @@ L["Priority"] = "Priorität"
 L['PVP Trinket'] = 'PVP Schmuck'
 L['Raid Icon'] = 'Schlachtzugssymbol'
 L['Raid-Wide Sorting'] = "Raidweite Sortierung"
-L["Raid40 Frames"] = true;
+L["Raid40 Frames"] = "40er Schlachtzugsfenster"
 L["RaidDebuff Indicator"] = "RaidDebuff Indikator"
 L["Range Check"] = "Entfernungcheck"
 L["Rapidly update the health, uses more memory and cpu. Only recommended for healing."] = "Schnelle Aktualisierung der Lebensleiste. Benutzt mehr Speicher und Prozessorleistung. Nur für Heiler zu empfehlen."
@@ -756,7 +757,7 @@ L['Select an additional filter to use. If the selected filter is a whitelist and
 L["Select Filter"] = "Filter auswählen"
 L["Select Spell"] = "Zauber auswählen"
 L['Select the display method of the portrait.'] = 'Wähle das Anzeigemethode für das Portrait.'
-L["Set space between each aura icon."] = true;
+L["Set space between each aura icon."] = 'Wähle den Abstand zwischen den einzelnen Aurensymbolen.'
 L["Set the filter type, blacklisted filters hide any aura on the like and show all else, whitelisted filters show any aura on the filter and hide all else."] = "Stelle den Filtertypus ein; Filter 'Schwarze Liste' zeigt alle Auren und versteckt jene, die explizit im Filter angegeben wurden; im Gegensatz dazu verbirgt der Filter 'Weiße Liste' alle Auren und zeigt nur jene an, die explizit im Filter angegeben wurden."
 L["Set the font size for unitframes."] = "Wähle die Schriftart für die Einheitenfenster."
 L["Set the order that the group will sort."] = "Wähle die Richtung in welche die Gruppe sortiert werden soll."
