@@ -6,14 +6,15 @@ E.PopupDialogs = {};
 E.StaticPopup_DisplayedFrames = {};
 
 E.PopupDialogs['ELVUI_UPDATE_AVAILABLE'] = {
-	text = L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"],
+	text = L["ElvUI is more than ten revisions out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"],
 	hasEditBox = 1,
 	OnShow = function(self)
+		self.editBox:SetAutoFocus(false)
 		self.editBox.width = self.editBox:GetWidth()
 		self.editBox:SetWidth(220)
 		self.editBox:SetText("http://www.tukui.org/dl.php")
 		self.editBox:HighlightText()
-		self.editBox:ClearFocus()
+		ChatEdit_FocusActiveWindow();
 	end,	
 	OnHide = function(self)
 		self.editBox:SetWidth(self.editBox.width or 50)
@@ -30,6 +31,17 @@ E.PopupDialogs['ELVUI_UPDATE_AVAILABLE'] = {
 		ChatEdit_FocusActiveWindow();
 		self:GetParent():Hide();
 	end,	
+	EditBoxOnTextChanged = function(self)
+		if(self:GetText() ~= "http://www.tukui.org/dl.php") then
+			self:SetText("http://www.tukui.org/dl.php")
+		end
+		self:HighlightText()
+		self:ClearFocus()
+		ChatEdit_FocusActiveWindow();
+	end,
+	OnEditFocusGained = function(self)
+		self:HighlightText()
+	end,
 	showAlert = 1,
 }
 
