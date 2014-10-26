@@ -269,29 +269,40 @@ function NP:UpdateLevelAndName(myPlate)
 	if region and region:GetObjectType() == 'FontString' then
 		self.level = region
 	end
-
-	if self.level:IsShown() then
-		local level, elite, boss, mylevel = self.level:GetObjectType() == 'FontString' and tonumber(self.level:GetText()) or nil, self.eliteIcon:IsShown(), self.bossIcon:IsShown(), UnitLevel("player")
-		if boss then
-			myPlate.level:SetText("??")
-			myPlate.level:SetTextColor(0.8, 0.05, 0)
-		elseif level then
-			myPlate.level:SetText(level..(elite and "+" or ""))
-			myPlate.level:SetTextColor(self.level:GetTextColor())
-		end
-	elseif self.bossIcon:IsShown() and myPlate.level:GetText() ~= '??' then
-		myPlate.level:SetText("??")
-		myPlate.level:SetTextColor(0.8, 0.05, 0)
-	end
-
-	if self.isSmall then
+	
+	if not NP.db.showLevel then
 		myPlate.level:SetText("")
 		myPlate.level:Hide()
-	elseif not myPlate.level:IsShown() then
-		myPlate.level:Show()
+	else
+		if self.level:IsShown() then
+			local level, elite, boss, mylevel = self.level:GetObjectType() == 'FontString' and tonumber(self.level:GetText()) or nil, self.eliteIcon:IsShown(), self.bossIcon:IsShown(), UnitLevel("player")
+			if boss then
+				myPlate.level:SetText("??")
+				myPlate.level:SetTextColor(0.8, 0.05, 0)
+			elseif level then
+				myPlate.level:SetText(level..(elite and "+" or ""))
+				myPlate.level:SetTextColor(self.level:GetTextColor())
+			end
+		elseif self.bossIcon:IsShown() and myPlate.level:GetText() ~= '??' then
+			myPlate.level:SetText("??")
+			myPlate.level:SetTextColor(0.8, 0.05, 0)
+		end
+
+		if self.isSmall then
+			myPlate.level:SetText("")
+			myPlate.level:Hide()
+		elseif not myPlate.level:IsShown() then
+			myPlate.level:Show()
+		end
 	end
 
-	myPlate.name:SetText(self.name:GetText())
+	if not NP.db.showName then
+		myPlate.name:SetText("")
+		myPlate.name:Hide()
+	else
+		myPlate.name:SetText(self.name:GetText())
+		if not myPlate.name:IsShown() then myPlate.name:Show() end
+	end
 end
 
 function NP:GetReaction(frame)
@@ -479,7 +490,6 @@ function NP:SetUnitInfo(myPlate)
 		myPlate.overlay:Hide()
 		self.unit = nil
 	end
-
 end
 
 function NP:PLAYER_ENTERING_WORLD()
