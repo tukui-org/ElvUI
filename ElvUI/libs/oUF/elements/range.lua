@@ -75,7 +75,6 @@ local function UpdateSpellList()
 		AddSpell(enemySpells, 5246) -- Intimidating Shout
 		AddSpell(enemySpells, 100) -- Charge
 		AddSpell(longEnemySpells, 355) -- Taunt
-		AddSpell(friendlySpells, 3411) -- Intervene
 	elseif class == "MONK" then
 		AddSpell(enemySpells, 115546) -- Provoke
 		AddSpell(friendlySpells, 115450) -- Detox
