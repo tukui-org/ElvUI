@@ -547,7 +547,6 @@ L['At what point should the text be displayed. Set to -1 to disable.'] = "在何
 L['Attach Text to Power'] = true;
 L["Attach To"] = "附加到"
 L['Aura Bars'] = "光环条"
-L["Aura Spacing"] = true;
 L['Auto-Hide'] = true;
 L["Bad"] = "危险"
 L["Bars will transition smoothly."] = "状态条平滑增减"
@@ -758,7 +757,6 @@ L['Select an additional filter to use. If the selected filter is a whitelist and
 L["Select Filter"] = "选择过滤器"
 L["Select Spell"] = "选择技能"
 L['Select the display method of the portrait.'] = "选择头像的显示方式"
-L["Set space between each aura icon."] = true;
 L["Set the filter type, blacklisted filters hide any aura on the like and show all else, whitelisted filters show any aura on the filter and hide all else."] = "设定过滤器类型, '黑名单'会隐藏名单里面的光环, '白名单'则显示名单里的光环"
 L["Set the font size for unitframes."] = "设置单位框架字体尺寸."
 L["Set the order that the group will sort."] = "设置组排序的顺序."

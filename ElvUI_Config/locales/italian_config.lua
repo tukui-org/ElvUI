@@ -536,7 +536,6 @@ L['At what point should the text be displayed. Set to -1 to disable.'] = true;
 L['Attach Text to Power'] = true;
 L["Attach To"] = true;
 L['Aura Bars'] = true;
-L["Aura Spacing"] = true;
 L['Auto-Hide'] = true;
 L["Bad"] = true;
 L["Bars will transition smoothly."] = true;
@@ -747,7 +746,6 @@ L['Select an additional filter to use. If the selected filter is a whitelist and
 L["Select Filter"] = true;
 L["Select Spell"] = true;
 L['Select the display method of the portrait.'] = true;
-L["Set space between each aura icon."] = true;
 L["Set the filter type, blacklisted filters hide any aura on the like and show all else, whitelisted filters show any aura on the filter and hide all else."] = true;
 L["Set the font size for unitframes."] = true;
 L["Set the order that the group will sort."] = true;

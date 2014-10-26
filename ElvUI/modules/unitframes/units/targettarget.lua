@@ -221,7 +221,6 @@ function UF:Update_TargetTargetFrame(frame, db)
 		
 		buffs.forceShow = frame.forceShowAuras
 		buffs.num = db.buffs.perrow * rows
-		buffs.spacing = db.buffs.spacing
 		buffs.size = db.buffs.sizeOverride ~= 0 and db.buffs.sizeOverride or ((((buffs:GetWidth() - (buffs.spacing*(buffs.num/rows - 1))) / buffs.num)) * rows)
 		
 		if db.buffs.sizeOverride and db.buffs.sizeOverride > 0 then
@@ -257,7 +256,6 @@ function UF:Update_TargetTargetFrame(frame, db)
 		
 		debuffs.forceShow = frame.forceShowAuras
 		debuffs.num = db.debuffs.perrow * rows
-		debuffs.spacing = db.debuffs.spacing
 		debuffs.size = db.debuffs.sizeOverride ~= 0 and db.debuffs.sizeOverride or ((((debuffs:GetWidth() - (debuffs.spacing*(debuffs.num/rows - 1))) / debuffs.num)) * rows)
 		
 		if db.debuffs.sizeOverride and db.debuffs.sizeOverride > 0 then

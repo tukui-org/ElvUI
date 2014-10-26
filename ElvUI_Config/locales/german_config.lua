@@ -546,7 +546,6 @@ L['At what point should the text be displayed. Set to -1 to disable.'] = 'An wel
 L['Attach Text to Power'] = 'Text an die Energie anfügen'
 L["Attach To"] = "Anpassen an"
 L['Aura Bars'] = 'Auren Leisten'
-L["Aura Spacing"] = 'Auren Abstand'
 L['Auto-Hide'] = "Automatisch verstecken"
 L["Bad"] = "Schlecht"
 L["Bars will transition smoothly."] = "Sanfter Übergang der Leisten."
@@ -757,7 +756,6 @@ L['Select an additional filter to use. If the selected filter is a whitelist and
 L["Select Filter"] = "Filter auswählen"
 L["Select Spell"] = "Zauber auswählen"
 L['Select the display method of the portrait.'] = 'Wähle das Anzeigemethode für das Portrait.'
-L["Set space between each aura icon."] = 'Wähle den Abstand zwischen den einzelnen Aurensymbolen.'
 L["Set the filter type, blacklisted filters hide any aura on the like and show all else, whitelisted filters show any aura on the filter and hide all else."] = "Stelle den Filtertypus ein; Filter 'Schwarze Liste' zeigt alle Auren und versteckt jene, die explizit im Filter angegeben wurden; im Gegensatz dazu verbirgt der Filter 'Weiße Liste' alle Auren und zeigt nur jene an, die explizit im Filter angegeben wurden."
 L["Set the font size for unitframes."] = "Wähle die Schriftart für die Einheitenfenster."
 L["Set the order that the group will sort."] = "Wähle die Richtung in welche die Gruppe sortiert werden soll."

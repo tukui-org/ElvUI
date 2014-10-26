@@ -572,7 +572,6 @@ L["At what point should the text be displayed. Set to -1 to disable."] = "이 �
 L["Attach Text to Power"] = "자원바 기준 글자위치"
 L["Attach To"] = "기준 프레임"
 L["Aura Bars"] = "클래스타이머"
-L["Aura Spacing"] = true;
 L["Auto-Hide"] = "자동으로 숨기기"
 L["Bad"] = "나쁨"
 L["Bars will transition smoothly."] = "바의 증감을 부드럽게 표현합니다."
@@ -783,7 +782,6 @@ L["Select an additional filter to use. If the selected filter is a whitelist and
 L["Select Filter"] = "필터 선택"
 L["Select Spell"] = "주문 선택"
 L["Select the display method of the portrait."] = "초상화 표시 방법을 결정합니다."
-L["Set space between each aura icon."] = true;
 L["Set the filter type, blacklisted filters hide any aura on the like and show all else, whitelisted filters show any aura on the filter and hide all else."] = "필터 형식을 설정합니다. 차단 목록 형태는 설정된 오라를 제외한 모든 오라를 표시하며 요구 목록 형태는 설정된 오라만을 표시합니다."
 L["Set the font size for unitframes."] = "유닛프레임 내에서 쓰이는 모든 글자의 크기를 결정합니다."
 L["Set the order that the group will sort."] = "이 유닛프레임에서 그룹을 어떤 기준으로 묶을지를 결정합니다.|n|n|cffceff00해석불완전|r : 기능을 제가 아직 확인해보지 못했습니다."
