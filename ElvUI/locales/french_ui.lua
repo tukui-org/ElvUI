@@ -7,7 +7,7 @@ if not L then return; end
 L["A taint has occured that is preventing you from using the queue system. Please reload your user interface and try again."] = "Une altération s'est produite et vous empêche d'utiliser la file d'attente. Veuillez recharger votre interface utilisateur et essayer à nouveau."
 
 --*_ADDON locales
-L["INCOMPATIBLE_ADDON"] = "L'add-on %s n'est pas compatible avec le module %s d'ElvUI. S'il vous plait, sélectionnez soit l'add-on ou le module d'ElvUI pour le désactiver."
+L["INCOMPATIBLE_ADDON"] = "L'addon %s n'est pas compatible avec le module %s d'ElvUI. Merci de sélectionner soit l'addon ou le module d'ElvUI pour le désactiver."
 
 --*_MSG locales
 L['LOGIN_MSG'] = "Bienvenue sur %sElvUI|r version %s%s|r, tapez /ec afin d'accéder au menu de configuration en jeu. Si vous avez besoin d'un support technique, vous pouvez nous rejoindre sur http://www.tukui.org"
@@ -143,7 +143,7 @@ L["Lord! It's a miracle! The download up and vanished like a fart in the wind! T
 L['Profile download complete from %s, but the profile %s already exists. Change the name or else it will overwrite the existing profile.'] = "Téléchargement du profil de %s complet, néanmoins le profil de % existe déjà. Changez le nom ou bien il écrasera le profil existant."
 L['Profile download complete from %s, would you like to load the profile %s now?'] = "Téléchargement du profil de %s complet, voulez-vous charger le profil %s maintenant?"
 L['Profile request sent. Waiting for response from player.'] = "Requête du profil envoyé. En attente de la réponse du joueur."
-L['Request was denied by user.'] = "La requête a ete refusée par l'utilisateur."
+L['Request was denied by user.'] = "La requête a été refusée par l'utilisateur."
 L['Your profile was successfully recieved by the player.'] = "Votre profil a été reçu avec succès par le joueur."
 
 --Install
@@ -257,7 +257,7 @@ L['FocusTarget Frame'] = "Cadre de la cible de votre focalisation" --Also used i
 L["GM Ticket Frame"] = "Fenêtre du ticket MJ"
 L["Left Chat"] = "Chat de gauche"
 L["Loot / Alert Frames"] = "Butin / Fenêtre d'alerte"
-L["Loot Frame"] = true;
+L["Loot Frame"] = "Fenêtre de butin";
 L['Loss Control Icon'] = "Icône de la perte de contrôle"
 L['MA Frames'] = "Fenêtre du second Tank"
 L['Micro Bar'] = "Micro Barre" --Also in ActionBars
@@ -308,7 +308,7 @@ L["You don't have enough money to repair."] = "Vous n'avez pas assez d'argent po
 L['You must be at a vendor.'] = "Vous devez être chez un marchand."
 L['Your items have been repaired for: '] = "Votre équipement a été réparé pour: "
 L['Your items have been repaired using guild bank funds for: '] = "Votre équipement a été réparé avec l'argent de la banque de guilde pour: "
-L['|cFFE30000Lua error recieved. You can view the error message when you exit combat.'] = "|cFFE30000Erreur Lua reçue. Vous pouvez voir ce message d'erreur quand vous sortez de combat."
+L['|cFFE30000Lua error recieved. You can view the error message when you exit combat.'] = "|cFFE30000Erreur Lua reçue. Vous pouvez voir ce message d'erreur quand vous sortirez de combat."
 
 --Static Popups
 L["A setting you have changed will change an option for this character only. This setting that you have changed will be uneffected by changing user profiles. Changing this setting requires that you reload your User Interface."] = "Un réglage que vous avez modifié ne s'appliquera que pour ce personnage. La modification de ce réglage ne sera pas affecté par un changement de profil. Changer ce réglage requiert de relancer l'interface."
@@ -322,19 +322,19 @@ L["Detected that your ElvUI Config addon is out of date. This may be a result of
 L["Disable Warning"] = "Désactiver l'alerte"
 L["Discard"] = "Annuler"
 L["Do you enjoy the new ElvUI?"] = "Aimez-vous le nouveau ElvUI ?";
-L["Do you swear not to post in technical support about something not working without first disabling the addon/module combination first?"] = "Jurez-vous de ne pas avoir posté sur le support technique du forum sur quelque chose qui ne fonctionne pas sans avoir désactivé en premier la combinaison Add-on/Module?"
-L["ElvUI is five or more revisions out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = true;
+L["Do you swear not to post in technical support about something not working without first disabling the addon/module combination first?"] = "Jurez-vous de ne pas avoir posté sur le support technique du forum sur quelque chose qui ne fonctionne pas sans avoir désactivé en premier la combinaison Addon/Module?"
+L["ElvUI is five or more revisions out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "ElvUI est périmé d'au moins 5 versions. Vous pouvez télécharger la nouvelle version sur www.tukui.org. Obtenez l'adhésion premium et ayez automatiquement ElvUI mis à jour avec le client Tukui !";
 L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "ElvUI est périmé. Vous pouvez télécharger la nouvelle version sur www.tukui.org. Obtenez l'adhésion premium et ayez automatiquement ElvUI mis à jour avec le client Tukui !";
 L["ElvUI needs to perform database optimizations please be patient."] = "ElvUI a besoin d'effectuer des optimisations de la base de données, merci de patienter.";
 L["Enabling/Disabling Bar #6 will toggle a paging option from your main actionbar to prevent duplicating bars, are you sure you want to do this?"] = "Activer/Désactiver la Bar #6 affichera une option de pagination de la bar principale afin d'éviter un doublons des bar, êtes-vous sur de vouloir activer cette option?"
 L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."] = "Passez votre souris sur n'importe quel bouton d'action ou bouton du grimoire pour lui attribuer un raccourcis. Appuyez sur la touche Echap ou le clic droit pour effacer le raccourci en cours."
 L["I Swear"] = "Je le jure"
 L["No, Revert Changes!"] = "Non, annuler les changements !";
-L["Oh lord, you have got ElvUI and Tukui both enabled at the same time. Select an addon to disable."] = "Oh seigneur, vous avez ElvUI et Tukui d'activé en même temps. Sélectionnez un add-on à désactiver."
-L["One or more of the changes you have made require a ReloadUI."] = "Une ou plusieurs modifications que vous avez effectuées necessitent un rechargement de l'interface."
-L["One or more of the changes you have made will effect all characters using this addon. You will have to reload the user interface to see the changes you have made."] = "Un ou plusieurs changement(s) que vous avez effectués a une incidence sur tous les personnages qui utilise cet add-on. Vous devriez recharger l'interface utilisateur pour voir le(s) changement(s) apporté(s)."
+L["Oh lord, you have got ElvUI and Tukui both enabled at the same time. Select an addon to disable."] = "Oh seigneur, vous avez ElvUI et Tukui d'activé en même temps. Sélectionnez un addon à désactiver."
+L["One or more of the changes you have made require a ReloadUI."] = "Une ou plusieurs modifications que vous avez effectuées nécessitent un rechargement de l'interface."
+L["One or more of the changes you have made will effect all characters using this addon. You will have to reload the user interface to see the changes you have made."] = "Un ou plusieurs changement(s) que vous avez effectués a une incidence sur tous les personnages qui utilise cet addon. Vous devriez recharger l'interface utilisateur pour voir le(s) changement(s) apporté(s)."
 L["Save"] = "Sauvegarder"
-L["Using the healer layout it is highly recommended you download the addon Clique if you wish to have the click-to-heal function."] = "Si vous utilisé l'agencement Soigneur, il est hautement recommandé de télécharger l'add-on Clique si vous souhaitez avoir la fonction clicker-pour-soigner."
+L["Using the healer layout it is highly recommended you download the addon Clique if you wish to have the click-to-heal function."] = "Si vous utilisé l'agencement Soigneur, il est hautement recommandé de télécharger l'addon Clique si vous souhaitez avoir la fonction cliquer-pour-soigner."
 L["Yes, Keep Changes!"] = "Oui, garder les changements !";
 L["You have changed the pixel perfect option. You will have to complete the installation process to remove any graphical bugs."] = "Vous avez modifié l'option Pixel Parfait. Vous devrez compléter le processus d'installation pour éliminer les bugs graphiques."
 L["You have changed your UIScale, however you still have the AutoScale option enabled in ElvUI. Press accept if you would like to disable the Auto Scale option."] = "Vous venez de changer l'échelle de votre interface, alors que votre option d'échelle automatique est encore activée dans ElvUI. Cliquer sur accepter si vous voulez désactiver l'option d'échelle automatique."
@@ -351,7 +351,7 @@ L["A raid marker feature is available by pressing Escape -> Keybinds scroll to t
 L["ElvUI has a dual spec feature which allows you to load different profiles based on your current spec on the fly. You can enable this from the profiles tab."] = "ElvUI dispose d'une fonction double spécialisation qui vous permet de charger à la volée des profils différents en fonction de votre spécialisation actuelle."
 L["For technical support visit us at http://www.tukui.org."] = "Pour tout support technique, merci de nous visiter à http://www.tukui.org."
 L["If you accidently remove a chat frame you can always go the in-game configuration menu, press install, go to the chat portion and reset them."] = "Si vous supprimez accidentellement un cadre de discussion, vous pouvez toujours aller dans le menu de configuration d'ElvUI. Cliquez ensuite sur Installation puis passez à l'étape concernant les fenêtres de discussion pour remettre à zéro les paramètres."
-L["If you are experiencing issues with ElvUI try disabling all your addons except ElvUI, remember ElvUI is a full UI replacement addon, you cannot run two addons that do the same thing."] = "Si vous rencontrez des problèmes avec ElvUI, essayez de désactiver tous vos add-ons sauf ElvUI. Rappelez-vous que'ElvUi est une interface utilisateur complète et que vous ne pouvez pas exécuter deux add-ons qui font la même chose."
+L["If you are experiencing issues with ElvUI try disabling all your addons except ElvUI, remember ElvUI is a full UI replacement addon, you cannot run two addons that do the same thing."] = "Si vous rencontrez des problèmes avec ElvUI, essayez de désactiver tous vos addons sauf ElvUI. Rappelez-vous que'ElvUi est une interface utilisateur complète et que vous ne pouvez pas exécuter deux addons qui font la même chose."
 L["The buff panel to the right of minimap is a list of your consolidated buffs. You can disable it in Buffs and Debuffs options of ElvUI."] = "Le panneau d'améliorations à droite de la minicarte est une liste de vos améliorations groupées. Vous pouvez la désactiver dans la section Améliorations et Affaiblissement d'ElvUI."
 L["The focus unit can be set by typing /focus when you are targeting the unit you want to focus. It is recommended you make a macro to do this."] = "La cadre de focus peut être défini en tapent /focus quand vous êtes en train de cibler une unité que vous voulez focus. Il est recommandé de faire une macro pour cela."
 L["To move abilities on the actionbars by default hold shift + drag. You can change the modifier key from the actionbar options menu."] = "Pour déplacer par défaut les capacités des barres d'actions, maintenant MAJ + déplacer. Vous pouvez modifier la touche de modification dans le menu des barres d'actions."
