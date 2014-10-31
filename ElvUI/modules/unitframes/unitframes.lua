@@ -584,6 +584,11 @@ function UF.groupPrototype:Configure_Groups()
 		end
 	end
 
+	if self.mover then
+		self.mover.positionOverride = DIRECTION_TO_GROUP_ANCHOR_POINT[direction]
+		E:UpdatePositionOverride(self.mover:GetName())
+	end
+
 	self:SetSize(width - db.horizontalSpacing, height - db.verticalSpacing)
 end
 
