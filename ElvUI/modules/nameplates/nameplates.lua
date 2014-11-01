@@ -1431,7 +1431,7 @@ function NP:SetAuraInstance(guid, spellID, expiration, stacks, caster, duration,
 				filter = true;
 				if debugAuras[name] and debugAuras[name] == true then
 					print("The aura: ", name, " was previously allowed and is now allowed because of a whitelist filter")
-				elseif if debugAuras[name] and debugAuras[name] == false
+				elseif debugAuras[name] and debugAuras[name] == false
 					print("The aura: ", name, " was previously disallowed and is now allowed because of a whitelist filter")
 				else
 					print("The aura: ", name, " was allowed because of a whitelist filter")
