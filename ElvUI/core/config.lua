@@ -178,7 +178,7 @@ function E:NudgeFrame()
 	y = tonumber(ElvUIMoverNudgeWindow.yOffset.currentValue)
 
 	mover:ClearAllPoints()
-	mover:Point(point, E.UIParent, point, x, y)
+	mover:Point(mover.positionOverride or point, E.UIParent, mover.positionOverride and "BOTTOMLEFT" or point, x, y)
 	E:SaveMoverPosition(mover.name)	
 end
 
@@ -203,6 +203,20 @@ function E:UpdateNudgeFrame(mover)
 	else
 		x = x - screenCenter
 	end
+
+	if(mover.positionOverride == "TOPLEFT") then
+		x = mover:GetLeft()
+		y = mover:GetTop()
+	elseif(self.positionOverride == "TOPRIGHT") then
+		x = mover:GetRight()
+		y = mover:GetTop()
+	elseif(mover.positionOverride == "BOTTOMLEFT") then
+		x = mover:GetLeft()
+		y = mover:GetBottom()
+	elseif(mover.positionOverride == "BOTTOMRIGHT") then
+		x = mover:GetRight()
+		y = mover:GetBottom()
+	end	
 	
 	x = E:Round(x, 0)
 	y = E:Round(y, 0)

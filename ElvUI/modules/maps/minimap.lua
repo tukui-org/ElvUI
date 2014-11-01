@@ -363,11 +363,11 @@ function M:Initialize()
 	E.FrameLocks['FarmModeMap'] = true;
 	
 	FarmModeMap:SetScript('OnShow', function() 	
-		if not E:HasMoverBeenMoved('BuffsMover') then
+		if BuffsMover and not E:HasMoverBeenMoved('BuffsMover') then
 			BuffsMover:ClearAllPoints()
 			BuffsMover:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -3, -3)
 		end
-		if not E:HasMoverBeenMoved('DebuffsMover') then
+		if DebuffsMover and not E:HasMoverBeenMoved('DebuffsMover') then
 			DebuffsMover:ClearAllPoints()
 			DebuffsMover:Point("TOPRIGHT", ElvUIPlayerBuffs, "BOTTOMRIGHT", 0, -3)
 		end		
@@ -384,10 +384,10 @@ function M:Initialize()
 	end)
 	
 	FarmModeMap:SetScript('OnHide', function() 
-		if not E:HasMoverBeenMoved('BuffsMover') then
+		if BuffsMover and not E:HasMoverBeenMoved('BuffsMover') then
 			E:ResetMovers(L["Player Buffs"])
 		end	
-		if not E:HasMoverBeenMoved('DebuffsMover') then
+		if DebuffsMover and not E:HasMoverBeenMoved('DebuffsMover') then
 			E:ResetMovers(L["Player Debuffs"])
 		end			
 		MinimapCluster:ClearAllPoints()
