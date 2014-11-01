@@ -24,7 +24,7 @@ local function LoadSkin()
 		"ClassTrainerScrollFrameScrollBarMiddle",
 	}
 
-	for i=1,10 do
+	for i=1,8 do
 		_G["ClassTrainerScrollFrameButton"..i]:StripTextures()
 		_G["ClassTrainerScrollFrameButton"..i]:StyleButton()
 		_G["ClassTrainerScrollFrameButton"..i.."Icon"]:SetTexCoord(unpack(E.TexCoords))
