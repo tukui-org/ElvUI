@@ -452,6 +452,33 @@ ElvUF.Tags.Methods['threatcolor'] = function(unit)
 	end
 end
 
+local unitStatus = {}
+ElvUF.Tags.OnUpdateThrottle['statustimer'] = 1
+ElvUF.Tags.Methods['statustimer'] = function(unit)
+	local guid = UnitGUID(unit)
+	if (UnitIsAFK(unit)) then
+		if not unitStatus[guid] then unitStatus[guid] = {'AFK', GetTime()} end
+	elseif(UnitIsDND(unit)) then
+		if not unitStatus[guid] then unitStatus[guid] = {'DND', GetTime()} end
+	elseif(UnitIsDead(unit)) or (UnitIsGhost(unit))then
+		if not unitStatus[guid] then unitStatus[guid] = {'Dead', GetTime()} end
+	elseif(not UnitIsConnected(unit)) then
+		if not unitStatus[guid] then unitStatus[guid] = {'Offline', GetTime()} end
+	else
+		unitStatus[guid] = nil
+	end
+
+	if unitStatus[guid] ~= nil then
+		local status = unitStatus[guid][1]
+		local timer = GetTime() - unitStatus[guid][2]
+		local mins = floor(timer / 60)
+		local secs = floor(timer - (mins * 60))
+		return ("%s (%01.f:%02.f)"):format(status, mins, secs)
+	else 
+		return ''
+	end
+end
+
 ElvUF.Tags.OnUpdateThrottle['pvptimer'] = 1
 ElvUF.Tags.Methods['pvptimer'] = function(unit)	
 	if (UnitIsPVPFreeForAll(unit) or UnitIsPVP(unit)) then
