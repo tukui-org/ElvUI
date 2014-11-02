@@ -386,7 +386,6 @@ function UF:Update_Raid40Frames(frame, db)
 		
 		debuffs.forceShow = frame.forceShowAuras
 		debuffs.num = db.debuffs.perrow * rows
-		debuffs.spacing = db.debuffs.spacing
 		debuffs.size = db.debuffs.sizeOverride ~= 0 and db.debuffs.sizeOverride or ((((debuffs:GetWidth() - (debuffs.spacing*(debuffs.num/rows - 1))) / debuffs.num)) * rows)
 		
 		if db.debuffs.sizeOverride and db.debuffs.sizeOverride > 0 then
