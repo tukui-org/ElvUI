@@ -1395,8 +1395,6 @@ function NP:GetAuraInstance(guid, auraID)
 	end
 end
 
-local debugAuras = {}
-
 function NP:SetAuraInstance(guid, spellID, expiration, stacks, caster, duration, texture, auraType, auraTarget)
 	local filter = false
 	local db = self.db.buffs
@@ -1407,7 +1405,6 @@ function NP:SetAuraInstance(guid, spellID, expiration, stacks, caster, duration,
 
 	if (db.showPersonal and caster == UnitGUID('player')) then
 		filter = true;
-		--print("The aura: ", name, " was allowed because you are the caster")
 		debugAuras[name] = true
 	end
 	
@@ -1419,49 +1416,19 @@ function NP:SetAuraInstance(guid, spellID, expiration, stacks, caster, duration,
 		if type == 'Blacklist' then
 			if spellList[name] and spellList[name].enable then
 				filter = false;
-				--[[if debugAuras[name] and debugAuras[name] == true then
-					print("The aura: ", name, " was previously allowed but now filtered out because of a blacklist filter")
-				else
-					print("The aura: ", name, " was filtered out because of a blacklist filter")
-				end]]
-				debugAuras[name] = false
 			end
 		else
 			if spellList[name] and spellList[name].enable then
 				filter = true;
-				--[[if debugAuras[name] and debugAuras[name] == true then
-					print("The aura: ", name, " was previously allowed and is now allowed because of a whitelist filter")
-				elseif debugAuras[name] and debugAuras[name] == false then
-					print("The aura: ", name, " was previously disallowed and is now allowed because of a whitelist filter")
-				else
-					print("The aura: ", name, " was allowed because of a whitelist filter")
-				end]]
-				debugAuras[name] = true
 			end
 			if trackFilter == 'Whitelist (Strict)' and spellList[name].spellID and not spellList[name].spellID == spellID then
 				filter = false;
-				--[[if debugAuras[name] and debugAuras[name] == true then
-					print("The aura: ", name, " was previously allowed but now filtered out because of a strict whitelist filter")
-				elseif debugAuras[name] and debugAuras[name] == false then
-					print("The aura: ", name, " was previously disallowed and still filtered out because of a strict whitelist filter")
-				else
-					print("The aura: ", name, " was filtered out because of a strict whitelist filter")
-				end]]
-				debugAuras[name] = false
 			end
 		end
 	end
 	
 	if E.global.unitframe.InvalidSpells[spellID] then
 		filter = false;
-		--[[if debugAuras[name] and debugAuras[name] == true then
-			print("The aura: ", name, " was previously allowed but now filtered out because of a global blacklist filter")
-		elseif debugAuras[name] and debugAuras[name] == false then
-			print("The aura: ", name, " was previously disallowed and still filtered out because of a global blacklist filter")
-		else
-			print("The aura: ", name, " was filtered out because of a global blacklist filter")
-		end]]
-		debugAuras[name] = false
 	end
 
 	if filter ~= true then
