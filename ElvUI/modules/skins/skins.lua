@@ -84,7 +84,8 @@ function S:HandleScrollBar(frame, thumbTrim)
 				frame.thumbbg = CreateFrame("Frame", nil, frame)
 				frame.thumbbg:Point("TOPLEFT", frame:GetThumbTexture(), "TOPLEFT", 2, -thumbTrim)
 				frame.thumbbg:Point("BOTTOMRIGHT", frame:GetThumbTexture(), "BOTTOMRIGHT", -2, thumbTrim)
-				frame.thumbbg:SetTemplate("Default", true)
+				frame.thumbbg:SetTemplate("Default", true, true)
+				frame.thumbbg.backdropTexture:SetVertexColor(unpack(E.media.rgbvaluecolor))
 				if frame.trackbg then
 					frame.thumbbg:SetFrameLevel(frame.trackbg:GetFrameLevel())
 				end
