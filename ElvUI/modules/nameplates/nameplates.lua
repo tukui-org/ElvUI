@@ -1405,7 +1405,6 @@ function NP:SetAuraInstance(guid, spellID, expiration, stacks, caster, duration,
 
 	if (db.showPersonal and caster == UnitGUID('player')) then
 		filter = true;
-		debugAuras[name] = true
 	end
 	
 	local trackFilter = E.global['unitframe']['aurafilters'][db.additionalFilter]
