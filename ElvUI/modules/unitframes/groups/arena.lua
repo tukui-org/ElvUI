@@ -305,7 +305,6 @@ function UF:Update_ArenaFrames(frame, db)
 		
 		buffs.forceShow = frame.forceShowAuras
 		buffs.num = db.buffs.perrow * rows
-		buffs.spacing = db.buffs.spacing
 		buffs.size = db.buffs.sizeOverride ~= 0 and db.buffs.sizeOverride or ((((buffs:GetWidth() - (buffs.spacing*(buffs.num/rows - 1))) / buffs.num)) * rows)
 		
 		if db.buffs.sizeOverride and db.buffs.sizeOverride > 0 then
