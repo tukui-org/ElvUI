@@ -1440,13 +1440,13 @@ function NP:SetAuraInstance(guid, spellID, expiration, stacks, caster, duration,
 			end
 			if trackFilter == 'Whitelist (Strict)' and spellList[name].spellID and not spellList[name].spellID == spellID then
 				filter = false;
-				if debugAuras[name] and debugAuras[name] == true then
+				--[[if debugAuras[name] and debugAuras[name] == true then
 					print("The aura: ", name, " was previously allowed but now filtered out because of a strict whitelist filter")
 				elseif debugAuras[name] and debugAuras[name] == false then
 					print("The aura: ", name, " was previously disallowed and still filtered out because of a strict whitelist filter")
 				else
 					print("The aura: ", name, " was filtered out because of a strict whitelist filter")
-				end
+				end]]
 				debugAuras[name] = false
 			end
 		end
@@ -1454,13 +1454,13 @@ function NP:SetAuraInstance(guid, spellID, expiration, stacks, caster, duration,
 	
 	if E.global.unitframe.InvalidSpells[spellID] then
 		filter = false;
-		if debugAuras[name] and debugAuras[name] == true then
+		--[[if debugAuras[name] and debugAuras[name] == true then
 			print("The aura: ", name, " was previously allowed but now filtered out because of a global blacklist filter")
 		elseif debugAuras[name] and debugAuras[name] == false then
 			print("The aura: ", name, " was previously disallowed and still filtered out because of a global blacklist filter")
 		else
 			print("The aura: ", name, " was filtered out because of a global blacklist filter")
-		end
+		end]]
 		debugAuras[name] = false
 	end
 
