@@ -10,6 +10,11 @@ local band = bit.band
 local gsub = string.gsub
 local tolower = string.lower
 local targetIndicator
+local _G = _G
+
+--Pattern to remove cross realm label added to the end of plate names
+--Taken from http://www.wowace.com/addons/libnameplateregistry-1-0/
+local FSPAT = "%s*"..((_G.FOREIGN_SERVER_LABEL:gsub("^%s", "")):gsub("[%*()]", "%%%1")).."$"
 
 NP.NumTargetChecks = -1
 NP.CreatedPlates = {};
@@ -189,7 +194,7 @@ function NP:OnUpdate(elapsed)
 end
 
 function NP:CheckFilterAndHealers(myPlate)
-	local name = gsub(self.name:GetText(), '%s%(%*%)','')
+	local name = gsub(self.name:GetText(), FSPAT,'')
 	local db = E.global.nameplate["filter"][name]
 
 	if db and db.enable then
@@ -462,7 +467,7 @@ function NP:SetAlpha(myPlate)
 end
 
 function NP:SetUnitInfo(myPlate)
-	local plateName = gsub(self.name:GetText(), '%s%(%*%)','')
+	local plateName = gsub(self.name:GetText(), FSPAT,'')
 	if self:GetAlpha() == 1 and NP.targetName and (NP.targetName == plateName) then
 		self.guid = UnitGUID("target")
 		self.unit = "target"
@@ -655,7 +660,7 @@ function NP:OnShow()
 	NP.ColorizeAndScale(self, myPlate)	
 
 	NP.HealthBar_OnValueChanged(self.healthBar, self.healthBar:GetValue())
-	myPlate.nameText = gsub(self.name:GetText(), '%s%(%*%)','')
+	myPlate.nameText = gsub(self.name:GetText(), FSPAT,'')
 
 	--Check to see if its possible to update auras/comboPoints via raid icon or class color when a plate is shown.
 	if(not self.isSmall) then
@@ -1649,7 +1654,7 @@ function NP:UpdateAuras(frame)
 	if not guid then
 		-- Attempt to ID widget via Name or Raid Icon
 		if RAID_CLASS_COLORS[frame.unitType] then 
-			local name = gsub(frame.name:GetText(), '%s%(%*%)','')
+			local name = gsub(frame.name:GetText(), FSPAT,'')
 			guid = NP.ByName[name]
 		elseif frame.raidIcon:IsShown() then 
 			guid = NP.ByRaidIcon[frame.raidIconType] 
