@@ -1401,7 +1401,6 @@ function NP:SetAuraInstance(guid, spellID, expiration, stacks, caster, duration,
 	if(auraType == AURA_TYPE_DEBUFF) then
 		db = self.db.debuffs
 	end
-	local name = GetSpellInfo(spellID)
 
 	if (db.showPersonal and caster == UnitGUID('player')) then
 		filter = true;
