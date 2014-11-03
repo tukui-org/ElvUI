@@ -455,15 +455,24 @@ end
 local unitStatus = {}
 ElvUF.Tags.OnUpdateThrottle['statustimer'] = 1
 ElvUF.Tags.Methods['statustimer'] = function(unit)
+	if not UnitIsPlayer(unit) then return; end
 	local guid = UnitGUID(unit)
 	if (UnitIsAFK(unit)) then
-		if not unitStatus[guid] then unitStatus[guid] = {'AFK', GetTime()} end
+		if not unitStatus[guid] or unitStatus[guid] and unitStatus[guid][1] ~= 'AFK' then 
+			unitStatus[guid] = {'AFK', GetTime()} 
+		end
 	elseif(UnitIsDND(unit)) then
-		if not unitStatus[guid] then unitStatus[guid] = {'DND', GetTime()} end
+		if not unitStatus[guid] or unitStatus[guid] and unitStatus[guid][1] ~= 'DND' then 
+			unitStatus[guid] = {'DND', GetTime()} 
+		end
 	elseif(UnitIsDead(unit)) or (UnitIsGhost(unit))then
-		if not unitStatus[guid] then unitStatus[guid] = {'Dead', GetTime()} end
+		if not unitStatus[guid] or unitStatus[guid] and unitStatus[guid][1] ~= 'Dead' then 
+			unitStatus[guid] = {'Dead', GetTime()} 
+		end
 	elseif(not UnitIsConnected(unit)) then
-		if not unitStatus[guid] then unitStatus[guid] = {'Offline', GetTime()} end
+		if not unitStatus[guid] or unitStatus[guid] and unitStatus[guid][1] ~= 'Offline' then 
+			unitStatus[guid] = {'Offline', GetTime()} 
+		end
 	else
 		unitStatus[guid] = nil
 	end
