@@ -732,20 +732,35 @@ end
 
 
 
-local function GetBNFriendColor(name, id)
-	local _, _, game, _, _, _, _, class = BNGetToonInfo(id)
-
-	if game ~= BNET_CLIENT_WOW or not class then
-		return name
-	else
-		for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
-		for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
-
-		if RAID_CLASS_COLORS[class] then
-			return "|c"..RAID_CLASS_COLORS[class].colorStr..name.."|r"
-		else
-			return name
+function CH:GetBNFriendColor(name, id)
+	local _, _, _, _, _, _, _, class = BNGetToonInfo(id)
+	if(not class or class == "") then
+		local toonName, toonID
+		for i=1, BNGetNumFriends() do
+			_, presenceName, _, _, _, toonID = BNGetFriendInfo(i)
+			if(presenceName == name) then
+				_, _, _, _, _, _, _, class = BNGetToonInfo(toonID)
+				if(class) then
+					break;
+				end
+			end
 		end
+	end
+
+	if(class) then
+		for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
+		for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end	
+	end
+
+	if(not class or not RAID_CLASS_COLORS[class]) then
+		return name
+	end
+
+
+	if RAID_CLASS_COLORS[class] then
+		return "|c"..RAID_CLASS_COLORS[class].colorStr..name.."|r"
+	else
+		return name
 	end
 end
 
@@ -1070,7 +1085,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			if ( type ~= "BN_WHISPER" and type ~= "BN_WHISPER_INFORM" and type ~= "BN_CONVERSATION" ) then
 				playerLink = "|Hplayer:"..arg2..":"..arg11..":"..chatGroup..(chatTarget and ":"..chatTarget or "").."|h";
 			else
-				coloredName = GetBNFriendColor(arg2, arg13)
+				coloredName = CH:GetBNFriendColor(arg2, arg13)
 				playerLink = "|HBNplayer:"..arg2..":"..arg13..":"..arg11..":"..chatGroup..(chatTarget and ":"..chatTarget or "").."|h";
 			end
 			
