@@ -1129,12 +1129,12 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			
 			local accessID = ChatHistory_GetAccessID(chatGroup, chatTarget);
 			local typeID = ChatHistory_GetAccessID(infoType, chatTarget, arg12 == "" and arg13 or arg12);
-			if CH.db.shortChannels then
+			if CH.db.shortChannels and type ~= "EMOTE" and type ~= "TEXT_EMOTE" then
 				body = body:gsub("|Hchannel:(.-)|h%[(.-)%]|h", CH.ShortChannel)
 				body = body:gsub('CHANNEL:', '')
-				body = body:gsub("^(.-|h) "..L['whispers']..":", "%1:")
-				body = body:gsub("^(.-|h) "..L['says']..":", "%1:")
-				body = body:gsub("^(.-|h) "..L['yells']..":", "%1:")
+				body = body:gsub("^(.-|h) "..L['whispers'], "%1")
+				body = body:gsub("^(.-|h) "..L['says'], "%1")
+				body = body:gsub("^(.-|h) "..L['yells'], "%1")
 				body = body:gsub("<"..AFK..">", "[|cffFF0000"..L['AFK'].."|r] ")
 				body = body:gsub("<"..DND..">", "[|cffE7E716"..L['DND'].."|r] ")
 				body = body:gsub("%[BN_CONVERSATION:", '%['.."")			
