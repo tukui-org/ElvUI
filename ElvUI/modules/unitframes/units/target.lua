@@ -475,7 +475,7 @@ function UF:Update_TargetFrame(frame, db)
 		local CPoints = frame.CPoints
 		CPoints:ClearAllPoints()
 
-		if db.combobar.autoHide then
+		if not db.combobar.detachFromFrame then
 			CPoints:SetParent(frame)
 		else
 			CPoints:SetParent(E.UIParent)	
