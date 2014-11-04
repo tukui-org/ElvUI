@@ -480,6 +480,12 @@ function UF:Update_TargetFrame(frame, db)
 		else
 			CPoints:SetParent(E.UIParent)	
 		end
+		
+		if CPoints[1]:GetAlpha() == 1 or not db.combobar.autoHide then
+			CPoints:Show()
+		else
+			CPoints:Hide()
+		end
 
 		if USE_MINI_COMBOBAR and not db.combobar.detachFromFrame then
 			CPoints:Point("CENTER", frame.Health.backdrop, "TOP", -(BORDER*3 + 6), -SPACING)
