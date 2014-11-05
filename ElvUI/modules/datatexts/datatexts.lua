@@ -62,7 +62,7 @@ function DT:RegisterLDB()
 		end
 
 		local function textUpdate(event, name, key, value, dataobj)
-			if value == nil or (len(value) > 5) or value == 'n/a' or name == value then
+			if value == nil or (len(value) >= 3) or value == 'n/a' or name == value then
 				curFrame.text:SetText(value ~= 'n/a' and value or name)
 			else
 				curFrame.text:SetText(name..': '..hex..value..'|r')
