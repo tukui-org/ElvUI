@@ -169,9 +169,9 @@ function UF:PostCastStart(unit, name, rank, castid)
 	
 	if unit == "vehicle" then unit = "player" end
 	
-	local timeLen = utf8len(self.Time:GetText() or "")									 		--Get length of time
-	local textLen = floor(self:GetWidth() / E.db['unitframe'].fontSize - timeLen or 0)			--Calculate length available for text
-	if textLen <= 0 then textLen = floor(self:GetWidth() / E.db['unitframe'].fontSize) end		--Re-calculate and omit timeLen
+	local timeLen = utf8len(self.Time:GetText() or "")	--Get length of time
+	local textLen = floor(self:GetWidth() / E.db['unitframe'].fontSize - timeLen or 0)	--Calculate length available for text
+	if textLen <= 0 then textLen = floor(self:GetWidth() / E.db['unitframe'].fontSize) end	--Re-calculate and omit timeLen
 
 	if timeLen == 0 then --self.Time is still nil
 		E:Delay(0.03, function() --Delay may need tweaking
