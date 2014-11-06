@@ -182,8 +182,6 @@ function UF:PostCastStart(unit, name, rank, castid)
 			timeLen = utf8len(self.Time:GetText() or "")
 			textLen = floor(((((32/245) * self:GetWidth()) / E.db['unitframe'].fontSize) * 12) - timeLen)
 			if textLen <1 then textLen = floor((((32/245) * self:GetWidth()) / E.db['unitframe'].fontSize) * 12) end
-			print("timeLen2: ", timeLen)
-			print("textLen2: ", textLen)
 			
 			if db.castbar.displayTarget and self.curTarget then
 				self.Text:SetText(utf8sub(name..' --> '..self.curTarget, 0, textLen))
