@@ -168,7 +168,9 @@ function E:GetColorTable(data)
 	end
 end
 
-function E:UpdateMedia()	
+function E:UpdateMedia()
+	if not self.db['general'] or not self.private['general'] then return end --Prevent rare nil value errors
+	
 	--Fonts
 	self["media"].normFont = LSM:Fetch("font", self.db['general'].font)
 	self["media"].combatFont = LSM:Fetch("font", self.db['general'].dmgfont)
