@@ -125,8 +125,10 @@ function UF:Update_PartyFrames(frame, db)
 
 	if frame.isChild then
 		local childDB = db.petsGroup
+		local childType = "pet"
 		if frame == _G[frame.originalParent:GetName()..'Target'] then
 			childDB = db.targetsGroup
+			childType = "target"
 		end
 		
 		if not frame.originalParent.childList then
@@ -186,12 +188,7 @@ function UF:Update_PartyFrames(frame, db)
 		end
 		
 		--Name
-		do
-			local name = frame.Name
-			name:ClearAllPoints()
-			name:SetPoint('CENTER', frame.Health, 'CENTER')
-			frame:Tag(name, '[namecolor][name:short]')
-		end			
+		UF:UpdateNameSettings(frame, childType)		
 	else
 		if not InCombatLockdown() then
 			frame:Size(UNIT_WIDTH, UNIT_HEIGHT)

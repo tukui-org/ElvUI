@@ -10,8 +10,14 @@ function UF:Construct_NameText(frame)
 	return name
 end
 
-function UF:UpdateNameSettings(frame)
+function UF:UpdateNameSettings(frame, childType)
 	local db = frame.db
+	if childType == "pet" then
+		db = frame.db.petsGroup
+	elseif childType == "target" then
+		db = frame.db.targetsGroup
+	end
+	
 	local name = frame.Name
 	if not db.power or not db.power.hideonnpc then
 		local x, y = self:GetPositionOffset(db.name.position)

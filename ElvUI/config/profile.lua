@@ -1427,6 +1427,12 @@ P['unitframe'] = {
 				['anchorPoint'] = 'TOPLEFT',
 				['xOffset'] = -1,
 				['yOffset'] = 0,
+				['name'] = {
+					['position'] = 'CENTER',
+					['text_format'] = '[namecolor][name:short]',
+					['yOffset'] = 0,				
+					['xOffset'] = 0,				
+				},
 			},
 			['targetsGroup'] = {
 				['enable'] = false,
@@ -1435,6 +1441,12 @@ P['unitframe'] = {
 				['anchorPoint'] = 'TOPLEFT',
 				['xOffset'] = -1,
 				['yOffset'] = 0,
+				['name'] = {
+					['position'] = 'CENTER',
+					['text_format'] = '[namecolor][name:short]',
+					['yOffset'] = 0,				
+					['xOffset'] = 0,				
+				},
 			},		
 			['raidicon'] = {
 				['enable'] = true,
