@@ -3,6 +3,8 @@ local UF = E:GetModule('UnitFrames');
 
 local floor = math.floor
 local sub = string.sub
+local utf8sub = string.utf8sub
+local utf8len = string.utf8len
 local LSM = LibStub("LibSharedMedia-3.0");
 
 local _, ns = ...
