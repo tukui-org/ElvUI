@@ -169,10 +169,28 @@ function UF:PostCastStart(unit, name, rank, castid)
 	
 	if unit == "vehicle" then unit = "player" end
 	
-	if db.castbar.displayTarget and self.curTarget then
-		self.Text:SetText(sub(name..' --> '..self.curTarget, 0, floor((((32/245) * self:GetWidth()) / E.db['unitframe'].fontSize) * 12)))
+	local timeLen = utf8len(self.Time:GetText() or "")									 		--Get length of time
+	local textLen = floor(self:GetWidth() / E.db['unitframe'].fontSize - timeLen or 0)			--Calculate length available for text
+	if textLen <= 0 then textLen = floor(self:GetWidth() / E.db['unitframe'].fontSize) end		--Re-calculate and omit timeLen
+
+	if timeLen == 0 then --self.Time is still nil
+		E:Delay(0.03, function() --Delay may need tweaking
+			timeLen = utf8len(self.Time:GetText() or "")
+			textLen = floor(self:GetWidth() / E.db['unitframe'].fontSize - timeLen or 0)
+			if textLen <= 0 then textLen = floor(self:GetWidth() / E.db['unitframe'].fontSize) end
+
+			if db.castbar.displayTarget and self.curTarget then
+				self.Text:SetText(utf8sub(name..' --> '..self.curTarget, 0, textLen))
+			else
+				self.Text:SetText(utf8sub(name, 0, textLen))
+			end
+		end)
 	else
-		self.Text:SetText(sub(name, 0, floor((((32/245) * self:GetWidth()) / E.db['unitframe'].fontSize) * 12)))
+		if db.castbar.displayTarget and self.curTarget then
+			self.Text:SetText(utf8sub(name..' --> '..self.curTarget, 0, textLen))
+		else
+			self.Text:SetText(utf8sub(name, 0, textLen))
+		end
 	end
 
 	self.Spark:Height(self:GetHeight() * 2)
