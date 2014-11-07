@@ -486,32 +486,56 @@ end
 
 function AB:Bar_OnEnter(bar)
 	E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), bar.db.alpha)
-	for i=1, 12 do
-		bar.buttons[i].cooldown:SetSwipeColor(0, 0, 0, 1)
+	if bar:GetName() == "ElvUI_BarPet" then
+		for i=1, 10 do
+			_G["PetActionButton"..i].cooldown:SetSwipeColor(0, 0, 0, 1)
+		end
+	else
+		for i=1, 12 do
+			bar.buttons[i].cooldown:SetSwipeColor(0, 0, 0, 1)
+		end
 	end
 end
 
 function AB:Bar_OnLeave(bar)
 	E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
-	for i=1, 12 do
-		bar.buttons[i].cooldown:SetSwipeColor(0, 0, 0, 0)
-	end	
+	if bar:GetName() == "ElvUI_BarPet" then
+		for i=1, 10 do
+			_G["PetActionButton"..i].cooldown:SetSwipeColor(0, 0, 0, 0)
+		end
+	else
+		for i=1, 12 do
+			bar.buttons[i].cooldown:SetSwipeColor(0, 0, 0, 0)
+		end
+	end
 end
 
 function AB:Button_OnEnter(button)
 	local bar = button:GetParent()
 	E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), bar.db.alpha)
-	for i=1, 12 do
-		bar.buttons[i].cooldown:SetSwipeColor(0, 0, 0, 1)
+	if bar:GetName() == "ElvUI_BarPet" then
+		for i=1, 10 do
+			_G["PetActionButton"..i].cooldown:SetSwipeColor(0, 0, 0, 1)
+		end
+	else
+		for i=1, 12 do
+			bar.buttons[i].cooldown:SetSwipeColor(0, 0, 0, 1)
+		end
 	end
 end
 
 function AB:Button_OnLeave(button)
 	local bar = button:GetParent()
 	E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
-	for i=1, 12 do
-		bar.buttons[i].cooldown:SetSwipeColor(0, 0, 0, 0)
-	end	
+	if bar:GetName() == "ElvUI_BarPet" then
+		for i=1, 10 do
+			_G["PetActionButton"..i].cooldown:SetSwipeColor(0, 0, 0, 0)
+		end
+	else
+		for i=1, 12 do
+			bar.buttons[i].cooldown:SetSwipeColor(0, 0, 0, 0)
+		end
+	end
 end
 
 function AB:BlizzardOptionsPanel_OnEvent()
