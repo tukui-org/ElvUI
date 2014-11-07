@@ -189,7 +189,8 @@ E.Options.args.nameplate = {
 					guiInline = true,
 					get = function(info)
 						local t = E.db.nameplate.reactions[ info[#info] ]
-						return t.r, t.g, t.b, t.a
+						local d = P.nameplate.reactions[info[#info]]
+						return t.r, t.g, t.b, t.a, d.r, d.g, d.b
 					end,
 					set = function(info, r, g, b)
 						E.db.nameplate.reactions[ info[#info] ] = {}
@@ -309,7 +310,8 @@ E.Options.args.nameplate = {
 						color = {
 							get = function(info)
 								local t = E.db.nameplate.healthBar.lowHPScale.color
-								return t.r, t.g, t.b, t.a
+								local d = P.nameplate.healthBar.lowHPScale.color
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b
 							end,
 							set = function(info, r, g, b)
 								E.db.nameplate.healthBar.lowHPScale.color = {}
@@ -376,7 +378,8 @@ E.Options.args.nameplate = {
 					guiInline = true,
 					get = function(info)
 						local t = E.db.nameplate.castBar[ info[#info] ]
-						return t.r, t.g, t.b, t.a
+						local d = P.nameplate.castBar[ info[#info] ]
+						return t.r, t.g, t.b, t.a, d.r, d.g, d.b
 					end,
 					set = function(info, r, g, b)
 						E.db.nameplate.castBar[ info[#info] ] = {}
@@ -477,7 +480,8 @@ E.Options.args.nameplate = {
 					disabled = function() return E.db.nameplate.targetIndicator.colorMatchHealthBar end,
 					get = function(info)
 						local t = E.db.nameplate.targetIndicator[ info[#info] ]
-						return t.r, t.g, t.b, t.a
+						local d = P.nameplate.targetIndicator[ info[#info] ]
+						return t.r, t.g, t.b, t.a, d.r, d.g, d.b
 					end,
 					set = function(info, r, g, b)
 						E.db.nameplate.targetIndicator[ info[#info] ] = {}
@@ -727,7 +731,8 @@ E.Options.args.nameplate = {
 					guiInline = true,
 					get = function(info)
 						local t = E.db.nameplate.threat[ info[#info] ]
-						return t.r, t.g, t.b, t.a
+						local d = P.nameplate.threat[ info[#info] ]
+						return t.r, t.g, t.b, t.a, d.r, d.g, d.b
 					end,
 					set = function(info, r, g, b)
 						E.db.nameplate.castBar[ info[#info] ] = {}

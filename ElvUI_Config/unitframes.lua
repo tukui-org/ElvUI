@@ -1568,7 +1568,8 @@ E.Options.args.unitframe = {
 							name = HEALTH,
 							get = function(info)
 								local t = E.db.unitframe.colors[ info[#info] ]
-								return t.r, t.g, t.b, t.a
+								local d = P.unitframe.colors[ info[#info] ]
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b
 							end,
 							set = function(info, r, g, b)
 								E.db.general[ info[#info] ] = {}
@@ -1646,7 +1647,8 @@ E.Options.args.unitframe = {
 							name = L['Powers'],
 							get = function(info)
 								local t = E.db.unitframe.colors.power[ info[#info] ]
-								return t.r, t.g, t.b, t.a
+								local d = P.unitframe.colors.power[ info[#info] ]
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b
 							end,
 							set = function(info, r, g, b)
 								E.db.general[ info[#info] ] = {}
@@ -1705,7 +1707,8 @@ E.Options.args.unitframe = {
 							name = L['Reactions'],
 							get = function(info)
 								local t = E.db.unitframe.colors.reaction[ info[#info] ]
-								return t.r, t.g, t.b, t.a
+								local d = P.unitframe.colors.reaction[ info[#info] ]
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b
 							end,
 							set = function(info, r, g, b)
 								E.db.general[ info[#info] ] = {}
@@ -1738,7 +1741,8 @@ E.Options.args.unitframe = {
 							name = L['Castbar'],
 							get = function(info)
 								local t = E.db.unitframe.colors[ info[#info] ]
-								return t.r, t.g, t.b, t.a
+								local d = P.unitframe.colors[ info[#info] ]
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b
 							end,
 							set = function(info, r, g, b)
 								E.db.general[ info[#info] ] = {}
@@ -1807,7 +1811,8 @@ E.Options.args.unitframe = {
 									type = 'color',
 									get = function(info)
 										local t = E.db.unitframe.colors.auraBarBuff
-										return t.r, t.g, t.b, t.a
+										local d = P.unitframe.colors.auraBarBuff
+										return t.r, t.g, t.b, t.a, d.r, d.g, d.b
 									end,
 									set = function(info, r, g, b)
 										if E:CheckClassColor(r, g, b) then
@@ -1829,7 +1834,8 @@ E.Options.args.unitframe = {
 									type = 'color',
 									get = function(info)
 										local t = E.db.unitframe.colors.auraBarDebuff
-										return t.r, t.g, t.b, t.a
+										local d = P.unitframe.colors.auraBarDebuff
+										return t.r, t.g, t.b, t.a, d.r, d.g, d.b
 									end,
 									set = function(info, r, g, b)
 										E.db.general[ info[#info] ] = {}
@@ -1844,7 +1850,8 @@ E.Options.args.unitframe = {
 									type = 'color',
 									get = function(info)
 										local t = E.db.unitframe.colors.auraBarTurtleColor
-										return t.r, t.g, t.b, t.a
+										local d = P.unitframe.colors.auraBarTurtleColor
+										return t.r, t.g, t.b, t.a, d.r, d.g, d.b
 									end,
 									set = function(info, r, g, b)
 										E.db.general[ info[#info] ] = {}
@@ -1861,7 +1868,8 @@ E.Options.args.unitframe = {
 							type = 'group',
 							get = function(info)
 								local t = E.db.unitframe.colors.healPrediction[ info[#info] ]
-								return t.r, t.g, t.b, t.a
+								local d = P.unitframe.colors.healPrediction[ info[#info] ]
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
 							end,
 							set = function(info, r, g, b, a)
 								local t = E.db.unitframe.colors.healPrediction[ info[#info] ]
@@ -4856,7 +4864,8 @@ E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGrou
 	name = L['Class Resources'],
 	get = function(info)
 		local t = E.db.unitframe.colors.classResources[ info[#info] ]
-		return t.r, t.g, t.b, t.a
+		local d = P.unitframe.colors.classResources[ info[#info] ]
+		return t.r, t.g, t.b, t.a, d.r, d.g, d.b
 	end,
 	set = function(info, r, g, b)
 		E.db.unitframe.colors.classResources[ info[#info] ] = {}
@@ -4888,7 +4897,8 @@ for i = 1, 5 do
 		name = L['Combo Point']..' #'..i,
 		get = function(info)
 			local t = E.db.unitframe.colors.classResources.comboPoints[i]
-			return t.r, t.g, t.b, t.a
+			local d = P.unitframe.colors.classResources.comboPoints[i]
+			return t.r, t.g, t.b, t.a, d.r, d.g, d.b
 		end,
 		set = function(info, r, g, b)
 			E.db.unitframe.colors.classResources.comboPoints[i] = {}
@@ -4929,7 +4939,8 @@ if P.unitframe.colors.classResources[E.myclass] then
 				order = ORDER + i,
 				get = function(info)
 					local t = E.db.unitframe.colors.classResources.ROGUE[i]
-					return t.r, t.g, t.b, t.a
+					local d = P.unitframe.colors.classResources.ROGUE[i]
+					return t.r, t.g, t.b, t.a, d.r, d.g, d.b
 				end,
 				set = function(info, r, g, b)
 					E.db.unitframe.colors.classResources.ROGUE[i] = {}
@@ -4953,7 +4964,8 @@ if P.unitframe.colors.classResources[E.myclass] then
 				order = ORDER + i,
 				get = function(info)
 					local t = E.db.unitframe.colors.classResources.MONK[i]
-					return t.r, t.g, t.b, t.a
+					local d = P.unitframe.colors.classResources.MONK[i]
+					return t.r, t.g, t.b, t.a, d.r, d.g, d.b
 				end,
 				set = function(info, r, g, b)
 					E.db.unitframe.colors.classResources.MONK[i] = {}
@@ -4976,7 +4988,8 @@ if P.unitframe.colors.classResources[E.myclass] then
 				order = ORDER + i,
 				get = function(info)
 					local t = E.db.unitframe.colors.classResources.WARLOCK[i]
-					return t.r, t.g, t.b, t.a
+					local d = P.unitframe.colors.classResources.WARLOCK[i]
+					return t.r, t.g, t.b, t.a, d.r, d.g, d.b
 				end,
 				set = function(info, r, g, b)
 					E.db.unitframe.colors.classResources.WARLOCK[i] = {}
@@ -4998,7 +5011,8 @@ if P.unitframe.colors.classResources[E.myclass] then
 				order = ORDER + i,
 				get = function(info)
 					local t = E.db.unitframe.colors.classResources.DRUID[i]
-					return t.r, t.g, t.b, t.a
+					local d = P.unitframe.colors.classResources.DRUID[i]
+					return t.r, t.g, t.b, t.a, d.r, d.g, d.b
 				end,
 				set = function(info, r, g, b)
 					E.db.unitframe.colors.classResources.DRUID[i] = {}
@@ -5022,7 +5036,8 @@ if P.unitframe.colors.classResources[E.myclass] then
 				order = ORDER + i,
 				get = function(info)
 					local t = E.db.unitframe.colors.classResources.DEATHKNIGHT[i]
-					return t.r, t.g, t.b, t.a
+					local d = P.unitframe.colors.classResources.DEATHKNIGHT[i]
+					return t.r, t.g, t.b, t.a, d.r, d.g, d.b
 				end,
 				set = function(info, r, g, b)
 					E.db.unitframe.colors.classResources.DEATHKNIGHT[i] = {}

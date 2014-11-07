@@ -302,7 +302,8 @@ E.Options.args.general = {
 							hasAlpha = false,
 							get = function(info)
 								local t = E.db.general[ info[#info] ]
-								return t.r, t.g, t.b, t.a
+								local d = P.general[info[#info]]
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b
 							end,
 							set = function(info, r, g, b)
 								E.db.general[ info[#info] ] = {}
@@ -321,7 +322,8 @@ E.Options.args.general = {
 							hasAlpha = false,
 							get = function(info)
 								local t = E.db.general[ info[#info] ]
-								return t.r, t.g, t.b, t.a
+								local d = P.general[info[#info]]
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b
 							end,
 							set = function(info, r, g, b)
 								E.db.general[ info[#info] ] = {}
@@ -339,7 +341,8 @@ E.Options.args.general = {
 							hasAlpha = true,
 							get = function(info)
 								local t = E.db.general[ info[#info] ]
-								return t.r, t.g, t.b, t.a
+								local d = P.general[info[#info]]
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
 							end,
 							set = function(info, r, g, b, a)
 								E.db.general[ info[#info] ] = {}
@@ -357,7 +360,8 @@ E.Options.args.general = {
 							hasAlpha = false,
 							get = function(info)
 								local t = E.db.general[ info[#info] ]
-								return t.r, t.g, t.b, t.a
+								local d = P.general[info[#info]]
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b
 							end,
 							set = function(info, r, g, b, a)
 								E.db.general[ info[#info] ] = {}
@@ -366,19 +370,6 @@ E.Options.args.general = {
 								E:UpdateMedia()
 							end,						
 						},						
-						resetbutton = {
-							type = "execute",
-							order = 5,
-							name = L["Restore Defaults"],
-							func = function() 
-								E.db.general.backdropcolor = P.general.backdropcolor
-								E.db.general.backdropfadecolor = P.general.backdropfadecolor
-								E.db.general.bordercolor = P.general.bordercolor
-								E.db.general.valuecolor = P.general.valuecolor
-								E:UpdateMedia()
-								E:UpdateFrameTemplates()								
-							end,
-						},
 					},
 				},
 			},
@@ -635,7 +626,8 @@ E.Options.args.general = {
 			name = L['Cooldown Text'],
 			get = function(info)
 				local t = E.db.cooldown[ info[#info] ]
-				return t.r, t.g, t.b, t.a
+				local d = P.cooldown[info[#info]]
+				return t.r, t.g, t.b, t.a, d.r, d.g, d.b
 			end,
 			set = function(info, r, g, b)
 				E.db.cooldown[ info[#info] ] = {}
@@ -663,19 +655,6 @@ E.Options.args.general = {
 						E.db.cooldown[ info[#info] ] = value
 						E:UpdateCooldownSettings();
 					end,				
-				},
-				restoreColors = {
-					type = 'execute',
-					name = L["Restore Defaults"],
-					order = 3,
-					func = function() 
-						E.db.cooldown.expiringColor = P['cooldown'].expiringColor;
-						E.db.cooldown.secondsColor = P['cooldown'].secondsColor;
-						E.db.cooldown.minutesColor = P['cooldown'].minutesColor;
-						E.db.cooldown.hoursColor = P['cooldown'].hoursColor;
-						E.db.cooldown.daysColor = P['cooldown'].daysColor;
-						E:UpdateCooldownSettings();
-					end,
 				},
 				expiringColor = {
 					type = 'color',
