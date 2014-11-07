@@ -4849,46 +4849,84 @@ E.Options.args.unitframe.args.assist = {
 
 
 --MORE COLORING STUFF YAY
-if P.unitframe.colors.classResources[E.myclass] then
-	E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup = {
-		order = -1,
-		type = 'group',
-		guiInline = true,
-		name = L['Class Resources'],
+E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup = {
+	order = -10,
+	type = 'group',
+	guiInline = true,
+	name = L['Class Resources'],
+	get = function(info)
+		local t = E.db.unitframe.colors.classResources[ info[#info] ]
+		return t.r, t.g, t.b, t.a
+	end,
+	set = function(info, r, g, b)
+		E.db.unitframe.colors.classResources[ info[#info] ] = {}
+		local t = E.db.unitframe.colors.classResources[ info[#info] ]
+		t.r, t.g, t.b = r, g, b
+		UF:Update_AllFrames()
+	end,
+	args = {}
+}
+
+E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args.bgColor = {
+	order = 1,
+	type = 'color',
+	name = L['Backdrop Color'],
+	hasAlpha = false,
+}	
+
+E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args.spacer = {
+	order = 2,
+	name = ' ',
+	type = 'description',
+	width = 'full',
+}
+
+for i = 1, 5 do
+	E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args['combo'..i] = {
+		order = i + 2,
+		type = 'color',
+		name = L['Combo Point']..' #'..i,
 		get = function(info)
-			local t = E.db.unitframe.colors.classResources[ info[#info] ]
+			local t = E.db.unitframe.colors.classResources.comboPoints[i]
 			return t.r, t.g, t.b, t.a
 		end,
 		set = function(info, r, g, b)
-			E.db.unitframe.colors.classResources[ info[#info] ] = {}
-			local t = E.db.unitframe.colors.classResources[ info[#info] ]
+			E.db.unitframe.colors.classResources.comboPoints[i] = {}
+			local t = E.db.unitframe.colors.classResources.comboPoints[i]
 			t.r, t.g, t.b = r, g, b
 			UF:Update_AllFrames()
-		end,
-		args = {}
+		end,			
 	}
-	
-	E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args.bgColor = {
-		type = 'color',
-		name = L['Backdrop Color'],
-		hasAlpha = false,
-	}	
-	
+end		
+
+
+if P.unitframe.colors.classResources[E.myclass] then	
+	E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args.spacer2 = {
+		order = 10,
+		name = ' ',
+		type = 'description',
+		width = 'full',
+	}
+
+	local ORDER = 20
 	if E.myclass == 'PALADIN' then
 		E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args[E.myclass] = {
 			type = 'color',
 			name = L['Holy Power'],
+			order = ORDER,
 		}
 	elseif E.myclass == 'MAGE' then
 		E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args[E.myclass] = {
 			type = 'color',
 			name = L['Arcane Charges'],
+			order = ORDER,
 		}
 	elseif E.myclass == 'ROGUE' then
 		for i = 1, 5 do
 			E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args['resource'..i] = {
 				type = 'color',
 				name = L['Anticipation']..' #'..i,
+				order = ORDER + i,
 				get = function(info)
 					local t = E.db.unitframe.colors.classResources.ROGUE[i]
 					return t.r, t.g, t.b, t.a
@@ -4905,12 +4943,14 @@ if P.unitframe.colors.classResources[E.myclass] then
 		E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args[E.myclass] = {
 			type = 'color',
 			name = L['Shadow Orbs'],
+			order = ORDER,
 		}	
 	elseif E.myclass == 'MONK' then
 		for i = 1, 5 do
 			E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args['resource'..i] = {
 				type = 'color',
 				name = L['Harmony']..' #'..i,
+				order = ORDER + i,
 				get = function(info)
 					local t = E.db.unitframe.colors.classResources.MONK[i]
 					return t.r, t.g, t.b, t.a
@@ -4933,6 +4973,7 @@ if P.unitframe.colors.classResources[E.myclass] then
 			E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args['resource'..i] = {
 				type = 'color',
 				name = names[i],
+				order = ORDER + i,
 				get = function(info)
 					local t = E.db.unitframe.colors.classResources.WARLOCK[i]
 					return t.r, t.g, t.b, t.a
@@ -4954,6 +4995,7 @@ if P.unitframe.colors.classResources[E.myclass] then
 			E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args['resource'..i] = {
 				type = 'color',
 				name = names[i],
+				order = ORDER + i,
 				get = function(info)
 					local t = E.db.unitframe.colors.classResources.DRUID[i]
 					return t.r, t.g, t.b, t.a
@@ -4977,6 +5019,7 @@ if P.unitframe.colors.classResources[E.myclass] then
 			E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args['resource'..i] = {
 				type = 'color',
 				name = names[i],
+				order = ORDER + i,
 				get = function(info)
 					local t = E.db.unitframe.colors.classResources.DEATHKNIGHT[i]
 					return t.r, t.g, t.b, t.a

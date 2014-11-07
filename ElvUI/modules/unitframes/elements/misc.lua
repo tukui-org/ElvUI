@@ -73,12 +73,6 @@ function UF:Construct_Combobar(frame)
 		CPoints[i].backdrop:SetParent(CPoints)
 	end
 	
-	CPoints[1]:SetStatusBarColor(0.69, 0.31, 0.31)		
-	CPoints[2]:SetStatusBarColor(0.69, 0.31, 0.31)
-	CPoints[3]:SetStatusBarColor(0.65, 0.63, 0.35)
-	CPoints[4]:SetStatusBarColor(0.65, 0.63, 0.35)
-	CPoints[5]:SetStatusBarColor(0.33, 0.59, 0.33)	
-
 	return CPoints
 end
 
