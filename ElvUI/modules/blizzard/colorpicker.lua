@@ -219,6 +219,37 @@ function B:EnhanceColorPicker()
 		end
 	end)		
 
+	-- add defaults button to the ColorPickerFrame		
+	b = CreateFrame("Button", "ColorPPDefault", ColorPickerFrame, "UIPanelButtonTemplate")
+	b:SetText(DEFAULT)
+	S:HandleButton(b)
+	b:Width(70)
+	b:Height(22)
+	b:Point("TOPLEFT", "ColorPPPaste", "BOTTOMLEFT", 0, -7)
+	b:Disable()  -- enable when something has been copied
+	b:SetScript("OnHide", function(self)
+		self.colors = nil
+	end)			
+	b:SetScript("OnShow", function(self)
+		if(self.colors) then
+			self:Enable()
+		else
+			self:Disable()
+		end
+	end)
+			
+	-- paste color on button click, updating frame components
+	b:SetScript("OnClick", function(self)
+		local colorBuffer = self.colors
+		ColorPickerFrame:SetColorRGB(colorBuffer.r, colorBuffer.g, colorBuffer.b)
+		ColorSwatch:SetTexture(colorBuffer.r, colorBuffer.g, colorBuffer.b)
+		if ColorPickerFrame.hasOpacity then
+			if colorBuffer.a then
+				OpacitySliderFrame:SetValue(colorBuffer.a)
+			end
+		end
+	end)	
+
 	-- locate Color Swatch for copy color
 	ColorPPCopyColorSwatch:SetPoint("LEFT", "ColorSwatch", "LEFT")
 	ColorPPCopyColorSwatch:Point("TOP", "ColorPPPaste", "BOTTOM", 0, -5)
