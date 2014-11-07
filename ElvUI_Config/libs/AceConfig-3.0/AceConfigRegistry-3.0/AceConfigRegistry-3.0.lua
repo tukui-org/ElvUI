@@ -9,7 +9,7 @@
 -- @class file
 -- @name AceConfigRegistry-3.0
 -- @release $Id: AceConfigRegistry-3.0.lua 1045 2011-12-09 17:58:40Z nevcairiel $
-local MAJOR, MINOR = "AceConfigRegistry-3.0", 14
+local MAJOR, MINOR = "AceConfigRegistry-3.0", 99
 local AceConfigRegistry = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not AceConfigRegistry then return end
@@ -163,6 +163,7 @@ local typedkeys={
 	},
 	color={
 		hasAlpha=optmethodbool,
+		reset=opttable,
 	},
 	keybinding={
 		-- TODO
