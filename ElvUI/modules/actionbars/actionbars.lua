@@ -127,6 +127,7 @@ function AB:PositionAndSizeBar(barName)
 
 		if self.db[barName].mouseover == true then
 			bar:SetAlpha(0);
+			button.cooldown:SetSwipeColor(0, 0, 0, 0)
 			if not self.hooks[bar] then
 				self:HookScript(bar, 'OnEnter', 'Bar_OnEnter');
 				self:HookScript(bar, 'OnLeave', 'Bar_OnLeave');	
@@ -138,6 +139,7 @@ function AB:PositionAndSizeBar(barName)
 			end
 		else
 			bar:SetAlpha(self.db[barName].alpha);
+			button.cooldown:SetSwipeColor(0, 0, 0, 1)
 			if self.hooks[bar] then
 				self:Unhook(bar, 'OnEnter');
 				self:Unhook(bar, 'OnLeave');
@@ -191,7 +193,7 @@ function AB:PositionAndSizeBar(barName)
 			button:Show()
 		end
 		
-		self:StyleButton(button, nil, nil, true);
+		self:StyleButton(button, nil, nil, true, true);
 		button:SetCheckedTexture("")
 	end
 	
@@ -473,7 +475,7 @@ function AB:StyleButton(button, noBackdrop, adjustChecked)
 	
 	button.FlyoutUpdateFunc = AB.StyleFlyout
 	self:FixKeybindText(button);
-	button:StyleButton();
+	button:StyleButton(nil, nil, nil, true);
 
 	if(not self.handledbuttons[button]) then
 		E:RegisterCooldown(button.cooldown)
@@ -484,20 +486,32 @@ end
 
 function AB:Bar_OnEnter(bar)
 	E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), bar.db.alpha)
+	for i=1, 12 do
+		bar.buttons[i].cooldown:SetSwipeColor(0, 0, 0, 1)
+	end
 end
 
 function AB:Bar_OnLeave(bar)
 	E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
+	for i=1, 12 do
+		bar.buttons[i].cooldown:SetSwipeColor(0, 0, 0, 0)
+	end	
 end
 
 function AB:Button_OnEnter(button)
 	local bar = button:GetParent()
 	E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), bar.db.alpha)
+	for i=1, 12 do
+		bar.buttons[i].cooldown:SetSwipeColor(0, 0, 0, 1)
+	end
 end
 
 function AB:Button_OnLeave(button)
 	local bar = button:GetParent()
 	E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
+	for i=1, 12 do
+		bar.buttons[i].cooldown:SetSwipeColor(0, 0, 0, 0)
+	end	
 end
 
 function AB:BlizzardOptionsPanel_OnEvent()
