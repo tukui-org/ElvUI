@@ -481,9 +481,7 @@ function UF:Update_TargetFrame(frame, db)
 			CPoints:SetParent(E.UIParent)	
 		end
 		
-		if CPoints[1]:GetAlpha() == 1 or not db.combobar.autoHide then
-			CPoints:Show()
-		else
+		if not USE_COMBOBAR or db.combobar.autoHide then
 			CPoints:Hide()
 		end
 
