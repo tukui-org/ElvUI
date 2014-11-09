@@ -125,7 +125,7 @@ local function LoadSkin()
 		_G[sorttab.."Right"]:Kill()
 	end
 	
-	for i=1, 3 do
+	for i=1, AuctionFrame.numTabs do
 		S:HandleTab(_G["AuctionFrameTab"..i])
 	end
 	
