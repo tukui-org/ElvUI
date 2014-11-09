@@ -272,10 +272,10 @@ local function StyleButton(button, noHover, noPushed, noChecked, noCD)
 	end
 	
 	local cooldown = button:GetName() and _G[button:GetName().."Cooldown"] 
-	if cooldown and not noCD then
+	if cooldown then
 		cooldown:ClearAllPoints()
 		cooldown:SetInside()
-		cooldown:SetSwipeColor(0, 0, 0, 1)
+		if not noCD then cooldown:SetSwipeColor(0, 0, 0, 1) end
 	end
 end
 
