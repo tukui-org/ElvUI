@@ -275,6 +275,7 @@ local function StyleButton(button, noHover, noPushed, noChecked, noCD)
 	if cooldown then
 		cooldown:ClearAllPoints()
 		cooldown:SetInside()
+		cooldown:SetDrawEdge(false)
 		if not noCD then cooldown:SetSwipeColor(0, 0, 0, 1) end
 	end
 end
