@@ -4,7 +4,7 @@ local LO = E:NewModule('Layout', 'AceEvent-3.0');
 local PANEL_HEIGHT = 22;
 local SIDE_BUTTON_WIDTH = 16;
 
-E.Layout = LO;
+E.Layout = LO;  
 
 local function Panel_OnShow(self)
 	self:SetFrameLevel(0)
