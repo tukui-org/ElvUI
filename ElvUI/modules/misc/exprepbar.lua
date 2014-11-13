@@ -205,12 +205,14 @@ function M:UpdateExpRepDimensions()
 end
 
 function M:EnableDisable_ExperienceBar()
-	if UnitLevel('player') ~= MAX_PLAYER_LEVEL and E.db.general.experience.enable then
+	local maxLevel = MAX_PLAYER_LEVEL_TABLE[GetExpansionLevel()];
+	if UnitLevel('player') ~= maxLevel and E.db.general.experience.enable then
 		self:RegisterEvent('PLAYER_XP_UPDATE', 'UpdateExperience')
 		self:RegisterEvent('PLAYER_LEVEL_UP', 'UpdateExperience')
 		self:RegisterEvent("DISABLE_XP_GAIN", 'UpdateExperience')
 		self:RegisterEvent("ENABLE_XP_GAIN", 'UpdateExperience')
 		self:RegisterEvent('UPDATE_EXHAUSTION', 'UpdateExperience')
+		self:UnregisterEvent("UPDATE_EXPANSION_LEVEL")
 		self:UpdateExperience()	
 	else
 		self:UnregisterEvent('PLAYER_XP_UPDATE')
@@ -218,6 +220,7 @@ function M:EnableDisable_ExperienceBar()
 		self:UnregisterEvent("DISABLE_XP_GAIN")
 		self:UnregisterEvent("ENABLE_XP_GAIN")
 		self:UnregisterEvent('UPDATE_EXHAUSTION')
+		self:RegisterEvent("UPDATE_EXPANSION_LEVEL", "EnableDisable_ExperienceBar")
 		self.expBar:Hide()
 	end
 end
