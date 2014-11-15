@@ -214,6 +214,9 @@ function B:AlertFrame_SetGarrisonFollowerAlertFrameAnchors(alertAnchor)
 end
 
 function B:AlertMovers()
+	UIPARENT_MANAGED_FRAME_POSITIONS["GroupLootContainer"] = nil
+	E:CreateMover(AlertFrameHolder, "AlertFrameMover", L["Loot / Alert Frames"], nil, nil, E.PostAlertMove)
+
 	self:SecureHook('AlertFrame_FixAnchors', E.PostAlertMove)
 	self:SecureHook('AlertFrame_SetLootAnchors')
 	self:SecureHook('AlertFrame_SetStorePurchaseAnchors')
@@ -230,7 +233,4 @@ function B:AlertMovers()
 	self:SecureHook('AlertFrame_SetGarrisonBuildingAlertFrameAnchors')
 	self:SecureHook('AlertFrame_SetGarrisonMissionAlertFrameAnchors')
 	self:SecureHook('AlertFrame_SetGarrisonFollowerAlertFrameAnchors')
-
-	UIPARENT_MANAGED_FRAME_POSITIONS["GroupLootContainer"] = nil
-	E:CreateMover(AlertFrameHolder, "AlertFrameMover", L["Loot / Alert Frames"], nil, nil, E.PostAlertMove)
 end
