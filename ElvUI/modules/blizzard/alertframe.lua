@@ -93,7 +93,7 @@ function B:AlertFrame_SetLootWonAnchors(alertAnchor)
 	end
 end
 
-function AlertFrame_SetLootUpgradeFrameAnchors(alertAnchor)
+function B:AlertFrame_SetLootUpgradeFrameAnchors(alertAnchor)
 	for i=1, #LOOT_UPGRADE_ALERT_FRAMES do
 		local frame = LOOT_UPGRADE_ALERT_FRAMES[i];
 		if ( frame:IsShown() ) then
@@ -181,7 +181,7 @@ function B:AlertFrame_SetGuildChallengeAnchors(alertAnchor)
 	end
 end
 
-function AlertFrame_SetDigsiteCompleteToastFrameAnchors(alertAnchor)
+function B:AlertFrame_SetDigsiteCompleteToastFrameAnchors(alertAnchor)
     if ( DigsiteCompleteToastFrame and DigsiteCompleteToastFrame:IsShown() ) then
 		DigsiteCompleteToastFrame:ClearAllPoints()
         DigsiteCompleteToastFrame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
@@ -189,7 +189,7 @@ function AlertFrame_SetDigsiteCompleteToastFrameAnchors(alertAnchor)
     end
 end
  
-function AlertFrame_SetGarrisonBuildingAlertFrameAnchors(alertAnchor)
+function B:AlertFrame_SetGarrisonBuildingAlertFrameAnchors(alertAnchor)
     if ( GarrisonBuildingAlertFrame and GarrisonBuildingAlertFrame:IsShown() ) then
 		GarrisonBuildingAlertFrame:ClearAllPoints()
         GarrisonBuildingAlertFrame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
@@ -197,7 +197,7 @@ function AlertFrame_SetGarrisonBuildingAlertFrameAnchors(alertAnchor)
     end
 end
  
-function AlertFrame_SetGarrisonMissionAlertFrameAnchors(alertAnchor)
+function B:AlertFrame_SetGarrisonMissionAlertFrameAnchors(alertAnchor)
     if ( GarrisonMissionAlertFrame and GarrisonMissionAlertFrame:IsShown() ) then
 		GarrisonMissionAlertFrame:ClearAllPoints()
         GarrisonMissionAlertFrame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
@@ -205,7 +205,7 @@ function AlertFrame_SetGarrisonMissionAlertFrameAnchors(alertAnchor)
     end
 end
  
-function AlertFrame_SetGarrisonFollowerAlertFrameAnchors(alertAnchor)
+function B:AlertFrame_SetGarrisonFollowerAlertFrameAnchors(alertAnchor)
     if ( GarrisonFollowerAlertFrame and GarrisonFollowerAlertFrame:IsShown() ) then
 		GarrisonFollowerAlertFrame:ClearAllPoints()
         GarrisonFollowerAlertFrame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
