@@ -93,6 +93,17 @@ function B:AlertFrame_SetLootWonAnchors(alertAnchor)
 	end
 end
 
+function AlertFrame_SetLootUpgradeFrameAnchors(alertAnchor)
+    for i=1, #LOOT_UPGRADE_ALERT_FRAMES do
+        local frame = LOOT_UPGRADE_ALERT_FRAMES[i];
+        if ( frame:IsShown() ) then
+			frame:ClearAllPoints()
+            frame:SetPoint("BOTTOM", alertAnchor, "TOP", 0, 10);
+            alertAnchor = frame;
+        end
+    end
+end
+
 function B:AlertFrame_SetMoneyWonAnchors(alertAnchor)
 	for i=1, #MONEY_WON_ALERT_FRAMES do
 		local frame = MONEY_WON_ALERT_FRAMES[i];
