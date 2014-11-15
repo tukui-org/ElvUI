@@ -98,7 +98,7 @@ function AlertFrame_SetLootUpgradeFrameAnchors(alertAnchor)
         local frame = LOOT_UPGRADE_ALERT_FRAMES[i];
         if ( frame:IsShown() ) then
 			frame:ClearAllPoints()
-            frame:SetPoint("BOTTOM", alertAnchor, "TOP", 0, 10);
+            frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
             alertAnchor = frame;
         end
     end
