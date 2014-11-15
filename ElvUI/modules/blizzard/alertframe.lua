@@ -94,14 +94,14 @@ function B:AlertFrame_SetLootWonAnchors(alertAnchor)
 end
 
 function AlertFrame_SetLootUpgradeFrameAnchors(alertAnchor)
-    for i=1, #LOOT_UPGRADE_ALERT_FRAMES do
-        local frame = LOOT_UPGRADE_ALERT_FRAMES[i];
-        if ( frame:IsShown() ) then
+	for i=1, #LOOT_UPGRADE_ALERT_FRAMES do
+		local frame = LOOT_UPGRADE_ALERT_FRAMES[i];
+		if ( frame:IsShown() ) then
 			frame:ClearAllPoints()
-            frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
-            alertAnchor = frame;
-        end
-    end
+			frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
+			alertAnchor = frame;
+		end
+	end
 end
 
 function B:AlertFrame_SetMoneyWonAnchors(alertAnchor)
