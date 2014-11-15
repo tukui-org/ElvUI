@@ -170,10 +170,44 @@ function B:AlertFrame_SetGuildChallengeAnchors(alertAnchor)
 	end
 end
 
+function AlertFrame_SetDigsiteCompleteToastFrameAnchors(alertAnchor)
+    if ( DigsiteCompleteToastFrame and DigsiteCompleteToastFrame:IsShown() ) then
+		DigsiteCompleteToastFrame:ClearAllPoints()
+        DigsiteCompleteToastFrame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
+        alertAnchor = DigsiteCompleteToastFrame;
+    end
+end
+ 
+function AlertFrame_SetGarrisonBuildingAlertFrameAnchors(alertAnchor)
+    if ( GarrisonBuildingAlertFrame and GarrisonBuildingAlertFrame:IsShown() ) then
+		GarrisonBuildingAlertFrame:ClearAllPoints()
+        GarrisonBuildingAlertFrame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
+        alertAnchor = GarrisonBuildingAlertFrame;
+    end
+end
+ 
+function AlertFrame_SetGarrisonMissionAlertFrameAnchors(alertAnchor)
+    if ( GarrisonMissionAlertFrame and GarrisonMissionAlertFrame:IsShown() ) then
+		GarrisonMissionAlertFrame:ClearAllPoints()
+        GarrisonMissionAlertFrame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
+        alertAnchor = GarrisonMissionAlertFrame;
+    end
+end
+ 
+function AlertFrame_SetGarrisonFollowerAlertFrameAnchors(alertAnchor)
+    if ( GarrisonFollowerAlertFrame and GarrisonFollowerAlertFrame:IsShown() ) then
+		GarrisonFollowerAlertFrame:ClearAllPoints()
+        GarrisonFollowerAlertFrame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
+        alertAnchor = GarrisonFollowerAlertFrame;
+    end
+end
+
 function B:AlertMovers()
 	self:SecureHook('AlertFrame_FixAnchors', E.PostAlertMove)
 	self:SecureHook('AlertFrame_SetLootAnchors')
+	self:SecureHook('AlertFrame_SetStorePurchaseAnchors')
 	self:SecureHook('AlertFrame_SetLootWonAnchors')
+	self:SecureHook('AlertFrame_SetLootUpgradeFrameAnchors')
 	self:SecureHook('AlertFrame_SetMoneyWonAnchors')
 	self:SecureHook('AlertFrame_SetAchievementAnchors')
 	self:SecureHook('AlertFrame_SetCriteriaAnchors')
@@ -181,8 +215,11 @@ function B:AlertMovers()
 	self:SecureHook('AlertFrame_SetDungeonCompletionAnchors')
 	self:SecureHook('AlertFrame_SetScenarioAnchors')
 	self:SecureHook('AlertFrame_SetGuildChallengeAnchors')
-	self:SecureHook('AlertFrame_SetStorePurchaseAnchors')
-	
+	self:SecureHook('AlertFrame_SetDigsiteCompleteToastFrameAnchors')
+	self:SecureHook('AlertFrame_SetGarrisonBuildingAlertFrameAnchors')
+	self:SecureHook('AlertFrame_SetGarrisonMissionAlertFrameAnchors')
+	self:SecureHook('AlertFrame_SetGarrisonFollowerAlertFrameAnchors')
+
 	UIPARENT_MANAGED_FRAME_POSITIONS["GroupLootContainer"] = nil
 	E:CreateMover(AlertFrameHolder, "AlertFrameMover", L["Loot / Alert Frames"], nil, nil, E.PostAlertMove)
 end
