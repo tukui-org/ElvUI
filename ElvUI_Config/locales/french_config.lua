@@ -255,7 +255,6 @@ L["Testing:"] = "Testeurs: "
 
 --DataTexts
 L["24-Hour Time"] = "Mode 24 Heures"
-L['Always Display'] = "Toujours afficher"
 L['Battleground Texts'] = "Textes des Champs de bataille"
 L['Change settings for the display of the location text that is on the minimap.'] = "Modifier les paramètres pour l'affichage du texte d'emplacement sur la minicarte."
 L['Datatext Panel (Left)'] = "Panneaux d'informations (Gauche)"
@@ -269,9 +268,7 @@ L["left"] = "Gauche"
 L["LeftChatDataPanel"] = "Fenêtre de discussion à gauche"
 L["LeftMiniPanel"] = "Minicarte à gauche"
 L["Local Time"] = "Heure Locale"
-L['Location Text'] = "Texte de localisation"
 L["middle"] = "Milieu"
-L['Minimap Mouseover'] = "Au survol de la Minicarte"
 L['Minimap Panels'] = "Panneaux de la Minicarte"
 L['Panel Transparency'] = "Transparence du panneau"
 L["Panels"] = "Fenêtre"
@@ -364,6 +361,12 @@ L["The font that the core of the UI will use."] = "La police que le cœur de l'I
 L["The texture that will be used mainly for statusbars."] = "La texture qui sera utilisé principalement pour la barre de statut."
 L["This texture will get used on objects like chat windows and dropdown menus."] = "Cette texture sera utilisée pour les fenêtres de discussion et les menus déroulants."
 L["Value Color"] = "Couleur des Textes d'informations"
+
+--Minimap
+L['Always Display'] = "Toujours afficher"
+L['Location Text'] = "Texte de localisation"
+L["Minimap Buttons"] = true;
+L['Minimap Mouseover'] = "Au survol de la Minicarte"
 
 --Misc
 L["Install"] = "Installer"
