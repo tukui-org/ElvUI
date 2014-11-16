@@ -16,6 +16,8 @@ V['general'] = {
 
 	['minimap'] = {
 		['enable'] = true,
+		['hideGarrison'] = false,
+		['hideCalendar'] = true,
 	},
 }
 

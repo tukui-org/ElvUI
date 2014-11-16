@@ -29,6 +29,8 @@ P['general'] = {
 	['minimap'] = {
 		['size'] = 176,
 		['locationText'] = 'MOUSEOVER',
+		['garrisonPos'] = "TOPLEFT",
+		['calendarPos'] = "TOPRIGHT",
 	},	
 	
 	['experience'] = {
