@@ -255,7 +255,6 @@ L["Testing:"] = "Pruebas:"
 
 --DataTexts
 L["24-Hour Time"] = "Tiempo de 24 horas"
-L["Always Display"] = "Mostrar Siempre"
 L["Battleground Texts"] = "Textos de los Campos de Batalla"
 L["Change settings for the display of the location text that is on the minimap."] = "Cambia la configuración para mostrar el texto de ubicación que está en el minimapa."
 L["Datatext Panel (Left)"] = "Panel Izquierdo de los Datos de texto"
@@ -269,9 +268,7 @@ L["left"] = "Izquierda"
 L["LeftChatDataPanel"] = "Panel de Chat Izquierdo"
 L["LeftMiniPanel"] = "Panel Izquierdo del Minimapa"
 L["Local Time"] = "Hora Local"
-L["Location Text"] = "Texto de Ubicación"
 L["middle"] = "Medio"
-L["Minimap Mouseover"] = "Ratón por encima del Minimapa"
 L["Minimap Panels"] = "Paneles del Minimapa"
 L["Panel Transparency"] = "Transparencia del Panel"
 L["Panels"] = "Paneles"
@@ -364,6 +361,12 @@ L["The font that the core of the UI will use."] = "La fuente que usará el núcl
 L["The texture that will be used mainly for statusbars."] = "La textura que se usará principalmente para las barras de estado."
 L["This texture will get used on objects like chat windows and dropdown menus."] = "Esta textura se usará en objetos como las ventanas de chat y menús desplegables."
 L["Value Color"] = "Color de Dato"
+
+--Minimap
+L['Always Display'] = "Mostrar Siempre"
+L['Location Text'] = "Texto de Ubicación"
+L["Minimap Buttons"] = true;
+L['Minimap Mouseover'] = "Ratón por encima del Minimapa"
 
 --Misc
 L["Install"] = "Instalar"

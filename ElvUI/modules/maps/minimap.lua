@@ -54,6 +54,8 @@ local menuList = {
 	func = function() ToggleFriendsFrame() end},
 	{text = L["Calendar"],
 	func = function() GameTimeFrame:Click() end},
+	{text = GARRISON_LANDING_PAGE_TITLE,
+	func = function() GarrisonLandingPageMinimapButton_OnClick() end},
 	{text = ACHIEVEMENTS_GUILD_TAB,
 	func = function()
 		if IsInGuild() then
@@ -69,7 +71,7 @@ local menuList = {
 	func = function() PVEFrame_ToggleFrame(); end},
 	--[[{text = L["Raid Browser"],
 	func = function() ToggleFrame(RaidBrowserFrame); end},]]
-	{text = ENCOUNTER_JOURNAL, 
+	{text = ENCOUNTER_JOURNAL,
 	func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then EncounterJournal_LoadUI(); end ToggleFrame(EncounterJournal) end}
 }
 
@@ -232,6 +234,23 @@ function M:UpdateSettings()
 	if ElvUI_ConsolidatedBuffs then
 		E:GetModule('Auras'):Update_ConsolidatedBuffsSettings()
 	end
+
+	if GarrisonLandingPageMinimapButton then
+		local pos = E.db.general.minimap.garrisonPos or "TOPLEFT"
+		GarrisonLandingPageMinimapButton:ClearAllPoints()
+		GarrisonLandingPageMinimapButton:SetPoint(pos, Minimap)
+	end
+	
+	if GameTimeFrame then
+		if E.private.general.minimap.hideCalendar then
+			GameTimeFrame:Hide()
+		else
+			GameTimeFrame:Show()
+			local pos = E.db.general.minimap.calendarPos or "TOPRIGHT"
+			GameTimeFrame:ClearAllPoints()
+			GameTimeFrame:SetPoint(pos, Minimap)
+		end
+	end
 end
 
 function M:Initialize()	
@@ -291,8 +310,6 @@ function M:Initialize()
 
 	MinimapNorthTag:Kill()
 
-	GameTimeFrame:Hide()
-
 	MinimapZoneTextButton:Hide()
 
 	MiniMapTracking:Hide()
@@ -302,8 +319,9 @@ function M:Initialize()
 	MiniMapMailBorder:Hide()
 	MiniMapMailIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\mail")
 
-	GarrisonLandingPageMinimapButton:ClearAllPoints()
-	GarrisonLandingPageMinimapButton:SetPoint("TOPLEFT", Minimap)
+	if E.private.general.minimap.hideGarrison then
+		GarrisonLandingPageMinimapButton:Kill()
+	end
 
 	QueueStatusMinimapButton:ClearAllPoints()
 	QueueStatusMinimapButton:Point("BOTTOMRIGHT", Minimap, 3, 0)

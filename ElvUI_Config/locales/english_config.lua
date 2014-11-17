@@ -244,7 +244,6 @@ L["Testing:"] = true;
 
 --DataTexts
 L["24-Hour Time"] = true;
-L['Always Display'] = true;
 L['Battleground Texts'] = true;
 L['Change settings for the display of the location text that is on the minimap.'] = true;
 L['Datatext Panel (Left)'] = true;
@@ -258,9 +257,7 @@ L["left"] = "Left"
 L["LeftChatDataPanel"] = "Left Chat"
 L["LeftMiniPanel"] = "Minimap Left"
 L["Local Time"] = true;
-L['Location Text'] = true;
 L["middle"] = "Middle"
-L['Minimap Mouseover'] = true;
 L['Minimap Panels'] = true;
 L['Panel Transparency'] = true;
 L["Panels"] = true;
@@ -353,6 +350,12 @@ L["The font that the core of the UI will use."] = true;
 L["The texture that will be used mainly for statusbars."] = true;
 L["This texture will get used on objects like chat windows and dropdown menus."] = true;
 L["Value Color"] = true;
+
+--Minimap
+L['Always Display'] = true;
+L['Location Text'] = true;
+L["Minimap Buttons"] = true;
+L['Minimap Mouseover'] = true;
 
 --Misc
 L['Install'] = true;
@@ -577,6 +580,7 @@ L['Colored Icon'] = true;
 L['Coloring (Specific)'] = true
 L['Coloring'] = true
 L["Combat Fade"] = true;
+L['Combo Point'] = true;
 L["Combobar"] = true;
 L['Configure Auras'] = true;
 L["Copy From"] = true;

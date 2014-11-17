@@ -255,7 +255,6 @@ L["Testing:"] = "测试:"
 
 --DataTexts
 L["24-Hour Time"] = "24小时制"
-L['Always Display'] = "总是显示"
 L['Battleground Texts'] = "战场资讯"
 L['Change settings for the display of the location text that is on the minimap.'] = "改变小地图所在位置文字的显示设置."
 L['Datatext Panel (Left)'] = "左侧资讯框"
@@ -269,9 +268,7 @@ L["left"] = "左"
 L["LeftChatDataPanel"] = "对话视窗左方"
 L["LeftMiniPanel"] = "小地图左方"
 L["Local Time"] = "本地时间"
-L['Location Text'] = "所在位置文字"
 L["middle"] = "中"
-L['Minimap Mouseover'] = "小地图鼠标滑过"
 L['Minimap Panels'] = "小地图栏"
 L['Panel Transparency'] = "面板透明"
 L["Panels"] = "对话框"
@@ -364,6 +361,12 @@ L["The font that the core of the UI will use."] = "核心 UI 所使用的字体.
 L["The texture that will be used mainly for statusbars."] = "此材质主用于状态列上。"
 L["This texture will get used on objects like chat windows and dropdown menus."] = "主要用于对话视窗及下拉选单等物件的材质"
 L["Value Color"] = "数值颜色"
+
+--Minimap
+L['Always Display'] = "总是显示"
+L['Location Text'] = "所在位置文字"
+L["Minimap Buttons"] = true;
+L['Minimap Mouseover'] = "小地图鼠标滑过"
 
 --Misc
 L['Install'] = "安装"
