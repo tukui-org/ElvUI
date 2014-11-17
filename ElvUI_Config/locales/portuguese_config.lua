@@ -364,9 +364,17 @@ L["Value Color"] = "Cor dos Valores"
 
 --Minimap
 L['Always Display'] = "Exibir sempre"
+L["Bottom Left"] = true;
+L["Bottom Right"] = true;
+L["Bottom"] = true;
+L["Left"] = true;
 L['Location Text'] = "Texto de Localização"
 L["Minimap Buttons"] = true;
 L['Minimap Mouseover'] = "Passar com o rato(mouse) sobre o minimapa"
+L["Right"] = true;
+L["Top Left"] = true;
+L["Top Right"] = true;
+L["Top"] = true;
 
 --Misc
 L["Install"] = "Instalação"

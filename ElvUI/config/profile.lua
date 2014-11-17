@@ -29,8 +29,38 @@ P['general'] = {
 	['minimap'] = {
 		['size'] = 176,
 		['locationText'] = 'MOUSEOVER',
-		['garrisonPos'] = "TOPLEFT",
-		['calendarPos'] = "TOPRIGHT",
+		['icons'] = {
+			['garrison'] = {
+				['position'] = "TOPLEFT",
+				['xOffset'] = 0,
+				['yOffset'] = 0,
+			},
+			['calendar'] = {
+				['position'] = "TOPRIGHT",
+				['xOffset'] = 0,
+				['yOffset'] = 0,
+			},
+			['mail'] = {
+				['position'] = "TOPRIGHT",
+				['xOffset'] = 3,
+				['yOffset'] = 4,
+			},
+			['lfgEye'] = {
+				['position'] = "BOTTOMRIGHT",
+				['xOffset'] = 3,
+				['yOffset'] = 0,
+			},
+			['difficulty'] = {
+				['position'] = "TOPLEFT",
+				['xOffset'] = 0,
+				['yOffset'] = 0,
+			},
+			['challengeMode'] = {
+				['position'] = "TOPLEFT",
+				['xOffset'] = 8,
+				['yOffset'] = -8,
+			},
+		}
 	},	
 	
 	['experience'] = {

@@ -236,9 +236,9 @@ function M:UpdateSettings()
 	end
 
 	if GarrisonLandingPageMinimapButton then
-		local pos = E.db.general.minimap.garrisonPos or "TOPLEFT"
+		local pos = E.db.general.minimap.icons.garrison.position or "TOPLEFT"
 		GarrisonLandingPageMinimapButton:ClearAllPoints()
-		GarrisonLandingPageMinimapButton:SetPoint(pos, Minimap)
+		GarrisonLandingPageMinimapButton:SetPoint(pos, Minimap, pos, E.db.general.minimap.icons.garrison.xOffset or 0, E.db.general.minimap.icons.garrison.yOffset or 0)
 	end
 	
 	if GameTimeFrame then
@@ -246,10 +246,38 @@ function M:UpdateSettings()
 			GameTimeFrame:Hide()
 		else
 			GameTimeFrame:Show()
-			local pos = E.db.general.minimap.calendarPos or "TOPRIGHT"
+			local pos = E.db.general.minimap.icons.calendar.position or "TOPRIGHT"
 			GameTimeFrame:ClearAllPoints()
-			GameTimeFrame:SetPoint(pos, Minimap)
+			GameTimeFrame:SetPoint(pos, Minimap, pos, E.db.general.minimap.icons.calendar.xOffset or 0, E.db.general.minimap.icons.calendar.yOffset or 0)
 		end
+	end
+	
+	if MiniMapMailFrame then
+		local pos = E.db.general.minimap.icons.mail.position or "TOPRIGHT"
+		MiniMapMailFrame:ClearAllPoints()
+		MiniMapMailFrame:SetPoint(pos, Minimap, pos, E.db.general.minimap.icons.mail.xOffset or 3, E.db.general.minimap.icons.mail.yOffset or 4)
+	end
+	
+	if QueueStatusMinimapButton then
+		local pos = E.db.general.minimap.icons.lfgEye.position or "BOTTOMRIGHT"
+		QueueStatusMinimapButton:ClearAllPoints()
+		QueueStatusMinimapButton:SetPoint(pos, Minimap, pos, E.db.general.minimap.icons.lfgEye.xOffset or 3, E.db.general.minimap.icons.lfgEye.yOffset or 0)
+	end
+	
+	if MiniMapInstanceDifficulty and GuildInstanceDifficulty then
+		local pos = E.db.general.minimap.icons.difficulty.position or "TOPLEFT"
+		local x = E.db.general.minimap.icons.difficulty.xOffset or 0
+		local y = E.db.general.minimap.icons.difficulty.yOffset or 0
+		MiniMapInstanceDifficulty:ClearAllPoints()
+		MiniMapInstanceDifficulty:SetPoint(pos, Minimap, pos, x, y)
+		GuildInstanceDifficulty:ClearAllPoints()
+		GuildInstanceDifficulty:SetPoint(pos, Minimap, pos, x, y)
+	end
+	
+	if MiniMapChallengeMode then
+		local pos = E.db.general.minimap.icons.challengeMode.position or "TOPLEFT"
+		MiniMapChallengeMode:ClearAllPoints()
+		MiniMapChallengeMode:SetPoint(pos, Minimap, pos, E.db.general.minimap.icons.challengeMode.xOffset or 8, E.db.general.minimap.icons.challengeMode.yOffset or -8)
 	end
 end
 
@@ -314,8 +342,6 @@ function M:Initialize()
 
 	MiniMapTracking:Hide()
 
-	MiniMapMailFrame:ClearAllPoints()
-	MiniMapMailFrame:Point("TOPRIGHT", Minimap, 3, 4)
 	MiniMapMailBorder:Hide()
 	MiniMapMailIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\mail")
 
@@ -323,24 +349,14 @@ function M:Initialize()
 		GarrisonLandingPageMinimapButton:Kill()
 	end
 
-	QueueStatusMinimapButton:ClearAllPoints()
-	QueueStatusMinimapButton:Point("BOTTOMRIGHT", Minimap, 3, 0)
 	QueueStatusMinimapButtonBorder:Hide()
 	QueueStatusFrame:SetClampedToScreen(true)
 
 	MiniMapWorldMapButton:Hide()
 
-	MiniMapInstanceDifficulty:ClearAllPoints()
 	MiniMapInstanceDifficulty:SetParent(Minimap)
-	MiniMapInstanceDifficulty:Point("TOPLEFT", Minimap, "TOPLEFT", 0, 0)
-
-	GuildInstanceDifficulty:ClearAllPoints()
 	GuildInstanceDifficulty:SetParent(Minimap)
-	GuildInstanceDifficulty:Point("TOPLEFT", Minimap, "TOPLEFT", 0, 0)
-	
-	MiniMapChallengeMode:ClearAllPoints()
 	MiniMapChallengeMode:SetParent(Minimap)
-	MiniMapChallengeMode:Point("TOPLEFT", Minimap, "TOPLEFT", 8, -8)
 	
 	if TimeManagerClockButton then
 		TimeManagerClockButton:Kill()

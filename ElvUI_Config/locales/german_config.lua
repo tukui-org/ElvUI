@@ -362,9 +362,17 @@ L["Value Color"] = "Farbwert"
 
 --Minimap
 L['Always Display'] = 'Immer anzeigen'
+L["Bottom Left"] = true;
+L["Bottom Right"] = true;
+L["Bottom"] = true;
+L["Left"] = true;
 L['Location Text'] = 'Umgebungstext'
 L["Minimap Buttons"] = true;
 L['Minimap Mouseover'] = 'Minimap Mouseover'
+L["Right"] = true;
+L["Top Left"] = true;
+L["Top Right"] = true;
+L["Top"] = true;
 
 --Misc
 L["Enable"] = "Eingeschaltet"

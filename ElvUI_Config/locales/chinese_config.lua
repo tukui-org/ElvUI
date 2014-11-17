@@ -364,9 +364,17 @@ L["Value Color"] = "数值颜色"
 
 --Minimap
 L['Always Display'] = "总是显示"
+L["Bottom Left"] = true;
+L["Bottom Right"] = true;
+L["Bottom"] = true;
+L["Left"] = true;
 L['Location Text'] = "所在位置文字"
 L["Minimap Buttons"] = true;
 L['Minimap Mouseover'] = "小地图鼠标滑过"
+L["Right"] = true;
+L["Top Left"] = true;
+L["Top Right"] = true;
+L["Top"] = true;
 
 --Misc
 L['Install'] = "安装"

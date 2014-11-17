@@ -364,9 +364,17 @@ L["Value Color"] = "Couleur des Textes d'informations"
 
 --Minimap
 L['Always Display'] = "Toujours afficher"
+L["Bottom Left"] = true;
+L["Bottom Right"] = true;
+L["Bottom"] = true;
+L["Left"] = true;
 L['Location Text'] = "Texte de localisation"
 L["Minimap Buttons"] = true;
 L['Minimap Mouseover'] = "Au survol de la Minicarte"
+L["Right"] = true;
+L["Top Left"] = true;
+L["Top Right"] = true;
+L["Top"] = true;
 
 --Misc
 L["Install"] = "Installer"

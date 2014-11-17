@@ -364,9 +364,17 @@ L["Value Color"] = "Цвет значений"
 
 --Minimap
 L['Always Display'] = "Всегда отображать"
+L["Bottom Left"] = true;
+L["Bottom Right"] = true;
+L["Bottom"] = true;
+L["Left"] = true;
 L['Location Text'] = "Текст локации"
 L["Minimap Buttons"] = true;
 L['Minimap Mouseover'] = "При наведении мыши"
+L["Right"] = true;
+L["Top Left"] = true;
+L["Top Right"] = true;
+L["Top"] = true;
 
 --Misc
 L['Install'] = "Установка"

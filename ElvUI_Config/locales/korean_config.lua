@@ -389,9 +389,17 @@ L["Value Color"] = "강조 색상"
 
 --Minimap
 L['Always Display'] = "항상 표시"
+L["Bottom Left"] = true;
+L["Bottom Right"] = true;
+L["Bottom"] = true;
+L["Left"] = true;
 L['Location Text'] = "지역이름 표시 방법"
 L["Minimap Buttons"] = true;
 L['Minimap Mouseover'] = "마우스오버 때만 표시"
+L["Right"] = true;
+L["Top Left"] = true;
+L["Top Right"] = true;
+L["Top"] = true;
 
 --Misc
 L["Install"] = "설치"
