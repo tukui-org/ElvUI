@@ -53,7 +53,7 @@ local function LoadSkin()
 			local itemId = GetInventoryItemID("player", slotId)
 
 			if itemId then
-				local _, _, rarity, _, _, _, _, _, _, _, _ = GetItemInfo(itemId)
+				local rarity = GetInventoryItemQuality("player", slotId);
 				if rarity and rarity > 1 then
 					target:SetBackdropBorderColor(GetItemQualityColor(rarity))
 				else
