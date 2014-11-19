@@ -372,6 +372,7 @@ L['Location Text'] = "Texte de localisation"
 L["Minimap Buttons"] = true;
 L['Minimap Mouseover'] = "Au survol de la Minicarte"
 L["Right"] = true;
+L["Scale"] = true;
 L["Top Left"] = true;
 L["Top Right"] = true;
 L["Top"] = true;
