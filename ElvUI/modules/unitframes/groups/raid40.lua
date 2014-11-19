@@ -56,7 +56,7 @@ function UF:Raid40SmartVisibility(event)
 
 	if not InCombatLockdown() then		
 		if(inInstance and (instanceType == 'raid' or instanceType == 'pvp')) then
-			local _, _, _, _, maxPlayers, _, _, _, maxPlayersInstance = GetInstanceInfo()
+			local _, _, _, _, maxPlayers, _, _, mapID, maxPlayersInstance = GetInstanceInfo()
 			--[[if(maxPlayersInstance and maxPlayersInstance > 0) then
 				maxPlayers = maxPlayersInstance
 			end]]
@@ -69,7 +69,7 @@ function UF:Raid40SmartVisibility(event)
 
 			if(maxPlayers == 40) then
 				self:Show()
-				if(maxPlayers and ElvUF_Raid40.numGroups ~= E:Round(maxPlayers/5) and event) then
+				if(ElvUF_Raid40.numGroups ~= E:Round(maxPlayers/5) and event) then
 					UF:CreateAndUpdateHeaderGroup('raid40')	
 				end					
 			else
