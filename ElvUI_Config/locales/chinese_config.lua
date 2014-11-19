@@ -372,6 +372,7 @@ L['Location Text'] = "所在位置文字"
 L["Minimap Buttons"] = true;
 L['Minimap Mouseover'] = "小地图鼠标滑过"
 L["Right"] = true;
+L["Scale"] = true;
 L["Top Left"] = true;
 L["Top Right"] = true;
 L["Top"] = true;

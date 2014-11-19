@@ -361,6 +361,7 @@ L['Location Text'] = true;
 L["Minimap Buttons"] = true;
 L['Minimap Mouseover'] = true;
 L["Right"] = true;
+L["Scale"] = true;
 L["Top Left"] = true;
 L["Top Right"] = true;
 L["Top"] = true;

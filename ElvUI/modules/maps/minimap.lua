@@ -237,47 +237,60 @@ function M:UpdateSettings()
 
 	if GarrisonLandingPageMinimapButton then
 		local pos = E.db.general.minimap.icons.garrison.position or "TOPLEFT"
+		local scale = E.db.general.minimap.icons.garrison.scale or 1
 		GarrisonLandingPageMinimapButton:ClearAllPoints()
 		GarrisonLandingPageMinimapButton:SetPoint(pos, Minimap, pos, E.db.general.minimap.icons.garrison.xOffset or 0, E.db.general.minimap.icons.garrison.yOffset or 0)
+		GarrisonLandingPageMinimapButton:SetScale(scale)
 	end
 	
 	if GameTimeFrame then
 		if E.private.general.minimap.hideCalendar then
 			GameTimeFrame:Hide()
 		else
-			GameTimeFrame:Show()
 			local pos = E.db.general.minimap.icons.calendar.position or "TOPRIGHT"
+			local scale = E.db.general.minimap.icons.calendar.scale or 1
 			GameTimeFrame:ClearAllPoints()
 			GameTimeFrame:SetPoint(pos, Minimap, pos, E.db.general.minimap.icons.calendar.xOffset or 0, E.db.general.minimap.icons.calendar.yOffset or 0)
+			GameTimeFrame:SetScale(scale)
+			GameTimeFrame:Show()
 		end
 	end
 	
 	if MiniMapMailFrame then
 		local pos = E.db.general.minimap.icons.mail.position or "TOPRIGHT"
+		local scale = E.db.general.minimap.icons.mail.scale or 1
 		MiniMapMailFrame:ClearAllPoints()
 		MiniMapMailFrame:SetPoint(pos, Minimap, pos, E.db.general.minimap.icons.mail.xOffset or 3, E.db.general.minimap.icons.mail.yOffset or 4)
+		MiniMapMailFrame:SetScale(scale)
 	end
 	
 	if QueueStatusMinimapButton then
 		local pos = E.db.general.minimap.icons.lfgEye.position or "BOTTOMRIGHT"
+		local scale = E.db.general.minimap.icons.lfgEye.scale or 1
 		QueueStatusMinimapButton:ClearAllPoints()
 		QueueStatusMinimapButton:SetPoint(pos, Minimap, pos, E.db.general.minimap.icons.lfgEye.xOffset or 3, E.db.general.minimap.icons.lfgEye.yOffset or 0)
+		MiniMapMailFrame:SetScale(scale)
 	end
 	
 	if MiniMapInstanceDifficulty and GuildInstanceDifficulty then
 		local pos = E.db.general.minimap.icons.difficulty.position or "TOPLEFT"
+		local scale = E.db.general.minimap.icons.difficulty.scale or 1
 		local x = E.db.general.minimap.icons.difficulty.xOffset or 0
 		local y = E.db.general.minimap.icons.difficulty.yOffset or 0
 		MiniMapInstanceDifficulty:ClearAllPoints()
 		MiniMapInstanceDifficulty:SetPoint(pos, Minimap, pos, x, y)
+		MiniMapInstanceDifficulty:SetScale(scale)
 		GuildInstanceDifficulty:ClearAllPoints()
 		GuildInstanceDifficulty:SetPoint(pos, Minimap, pos, x, y)
+		GuildInstanceDifficulty:SetScale(scale)
 	end
 	
 	if MiniMapChallengeMode then
 		local pos = E.db.general.minimap.icons.challengeMode.position or "TOPLEFT"
+		local scale = E.db.general.minimap.icons.challengeMode.scale or 1
 		MiniMapChallengeMode:ClearAllPoints()
 		MiniMapChallengeMode:SetPoint(pos, Minimap, pos, E.db.general.minimap.icons.challengeMode.xOffset or 8, E.db.general.minimap.icons.challengeMode.yOffset or -8)
+		MiniMapChallengeMode:SetScale(scale)
 	end
 end
 

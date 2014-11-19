@@ -372,6 +372,7 @@ L['Location Text'] = "Текст локации"
 L["Minimap Buttons"] = true;
 L['Minimap Mouseover'] = "При наведении мыши"
 L["Right"] = true;
+L["Scale"] = true;
 L["Top Left"] = true;
 L["Top Right"] = true;
 L["Top"] = true;

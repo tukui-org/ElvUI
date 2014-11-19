@@ -353,9 +353,18 @@ L["Value Color"] = true;
 
 --Minimap
 L['Always Display'] = true;
+L["Bottom Left"] = true;
+L["Bottom Right"] = true;
+L["Bottom"] = true;
+L["Left"] = true;
 L['Location Text'] = true;
 L["Minimap Buttons"] = true;
 L['Minimap Mouseover'] = true;
+L["Right"] = true;
+L["Scale"] = true;
+L["Top Left"] = true;
+L["Top Right"] = true;
+L["Top"] = true;
 
 --Misc
 L['Install'] = true;

@@ -42,6 +42,20 @@ function AB:SetupExtraButton()
 			end
 		end
 	end
+	
+	local button = DraenorZoneAbilityFrame.SpellButton
+	if button then
+		button:SetNormalTexture('')
+		button:StyleButton(nil, nil, nil, true)
+		button:SetTemplate()
+		button.Icon:SetDrawLayer('ARTWORK')
+		button.Icon:SetTexCoord(unpack(E.TexCoords))
+		button.Icon:SetInside()
+		
+		if(button.Cooldown and E.private.cooldown.enable) then
+			E:RegisterCooldown(button.Cooldown)
+		end
+	end
 
 	if HasExtraActionBar() then
 		ExtraActionBarFrame:Show();	
