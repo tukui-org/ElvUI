@@ -13,7 +13,7 @@ V['general'] = {
 	['pixelPerfect'] = true,
 	['lfrEnhancement'] = true,
 	['replaceBlizzFonts'] = true,
-
+	['smallerWorldMap'] = true,
 	['minimap'] = {
 		['enable'] = true,
 		['hideGarrison'] = false,

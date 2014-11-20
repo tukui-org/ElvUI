@@ -102,17 +102,19 @@ function M:Initialize()
 	
 	self:ScheduleRepeatingTimer('UpdateCoords', 0.05)
 
-	BlackoutWorld:SetTexture(nil)
-	self:SecureHook("WorldMap_ToggleSizeDown", 'SetSmallWorldMap')	
-	self:SecureHook("WorldMap_ToggleSizeUp", "SetLargeWorldMap")
-	self:RegisterEvent('PLAYER_REGEN_ENABLED')
-	self:RegisterEvent('PLAYER_REGEN_DISABLED')
+	if(E.global.general.smallerWorldMap) then
+		BlackoutWorld:SetTexture(nil)
+		self:SecureHook("WorldMap_ToggleSizeDown", 'SetSmallWorldMap')	
+		self:SecureHook("WorldMap_ToggleSizeUp", "SetLargeWorldMap")
+		self:RegisterEvent('PLAYER_REGEN_ENABLED')
+		self:RegisterEvent('PLAYER_REGEN_DISABLED')
 
-	if WORLDMAP_SETTINGS.size == WORLDMAP_FULLMAP_SIZE then
-		self:SetLargeWorldMap()
-	elseif WORLDMAP_SETTINGS.size == WORLDMAP_WINDOWED_SIZE then
-		self:SetSmallWorldMap()
-	end		
+		if WORLDMAP_SETTINGS.size == WORLDMAP_FULLMAP_SIZE then
+			self:SetLargeWorldMap()
+		elseif WORLDMAP_SETTINGS.size == WORLDMAP_WINDOWED_SIZE then
+			self:SetSmallWorldMap()
+		end		
+	end
 end
 
 E:RegisterInitialModule(M:GetName())

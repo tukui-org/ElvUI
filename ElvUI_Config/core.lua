@@ -203,6 +203,14 @@ E.Options.args.general = {
 					set = function(info, value) E.db.general.afk = value; E:GetModule('AFK'):Toggle() end						
 
 				},			
+				smallerWorldMap = {
+					order = 19,
+					type = 'toggle',
+					name = L['Smaller World Map'],
+					desc = L['Make the world map smaller.'],
+					get = function(info) return E.global.general.smallerWorldMap end,
+					set = function(info, value) E.global.general.smallerWorldMap = value; E:StaticPopup_Show("GLOBAL_RL") end					
+				},
 			},
 		},	
 		media = {
