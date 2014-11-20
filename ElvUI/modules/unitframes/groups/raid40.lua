@@ -54,7 +54,8 @@ function UF:Raid40SmartVisibility(event)
 	
 	if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
 
-	if not InCombatLockdown() then		
+	if not InCombatLockdown() then	
+		self.isInstanceForced = nil
 		if(inInstance and (instanceType == 'raid' or instanceType == 'pvp')) then
 			local _, _, _, _, maxPlayers, _, _, mapID, maxPlayersInstance = GetInstanceInfo()
 			--[[if(maxPlayersInstance and maxPlayersInstance > 0) then
@@ -69,6 +70,7 @@ function UF:Raid40SmartVisibility(event)
 
 			if(maxPlayers == 40) then
 				self:Show()
+				self.isInstanceForced = true
 				if(ElvUF_Raid40.numGroups ~= E:Round(maxPlayers/5) and event) then
 					UF:CreateAndUpdateHeaderGroup('raid40')	
 				end					

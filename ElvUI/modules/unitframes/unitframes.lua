@@ -591,6 +591,11 @@ function UF.groupPrototype:Configure_Groups()
 		end
 	end
 
+	if not self.isInstanceForced then
+		self.dirtyWidth = width - db.horizontalSpacing
+		self.dirtyHeight = height - db.verticalSpacing
+	end	
+
 	if self.mover then
 		self.mover.positionOverride = DIRECTION_TO_GROUP_ANCHOR_POINT[direction]
 		E:UpdatePositionOverride(self.mover:GetName())
@@ -685,57 +690,6 @@ function UF.headerPrototype:Reset()
 	self:SetAttribute("unitsPerColumn", nil)
 	self:SetAttribute("xOffset", nil)
 	self:SetAttribute("yOffset", nil)
-end
-
-function UF:SetupGroupAnchorPoints(group)
-	UF:ConvertGroupDB(group)
-	local db = self.db.units[group.groupName]
-	local direction = db.growthDirection
-	local point = DIRECTION_TO_POINT[direction]
-	local positionOverride = DIRECTION_TO_GROUP_ANCHOR_POINT[direction]
-	
-	local maxUnits, startingIndex = MAX_RAID_MEMBERS, -1
-	local numGroups = group.numGroups
-	if (numGroups and db.groupsPerRowCol) then
-		startingIndex = -min(numGroups * (db.groupsPerRowCol * 5), maxUnits) + 1
-	end
-	
-	if point == "LEFT" or point == "RIGHT" then
-		group:SetAttribute("xOffset", db.horizontalSpacing * DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction])
-		group:SetAttribute("yOffset", 0)
-		group:SetAttribute("columnSpacing", db.verticalSpacing)
-	else
-		group:SetAttribute("xOffset", 0)
-		group:SetAttribute("yOffset", db.verticalSpacing * DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction])
-		group:SetAttribute("columnSpacing", db.horizontalSpacing)
-	end
-	
-	group:SetAttribute("columnAnchorPoint", db.invertGroupingOrder and INVERTED_DIRECTION_TO_COLUMN_ANCHOR_POINT[direction] or DIRECTION_TO_COLUMN_ANCHOR_POINT[direction])
-	UF:ClearChildPoints(group:GetChildren())
-	group:SetAttribute("point", point)	
-	group:SetAttribute("maxColumns", numGroups or 1)
-	group:SetAttribute("unitsPerColumn", db.groupsPerRowCol and (db.groupsPerRowCol * 5) or 5)				
-
-	UF.headerGroupBy[db.groupBy](group)
-	group:SetAttribute('sortDir', db.sortDir)
-	group:SetAttribute("showPlayer", db.showPlayer)	
-
-	if not group.isForced then
-		group:SetAttribute("startingIndex", startingIndex)
-		RegisterAttributeDriver(group, 'state-visibility', 'show')	
-		group.dirtyWidth, group.dirtyHeight = group:GetSize()
-		RegisterAttributeDriver(group, 'state-visibility', db.visibility)
-		group:SetAttribute('startingIndex', 1)
-		
-		E:Delay(0.25, DelayedUpdate, group)
-	end
-
-	if group.mover then
-		group.mover.positionOverride = positionOverride
-		E:UpdatePositionOverride(group.mover:GetName())
-	end
-
-	return positionOverride
 end
 
 function UF:CreateHeader(parent, groupFilter, overrideName, template, groupName, headerTemplate)
