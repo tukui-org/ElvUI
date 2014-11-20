@@ -731,6 +731,18 @@ function E:DBConversions()
 		end
 		E.db.bagsOffsetFixed = true
 	end
+
+	if E.db.general.experience.width > 100 and E.db.general.experience.height > 100 then
+		E.db.general.experience.width = P.general.experience.width
+		E.db.general.experience.height = P.general.experience.height
+		E:Print("Experience bar appears to be an odd shape. Resetting to default size.")
+	end
+
+	if E.db.general.reputation.width > 100 and E.db.general.reputation.height > 100 then
+		E.db.general.reputation.width = P.general.reputation.width
+		E.db.general.reputation.height = P.general.reputation.height
+		E:Print("Reputation bar appears to be an odd shape. Resetting to default size.")
+	end		
 end
 
 function E:StopMassiveShake()
