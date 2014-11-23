@@ -342,7 +342,6 @@ L["Enhance the raid browser frame by adding item level and talent spec informati
 L["General"] = "일반"
 L["Hide Error Text"] = "전투중 에러 숨기기"
 L["Hides the red error text at the top of the screen while in combat."] = "화면 중앙 상단에 뜨는 여러 에러메시지(ex : 사정거리 부족)를 전투 중에는 띄우지 않게 합니다."
-L["Left"] = "왼쪽"
 L["Log Taints"] = "Taint 에러 표시"
 L["Login Message"] = "로그인 메세지 표시"
 L["Loot Roll"] = "주사위 굴림창"
@@ -391,7 +390,7 @@ L['Always Display'] = "항상 표시"
 L["Bottom Left"] = true;
 L["Bottom Right"] = true;
 L["Bottom"] = true;
-L["Left"] = true;
+L["Left"] = "왼쪽"
 L['Location Text'] = "지역이름 표시 방법"
 L["Minimap Buttons"] = true;
 L['Minimap Mouseover'] = "마우스오버 때만 표시"

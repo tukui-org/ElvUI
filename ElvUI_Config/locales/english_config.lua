@@ -306,7 +306,6 @@ L['Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from see
 L["General"] = true;
 L["Hide Error Text"] = true;
 L["Hides the red error text at the top of the screen while in combat."] = true;
-L['Left'] = true;
 L["Log Taints"] = true;
 L["Login Message"] = true;
 L["Loot Roll"] = true;
@@ -316,7 +315,6 @@ L["Name Font"] = true;
 L['Remove Backdrop'] = true;
 L["Reset all frames to their original positions."] = true;
 L["Reset Anchors"] = true;
-L['Right'] = true;
 L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."] = true;
 L['Skin Backdrop'] = true;
 L["Skin the blizzard chat bubbles."] = true;

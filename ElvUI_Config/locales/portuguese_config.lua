@@ -317,7 +317,6 @@ L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from see
 L["General"] = "Geral"
 L["Hide Error Text"] = "Esconder Texto de Erro"
 L["Hides the red error text at the top of the screen while in combat."] = "Esconde o texto de erro vermelho do topo da tela quando em combate."
-L["Left"] = "Esquerda"
 L["Log Taints"] = "Capturar Problemas"
 L["Login Message"] = "Mensagem de Entrada"
 L["Loot Roll"] = "Disputa de Saques"
@@ -366,7 +365,7 @@ L['Always Display'] = "Exibir sempre"
 L["Bottom Left"] = true;
 L["Bottom Right"] = true;
 L["Bottom"] = true;
-L["Left"] = true;
+L["Left"] = "Esquerda"
 L['Location Text'] = "Texto de Localização"
 L["Minimap Buttons"] = true;
 L['Minimap Mouseover'] = "Passar com o rato(mouse) sobre o minimapa"
