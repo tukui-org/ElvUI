@@ -363,7 +363,7 @@ local function UpdateFilterGroup()
 						elseif not GetSpellInfo(value) then
 							E:Print(L["Not valid spell id"])
 						else	
-							tinsert(E.global.unitframe.buffwatch.PET, {["enabled"] = true, ["id"] = tonumber(value), ["point"] = "TOPRIGHT", ["color"] = {["r"] = 1, ["g"] = 0, ["b"] = 0}, ["anyUnit"] = true})
+							tinsert(E.global.unitframe.buffwatch.PET, {["enabled"] = true, ["id"] = tonumber(value), ["point"] = "TOPRIGHT", ["color"] = {["r"] = 1, ["g"] = 0, ["b"] = 0}, ["anyUnit"] = true, ['style'] = 'coloredIcon'})
 							UpdateFilterGroup();
 							UF:CreateAndUpdateUF('pet');
 							selectedSpell = nil;
@@ -583,7 +583,7 @@ local function UpdateFilterGroup()
 						elseif not GetSpellInfo(value) then
 							E:Print(L["Not valid spell id"])
 						else	
-							tinsert(E.global.unitframe.buffwatch[E.myclass], {["enabled"] = true, ["id"] = tonumber(value), ["point"] = "TOPRIGHT", ["color"] = {["r"] = 1, ["g"] = 0, ["b"] = 0}, ["anyUnit"] = false})
+							tinsert(E.global.unitframe.buffwatch[E.myclass], {["enabled"] = true, ["id"] = tonumber(value), ["point"] = "TOPRIGHT", ["color"] = {["r"] = 1, ["g"] = 0, ["b"] = 0}, ["anyUnit"] = false, ['style'] = 'coloredIcon'})
 							UpdateFilterGroup();
 							
 							UF:UpdateAuraWatchFromHeader('raid')
