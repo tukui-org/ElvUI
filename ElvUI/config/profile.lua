@@ -233,6 +233,7 @@ P['auras'] = {
 		['font'] = 'ElvUI Pixel',
 		['fontSize'] = 10,
 		['fontOutline'] = 'MONOCHROMEOUTLINE',
+		['reverseStyle'] = false,
 	},
 	
 	['fadeThreshold'] = 5,

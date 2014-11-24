@@ -39,6 +39,8 @@ end
 function A:UpdateReminder(event, unit)
 	if (event == "UNIT_AURA" and unit ~= "player") then return end	
 	local frame = self.frame
+	local reverseStyle = E.db.auras.consolidatedBuffs.reverseStyle
+
 	for i = 1, NUM_LE_RAID_BUFF_TYPES do
 		local spellName, rank, texture, duration, expirationTime, spellId, slot = GetRaidBuffTrayAuraInfo(i);
 		local button = self.frame[i]
@@ -50,20 +52,21 @@ function A:UpdateReminder(event, unit)
 			button.t:SetTexture(texture)
 
 			if (duration == 0 and expirationTime == 0) or E.db.auras.consolidatedBuffs.durations ~= true then
-				button.t:SetAlpha(0.3)
+				button.t:SetAlpha(reverseStyle == true and 1 or 0.3)
 				button:SetScript('OnUpdate', nil)
 				button.timer:SetText(nil)
 				CooldownFrame_SetTimer(button.cd, 0, 0, 0)
 			else
 				CooldownFrame_SetTimer(button.cd, expirationTime - duration, duration, 1)
 				button.t:SetAlpha(1)
+				button.cd:SetReverse(reverseStyle == true and true or false)
 				button:SetScript('OnUpdate', A.UpdateConsolidatedTime)
 			end
 			button.spellName = spellName
 		else
 			CooldownFrame_SetTimer(button.cd, 0, 0, 0)
 			button.spellName = nil
-			button.t:SetAlpha(1)
+			button.t:SetAlpha(reverseStyle == true and 0.3 or 1)
 			button:SetScript('OnUpdate', nil)
 			button.timer:SetText(nil)
 			button.t:SetTexture(self.DefaultIcons[i])
