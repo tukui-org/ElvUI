@@ -423,6 +423,7 @@ function UF:UpdateAuraWatch(frame, petOverride)
 				icon.missingAlpha = icon.onlyShowMissing and 1 or 0;
 				icon.textThreshold = buffs[i].textThreshold or -1
 				icon.displayText = buffs[i].displayText
+				icon.decimalThreshold = buffs[i].decimalThreshold
 				
 				icon:Width(db.size);
 				icon:Height(db.size);
