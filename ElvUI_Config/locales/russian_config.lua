@@ -364,8 +364,8 @@ L["Value Color"] = "Цвет значений"
 
 --Minimap
 L['Always Display'] = "Всегда отображать"
-L["Bottom Left"] = "Вверху слева"
-L["Bottom Right"] = "Вверху справа"
+L["Bottom Left"] = "Внизу слева"
+L["Bottom Right"] = "Внизу справа"
 L["Bottom"] = "Внизу"
 L["Instance Difficulty"] = "Сложность подземелья"
 L["Left"] = "Левый"
