@@ -1328,6 +1328,18 @@ function CH:ThrottleSound()
 end
 
 function CH:CheckKeyword(message)
+	for itemLink in message:gmatch("|%x+|Hitem:.-|h.-|h|r") do
+		for keyword, _ in pairs(CH.Keywords) do
+			if itemLink == keyword then
+				if self.db.keywordSound ~= 'None' and not self.SoundPlayed  then
+					PlaySoundFile(LSM:Fetch("sound", self.db.keywordSound), "Master")
+					self.SoundPlayed = true
+					self.SoundTimer = CH:ScheduleTimer('ThrottleSound', 1)
+				end
+			end
+		end
+	end
+	
 	local rebuiltString, lowerCaseWord
 	local isFirstWord = true
 	for word in message:gmatch("[^%s]+") do
