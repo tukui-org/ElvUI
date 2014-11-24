@@ -112,7 +112,7 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 	end
 	
 	if USE_STAGGER then
-		if not USE_MINI_POWERBAR and not USE_INSET_POWERBAR then
+		if not USE_MINI_POWERBAR and not USE_INSET_POWERBAR and not POWERBAR_DETACHED then
 			stagger:Point('BOTTOMLEFT', power, 'BOTTOMRIGHT', BORDER*2 + (E.PixelMode and -1 or SPACING), 0)
 		else
 			stagger:Point('BOTTOMLEFT', health, 'BOTTOMRIGHT', BORDER*2 + (E.PixelMode and -1 or SPACING), 0)
