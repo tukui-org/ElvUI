@@ -533,6 +533,7 @@ local function UpdateFilterGroup()
 						name = L["Decimal Threshold"],
 						desc = L["Threshold before text goes into decimal form. Set to -1 to disable decimals."],
 						type = 'range',
+						order = 8,
 						min = -1, max = 10, step = 1,
 					},
 					textThreshold = {
