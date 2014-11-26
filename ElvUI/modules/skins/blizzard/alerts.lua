@@ -259,7 +259,7 @@ local function LoadSkin()
 				frame.IconBorder:Kill()
 				frame.glow:Kill()
 				frame.shine:Kill()
-				if frame.SpecRing then frame.SpecRing:Kill() end
+				if frame.SpecRing and (not frame.SpecIcon) then frame.SpecRing:Kill() end
 				
 				-- Icon border
 				if not frame.Icon.b then
