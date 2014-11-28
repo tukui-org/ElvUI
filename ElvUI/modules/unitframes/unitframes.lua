@@ -373,7 +373,7 @@ function UF:Update_StatusBars()
 	for statusbar in pairs(UF['statusbars']) do
 		if statusbar and statusbar:GetObjectType() == 'StatusBar' and not statusbar.isTransparent then
 			statusbar:SetStatusBarTexture(statusBarTexture)
-		elseif statusBar and statusbar:GetObjectType() == 'Texture' then
+		elseif statusbar and statusbar:GetObjectType() == 'Texture' then
 			statusbar:SetTexture(statusBarTexture)
 		end
 	end
