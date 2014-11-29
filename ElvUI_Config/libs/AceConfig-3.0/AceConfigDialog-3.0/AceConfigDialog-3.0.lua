@@ -1,7 +1,7 @@
 --- AceConfigDialog-3.0 generates AceGUI-3.0 based windows based on option tables.
 -- @class file
 -- @name AceConfigDialog-3.0
--- @release $Id: AceConfigDialog-3.0.lua 1089 2013-09-13 14:32:35Z nevcairiel $
+-- @release $Id: AceConfigDialog-3.0.lua 1126 2014-11-10 06:38:01Z nevcairiel $
 
 local LibStub = LibStub
 local MAJOR, MINOR = "AceConfigDialog-3.0", 99
@@ -542,16 +542,16 @@ local function OptionOnMouseOver(widget, event)
 	
 	if descStyle and descStyle ~= "tooltip" then return end
 	
-	GameTooltip:SetText(name, 1, .82, 0, 1)
+	GameTooltip:SetText(name, 1, .82, 0, true)
 	
 	if opt.type == "multiselect" then
-		GameTooltip:AddLine(user.text,0.5, 0.5, 0.8, 1)
+		GameTooltip:AddLine(user.text, 0.5, 0.5, 0.8, true)
 	end	
 	if type(desc) == "string" then
-		GameTooltip:AddLine(desc, 1, 1, 1, 1)
+		GameTooltip:AddLine(desc, 1, 1, 1, true)
 	end
 	if type(usage) == "string" then
-		GameTooltip:AddLine("Usage: "..usage, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, 1)
+		GameTooltip:AddLine("Usage: "..usage, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, true)
 	end
 
 	GameTooltip:Show()
@@ -1448,10 +1448,10 @@ local function TreeOnButtonEnter(widget, event, uniquevalue, button)
 		GameTooltip:SetPoint("LEFT",button,"RIGHT")
 	end
 
-	GameTooltip:SetText(name, 1, .82, 0, 1)
+	GameTooltip:SetText(name, 1, .82, 0, true)
 	
 	if type(desc) == "string" then
-		GameTooltip:AddLine(desc, 1, 1, 1, 1)
+		GameTooltip:AddLine(desc, 1, 1, 1, true)
 	end
 	
 	GameTooltip:Show()
@@ -1817,6 +1817,13 @@ function AceConfigDialog:Open(appName, container, ...)
 		tinsert(path, (select(n, ...)))
 	end
 	
+	local option = options
+	if type(container) == "table" and container.type == "BlizOptionsGroup" and #path > 0 then
+		for i = 1, #path do
+			option = options.args[path[i]]
+		end
+		name = format("%s - %s", name, GetOptionsMemberValue("name", option, options, path, appName))
+	end
 	--if a container is given feed into that
 	if container then
 		f = container
