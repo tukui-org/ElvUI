@@ -256,6 +256,7 @@ local function LoadSkin()
 				
 				frame.Background:Kill()
 				frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+				frame.Icon:SetDrawLayer("BORDER")
 				frame.IconBorder:Kill()
 				frame.glow:Kill()
 				frame.shine:Kill()
