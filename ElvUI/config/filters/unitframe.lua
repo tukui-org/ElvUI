@@ -713,7 +713,7 @@ G.unitframe.buffwatch = {
 }
 
 local mfTicks = 3
-if E.myclass == "PRIEST" and IsSpellKnown(157223) then --Enhanced Mind Flay
+if select(2, UnitClass("player")) == "PRIEST" and IsSpellKnown(157223) then --Enhanced Mind Flay
 	mfTicks = 4
 end
 --List of spells to display ticks
