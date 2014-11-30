@@ -712,6 +712,10 @@ G.unitframe.buffwatch = {
 	},
 }
 
+local mfTicks = 3
+if E.myclass == "PRIEST" and IsSpellKnown(157223) then --Enhanced Mind Flay
+	mfTicks = 4
+end
 --List of spells to display ticks
 G.unitframe.ChannelTicks = {
 	--Warlock
@@ -725,8 +729,8 @@ G.unitframe.ChannelTicks = {
 	--[SpellName(44203)] = 4, -- "Tranquility"
 	[SpellName(16914)] = 10, -- "Hurricane"
 	--Priest
-	[SpellName(15407)] = 3, -- "Mind Flay"
-	[SpellName(129197)] = 3, -- "Mind Flay (Insanity)"
+	[SpellName(15407)] = mfTicks, -- "Mind Flay"
+	[SpellName(129197)] = mfTicks, -- "Mind Flay (Insanity)"
 	[SpellName(48045)] = 5, -- "Mind Sear"
 	[SpellName(47540)] = 2, -- "Penance"
 	--[SpellName(64901)] = 4, -- Hymn of Hope
