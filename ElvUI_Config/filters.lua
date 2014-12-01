@@ -477,14 +477,14 @@ local function UpdateFilterGroup()
 						min = -75, max = 75, step = 1,
 					},		
 					yOffset = {
-						order = 2,
+						order = 3,
 						type = 'range',
 						name = L['yOffset'],
 						min = -75, max = 75, step = 1,
 					},						
 					style = {
 						name = L['Style'],
-						order = 3,
+						order = 4,
 						type = 'select',	
 						values = {
 							['coloredIcon'] = L['Colored Icon'],
@@ -495,7 +495,7 @@ local function UpdateFilterGroup()
 					color = {
 						name = L['Color'],
 						type = 'color',
-						order = 4,
+						order = 5,
 						get = function(info)
 							local t = E.global.unitframe.buffwatch.PET[tableIndex][ info[#info] ]
 							return t.r, t.g, t.b, t.a
@@ -509,12 +509,12 @@ local function UpdateFilterGroup()
 					displayText = {
 						name = L['Display Text'],
 						type = 'toggle',
-						order = 5,
+						order = 6,
 					},
 					textColor = {
 						name = L['Text Color'],
 						type = 'color',
-						order = 6,
+						order = 7,
 						get = function(info)
 							local t = E.global.unitframe.buffwatch.PET[tableIndex][ info[#info] ]
 							if t then
@@ -528,22 +528,29 @@ local function UpdateFilterGroup()
 							t.r, t.g, t.b = r, g, b
 							UF:CreateAndUpdateUF('pet')
 						end,						
-					},					
+					},
+					decimalThreshold = {
+						name = L["Decimal Threshold"],
+						desc = L["Threshold before text goes into decimal form. Set to -1 to disable decimals."],
+						type = 'range',
+						order = 8,
+						min = -1, max = 10, step = 1,
+					},
 					textThreshold = {
 						name = L['Text Threshold'],
 						desc = L['At what point should the text be displayed. Set to -1 to disable.'],
 						type = 'range',
-						order = 6,
+						order = 9,
 						min = -1, max = 60, step = 1,
 					},
 					anyUnit = {
 						name = L['Show Aura From Other Players'],
-						order = 7,
+						order = 10,
 						type = 'toggle',	
 					},
 					onlyShowMissing = {
 						name = L['Show When Not Active'],
-						order = 8,
+						order = 11,
 						type = 'toggle',	
 						disabled = function() return E.global.unitframe.buffwatch.PET[tableIndex].style == 'text' end,
 					},
@@ -710,14 +717,14 @@ local function UpdateFilterGroup()
 						min = -75, max = 75, step = 1,
 					},		
 					yOffset = {
-						order = 2,
+						order = 3,
 						type = 'range',
 						name = L['yOffset'],
 						min = -75, max = 75, step = 1,
 					},						
 					style = {
 						name = L['Style'],
-						order = 3,
+						order = 4,
 						type = 'select',	
 						values = {
 							['coloredIcon'] = L['Colored Icon'],
@@ -728,7 +735,7 @@ local function UpdateFilterGroup()
 					color = {
 						name = L['Color'],
 						type = 'color',
-						order = 4,
+						order = 5,
 						get = function(info)
 							local t = E.global.unitframe.buffwatch[E.myclass][tableIndex][ info[#info] ]
 							return t.r, t.g, t.b, t.a
@@ -745,12 +752,12 @@ local function UpdateFilterGroup()
 					displayText = {
 						name = L['Display Text'],
 						type = 'toggle',
-						order = 5,
+						order = 6,
 					},
 					textColor = {
 						name = L['Text Color'],
 						type = 'color',
-						order = 6,
+						order = 7,
 						get = function(info)
 							local t = E.global.unitframe.buffwatch[E.myclass][tableIndex][ info[#info] ]
 							if t then
@@ -768,22 +775,29 @@ local function UpdateFilterGroup()
 							UF:UpdateAuraWatchFromHeader('party')
 							UF:UpdateAuraWatchFromHeader('raidpet', true)
 						end,						
-					},					
+					},
+					decimalThreshold = {
+						name = L["Decimal Threshold"],
+						desc = L["Threshold before text goes into decimal form. Set to -1 to disable decimals."],
+						type = 'range',
+						order = 8,
+						min = -1, max = 10, step = 1,
+					},
 					textThreshold = {
 						name = L['Text Threshold'],
 						desc = L['At what point should the text be displayed. Set to -1 to disable.'],
 						type = 'range',
-						order = 6,
+						order = 9,
 						min = -1, max = 60, step = 1,
 					},
 					anyUnit = {
 						name = L['Show Aura From Other Players'],
-						order = 7,
+						order = 10,
 						type = 'toggle',	
 					},
 					onlyShowMissing = {
 						name = L['Show When Not Active'],
-						order = 8,
+						order = 11,
 						type = 'toggle',	
 						disabled = function() return E.global.unitframe.buffwatch[E.myclass][tableIndex].style == 'text' end,
 					},

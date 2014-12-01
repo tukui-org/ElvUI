@@ -256,10 +256,11 @@ local function LoadSkin()
 				
 				frame.Background:Kill()
 				frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+				frame.Icon:SetDrawLayer("BORDER")
 				frame.IconBorder:Kill()
 				frame.glow:Kill()
 				frame.shine:Kill()
-				if frame.SpecRing then frame.SpecRing:Kill() end
+				if frame.SpecRing and frame.SpecIcon and frame.SpecIcon.GetTexture and frame.SpecIcon:GetTexture() == nil then frame.SpecRing:Hide() end
 				
 				-- Icon border
 				if not frame.Icon.b then

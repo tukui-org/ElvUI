@@ -46,6 +46,9 @@ you can specify, as explained below.
 		Default false
 		Set to true for oUF_AW to to show an aura no matter what unit it 
 		originates from. This will override any fromUnits setting.
+	decimalThreshold
+		Default 5
+		The threshold before timers go into decimal form. Set to -1 to disable decimals.
 	PostCreateIcon
 		Default nil
 		A function to call when an icon is created to modify it, such as adding
@@ -61,6 +64,7 @@ The following settings can be overridden from the AuraWatch table on a per-aura 
 	hideCount
 	fromUnits
 	anyUnit
+	decimalThreshold
 		
 The following settings are unique to icons:
 	
@@ -148,14 +152,14 @@ do
 end
 
 local day, hour, minute, second = 86400, 3600, 60, 1
-function formatTime(s)
+local function formatTime(s, threshold)
 	if s >= day then
 		return format("%dd", ceil(s / hour))
 	elseif s >= hour then
 		return format("%dh", ceil(s / hour))
 	elseif s >= minute then
 		return format("%dm", ceil(s / minute))
-	elseif s >= minute / 12 then
+	elseif s >= threshold then
 		return floor(s)
 	end
 	
@@ -173,7 +177,7 @@ local function updateText(self, elapsed)
 				self.first = false
 			end
 			if self.timeLeft > 0 and ((self.timeLeft <= self.textThreshold) or self.textThreshold == -1) then
-				local time = formatTime(self.timeLeft)
+				local time = formatTime(self.timeLeft, self.decimalThreshold or 5)
 				self.text:SetText(time)
 			else
 				self.text:SetText('')
