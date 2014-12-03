@@ -1,4 +1,4 @@
-﻿local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local CH = E:NewModule('Chat', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
 local LSM = LibStub("LibSharedMedia-3.0")
 local CreatedFrames = 0;
@@ -18,7 +18,6 @@ local tinsert, tremove, tsort, twipe, tconcat = table.insert, table.remove, tabl
 
 local PLAYER_REALM = gsub(E.myrealm,'[%s%-]','')
 local PLAYER_NAME = E.myname.."-"..PLAYER_REALM
-
 
 local TIMESTAMP_FORMAT
 local DEFAULT_STRINGS = {
