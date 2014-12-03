@@ -70,7 +70,7 @@ function UF:RaidSmartVisibility(event)
 			
 			if(maxPlayers < 40) then
 				self:Show()	
-				self.isInstanceForced = true
+				--self.isInstanceForced = true
 				if(maxPlayers and ElvUF_Raid.numGroups ~= E:Round(maxPlayers/5) and event) then	
 					UF:CreateAndUpdateHeaderGroup('raid')
 				end				
