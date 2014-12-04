@@ -31,7 +31,7 @@ local function New()
 		if ( index <= numMissions) then
 			local mission = missions[index];
 
-			if ((i == 1 and not missionName) then
+			if (i == 1 and not missionName) then
 				mission.isRare = true
 				mission.level = 100
 				missionName = mission.name
