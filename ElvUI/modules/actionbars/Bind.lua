@@ -139,7 +139,7 @@ function AB:BindUpdate(button, spellmacro)
 	elseif spellmacro == "MACRO" then
 		bind.button.id = bind.button:GetID();
 		
-		if floor(.5+select(2,MacroFrameTab1Text:GetTextColor())*10)/10==.8 then bind.button.id = bind.button.id + 36; end
+		if floor(.5+select(2,MacroFrameTab1Text:GetTextColor())*10)/10==.8 then bind.button.id = bind.button.id + MAX_ACCOUNT_MACROS; end
 		
 		bind.button.name = GetMacroInfo(bind.button.id);
 		
