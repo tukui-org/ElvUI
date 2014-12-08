@@ -10,7 +10,6 @@ function B:MoveObjectiveFrame()
 	E:CreateMover(ObjectiveFrameHolder, 'ObjectiveFrameMover', L['Objective Frame'])
 	ObjectiveFrameHolder:SetAllPoints(ObjectiveFrameMover)
 
-	
 	ObjectiveTrackerFrame:ClearAllPoints()
 	ObjectiveTrackerFrame:SetPoint('TOP', ObjectiveFrameHolder, 'TOP')
 	ObjectiveTrackerFrame:Height(E.screenheight / 2)
