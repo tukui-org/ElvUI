@@ -269,7 +269,7 @@ function M:UpdateSettings()
 		local scale = E.db.general.minimap.icons.lfgEye.scale or 1
 		QueueStatusMinimapButton:ClearAllPoints()
 		QueueStatusMinimapButton:SetPoint(pos, Minimap, pos, E.db.general.minimap.icons.lfgEye.xOffset or 3, E.db.general.minimap.icons.lfgEye.yOffset or 0)
-		MiniMapMailFrame:SetScale(scale)
+		QueueStatusMinimapButton:SetScale(scale)
 	end
 	
 	if MiniMapInstanceDifficulty and GuildInstanceDifficulty then
