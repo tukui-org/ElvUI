@@ -411,7 +411,7 @@ E.Options.args.general = {
 					name = L['Location Text'],
 					desc = L['Change settings for the display of the location text that is on the minimap.'],
 					get = function(info) return E.db.general.minimap.locationText end,
-					set = function(info, value) E.db.general.minimap.locationText = value; E:GetModule('Minimap'):UpdateSettings() end,
+					set = function(info, value) E.db.general.minimap.locationText = value; E:GetModule('Minimap'):UpdateSettings(); E:GetModule('Minimap'):Update_ZoneText() end,
 					values = {
 						['MOUSEOVER'] = L['Minimap Mouseover'],
 						['SHOW'] = L['Always Display'],
