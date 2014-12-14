@@ -563,7 +563,6 @@ L["At what point should the text be displayed. Set to -1 to disable."] = "En qu�
 L['Attach Text to Power'] = true;
 L["Attach To"] = "Adjuntar a"
 L["Aura Bars"] = "Barra de Auras"
-L["Aura Spacing"] = true;
 L["Auto-Hide"] = "Ocultar Automáticamente"
 L["Bad"] = "Hostil"
 L["Bars will transition smoothly."] = "Las barras harán las transiciones suavemente."

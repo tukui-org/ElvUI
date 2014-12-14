@@ -552,7 +552,6 @@ L['At what point should the text be displayed. Set to -1 to disable.'] = true;
 L['Attach Text to Power'] = true;
 L["Attach To"] = true;
 L['Aura Bars'] = true;
-L["Aura Spacing"] = true;
 L['Auto-Hide'] = true;
 L["Bad"] = true;
 L["Bars will transition smoothly."] = true;

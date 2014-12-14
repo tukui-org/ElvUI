@@ -563,7 +563,6 @@ L['At what point should the text be displayed. Set to -1 to disable.'] = "При
 L['Attach Text to Power'] = "Привязать текст к ресурсу"
 L["Attach To"] = "Прикрепить к"
 L['Aura Bars'] = "Полосы аур"
-L["Aura Spacing"] = "Отступ аур"
 L['Auto-Hide'] = "Автоматически скрывать"
 L["Bad"] = "Плохое"
 L["Bars will transition smoothly."] = "Полосы будут изменяться плавно"

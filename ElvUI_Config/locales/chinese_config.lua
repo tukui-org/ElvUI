@@ -563,7 +563,6 @@ L['At what point should the text be displayed. Set to -1 to disable.'] = "在何
 L['Attach Text to Power'] = true;
 L["Attach To"] = "附加到"
 L['Aura Bars'] = "光环条"
-L["Aura Spacing"] = true;
 L['Auto-Hide'] = true;
 L["Bad"] = "危险"
 L["Bars will transition smoothly."] = "状态条平滑增减"

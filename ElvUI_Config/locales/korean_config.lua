@@ -588,7 +588,6 @@ L["At what point should the text be displayed. Set to -1 to disable."] = "이 �
 L["Attach Text to Power"] = "자원바 기준 글자위치"
 L["Attach To"] = "기준 프레임"
 L["Aura Bars"] = "클래스타이머"
-L["Aura Spacing"] = true;
 L["Auto-Hide"] = "자동으로 숨기기"
 L["Bad"] = "나쁨"
 L["Bars will transition smoothly."] = "바의 증감을 부드럽게 표현합니다."
