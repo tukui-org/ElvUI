@@ -283,7 +283,7 @@ end
 
 function AB:RegisterMacro(addon)
 	if addon == "Blizzard_MacroUI" then
-		for i=1, 36 do
+		for i=1, MAX_ACCOUNT_MACROS do
 			local b = _G["MacroButton"..i];
 			b:HookScript("OnEnter", function(b) AB:BindUpdate(b, "MACRO"); end);
 		end	
