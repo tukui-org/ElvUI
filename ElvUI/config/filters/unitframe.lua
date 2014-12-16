@@ -712,10 +712,7 @@ G.unitframe.buffwatch = {
 	},
 }
 
-local mfTicks = 3
-if select(2, UnitClass("player")) == "PRIEST" and IsSpellKnown(157223) then --Enhanced Mind Flay
-	mfTicks = 4
-end
+
 --List of spells to display ticks
 G.unitframe.ChannelTicks = {
 	--Warlock
@@ -729,8 +726,6 @@ G.unitframe.ChannelTicks = {
 	--[SpellName(44203)] = 4, -- "Tranquility"
 	[SpellName(16914)] = 10, -- "Hurricane"
 	--Priest
-	[SpellName(15407)] = mfTicks, -- "Mind Flay"
-	[SpellName(129197)] = mfTicks, -- "Mind Flay (Insanity)"
 	[SpellName(48045)] = 5, -- "Mind Sear"
 	[SpellName(47540)] = 2, -- "Penance"
 	--[SpellName(64901)] = 4, -- Hymn of Hope
@@ -743,6 +738,20 @@ G.unitframe.ChannelTicks = {
 	--Monk
 	[SpellName(115175)] = 9, -- "Smoothing Mist"
 }
+
+local f = CreateFrame("Frame")
+f:RegisterEvent("PLAYER_ENTERING_WORLD")
+f:SetScript("OnEvent", function(self)
+	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+	
+	local mfTicks = 3
+	if string.lower(select(2, UnitClass("player"))) == "priest" and IsSpellKnown(157223) then --Enhanced Mind Flay
+		mfTicks = 4
+	end
+	--Priest
+	G.unitframe.ChannelTicks[SpellName(15407)] = mfTicks -- "Mind Flay"
+	G.unitframe.ChannelTicks[SpellName(129197)] = mfTicks -- "Mind Flay (Insanity)"
+end)
 
 G.unitframe.ChannelTicksSize = {
     --Warlock
