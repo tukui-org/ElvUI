@@ -211,6 +211,14 @@ E.Options.args.general = {
 					get = function(info) return E.global.general.smallerWorldMap end,
 					set = function(info, value) E.global.general.smallerWorldMap = value; E:StaticPopup_Show("GLOBAL_RL") end					
 				},
+				questHeight = {
+					type = 'range',
+					name = L['Objective Frame Height'],
+					desc = L['Height of the objective tracker. Lesser size means less quests will be shown and potentially disappearing achievement tracking.'],
+					min = 400, max = E.screenheight, step = 1,	
+					order = 20,
+					set = function(info, value) E.db.general.questHeight = value; E:GetModule('Blizzard'):TrackerHeight(); end,				
+				},
 			},
 		},	
 		media = {
@@ -980,6 +988,22 @@ E.Options.args.general = {
 				},				
 			},
 		},
+		-- questHeight = {
+			-- order = 11,
+			-- type = "group",
+			-- name = L['Objective Frame'],
+			-- args = {
+				-- threshold = {
+					-- type = 'range',
+					-- name = L['Height'],
+					-- desc = L['Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red'],
+					-- min = 400, max = E.screenheight, step = 1,	
+					-- order = 1,
+					-- get = function(info) return E.db.general.questHeight end,
+					-- set = function(info, value) E.db.general.questHeight = value; E:GetModule('Blizzard'):TrackerHeight(); end,				
+				-- },
+			-- },
+		-- },
 	},
 }
 
