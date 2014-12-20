@@ -257,6 +257,8 @@ local function LoadSkin()
 		frame.IconBorder:Kill()
 		frame.glow:Kill()
 		frame.shine:Kill()
+		frame.BGAtlas:Kill()
+		frame.PvPBackground:Kill()
 		if frame.SpecRing and frame.SpecIcon and frame.SpecIcon.GetTexture and frame.SpecIcon:GetTexture() == nil then frame.SpecRing:Hide() end
 		
 		-- Icon border
