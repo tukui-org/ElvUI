@@ -342,6 +342,7 @@ L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from see
 L["Enhance Raid Browser"] = "기타공격대창 향상"
 L["Enhance the raid browser frame by adding item level and talent spec information, also add average item level of group information to tooltips."] = "기타 공격대창 검색탭에 템렙과 특성을 표시하고, 파티의 평균템렙을 툴팁에 추가해줍니다."
 L["General"] = "일반"
+L["Height of the objective tracker. Increase size to be able to see more objectives."] = true;
 L["Hide Error Text"] = "전투중 에러 숨기기"
 L["Hides the red error text at the top of the screen while in combat."] = "화면 중앙 상단에 뜨는 여러 에러메시지(ex : 사정거리 부족)를 전투 중에는 띄우지 않게 합니다."
 L["Log Taints"] = "Taint 에러 표시"
@@ -351,6 +352,7 @@ L["Loot"] = "전리품 확인창"
 L["Make the world map smaller."] = true;
 L["Multi-Monitor Support"] = "다중모니터 지원"
 L["Name Font"] = "캐릭터 이름 글꼴"
+L["Objective Frame Height"] = true;
 L["Remove Backdrop"] = "표시하지 않음"
 L["Reset all frames to their original positions."] = "ElvUI 에서 움직일 수 있는 모든 프레임의 위치를 기본 위치로 초기화합니다."
 L["Reset Anchors"] = "위치 초기화"

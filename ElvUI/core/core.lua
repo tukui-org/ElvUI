@@ -582,7 +582,7 @@ function E:UpdateAll(ignoreInstall)
 	LO:BottomPanelVisibility()
 	LO:TopPanelVisibility()
 	
-	self:GetModule('Blizzard'):TrackerHeight()
+	self:GetModule('Blizzard'):ObjectiveFrameHeight()
 		
 	collectgarbage('collect');
 end

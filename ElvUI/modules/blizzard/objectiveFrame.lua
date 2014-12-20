@@ -6,8 +6,8 @@ ObjectiveFrameHolder:SetWidth(130)
 ObjectiveFrameHolder:SetHeight(22)
 ObjectiveFrameHolder:SetPoint('TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300)
 
-function B:TrackerHeight()
-	ObjectiveTrackerFrame:Height(E.db.general.questHeight)
+function B:ObjectiveFrameHeight()
+	ObjectiveTrackerFrame:Height(E.db.general.objectiveFrameHeight)
 end
 
 function B:MoveObjectiveFrame()
@@ -16,7 +16,7 @@ function B:MoveObjectiveFrame()
 
 	ObjectiveTrackerFrame:ClearAllPoints()
 	ObjectiveTrackerFrame:SetPoint('TOP', ObjectiveFrameHolder, 'TOP')
-	B:TrackerHeight()
+	B:ObjectiveFrameHeight()
 	ObjectiveTrackerFrame:SetClampedToScreen(false)
 	hooksecurefunc(ObjectiveTrackerFrame,"SetPoint",function(_,_,parent)
 		if parent ~= ObjectiveFrameHolder then
