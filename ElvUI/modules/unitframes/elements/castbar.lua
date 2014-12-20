@@ -297,10 +297,6 @@ function UF:PostChannelUpdate(unit, name)
 		local unitframe = E.global.unitframe
 		local baseTicks = unitframe.ChannelTicks[name]
 
-		if self.chainChannel then
-			baseTicks = baseTicks + 1
-		end
-
 		if baseTicks and unitframe.ChannelTicksSize[name] and unitframe.HastedChannelTicks[name] then
 			local tickIncRate = 1 / baseTicks
 			local curHaste = UnitSpellHaste("player") * 0.01
@@ -339,6 +335,9 @@ function UF:PostChannelUpdate(unit, name)
 
 			UF:SetCastTicks(self, baseTicks, self.extraTickRatio)
 		elseif baseTicks then
+			if self.chainChannel then
+				baseTicks = baseTicks + 1
+			end
 			UF:SetCastTicks(self, baseTicks)
 		else
 			UF:HideTicks()
