@@ -275,7 +275,6 @@ end
 
 function UF:UpdateComboDisplay(event, unit)
 	if (unit == 'pet') then return end
-	local db = UF.player.db
 	local cpoints = self.CPoints
 	local cp = (UnitHasVehicleUI("player") or UnitHasVehicleUI("vehicle")) and UnitPower('vehicle', 4) or UnitPower('player', 4)
 
@@ -296,6 +295,10 @@ function UF:UpdateComboDisplay(event, unit)
 	local USE_PORTRAIT = db.portrait.enable
 	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
 	local PORTRAIT_WIDTH = db.portrait.width
+	local PORTRAIT_OFFSET_Y = ((COMBOBAR_HEIGHT/2) + SPACING - BORDER)
+	local HEALTH_OFFSET_Y
+	local DETACHED = db.combobar.detachFromFrame
+
 	if not self.Portrait then
 		self.Portrait = db.portrait.style == '2D' and self.Portrait2D or self.Portrait3D
 	end
@@ -304,20 +307,21 @@ function UF:UpdateComboDisplay(event, unit)
 		PORTRAIT_WIDTH = 0
 	end
 
-	if db.combobar.detachFromFrame then
-		COMBOBAR_HEIGHT = 0
-	end	
-	
+	if DETACHED then
+		PORTRAIT_OFFSET_Y = 0
+	end
+
 	if cpoints[1]:GetAlpha() == 1 or not db.combobar.autoHide then
 		cpoints:Show()
 		if USE_MINI_COMBOBAR then
-			self.Portrait.backdrop:SetPoint("TOPRIGHT", self, "TOPRIGHT", 0, -((COMBOBAR_HEIGHT/2) + SPACING - BORDER))
-			self.Health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+PORTRAIT_WIDTH), -(SPACING + (COMBOBAR_HEIGHT/2)))
+			HEALTH_OFFSET_Y = DETACHED and 0 or (SPACING + (COMBOBAR_HEIGHT/2))
+			self.Portrait.backdrop:SetPoint("TOPRIGHT", self, "TOPRIGHT", 0, -PORTRAIT_OFFSET_Y)
+			self.Health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+PORTRAIT_WIDTH), -HEALTH_OFFSET_Y)
 		else
+			HEALTH_OFFSET_Y = DETACHED and 0 or (SPACING + COMBOBAR_HEIGHT)
 			self.Portrait.backdrop:SetPoint("TOPRIGHT", self, "TOPRIGHT")
-			self.Health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+PORTRAIT_WIDTH), -(BORDER + SPACING + COMBOBAR_HEIGHT))
-		end		
-
+			self.Health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+PORTRAIT_WIDTH), -(BORDER + HEALTH_OFFSET_Y))
+		end
 	else
 		cpoints:Hide()
 		self.Portrait.backdrop:SetPoint("TOPRIGHT", self, "TOPRIGHT")
