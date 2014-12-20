@@ -206,7 +206,7 @@ function UF:PostCastStart(unit, name, rank, castid)
 		local baseTicks = unitframe.ChannelTicks[name]
 		
         -- Detect channeling spell and if it's the same as the previously channeled one
-        if baseTicks and name == prevSpellCast then
+        if baseTicks and name == self.prevSpellCast then
             self.chainChannel = true
         elseif baseTicks then
             self.chainChannel = nil
@@ -296,7 +296,11 @@ function UF:PostChannelUpdate(unit, name)
 	if db.castbar.ticks then
 		local unitframe = E.global.unitframe
 		local baseTicks = unitframe.ChannelTicks[name]
-		
+
+		if self.chainChannel then
+			baseTicks = baseTicks + 1
+		end
+
 		if baseTicks and unitframe.ChannelTicksSize[name] and unitframe.HastedChannelTicks[name] then
 			local tickIncRate = 1 / baseTicks
 			local curHaste = UnitSpellHaste("player") * 0.01
