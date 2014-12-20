@@ -15,6 +15,7 @@ P['general'] = {
 	['autoAcceptInvite'] = false,
 	['bottomPanel'] = true,
 	['hideErrorFrame'] = true,
+	['questHeight'] = 480,
 
 	['afk'] = true,
 	
