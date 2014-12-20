@@ -247,64 +247,54 @@ local function LoadSkin()
 		end
 	end)
 	
-	hooksecurefunc('AlertFrame_SetLootWonAnchors', function()
-		for i=1, #LOOT_WON_ALERT_FRAMES do
-			local frame = LOOT_WON_ALERT_FRAMES[i];
-			if frame then
-				frame:SetAlpha(1)
-				if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
-				
-				frame.Background:Kill()
-				frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-				frame.Icon:SetDrawLayer("BORDER")
-				frame.IconBorder:Kill()
-				frame.glow:Kill()
-				frame.shine:Kill()
-				if frame.SpecRing and frame.SpecIcon and frame.SpecIcon.GetTexture and frame.SpecIcon:GetTexture() == nil then frame.SpecRing:Hide() end
-				
-				-- Icon border
-				if not frame.Icon.b then
-					frame.Icon.b = CreateFrame("Frame", nil, frame)
-					frame.Icon.b:SetTemplate("Default")
-					frame.Icon.b:SetOutside(frame.Icon)
-					frame.Icon:SetParent(frame.Icon.b)
-				end
-				
-				if not frame.backdrop then
-					frame:CreateBackdrop("Transparent")
-					frame.backdrop:SetPoint('TOPLEFT', frame.Icon.b, 'TOPLEFT', -4, 4)
-					frame.backdrop:SetPoint('BOTTOMRIGHT', frame.Icon.b, 'BOTTOMRIGHT', 180, -4)
-				end				
-			end
-		end	
+	hooksecurefunc('LootWonAlertFrame_SetUp', function(frame)
+		frame:SetAlpha(1)
+		if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
+		
+		frame.Background:Kill()
+		frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+		frame.Icon:SetDrawLayer("BORDER")
+		frame.IconBorder:Kill()
+		frame.glow:Kill()
+		frame.shine:Kill()
+		if frame.SpecRing and frame.SpecIcon and frame.SpecIcon.GetTexture and frame.SpecIcon:GetTexture() == nil then frame.SpecRing:Hide() end
+		
+		-- Icon border
+		if not frame.Icon.b then
+			frame.Icon.b = CreateFrame("Frame", nil, frame)
+			frame.Icon.b:SetTemplate("Default")
+			frame.Icon.b:SetOutside(frame.Icon)
+			frame.Icon:SetParent(frame.Icon.b)
+		end
+		
+		if not frame.backdrop then
+			frame:CreateBackdrop("Transparent")
+			frame.backdrop:SetPoint('TOPLEFT', frame.Icon.b, 'TOPLEFT', -4, 4)
+			frame.backdrop:SetPoint('BOTTOMRIGHT', frame.Icon.b, 'BOTTOMRIGHT', 180, -4)
+		end
 	end)
 	
-	hooksecurefunc('AlertFrame_SetMoneyWonAnchors', function()
-		for i=1, #MONEY_WON_ALERT_FRAMES do
-			local frame = MONEY_WON_ALERT_FRAMES[i];
-			if frame then
-				frame:SetAlpha(1)
-				if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
+	hooksecurefunc('MoneyWonAlertFrame_SetUp', function(frame)
+		frame:SetAlpha(1)
+		if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
 
-				frame.Background:Kill()
-				frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-				frame.IconBorder:Kill()
-				
-				-- Icon border
-				if not frame.Icon.b then
-					frame.Icon.b = CreateFrame("Frame", nil, frame)
-					frame.Icon.b:SetTemplate("Default")
-					frame.Icon.b:SetOutside(frame.Icon)
-					frame.Icon:SetParent(frame.Icon.b)
-				end
-				
-				if not frame.backdrop then
-					frame:CreateBackdrop("Transparent")
-					frame.backdrop:SetPoint('TOPLEFT', frame.Icon.b, 'TOPLEFT', -4, 4)
-					frame.backdrop:SetPoint('BOTTOMRIGHT', frame.Icon.b, 'BOTTOMRIGHT', 180, -4)
-				end				
-			end
-		end	
+		frame.Background:Kill()
+		frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+		frame.IconBorder:Kill()
+		
+		-- Icon border
+		if not frame.Icon.b then
+			frame.Icon.b = CreateFrame("Frame", nil, frame)
+			frame.Icon.b:SetTemplate("Default")
+			frame.Icon.b:SetOutside(frame.Icon)
+			frame.Icon:SetParent(frame.Icon.b)
+		end
+		
+		if not frame.backdrop then
+			frame:CreateBackdrop("Transparent")
+			frame.backdrop:SetPoint('TOPLEFT', frame.Icon.b, 'TOPLEFT', -4, 4)
+			frame.backdrop:SetPoint('BOTTOMRIGHT', frame.Icon.b, 'BOTTOMRIGHT', 180, -4)
+		end
 	end)
 	
 	local frame = BonusRollMoneyWonFrame
@@ -344,7 +334,80 @@ local function LoadSkin()
 	frame:CreateBackdrop("Transparent")
 	frame.backdrop:SetPoint('TOPLEFT', frame.Icon.b, 'TOPLEFT', -4, 4)
 	frame.backdrop:SetPoint('BOTTOMRIGHT', frame.Icon.b, 'BOTTOMRIGHT', 180, -4)
-	
+
+	-- Garrison building alert
+	local frame = GarrisonBuildingAlertFrame
+	frame.glow:Kill()
+	frame.shine:Kill()
+	frame:GetRegions():Hide()
+	frame:CreateBackdrop("Transparent")
+	frame.backdrop:SetPoint('TOPLEFT', frame, 'TOPLEFT', 8, -8)
+	frame.backdrop:SetPoint('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 8)
+
+	frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+	frame.Icon:SetDrawLayer("ARTWORK")
+	frame.Icon.b = CreateFrame("Frame", nil, frame)
+	frame.Icon.b:SetTemplate("Default")
+	frame.Icon.b:SetTemplate("Default")
+	frame.Icon.b:SetOutside(frame.Icon)
+	frame.Icon:SetParent(frame.Icon.b)
+
+	-- Garrison mission alert
+	local frame = GarrisonMissionAlertFrame
+	frame.glow:Kill()
+	frame.shine:Kill()
+	frame:GetRegions():Hide()
+	frame.IconBG:Hide()
+
+	frame:CreateBackdrop("Transparent")
+	frame.backdrop:SetPoint('TOPLEFT', frame, 'TOPLEFT', 8, -8)
+	frame.backdrop:SetPoint('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 8)
+
+	-- Garrison follower alert
+	local frame = GarrisonFollowerAlertFrame
+	frame.glow:Kill()
+	frame.shine:Kill()
+	frame:GetRegions():Hide()
+	frame.FollowerBG:SetAlpha(0)
+
+	frame:CreateBackdrop("Transparent")
+	frame.backdrop:SetPoint('TOPLEFT', frame, 'TOPLEFT', 16, -3)
+	frame.backdrop:SetPoint('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -16, 16)
+
+	local level = frame.PortraitFrame.Level
+	local cover = frame.PortraitFrame.PortraitRingCover
+
+	frame.PortraitFrame.PortraitRing:Hide()
+	frame.PortraitFrame.PortraitRingQuality:SetTexture("")
+
+	frame.PortraitFrame.LevelBorder:SetTexture(0, 0, 0, .5)
+	frame.PortraitFrame.LevelBorder:SetSize(44, 11)
+	frame.PortraitFrame.LevelBorder:ClearAllPoints()
+	frame.PortraitFrame.LevelBorder:SetPoint("BOTTOM", 0, 12)
+
+	level:ClearAllPoints()
+	level:SetPoint("BOTTOM", frame.PortraitFrame, 0, 12)
+
+	local squareBG = CreateFrame("Frame", nil, frame.PortraitFrame)
+	squareBG:SetFrameLevel(frame.PortraitFrame:GetFrameLevel()-1)
+	squareBG:SetPoint("TOPLEFT", 3, -3)
+	squareBG:SetPoint("BOTTOMRIGHT", -3, 11)
+	squareBG:SetTemplate("Default")
+	frame.PortraitFrame.squareBG = squareBG
+
+	if cover then
+		cover:SetTexture(0, 0, 0)
+		cover:SetAllPoints(squareBG)
+	end
+
+	hooksecurefunc("GarrisonFollowerAlertFrame_ShowAlert", function(_, _, _, _, quality)
+		local color = BAG_ITEM_QUALITY_COLORS[quality]
+		if color then
+			GarrisonFollowerAlertFrame.PortraitFrame.squareBG:SetBackdropBorderColor(color.r, color.g, color.b)
+		else
+			GarrisonFollowerAlertFrame.PortraitFrame.squareBG:SetBackdropBorderColor(0, 0, 0)
+		end
+	end)
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)
