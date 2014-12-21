@@ -122,6 +122,12 @@ local function LoadSkin()
 			end
 		end
 	end)
+	
+	hooksecurefunc("GarrisonMissionPage_SetReward", function(frame, reward)
+		frame.BG:SetTexture()
+		S:HandleIcon(frame.Icon)
+		frame.Icon:SetDrawLayer("BORDER", 0)
+	end)
 
 	-- Landing page
 	-- GarrisonLandingPage:StripTextures(true) -- I actually like the look of this texture. Not sure if we want to remove it.
