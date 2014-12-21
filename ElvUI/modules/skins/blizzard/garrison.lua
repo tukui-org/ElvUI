@@ -99,6 +99,7 @@ local function LoadSkin()
 	MissionList:DisableDrawLayer("BORDER")
 	S:HandleScrollBar(MissionList.listScroll.scrollBar)
 	S:HandleButton(MissionList.CompleteDialog.BorderFrame.ViewButton)
+	S:HandleButton(GarrisonMissionFrame.MissionComplete.NextMissionButton)
 
 	hooksecurefunc("GarrisonMissionButton_SetRewards", function(self, rewards, numRewards)
 		if self.numRewardsStyled == nil then
