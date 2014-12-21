@@ -125,7 +125,9 @@ local function LoadSkin()
 	
 	hooksecurefunc("GarrisonMissionPage_SetReward", function(frame, reward)
 		frame.BG:SetTexture()
-		S:HandleIcon(frame.Icon)
+		if not frame.backdrop then
+			S:HandleIcon(frame.Icon)
+		end
 		frame.Icon:SetDrawLayer("BORDER", 0)
 	end)
 
