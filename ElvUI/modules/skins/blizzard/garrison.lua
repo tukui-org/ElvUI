@@ -24,14 +24,11 @@ local function LoadSkin()
 
 	do
 		local reagentIndex = 1
-
 		hooksecurefunc("GarrisonCapacitiveDisplayFrame_Update", function(self)
 			local reagents = CapacitiveDisplay.Reagents
-
 			local reagent = reagents[reagentIndex]
 			while reagent do
 				reagent.NameFrame:SetTexture()
-
 				reagent.Icon:SetTexCoord(unpack(E.TexCoords))
 				reagent.Icon:SetDrawLayer("BORDER")
 				
@@ -73,15 +70,16 @@ local function LoadSkin()
 	GarrisonMissionFrameTab1:ClearAllPoints()
 	GarrisonMissionFrameTab1:SetPoint("BOTTOMLEFT", 11, -40)
 
-	-- Handle GarrisonMissionFrameTab3 for MasterPlan
+	-- Handle MasterPlan AddOn
 	do
 		local f = CreateFrame("Frame")
 		f:RegisterEvent("ADDON_LOADED")
 		f:SetScript("OnEvent", function(self, event, addon)
 			if addon == "MasterPlan" then
 				S:HandleTab(GarrisonMissionFrameTab3)
-				S:HandleCloseButton(GarrisonMissionFrame.MissionTab.MissionPage.MinimizeButton, nil, "-")
-				GarrisonMissionFrame.MissionTab.MissionPage.MinimizeButton:SetFrameLevel(GarrisonMissionFrame.MissionTab.MissionPage:GetFrameLevel() + 2)
+				local MissionPage = GarrisonMissionFrame.MissionTab.MissionPage
+				S:HandleCloseButton(MissionPage.MinimizeButton, nil, "-")
+				MissionPage.MinimizeButton:SetFrameLevel(MissionPage:GetFrameLevel() + 2)
 				self:UnregisterEvent("ADDON_LOADED")
 			end
 		end)
@@ -91,26 +89,25 @@ local function LoadSkin()
 	local FollowerList = GarrisonMissionFrame.FollowerList
 	FollowerList:DisableDrawLayer("BORDER")
 	FollowerList.MaterialFrame:StripTextures()
-
 	S:HandleEditBox(FollowerList.SearchBox)
 	S:HandleScrollBar(FollowerList.listScroll.scrollBar)
 
 	-- Mission list
 	local MissionTab = GarrisonMissionFrame.MissionTab
 	local MissionList = MissionTab.MissionList
+	local MissionPage = GarrisonMissionFrame.MissionTab.MissionPage
 	MissionList:DisableDrawLayer("BORDER")
 	S:HandleScrollBar(MissionList.listScroll.scrollBar)
-	S:HandleCloseButton(GarrisonMissionFrame.MissionTab.MissionPage.CloseButton)
-	GarrisonMissionFrame.MissionTab.MissionPage.CloseButton:SetFrameLevel(GarrisonMissionFrame.MissionTab.MissionPage:GetFrameLevel() + 2)
+	S:HandleCloseButton(MissionPage.CloseButton)
+	MissionPage.CloseButton:SetFrameLevel(MissionPage:GetFrameLevel() + 2)
 	S:HandleButton(MissionList.CompleteDialog.BorderFrame.ViewButton)
-	S:HandleButton(GarrisonMissionFrame.MissionTab.MissionPage.StartMissionButton)
+	S:HandleButton(MissionPage.StartMissionButton)
 	S:HandleButton(GarrisonMissionFrame.MissionComplete.NextMissionButton)
 
 	hooksecurefunc("GarrisonMissionButton_SetRewards", function(self, rewards, numRewards)
 		if self.numRewardsStyled == nil then
 			self.numRewardsStyled = 0
 		end
-
 		while self.numRewardsStyled < numRewards do
 			self.numRewardsStyled = self.numRewardsStyled + 1
 			local reward = self.Rewards[self.numRewardsStyled]
@@ -204,7 +201,6 @@ local function SkinTooltip()
 		for i = 1, 9 do
 			select(i, frame:GetRegions()):Hide()
 		end
-
 		frame:SetTemplate("Transparent")
 	end
 
@@ -212,42 +208,32 @@ local function SkinTooltip()
 		for i = 1, 9 do
 			select(i, frame:GetRegions()):Hide()
 		end
-
 		local icon = frame.Icon
-
 		icon:SetTexCoord(unpack(E.TexCoords))
 		if not frame.border then
 			frame.border = CreateFrame("Frame", nil, frame)
 			S:HandleIcon(frame.Icon, frame.border)
 		end
-
 		frame:SetTemplate("Transparent")
 	end
 
 	restyleGarrisonFollowerTooltipTemplate(GarrisonFollowerTooltip)
 	restyleGarrisonFollowerAbilityTooltipTemplate(GarrisonFollowerAbilityTooltip)
-
 	restyleGarrisonFollowerTooltipTemplate(FloatingGarrisonFollowerTooltip)
 	S:HandleCloseButton(FloatingGarrisonFollowerTooltip.CloseButton)
-
 	restyleGarrisonFollowerAbilityTooltipTemplate(FloatingGarrisonFollowerAbilityTooltip)
 	S:HandleCloseButton(FloatingGarrisonFollowerAbilityTooltip.CloseButton)
 
 	hooksecurefunc("GarrisonFollowerTooltipTemplate_SetGarrisonFollower", function(tooltipFrame)
 		-- Abilities
-
 		if tooltipFrame.numAbilitiesStyled == nil then
 			tooltipFrame.numAbilitiesStyled = 1
 		end
-
 		local numAbilitiesStyled = tooltipFrame.numAbilitiesStyled
-
 		local abilities = tooltipFrame.Abilities
-
 		local ability = abilities[numAbilitiesStyled]
 		while ability do
 			local icon = ability.Icon
-
 			icon:SetTexCoord(unpack(E.TexCoords))
 			if not ability.border then
 				ability.border = CreateFrame("Frame", nil, ability)
@@ -257,23 +243,17 @@ local function SkinTooltip()
 			numAbilitiesStyled = numAbilitiesStyled + 1
 			ability = abilities[numAbilitiesStyled]
 		end
-
 		tooltipFrame.numAbilitiesStyled = numAbilitiesStyled
 
 		-- Traits
-
 		if tooltipFrame.numTraitsStyled == nil then
 			tooltipFrame.numTraitsStyled = 1
 		end
-
 		local numTraitsStyled = tooltipFrame.numTraitsStyled
-
 		local traits = tooltipFrame.Traits
-
 		local trait = traits[numTraitsStyled]
 		while trait do
 			local icon = trait.Icon
-
 			icon:SetTexCoord(unpack(E.TexCoords))
 			if not trait.border then
 				trait.border = CreateFrame("Frame", nil, trait)
@@ -283,7 +263,6 @@ local function SkinTooltip()
 			numTraitsStyled = numTraitsStyled + 1
 			trait = traits[numTraitsStyled]
 		end
-
 		tooltipFrame.numTraitsStyled = numTraitsStyled
 	end)
 end
