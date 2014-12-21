@@ -498,6 +498,7 @@ L["Non-Raid Frame"] = "Kein-Raid Fenster"
 L["Pet Battle"] = "Haustierkampf"
 L["Petition Frame"] = "Abstimmungsfenster"
 L["PvP Frames"] = "Pvp Fenster"
+L["Quest Choice"] = true;
 L["Quest Frames"] = "Quest Fenster"
 L["Raid Frame"] = "Schlachtzugsfenster"
 L["Reforge Frame"] = "Umschmiedefenster"

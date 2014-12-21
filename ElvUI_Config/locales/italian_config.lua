@@ -488,6 +488,7 @@ L["Non-Raid Frame"] = true;
 L["Pet Battle"] = true;
 L["Petition Frame"] = true;
 L["PvP Frames"] = true;
+L["Quest Choice"] = true;
 L["Quest Frames"] = true;
 L["Raid Frame"] = true;
 L["Reforge Frame"] = true;

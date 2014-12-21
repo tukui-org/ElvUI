@@ -500,6 +500,7 @@ L["Non-Raid Frame"] = "非團隊框架"
 L["Pet Battle"] = "寵物戰鬥"
 L["Petition Frame"] = "回報GM"
 L["PvP Frames"] = "PvP框架"
+L["Quest Choice"] = true;
 L["Quest Frames"] = "任務"
 L["Raid Frame"] = "團隊框架"
 L["Reforge Frame"] = "重鑄"

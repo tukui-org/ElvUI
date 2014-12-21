@@ -499,6 +499,7 @@ L["Non-Raid Frame"] = "Info Raid"
 L["Pet Battle"] = "Combats de mascottes"
 L["Petition Frame"] = "Fenêtre de Charte"
 L["PvP Frames"] = "Fenêtre JcJ"
+L["Quest Choice"] = true;
 L["Quest Frames"] = "Fenêtre de Quête"
 L["Raid Frame"] = "Fenêtre de Raid"
 L["Reforge Frame"] = "Retouche"
