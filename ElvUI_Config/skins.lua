@@ -304,6 +304,11 @@ E.Options.args.skins = {
 					name = L['Item Upgrade'],
 					desc = L["TOGGLESKIN_DESC"],				
 				},
+				questChoice = {
+					type = "toggle",
+					name = L['Quest Choice'],
+					desc = L["TOGGLESKIN_DESC"],	
+				},
 			},
 		},
 	},

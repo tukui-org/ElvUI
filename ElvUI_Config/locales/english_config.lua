@@ -489,6 +489,7 @@ L["Pet Battle"] = true;
 L["Petition Frame"] = true;
 L["PvP Frames"] = true;
 L["Quest Frames"] = true;
+L['Quest Choice'] = true;
 L["Raid Frame"] = true;
 L["Reforge Frame"] = true;
 L["Skins"] = true;
