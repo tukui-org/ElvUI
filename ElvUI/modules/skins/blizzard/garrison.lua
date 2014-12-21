@@ -15,7 +15,7 @@ local function LoadSkin()
 	GarrisonCapacitiveDisplayFrame:CreateBackdrop("Transparent")
 	GarrisonCapacitiveDisplayFrame.Inset:StripTextures()
 	S:HandleCloseButton(GarrisonCapacitiveDisplayFrame.CloseButton, GarrisonCapacitiveDisplayFrame.backdrop)
-	S:HandleButton(GarrisonCapacitiveDisplayFrame.StartWorkOrderButton)
+	S:HandleButton(GarrisonCapacitiveDisplayFrame.StartWorkOrderButton, true)
 	local CapacitiveDisplay = GarrisonCapacitiveDisplayFrame.CapacitiveDisplay
 	CapacitiveDisplay.IconBG:SetTexture()
 	CapacitiveDisplay.ShipmentIconFrame.Icon:SetTexCoord(unpack(E.TexCoords))
