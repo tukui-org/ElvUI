@@ -54,4 +54,5 @@
 	<Script file='itemupgrade.lua'/>
 	<Script file='losscontrol.lua'/>
 	<Script file='loot.lua'/>
+	<Script file='questchoice.lua'/>
 </Ui>
