@@ -298,6 +298,33 @@ local function LoadSkin()
 			frame.backdrop:SetPoint('BOTTOMRIGHT', frame.Icon.b, 'BOTTOMRIGHT', 180, -4)
 		end
 	end)
+
+	hooksecurefunc('LootUpgradeFrame_SetUp', function(frame)
+		frame:SetAlpha(1)
+		if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
+
+		frame.Background:Kill()
+		frame.Sheen:Kill()
+		frame.BorderGlow:Kill()
+		frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+		frame.Icon:SetDrawLayer("BORDER", 5)
+		frame.Icon:ClearAllPoints()
+		frame.Icon:SetInside(frame.BaseQualityBorder, 5, 5)
+
+		-- Icon border
+		if not frame.Icon.b then
+			frame.Icon.b = CreateFrame("Frame", nil, frame)
+			frame.Icon.b:SetTemplate("Default")
+			frame.Icon.b:SetOutside(frame.Icon)
+			frame.Icon:SetParent(frame.Icon.b)
+		end
+
+		if not frame.backdrop then
+			frame:CreateBackdrop("Transparent")
+			frame.backdrop:SetPoint('TOPLEFT', frame.Icon.b, 'TOPLEFT', -8, 8)
+			frame.backdrop:SetPoint('BOTTOMRIGHT', frame.Icon.b, 'BOTTOMRIGHT', 180, -8)
+		end
+	end)
 	
 	local frame = BonusRollMoneyWonFrame
 	frame:SetAlpha(1)
