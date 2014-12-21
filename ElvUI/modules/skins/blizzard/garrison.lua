@@ -21,6 +21,9 @@ local function LoadSkin()
 	CapacitiveDisplay.ShipmentIconFrame.Icon:SetTexCoord(unpack(E.TexCoords))
 	CapacitiveDisplay.ShipmentIconFrame:SetTemplate("Default", true)
 	CapacitiveDisplay.ShipmentIconFrame.Icon:SetInside()
+	--Fix unitframes appearing above work orders
+	GarrisonCapacitiveDisplayFrame:SetFrameStrata("MEDIUM")
+	GarrisonCapacitiveDisplayFrame:SetFrameLevel(45)
 
 	do
 		local reagentIndex = 1
