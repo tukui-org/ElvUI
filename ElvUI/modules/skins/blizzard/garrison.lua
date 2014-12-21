@@ -98,6 +98,7 @@ local function LoadSkin()
 	local MissionList = MissionTab.MissionList
 	MissionList:DisableDrawLayer("BORDER")
 	S:HandleScrollBar(MissionList.listScroll.scrollBar)
+	S:HandleCloseButton(GarrisonMissionFrame.MissionTab.MissionPage.CloseButton)
 	S:HandleButton(MissionList.CompleteDialog.BorderFrame.ViewButton)
 	S:HandleButton(GarrisonMissionFrame.MissionTab.MissionPage.StartMissionButton)
 	S:HandleButton(GarrisonMissionFrame.MissionComplete.NextMissionButton)
