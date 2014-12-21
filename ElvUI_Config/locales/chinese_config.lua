@@ -499,6 +499,7 @@ L["Non-Raid Frame"] = "非团队框架"
 L["Pet Battle"] = "宠物战斗"
 L["Petition Frame"] = "回报GM"
 L["PvP Frames"] = "PvP框架"
+L["Quest Choice"] = true;
 L["Quest Frames"] = "任务"
 L["Raid Frame"] = "团队"
 L["Reforge Frame"] = "重铸"

@@ -524,6 +524,7 @@ L["Non-Raid Frame"] = "비공격대 프레임"
 L["Pet Battle"] = "애완동물대전 관련"
 L["Petition Frame"] = "GM 요청 창"
 L["PvP Frames"] = "PvP 창"
+L["Quest Choice"] = true;
 L["Quest Frames"] = "퀘스트 창"
 L["Raid Frame"] = "공격대 프레임"
 L["Reforge Frame"] = "재연마 창"

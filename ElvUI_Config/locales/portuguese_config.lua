@@ -499,6 +499,7 @@ L["Non-Raid Frame"] = "Quadro Não Raide"
 L["Pet Battle"] = "Batalha de Mascote"
 L["Petition Frame"] = "Petição"
 L["PvP Frames"] = "JxJ"
+L["Quest Choice"] = true;
 L["Quest Frames"] = "Missões"
 L["Raid Frame"] = "Quadro de Raide"
 L["Reforge Frame"] = "Reforja"
