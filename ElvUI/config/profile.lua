@@ -308,7 +308,7 @@ P['datatexts'] = {
 		['LeftChatDataPanel'] = {
 			['left'] = 'Talent/Loot Specialization',
 			['middle'] = 'Durability',
-			['right'] = 'Combat/Arena Time',
+			['right'] = 'Garrison',
 		},
 		['RightChatDataPanel'] = {
 			['left'] = 'System',

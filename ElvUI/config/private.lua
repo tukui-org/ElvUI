@@ -16,7 +16,7 @@ V['general'] = {
 	['smallerWorldMap'] = true,
 	['minimap'] = {
 		['enable'] = true,
-		['hideGarrison'] = false,
+		['hideGarrison'] = true,
 		['hideCalendar'] = true,
 	},
 }
