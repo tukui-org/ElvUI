@@ -130,6 +130,11 @@ local function LoadSkin()
 		end
 		frame.Icon:SetDrawLayer("BORDER", 0)
 	end)
+	
+	hooksecurefunc("GarrisonMissionPage_UpdateStartButton", function(missionPage)
+		missionPage.StartMissionButton.Flash:Hide()
+		missionPage.StartMissionButton.FlashAnim:Stop();
+	end)
 
 	-- Landing page
 	-- GarrisonLandingPage:StripTextures(true) -- I actually like the look of this texture. Not sure if we want to remove it.
