@@ -120,7 +120,7 @@ local function LoadSkin()
 	end)
 
 	-- Landing page
-	GarrisonLandingPage:StripTextures(true)
+	-- GarrisonLandingPage:StripTextures(true) -- I actually like the look of this texture. Not sure if we want to remove it.
 	GarrisonLandingPage:CreateBackdrop("Transparent")
 	S:HandleCloseButton(GarrisonLandingPage.CloseButton, GarrisonLandingPage.backdrop)
 	S:HandleTab(GarrisonLandingPageTab1)
