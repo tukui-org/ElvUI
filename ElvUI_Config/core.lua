@@ -211,14 +211,6 @@ E.Options.args.general = {
 					get = function(info) return E.global.general.smallerWorldMap end,
 					set = function(info, value) E.global.general.smallerWorldMap = value; E:StaticPopup_Show("GLOBAL_RL") end					
 				},
-				objectiveFrameHeight = {
-					order = 20,
-					type = 'range',
-					name = L["Objective Frame Height"],
-					desc = L["Height of the objective tracker. Increase size to be able to see more objectives."],
-					min = 400, max = E.screenheight, step = 1,
-					set = function(info, value) E.db.general.objectiveFrameHeight = value; E:GetModule('Blizzard'):ObjectiveFrameHeight(); end,				
-				},
 			},
 		},	
 		media = {
@@ -986,6 +978,40 @@ E.Options.args.general = {
 					name = L['Days'],
 					desc = L['Color when the text is in the days format.'],			
 				},				
+			},
+		},
+		questTracker = {
+			order = 11,
+			type = "group",
+			name = L['Objective Frame'],
+			get = function(info) return E.db.general[ info[#info] ] end,
+			set = function(info, value) E.db.general[ info[#info] ] = value end,
+			args = {
+				objectiveFrameHeight = {
+					order = 1,
+					type = 'range',
+					name = L["Objective Frame Height"],
+					desc = L["Height of the objective tracker. Increase size to be able to see more objectives."],
+					min = 400, max = E.screenheight, step = 1,
+					set = function(info, value) E.db.general.objectiveFrameHeight = value; E:GetModule('Blizzard'):ObjectiveFrameHeight(); end,
+				},
+				bonusObjectivePosition = {
+					order = 2,
+					type = 'select',
+					name = L["Bonus Reward position"],
+					desc = L["Position of bonus quest reward frame relative to objective tracker."],
+					disabled = function() return E.db.general.bonusObjectiveAuto end,
+					values = {
+						['RIGHT'] = L["Right"],
+						['LEFT'] = L["Left"],
+					},			
+				},
+				bonusObjectiveAuto = {
+					order = 3,
+					type = "toggle",
+					name = L["Bonus Reward auto position"],
+					desc = L["Set the point of bonus quest reward frame based on position of objective frme."],
+				},
 			},
 		},
 	},
