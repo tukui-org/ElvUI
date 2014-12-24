@@ -48,7 +48,11 @@ function B:MoveObjectiveFrame()
 		rewardsFrame:ClearAllPoints();
 		if E.db.general.bonusObjectiveAuto then
 			local left = GetSide(ObjectiveTrackerFrame)
-			if left then rewardsFrame:SetPoint("TOPLEFT", block, "TOPRIGHT", -10, -4); end
+			if left then
+				rewardsFrame:SetPoint("TOPLEFT", block, "TOPRIGHT", -10, -4); 
+			else
+				rewardsFrame:SetPoint("TOPRIGHT", block, "TOPLEFT", 10, -4);
+			end
 		else
 			if E.db.general.bonusObjectivePosition == "RIGHT" then
 				rewardsFrame:SetPoint("TOPLEFT", block, "TOPRIGHT", -10, -4);
