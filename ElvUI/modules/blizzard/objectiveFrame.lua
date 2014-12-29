@@ -46,16 +46,14 @@ function B:MoveObjectiveFrame()
 	hooksecurefunc("BonusObjectiveTracker_AnimateReward", function(block)
 		local rewardsFrame = ObjectiveTrackerBonusRewardsFrame;
 		rewardsFrame:ClearAllPoints();
-		if E.db.general.bonusObjectiveAuto then
+		if E.db.general.bonusObjectivePosition == "RIGHT" then
+			rewardsFrame:SetPoint("TOPLEFT", block, "TOPRIGHT", -10, -4);
+		elseif E.db.general.bonusObjectivePosition == "LEFT" then
+			rewardsFrame:SetPoint("TOPRIGHT", block, "TOPLEFT", 10, -4);
+		else
 			local left = GetSide(ObjectiveTrackerFrame)
 			if left then
 				rewardsFrame:SetPoint("TOPLEFT", block, "TOPRIGHT", -10, -4); 
-			else
-				rewardsFrame:SetPoint("TOPRIGHT", block, "TOPLEFT", 10, -4);
-			end
-		else
-			if E.db.general.bonusObjectivePosition == "RIGHT" then
-				rewardsFrame:SetPoint("TOPLEFT", block, "TOPRIGHT", -10, -4);
 			else
 				rewardsFrame:SetPoint("TOPRIGHT", block, "TOPLEFT", 10, -4);
 			end

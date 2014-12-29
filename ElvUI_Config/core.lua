@@ -1004,13 +1004,8 @@ E.Options.args.general = {
 					values = {
 						['RIGHT'] = L["Right"],
 						['LEFT'] = L["Left"],
+						['AUTO'] = L["Auto"],
 					},			
-				},
-				bonusObjectiveAuto = {
-					order = 3,
-					type = "toggle",
-					name = L["Bonus Reward auto position"],
-					desc = L["Set the point of bonus quest reward frame based on position of objective frme."],
 				},
 			},
 		},
