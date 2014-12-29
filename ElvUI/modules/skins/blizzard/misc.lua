@@ -867,13 +867,11 @@ local function LoadSkin()
         "CombatPanelTOTDropDown",
         "CombatPanelFocusCastKeyDropDown",
         "CombatPanelSelfCastKeyDropDown",
-	  "CombatPanelLossOfControlFullDropDown",
-	  "CombatPanelLossOfControlSilenceDropDown",
-	  "CombatPanelLossOfControlInterruptDropDown",
-	  "CombatPanelLossOfControlDisarmDropDown",
-	  "CombatPanelLossOfControlRootDropDown",
-        -- Display
-        "DisplayPanelOutlineDropDown",
+		"CombatPanelLossOfControlFullDropDown",
+		"CombatPanelLossOfControlSilenceDropDown",
+		"CombatPanelLossOfControlInterruptDropDown",
+		"CombatPanelLossOfControlDisarmDropDown",
+		"CombatPanelLossOfControlRootDropDown",
         --Objectives
         "ObjectivesPanelQuestSorting",
         -- Social
@@ -905,6 +903,9 @@ local function LoadSkin()
             DropDownList1:SetTemplate("Transparent")
         end
     end
+	-- Display
+	S:HandleDropDownBox(InterfaceOptionsDisplayPanelOutlineDropDown, 210)
+
     S:HandleButton(InterfaceOptionsHelpPanelResetTutorials)
     local optioncheckbox = {
     	-- Display
