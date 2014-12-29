@@ -4950,7 +4950,7 @@ if P.unitframe.colors.classResources[E.myclass] then
 			order = ORDER,
 		}	
 	elseif E.myclass == 'MONK' then
-		for i = 1, 5 do
+		for i = 1, 6 do
 			E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args['resource'..i] = {
 				type = 'color',
 				name = L['Harmony']..' #'..i,
