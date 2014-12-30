@@ -16,6 +16,7 @@ P['general'] = {
 	['bottomPanel'] = true,
 	['hideErrorFrame'] = true,
 	['objectiveFrameHeight'] = 480,
+	['bonusObjectivePosition'] = "LEFT",
 
 	['afk'] = true,
 	
