@@ -10,23 +10,17 @@ function B:ObjectiveFrameHeight()
 	ObjectiveTrackerFrame:Height(E.db.general.objectiveFrameHeight)
 end
 
-local function GetSide(frame)
-	local x, y = frame:GetCenter()
+local function IsFramePositionedLeft(frame)
+	local x = frame:GetCenter()
 	local screenWidth = GetScreenWidth()
 	local screenHeight = GetScreenHeight()
-	
-	if not frame:GetCenter() then
-		return false
+	local positionedLeft = false
+
+	if x and x < (screenWidth / 2) then
+		positionedLeft = true;
 	end
-	
-	if x < (screenWidth / 2) then
-		return true
-	elseif x > (screenWidth / 2)then
-		return false
-	else
-		return false
-	end
-	return false
+
+	return positionedLeft;
 end
 
 function B:MoveObjectiveFrame()
@@ -43,20 +37,14 @@ function B:MoveObjectiveFrame()
 			ObjectiveTrackerFrame:SetPoint('TOP', ObjectiveFrameHolder, 'TOP')
 		end
 	end)
+	
 	hooksecurefunc("BonusObjectiveTracker_AnimateReward", function(block)
 		local rewardsFrame = ObjectiveTrackerBonusRewardsFrame;
 		rewardsFrame:ClearAllPoints();
-		if E.db.general.bonusObjectivePosition == "RIGHT" then
+		if E.db.general.bonusObjectivePosition == "RIGHT" or (E.db.general.bonusObjectivePosition == "AUTO" and IsFramePositionedLeft(ObjectiveTrackerFrame)) then
 			rewardsFrame:SetPoint("TOPLEFT", block, "TOPRIGHT", -10, -4);
-		elseif E.db.general.bonusObjectivePosition == "LEFT" then
-			rewardsFrame:SetPoint("TOPRIGHT", block, "TOPLEFT", 10, -4);
 		else
-			local left = GetSide(ObjectiveTrackerFrame)
-			if left then
-				rewardsFrame:SetPoint("TOPLEFT", block, "TOPRIGHT", -10, -4); 
-			else
-				rewardsFrame:SetPoint("TOPRIGHT", block, "TOPLEFT", 10, -4);
-			end
+			rewardsFrame:SetPoint("TOPRIGHT", block, "TOPLEFT", 10, -4);
 		end
 	end)
 end
