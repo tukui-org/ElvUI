@@ -20,7 +20,12 @@ local function SetTip(frame)
 	GameTooltip:SetOwner(frame, "ANCHOR_RIGHT")
 	GameTooltip:SetText(frame.tiptext)
 	if frame:IsEnabled() == 0 then GameTooltip:AddLine("|cffff3333"..L["Can't Roll"]) end
-	for name,roll in pairs(frame.parent.rolls) do if rolltypes[roll] == rolltypes[frame.rolltype] then GameTooltip:AddLine(name, 1, 1, 1) end end
+	for name, tbl in pairs(frame.parent.rolls) do
+		if rolltypes[tbl[1]] == rolltypes[frame.rolltype] then
+			local classColor = RAID_CLASS_COLORS[tbl[2]]
+			GameTooltip:AddLine(name, classColor.r, classColor.g, classColor.b)
+		end
+	end
 	GameTooltip:Show()
 end
 
@@ -231,7 +236,7 @@ function M:LOOT_HISTORY_ROLL_CHANGED(event, itemIdx, playerIdx)
 	if name and rollType then
 		for _,f in ipairs(M.RollBars) do
 			if f.rollID == rollID then
-				f.rolls[name] = rollType
+				f.rolls[name] = {rollType, class}
 				f[rolltypes[rollType]]:SetText(tonumber(f[rolltypes[rollType]]:GetText()) + 1)
 				return
 			end
