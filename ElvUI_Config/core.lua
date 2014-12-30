@@ -980,7 +980,7 @@ E.Options.args.general = {
 				},				
 			},
 		},
-		questTracker = {
+		objectiveFrame = {
 			order = 11,
 			type = "group",
 			name = L['Objective Frame'],
@@ -998,9 +998,8 @@ E.Options.args.general = {
 				bonusObjectivePosition = {
 					order = 2,
 					type = 'select',
-					name = L["Bonus Reward position"],
-					desc = L["Position of bonus quest reward frame relative to objective tracker."],
-					disabled = function() return E.db.general.bonusObjectiveAuto end,
+					name = L["Bonus Reward Position"],
+					desc = L["Position of bonus quest reward frame relative to the objective tracker."],
 					values = {
 						['RIGHT'] = L["Right"],
 						['LEFT'] = L["Left"],
