@@ -242,8 +242,10 @@ local function OnEnter(self)
 		dataValid = true
 	end
 
+	local name, realm = UnitFullName("player")
+	local playerNameString = name.."-"..realm
 	local totalfriends = numberOfFriends + totalBNet
-	local zonec, classc, levelc, realmc, info
+	local zonec, classc, levelc, realmc, info, playerZone
 	DT.tooltip:AddDoubleLine(L['Friends List'], format(totalOnlineString, totalonline, totalfriends),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
 	if onlineFriends > 0 then
 		DT.tooltip:AddLine(' ')
@@ -251,7 +253,8 @@ local function OnEnter(self)
 		for i = 1, #friendTable do
 			info = friendTable[i]
 			if info[5] then
-				if GetRealZoneText() == info[4] then zonec = activezone else zonec = inactivezone end
+				if info[1] == playerNameString then playerZone = info[4] end
+				if playerZone == info[4] then zonec = activezone else zonec = inactivezone end
 				classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[3]], GetQuestDifficultyColor(info[2])
 				
 				classc = classc or GetQuestDifficultyColor(info[2])
