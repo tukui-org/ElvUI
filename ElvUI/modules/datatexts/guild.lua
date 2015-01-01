@@ -226,10 +226,8 @@ local function OnEnter(self, _, noUpdate)
 		barMin = 0
 		DT.tooltip:AddLine(format(standingString, COMBAT_FACTION_CHANGE, E:ShortValue(barValue), E:ShortValue(barMax), ceil((barValue / barMax) * 100)))
 	end
-	
-	local name, realm = UnitFullName("player")
-	local playerNameString = name.."-"..realm
-	local zonec, classc, levelc, info, grouped, playerZone
+
+	local zonec, classc, levelc, info, grouped
 	local shown = 0
 	
 	DT.tooltip:AddLine(' ')
@@ -241,8 +239,7 @@ local function OnEnter(self, _, noUpdate)
 		end
 
 		info = guildTable[i]
-		if info[1] == playerNameString then	playerZone = info[4] end
-		if playerZone == info[4] then zonec = activezone else zonec = inactivezone end
+		if GetRealZoneText() == info[4] then zonec = activezone else zonec = inactivezone end
 		classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[9]], GetQuestDifficultyColor(info[3])
 		
 		if (UnitInParty(info[1]) or UnitInRaid(info[1])) then grouped = 1 else grouped = 2 end
