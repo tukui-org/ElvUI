@@ -27,7 +27,7 @@ local function LoadSkin()
 
 	
 	-->>>HONOR FRAME
-	S:HandleDropDownBox(HonorFrameTypeDropDown)
+	S:HandleDropDownBox(HonorFrameTypeDropDown, 210)
 	
 	HonorFrame.Inset:StripTextures()
 	--HonorFrame.Inset:SetTemplate("Transparent")
