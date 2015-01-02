@@ -57,7 +57,9 @@ local function LoadSkin()
 	S:HandleNextPrevButton(BrowseNextPageButton)
 	S:HandleNextPrevButton(BrowsePrevPageButton)
 
+	BrowseNextPageButton:ClearAllPoints()
 	BrowseNextPageButton:SetPoint("TOPRIGHT", AuctionFrameBrowse, "TOPRIGHT", 70, -60)
+	BrowsePrevPageButton:ClearAllPoints()
 	BrowsePrevPageButton:SetPoint("TOPLEFT", AuctionFrameBrowse, "TOPLEFT", 658, -60)
 
 	S:HandleCheckBox(ExactMatchCheckButton)
