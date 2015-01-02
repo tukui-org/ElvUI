@@ -91,6 +91,10 @@ function AB:PositionAndSizeBarShapeShift()
 	local point = self.db['stanceBar'].point;
 	local widthMult = self.db['stanceBar'].widthMult;
 	local heightMult = self.db['stanceBar'].heightMult;
+	if bar.mover then
+		bar.mover.positionOverride = point;
+		E:UpdatePositionOverride(bar.mover:GetName())
+	end
 	bar.db = self.db['stanceBar']
 	bar.db.position = nil; --Depreciated
 	if bar.LastButton and numButtons > bar.LastButton then	
