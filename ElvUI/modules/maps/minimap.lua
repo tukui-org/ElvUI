@@ -264,6 +264,7 @@ function M:UpdateSettings()
 		QueueStatusMinimapButton:ClearAllPoints()
 		QueueStatusMinimapButton:SetPoint(pos, Minimap, pos, E.db.general.minimap.icons.lfgEye.xOffset or 3, E.db.general.minimap.icons.lfgEye.yOffset or 0)
 		QueueStatusMinimapButton:SetScale(scale)
+		QueueStatusFrame:SetScale(1/scale)
 	end
 	
 	if MiniMapInstanceDifficulty and GuildInstanceDifficulty then
