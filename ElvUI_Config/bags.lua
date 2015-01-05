@@ -19,7 +19,7 @@ E.Options.args.bags = {
 			desc = L['Enable/Disable the all-in-one bag.'],
 			get = function(info) return E.private.bags.enable end,
 			set = function(info, value) E.private.bags.enable = value; E:StaticPopup_Show("PRIVATE_RL") end
-		},			
+		},
 		general = {
 			order = 3,
 			type = "group",
@@ -74,7 +74,7 @@ E.Options.args.bags = {
 					width = 'full',
 					multiline = true,
 					set = function(info, value) E.db.bags[ info[#info] ] = value; end,
-				},						
+				},
 			},
 		},
 		sizeAndPos = {
@@ -130,28 +130,28 @@ E.Options.args.bags = {
 					type = 'range',
 					name = L["X Offset Bags"],
 					min = -1000, max = 1000, step = 1,
-					set = function(info, value) E.db.bags[ info[#info] ] = value; B:PositionBagFrames(); end,				
+					set = function(info, value) E.db.bags[ info[#info] ] = value; B:PositionBagFrames(); end,
 				},
 				yOffset = {
 					order = 7,
 					type = 'range',
 					name = L["Y Offset Bags"],
 					min = -1000, max = 1000, step = 1,
-					set = function(info, value) E.db.bags[ info[#info] ] = value; B:PositionBagFrames(); end,				
+					set = function(info, value) E.db.bags[ info[#info] ] = value; B:PositionBagFrames(); end,
 				},
 				xOffsetBank = {
 					order = 8,
 					type = 'range',
 					name = L["X Offset Bank"],
 					min = -1000, max = 1000, step = 1,
-					set = function(info, value) E.db.bags[ info[#info] ] = value; B:PositionBagFrames(); end,				
+					set = function(info, value) E.db.bags[ info[#info] ] = value; B:PositionBagFrames(); end,
 				},
 				yOffsetBank = {
 					order = 9,
 					type = 'range',
 					name = L["Y Offset Bank"],
 					min = -1000, max = 1000, step = 1,
-					set = function(info, value) E.db.bags[ info[#info] ] = value; B:PositionBagFrames(); end,				
+					set = function(info, value) E.db.bags[ info[#info] ] = value; B:PositionBagFrames(); end,
 				},
 			},
 		},
@@ -169,8 +169,8 @@ E.Options.args.bags = {
 					name = L["Enable"],
 					desc = L['Enable/Disable the Bag-Bar.'],
 					get = function(info) return E.private.bags.bagBar end,
-					set = function(info, value) E.private.bags.bagBar = value; E:StaticPopup_Show("PRIVATE_RL") end			
-				},					
+					set = function(info, value) E.private.bags.bagBar = value; E:StaticPopup_Show("PRIVATE_RL") end
+				},
 				size = {
 					order = 2,
 					type = 'range',
@@ -183,7 +183,7 @@ E.Options.args.bags = {
 					type = 'range',
 					name = L['Button Spacing'],
 					desc = L['The spacing between buttons.'],
-					min = 1, max = 10, step = 1,			
+					min = 1, max = 10, step = 1,
 				},
 				showBackdrop = {
 					order = 4,
@@ -215,8 +215,8 @@ E.Options.args.bags = {
 						['VERTICAL'] = L['Vertical'],
 						['HORIZONTAL'] = L['Horizontal'],
 					},
-				},				
+				},
 			},
-		},			
+		},
 	},
 }

@@ -16,8 +16,8 @@ local function LoadSkin()
 	for _, object in pairs(StripAllTextures) do
 		_G[object]:StripTextures()
 	end
-	
-	
+
+
 	for i=1, 2 do
 		local tab = VoidStorageFrame["Page"..i]
 		tab:DisableDrawLayer("BACKGROUND")
@@ -91,7 +91,7 @@ local function LoadSkin()
 					button:SetBackdropBorderColor(BAG_ITEM_QUALITY_COLORS[quality].r, BAG_ITEM_QUALITY_COLORS[quality].g, BAG_ITEM_QUALITY_COLORS[quality].b);
 				else
 					button:SetTemplate()
-				end				
+				end
 			end
 		end
 
@@ -103,7 +103,7 @@ local function LoadSkin()
 					button:SetBackdropBorderColor(BAG_ITEM_QUALITY_COLORS[quality].r, BAG_ITEM_QUALITY_COLORS[quality].g, BAG_ITEM_QUALITY_COLORS[quality].b);
 				else
 					button:SetTemplate()
-				end				
+				end
 			end
 
 			for i = 1, 80 do

@@ -59,7 +59,7 @@ function TT:GameTooltip_ShowCompareItem(tt, shift)
 	if ( not link ) then
 		return;
 	end
-	
+
 	local shoppingTooltip1, shoppingTooltip2, shoppingTooltip3 = unpack(tt.shoppingTooltips);
 
 	local item1 = nil;
@@ -127,7 +127,7 @@ function TT:GameTooltip_ShowCompareItem(tt, shift)
 		shoppingTooltip3:SetHyperlinkCompareItem(link, 3, shift, tt);
 		shoppingTooltip3:Show();
 	end
-	
+
 	if ( item1 ) then
 		if( item3 ) then
 			shoppingTooltip1:SetOwner(shoppingTooltip3, "ANCHOR_NONE");
@@ -176,7 +176,7 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 
 	if(parent) then
 		if(self.db.cursorAnchor) then
-			tt:SetOwner(parent, "ANCHOR_CURSOR")	
+			tt:SetOwner(parent, "ANCHOR_CURSOR")
 			if(not GameTooltipStatusBar.anchoredToTop) then
 				GameTooltipStatusBar:ClearAllPoints()
 				GameTooltipStatusBar:SetPoint("BOTTOMLEFT", GameTooltip, "TOPLEFT", E.Border, (E.Spacing * 3))
@@ -194,15 +194,15 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 				GameTooltipStatusBar:SetPoint("TOPRIGHT", GameTooltip, "BOTTOMRIGHT", -E.Border, -(E.Spacing * 3))
 				GameTooltipStatusBar.text:Point("CENTER", GameTooltipStatusBar, 0, -3)
 				GameTooltipStatusBar.anchoredToTop = nil
-			end			
+			end
 		end
 	end
 
 	if(not E:HasMoverBeenMoved('TooltipMover')) then
 		if ElvUI_ContainerFrame and ElvUI_ContainerFrame:IsShown() then
-			tt:SetPoint('BOTTOMRIGHT', ElvUI_ContainerFrame, 'TOPRIGHT', 0, 18)	
+			tt:SetPoint('BOTTOMRIGHT', ElvUI_ContainerFrame, 'TOPRIGHT', 0, 18)
 		elseif RightChatPanel:GetAlpha() == 1 and RightChatPanel:IsShown() then
-			tt:SetPoint('BOTTOMRIGHT', RightChatPanel, 'TOPRIGHT', 0, 18)		
+			tt:SetPoint('BOTTOMRIGHT', RightChatPanel, 'TOPRIGHT', 0, 18)
 		else
 			tt:SetPoint('BOTTOMRIGHT', RightChatPanel, 'BOTTOMRIGHT', 0, 18)
 		end
@@ -244,7 +244,7 @@ function TT:ScanForItemLevel(itemLink)
 			end
 		end
 	end
-  
+
 	tooltip:Hide();
 	return itemLevel
 end
@@ -265,7 +265,7 @@ function TT:GetItemLvL(unit)
 	if(total < 1 or item < 15) then
 		return
 	end
-	
+
 	return floor(total / item)
 end
 
@@ -298,7 +298,7 @@ function TT:GetTalentSpec(unit, isPlayer)
 		spec = GetInspectSpecialization(unit)
 	end
 	if(spec ~= nil and spec > 0) then
-		if(not isPlayer) then 
+		if(not isPlayer) then
 			local role = GetSpecializationRoleByID(spec);
 			if(role ~= nil) then
 				local _, name = GetSpecializationInfoByID(spec);
@@ -314,7 +314,7 @@ end
 
 function TT:INSPECT_READY(event, GUID)
 	if(self.lastGUID ~= GUID) then return end
-	
+
 	local unit = "mouseover"
 	if(UnitExists(unit)) then
 		local itemLevel = self:GetItemLvL(unit)
@@ -341,7 +341,7 @@ function TT:ShowInspectInfo(tt, unit, level, r, g, b, numTries)
 	local GUID = UnitGUID(unit)
 	if(GUID == playerGUID) then
 		tt:AddDoubleLine(L["Talent Specialization:"], self:GetTalentSpec(unit, true), nil, nil, nil, r, g, b)
-		tt:AddDoubleLine(L["Item Level:"], floor(select(2, GetAverageItemLevel())), nil, nil, nil, 1, 1, 1)		
+		tt:AddDoubleLine(L["Item Level:"], floor(select(2, GetAverageItemLevel())), nil, nil, nil, 1, 1, 1)
 	elseif(inspectCache[GUID]) then
 		local talent = inspectCache[GUID].talent
 		local itemLevel = inspectCache[GUID].itemLevel
@@ -359,16 +359,16 @@ function TT:ShowInspectInfo(tt, unit, level, r, g, b, numTries)
 		self.lastGUID = GUID
 		NotifyInspect(unit)
 		self:RegisterEvent("INSPECT_READY")
-	end	
+	end
 end
 
 function TT:GameTooltip_OnTooltipSetUnit(tt)
 	local unit = select(2, tt:GetUnit())
-	if((tt:GetOwner() ~= UIParent) and self.db.visibility.unitFrames ~= 'NONE') then 
+	if((tt:GetOwner() ~= UIParent) and self.db.visibility.unitFrames ~= 'NONE') then
 		local modifier = self.db.visibility.unitFrames
-		
+
 		if(modifier == 'ALL' or not ((modifier == 'SHIFT' and IsShiftKeyDown()) or (modifier == 'CTRL' and IsControlKeyDown()) or (modifier == 'ALT' and IsAltKeyDown()))) then
-			tt:Hide() 
+			tt:Hide()
 			return
 		end
 	end
@@ -386,7 +386,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	self:RemoveTrashLines(tt) --keep an eye on this may be buggy
 	local level = UnitLevel(unit)
 	local isShiftKeyDown = IsShiftKeyDown()
-	
+
 	local color
 	if(UnitIsPlayer(unit)) then
 		local localeClass, class = UnitClass(unit)
@@ -418,7 +418,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 
 
 		GameTooltipTextLeft1:SetFormattedText("|c%s%s|r", color.colorStr, name)
-		
+
 		local lineOffset = 2
 		if(guildName) then
 			if(guildRealm and isShiftKeyDown) then
@@ -441,14 +441,14 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 			local _, factionGroup = UnitFactionGroup(unit)
 			if(factionGroup and englishRace == "Pandaren") then
 				race = factionGroup.." "..race
-			end			
+			end
 			levelLine:SetFormattedText("|cff%02x%02x%02x%s|r %s |c%s%s|r", diffColor.r * 255, diffColor.g * 255, diffColor.b * 255, level > 0 and level or "??", race or '', color.colorStr, localeClass)
 		end
 
 		--High CPU usage, restricting it to shift key down only.
 		if(self.db.inspectInfo and isShiftKeyDown) then
 			self:ShowInspectInfo(tt, unit, level, color.r, color.g, color.b, 0)
-		end		
+		end
 	else
 		if(UnitIsTapped(unit) and not UnitIsTappedByPlayer(unit)) then
 			color = TAPPED_COLOR
@@ -465,17 +465,17 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 			local diffColor
 			if(isPetWild or isPetCompanion) then
 				level = UnitBattlePetLevel(unit)
-				
+
 				local teamLevel = C_PetJournal.GetPetTeamAverageLevel();
 				if(teamLevel) then
-					diffColor = GetRelativeDifficultyColor(teamLevel, level); 
+					diffColor = GetRelativeDifficultyColor(teamLevel, level);
 				else
 					diffColor = GetQuestDifficultyColor(level)
 				end
 			else
 				diffColor = GetQuestDifficultyColor(level)
 			end
-	
+
 			if(UnitIsPVP(unit)) then
 				pvpFlag = format(" (%s)", PVP)
 			end
@@ -490,7 +490,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		if(UnitIsPlayer(unitTarget) and not UnitHasVehicleUI(unitTarget)) then
 			targetColor = RAID_CLASS_COLORS[select(2, UnitClass(unitTarget))]
 		else
-			targetColor = FACTION_BAR_COLORS[UnitReaction(unitTarget, "player")]	
+			targetColor = FACTION_BAR_COLORS[UnitReaction(unitTarget, "player")]
 		end
 
 		GameTooltip:AddDoubleLine(format("%s:", TARGET), format("|cff%02x%02x%02x%s|r", targetColor.r * 255, targetColor.g * 255, targetColor.b * 255, UnitName(unitTarget)))
@@ -508,7 +508,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		if (numList > 0) then
 			GameTooltip:AddLine(format("%s (|cffffffff%d|r): %s", L['Targeted By:'], numList, tconcat(targetList, ", ")), nil, nil, nil, true);
 			twipe(targetList);
-		end	
+		end
 	end
 
 	if(color) then
@@ -611,7 +611,7 @@ function TT:SetUnitAura(tt, unit, index, filter)
 		end
 
 		tt:Show()
-	end	
+	end
 end
 
 function TT:SetConsolidatedUnitAura(tt, unit, index)
@@ -628,7 +628,7 @@ function TT:SetConsolidatedUnitAura(tt, unit, index)
 		end
 
 		tt:Show()
-	end	
+	end
 end
 
 function TT:GameTooltip_OnTooltipSetSpell(tt)
@@ -645,7 +645,7 @@ function TT:GameTooltip_OnTooltipSetSpell(tt)
 			break
 		end
 	end
-	
+
 	if not isFound then
 		tt:AddLine(displayString)
 		tt:Show()
@@ -699,13 +699,13 @@ function TT:Initialize()
 	GameTooltipStatusBar.text = GameTooltipStatusBar:CreateFontString(nil, "OVERLAY")
 	GameTooltipStatusBar.text:Point("CENTER", GameTooltipStatusBar, 0, -3)
 	GameTooltipStatusBar.text:FontTemplate(E.LSM:Fetch("font", self.db.healthBar.font), self.db.healthBar.fontSize, "OUTLINE")
-	
+
 	local GameTooltipAnchor = CreateFrame('Frame', 'GameTooltipAnchor', E.UIParent)
 	GameTooltipAnchor:Point('BOTTOMRIGHT', RightChatToggleButton, 'BOTTOMRIGHT')
 	GameTooltipAnchor:Size(130, 20)
 	GameTooltipAnchor:SetFrameLevel(GameTooltipAnchor:GetFrameLevel() + 50)
 	E:CreateMover(GameTooltipAnchor, 'TooltipMover', L['Tooltip'])
-	
+
 	self:SecureHook('GameTooltip_SetDefaultAnchor')
 	self:SecureHook('GameTooltip_ShowStatusBar')
 	self:SecureHook("SetItemRef")
@@ -721,7 +721,7 @@ function TT:Initialize()
 	self:HookScript(GameTooltip, "OnSizeChanged", "CheckBackdropColor")
 
 	self:HookScript(GameTooltipStatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
-	
+
 	self:RegisterEvent("MODIFIER_STATE_CHANGED")
 	self:RegisterEvent("CURSOR_UPDATE", "CheckBackdropColor")
 	E.Skins:HandleCloseButton(ItemRefCloseButton)

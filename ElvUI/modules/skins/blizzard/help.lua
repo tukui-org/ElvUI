@@ -10,7 +10,7 @@ local function LoadSkin()
 		"HelpFrameHeader",
 		"HelpFrameKnowledgebaseErrorFrame",
 	}
-	
+
 	local buttons = {
 		"HelpFrameOpenTicketHelpItemRestoration",
 		"HelpFrameAccountSecurityOpenTicket",
@@ -23,23 +23,23 @@ local function LoadSkin()
 		"HelpFrameTicketSubmit",
 		"HelpFrameTicketCancel",
 	}
-	
+
 	-- 4.3.4 patch
 	if E.wowbuild >= 15595 then
 		tinsert(buttons, "HelpFrameButton16")
 		tinsert(buttons, "HelpFrameSubmitSuggestionSubmit")
 		tinsert(buttons, "HelpFrameReportBugSubmit")
 	end
-	
+
 	-- skin main frames
 	for i = 1, #frames do
 		_G[frames[i]]:StripTextures(true)
 		_G[frames[i]]:CreateBackdrop("Transparent")
 	end
-	
+
 	HelpFrameHeader:SetFrameLevel(HelpFrameHeader:GetFrameLevel() + 2)
 	HelpFrameKnowledgebaseErrorFrame:SetFrameLevel(HelpFrameKnowledgebaseErrorFrame:GetFrameLevel() + 2)
-	
+
 	HelpFrameReportBugScrollFrame:StripTextures()
 	HelpFrameReportBugScrollFrame:CreateBackdrop("Transparent")
 	HelpFrameReportBugScrollFrame.backdrop:Point("TOPLEFT", -4, 4)
@@ -50,9 +50,9 @@ local function LoadSkin()
 			child:StripTextures()
 		end
 	end
-	
+
 	S:HandleScrollBar(HelpFrameReportBugScrollFrameScrollBar)
-	
+
 	HelpFrameSubmitSuggestionScrollFrame:StripTextures()
 	HelpFrameSubmitSuggestionScrollFrame:CreateBackdrop("Transparent")
 	HelpFrameSubmitSuggestionScrollFrame.backdrop:Point("TOPLEFT", -4, 4)
@@ -63,7 +63,7 @@ local function LoadSkin()
 			child:StripTextures()
 		end
 	end
-	
+
 	S:HandleScrollBar(HelpFrameSubmitSuggestionScrollFrameScrollBar)
 
 	HelpFrameTicketScrollFrame:StripTextures()
@@ -75,22 +75,22 @@ local function LoadSkin()
 		if not child:GetName() then
 			child:StripTextures()
 		end
-	end	
-	
+	end
+
 	S:HandleScrollBar(HelpFrameKnowledgebaseScrollFrame2ScrollBar)
-	
+
 	-- skin sub buttons
 	for i = 1, #buttons do
 		_G[buttons[i]]:StripTextures(true)
 		S:HandleButton(_G[buttons[i]], true)
-		
+
 		if _G[buttons[i]].text then
 			_G[buttons[i]].text:ClearAllPoints()
 			_G[buttons[i]].text:SetPoint("CENTER")
-			_G[buttons[i]].text:SetJustifyH("CENTER")				
+			_G[buttons[i]].text:SetJustifyH("CENTER")
 		end
 	end
-	
+
 	-- skin main buttons
 	for i = 1, 6 do
 		local b = _G["HelpFrameButton"..i]
@@ -98,35 +98,35 @@ local function LoadSkin()
 		b.text:ClearAllPoints()
 		b.text:SetPoint("CENTER")
 		b.text:SetJustifyH("CENTER")
-	end	
-	
+	end
+
 	-- skin table options
 	for i = 1, HelpFrameKnowledgebaseScrollFrameScrollChild:GetNumChildren() do
 		local b = _G["HelpFrameKnowledgebaseScrollFrameButton"..i]
 		b:StripTextures(true)
 		S:HandleButton(b, true)
 	end
-	
+
 	-- skin misc items
 	HelpFrameKnowledgebaseSearchBox:ClearAllPoints()
 	HelpFrameKnowledgebaseSearchBox:Point("TOPLEFT", HelpFrameMainInset, "TOPLEFT", 13, -10)
 	HelpFrameKnowledgebaseNavBarOverlay:Kill()
 	HelpFrameKnowledgebaseNavBar:StripTextures()
-	
+
 	HelpFrame:StripTextures(true)
 	HelpFrame:CreateBackdrop("Transparent")
 	S:HandleEditBox(HelpFrameKnowledgebaseSearchBox)
 	S:HandleScrollBar(HelpFrameKnowledgebaseScrollFrameScrollBar, 5)
 	S:HandleScrollBar(HelpFrameTicketScrollFrameScrollBar, 4)
-	S:HandleCloseButton(HelpFrameCloseButton, HelpFrame.backdrop)	
+	S:HandleCloseButton(HelpFrameCloseButton, HelpFrame.backdrop)
 	S:HandleCloseButton(HelpFrameKnowledgebaseErrorFrameCloseButton, HelpFrameKnowledgebaseErrorFrame.backdrop)
-	
+
 	--Hearth Stone Button
 	HelpFrameCharacterStuckHearthstone:StyleButton()
 	HelpFrameCharacterStuckHearthstone:SetTemplate("Default", true)
 	HelpFrameCharacterStuckHearthstone.IconTexture:SetInside()
 	HelpFrameCharacterStuckHearthstone.IconTexture:SetTexCoord(unpack(E.TexCoords))
-	
+
 	local function navButtonFrameLevel(self)
 		for i=1, #self.navList do
 			local navButton = self.navList[i]
@@ -138,13 +138,13 @@ local function LoadSkin()
 					navButton:SetFrameLevel(0)
 				end
 			end
-		end			
+		end
 	end
-	
+
 	hooksecurefunc("NavBar_AddButton", function(self, buttonData)
 		local navButton = self.navList[#self.navList]
-		
-		
+
+
 		if not navButton.skinned then
 			S:HandleButton(navButton, true)
 
@@ -154,7 +154,7 @@ local function LoadSkin()
 			navButton.skinned = true
 		end
 	end)
-	
+
 	S:HandleButton(HelpFrameGM_ResponseNeedMoreHelp)
 	S:HandleButton(HelpFrameGM_ResponseCancel)
 	for i=1, HelpFrameGM_Response:GetNumChildren() do

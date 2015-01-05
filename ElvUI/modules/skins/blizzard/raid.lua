@@ -17,7 +17,7 @@ local function LoadSkin()
 
 	for _, object in pairs(StripAllTextures) do
 		if not _G[object] then print(object) end
-		
+
 		if _G[object] then
 			_G[object]:StripTextures()
 		end

@@ -8,7 +8,7 @@ local function LoadSkin()
 	GuildBankEmblemFrame:StripTextures(true)
 	GuildBankMoneyFrameBackground:Kill()
 	S:HandleScrollBar(GuildBankPopupScrollFrameScrollBar)
-	
+
 	--Close button doesn't have a fucking name, extreme hackage
 	for i=1, GuildBankFrame:GetNumChildren() do
 		local child = select(i, GuildBankFrame:GetChildren())
@@ -16,26 +16,26 @@ local function LoadSkin()
 			S:HandleCloseButton(child)
 		end
 	end
-	
+
 	S:HandleButton(GuildBankFrameDepositButton, true)
 	S:HandleButton(GuildBankFrameWithdrawButton, true)
 	S:HandleButton(GuildBankInfoSaveButton, true)
 	S:HandleButton(GuildBankFramePurchaseButton, true)
-	
+
 	GuildBankFrameWithdrawButton:Point("RIGHT", GuildBankFrameDepositButton, "LEFT", -2, 0)
 	GuildBankInfoScrollFrame:Point('TOPLEFT', GuildBankInfo, 'TOPLEFT', -10, 12)
 	GuildBankInfoScrollFrame:StripTextures()
 	GuildBankInfoScrollFrame:Width(GuildBankInfoScrollFrame:GetWidth() - 8)
 	GuildBankTransactionsScrollFrame:StripTextures()
-	
+
 	GuildBankFrame.inset = CreateFrame("Frame", nil, GuildBankFrame)
 	GuildBankFrame.inset:SetTemplate("Default")
 	GuildBankFrame.inset:Point("TOPLEFT", 20, -58)
 	GuildBankFrame.inset:Point("BOTTOMRIGHT", -16, 60)
-	
+
 	for i=1, NUM_GUILDBANK_COLUMNS do
 		_G["GuildBankColumn"..i]:StripTextures()
-		
+
 		for x=1, NUM_SLOTS_PER_GUILDBANK_GROUP do
 			local button = _G["GuildBankColumn"..i.."Button"..x]
 			local icon = _G["GuildBankColumn"..i.."Button"..x.."IconTexture"]
@@ -50,12 +50,12 @@ local function LoadSkin()
 			icon:SetTexCoord(unpack(E.TexCoords))
 		end
 	end
-	
+
 	for i=1, 8 do
 		local button = _G["GuildBankTab"..i.."Button"]
 		local texture = _G["GuildBankTab"..i.."ButtonIconTexture"]
 		_G["GuildBankTab"..i]:StripTextures(true)
-		
+
 		button:StripTextures()
 		button:StyleButton(true)
 		button:SetTemplate("Default", true)
@@ -63,11 +63,11 @@ local function LoadSkin()
 		texture:SetInside()
 		texture:SetTexCoord(unpack(E.TexCoords))
 	end
-	
+
 	for i=1, 4 do
 		S:HandleTab(_G["GuildBankFrameTab"..i])
 	end
-	
+
 	hooksecurefunc('GuildBankFrame_Update', function()
 		if GuildBankFrame.mode ~= "bank" then return; end
 		local tab = GetCurrentGuildBankTab();
@@ -92,9 +92,9 @@ local function LoadSkin()
 				r, g, b = unpack(E.media.bordercolor)
 			end
 			button:SetBackdropBorderColor(r, g, b)
-		end		
-	end)	
-	
+		end
+	end)
+
 	--Popup
 	GuildBankPopupFrame:StripTextures()
 	GuildBankPopupScrollFrame:StripTextures()
@@ -106,12 +106,12 @@ local function LoadSkin()
 	GuildBankPopupNameLeft:Kill()
 	GuildBankPopupNameRight:Kill()
 	GuildBankPopupNameMiddle:Kill()
-		
+
 	GuildItemSearchBox:StripTextures()
 	GuildItemSearchBox:CreateBackdrop("Overlay")
 	GuildItemSearchBox.backdrop:Point("TOPLEFT", 10, -1)
-	GuildItemSearchBox.backdrop:Point("BOTTOMRIGHT", 4, 1)	
-	
+	GuildItemSearchBox.backdrop:Point("BOTTOMRIGHT", 4, 1)
+
 	for i=1, 16 do
 		local button = _G["GuildBankPopupButton"..i]
 		local icon = _G[button:GetName().."Icon"]
@@ -121,7 +121,7 @@ local function LoadSkin()
 		icon:SetInside()
 		icon:SetTexCoord(unpack(E.TexCoords))
 	end
-	
+
 	S:HandleScrollBar(GuildBankTransactionsScrollFrameScrollBar)
 	S:HandleScrollBar(GuildBankInfoScrollFrameScrollBar)
 end

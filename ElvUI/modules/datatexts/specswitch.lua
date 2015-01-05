@@ -23,8 +23,8 @@ local function OnEvent(self, event)
 	lastPanel = self
 
 	local specIndex = GetSpecialization();
-	if not specIndex then return end	
-	
+	if not specIndex then return end
+
 	active = GetActiveSpecGroup()
 
 	local talent, loot = '', ''
@@ -35,7 +35,7 @@ local function OnEvent(self, event)
 	local specialization = GetLootSpecialization()
 	if specialization == 0 then
 		local specIndex = GetSpecialization();
-		
+
 		if specIndex then
 			local specID, _, _, texture = GetSpecializationInfo(specIndex);
 			loot = format('|T%s:14:14:0:0:64:64:4:60:4:60|t', texture)
@@ -67,7 +67,7 @@ local function OnEnter(self)
 	local specialization = GetLootSpecialization()
 	if specialization == 0 then
 		local specIndex = GetSpecialization();
-		
+
 		if specIndex then
 			local specID, name = GetSpecializationInfo(specIndex);
 			DT.tooltip:AddLine(format('|cffFFFFFF%s:|r %s', SELECT_LOOT_SPECIALIZATION, format(LOOT_SPECIALIZATION_DEFAULT, name)))
@@ -81,8 +81,8 @@ local function OnEnter(self)
 
 	DT.tooltip:AddLine(' ')
 	DT.tooltip:AddLine(L['|cffFFFFFFLeft Click:|r Change Talent Specialization'])
-	DT.tooltip:AddLine(L['|cffFFFFFFRight Click:|r Change Loot Specialization'])	
-	
+	DT.tooltip:AddLine(L['|cffFFFFFFRight Click:|r Change Loot Specialization'])
+
 	DT.tooltip:Show()
 end
 

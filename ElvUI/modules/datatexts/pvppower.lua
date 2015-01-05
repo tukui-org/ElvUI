@@ -18,15 +18,15 @@ local function OnEnter(self)
 	local pvpPower = BreakUpLargeNumbers(GetCombatRating(CR_PVP_POWER));
 	local pvpDamage = GetPvpPowerDamage();
 	local pvpHealing = GetPvpPowerHealing();
-	
+
 	if (pvpHealing > pvpDamage) then
 		DT.tooltip:AddDoubleLine(STAT_PVP_POWER, format("%.2F%%", pvpHealing).." ("..SHOW_COMBAT_HEALING..")", 1, 1, 1);
 		DT.tooltip:AddLine(PVP_POWER_TOOLTIP, nil, nil, nil, true)
-		DT.tooltip:AddLine(format(PVP_POWER_HEALING_TOOLTIP, pvpPower, pvpHealing, pvpDamage))		
+		DT.tooltip:AddLine(format(PVP_POWER_HEALING_TOOLTIP, pvpPower, pvpHealing, pvpDamage))
 	else
 		DT.tooltip:AddDoubleLine(STAT_PVP_POWER, format("%.2F%%", pvpDamage).." ("..DAMAGE..")", 1, 1, 1);
 		DT.tooltip:AddLine(PVP_POWER_TOOLTIP, nil, nil, nil, true)
-		DT.tooltip:AddLine(format(PVP_POWER_DAMAGE_TOOLTIP, pvpPower, pvpDamage, pvpHealing))			
+		DT.tooltip:AddLine(format(PVP_POWER_DAMAGE_TOOLTIP, pvpPower, pvpDamage, pvpHealing))
 	end
 
 	DT.tooltip:Show()

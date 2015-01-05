@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.worldmap ~= true then return end
-	
+
 	WorldMapFrame.BorderFrame.Inset:StripTextures()
 	WorldMapFrame.BorderFrame:StripTextures()
 	WorldMapFrameNavBar:StripTextures()
@@ -29,8 +29,8 @@ local function LoadSkin()
 	WorldMapFrameTutorialButton:Kill()
 
 	S:HandleButton(QuestMapFrame.DetailsFrame.BackButton)
-	S:HandleButton(QuestMapFrame.DetailsFrame.AbandonButton)	
-	S:HandleButton(QuestMapFrame.DetailsFrame.ShareButton, true)	
+	S:HandleButton(QuestMapFrame.DetailsFrame.AbandonButton)
+	S:HandleButton(QuestMapFrame.DetailsFrame.ShareButton, true)
 	S:HandleButton(QuestMapFrame.DetailsFrame.TrackButton)
 
 	S:HandleCloseButton(WorldMapFrameCloseButton)

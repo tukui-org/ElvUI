@@ -32,7 +32,7 @@ local OnUpdate = function(self, elapsed)
 	self.lastupdate = (self.lastupdate or 0) + elapsed
 	if (self.lastupdate < .1) then return end
 	self.lastupdate = 0
-	
+
 	self:SetValue(GetMirrorTimerProgress(self.type) / 1e3)
 end
 
@@ -64,7 +64,7 @@ local function Spawn(type)
 	bg:SetTexture(E["media"].blankTex)
 	bg:SetVertexColor(r, g, b)
 	bg:SetAlpha(0.2)
-	
+
 	local border = CreateFrame("Frame", nil, frame)
 	border:SetOutside()
 	border:SetTemplate("Default")
@@ -127,7 +127,7 @@ end
 
 function M:LoadMirrorBars()
 	UIParent:UnregisterEvent('MIRROR_TIMER_START')
-	
+
 	self:RegisterEvent('PLAYER_ENTERING_WORLD', 'OnEnterWorld')
 	self:RegisterEvent('MIRROR_TIMER_START', 'MirrorStart')
 	self:RegisterEvent('MIRROR_TIMER_STOP', 'MirrorStop')

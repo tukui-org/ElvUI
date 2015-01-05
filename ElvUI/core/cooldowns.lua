@@ -34,7 +34,7 @@ local function Cooldown_OnUpdate(cd, elapsed)
 			cd.nextUpdate = 500
 		else
 			local timervalue, formatid
-			timervalue, formatid, cd.nextUpdate = E:GetTimeInfo(remain, threshold)		
+			timervalue, formatid, cd.nextUpdate = E:GetTimeInfo(remain, threshold)
 			cd.text:SetFormattedText(("%s%s|r"):format(TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
 		end
 	else
@@ -45,10 +45,10 @@ end
 function E:Cooldown_OnSizeChanged(cd, width, height)
 	local fontScale = floor(width +.5) / ICON_SIZE
 	local override = cd:GetParent():GetParent().SizeOverride
-	if override then 
+	if override then
 		fontScale = override / FONT_SIZE
 	end
-	
+
 	if fontScale == cd.fontScale then
 		return
 	end
@@ -98,7 +98,7 @@ end
 function E:OnSetCooldown(start, duration, charges, maxCharges)
 	if(self.noOCC) then return end
 	local button = self:GetParent()
-	
+
 	if start > 0 and duration > MIN_DURATION then
 		local timer = self.timer or E:CreateCooldownTimer(self)
 		timer.start = start
@@ -113,12 +113,12 @@ function E:OnSetCooldown(start, duration, charges, maxCharges)
 			return
 		end
 	end
-	
+
 	if self.timer then
 		if charges and charges > 0 then
 			self.timer:SetAlpha(0)
 		else
-			self.timer:SetAlpha(1)	
+			self.timer:SetAlpha(1)
 		end
 	end
 end
@@ -132,19 +132,19 @@ end
 
 function E:UpdateCooldownSettings()
 	threshold = self.db.cooldown.threshold
-	
+
 	local color = self.db.cooldown.expiringColor
 	TimeColors[4] = E:RGBToHex(color.r, color.g, color.b) -- color for timers that are soon to expire
-	
+
 	color = self.db.cooldown.secondsColor
 	TimeColors[3] = E:RGBToHex(color.r, color.g, color.b) -- color for timers that have seconds remaining
-	
+
 	color = self.db.cooldown.minutesColor
 	TimeColors[2] = E:RGBToHex(color.r, color.g, color.b) -- color for timers that have minutes remaining
-	
+
 	color = self.db.cooldown.hoursColor
 	TimeColors[1] = E:RGBToHex(color.r, color.g, color.b) -- color for timers that have hours remaining
-	
+
 	color = self.db.cooldown.daysColor
-	TimeColors[0] = E:RGBToHex(color.r, color.g, color.b) -- color for timers that have days remaining	
+	TimeColors[0] = E:RGBToHex(color.r, color.g, color.b) -- color for timers that have days remaining
 end

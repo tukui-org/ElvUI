@@ -32,7 +32,7 @@ local function LoadSkin()
 	TransmogrifyApplyButton:Point("BOTTOMRIGHT", TransmogrifyFrame, "BOTTOMRIGHT", -4, 4)
 	S:HandleCloseButton(TransmogrifyArtFrameCloseButton)
 	TransmogrifyArtFrame:StripTextures()
-	
+
 	local slots = {"Head", "Shoulder", "Chest", "Waist", "Legs", "Feet",
 	"Wrist", "Hands", "Back", "MainHand", "SecondaryHand"}
 
@@ -59,7 +59,7 @@ local function LoadSkin()
 	S:HandleButton(TransmogrifyConfirmationPopup.Button1)
 	S:HandleButton(TransmogrifyConfirmationPopup.Button2)
 	S:HandleItemButton(TransmogrifyConfirmationPopupItemFrame1, true)
-	S:HandleItemButton(TransmogrifyConfirmationPopupItemFrame2, true)	
+	S:HandleItemButton(TransmogrifyConfirmationPopupItemFrame2, true)
 end
 
 S:RegisterSkin("Blizzard_ItemAlterationUI", LoadSkin)

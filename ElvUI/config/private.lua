@@ -6,7 +6,7 @@ V['general'] = {
 	['loot'] = true,
 	['lootRoll'] = true,
 	["normTex"] = "ElvUI Norm",
-	["glossTex"] = "ElvUI Norm",	
+	["glossTex"] = "ElvUI Norm",
 	["dmgfont"] = "ElvUI Combat",
 	["namefont"] = "ElvUI Font",
 	['chatBubbles'] = 'backdrop',
@@ -42,7 +42,7 @@ V['chat'] = {
 V['skins'] = {
 	['ace3'] = {
 		['enable'] = true,
-	},	
+	},
 	['blizzard'] = {
 		['enable'] = true,
 		["bags"] = true,
@@ -110,7 +110,7 @@ V['tooltip'] = {
 
 V['unitframe'] = {
 	['enable'] = true,
-	['disableBlizzard'] = true,	
+	['disableBlizzard'] = true,
 }
 
 V["actionbar"] = {

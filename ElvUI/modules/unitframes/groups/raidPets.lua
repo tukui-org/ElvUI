@@ -9,11 +9,11 @@ local tinsert = table.insert
 function UF:Construct_RaidpetFrames(unitGroup)
 	self:SetScript('OnEnter', UnitFrame_OnEnter)
 	self:SetScript('OnLeave', UnitFrame_OnLeave)
-	
+
 	self.RaisedElementParent = CreateFrame('Frame', nil, self)
 	self.RaisedElementParent:SetFrameStrata("MEDIUM")
 	self.RaisedElementParent:SetFrameLevel(self:GetFrameLevel() + 10)
-	
+
 	self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
 	self.Name = UF:Construct_NameText(self)
 	self.Buffs = UF:Construct_Buffs(self)
@@ -25,12 +25,12 @@ function UF:Construct_RaidpetFrames(unitGroup)
 	tinsert(self.__elements, UF.UpdateTargetGlow)
 	self:RegisterEvent('PLAYER_TARGET_CHANGED', UF.UpdateTargetGlow)
 	self:RegisterEvent('PLAYER_ENTERING_WORLD', UF.UpdateTargetGlow)
-	
+
 	self.Threat = UF:Construct_Threat(self)
 	self.RaidIcon = UF:Construct_RaidIcon(self)
 	self.HealPrediction = UF:Construct_HealComm(self)
 	self.Range = UF:Construct_Range(self)
-	
+
 	UF:Update_StatusBars()
 	UF:Update_FontStrings()
 
@@ -43,7 +43,7 @@ function UF:RaidPetsSmartVisibility(event)
 	local inInstance, instanceType = IsInInstance()
 	local _, _, _, _, maxPlayers, _, _ = GetInstanceInfo()
 	if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
-	
+
 	if not InCombatLockdown() then
 		if inInstance and instanceType == "raid" then
 			UnregisterStateDriver(self, "visibility")
@@ -59,22 +59,22 @@ end
 
 function UF:Update_RaidpetHeader(header, db)
 	header.db = db
-	
+
 	local headerHolder = header:GetParent()
 	headerHolder.db = db
-	
+
 	if not headerHolder.positioned then
 		headerHolder:ClearAllPoints()
 		headerHolder:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 574)
-		
+
 		E:CreateMover(headerHolder, headerHolder:GetName()..'Mover', L['Raid Pet Frames'], nil, nil, nil, 'ALL,RAID10,RAID25,RAID40')
 		headerHolder.positioned = true;
 
 		headerHolder:RegisterEvent("PLAYER_ENTERING_WORLD")
 		headerHolder:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-		headerHolder:SetScript("OnEvent", UF['RaidPetsSmartVisibility'])		
+		headerHolder:SetScript("OnEvent", UF['RaidPetsSmartVisibility'])
 	end
-	
+
 	UF.RaidPetsSmartVisibility(headerHolder)
 end
 
@@ -108,13 +108,13 @@ function UF:Update_RaidpetFrames(frame, db)
 		health.value:ClearAllPoints()
 		health.value:Point(db.health.position, health, db.health.position, x + db.health.xOffset, y + db.health.yOffset)
 		frame:Tag(health.value, db.health.text_format)
-		
+
 		--Colors
 		health.colorSmooth = nil
 		health.colorHealth = nil
 		health.colorClass = nil
 		health.colorReaction = nil
-		
+
 		if db.colorOverride == "FORCE_ON" then
 			health.colorClass = true
 			health.colorReaction = true
@@ -123,25 +123,25 @@ function UF:Update_RaidpetFrames(frame, db)
 				health.colorSmooth = true
 			else
 				health.colorHealth = true
-			end		
+			end
 		else
 			if self.db['colors'].healthclass ~= true then
 				if self.db['colors'].colorhealthbyvalue == true then
 					health.colorSmooth = true
 				else
 					health.colorHealth = true
-				end		
+				end
 			else
 				health.colorClass = true
 				health.colorReaction = true
-			end				
+			end
 		end
-		
+
 		--Position
 		health:ClearAllPoints()
 		health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -BORDER)
 		health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER)
-		
+
 		health:SetOrientation(db.health.orientation)
 	end
 
@@ -169,15 +169,15 @@ function UF:Update_RaidpetFrames(frame, db)
 				threat:SetFrameStrata('HIGH')
 				local point = db.threatStyle
 				point = point:gsub("ICON", "")
-				
+
 				threat.texIcon:ClearAllPoints()
 				threat.texIcon:SetPoint(point, frame.Health, point)
 			end
 		elseif frame:IsElementEnabled('Threat') then
 			frame:DisableElement('Threat')
 		end
-	end		
-	
+	end
+
 	--Target Glow
 	do
 		local tGlow = frame.TargetGlow
@@ -185,72 +185,72 @@ function UF:Update_RaidpetFrames(frame, db)
 		tGlow:Point("TOPLEFT", -SHADOW_SPACING, SHADOW_SPACING)
 		tGlow:Point("TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING)
 		tGlow:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
-		tGlow:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)			
+		tGlow:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
 	end
-	
+
 	--Auras Disable/Enable
 	--Only do if both debuffs and buffs aren't being used.
 	do
 		if db.debuffs.enable or db.buffs.enable then
 			frame:EnableElement('Aura')
 		else
-			frame:DisableElement('Aura')		
+			frame:DisableElement('Aura')
 		end
-		
+
 		frame.Buffs:ClearAllPoints()
 		frame.Debuffs:ClearAllPoints()
 	end
-	
+
 	--Buffs
 	do
 		local buffs = frame.Buffs
 		local rows = db.buffs.numrows
 
 		buffs:SetWidth(UNIT_WIDTH)
-		
+
 		buffs.forceShow = frame.forceShowAuras
 		buffs.num = db.buffs.perrow * rows
 		buffs.size = db.buffs.sizeOverride ~= 0 and db.buffs.sizeOverride or ((((buffs:GetWidth() - (buffs.spacing*(buffs.num/rows - 1))) / buffs.num)) * rows)
-		
+
 		if db.buffs.sizeOverride and db.buffs.sizeOverride > 0 then
 			buffs:SetWidth(db.buffs.perrow * db.buffs.sizeOverride)
 		end
-		
+
 		local x, y = E:GetXYOffset(db.buffs.anchorPoint)
 		local attachTo = self:GetAuraAnchorFrame(frame, db.buffs.attachTo)
-		
+
 		buffs:Point(E.InversePoints[db.buffs.anchorPoint], attachTo, db.buffs.anchorPoint, x + db.buffs.xOffset, y + db.buffs.yOffset + (E.PixelMode and (db.buffs.anchorPoint:find('TOP') and -1 or 1) or 0))
 		buffs:Height(buffs.size * rows)
 		buffs["growth-y"] = db.buffs.anchorPoint:find('TOP') and 'UP' or 'DOWN'
 		buffs["growth-x"] = db.buffs.anchorPoint == 'LEFT' and 'LEFT' or  db.buffs.anchorPoint == 'RIGHT' and 'RIGHT' or (db.buffs.anchorPoint:find('LEFT') and 'RIGHT' or 'LEFT')
 		buffs.initialAnchor = E.InversePoints[db.buffs.anchorPoint]
 
-		if db.buffs.enable then			
+		if db.buffs.enable then
 			buffs:Show()
 			UF:UpdateAuraIconSettings(buffs)
 		else
 			buffs:Hide()
 		end
 	end
-	
+
 	--Debuffs
 	do
 		local debuffs = frame.Debuffs
 		local rows = db.debuffs.numrows
 
 		debuffs:SetWidth(UNIT_WIDTH)
-		
+
 		debuffs.forceShow = frame.forceShowAuras
 		debuffs.num = db.debuffs.perrow * rows
 		debuffs.size = db.debuffs.sizeOverride ~= 0 and db.debuffs.sizeOverride or ((((debuffs:GetWidth() - (debuffs.spacing*(debuffs.num/rows - 1))) / debuffs.num)) * rows)
-		
+
 		if db.debuffs.sizeOverride and db.debuffs.sizeOverride > 0 then
 			debuffs:SetWidth(db.debuffs.perrow * db.debuffs.sizeOverride)
 		end
-		
+
 		local x, y = E:GetXYOffset(db.debuffs.anchorPoint)
 		local attachTo = self:GetAuraAnchorFrame(frame, db.debuffs.attachTo, db.debuffs.attachTo == 'BUFFS' and db.buffs.attachTo == 'DEBUFFS')
-		
+
 		debuffs:Point(E.InversePoints[db.debuffs.anchorPoint], attachTo, db.debuffs.anchorPoint, x + db.debuffs.xOffset, y + db.debuffs.yOffset)
 		debuffs:Height(debuffs.size * rows)
 		debuffs["growth-y"] = db.debuffs.anchorPoint:find('TOP') and 'UP' or 'DOWN'
@@ -269,7 +269,7 @@ function UF:Update_RaidpetFrames(frame, db)
 	do
 		local rdebuffs = frame.RaidDebuffs
 		if db.rdebuffs.enable then
-			frame:EnableElement('RaidDebuffs')				
+			frame:EnableElement('RaidDebuffs')
 
 			rdebuffs:Size(db.rdebuffs.size)
 			rdebuffs:Point('BOTTOM', frame, 'BOTTOM', db.rdebuffs.xOffset, db.rdebuffs.yOffset)
@@ -277,7 +277,7 @@ function UF:Update_RaidpetFrames(frame, db)
 			rdebuffs.time:FontTemplate(nil, db.rdebuffs.fontSize, 'OUTLINE')
 		else
 			frame:DisableElement('RaidDebuffs')
-			rdebuffs:Hide()				
+			rdebuffs:Hide()
 		end
 	end
 
@@ -288,16 +288,16 @@ function UF:Update_RaidpetFrames(frame, db)
 			frame:EnableElement('RaidIcon')
 			RI:Show()
 			RI:Size(db.raidicon.size)
-			
+
 			local x, y = self:GetPositionOffset(db.raidicon.attachTo)
 			RI:ClearAllPoints()
-			RI:Point(db.raidicon.attachTo, frame, db.raidicon.attachTo, x + db.raidicon.xOffset, y + db.raidicon.yOffset)	
+			RI:Point(db.raidicon.attachTo, frame, db.raidicon.attachTo, x + db.raidicon.xOffset, y + db.raidicon.yOffset)
 		else
-			frame:DisableElement('RaidIcon')	
+			frame:DisableElement('RaidIcon')
 			RI:Hide()
 		end
-	end			
-	
+	end
+
 	--Debuff Highlight
 	do
 		local dbh = frame.DebuffHighlight
@@ -307,7 +307,7 @@ function UF:Update_RaidpetFrames(frame, db)
 			frame:DisableElement('DebuffHighlight')
 		end
 	end
-	
+
 	--OverHealing
 	do
 		local healPrediction = frame.HealPrediction
@@ -323,11 +323,11 @@ function UF:Update_RaidpetFrames(frame, db)
 
 			healPrediction.myBar:SetStatusBarColor(c.personal.r, c.personal.g, c.personal.b, c.personal.a)
 			healPrediction.otherBar:SetStatusBarColor(c.others.r, c.others.g, c.others.b, c.others.a)
-			healPrediction.absorbBar:SetStatusBarColor(c.absorbs.r, c.absorbs.g, c.absorbs.b, c.absorbs.a)				
+			healPrediction.absorbBar:SetStatusBarColor(c.absorbs.r, c.absorbs.g, c.absorbs.b, c.absorbs.a)
 		else
 			if frame:IsElementEnabled('HealPrediction') then
 				frame:DisableElement('HealPrediction')
-			end		
+			end
 		end
 	end
 
@@ -343,13 +343,13 @@ function UF:Update_RaidpetFrames(frame, db)
 		else
 			if frame:IsElementEnabled('Range') then
 				frame:DisableElement('Range')
-			end				
+			end
 		end
 	end
 
 	--BuffIndicator
 	UF:UpdateAuraWatch(frame, true) --2nd argument is the petOverride
-	
+
 	--CustomTexts
 	if db.customTexts then
 		local customFont = UF.LSM:Fetch("font", UF.db.font)
@@ -357,23 +357,23 @@ function UF:Update_RaidpetFrames(frame, db)
 			if not frame[objectName] then
 				frame[objectName] = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
 			end
-			
+
 			local objectDB = db.customTexts[objectName]
 
 			if objectDB.font then
 				customFont = UF.LSM:Fetch("font", objectDB.font)
 			end
-						
+
 			frame[objectName]:FontTemplate(customFont, objectDB.size or UF.db.fontSize, objectDB.fontOutline or UF.db.fontOutline)
 			frame:Tag(frame[objectName], objectDB.text_format or '')
 			frame[objectName]:SetJustifyH(objectDB.justifyH or 'CENTER')
 			frame[objectName]:ClearAllPoints()
 			frame[objectName]:SetPoint(objectDB.justifyH or 'CENTER', frame, objectDB.justifyH or 'CENTER', objectDB.xOffset, objectDB.yOffset)
 		end
-	end		
+	end
 
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg, true)
-	
+
 	frame:UpdateAllElements()
 end
 

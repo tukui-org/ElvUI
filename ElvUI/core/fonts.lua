@@ -43,7 +43,7 @@ function E:UpdateBlizzardFonts()
 	--NAMEPLATE_FONT     = NAMEFONT
 	DAMAGE_TEXT_FONT   = COMBAT
 	STANDARD_TEXT_FONT = NORMAL
-	
+
 	if self.private.general.replaceBlizzFonts then
 		-- Base fonts
 		--SetFont(NumberFontNormal,					LSM:Fetch('font', 'ElvUI Pixel'), 10, 'MONOCHROMEOUTLINE', 1, 1, 1, 0, 0, 0)

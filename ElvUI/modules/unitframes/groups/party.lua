@@ -7,24 +7,24 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 local tinsert = table.insert
 function UF:Construct_PartyFrames(unitGroup)
 	self:SetScript('OnEnter', UnitFrame_OnEnter)
-	self:SetScript('OnLeave', UnitFrame_OnLeave)	
+	self:SetScript('OnLeave', UnitFrame_OnLeave)
 
 	self.RaisedElementParent = CreateFrame('Frame', nil, self)
 	self.RaisedElementParent:SetFrameStrata("MEDIUM")
 	self.RaisedElementParent:SetFrameLevel(self:GetFrameLevel() + 10)
-	
+
 	if self.isChild then
 		self.Health = UF:Construct_HealthBar(self, true)
-		
+
 		self.Name = UF:Construct_NameText(self)
 		self.originalParent = self:GetParent()
 	else
-		
+
 		self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
 
 		self.Power = UF:Construct_PowerBar(self, true, true, 'LEFT', false)
 		self.Power.frequentUpdates = false;
-		
+
 		self.Name = UF:Construct_NameText(self)
 		self.Buffs = UF:Construct_Buffs(self)
 		self.Debuffs = UF:Construct_Debuffs(self)
@@ -43,20 +43,20 @@ function UF:Construct_PartyFrames(unitGroup)
 		self.ReadyCheck = UF:Construct_ReadyCheckIcon(self)
 		self.HealPrediction = UF:Construct_HealComm(self)
 		self.GPS = UF:Construct_GPS(self)
-		
+
 		self.Sparkle = CreateFrame("Frame", nil, self)
 		self.Sparkle:SetAllPoints(self.Health)
 	end
-	
+
 	self.Range = UF:Construct_Range(self)
-	
+
 	UF:Update_StatusBars()
-	UF:Update_FontStrings()	
+	UF:Update_FontStrings()
 
 	return self
 end
 
-function UF:Update_PartyHeader(header, db)	
+function UF:Update_PartyHeader(header, db)
 	header.db = db
 
 	local headerHolder = header:GetParent()
@@ -65,16 +65,16 @@ function UF:Update_PartyHeader(header, db)
 	if not headerHolder.positioned then
 		headerHolder:ClearAllPoints()
 		headerHolder:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)
-		
+
 		E:CreateMover(headerHolder, headerHolder:GetName()..'Mover', L['Party Frames'], nil, nil, nil, 'ALL,PARTY,ARENA')
 		headerHolder.positioned = true;
 
 		headerHolder:RegisterEvent("PLAYER_ENTERING_WORLD")
 		headerHolder:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-		headerHolder:SetScript("OnEvent", UF['PartySmartVisibility'])		
+		headerHolder:SetScript("OnEvent", UF['PartySmartVisibility'])
 	end
 
-	UF.PartySmartVisibility(headerHolder)	
+	UF.PartySmartVisibility(headerHolder)
 end
 
 function UF:PartySmartVisibility(event)
@@ -82,7 +82,7 @@ function UF:PartySmartVisibility(event)
 	local inInstance, instanceType = IsInInstance()
 	if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
 
-	if not InCombatLockdown() then		
+	if not InCombatLockdown() then
 		if inInstance and (instanceType == "raid" or instanceType == "pvp") then
 			UnregisterStateDriver(self, "visibility")
 			self:Hide()
@@ -108,7 +108,7 @@ function UF:Update_PartyFrames(frame, db)
 	local POWERBAR_OFFSET = db.power.offset
 	local POWERBAR_HEIGHT = db.power.height
 	local POWERBAR_WIDTH = db.width - (BORDER*2)
-	
+
 	frame.db = db
 	frame.colors = ElvUF.colors
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
@@ -116,8 +116,8 @@ function UF:Update_PartyFrames(frame, db)
 	do
 		if not USE_POWERBAR then
 			POWERBAR_HEIGHT = 0
-		end	
-	
+		end
+
 		if USE_MINI_POWERBAR then
 			POWERBAR_WIDTH = POWERBAR_WIDTH / 2
 		end
@@ -130,12 +130,12 @@ function UF:Update_PartyFrames(frame, db)
 			childDB = db.targetsGroup
 			childType = "target"
 		end
-		
+
 		if not frame.originalParent.childList then
 			frame.originalParent.childList = {}
-		end	
+		end
 		frame.originalParent.childList[frame] = true;
-		
+
 		if not InCombatLockdown() then
 			if childDB.enable then
 				frame:SetParent(frame.originalParent)
@@ -145,8 +145,8 @@ function UF:Update_PartyFrames(frame, db)
 			else
 				frame:SetParent(E.HiddenFrame)
 			end
-		end		
-	
+		end
+
 		--Health
 		do
 			local health = frame.Health
@@ -167,18 +167,18 @@ function UF:Update_PartyFrames(frame, db)
 					health.colorSmooth = true
 				else
 					health.colorHealth = true
-				end		
+				end
 			else
 				if self.db['colors'].healthclass ~= true then
 					if self.db['colors'].colorhealthbyvalue == true then
 						health.colorSmooth = true
 					else
 						health.colorHealth = true
-					end		
+					end
 				else
 					health.colorClass = true
 					health.colorReaction = true
-				end				
+				end
 			end
 
 			--Position
@@ -186,25 +186,25 @@ function UF:Update_PartyFrames(frame, db)
 			health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -BORDER)
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER)
 		end
-		
+
 		--Name
-		UF:UpdateNameSettings(frame, childType)		
+		UF:UpdateNameSettings(frame, childType)
 	else
 		if not InCombatLockdown() then
 			frame:Size(UNIT_WIDTH, UNIT_HEIGHT)
-		end	
-	
+		end
+
 		--Health
 		do
 			local health = frame.Health
 			health.Smooth = self.db.smoothbars
-	
+
 			--Position this even if disabled because resurrection icon depends on the position
 			local x, y = self:GetPositionOffset(db.health.position)
 			health.value:ClearAllPoints()
 			health.value:Point(db.health.position, health, db.health.position, x + db.health.xOffset, y + db.health.yOffset)
 			frame:Tag(health.value, db.health.text_format)
-			
+
 			health.frequentUpdates = db.health.frequentUpdates
 
 			--Colors
@@ -212,7 +212,7 @@ function UF:Update_PartyFrames(frame, db)
 			health.colorHealth = nil
 			health.colorClass = nil
 			health.colorReaction = nil
-			
+
 			if db.colorOverride == "FORCE_ON" then
 				health.colorClass = true
 				health.colorReaction = true
@@ -221,65 +221,65 @@ function UF:Update_PartyFrames(frame, db)
 					health.colorSmooth = true
 				else
 					health.colorHealth = true
-				end		
+				end
 			else
 				if self.db['colors'].healthclass ~= true then
 					if self.db['colors'].colorhealthbyvalue == true then
 						health.colorSmooth = true
 					else
 						health.colorHealth = true
-					end		
+					end
 				else
 					health.colorClass = true
 					health.colorReaction = true
-				end				
+				end
 			end
-			
+
 			--Position
 			health:ClearAllPoints()
 			health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -BORDER)
-			if USE_POWERBAR_OFFSET then			
+			if USE_POWERBAR_OFFSET then
 				health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER+POWERBAR_OFFSET, BORDER+POWERBAR_OFFSET)
 			elseif USE_MINI_POWERBAR then
 				health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER + (POWERBAR_HEIGHT/2))
 			elseif USE_INSET_POWERBAR then
-				health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER)				
+				health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER)
 			else
 				health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER + POWERBAR_HEIGHT)
 			end
-			
+
 			health:SetOrientation(db.health.orientation)
 		end
-		
+
 		--Name
 		UF:UpdateNameSettings(frame)
-		
+
 		--Power
 		do
 			local power = frame.Power
-			
+
 			if USE_POWERBAR then
 				frame:EnableElement('Power')
-				power:Show()		
+				power:Show()
 				power.Smooth = self.db.smoothbars
-				
+
 				--Text
 				local x, y = self:GetPositionOffset(db.power.position)
 				power.value:ClearAllPoints()
-				power.value:Point(db.power.position, frame.Health, db.power.position, x + db.power.xOffset, y + db.power.yOffset)		
+				power.value:Point(db.power.position, frame.Health, db.power.position, x + db.power.xOffset, y + db.power.yOffset)
 				frame:Tag(power.value, db.power.text_format)
-				
+
 				--Colors
 				power.colorClass = nil
-				power.colorReaction = nil	
+				power.colorReaction = nil
 				power.colorPower = nil
 				if self.db['colors'].powerclass then
 					power.colorClass = true
 					power.colorReaction = true
 				else
 					power.colorPower = true
-				end		
-				
+				end
+
 				--Position
 				power:ClearAllPoints()
 				if USE_POWERBAR_OFFSET then
@@ -298,7 +298,7 @@ function UF:Update_PartyFrames(frame, db)
 					power:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", BORDER + (BORDER*2), BORDER + (BORDER*2))
 					power:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", -(BORDER + (BORDER*2)), BORDER + (BORDER*2))
 					power:SetFrameStrata("MEDIUM")
-					power:SetFrameLevel(frame:GetFrameLevel() + 3)							
+					power:SetFrameLevel(frame:GetFrameLevel() + 3)
 				else
 					power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(E.PixelMode and 0 or (BORDER + SPACING)))
 					power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -(BORDER), BORDER)
@@ -308,7 +308,7 @@ function UF:Update_PartyFrames(frame, db)
 				power:Hide()
 			end
 		end
-		
+
 		--Threat
 		do
 			local threat = frame.Threat
@@ -325,13 +325,13 @@ function UF:Update_PartyFrames(frame, db)
 					threat.glow:Point("TOPLEFT", frame.Health.backdrop, "TOPLEFT", -SHADOW_SPACING, SHADOW_SPACING)
 					threat.glow:Point("TOPRIGHT", frame.Health.backdrop, "TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING)
 					threat.glow:Point("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
-					threat.glow:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)	
-					
+					threat.glow:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
+
 					if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or USE_INSET_POWERBAR then
 						threat.glow:Point("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
-						threat.glow:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)	
+						threat.glow:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
 					end
-					
+
 					if USE_PORTRAIT and not USE_PORTRAIT_OVERLAY then
 						threat.glow:Point("TOPRIGHT", frame.Portrait.backdrop, "TOPRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
 						threat.glow:Point("BOTTOMRIGHT", frame.Portrait.backdrop, "BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
@@ -340,38 +340,38 @@ function UF:Update_PartyFrames(frame, db)
 					threat:SetFrameStrata('HIGH')
 					local point = db.threatStyle
 					point = point:gsub("ICON", "")
-					
+
 					threat.texIcon:ClearAllPoints()
 					threat.texIcon:SetPoint(point, frame.Health, point)
 				end
 			elseif frame:IsElementEnabled('Threat') then
 				frame:DisableElement('Threat')
 			end
-		end		
-		
+		end
+
 		--Target Glow
 		do
 			local tGlow = frame.TargetGlow
 			tGlow:ClearAllPoints()
-			
+
 			tGlow:Point("TOPLEFT", -SHADOW_SPACING, SHADOW_SPACING)
 			tGlow:Point("TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING)
-			
+
 			if USE_MINI_POWERBAR then
 				tGlow:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING + (POWERBAR_HEIGHT/2))
-				tGlow:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING + (POWERBAR_HEIGHT/2))		
+				tGlow:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING + (POWERBAR_HEIGHT/2))
 			else
 				tGlow:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
 				tGlow:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
 			end
-			
+
 			if USE_POWERBAR_OFFSET then
 				tGlow:Point("TOPLEFT", -SHADOW_SPACING+POWERBAR_OFFSET, SHADOW_SPACING)
 				tGlow:Point("TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING)
 				tGlow:Point("BOTTOMLEFT", -SHADOW_SPACING+POWERBAR_OFFSET, -SHADOW_SPACING+POWERBAR_OFFSET)
-				tGlow:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING+POWERBAR_OFFSET)				
-			end				
-		end		
+				tGlow:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING+POWERBAR_OFFSET)
+			end
+		end
 
 		--Auras Disable/Enable
 		--Only do if both debuffs and buffs aren't being used.
@@ -379,85 +379,85 @@ function UF:Update_PartyFrames(frame, db)
 			if db.debuffs.enable or db.buffs.enable then
 				frame:EnableElement('Aura')
 			else
-				frame:DisableElement('Aura')		
+				frame:DisableElement('Aura')
 			end
-			
+
 			frame.Buffs:ClearAllPoints()
 			frame.Debuffs:ClearAllPoints()
 		end
-			
+
 		--Buffs
 		do
 			local buffs = frame.Buffs
 			local rows = db.buffs.numrows
-			
+
 			if USE_POWERBAR_OFFSET then
 				buffs:SetWidth(UNIT_WIDTH - POWERBAR_OFFSET)
 			else
 				buffs:SetWidth(UNIT_WIDTH)
 			end
-			
+
 			buffs.forceShow = frame.forceShowAuras
 			buffs.num = db.buffs.perrow * rows
 			buffs.size = db.buffs.sizeOverride ~= 0 and db.buffs.sizeOverride or ((((buffs:GetWidth() - (buffs.spacing*(buffs.num/rows - 1))) / buffs.num)) * rows)
-			
+
 			if db.buffs.sizeOverride and db.buffs.sizeOverride > 0 then
 				buffs:SetWidth(db.buffs.perrow * db.buffs.sizeOverride)
 			end
-			
+
 			local x, y = E:GetXYOffset(db.buffs.anchorPoint)
 			local attachTo = self:GetAuraAnchorFrame(frame, db.buffs.attachTo)
-			
+
 			buffs:Point(E.InversePoints[db.buffs.anchorPoint], attachTo, db.buffs.anchorPoint, x + db.buffs.xOffset, y + db.buffs.yOffset + (E.PixelMode and (db.buffs.anchorPoint:find('TOP') and -1 or 1) or 0))
 			buffs:Height(buffs.size * rows)
 			buffs["growth-y"] = db.buffs.anchorPoint:find('TOP') and 'UP' or 'DOWN'
 			buffs["growth-x"] = db.buffs.anchorPoint == 'LEFT' and 'LEFT' or  db.buffs.anchorPoint == 'RIGHT' and 'RIGHT' or (db.buffs.anchorPoint:find('LEFT') and 'RIGHT' or 'LEFT')
 			buffs.initialAnchor = E.InversePoints[db.buffs.anchorPoint]
 
-			if db.buffs.enable then			
+			if db.buffs.enable then
 				buffs:Show()
 				UF:UpdateAuraIconSettings(buffs)
 			else
 				buffs:Hide()
 			end
 		end
-		
+
 		--Debuffs
 		do
 			local debuffs = frame.Debuffs
 			local rows = db.debuffs.numrows
-			
+
 			if USE_POWERBAR_OFFSET then
 				debuffs:SetWidth(UNIT_WIDTH - POWERBAR_OFFSET)
 			else
 				debuffs:SetWidth(UNIT_WIDTH)
 			end
-			
+
 			debuffs.forceShow = frame.forceShowAuras
 			debuffs.num = db.debuffs.perrow * rows
 			debuffs.size = db.debuffs.sizeOverride ~= 0 and db.debuffs.sizeOverride or ((((debuffs:GetWidth() - (debuffs.spacing*(debuffs.num/rows - 1))) / debuffs.num)) * rows)
-			
+
 			if db.debuffs.sizeOverride and db.debuffs.sizeOverride > 0 then
 				debuffs:SetWidth(db.debuffs.perrow * db.debuffs.sizeOverride)
 			end
-			
+
 			local x, y = E:GetXYOffset(db.debuffs.anchorPoint)
 			local attachTo = self:GetAuraAnchorFrame(frame, db.debuffs.attachTo, db.debuffs.attachTo == 'BUFFS' and db.buffs.attachTo == 'DEBUFFS')
-			
+
 			debuffs:Point(E.InversePoints[db.debuffs.anchorPoint], attachTo, db.debuffs.anchorPoint, x + db.debuffs.xOffset, y + db.debuffs.yOffset)
 			debuffs:Height(debuffs.size * rows)
 			debuffs["growth-y"] = db.debuffs.anchorPoint:find('TOP') and 'UP' or 'DOWN'
 			debuffs["growth-x"] = db.debuffs.anchorPoint == 'LEFT' and 'LEFT' or  db.debuffs.anchorPoint == 'RIGHT' and 'RIGHT' or (db.debuffs.anchorPoint:find('LEFT') and 'RIGHT' or 'LEFT')
 			debuffs.initialAnchor = E.InversePoints[db.debuffs.anchorPoint]
 
-			if db.debuffs.enable then			
+			if db.debuffs.enable then
 				debuffs:Show()
 				UF:UpdateAuraIconSettings(debuffs)
 			else
 				debuffs:Hide()
 			end
-		end	
-		
+		end
+
 		--Raid Icon
 		do
 			local RI = frame.RaidIcon
@@ -465,15 +465,15 @@ function UF:Update_PartyFrames(frame, db)
 				frame:EnableElement('RaidIcon')
 				RI:Show()
 				RI:Size(db.raidicon.size)
-				
+
 				local x, y = self:GetPositionOffset(db.raidicon.attachTo)
 				RI:ClearAllPoints()
-				RI:Point(db.raidicon.attachTo, frame, db.raidicon.attachTo, x + db.raidicon.xOffset, y + db.raidicon.yOffset)	
+				RI:Point(db.raidicon.attachTo, frame, db.raidicon.attachTo, x + db.raidicon.xOffset, y + db.raidicon.yOffset)
 			else
-				frame:DisableElement('RaidIcon')	
+				frame:DisableElement('RaidIcon')
 				RI:Hide()
 			end
-		end			
+		end
 
 		--Debuff Highlight
 		do
@@ -481,26 +481,26 @@ function UF:Update_PartyFrames(frame, db)
 			if E.db.unitframe.debuffHighlighting then
 				frame:EnableElement('DebuffHighlight')
 			else
-				frame:DisableElement('DebuffHighlight')	
+				frame:DisableElement('DebuffHighlight')
 			end
 		end
-		
+
 		--Role Icon
 		do
 			local role = frame.LFDRole
 			if db.roleIcon.enable then
-				frame:EnableElement('LFDRole')				
-				
+				frame:EnableElement('LFDRole')
+
 				local x, y = self:GetPositionOffset(db.roleIcon.position, 1)
 				role:ClearAllPoints()
 				role:Point(db.roleIcon.position, frame.Health, db.roleIcon.position, x, y)
 				role:Size(db.roleIcon.size)
 			else
-				frame:DisableElement('LFDRole')	
+				frame:DisableElement('LFDRole')
 				role:Hide()
 			end
 		end
-		
+
 		--OverHealing
 		do
 			local healPrediction = frame.HealPrediction
@@ -516,14 +516,14 @@ function UF:Update_PartyFrames(frame, db)
 
 				healPrediction.myBar:SetStatusBarColor(c.personal.r, c.personal.g, c.personal.b, c.personal.a)
 				healPrediction.otherBar:SetStatusBarColor(c.others.r, c.others.g, c.others.b, c.others.a)
-				healPrediction.absorbBar:SetStatusBarColor(c.absorbs.r, c.absorbs.g, c.absorbs.b, c.absorbs.a)				
+				healPrediction.absorbBar:SetStatusBarColor(c.absorbs.r, c.absorbs.g, c.absorbs.b, c.absorbs.a)
 			else
 				if frame:IsElementEnabled('HealPrediction') then
 					frame:DisableElement('HealPrediction')
-				end		
+				end
 			end
 		end
-		
+
 		--GPSArrow
 		do
 			local GPS = frame.GPS
@@ -535,15 +535,15 @@ function UF:Update_PartyFrames(frame, db)
 				GPS:Size(db.GPSArrow.size)
 				GPS.onMouseOver = db.GPSArrow.onMouseOver
 				GPS.outOfRange = db.GPSArrow.outOfRange
-				
+
 				GPS:SetPoint("CENTER", frame, "CENTER", db.GPSArrow.xOffset, db.GPSArrow.yOffset)
 			else
 				if frame:IsElementEnabled('GPS') then
 					frame:DisableElement('GPS')
-				end				
+				end
 			end
 		end
-		
+
 		--Raid Roles
 		do
 			local raidRoleFrameAnchor = frame.RaidRoleFramesAnchor
@@ -552,7 +552,7 @@ function UF:Update_PartyFrames(frame, db)
 				raidRoleFrameAnchor:Show()
 				frame:EnableElement('Leader')
 				frame:EnableElement('MasterLooter')
-				
+
 				raidRoleFrameAnchor:ClearAllPoints()
 				if db.raidRoleIcons.position == 'TOPLEFT' then
 					raidRoleFrameAnchor:Point('LEFT', frame, 'TOPLEFT', 2, 0)
@@ -565,7 +565,7 @@ function UF:Update_PartyFrames(frame, db)
 				frame:DisableElement('MasterLooter')
 			end
 		end
-		
+
 		UF:UpdateAuraWatch(frame)
 		frame:EnableElement('ReadyCheck')
 
@@ -575,20 +575,20 @@ function UF:Update_PartyFrames(frame, db)
 				if not frame[objectName] then
 					frame[objectName] = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
 				end
-				
+
 				local objectDB = db.customTexts[objectName]
 
 				if objectDB.font then
 					customFont = UF.LSM:Fetch("font", objectDB.font)
 				end
-							
+
 				frame[objectName]:FontTemplate(customFont, objectDB.size or UF.db.fontSize, objectDB.fontOutline or UF.db.fontOutline)
 				frame:Tag(frame[objectName], objectDB.text_format or '')
 				frame[objectName]:SetJustifyH(objectDB.justifyH or 'CENTER')
 				frame[objectName]:ClearAllPoints()
 				frame[objectName]:SetPoint(objectDB.justifyH or 'CENTER', frame, objectDB.justifyH or 'CENTER', objectDB.xOffset, objectDB.yOffset)
 			end
-		end	
+		end
 	end
 
 	--Range
@@ -603,15 +603,15 @@ function UF:Update_PartyFrames(frame, db)
 		else
 			if frame:IsElementEnabled('Range') then
 				frame:DisableElement('Range')
-			end				
+			end
 		end
 	end
 
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg, true)
 	if frame.Power then
-		UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)	
+		UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)
 	end
-	
+
 	frame:UpdateAllElements()
 end
 

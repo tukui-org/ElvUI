@@ -43,7 +43,7 @@ local function UpdateCoords(self)
 		inversePoint = 'TOP'
 		y = mover:GetBottom()
 	end
-	
+
 	if x >= RIGHT then
 		point = 'RIGHT'
 		inversePoint = 'LEFT'
@@ -55,7 +55,7 @@ local function UpdateCoords(self)
 	else
 		x = x - screenCenter
 	end
-	
+
 	local coordX, coordY = E:GetXYOffset(inversePoint, 1)
 	ElvUIMoverNudgeWindow:ClearAllPoints()
 	ElvUIMoverNudgeWindow:SetPoint(point, mover, inversePoint, coordX, coordY)
@@ -70,7 +70,7 @@ coordFrame:Hide()
 local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 	if not parent then return end --If for some reason the parent isnt loaded yet
 	if E.CreatedMovers[name].Created then return end
-	
+
 	if overlay == nil then overlay = true end
 	local point, anchor, secondaryPoint, x, y = split('\031', GetPoint(parent))
 	local f = CreateFrame("Button", name, E.UIParent)
@@ -85,22 +85,22 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 	f.overlay = overlay
 	f.snapOffset = snapOffset or -2
 	E.CreatedMovers[name].mover = f
-	
+
 	E['snapBars'][#E['snapBars'] + 1] = f
-	
+
 	if overlay == true then
 		f:SetFrameStrata("DIALOG")
 	else
 		f:SetFrameStrata("BACKGROUND")
 	end
-	
+
 	if E.db['movers'] and E.db['movers'][name] then
 		if type(E.db['movers'][name]) == 'table' then
 			f:SetPoint(E.db["movers"][name]["p"], E.UIParent, E.db["movers"][name]["p2"], E.db["movers"][name]["p3"], E.db["movers"][name]["p4"])
 			E.db['movers'][name] = GetPoint(f)
 			f:ClearAllPoints()
 		end
-		
+
 		local point, anchor, secondaryPoint, x, y = split('\031', E.db['movers'][name])
 		f:SetPoint(point, anchor, secondaryPoint, x, y)
 	else
@@ -109,22 +109,22 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 	end
 	f:SetTemplate("Transparent", nil, nil, true)
 	f:RegisterForDrag("LeftButton", "RightButton")
-	f:SetScript("OnDragStart", function(self) 
-		if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end	
+	f:SetScript("OnDragStart", function(self)
+		if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
 
 		if E.db['general'].stickyFrames then
 			Sticky:StartMoving(self, E['snapBars'], f.snapOffset, f.snapOffset, f.snapOffset, f.snapOffset)
 		else
-			self:StartMoving() 
+			self:StartMoving()
 		end
 		coordFrame.child = self
 		coordFrame:Show()
 		isDragging = true;
 	end)
-	
+
 	f:SetScript('OnMouseUp', E.AssignFrameToNudge)
-	
-	f:SetScript("OnDragStop", function(self) 
+
+	f:SetScript("OnDragStop", function(self)
 		if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
 		isDragging = false;
 		if E.db['general'].stickyFrames then
@@ -132,11 +132,11 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 		else
 			self:StopMovingOrSizing()
 		end
-		
+
 		local screenWidth, screenHeight, screenCenter = E.UIParent:GetRight(), E.UIParent:GetTop(), E.UIParent:GetCenter()
 		local x, y = self:GetCenter()
 		local point
-		
+
 		local LEFT = screenWidth / 3
 		local RIGHT = screenWidth * 2 / 3
 		local TOP = screenHeight / 2
@@ -148,7 +148,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 			point = "BOTTOM"
 			y = self:GetBottom()
 		end
-		
+
 		if x >= RIGHT then
 			point = point..'RIGHT'
 			x = self:GetRight() - screenWidth
@@ -158,8 +158,8 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 		else
 			x = x - screenCenter
 		end
-		
-		
+
+
 		if self.positionOverride then
 			if(self.positionOverride == "TOPLEFT") then
 				x = self:GetLeft()
@@ -190,23 +190,23 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 		if ElvUIMoverNudgeWindow then
 			E:UpdateNudgeFrame(self)
 		end
-		
+
 		coordFrame.child = nil
-		coordFrame:Hide()		
-			
+		coordFrame:Hide()
+
 		if postdrag ~= nil and type(postdrag) == 'function' then
 			postdrag(self, E:GetScreenQuadrant(self))
 		end
-	
+
 		self:SetUserPlaced(false)
-	end)	
-	
+	end)
+
 	parent:SetScript('OnSizeChanged', SizeChanged)
 	parent.mover = f
 	parent:ClearAllPoints()
 
 	parent:SetPoint(point, f, 0, 0)
-	
+
 	local fs = f:CreateFontString(nil, "OVERLAY")
 	fs:FontTemplate()
 	fs:SetJustifyH("CENTER")
@@ -215,8 +215,8 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 	fs:SetTextColor(unpack(E["media"].rgbvaluecolor))
 	f:SetFontString(fs)
 	f.text = fs
-		
-	f:SetScript("OnEnter", function(self) 
+
+	f:SetScript("OnEnter", function(self)
 		if isDragging then return end
 		self.text:SetTextColor(1, 1, 1)
 		ElvUIMoverNudgeWindow:Show()
@@ -224,7 +224,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 		coordFrame.child = self
 		coordFrame:GetScript('OnUpdate')(coordFrame)
 	end)
-	
+
 	f:SetScript("OnMouseDown", function(self, button)
 		if button == "RightButton" then
 			isDragging = false;
@@ -235,7 +235,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 			end
 		end
 	end)
-	
+
 	f:SetScript("OnLeave", function(self)
 		if isDragging then return end
 		self.text:SetTextColor(unpack(E["media"].rgbvaluecolor))
@@ -243,18 +243,18 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 	f:SetScript('OnShow', function(self)
 		self:SetBackdropBorderColor(unpack(E["media"].rgbvaluecolor))
 	end)
-	
+
 	f:SetMovable(true)
-	f:Hide()	
-	
+	f:Hide()
+
 	if postdrag ~= nil and type(postdrag) == 'function' then
 		f:RegisterEvent("PLAYER_ENTERING_WORLD")
 		f:SetScript("OnEvent", function(self, event)
 			postdrag(f, E:GetScreenQuadrant(f))
 			self:UnregisterAllEvents()
 		end)
-	end	
-	
+	end
+
 	E.CreatedMovers[name].Created = true;
 end
 
@@ -295,8 +295,8 @@ end
 function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag, moverTypes)
 	if not moverTypes then moverTypes = 'ALL,GENERAL' end
 	local p, p2, p3, p4, p5 = parent:GetPoint()
-	
-	if E.CreatedMovers[name] == nil then 
+
+	if E.CreatedMovers[name] == nil then
 		E.CreatedMovers[name] = {}
 		E.CreatedMovers[name]["parent"] = parent
 		E.CreatedMovers[name]["text"] = text
@@ -311,8 +311,8 @@ function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag, moverT
 			local moverType = types[i]
 			E.CreatedMovers[name]["type"][moverType] = true
 		end
-	end	
-	
+	end
+
 	CreateMover(parent, name, text, overlay, snapoffset, postdrag)
 end
 
@@ -337,35 +337,35 @@ function E:ResetMovers(arg)
 			local point, anchor, secondaryPoint, x, y = split('\031', E.CreatedMovers[name]['point'])
 			f:ClearAllPoints()
 			f:SetPoint(point, anchor, secondaryPoint, x, y)
-			
+
 			for key, value in pairs(E.CreatedMovers[name]) do
 				if key == "postdrag" and type(value) == 'function' then
 					value(f, E:GetScreenQuadrant(f))
 				end
 			end
-		end	
+		end
 		self.db.movers = nil
 	else
 		for name, _ in pairs(E.CreatedMovers) do
 			for key, value in pairs(E.CreatedMovers[name]) do
 				local mover
 				if key == "text" then
-					if arg == value then 
+					if arg == value then
 						local f = _G[name]
 						local point, anchor, secondaryPoint, x, y = split('\031', E.CreatedMovers[name]['point'])
 						f:ClearAllPoints()
-						f:SetPoint(point, anchor, secondaryPoint, x, y)				
-						
+						f:SetPoint(point, anchor, secondaryPoint, x, y)
+
 						if self.db.movers then
 							self.db.movers[name] = nil
 						end
-						
+
 						if E.CreatedMovers[name]["postdrag"] ~= nil and type(E.CreatedMovers[name]["postdrag"]) == 'function' then
 							E.CreatedMovers[name]["postdrag"](f, E:GetScreenQuadrant(f))
 						end
 					end
 				end
-			end	
+			end
 		end
 	end
 end
@@ -383,7 +383,7 @@ function E:SetMoversPositions()
 			point, anchor, secondaryPoint, x, y = split('\031', E.CreatedMovers[name]['point'])
 			f:ClearAllPoints()
 			f:SetPoint(point, anchor, secondaryPoint, x, y)
-		end		
+		end
 	end
 end
 

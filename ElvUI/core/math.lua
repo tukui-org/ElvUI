@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
-local Astrolabe = DongleStub("Astrolabe-1.0") 
+local Astrolabe = DongleStub("Astrolabe-1.0")
 local format = string.format
 local sub = string.sub
 local upper = string.upper
@@ -77,11 +77,11 @@ function E:GetScreenQuadrant(frame)
 	local screenWidth = GetScreenWidth()
 	local screenHeight = GetScreenHeight()
 	local point
-	
+
 	if not frame:GetCenter() then
 		return "UNKNOWN", frame:GetName()
 	end
-	
+
 	if (x > (screenWidth / 4) and x < (screenWidth / 4)*3) and y > (screenHeight / 4)*3 then
 		point = "TOP"
 	elseif x < (screenWidth / 4) and y > (screenHeight / 4)*3 then
@@ -108,7 +108,7 @@ end
 function E:GetXYOffset(position, override)
 	local default = E.PixelMode and 0 or 1
 	local x, y = override or default, override or default
-	
+
 	if position == 'TOP' or position == 'TOPLEFT' or position == 'TOPRIGHT' then
 		return 0, y
 	elseif position == 'BOTTOM' or position == 'BOTTOMLEFT' or position == 'BOTTOMRIGHT' then
@@ -133,9 +133,9 @@ function E:GetFormattedText(style, min, max)
 	assert(styles[style], 'Invalid format style: '..style)
 	assert(min, 'You need to provide a current value. Usage: E:GetFormattedText(style, min, max)')
 	assert(max, 'You need to provide a maximum value. Usage: E:GetFormattedText(style, min, max)')
-	
+
 	if max == 0 then max = 1 end
-	
+
 	local useStyle = styles[style]
 
 	if style == 'DEFICIT' then
@@ -271,7 +271,7 @@ function E:GetTimeInfo(s, threshhold)
 	end
 end
 
-local ninetyDegreeAngleInRadians = (3.141592653589793 / 2) 
+local ninetyDegreeAngleInRadians = (3.141592653589793 / 2)
 local function GetPosition(unit, mapScan)
 	local m, f, x, y
 	if unit == "player" or UnitIsUnit("player", unit) then
@@ -298,7 +298,7 @@ function E:GetDistance(unit1, unit2, mapScan)
 
 	local distance, xDelta, yDelta = Astrolabe:ComputeDistance(m1, f1, x1, y1, m2, f2, x2, y2)
 	if distance and xDelta and yDelta then
-		return distance, -ninetyDegreeAngleInRadians -GetPlayerFacing() - atan2(yDelta, xDelta) 
+		return distance, -ninetyDegreeAngleInRadians -GetPlayerFacing() - atan2(yDelta, xDelta)
 	elseif distance then
 		return distance
 	end

@@ -36,7 +36,7 @@ local function LoadSkin()
 				reagent.NameFrame:SetTexture()
 				reagent.Icon:SetTexCoord(unpack(E.TexCoords))
 				reagent.Icon:SetDrawLayer("BORDER")
-				
+
 				if not reagent.border then
 					reagent.border = CreateFrame("Frame", nil, reagent)
 					S:HandleIcon(reagent.Icon, reagent.border)
@@ -83,7 +83,7 @@ local function LoadSkin()
 			S:HandleCloseButton(MissionPage.MinimizeButton, nil, "-")
 			MissionPage.MinimizeButton:SetFrameLevel(MissionPage:GetFrameLevel() + 2)
 		end
-		
+
 		if IsAddOnLoaded("MasterPlan") then
 			skinMasterPlan()
 		else
@@ -132,7 +132,7 @@ local function LoadSkin()
 			end
 		end
 	end)
-	
+
 	hooksecurefunc("GarrisonMissionPage_SetReward", function(frame, reward)
 		frame.BG:SetTexture()
 		if not frame.backdrop then
@@ -140,7 +140,7 @@ local function LoadSkin()
 		end
 		frame.Icon:SetDrawLayer("BORDER", 0)
 	end)
-	
+
 	hooksecurefunc("GarrisonMissionPage_UpdateStartButton", function(missionPage)
 		missionPage.StartMissionButton.Flash:Hide()
 		missionPage.StartMissionButton.FlashAnim:Stop();

@@ -20,20 +20,20 @@ end
 function M:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, _, sourceGUID, _, _, _, _, destName, _, _, _, _, _, spellID, spellName)
 	if E.db.general.interruptAnnounce == "NONE" then return end -- No Announcement configured, exit.
 	if not (event == "SPELL_INTERRUPT" and sourceGUID == UnitGUID('player')) then return end -- No annoucable interrupt from player, exit.
-	
+
 	local inGroup, inRaid, inPartyLFG = IsInGroup(), IsInRaid(), IsPartyLFG()
 	if not inGroup then return end -- not in group, exit.
-	
+
 	if E.db.general.interruptAnnounce == "PARTY" then
 		SendChatMessage(format(interruptMsg, destName, spellID, spellName), inPartyLFG and "INSTANCE_CHAT" or "PARTY")
 	elseif E.db.general.interruptAnnounce == "RAID" then
 		if inRaid then
-			SendChatMessage(format(interruptMsg, destName, spellID, spellName), inPartyLFG and "INSTANCE_CHAT" or "RAID")		
+			SendChatMessage(format(interruptMsg, destName, spellID, spellName), inPartyLFG and "INSTANCE_CHAT" or "RAID")
 		else
 			SendChatMessage(format(interruptMsg, destName, spellID, spellName), inPartyLFG and "INSTANCE_CHAT" or "PARTY")
-		end	
+		end
 	elseif E.db.general.interruptAnnounce == "SAY" then
-		SendChatMessage(format(interruptMsg, destName, spellID, spellName), "SAY")	
+		SendChatMessage(format(interruptMsg, destName, spellID, spellName), "SAY")
 	end
 end
 
@@ -44,18 +44,18 @@ function M:MERCHANT_SHOW()
 
 	local autoRepair = E.db.general.autoRepair
 	if IsShiftKeyDown() or autoRepair == 'NONE' or not CanMerchantRepair() then return end
-	
+
 	local cost, possible = GetRepairAllCost()
 	local withdrawLimit = GetGuildBankWithdrawMoney();
 	if autoRepair == 'GUILD' and (not CanGuildBankRepair() or cost > withdrawLimit) then
 		autoRepair = 'PLAYER'
 	end
-		
+
 	if cost > 0 then
 		if possible then
 			RepairAllItems(autoRepair == 'GUILD')
 			local c, s, g = cost%100, floor((cost%10000)/100), floor(cost/10000)
-			
+
 			if autoRepair == 'GUILD' then
 				E:Print(L['Your items have been repaired using guild bank funds for: ']..GetCoinTextureString(cost, 12))
 			else
@@ -103,12 +103,12 @@ function M:AutoInvite(event, leaderName)
 		if QueueStatusMinimapButton:IsShown() then return end -- Prevent losing que inside LFD if someone invites you to group
 		if IsInGroup() then return end
 		hideStatic = true
-	
+
 		-- Update Guild and Friendlist
 		if GetNumFriends() > 0 then ShowFriends() end
 		if IsInGuild() then GuildRoster() end
 		local inGroup = false;
-		
+
 		for friendIndex = 1, GetNumFriends() do
 			local friendName = gsub(GetFriendInfo(friendIndex),  "-.*", "")
 			if friendName == leaderName then
@@ -117,7 +117,7 @@ function M:AutoInvite(event, leaderName)
 				break
 			end
 		end
-		
+
 		if not inGroup then
 			for guildIndex = 1, GetNumGuildMembers(true) do
 				local guildMemberName = gsub(GetGuildRosterInfo(guildIndex), "-.*", "")
@@ -128,7 +128,7 @@ function M:AutoInvite(event, leaderName)
 				end
 			end
 		end
-		
+
 		if not inGroup then
 			for bnIndex = 1, BNGetNumFriends() do
 				local _, _, _, _, name = BNGetFriendInfo(bnIndex)

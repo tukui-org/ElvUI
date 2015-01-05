@@ -9,11 +9,11 @@ local format = string.format
 
 local function OnEnter(self)
 	DT:SetupTooltip(self)
-	
+
 	local text, tooltip;
 	text = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, STAT_MULTISTRIKE).." "..format("%.2F%%", GetMultistrike())..FONT_COLOR_CODE_CLOSE
 	tooltip = format(CR_MULTISTRIKE_TOOLTIP, GetMultistrike(), GetMultistrikeEffect(), BreakUpLargeNumbers(GetCombatRating(CR_MULTISTRIKE)), GetCombatRatingBonus(CR_MULTISTRIKE))
-	
+
 	DT.tooltip:AddDoubleLine(text, nil, 1, 1, 1);
 	DT.tooltip:AddLine(tooltip, nil, nil, nil, true);
 	DT.tooltip:Show()
@@ -27,7 +27,7 @@ end
 
 local function ValueColorUpdate(hex, r, g, b)
 	displayModifierString = join("", "%s: ", hex, "%.2f%%|r")
-	
+
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)
 	end
@@ -36,9 +36,9 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 
 --[[
 	DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc)
-	
+
 	name - name of the datatext (required)
-	events - must be a table with string values of event names to register 
+	events - must be a table with string values of event names to register
 	eventFunc - function that gets fired when an event gets triggered
 	updateFunc - onUpdate script target function
 	click - function to fire when clicking the datatext

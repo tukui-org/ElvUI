@@ -37,7 +37,7 @@ function B:MoveObjectiveFrame()
 			ObjectiveTrackerFrame:SetPoint('TOP', ObjectiveFrameHolder, 'TOP')
 		end
 	end)
-	
+
 	hooksecurefunc("BonusObjectiveTracker_AnimateReward", function(block)
 		local rewardsFrame = ObjectiveTrackerBonusRewardsFrame;
 		rewardsFrame:ClearAllPoints();

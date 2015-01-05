@@ -8,7 +8,7 @@ local join = string.join
 
 local function OnEnter(self)
 	DT:SetupTooltip(self)
-	
+
 	local text, tooltip;
 	if E.role == "Caster" then
 		text = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, SPELL_CRIT_CHANCE).." "..format("%.2F%%", GetSpellCritChance(1))..FONT_COLOR_CODE_CLOSE
@@ -22,7 +22,7 @@ local function OnEnter(self)
 			tooltip = format(CR_CRIT_MELEE_TOOLTIP, BreakUpLargeNumbers(GetCombatRating(CR_CRIT_MELEE)), GetCombatRatingBonus(CR_CRIT_MELEE));
 		end
 	end
-	
+
 	DT.tooltip:AddDoubleLine(text, nil, 1, 1, 1);
 	DT.tooltip:AddLine(tooltip, nil, nil, nil, true);
 	DT.tooltip:Show()
@@ -46,7 +46,7 @@ end
 
 local function ValueColorUpdate(hex, r, g, b)
 	displayModifierString = join("", "%s: ", hex, "%.2f%%|r")
-	
+
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)
 	end
@@ -55,9 +55,9 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 
 --[[
 	DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc)
-	
+
 	name - name of the datatext (required)
-	events - must be a table with string values of event names to register 
+	events - must be a table with string values of event names to register
 	eventFunc - function that gets fired when an event gets triggered
 	updateFunc - onUpdate script target function
 	click - function to fire when clicking the datatext

@@ -12,13 +12,13 @@ function TOTEMS:Update(event)
 			self.bar[i].iconTexture:SetTexture(icon)
 			displayedTotems = displayedTotems + 1
 			CooldownFrame_SetTimer(self.bar[i].cooldown, startTime, duration, 1)
-			
+
 			for d=1, MAX_TOTEMS do
 				if _G['TotemFrameTotem'..d..'IconTexture']:GetTexture() == icon then
 					_G['TotemFrameTotem'..d]:ClearAllPoints();
 					_G['TotemFrameTotem'..d]:SetParent(self.bar[i].holder);
-					_G['TotemFrameTotem'..d]:SetAllPoints(self.bar[i].holder);		
-				end		
+					_G['TotemFrameTotem'..d]:SetAllPoints(self.bar[i].holder);
+				end
 			end
 		else
 			self.bar[i]:Hide()
@@ -56,28 +56,28 @@ function TOTEMS:PositionAndSize()
 				button:SetPoint('TOP', self.bar, 'TOP', 0, -self.db.spacing)
 			elseif prevButton then
 				button:SetPoint('TOP', prevButton, 'BOTTOM', 0, -self.db.spacing)
-			end		
-		elseif self.db.growthDirection == 'HORIZONTAL' and self.db.sortDirection == 'DESCENDING' then	
+			end
+		elseif self.db.growthDirection == 'HORIZONTAL' and self.db.sortDirection == 'DESCENDING' then
 			if i == 1 then
 				button:SetPoint('RIGHT', self.bar, 'RIGHT', -self.db.spacing, 0)
 			elseif prevButton then
 				button:SetPoint('RIGHT', prevButton, 'LEFT', -self.db.spacing, 0)
-			end		
+			end
 		else
 			if i == 1 then
 				button:SetPoint('BOTTOM', self.bar, 'BOTTOM', 0, self.db.spacing)
 			elseif prevButton then
 				button:SetPoint('BOTTOM', prevButton, 'TOP', 0, self.db.spacing)
-			end			
+			end
 		end
 	end
 
 	if self.db.growthDirection == 'HORIZONTAL' then
 		self.bar:Width(self.db.size*(MAX_TOTEMS) + self.db.spacing*(MAX_TOTEMS) + self.db.spacing)
-		self.bar:Height(self.db.size + self.db.spacing*2)	
+		self.bar:Height(self.db.size + self.db.spacing*2)
 	else
 		self.bar:Height(self.db.size*(MAX_TOTEMS) + self.db.spacing*(MAX_TOTEMS) + self.db.spacing)
-		self.bar:Width(self.db.size + self.db.spacing*2)		
+		self.bar:Width(self.db.size + self.db.spacing*2)
 	end
 	self:Update()
 end
@@ -85,12 +85,12 @@ end
 
 function TOTEMS:Initialize()
 	self.db = E.db.general.totems
-	
+
 	local bar = CreateFrame('Frame', 'ElvUI_TotemBar', E.UIParent)
 	bar = CreateFrame('Frame', 'ElvUI_TotemBar', E.UIParent)
 	bar:SetPoint('TOPLEFT', LeftChatPanel, 'TOPRIGHT', 14, 0)
 	self.bar = bar;
-	
+
 	for i=1, MAX_TOTEMS do
 		local frame = CreateFrame('Button', bar:GetName()..'Totem'..i, bar)
 		frame:SetID(i)
@@ -100,18 +100,18 @@ function TOTEMS:Initialize()
 		frame.holder = CreateFrame('Frame', nil, frame)
 		frame.holder:SetAlpha(0)
 		frame.holder:SetAllPoints()
-		
+
 		frame.iconTexture = frame:CreateTexture(nil, 'ARTWORK')
 		frame.iconTexture:SetInside()
 		frame.iconTexture:SetTexCoord(unpack(E.TexCoords))
-		
+
 		frame.cooldown = CreateFrame('Cooldown', frame:GetName()..'Cooldown', frame, 'CooldownFrameTemplate')
 		frame.cooldown:SetReverse(true)
 		frame.cooldown:SetInside()
 		E:RegisterCooldown(frame.cooldown)
 		self.bar[i] = frame;
 	end
-	
+
 	self:ToggleEnable()
 	self:PositionAndSize()
 

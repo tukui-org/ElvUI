@@ -38,13 +38,13 @@ E.Options.args.tooltip = {
 					type = 'toggle',
 					name = L["Target Info"],
 					desc = L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."],
-				},	
+				},
 				playerTitles = {
 					order = 3,
 					type = 'toggle',
 					name = L['Player Titles'],
 					desc = L['Display player titles.'],
-				},				
+				},
 				guildRanks = {
 					order = 4,
 					type = 'toggle',
@@ -56,12 +56,12 @@ E.Options.args.tooltip = {
 					type = 'toggle',
 					name = L['Inspect Info'],
 					desc = L['Display the players talent spec and item level in the tooltip, this may not immediately update when mousing over a unit.'],
-				},			
+				},
 				spellID = {
 					order = 6,
 					type = 'toggle',
 					name = L['Spell/Item IDs'],
-					desc = L['Display the spell or item ID when mousing over a spell or item tooltip.'],				
+					desc = L['Display the spell or item ID when mousing over a spell or item tooltip.'],
 				},
 				itemCount = {
 					order = 7,
@@ -94,7 +94,7 @@ E.Options.args.tooltip = {
 						['NONE'] = L['Never Hide'],
 						['SHIFT'] = SHIFT_KEY,
 						['ALT'] = ALT_KEY,
-						['CTRL'] = CTRL_KEY					
+						['CTRL'] = CTRL_KEY
 					},
 				},
 				combat = {
@@ -102,7 +102,7 @@ E.Options.args.tooltip = {
 					type = 'toggle',
 					name = COMBAT,
 					desc = L["Hide tooltip while in combat."],
-				},						
+				},
 			},
 		},
 		healthBar = {
@@ -110,7 +110,7 @@ E.Options.args.tooltip = {
 			type = "group",
 			name = L["Health Bar"],
 			get = function(info) return E.db.tooltip.healthBar[ info[#info] ] end,
-			set = function(info, value) E.db.tooltip.healthBar[ info[#info] ] = value; end,			
+			set = function(info, value) E.db.tooltip.healthBar[ info[#info] ] = value; end,
 			args = {
 				height = {
 					order = 1,
@@ -136,8 +136,8 @@ E.Options.args.tooltip = {
 							order = 2,
 							name = L["Font"],
 							values = AceGUIWidgetLSMlists.font,
-							set = function(info, value) 
-								E.db.tooltip.healthBar.font = value; 
+							set = function(info, value)
+								E.db.tooltip.healthBar.font = value;
 								GameTooltipStatusBar.text:FontTemplate(E.LSM:Fetch("font", E.db.tooltip.healthBar.font), E.db.tooltip.healthBar.fontSize, "OUTLINE")
 							end,
 						},
@@ -146,14 +146,14 @@ E.Options.args.tooltip = {
 							name = L["Font Size"],
 							type = "range",
 							min = 6, max = 22, step = 1,
-							set = function(info, value) 
-								E.db.tooltip.healthBar.fontSize = value; 
+							set = function(info, value)
+								E.db.tooltip.healthBar.fontSize = value;
 								GameTooltipStatusBar.text:FontTemplate(E.LSM:Fetch("font", E.db.tooltip.healthBar.font), E.db.tooltip.healthBar.fontSize, "OUTLINE")
-							end,								
+							end,
 						},
 					},
 				},
 			},
-		},		
+		},
 	},
 }

@@ -16,30 +16,30 @@ local function LoadSkin()
 		end
 	end)
 	ItemTextFrame:SetTemplate("Transparent")
-	ItemTextFrameInset:Kill()	
+	ItemTextFrameInset:Kill()
 	S:HandleScrollBar(ItemTextScrollFrameScrollBar)
 	S:HandleCloseButton(ItemTextFrameCloseButton)
-	
+
 	local StripAllTextures = {
 		"GossipFrameGreetingPanel",
 		"GossipFrame",
 		"GossipFrameInset",
 		"GossipGreetingScrollFrame",
-	}			
-	
+	}
+
 	S:HandleScrollBar(GossipGreetingScrollFrameScrollBar, 5)
 
-		
+
 	for _, object in pairs(StripAllTextures) do
 		_G[object]:StripTextures()
 	end
-	
-	GossipGreetingScrollFrame:SetTemplate()	
+
+	GossipGreetingScrollFrame:SetTemplate()
 	GossipGreetingScrollFrame.spellTex = GossipGreetingScrollFrame:CreateTexture(nil, 'ARTWORK')
 	GossipGreetingScrollFrame.spellTex:SetTexture([[Interface\QuestFrame\QuestBG]])
 	GossipGreetingScrollFrame.spellTex:SetPoint("TOPLEFT", 2, -2)
 	GossipGreetingScrollFrame.spellTex:Size(506, 615)
-	GossipGreetingScrollFrame.spellTex:SetTexCoord(0, 1, 0.02, 1)		
+	GossipGreetingScrollFrame.spellTex:SetTexCoord(0, 1, 0.02, 1)
 
 	local KillTextures = {
 		"GossipFramePortrait",
@@ -60,7 +60,7 @@ local function LoadSkin()
 
 
 	S:HandleCloseButton(GossipFrameCloseButton,GossipFrame.backdrop)
-	
+
 	NPCFriendshipStatusBar:StripTextures()
 	NPCFriendshipStatusBar:SetStatusBarTexture(E.media.normTex)
 	NPCFriendshipStatusBar:CreateBackdrop('Default')

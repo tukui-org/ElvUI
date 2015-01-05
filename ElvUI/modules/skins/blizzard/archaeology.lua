@@ -11,29 +11,29 @@ local function LoadSkin()
 	ArchaeologyFrameInset:CreateBackdrop('Default')
 	ArchaeologyFrameInset.backdrop:SetPoint('TOPLEFT')
 	ArchaeologyFrameInset.backdrop:SetPoint('BOTTOMRIGHT', -3, -1)
-	
+
 	S:HandleButton(ArchaeologyFrameArtifactPageSolveFrameSolveButton, true)
 	S:HandleButton(ArchaeologyFrameArtifactPageBackButton, true)
 	ArchaeologyFrameRaceFilter:SetFrameLevel(ArchaeologyFrameRaceFilter:GetFrameLevel() + 2)
 	S:HandleDropDownBox(ArchaeologyFrameRaceFilter, 125)
-	
+
 	S:HandleNextPrevButton(ArchaeologyFrameCompletedPageNextPageButton)
 	S:HandleNextPrevButton(ArchaeologyFrameCompletedPagePrevPageButton)
-	
+
 	ArchaeologyFrameRankBar:StripTextures()
 	ArchaeologyFrameRankBar:SetStatusBarTexture(E["media"].normTex)
 	ArchaeologyFrameRankBar:SetFrameLevel(ArchaeologyFrameRankBar:GetFrameLevel() + 2)
 	ArchaeologyFrameRankBar:CreateBackdrop("Default")
-	
+
 	ArchaeologyFrameArtifactPageSolveFrameStatusBar:StripTextures()
 	ArchaeologyFrameArtifactPageSolveFrameStatusBar:SetStatusBarTexture(E["media"].normTex)
 	ArchaeologyFrameArtifactPageSolveFrameStatusBar:SetStatusBarColor(0.7, 0.2, 0)
 	ArchaeologyFrameArtifactPageSolveFrameStatusBar:SetFrameLevel(ArchaeologyFrameArtifactPageSolveFrameStatusBar:GetFrameLevel() + 2)
 	ArchaeologyFrameArtifactPageSolveFrameStatusBar:CreateBackdrop("Default")
-	
+
 	for i=1, ARCHAEOLOGY_MAX_COMPLETED_SHOWN do
 		local artifact = _G["ArchaeologyFrameCompletedPageArtifact"..i]
-		
+
 		if artifact then
 			_G["ArchaeologyFrameCompletedPageArtifact"..i.."Border"]:Kill()
 			_G["ArchaeologyFrameCompletedPageArtifact"..i.."Bg"]:Kill()
@@ -52,7 +52,7 @@ local function LoadSkin()
 	ArchaeologyFrameArtifactPageIcon.backdrop:SetOutside(ArchaeologyFrameArtifactPageIcon)
 	ArchaeologyFrameArtifactPageIcon.backdrop:SetFrameLevel(ArchaeologyFrameArtifactPage:GetFrameLevel())
 	ArchaeologyFrameArtifactPageIcon:SetParent(ArchaeologyFrameArtifactPageIcon.backdrop)
-	ArchaeologyFrameArtifactPageIcon:SetDrawLayer("OVERLAY")	
+	ArchaeologyFrameArtifactPageIcon:SetDrawLayer("OVERLAY")
 
 	S:HandleCloseButton(ArchaeologyFrameCloseButton)
 

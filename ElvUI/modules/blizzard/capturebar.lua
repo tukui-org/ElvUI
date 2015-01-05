@@ -9,14 +9,14 @@ local function CaptureUpdate()
 
 			if captureBar and captureBar:IsVisible() then
 				captureBar:ClearAllPoints()
-				
+
 				if( i == 1 ) then
 					captureBar:Point("TOP", E.UIParent, "TOP", 0, -170)
 				else
 					captureBar:Point("TOPLEFT", _G["WorldStateCaptureBar" .. i - 1], "TOPLEFT", 0, -45)
 				end
-			end	
-		end	
+			end
+		end
 	end
 end
 

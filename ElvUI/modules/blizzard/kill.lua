@@ -17,7 +17,7 @@ local function DisableStupidFuckingButtons(self)
 		local button = _G[self:GetName()..'Button'..i]
 		if removeMenuOptions[button.value] then
 			button:Hide()
-			
+
 			for z = i + 1, self.numButtons do
 				local point, attachTo, anchorPoint, x, y = _G[self:GetName()..'Button'..z]:GetPoint()
 				_G[self:GetName()..'Button'..z]:Point(point, attachTo, anchorPoint, x, y + UIDROPDOWNMENU_BUTTON_HEIGHT);

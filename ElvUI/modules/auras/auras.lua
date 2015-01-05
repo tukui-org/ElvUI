@@ -66,7 +66,7 @@ function A:UpdateTime(elapsed)
 
 	local timerValue, formatID
 	timerValue, formatID, self.nextUpdate = E:GetTimeInfo(self.timeLeft, A.db.fadeThreshold)
-	self.time:SetFormattedText(("%s%s|r"):format(E.TimeColors[formatID], E.TimeFormats[formatID][1]), timerValue)	
+	self.time:SetFormattedText(("%s%s|r"):format(E.TimeColors[formatID], E.TimeFormats[formatID][1]), timerValue)
 
 	if self.timeLeft > E.db.auras.fadeThreshold then
 		E:StopFlash(self)
@@ -121,14 +121,14 @@ function A:UpdateAura(button, index)
 		else
 			button.timeLeft = nil
 			button.time:SetText("")
-			button:SetScript("OnUpdate", nil)			
+			button:SetScript("OnUpdate", nil)
 		end
 
 		if(count > 1) then
 			button.count:SetText(count)
 		else
 			button.count:SetText("")
-		end		
+		end
 
 		if filter == "HARMFUL" then
 			local color = DebuffTypeColor[dtype or ""]
@@ -136,12 +136,12 @@ function A:UpdateAura(button, index)
 		else
 			button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
-		
+
 		button.texture:SetTexture(texture)
 		button.offset = nil
 	end
 end
-	
+
 function A:UpdateTempEnchant(button, index)
 	local quality = GetInventoryItemQuality("player", index)
 	button.texture:SetTexture(GetInventoryItemTexture("player", index))
@@ -152,11 +152,11 @@ function A:UpdateTempEnchant(button, index)
 	if weapon:match("2") then
 		offset = 5
 	end
-	
+
 	if(quality) then
 		button:SetBackdropBorderColor(GetItemQualityColor(quality))
 	end
-	
+
 	local expirationTime = select(offset, GetWeaponEnchantInfo())
 	if(expirationTime) then
 		button.offset = offset
@@ -178,7 +178,7 @@ function A:OnAttributeChanged(attribute, value)
 		A:UpdateTempEnchant(self, value)
 	end
 end
-	
+
 function A:UpdateHeader(header)
 	if(not E.private.auras.enable) then return end
 	local db = self.db.debuffs
@@ -202,14 +202,14 @@ function A:UpdateHeader(header)
 		header:SetAttribute("xOffset", DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[db.growthDirection] * (db.horizontalSpacing + db.size))
 		header:SetAttribute("yOffset", 0)
 		header:SetAttribute("wrapXOffset", 0)
-		header:SetAttribute("wrapYOffset", DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[db.growthDirection] * (db.verticalSpacing + db.size))		
+		header:SetAttribute("wrapYOffset", DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[db.growthDirection] * (db.verticalSpacing + db.size))
 	else
 		header:SetAttribute("minWidth", (db.horizontalSpacing + db.size) * db.maxWraps)
 		header:SetAttribute("minHeight", ((db.wrapAfter == 1 and 0 or db.verticalSpacing) + db.size) * db.wrapAfter)
 		header:SetAttribute("xOffset", 0)
 		header:SetAttribute("yOffset", DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[db.growthDirection] * (db.verticalSpacing + db.size))
 		header:SetAttribute("wrapXOffset", DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[db.growthDirection] * (db.horizontalSpacing + db.size))
-		header:SetAttribute("wrapYOffset", 0)				
+		header:SetAttribute("wrapYOffset", 0)
 	end
 
 	header:SetAttribute("template", ("ElvUIAuraTemplate%d"):format(db.size))
@@ -230,7 +230,7 @@ function A:UpdateHeader(header)
 			child.count:SetPoint("BOTTOMRIGHT", -1 + self.db.countXOffset, 0 + self.db.countYOffset)
 			child.count:FontTemplate(font, self.db.fontSize, self.db.fontOutline)
 		end
-		
+
 		--Blizzard bug fix, icons arent being hidden when you reduce the amount of maximum buttons
 		if(index > (db.maxWraps * db.wrapAfter) and child:IsShown()) then
 			child:Hide()
@@ -243,8 +243,8 @@ end
 
 function A:CreateAuraHeader(filter)
 	local name = "ElvUIPlayerDebuffs"
-	if filter == "HELPFUL" then 
-		name = "ElvUIPlayerBuffs" 
+	if filter == "HELPFUL" then
+		name = "ElvUIPlayerBuffs"
 	end
 
 	local header = CreateFrame("Frame", name, E.UIParent, "SecureAuraHeaderTemplate")
@@ -261,7 +261,7 @@ function A:CreateAuraHeader(filter)
 
 	A:UpdateHeader(header)
 	header:Show()
-	
+
 	return header
 end
 
@@ -280,7 +280,7 @@ function A:Initialize()
 	if(not E.private.auras.enable) then return end
 
 	self.db = E.db.auras
-	
+
 	self.BuffFrame = self:CreateAuraHeader("HELPFUL")
 	self.BuffFrame:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", -8, 0)
 	E:CreateMover(self.BuffFrame, "BuffsMover", L["Player Buffs"])

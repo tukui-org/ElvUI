@@ -8,14 +8,14 @@ local ACD = LibStub("AceConfigDialog-3.0")
 local ACR = LibStub("AceConfigRegistry-3.0")
 
 AC:RegisterOptionsTable("ElvUI", E.Options)
-ACD:SetDefaultSize("ElvUI", DEFAULT_WIDTH, DEFAULT_HEIGHT)	
+ACD:SetDefaultSize("ElvUI", DEFAULT_WIDTH, DEFAULT_HEIGHT)
 
 E.Options.args = {
 	ElvUI_Header = {
 		order = 1,
 		type = "header",
 		name = L["Version"]..format(": |cff99ff33%s|r",E.version),
-		width = "full",		
+		width = "full",
 	},
 	LoginMessage = {
 		order = 2,
@@ -23,7 +23,7 @@ E.Options.args = {
 		name = L['Login Message'],
 		get = function(info) return E.db.general.loginmessage end,
 		set = function(info, value) E.db.general.loginmessage = value end,
-	},	
+	},
 	ToggleTutorial = {
 		order = 3,
 		type = 'execute',
@@ -36,7 +36,7 @@ E.Options.args = {
 		name = L['Install'],
 		desc = L['Run the installation process.'],
 		func = function() E:Install(); E:ToggleConfig() end,
-	},	
+	},
 	ToggleAnchors = {
 		order = 5,
 		type = "execute",
@@ -50,7 +50,7 @@ E.Options.args = {
 		name = L["Reset Anchors"],
 		desc = L["Reset all frames to their original positions."],
 		func = function() E:ResetUI() end,
-	},	
+	},
 }
 
 E.Options.args.general = {
@@ -65,7 +65,7 @@ E.Options.args.general = {
 			order = 1,
 			type = "description",
 			name = L["ELVUI_DESC"],
-		},			
+		},
 		general = {
 			order = 2,
 			type = "group",
@@ -77,7 +77,7 @@ E.Options.args.general = {
 					desc = L['The Pixel Perfect option will change the overall apperance of your UI. Using Pixel Perfect is a slight performance increase over the traditional layout.'],
 					type = 'toggle',
 					get = function(info) return E.private.general.pixelPerfect end,
-					set = function(info, value) E.private.general.pixelPerfect = value; E:StaticPopup_Show("PRIVATE_RL") end					
+					set = function(info, value) E.private.general.pixelPerfect = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
 				interruptAnnounce = {
 					order = 2,
@@ -100,7 +100,7 @@ E.Options.args.general = {
 						['NONE'] = NONE,
 						['GUILD'] = GUILD,
 						['PLAYER'] = PLAYER,
-					},				
+					},
 				},
 				chatBubbles = {
 					order = 5,
@@ -114,7 +114,7 @@ E.Options.args.general = {
 						['nobackdrop'] = L['Remove Backdrop'],
 						['disabled'] = L['Disabled']
 					}
-				},					
+				},
 				autoAcceptInvite = {
 					order = 6,
 					name = L['Accept Invites'],
@@ -125,13 +125,13 @@ E.Options.args.general = {
 					order = 7,
 					name = L['Vendor Grays'],
 					desc = L['Automatically vendor gray items when visiting a vendor.'],
-					type = 'toggle',				
-				},			
+					type = 'toggle',
+				},
 				autoRoll = {
 					order = 8,
 					name = L['Auto Greed/DE'],
 					desc = L['Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level.'],
-					type = 'toggle',		
+					type = 'toggle',
 					disabled = function() return not E.private.general.lootRoll end
 				},
 				loot = {
@@ -154,18 +154,18 @@ E.Options.args.general = {
 					order = 11,
 					name = L["Auto Scale"],
 					desc = L["Automatically scale the User Interface based on your screen resolution"],
-					type = "toggle",	
+					type = "toggle",
 					get = function(info) return E.global.general.autoScale end,
 					set = function(info, value) E.global.general[ info[#info] ] = value; E:StaticPopup_Show("GLOBAL_RL") end
-				},	
+				},
 				eyefinity = {
 					order = 12,
 					name = L["Multi-Monitor Support"],
 					desc = L["Attempt to support eyefinity/nvidia surround."],
-					type = "toggle",	
+					type = "toggle",
 					get = function(info) return E.global.general.eyefinity end,
 					set = function(info, value) E.global.general[ info[#info] ] = value; E:StaticPopup_Show("GLOBAL_RL") end
-				},					
+				},
 				hideErrorFrame = {
 					order = 13,
 					name = L["Hide Error Text"],
@@ -184,7 +184,7 @@ E.Options.args.general = {
 					name = L['Bottom Panel'],
 					desc = L['Display a panel across the bottom of the screen. This is for cosmetic only.'],
 					get = function(info) return E.db.general.bottomPanel end,
-					set = function(info, value) E.db.general.bottomPanel = value; E:GetModule('Layout'):BottomPanelVisibility() end						
+					set = function(info, value) E.db.general.bottomPanel = value; E:GetModule('Layout'):BottomPanelVisibility() end
 				},
 				topPanel = {
 					order = 17,
@@ -192,33 +192,33 @@ E.Options.args.general = {
 					name = L['Top Panel'],
 					desc = L['Display a panel across the top of the screen. This is for cosmetic only.'],
 					get = function(info) return E.db.general.topPanel end,
-					set = function(info, value) E.db.general.topPanel = value; E:GetModule('Layout'):TopPanelVisibility() end						
-				},	
+					set = function(info, value) E.db.general.topPanel = value; E:GetModule('Layout'):TopPanelVisibility() end
+				},
 				afk = {
 					order = 18,
 					type = 'toggle',
 					name = L['AFK Mode'],
 					desc = L['When you go AFK display the AFK screen.'],
 					get = function(info) return E.db.general.afk end,
-					set = function(info, value) E.db.general.afk = value; E:GetModule('AFK'):Toggle() end						
+					set = function(info, value) E.db.general.afk = value; E:GetModule('AFK'):Toggle() end
 
-				},			
+				},
 				smallerWorldMap = {
 					order = 19,
 					type = 'toggle',
 					name = L['Smaller World Map'],
 					desc = L['Make the world map smaller.'],
 					get = function(info) return E.global.general.smallerWorldMap end,
-					set = function(info, value) E.global.general.smallerWorldMap = value; E:StaticPopup_Show("GLOBAL_RL") end					
+					set = function(info, value) E.global.general.smallerWorldMap = value; E:StaticPopup_Show("GLOBAL_RL") end
 				},
 			},
-		},	
+		},
 		media = {
 			order = 3,
 			type = "group",
 			name = L["Media"],
 			get = function(info) return E.db.general[ info[#info] ] end,
-			set = function(info, value) E.db.general[ info[#info] ] = value end,	
+			set = function(info, value) E.db.general[ info[#info] ] = value end,
 			args = {
 				fonts = {
 					order = 1,
@@ -269,7 +269,7 @@ E.Options.args.general = {
 							set = function(info, value) E.private.general[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL"); end,
 						},
 					},
-				},	
+				},
 				textures = {
 					order = 2,
 					type = "group",
@@ -283,17 +283,17 @@ E.Options.args.general = {
 							desc = L["The texture that will be used mainly for statusbars."],
 							values = AceGUIWidgetLSMlists.statusbar,
 							get = function(info) return E.private.general[ info[#info] ] end,
-							set = function(info, value) E.private.general[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end							
+							set = function(info, value) E.private.general[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end
 						},
 						glossTex = {
 							type = "select", dialogControl = 'LSM30_Statusbar',
 							order = 2,
 							name = L["Secondary Texture"],
 							desc = L["This texture will get used on objects like chat windows and dropdown menus."],
-							values = AceGUIWidgetLSMlists.statusbar,	
+							values = AceGUIWidgetLSMlists.statusbar,
 							get = function(info) return E.private.general[ info[#info] ] end,
 							set = function(info, value) E.private.general[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end
-						},				
+						},
 					},
 				},
 				colors = {
@@ -319,7 +319,7 @@ E.Options.args.general = {
 								t.r, t.g, t.b = r, g, b
 								E:UpdateMedia()
 								E:UpdateBorderColors()
-							end,	
+							end,
 							disabled = function() return E.PixelMode end,
 						},
 						backdropcolor = {
@@ -339,7 +339,7 @@ E.Options.args.general = {
 								t.r, t.g, t.b = r, g, b
 								E:UpdateMedia()
 								E:UpdateBackdropColors()
-							end,						
+							end,
 						},
 						backdropfadecolor = {
 							type = "color",
@@ -354,11 +354,11 @@ E.Options.args.general = {
 							end,
 							set = function(info, r, g, b, a)
 								E.db.general[ info[#info] ] = {}
-								local t = E.db.general[ info[#info] ]	
+								local t = E.db.general[ info[#info] ]
 								t.r, t.g, t.b, t.a = r, g, b, a
 								E:UpdateMedia()
 								E:UpdateBackdropColors()
-							end,						
+							end,
 						},
 						valuecolor = {
 							type = "color",
@@ -373,18 +373,18 @@ E.Options.args.general = {
 							end,
 							set = function(info, r, g, b, a)
 								E.db.general[ info[#info] ] = {}
-								local t = E.db.general[ info[#info] ]	
+								local t = E.db.general[ info[#info] ]
 								t.r, t.g, t.b, t.a = r, g, b, a
 								E:UpdateMedia()
-							end,						
-						},						
+							end,
+						},
 					},
 				},
 			},
 		},
 		minimap = {
 			order = 4,
-			get = function(info) return E.db.general.minimap[ info[#info] ] end,	
+			get = function(info) return E.db.general.minimap[ info[#info] ] end,
 			type = "group",
 			name = MINIMAP_LABEL,
 			args = {
@@ -394,7 +394,7 @@ E.Options.args.general = {
 					name = L["Enable"],
 					desc = L['Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the consolidated buffs bar, and prevent you from seeing the minimap datatexts.|r'],
 					get = function(info) return E.private.general.minimap[ info[#info] ] end,
-					set = function(info, value) E.private.general.minimap[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,	
+					set = function(info, value) E.private.general.minimap[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
 				},
 				size = {
 					order = 2,
@@ -402,9 +402,9 @@ E.Options.args.general = {
 					name = L["Size"],
 					desc = L['Adjust the size of the minimap.'],
 					min = 120, max = 250, step = 1,
-					set = function(info, value) E.db.general.minimap[ info[#info] ] = value; E:GetModule('Minimap'):UpdateSettings() end,	
+					set = function(info, value) E.db.general.minimap[ info[#info] ] = value; E:GetModule('Minimap'):UpdateSettings() end,
 					disabled = function() return not E.private.general.minimap.enable end,
-				},	
+				},
 				locationText = {
 					order = 3,
 					type = 'select',
@@ -703,12 +703,12 @@ E.Options.args.general = {
 						},
 					},
 				},
-			},		
+			},
 		},
 		experience = {
 			order = 5,
 			get = function(info) return E.db.general.experience[ info[#info] ] end,
-			set = function(info, value) E.db.general.experience[ info[#info] ] = value; E:GetModule('Misc'):UpdateExpRepDimensions() end,		
+			set = function(info, value) E.db.general.experience[ info[#info] ] = value; E:GetModule('Misc'):UpdateExpRepDimensions() end,
 			type = "group",
 			name = XPBAR_LABEL,
 			args = {
@@ -727,7 +727,7 @@ E.Options.args.general = {
 					order = 2,
 					type = 'description',
 					name = ' '
-				},				
+				},
 				width = {
 					order = 3,
 					type = "range",
@@ -761,19 +761,19 @@ E.Options.args.general = {
 						CURPERC = L["Current - Percent"],
 					},
 					set = function(info, value) E.db.general.experience[ info[#info] ] = value; E:GetModule('Misc'):UpdateExperience() end,
-				},		
+				},
 				textSize = {
 					order = 7,
 					name = L["Font Size"],
 					type = "range",
-					min = 6, max = 22, step = 1,		
-				},				
+					min = 6, max = 22, step = 1,
+				},
 			},
 		},
 		reputation = {
 			order = 6,
 			get = function(info) return E.db.general.reputation[ info[#info] ] end,
-			set = function(info, value) E.db.general.reputation[ info[#info] ] = value; E:GetModule('Misc'):UpdateExpRepDimensions() end,		
+			set = function(info, value) E.db.general.reputation[ info[#info] ] = value; E:GetModule('Misc'):UpdateExpRepDimensions() end,
 			type = "group",
 			name = REPUTATION,
 			args = {
@@ -787,7 +787,7 @@ E.Options.args.general = {
 					order = 1,
 					type = "toggle",
 					name = L['Mouseover'],
-				},				
+				},
 				spacer = {
 					order = 2,
 					type = 'description',
@@ -814,7 +814,7 @@ E.Options.args.general = {
 						['HORIZONTAL'] = L['Horizontal'],
 						['VERTICAL'] = L['Vertical']
 					}
-				},				
+				},
 				textFormat = {
 					order = 6,
 					type = 'select',
@@ -826,19 +826,19 @@ E.Options.args.general = {
 						CURPERC = L["Current - Percent"],
 					},
 					set = function(info, value) E.db.general.reputation[ info[#info] ] = value; E:GetModule('Misc'):UpdateReputation() end,
-				},		
+				},
 				textSize = {
 					order = 7,
 					name = L["Font Size"],
 					type = "range",
-					min = 6, max = 22, step = 1,		
-				},				
+					min = 6, max = 22, step = 1,
+				},
 			},
-		},	
+		},
 		threat = {
 			order = 7,
 			get = function(info) return E.db.general.threat[ info[#info] ] end,
-			set = function(info, value) E.db.general.threat[ info[#info] ] = value; E:GetModule('Threat'):ToggleEnable()end,		
+			set = function(info, value) E.db.general.threat[ info[#info] ] = value; E:GetModule('Threat'):ToggleEnable()end,
 			type = "group",
 			name = L['Threat'],
 			args = {
@@ -856,17 +856,17 @@ E.Options.args.general = {
 						['LEFTCHAT'] = L['Left Chat'],
 						['RIGHTCHAT'] = L['Right Chat'],
 					},
-					set = function(info, value) E.db.general.threat[ info[#info] ] = value; E:GetModule('Threat'):UpdatePosition() end,	
+					set = function(info, value) E.db.general.threat[ info[#info] ] = value; E:GetModule('Threat'):UpdatePosition() end,
 				},
 				textSize = {
 					order = 3,
 					name = L["Font Size"],
 					type = "range",
-					min = 6, max = 22, step = 1,	
-					set = function(info, value) E.db.general.threat[ info[#info] ] = value; E:GetModule('Threat'):UpdatePosition() end,	
-				},		
+					min = 6, max = 22, step = 1,
+					set = function(info, value) E.db.general.threat[ info[#info] ] = value; E:GetModule('Threat'):UpdatePosition() end,
+				},
 			},
-		},	
+		},
 		totems = {
 			order = 8,
 			type = "group",
@@ -879,7 +879,7 @@ E.Options.args.general = {
 					type = "toggle",
 					name = L["Enable"],
 					set = function(info, value) E.db.general.totems[ info[#info] ] = value; E:GetModule('Totems'):ToggleEnable() end,
-				},					
+				},
 				size = {
 					order = 2,
 					type = 'range',
@@ -890,7 +890,7 @@ E.Options.args.general = {
 					order = 3,
 					type = 'range',
 					name = L['Button Spacing'],
-					min = 1, max = 10, step = 1,			
+					min = 1, max = 10, step = 1,
 				},
 				sortDirection = {
 					order = 4,
@@ -926,7 +926,7 @@ E.Options.args.general = {
 				local t = E.db.cooldown[ info[#info] ]
 				t.r, t.g, t.b = r, g, b
 				E:UpdateCooldownSettings();
-			end,	
+			end,
 			args = {
 				enable = {
 					type = "toggle",
@@ -934,50 +934,50 @@ E.Options.args.general = {
 					name = L['Enable'],
 					desc = L['Display cooldown text on anything with the cooldown spiral.'],
 					get = function(info) return E.private.cooldown[ info[#info] ] end,
-					set = function(info, value) E.private.cooldown[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end				
-				},			
+					set = function(info, value) E.private.cooldown[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end
+				},
 				threshold = {
 					type = 'range',
 					name = L['Low Threshold'],
 					desc = L['Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red'],
-					min = -1, max = 20, step = 1,	
+					min = -1, max = 20, step = 1,
 					order = 2,
 					get = function(info) return E.db.cooldown[ info[#info] ] end,
 					set = function(info, value)
 						E.db.cooldown[ info[#info] ] = value
 						E:UpdateCooldownSettings();
-					end,				
+					end,
 				},
 				expiringColor = {
 					type = 'color',
 					order = 4,
 					name = L['Expiring'],
-					desc = L['Color when the text is about to expire'],					
+					desc = L['Color when the text is about to expire'],
 				},
 				secondsColor = {
 					type = 'color',
 					order = 5,
 					name = L['Seconds'],
-					desc = L['Color when the text is in the seconds format.'],			
+					desc = L['Color when the text is in the seconds format.'],
 				},
 				minutesColor = {
 					type = 'color',
 					order = 6,
 					name = L['Minutes'],
-					desc = L['Color when the text is in the minutes format.'],		
+					desc = L['Color when the text is in the minutes format.'],
 				},
 				hoursColor = {
 					type = 'color',
 					order = 7,
 					name = L['Hours'],
-					desc = L['Color when the text is in the hours format.'],				
-				},	
+					desc = L['Color when the text is in the hours format.'],
+				},
 				daysColor = {
 					type = 'color',
 					order = 8,
 					name = L['Days'],
-					desc = L['Color when the text is in the days format.'],			
-				},				
+					desc = L['Color when the text is in the days format.'],
+				},
 			},
 		},
 		objectiveFrame = {
@@ -1004,7 +1004,7 @@ E.Options.args.general = {
 						['RIGHT'] = L["Right"],
 						['LEFT'] = L["Left"],
 						['AUTO'] = L["Auto"],
-					},			
+					},
 				},
 			},
 		},
@@ -1162,7 +1162,7 @@ E.Options.args.profiles.plugins["ElvUI"] = {
 				E:Print(L["You must be targeting a player."])
 				return
 			end
-			
+
 			local name, server = UnitName("target")
 			if name and (not server or server == "") then
 				E:GetModule("Distributor"):Distribute(name, false, true)
@@ -1170,5 +1170,5 @@ E.Options.args.profiles.plugins["ElvUI"] = {
 				E:GetModule("Distributor"):Distribute(name, true, true)
 			end
 		end,
-	},		
+	},
 }

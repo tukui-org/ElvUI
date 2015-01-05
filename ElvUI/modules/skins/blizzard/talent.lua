@@ -3,54 +3,54 @@ local S = E:GetModule('Skins')
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.talent ~= true then return end
-	
+
 	local objects = {
 		PlayerTalentFrame,
 		PlayerTalentFrameInset,
 		PlayerTalentFrameTalents
 	}
-	
+
 	for _, object in pairs(objects) do
 		object:StripTextures()
 	end
-	
+
 	PlayerTalentFrame:StripTextures()
 	PlayerTalentFrame:CreateBackdrop('Transparent')
 	PlayerTalentFrame.backdrop:SetAllPoints()
 	PlayerTalentFrame.backdrop:SetFrameLevel(0)
 	PlayerTalentFrame.backdrop:SetPoint('BOTTOMRIGHT', PlayerTalentFrame, 'BOTTOMRIGHT', 0, -6)
-	
+
 	PlayerTalentFrameInset:StripTextures()
 	PlayerTalentFrameInset:CreateBackdrop('Default')
 	PlayerTalentFrameInset.backdrop:Hide()
-	
+
 	PlayerTalentFrameSpecializationTutorialButton:Kill()
 	PlayerTalentFrameTalentsTutorialButton:Kill()
 	PlayerTalentFramePetSpecializationTutorialButton:Kill()
-	
+
 	S:HandleCloseButton(PlayerTalentFrameCloseButton)
-	
+
 	local buttons = {
 		PlayerTalentFrameSpecializationLearnButton,
 		PlayerTalentFrameTalentsLearnButton,
 		PlayerTalentFramePetSpecializationLearnButton
 	}
-	
+
 	S:HandleButton(PlayerTalentFrameActivateButton)
-	
+
 	for _, button in pairs(buttons) do
 		S:HandleButton(button, true)
 		local point, anchor, anchorPoint, x = button:GetPoint()
 		button:Point(point, anchor, anchorPoint, x, -28)
 	end
-	
-	
+
+
 	PlayerTalentFrameTalentsClearInfoFrame:CreateBackdrop('Default')
 	PlayerTalentFrameTalentsClearInfoFrame.icon:SetTexCoord(unpack(E.TexCoords))
 	PlayerTalentFrameTalentsClearInfoFrame:Width(PlayerTalentFrameTalentsClearInfoFrame:GetWidth() - 2)
 	PlayerTalentFrameTalentsClearInfoFrame:Height(PlayerTalentFrameTalentsClearInfoFrame:GetHeight() - 2)
 	PlayerTalentFrameTalentsClearInfoFrame.icon:Size(PlayerTalentFrameTalentsClearInfoFrame:GetSize())
-	PlayerTalentFrameTalentsClearInfoFrame:Point('TOPLEFT', PlayerTalentFrameTalents, 'BOTTOMLEFT', 8, -8)	
+	PlayerTalentFrameTalentsClearInfoFrame:Point('TOPLEFT', PlayerTalentFrameTalents, 'BOTTOMLEFT', 8, -8)
 
 	for i=1, 4 do
 		S:HandleTab(_G['PlayerTalentFrameTab'..i])
@@ -60,28 +60,28 @@ local function LoadSkin()
 			_G['PlayerTalentFrameTab'..i]:Point(point, anchor, anchorPoint, x, -4)
 		end
 	end
-	
+
 	hooksecurefunc('PlayerTalentFrame_UpdateTabs', function()
 		for i=1, 4 do
 			local point, anchor, anchorPoint, x = _G['PlayerTalentFrameTab'..i]:GetPoint()
 			_G['PlayerTalentFrameTab'..i]:Point(point, anchor, anchorPoint, x, -4)
 		end
 	end)
-	
+
 	PlayerTalentFrameSpecializationSpellScrollFrameScrollChild.Seperator:SetTexture(1, 1, 1)
 	PlayerTalentFrameSpecializationSpellScrollFrameScrollChild.Seperator:SetAlpha(0.2)
-	
+
 	for i=1, 2 do
 		local tab = _G['PlayerSpecTab'..i]
 		_G['PlayerSpecTab'..i..'Background']:Kill()
-		
+
 		tab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 		tab:GetNormalTexture():SetInside()
-		
+
 		tab.pushed = true;
 		tab:CreateBackdrop("Default")
 		tab.backdrop:SetAllPoints()
-		tab:StyleButton(true)	
+		tab:StyleButton(true)
 		hooksecurefunc(tab:GetHighlightTexture(), "SetTexture", function(self, texPath)
 			if texPath ~= nil then
 				self:SetTexture(nil)
@@ -91,12 +91,12 @@ local function LoadSkin()
 			if texPath ~= nil then
 				self:SetTexture(nil)
 			end
-		end)		
+		end)
 	end
-	
+
 	hooksecurefunc('PlayerTalentFrame_UpdateSpecs', function()
 		local point, relatedTo, point2, x, y = PlayerSpecTab1:GetPoint()
-		PlayerSpecTab1:Point(point, relatedTo, point2, E.PixelMode and -1 or 1, y)	
+		PlayerSpecTab1:Point(point, relatedTo, point2, E.PixelMode and -1 or 1, y)
 	end)
 
 	for i = 1, MAX_TALENT_TIERS do
@@ -147,11 +147,11 @@ local function LoadSkin()
 			end
 		end
 	end)
-	
+
 	for i = 1, 5 do
 		select(i, PlayerTalentFrameSpecializationSpellScrollFrameScrollChild:GetRegions()):Hide()
-	end	
-	
+	end
+
 	local pspecspell = _G["PlayerTalentFrameSpecializationSpellScrollFrameScrollChild"]
 	pspecspell.ring:Hide()
 	pspecspell:CreateBackdrop("Default")
@@ -242,13 +242,13 @@ local function LoadSkin()
 			bu.backdrop:Point("TOPLEFT", 8, 2)
 			bu.backdrop:Point("BOTTOMRIGHT", 10, -2)
 			bu:GetHighlightTexture():SetInside(bu.backdrop)
-			
+
 			bu.border = CreateFrame("Frame", nil, bu)
 			bu.border:CreateBackdrop("Default")
 			bu.border.backdrop:SetOutside(bu.specIcon)
 		end
 	end
-	
+
 	if E.myclass == "HUNTER" then
 		for i = 1, 6 do
 			select(i, PlayerTalentFramePetSpecialization:GetRegions()):Hide()
@@ -260,7 +260,7 @@ local function LoadSkin()
 				child:DisableDrawLayer("OVERLAY")
 			end
 		end
-	
+
 		for i = 1, 5 do
 			select(i, PlayerTalentFramePetSpecializationSpellScrollFrameScrollChild:GetRegions()):Hide()
 		end
@@ -276,13 +276,13 @@ local function LoadSkin()
 			bu.specIcon:Point("LEFT", bu, "LEFT", 15, 0)
 
 			bu.SelectedTexture = bu:CreateTexture(nil, 'ARTWORK')
-			bu.SelectedTexture:SetTexture(1, 1, 0, 0.1) 			
+			bu.SelectedTexture:SetTexture(1, 1, 0, 0.1)
 		end
-		
+
 		PlayerTalentFramePetSpecializationSpellScrollFrameScrollChild.Seperator:SetTexture(1, 1, 1)
-		PlayerTalentFramePetSpecializationSpellScrollFrameScrollChild.Seperator:SetAlpha(0.2)			
-	end	
-	
+		PlayerTalentFramePetSpecializationSpellScrollFrameScrollChild.Seperator:SetAlpha(0.2)
+	end
+
 	PlayerTalentFrameSpecialization:DisableDrawLayer('ARTWORK')
 	PlayerTalentFrameSpecialization:DisableDrawLayer('BORDER')
 	for i=1, PlayerTalentFrameSpecialization:GetNumChildren() do

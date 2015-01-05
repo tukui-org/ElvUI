@@ -24,7 +24,7 @@ Examples:
 Formatos de Vida / Poder:
 'current' - Quantidade Actual
 'percent' - Quantidade de Percentagem
-'current-max' - Quantidade actual seguida pela quantidade máxima, será exibida apenas a máxima se a actual for igual à máxima 
+'current-max' - Quantidade actual seguida pela quantidade máxima, será exibida apenas a máxima se a actual for igual à máxima
 'current-percent' - Quantidade actual seguida pela quantidade em percentagem, será exibida apenas a máxima se a actual for igual à máxima
 'current-max-percent' - Quantidade actual, quantidade máxima seguida por quantidade em percentagem, será exibida apenas a máxima se a actual for igual à máxima
 'deficit' - Exibir o valor em falta, nao será exibido nada se não houver nada em falta

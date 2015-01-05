@@ -3,14 +3,14 @@ local S = E:GetModule('Skins')
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.itemUpgrade ~= true then return end
-	
+
 	ItemUpgradeFrame:StripTextures()
 	ItemUpgradeFrame:SetTemplate('Transparent')
 	--ItemUpgradeFrameShadows:Kill()
 	--ItemUpgradeFrameInset:Kill()
-	
+
 	S:HandleCloseButton(ItemUpgradeFrameCloseButton)
-	
+
 	S:HandleItemButton(ItemUpgradeFrame.ItemButton, true)
 
 	hooksecurefunc('ItemUpgradeFrame_Update', function()
@@ -21,10 +21,10 @@ local function LoadSkin()
 			ItemUpgradeFrame.ItemButton.IconTexture:SetAlpha(0)
 		end
 	end)
-	
+
 	ItemUpgradeFrameMoneyFrame:StripTextures()
 	S:HandleButton(ItemUpgradeFrameUpgradeButton, true)
-	ItemUpgradeFrame.FinishedGlow:Kill()	
+	ItemUpgradeFrame.FinishedGlow:Kill()
 	ItemUpgradeFrame.ButtonFrame:DisableDrawLayer('BORDER')
 end
 

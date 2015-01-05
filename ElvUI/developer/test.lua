@@ -1,10 +1,10 @@
 --[[
 	Going to leave this as my bullshit lua file.
-	
+
 	So I can test stuff.
 ]]
 
-local missionName 
+local missionName
 local function New()
 	local self = GarrisonMissionFrame.MissionTab.MissionList;
 	local missions;
@@ -24,7 +24,7 @@ local function New()
 	else
 		self.EmptyListString:Hide();
 	end
-	
+
 	for i = 1, numButtons do
 		local button = buttons[i];
 		local index = offset + i; -- adjust index
@@ -65,7 +65,7 @@ local function New()
 				button.Title:SetPoint("LEFT", 165, 10);
 				button.Title:SetWidth(655 - mission.numRewards * 65);
 				button.Summary:ClearAllPoints();
-				button.Summary:SetPoint("TOPLEFT", button.Title, "BOTTOMLEFT", 0, -4);	
+				button.Summary:SetPoint("TOPLEFT", button.Title, "BOTTOMLEFT", 0, -4);
 			end
 			if ( mission.locPrefix ) then
 				button.LocBG:Show();
@@ -110,7 +110,7 @@ local function New()
 			button:Hide();
 		end
 	end
-	
+
 	local totalHeight = numMissions * scrollFrame.buttonHeight;
 	local displayedHeight = numButtons * scrollFrame.buttonHeight;
 	HybridScrollFrame_Update(scrollFrame, totalHeight, displayedHeight);

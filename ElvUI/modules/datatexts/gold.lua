@@ -43,7 +43,7 @@ local function OnEnter(self)
 	DT:SetupTooltip(self)
 	local textOnly = not E.db.datatexts.goldCoins and true or false
 	local style = E.db.datatexts.goldFormat or "BLIZZARD"
-	
+
 	DT.tooltip:AddLine(L['Session:'])
 	DT.tooltip:AddDoubleLine(L["Earned:"], E:FormatMoney(Profit, style, textOnly), 1, 1, 1, 1, 1, 1)
 	DT.tooltip:AddDoubleLine(L["Spent:"], E:FormatMoney(Spent, style, textOnly), 1, 1, 1, 1, 1, 1)
@@ -76,7 +76,7 @@ local function OnEnter(self)
 		end
 		if name and count then DT.tooltip:AddDoubleLine(name, count, 1, 1, 1) end
 	end
-	
+
 	DT.tooltip:AddLine' '
 	DT.tooltip:AddLine(resetInfoFormatter)
 

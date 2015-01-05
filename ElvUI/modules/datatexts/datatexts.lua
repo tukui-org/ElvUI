@@ -8,13 +8,13 @@ local len = string.len
 function DT:Initialize()
 	--if E.db["datatexts"].enable ~= true then return end
 	E.DataTexts = DT
-	
+
 	self.tooltip = CreateFrame("GameTooltip", "DatatextTooltip", E.UIParent, "GameTooltipTemplate")
 	TT:HookScript(self.tooltip, 'OnShow', 'SetStyle')
-	
+
 	self:RegisterLDB()
 	self:LoadDataTexts()
-	
+
 	self:RegisterEvent('PLAYER_ENTERING_WORLD', 'LoadDataTexts')
 	--self:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'LoadDataTexts') -- is this needed??
 end
@@ -41,20 +41,20 @@ function DT:RegisterLDB()
 				DT.tooltip:Show()
 			end
 		end
-		
+
 		if obj.OnEnter then
 			function OnEnter(self)
 				DT:SetupTooltip(self)
 				obj.OnEnter(self)
 				DT.tooltip:Show()
-			end		
+			end
 		end
 
 		if obj.OnLeave then
 			function OnLeave(self)
 				obj.OnLeave(self)
 				DT.tooltip:Hide()
-			end		
+			end
 		end
 
 		local function OnClick(self, button)
@@ -68,16 +68,16 @@ function DT:RegisterLDB()
 				curFrame.text:SetText(name..': '..hex..value..'|r')
 			end
 		end
-		
+
 		local function OnEvent(self)
 			curFrame = self
 			LDB:RegisterCallback("LibDataBroker_AttributeChanged_"..name.."_text", textUpdate)
-			LDB:RegisterCallback("LibDataBroker_AttributeChanged_"..name.."_value", textUpdate)					
-			LDB.callbacks:Fire("LibDataBroker_AttributeChanged_"..name.."_text", name, nil, obj.text, obj)	
+			LDB:RegisterCallback("LibDataBroker_AttributeChanged_"..name.."_value", textUpdate)
+			LDB.callbacks:Fire("LibDataBroker_AttributeChanged_"..name.."_text", name, nil, obj.text, obj)
 		end
 
 		self:RegisterDatatext(name, {'PLAYER_ENTER_WORLD'}, OnEvent, nil, OnClick, OnEnter, OnLeave)
-	end	
+	end
 end
 
 local function ValueColorUpdate(newHex)
@@ -107,7 +107,7 @@ function DT:UpdateAllDimensions()
 			local pointIndex = DT.PointLocation[i]
 			panel.dataPanels[pointIndex]:Width(width)
 			panel.dataPanels[pointIndex]:Height(height)
-			panel.dataPanels[pointIndex]:Point(DT:GetDataPanelPoint(panel, i, numPoints))		
+			panel.dataPanels[pointIndex]:Point(DT:GetDataPanelPoint(panel, i, numPoints))
 		end
 	end
 end
@@ -128,7 +128,7 @@ function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff)
 	DT.RegisteredPanels[panel:GetName()] = panel
 	panel.dataPanels = {}
 	panel.numPoints = numPoints
-	
+
 	panel.xOff = xOff
 	panel.yOff = yOff
 	panel.anchor = anchor
@@ -141,23 +141,23 @@ function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff)
 			panel.dataPanels[pointIndex].text:SetAllPoints()
 			panel.dataPanels[pointIndex].text:FontTemplate()
 			panel.dataPanels[pointIndex].text:SetJustifyH("CENTER")
-			panel.dataPanels[pointIndex].text:SetJustifyV("MIDDLE")	
+			panel.dataPanels[pointIndex].text:SetJustifyV("MIDDLE")
 		end
-		
+
 		panel.dataPanels[pointIndex]:Point(DT:GetDataPanelPoint(panel, i, numPoints))
 	end
-	
+
 	panel:SetScript('OnSizeChanged', DT.UpdateAllDimensions)
 	DT.UpdateAllDimensions(panel)
 end
 
 
 
-function DT:AssignPanelToDataText(panel, data)	
+function DT:AssignPanelToDataText(panel, data)
 	if data['events'] then
 		for _, event in pairs(data['events']) do
 			-- use new filtered event registration for appropriate events
-			if event == "UNIT_AURA" or event == "UNIT_RESISTANCES"  or event == "UNIT_STATS" or event == "UNIT_ATTACK_POWER" 
+			if event == "UNIT_AURA" or event == "UNIT_RESISTANCES"  or event == "UNIT_STATS" or event == "UNIT_ATTACK_POWER"
 				or event == "UNIT_RANGED_ATTACK_POWER" or event == "UNIT_TARGET" or event == "UNIT_SPELL_HASTE" then
 				panel:RegisterUnitEvent(event, 'player')
 			elseif event == 'COMBAT_LOG_EVENT_UNFILTERED' then
@@ -167,7 +167,7 @@ function DT:AssignPanelToDataText(panel, data)
 			end
 		end
 	end
-	
+
 	if data['eventFunc'] then
 		panel:SetScript('OnEvent', data['eventFunc'])
 		data['eventFunc'](panel, 'ELVUI_FORCE_RUN')
@@ -177,11 +177,11 @@ function DT:AssignPanelToDataText(panel, data)
 		panel:SetScript('OnUpdate', data['onUpdate'])
 		data['onUpdate'](panel, 20000)
 	end
-	
+
 	if data['onClick'] then
 		panel:SetScript('OnClick', data['onClick'])
 	end
-	
+
 	if data['onEnter'] then
 		panel:SetScript('OnEnter', data['onEnter'])
 	end
@@ -190,14 +190,14 @@ function DT:AssignPanelToDataText(panel, data)
 		panel:SetScript('OnLeave', data['onLeave'])
 	else
 		panel:SetScript('OnLeave', DT.Data_OnLeave)
-	end	
+	end
 end
 
 function DT:LoadDataTexts()
 	self.db = E.db.datatexts
 	for name, obj in LDB:DataObjectIterator() do
 		LDB:UnregisterAllCallbacks(self)
-	end	
+	end
 
 	local inInstance, instanceType = IsInInstance()
 	local fontTemplate = LSM:Fetch("font", self.db.font)
@@ -213,7 +213,7 @@ function DT:LoadDataTexts()
 			panel.dataPanels[pointIndex].text:FontTemplate(fontTemplate, self.db.fontSize, self.db.fontOutline)
 			panel.dataPanels[pointIndex].text:SetText(nil)
 			panel.dataPanels[pointIndex].pointIndex = pointIndex
-			
+
 			if (panelName == 'LeftChatDataPanel' or panelName == 'RightChatDataPanel') and (inInstance and (instanceType == "pvp")) and not DT.ForceHideBGStats and E.db.datatexts.battleground then
 				panel.dataPanels[pointIndex]:RegisterEvent('UPDATE_BATTLEFIELD_SCORE')
 				panel.dataPanels[pointIndex]:SetScript('OnEvent', DT.UPDATE_BATTLEFIELD_SCORE)
@@ -239,7 +239,7 @@ function DT:LoadDataTexts()
 			end
 		end
 	end
-	
+
 	if DT.ForceHideBGStats then
 		DT.ForceHideBGStats = nil;
 	end
@@ -247,9 +247,9 @@ end
 
 --[[
 	DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc)
-	
+
 	name - name of the datatext (required)
-	events - must be a table with string values of event names to register 
+	events - must be a table with string values of event names to register
 	eventFunc - function that gets fired when an event gets triggered
 	updateFunc - onUpdate script target function
 	click - function to fire when clicking the datatext
@@ -262,29 +262,29 @@ function DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onE
 	else
 		error('Cannot register datatext no name was provided.')
 	end
-	
+
 	if type(events) ~= 'table' and events ~= nil then
 		error('Events must be registered as a table.')
 	else
 		DT.RegisteredDataTexts[name]['events'] = events
 		DT.RegisteredDataTexts[name]['eventFunc'] = eventFunc
 	end
-	
+
 	if updateFunc and type(updateFunc) == 'function' then
 		DT.RegisteredDataTexts[name]['onUpdate'] = updateFunc
 	end
-	
+
 	if clickFunc and type(clickFunc) == 'function' then
 		DT.RegisteredDataTexts[name]['onClick'] = clickFunc
 	end
-	
+
 	if onEnterFunc and type(onEnterFunc) == 'function' then
 		DT.RegisteredDataTexts[name]['onEnter'] = onEnterFunc
 	end
-	
+
 	if onLeaveFunc and type(onLeaveFunc) == 'function' then
 		DT.RegisteredDataTexts[name]['onLeave'] = onLeaveFunc
-	end	
+	end
 end
 
 E:RegisterModule(DT:GetName())

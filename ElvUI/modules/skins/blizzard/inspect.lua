@@ -55,7 +55,7 @@ local function LoadSkin()
 		slot:CreateBackdrop("Default")
 		slot.backdrop:SetAllPoints()
 	end
-	
+
 	hooksecurefunc('InspectPaperDollItemSlotButton_Update', function(button)
 		local unit = InspectFrame.unit;
 		local quality = GetInventoryItemQuality(unit, button:GetID())
@@ -66,11 +66,11 @@ local function LoadSkin()
 			button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
 	end)
-	
+
 	--InspectPVPFrameBottom:Kill()
 	InspectGuildFrameBG:Kill()
 
-	InspectTalentFrame:StripTextures()	
+	InspectTalentFrame:StripTextures()
 end
 
 S:RegisterSkin("Blizzard_InspectUI", LoadSkin)

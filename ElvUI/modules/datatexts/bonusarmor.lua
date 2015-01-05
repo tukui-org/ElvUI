@@ -11,15 +11,15 @@ local effectiveArmor, bonusArmor, isNegatedForSpec, armorReduction, hasAura, per
 
 local function OnEnter(self)
 	DT:SetupTooltip(self)
-	
+
 	local text, tooltip;
 	effectiveArmor = select(2, UnitArmor('player'));
 	bonusArmor, isNegatedForSpec = UnitBonusArmor('player');
 	armorReduction = PaperDollFrame_GetArmorReduction(effectiveArmor, UnitLevel('player'));
 	hasAura, percent = GetBladedArmorEffect();
-	
+
 	text = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, BONUS_ARMOR).." "..format("%s", bonusArmor)..FONT_COLOR_CODE_CLOSE
-	
+
 	if (hasAura) then
 		tooltip = format(STAT_ARMOR_BONUS_ARMOR_BLADED_ARMOR_TOOLTIP, armorReduction, (bonusArmor * (percent / 100)))
 	elseif (not isNegatedForSpec) then
@@ -27,14 +27,14 @@ local function OnEnter(self)
 	else
 		tooltip = STAT_NO_BENEFIT_TOOLTIP
 	end
-	
+
 	DT.tooltip:AddDoubleLine(text, nil, 1, 1, 1);
 	DT.tooltip:AddLine(tooltip, nil, nil, nil, true);
-	
+
 	if (hasAura) or (not isNegatedForSpec) then
 		DT.tooltip:AddLine(' ')
 		DT.tooltip:AddLine(L['Mitigation By Level: '])
-		
+
 		local playerlvl = UnitLevel('player') + 3
 		for i = 1, 4 do
 			armorReduction = PaperDollFrame_GetArmorReduction(effectiveArmor, playerlvl);
@@ -58,7 +58,7 @@ end
 
 local function ValueColorUpdate(hex, r, g, b)
 	displayString = join("", "%s", hex, "%d|r")
-	
+
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)
 	end
@@ -67,9 +67,9 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 
 --[[
 	DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc)
-	
+
 	name - name of the datatext (required)
-	events - must be a table with string values of event names to register 
+	events - must be a table with string values of event names to register
 	eventFunc - function that gets fired when an event gets triggered
 	updateFunc - onUpdate script target function
 	click - function to fire when clicking the datatext

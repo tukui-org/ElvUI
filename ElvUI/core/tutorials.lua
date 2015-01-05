@@ -21,22 +21,22 @@ E.TutorialList = {
 function E:SetNextTutorial()
 	self.db.currentTutorial = self.db.currentTutorial or 0
 	self.db.currentTutorial = self.db.currentTutorial + 1
-	
+
 	if self.db.currentTutorial > #E.TutorialList then
 		self.db.currentTutorial = 1
 	end
-	
+
 	ElvUITutorialWindow.desc:SetText(E.TutorialList[self.db.currentTutorial])
 end
 
 function E:SetPrevTutorial()
 	self.db.currentTutorial = self.db.currentTutorial or 0
 	self.db.currentTutorial = self.db.currentTutorial - 1
-	
+
 	if self.db.currentTutorial <= 0 then
 		self.db.currentTutorial = #E.TutorialList
 	end
-	
+
 	ElvUITutorialWindow.desc:SetText(E.TutorialList[self.db.currentTutorial])
 end
 
@@ -62,7 +62,7 @@ function E:SpawnTutorialFrame()
 	title:FontTemplate()
 	title:SetPoint("CENTER", header, "CENTER")
 	title:SetText('ElvUI')
-		
+
 	local desc = f:CreateFontString("ARTWORK")
 	desc:SetFontObject("GameFontHighlight")
 	desc:SetJustifyV("TOP")
@@ -70,7 +70,7 @@ function E:SpawnTutorialFrame()
 	desc:SetPoint("TOPLEFT", 18, -32)
 	desc:SetPoint("BOTTOMRIGHT", -18, 30)
 	f.desc = desc
-	
+
 	f.disableButton = CreateFrame("CheckButton", f:GetName()..'DisableButton', f, "OptionsCheckButtonTemplate")
 	_G[f.disableButton:GetName() .. "Text"]:SetText(DISABLE)
 	f.disableButton:SetPoint("BOTTOMLEFT")
@@ -80,22 +80,22 @@ function E:SpawnTutorialFrame()
 	f.disableButton:SetScript("OnClick", function(self) E.db.hideTutorial = self:GetChecked() end)
 
 	f.hideButton = CreateFrame("Button", f:GetName()..'HideButton', f, "OptionsButtonTemplate")
-	f.hideButton:SetPoint("BOTTOMRIGHT", -5, 5)	
-	S:HandleButton(f.hideButton)	
+	f.hideButton:SetPoint("BOTTOMRIGHT", -5, 5)
+	S:HandleButton(f.hideButton)
 	_G[f.hideButton:GetName() .. "Text"]:SetText(HIDE)
 	f.hideButton:SetScript("OnClick", function(self) E:StaticPopupSpecial_Hide(self:GetParent()) end)
-	
+
 	f.nextButton = CreateFrame("Button", f:GetName()..'NextButton', f, "OptionsButtonTemplate")
-	f.nextButton:SetPoint("RIGHT", f.hideButton, 'LEFT', -4, 0)	
+	f.nextButton:SetPoint("RIGHT", f.hideButton, 'LEFT', -4, 0)
 	f.nextButton:Width(20)
-	S:HandleButton(f.nextButton)	
+	S:HandleButton(f.nextButton)
 	_G[f.nextButton:GetName() .. "Text"]:SetText('>')
 	f.nextButton:SetScript("OnClick", function(self) E:SetNextTutorial() end)
 
 	f.prevButton = CreateFrame("Button", f:GetName()..'PrevButton', f, "OptionsButtonTemplate")
-	f.prevButton:SetPoint("RIGHT", f.nextButton, 'LEFT', -4, 0)	
+	f.prevButton:SetPoint("RIGHT", f.nextButton, 'LEFT', -4, 0)
 	f.prevButton:Width(20)
-	S:HandleButton(f.prevButton)	
+	S:HandleButton(f.prevButton)
 	_G[f.prevButton:GetName() .. "Text"]:SetText('<')
 	f.prevButton:SetScript("OnClick", function(self) E:SetPrevTutorial() end)
 
@@ -110,6 +110,6 @@ function E:Tutorials(forceShow)
 	end
 
 	E:StaticPopupSpecial_Show(f)
-	
+
 	self:SetNextTutorial()
 end

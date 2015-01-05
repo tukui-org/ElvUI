@@ -19,7 +19,7 @@ local Uploads = {}
 function D:Initialize()
 	self:RegisterComm(REQUEST_PREFIX)
 	self:RegisterEvent("CHAT_MSG_ADDON")
-	
+
 	self.statusBar = CreateFrame("StatusBar", "ElvUI_Download", UIParent)
 	self.statusBar:CreateBackdrop('Default')
 	self.statusBar:SetStatusBarTexture(E.media.normTex)
@@ -32,13 +32,13 @@ function D:Initialize()
 end
 
 -- Used to start uploads
-function D:Distribute(target, otherServer, isGlobal)	
+function D:Distribute(target, otherServer, isGlobal)
 	local profileKey
 	if not isGlobal then
 		if ElvDB.profileKeys then
 			profileKey = ElvDB.profileKeys[E.myname..' - '..E.myrealm]
 		end
-		
+
 		data = ElvDB.profiles[profileKey]
 	else
 		profileKey = 'global'
@@ -46,7 +46,7 @@ function D:Distribute(target, otherServer, isGlobal)
 	end
 
 	if not data or not profileKey then return end
-	
+
 	local serialData = self:Serialize(data)
 	local length = len(serialData)
 	local message = format("%s:%d:%s", profileKey, length, target)
@@ -55,7 +55,7 @@ function D:Distribute(target, otherServer, isGlobal)
 		serialData = serialData,
 		target = target,
 	}
-	
+
 	if otherServer then
 		if IsInRaid() and UnitInRaid("target") then
 			self:SendCommMessage(REQUEST_PREFIX, message, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and "INSTANCE_CHAT" or "RAID")
@@ -64,7 +64,7 @@ function D:Distribute(target, otherServer, isGlobal)
 		else
 			E:Print(L["Must be in group with the player if he isn't on the same server as you."])
 			return
-		end		
+		end
 	else
 		self:SendCommMessage(REQUEST_PREFIX, message, "WHISPER", target)
 	end
@@ -77,11 +77,11 @@ function D:CHAT_MSG_ADDON(event, prefix, message, channel, sender)
 	local cur = len(message)
 	local max = Downloads[sender].length
 	Downloads[sender].current = Downloads[sender].current + cur
-	
+
 	if Downloads[sender].current > max then
 		Downloads[sender].current = max
 	end
-	
+
 	self.statusBar:SetValue(Downloads[sender].current)
 end
 
@@ -92,17 +92,17 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 		if dist ~= "WHISPER" and sendTo ~= E.myname then
 			return
 		end
-		
-		if self.statusBar:IsShown() then 
+
+		if self.statusBar:IsShown() then
 			self:SendCommMessage(REPLY_PREFIX, profile..":NO", dist, sender)
-			return 
+			return
 		end
 
 		local textString = format(L['%s is attempting to share the profile %s with you. Would you like to accept the request?'], sender, profile)
 		if profile == "global" then
 			textString = format(L['%s is attempting to share his filters with you. Would you like to accept the request?'], sender)
 		end
-		
+
 		E.PopupDialogs['DISTRIBUTOR_RESPONSE'] = {
 			text = textString,
 			OnAccept = function()
@@ -112,7 +112,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 				E:StaticPopupSpecial_Show(self.statusBar)
 				self:SendCommMessage(REPLY_PREFIX, profile..":YES", dist, sender)
 			end,
-			OnCancel = function() 
+			OnCancel = function()
 				self:SendCommMessage(REPLY_PREFIX, profile..":NO", dist, sender)
 			end,
 			button1 = ACCEPT,
@@ -122,7 +122,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 			hideOnEscape = 1,
 		}
 		E:StaticPopup_Show('DISTRIBUTOR_RESPONSE')
-		
+
 		Downloads[sender] = {
 			current = 0,
 			length = tonumber(length),
@@ -133,7 +133,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 	elseif prefix == REPLY_PREFIX then
 		self:UnregisterComm(REPLY_PREFIX)
 		E:StaticPopup_Hide('DISTRIBUTOR_WAITING')
-		
+
 		local profileKey, response = split(":", msg)
 		if response == "YES" then
 			self:RegisterComm(TRANSFER_COMPLETE_PREFIX)
@@ -146,13 +146,13 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 	elseif prefix == TRANSFER_PREFIX then
 		self:UnregisterComm(TRANSFER_PREFIX)
 		E:StaticPopupSpecial_Hide(self.statusBar)
-		
+
 		local profileKey = Downloads[sender].profile
 		local success, data = self:Deserialize(msg)
-		
+
 		if success then
 			local textString = format(L['Profile download complete from %s, would you like to load the profile %s now?'], sender, profileKey)
-			
+
 			if profileKey == "global" then
 				textString = format(L['Filter download complete from %s, would you like to apply changes now?'], sender)
 			else
@@ -170,22 +170,22 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 							ElvDB.profiles[self.editBox:GetText()] = data
 							LibStub("AceAddon-3.0"):GetAddon("ElvUI").data:SetProfile(self.editBox:GetText())
 							E:UpdateAll(true)
-							Downloads[sender] = nil						
+							Downloads[sender] = nil
 						end,
 						OnShow = function(self) self.editBox:SetText(profileKey) self.editBox:SetFocus() end,
 						timeout = 0,
 						exclusive = 1,
 						whileDead = 1,
 						hideOnEscape = 1,
-						preferredIndex = 3						
+						preferredIndex = 3
 					}
-					
+
 					E:StaticPopup_Show('DISTRIBUTOR_CONFIRM')
-					self:SendCommMessage(TRANSFER_COMPLETE_PREFIX, "COMPLETE", dist, sender)					
+					self:SendCommMessage(TRANSFER_COMPLETE_PREFIX, "COMPLETE", dist, sender)
 					return
 				end
 			end
-			
+
 			E.PopupDialogs['DISTRIBUTOR_CONFIRM'] = {
 				text = textString,
 				OnAccept = function()
@@ -193,11 +193,11 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 						E:CopyTable(ElvDB.global, data)
 						E:UpdateAll(true)
 					else
-						LibStub("AceAddon-3.0"):GetAddon("ElvUI").data:SetProfile(profileKey)					
+						LibStub("AceAddon-3.0"):GetAddon("ElvUI").data:SetProfile(profileKey)
 					end
 					Downloads[sender] = nil
 				end,
-				OnCancel = function() 
+				OnCancel = function()
 					Downloads[sender] = nil
 				end,
 				button1 = YES,
@@ -205,7 +205,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 				whileDead = 1,
 				hideOnEscape = 1,
 			}
-			
+
 			E:StaticPopup_Show('DISTRIBUTOR_CONFIRM')
 			self:SendCommMessage(TRANSFER_COMPLETE_PREFIX, "COMPLETE", dist, sender)
 		else

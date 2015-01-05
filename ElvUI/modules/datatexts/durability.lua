@@ -28,7 +28,7 @@ local function OnEvent(self, event, ...)
 	for index, value in pairs(slots) do
 		local slot = GetInventorySlotInfo(index)
 		current, max = GetInventoryItemDurability(slot)
-		
+
 		if current then
 			invDurability[value] = (current/max)*100
 
@@ -37,7 +37,7 @@ local function OnEvent(self, event, ...)
 			end
 		end
 	end
-	
+
 	self.text:SetFormattedText(displayString, totalDurability)
 end
 
@@ -47,17 +47,17 @@ end
 
 local function OnEnter(self)
 	DT:SetupTooltip(self)
-	
+
 	for slot, durability in pairs(invDurability) do
 		DT.tooltip:AddDoubleLine(slot, format(tooltipString, durability), 1, 1, 1, E:ColorGradient(durability * 0.01, 1, 0, 0, 1, 1, 0, 0, 1, 0))
 	end
-		
+
 	DT.tooltip:Show()
 end
 
 local function ValueColorUpdate(hex, r, g, b)
 	displayString = join("", DURABILITY, ": ", hex, "%d%%|r")
-	
+
 	if lastPanel ~= nil then
 		OnEvent(lastPanel, 'ELVUI_COLOR_UPDATE')
 	end
@@ -67,9 +67,9 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 
 --[[
 	DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc)
-	
+
 	name - name of the datatext (required)
-	events - must be a table with string values of event names to register 
+	events - must be a table with string values of event names to register
 	eventFunc - function that gets fired when an event gets triggered
 	updateFunc - onUpdate script target function
 	click - function to fire when clicking the datatext

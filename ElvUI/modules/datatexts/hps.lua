@@ -18,7 +18,7 @@ local function Reset()
 	combatTime = 0
 	healTotal = 0
 	lastHealAmount = 0
-end	
+end
 
 local function GetHPS(self)
 	local hps
@@ -32,7 +32,7 @@ end
 
 local function OnEvent(self, event, ...)
 	lastPanel = self
-	
+
 	if event == 'PLAYER_ENTERING_WORLD' then
 		playerID = UnitGUID('player')
 	elseif event == 'PLAYER_REGEN_DISABLED' or event == "PLAYER_LEAVE_COMBAT" then
@@ -43,7 +43,7 @@ local function OnEvent(self, event, ...)
 		lastSegment = now
 	elseif event == 'COMBAT_LOG_EVENT_UNFILTERED' then
 		if not events[select(2, ...)] then return end
-		
+
 		local id = select(4, ...)
 		if id == playerID or id == petID then
 			if timeStamp == 0 then timeStamp = select(1, ...) end
@@ -56,7 +56,7 @@ local function OnEvent(self, event, ...)
 	elseif event == UNIT_PET then
 		petID = UnitGUID("pet")
 	end
-	
+
 	GetHPS(self)
 end
 

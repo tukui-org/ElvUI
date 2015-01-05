@@ -9,15 +9,15 @@ local format = string.format
 
 local function OnEnter(self)
 	DT:SetupTooltip(self)
-	
+
 	local text, tooltip;
 	local versatility = GetCombatRating(CR_VERSATILITY_DAMAGE_DONE);
 	local versatilityDamageBonus = GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE) + GetVersatilityBonus(CR_VERSATILITY_DAMAGE_DONE);
 	local versatilityDamageTakenReduction = GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_TAKEN) + GetVersatilityBonus(CR_VERSATILITY_DAMAGE_TAKEN);
-	
+
 	text = HIGHLIGHT_FONT_COLOR_CODE..format(VERSATILITY_TOOLTIP_FORMAT, STAT_VERSATILITY, versatilityDamageBonus, versatilityDamageTakenReduction)..FONT_COLOR_CODE_CLOSE
 	tooltip = format(CR_VERSATILITY_TOOLTIP, versatilityDamageBonus, versatilityDamageTakenReduction, BreakUpLargeNumbers(versatility), versatilityDamageBonus, versatilityDamageTakenReduction)
-	
+
 	DT.tooltip:AddDoubleLine(text, nil, 1, 1, 1);
 	DT.tooltip:AddLine(tooltip, nil, nil, nil, true);
 	DT.tooltip:Show()
@@ -31,7 +31,7 @@ end
 
 local function ValueColorUpdate(hex, r, g, b)
 	displayModifierString = join("", "%s: ", hex, "%.2f%%|r")
-	
+
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)
 	end
@@ -40,9 +40,9 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 
 --[[
 	DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc)
-	
+
 	name - name of the datatext (required)
-	events - must be a table with string values of event names to register 
+	events - must be a table with string values of event names to register
 	eventFunc - function that gets fired when an event gets triggered
 	updateFunc - onUpdate script target function
 	click - function to fire when clicking the datatext
