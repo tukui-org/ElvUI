@@ -169,6 +169,11 @@ function UF:Update_ArenaFrames(frame, db)
 				health.colorClass = true
 				health.colorReaction = true
 			end
+
+			if self.db['colors'].forcehealthreaction == true then
+				health.colorClass = false
+				health.colorReaction = true
+			end
 		end
 
 		--Position

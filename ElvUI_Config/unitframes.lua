@@ -1579,6 +1579,14 @@ E.Options.args.unitframe = {
 									get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
 									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,
 								},
+								forcehealthreaction = {
+									order = 2,
+									type = 'toggle',
+									name = L['Force Reaction Color'],
+									desc = L['Forces reaction color instead of class color on units controlled by players.'],
+									get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
+									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,
+									},
 								colorhealthbyvalue = {
 									order = 3,
 									type = 'toggle',
