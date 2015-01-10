@@ -552,6 +552,7 @@ L["Bags Only"] = true;
 L["Bank Only"] = true;
 L["Both"] = true;
 L["Cursor Anchor"] = "툴팁을 마우스에 표시"
+L["Custom Faction Colors"] = true;
 L["Display guild ranks if a unit is guilded."] = "길드명과 함께 길드 등급도 표시합니다."
 L["Display how many of a certain item you have in your possession."] = "현재 툴팁으로 보고있는 아이템을 여러개 갖고 있다면 갯수를 표시합니다."
 L["Display player titles."] = "이름에 칭호도 표시합니다."

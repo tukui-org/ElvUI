@@ -527,6 +527,7 @@ L["Bags Only"] = "Sacs seulement";
 L["Bank Only"] = "Banque seulement";
 L["Both"] = "Les deux";
 L['Cursor Anchor'] = "Ancrage sur le curseur";
+L["Custom Faction Colors"] = true;
 L['Display guild ranks if a unit is guilded.'] = "Affiche le rang de la guilde si un joueur est guildé"
 L['Display how many of a certain item you have in your possession.'] = "Affiche combien vous avez d'objets de ce type en votre possession."
 L['Display player titles.'] = "Affiche le titre du joueur"

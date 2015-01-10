@@ -527,6 +527,7 @@ L["Bags Only"] = true;
 L["Bank Only"] = true;
 L["Both"] = true;
 L['Cursor Anchor'] = true;
+L["Custom Faction Colors"] = true;
 L["Display guild ranks if a unit is guilded."] = "Mostrar o Posto da guilda se a unidade possuir uma."
 L["Display how many of a certain item you have in your possession."] = "Mostra quantos de certo item você possui."
 L["Display player titles."] = "Mostrar títulos dos jogadores."

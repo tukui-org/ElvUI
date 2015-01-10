@@ -527,6 +527,7 @@ L["Bags Only"] = true;
 L["Bank Only"] = true;
 L["Both"] = true;
 L['Cursor Anchor'] = true;
+L["Custom Faction Colors"] = true;
 L['Display guild ranks if a unit is guilded.'] = "当目标有公会时显示其在公会内的等级."
 L['Display how many of a certain item you have in your possession.'] = '显示当前物品在你身上的数量.'
 L['Display player titles.'] = "显示玩家头衔."
