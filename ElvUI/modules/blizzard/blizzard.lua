@@ -14,7 +14,7 @@ function B:Initialize()
 	self:PositionVehicleFrame()
 	self:PositionAltPowerBar()
 
-	if not IsAddOnLoaded("DugisGuideViewerZ")) then
+	if not IsAddOnLoaded("DugisGuideViewerZ") then
 		self:MoveObjectiveFrame()
 	end
 
