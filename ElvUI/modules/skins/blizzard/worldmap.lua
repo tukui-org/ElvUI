@@ -32,6 +32,7 @@ local function LoadSkin()
 	S:HandleButton(QuestMapFrame.DetailsFrame.AbandonButton)
 	S:HandleButton(QuestMapFrame.DetailsFrame.ShareButton, true)
 	S:HandleButton(QuestMapFrame.DetailsFrame.TrackButton)
+	QuestMapFrame.QuestsFrame.StoryTooltip:SetTemplate("Transparent")
 
 	S:HandleCloseButton(WorldMapFrameCloseButton)
 	S:HandleButton(WorldMapFrameSizeDownButton, true)
