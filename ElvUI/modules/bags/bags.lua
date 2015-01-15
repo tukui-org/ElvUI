@@ -1,7 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:NewModule('Bags', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
+local Search = LibStub('LibItemSearch-1.2')
 
-local len, sub, find, format, floor, abs = string.len, string.sub, string.find, string.format, math.floor, math.abs
+local len, sub, find, format, floor, abs, gsub = string.len, string.sub, string.find, string.format, math.floor, math.abs, string.gsub
 local tinsert = table.insert
 
 B.ProfessionColors = {
@@ -81,7 +82,8 @@ function B:UpdateSearch()
 		searchString = ''
 	end
 
-	SetItemSearch(searchString);
+	B:SetSearch(searchString);
+	-- SetItemSearch(searchString);
 end
 
 function B:OpenEditbox()
@@ -98,18 +100,19 @@ function B:ResetAndClear()
 	B:SearchReset();
 end
 
-function B:INVENTORY_SEARCH_UPDATE()
+function B:SetSearch(query)
+	local empty = len(query:gsub(' ', '')) == 0
 	for _, bagFrame in pairs(self.BagFrames) do
 		for _, bagID in ipairs(bagFrame.BagIDs) do
 			for slotID = 1, GetContainerNumSlots(bagID) do
-				local _, _, _, _, _, _, _, isFiltered = GetContainerItemInfo(bagID, slotID);
+				local _, _, _, _, _, _, link = GetContainerItemInfo(bagID, slotID);
 				local button = bagFrame.Bags[bagID][slotID];
-				if ( isFiltered ) then
-					SetItemButtonDesaturated(button, 1);
-					button:SetAlpha(0.4);
-				else
+				if ( empty or Search:Matches(link, query) ) then
 					SetItemButtonDesaturated(button);
 					button:SetAlpha(1);
+				else
+					SetItemButtonDesaturated(button, 1);
+					button:SetAlpha(0.4);
 				end
 			end
 		end
@@ -117,17 +120,33 @@ function B:INVENTORY_SEARCH_UPDATE()
 
 	if(ElvUIReagentBankFrameItem1) then
 		for slotID=1, 98 do
-			local _, _, _, _, _, _, _, isFiltered = GetContainerItemInfo(REAGENTBANK_CONTAINER, slotID);
+			local _, _, _, _, _, _, link = GetContainerItemInfo(REAGENTBANK_CONTAINER, slotID);
 			local button = _G["ElvUIReagentBankFrameItem"..slotID]
-			if ( isFiltered ) then
-				SetItemButtonDesaturated(button, 1);
-				button:SetAlpha(0.4);
-			else
+			if ( empty or Search:Matches(link, query) ) then
 				SetItemButtonDesaturated(button);
 				button:SetAlpha(1);
+			else
+				SetItemButtonDesaturated(button, 1);
+				button:SetAlpha(0.4);
 			end
 		end
 	end
+	
+	--WIP: Guild bank support
+	-- if GuildBankFrame:IsShown() then
+		-- for i = 1, GetNumGuildBankTabs() do
+			-- local tab = _G["GuildBankTab"..i]
+			-- for slotID = 1, MAX_GUILDBANK_SLOTS_PER_TAB do
+				-- local link = GetGuildBankItemLink(tab, slotID)
+				-- local button =  ??
+				-- if (empty or Search:Matches(link, query) ) then
+				
+				-- else
+				
+				-- end
+			-- end
+		-- end
+	-- end
 end
 
 function B:UpdateSlot(bagID, slotID)
@@ -1248,7 +1267,7 @@ function B:Initialize()
 	E.Bags = self;
 
 	self:DisableBlizzard();
-	self:RegisterEvent('INVENTORY_SEARCH_UPDATE');
+	-- self:RegisterEvent('INVENTORY_SEARCH_UPDATE');
 	self:RegisterEvent("PLAYER_MONEY", "UpdateGoldText")
 	self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateGoldText")
 	self:RegisterEvent("PLAYER_TRADE_MONEY", "UpdateGoldText")
