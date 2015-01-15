@@ -5,6 +5,8 @@ local Search = LibStub('LibItemSearch-1.2')
 local len, sub, find, format, floor, abs, gsub = string.len, string.sub, string.find, string.format, math.floor, math.abs, string.gsub
 local tinsert = table.insert
 
+local SEARCH_STRING = ""
+
 B.ProfessionColors = {
 	[0x0008] = {224/255, 187/255, 74/255}, -- Leatherworking
 	[0x0010] = {74/255, 77/255, 224/255}, -- Inscription
@@ -58,12 +60,13 @@ function B:DisableBlizzard()
 end
 
 function B:SearchReset()
-	SetItemSearch('')
+	SEARCH_STRING = ""
 end
 
 function B:UpdateSearch()
 	local MIN_REPEAT_CHARACTERS = 3;
 	local searchString = self:GetText();
+	local prevSearchString = SEARCH_STRING;
 	if (len(searchString) > MIN_REPEAT_CHARACTERS) then
 		local repeatChar = true;
 		for i=1, MIN_REPEAT_CHARACTERS, 1 do
@@ -78,12 +81,17 @@ function B:UpdateSearch()
 		end
 	end
 
-	if searchString == SEARCH then
+	--Keep active search term when switching between bank and reagent bank
+	if searchString == SEARCH and prevSearchString ~= "" then
+		searchString = prevSearchString
+	elseif searchString == SEARCH then
 		searchString = ''
 	end
 
-	B:SetSearch(searchString);
-	-- SetItemSearch(searchString);
+	SEARCH_STRING = searchString
+
+	B:SetSearch(SEARCH_STRING);
+	B:SetGuildBankSearch(SEARCH_STRING);
 end
 
 function B:OpenEditbox()
@@ -131,22 +139,32 @@ function B:SetSearch(query)
 			end
 		end
 	end
-	
-	--WIP: Guild bank support
-	-- if GuildBankFrame:IsShown() then
-		-- for i = 1, GetNumGuildBankTabs() do
-			-- local tab = _G["GuildBankTab"..i]
-			-- for slotID = 1, MAX_GUILDBANK_SLOTS_PER_TAB do
-				-- local link = GetGuildBankItemLink(tab, slotID)
-				-- local button =  ??
-				-- if (empty or Search:Matches(link, query) ) then
-				
-				-- else
-				
-				-- end
-			-- end
-		-- end
-	-- end
+end
+
+function B:SetGuildBankSearch(query)
+	if GuildBankFrame and GuildBankFrame:IsShown() then
+		local tab = GetCurrentGuildBankTab()
+		local _, _, isViewable = GetGuildBankTabInfo(tab)
+		
+		if isViewable then
+			for slotID = 1, MAX_GUILDBANK_SLOTS_PER_TAB do
+				local link = GetGuildBankItemLink(tab, slotID)
+				--A column goes from 1-14, e.g. GuildBankColumn1Button14 (slotID 14) or GuildBankColumn2Button3 (slotID 17)
+				local col = math.ceil(slotID / 14)
+				local btn = (slotID % 14)
+				if col == 0 then col = 1 end
+				if btn == 0 then btn = 14 end
+				local button = _G["GuildBankColumn"..col.."Button"..btn]
+				if (empty or Search:Matches(link, query) ) then
+					SetItemButtonDesaturated(button);
+					button:SetAlpha(1);
+				else
+					SetItemButtonDesaturated(button, 1);
+					button:SetAlpha(0.4);
+				end
+			end
+		end
+	end
 end
 
 function B:UpdateSlot(bagID, slotID)
@@ -1218,6 +1236,11 @@ function B:PLAYERBANKBAGSLOTS_CHANGED()
 	self:Layout(true)
 end
 
+--Update search when switching guild bank tab (slightly delayed, depending on how fast the event fires)
+function B:GUILDBANKBAGSLOTS_CHANGED()
+	self:SetGuildBankSearch(SEARCH_STRING);
+end
+
 function B:CloseBank()
 	if not self.BankFrame then return; end -- WHY???, WHO KNOWS!
 	self.BankFrame:Hide()
@@ -1267,7 +1290,7 @@ function B:Initialize()
 	E.Bags = self;
 
 	self:DisableBlizzard();
-	-- self:RegisterEvent('INVENTORY_SEARCH_UPDATE');
+	self:RegisterEvent("GUILDBANKBAGSLOTS_CHANGED")
 	self:RegisterEvent("PLAYER_MONEY", "UpdateGoldText")
 	self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateGoldText")
 	self:RegisterEvent("PLAYER_TRADE_MONEY", "UpdateGoldText")
