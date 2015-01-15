@@ -104,6 +104,7 @@ L["Legs"] = "다리"
 L["lvl"] = "레벨"
 L["Main Hand"] = "주장비"
 L["Mitigation By Level: "] = "레벨별 데미지 경감률"
+L["Multistrike"] = true;
 L["No Guild"] = "길드 없음"
 L["Offhand"] = "보조장비"
 L["Orb Possessions"] = "공 소지"

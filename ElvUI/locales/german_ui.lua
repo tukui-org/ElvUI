@@ -104,6 +104,7 @@ L['Legs'] = "Beine"
 L['lvl'] = "lvl"
 L['Main Hand'] = "Waffenhand"
 L['Mitigation By Level: '] = "Milderung durch Stufe:"
+L["Multistrike"] = true;
 L['No Guild'] = 'Keine Gilde'
 L['Offhand'] = "Schildhand"
 L['Orb Possessions'] = 'Erhaltene Kugeln'

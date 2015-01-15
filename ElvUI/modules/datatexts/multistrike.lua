@@ -11,7 +11,7 @@ local function OnEnter(self)
 	DT:SetupTooltip(self)
 
 	local text, tooltip;
-	text = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, STAT_MULTISTRIKE).." "..format("%.2F%%", GetMultistrike())..FONT_COLOR_CODE_CLOSE
+	text = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, L["Multistrike"]).." "..format("%.2F%%", GetMultistrike())..FONT_COLOR_CODE_CLOSE
 	tooltip = format(CR_MULTISTRIKE_TOOLTIP, GetMultistrike(), GetMultistrikeEffect(), BreakUpLargeNumbers(GetCombatRating(CR_MULTISTRIKE)), GetCombatRatingBonus(CR_MULTISTRIKE))
 
 	DT.tooltip:AddDoubleLine(text, nil, 1, 1, 1);
@@ -21,7 +21,7 @@ end
 
 local function OnEvent(self, event, unit)
 	multistrike = GetMultistrike()
-	self.text:SetFormattedText(displayModifierString, STAT_MULTISTRIKE, multistrike)
+	self.text:SetFormattedText(displayModifierString, L["Multistrike"], multistrike)
 	lastPanel = self
 end
 

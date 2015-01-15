@@ -104,6 +104,7 @@ L['Legs'] = "Ноги"
 L['lvl'] = "ур."
 L['Main Hand'] = "Правая рука"
 L['Mitigation By Level: '] = "Снижение на уровне: "
+L["Multistrike"] = true;
 L['No Guild'] = "Нет гильдии"
 L['Offhand'] = "Левая рука"
 L['Orb Possessions'] = "Захваты сферы"

@@ -104,6 +104,7 @@ L['Legs'] = "腿部"
 L['lvl'] = "等級"
 L['Main Hand'] = "主手"
 L['Mitigation By Level: '] = "等級減傷: "
+L["Multistrike"] = true;
 L['No Guild'] = "沒有公會"
 L['Offhand'] = "副手"
 L['Orb Possessions'] = "寶珠屬地"

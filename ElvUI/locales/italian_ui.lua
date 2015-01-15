@@ -104,6 +104,7 @@ L['Legs'] = true;
 L['lvl'] = true;
 L['Main Hand'] = true;
 L['Mitigation By Level: '] = true;
+L["Multistrike"] = true;
 L['No Guild'] = true;
 L['Offhand'] = true;
 L['Orb Possessions'] = true;

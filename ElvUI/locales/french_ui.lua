@@ -104,6 +104,7 @@ L['Legs'] = "Jambes"
 L['lvl'] = "niveau"
 L['Main Hand'] = "Main droite"
 L['Mitigation By Level: '] = "Réduction par niveau: "
+L["Multistrike"] = true;
 L['No Guild'] = "Non Guildé"
 L['Offhand'] = "Main gauche"
 L['Orb Possessions'] = "Orbes obtenues"
