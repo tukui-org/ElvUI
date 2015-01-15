@@ -64,6 +64,7 @@ function B:SearchReset()
 end
 
 function B:UpdateSearch()
+	if self.Instructions then self.Instructions:SetShown(self:GetText() == "") end
 	local MIN_REPEAT_CHARACTERS = 3;
 	local searchString = self:GetText();
 	local prevSearchString = SEARCH_STRING;
@@ -102,7 +103,8 @@ function B:OpenEditbox()
 end
 
 function B:ResetAndClear()
-	self:GetParent().editBox:SetText(SEARCH)
+	local editbox = self:GetParent().editBox or self
+	if editbox then editbox:SetText(SEARCH) end
 
 	self:ClearFocus();
 	B:SearchReset();
@@ -142,10 +144,11 @@ function B:SetSearch(query)
 end
 
 function B:SetGuildBankSearch(query)
+	local empty = len(query:gsub(' ', '')) == 0
 	if GuildBankFrame and GuildBankFrame:IsShown() then
 		local tab = GetCurrentGuildBankTab()
 		local _, _, isViewable = GetGuildBankTabInfo(tab)
-		
+
 		if isViewable then
 			for slotID = 1, MAX_GUILDBANK_SLOTS_PER_TAB do
 				local link = GetGuildBankItemLink(tab, slotID)
@@ -1257,7 +1260,14 @@ function B:GUILDBANKFRAME_OPENED()
 	button:SetText(L['Sort Tab'])
 	button:SetScript("OnClick", function() B:CommandDecorator(B.SortBags, 'guild')() end)
 	E.Skins:HandleButton(button, true)]]
-
+	if GuildItemSearchBox then
+		GuildItemSearchBox:SetScript("OnEscapePressed", self.ResetAndClear);
+		GuildItemSearchBox:SetScript("OnEnterPressed", self.ResetAndClear);
+		GuildItemSearchBox:SetScript("OnEditFocusLost", self.ResetAndClear);
+		GuildItemSearchBox:SetScript("OnEditFocusGained", GuildItemSearchBox.HighlightText);
+		GuildItemSearchBox:SetScript("OnTextChanged", self.UpdateSearch);
+		GuildItemSearchBox:SetScript('OnChar', self.UpdateSearch);
+	end
 	self:UnregisterEvent("GUILDBANKFRAME_OPENED")
 end
 
