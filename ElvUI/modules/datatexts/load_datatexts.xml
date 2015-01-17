@@ -19,7 +19,6 @@
 	<Script file='leech.lua'/>
 	<Script file='mastery.lua'/>
 	<Script file='multistrike.lua'/>
-	<Script file='pvppower.lua'/>
 	<Script file='pvpresilience.lua'/>
 	<Script file='regen.lua'/>
 	<Script file='resolve.lua'/>
