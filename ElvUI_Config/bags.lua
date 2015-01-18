@@ -218,5 +218,18 @@ E.Options.args.bags = {
 				},
 			},
 		},
+		search_syntax = {
+			order = 6,
+			type = "group",
+			name = L["Search Syntax"],
+			disabled = function() return not E.bags end,
+			args = {
+				text = {
+					order = 1,
+					type = "description",
+					name = L["SEARCH_SYNTAX_DESC"],
+				},
+			},
+		},
 	},
 }

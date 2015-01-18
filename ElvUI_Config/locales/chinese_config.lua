@@ -14,6 +14,30 @@ L['PANEL_DESC'] = "调整左、右对话框的大小，此设定将会影响对�
 L["SKINS_DESC"] = "调整外观设定."
 L["TOGGLESKIN_DESC"] = "启用/停用此外观."
 L["TOOLTIP_DESC"] = "鼠标提示资讯设定选项."
+L["SEARCH_SYNTAX_DESC"] = [=[With the new addition of LibItemSearch, you now have access to much more advanced item searches. The following is a documentation of the search syntax. See the full explanation at: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
+
+Specific Searching:
+    • q:[quality] or quality:[quality]. For instance, q:epic will find all epic items.
+    • l:[level], lvl:[level] or level:[level]. For example, l:30 will find all items with level 30.
+    • t:[search], type:[search] or slot:[search]. For instance, t:weapon will find all weapons.
+    • n:[name] or name:[name]. For instance, typing n:muffins will find all items with names containing "muffins".
+    • s:[set] or set:[set]. For example, s:fire will find all items in equipment sets you have with names that start with fire.
+    • tt:[search], tip:[search] or tooltip:[search]. For instance, tt:binds will find all items that can be bound to account, on equip, or on pickup.
+
+	
+Search Operators:
+    • ! : Negates a search. For example, !q:epic will find all items that are NOT epic.
+    • | : Joins two searches. Typing q:epic | t:weapon will find all items that are either epic OR weapons.
+    • & : Intersects two searches. For instance, q:epic & t:weapon will find all items that are epic AND weapons
+    • >, <, <=, => : Performs comparisons on numerical searches. For example, typing lvl: >30 will find all items with level HIGHER than 30.
+
+
+The following search keywords can also be used:
+    • soulbound, bound, bop : Bind on pickup items.
+    • bou : Bind on use items.
+    • boe : Bind on equip items.
+    • boa : Bind on account items.
+    • quest : Quest bound items.]=];
 L['TEXT_FORMAT_DESC'] = [=[提供一个更改文字格式的方式
 
 例如:
@@ -118,6 +142,7 @@ L['List of items to ignore when sorting. If you wish to add multiple items you m
 L['Money Format'] = true;
 L['Panel Width (Bags)'] = '背包面板宽度'
 L['Panel Width (Bank)'] = '银行面板宽度'
+L["Search Syntax"] = true;
 L["Set the size of your bag buttons."] = "设置背包按钮尺寸."
 L['Short (Whole Numbers)'] = true;
 L['Short'] = true;
