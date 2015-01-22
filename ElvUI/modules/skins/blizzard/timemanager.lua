@@ -11,15 +11,15 @@ local function LoadSkin()
 	S:HandleDropDownBox(TimeManagerAlarmHourDropDown, 80)
 	S:HandleDropDownBox(TimeManagerAlarmMinuteDropDown, 80)
 	S:HandleDropDownBox(TimeManagerAlarmAMPMDropDown, 80)
-	
+
 	S:HandleEditBox(TimeManagerAlarmMessageEditBox)
-	
+
 	S:HandleCheckBox(TimeManagerAlarmEnabledButton)
 
-	
+
 	S:HandleCheckBox(TimeManagerMilitaryTimeCheck)
 	S:HandleCheckBox(TimeManagerLocalTimeCheck)
-	
+
 	TimeManagerStopwatchFrame:StripTextures()
 	TimeManagerStopwatchCheck:SetTemplate("Default")
 	TimeManagerStopwatchCheck:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
@@ -29,12 +29,12 @@ local function LoadSkin()
 	hover:Point("TOPLEFT",TimeManagerStopwatchCheck,2,-2)
 	hover:Point("BOTTOMRIGHT",TimeManagerStopwatchCheck,-2,2)
 	TimeManagerStopwatchCheck:SetHighlightTexture(hover)
-	
+
 	StopwatchFrame:StripTextures()
 	StopwatchFrame:CreateBackdrop("Transparent")
 	StopwatchFrame.backdrop:Point("TOPLEFT", 0, -17)
 	StopwatchFrame.backdrop:Point("BOTTOMRIGHT", 0, 2)
-	
+
 	StopwatchTabFrame:StripTextures()
 	S:HandleCloseButton(StopwatchCloseButton)
 	S:HandleNextPrevButton(StopwatchPlayPauseButton)

@@ -75,16 +75,16 @@ local function UpdateCPU()
 	for i = 1, #cpuTable do
 		addonCPU = GetAddOnCPUUsage(cpuTable[i][1])
 		cpuTable[i][3] = addonCPU
-		totalCPU = totalCPU + addonCPU	
+		totalCPU = totalCPU + addonCPU
 	end
-	
+
 	-- Sort the table to put the largest addon on top
 	sort(cpuTable, function(a, b)
 		if a and b then
 			return a[3] > b[3]
 		end
-	end)	
-	
+	end)
+
 	return totalCPU
 end
 
@@ -98,24 +98,24 @@ local function OnEnter(self)
 	local cpuProfiling = GetCVar("scriptProfile") == "1"
 	DT:SetupTooltip(self)
 
-	UpdateMemory()	
+	UpdateMemory()
 	bandwidth = GetAvailableBandwidth()
-	
+
 	DT.tooltip:AddDoubleLine(L['Home Latency:'], format(homeLatencyString, select(3, GetNetStats())), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
-	
+
 	if bandwidth ~= 0 then
 		DT.tooltip:AddDoubleLine(L['Bandwidth'] , format(bandwidthString, bandwidth),0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 		DT.tooltip:AddDoubleLine(L['Download'] , format(percentageString, GetDownloadedPercentage() *100),0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
 		DT.tooltip:AddLine(" ")
 	end
-	
+
 	local totalCPU = nil
 	DT.tooltip:AddDoubleLine(L['Total Memory:'], formatMem(totalMemory), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 	if cpuProfiling then
 		totalCPU = UpdateCPU()
 		DT.tooltip:AddDoubleLine(L['Total CPU:'], format(homeLatencyString, totalCPU), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 	end
-	
+
 	local red, green
 	if IsShiftKeyDown() or not cpuProfiling then
 		DT.tooltip:AddLine(" ")
@@ -124,10 +124,10 @@ local function OnEnter(self)
 				red = memoryTable[i][3] / totalMemory
 				green = 1 - red
 				DT.tooltip:AddDoubleLine(memoryTable[i][2], formatMem(memoryTable[i][3]), 1, 1, 1, red, green + .5, 0)
-			end						
+			end
 		end
 	end
-	
+
 	if cpuProfiling and not IsShiftKeyDown() then
 		DT.tooltip:AddLine(" ")
 		for i = 1, #cpuTable do
@@ -135,12 +135,12 @@ local function OnEnter(self)
 				red = cpuTable[i][3] / totalCPU
 				green = 1 - red
 				DT.tooltip:AddDoubleLine(cpuTable[i][2], format(homeLatencyString, cpuTable[i][3]), 1, 1, 1, red, green + .5, 0)
-			end						
+			end
 		end
 		DT.tooltip:AddLine(" ")
 		DT.tooltip:AddLine(L['(Hold Shift) Memory Usage'])
 	end
-	
+
 	DT.tooltip:Show()
 end
 
@@ -152,32 +152,32 @@ end
 local function Update(self, t)
 	int = int - t
 	int2 = int2 - t
-	
+
 	if int < 0 then
 		RebuildAddonList()
 		int = 10
 	end
 	if int2 < 0 then
 		local framerate = floor(GetFramerate())
-		local latency = select(4, GetNetStats()) 
-					
-		self.text:SetFormattedText("FPS: %s%d|r MS: %s%d|r", 
-			statusColors[framerate >= 30 and 1 or (framerate >= 20 and framerate < 30) and 2 or (framerate >= 10 and framerate < 20) and 3 or 4], 
-			framerate, 
-			statusColors[latency < 150 and 1 or (latency >= 150 and latency < 300) and 2 or (latency >= 300 and latency < 500) and 3 or 4], 
+		local latency = select(4, GetNetStats())
+
+		self.text:SetFormattedText("FPS: %s%d|r MS: %s%d|r",
+			statusColors[framerate >= 30 and 1 or (framerate >= 20 and framerate < 30) and 2 or (framerate >= 10 and framerate < 20) and 3 or 4],
+			framerate,
+			statusColors[latency < 150 and 1 or (latency >= 150 and latency < 300) and 2 or (latency >= 300 and latency < 500) and 3 or 4],
 			latency)
 		int2 = 1
 		if enteredFrame then
 			OnEnter(self)
-		end		
+		end
 	end
 end
 
 --[[
 	DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc)
-	
+
 	name - name of the datatext (required)
-	events - must be a table with string values of event names to register 
+	events - must be a table with string values of event names to register
 	eventFunc - function that gets fired when an event gets triggered
 	updateFunc - onUpdate script target function
 	click - function to fire when clicking the datatext

@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.bgscore ~= true then return end
 
-	
+
 	WorldStateScoreScrollFrame:StripTextures()
 	WorldStateScoreFrame:StripTextures()
 	WorldStateScoreFrame:SetTemplate("Transparent")
@@ -12,8 +12,8 @@ local function LoadSkin()
 	S:HandleScrollBar(WorldStateScoreScrollFrameScrollBar)
 	WorldStateScoreFrameInset:SetAlpha(0)
 	S:HandleButton(WorldStateScoreFrameLeaveButton)
-	
-	for i = 1, 3 do 
+	S:HandleButton(WorldStateScoreFrameQueueButton)
+	for i = 1, 3 do
 		S:HandleTab(_G["WorldStateScoreFrameTab"..i])
 	end
 end

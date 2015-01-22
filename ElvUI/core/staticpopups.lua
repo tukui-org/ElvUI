@@ -6,15 +6,16 @@ E.PopupDialogs = {};
 E.StaticPopup_DisplayedFrames = {};
 
 E.PopupDialogs['ELVUI_UPDATE_AVAILABLE'] = {
-	text = L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"],
+	text = L["ElvUI is five or more revisions out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"],
 	hasEditBox = 1,
 	OnShow = function(self)
+		self.editBox:SetAutoFocus(false)
 		self.editBox.width = self.editBox:GetWidth()
 		self.editBox:SetWidth(220)
 		self.editBox:SetText("http://www.tukui.org/dl.php")
 		self.editBox:HighlightText()
-		self.editBox:ClearFocus()
-	end,	
+		ChatEdit_FocusActiveWindow();
+	end,
 	OnHide = function(self)
 		self.editBox:SetWidth(self.editBox.width or 50)
 		self.editBox.width = nil
@@ -25,11 +26,22 @@ E.PopupDialogs['ELVUI_UPDATE_AVAILABLE'] = {
 	EditBoxOnEnterPressed = function(self)
 		ChatEdit_FocusActiveWindow();
 		self:GetParent():Hide();
-	end,	
+	end,
 	EditBoxOnEscapePressed = function(self)
 		ChatEdit_FocusActiveWindow();
 		self:GetParent():Hide();
-	end,	
+	end,
+	EditBoxOnTextChanged = function(self)
+		if(self:GetText() ~= "http://www.tukui.org/dl.php") then
+			self:SetText("http://www.tukui.org/dl.php")
+		end
+		self:HighlightText()
+		self:ClearFocus()
+		ChatEdit_FocusActiveWindow();
+	end,
+	OnEditFocusGained = function(self)
+		self:HighlightText()
+	end,
 	showAlert = 1,
 }
 
@@ -72,10 +84,10 @@ E.PopupDialogs['TUKUI_ELVUI_INCOMPATIBLE'] = {
 	OnAccept = function() DisableAddOn("ElvUI"); ReloadUI() end,
 	OnCancel = function() DisableAddOn("Tukui"); ReloadUI() end,
 	button1 = 'ElvUI',
-	button2 = 'Tukui',	
+	button2 = 'Tukui',
 	timeout = 0,
-	whileDead = 1,	
-	hideOnEscape = false,	
+	whileDead = 1,
+	hideOnEscape = false,
 }
 
 E.PopupDialogs['DISABLE_INCOMPATIBLE_ADDON'] = {
@@ -83,10 +95,10 @@ E.PopupDialogs['DISABLE_INCOMPATIBLE_ADDON'] = {
 	OnAccept = function() E.global.ignoreIncompatible = true; end,
 	OnCancel = function() E:StaticPopup_Hide('DISABLE_INCOMPATIBLE_ADDON'); E:StaticPopup_Show('INCOMPATIBLE_ADDON', E.PopupDialogs['INCOMPATIBLE_ADDON'].addon, E.PopupDialogs['INCOMPATIBLE_ADDON'].module) end,
 	button1 = L['I Swear'],
-	button2 = DECLINE,	
+	button2 = DECLINE,
 	timeout = 0,
-	whileDead = 1,	
-	hideOnEscape = false,		
+	whileDead = 1,
+	hideOnEscape = false,
 }
 
 E.PopupDialogs['INCOMPATIBLE_ADDON'] = {
@@ -97,10 +109,10 @@ E.PopupDialogs['INCOMPATIBLE_ADDON'] = {
 	OnAlt = function ()
 		E:StaticPopup_Hide('INCOMPATIBLE_ADDON')
 		E:StaticPopup_Show('DISABLE_INCOMPATIBLE_ADDON');
-	end,	
+	end,
 	timeout = 0,
-	whileDead = 1,	
-	hideOnEscape = false,	
+	whileDead = 1,
+	hideOnEscape = false,
 }
 
 E.PopupDialogs['PIXELPERFECT_CHANGED'] = {
@@ -108,8 +120,8 @@ E.PopupDialogs['PIXELPERFECT_CHANGED'] = {
 	button1 = ACCEPT,
 	OnAccept = E.noop,
 	timeout = 0,
-	whileDead = 1,	
-	hideOnEscape = false,	
+	whileDead = 1,
+	hideOnEscape = false,
 }
 
 E.PopupDialogs['CONFIGAURA_SET'] = {
@@ -117,8 +129,8 @@ E.PopupDialogs['CONFIGAURA_SET'] = {
 	button1 = ACCEPT,
 	OnAccept = E.noop,
 	timeout = 0,
-	whileDead = 1,	
-	hideOnEscape = false,	
+	whileDead = 1,
+	hideOnEscape = false,
 }
 
 E.PopupDialogs['QUEUE_TAINT'] = {
@@ -127,7 +139,7 @@ E.PopupDialogs['QUEUE_TAINT'] = {
 	button2 = CANCEL,
 	OnAccept = function() ReloadUI(); end,
 	timeout = 0,
-	whileDead = 1,	
+	whileDead = 1,
 	hideOnEscape = false,
 }
 
@@ -137,7 +149,7 @@ E.PopupDialogs['FAILED_UISCALE'] = {
 	button2 = CANCEL,
 	OnAccept = function() E.global.general.autoScale = false; ReloadUI(); end,
 	timeout = 0,
-	whileDead = 1,	
+	whileDead = 1,
 	hideOnEscape = false,
 }
 
@@ -189,7 +201,7 @@ E.PopupDialogs["DELETE_GRAYS"] = {
 	OnAccept = function() local B = E:GetModule('Bags'); B:VendorGrays(true) end,
 	OnShow = function(self)
 		MoneyFrame_Update(self.moneyFrame, E.PopupDialogs["DELETE_GRAYS"].Money);
-	end,	
+	end,
 	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
@@ -215,14 +227,14 @@ E.PopupDialogs["CANNOT_BUY_BANK_SLOT"] = {
 	text = L["Can't buy anymore slots!"],
 	button1 = ACCEPT,
 	timeout = 0,
-	whileDead = 1,	
+	whileDead = 1,
 }
 
 E.PopupDialogs["NO_BANK_BAGS"] = {
 	text = L['You must purchase a bank slot first!'],
 	button1 = ACCEPT,
 	timeout = 0,
-	whileDead = 1,	
+	whileDead = 1,
 }
 
 E.PopupDialogs["RESETUI_CHECK"] = {
@@ -237,35 +249,35 @@ E.PopupDialogs["RESETUI_CHECK"] = {
 }
 
 E.PopupDialogs["APRIL_FOOLS2013"] = {
-	text = "ElvUI needs to perform database optimizations please be patient.",
+	text = L["ElvUI needs to perform database optimizations please be patient."],
 	button1 = OKAY,
-	OnAccept = function() 
+	OnAccept = function()
 		if E.isMassiveShaking then
 			E:StopMassiveShake()
 		else
-			E:BeginFoolsDayEvent() 
-			return true 
+			E:BeginFoolsDayEvent()
+			return true
 		end
 	end,
 	timeout = 0,
-	whileDead = 1,	
+	whileDead = 1,
 }
 
 E.PopupDialogs["APRIL_FOOLS"] = {
-	text = "ElvUI needs to perform database optimizations please be patient.",
+	text = L["ElvUI needs to perform database optimizations please be patient."],
 	button1 = OKAY,
-	OnAccept = function() 
+	OnAccept = function()
 		E:SetupAprilFools2014()
 	end,
 	timeout = 0,
-	whileDead = 1,	
+	whileDead = 1,
 }
 
 E.PopupDialogs["APRIL_FOOLS_END"] = {
-	text = "Do you enjoy the new ElvUI?",
+	text = L["Do you enjoy the new ElvUI?"],
 	button1 = L["Yes, Keep Changes!"],
 	button2 = L["No, Revert Changes!"],
-	OnAccept = function() 
+	OnAccept = function()
 		E.global.aprilFools = true;
 		E:Print(L["Type /aprilfools to revert to old settings."])
 	end,
@@ -274,7 +286,7 @@ E.PopupDialogs["APRIL_FOOLS_END"] = {
 		E:RestoreAprilFools()
 	end,
 	timeout = 0,
-	whileDead = 1,	
+	whileDead = 1,
 }
 
 
@@ -364,7 +376,7 @@ end
 function E:StaticPopup_SetUpPosition(dialog)
 	if ( not tContains(E.StaticPopup_DisplayedFrames, dialog) ) then
 		local lastFrame = E.StaticPopup_DisplayedFrames[#E.StaticPopup_DisplayedFrames];
-		if ( lastFrame ) then	
+		if ( lastFrame ) then
 			dialog:SetPoint("TOP", lastFrame, "BOTTOM", 0, -4);
 		else
 			dialog:SetPoint("TOP", E.UIParent, "TOP", 0, -100);
@@ -431,7 +443,7 @@ function E:StaticPopup_OnHide()
 	PlaySound("igMainMenuClose");
 
 	E:StaticPopup_CollapseTable();
-	
+
 	local dialog = E.PopupDialogs[self.which];
 	local OnHide = dialog.OnHide;
 	if ( OnHide ) then
@@ -460,7 +472,7 @@ function E:StaticPopup_OnUpdate(elapsed)
 		end
 		self.timeleft = timeleft;
 	end
-	
+
 	if ( self.startDelay ) then
 		local which = self.which;
 		local timeleft = self.startDelay - elapsed;
@@ -573,10 +585,10 @@ function E:StaticPopup_Resize(dialog, which)
 	local text = _G[dialog:GetName().."Text"];
 	local editBox = _G[dialog:GetName().."EditBox"];
 	local button1 = _G[dialog:GetName().."Button1"];
-	
+
 	local maxHeightSoFar, maxWidthSoFar = (dialog.maxHeightSoFar or 0), (dialog.maxWidthSoFar or 0);
 	local width = 320;
-	
+
 	if ( dialog.numButtons == 3 ) then
 		width = 440;
 	elseif (info.showAlert or info.showAlertGear or info.closeButton) then
@@ -585,12 +597,12 @@ function E:StaticPopup_Resize(dialog, which)
 	elseif ( info.editBoxWidth and info.editBoxWidth > 260 ) then
 		width = width + (info.editBoxWidth - 260);
 	end
-	
+
 	if ( width > maxWidthSoFar )  then
 		dialog:SetWidth(width);
 		dialog.maxWidthSoFar = width;
 	end
-	
+
 	local height = 32 + text:GetHeight() + 8 + button1:GetHeight();
 	if ( info.hasEditBox ) then
 		height = height + 8 + editBox:GetHeight();
@@ -786,19 +798,19 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 	dialog.enterClicksFirstButton = info.enterClicksFirstButton;
 	-- Clear out data
 	dialog.data = data;
-	
+
 	-- Set the buttons of the dialog
 	local button1 = _G[dialog:GetName().."Button1"];
 	local button2 = _G[dialog:GetName().."Button2"];
 	local button3 = _G[dialog:GetName().."Button3"];
-	
+
 	do	--If there is any recursion in this block, we may get errors (tempButtonLocs is static). If you have to recurse, we'll have to create a new table each time.
 		assert(#tempButtonLocs == 0);	--If this fails, we're recursing. (See the table.wipe at the end of the block)
-		
+
 		tinsert(tempButtonLocs, button1);
 		tinsert(tempButtonLocs, button2);
 		tinsert(tempButtonLocs, button3);
-		
+
 		for i=#tempButtonLocs, 1, -1 do
 			--Do this stuff before we move it. (This is why we go back-to-front)
 			tempButtonLocs[i]:SetText(info["button"..i]);
@@ -809,11 +821,11 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 				tremove(tempButtonLocs, i);
 			end
 		end
-		
+
 		local numButtons = #tempButtonLocs;
 		--Save off the number of buttons.
 		dialog.numButtons = numButtons;
-		
+
 		if ( numButtons == 3 ) then
 			tempButtonLocs[1]:SetPoint("BOTTOMRIGHT", dialog, "BOTTOM", -72, 16);
 		elseif ( numButtons == 2 ) then
@@ -821,12 +833,12 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 		elseif ( numButtons == 1 ) then
 			tempButtonLocs[1]:SetPoint("BOTTOM", dialog, "BOTTOM", 0, 16);
 		end
-		
+
 		for i=1, numButtons do
 			if ( i > 1 ) then
 				tempButtonLocs[i]:SetPoint("LEFT", tempButtonLocs[i-1], "RIGHT", 13, 0);
 			end
-			
+
 			local width = tempButtonLocs[i]:GetTextWidth();
 			if ( width > 110 ) then
 				tempButtonLocs[i]:SetWidth(width + 20);
@@ -836,7 +848,7 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 			tempButtonLocs[i]:Enable();
 			tempButtonLocs[i]:Show();
 		end
-		
+
 		table.wipe(tempButtonLocs);
 	end
 
@@ -874,13 +886,13 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 	editBox.autoCompleteParams = info.autoCompleteParams;
 	editBox.autoCompleteRegex = info.autoCompleteRegex;
 	editBox.autoCompleteFormatRegex = info.autoCompleteFormatRegex;
-	
+
 	editBox.addHighlightedText = true;
-	
+
 	-- Finally size and show the dialog
 	E:StaticPopup_SetUpPosition(dialog);
 	dialog:Show();
-	
+
 	E:StaticPopup_Resize(dialog, which);
 
 	if ( info.sound ) then
@@ -902,7 +914,7 @@ end
 function E:StaticPopup_CombineTables()
 	if ( not tContains(E.StaticPopup_DisplayedFrames, dialog) ) then
 		local lastFrame = E.StaticPopup_DisplayedFrames[#StaticPopup_DisplayedFrames];
-		if ( lastFrame ) then	
+		if ( lastFrame ) then
 			dialog:SetPoint("TOP", lastFrame, "BOTTOM", 0, -4);
 		else
 			dialog:SetPoint("TOP", E.UIParent, "TOP", 0, -135);
@@ -913,35 +925,35 @@ end
 
 function E:Contruct_StaticPopups()
 	E.StaticPopupFrames = {}
-	
+
 	local S = self:GetModule('Skins')
 	for index = 1, MAX_STATIC_POPUPS do
 		E.StaticPopupFrames[index] = CreateFrame('Frame', 'ElvUI_StaticPopup'..index, E.UIParent, 'StaticPopupTemplate')
 		E.StaticPopupFrames[index]:SetID(index)
-		
+
 		--Fix Scripts
 		E.StaticPopupFrames[index]:SetScript('OnShow', E.StaticPopup_OnShow)
 		E.StaticPopupFrames[index]:SetScript('OnHide', E.StaticPopup_OnHide)
 		E.StaticPopupFrames[index]:SetScript('OnUpdate', E.StaticPopup_OnUpdate)
 		E.StaticPopupFrames[index]:SetScript('OnEvent', E.StaticPopup_OnEvent)
-		
+
 		for i = 1, 3 do
 			_G['ElvUI_StaticPopup'..index..'Button'..i]:SetScript('OnClick', function(self)
 				E.StaticPopup_OnClick(self:GetParent(), self:GetID())
 			end)
 		end
-		
+
 		_G['ElvUI_StaticPopup'..index..'EditBox']:SetScript('OnEnterPressed', E.StaticPopup_EditBoxOnEnterPressed)
 		_G['ElvUI_StaticPopup'..index..'EditBox']:SetScript('OnEscapePressed', E.StaticPopup_EditBoxOnEscapePressed)
 		_G['ElvUI_StaticPopup'..index..'EditBox']:SetScript('OnTextChanged', E.StaticPopup_EditBoxOnTextChanged)
-		
+
 		--Skin
 		E.StaticPopupFrames[index]:SetTemplate('Transparent')
 
 		for i = 1, 3 do
 			S:HandleButton(_G["ElvUI_StaticPopup"..index.."Button"..i])
 		end
-		
+
 		S:HandleEditBox(_G["ElvUI_StaticPopup"..index.."EditBox"])
 		S:HandleEditBox(_G["ElvUI_StaticPopup"..index.."MoneyInputFrameGold"])
 		S:HandleEditBox(_G["ElvUI_StaticPopup"..index.."MoneyInputFrameSilver"])
@@ -955,7 +967,7 @@ function E:Contruct_StaticPopups()
 		_G["ElvUI_StaticPopup"..index.."ItemFrameIconTexture"]:SetTexCoord(unpack(E.TexCoords))
 		_G["ElvUI_StaticPopup"..index.."ItemFrameIconTexture"]:SetInside()
 	end
-	
+
 	E:SecureHook('StaticPopup_SetUpPosition')
 	E:SecureHook('StaticPopup_CollapseTable')
 end

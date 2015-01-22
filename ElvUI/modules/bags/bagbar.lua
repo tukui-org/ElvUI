@@ -17,7 +17,7 @@ end
 function B:SkinBag(bag)
 	local icon = _G[bag:GetName().."IconTexture"]
 	bag.oldTex = icon:GetTexture()
-	
+
 	bag:StripTextures()
 	bag:SetTemplate("Default", true)
 	bag:StyleButton(true)
@@ -33,13 +33,13 @@ function B:SizeAndPositionBagBar()
 	else
 		ElvUIBags:SetAlpha(1)
 	end
-	
+
 	if E.db.bags.bagBar.showBackdrop then
 		ElvUIBags.backdrop:Show()
 	else
 		ElvUIBags.backdrop:Hide()
 	end
-	
+
 	for i=1, #ElvUIBags.buttons do
 		local button = ElvUIBags.buttons[i]
 		local prevButton = ElvUIBags.buttons[i-1]
@@ -56,36 +56,36 @@ function B:SizeAndPositionBagBar()
 				button:SetPoint('TOP', ElvUIBags, 'TOP', 0, -E.db.bags.bagBar.spacing)
 			elseif prevButton then
 				button:SetPoint('TOP', prevButton, 'BOTTOM', 0, -E.db.bags.bagBar.spacing)
-			end		
-		elseif E.db.bags.bagBar.growthDirection == 'HORIZONTAL' and E.db.bags.bagBar.sortDirection == 'DESCENDING' then	
+			end
+		elseif E.db.bags.bagBar.growthDirection == 'HORIZONTAL' and E.db.bags.bagBar.sortDirection == 'DESCENDING' then
 			if i == 1 then
 				button:SetPoint('RIGHT', ElvUIBags, 'RIGHT', -E.db.bags.bagBar.spacing, 0)
 			elseif prevButton then
 				button:SetPoint('RIGHT', prevButton, 'LEFT', -E.db.bags.bagBar.spacing, 0)
-			end		
+			end
 		else
 			if i == 1 then
 				button:SetPoint('BOTTOM', ElvUIBags, 'BOTTOM', 0, E.db.bags.bagBar.spacing)
 			elseif prevButton then
 				button:SetPoint('BOTTOM', prevButton, 'TOP', 0, E.db.bags.bagBar.spacing)
-			end			
+			end
 		end
 	end
-	
+
 	if E.db.bags.bagBar.growthDirection == 'HORIZONTAL' then
 		ElvUIBags:Width(E.db.bags.bagBar.size*(TOTAL_BAGS) + E.db.bags.bagBar.spacing*(TOTAL_BAGS) + E.db.bags.bagBar.spacing)
-		ElvUIBags:Height(E.db.bags.bagBar.size + E.db.bags.bagBar.spacing*2)	
+		ElvUIBags:Height(E.db.bags.bagBar.size + E.db.bags.bagBar.spacing*2)
 	else
 		ElvUIBags:Height(E.db.bags.bagBar.size*(TOTAL_BAGS) + E.db.bags.bagBar.spacing*(TOTAL_BAGS) + E.db.bags.bagBar.spacing)
-		ElvUIBags:Width(E.db.bags.bagBar.size + E.db.bags.bagBar.spacing*2)		
+		ElvUIBags:Width(E.db.bags.bagBar.size + E.db.bags.bagBar.spacing*2)
 	end
 end
 
 function B:LoadBagBar()
-	if not E.private.bags.bagBar then 
-		return 
+	if not E.private.bags.bagBar then
+		return
 	end
-	
+
 	local ElvUIBags = CreateFrame("Frame", "ElvUIBags", E.UIParent)
 	ElvUIBags:SetPoint('TOPRIGHT', RightChatPanel, 'TOPLEFT', -4, 0)
 	ElvUIBags.buttons = {};
@@ -97,13 +97,13 @@ function B:LoadBagBar()
 
 	MainMenuBarBackpackButton:SetParent(ElvUIBags)
 	MainMenuBarBackpackButton.SetParent = E.dummy
-	MainMenuBarBackpackButton:ClearAllPoints()	
+	MainMenuBarBackpackButton:ClearAllPoints()
 	MainMenuBarBackpackButtonCount:FontTemplate(nil, 10)
 	MainMenuBarBackpackButtonCount:ClearAllPoints()
 	MainMenuBarBackpackButtonCount:Point("BOTTOMRIGHT", MainMenuBarBackpackButton, "BOTTOMRIGHT", -1, 4)
 	MainMenuBarBackpackButton:HookScript('OnEnter', OnEnter)
 	MainMenuBarBackpackButton:HookScript('OnLeave', OnLeave)
-		
+
 	tinsert(ElvUIBags.buttons, MainMenuBarBackpackButton)
 	self:SkinBag(MainMenuBarBackpackButton)
 
@@ -113,11 +113,11 @@ function B:LoadBagBar()
 		b.SetParent = E.dummy
 		b:HookScript('OnEnter', OnEnter)
 		b:HookScript('OnLeave', OnLeave)
-		
+
 		self:SkinBag(b)
 		tinsert(ElvUIBags.buttons, b)
 	end
-	
+
 	self:SizeAndPositionBagBar()
 	E:CreateMover(ElvUIBags, 'BagsMover', L['Bags'])
 end

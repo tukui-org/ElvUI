@@ -1,6 +1,6 @@
 --[[
 	Command to grab frame information when mouseing over a frame
-	
+
 	Frame Name
 	Width
 	Height
@@ -26,12 +26,12 @@ SlashCmdList["FRAME"] = function(arg)
 		if arg:GetParent() and arg:GetParent():GetName() then
 			ChatFrame1:AddMessage("Parent: |cffFFD100"..arg:GetParent():GetName())
 		end
- 
+
 		ChatFrame1:AddMessage("Width: |cffFFD100"..format("%.2f",arg:GetWidth()))
 		ChatFrame1:AddMessage("Height: |cffFFD100"..format("%.2f",arg:GetHeight()))
 		ChatFrame1:AddMessage("Strata: |cffFFD100"..arg:GetFrameStrata())
 		ChatFrame1:AddMessage("Level: |cffFFD100"..arg:GetFrameLevel())
- 
+
 		if xOfs then
 			ChatFrame1:AddMessage("X: |cffFFD100"..format("%.2f",xOfs))
 		end
@@ -95,7 +95,7 @@ function TextureList(frame)
 	for i=1, frame:GetNumRegions() do
 		local region = select(i, frame:GetRegions())
 		if(region:GetObjectType() == "Texture") then
-			print(region:GetTexture(), region:GetName())
+			print(region:GetTexture(), region:GetName(), region:GetDrawLayer())
 		end
 	end
 end

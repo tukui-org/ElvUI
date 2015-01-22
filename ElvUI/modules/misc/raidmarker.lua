@@ -6,7 +6,7 @@ local ButtonIsDown;
 
 function M:RaidMarkCanMark()
 	if not self.RaidMarkFrame then return false; end
-	
+
 	if GetNumGroupMembers() > 0 then
 		if UnitIsGroupLeader('player') or UnitIsGroupAssistant("player") then
 			return true;
@@ -15,7 +15,7 @@ function M:RaidMarkCanMark()
 		else
 			UIErrorsFrame:AddMessage(L["You don't have permission to mark targets."], 1.0, 0.1, 0.1, 1.0, UIERRORS_HOLD_TIME);
 			return false;
-		end	
+		end
 	else
 		return true
 	end
@@ -88,6 +88,6 @@ function M:LoadRaidMarker()
 			button:SetPoint("CENTER", sin(angle) * 60, cos(angle) * 60);
 		end
 	end
-	
+
 	M.RaidMarkFrame = marker;
 end

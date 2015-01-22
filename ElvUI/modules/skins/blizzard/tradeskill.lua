@@ -9,7 +9,7 @@ local function LoadSkin()
 	TradeSkillFrameInset:StripTextures()
 	TradeSkillExpandButtonFrame:StripTextures()
 	TradeSkillDetailScrollChildFrame:StripTextures()
-	
+
 	TradeSkillFrame:SetTemplate("Transparent")
 	--TradeSkillFrame:Height(TradeSkillFrame:GetHeight() + 12)
 	TradeSkillRankFrame:StripTextures()
@@ -22,10 +22,10 @@ local function LoadSkin()
 	TradeSkillFilterButton.backdrop:SetAllPoints()
 	S:HandleButton(TradeSkillCreateAllButton, true)
 	S:HandleButton(TradeSkillViewGuildCraftersButton, true)
-	
+
 	S:HandleScrollBar(TradeSkillListScrollFrameScrollBar)
-	S:HandleScrollBar(TradeSkillDetailScrollFrameScrollBar)	
-	
+	S:HandleScrollBar(TradeSkillDetailScrollFrameScrollBar)
+
 	TradeSkillLinkButton:GetNormalTexture():SetTexCoord(0.25, 0.7, 0.37, 0.75)
 	TradeSkillLinkButton:GetPushedTexture():SetTexCoord(0.25, 0.7, 0.45, 0.8)
 	TradeSkillLinkButton:GetHighlightTexture():Kill()
@@ -37,9 +37,9 @@ local function LoadSkin()
 	S:HandleNextPrevButton(TradeSkillDecrementButton)
 	S:HandleNextPrevButton(TradeSkillIncrementButton)
 	TradeSkillIncrementButton:Point("RIGHT", TradeSkillCreateButton, "LEFT", -13, 0)
-	
+
 	S:HandleCloseButton(TradeSkillFrameCloseButton)
-	
+
 	local once = false
 	hooksecurefunc("TradeSkillFrame_SetSelection", function(id)
 		TradeSkillSkillIcon:StyleButton()
@@ -53,7 +53,7 @@ local function LoadSkin()
 			local button = _G["TradeSkillReagent"..i]
 			local icon = _G["TradeSkillReagent"..i.."IconTexture"]
 			local count = _G["TradeSkillReagent"..i.."Count"]
-			
+
 			icon:SetTexCoord(unpack(E.TexCoords))
 			icon:SetDrawLayer("OVERLAY")
 			if not icon.backdrop then
@@ -62,23 +62,23 @@ local function LoadSkin()
 				icon.backdrop:SetTemplate("Default")
 				icon.backdrop:SetOutside(icon)
 			end
-			
+
 			icon:SetParent(icon.backdrop)
 			count:SetParent(icon.backdrop)
 			count:SetDrawLayer("OVERLAY")
-			
+
 			if i > 2 and once == false then
 				local point, anchoredto, point2, x, y = button:GetPoint()
 				button:ClearAllPoints()
 				button:Point(point, anchoredto, point2, x, y - 3)
 				once = true
 			end
-			
+
 			_G["TradeSkillReagent"..i.."NameFrame"]:Kill()
 		end
 	end)
-	
-	
+
+
 	--Guild Crafters
 	TradeSkillGuildFrame:StripTextures()
 	TradeSkillGuildFrame:SetTemplate("Transparent")

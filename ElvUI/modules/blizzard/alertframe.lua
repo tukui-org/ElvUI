@@ -34,7 +34,7 @@ function E:PostAlertMove(screenQuadrant)
 					frame:Point("TOP", lastframe, "BOTTOM", 0, -4)
 				else
 					frame:Point("BOTTOM", lastframe, "TOP", 0, 4)
-				end	
+				end
 			else
 				if POSITION == "TOP" then
 					frame:Point("TOP", AlertFrameHolder, "BOTTOM", 0, -4)
@@ -43,17 +43,17 @@ function E:PostAlertMove(screenQuadrant)
 				end
 			end
 			lastframe = frame
-			
+
 			if frame:IsShown() then
 				lastShownFrame = frame
 			end
 		end
-		
+
 		AlertFrame:ClearAllPoints()
 		if lastShownFrame then
-			AlertFrame:SetAllPoints(lastShownFrame)			
+			AlertFrame:SetAllPoints(lastShownFrame)
 		else
-			AlertFrame:SetAllPoints(AlertFrameHolder)					
+			AlertFrame:SetAllPoints(AlertFrameHolder)
 		end
 	else
 		AlertFrame:ClearAllPoints()
@@ -75,10 +75,10 @@ function B:AlertFrame_SetLootAnchors(alertAnchor)
 		if ( GroupLootContainer:IsShown() ) then
 			GroupLootContainer:ClearAllPoints()
 			GroupLootContainer:SetPoint(POSITION, MissingLootFrame, ANCHOR_POINT, 0, YOFFSET)
-		end		
+		end
 	elseif ( GroupLootContainer:IsShown() or FORCE_POSITION) then
 		GroupLootContainer:ClearAllPoints()
-		GroupLootContainer:SetPoint(POSITION, alertAnchor, ANCHOR_POINT)	
+		GroupLootContainer:SetPoint(POSITION, alertAnchor, ANCHOR_POINT)
 	end
 end
 
@@ -89,6 +89,17 @@ function B:AlertFrame_SetLootWonAnchors(alertAnchor)
 			frame:ClearAllPoints()
 			frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
 			alertAnchor = frame
+		end
+	end
+end
+
+function B:AlertFrame_SetLootUpgradeFrameAnchors(alertAnchor)
+	for i=1, #LOOT_UPGRADE_ALERT_FRAMES do
+		local frame = LOOT_UPGRADE_ALERT_FRAMES[i];
+		if ( frame:IsShown() ) then
+			frame:ClearAllPoints()
+			frame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
+			alertAnchor = frame;
 		end
 	end
 end
@@ -170,10 +181,47 @@ function B:AlertFrame_SetGuildChallengeAnchors(alertAnchor)
 	end
 end
 
+function B:AlertFrame_SetDigsiteCompleteToastFrameAnchors(alertAnchor)
+    if ( DigsiteCompleteToastFrame and DigsiteCompleteToastFrame:IsShown() ) then
+		DigsiteCompleteToastFrame:ClearAllPoints()
+        DigsiteCompleteToastFrame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
+        alertAnchor = DigsiteCompleteToastFrame;
+    end
+end
+
+function B:AlertFrame_SetGarrisonBuildingAlertFrameAnchors(alertAnchor)
+    if ( GarrisonBuildingAlertFrame and GarrisonBuildingAlertFrame:IsShown() ) then
+		GarrisonBuildingAlertFrame:ClearAllPoints()
+        GarrisonBuildingAlertFrame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
+        alertAnchor = GarrisonBuildingAlertFrame;
+    end
+end
+
+function B:AlertFrame_SetGarrisonMissionAlertFrameAnchors(alertAnchor)
+    if ( GarrisonMissionAlertFrame and GarrisonMissionAlertFrame:IsShown() ) then
+		GarrisonMissionAlertFrame:ClearAllPoints()
+        GarrisonMissionAlertFrame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
+        alertAnchor = GarrisonMissionAlertFrame;
+    end
+end
+
+function B:AlertFrame_SetGarrisonFollowerAlertFrameAnchors(alertAnchor)
+    if ( GarrisonFollowerAlertFrame and GarrisonFollowerAlertFrame:IsShown() ) then
+		GarrisonFollowerAlertFrame:ClearAllPoints()
+        GarrisonFollowerAlertFrame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
+        alertAnchor = GarrisonFollowerAlertFrame;
+    end
+end
+
 function B:AlertMovers()
+	UIPARENT_MANAGED_FRAME_POSITIONS["GroupLootContainer"] = nil
+	E:CreateMover(AlertFrameHolder, "AlertFrameMover", L["Loot / Alert Frames"], nil, nil, E.PostAlertMove)
+
 	self:SecureHook('AlertFrame_FixAnchors', E.PostAlertMove)
 	self:SecureHook('AlertFrame_SetLootAnchors')
+	self:SecureHook('AlertFrame_SetStorePurchaseAnchors')
 	self:SecureHook('AlertFrame_SetLootWonAnchors')
+	self:SecureHook('AlertFrame_SetLootUpgradeFrameAnchors')
 	self:SecureHook('AlertFrame_SetMoneyWonAnchors')
 	self:SecureHook('AlertFrame_SetAchievementAnchors')
 	self:SecureHook('AlertFrame_SetCriteriaAnchors')
@@ -181,8 +229,8 @@ function B:AlertMovers()
 	self:SecureHook('AlertFrame_SetDungeonCompletionAnchors')
 	self:SecureHook('AlertFrame_SetScenarioAnchors')
 	self:SecureHook('AlertFrame_SetGuildChallengeAnchors')
-	self:SecureHook('AlertFrame_SetStorePurchaseAnchors')
-	
-	UIPARENT_MANAGED_FRAME_POSITIONS["GroupLootContainer"] = nil
-	E:CreateMover(AlertFrameHolder, "AlertFrameMover", L["Loot / Alert Frames"], nil, nil, E.PostAlertMove)
+	self:SecureHook('AlertFrame_SetDigsiteCompleteToastFrameAnchors')
+	self:SecureHook('AlertFrame_SetGarrisonBuildingAlertFrameAnchors')
+	self:SecureHook('AlertFrame_SetGarrisonMissionAlertFrameAnchors')
+	self:SecureHook('AlertFrame_SetGarrisonFollowerAlertFrameAnchors')
 end

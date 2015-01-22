@@ -14,6 +14,30 @@ L['PANEL_DESC'] = "调整左、右对话框的大小，此设定将会影响对�
 L["SKINS_DESC"] = "调整外观设定."
 L["TOGGLESKIN_DESC"] = "启用/停用此外观."
 L["TOOLTIP_DESC"] = "鼠标提示资讯设定选项."
+L["SEARCH_SYNTAX_DESC"] = [=[With the new addition of LibItemSearch, you now have access to much more advanced item searches. The following is a documentation of the search syntax. See the full explanation at: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
+
+Specific Searching:
+    • q:[quality] or quality:[quality]. For instance, q:epic will find all epic items.
+    • l:[level], lvl:[level] or level:[level]. For example, l:30 will find all items with level 30.
+    • t:[search], type:[search] or slot:[search]. For instance, t:weapon will find all weapons.
+    • n:[name] or name:[name]. For instance, typing n:muffins will find all items with names containing "muffins".
+    • s:[set] or set:[set]. For example, s:fire will find all items in equipment sets you have with names that start with fire.
+    • tt:[search], tip:[search] or tooltip:[search]. For instance, tt:binds will find all items that can be bound to account, on equip, or on pickup.
+
+	
+Search Operators:
+    • ! : Negates a search. For example, !q:epic will find all items that are NOT epic.
+    • | : Joins two searches. Typing q:epic | t:weapon will find all items that are either epic OR weapons.
+    • & : Intersects two searches. For instance, q:epic & t:weapon will find all items that are epic AND weapons
+    • >, <, <=, => : Performs comparisons on numerical searches. For example, typing lvl: >30 will find all items with level HIGHER than 30.
+
+
+The following search keywords can also be used:
+    • soulbound, bound, bop : Bind on pickup items.
+    • bou : Bind on use items.
+    • boe : Bind on equip items.
+    • boa : Bind on account items.
+    • quest : Quest bound items.]=];
 L['TEXT_FORMAT_DESC'] = [=[提供一个更改文字格式的方式
 
 例如:
@@ -58,7 +82,7 @@ L["Cooldown Text"] = "冷却文字"
 L["Darken Inactive"] = true;
 L["Days"] = "天"
 L["Display bind names on action buttons."] = "在快捷列按钮上显示快捷键名称."
-L["Display cooldown text on anything with the cooldown spiril."] = "显示技能冷却时间."
+L["Display cooldown text on anything with the cooldown spiral."] = "显示技能冷却时间."
 L["Display macro names on action buttons."] = "在快捷列按钮上显示巨集名称."
 L["Expiring"] = "即将冷却完毕"
 L["Height Multiplier"] = "高度倍增"
@@ -101,32 +125,45 @@ L['Align To Chat'] = '对齐到对话框'
 L["Ascending"] = "升序"
 L["Bag-Bar"] = "背包条"
 L["Bar Direction"] = "背包条排序方向"
+L['Blizzard Style'] = true;
 L["Bottom to Top"] = '底部到顶部'
 L['Button Size (Bag)'] = '背包格子尺寸'
 L['Button Size (Bank)'] = '银行背包格子尺寸'
+L['Condensed'] = true;
 L['Currency Format'] = "货币格式"
 L["Descending"] = "降序"
 L["Direction the bag sorting will use to allocate the items."] = '整理背包时物品排序方向.'
 L["Enable/Disable the all-in-one bag."] = "开/关整合背包。"
 L["Enable/Disable the Bag-Bar."] = "启用/禁用 背包条."
+L['Full'] = true;
 L["Icons and Text"] = "图标和文字"
 L['Ignore Items'] = "忽略项目"
 L['List of items to ignore when sorting. If you wish to add multiple items you must seperate the word with a comma.'] = "忽略清单中的项目，如果你想添加多个项目，你必须用逗号将它们分开."
+L['Money Format'] = true;
 L['Panel Width (Bags)'] = '背包面板宽度'
 L['Panel Width (Bank)'] = '银行面板宽度'
+L["Search Syntax"] = true;
 L["Set the size of your bag buttons."] = "设置背包按钮尺寸."
+L['Short (Whole Numbers)'] = true;
+L['Short'] = true;
+L['Show Coins'] = true;
+L['Smart'] = true;
 L["Sort Direction"] = "排列方向"
 L['Sort Inverted'] = "倒序"
 L["The direction that the bag frames be (Horizontal or Vertical)."] = "此方向决定框架是横排还是竖排."
 L["The direction that the bag frames will grow from the anchor."] = "背包框架将从此方向开始排列."
 L['The display format of the currency icons that get displayed below the main bag. (You have to be watching a currency for this to display)'] = "背包底部的货币显示格式. (你需要在货币页中勾选显示)."
+L['The display format of the money text that is shown at the top of the main bag.'] = true;
 L["The frame is not shown unless you mouse over the frame."] = "仅于滑鼠移经动作列时显示其框架."
 L['The size of the individual buttons on the bag frame.'] = '背包框架单个格子的尺寸.'
 L['The size of the individual buttons on the bank frame.'] = '银行框架单个格子的尺寸.'
 L["The spacing between buttons."] = "两个按钮间的距离"
 L["Top to Bottom"] = '顶部到底部'
-L["X Offset"] = "X轴偏移"
-L["Y Offset"] = "Y轴偏移"
+L['Use coin icons instead of colored text.'] = true;
+L["X Offset Bags"] = true;
+L["X Offset Bank"] = true;
+L["Y Offset Bags"] = true;
+L["Y Offset Bank"] = true;
 
 --Buffs and Debuffs
 L['Begin a new row or column after this many auras.'] = "在这些光环旁开始新的行或列."
@@ -139,6 +176,7 @@ L['Disabled Blizzard'] = true;
 L['Display the consolidated buffs bar.'] = "显示整合增益条"
 L["Fade Threshold"] = "阈值渐隐"
 L['Filter Consolidated'] = '过滤综合BUFF';
+L["When enabled active buff icons will light up instead of becoming darker, while inactive buff icons will become darker instead of being lit up."] = true;
 L['Index'] = "索引"
 L['Indicate whether buffs you cast yourself should be separated before or after.'] = "将你自身施放的增益从整体增益之前或之后分离出来."
 L['Limit the number of rows or columns.'] = "最大行数或列数."
@@ -147,6 +185,7 @@ L['No Sorting'] = "不排序"
 L['Only show consolidated icons on the consolidated bar that your class/spec is interested in. This is useful for raid leading.'] = '只在综合光环条上显示与你天赋相关的综合图标, 这对团队领袖非常有用.';
 L["Other's First"] = "他人光环优先"
 L['Remaining Time'] = "剩余时间"
+L["Reverse Style"] = true;
 L['Seperate'] = "光环分离"
 L['Set the size of the individual auras.'] = "设置每个光环的尺寸."
 L['Sort Method'] = "排序方式"
@@ -160,6 +199,9 @@ L['Your Auras First'] = "自身光环优先"
 
 --Chat
 L['Above Chat'] = '对话框上方'
+L['Adjust the height of your right chat panel.'] = true;
+L['Adjust the width of your right chat panel.'] = true;
+L["Alerts"] = true;
 L["Attempt to create URL links inside the chat."] = "在对话框中创建超链结"
 L['Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish.'] = "锁定左右对话框架的位置.禁用此选项将允许你移动对话框架到任意位置."
 L['Below Chat'] = '对话框下方'
@@ -168,6 +210,7 @@ L['Chat History'] = '对话历史'
 L["Copy Text"] = "复制文字"
 L['Display LFG Icons in group chat.'] = true;
 L["Display the hyperlink tooltip while hovering over a hyperlink."] = "鼠标悬停在超链接上时显示链接提示框"
+L["Enable the use of separate size options for the right chat panel."] = true;
 L['Fade Chat'] = '对话内容渐隐'
 L['Fade the chat text when there is no activity.'] = '渐隐对话框内长期不活动的文字.'
 L["Font Outline"] = "字体描边"
@@ -190,7 +233,10 @@ L['Panel Width'] = "对话框寛度"
 L['Position of the Chat EditBox, if datatexts are disabled this will be forced to be above chat.'] = '对话编辑框位置,如果底部的信息文字被禁用的话,将会强制显示在对话框顶部.'
 L["Prevent the same messages from displaying in chat more than once within this set amount of seconds, set to zero to disable."] = "单位时间（秒）内屏蔽重复对话信息，0为禁用此功能"
 L['Right Only'] = "仅显示右边"
+L['Right Panel Height'] = true;
+L['Right Panel Width'] = true;
 L["Scroll Interval"] = "滚动间隔"
+L["Separate Panel Sizes"] = true;
 L["Set the font outline."] = "设定字体的描边"
 L["Short Channels"] = "隐藏频道名称"
 L["Shorten the channel names in chat."] = "在对话视窗中隐藏频道名称."
@@ -236,7 +282,6 @@ L["Testing:"] = "测试:"
 
 --DataTexts
 L["24-Hour Time"] = "24小时制"
-L['Always Display'] = "总是显示"
 L['Battleground Texts'] = "战场资讯"
 L['Change settings for the display of the location text that is on the minimap.'] = "改变小地图所在位置文字的显示设置."
 L['Datatext Panel (Left)'] = "左侧资讯框"
@@ -244,20 +289,20 @@ L['Datatext Panel (Right)'] = "右侧资讯框"
 L["DataTexts"] = "资讯文字"
 L['Display data panels below the chat, used for datatexts.'] = "在对话框下显示用于资讯的框架."
 L['Display minimap panels below the minimap, used for datatexts.'] = "显示小地图下方的资讯框."
+L["Gold Format"] = true;
 L["If not set to true then the server time will be displayed instead."] = "若关闭此选项将显示伺服器时间."
 L["left"] = "左"
 L["LeftChatDataPanel"] = "对话视窗左方"
 L["LeftMiniPanel"] = "小地图左方"
 L["Local Time"] = "本地时间"
-L['Location Text'] = "所在位置文字"
 L["middle"] = "中"
-L['Minimap Mouseover'] = "小地图鼠标滑过"
 L['Minimap Panels'] = "小地图栏"
 L['Panel Transparency'] = "面板透明"
 L["Panels"] = "对话框"
 L["right"] = "右"
 L["RightChatDataPanel"] = "对话视窗右方"
 L["RightMiniPanel"] = "小地图右方"
+L["The display format of the money text that is shown in the gold datatext and its tooltip."] = true;
 L["Toggle 24-hour mode for the time datatext."] = "切换时间显示为24小时制."
 L['When inside a battleground display personal scoreboard information on the main datatext bars.'] = "处于战场时, 在主资讯文字条显示你的战场得分讯息."
 
@@ -274,19 +319,23 @@ L["You must be targeting a player."] = "你必须以一名玩家为目标."
 L["Accept Invites"] = "接受邀请"
 L['Adjust the position of the threat bar to either the left or right datatext panels.'] = "调整仇恨条的位置于左侧或右侧资讯面板"
 L['Adjust the size of the minimap.'] = "调整小地图尺寸。"
+L['AFK Mode'] = true;
 L["Announce Interrupts"] = "打断通告"
 L["Announce when you interrupt a spell to the specified chat channel."] = "在指定对话频道通知打断信息."
 L["Attempt to support eyefinity/nvidia surround."] = true;
 L['Auto Greed/DE'] = "自动贪婪/分解"
 L["Auto Repair"] = "自动修装"
 L["Auto Scale"] = "自动缩放"
+L["Auto"] = true;
 L["Automatically accept invites from guild/friends."] = "自动接受工会或好友的邀请"
 L["Automatically repair using the following method when visiting a merchant."] = "使用以下方式来自动修理装备."
 L["Automatically scale the User Interface based on your screen resolution"] = "依据屏幕分辨率度自动缩放介面"
 L['Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level.'] = "当你的等级达到满级时, 自动选择贪婪或分解绿色物品."
 L["Automatically vendor gray items when visiting a vendor."] = "当访问商人时自动出售灰色物品."
+L["Bonus Reward Position"] = true;
 L['Bottom Panel'] = "底部面板"
 L['Chat Bubbles Style'] = true;
+L['Direction the bar moves on gains/losses'] = true;
 L['Display a panel across the bottom of the screen. This is for cosmetic only.'] = '显示跨越屏幕底部的面板,仅仅是用于装饰.'
 L['Display a panel across the top of the screen. This is for cosmetic only.'] = '显示跨越屏幕顶部的面板,仅仅是用于装饰.'
 L['Display emotion icons in chat.'] = "在对话中显示表情图标."
@@ -294,28 +343,30 @@ L['Emotion Icons'] = "表情图标"
 L["Enable/Disable the loot frame."] = "开/关物品掉落框架。"
 L["Enable/Disable the loot roll frame."] = "开/关掷骰子框架。"
 L['Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the consolidated buffs bar, and prevent you from seeing the minimap datatexts.|r'] = "开/关小地图. |cffFF0000警告: 这将使你无法看见综合增益框和小地图资讯栏.|r"
-L['Enhance Raid Browser'] = true;
-L['Enhance the raid browser frame by adding item level and talent spec information, also add average item level of group information to tooltips.'] = true;
 L["General"] = "一般"
+L["Height of the objective tracker. Increase size to be able to see more objectives."] = true;
 L["Hide Error Text"] = "隐藏错误文字"
 L["Hides the red error text at the top of the screen while in combat."] = "战斗中隐藏屏幕顶部红字错误信息."
-L['Left'] = "左"
 L["Log Taints"] = "错误记录"
 L["Login Message"] = "登入资讯"
 L["Loot Roll"] = "掷骰"
 L["Loot"] = "拾取"
+L["Make the world map smaller."] = true;
 L["Multi-Monitor Support"] = true;
 L["Name Font"] = "名称字体"
+L["Objective Frame Height"] = true;
+L["Position of bonus quest reward frame relative to the objective tracker."] = true;
 L['Remove Backdrop'] = "去除背景"
 L["Reset all frames to their original positions."] = "重设所有框架至预设位置."
 L["Reset Anchors"] = "重置定位"
-L['Right'] = "右"
 L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."] = "发送ADDON_ACTION_BLOCKED错误至Lua错误框, 这些错误并不重要, 不会影响你的游戏体验. 并且很多这类错误无法被修复. 请只将影响游戏体验的错误发送给我们."
 L['Skin Backdrop'] = "美化背景"
 L["Skin the blizzard chat bubbles."] = "美化暴雪对话泡泡."
+L["Smaller World Map"] = true;
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "玩家头顶姓名的字体. |cffFF0000警告: 你需要重新开启游戏或重新登录才能使用此功能.|r"
 L['Toggle Tutorials'] = "教学开关"
 L['Top Panel'] = '顶部面板'
+L["When you go AFK display the AFK screen."] = true;
 
 --Media
 L["Backdrop color of transparent frames"] = "透明框架的背景颜色"
@@ -332,6 +383,8 @@ L["Main backdrop color of the UI."] = "介面背景主色"
 L["Main border color of the UI. |cffFF0000This is disabled if you are using the pixel perfect theme.|r"] = "用户界面主色. |cffFF0000如果你使用像素完美主题, 此选项将被禁用.|r"
 L["Media"] = "材质"
 L["Primary Texture"] = "主要材质"
+L['Replace Blizzard Fonts'] = true;
+L['Replaces the default Blizzard fonts on various panels and frames with the fonts chosen in the Media section of the ElvUI config. NOTE: Any font that inherits from the fonts ElvUI usually replaces will be affected as well if you disable this. Enabled by default.'] = true;
 L["Secondary Texture"] = "次要材质"
 L["Set the font size for everything in UI. Note: This doesn't effect somethings that have their own seperate options (UnitFrame Font, Datatext Font, ect..)"] = "设定介面上所有字体的大小，但不包含本身有独立设定的字体(如单位框架字体、资讯文字字体等...)"
 L["Textures"] = "材质"
@@ -340,6 +393,23 @@ L["The font that the core of the UI will use."] = "核心 UI 所使用的字体.
 L["The texture that will be used mainly for statusbars."] = "此材质主用于状态列上。"
 L["This texture will get used on objects like chat windows and dropdown menus."] = "主要用于对话视窗及下拉选单等物件的材质"
 L["Value Color"] = "数值颜色"
+
+--Minimap
+L['Always Display'] = "总是显示"
+L["Bottom Left"] = true;
+L["Bottom Right"] = true;
+L["Bottom"] = true;
+L["Instance Difficulty"] = true;
+L["Left"] = "左"
+L["LFG Queue"] = true;
+L['Location Text'] = "所在位置文字"
+L["Minimap Buttons"] = true;
+L['Minimap Mouseover'] = "小地图鼠标滑过"
+L["Right"] = "右"
+L["Scale"] = true;
+L["Top Left"] = true;
+L["Top Right"] = true;
+L["Top"] = true;
 
 --Misc
 L['Install'] = "安装"
@@ -403,6 +473,8 @@ L["Remove Name"] = "删除筛选名"
 L['Scale if Low Health'] = true;
 L["Scaling"] = true;
 L["Set the scale of the nameplate."] = "设定血条的缩放比例"
+L['Show Level'] = true;
+L['Show Name'] = true;
 L["Show Personal Auras"] = true;
 L["Small Plates"] = "小型模板"
 L["Stretch Texture"] = true;
@@ -455,6 +527,7 @@ L["Non-Raid Frame"] = "非团队框架"
 L["Pet Battle"] = "宠物战斗"
 L["Petition Frame"] = "回报GM"
 L["PvP Frames"] = "PvP框架"
+L["Quest Choice"] = true;
 L["Quest Frames"] = "任务"
 L["Raid Frame"] = "团队"
 L["Reforge Frame"] = "重铸"
@@ -475,7 +548,11 @@ L["World Map"] = "世界地图"
 
 --Tooltip
 L['Always Hide'] = "总是隐藏"
+L["Bags Only"] = true;
+L["Bank Only"] = true;
+L["Both"] = true;
 L['Cursor Anchor'] = true;
+L["Custom Faction Colors"] = true;
 L['Display guild ranks if a unit is guilded.'] = "当目标有公会时显示其在公会内的等级."
 L['Display how many of a certain item you have in your possession.'] = '显示当前物品在你身上的数量.'
 L['Display player titles.'] = "显示玩家头衔."
@@ -575,6 +652,7 @@ L['Custom Texts'] = "自定义字体"
 L['Death'] = "死亡符文"
 L["Debuff Highlighting"] = "减益光环加亮显示"
 L["Debuffs"] = "减益光环"
+L["Decimal Threshold"] = true;
 L["Deficit"] = "亏损值"
 L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."] = "删除一个创造的过滤器, 你不能删除内建的过滤器, 只能删除你自已添加的"
 L["Delete Filter"] = "删除过滤器"
@@ -667,6 +745,7 @@ L["Main statusbar texture."] = "主状态条材质"
 L['Main Tanks / Main Assist'] = "主坦克 / 主助理"
 L['Make textures transparent.'] = "材质透明"
 L["Match Frame Width"] = "匹配视窗宽度"
+L['Max Bars'] = true;
 L["Maximum Duration"] = true;
 L['Middle Click - Set Focus'] = "鼠标中键 - 设置焦点"
 L['Middle clicking the unit frame will cause your focus to match the unit.'] = "鼠标中键点击单位框架设置焦点."
@@ -708,6 +787,7 @@ L["Priority"] = "优先级"
 L['PVP Trinket'] = "PVP 饰品"
 L['Raid Icon'] = "团队图标"
 L['Raid-Wide Sorting'] = true;
+L["Raid40 Frames"] = true;
 L["RaidDebuff Indicator"] = "团队副本减益光环标示"
 L["Range Check"] = "距离检查"
 L["Rapidly update the health, uses more memory and cpu. Only recommended for healing."] = "实时更新生命值会占用更多的内存的和CPU，只推荐治疗角色开启。"
@@ -726,6 +806,7 @@ L['Select an additional filter to use. If the selected filter is a whitelist and
 L["Select Filter"] = "选择过滤器"
 L["Select Spell"] = "选择技能"
 L['Select the display method of the portrait.'] = "选择头像的显示方式"
+L["Set space between each aura icon."] = true;
 L["Set the filter type, blacklisted filters hide any aura on the like and show all else, whitelisted filters show any aura on the filter and hide all else."] = "设定过滤器类型, '黑名单'会隐藏名单里面的光环, '白名单'则显示名单里的光环"
 L["Set the font size for unitframes."] = "设置单位框架字体尺寸."
 L["Set the order that the group will sort."] = "设置组排序的顺序."
@@ -777,6 +858,7 @@ L['The object you want to attach to.'] = "你想依附的目标."
 L['This filter is meant to be used when you only want to whitelist specific spellIDs which share names with unwanted spells.'] = true;
 L['This filter is used for both aura bars and aura icons no matter what. Its purpose is to block out specific spellids from being shown. For example a paladin can have two sacred shield buffs at once, we block out the short one.'] = '这个过滤器作用于光环条和光环图标,不管是什么,其目的是为了用阻止特定技能ID的技能被显示. 例如: 圣骑士可以一次有两个神圣之盾BUFF, 我们阻止了时间短的那个显示.'
 L['Threat Display Mode'] = "仇恨显示模式"
+L["Threshold before text goes into decimal form. Set to -1 to disable decimals."] = true;
 L["Ticks"] = "周期伤害"
 L['Time Remaining Reverse'] = "剩余时间反转"
 L['Time Remaining'] = "剩余时间"

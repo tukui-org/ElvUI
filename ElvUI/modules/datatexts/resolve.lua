@@ -20,9 +20,9 @@ local function OnEvent(self, event, ...)
 		tooltip:SetOwner(E.UIParent, "ANCHOR_NONE")
 		tooltiptext:SetText("")
 	end
-	
+
 	local name = UnitAura("player", resolve, nil, "PLAYER|HELPFUL")
-	
+
 	if name then
 		tooltip:ClearLines()
 		tooltip:SetUnitBuff("player", name)
@@ -30,14 +30,14 @@ local function OnEvent(self, event, ...)
 	else
 		value = 0
 	end
-	
+
 	self.text:SetFormattedText(displayString, resolve, value);
 	lastPanel = self
 end
 
 local function ValueColorUpdate(hex, r, g, b)
 	displayString = join("", "%s: ", hex, "%s|r")
-	
+
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)
 	end
@@ -46,9 +46,9 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 
 --[[
 	DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc)
-	
+
 	name - name of the datatext (required)
-	events - must be a table with string values of event names to register 
+	events - must be a table with string values of event names to register
 	eventFunc - function that gets fired when an event gets triggered
 	updateFunc - onUpdate script target function
 	click - function to fire when clicking the datatext

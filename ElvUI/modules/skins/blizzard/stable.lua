@@ -27,7 +27,7 @@ local function LoadSkin()
 	for i = 1, NUM_PET_STABLE_SLOTS do
 	   S:HandleItemButton(_G['PetStableStabledPet' .. i], true)
 	end
-	
+
 	PetStableSelectedPetIcon:SetTexCoord(unpack(E.TexCoords))
 end
 

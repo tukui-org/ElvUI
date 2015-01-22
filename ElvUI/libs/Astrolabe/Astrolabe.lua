@@ -1,7 +1,7 @@
 --[[
 Name: Astrolabe
-Revision: $Rev$
-$Date$
+Revision: $Rev: 161 $
+$Date: 2014-10-14 22:59:04 -0700 (Tue, 14 Oct 2014) $
 Author(s): Esamynn (esamynn at wowinterface.com)
 Inspired By: Gatherer by Norganna
              MapLibrary by Kristofer Karlsson (krka at kth.se)
@@ -42,7 +42,7 @@ Note:
 -- DO NOT MAKE CHANGES TO THIS LIBRARY WITHOUT FIRST CHANGING THE LIBRARY_VERSION_MAJOR
 -- STRING (to something unique) OR ELSE YOU MAY BREAK OTHER ADDONS THAT USE THIS LIBRARY!!!
 local LIBRARY_VERSION_MAJOR = "Astrolabe-1.0"
-local LIBRARY_VERSION_MINOR = tonumber(string.match("$Revision$", "(%d+)") or 1)
+local LIBRARY_VERSION_MINOR = tonumber(string.match("$Revision: 161 $", "(%d+)") or 1)
 
 if not DongleStub then error(LIBRARY_VERSION_MAJOR .. " requires DongleStub.") end
 if not DongleStub:IsNewerVersion(LIBRARY_VERSION_MAJOR, LIBRARY_VERSION_MINOR) then return end
@@ -1248,21 +1248,18 @@ local function activate( newInstance, oldInstance )
 		newInstance.HarvestedMapData = { VERSION = HARVESTED_DATA_VERSION };
 		local HarvestedMapData = newInstance.HarvestedMapData;
 		
-		newInstance.ContinentList = { GetMapContinents() };
-		local cindex = 0;
-		for i = 1, #newInstance.ContinentList, 2 do
-			cindex = cindex + 1;
-			local zones = { GetMapZones(cindex) };
-			newInstance.ContinentList[cindex] = zones;
-			SetMapZoom(cindex, 0);
-			zones[0] = GetCurrentMapAreaID();
+		local continents = {GetMapContinents()};
+		newInstance.ContinentList = {};
+		for C = 1, (#continents / 2) do
+			local zones = {GetMapZones(C)};
+			newInstance.ContinentList[C] = {};
+			SetMapZoom(C);
 			harvestMapData(HarvestedMapData);
-
-			local zindex = 0;
-			for i = 1, #zones, 2 do
-				zindex = zindex + 1;
-				SetMapZoom(cindex, zindex);
-				zones[zindex] = GetCurrentMapAreaID();
+			local contZoneList = newInstance.ContinentList[C];
+			contZoneList[0] = continents[C*2 - 1];
+			for Z = 1, (#zones / 2) do
+				contZoneList[Z] = zones[Z*2 - 1];
+				SetMapByID(contZoneList[Z]);
 				harvestMapData(HarvestedMapData);
 			end
 		end

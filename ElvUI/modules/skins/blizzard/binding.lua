@@ -9,22 +9,22 @@ local function LoadSkin()
 		"okayButton",
 		"cancelButton",
 	}
-	
+
 	for _, v in pairs(buttons) do
 		KeyBindingFrame[v]:StripTextures()
 		KeyBindingFrame[v]:SetTemplate("Default", true)
 	end
-	
+
 	KeyBindingFrame.header:StripTextures()
 	KeyBindingFrameScrollFrame:StripTextures()
 	S:HandleScrollBar(KeyBindingFrameScrollFrameScrollBar)
-	
+
 	S:HandleCheckBox(KeyBindingFrame.characterSpecificButton)
 	KeyBindingFrame.header:ClearAllPoints()
 	KeyBindingFrame.header:Point("TOP", KeyBindingFrame, "TOP", 0, -4)
 	KeyBindingFrame:StripTextures()
 	KeyBindingFrame:SetTemplate("Transparent")
-	
+
 	KeyBindingFrameCategoryList:StripTextures()
 	KeyBindingFrameCategoryList:SetTemplate("Transparent")
 	KeyBindingFrame.bindingsContainer:StripTextures()

@@ -20,7 +20,12 @@ local function SetTip(frame)
 	GameTooltip:SetOwner(frame, "ANCHOR_RIGHT")
 	GameTooltip:SetText(frame.tiptext)
 	if frame:IsEnabled() == 0 then GameTooltip:AddLine("|cffff3333"..L["Can't Roll"]) end
-	for name,roll in pairs(frame.parent.rolls) do if rolltypes[roll] == rolltypes[frame.rolltype] then GameTooltip:AddLine(name, 1, 1, 1) end end
+	for name, tbl in pairs(frame.parent.rolls) do
+		if rolltypes[tbl[1]] == rolltypes[frame.rolltype] then
+			local classColor = RAID_CLASS_COLORS[tbl[2]]
+			GameTooltip:AddLine(name, classColor.r, classColor.g, classColor.b)
+		end
+	end
 	GameTooltip:Show()
 end
 
@@ -60,7 +65,7 @@ local function StatusUpdate(frame)
 	local perc = t / frame.parent.time
 	frame.spark:Point("CENTER", frame, "LEFT", perc * frame:GetWidth(), 0)
 	frame:SetValue(t)
-		   
+
 	if t > 1000000000 then
 		frame:GetParent():Hide()
 	end
@@ -103,11 +108,11 @@ function M:CreateRollFrame()
 	button:SetScript("OnUpdate", ItemOnUpdate)
 	button:SetScript("OnClick", LootClick)
 	frame.button = button
-	
+
 	button.icon = button:CreateTexture(nil, 'OVERLAY')
 	button.icon:SetAllPoints()
 	button.icon:SetTexCoord(unpack(E.TexCoords))
-	
+
 	local tfade = frame:CreateTexture(nil, "BORDER")
 	tfade:Point("TOPLEFT", frame, "TOPLEFT", 4, 0)
 	tfade:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -4, 0)
@@ -123,7 +128,7 @@ function M:CreateRollFrame()
 	status:SetStatusBarColor(.8, .8, .8, .9)
 	status.parent = frame
 	frame.status = status
-	
+
 	status.bg = status:CreateTexture(nil, 'BACKGROUND')
 	status.bg:SetAlpha(0.1)
 	status.bg:SetAllPoints()
@@ -207,21 +212,21 @@ function M:START_LOOT_ROLL(event, rollID, time)
 	f.fsloot:SetText(name)
 	f.status:SetStatusBarColor(color.r, color.g, color.b, .7)
 	f.status.bg:SetTexture(color.r, color.g, color.b)
-	
+
 	f.status:SetMinMaxValues(0, time)
 	f.status:SetValue(time)
 
 	f:SetPoint("CENTER", WorldFrame, "CENTER")
 	f:Show()
 	AlertFrame_FixAnchors()
-	
+
 	if E.db.general.autoRoll and UnitLevel('player') == MAX_PLAYER_LEVEL and quality == 2 and not bop then
 		if canDisenchant then
 			RollOnLoot(rollID, 3)
 		else
 			RollOnLoot(rollID, 2)
-		end		
-	end	
+		end
+	end
 end
 
 function M:LOOT_HISTORY_ROLL_CHANGED(event, itemIdx, playerIdx)
@@ -231,7 +236,7 @@ function M:LOOT_HISTORY_ROLL_CHANGED(event, itemIdx, playerIdx)
 	if name and rollType then
 		for _,f in ipairs(M.RollBars) do
 			if f.rollID == rollID then
-				f.rolls[name] = rollType
+				f.rolls[name] = {rollType, class}
 				f[rolltypes[rollType]]:SetText(tonumber(f[rolltypes[rollType]]:GetText()) + 1)
 				return
 			end
@@ -239,9 +244,9 @@ function M:LOOT_HISTORY_ROLL_CHANGED(event, itemIdx, playerIdx)
 	end
 end
 
-function M:LoadLootRoll()	
+function M:LoadLootRoll()
 	if not E.private.general.lootRoll then return end
-	
+
 	self:RegisterEvent('LOOT_HISTORY_ROLL_CHANGED')
 	self:RegisterEvent("START_LOOT_ROLL")
 

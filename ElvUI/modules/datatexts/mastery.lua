@@ -20,11 +20,11 @@ local function OnEnter(self)
 	DT.tooltip:ClearLines()
 
 	local primaryTalentTree = GetSpecialization();
-	
+
 	if (primaryTalentTree) then
 		local masterySpell = GetSpecializationMasterySpells(primaryTalentTree);
 		local masteryKnown = IsSpellKnown(masterySpell);
-		
+
 		if (masteryKnown) then
 			DT.tooltip:AddSpellByID(masterySpell);
 		end

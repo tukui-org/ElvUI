@@ -1,7 +1,7 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Engine
 
 local function SpellName(id)
-	local name, _, _, _, _, _, _, _, _ = GetSpellInfo(id) 	
+	local name, _, _, _, _, _, _, _, _ = GetSpellInfo(id)
 	if not name then
 		print('|cff1784d1ElvUI:|r SpellID is not valid: '..id..'. Please check for an updated version, if none exists report to ElvUI author.')
 		return 'Impale'
@@ -430,7 +430,7 @@ G.unitframe.aurafilters['Blacklist'] = {
 
 --[[
 	This should be a list of important buffs that we always want to see when they are active
-	bloodlust, paladin hand spells, raid cooldowns, etc.. 
+	bloodlust, paladin hand spells, raid cooldowns, etc..
 ]]
 
 G.unitframe.aurafilters['Whitelist'] = {
@@ -438,24 +438,15 @@ G.unitframe.aurafilters['Whitelist'] = {
 	['spells'] = {
 		[SpellName(31821)] = Defaults(), -- Devotion Aura
 		[SpellName(2825)] = Defaults(), -- Bloodlust
-		[SpellName(32182)] = Defaults(), -- Heroism	
+		[SpellName(32182)] = Defaults(), -- Heroism
 		[SpellName(80353)] = Defaults(), --Time Warp
-		[SpellName(90355)] = Defaults(), --Ancient Hysteria		
+		[SpellName(90355)] = Defaults(), --Ancient Hysteria
 		[SpellName(47788)] = Defaults(), --Guardian Spirit
 		[SpellName(33206)] = Defaults(), --Pain Suppression
 		[SpellName(116849)] = Defaults(), --Life Cocoon
 		[SpellName(22812)] = Defaults(), --Barkskin
 		--[SpellName(1490)] = Defaults(), --Curse of the Elements (5% magic damage taken debuff)
 		--[SpellName(116202)] = Defaults(), --Aura of the Elements (5% magic damage taken debuff)
-		[SpellName(123059)] = Defaults(), --Destabilize (Amber-Shaper Un'sok)
-		[SpellName(136431)] = Defaults(), --Shell Concussion (Tortos)
-		[SpellName(137332)] = Defaults(), --Beast of Nightmares (Twin Consorts)
-		[SpellName(137375)] = Defaults(), --Beast of Nightmares (Twin Consorts)
-		[SpellName(144351)] = Defaults(), --Mark of Arrogance (Norushen)
-		[SpellName(142863)] = Defaults(), --Weak Ancient Barrier (Malkorok)
-		[SpellName(142864)] = Defaults(), --Ancient Barrier (Malkorok)
-		[SpellName(142865)] = Defaults(), --Strong Ancient Barrier (Malkorok)
-		[SpellName(143198)] = Defaults(), --Garrote (Fallen Protectors)
 	},
 }
 
@@ -501,7 +492,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 			-- Will of the Emperor
 			[SpellName(116835)] = Defaults(), -- Devastating Arc
 			[SpellName(116778)] = Defaults(), -- Focused Defense
-			[SpellName(116525)] = Defaults(), -- Focused Assault    
+			[SpellName(116525)] = Defaults(), -- Focused Assault
 		-- Heart of Fear
 			-- Imperial Vizier Zor'lok
 			[SpellName(122761)] = Defaults(), -- Exhale
@@ -534,100 +525,100 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 			-- Sha of Fear
 			[SpellName(119985)] = Defaults(), -- Dread Spray
 			[SpellName(119086)] = Defaults(), -- Penetrating Bolt
-			[SpellName(119775)] = Defaults(), -- Reaching Attack	
-			
-			
+			[SpellName(119775)] = Defaults(), -- Reaching Attack
+
+
 			[SpellName(122151)] = Defaults(), -- Voodoo Doll
 		-- Throne of Thunder
 			--Trash
 			[SpellName(138349)] = Defaults(), -- Static Wound
 			[SpellName(137371)] = Defaults(), -- Thundering Throw
-			
+
 			--Horridon
 			[SpellName(136767)] = Defaults(), --Triple Puncture
-			
+
 			--Council of Elders
 			[SpellName(137641)] = Defaults(), --Soul Fragment
 			[SpellName(137359)] = Defaults(), --Shadowed Loa Spirit Fixate
 			[SpellName(137972)] = Defaults(), --Twisted Fate
 			[SpellName(136903)] = Defaults(), --Frigid Assault
-			
+
 			--Tortos
 			[SpellName(136753)] = Defaults(), --Slashing Talons
 			[SpellName(137633)] = Defaults(), --Crystal Shell
-			
+
 			--Megaera
 			[SpellName(137731)] = Defaults(), --Ignite Flesh
-			
-			
+
+
 			--Durumu the Forgotten
 			[SpellName(133767)] = Defaults(), --Serious Wound
 			[SpellName(133768)] = Defaults(), --Arterial Cut
-			
+
 			--Primordius
 			[SpellName(136050)] = Defaults(), --Malformed Blood
-			
+
 			--Dark Animus
 			[SpellName(138569)] = Defaults(), --Explosive Slam
-			
+
 			--Iron Qon
 			[SpellName(134691)] = Defaults(), --Impale
-			
+
 			--Twin Consorts
 			[SpellName(137440)] = Defaults(), --Icy Shadows
 			[SpellName(137408)] = Defaults(), --Fan of Flames
 			[SpellName(137360)] = Defaults(), --Corrupted Healing
-			
+
 			--Lei Shen
 			[SpellName(135000)] = Defaults(), --Decapitate
-			
+
 			--Ra-den
 		--Siege of Orgrimmar
 			--Immerseus
 				[SpellName(143436)] = Defaults(), -- Corrosive Blast
 				[SpellName(143579)] = Defaults(), --Sha Corruption(Heroic)
-			
+
 			--Fallen Protectors
 				[SpellName(147383)] = Defaults(), --Debilitation
-				
+
 			--Norushen
 				[SpellName(146124)] = Defaults(), --Self Doubt
 				[SpellName(144851)] = Defaults(), --Test of Confidence
-				
+
 			--Sha of Pride
 				[SpellName(144358)] = Defaults(), --Wounded Pride
 				[SpellName(144774)] = Defaults(), --Reaching Attacks
 				[SpellName(147207)] = Defaults(), --Weakened Resolve(Heroic)
-			
+
 			--Galakras
-			
+
 			--Iron Juggernaut
 				[SpellName(144467)] = Defaults(), --Ignite Armor
-			
+
 			--Kor'kron Dark Shaman
 				[SpellName(144215)] = Defaults(), --Froststorm Strike
 				[SpellName(143990)] = Defaults(), --Foul Geyser
 				[SpellName(144330)] = Defaults(), --Iron Prison(Heroic)
-				
+
 			--General Nazgrim
 				[SpellName(143494)] = Defaults(), --Sundering Blow
-				
+
 			--Malkorok
 				[SpellName(142990)] = Defaults(), --Fatal Strike
 				[SpellName(143919)] = Defaults(), --Languish(Heroic)
-				
+
 			--Thok the Bloodthirsty
 				[SpellName(143766)] = Defaults(), --Panic
 				[SpellName(143773)] = Defaults(), --Freezing Breath
 				[SpellName(146589)] = Defaults(), --Skeleton Key
 				[SpellName(143777)] = Defaults(), --Frozen Solid
-				
+
 			--Siegecrafter Blackfuse
 				[SpellName(143385)] = Defaults(), --Electrostatic Charge
-				
+
 			--Paragons of the Klaxxi
 				[SpellName(143974)] = Defaults(), --Shield Bash
-				
+
 			--Garrosh Hellscream
 				[SpellName(145183)] = Defaults(), --Gripping Despair
 				[SpellName(145195)] = Defaults(), --Empowered Gripping Despair
@@ -641,16 +632,16 @@ E.ReverseTimer = {
 
 --BuffWatch
 --List of personal spells to show on unitframes as icon
-local function ClassBuff(id, point, color, anyUnit, onlyShowMissing, style, displayText, textColor, textThreshold, xOffset, yOffset)
+local function ClassBuff(id, point, color, anyUnit, onlyShowMissing, style, displayText, decimalThreshold, textColor, textThreshold, xOffset, yOffset)
 	local r, g, b = unpack(color)
-	
+
 	local r2, g2, b2 = 1, 1, 1
 	if textColor then
 		r2, g2, b2 = unpack(textColor)
 	end
-	
-	return {["enabled"] = true, ["id"] = id, ["point"] = point, ["color"] = {["r"] = r, ["g"] = g, ["b"] = b}, 
-	["anyUnit"] = anyUnit, ["onlyShowMissing"] = onlyShowMissing, ['style'] = style or 'coloredIcon', ['displayText'] = displayText or false, 
+
+	return {["enabled"] = true, ["id"] = id, ["point"] = point, ["color"] = {["r"] = r, ["g"] = g, ["b"] = b},
+	["anyUnit"] = anyUnit, ["onlyShowMissing"] = onlyShowMissing, ['style'] = style or 'coloredIcon', ['displayText'] = displayText or false, ['decimalThreshold'] = decimalThreshold or 5,
 	['textColor'] = {["r"] = r2, ["g"] = g2, ["b"] = b2}, ['textThreshold'] = textThreshold or -1, ['xOffset'] = xOffset or 0, ['yOffset'] = yOffset or 0}
 end
 
@@ -663,7 +654,7 @@ G.unitframe.buffwatch = {
 		ClassBuff(123258, "TOPLEFT", {0.81, 0.85, 0.1}, true),	 -- Power Word: Shield Power Insight
 		ClassBuff(10060 , "RIGHT", {227/255, 23/255, 13/255}), -- Power Infusion
 		ClassBuff(47788, "LEFT", {221/255, 117/255, 0}, true), -- Guardian Spirit
-		ClassBuff(33206, "LEFT", {227/255, 23/255, 13/255}, true), -- Pain Suppression		
+		ClassBuff(33206, "LEFT", {227/255, 23/255, 13/255}, true), -- Pain Suppression
 	},
 	DRUID = {
 		ClassBuff(774, "TOPRIGHT", {0.8, 0.4, 0.8}),	 -- Rejuvenation
@@ -678,8 +669,8 @@ G.unitframe.buffwatch = {
 		ClassBuff(1038, "BOTTOMRIGHT", {0.93, 0.75, 0}, true),	-- Hand of Salvation
 		ClassBuff(6940, "BOTTOMRIGHT", {0.89, 0.1, 0.1}, true),	-- Hand of Sacrifice
 		ClassBuff(114039, "BOTTOMRIGHT", {164/255, 105/255, 184/255}), -- Hand of Purity
-		ClassBuff(20925, 'TOPLEFT', {0.93, 0.75, 0}), -- Sacred Shield
-		ClassBuff(114163, 'BOTTOMLEFT', {0.87, 0.7, 0.03}), -- Eternal Flame
+		ClassBuff(148039, 'TOPLEFT', {0.93, 0.75, 0}), -- Sacred Shield
+		ClassBuff(156322, 'BOTTOMLEFT', {0.87, 0.7, 0.03}), -- Eternal Flame
 	},
 	SHAMAN = {
 		ClassBuff(61295, "TOPRIGHT", {0.7, 0.3, 0.7}),	 -- Riptide
@@ -700,11 +691,11 @@ G.unitframe.buffwatch = {
 	},
 	WARRIOR = {
 		ClassBuff(114030, "TOPLEFT", {0.2, 0.2, 1}), -- Vigilance
-		ClassBuff(3411, "TOPRIGHT", {227/255, 23/255, 13/255}), -- Intervene	
+		ClassBuff(3411, "TOPRIGHT", {227/255, 23/255, 13/255}), -- Intervene
 		ClassBuff(114029, "TOPRIGHT", {227/255, 23/255, 13/255}), -- Safe Guard
 	},
 	DEATHKNIGHT = {
-		ClassBuff(49016, "TOPRIGHT", {227/255, 23/255, 13/255}), -- Unholy Frenzy	
+		ClassBuff(49016, "TOPRIGHT", {227/255, 23/255, 13/255}), -- Unholy Frenzy
 	},
 	PET = {
 		ClassBuff(19615, 'TOPLEFT', {227/255, 23/255, 13/255}, true), -- Frenzy
@@ -725,8 +716,6 @@ G.unitframe.ChannelTicks = {
 	--[SpellName(44203)] = 4, -- "Tranquility"
 	[SpellName(16914)] = 10, -- "Hurricane"
 	--Priest
-	[SpellName(15407)] = 3, -- "Mind Flay"
-	[SpellName(129197)] = 3, -- "Mind Flay (Insanity)"
 	[SpellName(48045)] = 5, -- "Mind Sear"
 	[SpellName(47540)] = 2, -- "Penance"
 	--[SpellName(64901)] = 4, -- Hymn of Hope
@@ -735,10 +724,24 @@ G.unitframe.ChannelTicks = {
 	[SpellName(5143)] = 5, -- "Arcane Missiles"
 	[SpellName(10)] = 8, -- "Blizzard"
 	[SpellName(12051)] = 4, -- "Evocation"
-	
+
 	--Monk
 	[SpellName(115175)] = 9, -- "Smoothing Mist"
 }
+
+local f = CreateFrame("Frame")
+f:RegisterEvent("PLAYER_ENTERING_WORLD")
+f:SetScript("OnEvent", function(self)
+	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+
+	local mfTicks = 3
+	if string.lower((UnitClass("player"))) == "priest" and IsSpellKnown(157223) then --Enhanced Mind Flay
+		mfTicks = 4
+	end
+
+	E.global.unitframe.ChannelTicks[SpellName(15407)] = mfTicks -- "Mind Flay"
+	E.global.unitframe.ChannelTicks[SpellName(129197)] = mfTicks -- "Mind Flay (Insanity)"
+end)
 
 G.unitframe.ChannelTicksSize = {
     --Warlock

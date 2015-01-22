@@ -21,13 +21,13 @@ local function LoadSkin()
 			end
 		end
 	end
-	
+
 	GuildRegistrarFrameEditBox:Height(20)
-	
+
 	for i=1, 2 do
 		_G["GuildRegistrarButton"..i]:GetFontString():SetTextColor(1, 1, 1)
 	end
-	
+
 	GuildRegistrarPurchaseText:SetTextColor(1, 1, 1)
 	AvailableServicesText:SetTextColor(1, 1, 0)
 end

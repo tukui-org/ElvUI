@@ -10,14 +10,14 @@ local function SkinIt(bar)
 			region:FontTemplate(nil, 12, 'OUTLINE')
 		end
 	end
-	
+
 	bar:SetStatusBarTexture(E["media"].normTex)
 	if E.PixelMode then
 		bar:SetStatusBarColor(.31, .31, .31)
 	else
 		bar:SetStatusBarColor(unpack(E["media"].bordercolor))
 	end
-	
+
 	if not bar.backdrop then
 		bar.backdrop = CreateFrame("Frame", nil, bar)
 		bar.backdrop:SetFrameLevel(0)

@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
-
-local Astrolabe = DongleStub("Astrolabe-1.0") 
+local Astrolabe = DongleStub("Astrolabe-1.0")
 local format = string.format
 local sub = string.sub
 local upper = string.upper
@@ -10,6 +9,7 @@ local atan2 = math.atan2
 local modf = math.modf
 local ceil = math.ceil
 local floor = math.floor
+local abs = math.abs
 
 --Return short value of a number
 
@@ -77,11 +77,11 @@ function E:GetScreenQuadrant(frame)
 	local screenWidth = GetScreenWidth()
 	local screenHeight = GetScreenHeight()
 	local point
-	
+
 	if not frame:GetCenter() then
 		return "UNKNOWN", frame:GetName()
 	end
-	
+
 	if (x > (screenWidth / 4) and x < (screenWidth / 4)*3) and y > (screenHeight / 4)*3 then
 		point = "TOP"
 	elseif x < (screenWidth / 4) and y > (screenHeight / 4)*3 then
@@ -108,7 +108,7 @@ end
 function E:GetXYOffset(position, override)
 	local default = E.PixelMode and 0 or 1
 	local x, y = override or default, override or default
-	
+
 	if position == 'TOP' or position == 'TOPLEFT' or position == 'TOPRIGHT' then
 		return 0, y
 	elseif position == 'BOTTOM' or position == 'BOTTOMLEFT' or position == 'BOTTOMRIGHT' then
@@ -133,9 +133,9 @@ function E:GetFormattedText(style, min, max)
 	assert(styles[style], 'Invalid format style: '..style)
 	assert(min, 'You need to provide a current value. Usage: E:GetFormattedText(style, min, max)')
 	assert(max, 'You need to provide a maximum value. Usage: E:GetFormattedText(style, min, max)')
-	
+
 	if max == 0 then max = 1 end
-	
+
 	local useStyle = styles[style]
 
 	if style == 'DEFICIT' then
@@ -271,7 +271,7 @@ function E:GetTimeInfo(s, threshhold)
 	end
 end
 
-local ninetyDegreeAngleInRadians = (3.141592653589793 / 2) 
+local ninetyDegreeAngleInRadians = (3.141592653589793 / 2)
 local function GetPosition(unit, mapScan)
 	local m, f, x, y
 	if unit == "player" or UnitIsUnit("player", unit) then
@@ -298,8 +298,85 @@ function E:GetDistance(unit1, unit2, mapScan)
 
 	local distance, xDelta, yDelta = Astrolabe:ComputeDistance(m1, f1, x1, y1, m2, f2, x2, y2)
 	if distance and xDelta and yDelta then
-		return distance, -ninetyDegreeAngleInRadians -GetPlayerFacing() - atan2(yDelta, xDelta) 
+		return distance, -ninetyDegreeAngleInRadians -GetPlayerFacing() - atan2(yDelta, xDelta)
 	elseif distance then
 		return distance
 	end
+end
+
+--Money text formatting, code taken from Scrooge by thelibrarian ( http://www.wowace.com/addons/scrooge/ )
+local COLOR_COPPER = "|cffeda55f"
+local COLOR_SILVER = "|cffc7c7cf"
+local COLOR_GOLD = "|cffffd700"
+local ICON_COPPER = "|TInterface\\MoneyFrame\\UI-CopperIcon:12:12|t"
+local ICON_SILVER = "|TInterface\\MoneyFrame\\UI-SilverIcon:12:12|t"
+local ICON_GOLD = "|TInterface\\MoneyFrame\\UI-GoldIcon:12:12|t"
+function E:FormatMoney(amount, style, textonly)
+	local coppername = textonly and L.copperabbrev or ICON_COPPER
+	local silvername = textonly and L.silverabbrev or ICON_SILVER
+	local goldname = textonly and L.goldabbrev or ICON_GOLD
+
+	local value = abs(amount)
+	local gold = floor(value / 10000)
+	local silver = floor(mod(value / 100, 100))
+	local copper = floor(mod(value, 100))
+
+	if not style or style == "SMART" then
+		local str = "";
+		if gold > 0 then
+			str = format("%d%s%s", gold, goldname, (silver > 0 or copper > 0) and " " or "")
+		end
+		if silver > 0 then
+			str = format("%s%d%s%s", str, silver, silvername, copper > 0 and " " or "")
+		end
+		if copper > 0 or value == 0 then
+			str = format("%s%d%s", str, copper, coppername)
+		end
+		return str
+	end
+
+	if style == "FULL" then
+		if gold > 0 then
+			return format("%d%s %d%s %d%s", gold, goldname, silver, silvername, copper, coppername)
+		elseif silver > 0 then
+			return format("%d%s %d%s", silver, silvername, copper, coppername)
+		else
+			return format("%d%s", copper, coppername)
+		end
+	elseif style == "SHORT" then
+		if gold > 0 then
+			return format("%.1f%s", amount / 10000, goldname)
+		elseif silver > 0 then
+			return format("%.1f%s", amount / 100, silvername)
+		else
+			return format("%d%s", amount, coppername)
+		end
+	elseif style == "SHORTINT" then
+		if gold > 0 then
+			return format("%d%s", gold, goldname)
+		elseif silver > 0 then
+			return format("%d%s", silver, silvername)
+		else
+			return format("%d%s", copper, coppername)
+		end
+	elseif style == "CONDENSED" then
+		if gold > 0 then
+			return format("%s%d|r.%s%02d|r.%s%02d|r", COLOR_GOLD, gold, COLOR_SILVER, silver, COLOR_COPPER, copper)
+		elseif silver > 0 then
+			return format("%s%d|r.%s%02d|r", COLOR_SILVER, silver, COLOR_COPPER, copper)
+		else
+			return format("%s%d|r", COLOR_COPPER, copper)
+		end
+	elseif style == "BLIZZARD" then
+		if gold > 0 then
+			return format("%s%s %d%s %d%s", BreakUpLargeNumbers(gold), goldname, silver, silvername, copper, coppername)
+		elseif silver > 0 then
+			return format("%d%s %d%s", silver, silvername, copper, coppername)
+		else
+			return format("%d%s", copper, coppername)
+		end
+	end
+
+	-- Shouldn't be here; punt
+	return self:FormatMoney(amount, "SMART")
 end

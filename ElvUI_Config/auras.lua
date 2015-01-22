@@ -8,7 +8,7 @@ local auraOptions = {
 		desc = L['Set the size of the individual auras.'],
 		min = 16, max = 60, step = 2,
 		order = 1,
-	},				
+	},
 	growthDirection = {
 		type = 'select',
 		order = 2,
@@ -22,7 +22,7 @@ local auraOptions = {
 			RIGHT_DOWN = format(L['%s and then %s'], L['Right'], L['Down']),
 			RIGHT_UP = format(L['%s and then %s'], L['Right'], L['Up']),
 			LEFT_DOWN = format(L['%s and then %s'], L['Left'], L['Down']),
-			LEFT_UP = format(L['%s and then %s'], L['Left'], L['Up']),								
+			LEFT_UP = format(L['%s and then %s'], L['Left'], L['Up']),
 		},
 	},
 	wrapAfter = {
@@ -31,7 +31,7 @@ local auraOptions = {
 		name = L['Wrap After'],
 		desc = L['Begin a new row or column after this many auras.'],
 		min = 1, max = 32, step = 1,
-	},					
+	},
 	maxWraps = {
 		name = L['Max Wraps'],
 		order = 4,
@@ -43,14 +43,14 @@ local auraOptions = {
 		order = 5,
 		type = 'range',
 		name = L['Horizontal Spacing'],
-		min = 0, max = 50, step = 1,		
+		min = 0, max = 50, step = 1,
 	},
 	verticalSpacing = {
 		order = 6,
 		type = 'range',
 		name = L['Vertical Spacing'],
-		min = 0, max = 50, step = 1,		
-	},				
+		min = 0, max = 50, step = 1,
+	},
 	sortMethod = {
 		order = 7,
 		name = L['Sort Method'],
@@ -70,8 +70,8 @@ local auraOptions = {
 		values = {
 			['+'] = L['Ascending'],
 			['-'] = L['Descending'],
-		},				
-	},				
+		},
+	},
 	seperateOwn = {
 		order = 9,
 		name = L['Seperate'],
@@ -102,21 +102,21 @@ E.Options.args.auras = {
 			type = 'toggle',
 			name = L['Enable'],
 			get = function(info) return E.private.auras[ info[#info] ] end,
-			set = function(info, value) 
-				E.private.auras[ info[#info] ] = value; 
+			set = function(info, value)
+				E.private.auras[ info[#info] ] = value;
 				E:StaticPopup_Show("PRIVATE_RL")
-			end,		
-		},	
+			end,
+		},
 		disableBlizzard = {
 			order = 3,
 			type = 'toggle',
 			name = L['Disabled Blizzard'],
 			get = function(info) return E.private.auras[ info[#info] ] end,
-			set = function(info, value) 
-				E.private.auras[ info[#info] ] = value; 
+			set = function(info, value)
+				E.private.auras[ info[#info] ] = value;
 				E:StaticPopup_Show("PRIVATE_RL")
-			end,		
-		},			
+			end,
+		},
 		general = {
 			order = 5,
 			type = 'group',
@@ -128,7 +128,7 @@ E.Options.args.auras = {
 					desc = L['Threshold before text changes red, goes into decimal form, and the icon will fade. Set to -1 to disable.'],
 					min = -1, max = 30, step = 1,
 					order = 1,
-				},	
+				},
 				font = {
 					type = "select", dialogControl = 'LSM30_Font',
 					order = 2,
@@ -140,7 +140,7 @@ E.Options.args.auras = {
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},	
+				},
 				fontOutline = {
 					order = 4,
 					name = L["Font Outline"],
@@ -149,108 +149,124 @@ E.Options.args.auras = {
 					values = {
 						['NONE'] = L['None'],
 						['OUTLINE'] = 'OUTLINE',
-						
+
 						['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 						['THICKOUTLINE'] = 'THICKOUTLINE',
 					},
-				},	
+				},
 				timeXOffset = {
 					order = 5,
 					name = L['Time xOffset'],
 					type = 'range',
 					min = -60, max = 60, step = 1,
-				},		
+				},
 				timeYOffset = {
 					order = 6,
 					name = L['Time yOffset'],
 					type = 'range',
 					min = -60, max = 60, step = 1,
-				},	
+				},
 				countXOffset = {
 					order = 7,
 					name = L['Count xOffset'],
 					type = 'range',
 					min = -60, max = 60, step = 1,
-				},		
+				},
 				countYOffset = {
 					order = 8,
 					name = L['Count yOffset'],
 					type = 'range',
 					min = -60, max = 60, step = 1,
-				},															
+				},
 			},
-		},	
+		},
 		consolidatedBuffs = {
 			order = 9,
 			type = 'group',
-			name = L['Consolidated Buffs'],	
-			disabled = function() return (E.private.general.minimap.enable ~= true or E.private.auras.disableBlizzard ~= true) end,				
+			name = L['Consolidated Buffs'],
+			disabled = function() return (E.private.general.minimap.enable ~= true or E.private.auras.disableBlizzard ~= true) end,
 			get = function(info) return E.db.auras.consolidatedBuffs[ info[#info] ] end,
-			set = function(info, value) E.db.auras.consolidatedBuffs[ info[#info] ] = value; E:GetModule('Minimap'):UpdateSettings() end,			
+			set = function(info, value) E.db.auras.consolidatedBuffs[ info[#info] ] = value; E:GetModule('Minimap'):UpdateSettings() end,
 			args = {
 				enable = {
 					order = 1,
 					type = 'toggle',
 					name = L['Enable'],
-					set = function(info, value) 
+					set = function(info, value)
 						E.db.auras.consolidatedBuffs[ info[#info] ] = value
 						E:GetModule('Minimap'):UpdateSettings()
 						A:UpdateHeader(ElvUIPlayerBuffs)
-					end,	
+					end,
 					desc = L['Display the consolidated buffs bar.'],
 				},
 				filter = {
 					order = 2,
 					name = L['Filter Consolidated'],
 					desc = L['Only show consolidated icons on the consolidated bar that your class/spec is interested in. This is useful for raid leading.'],
-					type = 'toggle',					
+					type = 'toggle',
 				},
 				durations = {
 					order = 3,
 					type = 'toggle',
 					name = L['Remaining Time']
 				},
+				reverseStyle = {
+					order = 4,
+					type = 'toggle',
+					name = L["Reverse Style"],
+					desc = L["When enabled active buff icons will light up instead of becoming darker, while inactive buff icons will become darker instead of being lit up."],
+				},
+				position = {
+					order = 5,
+					type = 'select',
+					name = L["Position"],
+					set = function(info, value) E.db.auras.consolidatedBuffs[ info[#info] ] = value; E:StaticPopup_Show('CONFIG_RL') end,
+					values = {
+						["LEFT"] = L["Left"],
+						["RIGHT"] = L["Right"],
+					}
+				},
 				font = {
 					type = "select", dialogControl = 'LSM30_Font',
-					order = 4,
+					order = 6,
 					name = L["Font"],
 					values = AceGUIWidgetLSMlists.font,
 				},
 				fontSize = {
-					order = 5,
+					order = 7,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
-				},	
+				},
 				fontOutline = {
-					order = 6,
+					order = 8,
 					name = L["Font Outline"],
 					desc = L["Set the font outline."],
 					type = "select",
 					values = {
 						['NONE'] = L['None'],
 						['OUTLINE'] = 'OUTLINE',
-						
+
 						['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 						['THICKOUTLINE'] = 'THICKOUTLINE',
 					},
-				},					
+				},
 			},
-		},			
+		},
 		buffs = {
 			order = 10,
 			type = 'group',
 			name = L['Buffs'],
 			get = function(info) return E.db.auras.buffs[ info[#info] ] end,
-			set = function(info, value) E.db.auras.buffs[ info[#info] ] = value; A:UpdateHeader(ElvUIPlayerBuffs) end,			
+			set = function(info, value) E.db.auras.buffs[ info[#info] ] = value; A:UpdateHeader(ElvUIPlayerBuffs) end,
 			args = auraOptions,
-		},	
+		},
 		debuffs = {
 			order = 20,
 			type = 'group',
 			name = L['Debuffs'],
 			get = function(info) return E.db.auras.debuffs[ info[#info] ] end,
-			set = function(info, value) E.db.auras.debuffs[ info[#info] ] = value; A:UpdateHeader(ElvUIPlayerDebuffs) end,				
+			set = function(info, value) E.db.auras.debuffs[ info[#info] ] = value; A:UpdateHeader(ElvUIPlayerDebuffs) end,
 			args = auraOptions,
 		},
 	},

@@ -34,10 +34,10 @@ function E:DropDown(list, frame, xOffset, yOffset)
 		frame.buttons[i]:Hide()
 	end
 
-	for i=1, #list do 
+	for i=1, #list do
 		if not frame.buttons[i] then
 			frame.buttons[i] = CreateFrame("Button", nil, frame)
-			
+
 			frame.buttons[i].hoverTex = frame.buttons[i]:CreateTexture(nil, 'OVERLAY')
 			frame.buttons[i].hoverTex:SetAllPoints()
 			frame.buttons[i].hoverTex:SetTexture([[Interface\QuestFrame\UI-QuestTitleHighlight]])
@@ -50,7 +50,7 @@ function E:DropDown(list, frame, xOffset, yOffset)
 			frame.buttons[i].text:SetJustifyH("LEFT")
 
 			frame.buttons[i]:SetScript("OnEnter", OnEnter)
-			frame.buttons[i]:SetScript("OnLeave", OnLeave)			
+			frame.buttons[i]:SetScript("OnLeave", OnLeave)
 		end
 
 		frame.buttons[i]:Show()
@@ -68,14 +68,14 @@ function E:DropDown(list, frame, xOffset, yOffset)
 	end
 
 	frame:SetHeight((#list * BUTTON_HEIGHT) + PADDING * 2)
-	frame:SetWidth(BUTTON_WIDTH + PADDING * 2)	
+	frame:SetWidth(BUTTON_WIDTH + PADDING * 2)
 
 	local UIScale = UIParent:GetScale();
 	local x, y = GetCursorPosition();
 	x = x/UIScale
 	y = y/UIScale
 	frame:ClearAllPoints()
-	frame:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", x + xOffset, y + yOffset)	
+	frame:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", x + xOffset, y + yOffset)
 
 	ToggleFrame(frame)
 end

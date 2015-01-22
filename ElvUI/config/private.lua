@@ -6,15 +6,18 @@ V['general'] = {
 	['loot'] = true,
 	['lootRoll'] = true,
 	["normTex"] = "ElvUI Norm",
-	["glossTex"] = "ElvUI Norm",	
+	["glossTex"] = "ElvUI Norm",
 	["dmgfont"] = "ElvUI Combat",
 	["namefont"] = "ElvUI Font",
 	['chatBubbles'] = 'backdrop',
 	['pixelPerfect'] = true,
 	['lfrEnhancement'] = true,
-
+	['replaceBlizzFonts'] = true,
+	['smallerWorldMap'] = true,
 	['minimap'] = {
 		['enable'] = true,
+		['hideGarrison'] = true,
+		['hideCalendar'] = true,
 	},
 }
 
@@ -39,7 +42,7 @@ V['chat'] = {
 V['skins'] = {
 	['ace3'] = {
 		['enable'] = true,
-	},	
+	},
 	['blizzard'] = {
 		['enable'] = true,
 		["bags"] = true,
@@ -64,7 +67,7 @@ V['skins'] = {
 		["trainer"] = true,
 		["socket"] = true,
 		['loot'] = true,
-		["alertframes"] = true,
+		["alertframes"] = false,
 		["bgscore"] = true,
 		["merchant"] = true,
 		["mail"] = true,
@@ -76,6 +79,7 @@ V['skins'] = {
 		["worldmap"] = true,
 		["taxi"] = true,
 		["quest"] = true,
+		["questChoice"] = false,
 		["petition"] = true,
 		["dressingroom"] = true,
 		["pvp"] = true,
@@ -106,7 +110,7 @@ V['tooltip'] = {
 
 V['unitframe'] = {
 	['enable'] = true,
-	['disableBlizzard'] = true,	
+	['disableBlizzard'] = true,
 }
 
 V["actionbar"] = {

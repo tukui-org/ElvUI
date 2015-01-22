@@ -8,7 +8,7 @@ local function LoadSkin()
 	TaxiRouteMap:CreateBackdrop("Default")
 	TaxiRouteMap.backdrop.backdropTexture:Hide()
 
-	
+
 	S:HandleCloseButton(TaxiFrame.CloseButton)
 end
 

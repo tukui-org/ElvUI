@@ -20,8 +20,10 @@
 --
 -- Can run as a standalone addon also, but, really, just embed it! :-)
 --
+-- LICENSE: ChatThrottleLib is released into the Public Domain
+--
 
-local CTL_VERSION = 22
+local CTL_VERSION = 23
 
 local _G = _G
 
@@ -71,8 +73,10 @@ local math_min = math.min
 local math_max = math.max
 local next = next
 local strlen = string.len
-local GetFrameRate = GetFrameRate
-
+local GetFramerate = GetFramerate
+local strlower = string.lower
+local unpack,type,pairs,wipe = unpack,type,pairs,wipe
+local UnitInRaid,UnitInParty = UnitInRaid,UnitInParty
 
 
 -----------------------------------------------------------------------
@@ -115,24 +119,20 @@ end
 
 -----------------------------------------------------------------------
 -- Recycling bin for pipes 
--- A pipe is a plain integer-indexed queue, which also happens to be a ring member
+-- A pipe is a plain integer-indexed queue of messages
+-- Pipes normally live in Rings of pipes  (3 rings total, one per priority)
 
 ChatThrottleLib.PipeBin = nil -- pre-v19, drastically different
 local PipeBin = setmetatable({}, {__mode="k"})
 
 local function DelPipe(pipe)
-	for i = #pipe, 1, -1 do
-		pipe[i] = nil
-	end
-	pipe.prev = nil
-	pipe.next = nil
-
 	PipeBin[pipe] = true
 end
 
 local function NewPipe()
 	local pipe = next(PipeBin)
 	if pipe then
+		wipe(pipe)
 		PipeBin[pipe] = nil
 		return pipe
 	end
@@ -281,12 +281,16 @@ end
 
 -----------------------------------------------------------------------
 -- Despooling logic
+-- Reminder:
+-- - We have 3 Priorities, each containing a "Ring" construct ...
+-- - ... made up of N "Pipe"s (1 for each destination/pipename)
+-- - and each pipe contains messages
 
 function ChatThrottleLib:Despool(Prio)
 	local ring = Prio.Ring
 	while ring.pos and Prio.avail > ring.pos[1].nSize do
-		local msg = table_remove(Prio.Ring.pos, 1)
-		if not Prio.Ring.pos[1] then
+		local msg = table_remove(ring.pos, 1)
+		if not ring.pos[1] then  -- did we remove last msg in this pipe?
 			local pipe = Prio.Ring.pos
 			Prio.Ring:Remove(pipe)
 			Prio.ByName[pipe.name] = nil
@@ -294,15 +298,26 @@ function ChatThrottleLib:Despool(Prio)
 		else
 			Prio.Ring.pos = Prio.Ring.pos.next
 		end
-		Prio.avail = Prio.avail - msg.nSize
-		bMyTraffic = true
-		msg.f(unpack(msg, 1, msg.n))
-		bMyTraffic = false
-		Prio.nTotalSent = Prio.nTotalSent + msg.nSize
-		DelMsg(msg)
-		if msg.callbackFn then
-			msg.callbackFn (msg.callbackArg)
+		local didSend=false
+		local lowerDest = strlower(msg[3] or "")
+		if lowerDest == "raid" and not UnitInRaid("player") then
+			-- do nothing
+		elseif lowerDest == "party" and not UnitInParty("player") then
+			-- do nothing
+		else
+			Prio.avail = Prio.avail - msg.nSize
+			bMyTraffic = true
+			msg.f(unpack(msg, 1, msg.n))
+			bMyTraffic = false
+			Prio.nTotalSent = Prio.nTotalSent + msg.nSize
+			DelMsg(msg)
+			didSend = true
 		end
+		-- notify caller of delivery (even if we didn't send it)
+		if msg.callbackFn then
+			msg.callbackFn (msg.callbackArg, didSend)
+		end
+		-- USER CALLBACK MAY ERROR
 	end
 end
 
@@ -374,7 +389,6 @@ end
 -----------------------------------------------------------------------
 -- Spooling logic
 
-
 function ChatThrottleLib:Enqueue(prioname, pipename, msg)
 	local Prio = self.Prio[prioname]
 	local pipe = Prio.ByName[pipename]
@@ -390,8 +404,6 @@ function ChatThrottleLib:Enqueue(prioname, pipename, msg)
 
 	self.bQueueing = true
 end
-
-
 
 function ChatThrottleLib:SendChatMessage(prio, prefix,   text, chattype, language, destination, queueName, callbackFn, callbackArg)
 	if not self or not prio or not prefix or not text or not self.Prio[prio] then
@@ -417,8 +429,9 @@ function ChatThrottleLib:SendChatMessage(prio, prefix,   text, chattype, languag
 		bMyTraffic = false
 		self.Prio[prio].nTotalSent = self.Prio[prio].nTotalSent + nSize
 		if callbackFn then
-			callbackFn (callbackArg)
+			callbackFn (callbackArg, true)
 		end
+		-- USER CALLBACK MAY ERROR
 		return
 	end
 
@@ -469,8 +482,9 @@ function ChatThrottleLib:SendAddonMessage(prio, prefix, text, chattype, target, 
 		bMyTraffic = false
 		self.Prio[prio].nTotalSent = self.Prio[prio].nTotalSent + nSize
 		if callbackFn then
-			callbackFn (callbackArg)
+			callbackFn (callbackArg, true)
 		end
+		-- USER CALLBACK MAY ERROR
 		return
 	end
 

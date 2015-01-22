@@ -13,7 +13,7 @@ function UF:Construct_Buffs(frame)
 	buffs.CustomFilter = self.AuraFilter
 	buffs:SetFrameLevel(10)
 	buffs.type = 'buffs'
-	
+
 	return buffs
 end
 
@@ -26,7 +26,7 @@ function UF:Construct_Debuffs(frame)
 	debuffs.CustomFilter = self.AuraFilter
 	debuffs.type = 'debuffs'
 	debuffs:SetFrameLevel(10)
-	
+
 	return debuffs
 end
 
@@ -34,19 +34,19 @@ function UF:Construct_AuraIcon(button)
 	button.text = button.cd:CreateFontString(nil, 'OVERLAY')
 	button.text:Point('CENTER', 1, 1)
 	button.text:SetJustifyH('CENTER')
-	
+
 	button:SetTemplate('Default')
 
 	button.cd.noOCC = true
 	button.cd.noCooldownCount = true
-	button.cd:SetReverse()
+	button.cd:SetReverse(true)
 	button.cd:SetInside()
 	button.cd:SetHideCountdownNumbers(true)
-	
+
 	button.icon:SetInside()
 	button.icon:SetTexCoord(unpack(E.TexCoords))
 	button.icon:SetDrawLayer('ARTWORK')
-	
+
 	button.count:ClearAllPoints()
 	button.count:Point('BOTTOMRIGHT', 1, 1)
 	button.count:SetJustifyH('RIGHT')
@@ -58,14 +58,14 @@ function UF:Construct_AuraIcon(button)
 	button:SetScript('OnClick', function(self)
 		if not IsShiftKeyDown() then return; end
 		local auraName = self.name
-		
+
 		if auraName then
 			E:Print(format(L['The spell "%s" has been added to the Blacklist unitframe aura filter.'], auraName))
 			E.global['unitframe']['aurafilters']['Blacklist']['spells'][auraName] = {
 				['enable'] = true,
-				['priority'] = 0,			
+				['priority'] = 0,
 			}
-			
+
 			UF:Update_AllFrames()
 		end
 	end)
@@ -80,7 +80,7 @@ local function SortAurasByPriority(a, b)
 		elseif not a.isPlayer and b.isPlayer then
 			return false
 		end
-	
+
 		if (a.priority and b.priority) then
 			return a.priority > b.priority
 		end
@@ -99,7 +99,7 @@ function UF:UpdateAuraIconSettings(auras, noCycle)
 		type = auras:GetParent().type
 	end
 	if(not frame.db) then return end
-	
+
 	local db = frame.db[type]
 	local unitframeFont = LSM:Fetch("font", E.db['unitframe'].font)
 	local index = 1
@@ -133,8 +133,8 @@ end
 function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, duration, timeLeft)
 	local name, _, _, _, dtype, duration, expiration, _, isStealable = UnitAura(unit, index, button.filter)
 
-	
-	local isFriend = UnitIsFriend('player', unit) == 1 and true or false
+
+	local isFriend = UnitIsFriend('player', unit)
 	if button.isDebuff then
 		if(not isFriend and button.owner ~= "player" and button.owner ~= "vehicle") --[[and (not E.isDebuffWhiteList[name])]] then
 			button:SetBackdropBorderColor(0.9, 0.1, 0.1)
@@ -152,15 +152,15 @@ function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, durati
 		if (isStealable) and not isFriend then
 			button:SetBackdropBorderColor(237/255, 234/255, 142/255)
 		else
-			button:SetBackdropBorderColor(unpack(E["media"].bordercolor))		
-		end	
+			button:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+		end
 	end
 
 	local size = button:GetParent().size
 	if size then
 		button:Size(size)
 	end
-	
+
 	button.spell = name
 	button.isStealable = isStealable
 	if expiration and duration ~= 0 then
@@ -175,7 +175,7 @@ function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, durati
 			button.expiration = expiration - GetTime()
 			button.nextupdate = -1
 		end
-	end	
+	end
 	if duration == 0 or expiration == 0 then
 		button:SetScript('OnUpdate', nil)
 		if(button.text:GetFont()) then
@@ -184,16 +184,16 @@ function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, durati
 	end
 end
 
-function UF:UpdateAuraTimer(elapsed)	
+function UF:UpdateAuraTimer(elapsed)
 	self.expiration = self.expiration - elapsed
 	if self.nextupdate > 0 then
 		self.nextupdate = self.nextupdate - elapsed
 		return
 	end
-	
+
 	if(self.expiration <= 0) then
 		self:SetScript('OnUpdate', nil)
-		
+
 		if(self.text:GetFont()) then
 			self.text:SetText('')
 		end
@@ -220,15 +220,15 @@ function UF:CheckFilter(filterType, isFriend)
 		FRIENDLY_CHECK = filterType.friendly
 		ENEMY_CHECK = filterType.enemy
 	end
-	
+
 	if (FRIENDLY_CHECK and isFriend) or (ENEMY_CHECK and not isFriend) then
 		return true
 	end
-	
+
 	return false
 end
 
-function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, timeLeft, unitCaster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura)	
+function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, timeLeft, unitCaster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura)
 	if E.global.unitframe.InvalidSpells[spellID] then
 		return false;
 	end
@@ -236,7 +236,7 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 	local isPlayer, isFriend
 	local db = self:GetParent().db
 	if not db or not db[self.type] then return true; end
-	
+
 	db = db[self.type]
 
 	local returnValue = true
@@ -244,9 +244,9 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 	local anotherFilterExists = false
 	local playerOnlyFilter = false
 	local isPlayer = unitCaster == 'player' or unitCaster == 'vehicle'
-	local isFriend = UnitIsFriend('player', unit) == 1 and true or false
+	local isFriend = UnitIsFriend('player', unit)
 	local auraType = isFriend and db.friendlyAuraType or db.enemyAuraType
-	
+
 	icon.isPlayer = isPlayer
 	icon.owner = unitCaster
 	icon.name = name
@@ -256,18 +256,18 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 	if turtleBuff and turtleBuff.enable then
 		icon.priority = turtleBuff.priority
 	end
-	
+
 	if UF:CheckFilter(db.playerOnly, isFriend) then
 		if isPlayer then
 			returnValue = true;
 		else
 			returnValue = false;
 		end
-		
+
 		passPlayerOnlyCheck = returnValue
 		playerOnlyFilter = true
 	end
-	
+
 	if UF:CheckFilter(db.onlyDispellable, isFriend) then
 		if (self.type == 'buffs' and not isStealable) or (self.type == 'debuffs' and dtype and  not E:IsDispellableByMe(dtype)) or dtype == nil then
 			returnValue = false;
@@ -277,18 +277,18 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 
 
 	if UF:CheckFilter(db.noConsolidated, isFriend) then
-		if shouldConsolidate == 1 then
+		if shouldConsolidate == true then
 			returnValue = false;
 		end
-		
+
 		anotherFilterExists = true
 	end
-	
+
 	if UF:CheckFilter(db.noDuration, isFriend) then
 		if (duration == 0 or not duration) then
 			returnValue = false;
 		end
-		
+
 		anotherFilterExists = true
 	end
 
@@ -305,10 +305,10 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 		if blackList and blackList.enable then
 			returnValue = false;
 		end
-		
+
 		anotherFilterExists = true
 	end
-	
+
 	if UF:CheckFilter(db.useWhitelist, isFriend) then
 		local whiteList = E.global['unitframe']['aurafilters']['Whitelist'].spells[name]
 		if whiteList and whiteList.enable then
@@ -317,9 +317,9 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 		elseif not anotherFilterExists and not playerOnlyFilter then
 			returnValue = false
 		end
-		
+
 		anotherFilterExists = true
-	end	
+	end
 
 	if UF:CheckFilter(db.useWhitelist, isFriend) then
 		local whiteList = E.global['unitframe']['aurafilters']['Whitelist (Strict)'].spells[name]
@@ -343,7 +343,7 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 			if spellList[name] and spellList[name].enable and passPlayerOnlyCheck then
 				returnValue = true
 				icon.priority = spellList[name].priority
-				
+
 				--bit hackish fix to this
 				if db.useFilter == 'TurtleBuffs' and (spellID == 86698 or spellID == 86669) then
 					returnValue = false
@@ -356,9 +356,9 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 				returnValue = false
 			end
 		elseif type == 'Blacklist' and spellList[name] and spellList[name].enable then
-			returnValue = false				
+			returnValue = false
 		end
-	end		
-	
-	return returnValue	
+	end
+
+	return returnValue
 end

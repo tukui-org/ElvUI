@@ -1,4 +1,4 @@
---[[ $Id: AceGUIWidget-DropDown.lua 1101 2013-10-25 12:46:47Z nevcairiel $ ]]--
+--[[ $Id: AceGUIWidget-DropDown.lua 1116 2014-10-12 08:15:46Z nevcairiel $ ]]--
 local AceGUI = LibStub("AceGUI-3.0")
 
 -- Lua APIs
@@ -356,7 +356,7 @@ end
 
 do
 	local widgetType = "Dropdown"
-	local widgetVersion = 29
+	local widgetVersion = 30
 	
 	--[[ Static data ]]--
 	
@@ -494,9 +494,11 @@ do
 		if disabled then
 			self.text:SetTextColor(0.5,0.5,0.5)
 			self.button:Disable()
+			self.button_cover:Disable()
 			self.label:SetTextColor(0.5,0.5,0.5)
 		else
 			self.button:Enable()
+			self.button_cover:Enable()
 			self.label:SetTextColor(1,.82,0)
 			self.text:SetTextColor(1,1,1)
 		end
@@ -704,6 +706,7 @@ do
 		button:SetScript("OnClick",Dropdown_TogglePullout)
 		
 		local button_cover = CreateFrame("BUTTON",nil,self.frame)
+		self.button_cover = button_cover
 		button_cover.obj = self
 		button_cover:SetPoint("TOPLEFT",self.frame,"BOTTOMLEFT",0,25)
 		button_cover:SetPoint("BOTTOMRIGHT",self.frame,"BOTTOMRIGHT")

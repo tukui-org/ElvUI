@@ -2,8 +2,8 @@
 -- AceTimer supports one-shot timers and repeating timers. All timers are stored in an efficient
 -- data structure that allows easy dispatching and fast rescheduling. Timers can be registered
 -- or canceled at any time, even from within a running timer, without conflict or large overhead.\\
--- AceTimer is currently limited to firing timers at a frequency of 0.01s. This constant may change
--- in the future, but for now it's required as animations with lower frequencies are buggy.
+-- AceTimer is currently limited to firing timers at a frequency of 0.01s as this is what the WoW timer API
+-- restricts us to.
 --
 -- All `:Schedule` functions will return a handle to the current timer, which you will need to store if you
 -- need to cancel the timer you just registered.
@@ -15,79 +15,63 @@
 -- make into AceTimer.
 -- @class file
 -- @name AceTimer-3.0
--- @release $Id: AceTimer-3.0.lua 1079 2013-02-17 19:56:06Z funkydude $
+-- @release $Id: AceTimer-3.0.lua 1119 2014-10-14 17:23:29Z nevcairiel $
 
-local MAJOR, MINOR = "AceTimer-3.0", 16 -- Bump minor on changes
+local MAJOR, MINOR = "AceTimer-3.0", 17 -- Bump minor on changes
 local AceTimer, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not AceTimer then return end -- No upgrade needed
-
-AceTimer.frame = AceTimer.frame or CreateFrame("Frame", "AceTimer30Frame") -- Animation parent
-AceTimer.inactiveTimers = AceTimer.inactiveTimers or {}                    -- Timer recycling storage
-AceTimer.activeTimers = AceTimer.activeTimers or {}                        -- Active timer list
+AceTimer.activeTimers = AceTimer.activeTimers or {} -- Active timer list
+local activeTimers = AceTimer.activeTimers -- Upvalue our private data
 
 -- Lua APIs
-local type, unpack, next, error, pairs, tostring, select = type, unpack, next, error, pairs, tostring, select
-
--- Upvalue our private data
-local inactiveTimers = AceTimer.inactiveTimers
-local activeTimers = AceTimer.activeTimers
-
-local function OnFinished(self)
-	local id = self.id
-	if type(self.func) == "string" then
-		-- We manually set the unpack count to prevent issues with an arg set that contains nil and ends with nil
-		-- e.g. local t = {1, 2, nil, 3, nil} print(#t) will result in 2, instead of 5. This fixes said issue.
-		self.object[self.func](self.object, unpack(self.args, 1, self.argsCount))
-	else
-		self.func(unpack(self.args, 1, self.argsCount))
-	end
-
-	-- If the id is different it means that the timer was already cancelled
-	-- and has been used to create a new timer during the OnFinished callback.
-	if not self.looping and id == self.id then
-		activeTimers[self.id] = nil
-		self.args = nil
-		inactiveTimers[self] = true
-	end
-end
+local type, unpack, next, error, select = type, unpack, next, error, select
+-- WoW APIs
+local GetTime, C_TimerAfter = GetTime, C_Timer.After
 
 local function new(self, loop, func, delay, ...)
-	local timer = next(inactiveTimers)
-	if timer then
-		inactiveTimers[timer] = nil
-	else
-		local anim = AceTimer.frame:CreateAnimationGroup()
-		timer = anim:CreateAnimation()
-		timer:SetScript("OnFinished", OnFinished)
-	end
-
-	-- Very low delays cause the animations to fail randomly.
-	-- A limited resolution of 0.01 seems reasonable.
 	if delay < 0.01 then
-		delay = 0.01
+		delay = 0.01 -- Restrict to the lowest time that the C_Timer API allows us
 	end
 
+	local timer = {...}
 	timer.object = self
 	timer.func = func
 	timer.looping = loop
-	timer.args = {...}
 	timer.argsCount = select("#", ...)
+	timer.delay = delay
+	timer.ends = GetTime() + delay
 
-	local anim = timer:GetParent()
-	if loop then
-		anim:SetLooping("REPEAT")
-	else
-		anim:SetLooping("NONE")
+	activeTimers[timer] = timer
+
+	-- Create new timer closure to wrap the "timer" object
+	timer.callback = function() 
+		if not timer.cancelled then
+			if type(timer.func) == "string" then
+				-- We manually set the unpack count to prevent issues with an arg set that contains nil and ends with nil
+				-- e.g. local t = {1, 2, nil, 3, nil} print(#t) will result in 2, instead of 5. This fixes said issue.
+				timer.object[timer.func](timer.object, unpack(timer, 1, timer.argsCount))
+			else
+				timer.func(unpack(timer, 1, timer.argsCount))
+			end
+
+			if timer.looping and not timer.cancelled then
+				-- Compensate delay to get a perfect average delay, even if individual times don't match up perfectly
+				-- due to fps differences
+				local time = GetTime()
+				local delay = timer.delay - (time - timer.ends)
+				-- Ensure the delay doesn't go below the threshold
+				if delay < 0.01 then delay = 0.01 end
+				C_TimerAfter(delay, timer.callback)
+				timer.ends = time + delay
+			else
+				activeTimers[timer.handle or timer] = nil
+			end
+		end
 	end
-	timer:SetDuration(delay)
 
-	local id = tostring(timer.args)
-	timer.id = id
-	activeTimers[id] = timer
-
-	anim:Play()
-	return id
+	C_TimerAfter(delay, timer.callback)
+	return timer
 end
 
 --- Schedule a new one-shot timer.
@@ -160,15 +144,14 @@ end
 -- @param id The id of the timer, as returned by `:ScheduleTimer` or `:ScheduleRepeatingTimer`
 function AceTimer:CancelTimer(id)
 	local timer = activeTimers[id]
-	if not timer then return false end
 
-	local anim = timer:GetParent()
-	anim:Stop()
-
-	activeTimers[id] = nil
-	timer.args = nil
-	inactiveTimers[timer] = true
-	return true
+	if not timer then
+		return false
+	else
+		timer.cancelled = true
+		activeTimers[id] = nil
+		return true
+	end
 end
 
 --- Cancels all timers registered to the current addon object ('self')
@@ -186,15 +169,18 @@ end
 -- @return The time left on the timer.
 function AceTimer:TimeLeft(id)
 	local timer = activeTimers[id]
-	if not timer then return 0 end
-	return timer:GetDuration() - timer:GetElapsed()
+	if not timer then
+		return 0
+	else
+		return timer.ends - GetTime()
+	end
 end
 
 
 -- ---------------------------------------------------------------------
 -- Upgrading
 
--- Upgrade from old hash-bucket based timers to animation timers
+-- Upgrade from old hash-bucket based timers to C_Timer.After timers.
 if oldminor and oldminor < 10 then
 	-- disable old timer logic
 	AceTimer.frame:SetScript("OnUpdate", nil)
@@ -204,42 +190,58 @@ if oldminor and oldminor < 10 then
 	for object,timers in pairs(AceTimer.selfs) do
 		for handle,timer in pairs(timers) do
 			if type(timer) == "table" and timer.callback then
-				local id
+				local newTimer
 				if timer.delay then
-					id = AceTimer.ScheduleRepeatingTimer(timer.object, timer.callback, timer.delay, timer.arg)
+					newTimer = AceTimer.ScheduleRepeatingTimer(timer.object, timer.callback, timer.delay, timer.arg)
 				else
-					id = AceTimer.ScheduleTimer(timer.object, timer.callback, timer.when - GetTime(), timer.arg)
+					newTimer = AceTimer.ScheduleTimer(timer.object, timer.callback, timer.when - GetTime(), timer.arg)
 				end
-				-- change id to the old handle
-				local t = activeTimers[id]
-				activeTimers[id] = nil
-				activeTimers[handle] = t
-				t.id = handle
+				-- Use the old handle for old timers
+				activeTimers[newTimer] = nil
+				activeTimers[handle] = newTimer
+				newTimer.handle = handle
 			end
 		end
 	end
 	AceTimer.selfs = nil
 	AceTimer.hash = nil
 	AceTimer.debug = nil
-elseif oldminor and oldminor < 13 then
-	for handle, id in pairs(AceTimer.hashCompatTable) do
-		local t = activeTimers[id]
-		if t then
-			activeTimers[id] = nil
-			activeTimers[handle] = t
-			t.id = handle
+elseif oldminor and oldminor < 17 then
+	-- Upgrade from old animation based timers to C_Timer.After timers.
+	AceTimer.inactiveTimers = nil
+	AceTimer.frame = nil
+	local oldTimers = AceTimer.activeTimers
+	-- Clear old timer table and update upvalue
+	AceTimer.activeTimers = {}
+	activeTimers = AceTimer.activeTimers
+	for handle, timer in pairs(oldTimers) do
+		local newTimer
+		-- Stop the old timer animation
+		local duration, elapsed = timer:GetDuration(), timer:GetElapsed()
+		timer:GetParent():Stop()
+		if timer.looping then
+			newTimer = AceTimer.ScheduleRepeatingTimer(timer.object, timer.func, duration, unpack(timer.args, 1, timer.argsCount))
+		else
+			newTimer = AceTimer.ScheduleTimer(timer.object, timer.func, duration - elapsed, unpack(timer.args, 1, timer.argsCount))
 		end
+		-- Use the old handle for old timers
+		activeTimers[newTimer] = nil
+		activeTimers[handle] = newTimer
+		newTimer.handle = handle
 	end
-	AceTimer.hashCompatTable = nil
-end
 
--- upgrade existing timers to the latest OnFinished
-for timer in pairs(inactiveTimers) do
-	timer:SetScript("OnFinished", OnFinished)
-end
-
-for _,timer in pairs(activeTimers) do
-	timer:SetScript("OnFinished", OnFinished)
+	-- Migrate transitional handles
+	if oldminor < 13 and AceTimer.hashCompatTable then
+		for handle, id in pairs(AceTimer.hashCompatTable) do
+			local t = activeTimers[id]
+			if t then
+				activeTimers[id] = nil
+				activeTimers[handle] = t
+				t.handle = handle
+			end
+		end
+		AceTimer.hashCompatTable = nil
+	end
 end
 
 -- ---------------------------------------------------------------------

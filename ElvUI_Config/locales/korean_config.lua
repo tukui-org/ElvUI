@@ -14,6 +14,30 @@ L["PANEL_DESC"] = "좌우 패널의 크기를 조절합니다. 이 값에 따라
 L["SKINS_DESC"] = "다른 애드온이나 게임 내 여러 프레임에 체크 시 스킨을 적용합니다."
 L["TOGGLESKIN_DESC"] = "체크 시 해당 프레임에 스킨을 사용합니다."
 L["TOOLTIP_DESC"] = "툴팁에 관련된 옵션들입니다."
+L["SEARCH_SYNTAX_DESC"] = [=[With the new addition of LibItemSearch, you now have access to much more advanced item searches. The following is a documentation of the search syntax. See the full explanation at: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
+
+Specific Searching:
+    • q:[quality] or quality:[quality]. For instance, q:epic will find all epic items.
+    • l:[level], lvl:[level] or level:[level]. For example, l:30 will find all items with level 30.
+    • t:[search], type:[search] or slot:[search]. For instance, t:weapon will find all weapons.
+    • n:[name] or name:[name]. For instance, typing n:muffins will find all items with names containing "muffins".
+    • s:[set] or set:[set]. For example, s:fire will find all items in equipment sets you have with names that start with fire.
+    • tt:[search], tip:[search] or tooltip:[search]. For instance, tt:binds will find all items that can be bound to account, on equip, or on pickup.
+
+	
+Search Operators:
+    • ! : Negates a search. For example, !q:epic will find all items that are NOT epic.
+    • | : Joins two searches. Typing q:epic | t:weapon will find all items that are either epic OR weapons.
+    • & : Intersects two searches. For instance, q:epic & t:weapon will find all items that are epic AND weapons
+    • >, <, <=, => : Performs comparisons on numerical searches. For example, typing lvl: >30 will find all items with level HIGHER than 30.
+
+
+The following search keywords can also be used:
+    • soulbound, bound, bop : Bind on pickup items.
+    • bou : Bind on use items.
+    • boe : Bind on equip items.
+    • boa : Bind on account items.
+    • quest : Quest bound items.]=];
 L["TEXT_FORMAT_DESC"] = [=[글자가 표시되는 형식을 변경할 수 있습니다.
 
 
@@ -68,7 +92,7 @@ L["Cooldown Text"] = "재사용 대기시간 설정"
 L["Darken Inactive"] = "킨 태세만 아이콘 표시"
 L["Days"] = "일 단위 색상"
 L["Display bind names on action buttons."] = "버튼에 지정된 단축키를 표시할지 여부를 결정합니다."
-L["Display cooldown text on anything with the cooldown spiril."] = "재사용 대기시간을 가진 모든 것에 시간을 표시합니다."
+L["Display cooldown text on anything with the cooldown spiral."] = "재사용 대기시간을 가진 모든 것에 시간을 표시합니다."
 L["Display macro names on action buttons."] = "버튼에 배치된 매크로의 이름을 표시할지 여부를 결정합니다."
 L["Expiring"] = "초읽기 색상"
 L["Height Multiplier"] = "배경 세로길이 배율"
@@ -98,17 +122,17 @@ L["Visibility State"] = "표시 자동전환 조건"
 L["Width Multiplier"] = "배경 가로길이 배율"
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = [=[이곳에 작성한 조건(예를 들어 전투여부)에 따라 이 행동단축바의 페이지를 자동으로 전환시킬 수 있습니다.
- 
+
 매크로처럼 작성하세요.
- 
+
 |cff2eb7e4< 예시 >|r
 |cffceff00[combat]2;1|r
  : 전투에 돌입하면 2번 페이지로 변경, 전투가 끝나면 1번 페이지로 변경 ]=]
 L[ [=[This works like a macro, you can run different situations to get the actionbar to show/hide differently.
  Example: '[combat] show;hide']=] ] = [=[이곳에 작성한 조건(예를 들어 전투여부)에 따라 이 행동단축바를 자동으로 숨기거나 표시할 수 있게 해줍니다.
- 
+
 매크로처럼 작성하세요.
- 
+
 |cff2eb7e4< 예시 >|r
 |cffceff00[combat]show;hide|r
  : 전투에 돌입하면 표시, 전투가 끝나면 숨김]=]
@@ -121,32 +145,45 @@ L["Align To Chat"] = "패널에 맞춤"
 L["Ascending"] = "오름차순"
 L["Bag-Bar"] = "가방바"
 L["Bar Direction"] = "바 방향"
+L['Blizzard Style'] = true;
 L["Bottom to Top"] = "상단 아래쪽으로 이동"
 L["Button Size (Bag)"] = "슬롯 크기 (가방)"
 L["Button Size (Bank)"] = "슬롯 크기 (은행)"
+L['Condensed'] = true;
 L["Currency Format"] = "화폐 표시방법"
 L["Descending"] = "내림차순"
 L["Direction the bag sorting will use to allocate the items."] = "정렬기능을 실행할 때 체크 시 아이템이 가방칸의 우측하단을, 체크 해제 시 좌측상단을 기준으로 모아서 정렬됩니다."
 L["Enable/Disable the all-in-one bag."] = "통합가방 기능을 사용할지 여부를 결정합니다."
 L["Enable/Disable the Bag-Bar."] = "가방바를 사용할지 여부를 결정합니다."
+L['Full'] = true;
 L["Icons and Text"] = "아이콘 + 문자"
 L["Ignore Items"] = "정렬 예외 아이템 목록"
 L["List of items to ignore when sorting. If you wish to add multiple items you must seperate the word with a comma."] = "정렬기능이 실행될 때 여기에 적힌 아이템은 정렬하지 않고 놔둡니다. 여러 아이템을 등록할 수 있으며 쉼표(,)로 이어서 쓰세요."
+L['Money Format'] = true;
 L["Panel Width (Bags)"] = "통합가방 프레임 가로길이"
 L["Panel Width (Bank)"] = "통합은행 프레임 가로길이"
+L["Search Syntax"] = true;
 L["Set the size of your bag buttons."] = "가방바에서 슬롯의 크기를 결정합니다."
+L['Short (Whole Numbers)'] = true;
+L['Short'] = true;
+L['Show Coins'] = true;
+L['Smart'] = true;
 L["Sort Direction"] = "정렬 방법"
 L["Sort Inverted"] = "아래로 정렬"
 L["The direction that the bag frames be (Horizontal or Vertical)."] = "가방바를 가로로 나열할지, 세로로 나열할지 결정합니다."
 L["The direction that the bag frames will grow from the anchor."] = "가방바의 슬롯이 시작점을 기준으로 슬롯번호순으로 나열할지, 역순으로 나열할지 결정합니다."
 L["The display format of the currency icons that get displayed below the main bag. (You have to be watching a currency for this to display)"] = "화폐의 표시방법을 결정합니다."
+L['The display format of the money text that is shown at the top of the main bag.'] = true;
 L["The frame is not shown unless you mouse over the frame."] = "커서를 갖다 댔을(마우스오버) 시에만 표시됩니다."
 L["The size of the individual buttons on the bag frame."] = "통합가방 프레임의 슬롯크기를 결정합니다."
 L["The size of the individual buttons on the bank frame."] = "통합은행 프레임의 슬롯크기를 결정합니다."
 L["The spacing between buttons."] = "버튼 사이의 간격을 설정합니다."
 L["Top to Bottom"] = "위에서 아래로"
-L["X Offset"] = "X 축 기준 좌표"
-L["Y Offset"] = "Y 축 기준 좌표"
+L['Use coin icons instead of colored text.'] = true;
+L["X Offset Bags"] = true;
+L["X Offset Bank"] = true;
+L["Y Offset Bags"] = true;
+L["Y Offset Bank"] = true;
 
 --Buffs and Debuffs
 L["Begin a new row or column after this many auras."] = "한 줄에 아이콘이 이 값보다 많으면 다음 줄에 배치합니다."
@@ -159,6 +196,7 @@ L["Disabled Blizzard"] = "기본 오라창 미사용"
 L["Display the consolidated buffs bar."] = "미니맵 우측의 시너지버프 모음 바를 표시합니다."
 L["Fade Threshold"] = "초읽기 시작 시점"
 L["Filter Consolidated"] = "내게 유용한 것만 표시"
+L["When enabled active buff icons will light up instead of becoming darker, while inactive buff icons will become darker instead of being lit up."] = true;
 L["Index"] = "종류"
 L["Indicate whether buffs you cast yourself should be separated before or after."] = "스스로 걸은 효과를 남이 걸어준 효과보다 먼저 나열할지, 후에 나열할지, 구분하지 않을지를 결정합니다."
 L["Limit the number of rows or columns."] = "표시줄 수를 제한해 최종적으로 보여줄 오라의 총 개수를 제한합니다."
@@ -167,6 +205,7 @@ L["No Sorting"] = "구분하지 않음"
 L["Only show consolidated icons on the consolidated bar that your class/spec is interested in. This is useful for raid leading."] = "체크 시 현재 캐릭터의 직업과 특성에 유용한 시너지버프만, 체크 해제 시 모든 시너지버프를 표시합니다."
 L["Other's First"] = "남이 걸어준 효과 먼저"
 L["Remaining Time"] = "지속시간 표시"
+L["Reverse Style"] = true;
 L["Seperate"] = "시전자 구분 정렬"
 L["Set the size of the individual auras."] = "오라 아이콘의 크기를 결정합니다."
 L["Sort Method"] = "정렬 기준"
@@ -180,6 +219,9 @@ L["Your Auras First"] = "내가 걸은 효과 먼저"
 
 --Chat
 L["Above Chat"] = "채팅창 위에 배치"
+L['Adjust the height of your right chat panel.'] = true;
+L['Adjust the width of your right chat panel.'] = true;
+L["Alerts"] = true;
 L["Attempt to create URL links inside the chat."] = "대화 내역에 URL 주소가 있으면 강조하고 클릭 시 복사할 수 있게끔 합니다."
 L["Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish."] = "좌우측 패널에 채팅창 고정 여부를 결정합니다. 체크 해제 시 좌측에 고정된 기본 채팅창도 움직일 수 있습니다."
 L["Below Chat"] = "채팅창 아래에 배치"
@@ -188,6 +230,7 @@ L["Chat History"] = "이전 채팅내역 기억"
 L["Copy Text"] = "내용 복사"
 L["Display LFG Icons in group chat."] = "말한 사람에게 역할 아이콘이 설정되어 있는 경우 이름에 같이 표시할지 여부를 결정합니다."
 L["Display the hyperlink tooltip while hovering over a hyperlink."] = "각종 링크에 커서를 갖다 댄(마우스오버) 동안에 링크에 대한 툴팁을 표시합니다."
+L["Enable the use of separate size options for the right chat panel."] = true;
 L["Fade Chat"] = "오래된 메시지 숨기기"
 L["Fade the chat text when there is no activity."] = "시간이 오래 지난 이전의 메시지를 채팅창에서 보이지 않게 합니다. 삭제하는 것은 아니니 마우스 휠링으로 안보이게 한 이전의 메시지를 다시 확인할 수 있습니다."
 L["Font Outline"] = "글꼴 외곽선"
@@ -210,7 +253,10 @@ L["Panel Width"] = "패널 가로길이"
 L["Position of the Chat EditBox, if datatexts are disabled this will be forced to be above chat."] = "대화 입력창의 위치를 결정합니다. 만약 정보문자 항목에서 패널에 정보문자를 표시하지 않게 해놨다면 위치가 채팅창 위로 고정됩니다."
 L["Prevent the same messages from displaying in chat more than once within this set amount of seconds, set to zero to disable."] = "같은 내용의 메시지는 이 값만큼 정해진 시간 내에선 한번만 보여줍니다.|n|n0으로 설정하면 이 기능을 끕니다."
 L["Right Only"] = "우측 배경만 표시"
+L['Right Panel Height'] = true;
+L['Right Panel Width'] = true;
 L["Scroll Interval"] = "자동 스크롤링 시간"
+L["Separate Panel Sizes"] = true;
 L["Set the font outline."] = "글꼴의 외곽선을 결정합니다."
 L["Short Channels"] = "채널명 요약"
 L["Shorten the channel names in chat."] = "채팅창의 채널명을 간추려 표시합니다."
@@ -259,7 +305,6 @@ L["Testing:"] = "|cff2eb7e4< 테스터 >|r"
 
 --DataTexts
 L["24-Hour Time"] = "24시제로 표시"
-L["Always Display"] = "항상 표시"
 L["Battleground Texts"] = "전장에서 표시전환"
 L["Change settings for the display of the location text that is on the minimap."] = "미니맵 상단에 있는 지역이름의 표시방법을 결정합니다."
 L["Datatext Panel (Left)"] = "좌측 정보문자 탭 사용"
@@ -267,20 +312,20 @@ L["Datatext Panel (Right)"] = "우측 정보문자 탭 사용"
 L["DataTexts"] = "정보문자"
 L["Display data panels below the chat, used for datatexts."] = "패널의 하단에 정보문자 탭을 추가합니다. 이 탭에 정보문자가 있게 됩니다."
 L["Display minimap panels below the minimap, used for datatexts."] = "미니맵 하단에 2개의 정보문자를 추가합니다."
+L["Gold Format"] = true;
 L["If not set to true then the server time will be displayed instead."] = "체크 시 컴퓨터의 시간을 표시하고, 체크 해제 시 서버시간으로 표시합니다."
 L["left"] = "왼쪽"
 L["LeftChatDataPanel"] = "좌측 패널 정보문자 탭"
 L["LeftMiniPanel"] = "미니맵 왼쪽 정보문자"
 L["Local Time"] = "컴퓨터 시계 기준"
-L["Location Text"] = "지역이름 표시 방법"
 L["middle"] = "중앙"
-L["Minimap Mouseover"] = "마우스오버 때만 표시"
 L["Minimap Panels"] = "미니맵 정보문자 사용"
 L["Panel Transparency"] = "탭을 반투명하게"
 L["Panels"] = "패널"
 L["right"] = "오른쪽"
 L["RightChatDataPanel"] = "우측 패널 정보문자 탭"
 L["RightMiniPanel"] = "미니맵 오른쪽 정보문자"
+L["The display format of the money text that is shown in the gold datatext and its tooltip."] = true;
 L["Toggle 24-hour mode for the time datatext."] = "시간을 24시제 표기법으로 표시합니다. 체크 해제 시 오전/오후 로 표시합니다."
 L["When inside a battleground display personal scoreboard information on the main datatext bars."] = "전장 안에 있는 경우 주 정보문자에 자신의 각종 점수들을 표시하게 합니다."
 
@@ -297,19 +342,23 @@ L["You must be targeting a player."] = "유저를 대상으로 잡은 후에 시
 L["Accept Invites"] = "지인의 초대 자동수락"
 L["Adjust the position of the threat bar to either the left or right datatext panels."] = "위협수치 바를 어느 패널의 정보문자 탭에 배치할지 결정합니다."
 L["Adjust the size of the minimap."] = "미니맵의 크기를 결정합니다."
+L['AFK Mode'] = true;
 L["Announce Interrupts"] = "차단 성공시 알림"
 L["Announce when you interrupt a spell to the specified chat channel."] = "주문 차단에 성공하면 여기에서 설정한 채널로 차단성공을 알립니다."
 L["Attempt to support eyefinity/nvidia surround."] = "다중모니터 기술인 아이피니티 기능이나 nvidia 서라운드 기능 지원을 적용합니다."
 L["Auto Greed/DE"] = "자동 차비/추출 선택"
 L["Auto Repair"] = "자동 수리"
 L["Auto Scale"] = "UI크기 자동조절"
+L["Auto"] = true;
 L["Automatically accept invites from guild/friends."] = "길드원이나 친구가 플레이어를 파티를 초대하면 자동으로 수락합니다."
 L["Automatically repair using the following method when visiting a merchant."] = "수리가 가능한 상점을 열면 이 옵션에서 선택한 자금으로 장비를 자동 수리합니다."
 L["Automatically scale the User Interface based on your screen resolution"] = "현재의 화면 해상도에 따라 자동으로 UI의 크기를 조절합니다."
 L["Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level."] = "녹템 주사위창이 뜨면 자동으로 차비나 마력추출을 선택합니다. 이 기능은 오로지 만렙 캐릭터에서만 동작합니다."
 L["Automatically vendor gray items when visiting a vendor."] = "상점이 열리면 잡동사니를 자동으로 판매합니다."
+L["Bonus Reward Position"] = true;
 L["Bottom Panel"] = "하단 패널 표시"
 L["Chat Bubbles Style"] = "말풍선 디자인"
+L['Direction the bar moves on gains/losses'] = true;
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = "화면 하단에 꾸미기 용도의 바를 생성합니다."
 L["Display a panel across the top of the screen. This is for cosmetic only."] = "화면 상단에 꾸미기 용도의 바를 생성합니다."
 L["Display emotion icons in chat."] = "메시지 안에 이모티콘이 있으면 그림으로 바꿔 보여줍니다."
@@ -320,25 +369,29 @@ L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from see
 L["Enhance Raid Browser"] = "기타공격대창 향상"
 L["Enhance the raid browser frame by adding item level and talent spec information, also add average item level of group information to tooltips."] = "기타 공격대창 검색탭에 템렙과 특성을 표시하고, 파티의 평균템렙을 툴팁에 추가해줍니다."
 L["General"] = "일반"
+L["Height of the objective tracker. Increase size to be able to see more objectives."] = true;
 L["Hide Error Text"] = "전투중 에러 숨기기"
 L["Hides the red error text at the top of the screen while in combat."] = "화면 중앙 상단에 뜨는 여러 에러메시지(ex : 사정거리 부족)를 전투 중에는 띄우지 않게 합니다."
-L["Left"] = "왼쪽"
 L["Log Taints"] = "Taint 에러 표시"
 L["Login Message"] = "로그인 메세지 표시"
 L["Loot Roll"] = "주사위 굴림창"
 L["Loot"] = "전리품 확인창"
+L["Make the world map smaller."] = true;
 L["Multi-Monitor Support"] = "다중모니터 지원"
 L["Name Font"] = "캐릭터 이름 글꼴"
+L["Objective Frame Height"] = true;
+L["Position of bonus quest reward frame relative to the objective tracker."] = true;
 L["Remove Backdrop"] = "표시하지 않음"
 L["Reset all frames to their original positions."] = "ElvUI 에서 움직일 수 있는 모든 프레임의 위치를 기본 위치로 초기화합니다."
 L["Reset Anchors"] = "위치 초기화"
-L["Right"] = "오른쪽"
 L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."] = "애드온 기능이 막히는 에러도 오류확인창에 등록합니다. 이런 에러들은 중요하지 않거나 게임플레이에 영향을 미치지 않는 것들이 대부분입니다. 게다가 이런 에러들은 대부분 고칠 수 없는 것들입니다.|n|n발견되는 에러가 게임플레이에 지장이 될 경우에만 에러보고를 해주세요."
 L["Skin Backdrop"] = "반투명 스킨적용"
 L["Skin the blizzard chat bubbles."] = "말풍선에 디자인을 변경해 스킨을 입힐지, 혹은 투명하게 하여 안보이게 할지 결정합니다."
+L["Smaller World Map"] = true;
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "화면상에서 캐릭터 위에 표시되는 이름, 길드, 칭호 등의 글꼴을 변경합니다.|n|n|cffff0000WARNING|r|n이 설정은 리로드가 아닌 캐릭터에 재접속하야 적용됩니다."
 L["Toggle Tutorials"] = "애드온 튜토리얼 확인"
 L["Top Panel"] = "상단 패널 표시"
+L["When you go AFK display the AFK screen."] = true;
 
 --Media
 L["Backdrop color of transparent frames"] = "ElvUI에서 생성하는 모든 반투명한 프레임의 배경 색상과 투명도를 결정합니다."
@@ -355,6 +408,8 @@ L["Main backdrop color of the UI."] = "ElvUI에서 생성하는 모든 불투명
 L["Main border color of the UI. |cffFF0000This is disabled if you are using the pixel perfect theme.|r"] = "ElvUI에서 생성하는 모든 프레임의 테두리 색상을 결정합니다. Pixel Perfect 테마에서는 테두리를 설정할 수 없습니다."
 L["Media"] = "미디어"
 L["Primary Texture"] = "주 텍스쳐"
+L['Replace Blizzard Fonts'] = true;
+L['Replaces the default Blizzard fonts on various panels and frames with the fonts chosen in the Media section of the ElvUI config. NOTE: Any font that inherits from the fonts ElvUI usually replaces will be affected as well if you disable this. Enabled by default.'] = true;
 L["Secondary Texture"] = "보조 텍스쳐"
 L["Set the font size for everything in UI. Note: This doesn't effect somethings that have their own seperate options (UnitFrame Font, Datatext Font, ect..)"] = "ElvUI에서 쓰이는 모든 글꼴 크기를 결정합니다.|n|n개인적으로 글꼴 크기를 지정할 수 있는 곳은 적용되지 않습니다."
 L["Textures"] = "텍스처"
@@ -363,6 +418,23 @@ L["The font that the core of the UI will use."] = "ElvUI에서 쓰이는 모든 
 L["The texture that will be used mainly for statusbars."] = "기본적으로 상태바 같은 곳에서 입혀지는 텍스쳐입니다."
 L["This texture will get used on objects like chat windows and dropdown menus."] = "채팅창이나 메뉴 같은 프레임에 입혀지는 텍스쳐입니다."
 L["Value Color"] = "강조 색상"
+
+--Minimap
+L['Always Display'] = "항상 표시"
+L["Bottom Left"] = true;
+L["Bottom Right"] = true;
+L["Bottom"] = true;
+L["Instance Difficulty"] = true;
+L["Left"] = "왼쪽"
+L["LFG Queue"] = true;
+L['Location Text'] = "지역이름 표시 방법"
+L["Minimap Buttons"] = true;
+L['Minimap Mouseover'] = "마우스오버 때만 표시"
+L["Right"] = "오른쪽"
+L["Scale"] = true;
+L["Top Left"] = true;
+L["Top Right"] = true;
+L["Top"] = true;
 
 --Misc
 L["Install"] = "설치"
@@ -426,6 +498,8 @@ L["Remove Name"] = "이름표 필터 제거"
 L["Scale if Low Health"] = "생명력이 낮을 때 설정 자동변경"
 L["Scaling"] = "크기"
 L["Set the scale of the nameplate."] = "필터 이름과 같은 유닛의 이름표는 특별히 생명력바 크기를 이 값 만큼 확대하거나 축소하게 합니다."
+L['Show Level'] = true;
+L['Show Name'] = true;
 L["Show Personal Auras"] = "내가 걸은 주문만 표시"
 L["Small Plates"] = "잡몹 이름표는 작게"
 L["Stretch Texture"] = "아이콘 늘이기"
@@ -478,6 +552,7 @@ L["Non-Raid Frame"] = "비공격대 프레임"
 L["Pet Battle"] = "애완동물대전 관련"
 L["Petition Frame"] = "GM 요청 창"
 L["PvP Frames"] = "PvP 창"
+L["Quest Choice"] = true;
 L["Quest Frames"] = "퀘스트 창"
 L["Raid Frame"] = "공격대 프레임"
 L["Reforge Frame"] = "재연마 창"
@@ -498,7 +573,11 @@ L["World Map"] = "세계 지도"
 
 --Tooltip
 L["Always Hide"] = "표시하지 않음"
+L["Bags Only"] = true;
+L["Bank Only"] = true;
+L["Both"] = true;
 L["Cursor Anchor"] = "툴팁을 마우스에 표시"
+L["Custom Faction Colors"] = true;
 L["Display guild ranks if a unit is guilded."] = "길드명과 함께 길드 등급도 표시합니다."
 L["Display how many of a certain item you have in your possession."] = "현재 툴팁으로 보고있는 아이템을 여러개 갖고 있다면 갯수를 표시합니다."
 L["Display player titles."] = "이름에 칭호도 표시합니다."
@@ -598,6 +677,7 @@ L["Custom Texts"] = "사용자지정 문자"
 L["Death"] = "죽음"
 L["Debuff Highlighting"] = "해제가능한 디버프 강조"
 L["Debuffs"] = "디버프"
+L["Decimal Threshold"] = true;
 L["Deficit"] = "부족"
 L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."] = "생성된 필터를 제거합니다. 단, 추가로 생성한 필터만 제거가 가능합니다."
 L["Delete Filter"] = "필터 삭제"
@@ -690,6 +770,7 @@ L["Main statusbar texture."] = "시전바, 클래스타이머 등의 텍스쳐�
 L["Main Tanks / Main Assist"] = "방어/지원 담당자"
 L["Make textures transparent."] = "색상을 반투명하게 합니다."
 L["Match Frame Width"] = "프레임 너비와 맞춤"
+L['Max Bars'] = true;
 L["Maximum Duration"] = "지속시간 제한"
 L["Middle Click - Set Focus"] = "휠클릭으로 주시 설정"
 L["Middle clicking the unit frame will cause your focus to match the unit."] = "마우스 휠로 이 프레임을 클릭하면 유닛을 주시 대상으로 잡습니다."
@@ -731,6 +812,7 @@ L["Priority"] = "우선도"
 L["PVP Trinket"] = "PvP 장신구"
 L["Raid Icon"] = "레이드 아이콘"
 L["Raid-Wide Sorting"] = "빈칸없이 나열"
+L["Raid40 Frames"] = true;
 L["RaidDebuff Indicator"] = "공격대 주요 디버프 표시기"
 L["Range Check"] = "거리에 따른 투명도 적용"
 L["Rapidly update the health, uses more memory and cpu. Only recommended for healing."] = "생명력 수치 업데이트를 평소보다 더 빠르게 하지만 메모리와 CPU점유율이 더 증가하는 기능입니다. 힐러일 경우에만 추천합니다."
@@ -749,6 +831,7 @@ L["Select an additional filter to use. If the selected filter is a whitelist and
 L["Select Filter"] = "필터 선택"
 L["Select Spell"] = "주문 선택"
 L["Select the display method of the portrait."] = "초상화 표시 방법을 결정합니다."
+L["Set space between each aura icon."] = true;
 L["Set the filter type, blacklisted filters hide any aura on the like and show all else, whitelisted filters show any aura on the filter and hide all else."] = "필터 형식을 설정합니다. 차단 목록 형태는 설정된 오라를 제외한 모든 오라를 표시하며 요구 목록 형태는 설정된 오라만을 표시합니다."
 L["Set the font size for unitframes."] = "유닛프레임 내에서 쓰이는 모든 글자의 크기를 결정합니다."
 L["Set the order that the group will sort."] = "이 유닛프레임에서 그룹을 어떤 기준으로 묶을지를 결정합니다.|n|n|cffceff00해석불완전|r : 기능을 제가 아직 확인해보지 못했습니다."
@@ -800,6 +883,7 @@ L["The object you want to attach to."] = "이 요소가 어느 프레임을 기�
 L["This filter is meant to be used when you only want to whitelist specific spellIDs which share names with unwanted spells."] = "요구 목록에 적은 주문과 같은 이름을 가진 주문이 여러개 있는 경우,|n이 곳에 ID를 적은 주문만 표시해주는 기능입니다."
 L["This filter is used for both aura bars and aura icons no matter what. Its purpose is to block out specific spellids from being shown. For example a paladin can have two sacred shield buffs at once, we block out the short one."] = "같은 주문 이름이 여러개 있는 경우, 특정 주문을 표시하지 않게 하는 기능입니다.|n|n예로, 성기사의 [성스러운 보호막]은 같은 이름의 효과가 2개가 있어,|n덜 중요한 하나를 여기에서 차단해 보이지 않게 하고 있습니다."
 L["Threat Display Mode"] = "어그로획득 표시방법"
+L["Threshold before text goes into decimal form. Set to -1 to disable decimals."] = true;
 L["Ticks"] = "주문 틱 표시"
 L["Time Remaining Reverse"] = "남은시간이 짧은 순으로"
 L["Time Remaining"] = "남은시간이 긴 순으로"

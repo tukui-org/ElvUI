@@ -16,13 +16,13 @@ local function LoadSkin()
 	for _, v in pairs(checkbox) do
 		S:HandleCheckBox(_G[v])
 	end
-	
+
 
 	-- have to skin these checkboxes seperate for some reason o_O
 	S:HandleCheckBox(LookingForGuildTankButton.checkButton)
 	S:HandleCheckBox(LookingForGuildHealerButton.checkButton)
 	S:HandleCheckBox(LookingForGuildDamagerButton.checkButton)
-	
+
 	-- skinning other frames
 	LookingForGuildFrameInset:StripTextures(false)
 	LookingForGuildFrame:StripTextures()
@@ -35,7 +35,7 @@ local function LoadSkin()
 	S:HandleCloseButton(LookingForGuildFrameCloseButton)
 	LookingForGuildCommentInputFrame:CreateBackdrop("Default")
 	LookingForGuildCommentInputFrame:StripTextures(false)
-	
+
 	-- skin container buttons on browse and request page
 	for i = 1, 5 do
 		local b = _G["LookingForGuildBrowseFrameContainerButton"..i]
@@ -43,12 +43,12 @@ local function LoadSkin()
 		b:SetBackdrop(nil)
 		t:SetBackdrop(nil)
 	end
-	
+
 	-- skin tabs
 	for i= 1, 3 do
 		S:HandleTab(_G["LookingForGuildFrameTab"..i])
 	end
-	
+
 	GuildFinderRequestMembershipFrame:StripTextures(true)
 	GuildFinderRequestMembershipFrame:SetTemplate("Transparent")
 	S:HandleButton(GuildFinderRequestMembershipFrameAcceptButton)

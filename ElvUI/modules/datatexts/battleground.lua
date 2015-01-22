@@ -14,7 +14,7 @@ local dataLayout = {
 		['left'] = 4,
 		['middle'] = 3,
 		['right'] = 11,
-	},	
+	},
 }
 
 local dataStrings = {
@@ -45,7 +45,7 @@ function DT:UPDATE_BATTLEFIELD_SCORE()
 		name = GetBattlefieldScore(i)
 		if name == E.myname then
 			self.text:SetFormattedText(displayString, dataStrings[pointIndex], E:ShortValue(select(pointIndex, GetBattlefieldScore(i))))
-			break	
+			break
 		end
 	end
 end
@@ -60,7 +60,7 @@ function DT:BattlegroundStats()
 			DT.tooltip:AddLine(" ")
 
 			--Add extra statistics to watch based on what BG you are in.
-			if CurrentMapID == WSG or CurrentMapID == TP then 
+			if CurrentMapID == WSG or CurrentMapID == TP then
 				DT.tooltip:AddDoubleLine(L['Flags Captured'], GetBattlefieldStatData(index, 1),1,1,1)
 				DT.tooltip:AddDoubleLine(L['Flags Returned'], GetBattlefieldStatData(index, 2),1,1,1)
 			elseif CurrentMapID == EOTS then
@@ -78,14 +78,14 @@ function DT:BattlegroundStats()
 				DT.tooltip:AddDoubleLine(L['Bases Defended'], GetBattlefieldStatData(index, 2),1,1,1)
 			elseif CurrentMapID == TOK then
 				DT.tooltip:AddDoubleLine(L['Orb Possessions'], GetBattlefieldStatData(index, 1),1,1,1)
-				DT.tooltip:AddDoubleLine(L['Victory Points'], GetBattlefieldStatData(index, 2),1,1,1)	
+				DT.tooltip:AddDoubleLine(L['Victory Points'], GetBattlefieldStatData(index, 2),1,1,1)
 			elseif CurrentMapID == SSM then
-				DT.tooltip:AddDoubleLine(L['Carts Controlled'], GetBattlefieldStatData(index, 1),1,1,1)	
+				DT.tooltip:AddDoubleLine(L['Carts Controlled'], GetBattlefieldStatData(index, 1),1,1,1)
 			end
 			break
 		end
-	end	
-	
+	end
+
 	DT.tooltip:Show()
 end
 

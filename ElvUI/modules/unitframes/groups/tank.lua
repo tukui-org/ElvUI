@@ -7,38 +7,38 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 local tinsert = table.insert
 function UF:Construct_TankFrames(unitGroup)
 	self:SetScript('OnEnter', UnitFrame_OnEnter)
-	self:SetScript('OnLeave', UnitFrame_OnLeave)	
+	self:SetScript('OnLeave', UnitFrame_OnLeave)
 
 	self.Health = UF:Construct_HealthBar(self, true)
 	self.Name = UF:Construct_NameText(self)
 	self.Threat = UF:Construct_Threat(self)
 	self.RaidIcon = UF:Construct_RaidIcon(self)
 	self.Range = UF:Construct_Range(self)
-	
+
 	UF:Update_TankFrames(self, E.db['unitframe']['units']['tank'])
 	UF:Update_StatusBars()
-	UF:Update_FontStrings()	
-	
+	UF:Update_FontStrings()
+
 	self.originalParent = self:GetParent()
-	
+
 	return self
 end
 
 function UF:Update_TankHeader(header, db)
 	header:Hide()
 	header.db = db
-	
+
 	UF:ClearChildPoints(header:GetChildren())
-	
+
 	header:SetAttribute("startingIndex", -1)
-	RegisterAttributeDriver(header, 'state-visibility', 'show')	
-	header.dirtyWidth, header.dirtyHeight = header:GetSize()	
+	RegisterAttributeDriver(header, 'state-visibility', 'show')
+	header.dirtyWidth, header.dirtyHeight = header:GetSize()
 	RegisterAttributeDriver(header, 'state-visibility', '[@raid1,exists] show;hide')
 	header:SetAttribute("startingIndex", 1)
-	
+
 	header:SetAttribute('point', 'BOTTOM')
 	header:SetAttribute('columnAnchorPoint', 'LEFT')
-	
+
 	UF:ClearChildPoints(header:GetChildren())
 	header:SetAttribute("yOffset", 7)
 
@@ -66,9 +66,9 @@ function UF:Update_TankFrames(frame, db)
 		frame.db = db.targetsGroup
 		if not frame.originalParent.childList then
 			frame.originalParent.childList = {}
-		end	
+		end
 		frame.originalParent.childList[frame] = true;
-		
+
 		if not InCombatLockdown() then
 			if childDB.enable then
 				frame:SetParent(frame.originalParent)
@@ -78,17 +78,17 @@ function UF:Update_TankFrames(frame, db)
 			else
 				frame:SetParent(E.HiddenFrame)
 			end
-		end	
+		end
 	elseif not InCombatLockdown() then
 		frame.db = db
 		frame:Size(db.width, db.height)
 	end
-	
+
 	--Health
 	do
 		local health = frame.Health
 		health.Smooth = self.db.smoothbars
-		
+
 		--Colors
 		health.colorSmooth = nil
 		health.colorHealth = nil
@@ -99,18 +99,18 @@ function UF:Update_TankFrames(frame, db)
 				health.colorSmooth = true
 			else
 				health.colorHealth = true
-			end		
+			end
 		else
 			health.colorClass = true
 			health.colorReaction = true
-		end	
-		
+		end
+
 		--Position
 		health:ClearAllPoints()
 		health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -BORDER)
 		health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER)
 	end
-	
+
 	--Name
 	do
 		local name = frame.Name
@@ -120,8 +120,8 @@ function UF:Update_TankFrames(frame, db)
 		else
 			frame:Tag(name, '[namecolor][name:medium]')
 		end
-	end	
-	
+	end
+
 	--Threat
 	do
 		local threat = frame.Threat
@@ -138,20 +138,20 @@ function UF:Update_TankFrames(frame, db)
 				threat.glow:Point("TOPLEFT", frame.Health.backdrop, "TOPLEFT", -SHADOW_SPACING, SHADOW_SPACING)
 				threat.glow:Point("TOPRIGHT", frame.Health.backdrop, "TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING)
 				threat.glow:Point("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
-				threat.glow:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)	
+				threat.glow:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
 			elseif db.threatStyle == "ICONTOPLEFT" or db.threatStyle == "ICONTOPRIGHT" or db.threatStyle == "ICONBOTTOMLEFT" or db.threatStyle == "ICONBOTTOMRIGHT" or db.threatStyle == "ICONTOP" or db.threatStyle == "ICONBOTTOM" or db.threatStyle == "ICONLEFT" or db.threatStyle == "ICONRIGHT" then
 				threat:SetFrameStrata('HIGH')
 				local point = db.threatStyle
 				point = point:gsub("ICON", "")
-				
+
 				threat.texIcon:ClearAllPoints()
 				threat.texIcon:SetPoint(point, frame.Health, point)
 			end
 		elseif frame:IsElementEnabled('Threat') then
 			frame:DisableElement('Threat')
 		end
-	end	
-	
+	end
+
 	--Range
 	do
 		local range = frame.Range
@@ -164,10 +164,10 @@ function UF:Update_TankFrames(frame, db)
 		else
 			if frame:IsElementEnabled('Range') then
 				frame:DisableElement('Range')
-			end				
+			end
 		end
-	end	
-	
+	end
+
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg, true)
 
 	frame:UpdateAllElements()

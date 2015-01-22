@@ -16,7 +16,7 @@ local function Reset()
 	combatTime = 0
 	DMGTotal = 0
 	lastDMGAmount = 0
-end	
+end
 
 local function GetDPS(self)
 	local DPS
@@ -30,7 +30,7 @@ end
 
 local function OnEvent(self, event, ...)
 	lastPanel = self
-	
+
 	if event == "PLAYER_ENTERING_WORLD" then
 		playerID = UnitGUID('player')
 	elseif event == 'PLAYER_REGEN_DISABLED' or event == "PLAYER_LEAVE_COMBAT" then
@@ -60,7 +60,7 @@ local function OnEvent(self, event, ...)
 	elseif event == UNIT_PET then
 		petID = UnitGUID("pet")
 	end
-	
+
 	GetDPS(self)
 end
 

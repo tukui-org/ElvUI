@@ -14,9 +14,9 @@ local Update = function(self, event, unit)
 
 	local cp
 	if(UnitHasVehicleUI'player') then
-		cp = GetComboPoints('vehicle', 'target')
+		cp = UnitPower('vehicle', 4)
 	else
-		cp = GetComboPoints('player', 'target')
+		cp = UnitPower('player', 4)
 	end
 
 	for i=1, MAX_COMBO_POINTS do

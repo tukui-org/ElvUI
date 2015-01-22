@@ -17,7 +17,7 @@ local function MakeIconString(tank, healer, damage)
 	end
 	if damage then
 		str = str..DPS_ICON
-	end	
+	end
 
 	return str
 end
@@ -35,7 +35,7 @@ local function OnEvent(self, event, ...)
 			if eligible and forHealer and itemCount > 0 then healerReward = true; unavailable = false; end
 			if eligible and forDamage and itemCount > 0 then dpsReward = true; unavailable = false; end
 		end
-	end	
+	end
 
 	if unavailable then
 		self.text:SetText(NOBONUSREWARDS)
@@ -51,7 +51,7 @@ end
 
 local function ValueColorUpdate(hex, r, g, b)
 	NOBONUSREWARDS = BATTLEGROUND_HOLIDAY..": "..hex.."N/A|r"
-	
+
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)
 	end
@@ -75,7 +75,7 @@ local function OnEnter(self)
 			if eligible and forHealer and itemCount > 0 then healerReward = true end
 			if eligible and forDamage and itemCount > 0 then dpsReward = true end
 		end
-		
+
 		if not unavailable then
 			allUnavailable = false
 			local rolesString = MakeIconString(tankReward, healerReward, dpsReward)

@@ -12,9 +12,9 @@ function THREAT:UpdatePosition()
 		self.bar:SetParent(RightChatDataPanel)
 	else
 		self.bar:SetInside(LeftChatDataPanel)
-		self.bar:SetParent(LeftChatDataPanel)	
+		self.bar:SetParent(LeftChatDataPanel)
 	end
-	
+
 	self.bar.text:FontTemplate(nil, self.db.textSize)
 	self.bar:SetFrameStrata('MEDIUM')
 end
@@ -27,7 +27,7 @@ function THREAT:GetLargestThreatOnList(percent)
 			largestUnit = unit
 		end
 	end
-	
+
 	return (percent - largestValue), largestUnit
 end
 
@@ -57,7 +57,7 @@ function THREAT:Update()
 			if petExists then
 				self.list['pet'] = select(3, UnitDetailedThreatSituation('pet', 'target'))
 			end
-			
+
 			if isInRaid then
 				for i=1, 40 do
 					if UnitExists('raid'..i) and not UnitIsUnit('raid'..i, 'player') then
@@ -68,15 +68,15 @@ function THREAT:Update()
 				for i=1, 4 do
 					if UnitExists('party'..i) then
 						self.list['party'..i] = select(3, UnitDetailedThreatSituation('party'..i, 'target'))
-					end			
+					end
 				end
 			end
-			
+
 			local leadPercent, largestUnit = self:GetLargestThreatOnList(percent)
 			if leadPercent > 0 and largestUnit ~= nil then
 				local r, g, b = self:GetColor(largestUnit)
 				self.bar.text:SetFormattedText(L['ABOVE_THREAT_FORMAT'], name, percent, leadPercent, r, g, b, UnitName(largestUnit) or UNKNOWN)
-				
+
 				if E.role == 'Tank' then
 					self.bar:SetStatusBarColor(0, 0.839, 0)
 					self.bar:SetValue(leadPercent)
@@ -97,7 +97,7 @@ function THREAT:Update()
 	else
 		self.bar:Hide()
 	end
-	
+
 	twipe(self.list)
 end
 
@@ -119,16 +119,16 @@ end
 
 function THREAT:Initialize()
 	self.db = E.db.general.threat
-	
+
 	self.bar = CreateFrame('StatusBar', 'ElvUI_ThreatBar', UIParent)
 	self.bar:SetStatusBarTexture(E['media'].normTex)
 	self.bar:SetMinMaxValues(0, 100)
 	self.bar:CreateBackdrop('Default')
-	
+
 	self.bar.text = self.bar:CreateFontString(nil, 'OVERLAY')
 	self.bar.text:FontTemplate(nil, self.db.textSize)
 	self.bar.text:SetPoint('CENTER', self.bar, 'CENTER')
-	
+
 	self:UpdatePosition()
 	self:ToggleEnable()
 end

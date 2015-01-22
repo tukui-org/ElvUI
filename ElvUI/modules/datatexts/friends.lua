@@ -44,7 +44,7 @@ local menuList = {
 
 local function inviteClick(self, name)
 	menuFrame:Hide()
-	
+
 	if type(name) ~= 'number' then
 		InviteUnit(name)
 	else
@@ -53,12 +53,12 @@ local function inviteClick(self, name)
 end
 
 local function whisperClick(self, name, battleNet)
-	menuFrame:Hide() 
-	
+	menuFrame:Hide()
+
 	if battleNet then
 		ChatFrame_SendSmartTell(name)
 	else
-		SetItemRef( "player:"..name, ("|Hplayer:%1$s|h[%1$s]|h"):format(name), "LeftButton" )		 
+		SetItemRef( "player:"..name, ("|Hplayer:%1$s|h[%1$s]|h"):format(name), "LeftButton" )
 	end
 end
 
@@ -72,7 +72,7 @@ local tthead, ttsubh, ttoff = {r=0.4, g=0.78, b=1}, {r=0.75, g=0.9, b=1}, {r=.3,
 local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
 local displayString = ''
 local statusTable = { "|cffFFFFFF[|r|cffFF0000"..L['AFK'].."|r|cffFFFFFF]|r", "|cffFFFFFF[|r|cffFF0000"..L['DND'].."|r|cffFFFFFF]|r", "" }
-local groupedTable = { "|cffaaaaaa*|r", "" } 
+local groupedTable = { "|cffaaaaaa*|r", "" }
 local friendTable, BNTable, BNTableWoW, BNTableD3, BNTableSC, BNTableWTCG, BNTableApp = {}, {}, {}, {}, {}, {}, {}
 local tableList = {[wowString] = BNTableWoW, [d3String] = BNTableD3, [scString] = BNTableSC, [wtcgString] = BNTableWTCG, [appString] = BNTableApp}
 local friendOnline, friendOffline = gsub(ERR_FRIEND_ONLINE_SS,"\124Hplayer:%%s\124h%[%%s%]\124h",""), gsub(ERR_FRIEND_OFFLINE_S,"%%s","")
@@ -90,8 +90,8 @@ local function BuildFriendTable(total)
 		elseif status == "<"..DND..">" then
 			status = "|cffFFFFFF[|r|cffFF0000"..L['DND'].."|r|cffFFFFFF]|r"
 		end
-		
-		if connected then 
+
+		if connected then
 			for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
 			for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
 			friendTable[i] = { name, level, class, area, connected, status, note }
@@ -123,10 +123,9 @@ local function BuildBNTable(total)
 	local hasFocus, realmName, realmID, faction, race, class, guild, zoneName, level, gameText
 	for i = 1, total do
 		presenceID, presenceName, battleTag, isBattleTagPresence, toonName, toonID, client, isOnline, lastOnline, isAFK, isDND, messageText, noteText, isRIDFriend, messageTime, canSoR = BNGetFriendInfo(i)
-		
+
 		hasFocus, _, _, realmName, realmID, faction, race, class, guild, zoneName, level, gameText = BNGetToonInfo(toonID or presenceID);
-		
-		if isOnline then 
+		if isOnline then
 			for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
 			BNTable[i] = { presenceID, presenceName, battleTag, toonName, toonID, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
 
@@ -143,8 +142,8 @@ local function BuildBNTable(total)
 			end
 		end
 	end
-	
-	sort(BNTable, Sort)	
+
+	sort(BNTable, Sort)
 	sort(BNTableWoW, Sort)
 	sort(BNTableSC, Sort)
 	sort(BNTableD3, Sort)
@@ -157,7 +156,7 @@ local function OnEvent(self, event, ...)
 	local _, numBNetOnline = BNGetNumFriends()
 
 	-- special handler to detect friend coming online or going offline
-	-- when this is the case, we invalidate our buffered table and update the 
+	-- when this is the case, we invalidate our buffered table and update the
 	-- datatext information
 	if event == "CHAT_MSG_SYSTEM" then
 		local message = select(1, ...)
@@ -178,20 +177,20 @@ local function Click(self, btn)
 		local menuCountWhispers = 0
 		local menuCountInvites = 0
 		local classc, levelc, info
-		
+
 		menuList[2].menuList = {}
 		menuList[3].menuList = {}
-		
+
 		if #friendTable > 0 then
 			for i = 1, #friendTable do
 				info = friendTable[i]
 				if (info[5]) then
 					menuCountInvites = menuCountInvites + 1
 					menuCountWhispers = menuCountWhispers + 1
-		
+
 					classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[3]], GetQuestDifficultyColor(info[2])
 					classc = classc or GetQuestDifficultyColor(info[2]);
-		
+
 					menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[2],classc.r*255,classc.g*255,classc.b*255,info[1]), arg1 = info[1],notCheckable=true, func = inviteClick}
 					menuList[3].menuList[menuCountWhispers] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[2],classc.r*255,classc.g*255,classc.b*255,info[1]), arg1 = info[1],notCheckable=true, func = whisperClick}
 				end
@@ -212,14 +211,14 @@ local function Click(self, btn)
 
 						if UnitInParty(info[4]) or UnitInRaid(info[4]) then grouped = 1 else grouped = 2 end
 						menuCountInvites = menuCountInvites + 1
-						
+
 						menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[16],classc.r*255,classc.g*255,classc.b*255,info[4]), arg1 = info[5], notCheckable=true, func = inviteClick}
 					end
 				end
 			end
 		end
 
-		EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)	
+		EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
 	else
 		ToggleFriendsFrame()
 	end
@@ -230,9 +229,9 @@ local function OnEnter(self)
 
 	local numberOfFriends, onlineFriends = GetNumFriends()
 	local totalBNet, numBNetOnline = BNGetNumFriends()
-		
+
 	local totalonline = onlineFriends + numBNetOnline
-	
+
 	-- no friends online, quick exit
 	if totalonline == 0 then return end
 
@@ -254,9 +253,9 @@ local function OnEnter(self)
 			if info[5] then
 				if GetRealZoneText() == info[4] then zonec = activezone else zonec = inactivezone end
 				classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[3]], GetQuestDifficultyColor(info[2])
-				
+
 				classc = classc or GetQuestDifficultyColor(info[2])
-				
+
 				if UnitInParty(info[1]) or UnitInRaid(info[1]) then grouped = 1 else grouped = 2 end
 				DT.tooltip:AddDoubleLine(format(levelNameClassString,levelc.r*255,levelc.g*255,levelc.b*255,info[2],info[1],groupedTable[grouped]," "..info[6]),info[4],classc.r,classc.g,classc.b,zonec.r,zonec.g,zonec.b)
 			end
@@ -268,7 +267,7 @@ local function OnEnter(self)
 		for client, BNTable in pairs(tableList) do
 			if #BNTable > 0 then
 				DT.tooltip:AddLine(' ')
-				DT.tooltip:AddLine(battleNetString..' ('..client..')')			
+				DT.tooltip:AddLine(battleNetString..' ('..client..')')
 				for i = 1, #BNTable do
 					info = BNTable[i]
 					if info[6] then
@@ -296,14 +295,14 @@ local function OnEnter(self)
 				end
 			end
 		end
-	end	
-	
+	end
+
 	DT.tooltip:Show()
 end
 
 local function ValueColorUpdate(hex, r, g, b)
 	displayString = join("", "%s: ", hex, "%d|r")
-	
+
 	if lastPanel ~= nil then
 		OnEvent(lastPanel, 'ELVUI_COLOR_UPDATE')
 	end
@@ -312,9 +311,9 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 
 --[[
 	DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc)
-	
+
 	name - name of the datatext (required)
-	events - must be a table with string values of event names to register 
+	events - must be a table with string values of event names to register
 	eventFunc - function that gets fired when an event gets triggered
 	updateFunc - onUpdate script target function
 	click - function to fire when clicking the datatext

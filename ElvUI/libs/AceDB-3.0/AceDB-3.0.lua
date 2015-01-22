@@ -39,8 +39,8 @@
 -- end
 -- @class file
 -- @name AceDB-3.0.lua
--- @release $Id: AceDB-3.0.lua 1096 2013-09-13 15:05:40Z nevcairiel $
-local ACEDB_MAJOR, ACEDB_MINOR = "AceDB-3.0", 23
+-- @release $Id: AceDB-3.0.lua 1124 2014-10-27 21:00:07Z funkydude $
+local ACEDB_MAJOR, ACEDB_MINOR = "AceDB-3.0", 26
 local AceDB, oldminor = LibStub:NewLibrary(ACEDB_MAJOR, ACEDB_MINOR)
 
 if not AceDB then return end -- No upgrade needed
@@ -260,8 +260,11 @@ local _, classKey = UnitClass("player")
 local _, raceKey = UnitRace("player")
 local factionKey = UnitFactionGroup("player")
 local factionrealmKey = factionKey .. " - " .. realmKey
-local factionrealmregionKey = factionrealmKey .. " - US" --[[.. string.sub(GetCVar("realmList"), 1, 2):upper()]]
 local localeKey = GetLocale():lower()
+
+local regionTable = { "US", "KR", "EU", "TW", "CN" }
+local regionKey = regionTable[GetCurrentRegion()]
+local factionrealmregionKey = factionrealmKey .. " - " .. regionKey
 
 -- Actual database initialization function
 local function initdb(sv, defaults, defaultProfile, olddb, parent)
@@ -300,7 +303,7 @@ local function initdb(sv, defaults, defaultProfile, olddb, parent)
 		["factionrealm"] = factionrealmKey,
 		["factionrealmregion"] = factionrealmregionKey,
 		["profile"] = profileKey,
-        ["locale"] = localeKey,
+		["locale"] = localeKey,
 		["global"] = true,
 		["profiles"] = true,
 	}

@@ -52,11 +52,11 @@ local function SetOutside(obj, anchor, xOffset, yOffset)
 	xOffset = xOffset or E.Border
 	yOffset = yOffset or E.Border
 	anchor = anchor or obj:GetParent()
-	
+
 	if obj:GetPoint() then
 		obj:ClearAllPoints()
 	end
-	
+
 	obj:Point('TOPLEFT', anchor, 'TOPLEFT', -xOffset, yOffset)
 	obj:Point('BOTTOMRIGHT', anchor, 'BOTTOMRIGHT', xOffset, -yOffset)
 end
@@ -65,34 +65,34 @@ local function SetInside(obj, anchor, xOffset, yOffset)
 	xOffset = xOffset or E.Border
 	yOffset = yOffset or E.Border
 	anchor = anchor or obj:GetParent()
-	
+
 	if obj:GetPoint() then
 		obj:ClearAllPoints()
 	end
-	
+
 	obj:Point('TOPLEFT', anchor, 'TOPLEFT', xOffset, -yOffset)
 	obj:Point('BOTTOMRIGHT', anchor, 'BOTTOMRIGHT', -xOffset, yOffset)
 end
 
 local function SetTemplate(f, t, glossTex, ignoreUpdates)
 	GetTemplate(t)
-	
+
 	f.template = t
 	f.glossTex = glossTex
 	f.ignoreUpdates = ignoreUpdates
-	
+
 	if E.private.general.pixelPerfect then
 		f:SetBackdrop({
-		  bgFile = E["media"].blankTex, 
-		  edgeFile = E["media"].blankTex, 
-		  tile = false, tileSize = 0, edgeSize = E.mult, 
+		  bgFile = E["media"].blankTex,
+		  edgeFile = E["media"].blankTex,
+		  tile = false, tileSize = 0, edgeSize = E.mult,
 		  insets = { left = 0, right = 0, top = 0, bottom = 0}
-		})	
+		})
 	else
 		f:SetBackdrop({
-		  bgFile = E["media"].blankTex, 
-		  edgeFile = E["media"].blankTex, 
-		  tile = false, tileSize = 0, edgeSize = E.mult, 
+		  bgFile = E["media"].blankTex,
+		  edgeFile = E["media"].blankTex,
+		  tile = false, tileSize = 0, edgeSize = E.mult,
 		  insets = { left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
 		})
 	end
@@ -103,38 +103,38 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates)
 		f.backdropTexture = backdropTexture
 	elseif t == 'Transparent' then
 		f:SetBackdropColor(backdropr, backdropg, backdropb, backdropa)
-		
+
 		if f.backdropTexture then
 			f.backdropTexture:Hide()
 			f.backdropTexture = nil
 		end
-		
+
 		if not f.oborder and not f.iborder and not E.private.general.pixelPerfect then
 			local border = CreateFrame("Frame", nil, f)
 			border:SetInside(f, E.mult, E.mult)
 			border:SetBackdrop({
-				edgeFile = E["media"].blankTex, 
-				edgeSize = E.mult, 
+				edgeFile = E["media"].blankTex,
+				edgeSize = E.mult,
 				insets = { left = E.mult, right = E.mult, top = E.mult, bottom = E.mult }
 			})
 			border:SetBackdropBorderColor(0, 0, 0, 1)
 			f.iborder = border
-			
+
 			if f.oborder then return end
 			local border = CreateFrame("Frame", nil, f)
 			border:SetOutside(f, E.mult, E.mult)
 			border:SetFrameLevel(f:GetFrameLevel() + 1)
 			border:SetBackdrop({
-				edgeFile = E["media"].blankTex, 
-				edgeSize = E.mult, 
+				edgeFile = E["media"].blankTex,
+				edgeSize = E.mult,
 				insets = { left = E.mult, right = E.mult, top = E.mult, bottom = E.mult }
 			})
 			border:SetBackdropBorderColor(0, 0, 0, 1)
-			f.oborder = border				
+			f.oborder = border
 		end
 	end
-	
-	if f.backdropTexture then 
+
+	if f.backdropTexture then
 		f:SetBackdropColor(0, 0, 0, backdropa)
 		f.backdropTexture:SetVertexColor(backdropr, backdropg, backdropb)
 		f.backdropTexture:SetAlpha(backdropa)
@@ -143,22 +143,22 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates)
 		else
 			f.backdropTexture:SetTexture(E["media"].blankTex)
 		end
-		
+
 		f.backdropTexture:SetInside(f)
 	end
-	
+
 	f:SetBackdropBorderColor(borderr, borderg, borderb)
-	
+
 	if not ignoreUpdates then
 		E["frames"][f] = true
 	end
-	
+
 	frame = nil;
 end
 
 local function CreateBackdrop(f, t, tex)
 	if not t then t = "Default" end
-	
+
 	local b = CreateFrame("Frame", nil, f)
 	b:SetOutside()
 	b:SetTemplate(t, tex)
@@ -168,13 +168,13 @@ local function CreateBackdrop(f, t, tex)
 	else
 		b:SetFrameLevel(0)
 	end
-	
+
 	f.backdrop = b
 end
 
 local function CreateShadow(f)
 	if f.shadow then return end
-	
+
 	borderr, borderg, borderb = 0, 0, 0
 	backdropr, backdropg, backdropb = 0, 0, 0
 
@@ -182,7 +182,7 @@ local function CreateShadow(f)
 	shadow:SetFrameLevel(1)
 	shadow:SetFrameStrata(f:GetFrameStrata())
 	shadow:SetOutside(f, 3, 3)
-	shadow:SetBackdrop( { 
+	shadow:SetBackdrop( {
 		edgeFile = LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = E:Scale(3),
 		insets = {left = E:Scale(5), right = E:Scale(5), top = E:Scale(5), bottom = E:Scale(5)},
 	})
@@ -198,7 +198,7 @@ local function Kill(object)
 	else
 		object.Show = object.Hide
 	end
-	
+
 	object:Hide()
 end
 
@@ -223,7 +223,7 @@ local function FontTemplate(fs, font, fontSize, fontStyle)
 	fs.font = font
 	fs.fontSize = fontSize
 	fs.fontStyle = fontStyle
-	
+
 	font = font or LSM:Fetch("font", E.db['general'].font)
 	fontSize = fontSize or E.db.general.fontSize
 
@@ -233,7 +233,7 @@ local function FontTemplate(fs, font, fontSize, fontStyle)
 			fontSize = 10
 		end
 	end
-	
+
 	fs:SetFont(font, fontSize, fontStyle)
 	if fontStyle then
 		fs:SetShadowColor(0, 0, 0, 0.2)
@@ -241,11 +241,11 @@ local function FontTemplate(fs, font, fontSize, fontStyle)
 		fs:SetShadowColor(0, 0, 0, 1)
 	end
 	fs:SetShadowOffset((E.mult or 1), -(E.mult or 1))
-	
+
 	E["texts"][fs] = true
 end
 
-local function StyleButton(button, noHover, noPushed, noChecked)
+local function StyleButton(button, noHover, noPushed, noChecked, noCD)
 	if button.SetHighlightTexture and not button.hover and not noHover then
 		local hover = button:CreateTexture("frame", nil, self)
 		hover:SetTexture(1, 1, 1, 0.3)
@@ -253,7 +253,7 @@ local function StyleButton(button, noHover, noPushed, noChecked)
 		button.hover = hover
 		button:SetHighlightTexture(hover)
 	end
-	
+
 	if button.SetPushedTexture and not button.pushed and not noPushed then
 		local pushed = button:CreateTexture("frame", nil, self)
 		pushed:SetTexture(0.9, 0.8, 0.1, 0.3)
@@ -261,7 +261,7 @@ local function StyleButton(button, noHover, noPushed, noChecked)
 		button.pushed = pushed
 		button:SetPushedTexture(pushed)
 	end
-	
+
 	if button.SetCheckedTexture and not button.checked and not noChecked then
 		local checked = button:CreateTexture("frame", nil, self)
 		checked:SetTexture(1, 1, 1)
@@ -270,12 +270,13 @@ local function StyleButton(button, noHover, noPushed, noChecked)
 		button.checked = checked
 		button:SetCheckedTexture(checked)
 	end
-	
-	local cooldown = button:GetName() and _G[button:GetName().."Cooldown"] 
+
+	local cooldown = button:GetName() and _G[button:GetName().."Cooldown"]
 	if cooldown then
 		cooldown:ClearAllPoints()
 		cooldown:SetInside()
-		cooldown:SetSwipeColor(0, 0, 0, 1)
+		cooldown:SetDrawEdge(false)
+		if not noCD then cooldown:SetSwipeColor(0, 0, 0, 1) end
 	end
 end
 
@@ -308,6 +309,6 @@ while object do
 		addapi(object)
 		handled[object:GetObjectType()] = true
 	end
-	
+
 	object = EnumerateFrames(object)
 end

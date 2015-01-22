@@ -4,37 +4,17 @@ local format = string.format
 local lower = string.lower
 local split = string.split
 
-function E:EnableAddon(addon)
-	local _, _, _, _, _, reason, _ = GetAddOnInfo(addon)
-	if reason ~= "MISSING" then 
-		EnableAddOn(addon) 
-		ReloadUI() 
-	else 
-		print("|cffff0000Error, Addon '"..addon.."' not found.|r") 
-	end	
-end
-
-function E:DisableAddon(addon)
-	local _, _, _, _, _, reason, _ = GetAddOnInfo(addon)
-	if reason ~= "MISSING" then 
-		DisableAddOn(addon) 
-		ReloadUI() 
-	else 
-		print("|cffff0000Error, Addon '"..addon.."' not found.|r") 
-	end
-end
-
 function FarmMode()
 	if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT); return; end
 	if E.private.general.minimap.enable ~= true then return; end
 	if Minimap:IsShown() then
 		UIFrameFadeOut(Minimap, 0.3)
-		UIFrameFadeIn(FarmModeMap, 0.3) 
+		UIFrameFadeIn(FarmModeMap, 0.3)
 		Minimap.fadeInfo.finishedFunc = function() Minimap:Hide(); _G.MinimapZoomIn:Click(); _G.MinimapZoomOut:Click(); Minimap:SetAlpha(1) end
 		FarmModeMap.enabled = true
 	else
 		UIFrameFadeOut(FarmModeMap, 0.3)
-		UIFrameFadeIn(Minimap, 0.3) 
+		UIFrameFadeIn(Minimap, 0.3)
 		FarmModeMap.fadeInfo.finishedFunc = function() FarmModeMap:Hide(); _G.MinimapZoomIn:Click(); _G.MinimapZoomOut:Click(); Minimap:SetAlpha(1) end
 		FarmModeMap.enabled = false
 	end
@@ -46,46 +26,18 @@ function E:FarmMode(msg)
 		E.db.farmSize = tonumber(msg)
 		FarmModeMap:Size(tonumber(msg))
 	end
-	
+
 	FarmMode()
-end
-
-local channel = 'PARTY'
-local target = nil;
-function E:DevChannel(chnl)
-	channel = chnl
-	E:Print(format('Developer channel has been changed to %s.', chnl))
-end
-
-function E:DevTarget(tgt)
-	target = tgt
-	E:Print(format('Developer target has been changed to %s.', tgt))
-end
-
-function E:DevSays(msg)
-	if channel == 'WHISPER' and target == nil then
-		E:Print('You need to set a whisper target.')
-		return
-	end
-	SendAddonMessage('ELVUI_DEV_SAYS', msg, channel, target)
-end
-
-function E:DevCommand(msg)
-	if channel == 'WHISPER' and target == nil then
-		E:Print('You need to set a whisper target.')
-		return
-	end
-	SendAddonMessage('ELVUI_DEV_CMD', msg, channel, target)
 end
 
 function E:Grid(msg)
 	if msg and type(tonumber(msg))=="number" and tonumber(msg) <= 256 and tonumber(msg) >= 4 then
 		E.db.gridSize = msg
 		E:Grid_Show()
-	else 
-		if EGrid then		
+	else
+		if EGrid then
 			E:Grid_Hide()
-		else 
+		else
 			E:Grid_Show()
 		end
 	end
@@ -111,7 +63,7 @@ function E:BGStats()
 	local DT = E:GetModule('DataTexts')
 	DT.ForceHideBGStats = nil;
 	DT:LoadDataTexts()
-	
+
 	E:Print(L['Battleground datatexts will now show again if you are inside a battleground.'])
 end
 
@@ -135,27 +87,27 @@ function E:MassGuildKick(msg)
 	minRankIndex = tonumber(minRankIndex);
 	minLevel = tonumber(minLevel);
 	minDays = tonumber(minDays);
-	
+
 	if not minLevel or not minDays then
 		E:Print("Usage: /cleanguild <minLevel>, <minDays>, [<minRankIndex>]");
 		return;
 	end
-	
+
 	if minDays > 31 then
 		E:Print("Maximum days value must be below 32.");
 		return;
 	end
-	
+
 	if not minRankIndex then minRankIndex = GuildControlGetNumRanks() - 1 end
-	
+
 	for i = 1, GetNumGuildMembers() do
 		local name, _, rankIndex, level, class, _, note, officerNote, connected, _, class = GetGuildRosterInfo(i)
 		local minLevelx = minLevel
-		
+
 		if class == "DEATHKNIGHT" then
 			minLevelx = minLevelx + 55
 		end
-		
+
 		if not connected then
 			local years, months, days, hours = GetGuildRosterLastOnline(i)
 			if days ~= nil and ((years > 0 or months > 0 or days >= minDays) and rankIndex >= minRankIndex) and note ~= nil and officerNote ~= nil and (level <= minLevelx) then
@@ -198,7 +150,7 @@ function E:LoadCommands()
 	self:RegisterChatCommand("in", "DelayScriptCall")
 	self:RegisterChatCommand("ec", "ToggleConfig")
 	self:RegisterChatCommand("elvui", "ToggleConfig")
-	
+
 	self:RegisterChatCommand('cpuimpact', 'GetCPUImpact')
 	self:RegisterChatCommand('cpuusage', 'GetTopCPUFunc')
 	self:RegisterChatCommand('bgstats', 'BGStats')
@@ -207,13 +159,7 @@ function E:LoadCommands()
 	self:RegisterChatCommand('egrid', 'Grid')
 	self:RegisterChatCommand("moveui", "ToggleConfigMode")
 	self:RegisterChatCommand("resetui", "ResetUI")
-	self:RegisterChatCommand("enable", "EnableAddon")
-	self:RegisterChatCommand("disable", "DisableAddon")
 	self:RegisterChatCommand('farmmode', 'FarmMode')
-	self:RegisterChatCommand('devsays', 'DevSays')
-	self:RegisterChatCommand('devchannel', 'DevChannel')
-	self:RegisterChatCommand('devcmd', 'DevCommand')
-	self:RegisterChatCommand('devtarget', 'DevTarget')
 	self:RegisterChatCommand('cleanguild', 'MassGuildKick')
 	if E.ActionBars then
 		self:RegisterChatCommand('kb', E.ActionBars.ActivateBindMode)

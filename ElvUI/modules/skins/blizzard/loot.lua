@@ -25,12 +25,12 @@ local function LoadSkin()
 			icon:SetTexture(texture)
 			frame:SetBackdropBorderColor(color)
 		end
-		
+
 		local numRows = ceil(numItems / 2);
 		MissingLootFrame:SetHeight(numRows * 43 + 38 + MissingLootFrameLabel:GetHeight());
 	end
 	hooksecurefunc("MissingLootFrame_Show", SkinButton)
-	
+
 	-- loot history frame
 	LootHistoryFrame:StripTextures()
 	S:HandleCloseButton(LootHistoryFrame.CloseButton)
@@ -72,7 +72,7 @@ local function LoadSkin()
 	MasterLooterFrame:StripTextures()
 	MasterLooterFrame:SetTemplate()
 	MasterLooterFrame:SetFrameStrata('FULLSCREEN_DIALOG')
-	
+
 	hooksecurefunc("MasterLooterFrame_Show", function()
 		local b = MasterLooterFrame.Item
 		if b then
@@ -102,15 +102,15 @@ local function LoadSkin()
 				end
 			end
 		end
-	end) 
-	
+	end)
+
 	BonusRollFrame:StripTextures()
 	BonusRollFrame:SetTemplate('Transparent')
 	BonusRollFrame.PromptFrame.Icon:SetTexCoord(unpack(E.TexCoords))
 	BonusRollFrame.PromptFrame.IconBackdrop = CreateFrame("Frame", nil, BonusRollFrame.PromptFrame)
 	BonusRollFrame.PromptFrame.IconBackdrop:SetFrameLevel(BonusRollFrame.PromptFrame.IconBackdrop:GetFrameLevel() - 1)
 	BonusRollFrame.PromptFrame.IconBackdrop:SetOutside(BonusRollFrame.PromptFrame.Icon)
-	BonusRollFrame.PromptFrame.IconBackdrop:SetTemplate()	
+	BonusRollFrame.PromptFrame.IconBackdrop:SetTemplate()
 	BonusRollFrame.PromptFrame.Timer.Bar:SetTexture(1, 1, 1)
 	BonusRollFrame.PromptFrame.Timer.Bar:SetVertexColor(1, 1, 1)
 
@@ -139,7 +139,7 @@ local function LoadSkin()
 		local button = _G["LootButton"..i]
 		_G["LootButton"..i.."NameFrame"]:Hide()
 		S:HandleItemButton(button, true)
-		
+
 		_G["LootButton"..i.."IconQuestTexture"]:SetParent(E.HiddenFrame)
 
 		local point, attachTo, point2, x, y = button:GetPoint()
@@ -158,7 +158,7 @@ local function LoadSkin()
 		if ( numLootItems > LOOTFRAME_NUMBUTTONS ) then
 			numLootToShow = numLootToShow - 1; -- make space for the page buttons
 		end
-		
+
 		local button = _G["LootButton"..index];
 		local slot = (numLootToShow * (LootFrame.page - 1)) + index;
 		if(button and button:IsShown()) then
@@ -186,7 +186,7 @@ local function LoadSkin()
 				if ( questId and not isActive ) then
 					ActionButton_ShowOverlayGlow(button)
 				elseif ( questId or isQuestItem ) then
-					ActionButton_ShowOverlayGlow(button)		
+					ActionButton_ShowOverlayGlow(button)
 				else
 					ActionButton_HideOverlayGlow(button)
 				end

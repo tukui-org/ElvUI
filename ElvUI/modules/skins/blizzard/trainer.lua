@@ -31,13 +31,13 @@ local function LoadSkin()
 		_G["ClassTrainerScrollFrameButton"..i]:CreateBackdrop()
 		_G["ClassTrainerScrollFrameButton"..i].backdrop:SetOutside(_G["ClassTrainerScrollFrameButton"..i.."Icon"])
 		_G["ClassTrainerScrollFrameButton"..i.."Icon"]:SetParent(_G["ClassTrainerScrollFrameButton"..i].backdrop)
-		
+
 		_G["ClassTrainerScrollFrameButton"..i].selectedTex:SetTexture(1, 1, 1, 0.3)
 		_G["ClassTrainerScrollFrameButton"..i].selectedTex:SetInside()
 	end
-	
+
 	S:HandleScrollBar(ClassTrainerScrollFrameScrollBar, 5)
-	
+
 	for _, object in pairs(StripAllTextures) do
 		_G[object]:StripTextures()
 	end

@@ -3,14 +3,14 @@ local S = E:GetModule('Skins')
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.pvp ~= true then return end
-	
+
 	PVPUIFrame:StripTextures()
 	--PVPUIFrame.Shadows:StripTextures()
 
 	for i=1, 2 do
 		S:HandleTab(_G["PVPUIFrameTab"..i])
 	end
-	
+
 	for i=1, 4 do
 		local button = _G["PVPQueueFrameCategoryButton"..i]
 		button:SetTemplate('Default')
@@ -22,16 +22,16 @@ local function LoadSkin()
 		button.backdrop:SetOutside(button.Icon)
 		button.backdrop:SetFrameLevel(button:GetFrameLevel())
 		button.Icon:SetParent(button.backdrop)
-		button:StyleButton(nil, true)	
+		button:StyleButton(nil, true)
 	end
 
-	
+
 	-->>>HONOR FRAME
-	S:HandleDropDownBox(HonorFrameTypeDropDown)
-	
+	S:HandleDropDownBox(HonorFrameTypeDropDown, 210)
+
 	HonorFrame.Inset:StripTextures()
 	--HonorFrame.Inset:SetTemplate("Transparent")
-	
+
 	S:HandleScrollBar(HonorFrameSpecificFrameScrollBar)
 	S:HandleButton(HonorFrameSoloQueueButton, true)
 	S:HandleButton(HonorFrameGroupQueueButton, true)
@@ -47,13 +47,13 @@ local function LoadSkin()
 	HonorFrame.BonusFrame.Arena1Button:SetTemplate()
 	HonorFrame.BonusFrame.Arena1Button:StyleButton(nil, true)
 	HonorFrame.BonusFrame.Arena1Button.SelectedTexture:SetInside()
-	HonorFrame.BonusFrame.Arena1Button.SelectedTexture:SetTexture(1, 1, 0, 0.1)	
+	HonorFrame.BonusFrame.Arena1Button.SelectedTexture:SetTexture(1, 1, 0, 0.1)
 
 	HonorFrame.BonusFrame.Arena2Button:StripTextures()
 	HonorFrame.BonusFrame.Arena2Button:SetTemplate()
 	HonorFrame.BonusFrame.Arena2Button:StyleButton(nil, true)
 	HonorFrame.BonusFrame.Arena2Button.SelectedTexture:SetInside()
-	HonorFrame.BonusFrame.Arena2Button.SelectedTexture:SetTexture(1, 1, 0, 0.1)		
+	HonorFrame.BonusFrame.Arena2Button.SelectedTexture:SetTexture(1, 1, 0, 0.1)
 
 	HonorFrame.BonusFrame.DiceButton:DisableDrawLayer("ARTWORK")
 	HonorFrame.BonusFrame.DiceButton:SetHighlightTexture("")
@@ -62,7 +62,7 @@ local function LoadSkin()
 	S:HandleCheckBox(HonorFrame.RoleInset.DPSIcon.checkButton, true)
 	S:HandleCheckBox(HonorFrame.RoleInset.TankIcon.checkButton, true)
 	S:HandleCheckBox(HonorFrame.RoleInset.HealerIcon.checkButton, true)
-	
+
 	HonorFrame.RoleInset.TankIcon:DisableDrawLayer("ARTWORK")
 	HonorFrame.RoleInset.TankIcon:DisableDrawLayer("OVERLAY")
 	HonorFrame.RoleInset.TankIcon.bg = HonorFrame.RoleInset.TankIcon:CreateTexture(nil, 'BACKGROUND')
@@ -99,7 +99,7 @@ local function LoadSkin()
 
 	-->>>CONQUEST FRAME
 	ConquestFrame.Inset:StripTextures()
-	
+
 	--CapProgressBar_Update(ConquestFrame.ConquestBar, 0, 0, nil, nil, 1000, 2200);
 	ConquestPointsBarLeft:Kill()
 	ConquestPointsBarRight:Kill()

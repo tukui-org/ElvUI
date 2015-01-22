@@ -22,7 +22,7 @@ local function LoadSkin()
 		button_icon:SetTexCoord(unpack(E.TexCoords))
 		button_icon:SetInside()
 	end
-	
+
 	hooksecurefunc("ItemSocketingFrame_Update", function()
 		local numSockets = GetNumSockets();
 		for i=1, numSockets do
@@ -30,10 +30,10 @@ local function LoadSkin()
 			local gemColor = GetSocketTypes(i)
 			local color = GEM_TYPE_INFO[gemColor]
 			button:SetBackdropColor(color.r, color.g, color.b, 0.15)
-			button:SetBackdropBorderColor(color.r, color.g, color.b)			
+			button:SetBackdropBorderColor(color.r, color.g, color.b)
 		end
 	end)
-	
+
 	ItemSocketingFramePortrait:Kill()
 	ItemSocketingSocketButton:ClearAllPoints()
 	ItemSocketingSocketButton:Point("BOTTOMRIGHT", ItemSocketingFrame, "BOTTOMRIGHT", -5, 5)

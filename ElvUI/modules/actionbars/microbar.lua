@@ -19,7 +19,7 @@ function AB:HandleMicroButton(button)
 	local pushed = button:GetPushedTexture()
 	local normal = button:GetNormalTexture()
 	local disabled = button:GetDisabledTexture()
-	
+
 	button:SetParent(ElvUI_MicroBar)
 	button.Flash:SetTexture(nil)
 	button:GetHighlightTexture():Kill()
@@ -33,13 +33,13 @@ function AB:HandleMicroButton(button)
 	f:SetPoint("TOPRIGHT", button, "TOPRIGHT", -2, -28)
 	f:SetTemplate("Default", true)
 	button.backdrop = f
-	
+
 	pushed:SetTexCoord(0.17, 0.87, 0.5, 0.908)
 	pushed:SetInside(f)
 
 	normal:SetTexCoord(0.17, 0.87, 0.5, 0.908)
 	normal:SetInside(f)
-	
+
 	if disabled then
 		disabled:SetTexCoord(0.17, 0.87, 0.5, 0.908)
 		disabled:SetInside(f)
@@ -56,7 +56,7 @@ end
 
 function AB:UpdateMicroButtonsParent(parent)
 	if parent ~= ElvUI_MicroBar then parent = ElvUI_MicroBar end
-	
+
 	for i=1, #MICRO_BUTTONS do
 		_G[MICRO_BUTTONS[i]]:SetParent(ElvUI_MicroBar);
 	end
@@ -86,7 +86,7 @@ function AB:UpdateMicroPositionDimensions()
 		if prevButton == ElvUI_MicroBar then
 			button:SetPoint("TOPLEFT", prevButton, "TOPLEFT", -2, 28)
 		elseif (i - 1) % self.db.microbar.buttonsPerRow == 0 then
-			button:Point('TOP', lastColumnButton, 'BOTTOM', 0, 27);	
+			button:Point('TOP', lastColumnButton, 'BOTTOM', 0, 27);
 			numRows = numRows + 1
 		else
 			button:Point('LEFT', prevButton, 'RIGHT', -3, 0);
@@ -99,8 +99,8 @@ function AB:UpdateMicroPositionDimensions()
 		ElvUI_MicroBar:SetAlpha(0)
 	else
 		ElvUI_MicroBar:SetAlpha(self.db.microbar.alpha)
-	end	
-		
+	end
+
 	ElvUI_MicroBar:SetWidth((((CharacterMicroButton:GetWidth() - 0.5) * (#MICRO_BUTTONS - 2)) - 3) / numRows)
 	ElvUI_MicroBar:Height((CharacterMicroButton:GetHeight() - 27) * numRows)
 
@@ -108,7 +108,7 @@ function AB:UpdateMicroPositionDimensions()
 		ElvUI_MicroBar:Show()
 	else
 		ElvUI_MicroBar:Hide()
-	end		
+	end
 end
 
 function AB:UpdateMicroButtons()
@@ -136,6 +136,6 @@ function AB:SetupMicroBar()
 	self:MainMenuMicroButton_SetNormal()
 	self:UpdateMicroPositionDimensions()
 	MainMenuBarPerformanceBar:Kill()
-	
+
 	E:CreateMover(microBar, 'MicrobarMover', L['Micro Bar'], nil, nil, nil, 'ALL,ACTIONBARS');
 end

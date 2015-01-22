@@ -1,4 +1,4 @@
-## Interface: 50001
+## Interface: 60000
 ## Title: Astrolabe |cff224477(lib)
 ## Notes: A library for drawing icons on the Minimap and World Maps.
 ## Version: 1.0

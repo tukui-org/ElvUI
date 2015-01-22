@@ -10,7 +10,7 @@ function AB:SetupExtraButton()
 	local holder = CreateFrame('Frame', nil, E.UIParent)
 	holder:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 150)
 	holder:Size(ExtraActionBarFrame:GetSize())
-	
+
 	ExtraActionBarFrame:SetParent(holder)
 	ExtraActionBarFrame:ClearAllPoints()
 	ExtraActionBarFrame:SetPoint('CENTER', holder, 'CENTER')
@@ -20,14 +20,14 @@ function AB:SetupExtraButton()
 
 	DraenorZoneAbilityFrame.ignoreFramePositionManager = true
 	ExtraActionBarFrame.ignoreFramePositionManager  = true
-	
+
 	for i=1, ExtraActionBarFrame:GetNumChildren() do
 		local button = _G["ExtraActionButton"..i]
 		if button then
 			button.noResize = true;
 			button.pushed = true
 			button.checked = true
-			
+
 			self:StyleButton(button, true)
 			button:SetTemplate()
 			_G["ExtraActionButton"..i..'Icon']:SetDrawLayer('ARTWORK')
@@ -43,9 +43,23 @@ function AB:SetupExtraButton()
 		end
 	end
 
-	if HasExtraActionBar() then
-		ExtraActionBarFrame:Show();	
+	local button = DraenorZoneAbilityFrame.SpellButton
+	if button then
+		button:SetNormalTexture('')
+		button:StyleButton(nil, nil, nil, true)
+		button:SetTemplate()
+		button.Icon:SetDrawLayer('ARTWORK')
+		button.Icon:SetTexCoord(unpack(E.TexCoords))
+		button.Icon:SetInside()
+
+		if(button.Cooldown and E.private.cooldown.enable) then
+			E:RegisterCooldown(button.Cooldown)
+		end
 	end
-	
+
+	if HasExtraActionBar() then
+		ExtraActionBarFrame:Show();
+	end
+
 	E:CreateMover(holder, 'BossButton', L['Boss Button'], nil, nil, nil, 'ALL,ACTIONBARS');
 end

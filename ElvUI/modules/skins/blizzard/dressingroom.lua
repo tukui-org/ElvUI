@@ -7,11 +7,11 @@ local function LoadSkin()
 	DressUpFrame:CreateBackdrop("Transparent")
 	DressUpFrame.backdrop:Point("TOPLEFT", 6, 0)
 	DressUpFrame.backdrop:Point("BOTTOMRIGHT", -32, 70)
-	
+
 	S:HandleButton(DressUpFrameResetButton)
 	S:HandleButton(DressUpFrameCancelButton)
 	S:HandleCloseButton(DressUpFrameCloseButton, DressUpFrame.backdrop)
-		
+
 	DressUpFrameResetButton:Point("RIGHT", DressUpFrameCancelButton, "LEFT", -2, 0)
 end
 

@@ -5,7 +5,7 @@ local MAX_PAGE = 8
 
 local function SetupChat()
 	InstallStepComplete.message = L["Chat Set"]
-	InstallStepComplete:Show()			
+	InstallStepComplete:Show()
 	FCF_ResetChatWindows()
 	FCF_SetLocked(ChatFrame1, 1)
 	FCF_DockFrame(ChatFrame2)
@@ -14,38 +14,38 @@ local function SetupChat()
 	FCF_OpenNewWindow(LOOT)
 	FCF_UnDockFrame(ChatFrame3)
 	FCF_SetLocked(ChatFrame3, 1)
-	ChatFrame3:Show()			
-			
+	ChatFrame3:Show()
+
 	for i = 1, NUM_CHAT_WINDOWS do
 		local frame = _G[format("ChatFrame%s", i)]
 		local chatFrameId = frame:GetID()
 		local chatName = FCF_GetChatWindowInfo(chatFrameId)
-		
+
 		-- move general bottom left
 		if i == 1 then
 			frame:ClearAllPoints()
-			frame:Point("BOTTOMLEFT", LeftChatToggleButton, "TOPLEFT", 1, 3)			
+			frame:Point("BOTTOMLEFT", LeftChatToggleButton, "TOPLEFT", 1, 3)
 		elseif i == 3 then
 			frame:ClearAllPoints()
 			frame:Point("BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 1, 3)
 		end
-		
+
 		FCF_SavePositionAndDimensions(frame)
 		FCF_StopDragging(frame)
-		
+
 		-- set default Elvui font size
 		FCF_SetChatWindowFontSize(nil, frame, 12)
-		
+
 		-- rename windows general because moved to chat #3
 		if i == 1 then
 			FCF_SetWindowName(frame, GENERAL)
 		elseif i == 2 then
 			FCF_SetWindowName(frame, GUILD_EVENT_LOG)
-		elseif i == 3 then 
-			FCF_SetWindowName(frame, LOOT.." / "..TRADE) 
+		elseif i == 3 then
+			FCF_SetWindowName(frame, LOOT.." / "..TRADE)
 		end
 	end
-	
+
 	ChatFrame_RemoveAllMessageGroups(ChatFrame1)
 	ChatFrame_AddMessageGroup(ChatFrame1, "SAY")
 	ChatFrame_AddMessageGroup(ChatFrame1, "EMOTE")
@@ -64,7 +64,7 @@ local function SetupChat()
 	ChatFrame_AddMessageGroup(ChatFrame1, "RAID_LEADER")
 	ChatFrame_AddMessageGroup(ChatFrame1, "RAID_WARNING")
 	ChatFrame_AddMessageGroup(ChatFrame1, "INSTANCE_CHAT")
-	ChatFrame_AddMessageGroup(ChatFrame1, "INSTANCE_CHAT_LEADER")	
+	ChatFrame_AddMessageGroup(ChatFrame1, "INSTANCE_CHAT_LEADER")
 	ChatFrame_AddMessageGroup(ChatFrame1, "BATTLEGROUND")
 	ChatFrame_AddMessageGroup(ChatFrame1, "BATTLEGROUND_LEADER")
 	ChatFrame_AddMessageGroup(ChatFrame1, "BG_HORDE")
@@ -79,9 +79,9 @@ local function SetupChat()
 	ChatFrame_AddMessageGroup(ChatFrame1, "BN_WHISPER")
 	ChatFrame_AddMessageGroup(ChatFrame1, "BN_CONVERSATION")
 	ChatFrame_AddMessageGroup(ChatFrame1, "BN_INLINE_TOAST_ALERT")
-	
 
-	ChatFrame_RemoveAllMessageGroups(ChatFrame3)	
+
+	ChatFrame_RemoveAllMessageGroups(ChatFrame3)
 	ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_FACTION_CHANGE")
 	ChatFrame_AddMessageGroup(ChatFrame3, "SKILL")
 	ChatFrame_AddMessageGroup(ChatFrame3, "LOOT")
@@ -89,15 +89,16 @@ local function SetupChat()
 	ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_XP_GAIN")
 	ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_HONOR_GAIN")
 	ChatFrame_AddMessageGroup(ChatFrame3, "COMBAT_GUILD_XP_GAIN")
+	ChatFrame_AddMessageGroup(ChatFrame3, "CURRENCY")
 	ChatFrame_AddChannel(ChatFrame1, GENERAL)
 	ChatFrame_RemoveChannel(ChatFrame1, L['Trade'])
 	ChatFrame_AddChannel(ChatFrame3, L['Trade'])
 
-	
+
 	if E.myname == "Elvz" then
 		SetCVar("scriptErrors", 1)
-	end	
-	
+	end
+
 	-- enable classcolor automatically on login and on each character without doing /configure each time.
 	ToggleChatColorNamesByClassGroup(true, "SAY")
 	ToggleChatColorNamesByClassGroup(true, "EMOTE")
@@ -113,9 +114,9 @@ local function SetupChat()
 	ToggleChatColorNamesByClassGroup(true, "RAID_LEADER")
 	ToggleChatColorNamesByClassGroup(true, "RAID_WARNING")
 	ToggleChatColorNamesByClassGroup(true, "BATTLEGROUND")
-	ToggleChatColorNamesByClassGroup(true, "BATTLEGROUND_LEADER")	
+	ToggleChatColorNamesByClassGroup(true, "BATTLEGROUND_LEADER")
 	ToggleChatColorNamesByClassGroup(true, "INSTANCE_CHAT")
-	ToggleChatColorNamesByClassGroup(true, "INSTANCE_CHAT_LEADER")		
+	ToggleChatColorNamesByClassGroup(true, "INSTANCE_CHAT_LEADER")
 	ToggleChatColorNamesByClassGroup(true, "CHANNEL1")
 	ToggleChatColorNamesByClassGroup(true, "CHANNEL2")
 	ToggleChatColorNamesByClassGroup(true, "CHANNEL3")
@@ -127,7 +128,7 @@ local function SetupChat()
 	ToggleChatColorNamesByClassGroup(true, "CHANNEL9")
 	ToggleChatColorNamesByClassGroup(true, "CHANNEL10")
 	ToggleChatColorNamesByClassGroup(true, "CHANNEL11")
-	
+
 	--Adjust Chat Colors
 	--General
 	ChangeChatColor("CHANNEL1", 195/255, 230/255, 232/255)
@@ -135,16 +136,16 @@ local function SetupChat()
 	ChangeChatColor("CHANNEL2", 232/255, 158/255, 121/255)
 	--Local Defense
 	ChangeChatColor("CHANNEL3", 232/255, 228/255, 121/255)
-	
+
 	if E.Chat then
 		E.Chat:PositionChat(true)
 		if E.db['RightChatPanelFaded'] then
 			RightChatToggleButton:Click()
 		end
-		
+
 		if E.db['LeftChatPanelFaded'] then
 			LeftChatToggleButton:Click()
-		end		
+		end
 	end
 end
 
@@ -165,12 +166,12 @@ local function SetupCVars()
 	SetCVar('SpamFilter', 0)
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetValue('SHIFT')
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:RefreshValue()
-		
-	InstallStepComplete.message = L["CVars Set"]
-	InstallStepComplete:Show()					
-end	
 
-function E:GetColor(r, b, g, a)	
+	InstallStepComplete.message = L["CVars Set"]
+	InstallStepComplete:Show()
+end
+
+function E:GetColor(r, b, g, a)
 	return { r = r, b = b, g = g, a = a }
 end
 
@@ -184,7 +185,7 @@ function E:SetupTheme(theme, noDisplayMsg)
 		E.db.general.bordercolor = E:GetColor(.31, .31, .31)
 		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
 		E.db.general.backdropfadecolor = E:GetColor(.06, .06, .06, .8)
-		
+
 		E.db.unitframe.colors.healthclass = false
 		E.db.unitframe.colors.health = E:GetColor(.31, .31, .31)
 		E.db.unitframe.colors.auraBarBuff = E:GetColor(.31, .31, .31)
@@ -207,25 +208,25 @@ function E:SetupTheme(theme, noDisplayMsg)
 		E.db.unitframe.colors.castColor = E:GetColor(.1, .1, .1)
 		E.db.unitframe.colors.castClassColor = false
 	end
-	
+
 	--Value Color
 	if theme == "class" then
 		E.db.general.valuecolor = E:GetColor(classColor.r, classColor.b, classColor.g)
 	else
 		E.db.general.valuecolor = E:GetColor(.09, .819, .513)
 	end
-	
+
 	if not noDisplayMsg then
 		E:UpdateAll(true)
 	end
 
 	if InstallStatus then
 		InstallStatus:SetStatusBarColor(unpack(E['media'].rgbvaluecolor))
-		
+
 		if InstallStepComplete and not noDisplayMsg then
 			InstallStepComplete.message = L["Theme Set"]
-			InstallStepComplete:Show()		
-		end	
+			InstallStepComplete:Show()
+		end
 	end
 end
 
@@ -233,88 +234,90 @@ function E:SetupResolution(noDataReset)
 	if not noDataReset then
 		E:ResetMovers('')
 	end
-	
+
 	if self == 'low' then
 		if not E.db.movers then E.db.movers = {}; end
 		if not noDataReset then
 			E.db.chat.panelWidth = 400
 			E.db.chat.panelHeight = 180
-			
+			E.db.chat.panelWidthRight = 400
+			E.db.chat.panelHeightRight = 180
+
 			E:CopyTable(E.db.actionbar, P.actionbar)
-					
+
 			E.db.actionbar.bar1.heightMult = 2;
 			E.db.actionbar.bar2.enabled = true;
 			E.db.actionbar.bar3.enabled = false;
 			E.db.actionbar.bar5.enabled = false;
 		end
-		
+
 		if not noDataReset then
 			E.db.auras.wrapAfter = 10;
 		end
 
 		E.db.movers.ElvAB_2 = "CENTERElvUIParentBOTTOM056.18"
-		
+
 		if not noDataReset then
 			E:CopyTable(E.db.unitframe.units, P.unitframe.units)
-			
+
 			E.db.unitframe.fontSize = 10
-			
+
 			E.db.unitframe.units.player.width = 200;
 			E.db.unitframe.units.player.castbar.width = 200;
 			E.db.unitframe.units.player.classbar.fill = 'fill';
 			E.db.unitframe.units.player.health.text_format = "[healthcolor][health:current]"
-			
+
 			E.db.unitframe.units.target.width = 200;
 			E.db.unitframe.units.target.castbar.width = 200;
 			E.db.unitframe.units.target.health.text_format = '[healthcolor][health:current]'
-			
+
 			E.db.unitframe.units.pet.power.enable = false;
 			E.db.unitframe.units.pet.width = 200;
 			E.db.unitframe.units.pet.height = 26;
-			
+
 			E.db.unitframe.units.targettarget.debuffs.enable = false;
 			E.db.unitframe.units.targettarget.power.enable = false;
 			E.db.unitframe.units.targettarget.width = 200;
-			E.db.unitframe.units.targettarget.height = 26;	
-			
+			E.db.unitframe.units.targettarget.height = 26;
+
 			E.db.unitframe.units.boss.width = 200;
 			E.db.unitframe.units.boss.castbar.width = 200;
 			E.db.unitframe.units.arena.width = 200;
-			E.db.unitframe.units.arena.castbar.width = 200;			
+			E.db.unitframe.units.arena.castbar.width = 200;
 		end
-		
+
 		local isPixel = E.private.general.pixelPerfect
 		local xOffset = isPixel and 103 or 106;
 		local yOffset = isPixel and 125 or 135;
 		local yOffsetSmall = isPixel and 76 or 80;
-		
+
 		E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM"..-xOffset..""..yOffset
 		E.db.movers.ElvUF_TargetTargetMover = "BOTTOMElvUIParentBOTTOM"..xOffset..""..yOffsetSmall
 		E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM"..xOffset..""..yOffset
 		E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM"..-xOffset..""..yOffsetSmall
 		E.db.movers.ElvUF_FocusMover = "BOTTOMElvUIParentBOTTOM310332"
-		
+
 		E.db.lowresolutionset = true;
 	elseif not noDataReset then
 		E.db.chat.panelWidth = P.chat.panelWidth
 		E.db.chat.panelHeight = P.chat.panelHeight
-		
+
 		E:CopyTable(E.db.actionbar, P.actionbar)
 		E:CopyTable(E.db.unitframe.units, P.unitframe.units)
-		E.db.auras.wrapAfter = P.auras.wrapAfter;	
+		E.db.auras.wrapAfter = P.auras.wrapAfter;
 
 		E.db.lowresolutionset = nil;
 	end
-	
+
 	if not noDataReset and E.private.theme then
 		E:SetupTheme(E.private.theme, true)
 	end
 
 	E:UpdateAll(true)
-	
+
 	if InstallStepComplete and not noDataReset then
 		InstallStepComplete.message = L["Resolution Style Set"]
-		InstallStepComplete:Show()		
+		InstallStepComplete:Show()
 	end
 end
 
@@ -325,9 +328,9 @@ function E:SetupLayout(layout, noDataReset)
 	end
 
 	if not noDataReset then
-		E:ResetMovers('')	
+		E:ResetMovers('')
 		if not E.db.movers then E.db.movers = {} end
-		
+
 		E.db.actionbar.bar2.enabled = E.db.lowresolutionset
 		if E.PixelMode then
 			E.db.movers.ElvAB_2 = "BOTTOMElvUIParentBOTTOM038"
@@ -338,14 +341,14 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.actionbar.bar3.buttons = 6
 			E.db.actionbar.bar5.buttons = 6
 			E.db.actionbar.bar4.enabled = true
-		end			
-	end		
-	
+		end
+	end
+
 	if layout == 'healer' then
 		if not IsAddOnLoaded('Clique') then
 			E:StaticPopup_Show("CLIQUE_ADVERT")
 		end
-		
+
 		if not noDataReset then
 			E.db.unitframe.units.raid.horizontalSpacing = 9;
 			E.db.unitframe.units.raid.rdebuffs.enable = false;
@@ -366,9 +369,9 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.raid.buffs.useFilter = "TurtleBuffs"
 			E.db.unitframe.units.raid.buffs.sizeOverride = 22
 			E.db.unitframe.units.raid.buffs.useBlacklist = false
-			E.db.unitframe.units.raid.buffs.enable = true			
+			E.db.unitframe.units.raid.buffs.enable = true
 			E.db.unitframe.units.raid.growthDirection = "LEFT_UP"
-			
+
 			E.db.unitframe.units.party.growthDirection = "LEFT_UP"
 			E.db.unitframe.units.party.horizontalSpacing = 9;
 			E.db.unitframe.units.party.verticalSpacing = 9;
@@ -388,7 +391,7 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.party.buffs.useFilter = "TurtleBuffs"
 			E.db.unitframe.units.party.buffs.sizeOverride = 22
 			E.db.unitframe.units.party.buffs.useBlacklist = false
-			E.db.unitframe.units.party.buffs.enable = true	
+			E.db.unitframe.units.party.buffs.enable = true
 			E.db.unitframe.units.party.roleIcon.position = "BOTTOMRIGHT"
 			E.db.unitframe.units.party.health.text_format = "[healthcolor][health:deficit]"
 			E.db.unitframe.units.party.health.position = "BOTTOM"
@@ -398,13 +401,18 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.party.name.text_format = "[namecolor][name:short]"
 			E.db.unitframe.units.party.name.position = "TOP"
 			E.db.unitframe.units.party.power.text_format = ""
-			
+
+
+			E.db.unitframe.units.raid40.height = 30
+			E.db.unitframe.units.raid40.growthDirection = "LEFT_UP"
 
 			E.db.unitframe.units.party.health.frequentUpdates = true
 			E.db.unitframe.units.raid.health.frequentUpdates = true
-			
+			E.db.unitframe.units.raid40.health.frequentUpdates = true
+
 			E.db.unitframe.units.party.healPrediction = true;
 			E.db.unitframe.units.raid.healPrediction = true;
+			E.db.unitframe.units.raid40.healPrediction = true
 
 			E.db.actionbar.bar2.enabled = true
 			if not E.db.lowresolutionset then
@@ -413,19 +421,20 @@ function E:SetupLayout(layout, noDataReset)
 				E.db.actionbar.bar4.enabled = false
 				if not E.PixelMode then
 					E.db.actionbar.bar1.heightMult = 2
-				end				
+				end
 			end
 		end
-			
+
 		if not E.db.movers then E.db.movers = {}; end
 		local xOffset = GetScreenWidth() * 0.34375
-		
+
 		if E.PixelMode then
 			E.db.movers.ElvAB_3 = "BOTTOMElvUIParentBOTTOM3124"
 			E.db.movers.ElvAB_5 = "BOTTOMElvUIParentBOTTOM-3124"
 			E.db.movers.ElvUF_PartyMover = "BOTTOMRIGHTElvUIParentBOTTOMLEFT"..xOffset.."450"
 			E.db.movers.ElvUF_RaidMover = "BOTTOMRIGHTElvUIParentBOTTOMLEFT"..xOffset.."450"
-			
+			E.db.movers.ElvUF_Raid40Mover = "BOTTOMRIGHTElvUIParentBOTTOMLEFT"..xOffset.."450"
+
 			if not E.db.lowresolutionset then
 				E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM278132"
 				E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM-278132"
@@ -438,7 +447,7 @@ function E:SetupLayout(layout, noDataReset)
 				E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM102182"
 				E.db.movers.ElvUF_TargetTargetMover = "BOTTOMElvUIParentBOTTOM102120"
 				E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM-102120"
-				E.db.movers.ElvUF_FocusMover = "BOTTOMElvUIParentBOTTOM310332"		
+				E.db.movers.ElvUF_FocusMover = "BOTTOMElvUIParentBOTTOM310332"
 				E.db.movers["BossButton"] = "TOPElvUIParentTOP0-138"
 			end
 		else
@@ -446,7 +455,8 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.movers.ElvAB_5 = "BOTTOMElvUIParentBOTTOM-3324"
 			E.db.movers.ElvUF_PartyMover = "BOTTOMRIGHTElvUIParentBOTTOMLEFT"..xOffset.."450"
 			E.db.movers.ElvUF_RaidMover = "BOTTOMRIGHTElvUIParentBOTTOMLEFT"..xOffset.."450"
-			
+			E.db.movers.ElvUF_Raid40Mover = "BOTTOMRIGHTElvUIParentBOTTOMLEFT"..xOffset.."450"
+
 			if not E.db.lowresolutionset then
 				E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM307145"
 				E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM-307145"
@@ -459,9 +469,9 @@ function E:SetupLayout(layout, noDataReset)
 				E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM118182"
 				E.db.movers.ElvUF_TargetTargetMover = "BOTTOMElvUIParentBOTTOM118120"
 				E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM-118120"
-				E.db.movers.ElvUF_FocusMover = "BOTTOMElvUIParentBOTTOM310332"		
+				E.db.movers.ElvUF_FocusMover = "BOTTOMElvUIParentBOTTOM310332"
 				E.db.movers["BossButton"] = "TOPElvUIParentTOP0-138"
-			end		
+			end
 		end
 	elseif E.db.lowresolutionset then
 		if not E.db.movers then E.db.movers = {}; end
@@ -470,68 +480,68 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM102135"
 			E.db.movers.ElvUF_TargetTargetMover = "BOTTOMElvUIParentBOTTOM10280"
 			E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM-10280"
-			E.db.movers.ElvUF_FocusMover = "BOTTOMElvUIParentBOTTOM310332"			
+			E.db.movers.ElvUF_FocusMover = "BOTTOMElvUIParentBOTTOM310332"
 		else
 			E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM-118142"
 			E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM118142"
 			E.db.movers.ElvUF_TargetTargetMover = "BOTTOMElvUIParentBOTTOM11884"
 			E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM-11884"
-			E.db.movers.ElvUF_FocusMover = "BOTTOMElvUIParentBOTTOM310332"	
+			E.db.movers.ElvUF_FocusMover = "BOTTOMElvUIParentBOTTOM310332"
 		end
-		
+
 		E.db.movers["BossButton"] = "TOPElvUIParentTOP0-138"
 	end
-	
+
 	if layout ~= 'healer' and not E.db.lowresolutionset then
 		E.db.actionbar.bar1.heightMult = 1
 	end
-	
+
 	if E.db.lowresolutionset and not noDataReset then
 		E.db.unitframe.units.player.width = 200;
 		if layout ~= 'healer' then
 			E.db.unitframe.units.player.castbar.width = 200;
 		end
 		E.db.unitframe.units.player.classbar.fill = 'fill';
-		
+
 		E.db.unitframe.units.target.width = 200;
 		E.db.unitframe.units.target.castbar.width = 200;
-		
+
 		E.db.unitframe.units.pet.power.enable = false;
 		E.db.unitframe.units.pet.width = 200;
 		E.db.unitframe.units.pet.height = 26;
-		
+
 		E.db.unitframe.units.targettarget.debuffs.enable = false;
 		E.db.unitframe.units.targettarget.power.enable = false;
 		E.db.unitframe.units.targettarget.width = 200;
-		E.db.unitframe.units.targettarget.height = 26;	
-		
+		E.db.unitframe.units.targettarget.height = 26;
+
 		E.db.unitframe.units.boss.width = 200;
 		E.db.unitframe.units.boss.castbar.width = 200;
 		E.db.unitframe.units.arena.width = 200;
-		E.db.unitframe.units.arena.castbar.width = 200;		
+		E.db.unitframe.units.arena.castbar.width = 200;
 	end
-	
+
 	if(layout == 'dpsCaster' or layout == 'healer' or (layout == 'dpsMelee' and E.myclass == 'HUNTER')) then
 		if not E.db.movers then E.db.movers = {}; end
 		E.db.unitframe.units.player.castbar.width = E.PixelMode and 406 or 436
-		E.db.unitframe.units.player.castbar.height = 28	
+		E.db.unitframe.units.player.castbar.height = 28
 		local yOffset = 80
 		if not E.db.lowresolutionset then
 			if layout ~= 'healer' then
 				yOffset = 42
-				
+
 				if E.PixelMode then
 					E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM-278110"
 					E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM278110"
 					E.db.movers.ElvUF_TargetTargetMover = "BOTTOMElvUIParentBOTTOM0110"
-					E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM0150"			
-					E.db.movers["BossButton"] = "BOTTOMElvUIParentBOTTOM0195"		
+					E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM0150"
+					E.db.movers["BossButton"] = "BOTTOMElvUIParentBOTTOM0195"
 				else
 					E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM-307110"
 					E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM307110"
 					E.db.movers.ElvUF_TargetTargetMover = "BOTTOMElvUIParentBOTTOM0110"
-					E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM0150"			
-					E.db.movers["BossButton"] = "BOTTOMElvUIParentBOTTOM0195"						
+					E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM0150"
+					E.db.movers["BossButton"] = "BOTTOMElvUIParentBOTTOM0195"
 				end
 			else
 				yOffset = 76
@@ -542,18 +552,18 @@ function E:SetupLayout(layout, noDataReset)
 				E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM102182"
 				E.db.movers.ElvUF_TargetTargetMover = "BOTTOMElvUIParentBOTTOM102120"
 				E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM-102120"
-				E.db.movers.ElvUF_FocusMover = "BOTTOMElvUIParentBOTTOM310332"			
+				E.db.movers.ElvUF_FocusMover = "BOTTOMElvUIParentBOTTOM310332"
 			else
 				E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM-118182"
 				E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM118182"
 				E.db.movers.ElvUF_TargetTargetMover = "BOTTOMElvUIParentBOTTOM118120"
 				E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM-118120"
-				E.db.movers.ElvUF_FocusMover = "BOTTOMElvUIParentBOTTOM310332"						
+				E.db.movers.ElvUF_FocusMover = "BOTTOMElvUIParentBOTTOM310332"
 			end
-			
+
 			E.db.movers["BossButton"] = "TOPElvUIParentTOP0-138"
 		end
-		
+
 		if E.PixelMode then
 			E.db.movers.ElvUF_PlayerCastbarMover = "BOTTOMElvUIParentBOTTOM0"..yOffset
 		else
@@ -563,23 +573,23 @@ function E:SetupLayout(layout, noDataReset)
 		E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM-30776"
 		E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM30776"
 		E.db.movers.ElvUF_TargetTargetMover = "BOTTOMElvUIParentBOTTOM076"
-		E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM0115"			
-		E.db.movers["BossButton"] = "BOTTOMElvUIParentBOTTOM0158"		
-			
+		E.db.movers.ElvUF_PetMover = "BOTTOMElvUIParentBOTTOM0115"
+		E.db.movers["BossButton"] = "BOTTOMElvUIParentBOTTOM0158"
+
 	end
-	
+
 	--Datatexts
 	if not noDataReset and InstallStepComplete then
 		InstallStepComplete.message = L["Layout Set"]
-		InstallStepComplete:Show()	
+		InstallStepComplete:Show()
 	end
-	
+
 	E.db.layoutSet = layout
-	
+
 	if not noDataReset and E.private.theme then
 		E:SetupTheme(E.private.theme, true)
-	end	
-	
+	end
+
 	E:UpdateAll(true)
 end
 
@@ -588,38 +598,38 @@ local function SetupAuras(style)
 	E:CopyTable(E.db.unitframe.units.player.buffs, P.unitframe.units.player.buffs)
 	E:CopyTable(E.db.unitframe.units.player.debuffs, P.unitframe.units.player.debuffs)
 	E:CopyTable(E.db.unitframe.units.player.aurabar, P.unitframe.units.player.aurabar)
-	
+
 	E:CopyTable(E.db.unitframe.units.target.buffs, P.unitframe.units.target.buffs)
-	E:CopyTable(E.db.unitframe.units.target.debuffs, P.unitframe.units.target.debuffs)	
+	E:CopyTable(E.db.unitframe.units.target.debuffs, P.unitframe.units.target.debuffs)
 	E:CopyTable(E.db.unitframe.units.target.aurabar, P.unitframe.units.target.aurabar)
 	E.db.unitframe.units.target.smartAuraDisplay = P.unitframe.units.target.smartAuraDisplay
-	
+
 	E:CopyTable(E.db.unitframe.units.focus.buffs, P.unitframe.units.focus.buffs)
-	E:CopyTable(E.db.unitframe.units.focus.debuffs, P.unitframe.units.focus.debuffs)	
+	E:CopyTable(E.db.unitframe.units.focus.debuffs, P.unitframe.units.focus.debuffs)
 	E:CopyTable(E.db.unitframe.units.focus.aurabar, P.unitframe.units.focus.aurabar)
-	E.db.unitframe.units.focus.smartAuraDisplay = P.unitframe.units.focus.smartAuraDisplay		
-	
+	E.db.unitframe.units.focus.smartAuraDisplay = P.unitframe.units.focus.smartAuraDisplay
+
 	if not style then
 		--PLAYER
 		E.db.unitframe.units.player.buffs.enable = true;
 		E.db.unitframe.units.player.buffs.attachTo = 'FRAME';
 		E.db.unitframe.units.player.buffs.noDuration = false;
-		
+
 		E.db.unitframe.units.player.debuffs.attachTo = 'BUFFS';
 
 		E.db.unitframe.units.player.aurabar.enable = false;
-		
+
 		--TARGET
 		E.db.unitframe.units.target.smartAuraDisplay = 'DISABLED';
 		E.db.unitframe.units.target.debuffs.enable = true;
 		E.db.unitframe.units.target.aurabar.enable = false;
 	end
 
-	E:GetModule('UnitFrames'):Update_AllFrames()	
+	E:GetModule('UnitFrames'):Update_AllFrames()
 	if InstallStepComplete then
 		InstallStepComplete.message = L["Auras Set"]
-		InstallStepComplete:Show()		
-	end	
+		InstallStepComplete:Show()
+	end
 end
 
 local function InstallComplete()
@@ -627,7 +637,7 @@ local function InstallComplete()
 
 	ReloadUI()
 end
-		
+
 local function ResetAll()
 	InstallNextButton:Disable()
 	InstallPrevButton:Disable()
@@ -639,7 +649,7 @@ local function ResetAll()
 	InstallOption2Button:SetText('')
 	InstallOption3Button:Hide()
 	InstallOption3Button:SetScript('OnClick', nil)
-	InstallOption3Button:SetText('')	
+	InstallOption3Button:SetText('')
 	InstallOption4Button:Hide()
 	InstallOption4Button:SetScript('OnClick', nil)
 	InstallOption4Button:SetText('')
@@ -654,15 +664,15 @@ local function SetPage(PageNum)
 	CURRENT_PAGE = PageNum
 	ResetAll()
 	InstallStatus:SetValue(PageNum)
-	
+
 	local f = ElvUIInstallFrame
-	
+
 	if PageNum == MAX_PAGE then
 		InstallNextButton:Disable()
 	else
 		InstallNextButton:Enable()
 	end
-	
+
 	if PageNum == 1 then
 		InstallPrevButton:Disable()
 	else
@@ -674,10 +684,10 @@ local function SetPage(PageNum)
 		f.Desc1:SetText(L["This install process will help you learn some of the features in ElvUI has to offer and also prepare your user interface for usage."])
 		f.Desc2:SetText(L["The in-game configuration menu can be accesses by typing the /ec command or by clicking the 'C' button on the minimap. Press the button below if you wish to skip the installation process."])
 		f.Desc3:SetText(L["Please press the continue button to go onto the next step."])
-				
+
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript("OnClick", InstallComplete)
-		InstallOption1Button:SetText(L["Skip Process"])			
+		InstallOption1Button:SetText(L["Skip Process"])
 	elseif PageNum == 2 then
 		f.SubTitle:SetText(L["CVars"])
 		f.Desc1:SetText(L["This part of the installation process sets up your World of Warcraft default options it is recommended you should do this step for everything to behave properly."])
@@ -702,13 +712,13 @@ local function SetPage(PageNum)
 
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', function() E:SetupTheme('classic') end)
-		InstallOption1Button:SetText(L["Classic"])	
+		InstallOption1Button:SetText(L["Classic"])
 		InstallOption2Button:Show()
 		InstallOption2Button:SetScript('OnClick', function() E:SetupTheme('default') end)
 		InstallOption2Button:SetText(L['Dark'])
 		InstallOption3Button:Show()
 		InstallOption3Button:SetScript('OnClick', function() E:SetupTheme('class') end)
-		InstallOption3Button:SetText(CLASS)		
+		InstallOption3Button:SetText(CLASS)
 	elseif PageNum == 5 then
 		f.SubTitle:SetText(L["Resolution"])
 		f.Desc1:SetText(format(L["Your current resolution is %s, this is considered a %s resolution."], E.resolution, E.lowversion == true and L["low"] or L["high"]))
@@ -719,10 +729,10 @@ local function SetPage(PageNum)
 			f.Desc2:SetText(L["This resolution doesn't require that you change settings for the UI to fit on your screen."].." "..L["Click the button below to resize your chat frames, unitframes, and reposition your actionbars."].." "..L["This is completely optional."])
 			f.Desc3:SetText(L["Importance: |cffFF0000Low|r"])
 		end
-		
+
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', function() E.SetupResolution('high') end)
-		InstallOption1Button:SetText(L["High Resolution"])	
+		InstallOption1Button:SetText(L["High Resolution"])
 		InstallOption2Button:Show()
 		InstallOption2Button:SetScript('OnClick', function() E.SetupResolution('low') end)
 		InstallOption2Button:SetText(L['Low Resolution'])
@@ -757,15 +767,15 @@ local function SetPage(PageNum)
 	elseif PageNum == 8 then
 		f.SubTitle:SetText(L["Installation Complete"])
 		f.Desc1:SetText(L["You are now finished with the installation process. If you are in need of technical support please visit us at http://www.tukui.org."])
-		f.Desc2:SetText(L["Please click the button below so you can setup variables and ReloadUI."])			
+		f.Desc2:SetText(L["Please click the button below so you can setup variables and ReloadUI."])
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript("OnClick", InstallComplete)
-		InstallOption1Button:SetText(L["Finished"])				
+		InstallOption1Button:SetText(L["Finished"])
 		ElvUIInstallFrame:Size(550, 350)
 	end
 end
 
-local function NextPage()	
+local function NextPage()
 	if CURRENT_PAGE ~= MAX_PAGE then
 		CURRENT_PAGE = CURRENT_PAGE + 1
 		SetPage(CURRENT_PAGE)
@@ -780,47 +790,47 @@ local function PreviousPage()
 end
 
 --Install UI
-function E:Install()	
+function E:Install()
 	if not InstallStepComplete then
 		local imsg = CreateFrame("Frame", "InstallStepComplete", E.UIParent)
 		imsg:Size(418, 72)
 		imsg:Point("TOP", 0, -190)
 		imsg:Hide()
 		imsg:SetScript('OnShow', function(self)
-			if self.message then 
+			if self.message then
 				PlaySoundFile([[Sound\Interface\LevelUp.wav]])
 				self.text:SetText(self.message)
 				UIFrameFadeOut(self, 3.5, 1, 0)
-				E:Delay(4, function() self:Hide() end)	
+				E:Delay(4, function() self:Hide() end)
 				self.message = nil
 			else
 				self:Hide()
 			end
 		end)
-		
+
 		imsg.firstShow = false
-		
+
 		imsg.bg = imsg:CreateTexture(nil, 'BACKGROUND')
 		imsg.bg:SetTexture([[Interface\LevelUp\LevelUpTex]])
 		imsg.bg:SetPoint('BOTTOM')
 		imsg.bg:Size(326, 103)
 		imsg.bg:SetTexCoord(0.00195313, 0.63867188, 0.03710938, 0.23828125)
 		imsg.bg:SetVertexColor(1, 1, 1, 0.6)
-		
+
 		imsg.lineTop = imsg:CreateTexture(nil, 'BACKGROUND')
 		imsg.lineTop:SetDrawLayer('BACKGROUND', 2)
 		imsg.lineTop:SetTexture([[Interface\LevelUp\LevelUpTex]])
 		imsg.lineTop:SetPoint("TOP")
 		imsg.lineTop:Size(418, 7)
 		imsg.lineTop:SetTexCoord(0.00195313, 0.81835938, 0.01953125, 0.03320313)
-		
+
 		imsg.lineBottom = imsg:CreateTexture(nil, 'BACKGROUND')
 		imsg.lineBottom:SetDrawLayer('BACKGROUND', 2)
 		imsg.lineBottom:SetTexture([[Interface\LevelUp\LevelUpTex]])
 		imsg.lineBottom:SetPoint("BOTTOM")
 		imsg.lineBottom:Size(418, 7)
 		imsg.lineBottom:SetTexCoord(0.00195313, 0.81835938, 0.01953125, 0.03320313)
-		
+
 		imsg.text = imsg:CreateFontString(nil, 'ARTWORK', 'GameFont_Gigantic')
 		imsg.text:Point("BOTTOM", 0, 12)
 		imsg.text:SetTextColor(1, 0.82, 0)
@@ -835,12 +845,12 @@ function E:Install()
 		f:SetTemplate("Transparent")
 		f:SetPoint("CENTER")
 		f:SetFrameStrata('TOOLTIP')
-		
+
 		f.Title = f:CreateFontString(nil, 'OVERLAY')
 		f.Title:FontTemplate(nil, 17, nil)
 		f.Title:Point("TOP", 0, -5)
 		f.Title:SetText(L["ElvUI Installation"])
-		
+
 		f.Next = CreateFrame("Button", "InstallNextButton", f, "UIPanelButtonTemplate")
 		f.Next:StripTextures()
 		f.Next:SetTemplate("Default", true)
@@ -850,17 +860,17 @@ function E:Install()
 		f.Next:Disable()
 		f.Next:SetScript("OnClick", NextPage)
 		E.Skins:HandleButton(f.Next, true)
-		
+
 		f.Prev = CreateFrame("Button", "InstallPrevButton", f, "UIPanelButtonTemplate")
 		f.Prev:StripTextures()
 		f.Prev:SetTemplate("Default", true)
 		f.Prev:Size(110, 25)
 		f.Prev:Point("BOTTOMLEFT", 5, 5)
-		f.Prev:SetText(PREVIOUS)	
+		f.Prev:SetText(PREVIOUS)
 		f.Prev:Disable()
 		f.Prev:SetScript("OnClick", PreviousPage)
 		E.Skins:HandleButton(f.Prev, true)
-		
+
 		f.Status = CreateFrame("StatusBar", "InstallStatus", f)
 		f.Status:SetFrameLevel(f.Status:GetFrameLevel() + 2)
 		f.Status:CreateBackdrop("Default")
@@ -876,7 +886,7 @@ function E:Install()
 		f.Status:SetScript("OnValueChanged", function(self)
 			self.text:SetText(self:GetValue().." / "..MAX_PAGE)
 		end)
-		
+
 		f.Option1 = CreateFrame("Button", "InstallOption1Button", f, "UIPanelButtonTemplate")
 		f.Option1:StripTextures()
 		f.Option1:Size(160, 30)
@@ -884,7 +894,7 @@ function E:Install()
 		f.Option1:SetText("")
 		f.Option1:Hide()
 		E.Skins:HandleButton(f.Option1, true)
-		
+
 		f.Option2 = CreateFrame("Button", "InstallOption2Button", f, "UIPanelButtonTemplate")
 		f.Option2:StripTextures()
 		f.Option2:Size(110, 30)
@@ -893,8 +903,8 @@ function E:Install()
 		f.Option2:Hide()
 		f.Option2:SetScript('OnShow', function() f.Option1:SetWidth(110); f.Option1:ClearAllPoints(); f.Option1:Point('BOTTOMRIGHT', f, 'BOTTOM', -4, 45) end)
 		f.Option2:SetScript('OnHide', function() f.Option1:SetWidth(160); f.Option1:ClearAllPoints(); f.Option1:Point("BOTTOM", 0, 45) end)
-		E.Skins:HandleButton(f.Option2, true)		
-		
+		E.Skins:HandleButton(f.Option2, true)
+
 		f.Option3 = CreateFrame("Button", "InstallOption3Button", f, "UIPanelButtonTemplate")
 		f.Option3:StripTextures()
 		f.Option3:Size(100, 30)
@@ -903,59 +913,59 @@ function E:Install()
 		f.Option3:Hide()
 		f.Option3:SetScript('OnShow', function() f.Option1:SetWidth(100); f.Option1:ClearAllPoints(); f.Option1:Point('RIGHT', f.Option2, 'LEFT', -4, 0); f.Option2:SetWidth(100); f.Option2:ClearAllPoints(); f.Option2:Point('BOTTOM', f, 'BOTTOM', 0, 45)  end)
 		f.Option3:SetScript('OnHide', function() f.Option1:SetWidth(160); f.Option1:ClearAllPoints(); f.Option1:Point("BOTTOM", 0, 45); f.Option2:SetWidth(110); f.Option2:ClearAllPoints(); f.Option2:Point('BOTTOMLEFT', f, 'BOTTOM', 4, 45) end)
-		E.Skins:HandleButton(f.Option3, true)			
-		
+		E.Skins:HandleButton(f.Option3, true)
+
 		f.Option4 = CreateFrame("Button", "InstallOption4Button", f, "UIPanelButtonTemplate")
 		f.Option4:StripTextures()
 		f.Option4:Size(100, 30)
 		f.Option4:Point('LEFT', f.Option3, 'RIGHT', 4, 0)
 		f.Option4:SetText("")
 		f.Option4:Hide()
-		f.Option4:SetScript('OnShow', function() 
+		f.Option4:SetScript('OnShow', function()
 			f.Option1:Width(100)
 			f.Option2:Width(100)
-			
-			f.Option1:ClearAllPoints(); 
-			f.Option1:Point('RIGHT', f.Option2, 'LEFT', -4, 0); 
-			f.Option2:ClearAllPoints(); 
-			f.Option2:Point('BOTTOMRIGHT', f, 'BOTTOM', -4, 45)  
+
+			f.Option1:ClearAllPoints();
+			f.Option1:Point('RIGHT', f.Option2, 'LEFT', -4, 0);
+			f.Option2:ClearAllPoints();
+			f.Option2:Point('BOTTOMRIGHT', f, 'BOTTOM', -4, 45)
 		end)
 		f.Option4:SetScript('OnHide', function() f.Option1:SetWidth(160); f.Option1:ClearAllPoints(); f.Option1:Point("BOTTOM", 0, 45); f.Option2:SetWidth(110); f.Option2:ClearAllPoints(); f.Option2:Point('BOTTOMLEFT', f, 'BOTTOM', 4, 45) end)
-		E.Skins:HandleButton(f.Option4, true)					
+		E.Skins:HandleButton(f.Option4, true)
 
 		f.SubTitle = f:CreateFontString(nil, 'OVERLAY')
-		f.SubTitle:FontTemplate(nil, 15, nil)		
+		f.SubTitle:FontTemplate(nil, 15, nil)
 		f.SubTitle:Point("TOP", 0, -40)
-		
+
 		f.Desc1 = f:CreateFontString(nil, 'OVERLAY')
-		f.Desc1:FontTemplate()	
-		f.Desc1:Point("TOPLEFT", 20, -75)	
+		f.Desc1:FontTemplate()
+		f.Desc1:Point("TOPLEFT", 20, -75)
 		f.Desc1:Width(f:GetWidth() - 40)
-		
+
 		f.Desc2 = f:CreateFontString(nil, 'OVERLAY')
-		f.Desc2:FontTemplate()	
-		f.Desc2:Point("TOPLEFT", 20, -125)		
+		f.Desc2:FontTemplate()
+		f.Desc2:Point("TOPLEFT", 20, -125)
 		f.Desc2:Width(f:GetWidth() - 40)
-		
+
 		f.Desc3 = f:CreateFontString(nil, 'OVERLAY')
-		f.Desc3:FontTemplate()	
-		f.Desc3:Point("TOPLEFT", 20, -175)	
+		f.Desc3:FontTemplate()
+		f.Desc3:Point("TOPLEFT", 20, -175)
 		f.Desc3:Width(f:GetWidth() - 40)
-		
+
 		local close = CreateFrame("Button", "InstallCloseButton", f, "UIPanelCloseButton")
 		close:SetPoint("TOPRIGHT", f, "TOPRIGHT")
 		close:SetScript("OnClick", function()
 			f:Hide()
-		end)		
+		end)
 		E.Skins:HandleCloseButton(close)
-		
+
 		f.tutorialImage = f:CreateTexture('InstallTutorialImage', 'OVERLAY')
 		f.tutorialImage:Size(256, 128)
-		f.tutorialImage:SetTexture('Interface\\AddOns\\ElvUI\\media\\textures\\logo_elvui.tga')
+		f.tutorialImage:SetTexture('Interface\\AddOns\\ElvUI\\media\\textures\\logo.tga')
 		f.tutorialImage:Point('BOTTOM', 0, 70)
 
 	end
-	
+
 	ElvUIInstallFrame:Show()
 	NextPage()
 end

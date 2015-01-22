@@ -38,13 +38,13 @@ E.Options.args.tooltip = {
 					type = 'toggle',
 					name = L["Target Info"],
 					desc = L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."],
-				},	
+				},
 				playerTitles = {
 					order = 3,
 					type = 'toggle',
 					name = L['Player Titles'],
 					desc = L['Display player titles.'],
-				},				
+				},
 				guildRanks = {
 					order = 4,
 					type = 'toggle',
@@ -57,17 +57,45 @@ E.Options.args.tooltip = {
 					name = L['Inspect Info'],
 					desc = L['Display the players talent spec and item level in the tooltip, this may not immediately update when mousing over a unit.'],
 				},
-				itemCount = {
+				spellID = {
 					order = 6,
 					type = 'toggle',
-					name = L['Item Count'],
-					desc = L['Display how many of a certain item you have in your possession.'],				
-				},				
-				spellID = {
-					order = 7,
-					type = 'toggle',
 					name = L['Spell/Item IDs'],
-					desc = L['Display the spell or item ID when mousing over a spell or item tooltip.'],				
+					desc = L['Display the spell or item ID when mousing over a spell or item tooltip.'],
+				},
+				itemCount = {
+					order = 7,
+					type = 'select',
+					name = L['Item Count'],
+					desc = L['Display how many of a certain item you have in your possession.'],
+					values = {
+						["BAGS_ONLY"] = L["Bags Only"],
+						["BANK_ONLY"] = L["Bank Only"],
+						["BOTH"] = L["Both"],
+						["NONE"] = L["None"],
+					},
+				},
+				useCustomFactionColors = {
+					order = 8,
+					type = 'toggle',
+					name = L['Custom Faction Colors'],
+				},
+				factionColors = {
+					order = 9,
+					type = "group",
+					name = L["Custom Faction Colors"],
+					guiInline = true,
+					args = {},
+					get = function(info)
+						local t = E.db.tooltip.factionColors[ info[#info] ]
+						local d = P.tooltip.factionColors[ info[#info] ]
+						return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+					end,
+					set = function(info, r, g, b)
+						E.db.tooltip.factionColors[ info[#info] ] = {}
+						local t = E.db.tooltip.factionColors[ info[#info] ]
+						t.r, t.g, t.b = r, g, b
+					end,
 				},
 			},
 		},
@@ -88,7 +116,7 @@ E.Options.args.tooltip = {
 						['NONE'] = L['Never Hide'],
 						['SHIFT'] = SHIFT_KEY,
 						['ALT'] = ALT_KEY,
-						['CTRL'] = CTRL_KEY					
+						['CTRL'] = CTRL_KEY
 					},
 				},
 				combat = {
@@ -96,7 +124,7 @@ E.Options.args.tooltip = {
 					type = 'toggle',
 					name = COMBAT,
 					desc = L["Hide tooltip while in combat."],
-				},						
+				},
 			},
 		},
 		healthBar = {
@@ -104,7 +132,7 @@ E.Options.args.tooltip = {
 			type = "group",
 			name = L["Health Bar"],
 			get = function(info) return E.db.tooltip.healthBar[ info[#info] ] end,
-			set = function(info, value) E.db.tooltip.healthBar[ info[#info] ] = value; end,			
+			set = function(info, value) E.db.tooltip.healthBar[ info[#info] ] = value; end,
 			args = {
 				height = {
 					order = 1,
@@ -130,8 +158,8 @@ E.Options.args.tooltip = {
 							order = 2,
 							name = L["Font"],
 							values = AceGUIWidgetLSMlists.font,
-							set = function(info, value) 
-								E.db.tooltip.healthBar.font = value; 
+							set = function(info, value)
+								E.db.tooltip.healthBar.font = value;
 								GameTooltipStatusBar.text:FontTemplate(E.LSM:Fetch("font", E.db.tooltip.healthBar.font), E.db.tooltip.healthBar.fontSize, "OUTLINE")
 							end,
 						},
@@ -140,14 +168,24 @@ E.Options.args.tooltip = {
 							name = L["Font Size"],
 							type = "range",
 							min = 6, max = 22, step = 1,
-							set = function(info, value) 
-								E.db.tooltip.healthBar.fontSize = value; 
+							set = function(info, value)
+								E.db.tooltip.healthBar.fontSize = value;
 								GameTooltipStatusBar.text:FontTemplate(E.LSM:Fetch("font", E.db.tooltip.healthBar.font), E.db.tooltip.healthBar.fontSize, "OUTLINE")
-							end,								
+							end,
 						},
 					},
 				},
 			},
-		},		
+		},
 	},
 }
+
+for i = 1, 8 do
+	E.Options.args.tooltip.args.general.args.factionColors.args[""..i] = {
+		order = i,
+		type = "color",
+		hasAlpha = false,
+		name = _G["FACTION_STANDING_LABEL"..i],
+		disabled = function() return not E.Tooltip or not E.db.tooltip.useCustomFactionColors end,
+	}
+end
