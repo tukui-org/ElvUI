@@ -32,9 +32,17 @@ local menuList = {
 			HideUIPanel(PlayerTalentFrame)
 		end
 	end},
-	{text = COLLECTIONS,
+	{text = MOUNTS,
 	func = function()
-		ToggleCollectionsJournal()
+		TogglePetJournal(1);
+	end},
+	{text = PETS,
+	func = function()
+		TogglePetJournal(2)
+	end},
+	{text = TOY_BOX,
+	func = function()
+		TogglePetJournal(3)
 	end},
 	{text = L["Farm Mode"],
 	func = FarmMode},
@@ -60,7 +68,9 @@ local menuList = {
 		end
 	end},
 	{text = LFG_TITLE,
-	func = function() ToggleLFDParentFrame(); end},
+	func = function() PVEFrame_ToggleFrame(); end},
+	--[[{text = L["Raid Browser"],
+	func = function() ToggleFrame(RaidBrowserFrame); end},]]
 	{text = ENCOUNTER_JOURNAL,
 	func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then EncounterJournal_LoadUI(); end ToggleFrame(EncounterJournal) end}
 }
@@ -446,12 +456,12 @@ function M:Initialize()
 	end)
 
 	--PET JOURNAL TAINT FIX AS OF 5.1
-	--[[local info = UIPanelWindows['PetJournalParent'];
+	local info = UIPanelWindows['PetJournalParent'];
 	for name, value in pairs(info) do
 		PetJournalParent:SetAttribute("UIPanelLayout-"..name, value);
 	end
 
-	PetJournalParent:SetAttribute("UIPanelLayout-defined", true);]]
+	PetJournalParent:SetAttribute("UIPanelLayout-defined", true);
 end
 
 E:RegisterInitialModule(M:GetName())
