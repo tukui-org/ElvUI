@@ -827,8 +827,6 @@ local function LoadSkin()
         "HelpPanelShowTutorials",
         "HelpPanelEnhancedTooltips",
         "HelpPanelShowLuaErrors",
-        "HelpPanelColorblindMode",
-        "HelpPanelMovePad",
         "BattlenetPanelOnlineFriends",
         "BattlenetPanelOfflineFriends",
         "BattlenetPanelBroadcasts",
@@ -1081,7 +1079,7 @@ local function LoadSkin()
 	end
 
 	-- mac option
-	MacOptionsFrame:StripTextures()
+	--[[MacOptionsFrame:StripTextures()
 	MacOptionsFrame:SetTemplate()
 	S:HandleButton(MacOptionsButtonCompress)
 	S:HandleButton(MacOptionsButtonKeybindings)
@@ -1109,7 +1107,7 @@ local function LoadSkin()
 	MacOptionsFrameOkay:SetPoint("LEFT", MacOptionsButtonKeybindings, "RIGHT", 2, 0)
 	MacOptionsFrameCancel:ClearAllPoints()
 	MacOptionsFrameCancel:SetPoint("LEFT", MacOptionsFrameOkay, "RIGHT", 2, 0)
-	MacOptionsFrameCancel:SetWidth(MacOptionsFrameCancel:GetWidth() - 6)
+	MacOptionsFrameCancel:SetWidth(MacOptionsFrameCancel:GetWidth() - 6)]]
 
 	ReportCheatingDialog:StripTextures()
 	ReportCheatingDialogCommentFrame:StripTextures()
