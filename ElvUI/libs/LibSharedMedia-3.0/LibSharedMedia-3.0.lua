@@ -120,6 +120,7 @@ elseif locale == "ruRU" then
 	SML_MT_font["Arial Narrow"]			= [[Fonts\ARIALN.TTF]]
 	SML_MT_font["Nimrod MT"]			= [[Fonts\NIM_____.ttf]]
 	SML_MT_font["Friz Quadrata TT"]		= [[Fonts\FRIZQT___CYR.TTF]]
+	SML_MT_font["Skurri"]				= [[Fonts\SKURRI_CYR.TTF]]
 
 	lib.DefaultMedia.font = "Arial Narrow"
 --
