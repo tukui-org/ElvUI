@@ -32,6 +32,7 @@ function UF:UpdateHoly(event, unit, powerType)
 	if (self.unit ~= unit or (powerType and powerType ~= 'HOLY_POWER')) then return end
 	local db = self.db
 	if not db then return; end
+
 	local BORDER = E.Border
 	local numHolyPower = UnitPower('player', SPELL_POWER_HOLY_POWER);
 	local maxHolyPower = UnitPowerMax('player', SPELL_POWER_HOLY_POWER);
@@ -235,6 +236,7 @@ end
 function UF:UpdateArcaneCharges(event, unit, arcaneCharges, maxCharges)
 	local frame = self:GetParent()
 	local db = frame.db
+	if not db then return; end
 
 	local point, _, anchorPoint, x, y = frame.Health:GetPoint()
 	if self:IsShown() and point then
@@ -279,6 +281,7 @@ end
 function UF:UpdateAnticipationCharges(event, unit, numCharges, maxCharges)
 	local frame = self:GetParent()
 	local db = frame.db
+	if not db then return; end
 
 	local point, _, anchorPoint, x, y = frame.Health:GetPoint()
 	if self:IsShown() and point then
@@ -321,8 +324,8 @@ end
 function UF:UpdateShardBar(spec)
 	local frame = self:GetParent()
 	local db = frame.db
-
 	if not db then return; end
+
 	local maxBars = self.number
 
 	for i=1, UF['classMaxResourceBar'][E.myclass] do
@@ -384,6 +387,7 @@ end
 function UF:UpdateShadowOrbs(event, unit, powerType)
 	local frame = self:GetParent()
 	local db = frame.db
+	if not db then return; end
 
 	local point, _, anchorPoint, x, y = frame.Health:GetPoint()
 	if self:IsShown() and point and not db.classbar.detachFromFrame then
