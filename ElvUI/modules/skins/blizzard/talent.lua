@@ -185,16 +185,17 @@ local function LoadSkin()
 		for i = 1, #bonuses, 2 do
 			local frame = scrollChild["abilityButton"..index]
 			local _, icon = GetSpellTexture(bonuses[i])
-			frame.icon:SetTexture(icon)
-			if not frame.reskinned then
-				frame.reskinned = true
-				frame:Size(30, 30)
-				frame.ring:Hide()
-				frame:SetTemplate("Default")
-				frame.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-				frame.icon:SetInside()
+			if frame then
+				frame.icon:SetTexture(icon)
+				if not frame.reskinned then
+					frame.reskinned = true
+					frame:Size(30, 30)
+					frame.ring:Hide()
+					frame:SetTemplate("Default")
+					frame.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+					frame.icon:SetInside()
+				end
 			end
-
 
 			index = index + 1
 		end
