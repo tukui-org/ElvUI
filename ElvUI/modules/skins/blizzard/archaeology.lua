@@ -17,8 +17,10 @@ local function LoadSkin()
 	ArchaeologyFrameRaceFilter:SetFrameLevel(ArchaeologyFrameRaceFilter:GetFrameLevel() + 2)
 	S:HandleDropDownBox(ArchaeologyFrameRaceFilter, 125)
 
-	S:HandleNextPrevButton(ArchaeologyFrameCompletedPageNextPageButton)
-	S:HandleNextPrevButton(ArchaeologyFrameCompletedPagePrevPageButton)
+	S:HandleButton(ArchaeologyFrameSummaryPagePrevPageButton)
+	S:HandleButton(ArchaeologyFrameSummaryPageNextPageButton)
+	S:HandleButton(ArchaeologyFrameCompletedPageNextPageButton)
+	S:HandleButton(ArchaeologyFrameCompletedPagePrevPageButton)
 
 	ArchaeologyFrameRankBar:StripTextures()
 	ArchaeologyFrameRankBar:SetStatusBarTexture(E["media"].normTex)
