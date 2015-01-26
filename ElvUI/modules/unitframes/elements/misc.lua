@@ -277,6 +277,9 @@ function UF:UpdateComboDisplay(event, unit)
 	if (unit == 'pet') then return end
 	local cpoints = self.CPoints
 	local cp = (UnitHasVehicleUI("player") or UnitHasVehicleUI("vehicle")) and UnitPower('vehicle', 4) or UnitPower('player', 4)
+	--Some bosses require the old API and return 0 constantly with the new API (Malygos is one example)
+	local cpOldApi = (UnitHasVehicleUI("player") or UnitHasVehicleUI("vehicle")) and GetComboPoints('vehicle', 'target') or GetComboPoints('player', 'target')
+	if cpOldApi and cp and (cpOldApi > cp) then cp = cpOldApi end
 
 	for i=1, MAX_COMBO_POINTS do
 		if(i <= cp) then
