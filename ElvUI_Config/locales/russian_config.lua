@@ -14,30 +14,30 @@ L["PANEL_DESC"] = "Регулирование размеров левой и п�
 L["SKINS_DESC"] = "Установки скинов"
 L["TOGGLESKIN_DESC"] = "Включить/выключить этот скин."
 L["TOOLTIP_DESC"] = "Опций подсказки"
-L["SEARCH_SYNTAX_DESC"] = [=[With the new addition of LibItemSearch, you now have access to much more advanced item searches. The following is a documentation of the search syntax. See the full explanation at: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
+L["SEARCH_SYNTAX_DESC"] = [=[С добавлением библиотеки LibItemSearch, у вас появился доступ к большему количеству поисковых запросов. Здесь представлена документация по синтаксису поисковых запросов. Полная инструкция доступна по адресу: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
 
-Specific Searching:
-    • q:[quality] or quality:[quality]. For instance, q:epic will find all epic items.
-    • l:[level], lvl:[level] or level:[level]. For example, l:30 will find all items with level 30.
-    • t:[search], type:[search] or slot:[search]. For instance, t:weapon will find all weapons.
-    • n:[name] or name:[name]. For instance, typing n:muffins will find all items with names containing "muffins".
-    • s:[set] or set:[set]. For example, s:fire will find all items in equipment sets you have with names that start with fire.
-    • tt:[search], tip:[search] or tooltip:[search]. For instance, tt:binds will find all items that can be bound to account, on equip, or on pickup.
+Специфический поик:
+    • q:[качество] или quality:[качество]. Например, q:эпическое покажет все предметы эпического качества (слово "эпическое" не обязательно вводить до конца).
+    • l:[уровень], lvl:[уровень] or level:[уровень]. Например, l:30 покажет все предметы с уровнем 30. Это относитя именно к уровню предметов, а не требуемому уровню персонажа.
+    • t:[запрос], type:[запрос] or slot:[запрос]. Например, t:оружие покажет все предметы, являющиеся оружием.
+    • n:[имя] or name:[имя]. Например, n:muffins покажет все предметы, в имени которых соержится "muffins".
+    • s:[набор] or set:[набор]. Например, s:fire покажет предметы из наборов экипировки, название которых начинается с "fire".
+    • tt:[запрос], tip:[запрос] or tooltip:[запрос]. Например, tt:уникальный покажет все предметы, которые являются уникальными или уникальными использующимися.
 
 	
-Search Operators:
-    • ! : Negates a search. For example, !q:epic will find all items that are NOT epic.
-    • | : Joins two searches. Typing q:epic | t:weapon will find all items that are either epic OR weapons.
-    • & : Intersects two searches. For instance, q:epic & t:weapon will find all items that are epic AND weapons
-    • >, <, <=, => : Performs comparisons on numerical searches. For example, typing lvl: >30 will find all items with level HIGHER than 30.
+Операторы поиска:
+    • ! : Обращает результат поиска. Например, !q:эпическое покажет все НЕ эпические предметы.
+    • | : Объединет запросы. Например, "q:эпическое | t:оружие" отобразит все предметы эпического качества ИЛИ являющиеся оружием.
+    • & : Суммирует запросы. Например, "q:эпическое & t:оружие" отобразит все оружие эпического качества.
+    • >, <, <=, => : сразнения для численных запросов. Например, запрос "lvl: >30" покажет все предметы с уровнем выше 30.
 
 
 The following search keywords can also be used:
-    • soulbound, bound, bop : Bind on pickup items.
-    • bou : Bind on use items.
-    • boe : Bind on equip items.
-    • boa : Bind on account items.
-    • quest : Quest bound items.]=];
+    • soulbound, bound, bop : персональные при поднятии.
+    • bou : персональные при использовании.
+    • boe : персональные при одевании.
+    • boa : привязоные к учетной записи.
+    • quest : специальные предметы для заданий.]=];
 L['TEXT_FORMAT_DESC'] = [=[Строка для изменения вида текста.
 
 Примеры:
@@ -142,7 +142,7 @@ L['List of items to ignore when sorting. If you wish to add multiple items you m
 L['Money Format'] = "Формат денег"
 L['Panel Width (Bags)'] = "Ширина сумок"
 L['Panel Width (Bank)'] = "Ширина банка"
-L["Search Syntax"] = true;
+L["Search Syntax"] = "Синтакс поиска"
 L["Set the size of your bag buttons."] = "Установите размер кнопок на панели."
 L['Short (Whole Numbers)'] = "Короткий (целые)"
 L['Short'] = "Короткий"
@@ -694,9 +694,9 @@ L["Filled"] = "По ширине рамки"
 L["Filter Type"] = "Тип фильтра"
 L['Force Off'] = "Постоянно выключен"
 L['Force On'] = "Постоянно включен"
-L['Force Reaction Color'] = true;
+L['Force Reaction Color'] = "Принудительная реакция"
 L['Force the frames to show, they will act as if they are the player frame.'] = "Принудительно показать рамки, они будут вести себя как рамка игрока."
-L['Forces reaction color instead of class color on units controlled by players.'] = true;
+L['Forces reaction color instead of class color on units controlled by players.'] = "Принудительно окрашивает полосу здоровья по цвету реакции для рамок игроков."
 L["Format"] = "Формат"
 L["Frame"] = "Рамка"
 L["Frequent Updates"] = "Частое обновление"
