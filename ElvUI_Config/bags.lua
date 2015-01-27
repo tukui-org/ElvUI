@@ -226,8 +226,12 @@ E.Options.args.bags = {
 			args = {
 				text = {
 					order = 1,
-					type = "description",
-					name = L["SEARCH_SYNTAX_DESC"],
+					type = "input",
+					multiline = 30,
+					width = "full",
+					name = L["Search Syntax"],
+					get = function(info) return L["SEARCH_SYNTAX_DESC"]; end,
+					set = function(info, value) value = L["SEARCH_SYNTAX_DESC"]; end,
 				},
 			},
 		},
