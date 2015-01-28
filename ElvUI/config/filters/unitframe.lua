@@ -735,7 +735,8 @@ f:SetScript("OnEvent", function(self)
 	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 
 	local mfTicks = 3
-	if string.lower((UnitClass("player"))) == "priest" and IsSpellKnown(157223) then --Enhanced Mind Flay
+	local class = select(2,UnitClass("player"))
+	if string.lower(class) == "priest" and IsSpellKnown(157223) then --Enhanced Mind Flay
 		mfTicks = 4
 	end
 
