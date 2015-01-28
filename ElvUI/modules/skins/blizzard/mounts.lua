@@ -50,12 +50,17 @@ local function LoadSkin()
 		for i = 1, #MountJournal.ListScrollFrame.buttons do
 			local b = _G["MountJournalListScrollFrameButton"..i]
 			local t = _G["MountJournalListScrollFrameButton"..i.."Name"]
-			if b.selectedTexture:IsShown() then
-				t:SetTextColor(1,1,0)
-				b.backdrop:SetBackdropBorderColor(1, 1, 0)
+			if b.index == nil then
+				b:Hide()
 			else
-				t:SetTextColor(1, 1, 1)
-				b.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				b:Show()
+				if b.selectedTexture:IsShown() then
+					t:SetTextColor(1,1,0)
+					b.backdrop:SetBackdropBorderColor(1, 1, 0)
+				else
+					t:SetTextColor(1, 1, 1)
+					b.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				end
 			end
 		end
 	end
