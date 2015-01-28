@@ -394,7 +394,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		local guildName, guildRankName, _, guildRealm = GetGuildInfo(unit)
 		local pvpName = UnitPVPName(unit)
 		local relationship = UnitRealmRelationship(unit);
-		color = RAID_CLASS_COLORS[class]
+		color = RAID_CLASS_COLORS[class or "PRIEST"] 
 
 		if(self.db.playerTitles and pvpName) then
 			name = pvpName
@@ -415,7 +415,6 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		elseif(UnitIsDND(unit)) then
 			name = name..DND_LABEL
 		end
-
 
 		GameTooltipTextLeft1:SetFormattedText("|c%s%s|r", color.colorStr, name)
 
