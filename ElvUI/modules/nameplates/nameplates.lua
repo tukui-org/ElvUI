@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+flocal E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
 local LSM = LibStub("LibSharedMedia-3.0")
 
@@ -490,6 +490,7 @@ function NP:SetUnitInfo(myPlate)
 		end
 		self.guid = UnitGUID("mouseover")
 		self.unit = "mouseover"
+		NP:UpdateAurasByUnitID('mouseover')
 	else
 		myPlate:SetFrameLevel(0)
 		myPlate.overlay:Hide()
