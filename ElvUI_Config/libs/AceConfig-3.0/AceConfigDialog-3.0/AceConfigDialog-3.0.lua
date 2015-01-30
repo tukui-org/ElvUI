@@ -1441,7 +1441,7 @@ local function TreeOnButtonEnter(widget, event, uniquevalue, button)
 	local name = GetOptionsMemberValue("name", group, options, feedpath, appName)
 	local desc = GetOptionsMemberValue("desc", group, options, feedpath, appName)
 	
-	GameTooltip:SetOwner(button, "ANCHOR_NONE")
+	GameTooltip:SetOwner(button, "ANCHOR_CURSOR")
 	if widget.type == "TabGroup" then
 		GameTooltip:SetPoint("BOTTOM",button,"TOP")
 	else
