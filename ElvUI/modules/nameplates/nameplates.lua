@@ -1372,7 +1372,7 @@ function NP:ClearAuraContext(frame)
 	AuraList[frame] = nil
 end
 
-function NP:RemoveAuraInstance(guid, spellID)
+function NP:RemoveAuraInstance(guid, spellID, caster)
 	if guid and spellID and NP.AuraList[guid] then
 		local instanceID = tostring(guid)..tostring(spellID)..(tostring(caster or "UNKNOWN_CASTER"))
 		local auraID = spellID..(tostring(caster or "UNKNOWN_CASTER"))
@@ -1476,7 +1476,7 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, ...)
 			local texture = GetSpellTexture(spellID)
 			NP:SetAuraInstance(destGUID, spellID, GetTime() + (duration or 0), stackCount, sourceGUID, duration, texture, auraType, AURA_TARGET_HOSTILE)
 		elseif event == "SPELL_AURA_BROKEN" or event == "SPELL_AURA_BROKEN_SPELL" or event == "SPELL_AURA_REMOVED" then
-			NP:RemoveAuraInstance(destGUID, spellID)
+			NP:RemoveAuraInstance(destGUID, spellID, sourceGUID)
 		end
 
 		local name, raidIcon
