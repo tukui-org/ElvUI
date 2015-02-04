@@ -1112,14 +1112,14 @@ local function GetOptionsTable_Portrait(updateFunc, groupName, numUnits)
 				type = "range",
 				name = L["xOffset"],
 				desc = L["Position the Model horizontally."],
-				min = -1, max = 1, step = 0.05,
+				min = -1, max = 1, step = 0.01,
 			},
 			yOffset = {
 				order = 8,
 				type = "range",
 				name = L["yOffset"],
 				desc = L["Position the Model vertically."],
-				min = -1, max = 1, step = 0.05,
+				min = -1, max = 1, step = 0.01,
 			},
 		},
 	}
