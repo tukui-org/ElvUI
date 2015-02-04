@@ -50,6 +50,7 @@ function UF:PortraitUpdate(unit)
 		end
 
 		self:SetCamDistanceScale(portrait.camDistanceScale)
+		self:SetPosition(0, portrait.xOffset, portrait.yOffset)
 	end
 end
 
