@@ -64,6 +64,7 @@ local mixin = lib.mixin
 -- "Externals"
 local AceDB3 = LibStub('AceDB-3.0', true)
 local AceDBOptions3 = LibStub('AceDBOptions-3.0', true)
+local AceConfigRegistry3 = LibStub('AceConfigRegistry-3.0', true)
 
 -- ----------------------------------------------------------------------------
 -- MoP compatibility
@@ -194,7 +195,7 @@ function mixin:CheckDualSpecState()
 			
 			--Bugfix: 	Changing spec while having the profiles tab open causes dualspec to mess up the profile selections.
 			--			This will force the selection to update properly, so GetCurrentProfile doesn't return incorrect values
-			LibStub('AceConfigRegistry-3.0'):NotifyChange(registry[self].name)
+			AceConfigRegistry3:NotifyChange(registry[self].name)
 		end
 	end
 end
