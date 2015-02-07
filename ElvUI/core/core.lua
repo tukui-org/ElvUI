@@ -493,10 +493,12 @@ f:RegisterEvent("CHAT_MSG_ADDON")
 f:SetScript('OnEvent', SendRecieve)
 
 function E:UpdateAll(ignoreInstall)
-	self.data = LibStub("AceDB-3.0"):New("ElvDB", self.DF);
-	self.data.RegisterCallback(self, "OnProfileChanged", "UpdateAll")
-	self.data.RegisterCallback(self, "OnProfileCopied", "UpdateAll")
-	self.data.RegisterCallback(self, "OnProfileReset", "OnProfileReset")
+	-- Why is this code even here? All this is done during :Initialize()
+	
+	-- self.data = LibStub("AceDB-3.0"):New("ElvDB", self.DF);
+	-- self.data.RegisterCallback(self, "OnProfileChanged", "UpdateAll")
+	-- self.data.RegisterCallback(self, "OnProfileCopied", "UpdateAll")
+	-- self.data.RegisterCallback(self, "OnProfileReset", "OnProfileReset")
 	LibStub('LibDualSpec-1.0'):EnhanceDatabase(self.data, "ElvUI")
 	self.db = self.data.profile;
 	self.global = self.data.global;
