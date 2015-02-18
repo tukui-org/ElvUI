@@ -499,10 +499,10 @@ function E:UpdateAll(ignoreInstall)
 	-- self.data.RegisterCallback(self, "OnProfileChanged", "UpdateAll")
 	-- self.data.RegisterCallback(self, "OnProfileCopied", "UpdateAll")
 	-- self.data.RegisterCallback(self, "OnProfileReset", "OnProfileReset")
-	LibStub('LibDualSpec-1.0'):EnhanceDatabase(self.data, "ElvUI")
-	self.db = self.data.profile;
-	self.global = self.data.global;
-	self:DBConversions()
+	-- LibStub('LibDualSpec-1.0'):EnhanceDatabase(self.data, "ElvUI")
+	-- self.db = self.data.profile;
+	-- self.global = self.data.global;
+	-- self:DBConversions()
 	self.db.theme = nil;
 	self.db.install_complete = nil;
 
