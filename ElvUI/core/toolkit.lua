@@ -240,7 +240,11 @@ local function FontTemplate(fs, font, fontSize, fontStyle)
 	else
 		fs:SetShadowColor(0, 0, 0, 1)
 	end
-	fs:SetShadowOffset((E.mult or 1), -(E.mult or 1))
+	if fontStyle and fontStyle:lower():find('monochrome') then
+		fs:SetShadowOffset(0, 0) --remove font shadow when using monochromeoutline with pixel fonts, makes it look more crisp.
+	else
+		fs:SetShadowOffset((E.mult or 1), -(E.mult or 1))
+	end
 
 	E["texts"][fs] = true
 end
