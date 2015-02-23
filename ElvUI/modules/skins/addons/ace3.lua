@@ -236,7 +236,7 @@ function S:SkinAce3()
 		return oldRegisterAsWidget(self, widget)
 	end
 	AceGUI.RegisterAsWidget = RegisterAsWidget
-
+	--LibStub("AceGUI-3.0"):Create("Window")
 	local oldRegisterAsContainer = AceGUI.RegisterAsContainer
 	RegisterAsContainer = function(self, widget)
 		if not E.private.skins.ace3.enable then
@@ -246,7 +246,7 @@ function S:SkinAce3()
 		if TYPE == "ScrollFrame" then
 			local frame = widget.scrollbar
 			SkinScrollBar(frame)
-		elseif TYPE == "InlineGroup" or TYPE == "TreeGroup" or TYPE == "TabGroup" or TYPE == "SimpleGroup" or TYPE == "Frame" or TYPE == "DropdownGroup" then
+		elseif TYPE == "InlineGroup" or TYPE == "TreeGroup" or TYPE == "TabGroup" or TYPE == "SimpleGroup" or TYPE == "Frame" or TYPE == "DropdownGroup" or TYPE == "Window" then
 			local frame = widget.content:GetParent()
 			if TYPE == "Frame" then
 				frame:StripTextures()
@@ -258,6 +258,9 @@ function S:SkinAce3()
 						child:StripTextures()
 					end
 				end
+			elseif TYPE == "Window" then
+				frame:StripTextures()
+				S:HandleCloseButton(frame.obj.closebutton)
 			end
 			frame:SetTemplate('Transparent')
 
