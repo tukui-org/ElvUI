@@ -1,0 +1,16 @@
+tag v1.9
+3b863c2beb9c095f395b29a30fcfdb6d7de7c61a
+Adirelle <adirelle@gmail.com>
+2013-04-13 12:07:04 +0200
+
+Tagging as v1.9.
+
+
+--------------------
+
+Guillaume Perréal:
+	- Standalone TOC bump.
+Adirelle:
+	- Try to initialize the library on ADDON_LOADED when IsLoggedIn() yields true.
+	This should detect when LDS is loaded after the player has switched spec.
+	- Standalone TOC bump.
