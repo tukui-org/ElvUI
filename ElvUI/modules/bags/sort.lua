@@ -489,9 +489,9 @@ function B.Stack(sourceBags, targetBags, canMove)
 		end
 	end
 
-	wipe(targetItems)
-	wipe(targetSlots)
-	wipe(sourceUsed)
+	twipe(targetItems)
+	twipe(targetSlots)
+	twipe(sourceUsed)
 end
 
 local blackListedSlots = {}
@@ -556,11 +556,11 @@ function B.Sort(bags, sorter, invertDirection)
 				i = i + 1
 			end
 		end
-		wipe(bagLocked)
+		twipe(bagLocked)
 	end
 
-	wipe(bagSorted)
-	wipe(initialOrder)
+	twipe(bagSorted)
+	twipe(initialOrder)
 end
 
 function B.FillBags(from, to)
@@ -575,7 +575,7 @@ function B.FillBags(from, to)
 	end
 
 	B.Fill(from, to)
-	wipe(specialtyBags)
+	twipe(specialtyBags)
 end
 
 function B.Fill(sourceBags, targetBags, reverse, canMove)
@@ -596,7 +596,7 @@ function B.Fill(sourceBags, targetBags, reverse, canMove)
 			B:AddMove(bagSlot, tremove(emptySlots, 1))
 		end
 	end
-	wipe(emptySlots)
+	twipe(emptySlots)
 end
 
 function B.SortBags(...)
@@ -615,26 +615,26 @@ function B.SortBags(...)
 				B.Stack(bagCache['Normal'], sortedBags)
 				B.Fill(bagCache['Normal'], sortedBags, B.db.sortInverted)
 				B.Sort(sortedBags, nil, B.db.sortInverted)
-				wipe(sortedBags)
+				twipe(sortedBags)
 			end
 		end
 
 		if bagCache['Normal'] then
 			B.Stack(bagCache['Normal'], bagCache['Normal'], B.IsPartial)
 			B.Sort(bagCache['Normal'], nil, B.db.sortInverted)
-			wipe(bagCache['Normal'])
+			twipe(bagCache['Normal'])
 		end
-		wipe(bagCache)
-		wipe(bagGroups)
+		twipe(bagCache)
+		twipe(bagGroups)
 	end
 end
 
 function B:StartStacking()
-	wipe(bagMaxStacks)
-	wipe(bagStacks)
-	wipe(bagIDs)
-	wipe(bagPetIDs)
-	wipe(moveTracker)
+	twipe(bagMaxStacks)
+	twipe(bagStacks)
+	twipe(bagIDs)
+	twipe(bagPetIDs)
+	twipe(moveTracker)
 
 	if #moves > 0 then
 		self.SortUpdateTimer:Show()
@@ -644,8 +644,8 @@ function B:StartStacking()
 end
 
 function B:StopStacking(message)
-	wipe(moves)
-	wipe(moveTracker)
+	twipe(moves)
+	twipe(moveTracker)
 	moveRetries, lastItemID, lockStop, lastDestination, lastMove = 0, nil, nil, nil, nil
 
 	self.SortUpdateTimer:Hide()
@@ -765,7 +765,7 @@ function B:DoMoves()
 	end
 
 	lastItemID, lockStop, lastDestination, lastMove = nil, nil, nil, nil
-	wipe(moveTracker)
+	twipe(moveTracker)
 
 	local start, success, moveID, targetID, moveSource, moveTarget, wasGuild
 	start = GetTime()
@@ -814,7 +814,7 @@ function B:CommandDecorator(func, groupsDefaults)
 			return;
 		end
 
-		wipe(bagGroups)
+		twipe(bagGroups)
 		if not groups or #groups == 0 then
 			groups = groupsDefaults
 		end
@@ -836,7 +836,7 @@ function B:CommandDecorator(func, groupsDefaults)
 		if func(unpack(bagGroups)) == false then
 			return
 		end
-		wipe(bagGroups)
+		twipe(bagGroups)
 		B:StartStacking()
 	end
 end
