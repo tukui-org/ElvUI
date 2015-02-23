@@ -633,6 +633,7 @@ function B:StartStacking()
 	wipe(bagMaxStacks)
 	wipe(bagStacks)
 	wipe(bagIDs)
+	wipe(bagPetIDs)
 	wipe(moveTracker)
 
 	if #moves > 0 then
