@@ -509,7 +509,9 @@ P['unitframe'] = {
 				['overlay'] = false,
 				['camDistanceScale'] = 1,
 				['rotation'] = 0,
-				['style'] = '3D'
+				['style'] = '3D',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
 			},
 			['buffs'] = {
 				['enable'] = false,
@@ -636,7 +638,9 @@ P['unitframe'] = {
 				['overlay'] = false,
 				['rotation'] = 0,
 				['camDistanceScale'] = 1,
-				['style'] = '3D'
+				['style'] = '3D',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -1209,7 +1213,9 @@ P['unitframe'] = {
 				['overlay'] = false,
 				['rotation'] = 0,
 				['camDistanceScale'] = 1,
-				['style'] = '3D'
+				['style'] = '3D',
+				['xOffset'] = 0,
+				['yOffset'] = 0,
 			},
 			['name'] = {
 				['position'] = 'LEFT',
