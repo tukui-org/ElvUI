@@ -752,6 +752,7 @@ local function LoadSkin()
         "SocialPanelChatHoverDelay",
         "SocialPanelGuildMemberAlert",
         "SocialPanelChatMouseScroll",
+		"SocialPanelEnableTwitter",
         -- Action bars
         "ActionBarsPanelLockActionBars",
         "ActionBarsPanelSecureAbilityToggle",
@@ -846,7 +847,11 @@ local function LoadSkin()
         "UnitFramePanelArenaEnemyCastBar",
         "UnitFramePanelArenaEnemyPets",
         "UnitFramePanelFullSizeFocusFrame",
-
+		
+		--Assessability
+		"AccessibilityPanelMovePad",
+		"AccessibilityPanelColorblindMode",
+		
 		--Watev
 		"NamesPanelUnitNameplatesNameplateClassColors",
     }
@@ -892,7 +897,13 @@ local function LoadSkin()
         "MousePanelClickMoveStyleDropDown",
         "LanguagesPanelLocaleDropDown",
         -- Status Text
-        "StatusTextPanelDisplayDropDown"
+        "StatusTextPanelDisplayDropDown",
+		
+		--Assess-ability
+		"AccessibilityPanelColorFilterDropDown",
+		
+		--Locales
+		"InterfaceOptionsLanguagesPanelAudioLocaleDropDown",
     }
     for i = 1, getn(interfacedropdown) do
         local idropdown = _G["InterfaceOptions"..interfacedropdown[i]]
@@ -901,6 +912,7 @@ local function LoadSkin()
             DropDownList1:SetTemplate("Transparent")
         end
     end
+
 	-- Display
 	S:HandleDropDownBox(InterfaceOptionsDisplayPanelOutlineDropDown, 210)
 
@@ -933,6 +945,8 @@ local function LoadSkin()
         "AudioOptionsVoicePanelEnableMicrophone",
         "AudioOptionsVoicePanelPushToTalkSound",
 		"AudioOptionsSoundPanelPetBattleMusic",
+		"AudioOptionsSoundPanelDialogSounds",
+		
         -- Network
         "NetworkOptionsPanelOptimizeSpeed",
         "NetworkOptionsPanelUseIPv6",
@@ -963,6 +977,9 @@ local function LoadSkin()
         "Graphics_ParticleDensityDropDown",
         "Graphics_SSAODropDown",
         "Graphics_RefractionDropDown",
+		"Graphics_DepthEffectsDropDown",
+		"Graphics_LightingQualityDropDown",
+		"Graphics_OutlineModeDropDown",
 
         "RaidGraphics_TextureResolutionDropDown",
         "RaidGraphics_FilteringDropDown",
@@ -976,12 +993,21 @@ local function LoadSkin()
         "RaidGraphics_ParticleDensityDropDown",
         "RaidGraphics_SSAODropDown",
         "RaidGraphics_RefractionDropDown",
+		"RaidGraphics_DepthEffectsDropDown",
+		"RaidGraphics_LightingQualityDropDown",
+		"RaidGraphics_OutlineModeDropDown",
 
         -- Advanced
         "Advanced_BufferingDropDown",
         "Advanced_LagDropDown",
         "Advanced_HardwareCursorDropDown",
         "Advanced_GraphicsAPIDropDown",
+		"Advanced_ResampleQualityDropDown",
+		"Advanced_MultisampleAlphaTest",
+		"Advanced_PostProcessAntiAliasingDropDown",
+		"Advanced_ResampleQualityDropDown",
+		"Advanced_MultisampleAntiAliasingDropDown",
+		
         -- Audio
         "AudioOptionsSoundPanelHardwareDropDown",
         "AudioOptionsSoundPanelSoundChannelsDropDown",
@@ -1006,6 +1032,7 @@ local function LoadSkin()
         "AudioOptionsVoicePanelChatMode1KeyBindingButton",
         "CompactUnitFrameProfilesSaveButton",
         "CompactUnitFrameProfilesDeleteButton",
+		"InterfaceOptionsSocialPanelTwitterLoginButton"
     }
     for _, button in pairs(buttons) do
         S:HandleButton(_G[button])
@@ -1053,6 +1080,7 @@ local function LoadSkin()
 		"Advanced_UIScaleSlider",
 		"Advanced_MaxFPSSlider",
 		"Advanced_MaxFPSBKSlider",
+		"Advanced_RenderScaleSlider",
 		"AudioOptionsSoundPanelMasterVolume",
 		"AudioOptionsSoundPanelSoundVolume",
 		"AudioOptionsSoundPanelMusicVolume",
@@ -1070,6 +1098,7 @@ local function LoadSkin()
 		"InterfaceOptionsCameraPanelFollowSpeedSlider",
 		"InterfaceOptionsMousePanelMouseSensitivitySlider",
 		"InterfaceOptionsMousePanelMouseLookSpeedSlider",
+		"InterfaceOptionsAccessibilityPanelColorblindStrengthSlider",
 		"OpacityFrameSlider",
 	}
 	Graphics_RightQuality:Kill()
