@@ -243,22 +243,24 @@ function S:HandleDropDownBox(frame, width)
 
 	frame:StripTextures()
 	frame:Width(width)
+	
+	if(_G[frame:GetName().."Text"]) then
+		_G[frame:GetName().."Text"]:ClearAllPoints()
+		_G[frame:GetName().."Text"]:Point("RIGHT", button, "LEFT", -2, 0)
+	end
+	
+	if(button) then
+		button:ClearAllPoints()
+		button:Point("RIGHT", frame, "RIGHT", -10, 3)
+		hooksecurefunc(button, "SetPoint", function(self, point, attachTo, anchorPoint, xOffset, yOffset, noReset)
+			if not noReset then
+				button:ClearAllPoints()
+				button:SetPoint("RIGHT", frame, "RIGHT", -10, 3, true)
+			end
+		end)
 
-	_G[frame:GetName().."Text"]:ClearAllPoints()
-	_G[frame:GetName().."Text"]:Point("RIGHT", button, "LEFT", -2, 0)
-
-
-	button:ClearAllPoints()
-	button:Point("RIGHT", frame, "RIGHT", -10, 3)
-	hooksecurefunc(button, "SetPoint", function(self, point, attachTo, anchorPoint, xOffset, yOffset, noReset)
-		if not noReset then
-			button:ClearAllPoints()
-			button:SetPoint("RIGHT", frame, "RIGHT", -10, 3, true)
-		end
-	end)
-
-	self:HandleNextPrevButton(button, true)
-
+		self:HandleNextPrevButton(button, true)
+	end
 	frame:CreateBackdrop("Default")
 	frame.backdrop:Point("TOPLEFT", 20, -2)
 	frame.backdrop:Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", 2, -2)
