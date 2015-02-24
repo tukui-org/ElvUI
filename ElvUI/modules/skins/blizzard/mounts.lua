@@ -4,15 +4,15 @@ local S = E:GetModule('Skins')
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.mounts ~= true then return end
 	-- global
-	PetJournalParent:StripTextures()
-	PetJournalParent:SetTemplate('Transparent')
-	PetJournalParentPortrait:Hide()
+	CollectionsJournal:StripTextures()
+	CollectionsJournal:SetTemplate('Transparent')
+	CollectionsJournal:Hide()
 
-	for i=1, 3 do
-		S:HandleTab(_G['PetJournalParentTab'..i])
+	for i=1, 4 do
+		S:HandleTab(_G['CollectionsJournalTab'..i])
 	end
 
-	S:HandleCloseButton(PetJournalParentCloseButton)
+	S:HandleCloseButton(CollectionsJournalCloseButton)
 	S:HandleItemButton(MountJournalSummonRandomFavoriteButton)
 	S:HandleButton(MountJournalFilterButton)
 
@@ -46,7 +46,7 @@ local function LoadSkin()
 	end
 
 	-- Color in green icon border on selected mount
-	local function ColorSelectedMount()
+	--[[local function ColorSelectedMount()
 		for i = 1, #MountJournal.ListScrollFrame.buttons do
 			local b = _G["MountJournalListScrollFrameButton"..i]
 			local t = _G["MountJournalListScrollFrameButton"..i.."Name"]
@@ -64,11 +64,11 @@ local function LoadSkin()
 			end
 		end
 	end
-	hooksecurefunc("MountJournal_UpdateMountList", ColorSelectedMount)
+	hooksecurefunc("MountJournal_UpdateMountList", ColorSelectedMount)]]
 
 	-- bug fix when we scroll
-	MountJournalListScrollFrame:HookScript("OnVerticalScroll", ColorSelectedMount)
-	MountJournalListScrollFrame:HookScript("OnMouseWheel", ColorSelectedMount)
+	--MountJournalListScrollFrame:HookScript("OnVerticalScroll", ColorSelectedMount)
+	--MountJournalListScrollFrame:HookScript("OnMouseWheel", ColorSelectedMount)
 
 	-----------------------------
 	--[[ pet journal (tab 2) ]]--
@@ -240,16 +240,16 @@ local function LoadSkin()
 
 	--Toy Box
 	S:HandleButton(ToyBoxFilterButton)
-	S:HandleEditBox(ToyBoxSearchBox)
+	--S:HandleEditBox(ToyBoxSearchBox)
 
 	ToyBoxFilterButton:SetPoint("TOPRIGHT", ToyBox, "TOPRIGHT", -15, -34)
 
-	S:HandleNextPrevButton(ToyBoxNextPageButton)
-	S:HandleNextPrevButton(ToyBoxPrevPageButton)
+	--S:HandleNextPrevButton(ToyBoxNextPageButton)
+	--S:HandleNextPrevButton(ToyBoxPrevPageButton)
 
-	ToyBoxIconsFrame:StripTextures()
+	--ToyBoxIconsFrame:StripTextures()
 
-	for i=1, 18 do
+	--[[for i=1, 18 do
 		S:HandleItemButton(_G["ToySpellButton"..i])
 		_G["ToySpellButton"..i].hover:SetAllPoints(_G["ToySpellButton"..i.."IconTexture"])
 		_G["ToySpellButton"..i].checked:SetAllPoints(_G["ToySpellButton"..i.."IconTexture"])
@@ -266,7 +266,7 @@ local function LoadSkin()
 		end
 	end)
 
-	ToyBoxProgressBar:StripTextures()
+	ToyBoxProgressBar:StripTextures()]]
 end
 
-S:RegisterSkin("Blizzard_PetJournal", LoadSkin)
+S:RegisterSkin("Blizzard_Collections", LoadSkin)
