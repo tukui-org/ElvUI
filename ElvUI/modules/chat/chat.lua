@@ -629,20 +629,19 @@ function CH:FindURL(event, msg, ...)
 	return false, msg, ...
 end
 
-local function URLChatFrame_OnHyperlinkShow(self, link, ...)
-	CH.clickedframe = self
-	if (link):sub(1, 3) == "url" then
+local SetHyperlink = ItemRefTooltip.SetHyperlink
+function ItemRefTooltip:SetHyperlink(data, ...)
+	if (data):sub(1, 3) == "url" then
 		local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
-		local currentLink = (link):sub(5)
+		local currentLink = (data):sub(5)
 		if (not ChatFrameEditBox:IsShown()) then
 			ChatEdit_ActivateChat(ChatFrameEditBox)
 		end
 		ChatFrameEditBox:Insert(currentLink)
 		ChatFrameEditBox:HighlightText()
-		return;
+	else
+		SetHyperlink(self, data, ...)
 	end
-
-	ChatFrame_OnHyperlinkShow(self, link, ...)
 end
 
 local function WIM_URLLink(link)
@@ -659,7 +658,7 @@ local function WIM_URLLink(link)
 end
 
 local hyperLinkEntered
-function CH:OnHyperlinkEnter(frame, refString)
+function CH:OnHyperlinkEnter(frame, refString)	
 	if InCombatLockdown() then return; end
 	local linkToken = refString:match("^([^:]+)")
 	if hyperlinkTypes[linkToken] then
@@ -774,7 +773,8 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 		local arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14 = ...;
 		local type = strsub(event, 10);
 		local info = ChatTypeInfo[type];
-
+		--Twitter link test
+		--arg1 = arg1 .. " " .. "|cffffd200|Hshareachieve:51:0|h|TInterface\\ChatFrame\\UI-ChatIcon-Share:18:18|t|h|r"
 		local filter = false;
 		if ( chatFilters[event] ) then
 			local newarg1, newarg2, newarg3, newarg4, newarg5, newarg6, newarg7, newarg8, newarg9, newarg10, newarg11, newarg12, newarg13, newarg14;
@@ -890,6 +890,14 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 		elseif ( strsub(type,1,10) == "BG_SYSTEM_" ) then
 			self:AddMessage(CH:ConcatenateTimeStamp(arg1), info.r, info.g, info.b, info.id);
 		elseif ( strsub(type,1,11) == "ACHIEVEMENT" ) then
+			-- Append [Share] hyperlink
+			if (arg12 == UnitGUID("player") and C_Social.IsSocialEnabled()) then
+				local achieveID = GetAchievementInfoFromHyperlink(arg1);
+				if (achieveID) then
+					arg1 = arg1 .. " " .. Social_GetShareAchievementLink(achieveID, true);
+				end
+			end
+			
 			self:AddMessage(format(CH:ConcatenateTimeStamp(arg1), "|Hplayer:"..arg2.."|h".."["..coloredName.."]".."|h"), info.r, info.g, info.b, info.id);
 		elseif ( strsub(type,1,18) == "GUILD_ACHIEVEMENT" ) then
 			self:AddMessage(format(CH:ConcatenateTimeStamp(arg1), "|Hplayer:"..arg2.."|h".."["..coloredName.."]".."|h"), info.r, info.g, info.b, info.id);
@@ -1214,7 +1222,6 @@ function CH:SetupChat(event, ...)
 		frame:SetFading(self.db.fade)
 
 		if not frame.scriptsSet then
-			frame:SetScript("OnHyperlinkClick", URLChatFrame_OnHyperlinkShow)
 			frame:SetScript("OnMouseWheel", ChatFrame_OnMouseScroll)
 
 			if id > NUM_CHAT_WINDOWS then
