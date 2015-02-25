@@ -229,48 +229,23 @@ local function LoadSkin()
 
 	-- mac menu/option panel, made by affli.
 	if IsMacClient() then
-		-- Skin main frame and reposition the header
-		MacOptionsFrame:SetTemplate("Default", true)
-		MacOptionsFrameHeader:SetTexture("")
-		MacOptionsFrameHeader:ClearAllPoints()
-		MacOptionsFrameHeader:SetPoint("TOP", MacOptionsFrame, 0, 0)
+		S:HandleDropDownBox(MovieRecordingOptionsFrameResolutionDropDown)
+		S:HandleDropDownBox(MovieRecordingOptionsFrameFramerateDropDown)
+		S:HandleDropDownBox(MovieRecordingOptionsFrameCodecDropDown)
 
-		--Skin internal frames
-		MacOptionsFrameMovieRecording:SetTemplate("Default", true)
-		MacOptionsITunesRemote:SetTemplate("Default", true)
+		S:HandleButton(MovieRecordingOptionsButtonCompress)
+		S:HandleSliderFrame(MovieRecordingOptionsFrameQualitySlider)
 
-		--Skin buttons
-		S:HandleButton(MacOptionsFrameCancel)
-		S:HandleButton(MacOptionsFrameOkay)
-		S:HandleButton(MacOptionsButtonKeybindings)
-		S:HandleButton(MacOptionsFrameDefaults)
-		S:HandleButton(MacOptionsButtonCompress)
+		for i=1, 6 do
+			S:HandleCheckBox(_G["MovieRecordingOptionsFrameCheckButton"..i])
+		end
 
-		--Reposition and resize buttons
-		local tPoint, tRTo, tRP, tX, tY =  MacOptionsButtonCompress:GetPoint()
-		MacOptionsButtonCompress:SetWidth(136)
-		MacOptionsButtonCompress:ClearAllPoints()
-		MacOptionsButtonCompress:Point(tPoint, tRTo, tRP, 4, tY)
+		S:HandleCheckBox(iTunesRemoteOptionsFrameCheckButton7)
+		S:HandleCheckBox(iTunesRemoteOptionsFrameCheckButton8)
 
-		MacOptionsFrameCancel:SetWidth(96)
-		MacOptionsFrameCancel:SetHeight(22)
-		tPoint, tRTo, tRP, tX, tY =  MacOptionsFrameCancel:GetPoint()
-		MacOptionsFrameCancel:ClearAllPoints()
-		MacOptionsFrameCancel:Point(tPoint, tRTo, tRP, -14, tY)
-
-		MacOptionsFrameOkay:ClearAllPoints()
-		MacOptionsFrameOkay:SetWidth(96)
-		MacOptionsFrameOkay:SetHeight(22)
-		MacOptionsFrameOkay:Point("LEFT",MacOptionsFrameCancel, -99,0)
-
-		MacOptionsButtonKeybindings:ClearAllPoints()
-		MacOptionsButtonKeybindings:SetWidth(96)
-		MacOptionsButtonKeybindings:SetHeight(22)
-		MacOptionsButtonKeybindings:Point("LEFT",MacOptionsFrameOkay, -99,0)
-
-		MacOptionsFrameDefaults:SetWidth(96)
-		MacOptionsFrameDefaults:SetHeight(22)
-
+		S:HandleCheckBox(MacKeyboardOptionsFrameCheckButton9)
+		S:HandleCheckBox(MacKeyboardOptionsFrameCheckButton10)
+		S:HandleCheckBox(MacKeyboardOptionsFrameCheckButton11)
 	end
 
 	--PVP QUEUE FRAME

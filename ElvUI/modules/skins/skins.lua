@@ -239,6 +239,8 @@ end
 
 function S:HandleDropDownBox(frame, width)
 	local button = _G[frame:GetName().."Button"]
+	if not button then return end
+
 	if not width then width = 155 end
 
 	frame:StripTextures()
