@@ -493,6 +493,7 @@ f:RegisterEvent("CHAT_MSG_ADDON")
 f:SetScript('OnEvent', SendRecieve)
 
 function E:UpdateAll(ignoreInstall)
+	self.private = self.charSettings.profile
 	self.db = self.data.profile;
 	self.global = self.data.global;
 	self.db.theme = nil;
