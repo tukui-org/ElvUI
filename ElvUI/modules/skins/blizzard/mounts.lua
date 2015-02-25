@@ -7,7 +7,8 @@ local function LoadSkin()
 	CollectionsJournal:StripTextures()
 	CollectionsJournal:SetTemplate('Transparent')
 	CollectionsJournal:Hide()
-
+	CollectionsJournalPortrait:SetAlpha(0)
+	
 	for i=1, 4 do
 		S:HandleTab(_G['CollectionsJournalTab'..i])
 	end
@@ -45,30 +46,7 @@ local function LoadSkin()
 		b.favorite:SetSize(32,32)
 	end
 
-	-- Color in green icon border on selected mount
-	--[[local function ColorSelectedMount()
-		for i = 1, #MountJournal.ListScrollFrame.buttons do
-			local b = _G["MountJournalListScrollFrameButton"..i]
-			local t = _G["MountJournalListScrollFrameButton"..i.."Name"]
-			if b.index == nil then
-				b:Hide()
-			else
-				b:Show()
-				if b.selectedTexture:IsShown() then
-					t:SetTextColor(1,1,0)
-					b.backdrop:SetBackdropBorderColor(1, 1, 0)
-				else
-					t:SetTextColor(1, 1, 1)
-					b.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-				end
-			end
-		end
-	end
-	hooksecurefunc("MountJournal_UpdateMountList", ColorSelectedMount)]]
-
-	-- bug fix when we scroll
-	--MountJournalListScrollFrame:HookScript("OnVerticalScroll", ColorSelectedMount)
-	--MountJournalListScrollFrame:HookScript("OnMouseWheel", ColorSelectedMount)
+	
 
 	-----------------------------
 	--[[ pet journal (tab 2) ]]--
@@ -240,33 +218,82 @@ local function LoadSkin()
 
 	--Toy Box
 	S:HandleButton(ToyBoxFilterButton)
-	--S:HandleEditBox(ToyBoxSearchBox)
-
 	ToyBoxFilterButton:SetPoint("TOPRIGHT", ToyBox, "TOPRIGHT", -15, -34)
+	
+	S:HandleEditBox(ToyBox.searchBox)
+	ToyBox.iconsFrame:StripTextures()
+	S:HandleNextPrevButton(ToyBox.navigationFrame.nextPageButton)
+	S:HandleNextPrevButton(ToyBox.navigationFrame.prevPageButton)
+	ToyBox.progressBar:StripTextures()
 
-	--S:HandleNextPrevButton(ToyBoxNextPageButton)
-	--S:HandleNextPrevButton(ToyBoxPrevPageButton)
-
-	--ToyBoxIconsFrame:StripTextures()
-
-	--[[for i=1, 18 do
-		S:HandleItemButton(_G["ToySpellButton"..i])
-		_G["ToySpellButton"..i].hover:SetAllPoints(_G["ToySpellButton"..i.."IconTexture"])
-		_G["ToySpellButton"..i].checked:SetAllPoints(_G["ToySpellButton"..i.."IconTexture"])
-		_G["ToySpellButton"..i].pushed:SetAllPoints(_G["ToySpellButton"..i.."IconTexture"])
-		_G["ToySpellButton"..i.."Cooldown"]:SetAllPoints(_G["ToySpellButton"..i.."IconTexture"])
-		E:RegisterCooldown(_G["ToySpellButton"..i.."Cooldown"])
-	end
+	for i=1, 18 do
+		S:HandleItemButton(ToyBox.iconsFrame["spellButton"..i], true)
+		ToyBox.iconsFrame["spellButton"..i].iconTextureUncollected:SetTexCoord(unpack(E.TexCoords))
+		ToyBox.iconsFrame["spellButton"..i].iconTextureUncollected:SetInside(ToyBox.iconsFrame["spellButton"..i])
+		ToyBox.iconsFrame["spellButton"..i].hover:SetAllPoints(ToyBox.iconsFrame["spellButton"..i].iconTexture)
+		ToyBox.iconsFrame["spellButton"..i].checked:SetAllPoints(ToyBox.iconsFrame["spellButton"..i].iconTexture)
+		ToyBox.iconsFrame["spellButton"..i].pushed:SetAllPoints(ToyBox.iconsFrame["spellButton"..i].iconTexture)
+		ToyBox.iconsFrame["spellButton"..i].cooldown:SetAllPoints(ToyBox.iconsFrame["spellButton"..i].iconTexture)
+		E:RegisterCooldown(ToyBox.iconsFrame["spellButton"..i].cooldown)
+	end	
 
 	hooksecurefunc("ToySpellButton_UpdateButton", function(self)
 		if (PlayerHasToy(self.itemID)) then
-			_G[self:GetName().."ToyName"]:SetTextColor(1, 1, 1)
+			self.name:SetTextColor(1, 1, 1)
+			self.new:SetTextColor(1, 1, 1)
 		else
-			_G[self:GetName().."ToyName"]:SetTextColor(0.6, 0.6, 0.6)
+			self.name:SetTextColor(0.6, 0.6, 0.6)
+			self.new:SetTextColor(0.6, 0.6, 0.6)
+		end
+		self.updateFunction = ToySpellButton_UpdateButton
+	end)	
+	
+	--Heirlooms
+	S:HandleButton(HeirloomsJournalFilterButton)
+	HeirloomsJournalFilterButton:SetPoint("TOPRIGHT", HeirloomsJournal, "TOPRIGHT", -15, -34)
+	
+	S:HandleEditBox(HeirloomsJournal.SearchBox)
+	HeirloomsJournal.iconsFrame:StripTextures()
+	S:HandleNextPrevButton(HeirloomsJournal.navigationFrame.nextPageButton)
+	S:HandleNextPrevButton(HeirloomsJournal.navigationFrame.prevPageButton)
+	SquareButton_SetIcon(HeirloomsJournal.navigationFrame.prevPageButton, 'LEFT')
+	HeirloomsJournal.progressBar:StripTextures()
+	S:HandleDropDownBox(HeirloomsJournalClassDropDown)
+	hooksecurefunc(HeirloomsJournal, "LayoutCurrentPage", function()
+		for i=1, #HeirloomsJournal.heirloomHeaderFrames do
+			local header = HeirloomsJournal.heirloomHeaderFrames[i]
+			header.text:FontTemplate()
+			header.text:SetTextColor(1, 1, 1)
+		end
+		
+		for i=1, #HeirloomsJournal.heirloomEntryFrames do
+			local button = HeirloomsJournal.heirloomEntryFrames[i]
+			if(not button.skinned) then
+				button.skinned = true
+				S:HandleItemButton(button, true)
+				--button.levelBackground:SetAlpha(0)
+				button.iconTextureUncollected:SetTexCoord(unpack(E.TexCoords))
+				button.iconTextureUncollected:SetInside(button)
+				button.iconTextureUncollected:SetTexture(button.iconTexture:GetTexture())
+				HeirloomsJournal:UpdateButton(button)
+			end
+			
+			if(C_Heirloom.PlayerHasHeirloom(button.itemID)) then
+				button.name:SetTextColor(1, 1, 1)
+			else
+				button.name:SetTextColor(0.6, 0.6, 0.6)
+			end
 		end
 	end)
-
-	ToyBoxProgressBar:StripTextures()]]
+	
+	hooksecurefunc(HeirloomsJournal, "UpdateButton", function(self, button)
+		button.iconTextureUncollected:SetTexture(button.iconTexture:GetTexture())
+		if(C_Heirloom.PlayerHasHeirloom(button.itemID)) then
+			button.name:SetTextColor(1, 1, 1)
+		else
+			button.name:SetTextColor(0.6, 0.6, 0.6)
+		end	
+	end)
 end
 
 S:RegisterSkin("Blizzard_Collections", LoadSkin)

@@ -333,7 +333,7 @@ end
 function S:HandleItemButton(b, shrinkIcon)
 	if b.isSkinned then return; end
 
-	local icon = b.icon or b.IconTexture
+	local icon = b.icon or b.IconTexture or b.iconTexture
 	local texture
 	if b:GetName() and _G[b:GetName()..'IconTexture'] then
 		icon = _G[b:GetName()..'IconTexture']
