@@ -85,6 +85,7 @@ local function LoadSkin()
 	do
 		local function skinMasterPlan()
 			S:HandleTab(GarrisonMissionFrameTab3)
+			S:HandleTab(GarrisonMissionFrameTab4)
 			local MissionPage = GarrisonMissionFrame.MissionTab.MissionPage
 			S:HandleCloseButton(MissionPage.MinimizeButton, nil, "-")
 			MissionPage.MinimizeButton:SetFrameLevel(MissionPage:GetFrameLevel() + 2)
