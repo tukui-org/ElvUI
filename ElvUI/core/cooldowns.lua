@@ -128,6 +128,9 @@ function E:RegisterCooldown(cooldown)
 	hooksecurefunc(cooldown, "SetCooldown", E.OnSetCooldown)
 	cooldown.isHooked = true
 	cooldown:SetHideCountdownNumbers(true)
+	--Bling Texture is currently bugged and doesn't hide properly when the cooldown animation finishes
+	--See http://git.tukui.org/Elv/elvui/issues/565
+	cooldown:SetDrawBling(false)
 end
 
 function E:UpdateCooldownSettings()
