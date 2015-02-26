@@ -237,7 +237,9 @@ local function LoadSkin()
 		E:RegisterCooldown(ToyBox.iconsFrame["spellButton"..i].cooldown)
 	end	
 
-	hooksecurefunc("ToySpellButton_UpdateButton", function(self)
+	-- Doing "self.updateFunction = ToySpellButton_UpdateButton" taints the toybox and prevents toys from being used directly from the toybox except for the first time you try to use a toy.
+	-- Without this line the text colors revert back to original, so the rest of the code is useless.
+	--[[hooksecurefunc("ToySpellButton_UpdateButton", function(self)
 		if (PlayerHasToy(self.itemID)) then
 			self.name:SetTextColor(1, 1, 1)
 			self.new:SetTextColor(1, 1, 1)
@@ -246,7 +248,7 @@ local function LoadSkin()
 			self.new:SetTextColor(0.6, 0.6, 0.6)
 		end
 		self.updateFunction = ToySpellButton_UpdateButton
-	end)	
+	end)]]
 	
 	--Heirlooms
 	S:HandleButton(HeirloomsJournalFilterButton)
