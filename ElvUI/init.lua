@@ -151,6 +151,12 @@ function AddOn:ToggleConfig()
 		local _, _, _, _, reason = GetAddOnInfo("ElvUI_Config")
 		if reason ~= "MISSING" and reason ~= "DISABLED" then
 			LoadAddOn("ElvUI_Config")
+			--For some reason, GetAddOnInfo reason is "DEMAND_LOADED" even if the addon is disabled.
+			--Workaround: Try to load addon and check if it is loaded right after.
+			if not IsAddOnLoaded("ElvUI_Config") then
+				self:Print("|cffff0000Error -- Addon 'ElvUI_Config' not found or is disabled.|r")
+				return
+			end
 			if GetAddOnMetadata("ElvUI_Config", "Version") ~= "1.01" then
 				self:StaticPopup_Show("CLIENT_UPDATE_REQUEST")
 			end
