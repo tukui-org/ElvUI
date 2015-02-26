@@ -151,10 +151,11 @@ E.Options.args.nameplate = {
 							order = 2,
 							name = L['Show Level'],
 						},
-						spacer = {
+						wrapName = {
+							type = 'toggle',
 							order = 3,
-							type = 'description',
-							name = '',
+							name = L["Wrap Name"],
+							desc = L["Wraps name instead of truncating it."],
 						},
 						font = {
 							type = "select", dialogControl = 'LSM30_Font',

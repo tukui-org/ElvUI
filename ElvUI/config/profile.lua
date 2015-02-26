@@ -141,6 +141,7 @@ P["nameplate"] = {
 	['combatHide'] = false,
 	['colorNameByValue'] =  true,
 	['showName'] = true,
+	['wrapName'] = false,
 	['showLevel'] = true,
 	['targetIndicator'] = {
 		['enable'] = true,
