@@ -18,6 +18,7 @@ function UF:Construct_AuraBars()
 	bar.spellname:ClearAllPoints()
 	bar.spellname:SetPoint('LEFT', bar, 'LEFT', 2, 0)
 	bar.spellname:SetPoint('RIGHT', bar.spelltime, 'LEFT', -4, 0)
+	bar.spellname:SetWordWrap(false)
 
 	bar.iconHolder:SetTemplate('Default')
 	bar.icon:SetInside(bar.iconHolder)

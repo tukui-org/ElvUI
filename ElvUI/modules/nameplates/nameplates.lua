@@ -970,6 +970,7 @@ function NP:CreatePlate(frame)
 	--Name
 	myPlate.name = myPlate:CreateFontString(nil, 'OVERLAY')
 	myPlate.name:SetJustifyH("LEFT")
+	myPlate.name:SetWordWrap(false)
 
 	--Raid Icon
 	frame.raidIcon:SetParent(myPlate)
