@@ -742,6 +742,7 @@ G.unitframe.ChannelTicks = {
 	[SpellName(16914)] = 10, -- "Hurricane"
 	--Priest
 	[SpellName(48045)] = 5, -- "Mind Sear"
+	[SpellName(179338)] = 5, -- "Searing insanity"
 	[SpellName(47540)] = 2, -- "Penance"
 	--[SpellName(64901)] = 4, -- Hymn of Hope
 	[SpellName(64843)] = 4, -- Divine Hymn
