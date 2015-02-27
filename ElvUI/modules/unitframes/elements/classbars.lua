@@ -14,7 +14,7 @@ function UF:Construct_PaladinResourceBar(frame)
 	bars:CreateBackdrop('Default')
 
 	for i = 1, UF['classMaxResourceBar'][E.myclass] do
-		bars[i] = CreateFrame("StatusBar", nil, bars)
+		bars[i] = CreateFrame("StatusBar", frame:GetName().."ClassBarButton"..i, bars)
 		bars[i]:SetStatusBarTexture(E['media'].blankTex) --Dummy really, this needs to be set so we can change the color
 		bars[i]:GetStatusBarTexture():SetHorizTile(false)
 		UF['statusbars'][bars[i]] = true
@@ -109,7 +109,7 @@ function UF:Construct_MonkResourceBar(frame)
 	bars:CreateBackdrop('Default')
 
 	for i = 1, UF['classMaxResourceBar'][E.myclass] do
-		bars[i] = CreateFrame("StatusBar", nil, bars)
+		bars[i] = CreateFrame("StatusBar", frame:GetName().."ClassBarButton"..i, bars)
 		bars[i]:SetStatusBarTexture(E['media'].blankTex) --Dummy really, this needs to be set so we can change the color
 		bars[i]:GetStatusBarTexture():SetHorizTile(false)
 		UF['statusbars'][bars[i]] = true
@@ -216,7 +216,7 @@ function UF:Construct_MageResourceBar(frame)
 	bars:CreateBackdrop('Default')
 
 	for i = 1, UF['classMaxResourceBar'][E.myclass] do
-		bars[i] = CreateFrame("StatusBar", nil, bars)
+		bars[i] = CreateFrame("StatusBar", frame:GetName().."ClassBarButton"..i, bars)
 		bars[i]:SetStatusBarTexture(E['media'].blankTex) --Dummy really, this needs to be set so we can change the color
 		bars[i]:GetStatusBarTexture():SetHorizTile(false)
 
@@ -261,7 +261,7 @@ function UF:Construct_RogueResourceBar(frame)
 	bars:CreateBackdrop('Default')
 
 	for i = 1, UF['classMaxResourceBar'][E.myclass] do
-		bars[i] = CreateFrame("StatusBar", nil, bars)
+		bars[i] = CreateFrame("StatusBar", frame:GetName().."ClassBarButton"..i, bars)
 		bars[i]:SetStatusBarTexture(E['media'].blankTex) --Dummy really, this needs to be set so we can change the color
 		bars[i]:GetStatusBarTexture():SetHorizTile(false)
 
@@ -306,7 +306,7 @@ function UF:Construct_WarlockResourceBar(frame)
 	bars:CreateBackdrop('Default')
 
 	for i = 1, UF['classMaxResourceBar'][E.myclass] do
-		bars[i] = CreateFrame("StatusBar", nil, bars)
+		bars[i] = CreateFrame("StatusBar", frame:GetName().."ClassBarButton"..i, bars)
 		bars[i]:SetStatusBarTexture(E['media'].blankTex) --Dummy really, this needs to be set so we can change the color
 		bars[i]:GetStatusBarTexture():SetHorizTile(false)
 		bars[i].bg = bars[i]:CreateTexture(nil, 'ARTWORK')
@@ -370,7 +370,7 @@ function UF:Construct_PriestResourceBar(frame)
 	bars:CreateBackdrop('Default')
 
 	for i = 1, UF['classMaxResourceBar'][E.myclass] do
-		bars[i] = CreateFrame("StatusBar", nil, bars)
+		bars[i] = CreateFrame("StatusBar", frame:GetName().."ClassBarButton"..i, bars)
 		bars[i]:SetStatusBarTexture(E['media'].blankTex) --Dummy really, this needs to be set so we can change the color
 		bars[i]:GetStatusBarTexture():SetHorizTile(false)
 		UF['statusbars'][bars[i]] = true
