@@ -94,8 +94,8 @@ function A:Button_OnLeave()
 	GameTooltip:Hide()
 end
 
-function A:CreateButton()
-	local button = CreateFrame("Button", nil, ElvUI_ConsolidatedBuffs)
+function A:CreateButton(i)
+	local button = CreateFrame("Button", "ElvUIConsolidatedBuff"..i, ElvUI_ConsolidatedBuffs)
 	button:SetTemplate('Default')
 
 	button.t = button:CreateTexture(nil, "OVERLAY")
@@ -217,7 +217,7 @@ function A:Construct_ConsolidatedBuffs()
 	self.frame = frame
 
 	for i=1, NUM_LE_RAID_BUFF_TYPES do
-		frame[i] = self:CreateButton()
+		frame[i] = self:CreateButton(i)
 		frame[i]:SetID(i)
 	end
 
