@@ -415,7 +415,6 @@ G.unitframe.aurafilters['Blacklist'] = {
 		[SpellName(24755)] = Defaults(), --gay homosexual tricked or treated debuff
 		[SpellName(25163)] = Defaults(), --fucking annoying pet debuff oozeling disgusting aura
 		[SpellName(80354)] = Defaults(), --timewarp debuff
-		[SpellName(95809)] = Defaults(), --Insanity debuff (Hunter Pet heroism)
 		[SpellName(95223)] = Defaults(), --group res debuff
 		[SpellName(124275)] = Defaults(), -- Stagger
 		[SpellName(124274)] = Defaults(), -- Stagger
@@ -810,4 +809,5 @@ G.unitframe.AuraBarColors = {
 
 G.unitframe.InvalidSpells = {
 	[65148] = true, --Sacred Shield
+	[95809] = true, --Insanity debuff (Hunter Pet heroism)
 }
