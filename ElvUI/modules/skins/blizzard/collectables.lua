@@ -224,22 +224,34 @@ local function LoadSkin()
 	ToyBox.iconsFrame:StripTextures()
 	S:HandleNextPrevButton(ToyBox.navigationFrame.nextPageButton)
 	S:HandleNextPrevButton(ToyBox.navigationFrame.prevPageButton)
+	SquareButton_SetIcon(ToyBox.navigationFrame.prevPageButton, 'LEFT')
 	ToyBox.progressBar:StripTextures()
-
+	
+	local function TextColorModified(self, r, g, b) 
+		if(r == 0.33 and g == 0.27 and b == 0.2) then
+			self:SetTextColor(0.6, 0.6, 0.6)
+		elseif(r == 1 and g == 0.82 and b == 0) then
+			self:SetTextColor(1, 1, 1)
+		end
+	end
+	
 	for i=1, 18 do
-		S:HandleItemButton(ToyBox.iconsFrame["spellButton"..i], true)
-		ToyBox.iconsFrame["spellButton"..i].iconTextureUncollected:SetTexCoord(unpack(E.TexCoords))
-		ToyBox.iconsFrame["spellButton"..i].iconTextureUncollected:SetInside(ToyBox.iconsFrame["spellButton"..i])
-		ToyBox.iconsFrame["spellButton"..i].hover:SetAllPoints(ToyBox.iconsFrame["spellButton"..i].iconTexture)
-		ToyBox.iconsFrame["spellButton"..i].checked:SetAllPoints(ToyBox.iconsFrame["spellButton"..i].iconTexture)
-		ToyBox.iconsFrame["spellButton"..i].pushed:SetAllPoints(ToyBox.iconsFrame["spellButton"..i].iconTexture)
-		ToyBox.iconsFrame["spellButton"..i].cooldown:SetAllPoints(ToyBox.iconsFrame["spellButton"..i].iconTexture)
-		E:RegisterCooldown(ToyBox.iconsFrame["spellButton"..i].cooldown)
+		local button = ToyBox.iconsFrame["spellButton"..i]
+		S:HandleItemButton(button, true)
+		button.iconTextureUncollected:SetTexCoord(unpack(E.TexCoords))
+		button.iconTextureUncollected:SetInside(button)
+		button.hover:SetAllPoints(button.iconTexture)
+		button.checked:SetAllPoints(button.iconTexture)
+		button.pushed:SetAllPoints(button.iconTexture)
+		button.cooldown:SetAllPoints(button.iconTexture)
+		
+		hooksecurefunc(button.name, "SetTextColor", TextColorModified)
+		hooksecurefunc(button.new, "SetTextColor", TextColorModified)
+		E:RegisterCooldown(button.cooldown)
 	end	
+	
 
-	-- Doing "self.updateFunction = ToySpellButton_UpdateButton" taints the toybox and prevents toys from being used directly from the toybox except for the first time you try to use a toy.
-	-- Without this line the text colors revert back to original, so the rest of the code is useless.
-	--[[hooksecurefunc("ToySpellButton_UpdateButton", function(self)
+	hooksecurefunc("ToySpellButton_UpdateButton", function(self)
 		if (PlayerHasToy(self.itemID)) then
 			self.name:SetTextColor(1, 1, 1)
 			self.new:SetTextColor(1, 1, 1)
@@ -247,9 +259,9 @@ local function LoadSkin()
 			self.name:SetTextColor(0.6, 0.6, 0.6)
 			self.new:SetTextColor(0.6, 0.6, 0.6)
 		end
-		self.updateFunction = ToySpellButton_UpdateButton
-	end)]]
-	
+	end)	
+
+
 	--Heirlooms
 	S:HandleButton(HeirloomsJournalFilterButton)
 	HeirloomsJournalFilterButton:SetPoint("TOPRIGHT", HeirloomsJournal, "TOPRIGHT", -15, -34)
