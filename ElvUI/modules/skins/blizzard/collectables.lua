@@ -249,17 +249,7 @@ local function LoadSkin()
 		hooksecurefunc(button.new, "SetTextColor", TextColorModified)
 		E:RegisterCooldown(button.cooldown)
 	end	
-	
 
-	hooksecurefunc("ToySpellButton_UpdateButton", function(self)
-		if (PlayerHasToy(self.itemID)) then
-			self.name:SetTextColor(1, 1, 1)
-			self.new:SetTextColor(1, 1, 1)
-		else
-			self.name:SetTextColor(0.6, 0.6, 0.6)
-			self.new:SetTextColor(0.6, 0.6, 0.6)
-		end
-	end)	
 
 
 	--Heirlooms
