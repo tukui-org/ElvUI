@@ -15,7 +15,7 @@
 	<Script file='raid.lua'/>
 	<Script file='petbattle.lua'/>
 	<Script file='talent.lua'/>
-	<Script file='mounts.lua'/>
+	<Script file='collectables.lua'/>
 	<Script file='glyph.lua'/>
 	<Script file='auctionhouse.lua'/>
 	<Script file='barber.lua'/>
