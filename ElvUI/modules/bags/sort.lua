@@ -581,6 +581,12 @@ end
 function B.Fill(sourceBags, targetBags, reverse, canMove)
 	if not canMove then canMove = DefaultCanMove end
 
+	twipe(blackListedSlots)
+
+	local ignoreItems = B.db.ignoreItems
+	ignoreItems = ignoreItems:gsub(',%s', ',') --remove spaces that follow a comma
+	buildBlacklist(split(",", ignoreItems))
+
 	for _, bag, slot in B.IterateBags(targetBags, reverse, "deposit") do
 		local bagSlot = B:Encode_BagSlot(bag, slot)
 		if not bagIDs[bagSlot] then
@@ -592,7 +598,13 @@ function B.Fill(sourceBags, targetBags, reverse, canMove)
 		if #emptySlots == 0 then break end
 		local bagSlot = B:Encode_BagSlot(bag, slot)
 		local targetBag, targetSlot = B:Decode_BagSlot(emptySlots[1])
-		if bagIDs[bagSlot] and B:CanItemGoInBag(bag, slot, targetBag) and canMove(bagIDs[bagSlot], bag, slot) then
+		local link = B:GetItemLink(bag, slot);
+
+		if link and blackList[GetItemInfo(link)] then
+			blackListedSlots[bagSlot] = true
+		end
+
+		if bagIDs[bagSlot] and B:CanItemGoInBag(bag, slot, targetBag) and canMove(bagIDs[bagSlot], bag, slot) and not blackListedSlots[bagSlot] then
 			B:AddMove(bagSlot, tremove(emptySlots, 1))
 		end
 	end
