@@ -349,6 +349,7 @@ function M:Initialize()
 
 	if E.private.general.minimap.hideGarrison then
 		GarrisonLandingPageMinimapButton:Kill()
+		GarrisonLandingPageMinimapButton.IsShown = function() return true end
 	end
 
 	QueueStatusMinimapButtonBorder:Hide()
