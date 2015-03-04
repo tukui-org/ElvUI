@@ -64,7 +64,7 @@ function UF:Construct_Combobar(frame)
 	CPoints.Override = UF.UpdateComboDisplay
 
 	for i = 1, MAX_COMBO_POINTS do
-		CPoints[i] = CreateFrame("StatusBar", nil, CPoints)
+		CPoints[i] = CreateFrame("StatusBar", frame:GetName().."ComboBarButton"..i, CPoints)
 		UF['statusbars'][CPoints[i]] = true
 		CPoints[i]:SetStatusBarTexture(E['media'].blankTex)
 		CPoints[i]:GetStatusBarTexture():SetHorizTile(false)
