@@ -1569,15 +1569,17 @@ end)
 local cachedMsg = GetGuildRosterMOTD()
 if cachedMsg == "" then cachedMsg = nil end
 function CH:DelayGMOTD()
-	stopScript = true
-	DEFAULT_CHAT_FRAME:RegisterEvent("GUILD_MOTD")
-	local msg = cachedMsg or GetGuildRosterMOTD()
-	if msg == "" then msg = nil end
+	E:Delay(5, function()
+		stopScript = true
+		DEFAULT_CHAT_FRAME:RegisterEvent("GUILD_MOTD")
+		local msg = cachedMsg or GetGuildRosterMOTD()
+		if msg == "" then msg = nil end
 
-	if msg then
-		ChatFrame_SystemEventHandler(DEFAULT_CHAT_FRAME, "GUILD_MOTD", msg)
-	end
-	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+		if msg then
+			ChatFrame_SystemEventHandler(DEFAULT_CHAT_FRAME, "GUILD_MOTD", msg)
+		end
+		self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+	end)
 end
 
 function CH:CheckLFGRoles()
