@@ -1138,7 +1138,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.currencyButton:Point('TOPRIGHT', f.holderFrame, 'BOTTOMRIGHT', 0, 18);
 		f.currencyButton:Height(22);
 		for i = 1, MAX_WATCHED_TOKENS do
-			f.currencyButton[i] = CreateFrame('Button', nil, f.currencyButton);
+			f.currencyButton[i] = CreateFrame('Button', f:GetName().."CurrencyButton"..i, f.currencyButton);
 			f.currencyButton[i]:Size(16);
 			f.currencyButton[i]:SetTemplate('Default');
 			f.currencyButton[i]:SetID(i);
