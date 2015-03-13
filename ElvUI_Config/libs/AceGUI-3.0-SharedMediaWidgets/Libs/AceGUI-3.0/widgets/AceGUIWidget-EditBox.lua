@@ -1,7 +1,7 @@
 --[[-----------------------------------------------------------------------------
 EditBox Widget
 -------------------------------------------------------------------------------]]
-local Type, Version = "EditBox", 24
+local Type, Version = "EditBox", 25
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
@@ -87,6 +87,11 @@ local function EditBox_OnReceiveDrag(frame)
 		ClearCursor()
 	elseif type == "spell" then
 		local name = GetSpellInfo(id, info)
+		self:SetText(name)
+		self:Fire("OnEnterPressed", name)
+		ClearCursor()
+	elseif type == "macro" then
+		local name = GetMacroInfo(id)
 		self:SetText(name)
 		self:Fire("OnEnterPressed", name)
 		ClearCursor()
