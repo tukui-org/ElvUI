@@ -4,8 +4,7 @@
 --]]
 
 local Search = LibStub('CustomSearch-1.0')
-local Unfit = LibStub('Unfit-1.0')
-local Lib = LibStub:NewLibrary('LibItemSearch-1.2', 10)
+local Lib = LibStub:NewLibrary('LibItemSearch-1.2', 7)
 if Lib then
 	Lib.Filters = {}
 else
@@ -116,24 +115,6 @@ Lib.Filters.quality = {
 		local quality = link:sub(1, 9) == 'battlepet' and tonumber(link:match('%d+:%d+:(%d+)')) or select(3, GetItemInfo(link))
 		return Search:Compare(operator, quality, num)
 	end,
-}
-
-
---[[ Usable ]]--
-
-Lib.Filters.usable = {
-	tags = {},
-
-	canSearch = function(self, operator, search)
-		return not operator and search == 'usable'
-	end,
-
-	match = function(self, link)
-		if not Unfit:IsItemUnusable(link) then
-			local lvl = select(5, GetItemInfo(link))
-			return lvl and (lvl == 0 or lvl > UnitLevel('player'))
-		end
-	end	
 }
 
 
