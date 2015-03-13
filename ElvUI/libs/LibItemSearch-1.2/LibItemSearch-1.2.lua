@@ -4,7 +4,7 @@
 --]]
 
 local Search = LibStub('CustomSearch-1.0')
-local Unfit = LibStub('Unfit-1.0')
+local Unfit = LibStub('Unfit-1.0', true)
 local Lib = LibStub:NewLibrary('LibItemSearch-1.2', 10)
 if Lib then
 	Lib.Filters = {}
