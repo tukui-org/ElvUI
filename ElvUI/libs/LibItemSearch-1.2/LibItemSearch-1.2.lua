@@ -4,7 +4,8 @@
 --]]
 
 local Search = LibStub('CustomSearch-1.0')
-local Lib = LibStub:NewLibrary('LibItemSearch-1.2', 7)
+local Unfit = LibStub('Unfit-1.0')
+local Lib = LibStub:NewLibrary('LibItemSearch-1.2', 10)
 if Lib then
 	Lib.Filters = {}
 else
@@ -77,6 +78,21 @@ Lib.Filters.level = {
 	end
 }
 
+Lib.Filters.requiredlevel = {
+	tags = {'r', 'req', 'rl', 'reql', 'reqlvl'},
+
+	canSearch = function(self, _, search)
+		return tonumber(search)
+	end,
+
+	match = function(self, link, operator, num)
+		local lvl = select(5, GetItemInfo(link))
+		if lvl then
+			return Search:Compare(operator, lvl, num)
+		end
+	end
+}
+
 
 --[[ Quality ]]--
 
@@ -100,6 +116,24 @@ Lib.Filters.quality = {
 		local quality = link:sub(1, 9) == 'battlepet' and tonumber(link:match('%d+:%d+:(%d+)')) or select(3, GetItemInfo(link))
 		return Search:Compare(operator, quality, num)
 	end,
+}
+
+
+--[[ Usable ]]--
+
+Lib.Filters.quality = {
+	tags = {},
+
+	canSearch = function(self, operator, search)
+		return not operator and search == 'usable'
+	end,
+
+	match = function(self, link)
+		if not Unfit:IsItemUnusable(link) then
+			local lvl = select(5, GetItemInfo(link))
+			return lvl and (lvl == 0 or lvl > UnitLevel('player'))
+		end
+	end	
 }
 
 
@@ -164,13 +198,19 @@ Lib.Filters.tipPhrases = {
 	keywords = {
     	[ITEM_SOULBOUND:lower()] = ITEM_BIND_ON_PICKUP,
     	['bound'] = ITEM_BIND_ON_PICKUP,
+    	['bop'] = ITEM_BIND_ON_PICKUP,
 		['boe'] = ITEM_BIND_ON_EQUIP,
-		['bop'] = ITEM_BIND_ON_PICKUP,
 		['bou'] = ITEM_BIND_ON_USE,
-		['quest'] = ITEM_BIND_QUEST,
 		['boa'] = ITEM_BIND_TO_BNETACCOUNT,
+		[BATTLE_PET_SOURCE_2:lower()] = ITEM_BIND_QUEST,
+		[QUESTS_LABEL:lower()] = ITEM_BIND_QUEST,
+		[TOY:lower()] = TOY,
+		[MINIMAP_TRACKING_VENDOR_REAGENT:lower()] = PROFESSIONS_USED_IN_COOKING,
 		['reagent'] = PROFESSIONS_USED_IN_COOKING,
-		[TOY:lower()] = TOY
+		['crafting'] = PROFESSIONS_USED_IN_COOKING,
+		['follower'] = 'follower',
+		['followe'] = 'follower',
+		['follow'] = 'follower'
 	}
 }
 
