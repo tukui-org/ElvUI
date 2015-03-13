@@ -1,0 +1,2 @@
+## Interface: 40100## Title: Unfit-1.0## Notes: Determines which items are usable for the player's class## Author: Jaliborc (João Cardoso)## X-Category: Library## X-Licence: GNU General Public License - Version 3
+## OptionalDeps: LibStubUnfit-1.0.lua

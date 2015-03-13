@@ -4,7 +4,7 @@
 --]]
 
 local Search = LibStub('CustomSearch-1.0')
-local Unfit = LibStub('Unfit-1.0', true)
+local Unfit = LibStub('Unfit-1.0')
 local Lib = LibStub:NewLibrary('LibItemSearch-1.2', 10)
 if Lib then
 	Lib.Filters = {}
@@ -121,7 +121,7 @@ Lib.Filters.quality = {
 
 --[[ Usable ]]--
 
-Lib.Filters.quality = {
+Lib.Filters.usable = {
 	tags = {},
 
 	canSearch = function(self, operator, search)
