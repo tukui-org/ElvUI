@@ -191,10 +191,6 @@ function mixin:CheckDualSpecState()
 		if newProfile ~= currentProfile then
 			db.char.profile = currentProfile
 			self:SetProfile(newProfile)
-			
-			--Bugfix:	Changing spec while having the profiles tab open causes dualspec to mess up the profile selections.
-			--			This will force the selection to update properly, so GetCurrentProfile doesn't return incorrect values
-			LibStub('AceConfigRegistry-3.0'):NotifyChange(registry[self].name)
 		end
 	end
 end
