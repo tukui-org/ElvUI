@@ -394,7 +394,8 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		local guildName, guildRankName, _, guildRealm = GetGuildInfo(unit)
 		local pvpName = UnitPVPName(unit)
 		local relationship = UnitRealmRelationship(unit);
-		color = RAID_CLASS_COLORS[class or "PRIEST"] 
+		if not localeClass or not class then return; end
+		color = RAID_CLASS_COLORS[class]
 
 		if(self.db.playerTitles and pvpName) then
 			name = pvpName
