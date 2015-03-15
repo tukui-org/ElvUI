@@ -140,12 +140,12 @@ L['List of items to ignore when sorting. If you wish to add multiple items you m
 L['Money Format'] = 'Geldformat'
 L['Panel Width (Bags)'] = 'Leistenbreite (Taschen)'
 L['Panel Width (Bank)'] = 'Leistenbreite (Bank)'
-L["Search Syntax"] = true;
+L["Search Syntax"] = "Suchsyntax"
 L["Set the size of your bag buttons."] = "Setze die Größe der Taschenbuttons."
 L['Short (Whole Numbers)'] = 'Kurz (ganze Zahlen)'
 L['Short'] = 'Kurz'
 L['Show Coins'] = 'Währungssymbole anzeigen'
-L['Smart'] = true;
+L['Smart'] = "Elegant" --needs Review
 L["Sort Direction"] = "Sortierrichtung" --Also used in Buffs and Debuffs
 L['Sort Inverted'] = 'Umgekehrtes sortieren'
 L["The direction that the bag frames be (Horizontal or Vertical)."] = "Die Ausrichtung der Leiste (Horizontal oder Vertikal)."

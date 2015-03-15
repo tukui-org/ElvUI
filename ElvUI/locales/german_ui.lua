@@ -135,7 +135,7 @@ L['Request was denied by user.'] = 'Die Anfrage wurde vom Benutzer abgelehnt.'
 L['Your profile was successfully recieved by the player.'] = 'Dein Profil wurde erfolgreich von dem Spieler empfangen.'
 
 --Install
-L["Aura Bars & Icons"] = true;
+L["Aura Bars & Icons"] = "Aurenleiste & Symbole"
 L["Auras Set"] = "Auren gesetzt"
 L["Auras"] = 'Auren'
 L['Caster DPS'] = "Fernkampf DD"
