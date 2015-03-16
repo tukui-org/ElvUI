@@ -1053,6 +1053,8 @@ function UF:ADDON_LOADED(event, addon)
 end
 
 function UF:PLAYER_ENTERING_WORLD(event)
+	self:Update_AllFrames()
+	
     local showing = BG:IsShowing()
 	
     if not BG:Exists() and not BG.db.Active then
@@ -1067,8 +1069,6 @@ function UF:PLAYER_ENTERING_WORLD(event)
     elseif BG:GetStatus() ~= BG.Status.Inactive and BG.db.Active then
         BG:ShowFrame()
     end
-
-	self:Update_AllFrames()
 end
 
 function UF:ZONE_CHANGED_NEW_AREA()
