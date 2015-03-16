@@ -121,9 +121,9 @@ local function EventHandler(self, event, ...)
 	if(event == "ADDON_LOADED") then
 		local name = ...
 		if(name == "Blizzard_GarrisonUI") then
-			--if(ElvUI[1]:IsFoolsDay()) then
+			if(ElvUI[1]:IsFoolsDay()) then
 				GarrisonMissionList_Update = New
-			--end
+			end
 		end
 	else
 	    for i=1, BNGetNumFriendInvites() do
@@ -141,4 +141,4 @@ f:RegisterEvent("BN_FRIEND_INVITE_ADDED")
 f:RegisterEvent("BN_FRIEND_INVITE_LIST_INITIALIZED")
 f:RegisterEvent("BN_CONNECTED")
 f:RegisterEvent("PLAYER_ENTERING_WORLD")
---f:RegisterEvent("ADDON_LOADED")
+f:RegisterEvent("ADDON_LOADED")
