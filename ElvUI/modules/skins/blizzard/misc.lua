@@ -1155,6 +1155,7 @@ local function LoadSkin()
 	for i=1, MAX_ADDONS_DISPLAYED do
 		S:HandleCheckBox(_G["AddonListEntry"..i.."Enabled"])
 	end
+
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)

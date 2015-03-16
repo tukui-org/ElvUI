@@ -34,6 +34,11 @@ E.Options.args.skins = {
 			disabled = function() return not E.private.skins.blizzard.enable end,
 			guiInline = true,
 			args = {
+				deathRecap = {
+					type = 'toggle',
+					name = L["Death Recap"],
+					desc = L['TOGGLESKIN_DESC'],
+				},		
 				garrison = {
 					type = 'toggle',
 					name = GARRISON_LOCATION_TOOLTIP,

@@ -45,6 +45,7 @@ V['skins'] = {
 	},
 	['blizzard'] = {
 		['enable'] = true,
+		["deathRecap"] = true,
 		["bags"] = true,
 		["bmah"] = true, --black market ah
 		["reforge"] = true,

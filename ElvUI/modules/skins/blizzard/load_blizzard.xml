@@ -55,4 +55,5 @@
 	<Script file='losscontrol.lua'/>
 	<Script file='loot.lua'/>
 	<Script file='questchoice.lua'/>
+	<Script file='deathRecap.lua'/>
 </Ui>
