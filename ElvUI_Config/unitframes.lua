@@ -4870,6 +4870,47 @@ E.Options.args.unitframe.args.assist = {
 	},
 }
 
+--Tank Frames
+E.Options.args.unitframe.args.bodyguard = {
+	name = L['BodyGuard Frame'],
+	type = 'group',
+	order = 1100,
+	get = function(info) return E.db.unitframe.units['bodyguard'][ info[#info] ] end,
+	set = function(info, value) E.db.unitframe.units['bodyguard'][ info[#info] ] = value; LibStub("LibBodyguard-1.0"):UpdateSettings() end,
+	args = {
+		enable = {
+			type = 'toggle',
+			order = 1,
+			name = L['Enable'],
+		},
+		resetSettings = {
+			type = 'execute',
+			order = 2,
+			name = L['Restore Defaults'],
+			func = function(info, value) UF:ResetUnitSettings('bodyguard') end,
+		},		
+		general = {
+			order = 3,
+			type = 'group',
+			name = L['General'],
+			guiInline = true,
+			args = {
+				width = {
+					order = 2,
+					name = L['Width'],
+					type = 'range',
+					min = 50, max = 500, step = 1,
+				},
+				height = {
+					order = 3,
+					name = L['Height'],
+					type = 'range',
+					min = 10, max = 250, step = 1,
+				},
+			},
+		},
+	},
+}
 
 --MORE COLORING STUFF YAY
 E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup = {
