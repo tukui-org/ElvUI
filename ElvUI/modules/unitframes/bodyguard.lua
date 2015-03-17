@@ -107,7 +107,7 @@ function BG:CreateFrame()
 
 	frame.healthBar.name:SetTextColor(unpack(ElvUF.colors.reaction[5]))
 
-	E:CreateMover(frame, frame:GetName()..'Mover', L['BodyGuard Frame'], nil, nil, nil, 'ALL,SOLO')
+	E:CreateMover(frame, frame:GetName()..'Mover', L["BodyGuard Frame"], nil, nil, nil, 'ALL,SOLO')
 
 	isCreated = true
 end

@@ -101,19 +101,19 @@ local function OnEnter(self)
 	UpdateMemory()
 	bandwidth = GetAvailableBandwidth()
 
-	DT.tooltip:AddDoubleLine(L['Home Latency:'], format(homeLatencyString, select(3, GetNetStats())), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+	DT.tooltip:AddDoubleLine(L["Home Latency:"], format(homeLatencyString, select(3, GetNetStats())), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 
 	if bandwidth ~= 0 then
-		DT.tooltip:AddDoubleLine(L['Bandwidth'] , format(bandwidthString, bandwidth),0.69, 0.31, 0.31,0.84, 0.75, 0.65)
-		DT.tooltip:AddDoubleLine(L['Download'] , format(percentageString, GetDownloadedPercentage() *100),0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
+		DT.tooltip:AddDoubleLine(L["Bandwidth"] , format(bandwidthString, bandwidth),0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+		DT.tooltip:AddDoubleLine(L["Download"] , format(percentageString, GetDownloadedPercentage() *100),0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
 		DT.tooltip:AddLine(" ")
 	end
 
 	local totalCPU = nil
-	DT.tooltip:AddDoubleLine(L['Total Memory:'], formatMem(totalMemory), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+	DT.tooltip:AddDoubleLine(L["Total Memory:"], formatMem(totalMemory), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 	if cpuProfiling then
 		totalCPU = UpdateCPU()
-		DT.tooltip:AddDoubleLine(L['Total CPU:'], format(homeLatencyString, totalCPU), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+		DT.tooltip:AddDoubleLine(L["Total CPU:"], format(homeLatencyString, totalCPU), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 	end
 
 	local red, green
@@ -138,7 +138,7 @@ local function OnEnter(self)
 			end
 		end
 		DT.tooltip:AddLine(" ")
-		DT.tooltip:AddLine(L['(Hold Shift) Memory Usage'])
+		DT.tooltip:AddLine(L["(Hold Shift) Memory Usage"])
 	end
 
 	DT.tooltip:Show()

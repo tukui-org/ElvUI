@@ -70,7 +70,7 @@ local function ChatButton_OnEnter(self, ...)
 
 	GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT', 0, 4)
 	GameTooltip:ClearLines()
-	GameTooltip:AddDoubleLine(L['Left Click:'], L['Toggle Chat Frame'], 1, 1, 1)
+	GameTooltip:AddDoubleLine(L["Left Click:"], L["Toggle Chat Frame"], 1, 1, 1)
 	GameTooltip:Show()
 end
 
@@ -376,10 +376,10 @@ function LO:CreateMinimapPanels()
 	configtoggle:SetScript('OnEnter', function(self)
 		GameTooltip:SetOwner(self, 'ANCHOR_BOTTOMRIGHT', 0, -4)
 		GameTooltip:ClearLines()
-		GameTooltip:AddDoubleLine(L['Left Click:'], L['Toggle Configuration'], 1, 1, 1)
+		GameTooltip:AddDoubleLine(L["Left Click:"], L["Toggle Configuration"], 1, 1, 1)
 
 		if E.db.datatexts.battleground then
-			GameTooltip:AddDoubleLine(L['Right Click:'], L['Show BG Texts'], 1, 1, 1)
+			GameTooltip:AddDoubleLine(L["Right Click:"], L["Show BG Texts"], 1, 1, 1)
 		end
 		GameTooltip:Show()
 	end)

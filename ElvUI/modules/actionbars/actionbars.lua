@@ -284,7 +284,7 @@ function AB:CreateBar(id)
 
 	self["handledBars"]['bar'..id] = bar;
 	self:PositionAndSizeBar('bar'..id);
-	E:CreateMover(bar, 'ElvAB_'..id, L['Bar ']..id, nil, nil, nil,'ALL,ACTIONBARS')
+	E:CreateMover(bar, 'ElvAB_'..id, L["Bar "]..id, nil, nil, nil,'ALL,ACTIONBARS')
 	return bar
 end
 
@@ -600,10 +600,10 @@ function AB:Button_OnLeave(button)
 end
 
 function AB:BlizzardOptionsPanel_OnEvent()
-	InterfaceOptionsActionBarsPanelBottomRight.Text:SetText(format(L['Remove Bar %d Action Page'], 2))
-	InterfaceOptionsActionBarsPanelBottomLeft.Text:SetText(format(L['Remove Bar %d Action Page'], 3))
-	InterfaceOptionsActionBarsPanelRightTwo.Text:SetText(format(L['Remove Bar %d Action Page'], 4))
-	InterfaceOptionsActionBarsPanelRight.Text:SetText(format(L['Remove Bar %d Action Page'], 5))
+	InterfaceOptionsActionBarsPanelBottomRight.Text:SetText(format(L["Remove Bar %d Action Page"], 2))
+	InterfaceOptionsActionBarsPanelBottomLeft.Text:SetText(format(L["Remove Bar %d Action Page"], 3))
+	InterfaceOptionsActionBarsPanelRightTwo.Text:SetText(format(L["Remove Bar %d Action Page"], 4))
+	InterfaceOptionsActionBarsPanelRight.Text:SetText(format(L["Remove Bar %d Action Page"], 5))
 
 	InterfaceOptionsActionBarsPanelBottomRight:SetScript('OnEnter', nil)
 	InterfaceOptionsActionBarsPanelBottomLeft:SetScript('OnEnter', nil)
@@ -762,19 +762,19 @@ function AB:FixKeybindText(button)
 	local text = hotkey:GetText();
 
 	if text then
-		text = gsub(text, 'SHIFT%-', L['KEY_SHIFT']);
-		text = gsub(text, 'ALT%-', L['KEY_ALT']);
-		text = gsub(text, 'CTRL%-', L['KEY_CTRL']);
-		text = gsub(text, 'BUTTON', L['KEY_MOUSEBUTTON']);
-		text = gsub(text, 'MOUSEWHEELUP', L['KEY_MOUSEWHEELUP']);
-		text = gsub(text, 'MOUSEWHEELDOWN', L['KEY_MOUSEWHEELDOWN']);
-		text = gsub(text, 'NUMPAD', L['KEY_NUMPAD']);
-		text = gsub(text, 'PAGEUP', L['KEY_PAGEUP']);
-		text = gsub(text, 'PAGEDOWN', L['KEY_PAGEDOWN']);
-		text = gsub(text, 'SPACE', L['KEY_SPACE']);
-		text = gsub(text, 'INSERT', L['KEY_INSERT']);
-		text = gsub(text, 'HOME', L['KEY_HOME']);
-		text = gsub(text, 'DELETE', L['KEY_DELETE']);
+		text = gsub(text, 'SHIFT%-', L["KEY_SHIFT"]);
+		text = gsub(text, 'ALT%-', L["KEY_ALT"]);
+		text = gsub(text, 'CTRL%-', L["KEY_CTRL"]);
+		text = gsub(text, 'BUTTON', L["KEY_MOUSEBUTTON"]);
+		text = gsub(text, 'MOUSEWHEELUP', L["KEY_MOUSEWHEELUP"]);
+		text = gsub(text, 'MOUSEWHEELDOWN', L["KEY_MOUSEWHEELDOWN"]);
+		text = gsub(text, 'NUMPAD', L["KEY_NUMPAD"]);
+		text = gsub(text, 'PAGEUP', L["KEY_PAGEUP"]);
+		text = gsub(text, 'PAGEDOWN', L["KEY_PAGEDOWN"]);
+		text = gsub(text, 'SPACE', L["KEY_SPACE"]);
+		text = gsub(text, 'INSERT', L["KEY_INSERT"]);
+		text = gsub(text, 'HOME', L["KEY_HOME"]);
+		text = gsub(text, 'DELETE', L["KEY_DELETE"]);
 		text = gsub(text, 'NMULTIPLY', "*");
 		text = gsub(text, 'NMINUS', "N-");
 		text = gsub(text, 'NPLUS', "N+");

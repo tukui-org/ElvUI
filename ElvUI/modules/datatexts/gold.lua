@@ -44,7 +44,7 @@ local function OnEnter(self)
 	local textOnly = not E.db.datatexts.goldCoins and true or false
 	local style = E.db.datatexts.goldFormat or "BLIZZARD"
 
-	DT.tooltip:AddLine(L['Session:'])
+	DT.tooltip:AddLine(L["Session:"])
 	DT.tooltip:AddDoubleLine(L["Earned:"], E:FormatMoney(Profit, style, textOnly), 1, 1, 1, 1, 1, 1)
 	DT.tooltip:AddDoubleLine(L["Spent:"], E:FormatMoney(Spent, style, textOnly), 1, 1, 1, 1, 1, 1)
 	if Profit < Spent then

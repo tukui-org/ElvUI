@@ -9,16 +9,16 @@ local totalDurability = 0
 local current, max, lastPanel
 local invDurability = {}
 local slots = {
-	["SecondaryHandSlot"] = L['Offhand'],
-	["MainHandSlot"] = L['Main Hand'],
-	["FeetSlot"] = L['Feet'],
-	["LegsSlot"] = L['Legs'],
-	["HandsSlot"] = L['Hands'],
-	["WristSlot"] = L['Wrist'],
-	["WaistSlot"] = L['Waist'],
-	["ChestSlot"] = L['Chest'],
-	["ShoulderSlot"] = L['Shoulder'],
-	["HeadSlot"] = L['Head'],
+	["SecondaryHandSlot"] = L["Offhand"],
+	["MainHandSlot"] = L["Main Hand"],
+	["FeetSlot"] = L["Feet"],
+	["LegsSlot"] = L["Legs"],
+	["HandsSlot"] = L["Hands"],
+	["WristSlot"] = L["Wrist"],
+	["WaistSlot"] = L["Waist"],
+	["ChestSlot"] = L["Chest"],
+	["ShoulderSlot"] = L["Shoulder"],
+	["HeadSlot"] = L["Head"],
 }
 
 local function OnEvent(self, event, ...)

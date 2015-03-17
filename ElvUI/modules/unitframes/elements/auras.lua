@@ -60,7 +60,7 @@ function UF:Construct_AuraIcon(button)
 		local auraName = self.name
 
 		if auraName then
-			E:Print(format(L['The spell "%s" has been added to the Blacklist unitframe aura filter.'], auraName))
+			E:Print(format(L["The spell '%s' has been added to the Blacklist unitframe aura filter."], auraName))
 			E.global['unitframe']['aurafilters']['Blacklist']['spells'][auraName] = {
 				['enable'] = true,
 				['priority'] = 0,

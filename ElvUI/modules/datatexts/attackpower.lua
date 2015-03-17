@@ -17,7 +17,7 @@ local function OnEvent(self, event, unit)
 		pwr = effective
 	end
 
-	self.text:SetFormattedText(displayNumberString, L['AP'], pwr)
+	self.text:SetFormattedText(displayNumberString, L["AP"], pwr)
 	lastPanel = self
 end
 

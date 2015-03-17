@@ -30,8 +30,8 @@ E.Options.args.tooltip = {
 				cursorAnchor = {
 					order = 1,
 					type = 'toggle',
-					name = L['Cursor Anchor'],
-					desc = L['Should tooltip be anchored to mouse cursor'],
+					name = L["Cursor Anchor"],
+					desc = L["Should tooltip be anchored to mouse cursor"],
 				},
 				targetInfo = {
 					order = 2,
@@ -42,32 +42,32 @@ E.Options.args.tooltip = {
 				playerTitles = {
 					order = 3,
 					type = 'toggle',
-					name = L['Player Titles'],
-					desc = L['Display player titles.'],
+					name = L["Player Titles"],
+					desc = L["Display player titles."],
 				},
 				guildRanks = {
 					order = 4,
 					type = 'toggle',
-					name = L['Guild Ranks'],
-					desc = L['Display guild ranks if a unit is guilded.'],
+					name = L["Guild Ranks"],
+					desc = L["Display guild ranks if a unit is guilded."],
 				},
 				inspectInfo = {
 					order = 5,
 					type = 'toggle',
-					name = L['Inspect Info'],
-					desc = L['Display the players talent spec and item level in the tooltip, this may not immediately update when mousing over a unit.'],
+					name = L["Inspect Info"],
+					desc = L["Display the players talent spec and item level in the tooltip, this may not immediately update when mousing over a unit."],
 				},
 				spellID = {
 					order = 6,
 					type = 'toggle',
-					name = L['Spell/Item IDs'],
-					desc = L['Display the spell or item ID when mousing over a spell or item tooltip.'],
+					name = L["Spell/Item IDs"],
+					desc = L["Display the spell or item ID when mousing over a spell or item tooltip."],
 				},
 				itemCount = {
 					order = 7,
 					type = 'select',
-					name = L['Item Count'],
-					desc = L['Display how many of a certain item you have in your possession.'],
+					name = L["Item Count"],
+					desc = L["Display how many of a certain item you have in your possession."],
 					values = {
 						["BAGS_ONLY"] = L["Bags Only"],
 						["BANK_ONLY"] = L["Bank Only"],
@@ -78,7 +78,7 @@ E.Options.args.tooltip = {
 				useCustomFactionColors = {
 					order = 8,
 					type = 'toggle',
-					name = L['Custom Faction Colors'],
+					name = L["Custom Faction Colors"],
 				},
 				factionColors = {
 					order = 9,
@@ -109,11 +109,11 @@ E.Options.args.tooltip = {
 				unitFrames = {
 					order = 1,
 					type = 'select',
-					name = L['Unitframes'],
+					name = L["Unitframes"],
 					desc = L["Don't display the tooltip when mousing over a unitframe."],
 					values = {
-						['ALL'] = L['Always Hide'],
-						['NONE'] = L['Never Hide'],
+						['ALL'] = L["Always Hide"],
+						['NONE'] = L["Never Hide"],
 						['SHIFT'] = SHIFT_KEY,
 						['ALT'] = ALT_KEY,
 						['CTRL'] = CTRL_KEY
@@ -136,7 +136,7 @@ E.Options.args.tooltip = {
 			args = {
 				height = {
 					order = 1,
-					name = L['Height'],
+					name = L["Height"],
 					type = 'range',
 					min = 1, max = 15, step = 1,
 					set = function(info, value) E.db.tooltip.healthBar.height = value; GameTooltipStatusBar:Height(value); end,

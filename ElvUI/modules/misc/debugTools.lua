@@ -110,7 +110,7 @@ end
 function D:ScriptErrorsFrame_OnError(_, keepHidden)
 	if keepHidden or self.MessagePrinted or not InCombatLockdown() or GetCVarBool('scriptErrors') ~= true then return; end
 
-	E:Print(L['|cFFE30000Lua error recieved. You can view the error message when you exit combat.'])
+	E:Print(L["|cFFE30000Lua error recieved. You can view the error message when you exit combat."])
 	self.MessagePrinted = true;
 end
 

@@ -33,7 +33,7 @@ function UF:Construct_BossFrames(frame)
 	frame:SetAttribute("type2", "focus")
 
 	BossHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165)
-	E:CreateMover(BossHeader, BossHeader:GetName()..'Mover', L['Boss Frames'], nil, nil, nil, 'ALL,PARTY,RAID10,RAID25,RAID40')
+	E:CreateMover(BossHeader, BossHeader:GetName()..'Mover', L["Boss Frames"], nil, nil, nil, 'ALL,PARTY,RAID10,RAID25,RAID40')
 end
 
 function UF:Update_BossFrames(frame, db)

@@ -57,7 +57,7 @@ function DT:BattlegroundStats()
 	for index=1, GetNumBattlefieldScores() do
 		name = GetBattlefieldScore(index)
 		if name and name == E.myname then
-			DT.tooltip:AddDoubleLine(L['Stats For:'], name, 1,1,1, classColor.r, classColor.g, classColor.b)
+			DT.tooltip:AddDoubleLine(L["Stats For:"], name, 1,1,1, classColor.r, classColor.g, classColor.b)
 			DT.tooltip:AddLine(" ")
 
 			--Add extra statistics to watch based on what BG you are in.
@@ -98,7 +98,7 @@ end
 function DT:HideBattlegroundTexts()
 	DT.ForceHideBGStats = true
 	DT:LoadDataTexts()
-	E:Print(L['Battleground datatexts temporarily hidden, to show type /bgstats or right click the "C" icon near the minimap.'])
+	E:Print(L["Battleground datatexts temporarily hidden, to show type /bgstats or right click the 'C' icon near the minimap."])
 end
 
 local function ValueColorUpdate(hex, r, g, b)

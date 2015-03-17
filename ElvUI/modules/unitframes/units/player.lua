@@ -25,7 +25,7 @@ function UF:Construct_PlayerFrame(frame)
 
 	frame.Debuffs = self:Construct_Debuffs(frame)
 
-	frame.Castbar = self:Construct_Castbar(frame, 'LEFT', L['Player Castbar'])
+	frame.Castbar = self:Construct_Castbar(frame, 'LEFT', L["Player Castbar"])
 
 	if E.myclass == "PALADIN" then
 		frame.HolyPower = self:Construct_PaladinResourceBar(frame)
@@ -67,7 +67,7 @@ function UF:Construct_PlayerFrame(frame)
 	frame.CombatFade = true
 
 	frame:Point('BOTTOMLEFT', E.UIParent, 'BOTTOM', -413, 68) --Set to default position
-	E:CreateMover(frame, frame:GetName()..'Mover', L['Player Frame'], nil, nil, nil, 'ALL,SOLO')
+	E:CreateMover(frame, frame:GetName()..'Mover', L["Player Frame"], nil, nil, nil, 'ALL,SOLO')
 end
 
 function UF:UpdatePlayerFrameAnchors(frame, isShown)
@@ -753,7 +753,7 @@ function UF:Update_PlayerFrame(frame, db)
 					bars:Height(CLASSBAR_HEIGHT - (E.PixelMode and 1 or 4))
 					bars:ClearAllPoints()
 					bars:Point("BOTTOM", E.UIParent, "BOTTOM", 0, 150)
-					E:CreateMover(bars, 'ClassBarMover', L['Classbar'], nil, nil, nil, 'ALL,SOLO')
+					E:CreateMover(bars, 'ClassBarMover', L["Classbar"], nil, nil, nil, 'ALL,SOLO')
 				else
 					bars:ClearAllPoints()
 					bars:SetPoint("BOTTOMLEFT", bars.mover, "BOTTOMLEFT")

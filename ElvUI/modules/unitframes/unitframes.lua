@@ -267,7 +267,7 @@ end
 
 function UF:GetAuraAnchorFrame(frame, attachTo, isConflict)
 	if isConflict then
-		E:Print(format(L['%s frame(s) has a conflicting anchor point, please change either the buff or debuff anchor point so they are not attached to each other. Forcing the debuffs to be attached to the main unitframe until fixed.'], E:StringTitle(frame:GetName())))
+		E:Print(format(L["%s frame(s) has a conflicting anchor point, please change either the buff or debuff anchor point so they are not attached to each other. Forcing the debuffs to be attached to the main unitframe until fixed."], E:StringTitle(frame:GetName())))
 	end
 
 	if isConflict or attachTo == 'FRAME' then
@@ -1251,7 +1251,7 @@ function UF:MergeUnitSettings(fromUnit, toUnit, isGroupUnit)
 			end
 		end
 	else
-		E:Print(L['You cannot copy settings from the same unit.'])
+		E:Print(L["You cannot copy settings from the same unit."])
 	end
 
 	self:Update_AllFrames()

@@ -98,9 +98,9 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 			return
 		end
 
-		local textString = format(L['%s is attempting to share the profile %s with you. Would you like to accept the request?'], sender, profile)
+		local textString = format(L["%s is attempting to share the profile %s with you. Would you like to accept the request?"], sender, profile)
 		if profile == "global" then
-			textString = format(L['%s is attempting to share his filters with you. Would you like to accept the request?'], sender)
+			textString = format(L["%s is attempting to share his filters with you. Would you like to accept the request?"], sender)
 		end
 
 		E.PopupDialogs['DISTRIBUTOR_RESPONSE'] = {
@@ -151,15 +151,15 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 		local success, data = self:Deserialize(msg)
 
 		if success then
-			local textString = format(L['Profile download complete from %s, would you like to load the profile %s now?'], sender, profileKey)
+			local textString = format(L["Profile download complete from %s, would you like to load the profile %s now?"], sender, profileKey)
 
 			if profileKey == "global" then
-				textString = format(L['Filter download complete from %s, would you like to apply changes now?'], sender)
+				textString = format(L["Filter download complete from %s, would you like to apply changes now?"], sender)
 			else
 				if not ElvDB.profiles[profileKey] then
 					ElvDB.profiles[profileKey] = data
 				else
-					textString = format(L['Profile download complete from %s, but the profile %s already exists. Change the name or else it will overwrite the existing profile.'], sender, profileKey)
+					textString = format(L["Profile download complete from %s, but the profile %s already exists. Change the name or else it will overwrite the existing profile."], sender, profileKey)
 					E.PopupDialogs['DISTRIBUTOR_CONFIRM'] = {
 						text = textString,
 						button1 = ACCEPT,
@@ -223,21 +223,21 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 end
 
 E.PopupDialogs['DISTRIBUTOR_SUCCESS'] = {
-	text = L['Your profile was successfully recieved by the player.'],
+	text = L["Your profile was successfully recieved by the player."],
 	whileDead = 1,
 	hideOnEscape = 1,
 	button1 = OKAY,
 }
 
 E.PopupDialogs['DISTRIBUTOR_WAITING'] = {
-	text = L['Profile request sent. Waiting for response from player.'],
+	text = L["Profile request sent. Waiting for response from player."],
 	whileDead = 1,
 	hideOnEscape = 1,
 	timeout = 35,
 }
 
 E.PopupDialogs['DISTRIBUTOR_REQUEST_DENIED'] = {
-	text = L['Request was denied by user.'],
+	text = L["Request was denied by user."],
 	whileDead = 1,
 	hideOnEscape = 1,
 	button1 = OKAY,
