@@ -534,6 +534,41 @@ local function LoadSkin()
 
 	S:HandleButton(LFGListFrame.SearchPanel.RefreshButton)
 	LFGListFrame.SearchPanel.RefreshButton:Size(26)
+
+
+	--ApplicationViewer (Custom Groups)
+	LFGListFrame.ApplicationViewer.InfoBackground:SetTexCoord(unpack(E.TexCoords))
+	S:HandleCheckBox(LFGListFrame.ApplicationViewer.AutoAcceptButton)
+
+	LFGListFrame.ApplicationViewer.Inset:StripTextures()
+	LFGListFrame.ApplicationViewer.Inset:SetTemplate("Transparent")
+
+	S:HandleButton(LFGListFrame.ApplicationViewer.NameColumnHeader, true)
+	S:HandleButton(LFGListFrame.ApplicationViewer.RoleColumnHeader, true)
+	S:HandleButton(LFGListFrame.ApplicationViewer.ItemLevelColumnHeader, true)
+	LFGListFrame.ApplicationViewer.NameColumnHeader:ClearAllPoints()
+	LFGListFrame.ApplicationViewer.NameColumnHeader:SetPoint("BOTTOMLEFT", LFGListFrame.ApplicationViewer.Inset, "TOPLEFT", 0, 1)
+	LFGListFrame.ApplicationViewer.RoleColumnHeader:ClearAllPoints()
+	LFGListFrame.ApplicationViewer.RoleColumnHeader:SetPoint("LEFT", LFGListFrame.ApplicationViewer.NameColumnHeader, "RIGHT", 1, 0)
+	LFGListFrame.ApplicationViewer.ItemLevelColumnHeader:ClearAllPoints()
+	LFGListFrame.ApplicationViewer.ItemLevelColumnHeader:SetPoint("LEFT", LFGListFrame.ApplicationViewer.RoleColumnHeader, "RIGHT", 1, 0)
+
+	S:HandleButton(LFGListFrame.ApplicationViewer.RefreshButton)
+	LFGListFrame.ApplicationViewer.RefreshButton:SetSize(24,24)
+	LFGListFrame.ApplicationViewer.RefreshButton:ClearAllPoints()
+	LFGListFrame.ApplicationViewer.RefreshButton:SetPoint("BOTTOMRIGHT", LFGListFrame.ApplicationViewer.Inset, "TOPRIGHT", 16, 4)
+
+	S:HandleButton(LFGListFrame.ApplicationViewer.RemoveEntryButton, true)
+	S:HandleButton(LFGListFrame.ApplicationViewer.EditButton, true)
+	LFGListFrame.ApplicationViewer.RemoveEntryButton:ClearAllPoints()
+	LFGListFrame.ApplicationViewer.RemoveEntryButton:SetPoint("BOTTOMLEFT", -1, 3)
+	LFGListFrame.ApplicationViewer.EditButton:ClearAllPoints()
+	LFGListFrame.ApplicationViewer.EditButton:SetPoint("BOTTOMRIGHT", -6, 3)
+
+	S:HandleScrollBar(LFGListApplicationViewerScrollFrameScrollBar)
+	LFGListApplicationViewerScrollFrameScrollBar:ClearAllPoints()
+	LFGListApplicationViewerScrollFrameScrollBar:SetPoint("TOPLEFT", LFGListFrame.ApplicationViewer.Inset, "TOPRIGHT", 0, -14)
+	LFGListApplicationViewerScrollFrameScrollBar:SetPoint("BOTTOMLEFT", LFGListFrame.ApplicationViewer.Inset, "BOTTOMRIGHT", 0, 14)
 end
 
 S:RegisterSkin("ElvUI", LoadSkin)
