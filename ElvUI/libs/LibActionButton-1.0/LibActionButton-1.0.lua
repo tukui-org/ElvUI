@@ -3,16 +3,16 @@ Copyright (c) 2010-2014, Hendrik "nevcairiel" Leppkes <h.leppkes@gmail.com>
 
 All rights reserved.
 
-Redistribution and use in source and binary forms, with or without 
+Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
 
-    * Redistributions of source code must retain the above copyright notice, 
+    * Redistributions of source code must retain the above copyright notice,
       this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright notice, 
-      this list of conditions and the following disclaimer in the documentation 
+    * Redistributions in binary form must reproduce the above copyright notice,
+      this list of conditions and the following disclaimer in the documentation
       and/or other materials provided with the distribution.
-    * Neither the name of the developer nor the names of its contributors 
-      may be used to endorse or promote products derived from this software without 
+    * Neither the name of the developer nor the names of its contributors
+      may be used to endorse or promote products derived from this software without
       specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
@@ -539,11 +539,11 @@ end
 
 function Generic:OnUpdate(elapsed)
 	if not GetCVarBool('lockActionBars') then return; end
-	
-	self.lastupdate = (self.lastupdate or 0) + elapsed;  
+
+	self.lastupdate = (self.lastupdate or 0) + elapsed;
 	if (self.lastupdate < .2) then return end
 	self.lastupdate = 0
-	
+
 	local isDragKeyDown
 	if GetModifiedClick("PICKUPACTION") == 'ALT' then
 		isDragKeyDown = IsAltKeyDown()
@@ -552,7 +552,7 @@ function Generic:OnUpdate(elapsed)
 	elseif GetModifiedClick("PICKUPACTION") == 'SHIFT' then
 		isDragKeyDown = IsShiftKeyDown()
 	end
-	
+
 	if isDragKeyDown and (self.clickState == 'AnyDown' or self.clickState == nil) then
 		self.clickState = 'AnyUp'
 		self:RegisterForClicks(self.clickState)
@@ -574,7 +574,7 @@ function Generic:OnEnter()
 		lib.ACTION_HIGHLIGHT_MARKS[self._state_action] = false
 		UpdateNewAction(self)
 	end
-	
+
 	if self.config.clickOnDown then
 		self:SetScript('OnUpdate', Generic.OnUpdate)
 	end
@@ -1351,7 +1351,7 @@ function UpdateHotkeys(self)
 		self.HotKey:SetPoint("TOPLEFT", self, "TOPLEFT", - 2, - 2)
 		self.HotKey:Show()
 	end
-	
+
 	if self.postKeybind then
 		self.postKeybind(nil, self)
 	end
@@ -1439,12 +1439,12 @@ function UpdateFlyout(self)
 				SetClampedTextureRotation(self.FlyoutArrow, 0)
 			end
 
+			if self.FlyoutUpdateFunc then
+				self.FlyoutUpdateFunc(nil, self)
+			end
+
 			-- return here, otherwise flyout is hidden
 			return
-		end
-
-		if self.FlyoutUpdateFunc then
-			self.FlyoutUpdateFunc(nil, self)
 		end
 	end
 	self.FlyoutArrow:Hide()
