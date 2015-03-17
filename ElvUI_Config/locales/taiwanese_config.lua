@@ -503,6 +503,7 @@ L["BG Score"] = "戰場積分"
 L['Black Market AH'] = "黑市"
 L["Calendar Frame"] = "行事曆"
 L["Character Frame"] = "角色"
+L["Death Recap"] = true;
 L["Debug Tools"] = "除錯工具"
 L["Dressing Room"] = "試衣間"
 L["Encounter Journal"] = "地城導覽"

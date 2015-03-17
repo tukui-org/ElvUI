@@ -501,6 +501,7 @@ L["BG Score"] = "Schlachtfeldpunkte"
 L['Black Market AH'] = 'Schwarzmarkt Auktionshaus'
 L["Calendar Frame"] = "Kalender Fenster"
 L["Character Frame"] = "Charakterfenster"
+L["Death Recap"] = true;
 L["Debug Tools"] = "Debug Tools"
 L["Dressing Room"] = "Ankleideraum"
 L["Encounter Journal"] = "Dungeonkompendium"

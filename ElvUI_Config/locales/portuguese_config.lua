@@ -502,6 +502,7 @@ L["BG Score"] = "Placar do CB"
 L["Black Market AH"] = "CL Mercado Negro"
 L["Calendar Frame"] = "Calendário"
 L["Character Frame"] = "Personagem"
+L["Death Recap"] = true;
 L["Debug Tools"] = "Ferramentas de Depuração"
 L["Dressing Room"] = "Provador"
 L["Encounter Journal"] = "Almanaque de Masmorras"

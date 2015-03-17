@@ -502,6 +502,7 @@ L["BG Score"] = "Puntuación de CB"
 L["Black Market AH"] = "CS del Mercado Negro"
 L["Calendar Frame"] = "Calendario"
 L["Character Frame"] = "Personaje"
+L["Death Recap"] = true;
 L["Debug Tools"] = "Herramientas de Depuración"
 L["Dressing Room"] = "Probador"
 L["Encounter Journal"] = "Diario de Encuentros"

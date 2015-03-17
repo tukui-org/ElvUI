@@ -234,6 +234,7 @@ L['Arena Frames'] = "Cadre d'arène" --Also used in UnitFrames
 L['Bags'] = "Sacs" --Also in DataTexts
 L['Bar '] = "Barre " --Also in ActionBars
 L['BNet Frame'] = "Fenetre BNet"
+L['BodyGuard Frame'] = true;
 L['Boss Button'] = "Bouton du Boss"
 L['Boss Frames'] = "Cadre du Boss" --Also used in UnitFrames
 L['Class Bar'] = "Barre de classe";

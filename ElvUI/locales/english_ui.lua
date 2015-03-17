@@ -234,6 +234,7 @@ L['Arena Frames'] = true; --Also used in UnitFrames
 L['Bags'] = true; --Also in DataTexts
 L['Bar '] = true; --Also in ActionBars
 L['BNet Frame'] = true;
+L['BodyGuard Frame'] = true;
 L['Boss Button'] = true;
 L['Boss Frames'] = true; --Also used in UnitFrames
 L['Class Bar'] = true;

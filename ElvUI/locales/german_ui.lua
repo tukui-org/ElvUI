@@ -234,6 +234,7 @@ L['Arena Frames'] = "Arena Fenster" --Also used in UnitFrames
 L['Bags'] = "Taschen" --Also in DataTexts
 L['Bar '] = "Leiste " --Also in ActionBars
 L['BNet Frame'] = "BNet-Fenster"
+L['BodyGuard Frame'] = true;
 L['Boss Button'] = "Boss Button"
 L['Boss Frames'] = "Boss Fenster" --Also used in UnitFrames
 L['Class Bar'] = "Klassenleiste"
