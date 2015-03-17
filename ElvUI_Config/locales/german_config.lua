@@ -273,7 +273,7 @@ Für die meisten Anwender ist es allerdigns einfacher, eine tga-Datei in ihren W
 
 --Credits
 L["Coding:"] = "Programmierung:"
-L["Credits"] = "Credits"
+L["Credits"] = "Danksagung"
 L["Donations:"] = "Spenden:"
 L["ELVUI_CREDITS"] = "Ich möchte mich hier bei folgenden Personen bedanken, die durch ihre tatkräftige Unterstützung beim Testen und Coden, sowie durch Spenden, sehr geholfen haben. Bitte beachten: Für Spenden poste ich nur die Namen, die mich im Forum via PM angeschrieben haben. Sollte dein Name fehlen und du möchtest deinen Namen hinzugefügt haben, schreib mir bitte eine PM im Forum."
 L["Testing:"] = "Tester:"
