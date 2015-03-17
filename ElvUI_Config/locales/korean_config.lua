@@ -196,7 +196,6 @@ L["Disabled Blizzard"] = "기본 오라창 미사용"
 L["Display the consolidated buffs bar."] = "미니맵 우측의 시너지버프 모음 바를 표시합니다."
 L["Fade Threshold"] = "초읽기 시작 시점"
 L["Filter Consolidated"] = "내게 유용한 것만 표시"
-L["When enabled active buff icons will light up instead of becoming darker, while inactive buff icons will become darker instead of being lit up."] = true;
 L["Index"] = "종류"
 L["Indicate whether buffs you cast yourself should be separated before or after."] = "스스로 걸은 효과를 남이 걸어준 효과보다 먼저 나열할지, 후에 나열할지, 구분하지 않을지를 결정합니다."
 L["Limit the number of rows or columns."] = "표시줄 수를 제한해 최종적으로 보여줄 오라의 총 개수를 제한합니다."
@@ -214,6 +213,7 @@ L["Threshold before text changes red, goes into decimal form, and the icon will 
 L["Time xOffset"] = "시간 x 좌표"
 L["Time yOffset"] = "시간 y 좌표"
 L["Time"] = "시간"
+L["When enabled active buff icons will light up instead of becoming darker, while inactive buff icons will become darker instead of being lit up."] = true;
 L["Wrap After"] = "한 줄에 표시할 오라 수"
 L["Your Auras First"] = "내가 걸은 효과 먼저"
 

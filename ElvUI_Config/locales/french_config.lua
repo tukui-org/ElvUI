@@ -176,7 +176,6 @@ L["Disabled Blizzard"] = "Désactiver Blizzard";
 L["Display the consolidated buffs bar."] = "Affiche la barre d'améliorations groupées."
 L["Fade Threshold"] = "Seuil du fondu"
 L["Filter Consolidated"] = "Filtre consolidé"
-L["When enabled active buff icons will light up instead of becoming darker, while inactive buff icons will become darker instead of being lit up."] = true;
 L["Index"] = "Index"
 L["Indicate whether buffs you cast yourself should be separated before or after."] = "Indique si les améliorations que vous lancez doivent être séparées avant ou après."
 L["Limit the number of rows or columns."] = "Limiter le nombre de lignes ou de colonnes."
@@ -194,6 +193,7 @@ L["Threshold before text changes red, goes into decimal form, and the icon will 
 L["Time xOffset"] = "Décalage X du temps";
 L["Time yOffset"] = "Décalage Y du temps";
 L["Time"] = "Temps"
+L["When enabled active buff icons will light up instead of becoming darker, while inactive buff icons will become darker instead of being lit up."] = true;
 L["Wrap After"] = "Retour à la ligne après"
 L["Your Auras First"] = "Vos Auras en premier"
 

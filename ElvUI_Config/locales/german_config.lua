@@ -174,7 +174,6 @@ L["Disabled Blizzard"] = "Blizzard deaktivieren"
 L["Display the consolidated buffs bar."] = 'Zeige die zusammengesetzte Stärkungszauberleiste.'
 L["Fade Threshold"] = "Zeit bis zum verblassen"
 L["Filter Consolidated"] = 'Nur nützliche Stärkungszauber'
-L["When enabled active buff icons will light up instead of becoming darker, while inactive buff icons will become darker instead of being lit up."] = "Wenn diese Option aktiviert wird, leuchten die Symbole für aktive Stärkungszauber auf und inaktive Stärkungszauber werden dunkler. Ansonsten leuchten die Symbole für inaktive Stärkungszauber auf und aktive Stärkungszauber werden dunkler."
 L["Index"] = 'Index'
 L["Indicate whether buffs you cast yourself should be separated before or after."] = 'Wenn du einen Stärkungszauber auf dich selber wirkst, zeige diesen zuerst in der Leiste.'
 L["Limit the number of rows or columns."] = 'Beschränkung für die Anzahl an Leisten oder Spalten.'
@@ -192,6 +191,7 @@ L["Threshold before text changes red, goes into decimal form, and the icon will 
 L["Time xOffset"] = "Zeit X-Versatz"
 L["Time yOffset"] = "Zeit Y-Versatz"
 L["Time"] = 'Zeit'
+L["When enabled active buff icons will light up instead of becoming darker, while inactive buff icons will become darker instead of being lit up."] = "Wenn diese Option aktiviert wird, leuchten die Symbole für aktive Stärkungszauber auf und inaktive Stärkungszauber werden dunkler. Ansonsten leuchten die Symbole für inaktive Stärkungszauber auf und aktive Stärkungszauber werden dunkler."
 L["Wrap After"] = 'Neue Reihe/Spalte beginnen'
 L["Your Auras First"] = 'Deine Auren zuerst'
 

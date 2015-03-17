@@ -202,6 +202,7 @@ L["You may need to further alter these settings depending how low you resolution
 L["Your current resolution is %s, this is considered a %s resolution."] = "현재 사용중인 해상도는 |cff2eb7e4%s|r 이며, |cff2eb7e4%s해상도|r 입니다."
 
 --Misc
+L["ABOVE_THREAT_FORMAT"] = "%s: %.0f%% [%.0f%% 정도 |cff%02x%02x%02x%s|r보다 많음]"
 L["Average Group iLvl:"] = "파티 평균템렙"
 L["Bars"] = "바"
 L["Calendar"] = "달력"
@@ -225,7 +226,6 @@ L["Toggle Chat Frame"] = "패널 표시 전환"
 L["Toggle Configuration"] = "ElvUI 설정창 열기"
 L["XP:"] = "경험치:"
 L["You don't have permission to mark targets."] = "레이드 아이콘을 지정할 권한이 없습니다."
-L["ABOVE_THREAT_FORMAT"] = "%s: %.0f%% [%.0f%% 정도 |cff%02x%02x%02x%s|r보다 많음]"
 
 --Movers
 L["Alternative Power"] = "특수상황 진행 바"

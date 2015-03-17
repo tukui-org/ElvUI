@@ -202,6 +202,7 @@ L["You may need to further alter these settings depending how low you resolution
 L["Your current resolution is %s, this is considered a %s resolution."] = "Votre résolution actuelle est %s, elle est donc considérée comme une %s Résolution."
 
 --Misc
+L["ABOVE_THREAT_FORMAT"] = '%s: %.0f%% [%.0f%% excès |cff%02x%02x%02x%s|r]'
 L["Average Group iLvl:"] = "iLvl moyen du groupe";
 L["Bars"] = "Barres" --Also used in UnitFrames
 L["Calendar"] = 'Calendrier'
@@ -225,7 +226,6 @@ L["Toggle Chat Frame"] = "Activer la fenêtre de discussion" --layout\layout.lua
 L["Toggle Configuration"] = "Afficher la Configuration" --layout\layout.lua
 L["XP:"] = "XP:"
 L["You don't have permission to mark targets."] = "Vous n'avez pas la permission de marquer les cibles."
-L["ABOVE_THREAT_FORMAT"] = '%s: %.0f%% [%.0f%% excès |cff%02x%02x%02x%s|r]'
 
 --Movers
 L["Alternative Power"] = "Puissance Alternative"

@@ -202,6 +202,7 @@ L["You may need to further alter these settings depending how low you resolution
 L["Your current resolution is %s, this is considered a %s resolution."] = "你当前的分辨率是 %s, 这被认为是个 %s 分辨率。"
 
 --Misc
+L["ABOVE_THREAT_FORMAT"] = '%s: %.0f%% [%.0f%% 以上 |cff%02x%02x%02x%s|r]'
 L["Average Group iLvl:"] = true;
 L["Bars"] = "条"
 L["Calendar"] = "日历"
@@ -225,7 +226,6 @@ L["Toggle Chat Frame"] = "开关对话框架"
 L["Toggle Configuration"] = "设置开关"
 L["XP:"] = "经验:"
 L["You don't have permission to mark targets."] = "你没有标记目标的权限"
-L["ABOVE_THREAT_FORMAT"] = '%s: %.0f%% [%.0f%% 以上 |cff%02x%02x%02x%s|r]'
 
 --Movers
 L["Alternative Power"] = "特殊能量条"

@@ -202,6 +202,7 @@ L["You may need to further alter these settings depending how low you resolution
 L["Your current resolution is %s, this is considered a %s resolution."] = true;
 
 --Misc
+L["ABOVE_THREAT_FORMAT"] = '%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]'
 L["Average Group iLvl:"] = true;
 L["Bars"] = true; --Also used in UnitFrames
 L["Calendar"] = true;
@@ -225,7 +226,6 @@ L["Toggle Chat Frame"] = true; --layout\layout.lua
 L["Toggle Configuration"] = true; --layout\layout.lua
 L["XP:"] = true;
 L["You don't have permission to mark targets."] = true;
-L["ABOVE_THREAT_FORMAT"] = '%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]'
 
 --Movers
 L["Alternative Power"] = true;

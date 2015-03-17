@@ -176,7 +176,6 @@ L["Disabled Blizzard"] = true;
 L["Display the consolidated buffs bar."] = "显示整合增益条"
 L["Fade Threshold"] = "阈值渐隐"
 L["Filter Consolidated"] = '过滤综合BUFF';
-L["When enabled active buff icons will light up instead of becoming darker, while inactive buff icons will become darker instead of being lit up."] = true;
 L["Index"] = "索引"
 L["Indicate whether buffs you cast yourself should be separated before or after."] = "将你自身施放的增益从整体增益之前或之后分离出来."
 L["Limit the number of rows or columns."] = "最大行数或列数."
@@ -194,6 +193,7 @@ L["Threshold before text changes red, goes into decimal form, and the icon will 
 L["Time xOffset"] = true;
 L["Time yOffset"] = true;
 L["Time"] = "时间"
+L["When enabled active buff icons will light up instead of becoming darker, while inactive buff icons will become darker instead of being lit up."] = true;
 L["Wrap After"] = "每行行数"
 L["Your Auras First"] = "自身光环优先"
 

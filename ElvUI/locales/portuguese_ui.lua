@@ -202,6 +202,7 @@ L["You may need to further alter these settings depending how low you resolution
 L["Your current resolution is %s, this is considered a %s resolution."] = "A sua resolução actual é %s, esta é considerada uma resolução %s."
 
 --Misc
+L["ABOVE_THREAT_FORMAT"] = "%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]"
 L["Average Group iLvl:"] = true;
 L["Bars"] = "Barras"
 L["Calendar"] = "Calendário"
@@ -225,7 +226,6 @@ L["Toggle Chat Frame"] = "Mostrar/Ocultar Bat-papo"
 L["Toggle Configuration"] = "Mostrar/Ocultar Modo de Configuração"
 L["XP:"] = "XP:"
 L["You don't have permission to mark targets."] = "Você não tem permissão para marcar alvos."
-L["ABOVE_THREAT_FORMAT"] = "%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]"
 
 --Movers
 L["Alternative Power"] = "Recurso Alternativo"

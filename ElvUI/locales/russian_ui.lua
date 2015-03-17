@@ -202,6 +202,7 @@ L["You may need to further alter these settings depending how low you resolution
 L["Your current resolution is %s, this is considered a %s resolution."] = "Ваше текущее разрешение - %s, это считается %s разрешением."
 
 --Misc
+L["ABOVE_THREAT_FORMAT"] = '%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]'
 L["Average Group iLvl:"] = "Средний ур. предметов:"
 L["Bars"] = "Полосы" --Also used in UnitFrames
 L["Calendar"] = "Календарь"
@@ -225,7 +226,6 @@ L["Toggle Chat Frame"] = "Показать/скрыть чат" --layout\layout.
 L["Toggle Configuration"] = "Конфигурация" --layout\layout.lua
 L["XP:"] = "Опыт:"
 L["You don't have permission to mark targets."] = "У вас нет разрешения на установку меток"
-L["ABOVE_THREAT_FORMAT"] = '%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]'
 
 --Movers
 L["Alternative Power"] = "Альтернативный ресурс"
