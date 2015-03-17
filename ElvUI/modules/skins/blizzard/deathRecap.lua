@@ -6,7 +6,7 @@ local function LoadSkin()
 	DeathRecapFrame:StripTextures()
 	S:HandleCloseButton(DeathRecapFrame.CloseXButton)
 	DeathRecapFrame:SetTemplate("Transparent")
-	
+
 	for i=1, 5 do
 		local iconBorder = DeathRecapFrame["Recap"..i].SpellInfo.IconBorder
 		local icon = DeathRecapFrame["Recap"..i].SpellInfo.Icon
@@ -16,7 +16,7 @@ local function LoadSkin()
 		DeathRecapFrame["Recap"..i].SpellInfo.backdrop:SetOutside(icon)
 		icon:SetParent(DeathRecapFrame["Recap"..i].SpellInfo.backdrop)
 	end
-	
+
 	for i=1, DeathRecapFrame:GetNumChildren() do
 		local child = select(i, DeathRecapFrame:GetChildren())
 		if(child:GetObjectType() == "Button" and child.GetText and child:GetText() == CLOSE) then

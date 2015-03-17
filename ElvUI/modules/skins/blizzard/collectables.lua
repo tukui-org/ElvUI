@@ -8,7 +8,7 @@ local function LoadSkin()
 	CollectionsJournal:SetTemplate('Transparent')
 	CollectionsJournal:Hide()
 	CollectionsJournalPortrait:SetAlpha(0)
-	
+
 	for i=1, 4 do
 		S:HandleTab(_G['CollectionsJournalTab'..i])
 	end
@@ -46,7 +46,7 @@ local function LoadSkin()
 		b.favorite:SetSize(32,32)
 	end
 
-	
+
 
 	-----------------------------
 	--[[ pet journal (tab 2) ]]--
@@ -219,22 +219,22 @@ local function LoadSkin()
 	--Toy Box
 	S:HandleButton(ToyBoxFilterButton)
 	ToyBoxFilterButton:SetPoint("TOPRIGHT", ToyBox, "TOPRIGHT", -15, -34)
-	
+
 	S:HandleEditBox(ToyBox.searchBox)
 	ToyBox.iconsFrame:StripTextures()
 	S:HandleNextPrevButton(ToyBox.navigationFrame.nextPageButton)
 	S:HandleNextPrevButton(ToyBox.navigationFrame.prevPageButton)
 	SquareButton_SetIcon(ToyBox.navigationFrame.prevPageButton, 'LEFT')
 	ToyBox.progressBar:StripTextures()
-	
-	local function TextColorModified(self, r, g, b) 
+
+	local function TextColorModified(self, r, g, b)
 		if(r == 0.33 and g == 0.27 and b == 0.2) then
 			self:SetTextColor(0.6, 0.6, 0.6)
 		elseif(r == 1 and g == 0.82 and b == 0) then
 			self:SetTextColor(1, 1, 1)
 		end
 	end
-	
+
 	for i=1, 18 do
 		local button = ToyBox.iconsFrame["spellButton"..i]
 		S:HandleItemButton(button, true)
@@ -244,18 +244,18 @@ local function LoadSkin()
 		button.checked:SetAllPoints(button.iconTexture)
 		button.pushed:SetAllPoints(button.iconTexture)
 		button.cooldown:SetAllPoints(button.iconTexture)
-		
+
 		hooksecurefunc(button.name, "SetTextColor", TextColorModified)
 		hooksecurefunc(button.new, "SetTextColor", TextColorModified)
 		E:RegisterCooldown(button.cooldown)
-	end	
+	end
 
 
 
 	--Heirlooms
 	S:HandleButton(HeirloomsJournalFilterButton)
 	HeirloomsJournalFilterButton:SetPoint("TOPRIGHT", HeirloomsJournal, "TOPRIGHT", -15, -34)
-	
+
 	S:HandleEditBox(HeirloomsJournal.SearchBox)
 	HeirloomsJournal.iconsFrame:StripTextures()
 	S:HandleNextPrevButton(HeirloomsJournal.navigationFrame.nextPageButton)
@@ -269,7 +269,7 @@ local function LoadSkin()
 			header.text:FontTemplate()
 			header.text:SetTextColor(1, 1, 1)
 		end
-		
+
 		for i=1, #HeirloomsJournal.heirloomEntryFrames do
 			local button = HeirloomsJournal.heirloomEntryFrames[i]
 			if(not button.skinned) then
@@ -281,7 +281,7 @@ local function LoadSkin()
 				button.iconTextureUncollected:SetTexture(button.iconTexture:GetTexture())
 				HeirloomsJournal:UpdateButton(button)
 			end
-			
+
 			if(C_Heirloom.PlayerHasHeirloom(button.itemID)) then
 				button.name:SetTextColor(1, 1, 1)
 			else
@@ -289,14 +289,14 @@ local function LoadSkin()
 			end
 		end
 	end)
-	
+
 	hooksecurefunc(HeirloomsJournal, "UpdateButton", function(self, button)
 		button.iconTextureUncollected:SetTexture(button.iconTexture:GetTexture())
 		if(C_Heirloom.PlayerHasHeirloom(button.itemID)) then
 			button.name:SetTextColor(1, 1, 1)
 		else
 			button.name:SetTextColor(0.6, 0.6, 0.6)
-		end	
+		end
 	end)
 end
 

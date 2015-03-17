@@ -1837,7 +1837,7 @@ P['unitframe'] = {
 			['enable'] = true,
 			['width'] = 120,
 			['height'] = 28
-		},		
+		},
 		['tank'] = {
 			['enable'] = true,
 			['threatStyle'] = 'GLOW',
@@ -1852,7 +1852,7 @@ P['unitframe'] = {
 				['width'] = 120,
 				['height'] = 28,
 			},
-		},		
+		},
 		['assist'] = {
 			['enable'] = true,
 			['threatStyle'] = 'GLOW',

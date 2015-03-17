@@ -245,12 +245,12 @@ function S:HandleDropDownBox(frame, width)
 
 	frame:StripTextures()
 	frame:Width(width)
-	
+
 	if(_G[frame:GetName().."Text"]) then
 		_G[frame:GetName().."Text"]:ClearAllPoints()
 		_G[frame:GetName().."Text"]:Point("RIGHT", button, "LEFT", -2, 0)
 	end
-	
+
 	if(button) then
 		button:ClearAllPoints()
 		button:Point("RIGHT", frame, "RIGHT", -10, 3)

@@ -407,7 +407,7 @@ function UF:Update_AllFrames()
 	self:Update_FontStrings()
 	self:Update_StatusBars()
 	BG:UpdateSettings()
-	
+
 	for unit in pairs(self['units']) do
 		if self.db['units'][unit].enable then
 			self[unit]:Enable()
@@ -1054,9 +1054,9 @@ end
 
 function UF:PLAYER_ENTERING_WORLD(event)
 	self:Update_AllFrames()
-	
+
     local showing = BG:IsShowing()
-	
+
     if not BG:Exists() and not BG.db.Active then
         if showing then BG:HideFrame() end
         return
@@ -1143,14 +1143,14 @@ function UF:Initialize()
 	ORD.ShowDispelableDebuff = true
 	ORD.FilterDispellableDebuff = true
 	ORD.MatchBySpellName = true
-	
+
 	ElvCharacterDB.BodyGuard = ElvCharacterDB.BodyGuard or {}
 	ElvCharacterDB.BodyGuard.MaxHealth = ElvCharacterDB.BodyGuard.MaxHealth or 0
 	ElvCharacterDB.BodyGuard.Health = ElvCharacterDB.BodyGuard.Health or 0
 	ElvCharacterDB.BodyGuard.Active = ElvCharacterDB.BodyGuard.Active or false
-	
+
 	BG:UpdateFromBuilding()
-	
+
 	BG:CreateFrame()
 	BG.LoginHealth = true
 	BG:RegisterCallback('guid', BG.GUIDUpdate)
@@ -1161,11 +1161,11 @@ function UF:Initialize()
 	BG:RegisterCallback('gossip_opened', BG.GossipOpened)
 	BG:RegisterCallback('gossip_closed', BG.GossipClosed)
 	BG.db = ElvCharacterDB.BodyGuard
-	
+
     if type(BG.db.IsInValidZone) ~= "boolean" then
         BG.db.IsInValidZone = BG:IsValidZone()
-    end	
-	
+    end
+
 	if BG.db.Active and BG.db.IsInValidZone then
 		BG:ShowFrame()
         BG:HealthUpdate(BG.db.Health, BG.db.MaxHealth)

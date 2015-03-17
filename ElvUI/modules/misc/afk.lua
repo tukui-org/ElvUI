@@ -248,7 +248,7 @@ function AFK:Initialize()
 	self.AFKMode.bottom.time:SetText("00:00")
 	self.AFKMode.bottom.time:SetPoint("TOPLEFT", self.AFKMode.bottom.guild, "BOTTOMLEFT", 0, -6)
 	self.AFKMode.bottom.time:SetTextColor(0.7, 0.7, 0.7)
-	
+
 	--Use this frame to control position of the model
 	self.AFKMode.bottom.modelHolder = CreateFrame("Frame", nil, self.AFKMode.bottom)
 	self.AFKMode.bottom.modelHolder:SetSize(150, 150)

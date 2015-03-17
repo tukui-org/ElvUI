@@ -38,7 +38,7 @@ E.Options.args.skins = {
 					type = 'toggle',
 					name = L["Death Recap"],
 					desc = L['TOGGLESKIN_DESC'],
-				},		
+				},
 				garrison = {
 					type = 'toggle',
 					name = GARRISON_LOCATION_TOOLTIP,

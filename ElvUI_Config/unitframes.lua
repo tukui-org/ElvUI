@@ -4888,7 +4888,7 @@ E.Options.args.unitframe.args.bodyguard = {
 			order = 2,
 			name = L['Restore Defaults'],
 			func = function(info, value) UF:ResetUnitSettings('bodyguard') end,
-		},		
+		},
 		general = {
 			order = 3,
 			type = 'group',

@@ -19,7 +19,7 @@ function BG:IsValidZone()
     local currentMapAreaID = GetCurrentMapAreaID()
     local valid = currentContinent == CONTINENT_DRAENOR and not BODYGUARD_BANNED_ZONES[currentMapAreaID]
     BG.db.IsInValidZone = valid
-	
+
     return valid
 end
 
@@ -39,7 +39,7 @@ function BG:HideFrame()
 	elseif(self.frame:IsEventRegistered("COMBAT_REGEN_ENABLED")) then
 		self.frame:UnregisterEvent("COMBAT_REGEN_ENABLED")
 	end
-	
+
 	self.frame:Hide()
 end
 
@@ -49,9 +49,9 @@ function BG:ShowFrame()
 		self.combatEvent = self.ShowFrame
 		return
 	elseif(self.frame:IsEventRegistered("COMBAT_REGEN_ENABLED")) then
-		self.frame:UnregisterEvent("COMBAT_REGEN_ENABLED")	
+		self.frame:UnregisterEvent("COMBAT_REGEN_ENABLED")
 	end
-	
+
 	self.frame:Show()
 end
 
@@ -73,22 +73,22 @@ function BG:CreateFrame()
 	local frame = CreateFrame("Button", "ElvUF_BodyGuard", E.UIParent, "SecureActionButtonTemplate")
 	frame:SetScript("OnEvent", OnEvent)
 	frame:RegisterEvent("PLAYER_TARGET_CHANGED")
-	
+
 	frame:CreateShadow()
-	frame.targetGlow = frame.shadow 
+	frame.targetGlow = frame.shadow
 	frame.shadow = nil
 	frame.targetGlow:SetBackdropBorderColor(unpack(ElvUF.colors.reaction[5]))
 	frame.targetGlow:Hide()
-	
+
 	BG.frame = frame
 	local name = self:GetName()
 	frame:SetAttribute("type1", "macro")
 	if name then
 		frame:SetAttribute("macrotext1", "/targetexact " .. name)
 	end
-		
+
 	self:HideFrame()
-	
+
 	frame:SetTemplate("Default", nil, true)
 	frame:SetPoint("CENTER", E.UIParent, "CENTER")
 	frame:SetWidth(UF.db.units.bodyguard.width)
@@ -100,15 +100,15 @@ function BG:CreateFrame()
 	frame.healthBar:SetValue(1)
 	frame.healthBar:SetStatusBarTexture(LSM:Fetch("statusbar", UF.db.statusbar))
 	UF.statusbars[frame.healthBar] = true
-	
+
 	frame.healthBar.name = frame.healthBar:CreateFontString(nil, 'OVERLAY')
 	UF:Configure_FontString(frame.healthBar.name)
 	frame.healthBar.name:SetPoint("CENTER", frame, "CENTER")
 
 	frame.healthBar.name:SetTextColor(unpack(ElvUF.colors.reaction[5]))
-	
+
 	E:CreateMover(frame, frame:GetName()..'Mover', L['BodyGuard Frame'], nil, nil, nil, 'ALL,SOLO')
-	
+
 	isCreated = true
 end
 
@@ -118,7 +118,7 @@ function BG:UpdateSettings()
 	else
 		self.frame:SetParent(E.HiddenFrame)
 	end
-	
+
 	self:HealthUpdate(self.db.Health, self.db.MaxHealth)
 	self.frame:SetWidth(UF.db.units.bodyguard.width)
 	self.frame:SetHeight(UF.db.units.bodyguard.height)
@@ -145,7 +145,7 @@ function BG:NameUpdate(name)
 	if(not InCombatLockdown() and name) then
 		self.frame:SetAttribute("macrotext1", "/targetexact " .. name)
 	end
-	
+
 	self.frame.healthBar.name:SetText(name)
 end
 
@@ -156,24 +156,24 @@ end
 function BG:HealthUpdate(health, maxHealth)
 	self.frame.healthBar:SetMinMaxValues(0, maxHealth)
 	self.frame.healthBar:SetValue(health)
-	
+
 	local r, g, b = unpack(ElvUF.colors.health)
 	if E.db.unitframe.colors.healthclass then
 		r, g, b = unpack(ElvUF.colors.reaction[5])
 	end
-	
+
 	if E.db.unitframe.colors.colorhealthbyvalue then
-		r, g, b = ElvUF.ColorGradient(health, maxHealth, 1, 0, 0, 1, 1, 0, r, g, b)		
+		r, g, b = ElvUF.ColorGradient(health, maxHealth, 1, 0, 0, 1, 1, 0, r, g, b)
 	end
-	
+
 	self.frame.healthBar:SetStatusBarColor(r, g, b)
-	
+
 	if(E.db.unitframe.colors.customhealthbackdrop) then
 		self.frame.backdropTexture:SetVertexColor(E.db.unitframe.colors.health_backdrop.r, E.db.unitframe.colors.health_backdrop.g, E.db.unitframe.colors.health_backdrop.b)
 	else
 		self.frame.backdropTexture:SetVertexColor(r * 0.35, g * 0.35, b * 0.35)
 	end
-	
+
 	self.db.Health = health
 	self.db.MaxHealth = maxHealth
 end

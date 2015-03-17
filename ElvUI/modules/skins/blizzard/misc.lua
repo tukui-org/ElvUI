@@ -822,11 +822,11 @@ local function LoadSkin()
         "UnitFramePanelArenaEnemyCastBar",
         "UnitFramePanelArenaEnemyPets",
         "UnitFramePanelFullSizeFocusFrame",
-		
+
 		--Assessability
 		"AccessibilityPanelMovePad",
 		"AccessibilityPanelColorblindMode",
-		
+
 		--Watev
 		"NamesPanelUnitNameplatesNameplateClassColors",
     }
@@ -873,10 +873,10 @@ local function LoadSkin()
         "LanguagesPanelLocaleDropDown",
         -- Status Text
         "StatusTextPanelDisplayDropDown",
-		
+
 		--Assess-ability
 		"AccessibilityPanelColorFilterDropDown",
-		
+
 		--Locales
 		"InterfaceOptionsLanguagesPanelAudioLocaleDropDown",
     }
@@ -921,7 +921,7 @@ local function LoadSkin()
         "AudioOptionsVoicePanelPushToTalkSound",
 		"AudioOptionsSoundPanelPetBattleMusic",
 		"AudioOptionsSoundPanelDialogSounds",
-		
+
         -- Network
         "NetworkOptionsPanelOptimizeSpeed",
         "NetworkOptionsPanelUseIPv6",
@@ -982,7 +982,7 @@ local function LoadSkin()
 		"Advanced_PostProcessAntiAliasingDropDown",
 		"Advanced_ResampleQualityDropDown",
 		"Advanced_MultisampleAntiAliasingDropDown",
-		
+
         -- Audio
         "AudioOptionsSoundPanelHardwareDropDown",
         "AudioOptionsSoundPanelSoundChannelsDropDown",

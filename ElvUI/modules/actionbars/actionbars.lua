@@ -322,7 +322,7 @@ function AB:CreateVehicleLeave()
 	vehicle:SetHighlightTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
 	vehicle:SetTemplate("Default")
 	vehicle:RegisterForClicks("AnyUp")
-	
+
 	vehicle:SetScript("OnClick", Vehicle_OnClick)
 	vehicle:SetScript("OnEnter", MainMenuBarVehicleLeaveButton_OnEnter)
 	vehicle:SetScript("OnLeave", GameTooltip_Hide)
@@ -333,7 +333,7 @@ function AB:CreateVehicleLeave()
 	vehicle:RegisterEvent("UNIT_EXITED_VEHICLE");
 	vehicle:RegisterEvent("VEHICLE_UPDATE");
 	vehicle:SetScript("OnEvent", Vehicle_OnEvent)
-	
+
 	vehicle:Hide()
 end
 
