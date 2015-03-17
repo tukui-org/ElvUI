@@ -80,7 +80,7 @@ E.PopupDialogs["CONFIRM_LOSE_BINDING_CHANGES"] = {
 };
 
 E.PopupDialogs['TUKUI_ELVUI_INCOMPATIBLE'] = {
-	text = L['Oh lord, you have got ElvUI and Tukui both enabled at the same time. Select an addon to disable.'],
+	text = L["Oh lord, you have got ElvUI and Tukui both enabled at the same time. Select an addon to disable."],
 	OnAccept = function() DisableAddOn("ElvUI"); ReloadUI() end,
 	OnCancel = function() DisableAddOn("Tukui"); ReloadUI() end,
 	button1 = 'ElvUI',
@@ -91,10 +91,10 @@ E.PopupDialogs['TUKUI_ELVUI_INCOMPATIBLE'] = {
 }
 
 E.PopupDialogs['DISABLE_INCOMPATIBLE_ADDON'] = {
-	text = L['Do you swear not to post in technical support about something not working without first disabling the addon/module combination first?'],
+	text = L["Do you swear not to post in technical support about something not working without first disabling the addon/module combination first?"],
 	OnAccept = function() E.global.ignoreIncompatible = true; end,
 	OnCancel = function() E:StaticPopup_Hide('DISABLE_INCOMPATIBLE_ADDON'); E:StaticPopup_Show('INCOMPATIBLE_ADDON', E.PopupDialogs['INCOMPATIBLE_ADDON'].addon, E.PopupDialogs['INCOMPATIBLE_ADDON'].module) end,
-	button1 = L['I Swear'],
+	button1 = L["I Swear"],
 	button2 = DECLINE,
 	timeout = 0,
 	whileDead = 1,
@@ -102,10 +102,10 @@ E.PopupDialogs['DISABLE_INCOMPATIBLE_ADDON'] = {
 }
 
 E.PopupDialogs['INCOMPATIBLE_ADDON'] = {
-	text = L['INCOMPATIBLE_ADDON'],
+	text = L["INCOMPATIBLE_ADDON"],
 	OnAccept = function(self) DisableAddOn(E.PopupDialogs['INCOMPATIBLE_ADDON'].addon); ReloadUI(); end,
 	OnCancel = function(self) E.private[lower(E.PopupDialogs['INCOMPATIBLE_ADDON'].module)].enable = false; ReloadUI(); end,
-	button3 = L['Disable Warning'],
+	button3 = L["Disable Warning"],
 	OnAlt = function ()
 		E:StaticPopup_Hide('INCOMPATIBLE_ADDON')
 		E:StaticPopup_Show('DISABLE_INCOMPATIBLE_ADDON');
@@ -144,7 +144,7 @@ E.PopupDialogs['QUEUE_TAINT'] = {
 }
 
 E.PopupDialogs['FAILED_UISCALE'] = {
-	text = L['You have changed your UIScale, however you still have the AutoScale option enabled in ElvUI. Press accept if you would like to disable the Auto Scale option.'],
+	text = L["You have changed your UIScale, however you still have the AutoScale option enabled in ElvUI. Press accept if you would like to disable the Auto Scale option."],
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	OnAccept = function() E.global.general.autoScale = false; ReloadUI(); end,
@@ -185,8 +185,8 @@ E.PopupDialogs["PRIVATE_RL"] = {
 
 E.PopupDialogs["KEYBIND_MODE"] = {
 	text = L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the escape key or right click to clear the current actionbutton's keybinding."],
-	button1 = L['Save'],
-	button2 = L['Discard'],
+	button1 = L["Save"],
+	button2 = L["Discard"],
 	OnAccept = function() local AB = E:GetModule('ActionBars'); AB:DeactivateBindMode(true) end,
 	OnCancel = function() local AB = E:GetModule('ActionBars'); AB:DeactivateBindMode(false) end,
 	timeout = 0,
@@ -231,7 +231,7 @@ E.PopupDialogs["CANNOT_BUY_BANK_SLOT"] = {
 }
 
 E.PopupDialogs["NO_BANK_BAGS"] = {
-	text = L['You must purchase a bank slot first!'],
+	text = L["You must purchase a bank slot first!"],
 	button1 = ACCEPT,
 	timeout = 0,
 	whileDead = 1,

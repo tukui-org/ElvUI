@@ -23,7 +23,7 @@ function UF:Construct_PetFrame(frame)
 	frame.AuraWatch = UF:Construct_AuraWatch(frame)
 	frame.Range = UF:Construct_Range(frame)
 	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 118)
-	E:CreateMover(frame, frame:GetName()..'Mover', L['Pet Frame'], nil, nil, nil, 'ALL,SOLO')
+	E:CreateMover(frame, frame:GetName()..'Mover', L["Pet Frame"], nil, nil, nil, 'ALL,SOLO')
 end
 
 function UF:Update_PetFrame(frame, db)

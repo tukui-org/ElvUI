@@ -37,22 +37,22 @@ E.Options.args.skins = {
 				deathRecap = {
 					type = 'toggle',
 					name = L["Death Recap"],
-					desc = L['TOGGLESKIN_DESC'],
+					desc = L["TOGGLESKIN_DESC"],
 				},
 				garrison = {
 					type = 'toggle',
 					name = GARRISON_LOCATION_TOOLTIP,
-					desc = L['TOGGLESKIN_DESC'],
+					desc = L["TOGGLESKIN_DESC"],
 				},
 				bmah = {
 					type = 'toggle',
-					name = L['Black Market AH'],
-					desc = L['TOGGLESKIN_DESC'],
+					name = L["Black Market AH"],
+					desc = L["TOGGLESKIN_DESC"],
 				},
 				transmogrify = {
 					type = 'toggle',
-					name = L['Transmogrify Frame'],
-					desc = L['TOGGLESKIN_DESC'],
+					name = L["Transmogrify Frame"],
+					desc = L["TOGGLESKIN_DESC"],
 				},
 				encounterjournal = {
 					type = "toggle",
@@ -296,22 +296,22 @@ E.Options.args.skins = {
 				},
 				losscontrol = {
 					type = "toggle",
-					name = L['Loss Control'],
+					name = L["Loss Control"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				voidstorage = {
 					type = "toggle",
-					name = L['Void Storage'],
+					name = L["Void Storage"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				itemUpgrade = {
 					type = "toggle",
-					name = L['Item Upgrade'],
+					name = L["Item Upgrade"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				questChoice = {
 					type = "toggle",
-					name = L['Quest Choice'],
+					name = L["Quest Choice"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 			},

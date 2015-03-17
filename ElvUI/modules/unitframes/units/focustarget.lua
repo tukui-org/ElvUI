@@ -18,7 +18,7 @@ function UF:Construct_FocusTargetFrame(frame)
 	frame.Range = UF:Construct_Range(frame)
 	frame.Threat = UF:Construct_Threat(frame)
 	frame:Point('BOTTOM', ElvUF_Focus, 'TOP', 0, 7) --Set to default position
-	E:CreateMover(frame, frame:GetName()..'Mover', L['FocusTarget Frame'], nil, -7, nil, 'ALL,SOLO')
+	E:CreateMover(frame, frame:GetName()..'Mover', L["FocusTarget Frame"], nil, -7, nil, 'ALL,SOLO')
 end
 
 function UF:Update_FocusTargetFrame(frame, db)

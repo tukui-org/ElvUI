@@ -51,7 +51,7 @@ local function OnEvent(self, event)
 		end
 	end
 
-	self.text:SetText(format('%s: %s %s: %s', L['Spec'], talent, LOOT, loot))
+	self.text:SetText(format('%s: %s %s: %s', L["Spec"], talent, LOOT, loot))
 end
 
 local function OnEnter(self)
@@ -80,8 +80,8 @@ local function OnEnter(self)
 	end
 
 	DT.tooltip:AddLine(' ')
-	DT.tooltip:AddLine(L['|cffFFFFFFLeft Click:|r Change Talent Specialization'])
-	DT.tooltip:AddLine(L['|cffFFFFFFRight Click:|r Change Loot Specialization'])
+	DT.tooltip:AddLine(L["|cffFFFFFFLeft Click:|r Change Talent Specialization"])
+	DT.tooltip:AddLine(L["|cffFFFFFFRight Click:|r Change Loot Specialization"])
 
 	DT.tooltip:Show()
 end

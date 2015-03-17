@@ -506,7 +506,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		end
 		local numList = #targetList
 		if (numList > 0) then
-			GameTooltip:AddLine(format("%s (|cffffffff%d|r): %s", L['Targeted By:'], numList, tconcat(targetList, ", ")), nil, nil, nil, true);
+			GameTooltip:AddLine(format("%s (|cffffffff%d|r): %s", L["Targeted By:"], numList, tconcat(targetList, ", ")), nil, nil, nil, true);
 			twipe(targetList);
 		end
 	end
@@ -558,12 +558,12 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 		end
 
 		if self.db.itemCount == "BAGS_ONLY" then
-			right = ("|cFFCA3C3C%s|r %d"):format(L['Count'], num)
+			right = ("|cFFCA3C3C%s|r %d"):format(L["Count"], num)
 		elseif self.db.itemCount == "BANK_ONLY" then
-			bankCount = ("|cFFCA3C3C%s|r %d"):format(L['Bank'],(numall - num))
+			bankCount = ("|cFFCA3C3C%s|r %d"):format(L["Bank"],(numall - num))
 		elseif self.db.itemCount == "BOTH" then
-			right = ("|cFFCA3C3C%s|r %d"):format(L['Count'], num)
-			bankCount = ("|cFFCA3C3C%s|r %d"):format(L['Bank'],(numall - num))
+			right = ("|cFFCA3C3C%s|r %d"):format(L["Count"], num)
+			bankCount = ("|cFFCA3C3C%s|r %d"):format(L["Bank"],(numall - num))
 		end
 
 		if left ~= " " or right ~= " " then
@@ -683,7 +683,7 @@ function TT:Initialize()
 	self.db = E.db.tooltip
 
 	BNToastFrame:Point('TOPRIGHT', MMHolder, 'BOTTOMRIGHT', 0, -10);
-	E:CreateMover(BNToastFrame, 'BNETMover', L['BNet Frame'])
+	E:CreateMover(BNToastFrame, 'BNETMover', L["BNet Frame"])
 	self:SecureHook(BNToastFrame, "SetPoint", "RepositionBNET")
 
 	if E.private.tooltip.enable ~= true then return end
@@ -704,7 +704,7 @@ function TT:Initialize()
 	GameTooltipAnchor:Point('BOTTOMRIGHT', RightChatToggleButton, 'BOTTOMRIGHT')
 	GameTooltipAnchor:Size(130, 20)
 	GameTooltipAnchor:SetFrameLevel(GameTooltipAnchor:GetFrameLevel() + 50)
-	E:CreateMover(GameTooltipAnchor, 'TooltipMover', L['Tooltip'])
+	E:CreateMover(GameTooltipAnchor, 'TooltipMover', L["Tooltip"])
 
 	self:SecureHook('GameTooltip_SetDefaultAnchor')
 	self:SecureHook('GameTooltip_ShowStatusBar')

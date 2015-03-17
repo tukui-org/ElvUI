@@ -46,8 +46,8 @@ local chatframetexture = ChatFrame_GetMobileEmbeddedTexture(73/255, 177/255, 73/
 local onlinestatusstring = "|cffFFFFFF[|r|cffFF0000%s|r|cffFFFFFF]|r"
 local onlinestatus = {
 	[0] = function () return '' end,
-	[1] = function () return format(onlinestatusstring, L['AFK']) end,
-	[2] = function () return format(onlinestatusstring, L['DND']) end,
+	[1] = function () return format(onlinestatusstring, L["AFK"]) end,
+	[2] = function () return format(onlinestatusstring, L["DND"]) end,
 }
 local mobilestatus = {
 	[0] = function () return chatframetexture end,
@@ -263,7 +263,7 @@ end
 
 local function ValueColorUpdate(hex, r, g, b)
 	displayString = join("", GUILD, ": ", hex, "%d|r")
-	noGuildString = join("", hex, L['No Guild'])
+	noGuildString = join("", hex, L["No Guild"])
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel, 'ELVUI_COLOR_UPDATE')

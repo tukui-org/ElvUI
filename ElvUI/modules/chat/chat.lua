@@ -21,14 +21,14 @@ local PLAYER_NAME = E.myname.."-"..PLAYER_REALM
 
 local TIMESTAMP_FORMAT
 local DEFAULT_STRINGS = {
-	GUILD = L['G'],
-	PARTY = L['P'],
-	RAID = L['R'],
-	OFFICER = L['O'],
-	PARTY_LEADER = L['PL'],
-	RAID_LEADER = L['RL'],
-	INSTANCE_CHAT = L['I'],
-	INSTANCE_CHAT_LEADER = L['IL'],
+	GUILD = L["G"],
+	PARTY = L["P"],
+	RAID = L["R"],
+	OFFICER = L["O"],
+	PARTY_LEADER = L["PL"],
+	RAID_LEADER = L["RL"],
+	INSTANCE_CHAT = L["I"],
+	INSTANCE_CHAT_LEADER = L["IL"],
 	PET_BATTLE_COMBAT_LOG = PET_BATTLE_COMBAT_LOG,
 }
 
@@ -304,7 +304,7 @@ function CH:StyleChat(frame)
 				if unitname and UnitRealmRelationship("target") ~= LE_REALM_RELATION_SAME then
 					unitname = unitname .. "-" .. gsub(realm, " ", "")
 				end
-				ChatFrame_SendTell((unitname or L['Invalid Target']), ChatFrame1)
+				ChatFrame_SendTell((unitname or L["Invalid Target"]), ChatFrame1)
 			end
 
 			if text:sub(1, 4) == "/gr " then
@@ -1139,13 +1139,13 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			if CH.db.shortChannels and type ~= "EMOTE" and type ~= "TEXT_EMOTE" then
 				body = body:gsub("|Hchannel:(.-)|h%[(.-)%]|h", CH.ShortChannel)
 				body = body:gsub('CHANNEL:', '')
-				body = body:gsub("^(.-|h) "..L['whispers'], "%1")
-				body = body:gsub("^(.-|h) "..L['says'], "%1")
-				body = body:gsub("^(.-|h) "..L['yells'], "%1")
-				body = body:gsub("<"..AFK..">", "[|cffFF0000"..L['AFK'].."|r] ")
-				body = body:gsub("<"..DND..">", "[|cffE7E716"..L['DND'].."|r] ")
+				body = body:gsub("^(.-|h) "..L["whispers"], "%1")
+				body = body:gsub("^(.-|h) "..L["says"], "%1")
+				body = body:gsub("^(.-|h) "..L["yells"], "%1")
+				body = body:gsub("<"..AFK..">", "[|cffFF0000"..L["AFK"].."|r] ")
+				body = body:gsub("<"..DND..">", "[|cffE7E716"..L["DND"].."|r] ")
 				body = body:gsub("%[BN_CONVERSATION:", '%['.."")
-				body = body:gsub("^%["..RAID_WARNING.."%]", '['..L['RW']..']')
+				body = body:gsub("^%["..RAID_WARNING.."%]", '['..L["RW"]..']')
 			end
 			self:AddMessage(CH:ConcatenateTimeStamp(body), info.r, info.g, info.b, info.id, false, accessID, typeID);
 		end

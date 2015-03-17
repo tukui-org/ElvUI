@@ -14,10 +14,10 @@ end
 function AB:DeactivateBindMode(save)
 	if save then
 		SaveBindings(GetCurrentBindingSet());
-		E:Print(L['Binds Saved']);
+		E:Print(L["Binds Saved"]);
 	else
 		LoadBindings(GetCurrentBindingSet());
-		E:Print(L['Binds Discarded']);
+		E:Print(L["Binds Discarded"]);
 	end
 	bind.active = false;
 	self:BindHide();
@@ -96,7 +96,7 @@ function AB:BindUpdate(button, spellmacro)
 		bind.button.name = GetSpellInfo(button.spellID);
 		bind.button.bindstring = "SPELL "..bind.button.name
 
-		GameTooltip:AddLine(L['Trigger']);
+		GameTooltip:AddLine(L["Trigger"]);
 		GameTooltip:Show();
 		GameTooltip:SetScript("OnHide", function(tt)
 			tt:SetOwner(bind, "ANCHOR_TOP");
@@ -118,7 +118,7 @@ function AB:BindUpdate(button, spellmacro)
 		bind.button.id = SpellBook_GetSpellBookSlot(bind.button);
 		bind.button.name = GetSpellBookItemName(bind.button.id, SpellBookFrame.bookType);
 
-		GameTooltip:AddLine(L['Trigger']);
+		GameTooltip:AddLine(L["Trigger"]);
 		GameTooltip:Show();
 		GameTooltip:SetScript("OnHide", function(tt)
 			tt:SetOwner(bind, "ANCHOR_TOP");
@@ -169,7 +169,7 @@ function AB:BindUpdate(button, spellmacro)
 			bind.button.bindstring = (spellmacro=="STANCE" and "StanceButton" or "BONUSACTIONBUTTON")..bind.button.id;
 		end
 
-		GameTooltip:AddLine(L['Trigger']);
+		GameTooltip:AddLine(L["Trigger"]);
 		GameTooltip:Show();
 		GameTooltip:SetScript("OnHide", function(tt)
 			tt:SetOwner(bind, "ANCHOR_NONE");
@@ -211,7 +211,7 @@ function AB:BindUpdate(button, spellmacro)
 			end
 		end
 
-		GameTooltip:AddLine(L['Trigger']);
+		GameTooltip:AddLine(L["Trigger"]);
 		GameTooltip:Show();
 		GameTooltip:SetScript("OnHide", function(tt)
 			tt:SetOwner(bind, "ANCHOR_TOP");

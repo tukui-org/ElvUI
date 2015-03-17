@@ -369,7 +369,7 @@ function M:Initialize()
 		FeedbackUIButton:Kill()
 	end
 
-	E:CreateMover(MMHolder, 'MinimapMover', L['Minimap'])
+	E:CreateMover(MMHolder, 'MinimapMover', L["Minimap"])
 
 	Minimap:EnableMouseWheel(true)
 	Minimap:SetScript("OnMouseWheel", M.Minimap_OnMouseWheel)

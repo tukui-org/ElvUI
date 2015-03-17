@@ -11,5 +11,5 @@ function B:PositionAltPowerBar()
 	PlayerPowerBarAlt:SetParent(holder)
 	PlayerPowerBarAlt.ignoreFramePositionManager = true
 
-	E:CreateMover(holder, 'AltPowerBarMover', L['Alternative Power'])
+	E:CreateMover(holder, 'AltPowerBarMover', L["Alternative Power"])
 end

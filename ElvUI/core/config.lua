@@ -331,7 +331,7 @@ function E:CreateMoverPopup()
 
 	align.text = align:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
 	align.text:SetPoint('RIGHT', align, 'LEFT', -4, 0)
-	align.text:SetText(L['Grid Size:'])
+	align.text:SetText(L["Grid Size:"])
 
 	--position buttons
 	snapping:SetPoint("BOTTOMLEFT", 14, 10)
@@ -356,7 +356,7 @@ function E:CreateMoverPopup()
 	S:HandleDropDownBox(configMode, 148)
 	configMode.text = configMode:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
 	configMode.text:SetPoint('RIGHT', configMode.backdrop, 'LEFT', -2, 0)
-	configMode.text:SetText(L['Config Mode:'])
+	configMode.text:SetText(L["Config Mode:"])
 
 	UIDropDownMenu_Initialize(configMode, ConfigMode_Initialize);
 
@@ -390,7 +390,7 @@ function E:CreateMoverPopup()
 	local title = header:CreateFontString("OVERLAY")
 	title:FontTemplate()
 	title:SetPoint("CENTER", header, "CENTER")
-	title:SetText(L['Nudge'])
+	title:SetText(L["Nudge"])
 
 	local xOffset = CreateFrame('EditBox', nudgeFrame:GetName()..'XEditBox', nudgeFrame, 'InputBoxTemplate')
 	xOffset:Width(50)

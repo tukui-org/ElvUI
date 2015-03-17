@@ -58,25 +58,25 @@ E.Options.args.datatexts = {
 		time24 = {
 			order = 2,
 			type = 'toggle',
-			name = L['24-Hour Time'],
-			desc = L['Toggle 24-hour mode for the time datatext.'],
+			name = L["24-Hour Time"],
+			desc = L["Toggle 24-hour mode for the time datatext."],
 		},
 		localtime = {
 			order = 3,
 			type = 'toggle',
-			name = L['Local Time'],
-			desc = L['If not set to true then the server time will be displayed instead.'],
+			name = L["Local Time"],
+			desc = L["If not set to true then the server time will be displayed instead."],
 		},
 		battleground = {
 			order = 4,
 			type = 'toggle',
-			name = L['Battleground Texts'],
-			desc = L['When inside a battleground display personal scoreboard information on the main datatext bars.'],
+			name = L["Battleground Texts"],
+			desc = L["When inside a battleground display personal scoreboard information on the main datatext bars."],
 		},
 		minimapPanels = {
 			order = 5,
-			name = L['Minimap Panels'],
-			desc = L['Display minimap panels below the minimap, used for datatexts.'],
+			name = L["Minimap Panels"],
+			desc = L["Display minimap panels below the minimap, used for datatexts."],
 			type = 'toggle',
 			set = function(info, value)
 				E.db.datatexts[ info[#info] ] = value
@@ -85,8 +85,8 @@ E.Options.args.datatexts = {
 		},
 		leftChatPanel = {
 			order = 6,
-			name = L['Datatext Panel (Left)'],
-			desc = L['Display data panels below the chat, used for datatexts.'],
+			name = L["Datatext Panel (Left)"],
+			desc = L["Display data panels below the chat, used for datatexts."],
 			type = 'toggle',
 			set = function(info, value)
 				E.db.datatexts[ info[#info] ] = value
@@ -101,8 +101,8 @@ E.Options.args.datatexts = {
 		},
 		rightChatPanel = {
 			order = 7,
-			name = L['Datatext Panel (Right)'],
-			desc = L['Display data panels below the chat, used for datatexts.'],
+			name = L["Datatext Panel (Right)"],
+			desc = L["Display data panels below the chat, used for datatexts."],
 			type = 'toggle',
 			set = function(info, value)
 				E.db.datatexts[ info[#info] ] = value
@@ -117,7 +117,7 @@ E.Options.args.datatexts = {
 		},
 		panelTransparency = {
 			order = 8,
-			name = L['Panel Transparency'],
+			name = L["Panel Transparency"],
 			type = 'toggle',
 			set = function(info, value)
 				E.db.datatexts[ info[#info] ] = value
@@ -130,23 +130,23 @@ E.Options.args.datatexts = {
 			name = L["Gold Format"],
 			desc = L["The display format of the money text that is shown in the gold datatext and its tooltip."],
 			values = {
-				['SMART'] = L['Smart'],
-				['FULL'] = L['Full'],
-				['SHORT'] = L['Short'],
-				['SHORTINT'] = L['Short (Whole Numbers)'],
-				['CONDENSED'] = L['Condensed'],
-				['BLIZZARD'] = L['Blizzard Style'],
+				['SMART'] = L["Smart"],
+				['FULL'] = L["Full"],
+				['SHORT'] = L["Short"],
+				['SHORTINT'] = L["Short (Whole Numbers)"],
+				['CONDENSED'] = L["Condensed"],
+				['BLIZZARD'] = L["Blizzard Style"],
 			},
 		},
 		goldCoins = {
 			order = 10,
 			type = 'toggle',
-			name = L['Show Coins'],
-			desc = L['Use coin icons instead of colored text.'],
+			name = L["Show Coins"],
+			desc = L["Use coin icons instead of colored text."],
 		},
 		panels = {
 			type = 'group',
-			name = L['Panels'],
+			name = L["Panels"],
 			order = 100,
 			args = {},
 			guiInline = true,
@@ -155,7 +155,7 @@ E.Options.args.datatexts = {
 			order = 120,
 			type = 'group',
 			guiInline = true,
-			name = L['Fonts'],
+			name = L["Fonts"],
 			args = {
 				font = {
 					type = "select", dialogControl = 'LSM30_Font',
@@ -175,7 +175,7 @@ E.Options.args.datatexts = {
 					desc = L["Set the font outline."],
 					type = "select",
 					values = {
-						['NONE'] = L['None'],
+						['NONE'] = L["None"],
 						['OUTLINE'] = 'OUTLINE',
 
 						['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',

@@ -690,7 +690,7 @@ function B:DoMove(move)
 		if moveTracker[source] then
 			return false, 'move incomplete'
 		else
-			return B:StopStacking(L['Confused.. Try Again!'])
+			return B:StopStacking(L["Confused.. Try Again!"])
 		end
 	end
 
@@ -720,13 +720,13 @@ end
 
 function B:DoMoves()
 	if InCombatLockdown() then
-		return B:StopStacking(L['Confused.. Try Again!'])
+		return B:StopStacking(L["Confused.. Try Again!"])
 	end
 
 	local cursorType, cursorItemID = GetCursorInfo()
 	if cursorType == "item" and cursorItemID then
 		if lastItemID ~= cursorItemID then
-			return B:StopStacking(L['Confused.. Try Again!'])
+			return B:StopStacking(L["Confused.. Try Again!"])
 		end
 
 		if moveRetries < 100 then
@@ -821,7 +821,7 @@ function B:CommandDecorator(func, groupsDefaults)
 
 	return function(groups)
 		if self.SortUpdateTimer:IsShown() then
-			E:Print(L['Already Running.. Bailing Out!']);
+			E:Print(L["Already Running.. Bailing Out!"]);
 			B:StopStacking()
 			return;
 		end

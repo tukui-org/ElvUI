@@ -20,21 +20,21 @@ E.Options.args = {
 	LoginMessage = {
 		order = 2,
 		type = 'toggle',
-		name = L['Login Message'],
+		name = L["Login Message"],
 		get = function(info) return E.db.general.loginmessage end,
 		set = function(info, value) E.db.general.loginmessage = value end,
 	},
 	ToggleTutorial = {
 		order = 3,
 		type = 'execute',
-		name = L['Toggle Tutorials'],
+		name = L["Toggle Tutorials"],
 		func = function() E:Tutorials(true); E:ToggleConfig()  end,
 	},
 	Install = {
 		order = 4,
 		type = 'execute',
-		name = L['Install'],
-		desc = L['Run the installation process.'],
+		name = L["Install"],
+		desc = L["Run the installation process."],
 		func = function() E:Install(); E:ToggleConfig() end,
 	},
 	ToggleAnchors = {
@@ -73,16 +73,16 @@ E.Options.args.general = {
 			args = {
 				pixelPerfect = {
 					order = 1,
-					name = L['Pixel Perfect'],
-					desc = L['The Pixel Perfect option will change the overall apperance of your UI. Using Pixel Perfect is a slight performance increase over the traditional layout.'],
+					name = L["Pixel Perfect"],
+					desc = L["The Pixel Perfect option will change the overall apperance of your UI. Using Pixel Perfect is a slight performance increase over the traditional layout."],
 					type = 'toggle',
 					get = function(info) return E.private.general.pixelPerfect end,
 					set = function(info, value) E.private.general.pixelPerfect = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
 				interruptAnnounce = {
 					order = 2,
-					name = L['Announce Interrupts'],
-					desc = L['Announce when you interrupt a spell to the specified chat channel.'],
+					name = L["Announce Interrupts"],
+					desc = L["Announce when you interrupt a spell to the specified chat channel."],
 					type = 'select',
 					values = {
 						['NONE'] = NONE,
@@ -93,8 +93,8 @@ E.Options.args.general = {
 				},
 				autoRepair = {
 					order = 3,
-					name = L['Auto Repair'],
-					desc = L['Automatically repair using the following method when visiting a merchant.'],
+					name = L["Auto Repair"],
+					desc = L["Automatically repair using the following method when visiting a merchant."],
 					type = 'select',
 					values = {
 						['NONE'] = NONE,
@@ -105,48 +105,48 @@ E.Options.args.general = {
 				chatBubbles = {
 					order = 5,
 					type = "select",
-					name = L['Chat Bubbles Style'],
-					desc = L['Skin the blizzard chat bubbles.'],
+					name = L["Chat Bubbles Style"],
+					desc = L["Skin the blizzard chat bubbles."],
 					get = function(info) return E.private.general.chatBubbles end,
 					set = function(info, value) E.private.general.chatBubbles = value; E:StaticPopup_Show("PRIVATE_RL") end,
 					values = {
-						['backdrop'] = L['Skin Backdrop'],
-						['nobackdrop'] = L['Remove Backdrop'],
-						['disabled'] = L['Disabled']
+						['backdrop'] = L["Skin Backdrop"],
+						['nobackdrop'] = L["Remove Backdrop"],
+						['disabled'] = L["Disabled"]
 					}
 				},
 				autoAcceptInvite = {
 					order = 6,
-					name = L['Accept Invites'],
-					desc = L['Automatically accept invites from guild/friends.'],
+					name = L["Accept Invites"],
+					desc = L["Automatically accept invites from guild/friends."],
 					type = 'toggle',
 				},
 				vendorGrays = {
 					order = 7,
-					name = L['Vendor Grays'],
-					desc = L['Automatically vendor gray items when visiting a vendor.'],
+					name = L["Vendor Grays"],
+					desc = L["Automatically vendor gray items when visiting a vendor."],
 					type = 'toggle',
 				},
 				autoRoll = {
 					order = 8,
-					name = L['Auto Greed/DE'],
-					desc = L['Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level.'],
+					name = L["Auto Greed/DE"],
+					desc = L["Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level."],
 					type = 'toggle',
 					disabled = function() return not E.private.general.lootRoll end
 				},
 				loot = {
 					order = 9,
 					type = "toggle",
-					name = L['Loot'],
-					desc = L['Enable/Disable the loot frame.'],
+					name = L["Loot"],
+					desc = L["Enable/Disable the loot frame."],
 					get = function(info) return E.private.general.loot end,
 					set = function(info, value) E.private.general.loot = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
 				lootRoll = {
 					order = 10,
 					type = "toggle",
-					name = L['Loot Roll'],
-					desc = L['Enable/Disable the loot roll frame.'],
+					name = L["Loot Roll"],
+					desc = L["Enable/Disable the loot roll frame."],
 					get = function(info) return E.private.general.lootRoll end,
 					set = function(info, value) E.private.general.lootRoll = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
@@ -181,24 +181,24 @@ E.Options.args.general = {
 				bottomPanel = {
 					order = 16,
 					type = 'toggle',
-					name = L['Bottom Panel'],
-					desc = L['Display a panel across the bottom of the screen. This is for cosmetic only.'],
+					name = L["Bottom Panel"],
+					desc = L["Display a panel across the bottom of the screen. This is for cosmetic only."],
 					get = function(info) return E.db.general.bottomPanel end,
 					set = function(info, value) E.db.general.bottomPanel = value; E:GetModule('Layout'):BottomPanelVisibility() end
 				},
 				topPanel = {
 					order = 17,
 					type = 'toggle',
-					name = L['Top Panel'],
-					desc = L['Display a panel across the top of the screen. This is for cosmetic only.'],
+					name = L["Top Panel"],
+					desc = L["Display a panel across the top of the screen. This is for cosmetic only."],
 					get = function(info) return E.db.general.topPanel end,
 					set = function(info, value) E.db.general.topPanel = value; E:GetModule('Layout'):TopPanelVisibility() end
 				},
 				afk = {
 					order = 18,
 					type = 'toggle',
-					name = L['AFK Mode'],
-					desc = L['When you go AFK display the AFK screen.'],
+					name = L["AFK Mode"],
+					desc = L["When you go AFK display the AFK screen."],
 					get = function(info) return E.db.general.afk end,
 					set = function(info, value) E.db.general.afk = value; E:GetModule('AFK'):Toggle() end
 
@@ -206,8 +206,8 @@ E.Options.args.general = {
 				smallerWorldMap = {
 					order = 19,
 					type = 'toggle',
-					name = L['Smaller World Map'],
-					desc = L['Make the world map smaller.'],
+					name = L["Smaller World Map"],
+					desc = L["Make the world map smaller."],
 					get = function(info) return E.global.general.smallerWorldMap end,
 					set = function(info, value) E.global.general.smallerWorldMap = value; E:StaticPopup_Show("GLOBAL_RL") end
 				},
@@ -263,8 +263,8 @@ E.Options.args.general = {
 						replaceBlizzFonts = {
 							order = 5,
 							type = 'toggle',
-							name = L['Replace Blizzard Fonts'],
-							desc = L['Replaces the default Blizzard fonts on various panels and frames with the fonts chosen in the Media section of the ElvUI config. NOTE: Any font that inherits from the fonts ElvUI usually replaces will be affected as well if you disable this. Enabled by default.'],
+							name = L["Replace Blizzard Fonts"],
+							desc = L["Replaces the default Blizzard fonts on various panels and frames with the fonts chosen in the Media section of the ElvUI config. NOTE: Any font that inherits from the fonts ElvUI usually replaces will be affected as well if you disable this. Enabled by default."],
 							get = function(info) return E.private.general[ info[#info] ] end,
 							set = function(info, value) E.private.general[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL"); end,
 						},
@@ -392,7 +392,7 @@ E.Options.args.general = {
 					order = 1,
 					type = "toggle",
 					name = L["Enable"],
-					desc = L['Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the consolidated buffs bar, and prevent you from seeing the minimap datatexts.|r'],
+					desc = L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the consolidated buffs bar, and prevent you from seeing the minimap datatexts.|r"],
 					get = function(info) return E.private.general.minimap[ info[#info] ] end,
 					set = function(info, value) E.private.general.minimap[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
 				},
@@ -400,7 +400,7 @@ E.Options.args.general = {
 					order = 2,
 					type = "range",
 					name = L["Size"],
-					desc = L['Adjust the size of the minimap.'],
+					desc = L["Adjust the size of the minimap."],
 					min = 120, max = 250, step = 1,
 					set = function(info, value) E.db.general.minimap[ info[#info] ] = value; E:GetModule('Minimap'):UpdateSettings() end,
 					disabled = function() return not E.private.general.minimap.enable end,
@@ -408,14 +408,14 @@ E.Options.args.general = {
 				locationText = {
 					order = 3,
 					type = 'select',
-					name = L['Location Text'],
-					desc = L['Change settings for the display of the location text that is on the minimap.'],
+					name = L["Location Text"],
+					desc = L["Change settings for the display of the location text that is on the minimap."],
 					get = function(info) return E.db.general.minimap.locationText end,
 					set = function(info, value) E.db.general.minimap.locationText = value; E:GetModule('Minimap'):UpdateSettings(); E:GetModule('Minimap'):Update_ZoneText() end,
 					values = {
-						['MOUSEOVER'] = L['Minimap Mouseover'],
-						['SHOW'] = L['Always Display'],
-						['HIDE'] = L['Hide'],
+						['MOUSEOVER'] = L["Minimap Mouseover"],
+						['SHOW'] = L["Always Display"],
+						['HIDE'] = L["Hide"],
 					},
 					disabled = function() return not E.private.general.minimap.enable end,
 				},
@@ -461,14 +461,14 @@ E.Options.args.general = {
 								xOffset = {
 									order = 3,
 									type = 'range',
-									name = L['xOffset'],
+									name = L["xOffset"],
 									min = -50, max = 50, step = 1,
 									disabled = function() return E.private.general.minimap.hideGarrison end,
 								},
 								yOffset = {
 									order = 4,
 									type = 'range',
-									name = L['yOffset'],
+									name = L["yOffset"],
 									min = -50, max = 50, step = 1,
 									disabled = function() return E.private.general.minimap.hideGarrison end,
 								},
@@ -513,14 +513,14 @@ E.Options.args.general = {
 								xOffset = {
 									order = 3,
 									type = 'range',
-									name = L['xOffset'],
+									name = L["xOffset"],
 									min = -50, max = 50, step = 1,
 									disabled = function() return E.private.general.minimap.hideCalendar end,
 								},
 								yOffset = {
 									order = 4,
 									type = 'range',
-									name = L['yOffset'],
+									name = L["yOffset"],
 									min = -50, max = 50, step = 1,
 									disabled = function() return E.private.general.minimap.hideCalendar end,
 								},
@@ -564,13 +564,13 @@ E.Options.args.general = {
 								xOffset = {
 									order = 3,
 									type = 'range',
-									name = L['xOffset'],
+									name = L["xOffset"],
 									min = -50, max = 50, step = 1,
 								},
 								yOffset = {
 									order = 4,
 									type = 'range',
-									name = L['yOffset'],
+									name = L["yOffset"],
 									min = -50, max = 50, step = 1,
 								},
 							},
@@ -578,7 +578,7 @@ E.Options.args.general = {
 						lfgEye = {
 							order = 3,
 							type = 'group',
-							name = L['LFG Queue'],
+							name = L["LFG Queue"],
 							get = function(info) return E.db.general.minimap.icons.lfgEye[ info[#info] ] end,
 							set = function(info, value) E.db.general.minimap.icons.lfgEye[ info[#info] ] = value; E:GetModule('Minimap'):UpdateSettings() end,
 							args = {
@@ -606,13 +606,13 @@ E.Options.args.general = {
 								xOffset = {
 									order = 3,
 									type = 'range',
-									name = L['xOffset'],
+									name = L["xOffset"],
 									min = -50, max = 50, step = 1,
 								},
 								yOffset = {
 									order = 4,
 									type = 'range',
-									name = L['yOffset'],
+									name = L["yOffset"],
 									min = -50, max = 50, step = 1,
 								},
 							},
@@ -620,7 +620,7 @@ E.Options.args.general = {
 						difficulty = {
 							order = 4,
 							type = 'group',
-							name = L['Instance Difficulty'],
+							name = L["Instance Difficulty"],
 							get = function(info) return E.db.general.minimap.icons.difficulty[ info[#info] ] end,
 							set = function(info, value) E.db.general.minimap.icons.difficulty[ info[#info] ] = value; E:GetModule('Minimap'):UpdateSettings() end,
 							args = {
@@ -648,13 +648,13 @@ E.Options.args.general = {
 								xOffset = {
 									order = 3,
 									type = 'range',
-									name = L['xOffset'],
+									name = L["xOffset"],
 									min = -50, max = 50, step = 1,
 								},
 								yOffset = {
 									order = 4,
 									type = 'range',
-									name = L['yOffset'],
+									name = L["yOffset"],
 									min = -50, max = 50, step = 1,
 								},
 							},
@@ -690,13 +690,13 @@ E.Options.args.general = {
 								xOffset = {
 									order = 3,
 									type = 'range',
-									name = L['xOffset'],
+									name = L["xOffset"],
 									min = -50, max = 50, step = 1,
 								},
 								yOffset = {
 									order = 4,
 									type = 'range',
-									name = L['yOffset'],
+									name = L["yOffset"],
 									min = -50, max = 50, step = 1,
 								},
 							},
@@ -721,7 +721,7 @@ E.Options.args.general = {
 				mouseover = {
 					order = 1,
 					type = "toggle",
-					name = L['Mouseover'],
+					name = L["Mouseover"],
 				},
 				spacer = {
 					order = 2,
@@ -743,11 +743,11 @@ E.Options.args.general = {
 				orientation = {
 					order = 5,
 					type = "select",
-					name = L['Orientation'],
-					desc = L['Direction the bar moves on gains/losses'],
+					name = L["Orientation"],
+					desc = L["Direction the bar moves on gains/losses"],
 					values = {
-						['HORIZONTAL'] = L['Horizontal'],
-						['VERTICAL'] = L['Vertical']
+						['HORIZONTAL'] = L["Horizontal"],
+						['VERTICAL'] = L["Vertical"]
 					}
 				},
 				textFormat = {
@@ -786,7 +786,7 @@ E.Options.args.general = {
 				mouseover = {
 					order = 1,
 					type = "toggle",
-					name = L['Mouseover'],
+					name = L["Mouseover"],
 				},
 				spacer = {
 					order = 2,
@@ -808,11 +808,11 @@ E.Options.args.general = {
 				orientation = {
 					order = 5,
 					type = "select",
-					name = L['Orientation'],
-					desc = L['Direction the bar moves on gains/losses'],
+					name = L["Orientation"],
+					desc = L["Direction the bar moves on gains/losses"],
 					values = {
-						['HORIZONTAL'] = L['Horizontal'],
-						['VERTICAL'] = L['Vertical']
+						['HORIZONTAL'] = L["Horizontal"],
+						['VERTICAL'] = L["Vertical"]
 					}
 				},
 				textFormat = {
@@ -840,7 +840,7 @@ E.Options.args.general = {
 			get = function(info) return E.db.general.threat[ info[#info] ] end,
 			set = function(info, value) E.db.general.threat[ info[#info] ] = value; E:GetModule('Threat'):ToggleEnable()end,
 			type = "group",
-			name = L['Threat'],
+			name = L["Threat"],
 			args = {
 				enable = {
 					order = 1,
@@ -850,11 +850,11 @@ E.Options.args.general = {
 				position = {
 					order = 2,
 					type = 'select',
-					name = L['Position'],
-					desc = L['Adjust the position of the threat bar to either the left or right datatext panels.'],
+					name = L["Position"],
+					desc = L["Adjust the position of the threat bar to either the left or right datatext panels."],
 					values = {
-						['LEFTCHAT'] = L['Left Chat'],
-						['RIGHTCHAT'] = L['Right Chat'],
+						['LEFTCHAT'] = L["Left Chat"],
+						['RIGHTCHAT'] = L["Right Chat"],
 					},
 					set = function(info, value) E.db.general.threat[ info[#info] ] = value; E:GetModule('Threat'):UpdatePosition() end,
 				},
@@ -889,7 +889,7 @@ E.Options.args.general = {
 				spacing = {
 					order = 3,
 					type = 'range',
-					name = L['Button Spacing'],
+					name = L["Button Spacing"],
 					min = 1, max = 10, step = 1,
 				},
 				sortDirection = {
@@ -897,17 +897,17 @@ E.Options.args.general = {
 					type = 'select',
 					name = L["Sort Direction"],
 					values = {
-						['ASCENDING'] = L['Ascending'],
-						['DESCENDING'] = L['Descending'],
+						['ASCENDING'] = L["Ascending"],
+						['DESCENDING'] = L["Descending"],
 					},
 				},
 				growthDirection = {
 					order = 5,
 					type = 'select',
-					name = L['Bar Direction'],
+					name = L["Bar Direction"],
 					values = {
-						['VERTICAL'] = L['Vertical'],
-						['HORIZONTAL'] = L['Horizontal'],
+						['VERTICAL'] = L["Vertical"],
+						['HORIZONTAL'] = L["Horizontal"],
 					},
 				},
 			},
@@ -915,7 +915,7 @@ E.Options.args.general = {
 		cooldown = {
 			type = "group",
 			order = 10,
-			name = L['Cooldown Text'],
+			name = L["Cooldown Text"],
 			get = function(info)
 				local t = E.db.cooldown[ info[#info] ]
 				local d = P.cooldown[info[#info]]
@@ -931,15 +931,15 @@ E.Options.args.general = {
 				enable = {
 					type = "toggle",
 					order = 1,
-					name = L['Enable'],
-					desc = L['Display cooldown text on anything with the cooldown spiral.'],
+					name = L["Enable"],
+					desc = L["Display cooldown text on anything with the cooldown spiral."],
 					get = function(info) return E.private.cooldown[ info[#info] ] end,
 					set = function(info, value) E.private.cooldown[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
 				threshold = {
 					type = 'range',
-					name = L['Low Threshold'],
-					desc = L['Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red'],
+					name = L["Low Threshold"],
+					desc = L["Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red"],
 					min = -1, max = 20, step = 1,
 					order = 2,
 					get = function(info) return E.db.cooldown[ info[#info] ] end,
@@ -951,39 +951,39 @@ E.Options.args.general = {
 				expiringColor = {
 					type = 'color',
 					order = 4,
-					name = L['Expiring'],
-					desc = L['Color when the text is about to expire'],
+					name = L["Expiring"],
+					desc = L["Color when the text is about to expire"],
 				},
 				secondsColor = {
 					type = 'color',
 					order = 5,
-					name = L['Seconds'],
-					desc = L['Color when the text is in the seconds format.'],
+					name = L["Seconds"],
+					desc = L["Color when the text is in the seconds format."],
 				},
 				minutesColor = {
 					type = 'color',
 					order = 6,
-					name = L['Minutes'],
-					desc = L['Color when the text is in the minutes format.'],
+					name = L["Minutes"],
+					desc = L["Color when the text is in the minutes format."],
 				},
 				hoursColor = {
 					type = 'color',
 					order = 7,
-					name = L['Hours'],
-					desc = L['Color when the text is in the hours format.'],
+					name = L["Hours"],
+					desc = L["Color when the text is in the hours format."],
 				},
 				daysColor = {
 					type = 'color',
 					order = 8,
-					name = L['Days'],
-					desc = L['Color when the text is in the days format.'],
+					name = L["Days"],
+					desc = L["Color when the text is in the days format."],
 				},
 			},
 		},
 		objectiveFrame = {
 			order = 11,
 			type = "group",
-			name = L['Objective Frame'],
+			name = L["Objective Frame"],
 			get = function(info) return E.db.general[ info[#info] ] end,
 			set = function(info, value) E.db.general[ info[#info] ] = value end,
 			args = {
@@ -1112,7 +1112,7 @@ E.Options.args.credits = {
 		text = {
 			order = 1,
 			type = "description",
-			name = L['ELVUI_CREDITS']..'\n\n'..L['Coding:']..DEVELOPER_STRING..'\n\n'..L['Testing:']..TESTER_STRING..'\n\n'..L['Donations:']..DONATOR_STRING,
+			name = L["ELVUI_CREDITS"]..'\n\n'..L["Coding:"]..DEVELOPER_STRING..'\n\n'..L["Testing:"]..TESTER_STRING..'\n\n'..L["Donations:"]..DONATOR_STRING,
 		},
 	},
 }

@@ -36,10 +36,10 @@ NP.BuffCache = {}
 NP.DebuffCache = {}
 
 NP.HealerSpecs = {
-	[L['Restoration']] = true,
-	[L['Holy']] = true,
-	[L['Discipline']] = true,
-	[L['Mistweaver']] = true,
+	[L["Restoration"]] = true,
+	[L["Holy"]] = true,
+	[L["Discipline"]] = true,
+	[L["Mistweaver"]] = true,
 }
 
 NP.RaidTargetReference = {
