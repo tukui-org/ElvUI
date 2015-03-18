@@ -165,6 +165,9 @@ function UF:SetCastTicks(frame, numTicks, extraTickRatio)
 	end
 end
 
+local MageSpellName = GetSpellInfo(5143) --Arcane Missiles
+local MageBuffName = GetSpellInfo(166872) --4p T17 bonus proc for arcane
+
 function UF:PostCastStart(unit, name, rank, castid)
 	local db = self:GetParent().db
 	if not db or not db.castbar then return; end
@@ -245,6 +248,10 @@ function UF:PostCastStart(unit, name, rank, castid)
 
 			UF:SetCastTicks(self, baseTicks, extraTickRatio)
 		elseif baseTicks then
+			local hasBuff = UnitBuff("player", MageBuffName)
+			if name == MageSpellName and hasBuff then
+				baseTicks = 10
+			end
 			UF:SetCastTicks(self, baseTicks)
 		else
 			UF:HideTicks()
@@ -335,6 +342,10 @@ function UF:PostChannelUpdate(unit, name)
 
 			UF:SetCastTicks(self, baseTicks, self.extraTickRatio)
 		elseif baseTicks then
+			local hasBuff = UnitBuff("player", MageBuffName)
+			if name == MageSpellName and hasBuff then
+				baseTicks = 10
+			end
 			if self.chainChannel then
 				baseTicks = baseTicks + 1
 			end
