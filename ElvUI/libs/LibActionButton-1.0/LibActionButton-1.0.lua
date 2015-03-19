@@ -1229,7 +1229,7 @@ function UpdateCount(self)
 		end
 	else
 		local charges, maxCharges, chargeStart, chargeDuration = self:GetCharges()
-		if charges and maxCharges and maxCharges > 0 then
+		if charges and maxCharges and maxCharges > 1 then
 			self.Count:SetText(charges)
 		else
 			self.Count:SetText("")
