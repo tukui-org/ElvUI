@@ -127,8 +127,6 @@ function AB:PositionAndSizeBar(barName)
 
 		if self.db[barName].mouseover == true then
 			bar:SetAlpha(0);
-			button.cooldown:SetSwipeColor(0, 0, 0, 0)
-			button.cooldown:SetDrawBling(false)
 			if not self.hooks[bar] then
 				self:HookScript(bar, 'OnEnter', 'Bar_OnEnter');
 				self:HookScript(bar, 'OnLeave', 'Bar_OnLeave');
@@ -140,8 +138,6 @@ function AB:PositionAndSizeBar(barName)
 			end
 		else
 			bar:SetAlpha(self.db[barName].alpha);
-			button.cooldown:SetSwipeColor(0, 0, 0, 1)
-			button.cooldown:SetDrawBling(true)
 			if self.hooks[bar] then
 				self:Unhook(bar, 'OnEnter');
 				self:Unhook(bar, 'OnLeave');
@@ -195,7 +191,7 @@ function AB:PositionAndSizeBar(barName)
 			button:Show()
 		end
 
-		self:StyleButton(button, nil, nil, true, true);
+		self:StyleButton(button, nil, nil, true);
 		button:SetCheckedTexture("")
 	end
 
@@ -508,7 +504,7 @@ function AB:StyleButton(button, noBackdrop, adjustChecked)
 
 	button.FlyoutUpdateFunc = AB.StyleFlyout
 	self:FixKeybindText(button);
-	button:StyleButton(nil, nil, nil, true);
+	button:StyleButton();
 
 	if(not self.handledbuttons[button]) then
 		E:RegisterCooldown(button.cooldown)
@@ -519,84 +515,20 @@ end
 
 function AB:Bar_OnEnter(bar)
 	E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), bar.db.alpha)
-	if bar:GetName() == "ElvUI_BarPet" then
-		for i=1, NUM_PET_ACTION_SLOTS do
-			_G["PetActionButton"..i].cooldown:SetSwipeColor(0, 0, 0, 1)
-			_G["PetActionButton"..i].cooldown:SetDrawBling(true)
-		end
-	elseif bar:GetName() == "ElvUI_StanceBar" then
-		for i=1, NUM_STANCE_SLOTS do
-			_G["ElvUI_StanceBarButton"..i].cooldown:SetSwipeColor(0, 0, 0, 1)
-			_G["ElvUI_StanceBarButton"..i].cooldown:SetDrawBling(true)
-		end
-	else
-		for i=1, NUM_ACTIONBAR_BUTTONS do
-			bar.buttons[i].cooldown:SetSwipeColor(0, 0, 0, 1)
-			bar.buttons[i].cooldown:SetDrawBling(true)
-		end
-	end
 end
 
 function AB:Bar_OnLeave(bar)
 	E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
-	if bar:GetName() == "ElvUI_BarPet" then
-		for i=1, NUM_PET_ACTION_SLOTS do
-			_G["PetActionButton"..i].cooldown:SetSwipeColor(0, 0, 0, 0)
-			_G["PetActionButton"..i].cooldown:SetDrawBling(false)
-		end
-	elseif bar:GetName() == "ElvUI_StanceBar" then
-		for i=1, NUM_STANCE_SLOTS do
-			_G["ElvUI_StanceBarButton"..i].cooldown:SetSwipeColor(0, 0, 0, 0)
-			_G["ElvUI_StanceBarButton"..i].cooldown:SetDrawBling(false)
-		end
-	else
-		for i=1, NUM_ACTIONBAR_BUTTONS do
-			bar.buttons[i].cooldown:SetSwipeColor(0, 0, 0, 0)
-			bar.buttons[i].cooldown:SetDrawBling(false)
-		end
-	end
 end
 
 function AB:Button_OnEnter(button)
 	local bar = button:GetParent()
 	E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), bar.db.alpha)
-	if bar:GetName() == "ElvUI_BarPet" then
-		for i=1, NUM_PET_ACTION_SLOTS do
-			_G["PetActionButton"..i].cooldown:SetSwipeColor(0, 0, 0, 1)
-			_G["PetActionButton"..i].cooldown:SetDrawBling(true)
-		end
-	elseif bar:GetName() == "ElvUI_StanceBar" then
-		for i=1, NUM_STANCE_SLOTS do
-			_G["ElvUI_StanceBarButton"..i].cooldown:SetSwipeColor(0, 0, 0, 1)
-			_G["ElvUI_StanceBarButton"..i].cooldown:SetDrawBling(true)
-		end
-	else
-		for i=1, NUM_ACTIONBAR_BUTTONS do
-			bar.buttons[i].cooldown:SetSwipeColor(0, 0, 0, 1)
-			bar.buttons[i].cooldown:SetDrawBling(true)
-		end
-	end
 end
 
 function AB:Button_OnLeave(button)
 	local bar = button:GetParent()
 	E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
-	if bar:GetName() == "ElvUI_BarPet" then
-		for i=1, NUM_PET_ACTION_SLOTS do
-			_G["PetActionButton"..i].cooldown:SetSwipeColor(0, 0, 0, 0)
-			_G["PetActionButton"..i].cooldown:SetDrawBling(false)
-		end
-	elseif bar:GetName() == "ElvUI_StanceBar" then
-		for i=1, NUM_STANCE_SLOTS do
-			_G["ElvUI_StanceBarButton"..i].cooldown:SetSwipeColor(0, 0, 0, 0)
-			_G["ElvUI_StanceBarButton"..i].cooldown:SetDrawBling(false)
-		end
-	else
-		for i=1, NUM_ACTIONBAR_BUTTONS do
-			bar.buttons[i].cooldown:SetSwipeColor(0, 0, 0, 0)
-			bar.buttons[i].cooldown:SetDrawBling(false)
-		end
-	end
 end
 
 function AB:BlizzardOptionsPanel_OnEvent()

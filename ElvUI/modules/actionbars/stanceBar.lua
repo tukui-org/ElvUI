@@ -155,8 +155,6 @@ function AB:PositionAndSizeBarShapeShift()
 
 		if self.db['stanceBar'].mouseover == true then
 			bar:SetAlpha(0);
-			button.cooldown:SetSwipeColor(0, 0, 0, 0)
-			button.cooldown:SetDrawBling(false)
 			if not self.hooks[bar] then
 				self:HookScript(bar, 'OnEnter', 'Bar_OnEnter');
 				self:HookScript(bar, 'OnLeave', 'Bar_OnLeave');
@@ -168,8 +166,6 @@ function AB:PositionAndSizeBarShapeShift()
 			end
 		else
 			bar:SetAlpha(bar.db.alpha);
-			button.cooldown:SetSwipeColor(0, 0, 0, 1)
-			button.cooldown:SetDrawBling(true)
 			if self.hooks[bar] then
 				self:Unhook(bar, 'OnEnter');
 				self:Unhook(bar, 'OnLeave');
