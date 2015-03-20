@@ -108,6 +108,22 @@ local UNIT_SPELLCAST_FAILED = function(self, event, unit, spellname, _, castid)
 	end
 end
 
+local UNIT_SPELLCAST_FAILED_QUIET = function(self, event, unit, spellname, _, castid)
+	if (self.unit ~= unit) or not unit then return end
+
+	local castbar = self.Castbar
+	if (castbar.castid ~= castid) then	return end
+
+	if(mergeTradeskill and UnitIsUnit(unit, "player")) then
+		mergeTradeskill = false;
+	end
+	
+	castbar.casting = nil
+	castbar.interrupt = nil
+	castbar:SetValue(0)
+	castbar:Hide()
+end
+
 local UNIT_SPELLCAST_INTERRUPTED = function(self, event, unit, spellname, _, castid)
 	if(self.unit ~= unit) or not unit then return end
 
@@ -374,6 +390,7 @@ local Enable = function(object, unit)
 			object:RegisterEvent("UNIT_SPELLCAST_SENT", UNIT_SPELLCAST_SENT)
 			object:RegisterEvent("UNIT_SPELLCAST_START", UNIT_SPELLCAST_START)
 			object:RegisterEvent("UNIT_SPELLCAST_FAILED", UNIT_SPELLCAST_FAILED)
+			object:RegisterEvent("UNIT_SPELLCAST_FAILED_QUIET", UNIT_SPELLCAST_FAILED_QUIET)
 			object:RegisterEvent("UNIT_SPELLCAST_STOP", UNIT_SPELLCAST_STOP)
 			object:RegisterEvent("UNIT_SPELLCAST_INTERRUPTED", UNIT_SPELLCAST_INTERRUPTED)
 			object:RegisterEvent("UNIT_SPELLCAST_INTERRUPTIBLE", UNIT_SPELLCAST_INTERRUPTIBLE)
@@ -428,6 +445,7 @@ local Disable = function(object, unit)
 		object:UnregisterEvent("UNIT_SPELLCAST_SENT", UNIT_SPELLCAST_SENT)
 		object:UnregisterEvent("UNIT_SPELLCAST_START", UNIT_SPELLCAST_START)
 		object:UnregisterEvent("UNIT_SPELLCAST_FAILED", UNIT_SPELLCAST_FAILED)
+		object:UnregisterEvent("UNIT_SPELLCAST_FAILED_QUIET", UNIT_SPELLCAST_FAILED_QUIET)
 		object:UnregisterEvent("UNIT_SPELLCAST_STOP", UNIT_SPELLCAST_STOP)
 		object:UnregisterEvent("UNIT_SPELLCAST_INTERRUPTED", UNIT_SPELLCAST_INTERRUPTED)
 		object:UnregisterEvent("UNIT_SPELLCAST_INTERRUPTIBLE", UNIT_SPELLCAST_INTERRUPTIBLE)
