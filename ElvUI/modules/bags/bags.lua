@@ -1155,7 +1155,18 @@ function B:ContructContainerFrame(name, isBank)
 			f.currencyButton[i]:Hide();
 		end
 
-		f:SetScript('OnHide', CloseBackpack)
+		f:SetScript('OnHide', function()
+			CloseBackpack()
+			for i = 1, NUM_BAG_FRAMES do
+				CloseBag(i)
+			end
+
+			if ElvUIBags and ElvUIBags.buttons then
+				for _, bagButton in pairs(ElvUIBags.buttons) do
+					bagButton:SetChecked(false)
+				end
+			end
+		end)
 	end
 
 	tinsert(UISpecialFrames, f:GetName()) --Keep an eye on this for taints..
