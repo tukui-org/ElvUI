@@ -125,7 +125,7 @@ local issecurevariable = issecurevariable
 local real_GetCurrentMapAreaID = GetCurrentMapAreaID
 local function GetCurrentMapAreaID()
 	local id = real_GetCurrentMapAreaID();
-	if ( id < 0 and GetCurrentMapContinent() == WORLDMAP_WORLD_ID ) then
+	if ( id < 0 and GetCurrentMapContinent() == WORLDMAP_AZEROTH_ID ) then
 		return 0;
 	end
 	return id;
@@ -336,10 +336,10 @@ function Astrolabe:GetUnitPosition( unit, noMapChange )
 			-- attempt to zoom out once - logic copied from WorldMapZoomOutButton_OnClick()
 				if ( ZoomOut() ) then
 					-- do nothing
-				elseif ( GetCurrentMapZone() ~= WORLDMAP_WORLD_ID ) then
+				elseif ( GetCurrentMapZone() ~= WORLDMAP_AZEROTH_ID ) then
 					SetMapZoom(GetCurrentMapContinent());
 				else
-					SetMapZoom(WORLDMAP_WORLD_ID);
+					SetMapZoom(WORLDMAP_AZEROTH_ID);
 				end
 			x, y = GetPlayerMapPosition(unit);
 			if ( x <= 0 and y <= 0 ) then
@@ -380,10 +380,10 @@ function Astrolabe:GetCurrentPlayerPosition()
 			-- attempt to zoom out once - logic copied from WorldMapZoomOutButton_OnClick()
 				if ( ZoomOut() ) then
 					-- do nothing
-				elseif ( GetCurrentMapZone() ~= WORLDMAP_WORLD_ID ) then
+				elseif ( GetCurrentMapZone() ~= WORLDMAP_AZEROTH_ID ) then
 					SetMapZoom(GetCurrentMapContinent());
 				else
-					SetMapZoom(WORLDMAP_WORLD_ID);
+					SetMapZoom(WORLDMAP_AZEROTH_ID);
 				end
 			x, y = GetPlayerMapPosition("player");
 			if ( x <= 0 and y <= 0 ) then
