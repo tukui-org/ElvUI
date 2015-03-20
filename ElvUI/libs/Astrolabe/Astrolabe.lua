@@ -1,10 +1,10 @@
 --[[
 Name: Astrolabe
-Revision: $Rev: 161 $
+Revision: $Rev: 162 $
 $Date: 2014-10-14 22:59:04 -0700 (Tue, 14 Oct 2014) $
 Author(s): Esamynn (esamynn at wowinterface.com)
 Inspired By: Gatherer by Norganna
-             MapLibrary by Kristofer Karlsson (krka at kth.se)
+			 MapLibrary by Kristofer Karlsson (krka at kth.se)
 Documentation: http://wiki.esamynn.org/Astrolabe
 SVN: http://svn.esamynn.org/astrolabe/
 Description:
@@ -42,7 +42,7 @@ Note:
 -- DO NOT MAKE CHANGES TO THIS LIBRARY WITHOUT FIRST CHANGING THE LIBRARY_VERSION_MAJOR
 -- STRING (to something unique) OR ELSE YOU MAY BREAK OTHER ADDONS THAT USE THIS LIBRARY!!!
 local LIBRARY_VERSION_MAJOR = "Astrolabe-1.0"
-local LIBRARY_VERSION_MINOR = tonumber(string.match("$Revision: 161 $", "(%d+)") or 1)
+local LIBRARY_VERSION_MINOR = tonumber(string.match("$Revision: 162 $", "(%d+)") or 1)
 
 if not DongleStub then error(LIBRARY_VERSION_MAJOR .. " requires DongleStub.") end
 if not DongleStub:IsNewerVersion(LIBRARY_VERSION_MAJOR, LIBRARY_VERSION_MINOR) then return end
@@ -1099,7 +1099,7 @@ function Astrolabe:OnEvent( frame, event )
 		frame:Hide(); -- yes, I know this is redunant
 		self:RemoveAllMinimapIcons(); --dump all minimap icons
 		-- TODO: when I uncouple the point buffer from Minimap drawing,
-		--       I should consider updating LastPlayerPosition here
+		--	   I should consider updating LastPlayerPosition here
 	
 	elseif ( event == "PLAYER_ENTERING_WORLD" ) then
 		frame:Show();
@@ -1271,6 +1271,87 @@ local function activate( newInstance, oldInstance )
 				end
 			end
 		end
+		
+		-- worldMapIDs who have the bit 2 flag set cannot be displayed via SetMapByID and therefore will get no information from the above code.
+		-- We work around this by remapping them where possible since their characteristics usually are based off another worldMapID anyway.
+		local HARDCODED_MAP_INFORMATION_FOR_UNOBTAINABLE_MAPIDS = {
+			[681] = HarvestedMapData[544], --["TheLostIsles_terrain1"] = "TheLostIsles",
+			[682] = HarvestedMapData[544], --["TheLostIsles_terrain2"] = "TheLostIsles",
+			[683] = HarvestedMapData[606], --["Hyjal_terrain1"] = "Hyjal",
+			[748] = HarvestedMapData[720], --["Uldum_terrain1"] = "Uldum",
+			[770] = HarvestedMapData[700], --["TwilightHighlands_terrain1"] = "TwilightHighlands",
+			[907] = HarvestedMapData[141], --["Dustwallow_terrain1"] = "Dustwallow",
+			[910] = HarvestedMapData[857], --["Krasarang_terrain1"] = "Krasarang",
+			-- In the following 2 cases, there is no existing map ID with these properties.
+			-- Additionally, the client can access this map by itself but only after a /reload (and only one of the two maps per faction of requesting character)
+			-- It is unknown why this is the case; it is probably a bug with the game.
+			[971] = {
+				["mapName"] = "garrisonsmvalliance",
+				["cont"] = 7,
+				["zone"] = 7,
+				["numFloors"] = 0,
+				[0] = {},
+			},
+			[976] = {
+				["mapName"] = "garrisonffhorde",
+				["cont"] = 7,
+				["zone"] = 3,
+				["numFloors"] = 0,
+				[0] = {},
+			},
+			[992] = HarvestedMapData[19], -- ["BlastedLands_terrain1"] = "BlastedLands",
+		}
+		
+		-- While MapID 971 is not accessible by most of the API, we -can- get the coordinate info, so we don't have to hardcode that.
+		local _, _, _, TLx, BRx, TLy, BRy, _, _, _ = GetAreaMapInfo(971)
+		HARDCODED_MAP_INFORMATION_FOR_UNOBTAINABLE_MAPIDS[971][0].TLx = TLx
+		HARDCODED_MAP_INFORMATION_FOR_UNOBTAINABLE_MAPIDS[971][0].TLy = TLy
+		HARDCODED_MAP_INFORMATION_FOR_UNOBTAINABLE_MAPIDS[971][0].BRx = BRx
+		HARDCODED_MAP_INFORMATION_FOR_UNOBTAINABLE_MAPIDS[971][0].BRy = BRy
+		
+		-- Alternate mapIDs for 971 (Alliance Garrison)
+		HARDCODED_MAP_INFORMATION_FOR_UNOBTAINABLE_MAPIDS[973] = HARDCODED_MAP_INFORMATION_FOR_UNOBTAINABLE_MAPIDS[971]
+		HARDCODED_MAP_INFORMATION_FOR_UNOBTAINABLE_MAPIDS[974] = HARDCODED_MAP_INFORMATION_FOR_UNOBTAINABLE_MAPIDS[971]
+		HARDCODED_MAP_INFORMATION_FOR_UNOBTAINABLE_MAPIDS[975] = HARDCODED_MAP_INFORMATION_FOR_UNOBTAINABLE_MAPIDS[971]
+		HARDCODED_MAP_INFORMATION_FOR_UNOBTAINABLE_MAPIDS[991] = HARDCODED_MAP_INFORMATION_FOR_UNOBTAINABLE_MAPIDS[971]
+		
+		-- While MapID 976 is not accessible by most of the API, we -can- get the coordinate info, so we don't have to hardcode that.
+		_, _, _, TLx, BRx, TLy, BRy, _, _, _ = GetAreaMapInfo(976)
+		HARDCODED_MAP_INFORMATION_FOR_UNOBTAINABLE_MAPIDS[976][0].TLx = TLx
+		HARDCODED_MAP_INFORMATION_FOR_UNOBTAINABLE_MAPIDS[976][0].TLy = TLy
+		HARDCODED_MAP_INFORMATION_FOR_UNOBTAINABLE_MAPIDS[976][0].BRx = BRx
+		HARDCODED_MAP_INFORMATION_FOR_UNOBTAINABLE_MAPIDS[976][0].BRy = BRy
+		
+		-- Alternate mapIDs for 976 (Horde Garrison)
+		HARDCODED_MAP_INFORMATION_FOR_UNOBTAINABLE_MAPIDS[980] = HARDCODED_MAP_INFORMATION_FOR_UNOBTAINABLE_MAPIDS[976]
+		HARDCODED_MAP_INFORMATION_FOR_UNOBTAINABLE_MAPIDS[981] = HARDCODED_MAP_INFORMATION_FOR_UNOBTAINABLE_MAPIDS[976]
+		HARDCODED_MAP_INFORMATION_FOR_UNOBTAINABLE_MAPIDS[982] = HARDCODED_MAP_INFORMATION_FOR_UNOBTAINABLE_MAPIDS[976]
+		HARDCODED_MAP_INFORMATION_FOR_UNOBTAINABLE_MAPIDS[990] = HARDCODED_MAP_INFORMATION_FOR_UNOBTAINABLE_MAPIDS[976]
+		
+		-- Distribute hardcoded (and specially harvested in the case of 971/976) information to HarvestedMapData
+		for id, data in pairs(HARDCODED_MAP_INFORMATION_FOR_UNOBTAINABLE_MAPIDS) do
+			if not HarvestedMapData[id] then
+				-- Copy table contents
+				HarvestedMapData[id] = {}
+				HarvestedMapData[id].mapName = data.mapName
+				HarvestedMapData[id].cont = data.cont
+				HarvestedMapData[id].zone = data.zone
+				HarvestedMapData[id].numFloors = data.numFloors
+				HarvestedMapData[id].hiddenFloor = data.hiddenFloor
+				-- Copy floors
+				if ( data.numFloors ) then
+					for f = 0, data.numFloors do
+						if ( data[f] and data[f].TLx and data[f].TLy and data[f].BRx and data[f].BRy ) then
+							HarvestedMapData[id][f] = {}
+							HarvestedMapData[id][f].TLx = data[f].TLx
+							HarvestedMapData[id][f].TLy = data[f].TLy
+							HarvestedMapData[id][f].BRx = data[f].BRx
+							HarvestedMapData[id][f].BRy = data[f].BRy
+						end
+					end
+				end
+			end
+		end
 	end
 	
 	local Minimap = newInstance.Minimap
@@ -1326,27 +1407,27 @@ MinimapSize = {
 	},
 	outdoor = {
 		[0] = 466 + 2/3, -- scale
-		[1] = 400,       -- 7/6
+		[1] = 400,	   -- 7/6
 		[2] = 333 + 1/3, -- 1.4
 		[3] = 266 + 2/6, -- 1.75
-		[4] = 200,       -- 7/3
+		[4] = 200,	   -- 7/3
 		[5] = 133 + 1/3, -- 3.5
 	},
 }
 
 ValidMinimapShapes = {
 	-- { upper-left, lower-left, upper-right, lower-right }
-	["SQUARE"]                = { false, false, false, false },
-	["CORNER-TOPLEFT"]        = { true,  false, false, false },
-	["CORNER-TOPRIGHT"]       = { false, false, true,  false },
-	["CORNER-BOTTOMLEFT"]     = { false, true,  false, false },
-	["CORNER-BOTTOMRIGHT"]    = { false, false, false, true },
-	["SIDE-LEFT"]             = { true,  true,  false, false },
-	["SIDE-RIGHT"]            = { false, false, true,  true },
-	["SIDE-TOP"]              = { true,  false, true,  false },
-	["SIDE-BOTTOM"]           = { false, true,  false, true },
-	["TRICORNER-TOPLEFT"]     = { true,  true,  true,  false },
-	["TRICORNER-TOPRIGHT"]    = { true,  false, true,  true },
+	["SQUARE"]				= { false, false, false, false },
+	["CORNER-TOPLEFT"]		= { true,  false, false, false },
+	["CORNER-TOPRIGHT"]	   = { false, false, true,  false },
+	["CORNER-BOTTOMLEFT"]	 = { false, true,  false, false },
+	["CORNER-BOTTOMRIGHT"]	= { false, false, false, true },
+	["SIDE-LEFT"]			 = { true,  true,  false, false },
+	["SIDE-RIGHT"]			= { false, false, true,  true },
+	["SIDE-TOP"]			  = { true,  false, true,  false },
+	["SIDE-BOTTOM"]		   = { false, true,  false, true },
+	["TRICORNER-TOPLEFT"]	 = { true,  true,  true,  false },
+	["TRICORNER-TOPRIGHT"]	= { true,  false, true,  true },
 	["TRICORNER-BOTTOMLEFT"]  = { true,  true,  false, true },
 	["TRICORNER-BOTTOMRIGHT"] = { false, true,  true,  true },
 }
@@ -1636,4 +1717,3 @@ setmetatable(WorldMapSize, zeroData); -- setup the metatable so that invalid map
 -- register this library with AstrolabeMapMonitor, this will cause a full update if PLAYER_LOGIN has already fired
 local AstrolabeMapMonitor = DongleStub("AstrolabeMapMonitor");
 AstrolabeMapMonitor:RegisterAstrolabeLibrary(Astrolabe, LIBRARY_VERSION_MAJOR);
-
