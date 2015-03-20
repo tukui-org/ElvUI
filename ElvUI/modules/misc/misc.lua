@@ -32,6 +32,10 @@ function M:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, _, sourceGUID, _, _, _, _, d
 		else
 			SendChatMessage(format(interruptMsg, destName, spellID, spellName), inPartyLFG and "INSTANCE_CHAT" or "PARTY")
 		end
+	elseif E.db.general.interruptAnnounce == "RAID_ONLY" then
+		if inRaid then
+			SendChatMessage(format(interruptMsg, destName, spellID, spellName), inPartyLFG and "INSTANCE_CHAT" or "RAID")
+		end
 	elseif E.db.general.interruptAnnounce == "SAY" then
 		SendChatMessage(format(interruptMsg, destName, spellID, spellName), "SAY")
 	end

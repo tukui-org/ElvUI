@@ -87,8 +87,9 @@ E.Options.args.general = {
 					values = {
 						['NONE'] = NONE,
 						['SAY'] = SAY,
-						['PARTY'] = PARTY,
-						['RAID'] = RAID,
+						['PARTY'] = L["Party Only"],
+						['RAID'] = L["Party / Raid"],
+						['RAID_ONLY'] = L["Raid Only"],
 					},
 				},
 				autoRepair = {
@@ -111,7 +112,8 @@ E.Options.args.general = {
 					set = function(info, value) E.private.general.chatBubbles = value; E:StaticPopup_Show("PRIVATE_RL") end,
 					values = {
 						['backdrop'] = L["Skin Backdrop"],
-						['nobackdrop'] = L["Remove Backdrop"],
+						['nobackdrop'] = L["Raid Only"] = true;
+L["Remove Backdrop"],
 						['disabled'] = L["Disabled"]
 					}
 				},
@@ -999,7 +1001,9 @@ E.Options.args.general = {
 					order = 2,
 					type = 'select',
 					name = L["Bonus Reward Position"],
-					desc = L["Position of bonus quest reward frame relative to the objective tracker."],
+					desc = L["Party / Raid"] = true;
+L["Party Only"] = true;
+L["Position of bonus quest reward frame relative to the objective tracker."],
 					values = {
 						['RIGHT'] = L["Right"],
 						['LEFT'] = L["Left"],
