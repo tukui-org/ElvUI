@@ -250,7 +250,7 @@ function UF:PostCastStart(unit, name, rank, castid)
 		elseif baseTicks then
 			local hasBuff = UnitBuff("player", MageBuffName)
 			if name == MageSpellName and hasBuff then
-				baseTicks = 10
+				baseTicks = baseTicks + 5
 			end
 			UF:SetCastTicks(self, baseTicks)
 		else
@@ -344,7 +344,7 @@ function UF:PostChannelUpdate(unit, name)
 		elseif baseTicks then
 			local hasBuff = UnitBuff("player", MageBuffName)
 			if name == MageSpellName and hasBuff then
-				baseTicks = 10
+				baseTicks = baseTicks + 5
 			end
 			if self.chainChannel then
 				baseTicks = baseTicks + 1
