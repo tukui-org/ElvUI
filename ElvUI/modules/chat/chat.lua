@@ -549,7 +549,8 @@ function CH:PositionChat(override)
 			tab:SetParent(UIParent)
 			chat:SetParent(UIParent)
 
-			CH:SetupChatTabs(tab, true)
+			local fade = E.db["chat"].fadeUndockedTabs
+			CH:SetupChatTabs(tab, fade and true or false)
 		else
 			if id ~= 2 and not (id > NUM_CHAT_WINDOWS) then
 				chat:ClearAllPoints()
