@@ -9,8 +9,17 @@ local format, strsub = string.format, string.sub
 local ignoreKeys = {
 	LALT = true,
 	LSHIFT = true,
-	RSHIFT = true
+	RSHIFT = true,
+	
 }
+
+local printKeys = {
+	["PRINTSCREEN"] = true,
+}
+
+if IsMacClient() then
+	printKeys[_G["KEY_PRINTSCREEN_MAC"]] = true
+end
 
 function AFK:UpdateTimer()
 	local time = GetTime() - self.startTime
@@ -114,8 +123,12 @@ end
 
 local function OnKeyDown(self, key)
 	if(ignoreKeys[key]) then return end
-	AFK:SetAFK(false)
-	AFK:ScheduleTimer('OnEvent', 60)
+	if printKeys[key] then
+		Screenshot()
+	else
+		AFK:SetAFK(false)
+		AFK:ScheduleTimer('OnEvent', 60)
+	end
 end
 
 local function Chat_OnMouseWheel(self, delta)
