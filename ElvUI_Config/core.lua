@@ -112,8 +112,7 @@ E.Options.args.general = {
 					set = function(info, value) E.private.general.chatBubbles = value; E:StaticPopup_Show("PRIVATE_RL") end,
 					values = {
 						['backdrop'] = L["Skin Backdrop"],
-						['nobackdrop'] = L["Raid Only"] = true;
-L["Remove Backdrop"],
+						['nobackdrop'] = L["Remove Backdrop"],
 						['disabled'] = L["Disabled"]
 					}
 				},
@@ -1001,9 +1000,7 @@ L["Remove Backdrop"],
 					order = 2,
 					type = 'select',
 					name = L["Bonus Reward Position"],
-					desc = L["Party / Raid"] = true;
-L["Party Only"] = true;
-L["Position of bonus quest reward frame relative to the objective tracker."],
+					desc = L["Position of bonus quest reward frame relative to the objective tracker."],
 					values = {
 						['RIGHT'] = L["Right"],
 						['LEFT'] = L["Left"],
