@@ -5,7 +5,7 @@
 ## Notes: User Interface replacement AddOn for World of Warcraft.
 ## SavedVariables: ElvDB, ElvPrivateDB
 ## SavedVariablesPerCharacter: ElvCharacterDB
-## OptionalDeps: Blizzard_DebugTools, Blizzard_PetJournal, SharedMedia, Tukui, SunnArt
+## OptionalDeps: Blizzard_DebugTools, Blizzard_PetJournal, SharedMedia, Tukui, SunnArt, Gatherer
 ## X-oUF: ElvUF
 
 developer\load_developer.xml
