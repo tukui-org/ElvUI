@@ -9,13 +9,8 @@ local format, strsub = string.format, string.sub
 local ignoreKeys = {
 	LALT = true,
 	LSHIFT = true,
-	RSHIFT = true,
-	PRINTSCREEN = true,
+	RSHIFT = true
 }
-
-if IsMacClient() then
-	ignoreKeys[_G["KEY_PRINTSCREEN_MAC"]] = true
-end
 
 function AFK:UpdateTimer()
 	local time = GetTime() - self.startTime
