@@ -108,7 +108,7 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 	end
 
 	if db.classbar.detachFromFrame then
-		CLASSBAR_HEIGHT = 0
+		CLASSBAR_HEIGHT = E.PixelMode and 0 or -1 --Easiest way to counter the 1px difference SPACING introduces
 	end
 
 	if USE_STAGGER then
