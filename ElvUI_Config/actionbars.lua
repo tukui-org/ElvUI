@@ -409,6 +409,7 @@ E.Options.args.actionbar = {
 			disabled = function() return not E.private.actionbar.enable end,
 			order = 8,
 			values = {
+				['NONE'] = NONE,
 				['SHIFT'] = SHIFT_KEY,
 				['ALT'] = ALT_KEY,
 				['CTRL'] = CTRL_KEY,

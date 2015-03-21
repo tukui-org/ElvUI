@@ -44,17 +44,19 @@ UF['classMaxResourceBar'] = {
 }
 
 UF['mapIDs'] = {
-	[727] = 10, --Silvershard mines
-	[489] = 10, -- WSG
-	[628] = 40, -- Isle of Conquest
+	[30] = 40, -- Alterac Valley
+	[489] = 10, -- Warsong Gulch
+	[529] = 15, -- Arathi Basin
+	[566] = 15, -- Eye of the Storm
 	[607] = 15, -- Strand of the Ancients
+	[628] = 40, -- Isle of Conquest
 	[726] = 10, -- Twin Peaks
-	[30] = 40, -- AV
-	[529] = 15, -- AB
+	[727] = 10, -- Silvershard mines
+	[761] = 10, -- The Battle for Gilneas
+	[968] = 10, -- Rated Eye of the Storm
 	[998] = 10, -- Temple of Kotmogu
 	[1105] = 15, -- Deepwind Gourge
-	[761] = 10, -- Gilneas
-	[566] = 15, -- EOTS
+	[1280] = 40, -- Southshore vs. Tarren Mill
 }
 
 UF['headerGroupBy'] = {
@@ -728,15 +730,15 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 		local inInstance, instanceType = IsInInstance()
 		if(inInstance and (instanceType == 'raid' or instanceType == 'pvp')) then
 			local _, _, _, _, maxPlayers, _, _, mapID, maxPlayersInstance = GetInstanceInfo()
-			--[[if(maxPlayersInstance and maxPlayersInstance > 0) then
+			--[[if maxPlayersInstance > 0 then
 				maxPlayers = maxPlayersInstance
 			end]]
 
-			if mapID and UF.mapIDs[mapID] then
+			if UF.mapIDs[mapID] then
 				maxPlayers = UF.mapIDs[mapID]
 			end
 
-			if(maxPlayers > 0) then
+			if maxPlayers > 0 then
 				numGroups = E:Round(maxPlayers/5)
 				E:Print("Forcing maxGroups to: "..numGroups.." because maxPlayers is: "..maxPlayers)
 			end

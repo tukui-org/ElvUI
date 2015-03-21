@@ -771,7 +771,12 @@ end
 E.NameReplacements = {}
 function CH:ChatFrame_MessageEventHandler(event, ...)
 	if ( strsub(event, 1, 8) == "CHAT_MSG" ) then
-		local arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14 = ...;
+		local arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16 = ...;
+		if (arg16) then
+			-- hiding sender in letterbox: do NOT even show in chat window (only shows in cinematic frame)
+			return true;
+		end
+
 		local type = strsub(event, 10);
 		local info = ChatTypeInfo[type];
 		--Twitter link test
@@ -881,8 +886,18 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			end
 		end
 
-		if ( type == "SYSTEM" or type == "SKILL" or type == "LOOT" or type == "CURRENCY" or type == "MONEY" or
+		if ( type == "SYSTEM" or type == "SKILL" or type == "CURRENCY" or type == "MONEY" or
 		     type == "OPENING" or type == "TRADESKILLS" or type == "PET_INFO" or type == "TARGETICONS" or type == "BN_WHISPER_PLAYER_OFFLINE") then
+			self:AddMessage(CH:ConcatenateTimeStamp(arg1), info.r, info.g, info.b, info.id);
+		elseif (type == "LOOT") then
+			-- Append [Share] hyperlink if this is a valid social item and you are the looter.
+			-- arg5 contains the name of the player who looted
+			if (C_Social.IsSocialEnabled() and UnitName("player") == arg5) then
+				local itemID, creationContext = GetItemInfoFromHyperlink(arg1);
+				if (itemID and C_Social.GetLastItem() == itemID) then
+					arg1 = arg1 .. " " .. Social_GetShareItemLink(itemID, creationContext, true);
+				end
+			end
 			self:AddMessage(CH:ConcatenateTimeStamp(arg1), info.r, info.g, info.b, info.id);
 		elseif ( strsub(type,1,7) == "COMBAT_" ) then
 			self:AddMessage(CH:ConcatenateTimeStamp(arg1), info.r, info.g, info.b, info.id);
@@ -907,7 +922,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 		elseif ( type == "FILTERED" ) then
 			self:AddMessage(format(CH:ConcatenateTimeStamp(CHAT_FILTERED), arg2), info.r, info.g, info.b, info.id);
 		elseif ( type == "RESTRICTED" ) then
-			self:AddMessage(CH:ConcatenateTimeStamp(CHAT_RESTRICTED), info.r, info.g, info.b, info.id);
+			self:AddMessage(CH:ConcatenateTimeStamp(GameLimitedMode_GetString("CHAT_RESTRICTED")), info.r, info.g, info.b, info.id);
 		elseif ( type == "CHANNEL_LIST") then
 			if(channelLength > 0) then
 				self:AddMessage(format(CH:ConcatenateTimeStamp(_G["CHAT_"..type.."_GET"]..arg1), tonumber(arg8), arg4), info.r, info.g, info.b, info.id);
@@ -930,15 +945,18 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			else
 				self:AddMessage(format(globalstring, arg8, arg4, arg2), info.r, info.g, info.b, info.id);
 			end
+			if ( arg1 == "INVITE" and GetCVarBool("blockChannelInvites") ) then
+				self:AddMessage(CHAT_MSG_BLOCK_CHAT_CHANNEL_INVITE, info.r, info.g, info.b, info.id);
+			end
 		elseif (type == "CHANNEL_NOTICE") then
 			local globalstring = _G["CHAT_"..arg1.."_NOTICE_BN"];
-			if ( not globalstring ) then
-				globalstring = _G["CHAT_"..arg1.."_NOTICE"];
+			if( arg1 == "TRIAL_RESTRICTED" ) then
+				globalstring = GameLimitedMode_GetString("CHAT_TRIAL_RESTRICTED_NOTICE");
+			else
+				if ( not globalstring ) then
+					globalstring = _G["CHAT_"..arg1.."_NOTICE"];
+				end
 			end
-			if ( arg10 > 0 ) then
-				arg4 = arg4.." "..arg10;
-			end
-
 			local accessID = ChatHistory_GetAccessID(Chat_GetChatCategory(type), arg8);
 			local typeID = ChatHistory_GetAccessID(infoType, arg8, arg12);
 			self:AddMessage(format(CH:ConcatenateTimeStamp(globalstring), arg8, arg4), info.r, info.g, info.b, info.id, false, accessID, typeID);
@@ -953,6 +971,8 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 		elseif ( type == "BN_CONVERSATION_LIST" ) then
 			local channelLink = format(CHAT_BN_CONVERSATION_GET_LINK, arg8, MAX_WOW_CHAT_CHANNELS + arg8);
 			local message = format(CHAT_BN_CONVERSATION_LIST, channelLink, arg1);
+			local accessID = ChatHistory_GetAccessID(Chat_GetChatCategory(type), arg8);
+			local typeID = ChatHistory_GetAccessID(infoType, arg8, arg12);
 			self:AddMessage(CH:ConcatenateTimeStamp(message), info.r, info.g, info.b, info.id, false, accessID, typeID);
 		elseif ( type == "BN_INLINE_TOAST_ALERT" ) then
 			if ( arg1 == "FRIEND_OFFLINE" and not BNet_ShouldProcessOfflineEvents() ) then
@@ -969,6 +989,8 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			elseif ( arg1 == "FRIEND_ONLINE" or arg1 == "FRIEND_OFFLINE") then
 				local hasFocus, toonName, client, realmName, realmID, faction, race, class, guild, zoneName, level, gameText = BNGetToonInfo(arg13);
 				if (toonName and toonName ~= "" and client and client ~= "") then
+					local _, _, battleTag = BNGetFriendInfoByID(arg13);
+					toonName = BNet_GetValidatedCharacterName(toonName, battleTag, client) or "";
 					local toonNameText = BNet_GetClientEmbeddedTexture(client, 14)..toonName;
 					local playerLink = format("|HBNplayer:%s:%s:%s:%s:%s|h[%s] (%s)|h", arg2, arg13, arg11, Chat_GetChatCategory(type), 0, arg2, toonNameText);
 					message = format(globalstring, playerLink);
@@ -1130,13 +1152,13 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			-- Add Channel
 			arg4 = gsub(arg4, "%s%-%s.*", "");
 			if( chatGroup  == "BN_CONVERSATION" ) then
-				body = format(CHAT_BN_CONVERSATION_GET_LINK, MAX_WOW_CHAT_CHANNELS + arg8, MAX_WOW_CHAT_CHANNELS + arg8)..body;
+				body = format(CHAT_BN_CONVERSATION_GET_LINK, arg8, MAX_WOW_CHAT_CHANNELS + arg8)..body;
 			elseif(channelLength > 0) then
 				body = "|Hchannel:channel:"..arg8.."|h["..arg4.."]|h "..body;
 			end
 
 			local accessID = ChatHistory_GetAccessID(chatGroup, chatTarget);
-			local typeID = ChatHistory_GetAccessID(infoType, chatTarget, arg12 == "" and arg13 or arg12);
+			local typeID = ChatHistory_GetAccessID(infoType, chatTarget, arg12 or arg13);
 			if CH.db.shortChannels and type ~= "EMOTE" and type ~= "TEXT_EMOTE" then
 				body = body:gsub("|Hchannel:(.-)|h%[(.-)%]|h", CH.ShortChannel)
 				body = body:gsub('CHANNEL:', '')
@@ -1757,7 +1779,26 @@ function CH:Initialize()
 	frame:Size(700, 200)
 	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 3)
 	frame:Hide()
+	frame:SetMovable(true)
 	frame:EnableMouse(true)
+	frame:SetScript("OnMouseDown", function(self, button)
+		if button == "LeftButton" and not self.isMoving then
+			self:StartMoving();
+			self.isMoving = true;
+		end
+	end)
+	frame:SetScript("OnMouseUp", function(self, button)
+		if button == "LeftButton" and self.isMoving then
+			self:StopMovingOrSizing();
+			self.isMoving = false;
+		end
+	end)
+	frame:SetScript("OnHide", function(self)
+		if ( self.isMoving ) then
+			self:StopMovingOrSizing();
+			self.isMoving = false;
+		end
+	end)
 	frame:SetFrameStrata("DIALOG")
 
 
