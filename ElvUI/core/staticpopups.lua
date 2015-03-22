@@ -316,6 +316,22 @@ E.PopupDialogs["RESET_PROFILE_PROMPT"] = {
 	OnAccept = function() E:ResetProfile() end,
 }
 
+E.PopupDialogs["WARNING_BLIZZARD_ADDONS"] = {
+	text = L["One or more of the default Blizzard AddOns are disabled. This can cause errors and other issues. We recommend you re-enable the AddOns. Re-enable Blizzard AddOns now?"],
+	button1 = YES,
+	button2 = NO,
+	timeout = 0,
+	hideOnEscape = false,
+	OnAccept = function()
+		for i = 1, GetNumAddOns() do
+			local name = GetAddOnInfo(i)
+			if strfind(name, 'Blizzard_') then
+				EnableAddOn(i)
+			end
+		end
+		ReloadUI()
+	end,
+}
 
 
 

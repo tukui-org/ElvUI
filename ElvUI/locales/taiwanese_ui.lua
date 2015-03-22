@@ -322,6 +322,7 @@ L["No, Revert Changes!"] = true;
 L["Oh lord, you have got ElvUI and Tukui both enabled at the same time. Select an addon to disable."] = "你不能同時啓用Elvui和Tukui， 請選擇一個禁用."
 L["One or more of the changes you have made require a ReloadUI."] = "已變更一或多個設定, 需重載介面."
 L["One or more of the changes you have made will effect all characters using this addon. You will have to reload the user interface to see the changes you have made."] = "你所做的改動可能會影響到使用這個插件的所有角色, 你需要重新加載介面才能使改動生效."
+L["One or more of the default Blizzard AddOns are disabled. This can cause errors and other issues. We recommend you re-enable the AddOns. Re-enable Blizzard AddOns now?"] = true;
 L["Save"] = "儲存"
 L["Using the healer layout it is highly recommended you download the addon Clique if you wish to have the click-to-heal function."] = true;
 L["Yes, Keep Changes!"] = true;

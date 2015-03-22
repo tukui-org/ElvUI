@@ -322,6 +322,7 @@ L["No, Revert Changes!"] = "예전으로 돌려주세요"
 L["Oh lord, you have got ElvUI and Tukui both enabled at the same time. Select an addon to disable."] = "ElvUI 와 TukUI 를 동시에 사용하려 하고 있습니다. 하나만 선택해 주세요."
 L["One or more of the changes you have made require a ReloadUI."] = "변경 사항을 적용하려면 애드온을 리로드 해야합니다."
 L["One or more of the changes you have made will effect all characters using this addon. You will have to reload the user interface to see the changes you have made."] = "이 설정은 모든 캐릭터에게 동일하게 적용됩니다.|n|n설정 적용을 위해 리로드 하시겠습니까?"
+L["One or more of the default Blizzard AddOns are disabled. This can cause errors and other issues. We recommend you re-enable the AddOns. Re-enable Blizzard AddOns now?"] = true;
 L["Save"] = "저장"
 L["Type /aprilfools to revert to old settings."] = "/aprilfools 를 입력해서 예전 세팅으로 돌릴 수 있습니다."
 L["Using the healer layout it is highly recommended you download the addon Clique if you wish to have the click-to-heal function."] = "힐러 레이아웃을 사용할 거라면 Clique 애드온을 같이 써 클릭캐스팅 기능을 이용할 것을 강력히 추천합니다."
