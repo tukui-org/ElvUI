@@ -126,6 +126,7 @@ end
 function E:RegisterCooldown(cooldown)
 	if(not E.private.cooldown.enable or cooldown.isHooked) then return end
 	hooksecurefunc(cooldown, "SetCooldown", E.OnSetCooldown)
+	cooldown.currentCooldownType = COOLDOWN_TYPE_NORMAL --Prevent LibActionButton from doing SetHideCountdownNumbers(false)
 	cooldown.isHooked = true
 	cooldown:SetHideCountdownNumbers(true)
 	--Bling Texture is currently bugged and doesn't hide properly when the cooldown animation finishes
