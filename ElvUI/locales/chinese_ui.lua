@@ -324,6 +324,7 @@ L["Oh lord, you have got ElvUI and Tukui both enabled at the same time. Select a
 L["One or more of the changes you have made require a ReloadUI."] = "已变更一或多个设定，需重载介面."
 L["One or more of the changes you have made will effect all characters using this addon. You will have to reload the user interface to see the changes you have made."] = "你所做的改动可能会影响到使用这个插件的所有角色，你需要重新加载界面才能使改动生效。"
 L["Save"] = "储存"
+L["Type /aprilfools to revert to old settings."] = true;
 L["Using the healer layout it is highly recommended you download the addon Clique if you wish to have the click-to-heal function."] = true;
 L["Yes, Keep Changes!"] = true;
 L["You have changed the pixel perfect option. You will have to complete the installation process to remove any graphical bugs."] = "你已改变了像素完美中的选项, 你必须完成安装过程以消除任何图形错误."
