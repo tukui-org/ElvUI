@@ -3,7 +3,7 @@ local M = E:NewModule('Minimap', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
 E.Minimap = M
 
 local Astrolabe, AstrolabeMapMonitor
-if DongleStub then
+if IsAddOnLoaded("Gatherer") then
 	Astrolabe = DongleStub("Astrolabe-1.0")
 	AstrolabeMapMonitor = DongleStub("AstrolabeMapMonitor")
 end
