@@ -938,16 +938,14 @@ function HideRaid()
 end
 
 function UF:DisableBlizzard(event)
-	if not CompactRaidFrameManager_UpdateShown then
-		E:StaticPopup_Show("WARNING_BLIZZARD_ADDONS")
-		return
-	end
-	hooksecurefunc("CompactRaidFrameManager_UpdateShown", HideRaid)
-	CompactRaidFrameManager:HookScript('OnShow', HideRaid)
-	CompactRaidFrameContainer:UnregisterAllEvents()
+	if CompactRaidFrameManager_UpdateShown then
+		hooksecurefunc("CompactRaidFrameManager_UpdateShown", HideRaid)
+		CompactRaidFrameManager:HookScript('OnShow', HideRaid)
+		CompactRaidFrameContainer:UnregisterAllEvents()
 
-	HideRaid()
-	hooksecurefunc("CompactUnitFrame_RegisterEvents", CompactUnitFrame_UnregisterEvents)
+		HideRaid()
+		hooksecurefunc("CompactUnitFrame_RegisterEvents", CompactUnitFrame_UnregisterEvents)
+	end
 end
 
 local hiddenParent = CreateFrame("Frame")
