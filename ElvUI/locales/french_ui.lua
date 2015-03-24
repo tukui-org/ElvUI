@@ -322,6 +322,7 @@ L["No, Revert Changes!"] = "Non, annuler les changements !";
 L["Oh lord, you have got ElvUI and Tukui both enabled at the same time. Select an addon to disable."] = "Oh seigneur, vous avez ElvUI et Tukui d'activé en même temps. Sélectionnez un addon à désactiver."
 L["One or more of the changes you have made require a ReloadUI."] = "Une ou plusieurs modifications que vous avez effectuées nécessitent un rechargement de l'interface."
 L["One or more of the changes you have made will effect all characters using this addon. You will have to reload the user interface to see the changes you have made."] = "Un ou plusieurs changement(s) que vous avez effectués a une incidence sur tous les personnages qui utilise cet addon. Vous devriez recharger l'interface utilisateur pour voir le(s) changement(s) apporté(s)."
+L["One or more of the default Blizzard AddOns are disabled. This can cause errors and other issues. We recommend you re-enable the AddOns. Re-enable Blizzard AddOns now?"] = true;
 L["Save"] = "Sauvegarder"
 L["Using the healer layout it is highly recommended you download the addon Clique if you wish to have the click-to-heal function."] = "Si vous utilisé l'agencement Soigneur, il est hautement recommandé de télécharger l'addon Clique si vous souhaitez avoir la fonction cliquer-pour-soigner."
 L["Yes, Keep Changes!"] = "Oui, garder les changements !";
