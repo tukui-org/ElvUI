@@ -80,7 +80,7 @@ local function LoadSkin()
 	}
 
 	for _, button in pairs(buttons) do
-		S:HandleButton(_G[button])
+		S:HandleButton(_G[button], true)
 	end
 
 	--Fix Button Positions
@@ -130,12 +130,16 @@ local function LoadSkin()
 	for i=1, AuctionFrame.numTabs do
 		S:HandleTab(_G["AuctionFrameTab"..i])
 	end
-
+	
 	for i=1, NUM_FILTERS_TO_DISPLAY do
 		local tab = _G["AuctionFilterButton"..i]
-		tab:StripTextures()
 		tab:StyleButton()
 	end
+	
+	hooksecurefunc("FilterButton_SetType", function(button)
+		local tex = button:GetNormalTexture();
+		tex:SetAlpha(0)
+	end)
 
 	local editboxs = {
 		"BrowseName",
