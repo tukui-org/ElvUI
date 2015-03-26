@@ -24,9 +24,13 @@ local updateSafeZone = function(self)
 	end
 end
 
-local UNIT_SPELLCAST_SENT = function (self, event, unit, spell, rank, target)
+local UNIT_SPELLCAST_SENT = function (self, event, unit, spell, rank, target, castid)
 	local castbar = self.Castbar
 	castbar.curTarget = (target and target ~= "") and target or nil
+
+	if castbar.isTradeSkill then
+		castbar.tradeSkillCastId = castid
+	end
 end
 
 local UNIT_SPELLCAST_START = function(self, event, unit, spell)
@@ -96,10 +100,11 @@ local UNIT_SPELLCAST_FAILED = function(self, event, unit, spellname, _, castid)
 	if (self.unit ~= unit) or not unit then return end
 
 	local castbar = self.Castbar
-	if (castbar.castid ~= castid) then	return end
+	if (castbar.castid ~= castid) and (castbar.tradeSkillCastId ~= castid) then return end
 
 	if(mergeTradeskill and UnitIsUnit(unit, "player")) then
 		mergeTradeskill = false;
+		castbar.tradeSkillCastId = nil
 	end
 
 	castbar.casting = nil
@@ -116,10 +121,11 @@ local UNIT_SPELLCAST_FAILED_QUIET = function(self, event, unit, spellname, _, ca
 	if (self.unit ~= unit) or not unit then return end
 
 	local castbar = self.Castbar
-	if (castbar.castid ~= castid) then	return end
+	if (castbar.castid ~= castid) and (castbar.tradeSkillCastId ~= castid) then return end
 
 	if(mergeTradeskill and UnitIsUnit(unit, "player")) then
 		mergeTradeskill = false;
+		castbar.tradeSkillCastId = nil
 	end
 	
 	castbar.casting = nil
