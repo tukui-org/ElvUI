@@ -6,7 +6,6 @@ local function LoadSkin()
 	-- global
 	CollectionsJournal:StripTextures()
 	CollectionsJournal:SetTemplate('Transparent')
-	CollectionsJournal:Hide()
 	CollectionsJournalPortrait:SetAlpha(0)
 
 	for i=1, 4 do
