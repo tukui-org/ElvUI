@@ -98,6 +98,10 @@ local UNIT_SPELLCAST_FAILED = function(self, event, unit, spellname, _, castid)
 	local castbar = self.Castbar
 	if (castbar.castid ~= castid) then	return end
 
+	if(mergeTradeskill and UnitIsUnit(unit, "player")) then
+		mergeTradeskill = false;
+	end
+
 	castbar.casting = nil
 	castbar.interrupt = nil
 	castbar:SetValue(0)
