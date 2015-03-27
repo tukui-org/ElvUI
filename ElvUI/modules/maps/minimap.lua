@@ -65,7 +65,27 @@ local menuList = {
 	{text = LFG_TITLE,
 	func = function() ToggleLFDParentFrame(); end},
 	{text = ENCOUNTER_JOURNAL,
-	func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then EncounterJournal_LoadUI(); end ToggleFrame(EncounterJournal) end}
+	func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then EncounterJournal_LoadUI(); end ToggleFrame(EncounterJournal) end},
+	{text = MAINMENU_BUTTON,
+	func = function() 
+		if ( not GameMenuFrame:IsShown() ) then
+			if ( VideoOptionsFrame:IsShown() ) then
+				VideoOptionsFrameCancel:Click();
+			elseif ( AudioOptionsFrame:IsShown() ) then
+				AudioOptionsFrameCancel:Click();
+			elseif ( InterfaceOptionsFrame:IsShown() ) then
+				InterfaceOptionsFrameCancel:Click();
+			end		
+			CloseMenus();
+			CloseAllWindows()
+			PlaySound("igMainMenuOpen");
+			ShowUIPanel(GameMenuFrame);
+		else
+			PlaySound("igMainMenuQuit");
+			HideUIPanel(GameMenuFrame);
+			MainMenuMicroButton_SetNormal();
+		end
+	end}
 }
 
 --if(C_StorePublic.IsEnabled()) then
