@@ -757,7 +757,7 @@ local priestTier17 = {115560,115561,115562,115563,115564}
 local f = CreateFrame("Frame")
 f:RegisterEvent("PLAYER_ENTERING_WORLD")
 f:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
-f:SetScript("OnEvent", function(self)
+f:SetScript("OnEvent", function(self, event)
 	local class = select(2, UnitClass("player"))
 	if string.lower(class) ~= "priest" then return; end
 
