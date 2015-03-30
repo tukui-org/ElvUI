@@ -213,10 +213,11 @@ function E:UpdateMedia()
 
 	if LeftChatPanel and LeftChatPanel.tex and RightChatPanel and RightChatPanel.tex then
 		LeftChatPanel.tex:SetTexture(E.db.chat.panelBackdropNameLeft)
-		LeftChatPanel.tex:SetAlpha(E.db.general.backdropfadecolor.a - 0.55 > 0 and E.db.general.backdropfadecolor.a - 0.55 or 0.5)
+		local a = E.db.general.backdropfadecolor.a or 0.5
+		LeftChatPanel.tex:SetAlpha(a)
 
 		RightChatPanel.tex:SetTexture(E.db.chat.panelBackdropNameRight)
-		RightChatPanel.tex:SetAlpha(E.db.general.backdropfadecolor.a - 0.55 > 0 and E.db.general.backdropfadecolor.a - 0.55 or 0.5)
+		RightChatPanel.tex:SetAlpha(a)
 	end
 
 	self:ValueFuncCall()
@@ -788,7 +789,7 @@ function E:BeginFoolsDayEvent()
 
 	SetCVar("Sound_EnableAllSound", 1)
 	SetCVar("Sound_EnableMusic", 1)
-	PlayMusic([[Interface\AddOns\ElvUI\media\sounds\harlemshake.mp3]])
+	PlayMusic([[Interface\AddOns\ElvUI\media\sounds\harlemshake.ogg]])
 	E:ScheduleTimer("MassiveShake", 15.5)
 
 	local UF = E:GetModule("UnitFrames")
@@ -973,7 +974,7 @@ function E:SetupAprilFools2014()
 
 		SetCVar("Sound_EnableAllSound", 1)
 		SetCVar("Sound_EnableMusic", 1)
-		PlayMusic([[Interface\AddOns\ElvUI\media\sounds\helloKitty.mp3]])
+		PlayMusic([[Interface\AddOns\ElvUI\media\sounds\helloKitty.ogg]])
 		self:ScheduleTimer('EndAprilFoolsDay2014', 59)
 
 		self.db.general.kittys = true
