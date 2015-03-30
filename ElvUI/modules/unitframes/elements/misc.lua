@@ -360,6 +360,13 @@ function UF:UpdateAuraWatchFromHeader(group, petOverride)
 		local frame = select(i, self[group]:GetChildren())
 		if frame and frame.Health then
 			UF:UpdateAuraWatch(frame, petOverride)
+		elseif frame then
+			for n = 1, frame:GetNumChildren() do
+				local child = select(n, frame:GetChildren())
+				if child and child.Health then
+					UF:UpdateAuraWatch(child, petOverride)
+				end
+			end
 		end
 	end
 end
