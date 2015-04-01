@@ -1157,7 +1157,7 @@ function E:Initialize()
 	if(self:CheckForFoolsDayFuckup()) then
 		E:AprilFoolsFuckupFix()
 	elseif E:IsFoolsDay() and not self.db.general.kittys then
-		E:StaticPopup_Show('APRIL_FOOLS')
+		--E:StaticPopup_Show('APRIL_FOOLS')
 	end
 
 	self:UpdateMedia()
