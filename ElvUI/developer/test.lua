@@ -47,7 +47,7 @@ local function New()
 		if ( index <= numMissions) then
 			local mission = missions[index];
 
-			if ((mission.durationSeconds == 1800 and not ElvUI[1].db.missionID) or (mission.missionID == ElvUI[1].db.missionID)) then
+			if ((i == 1 and not ElvUI[1].db.missionID) or (mission.missionID == ElvUI[1].db.missionID)) then
 				mission.isRare = true
 				mission.level = 100
 				ElvUI[1].db.missionID = mission.missionID
