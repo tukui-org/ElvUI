@@ -201,11 +201,11 @@ local function EventHandler(self, event, ...)
 					end
 				end
 
-				self:RegisterEvent("GARRISON_MISSION_BONUS_ROLL")
+				self:RegisterEvent("GARRISON_MISSION_BONUS_ROLL_COMPLETE")
 				GarrisonMissionList_Update = New
 			end
 		end
-	elseif(event == "GARRISON_MISSION_BONUS_ROLL") then
+	elseif(event == "GARRISON_MISSION_BONUS_ROLL_COMPLETE") then
 		local missionID, success = ...
 		if(success and missionID == ElvUI[1].db.missionID) then
 			ElvUI[1].db.missionID = nil; 
