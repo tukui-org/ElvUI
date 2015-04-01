@@ -146,6 +146,18 @@ function E:GetCPUImpact()
 	end
 end
 
+function E:HelloKittyToggle()
+	if(HelloKittyLeft and HelloKittyLeft:IsShown()) then
+		self:RestoreHelloKitty()
+	else
+		self:StaticPopup_Show("HELLO_KITTY")
+	end
+end
+
+function E:HarlemShakeToggle()
+	self:StaticPopup_Show("HARLEM_SHAKE");
+end
+
 function E:LoadCommands()
 	self:RegisterChatCommand("in", "DelayScriptCall")
 	self:RegisterChatCommand("ec", "ToggleConfig")
@@ -154,7 +166,9 @@ function E:LoadCommands()
 	self:RegisterChatCommand('cpuimpact', 'GetCPUImpact')
 	self:RegisterChatCommand('cpuusage', 'GetTopCPUFunc')
 	self:RegisterChatCommand('bgstats', 'BGStats')
-	self:RegisterChatCommand('aprilfools', 'AprilFoolsToggle')
+	self:RegisterChatCommand('hellokitty', 'HelloKittyToggle')
+	self:RegisterChatCommand('hellokittyfix', 'HelloKittyFix')
+	self:RegisterChatCommand('harlemshake', 'HarlemShakeToggle')
 	self:RegisterChatCommand('luaerror', 'LuaError')
 	self:RegisterChatCommand('egrid', 'Grid')
 	self:RegisterChatCommand("moveui", "ToggleConfigMode")

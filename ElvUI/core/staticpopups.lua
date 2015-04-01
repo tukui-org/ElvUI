@@ -248,14 +248,14 @@ E.PopupDialogs["RESETUI_CHECK"] = {
 	whileDead = 1,
 }
 
-E.PopupDialogs["APRIL_FOOLS2013"] = {
+E.PopupDialogs["HARLEM_SHAKE"] = {
 	text = L["ElvUI needs to perform database optimizations please be patient."],
 	button1 = OKAY,
 	OnAccept = function()
 		if E.isMassiveShaking then
-			E:StopMassiveShake()
+			E:StopHarlemShake()
 		else
-			E:BeginFoolsDayEvent()
+			E:BeginHarlemShake()
 			return true
 		end
 	end,
@@ -263,27 +263,31 @@ E.PopupDialogs["APRIL_FOOLS2013"] = {
 	whileDead = 1,
 }
 
-E.PopupDialogs["APRIL_FOOLS"] = {
+E.PopupDialogs["HELLO_KITTY"] = {
 	text = L["ElvUI needs to perform database optimizations please be patient."],
 	button1 = OKAY,
 	OnAccept = function()
-		E:SetupAprilFools2014()
+		E:SetupHelloKitty()
 	end,
 	timeout = 0,
 	whileDead = 1,
 }
 
-E.PopupDialogs["APRIL_FOOLS_END"] = {
+E.PopupDialogs["HELLO_KITTY_END"] = {
 	text = L["Do you enjoy the new ElvUI?"],
 	button1 = L["Yes, Keep Changes!"],
 	button2 = L["No, Revert Changes!"],
 	OnAccept = function()
-		E.global.aprilFools = true;
-		E:Print(L["Type /aprilfools to revert to old settings."])
+		E:Print(L["Type /hellokitty to revert to old settings."])
+		StopMusic()
+		SetCVar("Sound_EnableAllSound", E.oldEnableAllSound)
+		SetCVar("Sound_EnableMusic", E.oldEnableMusic)		
 	end,
 	OnCancel = function()
-		E.global.aprilFools = true;
-		E:RestoreAprilFools()
+		E:RestoreHelloKitty()
+		StopMusic()
+		SetCVar("Sound_EnableAllSound", E.oldEnableAllSound)
+		SetCVar("Sound_EnableMusic", E.oldEnableMusic)				
 	end,
 	timeout = 0,
 	whileDead = 1,
