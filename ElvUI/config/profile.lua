@@ -121,6 +121,7 @@ P['bags'] = {
 	['moneyCoins'] = true,
 	['ignoreItems'] = '',
 	['itemLevel'] = true,
+	['itemLevelFilter'] = 1,
 	['bagBar'] = {
 		['growthDirection'] = 'VERTICAL',
 		['sortDirection'] = 'ASCENDING',
