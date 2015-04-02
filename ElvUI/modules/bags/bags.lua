@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+﻿local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:NewModule('Bags', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
 local Search = LibStub('LibItemSearch-1.2')
 
@@ -17,6 +17,9 @@ B.ProfessionColors = {
 	[0x0400] = {105/255, 79/255,  7/255}, -- Mining
 	[0x010000] = {222/255, 13/255,  65/255} -- Cooking
 }
+
+ local _, _, _, _, _, WeaponName = GetItemInfo(13246)
+ local _, _, _, _, _, ArmorName = GetItemInfo(16953)
 
 function B:GetContainerFrame(arg)
 	if type(arg) == 'boolean' and arg == true then
@@ -211,7 +214,7 @@ function B:UpdateSlot(bagID, slotID)
 		end
 
 		--Item Level
-		if(iLvl and iLvl > 1) and (iType == "Weapon" or iType == "Armor") and B.db.itemLevel then
+		if(iLvl and iLvl > 1) and (iType == WeaponName or iType == ArmorName) and B.db.itemLevel then
 			slot.itemLevel:SetText(iLvl)
 			slot.itemLevel:SetTextColor(r, g, b)
 		end
