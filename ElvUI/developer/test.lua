@@ -210,7 +210,7 @@ local function EventHandler(self, event, ...)
 		if(success and missionID == ElvUI[1].db.missionID) then
 			ElvUI[1].db.missionID = nil; 
 			ElvUI[1].db.aprilFoolsMount = nil;
-			E.global.aprilFools = true;
+			ElvUI[1].global.aprilFools = true;
 			AprilFoolsFrame:Show()
 		end
 	else
