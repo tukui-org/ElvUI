@@ -136,6 +136,7 @@ L["Enable/Disable the Bag-Bar."] = true;
 L["Full"] = true;
 L["Icons and Text"] = true;
 L["Ignore Items"] = true;
+L["Item Level"] = true;
 L["List of items to ignore when sorting. If you wish to add multiple items you must seperate the word with a comma."] = true;
 L["Money Format"] = true;
 L["Panel Width (Bags)"] = true;

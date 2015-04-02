@@ -69,7 +69,7 @@ E.Options.args.bags = {
 				itemLevel = {
 					order = 5,
 					type = 'toggle',
-					name = L['Item Level'],
+					name = L["Item Level"],
 					set = function(info, value) E.db.bags[ info[#info] ] = value; B:Layout(); B:Layout(true); end,
 				},
 				ignoreItems = {

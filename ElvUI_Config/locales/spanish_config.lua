@@ -138,6 +138,7 @@ L["Enable/Disable the Bag-Bar."] = "Activa/Desactiva la barra de las bolsas."
 L["Full"] = true;
 L["Icons and Text"] = "Iconos y Texto"
 L["Ignore Items"] = "Ignorar Objetos"
+L["Item Level"] = true;
 L["List of items to ignore when sorting. If you wish to add multiple items you must seperate the word with a comma."] = "Lista de objetos a ignorar durante el ordenamiento. Para ignorar múltiples objetos sepáralos con una coma."
 L["Money Format"] = true;
 L["Panel Width (Bags)"] = "Ancho del Panel (Bolsas)"

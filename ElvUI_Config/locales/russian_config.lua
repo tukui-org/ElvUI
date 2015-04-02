@@ -138,6 +138,7 @@ L["Enable/Disable the Bag-Bar."] = "Включить/выключить пане
 L["Full"] = "Полный"
 L["Icons and Text"] = "Иконки и текст"
 L["Ignore Items"] = "Игнорировать предметы"
+L["Item Level"] = true;
 L["List of items to ignore when sorting. If you wish to add multiple items you must seperate the word with a comma."] = "Список предметов, игнорируемых при сортироваке. Если Вы хотите добавить несколько предметов, то должны разделять их запятой."
 L["Money Format"] = "Формат денег"
 L["Panel Width (Bags)"] = "Ширина сумок"
