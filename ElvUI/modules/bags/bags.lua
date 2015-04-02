@@ -18,8 +18,9 @@ B.ProfessionColors = {
 	[0x010000] = {222/255, 13/255,  65/255} -- Cooking
 }
 
- local _, _, _, _, _, WeaponName = GetItemInfo(13246)
- local _, _, _, _, _, ArmorName = GetItemInfo(16953)
+--Localized Weapon/Armor item type, used for ilvl display
+local _, _, _, _, _, TYPE_WEAPON = GetItemInfo(13246)
+local _, _, _, _, _, TYPE_ARMOR = GetItemInfo(16953)
 
 function B:GetContainerFrame(arg)
 	if type(arg) == 'boolean' and arg == true then
@@ -214,7 +215,7 @@ function B:UpdateSlot(bagID, slotID)
 		end
 
 		--Item Level
-		if(iLvl and iLvl > 1) and (iType == WeaponName or iType == ArmorName) and B.db.itemLevel then
+		if(iLvl and iLvl > 1) and (iType == TYPE_WEAPON or iType == TYPE_ARMOR) and B.db.itemLevel then
 			slot.itemLevel:SetText(iLvl)
 			slot.itemLevel:SetTextColor(r, g, b)
 		end
