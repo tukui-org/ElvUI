@@ -66,6 +66,12 @@ E.Options.args.bags = {
 					name = L["Sort Inverted"],
 					desc = L["Direction the bag sorting will use to allocate the items."],
 				},
+				itemLevel = {
+					order = 5,
+					type = 'toggle',
+					name = L['Item Level'],
+					set = function(info, value) E.db.bags[ info[#info] ] = value; B:Layout(); B:Layout(true); end,
+				},
 				ignoreItems = {
 					order = 100,
 					name = L["Ignore Items"],

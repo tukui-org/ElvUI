@@ -195,11 +195,12 @@ function B:UpdateSlot(bagID, slotID)
 		SetItemButtonTextureVertexColor(slot, 1, 1, 1);
 	end
 
+	slot.itemLevel:SetText("")
 	if B.ProfessionColors[bagType] then
 		slot:SetBackdropBorderColor(unpack(B.ProfessionColors[bagType]))
 	elseif (clink) then
-		local iType;
-		slot.name, _, slot.rarity, _, _, iType = GetItemInfo(clink);
+		local iType, iLvl;
+		slot.name, _, slot.rarity, iLvl, _, iType = GetItemInfo(clink);
 
 		local isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID);
 		local r, g, b
@@ -207,6 +208,12 @@ function B:UpdateSlot(bagID, slotID)
 		if(slot.rarity) then
 			r, g, b = GetItemQualityColor(slot.rarity);
 			slot.shadow:SetBackdropBorderColor(r, g, b)
+		end
+
+		--Item Level
+		if(iLvl and iLvl > 1) and (iType == "Weapon" or iType == "Armor") and B.db.itemLevel then
+			slot.itemLevel:SetText(iLvl)
+			slot.itemLevel:SetTextColor(r, g, b)
 		end
 
 		-- color slot according to item quality
@@ -443,6 +450,11 @@ function B:Layout(isBank)
 					E:RegisterCooldown(f.Bags[bagID][slotID].cooldown)
 					f.Bags[bagID][slotID].bagID = bagID
 					f.Bags[bagID][slotID].slotID = slotID
+
+					f.Bags[bagID][slotID].itemLevel = f.Bags[bagID][slotID]:CreateFontString(nil, 'OVERLAY')
+					f.Bags[bagID][slotID].itemLevel:SetPoint("BOTTOMRIGHT", 0, 2)
+					f.Bags[bagID][slotID].itemLevel:FontTemplate(nil, nil, "OUTLINE")
+					--f.Bags[bagID][slotID].itemLevel:FontTemplate(E.LSM:Fetch("font", "ElvUI Pixel"), 10, "MONOCHROMEOUTLINE")
 
 					if(f.Bags[bagID][slotID].BattlepayItemTexture) then
 						f.Bags[bagID][slotID].BattlepayItemTexture:Hide()
