@@ -11,7 +11,7 @@ local function SpellName(id)
 end
 
 local function Defaults(priorityOverride)
-	return {['enable'] = true, ['priority'] = priorityOverride or 0}
+	return {['enable'] = true, ['priority'] = priorityOverride or 0, ['stacks'] = 0}
 end
 
 local function DefaultsID(spellID, priorityOverride)

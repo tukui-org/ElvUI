@@ -927,6 +927,20 @@ local function UpdateFilterGroup()
 					min = 0, max = 99, step = 1,
 					desc = L["Set the priority order of the spell, please note that prioritys are only used for the raid debuff module, not the standard buff/debuff module. If you want to disable set to zero."],
 				},
+				stacks = {
+					name = L["Stacks"],
+					type = "range",
+					get = function()
+						if selectedFolder or not selectedSpell then
+							return 0
+						else
+							return E.global.unitframe['aurafilters'][selectedFilter]['spells'][selectedSpell].stacks
+						end
+					end,
+					set = function(info, value) E.global.unitframe['aurafilters'][selectedFilter]['spells'][selectedSpell].stacks = value; UpdateFilterGroup(); UF:Update_AllFrames(); end,
+					min = 0, max = 99, step = 1,
+					desc = L["The number of stacks debuff need to be shown. If you want to disable set to zero."],
+				},
 			},
 		}
 
