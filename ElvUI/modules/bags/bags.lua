@@ -18,10 +18,6 @@ B.ProfessionColors = {
 	[0x010000] = {222/255, 13/255,  65/255} -- Cooking
 }
 
---Localized Weapon/Armor item type, used for ilvl display
-local _, _, _, _, _, TYPE_WEAPON = GetItemInfo(13246)
-local _, _, _, _, _, TYPE_ARMOR = GetItemInfo(16953)
-
 function B:GetContainerFrame(arg)
 	if type(arg) == 'boolean' and arg == true then
 		return self.BankFrame;
@@ -203,8 +199,8 @@ function B:UpdateSlot(bagID, slotID)
 	if B.ProfessionColors[bagType] then
 		slot:SetBackdropBorderColor(unpack(B.ProfessionColors[bagType]))
 	elseif (clink) then
-		local iType, iLvl;
-		slot.name, _, slot.rarity, iLvl, _, iType = GetItemInfo(clink);
+		local iLvl, itemEquipLoc
+		slot.name, _, slot.rarity, iLvl, _, _, _, _, itemEquipLoc = GetItemInfo(clink);
 
 		local isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID);
 		local r, g, b
@@ -215,7 +211,7 @@ function B:UpdateSlot(bagID, slotID)
 		end
 
 		--Item Level
-		if(iLvl and iLvl >= E.db.bags.itemLevelThreshold) and (iType == TYPE_WEAPON or iType == TYPE_ARMOR) and B.db.itemLevel then
+		if (iLvl and iLvl >= E.db.bags.itemLevelThreshold) and (itemEquipLoc ~= nil and sitemEquipLoc ~= "" and itemEquipLoc ~= "INVTYPE_BAG" and itemEquipLoc ~= "INVTYPE_QUIVER") and B.db.itemLevel then
 			slot.itemLevel:SetText(iLvl)
 			slot.itemLevel:SetTextColor(r, g, b)
 		end
@@ -595,8 +591,7 @@ function B:UpdateReagentSlot(slotID)
 	if B.ProfessionColors[bagType] then
 		slot:SetBackdropBorderColor(unpack(B.ProfessionColors[bagType]))
 	elseif (clink) then
-		local iType;
-		slot.name, _, slot.rarity, _, _, iType = GetItemInfo(clink);
+		slot.name, _, slot.rarity = GetItemInfo(clink);
 
 		local isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID);
 		local r, g, b
