@@ -211,7 +211,7 @@ function B:UpdateSlot(bagID, slotID)
 		end
 
 		--Item Level
-		if (iLvl and iLvl >= E.db.bags.itemLevelThreshold) and (itemEquipLoc ~= nil and sitemEquipLoc ~= "" and itemEquipLoc ~= "INVTYPE_BAG" and itemEquipLoc ~= "INVTYPE_QUIVER") and B.db.itemLevel then
+		if (iLvl and iLvl >= E.db.bags.itemLevelThreshold) and (itemEquipLoc ~= nil and sitemEquipLoc ~= "" and itemEquipLoc ~= "INVTYPE_BAG" and itemEquipLoc ~= "INVTYPE_QUIVER" and itemEquipLoc ~= "INVTYPE_TABARD") and B.db.itemLevel then
 			slot.itemLevel:SetText(iLvl)
 			slot.itemLevel:SetTextColor(r, g, b)
 		end
