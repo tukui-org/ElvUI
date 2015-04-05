@@ -54,9 +54,9 @@ L["TEXT_FORMAT_DESC"] = [=[請填入代碼以變更文字格式。
 'deficit' - 顯示損失數值，若未損失生命/能量值，將不予顯示
 
 名稱格式：
-'name-short' - 名稱上限為 10 個字元
-'name-medium' - 名稱上限為 15 個字元
-'name-long' - 名稱上限為 20 個字元
+'name:short' - 名稱上限為 10 個字元
+'name:medium' - 名稱上限為 15 個字元
+'name:long' - 名稱上限為 20 個字元
 
 若要停用此功能，此欄位請留空。如需更多資訊，請至 http://www.tukui.org]=];
 

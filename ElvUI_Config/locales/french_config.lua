@@ -54,9 +54,9 @@ Formats de la Vie / des Ressources:
 'deficit' - Affiche la valeur du déficit, n'affichera rien si il n'y a pas de déficit
 
 Format des Noms:
-'name-short' - Nom limité à 10 charactères
-'name-medium' - Nom limité à 15 charactères
-'name-long' - Nom limité à 20 charactères
+'name:short' - Nom limité à 10 charactères
+'name:medium' - Nom limité à 15 charactères
+'name:long' - Nom limité à 20 charactères
 
 Pour désactiver, laisser le champs vide. Pour plus d'information, merci de visiter http://www.tukui.org]=];
 

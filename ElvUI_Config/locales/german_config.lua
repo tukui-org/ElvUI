@@ -54,9 +54,9 @@ Leben / Kraft Formate:
 'deficit' - Zeigt das Defizit. Es wird nichts angezeigt, wenn kein Defizit vorhanden ist
 
 Namensformate:
-'name-short' - Name auf 10 Zeichen beschränkt
-'name-medium' - Name auf 15 Zeichen beschränkt
-'name-long' - Name auf 20 Zeichen beschränkt
+'name:short' - Name auf 10 Zeichen beschränkt
+'name:medium' - Name auf 15 Zeichen beschränkt
+'name:long' - Name auf 20 Zeichen beschränkt
 
 Zum Deaktvieren lasse das Feld leer. Brauchst du mehr Informationen besuche http://www.tukui.org]=];
 

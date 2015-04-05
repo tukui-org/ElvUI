@@ -64,9 +64,9 @@ L["TEXT_FORMAT_DESC"] = [=[글자가 표시되는 형식을 변경할 수 있습
 
 
 |cff2eb7e4< name(이름) 형식 >|r
-|cffceff00name-short|r : 최대 10글자
-|cffceff00name-medium|r : 최대 15글자
-|cffceff00name-long|r : 최대 20글자
+|cffceff00name:short|r : 최대 10글자
+|cffceff00name:medium|r : 최대 15글자
+|cffceff00name:long|r : 최대 20글자
 
 표시하고 싶지 않으면 빈칸으로 두면 되며, 자세한 정보는 |cff2eb7e4www.tukui.org|r 에서 확인하세요.]=];
 

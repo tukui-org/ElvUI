@@ -54,9 +54,9 @@ Formatos de Salud / Poder:
 'deficit' - muestra el valor de déficit, no muestra nada si no hay déficit
 
 Formatos de Nombre:
-'name-short' - Nombre restringido a 10 caracteres
-'name-medium' - Nombre restringido a 15 caracteres
-'name-long' - Nombre restringido a 20 caracteres
+'name:short' - Nombre restringido a 10 caracteres
+'name:medium' - Nombre restringido a 15 caracteres
+'name:long' - Nombre restringido a 20 caracteres
 
 Para desactivarlo dejar el campo en blanco, si necesitas más información visita http://www.tukui.org]=];
 

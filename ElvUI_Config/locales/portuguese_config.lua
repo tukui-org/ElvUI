@@ -54,9 +54,9 @@ Formatos de Vida / Poder:
 'deficit' - Exibir o valor em falta, nao será exibido nada se não houver nada em falta
 
 Formato de Nomes:
-'name-short' - Nome restringido a 10 caracteres
-'name-medium' - Nome restringido a 15 caracteres
-'name-long' - Nome restringido a 20 caracteres
+'name:short' - Nome restringido a 10 caracteres
+'name:medium' - Nome restringido a 15 caracteres
+'name:long' - Nome restringido a 20 caracteres
 
 Para desactivar deixe o espaço em branco, se precisar de mais informações visite o site http://www.tukui.org]=];
 

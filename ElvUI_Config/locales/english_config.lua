@@ -54,9 +54,9 @@ Health / Power Formats:
 'deficit' - display the deficit value, will display nothing if there is no deficit
 
 Name Formats:
-'name-short' - Name restricted to 10 characters
-'name-medium' - Name restricted to 15 characters
-'name-long' - Name restricted to 20 characters
+'name:short' - Name restricted to 10 characters
+'name:medium' - Name restricted to 15 characters
+'name:long' - Name restricted to 20 characters
 
 To disable leave the field blank, if you need more information visit http://www.tukui.org]=];
 

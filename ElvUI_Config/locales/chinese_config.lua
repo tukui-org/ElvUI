@@ -54,9 +54,9 @@ L["TEXT_FORMAT_DESC"] = [=[提供一个更改文字格式的方式
 'deficit' - 赤字. 当没有赤字时不显示
 
 姓名格式:
-'name-short' - 姓名显示限制于10字节内
-'name-medium' -姓名显示限制于15字节内
-'name-long' - 姓名显示限制于20字节内
+'name:short' - 姓名显示限制于10字节内
+'name:medium' -姓名显示限制于15字节内
+'name:long' - 姓名显示限制于20字节内
 
 空白则为禁用. 如需技术支援请至 http://www.tukui.org]=];
 
