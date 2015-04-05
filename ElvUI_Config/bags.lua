@@ -72,6 +72,14 @@ E.Options.args.bags = {
 					name = L["Item Level"],
 					set = function(info, value) E.db.bags[ info[#info] ] = value; B:Layout(); B:Layout(true); end,
 				},
+				itemLevelFilter = {
+					order = 6,
+					name = L["Item Level Filter"],
+					desc = L["The minimum item level required for it to be shown.\nRequires reopening of bags/bank to take effect."],
+					type = 'range',
+					min = 1, max = 1000, step = 1,
+					set = function(info, value) E.db.bags[ info[#info] ] = value; end,
+				},
 				ignoreItems = {
 					order = 100,
 					name = L["Ignore Items"],

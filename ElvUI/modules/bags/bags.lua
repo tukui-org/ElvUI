@@ -215,7 +215,7 @@ function B:UpdateSlot(bagID, slotID)
 		end
 
 		--Item Level
-		if(iLvl and iLvl > 1) and (iType == TYPE_WEAPON or iType == TYPE_ARMOR) and B.db.itemLevel then
+		if(iLvl and iLvl >= E.db.bags.itemLevelFilter) and (iType == TYPE_WEAPON or iType == TYPE_ARMOR) and B.db.itemLevel then
 			slot.itemLevel:SetText(iLvl)
 			slot.itemLevel:SetTextColor(r, g, b)
 		end
