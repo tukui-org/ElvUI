@@ -211,7 +211,7 @@ local function EventHandler(self, event, ...)
 			ElvUI[1].db.missionID = nil; 
 			ElvUI[1].db.aprilFoolsMount = nil;
 			ElvUI[1].global.aprilFools = true;
-			AprilFoolsFrame:Show()
+			-- AprilFoolsFrame:Show()
 		end
 	else
 	    for i=1, BNGetNumFriendInvites() do
