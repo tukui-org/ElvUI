@@ -79,6 +79,7 @@ E.Options.args.bags = {
 					disabled = function() return not E.db.bags.itemLevel end,
 					type = 'range',
 					min = 1, max = 1000, step = 1,
+					set = function(info, value) E.db.bags[ info[#info] ] = value; B:Layout(); B:Layout(true); end,
 				},
 				ignoreItems = {
 					order = 100,
