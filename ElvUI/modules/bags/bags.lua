@@ -170,6 +170,22 @@ function B:SetGuildBankSearch(query)
 	end
 end
 
+function B:UpdateItemLevelDisplay()
+	for _, bagFrame in pairs(self.BagFrames) do
+		for _, bagID in ipairs(bagFrame.BagIDs) do
+			for slotID = 1, GetContainerNumSlots(bagID) do
+				local slot = bagFrame.Bags[bagID][slotID]
+				if slot and slot.itemLevel then
+					slot.itemLevel:FontTemplate(E.LSM:Fetch("font", E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
+				end
+			end
+		end
+		if bagFrame.UpdateAllSlots then
+			bagFrame:UpdateAllSlots()
+		end
+	end
+end
+
 function B:UpdateSlot(bagID, slotID)
 	if (self.Bags[bagID] and self.Bags[bagID].numSlots ~= GetContainerNumSlots(bagID)) or not self.Bags[bagID] or not self.Bags[bagID][slotID] then
 		return;
@@ -322,7 +338,6 @@ function B:REAGENTBANK_PURCHASED()
 	ElvUIReagentBankFrame.cover:Hide()
 end
 
-
 function B:Layout(isBank)
 	if E.private.bags.enable ~= true then return; end
 	local f = self:GetContainerFrame(isBank);
@@ -453,8 +468,7 @@ function B:Layout(isBank)
 
 					f.Bags[bagID][slotID].itemLevel = f.Bags[bagID][slotID]:CreateFontString(nil, 'OVERLAY')
 					f.Bags[bagID][slotID].itemLevel:SetPoint("BOTTOMRIGHT", 0, 2)
-					f.Bags[bagID][slotID].itemLevel:FontTemplate(nil, nil, "OUTLINE")
-					--f.Bags[bagID][slotID].itemLevel:FontTemplate(E.LSM:Fetch("font", "ElvUI Pixel"), 10, "MONOCHROMEOUTLINE")
+					f.Bags[bagID][slotID].itemLevel:FontTemplate(E.LSM:Fetch("font", E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
 
 					if(f.Bags[bagID][slotID].BattlepayItemTexture) then
 						f.Bags[bagID][slotID].BattlepayItemTexture:Hide()
