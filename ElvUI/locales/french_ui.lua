@@ -255,6 +255,7 @@ L["MT Frames"] = "Cadres du Tank principal"
 L["Objective Frame"] = "Cadre d'objectif";
 L["Party Frames"] = "Cadres de groupe" --Also used in UnitFrames
 L["Pet Bar"] = "Barre du familier" --Also in ActionBars
+L["Pet Castbar"] = true;
 L["Pet Frame"] = "Cadre du familier" --Also used in UnitFrames
 L["PetTarget Frame"] = "Cadre de la cible du familier" --Also used in UnitFrames
 L["Player Buffs"] = "Améliorations du joueur";

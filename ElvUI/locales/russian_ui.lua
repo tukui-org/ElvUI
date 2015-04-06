@@ -255,6 +255,7 @@ L["MT Frames"] = "Танки"
 L["Objective Frame"] = "Задачи"
 L["Party Frames"] = "Группа" --Also used in UnitFrames
 L["Pet Bar"] = "Панель питомца" --Also in ActionBars
+L["Pet Castbar"] = true;
 L["Pet Frame"] = "Питомец" --Also used in UnitFrames
 L["PetTarget Frame"] = "Цель питомца" --Also used in UnitFrames
 L["Player Buffs"] = "Баффы игрока"

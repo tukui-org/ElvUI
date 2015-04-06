@@ -255,6 +255,7 @@ L["MT Frames"] = "MT-Fenster"
 L["Objective Frame"] = "Questfenster"
 L["Party Frames"] = "Gruppenfenster" --Also used in UnitFrames
 L["Pet Bar"] = "Begleisterleiste" --Also in ActionBars
+L["Pet Castbar"] = true;
 L["Pet Frame"] = "Begleiterfenster" --Also used in UnitFrames
 L["PetTarget Frame"] = "Begleiter-Ziel Fenster" --Also used in UnitFrames
 L["Player Buffs"] = "Spieler Buffs"

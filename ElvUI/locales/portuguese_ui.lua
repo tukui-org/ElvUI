@@ -255,6 +255,7 @@ L["MT Frames"] = "Quadro do Tank Principal"
 L["Objective Frame"] = true;
 L["Party Frames"] = "Quadros de Grupo"
 L["Pet Bar"] = "Barra do Ajudante"
+L["Pet Castbar"] = true;
 L["Pet Frame"] = "Quadro do Ajudante"
 L["PetTarget Frame"] = "Quadro do Alvo do Ajudante"
 L["Player Buffs"] = true;

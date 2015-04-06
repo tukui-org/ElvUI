@@ -255,6 +255,7 @@ L["MT Frames"] = true;
 L["Objective Frame"] = true;
 L["Party Frames"] = true; --Also used in UnitFrames
 L["Pet Bar"] = true; --Also in ActionBars
+L["Pet Castbar"] = true;
 L["Pet Frame"] = true; --Also used in UnitFrames
 L["PetTarget Frame"] = true; --Also used in UnitFrames
 L["Player Buffs"] = true;

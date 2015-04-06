@@ -255,6 +255,7 @@ L["MT Frames"] = "방어전담 프레임"
 L["Objective Frame"] = true;
 L["Party Frames"] = "파티 프레임"
 L["Pet Bar"] = "소환수 바"
+L["Pet Castbar"] = true;
 L["Pet Frame"] = "소환수 프레임"
 L["PetTarget Frame"] = "소환수 대상 프레임"
 L["Player Buffs"] = "플레이어 버프"

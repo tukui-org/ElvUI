@@ -255,6 +255,7 @@ L["MT Frames"] = "Marcos de TP"
 L["Objective Frame"] = true;
 L["Party Frames"] = "Marco de Grupo"
 L["Pet Bar"] = "Barra de Mascota"
+L["Pet Castbar"] = true;
 L["Pet Frame"] = "Marco de Mascota"
 L["PetTarget Frame"] = "Marco de Objetivo de Mascota"
 L["Player Buffs"] = true;

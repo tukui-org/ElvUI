@@ -255,6 +255,7 @@ L["MT Frames"] = "主坦克框架"
 L["Objective Frame"] = true;
 L["Party Frames"] = "隊伍框架" --Also used in UnitFrames
 L["Pet Bar"] = "寵物快捷列" --Also in ActionBars
+L["Pet Castbar"] = true;
 L["Pet Frame"] = "寵物框架" --Also used in UnitFrames
 L["PetTarget Frame"] = "寵物目標框架" --Also used in UnitFrames
 L["Player Buffs"] = true;
