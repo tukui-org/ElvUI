@@ -388,7 +388,7 @@ function UF:Update_PlayerFrame(frame, db)
 		elseif USE_MINI_POWERBAR then
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER + (POWERBAR_HEIGHT/2))
 		else
-			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER + POWERBAR_HEIGHT)
+			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, ((BORDER + SPACING)*2) + POWERBAR_HEIGHT)
 		end
 
 		health.bg:ClearAllPoints()
@@ -493,19 +493,19 @@ function UF:Update_PlayerFrame(frame, db)
 				power:SetFrameStrata("LOW")
 				power:SetFrameLevel(2)
 			elseif USE_INSET_POWERBAR then
-				power:Height(POWERBAR_HEIGHT - BORDER*2)
+				power:Height(POWERBAR_HEIGHT)
 				power:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", BORDER + (BORDER*2), BORDER + (BORDER*2))
 				power:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", -(BORDER + (BORDER*2)), BORDER + (BORDER*2))
 				power:SetFrameStrata("MEDIUM")
 				power:SetFrameLevel(frame:GetFrameLevel() + 3)
 			elseif USE_MINI_POWERBAR then
 				power:Width(POWERBAR_WIDTH - BORDER*2)
-				power:Height(POWERBAR_HEIGHT - BORDER*2)
+				power:Height(POWERBAR_HEIGHT)
 				power:Point("RIGHT", frame, "BOTTOMRIGHT", -(BORDER*2 + 4), BORDER + (POWERBAR_HEIGHT/2))
 				power:SetFrameStrata("MEDIUM")
 				power:SetFrameLevel(frame:GetFrameLevel() + 3)
 			else
-				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(E.PixelMode and 0 or (BORDER + SPACING)))
+				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(E.PixelMode and 0 or BORDER))
 				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -BORDER, BORDER)
 			end
 		elseif frame:IsElementEnabled('Power') then
