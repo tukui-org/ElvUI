@@ -1123,6 +1123,14 @@ P['unitframe'] = {
 				['size'] = 8,
 				['fontSize'] = 10,
 			},
+			['castbar'] = {
+				['enable'] = true,
+				['width'] = 130,
+				['height'] = 18,
+				['icon'] = true,
+				['format'] = 'REMAINING',
+				['spark'] = true,
+			},
 		},
 		['pettarget'] = {
 			['enable'] = false,
