@@ -284,10 +284,7 @@ local function Update(self, event, unit)
 		end
 	end
 
-	local stackThreshold = 0
-	if _name and ElvUI[1].global.unitframe['aurafilters']['RaidDebuffs']['spells'][_name].stackThreshold then
-		stackThreshold = ElvUI[1].global.unitframe['aurafilters']['RaidDebuffs']['spells'][_name].stackThreshold
-	end
+	local stackThreshold = _name and ElvUI[1].global.unitframe['aurafilters']['RaidDebuffs']['spells'][_name] and ElvUI[1].global.unitframe['aurafilters']['RaidDebuffs']['spells'][_name].stackThreshold or 0
 	UpdateDebuff(self, _name, _icon, _count, _dtype, _duration, _endTime, _spellId, stackThreshold)
 	
 	--Reset the DispellPriority
