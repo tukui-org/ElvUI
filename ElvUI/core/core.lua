@@ -705,18 +705,6 @@ function E:DBConversions()
 			self.db.actionbar.dayscolor = nil
 		end
 	end
-
-	if E.global.unitframe.aurafilters['Whitelist (Strict)'].spells then
-		for k, v in pairs(E.global.unitframe.aurafilters['Whitelist (Strict)'].spells) do
-			if type(v) == 'table' then
-				for k_,v_ in pairs(v) do
-					if k_ == 'spellID' and type(v_) ~= 'number' then
-						E.global.unitframe.aurafilters['Whitelist (Strict)']['spells'][k][k_] = tonumber(v_)
-					end
-				end
-			end
-		end
-	end
 	
 	if E.global.unitframe['aurafilters']['RaidDebuffs'].spells then
 		local matchFound
@@ -738,15 +726,6 @@ function E:DBConversions()
 
 	self.db.unitframe.units.raid10 = nil
 	self.db.unitframe.units.raid25 = nil
-
-	if not E.db.bagsOffsetFixed then
-		if E.db.bags.xOffset ~= P['bags']['xOffset'] then
-			E.db.bags.xOffsetBank = E.db.bags.xOffset
-			E.db.bags.yOffsetBank = E.db.bags.yOffset
-			E.db.bags.xOffset = E.db.bags.xOffset * (-1) --Change positive value to negative or vice versa
-		end
-		E.db.bagsOffsetFixed = true
-	end
 
 	if E.db.general.experience.width > 100 and E.db.general.experience.height > 100 then
 		E.db.general.experience.width = P.general.experience.width
