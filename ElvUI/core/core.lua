@@ -719,8 +719,8 @@ function E:DBConversions()
 	end
 	
 	if E.global.unitframe['aurafilters']['RaidDebuffs'].spells then
+		local matchFound
 		for k, v in pairs(E.global.unitframe['aurafilters']['RaidDebuffs'].spells) do
-			local matchFound
 			if type(v) == 'table' then
 				matchFound = false
 				for k_,v_ in pairs(v) do
