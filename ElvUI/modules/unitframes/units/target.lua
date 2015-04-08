@@ -157,7 +157,7 @@ function UF:Update_TargetFrame(frame, db)
 		elseif USE_MINI_POWERBAR then
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER + (POWERBAR_HEIGHT/2))
 		else
-			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, ((BORDER + SPACING)*2) + POWERBAR_HEIGHT)
+			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, (USE_POWERBAR and ((BORDER + SPACING)*2) or BORDER) + POWERBAR_HEIGHT)
 		end
 
 		health.bg:ClearAllPoints()
