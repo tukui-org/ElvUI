@@ -486,6 +486,7 @@ function UF.groupPrototype:Configure_Groups()
 	local width, height, newCols, newRows = 0, 0, 0, 0
 	local direction = db.growthDirection
 	local xMult, yMult = DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction], DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction]
+	local SPACING = E.Spacing
 
 
 	local numGroups = self.numGroups
@@ -498,12 +499,12 @@ function UF.groupPrototype:Configure_Groups()
 		if group then
 			UF:ConvertGroupDB(group)
 			if point == "LEFT" or point == "RIGHT" then
-				group:SetAttribute("xOffset", db.horizontalSpacing * DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction])
+				group:SetAttribute("xOffset", (db.horizontalSpacing + SPACING) * DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction])
 				group:SetAttribute("yOffset", 0)
 				group:SetAttribute("columnSpacing", db.verticalSpacing)
 			else
 				group:SetAttribute("xOffset", 0)
-				group:SetAttribute("yOffset", db.verticalSpacing * DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction])
+				group:SetAttribute("yOffset", (db.verticalSpacing + SPACING) * DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction])
 				group:SetAttribute("columnSpacing", db.horizontalSpacing)
 			end
 
@@ -553,14 +554,14 @@ function UF.groupPrototype:Configure_Groups()
 				if group then
 					group:SetPoint(point, self, point, 0, height * yMult)
 				end
-				height = height + (db.height + db.verticalSpacing)
+				height = height + (db.height + db.verticalSpacing + SPACING)
 
 				newRows = newRows + 1
 			else
 				if group then
 					group:SetPoint(point, self, point, width * xMult, 0)
 				end
-				width = width + (db.width + db.horizontalSpacing)
+				width = width + (db.width + db.horizontalSpacing + SPACING)
 
 				newCols = newCols + 1
 			end
@@ -568,22 +569,22 @@ function UF.groupPrototype:Configure_Groups()
 			if DIRECTION_TO_POINT[direction] == "LEFT" or DIRECTION_TO_POINT[direction] == "RIGHT" then
 				if newRows == 1 then
 					if group then
-						group:SetPoint(point, self, point, width * xMult, 0)
+						group:SetPoint(point, self, point, (width + (SPACING * 5)) * xMult, 0)
 					end
-					width = width + ((db.width + db.horizontalSpacing) * 5)
+					width = width + ((db.width + db.horizontalSpacing + SPACING) * 5)
 					newCols = newCols + 1
 				elseif group then
-					group:SetPoint(point, self, point, (((db.width + db.horizontalSpacing) * 5) * ((i-1) % db.groupsPerRowCol)) * xMult, ((db.height + db.verticalSpacing) * (newRows - 1)) * yMult)
+					group:SetPoint(point, self, point, (((db.width + db.horizontalSpacing + SPACING) * 5) * ((i-1) % db.groupsPerRowCol)) * xMult, ((db.height + db.verticalSpacing + SPACING) * (newRows - 1)) * yMult)
 				end
 			else
 				if newCols == 1 then
 					if group then
-						group:SetPoint(point, self, point, 0, height * yMult)
+						group:SetPoint(point, self, point, 0, (height + (SPACING*5)) * yMult)
 					end
-					height = height + ((db.height + db.verticalSpacing) * 5)
+					height = height + ((db.height + db.verticalSpacing + SPACING) * 5)
 					newRows = newRows + 1
 				elseif group then
-					group:SetPoint(point, self, point, ((db.width + db.horizontalSpacing) * (newCols - 1)) * xMult, (((db.height + db.verticalSpacing) * 5) * ((i-1) % db.groupsPerRowCol)) * yMult)
+					group:SetPoint(point, self, point, ((db.width + db.horizontalSpacing + SPACING) * (newCols - 1)) * xMult, (((db.height + db.verticalSpacing + SPACING) * 5) * ((i-1) % db.groupsPerRowCol)) * yMult)
 				end
 			end
 		end
