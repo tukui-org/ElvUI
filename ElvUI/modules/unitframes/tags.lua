@@ -859,3 +859,13 @@ ElvUF.Tags.Methods['speed:yardspersec-moving-raw'] = function(unit)
 	
 	return currentSpeedInYards > 0 and format("%.1f", currentSpeedInYards) or ''
 end
+
+ElvUF.Tags.Events['classificationcolor'] = 'UNIT_CLASSIFICATION_CHANGED'
+ElvUF.Tags.Methods['classificationcolor'] = function(unit)
+	local c = UnitClassification(unit)
+	if(c == 'rare' or c == 'elite') then
+		return Hex(1, 0.5, 0.25) --Orange
+	elseif(c == 'rareelite' or c == 'worldboss') then
+		return Hex(1, 0, 0) --Red
+	end
+end
