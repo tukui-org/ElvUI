@@ -224,6 +224,14 @@ function E:UpdateMedia()
 	self:UpdateBlizzardFonts()
 end
 
+--Update font/texture paths when they are registered by the addon providing them
+--This helps fix most of the issues with fonts or textures reverting to default because the addon providing them is loading after ElvUI.
+--We use a wrapper to avoid errors in :UpdateMedia because "self" is passed to the function with a value other than ElvUI.
+local function LSMCallback()
+	E:UpdateMedia()
+end
+E.LSM.RegisterCallback(E, "LibSharedMedia_Registered", LSMCallback)
+
 function E:RequestBGInfo()
 	RequestBattlefieldScoreData()
 end
