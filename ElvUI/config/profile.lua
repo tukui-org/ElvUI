@@ -300,6 +300,7 @@ P['chat'] = {
 	['panelTabTransparency'] = false,
 	['editBoxPosition'] = 'BELOW_CHAT',
 	['fadeUndockedTabs'] = true,
+	['fadeTabsNoBackdrop'] = true,
 
 	['tabFont'] = 'ElvUI Pixel',
 	['tabFontSize'] = 10,
