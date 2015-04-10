@@ -177,6 +177,7 @@ local function Chat_OnEvent(self, event, arg1, arg2, arg3, arg4, arg5, arg6, arg
 	if ( arg14 ) then	--isMobile
 		message = ChatFrame_GetMobileEmbeddedTexture(info.r, info.g, info.b)..message;
 	end
+
 	body = format(_G["CHAT_"..type.."_GET"]..message, playerLink.."["..coloredName.."]".."|h");
 
 	local accessID = ChatHistory_GetAccessID(chatGroup, chatTarget);
