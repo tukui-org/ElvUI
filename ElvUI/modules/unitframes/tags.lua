@@ -4,6 +4,7 @@ local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 local twipe = table.wipe
 local ceil, sqrt = math.ceil, math.sqrt
+local format = string.format
 ------------------------------------------------------------------------
 --	Tags
 ------------------------------------------------------------------------
@@ -788,4 +789,73 @@ ElvUF.Tags.Methods['distance'] = function(unit)
 	end
 
 	return d or ''
+end
+
+local baseSpeed = BASE_MOVEMENT_SPEED
+local speedText = SPEED
+ElvUF.Tags.OnUpdateThrottle['speed:percent'] = 0.1
+ElvUF.Tags.Methods['speed:percent'] = function(unit)
+	local currentSpeedInYards = GetUnitSpeed(unit)
+	local currentSpeedInPercent = (currentSpeedInYards / baseSpeed) * 100
+
+	return format("%s: %d%%", speedText, currentSpeedInPercent)
+end
+
+ElvUF.Tags.OnUpdateThrottle['speed:percent-moving'] = 0.1
+ElvUF.Tags.Methods['speed:percent-moving'] = function(unit)
+	local currentSpeedInYards = GetUnitSpeed(unit)
+	local currentSpeedInPercent = currentSpeedInYards > 0 and ((currentSpeedInYards / baseSpeed) * 100)
+	
+	if currentSpeedInPercent then
+		currentSpeedInPercent = format("%s: %d%%", speedText, currentSpeedInPercent)
+	end
+
+	return currentSpeedInPercent or ''
+end
+
+ElvUF.Tags.OnUpdateThrottle['speed:percent-raw'] = 0.1
+ElvUF.Tags.Methods['speed:percent-raw'] = function(unit)
+	local currentSpeedInYards = GetUnitSpeed(unit)
+	local currentSpeedInPercent = (currentSpeedInYards / baseSpeed) * 100
+
+	return format("%d%%", currentSpeedInPercent)
+end
+
+ElvUF.Tags.OnUpdateThrottle['speed:percent-moving-raw'] = 0.1
+ElvUF.Tags.Methods['speed:percent-moving-raw'] = function(unit)
+	local currentSpeedInYards = GetUnitSpeed(unit)
+	local currentSpeedInPercent = currentSpeedInYards > 0 and ((currentSpeedInYards / baseSpeed) * 100)
+	
+	if currentSpeedInPercent then
+		currentSpeedInPercent = format("%d%%", currentSpeedInPercent)
+	end
+
+	return currentSpeedInPercent or ''
+end
+
+ElvUF.Tags.OnUpdateThrottle['speed:yardspersec'] = 0.1
+ElvUF.Tags.Methods['speed:yardspersec'] = function(unit)
+	local currentSpeedInYards = GetUnitSpeed(unit)
+
+	return format("%s: %.1f", speedText, currentSpeedInYards)
+end
+
+ElvUF.Tags.OnUpdateThrottle['speed:yardspersec-moving'] = 0.1
+ElvUF.Tags.Methods['speed:yardspersec-moving'] = function(unit)
+	local currentSpeedInYards = GetUnitSpeed(unit)
+
+	return currentSpeedInYards > 0 and format("%s: %.1f", speedText, currentSpeedInYards) or ''
+end
+
+ElvUF.Tags.OnUpdateThrottle['speed:yardspersec-raw'] = 0.1
+ElvUF.Tags.Methods['speed:yardspersec-raw'] = function(unit)
+	local currentSpeedInYards = GetUnitSpeed(unit)
+	return format("%.1f", currentSpeedInYards)
+end
+
+ElvUF.Tags.OnUpdateThrottle['speed:yardspersec-moving-raw'] = 0.1
+ElvUF.Tags.Methods['speed:yardspersec-moving-raw'] = function(unit)
+	local currentSpeedInYards = GetUnitSpeed(unit)
+	
+	return currentSpeedInYards > 0 and format("%.1f", currentSpeedInYards) or ''
 end
