@@ -19,6 +19,15 @@ local INFO_BY = "by"
 local INFO_VERSION = "Version:"
 local INFO_NEW = "Newest:"
 
+if GetLocale() == "deDE" then -- German Translation
+	MSG_OUTDATED = "Deine Version von %s ist veraltet (akutelle Version ist %s). Du kannst die aktuelle Version von http://www.tukui.org herunterrladen."
+	HDR_CONFIG = "Plugins"
+	HDR_INFORMATION = "LibElvUIPlugin-1.0.%d - Plugins geladen (Grün bedeutet du hast die aktuelle Version, Rot bedeutet es ist veraltet)"
+	INFO_BY = "von"
+	INFO_VERSION = "Version:"
+	INFO_NEW = "Neuste:"
+end
+
 if GetLocale() == "ruRU" then -- Russian Translations
 	MSG_OUTDATED = "Ваша версия %s устарела (последняя версия %s). Вы можете скачать последнюю версию на http://www.tukui.org"
 	HDR_CONFIG = "Плагины"
