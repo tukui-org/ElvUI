@@ -111,7 +111,6 @@ V['tooltip'] = {
 
 V['unitframe'] = {
 	['enable'] = true,
-	['disableBlizzard'] = true,
 	['disabledBlizzardFrames'] = {
 		['player'] = true,
 		['target'] = true,
