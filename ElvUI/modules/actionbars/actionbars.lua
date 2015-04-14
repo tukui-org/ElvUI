@@ -309,6 +309,17 @@ local function Vehicle_OnClick(self)
 	end
 end
 
+function AB:UpdateVehicleLeave()
+	local button = LeaveVehicleButton
+	if not button then return; end
+	
+	local pos = E.db.general.minimap.icons.vehicleLeave.position or "BOTTOMLEFT"
+	local size = E.db.general.minimap.icons.vehicleLeave.size or 26
+	button:ClearAllPoints()
+	button:SetPoint(pos, Minimap, pos, E.db.general.minimap.icons.vehicleLeave.xOffset or 2, E.db.general.minimap.icons.vehicleLeave.yOffset or 2)
+	button:SetSize(size, size)
+end
+
 function AB:CreateVehicleLeave()
 	local vehicle = CreateFrame("Button", 'LeaveVehicleButton', E.UIParent)
 	vehicle:Size(26)
@@ -329,6 +340,8 @@ function AB:CreateVehicleLeave()
 	vehicle:RegisterEvent("UNIT_EXITED_VEHICLE");
 	vehicle:RegisterEvent("VEHICLE_UPDATE");
 	vehicle:SetScript("OnEvent", Vehicle_OnEvent)
+	
+	self:UpdateVehicleLeave()
 
 	vehicle:Hide()
 end
