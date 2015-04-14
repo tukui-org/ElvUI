@@ -924,7 +924,7 @@ function UF:UpdateAllHeaders(event)
 		end
 	end
 
-	if E.private.unitframe.disableBlizzard then
+	if E.private["unitframe"]["disabledBlizzardFrames"].party then
 		ElvUF:DisableBlizzard('party')
 	end
 end
@@ -939,6 +939,7 @@ function HideRaid()
 end
 
 function UF:DisableBlizzard(event)
+	if (not E.private["unitframe"]["disabledBlizzardFrames"].raid) and (not E.private["unitframe"]["disabledBlizzardFrames"].party) then return; end
 	if not CompactRaidFrameManager_UpdateShown then
 		E:StaticPopup_Show("WARNING_BLIZZARD_ADDONS")
 	else
@@ -994,7 +995,7 @@ end
 function ElvUF:DisableBlizzard(unit)
 	if(not unit) or InCombatLockdown() then return end
 
-	if(unit == 'player') then
+	if(unit == 'player') and E.private["unitframe"]["disabledBlizzardFrames"].player then
 		HandleFrame(PlayerFrame)
 
 		-- For the damn vehicle support:
@@ -1008,26 +1009,26 @@ function ElvUF:DisableBlizzard(unit)
 		PlayerFrame:SetUserPlaced(true)
 		PlayerFrame:SetDontSavePosition(true)
 		RuneFrame:SetParent(PlayerFrame)
-	elseif(unit == 'pet') then
+	elseif(unit == 'pet') and E.private["unitframe"]["disabledBlizzardFrames"].player then
 		HandleFrame(PetFrame)
-	elseif(unit == 'target') then
+	elseif(unit == 'target') and E.private["unitframe"]["disabledBlizzardFrames"].target then
 		HandleFrame(TargetFrame)
 		HandleFrame(ComboFrame)
-	elseif(unit == 'focus') then
+	elseif(unit == 'focus') and E.private["unitframe"]["disabledBlizzardFrames"].focus then
 		HandleFrame(FocusFrame)
 		HandleFrame(TargetofFocusFrame)
-	elseif(unit == 'targettarget') then
+	elseif(unit == 'targettarget') and E.private["unitframe"]["disabledBlizzardFrames"].target then
 		HandleFrame(TargetFrameToT)
-	elseif(unit:match'(boss)%d?$' == 'boss') then
+	elseif(unit:match'(boss)%d?$' == 'boss') and E.private["unitframe"]["disabledBlizzardFrames"].boss then
 		local id = unit:match'boss(%d)'
 		if(id) then
 			HandleFrame('Boss' .. id .. 'TargetFrame')
 		else
-			for i=1, 4 do
+			for i=1, MAX_BOSS_FRAMES do
 				HandleFrame(('Boss%dTargetFrame'):format(i))
 			end
 		end
-	elseif(unit:match'(party)%d?$' == 'party') then
+	elseif(unit:match'(party)%d?$' == 'party') and E.private["unitframe"]["disabledBlizzardFrames"].party then
 		local id = unit:match'party(%d)'
 		if(id) then
 			HandleFrame('PartyMemberFrame' .. id)
@@ -1036,7 +1037,7 @@ function ElvUF:DisableBlizzard(unit)
 				HandleFrame(('PartyMemberFrame%d'):format(i))
 			end
 		end
-	elseif(unit:match'(arena)%d?$' == 'arena') then
+	elseif(unit:match'(arena)%d?$' == 'arena') and E.private["unitframe"]["disabledBlizzardFrames"].arena then
 		local id = unit:match'arena(%d)'
 
 		if(id) then
@@ -1110,39 +1111,58 @@ function UF:Initialize()
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 	self:RegisterEvent('ZONE_CHANGED_NEW_AREA')
 
-	if E.private["unitframe"].disableBlizzard then
-		self:DisableBlizzard()
-		self:SecureHook('UnitFrameThreatIndicator_Initialize')
-		--InterfaceOptionsFrameCategoriesButton9:SetScale(0.0001)
+	--InterfaceOptionsFrameCategoriesButton9:SetScale(0.0001)
+	if E.private["unitframe"]["disabledBlizzardFrames"].arena and E.private["unitframe"]["disabledBlizzardFrames"].focus and E.private["unitframe"]["disabledBlizzardFrames"].party then
 		InterfaceOptionsFrameCategoriesButton10:SetScale(0.0001)
-		InterfaceOptionsFrameCategoriesButton11:SetScale(0.0001)
+	end
+
+	if E.private["unitframe"]["disabledBlizzardFrames"].player then
 		InterfaceOptionsStatusTextPanelPlayer:SetScale(0.0001)
-		InterfaceOptionsStatusTextPanelTarget:SetScale(0.0001)
-		InterfaceOptionsStatusTextPanelParty:SetScale(0.0001)
-		InterfaceOptionsStatusTextPanelPet:SetScale(0.0001)
 		InterfaceOptionsStatusTextPanelPlayer:SetAlpha(0)
-		InterfaceOptionsStatusTextPanelTarget:SetAlpha(0)
-		InterfaceOptionsStatusTextPanelParty:SetAlpha(0)
+		InterfaceOptionsStatusTextPanelPet:SetScale(0.0001)
 		InterfaceOptionsStatusTextPanelPet:SetAlpha(0)
+	end
+
+	if E.private["unitframe"]["disabledBlizzardFrames"].target then
+		InterfaceOptionsStatusTextPanelTarget:SetScale(0.0001)
+		InterfaceOptionsStatusTextPanelTarget:SetAlpha(0)
 		InterfaceOptionsCombatPanelEnemyCastBarsOnPortrait:SetAlpha(0)
 		InterfaceOptionsCombatPanelEnemyCastBarsOnPortrait:EnableMouse(false)
-		InterfaceOptionsCombatPanelTargetOfTarget:SetScale(0.0001)
-		InterfaceOptionsCombatPanelTargetOfTarget:SetAlpha(0)
 		InterfaceOptionsCombatPanelEnemyCastBarsOnNameplates:ClearAllPoints()
 		InterfaceOptionsCombatPanelEnemyCastBarsOnNameplates:SetPoint(InterfaceOptionsCombatPanelEnemyCastBarsOnPortrait:GetPoint())
+		InterfaceOptionsCombatPanelTargetOfTarget:SetScale(0.0001)
+		InterfaceOptionsCombatPanelTargetOfTarget:SetAlpha(0)
 		InterfaceOptionsDisplayPanelShowAggroPercentage:SetScale(0.0001)
 		InterfaceOptionsDisplayPanelShowAggroPercentage:SetAlpha(0)
+	end
 
-		if not IsAddOnLoaded('Blizzard_ArenaUI') then
-			self:RegisterEvent('ADDON_LOADED')
-		else
-			ElvUF:DisableBlizzard('arena')
-		end
+	if E.private["unitframe"]["disabledBlizzardFrames"].party then
+		InterfaceOptionsStatusTextPanelParty:SetScale(0.0001)
+		InterfaceOptionsStatusTextPanelParty:SetAlpha(0)
+	end
+
+	if E.private["unitframe"]["disabledBlizzardFrames"].party and E.private["unitframe"]["disabledBlizzardFrames"].raid then
+		self:DisableBlizzard()
+		InterfaceOptionsFrameCategoriesButton11:SetScale(0.0001)
 
 		self:RegisterEvent('GROUP_ROSTER_UPDATE', 'DisableBlizzard')
 		UIParent:UnregisterEvent('GROUP_ROSTER_UPDATE') --This may fuck shit up.. we'll see...
 	else
 		CompactUnitFrameProfiles:RegisterEvent('VARIABLES_LOADED')
+	end
+	
+	if (not E.private["unitframe"]["disabledBlizzardFrames"].party) and (not E.private["unitframe"]["disabledBlizzardFrames"].raid) then
+		E.RaidUtility.Initialize = E.noop
+	end
+
+	if E.private["unitframe"]["disabledBlizzardFrames"].arena then
+		self:SecureHook('UnitFrameThreatIndicator_Initialize')
+		
+		if not IsAddOnLoaded('Blizzard_ArenaUI') then
+			self:RegisterEvent('ADDON_LOADED')
+		else
+			ElvUF:DisableBlizzard('arena')
+		end
 	end
 
 	local ORD = ns.oUF_RaidDebuffs or oUF_RaidDebuffs
