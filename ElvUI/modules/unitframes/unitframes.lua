@@ -1016,7 +1016,7 @@ function ElvUF:DisableBlizzard(unit)
 		HandleFrame(ComboFrame)
 	elseif(unit == 'focus') and E.private["unitframe"]["disabledBlizzardFrames"].focus then
 		HandleFrame(FocusFrame)
-		HandleFrame(TargetofFocusFrame)
+		HandleFrame(FocusFrameToT)
 	elseif(unit == 'targettarget') and E.private["unitframe"]["disabledBlizzardFrames"].target then
 		HandleFrame(TargetFrameToT)
 	elseif(unit:match'(boss)%d?$' == 'boss') and E.private["unitframe"]["disabledBlizzardFrames"].boss then
