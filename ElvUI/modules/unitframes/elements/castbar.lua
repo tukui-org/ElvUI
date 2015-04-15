@@ -276,7 +276,7 @@ function UF:PostCastStart(unit, name, rank, castid)
 		end
 	end
 
-	if self.interrupt and unit ~= "player" and UnitCanAttack("player", unit) then
+	if  self.interrupt and unit ~= "player" and UnitCanAttack("player", unit) then
 		r, g, b = colors.castNoInterrupt[1], colors.castNoInterrupt[2], colors.castNoInterrupt[3]
 	end
 
@@ -377,7 +377,7 @@ function UF:PostCastInterruptible(unit)
 		end
 	end
 
-	if UnitCanAttack("player", unit) then
+	if self.interrupt and UnitCanAttack("player", unit) then
 		r, g, b = colors.castNoInterrupt[1], colors.castNoInterrupt[2], colors.castNoInterrupt[3]
 	end
 
