@@ -448,7 +448,6 @@ function B:Layout(isBank)
 					f.Bags[bagID][slotID]:SetTemplate('Default', true);
 					f.Bags[bagID][slotID]:SetNormalTexture(nil);
 					f.Bags[bagID][slotID]:SetCheckedTexture(nil);
-					-- f.Bags[bagID][slotID]:SetScript("OnEnter", ContainerFrameItemButton_OnEnter)
 
 					if(_G[f.Bags[bagID][slotID]:GetName()..'NewItemTexture']) then
 						_G[f.Bags[bagID][slotID]:GetName()..'NewItemTexture']:Hide()
