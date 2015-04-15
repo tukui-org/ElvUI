@@ -193,7 +193,7 @@ function B:UpdateSlot(bagID, slotID)
 
 	local slot, _ = self.Bags[bagID][slotID], nil;
 	local bagType = self.Bags[bagID].type;
-	local texture, count, locked = GetContainerItemInfo(bagID, slotID);
+	local texture, count, locked, _, readable = GetContainerItemInfo(bagID, slotID);
 	local clink = GetContainerItemLink(bagID, slotID);
 
 	slot:Show();
@@ -202,14 +202,6 @@ function B:UpdateSlot(bagID, slotID)
 	end
 
 	slot.name, slot.rarity = nil, nil;
-
-	local start, duration, enable = GetContainerItemCooldown(bagID, slotID)
-	CooldownFrame_SetTimer(slot.cooldown, start, duration, enable)
-	if ( duration > 0 and enable == 0 ) then
-		SetItemButtonTextureVertexColor(slot, 0.4, 0.4, 0.4);
-	else
-		SetItemButtonTextureVertexColor(slot, 1, 1, 1);
-	end
 
 	slot.itemLevel:SetText("")
 	if B.ProfessionColors[bagType] then
@@ -256,6 +248,21 @@ function B:UpdateSlot(bagID, slotID)
 		slot.shadow:Hide()
 		E:StopFlash(slot.shadow)
 	end
+	
+	if (texture) then
+		local start, duration, enable = GetContainerItemCooldown(bagID, slotID)
+		CooldownFrame_SetTimer(slot.cooldown, start, duration, enable)
+		if ( duration > 0 and enable == 0 ) then
+			SetItemButtonTextureVertexColor(slot, 0.4, 0.4, 0.4);
+		else
+			SetItemButtonTextureVertexColor(slot, 1, 1, 1);
+		end
+		slot.hasItem = 1;
+	else
+		slot.cooldown:Hide()
+		slot.hasItem = nil;
+	end
+	slot.readable = readable;
 
 	SetItemButtonTexture(slot, texture);
 	SetItemButtonCount(slot, count);
@@ -441,6 +448,7 @@ function B:Layout(isBank)
 					f.Bags[bagID][slotID]:SetTemplate('Default', true);
 					f.Bags[bagID][slotID]:SetNormalTexture(nil);
 					f.Bags[bagID][slotID]:SetCheckedTexture(nil);
+					-- f.Bags[bagID][slotID]:SetScript("OnEnter", ContainerFrameItemButton_OnEnter)
 
 					if(_G[f.Bags[bagID][slotID]:GetName()..'NewItemTexture']) then
 						_G[f.Bags[bagID][slotID]:GetName()..'NewItemTexture']:Hide()
