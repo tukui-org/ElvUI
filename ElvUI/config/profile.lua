@@ -1477,6 +1477,13 @@ P['unitframe'] = {
 				['size'] = 8,
 				['fontSize'] = 10,
 			},
+			['rdebuffs'] = {
+				['enable'] = false,
+				['fontSize'] = 10,
+				['size'] = 26,
+				['xOffset'] = 0,
+				['yOffset'] = 0,
+			},
 			['roleIcon'] = {
 				['enable'] = true,
 				['position'] = 'CENTER',
@@ -1620,6 +1627,8 @@ P['unitframe'] = {
 				['enable'] = true,
 				['fontSize'] = 10,
 				['size'] = 26,
+				['xOffset'] = 0,
+				['yOffset'] = 0,
 			},
 			['roleIcon'] = {
 				['enable'] = true,
@@ -1731,6 +1740,8 @@ P['unitframe'] = {
 				['enable'] = false,
 				['fontSize'] = 10,
 				['size'] = 22,
+				['xOffset'] = 0,
+				['yOffset'] = 0,
 			},
 			['roleIcon'] = {
 				['enable'] = false,

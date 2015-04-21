@@ -3470,8 +3470,52 @@ E.Options.args.unitframe.args.party = {
 		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'party'),
 		buffs = GetOptionsTable_Auras(true, 'buffs', true, UF.CreateAndUpdateHeaderGroup, 'party'),
 		debuffs = GetOptionsTable_Auras(true, 'debuffs', true, UF.CreateAndUpdateHeaderGroup, 'party'),
-		petsGroup = {
+		rdebuffs = {
 			order = 800,
+			type = 'group',
+			name = L["RaidDebuff Indicator"],
+			get = function(info) return E.db.unitframe.units['party']['rdebuffs'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['party']['rdebuffs'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup('party') end,
+			args = {
+				enable = {
+					type = 'toggle',
+					name = L["Enable"],
+					order = 1,
+				},
+				size = {
+					type = 'range',
+					name = L["Size"],
+					order = 2,
+					min = 8, max = 35, step = 1,
+				},
+				fontSize = {
+					type = 'range',
+					name = L["Font Size"],
+					order = 3,
+					min = 7, max = 22, step = 1,
+				},
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L["xOffset"],
+					min = -300, max = 300, step = 1,
+				},
+				yOffset = {
+					order = 5,
+					type = 'range',
+					name = L["yOffset"],
+					min = -300, max = 300, step = 1,
+				},
+				configureButton = {
+					type = 'execute',
+					name = L["Configure Auras"],
+					func = function() E:SetToFilterConfig('RaidDebuffs') end,
+					order = 7
+				},
+			},
+		},
+		petsGroup = {
+			order = 850,
 			type = 'group',
 			name = L["Party Pets"],
 			get = function(info) return E.db.unitframe.units['party']['petsGroup'][ info[#info] ] end,

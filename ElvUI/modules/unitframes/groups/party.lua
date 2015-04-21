@@ -29,6 +29,7 @@ function UF:Construct_PartyFrames(unitGroup)
 		self.Buffs = UF:Construct_Buffs(self)
 		self.Debuffs = UF:Construct_Debuffs(self)
 		self.AuraWatch = UF:Construct_AuraWatch(self)
+		self.RaidDebuffs = UF:Construct_RaidDebuffs(self)
 		self.DebuffHighlight = UF:Construct_DebuffHighlight(self)
 		self.ResurrectIcon = UF:Construct_ResurectionIcon(self)
 		self.LFDRole = UF:Construct_RoleIcon(self)
@@ -460,6 +461,22 @@ function UF:Update_PartyFrames(frame, db)
 				UF:UpdateAuraIconSettings(debuffs)
 			else
 				debuffs:Hide()
+			end
+		end
+		
+		--RaidDebuffs
+		do
+			local rdebuffs = frame.RaidDebuffs
+			if db.rdebuffs.enable then
+				frame:EnableElement('RaidDebuffs')
+
+				rdebuffs:Size(db.rdebuffs.size)
+				rdebuffs:Point('BOTTOM', frame, 'BOTTOM', db.rdebuffs.xOffset, db.rdebuffs.yOffset)
+				rdebuffs.count:FontTemplate(nil, db.rdebuffs.fontSize, 'OUTLINE')
+				rdebuffs.time:FontTemplate(nil, db.rdebuffs.fontSize, 'OUTLINE')
+			else
+				frame:DisableElement('RaidDebuffs')
+				rdebuffs:Hide()
 			end
 		end
 
