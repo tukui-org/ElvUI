@@ -157,7 +157,7 @@ function Update(self, t)
 	if int > 0 then return end
 
 	if GameTimeFrame.flashInvite then
-		E:Flash(self, 0.53)
+		E:Flash(self, 0.53, true)
 	else
 		E:StopFlash(self)
 	end
