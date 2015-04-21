@@ -272,13 +272,23 @@ function UF:Update_RaidpetFrames(frame, db)
 	--RaidDebuffs
 	do
 		local rdebuffs = frame.RaidDebuffs
+		local stackColor = db.rdebuffs.stack.color
+		local durationColor = db.rdebuffs.duration.color
 		if db.rdebuffs.enable then
 			frame:EnableElement('RaidDebuffs')
 
 			rdebuffs:Size(db.rdebuffs.size)
 			rdebuffs:Point('BOTTOM', frame, 'BOTTOM', db.rdebuffs.xOffset, db.rdebuffs.yOffset)
+			
 			rdebuffs.count:FontTemplate(nil, db.rdebuffs.fontSize, 'OUTLINE')
+			rdebuffs.count:ClearAllPoints()
+			rdebuffs.count:Point(db.rdebuffs.stack.position, db.rdebuffs.stack.xOffset, db.rdebuffs.stack.yOffset)
+			rdebuffs.count:SetTextColor(stackColor.r, stackColor.g, stackColor.b)
+			
 			rdebuffs.time:FontTemplate(nil, db.rdebuffs.fontSize, 'OUTLINE')
+			rdebuffs.time:ClearAllPoints()
+			rdebuffs.time:Point(db.rdebuffs.duration.position, db.rdebuffs.duration.xOffset, db.rdebuffs.duration.yOffset)
+			rdebuffs.time:SetTextColor(durationColor.r, durationColor.g, durationColor.b)
 		else
 			frame:DisableElement('RaidDebuffs')
 			rdebuffs:Hide()
