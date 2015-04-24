@@ -638,6 +638,7 @@ function UF:RaidRoleUpdate()
 	local isAssist = assistant:IsShown()
 
 	leader:ClearAllPoints()
+	assistant:ClearAllPoints()
 	masterLooter:ClearAllPoints()
 
 	if db and db.raidRoleIcons then
