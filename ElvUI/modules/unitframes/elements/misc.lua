@@ -179,13 +179,16 @@ end
 function UF:Construct_RaidRoleFrames(frame)
 	local anchor = CreateFrame('Frame', nil, frame)
 	frame.Leader = anchor:CreateTexture(nil, 'OVERLAY')
+	frame.Assistant = anchor:CreateTexture(nil, 'OVERLAY')
 	frame.MasterLooter = anchor:CreateTexture(nil, 'OVERLAY')
 
 	anchor:Size(24, 12)
 	frame.Leader:Size(12)
+	frame.Assistant:Size(12)
 	frame.MasterLooter:Size(11)
 
 	frame.Leader.PostUpdate = UF.RaidRoleUpdate
+	frame.Assistant.PostUpdate = UF.RaidRoleUpdate
 	frame.MasterLooter.PostUpdate = UF.RaidRoleUpdate
 
 	return anchor
@@ -623,14 +626,16 @@ end
 function UF:RaidRoleUpdate()
 	local anchor = self:GetParent()
 	local leader = anchor:GetParent().Leader
+	local assistant = anchor:GetParent().Assistant
 	local masterLooter = anchor:GetParent().MasterLooter
 
-	if not leader or not masterLooter then return; end
+	if not leader or not masterLooter or not assistant then return; end
 
 	local unit = anchor:GetParent().unit
 	local db = anchor:GetParent().db
 	local isLeader = leader:IsShown()
 	local isMasterLooter = masterLooter:IsShown()
+	local isAssist = assistant:IsShown()
 
 	leader:ClearAllPoints()
 	masterLooter:ClearAllPoints()
@@ -641,6 +646,12 @@ function UF:RaidRoleUpdate()
 			masterLooter:Point('RIGHT', anchor, 'RIGHT')
 		elseif isLeader and db.raidRoleIcons.position == 'TOPRIGHT' then
 			leader:Point('RIGHT', anchor, 'RIGHT')
+			masterLooter:Point('LEFT', anchor, 'LEFT')
+		elseif isAssist and db.raidRoleIcons.position == 'TOPLEFT' then
+			assistant:Point('LEFT', anchor, 'LEFT')
+			masterLooter:Point('RIGHT', anchor, 'RIGHT')
+		elseif isAssist and db.raidRoleIcons.position == 'TOPRIGHT' then
+			assistant:Point('RIGHT', anchor, 'RIGHT')
 			masterLooter:Point('LEFT', anchor, 'LEFT')
 		elseif isMasterLooter and db.raidRoleIcons.position == 'TOPLEFT' then
 			masterLooter:Point('LEFT', anchor, 'LEFT')
