@@ -144,7 +144,9 @@ function M:AutoInvite(event, leaderName)
 			end
 		end
 	elseif event == "GROUP_ROSTER_UPDATE" and hideStatic == true then
+		StaticPopupSpecial_Hide(LFGInvitePopup) --New LFD popup when invited in custon created group
 		StaticPopup_Hide("PARTY_INVITE")
+		StaticPopup_Hide("PARTY_INVITE_XREALM") --Not sure bout this but whatever, still an invite
 		hideStatic = false
 	end
 end
