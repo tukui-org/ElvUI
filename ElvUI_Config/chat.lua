@@ -109,12 +109,12 @@ E.Options.args.chat = {
 						CH:PositionChat(true)
 					end,
 				},
-				--[[chatHistory = {
+				chatHistory = {
 					order = 9,
 					type = 'toggle',
 					name = L["Chat History"],
 					desc = L["Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session."],
-				},]]
+				},
 				spacer = {
 					order = 10,
 					type = 'description',

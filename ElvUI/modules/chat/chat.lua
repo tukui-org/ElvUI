@@ -1766,9 +1766,9 @@ function CH:Initialize()
 	end)
 
 	if self.db.chatHistory then
-		--self.SoundPlayed = true;
-		--self:DisplayChatHistory()
-		--self.SoundPlayed = nil;
+		self.SoundPlayed = true;
+		self:DisplayChatHistory()
+		self.SoundPlayed = nil;
 	end
 
 
