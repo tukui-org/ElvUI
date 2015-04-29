@@ -184,10 +184,10 @@ local function OnUpdate(self, elapsed)
 	end
 end
 
-local function UpdateDebuff(self, name, icon, count, debuffType, duration, endTime, spellId)
+local function UpdateDebuff(self, name, icon, count, debuffType, duration, endTime, spellId, stackThreshold)
 	local f = self.RaidDebuffs
 
-	if name then
+	if name and (count >= stackThreshold) then
 		f.icon:SetTexture(icon)
 		f.icon:Show()
 		f.duration = duration
@@ -283,8 +283,9 @@ local function Update(self, event, unit)
 			_priority, _name, _icon, _count, _dtype, _duration, _endTime, _spellId = priority, name, icon, count, debuffType, duration, expirationTime, spellId
 		end
 	end
-	
-	UpdateDebuff(self, _name, _icon, _count, _dtype, _duration, _endTime, _spellId)
+
+	local stackThreshold = _name and ElvUI[1].global.unitframe['aurafilters']['RaidDebuffs']['spells'][_name] and ElvUI[1].global.unitframe['aurafilters']['RaidDebuffs']['spells'][_name].stackThreshold or 0
+	UpdateDebuff(self, _name, _icon, _count, _dtype, _duration, _endTime, _spellId, stackThreshold)
 	
 	--Reset the DispellPriority
 	DispellPriority = {

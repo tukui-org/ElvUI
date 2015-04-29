@@ -29,6 +29,7 @@ function UF:Construct_PartyFrames(unitGroup)
 		self.Buffs = UF:Construct_Buffs(self)
 		self.Debuffs = UF:Construct_Debuffs(self)
 		self.AuraWatch = UF:Construct_AuraWatch(self)
+		self.RaidDebuffs = UF:Construct_RaidDebuffs(self)
 		self.DebuffHighlight = UF:Construct_DebuffHighlight(self)
 		self.ResurrectIcon = UF:Construct_ResurectionIcon(self)
 		self.LFDRole = UF:Construct_RoleIcon(self)
@@ -66,7 +67,7 @@ function UF:Update_PartyHeader(header, db)
 		headerHolder:ClearAllPoints()
 		headerHolder:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)
 
-		E:CreateMover(headerHolder, headerHolder:GetName()..'Mover', L['Party Frames'], nil, nil, nil, 'ALL,PARTY,ARENA')
+		E:CreateMover(headerHolder, headerHolder:GetName()..'Mover', L["Party Frames"], nil, nil, nil, 'ALL,PARTY,ARENA')
 		headerHolder.positioned = true;
 
 		headerHolder:RegisterEvent("PLAYER_ENTERING_WORLD")
@@ -250,7 +251,7 @@ function UF:Update_PartyFrames(frame, db)
 			elseif USE_INSET_POWERBAR then
 				health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER)
 			else
-				health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER + POWERBAR_HEIGHT)
+				health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, (USE_POWERBAR and ((BORDER + SPACING)*2) or BORDER) + POWERBAR_HEIGHT)
 			end
 
 			health:SetOrientation(db.health.orientation)
@@ -294,12 +295,12 @@ function UF:Update_PartyFrames(frame, db)
 					power:SetFrameLevel(2)
 				elseif USE_MINI_POWERBAR then
 					power:Width(POWERBAR_WIDTH - BORDER*2)
-					power:Height(POWERBAR_HEIGHT - BORDER*2)
+					power:Height(POWERBAR_HEIGHT)
 					power:Point("LEFT", frame, "BOTTOMLEFT", (BORDER*2 + 4), BORDER + (POWERBAR_HEIGHT/2))
 					power:SetFrameStrata("MEDIUM")
 					power:SetFrameLevel(frame:GetFrameLevel() + 3)
 				elseif USE_INSET_POWERBAR then
-					power:Height(POWERBAR_HEIGHT - BORDER*2)
+					power:Height(POWERBAR_HEIGHT)
 					power:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", BORDER + (BORDER*2), BORDER + (BORDER*2))
 					power:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", -(BORDER + (BORDER*2)), BORDER + (BORDER*2))
 					power:SetFrameStrata("MEDIUM")
@@ -460,6 +461,32 @@ function UF:Update_PartyFrames(frame, db)
 				UF:UpdateAuraIconSettings(debuffs)
 			else
 				debuffs:Hide()
+			end
+		end
+		
+		--RaidDebuffs
+		do
+			local rdebuffs = frame.RaidDebuffs
+			local stackColor = db.rdebuffs.stack.color
+			local durationColor = db.rdebuffs.duration.color
+			if db.rdebuffs.enable then
+				frame:EnableElement('RaidDebuffs')
+
+				rdebuffs:Size(db.rdebuffs.size)
+				rdebuffs:Point('BOTTOM', frame, 'BOTTOM', db.rdebuffs.xOffset, db.rdebuffs.yOffset)
+				
+				rdebuffs.count:FontTemplate(nil, db.rdebuffs.fontSize, 'OUTLINE')
+				rdebuffs.count:ClearAllPoints()
+				rdebuffs.count:Point(db.rdebuffs.stack.position, db.rdebuffs.stack.xOffset, db.rdebuffs.stack.yOffset)
+				rdebuffs.count:SetTextColor(stackColor.r, stackColor.g, stackColor.b)
+				
+				rdebuffs.time:FontTemplate(nil, db.rdebuffs.fontSize, 'OUTLINE')
+				rdebuffs.time:ClearAllPoints()
+				rdebuffs.time:Point(db.rdebuffs.duration.position, db.rdebuffs.duration.xOffset, db.rdebuffs.duration.yOffset)
+				rdebuffs.time:SetTextColor(durationColor.r, durationColor.g, durationColor.b)
+			else
+				frame:DisableElement('RaidDebuffs')
+				rdebuffs:Hide()
 			end
 		end
 

@@ -68,6 +68,12 @@ P['general'] = {
 				['xOffset'] = 8,
 				['yOffset'] = -8,
 			},
+			['vehicleLeave'] = {
+				['size'] = 26,
+				['position'] = "BOTTOMLEFT",
+				['xOffset'] = 2,
+				['yOffset'] = 2,
+			},
 		}
 	},
 
@@ -120,6 +126,11 @@ P['bags'] = {
 	['moneyFormat'] = 'SMART',
 	['moneyCoins'] = true,
 	['ignoreItems'] = '',
+	['itemLevel'] = true,
+	['itemLevelThreshold'] = 1,
+	['itemLevelFont'] = "ElvUI Pixel",
+	['itemLevelFontSize'] = 10,
+	['itemLevelFontOutline'] = "MONOCHROMEOUTLINE",
 	['bagBar'] = {
 		['growthDirection'] = 'VERTICAL',
 		['sortDirection'] = 'ASCENDING',
@@ -141,6 +152,7 @@ P["nameplate"] = {
 	['combatHide'] = false,
 	['colorNameByValue'] =  true,
 	['showName'] = true,
+	['wrapName'] = false,
 	['showLevel'] = true,
 	['targetIndicator'] = {
 		['enable'] = true,
@@ -293,6 +305,8 @@ P['chat'] = {
 	['panelTabBackdrop'] = false,
 	['panelTabTransparency'] = false,
 	['editBoxPosition'] = 'BELOW_CHAT',
+	['fadeUndockedTabs'] = true,
+	['fadeTabsNoBackdrop'] = true,
 
 	['tabFont'] = 'ElvUI Pixel',
 	['tabFontSize'] = 10,
@@ -1116,6 +1130,14 @@ P['unitframe'] = {
 				['size'] = 8,
 				['fontSize'] = 10,
 			},
+			['castbar'] = {
+				['enable'] = true,
+				['width'] = 130,
+				['height'] = 18,
+				['icon'] = true,
+				['format'] = 'REMAINING',
+				['spark'] = true,
+			},
 		},
 		['pettarget'] = {
 			['enable'] = false,
@@ -1455,6 +1477,25 @@ P['unitframe'] = {
 				['size'] = 8,
 				['fontSize'] = 10,
 			},
+			['rdebuffs'] = {
+				['enable'] = false,
+				['fontSize'] = 10,
+				['size'] = 26,
+				['xOffset'] = 0,
+				['yOffset'] = 0,
+				['duration'] = {
+					['position'] = "CENTER",
+					['xOffset'] = 0,
+					['yOffset'] = 0,
+					['color'] = {r = 1, g = 0.9, b = 0}
+				},
+				['stack'] = {
+					['position'] = "BOTTOMRIGHT",
+					['xOffset'] = 0,
+					['yOffset'] = 2,
+					['color'] = {r = 1, g = 0.9, b = 0}
+				},
+			},
 			['roleIcon'] = {
 				['enable'] = true,
 				['position'] = 'CENTER',
@@ -1598,6 +1639,20 @@ P['unitframe'] = {
 				['enable'] = true,
 				['fontSize'] = 10,
 				['size'] = 26,
+				['xOffset'] = 0,
+				['yOffset'] = 0,
+				['duration'] = {
+					['position'] = "CENTER",
+					['xOffset'] = 0,
+					['yOffset'] = 0,
+					['color'] = {r = 1, g = 0.9, b = 0}
+				},
+				['stack'] = {
+					['position'] = "BOTTOMRIGHT",
+					['xOffset'] = 0,
+					['yOffset'] = 2,
+					['color'] = {r = 1, g = 0.9, b = 0}
+				},
 			},
 			['roleIcon'] = {
 				['enable'] = true,
@@ -1709,6 +1764,20 @@ P['unitframe'] = {
 				['enable'] = false,
 				['fontSize'] = 10,
 				['size'] = 22,
+				['xOffset'] = 0,
+				['yOffset'] = 0,
+				['duration'] = {
+					['position'] = "CENTER",
+					['xOffset'] = 0,
+					['yOffset'] = 0,
+					['color'] = {r = 1, g = 0.9, b = 0}
+				},
+				['stack'] = {
+					['position'] = "BOTTOMRIGHT",
+					['xOffset'] = 0,
+					['yOffset'] = 2,
+					['color'] = {r = 1, g = 0.9, b = 0}
+				},
 			},
 			['roleIcon'] = {
 				['enable'] = false,
@@ -1823,6 +1892,18 @@ P['unitframe'] = {
 				['size'] = 26,
 				['xOffset'] = 0,
 				['yOffset'] = 2,
+				['duration'] = {
+					['position'] = "CENTER",
+					['xOffset'] = 0,
+					['yOffset'] = 0,
+					['color'] = {r = 1, g = 0.9, b = 0}
+				},
+				['stack'] = {
+					['position'] = "BOTTOMRIGHT",
+					['xOffset'] = 0,
+					['yOffset'] = 2,
+					['color'] = {r = 1, g = 0.9, b = 0}
+				},
 			},
 			['raidicon'] = {
 				['enable'] = true,
@@ -1831,6 +1912,11 @@ P['unitframe'] = {
 				['xOffset'] = 0,
 				['yOffset'] = 10,
 			},
+		},
+		['bodyguard'] = {
+			['enable'] = true,
+			['width'] = 120,
+			['height'] = 28
 		},
 		['tank'] = {
 			['enable'] = true,

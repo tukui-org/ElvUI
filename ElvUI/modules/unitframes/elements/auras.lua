@@ -5,7 +5,7 @@ local tsort = table.sort
 local LSM = LibStub("LibSharedMedia-3.0");
 
 function UF:Construct_Buffs(frame)
-	local buffs = CreateFrame('Frame', nil, frame)
+	local buffs = CreateFrame('Frame', frame:GetName().."Buffs", frame)
 	buffs.spacing = E.Spacing
 	--buffs.PreSetPosition = (not frame:GetScript("OnUpdate")) and self.SortAuras or nil
 	buffs.PostCreateIcon = self.Construct_AuraIcon
@@ -18,7 +18,7 @@ function UF:Construct_Buffs(frame)
 end
 
 function UF:Construct_Debuffs(frame)
-	local debuffs = CreateFrame('Frame', nil, frame)
+	local debuffs = CreateFrame('Frame', frame:GetName().."Debuffs", frame)
 	debuffs.spacing = E.Spacing
 	--debuffs.PreSetPosition = (not frame:GetScript("OnUpdate")) and self.SortAuras or nil
 	debuffs.PostCreateIcon = self.Construct_AuraIcon
@@ -60,7 +60,7 @@ function UF:Construct_AuraIcon(button)
 		local auraName = self.name
 
 		if auraName then
-			E:Print(format(L['The spell "%s" has been added to the Blacklist unitframe aura filter.'], auraName))
+			E:Print(format(L["The spell '%s' has been added to the Blacklist unitframe aura filter."], auraName))
 			E.global['unitframe']['aurafilters']['Blacklist']['spells'][auraName] = {
 				['enable'] = true,
 				['priority'] = 0,

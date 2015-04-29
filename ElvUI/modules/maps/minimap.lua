@@ -2,8 +2,11 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local M = E:NewModule('Minimap', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
 E.Minimap = M
 
-local Astrolabe = DongleStub("Astrolabe-1.0")
-local AstrolabeMapMonitor = DongleStub("AstrolabeMapMonitor")
+local Astrolabe, AstrolabeMapMonitor
+if IsAddOnLoaded("Gatherer") then
+	Astrolabe = DongleStub("Astrolabe-1.0")
+	AstrolabeMapMonitor = DongleStub("AstrolabeMapMonitor")
+end
 
 local gsub = string.gsub
 local upper = string.upper
@@ -62,7 +65,27 @@ local menuList = {
 	{text = LFG_TITLE,
 	func = function() ToggleLFDParentFrame(); end},
 	{text = ENCOUNTER_JOURNAL,
-	func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then EncounterJournal_LoadUI(); end ToggleFrame(EncounterJournal) end}
+	func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then EncounterJournal_LoadUI(); end ToggleFrame(EncounterJournal) end},
+	{text = MAINMENU_BUTTON,
+	func = function() 
+		if ( not GameMenuFrame:IsShown() ) then
+			if ( VideoOptionsFrame:IsShown() ) then
+				VideoOptionsFrameCancel:Click();
+			elseif ( AudioOptionsFrame:IsShown() ) then
+				AudioOptionsFrameCancel:Click();
+			elseif ( InterfaceOptionsFrame:IsShown() ) then
+				InterfaceOptionsFrameCancel:Click();
+			end		
+			CloseMenus();
+			CloseAllWindows()
+			PlaySound("igMainMenuOpen");
+			ShowUIPanel(GameMenuFrame);
+		else
+			PlaySound("igMainMenuQuit");
+			HideUIPanel(GameMenuFrame);
+			MainMenuMicroButton_SetNormal();
+		end
+	end}
 }
 
 --if(C_StorePublic.IsEnabled()) then
@@ -349,6 +372,7 @@ function M:Initialize()
 
 	if E.private.general.minimap.hideGarrison then
 		GarrisonLandingPageMinimapButton:Kill()
+		GarrisonLandingPageMinimapButton.IsShown = function() return true end
 	end
 
 	QueueStatusMinimapButtonBorder:Hide()
@@ -368,7 +392,7 @@ function M:Initialize()
 		FeedbackUIButton:Kill()
 	end
 
-	E:CreateMover(MMHolder, 'MinimapMover', L['Minimap'])
+	E:CreateMover(MMHolder, 'MinimapMover', L["Minimap"])
 
 	Minimap:EnableMouseWheel(true)
 	Minimap:SetScript("OnMouseWheel", M.Minimap_OnMouseWheel)
@@ -394,7 +418,7 @@ function M:Initialize()
 	fm:SetMovable(true)
 	fm:SetScript("OnDragStart", function(self) self:StartMoving() end)
 	fm:SetScript("OnDragStop", function(self) self:StopMovingOrSizing() end)
-	AstrolabeMapMonitor:MonitorWorldMap(fm)
+	if AstrolabeMapMonitor then AstrolabeMapMonitor:MonitorWorldMap(fm) end
 	fm:Hide()
 	E.FrameLocks['FarmModeMap'] = true;
 
@@ -416,7 +440,7 @@ function M:Initialize()
 		if IsAddOnLoaded('GatherMate2') then
 			LibStub('AceAddon-3.0'):GetAddon('GatherMate2'):GetModule('Display'):ReparentMinimapPins(FarmModeMap)
 		end
-		Astrolabe:SetTargetMinimap(FarmModeMap)
+		if Astrolabe then Astrolabe:SetTargetMinimap(FarmModeMap) end
 	end)
 
 	FarmModeMap:SetScript('OnHide', function()
@@ -435,7 +459,7 @@ function M:Initialize()
 		if IsAddOnLoaded('GatherMate2') then
 			LibStub('AceAddon-3.0'):GetAddon('GatherMate2'):GetModule('Display'):ReparentMinimapPins(Minimap)
 		end
-		Astrolabe:SetTargetMinimap(Minimap)
+		if Astrolabe then Astrolabe:SetTargetMinimap(Minimap) end
 	end)
 
 

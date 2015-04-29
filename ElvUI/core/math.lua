@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
-local Astrolabe = DongleStub("Astrolabe-1.0")
 local format = string.format
 local sub = string.sub
 local upper = string.upper
@@ -10,6 +9,9 @@ local modf = math.modf
 local ceil = math.ceil
 local floor = math.floor
 local abs = math.abs
+local sqrt = math.sqrt
+local pi = math.pi
+local UnitPosition = UnitPosition
 
 --Return short value of a number
 
@@ -271,37 +273,22 @@ function E:GetTimeInfo(s, threshhold)
 	end
 end
 
-local ninetyDegreeAngleInRadians = (3.141592653589793 / 2)
-local function GetPosition(unit, mapScan)
-	local m, f, x, y
-	if unit == "player" or UnitIsUnit("player", unit) then
-		m, f, x, y = Astrolabe:GetCurrentPlayerPosition()
-	else
-		m, f, x, y = Astrolabe:GetUnitPosition(unit, mapScan or WorldMapFrame:IsVisible())
-	end
+function E:GetDistance(unit1, unit2)
+	local x1, y1, _, map1 = UnitPosition(unit1)
 
-	if not (m and y) then
-		return false
-	else
-		return true, m, f, x, y
-	end
-end
+	if not x1 then return end
 
-function E:GetDistance(unit1, unit2, mapScan)
-	local canCalculate, m1, f1, x1, y1 = GetPosition(unit1, mapScan)
+	local x2, y2, _, map2 = UnitPosition(unit2)
 
-	if not canCalculate then return end
+	if not x2 then return end
 
-	local canCalculate, m2, f2, x2, y2 = GetPosition(unit2, mapScan)
+	if map1 ~= map2 then return end
 
-	if not canCalculate then return end
+	local dX = x2 - x1
+	local dY = y2 - y1
+	local distance = sqrt(dX * dX + dY * dY)
 
-	local distance, xDelta, yDelta = Astrolabe:ComputeDistance(m1, f1, x1, y1, m2, f2, x2, y2)
-	if distance and xDelta and yDelta then
-		return distance, -ninetyDegreeAngleInRadians -GetPlayerFacing() - atan2(yDelta, xDelta)
-	elseif distance then
-		return distance
-	end
+	return distance, atan2(dY, dX) - GetPlayerFacing()
 end
 
 --Money text formatting, code taken from Scrooge by thelibrarian ( http://www.wowace.com/addons/scrooge/ )

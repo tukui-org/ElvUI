@@ -196,7 +196,7 @@ local function LoadSkin()
 
 	LootFrame:HookScript("OnShow", function(self)
 		if(IsFishingLoot()) then
-			self.Title:SetText(L['Fishy Loot'])
+			self.Title:SetText(L["Fishy Loot"])
 		elseif(not UnitIsFriend("player", "target") and UnitIsDead"target") then
 			self.Title:SetText(UnitName("target"))
 		else

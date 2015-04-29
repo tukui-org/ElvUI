@@ -18,7 +18,7 @@ function B:Initialize()
 		self:MoveObjectiveFrame()
 	end
 
-	E:CreateMover(LossOfControlFrame, 'LossControlMover', L['Loss Control Icon'])
+	E:CreateMover(LossOfControlFrame, 'LossControlMover', L["Loss Control Icon"])
 
 	CreateFrame("Frame"):SetScript("OnUpdate", function(self, elapsed)
 		if LFRBrowseFrame.timeToClear then

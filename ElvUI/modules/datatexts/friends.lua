@@ -66,15 +66,15 @@ local levelNameString = "|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r"
 local levelNameClassString = "|cff%02x%02x%02x%d|r %s%s%s"
 local worldOfWarcraftString = WORLD_OF_WARCRAFT
 local battleNetString = BATTLENET_OPTIONS_LABEL
-local wowString, scString, d3String, wtcgString, appString  = BNET_CLIENT_WOW, BNET_CLIENT_SC2, BNET_CLIENT_D3, BNET_CLIENT_WTCG, L["App"]
+local wowString, scString, d3String, wtcgString, appString, hotsString  = BNET_CLIENT_WOW, BNET_CLIENT_SC2, BNET_CLIENT_D3, BNET_CLIENT_WTCG, L["App"], BNET_CLIENT_HEROES
 local totalOnlineString = join("", FRIENDS_LIST_ONLINE, ": %s/%s")
 local tthead, ttsubh, ttoff = {r=0.4, g=0.78, b=1}, {r=0.75, g=0.9, b=1}, {r=.3,g=1,b=.3}
 local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
 local displayString = ''
-local statusTable = { "|cffFFFFFF[|r|cffFF0000"..L['AFK'].."|r|cffFFFFFF]|r", "|cffFFFFFF[|r|cffFF0000"..L['DND'].."|r|cffFFFFFF]|r", "" }
+local statusTable = { "|cffFFFFFF[|r|cffFF0000"..L["AFK"].."|r|cffFFFFFF]|r", "|cffFFFFFF[|r|cffFF0000"..L["DND"].."|r|cffFFFFFF]|r", "" }
 local groupedTable = { "|cffaaaaaa*|r", "" }
-local friendTable, BNTable, BNTableWoW, BNTableD3, BNTableSC, BNTableWTCG, BNTableApp = {}, {}, {}, {}, {}, {}, {}
-local tableList = {[wowString] = BNTableWoW, [d3String] = BNTableD3, [scString] = BNTableSC, [wtcgString] = BNTableWTCG, [appString] = BNTableApp}
+local friendTable, BNTable, BNTableWoW, BNTableD3, BNTableSC, BNTableWTCG, BNTableApp, BNTableHOTS = {}, {}, {}, {}, {}, {}, {}, {}
+local tableList = {[wowString] = BNTableWoW, [d3String] = BNTableD3, [scString] = BNTableSC, [wtcgString] = BNTableWTCG, [appString] = BNTableApp, [hotsString] = BNTableHOTS}
 local friendOnline, friendOffline = gsub(ERR_FRIEND_ONLINE_SS,"\124Hplayer:%%s\124h%[%%s%]\124h",""), gsub(ERR_FRIEND_OFFLINE_S,"%%s","")
 local dataValid = false
 local lastPanel
@@ -86,9 +86,9 @@ local function BuildFriendTable(total)
 		name, level, class, area, connected, status, note = GetFriendInfo(i)
 
 		if status == "<"..AFK..">" then
-			status = "|cffFFFFFF[|r|cffFF0000"..L['AFK'].."|r|cffFFFFFF]|r"
+			status = "|cffFFFFFF[|r|cffFF0000"..L["AFK"].."|r|cffFFFFFF]|r"
 		elseif status == "<"..DND..">" then
-			status = "|cffFFFFFF[|r|cffFF0000"..L['DND'].."|r|cffFFFFFF]|r"
+			status = "|cffFFFFFF[|r|cffFF0000"..L["DND"].."|r|cffFFFFFF]|r"
 		end
 
 		if connected then
@@ -118,6 +118,7 @@ local function BuildBNTable(total)
 	wipe(BNTableSC)
 	wipe(BNTableWTCG)
 	wipe(BNTableApp)
+	wipe(BNTableHOTS)
 
 	local _, presenceID, presenceName, battleTag, isBattleTagPresence, toonName, toonID, client, isOnline, lastOnline, isAFK, isDND, messageText, noteText, isRIDFriend, messageTime, canSoR
 	local hasFocus, realmName, realmID, faction, race, class, guild, zoneName, level, gameText
@@ -126,6 +127,7 @@ local function BuildBNTable(total)
 
 		hasFocus, _, _, realmName, realmID, faction, race, class, guild, zoneName, level, gameText = BNGetToonInfo(toonID or presenceID);
 		if isOnline then
+			toonName = BNet_GetValidatedCharacterName(toonName, battleTag, client) or "";
 			for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
 			BNTable[i] = { presenceID, presenceName, battleTag, toonName, toonID, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
 
@@ -137,6 +139,8 @@ local function BuildBNTable(total)
 				BNTableWTCG[#BNTableWTCG + 1] = { presenceID, presenceName, toonName, toonID, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
 			elseif client == appString then
 				BNTableApp[#BNTableApp + 1] = { presenceID, presenceName, toonName, toonID, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
+			elseif client == hotsString then
+				BNTableHOTS[#BNTableHOTS + 1] = { presenceID, presenceName, toonName, toonID, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
 			else
 				BNTableWoW[#BNTableWoW + 1] = { presenceID, presenceName, toonName, toonID, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
 			end
@@ -149,6 +153,7 @@ local function BuildBNTable(total)
 	sort(BNTableD3, Sort)
 	sort(BNTableWTCG, Sort)
 	sort(BNTableApp, Sort)
+	sort(BNTableHOTS, Sort)
 end
 
 local function OnEvent(self, event, ...)
@@ -166,7 +171,7 @@ local function OnEvent(self, event, ...)
 	-- force update when showing tooltip
 	dataValid = false
 
-	self.text:SetFormattedText(displayString, L['Friends'], onlineFriends + numBNetOnline)
+	self.text:SetFormattedText(displayString, L["Friends"], onlineFriends + numBNetOnline)
 	lastPanel = self
 end
 
@@ -244,7 +249,7 @@ local function OnEnter(self)
 
 	local totalfriends = numberOfFriends + totalBNet
 	local zonec, classc, levelc, realmc, info
-	DT.tooltip:AddDoubleLine(L['Friends List'], format(totalOnlineString, totalonline, totalfriends),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
+	DT.tooltip:AddDoubleLine(L["Friends List"], format(totalOnlineString, totalonline, totalfriends),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
 	if onlineFriends > 0 then
 		DT.tooltip:AddLine(' ')
 		DT.tooltip:AddLine(worldOfWarcraftString)

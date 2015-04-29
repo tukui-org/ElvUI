@@ -213,15 +213,24 @@ function E:UpdateMedia()
 
 	if LeftChatPanel and LeftChatPanel.tex and RightChatPanel and RightChatPanel.tex then
 		LeftChatPanel.tex:SetTexture(E.db.chat.panelBackdropNameLeft)
-		LeftChatPanel.tex:SetAlpha(E.db.general.backdropfadecolor.a - 0.55 > 0 and E.db.general.backdropfadecolor.a - 0.55 or 0.5)
+		local a = E.db.general.backdropfadecolor.a or 0.5
+		LeftChatPanel.tex:SetAlpha(a)
 
 		RightChatPanel.tex:SetTexture(E.db.chat.panelBackdropNameRight)
-		RightChatPanel.tex:SetAlpha(E.db.general.backdropfadecolor.a - 0.55 > 0 and E.db.general.backdropfadecolor.a - 0.55 or 0.5)
+		RightChatPanel.tex:SetAlpha(a)
 	end
 
 	self:ValueFuncCall()
 	self:UpdateBlizzardFonts()
 end
+
+--Update font/texture paths when they are registered by the addon providing them
+--This helps fix most of the issues with fonts or textures reverting to default because the addon providing them is loading after ElvUI.
+--We use a wrapper to avoid errors in :UpdateMedia because "self" is passed to the function with a value other than ElvUI.
+local function LSMCallback()
+	E:UpdateMedia()
+end
+E.LSM.RegisterCallback(E, "LibSharedMedia_Registered", LSMCallback)
 
 function E:RequestBGInfo()
 	RequestBattlefieldScoreData()
@@ -493,16 +502,9 @@ f:RegisterEvent("CHAT_MSG_ADDON")
 f:SetScript('OnEvent', SendRecieve)
 
 function E:UpdateAll(ignoreInstall)
-	-- Why is this code even here? All this is done during :Initialize()
-	
-	-- self.data = LibStub("AceDB-3.0"):New("ElvDB", self.DF);
-	-- self.data.RegisterCallback(self, "OnProfileChanged", "UpdateAll")
-	-- self.data.RegisterCallback(self, "OnProfileCopied", "UpdateAll")
-	-- self.data.RegisterCallback(self, "OnProfileReset", "OnProfileReset")
-	-- LibStub('LibDualSpec-1.0'):EnhanceDatabase(self.data, "ElvUI")
-	-- self.db = self.data.profile;
-	-- self.global = self.data.global;
-	-- self:DBConversions()
+	self.private = self.charSettings.profile
+	self.db = self.data.profile;
+	self.global = self.data.global;
 	self.db.theme = nil;
 	self.db.install_complete = nil;
 
@@ -530,6 +532,7 @@ function E:UpdateAll(ignoreInstall)
 	bags:Layout(true);
 	bags:PositionBagFrames()
 	bags:SizeAndPositionBagBar()
+	bags:UpdateItemLevelDisplay()
 
 	local totems = E:GetModule('Totems');
 	totems.db = self.db.general.totems
@@ -711,30 +714,27 @@ function E:DBConversions()
 			self.db.actionbar.dayscolor = nil
 		end
 	end
-
-	if E.global.unitframe.aurafilters['Whitelist (Strict)'].spells then
-		for k, v in pairs(E.global.unitframe.aurafilters['Whitelist (Strict)'].spells) do
+	
+	if E.global.unitframe['aurafilters']['RaidDebuffs'].spells then
+		local matchFound
+		for k, v in pairs(E.global.unitframe['aurafilters']['RaidDebuffs'].spells) do
 			if type(v) == 'table' then
+				matchFound = false
 				for k_,v_ in pairs(v) do
-					if k_ == 'spellID' and type(v_) ~= 'number' then
-						E.global.unitframe.aurafilters['Whitelist (Strict)']['spells'][k][k_] = tonumber(v_)
+					if k_ == 'stackThreshold' then
+						matchFound = true
 					end
 				end
+			end
+			
+			if not matchFound then
+				E.global.unitframe['aurafilters']['RaidDebuffs']['spells'][k].stackThreshold = 0
 			end
 		end
 	end
 
 	self.db.unitframe.units.raid10 = nil
 	self.db.unitframe.units.raid25 = nil
-
-	if not E.db.bagsOffsetFixed then
-		if E.db.bags.xOffset ~= P['bags']['xOffset'] then
-			E.db.bags.xOffsetBank = E.db.bags.xOffset
-			E.db.bags.yOffsetBank = E.db.bags.yOffset
-			E.db.bags.xOffset = E.db.bags.xOffset * (-1) --Change positive value to negative or vice versa
-		end
-		E.db.bagsOffsetFixed = true
-	end
 
 	if E.db.general.experience.width > 100 and E.db.general.experience.height > 100 then
 		E.db.general.experience.width = P.general.experience.width
@@ -749,7 +749,7 @@ function E:DBConversions()
 	end
 end
 
-function E:StopMassiveShake()
+function E:StopHarlemShake()
 	E.isMassiveShaking = nil
 	StopMusic()
 	SetCVar("Sound_EnableAllSound", self.oldEnableAllSound)
@@ -767,12 +767,12 @@ function E:StopMassiveShake()
 	end
 
 	E.global.aprilFools = true;
-	E:StaticPopup_Hide("APRIL_FOOLS2013")
+	E:StaticPopup_Hide("HARLEM_SHAKE")
 	twipe(self.massiveShakeObjects)
 	DoEmote("Dance")
 end
 
-function E:MassiveShake()
+function E:DoTheHarlemShake()
 	E.isMassiveShaking = true
 	ElvUI_StaticPopup1Button1:Enable()
 
@@ -782,11 +782,11 @@ function E:MassiveShake()
 		end
 	end
 
-	E.massiveShakeTimer = E:ScheduleTimer("StopMassiveShake", 42.5)
+	E.massiveShakeTimer = E:ScheduleTimer("StopHarlemShake", 42.5)
 	SendChatMessage("DO THE HARLEM SHAKE!", "YELL")
 end
 
-function E:BeginFoolsDayEvent()
+function E:BeginHarlemShake()
 	DoEmote("Dance")
 	ElvUI_StaticPopup1Button1:Disable()
 	self:ShakeHorizontal(ElvUI_StaticPopup1)
@@ -795,15 +795,15 @@ function E:BeginFoolsDayEvent()
 
 	SetCVar("Sound_EnableAllSound", 1)
 	SetCVar("Sound_EnableMusic", 1)
-	PlayMusic([[Interface\AddOns\ElvUI\media\sounds\harlemshake.mp3]])
-	E:ScheduleTimer("MassiveShake", 15.5)
+	PlayMusic([[Interface\AddOns\ElvUI\media\sounds\harlemshake.ogg]])
+	E:ScheduleTimer("DoTheHarlemShake", 15.5)
 
 	local UF = E:GetModule("UnitFrames")
 	local AB = E:GetModule("ActionBars")
 	self.massiveShakeObjects = {}
 	tinsert(self.massiveShakeObjects, GameTooltip)
 	tinsert(self.massiveShakeObjects, Minimap)
-	tinsert(self.massiveShakeObjects, WatchFrame)
+	tinsert(self.massiveShakeObjects, ObjectiveTrackerFrame)
 	tinsert(self.massiveShakeObjects, LeftChatPanel)
 	tinsert(self.massiveShakeObjects, RightChatPanel)
 	tinsert(self.massiveShakeObjects,LeftChatToggleButton)
@@ -878,7 +878,7 @@ function E:GetTopCPUFunc(msg)
 	self:Print("Calculating CPU Usage..")
 end
 
-function E:CheckForFoolsDayFuckup(secondCheck)
+function E:HelloKittyFixCheck(secondCheck)
 	local t = self.db.tempSettings
 	if(not t and not secondCheck) then t = self.db.general end
 	if(t and t.backdropcolor)then
@@ -886,12 +886,12 @@ function E:CheckForFoolsDayFuckup(secondCheck)
 	end
 end
 
-function E:AprilFoolsFuckupFix()
+function E:HelloKittyFix()
 	local c = P.general.backdropcolor
 	self.db.general.backdropcolor = {r = c.r, g = c.g, b = c.b}
 
 	c = P.general.backdropfadecolor
-	self.db.general.backdropfadecolor = {r = c.r, g = c.g, b = c.b}
+	self.db.general.backdropfadecolor = {r = c.r, g = c.g, b = c.b, a = (c.a or 0.8)}
 
 	c = P.general.bordercolor
 	self.db.general.bordercolor = {r = c.r, g = c.g, b = c.b}
@@ -917,6 +917,7 @@ function E:AprilFoolsFuckupFix()
 	if(HelloKittyLeft) then
 		HelloKittyLeft:Hide()
 		HelloKittyRight:Hide()
+		self.db.general.kittys = nil
 		return
 	end
 
@@ -924,7 +925,7 @@ function E:AprilFoolsFuckupFix()
 	self:UpdateAll()
 end
 
-function E:SetupAprilFools2014()
+function E:SetupHelloKitty()
 	if not self.db.tempSettings then
 		self.db.tempSettings = {}
 	end
@@ -933,8 +934,8 @@ function E:SetupAprilFools2014()
 	--Store old settings
 	local t = self.db.tempSettings
 	local c = self.db.general.backdropcolor
-	if(self:CheckForFoolsDayFuckup()) then
-		E:AprilFoolsFuckupFix()
+	if(self:HelloKittyFixCheck()) then
+		E:HelloKittyFix()
 	else
 		self.oldEnableAllSound = GetCVar("Sound_EnableAllSound")
 		self.oldEnableMusic = GetCVar("Sound_EnableMusic")
@@ -980,8 +981,8 @@ function E:SetupAprilFools2014()
 
 		SetCVar("Sound_EnableAllSound", 1)
 		SetCVar("Sound_EnableMusic", 1)
-		PlayMusic([[Interface\AddOns\ElvUI\media\sounds\helloKitty.mp3]])
-		self:ScheduleTimer('EndAprilFoolsDay2014', 59)
+		PlayMusic([[Interface\AddOns\ElvUI\media\sounds\helloKitty.ogg]])
+		E:StaticPopup_Show("HELLO_KITTY_END")
 
 		self.db.general.kittys = true
 		self:CreateKittys()
@@ -990,16 +991,8 @@ function E:SetupAprilFools2014()
 	end
 end
 
-function E:EndAprilFoolsDay2014()
-	StopMusic()
-	SetCVar("Sound_EnableAllSound", self.oldEnableAllSound)
-	SetCVar("Sound_EnableMusic", self.oldEnableMusic)
 
-	E.global.aprilFools = true;
-	E:StaticPopup_Show("APRIL_FOOLS_END")
-end
-
-function E:RestoreAprilFools()
+function E:RestoreHelloKitty()
 	--Store old settings
 	self.db.general.kittys = false
 	if(HelloKittyLeft) then
@@ -1008,8 +1001,8 @@ function E:RestoreAprilFools()
 	end
 
 	if not(self.db.tempSettings) then return end
-	if(self:CheckForFoolsDayFuckup()) then
-		self:AprilFoolsFuckupFix()
+	if(self:HelloKittyFixCheck()) then
+		self:HelloKittyFix()
 		self.db.tempSettings = nil
 		return
 	end
@@ -1017,7 +1010,7 @@ function E:RestoreAprilFools()
 	self.db.general.backdropcolor = {r = c.r, g = c.g, b = c.b}
 
 	c = self.db.tempSettings.backdropfadecolor
-	self.db.general.backdropfadecolor = {r = c.r, g = c.g, b = c.b}
+	self.db.general.backdropfadecolor = {r = c.r, g = c.g, b = c.b, a = (c.a or 0.8)}
 
 	c = self.db.tempSettings.bordercolor
 	self.db.general.bordercolor = {r = c.r, g = c.g, b = c.b}
@@ -1043,15 +1036,6 @@ function E:RestoreAprilFools()
 	self.db.tempSettings = nil
 
 	self:UpdateAll()
-end
-
-function E:AprilFoolsToggle()
-	if(HelloKittyLeft and HelloKittyLeft:IsShown()) then
-		self:RestoreAprilFools()
-		self.global.aprilFools = true
-	else
-		self:StaticPopup_Show("APRIL_FOOLS")
-	end
 end
 
 local function OnDragStart(self)
@@ -1160,10 +1144,8 @@ function E:Initialize()
 		E.global.aprilFools = nil;
 	end
 
-	if(self:CheckForFoolsDayFuckup()) then
-		E:AprilFoolsFuckupFix()
-	elseif E:IsFoolsDay() and not self.db.general.kittys then
-		E:StaticPopup_Show('APRIL_FOOLS')
+	if(self:HelloKittyFixCheck()) then
+		self:HelloKittyFix()
 	end
 
 	self:UpdateMedia()
@@ -1184,7 +1166,7 @@ function E:Initialize()
 
 	if self.db.general.kittys then
 		self:CreateKittys()
-		self:Delay(5, self.Print, self, L["Type /aprilfools to revert to old settings."])
+		self:Delay(5, self.Print, self, L["Type /hellokitty to revert to old settings."])
 	end
 
 	self:Tutorials()
@@ -1193,6 +1175,6 @@ function E:Initialize()
 	collectgarbage("collect");
 
 	if self.db.general.loginmessage then
-		print(select(2, E:GetModule('Chat'):FindURL("CHAT_MSG_DUMMY", format(L['LOGIN_MSG'], self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version)))..'.')
+		print(select(2, E:GetModule('Chat'):FindURL("CHAT_MSG_DUMMY", format(L["LOGIN_MSG"], self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version)))..'.')
 	end
 end

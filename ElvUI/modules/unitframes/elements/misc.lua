@@ -64,7 +64,7 @@ function UF:Construct_Combobar(frame)
 	CPoints.Override = UF.UpdateComboDisplay
 
 	for i = 1, MAX_COMBO_POINTS do
-		CPoints[i] = CreateFrame("StatusBar", nil, CPoints)
+		CPoints[i] = CreateFrame("StatusBar", frame:GetName().."ComboBarButton"..i, CPoints)
 		UF['statusbars'][CPoints[i]] = true
 		CPoints[i]:SetStatusBarTexture(E['media'].blankTex)
 		CPoints[i]:GetStatusBarTexture():SetHorizTile(false)
@@ -179,13 +179,16 @@ end
 function UF:Construct_RaidRoleFrames(frame)
 	local anchor = CreateFrame('Frame', nil, frame)
 	frame.Leader = anchor:CreateTexture(nil, 'OVERLAY')
+	frame.Assistant = anchor:CreateTexture(nil, 'OVERLAY')
 	frame.MasterLooter = anchor:CreateTexture(nil, 'OVERLAY')
 
 	anchor:Size(24, 12)
 	frame.Leader:Size(12)
+	frame.Assistant:Size(12)
 	frame.MasterLooter:Size(11)
 
 	frame.Leader.PostUpdate = UF.RaidRoleUpdate
+	frame.Assistant.PostUpdate = UF.RaidRoleUpdate
 	frame.MasterLooter.PostUpdate = UF.RaidRoleUpdate
 
 	return anchor
@@ -360,6 +363,13 @@ function UF:UpdateAuraWatchFromHeader(group, petOverride)
 		local frame = select(i, self[group]:GetChildren())
 		if frame and frame.Health then
 			UF:UpdateAuraWatch(frame, petOverride)
+		elseif frame then
+			for n = 1, frame:GetNumChildren() do
+				local child = select(n, frame:GetChildren())
+				if child and child.Health then
+					UF:UpdateAuraWatch(child, petOverride)
+				end
+			end
 		end
 	end
 end
@@ -549,6 +559,28 @@ local roleIconTextures = {
 	DAMAGER = [[Interface\AddOns\ElvUI\media\textures\dps.tga]]
 }
 
+--From http://forums.wowace.com/showpost.php?p=325677&postcount=5
+local specNameToRole = {}
+for i = 1, GetNumClasses() do
+	local _, class, classID = GetClassInfo(i)
+	specNameToRole[class] = {}
+	for j = 1, GetNumSpecializationsForClassID(classID) do
+		local _, spec, _, _, _, role = GetSpecializationInfoForClassID(classID, j)
+		specNameToRole[class][spec] = role
+	end
+end
+
+local function GetBattleFieldIndexFromUnitName(name)
+	local nameFromIndex
+	for index = 1, GetNumBattlefieldScores() do
+		nameFromIndex = GetBattlefieldScore(index)
+		if nameFromIndex == name then
+			return index
+		end
+	end
+	return nil
+end
+
 function UF:UpdateRoleIcon()
 	local lfdrole = self.LFDRole
 	if not self.db then return; end
@@ -558,11 +590,29 @@ function UF:UpdateRoleIcon()
 		lfdrole:Hide()
 		return
 	end
+	
+	local isInstance, instanceType = IsInInstance()
+	local role
 
-	local role = UnitGroupRolesAssigned(self.unit)
-	if self.isForced and role == 'NONE' then
-		local rnd = random(1, 3)
-		role = rnd == 1 and "TANK" or (rnd == 2 and "HEALER" or (rnd == 3 and "DAMAGER"))
+	if isInstance and instanceType == "pvp" then
+		local name = GetUnitName(self.unit, true)
+		local index = GetBattleFieldIndexFromUnitName(name)
+		if index then
+			local _, _, _, _, _, _, _, _, classToken, _, _, _, _, _, _, talentSpec = GetBattlefieldScore(index)
+			if classToken and talentSpec then
+				role = specNameToRole[classToken][talentSpec]
+			else
+				role = UnitGroupRolesAssigned(self.unit) --Fallback
+			end
+		else
+			role = UnitGroupRolesAssigned(self.unit) --Fallback
+		end
+	else
+		role = UnitGroupRolesAssigned(self.unit)
+		if self.isForced and role == 'NONE' then
+			local rnd = random(1, 3)
+			role = rnd == 1 and "TANK" or (rnd == 2 and "HEALER" or (rnd == 3 and "DAMAGER"))
+		end
 	end
 
 	if role ~= 'NONE' and (self.isForced or UnitIsConnected(self.unit)) then
@@ -576,16 +626,19 @@ end
 function UF:RaidRoleUpdate()
 	local anchor = self:GetParent()
 	local leader = anchor:GetParent().Leader
+	local assistant = anchor:GetParent().Assistant
 	local masterLooter = anchor:GetParent().MasterLooter
 
-	if not leader or not masterLooter then return; end
+	if not leader or not masterLooter or not assistant then return; end
 
 	local unit = anchor:GetParent().unit
 	local db = anchor:GetParent().db
 	local isLeader = leader:IsShown()
 	local isMasterLooter = masterLooter:IsShown()
+	local isAssist = assistant:IsShown()
 
 	leader:ClearAllPoints()
+	assistant:ClearAllPoints()
 	masterLooter:ClearAllPoints()
 
 	if db and db.raidRoleIcons then
@@ -594,6 +647,12 @@ function UF:RaidRoleUpdate()
 			masterLooter:Point('RIGHT', anchor, 'RIGHT')
 		elseif isLeader and db.raidRoleIcons.position == 'TOPRIGHT' then
 			leader:Point('RIGHT', anchor, 'RIGHT')
+			masterLooter:Point('LEFT', anchor, 'LEFT')
+		elseif isAssist and db.raidRoleIcons.position == 'TOPLEFT' then
+			assistant:Point('LEFT', anchor, 'LEFT')
+			masterLooter:Point('RIGHT', anchor, 'RIGHT')
+		elseif isAssist and db.raidRoleIcons.position == 'TOPRIGHT' then
+			assistant:Point('RIGHT', anchor, 'RIGHT')
 			masterLooter:Point('LEFT', anchor, 'LEFT')
 		elseif isMasterLooter and db.raidRoleIcons.position == 'TOPLEFT' then
 			masterLooter:Point('LEFT', anchor, 'LEFT')

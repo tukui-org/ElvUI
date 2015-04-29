@@ -33,7 +33,7 @@ function UF:Construct_BossFrames(frame)
 	frame:SetAttribute("type2", "focus")
 
 	BossHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165)
-	E:CreateMover(BossHeader, BossHeader:GetName()..'Mover', L['Boss Frames'], nil, nil, nil, 'ALL,PARTY,RAID10,RAID25,RAID40')
+	E:CreateMover(BossHeader, BossHeader:GetName()..'Mover', L["Boss Frames"], nil, nil, nil, 'ALL,PARTY,RAID')
 end
 
 function UF:Update_BossFrames(frame, db)
@@ -125,7 +125,7 @@ function UF:Update_BossFrames(frame, db)
 		elseif USE_INSET_POWERBAR then
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER)
 		else
-			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER + POWERBAR_HEIGHT)
+			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, (USE_POWERBAR and ((BORDER + SPACING)*2) or BORDER) + POWERBAR_HEIGHT)
 		end
 
 		health.bg:ClearAllPoints()
@@ -181,13 +181,13 @@ function UF:Update_BossFrames(frame, db)
 				power.value:SetParent(frame.RaisedElementParent)
 			elseif USE_MINI_POWERBAR then
 				power:Width(POWERBAR_WIDTH - BORDER*2)
-				power:Height(POWERBAR_HEIGHT - BORDER*2)
+				power:Height(POWERBAR_HEIGHT)
 				power:Point("LEFT", frame, "BOTTOMLEFT", (BORDER*2 + 4), BORDER + (POWERBAR_HEIGHT/2))
 				power:SetFrameStrata("MEDIUM")
 				power:SetFrameLevel(frame:GetFrameLevel() + 3)
 				power.value:SetParent(power)
 			elseif USE_INSET_POWERBAR then
-				power:Height(POWERBAR_HEIGHT - BORDER*2)
+				power:Height(POWERBAR_HEIGHT)
 				power:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", BORDER + (BORDER*2), BORDER + (BORDER*2))
 				power:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", -(BORDER + (BORDER*2)), BORDER + (BORDER*2))
 				power:SetFrameStrata("MEDIUM")

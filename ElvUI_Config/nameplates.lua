@@ -33,25 +33,25 @@ local function UpdateFilterGroup()
 			enable = {
 				type = 'toggle',
 				order = 1,
-				name = L['Enable'],
-				desc = L['Use this filter.'],
+				name = L["Enable"],
+				desc = L["Use this filter."],
 			},
 			hide = {
 				type = 'toggle',
 				order = 2,
-				name = L['Hide'],
-				desc = L['Prevent any nameplate with this unit name from showing.'],
+				name = L["Hide"],
+				desc = L["Prevent any nameplate with this unit name from showing."],
 			},
 			customColor = {
 				type = 'toggle',
 				order = 3,
-				name = L['Custom Color'],
-				desc = L['Disable threat coloring for this plate and use the custom color.'],
+				name = L["Custom Color"],
+				desc = L["Disable threat coloring for this plate and use the custom color."],
 			},
 			color = {
 				type = 'color',
 				order = 4,
-				name = L['Color'],
+				name = L["Color"],
 				get = function(info)
 					local t = E.global["nameplate"]['filter'][selectedFilter][ info[#info] ]
 					if t then
@@ -71,8 +71,8 @@ local function UpdateFilterGroup()
 			},
 			customScale = {
 				type = 'range',
-				name = L['Custom Scale'],
-				desc = L['Set the scale of the nameplate.'],
+				name = L["Custom Scale"],
+				desc = L["Set the scale of the nameplate."],
 				min = 0.67, max = 2, step = 0.01,
 			},
 		},
@@ -126,35 +126,36 @@ E.Options.args.nameplate = {
 				nonTargetAlpha = {
 					type = 'range',
 					order = 4,
-					name = L['Non-Target Alpha'],
-					desc = L['Alpha of nameplates that are not your current target.'],
+					name = L["Non-Target Alpha"],
+					desc = L["Alpha of nameplates that are not your current target."],
 					min = 0, max = 1, step = 0.01, isPercent = true,
 				},
 				colorNameByValue = {
 					type = 'toggle',
 					order = 5,
-					name = L['Color Name By Health Value'],
+					name = L["Color Name By Health Value"],
 				},
 				fontGroup = {
 					order = 100,
 					type = 'group',
 					guiInline = true,
-					name = L['Fonts'],
+					name = L["Fonts"],
 					args = {
 						showName = {
 							type = 'toggle',
 							order = 1,
-							name = L['Show Name'],
+							name = L["Show Name"],
 						},
 						showLevel = {
 							type = 'toggle',
 							order = 2,
-							name = L['Show Level'],
+							name = L["Show Level"],
 						},
-						spacer = {
+						wrapName = {
+							type = 'toggle',
 							order = 3,
-							type = 'description',
-							name = '',
+							name = L["Wrap Name"],
+							desc = L["Wraps name instead of truncating it."],
 						},
 						font = {
 							type = "select", dialogControl = 'LSM30_Font',
@@ -174,7 +175,7 @@ E.Options.args.nameplate = {
 							desc = L["Set the font outline."],
 							type = "select",
 							values = {
-								['NONE'] = L['None'],
+								['NONE'] = L["None"],
 								['OUTLINE'] = 'OUTLINE',
 								['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 								['THICKOUTLINE'] = 'THICKOUTLINE',
@@ -260,8 +261,8 @@ E.Options.args.nameplate = {
 				lowThreshold = {
 					type = 'range',
 					order = 3,
-					name = L['Low Health Threshold'],
-					desc = L['Color the border of the nameplate yellow when it reaches this point, it will be colored red when it reaches half this value.'],
+					name = L["Low Health Threshold"],
+					desc = L["Color the border of the nameplate yellow when it reaches this point, it will be colored red when it reaches half this value."],
 					isPercent = true,
 					min = 0, max = 1, step = 0.01,
 				},
@@ -342,14 +343,14 @@ E.Options.args.nameplate = {
 						format = {
 							type = "select",
 							order = 2,
-							name = L['Format'],
+							name = L["Format"],
 							values = {
-								['CURRENT_MAX_PERCENT'] = L['Current - Max | Percent'],
-								['CURRENT_PERCENT'] = L['Current - Percent'],
-								['CURRENT_MAX'] = L['Current - Max'],
-								['CURRENT'] = L['Current'],
-								['PERCENT'] = L['Percent'],
-								['DEFICIT'] = L['Deficit'],
+								['CURRENT_MAX_PERCENT'] = L["Current - Max | Percent"],
+								['CURRENT_PERCENT'] = L["Current - Percent"],
+								['CURRENT_MAX'] = L["Current - Max"],
+								['CURRENT'] = L["Current"],
+								['PERCENT'] = L["Percent"],
+								['DEFICIT'] = L["Deficit"],
 							},
 						},
 					},
@@ -446,14 +447,14 @@ E.Options.args.nameplate = {
 				},
 				xOffset = {
 					order = 5,
-					name = L['X-Offset'],
+					name = L["X-Offset"],
 					type = 'range',
 					min = -100, max = 100, step = 1,
 					disabled = function() return (NP.db.targetIndicator.style ~= "doubleArrow" and NP.db.targetIndicator.style ~= "doubleArrowInverted") end
 				},
 				yOffset = {
 					order = 6,
-					name = L['Y-Offset'],
+					name = L["Y-Offset"],
 					type = 'range',
 					min = -100, max = 100, step = 1,
 					disabled = function() return (NP.db.targetIndicator.style ~= "arrow") end
@@ -502,8 +503,8 @@ E.Options.args.nameplate = {
 				markHealers = {
 					type = 'toggle',
 					order = 1,
-					name = L['Healer Icon'],
-					desc = L['Display a healer icon over known healers inside battlegrounds or arenas.'],
+					name = L["Healer Icon"],
+					desc = L["Display a healer icon over known healers inside battlegrounds or arenas."],
 					set = function(info, value) E.db.nameplate.raidHealIcon[ info[#info] ] = value; NP:PLAYER_ENTERING_WORLD(); NP:UpdateAllPlates() end,
 				},
 				size = {
@@ -560,7 +561,7 @@ E.Options.args.nameplate = {
 				additionalFilter = {
 					type = "select",
 					order = 5,
-					name = L['Additional Filter'],
+					name = L["Additional Filter"],
 					values = function()
 						filters = {}
 						filters[''] = NONE
@@ -572,7 +573,7 @@ E.Options.args.nameplate = {
 				},
 				configureButton = {
 					order = 7,
-					name = L['Configure Selected Filter'],
+					name = L["Configure Selected Filter"],
 					type = 'execute',
 					width = 'full',
 					func = function() E:SetToFilterConfig(E.db.nameplate.buffs.additionalFilter) end,
@@ -581,7 +582,7 @@ E.Options.args.nameplate = {
 					order = 100,
 					type = 'group',
 					guiInline = true,
-					name = L['Fonts'],
+					name = L["Fonts"],
 					args = {
 						font = {
 							type = "select", dialogControl = 'LSM30_Font',
@@ -601,7 +602,7 @@ E.Options.args.nameplate = {
 							desc = L["Set the font outline."],
 							type = "select",
 							values = {
-								['NONE'] = L['None'],
+								['NONE'] = L["None"],
 								['OUTLINE'] = 'OUTLINE',
 
 								['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
@@ -640,7 +641,7 @@ E.Options.args.nameplate = {
 				additionalFilter = {
 					type = "select",
 					order = 5,
-					name = L['Additional Filter'],
+					name = L["Additional Filter"],
 					values = function()
 						filters = {}
 						filters[''] = NONE
@@ -652,7 +653,7 @@ E.Options.args.nameplate = {
 				},
 				configureButton = {
 					order = 7,
-					name = L['Configure Selected Filter'],
+					name = L["Configure Selected Filter"],
 					type = 'execute',
 					width = 'full',
 					func = function() E:SetToFilterConfig(E.db.nameplate.debuffs.additionalFilter) end,
@@ -661,7 +662,7 @@ E.Options.args.nameplate = {
 					order = 100,
 					type = 'group',
 					guiInline = true,
-					name = L['Fonts'],
+					name = L["Fonts"],
 					args = {
 						font = {
 							type = "select", dialogControl = 'LSM30_Font',
@@ -681,7 +682,7 @@ E.Options.args.nameplate = {
 							desc = L["Set the font outline."],
 							type = "select",
 							values = {
-								['NONE'] = L['None'],
+								['NONE'] = L["None"],
 								['OUTLINE'] = 'OUTLINE',
 
 								['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
@@ -706,19 +707,19 @@ E.Options.args.nameplate = {
 				},
 				scaling = {
 					type = 'group',
-					name = L['Scaling'],
+					name = L["Scaling"],
 					guiInline = true,
 					order = 2,
 					args = {
 						goodScale = {
 							type = 'range',
-							name = L['Good'],
+							name = L["Good"],
 							order = 1,
 							min = 0.5, max = 1.5, step = 0.01, isPercent = true,
 						},
 						badScale = {
 							type = 'range',
-							name = L['Bad'],
+							name = L["Bad"],
 							order = 1,
 							min = 0.5, max = 1.5, step = 0.01, isPercent = true,
 						},
@@ -778,11 +779,11 @@ E.Options.args.nameplate = {
 				addname = {
 					type = 'input',
 					order = 1,
-					name = L['Add Name'],
+					name = L["Add Name"],
 					get = function(info) return "" end,
 					set = function(info, value)
 						if E.global['nameplate']['filter'][value] then
-							E:Print(L['Filter already exists!'])
+							E:Print(L["Filter already exists!"])
 							return
 						end
 
@@ -800,7 +801,7 @@ E.Options.args.nameplate = {
 				deletename = {
 					type = 'input',
 					order = 2,
-					name = L['Remove Name'],
+					name = L["Remove Name"],
 					get = function(info) return "" end,
 					set = function(info, value)
 						if G['nameplate']['filter'][value] then
@@ -817,7 +818,7 @@ E.Options.args.nameplate = {
 				selectFilter = {
 					order = 3,
 					type = 'select',
-					name = L['Select Filter'],
+					name = L["Select Filter"],
 					get = function(info) return selectedFilter end,
 					set = function(info, value) selectedFilter = value; UpdateFilterGroup() end,
 					values = function()

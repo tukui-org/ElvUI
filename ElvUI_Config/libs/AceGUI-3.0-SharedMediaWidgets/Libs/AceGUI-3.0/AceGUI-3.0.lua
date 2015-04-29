@@ -24,8 +24,8 @@
 -- f:AddChild(btn)
 -- @class file
 -- @name AceGUI-3.0
--- @release $Id: AceGUI-3.0.lua 924 2010-05-13 15:12:20Z nevcairiel $
-local ACEGUI_MAJOR, ACEGUI_MINOR = "AceGUI-3.0", 33
+-- @release $Id: AceGUI-3.0.lua 1102 2013-10-25 14:15:23Z nevcairiel $
+local ACEGUI_MAJOR, ACEGUI_MINOR = "AceGUI-3.0", 34
 local AceGUI, oldminor = LibStub:NewLibrary(ACEGUI_MAJOR, ACEGUI_MINOR)
 
 if not AceGUI then return end -- No upgrade needed
@@ -673,8 +673,16 @@ AceGUI:RegisterLayout("Fill",
 		end
 	end)
 
+local layoutrecursionblock = nil
+local function safelayoutcall(object, func, ...)
+	layoutrecursionblock = true
+	object[func](object, ...)
+	layoutrecursionblock = nil
+end
+
 AceGUI:RegisterLayout("Flow",
 	function(content, children)
+		if layoutrecursionblock then return end
 		--used height so far
 		local height = 0
 		--width used in the current row
@@ -762,7 +770,7 @@ AceGUI:RegisterLayout("Flow",
 			end
 
 			if child.width == "fill" then
-				child:SetWidth(width)
+				safelayoutcall(child, "SetWidth", width)
 				frame:SetPoint("RIGHT", content)
 				
 				usedwidth = 0
@@ -776,7 +784,7 @@ AceGUI:RegisterLayout("Flow",
 				rowoffset = child.alignoffset or (rowheight / 2)
 				rowstartoffset = rowoffset
 			elseif child.width == "relative" then
-				child:SetWidth(width * child.relWidth)
+				safelayoutcall(child, "SetWidth", width * child.relWidth)
 				
 				if child.DoLayout then
 					child:DoLayout()

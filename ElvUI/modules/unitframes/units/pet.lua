@@ -17,13 +17,16 @@ function UF:Construct_PetFrame(frame)
 
 	frame.Debuffs = self:Construct_Debuffs(frame)
 
-	frame.Castbar = CreateFrame("StatusBar", nil, frame) -- Dummy Bar
+	frame.Castbar = self:Construct_Castbar(frame, 'LEFT', L["Pet Castbar"])
+	frame.Castbar.SafeZone = nil
+	frame.Castbar.LatencyTexture:Hide()
+	-- frame.Castbar = CreateFrame("StatusBar", nil, frame) -- Dummy Bar
 	frame.Threat = self:Construct_Threat(frame)
 	frame.HealPrediction = self:Construct_HealComm(frame)
 	frame.AuraWatch = UF:Construct_AuraWatch(frame)
 	frame.Range = UF:Construct_Range(frame)
 	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 118)
-	E:CreateMover(frame, frame:GetName()..'Mover', L['Pet Frame'], nil, nil, nil, 'ALL,SOLO')
+	E:CreateMover(frame, frame:GetName()..'Mover', L["Pet Frame"], nil, nil, nil, 'ALL,SOLO')
 end
 
 function UF:Update_PetFrame(frame, db)
@@ -102,7 +105,7 @@ function UF:Update_PetFrame(frame, db)
 		elseif USE_INSET_POWERBAR then
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER)
 		else
-			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER + POWERBAR_HEIGHT)
+			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, (USE_POWERBAR and ((BORDER + SPACING)*2) or BORDER) + POWERBAR_HEIGHT)
 		end
 	end
 
@@ -146,12 +149,12 @@ function UF:Update_PetFrame(frame, db)
 				power:SetFrameLevel(2)
 			elseif USE_MINI_POWERBAR then
 				power:Width(POWERBAR_WIDTH - BORDER*2)
-				power:Height(POWERBAR_HEIGHT - BORDER*2)
+				power:Height(POWERBAR_HEIGHT)
 				power:Point("LEFT", frame, "BOTTOMLEFT", (BORDER*2 + 4), BORDER + (POWERBAR_HEIGHT/2))
 				power:SetFrameStrata("MEDIUM")
 				power:SetFrameLevel(frame:GetFrameLevel() + 3)
 			elseif USE_INSET_POWERBAR then
-				power:Height(POWERBAR_HEIGHT - BORDER*2)
+				power:Height(POWERBAR_HEIGHT)
 				power:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", BORDER + (BORDER*2), BORDER + (BORDER*2))
 				power:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", -(BORDER + (BORDER*2)), BORDER + (BORDER*2))
 				power:SetFrameStrata("MEDIUM")
@@ -290,6 +293,49 @@ function UF:Update_PetFrame(frame, db)
 		end
 	end
 
+	--Castbar
+	do
+		local castbar = frame.Castbar
+		castbar:Width(db.castbar.width - (BORDER * 2))
+		castbar:Height(db.castbar.height)
+		castbar.Holder:Width(db.castbar.width)
+		castbar.Holder:Height(db.castbar.height + (E.PixelMode and 2 or (BORDER * 2)))
+		castbar.Holder:GetScript('OnSizeChanged')(castbar.Holder)
+
+		--Latency
+		if db.castbar.latency then
+			castbar.SafeZone = castbar.LatencyTexture
+			castbar.LatencyTexture:Show()
+		else
+			castbar.SafeZone = nil
+			castbar.LatencyTexture:Hide()
+		end
+
+		--Icon
+		if db.castbar.icon then
+			castbar.Icon = castbar.ButtonIcon
+			castbar.Icon.bg:Width(db.castbar.height + (E.Border * 2))
+			castbar.Icon.bg:Height(db.castbar.height + (E.Border * 2))
+
+			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - (E.PixelMode and 1 or 5))
+			castbar.Icon.bg:Show()
+		else
+			castbar.ButtonIcon.bg:Hide()
+			castbar.Icon = nil
+		end
+
+		if db.castbar.spark then
+			castbar.Spark:Show()
+		else
+			castbar.Spark:Hide()
+		end
+
+		if db.castbar.enable and not frame:IsElementEnabled('Castbar') then
+			frame:EnableElement('Castbar')
+		elseif not db.castbar.enable and frame:IsElementEnabled('Castbar') then
+			frame:DisableElement('Castbar')
+		end
+	end
 
 	--OverHealing
 	do

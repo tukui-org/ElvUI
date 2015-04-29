@@ -9,8 +9,17 @@ local format, strsub = string.format, string.sub
 local ignoreKeys = {
 	LALT = true,
 	LSHIFT = true,
-	RSHIFT = true
+	RSHIFT = true,
+	
 }
+
+local printKeys = {
+	["PRINTSCREEN"] = true,
+}
+
+if IsMacClient() then
+	printKeys[_G["KEY_PRINTSCREEN_MAC"]] = true
+end
 
 function AFK:UpdateTimer()
 	local time = GetTime() - self.startTime
@@ -114,8 +123,12 @@ end
 
 local function OnKeyDown(self, key)
 	if(ignoreKeys[key]) then return end
-	AFK:SetAFK(false)
-	AFK:ScheduleTimer('OnEvent', 60)
+	if printKeys[key] then
+		Screenshot()
+	else
+		AFK:SetAFK(false)
+		AFK:ScheduleTimer('OnEvent', 60)
+	end
 end
 
 local function Chat_OnMouseWheel(self, delta)
@@ -164,15 +177,16 @@ local function Chat_OnEvent(self, event, arg1, arg2, arg3, arg4, arg5, arg6, arg
 	if ( arg14 ) then	--isMobile
 		message = ChatFrame_GetMobileEmbeddedTexture(info.r, info.g, info.b)..message;
 	end
+
 	body = format(_G["CHAT_"..type.."_GET"]..message, playerLink.."["..coloredName.."]".."|h");
 
 	local accessID = ChatHistory_GetAccessID(chatGroup, chatTarget);
 	local typeID = ChatHistory_GetAccessID(type, chatTarget, arg12 == "" and arg13 or arg12);
 	if CH.db.shortChannels then
 		body = body:gsub("|Hchannel:(.-)|h%[(.-)%]|h", CH.ShortChannel)
-		body = body:gsub("^(.-|h) "..L['whispers'], "%1")
-		body = body:gsub("<"..AFKString..">", "[|cffFF0000"..L['AFK'].."|r] ")
-		body = body:gsub("<"..DND..">", "[|cffE7E716"..L['DND'].."|r] ")
+		body = body:gsub("^(.-|h) "..L["whispers"], "%1")
+		body = body:gsub("<"..AFKString..">", "[|cffFF0000"..L["AFK"].."|r] ")
+		body = body:gsub("<"..DND..">", "[|cffE7E716"..L["DND"].."|r] ")
 		body = body:gsub("%[BN_CONVERSATION:", '%['.."")
 	end
 
@@ -249,10 +263,15 @@ function AFK:Initialize()
 	self.AFKMode.bottom.time:SetPoint("TOPLEFT", self.AFKMode.bottom.guild, "BOTTOMLEFT", 0, -6)
 	self.AFKMode.bottom.time:SetTextColor(0.7, 0.7, 0.7)
 
-	self.AFKMode.bottom.model = CreateFrame("PlayerModel", "ElvUIAFKPlayerModel", self.AFKMode.bottom)
-	self.AFKMode.bottom.model:SetPoint("BOTTOMRIGHT", self.AFKMode.bottom, "BOTTOMRIGHT", 120, -100)
-	self.AFKMode.bottom.model:SetSize(800, 800)
-	self.AFKMode.bottom.model:SetCamDistanceScale(1.15)
+	--Use this frame to control position of the model
+	self.AFKMode.bottom.modelHolder = CreateFrame("Frame", nil, self.AFKMode.bottom)
+	self.AFKMode.bottom.modelHolder:SetSize(150, 150)
+	self.AFKMode.bottom.modelHolder:SetPoint("BOTTOMRIGHT", self.AFKMode.bottom, "BOTTOMRIGHT", -200, 220)
+
+	self.AFKMode.bottom.model = CreateFrame("PlayerModel", "ElvUIAFKPlayerModel", self.AFKMode.bottom.modelHolder)
+	self.AFKMode.bottom.model:SetPoint("CENTER", self.AFKMode.bottom.modelHolder, "CENTER")
+	self.AFKMode.bottom.model:SetSize(GetScreenWidth() * 2, GetScreenHeight() * 2) --YES, double screen size. This prevents clipping of models. Position is controlled with the helper frame.
+	self.AFKMode.bottom.model:SetCamDistanceScale(4.5) --Since the model frame is huge, we need to zoom out quite a bit.
 	self.AFKMode.bottom.model:SetFacing(6)
 	self.AFKMode.bottom.model:SetScript("OnUpdateModel", function(self)
 		local timePassed = GetTime() - self.startTime

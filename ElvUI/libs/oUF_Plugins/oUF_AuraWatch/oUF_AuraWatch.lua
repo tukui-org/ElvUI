@@ -176,9 +176,13 @@ local function updateText(self, elapsed)
 				self.timeLeft = self.timeLeft - GetTime()
 				self.first = false
 			end
-			if self.timeLeft > 0 and ((self.timeLeft <= self.textThreshold) or self.textThreshold == -1) then
-				local time = formatTime(self.timeLeft, self.decimalThreshold or 5)
-				self.text:SetText(time)
+			if self.timeLeft > 0 then
+				if ((self.timeLeft <= self.textThreshold) or self.textThreshold == -1) then
+					local time = formatTime(self.timeLeft, self.decimalThreshold or 5)
+					self.text:SetText(time)
+				else
+					self.text:SetText('')
+				end
 			else
 				self.text:SetText('')
 				self:SetScript("OnUpdate", nil)

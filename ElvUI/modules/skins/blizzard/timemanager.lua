@@ -24,7 +24,7 @@ local function LoadSkin()
 	TimeManagerStopwatchCheck:SetTemplate("Default")
 	TimeManagerStopwatchCheck:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 	TimeManagerStopwatchCheck:GetNormalTexture():SetInside()
-	local hover = TimeManagerStopwatchCheck:CreateTexture("frame", nil, TimeManagerStopwatchCheck) -- hover
+	local hover = TimeManagerStopwatchCheck:CreateTexture() -- hover
 	hover:SetTexture(1,1,1,0.3)
 	hover:Point("TOPLEFT",TimeManagerStopwatchCheck,2,-2)
 	hover:Point("BOTTOMRIGHT",TimeManagerStopwatchCheck,-2,2)

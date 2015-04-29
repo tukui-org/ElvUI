@@ -11,7 +11,7 @@ local function SpellName(id)
 end
 
 local function Defaults(priorityOverride)
-	return {['enable'] = true, ['priority'] = priorityOverride or 0}
+	return {['enable'] = true, ['priority'] = priorityOverride or 0, ['stackThreshold'] = 0}
 end
 
 local function DefaultsID(spellID, priorityOverride)
@@ -415,7 +415,6 @@ G.unitframe.aurafilters['Blacklist'] = {
 		[SpellName(24755)] = Defaults(), --gay homosexual tricked or treated debuff
 		[SpellName(25163)] = Defaults(), --fucking annoying pet debuff oozeling disgusting aura
 		[SpellName(80354)] = Defaults(), --timewarp debuff
-		[SpellName(95809)] = Defaults(), --Insanity debuff (Hunter Pet heroism)
 		[SpellName(95223)] = Defaults(), --group res debuff
 		[SpellName(124275)] = Defaults(), -- Stagger
 		[SpellName(124274)] = Defaults(), -- Stagger
@@ -489,7 +488,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 				[SpellName(174939)] = Defaults(), --Time Stop
 				[SpellName(172115)] = Defaults(), --Earthen Thrust
 				[SpellName(166200)] = Defaults(), --Arcane Volatility
-				[SpellName(174473)] = Defaults(), --Corrupted Blood		
+				[SpellName(174473)] = Defaults(), --Corrupted Blood
 
 			--Kargath Bladefist
 				[SpellName(158986)] = Defaults(), --Berserker Rush
@@ -742,31 +741,48 @@ G.unitframe.ChannelTicks = {
 	[SpellName(16914)] = 10, -- "Hurricane"
 	--Priest
 	[SpellName(48045)] = 5, -- "Mind Sear"
-	[SpellName(47540)] = 2, -- "Penance"
+	[SpellName(179338)] = 5, -- "Searing insanity"
 	--[SpellName(64901)] = 4, -- Hymn of Hope
 	[SpellName(64843)] = 4, -- Divine Hymn
 	--Mage
 	[SpellName(5143)] = 5, -- "Arcane Missiles"
 	[SpellName(10)] = 8, -- "Blizzard"
-	[SpellName(12051)] = 4, -- "Evocation"
+	[SpellName(12051)] = 3, -- "Evocation"
 
 	--Monk
 	[SpellName(115175)] = 9, -- "Smoothing Mist"
 }
 
+local priestTier17 = {115560,115561,115562,115563,115564}
 local f = CreateFrame("Frame")
 f:RegisterEvent("PLAYER_ENTERING_WORLD")
-f:SetScript("OnEvent", function(self)
-	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+f:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
+f:SetScript("OnEvent", function(self, event)
+	local class = select(2, UnitClass("player"))
+	if string.lower(class) ~= "priest" then return; end
 
-	local mfTicks = 3
-	local class = select(2,UnitClass("player"))
-	if string.lower(class) == "priest" and IsSpellKnown(157223) then --Enhanced Mind Flay
-		mfTicks = 4
+	if event == "PLAYER_ENTERING_WORLD" then
+		self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+
+		local mfTicks = 3
+		if IsSpellKnown(157223) then --Enhanced Mind Flay
+			mfTicks = 4
+		end
+		E.global.unitframe.ChannelTicks[SpellName(15407)] = mfTicks -- "Mind Flay"
+		E.global.unitframe.ChannelTicks[SpellName(129197)] = mfTicks -- "Mind Flay (Insanity)"
 	end
 
-	E.global.unitframe.ChannelTicks[SpellName(15407)] = mfTicks -- "Mind Flay"
-	E.global.unitframe.ChannelTicks[SpellName(129197)] = mfTicks -- "Mind Flay (Insanity)"
+	local penanceTicks = 2
+	local equippedPriestTier17 = 0
+	for _, item in pairs(priestTier17) do
+		if IsEquippedItem(item) then
+			equippedPriestTier17 = equippedPriestTier17 + 1
+		end
+	end
+	if equippedPriestTier17 >= 2 then
+		penanceTicks = 3
+	end
+	E.global.unitframe.ChannelTicks[SpellName(47540)] = penanceTicks --Penance
 end)
 
 G.unitframe.ChannelTicksSize = {
@@ -793,4 +809,5 @@ G.unitframe.AuraBarColors = {
 
 G.unitframe.InvalidSpells = {
 	[65148] = true, --Sacred Shield
+	[95809] = true, --Insanity debuff (Hunter Pet heroism)
 }

@@ -239,26 +239,30 @@ end
 
 function S:HandleDropDownBox(frame, width)
 	local button = _G[frame:GetName().."Button"]
+	if not button then return end
+
 	if not width then width = 155 end
 
 	frame:StripTextures()
 	frame:Width(width)
 
-	_G[frame:GetName().."Text"]:ClearAllPoints()
-	_G[frame:GetName().."Text"]:Point("RIGHT", button, "LEFT", -2, 0)
+	if(_G[frame:GetName().."Text"]) then
+		_G[frame:GetName().."Text"]:ClearAllPoints()
+		_G[frame:GetName().."Text"]:Point("RIGHT", button, "LEFT", -2, 0)
+	end
 
+	if(button) then
+		button:ClearAllPoints()
+		button:Point("RIGHT", frame, "RIGHT", -10, 3)
+		hooksecurefunc(button, "SetPoint", function(self, point, attachTo, anchorPoint, xOffset, yOffset, noReset)
+			if not noReset then
+				button:ClearAllPoints()
+				button:SetPoint("RIGHT", frame, "RIGHT", -10, 3, true)
+			end
+		end)
 
-	button:ClearAllPoints()
-	button:Point("RIGHT", frame, "RIGHT", -10, 3)
-	hooksecurefunc(button, "SetPoint", function(self, point, attachTo, anchorPoint, xOffset, yOffset, noReset)
-		if not noReset then
-			button:ClearAllPoints()
-			button:SetPoint("RIGHT", frame, "RIGHT", -10, 3, true)
-		end
-	end)
-
-	self:HandleNextPrevButton(button, true)
-
+		self:HandleNextPrevButton(button, true)
+	end
 	frame:CreateBackdrop("Default")
 	frame.backdrop:Point("TOPLEFT", 20, -2)
 	frame.backdrop:Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", 2, -2)
@@ -329,7 +333,7 @@ end
 function S:HandleItemButton(b, shrinkIcon)
 	if b.isSkinned then return; end
 
-	local icon = b.icon or b.IconTexture
+	local icon = b.icon or b.IconTexture or b.iconTexture
 	local texture
 	if b:GetName() and _G[b:GetName()..'IconTexture'] then
 		icon = _G[b:GetName()..'IconTexture']

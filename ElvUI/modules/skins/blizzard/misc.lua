@@ -205,9 +205,14 @@ local function LoadSkin()
 	ReadyCheckFrameText:SetPoint("TOP", 0, -12)
 
 	-- others
-	ReadyCheckListenerFrame:SetAlpha(0)
-	ReadyCheckFrame:HookScript("OnShow", function(self) if UnitIsUnit("player", self.initiator) then self:Hide() end end) -- bug fix, don't show it if initiator
 	StackSplitFrame:GetRegions():Hide()
+	ReadyCheckListenerFrame:SetAlpha(0)
+	ReadyCheckFrame:HookScript("OnShow", function(self)
+		-- bug fix, don't show it if player is initiator
+		if self.initiator and UnitIsUnit("player", self.initiator) then
+			self:Hide()
+		end
+	end)
 
 
 	RolePollPopup:SetTemplate("Transparent")
@@ -229,48 +234,23 @@ local function LoadSkin()
 
 	-- mac menu/option panel, made by affli.
 	if IsMacClient() then
-		-- Skin main frame and reposition the header
-		MacOptionsFrame:SetTemplate("Default", true)
-		MacOptionsFrameHeader:SetTexture("")
-		MacOptionsFrameHeader:ClearAllPoints()
-		MacOptionsFrameHeader:SetPoint("TOP", MacOptionsFrame, 0, 0)
+		S:HandleDropDownBox(MovieRecordingOptionsFrameResolutionDropDown)
+		S:HandleDropDownBox(MovieRecordingOptionsFrameFramerateDropDown)
+		S:HandleDropDownBox(MovieRecordingOptionsFrameCodecDropDown)
 
-		--Skin internal frames
-		MacOptionsFrameMovieRecording:SetTemplate("Default", true)
-		MacOptionsITunesRemote:SetTemplate("Default", true)
+		S:HandleButton(MovieRecordingOptionsButtonCompress)
+		S:HandleSliderFrame(MovieRecordingOptionsFrameQualitySlider)
 
-		--Skin buttons
-		S:HandleButton(MacOptionsFrameCancel)
-		S:HandleButton(MacOptionsFrameOkay)
-		S:HandleButton(MacOptionsButtonKeybindings)
-		S:HandleButton(MacOptionsFrameDefaults)
-		S:HandleButton(MacOptionsButtonCompress)
+		for i=1, 6 do
+			S:HandleCheckBox(_G["MovieRecordingOptionsFrameCheckButton"..i])
+		end
 
-		--Reposition and resize buttons
-		local tPoint, tRTo, tRP, tX, tY =  MacOptionsButtonCompress:GetPoint()
-		MacOptionsButtonCompress:SetWidth(136)
-		MacOptionsButtonCompress:ClearAllPoints()
-		MacOptionsButtonCompress:Point(tPoint, tRTo, tRP, 4, tY)
+		S:HandleCheckBox(iTunesRemoteOptionsFrameCheckButton7)
+		S:HandleCheckBox(iTunesRemoteOptionsFrameCheckButton8)
 
-		MacOptionsFrameCancel:SetWidth(96)
-		MacOptionsFrameCancel:SetHeight(22)
-		tPoint, tRTo, tRP, tX, tY =  MacOptionsFrameCancel:GetPoint()
-		MacOptionsFrameCancel:ClearAllPoints()
-		MacOptionsFrameCancel:Point(tPoint, tRTo, tRP, -14, tY)
-
-		MacOptionsFrameOkay:ClearAllPoints()
-		MacOptionsFrameOkay:SetWidth(96)
-		MacOptionsFrameOkay:SetHeight(22)
-		MacOptionsFrameOkay:Point("LEFT",MacOptionsFrameCancel, -99,0)
-
-		MacOptionsButtonKeybindings:ClearAllPoints()
-		MacOptionsButtonKeybindings:SetWidth(96)
-		MacOptionsButtonKeybindings:SetHeight(22)
-		MacOptionsButtonKeybindings:Point("LEFT",MacOptionsFrameOkay, -99,0)
-
-		MacOptionsFrameDefaults:SetWidth(96)
-		MacOptionsFrameDefaults:SetHeight(22)
-
+		S:HandleCheckBox(MacKeyboardOptionsFrameCheckButton9)
+		S:HandleCheckBox(MacKeyboardOptionsFrameCheckButton10)
+		S:HandleCheckBox(MacKeyboardOptionsFrameCheckButton11)
 	end
 
 	--PVP QUEUE FRAME
@@ -752,6 +732,7 @@ local function LoadSkin()
         "SocialPanelChatHoverDelay",
         "SocialPanelGuildMemberAlert",
         "SocialPanelChatMouseScroll",
+		"SocialPanelEnableTwitter",
         -- Action bars
         "ActionBarsPanelLockActionBars",
         "ActionBarsPanelSecureAbilityToggle",
@@ -847,6 +828,10 @@ local function LoadSkin()
         "UnitFramePanelArenaEnemyPets",
         "UnitFramePanelFullSizeFocusFrame",
 
+		--Assessability
+		"AccessibilityPanelMovePad",
+		"AccessibilityPanelColorblindMode",
+
 		--Watev
 		"NamesPanelUnitNameplatesNameplateClassColors",
     }
@@ -892,7 +877,13 @@ local function LoadSkin()
         "MousePanelClickMoveStyleDropDown",
         "LanguagesPanelLocaleDropDown",
         -- Status Text
-        "StatusTextPanelDisplayDropDown"
+        "StatusTextPanelDisplayDropDown",
+
+		--Assess-ability
+		"AccessibilityPanelColorFilterDropDown",
+
+		--Locales
+		"InterfaceOptionsLanguagesPanelAudioLocaleDropDown",
     }
     for i = 1, getn(interfacedropdown) do
         local idropdown = _G["InterfaceOptions"..interfacedropdown[i]]
@@ -901,6 +892,7 @@ local function LoadSkin()
             DropDownList1:SetTemplate("Transparent")
         end
     end
+
 	-- Display
 	S:HandleDropDownBox(InterfaceOptionsDisplayPanelOutlineDropDown, 210)
 
@@ -933,6 +925,8 @@ local function LoadSkin()
         "AudioOptionsVoicePanelEnableMicrophone",
         "AudioOptionsVoicePanelPushToTalkSound",
 		"AudioOptionsSoundPanelPetBattleMusic",
+		"AudioOptionsSoundPanelDialogSounds",
+
         -- Network
         "NetworkOptionsPanelOptimizeSpeed",
         "NetworkOptionsPanelUseIPv6",
@@ -963,6 +957,9 @@ local function LoadSkin()
         "Graphics_ParticleDensityDropDown",
         "Graphics_SSAODropDown",
         "Graphics_RefractionDropDown",
+		"Graphics_DepthEffectsDropDown",
+		"Graphics_LightingQualityDropDown",
+		"Graphics_OutlineModeDropDown",
 
         "RaidGraphics_TextureResolutionDropDown",
         "RaidGraphics_FilteringDropDown",
@@ -976,12 +973,21 @@ local function LoadSkin()
         "RaidGraphics_ParticleDensityDropDown",
         "RaidGraphics_SSAODropDown",
         "RaidGraphics_RefractionDropDown",
+		"RaidGraphics_DepthEffectsDropDown",
+		"RaidGraphics_LightingQualityDropDown",
+		"RaidGraphics_OutlineModeDropDown",
 
         -- Advanced
         "Advanced_BufferingDropDown",
         "Advanced_LagDropDown",
         "Advanced_HardwareCursorDropDown",
         "Advanced_GraphicsAPIDropDown",
+		"Advanced_ResampleQualityDropDown",
+		"Advanced_MultisampleAlphaTest",
+		"Advanced_PostProcessAntiAliasingDropDown",
+		"Advanced_ResampleQualityDropDown",
+		"Advanced_MultisampleAntiAliasingDropDown",
+
         -- Audio
         "AudioOptionsSoundPanelHardwareDropDown",
         "AudioOptionsSoundPanelSoundChannelsDropDown",
@@ -1006,6 +1012,7 @@ local function LoadSkin()
         "AudioOptionsVoicePanelChatMode1KeyBindingButton",
         "CompactUnitFrameProfilesSaveButton",
         "CompactUnitFrameProfilesDeleteButton",
+		"InterfaceOptionsSocialPanelTwitterLoginButton"
     }
     for _, button in pairs(buttons) do
         S:HandleButton(_G[button])
@@ -1053,6 +1060,7 @@ local function LoadSkin()
 		"Advanced_UIScaleSlider",
 		"Advanced_MaxFPSSlider",
 		"Advanced_MaxFPSBKSlider",
+		"Advanced_RenderScaleSlider",
 		"AudioOptionsSoundPanelMasterVolume",
 		"AudioOptionsSoundPanelSoundVolume",
 		"AudioOptionsSoundPanelMusicVolume",
@@ -1070,6 +1078,7 @@ local function LoadSkin()
 		"InterfaceOptionsCameraPanelFollowSpeedSlider",
 		"InterfaceOptionsMousePanelMouseSensitivitySlider",
 		"InterfaceOptionsMousePanelMouseLookSpeedSlider",
+		"InterfaceOptionsAccessibilityPanelColorblindStrengthSlider",
 		"OpacityFrameSlider",
 	}
 	Graphics_RightQuality:Kill()
@@ -1151,6 +1160,7 @@ local function LoadSkin()
 	for i=1, MAX_ADDONS_DISPLAYED do
 		S:HandleCheckBox(_G["AddonListEntry"..i.."Enabled"])
 	end
+
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)

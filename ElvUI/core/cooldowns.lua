@@ -128,6 +128,7 @@ function E:RegisterCooldown(cooldown)
 	hooksecurefunc(cooldown, "SetCooldown", E.OnSetCooldown)
 	cooldown.isHooked = true
 	cooldown:SetHideCountdownNumbers(true)
+	cooldown.SetHideCountdownNumbers = E.noop
 end
 
 function E:UpdateCooldownSettings()

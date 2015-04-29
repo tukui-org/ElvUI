@@ -1,0 +1,13 @@
+tag v1.2.3
+0f96094d3deec3ced92e86c67bb6dd57ce0f2199
+Adam Hellberg <sharparam@sharparam.com>
+2015-03-07 12:36:56 +0100
+
+Fix issues with index check.
+
+
+--------------------
+
+Adam Hellberg:
+	- Remove index check in GOSSIP_CONFIRM.
+	Causes issues when bodyguard has more than one gossip option (from perks).

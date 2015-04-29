@@ -4,6 +4,7 @@ local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 local twipe = table.wipe
 local ceil, sqrt = math.ceil, math.sqrt
+local format = string.format
 ------------------------------------------------------------------------
 --	Tags
 ------------------------------------------------------------------------
@@ -125,7 +126,7 @@ end
 
 ElvUF.Tags.Events['health:current'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
 ElvUF.Tags.Methods['health:current'] = function(unit)
-	local status = UnitIsDead(unit) and DEAD or UnitIsGhost(unit) and L['Ghost'] or not UnitIsConnected(unit) and L['Offline']
+	local status = UnitIsDead(unit) and DEAD or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 	if (status) then
 		return status
 	else
@@ -135,7 +136,7 @@ end
 
 ElvUF.Tags.Events['health:deficit'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
 ElvUF.Tags.Methods['health:deficit'] = function(unit)
-	local status = UnitIsDead(unit) and DEAD or UnitIsGhost(unit) and L['Ghost'] or not UnitIsConnected(unit) and L['Offline']
+	local status = UnitIsDead(unit) and DEAD or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 
 	if (status) then
 		return status
@@ -146,7 +147,7 @@ end
 
 ElvUF.Tags.Events['health:current-percent'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
 ElvUF.Tags.Methods['health:current-percent'] = function(unit)
-	local status = UnitIsDead(unit) and DEAD or UnitIsGhost(unit) and L['Ghost'] or not UnitIsConnected(unit) and L['Offline']
+	local status = UnitIsDead(unit) and DEAD or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 
 	if (status) then
 		return status
@@ -157,7 +158,7 @@ end
 
 ElvUF.Tags.Events['health:current-max'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
 ElvUF.Tags.Methods['health:current-max'] = function(unit)
-	local status = UnitIsDead(unit) and DEAD or UnitIsGhost(unit) and L['Ghost'] or not UnitIsConnected(unit) and L['Offline']
+	local status = UnitIsDead(unit) and DEAD or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 
 	if (status) then
 		return status
@@ -168,7 +169,7 @@ end
 
 ElvUF.Tags.Events['health:current-max-percent'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
 ElvUF.Tags.Methods['health:current-max-percent'] = function(unit)
-	local status = UnitIsDead(unit) and DEAD or UnitIsGhost(unit) and L['Ghost'] or not UnitIsConnected(unit) and L['Offline']
+	local status = UnitIsDead(unit) and DEAD or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 
 	if (status) then
 		return status
@@ -186,7 +187,7 @@ end
 
 ElvUF.Tags.Events['health:percent'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
 ElvUF.Tags.Methods['health:percent'] = function(unit)
-	local status = UnitIsDead(unit) and DEAD or UnitIsGhost(unit) and L['Ghost'] or not UnitIsConnected(unit) and L['Offline']
+	local status = UnitIsDead(unit) and DEAD or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 
 	if (status) then
 		return status
@@ -731,7 +732,7 @@ ElvUF.Tags.Methods['nearbyplayers:8'] = function(unit)
 	if UnitIsConnected(unit) then
 		for groupUnit, _ in pairs(GroupUnits) do
 			if not UnitIsUnit(unit, groupUnit) and UnitIsConnected(groupUnit) then
-				d = E:GetDistance(unit, groupUnit, true)
+				d = E:GetDistance(unit, groupUnit)
 				if d and d <= 8 then
 					unitsInRange = unitsInRange + 1
 				end
@@ -748,7 +749,7 @@ ElvUF.Tags.Methods['nearbyplayers:10'] = function(unit)
 	if UnitIsConnected(unit) then
 		for groupUnit, _ in pairs(GroupUnits) do
 			if not UnitIsUnit(unit, groupUnit) and UnitIsConnected(groupUnit) then
-				d = E:GetDistance(unit, groupUnit, true)
+				d = E:GetDistance(unit, groupUnit)
 				if d and d <= 10 then
 					unitsInRange = unitsInRange + 1
 				end
@@ -765,7 +766,7 @@ ElvUF.Tags.Methods['nearbyplayers:30'] = function(unit)
 	if UnitIsConnected(unit) then
 		for groupUnit, _ in pairs(GroupUnits) do
 			if not UnitIsUnit(unit, groupUnit) and UnitIsConnected(groupUnit) then
-				d = E:GetDistance(unit, groupUnit, true)
+				d = E:GetDistance(unit, groupUnit)
 				if d and d <= 30 then
 					unitsInRange = unitsInRange + 1
 				end
@@ -780,7 +781,7 @@ ElvUF.Tags.OnUpdateThrottle['distance'] = 0.1
 ElvUF.Tags.Methods['distance'] = function(unit)
 	local d
 	if UnitIsConnected(unit) and not UnitIsUnit(unit, 'player') then
-		d = E:GetDistance('player', unit, true)
+		d = E:GetDistance('player', unit)
 
 		if d then
 			d = format("%.1f", d)
@@ -788,4 +789,83 @@ ElvUF.Tags.Methods['distance'] = function(unit)
 	end
 
 	return d or ''
+end
+
+local baseSpeed = BASE_MOVEMENT_SPEED
+local speedText = SPEED
+ElvUF.Tags.OnUpdateThrottle['speed:percent'] = 0.1
+ElvUF.Tags.Methods['speed:percent'] = function(unit)
+	local currentSpeedInYards = GetUnitSpeed(unit)
+	local currentSpeedInPercent = (currentSpeedInYards / baseSpeed) * 100
+
+	return format("%s: %d%%", speedText, currentSpeedInPercent)
+end
+
+ElvUF.Tags.OnUpdateThrottle['speed:percent-moving'] = 0.1
+ElvUF.Tags.Methods['speed:percent-moving'] = function(unit)
+	local currentSpeedInYards = GetUnitSpeed(unit)
+	local currentSpeedInPercent = currentSpeedInYards > 0 and ((currentSpeedInYards / baseSpeed) * 100)
+	
+	if currentSpeedInPercent then
+		currentSpeedInPercent = format("%s: %d%%", speedText, currentSpeedInPercent)
+	end
+
+	return currentSpeedInPercent or ''
+end
+
+ElvUF.Tags.OnUpdateThrottle['speed:percent-raw'] = 0.1
+ElvUF.Tags.Methods['speed:percent-raw'] = function(unit)
+	local currentSpeedInYards = GetUnitSpeed(unit)
+	local currentSpeedInPercent = (currentSpeedInYards / baseSpeed) * 100
+
+	return format("%d%%", currentSpeedInPercent)
+end
+
+ElvUF.Tags.OnUpdateThrottle['speed:percent-moving-raw'] = 0.1
+ElvUF.Tags.Methods['speed:percent-moving-raw'] = function(unit)
+	local currentSpeedInYards = GetUnitSpeed(unit)
+	local currentSpeedInPercent = currentSpeedInYards > 0 and ((currentSpeedInYards / baseSpeed) * 100)
+	
+	if currentSpeedInPercent then
+		currentSpeedInPercent = format("%d%%", currentSpeedInPercent)
+	end
+
+	return currentSpeedInPercent or ''
+end
+
+ElvUF.Tags.OnUpdateThrottle['speed:yardspersec'] = 0.1
+ElvUF.Tags.Methods['speed:yardspersec'] = function(unit)
+	local currentSpeedInYards = GetUnitSpeed(unit)
+
+	return format("%s: %.1f", speedText, currentSpeedInYards)
+end
+
+ElvUF.Tags.OnUpdateThrottle['speed:yardspersec-moving'] = 0.1
+ElvUF.Tags.Methods['speed:yardspersec-moving'] = function(unit)
+	local currentSpeedInYards = GetUnitSpeed(unit)
+
+	return currentSpeedInYards > 0 and format("%s: %.1f", speedText, currentSpeedInYards) or ''
+end
+
+ElvUF.Tags.OnUpdateThrottle['speed:yardspersec-raw'] = 0.1
+ElvUF.Tags.Methods['speed:yardspersec-raw'] = function(unit)
+	local currentSpeedInYards = GetUnitSpeed(unit)
+	return format("%.1f", currentSpeedInYards)
+end
+
+ElvUF.Tags.OnUpdateThrottle['speed:yardspersec-moving-raw'] = 0.1
+ElvUF.Tags.Methods['speed:yardspersec-moving-raw'] = function(unit)
+	local currentSpeedInYards = GetUnitSpeed(unit)
+	
+	return currentSpeedInYards > 0 and format("%.1f", currentSpeedInYards) or ''
+end
+
+ElvUF.Tags.Events['classificationcolor'] = 'UNIT_CLASSIFICATION_CHANGED'
+ElvUF.Tags.Methods['classificationcolor'] = function(unit)
+	local c = UnitClassification(unit)
+	if(c == 'rare' or c == 'elite') then
+		return Hex(1, 0.5, 0.25) --Orange
+	elseif(c == 'rareelite' or c == 'worldboss') then
+		return Hex(1, 0, 0) --Red
+	end
 end

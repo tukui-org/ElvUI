@@ -81,7 +81,7 @@ function AddOn:OnInitialize()
 	self:UpdateMedia();
 
 	self:RegisterEvent('PLAYER_REGEN_DISABLED')
-	self:RegisterEvent('PLAYER_LOGIN', 'Initialize')
+	-- self:RegisterEvent('PLAYER_LOGIN', 'Initialize')
 	self:Contruct_StaticPopups()
 	self:InitializeInitialModules()
 
@@ -89,6 +89,12 @@ function AddOn:OnInitialize()
 		self:StaticPopup_Show("TUKUI_ELVUI_INCOMPATIBLE")
 	end
 end
+
+local f=CreateFrame("Frame")
+f:RegisterEvent("PLAYER_LOGIN")
+f:SetScript("OnEvent", function()
+	AddOn:Initialize()
+end)
 
 function AddOn:PLAYER_REGEN_ENABLED()
 	self:ToggleConfig()
@@ -151,6 +157,12 @@ function AddOn:ToggleConfig()
 		local _, _, _, _, reason = GetAddOnInfo("ElvUI_Config")
 		if reason ~= "MISSING" and reason ~= "DISABLED" then
 			LoadAddOn("ElvUI_Config")
+			--For some reason, GetAddOnInfo reason is "DEMAND_LOADED" even if the addon is disabled.
+			--Workaround: Try to load addon and check if it is loaded right after.
+			if not IsAddOnLoaded("ElvUI_Config") then
+				self:Print("|cffff0000Error -- Addon 'ElvUI_Config' not found or is disabled.|r")
+				return
+			end
 			if GetAddOnMetadata("ElvUI_Config", "Version") ~= "1.01" then
 				self:StaticPopup_Show("CLIENT_UPDATE_REQUEST")
 			end

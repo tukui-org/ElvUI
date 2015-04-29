@@ -18,7 +18,7 @@ function UF:Construct_TargetTargetFrame(frame)
 	frame.Range = UF:Construct_Range(frame)
 	frame.Threat = UF:Construct_Threat(frame)
 	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 75) --Set to default position
-	E:CreateMover(frame, frame:GetName()..'Mover', L['TargetTarget Frame'], nil, nil, nil, 'ALL,SOLO')
+	E:CreateMover(frame, frame:GetName()..'Mover', L["TargetTarget Frame"], nil, nil, nil, 'ALL,SOLO')
 end
 
 function UF:Update_TargetTargetFrame(frame, db)
@@ -96,7 +96,7 @@ function UF:Update_TargetTargetFrame(frame, db)
 		elseif USE_INSET_POWERBAR then
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER)
 		else
-			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER + POWERBAR_HEIGHT)
+			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, (USE_POWERBAR and ((BORDER + SPACING)*2) or BORDER) + POWERBAR_HEIGHT)
 		end
 	end
 
@@ -140,12 +140,12 @@ function UF:Update_TargetTargetFrame(frame, db)
 				power:SetFrameLevel(2)
 			elseif USE_MINI_POWERBAR then
 				power:Width(POWERBAR_WIDTH - BORDER*2)
-				power:Height(POWERBAR_HEIGHT - BORDER*2)
+				power:Height(POWERBAR_HEIGHT)
 				power:Point("LEFT", frame, "BOTTOMLEFT", (BORDER*2 + 4), BORDER + (POWERBAR_HEIGHT/2))
 				power:SetFrameStrata("MEDIUM")
 				power:SetFrameLevel(frame:GetFrameLevel() + 3)
 			elseif USE_INSET_POWERBAR then
-				power:Height(POWERBAR_HEIGHT - BORDER*2)
+				power:Height(POWERBAR_HEIGHT)
 				power:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", BORDER + (BORDER*2), BORDER + (BORDER*2))
 				power:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", -(BORDER + (BORDER*2)), BORDER + (BORDER*2))
 				power:SetFrameStrata("MEDIUM")

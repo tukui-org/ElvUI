@@ -36,10 +36,10 @@ NP.BuffCache = {}
 NP.DebuffCache = {}
 
 NP.HealerSpecs = {
-	[L['Restoration']] = true,
-	[L['Holy']] = true,
-	[L['Discipline']] = true,
-	[L['Mistweaver']] = true,
+	[L["Restoration"]] = true,
+	[L["Holy"]] = true,
+	[L["Discipline"]] = true,
+	[L["Mistweaver"]] = true,
 }
 
 NP.RaidTargetReference = {
@@ -834,10 +834,12 @@ function NP:UpdateSettings()
 	local myPlate = NP.CreatedPlates[self]
 	local font = LSM:Fetch("font", NP.db.font)
 	local fontSize, fontOutline = NP.db.fontSize, NP.db.fontOutline
+	local wrapName = NP.db.wrapName
 
 	--Name
 	myPlate.name:FontTemplate(font, fontSize, fontOutline)
 	myPlate.name:SetTextColor(1, 1, 1)
+	myPlate.name:SetWordWrap(wrapName == true and true or false)
 
 	--Level
 	myPlate.level:FontTemplate(font, fontSize, fontOutline)

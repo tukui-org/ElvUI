@@ -68,7 +68,7 @@ local function OnEvent(self, event, unit)
 	avoidance = (avoided+blocked)
 	unhittable = avoidance - unhittableMax
 
-	self.text:SetFormattedText(displayString, L['AVD: '], avoidance)
+	self.text:SetFormattedText(displayString, L["AVD: "], avoidance)
 
 	--print(unhittableMax) -- should report 102.4 for a level differance of +3 for shield classes, 101.2 for druids, 101.8 for monks and dks
 	lastPanel = self
@@ -78,11 +78,11 @@ local function OnEnter(self)
 	DT:SetupTooltip(self)
 
 	if targetlv > 1 then
-		DT.tooltip:AddDoubleLine(L["Avoidance Breakdown"], join("", " (", L['lvl'], " ", targetlv, ")"))
+		DT.tooltip:AddDoubleLine(L["Avoidance Breakdown"], join("", " (", L["lvl"], " ", targetlv, ")"))
 	elseif targetlv == -1 then
 		DT.tooltip:AddDoubleLine(L["Avoidance Breakdown"], join("", " (", BOSS, ")"))
 	else
-		DT.tooltip:AddDoubleLine(L["Avoidance Breakdown"], join("", " (", L['lvl'], " ", playerlv, ")"))
+		DT.tooltip:AddDoubleLine(L["Avoidance Breakdown"], join("", " (", L["lvl"], " ", playerlv, ")"))
 	end
 	DT.tooltip:AddLine' '
 	DT.tooltip:AddDoubleLine(DODGE_CHANCE, format(chanceString, dodge),1,1,1)
@@ -93,9 +93,9 @@ local function OnEnter(self)
 
 
 	if unhittable > 0 then
-		DT.tooltip:AddDoubleLine(L['Unhittable:'], '+'..format(chanceString, unhittable), 1, 1, 1, 0, 1, 0)
+		DT.tooltip:AddDoubleLine(L["Unhittable:"], '+'..format(chanceString, unhittable), 1, 1, 1, 0, 1, 0)
 	else
-		DT.tooltip:AddDoubleLine(L['Unhittable:'], format(chanceString, unhittable), 1, 1, 1, 1, 0, 0)
+		DT.tooltip:AddDoubleLine(L["Unhittable:"], format(chanceString, unhittable), 1, 1, 1, 1, 0, 0)
 	end
 	DT.tooltip:Show()
 end

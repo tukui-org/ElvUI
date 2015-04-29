@@ -40,11 +40,10 @@ end
 --I don't know if this function is needed or not? But the error I pm'ed you about was because of the missing OnEvent so I just added it.
 function UF:RaidPetsSmartVisibility(event)
 	if not self.db or (self.db and not self.db.enable) or (UF.db and not UF.db.smartRaidFilter) or self.isForced then return; end
-	local inInstance, instanceType = IsInInstance()
-	local _, _, _, _, maxPlayers, _, _ = GetInstanceInfo()
 	if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
 
 	if not InCombatLockdown() then
+		local inInstance, instanceType = IsInInstance()
 		if inInstance and instanceType == "raid" then
 			UnregisterStateDriver(self, "visibility")
 			self:Show()
@@ -67,7 +66,7 @@ function UF:Update_RaidpetHeader(header, db)
 		headerHolder:ClearAllPoints()
 		headerHolder:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 574)
 
-		E:CreateMover(headerHolder, headerHolder:GetName()..'Mover', L['Raid Pet Frames'], nil, nil, nil, 'ALL,RAID10,RAID25,RAID40')
+		E:CreateMover(headerHolder, headerHolder:GetName()..'Mover', L["Raid Pet Frames"], nil, nil, nil, 'ALL,RAID')
 		headerHolder.positioned = true;
 
 		headerHolder:RegisterEvent("PLAYER_ENTERING_WORLD")
@@ -273,13 +272,23 @@ function UF:Update_RaidpetFrames(frame, db)
 	--RaidDebuffs
 	do
 		local rdebuffs = frame.RaidDebuffs
+		local stackColor = db.rdebuffs.stack.color
+		local durationColor = db.rdebuffs.duration.color
 		if db.rdebuffs.enable then
 			frame:EnableElement('RaidDebuffs')
 
 			rdebuffs:Size(db.rdebuffs.size)
 			rdebuffs:Point('BOTTOM', frame, 'BOTTOM', db.rdebuffs.xOffset, db.rdebuffs.yOffset)
+			
 			rdebuffs.count:FontTemplate(nil, db.rdebuffs.fontSize, 'OUTLINE')
+			rdebuffs.count:ClearAllPoints()
+			rdebuffs.count:Point(db.rdebuffs.stack.position, db.rdebuffs.stack.xOffset, db.rdebuffs.stack.yOffset)
+			rdebuffs.count:SetTextColor(stackColor.r, stackColor.g, stackColor.b)
+			
 			rdebuffs.time:FontTemplate(nil, db.rdebuffs.fontSize, 'OUTLINE')
+			rdebuffs.time:ClearAllPoints()
+			rdebuffs.time:Point(db.rdebuffs.duration.position, db.rdebuffs.duration.xOffset, db.rdebuffs.duration.yOffset)
+			rdebuffs.time:SetTextColor(durationColor.r, durationColor.g, durationColor.b)
 		else
 			frame:DisableElement('RaidDebuffs')
 			rdebuffs:Hide()

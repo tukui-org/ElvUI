@@ -18,6 +18,7 @@ function UF:Construct_AuraBars()
 	bar.spellname:ClearAllPoints()
 	bar.spellname:SetPoint('LEFT', bar, 'LEFT', 2, 0)
 	bar.spellname:SetPoint('RIGHT', bar.spelltime, 'LEFT', -4, 0)
+	bar.spellname:SetWordWrap(false)
 
 	bar.iconHolder:SetTemplate('Default')
 	bar.icon:SetInside(bar.iconHolder)
@@ -33,7 +34,7 @@ function UF:Construct_AuraBars()
 		local auraName = self:GetParent().aura.name
 
 		if auraName then
-			E:Print(format(L['The spell "%s" has been added to the Blacklist unitframe aura filter.'], auraName))
+			E:Print(format(L["The spell '%s' has been added to the Blacklist unitframe aura filter."], auraName))
 			E.global['unitframe']['aurafilters']['Blacklist']['spells'][auraName] = {
 				['enable'] = true,
 				['priority'] = 0,

@@ -50,19 +50,19 @@ end
 
 function UF:RaidSmartVisibility(event)
 	if not self.db or (self.db and not self.db.enable) or (UF.db and not UF.db.smartRaidFilter) or self.isForced then return; end
-	local inInstance, instanceType = IsInInstance()
 
 	if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
 
 	if not InCombatLockdown() then
 		self.isInstanceForced = nil
+		local inInstance, instanceType = IsInInstance()
 		if(inInstance and (instanceType == 'raid' or instanceType == 'pvp')) then
 			local _, _, _, _, maxPlayers, _, _, mapID, maxPlayersInstance = GetInstanceInfo()
-			--[[if(maxPlayersInstance and maxPlayersInstance > 0) then
+			--[[if maxPlayersInstance > 0 then
 				maxPlayers = maxPlayersInstance
 			end]]
 
-			if mapID and UF.mapIDs[mapID] then
+			if UF.mapIDs[mapID] then
 				maxPlayers = UF.mapIDs[mapID]
 			end
 
@@ -71,7 +71,7 @@ function UF:RaidSmartVisibility(event)
 			if(maxPlayers < 40) then
 				self:Show()
 				--self.isInstanceForced = true
-				if(maxPlayers and ElvUF_Raid.numGroups ~= E:Round(maxPlayers/5) and event) then
+				if(ElvUF_Raid.numGroups ~= E:Round(maxPlayers/5) and event) then
 					UF:CreateAndUpdateHeaderGroup('raid')
 				end
 			else
@@ -99,7 +99,7 @@ function UF:Update_RaidHeader(header, db, isForced)
 		headerHolder:ClearAllPoints()
 		headerHolder:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)
 
-		E:CreateMover(headerHolder, headerHolder:GetName()..'Mover', L['Raid Frames'], nil, nil, nil, 'ALL,RAID')
+		E:CreateMover(headerHolder, headerHolder:GetName()..'Mover', L["Raid Frames"], nil, nil, nil, 'ALL,RAID')
 
 		headerHolder:RegisterEvent("PLAYER_ENTERING_WORLD")
 		headerHolder:RegisterEvent("ZONE_CHANGED_NEW_AREA")
@@ -205,7 +205,7 @@ function UF:Update_RaidFrames(frame, db)
 		elseif USE_INSET_POWERBAR then
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER)
 		else
-			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER + POWERBAR_HEIGHT)
+			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, (USE_POWERBAR and ((BORDER + SPACING)*2) or BORDER) + POWERBAR_HEIGHT)
 		end
 
 		health:SetOrientation(db.health.orientation)
@@ -247,12 +247,12 @@ function UF:Update_RaidFrames(frame, db)
 				power:SetFrameLevel(2)
 			elseif USE_MINI_POWERBAR then
 				power:Width(POWERBAR_WIDTH - BORDER*2)
-				power:Height(POWERBAR_HEIGHT - BORDER*2)
+				power:Height(POWERBAR_HEIGHT)
 				power:Point("LEFT", frame, "BOTTOMLEFT", (BORDER*2 + 4), BORDER + (POWERBAR_HEIGHT/2))
 				power:SetFrameStrata("MEDIUM")
 				power:SetFrameLevel(frame:GetFrameLevel() + 3)
 			elseif USE_INSET_POWERBAR then
-				power:Height(POWERBAR_HEIGHT - BORDER*2)
+				power:Height(POWERBAR_HEIGHT)
 				power:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", BORDER + (BORDER*2), BORDER + (BORDER*2))
 				power:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", -(BORDER + (BORDER*2)), BORDER + (BORDER*2))
 				power:SetFrameStrata("MEDIUM")
@@ -418,13 +418,23 @@ function UF:Update_RaidFrames(frame, db)
 	--RaidDebuffs
 	do
 		local rdebuffs = frame.RaidDebuffs
+		local stackColor = db.rdebuffs.stack.color
+		local durationColor = db.rdebuffs.duration.color
 		if db.rdebuffs.enable then
 			frame:EnableElement('RaidDebuffs')
 
 			rdebuffs:Size(db.rdebuffs.size)
 			rdebuffs:Point('BOTTOM', frame, 'BOTTOM', db.rdebuffs.xOffset, db.rdebuffs.yOffset)
+			
 			rdebuffs.count:FontTemplate(nil, db.rdebuffs.fontSize, 'OUTLINE')
+			rdebuffs.count:ClearAllPoints()
+			rdebuffs.count:Point(db.rdebuffs.stack.position, db.rdebuffs.stack.xOffset, db.rdebuffs.stack.yOffset)
+			rdebuffs.count:SetTextColor(stackColor.r, stackColor.g, stackColor.b)
+			
 			rdebuffs.time:FontTemplate(nil, db.rdebuffs.fontSize, 'OUTLINE')
+			rdebuffs.time:ClearAllPoints()
+			rdebuffs.time:Point(db.rdebuffs.duration.position, db.rdebuffs.duration.xOffset, db.rdebuffs.duration.yOffset)
+			rdebuffs.time:SetTextColor(durationColor.r, durationColor.g, durationColor.b)
 		else
 			frame:DisableElement('RaidDebuffs')
 			rdebuffs:Hide()

@@ -127,8 +127,6 @@ function AB:PositionAndSizeBar(barName)
 
 		if self.db[barName].mouseover == true then
 			bar:SetAlpha(0);
-			button.cooldown:SetSwipeColor(0, 0, 0, 0)
-			button.cooldown:SetDrawBling(false)
 			if not self.hooks[bar] then
 				self:HookScript(bar, 'OnEnter', 'Bar_OnEnter');
 				self:HookScript(bar, 'OnLeave', 'Bar_OnLeave');
@@ -140,8 +138,6 @@ function AB:PositionAndSizeBar(barName)
 			end
 		else
 			bar:SetAlpha(self.db[barName].alpha);
-			button.cooldown:SetSwipeColor(0, 0, 0, 1)
-			button.cooldown:SetDrawBling(true)
 			if self.hooks[bar] then
 				self:Unhook(bar, 'OnEnter');
 				self:Unhook(bar, 'OnLeave');
@@ -195,7 +191,7 @@ function AB:PositionAndSizeBar(barName)
 			button:Show()
 		end
 
-		self:StyleButton(button, nil, nil, true, true);
+		self:StyleButton(button, nil, nil, true);
 		button:SetCheckedTexture("")
 	end
 
@@ -284,7 +280,7 @@ function AB:CreateBar(id)
 
 	self["handledBars"]['bar'..id] = bar;
 	self:PositionAndSizeBar('bar'..id);
-	E:CreateMover(bar, 'ElvAB_'..id, L['Bar ']..id, nil, nil, nil,'ALL,ACTIONBARS')
+	E:CreateMover(bar, 'ElvAB_'..id, L["Bar "]..id, nil, nil, nil,'ALL,ACTIONBARS')
 	return bar
 end
 
@@ -293,8 +289,39 @@ function AB:PLAYER_REGEN_ENABLED()
 	self:UnregisterEvent('PLAYER_REGEN_ENABLED')
 end
 
+local function Vehicle_OnEvent(self, event)
+	if ( CanExitVehicle() and ActionBarController_GetCurrentActionBarState() == LE_ACTIONBAR_STATE_MAIN ) then
+		self:Show()
+		self:GetNormalTexture():SetVertexColor(1, 1, 1)
+		self:EnableMouse(true)
+	else
+		self:Hide()
+	end
+end
+
+local function Vehicle_OnClick(self)
+	if ( UnitOnTaxi("player") ) then
+		TaxiRequestEarlyLanding();
+		self:GetNormalTexture():SetVertexColor(1, 0, 0)
+		self:EnableMouse(false)
+	else
+		VehicleExit();
+	end
+end
+
+function AB:UpdateVehicleLeave()
+	local button = LeaveVehicleButton
+	if not button then return; end
+	
+	local pos = E.db.general.minimap.icons.vehicleLeave.position or "BOTTOMLEFT"
+	local size = E.db.general.minimap.icons.vehicleLeave.size or 26
+	button:ClearAllPoints()
+	button:SetPoint(pos, Minimap, pos, E.db.general.minimap.icons.vehicleLeave.xOffset or 2, E.db.general.minimap.icons.vehicleLeave.yOffset or 2)
+	button:SetSize(size, size)
+end
+
 function AB:CreateVehicleLeave()
-	local vehicle = CreateFrame("Button", 'LeaveVehicleButton', E.UIParent, "SecureHandlerClickTemplate")
+	local vehicle = CreateFrame("Button", 'LeaveVehicleButton', E.UIParent)
 	vehicle:Size(26)
 	vehicle:Point("BOTTOMLEFT", Minimap, "BOTTOMLEFT", 2, 2)
 	vehicle:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
@@ -302,8 +329,21 @@ function AB:CreateVehicleLeave()
 	vehicle:SetHighlightTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
 	vehicle:SetTemplate("Default")
 	vehicle:RegisterForClicks("AnyUp")
-	vehicle:SetScript("OnClick", function() VehicleExit() end)
-	RegisterStateDriver(vehicle, "visibility", "[vehicleui] show;[target=vehicle,exists] show;hide")
+
+	vehicle:SetScript("OnClick", Vehicle_OnClick)
+	vehicle:SetScript("OnEnter", MainMenuBarVehicleLeaveButton_OnEnter)
+	vehicle:SetScript("OnLeave", GameTooltip_Hide)
+	vehicle:RegisterEvent("PLAYER_ENTERING_WORLD");
+	vehicle:RegisterEvent("UPDATE_BONUS_ACTIONBAR");
+	vehicle:RegisterEvent("UPDATE_MULTI_CAST_ACTIONBAR");
+	vehicle:RegisterEvent("UNIT_ENTERED_VEHICLE");
+	vehicle:RegisterEvent("UNIT_EXITED_VEHICLE");
+	vehicle:RegisterEvent("VEHICLE_UPDATE");
+	vehicle:SetScript("OnEvent", Vehicle_OnEvent)
+	
+	self:UpdateVehicleLeave()
+
+	vehicle:Hide()
 end
 
 function AB:ReassignBindings(event)
@@ -477,7 +517,7 @@ function AB:StyleButton(button, noBackdrop, adjustChecked)
 
 	button.FlyoutUpdateFunc = AB.StyleFlyout
 	self:FixKeybindText(button);
-	button:StyleButton(nil, nil, nil, true);
+	button:StyleButton();
 
 	if(not self.handledbuttons[button]) then
 		E:RegisterCooldown(button.cooldown)
@@ -488,91 +528,27 @@ end
 
 function AB:Bar_OnEnter(bar)
 	E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), bar.db.alpha)
-	if bar:GetName() == "ElvUI_BarPet" then
-		for i=1, NUM_PET_ACTION_SLOTS do
-			_G["PetActionButton"..i].cooldown:SetSwipeColor(0, 0, 0, 1)
-			_G["PetActionButton"..i].cooldown:SetDrawBling(true)
-		end
-	elseif bar:GetName() == "ElvUI_StanceBar" then
-		for i=1, NUM_STANCE_SLOTS do
-			_G["ElvUI_StanceBarButton"..i].cooldown:SetSwipeColor(0, 0, 0, 1)
-			_G["ElvUI_StanceBarButton"..i].cooldown:SetDrawBling(true)
-		end
-	else
-		for i=1, NUM_ACTIONBAR_BUTTONS do
-			bar.buttons[i].cooldown:SetSwipeColor(0, 0, 0, 1)
-			bar.buttons[i].cooldown:SetDrawBling(true)
-		end
-	end
 end
 
 function AB:Bar_OnLeave(bar)
 	E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
-	if bar:GetName() == "ElvUI_BarPet" then
-		for i=1, NUM_PET_ACTION_SLOTS do
-			_G["PetActionButton"..i].cooldown:SetSwipeColor(0, 0, 0, 0)
-			_G["PetActionButton"..i].cooldown:SetDrawBling(false)
-		end
-	elseif bar:GetName() == "ElvUI_StanceBar" then
-		for i=1, NUM_STANCE_SLOTS do
-			_G["ElvUI_StanceBarButton"..i].cooldown:SetSwipeColor(0, 0, 0, 0)
-			_G["ElvUI_StanceBarButton"..i].cooldown:SetDrawBling(false)
-		end
-	else
-		for i=1, NUM_ACTIONBAR_BUTTONS do
-			bar.buttons[i].cooldown:SetSwipeColor(0, 0, 0, 0)
-			bar.buttons[i].cooldown:SetDrawBling(false)
-		end
-	end
 end
 
 function AB:Button_OnEnter(button)
 	local bar = button:GetParent()
 	E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), bar.db.alpha)
-	if bar:GetName() == "ElvUI_BarPet" then
-		for i=1, NUM_PET_ACTION_SLOTS do
-			_G["PetActionButton"..i].cooldown:SetSwipeColor(0, 0, 0, 1)
-			_G["PetActionButton"..i].cooldown:SetDrawBling(true)
-		end
-	elseif bar:GetName() == "ElvUI_StanceBar" then
-		for i=1, NUM_STANCE_SLOTS do
-			_G["ElvUI_StanceBarButton"..i].cooldown:SetSwipeColor(0, 0, 0, 1)
-			_G["ElvUI_StanceBarButton"..i].cooldown:SetDrawBling(true)
-		end
-	else
-		for i=1, NUM_ACTIONBAR_BUTTONS do
-			bar.buttons[i].cooldown:SetSwipeColor(0, 0, 0, 1)
-			bar.buttons[i].cooldown:SetDrawBling(true)
-		end
-	end
 end
 
 function AB:Button_OnLeave(button)
 	local bar = button:GetParent()
 	E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
-	if bar:GetName() == "ElvUI_BarPet" then
-		for i=1, NUM_PET_ACTION_SLOTS do
-			_G["PetActionButton"..i].cooldown:SetSwipeColor(0, 0, 0, 0)
-			_G["PetActionButton"..i].cooldown:SetDrawBling(false)
-		end
-	elseif bar:GetName() == "ElvUI_StanceBar" then
-		for i=1, NUM_STANCE_SLOTS do
-			_G["ElvUI_StanceBarButton"..i].cooldown:SetSwipeColor(0, 0, 0, 0)
-			_G["ElvUI_StanceBarButton"..i].cooldown:SetDrawBling(false)
-		end
-	else
-		for i=1, NUM_ACTIONBAR_BUTTONS do
-			bar.buttons[i].cooldown:SetSwipeColor(0, 0, 0, 0)
-			bar.buttons[i].cooldown:SetDrawBling(false)
-		end
-	end
 end
 
 function AB:BlizzardOptionsPanel_OnEvent()
-	InterfaceOptionsActionBarsPanelBottomRight.Text:SetText(format(L['Remove Bar %d Action Page'], 2))
-	InterfaceOptionsActionBarsPanelBottomLeft.Text:SetText(format(L['Remove Bar %d Action Page'], 3))
-	InterfaceOptionsActionBarsPanelRightTwo.Text:SetText(format(L['Remove Bar %d Action Page'], 4))
-	InterfaceOptionsActionBarsPanelRight.Text:SetText(format(L['Remove Bar %d Action Page'], 5))
+	InterfaceOptionsActionBarsPanelBottomRight.Text:SetText(format(L["Remove Bar %d Action Page"], 2))
+	InterfaceOptionsActionBarsPanelBottomLeft.Text:SetText(format(L["Remove Bar %d Action Page"], 3))
+	InterfaceOptionsActionBarsPanelRightTwo.Text:SetText(format(L["Remove Bar %d Action Page"], 4))
+	InterfaceOptionsActionBarsPanelRight.Text:SetText(format(L["Remove Bar %d Action Page"], 5))
 
 	InterfaceOptionsActionBarsPanelBottomRight:SetScript('OnEnter', nil)
 	InterfaceOptionsActionBarsPanelBottomLeft:SetScript('OnEnter', nil)
@@ -705,8 +681,8 @@ end
 function AB:UpdateButtonConfig(bar, buttonName)
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return; end
 	if not bar.buttonConfig then bar.buttonConfig = { hideElements = {}, colors = {} } end
-	bar.buttonConfig.hideElements.macro = self.db.macrotext
-	bar.buttonConfig.hideElements.hotkey = self.db.hotkeytext
+	bar.buttonConfig.hideElements.macro = not self.db.macrotext
+	bar.buttonConfig.hideElements.hotkey = not self.db.hotkeytext
 	bar.buttonConfig.showGrid = self.db.showGrid
 	bar.buttonConfig.clickOnDown = self.db.keyDown
 	SetModifiedClick("PICKUPACTION", self.db.movementModifier)
@@ -731,19 +707,19 @@ function AB:FixKeybindText(button)
 	local text = hotkey:GetText();
 
 	if text then
-		text = gsub(text, 'SHIFT%-', L['KEY_SHIFT']);
-		text = gsub(text, 'ALT%-', L['KEY_ALT']);
-		text = gsub(text, 'CTRL%-', L['KEY_CTRL']);
-		text = gsub(text, 'BUTTON', L['KEY_MOUSEBUTTON']);
-		text = gsub(text, 'MOUSEWHEELUP', L['KEY_MOUSEWHEELUP']);
-		text = gsub(text, 'MOUSEWHEELDOWN', L['KEY_MOUSEWHEELDOWN']);
-		text = gsub(text, 'NUMPAD', L['KEY_NUMPAD']);
-		text = gsub(text, 'PAGEUP', L['KEY_PAGEUP']);
-		text = gsub(text, 'PAGEDOWN', L['KEY_PAGEDOWN']);
-		text = gsub(text, 'SPACE', L['KEY_SPACE']);
-		text = gsub(text, 'INSERT', L['KEY_INSERT']);
-		text = gsub(text, 'HOME', L['KEY_HOME']);
-		text = gsub(text, 'DELETE', L['KEY_DELETE']);
+		text = gsub(text, 'SHIFT%-', L["KEY_SHIFT"]);
+		text = gsub(text, 'ALT%-', L["KEY_ALT"]);
+		text = gsub(text, 'CTRL%-', L["KEY_CTRL"]);
+		text = gsub(text, 'BUTTON', L["KEY_MOUSEBUTTON"]);
+		text = gsub(text, 'MOUSEWHEELUP', L["KEY_MOUSEWHEELUP"]);
+		text = gsub(text, 'MOUSEWHEELDOWN', L["KEY_MOUSEWHEELDOWN"]);
+		text = gsub(text, 'NUMPAD', L["KEY_NUMPAD"]);
+		text = gsub(text, 'PAGEUP', L["KEY_PAGEUP"]);
+		text = gsub(text, 'PAGEDOWN', L["KEY_PAGEDOWN"]);
+		text = gsub(text, 'SPACE', L["KEY_SPACE"]);
+		text = gsub(text, 'INSERT', L["KEY_INSERT"]);
+		text = gsub(text, 'HOME', L["KEY_HOME"]);
+		text = gsub(text, 'DELETE', L["KEY_DELETE"]);
 		text = gsub(text, 'NMULTIPLY', "*");
 		text = gsub(text, 'NMINUS', "N-");
 		text = gsub(text, 'NPLUS', "N+");

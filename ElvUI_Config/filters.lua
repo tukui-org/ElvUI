@@ -22,8 +22,8 @@ local function UpdateFilterGroup()
 			args = {
 				addSpell = {
 					order = 1,
-					name = L['Add Spell'],
-					desc = L['Add a spell to the filter.'],
+					name = L["Add Spell"],
+					desc = L["Add a spell to the filter."],
 					type = 'input',
 					get = function(info) return "" end,
 					set = function(info, value)
@@ -38,14 +38,14 @@ local function UpdateFilterGroup()
 				},
 				removeSpell = {
 					order = 1,
-					name = L['Remove Spell'],
-					desc = L['Remove a spell from the filter.'],
+					name = L["Remove Spell"],
+					desc = L["Remove a spell from the filter."],
 					type = 'input',
 					get = function(info) return "" end,
 					set = function(info, value)
 						if G['unitframe'].AuraBarColors[value] then
 							E.global.unitframe.AuraBarColors[value] = false;
-							E:Print(L['You may not remove a spell from a default filter that is not customly added. Setting spell to false instead.'])
+							E:Print(L["You may not remove a spell from a default filter that is not customly added. Setting spell to false instead."])
 						else
 							E.global.unitframe.AuraBarColors[value] = nil;
 						end
@@ -88,7 +88,7 @@ local function UpdateFilterGroup()
 			guiInline = true,
 			args = {
 				color = {
-					name = L['Color'],
+					name = L["Color"],
 					type = 'color',
 					order = 1,
 					get = function(info)
@@ -113,7 +113,7 @@ local function UpdateFilterGroup()
 				removeColor = {
 					type = 'execute',
 					order = 2,
-					name = L['Restore Defaults'],
+					name = L["Restore Defaults"],
 					func = function(info, value)
 						E.global.unitframe.AuraBarColors[selectedSpell] = false;
 						UF:CreateAndUpdateUF('player')
@@ -133,8 +133,8 @@ local function UpdateFilterGroup()
 			args = {
 				addSpellID = {
 					order = 1,
-					name = L['Add SpellID'],
-					desc = L['Add a spell to the filter.'],
+					name = L["Add SpellID"],
+					desc = L["Add a spell to the filter."],
 					type = 'input',
 					get = function(info) return "" end,
 					set = function(info, value)
@@ -151,8 +151,8 @@ local function UpdateFilterGroup()
 				},
 				removeSpellID = {
 					order = 2,
-					name = L['Remove SpellID'],
-					desc = L['Remove a spell from the filter.'],
+					name = L["Remove SpellID"],
+					desc = L["Remove a spell from the filter."],
 					type = 'input',
 					get = function(info) return "" end,
 					set = function(info, value)
@@ -163,7 +163,7 @@ local function UpdateFilterGroup()
 						else
 							if G.unitframe.InvalidSpells[tonumber(value)] then
 								E.global.unitframe.InvalidSpells[tonumber(value)] = false;
-								E:Print(L['You may not remove a spell from a default filter that is not customly added. Setting spell to false instead.'])
+								E:Print(L["You may not remove a spell from a default filter that is not customly added. Setting spell to false instead."])
 							else
 								E.global.unitframe.InvalidSpells[tonumber(value)] = nil;
 							end
@@ -176,11 +176,11 @@ local function UpdateFilterGroup()
 				desc = {
 					order = 3,
 					type = 'description',
-					name = L['This filter is used for both aura bars and aura icons no matter what. Its purpose is to block out specific spellids from being shown. For example a paladin can have two sacred shield buffs at once, we block out the short one.'],
+					name = L["This filter is used for both aura bars and aura icons no matter what. Its purpose is to block out specific spellids from being shown. For example a paladin can have two sacred shield buffs at once, we block out the short one."],
 				},
 				spellGroup = {
 					order = 4,
-					name = L['Spells'],
+					name = L["Spells"],
 					type = 'group',
 					args = {},
 					guiInline = true,
@@ -215,8 +215,8 @@ local function UpdateFilterGroup()
 			args = {
 				addSpellID = {
 					order = 1,
-					name = L['Add SpellID'],
-					desc = L['Add a spell to the filter.'],
+					name = L["Add SpellID"],
+					desc = L["Add a spell to the filter."],
 					type = 'input',
 					get = function(info) return "" end,
 					set = function(info, value)
@@ -240,8 +240,8 @@ local function UpdateFilterGroup()
 				},
 				removeSpellID = {
 					order = 2,
-					name = L['Remove SpellID'],
-					desc = L['Remove a spell from the filter.'],
+					name = L["Remove SpellID"],
+					desc = L["Remove a spell from the filter."],
 					type = 'input',
 					get = function(info) return "" end,
 					set = function(info, value)
@@ -254,7 +254,7 @@ local function UpdateFilterGroup()
 							if G['unitframe']['aurafilters'][selectedFilter] then
 								if G.unitframe.aurafilters[selectedFilter]['spells'][name] then
 									E.global.unitframe.aurafilters[selectedFilter]['spells'][name].enable = false;
-									E:Print(L['You may not remove a spell from a default filter that is not customly added. Setting spell to false instead.'])
+									E:Print(L["You may not remove a spell from a default filter that is not customly added. Setting spell to false instead."])
 								else
 									E.global.unitframe.aurafilters[selectedFilter]['spells'][name] = nil;
 								end
@@ -287,7 +287,7 @@ local function UpdateFilterGroup()
 				desc = {
 					order = 4,
 					type = 'description',
-					name = L['This filter is meant to be used when you only want to whitelist specific spellIDs which share names with unwanted spells.'],
+					name = L["This filter is meant to be used when you only want to whitelist specific spellIDs which share names with unwanted spells."],
 				},
 			},
 		}
@@ -317,20 +317,6 @@ local function UpdateFilterGroup()
 						end,
 						set = function(info, value) E.global.unitframe['aurafilters'][selectedFilter]['spells'][selectedSpell].enable = value; UpdateFilterGroup(); UF:Update_AllFrames(); end
 					},
-					priority = {
-						name = L["Priority"],
-						type = "range",
-						get = function()
-							if selectedFolder or not selectedSpell then
-								return 0
-							else
-								return E.global.unitframe['aurafilters'][selectedFilter]['spells'][selectedSpell].priority
-							end
-						end,
-						set = function(info, value) E.global.unitframe['aurafilters'][selectedFilter]['spells'][selectedSpell].priority = value; UpdateFilterGroup(); UF:Update_AllFrames(); end,
-						min = 0, max = 99, step = 1,
-						desc = L["Set the priority order of the spell, please note that prioritys are only used for the raid debuff module, not the standard buff/debuff module. If you want to disable set to zero."],
-					},
 				},
 			}
 		end
@@ -353,8 +339,8 @@ local function UpdateFilterGroup()
 			args = {
 				addSpellID = {
 					order = 1,
-					name = L['Add SpellID'],
-					desc = L['Add a spell to the filter.'],
+					name = L["Add SpellID"],
+					desc = L["Add a spell to the filter."],
 					type = 'input',
 					get = function(info) return "" end,
 					set = function(info, value)
@@ -372,8 +358,8 @@ local function UpdateFilterGroup()
 				},
 				removeSpellID = {
 					order = 2,
-					name = L['Remove SpellID'],
-					desc = L['Remove a spell from the filter.'],
+					name = L["Remove SpellID"],
+					desc = L["Remove a spell from the filter."],
 					type = 'input',
 					get = function(info) return "" end,
 					set = function(info, value)
@@ -388,7 +374,7 @@ local function UpdateFilterGroup()
 									match = y
 									if G.unitframe.buffwatch.PET[x] then
 										E.global.unitframe.buffwatch.PET[x].enabled = false
-										E:Print(L['You may not remove a spell from a default filter that is not customly added. Setting spell to false instead.'])
+										E:Print(L["You may not remove a spell from a default filter that is not customly added. Setting spell to false instead."])
 									else
 										E.global.unitframe.buffwatch.PET[x] = nil
 									end
@@ -451,12 +437,12 @@ local function UpdateFilterGroup()
 				order = -10,
 				args = {
 					enabled = {
-						name = L['Enable'],
+						name = L["Enable"],
 						order = 0,
 						type = 'toggle',
 					},
 					point = {
-						name = L['Anchor Point'],
+						name = L["Anchor Point"],
 						order = 1,
 						type = 'select',
 						values = {
@@ -473,27 +459,27 @@ local function UpdateFilterGroup()
 					xOffset = {
 						order = 2,
 						type = 'range',
-						name = L['xOffset'],
+						name = L["xOffset"],
 						min = -75, max = 75, step = 1,
 					},
 					yOffset = {
 						order = 3,
 						type = 'range',
-						name = L['yOffset'],
+						name = L["yOffset"],
 						min = -75, max = 75, step = 1,
 					},
 					style = {
-						name = L['Style'],
+						name = L["Style"],
 						order = 4,
 						type = 'select',
 						values = {
-							['coloredIcon'] = L['Colored Icon'],
-							['texturedIcon'] = L['Textured Icon'],
+							['coloredIcon'] = L["Colored Icon"],
+							['texturedIcon'] = L["Textured Icon"],
 							['NONE'] = NONE,
 						},
 					},
 					color = {
-						name = L['Color'],
+						name = L["Color"],
 						type = 'color',
 						order = 5,
 						get = function(info)
@@ -507,12 +493,12 @@ local function UpdateFilterGroup()
 						end,
 					},
 					displayText = {
-						name = L['Display Text'],
+						name = L["Display Text"],
 						type = 'toggle',
 						order = 6,
 					},
 					textColor = {
-						name = L['Text Color'],
+						name = L["Text Color"],
 						type = 'color',
 						order = 7,
 						get = function(info)
@@ -537,19 +523,19 @@ local function UpdateFilterGroup()
 						min = -1, max = 10, step = 1,
 					},
 					textThreshold = {
-						name = L['Text Threshold'],
-						desc = L['At what point should the text be displayed. Set to -1 to disable.'],
+						name = L["Text Threshold"],
+						desc = L["At what point should the text be displayed. Set to -1 to disable."],
 						type = 'range',
 						order = 9,
 						min = -1, max = 60, step = 1,
 					},
 					anyUnit = {
-						name = L['Show Aura From Other Players'],
+						name = L["Show Aura From Other Players"],
 						order = 10,
 						type = 'toggle',
 					},
 					onlyShowMissing = {
-						name = L['Show When Not Active'],
+						name = L["Show When Not Active"],
 						order = 11,
 						type = 'toggle',
 						disabled = function() return E.global.unitframe.buffwatch.PET[tableIndex].style == 'text' end,
@@ -580,8 +566,8 @@ local function UpdateFilterGroup()
 			args = {
 				addSpellID = {
 					order = 1,
-					name = L['Add SpellID'],
-					desc = L['Add a spell to the filter.'],
+					name = L["Add SpellID"],
+					desc = L["Add a spell to the filter."],
 					type = 'input',
 					get = function(info) return "" end,
 					set = function(info, value)
@@ -603,8 +589,8 @@ local function UpdateFilterGroup()
 				},
 				removeSpellID = {
 					order = 2,
-					name = L['Remove SpellID'],
-					desc = L['Remove a spell from the filter.'],
+					name = L["Remove SpellID"],
+					desc = L["Remove a spell from the filter."],
 					type = 'input',
 					get = function(info) return "" end,
 					set = function(info, value)
@@ -619,7 +605,7 @@ local function UpdateFilterGroup()
 									match = y
 									if G.unitframe.buffwatch[E.myclass][x] then
 										E.global.unitframe.buffwatch[E.myclass][x].enabled = false
-										E:Print(L['You may not remove a spell from a default filter that is not customly added. Setting spell to false instead.'])
+										E:Print(L["You may not remove a spell from a default filter that is not customly added. Setting spell to false instead."])
 									else
 										E.global.unitframe.buffwatch[E.myclass][x] = nil
 									end
@@ -691,12 +677,12 @@ local function UpdateFilterGroup()
 				order = -10,
 				args = {
 					enabled = {
-						name = L['Enable'],
+						name = L["Enable"],
 						order = 0,
 						type = 'toggle',
 					},
 					point = {
-						name = L['Anchor Point'],
+						name = L["Anchor Point"],
 						order = 1,
 						type = 'select',
 						values = {
@@ -713,27 +699,27 @@ local function UpdateFilterGroup()
 					xOffset = {
 						order = 2,
 						type = 'range',
-						name = L['xOffset'],
+						name = L["xOffset"],
 						min = -75, max = 75, step = 1,
 					},
 					yOffset = {
 						order = 3,
 						type = 'range',
-						name = L['yOffset'],
+						name = L["yOffset"],
 						min = -75, max = 75, step = 1,
 					},
 					style = {
-						name = L['Style'],
+						name = L["Style"],
 						order = 4,
 						type = 'select',
 						values = {
-							['coloredIcon'] = L['Colored Icon'],
-							['texturedIcon'] = L['Textured Icon'],
+							['coloredIcon'] = L["Colored Icon"],
+							['texturedIcon'] = L["Textured Icon"],
 							['NONE'] = NONE,
 						},
 					},
 					color = {
-						name = L['Color'],
+						name = L["Color"],
 						type = 'color',
 						order = 5,
 						get = function(info)
@@ -750,12 +736,12 @@ local function UpdateFilterGroup()
 						end,
 					},
 					displayText = {
-						name = L['Display Text'],
+						name = L["Display Text"],
 						type = 'toggle',
 						order = 6,
 					},
 					textColor = {
-						name = L['Text Color'],
+						name = L["Text Color"],
 						type = 'color',
 						order = 7,
 						get = function(info)
@@ -784,19 +770,19 @@ local function UpdateFilterGroup()
 						min = -1, max = 10, step = 1,
 					},
 					textThreshold = {
-						name = L['Text Threshold'],
-						desc = L['At what point should the text be displayed. Set to -1 to disable.'],
+						name = L["Text Threshold"],
+						desc = L["At what point should the text be displayed. Set to -1 to disable."],
 						type = 'range',
 						order = 9,
 						min = -1, max = 60, step = 1,
 					},
 					anyUnit = {
-						name = L['Show Aura From Other Players'],
+						name = L["Show Aura From Other Players"],
 						order = 10,
 						type = 'toggle',
 					},
 					onlyShowMissing = {
-						name = L['Show When Not Active'],
+						name = L["Show When Not Active"],
 						order = 11,
 						type = 'toggle',
 						disabled = function() return E.global.unitframe.buffwatch[E.myclass][tableIndex].style == 'text' end,
@@ -821,8 +807,8 @@ local function UpdateFilterGroup()
 			args = {
 				addSpell = {
 					order = 1,
-					name = L['Add Spell'],
-					desc = L['Add a spell to the filter.'],
+					name = L["Add Spell"],
+					desc = L["Add a spell to the filter."],
 					type = 'input',
 					get = function(info) return "" end,
 					set = function(info, value)
@@ -838,15 +824,15 @@ local function UpdateFilterGroup()
 				},
 				removeSpell = {
 					order = 1,
-					name = L['Remove Spell'],
-					desc = L['Remove a spell from the filter.'],
+					name = L["Remove Spell"],
+					desc = L["Remove a spell from the filter."],
 					type = 'input',
 					get = function(info) return "" end,
 					set = function(info, value)
 						if G['unitframe']['aurafilters'][selectedFilter] then
 							if G['unitframe']['aurafilters'][selectedFilter]['spells'][value] then
 								E.global.unitframe['aurafilters'][selectedFilter]['spells'][value].enable = false;
-								E:Print(L['You may not remove a spell from a default filter that is not customly added. Setting spell to false instead.'])
+								E:Print(L["You may not remove a spell from a default filter that is not customly added. Setting spell to false instead."])
 							else
 								E.global.unitframe['aurafilters'][selectedFilter]['spells'][value] = nil;
 							end
@@ -860,12 +846,12 @@ local function UpdateFilterGroup()
 				},
 				filterType = {
 					order = 4,
-					name = L['Filter Type'],
-					desc = L['Set the filter type, blacklisted filters hide any aura on the like and show all else, whitelisted filters show any aura on the filter and hide all else.'],
+					name = L["Filter Type"],
+					desc = L["Set the filter type, blacklisted filters hide any aura on the like and show all else, whitelisted filters show any aura on the filter and hide all else."],
 					type = 'select',
 					values = {
-						['Whitelist'] = L['Whitelist'],
-						['Blacklist'] = L['Blacklist'],
+						['Whitelist'] = L["Whitelist"],
+						['Blacklist'] = L["Blacklist"],
 					},
 					get = function() return E.global.unitframe['aurafilters'][selectedFilter].type end,
 					set = function(info, value) E.global.unitframe['aurafilters'][selectedFilter].type = value; UF:Update_AllFrames(); end,
@@ -913,22 +899,39 @@ local function UpdateFilterGroup()
 					end,
 					set = function(info, value) E.global.unitframe['aurafilters'][selectedFilter]['spells'][selectedSpell].enable = value; UpdateFilterGroup(); UF:Update_AllFrames(); end
 				},
-				priority = {
-					name = L["Priority"],
-					type = "range",
-					get = function()
-						if selectedFolder or not selectedSpell then
-							return 0
-						else
-							return E.global.unitframe['aurafilters'][selectedFilter]['spells'][selectedSpell].priority
-						end
-					end,
-					set = function(info, value) E.global.unitframe['aurafilters'][selectedFilter]['spells'][selectedSpell].priority = value; UpdateFilterGroup(); UF:Update_AllFrames(); end,
-					min = 0, max = 99, step = 1,
-					desc = L["Set the priority order of the spell, please note that prioritys are only used for the raid debuff module, not the standard buff/debuff module. If you want to disable set to zero."],
-				},
 			},
 		}
+
+		if selectedFilter == "RaidDebuffs" then
+			E.Options.args.filters.args.spellGroup.args.priority = {
+				name = L["Priority"],
+				type = "range",
+				get = function()
+					if selectedFolder or not selectedSpell then
+						return 0
+					else
+						return E.global.unitframe['aurafilters'][selectedFilter]['spells'][selectedSpell].priority
+					end
+				end,
+				set = function(info, value) E.global.unitframe['aurafilters'][selectedFilter]['spells'][selectedSpell].priority = value; UpdateFilterGroup(); UF:Update_AllFrames(); end,
+				min = 0, max = 99, step = 1,
+				desc = L["Set the priority order of the spell, please note that prioritys are only used for the raid debuff module, not the standard buff/debuff module. If you want to disable set to zero."],
+			}
+			E.Options.args.filters.args.spellGroup.args.stackThreshold = {
+				name = L["Stack Threshold"],
+				type = "range",
+				get = function()
+					if selectedFolder or not selectedSpell then
+						return 0
+					else
+						return E.global.unitframe['aurafilters'][selectedFilter]['spells'][selectedSpell].stackThreshold
+					end
+				end,
+				set = function(info, value) E.global.unitframe['aurafilters'][selectedFilter]['spells'][selectedSpell].stackThreshold = value; UpdateFilterGroup(); UF:Update_AllFrames(); end,
+				min = 0, max = 99, step = 1,
+				desc = L["The debuff needs to reach this amount of stacks before it is shown. Set to 0 to always show the debuff."],
+			}
+		end
 
 	end
 
@@ -937,13 +940,13 @@ end
 
 E.Options.args.filters = {
 	type = 'group',
-	name = L['Filters'],
+	name = L["Filters"],
 	order = -10, --Always Last Hehehe
 	args = {
 		createFilter = {
 			order = 1,
-			name = L['Create Filter'],
-			desc = L['Create a filter, once created a filter can be set inside the buffs/debuffs section of each unit.'],
+			name = L["Create Filter"],
+			desc = L["Create a filter, once created a filter can be set inside the buffs/debuffs section of each unit."],
 			type = 'input',
 			get = function(info) return "" end,
 			set = function(info, value)
@@ -954,8 +957,8 @@ E.Options.args.filters = {
 		deleteFilter = {
 			type = 'input',
 			order = 2,
-			name = L['Delete Filter'],
-			desc = L['Delete a created filter, you cannot delete pre-existing filters, only custom ones.'],
+			name = L["Delete Filter"],
+			desc = L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."],
 			get = function(info) return "" end,
 			set = function(info, value)
 				if G['unitframe']['aurafilters'][value] then
@@ -971,7 +974,7 @@ E.Options.args.filters = {
 		selectFilter = {
 			order = 3,
 			type = 'select',
-			name = L['Select Filter'],
+			name = L["Select Filter"],
 			get = function(info) return selectedFilter end,
 			set = function(info, value) if value == '' then selectedFilter = nil; selectedSpell = nil; else selectedFilter = value end; UpdateFilterGroup() end,
 			values = function()

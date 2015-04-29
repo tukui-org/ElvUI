@@ -22,7 +22,7 @@ function UF:Construct_TargetFrame(frame)
 
 	frame.Debuffs = self:Construct_Debuffs(frame)
 	frame.Threat = self:Construct_Threat(frame)
-	frame.Castbar = self:Construct_Castbar(frame, 'RIGHT', L['Target Castbar'])
+	frame.Castbar = self:Construct_Castbar(frame, 'RIGHT', L["Target Castbar"])
 	frame.Castbar.SafeZone = nil
 	frame.Castbar.LatencyTexture:Hide()
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)
@@ -33,7 +33,7 @@ function UF:Construct_TargetFrame(frame)
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
 	frame.Range = UF:Construct_Range(frame)
 	frame:Point('BOTTOMRIGHT', E.UIParent, 'BOTTOM', 413, 68)
-	E:CreateMover(frame, frame:GetName()..'Mover', L['Target Frame'], nil, nil, nil, 'ALL,SOLO')
+	E:CreateMover(frame, frame:GetName()..'Mover', L["Target Frame"], nil, nil, nil, 'ALL,SOLO')
 end
 
 function UF:Update_TargetFrame(frame, db)
@@ -157,7 +157,7 @@ function UF:Update_TargetFrame(frame, db)
 		elseif USE_MINI_POWERBAR then
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER + (POWERBAR_HEIGHT/2))
 		else
-			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER + POWERBAR_HEIGHT)
+			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, (USE_POWERBAR and ((BORDER + SPACING)*2) or BORDER) + POWERBAR_HEIGHT)
 		end
 
 		health.bg:ClearAllPoints()
@@ -235,12 +235,12 @@ function UF:Update_TargetFrame(frame, db)
 				power:SetFrameLevel(2)
 			elseif USE_MINI_POWERBAR then
 				power:Width(POWERBAR_WIDTH - BORDER*2)
-				power:Height(POWERBAR_HEIGHT - BORDER*2)
+				power:Height(POWERBAR_HEIGHT)
 				power:Point("LEFT", frame, "BOTTOMLEFT", (BORDER*2 + 4), BORDER + (POWERBAR_HEIGHT/2))
 				power:SetFrameStrata("MEDIUM")
 				power:SetFrameLevel(frame:GetFrameLevel() + 3)
 			elseif USE_INSET_POWERBAR then
-				power:Height(POWERBAR_HEIGHT - BORDER*2)
+				power:Height(POWERBAR_HEIGHT)
 				power:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", BORDER + (BORDER*2), BORDER + (BORDER*2))
 				power:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", -(BORDER + (BORDER*2)), BORDER + (BORDER*2))
 				power:SetFrameStrata("MEDIUM")
@@ -513,7 +513,7 @@ function UF:Update_TargetFrame(frame, db)
 				CPoints:Height(COMBOBAR_HEIGHT - (E.PixelMode and 1 or 4))
 				CPoints:ClearAllPoints()
 				CPoints:Point("BOTTOM", E.UIParent, "BOTTOM", 0, 150)
-				E:CreateMover(CPoints, 'ComboBarMover', L['Combobar'], nil, nil, nil, 'ALL,SOLO')
+				E:CreateMover(CPoints, 'ComboBarMover', L["Combobar"], nil, nil, nil, 'ALL,SOLO')
 			else
 				CPoints:ClearAllPoints()
 				CPoints:SetPoint("BOTTOMLEFT", CPoints.mover, "BOTTOMLEFT")

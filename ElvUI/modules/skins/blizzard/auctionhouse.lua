@@ -80,7 +80,7 @@ local function LoadSkin()
 	}
 
 	for _, button in pairs(buttons) do
-		S:HandleButton(_G[button])
+		S:HandleButton(_G[button], true)
 	end
 
 	--Fix Button Positions
@@ -130,12 +130,16 @@ local function LoadSkin()
 	for i=1, AuctionFrame.numTabs do
 		S:HandleTab(_G["AuctionFrameTab"..i])
 	end
-
+	
 	for i=1, NUM_FILTERS_TO_DISPLAY do
 		local tab = _G["AuctionFilterButton"..i]
-		tab:StripTextures()
 		tab:StyleButton()
 	end
+	
+	hooksecurefunc("FilterButton_SetType", function(button)
+		local tex = button:GetNormalTexture();
+		tex:SetAlpha(0)
+	end)
 
 	local editboxs = {
 		"BrowseName",
@@ -161,6 +165,7 @@ local function LoadSkin()
 		S:HandleEditBox(_G[editbox])
 		_G[editbox]:SetTextInsets(1, 1, -1, 1)
 	end
+	_G["BrowseName"]:SetTextInsets(15, 15, -1, 1)
 	BrowseMaxLevel:Point("LEFT", BrowseMinLevel, "RIGHT", 8, 0)
 	AuctionsStackSizeEntry.backdrop:SetAllPoints()
 	AuctionsNumStacksEntry.backdrop:SetAllPoints()
@@ -288,6 +293,36 @@ local function LoadSkin()
 	AuctionFrameAuctions.bg2:Point("TOPLEFT", AuctionFrameAuctions.bg1, "TOPRIGHT", 3, 0)
 	AuctionFrameAuctions.bg2:Point("BOTTOMRIGHT", AuctionFrame, -8, 35)
 	AuctionFrameAuctions.bg2:SetFrameLevel(AuctionFrameAuctions.bg2:GetFrameLevel() - 2)
+	
+	--WoW Token Category
+	S:HandleItemButton(BrowseWowTokenResults.Token)
+	BrowseWowTokenResults.Token:CreateBackdrop("Default", true)
+	S:HandleButton(BrowseWowTokenResults.Buyout)
+	BrowseWowTokenResults.Token:SetHighlightTexture("")
+	
+	--WoW Token Tutorial Frame
+	WowTokenGameTimeTutorial:CreateBackdrop("Transparent")
+	S:HandleCloseButton(WowTokenGameTimeTutorial.CloseButton)
+	S:HandleButton(StoreButton)
+	WowTokenGameTimeTutorial.Inset.InsetBorderBottom:SetAlpha(0)
+	WowTokenGameTimeTutorial.Inset.InsetBorderRight:SetAlpha(0)
+	WowTokenGameTimeTutorial.Inset.InsetBorderBottomLeft:SetAlpha(0)
+	WowTokenGameTimeTutorial.Inset.InsetBorderBottomRight:SetAlpha(0)
+	WowTokenGameTimeTutorial.Inset.InsetBorderTopLeft:SetAlpha(0)
+	WowTokenGameTimeTutorial.Inset.InsetBorderLeft:SetAlpha(0)
+	WowTokenGameTimeTutorial.Inset.InsetBorderTopRight:SetAlpha(0)
+	WowTokenGameTimeTutorial.Inset.InsetBorderTop:SetAlpha(0)
+	WowTokenGameTimeTutorial.Inset.Bg:SetAlpha(0)
+	WowTokenGameTimeTutorialTitleBg:SetAlpha(0)
+	WowTokenGameTimeTutorialBg:SetAlpha(0)
+	WowTokenGameTimeTutorialTopRightCorner:SetAlpha(0)
+	WowTokenGameTimeTutorialTopLeftCorner:SetAlpha(0)
+	WowTokenGameTimeTutorialTopBorder:SetAlpha(0)
+	WowTokenGameTimeTutorialBotLeftCorner:SetAlpha(0)
+	WowTokenGameTimeTutorialBotRightCorner:SetAlpha(0)
+	WowTokenGameTimeTutorialBottomBorder:SetAlpha(0)
+	WowTokenGameTimeTutorialLeftBorder:SetAlpha(0)
+	WowTokenGameTimeTutorialRightBorder:SetAlpha(0)
 end
 
 S:RegisterSkin("Blizzard_AuctionUI", LoadSkin)

@@ -98,25 +98,44 @@ local function LoadSkin()
 	S:HandleCheckBox(TokenFramePopupBackpackCheckBox)
 
 	EquipmentFlyoutFrameHighlight:Kill()
+	EquipmentFlyoutFrame.NavigationFrame:StripTextures()
+	EquipmentFlyoutFrame.NavigationFrame:SetTemplate("Transparent")
+	EquipmentFlyoutFrame.NavigationFrame:SetPoint("TOPLEFT", EquipmentFlyoutFrameButtons, "BOTTOMLEFT", 0, -(E.PixelMode and 1 or 3))
+	EquipmentFlyoutFrame.NavigationFrame:SetPoint("TOPRIGHT", EquipmentFlyoutFrameButtons, "BOTTOMRIGHT", 0, -(E.PixelMode and 1 or 3))
+	S:HandleNextPrevButton(EquipmentFlyoutFrame.NavigationFrame.PrevButton)
+	S:HandleNextPrevButton(EquipmentFlyoutFrame.NavigationFrame.NextButton)
+
 	local function SkinItemFlyouts()
-		EquipmentFlyoutFrameButtons:StripTextures()
+		--Because EquipmentFlyout_Show seems to run as OnUpdate, prevent re-skinning the frames over and over.
+		if (not EquipmentFlyoutFrameButtons.isSkinned) or (EquipmentFlyoutFrameButtons.bg2 and not EquipmentFlyoutFrameButtons.bg2.isSkinned) or (EquipmentFlyoutFrameButtons.bg3 and not EquipmentFlyoutFrameButtons.bg3.isSkinned) or (EquipmentFlyoutFrameButtons.bg4 and not EquipmentFlyoutFrameButtons.bg4.isSkinned) then
+			EquipmentFlyoutFrameButtons:StripTextures()
+			EquipmentFlyoutFrameButtons:SetTemplate("Transparent")
+			EquipmentFlyoutFrameButtons.isSkinned = true
+			if EquipmentFlyoutFrameButtons.bg2 then EquipmentFlyoutFrameButtons.bg2.isSkinned = true end
+			if EquipmentFlyoutFrameButtons.bg3 then EquipmentFlyoutFrameButtons.bg3.isSkinned = true end
+			if EquipmentFlyoutFrameButtons.bg4 then EquipmentFlyoutFrameButtons.bg4.isSkinned = true end
+		end
 
 		local i = 1
 		local button = _G["EquipmentFlyoutFrameButton"..i]
 
 		while button do
-			local icon = _G["EquipmentFlyoutFrameButton"..i.."IconTexture"]
-			button:StyleButton(false)
+			if not button.isHooked then
+				local icon = _G["EquipmentFlyoutFrameButton"..i.."IconTexture"]
 
-			icon:SetTexCoord(unpack(E.TexCoords))
-			button:GetNormalTexture():SetTexture(nil)
+				button:StyleButton(false)
+				button:GetNormalTexture():SetTexture(nil)
 
-			icon:SetInside()
-			button:SetFrameLevel(button:GetFrameLevel() + 2)
-			if not button.backdrop then
-				button:CreateBackdrop("Default")
-				button.backdrop:SetAllPoints()
+				if not button.backdrop then
+					button:CreateBackdrop("Default")
+					button.backdrop:SetAllPoints()
+				end
+
+				icon:SetInside()
+				icon:SetTexCoord(unpack(E.TexCoords))
+				button.isHooked = true
 			end
+
 			i = i + 1
 			button = _G["EquipmentFlyoutFrameButton"..i]
 		end
@@ -124,7 +143,7 @@ local function LoadSkin()
 
 	--Swap item flyout frame (shown when holding alt over a slot)
 	EquipmentFlyoutFrame:HookScript("OnShow", SkinItemFlyouts)
-	hooksecurefunc("EquipmentFlyout_Show", SkinItemFlyouts)
+	-- hooksecurefunc("EquipmentFlyout_Show", SkinItemFlyouts)	--This spams like crazy. Are Blizzard using this in an OnUpdate somewhere? It doesn't seem to be needed either so comment out for now.
 
 	--Icon in upper right corner of character frame
 	CharacterFramePortrait:Kill()

@@ -32,6 +32,10 @@ function M:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, _, sourceGUID, _, _, _, _, d
 		else
 			SendChatMessage(format(interruptMsg, destName, spellID, spellName), inPartyLFG and "INSTANCE_CHAT" or "PARTY")
 		end
+	elseif E.db.general.interruptAnnounce == "RAID_ONLY" then
+		if inRaid then
+			SendChatMessage(format(interruptMsg, destName, spellID, spellName), inPartyLFG and "INSTANCE_CHAT" or "RAID")
+		end
 	elseif E.db.general.interruptAnnounce == "SAY" then
 		SendChatMessage(format(interruptMsg, destName, spellID, spellName), "SAY")
 	end
@@ -57,9 +61,9 @@ function M:MERCHANT_SHOW()
 			local c, s, g = cost%100, floor((cost%10000)/100), floor(cost/10000)
 
 			if autoRepair == 'GUILD' then
-				E:Print(L['Your items have been repaired using guild bank funds for: ']..GetCoinTextureString(cost, 12))
+				E:Print(L["Your items have been repaired using guild bank funds for: "]..GetCoinTextureString(cost, 12))
 			else
-				E:Print(L['Your items have been repaired for: ']..GetCoinTextureString(cost, 12))
+				E:Print(L["Your items have been repaired for: "]..GetCoinTextureString(cost, 12))
 			end
 		else
 			E:Print(L["You don't have enough money to repair."])
@@ -140,7 +144,9 @@ function M:AutoInvite(event, leaderName)
 			end
 		end
 	elseif event == "GROUP_ROSTER_UPDATE" and hideStatic == true then
+		StaticPopupSpecial_Hide(LFGInvitePopup) --New LFD popup when invited in custon created group
 		StaticPopup_Hide("PARTY_INVITE")
+		StaticPopup_Hide("PARTY_INVITE_XREALM") --Not sure bout this but whatever, still an invite
 		hideStatic = false
 	end
 end

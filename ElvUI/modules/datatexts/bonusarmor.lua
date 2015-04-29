@@ -33,7 +33,7 @@ local function OnEnter(self)
 
 	if (hasAura) or (not isNegatedForSpec) then
 		DT.tooltip:AddLine(' ')
-		DT.tooltip:AddLine(L['Mitigation By Level: '])
+		DT.tooltip:AddLine(L["Mitigation By Level: "])
 
 		local playerlvl = UnitLevel('player') + 3
 		for i = 1, 4 do
