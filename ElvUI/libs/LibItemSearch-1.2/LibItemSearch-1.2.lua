@@ -131,7 +131,7 @@ Lib.Filters.usable = {
 	match = function(self, link)
 		if not Unfit:IsItemUnusable(link) then
 			local lvl = select(5, GetItemInfo(link))
-			return lvl and (lvl == 0 or lvl > UnitLevel('player'))
+			return lvl and (lvl ~= 0 and lvl <= UnitLevel('player'))
 		end
 	end	
 }
