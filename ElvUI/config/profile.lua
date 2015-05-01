@@ -2107,7 +2107,7 @@ P["actionbar"] = {
 		["buttonspacing"] = 2,
 		['alpha'] = 1,
 	},
-	['bossbutton'] = {
+	['extraActionButton'] = {
 		['alpha'] = 1,
 	},
 };

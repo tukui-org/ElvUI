@@ -6,7 +6,7 @@ local function FixExtraActionCD(cd)
 	E.OnSetCooldown(cd, start, duration, 0, 0)
 end
 
-function AB:ExtraUpdate()
+function AB:Extra_SetAlpha()
 	local alpha = E.db.actionbar.bossbutton.alpha
 	for i=1, ExtraActionBarFrame:GetNumChildren() do
 		local button = _G["ExtraActionButton"..i]
@@ -76,7 +76,7 @@ function AB:SetupExtraButton()
 		ExtraActionBarFrame:Show();
 	end
 	
-	AB:ExtraUpdate()
+	AB:Extra_SetAlpha()
 
 	E:CreateMover(holder, 'BossButton', L["Boss Button"], nil, nil, nil, 'ALL,ACTIONBARS');
 end

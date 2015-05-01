@@ -517,12 +517,12 @@ E.Options.args.actionbar = {
 				},
 			},
 		},
-		bossbutton = {
+		extraActionButton = {
 			type = "group",
-			name = L["Boss Button"],
+			name = L["Extra Action Button"],
 			disabled = function() return not E.private.actionbar.enable end,
-			get = function(info) return E.db.actionbar.bossbutton[ info[#info] ] end,
-			set = function(info, value) E.db.actionbar.bossbutton[ info[#info] ] = value; AB:ExtraUpdate() end,
+			get = function(info) return E.db.actionbar.extraActionButton[ info[#info] ] end,
+			set = function(info, value) E.db.actionbar.extraActionButton[ info[#info] ] = value; AB:Extra_SetAlpha() end,
 			args = {
 				alpha = {
 					order = 1,
