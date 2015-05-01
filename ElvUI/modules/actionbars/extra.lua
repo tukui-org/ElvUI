@@ -7,7 +7,7 @@ local function FixExtraActionCD(cd)
 end
 
 function AB:Extra_SetAlpha()
-	local alpha = E.db.actionbar.bossbutton.alpha
+	local alpha = E.db.actionbar.extraActionButton.alpha
 	for i=1, ExtraActionBarFrame:GetNumChildren() do
 		local button = _G["ExtraActionButton"..i]
 		if button then
