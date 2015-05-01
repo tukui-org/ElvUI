@@ -519,7 +519,7 @@ E.Options.args.actionbar = {
 		},
 		extraActionButton = {
 			type = "group",
-			name = L["Extra Action Button"],
+			name = L["Boss Button"],
 			disabled = function() return not E.private.actionbar.enable end,
 			get = function(info) return E.db.actionbar.extraActionButton[ info[#info] ] end,
 			set = function(info, value) E.db.actionbar.extraActionButton[ info[#info] ] = value; AB:Extra_SetAlpha() end,
