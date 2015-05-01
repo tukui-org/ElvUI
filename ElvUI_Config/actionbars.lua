@@ -517,6 +517,23 @@ E.Options.args.actionbar = {
 				},
 			},
 		},
+		bossbutton = {
+			type = "group",
+			name = L["Boss Button"],
+			disabled = function() return not E.private.actionbar.enable end,
+			get = function(info) return E.db.actionbar.bossbutton[ info[#info] ] end,
+			set = function(info, value) E.db.actionbar.bossbutton[ info[#info] ] = value; AB:ExtraUpdate() end,
+			args = {
+				alpha = {
+					order = 1,
+					type = 'range',
+					name = L["Alpha"],
+					desc = L["Change the alpha level of the frame."],
+					isPercent = true,
+					min = 0, max = 1, step = 0.01,
+				},
+			},
+		},
 	},
 }
 group = E.Options.args.actionbar.args
