@@ -525,6 +525,7 @@ function E:UpdateAll(ignoreInstall)
 	AB.db = self.db.actionbar
 	AB:UpdateButtonSettings()
 	AB:UpdateMicroPositionDimensions()
+	AB:ExtraUpdate()
 
 	local bags = E:GetModule('Bags');
 	bags.db = self.db.bags
