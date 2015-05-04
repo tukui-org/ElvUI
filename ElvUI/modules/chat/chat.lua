@@ -738,7 +738,7 @@ function CH:GetBNFriendColor(name, id)
 		local toonName, toonID
 		for i=1, BNGetNumFriends() do
 			_, presenceName, _, _, _, toonID = BNGetFriendInfo(i)
-			if(presenceName == name) then
+			if (toonID) and (presenceName == name) then
 				_, _, _, _, _, _, _, class = BNGetToonInfo(toonID)
 				if(class) then
 					break;
