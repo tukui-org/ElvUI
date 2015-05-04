@@ -25,6 +25,7 @@ local function LoadSkin()
 		"ReadyCheckFrame",
 		"StackSplitFrame",
 		"QueueStatusFrame",
+		"LFDReadyCheckPopup",
 	}
 
 	QueueStatusFrame:StripTextures()
@@ -186,6 +187,8 @@ local function LoadSkin()
 			S:HandleButton(ElvuiButtons)
 		end
 	end
+	S:HandleButton(LFDReadyCheckPopup.YesButton)
+	S:HandleButton(LFDReadyCheckPopup.NoButton)
 
 	-- if a button position is not really where we want, we move it here
 	VideoOptionsFrameCancel:ClearAllPoints()
