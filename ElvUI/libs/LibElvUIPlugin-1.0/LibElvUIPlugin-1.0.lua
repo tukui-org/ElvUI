@@ -50,10 +50,11 @@ end
 --   Registers a module with the given name and option callback, pulls version info from metadata
 --
 
-function lib:RegisterPlugin(name,callback)
+function lib:RegisterPlugin(name,callback, isLib)
     local plugin = {}
 	plugin.name = name
 	plugin.version = name == MAJOR and MINOR or GetAddOnMetadata(name, "Version")
+	if isLib then plugin.isLib = true; plugin.version = 1 end
 	plugin.callback = callback
 	lib.plugins[name] = plugin
 	local loaded = IsAddOnLoaded("ElvUI_Config")
@@ -170,7 +171,7 @@ function lib:GeneratePluginList()
 			if author then
 			  list = list .. " ".. INFO_BY .." " .. author
 			end
-			list = list .. color .. " - " .. INFO_VERSION .." " .. plugin.version
+			list = list .. color ..(not plugin.isLib and " - " .. INFO_VERSION .." " .. plugin.version or " "..ElvUI[2]["Library"])
 			if plugin.old then
 			  list = list .. INFO_NEW .. plugin.newversion .. ")"
 			end
