@@ -18,6 +18,7 @@ local HDR_INFORMATION = "LibElvUIPlugin-1.0.%d - Plugins Loaded  (Green means yo
 local INFO_BY = "by"
 local INFO_VERSION = "Version:"
 local INFO_NEW = "Newest:"
+local LIBRARY = "Library"
 
 if GetLocale() == "deDE" then -- German Translation
 	MSG_OUTDATED = "Deine Version von %s ist veraltet (akutelle Version ist %s). Du kannst die aktuelle Version von http://www.tukui.org herunterrladen."
@@ -26,6 +27,7 @@ if GetLocale() == "deDE" then -- German Translation
 	INFO_BY = "von"
 	INFO_VERSION = "Version:"
 	INFO_NEW = "Neuste:"
+	LIBRARY = "Library"
 end
 
 if GetLocale() == "ruRU" then -- Russian Translations
@@ -35,6 +37,7 @@ if GetLocale() == "ruRU" then -- Russian Translations
 	INFO_BY = "от"
 	INFO_VERSION = "Версия:"
 	INFO_NEW = "Последняя:"
+	LIBRARY = "Library"
 end
 
 --
@@ -171,7 +174,7 @@ function lib:GeneratePluginList()
 			if author then
 			  list = list .. " ".. INFO_BY .." " .. author
 			end
-			list = list .. color ..(not plugin.isLib and " - " .. INFO_VERSION .." " .. plugin.version or " "..ElvUI[2]["Library"])
+			list = list .. color ..(plugin.isLib and " "..LIBRARY or " - " .. INFO_VERSION .." " .. plugin.version)
 			if plugin.old then
 			  list = list .. INFO_NEW .. plugin.newversion .. ")"
 			end
