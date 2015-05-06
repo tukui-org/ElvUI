@@ -37,7 +37,7 @@ if GetLocale() == "ruRU" then -- Russian Translations
 	INFO_BY = "от"
 	INFO_VERSION = "Версия:"
 	INFO_NEW = "Последняя:"
-	LIBRARY = "Library"
+	LIBRARY = "Библиотека"
 end
 
 --
