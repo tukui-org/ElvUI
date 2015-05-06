@@ -27,7 +27,7 @@ if GetLocale() == "deDE" then -- German Translation
 	INFO_BY = "von"
 	INFO_VERSION = "Version:"
 	INFO_NEW = "Neuste:"
-	LIBRARY = "Library"
+	LIBRARY = "Bibliothek"
 end
 
 if GetLocale() == "ruRU" then -- Russian Translations
