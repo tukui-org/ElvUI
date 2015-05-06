@@ -54,7 +54,7 @@ function lib:RegisterPlugin(name,callback, isLib)
     local plugin = {}
 	plugin.name = name
 	plugin.version = name == MAJOR and MINOR or GetAddOnMetadata(name, "Version")
-	if isLib then plugin.isLib = true; plugin.version = "" end
+	if isLib then plugin.isLib = true; plugin.version = 1 end
 	plugin.callback = callback
 	lib.plugins[name] = plugin
 	local loaded = IsAddOnLoaded("ElvUI_Config")
