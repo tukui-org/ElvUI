@@ -769,6 +769,40 @@ function CH:GetPluginReplacementIcon(nameRealm)
 	return
 end
 
+--Copied from FrameXML/ChatFrame.lua and modified to use pcall on GetPlayerInfoByGUID
+--For some reason, arg12 is sometimes something other than a valid player GUID
+local function GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12)
+	local chatType = strsub(event, 10);
+	if ( strsub(chatType, 1, 7) == "WHISPER" ) then
+		chatType = "WHISPER";
+	end
+	if ( strsub(chatType, 1, 7) == "CHANNEL" ) then
+		chatType = "CHANNEL"..arg8;
+	end
+	local info = ChatTypeInfo[chatType];
+	
+	--ambiguate guild chat names
+	if (chatType == "GUILD") then
+		arg2 = Ambiguate(arg2, "guild")
+	else
+		arg2 = Ambiguate(arg2, "none")
+	end
+	
+	if ( info and info.colorNameByClass and arg12 ) then
+		local _, localizedClass, englishClass, localizedRace, englishRace, sex = pcall(GetPlayerInfoByGUID, arg12)
+		
+		if ( englishClass ) then
+			local classColorTable = RAID_CLASS_COLORS[englishClass];
+			if ( not classColorTable ) then
+				return arg2;
+			end
+			return string.format("\124cff%.2x%.2x%.2x", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255)..arg2.."\124r"
+		end
+	end
+	
+	return arg2;
+end
+
 E.NameReplacements = {}
 function CH:ChatFrame_MessageEventHandler(event, ...)
 	if ( strsub(event, 1, 8) == "CHAT_MSG" ) then
