@@ -235,7 +235,7 @@ local function FontTemplate(fs, font, fontSize, fontStyle)
 	end
 
 	fs:SetFont(font, fontSize, fontStyle)
-	if fontStyle then
+	if fontStyle and (fontStyle ~= "NONE") then
 		fs:SetShadowColor(0, 0, 0, 0.2)
 	else
 		fs:SetShadowColor(0, 0, 0, 1)
