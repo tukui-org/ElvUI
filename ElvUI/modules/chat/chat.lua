@@ -771,7 +771,7 @@ end
 
 --Copied from FrameXML/ChatFrame.lua and modified to use pcall on GetPlayerInfoByGUID
 --For some reason, arg12 is sometimes in hexadecimal form and not the expected "Player-[server ID]-[player UID]" format
-local function GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12)
+function GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12)
 	local chatType = strsub(event, 10);
 	if ( strsub(chatType, 1, 7) == "WHISPER" ) then
 		chatType = "WHISPER";
