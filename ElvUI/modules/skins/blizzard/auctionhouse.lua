@@ -96,10 +96,15 @@ local function LoadSkin()
 	--BrowseResetButton:Point("TOPLEFT", AuctionFrameBrowse, "TOPLEFT", 81, -74)
 	--BrowseSearchButton:Point("TOPRIGHT", AuctionFrameBrowse, "TOPRIGHT", 25, -34)
 
-	AuctionsItemButton:SetScript("OnUpdate", function()
-		if AuctionsItemButton:GetNormalTexture() then
-			AuctionsItemButton:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
-			AuctionsItemButton:GetNormalTexture():SetInside()
+	AuctionsItemButton:HookScript('OnEvent', function(self, event, ...)
+		self:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+		if event == 'NEW_AUCTION_UPDATE' and self:GetNormalTexture() then
+			local Quality = select(4, GetAuctionSellItemInfo())
+			self:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
+			self:GetNormalTexture():SetInside()
+			if Quality and Quality > 1 and BAG_ITEM_QUALITY_COLORS[Quality] then
+				self:SetBackdropBorderColor(BAG_ITEM_QUALITY_COLORS[Quality].r, BAG_ITEM_QUALITY_COLORS[Quality].g, BAG_ITEM_QUALITY_COLORS[Quality].b)
+			end
 		end
 	end)
 
@@ -134,12 +139,9 @@ local function LoadSkin()
 	for i=1, NUM_FILTERS_TO_DISPLAY do
 		local tab = _G["AuctionFilterButton"..i]
 		tab:StyleButton()
+		_G["AuctionFilterButton"..i..'NormalTexture']:SetAlpha(0)
+		_G["AuctionFilterButton"..i..'NormalTexture'].SetAlpha = E.noop
 	end
-	
-	hooksecurefunc("FilterButton_SetType", function(button)
-		local tex = button:GetNormalTexture();
-		tex:SetAlpha(0)
-	end)
 
 	local editboxs = {
 		"BrowseName",
@@ -174,29 +176,27 @@ local function LoadSkin()
 		local button = _G["BrowseButton"..i]
 		local icon = _G["BrowseButton"..i.."Item"]
 
-		if _G["BrowseButton"..i.."ItemIconTexture"] then
-			_G["BrowseButton"..i.."ItemIconTexture"]:SetTexCoord(unpack(E.TexCoords))
-			_G["BrowseButton"..i.."ItemIconTexture"]:SetInside()
-		end
+		_G["BrowseButton"..i.."ItemIconTexture"]:SetTexCoord(unpack(E.TexCoords))
+		_G["BrowseButton"..i.."ItemIconTexture"]:SetInside()
 
-		if icon then
-			icon:StyleButton()
-			--TODO: Find a better method to ensure that the icon:GetNormalTexture doesn't return after clicking
-			icon:HookScript("OnUpdate", function() icon:GetNormalTexture():Kill() end)
+		icon:StyleButton()
+		icon:GetNormalTexture():SetTexture('')
+		icon:SetTemplate("Default")
+		icon.IconBorder:SetTexture('')
+		hooksecurefunc(icon.IconBorder, 'SetVertexColor', function(self, r, g, b)
+			icon:SetBackdropBorderColor(r, g, b)
+		end)
+		hooksecurefunc(icon.IconBorder, 'Hide', function(self, r, g, b)
+			icon:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+		end)
 
-			icon:CreateBackdrop("Default")
-			icon.backdrop:SetAllPoints()
-		end
-
-		if button then
-			button:StripTextures()
-			button:StyleButton()
-			_G["BrowseButton"..i.."Highlight"] = button:GetHighlightTexture()
-			button:GetHighlightTexture():ClearAllPoints()
-			button:GetHighlightTexture():Point("TOPLEFT", icon, "TOPRIGHT", 2, 0)
-			button:GetHighlightTexture():SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", -2, 5)
-			button:GetPushedTexture():SetAllPoints(button:GetHighlightTexture())
-		end
+		button:StripTextures()
+		button:StyleButton()
+		_G["BrowseButton"..i.."Highlight"] = button:GetHighlightTexture()
+		button:GetHighlightTexture():ClearAllPoints()
+		button:GetHighlightTexture():Point("TOPLEFT", icon, "TOPRIGHT", 2, 0)
+		button:GetHighlightTexture():SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", -2, 5)
+		button:GetPushedTexture():SetAllPoints(button:GetHighlightTexture())
 	end
 
 	for i=1, NUM_AUCTIONS_TO_DISPLAY do
@@ -204,20 +204,18 @@ local function LoadSkin()
 		local icon = _G["AuctionsButton"..i.."Item"]
 
 		_G["AuctionsButton"..i.."ItemIconTexture"]:SetTexCoord(unpack(E.TexCoords))
-		hooksecurefunc(_G["AuctionsButton"..i.."ItemIconTexture"], "SetTexCoord", function(self, x1, y1, x2, y2)
-			local x3, y3, x4, y4 = unpack(E.TexCoords)
-			if x1 ~= x3 or y1 ~= y3 or x2 ~= x4 or y2 ~= y4 then
-				self:SetTexCoord(unpack(E.TexCoords))
-			end
-		end)
 		_G["AuctionsButton"..i.."ItemIconTexture"]:SetInside()
 
 		icon:StyleButton()
-		--TODO: Find a better method to ensure that the icon:GetNormalTexture doesn't return after clicking
-		icon:HookScript("OnUpdate", function() icon:GetNormalTexture():Kill() end)
-
-		icon:CreateBackdrop("Default")
-		icon.backdrop:SetAllPoints()
+		icon:GetNormalTexture():SetTexture('')
+		icon:SetTemplate("Default")
+		icon.IconBorder:SetTexture('')
+		hooksecurefunc(icon.IconBorder, 'SetVertexColor', function(self, r, g, b)
+			icon:SetBackdropBorderColor(r, g, b)
+		end)
+		hooksecurefunc(icon.IconBorder, 'Hide', function(self, r, g, b)
+			icon:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+		end)
 
 		button:StripTextures()
 		button:StyleButton()
@@ -236,10 +234,15 @@ local function LoadSkin()
 		_G["BidButton"..i.."ItemIconTexture"]:SetInside()
 
 		icon:StyleButton()
-		icon:HookScript("OnUpdate", function() icon:GetNormalTexture():Kill() end)
-
-		icon:CreateBackdrop("Default")
-		icon.backdrop:SetAllPoints()
+		icon:GetNormalTexture():SetTexture('')
+		icon:SetTemplate("Default")
+		icon.IconBorder:SetTexture('')
+		hooksecurefunc(icon.IconBorder, 'SetVertexColor', function(self, r, g, b)
+			icon:SetBackdropBorderColor(r, g, b)
+		end)
+		hooksecurefunc(icon.IconBorder, 'Hide', function(self, r, g, b)
+			icon:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+		end)
 
 		button:StripTextures()
 		button:StyleButton()
@@ -295,10 +298,14 @@ local function LoadSkin()
 	AuctionFrameAuctions.bg2:SetFrameLevel(AuctionFrameAuctions.bg2:GetFrameLevel() - 2)
 	
 	--WoW Token Category
-	S:HandleItemButton(BrowseWowTokenResults.Token)
-	BrowseWowTokenResults.Token:CreateBackdrop("Default", true)
 	S:HandleButton(BrowseWowTokenResults.Buyout)
-	BrowseWowTokenResults.Token:SetHighlightTexture("")
+	BrowseWowTokenResultsToken:CreateBackdrop("Default")
+	BrowseWowTokenResultsTokenIconTexture:SetTexCoord(unpack(E.TexCoords))
+	BrowseWowTokenResultsToken.backdrop:SetOutside(BrowseWowTokenResultsTokenIconTexture)
+	BrowseWowTokenResultsToken.backdrop:SetBackdropBorderColor(BrowseWowTokenResultsToken.IconBorder:GetVertexColor())
+	BrowseWowTokenResultsToken.backdrop:SetFrameLevel(BrowseWowTokenResultsToken:GetFrameLevel())
+	BrowseWowTokenResultsToken.IconBorder:SetTexture(nil)
+	BrowseWowTokenResultsToken.ItemBorder:SetTexture(nil)
 	
 	--WoW Token Tutorial Frame
 	WowTokenGameTimeTutorial:CreateBackdrop("Transparent")
