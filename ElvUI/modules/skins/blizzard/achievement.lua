@@ -1,98 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
-local function LoadSkin(event)
+local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.achievement ~= true then return end
-
-	local function SkinAchievement(Achievement, BiggerIcon)
-		Achievement:StripTextures(true)
-		Achievement:CreateBackdrop("Default", true)
-		Achievement.backdrop:SetInside()
-		Achievement.icon:SetTemplate()
-		Achievement.icon:SetSize(BiggerIcon and 54 or 36, BiggerIcon and 54 or 36)
-		Achievement.icon:ClearAllPoints()
-		Achievement.icon:Point("LEFT", 8, 0)
-		Achievement.icon.bling:Kill()
-		Achievement.icon.frame:Kill()
-		Achievement.icon.texture:SetTexCoord(unpack(E.TexCoords))
-		Achievement.icon.texture:SetInside()
-
-		if Achievement.highlight then
-			Achievement.highlight:StripTextures()
-			Achievement:HookScript('OnEnter', function(self) self.backdrop:SetBackdropBorderColor(1, 1, 0) end)
-			Achievement:HookScript('OnLeave', function(self)
-				if (self.player and self.player.accountWide or self.accountWide) then
-					self.backdrop:SetBackdropBorderColor(ACHIEVEMENTUI_BLUEBORDER_R, ACHIEVEMENTUI_BLUEBORDER_G, ACHIEVEMENTUI_BLUEBORDER_B)
-				else
-					self.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
-				end
-			end)
-		end
-
-		if Achievement.label then
-			Achievement.label:SetTextColor(1, 1, 1)
-		end
-
-		if Achievement.description then
-			Achievement.description:SetTextColor(.6, .6, .6)
-			hooksecurefunc(Achievement.description, 'SetTextColor', function(self, r, g, b)
-				if r == 0 and g == 0 and b == 0 then
-					Achievement.description:SetTextColor(.6, .6, .6)
-				end
-			end)
-		end
-
-		if Achievement.hiddenDescription then
-			Achievement.hiddenDescription:SetTextColor(1, 1, 1)
-		end
-
-		if Achievement.tracked then
-			S:HandleCheckBox(Achievement.tracked)
-		end
-	end
-
-	if event == "PLAYER_ENTERING_WORLD" then
-		hooksecurefunc('HybridScrollFrame_CreateButtons', function(frame, template)
-			if template == "AchievementCategoryTemplate" then
-				for _, button in pairs(frame.buttons) do
-					button:StripTextures(true)
-					button:StyleButton()
-				end
-			end
-			if template == "AchievementTemplate" then
-				for _, Achievement in pairs(frame.buttons) do
-					SkinAchievement(Achievement, true)
-				end
-			end
-			if template == "ComparisonTemplate" then
-				for _, Achievement in pairs(frame.buttons) do
-					SkinAchievement(Achievement.player)
-					SkinAchievement(Achievement.friend)
-
-					hooksecurefunc(Achievement.player, 'Saturate', function()
-						if Achievement.player.accountWide then
-							Achievement.player.backdrop:SetBackdropBorderColor(ACHIEVEMENTUI_BLUEBORDER_R, ACHIEVEMENTUI_BLUEBORDER_G, ACHIEVEMENTUI_BLUEBORDER_B)
-							Achievement.friend.backdrop:SetBackdropBorderColor(ACHIEVEMENTUI_BLUEBORDER_R, ACHIEVEMENTUI_BLUEBORDER_G, ACHIEVEMENTUI_BLUEBORDER_B)
-						else
-							Achievement.player.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
-							Achievement.friend.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
-						end
-					end)
-				end
-			end
-			if template == "StatTemplate" then
-				for _, Stats in pairs(frame.buttons) do
-					-- Stats:StripTextures(true)
-					Stats:StyleButton()
-				end
-			end
-		end)
-	end
-	
-	if (not IsAddOnLoaded("Blizzard_AchievementUI")) then
-		return;
-	end
-	
 	local frames = {
 		"AchievementFrame",
 		"AchievementFrameCategories",
@@ -140,9 +50,9 @@ local function LoadSkin(event)
 	AchievementFrameCategoriesContainer:CreateBackdrop("Default")
 	AchievementFrameCategoriesContainer.backdrop:Point("TOPLEFT", 0, 4)
 	AchievementFrameCategoriesContainer.backdrop:Point("BOTTOMRIGHT", -2, -3)
-	AchievementFrameAchievementsContainer:CreateBackdrop("Transparent")
-	AchievementFrameAchievementsContainer.backdrop:Point("TOPLEFT", -2, 2)
-	AchievementFrameAchievementsContainer.backdrop:Point("BOTTOMRIGHT", -2, -3)
+	AchievementFrameAchievementsContainer:CreateBackdrop("Default")
+	AchievementFrameAchievementsContainer.backdrop:Point("TOPLEFT", 0, 2)
+	AchievementFrameAchievementsContainer.backdrop:Point("BOTTOMRIGHT", -3, -3)
 
 	S:HandleCloseButton(AchievementFrameCloseButton, AchievementFrame.backdrop)
 	S:HandleDropDownBox(AchievementFrameFilterDropDown)
@@ -167,18 +77,16 @@ local function LoadSkin(event)
 		bar:SetStatusBarColor(4/255, 179/255, 30/255)
 		bar:CreateBackdrop("Default")
 
-		local StatusBarName = bar:GetName()
-
-		if _G[StatusBarName.."Title"] then
-			_G[StatusBarName.."Title"]:SetPoint("LEFT", 4, 0)
+		if _G[bar:GetName().."Title"] then
+			_G[bar:GetName().."Title"]:SetPoint("LEFT", 4, 0)
 		end
 
-		if _G[StatusBarName.."Label"] then
-			_G[StatusBarName.."Label"]:SetPoint("LEFT", 4, 0)
+		if _G[bar:GetName().."Label"] then
+			_G[bar:GetName().."Label"]:SetPoint("LEFT", 4, 0)
 		end
 
-		if _G[StatusBarName.."Text"] then
-			_G[StatusBarName.."Text"]:SetPoint("RIGHT", -4, 0)
+		if _G[bar:GetName().."Text"] then
+			_G[bar:GetName().."Text"]:SetPoint("RIGHT", -4, 0)
 		end
 	end
 
@@ -201,28 +109,53 @@ local function LoadSkin(event)
 		_G[highlight:GetName().."Middle"]:SetAllPoints(frame)
 	end
 
+	AchievementFrame:HookScript("OnShow", function(self)
+		if self.containerSkined then return; end
+		for i=1, 20 do
+			local frame = _G["AchievementFrameCategoriesContainerButton"..i]
+			local lastframe = _G["AchievementFrameCategoriesContainerButton"..i-1]
+
+			frame:StripTextures()
+			frame:StyleButton()
+		end
+		self.containerSkined = true
+	end)
+
 	hooksecurefunc('AchievementButton_DisplayAchievement', function(frame)
-		if frame.accountWide then
-			frame.backdrop:SetBackdropBorderColor(ACHIEVEMENTUI_BLUEBORDER_R, ACHIEVEMENTUI_BLUEBORDER_G, ACHIEVEMENTUI_BLUEBORDER_B)
-		else
-			frame.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		if frame.accountWide and frame.bg3 then
+			frame.bg3:SetTexture(ACHIEVEMENTUI_BLUEBORDER_R, ACHIEVEMENTUI_BLUEBORDER_G, ACHIEVEMENTUI_BLUEBORDER_B)
+		elseif frame.bg3 then
+			frame.bg3:SetTexture(unpack(E.media.bordercolor))
 		end
 	end)
 
 	hooksecurefunc("AchievementFrameSummary_UpdateAchievements", function()
 		for i=1, ACHIEVEMENTUI_MAX_SUMMARY_ACHIEVEMENTS do
 			local frame = _G["AchievementFrameSummaryAchievement"..i]
-			if not frame.isSkinned then
-				SkinAchievement(frame)
-				frame.isSkinned = true
-			end
+			_G["AchievementFrameSummaryAchievement"..i.."Highlight"]:Kill()
+			frame:StripTextures()
 
-			--The backdrop borders tend to overlap so add a little more space between summary achievements
-			local prevFrame = _G["AchievementFrameSummaryAchievement"..i-1]
 			if i ~= 1 then
 				frame:ClearAllPoints()
-				frame:SetPoint("TOPLEFT", prevFrame, "BOTTOMLEFT", 0, 1)
-				frame:SetPoint("TOPRIGHT", prevFrame, "BOTTOMRIGHT", 0, 1)
+				frame:SetPoint("TOPLEFT", _G["AchievementFrameSummaryAchievement"..i-1], "BOTTOMLEFT", 0, 1)
+				frame:SetPoint("TOPRIGHT", _G["AchievementFrameSummaryAchievement"..i-1], "BOTTOMRIGHT", 0, 1)
+			end
+
+			_G["AchievementFrameSummaryAchievement"..i.."Description"]:SetTextColor(0.6, 0.6, 0.6)
+
+			if not frame.backdrop then
+				frame:CreateBackdrop("Default", true)
+				frame.backdrop:SetInside()
+
+				_G["AchievementFrameSummaryAchievement"..i.."IconBling"]:Kill()
+				_G["AchievementFrameSummaryAchievement"..i.."IconOverlay"]:Kill()
+				_G["AchievementFrameSummaryAchievement"..i.."Icon"]:SetTemplate("Default")
+				_G["AchievementFrameSummaryAchievement"..i.."Icon"]:Height(_G["AchievementFrameSummaryAchievement"..i.."Icon"]:GetHeight() - 14)
+				_G["AchievementFrameSummaryAchievement"..i.."Icon"]:Width(_G["AchievementFrameSummaryAchievement"..i.."Icon"]:GetWidth() - 14)
+				_G["AchievementFrameSummaryAchievement"..i.."Icon"]:ClearAllPoints()
+				_G["AchievementFrameSummaryAchievement"..i.."Icon"]:Point("LEFT", 6, 0)
+				_G["AchievementFrameSummaryAchievement"..i.."IconTexture"]:SetTexCoord(unpack(E.TexCoords))
+				_G["AchievementFrameSummaryAchievement"..i.."IconTexture"]:SetInside()
 			end
 
 			if frame.accountWide then
@@ -230,6 +163,180 @@ local function LoadSkin(event)
 			else
 				frame.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
+		end
+	end)
+
+	for i=1, 7 do
+		local frame = _G["AchievementFrameAchievementsContainerButton"..i]
+		_G["AchievementFrameAchievementsContainerButton"..i.."Highlight"]:Kill()
+		frame:StripTextures(true)
+
+		--Initiate fucked up method of creating a backdrop
+		if not E.PixelMode then
+			frame.bg1 = frame:CreateTexture(nil, "BACKGROUND")
+			frame.bg1:SetDrawLayer("BACKGROUND", 4)
+			frame.bg1:SetTexture(E["media"].normTex) --Default TukUI users this is normTex, normTex doesn't exist
+			frame.bg1:SetVertexColor(unpack(E['media'].backdropcolor))
+			frame.bg1:Point("TOPLEFT", E.mult*4, -E.mult*4)
+			frame.bg1:Point("BOTTOMRIGHT", -E.mult*4, E.mult*4)
+
+			frame.bg2 = frame:CreateTexture(nil, "BACKGROUND")
+			frame.bg2:SetDrawLayer("BACKGROUND", 3)
+			frame.bg2:SetTexture(0,0,0)
+			frame.bg2:Point("TOPLEFT", E.mult*3, -E.mult*3)
+			frame.bg2:Point("BOTTOMRIGHT", -E.mult*3, E.mult*3)
+
+			frame.bg3 = frame:CreateTexture(nil, "BACKGROUND")
+			frame.bg3:SetDrawLayer("BACKGROUND", 2)
+			frame.bg3:SetTexture(unpack(E['media'].bordercolor))
+			frame.bg3:Point("TOPLEFT", E.mult*2, -E.mult*2)
+			frame.bg3:Point("BOTTOMRIGHT", -E.mult*2, E.mult*2)
+
+			frame.bg4 = frame:CreateTexture(nil, "BACKGROUND")
+			frame.bg4:SetDrawLayer("BACKGROUND", 1)
+			frame.bg4:SetTexture(0,0,0)
+			frame.bg4:Point("TOPLEFT", E.mult, -E.mult)
+			frame.bg4:Point("BOTTOMRIGHT", -E.mult, E.mult)
+		else
+			frame.bg1 = frame:CreateTexture(nil, "BACKGROUND")
+			frame.bg1:SetDrawLayer("BACKGROUND", 4)
+			frame.bg1:SetTexture(E["media"].normTex) --Default TukUI users this is normTex, normTex doesn't exist
+			frame.bg1:SetVertexColor(unpack(E['media'].backdropcolor))
+			frame.bg1:Point("TOPLEFT", E.mult, -E.mult)
+			frame.bg1:Point("BOTTOMRIGHT", -E.mult, E.mult)
+
+			frame.bg3 = frame:CreateTexture(nil, "BACKGROUND")
+			frame.bg3:SetDrawLayer("BACKGROUND", 2)
+			frame.bg3:SetTexture(unpack(E['media'].bordercolor))
+			frame.bg3:SetOutside(E.mult)
+		end
+
+		_G["AchievementFrameAchievementsContainerButton"..i.."Description"]:SetTextColor(0.6, 0.6, 0.6)
+		hooksecurefunc(_G["AchievementFrameAchievementsContainerButton"..i.."Description"], "SetTextColor", function(self, r, g, b)
+			if r ~= 0.6 or g ~= 0.6 or b ~= 0.6 then
+				self:SetTextColor(0.6, 0.6, 0.6)
+			end
+		end)
+
+		_G["AchievementFrameAchievementsContainerButton"..i.."HiddenDescription"]:SetTextColor(1, 1, 1)
+		hooksecurefunc(_G["AchievementFrameAchievementsContainerButton"..i.."HiddenDescription"], "SetTextColor", function(self, r, g, b)
+			if r ~= 1 or g ~= 1 or b ~= 1 then
+				self:SetTextColor(1, 1, 1)
+			end
+		end)
+
+		_G["AchievementFrameAchievementsContainerButton"..i.."IconBling"]:Kill()
+		_G["AchievementFrameAchievementsContainerButton"..i.."IconOverlay"]:Kill()
+		_G["AchievementFrameAchievementsContainerButton"..i.."Icon"]:SetTemplate('Default')
+		_G["AchievementFrameAchievementsContainerButton"..i.."Icon"]:Height(_G["AchievementFrameAchievementsContainerButton"..i.."Icon"]:GetHeight() - 14)
+		_G["AchievementFrameAchievementsContainerButton"..i.."Icon"]:Width(_G["AchievementFrameAchievementsContainerButton"..i.."Icon"]:GetWidth() - 14)
+		_G["AchievementFrameAchievementsContainerButton"..i.."Icon"]:ClearAllPoints()
+		_G["AchievementFrameAchievementsContainerButton"..i.."Icon"]:Point("LEFT", 6, 0)
+		_G["AchievementFrameAchievementsContainerButton"..i.."IconTexture"]:SetTexCoord(unpack(E.TexCoords))
+		_G["AchievementFrameAchievementsContainerButton"..i.."IconTexture"]:SetInside()
+
+		--_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"].oborder = "Don't use sharp border" --Needed for ElvUI only
+		_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"]:StripTextures()
+		_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"]:SetTemplate("Default")
+		_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"]:SetCheckedTexture("Interface\\Buttons\\UI-CheckBox-Check")
+		_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"]:Size(12, 12)
+		_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"]:GetCheckedTexture():Point("TOPLEFT", -4, 4)
+		_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"]:GetCheckedTexture():Point("BOTTOMRIGHT", 4, -4)
+
+		_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"]:ClearAllPoints()
+		_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"]:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", 5, 5)
+
+		hooksecurefunc(_G["AchievementFrameAchievementsContainerButton"..i.."Tracked"], "SetPoint", function(self, point, attachTo, anchorPoint, xOffset, yOffset)
+			if point ~= "BOTTOMLEFT" or attachTo ~= frame or anchorPoint ~= "BOTTOMLEFT" or xOffset ~= 5 or yOffset ~= 5 then
+				self:ClearAllPoints()
+				self:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", 5, 5)
+			end
+		end)
+	end
+
+
+	local compares = {
+		"Player",
+		"Friend"
+	}
+
+	for _, compare in pairs(compares) do
+		for i=1, 9 do
+			local frame = "AchievementFrameComparisonContainerButton"..i..compare
+
+			_G[frame]:StripTextures()
+			_G[frame.."Background"]:Kill()
+
+			if _G[frame.."Description"] then
+				_G[frame.."Description"]:SetTextColor(0.6, 0.6, 0.6)
+				hooksecurefunc(_G[frame.."Description"], "SetTextColor", function(self, r, g, b)
+					if r ~= 0.6 or g ~= 0.6 or b ~= 0.6 then
+						self:SetTextColor(0.6, 0.6, 0.6)
+					end
+				end)
+			end
+
+			--Initiate fucked up method of creating a backdrop
+			_G[frame].bg1 = _G[frame]:CreateTexture(nil, "BACKGROUND")
+			_G[frame].bg1:SetDrawLayer("BACKGROUND", 4)
+			_G[frame].bg1:SetTexture(E["media"].normTex) --Default TukUI users this is normTex, normTex doesn't exist
+			_G[frame].bg1:SetVertexColor(unpack(E['media'].backdropcolor))
+			_G[frame].bg1:Point("TOPLEFT", E.mult*4, -E.mult*4)
+			_G[frame].bg1:Point("BOTTOMRIGHT", -E.mult*4, E.mult*4)
+
+			_G[frame].bg2 = _G[frame]:CreateTexture(nil, "BACKGROUND")
+			_G[frame].bg2:SetDrawLayer("BACKGROUND", 3)
+			_G[frame].bg2:SetTexture(0,0,0)
+			_G[frame].bg2:Point("TOPLEFT", E.mult*3, -E.mult*3)
+			_G[frame].bg2:Point("BOTTOMRIGHT", -E.mult*3, E.mult*3)
+
+			_G[frame].bg3 = _G[frame]:CreateTexture(nil, "BACKGROUND")
+			_G[frame].bg3:SetDrawLayer("BACKGROUND", 2)
+			_G[frame].bg3:SetTexture(unpack(E['media'].bordercolor))
+			_G[frame].bg3:Point("TOPLEFT", E.mult*2, -E.mult*2)
+			_G[frame].bg3:Point("BOTTOMRIGHT", -E.mult*2, E.mult*2)
+
+			_G[frame].bg4 = _G[frame]:CreateTexture(nil, "BACKGROUND")
+			_G[frame].bg4:SetDrawLayer("BACKGROUND", 1)
+			_G[frame].bg4:SetTexture(0,0,0)
+			_G[frame].bg4:Point("TOPLEFT", E.mult, -E.mult)
+			_G[frame].bg4:Point("BOTTOMRIGHT", -E.mult, E.mult)
+
+
+			if compare == "Friend" then
+				_G[frame.."Shield"]:Point("TOPRIGHT", _G["AchievementFrameComparisonContainerButton"..i.."Friend"], "TOPRIGHT", -20, -3)
+			end
+
+			_G[frame.."IconBling"]:Kill()
+			_G[frame.."IconOverlay"]:Kill()
+			_G[frame.."Icon"]:SetTemplate("Default")
+			_G[frame.."Icon"]:Height(_G[frame.."Icon"]:GetHeight() - 14)
+			_G[frame.."Icon"]:Width(_G[frame.."Icon"]:GetWidth() - 14)
+			_G[frame.."Icon"]:ClearAllPoints()
+			_G[frame.."Icon"]:Point("LEFT", 6, 0)
+			_G[frame.."IconTexture"]:SetTexCoord(unpack(E.TexCoords))
+			_G[frame.."IconTexture"]:SetInside()
+		end
+	end
+
+	hooksecurefunc('AchievementFrameComparison_DisplayAchievement', function(button)
+		local player = button.player;
+		local friend = button.friend;
+		player.titleBar:Kill()
+		friend.titleBar:Kill()
+
+		if not player.bg3 or not friend.bg3 then return; end
+
+		if player.accountWide then
+			player.bg3:SetTexture(ACHIEVEMENTUI_BLUEBORDER_R, ACHIEVEMENTUI_BLUEBORDER_G, ACHIEVEMENTUI_BLUEBORDER_B)
+		else
+			player.bg3:SetTexture(unpack(E.media.bordercolor))
+		end
+
+		if friend.accountWide then
+			friend.bg3:SetTexture(ACHIEVEMENTUI_BLUEBORDER_R, ACHIEVEMENTUI_BLUEBORDER_G, ACHIEVEMENTUI_BLUEBORDER_B)
+		else
+			friend.bg3:SetTexture(unpack(E.media.bordercolor))
 		end
 	end)
 
@@ -260,9 +367,43 @@ local function LoadSkin(event)
 				frame:StripTextures()
 				frame:SetStatusBarTexture(E["media"].normTex)
 				frame:SetStatusBarColor(4/255, 179/255, 30/255)
-				frame:CreateBackdrop("Transparent")
 				frame:SetFrameLevel(frame:GetFrameLevel() + 3)
+
 				frame:Height(frame:GetHeight() - 2)
+
+				--Initiate fucked up method of creating a backdrop
+				if not E.PixelMode then
+					frame.bg1 = frame:CreateTexture(nil, "BACKGROUND")
+					frame.bg1:SetDrawLayer("BACKGROUND", -7)
+					frame.bg1:SetTexture(E["media"].normTex) --Default TukUI users this is normTex, normTex doesn't exist
+					frame.bg1:SetVertexColor(unpack(E['media'].backdropcolor))
+					frame.bg1:Point("TOPLEFT", -E.mult*3, E.mult*3)
+					frame.bg1:Point("BOTTOMRIGHT", E.mult*3, -E.mult*3)
+
+					frame.bg2 = frame:CreateTexture(nil, "BACKGROUND")
+					frame.bg2:SetDrawLayer("BACKGROUND", -6)
+					frame.bg2:SetTexture(unpack(E['media'].bordercolor))
+					frame.bg2:Point("TOPLEFT", -E.mult*2, E.mult*2)
+					frame.bg2:Point("BOTTOMRIGHT", E.mult*2, -E.mult*2)
+
+					frame.bg3 = frame:CreateTexture(nil, "BACKGROUND")
+					frame.bg3:SetDrawLayer("BACKGROUND", -5)
+					frame.bg3:SetTexture(unpack(E['media'].backdropcolor))
+					frame.bg3:Point("TOPLEFT", -E.mult, E.mult)
+					frame.bg3:Point("BOTTOMRIGHT", E.mult, -E.mult)
+				else
+					frame.bg1 = frame:CreateTexture(nil, "BACKGROUND")
+					frame.bg1:SetDrawLayer("BACKGROUND", 4)
+					frame.bg1:SetTexture(E["media"].normTex) --Default TukUI users this is normTex, normTex doesn't exist
+					frame.bg1:SetVertexColor(unpack(E['media'].backdropcolor))
+					frame.bg1:SetAllPoints()
+
+					frame.bg3 = frame:CreateTexture(nil, "BACKGROUND")
+					frame.bg3:SetDrawLayer("BACKGROUND", 2)
+					frame.bg3:SetTexture(unpack(E['media'].bordercolor))
+					frame.bg3:Point("TOPLEFT", -E.mult, E.mult)
+					frame.bg3:Point("BOTTOMRIGHT", E.mult, -E.mult)
+				end
 
 				frame.text:ClearAllPoints()
 				frame.text:SetPoint("CENTER", frame, "CENTER", 0, -1)
@@ -271,8 +412,13 @@ local function LoadSkin(event)
 				if index > 1 then
 					frame:ClearAllPoints()
 					frame:Point("TOP", _G["AchievementFrameProgressBar"..index-1], "BOTTOM", 0, -5)
-					frame.SetPoint = E.noop
-					frame.ClearAllPoints = E.noop
+					hooksecurefunc(frame, "SetPoint", function(self, point, attachTo, anchorPoint, xOffset, yOffset, noReset)
+
+						if not noReset then
+							self:ClearAllPoints()
+							self:SetPoint("TOP", _G["AchievementFrameProgressBar"..index-1], "BOTTOM", 0, -5, true)
+						end
+					end)
 				end
 
 				frame.skinned = true
@@ -317,12 +463,5 @@ local function LoadSkin(event)
 		end
 	end)
 end
-
-local f = CreateFrame("Frame")
-f:RegisterEvent("PLAYER_ENTERING_WORLD")
-f:SetScript("OnEvent", function(self, event)
-	self:UnregisterEvent(event)
-	LoadSkin(event)
-end)
 
 S:RegisterSkin("Blizzard_AchievementUI", LoadSkin)
