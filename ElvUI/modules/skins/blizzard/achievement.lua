@@ -47,7 +47,7 @@ local function LoadSkin(event)
 		end
 
 		if Achievement.tracked then
-			S:HandleCheckBox(Achievement.tracked)
+			S:HandleCheckBox(Achievement.tracked, true)
 		end
 	end
 
