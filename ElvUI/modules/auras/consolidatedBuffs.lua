@@ -223,5 +223,3 @@ function A:Construct_ConsolidatedBuffs()
 
 	self:Update_ConsolidatedBuffsSettings()
 end
-
-E:RegisterModule(A:GetName())

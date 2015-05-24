@@ -6,6 +6,21 @@ local function FixExtraActionCD(cd)
 	E.OnSetCooldown(cd, start, duration, 0, 0)
 end
 
+function AB:Extra_SetAlpha()
+	local alpha = E.db.actionbar.extraActionButton.alpha
+	for i=1, ExtraActionBarFrame:GetNumChildren() do
+		local button = _G["ExtraActionButton"..i]
+		if button then
+			button:SetAlpha(alpha)
+		end
+	end
+
+	local button = DraenorZoneAbilityFrame.SpellButton
+	if button then
+		button:SetAlpha(alpha)
+	end
+end
+
 function AB:SetupExtraButton()
 	local holder = CreateFrame('Frame', nil, E.UIParent)
 	holder:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 150)
@@ -60,6 +75,8 @@ function AB:SetupExtraButton()
 	if HasExtraActionBar() then
 		ExtraActionBarFrame:Show();
 	end
+	
+	AB:Extra_SetAlpha()
 
 	E:CreateMover(holder, 'BossButton', L["Boss Button"], nil, nil, nil, 'ALL,ACTIONBARS');
 end

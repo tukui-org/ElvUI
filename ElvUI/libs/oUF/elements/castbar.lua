@@ -145,7 +145,7 @@ local UNIT_SPELLCAST_START = function(self, event, unit, spell)
 		castbar:SetValue(0)		
 	end
 
-	castbar:SetMinMaxValues(0, max)
+	castbar:SetMinMaxValues(0, castbar.max)
 
 	if(castbar.Text) then castbar.Text:SetText(text) end
 	if(castbar.Icon) then castbar.Icon:SetTexture(texture) end

@@ -2107,4 +2107,7 @@ P["actionbar"] = {
 		["buttonspacing"] = 2,
 		['alpha'] = 1,
 	},
+	['extraActionButton'] = {
+		['alpha'] = 1,
+	},
 };

@@ -18,6 +18,7 @@ local HDR_INFORMATION = "LibElvUIPlugin-1.0.%d - Plugins Loaded  (Green means yo
 local INFO_BY = "by"
 local INFO_VERSION = "Version:"
 local INFO_NEW = "Newest:"
+local LIBRARY = "Library"
 
 if GetLocale() == "deDE" then -- German Translation
 	MSG_OUTDATED = "Deine Version von %s ist veraltet (akutelle Version ist %s). Du kannst die aktuelle Version von http://www.tukui.org herunterrladen."
@@ -26,6 +27,7 @@ if GetLocale() == "deDE" then -- German Translation
 	INFO_BY = "von"
 	INFO_VERSION = "Version:"
 	INFO_NEW = "Neuste:"
+	LIBRARY = "Bibliothek"
 end
 
 if GetLocale() == "ruRU" then -- Russian Translations
@@ -35,6 +37,7 @@ if GetLocale() == "ruRU" then -- Russian Translations
 	INFO_BY = "от"
 	INFO_VERSION = "Версия:"
 	INFO_NEW = "Последняя:"
+	LIBRARY = "Библиотека"
 end
 
 --
@@ -50,10 +53,11 @@ end
 --   Registers a module with the given name and option callback, pulls version info from metadata
 --
 
-function lib:RegisterPlugin(name,callback)
+function lib:RegisterPlugin(name,callback, isLib)
     local plugin = {}
 	plugin.name = name
 	plugin.version = name == MAJOR and MINOR or GetAddOnMetadata(name, "Version")
+	if isLib then plugin.isLib = true; plugin.version = 1 end
 	plugin.callback = callback
 	lib.plugins[name] = plugin
 	local loaded = IsAddOnLoaded("ElvUI_Config")
@@ -170,7 +174,7 @@ function lib:GeneratePluginList()
 			if author then
 			  list = list .. " ".. INFO_BY .." " .. author
 			end
-			list = list .. color .. " - " .. INFO_VERSION .." " .. plugin.version
+			list = list .. color ..(plugin.isLib and " "..LIBRARY or " - " .. INFO_VERSION .." " .. plugin.version)
 			if plugin.old then
 			  list = list .. INFO_NEW .. plugin.newversion .. ")"
 			end
