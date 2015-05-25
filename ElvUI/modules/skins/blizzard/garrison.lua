@@ -268,7 +268,7 @@ local function LoadSkin()
 	-- S:HandleScrollBar(scrollFrame.scrollBar)
 	HandleShipFollowerPage(ShipFollowerList.followerTab)
 	
-	
+
 	-- ShipYard
 	GarrisonShipyardFrame:StripTextures(true)
 	GarrisonShipyardFrame.BorderFrame:StripTextures(true)
@@ -278,12 +278,20 @@ local function LoadSkin()
 	S:HandleTab(GarrisonShipyardFrameTab1)
 	S:HandleTab(GarrisonShipyardFrameTab2)
 	
-	-- ShipYard: Mission Page
+	-- ShipYard: Naval Map
 	local MissionTab = GarrisonShipyardFrame.MissionTab
 	local MissionList = MissionTab.MissionList
-	local MissionPage = GarrisonShipyardFrame.MissionTab.MissionPage
+	MissionList:CreateBackdrop("Transparent")
+	MissionList.backdrop:SetOutside(MissionList.MapTexture)
+	
+	-- ShipYard: Mission
+	local MissionPage = MissionTab.MissionPage
 	S:HandleCloseButton(MissionPage.CloseButton)
 	MissionPage.CloseButton:SetFrameLevel(MissionPage.CloseButton:GetFrameLevel() + 2)
+	S:HandleButton(MissionList.CompleteDialog.BorderFrame.ViewButton)
+	S:HandleButton(GarrisonShipyardFrame.MissionComplete.NextMissionButton)
+	MissionList.CompleteDialog:SetAllPoints(MissionList.MapTexture)
+	GarrisonShipyardFrame.MissionCompleteBackground:SetAllPoints(MissionList.MapTexture)
 	S:HandleButton(MissionPage.StartMissionButton)
 	MissionPage.StartMissionButton.Flash:Hide()
 	MissionPage.StartMissionButton.Flash.Show = E.noop
@@ -299,10 +307,6 @@ local function LoadSkin()
 	FollowerList.MaterialFrame:StripTextures()
 	FollowerList.MaterialFrame.Icon:SetAtlas("ShipMission_CurrencyIcon-Oil", false) --Re-add the material icon
 	HandleShipFollowerPage(FollowerList.followerTab)
-	
-	-- ShipYard: Naval Map
-	MissionList:CreateBackdrop("Transparent")
-	MissionList.backdrop:SetOutside(MissionList.MapTexture)
 
 	-- ShipYard: Mission Tooltip
 	local tooltip = GarrisonShipyardMapMissionTooltip
