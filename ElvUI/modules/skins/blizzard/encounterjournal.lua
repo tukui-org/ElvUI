@@ -82,7 +82,14 @@ local function LoadSkin()
 	end
 	
 	--Suggestion Reward Tooltips
+	local tooltip = EncounterJournalTooltip
+	local item1 = tooltip.Item1
+	local item2 = tooltip.Item2
 	EncounterJournalTooltip:SetTemplate("Transparent")
+	S:HandleIcon(item1.icon)
+	S:HandleIcon(item2.icon)
+	item1.IconBorder:SetTexture(nil)
+	item2.IconBorder:SetTexture(nil)
 end
 
 S:RegisterSkin('Blizzard_EncounterJournal', LoadSkin)
