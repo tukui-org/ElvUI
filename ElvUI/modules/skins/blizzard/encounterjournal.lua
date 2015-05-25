@@ -82,9 +82,7 @@ local function LoadSkin()
 	end
 	
 	--Suggestion Reward Tooltips
-	S:HookScript(EncounterJournalTooltip, 'OnShow', function(self)
-		self:SetTemplate("Transparent");
-	end)
+	EncounterJournalTooltip:SetTemplate("Transparent")
 end
 
 S:RegisterSkin('Blizzard_EncounterJournal', LoadSkin)
