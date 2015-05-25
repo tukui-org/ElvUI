@@ -4,6 +4,60 @@ local S = E:GetModule('Skins')
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.garrison ~= true then return end
 
+	local function HandleFollowerPage(follower, hasItems)
+		local abilities = follower.followerTab.AbilitiesFrame.Abilities
+		if follower.numAbilitiesStyled == nil then
+			follower.numAbilitiesStyled = 1
+		end
+		local numAbilitiesStyled = follower.numAbilitiesStyled
+		local ability = abilities[numAbilitiesStyled]
+		while ability do
+			local icon = ability.IconButton.Icon
+			S:HandleIcon(icon, ability.IconButton)
+			icon:SetDrawLayer("BORDER", 0)
+			numAbilitiesStyled = numAbilitiesStyled + 1
+			ability = abilities[numAbilitiesStyled]
+		end
+		follower.numAbilitiesStyled = numAbilitiesStyled
+		
+		if hasItems then
+			local weapon = follower.followerTab.ItemWeapon
+			local armor = follower.followerTab.ItemArmor
+			if not weapon.backdrop then
+				S:HandleIcon(weapon.Icon, weapon)
+				weapon.Border:SetTexture(nil)
+				weapon.backdrop:SetFrameLevel(weapon:GetFrameLevel())
+			end
+			if not armor.backdrop then
+				S:HandleIcon(armor.Icon, armor)
+				armor.Border:SetTexture(nil)
+				armor.backdrop:SetFrameLevel(armor:GetFrameLevel())
+			end
+		end
+	end
+	
+	local function HandleShipFollowerPage(shipFollower)
+		local traits = shipFollower.followerTab.Traits
+		for i = 1, #traits do
+			if not traits[i].backdrop then
+				local icon = traits[i].Portrait
+				local border = traits[i].Border
+				S:HandleIcon(icon)
+				-- border:SetTexture(nil) -- I think the border looks nice, not sure if we want to remove that
+			end
+		end
+		
+		local equipment = shipFollower.followerTab.EquipmentFrame.Equipment
+		for i = 1, #equipment do
+			if not equipment[i].backdrop then
+				local icon = equipment[i].Icon
+				local border = equipment[i].Border
+				S:HandleIcon(icon)
+				border:SetAtlas("ShipMission_ShipFollower-TypeFrame") -- This border is ugly though, use the traits border instead
+			end
+		end
+	end
+
 	-- Building frame
 	GarrisonBuildingFrame:StripTextures(true)
 	GarrisonBuildingFrame.TitleText:Show()
@@ -111,6 +165,9 @@ local function LoadSkin()
 	FollowerList.MaterialFrame:StripTextures()
 	S:HandleEditBox(FollowerList.SearchBox)
 	S:HandleScrollBar(FollowerList.listScroll.scrollBar)
+	hooksecurefunc(FollowerList, "ShowFollower", function(self)
+		HandleFollowerPage(self, true)
+	end)
 
 	-- Mission list
 	local MissionTab = GarrisonMissionFrame.MissionTab
@@ -148,10 +205,11 @@ local function LoadSkin()
 		frame.Icon:SetDrawLayer("BORDER", 0)
 	end)
 
-	hooksecurefunc("GarrisonMissionPage_UpdateStartButton", function(missionPage)
-		missionPage.StartMissionButton.Flash:Hide()
-		missionPage.StartMissionButton.FlashAnim:Stop();
-	end)
+	MissionPage.StartMissionButton.Flash:Hide()
+	MissionPage.StartMissionButton.Flash.Show = E.noop
+	MissionPage.StartMissionButton.FlashAnim:Stop()
+	MissionPage.StartMissionButton.FlashAnim.Play = E.noop
+
 
 	-- Landing page
 	-- GarrisonLandingPage:StripTextures(true) -- I actually like the look of this texture. Not sure if we want to remove it.
@@ -159,6 +217,7 @@ local function LoadSkin()
 	S:HandleCloseButton(GarrisonLandingPage.CloseButton, GarrisonLandingPage.backdrop)
 	S:HandleTab(GarrisonLandingPageTab1)
 	S:HandleTab(GarrisonLandingPageTab2)
+	S:HandleTab(GarrisonLandingPageTab3)
 	GarrisonLandingPageTab1:ClearAllPoints()
 	GarrisonLandingPageTab1:SetPoint("TOPLEFT", GarrisonLandingPage, "BOTTOMLEFT", 70, 2)
 
@@ -182,11 +241,14 @@ local function LoadSkin()
 
 	-- Follower list
 	local FollowerList = GarrisonLandingPage.FollowerList
-	select(2, FollowerList:GetRegions()):Hide()
 	FollowerList.FollowerHeaderBar:Hide()
 	S:HandleEditBox(FollowerList.SearchBox)
 	local scrollFrame = FollowerList.listScroll
 	S:HandleScrollBar(scrollFrame.scrollBar)
+
+	hooksecurefunc(FollowerList, "ShowFollower", function(self)
+		HandleFollowerPage(self)
+	end)
 
 	hooksecurefunc("GarrisonFollowerButton_AddAbility", function(self, index)
 		local ability = self.Abilities[index]
@@ -196,22 +258,36 @@ local function LoadSkin()
 			ability.styled = true
 		end
 	end)
-
-	hooksecurefunc("GarrisonFollowerPage_ShowFollower", function(self, followerID)
-		local abilities = self.AbilitiesFrame.Abilities
-		if self.numAbilitiesStyled == nil then
-			self.numAbilitiesStyled = 1
-		end
-		local numAbilitiesStyled = self.numAbilitiesStyled
-		local ability = abilities[numAbilitiesStyled]
-		while ability do
-			local icon = ability.IconButton.Icon
-			S:HandleIcon(icon, ability.IconButton)
-			numAbilitiesStyled = numAbilitiesStyled + 1
-			ability = abilities[numAbilitiesStyled]
-		end
-		self.numAbilitiesStyled = numAbilitiesStyled
+	
+	--Fleet
+	local ShipFollowerList = GarrisonLandingPage.ShipFollowerList
+	ShipFollowerList.FollowerHeaderBar:Hide()
+	S:HandleEditBox(ShipFollowerList.SearchBox)
+	-- Blizzard fucked up, the scrollbar for the Ship follower list
+	-- has the same global name as the one from the regular follower list
+	-- which means we cannot skin it without fucking up the previously skinned scrollbar
+	-- local scrollFrame = ShipFollowerList.listScroll
+	-- S:HandleScrollBar(scrollFrame.scrollBar)
+	
+	hooksecurefunc(ShipFollowerList, "ShowFollower", function(self)
+		HandleShipFollowerPage(self)
 	end)
+	
+	
+	--ShipYard
+	GarrisonShipyardFrame:StripTextures(true)
+	GarrisonShipyardFrame.BorderFrame:StripTextures(true)
+	GarrisonShipyardFrame:CreateBackdrop("Transparent")
+	GarrisonShipyardFrame.backdrop:SetOutside(GarrisonShipyardFrame.BorderFrame)
+	GarrisonShipyardFrame.MissionTab.MissionList:CreateBackdrop("Transparent")
+	GarrisonShipyardFrame.MissionTab.MissionList.backdrop:SetOutside(GarrisonShipyardFrame.MissionTab.MissionList.MapTexture)
+	
+	S:HandleCloseButton(GarrisonShipyardFrame.BorderFrame.CloseButton2)
+	S:HandleCloseButton(GarrisonShipyardFrame.MissionTab.MissionPage.CloseButton)
+	GarrisonShipyardFrame.MissionTab.MissionPage.CloseButton:SetFrameLevel(GarrisonShipyardFrame.MissionTab.MissionPage.CloseButton:GetFrameLevel() + 2)
+	
+	S:HandleTab(GarrisonShipyardFrameTab1)
+	S:HandleTab(GarrisonShipyardFrameTab2)
 end
 
 local function SkinTooltip()
@@ -243,6 +319,8 @@ local function SkinTooltip()
 	S:HandleCloseButton(FloatingGarrisonFollowerTooltip.CloseButton)
 	restyleGarrisonFollowerAbilityTooltipTemplate(FloatingGarrisonFollowerAbilityTooltip)
 	S:HandleCloseButton(FloatingGarrisonFollowerAbilityTooltip.CloseButton)
+	restyleGarrisonFollowerTooltipTemplate(FloatingGarrisonMissionTooltip)
+	S:HandleCloseButton(FloatingGarrisonMissionTooltip.CloseButton)
 
 	hooksecurefunc("GarrisonFollowerTooltipTemplate_SetGarrisonFollower", function(tooltipFrame)
 		-- Abilities
