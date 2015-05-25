@@ -297,6 +297,7 @@ local function LoadSkin()
 	MissionPage.StartMissionButton.Flash.Show = E.noop
 	MissionPage.StartMissionButton.FlashAnim:Stop()
 	MissionPage.StartMissionButton.FlashAnim.Play = E.noop
+	S:HandleButton(GarrisonMissionFrameHelpBoxButton)
 	
 	-- ShipYard: Follower List
 	local FollowerList = GarrisonShipyardFrame.FollowerList
@@ -368,6 +369,7 @@ local function SkinTooltip()
 	S:HandleCloseButton(FloatingGarrisonMissionTooltip.CloseButton)
 	restyleGarrisonFollowerTooltipTemplate(FloatingGarrisonShipyardFollowerTooltip)
 	S:HandleCloseButton(FloatingGarrisonShipyardFollowerTooltip.CloseButton)
+	restyleGarrisonFollowerTooltipTemplate(GarrisonShipyardFollowerTooltip)
 
 	hooksecurefunc("GarrisonFollowerTooltipTemplate_SetGarrisonFollower", function(tooltipFrame)
 		-- Abilities
