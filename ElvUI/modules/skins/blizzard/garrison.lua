@@ -322,6 +322,17 @@ local function LoadSkin()
 	if bonusIcon then
 		S:HandleIcon(bonusIcon) --TODO: Check how this actually looks
 	end
+	
+
+	-- Threat Counter Tooltips
+	-- The tooltip starts using blue backdrop and white border unless we re-set the template.
+	-- We should check if there is a better way of doing this.
+	S:HookScript(GarrisonMissionMechanicFollowerCounterTooltip, "OnShow", function(self)
+		self:SetTemplate("Transparent")
+	end)
+	S:HookScript(GarrisonMissionMechanicTooltip, "OnShow", function(self)
+		self:SetTemplate("Transparent")
+	end)
 end
 
 local function SkinTooltip()
@@ -355,6 +366,8 @@ local function SkinTooltip()
 	S:HandleCloseButton(FloatingGarrisonFollowerAbilityTooltip.CloseButton)
 	restyleGarrisonFollowerTooltipTemplate(FloatingGarrisonMissionTooltip)
 	S:HandleCloseButton(FloatingGarrisonMissionTooltip.CloseButton)
+	restyleGarrisonFollowerTooltipTemplate(FloatingGarrisonShipyardFollowerTooltip)
+	S:HandleCloseButton(FloatingGarrisonShipyardFollowerTooltip.CloseButton)
 
 	hooksecurefunc("GarrisonFollowerTooltipTemplate_SetGarrisonFollower", function(tooltipFrame)
 		-- Abilities
@@ -396,6 +409,28 @@ local function SkinTooltip()
 			trait = traits[numTraitsStyled]
 		end
 		tooltipFrame.numTraitsStyled = numTraitsStyled
+	end)
+
+	hooksecurefunc("GarrisonFollowerTooltipTemplate_SetShipyardFollower", function(tooltipFrame)
+		-- Properties
+		if tooltipFrame.numPropertiesStyled == nil then
+			tooltipFrame.numPropertiesStyled = 1
+		end
+		local numPropertiesStyled = tooltipFrame.numPropertiesStyled
+		local properties = tooltipFrame.Properties
+		local property = properties[numPropertiesStyled]
+		while property do
+			local icon = property.Icon
+			icon:SetTexCoord(unpack(E.TexCoords))
+			if not property.border then
+				property.border = CreateFrame("Frame", nil, property)
+				S:HandleIcon(property.Icon, property.border)
+			end
+
+			numPropertiesStyled = numPropertiesStyled + 1
+			property = properties[numPropertiesStyled]
+		end
+		tooltipFrame.numPropertiesStyled = numPropertiesStyled
 	end)
 end
 
