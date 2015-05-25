@@ -36,25 +36,23 @@ local function LoadSkin()
 		end
 	end
 	
-	local function HandleShipFollowerPage(shipFollower)
-		local traits = shipFollower.followerTab.Traits
+	local function HandleShipFollowerPage(followerTab)
+		local traits = followerTab.Traits
 		for i = 1, #traits do
-			if not traits[i].backdrop then
-				local icon = traits[i].Portrait
-				local border = traits[i].Border
-				S:HandleIcon(icon)
-				-- border:SetTexture(nil) -- I think the border looks nice, not sure if we want to remove that
+			local icon = traits[i].Portrait
+			local border = traits[i].Border
+			-- border:SetTexture(nil) -- I think the default border looks nice, not sure if we want to replace that
+			--The landing page icons display inner borders
+			if followerTab.isLandingPage then
+				icon:SetTexCoord(unpack(E.TexCoords))
 			end
 		end
 		
-		local equipment = shipFollower.followerTab.EquipmentFrame.Equipment
+		local equipment = followerTab.EquipmentFrame.Equipment
 		for i = 1, #equipment do
-			if not equipment[i].backdrop then
-				local icon = equipment[i].Icon
-				local border = equipment[i].Border
-				S:HandleIcon(icon)
-				border:SetAtlas("ShipMission_ShipFollower-TypeFrame") -- This border is ugly though, use the traits border instead
-			end
+			local icon = equipment[i].Icon
+			local border = equipment[i].Border
+			border:SetAtlas("ShipMission_ShipFollower-TypeFrame") -- This border is ugly though, use the traits border instead
 		end
 	end
 
@@ -221,7 +219,7 @@ local function LoadSkin()
 	GarrisonLandingPageTab1:ClearAllPoints()
 	GarrisonLandingPageTab1:SetPoint("TOPLEFT", GarrisonLandingPage, "BOTTOMLEFT", 70, 2)
 
-	-- Report
+	-- Landing page: Report
 	local Report = GarrisonLandingPage.Report
 	Report.List:StripTextures(true)
 	local scrollFrame = Report.List.listScroll
@@ -239,7 +237,7 @@ local function LoadSkin()
 		end
 	end
 
-	-- Follower list
+	-- Landing page: Follower list
 	local FollowerList = GarrisonLandingPage.FollowerList
 	FollowerList.FollowerHeaderBar:Hide()
 	S:HandleEditBox(FollowerList.SearchBox)
@@ -259,7 +257,7 @@ local function LoadSkin()
 		end
 	end)
 	
-	--Fleet
+	-- Landing page: Fleet
 	local ShipFollowerList = GarrisonLandingPage.ShipFollowerList
 	ShipFollowerList.FollowerHeaderBar:Hide()
 	S:HandleEditBox(ShipFollowerList.SearchBox)
@@ -268,26 +266,58 @@ local function LoadSkin()
 	-- which means we cannot skin it without fucking up the previously skinned scrollbar
 	-- local scrollFrame = ShipFollowerList.listScroll
 	-- S:HandleScrollBar(scrollFrame.scrollBar)
-	
-	hooksecurefunc(ShipFollowerList, "ShowFollower", function(self)
-		HandleShipFollowerPage(self)
-	end)
+	HandleShipFollowerPage(ShipFollowerList.followerTab)
 	
 	
-	--ShipYard
+	-- ShipYard
 	GarrisonShipyardFrame:StripTextures(true)
 	GarrisonShipyardFrame.BorderFrame:StripTextures(true)
 	GarrisonShipyardFrame:CreateBackdrop("Transparent")
 	GarrisonShipyardFrame.backdrop:SetOutside(GarrisonShipyardFrame.BorderFrame)
-	GarrisonShipyardFrame.MissionTab.MissionList:CreateBackdrop("Transparent")
-	GarrisonShipyardFrame.MissionTab.MissionList.backdrop:SetOutside(GarrisonShipyardFrame.MissionTab.MissionList.MapTexture)
-	
 	S:HandleCloseButton(GarrisonShipyardFrame.BorderFrame.CloseButton2)
-	S:HandleCloseButton(GarrisonShipyardFrame.MissionTab.MissionPage.CloseButton)
-	GarrisonShipyardFrame.MissionTab.MissionPage.CloseButton:SetFrameLevel(GarrisonShipyardFrame.MissionTab.MissionPage.CloseButton:GetFrameLevel() + 2)
-	
 	S:HandleTab(GarrisonShipyardFrameTab1)
 	S:HandleTab(GarrisonShipyardFrameTab2)
+	
+	-- ShipYard: Mission Page
+	local MissionTab = GarrisonShipyardFrame.MissionTab
+	local MissionList = MissionTab.MissionList
+	local MissionPage = GarrisonShipyardFrame.MissionTab.MissionPage
+	S:HandleCloseButton(MissionPage.CloseButton)
+	MissionPage.CloseButton:SetFrameLevel(MissionPage.CloseButton:GetFrameLevel() + 2)
+	S:HandleButton(MissionPage.StartMissionButton)
+	MissionPage.StartMissionButton.Flash:Hide()
+	MissionPage.StartMissionButton.Flash.Show = E.noop
+	MissionPage.StartMissionButton.FlashAnim:Stop()
+	MissionPage.StartMissionButton.FlashAnim.Play = E.noop
+	
+	-- ShipYard: Follower List
+	local FollowerList = GarrisonShipyardFrame.FollowerList
+	local scrollFrame = FollowerList.listScroll
+	FollowerList:StripTextures()
+	S:HandleScrollBar(scrollFrame.scrollBar)
+	S:HandleEditBox(FollowerList.SearchBox)
+	FollowerList.MaterialFrame:StripTextures()
+	FollowerList.MaterialFrame.Icon:SetAtlas("ShipMission_CurrencyIcon-Oil", false) --Re-add the material icon
+	HandleShipFollowerPage(FollowerList.followerTab)
+	
+	-- ShipYard: Naval Map
+	MissionList:CreateBackdrop("Transparent")
+	MissionList.backdrop:SetOutside(MissionList.MapTexture)
+
+	-- ShipYard: Mission Tooltip
+	local tooltip = GarrisonShipyardMapMissionTooltip
+	local reward = tooltip.ItemTooltip
+	local bonusReward = tooltip.BonusReward
+	local icon = reward.Icon
+	local bonusIcon = bonusReward.Icon
+	tooltip:SetTemplate("Transparent")
+	if icon then
+		S:HandleIcon(icon)
+		reward.IconBorder:SetTexture(nil)
+	end
+	if bonusIcon then
+		S:HandleIcon(bonusIcon) --TODO: Check how this actually looks
+	end
 end
 
 local function SkinTooltip()
