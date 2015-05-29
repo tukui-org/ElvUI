@@ -806,6 +806,7 @@ L["Power text will be hidden on NPC targets, in addition the name text will be r
 L["Power"] = "Poder"
 L["Powers"] = "Poderes"
 L["Priority"] = "prioridade"
+L["Profile Specific"] = true;
 L["PVP Trinket"] = "Berloque de JXJ"
 L["Raid Icon"] = "Icone de Raide"
 L["Raid-Wide Sorting"] = true;
@@ -895,6 +896,7 @@ L["UnitFrames"] = "Quadro de Unidades"
 L["Up"] = "Acima"
 L["Use Default"] = "usar Padrão"
 L["Use the custom health backdrop color instead of a multiple of the main health color."] = "Usar a cor de fundo da vida personalizada em vez de um multiplo da cor de vida principal."
+L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the global filter 'Buff Indicator'."] = true;
 L["Value must be a number"] = "O valor tem de ser um número"
 L["Vertical Spacing"] = "Espaçamento Vertical"
 L["Vertical"] = "Vertical"

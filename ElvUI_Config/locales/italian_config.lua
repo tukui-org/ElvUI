@@ -795,6 +795,7 @@ L["Power text will be hidden on NPC targets, in addition the name text will be r
 L["Power"] = true;
 L["Powers"] = true;
 L["Priority"] = true;
+L["Profile Specific"] = true;
 L["PVP Trinket"] = true;
 L["Raid Icon"] = true;
 L["Raid-Wide Sorting"] = true;
@@ -884,6 +885,7 @@ L["UnitFrames"] = true;
 L["Up"] = true;
 L["Use Default"] = true;
 L["Use the custom health backdrop color instead of a multiple of the main health color."] = true;
+L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the global filter 'Buff Indicator'."] = true;
 L["Value must be a number"] = true;
 L["Vertical Spacing"] = true;
 L["Vertical"] = true; --Also used in bags section

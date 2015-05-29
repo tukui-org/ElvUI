@@ -856,6 +856,7 @@ L["Power text will be hidden on NPC targets, in addition the name text will be r
 L["Power"] = "자원"
 L["Powers"] = "자원 (마나, 분노, 기력...)"
 L["Priority"] = "우선도"
+L["Profile Specific"] = true;
 L["PVP Trinket"] = "PvP 장신구"
 L["Raid Icon"] = "레이드 아이콘"
 L["Raid-Wide Sorting"] = "빈칸없이 나열"
@@ -945,6 +946,7 @@ L["UnitFrames"] = "유닛프레임"
 L["Up"] = "위로"
 L["Use Default"] = "기존 설정대로"
 L["Use the custom health backdrop color instead of a multiple of the main health color."] = "생명력 바의 배경을 다른 설정을 무시하고 아래에서 지정한 색상만 사용합니다."
+L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the global filter 'Buff Indicator'."] = true;
 L["Value must be a number"] = "값으로 숫자만 입력할 수 있습니다."
 L["Vertical Spacing"] = "수직 간격"
 L["Vertical"] = "세로"

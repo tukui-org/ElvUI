@@ -805,6 +805,7 @@ L["Power text will be hidden on NPC targets, in addition the name text will be r
 L["Power"] = "Kraft"
 L["Powers"] = "Kräfte"
 L["Priority"] = "Priorität"
+L["Profile Specific"] = true;
 L["PVP Trinket"] = 'PVP Schmuck'
 L["Raid Icon"] = 'Schlachtzugssymbol'
 L["Raid-Wide Sorting"] = "Raidweite Sortierung"
@@ -893,6 +894,7 @@ L["UnitFrames"] = "Einheitenfenster"
 L["Up"] = "Hinauf"
 L["Use Default"] = "Benutze Standard"
 L["Use the custom health backdrop color instead of a multiple of the main health color."] = "Wähle eine eigene Hintergrundfarbe, andernfalls wird die aktuelle Gesundheitsleistenfarbe verwendet."
+L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the global filter 'Buff Indicator'."] = true;
 L["Value must be a number"] = "Der Wert muss eine Zahl sein"
 L["Vertical Spacing"] = "Vertikaler Abstand"
 L["Vertical"] = "Vertikal" --Also used in bags section

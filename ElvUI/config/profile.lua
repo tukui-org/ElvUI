@@ -1476,6 +1476,7 @@ P['unitframe'] = {
 				['enable'] = true,
 				['size'] = 8,
 				['fontSize'] = 10,
+				['profileSpecific'] = false,
 			},
 			['rdebuffs'] = {
 				['enable'] = false,
@@ -1634,6 +1635,7 @@ P['unitframe'] = {
 				['enable'] = true,
 				['size'] = 8,
 				['fontSize'] = 10,
+				['profileSpecific'] = false,
 			},
 			['rdebuffs'] = {
 				['enable'] = true,
@@ -1792,6 +1794,7 @@ P['unitframe'] = {
 				['enable'] = true,
 				['size'] = 8,
 				['fontSize'] = 10,
+				['profileSpecific'] = false,
 			},
 			['raidicon'] = {
 				['enable'] = true,

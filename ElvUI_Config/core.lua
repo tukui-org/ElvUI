@@ -10,6 +10,11 @@ local ACR = LibStub("AceConfigRegistry-3.0")
 AC:RegisterOptionsTable("ElvUI", E.Options)
 ACD:SetDefaultSize("ElvUI", DEFAULT_WIDTH, DEFAULT_HEIGHT)
 
+--Function we can call on profile change to update GUI
+function E:RefreshGUI()
+	ACR:NotifyChange("ElvUI")
+end
+
 E.Options.args = {
 	ElvUI_Header = {
 		order = 1,

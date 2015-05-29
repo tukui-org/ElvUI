@@ -806,6 +806,7 @@ L["Power text will be hidden on NPC targets, in addition the name text will be r
 L["Power"] = "能量"
 L["Powers"] = "能量"
 L["Priority"] = "優先級"
+L["Profile Specific"] = true;
 L["PVP Trinket"] = "PVP 飾品"
 L["Raid Icon"] = "團隊圖示"
 L["Raid-Wide Sorting"] = true;
@@ -895,6 +896,7 @@ L["UnitFrames"] = "單位框架"
 L["Up"] = "上"
 L["Use Default"] = "自定義默認值"
 L["Use the custom health backdrop color instead of a multiple of the main health color."] = "自定義生命條背景色."
+L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the global filter 'Buff Indicator'."] = true;
 L["Value must be a number"] = "數值必須為一個數字"
 L["Vertical Spacing"] = "垂直間隔"
 L["Vertical"] = "垂直"

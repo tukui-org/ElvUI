@@ -3408,11 +3408,23 @@ E.Options.args.unitframe.args.party = {
 					order = 4,
 					min = 7, max = 22, step = 1,
 				},
+				profileSpecific = {
+					type = 'toggle',
+					name = L["Profile Specific"],
+					desc = L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the global filter 'Buff Indicator'."],
+					order = 5,
+				},
 				configureButton = {
 					type = 'execute',
 					name = L["Configure Auras"],
-					func = function() E:SetToFilterConfig('Buff Indicator') end,
-					order = 5
+					func = function() 
+						if E.db.unitframe.units['party']['buffIndicator'].profileSpecific then
+							E:SetToFilterConfig('Buff Indicator (Profile)')
+						else
+							E:SetToFilterConfig('Buff Indicator')
+						end
+					end,
+					order = 6
 				},
 			},
 		},
@@ -4076,11 +4088,23 @@ E.Options.args.unitframe.args['raid'] = {
 					order = 4,
 					min = 7, max = 22, step = 1,
 				},
+				profileSpecific = {
+					type = 'toggle',
+					name = L["Profile Specific"],
+					desc = L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the global filter 'Buff Indicator'."],
+					order = 5,
+				},
 				configureButton = {
 					type = 'execute',
 					name = L["Configure Auras"],
-					func = function() E:SetToFilterConfig('Buff Indicator') end,
-					order = 5
+					func = function() 
+						if E.db.unitframe.units['raid']['buffIndicator'].profileSpecific then
+							E:SetToFilterConfig('Buff Indicator (Profile)')
+						else
+							E:SetToFilterConfig('Buff Indicator')
+						end
+					end,
+					order = 6
 				},
 			},
 		},
@@ -4569,11 +4593,23 @@ E.Options.args.unitframe.args['raid40'] = {
 					order = 4,
 					min = 7, max = 22, step = 1,
 				},
+				profileSpecific = {
+					type = 'toggle',
+					name = L["Profile Specific"],
+					desc = L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the global filter 'Buff Indicator'."],
+					order = 5,
+				},
 				configureButton = {
 					type = 'execute',
 					name = L["Configure Auras"],
-					func = function() E:SetToFilterConfig('Buff Indicator') end,
-					order = 5
+					func = function() 
+						if E.db.unitframe.units['raid40']['buffIndicator'].profileSpecific then
+							E:SetToFilterConfig('Buff Indicator (Profile)')
+						else
+							E:SetToFilterConfig('Buff Indicator')
+						end
+					end,
+					order = 6
 				},
 			},
 		},

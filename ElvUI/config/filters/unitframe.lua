@@ -727,6 +727,11 @@ G.unitframe.buffwatch = {
 	},
 }
 
+--Profile specific BuffIndicator
+P['unitframe']['filters'] = {
+	['buffwatch'] = {},
+}
+
 --List of spells to display ticks
 G.unitframe.ChannelTicks = {
 	--Warlock

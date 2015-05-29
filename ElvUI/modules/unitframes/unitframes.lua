@@ -922,6 +922,10 @@ function UF:UpdateAllHeaders(event)
 		if header.Configure_Groups then
 			header:Configure_Groups()
 		end
+		if header == 'party' or header == 'raid' or header == 'raid40' then
+			--Update BuffIndicators on profile change as they might be using profile specific data
+			UF:UpdateAuraWatchFromHeader(header)
+		end
 	end
 
 	if E.private["unitframe"]["disabledBlizzardFrames"].party then
