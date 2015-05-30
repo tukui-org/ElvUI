@@ -393,7 +393,7 @@ function UF:UpdateAuraWatch(frame, petOverride)
 			tinsert(buffs, value);
 		end
 	else
-		local buffWatch = E.global['unitframe'].buffwatch[E.myclass] or {}
+		local buffWatch = not db.profileSpecific and (E.global['unitframe'].buffwatch[E.myclass] or {}) or (E.db['unitframe']['filters'].buffwatch or {})
 		for _, value in pairs(buffWatch) do
 			if value.style == 'text' then value.style = 'NONE' end --depreciated
 			tinsert(buffs, value);
