@@ -229,55 +229,6 @@ local function LoadSkin()
 			button.icon:SetParent(button.backdrop)
 		end
 	end
-	local SIX_DAYS = 6 * 24 * 60 * 60		-- time in seconds
-	local GUILD_EVENT_TEXTURES = {
-		--[CALENDAR_EVENTTYPE_RAID]		= "Interface\\LFGFrame\\LFGIcon-",
-		--[CALENDAR_EVENTTYPE_DUNGEON]	= "Interface\\LFGFrame\\LFGIcon-",
-		[CALENDAR_EVENTTYPE_PVP]		= "Interface\\Calendar\\UI-Calendar-Event-PVP",
-		[CALENDAR_EVENTTYPE_MEETING]	= "Interface\\Calendar\\MeetingIcon",
-		[CALENDAR_EVENTTYPE_OTHER]		= "Interface\\Calendar\\UI-Calendar-Event-Other",
-		--[CALENDAR_EVENTTYPE_HEROIC_DUNGEON]	= "Interface\\LFGFrame\\LFGIcon-",
-	};
-	local GUILD_EVENT_TEXTURE_PATH = "Interface\\LFGFrame\\LFGIcon-";
-	function GuildInfoEvents_SetButton(button, eventIndex)
-		local today = date("*t");
-		local month, day, weekday, hour, minute, eventType, title, calendarType, textureName = CalendarGetGuildEventInfo(eventIndex);
-		local displayTime = GameTime_GetFormattedTime(hour, minute, true);
-		local displayDay;
-
-		if ( today["day"] == day and today["month"] == month ) then
-			displayDay = NORMAL_FONT_COLOR_CODE..GUILD_EVENT_TODAY..FONT_COLOR_CODE_CLOSE;
-		else
-			local year = today["year"];
-			-- if in December and looking at an event in January
-			if ( month < today["month"] ) then
-				year = year + 1;
-			end
-			local eventTime = time{year = year, month = month, day = day};
-			if ( eventTime - time() < SIX_DAYS ) and CALENDAR_WEEKDAY_NAMES[weekday] then
-				displayDay = CALENDAR_WEEKDAY_NAMES[weekday];
-			elseif CALENDAR_WEEKDAY_NAMES[weekday] and day and month then
-				displayDay = format(GUILD_NEWS_DATE, CALENDAR_WEEKDAY_NAMES[weekday], day, month);
-			end
-		end
-
-		if displayDay then
-			button.text:SetFormattedText(GUILD_EVENT_FORMAT, displayDay, displayTime, title);
-		end
-		button.index = eventIndex;
-		-- icon
-		if ( button.icon.type ~= "event" ) then
-			button.icon.type = "event"
-			button.icon:SetTexCoord(0, 1, 0, 1);
-			button.icon:SetWidth(14);
-			button.icon:SetHeight(14);
-		end
-		if ( GUILD_EVENT_TEXTURES[eventType] ) then
-			button.icon:SetTexture(GUILD_EVENT_TEXTURES[eventType]);
-		else
-			button.icon:SetTexture(GUILD_EVENT_TEXTURE_PATH..textureName);
-		end
-	end
 end
 
 S:RegisterSkin("Blizzard_GuildUI", LoadSkin)
