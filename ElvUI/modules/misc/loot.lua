@@ -308,18 +308,6 @@ function M:LoadLoot()
 	LootFrame:UnregisterAllEvents()
 	tinsert(UISpecialFrames, 'ElvLootFrame')
 
-	function _G.GroupLootDropDown_GiveLoot(self)
-		if ( sq >= MASTER_LOOT_THREHOLD ) then
-			local dialog = E:StaticPopup_Show("CONFIRM_LOOT_DISTRIBUTION", ITEM_QUALITY_COLORS[sq].hex..sn..FONT_COLOR_CODE_CLOSE, self:GetText())
-			if (dialog) then
-				dialog.data = self.value
-			end
-		else
-			GiveMasterLoot(ss, self.value)
-		end
-		CloseDropDownMenus()
-	end
-
 	E.PopupDialogs["CONFIRM_LOOT_DISTRIBUTION"].OnAccept = function(self, data)
 		GiveMasterLoot(ss, data)
 	end
