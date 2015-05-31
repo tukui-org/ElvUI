@@ -230,7 +230,7 @@ local function LoadSkin()
 
 	hooksecurefunc("LFDQueueFrameRandom_UpdateFrame", ReskinRewards)
 
-	function HandleGoldIcon(button)
+	local function HandleGoldIcon(button)
 		_G[button.."IconTexture"]:SetTexCoord(unpack(E.TexCoords))
 		_G[button.."IconTexture"]:SetDrawLayer("OVERLAY")
 		_G[button.."Count"]:SetDrawLayer("OVERLAY")
