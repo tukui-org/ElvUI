@@ -70,7 +70,7 @@ end
 local isCreated = false
 function BG:CreateFrame()
 	if(isCreated) then return end
-	local frame = CreateFrame("Button", "ElvUF_BodyGuard", E.UIParent, "SecureActionButtonTemplate")
+	local frame = CreateFrame("Button", "ElvUF_BodyGuard", ElvUF_Player, "SecureActionButtonTemplate")
 	frame:SetScript("OnEvent", OnEvent)
 	frame:RegisterEvent("PLAYER_TARGET_CHANGED")
 
@@ -114,7 +114,11 @@ end
 
 function BG:UpdateSettings()
 	if(UF.db.units.bodyguard.enable) then
-		self.frame:SetParent(E.UIParent)
+		if E.db.unitframe.units.player.enable and ElvUF_Player then
+			self.frame:SetParent(ElvUF_Player)
+		elseif not E.db.unitframe.units.player.enable then
+			self.frame:SetParent(E.UIParent)
+		end
 	else
 		self.frame:SetParent(E.HiddenFrame)
 	end
