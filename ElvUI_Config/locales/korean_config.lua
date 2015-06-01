@@ -392,6 +392,7 @@ L["Automatically vendor gray items when visiting a vendor."] = "상점이 열리
 L["Bonus Reward Position"] = "추가보상 표시 위치"
 L["Bottom Panel"] = "하단 패널 표시"
 L["Chat Bubbles Style"] = "말풍선 디자인"
+L["Chat Bubbles"] = true;
 L["Direction the bar moves on gains/losses"] = "바의 증감방향을 결정합니다."
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = "화면 하단에 꾸미기 용도의 바를 생성합니다."
 L["Display a panel across the top of the screen. This is for cosmetic only."] = "화면 상단에 꾸미기 용도의 바를 생성합니다."
