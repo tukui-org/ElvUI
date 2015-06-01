@@ -342,6 +342,7 @@ L["Automatically vendor gray items when visiting a vendor."] = "Automatischer Ve
 L["Bonus Reward Position"] = "Bonusbeute Position"
 L["Bottom Panel"] = 'Untere Leiste'
 L["Chat Bubbles Style"] = 'Chat-Blasen Stil'
+L["Chat Bubbles"] = true;
 L["Direction the bar moves on gains/losses"] = "Richtung in die der Balken wächst/sinkt"
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = 'Zeige eine Leiste am unterem Bildschirmrand. Das ist rein kosmetisch.'
 L["Display a panel across the top of the screen. This is for cosmetic only."] = 'Zeige eine Leiste am oberen Bildschirmrand. Das ist rein kosmetisch.'

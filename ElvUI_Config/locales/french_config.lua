@@ -344,6 +344,7 @@ L["Automatically vendor gray items when visiting a vendor."] = "Vendre automatiq
 L["Bonus Reward Position"] = "Position des récompenses bonus";
 L["Bottom Panel"] = "Bandeau en bas"
 L["Chat Bubbles Style"] = 'Style des bulles de discussion'
+L["Chat Bubbles"] = true;
 L["Direction the bar moves on gains/losses"] = "Direction que prend la barre quand gain / perte";
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = "Affiche un bandeau au bas de l'écran. Option purement cosmétique."
 L["Display a panel across the top of the screen. This is for cosmetic only."] = "Affiche un bandeau en haut de l'écran. Option purement cosmétique."

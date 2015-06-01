@@ -344,6 +344,7 @@ L["Automatically vendor gray items when visiting a vendor."] = "Vender itens cin
 L["Bonus Reward Position"] = true;
 L["Bottom Panel"] = "Painel Infeior"
 L["Chat Bubbles Style"] = "Estilo dos Balões de Fala";
+L["Chat Bubbles"] = true;
 L["Direction the bar moves on gains/losses"] = true;
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = "Mostra um painel na parte inferior da tela. Apenas para efeito cosmético."
 L["Display a panel across the top of the screen. This is for cosmetic only."] = "Mostra um painel na parte superior da tela. Apenas para efeito cosmético."

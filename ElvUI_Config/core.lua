@@ -108,40 +108,27 @@ E.Options.args.general = {
 						['PLAYER'] = PLAYER,
 					},
 				},
-				chatBubbles = {
-					order = 5,
-					type = "select",
-					name = L["Chat Bubbles Style"],
-					desc = L["Skin the blizzard chat bubbles."],
-					get = function(info) return E.private.general.chatBubbles end,
-					set = function(info, value) E.private.general.chatBubbles = value; E:StaticPopup_Show("PRIVATE_RL") end,
-					values = {
-						['backdrop'] = L["Skin Backdrop"],
-						['nobackdrop'] = L["Remove Backdrop"],
-						['disabled'] = L["Disabled"]
-					}
-				},
 				autoAcceptInvite = {
-					order = 6,
+					order = 4,
 					name = L["Accept Invites"],
 					desc = L["Automatically accept invites from guild/friends."],
 					type = 'toggle',
 				},
 				vendorGrays = {
-					order = 7,
+					order = 5,
 					name = L["Vendor Grays"],
 					desc = L["Automatically vendor gray items when visiting a vendor."],
 					type = 'toggle',
 				},
 				autoRoll = {
-					order = 8,
+					order = 6,
 					name = L["Auto Greed/DE"],
 					desc = L["Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level."],
 					type = 'toggle',
 					disabled = function() return not E.private.general.lootRoll end
 				},
 				loot = {
-					order = 9,
+					order = 7,
 					type = "toggle",
 					name = L["Loot"],
 					desc = L["Enable/Disable the loot frame."],
@@ -149,7 +136,7 @@ E.Options.args.general = {
 					set = function(info, value) E.private.general.loot = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
 				lootRoll = {
-					order = 10,
+					order = 8,
 					type = "toggle",
 					name = L["Loot Roll"],
 					desc = L["Enable/Disable the loot roll frame."],
@@ -157,7 +144,7 @@ E.Options.args.general = {
 					set = function(info, value) E.private.general.lootRoll = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
 				autoScale = {
-					order = 11,
+					order = 9,
 					name = L["Auto Scale"],
 					desc = L["Automatically scale the User Interface based on your screen resolution"],
 					type = "toggle",
@@ -165,7 +152,7 @@ E.Options.args.general = {
 					set = function(info, value) E.global.general[ info[#info] ] = value; E:StaticPopup_Show("GLOBAL_RL") end
 				},
 				eyefinity = {
-					order = 12,
+					order = 10,
 					name = L["Multi-Monitor Support"],
 					desc = L["Attempt to support eyefinity/nvidia surround."],
 					type = "toggle",
@@ -173,19 +160,19 @@ E.Options.args.general = {
 					set = function(info, value) E.global.general[ info[#info] ] = value; E:StaticPopup_Show("GLOBAL_RL") end
 				},
 				hideErrorFrame = {
-					order = 13,
+					order = 11,
 					name = L["Hide Error Text"],
 					desc = L["Hides the red error text at the top of the screen while in combat."],
 					type = "toggle"
 				},
 				taintLog = {
-					order = 14,
+					order = 12,
 					type = "toggle",
 					name = L["Log Taints"],
 					desc = L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."],
 				},
 				bottomPanel = {
-					order = 16,
+					order = 13,
 					type = 'toggle',
 					name = L["Bottom Panel"],
 					desc = L["Display a panel across the bottom of the screen. This is for cosmetic only."],
@@ -193,7 +180,7 @@ E.Options.args.general = {
 					set = function(info, value) E.db.general.bottomPanel = value; E:GetModule('Layout'):BottomPanelVisibility() end
 				},
 				topPanel = {
-					order = 17,
+					order = 14,
 					type = 'toggle',
 					name = L["Top Panel"],
 					desc = L["Display a panel across the top of the screen. This is for cosmetic only."],
@@ -201,7 +188,7 @@ E.Options.args.general = {
 					set = function(info, value) E.db.general.topPanel = value; E:GetModule('Layout'):TopPanelVisibility() end
 				},
 				afk = {
-					order = 18,
+					order = 15,
 					type = 'toggle',
 					name = L["AFK Mode"],
 					desc = L["When you go AFK display the AFK screen."],
@@ -210,12 +197,50 @@ E.Options.args.general = {
 
 				},
 				smallerWorldMap = {
-					order = 19,
+					order = 16,
 					type = 'toggle',
 					name = L["Smaller World Map"],
 					desc = L["Make the world map smaller."],
 					get = function(info) return E.global.general.smallerWorldMap end,
 					set = function(info, value) E.global.general.smallerWorldMap = value; E:StaticPopup_Show("GLOBAL_RL") end
+				},
+				chatBubbles = {
+					order = 30,
+					type = "group",
+					guiInline = true,
+					name = L["Chat Bubbles"],
+					args = {
+						style = {
+							order = 1,
+							type = "select",
+							name = L["Chat Bubbles Style"],
+							desc = L["Skin the blizzard chat bubbles."],
+							get = function(info) return E.private.general.chatBubbles end,
+							set = function(info, value) E.private.general.chatBubbles = value; E:StaticPopup_Show("PRIVATE_RL") end,
+							values = {
+								['backdrop'] = L["Skin Backdrop"],
+								['nobackdrop'] = L["Remove Backdrop"],
+								['disabled'] = L["Disabled"]
+							}
+						},
+						font = {
+							order = 2,
+							type = "select",
+							name = L["Font"],
+							dialogControl = 'LSM30_Font',
+							values = AceGUIWidgetLSMlists.font,
+							get = function(info) return E.private.general.chatBubbleFont end,
+							set = function(info, value) E.private.general.chatBubbleFont = value; E:StaticPopup_Show("PRIVATE_RL") end,
+						},
+						fontSize = {
+							order = 3,
+							type = "range",
+							name = L["Font Size"],
+							get = function(info) return E.private.general.chatBubbleFontSize end,
+							set = function(info, value) E.private.general.chatBubbleFontSize = value; E:StaticPopup_Show("PRIVATE_RL") end,
+							min = 6, max = 20, step = 1,
+						},
+					},
 				},
 			},
 		},
