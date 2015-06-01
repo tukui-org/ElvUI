@@ -1972,6 +1972,16 @@ E.Options.args.unitframe.args.player = {
 			type = 'toggle',
 			order = 1,
 			name = L["Enable"],
+			set = function(info, value) 
+				E.db.unitframe.units['player'][ info[#info] ] = value; 
+				UF:CreateAndUpdateUF('player');
+				LibStub("LibBodyguard-1.0"):UpdateSettings();
+				if value == true and E.db.unitframe.units.player.combatfade then
+					ElvUF_Pet:SetParent(ElvUF_Player)
+				else
+					ElvUF_Pet:SetParent(ElvUF_Parent)
+				end
+			end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -2037,8 +2047,8 @@ E.Options.args.unitframe.args.player = {
 			set = function(info, value)
 				E.db.unitframe.units['player'][ info[#info] ] = value;
 				UF:CreateAndUpdateUF('player');
-
-				if value == true then
+				LibStub("LibBodyguard-1.0"):UpdateSettings();
+				if value == true and E.db.unitframe.units.player.enable then
 					ElvUF_Pet:SetParent(ElvUF_Player)
 				else
 					ElvUF_Pet:SetParent(ElvUF_Parent)
