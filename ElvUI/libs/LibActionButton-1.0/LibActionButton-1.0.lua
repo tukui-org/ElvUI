@@ -1226,7 +1226,7 @@ function UpdateCount(self)
 	end
 end
 
-function OnCooldownDone(self)
+local function OnCooldownDone(self)
 	self:SetScript("OnCooldownDone", nil)
 	UpdateCooldown(self:GetParent())
 end

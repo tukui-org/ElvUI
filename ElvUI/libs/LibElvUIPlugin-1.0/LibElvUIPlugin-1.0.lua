@@ -119,7 +119,7 @@ function lib:GetPluginOptions()
 end
 
 function lib:GenerateVersionCheckMessage()
-	list = ""
+	local list = ""
 	for _, plugin in pairs(lib.plugins) do
 		if plugin.name ~= MAJOR then
 			list = list..plugin.name.."="..plugin.version..";"

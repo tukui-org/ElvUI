@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 local spellpwr, healpwr
-local displayModifierString = ''
+local displayNumberString = ''
 local lastPanel;
 local join = string.join
 

@@ -1,8 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local M = E:GetModule('Misc');
 
-FACTION_STANDING_LABEL100 = UNKNOWN
-
 local format = string.format
 local min, max = math.min, math.max
 
@@ -61,11 +59,12 @@ function M:UpdateExperience(event)
 end
 
 local backupColor = FACTION_BAR_COLORS[1]
+local FactionStandingLabelUnknown = UNKNOWN
 function M:UpdateReputation(event)
 	local bar = self.repBar
 
-	local ID = 100
-	local isFriend, friendText
+	local ID
+	local isFriend, friendText, standingLabel
 	local name, reaction, min, max, value = GetWatchedFactionInfo()
 	local numFactions = GetNumFactions();
 
@@ -94,13 +93,19 @@ function M:UpdateReputation(event)
 				end
 			end
 		end
+		
+		if ID then
+			standingLabel = _G['FACTION_STANDING_LABEL'..ID]
+		else
+			standingLabel = FactionStandingLabelUnknown
+		end
 
 		if textFormat == 'PERCENT' then
-			text = format('%s: %d%% [%s]', name, ((value - min) / (max - min) * 100), isFriend and friendText or _G['FACTION_STANDING_LABEL'..ID])
+			text = format('%s: %d%% [%s]', name, ((value - min) / (max - min) * 100), isFriend and friendText or standingLabel)
 		elseif textFormat == 'CURMAX' then
-			text = format('%s: %s - %s [%s]', name, E:ShortValue(value - min), E:ShortValue(max - min), isFriend and friendText or _G['FACTION_STANDING_LABEL'..ID])
+			text = format('%s: %s - %s [%s]', name, E:ShortValue(value - min), E:ShortValue(max - min), isFriend and friendText or standingLabel)
 		elseif textFormat == 'CURPERC' then
-			text = format('%s: %s - %d%% [%s]', name, E:ShortValue(value - min), ((value - min) / (max - min) * 100), isFriend and friendText or _G['FACTION_STANDING_LABEL'..ID])
+			text = format('%s: %s - %d%% [%s]', name, E:ShortValue(value - min), ((value - min) / (max - min) * 100), isFriend and friendText or standingLabel)
 		end
 
 		bar.text:SetText(text)
