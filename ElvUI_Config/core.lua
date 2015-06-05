@@ -12,6 +12,7 @@ ACD:SetDefaultSize("ElvUI", DEFAULT_WIDTH, DEFAULT_HEIGHT)
 
 --Function we can call on profile change to update GUI
 function E:RefreshGUI()
+	self:RefreshCustomTextsConfigs()
 	ACR:NotifyChange("ElvUI")
 end
 

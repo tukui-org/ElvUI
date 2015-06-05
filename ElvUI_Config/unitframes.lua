@@ -3,6 +3,9 @@ local UF = E:GetModule('UnitFrames');
 local _, ns = ...
 local ElvUF = ns.oUF
 
+local tinsert = table.insert
+local twipe = table.wipe
+
 local ACD = LibStub("AceConfigDialog-3.0")
 local fillValues = {
 	['fill'] = L["Filled"],
@@ -56,6 +59,8 @@ local auraBarsSortValues = {
 	['NAME'] = NAME,
 	['NONE'] = NONE,
 }
+
+local CUSTOMTEXT_CONFIGS = {}
 
 -----------------------------------------------------------------------
 -- OPTIONS TABLES
@@ -947,7 +952,7 @@ local function GetOptionsTable_CustomText(updateFunc, groupName, numUnits, order
 			end
 			
 			local frameName = "ElvUF_"..E:StringTitle(groupName)
-			if E.db.unitframe.units[groupName].customTexts[textName] or (_G[frameName] and _G[frameName][textName] or _G[frameName.."Group1UnitButton1"] and _G[frameName.."Group1UnitButton1"][textName]) then
+			if E.db.unitframe.units[groupName].customTexts[textName] or (_G[frameName] and _G[frameName]["customTexts"] and _G[frameName]["customTexts"][textName] or _G[frameName.."Group1UnitButton1"] and _G[frameName.."Group1UnitButton1"]["customTexts"] and _G[frameName.."Group1UnitButton1"][textName]) then
 				E:Print(L["The name you have selected is already in use by another element."])
 				return;
 			end
@@ -1317,9 +1322,14 @@ local function GetOptionsTable_RaidIcon(updateFunc, groupName, numUnits)
 	return config
 end
 
-local tinsert = table.insert
 function UF:CreateCustomTextGroup(unit, objectName)
-	if E.Options.args.unitframe.args[unit].args[objectName] or not E.Options.args.unitframe.args[unit] then return end
+	if not E.Options.args.unitframe.args[unit] then
+		return
+	elseif E.Options.args.unitframe.args[unit].args[objectName] then
+		E.Options.args.unitframe.args[unit].args[objectName].hidden = false -- Re-show existing custom texts which belong to current profile and were previously hidden
+		tinsert(CUSTOMTEXT_CONFIGS, E.Options.args.unitframe.args[unit].args[objectName]) --Register this custom text config to be hidden again on profile change
+		return
+	end
 
 	E.Options.args.unitframe.args[unit].args[objectName] = {
 		order = -1,
@@ -1351,29 +1361,29 @@ function UF:CreateCustomTextGroup(unit, objectName)
 					if unit == 'boss' or unit == 'arena' then
 						for i=1, 5 do
 							if UF[unit..i] then
-								UF[unit..i]:Tag(UF[unit..i][objectName], '');
-								UF[unit..i][objectName]:Hide();
+								UF[unit..i]:Tag(UF[unit..i]["customTexts"][objectName], '');
+								UF[unit..i]["customTexts"][objectName]:Hide();
 							end
 						end
 					elseif unit == 'party' or unit:find('raid') then
 						for i=1, UF[unit]:GetNumChildren() do
 							local child = select(i, UF[unit]:GetChildren())
 							if child.Tag then
-								child:Tag(child[objectName], '');
-								child[objectName]:Hide();
+								child:Tag(child["customTexts"][objectName], '');
+								child["customTexts"][objectName]:Hide();
 							else
 								for x=1, child:GetNumChildren() do
 									local c2 = select(x, child:GetChildren())
 									if(c2.Tag) then
-										c2:Tag(c2[objectName], '');
-										c2[objectName]:Hide();
+										c2:Tag(c2["customTexts"][objectName], '');
+										c2["customTexts"][objectName]:Hide();
 									end
 								end
 							end
 						end
 					elseif UF[unit] then
-						UF[unit]:Tag(UF[unit][objectName], '');
-						UF[unit][objectName]:Hide();
+						UF[unit]:Tag(UF[unit]["customTexts"][objectName], '');
+						UF[unit]["customTexts"][objectName]:Hide();
 					end
 				end,
 			},
@@ -1434,6 +1444,8 @@ function UF:CreateCustomTextGroup(unit, objectName)
 			},
 		},
 	}
+
+	tinsert(CUSTOMTEXT_CONFIGS, E.Options.args.unitframe.args[unit].args[objectName]) --Register this custom text config to be hidden on profile change
 end
 
 E.Options.args.unitframe = {
@@ -1972,6 +1984,16 @@ E.Options.args.unitframe.args.player = {
 			type = 'toggle',
 			order = 1,
 			name = L["Enable"],
+			set = function(info, value) 
+				E.db.unitframe.units['player'][ info[#info] ] = value; 
+				UF:CreateAndUpdateUF('player');
+				LibStub("LibBodyguard-1.0"):UpdateSettings();
+				if value == true and E.db.unitframe.units.player.combatfade then
+					ElvUF_Pet:SetParent(ElvUF_Player)
+				else
+					ElvUF_Pet:SetParent(ElvUF_Parent)
+				end
+			end,
 		},
 		copyFrom = {
 			type = 'select',
@@ -2037,8 +2059,8 @@ E.Options.args.unitframe.args.player = {
 			set = function(info, value)
 				E.db.unitframe.units['player'][ info[#info] ] = value;
 				UF:CreateAndUpdateUF('player');
-
-				if value == true then
+				LibStub("LibBodyguard-1.0"):UpdateSettings();
+				if value == true and E.db.unitframe.units.player.enable then
 					ElvUF_Pet:SetParent(ElvUF_Player)
 				else
 					ElvUF_Pet:SetParent(ElvUF_Parent)
@@ -2097,7 +2119,7 @@ E.Options.args.unitframe.args.player = {
 					type = 'range',
 					order = 2,
 					name = L["Height"],
-					min = 5, max = 15, step = 1,
+					min = 5, max = 30, step = 1,
 				},
 				fill = {
 					type = 'select',
@@ -5663,10 +5685,19 @@ if P.unitframe.colors.classResources[E.myclass] then
 end
 
 --Custom Texts
-for unit, _ in pairs(E.db.unitframe.units) do
-	if E.db.unitframe.units[unit].customTexts then
-		for objectName, _ in pairs(E.db.unitframe.units[unit].customTexts) do
-			UF:CreateCustomTextGroup(unit, objectName)
+function E:RefreshCustomTextsConfigs()
+	--Hide any custom texts that don't belong to current profile
+	for _, customText in pairs(CUSTOMTEXT_CONFIGS) do
+		customText.hidden = true
+	end
+	twipe(CUSTOMTEXT_CONFIGS)
+
+	for unit, _ in pairs(E.db.unitframe.units) do
+		if E.db.unitframe.units[unit].customTexts then
+			for objectName, _ in pairs(E.db.unitframe.units[unit].customTexts) do
+				UF:CreateCustomTextGroup(unit, objectName)
+			end
 		end
 	end
 end
+E:RefreshCustomTextsConfigs()
