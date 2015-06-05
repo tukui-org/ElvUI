@@ -2119,7 +2119,7 @@ E.Options.args.unitframe.args.player = {
 					type = 'range',
 					order = 2,
 					name = L["Height"],
-					min = 5, max = 15, step = 1,
+					min = 5, max = 30, step = 1,
 				},
 				fill = {
 					type = 'select',
