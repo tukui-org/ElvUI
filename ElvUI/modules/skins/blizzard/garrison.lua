@@ -283,6 +283,8 @@ local function LoadSkin()
 	local MissionList = MissionTab.MissionList
 	MissionList:CreateBackdrop("Transparent")
 	MissionList.backdrop:SetOutside(MissionList.MapTexture)
+	MissionList.CompleteDialog.BorderFrame:StripTextures()
+	MissionList.CompleteDialog.BorderFrame:SetTemplate("Transparent")
 	
 	-- ShipYard: Mission
 	local MissionPage = MissionTab.MissionPage
