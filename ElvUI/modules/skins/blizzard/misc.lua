@@ -1167,20 +1167,16 @@ local function LoadSkin()
 
 	--NavBar Buttons (Used in WorldMapFrame, EncounterJournal and HelpFrame)
 	local function SkinNavBarButtons(self)
-		--Don't touch the Customer Support frame
-		if self:GetParent():GetName() == "HelpFrame" or self:GetParent():GetParent():GetName() == "HelpFrame" then
+		if (self:GetParent():GetName() == "EncounterJournal" and not E.private.skins.blizzard.encounterjournal) or (self:GetParent():GetName() == "WorldMapFrame" and not E.private.skins.blizzard.worldmap) or (self:GetParent():GetName() == "HelpFrameKnowledgebase" and not E.private.skins.blizzard.help) then
 			return
 		end
-
 		local navButton = self.navList[#self.navList]
 		if navButton and not navButton.isSkinned then
-			navButton:StripTextures()
-			navButton:SetTemplate("Default", true)
-			navButton:SetFrameLevel(1)
-			navButton.text:FontTemplate()
-			S:HandleButton(navButton.MenuArrowButton)
-			navButton.MenuArrowButton:Size(24)
-			navButton:SetFrameLevel(self:GetFrameLevel()) --Bugfix: For some reason, the 2nd button sometimes gets a framelevel of 1
+			S:HandleButton(navButton, true)
+			if navButton.MenuArrowButton then
+				S:HandleNextPrevButton(navButton.MenuArrowButton, true)
+			end
+			-- navButton:SetFrameLevel(self:GetFrameLevel()) --Bugfix: For some reason, the 2nd button sometimes gets a framelevel of 1
 			navButton.isSkinned = true
 		end
 	end
