@@ -736,6 +736,7 @@ local function LoadSkin()
         "SocialPanelGuildMemberAlert",
         "SocialPanelChatMouseScroll",
 		"SocialPanelEnableTwitter",
+		"SocialPanelWholeChatWindowClickable",
         -- Action bars
         "ActionBarsPanelLockActionBars",
         "ActionBarsPanelSecureAbilityToggle",
@@ -807,6 +808,7 @@ local function LoadSkin()
         "MousePanelInvertMouse",
         "MousePanelClickToMove",
         "MousePanelWoWMouse",
+		"MousePanelEnableMouseSpeed",
         -- Help
         "HelpPanelShowTutorials",
         "HelpPanelEnhancedTooltips",
@@ -1164,6 +1166,11 @@ local function LoadSkin()
 		S:HandleCheckBox(_G["AddonListEntry"..i.."Enabled"])
 		S:HandleButton(_G["AddonListEntry"..i].LoadAddonButton)
 	end
+	
+	--What's New
+	SplashFrame:CreateBackdrop("Transparent")
+	S:HandleButton(SplashFrame.BottomCloseButton)
+	S:HandleCloseButton(SplashFrame.TopCloseButton)
 
 	--NavBar Buttons (Used in WorldMapFrame, EncounterJournal and HelpFrame)
 	local function SkinNavBarButtons(self)
