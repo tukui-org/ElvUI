@@ -53,6 +53,10 @@ local function LoadSkin()
 			local icon = equipment[i].Icon
 			local border = equipment[i].Border
 			border:SetAtlas("ShipMission_ShipFollower-TypeFrame") -- This border is ugly though, use the traits border instead
+			--The landing page icons display inner borders
+			if followerTab.isLandingPage then
+				icon:SetTexCoord(unpack(E.TexCoords))
+			end
 		end
 	end
 
@@ -261,11 +265,8 @@ local function LoadSkin()
 	local ShipFollowerList = GarrisonLandingPage.ShipFollowerList
 	ShipFollowerList.FollowerHeaderBar:Hide()
 	S:HandleEditBox(ShipFollowerList.SearchBox)
-	-- Blizzard fucked up, the scrollbar for the Ship follower list
-	-- has the same global name as the one from the regular follower list
-	-- which means we cannot skin it without fucking up the previously skinned scrollbar
-	-- local scrollFrame = ShipFollowerList.listScroll
-	-- S:HandleScrollBar(scrollFrame.scrollBar)
+	local scrollFrame = ShipFollowerList.listScroll
+	S:HandleScrollBar(scrollFrame.scrollBar)
 	HandleShipFollowerPage(ShipFollowerList.followerTab)
 	
 
