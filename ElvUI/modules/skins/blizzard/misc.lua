@@ -1165,6 +1165,26 @@ local function LoadSkin()
 		S:HandleButton(_G["AddonListEntry"..i].LoadAddonButton)
 	end
 
+	--NavBar Buttons (Used in WorldMapFrame, EncounterJournal and HelpFrame)
+	local function SkinNavBarButtons(self)
+		--Don't touch the Customer Support frame
+		if self:GetParent():GetName() == "HelpFrame" or self:GetParent():GetParent():GetName() == "HelpFrame" then
+			return
+		end
+
+		local navButton = self.navList[#self.navList]
+		if navButton and not navButton.isSkinned then
+			navButton:StripTextures()
+			navButton:SetTemplate("Default", true)
+			navButton:SetFrameLevel(1)
+			navButton.text:FontTemplate()
+			S:HandleButton(navButton.MenuArrowButton)
+			navButton.MenuArrowButton:Size(24)
+			navButton:SetFrameLevel(self:GetFrameLevel()) --Bugfix: For some reason, the 2nd button sometimes gets a framelevel of 1
+			navButton.isSkinned = true
+		end
+	end
+	hooksecurefunc("NavBar_AddButton", SkinNavBarButtons)
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)
