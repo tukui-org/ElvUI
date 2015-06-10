@@ -1176,7 +1176,6 @@ local function LoadSkin()
 			if navButton.MenuArrowButton then
 				S:HandleNextPrevButton(navButton.MenuArrowButton, true)
 			end
-			-- navButton:SetFrameLevel(self:GetFrameLevel()) --Bugfix: For some reason, the 2nd button sometimes gets a framelevel of 1
 			navButton.isSkinned = true
 		end
 	end
