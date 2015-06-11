@@ -1297,7 +1297,7 @@ function CH:SetupChat(event, ...)
 		end
 
 		if not _G[frameName.."Tab"].glow.anim then
-			E:SetUpAnimGroup(_G[frameName.."Tab"].glow)
+			E:SetUpAnimGroup(_G[frameName.."Tab"].glow, "FlashLoop")
 		end
 	end
 
