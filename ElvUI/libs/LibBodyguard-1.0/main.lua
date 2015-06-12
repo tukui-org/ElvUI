@@ -1,5 +1,5 @@
 --[[
-    Copyright (c) 2014 by Adam Hellberg.
+    Copyright (c) 2014-2015 by Adam Hellberg.
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,7 @@
 ]]
 
 local MAJOR = "LibBodyguard-1.0"
-local MINOR = 6
+local MINOR = 7
 
 local lib = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
@@ -46,6 +46,36 @@ local reputation_spells = {
     [174671] = true, [174181] = true, [174182] = true, [174672] = true, [174696] = true, [174682] = true, [174200] = true,
     [174201] = true, [174231] = true, [174678] = true, [174686] = true, [174684] = true, [174233] = true, [174187] = true,
     [174661] = true, [174641] = true, [174648] = true, [174179] = true, [174227] = true
+}
+
+-- The various spells for maintaining bodyguards
+local maintain_spells = {
+    [173636] = true, -- Aeda Brightdawn
+    [175950] = true, -- Aeda Brightdawn
+    [173639] = true, -- Defender Illona
+    [175945] = true, -- Defender Illona
+    [173638] = true, -- Delvar Ironfist
+    [175948] = true, -- Delvar Ironfist
+    [173995] = true, -- Leorajh
+    [173637] = true, -- Talonpriest Ishaal
+    [173450] = true, -- Tormmok
+    [173635] = true, -- Vivianne
+    [175952] = true  -- Vivianne
+}
+
+-- The various spells for summoning bodyguards
+local summon_spells = {
+    [173631] = true, -- Aeda Brightdawn
+    [175949] = true, -- Aeda Brightdawn
+    [173634] = true, -- Defender Illona
+    [175943] = true, -- Defender Illona
+    [173633] = true, -- Delvar Ironfist
+    [175947] = true, -- Delvar Ironfist
+    [173993] = true, -- Leorajh
+    [173632] = true, -- Talonpriest Ishaal
+    [173449] = true, -- Tormmok
+    [173630] = true, -- Vivianne
+    [175951] = true  -- Vivianne
 }
 
 local defeated_spells = {
@@ -212,6 +242,12 @@ function events.UNIT_HEALTH(unit)
     UpdateFromUnit(unit)
 end
 
+function events.player.UNIT_SPELLCAST_SUCCEEDED(unit, name, rank, lineId, id)
+    if not summon_spells[id] then return end
+    bodyguard.status = lib.Status.Active
+    RunCallback("status", bodyguard.status)
+end
+
 -- We listen to CLEU to find out when the bodyguard is damaged or healed
 function events.COMBAT_LOG_EVENT_UNFILTERED(timestamp, event, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, ...)
     -- First find out if the destination (damaged or healed) is the player's bodyguard
@@ -326,10 +362,10 @@ frame:SetScript("OnEvent", function(f, e, ...)
 end)
 
 for key, val in pairs(events) do
-    if key:match("^[A-Z0-9_]+$") then
+    if type(val) == "function" then
         frame:RegisterEvent(key)
-    else
-        for event, _ in pairs(events[key]) do
+    elseif type(val) == "table" then
+        for event, _ in pairs(val) do
             frame:RegisterUnitEvent(event, key)
         end
     end
