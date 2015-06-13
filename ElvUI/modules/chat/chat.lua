@@ -1263,6 +1263,7 @@ function CH:FloatingChatFrame_OnEvent(event, ...)
 end
 
 function CH:SetupChat(event, ...)
+	if E.private.chat.enable ~= true then return end
 	for _, frameName in pairs(CHAT_FRAMES) do
 		local frame = _G[frameName]
 		local id = frame:GetID();
