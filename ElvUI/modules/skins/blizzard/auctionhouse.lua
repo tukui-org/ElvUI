@@ -176,27 +176,33 @@ local function LoadSkin()
 		local button = _G["BrowseButton"..i]
 		local icon = _G["BrowseButton"..i.."Item"]
 
-		_G["BrowseButton"..i.."ItemIconTexture"]:SetTexCoord(unpack(E.TexCoords))
-		_G["BrowseButton"..i.."ItemIconTexture"]:SetInside()
+		if _G["BrowseButton"..i.."ItemIconTexture"] then
+			_G["BrowseButton"..i.."ItemIconTexture"]:SetTexCoord(unpack(E.TexCoords))
+			_G["BrowseButton"..i.."ItemIconTexture"]:SetInside()
+		end
 
-		icon:StyleButton()
-		icon:GetNormalTexture():SetTexture('')
-		icon:SetTemplate("Default")
-		icon.IconBorder:SetTexture('')
-		hooksecurefunc(icon.IconBorder, 'SetVertexColor', function(self, r, g, b)
-			icon:SetBackdropBorderColor(r, g, b)
-		end)
-		hooksecurefunc(icon.IconBorder, 'Hide', function(self, r, g, b)
-			icon:SetBackdropBorderColor(unpack(E["media"].bordercolor))
-		end)
+		if icon then
+			icon:StyleButton()
+			icon:GetNormalTexture():SetTexture('')
+			icon:SetTemplate("Default")
+			icon.IconBorder:SetTexture('')
+			hooksecurefunc(icon.IconBorder, 'SetVertexColor', function(self, r, g, b)
+				icon:SetBackdropBorderColor(r, g, b)
+			end)
+			hooksecurefunc(icon.IconBorder, 'Hide', function(self, r, g, b)
+				icon:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+			end)
+		end
 
-		button:StripTextures()
-		button:StyleButton()
-		_G["BrowseButton"..i.."Highlight"] = button:GetHighlightTexture()
-		button:GetHighlightTexture():ClearAllPoints()
-		button:GetHighlightTexture():Point("TOPLEFT", icon, "TOPRIGHT", 2, 0)
-		button:GetHighlightTexture():SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", -2, 5)
-		button:GetPushedTexture():SetAllPoints(button:GetHighlightTexture())
+		if button then
+			button:StripTextures()
+			button:StyleButton()
+			_G["BrowseButton"..i.."Highlight"] = button:GetHighlightTexture()
+			button:GetHighlightTexture():ClearAllPoints()
+			button:GetHighlightTexture():Point("TOPLEFT", icon, "TOPRIGHT", 2, 0)
+			button:GetHighlightTexture():SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", -2, 5)
+			button:GetPushedTexture():SetAllPoints(button:GetHighlightTexture())
+		end
 	end
 
 	for i=1, NUM_AUCTIONS_TO_DISPLAY do
