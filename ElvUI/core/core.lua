@@ -546,7 +546,6 @@ function E:UpdateAll(ignoreInstall)
 	local DT = self:GetModule('DataTexts')
 	DT.db = self.db.datatexts
 	DT:LoadDataTexts()
-	E:GetModule('Layout'):SetDataPanelStyle()
 
 	local NP = self:GetModule('NamePlates')
 	NP.db = self.db.nameplate
@@ -589,6 +588,7 @@ function E:UpdateAll(ignoreInstall)
 	LO:ToggleChatPanels()
 	LO:BottomPanelVisibility()
 	LO:TopPanelVisibility()
+	LO:SetDataPanelStyle()
 
 	self:GetModule('Blizzard'):ObjectiveFrameHeight()
 
