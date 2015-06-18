@@ -588,6 +588,7 @@ function E:UpdateAll(ignoreInstall)
 	LO:ToggleChatPanels()
 	LO:BottomPanelVisibility()
 	LO:TopPanelVisibility()
+	LO:SetDataPanelStyle()
 
 	self:GetModule('Blizzard'):ObjectiveFrameHeight()
 

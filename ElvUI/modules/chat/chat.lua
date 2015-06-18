@@ -1263,6 +1263,7 @@ function CH:FloatingChatFrame_OnEvent(event, ...)
 end
 
 function CH:SetupChat(event, ...)
+	if E.private.chat.enable ~= true then return end
 	for _, frameName in pairs(CHAT_FRAMES) do
 		local frame = _G[frameName]
 		local id = frame:GetID();
@@ -1297,7 +1298,7 @@ function CH:SetupChat(event, ...)
 		end
 
 		if not _G[frameName.."Tab"].glow.anim then
-			E:SetUpAnimGroup(_G[frameName.."Tab"].glow)
+			E:SetUpAnimGroup(_G[frameName.."Tab"].glow, "FlashLoop")
 		end
 	end
 

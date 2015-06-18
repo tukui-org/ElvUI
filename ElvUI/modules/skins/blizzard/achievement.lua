@@ -5,6 +5,8 @@ local function LoadSkin(event)
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.achievement ~= true then return end
 
 	local function SkinAchievement(Achievement, BiggerIcon)
+		if Achievement.isSkinned then return; end
+
 		Achievement:StripTextures(true)
 		Achievement:CreateBackdrop("Default", true)
 		Achievement.backdrop:SetInside()
@@ -49,14 +51,18 @@ local function LoadSkin(event)
 		if Achievement.tracked then
 			S:HandleCheckBox(Achievement.tracked, true)
 		end
+		
+		Achievement.isSkinned = true
 	end
 
 	if event == "PLAYER_ENTERING_WORLD" then
 		hooksecurefunc('HybridScrollFrame_CreateButtons', function(frame, template)
 			if template == "AchievementCategoryTemplate" then
 				for _, button in pairs(frame.buttons) do
+					if button.isSkinned then return; end
 					button:StripTextures(true)
 					button:StyleButton()
+					button.isSkinned = true
 				end
 			end
 			if template == "AchievementTemplate" then
@@ -66,6 +72,7 @@ local function LoadSkin(event)
 			end
 			if template == "ComparisonTemplate" then
 				for _, Achievement in pairs(frame.buttons) do
+					if Achievement.isSkinned then return; end
 					SkinAchievement(Achievement.player)
 					SkinAchievement(Achievement.friend)
 
@@ -202,6 +209,11 @@ local function LoadSkin(event)
 	end
 
 	hooksecurefunc('AchievementButton_DisplayAchievement', function(frame)
+		--If another addon loads Blizzard_AchievementUI as a dependency, our hook might be executed too late.
+		if not frame.isSkinned then
+			SkinAchievement(frame, true)
+		end
+
 		if frame.accountWide then
 			frame.backdrop:SetBackdropBorderColor(ACHIEVEMENTUI_BLUEBORDER_R, ACHIEVEMENTUI_BLUEBORDER_G, ACHIEVEMENTUI_BLUEBORDER_B)
 		else
@@ -316,6 +328,37 @@ local function LoadSkin(event)
 			end
 		end
 	end)
+	
+	--The section below is usually handled in our hook, but another addon may have loaded the AchievementUI before we were ready
+	--Categories 
+	for i = 1, 20 do
+		local button = _G["AchievementFrameCategoriesContainerButton"..i]
+		if not button or (button and button.isSkinned) then return end
+		button:StripTextures(true)
+		button:StyleButton()
+		button.isSkinned = true
+	end
+	
+	--Comparison
+	for i = 1, 10 do
+		local Achievement = _G["AchievementFrameComparisonContainerButton"..i]
+		if not Achievement or (Achievement and Achievement.isSkinned) then return end
+
+		SkinAchievement(Achievement.player)
+		SkinAchievement(Achievement.friend)
+
+		hooksecurefunc(Achievement.player, 'Saturate', function()
+			if Achievement.player.accountWide then
+				Achievement.player.backdrop:SetBackdropBorderColor(ACHIEVEMENTUI_BLUEBORDER_R, ACHIEVEMENTUI_BLUEBORDER_G, ACHIEVEMENTUI_BLUEBORDER_B)
+				Achievement.friend.backdrop:SetBackdropBorderColor(ACHIEVEMENTUI_BLUEBORDER_R, ACHIEVEMENTUI_BLUEBORDER_G, ACHIEVEMENTUI_BLUEBORDER_B)
+			else
+				Achievement.player.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+				Achievement.friend.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+			end
+		end)
+		
+		Achievement.isSkinned = true
+	end
 end
 
 local f = CreateFrame("Frame")
