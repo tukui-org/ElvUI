@@ -736,6 +736,7 @@ local function LoadSkin()
         "SocialPanelGuildMemberAlert",
         "SocialPanelChatMouseScroll",
 		"SocialPanelEnableTwitter",
+		"SocialPanelWholeChatWindowClickable",
         -- Action bars
         "ActionBarsPanelLockActionBars",
         "ActionBarsPanelSecureAbilityToggle",
@@ -807,6 +808,7 @@ local function LoadSkin()
         "MousePanelInvertMouse",
         "MousePanelClickToMove",
         "MousePanelWoWMouse",
+		"MousePanelEnableMouseSpeed",
         -- Help
         "HelpPanelShowTutorials",
         "HelpPanelEnhancedTooltips",
@@ -1164,7 +1166,27 @@ local function LoadSkin()
 		S:HandleCheckBox(_G["AddonListEntry"..i.."Enabled"])
 		S:HandleButton(_G["AddonListEntry"..i].LoadAddonButton)
 	end
+	
+	--What's New
+	SplashFrame:CreateBackdrop("Transparent")
+	S:HandleButton(SplashFrame.BottomCloseButton)
+	S:HandleCloseButton(SplashFrame.TopCloseButton)
 
+	--NavBar Buttons (Used in WorldMapFrame, EncounterJournal and HelpFrame)
+	local function SkinNavBarButtons(self)
+		if (self:GetParent():GetName() == "EncounterJournal" and not E.private.skins.blizzard.encounterjournal) or (self:GetParent():GetName() == "WorldMapFrame" and not E.private.skins.blizzard.worldmap) or (self:GetParent():GetName() == "HelpFrameKnowledgebase" and not E.private.skins.blizzard.help) then
+			return
+		end
+		local navButton = self.navList[#self.navList]
+		if navButton and not navButton.isSkinned then
+			S:HandleButton(navButton, true)
+			if navButton.MenuArrowButton then
+				S:HandleNextPrevButton(navButton.MenuArrowButton, true)
+			end
+			navButton.isSkinned = true
+		end
+	end
+	hooksecurefunc("NavBar_AddButton", SkinNavBarButtons)
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)

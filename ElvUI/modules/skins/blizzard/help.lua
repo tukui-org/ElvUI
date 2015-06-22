@@ -12,14 +12,14 @@ local function LoadSkin()
 	}
 
 	local buttons = {
-		"HelpFrameOpenTicketHelpItemRestoration",
+		-- "HelpFrameOpenTicketHelpItemRestoration",
 		"HelpFrameAccountSecurityOpenTicket",
-		"HelpFrameOpenTicketHelpTopIssues",
+		-- "HelpFrameOpenTicketHelpTopIssues",
 		"HelpFrameOpenTicketHelpOpenTicket",
 		"HelpFrameKnowledgebaseSearchButton",
 		"HelpFrameKnowledgebaseNavBarHomeButton",
 		"HelpFrameCharacterStuckStuck",
-		"GMChatOpenLog",
+		-- "GMChatOpenLog",
 		"HelpFrameTicketSubmit",
 		"HelpFrameTicketCancel",
 	}
@@ -126,34 +126,6 @@ local function LoadSkin()
 	HelpFrameCharacterStuckHearthstone:SetTemplate("Default", true)
 	HelpFrameCharacterStuckHearthstone.IconTexture:SetInside()
 	HelpFrameCharacterStuckHearthstone.IconTexture:SetTexCoord(unpack(E.TexCoords))
-
-	local function navButtonFrameLevel(self)
-		for i=1, #self.navList do
-			local navButton = self.navList[i]
-			local lastNav = self.navList[i-1]
-			if navButton and lastNav then
-				if lastNav:GetFrameLevel() > 2 then
-					navButton:SetFrameLevel(lastNav:GetFrameLevel() - 2)
-				else
-					navButton:SetFrameLevel(0)
-				end
-			end
-		end
-	end
-
-	hooksecurefunc("NavBar_AddButton", function(self, buttonData)
-		local navButton = self.navList[#self.navList]
-
-
-		if not navButton.skinned then
-			S:HandleButton(navButton, true)
-
-			if(navButton.MenuArrowButton) then
-				S:HandleNextPrevButton(navButton.MenuArrowButton, true)
-			end
-			navButton.skinned = true
-		end
-	end)
 
 	S:HandleButton(HelpFrameGM_ResponseNeedMoreHelp)
 	S:HandleButton(HelpFrameGM_ResponseCancel)

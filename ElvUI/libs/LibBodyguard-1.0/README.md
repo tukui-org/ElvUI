@@ -19,7 +19,7 @@ Use LibStub to consume the library in your WoW AddOns, just like any other libra
 License
 -------
 
-Copyright (c) 2014 by Adam Hellberg.
+Copyright (c) 2014-2015 by Adam Hellberg.
 
 LibBodyguard-1.0 is licensed under the MIT License, see the LICENSE file for more information.
 
