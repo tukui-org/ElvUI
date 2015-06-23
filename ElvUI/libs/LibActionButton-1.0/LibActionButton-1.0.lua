@@ -1,18 +1,18 @@
 --[[
-Copyright (c) 2010-2015, Hendrik "nevcairiel" Leppkes <h.leppkes@gmail.com>
+Copyright (c) 2010-2014, Hendrik "nevcairiel" Leppkes <h.leppkes@gmail.com>
 
 All rights reserved.
 
-Redistribution and use in source and binary forms, with or without 
+Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
 
-    * Redistributions of source code must retain the above copyright notice, 
+    * Redistributions of source code must retain the above copyright notice,
       this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright notice, 
-      this list of conditions and the following disclaimer in the documentation 
+    * Redistributions in binary form must reproduce the above copyright notice,
+      this list of conditions and the following disclaimer in the documentation
       and/or other materials provided with the distribution.
-    * Neither the name of the developer nor the names of its contributors 
-      may be used to endorse or promote products derived from this software without 
+    * Neither the name of the developer nor the names of its contributors
+      may be used to endorse or promote products derived from this software without
       specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
@@ -29,7 +29,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ]]
 local MAJOR_VERSION = "LibActionButton-1.0"
-local MINOR_VERSION = 61
+local MINOR_VERSION = 60
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
@@ -68,9 +68,6 @@ lib.buttonRegistry = lib.buttonRegistry or {}
 lib.activeButtons = lib.activeButtons or {}
 lib.actionButtons = lib.actionButtons or {}
 lib.nonActionButtons = lib.nonActionButtons or {}
-
-lib.ChargeCooldowns = lib.ChargeCooldowns or {}
-lib.NumChargeCooldowns = lib.NumChargeCooldowns or 0
 
 lib.ACTION_HIGHLIGHT_MARKS = lib.ACTION_HIGHLIGHT_MARKS or setmetatable({}, { __index = ACTION_HIGHLIGHT_MARKS })
 
@@ -113,9 +110,21 @@ local Update, UpdateButtonState, UpdateUsable, UpdateCount, UpdateCooldown, Upda
 local StartFlash, StopFlash, UpdateFlash, UpdateHotkeys, UpdateRangeTimer, UpdateOverlayGlow
 local UpdateFlyout, ShowGrid, HideGrid, UpdateGrid, SetupSecureSnippets, WrapOnClick
 local ShowOverlayGlow, HideOverlayGlow
-local EndChargeCooldown
 
 local InitializeEventHandler, OnEvent, ForAllButtons, OnUpdate
+
+
+local SPELL_POWER_HOLY_POWER = SPELL_POWER_HOLY_POWER;
+local HAND_OF_LIGHT = GetSpellInfo(90174);
+local DIVINE_CRUSADER = GetSpellInfo(144595)
+local PLAYERCLASS = select(2, UnitClass('player'))
+local HOLY_POWER_SPELLS = {
+	[85256] = GetSpellInfo(85256), --Templar's Verdict
+	[53385] = GetSpellInfo(53385), --Divine Storm
+	[53600] = GetSpellInfo(53600), --Shield of the Righteous
+	[157048] = GetSpellInfo(157048), -- Final Verdict
+	[152262] = GetSpellInfo(152262), --Seraphim
+};
 
 local DefaultConfig = {
 	outOfRangeColoring = "button",
@@ -123,7 +132,8 @@ local DefaultConfig = {
 	showGrid = false,
 	colors = {
 		range = { 0.8, 0.1, 0.1 },
-		mana = { 0.5, 0.5, 1.0 }
+		mana = { 0.5, 0.5, 1.0 },
+		hp = { 0.5, 0.5, 1.0 }
 	},
 	hideElements = {
 		macro = false,
@@ -516,6 +526,31 @@ local function PickupAny(kind, target, detail, ...)
 	end
 end
 
+function Generic:OnUpdate(elapsed)
+	if not GetCVarBool('lockActionBars') then return; end
+
+	self.lastupdate = (self.lastupdate or 0) + elapsed;
+	if (self.lastupdate < .2) then return end
+	self.lastupdate = 0
+
+	local isDragKeyDown
+	if GetModifiedClick("PICKUPACTION") == 'ALT' then
+		isDragKeyDown = IsAltKeyDown()
+	elseif GetModifiedClick("PICKUPACTION") == 'CTRL' then
+		isDragKeyDown = IsControlKeyDown()
+	elseif GetModifiedClick("PICKUPACTION") == 'SHIFT' then
+		isDragKeyDown = IsShiftKeyDown()
+	end
+
+	if isDragKeyDown and (self.clickState == 'AnyDown' or self.clickState == nil) then
+		self.clickState = 'AnyUp'
+		self:RegisterForClicks(self.clickState)
+	elseif self.clickState == 'AnyUp' and not isDragKeyDown then
+		self.clickState = 'AnyDown'
+		self:RegisterForClicks(self.clickState)
+	end
+end
+
 function Generic:OnEnter()
 	if self.config.tooltip ~= "disabled" and (self.config.tooltip ~= "nocombat" or not InCombatLockdown()) then
 		UpdateTooltip(self)
@@ -528,10 +563,15 @@ function Generic:OnEnter()
 		lib.ACTION_HIGHLIGHT_MARKS[self._state_action] = false
 		UpdateNewAction(self)
 	end
+
+	if self.config.clickOnDown then
+		self:SetScript('OnUpdate', Generic.OnUpdate)
+	end
 end
 
 function Generic:OnLeave()
 	GameTooltip:Hide()
+	self:SetScript('OnUpdate', nil)
 end
 
 -- Insecure drag handler to allow clicking on the button with an action on the cursor
@@ -1023,10 +1063,6 @@ function Update(self)
 		end
 		self.cooldown:Hide()
 		self:SetChecked(false)
-
-		if self.chargeCooldown then
-			EndChargeCooldown(self.chargeCooldown)
-		end
 	end
 
 	-- Add a green border if button is an equipped item
@@ -1127,6 +1163,23 @@ function UpdateButtonState(self)
 	lib.callbacks:Fire("OnButtonState", self)
 end
 
+local function IsHolyPowerAbility(actionId)
+	if not actionId or type(actionId) ~= 'number' then return false; end
+	local actionType, id = GetActionInfo(actionId);
+	if actionType == 'macro' then
+		local macroSpell = GetMacroSpell(id);
+		if macroSpell then
+			for spellId, spellName in pairs(HOLY_POWER_SPELLS) do
+				if macroSpell == spellName then
+					return true;
+				end
+			end
+		end
+	else
+		return HOLY_POWER_SPELLS[id];
+	end
+	return false;
+end
 function UpdateUsable(self)
 	-- TODO: make the colors configurable
 	-- TODO: allow disabling of the whole recoloring
@@ -1134,7 +1187,10 @@ function UpdateUsable(self)
 		self.icon:SetVertexColor(unpack(self.config.colors.range))
 	else
 		local isUsable, notEnoughMana = self:IsUsable()
-		if isUsable then
+		local action = self._state_action
+		if PLAYERCLASS == 'PALADIN' and IsHolyPowerAbility(action) and not(UnitPower('player', SPELL_POWER_HOLY_POWER) >= 3 or UnitBuff('player', HAND_OF_LIGHT) or UnitBuff('player', DIVINE_CRUSADER)) then
+			self.icon:SetVertexColor(unpack(self.config.colors.hp))
+		elseif isUsable then
 			self.icon:SetVertexColor(1.0, 1.0, 1.0)
 			--self.NormalTexture:SetVertexColor(1.0, 1.0, 1.0)
 		elseif notEnoughMana then
@@ -1162,43 +1218,11 @@ function UpdateCount(self)
 		end
 	else
 		local charges, maxCharges, chargeStart, chargeDuration = self:GetCharges()
-		if charges and maxCharges and maxCharges > 0 then
+		if charges and maxCharges and maxCharges > 1 then
 			self.Count:SetText(charges)
 		else
 			self.Count:SetText("")
 		end
-	end
-end
-
-function EndChargeCooldown(self)
-	self:Hide()
-	self:SetParent(UIParent)
-	self.parent.chargeCooldown = nil
-	self.parent = nil
-	tinsert(lib.ChargeCooldowns, self)
-end
-
-local function StartChargeCooldown(parent, chargeStart, chargeDuration)
-	if not parent.chargeCooldown then
-		local cooldown = tremove(lib.ChargeCooldowns)
-		if not cooldown then
-			lib.NumChargeCooldowns = lib.NumChargeCooldowns + 1
-			cooldown = CreateFrame("Cooldown", "LAB10ChargeCooldown"..lib.NumChargeCooldowns, parent, "CooldownFrameTemplate");
-			cooldown:SetScript("OnCooldownDone", EndChargeCooldown)
-			cooldown:SetHideCountdownNumbers(true)
-			cooldown:SetDrawEdge(true)
-			cooldown:SetDrawSwipe(false)
-		end
-		cooldown:SetParent(parent)
-		cooldown:SetAllPoints(parent)
-		cooldown:SetFrameStrata("TOOLTIP")
-		cooldown:Show()
-		parent.chargeCooldown = cooldown
-		cooldown.parent = parent
-	end
-	parent.chargeCooldown:SetCooldown(chargeStart, chargeDuration)
-	if not chargeStart or chargeStart == 0 then
-		EndChargeCooldown(parent.chargeCooldown)
 	end
 end
 
@@ -1209,8 +1233,7 @@ end
 
 function UpdateCooldown(self)
 	local locStart, locDuration = self:GetLossOfControlCooldown()
-	local start, duration, enable = self:GetCooldown()
-	local charges, maxCharges, chargeStart, chargeDuration = self:GetCharges()
+	local start, duration, enable, charges, maxCharges = self:GetCooldown()
 
 	if (locStart + locDuration) > (start + duration) then
 		if self.cooldown.currentCooldownType ~= COOLDOWN_TYPE_LOSS_OF_CONTROL then
@@ -1219,7 +1242,7 @@ function UpdateCooldown(self)
 			self.cooldown:SetHideCountdownNumbers(true)
 			self.cooldown.currentCooldownType = COOLDOWN_TYPE_LOSS_OF_CONTROL
 		end
-		CooldownFrame_SetTimer(self.cooldown, locStart, locDuration, 1, true)
+		CooldownFrame_SetTimer(self.cooldown, locStart, locDuration, 1, nil, nil, true)
 	else
 		if self.cooldown.currentCooldownType ~= COOLDOWN_TYPE_NORMAL then
 			self.cooldown:SetEdgeTexture("Interface\\Cooldown\\edge")
@@ -1230,14 +1253,7 @@ function UpdateCooldown(self)
 		if locStart > 0 then
 			self.cooldown:SetScript("OnCooldownDone", OnCooldownDone)
 		end
-
-		if charges and maxCharges and maxCharges > 0 and charges < maxCharges then
-			StartChargeCooldown(self, chargeStart, chargeDuration)
-		elseif self.chargeCooldown then
-			EndChargeCooldown(self.chargeCooldown)
-		end
-
-		CooldownFrame_SetTimer(self.cooldown, start, duration, enable)
+		CooldownFrame_SetTimer(self.cooldown, start, duration, enable, charges, maxCharges)
 	end
 end
 
@@ -1284,6 +1300,10 @@ function UpdateHotkeys(self)
 		self.HotKey:SetText(key)
 		self.HotKey:SetPoint("TOPLEFT", self, "TOPLEFT", - 2, - 2)
 		self.HotKey:Show()
+	end
+
+	if self.postKeybind then
+		self.postKeybind(nil, self)
 	end
 end
 
@@ -1369,6 +1389,10 @@ function UpdateFlyout(self)
 				SetClampedTextureRotation(self.FlyoutArrow, 0)
 			end
 
+			if self.FlyoutUpdateFunc then
+				self.FlyoutUpdateFunc(nil, self)
+			end
+
 			-- return here, otherwise flyout is hidden
 			return
 		end
@@ -1378,6 +1402,15 @@ end
 
 function UpdateRangeTimer()
 	rangeTimer = -1
+end
+
+local function GetSpellIdByName(spellName)
+	if not spellName then return end
+	local spellLink = GetSpellLink(spellName)
+	if spellLink then
+		return tonumber(spellLink:match("spell:(%d+)"))
+	end
+	return nil
 end
 
 -----------------------------------------------------------

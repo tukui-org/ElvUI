@@ -1,4 +1,4 @@
-## Interface: 60200
+## Interface: 60100
 ## Title: Lib: ActionButton-1.0
 ## Notes: Creates and manages secure Action Buttons
 ## Author: Nevcairiel
@@ -6,7 +6,7 @@
 ## X-Category: Library
 ## X-License: BSD
 ## OptionalDeps: LibKeyBound-1.0, LibButtonGlow-1.0
-## X-Curse-Packaged-Version: 0.27
+## X-Curse-Packaged-Version: 0.25.1
 ## X-Curse-Project-Name: LibActionButton-1.0
 ## X-Curse-Project-ID: libactionbutton-1-0
 ## X-Curse-Repository-ID: wow/libactionbutton-1-0/mainline
