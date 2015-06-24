@@ -95,7 +95,7 @@ function E:CreateCooldownTimer(parent)
 	return timer
 end
 
-function E:OnSetCooldown(start, duration, charges, maxCharges)
+function E:OnSetCooldown(start, duration)
 	if(self.noOCC) then return end
 	local button = self:GetParent()
 
@@ -111,14 +111,6 @@ function E:OnSetCooldown(start, duration, charges, maxCharges)
 		if timer then
 			E:Cooldown_StopTimer(timer)
 			return
-		end
-	end
-
-	if self.timer then
-		if charges and charges > 0 then
-			self.timer:SetAlpha(0)
-		else
-			self.timer:SetAlpha(1)
 		end
 	end
 end
