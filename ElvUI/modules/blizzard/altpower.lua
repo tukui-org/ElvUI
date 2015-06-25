@@ -10,6 +10,10 @@ function B:PositionAltPowerBar()
 	PlayerPowerBarAlt:SetPoint('CENTER', holder, 'CENTER')
 	PlayerPowerBarAlt:SetParent(holder)
 	PlayerPowerBarAlt.ignoreFramePositionManager = true
+	--The Blizzard function FramePositionDelegate:UIParentManageFramePositions()
+	--calls :ClearAllPoints on PlayerPowerBarAlt under certain conditions. Disable ClearAllPoints and SetPoint.
+	PlayerPowerBarAlt.ClearAllPoints = function() end
+	PlayerPowerBarAlt.SetPoint = function() end
 
 	E:CreateMover(holder, 'AltPowerBarMover', L["Alternative Power"])
 end
