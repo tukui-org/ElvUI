@@ -6,6 +6,8 @@ function B:PositionAltPowerBar()
 	holder:SetPoint('TOP', E.UIParent, 'TOP', 0, -18)
 	holder:Size(128, 50)
 
+	PlayerPowerBarAlt.ClearAllPoints = nil
+	PlayerPowerBarAlt.SetPoint = nil
 	PlayerPowerBarAlt:ClearAllPoints()
 	PlayerPowerBarAlt:SetPoint('CENTER', holder, 'CENTER')
 	PlayerPowerBarAlt:SetParent(holder)
