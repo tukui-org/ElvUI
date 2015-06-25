@@ -387,6 +387,7 @@ local function LoadSkin()
 	frame.shine:Kill()
 	frame:GetRegions():Hide()
 	frame.IconBG:Hide()
+	frame.Background:Kill()
 
 	frame:CreateBackdrop("Transparent")
 	frame.backdrop:SetPoint('TOPLEFT', frame, 'TOPLEFT', 8, -8)
