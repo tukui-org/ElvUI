@@ -951,13 +951,21 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 
 			self:AddMessage(format(CH:ConcatenateTimeStamp(arg1), "|Hplayer:"..arg2.."|h".."["..coloredName.."]".."|h"), info.r, info.g, info.b, info.id);
 		elseif ( strsub(type,1,18) == "GUILD_ACHIEVEMENT" ) then
-			self:AddMessage(format(CH:ConcatenateTimeStamp(arg1), "|Hplayer:"..arg2.."|h".."["..coloredName.."]".."|h"), info.r, info.g, info.b, info.id);
+			-- self:AddMessage(format(CH:ConcatenateTimeStamp(arg1), "|Hplayer:"..arg2.."|h".."["..coloredName.."]".."|h"), info.r, info.g, info.b, info.id);
+			local message = format(arg1, "|Hplayer:"..arg2.."|h".."["..coloredName.."]".."|h");
+			if (C_Social.IsSocialEnabled()) then
+				local achieveID = GetAchievementInfoFromHyperlink(arg1);
+				if (achieveID) then
+					message = message .. " " .. Social_GetShareAchievementLink(achieveID, true);
+				end
+			end
+			self:AddMessage(CH:ConcatenateTimeStamp(message), info.r, info.g, info.b, info.id);
 		elseif ( type == "IGNORED" ) then
 			self:AddMessage(format(CH:ConcatenateTimeStamp(CHAT_IGNORED), arg2), info.r, info.g, info.b, info.id);
 		elseif ( type == "FILTERED" ) then
 			self:AddMessage(format(CH:ConcatenateTimeStamp(CHAT_FILTERED), arg2), info.r, info.g, info.b, info.id);
 		elseif ( type == "RESTRICTED" ) then
-			self:AddMessage(CH:ConcatenateTimeStamp(GameLimitedMode_GetString("CHAT_RESTRICTED")), info.r, info.g, info.b, info.id);
+			self:AddMessage(CH:ConcatenateTimeStamp(CHAT_RESTRICTED_TRIAL), info.r, info.g, info.b, info.id);
 		elseif ( type == "CHANNEL_LIST") then
 			if(channelLength > 0) then
 				self:AddMessage(format(CH:ConcatenateTimeStamp(_G["CHAT_"..type.."_GET"]..arg1), tonumber(arg8), arg4), info.r, info.g, info.b, info.id);
@@ -986,7 +994,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 		elseif (type == "CHANNEL_NOTICE") then
 			local globalstring = _G["CHAT_"..arg1.."_NOTICE_BN"];
 			if( arg1 == "TRIAL_RESTRICTED" ) then
-				globalstring = GameLimitedMode_GetString("CHAT_TRIAL_RESTRICTED_NOTICE");
+				globalstring = CHAT_TRIAL_RESTRICTED_NOTICE_TRIAL;
 			else
 				if ( not globalstring ) then
 					globalstring = _G["CHAT_"..arg1.."_NOTICE"];
@@ -1041,6 +1049,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 		elseif ( type == "BN_INLINE_TOAST_BROADCAST" ) then
 			if ( arg1 ~= "" ) then
 				arg1 = RemoveExtraSpaces(arg1);
+				arg1 = RemoveNewlines(arg1);
 				local playerLink = format("|HBNplayer:%s:%s:%s:%s:%s|h[%s]|h", arg2, arg13, arg11, Chat_GetChatCategory(type), 0, arg2);
 				self:AddMessage(format(CH:ConcatenateTimeStamp(BN_INLINE_TOAST_BROADCAST), playerLink, arg1), info.r, info.g, info.b, info.id);
 			end
@@ -1216,6 +1225,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			end
 			self.tellTimer = GetTime() + CHAT_TELL_ALERT_TIME;
 			--FCF_FlashTab(self);
+			-- FlashClientIcon();
 		end
 
 		if ( not self:IsShown() ) then
