@@ -213,6 +213,22 @@ function B:AlertFrame_SetGarrisonFollowerAlertFrameAnchors(alertAnchor)
     end
 end
 
+function B:AlertFrame_SetGarrisonShipFollowerAlertFrameAnchors(alertAnchor)
+    if ( GarrisonShipFollowerAlertFrame and GarrisonShipFollowerAlertFrame:IsShown() ) then
+		GarrisonShipFollowerAlertFrame:ClearAllPoints()
+        GarrisonShipFollowerAlertFrame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
+        alertAnchor = GarrisonShipFollowerAlertFrame;
+    end
+end
+
+function B:AlertFrame_SetGarrisonShipMissionAlertFrameAnchors(alertAnchor)
+    if ( GarrisonShipMissionAlertFrame and GarrisonShipMissionAlertFrame:IsShown() ) then
+		GarrisonShipMissionAlertFrame:ClearAllPoints()
+        GarrisonShipMissionAlertFrame:SetPoint(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
+        alertAnchor = GarrisonShipMissionAlertFrame;
+    end
+end
+
 function B:AlertMovers()
 	UIPARENT_MANAGED_FRAME_POSITIONS["GroupLootContainer"] = nil
 	E:CreateMover(AlertFrameHolder, "AlertFrameMover", L["Loot / Alert Frames"], nil, nil, E.PostAlertMove)
@@ -233,4 +249,6 @@ function B:AlertMovers()
 	self:SecureHook('AlertFrame_SetGarrisonBuildingAlertFrameAnchors')
 	self:SecureHook('AlertFrame_SetGarrisonMissionAlertFrameAnchors')
 	self:SecureHook('AlertFrame_SetGarrisonFollowerAlertFrameAnchors')
+	self:SecureHook('AlertFrame_SetGarrisonShipMissionAlertFrameAnchors')
+	self:SecureHook('AlertFrame_SetGarrisonShipFollowerAlertFrameAnchors')
 end
