@@ -19,7 +19,7 @@ function E:UIScale(event)
 
 	if self.screenwidth < 1600 then
 			self.lowversion = true;
-	elseif self.screenwidth >= 3840 and self.global.eyefinity then
+	elseif self.screenwidth >= 3840 and self.global.general.eyefinity then
 		local width = self.screenwidth;
 		local height = self.screenheight;
 
