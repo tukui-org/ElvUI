@@ -533,6 +533,7 @@ local function LoadSkin()
 	LFGListFrame.SearchPanel.AutoCompleteFrame:StripTextures()
 	LFGListFrame.SearchPanel.AutoCompleteFrame:SetTemplate("Transparent")
 
+	S:HandleButton(LFGListFrame.SearchPanel.FilterButton)
 	S:HandleButton(LFGListFrame.SearchPanel.RefreshButton)
 	LFGListFrame.SearchPanel.RefreshButton:Size(26)
 
