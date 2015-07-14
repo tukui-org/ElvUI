@@ -1,0 +1,12 @@
+tag 0.28.1
+b82a46c8d1685e2bfda193c9bde142191d4cc061
+Hendrik Leppkes <h.leppkes@gmail.com>
+2015-06-28 11:09:35 +0200
+
+Tag as 0.28.1
+
+
+--------------------
+
+Hendrik Leppkes:
+	- Only show charge cooldown if at least one charge is available - otherwise the main cooldown takes over
