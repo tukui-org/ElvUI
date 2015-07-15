@@ -360,6 +360,7 @@ local color, scale
 function NP:ColorizeAndScale(myPlate)
 	local unitType = NP:GetReaction(self)
 	local scale = 1
+	local canAttack = false
 
 	self.unitType = unitType
 	if RAID_CLASS_COLORS[unitType] then
@@ -369,6 +370,7 @@ function NP:ColorizeAndScale(myPlate)
 	elseif unitType == "HOSTILE_NPC" or unitType == "NEUTRAL_NPC" then
 		local classRole = E.role
 		local threatReaction = NP:GetThreatReaction(self)
+		canAttack = true
 		if(not NP.db.threat.enable) then
 			if unitType == "NEUTRAL_NPC" then
 				color = NP.db.reactions.neutral
@@ -420,11 +422,8 @@ function NP:ColorizeAndScale(myPlate)
 		color = NP.db.reactions.enemy
 	end
 
-	if (NP.db.healthBar.lowHPScale.enable and
-		NP.db.healthBar.lowHPScale.changeColor and
-		myPlate.lowHealth:IsShown() and
-		(color == NP.db.reactions.enemy or color == NP.db.reactions.neutral)) then
-	   		color = NP.db.healthBar.lowHPScale.color
+	if (NP.db.healthBar.lowHPScale.enable and NP.db.healthBar.lowHPScale.changeColor and myPlate.lowHealth:IsShown() and canAttack) then
+		color = NP.db.healthBar.lowHPScale.color
 	end
 
 	if(not self.customColor) then
