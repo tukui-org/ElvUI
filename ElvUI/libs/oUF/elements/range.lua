@@ -100,11 +100,7 @@ local function getUnit(unit)
 	end
 end
 
-local function friendlyIsInRange(unit)
-	if CheckInteractDistance(unit, 1) then
-		return true
-	end
-	
+local function friendlyIsInRange(unit)	
 	if UnitIsDeadOrGhost(unit) and #resSpells > 0 then
 		for _, name in ipairs(resSpells) do
 			if IsSpellInRange(name, unit) == 1 then
