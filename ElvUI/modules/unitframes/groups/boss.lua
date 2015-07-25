@@ -517,21 +517,33 @@ function UF:Update_BossFrames(frame, db)
 	frame:ClearAllPoints()
 	if INDEX == 1 then
 		if db.growthDirection == 'UP' then
-			frame:Point('BOTTOMRIGHT', BossHeaderMover, 'BOTTOMRIGHT') --Set to default position
-		else
-			frame:Point('TOPRIGHT', BossHeaderMover, 'TOPRIGHT') --Set to default position
+			frame:SetPoint('BOTTOMRIGHT', BossHeaderMover, 'BOTTOMRIGHT')
+		elseif db.growthDirection == 'RIGHT' then
+			frame:SetPoint('LEFT', BossHeaderMover, 'LEFT')
+		elseif db.growthDirection == 'LEFT' then
+			frame:SetPoint('RIGHT', BossHeaderMover, 'RIGHT')
+		else --Down
+			frame:SetPoint('TOPRIGHT', BossHeaderMover, 'TOPRIGHT')
 		end
 	else
 		if db.growthDirection == 'UP' then
-			frame:Point('BOTTOMRIGHT', _G['ElvUF_Boss'..INDEX-1], 'TOPRIGHT', 0, 12 + db.castbar.height)
-		else
-			frame:Point('TOPRIGHT', _G['ElvUF_Boss'..INDEX-1], 'BOTTOMRIGHT', 0, -(12 + db.castbar.height))
+			frame:SetPoint('BOTTOMRIGHT', _G['ElvUF_Boss'..INDEX-1], 'TOPRIGHT', 0, db.spacing)
+		elseif db.growthDirection == 'RIGHT' then
+			frame:SetPoint('LEFT', _G['ElvUF_Boss'..INDEX-1], 'RIGHT', db.spacing, 0)
+		elseif db.growthDirection == 'LEFT' then
+			frame:SetPoint('RIGHT', _G['ElvUF_Boss'..INDEX-1], 'LEFT', -db.spacing, 0)
+		else --Down
+			frame:SetPoint('TOPRIGHT', _G['ElvUF_Boss'..INDEX-1], 'BOTTOMRIGHT', 0, -db.spacing)
 		end
 	end
-
-	BossHeader:Width(UNIT_WIDTH)
-	BossHeader:Height(UNIT_HEIGHT + (UNIT_HEIGHT + 12 + db.castbar.height) * 3)
-
+	
+	if db.growthDirection == 'UP' or db.growthDirection == 'DOWN' then
+		BossHeader:SetWidth(UNIT_WIDTH)
+		BossHeader:SetHeight(UNIT_HEIGHT + ((UNIT_HEIGHT + db.spacing) * (MAX_BOSS_FRAMES -1)))
+	elseif db.growthDirection == 'LEFT' or db.growthDirection == 'RIGHT' then
+		BossHeader:SetWidth(UNIT_WIDTH + ((UNIT_WIDTH + db.spacing) * (MAX_BOSS_FRAMES -1)))
+		BossHeader:SetHeight(UNIT_HEIGHT)
+	end
 
 	if UF.db.colors.transparentHealth then
 		UF:ToggleTransparentStatusBar(true, frame.Health, frame.Health.bg)

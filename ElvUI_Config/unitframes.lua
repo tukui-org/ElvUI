@@ -2969,12 +2969,20 @@ E.Options.args.unitframe.args.boss = {
 		},
 		growthDirection = {
 			order = 8,
-			name = L["Growth Direction"],
 			type = 'select',
+			name = L['Growth Direction'],
 			values = {
-				['UP'] = L["Up"],
-				['DOWN'] = L["Down"],
+				['UP'] = L['Bottom To Top'],
+				['DOWN'] = L['Top To Bottom'],
+				['LEFT'] = L['Right to Left'],
+				['RIGHT'] = L['Left to Right'],
 			},
+		},
+		spacing = {
+			order = 9,
+			type = 'range',
+			name = L['Spacing'],
+			min = 0, max = 400, step = 1,
 		},
 		threatStyle = {
 			type = 'select',
@@ -3080,15 +3088,23 @@ E.Options.args.unitframe.args.arena = {
 		},
 		growthDirection = {
 			order = 10,
-			name = L["Growth Direction"],
 			type = 'select',
+			name = L['Growth Direction'],
 			values = {
-				['UP'] = L["Up"],
-				['DOWN'] = L["Down"],
+				['UP'] = L['Bottom To Top'],
+				['DOWN'] = L['Top To Bottom'],
+				['LEFT'] = L['Right to Left'],
+				['RIGHT'] = L['Left to Right'],
 			},
 		},
-		colorOverride = {
+		spacing = {
 			order = 11,
+			type = 'range',
+			name = L['Spacing'],
+			min = 0, max = 400, step = 1,
+		},
+		colorOverride = {
+			order = 13,
 			name = L["Class Color Override"],
 			desc = L["Override the default class color setting."],
 			type = 'select',
