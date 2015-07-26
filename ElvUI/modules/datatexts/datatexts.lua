@@ -107,7 +107,7 @@ function DT:UpdateAllDimensions()
 			local pointIndex = DT.PointLocation[i]
 			panel.dataPanels[pointIndex]:Width(width)
 			panel.dataPanels[pointIndex]:Height(height)
-			panel.dataPanels[pointIndex]:Point(DT:GetDataPanelPoint(panel, i, numPoints))
+			panel.dataPanels[pointIndex]:Point(DT:GetDataPanelPoint(panel, i, panel.numPoints))
 		end
 	end
 end
