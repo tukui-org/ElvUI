@@ -111,9 +111,15 @@ local function friendlyIsInRange(unit)
 		return false
 	end
 
-	if #friendlySpells == 0 and (UnitInRaid(unit) or UnitInParty(unit)) then
-		unit = getUnit(unit)
-		return unit and UnitInRange(unit)
+	if #friendlySpells == 0 then
+		if (UnitInRaid(unit) or UnitInParty(unit)) then
+			unit = getUnit(unit)
+			return unit and UnitInRange(unit)
+		else
+			if CheckInteractDistance(unit, 1) then --Inspect, 28 yards
+				return true
+			end
+		end
 	else
 		for _, name in ipairs(friendlySpells) do
 			if IsSpellInRange(name, unit) == 1 then
