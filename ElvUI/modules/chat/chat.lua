@@ -514,7 +514,7 @@ function CH:PositionChat(override)
 		tab.owner = chat
 		if id > NUM_CHAT_WINDOWS then
 			point = point or select(1, chat:GetPoint());
-			if select(2, tab:GetPoint()):GetName() ~= bg then
+			if select(2, tab:GetPoint()):GetName() ~= chatbg then
 				isDocked = true
 			else
 				isDocked = false
