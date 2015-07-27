@@ -2972,8 +2972,8 @@ E.Options.args.unitframe.args.boss = {
 			type = "select",
 			name = L["Growth Direction"],
 			values = {
-				["UP"] = L["Bottom To Top"],
-				["DOWN"] = L["Top To Bottom"],
+				["UP"] = L["Bottom to Top"],
+				["DOWN"] = L["Top to Bottom"],
 				["LEFT"] = L["Right to Left"],
 				["RIGHT"] = L["Left to Right"],
 			},
@@ -3091,8 +3091,8 @@ E.Options.args.unitframe.args.arena = {
 			type = "select",
 			name = L["Growth Direction"],
 			values = {
-				["UP"] = L["Bottom To Top"],
-				["DOWN"] = L["Top To Bottom"],
+				["UP"] = L["Bottom to Top"],
+				["DOWN"] = L["Top to Bottom"],
 				["LEFT"] = L["Right to Left"],
 				["RIGHT"] = L["Left to Right"],
 			},
