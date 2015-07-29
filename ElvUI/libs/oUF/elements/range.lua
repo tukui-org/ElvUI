@@ -224,7 +224,7 @@ local Enable = function(self)
 			OnRangeFrame:RegisterEvent("LEARNED_SPELL_IN_TAB");
 			OnRangeFrame:RegisterEvent("PLAYER_ENTERING_WORLD");
 			OnRangeFrame:SetScript("OnUpdate", OnRangeUpdate)
-			OnRangeFrame:SetScript("OnEvent", UpdateSpellList)
+			OnRangeFrame:SetScript("OnEvent", function() C_Timer.After(5, UpdateSpellList) end)
 		end
 
 		OnRangeFrame:Show()
