@@ -35,6 +35,7 @@ local function OnEnter(self, _, noUpdate)
 
 	local inProgressMissions = C_Garrison.GetInProgressMissions()
 	local numMissions = #inProgressMissions
+	local currentTime = time()
 	if(numMissions > 0) then
 		if(numBuildings > 0) then
 			DT.tooltip:AddLine(" ")
@@ -47,7 +48,7 @@ local function OnEnter(self, _, noUpdate)
 				r, g, b = 0.09, 0.51, 0.81
 			end
 
-			if(mission.timeLeft == "0 sec") then --may have localization issues here
+			if(mission.missionEndTime and currentTime and mission.missionEndTime <= currentTime) then
 				DT.tooltip:AddDoubleLine(mission.name, COMPLETE, r, g, b, 0, 1, 0)
 			else
 				DT.tooltip:AddDoubleLine(mission.name, mission.timeLeft, r, g, b)
