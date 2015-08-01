@@ -484,9 +484,8 @@ function CH:PositionChat(override)
 	for _, frameName in pairs(CHAT_FRAMES) do
 		chat = _G[frameName]
 		id = chat:GetID()
-		point = GetChatWindowSavedPosition(id)
 
-		if point == "BOTTOMRIGHT" and chat:IsShown() then
+		if E:FramesOverlap(chat, RightChatPanel) then
 			chatFound = true
 			break
 		end
@@ -521,7 +520,7 @@ function CH:PositionChat(override)
 			end
 		end
 
-		if point == "BOTTOMRIGHT" and chat:IsShown() and not (id > NUM_CHAT_WINDOWS) and id == self.RightChatWindowID then
+		if chat:IsShown() and not (id > NUM_CHAT_WINDOWS) and id == self.RightChatWindowID then
 			chat:ClearAllPoints()
 			if E.db.datatexts.rightChatPanel then
 				chat:SetPoint("BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 1, 3)

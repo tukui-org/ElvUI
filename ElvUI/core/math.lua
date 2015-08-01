@@ -74,6 +74,12 @@ function E:HexToRGB(hex)
 	return tonumber(rhex, 16), tonumber(ghex, 16), tonumber(bhex, 16)
 end
 
+--From http://wow.gamepedia.com/UI_coordinates
+function E:FramesOverlap(frameA, frameB)
+	local sA, sB = frameA:GetEffectiveScale(), frameB:GetEffectiveScale();
+	return ((frameA:GetLeft()*sA) < (frameB:GetRight()*sB)) and ((frameB:GetLeft()*sB) < (frameA:GetRight()*sA)) and ((frameA:GetBottom()*sA) < (frameB:GetTop()*sB)) and ((frameB:GetBottom()*sB) < (frameA:GetTop()*sA));
+end
+
 function E:GetScreenQuadrant(frame)
 	local x, y = frame:GetCenter()
 	local screenWidth = GetScreenWidth()
