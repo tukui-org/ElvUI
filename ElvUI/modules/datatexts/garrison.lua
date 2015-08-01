@@ -5,6 +5,10 @@ local GARRISON_CURRENCY = 824
 local format = string.format
 local GARRISON_ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", select(3, GetCurrencyInfo(GARRISON_CURRENCY)), 16, 16)
 
+local function sortFunction(a, b)
+	return a.missionEndTime < b.missionEndTime
+end
+
 local function OnEnter(self, _, noUpdate)
 	DT:SetupTooltip(self)
 
@@ -37,6 +41,8 @@ local function OnEnter(self, _, noUpdate)
 	local numMissions = #inProgressMissions
 	local currentTime = time()
 	if(numMissions > 0) then
+		sort(inProgressMissions, sortFunction) --Sort by time left, lowest first
+
 		if(numBuildings > 0) then
 			DT.tooltip:AddLine(" ")
 		end
