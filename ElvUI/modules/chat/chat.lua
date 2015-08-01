@@ -469,7 +469,7 @@ function CH:UpdateAnchors()
 	CH:PositionChat(true)
 end
 
-function CH:PositionChat(override)
+function CH:PositionChat(override, noSave)
 	if ((InCombatLockdown() and not override and self.initialMove) or (IsMouseButtonDown("LeftButton") and not override)) then return end
 	if not RightChatPanel or not LeftChatPanel then return; end
 	RightChatPanel:SetSize(E.db.chat.separateSizes and E.db.chat.panelWidthRight or E.db.chat.panelWidth, E.db.chat.separateSizes and E.db.chat.panelHeightRight or E.db.chat.panelHeight)
@@ -534,7 +534,8 @@ function CH:PositionChat(override)
 				chat:SetSize(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - BASE_OFFSET) - CombatLogQuickButtonFrame_Custom:GetHeight())
 			end
 
-			FCF_SavePositionAndDimensions(chat)
+			--Don't run when triggered by FCF_SavePositionAndDimensions, otherwise we get infinite loop
+			if not noSave then FCF_SavePositionAndDimensions(chat) end
 
 			tab:SetParent(RightChatPanel)
 			chat:SetParent(RightChatPanel)
@@ -561,7 +562,9 @@ function CH:PositionChat(override)
 					chat:SetPoint("BOTTOMLEFT", LeftChatToggleButton, "BOTTOMLEFT", 1, 1)
 				end
 				chat:SetSize(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - BASE_OFFSET))
-				FCF_SavePositionAndDimensions(chat)
+				
+				--Don't run when triggered by FCF_SavePositionAndDimensions, otherwise we get infinite loop
+				if not noSave then FCF_SavePositionAndDimensions(chat) end
 			end
 			chat:SetParent(LeftChatPanel)
 			if i > 2 then
@@ -1316,7 +1319,7 @@ function CH:SetupChat(event, ...)
 	end
 
 	GeneralDockManager:SetParent(LeftChatPanel)
-	self:ScheduleRepeatingTimer('PositionChat', 1)
+	-- self:ScheduleRepeatingTimer('PositionChat', 1)
 	self:PositionChat(true)
 
 	if not self.HookSecured then
@@ -1675,6 +1678,10 @@ function CH:CheckLFGRoles()
 	end
 end
 
+function CH:ON_FCF_SavePositionAndDimensions()
+	CH:PositionChat(nil, true) --2nd argument is to prevent infinite loop
+end
+
 function CH:Initialize()
 	if ElvCharacterDB.ChatHistory then
 		ElvCharacterDB.ChatHistory = nil --Depreciated
@@ -1719,6 +1726,7 @@ function CH:Initialize()
     end
 
 	self:SecureHook('FCF_SetChatWindowFontSize', 'SetChatFont')
+	self:SecureHook("FCF_SavePositionAndDimensions", "ON_FCF_SavePositionAndDimensions")
 	self:RegisterEvent('PLAYER_ENTERING_WORLD', 'DelayGMOTD')
 	self:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
 	self:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
