@@ -1,9 +1,12 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
-local GARRISON_CURRENCY = 824
 local format = string.format
+local tsort = table.sort
+local GARRISON_CURRENCY = 824
+local OIL_CURRENCY = 1101
 local GARRISON_ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", select(3, GetCurrencyInfo(GARRISON_CURRENCY)), 16, 16)
+local OIL_ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", select(3, GetCurrencyInfo(OIL_CURRENCY)), 16, 16)
 
 local function sortFunction(a, b)
 	return a.missionEndTime < b.missionEndTime
@@ -17,6 +20,10 @@ local function OnEnter(self, _, noUpdate)
 		C_Garrison.RequestLandingPageShipmentInfo();
 		return
 	end
+	
+	local currentTime = time()
+
+	--Buildings
 	local buildings = C_Garrison.GetBuildings();
 	local numBuildings = #buildings
 	local hasBuilding = false
@@ -36,12 +43,12 @@ local function OnEnter(self, _, noUpdate)
 			end
 		end
 	end
-
-	local inProgressMissions = C_Garrison.GetInProgressMissions()
+	
+	--Missions
+	local inProgressMissions = C_Garrison.GetInProgressMissions(LE_FOLLOWER_TYPE_GARRISON_6_0)
 	local numMissions = #inProgressMissions
-	local currentTime = time()
 	if(numMissions > 0) then
-		sort(inProgressMissions, sortFunction) --Sort by time left, lowest first
+		tsort(inProgressMissions, sortFunction) --Sort by time left, lowest first
 
 		if(numBuildings > 0) then
 			DT.tooltip:AddLine(" ")
@@ -62,7 +69,32 @@ local function OnEnter(self, _, noUpdate)
 		end
 	end
 
-	if(hasBuilding == true or numMissions > 0) then
+	--Naval Missions
+	local inProgressShipMissions = C_Garrison.GetInProgressMissions(LE_FOLLOWER_TYPE_SHIPYARD_6_2)
+	local numShipMissions = #inProgressShipMissions
+	if(numShipMissions > 0) then
+		tsort(inProgressShipMissions, sortFunction) --Sort by time left, lowest first
+
+		if(numBuildings > 0 or numMissions > 0) then
+			DT.tooltip:AddLine(" ")
+		end
+		DT.tooltip:AddLine(L["Naval Mission(s) Report:"])
+		for i=1, numShipMissions do
+			local mission = inProgressShipMissions[i]
+			local r, g, b = 1, 1, 1
+			if(mission.isRare) then
+				r, g, b = 0.09, 0.51, 0.81
+			end
+
+			if(mission.missionEndTime <= currentTime) then
+				DT.tooltip:AddDoubleLine(mission.name, COMPLETE, r, g, b, 0, 1, 0)
+			else
+				DT.tooltip:AddDoubleLine(mission.name, mission.timeLeft, r, g, b)
+			end
+		end
+	end
+
+	if(hasBuilding == true or numMissions > 0 or numShipMissions > 0) then
 		DT.tooltip:Show()
 	else
 		DT.tooltip:Hide()
@@ -78,8 +110,9 @@ local function OnEvent(self, event, ...)
 		return
 	end
 
-	local _, numResources = GetCurrencyInfo(GARRISON_CURRENCY)
-	self.text:SetFormattedText("%s %s", GARRISON_ICON, numResources)
+	local _, numGarrisonResources = GetCurrencyInfo(GARRISON_CURRENCY)
+	local _, numOil = GetCurrencyInfo(OIL_CURRENCY)
+	self.text:SetFormattedText("%s %s %s %s", GARRISON_ICON, numGarrisonResources, OIL_ICON, numOil)
 end
 
 
