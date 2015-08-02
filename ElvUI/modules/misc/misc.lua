@@ -59,9 +59,9 @@ function M:MERCHANT_SHOW()
 		if possible then
 			RepairAllItems(autoRepair == 'GUILD')
 			if autoRepair == 'GUILD' then
-				E:Print(L["Your items have been repaired using guild bank funds for: "]..GetCoinTextureString(cost, 12))
+				E:Print(L["Your items have been repaired using guild bank funds for: "]..E:FormatMoney(cost, "SMART", true)) --Amount, style, textOnly
 			else
-				E:Print(L["Your items have been repaired for: "]..GetCoinTextureString(cost, 12))
+				E:Print(L["Your items have been repaired for: "]..E:FormatMoney(cost, "SMART", true)) --Amount, style, textOnly
 			end
 		else
 			E:Print(L["You don't have enough money to repair."])
