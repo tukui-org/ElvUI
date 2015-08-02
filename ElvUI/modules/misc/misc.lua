@@ -58,8 +58,6 @@ function M:MERCHANT_SHOW()
 	if cost > 0 then
 		if possible then
 			RepairAllItems(autoRepair == 'GUILD')
-			local c, s, g = cost%100, floor((cost%10000)/100), floor(cost/10000)
-
 			if autoRepair == 'GUILD' then
 				E:Print(L["Your items have been repaired using guild bank funds for: "]..GetCoinTextureString(cost, 12))
 			else
