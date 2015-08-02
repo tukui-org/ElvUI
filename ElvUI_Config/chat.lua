@@ -96,7 +96,7 @@ E.Options.args.chat = {
 					desc = L["Fades the text on chat tabs that are not docked at the left or right chat panel."],
 					set = function(self, value)
 						E.db.chat.fadeUndockedTabs = value;
-						CH:PositionChat(true)
+						CH:UpdateChatTabs()
 					end,
 				},
 				fadeTabsNoBackdrop = {
@@ -106,7 +106,7 @@ E.Options.args.chat = {
 					desc = L["Fades the text on chat tabs that are docked in a panel where the backdrop is disabled."],
 					set = function(self, value)
 						E.db.chat.fadeTabsNoBackdrop = value;
-						CH:PositionChat(true)
+						CH:UpdateChatTabs()
 					end,
 				},
 				chatHistory = {
@@ -204,6 +204,12 @@ E.Options.args.chat = {
 					type = 'toggle',
 					name = L["Lock Positions"],
 					desc = L["Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish."],
+					set = function(info, value)
+						E.db.chat[ info[#info] ] = value
+						if value == true then
+							CH:PositionChat(true)
+						end
+					end,
 				},
 				panelTabTransparency = {
 					order = 2,

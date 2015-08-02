@@ -469,6 +469,43 @@ function CH:UpdateAnchors()
 	CH:PositionChat(true)
 end
 
+function CH:UpdateChatTabs()
+	local fadeUndockedTabs = E.db["chat"].fadeUndockedTabs
+	local fadeTabsNoBackdrop = E.db["chat"].fadeTabsNoBackdrop
+
+	for i = 1, CreatedFrames do
+		local chat = _G[format("ChatFrame%d", i)]
+		local tab = _G[format("ChatFrame%sTab", i)]
+		local id = chat:GetID()
+		local point = GetChatWindowSavedPosition(id)
+		local isDocked = chat.isDocked
+		if id > NUM_CHAT_WINDOWS then
+			point = point or select(1, chat:GetPoint());
+			if select(2, tab:GetPoint()):GetName() ~= chatbg then
+				isDocked = true
+			else
+				isDocked = false
+			end
+		end
+		
+		if chat:IsShown() and not (id > NUM_CHAT_WINDOWS) and id == self.RightChatWindowID then
+			if E.db.chat.panelBackdrop == 'HIDEBOTH' or E.db.chat.panelBackdrop == 'LEFT' then
+				CH:SetupChatTabs(tab, fadeTabsNoBackdrop and true or false)
+			else
+				CH:SetupChatTabs(tab, false)
+			end
+		elseif not isDocked and chat:IsShown() then
+			CH:SetupChatTabs(tab, fadeUndockedTabs and true or false)
+		else
+			if E.db.chat.panelBackdrop == 'HIDEBOTH' or E.db.chat.panelBackdrop == 'RIGHT' then
+				CH:SetupChatTabs(tab, fadeTabsNoBackdrop and true or false)
+			else
+				CH:SetupChatTabs(tab, false)
+			end
+		end
+	end
+end
+
 function CH:PositionChat(override, noSave)
 	if ((InCombatLockdown() and not override and self.initialMove) or (IsMouseButtonDown("LeftButton") and not override)) then return end
 	if not RightChatPanel or not LeftChatPanel then return; end
@@ -1680,6 +1717,10 @@ end
 
 function CH:ON_FCF_SavePositionAndDimensions()
 	CH:PositionChat(nil, true) --2nd argument is to prevent infinite loop
+
+	if not E.db.chat.lockPositions then
+		CH:UpdateChatTabs() --It was not done in PositionChat, so do it now
+	end
 end
 
 function CH:Initialize()
