@@ -41,7 +41,7 @@ function UF:Construct_ArenaFrames(frame)
 	frame.Name = self:Construct_NameText(frame)
 
 	if(not frame.isChild) then
-		frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT', false)
+		frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT')
 
 		frame.Buffs = self:Construct_Buffs(frame)
 

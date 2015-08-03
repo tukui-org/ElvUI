@@ -2044,13 +2044,6 @@ E.Options.args.unitframe.args.player = {
 			type = 'range',
 			min = 10, max = 250, step = 1,
 		},
-		lowmana = {
-			order = 6,
-			name = L["Low Mana Threshold"],
-			desc = L["When you mana falls below this point, text will flash on the player frame."],
-			type = 'range',
-			min = 0, max = 100, step = 1,
-		},
 		combatfade = {
 			order = 7,
 			name = L["Combat Fade"],
