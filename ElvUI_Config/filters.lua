@@ -271,58 +271,31 @@ local function UpdateFilterGroup()
 						UF:Update_AllFrames();
 					end,
 				},
-				selectSpell = {
-					name = L["Select Spell"],
-					type = 'select',
-					order = 3,
-					guiInline = true,
-					get = function(info) return selectedSpell end,
-					set = function(info, value) selectedSpell = value; UpdateFilterGroup() end,
-					values = function()
-						local filters = {}
-						filters[''] = NONE
-						for filter, _ in pairs(E.global.unitframe['aurafilters'][selectedFilter]['spells']) do
-							filters[filter] = filter
-						end
-
-						return filters
-					end,
-				},
 				desc = {
-					order = 4,
+					order = 3,
 					type = 'description',
 					name = L["This filter is meant to be used when you only want to whitelist specific spellIDs which share names with unwanted spells."],
 				},
+				spellGroup = {
+					order = 4,
+					name = L["Spells"],
+					type = 'group',
+					args = {},
+					guiInline = true,
+				},
 			},
 		}
-
-		if not selectedSpell or not E.global.unitframe['aurafilters'][selectedFilter]['spells'][selectedSpell] then
-			E.Options.args.filters.args.spellGroup = nil
-			return
-		end
-
-		if selectedSpell then
-			local id = E.global.unitframe['aurafilters'][selectedFilter]['spells'][selectedSpell]['spellID']
-			E.Options.args.filters.args.spellGroup = {
-				type = "group",
-				name = selectedSpell..' ('..id..')',
-				order = 15,
-				guiInline = true,
-				args = {
-					enable = {
-						name = L["Enable"],
-						type = "toggle",
-						get = function()
-							if selectedFolder or not selectedSpell then
-								return false
-							else
-								return E.global.unitframe['aurafilters'][selectedFilter]['spells'][selectedSpell].enable
-							end
-						end,
-						set = function(info, value) E.global.unitframe['aurafilters'][selectedFilter]['spells'][selectedSpell].enable = value; UpdateFilterGroup(); UF:Update_AllFrames(); end
-					},
-				},
-			}
+		
+		for spell, value in pairs(E.global.unitframe['aurafilters']['Whitelist (Strict)']['spells']) do
+			local id = value.spellID
+			if id then
+				E.Options.args.filters.args.filterGroup.args.spellGroup.args[id] = {
+					type = 'toggle',
+					name = spell..' ('..id..')',
+					get = function(info) return E.global.unitframe['aurafilters']['Whitelist (Strict)']['spells'][spell].enable end,
+					set = function(info, value) E.global.unitframe['aurafilters']['Whitelist (Strict)']['spells'][spell].enable = value; UF:Update_AllFrames() end,
+				}
+			end
 		end
 	elseif selectedFilter == 'Buff Indicator (Pet)' then
 		local buffs = {};
