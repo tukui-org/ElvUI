@@ -233,6 +233,7 @@ L["LFG Icons"] = "Иконки роли"
 L["List of words to color in chat if found in a message. If you wish to add multiple words you must seperate the word with a comma. To search for your current name you can use %MYNAME%.\n\nExample:\n%MYNAME%, ElvUI, RBGs, Tank"] = "Список слов для окрашивания, если они обнаружены в чате. Если Вы хотите добавить несколько слов, то разделяйте их запятыми. Для поиска имени Вашего текущего персонажа используйте %MYNAME%.\n\nПример:\n%MYNAME%, ElvUI, РБГ, Танк"
 L["Lock Positions"] = "Закрепить"
 L["Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session."] = "Записывать содержимое основных чатов. Таким образом, после перезагрузки интерфейса или входа/выхода из игры, Вы увидите сообщения из прошлой сессии."
+L["No Alert In Combat"] = true;
 L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."] = "Время в секундах, через которое чат автоматически покрутится вниз до конца, если Вы не сделаете это вручную."
 L["Panel Backdrop"] = "Фон панелей"
 L["Panel Height"] = "Высота панели"

@@ -233,6 +233,7 @@ L["LFG Icons"] = true;
 L["List of words to color in chat if found in a message. If you wish to add multiple words you must seperate the word with a comma. To search for your current name you can use %MYNAME%.\n\nExample:\n%MYNAME%, ElvUI, RBGs, Tank"] = "Lista de palabras a colorear si son encontradas en un mensaje del chat. Si quieres agregar varias palabras debes separarlas con comas. Para buscar tu nombre actual puedes usar %MYNAME%.\n\nEjemplo:\n%MYNAME%, ElvUI, Tanque"
 L["Lock Positions"] = "Bloquear Posiciones"
 L["Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session."] = "Guardar el historial de los marcos de chat principales. Así cuando recargues la interfaz o reconectes verás el historial de chat de tu última sesión."
+L["No Alert In Combat"] = true;
 L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."] = "Tiempo en segundos para desplazarse al final de la ventana de chat si no se ha desplazado completamente hasta el final."
 L["Panel Backdrop"] = "Fondo del Panel"
 L["Panel Height"] = "Altura del Panel"

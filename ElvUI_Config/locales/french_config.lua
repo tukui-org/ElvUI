@@ -233,6 +233,7 @@ L["LFG Icons"] = "Icône RDG";
 L["List of words to color in chat if found in a message. If you wish to add multiple words you must seperate the word with a comma. To search for your current name you can use %MYNAME%.\n\nExample:\n%MYNAME%, ElvUI, RBGs, Tank"] = "Liste des mots à colorer dans la fenêtre de discussion s'ils y sont trouvés. Si vous souhaitez ajouter plusieurs mots, vous devez séparer le mot avec une virgule. Pour rechercher votre nom actuel, vous pouvez utiliser %MYNAME%.\n\nExemple:\n%MYNAME%, ElvUI, RBG, Tank"
 L["Lock Positions"] = "Verrouiller les positions"
 L["Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session."] = "Active la fenêtre principale de l'historique de discussion. Ainsi quand vous rechargez l'interface ou effectuez une connexion / déconnexion, vous voyez l'historique de la dernière session"
+L["No Alert In Combat"] = true;
 L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."] = "Temps en secondes pour faire défiler vers le bas de la fenêtre de discussion si vous ne l'avez pas fait défiler jusqu'en bas."
 L["Panel Backdrop"] = "Arrière-plan de la fenêtre de discussion"
 L["Panel Height"] = "Hauteur de la fenêtre de discussion"

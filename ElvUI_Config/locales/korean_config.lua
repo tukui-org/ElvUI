@@ -278,6 +278,7 @@ L["LFG Icons"] = "역할 아이콘 표시"
 L["List of words to color in chat if found in a message. If you wish to add multiple words you must seperate the word with a comma. To search for your current name you can use %MYNAME%.\n\nExample:\n%MYNAME%, ElvUI, RBGs, Tank"] = "이 곳에 키워드를 적으면 모든 대화내용에서 해당 키워드를 발견 시 색깔을 입혀 강조합니다. 쉼표(,) 로 구분해서 작성하세요.|n|n내 이름을 강조하고 싶으면 |cff2eb7e4%MYNAME%|r 을 사용하면 됩니다."
 L["Lock Positions"] = "패널에 채팅창 고정"
 L["Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session."] = "애드온 리로드나 로그아웃 이전의 채팅내역을 보존하여 접속했을 때 보여줍니다."
+L["No Alert In Combat"] = true;
 L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."] = "채팅창의 스크롤이 맨 아래가 아니라면 이 값 만큼 시간이 지났을 때 맨 아래로 자동 스크롤링 됩니다."
 L["Panel Backdrop"] = "패널 배경 표시"
 L["Panel Height"] = "패널 세로길이"
