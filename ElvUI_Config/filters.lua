@@ -7,6 +7,10 @@ local filters;
 local tinsert = table.insert
 
 local function UpdateFilterGroup()
+	--Prevent errors when choosing a new filter, by doing a reset of the groups 
+	E.Options.args.filters.args.filterGroup = nil
+	E.Options.args.filters.args.spellGroup = nil
+
 	if selectedFilter == 'AuraBar Colors' then
 		if not selectedFilter then
 			E.Options.args.filters.args.filterGroup = nil
