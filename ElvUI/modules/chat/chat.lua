@@ -644,7 +644,9 @@ end
 function CH:FindURL(event, msg, ...)
 	if (event == "CHAT_MSG_WHISPER" or event == "CHAT_MSG_BN_WHISPER") and CH.db.whisperSound ~= 'None' and not CH.SoundPlayed then
 		if (msg:sub(1,3) == "OQ,") then return false, msg, ... end
-		PlaySoundFile(LSM:Fetch("sound", CH.db.whisperSound), "Master")
+		if (CH.db.noAlertInCombat and not InCombatLockdown()) or not CH.db.noAlertInCombat then
+			PlaySoundFile(LSM:Fetch("sound", CH.db.whisperSound), "Master")
+		end
 		CH.SoundPlayed = true
 		CH.SoundTimer = CH:ScheduleTimer('ThrottleSound', 1)
 	end
@@ -1446,7 +1448,9 @@ function CH:CheckKeyword(message)
 		for keyword, _ in pairs(CH.Keywords) do
 			if itemLink == keyword then
 				if self.db.keywordSound ~= 'None' and not self.SoundPlayed  then
-					PlaySoundFile(LSM:Fetch("sound", self.db.keywordSound), "Master")
+					if (self.db.noAlertInCombat and not InCombatLockdown()) or not self.db.noAlertInCombat then
+						PlaySoundFile(LSM:Fetch("sound", self.db.keywordSound), "Master")
+					end
 					self.SoundPlayed = true
 					self.SoundTimer = CH:ScheduleTimer('ThrottleSound', 1)
 				end
@@ -1464,7 +1468,9 @@ function CH:CheckKeyword(message)
 				local tempWord = word:gsub("%p", "")
 				word = word:gsub(tempWord, E.media.hexvaluecolor..tempWord..'|r')
 				if self.db.keywordSound ~= 'None' and not self.SoundPlayed  then
-					PlaySoundFile(LSM:Fetch("sound", self.db.keywordSound), "Master")
+					if (self.db.noAlertInCombat and not InCombatLockdown()) or not self.db.noAlertInCombat then
+						PlaySoundFile(LSM:Fetch("sound", self.db.keywordSound), "Master")
+					end
 					self.SoundPlayed = true
 					self.SoundTimer = CH:ScheduleTimer('ThrottleSound', 1)
 				end

@@ -290,6 +290,7 @@ P['chat'] = {
 	['emotionIcons'] = true,
 	['keywordSound'] = 'None',
 	['whisperSound'] = 'Whisper Alert',
+	["noAlertInCombat"] = false,
 	['chatHistory'] = true,
 	['lfgIcons'] = true,
 	['timeStampFormat'] = 'NONE',
