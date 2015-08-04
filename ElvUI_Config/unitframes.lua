@@ -1561,6 +1561,18 @@ E.Options.args.unitframe = {
 							desc = L["Target units on mouse down rather than mouse up. \n\n|cffFF0000Warning: If you are using the addon 'Clique' you may have to adjust your clique settings when changing this."],
 							type = "toggle",
 						},
+						auraBlacklistModifier = {
+							order = 6,
+							type = "select",
+							name = L["Blacklist Modifier"],
+							desc = L["You need to hold this modifier down in order to blacklist an aura by right-clicking the icon. Set to None to disable the blacklist functionality."],
+							values = {
+								['NONE'] = NONE,
+								['SHIFT'] = SHIFT_KEY,
+								['ALT'] = ALT_KEY,
+								['CTRL'] = CTRL_KEY,
+							},
+						}
 					},
 				},
 				barGroup = {

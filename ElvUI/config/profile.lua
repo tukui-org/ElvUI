@@ -389,6 +389,7 @@ P['unitframe'] = {
 	['debuffHighlighting'] = true,
 	["smartRaidFilter"] = true,
 	['targetOnMouseDown'] = false,
+	["auraBlacklistModifier"] = "SHIFT",
 
 	['colors'] = {
 		['healthclass'] = false,
