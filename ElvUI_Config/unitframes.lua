@@ -3507,6 +3507,21 @@ E.Options.args.unitframe.args.party = {
 					name = L["Size"],
 					min = 4, max = 100, step = 1,
 				},
+				tank = {
+					order = 4,
+					type = "toggle",
+					name = L["Show For Tanks"],
+				},
+				healer = {
+					order = 5,
+					type = "toggle",
+					name = L["Show For Healers"],
+				},
+				damager = {
+					order = 6,
+					type = "toggle",
+					name = L["Show For DPS"],
+				},
 			},
 		},
 		raidRoleIcons = {
@@ -4187,6 +4202,21 @@ E.Options.args.unitframe.args['raid'] = {
 					name = L["Size"],
 					min = 4, max = 100, step = 1,
 				},
+				tank = {
+					order = 4,
+					type = "toggle",
+					name = L["Show For Tanks"],
+				},
+				healer = {
+					order = 5,
+					type = "toggle",
+					name = L["Show For Healers"],
+				},
+				damager = {
+					order = 6,
+					type = "toggle",
+					name = L["Show For DPS"],
+				},
 			},
 		},
 		raidRoleIcons = {
@@ -4691,6 +4721,21 @@ E.Options.args.unitframe.args['raid40'] = {
 					order = 3,
 					name = L["Size"],
 					min = 4, max = 100, step = 1,
+				},
+				tank = {
+					order = 4,
+					type = "toggle",
+					name = L["Show For Tanks"],
+				},
+				healer = {
+					order = 5,
+					type = "toggle",
+					name = L["Show For Healers"],
+				},
+				damager = {
+					order = 6,
+					type = "toggle",
+					name = L["Show For DPS"],
 				},
 			},
 		},

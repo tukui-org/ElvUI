@@ -1511,6 +1511,9 @@ P['unitframe'] = {
 				['enable'] = true,
 				['position'] = 'CENTER',
 				['size'] = 15,
+				["tank"] = true,
+				["healer"] = true,
+				["damager"] = true,
 			},
 			['raidRoleIcons'] = {
 				['enable'] = true,
@@ -1670,6 +1673,9 @@ P['unitframe'] = {
 				['enable'] = true,
 				['position'] = 'BOTTOMRIGHT',
 				['size'] = 15,
+				["tank"] = true,
+				["healer"] = true,
+				["damager"] = true,
 			},
 			['raidRoleIcons'] = {
 				['enable'] = true,
@@ -1795,6 +1801,9 @@ P['unitframe'] = {
 				['enable'] = false,
 				['position'] = 'BOTTOMRIGHT',
 				['size'] = 15,
+				["tank"] = true,
+				["healer"] = true,
+				["damager"] = true,
 			},
 			['raidRoleIcons'] = {
 				['enable'] = true,
