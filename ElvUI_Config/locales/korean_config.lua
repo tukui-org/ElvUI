@@ -648,6 +648,7 @@ L["3D"] = "3d 모델"
 L["Above"] = "프레임 위로"
 L["Absorbs"] = "보호막"
 L["Add a spell to the filter."] = "필터에 주문을 추가합니다."
+L["Add Spell or spellID"] = true;
 L["Add Spell"] = "주문 추가"
 L["Add SpellID"] = "주문 ID 추가"
 L["Additional Filter"] = "추가적용할 필터"
@@ -873,6 +874,7 @@ L["Rapidly update the health, uses more memory and cpu. Only recommended for hea
 L["Reactions"] = "관계"
 L["Remaining"] = "남은 시간"
 L["Remove a spell from the filter."] = "필터에서 주문을 제거합니다."
+L["Remove Spell or spellID"] = true;
 L["Remove Spell"] = "주문 제거"
 L["Remove SpellID"] = "주문 ID 삭제"
 L["Rest Icon"] = "휴식 아이콘"

@@ -598,6 +598,7 @@ L["3D"] = '3D'
 L["Above"] = "Сверху"
 L["Absorbs"] = "Поглощения"
 L["Add a spell to the filter."] = "Добавить заклинание в фильтр"
+L["Add Spell or spellID"] = true;
 L["Add Spell"] = "Добавить заклинание"
 L["Add SpellID"] = "Добавить ID заклинания"
 L["Additional Filter"] = "Дополнительный фильтр"
@@ -823,6 +824,7 @@ L["Rapidly update the health, uses more memory and cpu. Only recommended for hea
 L["Reactions"] = "Отношение"
 L["Remaining"] = "Оставшееся"
 L["Remove a spell from the filter."] = "Удаляет заклинание из фильтра"
+L["Remove Spell or spellID"] = true;
 L["Remove Spell"] = "Удалить заклинание"
 L["Remove SpellID"] = "Удалить ID заклинания"
 L["Rest Icon"] = "Иконка отдыха"

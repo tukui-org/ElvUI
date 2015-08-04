@@ -587,6 +587,7 @@ L["3D"] = true;
 L["Above"] = true;
 L["Absorbs"] = true;
 L["Add a spell to the filter."] = true;
+L["Add Spell or spellID"] = true;
 L["Add Spell"] = true;
 L["Add SpellID"] = true;
 L["Additional Filter"] = true;
@@ -812,6 +813,7 @@ L["Rapidly update the health, uses more memory and cpu. Only recommended for hea
 L["Reactions"] = true;
 L["Remaining"] = true;
 L["Remove a spell from the filter."] = true;
+L["Remove Spell or spellID"] = true;
 L["Remove Spell"] = true;
 L["Remove SpellID"] = true;
 L["Rest Icon"] = true;

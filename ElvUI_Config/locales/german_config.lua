@@ -597,6 +597,7 @@ L["3D"] = '3D'
 L["Above"] = 'Oben'
 L["Absorbs"] = "Absorbierungen"
 L["Add a spell to the filter."] = "Zauber zum Filter hinzufügen"
+L["Add Spell or spellID"] = true;
 L["Add Spell"] = "Zauber hinzufügen"
 L["Add SpellID"] = "ZauberID hinzufügen"
 L["Additional Filter"] = "Zusätzlicher Filter"
@@ -822,6 +823,7 @@ L["Rapidly update the health, uses more memory and cpu. Only recommended for hea
 L["Reactions"] = "Reaktionen"
 L["Remaining"] = "Verbleibend"
 L["Remove a spell from the filter."] = "Entfernt einen Zauber aus dem Filter."
+L["Remove Spell or spellID"] = true;
 L["Remove Spell"] = "Zauber entfernen"
 L["Remove SpellID"] = "Entferne Zauber ID"
 L["Rest Icon"] = "Ausgeruht-Symbol"

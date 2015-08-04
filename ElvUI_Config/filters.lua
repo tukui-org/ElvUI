@@ -5,6 +5,7 @@ local selectedSpell;
 local selectedFilter;
 local filters;
 local tinsert = table.insert
+local tonumber = tonumber
 
 local function UpdateFilterGroup()
 	--Prevent errors when choosing a new filter, by doing a reset of the groups 
@@ -26,7 +27,7 @@ local function UpdateFilterGroup()
 			args = {
 				addSpell = {
 					order = 1,
-					name = L["Add Spell"],
+					name = L["Add Spell or spellID"],
 					desc = L["Add a spell to the filter."],
 					type = 'input',
 					get = function(info) return "" end,
@@ -42,7 +43,7 @@ local function UpdateFilterGroup()
 				},
 				removeSpell = {
 					order = 1,
-					name = L["Remove Spell"],
+					name = L["Remove Spell or spellID"],
 					desc = L["Remove a spell from the filter."],
 					type = 'input',
 					get = function(info) return "" end,
@@ -71,7 +72,12 @@ local function UpdateFilterGroup()
 						local filters = {}
 						filters[''] = NONE
 						for filter in pairs(E.global.unitframe.AuraBarColors) do
-							filters[filter] = filter
+							local spellString
+							local spellID = tonumber(filter)
+							if spellID then
+								spellString = filter.." ("..(GetSpellInfo(spellID))..")"
+							end
+							filters[filter] = spellString or filter
 						end
 
 						return filters
@@ -85,9 +91,13 @@ local function UpdateFilterGroup()
 			return
 		end
 
+		local nameString
+		if tonumber(selectedSpell) then
+			nameString = selectedSpell.." ("..(GetSpellInfo(selectedSpell))..")"
+		end
 		E.Options.args.filters.args.spellGroup = {
 			type = "group",
-			name = selectedSpell,
+			name = nameString or selectedSpell,
 			order = 15,
 			guiInline = true,
 			args = {

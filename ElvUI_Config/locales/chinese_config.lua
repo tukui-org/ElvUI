@@ -598,6 +598,7 @@ L["3D"] = "3D"
 L["Above"] = "向上"
 L["Absorbs"] = "吸收"
 L["Add a spell to the filter."] = "添加一个技能到过滤器"
+L["Add Spell or spellID"] = true;
 L["Add Spell"] = "添加技能"
 L["Add SpellID"] = "添加技能ID"
 L["Additional Filter"] = '额外的过滤器'
@@ -823,6 +824,7 @@ L["Rapidly update the health, uses more memory and cpu. Only recommended for hea
 L["Reactions"] = "声望"
 L["Remaining"] = "剩余生命值"
 L["Remove a spell from the filter."] = "从过滤器中移除一个技能"
+L["Remove Spell or spellID"] = true;
 L["Remove Spell"] = "移除技能"
 L["Remove SpellID"] = "移除技能ID"
 L["Rest Icon"] = "充分休息图标"
