@@ -806,6 +806,7 @@ L["Per Row"] = "par ligne"
 L["Percent"] = "Pourcent"
 L["Personal"] = "Personnel"
 L["Pet Name"] = "Nom familier";
+L["Player Frame Aura Bars"] = true;
 L["Portrait"] = "Portrait"
 L["Position the Model horizontally."] = "Position horizontale du modèle";
 L["Position the Model vertically."] = "Position verticale du modèle";

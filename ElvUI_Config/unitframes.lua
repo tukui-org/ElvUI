@@ -160,6 +160,10 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 		},
 	}
 
+	if groupName == "target" then
+		config.args.attachTo.values['PLAYER_AURABARS'] = L["Player Frame Aura Bars"]
+	end
+
 	if friendlyOnly then
 		config.args.filters.args.playerOnly = {
 			order = 10,

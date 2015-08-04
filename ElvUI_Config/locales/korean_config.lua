@@ -856,6 +856,7 @@ L["Per Row"] = "한 줄에 표시할 아이콘 수"
 L["Percent"] = "%"
 L["Personal"] = "플레이어"
 L["Pet Name"] = "펫 이름"
+L["Player Frame Aura Bars"] = true;
 L["Portrait"] = "초상화"
 L["Position the Model horizontally."] = "3D모델 가로위치"
 L["Position the Model vertically."] = "3D모델 세로위치"

@@ -806,6 +806,7 @@ L["Per Row"] = "每行"
 L["Percent"] = "百分比"
 L["Personal"] = "個人的"
 L["Pet Name"] = true;
+L["Player Frame Aura Bars"] = true;
 L["Portrait"] = "頭像"
 L["Position the Model horizontally."] = true;
 L["Position the Model vertically."] = true;
