@@ -588,7 +588,6 @@ L["Player Titles"] = "Звания игроков"
 L["Should tooltip be anchored to mouse cursor"] = "Привязывает подсказку к курсору мыши."
 L["Spell/Item IDs"] = "ID заклинаний/предметов"
 L["Target Info"] = "Информация о цели"
-L["Unitframes"] = "Рамки юнитов"
 L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."] = "В рейдовой группе отображать выбравших в цель юнит, для которого показана подсказка"
 
 --UnitFrames

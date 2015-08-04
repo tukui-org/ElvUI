@@ -588,7 +588,6 @@ L["Player Titles"] = "Titre du joueur"
 L["Should tooltip be anchored to mouse cursor"] = "L'infobulle doit être ancrée sur le curseur de la souris";
 L["Spell/Item IDs"] = "ID de l'objet / du sort"
 L["Target Info"] = "Info de la cible";
-L["Unitframes"] = "Cadres d'unités";
 L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."] = "Dans un groupe de raid, affiche l'infobulle d une personne ciblée par une autre."
 
 --UnitFrames

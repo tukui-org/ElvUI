@@ -588,7 +588,6 @@ L["Player Titles"] = "Títulos dos Jogadores"
 L["Should tooltip be anchored to mouse cursor"] = true;
 L["Spell/Item IDs"] = "IDs de Feitiços/Itens"
 L["Target Info"] = true;
-L["Unitframes"] = true;
 L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."] = "Exibe se alguém em sua raide tem como alvo a unidade da tooltip."
 
 --UnitFrames

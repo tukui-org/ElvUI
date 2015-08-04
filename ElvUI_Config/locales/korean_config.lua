@@ -638,7 +638,6 @@ L["Player Titles"] = "칭호 표시"
 L["Should tooltip be anchored to mouse cursor"] = "마우스에 툴팁을 표시합니다.|n|n체크 해제 시 프레임 이동 모드에서 툴팁 위치에 표시됩니다."
 L["Spell/Item IDs"] = "아이템/주문 ID 표시"
 L["Target Info"] = "대상선택 정보"
-L["Unitframes"] = "유닛프레임 툴팁 표시방법"
 L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."] = "누구를 대상으로 잡고 있는지, 누가 이 유닛을 대상으로 잡았는지에 대한 정보를 툴팁에 추가합니다."
 
 --UnitFrames

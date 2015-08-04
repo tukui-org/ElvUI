@@ -588,7 +588,6 @@ L["Player Titles"] = "Títulos de Jugador"
 L["Should tooltip be anchored to mouse cursor"] = true;
 L["Spell/Item IDs"] = "IDs de Hechizo/Objeto"
 L["Target Info"] = true;
-L["Unitframes"] = true;
 L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."] = "Cuando estás en una banda muestra si alguien en tu banda tiene marcado como objetivo a la unidad actual de la descripción emergente."
 
 --UnitFrames

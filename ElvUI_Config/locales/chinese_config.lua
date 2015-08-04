@@ -588,7 +588,6 @@ L["Player Titles"] = "玩家头衔"
 L["Should tooltip be anchored to mouse cursor"] = true;
 L["Spell/Item IDs"] = '技能/物品ID'
 L["Target Info"] = true;
-L["Unitframes"] = true;
 L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."] = "显示团队中目标与你目前鼠标提示目标相同的队友"
 
 --UnitFrames
