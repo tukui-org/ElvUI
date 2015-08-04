@@ -396,6 +396,7 @@ P['unitframe'] = {
 		['powerclass'] = false,
 		['colorhealthbyvalue'] = true,
 		['customhealthbackdrop'] = false,
+		['useDeadBackdrop'] = false,
 		['classbackdrop'] = false,
 		['auraBarByType'] = true,
 		['auraBarTurtle'] = true,
@@ -411,6 +412,7 @@ P['unitframe'] = {
 
 		['health'] = { r = .31,g = .31,b = .31 },
 		['health_backdrop'] = { r = .8,g = .01,b = .01 },
+		['health_backdrop_dead'] = { r = .8,g = .01,b = .01 },
 		['tapped'] = { r = 0.55, g = 0.57, b = 0.61},
 		['disconnected'] = { r = 0.84, g = 0.75, b = 0.65},
 		['auraBarBuff'] = { r = .31,g = .31,b = .31 },

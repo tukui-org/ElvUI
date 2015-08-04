@@ -1686,6 +1686,13 @@ E.Options.args.unitframe = {
 									get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
 									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,
 								},
+								useDeadBackdrop = {
+									order = 7,
+									type = "toggle",
+									name = L["Use Dead Backdrop"],
+									get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
+									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,
+								},
 								health = {
 									order = 10,
 									type = 'color',
@@ -1705,6 +1712,12 @@ E.Options.args.unitframe = {
 									order = 13,
 									type = 'color',
 									name = L["Disconnected"],
+								},
+								health_backdrop_dead = {
+									order = 14,
+									type = "color",
+									name = L["Custom Dead Backdrop"],
+									desc = L["Use this backdrop color for units that are dead or ghosts."],
 								},
 							},
 						},
