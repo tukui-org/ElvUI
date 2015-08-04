@@ -144,11 +144,17 @@ E.Options.args.datatexts = {
 			name = L["Show Coins"],
 			desc = L["Use coin icons instead of colored text."],
 		},
-		noCombat = {
+		noCombatClick = {
 			order = 11,
 			type = "toggle",
 			name = L["Block Combat Click"],
 			desc = L["Blocks all click events while in combat."],
+		},
+		noCombatHover = {
+			order = 12,
+			type = "toggle",
+			name = L["Block Combat Hover"],
+			desc = L["Blocks datatext tooltip from showing in combat."],
 		},
 		panels = {
 			type = 'group',
