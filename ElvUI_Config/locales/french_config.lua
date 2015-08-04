@@ -655,6 +655,7 @@ L["Colored Icon"] = "Icône Coloré"
 L["Coloring (Specific)"] = "Coloration (Spécifique)"
 L["Coloring"] = "Coloration"
 L["Combat Fade"] = "Estomper hors combat"
+L["Combat Icon"] = true;
 L["Combo Point"] = true;
 L["Combobar"] = "Barre des points de combo"
 L["Configure Auras"] = "Configure les Auras"
@@ -696,6 +697,7 @@ L["Display icon on arena frame indicating the units talent specialization or the
 L["Display Player"] = "Afficher le joueur"
 L["Display Target"] = "Afficher la cible"
 L["Display Text"] = "Afficher le texte"
+L["Display the combat icon on the unitframe."] = true;
 L["Display the rested icon on the unitframe."] = "Afficher l'icône reposé sur le portrait d'unité"
 L["Display the target of your current cast. Useful for mouseover casts."] = "Afficher la cible de votre incantation en courts. UTile pour les incantations en survol de souris."
 L["Display tick marks on the castbar for channelled spells. This will adjust automatically for spells like Drain Soul and add additional ticks based on haste."] = "Affichage des marques de graduation (ticks) sur la barre de lancement de sort. Cela s'ajustera automatiquement pour les sorts comme Drain d'âme qui est basé sur la Hâte."

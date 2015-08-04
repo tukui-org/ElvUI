@@ -654,6 +654,7 @@ L["Colored Icon"] = 'Buntes Symbol'
 L["Coloring (Specific)"] = 'Färben (Spezifisch)'
 L["Coloring"] = 'Färben'
 L["Combat Fade"] = "Im Kampf ausblenden"
+L["Combat Icon"] = true;
 L["Combo Point"] = "Kombopunkt"
 L["Combobar"] = "Kombopunkte Leiste"
 L["Configure Auras"] = 'Konfiguriere Auren'
@@ -695,6 +696,7 @@ L["Display icon on arena frame indicating the units talent specialization or the
 L["Display Player"] = "Zeige Spieler"
 L["Display Target"] = "Zeige Ziel"
 L["Display Text"] = 'Zeige Text'
+L["Display the combat icon on the unitframe."] = true;
 L["Display the rested icon on the unitframe."] = "Zeige das Ausgeruht-Symbol auf den Einheitenfenstern."
 L["Display the target of your current cast. Useful for mouseover casts."] = "Zeige das Ziel deines derzeitigen Zaubers, für Mouseover Zauber nützlich"
 L["Display tick marks on the castbar for channelled spells. This will adjust automatically for spells like Drain Soul and add additional ticks based on haste."] = "Anzeige der Zauberbalkenticks für kanalisierte Zauber. Dies ändert sich automatisch für Zauber wie Seelendieb, wenn zusätzliche Ticks durch einen hohen Tempowert entstehen."

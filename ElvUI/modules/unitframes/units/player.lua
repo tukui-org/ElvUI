@@ -345,6 +345,17 @@ function UF:Update_PlayerFrame(frame, db)
 		end
 	end
 
+	--Combat Icon
+	do
+		local cIcon = frame.Combat
+		if db.combatIcon and not frame:IsElementEnabled('Combat') then
+			frame:EnableElement('Combat')
+		elseif not db.combatIcon and frame:IsElementEnabled('Combat') then
+			frame:DisableElement('Combat')
+			cIcon:Hide()
+		end
+	end
+
 	--Health
 	do
 		local health = frame.Health

@@ -655,6 +655,7 @@ L["Colored Icon"] = "Окрашенная иконка"
 L["Coloring (Specific)"] = "Окрашивание конкретных"
 L["Coloring"] = "Окрашивание"
 L["Combat Fade"] = "Скрытие"
+L["Combat Icon"] = true;
 L["Combo Point"] = "Очко серии"
 L["Combobar"] = "Полоса серии"
 L["Configure Auras"] = "Настроить Ауры"
@@ -696,6 +697,7 @@ L["Display icon on arena frame indicating the units talent specialization or the
 L["Display Player"] = "Показывать себя"
 L["Display Target"] = "Показывать цель"
 L["Display Text"] = "Показывать текст"
+L["Display the combat icon on the unitframe."] = true;
 L["Display the rested icon on the unitframe."] = "Отображать иконку отдыха на рамке игрока"
 L["Display the target of your current cast. Useful for mouseover casts."] = "Отображать имя цели заклинания на полосе."
 L["Display tick marks on the castbar for channelled spells. This will adjust automatically for spells like Drain Soul and add additional ticks based on haste."] = "Отображать метки тиков на полосе заклинаний для поддерживаемых заклинаний. Они будут автоматически масштабироваться для заклинаний вроде Похищения души и добавлять новые тики, основываясь на показателе скорости."

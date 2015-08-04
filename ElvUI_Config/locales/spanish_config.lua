@@ -655,6 +655,7 @@ L["Colored Icon"] = "Icono Coloreado"
 L["Coloring (Specific)"] = "Coloreado (Específico)"
 L["Coloring"] = "Coloreado"
 L["Combat Fade"] = "Desvanecer en Combate"
+L["Combat Icon"] = true;
 L["Combo Point"] = true;
 L["Combobar"] = "Barra de Combo"
 L["Configure Auras"] = "Configurar Auras"
@@ -696,6 +697,7 @@ L["Display icon on arena frame indicating the units talent specialization or the
 L["Display Player"] = "Mostrar Jugador"
 L["Display Target"] = "Mostrar Objetivo"
 L["Display Text"] = "Mostrar Texto"
+L["Display the combat icon on the unitframe."] = true;
 L["Display the rested icon on the unitframe."] = "Muestra el icono de descansado en el marco de unidad."
 L["Display the target of your current cast. Useful for mouseover casts."] = "Muestra el objetivo de tu hechizo actual. Es útil para hechizos por ratón."
 L["Display tick marks on the castbar for channelled spells. This will adjust automatically for spells like Drain Soul and add additional ticks based on haste."] = "Muestra las marcas de cada tick en la barra de lanzamiento para los hechizos canalizados. Esto se ajustará automáticamente con base en el hechizo y la celeridad."

@@ -488,6 +488,7 @@ P['unitframe'] = {
 			['combatfade'] = false,
 			['healPrediction'] = true,
 			['restIcon'] = true,
+			["combatIcon"] = true,
 			['threatStyle'] = 'GLOW',
 			['health'] = {
 				['text_format'] = '[healthcolor][health:current-percent]',

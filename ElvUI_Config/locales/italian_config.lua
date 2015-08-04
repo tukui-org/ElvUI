@@ -644,6 +644,7 @@ L["Colored Icon"] = true;
 L["Coloring (Specific)"] = true
 L["Coloring"] = true
 L["Combat Fade"] = true;
+L["Combat Icon"] = true;
 L["Combo Point"] = true;
 L["Combobar"] = true;
 L["Configure Auras"] = true;
@@ -685,6 +686,7 @@ L["Display icon on arena frame indicating the units talent specialization or the
 L["Display Player"] = true;
 L["Display Target"] = true;
 L["Display Text"] = true;
+L["Display the combat icon on the unitframe."] = true;
 L["Display the rested icon on the unitframe."] = true;
 L["Display the target of your current cast. Useful for mouseover casts."] = true;
 L["Display tick marks on the castbar for channelled spells. This will adjust automatically for spells like Drain Soul and add additional ticks based on haste."] = true;

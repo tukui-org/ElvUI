@@ -655,6 +655,7 @@ L["Colored Icon"] = "圖示色彩"
 L["Coloring (Specific)"] = "著色（具體）"
 L["Coloring"] = "著色"
 L["Combat Fade"] = "戰鬥隱藏"
+L["Combat Icon"] = true;
 L["Combo Point"] = true;
 L["Combobar"] = "連擊點"
 L["Configure Auras"] = "設置光環"
@@ -696,6 +697,7 @@ L["Display icon on arena frame indicating the units talent specialization or the
 L["Display Player"] = "顯示玩家"
 L["Display Target"] = "顯示目標"
 L["Display Text"] = "顯示文本"
+L["Display the combat icon on the unitframe."] = true;
 L["Display the rested icon on the unitframe."] = "在單位框架上顯示充分休息圖示."
 L["Display the target of your current cast. Useful for mouseover casts."] = "顯示你當前的施法目標. 可以轉換成鼠标滑過類型."
 L["Display tick marks on the castbar for channelled spells. This will adjust automatically for spells like Drain Soul and add additional ticks based on haste."] = "若為需引導的法術, 在施法條上顯示每跳週期傷害. 啟動此功能後, 針對吸取靈魂這類的法術, 將自動調整顯示每跳週期傷害, 並視加速等級增加額外的周期傷害."

@@ -705,6 +705,7 @@ L["Colored Icon"] = "색상자 아이콘"
 L["Coloring (Specific)"] = "색상 설정 (지정)"
 L["Coloring"] = "색상 설정 (공통)"
 L["Combat Fade"] = "평상시 숨기기"
+L["Combat Icon"] = true;
 L["Combo Point"] = true;
 L["Combobar"] = "연계점수 바"
 L["Configure Auras"] = "오라 설정"
@@ -746,6 +747,7 @@ L["Display icon on arena frame indicating the units talent specialization or the
 L["Display Player"] = "플레이어 표시"
 L["Display Target"] = "시전 목표 표시"
 L["Display Text"] = "남은시간 표시"
+L["Display the combat icon on the unitframe."] = true;
 L["Display the rested icon on the unitframe."] = "휴식 아이콘을 표시할지 여부를 결정합니다."
 L["Display the target of your current cast. Useful for mouseover casts."] = "현재 캐스팅중인 기술의 목표를 기술명에 표기합니다. 마우스오버로 기술을 시전할 때 대상을 파악하기 좋습니다."
 L["Display tick marks on the castbar for channelled spells. This will adjust automatically for spells like Drain Soul and add additional ticks based on haste."] = "시전바에 시전되는 주문의 틱을 표시합니다. 영혼 흡수나 가속이 추가되는 주문에 따라 틱이 자동 조절됩니다."
