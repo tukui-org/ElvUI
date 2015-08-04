@@ -806,13 +806,13 @@ E.Options.args.general = {
 					order = 3,
 					type = "range",
 					name = L["Width"],
-					min = 5, max = 800, step = 1,
+					min = 5, max = GetScreenWidth() or 800, step = 1,
 				},
 				height = {
 					order = 4,
 					type = "range",
 					name = L["Height"],
-					min = 5, max = 800, step = 1,
+					min = 5, max = GetScreenHeight() or 800, step = 1,
 				},
 				orientation = {
 					order = 5,
@@ -871,13 +871,13 @@ E.Options.args.general = {
 					order = 3,
 					type = "range",
 					name = L["Width"],
-					min = 5, max = 800, step = 1,
+					min = 5, max = GetScreenWidth() or 800, step = 1,
 				},
 				height = {
 					order = 4,
 					type = "range",
 					name = L["Height"],
-					min = 5, max = 800, step = 1,
+					min = 5, max = GetScreenHeight() or 800, step = 1,
 				},
 				orientation = {
 					order = 5,
