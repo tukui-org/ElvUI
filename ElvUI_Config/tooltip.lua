@@ -106,8 +106,34 @@ E.Options.args.tooltip = {
 			get = function(info) return E.db.tooltip.visibility[ info[#info] ] end,
 			set = function(info, value) E.db.tooltip.visibility[ info[#info] ] = value; end,
 			args = {
-				unitFrames = {
+				actionbars = {
 					order = 1,
+					type = 'select',
+					name = L["ActionBars"],
+					desc = L["Choose when you want the tooltip to show. If a modifer is chosen, then you need to hold that down to show the tooltip."],
+					values = {
+						['ALL'] = L["Always Hide"],
+						['NONE'] = L["Never Hide"],
+						['SHIFT'] = SHIFT_KEY,
+						['ALT'] = ALT_KEY,
+						['CTRL'] = CTRL_KEY
+					},
+				},
+				bags = {
+					order = 2,
+					type = 'select',
+					name = L["Bags/Bank"],
+					desc = L["Choose when you want the tooltip to show. If a modifer is chosen, then you need to hold that down to show the tooltip."],
+					values = {
+						['ALL'] = L["Always Hide"],
+						['NONE'] = L["Never Hide"],
+						['SHIFT'] = SHIFT_KEY,
+						['ALT'] = ALT_KEY,
+						['CTRL'] = CTRL_KEY
+					},
+				},
+				unitFrames = {
+					order = 3,
 					type = 'select',
 					name = L["Unitframes"],
 					desc = L["Don't display the tooltip when mousing over a unitframe."],
@@ -120,7 +146,7 @@ E.Options.args.tooltip = {
 					},
 				},
 				combat = {
-					order = 2,
+					order = 4,
 					type = 'toggle',
 					name = COMBAT,
 					desc = L["Hide tooltip while in combat."],

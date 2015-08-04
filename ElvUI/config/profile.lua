@@ -356,6 +356,8 @@ P['tooltip'] = {
 	['spellID'] = true,
 	['visibility'] = {
 		['unitFrames'] = 'NONE',
+		["bags"] = "NONE",
+		["actionbars"] = "NONE",
 		['combat'] = false
 	},
 	['healthBar'] = {
@@ -480,6 +482,7 @@ P['unitframe'] = {
 			['enable'] = true,
 			['width'] = 270,
 			['height'] = 54,
+			['lowmana'] = 30,
 			['combatfade'] = false,
 			['healPrediction'] = true,
 			['restIcon'] = true,

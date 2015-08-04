@@ -566,8 +566,10 @@ L["World Map"] = "世界地圖"
 --Tooltip
 L["Always Hide"] = "總是隱藏"
 L["Bags Only"] = true;
+L["Bags/Bank"] = true;
 L["Bank Only"] = true;
 L["Both"] = true;
+L["Choose when you want the tooltip to show. If a modifer is chosen, then you need to hold that down to show the tooltip."] = true;
 L["Cursor Anchor"] = true;
 L["Custom Faction Colors"] = true;
 L["Display guild ranks if a unit is guilded."] = "当目标有公會時顯示其在公會內的會階."

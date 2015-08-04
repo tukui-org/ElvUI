@@ -565,8 +565,10 @@ L["World Map"] = "Weltkarte"
 --Tooltip
 L["Always Hide"] = 'Immer verstecken'
 L["Bags Only"] = 'Nur Taschen'
+L["Bags/Bank"] = true;
 L["Bank Only"] = 'Nur Bank'
 L["Both"] = 'Beide'
+L["Choose when you want the tooltip to show. If a modifer is chosen, then you need to hold that down to show the tooltip."] = true;
 L["Cursor Anchor"] = "Zeigeranker"
 L["Custom Faction Colors"] = "Benutzerdefinierte Fraktionsfarben"
 L["Display guild ranks if a unit is guilded."] = 'Zeige Gildenränge von Spielern die in einer Gilde sind.'

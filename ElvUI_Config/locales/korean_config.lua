@@ -616,8 +616,10 @@ L["World Map"] = "세계 지도"
 --Tooltip
 L["Always Hide"] = "표시하지 않음"
 L["Bags Only"] = "가방 안에만"
+L["Bags/Bank"] = true;
 L["Bank Only"] = "은행 안에만"
 L["Both"] = "가방, 은행 모두"
+L["Choose when you want the tooltip to show. If a modifer is chosen, then you need to hold that down to show the tooltip."] = true;
 L["Cursor Anchor"] = "툴팁을 마우스에 표시"
 L["Custom Faction Colors"] = "반응색 개인설정"
 L["Display guild ranks if a unit is guilded."] = "길드명과 함께 길드 등급도 표시합니다."

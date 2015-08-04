@@ -174,6 +174,16 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 		return
 	end
 
+	local ownerName = tt:GetOwner() and tt:GetOwner().GetName and tt:GetOwner():GetName()
+	if (self.db.visibility.actionbars ~= 'NONE' and ownerName and (find(ownerName, "ElvUI_Bar") or find(ownerName, "ElvUI_StanceBar") or find(ownerName, "PetAction"))) then
+		local modifier = self.db.visibility.actionbars
+
+		if(modifier == 'ALL' or not ((modifier == 'SHIFT' and IsShiftKeyDown()) or (modifier == 'CTRL' and IsControlKeyDown()) or (modifier == 'ALT' and IsAltKeyDown()))) then
+			tt:Hide()
+			return
+		end
+	end
+
 	if(parent) then
 		if(self.db.cursorAnchor) then
 			tt:SetOwner(parent, "ANCHOR_CURSOR")
@@ -545,6 +555,17 @@ function TT:GameTooltip_OnTooltipCleared(tt)
 end
 
 function TT:GameTooltip_OnTooltipSetItem(tt)
+	local ownerName = tt:GetOwner() and tt:GetOwner().GetName and tt:GetOwner():GetName()
+	if (self.db.visibility.bags ~= 'NONE' and ownerName and (find(ownerName, "ElvUI_Container") or find(ownerName, "ElvUI_BankContainer"))) then
+		local modifier = self.db.visibility.bags
+
+		if(modifier == 'ALL' or not ((modifier == 'SHIFT' and IsShiftKeyDown()) or (modifier == 'CTRL' and IsControlKeyDown()) or (modifier == 'ALT' and IsAltKeyDown()))) then
+			tt.itemCleared = true
+			tt:Hide()
+			return
+		end
+	end
+
 	if not tt.itemCleared then
 		local item, link = tt:GetItem()
 		local num = GetItemCount(link)
