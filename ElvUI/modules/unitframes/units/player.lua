@@ -935,6 +935,7 @@ function UF:Update_PlayerFrame(frame, db)
 			auraBars:Show()
 			auraBars.friendlyAuraType = db.aurabar.friendlyAuraType
 			auraBars.enemyAuraType = db.aurabar.enemyAuraType
+			auraBars.scaleTime = db.aurabar.uniformThreshold
 
 			local buffColor = UF.db.colors.auraBarBuff
 			local debuffColor = UF.db.colors.auraBarDebuff

@@ -157,9 +157,16 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 					['HELPFUL'] = L["Buffs"],
 				},
 			},
+			uniformThreshold = {
+				order = 18,
+				type = "range",
+				name = L["Uniform Threshold"],
+				desc = L["Seconds remaining on the aura duration before the bar starts moving. Set to 0 to disable."],
+				min = 0, max = 3600, step = 1,
+			},
 		},
 	}
-
+	
 	if groupName == "target" then
 		config.args.attachTo.values['PLAYER_AURABARS'] = L["Player Frame Aura Bars"]
 	end
