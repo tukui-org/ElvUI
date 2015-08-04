@@ -282,6 +282,8 @@ L["Testing:"] = true;
 --DataTexts
 L["24-Hour Time"] = true;
 L["Battleground Texts"] = true;
+L["Block Combat Click"] = true;
+L["Blocks all click events while in combat."] = true;
 L["Change settings for the display of the location text that is on the minimap."] = true;
 L["Datatext Panel (Left)"] = true;
 L["Datatext Panel (Right)"] = true;

@@ -293,6 +293,8 @@ L["Testing:"] = "Тестирование:"
 --DataTexts
 L["24-Hour Time"] = "24х часовой формат"
 L["Battleground Texts"] = "Текст ПБ"
+L["Block Combat Click"] = true;
+L["Blocks all click events while in combat."] = true;
 L["Change settings for the display of the location text that is on the minimap."] = "Изменяет опции отображения названия локации на миникарте"
 L["Datatext Panel (Left)"] = "Панель информации (левая)"
 L["Datatext Panel (Right)"] = "Панель информации (правая)"

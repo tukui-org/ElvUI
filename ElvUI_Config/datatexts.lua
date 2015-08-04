@@ -144,6 +144,12 @@ E.Options.args.datatexts = {
 			name = L["Show Coins"],
 			desc = L["Use coin icons instead of colored text."],
 		},
+		noCombat = {
+			order = 11,
+			type = "toggle",
+			name = L["Block Combat Click"],
+			desc = L["Blocks all click events while in combat."],
+		},
 		panels = {
 			type = 'group',
 			name = L["Panels"],

@@ -291,6 +291,8 @@ L["Testing:"] = "Tester:"
 --DataTexts
 L["24-Hour Time"] = "24-Stunden-Format"
 L["Battleground Texts"] = 'Schlachtfeld-Infotexte'
+L["Block Combat Click"] = true;
+L["Blocks all click events while in combat."] = true;
 L["Change settings for the display of the location text that is on the minimap."] = 'Ändere die Einstellungen für die Anzeige des Umgebungstextes an der Minimap.'
 L["Datatext Panel (Left)"] = 'Infotextleiste (Links)'
 L["Datatext Panel (Right)"] = 'Infotextleiste (Rechts)'

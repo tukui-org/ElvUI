@@ -343,6 +343,7 @@ P['datatexts'] = {
 	['panelTransparency'] = false,
 	['goldFormat'] = 'BLIZZARD',
 	['goldCoins'] = false,
+	["noCombat"] = false,
 }
 
 --Tooltip

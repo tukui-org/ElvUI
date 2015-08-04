@@ -293,6 +293,8 @@ L["Testing:"] = "Pruebas:"
 --DataTexts
 L["24-Hour Time"] = "Tiempo de 24 horas"
 L["Battleground Texts"] = "Textos de los Campos de Batalla"
+L["Block Combat Click"] = true;
+L["Blocks all click events while in combat."] = true;
 L["Change settings for the display of the location text that is on the minimap."] = "Cambia la configuración para mostrar el texto de ubicación que está en el minimapa."
 L["Datatext Panel (Left)"] = "Panel Izquierdo de los Datos de texto"
 L["Datatext Panel (Right)"] = "Panel Derecho de los Datos de texto"
