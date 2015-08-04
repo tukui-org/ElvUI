@@ -149,6 +149,7 @@ P["nameplate"] = {
 	["smallPlates"] = true,
 	["comboPoints"] = false,
 	['nonTargetAlpha'] = 0.6,
+	['targetAlpha'] = 1,
 	['combatHide'] = false,
 	['colorNameByValue'] =  true,
 	['showName'] = true,

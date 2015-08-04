@@ -11,6 +11,7 @@ local gsub = string.gsub
 local tolower = string.lower
 local targetIndicator
 local _G = _G
+local targetAlpha = 1
 
 --Pattern to remove cross realm label added to the end of plate names
 --Taken from http://www.wowace.com/addons/libnameplateregistry-1-0/
@@ -461,7 +462,7 @@ function NP:SetAlpha(myPlate)
 	if self:GetAlpha() < 1 then
 		myPlate:SetAlpha(NP.db.nonTargetAlpha)
 	else
-		myPlate:SetAlpha(1)
+		myPlate:SetAlpha(targetAlpha)
 	end
 end
 
@@ -529,9 +530,11 @@ function NP:PLAYER_TARGET_CHANGED()
 		self.targetName = UnitName("target")
 		WorldFrame.elapsed = 0.1
 		NP.NumTargetChecks = 0
+		targetAlpha = E.db.nameplate.targetAlpha
 	else
 		targetIndicator:Hide()
 		self.targetName = nil
+		targetAlpha = 1
 	end
 end
 

@@ -130,6 +130,13 @@ E.Options.args.nameplate = {
 					desc = L["Alpha of nameplates that are not your current target."],
 					min = 0, max = 1, step = 0.01, isPercent = true,
 				},
+				targetAlpha = {
+					type = 'range',
+					order = 4,
+					name = L["Target Alpha"],
+					desc = L["Alpha of current target nameplate."],
+					min = 0, max = 1, step = 0.01, isPercent = true,
+				},
 				colorNameByValue = {
 					type = 'toggle',
 					order = 5,
