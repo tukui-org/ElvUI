@@ -489,7 +489,7 @@ function UF:Construct_DeathKnightResourceBar(frame)
 		runes[i].bg = runes[i]:CreateTexture(nil, 'BORDER')
 		runes[i].bg:SetAllPoints()
 		runes[i].bg:SetTexture(E['media'].blankTex)
-		runes[i].bg.multiplier = 0.2
+		runes[i].bg.multiplier = 0.3
 	end
 
 	return runes
