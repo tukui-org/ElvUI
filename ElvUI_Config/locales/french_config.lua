@@ -585,6 +585,7 @@ L["Display the players talent spec and item level in the tooltip, this may not i
 L["Display the spell or item ID when mousing over a spell or item tooltip."] = "Affiche le sort ou l'ID de l'objet dans une infobulle quand vous passez votre souris sur le sort ou l'objet."
 L["Don't display the tooltip when mousing over a unitframe."] = "Ne pas afficher l'infobulle au survol d'un Portrait d'unité."
 L["Guild Ranks"] = "Rangs de la guilde"
+L["Header Font Size"] = true;
 L["Health Bar"] = "Barre de vie";
 L["Hide tooltip while in combat."] = "Masquer toutes les infobulles quand vous êtes en combat."
 L["Inspect Info"] = "Info inspection";
@@ -592,8 +593,11 @@ L["Item Count"] = "Nombre d'objet"
 L["Never Hide"] = "Jamais caché"
 L["Player Titles"] = "Titre du joueur"
 L["Should tooltip be anchored to mouse cursor"] = "L'infobulle doit être ancrée sur le curseur de la souris";
+L["Small Text Font Size"] = true;
 L["Spell/Item IDs"] = "ID de l'objet / du sort"
 L["Target Info"] = "Info de la cible";
+L["Text Font Size"] = true;
+L["Tooltip Font Settings"] = true;
 L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."] = "Dans un groupe de raid, affiche l'infobulle d une personne ciblée par une autre."
 
 --UnitFrames

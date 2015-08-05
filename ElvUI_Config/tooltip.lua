@@ -80,8 +80,88 @@ E.Options.args.tooltip = {
 					type = 'toggle',
 					name = L["Custom Faction Colors"],
 				},
-				factionColors = {
+				fontGroup = {
 					order = 9,
+					type = "group",
+					guiInline = true,
+					name = L["Tooltip Font Settings"],
+					args = {
+						font = {
+							order = 1,
+							type = "select", dialogControl = 'LSM30_Font',
+							name = L["Font"],
+							values = AceGUIWidgetLSMlists.font,
+							get = function(info) return E.db.tooltip.font end,
+							set = function(info, value)
+								E.db.tooltip.font = value;
+								local font = E.LSM:Fetch("font", E.db.tooltip.font)
+								local fontOutline = E.db.tooltip.fontOutline
+								GameTooltipHeaderText:SetFont(font, E.db.tooltip.headerFontSize, fontOutline)
+								GameTooltipText:SetFont(font, E.db.tooltip.textFontSize, fontOutline)
+								GameTooltipTextSmall:SetFont(font, E.db.tooltip.smallTextFontSize, fontOutline)
+							end,
+						},
+						fontOutline = {
+							order = 2,
+							name = L["Font Outline"],
+							type = "select",
+							values = {
+								['NONE'] = L["None"],
+								['OUTLINE'] = 'OUTLINE',
+								['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
+								['THICKOUTLINE'] = 'THICKOUTLINE',
+							},
+							get = function(info) return E.db.tooltip.fontOutline end,
+							set = function(info, value)
+								E.db.tooltip.fontOutline = value;
+								local font = E.LSM:Fetch("font", E.db.tooltip.font)
+								GameTooltipHeaderText:SetFont(font, E.db.tooltip.headerFontSize, value)
+								GameTooltipText:SetFont(font, E.db.tooltip.textFontSize, value)
+								GameTooltipTextSmall:SetFont(font, E.db.tooltip.smallTextFontSize, value)
+							end,
+						},
+						spacer = {
+							order = 3,
+							type = "description",
+							name = "",
+						},
+						headerFontSize = {
+							order = 4,
+							type = "range",
+							name = L["Header Font Size"],
+							min = 4, max = 50, step = 1,
+							get = function(info) return E.db.tooltip.headerFontSize end,
+							set = function(info, value)
+								E.db.tooltip.headerFontSize = value;
+								GameTooltipHeaderText:SetFont(E.LSM:Fetch("font", E.db.tooltip.font), value, E.db.tooltip.fontOutline)
+							end,
+						},
+						textFontSize = {
+							order = 5,
+							type = "range",
+							name = L["Text Font Size"],
+							min = 4, max = 30, step = 1,
+							get = function(info) return E.db.tooltip.textFontSize end,
+							set = function(info, value)
+								E.db.tooltip.textFontSize = value;
+								GameTooltipText:SetFont(E.LSM:Fetch("font", E.db.tooltip.font), value, E.db.tooltip.fontOutline)
+							end,
+						},
+						smallTextFontSize = {
+							order = 6,
+							type = "range",
+							name = L["Small Text Font Size"],
+							min = 4, max = 30, step = 1,
+							get = function(info) return E.db.tooltip.smallTextFontSize end,
+							set = function(info, value)
+								E.db.tooltip.smallTextFontSize = value;
+								GameTooltipTextSmall:SetFont(E.LSM:Fetch("font", E.db.tooltip.font), value, E.db.tooltip.fontOutline)
+							end,
+						},
+					},
+				},
+				factionColors = {
+					order = 10,
 					type = "group",
 					name = L["Custom Faction Colors"],
 					guiInline = true,

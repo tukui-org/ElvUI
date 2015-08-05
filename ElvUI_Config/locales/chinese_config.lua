@@ -585,6 +585,7 @@ L["Display the players talent spec and item level in the tooltip, this may not i
 L["Display the spell or item ID when mousing over a spell or item tooltip."] = '在鼠标提示中显示技能或物品的ID.'
 L["Don't display the tooltip when mousing over a unitframe."] = "当滑鼠指向单位框架时不显示滑鼠提示"
 L["Guild Ranks"] = "公会等级"
+L["Header Font Size"] = true;
 L["Health Bar"] = true;
 L["Hide tooltip while in combat."] = "战斗时不显示提示"
 L["Inspect Info"] = true;
@@ -592,8 +593,11 @@ L["Item Count"] = '物品数量'
 L["Never Hide"] = "从不隐藏"
 L["Player Titles"] = "玩家头衔"
 L["Should tooltip be anchored to mouse cursor"] = true;
+L["Small Text Font Size"] = true;
 L["Spell/Item IDs"] = '技能/物品ID'
 L["Target Info"] = true;
+L["Text Font Size"] = true;
+L["Tooltip Font Settings"] = true;
 L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."] = "显示团队中目标与你目前鼠标提示目标相同的队友"
 
 --UnitFrames

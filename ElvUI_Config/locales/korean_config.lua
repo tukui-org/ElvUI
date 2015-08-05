@@ -635,6 +635,7 @@ L["Display the players talent spec and item level in the tooltip, this may not i
 L["Display the spell or item ID when mousing over a spell or item tooltip."] = "아이템과 주문 툴팁에 각각의 ID를 표시합니다."
 L["Don't display the tooltip when mousing over a unitframe."] = "유닛프레임에서 툴팁을 어떻게 표시할지를 결정합니다.|n|n여기서 특정 키를 설정하면 해당 키를 누른 상태로 프레임에 마우스를 올려야 툴팁이 표시됩니다."
 L["Guild Ranks"] = "길드 내 등급 표시"
+L["Header Font Size"] = true;
 L["Health Bar"] = "생명력바"
 L["Hide tooltip while in combat."] = "전투 중에는 툴팁을 표시하지 않게 합니다."
 L["Inspect Info"] = "특성/아이템레벨 표시"
@@ -642,8 +643,11 @@ L["Item Count"] = "아이템 갯수 표시"
 L["Never Hide"] = "항시 표시"
 L["Player Titles"] = "칭호 표시"
 L["Should tooltip be anchored to mouse cursor"] = "마우스에 툴팁을 표시합니다.|n|n체크 해제 시 프레임 이동 모드에서 툴팁 위치에 표시됩니다."
+L["Small Text Font Size"] = true;
 L["Spell/Item IDs"] = "아이템/주문 ID 표시"
 L["Target Info"] = "대상선택 정보"
+L["Text Font Size"] = true;
+L["Tooltip Font Settings"] = true;
 L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."] = "누구를 대상으로 잡고 있는지, 누가 이 유닛을 대상으로 잡았는지에 대한 정보를 툴팁에 추가합니다."
 
 --UnitFrames

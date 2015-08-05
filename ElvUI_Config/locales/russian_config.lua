@@ -585,6 +585,7 @@ L["Display the players talent spec and item level in the tooltip, this may not i
 L["Display the spell or item ID when mousing over a spell or item tooltip."] = "Отображать ID заклинания или предмета в подсказке при наведении мыши."
 L["Don't display the tooltip when mousing over a unitframe."] = "Не отображать подсказку при наведении курсора на рамки юнитов."
 L["Guild Ranks"] = "Ранги гильдии"
+L["Header Font Size"] = true;
 L["Health Bar"] = "Полоса здоровья"
 L["Hide tooltip while in combat."] = "Скрывать подсказку в бою"
 L["Inspect Info"] = "Информация осмотра"
@@ -592,8 +593,11 @@ L["Item Count"] = "Кол-во предметов"
 L["Never Hide"] = "Никогда не скрывать"
 L["Player Titles"] = "Звания игроков"
 L["Should tooltip be anchored to mouse cursor"] = "Привязывает подсказку к курсору мыши."
+L["Small Text Font Size"] = true;
 L["Spell/Item IDs"] = "ID заклинаний/предметов"
 L["Target Info"] = "Информация о цели"
+L["Text Font Size"] = true;
+L["Tooltip Font Settings"] = true;
 L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."] = "В рейдовой группе отображать выбравших в цель юнит, для которого показана подсказка"
 
 --UnitFrames

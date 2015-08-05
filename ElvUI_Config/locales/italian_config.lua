@@ -574,6 +574,7 @@ L["Display the players talent spec and item level in the tooltip, this may not i
 L["Display the spell or item ID when mousing over a spell or item tooltip."] = true;
 L["Don't display the tooltip when mousing over a unitframe."] = true;
 L["Guild Ranks"] = true;
+L["Header Font Size"] = true;
 L["Health Bar"] = true;
 L["Hide tooltip while in combat."] = true;
 L["Inspect Info"] = true;
@@ -581,8 +582,11 @@ L["Item Count"] = true;
 L["Never Hide"] = true;
 L["Player Titles"] = true;
 L["Should tooltip be anchored to mouse cursor"] = true;
+L["Small Text Font Size"] = true;
 L["Spell/Item IDs"] = true;
 L["Target Info"] = true;
+L["Text Font Size"] = true;
+L["Tooltip Font Settings"] = true;
 L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."] = true;
 
 --UnitFrames

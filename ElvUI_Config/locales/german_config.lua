@@ -584,6 +584,7 @@ L["Display the players talent spec and item level in the tooltip, this may not i
 L["Display the spell or item ID when mousing over a spell or item tooltip."] = 'Zeige die ID des Zaubers oder des Gegenstands an, wenn du mit der Maus über einen Zauber oder Fegenstand ziehst.'
 L["Don't display the tooltip when mousing over a unitframe."] = "Zeige keinen Tooltip, wenn die Maus über einem Einheitenfenster schwebt."
 L["Guild Ranks"] = 'Gildenränge'
+L["Header Font Size"] = true;
 L["Health Bar"] = "Lebensleiste"
 L["Hide tooltip while in combat."] = "Verstecke den Tooltip während des Kampfes."
 L["Inspect Info"] = 'Informationen betrachten'
@@ -591,8 +592,11 @@ L["Item Count"] = 'Gegenstandsanzahl'
 L["Never Hide"] = 'Niemals verstecken'
 L["Player Titles"] = 'Spielertitel'
 L["Should tooltip be anchored to mouse cursor"] = "Soll das Tooltip an den Mauszeiger geankert werden"
+L["Small Text Font Size"] = true;
 L["Spell/Item IDs"] = 'Zauber/Gegenstand IDs'
 L["Target Info"] = "Ziel Info"
+L["Text Font Size"] = true;
+L["Tooltip Font Settings"] = true;
 L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."] = "Zeige ob jemand aus deiner Gruppe/Schlachtzug die Tooltip-Einheit ins Ziel genommen hat."
 
 --UnitFrames

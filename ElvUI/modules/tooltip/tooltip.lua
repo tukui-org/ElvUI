@@ -720,6 +720,13 @@ function TT:Initialize()
 	GameTooltipStatusBar.text = GameTooltipStatusBar:CreateFontString(nil, "OVERLAY")
 	GameTooltipStatusBar.text:Point("CENTER", GameTooltipStatusBar, 0, -3)
 	GameTooltipStatusBar.text:FontTemplate(E.LSM:Fetch("font", self.db.healthBar.font), self.db.healthBar.fontSize, "OUTLINE")
+	
+	--Tooltip Font Sizes
+	local font = E.LSM:Fetch("font", E.db.tooltip.font)
+	local fontOutline = E.db.tooltip.fontOutline
+	GameTooltipHeaderText:SetFont(font, E.db.tooltip.headerFontSize, fontOutline)
+	GameTooltipText:SetFont(font, E.db.tooltip.textFontSize, fontOutline)
+    GameTooltipTextSmall:SetFont(font, E.db.tooltip.smallTextFontSize, fontOutline)
 
 	local GameTooltipAnchor = CreateFrame('Frame', 'GameTooltipAnchor', E.UIParent)
 	GameTooltipAnchor:Point('BOTTOMRIGHT', RightChatToggleButton, 'BOTTOMRIGHT')
