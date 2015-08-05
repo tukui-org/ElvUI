@@ -4,7 +4,6 @@
 	<Script file='chatBubbles.lua'/>
 	<Script file='raidmarker.lua'/>
 	<Script file='exprepbar.lua'/>
-	<Script file='mirror.lua'/>
 	<Script file='loot.lua'/>
 	<Script file='loot_roll.lua'/>
 	<Script file='raidutility.lua'/>

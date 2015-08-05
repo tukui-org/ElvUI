@@ -254,6 +254,7 @@ L["Loss Control Icon"] = "Ícone de Perda de Controle"
 L["MA Frames"] = "Quadro do Assistente Principal"
 L["Micro Bar"] = "Micro Barra"
 L["Minimap"] = "Minimapa"
+L["MirrorTimer"] = true;
 L["MT Frames"] = "Quadro do Tank Principal"
 L["Objective Frame"] = true;
 L["Party Frames"] = "Quadros de Grupo"

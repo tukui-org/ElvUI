@@ -254,6 +254,7 @@ L["Loss Control Icon"] = true;
 L["MA Frames"] = true;
 L["Micro Bar"] = true; --Also in ActionBars
 L["Minimap"] = true;
+L["MirrorTimer"] = true;
 L["MT Frames"] = true;
 L["Objective Frame"] = true;
 L["Party Frames"] = true; --Also used in UnitFrames

@@ -254,6 +254,7 @@ L["Loss Control Icon"] = "Icono de Pérdida de Control"
 L["MA Frames"] = "Marcos de AP"
 L["Micro Bar"] = "Micro Barra"
 L["Minimap"] = "Minimapa"
+L["MirrorTimer"] = true;
 L["MT Frames"] = "Marcos de TP"
 L["Objective Frame"] = true;
 L["Party Frames"] = "Marco de Grupo"

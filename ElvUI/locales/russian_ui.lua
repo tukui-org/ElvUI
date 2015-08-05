@@ -254,6 +254,7 @@ L["Loss Control Icon"] = "Иконка потери контроля"
 L["MA Frames"] = "Помощники"
 L["Micro Bar"] = "Микроменю" --Also in ActionBars
 L["Minimap"] = "Миникарта"
+L["MirrorTimer"] = true;
 L["MT Frames"] = "Танки"
 L["Objective Frame"] = "Задачи"
 L["Party Frames"] = "Группа" --Also used in UnitFrames

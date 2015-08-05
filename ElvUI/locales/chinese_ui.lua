@@ -254,6 +254,7 @@ L["Loss Control Icon"] = "失去控制图标"
 L["MA Frames"] = "主助理框"
 L["Micro Bar"] = "微型系统菜单" --Also in ActionBars
 L["Minimap"] = "小地图"
+L["MirrorTimer"] = true;
 L["MT Frames"] = "主坦克框"
 L["Objective Frame"] = true;
 L["Party Frames"] = "队伍框架"

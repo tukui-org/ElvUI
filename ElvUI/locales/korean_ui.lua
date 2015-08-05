@@ -254,6 +254,7 @@ L["Loss Control Icon"] = "제어손실 표시"
 L["MA Frames"] = "지원공격 전담 프레임"
 L["Micro Bar"] = "메뉴모음 바"
 L["Minimap"] = "미니맵"
+L["MirrorTimer"] = true;
 L["MT Frames"] = "방어전담 프레임"
 L["Objective Frame"] = "퀘스트 프레임";
 L["Party Frames"] = "파티 프레임"

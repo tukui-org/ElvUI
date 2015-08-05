@@ -254,6 +254,7 @@ L["Loss Control Icon"] = "Kontrollverlustsymbol"
 L["MA Frames"] = "MA-Fenster"
 L["Micro Bar"] = "Mikroleiste" --Also in ActionBars
 L["Minimap"] = 'Minimap'
+L["MirrorTimer"] = true;
 L["MT Frames"] = "MT-Fenster"
 L["Objective Frame"] = "Questfenster"
 L["Party Frames"] = "Gruppenfenster" --Also used in UnitFrames

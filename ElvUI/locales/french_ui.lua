@@ -254,6 +254,7 @@ L["Loss Control Icon"] = "Icône de la perte de contrôle"
 L["MA Frames"] = "Cadres de l`assistant principal"
 L["Micro Bar"] = "Micro Barre" --Also in ActionBars
 L["Minimap"] = "Mini-carte"
+L["MirrorTimer"] = true;
 L["MT Frames"] = "Cadres du Tank principal"
 L["Objective Frame"] = "Cadre d'objectif";
 L["Party Frames"] = "Cadres de groupe" --Also used in UnitFrames
