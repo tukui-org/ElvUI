@@ -131,7 +131,8 @@ E.Options.args.tooltip = {
 						smallTextFontSize = {
 							order = 6,
 							type = "range",
-							name = L["Small Text Font Size"],
+							name = L["Comparison Font Size"],
+							desc = L["This setting controls the size of text in item comparison tooltips."],
 							min = 4, max = 30, step = 1,
 							get = function(info) return E.db.tooltip.smallTextFontSize end,
 							set = function(info, value) E.db.tooltip.smallTextFontSize = value; TT:SetTooltipFonts() end,
