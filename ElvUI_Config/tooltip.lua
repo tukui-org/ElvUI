@@ -92,14 +92,7 @@ E.Options.args.tooltip = {
 							name = L["Font"],
 							values = AceGUIWidgetLSMlists.font,
 							get = function(info) return E.db.tooltip.font end,
-							set = function(info, value)
-								E.db.tooltip.font = value;
-								local font = E.LSM:Fetch("font", E.db.tooltip.font)
-								local fontOutline = E.db.tooltip.fontOutline
-								GameTooltipHeaderText:SetFont(font, E.db.tooltip.headerFontSize, fontOutline)
-								GameTooltipText:SetFont(font, E.db.tooltip.textFontSize, fontOutline)
-								GameTooltipTextSmall:SetFont(font, E.db.tooltip.smallTextFontSize, fontOutline)
-							end,
+							set = function(info, value) E.db.tooltip.font = value; TT:SetTooltipFonts() end,
 						},
 						fontOutline = {
 							order = 2,
@@ -112,13 +105,7 @@ E.Options.args.tooltip = {
 								['THICKOUTLINE'] = 'THICKOUTLINE',
 							},
 							get = function(info) return E.db.tooltip.fontOutline end,
-							set = function(info, value)
-								E.db.tooltip.fontOutline = value;
-								local font = E.LSM:Fetch("font", E.db.tooltip.font)
-								GameTooltipHeaderText:SetFont(font, E.db.tooltip.headerFontSize, value)
-								GameTooltipText:SetFont(font, E.db.tooltip.textFontSize, value)
-								GameTooltipTextSmall:SetFont(font, E.db.tooltip.smallTextFontSize, value)
-							end,
+							set = function(info, value) E.db.tooltip.fontOutline = value; TT:SetTooltipFonts() end,
 						},
 						spacer = {
 							order = 3,
@@ -131,10 +118,7 @@ E.Options.args.tooltip = {
 							name = L["Header Font Size"],
 							min = 4, max = 50, step = 1,
 							get = function(info) return E.db.tooltip.headerFontSize end,
-							set = function(info, value)
-								E.db.tooltip.headerFontSize = value;
-								GameTooltipHeaderText:SetFont(E.LSM:Fetch("font", E.db.tooltip.font), value, E.db.tooltip.fontOutline)
-							end,
+							set = function(info, value) E.db.tooltip.headerFontSize = value; TT:SetTooltipFonts() end,
 						},
 						textFontSize = {
 							order = 5,
@@ -142,10 +126,7 @@ E.Options.args.tooltip = {
 							name = L["Text Font Size"],
 							min = 4, max = 30, step = 1,
 							get = function(info) return E.db.tooltip.textFontSize end,
-							set = function(info, value)
-								E.db.tooltip.textFontSize = value;
-								GameTooltipText:SetFont(E.LSM:Fetch("font", E.db.tooltip.font), value, E.db.tooltip.fontOutline)
-							end,
+							set = function(info, value) E.db.tooltip.textFontSize = value; TT:SetTooltipFonts() end,
 						},
 						smallTextFontSize = {
 							order = 6,
@@ -153,10 +134,7 @@ E.Options.args.tooltip = {
 							name = L["Small Text Font Size"],
 							min = 4, max = 30, step = 1,
 							get = function(info) return E.db.tooltip.smallTextFontSize end,
-							set = function(info, value)
-								E.db.tooltip.smallTextFontSize = value;
-								GameTooltipTextSmall:SetFont(E.LSM:Fetch("font", E.db.tooltip.font), value, E.db.tooltip.fontOutline)
-							end,
+							set = function(info, value) E.db.tooltip.smallTextFontSize = value; TT:SetTooltipFonts() end,
 						},
 					},
 				},
