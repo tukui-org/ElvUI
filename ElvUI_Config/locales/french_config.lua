@@ -913,6 +913,7 @@ L["The name you have selected is already in use by another element."] = "Le nom 
 L["The object you want to attach to."] = "L'objet que vous souhaitez attacher à."
 L["This filter is meant to be used when you only want to whitelist specific spellIDs which share names with unwanted spells."] = "Ce filtre est destiné à être utilisé lorsque que vous souhaitez mettre en liste blanche un SpellID spécifique qui partage le nom avec les sorts indésirables."; --need review
 L["This filter is used for both aura bars and aura icons no matter what. Its purpose is to block out specific spellids from being shown. For example a paladin can have two sacred shield buffs at once, we block out the short one."] = "Ce filtre est utilisé pour les deux barres d'auras: icônes et aura, quoi qu'il arrive. Son but est de bloquer les spellids spécifiques . Par exemple, un paladin peut avoir deux buffs bouclier sacré à la fois, nous bloquerons sur le  plus court."
+L["This opens the UnitFrames Color settings. These settings are global and affect all unitframes."] = true;
 L["Threat Display Mode"] = "Affichage du Mode de Menace."
 L["Threshold before text goes into decimal form. Set to -1 to disable decimals."] = "Seuil avant que le texte ne s'affiche sous forme décimale. Mettre à -1 pour désactiver l'affichage en décimal.";
 L["Ticks"] = "Ticks"

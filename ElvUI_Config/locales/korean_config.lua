@@ -964,6 +964,7 @@ L["The name you have selected is already in use by another element."] = "입력�
 L["The object you want to attach to."] = "이 요소가 어느 프레임을 기준으로 배치될지를 결정합니다."
 L["This filter is meant to be used when you only want to whitelist specific spellIDs which share names with unwanted spells."] = "요구 목록에 적은 주문과 같은 이름을 가진 주문이 여러개 있는 경우,|n이 곳에 ID를 적은 주문만 표시해주는 기능입니다."
 L["This filter is used for both aura bars and aura icons no matter what. Its purpose is to block out specific spellids from being shown. For example a paladin can have two sacred shield buffs at once, we block out the short one."] = "같은 주문 이름이 여러개 있는 경우, 특정 주문을 표시하지 않게 하는 기능입니다.|n|n예로, 성기사의 [성스러운 보호막]은 같은 이름의 효과가 2개가 있어,|n덜 중요한 하나를 여기에서 차단해 보이지 않게 하고 있습니다."
+L["This opens the UnitFrames Color settings. These settings are global and affect all unitframes."] = true;
 L["Threat Display Mode"] = "어그로획득 표시방법"
 L["Threshold before text goes into decimal form. Set to -1 to disable decimals."] = "소숫점으로 표시하게 될 기준점을 결정합니다. -1로 지정 시 작동하지 않습니다."
 L["Ticks"] = "주문 틱 표시"

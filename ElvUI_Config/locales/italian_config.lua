@@ -903,6 +903,7 @@ L["The name you have selected is already in use by another element."] = true;
 L["The object you want to attach to."] = true;
 L["This filter is meant to be used when you only want to whitelist specific spellIDs which share names with unwanted spells."] = true;
 L["This filter is used for both aura bars and aura icons no matter what. Its purpose is to block out specific spellids from being shown. For example a paladin can have two sacred shield buffs at once, we block out the short one."] = true;
+L["This opens the UnitFrames Color settings. These settings are global and affect all unitframes."] = true;
 L["Threat Display Mode"] = true;
 L["Threshold before text goes into decimal form. Set to -1 to disable decimals."] = true;
 L["Ticks"] = true;
