@@ -1060,3 +1060,19 @@ function UF:Update_PlayerFrame(frame, db)
 end
 
 tinsert(UF['unitstoload'], 'player')
+
+--Bugfix: Death Runes show as Blood Runes on first login ( http://git.tukui.org/Elv/elvui/issues/411 )
+--For some reason the registered "PLAYER_ENTERING_WORLD" in runebar.lua doesn't trigger on first login.
+local function UpdateAllRunes()
+	local frame = _G["ElvUF_Player"]
+	if frame and frame.Runes and frame.Runes.UpdateAllRuneTypes then
+		frame.Runes.UpdateAllRuneTypes(frame)
+	end
+end
+local f = CreateFrame("Frame")
+f:RegisterEvent("PLAYER_ENTERING_WORLD")
+f:SetScript("OnEvent", function(self, event)
+	self:UnregisterEvent(event)
+	
+	C_Timer.After(5, UpdateAllRunes) --Delay it, since the WoW client updates Death Runes after PEW
+end)

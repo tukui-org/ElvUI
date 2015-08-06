@@ -53,7 +53,7 @@ oUF.colors.Runes = {
 }
 
 local runemap = { 1, 2, 5, 6, 3, 4 }
-local BLOOD_OF_THE_NORTH = 54637
+
 local OnUpdate = function(self, elapsed)
 	local duration = self.duration + elapsed
 	if(duration >= self.max) then
@@ -64,12 +64,9 @@ local OnUpdate = function(self, elapsed)
 	end
 end
 
-local spellName = GetSpellInfo(54637)
 local UpdateType = function(self, event, rid, alt)
-	local isUsable = IsUsableSpell(spellName)
 	local rune = self.Runes[runemap[rid]]
 	local runeType = GetRuneType(rid) or alt
-	if isUsable and runeType == 1 then runeType = 4; end
 	if not runeType then return; end
 	local colors = oUF.colors.Runes[runeType]
 	local r, g, b = colors[1], colors[2], colors[3]
