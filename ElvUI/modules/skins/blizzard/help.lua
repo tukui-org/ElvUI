@@ -7,7 +7,6 @@ local function LoadSkin()
 		"HelpFrameLeftInset",
 		"HelpFrameMainInset",
 		"HelpFrameKnowledgebase",
-		"HelpFrameHeader",
 		"HelpFrameKnowledgebaseErrorFrame",
 	}
 
@@ -37,6 +36,8 @@ local function LoadSkin()
 		_G[frames[i]]:CreateBackdrop("Transparent")
 	end
 
+	HelpFrameHeader:StripTextures(true)
+	HelpFrameHeader:CreateBackdrop("Default", true)
 	HelpFrameHeader:SetFrameLevel(HelpFrameHeader:GetFrameLevel() + 2)
 	HelpFrameKnowledgebaseErrorFrame:SetFrameLevel(HelpFrameKnowledgebaseErrorFrame:GetFrameLevel() + 2)
 
