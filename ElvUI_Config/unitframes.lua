@@ -82,7 +82,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 			configureButton1 = {
 				order = 2,
 				name = L["Coloring"],
-				desc = L["This opens the UnitFrames Color settings. These settings are global and affect all unitframes."],
+				desc = L["This opens the UnitFrames Color settings. These settings affect all unitframes."],
 				type = 'execute',
 				func = function() ACD:SelectGroup("ElvUI", "unitframe", "general", "allColorsGroup", "auraBars") end,
 			},
@@ -815,7 +815,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 			configureButton = {
 				order = 4,
 				name = L["Coloring"],
-				desc = L["This opens the UnitFrames Color settings. These settings are global and affect all unitframes."],
+				desc = L["This opens the UnitFrames Color settings. These settings affect all unitframes."],
 				type = 'execute',
 				func = function() ACD:SelectGroup("ElvUI", "unitframe", "general", "allColorsGroup", "castBars") end,
 			},
@@ -916,7 +916,7 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 			configureButton = {
 				order = 5,
 				name = L["Coloring"],
-				desc = L["This opens the UnitFrames Color settings. These settings are global and affect all unitframes."],
+				desc = L["This opens the UnitFrames Color settings. These settings affect all unitframes."],
 				type = 'execute',
 				func = function() ACD:SelectGroup("ElvUI", "unitframe", "general", "allColorsGroup", "healthGroup") end,
 			},
@@ -1229,7 +1229,7 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 			configureButton = {
 				order = 4,
 				name = L["Coloring"],
-				desc = L["This opens the UnitFrames Color settings. These settings are global and affect all unitframes."],
+				desc = L["This opens the UnitFrames Color settings. These settings affect all unitframes."],
 				type = 'execute',
 				func = function() ACD:SelectGroup("ElvUI", "unitframe", "general", "allColorsGroup", "powerGroup") end,
 			},
