@@ -575,7 +575,7 @@ L["Bags/Bank"] = "Taschen/Bank"
 L["Bank Only"] = 'Nur Bank'
 L["Both"] = 'Beide'
 L["Choose when you want the tooltip to show. If a modifer is chosen, then you need to hold that down to show the tooltip."] = "Wählt aus wann der Tooltip angezeigt wird. Wenn ein Modifikator ausgewählt ist, dann musst du ihn gedrückt halten um den Tooltip anzuzeigen."
-L["Comparison Font Size"] = true;
+L["Comparison Font Size"] = "Vergleich Schriftgröße"
 L["Cursor Anchor"] = "Zeigeranker"
 L["Custom Faction Colors"] = "Benutzerdefinierte Fraktionsfarben"
 L["Display guild ranks if a unit is guilded."] = 'Zeige Gildenränge von Spielern die in einer Gilde sind.'
@@ -596,7 +596,7 @@ L["Should tooltip be anchored to mouse cursor"] = "Soll das Tooltip an den Mausz
 L["Spell/Item IDs"] = 'Zauber/Gegenstand IDs'
 L["Target Info"] = "Ziel Info"
 L["Text Font Size"] = "Text Schriftgröße"
-L["This setting controls the size of text in item comparison tooltips."] = true;
+L["This setting controls the size of text in item comparison tooltips."] = "Diese Einstellung kontrolliert die Größe der Schrift vom Text im Item Vergleichs-Tooltip."
 L["Tooltip Font Settings"] = "Tooltip Schrifteinstellung"
 L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."] = "Zeige ob jemand aus deiner Gruppe/Schlachtzug die Tooltip-Einheit ins Ziel genommen hat."
 
