@@ -138,6 +138,7 @@ L["Enable/Disable the Bag-Bar."] = "Aktiviere/Deaktiviere die Taschenleiste."
 L["Full"] = 'Voll'
 L["Icons and Text"] = "Symbole und Text"
 L["Ignore Items"] = 'Ignoriere Items'
+L["Item Count Font"] = true;
 L["Item Level Threshold"] = "Itemlevel Schwellenwert"
 L["Item Level"] = "Itemlevel"
 L["List of items to ignore when sorting. If you wish to add multiple items you must seperate the word with a comma."] = 'Liste von Items die beim sortieren ignoriert werden. Wenn du willst kannst du auch mehrere Items hinzufügen du musst nur nachdem Wort ein Komma setzen.'

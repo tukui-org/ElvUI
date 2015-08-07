@@ -140,6 +140,7 @@ L["Enable/Disable the Bag-Bar."] = "Включить/выключить пане
 L["Full"] = "Полный"
 L["Icons and Text"] = "Иконки и текст"
 L["Ignore Items"] = "Игнорировать предметы"
+L["Item Count Font"] = true;
 L["Item Level Threshold"] = "Ограничение уровня предметов"
 L["Item Level"] = "Уровень предметов"
 L["List of items to ignore when sorting. If you wish to add multiple items you must seperate the word with a comma."] = "Список предметов, игнорируемых при сортироваке. Если Вы хотите добавить несколько предметов, то должны разделять их запятой."

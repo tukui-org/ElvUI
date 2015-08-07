@@ -187,6 +187,7 @@ L["Enable/Disable the Bag-Bar."] = "가방바를 사용할지 여부를 결정�
 L["Full"] = "전체"
 L["Icons and Text"] = "아이콘 + 문자"
 L["Ignore Items"] = "정렬 예외 아이템 목록"
+L["Item Count Font"] = true;
 L["Item Level Threshold"] = "템렙표시 커트라인"
 L["Item Level"] = "아이템 레벨"
 L["List of items to ignore when sorting. If you wish to add multiple items you must seperate the word with a comma."] = "정렬기능이 실행될 때 여기에 적힌 아이템은 정렬하지 않고 놔둡니다. 여러 아이템을 등록할 수 있으며 쉼표(,)로 이어서 쓰세요."

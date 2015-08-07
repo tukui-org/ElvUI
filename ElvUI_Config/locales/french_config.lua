@@ -140,6 +140,7 @@ L["Enable/Disable the Bag-Bar."] = "Activer / Désactiver la barre des sacs."
 L["Full"] = "Plein"; -- we talk about bags, so full means "plein" instead of "complet"
 L["Icons and Text"] = "Icônes et textes"
 L["Ignore Items"] = "Objets ignorés"
+L["Item Count Font"] = true;
 L["Item Level Threshold"] = "Seuil de niveau d'objet";
 L["Item Level"] = "Niveau d'objet";
 L["List of items to ignore when sorting. If you wish to add multiple items you must seperate the word with a comma."] = "Liste des objets à ignorer pendant le tri. Si vous voulez ajouter plusieurs objets, vous devez séparer les mots par une virgule."

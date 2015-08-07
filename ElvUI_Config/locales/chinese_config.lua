@@ -140,6 +140,7 @@ L["Enable/Disable the Bag-Bar."] = "启用/禁用 背包条."
 L["Full"] = true;
 L["Icons and Text"] = "图标和文字"
 L["Ignore Items"] = "忽略项目"
+L["Item Count Font"] = true;
 L["Item Level Threshold"] = true;
 L["Item Level"] = true;
 L["List of items to ignore when sorting. If you wish to add multiple items you must seperate the word with a comma."] = "忽略清单中的项目，如果你想添加多个项目，你必须用逗号将它们分开."
