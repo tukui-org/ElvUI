@@ -69,6 +69,17 @@ NP.ComboColors = {
 	[5] = {0.33, 0.59, 0.33}
 }
 
+NP.RaidMarkColors = {
+	["STAR"] = {r = 0.85, g = 0.81, b = 0.27},
+	["MOON"] = {r = 0.60,g = 0.75,b = 0.85},
+	["CIRCLE"] = {r = 0.93,g = 0.51,b = 0.06},
+	["SQUARE"] = {r = 0,g = 0.64,b = 1},
+	["DIAMOND"] = {r = 0.7,g = 0.06,b = 0.84},
+	["CROSS"] = {r = 0.82,g = 0.18,b = 0.18},
+	["TRIANGLE"] = {r = 0.14,g = 0.66,b = 0.14},
+	["SKULL"] = {r = 0.89,g = 0.83,b = 0.74},
+}
+
 local AURA_UPDATE_INTERVAL = 0.1
 local AURA_TARGET_HOSTILE = 1
 local AURA_TARGET_FRIENDLY = 2
@@ -421,6 +432,11 @@ function NP:ColorizeAndScale(myPlate)
 		color = NP.db.reactions.friendlyPlayer
 	else
 		color = NP.db.reactions.enemy
+	end
+	
+	if self.raidIcon:IsShown() and NP.db.healthBar.colorByRaidIcon then
+		NP:CheckRaidIcon(self)
+		color = NP.RaidMarkColors[self.raidIconType]
 	end
 
 	if (NP.db.healthBar.lowHPScale.enable and NP.db.healthBar.lowHPScale.changeColor and myPlate.lowHealth:IsShown() and canAttack) then

@@ -273,9 +273,19 @@ E.Options.args.nameplate = {
 					isPercent = true,
 					min = 0, max = 1, step = 0.01,
 				},
+				colorByRaidIcon = {
+					type = "toggle",
+					order = 4,
+					name = L["Color By Raid Icon"],
+				},
+				spacer = {
+					order = 5,
+					type = "description",
+					name = "\n",
+				},
 				lowHPScale = {
 					type = "group",
-					order = 4,
+					order = 6,
 					name = L["Scale if Low Health"],
 					guiInline = true,
 					get = function(info) return E.db.nameplate.healthBar.lowHPScale[ info[#info] ] end,
@@ -335,7 +345,7 @@ E.Options.args.nameplate = {
 					},
 				},
 				fontGroup = {
-					order = 5,
+					order = 7,
 					type = "group",
 					name = L["Fonts"],
 					guiInline = true,

@@ -453,6 +453,7 @@ L["Cast Bar"] = "Barre d'incantation";
 L["Castbar Height"] = "Hauteur de la barre d'incantation"
 L["Change color on low health"] = "Changer la couleur si le niveau de vie est faible"; --need review
 L["Color By Healthbar"] = "Colorer par la barre de vie";
+L["Color By Raid Icon"] = true;
 L["Color Name By Health Value"] = "Colorer le nom selon le niveau de vie";
 L["Color on low health"] = "Colorer si le niveau de vie est faible"; --need review
 L["Color the border of the nameplate yellow when it reaches this point, it will be colored red when it reaches half this value."] = "Colore la bordure des cadres d'unités en jaune quand il atteint le point, il sera de couleur rouge quand il atteindra la moitié de cette valeur."

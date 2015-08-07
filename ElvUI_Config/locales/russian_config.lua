@@ -453,6 +453,7 @@ L["Cast Bar"] = "Полоса заклинаний"
 L["Castbar Height"] = "Высота полосы заклинаний"
 L["Change color on low health"] = "Изменять цвет";
 L["Color By Healthbar"]  = "По цвету здоровья"
+L["Color By Raid Icon"] = true;
 L["Color Name By Health Value"] = "Окрашивать имя по значению здоровья"
 L["Color on low health"] = "Цвет";
 L["Color the border of the nameplate yellow when it reaches this point, it will be colored red when it reaches half this value."] = "Окрашивать границу индикатора желтым, когда уровень здоровья достигает этого значения. Окраска сменится на красную при достижении половины этого значения."

@@ -453,6 +453,7 @@ L["Cast Bar"] = true;
 L["Castbar Height"] = "施法条高度"
 L["Change color on low health"] = true;
 L["Color By Healthbar"]  = true;
+L["Color By Raid Icon"] = true;
 L["Color Name By Health Value"] = true;
 L["Color on low health"] = true;
 L["Color the border of the nameplate yellow when it reaches this point, it will be colored red when it reaches half this value."] = "当到达此数值时, 血条的边框将被上色为黄色. 当到达此数值一半时, 姓名面板的边框将被上色为红色."

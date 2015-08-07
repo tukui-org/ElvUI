@@ -452,6 +452,7 @@ L["Cast Bar"] = "Zauberleiste"
 L["Castbar Height"] = "Zauberleistenhöhe"
 L["Change color on low health"] = "Farbe ändern bei niedriger Gesundheit"
 L["Color By Healthbar"]  = 'Farbe der Gesundheitsbar'
+L["Color By Raid Icon"] = true;
 L["Color Name By Health Value"] = 'Farbnamen nach Gesundheitswert'
 L["Color on low health"] = "Farbe bei niedriger Gesundheit"
 L["Color the border of the nameplate yellow when it reaches this point, it will be colored red when it reaches half this value."] = 'Färbe den Rand der Namensplaketten gelb, wenn ein Schwelle erreicht wird. Der Rand wird Rot wurde die Hälfte dieses Wertes erreicht.'
