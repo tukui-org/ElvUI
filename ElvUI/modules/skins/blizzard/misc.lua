@@ -652,6 +652,9 @@ local function LoadSkin()
         "AudioOptionsVoicePanelTalking",
         "AudioOptionsVoicePanelBinding",
         "AudioOptionsVoicePanelListening",
+		"Display_",
+		"Graphics_",
+		"RaidGraphics_",
     }
     for i = 1, getn(frames) do
         local SkinFrames = _G[frames[i]]
@@ -880,7 +883,9 @@ local function LoadSkin()
         "CameraPanelStyleDropDown",
         -- Mouse
         "MousePanelClickMoveStyleDropDown",
+		-- Language
         "LanguagesPanelLocaleDropDown",
+		"LanguagesPanelAudioLocaleDropDown",
         -- Status Text
         "StatusTextPanelDisplayDropDown",
 
@@ -990,7 +995,6 @@ local function LoadSkin()
 		"Advanced_ResampleQualityDropDown",
 		"Advanced_MultisampleAlphaTest",
 		"Advanced_PostProcessAntiAliasingDropDown",
-		"Advanced_ResampleQualityDropDown",
 		"Advanced_MultisampleAntiAliasingDropDown",
 
         -- Audio
@@ -1187,6 +1191,23 @@ local function LoadSkin()
 		end
 	end
 	hooksecurefunc("NavBar_AddButton", SkinNavBarButtons)
+
+	--Mirror Timers (Underwater Breath etc.), credit to Azilroka
+	for i = 1, MIRRORTIMER_NUMTIMERS do
+		local mirrorTimer = _G['MirrorTimer'..i]
+		local statusBar = _G['MirrorTimer'..i..'StatusBar']
+		local text = _G['MirrorTimer'..i.."Text"]
+
+		mirrorTimer:StripTextures()
+		mirrorTimer:Size(222, 18)
+		statusBar:SetStatusBarTexture(E["media"].normTex)
+		statusBar:CreateBackdrop()
+		statusBar:Size(222, 18)
+		text:ClearAllPoints()
+		text:SetPoint('CENTER', statusBar, 'CENTER', 0, 0)
+
+		E:CreateMover(mirrorTimer, "MirrorTimer"..i.."Mover", L["MirrorTimer"]..i, nil, nil, nil, "ALL,SOLO")
+	end
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)

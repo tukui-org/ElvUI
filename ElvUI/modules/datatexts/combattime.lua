@@ -12,7 +12,7 @@ local floor = math.floor
 local function OnUpdate(self)
 	timer = GetTime() - startTime
 
-	self.text:SetFormattedText(displayNumberString, timerText, format("%02d:%02d:%02d", floor(timer/60), timer % 60, (timer - floor(timer)) * 100))
+	self.text:SetFormattedText(displayNumberString, timerText, format("%02d:%02d.%02d", floor(timer/60), timer % 60, (timer - floor(timer)) * 100))
 end
 
 local function DelayOnUpdate(self, elapsed)

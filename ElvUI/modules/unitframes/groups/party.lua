@@ -22,7 +22,7 @@ function UF:Construct_PartyFrames(unitGroup)
 
 		self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
 
-		self.Power = UF:Construct_PowerBar(self, true, true, 'LEFT', false)
+		self.Power = UF:Construct_PowerBar(self, true, true, 'LEFT')
 		self.Power.frequentUpdates = false;
 
 		self.Name = UF:Construct_NameText(self)

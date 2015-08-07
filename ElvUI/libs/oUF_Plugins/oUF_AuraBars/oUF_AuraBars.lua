@@ -301,7 +301,7 @@ local function Update(self, event, unit)
 			bar:SetMinMaxValues(0, 1)
 			bar:SetValue(1)
 		else
-			if auraBars.scaleTime then
+			if auraBars.scaleTime and auraBars.scaleTime > 0 then
 				local maxvalue = min(auraBars.scaleTime, bar.aura.duration)
 				bar:SetMinMaxValues(0, maxvalue)
 				bar:SetWidth(

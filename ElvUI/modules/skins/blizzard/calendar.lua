@@ -70,6 +70,7 @@ local function LoadSkin()
 	S:HandleDropDownBox(CalendarCreateEventHourDropDown, 68)
 	S:HandleDropDownBox(CalendarCreateEventMinuteDropDown, 68)
 	S:HandleDropDownBox(CalendarCreateEventAMPMDropDown, 68)
+	S:HandleDropDownBox(CalendarCreateEventDifficultyOptionDropDown)
 	--S:HandleDropDownBox(CalendarCreateEventRepeatOptionDropDown, 120)
 	CalendarCreateEventIcon:SetTexCoord(unpack(E.TexCoords))
 	CalendarCreateEventIcon.SetTexCoord = E.noop

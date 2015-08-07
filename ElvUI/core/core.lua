@@ -173,8 +173,7 @@ function E:UpdateMedia()
 
 	--Fonts
 	self["media"].normFont = LSM:Fetch("font", self.db['general'].font)
-	self["media"].combatFont = LSM:Fetch("font", self.db['general'].dmgfont)
-
+	self["media"].combatFont = LSM:Fetch("font", self.private['general'].dmgfont)
 
 	--Textures
 	self["media"].blankTex = LSM:Fetch("background", "ElvUI Blank")

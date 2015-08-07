@@ -262,18 +262,17 @@ function UF:PostCastStart(unit, name, rank, castid)
 
 	local colors = ElvUF.colors
 	local r, g, b = colors.castColor[1], colors.castColor[2], colors.castColor[3]
-	if UF.db.colors.castClassColor then
-		local t
-		if UnitIsPlayer(unit) then
-			local _, class = UnitClass(unit)
-			t = ElvUF.colors.class[class]
-		elseif UnitReaction(unit, 'player') then
-			t = ElvUF.colors.reaction[UnitReaction(unit, "player")]
-		end
 
-		if(t) then
-			r, g, b = t[1], t[2], t[3]
-		end
+	local t
+	if UF.db.colors.castClassColor and UnitIsPlayer(unit) then
+		local _, class = UnitClass(unit)
+		t = ElvUF.colors.class[class]
+	elseif UF.db.colors.castReactionColor and UnitReaction(unit, 'player') then
+		t = ElvUF.colors.reaction[UnitReaction(unit, "player")]
+	end
+
+	if(t) then
+		r, g, b = t[1], t[2], t[3]
 	end
 
 	if  self.interrupt and unit ~= "player" and UnitCanAttack("player", unit) then
@@ -363,18 +362,17 @@ function UF:PostCastInterruptible(unit)
 
 	local colors = ElvUF.colors
 	local r, g, b = colors.castColor[1], colors.castColor[2], colors.castColor[3]
-	if UF.db.colors.castClassColor then
-		local t
-		if UnitIsPlayer(unit) then
-			local _, class = UnitClass(unit)
-			t = ElvUF.colors.class[class]
-		elseif UnitReaction(unit, 'player') then
-			t = ElvUF.colors.reaction[UnitReaction(unit, "player")]
-		end
 
-		if(t) then
-			r, g, b = t[1], t[2], t[3]
-		end
+	local t
+	if UF.db.colors.castClassColor and UnitIsPlayer(unit) then
+		local _, class = UnitClass(unit)
+		t = ElvUF.colors.class[class]
+	elseif UF.db.colors.castReactionColor and UnitReaction(unit, 'player') then
+		t = ElvUF.colors.reaction[UnitReaction(unit, "player")]
+	end
+
+	if(t) then
+		r, g, b = t[1], t[2], t[3]
 	end
 
 	if self.interrupt and UnitCanAttack("player", unit) then

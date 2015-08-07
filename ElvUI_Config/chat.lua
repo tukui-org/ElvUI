@@ -96,7 +96,7 @@ E.Options.args.chat = {
 					desc = L["Fades the text on chat tabs that are not docked at the left or right chat panel."],
 					set = function(self, value)
 						E.db.chat.fadeUndockedTabs = value;
-						CH:PositionChat(true)
+						CH:UpdateChatTabs()
 					end,
 				},
 				fadeTabsNoBackdrop = {
@@ -106,7 +106,7 @@ E.Options.args.chat = {
 					desc = L["Fades the text on chat tabs that are docked in a panel where the backdrop is disabled."],
 					set = function(self, value)
 						E.db.chat.fadeTabsNoBackdrop = value;
-						CH:PositionChat(true)
+						CH:UpdateChatTabs()
 					end,
 				},
 				chatHistory = {
@@ -171,20 +171,21 @@ E.Options.args.chat = {
 					order = 1,
 					type = 'select', dialogControl = 'LSM30_Sound',
 					name = L["Whisper Alert"],
-					disabled = function() return not E.db.chat.whisperSound end,
 					values = AceGUIWidgetLSMlists.sound,
-					set = function(info, value) E.db.chat.whisperSound = value; end,
 				},
 				keywordSound = {
 					order = 2,
 					type = 'select', dialogControl = 'LSM30_Sound',
 					name = L["Keyword Alert"],
-					disabled = function() return not E.db.chat.keywordSound end,
 					values = AceGUIWidgetLSMlists.sound,
-					set = function(info, value) E.db.chat.keywordSound = value; end,
+				},
+				noAlertInCombat = {
+					order = 3,
+					type = "toggle",
+					name = L["No Alert In Combat"],
 				},
 				keywords = {
-					order = 3,
+					order = 4,
 					name = L["Keywords"],
 					desc = L["List of words to color in chat if found in a message. If you wish to add multiple words you must seperate the word with a comma. To search for your current name you can use %MYNAME%.\n\nExample:\n%MYNAME%, ElvUI, RBGs, Tank"],
 					type = 'input',
@@ -204,6 +205,12 @@ E.Options.args.chat = {
 					type = 'toggle',
 					name = L["Lock Positions"],
 					desc = L["Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish."],
+					set = function(info, value)
+						E.db.chat[ info[#info] ] = value
+						if value == true then
+							CH:PositionChat(true)
+						end
+					end,
 				},
 				panelTabTransparency = {
 					order = 2,

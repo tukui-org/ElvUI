@@ -13,7 +13,7 @@ function UF:Construct_PlayerFrame(frame)
 	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
 	frame.Health.frequentUpdates = true;
 
-	frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT', true)
+	frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT')
 	frame.Power.frequentUpdates = true;
 
 	frame.Name = self:Construct_NameText(frame)
@@ -342,6 +342,17 @@ function UF:Update_PlayerFrame(frame, db)
 		elseif frame:IsElementEnabled('Resting') then
 			frame:DisableElement('Resting')
 			rIcon:Hide()
+		end
+	end
+
+	--Combat Icon
+	do
+		local cIcon = frame.Combat
+		if db.combatIcon and not frame:IsElementEnabled('Combat') then
+			frame:EnableElement('Combat')
+		elseif not db.combatIcon and frame:IsElementEnabled('Combat') then
+			frame:DisableElement('Combat')
+			cIcon:Hide()
 		end
 	end
 
@@ -935,6 +946,7 @@ function UF:Update_PlayerFrame(frame, db)
 			auraBars:Show()
 			auraBars.friendlyAuraType = db.aurabar.friendlyAuraType
 			auraBars.enemyAuraType = db.aurabar.enemyAuraType
+			auraBars.scaleTime = db.aurabar.uniformThreshold
 
 			local buffColor = UF.db.colors.auraBarBuff
 			local debuffColor = UF.db.colors.auraBarDebuff
@@ -1048,3 +1060,19 @@ function UF:Update_PlayerFrame(frame, db)
 end
 
 tinsert(UF['unitstoload'], 'player')
+
+--Bugfix: Death Runes show as Blood Runes on first login ( http://git.tukui.org/Elv/elvui/issues/411 )
+--For some reason the registered "PLAYER_ENTERING_WORLD" in runebar.lua doesn't trigger on first login.
+local function UpdateAllRunes()
+	local frame = _G["ElvUF_Player"]
+	if frame and frame.Runes and frame.Runes.UpdateAllRuneTypes then
+		frame.Runes.UpdateAllRuneTypes(frame)
+	end
+end
+local f = CreateFrame("Frame")
+f:RegisterEvent("PLAYER_ENTERING_WORLD")
+f:SetScript("OnEvent", function(self, event)
+	self:UnregisterEvent(event)
+	
+	C_Timer.After(5, UpdateAllRunes) --Delay it, since the WoW client updates Death Runes after PEW
+end)

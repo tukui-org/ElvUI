@@ -801,8 +801,9 @@ function AB:StyleFlyout(button)
 		local x = GetFlyoutID(i)
 		local _, _, numSlots, isKnown = GetFlyoutInfo(x)
 		if isKnown then
-			buttons = numSlots
-			break
+			if numSlots > buttons then
+				buttons = numSlots
+			end
 		end
 	end
 

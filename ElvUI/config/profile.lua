@@ -149,6 +149,7 @@ P["nameplate"] = {
 	["smallPlates"] = true,
 	["comboPoints"] = false,
 	['nonTargetAlpha'] = 0.6,
+	['targetAlpha'] = 1,
 	['combatHide'] = false,
 	['colorNameByValue'] =  true,
 	['showName'] = true,
@@ -290,6 +291,7 @@ P['chat'] = {
 	['emotionIcons'] = true,
 	['keywordSound'] = 'None',
 	['whisperSound'] = 'Whisper Alert',
+	["noAlertInCombat"] = false,
 	['chatHistory'] = true,
 	['lfgIcons'] = true,
 	['timeStampFormat'] = 'NONE',
@@ -342,6 +344,8 @@ P['datatexts'] = {
 	['panelTransparency'] = false,
 	['goldFormat'] = 'BLIZZARD',
 	['goldCoins'] = false,
+	["noCombatClick"] = false,
+	["noCombatHover"] = false,
 }
 
 --Tooltip
@@ -353,8 +357,15 @@ P['tooltip'] = {
 	['inspectInfo'] = true,
 	['itemCount'] = 'BAGS_ONLY',
 	['spellID'] = true,
+	["font"] = "ElvUI Font",
+	["fontOutline"] = "NONE",
+	["headerFontSize"] = 12,
+	["textFontSize"] = 12,
+	["smallTextFontSize"] = 12,
 	['visibility'] = {
 		['unitFrames'] = 'NONE',
+		["bags"] = "NONE",
+		["actionbars"] = "NONE",
 		['combat'] = false
 	},
 	['healthBar'] = {
@@ -386,6 +397,7 @@ P['unitframe'] = {
 	['debuffHighlighting'] = true,
 	["smartRaidFilter"] = true,
 	['targetOnMouseDown'] = false,
+	["auraBlacklistModifier"] = "SHIFT",
 
 	['colors'] = {
 		['healthclass'] = false,
@@ -393,6 +405,7 @@ P['unitframe'] = {
 		['powerclass'] = false,
 		['colorhealthbyvalue'] = true,
 		['customhealthbackdrop'] = false,
+		['useDeadBackdrop'] = false,
 		['classbackdrop'] = false,
 		['auraBarByType'] = true,
 		['auraBarTurtle'] = true,
@@ -404,10 +417,12 @@ P['unitframe'] = {
 		['castColor'] = { r = .31,g = .31,b = .31 },
 		['castNoInterrupt'] = { r = 0.78, g = 0.25, b = 0.25 },
 		['castClassColor'] = false,
+		['castReactionColor'] = false,
 
 
 		['health'] = { r = .31,g = .31,b = .31 },
 		['health_backdrop'] = { r = .8,g = .01,b = .01 },
+		['health_backdrop_dead'] = { r = .8,g = .01,b = .01 },
 		['tapped'] = { r = 0.55, g = 0.57, b = 0.61},
 		['disconnected'] = { r = 0.84, g = 0.75, b = 0.65},
 		['auraBarBuff'] = { r = .31,g = .31,b = .31 },
@@ -483,6 +498,7 @@ P['unitframe'] = {
 			['combatfade'] = false,
 			['healPrediction'] = true,
 			['restIcon'] = true,
+			["combatIcon"] = true,
 			['threatStyle'] = 'GLOW',
 			['health'] = {
 				['text_format'] = '[healthcolor][health:current-percent]',
@@ -598,7 +614,8 @@ P['unitframe'] = {
 				['friendlyAuraType'] = 'HELPFUL',
 				['enemyAuraType'] = 'HARMFUL',
 				['height'] = 20,
-				['sort'] = 'TIME_REMAINING'
+				['sort'] = 'TIME_REMAINING',
+				["uniformThreshold"] = 0,
 			},
 			['raidicon'] = {
 				['enable'] = true,
@@ -725,7 +742,8 @@ P['unitframe'] = {
 				['friendlyAuraType'] = 'HELPFUL',
 				['enemyAuraType'] = 'HARMFUL',
 				['height'] = 20,
-				['sort'] = 'TIME_REMAINING'
+				['sort'] = 'TIME_REMAINING',
+				["uniformThreshold"] = 0,
 			},
 			['raidicon'] = {
 				['enable'] = true,
@@ -974,7 +992,8 @@ P['unitframe'] = {
 				['friendlyAuraType'] = 'HELPFUL',
 				['enemyAuraType'] = 'HARMFUL',
 				['height'] = 20,
-				['sort'] = 'TIME_REMAINING'
+				['sort'] = 'TIME_REMAINING',
+				["uniformThreshold"] = 0,
 			},
 			['raidicon'] = {
 				['enable'] = true,
@@ -1209,9 +1228,10 @@ P['unitframe'] = {
 		['boss'] = {
 			['enable'] = true,
 			['rangeCheck'] = true,
-			['growthDirection'] = 'UP',
+			['growthDirection'] = 'DOWN',
 			['width'] = 216,
 			['height'] = 46,
+			['spacing'] = 25,
 			['health'] = {
 				['text_format'] = '[healthcolor][health:current]',
 				['position'] = 'TOPRIGHT',
@@ -1303,7 +1323,8 @@ P['unitframe'] = {
 		['arena'] = {
 			['enable'] = true,
 			['rangeCheck'] = true,
-			['growthDirection'] = 'UP',
+			['growthDirection'] = 'DOWN',
+			['spacing'] = 25,		
 			['width'] = 240,
 			['height'] = 47,
 			['pvpSpecIcon'] = true,
@@ -1501,6 +1522,9 @@ P['unitframe'] = {
 				['enable'] = true,
 				['position'] = 'CENTER',
 				['size'] = 15,
+				["tank"] = true,
+				["healer"] = true,
+				["damager"] = true,
 			},
 			['raidRoleIcons'] = {
 				['enable'] = true,
@@ -1660,6 +1684,9 @@ P['unitframe'] = {
 				['enable'] = true,
 				['position'] = 'BOTTOMRIGHT',
 				['size'] = 15,
+				["tank"] = true,
+				["healer"] = true,
+				["damager"] = true,
 			},
 			['raidRoleIcons'] = {
 				['enable'] = true,
@@ -1785,6 +1812,9 @@ P['unitframe'] = {
 				['enable'] = false,
 				['position'] = 'BOTTOMRIGHT',
 				['size'] = 15,
+				["tank"] = true,
+				["healer"] = true,
+				["damager"] = true,
 			},
 			['raidRoleIcons'] = {
 				['enable'] = true,

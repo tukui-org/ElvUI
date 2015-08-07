@@ -10,11 +10,11 @@ local format = string.format
 ------------------------------------------------------------------------
 
 local function UnitName(unit)
-	local name = _G.UnitName(unit);
+	local name, realm = _G.UnitName(unit);
 	if name == UNKNOWN and E.myclass == "MONK" and UnitIsUnit(unit, "pet") then
 		name = UNITNAME_SUMMON_TITLE17:format(_G.UnitName("player"))
 	else
-		return name
+		return name, realm
 	end
 end
 
@@ -451,6 +451,24 @@ ElvUF.Tags.Events['name:long'] = 'UNIT_NAME_UPDATE'
 ElvUF.Tags.Methods['name:long'] = function(unit)
 	local name = UnitName(unit)
 	return name ~= nil and E:ShortenString(name, 20) or ''
+end
+
+ElvUF.Tags.Events['realm'] = 'UNIT_NAME_UPDATE'
+ElvUF.Tags.Methods['realm'] = function(unit)
+	local _, realm = UnitName(unit)
+	return realm or ""
+end
+
+ElvUF.Tags.Events['realm:trailingdash'] = 'UNIT_NAME_UPDATE'
+ElvUF.Tags.Methods['realm:trailingdash'] = function(unit)
+	local _, realm = UnitName(unit)
+	local realmString
+	if realm then
+		realmString = format("-%s", realm)
+	else
+		realmString = ""
+	end
+	return realmString
 end
 
 ElvUF.Tags.Events['threat:percent'] = 'UNIT_THREAT_LIST_UPDATE GROUP_ROSTER_UPDATE'

@@ -10,7 +10,7 @@ function UF:Construct_TargetFrame(frame)
 	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
 	frame.Health.frequentUpdates = true;
 
-	frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT', false)
+	frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT')
 	frame.Power.frequentUpdates = true;
 
 	frame.Name = self:Construct_NameText(frame)
@@ -641,6 +641,7 @@ function UF:Update_TargetFrame(frame, db)
 			auraBars:Show()
 			auraBars.friendlyAuraType = db.aurabar.friendlyAuraType
 			auraBars.enemyAuraType = db.aurabar.enemyAuraType
+			auraBars.scaleTime = db.aurabar.uniformThreshold
 
 			local buffColor = UF.db.colors.auraBarBuff
 			local debuffColor = UF.db.colors.auraBarDebuff

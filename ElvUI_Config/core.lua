@@ -1,6 +1,7 @@
 ﻿local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 local tsort, tinsert = table.sort, table.insert
+local floor, ceil = math.floor, math.ceil
 local DEFAULT_WIDTH = 890;
 local DEFAULT_HEIGHT = 651;
 local AC = LibStub("AceConfig-3.0")
@@ -806,13 +807,13 @@ E.Options.args.general = {
 					order = 3,
 					type = "range",
 					name = L["Width"],
-					min = 5, max = 800, step = 1,
+					min = 5, max = ceil(GetScreenWidth() or 800), step = 1,
 				},
 				height = {
 					order = 4,
 					type = "range",
 					name = L["Height"],
-					min = 5, max = 800, step = 1,
+					min = 5, max = ceil(GetScreenHeight() or 800), step = 1,
 				},
 				orientation = {
 					order = 5,
@@ -871,13 +872,13 @@ E.Options.args.general = {
 					order = 3,
 					type = "range",
 					name = L["Width"],
-					min = 5, max = 800, step = 1,
+					min = 5, max = ceil(GetScreenWidth() or 800), step = 1,
 				},
 				height = {
 					order = 4,
 					type = "range",
 					name = L["Height"],
-					min = 5, max = 800, step = 1,
+					min = 5, max = ceil(GetScreenHeight() or 800), step = 1,
 				},
 				orientation = {
 					order = 5,

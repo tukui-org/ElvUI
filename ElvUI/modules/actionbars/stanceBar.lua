@@ -14,6 +14,7 @@ function AB:UPDATE_SHAPESHIFT_COOLDOWN()
 			cooldown = _G["ElvUI_StanceBarButton"..i.."Cooldown"];
 			start, duration, enable = GetShapeshiftFormCooldown(i);
 			CooldownFrame_SetTimer(cooldown, start, duration, enable);
+			cooldown:SetDrawBling(cooldown:GetEffectiveAlpha() > 0.5) --Cooldown Bling Fix
 		end
 	end
 

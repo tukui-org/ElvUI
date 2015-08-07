@@ -469,7 +469,44 @@ function CH:UpdateAnchors()
 	CH:PositionChat(true)
 end
 
-function CH:PositionChat(override)
+function CH:UpdateChatTabs()
+	local fadeUndockedTabs = E.db["chat"].fadeUndockedTabs
+	local fadeTabsNoBackdrop = E.db["chat"].fadeTabsNoBackdrop
+
+	for i = 1, CreatedFrames do
+		local chat = _G[format("ChatFrame%d", i)]
+		local tab = _G[format("ChatFrame%sTab", i)]
+		local id = chat:GetID()
+		local point = GetChatWindowSavedPosition(id)
+		local isDocked = chat.isDocked
+		if id > NUM_CHAT_WINDOWS then
+			point = point or select(1, chat:GetPoint());
+			if select(2, tab:GetPoint()):GetName() ~= chatbg then
+				isDocked = true
+			else
+				isDocked = false
+			end
+		end
+		
+		if chat:IsShown() and not (id > NUM_CHAT_WINDOWS) and id == self.RightChatWindowID then
+			if E.db.chat.panelBackdrop == 'HIDEBOTH' or E.db.chat.panelBackdrop == 'LEFT' then
+				CH:SetupChatTabs(tab, fadeTabsNoBackdrop and true or false)
+			else
+				CH:SetupChatTabs(tab, false)
+			end
+		elseif not isDocked and chat:IsShown() then
+			CH:SetupChatTabs(tab, fadeUndockedTabs and true or false)
+		else
+			if E.db.chat.panelBackdrop == 'HIDEBOTH' or E.db.chat.panelBackdrop == 'RIGHT' then
+				CH:SetupChatTabs(tab, fadeTabsNoBackdrop and true or false)
+			else
+				CH:SetupChatTabs(tab, false)
+			end
+		end
+	end
+end
+
+function CH:PositionChat(override, noSave)
 	if ((InCombatLockdown() and not override and self.initialMove) or (IsMouseButtonDown("LeftButton") and not override)) then return end
 	if not RightChatPanel or not LeftChatPanel then return; end
 	RightChatPanel:SetSize(E.db.chat.separateSizes and E.db.chat.panelWidthRight or E.db.chat.panelWidth, E.db.chat.separateSizes and E.db.chat.panelHeightRight or E.db.chat.panelHeight)
@@ -484,9 +521,8 @@ function CH:PositionChat(override)
 	for _, frameName in pairs(CHAT_FRAMES) do
 		chat = _G[frameName]
 		id = chat:GetID()
-		point = GetChatWindowSavedPosition(id)
 
-		if point == "BOTTOMRIGHT" and chat:IsShown() then
+		if E:FramesOverlap(chat, RightChatPanel) then
 			chatFound = true
 			break
 		end
@@ -514,14 +550,14 @@ function CH:PositionChat(override)
 		tab.owner = chat
 		if id > NUM_CHAT_WINDOWS then
 			point = point or select(1, chat:GetPoint());
-			if select(2, tab:GetPoint()):GetName() ~= bg then
+			if select(2, tab:GetPoint()):GetName() ~= chatbg then
 				isDocked = true
 			else
 				isDocked = false
 			end
 		end
 
-		if point == "BOTTOMRIGHT" and chat:IsShown() and not (id > NUM_CHAT_WINDOWS) and id == self.RightChatWindowID then
+		if chat:IsShown() and not (id > NUM_CHAT_WINDOWS) and id == self.RightChatWindowID then
 			chat:ClearAllPoints()
 			if E.db.datatexts.rightChatPanel then
 				chat:SetPoint("BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 1, 3)
@@ -535,7 +571,8 @@ function CH:PositionChat(override)
 				chat:SetSize(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - BASE_OFFSET) - CombatLogQuickButtonFrame_Custom:GetHeight())
 			end
 
-			FCF_SavePositionAndDimensions(chat)
+			--Don't run when triggered by FCF_SavePositionAndDimensions, otherwise we get infinite loop
+			if not noSave then FCF_SavePositionAndDimensions(chat) end
 
 			tab:SetParent(RightChatPanel)
 			chat:SetParent(RightChatPanel)
@@ -562,7 +599,9 @@ function CH:PositionChat(override)
 					chat:SetPoint("BOTTOMLEFT", LeftChatToggleButton, "BOTTOMLEFT", 1, 1)
 				end
 				chat:SetSize(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - BASE_OFFSET))
-				FCF_SavePositionAndDimensions(chat)
+				
+				--Don't run when triggered by FCF_SavePositionAndDimensions, otherwise we get infinite loop
+				if not noSave then FCF_SavePositionAndDimensions(chat) end
 			end
 			chat:SetParent(LeftChatPanel)
 			if i > 2 then
@@ -605,7 +644,9 @@ end
 function CH:FindURL(event, msg, ...)
 	if (event == "CHAT_MSG_WHISPER" or event == "CHAT_MSG_BN_WHISPER") and CH.db.whisperSound ~= 'None' and not CH.SoundPlayed then
 		if (msg:sub(1,3) == "OQ,") then return false, msg, ... end
-		PlaySoundFile(LSM:Fetch("sound", CH.db.whisperSound), "Master")
+		if (CH.db.noAlertInCombat and not InCombatLockdown()) or not CH.db.noAlertInCombat then
+			PlaySoundFile(LSM:Fetch("sound", CH.db.whisperSound), "Master")
+		end
 		CH.SoundPlayed = true
 		CH.SoundTimer = CH:ScheduleTimer('ThrottleSound', 1)
 	end
@@ -792,7 +833,7 @@ function GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, a
 		local _, localizedClass, englishClass, localizedRace, englishRace, sex = pcall(GetPlayerInfoByGUID, arg12)
 		
 		if ( englishClass ) then
-			local classColorTable = RAID_CLASS_COLORS[englishClass];
+			local classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[englishClass] or RAID_CLASS_COLORS[englishClass];
 			if ( not classColorTable ) then
 				return arg2;
 			end
@@ -951,13 +992,21 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 
 			self:AddMessage(format(CH:ConcatenateTimeStamp(arg1), "|Hplayer:"..arg2.."|h".."["..coloredName.."]".."|h"), info.r, info.g, info.b, info.id);
 		elseif ( strsub(type,1,18) == "GUILD_ACHIEVEMENT" ) then
-			self:AddMessage(format(CH:ConcatenateTimeStamp(arg1), "|Hplayer:"..arg2.."|h".."["..coloredName.."]".."|h"), info.r, info.g, info.b, info.id);
+			-- self:AddMessage(format(CH:ConcatenateTimeStamp(arg1), "|Hplayer:"..arg2.."|h".."["..coloredName.."]".."|h"), info.r, info.g, info.b, info.id);
+			local message = format(arg1, "|Hplayer:"..arg2.."|h".."["..coloredName.."]".."|h");
+			if (C_Social.IsSocialEnabled()) then
+				local achieveID = GetAchievementInfoFromHyperlink(arg1);
+				if (achieveID) then
+					message = message .. " " .. Social_GetShareAchievementLink(achieveID, true);
+				end
+			end
+			self:AddMessage(CH:ConcatenateTimeStamp(message), info.r, info.g, info.b, info.id);
 		elseif ( type == "IGNORED" ) then
 			self:AddMessage(format(CH:ConcatenateTimeStamp(CHAT_IGNORED), arg2), info.r, info.g, info.b, info.id);
 		elseif ( type == "FILTERED" ) then
 			self:AddMessage(format(CH:ConcatenateTimeStamp(CHAT_FILTERED), arg2), info.r, info.g, info.b, info.id);
 		elseif ( type == "RESTRICTED" ) then
-			self:AddMessage(CH:ConcatenateTimeStamp(GameLimitedMode_GetString("CHAT_RESTRICTED")), info.r, info.g, info.b, info.id);
+			self:AddMessage(CH:ConcatenateTimeStamp(CHAT_RESTRICTED_TRIAL), info.r, info.g, info.b, info.id);
 		elseif ( type == "CHANNEL_LIST") then
 			if(channelLength > 0) then
 				self:AddMessage(format(CH:ConcatenateTimeStamp(_G["CHAT_"..type.."_GET"]..arg1), tonumber(arg8), arg4), info.r, info.g, info.b, info.id);
@@ -986,7 +1035,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 		elseif (type == "CHANNEL_NOTICE") then
 			local globalstring = _G["CHAT_"..arg1.."_NOTICE_BN"];
 			if( arg1 == "TRIAL_RESTRICTED" ) then
-				globalstring = GameLimitedMode_GetString("CHAT_TRIAL_RESTRICTED_NOTICE");
+				globalstring = CHAT_TRIAL_RESTRICTED_NOTICE_TRIAL;
 			else
 				if ( not globalstring ) then
 					globalstring = _G["CHAT_"..arg1.."_NOTICE"];
@@ -1041,6 +1090,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 		elseif ( type == "BN_INLINE_TOAST_BROADCAST" ) then
 			if ( arg1 ~= "" ) then
 				arg1 = RemoveExtraSpaces(arg1);
+				arg1 = RemoveNewlines(arg1);
 				local playerLink = format("|HBNplayer:%s:%s:%s:%s:%s|h[%s]|h", arg2, arg13, arg11, Chat_GetChatCategory(type), 0, arg2);
 				self:AddMessage(format(CH:ConcatenateTimeStamp(BN_INLINE_TOAST_BROADCAST), playerLink, arg1), info.r, info.g, info.b, info.id);
 			end
@@ -1216,6 +1266,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			end
 			self.tellTimer = GetTime() + CHAT_TELL_ALERT_TIME;
 			--FCF_FlashTab(self);
+			-- FlashClientIcon();
 		end
 
 		if ( not self:IsShown() ) then
@@ -1307,7 +1358,7 @@ function CH:SetupChat(event, ...)
 	end
 
 	GeneralDockManager:SetParent(LeftChatPanel)
-	self:ScheduleRepeatingTimer('PositionChat', 1)
+	-- self:ScheduleRepeatingTimer('PositionChat', 1)
 	self:PositionChat(true)
 
 	if not self.HookSecured then
@@ -1397,7 +1448,9 @@ function CH:CheckKeyword(message)
 		for keyword, _ in pairs(CH.Keywords) do
 			if itemLink == keyword then
 				if self.db.keywordSound ~= 'None' and not self.SoundPlayed  then
-					PlaySoundFile(LSM:Fetch("sound", self.db.keywordSound), "Master")
+					if (self.db.noAlertInCombat and not InCombatLockdown()) or not self.db.noAlertInCombat then
+						PlaySoundFile(LSM:Fetch("sound", self.db.keywordSound), "Master")
+					end
 					self.SoundPlayed = true
 					self.SoundTimer = CH:ScheduleTimer('ThrottleSound', 1)
 				end
@@ -1415,7 +1468,9 @@ function CH:CheckKeyword(message)
 				local tempWord = word:gsub("%p", "")
 				word = word:gsub(tempWord, E.media.hexvaluecolor..tempWord..'|r')
 				if self.db.keywordSound ~= 'None' and not self.SoundPlayed  then
-					PlaySoundFile(LSM:Fetch("sound", self.db.keywordSound), "Master")
+					if (self.db.noAlertInCombat and not InCombatLockdown()) or not self.db.noAlertInCombat then
+						PlaySoundFile(LSM:Fetch("sound", self.db.keywordSound), "Master")
+					end
 					self.SoundPlayed = true
 					self.SoundTimer = CH:ScheduleTimer('ThrottleSound', 1)
 				end
@@ -1666,6 +1721,14 @@ function CH:CheckLFGRoles()
 	end
 end
 
+function CH:ON_FCF_SavePositionAndDimensions()
+	CH:PositionChat(nil, true) --2nd argument is to prevent infinite loop
+
+	if not E.db.chat.lockPositions then
+		CH:UpdateChatTabs() --It was not done in PositionChat, so do it now
+	end
+end
+
 function CH:Initialize()
 	if ElvCharacterDB.ChatHistory then
 		ElvCharacterDB.ChatHistory = nil --Depreciated
@@ -1710,6 +1773,7 @@ function CH:Initialize()
     end
 
 	self:SecureHook('FCF_SetChatWindowFontSize', 'SetChatFont')
+	self:SecureHook("FCF_SavePositionAndDimensions", "ON_FCF_SavePositionAndDimensions")
 	self:RegisterEvent('PLAYER_ENTERING_WORLD', 'DelayGMOTD')
 	self:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
 	self:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')

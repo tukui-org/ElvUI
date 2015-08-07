@@ -19,7 +19,7 @@ end
 
 function M:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, _, sourceGUID, _, _, _, _, destName, _, _, _, _, _, spellID, spellName)
 	if E.db.general.interruptAnnounce == "NONE" then return end -- No Announcement configured, exit.
-	if not (event == "SPELL_INTERRUPT" and sourceGUID == UnitGUID('player')) then return end -- No annoucable interrupt from player, exit.
+	if not (event == "SPELL_INTERRUPT" and (sourceGUID == UnitGUID('player') or sourceGUID == UnitGUID('pet'))) then return end -- No announce-able interrupt from player or pet, exit.
 
 	local inGroup, inRaid, inPartyLFG = IsInGroup(), IsInRaid(), IsPartyLFG()
 	if not inGroup then return end -- not in group, exit.
@@ -58,12 +58,10 @@ function M:MERCHANT_SHOW()
 	if cost > 0 then
 		if possible then
 			RepairAllItems(autoRepair == 'GUILD')
-			local c, s, g = cost%100, floor((cost%10000)/100), floor(cost/10000)
-
 			if autoRepair == 'GUILD' then
-				E:Print(L["Your items have been repaired using guild bank funds for: "]..GetCoinTextureString(cost, 12))
+				E:Print(L["Your items have been repaired using guild bank funds for: "]..E:FormatMoney(cost, "SMART", true)) --Amount, style, textOnly
 			else
-				E:Print(L["Your items have been repaired for: "]..GetCoinTextureString(cost, 12))
+				E:Print(L["Your items have been repaired for: "]..E:FormatMoney(cost, "SMART", true)) --Amount, style, textOnly
 			end
 		else
 			E:Print(L["You don't have enough money to repair."])
@@ -164,7 +162,6 @@ end
 function M:Initialize()
 	self:LoadRaidMarker()
 	self:LoadExpRepBar()
-	self:LoadMirrorBars()
 	self:LoadLootRoll()
 	self:LoadChatBubbles()
 	self:LoadLoot()

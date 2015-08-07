@@ -41,7 +41,7 @@ function UF:Construct_ArenaFrames(frame)
 	frame.Name = self:Construct_NameText(frame)
 
 	if(not frame.isChild) then
-		frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT', false)
+		frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT')
 
 		frame.Buffs = self:Construct_Buffs(frame)
 
@@ -507,20 +507,33 @@ function UF:Update_ArenaFrames(frame, db)
 	frame:ClearAllPoints()
 	if INDEX == 1 then
 		if db.growthDirection == 'UP' then
-			frame:Point('BOTTOMRIGHT', ArenaHeaderMover, 'BOTTOMRIGHT') --Set to default position
-		else
-			frame:Point('TOPRIGHT', ArenaHeaderMover, 'TOPRIGHT') --Set to default position
+			frame:SetPoint('BOTTOMRIGHT', ArenaHeaderMover, 'BOTTOMRIGHT')
+		elseif db.growthDirection == 'RIGHT' then
+			frame:SetPoint('LEFT', ArenaHeaderMover, 'LEFT')
+		elseif db.growthDirection == 'LEFT' then
+			frame:SetPoint('RIGHT', ArenaHeaderMover, 'RIGHT')
+		else --Down
+			frame:SetPoint('TOPRIGHT', ArenaHeaderMover, 'TOPRIGHT')
 		end
 	else
 		if db.growthDirection == 'UP' then
-			frame:Point('BOTTOMRIGHT', _G['ElvUF_Arena'..INDEX-1], 'TOPRIGHT', 0, 12 + db.castbar.height)
-		else
-			frame:Point('TOPRIGHT', _G['ElvUF_Arena'..INDEX-1], 'BOTTOMRIGHT', 0, -(12 + db.castbar.height))
+			frame:SetPoint('BOTTOMRIGHT', _G['ElvUF_Arena'..INDEX-1], 'TOPRIGHT', 0, db.spacing)
+		elseif db.growthDirection == 'RIGHT' then
+			frame:SetPoint('LEFT', _G['ElvUF_Arena'..INDEX-1], 'RIGHT', db.spacing, 0)
+		elseif db.growthDirection == 'LEFT' then
+			frame:SetPoint('RIGHT', _G['ElvUF_Arena'..INDEX-1], 'LEFT', -db.spacing, 0)
+		else --Down
+			frame:SetPoint('TOPRIGHT', _G['ElvUF_Arena'..INDEX-1], 'BOTTOMRIGHT', 0, -db.spacing)
 		end
 	end
-
-	ArenaHeader:Width(UNIT_WIDTH)
-	ArenaHeader:Height(UNIT_HEIGHT + (UNIT_HEIGHT + 12 + db.castbar.height) * 4)
+	
+	if db.growthDirection == 'UP' or db.growthDirection == 'DOWN' then
+		ArenaHeader:SetWidth(UNIT_WIDTH)
+		ArenaHeader:SetHeight(UNIT_HEIGHT + ((UNIT_HEIGHT + db.spacing) * 4))
+	elseif db.growthDirection == 'LEFT' or db.growthDirection == 'RIGHT' then
+		ArenaHeader:SetWidth(UNIT_WIDTH + ((UNIT_WIDTH + db.spacing) * 4))
+		ArenaHeader:SetHeight(UNIT_HEIGHT)
+	end
 
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg, true)
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)

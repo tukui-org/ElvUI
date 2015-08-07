@@ -80,8 +80,67 @@ E.Options.args.tooltip = {
 					type = 'toggle',
 					name = L["Custom Faction Colors"],
 				},
-				factionColors = {
+				fontGroup = {
 					order = 9,
+					type = "group",
+					guiInline = true,
+					name = L["Tooltip Font Settings"],
+					args = {
+						font = {
+							order = 1,
+							type = "select", dialogControl = 'LSM30_Font',
+							name = L["Font"],
+							values = AceGUIWidgetLSMlists.font,
+							get = function(info) return E.db.tooltip.font end,
+							set = function(info, value) E.db.tooltip.font = value; TT:SetTooltipFonts() end,
+						},
+						fontOutline = {
+							order = 2,
+							name = L["Font Outline"],
+							type = "select",
+							values = {
+								['NONE'] = L["None"],
+								['OUTLINE'] = 'OUTLINE',
+								['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
+								['THICKOUTLINE'] = 'THICKOUTLINE',
+							},
+							get = function(info) return E.db.tooltip.fontOutline end,
+							set = function(info, value) E.db.tooltip.fontOutline = value; TT:SetTooltipFonts() end,
+						},
+						spacer = {
+							order = 3,
+							type = "description",
+							name = "",
+						},
+						headerFontSize = {
+							order = 4,
+							type = "range",
+							name = L["Header Font Size"],
+							min = 4, max = 50, step = 1,
+							get = function(info) return E.db.tooltip.headerFontSize end,
+							set = function(info, value) E.db.tooltip.headerFontSize = value; TT:SetTooltipFonts() end,
+						},
+						textFontSize = {
+							order = 5,
+							type = "range",
+							name = L["Text Font Size"],
+							min = 4, max = 30, step = 1,
+							get = function(info) return E.db.tooltip.textFontSize end,
+							set = function(info, value) E.db.tooltip.textFontSize = value; TT:SetTooltipFonts() end,
+						},
+						smallTextFontSize = {
+							order = 6,
+							type = "range",
+							name = L["Comparison Font Size"],
+							desc = L["This setting controls the size of text in item comparison tooltips."],
+							min = 4, max = 30, step = 1,
+							get = function(info) return E.db.tooltip.smallTextFontSize end,
+							set = function(info, value) E.db.tooltip.smallTextFontSize = value; TT:SetTooltipFonts() end,
+						},
+					},
+				},
+				factionColors = {
+					order = 10,
 					type = "group",
 					name = L["Custom Faction Colors"],
 					guiInline = true,
@@ -106,10 +165,36 @@ E.Options.args.tooltip = {
 			get = function(info) return E.db.tooltip.visibility[ info[#info] ] end,
 			set = function(info, value) E.db.tooltip.visibility[ info[#info] ] = value; end,
 			args = {
-				unitFrames = {
+				actionbars = {
 					order = 1,
 					type = 'select',
-					name = L["Unitframes"],
+					name = L["ActionBars"],
+					desc = L["Choose when you want the tooltip to show. If a modifer is chosen, then you need to hold that down to show the tooltip."],
+					values = {
+						['ALL'] = L["Always Hide"],
+						['NONE'] = L["Never Hide"],
+						['SHIFT'] = SHIFT_KEY,
+						['ALT'] = ALT_KEY,
+						['CTRL'] = CTRL_KEY
+					},
+				},
+				bags = {
+					order = 2,
+					type = 'select',
+					name = L["Bags/Bank"],
+					desc = L["Choose when you want the tooltip to show. If a modifer is chosen, then you need to hold that down to show the tooltip."],
+					values = {
+						['ALL'] = L["Always Hide"],
+						['NONE'] = L["Never Hide"],
+						['SHIFT'] = SHIFT_KEY,
+						['ALT'] = ALT_KEY,
+						['CTRL'] = CTRL_KEY
+					},
+				},
+				unitFrames = {
+					order = 3,
+					type = 'select',
+					name = L["UnitFrames"],
 					desc = L["Don't display the tooltip when mousing over a unitframe."],
 					values = {
 						['ALL'] = L["Always Hide"],
@@ -120,7 +205,7 @@ E.Options.args.tooltip = {
 					},
 				},
 				combat = {
-					order = 2,
+					order = 4,
 					type = 'toggle',
 					name = COMBAT,
 					desc = L["Hide tooltip while in combat."],

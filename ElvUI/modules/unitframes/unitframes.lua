@@ -866,7 +866,7 @@ function UF:CreateAndUpdateUF(unit)
 		self[unit]:Disable()
 	end
 
-	if self[unit]:GetParent() ~= ElvUF_Parent and unit ~= "pet" then
+	if self[unit]:GetParent() ~= ElvUF_Parent then
 		self[unit]:SetParent(ElvUF_Parent)
 	end
 end

@@ -11,6 +11,7 @@ local gsub = string.gsub
 local tolower = string.lower
 local targetIndicator
 local _G = _G
+local targetAlpha = 1
 
 --Pattern to remove cross realm label added to the end of plate names
 --Taken from http://www.wowace.com/addons/libnameplateregistry-1-0/
@@ -360,6 +361,7 @@ local color, scale
 function NP:ColorizeAndScale(myPlate)
 	local unitType = NP:GetReaction(self)
 	local scale = 1
+	local canAttack = false
 
 	self.unitType = unitType
 	if RAID_CLASS_COLORS[unitType] then
@@ -369,6 +371,7 @@ function NP:ColorizeAndScale(myPlate)
 	elseif unitType == "HOSTILE_NPC" or unitType == "NEUTRAL_NPC" then
 		local classRole = E.role
 		local threatReaction = NP:GetThreatReaction(self)
+		canAttack = true
 		if(not NP.db.threat.enable) then
 			if unitType == "NEUTRAL_NPC" then
 				color = NP.db.reactions.neutral
@@ -420,11 +423,8 @@ function NP:ColorizeAndScale(myPlate)
 		color = NP.db.reactions.enemy
 	end
 
-	if (NP.db.healthBar.lowHPScale.enable and
-		NP.db.healthBar.lowHPScale.changeColor and
-		myPlate.lowHealth:IsShown() and
-		(color == NP.db.reactions.enemy or color == NP.db.reactions.neutral)) then
-	   		color = NP.db.healthBar.lowHPScale.color
+	if (NP.db.healthBar.lowHPScale.enable and NP.db.healthBar.lowHPScale.changeColor and myPlate.lowHealth:IsShown() and canAttack) then
+		color = NP.db.healthBar.lowHPScale.color
 	end
 
 	if(not self.customColor) then
@@ -462,7 +462,7 @@ function NP:SetAlpha(myPlate)
 	if self:GetAlpha() < 1 then
 		myPlate:SetAlpha(NP.db.nonTargetAlpha)
 	else
-		myPlate:SetAlpha(1)
+		myPlate:SetAlpha(targetAlpha)
 	end
 end
 
@@ -530,9 +530,11 @@ function NP:PLAYER_TARGET_CHANGED()
 		self.targetName = UnitName("target")
 		WorldFrame.elapsed = 0.1
 		NP.NumTargetChecks = 0
+		targetAlpha = E.db.nameplate.targetAlpha
 	else
 		targetIndicator:Hide()
 		self.targetName = nil
+		targetAlpha = 1
 	end
 end
 
