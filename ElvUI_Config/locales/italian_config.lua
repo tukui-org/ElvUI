@@ -442,6 +442,7 @@ L["Cast Bar"] = true;
 L["Castbar Height"] = true;
 L["Change color on low health"] = true;
 L["Color By Healthbar"]  = true;
+L["Color By Raid Icon"] = true;
 L["Color Name By Health Value"] = true;
 L["Color on low health"] = true;
 L["Color the border of the nameplate yellow when it reaches this point, it will be colored red when it reaches half this value."] = true;

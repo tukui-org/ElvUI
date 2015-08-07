@@ -453,6 +453,7 @@ L["Cast Bar"] = true;
 L["Castbar Height"] = "Altura da Barra de Lançamento"
 L["Change color on low health"] = true;
 L["Color By Healthbar"]  = true;
+L["Color By Raid Icon"] = true;
 L["Color Name By Health Value"] = true;
 L["Color on low health"] = true;
 L["Color the border of the nameplate yellow when it reaches this point, it will be colored red when it reaches half this value."] = "Muda a cor da borda da placa de identificação para amarelo quando atingir este ponto, muda para vermelho quando atingir metade deste valor."

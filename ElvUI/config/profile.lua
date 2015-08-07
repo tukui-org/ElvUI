@@ -173,6 +173,7 @@ P["nameplate"] = {
 		['lowThreshold'] =  0.40,
 		['width'] = 108,
 		['height'] = 9,
+		["colorByRaidIcon"] = false,
 		['lowHPScale'] = {
 			['enable'] = false,
 			['width'] = 108,

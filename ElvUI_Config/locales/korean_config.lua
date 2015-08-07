@@ -503,6 +503,7 @@ L["Cast Bar"] = "시전바"
 L["Castbar Height"] = "시전바 세로길이"
 L["Change color on low health"] = "생명력이 낮으면 색 변경"
 L["Color By Healthbar"]  = "생명력바 색상을 사용"
+L["Color By Raid Icon"] = true;
 L["Color Name By Health Value"] = "이름을 생명력바 색과 같게"
 L["Color on low health"] = "변경할 색상"
 L["Color the border of the nameplate yellow when it reaches this point, it will be colored red when it reaches half this value."] = "이름표 유닛의 생명력이 이 값보다 내려가면 노란색 강조후광이 생기고, 이 값의 절반보다 더 내려가면 후광이 빨갛게 바뀝니다."
