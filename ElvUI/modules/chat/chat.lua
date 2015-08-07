@@ -989,10 +989,8 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 					arg1 = arg1 .. " " .. Social_GetShareAchievementLink(achieveID, true);
 				end
 			end
-
 			self:AddMessage(format(CH:ConcatenateTimeStamp(arg1), "|Hplayer:"..arg2.."|h".."["..coloredName.."]".."|h"), info.r, info.g, info.b, info.id);
 		elseif ( strsub(type,1,18) == "GUILD_ACHIEVEMENT" ) then
-			-- self:AddMessage(format(CH:ConcatenateTimeStamp(arg1), "|Hplayer:"..arg2.."|h".."["..coloredName.."]".."|h"), info.r, info.g, info.b, info.id);
 			local message = format(arg1, "|Hplayer:"..arg2.."|h".."["..coloredName.."]".."|h");
 			if (C_Social.IsSocialEnabled()) then
 				local achieveID = GetAchievementInfoFromHyperlink(arg1);
@@ -1200,7 +1198,6 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			if ( type ~= "BN_WHISPER" and type ~= "BN_WHISPER_INFORM" and type ~= "BN_CONVERSATION" ) then
 				playerLink = "|Hplayer:"..arg2..":"..arg11..":"..chatGroup..(chatTarget and ":"..chatTarget or "").."|h";
 			else
-				coloredName = CH:GetBNFriendColor(arg2, arg13)
 				playerLink = "|HBNplayer:"..arg2..":"..arg13..":"..arg11..":"..chatGroup..(chatTarget and ":"..chatTarget or "").."|h";
 			end
 
@@ -1209,7 +1206,11 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				message = ChatFrame_GetMobileEmbeddedTexture(info.r, info.g, info.b)..message;
 			end
 
-			if ( (strlen(arg3) > 0) and (arg3 ~= self.defaultLanguage) ) then
+			local relevantDefaultLanguage = self.defaultLanguage;
+			if ( (type == "SAY") or (type == "YELL") ) then
+				relevantDefaultLanguage = self.alternativeDefaultLanguage;
+			end
+			if ( (strlen(arg3) > 0) and (arg3 ~= relevantDefaultLanguage) ) then
 				local languageHeader = "["..arg3.."] ";
 				if ( showLink and (strlen(arg2) > 0) ) then
 					body = format(_G["CHAT_"..type.."_GET"]..languageHeader..message, pflag..playerLink.."["..coloredName.."]".."|h");
