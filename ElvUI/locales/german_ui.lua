@@ -232,7 +232,7 @@ L["You don't have permission to mark targets."] = "Du hast keine Rechte um ein Z
 
 --Movers
 L["Alternative Power"] = "Alternative Energie"
-L["Archeology Progress Bar"] = "Archeologie Fortschrittsbar"
+L["Archeology Progress Bar"] = "Archeologie Fortschrittsleiste"
 L["Arena Frames"] = "Arena Fenster" --Also used in UnitFrames
 L["Bags"] = "Taschen" --Also in DataTexts
 L["Bar "] = "Leiste " --Also in ActionBars
