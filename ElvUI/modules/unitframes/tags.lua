@@ -459,8 +459,8 @@ ElvUF.Tags.Methods['realm'] = function(unit)
 	return realm or ""
 end
 
-ElvUF.Tags.Events['realm:trailingdash'] = 'UNIT_NAME_UPDATE'
-ElvUF.Tags.Methods['realm:trailingdash'] = function(unit)
+ElvUF.Tags.Events['realm:dash'] = 'UNIT_NAME_UPDATE'
+ElvUF.Tags.Methods['realm:dash'] = function(unit)
 	local _, realm = UnitName(unit)
 	local realmString
 	if realm then
