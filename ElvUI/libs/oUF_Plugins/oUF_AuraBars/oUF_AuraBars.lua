@@ -167,7 +167,11 @@ local function UpdateBars(auraBars)
 			bar:SetValue(timeleft)
 			bar.spelltime:SetText(FormatTime(timeleft))
 			if auraBars.spark == true then
-				bar.spark:Show()
+				if auraBars.scaleTime and auraBars.scaleTime > 0 and timeleft < auraBars.scaleTime then
+					bar.spark:Show()
+				else
+					bar.spark:Hide()
+				end
 			end
 		end
 	end
