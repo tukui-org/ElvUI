@@ -2333,6 +2333,32 @@ E.Options.args.unitframe.args.target = {
 			name = L["Threat Display Mode"],
 			values = threatValues,
 		},
+		smartAuraPosition = {
+			order = 13,
+			type = "select",
+			name = "Smart Aura Position",
+			desc = "If enabled, will show Buffs in the Debuffs position when there are no Debuffs active, or vice versa.",
+			values = {
+				["DISABLED"] = "Disabled",
+				["BUFFS_ON_DEBUFFS"] = "Position Buffs on Debuffs",
+				["DEBUFFS_ON_BUFFS"] = "Position Debuffs on Buffs",
+			},
+			set = function(info, value)
+				E.db.unitframe.units['target'][ info[#info] ] = value;
+				-- UF:UpdateSmartAuras("target", value)
+				if value == "BUFFS_ON_DEBUFFS" then
+					ElvUF_Target.Buffs.PostUpdate = nil
+					ElvUF_Target.Debuffs.PostUpdate = UF.UpdateBuffsHeaderPosition
+				elseif value == "DEBUFFS_ON_BUFFS" then
+					ElvUF_Target.Buffs.PostUpdate = UF.UpdateDebuffsHeaderPosition
+					ElvUF_Target.Debuffs.PostUpdate = nil
+				else
+					ElvUF_Target.Buffs.PostUpdate = nil
+					ElvUF_Target.Debuffs.PostUpdate = nil
+				end
+				UF:CreateAndUpdateUF('target')
+			end,
+		},
 		combobar = {
 			order = 800,
 			type = 'group',
