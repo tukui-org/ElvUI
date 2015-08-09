@@ -373,13 +373,9 @@ function UF:UpdateBuffsHeaderPosition()
 	if numDebuffs == 0 then
 		buffs:ClearAllPoints()
 		buffs:SetPoint(debuffs.point, debuffs.attachTo, debuffs.anchorPoint, debuffs.xOffset, debuffs.yOffset)
-		buffs["growth-y"] = debuffs["growth-y"]
-		buffs["growth-x"] = debuffs["growth-x"]
 	else
 		buffs:ClearAllPoints()
 		buffs:SetPoint(buffs.point, buffs.attachTo, buffs.anchorPoint, buffs.xOffset, buffs.yOffset)
-		buffs["growth-y"] = buffs.origGrowthY
-		buffs["growth-x"] = buffs.origGrowthX
 	end
 end
 
