@@ -21,6 +21,21 @@ function UF:Construct_PetTargetFrame(frame)
 	E:CreateMover(frame, frame:GetName()..'Mover', L["PetTarget Frame"], nil, -7, nil, 'ALL,SOLO')
 end
 
+function UF:Update_PetTargetAuraPosition(frame, db)
+	local position = db.smartAuraPosition
+
+	if position == "BUFFS_ON_DEBUFFS" then
+		frame.Buffs.PostUpdate = nil
+		frame.Debuffs.PostUpdate = UF.UpdateBuffsHeaderPosition
+	elseif position == "DEBUFFS_ON_BUFFS" then
+		frame.Buffs.PostUpdate = UF.UpdateDebuffsHeaderPosition
+		frame.Debuffs.PostUpdate = nil
+	else
+		frame.Buffs.PostUpdate = nil
+		frame.Debuffs.PostUpdate = nil
+	end
+end
+
 function UF:Update_PetTargetFrame(frame, db)
 	frame.db = db
 	local BORDER = E.Border;
@@ -239,6 +254,12 @@ function UF:Update_PetTargetFrame(frame, db)
 		buffs["growth-x"] = db.buffs.anchorPoint == 'LEFT' and 'LEFT' or  db.buffs.anchorPoint == 'RIGHT' and 'RIGHT' or (db.buffs.anchorPoint:find('LEFT') and 'RIGHT' or 'LEFT')
 		buffs.initialAnchor = E.InversePoints[db.buffs.anchorPoint]
 
+		buffs.attachTo = attachTo
+		buffs.point = E.InversePoints[db.buffs.anchorPoint]
+		buffs.anchorPoint = db.buffs.anchorPoint
+		buffs.xOffset = x + db.buffs.xOffset
+		buffs.yOffset = y + db.buffs.yOffset + (E.PixelMode and (db.buffs.anchorPoint:find('TOP') and -1 or 1) or 0)
+
 		if db.buffs.enable then
 			buffs:Show()
 			UF:UpdateAuraIconSettings(buffs)
@@ -274,6 +295,12 @@ function UF:Update_PetTargetFrame(frame, db)
 		debuffs["growth-y"] = db.debuffs.anchorPoint:find('TOP') and 'UP' or 'DOWN'
 		debuffs["growth-x"] = db.debuffs.anchorPoint == 'LEFT' and 'LEFT' or  db.debuffs.anchorPoint == 'RIGHT' and 'RIGHT' or (db.debuffs.anchorPoint:find('LEFT') and 'RIGHT' or 'LEFT')
 		debuffs.initialAnchor = E.InversePoints[db.debuffs.anchorPoint]
+
+		debuffs.attachTo = attachTo
+		debuffs.point = E.InversePoints[db.debuffs.anchorPoint]
+		debuffs.anchorPoint = db.debuffs.anchorPoint
+		debuffs.xOffset = x + db.debuffs.xOffset
+		debuffs.yOffset = y + db.debuffs.yOffset
 
 		if db.debuffs.enable then
 			debuffs:Show()

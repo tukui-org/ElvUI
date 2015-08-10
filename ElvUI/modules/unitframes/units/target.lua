@@ -37,6 +37,21 @@ function UF:Construct_TargetFrame(frame)
 	E:CreateMover(frame, frame:GetName()..'Mover', L["Target Frame"], nil, nil, nil, 'ALL,SOLO')
 end
 
+function UF:Update_TargetAuraPosition(frame, db)
+	local position = db.smartAuraPosition
+
+	if position == "BUFFS_ON_DEBUFFS" then
+		frame.Buffs.PostUpdate = nil
+		frame.Debuffs.PostUpdate = UF.UpdateBuffsHeaderPosition
+	elseif position == "DEBUFFS_ON_BUFFS" then
+		frame.Buffs.PostUpdate = UF.UpdateDebuffsHeaderPosition
+		frame.Debuffs.PostUpdate = nil
+	else
+		frame.Buffs.PostUpdate = nil
+		frame.Debuffs.PostUpdate = nil
+	end
+end
+
 function UF:Update_TargetFrame(frame, db)
 	frame.db = db
 
@@ -436,7 +451,7 @@ function UF:Update_TargetFrame(frame, db)
 		debuffs.point = E.InversePoints[db.debuffs.anchorPoint]
 		debuffs.anchorPoint = db.debuffs.anchorPoint
 		debuffs.xOffset = x + db.debuffs.xOffset
-		debuffs.yOffset = y + db.debuffs.yOffset + (E.PixelMode and (db.debuffs.anchorPoint:find('TOP') and -1 or 1) or 0)
+		debuffs.yOffset = y + db.debuffs.yOffset
 		
 		if db.debuffs.enable then
 			debuffs:Show()
