@@ -26,9 +26,17 @@ function UF:Update_TargetTargetAuraPosition(frame, db)
 	local position = db.smartAuraPosition
 
 	if position == "BUFFS_ON_DEBUFFS" then
+		if db.debuffs.attachTo == "BUFFS" then
+			E:Print(format(L["This setting caused a conflicting anchor point, where %s would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Buffs"], L["Debuffs"], L["Frame"]))
+			db.debuffs.attachTo = "FRAME"
+		end
 		frame.Buffs.PostUpdate = nil
 		frame.Debuffs.PostUpdate = UF.UpdateBuffsHeaderPosition
 	elseif position == "DEBUFFS_ON_BUFFS" then
+		if db.buffs.attachTo == "DEBUFFS" then
+			E:Print(format(L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Debuffs"], L["Buffs"], L["Frame"]))
+			db.buffs.attachTo = "FRAME"
+		end
 		frame.Buffs.PostUpdate = UF.UpdateDebuffsHeaderPosition
 		frame.Debuffs.PostUpdate = nil
 	else
