@@ -414,7 +414,6 @@ function UF:Update_AllFrames()
 		if self.db['units'][unit].enable then
 			self[unit]:Enable()
 			self[unit]:Update()
-			self[unit]:UpdateSmartAuras()
 		else
 			self[unit]:Disable()
 		end
@@ -424,7 +423,6 @@ function UF:Update_AllFrames()
 		if self.db['units'][group].enable then
 			self[unit]:Enable()
 			self[unit]:Update()
-			self[unit]:UpdateSmartAuras()
 		else
 			self[unit]:Disable()
 		end
@@ -454,14 +452,9 @@ function UF:CreateAndUpdateUFGroup(group, numGroup, template)
 			UF["Update_"..E:StringTitle(frameName).."Frames"](self, self[unit], self.db['units'][group])
 		end
 
-		self[unit].UpdateSmartAuras = function()
-			UF["Update_"..frameName.."AuraPosition"](self, self[unit], self.db['units'][group])
-		end
-
 		if self.db['units'][group].enable then
 			self[unit]:Enable()
 			self[unit].Update()
-			self[unit].UpdateSmartAuras()
 
 			if self[unit].isForced then
 				self:ForceShow(self[unit])
@@ -865,15 +858,10 @@ function UF:CreateAndUpdateUF(unit)
 	self[unit].Update = function()
 		UF["Update_"..frameName.."Frame"](self, self[unit], self.db['units'][unit])
 	end
-	
-	self[unit].UpdateSmartAuras = function()
-		UF["Update_"..frameName.."AuraPosition"](self, self[unit], self.db['units'][unit])
-	end
 
 	if self.db['units'][unit].enable then
 		self[unit]:Enable()
 		self[unit].Update()
-		self[unit].UpdateSmartAuras()
 	else
 		self[unit]:Disable()
 	end
