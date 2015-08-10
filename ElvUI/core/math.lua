@@ -76,8 +76,41 @@ end
 
 --From http://wow.gamepedia.com/UI_coordinates
 function E:FramesOverlap(frameA, frameB)
+	if not frameA or not frameB then
+		print("frameA:", frameA, "frameB:", frameB)
+		return
+	end
+	
 	local sA, sB = frameA:GetEffectiveScale(), frameB:GetEffectiveScale();
-	return ((frameA:GetLeft()*sA) < (frameB:GetRight()*sB)) and ((frameB:GetLeft()*sB) < (frameA:GetRight()*sA)) and ((frameA:GetBottom()*sA) < (frameB:GetTop()*sB)) and ((frameB:GetBottom()*sB) < (frameA:GetTop()*sA));
+	if not sA or not sB then
+		print("sA:", sA, "sB:", sB)
+		return
+	end
+	
+	local frameALeft = frameA:GetLeft()
+	local frameARight = frameA:GetRight()
+	local frameABottom = frameA:GetBottom()
+	local frameATop = frameA:GetTop()
+	
+	local frameBLeft = frameB:GetLeft()
+	local frameBRight = frameB:GetRight()
+	local frameBBottom = frameB:GetBottom()
+	local frameBTop = frameB:GetTop()
+	
+	if not frameALeft or not frameARight or not frameABottom or not frameATop then
+		print("aLeft:", frameALeft, "aRight:", frameARight, "aBottom:", frameABottom, "aTop:", frameATop)
+		return
+	end
+	
+	if not frameBLeft or not frameBRight or not frameBBottom or not frameBTop then
+		print("bLeft:", frameBLeft, "bRight:", frameBRight, "bBottom:", frameBBottom, "bTop:", frameBTop)
+		return
+	end
+	
+	return ((frameA:GetLeft()*sA) < (frameB:GetRight()*sB))
+		and ((frameB:GetLeft()*sB) < (frameA:GetRight()*sA))
+		and ((frameA:GetBottom()*sA) < (frameB:GetTop()*sB))
+		and ((frameB:GetBottom()*sB) < (frameA:GetTop()*sA));
 end
 
 function E:GetScreenQuadrant(frame)
