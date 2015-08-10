@@ -365,7 +365,6 @@ end
 
 function UF:UpdateBuffsHeaderPosition()
 	local parent = self:GetParent()
-	local db = parent.db
 	local buffs = parent.Buffs
 	local debuffs = parent.Debuffs
 	local numDebuffs = self.visibleDebuffs
@@ -381,7 +380,6 @@ end
 
 function UF:UpdateDebuffsHeaderPosition()
 	local parent = self:GetParent()
-	local db = parent.db
 	local debuffs = parent.Debuffs
 	local buffs = parent.Buffs
 	local numBuffs = self.visibleBuffs
