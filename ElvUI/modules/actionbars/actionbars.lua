@@ -870,12 +870,6 @@ function AB:VehicleFix()
 	end
 end
 
-function AB:ActionButton_ShowOverlayGlow(frame)
-	if not frame.overlay then return; end
-	local size =  frame:GetWidth() / 3
-	frame.overlay:SetOutside(frame, size, size)
-end
-
 function AB:Initialize()
 	self.db = E.db.actionbar
 	if E.private.actionbar.enable ~= true then return; end
@@ -908,8 +902,6 @@ function AB:Initialize()
 	else
 		self:ReassignBindings()
 	end
-
-	self:SecureHook('ActionButton_ShowOverlayGlow')
 
 	if not GetCVarBool('lockActionBars') then
 		SetCVar('lockActionBars', 1)
