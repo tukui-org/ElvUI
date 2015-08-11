@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local M = E:GetModule('Misc');
+local LBG = LibStub("LibButtonGlow-1.0", true)
 
 --Credit Haste
 local lootFrame, lootFrameHolder
@@ -232,13 +233,13 @@ function M:LOOT_OPENED(event, autoloot)
 			local questTexture = slot.questTexture
 			if ( questId and not isActive ) then
 				questTexture:Show();
-				ActionButton_ShowOverlayGlow(slot.iconFrame)
+				LBG:ShowOverlayGlow(slot.iconFrame)
 			elseif ( questId or isQuestItem ) then
 				questTexture:Hide();
-				ActionButton_ShowOverlayGlow(slot.iconFrame)
+				LBG:ShowOverlayGlow(slot.iconFrame)
 			else
 				questTexture:Hide();
-				ActionButton_HideOverlayGlow(slot.iconFrame)
+				LBG:HideOverlayGlow(slot.iconFrame)
 			end
 
 			slot:Enable()
