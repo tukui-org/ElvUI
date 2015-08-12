@@ -233,13 +233,13 @@ function M:LOOT_OPENED(event, autoloot)
 			local questTexture = slot.questTexture
 			if ( questId and not isActive ) then
 				questTexture:Show();
-				LBG:ShowOverlayGlow(slot.iconFrame)
+				LBG.ShowOverlayGlow(slot.iconFrame)
 			elseif ( questId or isQuestItem ) then
 				questTexture:Hide();
-				LBG:ShowOverlayGlow(slot.iconFrame)
+				LBG.ShowOverlayGlow(slot.iconFrame)
 			else
 				questTexture:Hide();
-				LBG:HideOverlayGlow(slot.iconFrame)
+				LBG.HideOverlayGlow(slot.iconFrame)
 			end
 
 			slot:Enable()

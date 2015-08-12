@@ -185,11 +185,11 @@ local function LoadSkin()
 
 			if(texture) then
 				if ( questId and not isActive ) then
-					LBG:ShowOverlayGlow(button)
+					LBG.ShowOverlayGlow(button)
 				elseif ( questId or isQuestItem ) then
-					LBG:ShowOverlayGlow(button)
+					LBG.ShowOverlayGlow(button)
 				else
-					LBG:HideOverlayGlow(button)
+					LBG.HideOverlayGlow(button)
 				end
 			end
 		end
