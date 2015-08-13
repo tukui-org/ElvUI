@@ -187,6 +187,26 @@ function B:UpdateItemLevelDisplay()
 	end
 end
 
+function B:UpdateCountDisplay()
+	if E.private.bags.enable ~= true then return; end
+	local color = E.db.bags.countFontColor
+
+	for _, bagFrame in pairs(self.BagFrames) do
+		for _, bagID in ipairs(bagFrame.BagIDs) do
+			for slotID = 1, GetContainerNumSlots(bagID) do
+				local slot = bagFrame.Bags[bagID][slotID]
+				if slot and slot.Count then
+					slot.Count:FontTemplate(E.LSM:Fetch("font", E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
+					slot.Count:SetTextColor(color.r, color.g, color.b)
+				end
+			end
+		end
+		if bagFrame.UpdateAllSlots then
+			bagFrame:UpdateAllSlots()
+		end
+	end
+end
+
 function B:UpdateSlot(bagID, slotID)
 	if (self.Bags[bagID] and self.Bags[bagID].numSlots ~= GetContainerNumSlots(bagID)) or not self.Bags[bagID] or not self.Bags[bagID][slotID] then
 		return;
@@ -358,6 +378,7 @@ function B:Layout(isBank)
 	local holderWidth = ((buttonSize + buttonSpacing) * numContainerColumns) - buttonSpacing;
 	local numContainerRows = 0;
 	local bottomPadding = (containerWidth - holderWidth) / 2;
+	local countColor = E.db.bags.countFontColor
 	f.holderFrame:Width(holderWidth);
 
 	if(isBank) then
@@ -456,6 +477,8 @@ function B:Layout(isBank)
 
 					f.Bags[bagID][slotID].Count:ClearAllPoints();
 					f.Bags[bagID][slotID].Count:Point('BOTTOMRIGHT', 0, 2);
+					f.Bags[bagID][slotID].Count:FontTemplate(E.LSM:Fetch("font", E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
+					f.Bags[bagID][slotID].Count:SetTextColor(countColor.r, countColor.g, countColor.b)
 
 					if not(f.Bags[bagID][slotID].questIcon) then
 						f.Bags[bagID][slotID].questIcon = _G[f.Bags[bagID][slotID]:GetName()..'IconQuestTexture'] or _G[f.Bags[bagID][slotID]:GetName()].IconQuestTexture
@@ -556,6 +579,8 @@ function B:Layout(isBank)
 
 				f.reagentFrame.slots[i].Count:ClearAllPoints();
 				f.reagentFrame.slots[i].Count:Point('BOTTOMRIGHT', 0, 2);
+				f.reagentFrame.slots[i].Count:FontTemplate(E.LSM:Fetch("font", E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
+				f.reagentFrame.slots[i].Count:SetTextColor(countColor.r, countColor.g, countColor.b)
 
 				f.reagentFrame.slots[i].iconTexture = _G[f.reagentFrame.slots[i]:GetName()..'IconTexture'];
 				f.reagentFrame.slots[i].iconTexture:SetInside(f.reagentFrame.slots[i]);

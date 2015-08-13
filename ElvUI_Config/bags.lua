@@ -66,8 +66,58 @@ E.Options.args.bags = {
 					name = L["Sort Inverted"],
 					desc = L["Direction the bag sorting will use to allocate the items."],
 				},
-				itemLevelGroup = {
+				countGroup = {
 					order = 5,
+					type = "group",
+					name = L["Item Count Font"],
+					args = {
+						countFont = {
+							order = 1,
+							type = "select",
+							dialogControl = 'LSM30_Font',
+							name = L["Font"],
+							values = AceGUIWidgetLSMlists.font,
+							set = function(info, value) E.db.bags.countFont = value; B:UpdateCountDisplay() end,
+						},
+						countFontColor = {
+							order = 2,
+							type = 'color',
+							name = L["Color"],
+							get = function(info)
+								local t = E.db.bags[ info[#info] ]
+								local d = P.bags[info[#info]]
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+							end,
+							set = function(info, r, g, b)
+								E.db.bags[ info[#info] ] = {}
+								local t = E.db.bags[ info[#info] ]
+								t.r, t.g, t.b = r, g, b
+								B:UpdateCountDisplay()
+							end,
+						},
+						countFontSize = {
+							order = 3,
+							type = "range",
+							name = L["Font Size"],
+							min = 6, max = 22, step = 1,
+							set = function(info, value) E.db.bags.countFontSize = value; B:UpdateCountDisplay() end,
+						},
+						countFontOutline = {
+							order = 4,
+							type = "select",
+							name = L["Font Outline"],
+							set = function(info, value) E.db.bags.countFontOutline = value; B:UpdateCountDisplay() end,
+							values = {
+								['NONE'] = L["None"],
+								['OUTLINE'] = 'OUTLINE',
+								['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
+								['THICKOUTLINE'] = 'THICKOUTLINE',
+							},
+						},
+					},
+				},
+				itemLevelGroup = {
+					order = 6,
 					type = "group",
 					name = L["Item Level"],
 					args = {

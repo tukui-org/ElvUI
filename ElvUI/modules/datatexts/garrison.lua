@@ -20,8 +20,6 @@ local function OnEnter(self, _, noUpdate)
 		C_Garrison.RequestLandingPageShipmentInfo();
 		return
 	end
-	
-	local currentTime = time()
 
 	--Buildings
 	local buildings = C_Garrison.GetBuildings();
@@ -56,12 +54,13 @@ local function OnEnter(self, _, noUpdate)
 		DT.tooltip:AddLine(L["Mission(s) Report:"])
 		for i=1, numMissions do
 			local mission = inProgressMissions[i]
+			local timeLeft = mission.timeLeft:match("%d")
 			local r, g, b = 1, 1, 1
 			if(mission.isRare) then
 				r, g, b = 0.09, 0.51, 0.81
 			end
 
-			if(mission.missionEndTime and currentTime and mission.missionEndTime <= currentTime) then
+			if(timeLeft and timeLeft == "0") then
 				DT.tooltip:AddDoubleLine(mission.name, COMPLETE, r, g, b, 0, 1, 0)
 			else
 				DT.tooltip:AddDoubleLine(mission.name, mission.timeLeft, r, g, b)
@@ -81,12 +80,13 @@ local function OnEnter(self, _, noUpdate)
 		DT.tooltip:AddLine(L["Naval Mission(s) Report:"])
 		for i=1, numShipMissions do
 			local mission = inProgressShipMissions[i]
+			local timeLeft = mission.timeLeft:match("%d")
 			local r, g, b = 1, 1, 1
 			if(mission.isRare) then
 				r, g, b = 0.09, 0.51, 0.81
 			end
 
-			if(mission.missionEndTime <= currentTime) then
+			if(timeLeft and timeLeft == "0") then
 				DT.tooltip:AddDoubleLine(mission.name, COMPLETE, r, g, b, 0, 1, 0)
 			else
 				DT.tooltip:AddDoubleLine(mission.name, mission.timeLeft, r, g, b)

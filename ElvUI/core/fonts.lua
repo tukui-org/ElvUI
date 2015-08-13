@@ -17,7 +17,6 @@ function E:UpdateBlizzardFonts()
 	local MONOCHROME = ''
 	local _, editBoxFontSize, _, _, _, _, _, _, _, _ = GetChatWindowInfo(1)
 
-	UIDROPDOWNMENU_DEFAULT_TEXT_HEIGHT = 12
 	CHAT_FONT_HEIGHTS = {6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 
 	if self.db.general.font:lower():find('pixel') then

@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
+local LBG = LibStub("LibButtonGlow-1.0", true)
 
 local lower = string.lower
 
@@ -61,10 +62,10 @@ local function LoadSkin()
 	LFDQueueFrameRoleButtonDPSIncentiveIcon:SetAlpha(0)
 
 	local function OnShow(self)
-		ActionButton_ShowOverlayGlow(self:GetParent().checkButton)
+		LBG.ShowOverlayGlow(self:GetParent().checkButton)
 	end
 	local function OnHide(self)
-		ActionButton_HideOverlayGlow(self:GetParent().checkButton)
+		LBG.HideOverlayGlow(self:GetParent().checkButton)
 	end
 	LFDQueueFrameRoleButtonTankIncentiveIcon:HookScript("OnShow", OnShow)
 	LFDQueueFrameRoleButtonHealerIncentiveIcon:HookScript("OnShow", OnShow)
