@@ -928,6 +928,7 @@ L["Unholy"] = "Sacré"
 L["Uniform Threshold"] = true;
 L["UnitFrames"] = "Cadre d'unité"
 L["Up"] = "Haut"
+L["Use Dead Backdrop"] = true;
 L["Use Default"] = 'Utiliser par défaut'
 L["Use the custom health backdrop color instead of a multiple of the main health color."] = "Utilise une couleur personnalisé pour colorer le fond de la barre de vie au lieu d'utiliser la couleur par défaut."
 L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the global filter 'Buff Indicator'."] = true;

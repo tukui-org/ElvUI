@@ -929,6 +929,7 @@ L["Unholy"] = "穢邪符文"
 L["Uniform Threshold"] = true;
 L["UnitFrames"] = "單位框架"
 L["Up"] = "上"
+L["Use Dead Backdrop"] = true;
 L["Use Default"] = "自定義默認值"
 L["Use the custom health backdrop color instead of a multiple of the main health color."] = "自定義生命條背景色."
 L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the global filter 'Buff Indicator'."] = true;

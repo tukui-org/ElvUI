@@ -979,6 +979,7 @@ L["Unholy"] = "부정"
 L["Uniform Threshold"] = true;
 L["UnitFrames"] = "유닛프레임"
 L["Up"] = "위로"
+L["Use Dead Backdrop"] = true;
 L["Use Default"] = "기존 설정대로"
 L["Use the custom health backdrop color instead of a multiple of the main health color."] = "생명력 바의 배경을 다른 설정을 무시하고 아래에서 지정한 색상만 사용합니다."
 L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the global filter 'Buff Indicator'."] = true;
