@@ -918,6 +918,7 @@ L["Unholy"] = true;
 L["Uniform Threshold"] = true;
 L["UnitFrames"] = true;
 L["Up"] = true;
+L["Use Dead Backdrop"] = true;
 L["Use Default"] = true;
 L["Use the custom health backdrop color instead of a multiple of the main health color."] = true;
 L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the global filter 'Buff Indicator'."] = true;

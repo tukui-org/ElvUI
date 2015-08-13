@@ -929,6 +929,7 @@ L["Unholy"] = "Profano"
 L["Uniform Threshold"] = true;
 L["UnitFrames"] = "Marco de Unidad"
 L["Up"] = "Arriba"
+L["Use Dead Backdrop"] = true;
 L["Use Default"] = "Usar Predeterminado"
 L["Use the custom health backdrop color instead of a multiple of the main health color."] = "Usar el color de fondo personalizado para la salud en vez de un múltiplo del color principal."
 L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the global filter 'Buff Indicator'."] = true;
