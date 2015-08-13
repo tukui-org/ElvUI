@@ -585,7 +585,6 @@ L["Display how many of a certain item you have in your possession."] = "Zeige wi
 L["Display player titles."] = "Zeige Spielertitel."
 L["Display the players talent spec and item level in the tooltip, this may not immediately update when mousing over a unit."] = "Zeige die Spezialisierung und das Itemlevel des Spielers im Tooltip an, wird vielleicht nicht direkt aktualisiert"
 L["Display the spell or item ID when mousing over a spell or item tooltip."] = "Zeige die ID des Zaubers oder des Gegenstands an, wenn du mit der Maus über einen Zauber oder Fegenstand ziehst."
-L["Don't display the tooltip when mousing over a unitframe."] = "Zeige keinen Tooltip, wenn die Maus über einem Einheitenfenster schwebt."
 L["Guild Ranks"] = "Gildenränge"
 L["Header Font Size"] = "Kopfzeile Schriftgröße"
 L["Health Bar"] = "Lebensleiste"

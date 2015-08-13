@@ -636,7 +636,6 @@ L["Display how many of a certain item you have in your possession."] = "현재 �
 L["Display player titles."] = "이름에 칭호도 표시합니다."
 L["Display the players talent spec and item level in the tooltip, this may not immediately update when mousing over a unit."] = "Shift를 누른 상태로 유저에게 마우스를 대면 특성과 아이템레벨도 표시합니다. 표시하는데 시간이 조금 필요합니다."
 L["Display the spell or item ID when mousing over a spell or item tooltip."] = "아이템과 주문 툴팁에 각각의 ID를 표시합니다."
-L["Don't display the tooltip when mousing over a unitframe."] = "유닛프레임에서 툴팁을 어떻게 표시할지를 결정합니다.|n|n여기서 특정 키를 설정하면 해당 키를 누른 상태로 프레임에 마우스를 올려야 툴팁이 표시됩니다."
 L["Guild Ranks"] = "길드 내 등급 표시"
 L["Header Font Size"] = true;
 L["Health Bar"] = "생명력바"

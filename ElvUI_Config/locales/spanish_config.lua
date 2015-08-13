@@ -586,7 +586,6 @@ L["Display how many of a certain item you have in your possession."] = "Desplieg
 L["Display player titles."] = "Mostrar los títulos de los jugadores"
 L["Display the players talent spec and item level in the tooltip, this may not immediately update when mousing over a unit."] = true;
 L["Display the spell or item ID when mousing over a spell or item tooltip."] = "Despliega el ID de hechizo u objeto cuando pasas el ratón sobre un hechizo o un ojbeto."
-L["Don't display the tooltip when mousing over a unitframe."] = "No mostrar la descripción emergente cuando pasas el ratón sobre un marco de unidad."
 L["Guild Ranks"] = "Rangos de Hermandad"
 L["Header Font Size"] = true;
 L["Health Bar"] = true;
