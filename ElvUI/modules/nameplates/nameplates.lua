@@ -436,7 +436,8 @@ function NP:ColorizeAndScale(myPlate)
 	
 	if self.raidIcon:IsShown() and NP.db.healthBar.colorByRaidIcon then
 		NP:CheckRaidIcon(self)
-		color = NP.RaidMarkColors[self.raidIconType]
+		local raidColor = NP.RaidMarkColors[self.raidIconType]
+		color = raidColor or color
 	end
 
 	if (NP.db.healthBar.lowHPScale.enable and NP.db.healthBar.lowHPScale.changeColor and myPlate.lowHealth:IsShown() and canAttack) then
