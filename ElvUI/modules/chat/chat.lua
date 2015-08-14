@@ -1781,6 +1781,9 @@ function CH:Initialize()
 
 	self:SetupChat()
 	self:UpdateAnchors()
+	if not E.db.chat.lockPositions then
+		CH:UpdateChatTabs() --It was not done in PositionChat, so do it now
+	end
 
 	self:RegisterEvent("GROUP_ROSTER_UPDATE", "CheckLFGRoles")
 
