@@ -16,6 +16,20 @@ local function LoadSkin()
 	TabardFrameInset:Kill()
 	TabardFrameMoneyInset:Kill()
 	TabardFrameMoneyBg:StripTextures()
+	
+	--Add Tabard Emblem back
+	local emblemFrames = {
+		"TabardFrameEmblemTopRight",
+		"TabardFrameEmblemBottomRight",
+		"TabardFrameEmblemTopLeft",
+		"TabardFrameEmblemBottomLeft",
+	}
+	for _, f in pairs(emblemFrames) do
+		local frame = _G[f]
+		frame:SetParent(TabardFrame)
+		frame.Show = nil
+		frame:Show()
+	end
 
 	for i=1, 5 do
 		local custom = "TabardFrameCustomization"..i
