@@ -327,6 +327,12 @@ function UF:Update_ArenaFrames(frame, db)
 		buffs["growth-x"] = db.buffs.anchorPoint == 'LEFT' and 'LEFT' or  db.buffs.anchorPoint == 'RIGHT' and 'RIGHT' or (db.buffs.anchorPoint:find('LEFT') and 'RIGHT' or 'LEFT')
 		buffs.initialAnchor = E.InversePoints[db.buffs.anchorPoint]
 
+		buffs.attachTo = attachTo
+		buffs.point = E.InversePoints[db.buffs.anchorPoint]
+		buffs.anchorPoint = db.buffs.anchorPoint
+		buffs.xOffset = x + db.buffs.xOffset
+		buffs.yOffset = y + db.buffs.yOffset + (E.PixelMode and (db.buffs.anchorPoint:find('TOP') and -1 or 1) or 0)
+
 		if db.buffs.enable then
 			buffs:Show()
 			UF:UpdateAuraIconSettings(buffs)
@@ -363,11 +369,41 @@ function UF:Update_ArenaFrames(frame, db)
 		debuffs["growth-x"] = db.debuffs.anchorPoint == 'LEFT' and 'LEFT' or  db.debuffs.anchorPoint == 'RIGHT' and 'RIGHT' or (db.debuffs.anchorPoint:find('LEFT') and 'RIGHT' or 'LEFT')
 		debuffs.initialAnchor = E.InversePoints[db.debuffs.anchorPoint]
 
+		debuffs.attachTo = attachTo
+		debuffs.point = E.InversePoints[db.debuffs.anchorPoint]
+		debuffs.anchorPoint = db.debuffs.anchorPoint
+		debuffs.xOffset = x + db.debuffs.xOffset
+		debuffs.yOffset = y + db.debuffs.yOffset
+
 		if db.debuffs.enable then
 			debuffs:Show()
 			UF:UpdateAuraIconSettings(debuffs)
 		else
 			debuffs:Hide()
+		end
+	end
+
+	--Smart Aura Position
+	do
+		local position = db.smartAuraPosition
+
+		if position == "BUFFS_ON_DEBUFFS" then
+			if db.debuffs.attachTo == "BUFFS" then
+				E:Print(format(L["This setting caused a conflicting anchor point, where %s would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Buffs"], L["Debuffs"], L["Frame"]))
+				db.debuffs.attachTo = "FRAME"
+			end
+			frame.Buffs.PostUpdate = nil
+			frame.Debuffs.PostUpdate = UF.UpdateBuffsHeaderPosition
+		elseif position == "DEBUFFS_ON_BUFFS" then
+			if db.buffs.attachTo == "DEBUFFS" then
+				E:Print(format(L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Debuffs"], L["Buffs"], L["Frame"]))
+				db.buffs.attachTo = "FRAME"
+			end
+			frame.Buffs.PostUpdate = UF.UpdateDebuffsHeaderPosition
+			frame.Debuffs.PostUpdate = nil
+		else
+			frame.Buffs.PostUpdate = nil
+			frame.Debuffs.PostUpdate = nil
 		end
 	end
 
