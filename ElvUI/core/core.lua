@@ -750,6 +750,12 @@ function E:DBConversions()
 		E.db.general.reputation.height = P.general.reputation.height
 		E:Print("Reputation bar appears to be an odd shape. Resetting to default size.")
 	end
+	
+	--Turns out that a chat height lower than 58 will cause the following error: Message: ..\FrameXML\FloatingChatFrame.lua line 1147: attempt to perform arithmetic on a nil value
+	--This only happens if the datatext panel for the respective chat panel is enabled, leaving no room for the chat frame.
+	--Minimum height has been increased to 60, convert any setting lower than this to the new minimum height.
+	if E.db.chat.panelHeight < 60 then E.db.chat.panelHeight = 60 end
+	if E.db.chat.panelHeightRight < 60 then E.db.chat.panelHeightRight = 60 end
 end
 
 function E:StopHarlemShake()

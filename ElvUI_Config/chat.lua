@@ -272,7 +272,7 @@ E.Options.args.chat = {
 					name = L["Panel Height"],
 					desc = L["PANEL_DESC"],
 					set = function(info, value) E.db.chat.panelHeight = value; E:GetModule('Chat'):PositionChat(true); end,
-					min = 50, max = 600, step = 1,
+					min = 60, max = 600, step = 1,
 				},
 				panelWidth = {
 					order = 9,
@@ -303,7 +303,7 @@ E.Options.args.chat = {
 					disabled = function() return not E.db.chat.separateSizes end,
 					hidden = function() return not E.db.chat.separateSizes end,
 					set = function(info, value) E.db.chat.panelHeightRight = value; E:GetModule('Chat'):PositionChat(true); end,
-					min = 50, max = 600, step = 1,
+					min = 60, max = 600, step = 1,
 				},
 				panelWidthRight = {
 					order = 12,
