@@ -76,13 +76,28 @@ end
 
 --From http://wow.gamepedia.com/UI_coordinates
 function E:FramesOverlap(frameA, frameB)
-	if not frameA or not frameB then return; end
+	if not frameA or not frameB then return	end
+
 	local sA, sB = frameA:GetEffectiveScale(), frameB:GetEffectiveScale();
+	if not sA or not sB then return	end
+
+	local frameALeft = frameA:GetLeft()
+	local frameARight = frameA:GetRight()
+	local frameABottom = frameA:GetBottom()
+	local frameATop = frameA:GetTop()
 	
-	return ((frameA:GetLeft()*sA) < (frameB:GetRight()*sB))
-		and ((frameB:GetLeft()*sB) < (frameA:GetRight()*sA))
-		and ((frameA:GetBottom()*sA) < (frameB:GetTop()*sB))
-		and ((frameB:GetBottom()*sB) < (frameA:GetTop()*sA));
+	local frameBLeft = frameB:GetLeft()
+	local frameBRight = frameB:GetRight()
+	local frameBBottom = frameB:GetBottom()
+	local frameBTop = frameB:GetTop()
+
+	if not frameALeft or not frameARight or not frameABottom or not frameATop then return end
+	if not frameBLeft or not frameBRight or not frameBBottom or not frameBTop then return end
+	
+	return ((frameALeft*sA) < (frameBRight*sB))
+		and ((frameBLeft*sB) < (frameARight*sA))
+		and ((frameABottom*sA) < (frameBTop*sB))
+		and ((frameBBottom*sB) < (frameATop*sA));
 end
 
 function E:GetScreenQuadrant(frame)
