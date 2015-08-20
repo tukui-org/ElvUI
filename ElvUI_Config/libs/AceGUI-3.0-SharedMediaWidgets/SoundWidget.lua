@@ -8,7 +8,7 @@ local AGSMW = LibStub("AceGUISharedMediaWidgets-1.0")
 
 do
 	local widgetType = "LSM30_Sound"
-	local widgetVersion = 10
+	local widgetVersion = 11
 
 	local contentFrameCache = {}
 	local function ReturnSelf(self)
@@ -68,8 +68,8 @@ do
 			frame.speakeron = speakeron
 
 			local text = frame:CreateFontString(nil,"OVERLAY","GameFontWhite")
-				text:SetPoint("LEFT", check, "RIGHT", 1, 0)
-				text:SetPoint("RIGHT", soundbutton, "LEFT", -2, 0)
+				text:SetPoint("TOPLEFT", check, "TOPRIGHT", 1, 0)
+				text:SetPoint("BOTTOMRIGHT", soundbutton, "BOTTOMLEFT", -2, 0)
 				text:SetJustifyH("LEFT")
 				text:SetText("Test Test Test Test Test Test Test")
 			frame.text = text

@@ -1,0 +1,29 @@
+------------------------------------------------------------------------
+r52 | nevcairiel | 2015-07-22 14:19:41 +0000 (Wed, 22 Jul 2015) | 1 line
+Changed paths:
+   A /tags/r52-release (from /trunk:51)
+
+Tagging as r52-release
+------------------------------------------------------------------------
+r51 | nevcairiel | 2015-07-22 14:19:21 +0000 (Wed, 22 Jul 2015) | 1 line
+Changed paths:
+   M /trunk/AceGUI-3.0-SharedMediaWidgets.toc
+
+Update TOC for 6.2
+------------------------------------------------------------------------
+r50 | nevcairiel | 2015-07-22 14:18:01 +0000 (Wed, 22 Jul 2015) | 1 line
+Changed paths:
+   M /trunk/AceGUI-3.0-SharedMediaWidgets/BackgroundWidget.lua
+   M /trunk/AceGUI-3.0-SharedMediaWidgets/BorderWidget.lua
+   M /trunk/AceGUI-3.0-SharedMediaWidgets/FontWidget.lua
+   M /trunk/AceGUI-3.0-SharedMediaWidgets/SoundWidget.lua
+   M /trunk/AceGUI-3.0-SharedMediaWidgets/StatusbarWidget.lua
+
+Fix font anchoring to avoid word-wraps in the dropdown
+------------------------------------------------------------------------
+r49 | funkydude | 2014-10-14 20:00:37 +0000 (Tue, 14 Oct 2014) | 1 line
+Changed paths:
+   M /trunk/AceGUI-3.0-SharedMediaWidgets.toc
+
+bump toc
+------------------------------------------------------------------------
