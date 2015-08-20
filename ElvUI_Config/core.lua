@@ -4,7 +4,7 @@ local tsort, tinsert = table.sort, table.insert
 local floor, ceil = math.floor, math.ceil
 local DEFAULT_WIDTH = 890;
 local DEFAULT_HEIGHT = 651;
-local AC = LibStub("AceConfig-3.0")
+local AC = LibStub("AceConfig-3.0-ElvUI")
 local ACD = LibStub("AceConfigDialog-3.0-ElvUI")
 local ACR = LibStub("AceConfigRegistry-3.0-ElvUI")
 
