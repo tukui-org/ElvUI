@@ -6,7 +6,7 @@ local ElvUF = ns.oUF
 local tinsert = table.insert
 local twipe = table.wipe
 
-local ACD = LibStub("AceConfigDialog-3.0")
+local ACD = LibStub("AceConfigDialog-3.0-ElvUI")
 local fillValues = {
 	['fill'] = L["Filled"],
 	['spaced'] = L["Spaced"],
