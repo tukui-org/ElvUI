@@ -5,7 +5,7 @@
 
 local Search = LibStub('CustomSearch-1.0')
 local Unfit = LibStub('Unfit-1.0')
-local Lib = LibStub:NewLibrary('LibItemSearch-1.2', 12)
+local Lib = LibStub:NewLibrary('LibItemSearch-1.2-ElvUI', 1)
 if Lib then
 	Lib.Filters = {}
 else

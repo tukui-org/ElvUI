@@ -4,7 +4,7 @@
 -- @release $Id: AceConfigDialog-3.0.lua 1126 2014-11-10 06:38:01Z nevcairiel $
 
 local LibStub = LibStub
-local MAJOR, MINOR = "AceConfigDialog-3.0", 99
+local MAJOR, MINOR = "AceConfigDialog-3.0-ElvUI", 1
 local AceConfigDialog, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not AceConfigDialog then return end
@@ -18,7 +18,7 @@ AceConfigDialog.frame.closing = AceConfigDialog.frame.closing or {}
 AceConfigDialog.frame.closeAllOverride = AceConfigDialog.frame.closeAllOverride or {}
 
 local gui = LibStub("AceGUI-3.0")
-local reg = LibStub("AceConfigRegistry-3.0")
+local reg = LibStub("AceConfigRegistry-3.0-ElvUI")
 
 -- Lua APIs
 local tconcat, tinsert, tsort, tremove, tsort = table.concat, table.insert, table.sort, table.remove, table.sort
@@ -1320,7 +1320,7 @@ local function FeedOptions(appName, options,container,rootframe,path,group,inlin
 					del(valuesort)
 
 				elseif v.type == "color" then
-					control = gui:Create("ColorPicker")
+					control = gui:Create("ColorPicker-ElvUI")
 					control:SetLabel(name)
 					control:SetHasAlpha(GetOptionsMemberValue("hasAlpha",v, options, path, appName))
 					control:SetColor(GetOptionsMemberValue("get",v, options, path, appName))

@@ -1,6 +1,6 @@
 ﻿local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:NewModule('Bags', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
-local Search = LibStub('LibItemSearch-1.2')
+local Search = LibStub('LibItemSearch-1.2-ElvUI')
 
 local len, sub, find, format, floor, abs, gsub = string.len, string.sub, string.find, string.format, math.floor, math.abs, string.gsub
 local tinsert = table.insert
