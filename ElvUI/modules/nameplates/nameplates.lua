@@ -935,8 +935,8 @@ function NP:UpdateSettings()
 end
 
 function NP:CreatePlate(frame)
-	frame.barFrame, frame.nameFrame = frame:GetChildren()
-	frame.healthBar, frame.castBar = frame.barFrame:GetChildren()
+	frame.barFrame, frame.nameFrame = frame.ArtContainer, frame.NameContainer
+	frame.healthBar, frame.castBar = frame.barFrame.HealthBar, frame.barFrame.CastBar
 	frame.threat, frame.border, frame.highlight, frame.level, frame.bossIcon, frame.raidIcon, frame.eliteIcon = frame.barFrame:GetRegions()
 	frame.name = frame.nameFrame:GetRegions()
 	frame.healthBar.texture = frame.healthBar:GetRegions()
