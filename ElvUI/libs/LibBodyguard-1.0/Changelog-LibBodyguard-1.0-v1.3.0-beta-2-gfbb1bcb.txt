@@ -1,3 +1,0 @@
-Adam Hellberg:
-	- Fix syntax error
-	- Update copyright years

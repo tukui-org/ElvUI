@@ -6,7 +6,7 @@ local ElvUF = ns.oUF
 local tinsert = table.insert
 local twipe = table.wipe
 
-local ACD = LibStub("AceConfigDialog-3.0")
+local ACD = LibStub("AceConfigDialog-3.0-ElvUI")
 local fillValues = {
 	['fill'] = L["Filled"],
 	['spaced'] = L["Spaced"],
@@ -2140,6 +2140,17 @@ E.Options.args.unitframe.args.player = {
 			name = L["Threat Display Mode"],
 			values = threatValues,
 		},
+		smartAuraPosition = {
+			order = 13,
+			type = "select",
+			name = L["Smart Aura Position"],
+			desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
+			values = {
+				["DISABLED"] = "Disabled",
+				["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
+				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
+			},
+		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'player'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'player'),
 		power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'player'),
@@ -2329,9 +2340,20 @@ E.Options.args.unitframe.args.target = {
 		},
 		threatStyle = {
 			type = 'select',
-			order = 12,
+			order = 11,
 			name = L["Threat Display Mode"],
 			values = threatValues,
+		},
+		smartAuraPosition = {
+			order = 12,
+			type = "select",
+			name = L["Smart Aura Position"],
+			desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
+			values = {
+				["DISABLED"] = "Disabled",
+				["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
+				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
+			},
 		},
 		combobar = {
 			order = 800,
@@ -2463,9 +2485,20 @@ E.Options.args.unitframe.args.targettarget = {
 		},
 		threatStyle = {
 			type = 'select',
-			order = 11,
+			order = 8,
 			name = L["Threat Display Mode"],
 			values = threatValues,
+		},
+		smartAuraPosition = {
+			order = 9,
+			type = "select",
+			name = L["Smart Aura Position"],
+			desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
+			values = {
+				["DISABLED"] = "Disabled",
+				["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
+				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
+			},
 		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'targettarget'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'targettarget'),
@@ -2548,9 +2581,20 @@ E.Options.args.unitframe.args.targettargettarget = {
 		},
 		threatStyle = {
 			type = 'select',
-			order = 11,
+			order = 8,
 			name = L["Threat Display Mode"],
 			values = threatValues,
+		},
+		smartAuraPosition = {
+			order = 9,
+			type = "select",
+			name = L["Smart Aura Position"],
+			desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
+			values = {
+				["DISABLED"] = "Disabled",
+				["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
+				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
+			},
 		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'targettargettarget'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'targettargettarget'),
@@ -2639,9 +2683,20 @@ E.Options.args.unitframe.args.focus = {
 		},
 		threatStyle = {
 			type = 'select',
-			order = 13,
+			order = 11,
 			name = L["Threat Display Mode"],
 			values = threatValues,
+		},
+		smartAuraPosition = {
+			order = 12,
+			type = "select",
+			name = L["Smart Aura Position"],
+			desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
+			values = {
+				["DISABLED"] = "Disabled",
+				["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
+				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
+			},
 		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'focus'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'focus'),
@@ -2726,9 +2781,20 @@ E.Options.args.unitframe.args.focustarget = {
 		},
 		threatStyle = {
 			type = 'select',
-			order = 13,
+			order = 8,
 			name = L["Threat Display Mode"],
 			values = threatValues,
+		},
+		smartAuraPosition = {
+			order = 9,
+			type = "select",
+			name = L["Smart Aura Position"],
+			desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
+			values = {
+				["DISABLED"] = "Disabled",
+				["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
+				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
+			},
 		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'focustarget'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'focustarget'),
@@ -2817,9 +2883,20 @@ E.Options.args.unitframe.args.pet = {
 		},
 		threatStyle = {
 			type = 'select',
-			order = 13,
+			order = 11,
 			name = L["Threat Display Mode"],
 			values = threatValues,
+		},
+		smartAuraPosition = {
+			order = 12,
+			type = "select",
+			name = L["Smart Aura Position"],
+			desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
+			values = {
+				["DISABLED"] = "Disabled",
+				["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
+				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
+			},
 		},
 		buffIndicator = {
 			order = 600,
@@ -2929,9 +3006,20 @@ E.Options.args.unitframe.args.pettarget = {
 		},
 		threatStyle = {
 			type = 'select',
-			order = 13,
+			order = 8,
 			name = L["Threat Display Mode"],
 			values = threatValues,
+		},
+		smartAuraPosition = {
+			order = 9,
+			type = "select",
+			name = L["Smart Aura Position"],
+			desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
+			values = {
+				["DISABLED"] = "Disabled",
+				["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
+				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
+			},
 		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'pettarget'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'pettarget'),
@@ -3033,9 +3121,20 @@ E.Options.args.unitframe.args.boss = {
 		},
 		threatStyle = {
 			type = 'select',
-			order = 13,
+			order = 10,
 			name = L["Threat Display Mode"],
 			values = threatValues,
+		},
+		smartAuraPosition = {
+			order = 11,
+			type = "select",
+			name = L["Smart Aura Position"],
+			desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
+			values = {
+				["DISABLED"] = "Disabled",
+				["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
+				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
+			},
 		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
@@ -3151,7 +3250,7 @@ E.Options.args.unitframe.args.arena = {
 			min = 0, max = 400, step = 1,
 		},
 		colorOverride = {
-			order = 13,
+			order = 12,
 			name = L["Class Color Override"],
 			desc = L["Override the default class color setting."],
 			type = 'select',
@@ -3159,6 +3258,17 @@ E.Options.args.unitframe.args.arena = {
 				['USE_DEFAULT'] = L["Use Default"],
 				['FORCE_ON'] = L["Force On"],
 				['FORCE_OFF'] = L["Force Off"],
+			},
+		},
+		smartAuraPosition = {
+			order = 13,
+			type = "select",
+			name = L["Smart Aura Position"],
+			desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
+			values = {
+				["DISABLED"] = "Disabled",
+				["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
+				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 			},
 		},
 		pvpTrinket = {

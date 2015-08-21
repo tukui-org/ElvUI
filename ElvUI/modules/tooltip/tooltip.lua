@@ -527,6 +527,10 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		GameTooltipStatusBar:SetStatusBarColor(0.6, 0.6, 0.6)
 	end
 
+	local textWidth = GameTooltipStatusBar.text:GetStringWidth()
+	if textWidth then
+		tt:SetMinimumWidth(textWidth)
+	end
 end
 
 function TT:GameTooltipStatusBar_OnValueChanged(tt, value)

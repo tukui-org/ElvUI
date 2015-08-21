@@ -859,15 +859,15 @@ function UF:CreateAndUpdateUF(unit)
 		UF["Update_"..frameName.."Frame"](self, self[unit], self.db['units'][unit])
 	end
 
+	if self[unit]:GetParent() ~= ElvUF_Parent then
+		self[unit]:SetParent(ElvUF_Parent)
+	end
+
 	if self.db['units'][unit].enable then
 		self[unit]:Enable()
 		self[unit].Update()
 	else
 		self[unit]:Disable()
-	end
-
-	if self[unit]:GetParent() ~= ElvUF_Parent then
-		self[unit]:SetParent(ElvUF_Parent)
 	end
 end
 

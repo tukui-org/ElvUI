@@ -1,0 +1,17 @@
+tag v1.3.1
+5349a38fa06a65048aac60eccc58b85a4901f460
+Adam Hellberg <sharparam@sharparam.com>
+2015-06-12 13:42:13 +0200
+
+Works with the new summon system on live and PTR
+
+
+--------------------
+
+Adam Hellberg:
+	- Fix syntax error
+	- Update copyright years
+	- Bump interface version in TOC
+	- Bump library version
+	- Add support for new summon format in 6.2.
+	- Improve event registration.

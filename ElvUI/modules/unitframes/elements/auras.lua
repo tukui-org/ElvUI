@@ -362,3 +362,33 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 
 	return returnValue
 end
+
+function UF:UpdateBuffsHeaderPosition()
+	local parent = self:GetParent()
+	local buffs = parent.Buffs
+	local debuffs = parent.Debuffs
+	local numDebuffs = self.visibleDebuffs
+
+	if numDebuffs == 0 then
+		buffs:ClearAllPoints()
+		buffs:SetPoint(debuffs.point, debuffs.attachTo, debuffs.anchorPoint, debuffs.xOffset, debuffs.yOffset)
+	else
+		buffs:ClearAllPoints()
+		buffs:SetPoint(buffs.point, buffs.attachTo, buffs.anchorPoint, buffs.xOffset, buffs.yOffset)
+	end
+end
+
+function UF:UpdateDebuffsHeaderPosition()
+	local parent = self:GetParent()
+	local debuffs = parent.Debuffs
+	local buffs = parent.Buffs
+	local numBuffs = self.visibleBuffs
+
+	if numBuffs == 0 then
+		debuffs:ClearAllPoints()
+		debuffs:SetPoint(buffs.point, buffs.attachTo, buffs.anchorPoint, buffs.xOffset, buffs.yOffset)
+	else
+		debuffs:ClearAllPoints()
+		debuffs:SetPoint(debuffs.point, debuffs.attachTo, debuffs.anchorPoint, debuffs.xOffset, debuffs.yOffset)
+	end
+end

@@ -105,7 +105,7 @@ function AddOn:PLAYER_REGEN_DISABLED()
 	local err = false;
 
 	if IsAddOnLoaded("ElvUI_Config") then
-		local ACD = LibStub("AceConfigDialog-3.0")
+		local ACD = LibStub("AceConfigDialog-3.0-ElvUI")
 
 		if ACD.OpenFrames[AddOnName] then
 			self:RegisterEvent('PLAYER_REGEN_ENABLED');
@@ -172,7 +172,7 @@ function AddOn:ToggleConfig()
 		end
 	end
 
-	local ACD = LibStub("AceConfigDialog-3.0")
+	local ACD = LibStub("AceConfigDialog-3.0-ElvUI")
 
 	local mode = 'Close'
 	if not ACD.OpenFrames[AddOnName] then

@@ -62,7 +62,7 @@ function E:ToggleConfigMode(override, configType)
 
 		ElvUIMoverPopupWindow:Show()
 		if IsAddOnLoaded("ElvUI_Config") then
-			LibStub("AceConfigDialog-3.0"):Close("ElvUI")
+			LibStub("AceConfigDialog-3.0-ElvUI"):Close("ElvUI")
 			GameTooltip:Hide()
 		end
 		E.ConfigurationMode = true
@@ -293,7 +293,7 @@ function E:CreateMoverPopup()
 
 	lock:SetScript("OnClick", function(self)
 		E:ToggleConfigMode(true)
-		if IsAddOnLoaded("ElvUI_Config") then LibStub("AceConfigDialog-3.0"):Open('ElvUI') end
+		if IsAddOnLoaded("ElvUI_Config") then LibStub("AceConfigDialog-3.0-ElvUI"):Open('ElvUI') end
 		selectedValue = 'ALL'
 		UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, selectedValue);
 	end)

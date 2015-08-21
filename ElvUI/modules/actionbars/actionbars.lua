@@ -4,7 +4,7 @@ local AB = E:NewModule('ActionBars', 'AceHook-3.0', 'AceEvent-3.0');
 
 local Sticky = LibStub("LibSimpleSticky-1.0");
 local _LOCK
-local LAB = LibStub("LibActionButton-1.0")
+local LAB = LibStub("LibActionButton-1.0-ElvUI")
 local LSM = LibStub("LibSharedMedia-3.0")
 
 local gsub = string.gsub
