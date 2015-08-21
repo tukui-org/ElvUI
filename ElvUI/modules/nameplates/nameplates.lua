@@ -282,17 +282,17 @@ function NP:CheckArenaHealers()
 end
 
 function NP:UpdateLevelAndName(myPlate)
-	local region = select(4, self:GetRegions())
-	if region and region:GetObjectType() == 'FontString' then
-		self.level = region
-	end
+	-- local levelObject = self.ArtContainer.LevelText
+	-- if levelObject and levelObject:GetObjectType() == 'FontString' then
+		-- self.level = levelObject
+	-- end
 
 	if not NP.db.showLevel then
 		myPlate.level:SetText("")
 		myPlate.level:Hide()
 	else
 		if self.level:IsShown() then
-			local level, elite, boss, mylevel = self.level:GetObjectType() == 'FontString' and tonumber(self.level:GetText()) or nil, self.eliteIcon:IsShown(), self.bossIcon:IsShown(), UnitLevel("player")
+			local level, elite, boss = self.level:GetObjectType() == 'FontString' and tonumber(self.level:GetText()) or nil, self.eliteIcon:IsShown(), self.bossIcon:IsShown()
 			if boss then
 				myPlate.level:SetText("??")
 				myPlate.level:SetTextColor(0.8, 0.05, 0)
@@ -936,9 +936,9 @@ end
 
 function NP:CreatePlate(frame) 
 	frame.healthBar = frame.ArtContainer.HealthBar
-	frame.healthBar.texture = frame.healthBar:GetRegions() --No parentKey, yet?
+	-- frame.healthBar.texture = frame.healthBar:GetRegions() --No parentKey, yet?
 
-	frame.absorbBar = frame.ArtContainer.AbsorbBar
+	-- frame.absorbBar = frame.ArtContainer.AbsorbBar
 	frame.border = frame.ArtContainer.Border
 	frame.highlight = frame.ArtContainer.Highlight
 	frame.level = frame.ArtContainer.LevelText
@@ -949,7 +949,7 @@ function NP:CreatePlate(frame)
 	frame.name = frame.NameContainer.NameText
 	
 	frame.castBar = frame.ArtContainer.CastBar
-	frame.castBar.texture = frame.castBar:GetRegions() --No parentKey, yet?
+	-- frame.castBar.texture = frame.castBar:GetRegions() --No parentKey, yet?
 	frame.castBar.border = frame.ArtContainer.CastBarBorder
 	frame.castBar.icon = frame.ArtContainer.CastBarSpellIcon
 	frame.castBar.shield = frame.ArtContainer.CastBarFrameShield
