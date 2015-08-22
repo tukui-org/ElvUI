@@ -469,10 +469,26 @@ function CH:UpdateAnchors()
 	CH:PositionChat(true)
 end
 
+local function FindRightChatID()
+	local rightChatID
+	
+	for _, frameName in pairs(CHAT_FRAMES) do
+		local chat = _G[frameName]
+		local id = chat:GetID()
+
+		if E:FramesOverlap(chat, RightChatPanel) then
+			rightChatID = id
+			break
+		end
+	end
+	
+	return rightChatID
+end
+
 function CH:UpdateChatTabs()
 	local fadeUndockedTabs = E.db["chat"].fadeUndockedTabs
 	local fadeTabsNoBackdrop = E.db["chat"].fadeTabsNoBackdrop
-
+		
 	for i = 1, CreatedFrames do
 		local chat = _G[format("ChatFrame%d", i)]
 		local tab = _G[format("ChatFrame%sTab", i)]
@@ -488,7 +504,7 @@ function CH:UpdateChatTabs()
 			end
 		end
 		
-		if chat:IsShown() and not (id > NUM_CHAT_WINDOWS) and id == self.RightChatWindowID then
+		if chat:IsShown() and not (id > NUM_CHAT_WINDOWS) and (id == self.RightChatWindowID) then
 			if E.db.chat.panelBackdrop == 'HIDEBOTH' or E.db.chat.panelBackdrop == 'LEFT' then
 				CH:SetupChatTabs(tab, fadeTabsNoBackdrop and true or false)
 			else
@@ -512,27 +528,13 @@ function CH:PositionChat(override, noSave)
 	RightChatPanel:SetSize(E.db.chat.separateSizes and E.db.chat.panelWidthRight or E.db.chat.panelWidth, E.db.chat.separateSizes and E.db.chat.panelHeightRight or E.db.chat.panelHeight)
 	LeftChatPanel:SetSize(E.db.chat.panelWidth, E.db.chat.panelHeight)
 
+	self.RightChatWindowID = FindRightChatID()
+
 	if not self.db.lockPositions or E.private.chat.enable ~= true then return end
 
-	local chat, chatbg, tab, id, point, button, isDocked, chatFound
+	local chat, chatbg, tab, id, point, button, isDocked
 	local fadeUndockedTabs = E.db["chat"].fadeUndockedTabs
 	local fadeTabsNoBackdrop = E.db["chat"].fadeTabsNoBackdrop
-
-	for _, frameName in pairs(CHAT_FRAMES) do
-		chat = _G[frameName]
-		id = chat:GetID()
-
-		if E:FramesOverlap(chat, RightChatPanel) then
-			chatFound = true
-			break
-		end
-	end
-
-	if chatFound then
-		self.RightChatWindowID = id
-	else
-		self.RightChatWindowID = nil
-	end
 
 	for i=1, CreatedFrames do
 		local BASE_OFFSET = 60
