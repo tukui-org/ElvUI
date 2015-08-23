@@ -1236,6 +1236,7 @@ local ignoreSettings = {
 	['noDuration'] = true,
 	['onlyDispellable'] = true,
 	['useFilter'] = true,
+	['bossAuras'] = true,
 }
 
 local ignoreSettingsGroup = {
