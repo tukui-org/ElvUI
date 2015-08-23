@@ -1276,9 +1276,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				if ( not CHAT_OPTIONS.HIDE_FRAME_ALERTS or type == "WHISPER" or type == "BN_WHISPER" ) then	--BN_WHISPER FIXME
 					if (not (type == "BN_CONVERSATION" and BNIsSelf(arg13))) then
 						if (not FCFManager_ShouldSuppressMessageFlash(self, chatGroup, chatTarget) ) then
-							--FCF_StartAlertFlash(self); THIS TAINTS<<<<<<<
-							_G[self:GetName().."Tab"].glow:Show()
-							_G[self:GetName().."Tab"]:SetScript("OnUpdate", CH.ChatTab_OnUpdate)
+							FCF_StartAlertFlash(self); --This would taint if we were not using LibChatAnims
 						end
 					end
 				end
@@ -1286,15 +1284,6 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 		end
 
 		return true;
-	end
-end
-
-function CH:ChatTab_OnUpdate(elapsed)
-	if self.glow:IsShown() then
-		E:Flash(self.glow, 1)
-	else
-		E:StopFlash(self.glow);
-		self:SetScript("OnUpdate", nil)
 	end
 end
 
@@ -1348,10 +1337,6 @@ function CH:SetupChat(event, ...)
 				end
 			end)
 			frame.scriptsSet = true
-		end
-
-		if not _G[frameName.."Tab"].glow.anim then
-			E:SetUpAnimGroup(_G[frameName.."Tab"].glow, "FlashLoop")
 		end
 	end
 
