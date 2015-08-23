@@ -1254,7 +1254,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				body = body:gsub("^(.-|h) "..L["yells"], "%1")
 				body = body:gsub("<"..AFK..">", "[|cffFF0000"..L["AFK"].."|r] ")
 				body = body:gsub("<"..DND..">", "[|cffE7E716"..L["DND"].."|r] ")
-				body = body:gsub("%[BN_CONVERSATION:", '%['.."")
+				body = body:gsub("%[BN_CONVERSATION:", '%[1'.."")
 				body = body:gsub("^%["..RAID_WARNING.."%]", '['..L["RW"]..']')
 			end
 			self:AddMessage(CH:ConcatenateTimeStamp(body), info.r, info.g, info.b, info.id, false, accessID, typeID);
