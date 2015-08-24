@@ -897,7 +897,7 @@ G.unitframe.ChannelTicksSize = {
 --Spells Effected By Haste
 G.unitframe.HastedChannelTicks = {
 	--[SpellName(64901)] = true, -- Hymn of Hope
-	[SpellName(64843)] = true, -- Divine Hymn
+	-- [SpellName(64843)] = true, -- Divine Hymn
 }
 
 --This should probably be the same as the whitelist filter + any personal class ones that may be important to watch

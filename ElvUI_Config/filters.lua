@@ -6,6 +6,8 @@ local selectedFilter;
 local filters;
 local tinsert = table.insert
 local tonumber = tonumber
+local format = string.format
+local UNKNOWN = UNKNOWN
 
 local function UpdateFilterGroup()
 	--Prevent errors when choosing a new filter, by doing a reset of the groups 
@@ -75,7 +77,7 @@ local function UpdateFilterGroup()
 							local spellString
 							local spellID = tonumber(filter)
 							if spellID then
-								spellString = filter.." ("..(GetSpellInfo(spellID))..")"
+								spellString = format("%s (%s)", filter, (GetSpellInfo(spellID)) or UNKNOWN)
 							end
 							filters[filter] = spellString or filter
 						end

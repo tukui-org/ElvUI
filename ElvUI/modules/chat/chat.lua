@@ -469,10 +469,26 @@ function CH:UpdateAnchors()
 	CH:PositionChat(true)
 end
 
+local function FindRightChatID()
+	local rightChatID
+	
+	for _, frameName in pairs(CHAT_FRAMES) do
+		local chat = _G[frameName]
+		local id = chat:GetID()
+
+		if E:FramesOverlap(chat, RightChatPanel) then
+			rightChatID = id
+			break
+		end
+	end
+	
+	return rightChatID
+end
+
 function CH:UpdateChatTabs()
 	local fadeUndockedTabs = E.db["chat"].fadeUndockedTabs
 	local fadeTabsNoBackdrop = E.db["chat"].fadeTabsNoBackdrop
-
+		
 	for i = 1, CreatedFrames do
 		local chat = _G[format("ChatFrame%d", i)]
 		local tab = _G[format("ChatFrame%sTab", i)]
@@ -488,7 +504,7 @@ function CH:UpdateChatTabs()
 			end
 		end
 		
-		if chat:IsShown() and not (id > NUM_CHAT_WINDOWS) and id == self.RightChatWindowID then
+		if chat:IsShown() and not (id > NUM_CHAT_WINDOWS) and (id == self.RightChatWindowID) then
 			if E.db.chat.panelBackdrop == 'HIDEBOTH' or E.db.chat.panelBackdrop == 'LEFT' then
 				CH:SetupChatTabs(tab, fadeTabsNoBackdrop and true or false)
 			else
@@ -512,27 +528,13 @@ function CH:PositionChat(override, noSave)
 	RightChatPanel:SetSize(E.db.chat.separateSizes and E.db.chat.panelWidthRight or E.db.chat.panelWidth, E.db.chat.separateSizes and E.db.chat.panelHeightRight or E.db.chat.panelHeight)
 	LeftChatPanel:SetSize(E.db.chat.panelWidth, E.db.chat.panelHeight)
 
+	self.RightChatWindowID = FindRightChatID()
+
 	if not self.db.lockPositions or E.private.chat.enable ~= true then return end
 
-	local chat, chatbg, tab, id, point, button, isDocked, chatFound
+	local chat, chatbg, tab, id, point, button, isDocked
 	local fadeUndockedTabs = E.db["chat"].fadeUndockedTabs
 	local fadeTabsNoBackdrop = E.db["chat"].fadeTabsNoBackdrop
-
-	for _, frameName in pairs(CHAT_FRAMES) do
-		chat = _G[frameName]
-		id = chat:GetID()
-
-		if E:FramesOverlap(chat, RightChatPanel) then
-			chatFound = true
-			break
-		end
-	end
-
-	if chatFound then
-		self.RightChatWindowID = id
-	else
-		self.RightChatWindowID = nil
-	end
 
 	for i=1, CreatedFrames do
 		local BASE_OFFSET = 60
@@ -1254,7 +1256,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				body = body:gsub("^(.-|h) "..L["yells"], "%1")
 				body = body:gsub("<"..AFK..">", "[|cffFF0000"..L["AFK"].."|r] ")
 				body = body:gsub("<"..DND..">", "[|cffE7E716"..L["DND"].."|r] ")
-				body = body:gsub("%[BN_CONVERSATION:", '%['.."")
+				body = body:gsub("%[BN_CONVERSATION:", '%[1'.."")
 				body = body:gsub("^%["..RAID_WARNING.."%]", '['..L["RW"]..']')
 			end
 			self:AddMessage(CH:ConcatenateTimeStamp(body), info.r, info.g, info.b, info.id, false, accessID, typeID);
@@ -1268,7 +1270,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			end
 			self.tellTimer = GetTime() + CHAT_TELL_ALERT_TIME;
 			--FCF_FlashTab(self);
-			-- FlashClientIcon();
+			FlashClientIcon();
 		end
 
 		if ( not self:IsShown() ) then
@@ -1276,9 +1278,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				if ( not CHAT_OPTIONS.HIDE_FRAME_ALERTS or type == "WHISPER" or type == "BN_WHISPER" ) then	--BN_WHISPER FIXME
 					if (not (type == "BN_CONVERSATION" and BNIsSelf(arg13))) then
 						if (not FCFManager_ShouldSuppressMessageFlash(self, chatGroup, chatTarget) ) then
-							--FCF_StartAlertFlash(self); THIS TAINTS<<<<<<<
-							_G[self:GetName().."Tab"].glow:Show()
-							_G[self:GetName().."Tab"]:SetScript("OnUpdate", CH.ChatTab_OnUpdate)
+							FCF_StartAlertFlash(self); --This would taint if we were not using LibChatAnims
 						end
 					end
 				end
@@ -1286,15 +1286,6 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 		end
 
 		return true;
-	end
-end
-
-function CH:ChatTab_OnUpdate(elapsed)
-	if self.glow:IsShown() then
-		E:Flash(self.glow, 1)
-	else
-		E:StopFlash(self.glow);
-		self:SetScript("OnUpdate", nil)
 	end
 end
 
@@ -1348,10 +1339,6 @@ function CH:SetupChat(event, ...)
 				end
 			end)
 			frame.scriptsSet = true
-		end
-
-		if not _G[frameName.."Tab"].glow.anim then
-			E:SetUpAnimGroup(_G[frameName.."Tab"].glow, "FlashLoop")
 		end
 	end
 

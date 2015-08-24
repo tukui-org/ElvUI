@@ -1,0 +1,15 @@
+## Interface: 60200
+## Title: Lib: ChatAnims
+## Notes: UIFrameFlash to Animation conversion library for Floating Chat Frame functions.
+## Author: Funkydude
+## X-Category: Library
+## OptionalDeps: LibStub
+## X-License: CC BY-NC-SA 3.0
+## X-Curse-Packaged-Version: r20-release
+## X-Curse-Project-Name: LibChatAnims
+## X-Curse-Project-ID: libchatanims
+## X-Curse-Repository-ID: wow/libchatanims/mainline
+
+embeds.xml
+LibChatAnims\LibChatAnims.xml
+

@@ -13,7 +13,7 @@ local function LoadSkin(event)
 		Achievement.icon:SetTemplate()
 		Achievement.icon:SetSize(BiggerIcon and 54 or 36, BiggerIcon and 54 or 36)
 		Achievement.icon:ClearAllPoints()
-		Achievement.icon:Point("LEFT", 8, 0)
+		Achievement.icon:Point("TOPLEFT", 8, -8)
 		Achievement.icon.bling:Kill()
 		Achievement.icon.frame:Kill()
 		Achievement.icon.texture:SetTexCoord(unpack(E.TexCoords))
@@ -50,6 +50,9 @@ local function LoadSkin(event)
 
 		if Achievement.tracked then
 			S:HandleCheckBox(Achievement.tracked, true)
+			Achievement.tracked:Size(14, 14)
+			Achievement.tracked:ClearAllPoints()
+			Achievement.tracked:SetPoint('TOPLEFT', Achievement.icon, 'BOTTOMLEFT', 0, -2)
 		end
 		
 		Achievement.isSkinned = true
