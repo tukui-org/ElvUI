@@ -727,6 +727,7 @@ local function LoadSkin()
         "DisplayPanelCinematicSubtitles",
         "DisplayPanelRotateMinimap",
         "DisplayPanelShowAccountAchievments",
+		"DisplayPanelAJAlerts",
         --Objectives
         "ObjectivesPanelAutoQuestTracking",
         "ObjectivesPanelMapFade",
