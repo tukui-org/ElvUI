@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.encounterjournal ~= true then return end
 	EncounterJournal:StripTextures(true)
-	EncounterJournal:CreateBackdrop("Default")
+	EncounterJournal:CreateBackdrop("Transparent")
 
 	EncounterJournalNavBar:StripTextures(true)
 	EncounterJournalNavBarOverlay:StripTextures(true)
