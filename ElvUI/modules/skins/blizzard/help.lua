@@ -17,6 +17,24 @@ local function LoadSkin()
 		"HelpFrameKnowledgebaseNavBarHomeButton",
 		"HelpFrameCharacterStuckStuck",
 	}
+	
+	--Remove when 6.2.2 is launched in all regions
+	if not E.wowbuild >= 20426 then
+		tinsert(buttons, "HelpFrameTicketSubmit")
+		tinsert(buttons, "HelpFrameTicketCancel")
+		
+		HelpFrameTicketScrollFrame:StripTextures()
+		HelpFrameTicketScrollFrame:CreateBackdrop("Transparent")
+		HelpFrameTicketScrollFrame.backdrop:Point("TOPLEFT", -4, 4)
+		HelpFrameTicketScrollFrame.backdrop:Point("BOTTOMRIGHT", 6, -4)
+		for i=1, HelpFrameTicket:GetNumChildren() do
+			local child = select(i, HelpFrameTicket:GetChildren())
+			if not child:GetName() then
+				child:StripTextures()
+			end
+		end
+		S:HandleScrollBar(HelpFrameTicketScrollFrameScrollBar, 4)
+	end
 
 	-- 4.3.4 patch
 	if E.wowbuild >= 15595 then

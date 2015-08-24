@@ -1211,9 +1211,13 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			end
 
 			local relevantDefaultLanguage = self.defaultLanguage;
-			if ( (type == "SAY") or (type == "YELL") ) then
-				relevantDefaultLanguage = self.alternativeDefaultLanguage;
+			--6.2.2 ONLY START
+			if E.wowbuild >= 20426 then
+				if ( (type == "SAY") or (type == "YELL") ) then
+					relevantDefaultLanguage = self.alternativeDefaultLanguage;
+				end
 			end
+			--6.2.2 ONLY END
 			if ( (strlen(arg3) > 0) and (arg3 ~= relevantDefaultLanguage) ) then
 				local languageHeader = "["..arg3.."] ";
 				if ( showLink and (strlen(arg2) > 0) ) then
