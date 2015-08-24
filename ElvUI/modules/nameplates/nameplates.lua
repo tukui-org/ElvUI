@@ -282,11 +282,6 @@ function NP:CheckArenaHealers()
 end
 
 function NP:UpdateLevelAndName(myPlate)
-	-- local levelObject = self.ArtContainer.LevelText
-	-- if levelObject and levelObject:GetObjectType() == 'FontString' then
-		-- self.level = levelObject
-	-- end
-
 	if not NP.db.showLevel then
 		myPlate.level:SetText("")
 		myPlate.level:Hide()
@@ -323,7 +318,6 @@ function NP:UpdateLevelAndName(myPlate)
 end
 
 function NP:GetReaction(frame)
-	-- local r, g, b = NP:RoundColors(frame.healthBar:GetStatusBarColor())
 	local r, g, b = frame.healthBar:GetStatusBarColor()
 
 	for class, _ in pairs(RAID_CLASS_COLORS) do
@@ -935,28 +929,36 @@ function NP:UpdateSettings()
 	NP.HealthBar_OnSizeChanged(myPlate.healthBar, myPlate.healthBar:GetSize())
 end
 
-function NP:CreatePlate(frame) 
-	frame.healthBar = frame.ArtContainer.HealthBar
-	-- frame.healthBar.texture = frame.healthBar:GetRegions() --No parentKey, yet?
+function NP:CreatePlate(frame)
+	if E.wowbuild >= 20426 then --6.2.2 ONLY START
+		frame.healthBar = frame.ArtContainer.HealthBar
+		-- frame.healthBar.texture = frame.healthBar:GetRegions() --No parentKey, yet?
 
-	-- frame.absorbBar = frame.ArtContainer.AbsorbBar
-	frame.border = frame.ArtContainer.Border
-	frame.highlight = frame.ArtContainer.Highlight
-	frame.level = frame.ArtContainer.LevelText
-	frame.raidIcon = frame.ArtContainer.RaidTargetIcon
-	frame.eliteIcon = frame.ArtContainer.EliteIcon
-	frame.threat = frame.ArtContainer.AggroWarningTexture
-	frame.bossIcon = frame.ArtContainer.HighLevelIcon
-	frame.name = frame.NameContainer.NameText
-	
-	frame.castBar = frame.ArtContainer.CastBar
-	-- frame.castBar.texture = frame.castBar:GetRegions() --No parentKey, yet?
-	frame.castBar.border = frame.ArtContainer.CastBarBorder
-	frame.castBar.icon = frame.ArtContainer.CastBarSpellIcon
-	frame.castBar.shield = frame.ArtContainer.CastBarFrameShield
-	frame.castBar.name = frame.ArtContainer.CastBarText
-	frame.castBar.shadow = frame.ArtContainer.CastBarTextBG
-	
+		-- frame.absorbBar = frame.ArtContainer.AbsorbBar
+		frame.border = frame.ArtContainer.Border
+		frame.highlight = frame.ArtContainer.Highlight
+		frame.level = frame.ArtContainer.LevelText
+		frame.raidIcon = frame.ArtContainer.RaidTargetIcon
+		frame.eliteIcon = frame.ArtContainer.EliteIcon
+		frame.threat = frame.ArtContainer.AggroWarningTexture
+		frame.bossIcon = frame.ArtContainer.HighLevelIcon
+		frame.name = frame.NameContainer.NameText
+		
+		frame.castBar = frame.ArtContainer.CastBar
+		-- frame.castBar.texture = frame.castBar:GetRegions() --No parentKey, yet?
+		frame.castBar.border = frame.ArtContainer.CastBarBorder
+		frame.castBar.icon = frame.ArtContainer.CastBarSpellIcon
+		frame.castBar.shield = frame.ArtContainer.CastBarFrameShield
+		frame.castBar.name = frame.ArtContainer.CastBarText
+		frame.castBar.shadow = frame.ArtContainer.CastBarTextBG
+	else --6.2.2 ONLY END
+		frame.barFrame, frame.nameFrame = frame:GetChildren()
+		frame.healthBar, frame.castBar = frame.barFrame:GetChildren()
+		frame.threat, frame.border, frame.highlight, frame.level, frame.bossIcon, frame.raidIcon, frame.eliteIcon = frame.barFrame:GetRegions()
+		frame.name = frame.nameFrame:GetRegions()
+		frame.healthBar.texture = frame.healthBar:GetRegions()
+		frame.castBar.texture, frame.castBar.border, frame.castBar.shield, frame.castBar.icon, frame.castBar.name, frame.castBar.shadow = frame.castBar:GetRegions()
+	end
 
 	local myPlate = CreateFrame("Frame", nil, self.PlateParent)
 	if(self.viewPort) then

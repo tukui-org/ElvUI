@@ -727,7 +727,6 @@ local function LoadSkin()
         "DisplayPanelCinematicSubtitles",
         "DisplayPanelRotateMinimap",
         "DisplayPanelShowAccountAchievments",
-		"DisplayPanelAJAlerts",
         --Objectives
         "ObjectivesPanelAutoQuestTracking",
         "ObjectivesPanelMapFade",
@@ -844,6 +843,13 @@ local function LoadSkin()
 		--Watev
 		"NamesPanelUnitNameplatesNameplateClassColors",
     }
+
+	--6.2.2 ONLY START
+	if E.wowbuild >= 20426 then
+		tinsert(interfacecheckbox, "DisplayPanelAJAlerts")
+	end
+	--6.2.2 ONLY END
+
     for i = 1, getn(interfacecheckbox) do
         local icheckbox = _G["InterfaceOptions"..interfacecheckbox[i]]
         if icheckbox then
