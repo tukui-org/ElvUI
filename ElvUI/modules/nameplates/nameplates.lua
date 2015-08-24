@@ -282,11 +282,6 @@ function NP:CheckArenaHealers()
 end
 
 function NP:UpdateLevelAndName(myPlate)
-	-- local levelObject = self.ArtContainer.LevelText
-	-- if levelObject and levelObject:GetObjectType() == 'FontString' then
-		-- self.level = levelObject
-	-- end
-
 	if not NP.db.showLevel then
 		myPlate.level:SetText("")
 		myPlate.level:Hide()
@@ -323,7 +318,6 @@ function NP:UpdateLevelAndName(myPlate)
 end
 
 function NP:GetReaction(frame)
-	-- local r, g, b = NP:RoundColors(frame.healthBar:GetStatusBarColor())
 	local r, g, b = frame.healthBar:GetStatusBarColor()
 
 	for class, _ in pairs(RAID_CLASS_COLORS) do
