@@ -16,6 +16,9 @@ local function LoadSkin()
 		"HelpFrameKnowledgebaseSearchButton",
 		"HelpFrameKnowledgebaseNavBarHomeButton",
 		"HelpFrameCharacterStuckStuck",
+		"HelpFrameButton16",
+		"HelpFrameSubmitSuggestionSubmit",
+		"HelpFrameReportBugSubmit",
 	}
 	
 	--Remove when 6.2.2 is launched in all regions
@@ -34,13 +37,6 @@ local function LoadSkin()
 			end
 		end
 		S:HandleScrollBar(HelpFrameTicketScrollFrameScrollBar, 4)
-	end
-
-	-- 4.3.4 patch
-	if E.wowbuild >= 15595 then
-		tinsert(buttons, "HelpFrameButton16")
-		tinsert(buttons, "HelpFrameSubmitSuggestionSubmit")
-		tinsert(buttons, "HelpFrameReportBugSubmit")
 	end
 
 	-- skin main frames
