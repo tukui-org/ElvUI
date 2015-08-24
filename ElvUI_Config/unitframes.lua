@@ -1412,7 +1412,7 @@ function UF:CreateCustomTextGroup(unit, objectName)
 				order = 3,
 				name = L["Font Size"],
 				type = "range",
-				min = 6, max = 32, step = 1,
+				min = 4, max = 32, step = 1,
 			},
 			fontOutline = {
 				order = 4,
@@ -1621,7 +1621,7 @@ E.Options.args.unitframe = {
 							name = L["Font Size"],
 							desc = L["Set the font size for unitframes."],
 							type = "range",
-							min = 6, max = 22, step = 1,
+							min = 4, max = 22, step = 1,
 							set = function(info, value) E.db.unitframe[ info[#info] ] = value; UF:Update_FontStrings() end,
 						},
 						fontOutline = {

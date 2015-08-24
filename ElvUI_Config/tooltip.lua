@@ -252,7 +252,7 @@ E.Options.args.tooltip = {
 							order = 3,
 							name = L["Font Size"],
 							type = "range",
-							min = 6, max = 22, step = 1,
+							min = 4, max = 22, step = 1,
 							set = function(info, value)
 								E.db.tooltip.healthBar.fontSize = value;
 								GameTooltipStatusBar.text:FontTemplate(E.LSM:Fetch("font", E.db.tooltip.healthBar.font), E.db.tooltip.healthBar.fontSize, "OUTLINE")
