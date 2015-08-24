@@ -22,7 +22,7 @@ local function LoadSkin()
 	}
 	
 	--Remove when 6.2.2 is launched in all regions
-	if not E.wowbuild >= 20426 then
+	if not (E.wowbuild >= 20426) then
 		tinsert(buttons, "HelpFrameTicketSubmit")
 		tinsert(buttons, "HelpFrameTicketCancel")
 		
