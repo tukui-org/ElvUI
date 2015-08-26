@@ -6,6 +6,7 @@ local find = string.find
 local split = string.split
 local match = string.match
 local twipe = table.wipe
+local tonumber = tonumber
 
 --Constants
 E.myclass = select(2, UnitClass("player"));
@@ -718,6 +719,7 @@ function E:DBConversions()
 		end
 	end
 	
+	--Add missing Stack Threshold
 	if E.global.unitframe['aurafilters']['RaidDebuffs'].spells then
 		local matchFound
 		for k, v in pairs(E.global.unitframe['aurafilters']['RaidDebuffs'].spells) do
@@ -732,6 +734,19 @@ function E:DBConversions()
 			
 			if not matchFound then
 				E.global.unitframe['aurafilters']['RaidDebuffs']['spells'][k].stackThreshold = 0
+			end
+		end
+	end
+	
+	--Convert spellIDs saved as strings to numbers
+	if E.global.unitframe['aurafilters']['Whitelist (Strict)'].spells then
+		for k, v in pairs(E.global.unitframe['aurafilters']['Whitelist (Strict)'].spells) do
+			if type(v) == 'table' then
+				for k_,v_ in pairs(v) do
+					if k_ == 'spellID' and type(v_) == "string" and tonumber(v_) then
+						E.global.unitframe['aurafilters']['Whitelist (Strict)']['spells'][k].spellID = tonumber(v_)
+					end
+				end
 			end
 		end
 	end
