@@ -139,7 +139,7 @@ E.Options.args.auras = {
 					order = 3,
 					name = L["Font Size"],
 					type = "range",
-					min = 6, max = 22, step = 1,
+					min = 4, max = 22, step = 1,
 				},
 				fontOutline = {
 					order = 4,
@@ -236,7 +236,7 @@ E.Options.args.auras = {
 					order = 7,
 					name = L["Font Size"],
 					type = "range",
-					min = 6, max = 22, step = 1,
+					min = 4, max = 22, step = 1,
 				},
 				fontOutline = {
 					order = 8,

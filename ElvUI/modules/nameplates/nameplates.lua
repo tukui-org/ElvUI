@@ -318,7 +318,7 @@ function NP:UpdateLevelAndName(myPlate)
 end
 
 function NP:GetReaction(frame)
-	local r, g, b = frame.healthBar:GetStatusBarColor()
+	local r, g, b = NP:RoundColors(frame.healthBar:GetStatusBarColor())
 
 	for class, _ in pairs(RAID_CLASS_COLORS) do
 		local bb = b

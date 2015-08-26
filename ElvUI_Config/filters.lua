@@ -245,7 +245,7 @@ local function UpdateFilterGroup()
 							if not E.global.unitframe['aurafilters'][selectedFilter]['spells'][name] then
 								E.global.unitframe['aurafilters'][selectedFilter]['spells'][name] = {
 									['enable'] = true,
-									['spellID'] = value,
+									['spellID'] = tonumber(value),
 									['priority'] = 0,
 								}
 								UpdateFilterGroup();
