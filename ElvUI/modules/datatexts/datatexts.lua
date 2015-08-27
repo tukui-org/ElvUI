@@ -154,6 +154,11 @@ end
 
 
 function DT:AssignPanelToDataText(panel, data)
+	panel.name = ""
+	if data['name'] then
+		panel.name = data['name']
+	end
+
 	if data['events'] then
 		for _, event in pairs(data['events']) do
 			-- use new filtered event registration for appropriate events
@@ -268,6 +273,8 @@ function DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onE
 	else
 		error('Cannot register datatext no name was provided.')
 	end
+
+	DT.RegisteredDataTexts[name]['name'] = name
 
 	if type(events) ~= 'table' and events ~= nil then
 		error('Events must be registered as a table.')
