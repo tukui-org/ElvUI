@@ -6,6 +6,8 @@ local Sticky = LibStub("LibSimpleSticky-1.0");
 local _LOCK
 local LAB = LibStub("LibActionButton-1.0-ElvUI")
 local LSM = LibStub("LibSharedMedia-3.0")
+local MSQ = LibStub("Masque")
+local MSQGroup = MSQ and MSQ:Group("ElvUI", "ActionBars")
 
 local gsub = string.gsub
 local format = string.format
@@ -67,7 +69,10 @@ AB.customExitButton = {
 	tooltip = LEAVE_VEHICLE,
 }
 
-
+function AB:MasqueSkinCallback(Addon, Group, SkinID, Gloss, Backdrop, Colors, Disabled)
+	print(Addon, Group, SkinID, Gloss, Backdrop, Colors, Disabled)
+end
+MSQ:Register("ElvUI", MasqueSkinCallback, AB)
 
 function AB:PositionAndSizeBar(barName)
 	local spacing = E:Scale(self.db[barName].buttonspacing);
@@ -191,8 +196,11 @@ function AB:PositionAndSizeBar(barName)
 			button:Show()
 		end
 
-		self:StyleButton(button, nil, nil, true);
-		button:SetCheckedTexture("")
+
+		if not MSQ then
+			self:StyleButton(button, nil, nil, true);
+			button:SetCheckedTexture("")
+		end
 	end
 
 	if self.db[barName].enabled or not bar.initialized then
@@ -225,8 +233,9 @@ function AB:PositionAndSizeBar(barName)
 		UnregisterStateDriver(bar, "visibility");
 	end
 
-
 	E:SetMoverSnapOffset('ElvAB_'..bar.id, bar.db.buttonspacing / 2)
+	
+	if MSQGroup then MSQGroup:ReSkin() end
 end
 
 function AB:CreateBar(id)
@@ -249,6 +258,10 @@ function AB:CreateBar(id)
 
 		if i == 12 then
 			bar.buttons[i]:SetState(12, "custom", AB.customExitButton)
+		end
+		
+		if MSQGroup then
+			bar.buttons[i]:AddToMasque(MSQGroup)
 		end
 	end
 	self:UpdateButtonConfig(bar, bar.bindButtons)
@@ -430,6 +443,7 @@ end
 function AB:UpdateButtonSettings()
 	if E.private.actionbar.enable ~= true then return end
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return; end
+	
 	for button, _ in pairs(self["handledbuttons"]) do
 		if button then
 			self:StyleButton(button, button.noBackdrop)
@@ -449,6 +463,9 @@ function AB:UpdateButtonSettings()
 	for barName, bar in pairs(self["handledBars"]) do
 		self:UpdateButtonConfig(bar, bar.bindButtons)
 	end
+	
+	if MSQ and MSQ:Group("ElvUI", "ActionBars") then MSQ:Group("ElvUI", "ActionBars"):ReSkin() end
+	if MSQ and MSQ:Group("ElvUI", "StanceBar") then MSQ:Group("ElvUI", "StanceBar"):ReSkin() end
 end
 
 function AB:GetPage(bar, defaultPage, condition)
@@ -476,10 +493,12 @@ function AB:StyleButton(button, noBackdrop, adjustChecked)
 	local shine = _G[name.."Shine"];
 	local combat = InCombatLockdown()
 
-	if flash then flash:SetTexture(nil); end
-	if normal then normal:SetTexture(nil); normal:Hide(); normal:SetAlpha(0); end
-	if normal2 then normal2:SetTexture(nil); normal2:Hide(); normal2:SetAlpha(0); end
-	if border then border:Kill(); end
+	-- if not MSQ then
+		if flash then flash:SetTexture(nil); end
+		if normal then normal:SetTexture(nil); normal:Hide(); normal:SetAlpha(0); end
+		if normal2 then normal2:SetTexture(nil); normal2:Hide(); normal2:SetAlpha(0); end
+		if border then border:Kill(); end
+	-- end
 
 	if not button.noBackdrop then
 		button.noBackdrop = noBackdrop;
@@ -491,18 +510,20 @@ function AB:StyleButton(button, noBackdrop, adjustChecked)
 		count:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 	end
 
-	if not button.noBackdrop and not button.backdrop then
-		button:CreateBackdrop('Default', true)
-		button.backdrop:SetAllPoints()
-	end
+	if not MSQ then
+		if not button.noBackdrop and not button.backdrop then
+			button:CreateBackdrop('Default', true)
+			button.backdrop:SetAllPoints()
+		end
 
-	if icon then
-		icon:SetTexCoord(unpack(E.TexCoords));
-		icon:SetInside()
-	end
+		if icon then
+			icon:SetTexCoord(unpack(E.TexCoords));
+			icon:SetInside()
+		end
 
-	if shine then
-		shine:SetAllPoints()
+		if shine then
+			shine:SetAllPoints()
+		end
 	end
 
 	if self.db.hotkeytext then
@@ -517,7 +538,12 @@ function AB:StyleButton(button, noBackdrop, adjustChecked)
 
 	button.FlyoutUpdateFunc = AB.StyleFlyout
 	self:FixKeybindText(button);
-	button:StyleButton();
+	
+	-- if MSQ then
+		-- button:StyleButton(true, true, true);
+	-- else
+		button:StyleButton();
+	-- end
 
 	if(not self.handledbuttons[button]) then
 		E:RegisterCooldown(button.cooldown)
@@ -728,7 +754,7 @@ function AB:FixKeybindText(button)
 	end
 
 	hotkey:ClearAllPoints()
-	hotkey:Point("TOPRIGHT", 0, -3);
+	hotkey:SetPoint("TOPRIGHT", 0, -3);
 end
 
 local buttons = 0

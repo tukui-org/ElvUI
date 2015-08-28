@@ -1,6 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars');
 
+local MSQ = LibStub("Masque")
+local MSQGroup = MSQ and MSQ:Group("ElvUI", "StanceBar")
+
 local ceil = math.ceil;
 local lower = string.lower;
 
@@ -52,28 +55,30 @@ function AB:StyleShapeShift(event)
 				cooldown:SetAlpha(0);
 			end
 
-			if isActive then
-				StanceBarFrame.lastSelected = button:GetID();
-				if numForms == 1 then
-					button.checked:SetTexture(1, 1, 1, 0.5)
-					button:SetChecked(true);
-				else
-					button.checked:SetTexture(1, 1, 1, 0.5)
-					button:SetChecked(self.db.stanceBar.style ~= 'darkenInactive');
-				end
-			else
-				if numForms == 1 or stance == 0 then
-					button:SetChecked(false);
-				else
-					button:SetChecked(self.db.stanceBar.style == 'darkenInactive');
-					button.checked:SetAlpha(1)
-					if self.db.stanceBar.style == 'darkenInactive' then
-						button.checked:SetTexture(0, 0, 0, 0.5)
+			-- if not MSQ then
+				if isActive then
+					StanceBarFrame.lastSelected = button:GetID();
+					if numForms == 1 then
+						button.checked:SetTexture(1, 1, 1, 0.5)
+						button:SetChecked(true);
 					else
 						button.checked:SetTexture(1, 1, 1, 0.5)
+						button:SetChecked(self.db.stanceBar.style ~= 'darkenInactive');
+					end
+				else
+					if numForms == 1 or stance == 0 then
+						button:SetChecked(false);
+					else
+						button:SetChecked(self.db.stanceBar.style == 'darkenInactive');
+						button.checked:SetAlpha(1)
+						if self.db.stanceBar.style == 'darkenInactive' then
+							button.checked:SetTexture(0, 0, 0, 0.5)
+						else
+							button.checked:SetTexture(1, 1, 1, 0.5)
+						end
 					end
 				end
-			end
+			-- end
 
 			if isCastable then
 				icon:SetVertexColor(1.0, 1.0, 1.0);
@@ -226,6 +231,8 @@ function AB:PositionAndSizeBarShapeShift()
 			self:StyleButton(button, nil, true);
 		end
 	end
+	
+	-- if MSQGroup then MSQGroup:ReSkin() end
 end
 
 function AB:AdjustMaxStanceButtons(event)
@@ -240,6 +247,9 @@ function AB:AdjustMaxStanceButtons(event)
 		if not bar.buttons[i] then
 			bar.buttons[i] = CreateFrame("CheckButton", format(bar:GetName().."Button%d", i), bar, "StanceButtonTemplate")
 			bar.buttons[i]:SetID(i)
+			if MSQGroup then
+				MSQGroup:AddButton(bar.buttons[i])
+			end
 			initialCreate = true;
 		end
 
@@ -271,6 +281,7 @@ end
 function AB:UpdateStanceBindings()
 	for i = 1, NUM_STANCE_SLOTS do
 		if self.db.hotkeytext then
+			print("show stancebar hotkeys")
 			_G["ElvUI_StanceBarButton"..i.."HotKey"]:Show()
 			_G["ElvUI_StanceBarButton"..i.."HotKey"]:SetText(GetBindingKey("CLICK ElvUI_StanceBarButton"..i..":LeftButton"))
 			self:FixKeybindText(_G["ElvUI_StanceBarButton"..i])
