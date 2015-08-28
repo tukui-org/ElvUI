@@ -28,4 +28,5 @@
 	<Script file='time.lua'/>
 	<Script file='versatility.lua'/>
 	<Script file='garrison.lua'/>
+	<Script file='elvuiconfig.lua'/>
 </Ui>
