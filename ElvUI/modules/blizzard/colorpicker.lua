@@ -94,6 +94,7 @@ function B:EnhanceColorPicker()
 	ColorPickerCancelButton:ClearAllPoints()
 	ColorPickerOkayButton:ClearAllPoints()
 	ColorPickerCancelButton:Point("BOTTOMRIGHT", ColorPickerFrame, "BOTTOMRIGHT", -6, 6)
+	ColorPickerCancelButton:Point("BOTTOMLEFT", ColorPickerFrame, "BOTTOM", 0, 6)
 	ColorPickerOkayButton:Point("BOTTOMLEFT", ColorPickerFrame,"BOTTOMLEFT", 6,6)
 	ColorPickerOkayButton:Point("RIGHT", ColorPickerCancelButton,"LEFT", -4,0)
 	S:HandleSliderFrame(OpacitySliderFrame)
@@ -108,11 +109,12 @@ function B:EnhanceColorPicker()
 			ColorPPBoxLabelA:Show()
 			ColorPPBoxH:SetScript("OnTabPressed", function(self) ColorPPBoxA:SetFocus()  end)
 			UpdateAlphaText()
-
+			self:SetWidth(405)
 		else
 			ColorPPBoxA:Hide()
 			ColorPPBoxLabelA:Hide()
 			ColorPPBoxH:SetScript("OnTabPressed", function(self) ColorPPBoxR:SetFocus()  end)
+			self:SetWidth(345)
 		end
 	end)
 
@@ -140,7 +142,7 @@ function B:EnhanceColorPicker()
 
 	-- move the Color Swatch
 	ColorSwatch:ClearAllPoints()
-	ColorSwatch:Point("TOPLEFT", ColorPickerFrame, "TOPLEFT", 230, -45)
+	ColorSwatch:Point("TOPLEFT", ColorPickerFrame, "TOPLEFT", 215, -45)
 
 	-- add Color Swatch for original color
 	local t = ColorPickerFrame:CreateTexture("ColorPPOldColorSwatch")
@@ -161,9 +163,9 @@ function B:EnhanceColorPicker()
 	local b = CreateFrame("Button", "ColorPPCopy", ColorPickerFrame, "UIPanelButtonTemplate")
 	S:HandleButton(b)
 	b:SetText(CALENDAR_COPY_EVENT)
-	b:SetWidth(50)
+	b:SetWidth(60)
 	b:SetHeight(22)
-	b:SetPoint("TOPLEFT", "ColorSwatch", "BOTTOMLEFT", -15, -5)
+	b:SetPoint("TOPLEFT", "ColorSwatch", "BOTTOMLEFT", 0, -5)
 
 	-- copy color into buffer on button click
 	b:SetScript("OnClick", function(self)
@@ -184,11 +186,12 @@ function B:EnhanceColorPicker()
 
 	--class color button
 	b = CreateFrame('Button', 'ColorPPClass', ColorPickerFrame, 'UIPanelButtonTemplate')
-	b:SetText('C')
+	b:SetText(CLASS)
 	S:HandleButton(b)
-	b:Width(18)
+	b:Width(80)
 	b:Height(22)
-	b:Point('TOPLEFT', 'ColorPPCopy', 'TOPRIGHT', 2, 0)
+	b:Point("TOP", "ColorPPCopy", "BOTTOMRIGHT", 0, -7)
+	
 
 	b:SetScript('OnClick', function()
 		local color = E.myclass == 'PRIEST' and E.PriestColors or RAID_CLASS_COLORS[E.myclass];
@@ -203,9 +206,9 @@ function B:EnhanceColorPicker()
 	b = CreateFrame("Button", "ColorPPPaste", ColorPickerFrame, "UIPanelButtonTemplate")
 	b:SetText(CALENDAR_PASTE_EVENT)
 	S:HandleButton(b)
-	b:Width(70)
+	b:Width(60)
 	b:Height(22)
-	b:Point("TOPLEFT", "ColorPPCopy", "BOTTOMLEFT", 0, -7)
+	b:Point('TOPLEFT', 'ColorPPCopy', 'TOPRIGHT', 2, 0)
 	b:Disable()  -- enable when something has been copied
 
 	-- paste color on button click, updating frame components
@@ -223,9 +226,9 @@ function B:EnhanceColorPicker()
 	b = CreateFrame("Button", "ColorPPDefault", ColorPickerFrame, "UIPanelButtonTemplate")
 	b:SetText(DEFAULT)
 	S:HandleButton(b)
-	b:Width(70)
+	b:Width(80)
 	b:Height(22)
-	b:Point("TOPLEFT", "ColorPPPaste", "BOTTOMLEFT", 0, -7)
+	b:Point("TOPLEFT", "ColorPPClass", "BOTTOMLEFT", 0, -7)
 	b:Disable()  -- enable when something has been copied
 	b:SetScript("OnHide", function(self)
 		self.colors = nil
@@ -250,13 +253,12 @@ function B:EnhanceColorPicker()
 		end
 	end)
 
-	-- locate Color Swatch for copy color
-	ColorPPCopyColorSwatch:SetPoint("LEFT", "ColorSwatch", "LEFT")
-	ColorPPCopyColorSwatch:Point("TOP", "ColorPPPaste", "BOTTOM", 0, -5)
+	-- position Color Swatch for copy color
+	ColorPPCopyColorSwatch:Point("BOTTOM", "ColorPPPaste", "TOP", 0, 10)
 
 	-- move the Opacity Slider Frame to align with bottom of Copy ColorSwatch
 	OpacitySliderFrame:ClearAllPoints()
-	OpacitySliderFrame:Point("BOTTOM", "ColorPPCopyColorSwatch", "BOTTOM", 0, 23)
+	OpacitySliderFrame:Point("BOTTOM", "ColorPPDefault", "BOTTOM", 0, 0)
 	OpacitySliderFrame:Point("RIGHT", "ColorPickerFrame", "RIGHT", -35, 18)
 
 	-- set up edit box frames and interior label and text areas
@@ -314,8 +316,8 @@ function B:EnhanceColorPicker()
 
 	-- finish up with placement
 	ColorPPBoxA:Point("RIGHT", "OpacitySliderFrame", "RIGHT", 10, 0)
-	ColorPPBoxH:Point("RIGHT", "ColorPPPaste", "RIGHT")
-	ColorPPBoxB:Point("RIGHT", "ColorPPPaste", "LEFT", -40, 0)
+	ColorPPBoxH:Point("RIGHT", "ColorPPDefault", "RIGHT", -10, 0)
+	ColorPPBoxB:Point("RIGHT", "ColorPPDefault", "LEFT", -40, 0)
 	ColorPPBoxG:Point("RIGHT", "ColorPPBoxB", "LEFT", -25, 0)
 	ColorPPBoxR:Point("RIGHT", "ColorPPBoxG", "LEFT", -25, 0)
 
