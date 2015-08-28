@@ -89,6 +89,7 @@ L["goldabbrev"] = "|cffffd700g|r" --Also used in Bags
 L["Hands"] = "Mains"
 L["Head"] = "Tête"
 L["Hit"] = "Toucher"
+L["Hold Shift + Right Click:"] = true;
 L["Home Latency:"] = "Latence du Domicile:"
 L["HP"] = "PdS"
 L["HPS"] = "HPS"

@@ -89,6 +89,7 @@ L["goldabbrev"] = "|cffffd700з|r" --Also used in Bags
 L["Hands"] = "Кисти рук"
 L["Head"] = "Голова"
 L["Hit"] = "Метк."
+L["Hold Shift + Right Click:"] = true;
 L["Home Latency:"] = "Локальная задержка: "
 L["HP"] = "+ Исцел."
 L["HPS"] = "ИВС"

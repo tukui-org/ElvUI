@@ -89,6 +89,7 @@ L["goldabbrev"] = "|cffffd700g|r" --Also used in Bags
 L["Hands"] = true;
 L["Head"] = true;
 L["Hit"] = true;
+L["Hold Shift + Right Click:"] = true;
 L["Home Latency:"] = true;
 L["HP"] = true;
 L["HPS"] = true;

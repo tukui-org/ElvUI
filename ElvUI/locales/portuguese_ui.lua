@@ -89,6 +89,7 @@ L["goldabbrev"] = "|cffffd700g|r"
 L["Hands"] = "Mãos"
 L["Head"] = "Cabeça"
 L["Hit"] = "Acerto"
+L["Hold Shift + Right Click:"] = true;
 L["Home Latency:"] = "Latência de Casa:"
 L["HP"] = "PV"
 L["HPS"] = "PVS"

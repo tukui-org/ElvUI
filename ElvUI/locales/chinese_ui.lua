@@ -89,6 +89,7 @@ L["goldabbrev"] = "|cffffd700金|r"
 L["Hands"] = "手"
 L["Head"] = "头"
 L["Hit"] = "命中"
+L["Hold Shift + Right Click:"] = true;
 L["Home Latency:"] = "本机延迟:"
 L["HP"] = "生命值"
 L["HPS"] = "治疗输出"
