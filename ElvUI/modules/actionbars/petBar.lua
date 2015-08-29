@@ -1,8 +1,14 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars');
 
+local Masque = LibStub("Masque", true)
+local MasqueGroup = Masque and Masque:Group("ElvUI", "ActionBars")
+
 local ceil = math.ceil;
 local bar = CreateFrame('Frame', 'ElvUI_BarPet', E.UIParent, 'SecureHandlerStateTemplate');
+
+local Masque = LibStub("Masque", true)
+local MasqueGroup = Masque and Masque:Group("ElvUI", "ActionBars")
 
 function AB:UpdatePet(event, unit)
 	if(event == "UNIT_AURA" and unit ~= "pet") then return end
@@ -273,4 +279,11 @@ function AB:CreateBarPet()
 	E:CreateMover(bar, 'PetAB', L["Pet Bar"], nil, nil, nil, 'ALL,ACTIONBARS');
 	self:PositionAndSizeBarPet();
 	self:UpdatePetBindings()
+	
+	if MasqueGroup then
+		for i=1, NUM_PET_ACTION_SLOTS do
+			local button = _G["PetActionButton"..i]
+			MasqueGroup:AddButton(button)
+		end
+	end
 end

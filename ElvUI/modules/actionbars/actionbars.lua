@@ -6,8 +6,10 @@ local Sticky = LibStub("LibSimpleSticky-1.0");
 local _LOCK
 local LAB = LibStub("LibActionButton-1.0-ElvUI")
 local LSM = LibStub("LibSharedMedia-3.0")
-local MSQ = LibStub("Masque")
-local MSQGroup = MSQ and MSQ:Group("ElvUI", "ActionBars")
+
+local Masque = LibStub("Masque", true)
+local MasqueGroup = Masque and Masque:Group("ElvUI", "ActionBars")
+local MasqueEnabled
 
 local gsub = string.gsub
 local format = string.format
@@ -68,11 +70,6 @@ AB.customExitButton = {
 	texture = "Interface\\Icons\\Spell_Shadow_SacrificialShield",
 	tooltip = LEAVE_VEHICLE,
 }
-
-function AB:MasqueSkinCallback(Addon, Group, SkinID, Gloss, Backdrop, Colors, Disabled)
-	print(Addon, Group, SkinID, Gloss, Backdrop, Colors, Disabled)
-end
-MSQ:Register("ElvUI", MasqueSkinCallback, AB)
 
 function AB:PositionAndSizeBar(barName)
 	local spacing = E:Scale(self.db[barName].buttonspacing);
@@ -196,11 +193,8 @@ function AB:PositionAndSizeBar(barName)
 			button:Show()
 		end
 
-
-		if not MSQ then
-			self:StyleButton(button, nil, nil, true);
-			button:SetCheckedTexture("")
-		end
+		self:StyleButton(button);
+		button:SetCheckedTexture("")
 	end
 
 	if self.db[barName].enabled or not bar.initialized then
@@ -234,8 +228,8 @@ function AB:PositionAndSizeBar(barName)
 	end
 
 	E:SetMoverSnapOffset('ElvAB_'..bar.id, bar.db.buttonspacing / 2)
-	
-	if MSQGroup then MSQGroup:ReSkin() end
+
+	if MasqueGroup and E.private.actionbar.useMasque then MasqueGroup:ReSkin() end
 end
 
 function AB:CreateBar(id)
@@ -260,8 +254,8 @@ function AB:CreateBar(id)
 			bar.buttons[i]:SetState(12, "custom", AB.customExitButton)
 		end
 		
-		if MSQGroup then
-			bar.buttons[i]:AddToMasque(MSQGroup)
+		if MasqueGroup then
+			bar.buttons[i]:AddToMasque(MasqueGroup)
 		end
 	end
 	self:UpdateButtonConfig(bar, bar.bindButtons)
@@ -463,9 +457,8 @@ function AB:UpdateButtonSettings()
 	for barName, bar in pairs(self["handledBars"]) do
 		self:UpdateButtonConfig(bar, bar.bindButtons)
 	end
-	
-	if MSQ and MSQ:Group("ElvUI", "ActionBars") then MSQ:Group("ElvUI", "ActionBars"):ReSkin() end
-	if MSQ and MSQ:Group("ElvUI", "StanceBar") then MSQ:Group("ElvUI", "StanceBar"):ReSkin() end
+
+	if MasqueGroup and E.private.actionbar.useMasque then MasqueGroup:ReSkin() end
 end
 
 function AB:GetPage(bar, defaultPage, condition)
@@ -493,12 +486,12 @@ function AB:StyleButton(button, noBackdrop, adjustChecked)
 	local shine = _G[name.."Shine"];
 	local combat = InCombatLockdown()
 
-	-- if not MSQ then
+	if not Masque or (Masque and not E.private.actionbar.useMasque) then
 		if flash then flash:SetTexture(nil); end
 		if normal then normal:SetTexture(nil); normal:Hide(); normal:SetAlpha(0); end
 		if normal2 then normal2:SetTexture(nil); normal2:Hide(); normal2:SetAlpha(0); end
 		if border then border:Kill(); end
-	-- end
+	end
 
 	if not button.noBackdrop then
 		button.noBackdrop = noBackdrop;
@@ -510,7 +503,7 @@ function AB:StyleButton(button, noBackdrop, adjustChecked)
 		count:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 	end
 
-	if not MSQ then
+	if not Masque or (Masque and not E.private.actionbar.useMasque) then
 		if not button.noBackdrop and not button.backdrop then
 			button:CreateBackdrop('Default', true)
 			button.backdrop:SetAllPoints()
@@ -539,11 +532,11 @@ function AB:StyleButton(button, noBackdrop, adjustChecked)
 	button.FlyoutUpdateFunc = AB.StyleFlyout
 	self:FixKeybindText(button);
 	
-	-- if MSQ then
-		-- button:StyleButton(true, true, true);
-	-- else
+	if not Masque or (Masque and not E.private.actionbar.useMasque) then
 		button:StyleButton();
-	-- end
+	else
+		button:StyleButton(true, true, true)
+	end
 
 	if(not self.handledbuttons[button]) then
 		E:RegisterCooldown(button.cooldown)
@@ -785,6 +778,10 @@ local function SetupFlyoutButton()
 					AB:Bar_OnLeave(parentAnchorBar)
 				end
 			end)
+			
+			if MasqueGroup then
+				MasqueGroup:AddButton(_G["SpellFlyoutButton"..i])
+			end
 		end
 	end
 
@@ -896,6 +893,20 @@ function AB:VehicleFix()
 	end
 end
 
+local function MasqueCallback(Addon, Group, SkinID, Gloss, Backdrop, Colors, Disabled)
+	print(Addon, Group, SkinID, Gloss, Backdrop, Colors, Disabled)
+	
+	if Group == "ActionBars" then
+		if Disabled and MasqueEnabled then
+			print("Skin disabled: you need to reload for this to take effect")
+			E.private.actionbar.useMasque = false
+		elseif not MasqueEnabled then
+			print("Skin enabled: you need to reload for this to take effect")
+			E.private.actionbar.useMasque = true
+		end
+	end
+end
+
 function AB:Initialize()
 	self.db = E.db.actionbar
 	if E.private.actionbar.enable ~= true then return; end
@@ -934,6 +945,11 @@ function AB:Initialize()
 	end
 
 	SpellFlyout:HookScript("OnShow", SetupFlyoutButton)
+	
+	MasqueEnabled = E.private.actionbar.useMasque
+	if Masque then
+		Masque:Register("ElvUI", MasqueCallback)
+	end
 end
 
 E:RegisterModule(AB:GetName())

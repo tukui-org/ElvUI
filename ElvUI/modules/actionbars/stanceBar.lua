@@ -1,8 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars');
 
-local MSQ = LibStub("Masque")
-local MSQGroup = MSQ and MSQ:Group("ElvUI", "StanceBar")
+local Masque = LibStub("Masque", true)
+local MasqueGroup = Masque and Masque:Group("ElvUI", "ActionBars")
 
 local ceil = math.ceil;
 local lower = string.lower;
@@ -39,23 +39,21 @@ function AB:StyleShapeShift(event)
 		if i <= numForms then
 			texture, name, isActive, isCastable = GetShapeshiftFormInfo(i);
 
-			if not texture then
-				texture = "Interface\\Icons\\Spell_Nature_WispSplode"
-			end
+			if not Masque or (Masque and not E.private.actionbar.useMasque) then
+				if not texture then
+					texture = "Interface\\Icons\\Spell_Nature_WispSplode"
+				end
 
-			if (type(texture) == "string" and (lower(texture) == "interface\\icons\\spell_nature_wispsplode" or lower(texture) == "interface\\icons\\ability_rogue_envelopingshadows")) and self.db.stanceBar.style == 'darkenInactive' then
-				_, _, texture = GetSpellInfo(name)
-			end
+				if (type(texture) == "string" and (lower(texture) == "interface\\icons\\spell_nature_wispsplode" or lower(texture) == "interface\\icons\\ability_rogue_envelopingshadows")) and self.db.stanceBar.style == 'darkenInactive' then
+					_, _, texture = GetSpellInfo(name)
+				end
 
-			icon:SetTexture(texture);
-
-			if texture then
-				cooldown:SetAlpha(1);
-			else
-				cooldown:SetAlpha(0);
-			end
-
-			-- if not MSQ then
+				if texture then
+					cooldown:SetAlpha(1);
+				else
+					cooldown:SetAlpha(0);
+				end
+				
 				if isActive then
 					StanceBarFrame.lastSelected = button:GetID();
 					if numForms == 1 then
@@ -78,7 +76,15 @@ function AB:StyleShapeShift(event)
 						end
 					end
 				end
-			-- end
+			else
+				if(isActive) then
+					texture = "Interface\\Icons\\Spell_Nature_WispSplode"
+				else
+					_, _, texture = GetSpellInfo(name)
+				end
+			end
+			
+			icon:SetTexture(texture);
 
 			if isCastable then
 				icon:SetVertexColor(1.0, 1.0, 1.0);
@@ -232,7 +238,7 @@ function AB:PositionAndSizeBarShapeShift()
 		end
 	end
 	
-	-- if MSQGroup then MSQGroup:ReSkin() end
+	if MasqueGroup and E.private.actionbar.useMasque then MasqueGroup:ReSkin() end
 end
 
 function AB:AdjustMaxStanceButtons(event)
@@ -247,8 +253,8 @@ function AB:AdjustMaxStanceButtons(event)
 		if not bar.buttons[i] then
 			bar.buttons[i] = CreateFrame("CheckButton", format(bar:GetName().."Button%d", i), bar, "StanceButtonTemplate")
 			bar.buttons[i]:SetID(i)
-			if MSQGroup then
-				MSQGroup:AddButton(bar.buttons[i])
+			if MasqueGroup then
+				MasqueGroup:AddButton(bar.buttons[i])
 			end
 			initialCreate = true;
 		end
@@ -281,7 +287,7 @@ end
 function AB:UpdateStanceBindings()
 	for i = 1, NUM_STANCE_SLOTS do
 		if self.db.hotkeytext then
-			print("show stancebar hotkeys")
+			-- print("show stancebar hotkeys")
 			_G["ElvUI_StanceBarButton"..i.."HotKey"]:Show()
 			_G["ElvUI_StanceBarButton"..i.."HotKey"]:SetText(GetBindingKey("CLICK ElvUI_StanceBarButton"..i..":LeftButton"))
 			self:FixKeybindText(_G["ElvUI_StanceBarButton"..i])
