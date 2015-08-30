@@ -62,7 +62,5 @@ function UF:PostUpdatePower(unit, min, max)
 	if db and db.power and db.power.hideonnpc then
 		UF:PostNamePosition(parent, unit)
 	end
-	
-	if min == 0 then self:SetValue(0.01) end
 end
 
