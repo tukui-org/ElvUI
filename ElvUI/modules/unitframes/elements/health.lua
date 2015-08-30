@@ -87,5 +87,7 @@ function UF:PostUpdateHealth(unit, min, max)
 		local backdrop = colors.health_backdrop_dead
 		self.bg:SetVertexColor(backdrop.r, backdrop.g, backdrop.b)
 	end
+	
+	if min == 0 then self:SetValue(0.01) end
 end
 
