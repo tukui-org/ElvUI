@@ -361,6 +361,9 @@ E.Options.args.nameplate = {
 							type = "select",
 							order = 2,
 							name = L["Format"],
+							--With patch 6.2.2 the HealthBar_OnValueChanged min and max values were changed to 0 and 1. Hopefully this is a bug.
+							--For the time being we force use of "Percent" format, so disable the choice.
+							disabled = true,
 							values = {
 								['CURRENT_MAX_PERCENT'] = L["Current - Max | Percent"],
 								['CURRENT_PERCENT'] = L["Current - Percent"],

@@ -797,10 +797,14 @@ function NP:HealthBar_OnValueChanged(value)
 		myPlate.lowHealth:Hide()
 	end
 
+	--With patch 6.2.2 the min and max values were changed to 0 and 1. Hopefully this is a bug.
+	--Force percentage display for the time being, as we have no other way to reliably get health values
 	--Health Text
-	if NP.db.healthBar.text.enable and value and maxValue and maxValue > 1 and self:GetScale() == 1 then
+	-- if NP.db.healthBar.text.enable and value and maxValue and maxValue > 1 and self:GetScale() == 1 then
+	if NP.db.healthBar.text.enable and value and maxValue and self:GetScale() == 1 then
 		myPlate.healthBar.text:Show()
-		myPlate.healthBar.text:SetText(E:GetFormattedText(NP.db.healthBar.text.format, value, maxValue))
+		-- myPlate.healthBar.text:SetText(E:GetFormattedText(NP.db.healthBar.text.format, value, maxValue))
+		myPlate.healthBar.text:SetText(E:GetFormattedText("PERCENT", value, maxValue))
 	elseif myPlate.healthBar.text:IsShown() then
 		myPlate.healthBar.text:Hide()
 	end
