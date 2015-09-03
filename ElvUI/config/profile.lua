@@ -761,6 +761,14 @@ P['unitframe'] = {
 				['xOffset'] = 0,
 				['yOffset'] = 10,
 			},
+			['GPSArrow'] = {
+				['enable'] = false,
+				['size'] = 45,
+				['xOffset'] = 0,
+				['yOffset'] = 0,
+				['onMouseOver'] = true,
+				['outOfRange'] = true
+			},
 		},
 		['targettarget'] = {
 			['enable'] = true,
@@ -1013,6 +1021,14 @@ P['unitframe'] = {
 				['attachTo'] = 'TOP',
 				['xOffset'] = 0,
 				['yOffset'] = 10,
+			},
+			['GPSArrow'] = {
+				['enable'] = false,
+				['size'] = 45,
+				['xOffset'] = 0,
+				['yOffset'] = 0,
+				['onMouseOver'] = true,
+				['outOfRange'] = true
 			},
 		},
 		['focustarget'] = {

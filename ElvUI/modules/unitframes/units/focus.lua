@@ -24,6 +24,7 @@ function UF:Construct_FocusFrame(frame)
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
 	frame.Range = UF:Construct_Range(frame)
 	frame.Threat = UF:Construct_Threat(frame)
+	frame.GPS = self:Construct_GPS(frame)
 	frame.customTexts = {}
 	frame:Point('BOTTOMRIGHT', ElvUF_Target, 'TOPRIGHT', 0, 220)
 	E:CreateMover(frame, frame:GetName()..'Mover', L["Focus Frame"], nil, nil, nil, 'ALL,SOLO')
@@ -385,6 +386,26 @@ function UF:Update_FocusFrame(frame, db)
 		else
 			if frame:IsElementEnabled('HealPrediction') then
 				frame:DisableElement('HealPrediction')
+			end
+		end
+	end
+	
+	--GPSArrow
+	do
+		local GPS = frame.GPS
+		if db.GPSArrow.enable then
+			if not frame:IsElementEnabled('GPS') then
+				frame:EnableElement('GPS')
+			end
+
+			GPS:Size(db.GPSArrow.size)
+			GPS.onMouseOver = db.GPSArrow.onMouseOver
+			GPS.outOfRange = db.GPSArrow.outOfRange
+
+			GPS:SetPoint("CENTER", frame, "CENTER", db.GPSArrow.xOffset, db.GPSArrow.yOffset)
+		else
+			if frame:IsElementEnabled('GPS') then
+				frame:DisableElement('GPS')
 			end
 		end
 	end
