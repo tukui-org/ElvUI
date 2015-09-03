@@ -85,6 +85,7 @@ P['general'] = {
 		['textSize'] = 11,
 		['mouseover'] = false,
 		['orientation'] = 'VERTICAL',
+		["reverseFill"] = false,
 	},
 	['reputation'] = {
 		['enable'] = true,
@@ -94,6 +95,7 @@ P['general'] = {
 		['textSize'] = 11,
 		['mouseover'] = false,
 		['orientation'] = 'VERTICAL',
+		["reverseFill"] = false,
 	},
 	['threat'] = {
 		['enable'] = true,

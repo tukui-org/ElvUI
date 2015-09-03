@@ -378,6 +378,7 @@ L["Raid Only"] = true;
 L["Remove Backdrop"] = "去除背景"
 L["Reset all frames to their original positions."] = "重设所有框架至预设位置."
 L["Reset Anchors"] = "重置定位"
+L["Reverse Fill Direction"] = true;
 L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."] = "发送ADDON_ACTION_BLOCKED错误至Lua错误框, 这些错误并不重要, 不会影响你的游戏体验. 并且很多这类错误无法被修复. 请只将影响游戏体验的错误发送给我们."
 L["Skin Backdrop"] = "美化背景"
 L["Skin the blizzard chat bubbles."] = "美化暴雪对话泡泡."

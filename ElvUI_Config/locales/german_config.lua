@@ -376,6 +376,7 @@ L["Raid Only"] = "Nur im Schlachtzug"
 L["Remove Backdrop"] = "Hintergrund entfernen"
 L["Reset all frames to their original positions."] = "Setze alle Einheiten an ihre ursprüngliche Position zurück."
 L["Reset Anchors"] = "Ankerpunkte zurücksetzen"
+L["Reverse Fill Direction"] = true;
 L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."] = "Sende ADDON_ACTION_BLOCKED Fehler zum Lua-Fehlerfenster. Diese Fehler sind weniger wichtig und werden deine Spielleistung nicht beeinflussen. Viele dieser Fehler können nicht beseitigt werden. Bitte melde diese Fehler nur, wenn es einen Defekt im Spiel verursacht."
 L["Skin Backdrop"] = "Skin für den Hintergrund"
 L["Skin the blizzard chat bubbles."] = "Skin die Blizzard Chat Sprechblasen."

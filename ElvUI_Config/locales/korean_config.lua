@@ -428,6 +428,7 @@ L["Raid Only"] = "레이드채널만"
 L["Remove Backdrop"] = "표시하지 않음"
 L["Reset all frames to their original positions."] = "ElvUI 에서 움직일 수 있는 모든 프레임의 위치를 기본 위치로 초기화합니다."
 L["Reset Anchors"] = "위치 초기화"
+L["Reverse Fill Direction"] = true;
 L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."] = "애드온 기능이 막히는 에러도 오류확인창에 등록합니다. 이런 에러들은 중요하지 않거나 게임플레이에 영향을 미치지 않는 것들이 대부분입니다. 게다가 이런 에러들은 대부분 고칠 수 없는 것들입니다.|n|n발견되는 에러가 게임플레이에 지장이 될 경우에만 에러보고를 해주세요."
 L["Skin Backdrop"] = "반투명 스킨적용"
 L["Skin the blizzard chat bubbles."] = "말풍선에 디자인을 변경해 스킨을 입힐지, 혹은 투명하게 하여 안보이게 할지 결정합니다."

@@ -367,6 +367,7 @@ L["Raid Only"] = true;
 L["Remove Backdrop"] = true;
 L["Reset all frames to their original positions."] = true;
 L["Reset Anchors"] = true;
+L["Reverse Fill Direction"] = true;
 L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."] = true;
 L["Skin Backdrop"] = true;
 L["Skin the blizzard chat bubbles."] = true;
