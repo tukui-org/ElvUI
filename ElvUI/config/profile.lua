@@ -528,6 +528,12 @@ P['unitframe'] = {
 				['detachedWidth'] = 250,
 				['attachTextToPower'] = false,
 				['druidMana'] = true,
+				["strataAndLevel"] = {
+					["useCustomStrata"] = false,
+					["frameStrata"] = "LOW",
+					["useCustomLevel"] = false,
+					["frameLevel"] = 1,
+				},
 			},
 			['name'] = {
 				['position'] = 'CENTER',
@@ -665,6 +671,12 @@ P['unitframe'] = {
 				['detachFromFrame'] = false,
 				['detachedWidth'] = 250,
 				['attachTextToPower'] = false,
+				["strataAndLevel"] = {
+					["useCustomStrata"] = false,
+					["frameStrata"] = "LOW",
+					["useCustomLevel"] = false,
+					["frameLevel"] = 1,
+				},
 			},
 			['name'] = {
 				['position'] = 'CENTER',

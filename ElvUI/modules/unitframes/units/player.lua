@@ -521,6 +521,14 @@ function UF:Update_PlayerFrame(frame, db)
 				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(E.PixelMode and 0 or (BORDER + SPACING)))
 				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -BORDER, BORDER)
 			end
+			
+			if db.power.strataAndLevel.useCustomStrata then
+				power:SetFrameStrata(db.power.strataAndLevel.frameStrata)
+			end
+			if db.power.strataAndLevel.useCustomLevel then
+				power:SetFrameLevel(db.power.strataAndLevel.frameLevel)
+			end
+
 		elseif frame:IsElementEnabled('Power') then
 			frame:DisableElement('Power')
 			power:Hide()
