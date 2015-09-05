@@ -298,6 +298,7 @@ L["Binds Saved"] = "단축키가 저장되었습니다."
 L["Confused.. Try Again!"] = "작업에 혼선이 있었습니다. 다시 시도해 주세요."
 L["No gray items to delete."] = "잡동사니가 없습니다."
 L["The spell '%s' has been added to the Blacklist unitframe aura filter."] = "%s 주문이 차단 목록에 등록되었습니다."
+L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."] = true;
 L["Vendored gray items for:"] = "모든 잡동사니를 팔았습니다:"
 L["You don't have enough money to repair."] = "수리 비용이 부족합니다."
 L["You must be at a vendor."] = "상인을 만나야 가능합니다."

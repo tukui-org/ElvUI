@@ -298,6 +298,7 @@ L["Binds Saved"] = true;
 L["Confused.. Try Again!"] = true;
 L["No gray items to delete."] = true;
 L["The spell '%s' has been added to the Blacklist unitframe aura filter."] = true;
+L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."] = true;
 L["Vendored gray items for:"] = true;
 L["You don't have enough money to repair."] = true;
 L["You must be at a vendor."] = true;

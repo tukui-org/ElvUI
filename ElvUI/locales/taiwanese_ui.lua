@@ -298,6 +298,7 @@ L["Binds Saved"] = "儲存綁定"
 L["Confused.. Try Again!"] = '請再試一次！'
 L["No gray items to delete."] = "沒有可刪除的灰色物品."
 L["The spell '%s' has been added to the Blacklist unitframe aura filter."] = '法術"%s"已經被添加到單位框架的光環過濾器中.'
+L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."] = true;
 L["Vendored gray items for:"] = "已售出灰色物品，共得："
 L["You don't have enough money to repair."] = "沒有足夠的資金來修復."
 L["You must be at a vendor."] = "你必須與商人對話."

@@ -298,6 +298,7 @@ L["Binds Saved"] = "Raccourcis sauvegardés"
 L["Confused.. Try Again!"] = "Confus...Essayez à nouveau!"
 L["No gray items to delete."] = "Aucun objet gris à détruire."
 L["The spell '%s' has been added to the Blacklist unitframe aura filter."] = "Le sort '%s' a bien été ajouté à la liste noire des filtres des cadres d'unités."
+L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."] = true;
 L["Vendored gray items for:"] = "Objets gris vendus pour:"
 L["You don't have enough money to repair."] = "Vous n'avez pas assez d'argent pour réparer votre équipement."
 L["You must be at a vendor."] = "Vous devez être chez un marchand."
