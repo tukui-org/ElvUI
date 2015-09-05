@@ -303,6 +303,7 @@ function UF:Update_TargetTargetFrame(frame, db)
 			if db.debuffs.attachTo == "BUFFS" then
 				E:Print(format(L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Buffs"], L["Debuffs"], L["Frame"]))
 				db.debuffs.attachTo = "FRAME"
+				frame.Debuffs.attachTo = frame
 			end
 			frame.Buffs.PostUpdate = nil
 			frame.Debuffs.PostUpdate = UF.UpdateBuffsHeaderPosition
@@ -310,6 +311,7 @@ function UF:Update_TargetTargetFrame(frame, db)
 			if db.buffs.attachTo == "DEBUFFS" then
 				E:Print(format(L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Debuffs"], L["Buffs"], L["Frame"]))
 				db.buffs.attachTo = "FRAME"
+				frame.Buffs.attachTo = frame
 			end
 			frame.Buffs.PostUpdate = UF.UpdateDebuffsHeaderPosition
 			frame.Debuffs.PostUpdate = nil
