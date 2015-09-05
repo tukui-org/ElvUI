@@ -2446,7 +2446,7 @@ E.Options.args.unitframe.args.target = {
 			name = L["Smart Aura Position"],
 			desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
 			values = {
-				["DISABLED"] = "Disabled",
+				["DISABLED"] = L["Disabled"],
 				["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 			},
@@ -2592,7 +2592,7 @@ E.Options.args.unitframe.args.targettarget = {
 			name = L["Smart Aura Position"],
 			desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
 			values = {
-				["DISABLED"] = "Disabled",
+				["DISABLED"] = L["Disabled"],
 				["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 			},
@@ -2688,7 +2688,7 @@ E.Options.args.unitframe.args.targettargettarget = {
 			name = L["Smart Aura Position"],
 			desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
 			values = {
-				["DISABLED"] = "Disabled",
+				["DISABLED"] = L["Disabled"],
 				["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 			},
@@ -2790,7 +2790,7 @@ E.Options.args.unitframe.args.focus = {
 			name = L["Smart Aura Position"],
 			desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
 			values = {
-				["DISABLED"] = "Disabled",
+				["DISABLED"] = L["Disabled"],
 				["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 			},
@@ -2889,7 +2889,7 @@ E.Options.args.unitframe.args.focustarget = {
 			name = L["Smart Aura Position"],
 			desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
 			values = {
-				["DISABLED"] = "Disabled",
+				["DISABLED"] = L["Disabled"],
 				["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 			},
@@ -2991,7 +2991,7 @@ E.Options.args.unitframe.args.pet = {
 			name = L["Smart Aura Position"],
 			desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
 			values = {
-				["DISABLED"] = "Disabled",
+				["DISABLED"] = L["Disabled"],
 				["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 			},
@@ -3114,7 +3114,7 @@ E.Options.args.unitframe.args.pettarget = {
 			name = L["Smart Aura Position"],
 			desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
 			values = {
-				["DISABLED"] = "Disabled",
+				["DISABLED"] = L["Disabled"],
 				["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 			},
@@ -3229,7 +3229,7 @@ E.Options.args.unitframe.args.boss = {
 			name = L["Smart Aura Position"],
 			desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
 			values = {
-				["DISABLED"] = "Disabled",
+				["DISABLED"] = L["Disabled"],
 				["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 			},
@@ -3364,7 +3364,7 @@ E.Options.args.unitframe.args.arena = {
 			name = L["Smart Aura Position"],
 			desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
 			values = {
-				["DISABLED"] = "Disabled",
+				["DISABLED"] = L["Disabled"],
 				["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 			},
