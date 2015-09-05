@@ -303,7 +303,7 @@ function UF:Update_FocusTargetFrame(frame, db)
 
 		if position == "BUFFS_ON_DEBUFFS" then
 			if db.debuffs.attachTo == "BUFFS" then
-				E:Print(format(L["This setting caused a conflicting anchor point, where %s would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Buffs"], L["Debuffs"], L["Frame"]))
+				E:Print(format(L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Buffs"], L["Debuffs"], L["Frame"]))
 				db.debuffs.attachTo = "FRAME"
 			end
 			frame.Buffs.PostUpdate = nil
