@@ -220,7 +220,7 @@ function UF:Update_TargetFrame(frame, db)
 				if not power.mover then
 					power:ClearAllPoints()
 					power:Point("BOTTOM", frame, "BOTTOM", 0, -20)
-					E:CreateMover(power, 'TargetPowerBarMover', 'Target Powerbar', nil, nil, nil, 'ALL,SOLO')
+					E:CreateMover(power, 'TargetPowerBarMover', L["Target Powerbar"], nil, nil, nil, 'ALL,SOLO')
 				else
 					power:ClearAllPoints()
 					power:SetPoint("BOTTOMLEFT", power.mover, "BOTTOMLEFT")
