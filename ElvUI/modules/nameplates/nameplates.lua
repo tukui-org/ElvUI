@@ -839,7 +839,8 @@ end
 
 local green =  {r = 0, g = 1, b = 0}
 function NP:CastBar_OnValueChanged(value)
-	local myPlate = NP.CreatedPlates[self:GetParent():GetParent()]
+	local blizzPlate = self:GetParent():GetParent()
+	local myPlate = NP.CreatedPlates[blizzPlate]
 	local min, max = self:GetMinMaxValues()
 	local isChannel = value < myPlate.castBar:GetValue()
 	myPlate.castBar:SetMinMaxValues(min, max)
@@ -857,6 +858,9 @@ function NP:CastBar_OnValueChanged(value)
 			color = NP.db.castBar.color
 		end
 	end
+
+	myPlate.castBar.name:SetText(blizzPlate.castBar.name:GetText())
+	myPlate.castBar.icon:SetTexture(blizzPlate.castBar.icon:GetTexture())
 
 	myPlate.castBar:SetStatusBarColor(color.r, color.g, color.b)
 end
