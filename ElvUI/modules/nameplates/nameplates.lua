@@ -12,6 +12,16 @@ local tolower = string.lower
 local targetIndicator
 local _G = _G
 local targetAlpha = 1
+local WorldFrame = WorldFrame
+local tonumber = tonumber
+local pairs = pairs
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local UnitGUID = UnitGUID
+local UnitHealthMax = UnitHealthMax
+local floor = math.floor
+local select = select
+local tostring = tostring
+local unpack = unpack
 
 --Pattern to remove cross realm label added to the end of plate names
 --Taken from http://www.wowace.com/addons/libnameplateregistry-1-0/
@@ -483,6 +493,7 @@ function NP:SetUnitInfo(myPlate)
 	if self:GetAlpha() == 1 and NP.targetName and (NP.targetName == plateName) then
 		self.guid = UnitGUID("target")
 		self.unit = "target"
+		self.maxHP = UnitHealthMax("target")
 		myPlate:SetFrameLevel(2)
 		myPlate.overlay:Hide()
 
@@ -502,6 +513,7 @@ function NP:SetUnitInfo(myPlate)
 		end
 		self.guid = UnitGUID("mouseover")
 		self.unit = "mouseover"
+		self.maxHP = UnitHealthMax("mouseover")
 		NP:UpdateAurasByUnitID('mouseover')
 	else
 		myPlate:SetFrameLevel(0)
@@ -652,9 +664,8 @@ function NP:OnShow()
 			object:SetWidth(0.001)
 		elseif objectType == 'StatusBar' then
 			object:SetStatusBarTexture("")
-		else
-			object:Hide()
 		end
+		object:Hide() -- HIDE EVERYTHING or SUFFER FROM LOW FPS, THIS IS BIGGEST ISSUE
 	end
 
 	if(not NP.CheckFilterAndHealers(self, myPlate)) then return end
@@ -695,6 +706,7 @@ function NP:OnHide()
 	self.unitType = nil
 	self.guid = nil
 	self.unit = nil
+	self.maxHP = nil
 	self.raidIconType = nil
 	self.customColor = nil
 	self.customScale = nil
@@ -728,7 +740,8 @@ function NP:OnHide()
 
 	--UIFrameFadeOut(myPlate, 0.1, myPlate:GetAlpha(), 0)
 	--myPlate:Hide()
-	myPlate:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT") --Prevent nameplate being in random location on screen when first shown
+	-- DOING THIS KILLS YOUR FPS
+	--myPlate:SetPoint("BOTTOMLEFT", self, "BOTTOMLEFT") --Prevent nameplate being in random location on screen when first shown
 end
 
 function NP:SizeAuraHeader(myPlate, width, auraHeader, dbTable)
@@ -779,7 +792,8 @@ function NP:HealthBar_OnSizeChanged(width, height)
 end
 
 function NP:HealthBar_OnValueChanged(value)
-	local myPlate = NP.CreatedPlates[self:GetParent():GetParent()]
+	local blizzPlate = self:GetParent():GetParent()
+	local myPlate = NP.CreatedPlates[blizzPlate]
 	local minValue, maxValue = self:GetMinMaxValues()
 	myPlate.healthBar:SetMinMaxValues(minValue, maxValue)
 	myPlate.healthBar:SetValue(value)
@@ -803,8 +817,11 @@ function NP:HealthBar_OnValueChanged(value)
 	-- if NP.db.healthBar.text.enable and value and maxValue and maxValue > 1 and self:GetScale() == 1 then
 	if NP.db.healthBar.text.enable and value and maxValue and self:GetScale() == 1 then
 		myPlate.healthBar.text:Show()
-		-- myPlate.healthBar.text:SetText(E:GetFormattedText(NP.db.healthBar.text.format, value, maxValue))
-		myPlate.healthBar.text:SetText(E:GetFormattedText("PERCENT", value, maxValue))
+		if blizzPlate.maxHP then
+			myPlate.healthBar.text:SetText(E:GetFormattedText(NP.db.healthBar.text.format, floor(blizzPlate.maxHP * value), blizzPlate.maxHP))
+		else
+			myPlate.healthBar.text:SetText(E:GetFormattedText("PERCENT", value, maxValue))
+		end
 	elseif myPlate.healthBar.text:IsShown() then
 		myPlate.healthBar.text:Hide()
 	end
@@ -992,18 +1009,20 @@ function NP:CreatePlate(frame)
 	myPlate.castBar.time:SetPoint("TOPRIGHT", myPlate.castBar, "BOTTOMRIGHT", 6, -2)
 	myPlate.castBar.time:SetJustifyH("RIGHT")
 
-	frame.castBar.name:SetParent(myPlate.castBar)
-	frame.castBar.name:ClearAllPoints()
-	frame.castBar.name:SetPoint("TOPLEFT", myPlate.castBar, "BOTTOMLEFT", 0, -2)
-	frame.castBar.name:SetPoint("TOPRIGHT", myPlate.castBar.time, "TOPLEFT", 0, -2)
-	frame.castBar.name:SetJustifyH("LEFT")
+	-- DO NOT REUSE BLIZZARD's, this need to be replaced with custom version
+	--frame.castBar.name:SetParent(myPlate.castBar)
+	--frame.castBar.name:ClearAllPoints()
+	--frame.castBar.name:SetPoint("TOPLEFT", myPlate.castBar, "BOTTOMLEFT", 0, -2)
+	--frame.castBar.name:SetPoint("TOPRIGHT", myPlate.castBar.time, "TOPLEFT", 0, -2)
+	--frame.castBar.name:SetJustifyH("LEFT")
 
-	frame.castBar.icon:SetParent(myPlate.castBar)
-	frame.castBar.icon:SetTexCoord(.07, .93, .07, .93)
-	frame.castBar.icon:SetDrawLayer("OVERLAY")
-	frame.castBar.icon:ClearAllPoints()
-	frame.castBar.icon:SetPoint("TOPLEFT", myPlate.healthBar, "TOPRIGHT", 5, 0)
-	NP:CreateBackdrop(myPlate.castBar, frame.castBar.icon)
+	-- DO NOT REUSE BLIZZARD's, this need to be replaced with custom version
+	--frame.castBar.icon:SetParent(myPlate.castBar)
+	--frame.castBar.icon:SetTexCoord(.07, .93, .07, .93)
+	--frame.castBar.icon:SetDrawLayer("OVERLAY")
+	--frame.castBar.icon:ClearAllPoints()
+	--frame.castBar.icon:SetPoint("TOPLEFT", myPlate.healthBar, "TOPRIGHT", 5, 0)
+	--NP:CreateBackdrop(myPlate.castBar, frame.castBar.icon)
 
 	--Level
 	myPlate.level = myPlate:CreateFontString(nil, 'OVERLAY')
@@ -1015,7 +1034,8 @@ function NP:CreatePlate(frame)
 	myPlate.name:SetJustifyH("LEFT")
 
 	--Raid Icon
-	frame.raidIcon:SetParent(myPlate)
+	-- DO NOT REUSE BLIZZARD's, this need to be replaced with custom version
+	--frame.raidIcon:SetParent(myPlate)
 
 	--Healer Icon
 	myPlate.healerIcon = myPlate:CreateTexture(nil, 'ARTWORK')
@@ -1030,7 +1050,8 @@ function NP:CreatePlate(frame)
 	myPlate.overlay:Hide()
 
 	local debuffHeader = CreateFrame("Frame", nil, myPlate)
-	debuffHeader:SetHeight(32); debuffHeader:Show()
+	debuffHeader:SetHeight(32);
+	debuffHeader:Show()
 	debuffHeader:SetPoint('BOTTOMRIGHT', myPlate.healthBar, 'TOPRIGHT', 0, 10)
 	debuffHeader:SetPoint('BOTTOMLEFT', myPlate.healthBar, 'TOPLEFT', 0, 10)
 	debuffHeader:SetFrameStrata("BACKGROUND")
@@ -1103,6 +1124,9 @@ function NP:CreatePlate(frame)
 	NP:QueueObject(frame, frame.castBar.shadow)
 	NP:QueueObject(frame, frame.bossIcon)
 	NP:QueueObject(frame, frame.eliteIcon)
+	NP:QueueObject(frame, frame.castBar.name)
+	NP:QueueObject(frame, frame.castBar.icon)
+	NP:QueueObject(frame, frame.raidIcon)
 
 	self.CreatedPlates[frame] = myPlate
 	NP.UpdateSettings(frame)
@@ -1127,7 +1151,7 @@ function NP:ScanFrames(...)
 		local frame = select(index, ...)
 		local name = frame:GetName()
 
-		if(not NP.CreatedPlates[frame] and (name and name:find("NamePlate%d"))) then
+		if(not NP.CreatedPlates[frame] and (name and name:find("^NamePlate%d"))) then
 			NP:CreatePlate(frame)
 		end
 	end
