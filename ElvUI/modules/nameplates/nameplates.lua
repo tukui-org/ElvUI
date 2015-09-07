@@ -296,19 +296,14 @@ function NP:UpdateLevelAndName(myPlate)
 		myPlate.level:SetText("")
 		myPlate.level:Hide()
 	else
-		--if self.level:IsShown() then
-			local level, elite, boss = self.level:GetObjectType() == 'FontString' and tonumber(self.level:GetText()) or nil, self.eliteIcon:IsShown(), self.bossIcon:IsShown()
-			if boss then
-				myPlate.level:SetText("??")
-				myPlate.level:SetTextColor(0.8, 0.05, 0)
-			elseif level then
-				myPlate.level:SetText(level..(elite and "+" or ""))
-				myPlate.level:SetTextColor(self.level:GetTextColor())
-			end
-		--elseif self.bossIcon:IsShown() and myPlate.level:GetText() ~= '??' then
-		--	myPlate.level:SetText("??")
-		--	myPlate.level:SetTextColor(0.8, 0.05, 0)
-		--end
+		local level, elite, boss = self.level:GetObjectType() == 'FontString' and tonumber(self.level:GetText()) or nil, self.eliteIcon:IsShown(), self.bossIcon:IsShown()
+		if boss then
+			myPlate.level:SetText("??")
+			myPlate.level:SetTextColor(0.8, 0.05, 0)
+		elseif level then
+			myPlate.level:SetText(level..(elite and "+" or ""))
+			myPlate.level:SetTextColor(self.level:GetTextColor())
+		end
 
 		if self.isSmall then
 			myPlate.level:SetText("")
@@ -1019,7 +1014,7 @@ function NP:CreatePlate(frame)
 	myPlate.castBar.time:SetPoint("TOPRIGHT", myPlate.castBar, "BOTTOMRIGHT", 6, -2)
 	myPlate.castBar.time:SetJustifyH("RIGHT")
 
-	-- DO NOT REUSE BLIZZARD's, this need to be replaced with custom version
+	-- DO NOT REUSE BLIZZARD's, make our own!
 	myPlate.castBar.name = myPlate.castBar:CreateFontString(nil, 'OVERLAY')
 	--myPlate.castBar.name:SetParent(myPlate.castBar)
 	--myPlate.castBar.name:ClearAllPoints()
@@ -1027,7 +1022,7 @@ function NP:CreatePlate(frame)
 	myPlate.castBar.name:SetPoint("TOPRIGHT", myPlate.castBar.time, "TOPLEFT", 0, -2)
 	myPlate.castBar.name:SetJustifyH("LEFT")
 
-	-- DO NOT REUSE BLIZZARD's, this need to be replaced with custom version
+	-- DO NOT REUSE BLIZZARD's, make our own!
 	myPlate.castBar.icon = myPlate.castBar:CreateTexture(nil, 'OVERLAY')
 	--myPlate.castBar.icon:SetParent(myPlate.castBar)
 	myPlate.castBar.icon:SetTexCoord(.07, .93, .07, .93)
@@ -1047,6 +1042,7 @@ function NP:CreatePlate(frame)
 
 	--Raid Icon
 	frame.raidIcon:SetAlpha(0)
+	-- DO NOT REUSE BLIZZARD's, make our own!
 	myPlate.raidIcon = myPlate:CreateTexture(nil, 'ARTWORK')
 	myPlate.raidIcon:SetSize(frame.raidIcon:GetSize())
 	myPlate.raidIcon:SetTexture([[Interface\TargetingFrame\UI-RaidTargetingIcons]])
