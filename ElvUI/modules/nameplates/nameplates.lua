@@ -717,6 +717,7 @@ function NP:OnHide()
 		targetIndicator:Hide()
 	end
 
+	myPlate:SetAlpha(0)
 	myPlate.lowHealth:Hide()
 	myPlate.healerIcon:Hide()
 
