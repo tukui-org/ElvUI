@@ -296,7 +296,7 @@ function NP:UpdateLevelAndName(myPlate)
 		myPlate.level:SetText("")
 		myPlate.level:Hide()
 	else
-		if self.level:IsShown() then
+		--if self.level:IsShown() then
 			local level, elite, boss = self.level:GetObjectType() == 'FontString' and tonumber(self.level:GetText()) or nil, self.eliteIcon:IsShown(), self.bossIcon:IsShown()
 			if boss then
 				myPlate.level:SetText("??")
@@ -305,10 +305,10 @@ function NP:UpdateLevelAndName(myPlate)
 				myPlate.level:SetText(level..(elite and "+" or ""))
 				myPlate.level:SetTextColor(self.level:GetTextColor())
 			end
-		elseif self.bossIcon:IsShown() and myPlate.level:GetText() ~= '??' then
-			myPlate.level:SetText("??")
-			myPlate.level:SetTextColor(0.8, 0.05, 0)
-		end
+		--elseif self.bossIcon:IsShown() and myPlate.level:GetText() ~= '??' then
+		--	myPlate.level:SetText("??")
+		--	myPlate.level:SetTextColor(0.8, 0.05, 0)
+		--end
 
 		if self.isSmall then
 			myPlate.level:SetText("")
@@ -324,6 +324,13 @@ function NP:UpdateLevelAndName(myPlate)
 	else
 		myPlate.name:SetText(self.name:GetText())
 		if not myPlate.name:IsShown() then myPlate.name:Show() end
+	end
+
+	if self.raidIcon:IsShown() then
+		myPlate.raidIcon:Show()
+		myPlate.raidIcon:SetTexCoord(self.raidIcon:GetTexCoord())
+	else
+		myPlate.raidIcon:Hide()
 	end
 end
 
@@ -476,7 +483,7 @@ function NP:ColorizeAndScale(myPlate)
 	end
 	if(not self.customScale and not self.isSmall and myPlate.healthBar:GetWidth() ~= w) then
 		myPlate.healthBar:SetSize(w, h)
-		self.castBar.icon:SetSize(NP.db.castBar.height + h + 5, NP.db.castBar.height + h + 5)
+		myPlate.castBar.icon:SetSize(NP.db.castBar.height + h + 5, NP.db.castBar.height + h + 5)
 	end
 end
 
@@ -681,7 +688,6 @@ function NP:OnShow()
 		myPlate.name:SetPoint("BOTTOMRIGHT", myPlate.level, "BOTTOMLEFT", -2, 0)
 	end
 
-
 	NP.UpdateLevelAndName(self, myPlate)
 	NP.ColorizeAndScale(self, myPlate)
 
@@ -720,7 +726,7 @@ function NP:OnHide()
 	myPlate.healerIcon:Hide()
 
 	myPlate.healthBar:SetSize(NP.db.healthBar.width, NP.db.healthBar.height)
-	self.castBar.icon:Size(NP.db.castBar.height + NP.db.healthBar.height + 5)
+	myPlate.castBar.icon:Size(NP.db.castBar.height + NP.db.healthBar.height + 5)
 
 	if myPlate.BuffWidget then
 		for index = 1, #myPlate.BuffWidget.icons do
@@ -892,13 +898,13 @@ function NP:UpdateSettings()
 	myPlate.castBar:SetSize(NP.db.healthBar.width, NP.db.castBar.height)
 	myPlate.castBar:SetStatusBarTexture(E.media.normTex)
 	myPlate.castBar.time:FontTemplate(font, fontSize, fontOutline)
-	self.castBar.name:FontTemplate(font, fontSize, fontOutline)
-	self.castBar.icon:Size(NP.db.castBar.height + NP.db.healthBar.height + 5)
+	myPlate.castBar.name:FontTemplate(font, fontSize, fontOutline)
+	myPlate.castBar.icon:Size(NP.db.castBar.height + NP.db.healthBar.height + 5)
 
 	--Raid Icon
-	self.raidIcon:ClearAllPoints()
-	self.raidIcon:SetPoint(E.InversePoints[NP.db.raidHealIcon.attachTo], myPlate.healthBar, NP.db.raidHealIcon.attachTo, NP.db.raidHealIcon.xOffset, NP.db.raidHealIcon.yOffset)
-	self.raidIcon:SetSize(NP.db.raidHealIcon.size, NP.db.raidHealIcon.size)
+	myPlate.raidIcon:ClearAllPoints()
+	myPlate.raidIcon:SetPoint(E.InversePoints[NP.db.raidHealIcon.attachTo], myPlate.healthBar, NP.db.raidHealIcon.attachTo, NP.db.raidHealIcon.xOffset, NP.db.raidHealIcon.yOffset)
+	myPlate.raidIcon:SetSize(NP.db.raidHealIcon.size, NP.db.raidHealIcon.size)
 
 	--Healer Icon
 	myPlate.healerIcon:ClearAllPoints()
@@ -1010,19 +1016,21 @@ function NP:CreatePlate(frame)
 	myPlate.castBar.time:SetJustifyH("RIGHT")
 
 	-- DO NOT REUSE BLIZZARD's, this need to be replaced with custom version
-	--frame.castBar.name:SetParent(myPlate.castBar)
-	--frame.castBar.name:ClearAllPoints()
-	--frame.castBar.name:SetPoint("TOPLEFT", myPlate.castBar, "BOTTOMLEFT", 0, -2)
-	--frame.castBar.name:SetPoint("TOPRIGHT", myPlate.castBar.time, "TOPLEFT", 0, -2)
-	--frame.castBar.name:SetJustifyH("LEFT")
+	myPlate.castBar.name = myPlate.castBar:CreateFontString(nil, 'OVERLAY')
+	--myPlate.castBar.name:SetParent(myPlate.castBar)
+	--myPlate.castBar.name:ClearAllPoints()
+	myPlate.castBar.name:SetPoint("TOPLEFT", myPlate.castBar, "BOTTOMLEFT", 0, -2)
+	myPlate.castBar.name:SetPoint("TOPRIGHT", myPlate.castBar.time, "TOPLEFT", 0, -2)
+	myPlate.castBar.name:SetJustifyH("LEFT")
 
 	-- DO NOT REUSE BLIZZARD's, this need to be replaced with custom version
-	--frame.castBar.icon:SetParent(myPlate.castBar)
-	--frame.castBar.icon:SetTexCoord(.07, .93, .07, .93)
-	--frame.castBar.icon:SetDrawLayer("OVERLAY")
-	--frame.castBar.icon:ClearAllPoints()
-	--frame.castBar.icon:SetPoint("TOPLEFT", myPlate.healthBar, "TOPRIGHT", 5, 0)
-	--NP:CreateBackdrop(myPlate.castBar, frame.castBar.icon)
+	myPlate.castBar.icon = myPlate.castBar:CreateTexture(nil, 'OVERLAY')
+	--myPlate.castBar.icon:SetParent(myPlate.castBar)
+	myPlate.castBar.icon:SetTexCoord(.07, .93, .07, .93)
+	myPlate.castBar.icon:SetDrawLayer("OVERLAY")
+	--myPlate.castBar.icon:ClearAllPoints()
+	myPlate.castBar.icon:SetPoint("TOPLEFT", myPlate.healthBar, "TOPRIGHT", 5, 0)
+	NP:CreateBackdrop(myPlate.castBar, myPlate.castBar.icon)
 
 	--Level
 	myPlate.level = myPlate:CreateFontString(nil, 'OVERLAY')
@@ -1034,8 +1042,11 @@ function NP:CreatePlate(frame)
 	myPlate.name:SetJustifyH("LEFT")
 
 	--Raid Icon
-	-- DO NOT REUSE BLIZZARD's, this need to be replaced with custom version
-	--frame.raidIcon:SetParent(myPlate)
+	frame.raidIcon:SetAlpha(0)
+	myPlate.raidIcon = myPlate:CreateTexture(nil, 'ARTWORK')
+	myPlate.raidIcon:SetSize(frame.raidIcon:GetSize())
+	myPlate.raidIcon:SetTexture([[Interface\TargetingFrame\UI-RaidTargetingIcons]])
+	myPlate.raidIcon:Hide()
 
 	--Healer Icon
 	myPlate.healerIcon = myPlate:CreateTexture(nil, 'ARTWORK')
@@ -1126,7 +1137,6 @@ function NP:CreatePlate(frame)
 	NP:QueueObject(frame, frame.eliteIcon)
 	NP:QueueObject(frame, frame.castBar.name)
 	NP:QueueObject(frame, frame.castBar.icon)
-	NP:QueueObject(frame, frame.raidIcon)
 
 	self.CreatedPlates[frame] = myPlate
 	NP.UpdateSettings(frame)
