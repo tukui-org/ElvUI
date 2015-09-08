@@ -710,6 +710,8 @@ function B:OnEvent(event, ...)
 		self:UpdateAllSlots()
 	elseif event == 'PLAYERREAGENTBANKSLOTS_CHANGED' then
 		B:UpdateReagentSlot(...)
+	elseif (event == "QUEST_ACCEPTED" or event == "QUEST_REMOVED") and self:IsShown() then
+		self:UpdateAllSlots()
 	end
 end
 
@@ -873,6 +875,8 @@ function B:ContructContainerFrame(name, isBank)
 	f:RegisterEvent('BAG_UPDATE_COOLDOWN')
 	f:RegisterEvent('BAG_UPDATE');
 	f:RegisterEvent('PLAYERBANKSLOTS_CHANGED');
+	f:RegisterEvent("QUEST_ACCEPTED");
+	f:RegisterEvent("QUEST_REMOVED");
 	f:SetMovable(true)
 	f:RegisterForDrag("LeftButton", "RightButton")
 	f:RegisterForClicks("AnyUp");
