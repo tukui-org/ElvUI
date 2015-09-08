@@ -649,7 +649,7 @@ function B:UpdateReagentSlot(slotID)
 		end
 
 		-- color slot according to item quality
-		if questId and not isActive then
+		if questId and not isActiveQuest then
 			slot:SetBackdropBorderColor(1.0, 0.3, 0.3);
 			slot.questIcon:Show();
 		elseif questId or isQuestItem then
