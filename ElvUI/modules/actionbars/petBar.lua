@@ -76,7 +76,9 @@ function AB:UpdatePet(event, unit)
 			button:SetChecked(0);
 		end
 
-		checked:SetAlpha(0.3)
+		if not Masque or (Masque and not E.private.actionbar.useMasque) then
+			checked:SetAlpha(0.3)
+		end
 	end
 end
 
@@ -215,7 +217,7 @@ function AB:PositionAndSizeBarPet()
 		self:StyleButton(button);
 
 		--wtf lol
-		if not button.CheckFixed then
+		if not Masque or (Masque and not E.private.actionbar.useMasque) and not button.CheckFixed then
 			hooksecurefunc(button:GetCheckedTexture(), 'SetAlpha', function(self, value)
 				if value == 1 then
 					self:SetAlpha(0.3)
