@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local AB = E:GetModule('ActionBars');
 
 local Masque = LibStub("Masque", true)
-local MasqueGroup = Masque and Masque:Group("ElvUI", "ActionBars")
+local MasqueGroup = Masque and Masque:Group("ElvUI", "Stance Bar")
 
 local ceil = math.ceil;
 local lower = string.lower;
