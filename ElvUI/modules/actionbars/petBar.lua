@@ -7,9 +7,6 @@ local MasqueGroup = Masque and Masque:Group("ElvUI", "ActionBars")
 local ceil = math.ceil;
 local bar = CreateFrame('Frame', 'ElvUI_BarPet', E.UIParent, 'SecureHandlerStateTemplate');
 
-local Masque = LibStub("Masque", true)
-local MasqueGroup = Masque and Masque:Group("ElvUI", "ActionBars")
-
 function AB:UpdatePet(event, unit)
 	if(event == "UNIT_AURA" and unit ~= "pet") then return end
 
@@ -280,7 +277,7 @@ function AB:CreateBarPet()
 	self:PositionAndSizeBarPet();
 	self:UpdatePetBindings()
 	
-	if MasqueGroup then
+	if MasqueGroup and E.private.actionbar.useMasque then
 		for i=1, NUM_PET_ACTION_SLOTS do
 			local button = _G["PetActionButton"..i]
 			MasqueGroup:AddButton(button)

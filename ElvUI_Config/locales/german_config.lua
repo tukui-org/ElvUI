@@ -63,6 +63,7 @@ Zum Deaktvieren lasse das Feld leer. Brauchst du mehr Informationen besuche http
 --ActionBars
 L["Action Paging"] = "Seitenwechsel der Aktionsleisten"
 L["ActionBars"] = "Aktionsleisten"
+L["Allow Masque to handle skinning of the actionbars."] = true;
 L["Alpha"] = "Alpha"
 L["Anchor Point"] = "Ankerpunkt" --also in unitframes
 L["Backdrop"] = "Hintergrund"
@@ -92,6 +93,7 @@ L["Keybind Mode"] = "Tastaturbelegung"
 L["Keybind Text"] = "Tastaturbelegungstext"
 L["Low Threshold"] = "Niedrige CD-Schwelle"
 L["Macro Text"] = "Makrotext"
+L["Masque Support"] = true;
 L["Minutes"] = "Minuten"
 L["Mouse Over"] = "Mouseover" --Also used in Bags
 L["Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop."] = "Multipliziere die Höhe und die Breite des Hintergrundes. Das ist nützlich, wenn du mehr als eine Leiste hinter einem Hintergrund haben möchtest."

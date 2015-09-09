@@ -253,7 +253,7 @@ function AB:AdjustMaxStanceButtons(event)
 		if not bar.buttons[i] then
 			bar.buttons[i] = CreateFrame("CheckButton", format(bar:GetName().."Button%d", i), bar, "StanceButtonTemplate")
 			bar.buttons[i]:SetID(i)
-			if MasqueGroup then
+			if MasqueGroup and E.private.actionbar.useMasque then
 				MasqueGroup:AddButton(bar.buttons[i])
 			end
 			initialCreate = true;

@@ -63,6 +63,7 @@ L["TEXT_FORMAT_DESC"] = [=[提供一个更改文字格式的方式
 --ActionBars
 L["Action Paging"] = "快捷列翻页"
 L["ActionBars"] = "快捷列"
+L["Allow Masque to handle skinning of the actionbars."] = true;
 L["Alpha"] = "透明度"
 L["Anchor Point"] = "定位方向"
 L["Backdrop"] = "背景"
@@ -92,6 +93,7 @@ L["Keybind Mode"] = "快捷键绑定模式"
 L["Keybind Text"] = "快捷键文字"
 L["Low Threshold"] = "冷却时间低阀值"
 L["Macro Text"] = "巨集内容"
+L["Masque Support"] = true;
 L["Minutes"] = "分"
 L["Mouse Over"] = "滑鼠滑过显示"
 L["Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop."] = "根据此值增加背景的高度或宽度. 一般用来在一个背景框里放置多条快捷列"

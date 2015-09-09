@@ -63,6 +63,7 @@ To disable leave the field blank, if you need more information visit http://www.
 --ActionBars
 L["Action Paging"] = true;
 L["ActionBars"] = true;
+L["Allow Masque to handle skinning of the actionbars."] = true;
 L["Alpha"] = true;
 L["Anchor Point"] = true; --also in unitframes
 L["Backdrop"] = true;
@@ -92,6 +93,7 @@ L["Keybind Mode"] = true;
 L["Keybind Text"] = true;
 L["Low Threshold"] = true;
 L["Macro Text"] = true;
+L["Masque Support"] = true;
 L["Minutes"] = true;
 L["Mouse Over"] = true; --Also used in Bags
 L["Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop."] = true;

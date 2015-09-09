@@ -63,6 +63,7 @@ Para desactivarlo dejar el campo en blanco, si necesitas más información visit
 --ActionBars
 L["Action Paging"] = "Paginación"
 L["ActionBars"] = "Barras de Acción"
+L["Allow Masque to handle skinning of the actionbars."] = true;
 L["Alpha"] = "Transparencia"
 L["Anchor Point"] = "Punto de Fijación"
 L["Backdrop"] = "Fondo"
@@ -92,6 +93,7 @@ L["Keybind Mode"] = "Asignar Teclas"
 L["Keybind Text"] = "Mostrar Atajos"
 L["Low Threshold"] = "Umbral Bajo"
 L["Macro Text"] = "Texto de Macro"
+L["Masque Support"] = true;
 L["Minutes"] = "Minutos"
 L["Mouse Over"] = "Pasar el ratón sobre"
 L["Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop."] = "Multiplica el ancho o alto de los fondos por este valor. Es útil si deseas tener más de una barra con fondo."

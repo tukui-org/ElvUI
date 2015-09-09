@@ -254,7 +254,7 @@ function AB:CreateBar(id)
 			bar.buttons[i]:SetState(12, "custom", AB.customExitButton)
 		end
 		
-		if MasqueGroup then
+		if MasqueGroup and E.private.actionbar.useMasque then
 			bar.buttons[i]:AddToMasque(MasqueGroup)
 		end
 	end
@@ -779,7 +779,7 @@ local function SetupFlyoutButton()
 				end
 			end)
 			
-			if MasqueGroup then
+			if MasqueGroup and E.private.actionbar.useMasque then
 				MasqueGroup:AddButton(_G["SpellFlyoutButton"..i])
 			end
 		end
@@ -894,15 +894,13 @@ function AB:VehicleFix()
 end
 
 local function MasqueCallback(Addon, Group, SkinID, Gloss, Backdrop, Colors, Disabled)
-	print(Addon, Group, SkinID, Gloss, Backdrop, Colors, Disabled)
-	
 	if Group == "ActionBars" then
 		if Disabled and MasqueEnabled then
-			print("Skin disabled: you need to reload for this to take effect")
 			E.private.actionbar.useMasque = false
+			E:StaticPopup_Show("CONFIG_RL")
 		elseif not MasqueEnabled then
-			print("Skin enabled: you need to reload for this to take effect")
 			E.private.actionbar.useMasque = true
+			E:StaticPopup_Show("CONFIG_RL")
 		end
 	end
 end

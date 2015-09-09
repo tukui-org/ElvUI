@@ -63,6 +63,7 @@ L["TEXT_FORMAT_DESC"] = [=[Строка для изменения вида те�
 --ActionBars
 L["Action Paging"] = "Переключение панелей"
 L["ActionBars"] = "Панели команд"
+L["Allow Masque to handle skinning of the actionbars."] = true;
 L["Alpha"] = "Прозрачность"
 L["Anchor Point"] = "Точка фиксации"
 L["Backdrop"] = "Фон"
@@ -92,6 +93,7 @@ L["Keybind Mode"] = "Назначить клавиши"
 L["Keybind Text"] = "Текст клавиш"
 L["Low Threshold"] = "Минимальное значение"
 L["Macro Text"] = "Названия макросов"
+L["Masque Support"] = true;
 L["Minutes"] = "Минуты"
 L["Mouse Over"] = "При наведении" --Also used in Bags
 L["Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop."] = "Умножает высоту или ширину фона панели на это значение. Это полезно, когда Вы хотите иметь более одной панели на данном фоне."
