@@ -39,7 +39,7 @@ function AB:StyleShapeShift(event)
 		if i <= numForms then
 			texture, name, isActive, isCastable = GetShapeshiftFormInfo(i);
 
-			if not Masque or (Masque and not E.private.actionbar.useMasque) then
+			if not button.useMasque then
 				if not texture then
 					texture = "Interface\\Icons\\Spell_Nature_WispSplode"
 				end
@@ -234,11 +234,11 @@ function AB:PositionAndSizeBarShapeShift()
 		end
 
 		if(not button.FlyoutUpdateFunc) then
-			self:StyleButton(button, nil, true);
+			self:StyleButton(button, nil, MasqueGroup and E.private.actionbar.masque.stanceBar and true or nil);
 		end
 	end
 	
-	if MasqueGroup and E.private.actionbar.useMasque then MasqueGroup:ReSkin() end
+	if MasqueGroup and E.private.actionbar.masque.stanceBar then MasqueGroup:ReSkin() end
 end
 
 function AB:AdjustMaxStanceButtons(event)
@@ -253,7 +253,7 @@ function AB:AdjustMaxStanceButtons(event)
 		if not bar.buttons[i] then
 			bar.buttons[i] = CreateFrame("CheckButton", format(bar:GetName().."Button%d", i), bar, "StanceButtonTemplate")
 			bar.buttons[i]:SetID(i)
-			if MasqueGroup and E.private.actionbar.useMasque then
+			if MasqueGroup and E.private.actionbar.masque.stanceBar then
 				MasqueGroup:AddButton(bar.buttons[i])
 			end
 			initialCreate = true;
@@ -287,7 +287,6 @@ end
 function AB:UpdateStanceBindings()
 	for i = 1, NUM_STANCE_SLOTS do
 		if self.db.hotkeytext then
-			-- print("show stancebar hotkeys")
 			_G["ElvUI_StanceBarButton"..i.."HotKey"]:Show()
 			_G["ElvUI_StanceBarButton"..i.."HotKey"]:SetText(GetBindingKey("CLICK ElvUI_StanceBarButton"..i..":LeftButton"))
 			self:FixKeybindText(_G["ElvUI_StanceBarButton"..i])

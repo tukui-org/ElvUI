@@ -63,7 +63,7 @@ L["TEXT_FORMAT_DESC"] = [=[提供一个更改文字格式的方式
 --ActionBars
 L["Action Paging"] = "快捷列翻页"
 L["ActionBars"] = "快捷列"
-L["Allow Masque to handle skinning of the actionbars."] = true;
+L["Allow Masque to handle the skinning of this element."] = true;
 L["Alpha"] = "透明度"
 L["Anchor Point"] = "定位方向"
 L["Backdrop"] = "背景"

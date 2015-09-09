@@ -126,7 +126,12 @@ V['unitframe'] = {
 
 V["actionbar"] = {
 	["enable"] = true,
-	["useMasque"] = false,
+
+	["masque"] = {
+		["actionbars"] = false,
+		["petBar"] = false,
+		["stanceBar"] = false,
+	},
 }
 
 V["cooldown"] = {

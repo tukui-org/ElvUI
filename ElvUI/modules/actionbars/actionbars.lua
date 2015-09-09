@@ -9,7 +9,6 @@ local LSM = LibStub("LibSharedMedia-3.0")
 
 local Masque = LibStub("Masque", true)
 local MasqueGroup = Masque and Masque:Group("ElvUI", "ActionBars")
-local MasqueEnabled
 
 local gsub = string.gsub
 local format = string.format
@@ -193,7 +192,7 @@ function AB:PositionAndSizeBar(barName)
 			button:Show()
 		end
 
-		self:StyleButton(button);
+		self:StyleButton(button, nil, MasqueGroup and E.private.actionbar.masque.actionbars and true or nil);
 		button:SetCheckedTexture("")
 	end
 
@@ -229,7 +228,7 @@ function AB:PositionAndSizeBar(barName)
 
 	E:SetMoverSnapOffset('ElvAB_'..bar.id, bar.db.buttonspacing / 2)
 
-	if MasqueGroup and E.private.actionbar.useMasque then MasqueGroup:ReSkin() end
+	if MasqueGroup and E.private.actionbar.masque.actionbars then MasqueGroup:ReSkin() end
 end
 
 function AB:CreateBar(id)
@@ -254,7 +253,7 @@ function AB:CreateBar(id)
 			bar.buttons[i]:SetState(12, "custom", AB.customExitButton)
 		end
 		
-		if MasqueGroup and E.private.actionbar.useMasque then
+		if MasqueGroup and E.private.actionbar.masque.actionbars then
 			bar.buttons[i]:AddToMasque(MasqueGroup)
 		end
 	end
@@ -440,7 +439,7 @@ function AB:UpdateButtonSettings()
 	
 	for button, _ in pairs(self["handledbuttons"]) do
 		if button then
-			self:StyleButton(button, button.noBackdrop)
+			self:StyleButton(button, button.noBackdrop, button.useMasque)
 			self:StyleFlyout(button)
 		else
 			self["handledbuttons"][button] = nil
@@ -458,7 +457,9 @@ function AB:UpdateButtonSettings()
 		self:UpdateButtonConfig(bar, bar.bindButtons)
 	end
 
-	if MasqueGroup and E.private.actionbar.useMasque then MasqueGroup:ReSkin() end
+	if Masque and Masque:Group("ElvUI", "ActionBars") and E.private.actionbar.masque.actionbars then Masque:Group("ElvUI", "ActionBars"):ReSkin() end
+	if Masque and Masque:Group("ElvUI", "Pet Bar") and E.private.actionbar.masque.petBar then Masque:Group("ElvUI", "Pet Bar"):ReSkin() end
+	if Masque and Masque:Group("ElvUI", "Stance Bar") and E.private.actionbar.masque.stanceBar then Masque:Group("ElvUI", "Stance Bar"):ReSkin() end
 end
 
 function AB:GetPage(bar, defaultPage, condition)
@@ -473,7 +474,7 @@ function AB:GetPage(bar, defaultPage, condition)
 	return condition
 end
 
-function AB:StyleButton(button, noBackdrop, adjustChecked)
+function AB:StyleButton(button, noBackdrop, useMasque)
 	local name = button:GetName();
 	local icon = _G[name.."Icon"];
 	local count = _G[name.."Count"];
@@ -486,15 +487,19 @@ function AB:StyleButton(button, noBackdrop, adjustChecked)
 	local shine = _G[name.."Shine"];
 	local combat = InCombatLockdown()
 
-	if not Masque or (Masque and not E.private.actionbar.useMasque) then
+	if not button.noBackdrop then
+		button.noBackdrop = noBackdrop;
+	end
+	
+	if not button.useMasque then
+		button.useMasque = useMasque;
+	end
+
+	if not button.useMasque then
 		if flash then flash:SetTexture(nil); end
 		if normal then normal:SetTexture(nil); normal:Hide(); normal:SetAlpha(0); end
 		if normal2 then normal2:SetTexture(nil); normal2:Hide(); normal2:SetAlpha(0); end
 		if border then border:Kill(); end
-	end
-
-	if not button.noBackdrop then
-		button.noBackdrop = noBackdrop;
 	end
 
 	if count then
@@ -503,7 +508,7 @@ function AB:StyleButton(button, noBackdrop, adjustChecked)
 		count:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 	end
 
-	if not Masque or (Masque and not E.private.actionbar.useMasque) then
+	if not button.useMasque then
 		if not button.noBackdrop and not button.backdrop then
 			button:CreateBackdrop('Default', true)
 			button.backdrop:SetAllPoints()
@@ -532,7 +537,7 @@ function AB:StyleButton(button, noBackdrop, adjustChecked)
 	button.FlyoutUpdateFunc = AB.StyleFlyout
 	self:FixKeybindText(button);
 	
-	if not Masque or (Masque and not E.private.actionbar.useMasque) then
+	if not button.useMasque then
 		button:StyleButton();
 	else
 		button:StyleButton(true, true, true)
@@ -755,7 +760,7 @@ local function SetupFlyoutButton()
 	for i=1, buttons do
 		--prevent error if you don't have max amount of buttons
 		if _G["SpellFlyoutButton"..i] then
-			AB:StyleButton(_G["SpellFlyoutButton"..i])
+			AB:StyleButton(_G["SpellFlyoutButton"..i], nil, MasqueGroup and E.private.actionbar.masque.actionbars and true or nil)
 			_G["SpellFlyoutButton"..i]:StyleButton()
 			_G["SpellFlyoutButton"..i]:HookScript('OnEnter', function(self)
 				local parent = self:GetParent()
@@ -779,7 +784,7 @@ local function SetupFlyoutButton()
 				end
 			end)
 			
-			if MasqueGroup and E.private.actionbar.useMasque then
+			if MasqueGroup and E.private.actionbar.masque.actionbars then
 				MasqueGroup:AddButton(_G["SpellFlyoutButton"..i])
 			end
 		end
@@ -893,13 +898,23 @@ function AB:VehicleFix()
 	end
 end
 
+local MasqueGroupToTableElement = {
+	["ActionBars"] = "actionbars",
+	["Pet Bar"] = "petBar",
+	["Stance Bar"] = "stanceBar",
+}
+
 local function MasqueCallback(Addon, Group, SkinID, Gloss, Backdrop, Colors, Disabled)
-	if Group == "ActionBars" then
-		if Disabled and MasqueEnabled then
-			E.private.actionbar.useMasque = false
-			E:StaticPopup_Show("CONFIG_RL")
-		elseif not MasqueEnabled then
-			E.private.actionbar.useMasque = true
+	local element = MasqueGroupToTableElement[Group]
+
+	if element then
+		if E.private.actionbar.masque[element] then
+			if Disabled then
+				E.private.actionbar.masque[element] = false
+				E:StaticPopup_Show("CONFIG_RL")
+			end
+		elseif not Disabled then
+			E.private.actionbar.masque[element] = true
 			E:StaticPopup_Show("CONFIG_RL")
 		end
 	end
@@ -944,7 +959,6 @@ function AB:Initialize()
 
 	SpellFlyout:HookScript("OnShow", SetupFlyoutButton)
 	
-	MasqueEnabled = E.private.actionbar.useMasque
 	if Masque then
 		Masque:Register("ElvUI", MasqueCallback)
 	end

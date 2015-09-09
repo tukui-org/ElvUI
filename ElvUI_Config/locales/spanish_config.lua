@@ -63,7 +63,7 @@ Para desactivarlo dejar el campo en blanco, si necesitas más información visit
 --ActionBars
 L["Action Paging"] = "Paginación"
 L["ActionBars"] = "Barras de Acción"
-L["Allow Masque to handle skinning of the actionbars."] = true;
+L["Allow Masque to handle the skinning of this element."] = true;
 L["Alpha"] = "Transparencia"
 L["Anchor Point"] = "Punto de Fijación"
 L["Backdrop"] = "Fondo"

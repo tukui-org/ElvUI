@@ -63,7 +63,7 @@ L["TEXT_FORMAT_DESC"] = [=[Строка для изменения вида те�
 --ActionBars
 L["Action Paging"] = "Переключение панелей"
 L["ActionBars"] = "Панели команд"
-L["Allow Masque to handle skinning of the actionbars."] = true;
+L["Allow Masque to handle the skinning of this element."] = true;
 L["Alpha"] = "Прозрачность"
 L["Anchor Point"] = "Точка фиксации"
 L["Backdrop"] = "Фон"

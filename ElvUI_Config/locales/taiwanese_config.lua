@@ -63,7 +63,7 @@ L["TEXT_FORMAT_DESC"] = [=[請填入代碼以變更文字格式。
 --ActionBars
 L["Action Paging"] = "快捷列翻頁"
 L["ActionBars"] = "快捷列"
-L["Allow Masque to handle skinning of the actionbars."] = true;
+L["Allow Masque to handle the skinning of this element."] = true;
 L["Alpha"] = "透明度"
 L["Anchor Point"] = "定位方向"
 L["Backdrop"] = "背景"

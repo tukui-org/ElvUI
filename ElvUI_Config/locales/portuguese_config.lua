@@ -63,7 +63,7 @@ Para desactivar deixe o espaço em branco, se precisar de mais informações vis
 --ActionBars
 L["Action Paging"] = "Paginação da Barra de Ação"
 L["ActionBars"] = "Barras de Ações"
-L["Allow Masque to handle skinning of the actionbars."] = true;
+L["Allow Masque to handle the skinning of this element."] = true;
 L["Alpha"] = "Transparência"
 L["Anchor Point"] = "Ponto de Fixação"
 L["Backdrop"] = "Fundo"

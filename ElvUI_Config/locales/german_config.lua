@@ -63,7 +63,7 @@ Zum Deaktvieren lasse das Feld leer. Brauchst du mehr Informationen besuche http
 --ActionBars
 L["Action Paging"] = "Seitenwechsel der Aktionsleisten"
 L["ActionBars"] = "Aktionsleisten"
-L["Allow Masque to handle skinning of the actionbars."] = true;
+L["Allow Masque to handle the skinning of this element."] = true;
 L["Alpha"] = "Alpha"
 L["Anchor Point"] = "Ankerpunkt" --also in unitframes
 L["Backdrop"] = "Hintergrund"

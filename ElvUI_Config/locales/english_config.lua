@@ -63,7 +63,7 @@ To disable leave the field blank, if you need more information visit http://www.
 --ActionBars
 L["Action Paging"] = true;
 L["ActionBars"] = true;
-L["Allow Masque to handle skinning of the actionbars."] = true;
+L["Allow Masque to handle the skinning of this element."] = true;
 L["Alpha"] = true;
 L["Anchor Point"] = true; --also in unitframes
 L["Backdrop"] = true;
