@@ -446,20 +446,17 @@ function AB:UpdateButtonSettings()
 		end
 	end
 
-	for i=1, 6 do
-		self:PositionAndSizeBar('bar'..i)
-	end
-	self:PositionAndSizeBarPet()
-	self:PositionAndSizeBarShapeShift()
 	self:UpdatePetBindings()
 	self:UpdateStanceBindings()
 	for barName, bar in pairs(self["handledBars"]) do
 		self:UpdateButtonConfig(bar, bar.bindButtons)
 	end
-
-	if Masque and Masque:Group("ElvUI", "ActionBars") and E.private.actionbar.masque.actionbars then Masque:Group("ElvUI", "ActionBars"):ReSkin() end
-	if Masque and Masque:Group("ElvUI", "Pet Bar") and E.private.actionbar.masque.petBar then Masque:Group("ElvUI", "Pet Bar"):ReSkin() end
-	if Masque and Masque:Group("ElvUI", "Stance Bar") and E.private.actionbar.masque.stanceBar then Masque:Group("ElvUI", "Stance Bar"):ReSkin() end
+	
+	for i=1, 6 do
+		self:PositionAndSizeBar('bar'..i)
+	end
+	self:PositionAndSizeBarPet()
+	self:PositionAndSizeBarShapeShift()
 end
 
 function AB:GetPage(bar, defaultPage, condition)
@@ -751,8 +748,10 @@ function AB:FixKeybindText(button)
 		hotkey:SetText(text);
 	end
 
-	hotkey:ClearAllPoints()
-	hotkey:SetPoint("TOPRIGHT", 0, -3);
+	if not button.useMasque then
+		hotkey:ClearAllPoints()
+		hotkey:SetPoint("TOPRIGHT", 0, -3);
+	end
 end
 
 local buttons = 0
