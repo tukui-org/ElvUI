@@ -35,8 +35,11 @@ end
 function AB:BindListener(key)
 	AB.bindingsChanged = true
 	if key == "ESCAPE" or key == "RightButton" then
-		for i = 1, #bind.button.bindings do
-			SetBinding(bind.button.bindings[i]);
+
+		if bind.button.bindings then
+			for i = 1, #bind.button.bindings do
+				SetBinding(bind.button.bindings[i]);
+			end
 		end
 		E:Print(format(L["All keybindings cleared for |cff00ff00%s|r."], bind.button.name));
 		self:BindUpdate(bind.button, bind.spellmacro);

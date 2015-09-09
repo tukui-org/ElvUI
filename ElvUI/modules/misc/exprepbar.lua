@@ -195,6 +195,9 @@ function M:UpdateExpRepDimensions()
 	self.expBar.statusBar:SetOrientation(E.db.general.experience.orientation)
 	self.repBar.statusBar:SetOrientation(E.db.general.reputation.orientation)
 	self.expBar.rested:SetOrientation(E.db.general.experience.orientation)
+	self.expBar.statusBar:SetReverseFill(E.db.general.experience.reverseFill)
+	self.repBar.statusBar:SetReverseFill(E.db.general.reputation.reverseFill)
+	self.expBar.rested:SetReverseFill(E.db.general.experience.reverseFill)
 
 	if E.db.general.experience.mouseover then
 		self.expBar:SetAlpha(0)

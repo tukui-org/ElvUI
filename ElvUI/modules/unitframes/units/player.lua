@@ -490,7 +490,7 @@ function UF:Update_PlayerFrame(frame, db)
 				if not power.mover then
 					power:ClearAllPoints()
 					power:Point("BOTTOM", frame, "BOTTOM", 0, -20)
-					E:CreateMover(power, 'PlayerPowerBarMover', 'Player Powerbar', nil, nil, nil, 'ALL,SOLO')
+					E:CreateMover(power, 'PlayerPowerBarMover', L["Player Powerbar"], nil, nil, nil, 'ALL,SOLO')
 				else
 					power:ClearAllPoints()
 					power:SetPoint("BOTTOMLEFT", power.mover, "BOTTOMLEFT")
@@ -521,6 +521,14 @@ function UF:Update_PlayerFrame(frame, db)
 				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(E.PixelMode and 0 or (BORDER + SPACING)))
 				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -BORDER, BORDER)
 			end
+			
+			if db.power.strataAndLevel.useCustomStrata then
+				power:SetFrameStrata(db.power.strataAndLevel.frameStrata)
+			end
+			if db.power.strataAndLevel.useCustomLevel then
+				power:SetFrameLevel(db.power.strataAndLevel.frameLevel)
+			end
+
 		elseif frame:IsElementEnabled('Power') then
 			frame:DisableElement('Power')
 			power:Hide()
@@ -694,8 +702,9 @@ function UF:Update_PlayerFrame(frame, db)
 
 		if position == "BUFFS_ON_DEBUFFS" then
 			if db.debuffs.attachTo == "BUFFS" then
-				E:Print(format(L["This setting caused a conflicting anchor point, where %s would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Buffs"], L["Debuffs"], L["Frame"]))
+				E:Print(format(L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Buffs"], L["Debuffs"], L["Frame"]))
 				db.debuffs.attachTo = "FRAME"
+				frame.Debuffs.attachTo = frame
 			end
 			frame.Buffs.PostUpdate = nil
 			frame.Debuffs.PostUpdate = UF.UpdateBuffsHeaderPosition
@@ -703,6 +712,7 @@ function UF:Update_PlayerFrame(frame, db)
 			if db.buffs.attachTo == "DEBUFFS" then
 				E:Print(format(L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Debuffs"], L["Buffs"], L["Frame"]))
 				db.buffs.attachTo = "FRAME"
+				frame.Buffs.attachTo = frame
 			end
 			frame.Buffs.PostUpdate = UF.UpdateDebuffsHeaderPosition
 			frame.Debuffs.PostUpdate = nil

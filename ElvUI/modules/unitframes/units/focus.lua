@@ -24,6 +24,7 @@ function UF:Construct_FocusFrame(frame)
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
 	frame.Range = UF:Construct_Range(frame)
 	frame.Threat = UF:Construct_Threat(frame)
+	frame.GPS = self:Construct_GPS(frame)
 	frame.customTexts = {}
 	frame:Point('BOTTOMRIGHT', ElvUF_Target, 'TOPRIGHT', 0, 220)
 	E:CreateMover(frame, frame:GetName()..'Mover', L["Focus Frame"], nil, nil, nil, 'ALL,SOLO')
@@ -309,8 +310,9 @@ function UF:Update_FocusFrame(frame, db)
 
 		if position == "BUFFS_ON_DEBUFFS" then
 			if db.debuffs.attachTo == "BUFFS" then
-				E:Print(format(L["This setting caused a conflicting anchor point, where %s would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Buffs"], L["Debuffs"], L["Frame"]))
+				E:Print(format(L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Buffs"], L["Debuffs"], L["Frame"]))
 				db.debuffs.attachTo = "FRAME"
+				frame.Debuffs.attachTo = frame
 			end
 			frame.Buffs.PostUpdate = nil
 			frame.Debuffs.PostUpdate = UF.UpdateBuffsHeaderPosition
@@ -318,6 +320,7 @@ function UF:Update_FocusFrame(frame, db)
 			if db.buffs.attachTo == "DEBUFFS" then
 				E:Print(format(L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Debuffs"], L["Buffs"], L["Frame"]))
 				db.buffs.attachTo = "FRAME"
+				frame.Buffs.attachTo = frame
 			end
 			frame.Buffs.PostUpdate = UF.UpdateDebuffsHeaderPosition
 			frame.Debuffs.PostUpdate = nil
@@ -385,6 +388,26 @@ function UF:Update_FocusFrame(frame, db)
 		else
 			if frame:IsElementEnabled('HealPrediction') then
 				frame:DisableElement('HealPrediction')
+			end
+		end
+	end
+	
+	--GPSArrow
+	do
+		local GPS = frame.GPS
+		if db.GPSArrow.enable then
+			if not frame:IsElementEnabled('GPS') then
+				frame:EnableElement('GPS')
+			end
+
+			GPS:Size(db.GPSArrow.size)
+			GPS.onMouseOver = db.GPSArrow.onMouseOver
+			GPS.outOfRange = db.GPSArrow.outOfRange
+
+			GPS:SetPoint("CENTER", frame, "CENTER", db.GPSArrow.xOffset, db.GPSArrow.yOffset)
+		else
+			if frame:IsElementEnabled('GPS') then
+				frame:DisableElement('GPS')
 			end
 		end
 	end

@@ -85,6 +85,7 @@ P['general'] = {
 		['textSize'] = 11,
 		['mouseover'] = false,
 		['orientation'] = 'VERTICAL',
+		["reverseFill"] = false,
 	},
 	['reputation'] = {
 		['enable'] = true,
@@ -94,6 +95,7 @@ P['general'] = {
 		['textSize'] = 11,
 		['mouseover'] = false,
 		['orientation'] = 'VERTICAL',
+		["reverseFill"] = false,
 	},
 	['threat'] = {
 		['enable'] = true,
@@ -526,6 +528,12 @@ P['unitframe'] = {
 				['detachedWidth'] = 250,
 				['attachTextToPower'] = false,
 				['druidMana'] = true,
+				["strataAndLevel"] = {
+					["useCustomStrata"] = false,
+					["frameStrata"] = "LOW",
+					["useCustomLevel"] = false,
+					["frameLevel"] = 1,
+				},
 			},
 			['name'] = {
 				['position'] = 'CENTER',
@@ -663,6 +671,12 @@ P['unitframe'] = {
 				['detachFromFrame'] = false,
 				['detachedWidth'] = 250,
 				['attachTextToPower'] = false,
+				["strataAndLevel"] = {
+					["useCustomStrata"] = false,
+					["frameStrata"] = "LOW",
+					["useCustomLevel"] = false,
+					["frameLevel"] = 1,
+				},
 			},
 			['name'] = {
 				['position'] = 'CENTER',
@@ -758,6 +772,14 @@ P['unitframe'] = {
 				['attachTo'] = 'TOP',
 				['xOffset'] = 0,
 				['yOffset'] = 10,
+			},
+			['GPSArrow'] = {
+				['enable'] = false,
+				['size'] = 45,
+				['xOffset'] = 0,
+				['yOffset'] = 0,
+				['onMouseOver'] = true,
+				['outOfRange'] = true
 			},
 		},
 		['targettarget'] = {
@@ -1011,6 +1033,14 @@ P['unitframe'] = {
 				['attachTo'] = 'TOP',
 				['xOffset'] = 0,
 				['yOffset'] = 10,
+			},
+			['GPSArrow'] = {
+				['enable'] = false,
+				['size'] = 45,
+				['xOffset'] = 0,
+				['yOffset'] = 0,
+				['onMouseOver'] = true,
+				['outOfRange'] = true
 			},
 		},
 		['focustarget'] = {

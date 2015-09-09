@@ -188,7 +188,7 @@ local function LoadSkin()
 			for i = 1, frame:GetNumRegions() do
 				local region = select(i, frame:GetRegions())
 				if region:GetObjectType() == "Texture" then
-					if region:GetTexture() == "Interface\\Scenarios\\ScenariosParts" then
+					if region:GetTexture() == "Interface\\Scenarios\\ScenarioParts" then
 						region:Kill()
 					end
 				end
@@ -202,6 +202,7 @@ local function LoadSkin()
 			ScenarioAlertFrame1DungeonTexture:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 			ScenarioAlertFrame1DungeonTexture:ClearAllPoints()
 			ScenarioAlertFrame1DungeonTexture:Point("LEFT", frame.backdrop, 9, 0)
+			ScenarioAlertFrame1DungeonTexture:SetDrawLayer("OVERLAY")
 
 			-- Icon border
 			if not ScenarioAlertFrame1DungeonTexture.b then
@@ -376,7 +377,6 @@ local function LoadSkin()
 	frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	frame.Icon:SetDrawLayer("ARTWORK")
 	frame.Icon.b = CreateFrame("Frame", nil, frame)
-	frame.Icon.b:SetTemplate("Default")
 	frame.Icon.b:SetTemplate("Default")
 	frame.Icon.b:SetOutside(frame.Icon)
 	frame.Icon:SetParent(frame.Icon.b)

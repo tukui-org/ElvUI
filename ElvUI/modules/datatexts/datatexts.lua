@@ -212,6 +212,9 @@ function DT:LoadDataTexts()
 
 	local inInstance, instanceType = IsInInstance()
 	local fontTemplate = LSM:Fetch("font", self.db.font)
+	if ElvConfigToggle then
+		ElvConfigToggle.text:FontTemplate(fontTemplate, self.db.fontSize, self.db.fontOutline)
+	end
 	for panelName, panel in pairs(DT.RegisteredPanels) do
 		--Restore Panels
 		for i=1, panel.numPoints do
