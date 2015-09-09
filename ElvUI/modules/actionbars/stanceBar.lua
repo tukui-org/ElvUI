@@ -76,12 +76,8 @@ function AB:StyleShapeShift(event)
 						end
 					end
 				end
-			else
-				if(isActive) then
-					texture = "Interface\\Icons\\Spell_Nature_WispSplode"
-				else
-					_, _, texture = GetSpellInfo(name)
-				end
+			elseif (isActive) then
+				texture = "Interface\\Icons\\Spell_Nature_WispSplode"
 			end
 			
 			icon:SetTexture(texture);
