@@ -25,7 +25,7 @@ local Update = function(self, event)
 			mlUnit = 'raid'..rid
 		end
 
-		if(UnitIsUnit(unit, mlUnit)) then
+		if(unit and mlUnit and UnitIsUnit(unit, mlUnit)) then
 			masterlooter:Show()
 		elseif(masterlooter:IsShown()) then
 			masterlooter:Hide()
