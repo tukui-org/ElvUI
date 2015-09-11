@@ -327,6 +327,7 @@ P['datatexts'] = {
 	['font'] = 'ElvUI Pixel',
 	['fontSize'] = 10,
 	['fontOutline'] = 'NONE',
+	["wordWrap"] = false,
 
 	['panels'] = {
 		['LeftChatDataPanel'] = {

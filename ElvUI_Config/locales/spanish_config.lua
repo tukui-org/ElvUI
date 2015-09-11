@@ -322,6 +322,7 @@ L["RightMiniPanel"] = "Panel Derecho del Minimapa"
 L["The display format of the money text that is shown in the gold datatext and its tooltip."] = true;
 L["Toggle 24-hour mode for the time datatext."] = "Ver formato de 24 horas para el texto de datos de tiempo."
 L["When inside a battleground display personal scoreboard information on the main datatext bars."] = "Cuando estás dentro de un campo de batalla muestra la puntuación personal en las barras de texto principales."
+L["Word Wrap"] = true;
 
 --Distributor
 L["Must be in group with the player if he isn't on the same server as you."] = "Debes estar agrupado con el jugador si no está en tu mismo servidor."

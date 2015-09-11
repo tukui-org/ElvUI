@@ -322,6 +322,7 @@ L["RightMiniPanel"] = "小地图右方"
 L["The display format of the money text that is shown in the gold datatext and its tooltip."] = true;
 L["Toggle 24-hour mode for the time datatext."] = "切换时间显示为24小时制."
 L["When inside a battleground display personal scoreboard information on the main datatext bars."] = "处于战场时, 在主资讯文字条显示你的战场得分讯息."
+L["Word Wrap"] = true;
 
 --Distributor
 L["Must be in group with the player if he isn't on the same server as you."] = "如果不是同一服务器, 那他必须和你在同一队伍中."
