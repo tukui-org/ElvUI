@@ -492,12 +492,10 @@ function AB:StyleButton(button, noBackdrop, useMasque)
 		button.useMasque = useMasque;
 	end
 
-	if not button.useMasque then
-		if flash then flash:SetTexture(nil); end
-		if normal then normal:SetTexture(nil); normal:Hide(); normal:SetAlpha(0); end
-		if normal2 then normal2:SetTexture(nil); normal2:Hide(); normal2:SetAlpha(0); end
-		if border then border:Kill(); end
-	end
+	if flash then flash:SetTexture(nil); end
+	if normal then normal:SetTexture(nil); normal:Hide(); normal:SetAlpha(0); end
+	if normal2 then normal2:SetTexture(nil); normal2:Hide(); normal2:SetAlpha(0); end
+	if border then border:Kill(); end
 
 	if count then
 		count:ClearAllPoints();
@@ -505,20 +503,18 @@ function AB:StyleButton(button, noBackdrop, useMasque)
 		count:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 	end
 
-	if not button.useMasque then
-		if not button.noBackdrop and not button.backdrop then
-			button:CreateBackdrop('Default', true)
-			button.backdrop:SetAllPoints()
-		end
+	if not button.noBackdrop and not button.backdrop and not button.useMasque then
+		button:CreateBackdrop('Default', true)
+		button.backdrop:SetAllPoints()
+	end
+	
+	if icon then
+		icon:SetTexCoord(unpack(E.TexCoords));
+		icon:SetInside()
+	end
 
-		if icon then
-			icon:SetTexCoord(unpack(E.TexCoords));
-			icon:SetInside()
-		end
-
-		if shine then
-			shine:SetAllPoints()
-		end
+	if shine then
+		shine:SetAllPoints()
 	end
 
 	if self.db.hotkeytext then
