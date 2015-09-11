@@ -318,6 +318,7 @@ L["RightMiniPanel"] = "Minimap Rechts"
 L["The display format of the money text that is shown in the gold datatext and its tooltip."] = "Das Anzeigeformat für Gold in den Haupt-Infoleisten und Tooltips."
 L["Toggle 24-hour mode for the time datatext."] = "Wählt das 24-Stunden-Format für den Zeit-Infotext."
 L["When inside a battleground display personal scoreboard information on the main datatext bars."] = "Zeige innerhalb eines Schlachtfeldes persönliche Statistiken in den Haupt-Infoleisten."
+L["Word Wrap"] = true;
 
 --Distributor
 L["Must be in group with the player if he isn't on the same server as you."] = "Du musst mit dem Spieler in einer Gruppe sein wenn dieser nicht auf deinem Server ist wie du."

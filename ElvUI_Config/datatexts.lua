@@ -171,18 +171,18 @@ E.Options.args.datatexts = {
 			args = {
 				font = {
 					type = "select", dialogControl = 'LSM30_Font',
-					order = 4,
+					order = 1,
 					name = L["Font"],
 					values = AceGUIWidgetLSMlists.font,
 				},
 				fontSize = {
-					order = 5,
+					order = 2,
 					name = L["Font Size"],
 					type = "range",
 					min = 4, max = 22, step = 1,
 				},
 				fontOutline = {
-					order = 6,
+					order = 3,
 					name = L["Font Outline"],
 					desc = L["Set the font outline."],
 					type = "select",
@@ -193,6 +193,11 @@ E.Options.args.datatexts = {
 						['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
 						['THICKOUTLINE'] = 'THICKOUTLINE',
 					},
+				},
+				wordWrap = {
+					order = 4,
+					type = "toggle",
+					name = L["Word Wrap"],
 				},
 			},
 		},

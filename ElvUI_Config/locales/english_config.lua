@@ -309,6 +309,7 @@ L["RightMiniPanel"] = "Minimap Right"
 L["The display format of the money text that is shown in the gold datatext and its tooltip."] = true;
 L["Toggle 24-hour mode for the time datatext."] = true;
 L["When inside a battleground display personal scoreboard information on the main datatext bars."] = true;
+L["Word Wrap"] = true;
 
 --Distributor
 L["Must be in group with the player if he isn't on the same server as you."] = true;
