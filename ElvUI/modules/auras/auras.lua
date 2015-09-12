@@ -7,6 +7,10 @@ local format = string.format
 local join = string.join
 local floor = math.floor
 
+local Masque = LibStub("Masque", true)
+local MasqueGroupBuffs = Masque and Masque:Group("ElvUI", "Buffs")
+local MasqueGroupDebuffs = Masque and Masque:Group("ElvUI", "Debuffs")
+
 local DIRECTION_TO_POINT = {
 	DOWN_RIGHT = "TOPLEFT",
 	DOWN_LEFT = "TOPRIGHT",
@@ -78,8 +82,6 @@ end
 function A:CreateIcon(button)
 	local font = LSM:Fetch("font", self.db.font)
 
-	button:SetTemplate('Default')
-
 	button.texture = button:CreateTexture(nil, "BORDER")
 	button.texture:SetInside()
 	button.texture:SetTexCoord(unpack(E.TexCoords))
@@ -99,6 +101,42 @@ function A:CreateIcon(button)
 	E:SetUpAnimGroup(button)
 
 	button:SetScript("OnAttributeChanged", A.OnAttributeChanged)
+	
+	local ButtonData = {
+		FloatingBG = nil,
+		Icon = button.texture,
+		Cooldown = nil,
+		Flash = nil,
+		Pushed = nil,
+		Normal = nil,
+		Disabled = nil,
+		Checked = nil,
+		Border = nil,
+		AutoCastable = nil,
+		Highlight = button.highlight,
+		HotKey = nil,
+		Count = button.count,
+		Name = nil,
+		Duration = button.time,
+		AutoCast = nil,
+	}
+
+	local header = button:GetParent()
+	local auraType = header:GetAttribute("filter")
+
+	if auraType == "HELPFUL" then
+		if MasqueGroupBuffs and E.private.auras.masque.buffs then
+			MasqueGroupBuffs:AddButton(button, ButtonData)
+		else
+			button:SetTemplate('Default')
+		end
+	elseif auraType == "HARMFUL" then
+		if MasqueGroupDebuffs and E.private.auras.masque.debuffs then
+			MasqueGroupDebuffs:AddButton(button, ButtonData)
+		else
+			button:SetTemplate('Default')
+		end
+	end
 end
 
 function A:UpdateAura(button, index)
@@ -239,6 +277,9 @@ function A:UpdateHeader(header)
 		index = index + 1
 		child = select(index, header:GetChildren())
 	end
+	
+	if MasqueGroupBuffs and E.private.auras.masque.buffs then MasqueGroupBuffs:ReSkin() end
+	if MasqueGroupDebuffs and E.private.auras.masque.debuffs then MasqueGroupDebuffs:ReSkin() end
 end
 
 function A:CreateAuraHeader(filter)
@@ -286,6 +327,11 @@ function A:Initialize()
 	self.DebuffFrame = self:CreateAuraHeader("HARMFUL")
 	self.DebuffFrame:SetPoint("BOTTOMRIGHT", LeftMiniPanel, "BOTTOMLEFT", -(6 + E.Border), 0)
 	E:CreateMover(self.DebuffFrame, "DebuffsMover", L["Player Debuffs"])
+	
+	if Masque then
+		if MasqueGroupBuffs then A.BuffsMasqueGroup = MasqueGroupBuffs end
+		if MasqueGroupDebuffs then A.DebuffsMasqueGroup = MasqueGroupDebuffs end
+	end
 end
 
 E:RegisterModule(A:GetName())

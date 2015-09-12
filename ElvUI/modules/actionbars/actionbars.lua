@@ -893,28 +893,6 @@ function AB:VehicleFix()
 	end
 end
 
-local MasqueGroupToTableElement = {
-	["ActionBars"] = "actionbars",
-	["Pet Bar"] = "petBar",
-	["Stance Bar"] = "stanceBar",
-}
-
-local function MasqueCallback(Addon, Group, SkinID, Gloss, Backdrop, Colors, Disabled)
-	local element = MasqueGroupToTableElement[Group]
-
-	if element then
-		if E.private.actionbar.masque[element] then
-			if Disabled then
-				E.private.actionbar.masque[element] = false
-				E:StaticPopup_Show("CONFIG_RL")
-			end
-		elseif not Disabled then
-			E.private.actionbar.masque[element] = true
-			E:StaticPopup_Show("CONFIG_RL")
-		end
-	end
-end
-
 function AB:Initialize()
 	self.db = E.db.actionbar
 	if E.private.actionbar.enable ~= true then return; end
@@ -953,10 +931,6 @@ function AB:Initialize()
 	end
 
 	SpellFlyout:HookScript("OnShow", SetupFlyoutButton)
-	
-	if Masque then
-		Masque:Register("ElvUI", MasqueCallback)
-	end
 end
 
 E:RegisterModule(AB:GetName())

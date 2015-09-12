@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local LSM = LibStub("LibSharedMedia-3.0")
+local Masque = LibStub("Masque", true)
 
 local format = string.format
 local find = string.find
@@ -231,6 +232,31 @@ local function LSMCallback()
 	E:UpdateMedia()
 end
 E.LSM.RegisterCallback(E, "LibSharedMedia_Registered", LSMCallback)
+
+local MasqueGroupToTableElement = {
+	["ActionBars"] = {"actionbar", "actionbars"},
+	["Pet Bar"] = {"actionbar", "petBar"},
+	["Stance Bar"] = {"actionbar", "stanceBar"},
+	["Buffs"] = {"auras", "buffs"},
+	["Debuffs"] = {"auras", "debuffs"},
+	["Consolidated Buffs"] = {"auras", "consolidatedBuffs"},
+}
+
+local function MasqueCallback(Addon, Group, SkinID, Gloss, Backdrop, Colors, Disabled)
+	local element = MasqueGroupToTableElement[Group]
+
+	if element then
+		if E.private[element[1]].masque[element[2]] then
+			if Disabled then
+				E.private[element[1]].masque[element[2]] = false
+				E:StaticPopup_Show("CONFIG_RL")
+			end
+		elseif not Disabled then
+			E.private[element[1]].masque[element[2]] = true
+			E:StaticPopup_Show("CONFIG_RL")
+		end
+	end
+end
 
 function E:RequestBGInfo()
 	RequestBattlefieldScoreData()
@@ -1200,5 +1226,9 @@ function E:Initialize()
 
 	if self.db.general.loginmessage then
 		print(select(2, E:GetModule('Chat'):FindURL("CHAT_MSG_DUMMY", format(L["LOGIN_MSG"], self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version)))..'.')
+	end
+	
+	if Masque then
+		Masque:Register("ElvUI", MasqueCallback)
 	end
 end
