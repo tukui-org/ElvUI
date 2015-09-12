@@ -334,4 +334,19 @@ function A:Initialize()
 	end
 end
 
+local function MasqueReSkin(self, event)
+	if not E.private.auras.enable then return; end
+
+	C_Timer.After(1, function()
+		if A.BuffsMasqueGroup and E.private.auras.masque.buffs then A.BuffsMasqueGroup:ReSkin() end
+		if A.DebuffsMasqueGroup and E.private.auras.masque.debuffs then A.DebuffsMasqueGroup:ReSkin() end
+	end)
+	
+	self:UnregisterEvent(event)
+end
+
+local f = CreateFrame("Frame")
+f:RegisterEvent("PLAYER_ENTERING_WORLD")
+f:SetScript("OnEvent", MasqueReSkin)
+
 E:RegisterModule(A:GetName())
