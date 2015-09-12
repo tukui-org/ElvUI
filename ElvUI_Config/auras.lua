@@ -178,6 +178,35 @@ E.Options.args.auras = {
 					type = 'range',
 					min = -60, max = 60, step = 1,
 				},
+				masque = {
+					order = 9,
+					type = "group",
+					guiInline = true,
+					name = L["Masque Support"],
+					get = function(info) return E.private.auras.masque[info[#info]] end,
+					set = function(info, value) E.private.auras.masque[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL") end,
+					disabled = function() return not E.private.auras.enable end,
+					args = {
+						buffs = {
+							order = 1,
+							type = "toggle",
+							name = L["Buffs"],
+							desc = L["Allow Masque to handle the skinning of this element."],
+						},
+						debuffs = {
+							order = 1,
+							type = "toggle",
+							name = L["Debuffs"],
+							desc = L["Allow Masque to handle the skinning of this element."],
+						},
+						consolidatedBuffs = {
+							order = 1,
+							type = "toggle",
+							name = L["Consolidated Buffs"],
+							desc = L["Allow Masque to handle the skinning of this element."],
+						},
+					},
+				},
 			},
 		},
 		consolidatedBuffs = {
