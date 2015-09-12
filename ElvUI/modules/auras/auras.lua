@@ -117,7 +117,7 @@ function A:CreateIcon(button)
 		HotKey = nil,
 		Count = button.count,
 		Name = nil,
-		Duration = button.time,
+		Duration = false,
 		AutoCast = nil,
 	}
 
