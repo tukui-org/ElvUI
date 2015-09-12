@@ -228,7 +228,7 @@ function A:Update_ConsolidatedBuffsSettings(isCallback)
 		end
 	end
 	
-	if MasqueGroup and E.private.auras.masque.consolidatedBuffs and E.db.auras.consolidatedBuffs.enable then print("reskin") MasqueGroup:ReSkin() end
+	if MasqueGroup and E.private.auras.masque.consolidatedBuffs and E.db.auras.consolidatedBuffs.enable then MasqueGroup:ReSkin() end
 end
 
 function A:Construct_ConsolidatedBuffs()
