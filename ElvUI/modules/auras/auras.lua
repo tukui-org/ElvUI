@@ -115,7 +115,7 @@ function A:CreateIcon(button)
 		AutoCastable = nil,
 		Highlight = button.highlight,
 		HotKey = nil,
-		Count = button.count,
+		Count = false,
 		Name = nil,
 		Duration = false,
 		AutoCast = nil,
