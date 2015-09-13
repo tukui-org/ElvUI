@@ -170,7 +170,7 @@ function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, durati
 			button.nextupdate = -1
 			button:SetScript('OnUpdate', UF.UpdateAuraTimer)
 		end
-		if button.expirationTime ~= expiration  then
+		if (button.expirationTime ~= expiration) or (button.expiration ~= (expiration - GetTime()))  then
 			button.expirationTime = expiration
 			button.expiration = expiration - GetTime()
 			button.nextupdate = -1
