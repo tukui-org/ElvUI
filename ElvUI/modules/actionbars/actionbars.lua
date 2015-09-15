@@ -780,6 +780,7 @@ local function SetupFlyoutButton()
 			end)
 			
 			if MasqueGroup and E.private.actionbar.masque.actionbars then
+				MasqueGroup:RemoveButton(_G["SpellFlyoutButton"..i]) --Remove first to fix issue with backdrops appearing at the wrong flyout menu
 				MasqueGroup:AddButton(_G["SpellFlyoutButton"..i])
 			end
 		end
