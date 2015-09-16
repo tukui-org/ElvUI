@@ -233,6 +233,7 @@ local function LSMCallback()
 end
 E.LSM.RegisterCallback(E, "LibSharedMedia_Registered", LSMCallback)
 
+local MasqueGroupState = {}
 local MasqueGroupToTableElement = {
 	["ActionBars"] = {"actionbar", "actionbars"},
 	["Pet Bar"] = {"actionbar", "petBar"},
@@ -246,14 +247,18 @@ local function MasqueCallback(Addon, Group, SkinID, Gloss, Backdrop, Colors, Dis
 	local element = MasqueGroupToTableElement[Group]
 
 	if element then
-		if E.private[element[1]].masque[element[2]] then
-			if Disabled then
+		if Disabled then
+			if E.private[element[1]].masque[element[2]] and MasqueGroupState[Group] ~= false then
 				E.private[element[1]].masque[element[2]] = false
 				E:StaticPopup_Show("CONFIG_RL")
 			end
-		elseif not Disabled then
-			E.private[element[1]].masque[element[2]] = true
-			E:StaticPopup_Show("CONFIG_RL")
+			MasqueGroupState[Group] = false
+		else
+			if not E.private[element[1]].masque[element[2]] and MasqueGroupState[Group] ~= true then
+				E.private[element[1]].masque[element[2]] = true
+				E:StaticPopup_Show("CONFIG_RL")
+			end
+			MasqueGroupState[Group] = true
 		end
 	end
 end
