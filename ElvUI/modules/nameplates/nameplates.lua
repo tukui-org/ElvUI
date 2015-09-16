@@ -957,40 +957,36 @@ function NP:UpdateSettings()
 end
 
 function NP:CreatePlate(frame)
-	if E.wowbuild >= 20426 then --6.2.2 ONLY START
-		frame.healthBar = frame.ArtContainer.HealthBar
-		-- frame.healthBar.texture = frame.healthBar:GetRegions() --No parentKey, yet?
+	frame.healthBar = frame.ArtContainer.HealthBar
+	-- frame.healthBar.texture = frame.healthBar:GetRegions() --No parentKey, yet?
 
-		-- frame.absorbBar = frame.ArtContainer.AbsorbBar
-		frame.border = frame.ArtContainer.Border
-		frame.highlight = frame.ArtContainer.Highlight
-		frame.level = frame.ArtContainer.LevelText
-		frame.raidIcon = frame.ArtContainer.RaidTargetIcon
-		frame.eliteIcon = frame.ArtContainer.EliteIcon
-		frame.threat = frame.ArtContainer.AggroWarningTexture
-		frame.bossIcon = frame.ArtContainer.HighLevelIcon
-		frame.name = frame.NameContainer.NameText
-		
-		frame.castBar = frame.ArtContainer.CastBar
-		-- frame.castBar.texture = frame.castBar:GetRegions() --No parentKey, yet?
-		frame.castBar.border = frame.ArtContainer.CastBarBorder
-		frame.castBar.icon = frame.ArtContainer.CastBarSpellIcon
-		frame.castBar.shield = frame.ArtContainer.CastBarFrameShield
-		frame.castBar.name = frame.ArtContainer.CastBarText
-		frame.castBar.shadow = frame.ArtContainer.CastBarTextBG
-	else --6.2.2 ONLY END
-		frame.barFrame, frame.nameFrame = frame:GetChildren()
-		frame.healthBar, frame.castBar = frame.barFrame:GetChildren()
-		frame.threat, frame.border, frame.highlight, frame.level, frame.bossIcon, frame.raidIcon, frame.eliteIcon = frame.barFrame:GetRegions()
-		frame.name = frame.nameFrame:GetRegions()
-		frame.healthBar.texture = frame.healthBar:GetRegions()
-		frame.castBar.texture, frame.castBar.border, frame.castBar.shield, frame.castBar.icon, frame.castBar.name, frame.castBar.shadow = frame.castBar:GetRegions()
-	end
+	-- frame.absorbBar = frame.ArtContainer.AbsorbBar
+	frame.border = frame.ArtContainer.Border
+	frame.highlight = frame.ArtContainer.Highlight
+	frame.level = frame.ArtContainer.LevelText
+	frame.raidIcon = frame.ArtContainer.RaidTargetIcon
+	frame.eliteIcon = frame.ArtContainer.EliteIcon
+	frame.threat = frame.ArtContainer.AggroWarningTexture
+	frame.bossIcon = frame.ArtContainer.HighLevelIcon
+	frame.name = frame.NameContainer.NameText
+	
+	frame.castBar = frame.ArtContainer.CastBar
+	-- frame.castBar.texture = frame.castBar:GetRegions() --No parentKey, yet?
+	frame.castBar.border = frame.ArtContainer.CastBarBorder
+	frame.castBar.icon = frame.ArtContainer.CastBarSpellIcon
+	frame.castBar.shield = frame.ArtContainer.CastBarFrameShield
+	frame.castBar.name = frame.ArtContainer.CastBarText
+	frame.castBar.shadow = frame.ArtContainer.CastBarTextBG
 
 	local myPlate = CreateFrame("Frame", nil, self.PlateParent)
 	if(self.viewPort) then
 		myPlate:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT")
 	end
+	
+	--Hidden Frame (used to hide castbar icon)
+	myPlate.hiddenFrame = CreateFrame("Frame", nil, myPlate)
+	myPlate.hiddenFrame:Hide()
+
 	--HealthBar
 	myPlate.healthBar = CreateFrame("StatusBar", nil, myPlate)
 	myPlate.healthBar:SetPoint('BOTTOM', myPlate, 'BOTTOM', 0, 5)
@@ -1015,20 +1011,15 @@ function NP:CreatePlate(frame)
 	myPlate.castBar.time:SetPoint("TOPRIGHT", myPlate.castBar, "BOTTOMRIGHT", 6, -2)
 	myPlate.castBar.time:SetJustifyH("RIGHT")
 
-	-- DO NOT REUSE BLIZZARD's, make our own!
 	myPlate.castBar.name = myPlate.castBar:CreateFontString(nil, 'OVERLAY')
-	--myPlate.castBar.name:SetParent(myPlate.castBar)
-	--myPlate.castBar.name:ClearAllPoints()
 	myPlate.castBar.name:SetPoint("TOPLEFT", myPlate.castBar, "BOTTOMLEFT", 0, -2)
 	myPlate.castBar.name:SetPoint("TOPRIGHT", myPlate.castBar.time, "TOPLEFT", 0, -2)
 	myPlate.castBar.name:SetJustifyH("LEFT")
 
-	-- DO NOT REUSE BLIZZARD's, make our own!
+	frame.castBar.icon:SetParent(myPlate.hiddenFrame)
 	myPlate.castBar.icon = myPlate.castBar:CreateTexture(nil, 'OVERLAY')
-	--myPlate.castBar.icon:SetParent(myPlate.castBar)
 	myPlate.castBar.icon:SetTexCoord(.07, .93, .07, .93)
 	myPlate.castBar.icon:SetDrawLayer("OVERLAY")
-	--myPlate.castBar.icon:ClearAllPoints()
 	myPlate.castBar.icon:SetPoint("TOPLEFT", myPlate.healthBar, "TOPRIGHT", 5, 0)
 	NP:CreateBackdrop(myPlate.castBar, myPlate.castBar.icon)
 
