@@ -68,10 +68,12 @@ local function ChatButton_OnEnter(self, ...)
 		UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
 	end
 
-	GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT', 0, 4)
-	GameTooltip:ClearLines()
-	GameTooltip:AddDoubleLine(L["Left Click:"], L["Toggle Chat Frame"], 1, 1, 1)
-	GameTooltip:Show()
+	if not self.parent.editboxforced then
+		GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT', 0, 4)
+		GameTooltip:ClearLines()
+		GameTooltip:AddDoubleLine(L["Left Click:"], L["Toggle Chat Frame"], 1, 1, 1)
+		GameTooltip:Show()
+	end
 end
 
 local function ChatButton_OnLeave(self, ...)
