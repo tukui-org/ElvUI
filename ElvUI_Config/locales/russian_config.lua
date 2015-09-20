@@ -322,7 +322,7 @@ L["RightMiniPanel"] = "Миникарта, справа"
 L["The display format of the money text that is shown in the gold datatext and its tooltip."] = "Формат отображения золота на инфо-тексте золота и его подсказке."
 L["Toggle 24-hour mode for the time datatext."] = "Включить 24х часовой формат отображения времени."
 L["When inside a battleground display personal scoreboard information on the main datatext bars."] = "На полях боя отображать личную информацию на основных полосах инфо-текстов"
-L["Word Wrap"] = true;
+L["Word Wrap"] = "Перенос слов"
 
 --Distributor
 L["Must be in group with the player if he isn't on the same server as you."] = "Вы должны быть в группе в данным игроком, если он не с Вашего сервера."
