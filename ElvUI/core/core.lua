@@ -244,6 +244,7 @@ local MasqueGroupToTableElement = {
 }
 
 local function MasqueCallback(Addon, Group, SkinID, Gloss, Backdrop, Colors, Disabled)
+	if not E.private then return; end
 	local element = MasqueGroupToTableElement[Group]
 
 	if element then
@@ -261,6 +262,10 @@ local function MasqueCallback(Addon, Group, SkinID, Gloss, Backdrop, Colors, Dis
 			MasqueGroupState[Group] = "enabled"
 		end
 	end
+end
+
+if Masque then
+	Masque:Register("ElvUI", MasqueCallback)
 end
 
 function E:RequestBGInfo()
@@ -1231,9 +1236,5 @@ function E:Initialize()
 
 	if self.db.general.loginmessage then
 		print(select(2, E:GetModule('Chat'):FindURL("CHAT_MSG_DUMMY", format(L["LOGIN_MSG"], self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version)))..'.')
-	end
-	
-	if Masque then
-		Masque:Register("ElvUI", MasqueCallback)
 	end
 end
