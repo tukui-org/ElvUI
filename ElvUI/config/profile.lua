@@ -612,6 +612,7 @@ P['unitframe'] = {
 				['height'] = 10,
 				['detachFromFrame'] = false,
 				['detachedWidth'] = 250,
+				['autoHide'] = false,
 			},
 			['aurabar'] = {
 				['enable'] = true,

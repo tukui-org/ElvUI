@@ -34,6 +34,7 @@ function UF:UpdateHoly(event, unit, powerType)
 	if not db then return; end
 
 	local BORDER = E.Border
+	local SPACING = E.Spacing
 	local numHolyPower = UnitPower('player', SPELL_POWER_HOLY_POWER);
 	local maxHolyPower = UnitPowerMax('player', SPELL_POWER_HOLY_POWER);
 	local MAX_HOLY_POWER = UF['classMaxResourceBar'][E.myclass]
@@ -43,6 +44,9 @@ function UF:UpdateHoly(event, unit, powerType)
 	local PORTRAIT_WIDTH = db.portrait.width
 	local POWERBAR_DETACHED = db.power.detachFromFrame
 	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR and not POWERBAR_DETACHED
+	local CLASSBAR_HEIGHT = db.classbar.height
+	local DETACHED = db.classbar.detachFromFrame
+	local HEALTH_OFFSET_Y = DETACHED and 0 or USE_MINI_CLASSBAR and (BORDER+(CLASSBAR_HEIGHT/2)) or (BORDER+CLASSBAR_HEIGHT+SPACING)
 
 	if USE_PORTRAIT_OVERLAY or not USE_PORTRAIT then
 		PORTRAIT_WIDTH = 0
@@ -67,35 +71,45 @@ function UF:UpdateHoly(event, unit, powerType)
 
 	self.HolyPower:Width(CLASSBAR_WIDTH)
 
-	for i = 1, MAX_HOLY_POWER do
-		if(i <= numHolyPower) then
-			self.HolyPower[i]:SetAlpha(1)
-		else
-			self.HolyPower[i]:SetAlpha(.2)
-		end
-		if db.classbar.fill == "spaced" then
-			self.HolyPower[i]:SetWidth((self.HolyPower:GetWidth() - ((maxHolyPower == 5 and 7 or 13)*(maxHolyPower - 1))) / maxHolyPower)
-		else
-			self.HolyPower[i]:SetWidth((self.HolyPower:GetWidth() - (maxHolyPower - 1)) / maxHolyPower)
-		end
+	if numHolyPower == 0 and db.classbar.autoHide then
+		self.HolyPower:Hide()
+		self.Health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
+		self.Health:Point("TOPLEFT", self, "TOPLEFT", BORDER+PORTRAIT_WIDTH, -BORDER)
+	else
+		self.HolyPower:Show()
+		self.Health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -HEALTH_OFFSET_Y)
+		self.Health:Point("TOPLEFT", self, "TOPLEFT", BORDER+PORTRAIT_WIDTH, -HEALTH_OFFSET_Y)
 
-		self.HolyPower[i]:ClearAllPoints()
-		if i == 1 then
-			self.HolyPower[i]:SetPoint("LEFT", self.HolyPower)
-		else
-			if USE_MINI_CLASSBAR then
-				self.HolyPower[i]:Point("LEFT", self.HolyPower[i-1], "RIGHT", maxHolyPower == 5 and 7 or 13, 0)
+		for i = 1, MAX_HOLY_POWER do
+			if(i <= numHolyPower) then
+				self.HolyPower[i]:SetAlpha(1)
 			else
-				self.HolyPower[i]:Point("LEFT", self.HolyPower[i-1], "RIGHT", 1, 0)
+				self.HolyPower[i]:SetAlpha(.2)
 			end
-		end
+			if db.classbar.fill == "spaced" then
+				self.HolyPower[i]:SetWidth((self.HolyPower:GetWidth() - ((maxHolyPower == 5 and 7 or 13)*(maxHolyPower - 1))) / maxHolyPower)
+			else
+				self.HolyPower[i]:SetWidth((self.HolyPower:GetWidth() - (maxHolyPower - 1)) / maxHolyPower)
+			end
 
-		if i > maxHolyPower then
-			self.HolyPower[i]:Hide()
-			self.HolyPower[i].backdrop:SetAlpha(0)
-		else
-			self.HolyPower[i]:Show()
-			self.HolyPower[i].backdrop:SetAlpha(1)
+			self.HolyPower[i]:ClearAllPoints()
+			if i == 1 then
+				self.HolyPower[i]:SetPoint("LEFT", self.HolyPower)
+			else
+				if USE_MINI_CLASSBAR then
+					self.HolyPower[i]:Point("LEFT", self.HolyPower[i-1], "RIGHT", maxHolyPower == 5 and 7 or 13, 0)
+				else
+					self.HolyPower[i]:Point("LEFT", self.HolyPower[i-1], "RIGHT", 1, 0)
+				end
+			end
+
+			if i > maxHolyPower then
+				self.HolyPower[i]:Hide()
+				self.HolyPower[i].backdrop:SetAlpha(0)
+			else
+				self.HolyPower[i]:Show()
+				self.HolyPower[i].backdrop:SetAlpha(1)
+			end
 		end
 	end
 end
@@ -124,13 +138,15 @@ function UF:Construct_MonkResourceBar(frame)
 end
 
 function UF:UpdateHarmony()
-	local maxBars = self.numPoints
 	local frame = self:GetParent()
 	local db = frame.db
 	if not db then return; end
 
+	local maxBars = self.numPoints
+	local numChi = UnitPower("player", SPELL_POWER_CHI)
 	local UNIT_WIDTH = db.width
 	local BORDER = E.Border
+	local SPACING = E.Spacing
 	local CLASSBAR_WIDTH = db.width - (BORDER*2)
 	local USE_PORTRAIT = db.portrait.enable
 	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
@@ -140,6 +156,13 @@ function UF:UpdateHarmony()
 	local POWERBAR_DETACHED = db.power.detachFromFrame
 	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR and not POWERBAR_DETACHED
 	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and db.classbar.enable
+	local stagger = frame.Stagger
+	local USE_STAGGER = stagger and stagger:IsShown();
+	local STAGGER_WIDTH = USE_STAGGER and (db.stagger.width + (BORDER*2)) or 0;
+	local CLASSBAR_HEIGHT = db.classbar.height
+	local DETACHED = db.classbar.detachFromFrame
+	local HEALTH_OFFSET_X = BORDER + STAGGER_WIDTH
+	local HEALTH_OFFSET_Y = DETACHED and BORDER or USE_MINI_CLASSBAR and (BORDER+(CLASSBAR_HEIGHT/2)) or (BORDER+CLASSBAR_HEIGHT+SPACING)
 
 	if USE_PORTRAIT_OVERLAY or not USE_PORTRAIT then
 		PORTRAIT_WIDTH = 0
@@ -171,26 +194,37 @@ function UF:UpdateHarmony()
 
 	self:SetWidth(CLASSBAR_WIDTH)
 	local colors = ElvUF.colors.Harmony
-	for i = 1, maxBars do
-		self[i]:SetHeight(self:GetHeight())
-		if db.classbar.fill == "spaced" then
-			self[i]:SetWidth((self:GetWidth() - ((E.PixelMode and (maxBars == 5 and 4 or 7) or (maxBars == 5 and 6 or 9))*(maxBars - 1))) / maxBars)
-		else
-			self[i]:SetWidth((self:GetWidth() - (maxBars - 1)) / maxBars)
-		end
-		self[i]:ClearAllPoints()
+	
+	if numChi == 0 and db.classbar.autoHide then
+		self:Hide()
+		frame.Health:Point("TOPRIGHT", frame, "TOPRIGHT", -HEALTH_OFFSET_X, -BORDER)
+		frame.Health:Point("TOPLEFT", frame, "TOPLEFT", BORDER+PORTRAIT_WIDTH, -BORDER)
+	else
+		self:Show()
+		frame.Health:Point("TOPRIGHT", frame, "TOPRIGHT", -HEALTH_OFFSET_X, -HEALTH_OFFSET_Y)
+		frame.Health:Point("TOPLEFT", frame, "TOPLEFT", BORDER+PORTRAIT_WIDTH, -HEALTH_OFFSET_Y)
 
-		if i == 1 then
-			self[i]:SetPoint("LEFT", self)
-		else
-			if USE_MINI_CLASSBAR then
-				self[i]:Point("LEFT", self[i-1], "RIGHT", E.PixelMode and (maxBars == 5 and 4 or 7) or (maxBars == 5 and 6 or 9), 0)
+		for i = 1, maxBars do
+			self[i]:SetHeight(self:GetHeight())
+			if db.classbar.fill == "spaced" then
+				self[i]:SetWidth((self:GetWidth() - ((E.PixelMode and (maxBars == 5 and 4 or 7) or (maxBars == 5 and 6 or 9))*(maxBars - 1))) / maxBars)
 			else
-				self[i]:Point("LEFT", self[i-1], "RIGHT", 1, 0)
+				self[i]:SetWidth((self:GetWidth() - (maxBars - 1)) / maxBars)
 			end
-		end
+			self[i]:ClearAllPoints()
 
-		self[i]:SetStatusBarColor(colors[i][1], colors[i][2], colors[i][3])
+			if i == 1 then
+				self[i]:SetPoint("LEFT", self)
+			else
+				if USE_MINI_CLASSBAR then
+					self[i]:Point("LEFT", self[i-1], "RIGHT", E.PixelMode and (maxBars == 5 and 4 or 7) or (maxBars == 5 and 6 or 9), 0)
+				else
+					self[i]:Point("LEFT", self[i-1], "RIGHT", 1, 0)
+				end
+			end
+
+			self[i]:SetStatusBarColor(colors[i][1], colors[i][2], colors[i][3])
+		end
 	end
 end
 

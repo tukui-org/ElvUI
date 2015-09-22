@@ -2296,6 +2296,11 @@ E.Options.args.unitframe.args.player = {
 					disabled = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
 					min = 15, max = 450, step = 1,
 				},
+				autoHide = {
+					order = 6,
+					type = 'toggle',
+					name = L["Auto-Hide"],
+				},
 			},
 		},
 		pvp = {

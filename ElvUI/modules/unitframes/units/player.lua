@@ -82,6 +82,7 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 	local USE_PORTRAIT = db.portrait.enable
 	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
 	local CLASSBAR_HEIGHT = db.classbar.height
+	local CLASSBAR_HEIGHT_SPACING
 	local USE_CLASSBAR = db.classbar.enable
 	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and USE_CLASSBAR
 	local USE_POWERBAR = db.power.enable
@@ -107,11 +108,15 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 
 	if USE_MINI_CLASSBAR then
 		CLASSBAR_HEIGHT = CLASSBAR_HEIGHT / 2
+		CLASSBAR_HEIGHT_SPACING = CLASSBAR_HEIGHT
+	else
+		CLASSBAR_HEIGHT_SPACING = CLASSBAR_HEIGHT + SPACING
 	end
 
 	if db.classbar.detachFromFrame then
-		CLASSBAR_HEIGHT = E.PixelMode and 0 or -1 --Easiest way to counter the 1px difference SPACING introduces
+		CLASSBAR_HEIGHT_SPACING = 0
 	end
+
 
 	if USE_STAGGER then
 		if not USE_MINI_POWERBAR and not USE_INSET_POWERBAR and not POWERBAR_DETACHED then
@@ -131,15 +136,15 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 
 	if isShown then
 		if db.power.offset ~= 0 then
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER+db.power.offset) - STAGGER_WIDTH, -(BORDER + CLASSBAR_HEIGHT + SPACING))
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER+db.power.offset) - STAGGER_WIDTH, -(BORDER + CLASSBAR_HEIGHT_SPACING))
 		else
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER - STAGGER_WIDTH, -(BORDER + CLASSBAR_HEIGHT + SPACING))
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER - STAGGER_WIDTH, -(BORDER + CLASSBAR_HEIGHT_SPACING))
 		end
-		health:Point("TOPLEFT", frame, "TOPLEFT", PORTRAIT_WIDTH + BORDER, -(BORDER + CLASSBAR_HEIGHT + SPACING))
+		health:Point("TOPLEFT", frame, "TOPLEFT", PORTRAIT_WIDTH + BORDER, -(BORDER + CLASSBAR_HEIGHT_SPACING))
 
 		local mini_classbarY = 0
 		if USE_MINI_CLASSBAR then
-			mini_classbarY = -(SPACING+(CLASSBAR_HEIGHT))
+			mini_classbarY = -(CLASSBAR_HEIGHT_SPACING)
 		end
 
 		if db.threatStyle == "GLOW" then
@@ -165,7 +170,7 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 			local portrait = frame.Portrait
 			portrait.backdrop:ClearAllPoints()
 			if USE_MINI_CLASSBAR and USE_CLASSBAR then
-				portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT", 0, -(CLASSBAR_HEIGHT + SPACING))
+				portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT", 0, -CLASSBAR_HEIGHT_SPACING)
 			else
 				portrait.backdrop:SetPoint("TOPLEFT", frame, "TOPLEFT")
 			end
