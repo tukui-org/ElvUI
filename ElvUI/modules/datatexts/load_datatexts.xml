@@ -1,5 +1,4 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">	
-	<Script file='datatexts.lua'/>
 	<Script file='armor.lua'/>
 	<Script file='attackpower.lua'/>
 	<Script file='avoidance.lua'/>
@@ -9,9 +8,12 @@
 	<Script file='calltoarms.lua'/>
 	<Script file='combattime.lua'/>
 	<Script file='crit.lua'/>
+	<Script file='datatexts.lua'/>
 	<Script file='dps.lua'/>
 	<Script file='durability.lua'/>
+	<Script file='elvuiconfig.lua'/>
 	<Script file='friends.lua'/>
+	<Script file='garrison.lua'/>
 	<Script file='gold.lua'/>
 	<Script file='guild.lua'/>
 	<Script file='haste.lua'/>
@@ -27,6 +29,4 @@
 	<Script file='system.lua'/>
 	<Script file='time.lua'/>
 	<Script file='versatility.lua'/>
-	<Script file='garrison.lua'/>
-	<Script file='elvuiconfig.lua'/>
 </Ui>
