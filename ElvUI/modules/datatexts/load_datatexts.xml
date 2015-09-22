@@ -8,6 +8,7 @@
 	<Script file='bonusarmor.lua'/>
 	<Script file='calltoarms.lua'/>
 	<Script file='combattime.lua'/>
+	<Script file='coordinates.lua'/>
 	<Script file='crit.lua'/>
 	<Script file='dps.lua'/>
 	<Script file='durability.lua'/>
