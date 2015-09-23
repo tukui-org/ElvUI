@@ -667,7 +667,9 @@ function NP:OnShow()
 		elseif objectType == 'StatusBar' then
 			object:SetStatusBarTexture("")
 		end
-		object:Hide() -- HIDE EVERYTHING or SUFFER FROM LOW FPS, THIS IS BIGGEST ISSUE
+		if object ~= self.bossIcon and object ~= self.eliteIcon then
+			object:Hide() -- HIDE EVERYTHING or SUFFER FROM LOW FPS, THIS IS BIGGEST ISSUE
+		end
 	end
 
 	if(not NP.CheckFilterAndHealers(self, myPlate)) then return end
