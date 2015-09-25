@@ -7,6 +7,11 @@ local format = string.format
 local join = string.join
 local floor = math.floor
 
+local Masque = LibStub("Masque", true)
+local MasqueGroupBuffs = Masque and Masque:Group("ElvUI", "Buffs")
+local MasqueGroupDebuffs = Masque and Masque:Group("ElvUI", "Debuffs")
+local StrataFixEnabled
+
 local DIRECTION_TO_POINT = {
 	DOWN_RIGHT = "TOPLEFT",
 	DOWN_LEFT = "TOPRIGHT",
@@ -75,10 +80,16 @@ function A:UpdateTime(elapsed)
 	end
 end
 
+local function DelaydReSkinBuffs()
+	MasqueGroupBuffs:ReSkin()
+end
+
+local function DelaydReSkinDebuffs()
+	MasqueGroupDebuffs:ReSkin()
+end
+
 function A:CreateIcon(button)
 	local font = LSM:Fetch("font", self.db.font)
-
-	button:SetTemplate('Default')
 
 	button.texture = button:CreateTexture(nil, "BORDER")
 	button.texture:SetInside()
@@ -99,6 +110,48 @@ function A:CreateIcon(button)
 	E:SetUpAnimGroup(button)
 
 	button:SetScript("OnAttributeChanged", A.OnAttributeChanged)
+	
+	local ButtonData = {
+		FloatingBG = nil,
+		Icon = button.texture,
+		Cooldown = nil,
+		Flash = nil,
+		Pushed = nil,
+		Normal = nil,
+		Disabled = nil,
+		Checked = nil,
+		Border = nil,
+		AutoCastable = nil,
+		Highlight = button.highlight,
+		HotKey = nil,
+		Count = false,
+		Name = nil,
+		Duration = false,
+		AutoCast = nil,
+	}
+
+	local header = button:GetParent()
+	local auraType = header:GetAttribute("filter")
+
+	if auraType == "HELPFUL" then
+		if MasqueGroupBuffs and E.private.auras.masque.buffs then
+			MasqueGroupBuffs:AddButton(button, ButtonData)
+			if StrataFixEnabled then
+				C_Timer.After(0.01, DelaydReSkinBuffs) --Fix bug caused by StrataFix.
+			end
+		else
+			button:SetTemplate('Default')
+		end
+	elseif auraType == "HARMFUL" then
+		if MasqueGroupDebuffs and E.private.auras.masque.debuffs then
+			MasqueGroupDebuffs:AddButton(button, ButtonData)
+			if StrataFixEnabled then
+				C_Timer.After(0.01, DelaydReSkinDebuffs) --Fix bug caused by StrataFix.
+			end
+		else
+			button:SetTemplate('Default')
+		end
+	end
 end
 
 function A:UpdateAura(button, index)
@@ -239,6 +292,9 @@ function A:UpdateHeader(header)
 		index = index + 1
 		child = select(index, header:GetChildren())
 	end
+	
+	if MasqueGroupBuffs and E.private.auras.masque.buffs then MasqueGroupBuffs:ReSkin() end
+	if MasqueGroupDebuffs and E.private.auras.masque.debuffs then MasqueGroupDebuffs:ReSkin() end
 end
 
 function A:CreateAuraHeader(filter)
@@ -286,6 +342,25 @@ function A:Initialize()
 	self.DebuffFrame = self:CreateAuraHeader("HARMFUL")
 	self.DebuffFrame:SetPoint("BOTTOMRIGHT", LeftMiniPanel, "BOTTOMLEFT", -(6 + E.Border), 0)
 	E:CreateMover(self.DebuffFrame, "DebuffsMover", L["Player Debuffs"])
+	
+	if Masque then
+		if MasqueGroupBuffs then A.BuffsMasqueGroup = MasqueGroupBuffs end
+		if MasqueGroupDebuffs then A.DebuffsMasqueGroup = MasqueGroupDebuffs end
+	end
 end
+
+--StrataFix causes the icon to appear above the border texture
+--We need to call :ReSkin() when icons are created, but we only do it if StrataFix is enabled
+local function CheckForStrataFix(self, event)
+	if not E.private.auras.enable then return; end
+	if IsAddOnLoaded("StrataFix") then
+		StrataFixEnabled = true
+	end
+	self:UnregisterEvent(event)
+end
+
+local f = CreateFrame("Frame")
+f:RegisterEvent("PLAYER_ENTERING_WORLD")
+f:SetScript("OnEvent", CheckForStrataFix)
 
 E:RegisterModule(A:GetName())

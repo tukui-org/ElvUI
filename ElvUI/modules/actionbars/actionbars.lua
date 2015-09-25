@@ -7,6 +7,9 @@ local _LOCK
 local LAB = LibStub("LibActionButton-1.0-ElvUI")
 local LSM = LibStub("LibSharedMedia-3.0")
 
+local Masque = LibStub("Masque", true)
+local MasqueGroup = Masque and Masque:Group("ElvUI", "ActionBars")
+
 local gsub = string.gsub
 local format = string.format
 local split = string.split
@@ -66,8 +69,6 @@ AB.customExitButton = {
 	texture = "Interface\\Icons\\Spell_Shadow_SacrificialShield",
 	tooltip = LEAVE_VEHICLE,
 }
-
-
 
 function AB:PositionAndSizeBar(barName)
 	local spacing = E:Scale(self.db[barName].buttonspacing);
@@ -191,7 +192,7 @@ function AB:PositionAndSizeBar(barName)
 			button:Show()
 		end
 
-		self:StyleButton(button, nil, nil, true);
+		self:StyleButton(button, nil, MasqueGroup and E.private.actionbar.masque.actionbars and true or nil);
 		button:SetCheckedTexture("")
 	end
 
@@ -225,8 +226,9 @@ function AB:PositionAndSizeBar(barName)
 		UnregisterStateDriver(bar, "visibility");
 	end
 
-
 	E:SetMoverSnapOffset('ElvAB_'..bar.id, bar.db.buttonspacing / 2)
+
+	if MasqueGroup and E.private.actionbar.masque.actionbars then MasqueGroup:ReSkin() end
 end
 
 function AB:CreateBar(id)
@@ -249,6 +251,10 @@ function AB:CreateBar(id)
 
 		if i == 12 then
 			bar.buttons[i]:SetState(12, "custom", AB.customExitButton)
+		end
+		
+		if MasqueGroup and E.private.actionbar.masque.actionbars then
+			bar.buttons[i]:AddToMasque(MasqueGroup)
 		end
 	end
 	self:UpdateButtonConfig(bar, bar.bindButtons)
@@ -430,25 +436,27 @@ end
 function AB:UpdateButtonSettings()
 	if E.private.actionbar.enable ~= true then return end
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return; end
+	
 	for button, _ in pairs(self["handledbuttons"]) do
 		if button then
-			self:StyleButton(button, button.noBackdrop)
+			self:StyleButton(button, button.noBackdrop, button.useMasque)
 			self:StyleFlyout(button)
 		else
 			self["handledbuttons"][button] = nil
 		end
 	end
 
-	for i=1, 6 do
-		self:PositionAndSizeBar('bar'..i)
-	end
-	self:PositionAndSizeBarPet()
-	self:PositionAndSizeBarShapeShift()
 	self:UpdatePetBindings()
 	self:UpdateStanceBindings()
 	for barName, bar in pairs(self["handledBars"]) do
 		self:UpdateButtonConfig(bar, bar.bindButtons)
 	end
+	
+	for i=1, 6 do
+		self:PositionAndSizeBar('bar'..i)
+	end
+	self:PositionAndSizeBarPet()
+	self:PositionAndSizeBarShapeShift()
 end
 
 function AB:GetPage(bar, defaultPage, condition)
@@ -463,7 +471,7 @@ function AB:GetPage(bar, defaultPage, condition)
 	return condition
 end
 
-function AB:StyleButton(button, noBackdrop, adjustChecked)
+function AB:StyleButton(button, noBackdrop, useMasque)
 	local name = button:GetName();
 	local icon = _G[name.."Icon"];
 	local count = _G[name.."Count"];
@@ -476,14 +484,18 @@ function AB:StyleButton(button, noBackdrop, adjustChecked)
 	local shine = _G[name.."Shine"];
 	local combat = InCombatLockdown()
 
+	if not button.noBackdrop then
+		button.noBackdrop = noBackdrop;
+	end
+	
+	if not button.useMasque then
+		button.useMasque = useMasque;
+	end
+
 	if flash then flash:SetTexture(nil); end
 	if normal then normal:SetTexture(nil); normal:Hide(); normal:SetAlpha(0); end
 	if normal2 then normal2:SetTexture(nil); normal2:Hide(); normal2:SetAlpha(0); end
 	if border then border:Kill(); end
-
-	if not button.noBackdrop then
-		button.noBackdrop = noBackdrop;
-	end
 
 	if count then
 		count:ClearAllPoints();
@@ -491,11 +503,11 @@ function AB:StyleButton(button, noBackdrop, adjustChecked)
 		count:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 	end
 
-	if not button.noBackdrop and not button.backdrop then
+	if not button.noBackdrop and not button.backdrop and not button.useMasque then
 		button:CreateBackdrop('Default', true)
 		button.backdrop:SetAllPoints()
 	end
-
+	
 	if icon then
 		icon:SetTexCoord(unpack(E.TexCoords));
 		icon:SetInside()
@@ -517,7 +529,12 @@ function AB:StyleButton(button, noBackdrop, adjustChecked)
 
 	button.FlyoutUpdateFunc = AB.StyleFlyout
 	self:FixKeybindText(button);
-	button:StyleButton();
+	
+	if not button.useMasque then
+		button:StyleButton();
+	else
+		button:StyleButton(true, true, true)
+	end
 
 	if(not self.handledbuttons[button]) then
 		E:RegisterCooldown(button.cooldown)
@@ -727,8 +744,10 @@ function AB:FixKeybindText(button)
 		hotkey:SetText(text);
 	end
 
-	hotkey:ClearAllPoints()
-	hotkey:Point("TOPRIGHT", 0, -3);
+	if not button.useMasque then
+		hotkey:ClearAllPoints()
+		hotkey:SetPoint("TOPRIGHT", 0, -3);
+	end
 end
 
 local buttons = 0
@@ -736,7 +755,7 @@ local function SetupFlyoutButton()
 	for i=1, buttons do
 		--prevent error if you don't have max amount of buttons
 		if _G["SpellFlyoutButton"..i] then
-			AB:StyleButton(_G["SpellFlyoutButton"..i])
+			AB:StyleButton(_G["SpellFlyoutButton"..i], nil, MasqueGroup and E.private.actionbar.masque.actionbars and true or nil)
 			_G["SpellFlyoutButton"..i]:StyleButton()
 			_G["SpellFlyoutButton"..i]:HookScript('OnEnter', function(self)
 				local parent = self:GetParent()
@@ -759,6 +778,11 @@ local function SetupFlyoutButton()
 					AB:Bar_OnLeave(parentAnchorBar)
 				end
 			end)
+			
+			if MasqueGroup and E.private.actionbar.masque.actionbars then
+				MasqueGroup:RemoveButton(_G["SpellFlyoutButton"..i]) --Remove first to fix issue with backdrops appearing at the wrong flyout menu
+				MasqueGroup:AddButton(_G["SpellFlyoutButton"..i])
+			end
 		end
 	end
 

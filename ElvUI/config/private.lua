@@ -35,6 +35,12 @@ V["nameplate"] = {
 V['auras'] = {
 	['enable'] = true,
 	['disableBlizzard'] = true,
+	
+	["masque"] = {
+		["buffs"] = false,
+		["debuffs"] = false,
+		["consolidatedBuffs"] = false,
+	},
 }
 
 V['chat'] = {
@@ -126,6 +132,12 @@ V['unitframe'] = {
 
 V["actionbar"] = {
 	["enable"] = true,
+
+	["masque"] = {
+		["actionbars"] = false,
+		["petBar"] = false,
+		["stanceBar"] = false,
+	},
 }
 
 V["cooldown"] = {

@@ -100,6 +100,7 @@ L["TEXT_FORMAT_DESC"] = [=[글자가 표시되는 형식을 변경할 수 있습
 --ActionBars
 L["Action Paging"] = "페이지 자동전환 조건"
 L["ActionBars"] = "행동단축바"
+L["Allow Masque to handle the skinning of this element."] = true;
 L["Alpha"] = "투명도"
 L["Anchor Point"] = "첫 번째 요소 위치"
 L["Backdrop"] = "배경"
@@ -129,6 +130,7 @@ L["Keybind Mode"] = "단축키 설정 모드"
 L["Keybind Text"] = "단축키 표시"
 L["Low Threshold"] = "초읽기 시작 시점"
 L["Macro Text"] = "매크로 이름 표시"
+L["Masque Support"] = true;
 L["Minutes"] = "분 단위 색상"
 L["Mouse Over"] = "마우스오버 시 표시"
 L["Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop."] = "이 값 만큼 배경의 길이가 배로 늘어납니다. 배경 하나에 여러 행동단축바를 올리고 싶은 경우에 유용합니다."

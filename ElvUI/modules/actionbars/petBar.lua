@@ -1,6 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars');
 
+local Masque = LibStub("Masque", true)
+local MasqueGroup = Masque and Masque:Group("ElvUI", "Pet Bar")
+
 local ceil = math.ceil;
 local bar = CreateFrame('Frame', 'ElvUI_BarPet', E.UIParent, 'SecureHandlerStateTemplate');
 
@@ -73,7 +76,9 @@ function AB:UpdatePet(event, unit)
 			button:SetChecked(0);
 		end
 
-		checked:SetAlpha(0.3)
+		if not button.useMasque then
+			checked:SetAlpha(0.3)
+		end
 	end
 end
 
@@ -209,10 +214,10 @@ function AB:PositionAndSizeBarPet()
 			button:SetAlpha(bar.db.alpha);
 		end
 
-		self:StyleButton(button);
+		self:StyleButton(button, nil, MasqueGroup and E.private.actionbar.masque.petBar and true or nil);
 
 		--wtf lol
-		if not button.CheckFixed then
+		if not button.useMasque and not button.CheckFixed then
 			hooksecurefunc(button:GetCheckedTexture(), 'SetAlpha', function(self, value)
 				if value == 1 then
 					self:SetAlpha(0.3)
@@ -223,6 +228,8 @@ function AB:PositionAndSizeBarPet()
 	end
 
 	RegisterStateDriver(bar, "show", self.db['barPet'].visibility);
+	
+	if MasqueGroup and E.private.actionbar.masque.petBar then MasqueGroup:ReSkin() end
 end
 
 function AB:UpdatePetBindings()
@@ -273,4 +280,11 @@ function AB:CreateBarPet()
 	E:CreateMover(bar, 'PetAB', L["Pet Bar"], nil, nil, nil, 'ALL,ACTIONBARS');
 	self:PositionAndSizeBarPet();
 	self:UpdatePetBindings()
+	
+	if MasqueGroup and E.private.actionbar.masque.petBar then
+		for i=1, NUM_PET_ACTION_SLOTS do
+			local button = _G["PetActionButton"..i]
+			MasqueGroup:AddButton(button)
+		end
+	end
 end
