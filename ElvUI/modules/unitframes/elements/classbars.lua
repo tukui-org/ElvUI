@@ -449,7 +449,7 @@ function UF:UpdateShadowOrbs(event, unit, powerType)
 		PORTRAIT_WIDTH = 0
 	end
 
-	local CLASSBAR_WIDTH = db.width - (E.Border * 2)
+	local CLASSBAR_WIDTH = db.width - (BORDER * 2)
 	if USE_PORTRAIT then
 		CLASSBAR_WIDTH = ceil((db.width - (BORDER*2)) - PORTRAIT_WIDTH)
 	end
@@ -468,35 +468,41 @@ function UF:UpdateShadowOrbs(event, unit, powerType)
 
 	self:Width(CLASSBAR_WIDTH)
 
-	for i = 1, MAX_SHADOW_ORBS do
-		if(i <= numShadowOrbs) then
-			self[i]:SetAlpha(1)
-		else
-			self[i]:SetAlpha(.2)
-		end
-		if db.classbar.fill == "spaced" then
-			self[i]:SetWidth((self:GetWidth() - ((maxShadowOrbs == 5 and 7 or 13)*(maxShadowOrbs - 1))) / maxShadowOrbs)
-		else
-			self[i]:SetWidth((self:GetWidth() - (maxShadowOrbs - 1)) / maxShadowOrbs)
-		end
+	if numShadowOrbs == 0 and db.classbar.autoHide then
+		self:Hide()
+	else
+		self:Show()
 
-		self[i]:ClearAllPoints()
-		if i == 1 then
-			self[i]:SetPoint("LEFT", self)
-		else
-			if USE_MINI_CLASSBAR then
-				self[i]:Point("LEFT", self[i-1], "RIGHT", maxShadowOrbs == 5 and 7 or 13, 0)
+		for i = 1, MAX_SHADOW_ORBS do
+			if(i <= numShadowOrbs) then
+				self[i]:SetAlpha(1)
 			else
-				self[i]:Point("LEFT", self[i-1], "RIGHT", 1, 0)
+				self[i]:SetAlpha(.2)
 			end
-		end
+			if db.classbar.fill == "spaced" then
+				self[i]:SetWidth((self:GetWidth() - ((maxShadowOrbs == 5 and 7 or 13)*(maxShadowOrbs - 1))) / maxShadowOrbs)
+			else
+				self[i]:SetWidth((self:GetWidth() - (maxShadowOrbs - 1)) / maxShadowOrbs)
+			end
 
-		if i > maxShadowOrbs then
-			self[i]:Hide()
-			self[i].backdrop:SetAlpha(0)
-		else
-			self[i]:Show()
-			self[i].backdrop:SetAlpha(1)
+			self[i]:ClearAllPoints()
+			if i == 1 then
+				self[i]:SetPoint("LEFT", self)
+			else
+				if USE_MINI_CLASSBAR then
+					self[i]:Point("LEFT", self[i-1], "RIGHT", maxShadowOrbs == 5 and 7 or 13, 0)
+				else
+					self[i]:Point("LEFT", self[i-1], "RIGHT", 1, 0)
+				end
+			end
+
+			if i > maxShadowOrbs then
+				self[i]:Hide()
+				self[i].backdrop:SetAlpha(0)
+			else
+				self[i]:Show()
+				self[i].backdrop:SetAlpha(1)
+			end
 		end
 	end
 
