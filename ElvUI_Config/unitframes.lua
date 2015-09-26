@@ -3813,20 +3813,37 @@ E.Options.args.unitframe.args.party = {
 					order = 2,
 					min = 8, max = 35, step = 1,
 				},
+				font = {
+					order = 3,
+					type = "select", dialogControl = "LSM30_Font",
+					name = L["Font"],
+					values = AceGUIWidgetLSMlists.font,
+				},
 				fontSize = {
 					type = 'range',
 					name = L["Font Size"],
-					order = 3,
+					order = 4,
 					min = 7, max = 22, step = 1,
 				},
+				fontOutline = {
+					order = 5,
+					type = "select",
+					name = L["Font Outline"],
+					values = {
+						["NONE"] = L["None"],
+						["OUTLINE"] = "OUTLINE",
+						["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
+						["THICKOUTLINE"] = "THICKOUTLINE",
+					},
+				},
 				xOffset = {
-					order = 4,
+					order = 6,
 					type = 'range',
 					name = L["xOffset"],
 					min = -300, max = 300, step = 1,
 				},
 				yOffset = {
-					order = 5,
+					order = 7,
 					type = 'range',
 					name = L["yOffset"],
 					min = -300, max = 300, step = 1,
@@ -3835,7 +3852,7 @@ E.Options.args.unitframe.args.party = {
 					type = 'execute',
 					name = L["Configure Auras"],
 					func = function() E:SetToFilterConfig('RaidDebuffs') end,
-					order = 7
+					order = 8
 				},
 				duration = {
 					order = 11,
@@ -4503,20 +4520,37 @@ E.Options.args.unitframe.args['raid'] = {
 					order = 2,
 					min = 8, max = 35, step = 1,
 				},
+				font = {
+					order = 3,
+					type = "select", dialogControl = "LSM30_Font",
+					name = L["Font"],
+					values = AceGUIWidgetLSMlists.font,
+				},
 				fontSize = {
 					type = 'range',
 					name = L["Font Size"],
-					order = 3,
+					order = 4,
 					min = 7, max = 22, step = 1,
 				},
+				fontOutline = {
+					order = 5,
+					type = "select",
+					name = L["Font Outline"],
+					values = {
+						["NONE"] = L["None"],
+						["OUTLINE"] = "OUTLINE",
+						["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
+						["THICKOUTLINE"] = "THICKOUTLINE",
+					},
+				},
 				xOffset = {
-					order = 4,
+					order = 6,
 					type = 'range',
 					name = L["xOffset"],
 					min = -300, max = 300, step = 1,
 				},
 				yOffset = {
-					order = 5,
+					order = 7,
 					type = 'range',
 					name = L["yOffset"],
 					min = -300, max = 300, step = 1,
@@ -4525,7 +4559,7 @@ E.Options.args.unitframe.args['raid'] = {
 					type = 'execute',
 					name = L["Configure Auras"],
 					func = function() E:SetToFilterConfig('RaidDebuffs') end,
-					order = 7
+					order = 8
 				},
 				duration = {
 					order = 11,
@@ -5023,20 +5057,37 @@ E.Options.args.unitframe.args['raid40'] = {
 					order = 2,
 					min = 8, max = 35, step = 1,
 				},
+				font = {
+					order = 3,
+					type = "select", dialogControl = "LSM30_Font",
+					name = L["Font"],
+					values = AceGUIWidgetLSMlists.font,
+				},
 				fontSize = {
 					type = 'range',
 					name = L["Font Size"],
-					order = 3,
+					order = 4,
 					min = 7, max = 22, step = 1,
 				},
+				fontOutline = {
+					order = 5,
+					type = "select",
+					name = L["Font Outline"],
+					values = {
+						["NONE"] = L["None"],
+						["OUTLINE"] = "OUTLINE",
+						["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
+						["THICKOUTLINE"] = "THICKOUTLINE",
+					},
+				},
 				xOffset = {
-					order = 4,
+					order = 6,
 					type = 'range',
 					name = L["xOffset"],
 					min = -300, max = 300, step = 1,
 				},
 				yOffset = {
-					order = 5,
+					order = 7,
 					type = 'range',
 					name = L["yOffset"],
 					min = -300, max = 300, step = 1,
@@ -5045,7 +5096,7 @@ E.Options.args.unitframe.args['raid40'] = {
 					type = 'execute',
 					name = L["Configure Auras"],
 					func = function() E:SetToFilterConfig('RaidDebuffs') end,
-					order = 7
+					order = 8
 				},
 				duration = {
 					order = 11,
@@ -5450,20 +5501,37 @@ E.Options.args.unitframe.args.raidpet = {
 					order = 2,
 					min = 8, max = 35, step = 1,
 				},
+				font = {
+					order = 3,
+					type = "select", dialogControl = "LSM30_Font",
+					name = L["Font"],
+					values = AceGUIWidgetLSMlists.font,
+				},
 				fontSize = {
 					type = 'range',
 					name = L["Font Size"],
-					order = 3,
+					order = 4,
 					min = 7, max = 22, step = 1,
 				},
+				fontOutline = {
+					order = 5,
+					type = "select",
+					name = L["Font Outline"],
+					values = {
+						["NONE"] = L["None"],
+						["OUTLINE"] = "OUTLINE",
+						["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
+						["THICKOUTLINE"] = "THICKOUTLINE",
+					},
+				},
 				xOffset = {
-					order = 4,
+					order = 6,
 					type = 'range',
 					name = L["xOffset"],
 					min = -300, max = 300, step = 1,
 				},
 				yOffset = {
-					order = 5,
+					order = 7,
 					type = 'range',
 					name = L["yOffset"],
 					min = -300, max = 300, step = 1,
@@ -5472,7 +5540,7 @@ E.Options.args.unitframe.args.raidpet = {
 					type = 'execute',
 					name = L["Configure Auras"],
 					func = function() E:SetToFilterConfig('RaidDebuffs') end,
-					order = 7
+					order = 8
 				},
 				duration = {
 					order = 11,
