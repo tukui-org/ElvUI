@@ -255,10 +255,6 @@ local function MasqueCallback(Addon, Group, SkinID, Gloss, Backdrop, Colors, Dis
 			end
 			MasqueGroupState[Group] = "disabled"
 		else
-			if not E.private[element[1]].masque[element[2]] and MasqueGroupState[Group] ~= "enabled" then
-				E.private[element[1]].masque[element[2]] = true
-				E:StaticPopup_Show("CONFIG_RL")
-			end
 			MasqueGroupState[Group] = "enabled"
 		end
 	end
