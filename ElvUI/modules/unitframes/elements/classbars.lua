@@ -71,7 +71,7 @@ function UF:UpdateHoly(event, unit, powerType)
 
 	self.HolyPower:Width(CLASSBAR_WIDTH)
 
-	if numHolyPower > 0 then
+	if numHolyPower > 0 or not db.classbar.autoHide then
 		self.HolyPower:Show()
 		self.Health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -HEALTH_OFFSET_Y)
 		self.Health:Point("TOPLEFT", self, "TOPLEFT", BORDER+PORTRAIT_WIDTH, -HEALTH_OFFSET_Y)
@@ -195,7 +195,7 @@ function UF:UpdateHarmony()
 	self:SetWidth(CLASSBAR_WIDTH)
 	local colors = ElvUF.colors.Harmony
 	
-	if numChi > 0 then
+	if numChi > 0 or not db.classbar.autoHide then
 		self:Show()
 		frame.Health:Point("TOPRIGHT", frame, "TOPRIGHT", -HEALTH_OFFSET_X, -HEALTH_OFFSET_Y)
 		frame.Health:Point("TOPLEFT", frame, "TOPLEFT", BORDER+PORTRAIT_WIDTH, -HEALTH_OFFSET_Y)
@@ -468,7 +468,7 @@ function UF:UpdateShadowOrbs(event, unit, powerType)
 
 	self:Width(CLASSBAR_WIDTH)
 
-	if numShadowOrbs > 0 then
+	if numShadowOrbs > 0 or not db.classbar.autoHide then
 		self:Show()
 
 		for i = 1, MAX_SHADOW_ORBS do
