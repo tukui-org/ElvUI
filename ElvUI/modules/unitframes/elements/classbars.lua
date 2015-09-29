@@ -71,7 +71,11 @@ function UF:UpdateHoly(event, unit, powerType)
 
 	self.HolyPower:Width(CLASSBAR_WIDTH)
 
-	if numHolyPower > 0 then
+	if numHolyPower == 0 and db.classbar.autoHide then
+		self.HolyPower:Hide()
+		self.Health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
+		self.Health:Point("TOPLEFT", self, "TOPLEFT", BORDER+PORTRAIT_WIDTH, -BORDER)
+	else
 		self.HolyPower:Show()
 		self.Health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -HEALTH_OFFSET_Y)
 		self.Health:Point("TOPLEFT", self, "TOPLEFT", BORDER+PORTRAIT_WIDTH, -HEALTH_OFFSET_Y)
@@ -107,10 +111,6 @@ function UF:UpdateHoly(event, unit, powerType)
 				self.HolyPower[i].backdrop:SetAlpha(1)
 			end
 		end
-	elseif db.classbar.autoHide then
-		self.HolyPower:Hide()
-		self.Health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
-		self.Health:Point("TOPLEFT", self, "TOPLEFT", BORDER+PORTRAIT_WIDTH, -BORDER)
 	end
 end
 
@@ -195,7 +195,11 @@ function UF:UpdateHarmony()
 	self:SetWidth(CLASSBAR_WIDTH)
 	local colors = ElvUF.colors.Harmony
 	
-	if numChi > 0 then
+	if numChi == 0 and db.classbar.autoHide then
+		self:Hide()
+		frame.Health:Point("TOPRIGHT", frame, "TOPRIGHT", -HEALTH_OFFSET_X, -BORDER)
+		frame.Health:Point("TOPLEFT", frame, "TOPLEFT", BORDER+PORTRAIT_WIDTH, -BORDER)
+	else
 		self:Show()
 		frame.Health:Point("TOPRIGHT", frame, "TOPRIGHT", -HEALTH_OFFSET_X, -HEALTH_OFFSET_Y)
 		frame.Health:Point("TOPLEFT", frame, "TOPLEFT", BORDER+PORTRAIT_WIDTH, -HEALTH_OFFSET_Y)
@@ -221,10 +225,6 @@ function UF:UpdateHarmony()
 
 			self[i]:SetStatusBarColor(colors[i][1], colors[i][2], colors[i][3])
 		end
-	elseif db.classbar.autoHide then
-		self:Hide()
-		frame.Health:Point("TOPRIGHT", frame, "TOPRIGHT", -HEALTH_OFFSET_X, -BORDER)
-		frame.Health:Point("TOPLEFT", frame, "TOPLEFT", BORDER+PORTRAIT_WIDTH, -BORDER)
 	end
 end
 
@@ -468,7 +468,9 @@ function UF:UpdateShadowOrbs(event, unit, powerType)
 
 	self:Width(CLASSBAR_WIDTH)
 
-	if numShadowOrbs > 0 then
+	if numShadowOrbs == 0 and db.classbar.autoHide then
+		self:Hide()
+	else
 		self:Show()
 
 		for i = 1, MAX_SHADOW_ORBS do
@@ -502,8 +504,6 @@ function UF:UpdateShadowOrbs(event, unit, powerType)
 				self[i].backdrop:SetAlpha(1)
 			end
 		end
-	elseif db.classbar.autoHide then
-		self:Hide()
 	end
 
 	UF:UpdatePlayerFrameAnchors(frame, self:IsShown())
