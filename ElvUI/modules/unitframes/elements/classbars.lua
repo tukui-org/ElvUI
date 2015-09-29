@@ -200,7 +200,6 @@ function UF:UpdateHarmony()
 		frame.Health:Point("TOPRIGHT", frame, "TOPRIGHT", -HEALTH_OFFSET_X, -BORDER)
 		frame.Health:Point("TOPLEFT", frame, "TOPLEFT", BORDER+PORTRAIT_WIDTH, -BORDER)
 	else
-		self:Show()
 		frame.Health:Point("TOPRIGHT", frame, "TOPRIGHT", -HEALTH_OFFSET_X, -HEALTH_OFFSET_Y)
 		frame.Health:Point("TOPLEFT", frame, "TOPLEFT", BORDER+PORTRAIT_WIDTH, -HEALTH_OFFSET_Y)
 
@@ -471,8 +470,6 @@ function UF:UpdateShadowOrbs(event, unit, powerType)
 	if numShadowOrbs == 0 and db.classbar.autoHide then
 		self:Hide()
 	else
-		self:Show()
-
 		for i = 1, MAX_SHADOW_ORBS do
 			if(i <= numShadowOrbs) then
 				self[i]:SetAlpha(1)
