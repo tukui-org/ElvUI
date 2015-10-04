@@ -422,17 +422,18 @@ function UF:Update_Raid40Frames(frame, db)
 		local stackColor = db.rdebuffs.stack.color
 		local durationColor = db.rdebuffs.duration.color
 		if db.rdebuffs.enable then
+			local rdebuffsFont = UF.LSM:Fetch("font", db.rdebuffs.font)
 			frame:EnableElement('RaidDebuffs')
 
 			rdebuffs:Size(db.rdebuffs.size)
 			rdebuffs:Point('BOTTOM', frame, 'BOTTOM', db.rdebuffs.xOffset, db.rdebuffs.yOffset)
 			
-			rdebuffs.count:FontTemplate(db.rdebuffs.font, db.rdebuffs.fontSize, db.rdebuffs.fontOutline)
+			rdebuffs.count:FontTemplate(rdebuffsFont, db.rdebuffs.fontSize, db.rdebuffs.fontOutline)
 			rdebuffs.count:ClearAllPoints()
 			rdebuffs.count:Point(db.rdebuffs.stack.position, db.rdebuffs.stack.xOffset, db.rdebuffs.stack.yOffset)
 			rdebuffs.count:SetTextColor(stackColor.r, stackColor.g, stackColor.b)
 			
-			rdebuffs.time:FontTemplate(db.rdebuffs.font, db.rdebuffs.fontSize, db.rdebuffs.fontOutline)
+			rdebuffs.time:FontTemplate(rdebuffsFont, db.rdebuffs.fontSize, db.rdebuffs.fontOutline)
 			rdebuffs.time:ClearAllPoints()
 			rdebuffs.time:Point(db.rdebuffs.duration.position, db.rdebuffs.duration.xOffset, db.rdebuffs.duration.yOffset)
 			rdebuffs.time:SetTextColor(durationColor.r, durationColor.g, durationColor.b)
