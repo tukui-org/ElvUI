@@ -108,7 +108,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 			OnAccept = function()
 				self.statusBar:SetMinMaxValues(0, length)
 				self.statusBar:SetValue(0)
-				self.statusBar.text:SetText(format(L["Data From: %s"], sender))
+				self.statusBar.text:SetFormattedText(L["Data From: %s"], sender)
 				E:StaticPopupSpecial_Show(self.statusBar)
 				self:SendCommMessage(REPLY_PREFIX, profile..":YES", dist, sender)
 			end,

@@ -680,7 +680,7 @@ local function SetPage(PageNum)
 	end
 
 	if PageNum == 1 then
-		f.SubTitle:SetText(format(L["Welcome to ElvUI version %s!"], E.version))
+		f.SubTitle:SetFormattedText(L["Welcome to ElvUI version %s!"], E.version)
 		f.Desc1:SetText(L["This install process will help you learn some of the features in ElvUI has to offer and also prepare your user interface for usage."])
 		f.Desc2:SetText(L["The in-game configuration menu can be accesses by typing the /ec command or by clicking the 'C' button on the minimap. Press the button below if you wish to skip the installation process."])
 		f.Desc3:SetText(L["Please press the continue button to go onto the next step."])
@@ -721,7 +721,7 @@ local function SetPage(PageNum)
 		InstallOption3Button:SetText(CLASS)
 	elseif PageNum == 5 then
 		f.SubTitle:SetText(L["Resolution"])
-		f.Desc1:SetText(format(L["Your current resolution is %s, this is considered a %s resolution."], E.resolution, E.lowversion == true and L["low"] or L["high"]))
+		f.Desc1:SetFormattedText(L["Your current resolution is %s, this is considered a %s resolution."], E.resolution, E.lowversion == true and L["low"] or L["high"])
 		if E.lowversion then
 			f.Desc2:SetText(L["This resolution requires that you change some settings to get everything to fit on your screen."].." "..L["Click the button below to resize your chat frames, unitframes, and reposition your actionbars."].." "..L["You may need to further alter these settings depending how low you resolution is."])
 			f.Desc3:SetText(L["Importance: |cff07D400High|r"])

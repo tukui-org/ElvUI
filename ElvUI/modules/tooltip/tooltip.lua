@@ -546,7 +546,7 @@ function TT:GameTooltipStatusBar_OnValueChanged(tt, value)
 
 	local min, max = tt:GetMinMaxValues()
 	if(value > 0 and max == 1) then
-		tt.text:SetText(format("%d%%", floor(value * 100)))
+		tt.text:SetFormattedText("%d%%", floor(value * 100))
 		tt:SetStatusBarColor(TAPPED_COLOR.r, TAPPED_COLOR.g, TAPPED_COLOR.b) --most effeciant?
 	elseif(value == 0 or (unit and UnitIsDeadOrGhost(unit))) then
 		tt.text:SetText(DEAD)

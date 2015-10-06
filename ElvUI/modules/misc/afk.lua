@@ -10,7 +10,6 @@ local ignoreKeys = {
 	LALT = true,
 	LSHIFT = true,
 	RSHIFT = true,
-	
 }
 
 local printKeys = {
@@ -23,7 +22,7 @@ end
 
 function AFK:UpdateTimer()
 	local time = GetTime() - self.startTime
-	self.AFKMode.bottom.time:SetText(format("%02d:%02d", floor(time/60), time % 60))
+	self.AFKMode.bottom.time:SetFormattedText("%02d:%02d", floor(time/60), time % 60)
 end
 
 function AFK:SetAFK(status)
@@ -36,7 +35,7 @@ function AFK:SetAFK(status)
 
 		if(IsInGuild()) then
 			local guildName, guildRankName = GetGuildInfo("player");
-			self.AFKMode.bottom.guild:SetText(guildName.."-"..guildRankName)
+			self.AFKMode.bottom.guild:SetFormattedText("%s-%s", guildName, guildRankName)
 		else
 			self.AFKMode.bottom.guild:SetText(L["No Guild"])
 		end
@@ -247,7 +246,7 @@ function AFK:Initialize()
 
 	self.AFKMode.bottom.name = self.AFKMode.bottom:CreateFontString(nil, 'OVERLAY')
 	self.AFKMode.bottom.name:FontTemplate(nil, 20)
-	self.AFKMode.bottom.name:SetText(E.myname.."-"..E.myrealm)
+	self.AFKMode.bottom.name:SetFormattedText("%s-%s", E.myname, E.myrealm)
 	self.AFKMode.bottom.name:SetPoint("TOPLEFT", self.AFKMode.bottom.faction, "TOPRIGHT", -10, -28)
 	self.AFKMode.bottom.name:SetTextColor(classColor.r, classColor.g, classColor.b)
 

@@ -565,10 +565,10 @@ function AB:Button_OnLeave(button)
 end
 
 function AB:BlizzardOptionsPanel_OnEvent()
-	InterfaceOptionsActionBarsPanelBottomRight.Text:SetText(format(L["Remove Bar %d Action Page"], 2))
-	InterfaceOptionsActionBarsPanelBottomLeft.Text:SetText(format(L["Remove Bar %d Action Page"], 3))
-	InterfaceOptionsActionBarsPanelRightTwo.Text:SetText(format(L["Remove Bar %d Action Page"], 4))
-	InterfaceOptionsActionBarsPanelRight.Text:SetText(format(L["Remove Bar %d Action Page"], 5))
+	InterfaceOptionsActionBarsPanelBottomRight.Text:SetFormattedText(L["Remove Bar %d Action Page"], 2)
+	InterfaceOptionsActionBarsPanelBottomLeft.Text:SetFormattedText(L["Remove Bar %d Action Page"], 3)
+	InterfaceOptionsActionBarsPanelRightTwo.Text:SetFormattedText(L["Remove Bar %d Action Page"], 4)
+	InterfaceOptionsActionBarsPanelRight.Text:SetFormattedText(L["Remove Bar %d Action Page"], 5)
 
 	InterfaceOptionsActionBarsPanelBottomRight:SetScript('OnEnter', nil)
 	InterfaceOptionsActionBarsPanelBottomLeft:SetScript('OnEnter', nil)

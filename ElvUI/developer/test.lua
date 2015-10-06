@@ -115,7 +115,7 @@ local function New()
 			button:Enable();
 			if (mission.inProgress) then
 				button.Overlay:Show();
-				button.Summary:SetText(mission.timeLeft.." "..RED_FONT_COLOR_CODE..GARRISON_MISSION_IN_PROGRESS..FONT_COLOR_CODE_CLOSE);
+				button.Summary:SetFormattedText("%s %s%s%s", mission.timeLeft, RED_FONT_COLOR_CODE, GARRISON_MISSION_IN_PROGRESS, FONT_COLOR_CODE_CLOSE);
 			else
 				button.Overlay:Hide();
 			end

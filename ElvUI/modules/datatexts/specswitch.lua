@@ -51,7 +51,7 @@ local function OnEvent(self, event)
 		end
 	end
 
-	self.text:SetText(format('%s: %s %s: %s', L["Spec"], talent, LOOT, loot))
+	self.text:SetFormattedText('%s: %s %s: %s', L["Spec"], talent, LOOT, loot)
 end
 
 local function OnEnter(self)
