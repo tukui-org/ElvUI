@@ -242,6 +242,11 @@ function M:UpdateSettings()
 		E:GetModule('Auras'):Update_ConsolidatedBuffsSettings()
 	end
 
+	--Stop here if ElvUI Minimap is disabled.
+	if not E.private.general.minimap.enable then
+		return;
+	end
+
 	if GarrisonLandingPageMinimapButton then
 		local pos = E.db.general.minimap.icons.garrison.position or "TOPLEFT"
 		local scale = E.db.general.minimap.icons.garrison.scale or 1
