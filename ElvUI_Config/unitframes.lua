@@ -474,7 +474,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 			sortMethod = {
 				order = 16,
 				name = L["Sort By"],
-				desc = L["Direction to sort by."],
+				desc = L["Method to sort by."],
 				type = 'select',
 				values = auraSortValues,
 			},
