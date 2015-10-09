@@ -136,6 +136,8 @@ local function LoadSkin()
 	S:HandleButton(WarGameStartButton, true)
 	S:HandleScrollBar(WarGamesFrameScrollFrameScrollBar)
 	WarGamesFrame.HorizontalBar:StripTextures()
+	S:HandleScrollBar(WarGamesFrameInfoScrollFrameScrollBar)
+	WarGamesFrameInfoScrollFrameScrollBar:StripTextures()
 	S:HandleCheckBox(WarGameTournamentModeCheckButton)
 	ConquestTooltip:SetTemplate("Transparent")
 end
