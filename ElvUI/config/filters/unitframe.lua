@@ -912,3 +912,8 @@ G.unitframe.InvalidSpells = {
 	[65148] = true, --Sacred Shield
 	[95809] = true, --Insanity debuff (Hunter Pet heroism)
 }
+
+
+G.unitframe.DebuffHighlightColors = {
+	[SpellName(25771)] = {enable = false, style = "FILL", color = {r = 0.85, g = 0, b = 0, a = 0.85}},
+}

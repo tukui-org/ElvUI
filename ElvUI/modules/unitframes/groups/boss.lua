@@ -500,6 +500,12 @@ function UF:Update_BossFrames(frame, db)
 		if E.db.unitframe.debuffHighlighting then
 			if not frame:IsElementEnabled('DebuffHighlight') then
 				frame:EnableElement('DebuffHighlight')
+				frame.DebuffHighlightFilterTable = E.global.unitframe.DebuffHighlightColors
+				if E.db.unitframe.debuffHighlighting == 'GLOW' then
+					frame.DebuffHighlightBackdrop = true
+				else
+					frame.DebuffHighlightBackdrop = false
+				end						
 			end
 		else
 			if frame:IsElementEnabled('DebuffHighlight') then

@@ -465,6 +465,13 @@ function UF:Update_RaidFrames(frame, db)
 		local dbh = frame.DebuffHighlight
 		if E.db.unitframe.debuffHighlighting then
 			frame:EnableElement('DebuffHighlight')
+			frame.DebuffHighlightFilterTable = E.global.unitframe.DebuffHighlightColors
+			if E.db.unitframe.debuffHighlighting == 'GLOW' then
+				frame.DebuffHighlightBackdrop = true
+				frame.DBHGlow:SetAllPoints(frame.Threat.glow)
+			else
+				frame.DebuffHighlightBackdrop = false
+			end		
 		else
 			frame:DisableElement('DebuffHighlight')
 		end
