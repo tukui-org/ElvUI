@@ -23,6 +23,12 @@ function M:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, _, sourceGUID, _, _, _, _, d
 
 	local inGroup, inRaid, inPartyLFG = IsInGroup(), IsInRaid(), IsPartyLFG()
 	if not inGroup then return end -- not in group, exit.
+	
+	--IsInRaid() returns "true" in arenas, but we can't post messages in raid channel while in arenas
+	local _, instanceType = IsInInstance()
+	if instanceType and inRaid and instanceType == "arena" then
+		inRaid = false
+	end
 
 	if E.db.general.interruptAnnounce == "PARTY" then
 		SendChatMessage(format(interruptMsg, destName, spellID, spellName), inPartyLFG and "INSTANCE_CHAT" or "PARTY")
