@@ -933,8 +933,15 @@ function UF:Update_PlayerFrame(frame, db)
 	--Debuff Highlight
 	do
 		local dbh = frame.DebuffHighlight
-		if E.db.unitframe.debuffHighlighting then
+		if E.db.unitframe.debuffHighlighting ~= 'NONE' then
 			frame:EnableElement('DebuffHighlight')
+			frame.DebuffHighlightFilterTable = E.global.unitframe.DebuffHighlightColors
+			if E.db.unitframe.debuffHighlighting == 'GLOW' then
+				frame.DebuffHighlightBackdrop = true
+				frame.DBHGlow:SetAllPoints(frame.Threat.glow)
+			else
+				frame.DebuffHighlightBackdrop = false
+			end
 		else
 			frame:DisableElement('DebuffHighlight')
 		end
