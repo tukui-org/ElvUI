@@ -317,7 +317,7 @@ function UF:Update_RaidpetFrames(frame, db)
 	--Debuff Highlight
 	do
 		local dbh = frame.DebuffHighlight
-		if E.db.unitframe.debuffHighlighting then
+		if E.db.unitframe.debuffHighlighting ~= 'NONE' then
 			frame:EnableElement('DebuffHighlight')
 			frame.DebuffHighlightFilterTable = E.global.unitframe.DebuffHighlightColors
 
