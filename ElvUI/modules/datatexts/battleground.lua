@@ -3,7 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 local lastPanel
 local displayString = ''
-local classColor = RAID_CLASS_COLORS[E.myclass]
+local classColor = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass]
 local dataLayout = {
 	['LeftChatDataPanel'] = {
 		['left'] = 10,

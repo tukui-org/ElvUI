@@ -8,6 +8,8 @@ local split = string.split
 local match = string.match
 local twipe = table.wipe
 local tonumber = tonumber
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 
 --Constants
 E.myclass = select(2, UnitClass("player"));
@@ -148,7 +150,7 @@ function E:CheckClassColor(r, g, b)
 	local matchFound = false;
 	for class, _ in pairs(RAID_CLASS_COLORS) do
 		if class ~= E.myclass then
-			local colorTable = class == 'PRIEST' and E.PriestColors or RAID_CLASS_COLORS[class]
+			local colorTable = class == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class])
 			if colorTable.r == r and colorTable.g == g and colorTable.b == b then
 				matchFound = true;
 			end
@@ -185,7 +187,7 @@ function E:UpdateMedia()
 	--Border Color
 	local border = E.db['general'].bordercolor
 	if self:CheckClassColor(border.r, border.g, border.b) then
-		classColor = E.myclass == 'PRIEST' and E.PriestColors or RAID_CLASS_COLORS[E.myclass]
+		classColor = E.myclass == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
 		E.db['general'].bordercolor.r = classColor.r
 		E.db['general'].bordercolor.g = classColor.g
 		E.db['general'].bordercolor.b = classColor.b
@@ -204,7 +206,7 @@ function E:UpdateMedia()
 	local value = self.db['general'].valuecolor
 
 	if self:CheckClassColor(value.r, value.g, value.b) then
-		value = E.myclass == 'PRIEST' and E.PriestColors or RAID_CLASS_COLORS[E.myclass]
+		value = E.myclass == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
 		self.db['general'].valuecolor.r = value.r
 		self.db['general'].valuecolor.g = value.g
 		self.db['general'].valuecolor.b = value.b

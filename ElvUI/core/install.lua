@@ -176,9 +176,8 @@ function E:GetColor(r, b, g, a)
 end
 
 function E:SetupTheme(theme, noDisplayMsg)
-	local classColor = E.myclass == 'PRIEST' and E.PriestColors or RAID_CLASS_COLORS[E.myclass]
+	local classColor = E.myclass == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
 	E.private.theme = theme
-
 
 	--Set colors
 	if theme == "classic" then

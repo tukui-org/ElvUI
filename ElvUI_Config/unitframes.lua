@@ -5,6 +5,8 @@ local ElvUF = ns.oUF
 
 local tinsert = table.insert
 local twipe = table.wipe
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 
 local ACD = LibStub("AceConfigDialog-3.0-ElvUI")
 local fillValues = {
@@ -2059,7 +2061,7 @@ E.Options.args.unitframe = {
 									end,
 									set = function(info, r, g, b)
 										if E:CheckClassColor(r, g, b) then
-											local classColor = E.myclass == 'PRIEST' and E.PriestColors or RAID_CLASS_COLORS[E.myclass]
+											local classColor = E.myclass == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
 											r = classColor.r
 											g = classColor.g
 											b = classColor.b

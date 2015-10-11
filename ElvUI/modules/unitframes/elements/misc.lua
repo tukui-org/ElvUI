@@ -3,7 +3,8 @@ local UF = E:GetModule('UnitFrames');
 
 local random, floor, ceil = math.random, math.floor, math.ceil
 local format = string.format
-
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 
 local LSM = LibStub("LibSharedMedia-3.0");
 function UF:Construct_TargetGlow(frame)
@@ -232,7 +233,7 @@ function UF:UpdateTargetGlow(event)
 		if UnitIsPlayer(unit) then
 			local _, class = UnitClass(unit)
 			if class then
-				local color = RAID_CLASS_COLORS[class]
+				local color = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
 				self.TargetGlow:SetBackdropBorderColor(color.r, color.g, color.b)
 			else
 				self.TargetGlow:SetBackdropBorderColor(1, 1, 1)
