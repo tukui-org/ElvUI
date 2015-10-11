@@ -383,7 +383,7 @@ function NP:ColorizeAndScale(myPlate)
 	local canAttack = false
 
 	self.unitType = unitType
-	if CUSTOM_CLASS_COLORS[unitType] then
+	if CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[unitType] then
 		color = CUSTOM_CLASS_COLORS[unitType]
 	elseif RAID_CLASS_COLORS[unitType] then
 		color = RAID_CLASS_COLORS[unitType]
