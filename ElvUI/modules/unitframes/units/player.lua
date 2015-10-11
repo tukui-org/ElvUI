@@ -6,6 +6,8 @@ local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
 local CAN_HAVE_CLASSBAR = (E.myclass == "PALADIN" or E.myclass == "DRUID" or E.myclass == "DEATHKNIGHT" or E.myclass == "WARLOCK" or E.myclass == "PRIEST" or E.myclass == "MONK" or E.myclass == 'MAGE' or E.myclass == 'ROGUE')
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 
 function UF:Construct_PlayerFrame(frame)
 	frame.Threat = self:Construct_Threat(frame, true)
@@ -1010,11 +1012,11 @@ function UF:Update_PlayerFrame(frame, db)
 			local attachTo = frame
 
 			if(E:CheckClassColor(buffColor.r, buffColor.g, buffColor.b)) then
-				buffColor = E.myclass == 'PRIEST' and E.PriestColors or RAID_CLASS_COLORS[E.myclass]
+				buffColor = E.myclass == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
 			end
 
 			if(E:CheckClassColor(debuffColor.r, debuffColor.g, debuffColor.b)) then
-				debuffColor = E.myclass == 'PRIEST' and E.PriestColors or RAID_CLASS_COLORS[E.myclass]
+				debuffColor = E.myclass == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
 			end
 
 			if db.aurabar.attachTo == 'BUFFS' then

@@ -19,6 +19,9 @@ local tinsert, tremove, tsort, twipe, tconcat = table.insert, table.remove, tabl
 local PLAYER_REALM = gsub(E.myrealm,'[%s%-]','')
 local PLAYER_NAME = E.myname.."-"..PLAYER_REALM
 
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
+
 local TIMESTAMP_FORMAT
 local DEFAULT_STRINGS = {
 	GUILD = L["G"],
@@ -795,12 +798,13 @@ function CH:GetBNFriendColor(name, id)
 		for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
 	end
 
-	if(not class or not RAID_CLASS_COLORS[class]) then
+	if(not class or not (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class])) then
 		return name
 	end
 
-
-	if RAID_CLASS_COLORS[class] then
+	if CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] then
+		return "|c"..CUSTOM_CLASS_COLORS[class].colorStr..name.."|r"
+	elseif RAID_CLASS_COLORS[class] then
 		return "|c"..RAID_CLASS_COLORS[class].colorStr..name.."|r"
 	else
 		return name
@@ -1181,7 +1185,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 					for i=1, GetNumGroupMembers() do
 						local name, rank, subgroup, level, class, classFileName = GetRaidRosterInfo(i);
 						if ( name and subgroup == groupIndex ) then
-							local classColorTable = RAID_CLASS_COLORS[classFileName];
+							local classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[classFileName] or RAID_CLASS_COLORS[classFileName];
 							if ( classColorTable ) then
 								name = format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, name);
 							end

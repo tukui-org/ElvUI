@@ -7,6 +7,9 @@ local find, format = string.find, string.format
 local floor = math.floor
 local twipe, tinsert, tconcat = table.wipe, table.insert, table.concat
 
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
+
 local S_ITEM_LEVEL = ITEM_LEVEL:gsub( "%%d", "(%%d+)" )
 local playerGUID = UnitGUID("player")
 local targetList, inspectCache = {}, {}
@@ -406,7 +409,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		local pvpName = UnitPVPName(unit)
 		local relationship = UnitRealmRelationship(unit);
 		if not localeClass or not class then return; end
-		color = RAID_CLASS_COLORS[class]
+		color = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
 
 		if(self.db.playerTitles and pvpName) then
 			name = pvpName
@@ -499,7 +502,8 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	if(self.db.targetInfo and unit ~= "player" and UnitExists(unitTarget)) then
 		local targetColor
 		if(UnitIsPlayer(unitTarget) and not UnitHasVehicleUI(unitTarget)) then
-			targetColor = RAID_CLASS_COLORS[select(2, UnitClass(unitTarget))]
+			local _, class = UnitClass(unitTarget)
+			targetColor = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
 		else
 			targetColor = E.db.tooltip.useCustomFactionColors and E.db.tooltip.factionColors[""..UnitReaction(unitTarget, "player")] or FACTION_BAR_COLORS[UnitReaction(unitTarget, "player")]
 		end
@@ -512,7 +516,8 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 			local groupUnit = (IsInRaid() and "raid"..i or "party"..i);
 			if (UnitIsUnit(groupUnit.."target", unit)) and (not UnitIsUnit(groupUnit,"player")) then
 				local _, class = UnitClass(groupUnit);
-				tinsert(targetList, format("|c%s%s|r", RAID_CLASS_COLORS[class].colorStr, UnitName(groupUnit)))
+				local color = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
+				tinsert(targetList, format("|c%s%s|r", color.colorStr, UnitName(groupUnit)))
 			end
 		end
 		local numList = #targetList
@@ -630,7 +635,7 @@ function TT:SetUnitAura(tt, unit, index, filter)
 		if caster then
 			local name = UnitName(caster)
 			local _, class = UnitClass(caster)
-			local color = RAID_CLASS_COLORS[class]
+			local color = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
 			tt:AddDoubleLine(("|cFFCA3C3C%s|r %d"):format(ID, id), format("|c%s%s|r", color.colorStr, name))
 		else
 			tt:AddLine(("|cFFCA3C3C%s|r %d"):format(ID, id))
@@ -647,7 +652,7 @@ function TT:SetConsolidatedUnitAura(tt, unit, index)
 		if caster then
 			local name = UnitName(caster)
 			local _, class = UnitClass(caster)
-			local color = RAID_CLASS_COLORS[class]
+			local color = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
 			tt:AddDoubleLine(("|cFFCA3C3C%s|r %d"):format(ID, id), format("|c%s%s|r", color.colorStr, name))
 		else
 			tt:AddLine(("|cFFCA3C3C%s|r %d"):format(ID, id))

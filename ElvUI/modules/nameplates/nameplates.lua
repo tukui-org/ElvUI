@@ -16,6 +16,7 @@ local WorldFrame = WorldFrame
 local tonumber = tonumber
 local pairs = pairs
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 local UnitGUID = UnitGUID
 local UnitHealthMax = UnitHealthMax
 local floor = math.floor
@@ -382,7 +383,9 @@ function NP:ColorizeAndScale(myPlate)
 	local canAttack = false
 
 	self.unitType = unitType
-	if RAID_CLASS_COLORS[unitType] then
+	if CUSTOM_CLASS_COLORS[unitType] then
+		color = CUSTOM_CLASS_COLORS[unitType]
+	elseif RAID_CLASS_COLORS[unitType] then
 		color = RAID_CLASS_COLORS[unitType]
 	elseif unitType == "TAPPED_NPC" then
 		color = NP.db.reactions.tapped

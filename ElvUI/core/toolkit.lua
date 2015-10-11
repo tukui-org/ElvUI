@@ -4,13 +4,20 @@ local LSM = LibStub("LibSharedMedia-3.0")
 local floor = math.floor
 local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0, 0, 0, 1, 0, 0, 0
 
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
+
 --Preload shit..
 E.mult = 1;
 
 local function GetTemplate(t)
 	backdropa = 1
 	if t == "ClassColor" then
-		borderr, borderg, borderb = RAID_CLASS_COLORS[E.myclass].r, RAID_CLASS_COLORS[E.myclass].g, RAID_CLASS_COLORS[E.myclass].b
+		if CUSTOM_CLASS_COLORS then
+			borderr, borderg, borderb = CUSTOM_CLASS_COLORS[E.myclass].r, CUSTOM_CLASS_COLORS[E.myclass].g, CUSTOM_CLASS_COLORS[E.myclass].b
+		else
+			borderr, borderg, borderb = RAID_CLASS_COLORS[E.myclass].r, RAID_CLASS_COLORS[E.myclass].g, RAID_CLASS_COLORS[E.myclass].b
+		end
 		if t ~= "Transparent" then
 			backdropr, backdropg, backdropb = unpack(E["media"].backdropcolor)
 		else

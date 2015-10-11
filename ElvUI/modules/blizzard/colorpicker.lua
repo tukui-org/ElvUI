@@ -10,6 +10,9 @@ local initialized = nil
 local colorBuffer = {}
 local editingText
 
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
+
 local function UpdateAlphaText()
 	local a = OpacitySliderFrame:GetValue()
 	a = a * 100
@@ -194,7 +197,7 @@ function B:EnhanceColorPicker()
 	
 
 	b:SetScript('OnClick', function()
-		local color = E.myclass == 'PRIEST' and E.PriestColors or RAID_CLASS_COLORS[E.myclass];
+		local color = E.myclass == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass]);
 		ColorPickerFrame:SetColorRGB(color.r, color.g, color.b)
 		ColorSwatch:SetTexture(color.r, color.g, color.b)
 		if ColorPickerFrame.hasOpacity then
