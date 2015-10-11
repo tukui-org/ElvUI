@@ -1677,8 +1677,8 @@ E.Options.args.unitframe = {
 							type = 'select',
 							values = {
 								['NONE'] = NONE,
-								['GLOW'] = L['Glow'],
-								['FILL'] = L['Fill']
+								['GLOW'] = L["Glow"],
+								['FILL'] = L["Fill"]
 							},
 						},
 						smartRaidFilter = {
