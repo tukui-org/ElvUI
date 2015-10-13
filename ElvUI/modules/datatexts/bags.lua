@@ -4,6 +4,7 @@ local DT = E:GetModule('DataTexts')
 local displayString = '';
 local lastPanel
 local join = string.join
+local CURRENCY = CURRENCY
 
 local function OnEvent(self, event, ...)
 	lastPanel = self
