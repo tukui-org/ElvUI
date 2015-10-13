@@ -1,21 +1,28 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
-local displayString, lastPanel
 local format = string.format
 local join = string.join
+local abs = abs
+local displayString, lastPanel
 local targetlv, playerlv
 local basemisschance, leveldifference, dodge, parry, block, avoidance, unhittable, avoided, blocked, numAvoidances, unhittableMax
 local chanceString = "%.2f%%"
 local modifierString = join("", "%d (+", chanceString, ")")
 local AVD_DECAY_RATE = 1.5
+local BOSS = BOSS
+local DODGE_CHANCE = DODGE_CHANCE
+local PARRY_CHANCE = PARRY_CHANCE
+local BLOCK_CHANCE = BLOCK_CHANCE
+local MISS_CHANCE = MISS_CHANCE
 
-function IsWearingShield()
+local function IsWearingShield()
 	local slotID = GetInventorySlotInfo("SecondaryHandSlot")
 	local itemID = GetInventoryItemID('player', slotID)
 
 	if itemID then
-		return select(9, GetItemInfo(itemID))
+		local _, _, _, _, _, _, _, _, itemEquipLoc = GetItemInfo(itemID)
+		return itemEquipLoc == "INVTYPE_SHIELD"
 	end
 end
 
@@ -56,7 +63,7 @@ local function OnEvent(self, event, unit)
 		numAvoidances = numAvoidances - 1
 	end
 
-	if IsWearingShield() ~= "INVTYPE_SHIELD" then
+	if not IsWearingShield() then
 		block = 0
 		numAvoidances = numAvoidances - 1
 	end
@@ -89,7 +96,7 @@ local function OnEnter(self)
 	DT.tooltip:AddDoubleLine(PARRY_CHANCE, format(chanceString, parry),1,1,1)
 	DT.tooltip:AddDoubleLine(BLOCK_CHANCE, format(chanceString, block),1,1,1)
 	DT.tooltip:AddDoubleLine(MISS_CHANCE, format(chanceString, basemisschance),1,1,1)
-	DT.tooltip:AddLine' '
+	DT.tooltip:AddLine(' ')
 
 
 	if unhittable > 0 then
@@ -123,4 +130,3 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 	onLeaveFunc - function to fire OnLeave, if not provided one will be set for you that hides the tooltip.
 ]]
 DT:RegisterDatatext('Avoidance', {"UNIT_TARGET", "UNIT_STATS", "UNIT_AURA", "FORGE_MASTER_ITEM_CHANGED", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE", 'PLAYER_EQUIPMENT_CHANGED'}, OnEvent, nil, nil, OnEnter)
-
