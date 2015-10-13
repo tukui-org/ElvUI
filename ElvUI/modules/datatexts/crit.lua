@@ -19,6 +19,7 @@ local critRating
 local displayModifierString = ''
 local lastPanel;
 local join = string.join
+local format = string.format
 
 local function OnEnter(self)
 	DT:SetupTooltip(self)
