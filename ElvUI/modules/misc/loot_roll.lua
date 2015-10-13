@@ -99,6 +99,8 @@ function M:CreateRollFrame()
 	frame:Size(FRAME_WIDTH, FRAME_HEIGHT)
 	frame:SetTemplate('Default')
 	frame:SetScript("OnEvent", OnEvent)
+	frame:SetFrameStrata("MEDUIM")
+	frame:SetFrameLevel(10)
 	frame:RegisterEvent("CANCEL_LOOT_ROLL")
 	frame:Hide()
 
