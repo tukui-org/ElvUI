@@ -3,12 +3,14 @@ local DT = E:GetModule('DataTexts')
 
 local displayNumberString = ''
 local lastPanel;
-local join = string.join
 local timer = 0
 local startTime = 0
 local timerText = L["Combat"]
 
 local floor = math.floor
+local format = string.format
+local join = string.join
+
 local function OnUpdate(self)
 	timer = GetTime() - startTime
 

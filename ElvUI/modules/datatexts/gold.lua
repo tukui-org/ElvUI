@@ -2,10 +2,13 @@ local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB,
 local DT = E:GetModule('DataTexts')
 
 local join = string.join
+local pairs = pairs
 
 local Profit	= 0
 local Spent		= 0
 local resetInfoFormatter = join("", "|cffaaaaaa", L["Reset Data: Hold Shift + Right Click"], "|r")
+local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
+local CURRENCY = CURRENCY
 
 local function OnEvent(self, event, ...)
 	if not IsLoggedIn() then return end

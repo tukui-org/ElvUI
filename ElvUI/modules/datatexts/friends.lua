@@ -22,10 +22,22 @@ E.PopupDialogs.SET_BN_BROADCAST = {
 }
 
 -- localized references for global functions (about 50% faster)
-local join 			= string.join
-local find			= string.find
-local format		= string.format
-local sort			= table.sort
+local join = string.join
+local find = string.find
+local format = string.format
+local sort = table.sort
+local type = type
+local gsub = string.gsub
+local wipe = wipe
+local pairs = pairs
+local select = select
+
+local AFK = AFK
+local DND = DND
+local LOCALIZED_CLASS_NAMES_MALE = LOCALIZED_CLASS_NAMES_MALE
+local LOCALIZED_CLASS_NAMES_FEMALE = LOCALIZED_CLASS_NAMES_FEMALE
+local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 local menuFrame = CreateFrame("Frame", "FriendDatatextRightClickMenu", E.UIParent, "UIDropDownMenuTemplate")
 local menuList = {
@@ -79,6 +91,12 @@ local friendOnline, friendOffline = gsub(ERR_FRIEND_ONLINE_SS,"\124Hplayer:%%s\1
 local dataValid = false
 local lastPanel
 
+local function SortAlphabeticName(a, b)
+	if a[1] and b[1] then
+		return a[1] < b[1]
+	end
+end
+
 local function BuildFriendTable(total)
 	wipe(friendTable)
 	local name, level, class, area, connected, status, note
@@ -97,13 +115,10 @@ local function BuildFriendTable(total)
 			friendTable[i] = { name, level, class, area, connected, status, note }
 		end
 	end
-	sort(friendTable, function(a, b)
-		if a[1] and b[1] then
-			return a[1] < b[1]
-		end
-	end)
+	sort(friendTable, SortAlphabeticName)
 end
 
+--Sort alphabetic by presenceName or toonName
 local function Sort(a, b)
 	if a[2] and b[2] and a[3] and b[3] then
 		if a[2] == b[2] then return a[3] < b[3] end
@@ -328,4 +343,3 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 
 DT:RegisterDatatext('Friends', {'PLAYER_ENTERING_WORLD', "BN_FRIEND_ACCOUNT_ONLINE", "BN_FRIEND_ACCOUNT_OFFLINE", "BN_FRIEND_INFO_CHANGED", "BN_FRIEND_TOON_ONLINE",
 "BN_FRIEND_TOON_OFFLINE", "BN_TOON_NAME_UPDATED", "FRIENDLIST_UPDATE", "CHAT_MSG_SYSTEM"}, OnEvent, nil, Click, OnEnter)
-

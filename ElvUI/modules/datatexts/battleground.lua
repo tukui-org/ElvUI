@@ -38,6 +38,7 @@ local TOK = 856
 local SSM = 860
 local DG = 935
 local name
+local select = select
 
 function DT:UPDATE_BATTLEFIELD_SCORE()
 	lastPanel = self

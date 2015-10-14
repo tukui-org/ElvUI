@@ -7,6 +7,7 @@ local reloadText = RELOADUI
 local plugins
 local find = string.find
 local join = string.join
+local pairs = pairs
 
 local function OnEvent(self, event, ...)
 	lastPanel = self
@@ -70,4 +71,3 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 	onLeaveFunc - function to fire OnLeave, if not provided one will be set for you that hides the tooltip.
 ]]
 DT:RegisterDatatext('ElvUI Config', {'PLAYER_ENTERING_WORLD'}, OnEvent, nil, Click, OnEnter)
-

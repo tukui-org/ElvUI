@@ -5,9 +5,19 @@ local bonusArmorString = STAT_BONUS_ARMOR..": "
 local chanceString = "%.2f%%";
 local displayString = ''
 local lastPanel;
+local effectiveArmor, bonusArmor, isNegatedForSpec, armorReduction, hasAura, percent
+
+local HIGHLIGHT_FONT_COLOR_CODE = HIGHLIGHT_FONT_COLOR_CODE
+local FONT_COLOR_CODE_CLOSE = FONT_COLOR_CODE_CLOSE
+local PAPERDOLLFRAME_TOOLTIP_FORMAT = PAPERDOLLFRAME_TOOLTIP_FORMAT
+local BONUS_ARMOR = BONUS_ARMOR
+local STAT_ARMOR_BONUS_ARMOR_BLADED_ARMOR_TOOLTIP = STAT_ARMOR_BONUS_ARMOR_BLADED_ARMOR_TOOLTIP
+local STAT_ARMOR_TOTAL_TOOLTIP = STAT_ARMOR_TOTAL_TOOLTIP
+local STAT_NO_BENEFIT_TOOLTIP = STAT_NO_BENEFIT_TOOLTIP
+
 local join = string.join
 local format = string.format
-local effectiveArmor, bonusArmor, isNegatedForSpec, armorReduction, hasAura, percent
+local select = select
 
 local function OnEnter(self)
 	DT:SetupTooltip(self)
@@ -79,4 +89,3 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 
 
 DT:RegisterDatatext('Bonus Armor', {"UNIT_STATS", "UNIT_AURA", "FORGE_MASTER_ITEM_CHANGED", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE", "PLAYER_DAMAGE_DONE_MODS"}, OnEvent, nil, nil, OnEnter)
-

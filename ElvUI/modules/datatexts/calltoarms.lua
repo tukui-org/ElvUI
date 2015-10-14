@@ -4,8 +4,10 @@ local DT = E:GetModule('DataTexts')
 local TANK_ICON = "|TInterface\\AddOns\\ElvUI\\media\\textures\\tank.tga:14:14|t"
 local HEALER_ICON = "|TInterface\\AddOns\\ElvUI\\media\\textures\\healer.tga:14:14|t"
 local DPS_ICON = "|TInterface\\AddOns\\ElvUI\\media\\textures\\dps.tga:14:14|t"
-local NOBONUSREWARDS = BATTLEGROUND_HOLIDAY..": N/A"
 local lastPanel
+
+local BATTLEGROUND_HOLIDAY = BATTLEGROUND_HOLIDAY
+local NOBONUSREWARDS = BATTLEGROUND_HOLIDAY..": N/A"
 
 local function MakeIconString(tank, healer, damage)
 	local str = ""

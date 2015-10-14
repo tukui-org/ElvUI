@@ -9,7 +9,9 @@ local timeStamp = 0
 local lastSegment = 0
 local lastPanel
 local displayString = '';
+
 local join = string.join
+local select = select
 
 local function Reset()
 	timeStamp = 0
@@ -25,7 +27,7 @@ local function GetDPS(self)
 	else
 		DPS = (DMGTotal) / (combatTime)
 	end
-	self.text:SetFormattedText(displayString, L["DPS"]..': ', DPS)
+	self.text:SetFormattedText(displayString, L["DPS"], DPS)
 end
 
 local function OnEvent(self, event, ...)
@@ -57,7 +59,7 @@ local function OnEvent(self, event, ...)
 
 			DMGTotal = DMGTotal + lastDMGAmount
 		end
-	elseif event == UNIT_PET then
+	elseif event == "UNIT_PET" then
 		petID = UnitGUID("pet")
 	end
 
@@ -70,7 +72,7 @@ local function OnClick(self)
 end
 
 local function ValueColorUpdate(hex, r, g, b)
-	displayString = join("", "%s", hex, "%.1f|r")
+	displayString = join("", "%s: ", hex, "%.1f|r")
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

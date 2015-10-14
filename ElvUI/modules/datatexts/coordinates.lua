@@ -40,4 +40,3 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 	onLeaveFunc - function to fire OnLeave, if not provided one will be set for you that hides the tooltip.
 ]]
 DT:RegisterDatatext('Coords', nil, nil, Update, Click)
-

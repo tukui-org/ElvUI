@@ -1,8 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
-local join = string.join
-
 local displayString = ""
 local tooltipString = "%d%%"
 local totalDurability = 0
@@ -20,6 +18,11 @@ local slots = {
 	["ShoulderSlot"] = L["Shoulder"],
 	["HeadSlot"] = L["Head"],
 }
+
+local DURABILITY = DURABILITY
+local join = string.join
+local pairs = pairs
+local format = string.format
 
 local function OnEvent(self, event, ...)
 	lastPanel = self
@@ -64,7 +67,6 @@ local function ValueColorUpdate(hex, r, g, b)
 end
 E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 
-
 --[[
 	DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc)
 
@@ -77,4 +79,3 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 	onLeaveFunc - function to fire OnLeave, if not provided one will be set for you that hides the tooltip.
 ]]
 DT:RegisterDatatext('Durability', {'PLAYER_ENTERING_WORLD', "UPDATE_INVENTORY_DURABILITY", "MERCHANT_SHOW"}, OnEvent, nil, Click, OnEnter)
-
