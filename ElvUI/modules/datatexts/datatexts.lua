@@ -4,6 +4,9 @@ local LDB = LibStub:GetLibrary("LibDataBroker-1.1");
 local LSM = LibStub("LibSharedMedia-3.0")
 local TT = E:GetModule("Tooltip")
 local len = string.len
+local pairs = pairs
+local type = type
+local error = error
 
 function DT:Initialize()
 	--if E.db["datatexts"].enable ~= true then return end
@@ -65,7 +68,7 @@ function DT:RegisterLDB()
 			if value == nil or (len(value) >= 3) or value == 'n/a' or name == value then
 				curFrame.text:SetText(value ~= 'n/a' and value or name)
 			else
-				curFrame.text:SetText(name..': '..hex..value..'|r')
+				curFrame.text:SetFormattedText("%s: %s%s|r", name, hex, value)
 			end
 		end
 
@@ -150,8 +153,6 @@ function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff)
 	panel:SetScript('OnSizeChanged', DT.UpdateAllDimensions)
 	DT.UpdateAllDimensions(panel)
 end
-
-
 
 function DT:AssignPanelToDataText(panel, data)
 	panel.name = ""
