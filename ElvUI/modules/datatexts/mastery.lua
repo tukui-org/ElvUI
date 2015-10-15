@@ -18,11 +18,13 @@ local function OnEnter(self)
 	local primaryTalentTree = GetSpecialization();
 
 	if (primaryTalentTree) then
-		local masterySpell = GetSpecializationMasterySpells(primaryTalentTree);
-		local masteryKnown = IsSpellKnown(masterySpell);
-
-		if (masteryKnown) then
+		local masterySpell, masterySpell2 = GetSpecializationMasterySpells(primaryTalentTree);
+		if (masterySpell) then
 			DT.tooltip:AddSpellByID(masterySpell);
+		end
+		if (masterySpell2) then
+			DT.tooltip:AddLine(" ");
+			DT.tooltip:AddSpellByID(masterySpell2);
 		end
 	end
 	DT.tooltip:Show()
