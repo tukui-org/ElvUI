@@ -68,7 +68,7 @@ local function UpdateMemory()
 		totalMemory = totalMemory + memoryTable[i][3]
 	end
 	-- Sort the table to put the largest addon on top
-	sort(memoryTable, sortByMemoryUsage)
+	sort(memoryTable, sortByMemoryOrCPU)
 end
 
 local function UpdateCPU()
