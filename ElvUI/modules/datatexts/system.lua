@@ -4,6 +4,9 @@ local DT = E:GetModule('DataTexts')
 local format = string.format
 local sort = table.sort
 local join = string.join
+local wipe = wipe
+local select = select
+local floor = math.floor
 
 -- initial delay for update (let the ui load)
 local int, int2 = 6, 5
@@ -34,6 +37,12 @@ local function formatMem(memory)
 	end
 end
 
+local function sortByMemoryOrCPU(a, b)
+	if a and b then
+		return a[3] > b[3]
+	end
+end
+
 local memoryTable = {}
 local cpuTable = {}
 local function RebuildAddonList()
@@ -41,8 +50,8 @@ local function RebuildAddonList()
 	if (addOnCount == #memoryTable) then return end
 
 	-- Number of loaded addons changed, create new memoryTable for all addons
-	memoryTable = {}
-	cpuTable = {}
+	wipe(memoryTable)
+	wipe(cpuTable)
 	for i = 1, addOnCount do
 		memoryTable[i] = { i, select(2, GetAddOnInfo(i)), 0, IsAddOnLoaded(i) }
 		cpuTable[i] = { i, select(2, GetAddOnInfo(i)), 0, IsAddOnLoaded(i) }
@@ -59,11 +68,7 @@ local function UpdateMemory()
 		totalMemory = totalMemory + memoryTable[i][3]
 	end
 	-- Sort the table to put the largest addon on top
-	sort(memoryTable, function(a, b)
-		if a and b then
-			return a[3] > b[3]
-		end
-	end)
+	sort(memoryTable, sortByMemoryUsage)
 end
 
 local function UpdateCPU()
@@ -79,11 +84,7 @@ local function UpdateCPU()
 	end
 
 	-- Sort the table to put the largest addon on top
-	sort(cpuTable, function(a, b)
-		if a and b then
-			return a[3] > b[3]
-		end
-	end)
+	sort(cpuTable, sortByMemoryOrCPU)
 
 	return totalCPU
 end

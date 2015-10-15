@@ -12,6 +12,7 @@ local displayString = '';
 
 local join = string.join
 local max = math.max
+local select = select
 
 local function Reset()
 	timeStamp = 0
@@ -27,7 +28,7 @@ local function GetHPS(self)
 	else
 		hps = healTotal / combatTime
 	end
-	self.text:SetFormattedText(displayString, L["HPS"]..': ', hps)
+	self.text:SetFormattedText(displayString, L["HPS"], hps)
 end
 
 local function OnEvent(self, event, ...)
@@ -53,7 +54,7 @@ local function OnEvent(self, event, ...)
 			lastHealAmount = select(15, ...)
 			healTotal = healTotal + max(0, lastHealAmount - overHeal)
 		end
-	elseif event == UNIT_PET then
+	elseif event == "UNIT_PET" then
 		petID = UnitGUID("pet")
 	end
 
@@ -66,7 +67,7 @@ local function OnClick(self)
 end
 
 local function ValueColorUpdate(hex, r, g, b)
-	displayString = join("", "%s", hex, "%.1f|r")
+	displayString = join("", "%s: ", hex, "%.1f|r")
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

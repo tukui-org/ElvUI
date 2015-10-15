@@ -13,6 +13,8 @@ tooltiptext:SetText("")
 
 local join = string.join
 local match = string.match
+local tonumber = tonumber
+local tostring = tostring
 
 local function OnEvent(self, event, ...)
 	if VengeanceTooltip and not VengeanceTooltip:IsShown() then

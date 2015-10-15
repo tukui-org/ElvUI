@@ -4,6 +4,14 @@ local DT = E:GetModule('DataTexts')
 local lifesteal
 local displayModifierString = ''
 local lastPanel;
+
+local HIGHLIGHT_FONT_COLOR_CODE = HIGHLIGHT_FONT_COLOR_CODE
+local FONT_COLOR_CODE_CLOSE = FONT_COLOR_CODE_CLOSE
+local PAPERDOLLFRAME_TOOLTIP_FORMAT = PAPERDOLLFRAME_TOOLTIP_FORMAT
+local STAT_LIFESTEAL = STAT_LIFESTEAL
+local CR_LIFESTEAL_TOOLTIP = CR_LIFESTEAL_TOOLTIP
+local CR_LIFESTEAL = CR_LIFESTEAL
+
 local join = string.join
 local format = string.format
 
@@ -46,6 +54,4 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 	onLeaveFunc - function to fire OnLeave, if not provided one will be set for you that hides the tooltip.
 ]]
 
-
 DT:RegisterDatatext('Leech', {"UNIT_STATS", "UNIT_AURA", "FORGE_MASTER_ITEM_CHANGED", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE", "PLAYER_DAMAGE_DONE_MODS"}, OnEvent, nil, nil, OnEnter)
-

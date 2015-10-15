@@ -3,16 +3,12 @@ local DT = E:GetModule('DataTexts')
 
 local lastPanel
 local displayString = '';
+local STAT_MASTERY = STAT_MASTERY
 local join = string.join
 
 local function OnEvent(self, event)
 	lastPanel = self
-	--STAT_MASTERY
-	local masteryspell, masteryTag
-	if GetCombatRating(CR_MASTERY) ~= 0 and GetSpecialization() then
-		masteryTag = STAT_MASTERY..": "
-		self.text:SetFormattedText(displayString, masteryTag, GetMasteryEffect())
-	end
+	self.text:SetFormattedText(displayString, STAT_MASTERY, GetMasteryEffect())
 end
 
 local function OnEnter(self)
@@ -33,7 +29,7 @@ local function OnEnter(self)
 end
 
 local function ValueColorUpdate(hex, r, g, b)
-	displayString = join("", "%s", hex, "%.2f%%|r")
+	displayString = join("", "%s: ", hex, "%.2f%%|r")
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

@@ -3,6 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 local displayNumberString = ''
 local lastPanel;
+local MANA_REGEN = MANA_REGEN
 local join = string.join
 
 local function OnEvent(self, event, unit)

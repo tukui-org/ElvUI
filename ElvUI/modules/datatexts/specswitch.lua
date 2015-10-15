@@ -3,6 +3,12 @@ local DT = E:GetModule('DataTexts')
 
 local format = string.format
 local join = string.join
+local select = select
+
+local LOOT = LOOT
+local SELECT_LOOT_SPECIALIZATION = SELECT_LOOT_SPECIALIZATION
+local LOOT_SPECIALIZATION_DEFAULT = LOOT_SPECIALIZATION_DEFAULT
+
 local lastPanel, active
 local displayString = '';
 local talent = {}
@@ -17,7 +23,6 @@ local menuList = {
 	{ notCheckable = true },
 	{ notCheckable = true }
 }
-
 
 local function OnEvent(self, event)
 	lastPanel = self

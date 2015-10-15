@@ -5,6 +5,14 @@ local format = string.format
 local join = string.join
 local floor = math.floor
 local wipe = table.wipe
+local date = date
+
+local VOICE_CHAT_BATTLEGROUND = VOICE_CHAT_BATTLEGROUND
+local WINTERGRASP_IN_PROGRESS = WINTERGRASP_IN_PROGRESS
+local QUEUE_TIME_UNAVAILABLE = QUEUE_TIME_UNAVAILABLE
+local WORLD_BOSSES_TEXT = RAID_INFO_WORLD_BOSS.."(s)"
+local TIMEMANAGER_TOOLTIP_REALMTIME = TIMEMANAGER_TOOLTIP_REALMTIME
+local TIMEMANAGER_TOOLTIP_LOCALTIME = TIMEMANAGER_TOOLTIP_LOCALTIME
 
 local APM = { TIMEMANAGER_PM, TIMEMANAGER_AM }
 local europeDisplayFormat = '';
@@ -55,7 +63,7 @@ local function CalculateTimeValues(tooltip)
 	if (tooltip and E.db.datatexts.localtime) or (not tooltip and not E.db.datatexts.localtime) then
 		return ConvertTime(GetGameTime())
 	else
-		local	dateTable =	date("*t")
+		local dateTable = date("*t")
 		return ConvertTime(dateTable["hour"], dateTable["min"])
 	end
 end
@@ -128,7 +136,7 @@ local function OnEnter(self)
 		if(reset) then
 			if(not addedLine) then
 				DT.tooltip:AddLine(' ')
-				DT.tooltip:AddLine(RAID_INFO_WORLD_BOSS.."(s)")
+				DT.tooltip:AddLine(WORLD_BOSSES_TEXT)
 				addedLine = true
 			end
 			DT.tooltip:AddDoubleLine(name, SecondsToTime(reset, true, nil, 3), 1, 1, 1, 0.8, 0.8, 0.8)

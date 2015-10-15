@@ -2,13 +2,20 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 -- localized references for global functions (about 50% faster)
-local join 			= string.join
-local format		= string.format
-local find			= string.find
-local gsub			= string.gsub
-local sort			= table.sort
-local ceil			= math.ceil
-local split 		= string.split
+local join = string.join
+local format = string.format
+local find = string.find
+local gsub = string.gsub
+local sort = table.sort
+local ceil = math.ceil
+local split = string.split
+local wipe = wipe
+local select = select
+local unpack = unpack
+
+local GUILD_MOTD = GUILD_MOTD
+local COMBAT_FACTION_CHANGE = COMBAT_FACTION_CHANGE
+local GUILD = GUILD
 
 local tthead, ttsubh, ttoff = {r=0.4, g=0.78, b=1}, {r=0.75, g=0.9, b=1}, {r=.3,g=1,b=.3}
 local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
@@ -30,16 +37,24 @@ local MOBILE_BUSY_ICON = "|TInterface\\ChatFrame\\UI-ChatIcon-ArmoryChat-BusyMob
 local MOBILE_AWAY_ICON = "|TInterface\\ChatFrame\\UI-ChatIcon-ArmoryChat-AwayMobile:14:14:0:0:16:16:0:16:0:16|t";
 local lastPanel
 
+local function sortByRank(a, b)
+	if a and b then
+		return a[10] < b[10]
+	end
+end
+
+local function sortByName(a, b)
+	if a and b then
+		return a[1] < b[1]
+	end
+end
+
 local function SortGuildTable(shift)
-	sort(guildTable, function(a, b)
-		if a and b then
-			if shift then
-				return a[10] < b[10]
-			else
-				return a[1] < b[1]
-			end
-		end
-	end)
+	if shift then
+		sort(guildTable, sortByRank)
+	else
+		sort(guildTable, sortByName)
+	end
 end
 
 local chatframetexture = ChatFrame_GetMobileEmbeddedTexture(73/255, 177/255, 73/255)
