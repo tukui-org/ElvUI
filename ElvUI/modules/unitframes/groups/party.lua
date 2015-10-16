@@ -138,6 +138,10 @@ function UF:Update_PartyFrames(frame, db)
 		if USE_PORTRAIT_OVERLAY or not USE_PORTRAIT then
 			PORTRAIT_WIDTH = 0
 		end
+		
+		if not USE_POWERBAR_OFFSET then
+			POWERBAR_OFFSET = 0
+		end
 	end
 
 	if frame.isChild then
