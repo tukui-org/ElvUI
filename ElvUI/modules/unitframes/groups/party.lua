@@ -681,7 +681,7 @@ function UF:Update_PartyFrames(frame, db)
 
 				raidRoleFrameAnchor:ClearAllPoints()
 				if db.raidRoleIcons.position == 'TOPLEFT' then
-					raidRoleFrameAnchor:Point('LEFT', frame, 'TOPLEFT', 2 + POWERBAR_OFFSET, 0)
+					raidRoleFrameAnchor:Point('LEFT', frame.Health, 'TOPLEFT', 2, 0)
 				else
 					raidRoleFrameAnchor:Point('RIGHT', frame, 'TOPRIGHT', -2, 0)
 				end
