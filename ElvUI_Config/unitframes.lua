@@ -2639,6 +2639,7 @@ E.Options.args.unitframe.args.targettarget = {
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'targettarget'),
 		power = GetOptionsTable_Power(nil, UF.CreateAndUpdateUF, 'targettarget'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'targettarget'),
+		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'targettarget'),
 		buffs = GetOptionsTable_Auras(false, 'buffs', false, UF.CreateAndUpdateUF, 'targettarget'),
 		debuffs = GetOptionsTable_Auras(false, 'debuffs', false, UF.CreateAndUpdateUF, 'targettarget'),
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'targettarget'),
@@ -2735,6 +2736,7 @@ E.Options.args.unitframe.args.targettargettarget = {
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'targettargettarget'),
 		power = GetOptionsTable_Power(nil, UF.CreateAndUpdateUF, 'targettargettarget'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'targettargettarget'),
+		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'targettargettarget'),
 		buffs = GetOptionsTable_Auras(false, 'buffs', false, UF.CreateAndUpdateUF, 'targettargettarget'),
 		debuffs = GetOptionsTable_Auras(false, 'debuffs', false, UF.CreateAndUpdateUF, 'targettargettarget'),
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'targettargettarget'),
@@ -2837,6 +2839,7 @@ E.Options.args.unitframe.args.focus = {
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'focus'),
 		power = GetOptionsTable_Power(nil, UF.CreateAndUpdateUF, 'focus'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'focus'),
+		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'focus'),
 		buffs = GetOptionsTable_Auras(false, 'buffs', false, UF.CreateAndUpdateUF, 'focus'),
 		debuffs = GetOptionsTable_Auras(false, 'debuffs', false, UF.CreateAndUpdateUF, 'focus'),
 		castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateUF, 'focus'),
@@ -2936,6 +2939,7 @@ E.Options.args.unitframe.args.focustarget = {
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'focustarget'),
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUF, 'focustarget'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'focustarget'),
+		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'focustarget'),
 		buffs = GetOptionsTable_Auras(false, 'buffs', false, UF.CreateAndUpdateUF, 'focustarget'),
 		debuffs = GetOptionsTable_Auras(false, 'debuffs', false, UF.CreateAndUpdateUF, 'focustarget'),
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'focustarget'),
@@ -3065,6 +3069,7 @@ E.Options.args.unitframe.args.pet = {
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'pet'),
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUF, 'pet'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'pet'),
+		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'pet'),
 		buffs = GetOptionsTable_Auras(true, 'buffs', false, UF.CreateAndUpdateUF, 'pet'),
 		debuffs = GetOptionsTable_Auras(true, 'debuffs', false, UF.CreateAndUpdateUF, 'pet'),
 		castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateUF, 'pet'),
@@ -3161,6 +3166,7 @@ E.Options.args.unitframe.args.pettarget = {
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'pettarget'),
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUF, 'pettarget'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'pettarget'),
+		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'pettarget'),
 		buffs = GetOptionsTable_Auras(false, 'buffs', false, UF.CreateAndUpdateUF, 'pettarget'),
 		debuffs = GetOptionsTable_Auras(false, 'debuffs', false, UF.CreateAndUpdateUF, 'pettarget'),
 	},
@@ -3452,6 +3458,7 @@ E.Options.args.unitframe.args.arena = {
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUFGroup, 'arena', 5),
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUFGroup, 'arena', 5),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUFGroup, 'arena', 5),
+		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUFGroup, 'arena', 5),
 		buffs = GetOptionsTable_Auras(false, 'buffs', false, UF.CreateAndUpdateUFGroup, 'arena', 5),
 		debuffs = GetOptionsTable_Auras(false, 'debuffs', false, UF.CreateAndUpdateUFGroup, 'arena', 5),
 		castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateUFGroup, 'arena', 5),
@@ -3826,6 +3833,7 @@ E.Options.args.unitframe.args.party = {
 		health = GetOptionsTable_Health(true, UF.CreateAndUpdateHeaderGroup, 'party'),
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateHeaderGroup, 'party'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'party'),
+		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateHeaderGroup, 'party'),
 		buffs = GetOptionsTable_Auras(true, 'buffs', true, UF.CreateAndUpdateHeaderGroup, 'party'),
 		debuffs = GetOptionsTable_Auras(true, 'debuffs', true, UF.CreateAndUpdateHeaderGroup, 'party'),
 		rdebuffs = {
@@ -4424,6 +4432,7 @@ E.Options.args.unitframe.args['raid'] = {
 		health = GetOptionsTable_Health(true, UF.CreateAndUpdateHeaderGroup, 'raid'),
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateHeaderGroup, 'raid'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'raid'),
+		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateHeaderGroup, 'raid'),
 		buffs = GetOptionsTable_Auras(true, 'buffs', true, UF.CreateAndUpdateHeaderGroup, 'raid'),
 		debuffs = GetOptionsTable_Auras(true, 'debuffs', true, UF.CreateAndUpdateHeaderGroup, 'raid'),
 		buffIndicator = {
@@ -4709,7 +4718,7 @@ E.Options.args.unitframe.args['raid'] = {
 	},
 }
 
---Raid Frames
+--Raid-40 Frames
 E.Options.args.unitframe.args['raid40'] = {
 	name = L["Raid-40 Frames"],
 	type = 'group',
@@ -4961,6 +4970,7 @@ E.Options.args.unitframe.args['raid40'] = {
 		health = GetOptionsTable_Health(true, UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'raid40'),
+		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		buffs = GetOptionsTable_Auras(true, 'buffs', true, UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		debuffs = GetOptionsTable_Auras(true, 'debuffs', true, UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		buffIndicator = {
@@ -5481,6 +5491,7 @@ E.Options.args.unitframe.args.raidpet = {
 		},
 		health = GetOptionsTable_Health(true, UF.CreateAndUpdateHeaderGroup, 'raidpet'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'raidpet'),
+		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateHeaderGroup, 'raidpet'),
 		buffs = GetOptionsTable_Auras(true, 'buffs', true, UF.CreateAndUpdateHeaderGroup, 'raidpet'),
 		debuffs = GetOptionsTable_Auras(true, 'debuffs', true, UF.CreateAndUpdateHeaderGroup, 'raidpet'),
 		buffIndicator = {
@@ -5870,7 +5881,7 @@ E.Options.args.unitframe.args.assist = {
 	},
 }
 
---Tank Frames
+--Bodyguard Frame
 E.Options.args.unitframe.args.bodyguard = {
 	name = L["BodyGuard Frame"],
 	type = 'group',
