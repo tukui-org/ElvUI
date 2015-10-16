@@ -834,6 +834,7 @@ L["If no other filter options are being used then it will block anything not on 
 L["If not set to 0 then override the size of the aura icon to this."] = "아이콘의 가로세로 길이를 결정합니다.|n|n이 값이 0이면 아이콘이 유닛프레임의 가로길이에 한 줄에 표시할 갯수만큼 들어갈 정도의 크기가 됩니다."
 L["If the unit is an enemy to you."] = "만약 유닛이 적군이라면"
 L["If the unit is friendly to you."] = "만약 유닛이 아군이라면"
+L["If you have a lot of 3D Portraits active then it will likely cause a big impact on your FPS. Disable some portraits if you experience FPS issues."] = true;
 L["Ignore mouse events."] = "아이콘이 마우스에 전혀 반응하지 않도록 합니다. 클릭 입력도 아이콘을 통과하게 됩니다."
 L["Inset"] = "내부에 분리"
 L["Interruptable"] = "차단이 가능한 기술"

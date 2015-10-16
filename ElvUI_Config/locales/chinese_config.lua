@@ -784,6 +784,7 @@ L["If no other filter options are being used then it will block anything not on 
 L["If not set to 0 then override the size of the aura icon to this."] = "如果不为 0, 此值将覆盖光环图标的尺寸."
 L["If the unit is an enemy to you."] = "如果是你的敌对目标"
 L["If the unit is friendly to you."] = "如果是你的友好目标"
+L["If you have a lot of 3D Portraits active then it will likely cause a big impact on your FPS. Disable some portraits if you experience FPS issues."] = true;
 L["Ignore mouse events."] = "忽略鼠标事件"
 L["Inset"] = "插入"
 L["Interruptable"] = "可打断颜色"
