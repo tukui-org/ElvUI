@@ -42,6 +42,9 @@ function UF:Construct_ArenaFrames(frame)
 
 	if(not frame.isChild) then
 		frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT')
+		
+		frame.Portrait3D = self:Construct_Portrait(frame, 'model')
+		frame.Portrait2D = self:Construct_Portrait(frame, 'texture')
 
 		frame.Buffs = self:Construct_Buffs(frame)
 
@@ -104,6 +107,13 @@ end
 
 function UF:Update_ArenaFrames(frame, db)
 	frame.db = db
+	
+	if frame.Portrait then
+		frame.Portrait:Hide()
+		frame.Portrait:ClearAllPoints()
+		frame.Portrait.backdrop:Hide()
+	end
+	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
 	local BORDER = E.Border;
 	local SPACING = E.Spacing;
 	local INDEX = frame.index
@@ -118,6 +128,9 @@ function UF:Update_ArenaFrames(frame, db)
 	local POWERBAR_OFFSET = db.power.offset
 	local POWERBAR_HEIGHT = db.power.height
 	local POWERBAR_WIDTH = db.width - (BORDER*2)
+	local USE_PORTRAIT = db.portrait.enable
+	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
+	local PORTRAIT_WIDTH = db.portrait.width
 
 	local unit = self.unit
 
@@ -132,6 +145,10 @@ function UF:Update_ArenaFrames(frame, db)
 
 		if USE_MINI_POWERBAR then
 			POWERBAR_WIDTH = POWERBAR_WIDTH / 2
+		end
+		
+		if USE_PORTRAIT_OVERLAY or not USE_PORTRAIT then
+			PORTRAIT_WIDTH = 0
 		end
 	end
 
@@ -193,8 +210,15 @@ function UF:Update_ArenaFrames(frame, db)
 		end
 
 		health.bg:ClearAllPoints()
-		health.bg:SetParent(health)
-		health.bg:SetAllPoints()
+		if not USE_PORTRAIT_OVERLAY then
+			health:Point("TOPRIGHT", -(PORTRAIT_WIDTH + PVPINFO_WIDTH + BORDER), -BORDER)
+			health.bg:SetParent(health)
+			health.bg:SetAllPoints()
+		else
+			health.bg:Point('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMRIGHT')
+			health.bg:Point('TOPRIGHT', health)
+			health.bg:SetParent(frame.Portrait.overlay)
+		end
 	end
 
 	--Name
@@ -249,11 +273,60 @@ function UF:Update_ArenaFrames(frame, db)
 				power:SetFrameLevel(frame:GetFrameLevel() + 3)
 			else
 				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(E.PixelMode and 0 or (BORDER + SPACING)))
-				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -(BORDER + PVPINFO_WIDTH), BORDER)
+				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -(BORDER + PVPINFO_WIDTH + PORTRAIT_WIDTH), BORDER)
 			end
 		elseif frame:IsElementEnabled('Power') then
 			frame:DisableElement('Power')
 			power:Hide()
+		end
+	end
+	
+		--Portrait
+	do
+		local portrait = frame.Portrait
+	
+		--Set Points
+		if USE_PORTRAIT then
+			if not frame:IsElementEnabled('Portrait') then
+				frame:EnableElement('Portrait')
+			end
+	
+			portrait:ClearAllPoints()
+	
+			if USE_PORTRAIT_OVERLAY then
+				if db.portrait.style == '3D' then
+					portrait:SetFrameLevel(frame.Health:GetFrameLevel() + 1)
+				end
+				portrait:SetAllPoints(frame.Health)
+				portrait:SetAlpha(0.3)
+				portrait:Show()
+				portrait.backdrop:Hide()
+			else
+				portrait:SetAlpha(1)
+				portrait:Show()
+				portrait.backdrop:Show()
+				portrait.backdrop:ClearAllPoints()
+				portrait.backdrop:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -((E.PixelMode and 1 or 0) + PVPINFO_WIDTH), 0)
+	
+				if db.portrait.style == '3D' then
+					portrait:SetFrameLevel(frame:GetFrameLevel() + 5)
+				end
+	
+				if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR or USE_INSET_POWERBAR then
+					portrait.backdrop:Point("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMRIGHT", E.PixelMode and -1 or SPACING, 0)
+				else
+					portrait.backdrop:Point("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMRIGHT", E.PixelMode and -1 or SPACING, 0)
+				end
+	
+				portrait:Point('BOTTOMLEFT', portrait.backdrop, 'BOTTOMLEFT', BORDER, BORDER)
+				portrait:Point('TOPRIGHT', portrait.backdrop, 'TOPRIGHT', -BORDER, -BORDER)
+			end
+		else
+			if frame:IsElementEnabled('Portrait') then
+				frame:DisableElement('Portrait')
+				portrait:Hide()
+				portrait.backdrop:Hide()
+			end
 		end
 	end
 
@@ -467,9 +540,9 @@ function UF:Update_ArenaFrames(frame, db)
 		local specIcon = frame.PVPSpecIcon
 		specIcon.bg:Point("TOPRIGHT", frame, "TOPRIGHT")
 		if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or USE_INSET_POWERBAR then
-			specIcon.bg:SetPoint("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMRIGHT", E.PixelMode and -1 or SPACING, 0)
+			specIcon.bg:SetPoint("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMRIGHT", (E.PixelMode and -1 or SPACING) + PORTRAIT_WIDTH, 0)
 		else
-			specIcon.bg:SetPoint("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMRIGHT", E.PixelMode and -1 or SPACING, 0)
+			specIcon.bg:SetPoint("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMRIGHT", (E.PixelMode and -1 or SPACING) + PORTRAIT_WIDTH, 0)
 		end
 
 		if db.pvpSpecIcon and not frame:IsElementEnabled('PVPSpecIcon') then
@@ -502,6 +575,16 @@ function UF:Update_ArenaFrames(frame, db)
 		if db.healPrediction then
 			if not frame:IsElementEnabled('HealPrediction') then
 				frame:EnableElement('HealPrediction')
+			end
+			
+			if not USE_PORTRAIT_OVERLAY then
+				healPrediction.myBar:SetParent(frame)
+				healPrediction.otherBar:SetParent(frame)
+				healPrediction.absorbBar:SetParent(frame)
+			else
+				healPrediction.myBar:SetParent(frame.Portrait.overlay)
+				healPrediction.otherBar:SetParent(frame.Portrait.overlay)
+				healPrediction.absorbBar:SetParent(frame.Portrait.overlay)
 			end
 
 			healPrediction.myBar:SetStatusBarColor(c.personal.r, c.personal.g, c.personal.b, c.personal.a)
@@ -573,7 +656,7 @@ function UF:Update_ArenaFrames(frame, db)
 		ArenaHeader:SetHeight(UNIT_HEIGHT)
 	end
 
-	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg, true)
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg, (USE_PORTRAIT and USE_PORTRAIT_OVERLAY) ~= true)
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)
 
 	frame:UpdateAllElements()
