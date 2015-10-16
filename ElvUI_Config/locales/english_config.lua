@@ -773,7 +773,7 @@ L["If no other filter options are being used then it will block anything not on 
 L["If not set to 0 then override the size of the aura icon to this."] = true;
 L["If the unit is an enemy to you."] = true;
 L["If the unit is friendly to you."] = true;
-L["If you have a lot of 3D Portraits active then it will likely cause a big impact on your FPS. Disable some portraits if you experience FPS issues."] = true;
+L["If you have a lot of 3D Portraits active then it will likely have a big impact on your FPS. Disable some portraits if you experience FPS issues."] = true;
 L["Ignore mouse events."] = true;
 L["Inset"] = true;
 L["Interruptable"] = true;

@@ -784,7 +784,7 @@ L["If no other filter options are being used then it will block anything not on 
 L["If not set to 0 then override the size of the aura icon to this."] = "Si no está a 0 entonces sobrescribe el tamaño del icono del aura con este."
 L["If the unit is an enemy to you."] = "Si la unidad es tu enemiga."
 L["If the unit is friendly to you."] = "Si la unidad es tu amiga."
-L["If you have a lot of 3D Portraits active then it will likely cause a big impact on your FPS. Disable some portraits if you experience FPS issues."] = true;
+L["If you have a lot of 3D Portraits active then it will likely have a big impact on your FPS. Disable some portraits if you experience FPS issues."] = true;
 L["Ignore mouse events."] = "Ignorar los eventos del ratón"
 L["Inset"] = "Hundido"
 L["Interruptable"] = "Interrumpible"
