@@ -118,7 +118,6 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 		CLASSBAR_HEIGHT_SPACING = 0
 	end
 
-
 	if USE_STAGGER then
 		if not USE_MINI_POWERBAR and not USE_INSET_POWERBAR and not POWERBAR_DETACHED then
 			stagger:Point('BOTTOMLEFT', power, 'BOTTOMRIGHT', BORDER*2 + (E.PixelMode and -1 or SPACING), 0)
@@ -136,8 +135,8 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 	end
 
 	if isShown then
-		if db.power.offset ~= 0 then
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER+db.power.offset) - STAGGER_WIDTH, -(BORDER + CLASSBAR_HEIGHT_SPACING))
+		if POWERBAR_OFFSET ~= 0 then
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER+POWERBAR_OFFSET) - STAGGER_WIDTH, -(BORDER + CLASSBAR_HEIGHT_SPACING))
 		else
 			health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER - STAGGER_WIDTH, -(BORDER + CLASSBAR_HEIGHT_SPACING))
 		end
@@ -183,8 +182,8 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 			end
 		end
 	else
-		if db.power.offset ~= 0 then
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER + db.power.offset) - STAGGER_WIDTH, -BORDER)
+		if POWERBAR_OFFSET ~= 0 then
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER + POWERBAR_OFFSET) - STAGGER_WIDTH, -BORDER)
 		else
 			health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER - STAGGER_WIDTH, -BORDER)
 		end
@@ -208,7 +207,7 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 			end
 		end
 
-		if db.portrait.enable and not USE_PORTRAIT_OVERLAY and frame.Portrait then
+		if USE_PORTRAIT and not USE_PORTRAIT_OVERLAY and frame.Portrait then
 			local portrait = frame.Portrait
 			portrait.backdrop:ClearAllPoints()
 			portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT")
