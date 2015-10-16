@@ -281,7 +281,7 @@ function UF:Update_ArenaFrames(frame, db)
 		end
 	end
 	
-		--Portrait
+	--Portrait
 	do
 		local portrait = frame.Portrait
 	
