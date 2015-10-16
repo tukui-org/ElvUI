@@ -386,7 +386,6 @@ function UF:Update_PartyFrames(frame, db)
 					portrait:Point('BOTTOMLEFT', portrait.backdrop, 'BOTTOMLEFT', BORDER, BORDER)
 					portrait:Point('TOPRIGHT', portrait.backdrop, 'TOPRIGHT', -BORDER, -BORDER)
 				end
-				portrait.backdrop:SetTemplate('Transparent')
 			else
 				if frame:IsElementEnabled('Portrait') then
 					frame:DisableElement('Portrait')
