@@ -306,7 +306,7 @@ function UF:Update_ArenaFrames(frame, db)
 				portrait:Show()
 				portrait.backdrop:Show()
 				portrait.backdrop:ClearAllPoints()
-				portrait.backdrop:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -((E.PixelMode and 1 or 0) + PVPINFO_WIDTH), 0)
+				portrait.backdrop:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -PVPINFO_WIDTH, 0)
 	
 				if db.portrait.style == '3D' then
 					portrait:SetFrameLevel(frame:GetFrameLevel() + 5)
