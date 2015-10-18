@@ -16,8 +16,16 @@ end
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.quest ~= true then return end
+	ObjectiveTrackerBlocksFrame.QuestHeader.Background:Kill()
+
+	ObjectiveTrackerFrame.HeaderMenu.MinimizeButton:SetAlpha(0)
+	local b = CreateFrame("Button", nil, ObjectiveTrackerFrame.QuestHeader)
+	b:SetPoint("TOPLEFT",ObjectiveTrackerFrame.QuestHeader, "TOPLEFT")
+	b:SetPoint("BOTTOMRIGHT", ObjectiveTrackerFrame.HeaderMenu.MinimizeButton, "BOTTOMRIGHT")
+	b:SetScript("OnClick", ObjectiveTrackerFrame.HeaderMenu.MinimizeButton:GetScript("OnClick"))
 	S:HandleScrollBar(QuestProgressScrollFrameScrollBar)
 	S:HandleScrollBar(QuestRewardScrollFrameScrollBar)
+	ObjectiveTrackerBlocksFrame.QuestHeader.Text:FontTemplate()
 
 
 	S:HandleScrollBar(QuestDetailScrollFrameScrollBar)

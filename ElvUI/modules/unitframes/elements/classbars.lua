@@ -54,7 +54,7 @@ function UF:UpdateHoly(event, unit, powerType)
 		PORTRAIT_WIDTH = 0
 	end
 
-	local CLASSBAR_WIDTH = db.width - (E.Border * 2)
+	local CLASSBAR_WIDTH = db.width - (BORDER * 2)
 	if USE_PORTRAIT then
 		CLASSBAR_WIDTH = ceil((db.width - (BORDER*2)) - PORTRAIT_WIDTH)
 	end
@@ -91,9 +91,9 @@ function UF:UpdateHoly(event, unit, powerType)
 				self.HolyPower[i]:SetAlpha(.2)
 			end
 			if db.classbar.fill == "spaced" then
-				self.HolyPower[i]:SetWidth((self.HolyPower:GetWidth() - ((maxHolyPower == 5 and 7 or 13)*(maxHolyPower - 1))) / maxHolyPower)
+				self.HolyPower[i]:Width((self.HolyPower:GetWidth() - ((maxHolyPower == 5 and 7 or 13)*(maxHolyPower - 1))) / maxHolyPower)
 			else
-				self.HolyPower[i]:SetWidth((self.HolyPower:GetWidth() - (maxHolyPower - 1)) / maxHolyPower)
+				self.HolyPower[i]:Width((self.HolyPower:GetWidth() - (maxHolyPower - 1)) / maxHolyPower)
 			end
 
 			self.HolyPower[i]:ClearAllPoints()
@@ -199,7 +199,7 @@ function UF:UpdateHarmony()
 
 	self:SetWidth(CLASSBAR_WIDTH)
 	local colors = ElvUF.colors.Harmony
-	
+
 	if numChi == 0 and db.classbar.autoHide then
 		self:Hide()
 		frame.Health:Point("TOPRIGHT", frame, "TOPRIGHT", -HEALTH_OFFSET_X, -BORDER)
