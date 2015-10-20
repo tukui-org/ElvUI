@@ -16,6 +16,7 @@ local split = string.split
 
 AB.RegisterCooldown = E.RegisterCooldown
 
+
 E.ActionBars = AB
 AB["handledBars"] = {} --List of all bars
 AB["handledbuttons"] = {} --List of all buttons that have been modified.
