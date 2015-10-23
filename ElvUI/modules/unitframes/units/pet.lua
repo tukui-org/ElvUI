@@ -12,7 +12,7 @@ function UF:Construct_PetFrame(frame)
 	frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT')
 
 	frame.Name = self:Construct_NameText(frame)
-	
+
 	frame.Portrait3D = self:Construct_Portrait(frame, 'model')
 	frame.Portrait2D = self:Construct_Portrait(frame, 'texture')
 
@@ -73,7 +73,7 @@ function UF:Update_PetFrame(frame, db)
 		if USE_MINI_POWERBAR then
 			POWERBAR_WIDTH = POWERBAR_WIDTH / 2
 		end
-		
+
 		if USE_PORTRAIT_OVERLAY or not USE_PORTRAIT then
 			PORTRAIT_WIDTH = 0
 		end
@@ -84,6 +84,7 @@ function UF:Update_PetFrame(frame, db)
 	do
 		local health = frame.Health
 		health.Smooth = self.db.smoothbars
+		health.bgFrame.Smooth = self.db.smoothbars
 
 		--Text
 		local x, y = self:GetPositionOffset(db.health.position)
@@ -124,17 +125,8 @@ function UF:Update_PetFrame(frame, db)
 		else
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, (USE_POWERBAR and ((BORDER + SPACING)*2) or BORDER) + POWERBAR_HEIGHT)
 		end
-		
-		health.bg:ClearAllPoints()
-		if not USE_PORTRAIT_OVERLAY then
-			health:Point("TOPRIGHT", -(PORTRAIT_WIDTH+BORDER), -BORDER)
-			health.bg:SetParent(health)
-			health.bg:SetAllPoints()
-		else
-			health.bg:Point('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMRIGHT')
-			health.bg:Point('TOPRIGHT', health)
-			health.bg:SetParent(frame.Portrait.overlay)
-		end
+
+		health.bgFrame:SetParent(frame.Portrait.overlay) --we toggle between two differant frames when switching between 3d and 2d
 	end
 
 	--Name
@@ -196,19 +188,19 @@ function UF:Update_PetFrame(frame, db)
 			power:Hide()
 		end
 	end
-	
+
 	--Portrait
 	do
 		local portrait = frame.Portrait
-	
+
 		--Set Points
 		if USE_PORTRAIT then
 			if not frame:IsElementEnabled('Portrait') then
 				frame:EnableElement('Portrait')
 			end
-	
+
 			portrait:ClearAllPoints()
-	
+
 			if USE_PORTRAIT_OVERLAY then
 				if db.portrait.style == '3D' then
 					portrait:SetFrameLevel(frame.Health:GetFrameLevel() + 1)
@@ -223,17 +215,17 @@ function UF:Update_PetFrame(frame, db)
 				portrait.backdrop:Show()
 				portrait.backdrop:ClearAllPoints()
 				portrait.backdrop:SetPoint("TOPRIGHT", frame, "TOPRIGHT", (E.PixelMode and -1 or 0) - POWERBAR_OFFSET, 0)
-	
+
 				if db.portrait.style == '3D' then
 					portrait:SetFrameLevel(frame:GetFrameLevel() + 5)
 				end
-	
+
 				if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR or USE_INSET_POWERBAR then
 					portrait.backdrop:Point("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMRIGHT", E.PixelMode and -1 or SPACING, 0)
 				else
 					portrait.backdrop:Point("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMRIGHT", E.PixelMode and -1 or SPACING, 0)
 				end
-	
+
 				portrait:Point('BOTTOMLEFT', portrait.backdrop, 'BOTTOMLEFT', BORDER, BORDER)
 				portrait:Point('TOPRIGHT', portrait.backdrop, 'TOPRIGHT', -BORDER, -BORDER)
 			end
@@ -268,7 +260,7 @@ function UF:Update_PetFrame(frame, db)
 					threat.glow:Point("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
 					threat.glow:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
 				end
-				
+
 				if USE_PORTRAIT and not USE_PORTRAIT_OVERLAY then
 					threat.glow:Point("TOPRIGHT", frame.Portrait.backdrop, "TOPRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
 					threat.glow:Point("BOTTOMRIGHT", frame.Portrait.backdrop, "BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
@@ -465,7 +457,7 @@ function UF:Update_PetFrame(frame, db)
 			if not frame:IsElementEnabled('HealPrediction') then
 				frame:EnableElement('HealPrediction')
 			end
-			
+
 			if not USE_PORTRAIT_OVERLAY then
 				healPrediction.myBar:SetParent(frame)
 				healPrediction.otherBar:SetParent(frame)
@@ -508,7 +500,7 @@ function UF:Update_PetFrame(frame, db)
 			end
 		end
 	end
-	
+
 	for objectName, object in pairs(frame.customTexts) do
 		if (not db.customTexts) or (db.customTexts and not db.customTexts[objectName]) then
 			object:Hide()
@@ -538,9 +530,9 @@ function UF:Update_PetFrame(frame, db)
 	end
 
 	if UF.db.colors.transparentHealth then
-		UF:ToggleTransparentStatusBar(true, frame.Health, frame.Health.bg)
+		UF:ToggleTransparentStatusBar(true, frame.Health, nil)
 	else
-		UF:ToggleTransparentStatusBar(false, frame.Health, frame.Health.bg, (USE_PORTRAIT and USE_PORTRAIT_OVERLAY) ~= true)
+		UF:ToggleTransparentStatusBar(false, frame.Health, nil, (USE_PORTRAIT and USE_PORTRAIT_OVERLAY) ~= true)
 	end
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)
 

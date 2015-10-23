@@ -88,6 +88,8 @@ function UF:Update_TankFrames(frame, db)
 	do
 		local health = frame.Health
 		health.Smooth = self.db.smoothbars
+		health.bgFrame.Smooth = self.db.smoothbars
+
 
 		--Colors
 		health.colorSmooth = nil
@@ -168,7 +170,7 @@ function UF:Update_TankFrames(frame, db)
 		end
 	end
 
-	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg, true)
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, nil, true)
 
 	frame:UpdateAllElements()
 end

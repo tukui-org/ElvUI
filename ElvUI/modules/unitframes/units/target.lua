@@ -122,6 +122,7 @@ function UF:Update_TargetFrame(frame, db)
 	do
 		local health = frame.Health
 		health.Smooth = self.db.smoothbars
+		health.bgFrame.Smooth = self.db.smoothbars
 
 		--Text
 		local x, y = self:GetPositionOffset(db.health.position)
@@ -165,16 +166,7 @@ function UF:Update_TargetFrame(frame, db)
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, (USE_POWERBAR and ((BORDER + SPACING)*2) or BORDER) + POWERBAR_HEIGHT)
 		end
 
-		health.bg:ClearAllPoints()
-		if not USE_PORTRAIT_OVERLAY then
-			health:Point("TOPRIGHT", -(PORTRAIT_WIDTH+BORDER), -BORDER)
-			health.bg:SetParent(health)
-			health.bg:SetAllPoints()
-		else
-			health.bg:Point('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMRIGHT')
-			health.bg:Point('TOPRIGHT', health)
-			health.bg:SetParent(frame.Portrait.overlay)
-		end
+		health.bgFrame:SetParent(frame.Portrait.overlay) --we toggle between two differant frames when switching between 3d and 2d
 	end
 
 	--Name
@@ -254,7 +246,7 @@ function UF:Update_TargetFrame(frame, db)
 				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(E.PixelMode and 0 or (BORDER + SPACING)))
 				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -(BORDER + PORTRAIT_WIDTH), BORDER)
 			end
-			
+
 			if db.power.strataAndLevel.useCustomStrata then
 				power:SetFrameStrata(db.power.strataAndLevel.frameStrata)
 			end
@@ -400,7 +392,7 @@ function UF:Update_TargetFrame(frame, db)
 		buffs["growth-y"] = db.buffs.anchorPoint:find('TOP') and 'UP' or 'DOWN'
 		buffs["growth-x"] = db.buffs.anchorPoint == 'LEFT' and 'LEFT' or  db.buffs.anchorPoint == 'RIGHT' and 'RIGHT' or (db.buffs.anchorPoint:find('LEFT') and 'RIGHT' or 'LEFT')
 		buffs.initialAnchor = E.InversePoints[db.buffs.anchorPoint]
-		
+
 		buffs.attachTo = attachTo
 		buffs.point = E.InversePoints[db.buffs.anchorPoint]
 		buffs.anchorPoint = db.buffs.anchorPoint
@@ -448,7 +440,7 @@ function UF:Update_TargetFrame(frame, db)
 		debuffs.anchorPoint = db.debuffs.anchorPoint
 		debuffs.xOffset = x + db.debuffs.xOffset
 		debuffs.yOffset = y + db.debuffs.yOffset
-		
+
 		if db.debuffs.enable then
 			debuffs:Show()
 			UF:UpdateAuraIconSettings(debuffs)
@@ -633,7 +625,7 @@ function UF:Update_TargetFrame(frame, db)
 					frame.DBHGlow:SetAllPoints(frame.Threat.glow)
 				else
 					frame.DebuffHighlightBackdrop = false
-				end				
+				end
 			end
 		else
 			if frame:IsElementEnabled('DebuffHighlight') then
@@ -669,7 +661,7 @@ function UF:Update_TargetFrame(frame, db)
 			end
 		end
 	end
-	
+
 	--GPSArrow
 	do
 		local GPS = frame.GPS
@@ -840,9 +832,9 @@ function UF:Update_TargetFrame(frame, db)
 	end
 
 	if UF.db.colors.transparentHealth then
-		UF:ToggleTransparentStatusBar(true, frame.Health, frame.Health.bg)
+		UF:ToggleTransparentStatusBar(true, frame.Health, nil)
 	else
-		UF:ToggleTransparentStatusBar(false, frame.Health, frame.Health.bg, (USE_PORTRAIT and USE_PORTRAIT_OVERLAY) ~= true)
+		UF:ToggleTransparentStatusBar(false, frame.Health, nil, (USE_PORTRAIT and USE_PORTRAIT_OVERLAY) ~= true)
 	end
 
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)
