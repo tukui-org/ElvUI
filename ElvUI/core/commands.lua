@@ -3,6 +3,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local format = string.format
 local lower = string.lower
 local split = string.split
+local tonumber, type, pairs, select = tonumber, type, pairs, select
 
 function FarmMode()
 	if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT); return; end

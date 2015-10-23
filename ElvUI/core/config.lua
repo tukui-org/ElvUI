@@ -3,6 +3,7 @@ local grid
 
 local selectedValue = 'ALL'
 local floor = math.floor
+local type, ipairs, tonumber = type, ipairs, tonumber
 
 E.ConfigModeLayouts = {
 	'ALL',
