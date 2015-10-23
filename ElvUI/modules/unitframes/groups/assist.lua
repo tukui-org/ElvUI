@@ -87,7 +87,6 @@ function UF:Update_AssistFrames(frame, db)
 	do
 		local health = frame.Health
 		health.Smooth = self.db.smoothbars
-		health.bgFrame.Smooth = self.db.smoothbars
 
 		--Colors
 		health.colorSmooth = nil

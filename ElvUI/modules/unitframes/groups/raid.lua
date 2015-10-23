@@ -172,7 +172,6 @@ function UF:Update_RaidFrames(frame, db)
 	do
 		local health = frame.Health
 		health.Smooth = self.db.smoothbars
-		health.bgFrame.Smooth = self.db.smoothbars
 
 		health.frequentUpdates = db.health.frequentUpdates
 

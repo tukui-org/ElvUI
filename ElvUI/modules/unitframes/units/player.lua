@@ -366,7 +366,6 @@ function UF:Update_PlayerFrame(frame, db)
 	do
 		local health = frame.Health
 		health.Smooth = self.db.smoothbars
-		health.bgFrame.Smooth = self.db.smoothbars
 
 		--Text
 		local x, y = self:GetPositionOffset(db.health.position)

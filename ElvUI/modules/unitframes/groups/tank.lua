@@ -88,8 +88,6 @@ function UF:Update_TankFrames(frame, db)
 	do
 		local health = frame.Health
 		health.Smooth = self.db.smoothbars
-		health.bgFrame.Smooth = self.db.smoothbars
-
 
 		--Colors
 		health.colorSmooth = nil

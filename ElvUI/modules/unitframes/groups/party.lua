@@ -172,7 +172,6 @@ function UF:Update_PartyFrames(frame, db)
 		do
 			local health = frame.Health
 			health.Smooth = self.db.smoothbars
-			health.bgFrame.Smooth = self.db.smoothbars
 
 			health.frequentUpdates = db.health.frequentUpdates
 
@@ -226,7 +225,6 @@ function UF:Update_PartyFrames(frame, db)
 		do
 			local health = frame.Health
 			health.Smooth = self.db.smoothbars
-			health.bgFrame.Smooth = self.db.smoothbars
 
 			--Position this even if disabled because resurrection icon depends on the position
 			local x, y = self:GetPositionOffset(db.health.position)

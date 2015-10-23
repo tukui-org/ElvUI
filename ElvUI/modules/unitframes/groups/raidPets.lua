@@ -119,8 +119,6 @@ function UF:Update_RaidpetFrames(frame, db)
 	do
 		local health = frame.Health
 		health.Smooth = self.db.smoothbars
-		health.bgFrame.Smooth = self.db.smoothbars
-
 		health.frequentUpdates = db.health.frequentUpdates
 
 		--Position this even if disabled because resurrection icon depends on the position
