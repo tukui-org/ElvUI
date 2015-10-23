@@ -917,14 +917,14 @@ function UF:UpdateAllHeaders(event)
 		end
 	end
 
-	for _, header in pairs(UF['headers']) do
+	for group, header in pairs(self['headers']) do
 		header:Update()
 		if header.Configure_Groups then
 			header:Configure_Groups()
 		end
-		if header == 'party' or header == 'raid' or header == 'raid40' then
+		if group == 'party' or group == 'raid' or group == 'raid40' then
 			--Update BuffIndicators on profile change as they might be using profile specific data
-			UF:UpdateAuraWatchFromHeader(header)
+			self:UpdateAuraWatchFromHeader(group)
 		end
 	end
 

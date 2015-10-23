@@ -369,25 +369,26 @@ local textCounterOffsets = {
 
 function UF:UpdateAuraWatchFromHeader(group, petOverride)
 	assert(self[group], "Invalid group specified.")
-	for i=1, self[group]:GetNumChildren() do
-		local frame = select(i, self[group]:GetChildren())
+	local group = self[group]
+	for i=1, group:GetNumChildren() do
+		local frame = select(i, group:GetChildren())
 		if frame and frame.Health then
-			UF:UpdateAuraWatch(frame, petOverride)
+			UF:UpdateAuraWatch(frame, petOverride, group.db)
 		elseif frame then
 			for n = 1, frame:GetNumChildren() do
 				local child = select(n, frame:GetChildren())
 				if child and child.Health then
-					UF:UpdateAuraWatch(child, petOverride)
+					UF:UpdateAuraWatch(child, petOverride, group.db)
 				end
 			end
 		end
 	end
 end
 
-function UF:UpdateAuraWatch(frame, petOverride)
+function UF:UpdateAuraWatch(frame, petOverride, db)
 	local buffs = {};
 	local auras = frame.AuraWatch;
-	local db = frame.db.buffIndicator;
+	local db = db and db.buffIndicator or frame.db.buffIndicator
 
 	if not db.enable then
 		auras:Hide()
