@@ -46,7 +46,6 @@ f:SetScript('OnUpdate', function()
 
 	for bar, value in pairs(smoothing) do
 		local cur = bar:GetValue()
-		local isReverse = bar:GetReverseFill()
 		local new = cur + min((value-cur)/3, max(value-cur, rate))
 
 		if new ~= new then
