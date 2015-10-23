@@ -927,13 +927,11 @@ function UF:UpdateAllHeaders(event)
 			if db.enable ~= true then
 				UnregisterStateDriver(self[group], "visibility")
 				self[group]:Hide()
-				return
 			end
 		else
 			if db.enable ~= true then
 				UnregisterAttributeDriver(self[group], "state-visibility")
 				self[group]:Hide()
-				return
 			end
 		end
 
