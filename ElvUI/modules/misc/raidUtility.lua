@@ -189,6 +189,15 @@ function RU:Initialize()
 	RaidControlButton:SetScript("OnMouseUp", function(self)
 		ToggleFriendsFrame(4)
 	end)
+	
+	local buttons = {
+		"DisbandRaidButton",
+		"RoleCheckButton",
+		"ReadyCheckButton",
+		"RaidControlButton",
+		"RaidUtility_ShowButton",
+		"RaidUtility_CloseButton"
+	}
 
 	if CompactRaidFrameManager then
 		--Reposition/Resize and Reuse the World Marker Button
@@ -205,42 +214,30 @@ function RU:Initialize()
 		CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateRolePoll:ClearAllPoints()
 		CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateRolePoll:SetPoint("BOTTOMLEFT", CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck, "TOPLEFT", 0, 1)
 		CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateRolePoll:SetPoint("BOTTOMRIGHT", CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck, "TOPRIGHT", 0, 1)
+		
+		table.insert(buttons, "CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton")
 	else
 		E:StaticPopup_Show("WARNING_BLIZZARD_ADDONS")
 	end
 
 	--Reskin Stuff
-	do
-		local buttons = {
-			"CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton",
-			"DisbandRaidButton",
-			--"MainTankButton",
-			--"MainAssistButton",
-			"RoleCheckButton",
-			"ReadyCheckButton",
-			"RaidControlButton",
-			"RaidUtility_ShowButton",
-			"RaidUtility_CloseButton"
-		}
+	for i, button in pairs(buttons) do
+		local f = _G[button]
+		f.BottomLeft:SetAlpha(0)
+		f.BottomRight:SetAlpha(0)
+		f.BottomMiddle:SetAlpha(0)
+		f.TopMiddle:SetAlpha(0)
+		f.TopLeft:SetAlpha(0)
+		f.TopRight:SetAlpha(0)
+		f.MiddleLeft:SetAlpha(0)
+		f.MiddleRight:SetAlpha(0)
+		f.MiddleMiddle:SetAlpha(0)
 
-		for i, button in pairs(buttons) do
-			local f = _G[button]
-			f.BottomLeft:SetAlpha(0)
-			f.BottomRight:SetAlpha(0)
-			f.BottomMiddle:SetAlpha(0)
-			f.TopMiddle:SetAlpha(0)
-			f.TopLeft:SetAlpha(0)
-			f.TopRight:SetAlpha(0)
-			f.MiddleLeft:SetAlpha(0)
-			f.MiddleRight:SetAlpha(0)
-			f.MiddleMiddle:SetAlpha(0)
-
-			f:SetHighlightTexture("")
-			f:SetDisabledTexture("")
-			f:HookScript("OnEnter", ButtonEnter)
-			f:HookScript("OnLeave", ButtonLeave)
-			f:SetTemplate("Default", true)
-		end
+		f:SetHighlightTexture("")
+		f:SetDisabledTexture("")
+		f:HookScript("OnEnter", ButtonEnter)
+		f:HookScript("OnLeave", ButtonLeave)
+		f:SetTemplate("Default", true)
 	end
 
 	--Automatically show/hide the frame if we have RaidLeader or RaidOfficer
