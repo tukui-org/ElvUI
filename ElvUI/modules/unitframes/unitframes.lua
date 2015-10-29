@@ -638,14 +638,12 @@ function UF.groupPrototype:AdjustVisibility()
 	end
 end
 
-
 function UF.headerPrototype:ClearChildPoints()
 	for i=1, self:GetNumChildren() do
 		local child = select(i, self:GetChildren())
 		child:ClearAllPoints()
 	end
 end
-
 
 function UF.headerPrototype:Update(isForced)
 	local group = self.groupName
@@ -720,8 +718,6 @@ function UF:CreateHeader(parent, groupFilter, overrideName, template, groupName,
 	return header
 end
 
-
-
 function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdate, headerTemplate)
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return end
 	local db = self.db['units'][group]
@@ -745,7 +741,6 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 			end
 		end
 	end
-
 
 	if not self[group] then
 		local stringTitle = E:StringTitle(group)
@@ -921,24 +916,9 @@ function UF:UpdateAllHeaders(event)
 		ElvUF:DisableBlizzard('party')
 	end
 
-	for group, header in pairs(self['headers']) do		
-		local db = self[group].db
-		if db.numGroups then
-			if db.enable ~= true then
-				UnregisterStateDriver(self[group], "visibility")
-				self[group]:Hide()
-			end
-		else
-			if db.enable ~= true then
-				UnregisterAttributeDriver(self[group], "state-visibility")
-				self[group]:Hide()
-			end
-		end
-
+	for group, header in pairs(self['headers']) do
 		header:Update()
-		if header.Configure_Groups then
-			header:Configure_Groups()
-		end
+		self:CreateAndUpdateHeaderGroup(group, nil, nil, true)
 
 		if group == 'party' or group == 'raid' or group == 'raid40' then
 			--Update BuffIndicators on profile change as they might be using profile specific data
