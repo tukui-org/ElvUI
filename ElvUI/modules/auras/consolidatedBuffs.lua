@@ -44,7 +44,7 @@ function A:UpdateReminder(event, unit)
 	local reverseStyle = E.db.auras.consolidatedBuffs.reverseStyle
 
 	for i = 1, NUM_LE_RAID_BUFF_TYPES do
-		local spellName, rank, texture, duration, expirationTime, spellId, slot = GetRaidBuffTrayAuraInfo(i);
+		local spellName, rank, texture, duration, expirationTime = GetRaidBuffTrayAuraInfo(i);
 		local button = self.frame[i]
 
 		if(spellName) then
