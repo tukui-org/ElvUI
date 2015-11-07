@@ -16,14 +16,14 @@ local UnitPosition = UnitPosition
 --Return short value of a number
 
 function E:ShortValue(v)
-	if v >= 1e9 then
-		return ("%.1fb"):format(v / 1e9):gsub("%.?0+([kmb])$", "%1")
-	elseif v >= 1e6 then
-		return ("%.1fm"):format(v / 1e6):gsub("%.?0+([kmb])$", "%1")
-	elseif v >= 1e3 or v <= -1e3 then
-		return ("%.1fk"):format(v / 1e3):gsub("%.?0+([kmb])$", "%1")
+	if abs(v) >= 1e9 then
+		return format("%.1fG", v / 1e9)
+	elseif abs(v) >= 1e6 then
+		return format("%.1fM", v / 1e6)
+	elseif abs(v) >= 1e3 then
+		return format("%.1fk", v / 1e3)
 	else
-		return v
+		return format("%d", v)
 	end
 end
 
@@ -151,9 +151,9 @@ end
 local styles = {
 	['CURRENT'] = '%s',
 	['CURRENT_MAX'] = '%s - %s',
-	['CURRENT_PERCENT'] =  '%s - %s%%',
-	['CURRENT_MAX_PERCENT'] = '%s - %s | %s%%',
-	['PERCENT'] = '%s%%',
+	['CURRENT_PERCENT'] =  '%s - %.1f%%',
+	['CURRENT_MAX_PERCENT'] = '%s - %s | %.1f%%',
+	['PERCENT'] = '%.1f%%',
 	['DEFICIT'] = '-%s'
 }
 
@@ -174,20 +174,17 @@ function E:GetFormattedText(style, min, max)
 			return format(useStyle, E:ShortValue(deficit))
 		end
 	elseif style == 'PERCENT' then
-		local s = format(useStyle, format("%.1f", min / max * 100))
-		s = s:gsub(".0%%", "%%")
+		local s = format(useStyle, min / max * 100)
 		return s
 	elseif style == 'CURRENT' or ((style == 'CURRENT_MAX' or style == 'CURRENT_MAX_PERCENT' or style == 'CURRENT_PERCENT') and min == max) then
 		return format(styles['CURRENT'],  E:ShortValue(min))
 	elseif style == 'CURRENT_MAX' then
 		return format(useStyle,  E:ShortValue(min), E:ShortValue(max))
 	elseif style == 'CURRENT_PERCENT' then
-		local s = format(useStyle, E:ShortValue(min), format("%.1f", min / max * 100))
-		s = s:gsub(".0%%", "%%")
+		local s = format(useStyle, E:ShortValue(min), min / max * 100)
 		return s
 	elseif style == 'CURRENT_MAX_PERCENT' then
-		local s = format(useStyle, E:ShortValue(min), E:ShortValue(max), format("%.1f", min / max * 100))
-		s = s:gsub(".0%%", "%%")
+		local s = format(useStyle, E:ShortValue(min), E:ShortValue(max), min / max * 100)
 		return s
 	end
 end
