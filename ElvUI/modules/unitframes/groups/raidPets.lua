@@ -107,7 +107,7 @@ function UF:Update_RaidpetFrames(frame, db)
 	if not frame:IsElementEnabled('Range') then
 		frame:EnableElement('Range')
 	end
-
+	
 	--Adjust some variables
 	do
 		if USE_PORTRAIT_OVERLAY or not USE_PORTRAIT then
@@ -165,15 +165,23 @@ function UF:Update_RaidpetFrames(frame, db)
 		health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER, -BORDER)
 		health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER)
 
-		health.bgFrame:SetParent(frame.Portrait.overlay) --we toggle between two differant frames when switching between 3d and 2d
+		health.bg:ClearAllPoints()
+		if not USE_PORTRAIT_OVERLAY then
+			health:Point("TOPLEFT", PORTRAIT_WIDTH+BORDER, -BORDER)
+			health.bg:SetParent(health)
+			health.bg:SetAllPoints()
+		else
+			health.bg:Point('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMRIGHT')
+			health.bg:Point('TOPRIGHT', health)
+			health.bg:SetParent(frame.Portrait.overlay)
+		end
 
 		health:SetOrientation(db.health.orientation)
-		health.bgFrame:SetOrientation(db.health.orientation)
 	end
 
 	--Name
 	UF:UpdateNameSettings(frame)
-
+	
 	--Portrait
 	do
 		local portrait = frame.Portrait
@@ -235,7 +243,7 @@ function UF:Update_RaidpetFrames(frame, db)
 				threat.glow:Point("TOPRIGHT", frame.Health.backdrop, "TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING)
 				threat.glow:Point("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
 				threat.glow:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
-
+				
 				if USE_PORTRAIT and not USE_PORTRAIT_OVERLAY then
 					threat.glow:Point("TOPLEFT", frame.Portrait.backdrop, "TOPLEFT", -SHADOW_SPACING, SHADOW_SPACING)
 					threat.glow:Point("BOTTOMLEFT", frame.Portrait.backdrop, "BOTTOMLEFT", -SHADOW_SPACING, SHADOW_SPACING)
@@ -351,12 +359,12 @@ function UF:Update_RaidpetFrames(frame, db)
 
 			rdebuffs:Size(db.rdebuffs.size)
 			rdebuffs:Point('BOTTOM', frame, 'BOTTOM', db.rdebuffs.xOffset, db.rdebuffs.yOffset)
-
+			
 			rdebuffs.count:FontTemplate(rdebuffsFont, db.rdebuffs.fontSize, db.rdebuffs.fontOutline)
 			rdebuffs.count:ClearAllPoints()
 			rdebuffs.count:Point(db.rdebuffs.stack.position, db.rdebuffs.stack.xOffset, db.rdebuffs.stack.yOffset)
 			rdebuffs.count:SetTextColor(stackColor.r, stackColor.g, stackColor.b)
-
+			
 			rdebuffs.time:FontTemplate(rdebuffsFont, db.rdebuffs.fontSize, db.rdebuffs.fontOutline)
 			rdebuffs.time:ClearAllPoints()
 			rdebuffs.time:Point(db.rdebuffs.duration.position, db.rdebuffs.duration.xOffset, db.rdebuffs.duration.yOffset)
@@ -396,7 +404,7 @@ function UF:Update_RaidpetFrames(frame, db)
 				frame.DBHGlow:SetAllPoints(frame.Threat.glow)
 			else
 				frame.DebuffHighlightBackdrop = false
-			end
+			end					
 		else
 			frame:DisableElement('DebuffHighlight')
 		end
@@ -473,7 +481,7 @@ function UF:Update_RaidpetFrames(frame, db)
 		end
 	end
 
-	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, nil, (USE_PORTRAIT and USE_PORTRAIT_OVERLAY) ~= true)
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg, (USE_PORTRAIT and USE_PORTRAIT_OVERLAY) ~= true)
 
 	frame:UpdateAllElements()
 end

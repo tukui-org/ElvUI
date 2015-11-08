@@ -43,29 +43,22 @@ oUF:RegisterInitCallback(hook)
 local f, min, max = CreateFrame('Frame'), math.min, math.max
 f:SetScript('OnUpdate', function()
 	local rate = GetFramerate()
+	local limit = 30/rate
 
 	for bar, value in pairs(smoothing) do
 		local cur = bar:GetValue()
-		local new = cur + min((value-cur)/3, max(value-cur, rate))
-
+		local new = cur + min((value-cur)/3, max(value-cur, limit))
 		if new ~= new then
 			-- Mad hax to prevent QNAN.
 			new = value
 		end
-
 		bar:SetValue_(new)
-
-		if(bar.bgFrame) then
-			local max = select(2, bar:GetMinMaxValues())
-			bar.bgFrame:SetValue(max - new)
-		end
-
 		if (cur == value or abs(new - value) < 2) and bar.Smooth then
 			bar:SetValue_(value)
 			smoothing[bar] = nil
 		elseif not bar.Smooth then
 			bar:SetValue_(value)
-			smoothing[bar] = nil
+			smoothing[bar] = nil		
 		end
 	end
 end)

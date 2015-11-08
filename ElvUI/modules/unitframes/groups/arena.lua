@@ -42,7 +42,7 @@ function UF:Construct_ArenaFrames(frame)
 
 	if(not frame.isChild) then
 		frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT')
-
+		
 		frame.Portrait3D = self:Construct_Portrait(frame, 'model')
 		frame.Portrait2D = self:Construct_Portrait(frame, 'texture')
 
@@ -63,7 +63,7 @@ function UF:Construct_ArenaFrames(frame)
 		frame:RegisterEvent('PLAYER_TARGET_CHANGED', UF.UpdateTargetGlow)
 		frame:RegisterEvent('PLAYER_ENTERING_WORLD', UF.UpdateTargetGlow)
 		frame:RegisterEvent('GROUP_ROSTER_UPDATE', UF.UpdateTargetGlow)
-
+		
 		frame.customTexts = {}
 	end
 
@@ -107,7 +107,7 @@ end
 
 function UF:Update_ArenaFrames(frame, db)
 	frame.db = db
-
+	
 	if frame.Portrait then
 		frame.Portrait:Hide()
 		frame.Portrait:ClearAllPoints()
@@ -146,7 +146,7 @@ function UF:Update_ArenaFrames(frame, db)
 		if USE_MINI_POWERBAR then
 			POWERBAR_WIDTH = POWERBAR_WIDTH / 2
 		end
-
+		
 		if USE_PORTRAIT_OVERLAY or not USE_PORTRAIT then
 			PORTRAIT_WIDTH = 0
 		end
@@ -209,7 +209,16 @@ function UF:Update_ArenaFrames(frame, db)
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, (USE_POWERBAR and ((BORDER + SPACING)*2) or BORDER) + POWERBAR_HEIGHT)
 		end
 
-		health.bgFrame:SetParent(frame.Portrait.overlay) --we toggle between two differant frames when switching between 3d and 2d
+		health.bg:ClearAllPoints()
+		if not USE_PORTRAIT_OVERLAY then
+			health:Point("TOPRIGHT", -(PORTRAIT_WIDTH + PVPINFO_WIDTH + BORDER), -BORDER)
+			health.bg:SetParent(health)
+			health.bg:SetAllPoints()
+		else
+			health.bg:Point('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMRIGHT')
+			health.bg:Point('TOPRIGHT', health)
+			health.bg:SetParent(frame.Portrait.overlay)
+		end
 	end
 
 	--Name
@@ -271,19 +280,19 @@ function UF:Update_ArenaFrames(frame, db)
 			power:Hide()
 		end
 	end
-
+	
 	--Portrait
 	do
 		local portrait = frame.Portrait
-
+	
 		--Set Points
 		if USE_PORTRAIT then
 			if not frame:IsElementEnabled('Portrait') then
 				frame:EnableElement('Portrait')
 			end
-
+	
 			portrait:ClearAllPoints()
-
+	
 			if USE_PORTRAIT_OVERLAY then
 				if db.portrait.style == '3D' then
 					portrait:SetFrameLevel(frame.Health:GetFrameLevel() + 1)
@@ -298,17 +307,17 @@ function UF:Update_ArenaFrames(frame, db)
 				portrait.backdrop:Show()
 				portrait.backdrop:ClearAllPoints()
 				portrait.backdrop:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -PVPINFO_WIDTH, 0)
-
+	
 				if db.portrait.style == '3D' then
 					portrait:SetFrameLevel(frame:GetFrameLevel() + 5)
 				end
-
+	
 				if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR or USE_INSET_POWERBAR then
 					portrait.backdrop:Point("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMRIGHT", E.PixelMode and -1 or SPACING, 0)
 				else
 					portrait.backdrop:Point("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMRIGHT", E.PixelMode and -1 or SPACING, 0)
 				end
-
+	
 				portrait:Point('BOTTOMLEFT', portrait.backdrop, 'BOTTOMLEFT', BORDER, BORDER)
 				portrait:Point('TOPRIGHT', portrait.backdrop, 'TOPRIGHT', -BORDER, -BORDER)
 			end
@@ -567,7 +576,7 @@ function UF:Update_ArenaFrames(frame, db)
 			if not frame:IsElementEnabled('HealPrediction') then
 				frame:EnableElement('HealPrediction')
 			end
-
+			
 			if not USE_PORTRAIT_OVERLAY then
 				healPrediction.myBar:SetParent(frame)
 				healPrediction.otherBar:SetParent(frame)
@@ -587,7 +596,7 @@ function UF:Update_ArenaFrames(frame, db)
 			end
 		end
 	end
-
+	
 	for objectName, object in pairs(frame.customTexts) do
 		if (not db.customTexts) or (db.customTexts and not db.customTexts[objectName]) then
 			object:Hide()
@@ -638,7 +647,7 @@ function UF:Update_ArenaFrames(frame, db)
 			frame:SetPoint('TOPRIGHT', _G['ElvUF_Arena'..INDEX-1], 'BOTTOMRIGHT', 0, -db.spacing)
 		end
 	end
-
+	
 	if db.growthDirection == 'UP' or db.growthDirection == 'DOWN' then
 		ArenaHeader:SetWidth(UNIT_WIDTH)
 		ArenaHeader:SetHeight(UNIT_HEIGHT + ((UNIT_HEIGHT + db.spacing) * 4))
@@ -647,7 +656,7 @@ function UF:Update_ArenaFrames(frame, db)
 		ArenaHeader:SetHeight(UNIT_HEIGHT)
 	end
 
-	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, nil, (USE_PORTRAIT and USE_PORTRAIT_OVERLAY) ~= true)
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg, (USE_PORTRAIT and USE_PORTRAIT_OVERLAY) ~= true)
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)
 
 	frame:UpdateAllElements()

@@ -1148,14 +1148,14 @@ function UF:Initialize()
 	else
 		CompactUnitFrameProfiles:RegisterEvent('VARIABLES_LOADED')
 	end
-
+	
 	if (not E.private["unitframe"]["disabledBlizzardFrames"].party) and (not E.private["unitframe"]["disabledBlizzardFrames"].raid) then
 		E.RaidUtility.Initialize = E.noop
 	end
 
 	if E.private["unitframe"]["disabledBlizzardFrames"].arena then
 		self:SecureHook('UnitFrameThreatIndicator_Initialize')
-
+		
 		if not IsAddOnLoaded('Blizzard_ArenaUI') then
 			self:RegisterEvent('ADDON_LOADED')
 		else
@@ -1299,7 +1299,6 @@ local function updateColor(self, r, g, b)
 end
 
 function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, adjustBackdropPoints, invertBackdropTex)
-	if(not backdropTex) then return end
 	statusBar.isTransparent = isTransparent
 
 	local statusBarTex = statusBar:GetStatusBarTexture()
@@ -1314,30 +1313,28 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 		end
 
 		statusBar:SetStatusBarTexture(0, 0, 0, 0)
+		backdropTex:ClearAllPoints()
+		if statusBarOrientation == 'VERTICAL' then
+			backdropTex:SetPoint("TOPLEFT", statusBar, "TOPLEFT")
+			backdropTex:SetPoint("BOTTOMLEFT", statusBarTex, "TOPLEFT")
+			backdropTex:SetPoint("BOTTOMRIGHT", statusBarTex, "TOPRIGHT")
+		else
+			backdropTex:SetPoint("TOPLEFT", statusBarTex, "TOPRIGHT")
+			backdropTex:SetPoint("BOTTOMLEFT", statusBarTex, "BOTTOMRIGHT")
+			backdropTex:SetPoint("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT")
+		end
 
-		if(backdropTex) then
-			backdropTex:ClearAllPoints()
-			if statusBarOrientation == 'VERTICAL' then
-				backdropTex:SetPoint("TOPLEFT", statusBar, "TOPLEFT")
-				backdropTex:SetPoint("BOTTOMLEFT", statusBarTex, "TOPLEFT")
-				backdropTex:SetPoint("BOTTOMRIGHT", statusBarTex, "TOPRIGHT")
-			else
-				backdropTex:SetPoint("TOPLEFT", statusBarTex, "TOPRIGHT")
-				backdropTex:SetPoint("BOTTOMLEFT", statusBarTex, "BOTTOMRIGHT")
-				backdropTex:SetPoint("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT")
-			end
-
-			if invertBackdropTex then
-				backdropTex:Show()
-			end
-			if backdropTex.multiplier then
-				backdropTex.multiplier = 0.25
-			end
+		if invertBackdropTex then
+			backdropTex:Show()
 		end
 
 		if not invertBackdropTex and not statusBar.hookedColor then
 			hooksecurefunc(statusBar, "SetStatusBarColor", updateColor)
 			statusBar.hookedColor = true
+		end
+
+		if backdropTex.multiplier then
+			backdropTex.multiplier = 0.25
 		end
 	else
 		if statusBar.backdrop then
@@ -1348,28 +1345,25 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 			statusBar:GetParent().ignoreUpdates = nil
 		end
 		statusBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
-
-		if(backdropTex) then
-			if adjustBackdropPoints then
-				backdropTex:ClearAllPoints()
-				if statusBarOrientation == 'VERTICAL' then
-					backdropTex:SetPoint("TOPLEFT", statusBar, "TOPLEFT")
-					backdropTex:SetPoint("BOTTOMLEFT", statusBarTex, "TOPLEFT")
-					backdropTex:SetPoint("BOTTOMRIGHT", statusBarTex, "TOPRIGHT")
-				else
-					backdropTex:SetPoint("TOPLEFT", statusBarTex, "TOPRIGHT")
-					backdropTex:SetPoint("BOTTOMLEFT", statusBarTex, "BOTTOMRIGHT")
-					backdropTex:SetPoint("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT")
-				end
+		if adjustBackdropPoints then
+			backdropTex:ClearAllPoints()
+			if statusBarOrientation == 'VERTICAL' then
+				backdropTex:SetPoint("TOPLEFT", statusBar, "TOPLEFT")
+				backdropTex:SetPoint("BOTTOMLEFT", statusBarTex, "TOPLEFT")
+				backdropTex:SetPoint("BOTTOMRIGHT", statusBarTex, "TOPRIGHT")				
+			else			
+				backdropTex:SetPoint("TOPLEFT", statusBarTex, "TOPRIGHT")
+				backdropTex:SetPoint("BOTTOMLEFT", statusBarTex, "BOTTOMRIGHT")
+				backdropTex:SetPoint("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT")
 			end
+		end
 
-			if invertBackdropTex then
-				backdropTex:Hide()
-			end
+		if invertBackdropTex then
+			backdropTex:Hide()
+		end
 
-			if backdropTex.multiplier then
-				backdropTex.multiplier = 0.25
-			end
+		if backdropTex.multiplier then
+			backdropTex.multiplier = 0.25
 		end
 	end
 end

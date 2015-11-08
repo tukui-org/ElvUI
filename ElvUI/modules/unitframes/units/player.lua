@@ -12,9 +12,6 @@ local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 function UF:Construct_PlayerFrame(frame)
 	frame.Threat = self:Construct_Threat(frame, true)
 
-	frame.Portrait3D = self:Construct_Portrait(frame, 'model')
-	frame.Portrait2D = self:Construct_Portrait(frame, 'texture')
-
 	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
 	frame.Health.frequentUpdates = true;
 
@@ -23,6 +20,8 @@ function UF:Construct_PlayerFrame(frame)
 
 	frame.Name = self:Construct_NameText(frame)
 
+	frame.Portrait3D = self:Construct_Portrait(frame, 'model')
+	frame.Portrait2D = self:Construct_Portrait(frame, 'texture')
 
 	frame.Buffs = self:Construct_Buffs(frame)
 
@@ -68,7 +67,7 @@ function UF:Construct_PlayerFrame(frame)
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
 
 	frame.CombatFade = true
-
+	
 	frame.customTexts = {}
 
 	frame:Point('BOTTOMLEFT', E.UIParent, 'BOTTOM', -413, 68) --Set to default position
@@ -112,7 +111,7 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 	if USE_MINI_CLASSBAR then
 		CLASSBAR_HEIGHT = CLASSBAR_HEIGHT / 2
 	end
-
+	
 	CLASSBAR_HEIGHT_SPACING = CLASSBAR_HEIGHT + SPACING
 
 	if db.classbar.detachFromFrame then
@@ -410,6 +409,16 @@ function UF:Update_PlayerFrame(frame, db)
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, (USE_POWERBAR and ((BORDER + SPACING)*2) or BORDER) + POWERBAR_HEIGHT)
 		end
 
+		health.bg:ClearAllPoints()
+		if not USE_PORTRAIT_OVERLAY then
+			health:Point("TOPLEFT", PORTRAIT_WIDTH+BORDER, -BORDER)
+			health.bg:SetParent(health)
+			health.bg:SetAllPoints()
+		else
+			health.bg:Point('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMRIGHT')
+			health.bg:Point('TOPRIGHT', health)
+			health.bg:SetParent(frame.Portrait.overlay)
+		end
 
 		if USE_CLASSBAR and not db.classbar.detachFromFrame then
 			local DEPTH
@@ -427,8 +436,6 @@ function UF:Update_PlayerFrame(frame, db)
 
 			health:Point("TOPLEFT", frame, "TOPLEFT", PORTRAIT_WIDTH+BORDER, DEPTH)
 		end
-
-		health.bgFrame:SetParent(frame.Portrait.overlay) --we toggle between two differant frames when switching between 3d and 2d
 	end
 
 	--Name
@@ -519,7 +526,7 @@ function UF:Update_PlayerFrame(frame, db)
 				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(E.PixelMode and 0 or (BORDER + SPACING)))
 				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -BORDER, BORDER)
 			end
-
+			
 			if db.power.strataAndLevel.useCustomStrata then
 				power:SetFrameStrata(db.power.strataAndLevel.frameStrata)
 			end
@@ -1099,9 +1106,9 @@ function UF:Update_PlayerFrame(frame, db)
 	end
 
 	if UF.db.colors.transparentHealth then
-		UF:ToggleTransparentStatusBar(true, frame.Health, nil)
+		UF:ToggleTransparentStatusBar(true, frame.Health, frame.Health.bg)
 	else
-		UF:ToggleTransparentStatusBar(false, frame.Health, nil, (USE_PORTRAIT and USE_PORTRAIT_OVERLAY) ~= true)
+		UF:ToggleTransparentStatusBar(false, frame.Health, frame.Health.bg, (USE_PORTRAIT and USE_PORTRAIT_OVERLAY) ~= true)
 	end
 
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)
@@ -1124,6 +1131,6 @@ local f = CreateFrame("Frame")
 f:RegisterEvent("PLAYER_ENTERING_WORLD")
 f:SetScript("OnEvent", function(self, event)
 	self:UnregisterEvent(event)
-
+	
 	C_Timer.After(5, UpdateAllRunes) --Delay it, since the WoW client updates Death Runes after PEW
 end)

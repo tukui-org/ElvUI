@@ -128,7 +128,16 @@ function UF:Update_BossFrames(frame, db)
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, (USE_POWERBAR and ((BORDER + SPACING)*2) or BORDER) + POWERBAR_HEIGHT)
 		end
 
-		health.bgFrame:SetParent(frame.Portrait.overlay) --we toggle between two differant frames when switching between 3d and 2d
+		health.bg:ClearAllPoints()
+		if not USE_PORTRAIT_OVERLAY then
+			health:Point("TOPRIGHT", -(PORTRAIT_WIDTH+BORDER), -BORDER)
+			health.bg:SetParent(health)
+			health.bg:SetAllPoints()
+		else
+			health.bg:Point('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMRIGHT')
+			health.bg:Point('TOPRIGHT', health)
+			health.bg:SetParent(frame.Portrait.overlay)
+		end
 	end
 
 	--Name
@@ -496,7 +505,7 @@ function UF:Update_BossFrames(frame, db)
 					frame.DebuffHighlightBackdrop = true
 				else
 					frame.DebuffHighlightBackdrop = false
-				end
+				end						
 			end
 		else
 			if frame:IsElementEnabled('DebuffHighlight') then
@@ -504,7 +513,7 @@ function UF:Update_BossFrames(frame, db)
 			end
 		end
 	end
-
+	
 	for objectName, object in pairs(frame.customTexts) do
 		if (not db.customTexts) or (db.customTexts and not db.customTexts[objectName]) then
 			object:Hide()
@@ -571,7 +580,7 @@ function UF:Update_BossFrames(frame, db)
 			frame:SetPoint('TOPRIGHT', _G['ElvUF_Boss'..INDEX-1], 'BOTTOMRIGHT', 0, -db.spacing)
 		end
 	end
-
+	
 	if db.growthDirection == 'UP' or db.growthDirection == 'DOWN' then
 		BossHeader:SetWidth(UNIT_WIDTH)
 		BossHeader:SetHeight(UNIT_HEIGHT + ((UNIT_HEIGHT + db.spacing) * (MAX_BOSS_FRAMES -1)))
@@ -592,7 +601,7 @@ function UF:Update_BossFrames(frame, db)
 		UF:ToggleTransparentStatusBar(false, frame.Power, frame.Power.bg, true)
 	end
 
-	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, nil, true)
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg, true)
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)
 
 	frame:UpdateAllElements()
