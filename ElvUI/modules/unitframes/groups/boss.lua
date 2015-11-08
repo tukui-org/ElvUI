@@ -82,6 +82,10 @@ function UF:Update_BossFrames(frame, db)
 		if USE_MINI_POWERBAR then
 			POWERBAR_WIDTH = POWERBAR_WIDTH / 2
 		end
+		
+		if not USE_POWERBAR_OFFSET then
+			POWERBAR_OFFSET = 0
+		end
 	end
 
 	--Health

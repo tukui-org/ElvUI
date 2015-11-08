@@ -282,6 +282,10 @@ function UF:Update_PlayerFrame(frame, db)
 		if USE_MINI_POWERBAR and not POWERBAR_DETACHED then
 			POWERBAR_WIDTH = POWERBAR_WIDTH / 2
 		end
+		
+		if not USE_POWERBAR_OFFSET then
+			POWERBAR_OFFSET = 0
+		end
 	end
 
 	local mini_classbarY = 0
