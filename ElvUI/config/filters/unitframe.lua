@@ -1,5 +1,10 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Engine
 
+--Cache global variables
+local GetSpellInfo, UnitClass, IsSpellKnown, IsEquippedItem = GetSpellInfo, UnitClass, IsSpellKnown, IsEquippedItem
+local print, unpack, select, pairs = print, unpack, select, pairs
+local lower = string.lower
+
 local function SpellName(id)
 	local name, _, _, _, _, _, _, _, _ = GetSpellInfo(id)
 	if not name then
@@ -860,7 +865,7 @@ f:RegisterEvent("PLAYER_ENTERING_WORLD")
 f:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
 f:SetScript("OnEvent", function(self, event)
 	local class = select(2, UnitClass("player"))
-	if string.lower(class) ~= "priest" then return; end
+	if lower(class) ~= "priest" then return; end
 
 	if event == "PLAYER_ENTERING_WORLD" then
 		self:UnregisterEvent("PLAYER_ENTERING_WORLD")

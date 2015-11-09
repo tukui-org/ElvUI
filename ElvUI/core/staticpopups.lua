@@ -1,6 +1,11 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
-local lower = string.lower
+--Cache global variables
+local _G = _G
+local pairs, type, unpack, assert = pairs, type, unpack, assert
+local lower, tremove, tContains, tinsert, wipe = string.lower, tremove, tContains, tinsert, table.wipe
+local UnitIsDeadOrGhost, InCinematic = UnitIsDeadOrGhost
+local STATICPOPUP_TEXTURE_ALERT, STATICPOPUP_TEXTURE_ALERTGEAR
 
 E.PopupDialogs = {};
 E.StaticPopup_DisplayedFrames = {};
@@ -858,7 +863,7 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 			tempButtonLocs[i]:Show();
 		end
 
-		table.wipe(tempButtonLocs);
+		wipe(tempButtonLocs);
 	end
 
 	-- Show or hide the alert icon

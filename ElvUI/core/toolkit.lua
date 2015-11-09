@@ -1,7 +1,11 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local LSM = LibStub("LibSharedMedia-3.0")
 
+--Cache global variables
+local CreateFrame = CreateFrame
+local unpack, type, select = unpack, type, select
 local floor = math.floor
+
 local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0, 0, 0, 1, 0, 0, 0
 
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
