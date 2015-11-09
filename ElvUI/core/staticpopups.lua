@@ -328,8 +328,6 @@ E.PopupDialogs["WARNING_BLIZZARD_ADDONS"] = {
 	OnAccept = function() EnableAddOn("Blizzard_CompactRaidFrames"); ReloadUI(); end,
 }
 
-
-
 local MAX_STATIC_POPUPS = 4
 
 function E:StaticPopup_OnShow()
@@ -919,18 +917,6 @@ function E:StaticPopup_Hide(which, data)
 		if ( (dialog.which == which) and (not data or (data == dialog.data)) ) then
 			dialog:Hide();
 		end
-	end
-end
-
-function E:StaticPopup_CombineTables()
-	if ( not tContains(E.StaticPopup_DisplayedFrames, dialog) ) then
-		local lastFrame = E.StaticPopup_DisplayedFrames[#StaticPopup_DisplayedFrames];
-		if ( lastFrame ) then
-			dialog:SetPoint("TOP", lastFrame, "BOTTOM", 0, -4);
-		else
-			dialog:SetPoint("TOP", E.UIParent, "TOP", 0, -135);
-		end
-		tinsert(E.StaticPopup_DisplayedFrames, dialog);
 	end
 end
 
