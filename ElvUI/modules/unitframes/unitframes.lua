@@ -918,7 +918,8 @@ function UF:UpdateAllHeaders(event)
 
 	for group, header in pairs(self['headers']) do
 		header:Update()
-		self:CreateAndUpdateHeaderGroup(group, nil, nil, true)
+		local shouldUpdateHeader = self[group].numGroups ~= nil and true or false
+		self:CreateAndUpdateHeaderGroup(group, nil, nil, shouldUpdateHeader)
 
 		if group == 'party' or group == 'raid' or group == 'raid40' then
 			--Update BuffIndicators on profile change as they might be using profile specific data
