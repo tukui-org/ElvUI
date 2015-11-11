@@ -1,7 +1,12 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local D = E:NewModule('Distributor', "AceEvent-3.0","AceTimer-3.0","AceComm-3.0","AceSerializer-3.0")
 
+--Cache global variables
+local tonumber = tonumber
 local len, format, split = string.len, string.format, string.split
+local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
+local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
+local ACCEPT, CANCEL, YES, NO = ACCEPT, CANCEL, YES, NO
 
 ----------------------------------
 -- CONSTANTS

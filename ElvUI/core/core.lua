@@ -2,14 +2,17 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local LSM = LibStub("LibSharedMedia-3.0")
 local Masque = LibStub("Masque", true)
 
-local format = string.format
-local find = string.find
-local split = string.split
-local match = string.match
-local twipe = table.wipe
-local tonumber = tonumber
+--Cache global variables
+local _G = _G
+local tonumber, pairs, error, unpack, select = tonumber, pairs, error, unpack, select
+local type, collectgarbage, pcall, date = type, collectgarbage, pcall, date
+local floor, twipe, tinsert = floor, twipe, tinsert
+local format, find, split, match = string.format, string.find, string.split, string.match
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
+local COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN = COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN
+local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
+local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 
 --Constants
 E.myclass = select(2, UnitClass("player"));

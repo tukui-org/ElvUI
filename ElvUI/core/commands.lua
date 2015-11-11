@@ -1,9 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
-local format = string.format
-local lower = string.lower
-local split = string.split
+--Cache global variables
+local _G = _G
 local tonumber, type, pairs, select = tonumber, type, pairs, select
+local format, lower, split = string.format, string.lower, string.split
 
 function FarmMode()
 	if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT); return; end

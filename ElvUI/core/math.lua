@@ -1,16 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
-local format = string.format
-local sub = string.sub
-local upper = string.upper
-
-local atan2 = math.atan2
-local modf = math.modf
-local ceil = math.ceil
-local floor = math.floor
-local abs = math.abs
-local sqrt = math.sqrt
-local pi = math.pi
+--Cache global variables
+local select, tonumber, assert, type, unpack = select, tonumber, assert, type, unpack
+local tinsert, tremove = tinsert, tremove
+local atan2, modf, ceil, floor, abs, sqrt, pi, mod = atan2, math.modf, ceil, floor, abs, sqrt, math.pi, mod
+local format, sub, upper = format, string.sub, string.upper
 local UnitPosition = UnitPosition
 
 --Return short value of a number

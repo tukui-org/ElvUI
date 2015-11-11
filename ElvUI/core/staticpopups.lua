@@ -4,7 +4,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local _G = _G
 local pairs, type, unpack, assert = pairs, type, unpack, assert
 local lower, tremove, tContains, tinsert, wipe = string.lower, tremove, tContains, tinsert, table.wipe
-local UnitIsDeadOrGhost, InCinematic = UnitIsDeadOrGhost, InCinematic
 local STATICPOPUP_TEXTURE_ALERT, STATICPOPUP_TEXTURE_ALERTGEAR
 
 E.PopupDialogs = {};

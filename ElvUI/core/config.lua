@@ -1,9 +1,11 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local grid
 
-local selectedValue = 'ALL'
-local floor = math.floor
+--Cache global variables
 local type, ipairs, tonumber = type, ipairs, tonumber
+local floor = math.floor
+
+local grid
+local selectedValue = 'ALL'
 
 E.ConfigModeLayouts = {
 	'ALL',

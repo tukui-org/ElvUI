@@ -2,9 +2,10 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local LSM = LibStub("LibSharedMedia-3.0")
 
 --Cache global variables
-local CreateFrame = CreateFrame
-local unpack, type, select = unpack, type, select
+local _G = _G
+local unpack, type, select, getmetatable = unpack, type, select, getmetatable
 local floor = math.floor
+local CreateFrame = CreateFrame
 
 local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0, 0, 0, 1, 0, 0, 0
 

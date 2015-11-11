@@ -1,5 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
+--Cache global variables
+local tinsert = tinsert
+
 local PADDING = 10
 local BUTTON_HEIGHT = 16
 local BUTTON_WIDTH = 135
