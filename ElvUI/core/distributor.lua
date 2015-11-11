@@ -33,7 +33,7 @@ end
 
 -- Used to start uploads
 function D:Distribute(target, otherServer, isGlobal)
-	local profileKey
+	local profileKey, data
 	if not isGlobal then
 		if ElvDB.profileKeys then
 			profileKey = ElvDB.profileKeys[E.myname..' - '..E.myrealm]
