@@ -187,7 +187,7 @@ function E:UpdateMedia()
 	--Border Color
 	local border = E.db['general'].bordercolor
 	if self:CheckClassColor(border.r, border.g, border.b) then
-		classColor = E.myclass == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
+		local classColor = E.myclass == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
 		E.db['general'].bordercolor.r = classColor.r
 		E.db['general'].bordercolor.g = classColor.g
 		E.db['general'].bordercolor.b = classColor.b
