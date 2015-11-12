@@ -1,6 +1,34 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local CH = E:NewModule('Chat', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
 local LSM = LibStub("LibSharedMedia-3.0")
+
+--Cache global variables
+local _G = _G
+local GetTime, time, difftime = GetTime, time, difftime
+local pairs, unpack, select, tostring, pcall, next, tonumber, type, assert = pairs, unpack, select, tostring, pcall, next, tonumber, type, assert
+local tinsert, tremove, tsort, twipe, tconcat = table.insert, table.remove, table.sort, table.wipe, table.concat
+local random = math.random
+local len, gsub, find, sub, gmatch, format, split = string.len, string.gsub, string.find, string.sub, string.gmatch, string.format, string.split
+local strlower, strsub, strlen, strupper = strlower, strsub, strlen, strupper
+local NUM_CHAT_WINDOWS = NUM_CHAT_WINDOWS
+local ERR_CHAT_PLAYER_NOT_FOUND_S = ERR_CHAT_PLAYER_NOT_FOUND_S
+local ERR_FRIEND_ONLINE_SS, ERR_FRIEND_OFFLINE_S = ERR_FRIEND_ONLINE_SS, ERR_FRIEND_OFFLINE_S
+local CHAT_IGNORED, CHAT_FILTERED, CHAT_RESTRICTED_TRIAL = CHAT_IGNORED, CHAT_FILTERED, CHAT_RESTRICTED_TRIAL
+local CHAT_MSG_BLOCK_CHAT_CHANNEL_INVITE = CHAT_MSG_BLOCK_CHAT_CHANNEL_INVITE
+local CHAT_TRIAL_RESTRICTED_NOTICE_TRIAL = CHAT_TRIAL_RESTRICTED_NOTICE_TRIAL
+local CHAT_BN_CONVERSATION_GET_LINK = CHAT_BN_CONVERSATION_GET_LINK
+local MAX_WOW_CHAT_CHANNELS = MAX_WOW_CHAT_CHANNELS
+local CHAT_BN_CONVERSATION_LIST = CHAT_BN_CONVERSATION_LIST
+local BN_INLINE_TOAST_FRIEND_PENDING = BN_INLINE_TOAST_FRIEND_PENDING
+local BN_INLINE_TOAST_BROADCAST = BN_INLINE_TOAST_BROADCAST
+local BN_INLINE_TOAST_BROADCAST_INFORM = BN_INLINE_TOAST_BROADCAST_INFORM
+local BN_INLINE_TOAST_CONVERSATION = BN_INLINE_TOAST_CONVERSATION
+local PLAYER_LIST_DELIMITER = PLAYER_LIST_DELIMITER
+local AFK, DND = AFK, DND
+local RAID_WARNING = RAID_WARNING
+local CHAT_TELL_ALERT_TIME = CHAT_TELL_ALERT_TIME
+local PET_BATTLE_COMBAT_LOG = PET_BATTLE_COMBAT_LOG
+
 local CreatedFrames = 0;
 local lines = {};
 local lfgRoles = {};
@@ -12,9 +40,6 @@ local cvars = {
 	["conversationMode"] = true,
 	["whisperMode"] = true,
 }
-
-local len, gsub, find, sub, gmatch, format, random = string.len, string.gsub, string.find, string.sub, string.gmatch, string.format, math.random
-local tinsert, tremove, tsort, twipe, tconcat = table.insert, table.remove, table.sort, table.wipe, table.concat
 
 local PLAYER_REALM = gsub(E.myrealm,'[%s%-]','')
 local PLAYER_NAME = E.myname.."-"..PLAYER_REALM
@@ -498,6 +523,7 @@ function CH:UpdateChatTabs()
 		local id = chat:GetID()
 		local point = GetChatWindowSavedPosition(id)
 		local isDocked = chat.isDocked
+		local chatbg = format("ChatFrame%dBackground", i)
 		if id > NUM_CHAT_WINDOWS then
 			point = point or select(1, chat:GetPoint());
 			if select(2, tab:GetPoint()):GetName() ~= chatbg then
@@ -781,7 +807,7 @@ end
 function CH:GetBNFriendColor(name, id)
 	local _, _, _, _, _, _, _, class = BNGetToonInfo(id)
 	if(not class or class == "") then
-		local toonName, toonID
+		local presenceName, toonID
 		for i=1, BNGetNumFriends() do
 			_, presenceName, _, _, _, toonID = BNGetFriendInfo(i)
 			if (toonID) and (presenceName and presenceName == name) then
@@ -843,7 +869,7 @@ function GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, a
 			if ( not classColorTable ) then
 				return arg2;
 			end
-			return string.format("\124cff%.2x%.2x%.2x", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255)..arg2.."\124r"
+			return format("\124cff%.2x%.2x%.2x", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255)..arg2.."\124r"
 		end
 	end
 	
@@ -1023,7 +1049,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				globalstring = _G["CHAT_"..arg1.."_NOTICE"];
 			end
 
-			globalString = CH:ConcatenateTimeStamp(globalstring);
+			globalstring = CH:ConcatenateTimeStamp(globalstring);
 
 			if(strlen(arg5) > 0) then
 				-- TWO users in this notice (E.G. x kicked y)
@@ -1538,8 +1564,8 @@ function CH:UpdateChatKeywords()
 	local keywords = self.db.keywords
 	keywords = keywords:gsub(',%s', ',')
 
-	for i=1, #{string.split(',', keywords)} do
-		local stringValue = select(i, string.split(',', keywords));
+	for i=1, #{split(',', keywords)} do
+		local stringValue = select(i, split(',', keywords));
 		if stringValue == '%MYNAME%' then
 			stringValue = E.myname;
 		end
