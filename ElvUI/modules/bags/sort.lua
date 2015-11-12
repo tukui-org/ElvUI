@@ -8,6 +8,7 @@ local tinsert, tremove, tsort, twipe = table.insert, table.remove, table.sort, t
 local floor = math.floor
 local band = bit.band
 local match, split, gmatch = string.match, string.split, string.gmatch
+local ARMOR, ENCHSLOT_WEAPON = ARMOR, ENCHSLOT_WEAPON
 
 local guildBags = {51,52,53,54,55,56,57,58}
 local bankBags = {BANK_CONTAINER}
