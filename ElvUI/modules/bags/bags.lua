@@ -2,8 +2,25 @@
 local B = E:NewModule('Bags', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
 local Search = LibStub('LibItemSearch-1.2-ElvUI')
 
-local len, sub, find, format, floor, abs, gsub = string.len, string.sub, string.find, string.format, math.floor, math.abs, string.gsub
+--Cache global variables
+local _G = _G
+local type, ipairs, pairs, unpack, select, assert = type, ipairs, pairs, unpack, select, assert
 local tinsert = table.insert
+local floor, abs, ceil = math.floor, math.abs, math.ceil
+local len, sub, find, format, gsub = string.len, string.sub, string.find, string.format, string.gsub
+local SEARCH = SEARCH
+local REAGENTBANK_CONTAINER = REAGENTBANK_CONTAINER
+local MAX_GUILDBANK_SLOTS_PER_TAB = MAX_GUILDBANK_SLOTS_PER_TAB
+local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES
+local MAX_CONTAINER_ITEMS = MAX_CONTAINER_ITEMS
+local TEXTURE_ITEM_QUEST_BANG = TEXTURE_ITEM_QUEST_BANG
+local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
+local REAGENTBANK_PURCHASE_TEXT = REAGENTBANK_PURCHASE_TEXT
+local NUM_BAG_FRAMES = NUM_BAG_FRAMES
+local CONTAINER_SCALE = CONTAINER_SCALE
+local CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y = CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y
+local CONTAINER_WIDTH = CONTAINER_WIDTH
+local CONTAINER_SPACING, VISIBLE_CONTAINER_SPACING = CONTAINER_SPACING, VISIBLE_CONTAINER_SPACING
 
 local SEARCH_STRING = ""
 
@@ -153,7 +170,7 @@ function B:SetGuildBankSearch(query)
 			for slotID = 1, MAX_GUILDBANK_SLOTS_PER_TAB do
 				local link = GetGuildBankItemLink(tab, slotID)
 				--A column goes from 1-14, e.g. GuildBankColumn1Button14 (slotID 14) or GuildBankColumn2Button3 (slotID 17)
-				local col = math.ceil(slotID / 14)
+				local col = ceil(slotID / 14)
 				local btn = (slotID % 14)
 				if col == 0 then col = 1 end
 				if btn == 0 then btn = 14 end
@@ -306,9 +323,9 @@ function B:UpdateBagSlots(bagID)
 	end
 end
 
-function TEST()
-	B:UpdateBagSlots(REAGENTBANK_CONTAINER)
-end
+-- function TEST()
+	-- B:UpdateBagSlots(REAGENTBANK_CONTAINER)
+-- end
 
 function B:UpdateCooldowns()
 	for _, bagID in ipairs(self.BagIDs) do
@@ -635,10 +652,9 @@ function B:UpdateReagentSlot(slotID)
 		SetItemButtonTextureVertexColor(slot, 1, 1, 1);
 	end
 
-	if B.ProfessionColors[bagType] then
-		slot:SetBackdropBorderColor(unpack(B.ProfessionColors[bagType]))
-	elseif (clink) then
-		slot.name, _, slot.rarity = GetItemInfo(clink);
+	if (clink) then
+		local name, _, rarity = GetItemInfo(clink);
+		slot.name, slot.rarity = name, rarity
 
 		local isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID);
 		local r, g, b
