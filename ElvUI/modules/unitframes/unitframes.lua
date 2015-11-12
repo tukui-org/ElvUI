@@ -623,6 +623,7 @@ function UF.groupPrototype:AdjustVisibility()
 	if not self.isForced then
 		local numGroups = self.numGroups
 		for i=1, #self.groups do
+			local group = self.groups[i]
 			if (i <= numGroups) and ((self.db.raidWideSorting and i <= 1) or not self.db.raidWideSorting) then
 				self.groups[i]:Show()
 			else
