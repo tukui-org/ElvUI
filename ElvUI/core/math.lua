@@ -3,7 +3,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 --Cache global variables
 local select, tonumber, assert, type, unpack = select, tonumber, assert, type, unpack
 local tinsert, tremove = tinsert, tremove
-local atan2, modf, ceil, floor, abs, sqrt, pi, mod = atan2, math.modf, ceil, floor, abs, sqrt, math.pi, mod
+local atan2, modf, ceil, floor, abs, sqrt, pi, mod = math.atan2, math.modf, ceil, floor, abs, sqrt, math.pi, mod
 local format, sub, upper = format, string.sub, string.upper
 local UnitPosition = UnitPosition
 
