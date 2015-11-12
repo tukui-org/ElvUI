@@ -885,7 +885,8 @@ function NP:UpdateSettings()
 	--Name
 	myPlate.name:FontTemplate(font, fontSize, fontOutline)
 	myPlate.name:SetTextColor(1, 1, 1)
-	myPlate.name:SetWordWrap(wrapName == true and true or false)
+	myPlate.name:SetHeight(2*fontSize)
+	myPlate.name:SetWordWrap(wrapName)
 
 	--Level
 	myPlate.level:FontTemplate(font, fontSize, fontOutline)
@@ -1036,6 +1037,7 @@ function NP:CreatePlate(frame)
 	--Name
 	myPlate.name = myPlate:CreateFontString(nil, 'OVERLAY')
 	myPlate.name:SetJustifyH("LEFT")
+	myPlate.name:SetJustifyV("BOTTOM")
 
 	--Raid Icon
 	frame.raidIcon:SetAlpha(0)
