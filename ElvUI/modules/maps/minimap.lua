@@ -2,15 +2,16 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local M = E:NewModule('Minimap', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
 E.Minimap = M
 
+--Cache global variables
+local _G = _G
+local tinsert = table.insert
+local gsub, upper, strsub = string.gsub, string.upper, strsub
+
 local Astrolabe, AstrolabeMapMonitor
 if IsAddOnLoaded("Gatherer") then
 	Astrolabe = DongleStub("Astrolabe-1.0")
 	AstrolabeMapMonitor = DongleStub("AstrolabeMapMonitor")
 end
-
-local gsub = string.gsub
-local upper = string.upper
-local tinsert = table.insert
 
 local menuFrame = CreateFrame("Frame", "MinimapRightClickMenu", E.UIParent)
 

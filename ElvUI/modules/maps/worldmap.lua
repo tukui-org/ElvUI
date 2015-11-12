@@ -2,6 +2,12 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local M = E:NewModule('WorldMap', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
 E.WorldMap = M
 
+--Cache global variables
+local PLAYER = PLAYER
+local MOUSE_LABEL = MOUSE_LABEL
+local WORLDMAP_FULLMAP_SIZE = WORLDMAP_FULLMAP_SIZE
+local WORLDMAP_WINDOWED_SIZE = WORLDMAP_WINDOWED_SIZE
+
 function M:SetLargeWorldMap()
 	if InCombatLockdown() then return end
 
@@ -25,7 +31,6 @@ function M:SetLargeWorldMap()
 	WorldMapFrame:SetPoint("CENTER", UIParent, "CENTER", 0, 100)
 	WorldMapFrame:SetSize(1002, 668)
 end
-
 
 function M:SetSmallWorldMap()
 	if InCombatLockdown() then return; end
