@@ -2,10 +2,11 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local A = E:NewModule('Auras', 'AceHook-3.0', 'AceEvent-3.0');
 local LSM = LibStub("LibSharedMedia-3.0")
 
-local find = string.find
-local format = string.format
-local join = string.join
+--Cache global variables
+local GetTime, C_TimerAfter = GetTime, C_Timer.After
+local select, unpack = select, unpack
 local floor = math.floor
+local format, find, join = string.format, string.find, string.join
 
 local Masque = LibStub("Masque", true)
 local MasqueGroupBuffs = Masque and Masque:Group("ElvUI", "Buffs")
@@ -137,7 +138,7 @@ function A:CreateIcon(button)
 		if MasqueGroupBuffs and E.private.auras.masque.buffs then
 			MasqueGroupBuffs:AddButton(button, ButtonData)
 			if StrataFixEnabled then
-				C_Timer.After(0.01, DelaydReSkinBuffs) --Fix bug caused by StrataFix.
+				C_TimerAfter(0.01, DelaydReSkinBuffs) --Fix bug caused by StrataFix.
 			end
 		else
 			button:SetTemplate('Default')
@@ -146,7 +147,7 @@ function A:CreateIcon(button)
 		if MasqueGroupDebuffs and E.private.auras.masque.debuffs then
 			MasqueGroupDebuffs:AddButton(button, ButtonData)
 			if StrataFixEnabled then
-				C_Timer.After(0.01, DelaydReSkinDebuffs) --Fix bug caused by StrataFix.
+				C_TimerAfter(0.01, DelaydReSkinDebuffs) --Fix bug caused by StrataFix.
 			end
 		else
 			button:SetTemplate('Default')

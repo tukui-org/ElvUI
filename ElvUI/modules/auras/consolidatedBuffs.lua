@@ -2,8 +2,12 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local A = E:GetModule('Auras');
 local LSM = LibStub("LibSharedMedia-3.0")
 
-local format = string.format
+--Cache global variables
+local _G = _G
+local GetTime = GetTime
+local unpack = unpack
 local twipe = table.wipe
+local format = string.format
 
 local Masque = LibStub("Masque", true)
 local MasqueGroup = Masque and Masque:Group("ElvUI", "Consolidated Buffs")
