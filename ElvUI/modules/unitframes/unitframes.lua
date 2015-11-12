@@ -929,7 +929,7 @@ function UF:UpdateAllHeaders(event)
 	end
 end
 
-function HideRaid()
+local function HideRaid()
 	if InCombatLockdown() then return end
 	CompactRaidFrameManager:Kill()
 	local compact_raid = CompactRaidFrameManager_GetSetting("IsShown")
