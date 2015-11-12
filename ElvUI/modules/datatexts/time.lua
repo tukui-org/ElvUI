@@ -77,7 +77,7 @@ local function OnLeave(self)
 	enteredFrame = false;
 end
 
-local function OnEvent()
+local function OnEvent(self, event)
 	if event == "UPDATE_INSTANCE_INFO" and enteredFrame then
 		RequestRaidInfo()
 	end
