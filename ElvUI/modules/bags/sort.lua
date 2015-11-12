@@ -1,13 +1,16 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule('Bags');
 
+--Cache global variables
+local GetTime = GetTime
+local ipairs, pairs, tonumber, select, unpack = ipairs, pairs, tonumber, select, unpack
+local tinsert, tremove, tsort, twipe = table.insert, table.remove, table.sort, table.wipe
+local floor = math.floor
+local band = bit.band
+local match, split, gmatch = string.match, string.split, string.gmatch
+
 local guildBags = {51,52,53,54,55,56,57,58}
 local bankBags = {BANK_CONTAINER}
-local match = string.match
-local split = string.split
-local gmatch = string.gmatch
-local floor = math.floor
-local tinsert, tremove, tsort, twipe = table.insert, table.remove, table.sort, table.wipe
 local MAX_MOVE_TIME = 1.25
 
 for i = NUM_BAG_SLOTS + 1, NUM_BAG_SLOTS + NUM_BANKBAGSLOTS do
@@ -299,7 +302,7 @@ end
 function B:GetItemID(bag, slot)
 	if IsGuildBankBag(bag) then
 		local link = self:GetItemLink(bag, slot)
-		return link and tonumber(string.match(link, "item:(%d+)"))
+		return link and tonumber(match(link, "item:(%d+)"))
 	else
 		return GetContainerItemID(bag, slot)
 	end
@@ -441,7 +444,7 @@ function B:CanItemGoInBag(bag, slot, targetBag)
 	end
 	local bagFamily = select(2, GetContainerNumFreeSlots(targetBag))
 	if itemFamily then
-		return (bagFamily == 0) or bit.band(itemFamily, bagFamily) > 0
+		return (bagFamily == 0) or band(itemFamily, bagFamily) > 0
 	else
 		return false;
 	end
@@ -745,7 +748,7 @@ function B:DoMoves()
 	if lockStop then
 		for slot, itemID in pairs(moveTracker) do
 			local actualItemID = self:GetItemID(self:Decode_BagSlot(slot))
-			if actualItemID  ~= itemid then
+			if actualItemID  ~= itemID then
 				WAIT_TIME = 0.1
 				if (GetTime() - lockStop) > MAX_MOVE_TIME then
 					if lastMove and moveRetries < 100 then
@@ -761,9 +764,9 @@ function B:DoMoves()
 						moveTracker[moveSource] = targetID
 						moveTracker[moveTarget] = moveID
 						lastDestination = moveTarget
-						lastMove = moves[i]
+						lastMove = moves[i] --Where does "i" come from???
 						lastItemID = moveID
-						tremove(moves, i)
+						tremove(moves, i) --Where does "i" come from???
 						return
 					end
 
