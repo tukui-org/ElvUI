@@ -10,7 +10,6 @@ local floor, abs, ceil = math.floor, math.abs, math.ceil
 local len, sub, find, format, gsub = string.len, string.sub, string.find, string.format, string.gsub
 local SEARCH = SEARCH
 local REAGENTBANK_CONTAINER = REAGENTBANK_CONTAINER
-local MAX_GUILDBANK_SLOTS_PER_TAB = MAX_GUILDBANK_SLOTS_PER_TAB
 local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES
 local MAX_CONTAINER_ITEMS = MAX_CONTAINER_ITEMS
 local TEXTURE_ITEM_QUEST_BANG = TEXTURE_ITEM_QUEST_BANG
