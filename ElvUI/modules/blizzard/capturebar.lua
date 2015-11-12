@@ -1,6 +1,9 @@
 local E, L, DF = unpack(select(2, ...))
 local B = E:GetModule('Blizzard');
 
+--Cache global variables
+local _G = _G
+
 local function CaptureUpdate()
 	if NUM_EXTENDED_UI_FRAMES then
 		local captureBar

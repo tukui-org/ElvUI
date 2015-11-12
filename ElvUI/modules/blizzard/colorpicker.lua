@@ -5,13 +5,18 @@ local E, L, DF = unpack(select(2, ...))
 local B = E:GetModule('Blizzard');
 local S = E:GetModule('Skins');
 
-local format, floor = string.format, math.floor
+--Cache global variables
+local tonumber, collectgarbage = tonumber, collectgarbage
+local floor = math.floor
+local format, strsub = string.format, strsub
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
+local CALENDAR_COPY_EVENT, CALENDAR_PASTE_EVENT = CALENDAR_COPY_EVENT, CALENDAR_PASTE_EVENT
+local CLASS, DEFAULT = CLASS, DEFAULT
+
 local initialized = nil
 local colorBuffer = {}
 local editingText
-
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
-local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 
 local function UpdateAlphaText()
 	local a = OpacitySliderFrame:GetValue()

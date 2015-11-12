@@ -1,6 +1,9 @@
 local E, L, DF = unpack(select(2, ...))
 local B = E:GetModule('Blizzard');
 
+--Cache global variables
+local select, unpack, pairs = select, unpack, pairs
+
 local function SkinIt(bar)
 	for i=1, bar:GetNumRegions() do
 		local region = select(i, bar:GetRegions())

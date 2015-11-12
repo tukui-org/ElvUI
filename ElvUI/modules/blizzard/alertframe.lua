@@ -1,6 +1,11 @@
 local E, L, DF = unpack(select(2, ...))
 local B = E:GetModule('Blizzard');
 
+--Cache global variables
+local _G = _G
+local pairs = pairs
+local MAX_ACHIEVEMENT_ALERTS = MAX_ACHIEVEMENT_ALERTS
+
 local AlertFrameHolder = CreateFrame("Frame", "AlertFrameHolder", E.UIParent)
 AlertFrameHolder:SetWidth(180)
 AlertFrameHolder:SetHeight(20)
