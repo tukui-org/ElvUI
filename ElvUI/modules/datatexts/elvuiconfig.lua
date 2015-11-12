@@ -9,6 +9,8 @@ local find = string.find
 local join = string.join
 local pairs = pairs
 
+local lastPanel
+
 local function OnEvent(self, event, ...)
 	lastPanel = self
 	

@@ -10,9 +10,11 @@ local lastSegment = 0
 local lastPanel
 local displayString = '';
 
+local time = time
 local join = string.join
 local max = math.max
 local select = select
+local UnitGUID = UnitGUID
 
 local function Reset()
 	timeStamp = 0

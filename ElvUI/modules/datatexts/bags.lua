@@ -5,6 +5,8 @@ local displayString = '';
 local lastPanel
 local join = string.join
 local CURRENCY = CURRENCY
+local NUM_BAG_SLOTS = NUM_BAG_SLOTS
+local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
 
 local function OnEvent(self, event, ...)
 	lastPanel = self

@@ -6,6 +6,7 @@ local HEALER_ICON = "|TInterface\\AddOns\\ElvUI\\media\\textures\\healer.tga:14:
 local DPS_ICON = "|TInterface\\AddOns\\ElvUI\\media\\textures\\dps.tga:14:14|t"
 local lastPanel
 
+local LFG_ROLE_NUM_SHORTAGE_TYPES = LFG_ROLE_NUM_SHORTAGE_TYPES
 local BATTLEGROUND_HOLIDAY = BATTLEGROUND_HOLIDAY
 local NOBONUSREWARDS = BATTLEGROUND_HOLIDAY..": N/A"
 

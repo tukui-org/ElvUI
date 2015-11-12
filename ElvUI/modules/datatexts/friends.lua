@@ -1,6 +1,17 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
+-- localized references for global functions (about 50% faster)
+local join = string.join
+local find = string.find
+local format = string.format
+local sort = table.sort
+local type = type
+local gsub = string.gsub
+local wipe = wipe
+local pairs = pairs
+local select = select
+
 -- create a popup
 E.PopupDialogs.SET_BN_BROADCAST = {
 	text = BN_BROADCAST_TOOLTIP,
@@ -20,17 +31,6 @@ E.PopupDialogs.SET_BN_BROADCAST = {
 	hideOnEscape = 1,
 	preferredIndex = 3
 }
-
--- localized references for global functions (about 50% faster)
-local join = string.join
-local find = string.find
-local format = string.format
-local sort = table.sort
-local type = type
-local gsub = string.gsub
-local wipe = wipe
-local pairs = pairs
-local select = select
 
 local AFK = AFK
 local DND = DND
@@ -263,7 +263,7 @@ local function OnEnter(self)
 	end
 
 	local totalfriends = numberOfFriends + totalBNet
-	local zonec, classc, levelc, realmc, info
+	local zonec, classc, levelc, realmc, info, grouped
 	DT.tooltip:AddDoubleLine(L["Friends List"], format(totalOnlineString, totalonline, totalfriends),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
 	if onlineFriends > 0 then
 		DT.tooltip:AddLine(' ')

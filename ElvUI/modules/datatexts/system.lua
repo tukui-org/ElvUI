@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
+local collectgarbage = collectgarbage
 local format = string.format
 local sort = table.sort
 local join = string.join

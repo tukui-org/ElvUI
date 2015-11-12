@@ -1,6 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
+local join = string.join
+
 local lastPanel
 local displayString = ''
 local classColor = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass]
@@ -103,7 +105,7 @@ function DT:HideBattlegroundTexts()
 end
 
 local function ValueColorUpdate(hex, r, g, b)
-	displayString = string.join("", "%s: ", hex, "%s|r")
+	displayString = join("", "%s: ", hex, "%s|r")
 
 	if lastPanel ~= nil then
 		DT.UPDATE_BATTLEFIELD_SCORE(lastPanel)

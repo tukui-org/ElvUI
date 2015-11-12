@@ -7,6 +7,7 @@ local timer = 0
 local startTime = 0
 local timerText = L["Combat"]
 
+local GetTime = GetTime
 local floor = math.floor
 local format = string.format
 local join = string.join

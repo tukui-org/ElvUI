@@ -12,6 +12,8 @@ local displayString = '';
 
 local join = string.join
 local select = select
+local time = time
+local UnitGUID = UnitGUID
 
 local function Reset()
 	timeStamp = 0

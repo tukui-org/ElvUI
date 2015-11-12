@@ -7,6 +7,7 @@ local len = string.len
 local pairs = pairs
 local type = type
 local error = error
+local UnitGUID = UnitGUID
 
 function DT:Initialize()
 	--if E.db["datatexts"].enable ~= true then return end

@@ -11,6 +11,7 @@ tooltiptext = _G[tooltip:GetName().."TextLeft2"]
 tooltip:SetOwner(E.UIParent, "ANCHOR_NONE")
 tooltiptext:SetText("")
 
+local _G = _G
 local join = string.join
 local match = string.match
 local tonumber = tonumber

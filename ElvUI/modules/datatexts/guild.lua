@@ -13,6 +13,9 @@ local wipe = wipe
 local select = select
 local unpack = unpack
 
+local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+
 local GUILD_MOTD = GUILD_MOTD
 local COMBAT_FACTION_CHANGE = COMBAT_FACTION_CHANGE
 local GUILD = GUILD
@@ -73,7 +76,7 @@ local mobilestatus = {
 local function BuildGuildTable()
 	wipe(guildTable)
 	local statusInfo
-	local _, name, rank, level, zone, note, officernote, connected, memberstatus, class, isMobile
+	local _, name, rank, rankIndex, level, zone, note, officernote, connected, memberstatus, class, isMobile
 
 	local totalMembers = GetNumGuildMembers()
 	for i = 1, totalMembers do
