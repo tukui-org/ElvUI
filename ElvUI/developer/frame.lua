@@ -84,7 +84,7 @@ SlashCmdList["FRAMELIST"] = function(msg)
 	end
 end
 
-function TextureList(frame)
+local function TextureList(frame)
 	frame = _G[frame] or FRAME
 	--[[for key, obj in pairs(frame) do
 		if type(obj) == "table" and obj.GetObjectType and obj:GetObjectType() == "Texture" then
