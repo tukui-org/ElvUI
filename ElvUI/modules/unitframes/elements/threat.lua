@@ -1,6 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
+--Cache global variables
+local unpack = unpack
+
 function UF:Construct_Threat(frame, glow)
 	local threat = CreateFrame("Frame", nil, frame)
 

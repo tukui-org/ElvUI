@@ -3,12 +3,19 @@ local UF = E:GetModule('UnitFrames');
 local _, ns = ...
 local ElvUF = ns.oUF
 
+--Cache global variables
+local _G = _G
+local setmetatable, getfenv, setfenv = setmetatable, getfenv, setfenv
+local type, unpack, select, pairs = type, unpack, select, pairs
+local min, random = math.min, math.random
+local format = string.format
+local CLASS_SORT_ORDER = CLASS_SORT_ORDER
+local MAX_RAID_MEMBERS = MAX_RAID_MEMBERS
+
 local attributeBlacklist = {["showRaid"] = true, ["showParty"] = true, ["showSolo"] = true}
 local configEnv
 local originalEnvs = {}
 local overrideFuncs = {}
-local format = string.format
-local min, random = math.min, math.random
 
 local function createConfigEnv()
 	if( configEnv ) then return end

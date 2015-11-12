@@ -4,10 +4,15 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
-local ceil = math.ceil
+--Cache global variables
+local _G = _G
+local pairs, unpack = pairs, unpack
 local tinsert = table.insert
+local ceil = math.ceil
+local format = format
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
+local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 
 function UF:Construct_TargetFrame(frame)
 	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')

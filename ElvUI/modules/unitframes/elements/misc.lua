@@ -1,10 +1,15 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
+--Cache global variables
+local unpack, select, assert, pairs = unpack, select, assert, pairs
+local tinsert = tinsert
 local random, floor, ceil = math.random, math.floor, math.ceil
 local format = string.format
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
+local FACTION_BAR_COLORS = FACTION_BAR_COLORS
+local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 
 local LSM = LibStub("LibSharedMedia-3.0");
 function UF:Construct_TargetGlow(frame)

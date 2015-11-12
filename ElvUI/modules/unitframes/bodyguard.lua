@@ -6,6 +6,9 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
+--Cache global variables
+local unpack = unpack
+
 local CONTINENT_DRAENOR = 7
 local BODYGUARD_BANNED_ZONES = {
     [978] = true,  -- Ashran

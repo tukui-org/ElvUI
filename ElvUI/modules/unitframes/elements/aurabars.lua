@@ -1,7 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
+--Cache global variables
 local tostring = tostring
+local format = format
 
 function UF:Construct_AuraBars()
 	local bar = self.statusBar

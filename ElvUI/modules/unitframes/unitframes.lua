@@ -4,6 +4,12 @@ local LSM = LibStub("LibSharedMedia-3.0");
 local BG = LibStub("LibBodyguard-1.0");
 UF.LSM = LSM
 
+--Cache global variables
+local _G = _G
+local select, pairs, type, unpack, assert, tostring = select, pairs, type, unpack, assert, tostring
+local MAX_RAID_MEMBERS = MAX_RAID_MEMBERS
+local MAX_BOSS_FRAMES = MAX_BOSS_FRAMES
+
 local _, ns = ...
 local ElvUF = ns.oUF
 local AceTimer = LibStub:GetLibrary("AceTimer-3.0")

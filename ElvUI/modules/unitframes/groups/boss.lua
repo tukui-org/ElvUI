@@ -1,6 +1,13 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
+--Cache global variables
+local _G = _G
+local pairs = pairs
+local tinsert = table.insert
+local format = format
+local MAX_BOSS_FRAMES = MAX_BOSS_FRAMES
+
 local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
