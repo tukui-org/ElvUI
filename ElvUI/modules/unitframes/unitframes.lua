@@ -923,9 +923,16 @@ function UF:UpdateAllHeaders(event)
 		ElvUF:DisableBlizzard('party')
 	end
 
+	local smartRaidFilterEnabled = self.db.smartRaidFilter
 	for group, header in pairs(self['headers']) do
 		header:Update()
-		local shouldUpdateHeader = self[group].numGroups ~= nil and true or false
+
+		local shouldUpdateHeader
+		if header.numGroups == nil or smartRaidFilterEnabled then
+			shouldUpdateHeader = false
+		elseif header.numGroups ~= nil and not smartRaidFilterEnabled then
+			shouldUpdateHeader = true
+		end
 		self:CreateAndUpdateHeaderGroup(group, nil, nil, shouldUpdateHeader)
 
 		if group == 'party' or group == 'raid' or group == 'raid40' then
