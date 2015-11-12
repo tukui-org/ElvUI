@@ -2,6 +2,12 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local M = E:GetModule('Misc');
 local LBG = LibStub("LibButtonGlow-1.0", true)
 
+--Cache global variables
+local unpack, pairs = unpack, pairs
+local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
+local TEXTURE_ITEM_QUEST_BANG = TEXTURE_ITEM_QUEST_BANG
+local LOOT = LOOT
+
 --Credit Haste
 local lootFrame, lootFrameHolder
 local iconSize = 30;

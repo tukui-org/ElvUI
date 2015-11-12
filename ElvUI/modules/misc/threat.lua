@@ -1,12 +1,15 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local THREAT = E:NewModule('Threat', 'AceEvent-3.0');
 
-E.Threat = THREAT
-THREAT.list = {};
-
+--Cache global variables
+local pairs, select = pairs, select
 local twipe = table.wipe
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
+local UNKNOWN = UNKNOWN
+
+E.Threat = THREAT
+THREAT.list = {};
 
 function THREAT:UpdatePosition()
 	if self.db.position == 'RIGHTCHAT' then

@@ -1,12 +1,15 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local M = E:NewModule('Misc', 'AceEvent-3.0', 'AceTimer-3.0');
-
 E.Misc = M;
-local UIErrorsFrame = UIErrorsFrame;
-local interruptMsg = INTERRUPTED.." %s's \124cff71d5ff\124Hspell:%d\124h[%s]\124h\124r!"
+
+--Cache global variables
 local floor = math.floor
-local format = string.format
-local gsub = string.gsub
+local format, gsub = string.format, string.gsub
+local UnitGUID = UnitGUID
+local UIErrorsFrame = UIErrorsFrame;
+local MAX_PARTY_MEMBERS = MAX_PARTY_MEMBERS
+
+local interruptMsg = INTERRUPTED.." %s's \124cff71d5ff\124Hspell:%d\124h[%s]\124h\124r!"
 
 function M:ErrorFrameToggle(event)
 	if not E.db.general.hideErrorFrame then return end

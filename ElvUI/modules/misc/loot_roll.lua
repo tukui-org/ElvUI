@@ -1,12 +1,15 @@
 ﻿local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local M = E:GetModule('Misc');
 
+--Cache global variables
+local pairs, unpack, ipairs, next, tonumber = pairs, unpack, ipairs, next, tonumber
+local tinsert = table.insert
+local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
+
 local pos = 'TOP';
 local cancelled_rolls = {}
 local FRAME_WIDTH, FRAME_HEIGHT = 328, 28
 M.RollBars = {}
-
-local tinsert = table.insert
 
 local function ClickRoll(frame)
 	RollOnLoot(frame.parent.rollID, frame.rolltype)

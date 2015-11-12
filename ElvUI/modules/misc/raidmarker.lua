@@ -2,6 +2,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local M = E:GetModule('Misc');
 
+--Cache global variables
+local sin, cos = math.sin, math.cos
+local UIErrorsFrame = UIErrorsFrame
+
 local ButtonIsDown;
 
 function M:RaidMarkCanMark()
@@ -13,7 +17,7 @@ function M:RaidMarkCanMark()
 		elseif IsInGroup() and not IsInRaid() then
 			return true;
 		else
-			UIErrorsFrame:AddMessage(L["You don't have permission to mark targets."], 1.0, 0.1, 0.1, 1.0, UIERRORS_HOLD_TIME);
+			UIErrorsFrame:AddMessage(L["You don't have permission to mark targets."], 1.0, 0.1, 0.1, 1.0);
 			return false;
 		end
 	else

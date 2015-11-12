@@ -1,10 +1,14 @@
 local E, L, DF = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 local RU = E:NewModule('RaidUtility', 'AceEvent-3.0');
 
-E.RaidUtility = RU
-
-local PANEL_HEIGHT = 100
+--Cache global variables
+local _G = _G
+local unpack, pairs = unpack, pairs
+local tinsert = table.insert
 local find = string.find
+
+E.RaidUtility = RU
+local PANEL_HEIGHT = 100
 
 --Check if We are Raid Leader or Raid Officer
 local function CheckRaidStatus()
@@ -215,7 +219,7 @@ function RU:Initialize()
 		CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateRolePoll:SetPoint("BOTTOMLEFT", CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck, "TOPLEFT", 0, 1)
 		CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateRolePoll:SetPoint("BOTTOMRIGHT", CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck, "TOPRIGHT", 0, 1)
 		
-		table.insert(buttons, "CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton")
+		tinsert(buttons, "CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton")
 	else
 		E:StaticPopup_Show("WARNING_BLIZZARD_ADDONS")
 	end

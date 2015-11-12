@@ -3,15 +3,22 @@ local AFKString = _G["AFK"]
 local AFK = E:NewModule('AFK', 'AceEvent-3.0', 'AceTimer-3.0');
 local CH = E:GetModule("Chat")
 
-local CAMERA_SPEED = 0.035
+--Cache global variables
+local _G = _G
+local GetTime = GetTime
+local tostring = tostring
+local floor = floor
 local format, strsub = string.format, string.sub
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
+local DND = DND
 
+local CAMERA_SPEED = 0.035
 local ignoreKeys = {
 	LALT = true,
 	LSHIFT = true,
 	RSHIFT = true,
 }
-
 local printKeys = {
 	["PRINTSCREEN"] = true,
 }

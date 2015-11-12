@@ -1,7 +1,11 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local TOTEMS = E:NewModule('Totems', 'AceEvent-3.0');
-
 E.TotemBar = TOTEMS
+
+--Cache global variables
+local _G = _G
+local unpack = unpack
+local MAX_TOTEMS = MAX_TOTEMS
 
 function TOTEMS:Update(event)
 	local displayedTotems = 0

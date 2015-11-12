@@ -1,9 +1,13 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local M = E:GetModule('Misc');
 
-local format = string.format
+--Cache global variables
+local _G = _G
 local min, max = math.min, math.max
-
+local format = string.format
+local STANDING = STANDING
+local REPUTATION = REPUTATION
+local FACTION_BAR_COLORS = FACTION_BAR_COLORS
 
 function M:GetXP(unit)
 	if(unit == 'pet') then

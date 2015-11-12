@@ -3,6 +3,10 @@ local M = E:GetModule('Misc');
 local NP = E:GetModule("NamePlates");
 local numChildren = -1
 
+--Cache global variables
+local select, unpack, type = select, unpack, type
+local strlower = strlower
+
 function M:UpdateBubbleBorder()
 	if not self.text then return end
 
