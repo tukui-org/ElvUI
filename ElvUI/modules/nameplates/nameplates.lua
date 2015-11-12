@@ -2,27 +2,27 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local NP = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
 local LSM = LibStub("LibSharedMedia-3.0")
 
-local numChildren = -1
-local twipe = table.wipe
-local tsort = table.sort
-local tinsert = table.insert
-local band = bit.band
-local gsub = string.gsub
-local tolower = string.lower
-local targetIndicator
+--Cache global variables
 local _G = _G
-local targetAlpha = 1
+local GetTime = GetTime
+local tonumber, pairs, select, tostring, unpack = tonumber, pairs, select, tostring, unpack
+local twipe, tsort, tinsert, wipe = table.wipe, table.sort, table.insert, wipe
+local band = bit.band
+local floor = math.floor
+local gsub, tolower, format, strsplit = string.gsub, string.lower, format, strsplit
 local WorldFrame = WorldFrame
-local tonumber = tonumber
-local pairs = pairs
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 local UnitGUID = UnitGUID
 local UnitHealthMax = UnitHealthMax
-local floor = math.floor
-local select = select
-local tostring = tostring
-local unpack = unpack
+local UNKNOWN = UNKNOWN
+local MAX_COMBO_POINTS = MAX_COMBO_POINTS
+local AURA_TYPE_BUFF, AURA_TYPE_DEBUFF = AURA_TYPE_BUFF, AURA_TYPE_DEBUFF
+local COMBATLOG_OBJECT_CONTROL_PLAYER = COMBATLOG_OBJECT_CONTROL_PLAYER
+
+local numChildren = -1
+local targetIndicator
+local targetAlpha = 1
 
 --Pattern to remove cross realm label added to the end of plate names
 --Taken from http://www.wowace.com/addons/libnameplateregistry-1-0/
