@@ -1,8 +1,13 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule('Bags');
 
-local TOTAL_BAGS = NUM_BAG_FRAMES + 1
+--Cache global variables
+local _G = _G
+local unpack = unpack
 local tinsert = table.insert
+local NUM_BAG_FRAMES = NUM_BAG_FRAMES
+
+local TOTAL_BAGS = NUM_BAG_FRAMES + 1
 
 local function OnEnter()
 	if E.db.bags.bagBar.mouseover ~= true then return; end
