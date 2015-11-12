@@ -1,3 +1,8 @@
+--Cache global variables
+local _G = _G
+local tostring, select = tostring, select
+local format = format
+
 --[[
 	Command to grab frame information when mouseing over a frame
 
