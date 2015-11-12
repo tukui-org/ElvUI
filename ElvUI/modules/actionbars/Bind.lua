@@ -1,9 +1,16 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars');
 
+--Cache global variables
+local _G = _G
+local select, tonumber, pairs = select, tonumber, pairs
+local floor = math.floor
+local find, format = string.find, string.format
+local MAX_ACCOUNT_MACROS = MAX_ACCOUNT_MACROS
+local CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP = CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP
+local CHARACTER_SPECIFIC_KEYBINDINGS = CHARACTER_SPECIFIC_KEYBINDINGS
+
 local bind = CreateFrame("Frame", "ElvUI_KeyBinder", E.UIParent);
-local find = string.find;
-local _G = getfenv(0);
 
 function AB:ActivateBindMode()
 	bind.active = true;

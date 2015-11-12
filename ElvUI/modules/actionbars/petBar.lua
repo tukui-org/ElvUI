@@ -1,10 +1,14 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars');
 
+--Cache global variables
+local _G = _G
+local ceil = math.ceil
+local NUM_PET_ACTION_SLOTS = NUM_PET_ACTION_SLOTS
+
 local Masque = LibStub("Masque", true)
 local MasqueGroup = Masque and Masque:Group("ElvUI", "Pet Bar")
 
-local ceil = math.ceil;
 local bar = CreateFrame('Frame', 'ElvUI_BarPet', E.UIParent, 'SecureHandlerStateTemplate');
 
 function AB:UpdatePet(event, unit)

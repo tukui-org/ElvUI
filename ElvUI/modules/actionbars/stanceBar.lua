@@ -1,11 +1,15 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars');
 
+--Cache global variables
+local _G = _G
+local type = type
+local ceil = math.ceil;
+local format, lower = format, string.lower
+local NUM_STANCE_SLOTS = NUM_STANCE_SLOTS
+
 local Masque = LibStub("Masque", true)
 local MasqueGroup = Masque and Masque:Group("ElvUI", "Stance Bar")
-
-local ceil = math.ceil;
-local lower = string.lower;
 
 local bar = CreateFrame('Frame', 'ElvUI_StanceBar', E.UIParent, 'SecureHandlerStateTemplate');
 

@@ -1,6 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars');
 
+--Cache global variables
+local _G = _G
+local unpack = unpack
+
 local function FixExtraActionCD(cd)
 	local start, duration = GetActionCooldown(cd:GetParent().action)
 	E.OnSetCooldown(cd, start, duration, 0, 0)

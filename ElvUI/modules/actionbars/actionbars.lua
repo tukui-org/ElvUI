@@ -2,6 +2,13 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local AB = E:NewModule('ActionBars', 'AceHook-3.0', 'AceEvent-3.0');
 --/run E, C, L = unpack(ElvUI); AB = E:GetModule('ActionBars'); AB:ToggleMovers()
 
+--Cache global variables
+local _G = _G
+local pairs, select, unpack = pairs, select, unpack
+local ceil = math.ceil
+local format, gsub, split, strfind = string.format, string.gsub, string.split, strfind
+local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
+
 local Sticky = LibStub("LibSimpleSticky-1.0");
 local _LOCK
 local LAB = LibStub("LibActionButton-1.0-ElvUI")
@@ -9,10 +16,6 @@ local LSM = LibStub("LibSharedMedia-3.0")
 
 local Masque = LibStub("Masque", true)
 local MasqueGroup = Masque and Masque:Group("ElvUI", "ActionBars")
-
-local gsub = string.gsub
-local format = string.format
-local split = string.split
 
 AB.RegisterCooldown = E.RegisterCooldown
 
