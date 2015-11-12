@@ -10,6 +10,7 @@ local tinsert, tremove, tsort, twipe, tconcat = table.insert, table.remove, tabl
 local random = math.random
 local len, gsub, find, sub, gmatch, format, split = string.len, string.gsub, string.find, string.sub, string.gmatch, string.format, string.split
 local strlower, strsub, strlen, strupper = strlower, strsub, strlen, strupper
+local UnitGUID = UnitGUID
 local NUM_CHAT_WINDOWS = NUM_CHAT_WINDOWS
 local ERR_CHAT_PLAYER_NOT_FOUND_S = ERR_CHAT_PLAYER_NOT_FOUND_S
 local ERR_FRIEND_ONLINE_SS, ERR_FRIEND_OFFLINE_S = ERR_FRIEND_ONLINE_SS, ERR_FRIEND_OFFLINE_S
