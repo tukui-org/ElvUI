@@ -765,9 +765,9 @@ function B:DoMoves()
 						moveTracker[moveSource] = targetID
 						moveTracker[moveTarget] = moveID
 						lastDestination = moveTarget
-						lastMove = moves[i] --Where does "i" come from???
+						-- lastMove = moves[i] --Where does "i" come from???
 						lastItemID = moveID
-						tremove(moves, i) --Where does "i" come from???
+						-- tremove(moves, i) --Where does "i" come from???
 						return
 					end
 
