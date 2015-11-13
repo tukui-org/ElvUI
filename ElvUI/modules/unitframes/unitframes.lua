@@ -797,6 +797,12 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 			if not self[group].isForced and not self[group].blockVisibilityChanges then
 				RegisterStateDriver(self[group], "visibility", db.visibility)
 			end
+			
+			--This fixes a bug where the party/raid frame will not appear when you enable it
+			--if it was disabled when you logged in/reloaded.
+			if not self[group].mover then
+				self[group]:Update()
+			end
 		else
 			self[group]:Configure_Groups()
 			self[group]:Update()
