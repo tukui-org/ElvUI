@@ -879,37 +879,6 @@ function E:GetTopCPUFunc(msg)
 	self:Print("Calculating CPU Usage..")
 end
 
-local function OnDragStart(self)
-	self:StartMoving()
-end
-
-local function OnDragStop(self)
-	self:StopMovingOrSizing()
-end
-
-local function OnUpdate(self, elapsed)
-	if(self.elapsed and self.elapsed > 0.1) then
-		self.tex:SetTexCoord((self.curFrame - 1) * 0.1, 0, (self.curFrame - 1) * 0.1, 1, self.curFrame * 0.1, 0, self.curFrame * 0.1, 1)
-
-		if(self.countUp) then
-			self.curFrame = self.curFrame + 1
-		else
-			self.curFrame = self.curFrame - 1
-		end
-
-		if(self.curFrame > 10) then
-			self.countUp = false
-			self.curFrame = 9
-		elseif(self.curFrame < 1) then
-			self.countUp = true
-			self.curFrame = 2
-		end
-		self.elapsed = 0
-	else
-		self.elapsed = (self.elapsed or 0) + elapsed
-	end
-end
-
 function E:Initialize()
 	twipe(self.db)
 	twipe(self.global)

@@ -1,9 +1,9 @@
 --[[
 	Collection of previous april fools pranks
 	
-	Garrison Missions: Would create fake Garrison Missions with very rare mounts as rewards.
-	Harlem Shake: Try it out with the command /harlemshake
-	Hello Kitty: Try it out with the command /hellokitty (pay attention to the popups, read what it says)
+	Garrison Missions: 	Would create fake Garrison Missions with very rare mounts as rewards.
+	Harlem Shake: 		Try it out with the command /harlemshake
+	Hello Kitty: 		Try it out with the command /hellokitty (pay attention to the popups, read what it says)
 ]]
 
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
@@ -342,6 +342,37 @@ end
 --Unfortunately there was a bug which caused some of the hello kitty changes to stick,
 -- when they should have reverted to the original settings. This bug was fixed later on.
 do
+	local function OnDragStart(self)
+		self:StartMoving()
+	end
+
+	local function OnDragStop(self)
+		self:StopMovingOrSizing()
+	end
+
+	local function OnUpdate(self, elapsed)
+		if(self.elapsed and self.elapsed > 0.1) then
+			self.tex:SetTexCoord((self.curFrame - 1) * 0.1, 0, (self.curFrame - 1) * 0.1, 1, self.curFrame * 0.1, 0, self.curFrame * 0.1, 1)
+
+			if(self.countUp) then
+				self.curFrame = self.curFrame + 1
+			else
+				self.curFrame = self.curFrame - 1
+			end
+
+			if(self.curFrame > 10) then
+				self.countUp = false
+				self.curFrame = 9
+			elseif(self.curFrame < 1) then
+				self.countUp = true
+				self.curFrame = 2
+			end
+			self.elapsed = 0
+		else
+			self.elapsed = (self.elapsed or 0) + elapsed
+		end
+	end
+
 	function E:SetupHelloKitty()
 		if not self.db.tempSettings then
 			self.db.tempSettings = {}
