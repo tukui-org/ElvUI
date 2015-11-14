@@ -100,7 +100,7 @@ function UF:Update_AssistFrames(frame, db)
 				health.colorHealth = true
 			end
 		else
-			health.colorClass = true
+			health.colorClass = (not self.db['colors'].forcehealthreaction)
 			health.colorReaction = true
 		end
 

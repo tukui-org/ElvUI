@@ -1810,7 +1810,8 @@ E.Options.args.unitframe = {
 									desc = L["Forces reaction color instead of class color on units controlled by players."],
 									get = function(info) return E.db.unitframe.colors[ info[#info] ] end,
 									set = function(info, value) E.db.unitframe.colors[ info[#info] ] = value; UF:Update_AllFrames() end,
-									},
+									disabled = function() return not E.db.unitframe.colors.healthclass end,
+								},
 								colorhealthbyvalue = {
 									order = 3,
 									type = 'toggle',
