@@ -2,11 +2,28 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local AB = E:GetModule('ActionBars');
 
 --Cache global variables
+--Lua functions
 local _G = _G
 local type = type
 local ceil = math.ceil;
 local format, lower = format, string.lower
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local GetSpellInfo = GetSpellInfo
+local GetShapeshiftForm = GetShapeshiftForm
+local GetNumShapeshiftForms = GetNumShapeshiftForms
+local GetShapeshiftFormCooldown = GetShapeshiftFormCooldown
+local GetShapeshiftFormInfo = GetShapeshiftFormInfo
+local CooldownFrame_SetTimer = CooldownFrame_SetTimer
+local InCombatLockdown = InCombatLockdown
+local RegisterStateDriver = RegisterStateDriver
+local UnregisterStateDriver = UnregisterStateDriver
+local GetBindingKey = GetBindingKey
+local C_PetBattlesIsInBattle = C_PetBattles.IsInBattle
 local NUM_STANCE_SLOTS = NUM_STANCE_SLOTS
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: StanceBarFrame 
 
 local Masque = LibStub("Masque", true)
 local MasqueGroup = Masque and Masque:Group("ElvUI", "Stance Bar")
@@ -277,7 +294,7 @@ function AB:AdjustMaxStanceButtons(event)
 		self:StyleShapeShift()
 	end
 
-	if not C_PetBattles.IsInBattle() or initialCreate then
+	if not C_PetBattlesIsInBattle() or initialCreate then
 		if numButtons == 0 then
 			UnregisterStateDriver(bar, "show");
 			bar:Hide()

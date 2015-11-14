@@ -3,11 +3,57 @@ local AB = E:NewModule('ActionBars', 'AceHook-3.0', 'AceEvent-3.0');
 --/run E, C, L = unpack(ElvUI); AB = E:GetModule('ActionBars'); AB:ToggleMovers()
 
 --Cache global variables
+--Lua functions
 local _G = _G
 local pairs, select, unpack = pairs, select, unpack
 local ceil = math.ceil
 local format, gsub, split, strfind = string.format, string.gsub, string.split, strfind
+--WoW API / Variables
+local hooksecurefunc = hooksecurefunc
+local CreateFrame = CreateFrame
+local UnitExists = UnitExists
+local UnitOnTaxi = UnitOnTaxi
+local VehicleExit = VehicleExit
+local PetDismiss = PetDismiss
+local CanExitVehicle = CanExitVehicle
+local ActionBarController_GetCurrentActionBarState = ActionBarController_GetCurrentActionBarState
+local TaxiRequestEarlyLanding = TaxiRequestEarlyLanding
+local MainMenuBarVehicleLeaveButton_OnEnter = MainMenuBarVehicleLeaveButton_OnEnter
+local RegisterStateDriver = RegisterStateDriver
+local UnregisterStateDriver = UnregisterStateDriver
+local GameTooltip_Hide = GameTooltip_Hide
+local InCombatLockdown = InCombatLockdown
+local ClearOverrideBindings = ClearOverrideBindings
+local GetBindingKey = GetBindingKey
+local SetOverrideBindingClick = SetOverrideBindingClick
+local SetClampedTextureRotation = SetClampedTextureRotation
+local GetVehicleBarIndex = GetVehicleBarIndex
+local GetOverrideBarIndex = GetOverrideBarIndex
+local SetModifiedClick = SetModifiedClick
+local GetNumFlyouts, GetFlyoutInfo = GetNumFlyouts, GetFlyoutInfo
+local GetFlyoutID = GetFlyoutID
+local GetMouseFocus = GetMouseFocus
+local HasOverrideActionBar, HasVehicleActionBar = HasOverrideActionBar, HasVehicleActionBar
+local GetCVarBool, SetCVar = GetCVarBool, SetCVar
+local C_PetBattlesIsInBattle = C_PetBattles.IsInBattle
 local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
+local LE_ACTIONBAR_STATE_MAIN = LE_ACTIONBAR_STATE_MAIN
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: LeaveVehicleButton, Minimap, SpellFlyout, SpellFlyoutHorizontalBackground
+-- GLOBALS: SpellFlyoutVerticalBackground, IconIntroTracker, MultiCastActionBarFrame
+-- GLOBALS: PetActionBarFrame, PossessBarFrame, OverrideActionBar, StanceBarFrame
+-- GLOBALS: MultiBarBottomLeft, MultiBarBottomRight, MultiBarLeft, MultiBarRight
+-- GLOBALS: ActionBarController, MainMenuBar, MainMenuExpBar, ReputationWatchBar
+-- GLOBALS: MainMenuBarArtFrame, InterfaceOptionsCombatPanelActionButtonUseKeyDown
+-- GLOBALS: InterfaceOptionsActionBarsPanelAlwaysShowActionBars
+-- GLOBALS: InterfaceOptionsActionBarsPanelBottomRight, InterfaceOptionsActionBarsPanelBottomLeft
+-- GLOBALS: InterfaceOptionsActionBarsPanelRight, InterfaceOptionsActionBarsPanelRightTwo
+-- GLOBALS: InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton
+-- GLOBALS: InterfaceOptionsActionBarsPanelLockActionBars
+-- GLOBALS: InterfaceOptionsActionBarsPanelPickupActionKeyDropDown
+-- GLOBALS: InterfaceOptionsStatusTextPanelXP
+-- GLOBALS: PlayerTalentFrame, SpellFlyoutBackgroundEnd
 
 local Sticky = LibStub("LibSimpleSticky-1.0");
 local _LOCK
@@ -18,7 +64,6 @@ local Masque = LibStub("Masque", true)
 local MasqueGroup = Masque and Masque:Group("ElvUI", "ActionBars")
 
 AB.RegisterCooldown = E.RegisterCooldown
-
 
 E.ActionBars = AB
 AB["handledBars"] = {} --List of all bars
@@ -928,7 +973,7 @@ function AB:Initialize()
 	self:RegisterEvent('UPDATE_VEHICLE_ACTIONBAR', 'VehicleFix')
 	self:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR', 'VehicleFix')
 
-	if C_PetBattles.IsInBattle() then
+	if C_PetBattlesIsInBattle() then
 		self:RemoveBindings()
 	else
 		self:ReassignBindings()
