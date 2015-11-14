@@ -256,7 +256,8 @@ function UF:Update_PartyFrames(frame, db)
 						health.colorHealth = true
 					end
 				else
-					health.colorClass = self.db['col(not self.db['colors'].forcehealthreaction)h.colorReaction = true
+					health.colorClass = (not self.db['colors'].forcehealthreaction)
+					health.colorReaction = true
 				end
 			end
 
