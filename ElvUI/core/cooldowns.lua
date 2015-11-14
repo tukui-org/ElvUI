@@ -1,8 +1,15 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 --Cache global variables
-local floor, min = floor, min
+--Lua functions
+local floor, min = math.floor, math.min
 local GetTime = GetTime
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local hooksecurefunc = hooksecurefunc
+
+--Global variables that we don't cache, list them here for the mikk's Find Globals script
+-- GLOBALS: UIParent
 
 local MIN_SCALE = 0.5
 local ICON_SIZE = 36 --the normal size for an icon (don't change this)

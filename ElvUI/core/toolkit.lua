@@ -2,18 +2,18 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local LSM = LibStub("LibSharedMedia-3.0")
 
 --Cache global variables
+--Lua functions
 local _G = _G
 local unpack, type, select, getmetatable = unpack, type, select, getmetatable
 local floor = math.floor
+--WoW API / Variables
 local CreateFrame = CreateFrame
-
-local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0, 0, 0, 1, 0, 0, 0
-
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 
 --Preload shit..
 E.mult = 1;
+local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0, 0, 0, 1, 0, 0, 0
 
 local function GetTemplate(t)
 	backdropa = 1

@@ -4,9 +4,16 @@ local D = E:NewModule('Distributor', "AceEvent-3.0","AceTimer-3.0","AceComm-3.0"
 --Cache global variables
 local tonumber = tonumber
 local len, format, split = string.len, string.format, string.split
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local IsInRaid, UnitInRaid = IsInRaid, UnitInRaid
+local IsInGroup, UnitInParty = IsInGroup, UnitInParty
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local ACCEPT, CANCEL, YES, NO = ACCEPT, CANCEL, YES, NO
+
+--Global variables that we don't cache, list them here for the mikk's Find Globals script
+-- GLOBALS: LibStub, UIParent, ElvDB
 
 ----------------------------------
 -- CONSTANTS

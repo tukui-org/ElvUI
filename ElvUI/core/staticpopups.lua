@@ -1,10 +1,28 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 --Cache global variables
+--Lua functions
 local _G = _G
 local pairs, type, unpack, assert = pairs, type, unpack, assert
-local lower, tremove, tContains, tinsert, wipe = string.lower, tremove, tContains, tinsert, table.wipe
-local STATICPOPUP_TEXTURE_ALERT, STATICPOPUP_TEXTURE_ALERTGEAR
+local tremove, tContains, tinsert, wipe = tremove, tContains, tinsert, table.wipe
+local lower = string.lower
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local UnitIsDeadOrGhost, InCinematic = UnitIsDeadOrGhost, InCinematic
+local GetBindingFromClick, RunBinding = GetBindingFromClick, RunBinding
+local PurchaseSlot, GetBankSlotCost = PurchaseSlot, GetBankSlotCost
+local MoneyFrame_Update = MoneyFrame_Update
+local SetCVar, EnableAddOn, DisableAddOn = SetCVar, EnableAddOn, DisableAddOn
+local ReloadUI, PlaySound, StopMusic = ReloadUI, PlaySound, StopMusic
+local StaticPopup_Resize = StaticPopup_Resize
+local AutoCompleteEditBox_OnEnterPressed = AutoCompleteEditBox_OnEnterPressed
+local AutoCompleteEditBox_OnTextChanged = AutoCompleteEditBox_OnTextChanged
+local ChatEdit_FocusActiveWindow = ChatEdit_FocusActiveWindow
+local STATICPOPUP_TEXTURE_ALERT = STATICPOPUP_TEXTURE_ALERT
+local STATICPOPUP_TEXTURE_ALERTGEAR = STATICPOPUP_TEXTURE_ALERTGEAR
+
+--Global variables that we don't cache, list them here for the mikk's Find Globals script
+-- GLOBALS: ElvUIBindPopupWindowCheckButton
 
 E.PopupDialogs = {};
 E.StaticPopup_DisplayedFrames = {};

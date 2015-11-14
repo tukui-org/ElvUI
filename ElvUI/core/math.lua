@@ -4,11 +4,15 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local select, tonumber, assert, type, unpack = select, tonumber, assert, type, unpack
 local tinsert, tremove = tinsert, tremove
 local atan2, modf, ceil, floor, abs, sqrt, pi, mod = math.atan2, math.modf, math.ceil, math.floor, math.abs, math.sqrt, math.pi, mod
-local format, sub, upper = format, string.sub, string.upper
+local format, sub, upper = string.format, string.sub, string.upper
+--WoW API / Variables
+local CreateFrame = CreateFrame
 local UnitPosition = UnitPosition
+local GetPlayerFacing = GetPlayerFacing
+local BreakUpLargeNumbers = BreakUpLargeNumbers
+local GetScreenWidth, GetScreenHeight = GetScreenWidth, GetScreenHeight
 
 --Return short value of a number
-
 function E:ShortValue(v)
 	if abs(v) >= 1e9 then
 		return format("%.1fG", v / 1e9)

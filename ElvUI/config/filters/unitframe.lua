@@ -1,9 +1,12 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Engine
 
 --Cache global variables
-local GetSpellInfo, UnitClass, IsSpellKnown, IsEquippedItem = GetSpellInfo, UnitClass, IsSpellKnown, IsEquippedItem
+--Lua functions
 local print, unpack, select, pairs = print, unpack, select, pairs
 local lower = string.lower
+--WoW API / Variables
+local GetSpellInfo, IsSpellKnown = GetSpellInfo, IsSpellKnown
+local UnitClass, IsEquippedItem = UnitClass, IsEquippedItem
 
 local function SpellName(id)
 	local name, _, _, _, _, _, _, _, _ = GetSpellInfo(id)

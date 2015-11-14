@@ -3,16 +3,42 @@ local LSM = LibStub("LibSharedMedia-3.0")
 local Masque = LibStub("Masque", true)
 
 --Cache global variables
+--Lua functions
 local _G = _G
 local tonumber, pairs, error, unpack, select = tonumber, pairs, error, unpack, select
-local type, collectgarbage, pcall, date = type, collectgarbage, pcall, date
+local print, type, collectgarbage, pcall, date = print, type, collectgarbage, pcall, date
 local floor, twipe, tinsert = floor, table.wipe, tinsert
 local format, find, split, match = string.format, string.find, string.split, string.match
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local GetCVar, SetCVar, GetCVarBool = GetCVar, SetCVar, GetCVarBool
+local IsAddOnLoaded = IsAddOnLoaded
+local PlayMusic, StopMusic = PlayMusic, StopMusic
+local GetSpellInfo = GetSpellInfo
+local IsInInstance, IsInGroup, IsInRaid = IsInInstance, IsInGroup, IsInRaid
+local RequestBattlefieldScoreData = RequestBattlefieldScoreData
+local GetSpecialization, GetActiveSpecGroup = GetSpecialization, GetActiveSpecGroup
+local GetCombatRatingBonus = GetCombatRatingBonus
+local GetDodgeChance, GetParryChance = GetDodgeChance, GetParryChance
+local UnitLevel, UnitStat, UnitAttackPower = UnitLevel, UnitStat, UnitAttackPower
+local SendAddonMessage = SendAddonMessage
+local InCombatLockdown = InCombatLockdown
+local DoEmote = DoEmote
+local SendChatMessage = SendChatMessage
+local GetFunctionCPUUsage = GetFunctionCPUUsage
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 local COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN = COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
+local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
+local NUM_PET_ACTION_SLOTS = NUM_PET_ACTION_SLOTS
+
+--Global variables that we don't cache, list them here for the mikk's Find Globals script
+-- GLOBALS: LibStub, UIParent, LeftChatPanel, RightChatPanel, HelloKittyLeft, HelloKittyRight
+-- GLOBALS: MAX_PLAYER_LEVEL, ElvUIPlayerBuffs, ElvUIPlayerDebuffs, ScriptErrorsFrame_OnError
+-- GLOBALS: ElvUI_StaticPopup1, ElvUI_StaticPopup1Button1, GameTooltip, Minimap, ElvUI_StanceBar
+-- GLOBALS: ObjectiveTrackerFrame, LeftChatToggleButton, RightChatToggleButton
 
 --Constants
 E.myclass = select(2, UnitClass("player"));

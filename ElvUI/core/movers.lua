@@ -2,10 +2,18 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local Sticky = LibStub("LibSimpleSticky-1.0")
 
 --Cache global variables
+--Lua functions
 local _G = _G
 local type, unpack, pairs = type, unpack, pairs
 local min = math.min
 local format, split = string.format, string.split
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local InCombatLockdown = InCombatLockdown
+local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
+
+--Global variables that we don't cache, list them here for the mikk's Find Globals script
+-- GLOBALS: ElvUIParent, ElvUIMoverNudgeWindow
 
 E.CreatedMovers = {}
 
@@ -305,7 +313,7 @@ function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag, moverT
 		E.CreatedMovers[name]["text"] = text
 		E.CreatedMovers[name]["overlay"] = overlay
 		E.CreatedMovers[name]["postdrag"] = postdrag
-		E.CreatedMovers[name]["snapoffset"] = snapOffset
+		E.CreatedMovers[name]["snapoffset"] = snapoffset
 		E.CreatedMovers[name]["point"] = GetPoint(parent)
 
 		E.CreatedMovers[name]["type"] = {}

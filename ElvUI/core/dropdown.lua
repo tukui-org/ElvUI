@@ -2,6 +2,13 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 
 --Cache global variables
 local tinsert = tinsert
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local ToggleFrame = ToggleFrame
+local GetCursorPosition = GetCursorPosition
+
+--Global variables that we don't cache, list them here for the mikk's Find Globals script
+-- GLOBALS: UIParent, UISpecialFrames, 
 
 local PADDING = 10
 local BUTTON_HEIGHT = 16
