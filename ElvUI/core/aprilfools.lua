@@ -8,6 +8,43 @@
 
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
+--Cache global variables
+--Lua functions
+local _G = _G
+local pairs = pairs
+local twipe, tinsert = table.wipe, table.insert
+local format = format
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local GarrisonMissionButton_SetRewards = GarrisonMissionButton_SetRewards
+local HybridScrollFrame_GetOffset = HybridScrollFrame_GetOffset
+local HybridScrollFrame_Update = HybridScrollFrame_Update
+local PlaySoundFile, PlayMusic, StopMusic = PlaySoundFile, PlayMusic, StopMusic
+local GetCVar, SetCVar = GetCVar, SetCVar
+local UIFrameFadeOut = UIFrameFadeOut
+local ToggleCollectionsJournal = ToggleCollectionsJournal
+local MountJournal_GetNumMounts = MountJournal_GetNumMounts
+local MountJournal_GetMountInfo = MountJournal_GetMountInfo
+local BNGetNumFriendInvites = BNGetNumFriendInvites
+local BNGetFriendInviteInfo = BNGetFriendInviteInfo
+local BNDeclineFriendInvite = BNDeclineFriendInvite
+local DoEmote = DoEmote
+local SendChatMessage = SendChatMessage
+local PARENS_TEMPLATE = PARENS_TEMPLATE
+local NUMBER_IN_PARENTHESES = NUMBER_IN_PARENTHESES
+local RED_FONT_COLOR_CODE = RED_FONT_COLOR_CODE
+local FONT_COLOR_CODE_CLOSE = FONT_COLOR_CODE_CLOSE
+local GARRISON_MISSION_IN_PROGRESS = GARRISON_MISSION_IN_PROGRESS
+local NUM_PET_ACTION_SLOTS = NUM_PET_ACTION_SLOTS
+
+--Global variables that we don't cache, list them here for the mikk's Find Globals script
+-- GLOBALS: UIParent, GarrisonMissionFrame, GarrisonMissionList_Update, GameTooltip, Minimap
+-- GLOBALS: GARRISON_FOLLOWER_MAX_LEVEL, GARRISON_LONG_MISSION_TIME, GARRISON_LONG_MISSION_TIME_FORMAT
+-- GLOBALS: ElvUI_StaticPopup1, ElvUI_StaticPopup1Button1, LeftChatPanel, RightChatPanel
+-- GLOBALS: LeftChatToggleButton, RightChatToggleButton, ElvUI_StanceBar, ObjectiveTrackerFrame
+-- GLOBALS: HelloKittyLeft, HelloKittyRight
+
+
 --Garrison Missions (Inactive)
 --Unfortunately this one didn't work with MasterPlan (and probably other Garrison Mission AddOns)
 --The idea was good, but due to time constraint the execution was not the best
