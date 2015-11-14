@@ -1,6 +1,17 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local LO = E:NewModule('Layout', 'AceEvent-3.0');
 
+--Cache global variables
+--Lua functions
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local UIFrameFadeIn, UIFrameFadeOut = UIFrameFadeIn, UIFrameFadeOut
+
+--Global variables that we don't cache, list them here for the mikk's Find Globals script
+-- GLOBALS: HideLeftChat, HideRightChat, HideBothChat, LeftChatPanel, RightChatPanel, Minimap
+-- GLOBALS: GameTooltip, LeftChatToggleButton, RightChatToggleButton, LeftChatTab, RightChatTab
+-- GLOBALS: LeftChatDataPanel, LeftMiniPanel, RightChatDataPanel, RightMiniPanel, ElvConfigToggle
+
 local PANEL_HEIGHT = 22;
 local SIDE_BUTTON_WIDTH = 16;
 
