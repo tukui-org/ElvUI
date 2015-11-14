@@ -3,11 +3,20 @@ local A = E:GetModule('Auras');
 local LSM = LibStub("LibSharedMedia-3.0")
 
 --Cache global variables
+--Lua functions
 local _G = _G
 local GetTime = GetTime
 local unpack = unpack
 local twipe = table.wipe
 local format = string.format
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local GetRaidBuffTrayAuraInfo = GetRaidBuffTrayAuraInfo
+local CooldownFrame_SetTimer = CooldownFrame_SetTimer
+local NUM_LE_RAID_BUFF_TYPES = NUM_LE_RAID_BUFF_TYPES
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: GameTooltip, Minimap, ElvUI_ConsolidatedBuffs, BuffFrame
 
 local Masque = LibStub("Masque", true)
 local MasqueGroup = Masque and Masque:Group("ElvUI", "Consolidated Buffs")

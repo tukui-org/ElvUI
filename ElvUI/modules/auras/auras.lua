@@ -3,10 +3,26 @@ local A = E:NewModule('Auras', 'AceHook-3.0', 'AceEvent-3.0');
 local LSM = LibStub("LibSharedMedia-3.0")
 
 --Cache global variables
-local GetTime, C_TimerAfter = GetTime, C_Timer.After
+--Lua functions
+local GetTime = GetTime 
 local select, unpack = select, unpack
 local floor = math.floor
 local format, find, join = string.format, string.find, string.join
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local C_TimerAfter = C_Timer.After
+local RegisterStateDriver = RegisterStateDriver
+local RegisterAttributeDriver = RegisterAttributeDriver
+local GetWeaponEnchantInfo = GetWeaponEnchantInfo
+local UnitAura = UnitAura
+local GetItemQualityColor = GetItemQualityColor
+local GetInventoryItemQuality = GetInventoryItemQuality
+local GetInventoryItemTexture = GetInventoryItemTexture
+local IsAddOnLoaded = IsAddOnLoaded
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: BuffFrame, ConsolidatedBuffs, TemporaryEnchantFrame, DebuffTypeColor
+-- GLOBALS: Minimap, LeftMiniPanel, InterfaceOptionsFrameCategoriesButton12
 
 local Masque = LibStub("Masque", true)
 local MasqueGroupBuffs = Masque and Masque:Group("ElvUI", "Buffs")
