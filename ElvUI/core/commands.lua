@@ -169,18 +169,6 @@ function E:GetCPUImpact()
 	end
 end
 
-function E:HelloKittyToggle()
-	if(HelloKittyLeft and HelloKittyLeft:IsShown()) then
-		self:RestoreHelloKitty()
-	else
-		self:StaticPopup_Show("HELLO_KITTY")
-	end
-end
-
-function E:HarlemShakeToggle()
-	self:StaticPopup_Show("HARLEM_SHAKE");
-end
-
 local BLIZZARD_ADDONS = {
     "Blizzard_AchievementUI",
     "Blizzard_ArchaeologyUI",
