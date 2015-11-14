@@ -1,7 +1,15 @@
 --Cache global variables
+--Lua functions
 local _G = _G
-local tostring, select = tostring, select
+local print, tostring, select = print, tostring, select
 local format = format
+--WoW API / Variables
+local GetMouseFocus = GetMouseFocus
+local FrameStackTooltip_Toggle = FrameStackTooltip_Toggle
+
+--Global variables that we don't cache, list them here for the mikk's Find Globals script
+-- GLOBALS: SLASH_FRAME1, SLASH_FRAMELIST1, SLASH_TEXLIST1, FRAME, ChatFrame1
+-- GLOBALS: FrameStackTooltip, UIParentLoadAddOn, CopyChatFrame, ElvUI
 
 --[[
 	Command to grab frame information when mouseing over a frame
