@@ -67,7 +67,6 @@ do
 							quantity = 1,
 						},
 					}
-					isSet = true
 				end
 
 				button.id = index;
