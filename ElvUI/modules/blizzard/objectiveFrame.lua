@@ -31,14 +31,16 @@ function B:MoveObjectiveFrame()
 	ObjectiveTrackerFrame:SetPoint('TOP', ObjectiveFrameHolder, 'TOP')
 	B:ObjectiveFrameHeight()
 	ObjectiveTrackerFrame:SetClampedToScreen(false)
-	hooksecurefunc(ObjectiveTrackerFrame,"SetPoint",function(_,_,parent)
+	
+	local function ObjectiveTrackerFrame_SetPosition(_,_, parent)
 		if parent ~= ObjectiveFrameHolder then
 			ObjectiveTrackerFrame:ClearAllPoints()
 			ObjectiveTrackerFrame:SetPoint('TOP', ObjectiveFrameHolder, 'TOP')
 		end
-	end)
+	end
+	hooksecurefunc(ObjectiveTrackerFrame,"SetPoint", ObjectiveTrackerFrame_SetPosition)
 
-	hooksecurefunc("BonusObjectiveTracker_AnimateReward", function(block)
+	local function RewardsFrame_SetPosition(block)
 		local rewardsFrame = ObjectiveTrackerBonusRewardsFrame;
 		rewardsFrame:ClearAllPoints();
 		if E.db.general.bonusObjectivePosition == "RIGHT" or (E.db.general.bonusObjectivePosition == "AUTO" and IsFramePositionedLeft(ObjectiveTrackerFrame)) then
@@ -46,5 +48,6 @@ function B:MoveObjectiveFrame()
 		else
 			rewardsFrame:SetPoint("TOPRIGHT", block, "TOPLEFT", 10, -4);
 		end
-	end)
+	end
+	hooksecurefunc("BonusObjectiveTracker_AnimateReward", RewardsFrame_SetPosition)
 end
