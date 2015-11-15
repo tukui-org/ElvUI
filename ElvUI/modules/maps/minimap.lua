@@ -3,9 +3,53 @@ local M = E:NewModule('Minimap', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
 E.Minimap = M
 
 --Cache global variables
+--Lua functions
 local _G = _G
 local tinsert = table.insert
 local gsub, upper, strsub = string.gsub, string.upper, strsub
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local ToggleCharacter = ToggleCharacter
+local ShowUIPanel, HideUIPanel = ShowUIPanel, HideUIPanel
+local ToggleCollectionsJournal = ToggleCollectionsJournal
+local ToggleFrame = ToggleFrame
+local ToggleAchievementFrame = ToggleAchievementFrame
+local ToggleFriendsFrame = ToggleFriendsFrame
+local GarrisonLandingPageMinimapButton_OnClick = GarrisonLandingPageMinimapButton_OnClick
+local IsInGuild = IsInGuild
+local GuildFrame_Toggle = GuildFrame_Toggle
+local LookingForGuildFrame_Toggle = LookingForGuildFrame_Toggle
+local ToggleLFDParentFrame = ToggleLFDParentFrame
+local IsAddOnLoaded = IsAddOnLoaded
+local CloseMenus = CloseMenus
+local CloseAllWindows = CloseAllWindows
+local PlaySound = PlaySound
+local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
+local ToggleHelpFrame = ToggleHelpFrame
+local GetZonePVPInfo = GetZonePVPInfo
+local IsShiftKeyDown = IsShiftKeyDown
+local ToggleDropDownMenu = ToggleDropDownMenu
+local Minimap_OnClick = Minimap_OnClick
+local GetMinimapZoneText = GetMinimapZoneText
+local InCombatLockdown = InCombatLockdown
+local GuildInstanceDifficulty = GuildInstanceDifficulty
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: GetMinimapShape, SpellBookFrame, PlayerTalentFrame, TalentFrame_LoadUI
+-- GLOBALS: GlyphFrame, GlyphFrame_LoadUI, PlayerTalentFrame, TimeManagerFrame
+-- GLOBALS: GameTimeFrame, GuildFrame, GuildFrame_LoadUI, Minimap, MinimapCluster
+-- GLOBALS: FarmModeMap, BuffsMover, DebuffsMover, LookingForGuildFrame, MiniMapWorldMapButton
+-- GLOBALS: LookingForGuildFrame_LoadUI, EncounterJournal_LoadUI, EncounterJournal
+-- GLOBALS: GameMenuFrame, VideoOptionsFrame, VideoOptionsFrameCancel, AudioOptionsFrame
+-- GLOBALS: AudioOptionsFrameCancel, InterfaceOptionsFrame, InterfaceOptionsFrameCancel
+-- GLOBALS: LibStub, ElvUIPlayerBuffs, MMHolder, StoreMicroButton, TimeManagerClockButton
+-- GLOBALS: FeedbackUIButton, MiniMapTrackingDropDown, LeftMiniPanel, RightMiniPanel
+-- GLOBALS: MinimapMover, AurasHolder, AurasMover, ElvConfigToggle, ElvUI_ConsolidatedBuffs
+-- GLOBALS: GarrisonLandingPageMinimapButton, GarrisonLandingPageTutorialBox, MiniMapMailFrame
+-- GLOBALS: QueueStatusMinimapButton, QueueStatusFrame, MiniMapInstanceDifficulty
+-- GLOBALS: MiniMapChallengeMode, MinimapBorder, MinimapBorderTop, MinimapZoomIn, MinimapZoomOut
+-- GLOBALS: MiniMapVoiceChatFrame, MinimapNorthTag, MinimapZoneTextButton, MiniMapTracking
+-- GLOBALS: MiniMapMailBorder, MiniMapMailIcon, QueueStatusMinimapButtonBorder, UIParent
 
 local Astrolabe, AstrolabeMapMonitor
 if IsAddOnLoaded("Gatherer") then
