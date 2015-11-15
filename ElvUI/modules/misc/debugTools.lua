@@ -34,7 +34,7 @@ function D:ModifyErrorFrame()
 	local function ScriptErrors_UnHighlightText()
 		ScriptErrorsFrameScrollFrameText:HighlightText(0, 0)
 	end
-	hooksecurefunc('ScriptErrorsFrame_Update', HighlightText)
+	hooksecurefunc('ScriptErrorsFrame_Update', ScriptErrors_UnHighlightText)
 
 	-- Unhighlight text when focus is hit
 	local function UnHighlightText(self)
