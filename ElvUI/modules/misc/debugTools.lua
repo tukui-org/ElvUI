@@ -31,14 +31,16 @@ function D:ModifyErrorFrame()
 		-- Stop text highlighting again
 		ScriptErrorsFrameScrollFrameText:HighlightText(0, 0)
 	end]]
-	hooksecurefunc('ScriptErrorsFrame_Update', function()
+	local function ScriptErrors_UnHighlightText()
 		ScriptErrorsFrameScrollFrameText:HighlightText(0, 0)
-	end)
+	end
+	hooksecurefunc('ScriptErrorsFrame_Update', HighlightText)
 
 	-- Unhighlight text when focus is hit
-	ScriptErrorsFrameScrollFrameText:HookScript("OnEscapePressed", function(self)
+	local function UnHighlightText(self)
 		self:HighlightText(0, 0)
-	end)
+	end
+	ScriptErrorsFrameScrollFrameText:HookScript("OnEscapePressed", UnHighlightText)
 
 
 	ScriptErrorsFrame:SetSize(500, 300)
