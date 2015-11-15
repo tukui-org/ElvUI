@@ -170,7 +170,7 @@ function M:LOOT_OPENED(event, autoloot)
 	lootFrame:Show()
 
 	if(not lootFrame:IsShown()) then
-		CloseLoot(not autoLoot)
+		CloseLoot(not autoloot)
 	end
 
 	local items = GetNumLootItems()
