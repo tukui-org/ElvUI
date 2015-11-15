@@ -14,9 +14,10 @@ function B:PositionAltPowerBar()
 	--The Blizzard function FramePositionDelegate:UIParentManageFramePositions()
 	--calls :ClearAllPoints on PlayerPowerBarAlt under certain conditions.
 	--Doing ".ClearAllPoints = function() end" causes error when you enter combat.
-	hooksecurefunc(PlayerPowerBarAlt, "ClearAllPoints", function(self)
+	local function Position(self)
 		self:SetPoint('CENTER', AltPowerBarHolder, 'CENTER')
-	end)
+	end
+	hooksecurefunc(PlayerPowerBarAlt, "ClearAllPoints", Position)
 
 	E:CreateMover(holder, 'AltPowerBarMover', L["Alternative Power"])
 end
