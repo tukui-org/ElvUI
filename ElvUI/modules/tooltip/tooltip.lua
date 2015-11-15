@@ -2,13 +2,71 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local TT = E:NewModule('Tooltip', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
 
 --Cache global variables
+--Lua functions
 local _G = _G
-local GetTime = GetTime
 local unpack, tonumber, select, pairs = unpack, tonumber, select, pairs
 local twipe, tinsert, tconcat = table.wipe, table.insert, table.concat
 local floor = math.floor
 local find, format, sub = string.find, string.format, string.sub
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local GetTime = GetTime
 local UnitGUID = UnitGUID
+local GetScreenWidth = GetScreenWidth
+local InCombatLockdown = InCombatLockdown
+local IsShiftKeyDown = IsShiftKeyDown
+local IsControlKeyDown = IsControlKeyDown
+local IsAltKeyDown = IsAltKeyDown
+local GetInventoryItemLink = GetInventoryItemLink
+local GetInventorySlotInfo = GetInventorySlotInfo
+local GetSpecialization = GetSpecialization
+local GetInspectSpecialization = GetInspectSpecialization
+local GetSpecializationRoleByID = GetSpecializationRoleByID
+local GetSpecializationInfo = GetSpecializationInfo
+local UnitExists = UnitExists
+local CanInspect = CanInspect
+local GetAverageItemLevel = GetAverageItemLevel
+local NotifyInspect = NotifyInspect
+local GetMouseFocus = GetMouseFocus
+local GetSpecializationInfoByID = GetSpecializationInfoByID
+local UnitLevel = UnitLevel
+local UnitIsPlayer = UnitIsPlayer
+local UnitClass = UnitClass
+local UnitName = UnitName
+local GetGuildInfo = GetGuildInfo
+local UnitPVPName = UnitPVPName
+local UnitRealmRelationship = UnitRealmRelationship
+local UnitIsAFK = UnitIsAFK
+local UnitIsDND = UnitIsDND
+local GetQuestDifficultyColor = GetQuestDifficultyColor
+local UnitRace = UnitRace
+local UnitFactionGroup = UnitFactionGroup
+local UnitIsTapped = UnitIsTapped
+local UnitIsTappedByPlayer = UnitIsTappedByPlayer
+local UnitReaction = UnitReaction
+local UnitIsWildBattlePet = UnitIsWildBattlePet
+local UnitIsBattlePetCompanion = UnitIsBattlePetCompanion
+local UnitClassification = UnitClassification
+local UnitCreatureType = UnitCreatureType
+local UnitBattlePetLevel = UnitBattlePetLevel
+local GetRelativeDifficultyColor = GetRelativeDifficultyColor
+local UnitIsPVP = UnitIsPVP
+local UnitHasVehicleUI = UnitHasVehicleUI
+local IsInGroup = IsInGroup
+local IsInRaid = IsInRaid
+local GetNumGroupMembers = GetNumGroupMembers
+local UnitIsUnit = UnitIsUnit
+local UnitIsDeadOrGhost = UnitIsDeadOrGhost
+local GetItemCount = GetItemCount
+local UnitAura = UnitAura
+local GetRaidBuffTrayAuraInfo = GetRaidBuffTrayAuraInfo
+local C_PetJournalGetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
+local SetTooltipMoney = SetTooltipMoney
+local GameTooltip_ClearMoney = GameTooltip_ClearMoney
+local TARGET = TARGET
+local DEAD = DEAD
+local INTERACTIVE_SERVER_LABEL = INTERACTIVE_SERVER_LABEL
+local FOREIGN_SERVER_LABEL = FOREIGN_SERVER_LABEL
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 local PVP = PVP
@@ -19,6 +77,17 @@ local LE_REALM_RELATION_COALESCED = LE_REALM_RELATION_COALESCED
 local LE_REALM_RELATION_VIRTUAL = LE_REALM_RELATION_VIRTUAL
 local FACTION_BAR_COLORS = FACTION_BAR_COLORS
 local ID = ID
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: ElvUI_ContainerFrame, RightChatPanel, TooltipMover, UIParent, ElvUI_KeyBinder
+-- GLOBALS: ItemRefCloseButton, RightChatToggleButton, BNToastFrame, MMHolder, GameTooltipText
+-- GLOBALS: BNETMover, ItemRefTooltip, InspectFrame,  GameTooltipHeaderText, GameTooltipTextSmall
+-- GLOBALS: ShoppingTooltip1TextLeft1, ShoppingTooltip1TextLeft2, ShoppingTooltip1TextLeft3
+-- GLOBALS: ShoppingTooltip1TextLeft4, ShoppingTooltip1TextRight1, ShoppingTooltip1TextRight2
+-- GLOBALS: ShoppingTooltip1TextRight3, ShoppingTooltip1TextRight4, ShoppingTooltip2TextLeft1
+-- GLOBALS: ShoppingTooltip2TextLeft2, ShoppingTooltip2TextLeft3, ShoppingTooltip2TextLeft4
+-- GLOBALS: ShoppingTooltip2TextRight1, ShoppingTooltip2TextRight2, ShoppingTooltip2TextRight3
+-- GLOBALS: ShoppingTooltip2TextRight4, GameTooltipTextLeft1, GameTooltipTextLeft2
 
 local GameTooltip, GameTooltipStatusBar = _G["GameTooltip"], _G["GameTooltipStatusBar"]
 local S_ITEM_LEVEL = ITEM_LEVEL:gsub( "%%d", "(%%d+)" )
@@ -491,7 +560,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 			if(isPetWild or isPetCompanion) then
 				level = UnitBattlePetLevel(unit)
 
-				local teamLevel = C_PetJournal.GetPetTeamAverageLevel();
+				local teamLevel = C_PetJournalGetPetTeamAverageLevel();
 				if(teamLevel) then
 					diffColor = GetRelativeDifficultyColor(teamLevel, level);
 				else
