@@ -1,7 +1,15 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
+--Cache global variables
+--Lua functions
 local join = string.join
+--WoW API / Variables
+local GetNumBattlefieldScores = GetNumBattlefieldScores
+local GetBattlefieldScore = GetBattlefieldScore
+local GetCurrentMapAreaID = GetCurrentMapAreaID
+local GetBattlefieldStatInfo = GetBattlefieldStatInfo
+local GetBattlefieldStatData = GetBattlefieldStatData
 
 local lastPanel
 local displayString = ''

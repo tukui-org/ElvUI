@@ -1,10 +1,14 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
-local lifesteal
-local displayModifierString = ''
-local lastPanel;
-
+--Cache global variables
+--Lua functions
+local format, join = string.format, string.join
+--WoW API / Variables
+local GetLifesteal = GetLifesteal
+local BreakUpLargeNumbers = BreakUpLargeNumbers
+local GetCombatRating = GetCombatRating
+local GetCombatRatingBonus = GetCombatRatingBonus
 local HIGHLIGHT_FONT_COLOR_CODE = HIGHLIGHT_FONT_COLOR_CODE
 local FONT_COLOR_CODE_CLOSE = FONT_COLOR_CODE_CLOSE
 local PAPERDOLLFRAME_TOOLTIP_FORMAT = PAPERDOLLFRAME_TOOLTIP_FORMAT
@@ -12,8 +16,9 @@ local STAT_LIFESTEAL = STAT_LIFESTEAL
 local CR_LIFESTEAL_TOOLTIP = CR_LIFESTEAL_TOOLTIP
 local CR_LIFESTEAL = CR_LIFESTEAL
 
-local join = string.join
-local format = string.format
+local lifesteal
+local displayModifierString = ''
+local lastPanel;
 
 local function OnEnter(self)
 	DT:SetupTooltip(self)

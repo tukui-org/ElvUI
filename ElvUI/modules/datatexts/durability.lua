@@ -1,6 +1,16 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
+--Cache global variables
+--Lua functions
+local pairs = pairs
+local format, join = string.join, string.format
+--WoW API / Variables
+local GetInventorySlotInfo = GetInventorySlotInfo
+local GetInventoryItemDurability = GetInventoryItemDurability
+local ToggleCharacter = ToggleCharacter
+local DURABILITY = DURABILITY
+
 local displayString = ""
 local tooltipString = "%d%%"
 local totalDurability = 0
@@ -18,11 +28,6 @@ local slots = {
 	["ShoulderSlot"] = L["Shoulder"],
 	["HeadSlot"] = L["Head"],
 }
-
-local DURABILITY = DURABILITY
-local join = string.join
-local pairs = pairs
-local format = string.format
 
 local function OnEvent(self, event, ...)
 	lastPanel = self

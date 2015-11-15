@@ -1,6 +1,19 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
+--Cache global variables
+--Lua functions
+local min, max = math.min, math.max
+local format, join = string.format, string.join
+--WoW API / Variables
+local UnitRangedAttackPower = UnitRangedAttackPower
+local UnitAttackPower = UnitAttackPower
+local GetOverrideAPBySpellPower = GetOverrideAPBySpellPower
+local GetSpellBonusDamage = GetSpellBonusDamage
+local GetSpellBonusHealing = GetSpellBonusHealing
+local BreakUpLargeNumbers = BreakUpLargeNumbers
+local ComputePetBonus = ComputePetBonus
+local GetOverrideSpellPowerByAP = GetOverrideSpellPowerByAP
 local RANGED_ATTACK_POWER = RANGED_ATTACK_POWER
 local RANGED_ATTACK_POWER_TOOLTIP = RANGED_ATTACK_POWER_TOOLTIP
 local ATTACK_POWER_MAGIC_NUMBER = ATTACK_POWER_MAGIC_NUMBER
@@ -14,10 +27,6 @@ local MAX_SPELL_SCHOOLS = MAX_SPELL_SCHOOLS
 local base, posBuff, negBuff, effective, Rbase, RposBuff, RnegBuff, Reffective, pwr
 local displayNumberString = ''
 local lastPanel;
-local join = string.join
-local format = string.format
-local min = math.min
-local max = math.max
 
 local function OnEvent(self, event, unit)
 	if E.myclass == "HUNTER" then

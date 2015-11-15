@@ -1,6 +1,16 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
+--Cache global variables
+--Lua functions
+local format, join = string.format, string.join
+--WoW API / Variables
+local GetSpellCritChance = GetSpellCritChance
+local BreakUpLargeNumbers = BreakUpLargeNumbers
+local GetCombatRating = GetCombatRating
+local GetCombatRatingBonus = GetCombatRatingBonus
+local GetRangedCritChance = GetRangedCritChance
+local GetCritChance = GetCritChance
 local HIGHLIGHT_FONT_COLOR_CODE = HIGHLIGHT_FONT_COLOR_CODE
 local FONT_COLOR_CODE_CLOSE = FONT_COLOR_CODE_CLOSE
 local PAPERDOLLFRAME_TOOLTIP_FORMAT = PAPERDOLLFRAME_TOOLTIP_FORMAT
@@ -18,8 +28,6 @@ local CRIT_ABBR = CRIT_ABBR
 local critRating
 local displayModifierString = ''
 local lastPanel;
-local join = string.join
-local format = string.format
 
 local function OnEnter(self)
 	DT:SetupTooltip(self)

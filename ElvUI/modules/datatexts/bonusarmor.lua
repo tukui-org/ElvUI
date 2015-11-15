@@ -1,12 +1,16 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
-local bonusArmorString = STAT_BONUS_ARMOR..": "
-local chanceString = "%.2f%%";
-local displayString = ''
-local lastPanel;
-local effectiveArmor, bonusArmor, isNegatedForSpec, armorReduction, hasAura, percent
-
+--Cache global variables
+--Lua functions
+local select = select
+local format, join = string.format, string.join
+--WoW API / Variables
+local UnitArmor = UnitArmor
+local UnitBonusArmor = UnitBonusArmor
+local PaperDollFrame_GetArmorReduction = PaperDollFrame_GetArmorReduction
+local UnitLevel = UnitLevel
+local GetBladedArmorEffect = GetBladedArmorEffect
 local HIGHLIGHT_FONT_COLOR_CODE = HIGHLIGHT_FONT_COLOR_CODE
 local FONT_COLOR_CODE_CLOSE = FONT_COLOR_CODE_CLOSE
 local PAPERDOLLFRAME_TOOLTIP_FORMAT = PAPERDOLLFRAME_TOOLTIP_FORMAT
@@ -15,9 +19,11 @@ local STAT_ARMOR_BONUS_ARMOR_BLADED_ARMOR_TOOLTIP = STAT_ARMOR_BONUS_ARMOR_BLADE
 local STAT_ARMOR_TOTAL_TOOLTIP = STAT_ARMOR_TOTAL_TOOLTIP
 local STAT_NO_BENEFIT_TOOLTIP = STAT_NO_BENEFIT_TOOLTIP
 
-local join = string.join
-local format = string.format
-local select = select
+local bonusArmorString = STAT_BONUS_ARMOR..": "
+local chanceString = "%.2f%%";
+local displayString = ''
+local lastPanel;
+local effectiveArmor, bonusArmor, isNegatedForSpec, armorReduction, hasAura, percent
 
 local function OnEnter(self)
 	DT:SetupTooltip(self)

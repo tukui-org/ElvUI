@@ -1,20 +1,31 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
-local format = string.format
-local join = string.join
+--Cache global variables
+--Lua functions
+local format, join = string.format, string.join
 local abs = abs
+--WoW API / Variables
+local GetInventorySlotInfo = GetInventorySlotInfo
+local GetInventoryItemID = GetInventoryItemID
+local GetItemInfo = GetItemInfo
+local UnitLevel = UnitLevel
+local GetDodgeChance = GetDodgeChance
+local GetParryChance = GetParryChance
+local GetBlockChance = GetBlockChance
+local GetBonusBarOffset = GetBonusBarOffset
+local BOSS = BOSS
+local DODGE_CHANCE = DODGE_CHANCE
+local PARRY_CHANCE = PARRY_CHANCE
+local BLOCK_CHANCE = BLOCK_CHANCE
+local MISS_CHANCE = MISS_CHANCE
+
 local displayString, lastPanel
 local targetlv, playerlv
 local basemisschance, leveldifference, dodge, parry, block, avoidance, unhittable, avoided, blocked, numAvoidances, unhittableMax
 local chanceString = "%.2f%%"
 local modifierString = join("", "%d (+", chanceString, ")")
 local AVD_DECAY_RATE = 1.5
-local BOSS = BOSS
-local DODGE_CHANCE = DODGE_CHANCE
-local PARRY_CHANCE = PARRY_CHANCE
-local BLOCK_CHANCE = BLOCK_CHANCE
-local MISS_CHANCE = MISS_CHANCE
 
 local function IsWearingShield()
 	local slotID = GetInventorySlotInfo("SecondaryHandSlot")

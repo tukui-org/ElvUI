@@ -1,6 +1,17 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
+--Cache global variables
+--Lua functions
+local _G = _G
+local tonumber, tostring = tonumber, tostring
+local match, join = string.match, string.join
+--WoW API / Variables
+local UnitAura = UnitAura
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: VengeanceTooltip
+
 local displayString = '';
 local lastPanel;
 local self = lastPanel
@@ -10,12 +21,6 @@ tooltip = CreateFrame("GameTooltip", "VengeanceTooltip", E.UIParent, "GameToolti
 tooltiptext = _G[tooltip:GetName().."TextLeft2"]
 tooltip:SetOwner(E.UIParent, "ANCHOR_NONE")
 tooltiptext:SetText("")
-
-local _G = _G
-local join = string.join
-local match = string.match
-local tonumber = tonumber
-local tostring = tostring
 
 local function OnEvent(self, event, ...)
 	if VengeanceTooltip and not VengeanceTooltip:IsShown() then

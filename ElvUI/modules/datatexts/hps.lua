@@ -1,6 +1,15 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
+--Cache global variables
+--Lua functions
+local time = time
+local select = select
+local max = math.max
+local join = string.join
+--WoW API / Variables
+local UnitGUID = UnitGUID
+
 local events = {SPELL_HEAL = true, SPELL_PERIODIC_HEAL = true}
 local playerID, petID
 local healTotal, lastHealAmount = 0, 0
@@ -9,12 +18,6 @@ local timeStamp = 0
 local lastSegment = 0
 local lastPanel
 local displayString = '';
-
-local time = time
-local join = string.join
-local max = math.max
-local select = select
-local UnitGUID = UnitGUID
 
 local function Reset()
 	timeStamp = 0

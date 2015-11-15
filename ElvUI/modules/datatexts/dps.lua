@@ -1,6 +1,14 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
+--Cache global variables
+--Lua functions
+local time = time
+local select = select
+local join = string.join
+--WoW API / Variables
+local UnitGUID = UnitGUID
+
 local events = {SWING_DAMAGE = true, RANGE_DAMAGE = true, SPELL_DAMAGE = true, SPELL_PERIODIC_DAMAGE = true, DAMAGE_SHIELD = true, DAMAGE_SPLIT = true, SPELL_EXTRA_ATTACKS = true}
 local playerID, petID
 local DMGTotal, lastDMGAmount = 0, 0
@@ -9,11 +17,6 @@ local timeStamp = 0
 local lastSegment = 0
 local lastPanel
 local displayString = '';
-
-local join = string.join
-local select = select
-local time = time
-local UnitGUID = UnitGUID
 
 local function Reset()
 	timeStamp = 0

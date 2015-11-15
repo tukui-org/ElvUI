@@ -1,10 +1,18 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
+--Cache global variables
+--Lua functions
+local join = string.join
+--WoW API / Variables
+local GetPlayerMapPosition = GetPlayerMapPosition
+local ToggleFrame = ToggleFrame
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: WorldMapFrame
+
 local displayString = ""
 local x, y = 0, 0
-
-local join = string.join
 
 local function Update(self, elapsed)
 	self.timeSinceUpdate = (self.timeSinceUpdate or 0) + elapsed

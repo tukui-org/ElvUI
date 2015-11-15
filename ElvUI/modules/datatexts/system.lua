@@ -1,13 +1,27 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
-local collectgarbage = collectgarbage
-local format = string.format
-local sort = table.sort
-local join = string.join
-local wipe = wipe
-local select = select
+--Cache global variables
+--Lua functions
+local select, collectgarbage = select, collectgarbage
+local sort, wipe = table.sort, wipe
 local floor = math.floor
+local format, join = string.format, string.join
+--WoW API / Variables
+local GetNumAddOns = GetNumAddOns
+local GetAddOnInfo = GetAddOnInfo
+local IsAddOnLoaded = IsAddOnLoaded
+local UpdateAddOnMemoryUsage = UpdateAddOnMemoryUsage
+local UpdateAddOnCPUUsage = UpdateAddOnCPUUsage
+local GetAddOnMemoryUsage = GetAddOnMemoryUsage
+local GetAddOnCPUUsage = GetAddOnCPUUsage
+local ResetCPUUsage = ResetCPUUsage
+local GetCVar = GetCVar
+local GetAvailableBandwidth = GetAvailableBandwidth
+local GetNetStats = GetNetStats
+local GetDownloadedPercentage = GetDownloadedPercentage
+local IsShiftKeyDown = IsShiftKeyDown
+local GetFramerate = GetFramerate
 
 -- initial delay for update (let the ui load)
 local int, int2 = 6, 5

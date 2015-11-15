@@ -1,10 +1,16 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
+--Cache global variables
+--Lua functions
+local join = string.join
+--WoW API / Variables
+local GetManaRegen = GetManaRegen
+local InCombatLockdown = InCombatLockdown
+local MANA_REGEN = MANA_REGEN
+
 local displayNumberString = ''
 local lastPanel;
-local MANA_REGEN = MANA_REGEN
-local join = string.join
 
 local function OnEvent(self, event, unit)
 	local baseMR, castingMR = GetManaRegen()

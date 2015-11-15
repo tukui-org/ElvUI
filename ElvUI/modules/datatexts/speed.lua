@@ -1,10 +1,14 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
-local speed
-local displayModifierString = ''
-local lastPanel;
-
+--Cache global variables
+--Lua functions
+local format, join = string.format, string.join
+--WoW API / Variables
+local GetSpeed = GetSpeed
+local BreakUpLargeNumbers = BreakUpLargeNumbers
+local GetCombatRating = GetCombatRating
+local GetCombatRatingBonus = GetCombatRatingBonus
 local HIGHLIGHT_FONT_COLOR_CODE = HIGHLIGHT_FONT_COLOR_CODE
 local FONT_COLOR_CODE_CLOSE = FONT_COLOR_CODE_CLOSE
 local PAPERDOLLFRAME_TOOLTIP_FORMAT = PAPERDOLLFRAME_TOOLTIP_FORMAT
@@ -12,8 +16,9 @@ local STAT_SPEED = STAT_SPEED
 local CR_SPEED_TOOLTIP = CR_SPEED_TOOLTIP
 local CR_SPEED = CR_SPEED
 
-local join = string.join
-local format = string.format
+local speed
+local displayModifierString = ''
+local lastPanel;
 
 local function OnEnter(self)
 	DT:SetupTooltip(self)

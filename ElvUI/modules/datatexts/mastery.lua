@@ -1,10 +1,17 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
+--Cache global variables
+--Lua functions
+local join = string.join
+--WoW API / Variables
+local GetMasteryEffect = GetMasteryEffect
+local GetSpecialization = GetSpecialization
+local GetSpecializationMasterySpells = GetSpecializationMasterySpells
+local STAT_MASTERY = STAT_MASTERY
+
 local lastPanel
 local displayString = '';
-local STAT_MASTERY = STAT_MASTERY
-local join = string.join
 
 local function OnEvent(self, event)
 	lastPanel = self

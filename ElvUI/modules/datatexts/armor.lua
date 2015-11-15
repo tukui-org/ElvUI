@@ -1,11 +1,18 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
+--Cache global variables
+--Lua functions
+local format = string.format
+local join = string.join
+--WoW API / Variables
+local UnitArmor = UnitArmor
+local UnitLevel = UnitLevel
+local PaperDollFrame_GetArmorReduction = PaperDollFrame_GetArmorReduction
+
 local lastPanel
 local armorString = ARMOR..": "
 local chanceString = "%.2f%%";
-local format = string.format
-local join = string.join
 local displayString = '';
 local baseArmor, effectiveArmor, armor, posBuff, negBuff
 
@@ -15,7 +22,6 @@ local function OnEvent(self, event, unit)
 	self.text:SetFormattedText(displayString, armorString, effectiveArmor)
 	lastPanel = self
 end
-
 
 local function OnEnter(self)
 	DT:SetupTooltip(self)

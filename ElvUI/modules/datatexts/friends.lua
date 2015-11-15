@@ -1,16 +1,42 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
--- localized references for global functions (about 50% faster)
-local join = string.join
-local find = string.find
-local format = string.format
-local sort = table.sort
-local type = type
-local gsub = string.gsub
-local wipe = wipe
-local pairs = pairs
-local select = select
+--Cache global variables
+--Lua functions
+local type, pairs, select = type, pairs, select
+local sort, wipe = table.sort, wipe
+local format, find, join, gsub = string.format, string.find, string.join, string.gsub
+--WoW API / Variables
+local BNSetCustomMessage = BNSetCustomMessage
+local BNGetInfo = BNGetInfo
+local IsChatAFK = IsChatAFK
+local IsChatDND = IsChatDND
+local SendChatMessage = SendChatMessage
+local InviteUnit = InviteUnit
+local BNInviteFriend = BNInviteFriend
+local ChatFrame_SendSmartTell = ChatFrame_SendSmartTell
+local SetItemRef = SetItemRef
+local GetFriendInfo = GetFriendInfo
+local BNGetFriendInfo = BNGetFriendInfo
+local BNGetToonInfo = BNGetToonInfo
+local BNet_GetValidatedCharacterName = BNet_GetValidatedCharacterName
+local GetNumFriends = GetNumFriends
+local BNGetNumFriends = BNGetNumFriends
+local GetQuestDifficultyColor = GetQuestDifficultyColor
+local UnitFactionGroup = UnitFactionGroup
+local UnitInParty = UnitInParty
+local UnitInRaid = UnitInRaid
+local ToggleFriendsFrame = ToggleFriendsFrame
+local EasyMenu = EasyMenu
+local GetRealZoneText = GetRealZoneText
+local IsShiftKeyDown = IsShiftKeyDown
+local GetRealmName = GetRealmName
+local AFK = AFK
+local DND = DND
+local LOCALIZED_CLASS_NAMES_MALE = LOCALIZED_CLASS_NAMES_MALE
+local LOCALIZED_CLASS_NAMES_FEMALE = LOCALIZED_CLASS_NAMES_FEMALE
+local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 -- create a popup
 E.PopupDialogs.SET_BN_BROADCAST = {
@@ -31,13 +57,6 @@ E.PopupDialogs.SET_BN_BROADCAST = {
 	hideOnEscape = 1,
 	preferredIndex = 3
 }
-
-local AFK = AFK
-local DND = DND
-local LOCALIZED_CLASS_NAMES_MALE = LOCALIZED_CLASS_NAMES_MALE
-local LOCALIZED_CLASS_NAMES_FEMALE = LOCALIZED_CLASS_NAMES_FEMALE
-local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 local menuFrame = CreateFrame("Frame", "FriendDatatextRightClickMenu", E.UIParent, "UIDropDownMenuTemplate")
 local menuList = {

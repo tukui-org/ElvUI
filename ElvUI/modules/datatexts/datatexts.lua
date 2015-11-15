@@ -3,11 +3,19 @@ local DT = E:NewModule('DataTexts', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0
 local LDB = LibStub:GetLibrary("LibDataBroker-1.1");
 local LSM = LibStub("LibSharedMedia-3.0")
 local TT = E:GetModule("Tooltip")
+
+--Cache global variables
+--Lua functions
+local pairs, type, error = pairs, type, error
 local len = string.len
-local pairs = pairs
-local type = type
-local error = error
+--WoW API / Variables
+local CreateFrame = CreateFrame
 local UnitGUID = UnitGUID
+local InCombatLockdown = InCombatLockdown
+local IsInInstance = IsInInstance
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: GameTooltip, ElvConfigToggle
 
 function DT:Initialize()
 	--if E.db["datatexts"].enable ~= true then return end

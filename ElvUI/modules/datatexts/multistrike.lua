@@ -1,18 +1,24 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
-local multistrike
-local displayModifierString = ''
-local lastPanel;
-
+--Cache global variables
+--Lua functions
+local format, join = string.format, string.join
+--WoW API / Variables
+local GetMultistrike = GetMultistrike
+local GetMultistrikeEffect = GetMultistrikeEffect
+local BreakUpLargeNumbers = BreakUpLargeNumbers
+local GetCombatRating = GetCombatRating
+local GetCombatRatingBonus = GetCombatRatingBonus
 local HIGHLIGHT_FONT_COLOR_CODE = HIGHLIGHT_FONT_COLOR_CODE
 local FONT_COLOR_CODE_CLOSE = FONT_COLOR_CODE_CLOSE
 local PAPERDOLLFRAME_TOOLTIP_FORMAT = PAPERDOLLFRAME_TOOLTIP_FORMAT
 local CR_MULTISTRIKE_TOOLTIP = CR_MULTISTRIKE_TOOLTIP
 local CR_MULTISTRIKE = CR_MULTISTRIKE
 
-local join = string.join
-local format = string.format
+local multistrike
+local displayModifierString = ''
+local lastPanel;
 
 local function OnEnter(self)
 	DT:SetupTooltip(self)

@@ -1,10 +1,20 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
-local format = string.format
-local join = string.join
+--Cache global variables
+--Lua functions
 local select = select
-
+local format, join = string.format, string.join
+--WoW API / Variables
+local SetLootSpecialization = SetLootSpecialization
+local GetSpecialization = GetSpecialization
+local GetActiveSpecGroup = GetActiveSpecGroup
+local GetSpecializationInfo = GetSpecializationInfo
+local GetLootSpecialization = GetLootSpecialization
+local GetSpecializationInfoByID = GetSpecializationInfoByID
+local GetNumSpecGroups = GetNumSpecGroups
+local SetActiveSpecGroup = SetActiveSpecGroup
+local EasyMenu = EasyMenu
 local LOOT = LOOT
 local SELECT_LOOT_SPECIALIZATION = SELECT_LOOT_SPECIALIZATION
 local LOOT_SPECIALIZATION_DEFAULT = LOOT_SPECIALIZATION_DEFAULT

@@ -1,10 +1,14 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
-local versatility
-local displayModifierString = ''
-local lastPanel;
-
+--Cache global variables
+--Lua functions
+local format, join = string.format, string.join
+--WoW API / Variables
+local GetCombatRating = GetCombatRating
+local GetCombatRatingBonus = GetCombatRatingBonus
+local GetVersatilityBonus = GetVersatilityBonus
+local BreakUpLargeNumbers = BreakUpLargeNumbers
 local CR_VERSATILITY_DAMAGE_DONE = CR_VERSATILITY_DAMAGE_DONE
 local CR_VERSATILITY_DAMAGE_TAKEN = CR_VERSATILITY_DAMAGE_TAKEN
 local HIGHLIGHT_FONT_COLOR_CODE = HIGHLIGHT_FONT_COLOR_CODE
@@ -13,8 +17,9 @@ local VERSATILITY_TOOLTIP_FORMAT = VERSATILITY_TOOLTIP_FORMAT
 local STAT_VERSATILITY = STAT_VERSATILITY
 local CR_VERSATILITY_TOOLTIP = CR_VERSATILITY_TOOLTIP
 
-local join = string.join
-local format = string.format
+local versatility
+local displayModifierString = ''
+local lastPanel;
 
 local function OnEnter(self)
 	DT:SetupTooltip(self)

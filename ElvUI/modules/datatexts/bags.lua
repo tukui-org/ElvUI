@@ -1,12 +1,20 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
-local displayString = '';
-local lastPanel
+--Cache global variables
+--Lua functions
 local join = string.join
+--WoW API / Variables
+local GetContainerNumFreeSlots = GetContainerNumFreeSlots
+local GetContainerNumSlots = GetContainerNumSlots
+local ToggleAllBags = ToggleAllBags
+local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
 local CURRENCY = CURRENCY
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
+
+local displayString = '';
+local lastPanel
 
 local function OnEvent(self, event, ...)
 	lastPanel = self
