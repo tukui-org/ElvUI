@@ -3,11 +3,55 @@ local B = E:NewModule('Bags', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
 local Search = LibStub('LibItemSearch-1.2-ElvUI')
 
 --Cache global variables
+--Lua functions
 local _G = _G
 local type, ipairs, pairs, unpack, select, assert = type, ipairs, pairs, unpack, select, assert
 local tinsert = table.insert
 local floor, abs, ceil = math.floor, math.abs, math.ceil
 local len, sub, find, format, gsub = string.len, string.sub, string.find, string.format, string.gsub
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local GetContainerNumSlots = GetContainerNumSlots
+local GetContainerItemInfo = GetContainerItemInfo
+local SetItemButtonDesaturated = SetItemButtonDesaturated
+local GetContainerItemInfo = GetContainerItemInfo
+local GetScreenWidth, GetScreenHeight = GetScreenWidth, GetScreenHeight
+local IsBagOpen, IsOptionFrameOpen = IsBagOpen, IsOptionFrameOpen
+local CloseBag, CloseBackpack, CloseBankFrame = CloseBag, CloseBackpack, CloseBankFrame
+local ToggleFrame = ToggleFrame
+local GetNumBankSlots = GetNumBankSlots
+local PlaySound = PlaySound
+local GetCurrentGuildBankTab = GetCurrentGuildBankTab
+local GetGuildBankTabInfo = GetGuildBankTabInfo
+local GetGuildBankItemLink = GetGuildBankItemLink
+local GetContainerItemLink = GetContainerItemLink
+local GetItemInfo = GetItemInfo
+local GetContainerItemQuestInfo = GetContainerItemQuestInfo
+local GetItemQualityColor = GetItemQualityColor
+local GetContainerItemCooldown = GetContainerItemCooldown
+local SetItemButtonCount = SetItemButtonCount
+local SetItemButtonTexture = SetItemButtonTexture
+local SetItemButtonTextureVertexColor = SetItemButtonTextureVertexColor
+local CooldownFrame_SetTimer = CooldownFrame_SetTimer
+local BankFrameItemButton_Update = BankFrameItemButton_Update
+local BankFrameItemButton_UpdateLocked = BankFrameItemButton_UpdateLocked
+local UpdateSlot = UpdateSlot
+local GetContainerNumFreeSlots = GetContainerNumFreeSlots
+local IsReagentBankUnlocked = IsReagentBankUnlocked
+local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
+local IsModifiedClick = IsModifiedClick
+local HandleModifiedItemClick = HandleModifiedItemClick
+local GetCurrencyLink = GetCurrencyLink
+local GetMoney = GetMoney
+local PickupContainerItem = PickupContainerItem
+local DeleteCursorItem = DeleteCursorItem
+local UseContainerItem = UseContainerItem
+local PickupMerchantItem = PickupMerchantItem
+local IsShiftKeyDown, IsControlKeyDown = IsShiftKeyDown, IsControlKeyDown
+local StaticPopup_Show = StaticPopup_Show
+local SortReagentBankBags = SortReagentBankBags
+local DepositReagentBank = DepositReagentBank
+local C_NewItemsIsNewItem = C_NewItems.IsNewItem
 local SEARCH = SEARCH
 local REAGENTBANK_CONTAINER = REAGENTBANK_CONTAINER
 local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES
@@ -20,6 +64,12 @@ local CONTAINER_SCALE = CONTAINER_SCALE
 local CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y = CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y
 local CONTAINER_WIDTH = CONTAINER_WIDTH
 local CONTAINER_SPACING, VISIBLE_CONTAINER_SPACING = CONTAINER_SPACING, VISIBLE_CONTAINER_SPACING
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: GameTooltip, BankFrame, ElvUIReagentBankFrameItem1, GuildBankFrame, ElvUIBags
+-- GLOBALS: ContainerFrame1, RightChatToggleButton, GuildItemSearchBox, StackSplitFrame
+-- GLOBALS: LeftChatToggleButton, MAX_GUILDBANK_SLOTS_PER_TAB, UISpecialFrames
+-- GLOBALS: ElvUIReagentBankFrame, MerchantFrame, BagItemAutoSortButton
 
 local SEARCH_STRING = ""
 
@@ -278,7 +328,7 @@ function B:UpdateSlot(bagID, slotID)
 		slot:SetBackdropBorderColor(unpack(E.media.bordercolor));
 	end
 
-	if(C_NewItems.IsNewItem(bagID, slotID)) then
+	if(C_NewItemsIsNewItem(bagID, slotID)) then
 		slot.shadow:Show()
 		E:Flash(slot.shadow, 1, true)
 	else
@@ -678,7 +728,7 @@ function B:UpdateReagentSlot(slotID)
 		slot:SetBackdropBorderColor(unpack(E.media.bordercolor));
 	end
 
-	if(C_NewItems.IsNewItem(bagID, slotID)) then
+	if(C_NewItemsIsNewItem(bagID, slotID)) then
 		slot.shadow:Show()
 		E:Flash(slot.shadow, 1, true)
 	else

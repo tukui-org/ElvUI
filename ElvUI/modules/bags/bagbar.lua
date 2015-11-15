@@ -2,10 +2,17 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local B = E:GetModule('Bags');
 
 --Cache global variables
+--Lua functions
 local _G = _G
 local unpack = unpack
 local tinsert = table.insert
+--WoW API / Variables
+local CreateFrame = CreateFrame
 local NUM_BAG_FRAMES = NUM_BAG_FRAMES
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: UIFrameFadeIn, ElvUIBags, RightChatPanel, MainMenuBarBackpackButton
+-- GLOBALS: MainMenuBarBackpackButtonCount
 
 local TOTAL_BAGS = NUM_BAG_FRAMES + 1
 
