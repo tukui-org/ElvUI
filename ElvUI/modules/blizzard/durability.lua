@@ -3,11 +3,13 @@ local B = E:GetModule('Blizzard');
 
 function B:PositionDurabilityFrame()
 	DurabilityFrame:SetFrameStrata("HIGH")
-	hooksecurefunc(DurabilityFrame,"SetPoint",function(self,_,parent)
+	
+	local function SetPosition(self, _, parent)
 		if (parent == "MinimapCluster") or (parent == _G["MinimapCluster"]) then
 			DurabilityFrame:ClearAllPoints()
 			DurabilityFrame:Point("RIGHT", Minimap, "RIGHT")
 			DurabilityFrame:SetScale(0.6)
 		end
-	end)
+	end
+	hooksecurefunc(DurabilityFrame,"SetPoint", SetPosition)
 end
