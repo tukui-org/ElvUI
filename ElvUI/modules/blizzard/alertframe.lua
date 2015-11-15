@@ -2,9 +2,21 @@ local E, L, DF = unpack(select(2, ...))
 local B = E:GetModule('Blizzard');
 
 --Cache global variables
+--Lua functions
 local _G = _G
 local pairs = pairs
+--WoW API / Variables
+local AlertFrame_FixAnchors = AlertFrame_FixAnchors
 local MAX_ACHIEVEMENT_ALERTS = MAX_ACHIEVEMENT_ALERTS
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: AlertFrame, AlertFrameMover, MissingLootFrame, GroupLootContainer
+-- GLOBALS: LOOT_WON_ALERT_FRAMES, LOOT_UPGRADE_ALERT_FRAMES, MONEY_WON_ALERT_FRAMES
+-- GLOBALS: AchievementAlertFrame1, CriteriaAlertFrame1, ChallengeModeAlertFrame1
+-- GLOBALS: DungeonCompletionAlertFrame1, StorePurchaseAlertFrame, ScenarioAlertFrame1
+-- GLOBALS: GuildChallengeAlertFrame, DigsiteCompleteToastFrame, GarrisonBuildingAlertFrame
+-- GLOBALS: GarrisonMissionAlertFrame, GarrisonFollowerAlertFrame, GarrisonShipFollowerAlertFrame
+-- GLOBALS: GarrisonShipMissionAlertFrame, UIPARENT_MANAGED_FRAME_POSITIONS
 
 local AlertFrameHolder = CreateFrame("Frame", "AlertFrameHolder", E.UIParent)
 AlertFrameHolder:SetWidth(180)

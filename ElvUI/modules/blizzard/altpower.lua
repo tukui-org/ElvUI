@@ -1,6 +1,9 @@
 local E, L, DF = unpack(select(2, ...))
 local B = E:GetModule('Blizzard');
 
+--No point caching anything here, but list them here for mikk's FindGlobals script
+-- GLOBALS: CreateFrame, UIParent, PlayerPowerBarAlt, hooksecurefunc, AltPowerBarHolder
+
 function B:PositionAltPowerBar()
 	local holder = CreateFrame('Frame', 'AltPowerBarHolder', UIParent)
 	holder:SetPoint('TOP', E.UIParent, 'TOP', 0, -18)

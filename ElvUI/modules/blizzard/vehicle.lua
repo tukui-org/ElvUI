@@ -1,8 +1,11 @@
 local E, L, DF = unpack(select(2, ...))
 local B = E:GetModule('Blizzard');
 
+--No point caching anything here, but list them here for mikk's FindGlobals script
+-- GLOBALS: hooksecurefunc, VehicleSeatIndicator, MinimapCluster, _G, VehicleSeatMover
+
 function B:PositionVehicleFrame()
-	hooksecurefunc(VehicleSeatIndicator,"SetPoint",function(_,_,parent) -- vehicle seat indicator
+	local function VehicleSeatIndicator_SetPosition(_,_, parent)
 		if (parent == "MinimapCluster") or (parent == _G["MinimapCluster"]) then
 			VehicleSeatIndicator:ClearAllPoints()
 
@@ -15,6 +18,8 @@ function B:PositionVehicleFrame()
 
 			VehicleSeatIndicator:SetScale(0.8)
 		end
-	end)
+	end
+	hooksecurefunc(VehicleSeatIndicator,"SetPoint", VehicleSeatIndicator_SetPosition)
+
 	VehicleSeatIndicator:SetPoint('TOPLEFT', MinimapCluster, 'TOPLEFT', 2, 2) -- initialize mover
 end

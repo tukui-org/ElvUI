@@ -1,6 +1,15 @@
 local E, L, DF = unpack(select(2, ...))
 local B = E:GetModule('Blizzard');
 
+--Cache global variables
+--WoW API / Variables
+local hooksecurefunc = hooksecurefunc
+local GetScreenWidth = GetScreenWidth
+local GetScreenHeight = GetScreenHeight
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: ObjectiveTrackerFrame, ObjectiveFrameMover, ObjectiveTrackerBonusRewardsFrame
+
 local ObjectiveFrameHolder = CreateFrame("Frame", "ObjectiveFrameHolder", E.UIParent)
 ObjectiveFrameHolder:SetWidth(130)
 ObjectiveFrameHolder:SetHeight(22)
