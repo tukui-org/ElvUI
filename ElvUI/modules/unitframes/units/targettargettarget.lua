@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames');
 
 --Cache global variables
+--Lua functions
 local _G = _G
 local pairs = pairs
 local format = format

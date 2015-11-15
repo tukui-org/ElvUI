@@ -3,6 +3,8 @@ local UF = E:GetModule('UnitFrames');
 
 --Cache global variables
 local unpack = unpack
+--WoW API / Variables
+local CreateFrame = CreateFrame
 
 function UF:Construct_Threat(frame, glow)
 	local threat = CreateFrame("Frame", nil, frame)

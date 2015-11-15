@@ -4,11 +4,24 @@ local _, ns = ...
 local ElvUF = ns.oUF
 
 --Cache global variables
+--Lua functions
 local _G = _G
 local setmetatable, getfenv, setfenv = setmetatable, getfenv, setfenv
 local type, unpack, select, pairs = type, unpack, select, pairs
 local min, random = math.min, math.random
 local format = string.format
+--WoW API / Variables
+local UnitPower = UnitPower
+local UnitPowerMax = UnitPowerMax
+local UnitHealth = UnitHealth
+local UnitHealthMax = UnitHealthMax
+local UnitName = UnitName
+local UnitClass = UnitClass
+local InCombatLockdown = InCombatLockdown
+local UnregisterUnitWatch = UnregisterUnitWatch
+local RegisterUnitWatch = RegisterUnitWatch
+local RegisterStateDriver = RegisterStateDriver
+local LOCALIZED_CLASS_NAMES_MALE = LOCALIZED_CLASS_NAMES_MALE
 local CLASS_SORT_ORDER = CLASS_SORT_ORDER
 local MAX_RAID_MEMBERS = MAX_RAID_MEMBERS
 

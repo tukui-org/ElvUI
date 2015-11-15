@@ -1,6 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
+--Cache global variables
+--WoW API / Variables
+local UnitIsPlayer = UnitIsPlayer
+
 function UF:Construct_NameText(frame)
 	local parent = frame.RaisedElementParent or frame
 	local name = parent:CreateFontString(nil, 'OVERLAY')

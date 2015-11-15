@@ -3,9 +3,18 @@ local UF = E:GetModule('UnitFrames');
 local LSM = LibStub("LibSharedMedia-3.0");
 
 --Cache global variables
+--Lua functions
 local unpack, tonumber = unpack, tonumber
 local floor, abs = math.floor, abs
 local sub, utf8sub, utf8len = string.sub, string.utf8sub, string.utf8len
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local UnitSpellHaste = UnitSpellHaste
+local UnitBuff = UnitBuff
+local UnitIsPlayer = UnitIsPlayer
+local UnitClass = UnitClass
+local UnitReaction = UnitReaction
+local UnitCanAttack = UnitCanAttack
 
 local _, ns = ...
 local ElvUF = ns.oUF

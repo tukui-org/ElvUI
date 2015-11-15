@@ -2,7 +2,11 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames');
 
 --Cache global variables
+--Lua functions
 local random = random
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local UnitPowerType = UnitPowerType
 
 local _, ns = ...
 local ElvUF = ns.oUF

@@ -4,13 +4,56 @@ local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
 --Cache global variables
+--Lua functions
 local _G = _G
 local unpack, pairs = unpack, pairs
-local GetTime = GetTime
 local twipe = table.wipe
 local ceil, sqrt, floor = math.ceil, math.sqrt, math.floor
 local format = string.format
+--WoW API / Variables
+local GetTime = GetTime
 local UnitGUID = UnitGUID
+local UnitIsUnit = UnitIsUnit
+local UnitPower = UnitPower
+local UnitPowerMax = UnitPowerMax
+local UnitAlternatePowerTextureInfo = UnitAlternatePowerTextureInfo
+local UnitIsAFK = UnitIsAFK
+local UnitIsDeadOrGhost = UnitIsDeadOrGhost
+local UnitIsConnected = UnitIsConnected
+local UnitHealth = UnitHealth
+local UnitHealthMax = UnitHealthMax
+local UnitIsDead = UnitIsDead
+local UnitIsGhost = UnitIsGhost
+local UnitPowerType = UnitPowerType
+local UnitIsWildBattlePet = UnitIsWildBattlePet
+local UnitIsBattlePetCompanion = UnitIsBattlePetCompanion
+local UnitBattlePetLevel = UnitBattlePetLevel
+local GetRelativeDifficultyColor = GetRelativeDifficultyColor
+local QuestDifficultyColors = QuestDifficultyColors
+local UnitLevel = UnitLevel
+local GetQuestGreenRange = GetQuestGreenRange
+local UnitReaction = UnitReaction
+local UnitClass = UnitClass
+local UnitIsPlayer = UnitIsPlayer
+local UnitDetailedThreatSituation = UnitDetailedThreatSituation
+local IsInGroup = IsInGroup
+local UnitExists = UnitExists
+local GetThreatStatusColor = GetThreatStatusColor
+local UnitIsDND = UnitIsDND
+local UnitIsPVPFreeForAll = UnitIsPVPFreeForAll
+local UnitIsPVP = UnitIsPVP
+local GetPVPTimer = GetPVPTimer
+local GetSpecialization = GetSpecialization
+local GetShapeshiftFormID = GetShapeshiftFormID
+local GetEclipseDirection = GetEclipseDirection
+local UnitGetTotalAbsorbs = UnitGetTotalAbsorbs
+local UnitGetIncomingHeals = UnitGetIncomingHeals
+local IsInRaid = IsInRaid
+local GetNumGroupMembers = GetNumGroupMembers
+local UnitClassification = UnitClassification
+local GetUnitSpeed = GetUnitSpeed
+local C_PetJournalGetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
+local DEFAULT_AFK_MESSAGE = DEFAULT_AFK_MESSAGE
 local UNKNOWN = UNKNOWN
 local UNITNAME_SUMMON_TITLE17 = UNITNAME_SUMMON_TITLE17
 local ALTERNATE_POWER_INDEX = ALTERNATE_POWER_INDEX
@@ -29,6 +72,9 @@ local SHADOW_ORBS_SHOW_LEVEL = SHADOW_ORBS_SHOW_LEVEL
 local MOONKIN_FORM = MOONKIN_FORM
 local DEAD = DEAD
 local PVP = PVP
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: Hex
 
 ------------------------------------------------------------------------
 --	Tags
@@ -398,7 +444,7 @@ ElvUF.Tags.Methods['difficultycolor'] = function(unit)
 	if ( UnitIsWildBattlePet(unit) or UnitIsBattlePetCompanion(unit) ) then
 		local level = UnitBattlePetLevel(unit)
 
-		local teamLevel = C_PetJournal.GetPetTeamAverageLevel();
+		local teamLevel = C_PetJournalGetPetTeamAverageLevel();
 		if teamLevel < level or teamLevel > level then
 			local c = GetRelativeDifficultyColor(teamLevel, level)
 			r, g, b = c.r, c.g, c.b

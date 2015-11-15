@@ -2,8 +2,15 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames');
 
 --Cache global variables
+--Lua functions
 local tostring = tostring
 local format = format
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local IsShiftKeyDown = IsShiftKeyDown
+local IsAltKeyDown = IsAltKeyDown
+local IsControlKeyDown = IsControlKeyDown
+local UnitIsFriend = UnitIsFriend
 
 function UF:Construct_AuraBars()
 	local bar = self.statusBar

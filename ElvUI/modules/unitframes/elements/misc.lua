@@ -2,10 +2,30 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames');
 
 --Cache global variables
+--Lua functions
 local unpack, select, assert, pairs = unpack, select, assert, pairs
 local tinsert = tinsert
 local random, floor, ceil = math.random, math.floor, math.ceil
 local format = string.format
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local UnitIsUnit = UnitIsUnit
+local UnitReaction = UnitReaction
+local UnitIsPlayer = UnitIsPlayer
+local UnitClass = UnitClass
+local UnitAlternatePowerInfo = UnitAlternatePowerInfo
+local UnitHasVehicleUI = UnitHasVehicleUI
+local UnitHasVehicleUI = UnitHasVehicleUI
+local UnitPower = UnitPower
+local GetComboPoints = GetComboPoints
+local GetSpellInfo = GetSpellInfo
+local GetNumBattlefieldScores = GetNumBattlefieldScores
+local GetBattlefieldScore = GetBattlefieldScore
+local IsInInstance = IsInInstance
+local GetUnitName = GetUnitName
+local GetBattlefieldScore = GetBattlefieldScore
+local UnitGroupRolesAssigned = UnitGroupRolesAssigned
+local UnitIsConnected = UnitIsConnected
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 local FACTION_BAR_COLORS = FACTION_BAR_COLORS

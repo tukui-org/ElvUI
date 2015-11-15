@@ -5,10 +5,39 @@ local BG = LibStub("LibBodyguard-1.0");
 UF.LSM = LSM
 
 --Cache global variables
+--Lua functions
 local _G = _G
 local select, pairs, type, unpack, assert, tostring = select, pairs, type, unpack, assert, tostring
+--WoW API / Variables
+local hooksecurefunc = hooksecurefunc
+local CreateFrame = CreateFrame
+local IsAddOnLoaded = IsAddOnLoaded
+local UnitFrame_OnEnter = UnitFrame_OnEnter
+local UnitFrame_OnLeave = UnitFrame_OnLeave
+local IsInInstance = IsInInstance
+local InCombatLockdown = InCombatLockdown
+local CompactRaidFrameManager_GetSetting = CompactRaidFrameManager_GetSetting
+local CompactRaidFrameManager_SetSetting = CompactRaidFrameManager_SetSetting
+local GetInstanceInfo = GetInstanceInfo
+local UnregisterStateDriver = UnregisterStateDriver
+local RegisterStateDriver = RegisterStateDriver
+local UnregisterAttributeDriver = UnregisterAttributeDriver
+local CompactRaidFrameManager_UpdateShown = CompactRaidFrameManager_UpdateShown
+local CompactRaidFrameContainer = CompactRaidFrameContainer
+local CompactUnitFrame_UnregisterEvents = CompactUnitFrame_UnregisterEvents
 local MAX_RAID_MEMBERS = MAX_RAID_MEMBERS
 local MAX_BOSS_FRAMES = MAX_BOSS_FRAMES
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: UIParent, ElvCharacterDB, ElvUF_Parent, oUF_RaidDebuffs, CompactRaidFrameManager
+-- GLOBALS: PlayerFrame, RuneFrame, PetFrame, TargetFrame, ComboFrame, FocusFrame
+-- GLOBALS: FocusFrameToT, TargetFrameToT, CompactUnitFrameProfiles
+-- GLOBALS: InterfaceOptionsFrameCategoriesButton10, InterfaceOptionsStatusTextPanelPlayer
+-- GLOBALS: InterfaceOptionsStatusTextPanelPet, InterfaceOptionsStatusTextPanelTarget
+-- GLOBALS: InterfaceOptionsCombatPanelEnemyCastBarsOnPortrait
+-- GLOBALS: InterfaceOptionsCombatPanelEnemyCastBarsOnNameplates
+-- GLOBALS: InterfaceOptionsCombatPanelTargetOfTarget, InterfaceOptionsDisplayPanelShowAggroPercentage
+-- GLOBALS: InterfaceOptionsStatusTextPanelParty, InterfaceOptionsFrameCategoriesButton11
 
 local _, ns = ...
 local ElvUF = ns.oUF

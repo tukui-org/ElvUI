@@ -2,9 +2,13 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames');
 
 --Cache global variables
+--Lua functions
 local _G = _G
 local pairs = pairs
 local format = format
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: ElvUF_Pet
 
 local _, ns = ...
 local ElvUF = ns.oUF

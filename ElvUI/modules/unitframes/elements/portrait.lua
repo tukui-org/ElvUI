@@ -1,6 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
+--Cache global variables
+--WoW API / Variables
+local CreateFrame = CreateFrame
+
 function UF:Construct_Portrait(frame, type)
 	local portrait
 

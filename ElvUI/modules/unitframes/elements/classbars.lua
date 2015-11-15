@@ -2,12 +2,22 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames');
 
 --Cache global variables
+--Lua functions
 local select = select
 local ceil, floor = math.ceil, math.floor
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local UnitPower = UnitPower
+local UnitPowerMax = UnitPowerMax
+local IsSpellKnown = IsSpellKnown
+local GetEclipseDirection = GetEclipseDirection
 local SPELL_POWER_HOLY_POWER = SPELL_POWER_HOLY_POWER
 local SPELL_POWER_SHADOW_ORBS = SPELL_POWER_SHADOW_ORBS
 local SHADOW_ORB_MINOR_TALENT_ID = SHADOW_ORB_MINOR_TALENT_ID
 local SPELL_POWER_CHI = SPELL_POWER_CHI
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: ElvUF_Player
 
 local _, ns = ...
 local ElvUF = ns.oUF

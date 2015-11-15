@@ -2,11 +2,16 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames');
 
 --Cache global variables
+--Lua functions
 local _G = _G
 local pairs = pairs
 local tinsert = table.insert
 local format = format
+--WoW API / Variables
 local MAX_BOSS_FRAMES = MAX_BOSS_FRAMES
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: BossHeaderMover
 
 local _, ns = ...
 local ElvUF = ns.oUF
