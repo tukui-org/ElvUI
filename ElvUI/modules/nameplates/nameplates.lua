@@ -3,22 +3,46 @@ local NP = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.
 local LSM = LibStub("LibSharedMedia-3.0")
 
 --Cache global variables
+--Lua functions
 local _G = _G
-local GetTime = GetTime
 local tonumber, pairs, select, tostring, unpack = tonumber, pairs, select, tostring, unpack
 local twipe, tsort, tinsert, wipe = table.wipe, table.sort, table.insert, wipe
 local band = bit.band
 local floor = math.floor
 local gsub, tolower, format, strsplit = string.gsub, string.lower, format, strsplit
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local GetTime = GetTime
+local UnitGUID = UnitGUID
+local UnitHealthMax = UnitHealthMax
+local GetNumBattlefieldScores = GetNumBattlefieldScores
+local GetBattlefieldScore = GetBattlefieldScore
+local GetNumArenaOpponentSpecs = GetNumArenaOpponentSpecs
+local UnitName = UnitName
+local GetArenaOpponentSpec = GetArenaOpponentSpec
+local GetSpecializationInfoByID = GetSpecializationInfoByID
+local InCombatLockdown = InCombatLockdown
+local UnitExists = UnitExists
+local IsInInstance = IsInInstance
+local SetCVar = SetCVar
+local IsAddOnLoaded = IsAddOnLoaded
+local GetComboPoints = GetComboPoints
+local UnitHasVehicleUI = UnitHasVehicleUI
+local GetSpellInfo = GetSpellInfo
+local GetSpellTexture = GetSpellTexture
+local UnitBuff, UnitDebuff = UnitBuff, UnitDebuff
+local UnitPlayerControlled = UnitPlayerControlled
+local GetRaidTargetIndex = GetRaidTargetIndex
 local WorldFrame = WorldFrame
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
-local UnitGUID = UnitGUID
-local UnitHealthMax = UnitHealthMax
 local UNKNOWN = UNKNOWN
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 local AURA_TYPE_BUFF, AURA_TYPE_DEBUFF = AURA_TYPE_BUFF, AURA_TYPE_DEBUFF
 local COMBATLOG_OBJECT_CONTROL_PLAYER = COMBATLOG_OBJECT_CONTROL_PLAYER
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: UIParent
 
 local numChildren = -1
 local targetIndicator
