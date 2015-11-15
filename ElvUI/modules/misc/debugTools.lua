@@ -1,7 +1,20 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local D = E:NewModule('DebugTools', 'AceEvent-3.0', 'AceHook-3.0');
-
 E.DebugTools = D
+
+--Cache global variables
+--WoW API / Variables
+local hooksecurefunc = hooksecurefunc
+local CreateFrame = CreateFrame
+local ScriptErrorsFrame_Update = ScriptErrorsFrame_Update
+local InCombatLockdown = InCombatLockdown
+local GetCVarBool = GetCVarBool
+local ScriptErrorsFrame_OnError = ScriptErrorsFrame_OnError
+local StaticPopup_Hide = StaticPopup_Hide
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: ScriptErrorsFrameScrollFrameText, ScriptErrorsFrame, ScriptErrorsFrameScrollFrame
+-- GLOBALS: UIParent, IsAddOnLoaded, LoadAddOn
 
 function D:ModifyErrorFrame()
 	ScriptErrorsFrameScrollFrameText.cursorOffset = 0

@@ -2,11 +2,26 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local THREAT = E:NewModule('Threat', 'AceEvent-3.0');
 
 --Cache global variables
+--Lua functions
 local pairs, select = pairs, select
 local twipe = table.wipe
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local UnitReaction = UnitReaction
+local UnitClass = UnitClass
+local UnitIsPlayer = UnitIsPlayer
+local IsInGroup, IsInRaid = IsInGroup, IsInRaid
+local UnitExists = UnitExists
+local UnitName = UnitName
+local UnitIsUnit = UnitIsUnit
+local UnitDetailedThreatSituation = UnitDetailedThreatSituation
+local GetThreatStatusColor = GetThreatStatusColor
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 local UNKNOWN = UNKNOWN
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: RightChatDataPanel, LeftChatDataPanel, ElvUF, UIParent
 
 E.Threat = THREAT
 THREAT.list = {};

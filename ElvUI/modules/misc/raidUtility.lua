@@ -2,10 +2,31 @@ local E, L, DF = unpack(select(2, ...)) -- Import Functions/Constants, Config, L
 local RU = E:NewModule('RaidUtility', 'AceEvent-3.0');
 
 --Cache global variables
+--Lua functions
 local _G = _G
 local unpack, pairs = unpack, pairs
 local tinsert = table.insert
 local find = string.find
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local IsInInstance = IsInInstance
+local IsInGroup = IsInGroup
+local IsInRaid = IsInRaid
+local InCombatLockdown = InCombatLockdown
+local UnitIsGroupLeader = UnitIsGroupLeader
+local UnitIsGroupAssistant = UnitIsGroupAssistant
+local InitiateRolePoll = InitiateRolePoll
+local DoReadyCheck = DoReadyCheck
+local ToggleFriendsFrame = ToggleFriendsFrame
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: DisbandRaidButton, ROLE_POLL, RoleCheckButton, READY_CHECK, ReadyCheckButton 
+-- GLOBALS: RaidControlButton, CompactRaidFrameManager, RaidUtilityPanel, RAID_CONTROL
+-- GLOBALS: CompactRaidFrameManagerDisplayFrameHiddenModeToggle, RaidUtility_ShowButton
+-- GLOBALS: CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
+-- GLOBALS: CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck, CLOSE
+-- GLOBALS: CompactRaidFrameManagerDisplayFrameLockedModeToggle, RaidUtility_CloseButton
+-- GLOBALS: CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateRolePoll
 
 E.RaidUtility = RU
 local PANEL_HEIGHT = 100

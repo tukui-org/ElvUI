@@ -2,9 +2,37 @@
 local M = E:GetModule('Misc');
 
 --Cache global variables
+--Lua functions
 local pairs, unpack, ipairs, next, tonumber = pairs, unpack, ipairs, next, tonumber
 local tinsert = table.insert
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local RollOnLoot = RollOnLoot
+local ResetCursor = ResetCursor
+local IsShiftKeyDown = IsShiftKeyDown
+local GameTooltip_ShowCompareItem = GameTooltip_ShowCompareItem
+local IsModifiedClick = IsModifiedClick
+local ShowInspectCursor = ShowInspectCursor
+local CursorOnUpdate = CursorOnUpdate
+local IsControlKeyDown = IsControlKeyDown
+local DressUpItemLink = DressUpItemLink
+local ChatEdit_InsertLink = ChatEdit_InsertLink
+local GetLootRollTimeLeft = GetLootRollTimeLeft
+local GetLootRollItemInfo = GetLootRollItemInfo
+local GetLootRollItemLink = GetLootRollItemLink
+local SetDesaturation = SetDesaturation
+local UnitLevel = UnitLevel
+local C_LootHistoryGetItem = C_LootHistory.GetItem
+local C_LootHistoryGetPlayerInfo = C_LootHistory.GetPlayerInfo
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
+local NEED = NEED
+local GREED = GREED
+local ROLL_DISENCHANT = ROLL_DISENCHANT
+local PASS = PASS
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: GameTooltip, AlertFrameHolder, WorldFrame, AlertFrame_FixAnchors
+-- GLOBALS: MAX_PLAYER_LEVEL, UIParent
 
 local pos = 'TOP';
 local cancelled_rolls = {}
@@ -238,8 +266,8 @@ function M:START_LOOT_ROLL(event, rollID, time)
 end
 
 function M:LOOT_HISTORY_ROLL_CHANGED(event, itemIdx, playerIdx)
-	local rollID, itemLink, numPlayers, isDone, winnerIdx, isMasterLoot = C_LootHistory.GetItem(itemIdx);
-	local name, class, rollType, roll, isWinner = C_LootHistory.GetPlayerInfo(itemIdx, playerIdx);
+	local rollID, itemLink, numPlayers, isDone, winnerIdx, isMasterLoot = C_LootHistoryGetItem(itemIdx);
+	local name, class, rollType, roll, isWinner = C_LootHistoryGetPlayerInfo(itemIdx, playerIdx);
 
 	if name and rollType then
 		for _,f in ipairs(M.RollBars) do

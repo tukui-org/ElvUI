@@ -2,12 +2,29 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local M = E:GetModule('Misc');
 
 --Cache global variables
+--Lua functions
 local _G = _G
 local min, max = math.min, math.max
 local format = string.format
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local GetPetExperience = GetPetExperience
+local UnitXP, UnitXPMax = UnitXP, UnitXPMax
+local UnitLevel = UnitLevel
+local IsXPUserDisabled = IsXPUserDisabled
+local GetXPExhaustion = GetXPExhaustion
+local GetWatchedFactionInfo = GetWatchedFactionInfo
+local GetNumFactions = GetNumFactions
+local GetFactionInfo = GetFactionInfo
+local GetFriendshipReputation = GetFriendshipReputation
+local GetExpansionLevel = GetExpansionLevel
 local STANDING = STANDING
 local REPUTATION = REPUTATION
 local FACTION_BAR_COLORS = FACTION_BAR_COLORS
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: MAX_PLAYER_LEVEL, GameTooltip, ElvUI_ExperienceBar, ElvUI_ReputationBar
+-- GLOBALS: MAX_PLAYER_LEVEL_TABLE, LeftChatPanel, RightChatPanel
 
 function M:GetXP(unit)
 	if(unit == 'pet') then

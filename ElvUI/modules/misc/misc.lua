@@ -3,11 +3,49 @@ local M = E:NewModule('Misc', 'AceEvent-3.0', 'AceTimer-3.0');
 E.Misc = M;
 
 --Cache global variables
+--Lua functions
 local floor = math.floor
 local format, gsub = string.format, string.gsub
+--WoW API / Variables
 local UnitGUID = UnitGUID
+local UnitInRaid = UnitInRaid
+local IsInGroup, IsInRaid = IsInGroup, IsInRaid
+local IsPartyLFG, IsInInstance = IsPartyLFG, IsInInstance
+local IsArenaSkirmish = IsArenaSkirmish
+local IsActiveBattlefieldArena = IsActiveBattlefieldArena
+local SendChatMessage = SendChatMessage
+local IsShiftKeyDown = IsShiftKeyDown
+local CanMerchantRepair = CanMerchantRepair
+local GetRepairAllCost = GetRepairAllCost
+local GetGuildBankWithdrawMoney = GetGuildBankWithdrawMoney
+local CanGuildBankRepair = CanGuildBankRepair
+local RepairAllItems = RepairAllItems
+local InCombatLockdown = InCombatLockdown
+local GetNumGroupMembers = GetNumGroupMembers
+local GetRaidRosterInfo = GetRaidRosterInfo
+local UninviteUnit = UninviteUnit
+local UnitExists = UnitExists
+local UnitName = UnitName
+local LeaveParty = LeaveParty
+local RaidNotice_AddMessage = RaidNotice_AddMessage
+local GetNumFriends = GetNumFriends
+local ShowFriends = ShowFriends
+local IsInGuild = IsInGuild
+local GuildRoster = GuildRoster
+local GetFriendInfo = GetFriendInfo
+local AcceptGroup = AcceptGroup
+local GetNumGuildMembers = GetNumGuildMembers
+local GetGuildRosterInfo = GetGuildRosterInfo
+local BNGetNumFriends = BNGetNumFriends
+local BNGetFriendInfo = BNGetFriendInfo
+local StaticPopupSpecial_Hide = StaticPopupSpecial_Hide
+local StaticPopup_Hide = StaticPopup_Hide
+local GetCVarBool, SetCVar = GetCVarBool, SetCVar
 local UIErrorsFrame = UIErrorsFrame;
 local MAX_PARTY_MEMBERS = MAX_PARTY_MEMBERS
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: RaidBossEmoteFrame, ChatTypeInfo, QueueStatusMinimapButton, LFGInvitePopup
 
 local interruptMsg = INTERRUPTED.." %s's \124cff71d5ff\124Hspell:%d\124h[%s]\124h\124r!"
 

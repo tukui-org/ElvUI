@@ -4,14 +4,40 @@ local AFK = E:NewModule('AFK', 'AceEvent-3.0', 'AceTimer-3.0');
 local CH = E:GetModule("Chat")
 
 --Cache global variables
+--Lua functions
 local _G = _G
 local GetTime = GetTime
 local tostring = tostring
 local floor = floor
 local format, strsub = string.format, string.sub
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local InCombatLockdown = InCombatLockdown
+local MoveViewLeftStart = MoveViewLeftStart
+local MoveViewLeftStop = MoveViewLeftStop
+local CloseAllBags = CloseAllBags
+local IsInGuild = IsInGuild
+local GetGuildInfo = GetGuildInfo
+local PVEFrame_ToggleFrame = PVEFrame_ToggleFrame
+local GetBattlefieldStatus = GetBattlefieldStatus
+local UnitIsAFK = UnitIsAFK
+local SetCVar = SetCVar
+local Screenshot = Screenshot
+local IsShiftKeyDown = IsShiftKeyDown
+local GetColoredName = GetColoredName
+local RemoveExtraSpaces = RemoveExtraSpaces
+local Chat_GetChatCategory = Chat_GetChatCategory
+local ChatFrame_GetMobileEmbeddedTexture = ChatFrame_GetMobileEmbeddedTexture
+local ChatHistory_GetAccessID = ChatHistory_GetAccessID
+local GetScreenWidth = GetScreenWidth
+local GetScreenHeight = GetScreenHeight
+local UnitFactionGroup = UnitFactionGroup
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 local DND = DND
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: UIParent, PVEFrame, ElvUIAFKPlayerModel, ChatTypeInfo
 
 local CAMERA_SPEED = 0.035
 local ignoreKeys = {

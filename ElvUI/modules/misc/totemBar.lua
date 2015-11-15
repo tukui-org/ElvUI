@@ -3,9 +3,17 @@ local TOTEMS = E:NewModule('Totems', 'AceEvent-3.0');
 E.TotemBar = TOTEMS
 
 --Cache global variables
+--Lua functions
 local _G = _G
 local unpack = unpack
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local GetTotemInfo = GetTotemInfo
+local CooldownFrame_SetTimer = CooldownFrame_SetTimer
 local MAX_TOTEMS = MAX_TOTEMS
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: LeftChatPanel
 
 function TOTEMS:Update(event)
 	local displayedTotems = 0

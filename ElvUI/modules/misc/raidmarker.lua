@@ -3,8 +3,23 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local M = E:GetModule('Misc');
 
 --Cache global variables
+--Lua functions
 local sin, cos = math.sin, math.cos
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local GetNumGroupMembers = GetNumGroupMembers
+local UnitIsGroupLeader = UnitIsGroupLeader
+local UnitIsGroupAssistant = UnitIsGroupAssistant
+local IsInGroup, IsInRaid = IsInGroup, IsInRaid
+local UnitExists, UnitIsDead = UnitExists, UnitIsDead
+local GetCursorPosition = GetCursorPosition
+local PlaySound = PlaySound
+local SetRaidTarget = SetRaidTarget
+local SetRaidTargetIconTexture = SetRaidTargetIconTexture
 local UIErrorsFrame = UIErrorsFrame
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: RaidMark_HotkeyPressed
 
 local ButtonIsDown;
 
