@@ -17,8 +17,7 @@ local ToggleAchievementFrame = ToggleAchievementFrame
 local ToggleFriendsFrame = ToggleFriendsFrame
 local GarrisonLandingPageMinimapButton_OnClick = GarrisonLandingPageMinimapButton_OnClick
 local IsInGuild = IsInGuild
-local GuildFrame_Toggle = GuildFrame_Toggle
-local LookingForGuildFrame_Toggle = LookingForGuildFrame_Toggle
+local ToggleGuildFrame = ToggleGuildFrame
 local ToggleLFDParentFrame = ToggleLFDParentFrame
 local IsAddOnLoaded = IsAddOnLoaded
 local CloseMenus = CloseMenus
@@ -97,16 +96,7 @@ local menuList = {
 	{text = GARRISON_LANDING_PAGE_TITLE,
 	func = function() GarrisonLandingPageMinimapButton_OnClick() end},
 	{text = ACHIEVEMENTS_GUILD_TAB,
-	func = function()
-		if IsInGuild() then
-			if not GuildFrame then GuildFrame_LoadUI() end
-			GuildFrame_Toggle()
-		else
-			if not LookingForGuildFrame then LookingForGuildFrame_LoadUI() end
-			if not LookingForGuildFrame then return end
-			LookingForGuildFrame_Toggle()
-		end
-	end},
+	func = function() ToggleGuildFrame() end},
 	{text = LFG_TITLE,
 	func = function() ToggleLFDParentFrame(); end},
 	{text = ENCOUNTER_JOURNAL,
