@@ -17,14 +17,13 @@ local GuildRoster = GuildRoster
 local GetMouseFocus = GetMouseFocus
 local InviteUnit = InviteUnit
 local SetItemRef = SetItemRef
-local GuildFrame_Toggle = GuildFrame_Toggle
-local LookingForGuildFrame_Toggle = LookingForGuildFrame_Toggle
 local GetQuestDifficultyColor = GetQuestDifficultyColor
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
 local EasyMenu = EasyMenu
 local IsShiftKeyDown = IsShiftKeyDown
 local GetGuildInfo = GetGuildInfo
+local ToggleGuildFrame = ToggleGuildFrame
 local GetGuildFactionInfo = GetGuildFactionInfo
 local GetRealZoneText = GetRealZoneText
 local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
@@ -184,18 +183,6 @@ end
 local function whisperClick(self, playerName)
 	menuFrame:Hide()
 	SetItemRef( "player:"..playerName, ("|Hplayer:%1$s|h[%1$s]|h"):format(playerName), "LeftButton" )
-end
-
-local function ToggleGuildFrame()
-	if IsInGuild() then
-		GuildFrame_LoadUI();
-		GuildFrame_Toggle();
-	else
-		if not LookingForGuildFrame then LookingForGuildFrame_LoadUI() end
-		if LookingForGuildFrame then
-			LookingForGuildFrame_Toggle()
-		end
-	end
 end
 
 local function Click(self, btn)
