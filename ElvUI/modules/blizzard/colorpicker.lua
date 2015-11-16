@@ -207,7 +207,6 @@ function B:EnhanceColorPicker()
 	b:Width(80)
 	b:Height(22)
 	b:Point("TOP", "ColorPPCopy", "BOTTOMRIGHT", 0, -7)
-	
 
 	b:SetScript('OnClick', function()
 		local color = E.myclass == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass]);
@@ -298,7 +297,7 @@ function B:EnhanceColorPicker()
 			box:SetNumeric(false)
 		else
 			box:SetMaxLetters(3)
-			box:Width(32)
+			box:Width(40)
 			box:SetNumeric(true)
 		end
 		box:SetPoint("TOP", "ColorPickerWheel", "BOTTOM", 0, -15)
