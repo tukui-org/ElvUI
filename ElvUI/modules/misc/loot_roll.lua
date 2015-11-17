@@ -265,6 +265,10 @@ function M:START_LOOT_ROLL(event, rollID, time)
 	end
 end
 
+--What happens if this event fires for the 5th item while player is still rolling on the first 4 items?
+--Since rollID doesn't match f.rollID for any of the roll frames the player has up, the info is lost I assume.
+--This is likely the cause of the following bug http://git.tukui.org/Elv/elvui/issues/615
+--We should look into caching this information, so the info isn't lost if the player takes too long to roll on items.
 function M:LOOT_HISTORY_ROLL_CHANGED(event, itemIdx, playerIdx)
 	local rollID, itemLink, numPlayers, isDone, winnerIdx, isMasterLoot = C_LootHistoryGetItem(itemIdx);
 	local name, class, rollType, roll, isWinner = C_LootHistoryGetPlayerInfo(itemIdx, playerIdx);
