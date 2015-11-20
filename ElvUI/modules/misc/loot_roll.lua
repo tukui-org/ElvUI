@@ -256,7 +256,7 @@ function M:START_LOOT_ROLL(event, rollID, time)
 	f:SetPoint("CENTER", WorldFrame, "CENTER")
 	f:Show()
 	AlertFrame_FixAnchors()
-	
+
 	--Add cached roll info, if any
 	for rollID, rollTable in pairs(cachedRolls) do
 		if f.rollID == rollID then --rollID matches cached rollID
@@ -265,7 +265,6 @@ function M:START_LOOT_ROLL(event, rollID, time)
 				f.rolls[rollerName] = {rollType, class}
 				f[rolltypes[rollType]]:SetText(tonumber(f[rolltypes[rollType]]:GetText()) + 1)
 			end
-			cachedRolls[rollID] = nil --Remove from cache
 			break
 		end
 	end
@@ -279,10 +278,6 @@ function M:START_LOOT_ROLL(event, rollID, time)
 	end
 end
 
---What happens if this event fires for the 5th item while player is still rolling on the first 4 items?
---Since rollID doesn't match f.rollID for any of the roll frames the player has up, the info is lost I assume.
---This is likely the cause of the following bug http://git.tukui.org/Elv/elvui/issues/615
---We should look into caching this information, so the info isn't lost if the player takes too long to roll on items.
 function M:LOOT_HISTORY_ROLL_CHANGED(event, itemIdx, playerIdx)
 	local rollID, itemLink, numPlayers, isDone, winnerIdx, isMasterLoot = C_LootHistoryGetItem(itemIdx);
 	local name, class, rollType, roll, isWinner = C_LootHistoryGetPlayerInfo(itemIdx, playerIdx);
@@ -293,7 +288,6 @@ function M:LOOT_HISTORY_ROLL_CHANGED(event, itemIdx, playerIdx)
 			if f.rollID == rollID then
 				f.rolls[name] = {rollType, class}
 				f[rolltypes[rollType]]:SetText(tonumber(f[rolltypes[rollType]]:GetText()) + 1)
-				
 				rollIsHidden = false
 				break
 			end
@@ -301,18 +295,36 @@ function M:LOOT_HISTORY_ROLL_CHANGED(event, itemIdx, playerIdx)
 
 		--History changed for a loot roll that hasn't popped up for the player yet, so cache it for later
 		if rollIsHidden then
-			local roll = cachedRolls[rollID] or {}
-			roll[name] = {rollType, class}
-			cachedRolls[rollID] = roll
+			cachedRolls[rollID] = cachedRolls[rollID] or {}
+			if not cachedRolls[rollID][name] then
+				cachedRolls[rollID][name] = {rollType, class}
+			end
 		end
 	end
 end
+
+function M:LOOT_HISTORY_ROLL_COMPLETE()
+	--Remove completed rolls from cache
+	local historyID = 1
+	while true do
+		local rollID, _, _, isDone = C_LootHistoryGetItem(historyID)
+		if not rollID then
+			return
+		elseif isDone then
+			cachedRolls[rollID] = nil
+		end
+		historyID = historyID + 1
+	end
+end
+M.LOOT_ROLLS_COMPLETE = M.LOOT_HISTORY_ROLL_COMPLETE
 
 function M:LoadLootRoll()
 	if not E.private.general.lootRoll then return end
 
 	self:RegisterEvent('LOOT_HISTORY_ROLL_CHANGED')
+	self:RegisterEvent('LOOT_HISTORY_ROLL_COMPLETE')
 	self:RegisterEvent("START_LOOT_ROLL")
+	self:RegisterEvent("LOOT_ROLLS_COMPLETE")
 
 	UIParent:UnregisterEvent("START_LOOT_ROLL")
 	UIParent:UnregisterEvent("CANCEL_LOOT_ROLL")
