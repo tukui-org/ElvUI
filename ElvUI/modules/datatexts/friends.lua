@@ -28,9 +28,9 @@ local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
 local ToggleFriendsFrame = ToggleFriendsFrame
 local EasyMenu = EasyMenu
-local GetRealZoneText = GetRealZoneText
 local IsShiftKeyDown = IsShiftKeyDown
 local GetRealmName = GetRealmName
+local GetCurrentMapAreaID = GetCurrentMapAreaID
 local AFK = AFK
 local DND = DND
 local LOCALIZED_CLASS_NAMES_MALE = LOCALIZED_CLASS_NAMES_MALE
@@ -290,7 +290,7 @@ local function OnEnter(self)
 		for i = 1, #friendTable do
 			info = friendTable[i]
 			if info[5] then
-				if GetRealZoneText() == info[4] then zonec = activezone else zonec = inactivezone end
+				if E:GetZoneText(GetCurrentMapAreaID()) == info[4] then zonec = activezone else zonec = inactivezone end
 				classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[3]], GetQuestDifficultyColor(info[2])
 
 				classc = classc or GetQuestDifficultyColor(info[2])
@@ -323,7 +323,7 @@ local function OnEnter(self)
 							if UnitInParty(info[4]) or UnitInRaid(info[4]) then grouped = 1 else grouped = 2 end
 							DT.tooltip:AddDoubleLine(format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[15],classc.r*255,classc.g*255,classc.b*255,info[3],groupedTable[grouped], 255, 0, 0, statusTable[status]),info[2],238,238,238,238,238,238)
 							if IsShiftKeyDown() then
-								if GetRealZoneText() == info[14] then zonec = activezone else zonec = inactivezone end
+								if E:GetZoneText(GetCurrentMapAreaID()) == info[14] then zonec = activezone else zonec = inactivezone end
 								if GetRealmName() == info[10] then realmc = activezone else realmc = inactivezone end
 								DT.tooltip:AddDoubleLine(info[14], info[10], zonec.r, zonec.g, zonec.b, realmc.r, realmc.g, realmc.b)
 							end

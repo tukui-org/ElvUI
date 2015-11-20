@@ -25,7 +25,7 @@ local IsShiftKeyDown = IsShiftKeyDown
 local GetGuildInfo = GetGuildInfo
 local ToggleGuildFrame = ToggleGuildFrame
 local GetGuildFactionInfo = GetGuildFactionInfo
-local GetRealZoneText = GetRealZoneText
+local GetCurrentMapAreaID = GetCurrentMapAreaID
 local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local GUILD_MOTD = GUILD_MOTD
@@ -261,7 +261,7 @@ local function OnEnter(self, _, noUpdate)
 		end
 
 		info = guildTable[i]
-		if GetRealZoneText() == info[4] then zonec = activezone else zonec = inactivezone end
+		if E:GetZoneText(GetCurrentMapAreaID()) == info[4] then zonec = activezone else zonec = inactivezone end
 		classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[9]], GetQuestDifficultyColor(info[3])
 
 		if (UnitInParty(info[1]) or UnitInRaid(info[1])) then grouped = 1 else grouped = 2 end
