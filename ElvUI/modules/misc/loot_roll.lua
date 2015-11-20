@@ -36,6 +36,7 @@ local PASS = PASS
 
 local pos = 'TOP';
 local cancelled_rolls = {}
+local cachedRolls = {}
 local FRAME_WIDTH, FRAME_HEIGHT = 328, 28
 M.RollBars = {}
 
@@ -255,6 +256,19 @@ function M:START_LOOT_ROLL(event, rollID, time)
 	f:SetPoint("CENTER", WorldFrame, "CENTER")
 	f:Show()
 	AlertFrame_FixAnchors()
+	
+	--Add cached roll info, if any
+	for rollID, rollTable in pairs(cachedRolls) do
+		if f.rollID == rollID then --rollID matches cached rollID
+			for rollerName, rollerInfo in pairs(rollTable) do
+				local rollType, class = rollerInfo[1], rollerInfo[2]
+				f.rolls[rollerName] = {rollType, class}
+				f[rolltypes[rollType]]:SetText(tonumber(f[rolltypes[rollType]]:GetText()) + 1)
+			end
+			cachedRolls[rollID] = nil --Remove from cache
+			break
+		end
+	end
 
 	if E.db.general.autoRoll and UnitLevel('player') == MAX_PLAYER_LEVEL and quality == 2 and not bop then
 		if canDisenchant then
@@ -273,13 +287,23 @@ function M:LOOT_HISTORY_ROLL_CHANGED(event, itemIdx, playerIdx)
 	local rollID, itemLink, numPlayers, isDone, winnerIdx, isMasterLoot = C_LootHistoryGetItem(itemIdx);
 	local name, class, rollType, roll, isWinner = C_LootHistoryGetPlayerInfo(itemIdx, playerIdx);
 
+	local rollIsHidden = true
 	if name and rollType then
 		for _,f in ipairs(M.RollBars) do
 			if f.rollID == rollID then
 				f.rolls[name] = {rollType, class}
 				f[rolltypes[rollType]]:SetText(tonumber(f[rolltypes[rollType]]:GetText()) + 1)
-				return
+				
+				rollIsHidden = false
+				break
 			end
+		end
+
+		--History changed for a loot roll that hasn't popped up for the player yet, so cache it for later
+		if rollIsHidden then
+			local roll = cachedRolls[rollID] or {}
+			roll[name] = {rollType, class}
+			cachedRolls[rollID] = roll
 		end
 	end
 end
