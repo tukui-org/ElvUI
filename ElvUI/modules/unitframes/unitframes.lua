@@ -660,14 +660,14 @@ function UF.groupPrototype:AdjustVisibility()
 		for i=1, #self.groups do
 			local group = self.groups[i]
 			if (i <= numGroups) and ((self.db.raidWideSorting and i <= 1) or not self.db.raidWideSorting) then
-				self.groups[i]:Show()
+				group:Show()
 			else
-				if self.groups[i].forceShow then
-					self.groups[i]:Hide()
+				if group.forceShow then
+					group:Hide()
 					UF:UnshowChildUnits(group, group:GetChildren())
 					group:SetAttribute('startingIndex', 1)
 				else
-					self.groups[i]:Reset()
+					group:Reset()
 				end
 			end
 		end
