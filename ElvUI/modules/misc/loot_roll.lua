@@ -25,6 +25,8 @@ local UnitLevel = UnitLevel
 local C_LootHistoryGetItem = C_LootHistory.GetItem
 local C_LootHistoryGetPlayerInfo = C_LootHistory.GetPlayerInfo
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 local NEED = NEED
 local GREED = GREED
 local ROLL_DISENCHANT = ROLL_DISENCHANT
@@ -37,15 +39,13 @@ local PASS = PASS
 local pos = 'TOP';
 local cancelled_rolls = {}
 local cachedRolls = {}
+local completedRolls = {}
 local FRAME_WIDTH, FRAME_HEIGHT = 328, 28
 M.RollBars = {}
 
 local function ClickRoll(frame)
 	RollOnLoot(frame.parent.rollID, frame.rolltype)
 end
-
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
-local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 
 local function HideTip() GameTooltip:Hide() end
 local function HideTip2() GameTooltip:Hide(); ResetCursor() end
@@ -265,6 +265,7 @@ function M:START_LOOT_ROLL(event, rollID, time)
 				f.rolls[rollerName] = {rollType, class}
 				f[rolltypes[rollType]]:SetText(tonumber(f[rolltypes[rollType]]:GetText()) + 1)
 			end
+			completedRolls[rollID] = true
 			break
 		end
 	end
@@ -305,15 +306,9 @@ end
 
 function M:LOOT_HISTORY_ROLL_COMPLETE()
 	--Remove completed rolls from cache
-	local historyID = 1
-	while true do
-		local rollID, _, _, isDone = C_LootHistoryGetItem(historyID)
-		if not rollID then
-			return
-		elseif isDone then
-			cachedRolls[rollID] = nil
-		end
-		historyID = historyID + 1
+	for rollID in pairs(completedRolls) do
+		cachedRolls[rollID] = nil
+		completedRolls[rollID] = nil
 	end
 end
 M.LOOT_ROLLS_COMPLETE = M.LOOT_HISTORY_ROLL_COMPLETE
