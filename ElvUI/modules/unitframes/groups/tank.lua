@@ -25,6 +25,14 @@ function UF:Construct_TankFrames(unitGroup)
 	self.RaidIcon = UF:Construct_RaidIcon(self)
 	self.Range = UF:Construct_Range(self)
 
+	if not self.isChild then
+		self.Buffs = UF:Construct_Buffs(self)
+		self.Debuffs = UF:Construct_Debuffs(self)
+		self.AuraWatch = UF:Construct_AuraWatch(self)
+		self.RaidDebuffs = UF:Construct_RaidDebuffs(self)
+		self.DebuffHighlight = UF:Construct_DebuffHighlight(self)
+	end
+
 	UF:Update_TankFrames(self, E.db['unitframe']['units']['tank'])
 	UF:Update_StatusBars()
 	UF:Update_FontStrings()
@@ -50,7 +58,7 @@ function UF:Update_TankHeader(header, db)
 	header:SetAttribute('columnAnchorPoint', 'LEFT')
 
 	UF:ClearChildPoints(header:GetChildren())
-	header:SetAttribute("yOffset", 7)
+	header:SetAttribute("yOffset", db.verticalSpacing)
 
 	if not header.positioned then
 		header:ClearAllPoints()
@@ -65,12 +73,15 @@ function UF:Update_TankHeader(header, db)
 end
 
 function UF:Update_TankFrames(frame, db)
+	frame.db = db
 	local BORDER = E.Border;
 	local SPACING = E.Spacing;
 	local SHADOW_SPACING = E.PixelMode and 3 or 4
+	local UNIT_WIDTH = db.width
 	frame.colors = ElvUF.colors
 	frame.Range.outsideAlpha = E.db.unitframe.OORAlpha
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
+
 	if frame.isChild and frame.originalParent then
 		local childDB = db.targetsGroup
 		frame.db = db.targetsGroup
@@ -176,6 +187,130 @@ function UF:Update_TankFrames(frame, db)
 				frame:DisableElement('Range')
 			end
 		end
+	end
+	
+	if not frame.isChild then
+		--Auras Disable/Enable
+		--Only do if both debuffs and buffs aren't being used.
+		do
+			if db.debuffs.enable or db.buffs.enable then
+				frame:EnableElement('Aura')
+			else
+				frame:DisableElement('Aura')
+			end
+
+			frame.Buffs:ClearAllPoints()
+			frame.Debuffs:ClearAllPoints()
+		end
+		
+		--Buffs
+		do
+			local buffs = frame.Buffs
+			local rows = db.buffs.numrows
+
+			buffs:SetWidth(UNIT_WIDTH)
+			buffs.forceShow = frame.forceShowAuras
+			buffs.num = db.buffs.perrow * rows
+			buffs.size = db.buffs.sizeOverride ~= 0 and db.buffs.sizeOverride or ((((buffs:GetWidth() - (buffs.spacing*(buffs.num/rows - 1))) / buffs.num)) * rows)
+
+			if db.buffs.sizeOverride and db.buffs.sizeOverride > 0 then
+				buffs:SetWidth(db.buffs.perrow * db.buffs.sizeOverride)
+			end
+
+			local x, y = E:GetXYOffset(db.buffs.anchorPoint)
+			local attachTo = self:GetAuraAnchorFrame(frame, db.buffs.attachTo)
+
+			buffs:Point(E.InversePoints[db.buffs.anchorPoint], attachTo, db.buffs.anchorPoint, x + db.buffs.xOffset, y + db.buffs.yOffset + (E.PixelMode and (db.buffs.anchorPoint:find('TOP') and -1 or 1) or 0))
+			buffs:Height(buffs.size * rows)
+			buffs["growth-y"] = db.buffs.anchorPoint:find('TOP') and 'UP' or 'DOWN'
+			buffs["growth-x"] = db.buffs.anchorPoint == 'LEFT' and 'LEFT' or  db.buffs.anchorPoint == 'RIGHT' and 'RIGHT' or (db.buffs.anchorPoint:find('LEFT') and 'RIGHT' or 'LEFT')
+			buffs.initialAnchor = E.InversePoints[db.buffs.anchorPoint]
+
+			if db.buffs.enable then
+				buffs:Show()
+				UF:UpdateAuraIconSettings(buffs)
+			else
+				buffs:Hide()
+			end
+		end
+
+		--Debuffs
+		do
+			local debuffs = frame.Debuffs
+			local rows = db.debuffs.numrows
+
+			debuffs:SetWidth(UNIT_WIDTH)
+			debuffs.forceShow = frame.forceShowAuras
+			debuffs.num = db.debuffs.perrow * rows
+			debuffs.size = db.debuffs.sizeOverride ~= 0 and db.debuffs.sizeOverride or ((((debuffs:GetWidth() - (debuffs.spacing*(debuffs.num/rows - 1))) / debuffs.num)) * rows)
+
+			if db.debuffs.sizeOverride and db.debuffs.sizeOverride > 0 then
+				debuffs:SetWidth(db.debuffs.perrow * db.debuffs.sizeOverride)
+			end
+
+			local x, y = E:GetXYOffset(db.debuffs.anchorPoint)
+			local attachTo = self:GetAuraAnchorFrame(frame, db.debuffs.attachTo, db.debuffs.attachTo == 'BUFFS' and db.buffs.attachTo == 'DEBUFFS')
+
+			debuffs:Point(E.InversePoints[db.debuffs.anchorPoint], attachTo, db.debuffs.anchorPoint, x + db.debuffs.xOffset, y + db.debuffs.yOffset)
+			debuffs:Height(debuffs.size * rows)
+			debuffs["growth-y"] = db.debuffs.anchorPoint:find('TOP') and 'UP' or 'DOWN'
+			debuffs["growth-x"] = db.debuffs.anchorPoint == 'LEFT' and 'LEFT' or  db.debuffs.anchorPoint == 'RIGHT' and 'RIGHT' or (db.debuffs.anchorPoint:find('LEFT') and 'RIGHT' or 'LEFT')
+			debuffs.initialAnchor = E.InversePoints[db.debuffs.anchorPoint]
+
+			if db.debuffs.enable then
+				debuffs:Show()
+				UF:UpdateAuraIconSettings(debuffs)
+			else
+				debuffs:Hide()
+			end
+		end
+
+		--RaidDebuffs
+		do
+			local rdebuffs = frame.RaidDebuffs
+			local stackColor = db.rdebuffs.stack.color
+			local durationColor = db.rdebuffs.duration.color
+			if db.rdebuffs.enable then
+				local rdebuffsFont = UF.LSM:Fetch("font", db.rdebuffs.font)
+				frame:EnableElement('RaidDebuffs')
+
+				rdebuffs:Size(db.rdebuffs.size)
+				rdebuffs:Point('BOTTOM', frame, 'BOTTOM', db.rdebuffs.xOffset, db.rdebuffs.yOffset)
+				
+				rdebuffs.count:FontTemplate(rdebuffsFont, db.rdebuffs.fontSize, db.rdebuffs.fontOutline)
+				rdebuffs.count:ClearAllPoints()
+				rdebuffs.count:Point(db.rdebuffs.stack.position, db.rdebuffs.stack.xOffset, db.rdebuffs.stack.yOffset)
+				rdebuffs.count:SetTextColor(stackColor.r, stackColor.g, stackColor.b)
+				
+				rdebuffs.time:FontTemplate(rdebuffsFont, db.rdebuffs.fontSize, db.rdebuffs.fontOutline)
+				rdebuffs.time:ClearAllPoints()
+				rdebuffs.time:Point(db.rdebuffs.duration.position, db.rdebuffs.duration.xOffset, db.rdebuffs.duration.yOffset)
+				rdebuffs.time:SetTextColor(durationColor.r, durationColor.g, durationColor.b)
+			else
+				frame:DisableElement('RaidDebuffs')
+				rdebuffs:Hide()
+			end
+		end
+		
+		--Debuff Highlight
+		do
+			local dbh = frame.DebuffHighlight
+			if E.db.unitframe.debuffHighlighting ~= 'NONE' and not db.disableDebuffHighlight then
+				frame:EnableElement('DebuffHighlight')
+				frame.DebuffHighlightFilterTable = E.global.unitframe.DebuffHighlightColors
+				if E.db.unitframe.debuffHighlighting == 'GLOW' then
+					frame.DebuffHighlightBackdrop = true
+					frame.DBHGlow:SetAllPoints(frame.Threat.glow)
+				else
+					frame.DebuffHighlightBackdrop = false
+				end		
+			else
+				frame:DisableElement('DebuffHighlight')
+			end
+		end
+
+		--Buff Indicator
+		UF:UpdateAuraWatch(frame)
 	end
 
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg, true)
