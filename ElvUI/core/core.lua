@@ -881,6 +881,41 @@ function E:DBConversions()
 	--Minimum height has been increased to 60, convert any setting lower than this to the new minimum height.
 	if E.db.chat.panelHeight < 60 then E.db.chat.panelHeight = 60 end
 	if E.db.chat.panelHeightRight < 60 then E.db.chat.panelHeightRight = 60 end
+	
+	--Boss Frame auras have been changed to support friendly/enemy filters in case there is an encounter with a friendly boss
+	--Try to convert any filter settings the user had to the new format
+	if not E.db.bossAurasConverted then
+		--Buffs
+		E.db.unitframe.units.boss.buffs.playerOnly.friendly = E.db.unitframe.units.boss.buffs.playerOnly
+		E.db.unitframe.units.boss.buffs.playerOnly.enemy = E.db.unitframe.units.boss.buffs.playerOnly
+		E.db.unitframe.units.boss.buffs.noConsolidated.friendly = E.db.unitframe.units.boss.buffs.noConsolidated
+		E.db.unitframe.units.boss.buffs.noConsolidated.enemy = E.db.unitframe.units.boss.buffs.noConsolidated
+		E.db.unitframe.units.boss.buffs.useBlacklist.friendly = E.db.unitframe.units.boss.buffs.useBlacklist
+		E.db.unitframe.units.boss.buffs.useBlacklist.enemy = E.db.unitframe.units.boss.buffs.useBlacklist
+		E.db.unitframe.units.boss.buffs.useWhitelist.friendly = E.db.unitframe.units.boss.buffs.useWhitelist
+		E.db.unitframe.units.boss.buffs.useWhitelist.enemy = E.db.unitframe.units.boss.buffs.useWhitelist
+		E.db.unitframe.units.boss.buffs.noDuration.friendly = E.db.unitframe.units.boss.buffs.noDuration
+		E.db.unitframe.units.boss.buffs.noDuration.enemy = E.db.unitframe.units.boss.buffs.noDuration
+		E.db.unitframe.units.boss.buffs.onlyDispellable.friendly = E.db.unitframe.units.boss.buffs.onlyDispellable
+		E.db.unitframe.units.boss.buffs.onlyDispellable.enemy = E.db.unitframe.units.boss.buffs.onlyDispellable
+		E.db.unitframe.units.boss.buffs.bossAuras.friendly = E.db.unitframe.units.boss.buffs.bossAuras
+		E.db.unitframe.units.boss.buffs.bossAuras.enemy = E.db.unitframe.units.boss.buffs.bossAuras
+		--Debuffs
+		E.db.unitframe.units.boss.debuffs.playerOnly.friendly = E.db.unitframe.units.boss.debuffs.playerOnly
+		E.db.unitframe.units.boss.debuffs.playerOnly.enemy = E.db.unitframe.units.boss.debuffs.playerOnly
+		E.db.unitframe.units.boss.debuffs.useBlacklist.friendly = E.db.unitframe.units.boss.debuffs.useBlacklist
+		E.db.unitframe.units.boss.debuffs.useBlacklist.enemy = E.db.unitframe.units.boss.debuffs.useBlacklist
+		E.db.unitframe.units.boss.debuffs.useWhitelist.friendly = E.db.unitframe.units.boss.debuffs.useWhitelist
+		E.db.unitframe.units.boss.debuffs.useWhitelist.enemy = E.db.unitframe.units.boss.debuffs.useWhitelist
+		E.db.unitframe.units.boss.debuffs.noDuration.friendly = E.db.unitframe.units.boss.debuffs.noDuration
+		E.db.unitframe.units.boss.debuffs.noDuration.enemy = E.db.unitframe.units.boss.debuffs.noDuration
+		E.db.unitframe.units.boss.debuffs.onlyDispellable.friendly = E.db.unitframe.units.boss.debuffs.onlyDispellable
+		E.db.unitframe.units.boss.debuffs.onlyDispellable.enemy = E.db.unitframe.units.boss.debuffs.onlyDispellable
+		E.db.unitframe.units.boss.debuffs.bossAuras.friendly = E.db.unitframe.units.boss.debuffs.bossAuras
+		E.db.unitframe.units.boss.debuffs.bossAuras.enemy = E.db.unitframe.units.boss.debuffs.bossAuras
+		
+		E.db.bossAurasConverted = true
+	end
 end
 
 local CPU_USAGE = {}
