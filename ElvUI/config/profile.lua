@@ -2507,5 +2507,6 @@ P["actionbar"] = {
 	},
 	['extraActionButton'] = {
 		['alpha'] = 1,
+		["scale"] = 1,
 	},
 };

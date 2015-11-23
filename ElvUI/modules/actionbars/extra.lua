@@ -33,6 +33,16 @@ function AB:Extra_SetAlpha()
 	end
 end
 
+function AB:Extra_SetScale()
+	local scale = E.db.actionbar.extraActionButton.scale
+	if ExtraActionBarFrame then
+		ExtraActionBarFrame:SetScale(scale)
+	end
+	if DraenorZoneAbilityFrame then
+		DraenorZoneAbilityFrame:SetScale(scale)
+	end
+end
+
 function AB:SetupExtraButton()
 	local holder = CreateFrame('Frame', nil, E.UIParent)
 	holder:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 150)
@@ -89,6 +99,7 @@ function AB:SetupExtraButton()
 	end
 	
 	AB:Extra_SetAlpha()
+	AB:Extra_SetScale()
 
 	E:CreateMover(holder, 'BossButton', L["Boss Button"], nil, nil, nil, 'ALL,ACTIONBARS');
 end
