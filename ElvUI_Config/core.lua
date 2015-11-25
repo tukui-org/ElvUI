@@ -825,8 +825,13 @@ E.Options.args.general = {
 						['VERTICAL'] = L["Vertical"]
 					}
 				},
-				textFormat = {
+				reverseFill = {
 					order = 6,
+					type = "toggle",
+					name = L["Reverse Fill Direction"],
+				},
+				textFormat = {
+					order = 7,
 					type = 'select',
 					name = L["Text Format"],
 					values = {
@@ -838,7 +843,7 @@ E.Options.args.general = {
 					set = function(info, value) E.db.general.experience[ info[#info] ] = value; E:GetModule('Misc'):UpdateExperience() end,
 				},
 				textSize = {
-					order = 7,
+					order = 8,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
@@ -890,8 +895,13 @@ E.Options.args.general = {
 						['VERTICAL'] = L["Vertical"]
 					}
 				},
-				textFormat = {
+				reverseFill = {
 					order = 6,
+					type = "toggle",
+					name = L["Reverse Fill Direction"],
+				},
+				textFormat = {
+					order = 7,
 					type = 'select',
 					name = L["Text Format"],
 					values = {
@@ -903,7 +913,7 @@ E.Options.args.general = {
 					set = function(info, value) E.db.general.reputation[ info[#info] ] = value; E:GetModule('Misc'):UpdateReputation() end,
 				},
 				textSize = {
-					order = 7,
+					order = 8,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,

@@ -27,13 +27,16 @@ local origColors = {}
 local origBorderColors = {}
 local origPostUpdateAura = {}
  
-local function GetDebuffType(unit, filter)
+local function GetDebuffType(unit, filter, filterTable)
 	if not unit or not UnitCanAssist("player", unit) then return nil end
 	local i = 1
 	while true do
 		local name, _, texture, _, debufftype = UnitAura(unit, i, "HARMFUL")
+
 		if not texture then break end
-		if debufftype and (not filter or (filter and dispellist[debufftype])) and not blackList[name] then
+		if(filterTable and filterTable[name] and filterTable[name].enable) then
+			return debufftype, texture, true, filterTable[name].style, filterTable[name].color
+		elseif debufftype and (not filter or (filter and dispellist[debufftype])) and not blackList[name] then
 			return debufftype, texture
 		end
 		i = i + 1
@@ -96,34 +99,41 @@ end
 local function Update(object, event, unit)
 	if unit ~= object.unit then return; end
 
-	local debuffType, texture  = GetDebuffType(unit, object.DebuffHighlightFilter)
-	if debuffType then
-		local color = DebuffTypeColor[debuffType]
-		if object.DebuffHighlightBackdrop then
-			object:SetBackdropColor(color.r, color.g, color.b, object.DebuffHighlightAlpha or 1)
+	local debuffType, texture, wasFiltered, style, color = GetDebuffType(unit, object.DebuffHighlightFilter, object.DebuffHighlightFilterTable)
+	if(wasFiltered) then
+		if style == "GLOW" and object.DBHGlow then
+			object.DBHGlow:Show()
+			object.DBHGlow:SetBackdropBorderColor(color.r, color.g, color.b)
+		elseif object.DBHGlow then
+			object.DBHGlow:Hide()
+			object.DebuffHighlight:SetVertexColor(color.r, color.g, color.b, color.a or object.DebuffHighlightAlpha or .5)
+		end		
+	elseif debuffType then
+		color = DebuffTypeColor[debuffType]
+		if object.DebuffHighlightBackdrop and object.DBHGlow then
+			object.DBHGlow:Show()
+			object.DBHGlow:SetBackdropBorderColor(color.r, color.g, color.b)
 		elseif object.DebuffHighlightUseTexture then
 			object.DebuffHighlight:SetTexture(texture)
 		else
 			object.DebuffHighlight:SetVertexColor(color.r, color.g, color.b, object.DebuffHighlightAlpha or .5)
 		end
 	else
-		if object.DebuffHighlightBackdrop then
-			local color = origColors[object]
-			object:SetBackdropColor(color.r, color.g, color.b, color.a)
-			color = origBorderColors[object]
-			object:SetBackdropBorderColor(color.r, color.g, color.b, color.a)
-		elseif object.DebuffHighlightUseTexture then
+		if object.DBHGlow then
+			object.DBHGlow:Hide()
+		end
+
+		if object.DebuffHighlightUseTexture then
 			object.DebuffHighlight:SetTexture(nil)
 		else
-			local color = origColors[object]
-			object.DebuffHighlight:SetVertexColor(color.r, color.g, color.b, color.a)
+			object.DebuffHighlight:SetVertexColor(0, 0, 0, 0)
 		end
 	end
 end
  
 local function Enable(object)
 	-- if we're not highlighting this unit return
-	if not object.DebuffHighlightBackdrop and not object.DebuffHighlight then
+	if not object.DebuffHighlightBackdrop and not object.DebuffHighlight and not object.DBHGlow then
 		return
 	end
 	-- if we're filtering highlights and we're not of the dispelling type, return
@@ -136,16 +146,6 @@ local function Enable(object)
 		object:RegisterEvent("SPELLS_CHANGED", CheckSymbiosis)
 	end
 
-	if object.DebuffHighlightBackdrop then
-		local r, g, b, a = object:GetBackdropColor()
-		origColors[object] = { r = r, g = g, b = b, a = a}
-		r, g, b, a = object:GetBackdropBorderColor()
-		origBorderColors[object] = { r = r, g = g, b = b, a = a}
-	elseif not object.DebuffHighlightUseTexture then
-		local r, g, b, a = object.DebuffHighlight:GetVertexColor()
-		origColors[object] = { r = r, g = g, b = b, a = a}
-	end
-
 	return true
 end
 
@@ -156,14 +156,11 @@ local function Disable(object)
 		object:UnregisterEvent("SPELLS_CHANGED", CheckSymbiosis)
 	end
 
-	if object.DebuffHighlightBackdrop then
-		local color = origColors[object]
-		if color then
-			object:SetBackdropColor(color.r, color.g, color.b, color.a)
-			color = origBorderColors[object]
-			object:SetBackdropBorderColor(color.r, color.g, color.b, color.a)
-		end
-	elseif not object.DebuffHighlightUseTexture then -- color debuffs
+	if object.DBHGlow then
+		object.DBHGlow:Hide()
+	end
+
+	if object.DebuffHighlight then
 		local color = origColors[object]
 		if color then
 			object.DebuffHighlight:SetVertexColor(color.r, color.g, color.b, color.a)

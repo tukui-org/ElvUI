@@ -1,6 +1,15 @@
 local E, L, DF = unpack(select(2, ...))
 local B = E:GetModule('Blizzard');
 
+--Cache global variables
+--WoW API / Variables
+local hooksecurefunc = hooksecurefunc
+local GetScreenWidth = GetScreenWidth
+local GetScreenHeight = GetScreenHeight
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: ObjectiveTrackerFrame, ObjectiveFrameMover, ObjectiveTrackerBonusRewardsFrame
+
 local ObjectiveFrameHolder = CreateFrame("Frame", "ObjectiveFrameHolder", E.UIParent)
 ObjectiveFrameHolder:SetWidth(130)
 ObjectiveFrameHolder:SetHeight(22)
@@ -31,14 +40,16 @@ function B:MoveObjectiveFrame()
 	ObjectiveTrackerFrame:SetPoint('TOP', ObjectiveFrameHolder, 'TOP')
 	B:ObjectiveFrameHeight()
 	ObjectiveTrackerFrame:SetClampedToScreen(false)
-	hooksecurefunc(ObjectiveTrackerFrame,"SetPoint",function(_,_,parent)
+	
+	local function ObjectiveTrackerFrame_SetPosition(_,_, parent)
 		if parent ~= ObjectiveFrameHolder then
 			ObjectiveTrackerFrame:ClearAllPoints()
 			ObjectiveTrackerFrame:SetPoint('TOP', ObjectiveFrameHolder, 'TOP')
 		end
-	end)
+	end
+	hooksecurefunc(ObjectiveTrackerFrame,"SetPoint", ObjectiveTrackerFrame_SetPosition)
 
-	hooksecurefunc("BonusObjectiveTracker_AnimateReward", function(block)
+	local function RewardsFrame_SetPosition(block)
 		local rewardsFrame = ObjectiveTrackerBonusRewardsFrame;
 		rewardsFrame:ClearAllPoints();
 		if E.db.general.bonusObjectivePosition == "RIGHT" or (E.db.general.bonusObjectivePosition == "AUTO" and IsFramePositionedLeft(ObjectiveTrackerFrame)) then
@@ -46,5 +57,6 @@ function B:MoveObjectiveFrame()
 		else
 			rewardsFrame:SetPoint("TOPRIGHT", block, "TOPLEFT", 10, -4);
 		end
-	end)
+	end
+	hooksecurefunc("BonusObjectiveTracker_AnimateReward", RewardsFrame_SetPosition)
 end

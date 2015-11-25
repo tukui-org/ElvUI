@@ -14,7 +14,121 @@ local function UpdateFilterGroup()
 	E.Options.args.filters.args.filterGroup = nil
 	E.Options.args.filters.args.spellGroup = nil
 
-	if selectedFilter == 'AuraBar Colors' then
+	if selectedFilter == 'Debuff Highlight' then
+		if not selectedFilter then
+			E.Options.args.filters.args.filterGroup = nil
+			E.Options.args.filters.args.spellGroup = nil
+			return
+		end
+
+		E.Options.args.filters.args.filterGroup = {
+			type = 'group',
+			name = selectedFilter,
+			guiInline = true,
+			order = 10,
+			args = {
+				addSpell = {
+					order = 1,
+					name = L["Add Spell Name"],
+					desc = L["Add a spell to the filter."],
+					type = 'input',
+					get = function(info) return "" end,
+					set = function(info, value)
+						E.global.unitframe.DebuffHighlightColors[value] = {enable = true, style = 'GLOW', color = {r = 0.8, g = 0, b = 0, a = 0.85}}
+						UpdateFilterGroup();
+						UF:Update_AllFrames();
+					end,
+				},
+				removeSpell = {
+					order = 1,
+					name = L["Remove Spell"],
+					desc = L["Remove a spell from the filter."],
+					type = 'input',
+					get = function(info) return "" end,
+					set = function(info, value)
+						E.global.unitframe.DebuffHighlightColors[value] = nil;
+						selectedSpell = nil;
+						UpdateFilterGroup();
+						UF:Update_AllFrames();
+					end,
+				},
+				selectSpell = {
+					name = L["Select Spell"],
+					type = 'select',
+					order = -9,
+					guiInline = true,
+					get = function(info) return selectedSpell end,
+					set = function(info, value) selectedSpell = value; UpdateFilterGroup() end,
+					values = function()
+						local filters = {}
+						filters[''] = NONE
+						for filter in pairs(E.global.unitframe.DebuffHighlightColors) do
+							filters[filter] = filter
+						end
+
+						return filters
+					end,
+				},
+			},
+		}
+
+		if not selectedSpell or E.global.unitframe.DebuffHighlightColors[selectedSpell] == nil then
+			E.Options.args.filters.args.spellGroup = nil
+			return
+		end
+
+		E.Options.args.filters.args.spellGroup = {
+			type = "group",
+			name = selectedSpell,
+			order = 15,
+			guiInline = true,
+			args = {
+				enabled = {
+					name = L["Enable"],
+					order = 0,
+					type = 'toggle',
+					get = function(info)
+						return E.global.unitframe.DebuffHighlightColors[selectedSpell].enable
+					end,
+					set = function(info, value)
+						E.global.unitframe.DebuffHighlightColors[selectedSpell].enable = value
+						UF:Update_AllFrames();
+					end,					
+				},		
+				style = {
+					name = L["Style"],
+					type = 'select',
+					order = 3,
+					values = {
+						['GLOW'] = L["Glow"],
+						['FILL'] = L["Fill"]
+					},
+					get = function(info)
+						return E.global.unitframe.DebuffHighlightColors[selectedSpell].style
+					end,
+					set = function(info, value)
+						E.global.unitframe.DebuffHighlightColors[selectedSpell].style = value
+						UF:Update_AllFrames();
+					end,						
+				},				
+				color = {
+					name = L["Color"],
+					type = 'color',
+					order = 1,
+					hasAlpha = true,
+					get = function(info)
+						local t = E.global.unitframe.DebuffHighlightColors[selectedSpell].color
+						return t.r, t.g, t.b, t.a
+					end,
+					set = function(info, r, g, b, a)
+						local t = E.global.unitframe.DebuffHighlightColors[selectedSpell].color
+						t.r, t.g, t.b, t.a = r, g, b, a
+						UF:Update_AllFrames();
+					end,
+				},
+			},
+		}
+	elseif selectedFilter == 'AuraBar Colors' then
 		if not selectedFilter then
 			E.Options.args.filters.args.filterGroup = nil
 			E.Options.args.filters.args.spellGroup = nil
@@ -1218,6 +1332,7 @@ E.Options.args.filters = {
 				filters['Buff Indicator (Profile)'] = 'Buff Indicator (Profile)'
 				filters['AuraBar Colors'] = 'AuraBar Colors'
 				filters['Blacklist (Strict)'] = 'Blacklist (Strict)'
+				filters['Debuff Highlight'] = 'Debuff Highlight'
 				return filters
 			end,
 		},

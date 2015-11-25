@@ -3,16 +3,48 @@ local AFKString = _G["AFK"]
 local AFK = E:NewModule('AFK', 'AceEvent-3.0', 'AceTimer-3.0');
 local CH = E:GetModule("Chat")
 
-local CAMERA_SPEED = 0.035
+--Cache global variables
+--Lua functions
+local _G = _G
+local GetTime = GetTime
+local tostring = tostring
+local floor = floor
 local format, strsub = string.format, string.sub
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local InCombatLockdown = InCombatLockdown
+local MoveViewLeftStart = MoveViewLeftStart
+local MoveViewLeftStop = MoveViewLeftStop
+local CloseAllBags = CloseAllBags
+local IsInGuild = IsInGuild
+local GetGuildInfo = GetGuildInfo
+local PVEFrame_ToggleFrame = PVEFrame_ToggleFrame
+local GetBattlefieldStatus = GetBattlefieldStatus
+local UnitIsAFK = UnitIsAFK
+local SetCVar = SetCVar
+local Screenshot = Screenshot
+local IsShiftKeyDown = IsShiftKeyDown
+local GetColoredName = GetColoredName
+local RemoveExtraSpaces = RemoveExtraSpaces
+local Chat_GetChatCategory = Chat_GetChatCategory
+local ChatFrame_GetMobileEmbeddedTexture = ChatFrame_GetMobileEmbeddedTexture
+local ChatHistory_GetAccessID = ChatHistory_GetAccessID
+local GetScreenWidth = GetScreenWidth
+local GetScreenHeight = GetScreenHeight
+local UnitFactionGroup = UnitFactionGroup
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
+local DND = DND
 
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: UIParent, PVEFrame, ElvUIAFKPlayerModel, ChatTypeInfo
+
+local CAMERA_SPEED = 0.035
 local ignoreKeys = {
 	LALT = true,
 	LSHIFT = true,
 	RSHIFT = true,
-	
 }
-
 local printKeys = {
 	["PRINTSCREEN"] = true,
 }
@@ -23,7 +55,7 @@ end
 
 function AFK:UpdateTimer()
 	local time = GetTime() - self.startTime
-	self.AFKMode.bottom.time:SetText(format("%02d:%02d", floor(time/60), time % 60))
+	self.AFKMode.bottom.time:SetFormattedText("%02d:%02d", floor(time/60), time % 60)
 end
 
 function AFK:SetAFK(status)
@@ -36,7 +68,7 @@ function AFK:SetAFK(status)
 
 		if(IsInGuild()) then
 			local guildName, guildRankName = GetGuildInfo("player");
-			self.AFKMode.bottom.guild:SetText(guildName.."-"..guildRankName)
+			self.AFKMode.bottom.guild:SetFormattedText("%s-%s", guildName, guildRankName)
 		else
 			self.AFKMode.bottom.guild:SetText(L["No Guild"])
 		end
@@ -205,7 +237,7 @@ function AFK:LoopAnimations()
 end
 
 function AFK:Initialize()
-	local classColor = RAID_CLASS_COLORS[E.myclass]
+	local classColor = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass]
 
 	self.AFKMode = CreateFrame("Frame", "ElvUIAFKFrame")
 	self.AFKMode:SetFrameLevel(1)
@@ -240,15 +272,22 @@ function AFK:Initialize()
 
 	local factionGroup = UnitFactionGroup("player");
 	--factionGroup = "Alliance"
+	local size, offsetX, offsetY = 140, -20, -16
+	local nameOffsetX, nameOffsetY = -10, -28
+	if factionGroup == "Neutral" then
+		factionGroup = "Panda"
+		size, offsetX, offsetY = 90, 15, 10
+		nameOffsetX, nameOffsetY = 20, -5
+	end
 	self.AFKMode.bottom.faction = self.AFKMode.bottom:CreateTexture(nil, 'OVERLAY')
-	self.AFKMode.bottom.faction:SetPoint("BOTTOMLEFT", self.AFKMode.bottom, "BOTTOMLEFT", -20, -16)
+	self.AFKMode.bottom.faction:SetPoint("BOTTOMLEFT", self.AFKMode.bottom, "BOTTOMLEFT", offsetX, offsetY)
 	self.AFKMode.bottom.faction:SetTexture("Interface\\Timer\\"..factionGroup.."-Logo")
-	self.AFKMode.bottom.faction:SetSize(140, 140)
+	self.AFKMode.bottom.faction:SetSize(size, size)
 
 	self.AFKMode.bottom.name = self.AFKMode.bottom:CreateFontString(nil, 'OVERLAY')
 	self.AFKMode.bottom.name:FontTemplate(nil, 20)
-	self.AFKMode.bottom.name:SetText(E.myname.."-"..E.myrealm)
-	self.AFKMode.bottom.name:SetPoint("TOPLEFT", self.AFKMode.bottom.faction, "TOPRIGHT", -10, -28)
+	self.AFKMode.bottom.name:SetFormattedText("%s-%s", E.myname, E.myrealm)
+	self.AFKMode.bottom.name:SetPoint("TOPLEFT", self.AFKMode.bottom.faction, "TOPRIGHT", nameOffsetX, nameOffsetY)
 	self.AFKMode.bottom.name:SetTextColor(classColor.r, classColor.g, classColor.b)
 
 	self.AFKMode.bottom.guild = self.AFKMode.bottom:CreateFontString(nil, 'OVERLAY')

@@ -1,6 +1,17 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local LO = E:NewModule('Layout', 'AceEvent-3.0');
 
+--Cache global variables
+--Lua functions
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local UIFrameFadeIn, UIFrameFadeOut = UIFrameFadeIn, UIFrameFadeOut
+
+--Global variables that we don't cache, list them here for the mikk's Find Globals script
+-- GLOBALS: HideLeftChat, HideRightChat, HideBothChat, LeftChatPanel, RightChatPanel, Minimap
+-- GLOBALS: GameTooltip, LeftChatToggleButton, RightChatToggleButton, LeftChatTab, RightChatTab
+-- GLOBALS: LeftChatDataPanel, LeftMiniPanel, RightChatDataPanel, RightMiniPanel, ElvConfigToggle
+
 local PANEL_HEIGHT = 22;
 local SIDE_BUTTON_WIDTH = 16;
 
@@ -68,10 +79,12 @@ local function ChatButton_OnEnter(self, ...)
 		UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
 	end
 
-	GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT', 0, 4)
-	GameTooltip:ClearLines()
-	GameTooltip:AddDoubleLine(L["Left Click:"], L["Toggle Chat Frame"], 1, 1, 1)
-	GameTooltip:Show()
+	if not self.parent.editboxforced then
+		GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT', 0, 4)
+		GameTooltip:ClearLines()
+		GameTooltip:AddDoubleLine(L["Left Click:"], L["Toggle Chat Frame"], 1, 1, 1)
+		GameTooltip:Show()
+	end
 end
 
 local function ChatButton_OnLeave(self, ...)
@@ -362,7 +375,7 @@ function LO:CreateMinimapPanels()
 	configtoggle:Width(E.ConsolidatedBuffsWidth)
 	configtoggle:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
 	configtoggle.text = configtoggle:CreateFontString(nil, 'OVERLAY')
-	configtoggle.text:FontTemplate()
+	configtoggle.text:FontTemplate(E.LSM:Fetch("font", E.db.datatexts.font), E.db.datatexts.fontSize, E.db.datatexts.fontOutline)
 	configtoggle.text:SetText('C')
 	configtoggle.text:SetPoint('CENTER')
 	configtoggle.text:SetJustifyH('CENTER')

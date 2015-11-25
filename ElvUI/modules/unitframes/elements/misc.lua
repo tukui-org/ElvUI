@@ -1,9 +1,35 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
+--Cache global variables
+--Lua functions
+local unpack, select, assert, pairs = unpack, select, assert, pairs
+local tinsert = tinsert
 local random, floor, ceil = math.random, math.floor, math.ceil
 local format = string.format
-
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local UnitIsUnit = UnitIsUnit
+local UnitReaction = UnitReaction
+local UnitIsPlayer = UnitIsPlayer
+local UnitClass = UnitClass
+local UnitAlternatePowerInfo = UnitAlternatePowerInfo
+local UnitHasVehicleUI = UnitHasVehicleUI
+local UnitHasVehicleUI = UnitHasVehicleUI
+local UnitPower = UnitPower
+local GetComboPoints = GetComboPoints
+local GetSpellInfo = GetSpellInfo
+local GetNumBattlefieldScores = GetNumBattlefieldScores
+local GetBattlefieldScore = GetBattlefieldScore
+local IsInInstance = IsInInstance
+local GetUnitName = GetUnitName
+local GetBattlefieldScore = GetBattlefieldScore
+local UnitGroupRolesAssigned = UnitGroupRolesAssigned
+local UnitIsConnected = UnitIsConnected
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
+local FACTION_BAR_COLORS = FACTION_BAR_COLORS
+local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 
 local LSM = LibStub("LibSharedMedia-3.0");
 function UF:Construct_TargetGlow(frame)
@@ -125,9 +151,18 @@ function UF:Construct_DebuffHighlight(frame)
 	dbh:SetBlendMode("ADD")
 	frame.DebuffHighlightFilter = true
 	frame.DebuffHighlightAlpha = 0.45
+	frame.DebuffHighlightFilterTable = E.global.unitframe.DebuffHighlightColors
 
+	frame:CreateShadow('Default')
+	local x = frame.shadow
+	frame.shadow = nil
+	x:Hide();
+
+	frame.DBHGlow = x
+	
 	if frame.Health then
 		dbh:SetParent(frame.Health)
+		frame.DBHGlow:SetParent(frame.Health)
 	end
 
 	return dbh
@@ -223,7 +258,7 @@ function UF:UpdateTargetGlow(event)
 		if UnitIsPlayer(unit) then
 			local _, class = UnitClass(unit)
 			if class then
-				local color = RAID_CLASS_COLORS[class]
+				local color = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
 				self.TargetGlow:SetBackdropBorderColor(color.r, color.g, color.b)
 			else
 				self.TargetGlow:SetBackdropBorderColor(1, 1, 1)
@@ -257,9 +292,9 @@ function UF:AltPowerBarPostUpdate(min, cur, max)
 		local type = select(10, UnitAlternatePowerInfo(unit))
 
 		if perc > 0 then
-			self.text:SetText(type..": "..format("%d%%", perc))
+			self.text:SetFormattedText("%s: %d%%", type, perc)
 		else
-			self.text:SetText(type..": 0%")
+			self.text:SetFormattedText("%s: 0%%", type)
 		end
 	elseif unit and unit:find("boss%d") and self.text then
 		self.text:SetTextColor(self:GetStatusBarColor())
@@ -269,7 +304,7 @@ function UF:AltPowerBarPostUpdate(min, cur, max)
 			self.text:Point("RIGHT", parent.Power.value.value, "LEFT", 2, E.mult)
 		end
 		if perc > 0 then
-			self.text:SetText("|cffD7BEA5[|r"..format("%d%%", perc).."|cffD7BEA5]|r")
+			self.text:SetFormattedText("|cffD7BEA5[|r%d%%|cffD7BEA5]|r", perc)
 		else
 			self.text:SetText(nil)
 		end
@@ -359,25 +394,26 @@ local textCounterOffsets = {
 
 function UF:UpdateAuraWatchFromHeader(group, petOverride)
 	assert(self[group], "Invalid group specified.")
-	for i=1, self[group]:GetNumChildren() do
-		local frame = select(i, self[group]:GetChildren())
+	local group = self[group]
+	for i=1, group:GetNumChildren() do
+		local frame = select(i, group:GetChildren())
 		if frame and frame.Health then
-			UF:UpdateAuraWatch(frame, petOverride)
+			UF:UpdateAuraWatch(frame, petOverride, group.db)
 		elseif frame then
 			for n = 1, frame:GetNumChildren() do
 				local child = select(n, frame:GetChildren())
 				if child and child.Health then
-					UF:UpdateAuraWatch(child, petOverride)
+					UF:UpdateAuraWatch(child, petOverride, group.db)
 				end
 			end
 		end
 	end
 end
 
-function UF:UpdateAuraWatch(frame, petOverride)
+function UF:UpdateAuraWatch(frame, petOverride, db)
 	local buffs = {};
 	local auras = frame.AuraWatch;
-	local db = frame.db.buffIndicator;
+	local db = db and db.buffIndicator or frame.db.buffIndicator
 
 	if not db.enable then
 		auras:Hide()

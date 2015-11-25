@@ -1,9 +1,27 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
-local format = string.format
-local sort = table.sort
-local join = string.join
+--Cache global variables
+--Lua functions
+local select, collectgarbage = select, collectgarbage
+local sort, wipe = table.sort, wipe
+local floor = math.floor
+local format, join = string.format, string.join
+--WoW API / Variables
+local GetNumAddOns = GetNumAddOns
+local GetAddOnInfo = GetAddOnInfo
+local IsAddOnLoaded = IsAddOnLoaded
+local UpdateAddOnMemoryUsage = UpdateAddOnMemoryUsage
+local UpdateAddOnCPUUsage = UpdateAddOnCPUUsage
+local GetAddOnMemoryUsage = GetAddOnMemoryUsage
+local GetAddOnCPUUsage = GetAddOnCPUUsage
+local ResetCPUUsage = ResetCPUUsage
+local GetCVar = GetCVar
+local GetAvailableBandwidth = GetAvailableBandwidth
+local GetNetStats = GetNetStats
+local GetDownloadedPercentage = GetDownloadedPercentage
+local IsShiftKeyDown = IsShiftKeyDown
+local GetFramerate = GetFramerate
 
 -- initial delay for update (let the ui load)
 local int, int2 = 6, 5
@@ -34,6 +52,12 @@ local function formatMem(memory)
 	end
 end
 
+local function sortByMemoryOrCPU(a, b)
+	if a and b then
+		return a[3] > b[3]
+	end
+end
+
 local memoryTable = {}
 local cpuTable = {}
 local function RebuildAddonList()
@@ -41,8 +65,8 @@ local function RebuildAddonList()
 	if (addOnCount == #memoryTable) then return end
 
 	-- Number of loaded addons changed, create new memoryTable for all addons
-	memoryTable = {}
-	cpuTable = {}
+	wipe(memoryTable)
+	wipe(cpuTable)
 	for i = 1, addOnCount do
 		memoryTable[i] = { i, select(2, GetAddOnInfo(i)), 0, IsAddOnLoaded(i) }
 		cpuTable[i] = { i, select(2, GetAddOnInfo(i)), 0, IsAddOnLoaded(i) }
@@ -59,11 +83,7 @@ local function UpdateMemory()
 		totalMemory = totalMemory + memoryTable[i][3]
 	end
 	-- Sort the table to put the largest addon on top
-	sort(memoryTable, function(a, b)
-		if a and b then
-			return a[3] > b[3]
-		end
-	end)
+	sort(memoryTable, sortByMemoryOrCPU)
 end
 
 local function UpdateCPU()
@@ -79,11 +99,7 @@ local function UpdateCPU()
 	end
 
 	-- Sort the table to put the largest addon on top
-	sort(cpuTable, function(a, b)
-		if a and b then
-			return a[3] > b[3]
-		end
-	end)
+	sort(cpuTable, sortByMemoryOrCPU)
 
 	return totalCPU
 end

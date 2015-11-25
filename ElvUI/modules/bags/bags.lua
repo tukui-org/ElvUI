@@ -2,8 +2,74 @@
 local B = E:NewModule('Bags', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
 local Search = LibStub('LibItemSearch-1.2-ElvUI')
 
-local len, sub, find, format, floor, abs, gsub = string.len, string.sub, string.find, string.format, math.floor, math.abs, string.gsub
+--Cache global variables
+--Lua functions
+local _G = _G
+local type, ipairs, pairs, unpack, select, assert = type, ipairs, pairs, unpack, select, assert
 local tinsert = table.insert
+local floor, abs, ceil = math.floor, math.abs, math.ceil
+local len, sub, find, format, gsub = string.len, string.sub, string.find, string.format, string.gsub
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local GetContainerNumSlots = GetContainerNumSlots
+local GetContainerItemInfo = GetContainerItemInfo
+local SetItemButtonDesaturated = SetItemButtonDesaturated
+local GetContainerItemInfo = GetContainerItemInfo
+local GetScreenWidth, GetScreenHeight = GetScreenWidth, GetScreenHeight
+local IsBagOpen, IsOptionFrameOpen = IsBagOpen, IsOptionFrameOpen
+local CloseBag, CloseBackpack, CloseBankFrame = CloseBag, CloseBackpack, CloseBankFrame
+local ToggleFrame = ToggleFrame
+local GetNumBankSlots = GetNumBankSlots
+local PlaySound = PlaySound
+local GetCurrentGuildBankTab = GetCurrentGuildBankTab
+local GetGuildBankTabInfo = GetGuildBankTabInfo
+local GetGuildBankItemLink = GetGuildBankItemLink
+local GetContainerItemLink = GetContainerItemLink
+local GetItemInfo = GetItemInfo
+local GetContainerItemQuestInfo = GetContainerItemQuestInfo
+local GetItemQualityColor = GetItemQualityColor
+local GetContainerItemCooldown = GetContainerItemCooldown
+local SetItemButtonCount = SetItemButtonCount
+local SetItemButtonTexture = SetItemButtonTexture
+local SetItemButtonTextureVertexColor = SetItemButtonTextureVertexColor
+local CooldownFrame_SetTimer = CooldownFrame_SetTimer
+local BankFrameItemButton_Update = BankFrameItemButton_Update
+local BankFrameItemButton_UpdateLocked = BankFrameItemButton_UpdateLocked
+local UpdateSlot = UpdateSlot
+local GetContainerNumFreeSlots = GetContainerNumFreeSlots
+local IsReagentBankUnlocked = IsReagentBankUnlocked
+local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
+local IsModifiedClick = IsModifiedClick
+local HandleModifiedItemClick = HandleModifiedItemClick
+local GetCurrencyLink = GetCurrencyLink
+local GetMoney = GetMoney
+local PickupContainerItem = PickupContainerItem
+local DeleteCursorItem = DeleteCursorItem
+local UseContainerItem = UseContainerItem
+local PickupMerchantItem = PickupMerchantItem
+local IsShiftKeyDown, IsControlKeyDown = IsShiftKeyDown, IsControlKeyDown
+local StaticPopup_Show = StaticPopup_Show
+local SortReagentBankBags = SortReagentBankBags
+local DepositReagentBank = DepositReagentBank
+local C_NewItemsIsNewItem = C_NewItems.IsNewItem
+local SEARCH = SEARCH
+local REAGENTBANK_CONTAINER = REAGENTBANK_CONTAINER
+local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES
+local MAX_CONTAINER_ITEMS = MAX_CONTAINER_ITEMS
+local TEXTURE_ITEM_QUEST_BANG = TEXTURE_ITEM_QUEST_BANG
+local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
+local REAGENTBANK_PURCHASE_TEXT = REAGENTBANK_PURCHASE_TEXT
+local NUM_BAG_FRAMES = NUM_BAG_FRAMES
+local CONTAINER_SCALE = CONTAINER_SCALE
+local CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y = CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y
+local CONTAINER_WIDTH = CONTAINER_WIDTH
+local CONTAINER_SPACING, VISIBLE_CONTAINER_SPACING = CONTAINER_SPACING, VISIBLE_CONTAINER_SPACING
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: GameTooltip, BankFrame, ElvUIReagentBankFrameItem1, GuildBankFrame, ElvUIBags
+-- GLOBALS: ContainerFrame1, RightChatToggleButton, GuildItemSearchBox, StackSplitFrame
+-- GLOBALS: LeftChatToggleButton, MAX_GUILDBANK_SLOTS_PER_TAB, UISpecialFrames
+-- GLOBALS: ElvUIReagentBankFrame, MerchantFrame, BagItemAutoSortButton
 
 local SEARCH_STRING = ""
 
@@ -153,7 +219,7 @@ function B:SetGuildBankSearch(query)
 			for slotID = 1, MAX_GUILDBANK_SLOTS_PER_TAB do
 				local link = GetGuildBankItemLink(tab, slotID)
 				--A column goes from 1-14, e.g. GuildBankColumn1Button14 (slotID 14) or GuildBankColumn2Button3 (slotID 17)
-				local col = math.ceil(slotID / 14)
+				local col = ceil(slotID / 14)
 				local btn = (slotID % 14)
 				if col == 0 then col = 1 end
 				if btn == 0 then btn = 14 end
@@ -262,7 +328,7 @@ function B:UpdateSlot(bagID, slotID)
 		slot:SetBackdropBorderColor(unpack(E.media.bordercolor));
 	end
 
-	if(C_NewItems.IsNewItem(bagID, slotID)) then
+	if(C_NewItemsIsNewItem(bagID, slotID)) then
 		slot.shadow:Show()
 		E:Flash(slot.shadow, 1, true)
 	else
@@ -306,9 +372,9 @@ function B:UpdateBagSlots(bagID)
 	end
 end
 
-function TEST()
-	B:UpdateBagSlots(REAGENTBANK_CONTAINER)
-end
+-- function TEST()
+	-- B:UpdateBagSlots(REAGENTBANK_CONTAINER)
+-- end
 
 function B:UpdateCooldowns()
 	for _, bagID in ipairs(self.BagIDs) do
@@ -635,10 +701,9 @@ function B:UpdateReagentSlot(slotID)
 		SetItemButtonTextureVertexColor(slot, 1, 1, 1);
 	end
 
-	if B.ProfessionColors[bagType] then
-		slot:SetBackdropBorderColor(unpack(B.ProfessionColors[bagType]))
-	elseif (clink) then
-		slot.name, _, slot.rarity = GetItemInfo(clink);
+	if (clink) then
+		local name, _, rarity = GetItemInfo(clink);
+		slot.name, slot.rarity = name, rarity
 
 		local isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID);
 		local r, g, b
@@ -649,7 +714,7 @@ function B:UpdateReagentSlot(slotID)
 		end
 
 		-- color slot according to item quality
-		if questId and not isActive then
+		if questId and not isActiveQuest then
 			slot:SetBackdropBorderColor(1.0, 0.3, 0.3);
 			slot.questIcon:Show();
 		elseif questId or isQuestItem then
@@ -663,7 +728,7 @@ function B:UpdateReagentSlot(slotID)
 		slot:SetBackdropBorderColor(unpack(E.media.bordercolor));
 	end
 
-	if(C_NewItems.IsNewItem(bagID, slotID)) then
+	if(C_NewItemsIsNewItem(bagID, slotID)) then
 		slot.shadow:Show()
 		E:Flash(slot.shadow, 1, true)
 	else
@@ -710,6 +775,8 @@ function B:OnEvent(event, ...)
 		self:UpdateAllSlots()
 	elseif event == 'PLAYERREAGENTBANKSLOTS_CHANGED' then
 		B:UpdateReagentSlot(...)
+	elseif (event == "QUEST_ACCEPTED" or event == "QUEST_REMOVED") and self:IsShown() then
+		self:UpdateAllSlots()
 	end
 end
 
@@ -873,6 +940,8 @@ function B:ContructContainerFrame(name, isBank)
 	f:RegisterEvent('BAG_UPDATE_COOLDOWN')
 	f:RegisterEvent('BAG_UPDATE');
 	f:RegisterEvent('PLAYERBANKSLOTS_CHANGED');
+	f:RegisterEvent("QUEST_ACCEPTED");
+	f:RegisterEvent("QUEST_REMOVED");
 	f:SetMovable(true)
 	f:RegisterForDrag("LeftButton", "RightButton")
 	f:RegisterForClicks("AnyUp");

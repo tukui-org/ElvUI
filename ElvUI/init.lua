@@ -10,6 +10,10 @@ To load the AddOn engine inside another addon add this to the top of your file:
 	local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 ]]
 
+--Cache global variables
+local _G = _G
+local pairs, unpack = pairs, unpack
+
 BINDING_HEADER_ELVUI = GetAddOnMetadata(..., "Title");
 
 local AddOnName, Engine = ...;
@@ -163,7 +167,7 @@ function AddOn:ToggleConfig()
 				self:Print("|cffff0000Error -- Addon 'ElvUI_Config' not found or is disabled.|r")
 				return
 			end
-			if GetAddOnMetadata("ElvUI_Config", "Version") ~= "1.01" then
+			if GetAddOnMetadata("ElvUI_Config", "Version") ~= "1.02" then
 				self:StaticPopup_Show("CLIENT_UPDATE_REQUEST")
 			end
 		else

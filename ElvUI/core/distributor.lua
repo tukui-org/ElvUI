@@ -1,7 +1,19 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local D = E:NewModule('Distributor', "AceEvent-3.0","AceTimer-3.0","AceComm-3.0","AceSerializer-3.0")
 
+--Cache global variables
+local tonumber = tonumber
 local len, format, split = string.len, string.format, string.split
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local IsInRaid, UnitInRaid = IsInRaid, UnitInRaid
+local IsInGroup, UnitInParty = IsInGroup, UnitInParty
+local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
+local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
+local ACCEPT, CANCEL, YES, NO = ACCEPT, CANCEL, YES, NO
+
+--Global variables that we don't cache, list them here for the mikk's Find Globals script
+-- GLOBALS: LibStub, UIParent, ElvDB
 
 ----------------------------------
 -- CONSTANTS
@@ -33,7 +45,7 @@ end
 
 -- Used to start uploads
 function D:Distribute(target, otherServer, isGlobal)
-	local profileKey
+	local profileKey, data
 	if not isGlobal then
 		if ElvDB.profileKeys then
 			profileKey = ElvDB.profileKeys[E.myname..' - '..E.myrealm]
@@ -108,7 +120,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 			OnAccept = function()
 				self.statusBar:SetMinMaxValues(0, length)
 				self.statusBar:SetValue(0)
-				self.statusBar.text:SetText(format(L["Data From: %s"], sender))
+				self.statusBar.text:SetFormattedText(L["Data From: %s"], sender)
 				E:StaticPopupSpecial_Show(self.statusBar)
 				self:SendCommMessage(REPLY_PREFIX, profile..":YES", dist, sender)
 			end,

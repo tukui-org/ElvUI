@@ -3,6 +3,9 @@
 ------------------------------------------------------------------------
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
+--Cache global variables
+--Lua functions
+local tremove = tremove
 local random = math.random
 
 function E:SetUpAnimGroup(object, type, ...)

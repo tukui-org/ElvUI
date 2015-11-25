@@ -2,12 +2,43 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local M = E:GetModule('Misc');
 local LBG = LibStub("LibButtonGlow-1.0", true)
 
+--Cache global variables
+--Lua functions
+local unpack, pairs = unpack, pairs
+local tinsert = table.insert
+local max = math.max
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local LootSlotHasItem = LootSlotHasItem
+local CursorUpdate = CursorUpdate
+local ResetCursor = ResetCursor
+local IsModifiedClick = IsModifiedClick
+local HandleModifiedItemClick = HandleModifiedItemClick
+local GetLootSlotLink = GetLootSlotLink
+local StaticPopup_Hide = StaticPopup_Hide
+local CursorOnUpdate = CursorOnUpdate
+local ToggleDropDownMenu = ToggleDropDownMenu
+local MasterLooterFrame_UpdatePlayers = MasterLooterFrame_UpdatePlayers
+local CloseLoot = CloseLoot
+local GetNumLootItems = GetNumLootItems
+local IsFishingLoot = IsFishingLoot
+local UnitIsFriend = UnitIsFriend
+local UnitIsDead = UnitIsDead
+local UnitName = UnitName
+local GetCVar = GetCVar
+local GetCursorPosition = GetCursorPosition
+local GetLootSlotInfo = GetLootSlotInfo
+local GiveMasterLoot = GiveMasterLoot
+local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
+local TEXTURE_ITEM_QUEST_BANG = TEXTURE_ITEM_QUEST_BANG
+local LOOT = LOOT
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: GameTooltip, LootFrame, LootSlot, GroupLootDropDown, UISpecialFrames
+
 --Credit Haste
 local lootFrame, lootFrameHolder
 local iconSize = 30;
-
-local max = math.max
-local tinsert = table.insert
 
 local sq, ss, sn
 local OnEnter = function(self)
@@ -164,7 +195,7 @@ function M:LOOT_OPENED(event, autoloot)
 	lootFrame:Show()
 
 	if(not lootFrame:IsShown()) then
-		CloseLoot(not autoLoot)
+		CloseLoot(not autoloot)
 	end
 
 	local items = GetNumLootItems()

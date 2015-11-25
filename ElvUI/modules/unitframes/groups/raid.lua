@@ -1,15 +1,28 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
+--Cache global variables
+--Lua functions
+local pairs = pairs
+local tinsert = table.insert
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local InCombatLockdown = InCombatLockdown
+local IsInInstance = IsInInstance
+local GetInstanceInfo = GetInstanceInfo
+local UnregisterStateDriver = UnregisterStateDriver
+local RegisterStateDriver = RegisterStateDriver
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: UnitFrame_OnEnter, UnitFrame_OnLeave, ElvUF_Raid
+
 local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
-local tinsert = table.insert
 
 function UF:Construct_RaidFrames(unitGroup)
 	self:SetScript('OnEnter', UnitFrame_OnEnter)
 	self:SetScript('OnLeave', UnitFrame_OnLeave)
-
 
 	self.RaisedElementParent = CreateFrame('Frame', nil, self)
 	self.RaisedElementParent:SetFrameStrata("MEDIUM")
@@ -19,6 +32,9 @@ function UF:Construct_RaidFrames(unitGroup)
 
 	self.Power = UF:Construct_PowerBar(self, true, true, 'LEFT')
 	self.Power.frequentUpdates = false;
+	
+	self.Portrait3D = UF:Construct_Portrait(self, 'model')
+	self.Portrait2D = UF:Construct_Portrait(self, 'texture')
 
 	self.Name = UF:Construct_NameText(self)
 	self.Buffs = UF:Construct_Buffs(self)
@@ -47,7 +63,6 @@ function UF:Construct_RaidFrames(unitGroup)
 
 	return self
 end
-
 
 function UF:RaidSmartVisibility(event)
 	if not self.db or (self.db and not self.db.enable) or (UF.db and not UF.db.smartRaidFilter) or self.isForced then return; end
@@ -113,6 +128,12 @@ end
 
 function UF:Update_RaidFrames(frame, db)
 	frame.db = db
+	if frame.Portrait then
+		frame.Portrait:Hide()
+		frame.Portrait:ClearAllPoints()
+		frame.Portrait.backdrop:Hide()
+	end
+	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
 	local BORDER = E.Border;
 	local SPACING = E.Spacing;
 	local SHADOW_SPACING = E.PixelMode and 3 or 4
@@ -126,6 +147,9 @@ function UF:Update_RaidFrames(frame, db)
 	local POWERBAR_OFFSET = db.power.offset
 	local POWERBAR_HEIGHT = db.power.height
 	local POWERBAR_WIDTH = db.width - (BORDER*2)
+	local USE_PORTRAIT = db.portrait.enable
+	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
+	local PORTRAIT_WIDTH = db.portrait.width
 
 	frame.db = db
 	frame.colors = ElvUF.colors
@@ -139,7 +163,6 @@ function UF:Update_RaidFrames(frame, db)
 		frame:EnableElement('Range')
 	end
 
-
 	--Adjust some variables
 	do
 		if not USE_POWERBAR then
@@ -148,6 +171,14 @@ function UF:Update_RaidFrames(frame, db)
 
 		if USE_MINI_POWERBAR then
 			POWERBAR_WIDTH = POWERBAR_WIDTH / 2
+		end
+		
+		if USE_PORTRAIT_OVERLAY or not USE_PORTRAIT then
+			PORTRAIT_WIDTH = 0
+		end
+		
+		if not USE_POWERBAR_OFFSET then
+			POWERBAR_OFFSET = 0
 		end
 	end
 
@@ -186,12 +217,7 @@ function UF:Update_RaidFrames(frame, db)
 					health.colorHealth = true
 				end
 			else
-				health.colorClass = true
-				health.colorReaction = true
-			end
-
-			if self.db['colors'].forcehealthreaction == true then
-				health.colorClass = false
+				health.colorClass = (not self.db['colors'].forcehealthreaction)
 				health.colorReaction = true
 			end
 		end
@@ -207,6 +233,17 @@ function UF:Update_RaidFrames(frame, db)
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, BORDER)
 		else
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, (USE_POWERBAR and ((BORDER + SPACING)*2) or BORDER) + POWERBAR_HEIGHT)
+		end
+		
+		health.bg:ClearAllPoints()
+		if not USE_PORTRAIT_OVERLAY then
+			health:Point("TOPLEFT", PORTRAIT_WIDTH+BORDER+POWERBAR_OFFSET, -BORDER)
+			health.bg:SetParent(health)
+			health.bg:SetAllPoints()
+		else
+			health.bg:Point('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMRIGHT')
+			health.bg:Point('TOPRIGHT', health)
+			health.bg:SetParent(frame.Portrait.overlay)
 		end
 
 		health:SetOrientation(db.health.orientation)
@@ -242,14 +279,14 @@ function UF:Update_RaidFrames(frame, db)
 			--Position
 			power:ClearAllPoints()
 			if USE_POWERBAR_OFFSET then
-				power:Point("TOPLEFT", frame.Health, "TOPLEFT", -POWERBAR_OFFSET, -POWERBAR_OFFSET)
+				power:Point("TOPLEFT", frame.Health, "TOPLEFT", -(POWERBAR_OFFSET + PORTRAIT_WIDTH), -POWERBAR_OFFSET)
 				power:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", -POWERBAR_OFFSET, -POWERBAR_OFFSET)
 				power:SetFrameStrata("LOW")
 				power:SetFrameLevel(2)
 			elseif USE_MINI_POWERBAR then
 				power:Width(POWERBAR_WIDTH - BORDER*2)
 				power:Height(POWERBAR_HEIGHT)
-				power:Point("LEFT", frame, "BOTTOMLEFT", (BORDER*2 + 4), BORDER + (POWERBAR_HEIGHT/2))
+				power:Point("LEFT", frame, "BOTTOMLEFT", (BORDER*2 + 4) + PORTRAIT_WIDTH, BORDER + (POWERBAR_HEIGHT/2))
 				power:SetFrameStrata("MEDIUM")
 				power:SetFrameLevel(frame:GetFrameLevel() + 3)
 			elseif USE_INSET_POWERBAR then
@@ -265,6 +302,55 @@ function UF:Update_RaidFrames(frame, db)
 		else
 			frame:DisableElement('Power')
 			power:Hide()
+		end
+	end
+	
+	--Portrait
+	do
+		local portrait = frame.Portrait
+	
+		--Set Points
+		if USE_PORTRAIT then
+			if not frame:IsElementEnabled('Portrait') then
+				frame:EnableElement('Portrait')
+			end
+	
+			portrait:ClearAllPoints()
+	
+			if USE_PORTRAIT_OVERLAY then
+				if db.portrait.style == '3D' then
+					portrait:SetFrameLevel(frame.Health:GetFrameLevel() + 1)
+				end
+				portrait:SetAllPoints(frame.Health)
+				portrait:SetAlpha(0.3)
+				portrait:Show()
+				portrait.backdrop:Hide()
+			else
+				portrait:SetAlpha(1)
+				portrait:Show()
+				portrait.backdrop:Show()
+				if db.portrait.style == '3D' then
+					portrait:SetFrameLevel(frame:GetFrameLevel() + 5)
+				end
+				
+				portrait.backdrop:ClearAllPoints()
+				portrait.backdrop:SetPoint("TOPLEFT", frame, "TOPLEFT", POWERBAR_OFFSET, 0)
+	
+				if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR or USE_INSET_POWERBAR then
+					portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", E.PixelMode and 1 or -SPACING, 0)
+				else
+					portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", E.PixelMode and 1 or -SPACING, 0)
+				end
+	
+				portrait:Point('BOTTOMLEFT', portrait.backdrop, 'BOTTOMLEFT', BORDER, BORDER)
+				portrait:Point('TOPRIGHT', portrait.backdrop, 'TOPRIGHT', -BORDER, -BORDER)
+			end
+		else
+			if frame:IsElementEnabled('Portrait') then
+				frame:DisableElement('Portrait')
+				portrait:Hide()
+				portrait.backdrop:Hide()
+			end
 		end
 	end
 
@@ -292,8 +378,8 @@ function UF:Update_RaidFrames(frame, db)
 				end
 
 				if USE_PORTRAIT and not USE_PORTRAIT_OVERLAY then
-					threat.glow:Point("TOPRIGHT", frame.Portrait.backdrop, "TOPRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
-					threat.glow:Point("BOTTOMRIGHT", frame.Portrait.backdrop, "BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
+					threat.glow:Point("TOPLEFT", frame.Portrait.backdrop, "TOPLEFT", -SHADOW_SPACING, SHADOW_SPACING)
+					threat.glow:Point("BOTTOMLEFT", frame.Portrait.backdrop, "BOTTOMLEFT", -SHADOW_SPACING, SHADOW_SPACING)
 				end
 			elseif db.threatStyle == "ICONTOPLEFT" or db.threatStyle == "ICONTOPRIGHT" or db.threatStyle == "ICONBOTTOMLEFT" or db.threatStyle == "ICONBOTTOMRIGHT" or db.threatStyle == "ICONTOP" or db.threatStyle == "ICONBOTTOM" or db.threatStyle == "ICONLEFT" or db.threatStyle == "ICONRIGHT" then
 				threat:SetFrameStrata('HIGH')
@@ -422,17 +508,18 @@ function UF:Update_RaidFrames(frame, db)
 		local stackColor = db.rdebuffs.stack.color
 		local durationColor = db.rdebuffs.duration.color
 		if db.rdebuffs.enable then
+			local rdebuffsFont = UF.LSM:Fetch("font", db.rdebuffs.font)
 			frame:EnableElement('RaidDebuffs')
 
 			rdebuffs:Size(db.rdebuffs.size)
 			rdebuffs:Point('BOTTOM', frame, 'BOTTOM', db.rdebuffs.xOffset, db.rdebuffs.yOffset)
 			
-			rdebuffs.count:FontTemplate(nil, db.rdebuffs.fontSize, 'OUTLINE')
+			rdebuffs.count:FontTemplate(rdebuffsFont, db.rdebuffs.fontSize, db.rdebuffs.fontOutline)
 			rdebuffs.count:ClearAllPoints()
 			rdebuffs.count:Point(db.rdebuffs.stack.position, db.rdebuffs.stack.xOffset, db.rdebuffs.stack.yOffset)
 			rdebuffs.count:SetTextColor(stackColor.r, stackColor.g, stackColor.b)
 			
-			rdebuffs.time:FontTemplate(nil, db.rdebuffs.fontSize, 'OUTLINE')
+			rdebuffs.time:FontTemplate(rdebuffsFont, db.rdebuffs.fontSize, db.rdebuffs.fontOutline)
 			rdebuffs.time:ClearAllPoints()
 			rdebuffs.time:Point(db.rdebuffs.duration.position, db.rdebuffs.duration.xOffset, db.rdebuffs.duration.yOffset)
 			rdebuffs.time:SetTextColor(durationColor.r, durationColor.g, durationColor.b)
@@ -462,8 +549,15 @@ function UF:Update_RaidFrames(frame, db)
 	--Debuff Highlight
 	do
 		local dbh = frame.DebuffHighlight
-		if E.db.unitframe.debuffHighlighting then
+		if E.db.unitframe.debuffHighlighting ~= 'NONE' then
 			frame:EnableElement('DebuffHighlight')
+			frame.DebuffHighlightFilterTable = E.global.unitframe.DebuffHighlightColors
+			if E.db.unitframe.debuffHighlighting == 'GLOW' then
+				frame.DebuffHighlightBackdrop = true
+				frame.DBHGlow:SetAllPoints(frame.Threat.glow)
+			else
+				frame.DebuffHighlightBackdrop = false
+			end		
 		else
 			frame:DisableElement('DebuffHighlight')
 		end
@@ -492,6 +586,16 @@ function UF:Update_RaidFrames(frame, db)
 		if db.healPrediction then
 			if not frame:IsElementEnabled('HealPrediction') then
 				frame:EnableElement('HealPrediction')
+			end
+			
+			if not USE_PORTRAIT_OVERLAY then
+				healPrediction.myBar:SetParent(frame)
+				healPrediction.otherBar:SetParent(frame)
+				healPrediction.absorbBar:SetParent(frame)
+			else
+				healPrediction.myBar:SetParent(frame.Portrait.overlay)
+				healPrediction.otherBar:SetParent(frame.Portrait.overlay)
+				healPrediction.absorbBar:SetParent(frame.Portrait.overlay)
 			end
 
 			healPrediction.myBar:SetOrientation(db.health.orientation)
@@ -539,7 +643,7 @@ function UF:Update_RaidFrames(frame, db)
 
 			raidRoleFrameAnchor:ClearAllPoints()
 			if db.raidRoleIcons.position == 'TOPLEFT' then
-				raidRoleFrameAnchor:Point('LEFT', frame, 'TOPLEFT', 2, 0)
+				raidRoleFrameAnchor:Point('LEFT', frame.Health, 'TOPLEFT', 2, 0)
 			else
 				raidRoleFrameAnchor:Point('RIGHT', frame, 'TOPRIGHT', -2, 0)
 			end
@@ -598,7 +702,11 @@ function UF:Update_RaidFrames(frame, db)
 		end
 	end
 
-	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg, true)
+	if UF.db.colors.transparentHealth then
+		UF:ToggleTransparentStatusBar(true, frame.Health, frame.Health.bg)
+	else
+		UF:ToggleTransparentStatusBar(false, frame.Health, frame.Health.bg, (USE_PORTRAIT and USE_PORTRAIT_OVERLAY) ~= true)
+	end
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)
 
 	frame:UpdateAllElements()

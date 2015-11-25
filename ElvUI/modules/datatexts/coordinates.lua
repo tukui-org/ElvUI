@@ -5,32 +5,34 @@ local DT = E:GetModule('DataTexts')
 --Lua functions
 local join = string.join
 --WoW API / Variables
-local GetSpellBonusDamage = GetSpellBonusDamage
-local GetSpellBonusHealing = GetSpellBonusHealing
+local GetPlayerMapPosition = GetPlayerMapPosition
+local ToggleFrame = ToggleFrame
 
-local spellpwr, healpwr
-local displayNumberString = ''
-local lastPanel;
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: WorldMapFrame
 
-local function OnEvent(self, event, unit)
-	spellpwr = GetSpellBonusDamage(7)
-	healpwr = GetSpellBonusHealing()
+local displayString = ""
+local x, y = 0, 0
 
-	if healpwr > spellpwr then
-		self.text:SetFormattedText(displayNumberString, L["HP"], healpwr)
-	else
-		self.text:SetFormattedText(displayNumberString, L["SP"], spellpwr)
+local function Update(self, elapsed)
+	self.timeSinceUpdate = (self.timeSinceUpdate or 0) + elapsed
+	
+	if self.timeSinceUpdate > 0.1 then
+		x, y = GetPlayerMapPosition("player")
+		x = E:Round(100 * x, 1)
+		y = E:Round(100 * y, 1)
+		
+		self.text:SetFormattedText(displayString, x, y)
+		self.timeSinceUpdate = 0
 	end
+end
 
-	lastPanel = self
+local function Click()
+	ToggleFrame(WorldMapFrame)
 end
 
 local function ValueColorUpdate(hex, r, g, b)
-	displayNumberString = join("", "%s: ", hex, "%d|r")
-
-	if lastPanel ~= nil then
-		OnEvent(lastPanel)
-	end
+	displayString = join("", hex, "%.1f|r", " , ", hex, "%.1f|r")
 end
 E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 
@@ -45,4 +47,4 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 	onEnterFunc - function to fire OnEnter
 	onLeaveFunc - function to fire OnLeave, if not provided one will be set for you that hides the tooltip.
 ]]
-DT:RegisterDatatext('Spell/Heal Power', {"UNIT_STATS", "UNIT_AURA", "FORGE_MASTER_ITEM_CHANGED", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE"}, OnEvent)
+DT:RegisterDatatext('Coords', nil, nil, Update, Click)

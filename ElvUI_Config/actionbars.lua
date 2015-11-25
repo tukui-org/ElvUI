@@ -368,7 +368,7 @@ E.Options.args.actionbar = {
 			set = function(info, value) E.private.actionbar[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end
 		},
 		toggleKeybind = {
-			order = 3,
+			order = 2,
 			type = "execute",
 			name = L["Keybind Mode"],
 			func = function() AB:ActivateBindMode(); E:ToggleConfig(); GameTooltip:Hide(); end,
@@ -378,28 +378,28 @@ E.Options.args.actionbar = {
 			type = "toggle",
 			name = L["Macro Text"],
 			desc = L["Display macro names on action buttons."],
-			order = 4,
+			order = 3,
 			disabled = function() return not E.private.actionbar.enable end,
 		},
 		hotkeytext = {
 			type = "toggle",
 			name = L["Keybind Text"],
 			desc = L["Display bind names on action buttons."],
-			order = 5,
+			order = 4,
 			disabled = function() return not E.private.actionbar.enable end,
 		},
 		keyDown = {
 			type = 'toggle',
 			name = L["Key Down"],
 			desc = OPTION_TOOLTIP_ACTION_BUTTON_USE_KEY_DOWN,
-			order = 7,
+			order = 5,
 			disabled = function() return not E.private.actionbar.enable end,
 		},
 		showGrid = {
 			type = 'toggle',
 			name = ALWAYS_SHOW_MULTIBARS_TEXT,
 			desc = OPTION_TOOLTIP_ALWAYS_SHOW_MULTIBARS,
-			order = 8,
+			order = 6,
 			disabled = function() return not E.private.actionbar.enable end,
 		},
 		movementModifier = {
@@ -483,6 +483,35 @@ E.Options.args.actionbar = {
 				},
 			},
 		},
+		masque = {
+			order = 12,
+			type = "group",
+			guiInline = true,
+			name = L["Masque Support"],
+			get = function(info) return E.private.actionbar.masque[info[#info]] end,
+			set = function(info, value) E.private.actionbar.masque[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL") end,
+			disabled = function() return not E.private.actionbar.enable end,
+			args = {
+				actionbars = {
+					order = 1,
+					type = "toggle",
+					name = L["ActionBars"],
+					desc = L["Allow Masque to handle the skinning of this element."],
+				},
+				petBar = {
+					order = 1,
+					type = "toggle",
+					name = L["Pet Bar"],
+					desc = L["Allow Masque to handle the skinning of this element."],
+				},
+				stanceBar = {
+					order = 1,
+					type = "toggle",
+					name = L["Stance Bar"],
+					desc = L["Allow Masque to handle the skinning of this element."],
+				},
+			},
+		},
 		microbar = {
 			type = "group",
 			name = L["Micro Bar"],
@@ -522,7 +551,6 @@ E.Options.args.actionbar = {
 			name = L["Boss Button"],
 			disabled = function() return not E.private.actionbar.enable end,
 			get = function(info) return E.db.actionbar.extraActionButton[ info[#info] ] end,
-			set = function(info, value) E.db.actionbar.extraActionButton[ info[#info] ] = value; AB:Extra_SetAlpha() end,
 			args = {
 				alpha = {
 					order = 1,
@@ -531,6 +559,15 @@ E.Options.args.actionbar = {
 					desc = L["Change the alpha level of the frame."],
 					isPercent = true,
 					min = 0, max = 1, step = 0.01,
+					set = function(info, value) E.db.actionbar.extraActionButton[ info[#info] ] = value; AB:Extra_SetAlpha() end,
+				},
+				scale = {
+					order = 2,
+					type = "range",
+					name = L["Scale"],
+					isPercent = true,
+					min = 0.2, max = 2, step = 0.01,
+					set = function(info, value) E.db.actionbar.extraActionButton[ info[#info] ] = value; AB:Extra_SetScale() end,
 				},
 			},
 		},

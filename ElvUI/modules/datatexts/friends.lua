@@ -1,6 +1,43 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
+--Cache global variables
+--Lua functions
+local type, pairs, select = type, pairs, select
+local sort, wipe = table.sort, wipe
+local format, find, join, gsub = string.format, string.find, string.join, string.gsub
+--WoW API / Variables
+local BNSetCustomMessage = BNSetCustomMessage
+local BNGetInfo = BNGetInfo
+local IsChatAFK = IsChatAFK
+local IsChatDND = IsChatDND
+local SendChatMessage = SendChatMessage
+local InviteUnit = InviteUnit
+local BNInviteFriend = BNInviteFriend
+local ChatFrame_SendSmartTell = ChatFrame_SendSmartTell
+local SetItemRef = SetItemRef
+local GetFriendInfo = GetFriendInfo
+local BNGetFriendInfo = BNGetFriendInfo
+local BNGetToonInfo = BNGetToonInfo
+local BNet_GetValidatedCharacterName = BNet_GetValidatedCharacterName
+local GetNumFriends = GetNumFriends
+local BNGetNumFriends = BNGetNumFriends
+local GetQuestDifficultyColor = GetQuestDifficultyColor
+local UnitFactionGroup = UnitFactionGroup
+local UnitInParty = UnitInParty
+local UnitInRaid = UnitInRaid
+local ToggleFriendsFrame = ToggleFriendsFrame
+local EasyMenu = EasyMenu
+local IsShiftKeyDown = IsShiftKeyDown
+local GetRealmName = GetRealmName
+local GetCurrentMapAreaID = GetCurrentMapAreaID
+local AFK = AFK
+local DND = DND
+local LOCALIZED_CLASS_NAMES_MALE = LOCALIZED_CLASS_NAMES_MALE
+local LOCALIZED_CLASS_NAMES_FEMALE = LOCALIZED_CLASS_NAMES_FEMALE
+local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+
 -- create a popup
 E.PopupDialogs.SET_BN_BROADCAST = {
 	text = BN_BROADCAST_TOOLTIP,
@@ -20,12 +57,6 @@ E.PopupDialogs.SET_BN_BROADCAST = {
 	hideOnEscape = 1,
 	preferredIndex = 3
 }
-
--- localized references for global functions (about 50% faster)
-local join 			= string.join
-local find			= string.find
-local format		= string.format
-local sort			= table.sort
 
 local menuFrame = CreateFrame("Frame", "FriendDatatextRightClickMenu", E.UIParent, "UIDropDownMenuTemplate")
 local menuList = {
@@ -79,6 +110,12 @@ local friendOnline, friendOffline = gsub(ERR_FRIEND_ONLINE_SS,"\124Hplayer:%%s\1
 local dataValid = false
 local lastPanel
 
+local function SortAlphabeticName(a, b)
+	if a[1] and b[1] then
+		return a[1] < b[1]
+	end
+end
+
 local function BuildFriendTable(total)
 	wipe(friendTable)
 	local name, level, class, area, connected, status, note
@@ -97,13 +134,10 @@ local function BuildFriendTable(total)
 			friendTable[i] = { name, level, class, area, connected, status, note }
 		end
 	end
-	sort(friendTable, function(a, b)
-		if a[1] and b[1] then
-			return a[1] < b[1]
-		end
-	end)
+	sort(friendTable, SortAlphabeticName)
 end
 
+--Sort alphabetic by presenceName or toonName
 local function Sort(a, b)
 	if a[2] and b[2] and a[3] and b[3] then
 		if a[2] == b[2] then return a[3] < b[3] end
@@ -248,7 +282,7 @@ local function OnEnter(self)
 	end
 
 	local totalfriends = numberOfFriends + totalBNet
-	local zonec, classc, levelc, realmc, info
+	local zonec, classc, levelc, realmc, info, grouped
 	DT.tooltip:AddDoubleLine(L["Friends List"], format(totalOnlineString, totalonline, totalfriends),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
 	if onlineFriends > 0 then
 		DT.tooltip:AddLine(' ')
@@ -256,7 +290,7 @@ local function OnEnter(self)
 		for i = 1, #friendTable do
 			info = friendTable[i]
 			if info[5] then
-				if GetRealZoneText() == info[4] then zonec = activezone else zonec = inactivezone end
+				if E:GetZoneText(GetCurrentMapAreaID()) == info[4] then zonec = activezone else zonec = inactivezone end
 				classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[3]], GetQuestDifficultyColor(info[2])
 
 				classc = classc or GetQuestDifficultyColor(info[2])
@@ -289,7 +323,7 @@ local function OnEnter(self)
 							if UnitInParty(info[4]) or UnitInRaid(info[4]) then grouped = 1 else grouped = 2 end
 							DT.tooltip:AddDoubleLine(format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info[15],classc.r*255,classc.g*255,classc.b*255,info[3],groupedTable[grouped], 255, 0, 0, statusTable[status]),info[2],238,238,238,238,238,238)
 							if IsShiftKeyDown() then
-								if GetRealZoneText() == info[14] then zonec = activezone else zonec = inactivezone end
+								if E:GetZoneText(GetCurrentMapAreaID()) == info[14] then zonec = activezone else zonec = inactivezone end
 								if GetRealmName() == info[10] then realmc = activezone else realmc = inactivezone end
 								DT.tooltip:AddDoubleLine(info[14], info[10], zonec.r, zonec.g, zonec.b, realmc.r, realmc.g, realmc.b)
 							end
@@ -328,4 +362,3 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 
 DT:RegisterDatatext('Friends', {'PLAYER_ENTERING_WORLD', "BN_FRIEND_ACCOUNT_ONLINE", "BN_FRIEND_ACCOUNT_OFFLINE", "BN_FRIEND_INFO_CHANGED", "BN_FRIEND_TOON_ONLINE",
 "BN_FRIEND_TOON_OFFLINE", "BN_TOON_NAME_UPDATED", "FRIENDLIST_UPDATE", "CHAT_MSG_SYSTEM"}, OnEvent, nil, Click, OnEnter)
-

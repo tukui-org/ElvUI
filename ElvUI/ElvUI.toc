@@ -1,11 +1,11 @@
 ## Interface: 60200
 ## Author: Elv
-## Version: 8.26
+## Version: 8.41
 ## Title: |cff1784d1ElvUI|r
 ## Notes: User Interface replacement AddOn for World of Warcraft.
 ## SavedVariables: ElvDB, ElvPrivateDB
 ## SavedVariablesPerCharacter: ElvCharacterDB
-## OptionalDeps: Blizzard_DebugTools, Blizzard_PetJournal, SharedMedia, Tukui, SunnArt, Gatherer
+## OptionalDeps: Blizzard_DebugTools, Blizzard_PetJournal, SharedMedia, Tukui, SunnArt, Gatherer, Masque
 ## X-oUF: ElvUF
 
 developer\load_developer.xml

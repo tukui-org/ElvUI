@@ -1,5 +1,46 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 
+--Cache global variables
+--Lua functions
+local _G = _G
+local unpack = unpack
+local format = format
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local IsAddOnLoaded = IsAddOnLoaded
+local GetScreenWidth = GetScreenWidth
+local SetCVar = SetCVar
+local PlaySoundFile = PlaySoundFile
+local ReloadUI = ReloadUI
+local UIFrameFadeOut = UIFrameFadeOut
+local ChatFrame_AddMessageGroup = ChatFrame_AddMessageGroup
+local ChatFrame_RemoveAllMessageGroups = ChatFrame_RemoveAllMessageGroups
+local ChatFrame_AddChannel = ChatFrame_AddChannel
+local ChatFrame_RemoveChannel = ChatFrame_RemoveChannel
+local ChangeChatColor = ChangeChatColor
+local ToggleChatColorNamesByClassGroup = ToggleChatColorNamesByClassGroup
+local FCF_ResetChatWindows = FCF_ResetChatWindows
+local FCF_SetLocked = FCF_SetLocked
+local FCF_DockFrame, FCF_UnDockFrame = FCF_DockFrame, FCF_UnDockFrame
+local FCF_OpenNewWindow = FCF_OpenNewWindow
+local FCF_SavePositionAndDimensions = FCF_SavePositionAndDimensions
+local FCF_GetChatWindowInfo = FCF_GetChatWindowInfo
+local FCF_SetWindowName = FCF_SetWindowName
+local FCF_StopDragging = FCF_StopDragging
+local FCF_SetChatWindowFontSize = FCF_SetChatWindowFontSize
+local CLASS, CONTINUE, PREVIOUS = CLASS, CONTINUE, PREVIOUS
+local NUM_CHAT_WINDOWS = NUM_CHAT_WINDOWS
+local LOOT, GENERAL, TRADE = LOOT, GENERAL, TRADE
+local GUILD_EVENT_LOG = GUILD_EVENT_LOG
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
+
+--Global variables that we don't cache, list them here for the mikk's Find Globals script
+-- GLOBALS: ElvUIInstallFrame, InstallStepComplete, InstallStatus, InstallNextButton, InstallPrevButton
+-- GLOBALS: InstallOption1Button, InstallOption2Button, InstallOption3Button, InstallOption4Button
+-- GLOBALS: LeftChatToggleButton, RightChatToggleButton, RightChatDataPanel
+-- GLOBALS: ChatFrame1, ChatFrame2, ChatFrame3, InterfaceOptionsActionBarsPanelPickupActionKeyDropDown
+
 local CURRENT_PAGE = 0
 local MAX_PAGE = 8
 
@@ -176,9 +217,8 @@ function E:GetColor(r, b, g, a)
 end
 
 function E:SetupTheme(theme, noDisplayMsg)
-	local classColor = E.myclass == 'PRIEST' and E.PriestColors or RAID_CLASS_COLORS[E.myclass]
+	local classColor = E.myclass == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
 	E.private.theme = theme
-
 
 	--Set colors
 	if theme == "classic" then
@@ -680,7 +720,7 @@ local function SetPage(PageNum)
 	end
 
 	if PageNum == 1 then
-		f.SubTitle:SetText(format(L["Welcome to ElvUI version %s!"], E.version))
+		f.SubTitle:SetFormattedText(L["Welcome to ElvUI version %s!"], E.version)
 		f.Desc1:SetText(L["This install process will help you learn some of the features in ElvUI has to offer and also prepare your user interface for usage."])
 		f.Desc2:SetText(L["The in-game configuration menu can be accesses by typing the /ec command or by clicking the 'C' button on the minimap. Press the button below if you wish to skip the installation process."])
 		f.Desc3:SetText(L["Please press the continue button to go onto the next step."])
@@ -721,7 +761,7 @@ local function SetPage(PageNum)
 		InstallOption3Button:SetText(CLASS)
 	elseif PageNum == 5 then
 		f.SubTitle:SetText(L["Resolution"])
-		f.Desc1:SetText(format(L["Your current resolution is %s, this is considered a %s resolution."], E.resolution, E.lowversion == true and L["low"] or L["high"]))
+		f.Desc1:SetFormattedText(L["Your current resolution is %s, this is considered a %s resolution."], E.resolution, E.lowversion == true and L["low"] or L["high"])
 		if E.lowversion then
 			f.Desc2:SetText(L["This resolution requires that you change some settings to get everything to fit on your screen."].." "..L["Click the button below to resize your chat frames, unitframes, and reposition your actionbars."].." "..L["You may need to further alter these settings depending how low you resolution is."])
 			f.Desc3:SetText(L["Importance: |cff07D400High|r"])

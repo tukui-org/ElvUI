@@ -1,6 +1,18 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars');
 
+--Cache global variables
+--Lua functions
+local _G = _G
+local unpack = unpack
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local GetActionCooldown = GetActionCooldown
+local HasExtraActionBar = HasExtraActionBar
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: ExtraActionBarFrame, DraenorZoneAbilityFrame
+
 local function FixExtraActionCD(cd)
 	local start, duration = GetActionCooldown(cd:GetParent().action)
 	E.OnSetCooldown(cd, start, duration, 0, 0)
@@ -18,6 +30,16 @@ function AB:Extra_SetAlpha()
 	local button = DraenorZoneAbilityFrame.SpellButton
 	if button then
 		button:SetAlpha(alpha)
+	end
+end
+
+function AB:Extra_SetScale()
+	local scale = E.db.actionbar.extraActionButton.scale
+	if ExtraActionBarFrame then
+		ExtraActionBarFrame:SetScale(scale)
+	end
+	if DraenorZoneAbilityFrame then
+		DraenorZoneAbilityFrame:SetScale(scale)
 	end
 end
 
@@ -77,6 +99,7 @@ function AB:SetupExtraButton()
 	end
 	
 	AB:Extra_SetAlpha()
+	AB:Extra_SetScale()
 
 	E:CreateMover(holder, 'BossButton', L["Boss Button"], nil, nil, nil, 'ALL,ACTIONBARS');
 end

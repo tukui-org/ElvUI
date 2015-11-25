@@ -1,10 +1,32 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
-local format = string.format
-local join = string.join
-local floor = math.floor
+--Cache global variables
+--Lua functions
+local date = date
 local wipe = table.wipe
+local floor = math.floor
+local format, join = string.format, string.join
+--WoW API / Variables
+local GetGameTime = GetGameTime
+local RequestRaidInfo = RequestRaidInfo
+local GetNumWorldPVPAreas = GetNumWorldPVPAreas
+local GetWorldPVPAreaInfo = GetWorldPVPAreaInfo
+local SecondsToTime = SecondsToTime
+local GetNumSavedInstances = GetNumSavedInstances
+local GetSavedInstanceInfo = GetSavedInstanceInfo
+local GetDifficultyInfo = GetDifficultyInfo
+local GetNumSavedWorldBosses = GetNumSavedWorldBosses
+local GetSavedWorldBossInfo = GetSavedWorldBossInfo
+local VOICE_CHAT_BATTLEGROUND = VOICE_CHAT_BATTLEGROUND
+local WINTERGRASP_IN_PROGRESS = WINTERGRASP_IN_PROGRESS
+local QUEUE_TIME_UNAVAILABLE = QUEUE_TIME_UNAVAILABLE
+local WORLD_BOSSES_TEXT = RAID_INFO_WORLD_BOSS.."(s)"
+local TIMEMANAGER_TOOLTIP_REALMTIME = TIMEMANAGER_TOOLTIP_REALMTIME
+local TIMEMANAGER_TOOLTIP_LOCALTIME = TIMEMANAGER_TOOLTIP_LOCALTIME
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: GameTimeFrame
 
 local APM = { TIMEMANAGER_PM, TIMEMANAGER_AM }
 local europeDisplayFormat = '';
@@ -55,7 +77,7 @@ local function CalculateTimeValues(tooltip)
 	if (tooltip and E.db.datatexts.localtime) or (not tooltip and not E.db.datatexts.localtime) then
 		return ConvertTime(GetGameTime())
 	else
-		local	dateTable =	date("*t")
+		local dateTable = date("*t")
 		return ConvertTime(dateTable["hour"], dateTable["min"])
 	end
 end
@@ -69,7 +91,7 @@ local function OnLeave(self)
 	enteredFrame = false;
 end
 
-local function OnEvent()
+local function OnEvent(self, event)
 	if event == "UPDATE_INSTANCE_INFO" and enteredFrame then
 		RequestRaidInfo()
 	end
@@ -128,7 +150,7 @@ local function OnEnter(self)
 		if(reset) then
 			if(not addedLine) then
 				DT.tooltip:AddLine(' ')
-				DT.tooltip:AddLine(RAID_INFO_WORLD_BOSS.."(s)")
+				DT.tooltip:AddLine(WORLD_BOSSES_TEXT)
 				addedLine = true
 			end
 			DT.tooltip:AddDoubleLine(name, SecondsToTime(reset, true, nil, 3), 1, 1, 1, 0.8, 0.8, 0.8)

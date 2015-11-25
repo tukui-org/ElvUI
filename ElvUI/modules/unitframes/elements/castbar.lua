@@ -1,11 +1,20 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
-
-local floor = math.floor
-local sub = string.sub
-local utf8sub = string.utf8sub
-local utf8len = string.utf8len
 local LSM = LibStub("LibSharedMedia-3.0");
+
+--Cache global variables
+--Lua functions
+local unpack, tonumber = unpack, tonumber
+local floor, abs = math.floor, abs
+local sub, utf8sub, utf8len = string.sub, string.utf8sub, string.utf8len
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local UnitSpellHaste = UnitSpellHaste
+local UnitBuff = UnitBuff
+local UnitIsPlayer = UnitIsPlayer
+local UnitClass = UnitClass
+local UnitReaction = UnitReaction
+local UnitCanAttack = UnitCanAttack
 
 local _, ns = ...
 local ElvUF = ns.oUF

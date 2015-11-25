@@ -1,9 +1,19 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
+--Cache global variables
+--Lua functions
+local join = string.join
+--WoW API / Variables
+local GetNumBattlefieldScores = GetNumBattlefieldScores
+local GetBattlefieldScore = GetBattlefieldScore
+local GetCurrentMapAreaID = GetCurrentMapAreaID
+local GetBattlefieldStatInfo = GetBattlefieldStatInfo
+local GetBattlefieldStatData = GetBattlefieldStatData
+
 local lastPanel
 local displayString = ''
-local classColor = RAID_CLASS_COLORS[E.myclass]
+local classColor = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass]
 local dataLayout = {
 	['LeftChatDataPanel'] = {
 		['left'] = 10,
@@ -38,6 +48,7 @@ local TOK = 856
 local SSM = 860
 local DG = 935
 local name
+local select = select
 
 function DT:UPDATE_BATTLEFIELD_SCORE()
 	lastPanel = self
@@ -102,7 +113,7 @@ function DT:HideBattlegroundTexts()
 end
 
 local function ValueColorUpdate(hex, r, g, b)
-	displayString = string.join("", "%s: ", hex, "%s|r")
+	displayString = join("", "%s: ", hex, "%s|r")
 
 	if lastPanel ~= nil then
 		DT.UPDATE_BATTLEFIELD_SCORE(lastPanel)

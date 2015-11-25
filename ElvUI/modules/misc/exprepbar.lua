@@ -1,9 +1,30 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local M = E:GetModule('Misc');
 
-local format = string.format
+--Cache global variables
+--Lua functions
+local _G = _G
 local min, max = math.min, math.max
+local format = string.format
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local GetPetExperience = GetPetExperience
+local UnitXP, UnitXPMax = UnitXP, UnitXPMax
+local UnitLevel = UnitLevel
+local IsXPUserDisabled = IsXPUserDisabled
+local GetXPExhaustion = GetXPExhaustion
+local GetWatchedFactionInfo = GetWatchedFactionInfo
+local GetNumFactions = GetNumFactions
+local GetFactionInfo = GetFactionInfo
+local GetFriendshipReputation = GetFriendshipReputation
+local GetExpansionLevel = GetExpansionLevel
+local STANDING = STANDING
+local REPUTATION = REPUTATION
+local FACTION_BAR_COLORS = FACTION_BAR_COLORS
 
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: MAX_PLAYER_LEVEL, GameTooltip, ElvUI_ExperienceBar, ElvUI_ReputationBar
+-- GLOBALS: MAX_PLAYER_LEVEL_TABLE, LeftChatPanel, RightChatPanel
 
 function M:GetXP(unit)
 	if(unit == 'pet') then
@@ -195,6 +216,9 @@ function M:UpdateExpRepDimensions()
 	self.expBar.statusBar:SetOrientation(E.db.general.experience.orientation)
 	self.repBar.statusBar:SetOrientation(E.db.general.reputation.orientation)
 	self.expBar.rested:SetOrientation(E.db.general.experience.orientation)
+	self.expBar.statusBar:SetReverseFill(E.db.general.experience.reverseFill)
+	self.repBar.statusBar:SetReverseFill(E.db.general.reputation.reverseFill)
+	self.expBar.rested:SetReverseFill(E.db.general.experience.reverseFill)
 
 	if E.db.general.experience.mouseover then
 		self.expBar:SetAlpha(0)

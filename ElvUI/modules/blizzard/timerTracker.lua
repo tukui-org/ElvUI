@@ -1,6 +1,15 @@
 local E, L, DF = unpack(select(2, ...))
 local B = E:GetModule('Blizzard');
 
+--Cache global variables
+--Lua functions
+local select, unpack, pairs = select, unpack, pairs
+--WoW API / Variables
+local CreateFrame = CreateFrame
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: TimerTracker
+
 local function SkinIt(bar)
 	for i=1, bar:GetNumRegions() do
 		local region = select(i, bar:GetRegions())

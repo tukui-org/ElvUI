@@ -1,10 +1,35 @@
 local E, L, DF = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 local RU = E:NewModule('RaidUtility', 'AceEvent-3.0');
 
-E.RaidUtility = RU
-
-local PANEL_HEIGHT = 100
+--Cache global variables
+--Lua functions
+local _G = _G
+local unpack, pairs = unpack, pairs
+local tinsert = table.insert
 local find = string.find
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local IsInInstance = IsInInstance
+local IsInGroup = IsInGroup
+local IsInRaid = IsInRaid
+local InCombatLockdown = InCombatLockdown
+local UnitIsGroupLeader = UnitIsGroupLeader
+local UnitIsGroupAssistant = UnitIsGroupAssistant
+local InitiateRolePoll = InitiateRolePoll
+local DoReadyCheck = DoReadyCheck
+local ToggleFriendsFrame = ToggleFriendsFrame
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: DisbandRaidButton, ROLE_POLL, RoleCheckButton, READY_CHECK, ReadyCheckButton 
+-- GLOBALS: RaidControlButton, CompactRaidFrameManager, RaidUtilityPanel, RAID_CONTROL
+-- GLOBALS: CompactRaidFrameManagerDisplayFrameHiddenModeToggle, RaidUtility_ShowButton
+-- GLOBALS: CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
+-- GLOBALS: CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck, CLOSE
+-- GLOBALS: CompactRaidFrameManagerDisplayFrameLockedModeToggle, RaidUtility_CloseButton
+-- GLOBALS: CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateRolePoll
+
+E.RaidUtility = RU
+local PANEL_HEIGHT = 100
 
 --Check if We are Raid Leader or Raid Officer
 local function CheckRaidStatus()
@@ -189,54 +214,55 @@ function RU:Initialize()
 	RaidControlButton:SetScript("OnMouseUp", function(self)
 		ToggleFriendsFrame(4)
 	end)
+	
+	local buttons = {
+		"DisbandRaidButton",
+		"RoleCheckButton",
+		"ReadyCheckButton",
+		"RaidControlButton",
+		"RaidUtility_ShowButton",
+		"RaidUtility_CloseButton"
+	}
 
-	--Reposition/Resize and Reuse the World Marker Button
-	CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:ClearAllPoints()
-	CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:SetPoint("TOPRIGHT", RoleCheckButton, "BOTTOMRIGHT", 0, -5)
-	CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:SetParent("RaidUtilityPanel")
-	CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:Height(18)
-	CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:SetWidth(RoleCheckButton:GetWidth() * 0.22)
+	if CompactRaidFrameManager then
+		--Reposition/Resize and Reuse the World Marker Button
+		CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:ClearAllPoints()
+		CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:SetPoint("TOPRIGHT", RoleCheckButton, "BOTTOMRIGHT", 0, -5)
+		CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:SetParent("RaidUtilityPanel")
+		CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:Height(18)
+		CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:SetWidth(RoleCheckButton:GetWidth() * 0.22)
 
-	--Put other stuff back
-	CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck:ClearAllPoints()
-	CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck:SetPoint("BOTTOMLEFT", CompactRaidFrameManagerDisplayFrameLockedModeToggle, "TOPLEFT", 0, 1)
-	CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck:SetPoint("BOTTOMRIGHT", CompactRaidFrameManagerDisplayFrameHiddenModeToggle, "TOPRIGHT", 0, 1)
-	CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateRolePoll:ClearAllPoints()
-	CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateRolePoll:SetPoint("BOTTOMLEFT", CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck, "TOPLEFT", 0, 1)
-	CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateRolePoll:SetPoint("BOTTOMRIGHT", CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck, "TOPRIGHT", 0, 1)
+		--Put other stuff back
+		CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck:ClearAllPoints()
+		CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck:SetPoint("BOTTOMLEFT", CompactRaidFrameManagerDisplayFrameLockedModeToggle, "TOPLEFT", 0, 1)
+		CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck:SetPoint("BOTTOMRIGHT", CompactRaidFrameManagerDisplayFrameHiddenModeToggle, "TOPRIGHT", 0, 1)
+		CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateRolePoll:ClearAllPoints()
+		CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateRolePoll:SetPoint("BOTTOMLEFT", CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck, "TOPLEFT", 0, 1)
+		CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateRolePoll:SetPoint("BOTTOMRIGHT", CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck, "TOPRIGHT", 0, 1)
+		
+		tinsert(buttons, "CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton")
+	else
+		E:StaticPopup_Show("WARNING_BLIZZARD_ADDONS")
+	end
 
 	--Reskin Stuff
-	do
-		local buttons = {
-			"CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton",
-			"DisbandRaidButton",
-			--"MainTankButton",
-			--"MainAssistButton",
-			"RoleCheckButton",
-			"ReadyCheckButton",
-			"RaidControlButton",
-			"RaidUtility_ShowButton",
-			"RaidUtility_CloseButton"
-		}
+	for i, button in pairs(buttons) do
+		local f = _G[button]
+		f.BottomLeft:SetAlpha(0)
+		f.BottomRight:SetAlpha(0)
+		f.BottomMiddle:SetAlpha(0)
+		f.TopMiddle:SetAlpha(0)
+		f.TopLeft:SetAlpha(0)
+		f.TopRight:SetAlpha(0)
+		f.MiddleLeft:SetAlpha(0)
+		f.MiddleRight:SetAlpha(0)
+		f.MiddleMiddle:SetAlpha(0)
 
-		for i, button in pairs(buttons) do
-			local f = _G[button]
-			f.BottomLeft:SetAlpha(0)
-			f.BottomRight:SetAlpha(0)
-			f.BottomMiddle:SetAlpha(0)
-			f.TopMiddle:SetAlpha(0)
-			f.TopLeft:SetAlpha(0)
-			f.TopRight:SetAlpha(0)
-			f.MiddleLeft:SetAlpha(0)
-			f.MiddleRight:SetAlpha(0)
-			f.MiddleMiddle:SetAlpha(0)
-
-			f:SetHighlightTexture("")
-			f:SetDisabledTexture("")
-			f:HookScript("OnEnter", ButtonEnter)
-			f:HookScript("OnLeave", ButtonLeave)
-			f:SetTemplate("Default", true)
-		end
+		f:SetHighlightTexture("")
+		f:SetDisabledTexture("")
+		f:HookScript("OnEnter", ButtonEnter)
+		f:HookScript("OnLeave", ButtonLeave)
+		f:SetTemplate("Default", true)
 	end
 
 	--Automatically show/hide the frame if we have RaidLeader or RaidOfficer

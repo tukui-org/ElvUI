@@ -1,18 +1,21 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
+--Cache global variables
+--Lua functions
+local join = string.join
+--WoW API / Variables
+local GetMasteryEffect = GetMasteryEffect
+local GetSpecialization = GetSpecialization
+local GetSpecializationMasterySpells = GetSpecializationMasterySpells
+local STAT_MASTERY = STAT_MASTERY
+
 local lastPanel
 local displayString = '';
-local join = string.join
 
 local function OnEvent(self, event)
 	lastPanel = self
-	--STAT_MASTERY
-	local masteryspell, masteryTag
-	if GetCombatRating(CR_MASTERY) ~= 0 and GetSpecialization() then
-		masteryTag = STAT_MASTERY..": "
-		self.text:SetFormattedText(displayString, masteryTag, GetMasteryEffect())
-	end
+	self.text:SetFormattedText(displayString, STAT_MASTERY, GetMasteryEffect())
 end
 
 local function OnEnter(self)
@@ -22,18 +25,20 @@ local function OnEnter(self)
 	local primaryTalentTree = GetSpecialization();
 
 	if (primaryTalentTree) then
-		local masterySpell = GetSpecializationMasterySpells(primaryTalentTree);
-		local masteryKnown = IsSpellKnown(masterySpell);
-
-		if (masteryKnown) then
+		local masterySpell, masterySpell2 = GetSpecializationMasterySpells(primaryTalentTree);
+		if (masterySpell) then
 			DT.tooltip:AddSpellByID(masterySpell);
+		end
+		if (masterySpell2) then
+			DT.tooltip:AddLine(" ");
+			DT.tooltip:AddSpellByID(masterySpell2);
 		end
 	end
 	DT.tooltip:Show()
 end
 
 local function ValueColorUpdate(hex, r, g, b)
-	displayString = join("", "%s", hex, "%.2f%%|r")
+	displayString = join("", "%s: ", hex, "%.2f%%|r")
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

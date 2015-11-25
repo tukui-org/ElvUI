@@ -1,6 +1,18 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
+--Cache global variables
+--Lua functions
+local _G = _G
+local pairs = pairs
+local tinsert = table.insert
+local format = format
+--WoW API / Variables
+local MAX_BOSS_FRAMES = MAX_BOSS_FRAMES
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: BossHeaderMover
+
 local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
@@ -82,6 +94,10 @@ function UF:Update_BossFrames(frame, db)
 		if USE_MINI_POWERBAR then
 			POWERBAR_WIDTH = POWERBAR_WIDTH / 2
 		end
+		
+		if not USE_POWERBAR_OFFSET then
+			POWERBAR_OFFSET = 0
+		end
 	end
 
 	--Health
@@ -107,11 +123,7 @@ function UF:Update_BossFrames(frame, db)
 				health.colorHealth = true
 			end
 		else
-			health.colorClass = true
-			health.colorReaction = true
-		end
-		if self.db['colors'].forcehealthreaction == true then
-			health.colorClass = false
+			health.colorClass = (not self.db['colors'].forcehealthreaction)
 			health.colorReaction = true
 		end
 
@@ -234,7 +246,7 @@ function UF:Update_BossFrames(frame, db)
 					portrait:SetFrameLevel(frame:GetFrameLevel() + 5)
 				end
 
-				if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR then
+				if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or USE_INSET_POWERBAR or not USE_POWERBAR then
 					portrait.backdrop:Point("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMRIGHT", E.PixelMode and -1 or SPACING, 0)
 				else
 					portrait.backdrop:Point("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMRIGHT", E.PixelMode and -1 or SPACING, 0)
@@ -384,8 +396,9 @@ function UF:Update_BossFrames(frame, db)
 
 		if position == "BUFFS_ON_DEBUFFS" then
 			if db.debuffs.attachTo == "BUFFS" then
-				E:Print(format(L["This setting caused a conflicting anchor point, where %s would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Buffs"], L["Debuffs"], L["Frame"]))
+				E:Print(format(L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Buffs"], L["Debuffs"], L["Frame"]))
 				db.debuffs.attachTo = "FRAME"
+				frame.Debuffs.attachTo = frame
 			end
 			frame.Buffs.PostUpdate = nil
 			frame.Debuffs.PostUpdate = UF.UpdateBuffsHeaderPosition
@@ -393,6 +406,7 @@ function UF:Update_BossFrames(frame, db)
 			if db.buffs.attachTo == "DEBUFFS" then
 				E:Print(format(L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Debuffs"], L["Buffs"], L["Frame"]))
 				db.buffs.attachTo = "FRAME"
+				frame.Buffs.attachTo = frame
 			end
 			frame.Buffs.PostUpdate = UF.UpdateDebuffsHeaderPosition
 			frame.Debuffs.PostUpdate = nil
@@ -495,9 +509,15 @@ function UF:Update_BossFrames(frame, db)
 	--Debuff Highlight
 	do
 		local dbh = frame.DebuffHighlight
-		if E.db.unitframe.debuffHighlighting then
+		if E.db.unitframe.debuffHighlighting ~= 'NONE' then
 			if not frame:IsElementEnabled('DebuffHighlight') then
 				frame:EnableElement('DebuffHighlight')
+				frame.DebuffHighlightFilterTable = E.global.unitframe.DebuffHighlightColors
+				if E.db.unitframe.debuffHighlighting == 'GLOW' then
+					frame.DebuffHighlightBackdrop = true
+				else
+					frame.DebuffHighlightBackdrop = false
+				end						
 			end
 		else
 			if frame:IsElementEnabled('DebuffHighlight') then

@@ -1,15 +1,27 @@
 local MAJOR, MINOR = "LibElvUIPlugin-1.0", 13
 local lib, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
-
-
 if not lib then return end
+
+--Cache global variables
+--Lua functions
+local pairs, tonumber = pairs, tonumber
+local format, strsplit = format, strsplit
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local IsInInstance, IsInGroup, IsInRaid = IsInInstance, IsInGroup, IsInRaid
+local GetAddOnMetadata = GetAddOnMetadata
+local IsAddOnLoaded = IsAddOnLoaded
+local RegisterAddonMessagePrefix = RegisterAddonMessagePrefix
+local SendAddonMessage = SendAddonMessage
+local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
+local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
+
+--Global variables that we don't cache, list them here for the mikk's Find Globals script
+-- GLOBALS: ElvUI
 
 lib.plugins = {}
 lib.index = 0
 lib.prefix = "ElvUIPluginVC"
---
--- GLOBALS:
---
 
 -- MULTI Language Support (Default Language: English)
 local MSG_OUTDATED = "Your version of %s is out of date (latest is version %s). You can download the latest version from http://www.tukui.org"

@@ -2,6 +2,25 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local M = E:GetModule('Misc');
 
+--Cache global variables
+--Lua functions
+local sin, cos = math.sin, math.cos
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local GetNumGroupMembers = GetNumGroupMembers
+local UnitIsGroupLeader = UnitIsGroupLeader
+local UnitIsGroupAssistant = UnitIsGroupAssistant
+local IsInGroup, IsInRaid = IsInGroup, IsInRaid
+local UnitExists, UnitIsDead = UnitExists, UnitIsDead
+local GetCursorPosition = GetCursorPosition
+local PlaySound = PlaySound
+local SetRaidTarget = SetRaidTarget
+local SetRaidTargetIconTexture = SetRaidTargetIconTexture
+local UIErrorsFrame = UIErrorsFrame
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: RaidMark_HotkeyPressed
+
 local ButtonIsDown;
 
 function M:RaidMarkCanMark()
@@ -13,7 +32,7 @@ function M:RaidMarkCanMark()
 		elseif IsInGroup() and not IsInRaid() then
 			return true;
 		else
-			UIErrorsFrame:AddMessage(L["You don't have permission to mark targets."], 1.0, 0.1, 0.1, 1.0, UIERRORS_HOLD_TIME);
+			UIErrorsFrame:AddMessage(L["You don't have permission to mark targets."], 1.0, 0.1, 0.1, 1.0);
 			return false;
 		end
 	else

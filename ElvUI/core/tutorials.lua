@@ -1,5 +1,17 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
+--Cache global variables
+--Lua functions
+local _G = _G
+
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local DISABLE = DISABLE
+local HIDE = HIDE
+
+--Global variables that we don't cache, list them here for the mikk's Find Globals script
+-- GLOBALS: UIParent, ElvUITutorialWindow 
+
 E.TutorialList = {
 	L["For technical support visit us at http://www.tukui.org."],
 	L["You can toggle the microbar by using your middle mouse button on the minimap you can also accomplish this by enabling the actual microbar located in the actionbar settings."],

@@ -1,12 +1,53 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local M = E:NewModule('Misc', 'AceEvent-3.0', 'AceTimer-3.0');
-
 E.Misc = M;
-local UIErrorsFrame = UIErrorsFrame;
-local interruptMsg = INTERRUPTED.." %s's \124cff71d5ff\124Hspell:%d\124h[%s]\124h\124r!"
+
+--Cache global variables
+--Lua functions
 local floor = math.floor
-local format = string.format
-local gsub = string.gsub
+local format, gsub = string.format, string.gsub
+--WoW API / Variables
+local UnitGUID = UnitGUID
+local UnitInRaid = UnitInRaid
+local IsInGroup, IsInRaid = IsInGroup, IsInRaid
+local IsPartyLFG, IsInInstance = IsPartyLFG, IsInInstance
+local IsArenaSkirmish = IsArenaSkirmish
+local IsActiveBattlefieldArena = IsActiveBattlefieldArena
+local SendChatMessage = SendChatMessage
+local IsShiftKeyDown = IsShiftKeyDown
+local CanMerchantRepair = CanMerchantRepair
+local GetRepairAllCost = GetRepairAllCost
+local GetGuildBankWithdrawMoney = GetGuildBankWithdrawMoney
+local CanGuildBankRepair = CanGuildBankRepair
+local RepairAllItems = RepairAllItems
+local InCombatLockdown = InCombatLockdown
+local GetNumGroupMembers = GetNumGroupMembers
+local GetRaidRosterInfo = GetRaidRosterInfo
+local UninviteUnit = UninviteUnit
+local UnitExists = UnitExists
+local UnitName = UnitName
+local LeaveParty = LeaveParty
+local RaidNotice_AddMessage = RaidNotice_AddMessage
+local GetNumFriends = GetNumFriends
+local ShowFriends = ShowFriends
+local IsInGuild = IsInGuild
+local GuildRoster = GuildRoster
+local GetFriendInfo = GetFriendInfo
+local AcceptGroup = AcceptGroup
+local GetNumGuildMembers = GetNumGuildMembers
+local GetGuildRosterInfo = GetGuildRosterInfo
+local BNGetNumFriends = BNGetNumFriends
+local BNGetFriendInfo = BNGetFriendInfo
+local StaticPopupSpecial_Hide = StaticPopupSpecial_Hide
+local StaticPopup_Hide = StaticPopup_Hide
+local GetCVarBool, SetCVar = GetCVarBool, SetCVar
+local UIErrorsFrame = UIErrorsFrame;
+local MAX_PARTY_MEMBERS = MAX_PARTY_MEMBERS
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: RaidBossEmoteFrame, ChatTypeInfo, QueueStatusMinimapButton, LFGInvitePopup
+
+local interruptMsg = INTERRUPTED.." %s's \124cff71d5ff\124Hspell:%d\124h[%s]\124h\124r!"
 
 function M:ErrorFrameToggle(event)
 	if not E.db.general.hideErrorFrame then return end
@@ -23,6 +64,17 @@ function M:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, _, sourceGUID, _, _, _, _, d
 
 	local inGroup, inRaid, inPartyLFG = IsInGroup(), IsInRaid(), IsPartyLFG()
 	if not inGroup then return end -- not in group, exit.
+
+	--Skirmish/non-rated arenas need to use INSTANCE_CHAT but IsPartyLFG() returns "false"
+	local _, instanceType = IsInInstance()
+	if instanceType and instanceType == "arena" then
+		local skirmish = IsArenaSkirmish()
+		local _, isRegistered = IsActiveBattlefieldArena()
+		if skirmish or not isRegistered then
+			inPartyLFG = true
+		end
+		inRaid = false --IsInRaid() returns true for arenas and they should not be considered a raid
+	end
 
 	if E.db.general.interruptAnnounce == "PARTY" then
 		SendChatMessage(format(interruptMsg, destName, spellID, spellName), inPartyLFG and "INSTANCE_CHAT" or "PARTY")

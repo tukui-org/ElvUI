@@ -4,6 +4,41 @@ local LSM = LibStub("LibSharedMedia-3.0");
 local BG = LibStub("LibBodyguard-1.0");
 UF.LSM = LSM
 
+--Cache global variables
+--Lua functions
+local _G = _G
+local select, pairs, type, unpack, assert, tostring = select, pairs, type, unpack, assert, tostring
+--WoW API / Variables
+local hooksecurefunc = hooksecurefunc
+local CreateFrame = CreateFrame
+local IsAddOnLoaded = IsAddOnLoaded
+local UnitFrame_OnEnter = UnitFrame_OnEnter
+local UnitFrame_OnLeave = UnitFrame_OnLeave
+local IsInInstance = IsInInstance
+local InCombatLockdown = InCombatLockdown
+local CompactRaidFrameManager_GetSetting = CompactRaidFrameManager_GetSetting
+local CompactRaidFrameManager_SetSetting = CompactRaidFrameManager_SetSetting
+local GetInstanceInfo = GetInstanceInfo
+local UnregisterStateDriver = UnregisterStateDriver
+local RegisterStateDriver = RegisterStateDriver
+local UnregisterAttributeDriver = UnregisterAttributeDriver
+local CompactRaidFrameManager_UpdateShown = CompactRaidFrameManager_UpdateShown
+local CompactRaidFrameContainer = CompactRaidFrameContainer
+local CompactUnitFrame_UnregisterEvents = CompactUnitFrame_UnregisterEvents
+local MAX_RAID_MEMBERS = MAX_RAID_MEMBERS
+local MAX_BOSS_FRAMES = MAX_BOSS_FRAMES
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: UIParent, ElvCharacterDB, ElvUF_Parent, oUF_RaidDebuffs, CompactRaidFrameManager
+-- GLOBALS: PlayerFrame, RuneFrame, PetFrame, TargetFrame, ComboFrame, FocusFrame
+-- GLOBALS: FocusFrameToT, TargetFrameToT, CompactUnitFrameProfiles
+-- GLOBALS: InterfaceOptionsFrameCategoriesButton10, InterfaceOptionsStatusTextPanelPlayer
+-- GLOBALS: InterfaceOptionsStatusTextPanelPet, InterfaceOptionsStatusTextPanelTarget
+-- GLOBALS: InterfaceOptionsCombatPanelEnemyCastBarsOnPortrait
+-- GLOBALS: InterfaceOptionsCombatPanelEnemyCastBarsOnNameplates
+-- GLOBALS: InterfaceOptionsCombatPanelTargetOfTarget, InterfaceOptionsDisplayPanelShowAggroPercentage
+-- GLOBALS: InterfaceOptionsStatusTextPanelParty, InterfaceOptionsFrameCategoriesButton11
+
 local _, ns = ...
 local ElvUF = ns.oUF
 local AceTimer = LibStub:GetLibrary("AceTimer-3.0")
@@ -623,21 +658,21 @@ function UF.groupPrototype:AdjustVisibility()
 	if not self.isForced then
 		local numGroups = self.numGroups
 		for i=1, #self.groups do
+			local group = self.groups[i]
 			if (i <= numGroups) and ((self.db.raidWideSorting and i <= 1) or not self.db.raidWideSorting) then
-				self.groups[i]:Show()
+				group:Show()
 			else
-				if self.groups[i].forceShow then
-					self.groups[i]:Hide()
+				if group.forceShow then
+					group:Hide()
 					UF:UnshowChildUnits(group, group:GetChildren())
 					group:SetAttribute('startingIndex', 1)
 				else
-					self.groups[i]:Reset()
+					group:Reset()
 				end
 			end
 		end
 	end
 end
-
 
 function UF.headerPrototype:ClearChildPoints()
 	for i=1, self:GetNumChildren() do
@@ -645,7 +680,6 @@ function UF.headerPrototype:ClearChildPoints()
 		child:ClearAllPoints()
 	end
 end
-
 
 function UF.headerPrototype:Update(isForced)
 	local group = self.groupName
@@ -720,8 +754,6 @@ function UF:CreateHeader(parent, groupFilter, overrideName, template, groupName,
 	return header
 end
 
-
-
 function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdate, headerTemplate)
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return end
 	local db = self.db['units'][group]
@@ -745,7 +777,6 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 			end
 		end
 	end
-
 
 	if not self[group] then
 		local stringTitle = E:StringTitle(group)
@@ -779,7 +810,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 
 		if db.raidWideSorting then
 			if not self[group].groups[1] then
-				self[group].groups[1] = self:CreateHeader(self[group], index, "ElvUF_"..E:StringTitle(self[group].groupName)..'Group1', template, nil, headerTemplate)
+				self[group].groups[1] = self:CreateHeader(self[group], nil, "ElvUF_"..E:StringTitle(self[group].groupName)..'Group1', template, nil, headerTemplate)
 			end
 		else
 			while numGroups > #self[group].groups do
@@ -794,6 +825,12 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 			self[group]:Configure_Groups()
 			if not self[group].isForced and not self[group].blockVisibilityChanges then
 				RegisterStateDriver(self[group], "visibility", db.visibility)
+			end
+			
+			--This fixes a bug where the party/raid frame will not appear when you enable it
+			--if it was disabled when you logged in/reloaded.
+			if not self[group].mover then
+				self[group]:Update()
 			end
 		else
 			self[group]:Configure_Groups()
@@ -917,23 +954,30 @@ function UF:UpdateAllHeaders(event)
 		end
 	end
 
-	for _, header in pairs(UF['headers']) do
-		header:Update()
-		if header.Configure_Groups then
-			header:Configure_Groups()
-		end
-		if header == 'party' or header == 'raid' or header == 'raid40' then
-			--Update BuffIndicators on profile change as they might be using profile specific data
-			UF:UpdateAuraWatchFromHeader(header)
-		end
-	end
-
 	if E.private["unitframe"]["disabledBlizzardFrames"].party then
 		ElvUF:DisableBlizzard('party')
 	end
+
+	local smartRaidFilterEnabled = self.db.smartRaidFilter
+	for group, header in pairs(self['headers']) do
+		header:Update()
+
+		local shouldUpdateHeader
+		if header.numGroups == nil or smartRaidFilterEnabled then
+			shouldUpdateHeader = false
+		elseif header.numGroups ~= nil and not smartRaidFilterEnabled then
+			shouldUpdateHeader = true
+		end
+		self:CreateAndUpdateHeaderGroup(group, nil, nil, shouldUpdateHeader)
+
+		if group == 'party' or group == 'raid' or group == 'raid40' then
+			--Update BuffIndicators on profile change as they might be using profile specific data
+			self:UpdateAuraWatchFromHeader(group)
+		end
+	end
 end
 
-function HideRaid()
+local function HideRaid()
 	if InCombatLockdown() then return end
 	CompactRaidFrameManager:Kill()
 	local compact_raid = CompactRaidFrameManager_GetSetting("IsShown")

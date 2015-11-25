@@ -2,6 +2,24 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local M = E:NewModule('WorldMap', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
 E.WorldMap = M
 
+--Cache global variables
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local InCombatLockdown = InCombatLockdown
+local SetUIPanelAttribute = SetUIPanelAttribute
+local IsInInstance = IsInInstance
+local GetPlayerMapPosition = GetPlayerMapPosition
+local GetCursorPosition = GetCursorPosition
+local PLAYER = PLAYER
+local MOUSE_LABEL = MOUSE_LABEL
+local WORLDMAP_FULLMAP_SIZE = WORLDMAP_FULLMAP_SIZE
+local WORLDMAP_WINDOWED_SIZE = WORLDMAP_WINDOWED_SIZE
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: WorldMapFrame, WorldMapFrameSizeUpButton, WorldMapFrameSizeDownButton
+-- GLOBALS: UIParent, CoordsHolder, WorldMapDetailFrame, DropDownList1
+-- GLOBALS: NumberFontNormal, WORLDMAP_SETTINGS, BlackoutWorld
+
 function M:SetLargeWorldMap()
 	if InCombatLockdown() then return end
 
@@ -25,7 +43,6 @@ function M:SetLargeWorldMap()
 	WorldMapFrame:SetPoint("CENTER", UIParent, "CENTER", 0, 100)
 	WorldMapFrame:SetSize(1002, 668)
 end
-
 
 function M:SetSmallWorldMap()
 	if InCombatLockdown() then return; end

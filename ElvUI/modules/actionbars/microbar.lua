@@ -1,6 +1,19 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars');
 
+--Cache global variables
+--Lua functions
+local _G = _G
+local assert = assert
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local UpdateMicroButtonsParent = UpdateMicroButtonsParent
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: ElvUI_MicroBar, MainMenuBarPerformanceBar, MainMenuMicroButton
+-- GLOBALS: MICRO_BUTTONS, CharacterMicroButton, GuildMicroButtonTabard
+-- GLOBALS: GuildMicroButton, MicroButtonPortrait
+
 local function Button_OnEnter(self)
 	if AB.db.microbar.mouseover then
 		E:UIFrameFadeIn(ElvUI_MicroBar, 0.2, ElvUI_MicroBar:GetAlpha(), AB.db.microbar.alpha)

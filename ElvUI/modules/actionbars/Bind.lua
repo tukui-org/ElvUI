@@ -1,9 +1,43 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars');
 
+--Cache global variables
+--Lua functions
+local _G = _G
+local select, tonumber, pairs = select, tonumber, pairs
+local floor = math.floor
+local find, format = string.find, string.format
+--WoW API / Variables
+local hooksecurefunc = hooksecurefunc
+local EnumerateFrames = EnumerateFrames
+local CreateFrame = CreateFrame
+local GetSpellInfo = GetSpellInfo
+local IsAddOnLoaded = IsAddOnLoaded
+local LoadBindings, SaveBindings = LoadBindings, SaveBindings
+local GetCurrentBindingSet = GetCurrentBindingSet
+local SetBinding = SetBinding
+local GetBindingKey = GetBindingKey
+local IsAltKeyDown, IsControlKeyDown = IsAltKeyDown, IsControlKeyDown
+local IsShiftKeyDown, IsModifiedClick = IsShiftKeyDown, IsModifiedClick
+local InCombatLockdown = InCombatLockdown
+local SpellBook_GetSpellBookSlot = SpellBook_GetSpellBookSlot
+local GetSpellBookItemName = GetSpellBookItemName
+local GameTooltip_ShowCompareItem = GameTooltip_ShowCompareItem
+local GetMacroInfo = GetMacroInfo
+local SecureActionButton_OnClick = SecureActionButton_OnClick
+local GetNumFlyouts, GetFlyoutInfo = GetNumFlyouts, GetFlyoutInfo
+local GetFlyoutID = GetFlyoutID
+local GameTooltip_Hide = GameTooltip_Hide
+local MAX_ACCOUNT_MACROS = MAX_ACCOUNT_MACROS
+local CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP = CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP
+local CHARACTER_SPECIFIC_KEYBINDINGS = CHARACTER_SPECIFIC_KEYBINDINGS
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: UIParent, ElvUIBindPopupWindow, GameTooltip, StanceButton1, PetActionButton1
+-- GLOBALS: ShoppingTooltip1, SpellBookFrame, MacroFrameTab1Text, SpellFlyout
+-- GLOBALS: ElvUIBindPopupWindowCheckButton 
+
 local bind = CreateFrame("Frame", "ElvUI_KeyBinder", E.UIParent);
-local find = string.find;
-local _G = getfenv(0);
 
 function AB:ActivateBindMode()
 	bind.active = true;
@@ -35,8 +69,11 @@ end
 function AB:BindListener(key)
 	AB.bindingsChanged = true
 	if key == "ESCAPE" or key == "RightButton" then
-		for i = 1, #bind.button.bindings do
-			SetBinding(bind.button.bindings[i]);
+
+		if bind.button.bindings then
+			for i = 1, #bind.button.bindings do
+				SetBinding(bind.button.bindings[i]);
+			end
 		end
 		E:Print(format(L["All keybindings cleared for |cff00ff00%s|r."], bind.button.name));
 		self:BindUpdate(bind.button, bind.spellmacro);

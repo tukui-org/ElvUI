@@ -101,6 +101,15 @@ local function OnEvent(self, event, arg1)
 	end
 end
 
+--Bugfix: http://git.tukui.org/Elv/elvui/issues/526
+local enteredWorld = false
+local f = CreateFrame("Frame")
+f:RegisterEvent("PLAYER_ENTERING_WORLD")
+f:SetScript("OnEvent", function(self, event)
+	self:UnregisterEvent(event)
+	enteredWorld = true
+end)
+
 local Enable = function(self, unit)
 	local stagger = self.Stagger
 	if(stagger) then
@@ -118,6 +127,14 @@ local Enable = function(self, unit)
 		
 		if not stagger.class then
 			stagger.class = select(2, UnitClass("player"))
+		end
+		
+		--Bugfix: http://git.tukui.org/Elv/elvui/issues/526
+		if enteredWorld and not self:IsEventRegistered("PLAYER_SPECIALIZATION_CHANGED") then
+			stagger.specRestriction = SPEC_MONK_BREWMASTER;
+			self:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED", OnEvent);
+			UpdateMaxValues(self);
+			UpdatePowerType(self);
 		end
 		UpdatePowerType(self)
 		return true

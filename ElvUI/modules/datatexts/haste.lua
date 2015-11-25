@@ -1,9 +1,17 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
+--Cache global variables
+--Lua functions
+local join = string.join
+--WoW API / Variables
+local UnitSpellHaste = UnitSpellHaste
+local GetRangedHaste = GetRangedHaste
+local GetMeleeHaste = GetMeleeHaste
+local STAT_HASTE = STAT_HASTE
+
 local displayNumberString = ''
 local lastPanel;
-local join = string.join
 
 local function OnEvent(self, event, unit)
 	local hasteRating

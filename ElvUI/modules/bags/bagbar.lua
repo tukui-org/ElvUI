@@ -1,8 +1,20 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule('Bags');
 
-local TOTAL_BAGS = NUM_BAG_FRAMES + 1
+--Cache global variables
+--Lua functions
+local _G = _G
+local unpack = unpack
 local tinsert = table.insert
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local NUM_BAG_FRAMES = NUM_BAG_FRAMES
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: UIFrameFadeIn, ElvUIBags, RightChatPanel, MainMenuBarBackpackButton
+-- GLOBALS: MainMenuBarBackpackButtonCount
+
+local TOTAL_BAGS = NUM_BAG_FRAMES + 1
 
 local function OnEnter()
 	if E.db.bags.bagBar.mouseover ~= true then return; end

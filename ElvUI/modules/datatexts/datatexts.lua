@@ -3,7 +3,19 @@ local DT = E:NewModule('DataTexts', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0
 local LDB = LibStub:GetLibrary("LibDataBroker-1.1");
 local LSM = LibStub("LibSharedMedia-3.0")
 local TT = E:GetModule("Tooltip")
+
+--Cache global variables
+--Lua functions
+local pairs, type, error = pairs, type, error
 local len = string.len
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local UnitGUID = UnitGUID
+local InCombatLockdown = InCombatLockdown
+local IsInInstance = IsInInstance
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: GameTooltip, ElvConfigToggle
 
 function DT:Initialize()
 	--if E.db["datatexts"].enable ~= true then return end
@@ -65,7 +77,7 @@ function DT:RegisterLDB()
 			if value == nil or (len(value) >= 3) or value == 'n/a' or name == value then
 				curFrame.text:SetText(value ~= 'n/a' and value or name)
 			else
-				curFrame.text:SetText(name..': '..hex..value..'|r')
+				curFrame.text:SetFormattedText("%s: %s%s|r", name, hex, value)
 			end
 		end
 
@@ -151,9 +163,12 @@ function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff)
 	DT.UpdateAllDimensions(panel)
 end
 
-
-
 function DT:AssignPanelToDataText(panel, data)
+	panel.name = ""
+	if data['name'] then
+		panel.name = data['name']
+	end
+
 	if data['events'] then
 		for _, event in pairs(data['events']) do
 			-- use new filtered event registration for appropriate events
@@ -207,6 +222,9 @@ function DT:LoadDataTexts()
 
 	local inInstance, instanceType = IsInInstance()
 	local fontTemplate = LSM:Fetch("font", self.db.font)
+	if ElvConfigToggle then
+		ElvConfigToggle.text:FontTemplate(fontTemplate, self.db.fontSize, self.db.fontOutline)
+	end
 	for panelName, panel in pairs(DT.RegisteredPanels) do
 		--Restore Panels
 		for i=1, panel.numPoints do
@@ -217,6 +235,7 @@ function DT:LoadDataTexts()
 			panel.dataPanels[pointIndex]:SetScript('OnLeave', nil)
 			panel.dataPanels[pointIndex]:SetScript('OnClick', nil)
 			panel.dataPanels[pointIndex].text:FontTemplate(fontTemplate, self.db.fontSize, self.db.fontOutline)
+			panel.dataPanels[pointIndex].text:SetWordWrap(self.db.wordWrap)
 			panel.dataPanels[pointIndex].text:SetText(nil)
 			panel.dataPanels[pointIndex].pointIndex = pointIndex
 
@@ -268,6 +287,8 @@ function DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onE
 	else
 		error('Cannot register datatext no name was provided.')
 	end
+
+	DT.RegisteredDataTexts[name]['name'] = name
 
 	if type(events) ~= 'table' and events ~= nil then
 		error('Events must be registered as a table.')

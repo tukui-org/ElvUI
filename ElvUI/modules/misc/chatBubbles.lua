@@ -3,6 +3,16 @@ local M = E:GetModule('Misc');
 local NP = E:GetModule("NamePlates");
 local numChildren = -1
 
+--Cache global variables
+--Lua functions
+local select, unpack, type = select, unpack, type
+local strlower = strlower
+--WoW API / Variables
+local CreateFrame = CreateFrame
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: UIParent, WorldFrame
+
 function M:UpdateBubbleBorder()
 	if not self.text then return end
 

@@ -1,7 +1,22 @@
 local E, L, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
+--Cache global variables
+--Lua functions
+local pairs = pairs
 local join = string.join
+--WoW API / Variables
+local IsLoggedIn = IsLoggedIn
+local GetMoney = GetMoney
+local IsShiftKeyDown = IsShiftKeyDown
+local ToggleAllBags = ToggleAllBags
+local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: ElvDB
+
+local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
+local CURRENCY = CURRENCY
 
 local Profit	= 0
 local Spent		= 0

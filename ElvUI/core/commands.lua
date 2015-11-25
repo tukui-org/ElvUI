@@ -1,8 +1,31 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
-local format = string.format
-local lower = string.lower
-local split = string.split
+--Cache global variables
+--Lua functions
+local _G = _G
+local tonumber, type, pairs, select = tonumber, type, pairs, select
+local format, lower, split = string.format, string.lower, string.split
+--WoW API / Variables
+local InCombatLockdown = InCombatLockdown
+local UIFrameFadeOut, UIFrameFadeIn = UIFrameFadeOut, UIFrameFadeIn
+local EnableAddOn, DisableAllAddOns = EnableAddOn, DisableAllAddOns
+local SetCVar = SetCVar
+local ReloadUI = ReloadUI
+local GuildControlGetNumRanks = GuildControlGetNumRanks
+local GuildControlGetRankName = GuildControlGetRankName
+local GetNumGuildMembers, GetGuildRosterInfo = GetNumGuildMembers, GetGuildRosterInfo
+local GetGuildRosterLastOnline = GetGuildRosterLastOnline
+local GuildUninvite = GuildUninvite
+local SendChatMessage = SendChatMessage
+local debugprofilestart, debugprofilestop = debugprofilestart, debugprofilestop
+local UpdateAddOnCPUUsage, GetAddOnCPUUsage = UpdateAddOnCPUUsage, GetAddOnCPUUsage
+local ResetCPUUsage = ResetCPUUsage
+local GetAddOnInfo = GetAddOnInfo
+local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
+
+--Global variables that we don't cache, list them here for the mikk's Find Globals script
+-- GLOBALS: FarmMode, Minimap, FarmModeMap, EGrid, MacroEditBox, HelloKittyLeft
+
 
 function FarmMode()
 	if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT); return; end
@@ -144,18 +167,6 @@ function E:GetCPUImpact()
 		self:Print("Consumed "..(GetAddOnCPUUsage("ElvUI") / num_frames).." milliseconds per frame. Each frame took "..(ms_passed / num_frames).." to render.");
 		toggleMode = false
 	end
-end
-
-function E:HelloKittyToggle()
-	if(HelloKittyLeft and HelloKittyLeft:IsShown()) then
-		self:RestoreHelloKitty()
-	else
-		self:StaticPopup_Show("HELLO_KITTY")
-	end
-end
-
-function E:HarlemShakeToggle()
-	self:StaticPopup_Show("HARLEM_SHAKE");
 end
 
 local BLIZZARD_ADDONS = {

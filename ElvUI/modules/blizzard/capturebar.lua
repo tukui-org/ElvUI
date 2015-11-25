@@ -1,6 +1,13 @@
 local E, L, DF = unpack(select(2, ...))
 local B = E:GetModule('Blizzard');
 
+--Cache global variables
+--Lua functions
+local _G = _G
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: NUM_EXTENDED_UI_FRAMES, hooksecurefunc
+
 local function CaptureUpdate()
 	if NUM_EXTENDED_UI_FRAMES then
 		local captureBar

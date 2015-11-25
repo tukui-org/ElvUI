@@ -1,6 +1,18 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
+--Cache global variables
+--WoW API / Variables
+local GetNumRandomDungeons = GetNumRandomDungeons
+local GetLFGRandomDungeonInfo = GetLFGRandomDungeonInfo
+local GetLFGRoleShortageRewards = GetLFGRoleShortageRewards
+local ToggleFrame = ToggleFrame
+local LFG_ROLE_NUM_SHORTAGE_TYPES = LFG_ROLE_NUM_SHORTAGE_TYPES
+local BATTLEGROUND_HOLIDAY = BATTLEGROUND_HOLIDAY
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: LFDParentFrame
+
 local TANK_ICON = "|TInterface\\AddOns\\ElvUI\\media\\textures\\tank.tga:14:14|t"
 local HEALER_ICON = "|TInterface\\AddOns\\ElvUI\\media\\textures\\healer.tga:14:14|t"
 local DPS_ICON = "|TInterface\\AddOns\\ElvUI\\media\\textures\\dps.tga:14:14|t"

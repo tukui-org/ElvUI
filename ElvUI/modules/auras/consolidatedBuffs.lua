@@ -2,9 +2,24 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local A = E:GetModule('Auras');
 local LSM = LibStub("LibSharedMedia-3.0")
 
-local format = string.format
+--Cache global variables
+--Lua functions
+local _G = _G
+local GetTime = GetTime
+local unpack = unpack
 local twipe = table.wipe
+local format = string.format
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local GetRaidBuffTrayAuraInfo = GetRaidBuffTrayAuraInfo
+local CooldownFrame_SetTimer = CooldownFrame_SetTimer
+local NUM_LE_RAID_BUFF_TYPES = NUM_LE_RAID_BUFF_TYPES
 
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: GameTooltip, Minimap, ElvUI_ConsolidatedBuffs, BuffFrame
+
+local Masque = LibStub("Masque", true)
+local MasqueGroup = Masque and Masque:Group("ElvUI", "Consolidated Buffs")
 
 A.DefaultIcons = {
 	[1] = "Interface\\Icons\\Spell_Magic_GreaterBlessingofKings", -- Stats
@@ -42,7 +57,7 @@ function A:UpdateReminder(event, unit)
 	local reverseStyle = E.db.auras.consolidatedBuffs.reverseStyle
 
 	for i = 1, NUM_LE_RAID_BUFF_TYPES do
-		local spellName, rank, texture, duration, expirationTime, spellId, slot = GetRaidBuffTrayAuraInfo(i);
+		local spellName, rank, texture, duration, expirationTime = GetRaidBuffTrayAuraInfo(i);
 		local button = self.frame[i]
 
 		if(spellName) then
@@ -96,7 +111,6 @@ end
 
 function A:CreateButton(i)
 	local button = CreateFrame("Button", "ElvUIConsolidatedBuff"..i, ElvUI_ConsolidatedBuffs)
-	button:SetTemplate('Default')
 
 	button.t = button:CreateTexture(nil, "OVERLAY")
 	button.t:SetTexCoord(unpack(E.TexCoords))
@@ -111,6 +125,31 @@ function A:CreateButton(i)
 
 	button.timer = button.cd:CreateFontString(nil, 'OVERLAY')
 	button.timer:SetPoint('CENTER')
+
+	local ButtonData = {
+		FloatingBG = nil,
+		Icon = button.t,
+		Cooldown = button.cd,
+		Flash = nil,
+		Pushed = nil,
+		Normal = nil,
+		Disabled = nil,
+		Checked = nil,
+		Border = nil,
+		AutoCastable = nil,
+		Highlight = nil,
+		HotKey = nil,
+		Count = nil,
+		Name = nil,
+		Duration = false,
+		AutoCast = nil,
+	}
+
+	if MasqueGroup and E.private.auras.masque.consolidatedBuffs then
+		MasqueGroup:AddButton(button, ButtonData)
+	elseif not E.private.auras.masque.consolidatedBuffs then
+		button:SetTemplate('Default')
+	end
 
 	return button
 end
@@ -201,11 +240,17 @@ function A:Update_ConsolidatedBuffsSettings(isCallback)
 			E:GetModule('Auras'):DisableCB()
 		end
 	end
+	
+	if MasqueGroup and E.private.auras.masque.consolidatedBuffs and E.db.auras.consolidatedBuffs.enable then MasqueGroup:ReSkin() end
 end
 
 function A:Construct_ConsolidatedBuffs()
 	local frame = CreateFrame('Frame', 'ElvUI_ConsolidatedBuffs', Minimap)
-	frame:SetTemplate('Default')
+
+	if not Masque or not E.private.auras.masque.consolidatedBuffs then
+		frame:SetTemplate('Default')
+	end
+
 	frame:Width(E.ConsolidatedBuffsWidth)
 	if E.db.auras.consolidatedBuffs.position == "LEFT" then
 		frame:Point('TOPRIGHT', Minimap.backdrop, 'TOPLEFT', (E.PixelMode and 1 or -1), 0)
@@ -219,6 +264,10 @@ function A:Construct_ConsolidatedBuffs()
 	for i=1, NUM_LE_RAID_BUFF_TYPES do
 		frame[i] = self:CreateButton(i)
 		frame[i]:SetID(i)
+	end
+	
+	if Masque and MasqueGroup then
+		A.CBMasqueGroup = MasqueGroup
 	end
 
 	self:Update_ConsolidatedBuffsSettings()

@@ -1,3 +1,16 @@
+--Cache global variables
+--Lua functions
+local _G = _G
+local print, tostring, select = print, tostring, select
+local format = format
+--WoW API / Variables
+local GetMouseFocus = GetMouseFocus
+local FrameStackTooltip_Toggle = FrameStackTooltip_Toggle
+
+--Global variables that we don't cache, list them here for the mikk's Find Globals script
+-- GLOBALS: SLASH_FRAME1, SLASH_FRAMELIST1, SLASH_TEXLIST1, FRAME, ChatFrame1
+-- GLOBALS: FrameStackTooltip, UIParentLoadAddOn, CopyChatFrame, ElvUI
+
 --[[
 	Command to grab frame information when mouseing over a frame
 
@@ -84,7 +97,7 @@ SlashCmdList["FRAMELIST"] = function(msg)
 	end
 end
 
-function TextureList(frame)
+local function TextureList(frame)
 	frame = _G[frame] or FRAME
 	--[[for key, obj in pairs(frame) do
 		if type(obj) == "table" and obj.GetObjectType and obj:GetObjectType() == "Texture" then

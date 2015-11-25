@@ -1,12 +1,47 @@
 ﻿local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local M = E:GetModule('Misc');
 
+--Cache global variables
+--Lua functions
+local pairs, unpack, ipairs, next, tonumber = pairs, unpack, ipairs, next, tonumber
+local tinsert = table.insert
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local RollOnLoot = RollOnLoot
+local ResetCursor = ResetCursor
+local IsShiftKeyDown = IsShiftKeyDown
+local GameTooltip_ShowCompareItem = GameTooltip_ShowCompareItem
+local IsModifiedClick = IsModifiedClick
+local ShowInspectCursor = ShowInspectCursor
+local CursorOnUpdate = CursorOnUpdate
+local IsControlKeyDown = IsControlKeyDown
+local DressUpItemLink = DressUpItemLink
+local ChatEdit_InsertLink = ChatEdit_InsertLink
+local GetLootRollTimeLeft = GetLootRollTimeLeft
+local GetLootRollItemInfo = GetLootRollItemInfo
+local GetLootRollItemLink = GetLootRollItemLink
+local SetDesaturation = SetDesaturation
+local UnitLevel = UnitLevel
+local C_LootHistoryGetItem = C_LootHistory.GetItem
+local C_LootHistoryGetPlayerInfo = C_LootHistory.GetPlayerInfo
+local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
+local NEED = NEED
+local GREED = GREED
+local ROLL_DISENCHANT = ROLL_DISENCHANT
+local PASS = PASS
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: GameTooltip, AlertFrameHolder, WorldFrame, AlertFrame_FixAnchors
+-- GLOBALS: MAX_PLAYER_LEVEL, UIParent
+
 local pos = 'TOP';
 local cancelled_rolls = {}
+local cachedRolls = {}
+local completedRolls = {}
 local FRAME_WIDTH, FRAME_HEIGHT = 328, 28
 M.RollBars = {}
-
-local tinsert = table.insert
 
 local function ClickRoll(frame)
 	RollOnLoot(frame.parent.rollID, frame.rolltype)
@@ -22,7 +57,7 @@ local function SetTip(frame)
 	if frame:IsEnabled() == 0 then GameTooltip:AddLine("|cffff3333"..L["Can't Roll"]) end
 	for name, tbl in pairs(frame.parent.rolls) do
 		if rolltypes[tbl[1]] == rolltypes[frame.rolltype] then
-			local classColor = RAID_CLASS_COLORS[tbl[2]]
+			local classColor = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[tbl[2]] or RAID_CLASS_COLORS[tbl[2]]
 			GameTooltip:AddLine(name, classColor.r, classColor.g, classColor.b)
 		end
 	end
@@ -96,6 +131,8 @@ function M:CreateRollFrame()
 	frame:Size(FRAME_WIDTH, FRAME_HEIGHT)
 	frame:SetTemplate('Default')
 	frame:SetScript("OnEvent", OnEvent)
+	frame:SetFrameStrata("MEDIUM")
+	frame:SetFrameLevel(10)
 	frame:RegisterEvent("CANCEL_LOOT_ROLL")
 	frame:Hide()
 
@@ -220,6 +257,19 @@ function M:START_LOOT_ROLL(event, rollID, time)
 	f:Show()
 	AlertFrame_FixAnchors()
 
+	--Add cached roll info, if any
+	for rollID, rollTable in pairs(cachedRolls) do
+		if f.rollID == rollID then --rollID matches cached rollID
+			for rollerName, rollerInfo in pairs(rollTable) do
+				local rollType, class = rollerInfo[1], rollerInfo[2]
+				f.rolls[rollerName] = {rollType, class}
+				f[rolltypes[rollType]]:SetText(tonumber(f[rolltypes[rollType]]:GetText()) + 1)
+			end
+			completedRolls[rollID] = true
+			break
+		end
+	end
+
 	if E.db.general.autoRoll and UnitLevel('player') == MAX_PLAYER_LEVEL and quality == 2 and not bop then
 		if canDisenchant then
 			RollOnLoot(rollID, 3)
@@ -230,25 +280,46 @@ function M:START_LOOT_ROLL(event, rollID, time)
 end
 
 function M:LOOT_HISTORY_ROLL_CHANGED(event, itemIdx, playerIdx)
-	local rollID, itemLink, numPlayers, isDone, winnerIdx, isMasterLoot = C_LootHistory.GetItem(itemIdx);
-	local name, class, rollType, roll, isWinner = C_LootHistory.GetPlayerInfo(itemIdx, playerIdx);
+	local rollID, itemLink, numPlayers, isDone, winnerIdx, isMasterLoot = C_LootHistoryGetItem(itemIdx);
+	local name, class, rollType, roll, isWinner = C_LootHistoryGetPlayerInfo(itemIdx, playerIdx);
 
+	local rollIsHidden = true
 	if name and rollType then
 		for _,f in ipairs(M.RollBars) do
 			if f.rollID == rollID then
 				f.rolls[name] = {rollType, class}
 				f[rolltypes[rollType]]:SetText(tonumber(f[rolltypes[rollType]]:GetText()) + 1)
-				return
+				rollIsHidden = false
+				break
+			end
+		end
+
+		--History changed for a loot roll that hasn't popped up for the player yet, so cache it for later
+		if rollIsHidden then
+			cachedRolls[rollID] = cachedRolls[rollID] or {}
+			if not cachedRolls[rollID][name] then
+				cachedRolls[rollID][name] = {rollType, class}
 			end
 		end
 	end
 end
 
+function M:LOOT_HISTORY_ROLL_COMPLETE()
+	--Remove completed rolls from cache
+	for rollID in pairs(completedRolls) do
+		cachedRolls[rollID] = nil
+		completedRolls[rollID] = nil
+	end
+end
+M.LOOT_ROLLS_COMPLETE = M.LOOT_HISTORY_ROLL_COMPLETE
+
 function M:LoadLootRoll()
 	if not E.private.general.lootRoll then return end
 
 	self:RegisterEvent('LOOT_HISTORY_ROLL_CHANGED')
+	self:RegisterEvent('LOOT_HISTORY_ROLL_COMPLETE')
 	self:RegisterEvent("START_LOOT_ROLL")
+	self:RegisterEvent("LOOT_ROLLS_COMPLETE")
 
 	UIParent:UnregisterEvent("START_LOOT_ROLL")
 	UIParent:UnregisterEvent("CANCEL_LOOT_ROLL")

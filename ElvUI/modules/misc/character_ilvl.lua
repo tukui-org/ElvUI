@@ -1,6 +1,15 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:NewModule('ChatILvL', 'AceEvent-3.0', 'AceTimer-3.0');
 
+--Cache global variables
+--Lua functions
+local unpack = unpack
+--WoW API / Variables
+local CreateFrame = CreateFrame
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: PaperDollItemsFrame
+
 mod.ignoreSlots = {
 	[6] = true,
 	[7] = true,

@@ -2,15 +2,59 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local M = E:NewModule('Minimap', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
 E.Minimap = M
 
+--Cache global variables
+--Lua functions
+local _G = _G
+local tinsert = table.insert
+local gsub, upper, strsub = string.gsub, string.upper, strsub
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local ToggleCharacter = ToggleCharacter
+local ShowUIPanel, HideUIPanel = ShowUIPanel, HideUIPanel
+local ToggleCollectionsJournal = ToggleCollectionsJournal
+local ToggleFrame = ToggleFrame
+local ToggleAchievementFrame = ToggleAchievementFrame
+local ToggleFriendsFrame = ToggleFriendsFrame
+local GarrisonLandingPageMinimapButton_OnClick = GarrisonLandingPageMinimapButton_OnClick
+local IsInGuild = IsInGuild
+local ToggleGuildFrame = ToggleGuildFrame
+local ToggleLFDParentFrame = ToggleLFDParentFrame
+local IsAddOnLoaded = IsAddOnLoaded
+local CloseMenus = CloseMenus
+local CloseAllWindows = CloseAllWindows
+local PlaySound = PlaySound
+local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
+local ToggleHelpFrame = ToggleHelpFrame
+local GetZonePVPInfo = GetZonePVPInfo
+local IsShiftKeyDown = IsShiftKeyDown
+local ToggleDropDownMenu = ToggleDropDownMenu
+local Minimap_OnClick = Minimap_OnClick
+local GetMinimapZoneText = GetMinimapZoneText
+local InCombatLockdown = InCombatLockdown
+local GuildInstanceDifficulty = GuildInstanceDifficulty
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: GetMinimapShape, SpellBookFrame, PlayerTalentFrame, TalentFrame_LoadUI
+-- GLOBALS: GlyphFrame, GlyphFrame_LoadUI, PlayerTalentFrame, TimeManagerFrame
+-- GLOBALS: GameTimeFrame, GuildFrame, GuildFrame_LoadUI, Minimap, MinimapCluster
+-- GLOBALS: FarmModeMap, BuffsMover, DebuffsMover, LookingForGuildFrame, MiniMapWorldMapButton
+-- GLOBALS: LookingForGuildFrame_LoadUI, EncounterJournal_LoadUI, EncounterJournal
+-- GLOBALS: GameMenuFrame, VideoOptionsFrame, VideoOptionsFrameCancel, AudioOptionsFrame
+-- GLOBALS: AudioOptionsFrameCancel, InterfaceOptionsFrame, InterfaceOptionsFrameCancel
+-- GLOBALS: LibStub, ElvUIPlayerBuffs, MMHolder, StoreMicroButton, TimeManagerClockButton
+-- GLOBALS: FeedbackUIButton, MiniMapTrackingDropDown, LeftMiniPanel, RightMiniPanel
+-- GLOBALS: MinimapMover, AurasHolder, AurasMover, ElvConfigToggle, ElvUI_ConsolidatedBuffs
+-- GLOBALS: GarrisonLandingPageMinimapButton, GarrisonLandingPageTutorialBox, MiniMapMailFrame
+-- GLOBALS: QueueStatusMinimapButton, QueueStatusFrame, MiniMapInstanceDifficulty
+-- GLOBALS: MiniMapChallengeMode, MinimapBorder, MinimapBorderTop, MinimapZoomIn, MinimapZoomOut
+-- GLOBALS: MiniMapVoiceChatFrame, MinimapNorthTag, MinimapZoneTextButton, MiniMapTracking
+-- GLOBALS: MiniMapMailBorder, MiniMapMailIcon, QueueStatusMinimapButtonBorder, UIParent
+
 local Astrolabe, AstrolabeMapMonitor
 if IsAddOnLoaded("Gatherer") then
 	Astrolabe = DongleStub("Astrolabe-1.0")
 	AstrolabeMapMonitor = DongleStub("AstrolabeMapMonitor")
 end
-
-local gsub = string.gsub
-local upper = string.upper
-local tinsert = table.insert
 
 local menuFrame = CreateFrame("Frame", "MinimapRightClickMenu", E.UIParent)
 
@@ -52,16 +96,7 @@ local menuList = {
 	{text = GARRISON_LANDING_PAGE_TITLE,
 	func = function() GarrisonLandingPageMinimapButton_OnClick() end},
 	{text = ACHIEVEMENTS_GUILD_TAB,
-	func = function()
-		if IsInGuild() then
-			if not GuildFrame then GuildFrame_LoadUI() end
-			GuildFrame_Toggle()
-		else
-			if not LookingForGuildFrame then LookingForGuildFrame_LoadUI() end
-			if not LookingForGuildFrame then return end
-			LookingForGuildFrame_Toggle()
-		end
-	end},
+	func = function() ToggleGuildFrame() end},
 	{text = LFG_TITLE,
 	func = function() ToggleLFDParentFrame(); end},
 	{text = ENCOUNTER_JOURNAL,
@@ -240,6 +275,11 @@ function M:UpdateSettings()
 
 	if ElvUI_ConsolidatedBuffs then
 		E:GetModule('Auras'):Update_ConsolidatedBuffsSettings()
+	end
+
+	--Stop here if ElvUI Minimap is disabled.
+	if not E.private.general.minimap.enable then
+		return;
 	end
 
 	if GarrisonLandingPageMinimapButton then

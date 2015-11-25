@@ -1,12 +1,46 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local LSM = LibStub("LibSharedMedia-3.0")
+local Masque = LibStub("Masque", true)
 
-local format = string.format
-local find = string.find
-local split = string.split
-local match = string.match
-local twipe = table.wipe
-local tonumber = tonumber
+--Cache global variables
+--Lua functions
+local _G = _G
+local tonumber, pairs, error, unpack, select = tonumber, pairs, error, unpack, select
+local print, type, collectgarbage, pcall, date = print, type, collectgarbage, pcall, date
+local twipe, tinsert= table.wipe, tinsert
+local floor = floor
+local format, find, split, match = string.format, string.find, string.split, string.match
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local GetCVar, SetCVar, GetCVarBool = GetCVar, SetCVar, GetCVarBool
+local IsAddOnLoaded = IsAddOnLoaded
+local PlayMusic, StopMusic = PlayMusic, StopMusic
+local GetSpellInfo = GetSpellInfo
+local IsInInstance, IsInGroup, IsInRaid = IsInInstance, IsInGroup, IsInRaid
+local RequestBattlefieldScoreData = RequestBattlefieldScoreData
+local GetSpecialization, GetActiveSpecGroup = GetSpecialization, GetActiveSpecGroup
+local GetCombatRatingBonus = GetCombatRatingBonus
+local GetDodgeChance, GetParryChance = GetDodgeChance, GetParryChance
+local UnitLevel, UnitStat, UnitAttackPower = UnitLevel, UnitStat, UnitAttackPower
+local SendAddonMessage = SendAddonMessage
+local InCombatLockdown = InCombatLockdown
+local DoEmote = DoEmote
+local SendChatMessage = SendChatMessage
+local GetFunctionCPUUsage = GetFunctionCPUUsage
+local GetMapNameByID = GetMapNameByID
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
+local COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN = COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN
+local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
+local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
+local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
+local NUM_PET_ACTION_SLOTS = NUM_PET_ACTION_SLOTS
+
+--Global variables that we don't cache, list them here for the mikk's Find Globals script
+-- GLOBALS: LibStub, UIParent, MAX_PLAYER_LEVEL, ScriptErrorsFrame_OnError
+-- GLOBALS: ElvUIPlayerBuffs, ElvUIPlayerDebuffs, LeftChatPanel, RightChatPanel
+-- GLOBALS: ElvUI_StaticPopup1, ElvUI_StaticPopup1Button1, LeftChatToggleButton, RightChatToggleButton
+-- GLOBALS: ElvUI_StanceBar, ObjectiveTrackerFrame, GameTooltip, Minimap
 
 --Constants
 E.myclass = select(2, UnitClass("player"));
@@ -147,7 +181,7 @@ function E:CheckClassColor(r, g, b)
 	local matchFound = false;
 	for class, _ in pairs(RAID_CLASS_COLORS) do
 		if class ~= E.myclass then
-			local colorTable = class == 'PRIEST' and E.PriestColors or RAID_CLASS_COLORS[class]
+			local colorTable = class == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class])
 			if colorTable.r == r and colorTable.g == g and colorTable.b == b then
 				matchFound = true;
 			end
@@ -184,7 +218,7 @@ function E:UpdateMedia()
 	--Border Color
 	local border = E.db['general'].bordercolor
 	if self:CheckClassColor(border.r, border.g, border.b) then
-		classColor = E.myclass == 'PRIEST' and E.PriestColors or RAID_CLASS_COLORS[E.myclass]
+		local classColor = E.myclass == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
 		E.db['general'].bordercolor.r = classColor.r
 		E.db['general'].bordercolor.g = classColor.g
 		E.db['general'].bordercolor.b = classColor.b
@@ -203,7 +237,7 @@ function E:UpdateMedia()
 	local value = self.db['general'].valuecolor
 
 	if self:CheckClassColor(value.r, value.g, value.b) then
-		value = E.myclass == 'PRIEST' and E.PriestColors or RAID_CLASS_COLORS[E.myclass]
+		value = E.myclass == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
 		self.db['general'].valuecolor.r = value.r
 		self.db['general'].valuecolor.g = value.g
 		self.db['general'].valuecolor.b = value.b
@@ -231,6 +265,82 @@ local function LSMCallback()
 	E:UpdateMedia()
 end
 E.LSM.RegisterCallback(E, "LibSharedMedia_Registered", LSMCallback)
+
+local MasqueGroupState = {}
+local MasqueGroupToTableElement = {
+	["ActionBars"] = {"actionbar", "actionbars"},
+	["Pet Bar"] = {"actionbar", "petBar"},
+	["Stance Bar"] = {"actionbar", "stanceBar"},
+	["Buffs"] = {"auras", "buffs"},
+	["Debuffs"] = {"auras", "debuffs"},
+	["Consolidated Buffs"] = {"auras", "consolidatedBuffs"},
+}
+
+local function MasqueCallback(Addon, Group, SkinID, Gloss, Backdrop, Colors, Disabled)
+	if not E.private then return; end
+	local element = MasqueGroupToTableElement[Group]
+
+	if element then
+		if Disabled then
+			if E.private[element[1]].masque[element[2]] and MasqueGroupState[Group] == "enabled" then
+				E.private[element[1]].masque[element[2]] = false
+				E:StaticPopup_Show("CONFIG_RL")
+			end
+			MasqueGroupState[Group] = "disabled"
+		else
+			MasqueGroupState[Group] = "enabled"
+		end
+	end
+end
+
+if Masque then
+	Masque:Register("ElvUI", MasqueCallback)
+end
+
+-- Code taken from LibTourist-3.0 and rewritten to fit our purpose
+local localizedMapNames = {}
+local ZoneIDToContinentName = {
+	[473] = "Outland",
+	[477] = "Outland",
+}
+local MapIdLookupTable = {
+	[466] = "Outland",
+	[473] = "Shadowmoon Valley",
+	[477] = "Nagrand",
+}
+
+local function LocalizeZoneNames()
+	local localizedZoneName
+
+	for mapID, englishName in pairs(MapIdLookupTable) do
+		localizedZoneName = GetMapNameByID(mapID)
+		if localizedZoneName then
+			-- Add combination of English and localized name to lookup table
+			if not localizedMapNames[englishName] then
+				localizedMapNames[englishName] = localizedZoneName
+			end
+		end
+	end
+end
+LocalizeZoneNames()
+
+--Add " (Outland)" to the end of zone name for Nagrand and Shadowmoon Valley, if mapID matches Outland continent.
+--We can then use this function when we need to compare the players own zone against return values from stuff like GetFriendInfo and GetGuildRosterInfo,
+--which adds the " (Outland)" part unlike the GetRealZoneText() API.
+function E:GetZoneText(zoneAreaID)
+	local zoneName = GetMapNameByID(zoneAreaID)
+	local continent = ZoneIDToContinentName[zoneAreaID]
+
+	if continent and continent == "Outland" then
+		if zoneName == localizedMapNames["Nagrand"] or zoneName == "Nagrand"  then
+			zoneName = localizedMapNames["Nagrand"].." ("..localizedMapNames["Outland"]..")"
+		elseif zoneName == localizedMapNames["Shadowmoon Valley"] or zoneName == "Shadowmoon Valley"  then
+			zoneName = localizedMapNames["Shadowmoon Valley"].." ("..localizedMapNames["Outland"]..")"
+		end
+	end
+
+	return zoneName
+end
 
 function E:RequestBGInfo()
 	RequestBattlefieldScoreData()
@@ -527,6 +637,7 @@ function E:UpdateAll(ignoreInstall)
 	AB:UpdateButtonSettings()
 	AB:UpdateMicroPositionDimensions()
 	AB:Extra_SetAlpha()
+	AB:Extra_SetScale()
 
 	local bags = E:GetModule('Bags');
 	bags.db = self.db.bags
@@ -771,92 +882,40 @@ function E:DBConversions()
 	--Minimum height has been increased to 60, convert any setting lower than this to the new minimum height.
 	if E.db.chat.panelHeight < 60 then E.db.chat.panelHeight = 60 end
 	if E.db.chat.panelHeightRight < 60 then E.db.chat.panelHeightRight = 60 end
-end
-
-function E:StopHarlemShake()
-	E.isMassiveShaking = nil
-	StopMusic()
-	SetCVar("Sound_EnableAllSound", self.oldEnableAllSound)
-	SetCVar("Sound_EnableMusic", self.oldEnableMusic)
-
-	self:StopShakeHorizontal(ElvUI_StaticPopup1)
-	for _, object in pairs(self["massiveShakeObjects"]) do
-		if object then
-			self:StopShake(object)
-		end
-	end
-
-	if E.massiveShakeTimer then
-		E:CancelTimer(E.massiveShakeTimer)
-	end
-
-	E.global.aprilFools = true;
-	E:StaticPopup_Hide("HARLEM_SHAKE")
-	twipe(self.massiveShakeObjects)
-	DoEmote("Dance")
-end
-
-function E:DoTheHarlemShake()
-	E.isMassiveShaking = true
-	ElvUI_StaticPopup1Button1:Enable()
-
-	for _, object in pairs(self["massiveShakeObjects"]) do
-		if object and object:IsShown() then
-			self:Shake(object)
-		end
-	end
-
-	E.massiveShakeTimer = E:ScheduleTimer("StopHarlemShake", 42.5)
-	SendChatMessage("DO THE HARLEM SHAKE!", "YELL")
-end
-
-function E:BeginHarlemShake()
-	DoEmote("Dance")
-	ElvUI_StaticPopup1Button1:Disable()
-	self:ShakeHorizontal(ElvUI_StaticPopup1)
-	self.oldEnableAllSound = GetCVar("Sound_EnableAllSound")
-	self.oldEnableMusic = GetCVar("Sound_EnableMusic")
-
-	SetCVar("Sound_EnableAllSound", 1)
-	SetCVar("Sound_EnableMusic", 1)
-	PlayMusic([[Interface\AddOns\ElvUI\media\sounds\harlemshake.ogg]])
-	E:ScheduleTimer("DoTheHarlemShake", 15.5)
-
-	local UF = E:GetModule("UnitFrames")
-	local AB = E:GetModule("ActionBars")
-	self.massiveShakeObjects = {}
-	tinsert(self.massiveShakeObjects, GameTooltip)
-	tinsert(self.massiveShakeObjects, Minimap)
-	tinsert(self.massiveShakeObjects, ObjectiveTrackerFrame)
-	tinsert(self.massiveShakeObjects, LeftChatPanel)
-	tinsert(self.massiveShakeObjects, RightChatPanel)
-	tinsert(self.massiveShakeObjects,LeftChatToggleButton)
-	tinsert(self.massiveShakeObjects,RightChatToggleButton)
-
-	for unit in pairs(UF['units']) do
-		tinsert(self.massiveShakeObjects, UF[unit])
-	end
-
-	for _, header in pairs(UF['headers']) do
-		tinsert(self.massiveShakeObjects, header)
-	end
-
-	for _, bar in pairs(AB['handledBars']) do
-		for i=1, #bar.buttons do
-			tinsert(self.massiveShakeObjects, bar.buttons[i])
-		end
-	end
-
-	if ElvUI_StanceBar then
-		for i=1, #ElvUI_StanceBar.buttons do
-			tinsert(self.massiveShakeObjects, ElvUI_StanceBar.buttons[i])
-		end
-	end
-
-	for i=1, NUM_PET_ACTION_SLOTS do
-		if _G["PetActionButton"..i] then
-			tinsert(self.massiveShakeObjects, _G["PetActionButton"..i])
-		end
+	
+	--Boss Frame auras have been changed to support friendly/enemy filters in case there is an encounter with a friendly boss
+	--Try to convert any filter settings the user had to the new format
+	if not E.db.bossAurasConverted then
+		--Buffs
+		E.db.unitframe.units.boss.buffs.playerOnly.friendly = E.db.unitframe.units.boss.buffs.playerOnly
+		E.db.unitframe.units.boss.buffs.playerOnly.enemy = E.db.unitframe.units.boss.buffs.playerOnly
+		E.db.unitframe.units.boss.buffs.noConsolidated.friendly = E.db.unitframe.units.boss.buffs.noConsolidated
+		E.db.unitframe.units.boss.buffs.noConsolidated.enemy = E.db.unitframe.units.boss.buffs.noConsolidated
+		E.db.unitframe.units.boss.buffs.useBlacklist.friendly = E.db.unitframe.units.boss.buffs.useBlacklist
+		E.db.unitframe.units.boss.buffs.useBlacklist.enemy = E.db.unitframe.units.boss.buffs.useBlacklist
+		E.db.unitframe.units.boss.buffs.useWhitelist.friendly = E.db.unitframe.units.boss.buffs.useWhitelist
+		E.db.unitframe.units.boss.buffs.useWhitelist.enemy = E.db.unitframe.units.boss.buffs.useWhitelist
+		E.db.unitframe.units.boss.buffs.noDuration.friendly = E.db.unitframe.units.boss.buffs.noDuration
+		E.db.unitframe.units.boss.buffs.noDuration.enemy = E.db.unitframe.units.boss.buffs.noDuration
+		E.db.unitframe.units.boss.buffs.onlyDispellable.friendly = E.db.unitframe.units.boss.buffs.onlyDispellable
+		E.db.unitframe.units.boss.buffs.onlyDispellable.enemy = E.db.unitframe.units.boss.buffs.onlyDispellable
+		E.db.unitframe.units.boss.buffs.bossAuras.friendly = E.db.unitframe.units.boss.buffs.bossAuras
+		E.db.unitframe.units.boss.buffs.bossAuras.enemy = E.db.unitframe.units.boss.buffs.bossAuras
+		--Debuffs
+		E.db.unitframe.units.boss.debuffs.playerOnly.friendly = E.db.unitframe.units.boss.debuffs.playerOnly
+		E.db.unitframe.units.boss.debuffs.playerOnly.enemy = E.db.unitframe.units.boss.debuffs.playerOnly
+		E.db.unitframe.units.boss.debuffs.useBlacklist.friendly = E.db.unitframe.units.boss.debuffs.useBlacklist
+		E.db.unitframe.units.boss.debuffs.useBlacklist.enemy = E.db.unitframe.units.boss.debuffs.useBlacklist
+		E.db.unitframe.units.boss.debuffs.useWhitelist.friendly = E.db.unitframe.units.boss.debuffs.useWhitelist
+		E.db.unitframe.units.boss.debuffs.useWhitelist.enemy = E.db.unitframe.units.boss.debuffs.useWhitelist
+		E.db.unitframe.units.boss.debuffs.noDuration.friendly = E.db.unitframe.units.boss.debuffs.noDuration
+		E.db.unitframe.units.boss.debuffs.noDuration.enemy = E.db.unitframe.units.boss.debuffs.noDuration
+		E.db.unitframe.units.boss.debuffs.onlyDispellable.friendly = E.db.unitframe.units.boss.debuffs.onlyDispellable
+		E.db.unitframe.units.boss.debuffs.onlyDispellable.enemy = E.db.unitframe.units.boss.debuffs.onlyDispellable
+		E.db.unitframe.units.boss.debuffs.bossAuras.friendly = E.db.unitframe.units.boss.debuffs.bossAuras
+		E.db.unitframe.units.boss.debuffs.bossAuras.enemy = E.db.unitframe.units.boss.debuffs.bossAuras
+		
+		E.db.bossAurasConverted = true
 	end
 end
 
@@ -900,238 +959,6 @@ function E:GetTopCPUFunc(msg)
 
 	self:Delay(delay or 5, CompareCPUDiff, module, minCalls)
 	self:Print("Calculating CPU Usage..")
-end
-
-function E:HelloKittyFixCheck(secondCheck)
-	local t = self.db.tempSettings
-	if(not t and not secondCheck) then t = self.db.general end
-	if(t and t.backdropcolor)then
-		return self:Round(t.backdropcolor.r, 2) == 0.87 and self:Round(t.backdropcolor.g, 2) == 0.3 and self:Round(t.backdropcolor.b, 2) == 0.74
-	end
-end
-
-function E:HelloKittyFix()
-	local c = P.general.backdropcolor
-	self.db.general.backdropcolor = {r = c.r, g = c.g, b = c.b}
-
-	c = P.general.backdropfadecolor
-	self.db.general.backdropfadecolor = {r = c.r, g = c.g, b = c.b, a = (c.a or 0.8)}
-
-	c = P.general.bordercolor
-	self.db.general.bordercolor = {r = c.r, g = c.g, b = c.b}
-
-	c = P.general.valuecolor
-	self.db.general.valuecolor = {r = c.r, g = c.g, b = c.b}
-
-	self.db.chat.panelBackdropNameLeft = ""
-	self.db.chat.panelBackdropNameRight = ""
-
-	c = P.unitframe.colors.health
-	self.db.unitframe.colors.health = {r = c.r, g = c.g, b = c.b}
-
-	c = P.unitframe.colors.castColor
-	self.db.unitframe.colors.castColor = {r = c.r, g = c.g, b = c.b}
-	self.db.unitframe.colors.transparentCastbar = false
-
-	c = P.unitframe.colors.castColor
-	self.db.unitframe.colors.auraBarBuff = {r = c.r, g = c.g, b = c.b}
-	self.db.unitframe.colors.transparentAurabars = false
-
-
-	if(HelloKittyLeft) then
-		HelloKittyLeft:Hide()
-		HelloKittyRight:Hide()
-		self.db.general.kittys = nil
-		return
-	end
-
-	self.db.tempSettings = nil
-	self:UpdateAll()
-end
-
-function E:SetupHelloKitty()
-	if not self.db.tempSettings then
-		self.db.tempSettings = {}
-	end
-
-
-	--Store old settings
-	local t = self.db.tempSettings
-	local c = self.db.general.backdropcolor
-	if(self:HelloKittyFixCheck()) then
-		E:HelloKittyFix()
-	else
-		self.oldEnableAllSound = GetCVar("Sound_EnableAllSound")
-		self.oldEnableMusic = GetCVar("Sound_EnableMusic")
-
-		t.backdropcolor = {r = c.r, g = c.g, b = c.b}
-		c = self.db.general.backdropfadecolor
-		t.backdropfadecolor = {r = c.r, g = c.g, b = c.b, a = c.a}
-		c = self.db.general.bordercolor
-		t.bordercolor = {r = c.r, g = c.g, b = c.b}
-		c = self.db.general.valuecolor
-		t.valuecolor = {r = c.r, g = c.g, b = c.b}
-
-		t.panelBackdropNameLeft = self.db.chat.panelBackdropNameLeft
-		t.panelBackdropNameRight = self.db.chat.panelBackdropNameRight
-
-		c = self.db.unitframe.colors.health
-		t.health = {r = c.r, g = c.g, b = c.b}
-
-		c = self.db.unitframe.colors.castColor
-		t.castColor = {r = c.r, g = c.g, b = c.b}
-		t.transparentCastbar = self.db.unitframe.colors.transparentCastbar
-
-		c = self.db.unitframe.colors.auraBarBuff
-		t.auraBarBuff = {r = c.r, g = c.g, b = c.b}
-		t.transparentAurabars = self.db.unitframe.colors.transparentAurabars
-
-		--Apply new settings
-		self.db.general.backdropfadecolor = {r =131/255, g =36/255, b = 130/255, a = 0.36}
-		self.db.general.backdropcolor = {r = 223/255, g = 76/255, b = 188/255}
-		self.db.general.bordercolor = {r = 223/255, g = 217/255, b = 47/255}
-		self.db.general.valuecolor = {r = 223/255, g = 217/255, b = 47/255}
-
-		self.db.chat.panelBackdropNameLeft = [[Interface\AddOns\ElvUI\media\textures\helloKittyChat.tga]]
-		self.db.chat.panelBackdropNameRight = [[Interface\AddOns\ElvUI\media\textures\helloKittyChat.tga]]
-
-		self.db.unitframe.colors.castColor = {r = 223/255, g = 76/255, b = 188/255}
-		self.db.unitframe.colors.transparentCastbar = true
-
-		self.db.unitframe.colors.auraBarBuff = {r = 223/255, g = 76/255, b = 188/255}
-		self.db.unitframe.colors.transparentAurabars = true
-
-		self.db.unitframe.colors.health = {r = 223/255, g = 76/255, b = 188/255}
-
-		SetCVar("Sound_EnableAllSound", 1)
-		SetCVar("Sound_EnableMusic", 1)
-		PlayMusic([[Interface\AddOns\ElvUI\media\sounds\helloKitty.ogg]])
-		E:StaticPopup_Show("HELLO_KITTY_END")
-
-		self.db.general.kittys = true
-		self:CreateKittys()
-
-		self:UpdateAll()
-	end
-end
-
-
-function E:RestoreHelloKitty()
-	--Store old settings
-	self.db.general.kittys = false
-	if(HelloKittyLeft) then
-		HelloKittyLeft:Hide()
-		HelloKittyRight:Hide()
-	end
-
-	if not(self.db.tempSettings) then return end
-	if(self:HelloKittyFixCheck()) then
-		self:HelloKittyFix()
-		self.db.tempSettings = nil
-		return
-	end
-	local c = self.db.tempSettings.backdropcolor
-	self.db.general.backdropcolor = {r = c.r, g = c.g, b = c.b}
-
-	c = self.db.tempSettings.backdropfadecolor
-	self.db.general.backdropfadecolor = {r = c.r, g = c.g, b = c.b, a = (c.a or 0.8)}
-
-	c = self.db.tempSettings.bordercolor
-	self.db.general.bordercolor = {r = c.r, g = c.g, b = c.b}
-
-	c = self.db.tempSettings.valuecolor
-	self.db.general.valuecolor = {r = c.r, g = c.g, b = c.b}
-
-	self.db.chat.panelBackdropNameLeft = self.db.tempSettings.panelBackdropNameLeft
-	self.db.chat.panelBackdropNameRight = self.db.tempSettings.panelBackdropNameRight
-
-	c = self.db.tempSettings.health
-	self.db.unitframe.colors.health = {r = c.r, g = c.g, b = c.b}
-
-	c = self.db.tempSettings.castColor
-	self.db.unitframe.colors.castColor = {r = c.r, g = c.g, b = c.b}
-	self.db.unitframe.colors.transparentCastbar = self.db.tempSettings.transparentCastbar
-
-	c = self.db.tempSettings.auraBarBuff
-	self.db.unitframe.colors.auraBarBuff = {r = c.r, g = c.g, b = c.b}
-	self.db.unitframe.colors.transparentAurabars = self.db.tempSettings.transparentAurabars
-
-
-	self.db.tempSettings = nil
-
-	self:UpdateAll()
-end
-
-local function OnDragStart(self)
-	self:StartMoving()
-end
-
-local function OnDragStop(self)
-	self:StopMovingOrSizing()
-end
-
-local function OnUpdate(self, elapsed)
-	if(self.elapsed and self.elapsed > 0.1) then
-		self.tex:SetTexCoord((self.curFrame - 1) * 0.1, 0, (self.curFrame - 1) * 0.1, 1, self.curFrame * 0.1, 0, self.curFrame * 0.1, 1)
-
-		if(self.countUp) then
-			self.curFrame = self.curFrame + 1
-		else
-			self.curFrame = self.curFrame - 1
-		end
-
-		if(self.curFrame > 10) then
-			self.countUp = false
-			self.curFrame = 9
-		elseif(self.curFrame < 1) then
-			self.countUp = true
-			self.curFrame = 2
-		end
-		self.elapsed = 0
-	else
-		self.elapsed = (self.elapsed or 0) + elapsed
-	end
-end
-
-function E:CreateKittys()
-	if(HelloKittyLeft) then
-		HelloKittyLeft:Show()
-		HelloKittyRight:Show()
-		return
-	end
-	local helloKittyLeft = CreateFrame("Frame", "HelloKittyLeft", UIParent)
-	helloKittyLeft:SetSize(120, 128)
-	helloKittyLeft:SetMovable(true)
-	helloKittyLeft:EnableMouse(true)
-	helloKittyLeft:RegisterForDrag("LeftButton")
-	helloKittyLeft:SetPoint("BOTTOMLEFT", LeftChatPanel, "BOTTOMRIGHT", 2, -4)
-	helloKittyLeft.tex = helloKittyLeft:CreateTexture(nil, "OVERLAY")
-	helloKittyLeft.tex:SetAllPoints()
-	helloKittyLeft.tex:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\helloKitty.tga")
-	helloKittyLeft.tex:SetTexCoord(0, 0, 0, 1, 0, 0, 0, 1)
-	helloKittyLeft.curFrame = 1
-	helloKittyLeft.countUp = true
-	helloKittyLeft:SetClampedToScreen(true)
-	helloKittyLeft:SetScript("OnDragStart", OnDragStart)
-	helloKittyLeft:SetScript("OnDragStop", OnDragStop)
-	helloKittyLeft:SetScript("OnUpdate", OnUpdate)
-
-	local helloKittyRight = CreateFrame("Frame", "HelloKittyRight", UIParent)
-	helloKittyRight:SetSize(120, 128)
-	helloKittyRight:SetMovable(true)
-	helloKittyRight:EnableMouse(true)
-	helloKittyRight:RegisterForDrag("LeftButton")
-	helloKittyRight:SetPoint("BOTTOMRIGHT", RightChatPanel, "BOTTOMLEFT", -2, -4)
-	helloKittyRight.tex = helloKittyRight:CreateTexture(nil, "OVERLAY")
-	helloKittyRight.tex:SetAllPoints()
-	helloKittyRight.tex:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\helloKitty.tga")
-	helloKittyRight.tex:SetTexCoord(0, 0, 0, 1, 0, 0, 0, 1)
-	helloKittyRight.curFrame = 10
-	helloKittyRight.countUp = false
-	helloKittyRight:SetClampedToScreen(true)
-	helloKittyRight:SetScript("OnDragStart", OnDragStart)
-	helloKittyRight:SetScript("OnDragStop", OnDragStop)
-	helloKittyRight:SetScript("OnUpdate", OnUpdate)
 end
 
 function E:Initialize()

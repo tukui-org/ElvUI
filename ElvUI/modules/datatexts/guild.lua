@@ -1,14 +1,40 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
--- localized references for global functions (about 50% faster)
-local join 			= string.join
-local format		= string.format
-local find			= string.find
-local gsub			= string.gsub
-local sort			= table.sort
-local ceil			= math.ceil
-local split 		= string.split
+--Cache global variables
+--Lua functions
+local select, unpack = select, unpack
+local sort, wipe = table.sort, wipe
+local ceil = math.ceil
+local format, find, join, split, gsub = string.format, string.find, string.join, string.split, string.gsub
+--WoW API / Variables
+local GetNumGuildMembers = GetNumGuildMembers
+local GetGuildRosterInfo = GetGuildRosterInfo
+local GetGuildRosterMOTD = GetGuildRosterMOTD
+local IsInGuild = IsInGuild
+local LoadAddOn = LoadAddOn
+local GuildRoster = GuildRoster
+local GetMouseFocus = GetMouseFocus
+local InviteUnit = InviteUnit
+local SetItemRef = SetItemRef
+local GetQuestDifficultyColor = GetQuestDifficultyColor
+local UnitInParty = UnitInParty
+local UnitInRaid = UnitInRaid
+local EasyMenu = EasyMenu
+local IsShiftKeyDown = IsShiftKeyDown
+local GetGuildInfo = GetGuildInfo
+local ToggleGuildFrame = ToggleGuildFrame
+local GetGuildFactionInfo = GetGuildFactionInfo
+local GetCurrentMapAreaID = GetCurrentMapAreaID
+local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local GUILD_MOTD = GUILD_MOTD
+local COMBAT_FACTION_CHANGE = COMBAT_FACTION_CHANGE
+local GUILD = GUILD
+local REMOTE_CHAT = REMOTE_CHAT
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: GuildFrame, LookingForGuildFrame, GuildFrame_LoadUI, LookingForGuildFrame_LoadUI
 
 local tthead, ttsubh, ttoff = {r=0.4, g=0.78, b=1}, {r=0.75, g=0.9, b=1}, {r=.3,g=1,b=.3}
 local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
@@ -30,16 +56,24 @@ local MOBILE_BUSY_ICON = "|TInterface\\ChatFrame\\UI-ChatIcon-ArmoryChat-BusyMob
 local MOBILE_AWAY_ICON = "|TInterface\\ChatFrame\\UI-ChatIcon-ArmoryChat-AwayMobile:14:14:0:0:16:16:0:16:0:16|t";
 local lastPanel
 
+local function sortByRank(a, b)
+	if a and b then
+		return a[10] < b[10]
+	end
+end
+
+local function sortByName(a, b)
+	if a and b then
+		return a[1] < b[1]
+	end
+end
+
 local function SortGuildTable(shift)
-	sort(guildTable, function(a, b)
-		if a and b then
-			if shift then
-				return a[10] < b[10]
-			else
-				return a[1] < b[1]
-			end
-		end
-	end)
+	if shift then
+		sort(guildTable, sortByRank)
+	else
+		sort(guildTable, sortByName)
+	end
 end
 
 local chatframetexture = ChatFrame_GetMobileEmbeddedTexture(73/255, 177/255, 73/255)
@@ -58,7 +92,7 @@ local mobilestatus = {
 local function BuildGuildTable()
 	wipe(guildTable)
 	local statusInfo
-	local _, name, rank, level, zone, note, officernote, connected, memberstatus, class, isMobile
+	local _, name, rank, rankIndex, level, zone, note, officernote, connected, memberstatus, class, isMobile
 
 	local totalMembers = GetNumGuildMembers()
 	for i = 1, totalMembers do
@@ -151,18 +185,6 @@ local function whisperClick(self, playerName)
 	SetItemRef( "player:"..playerName, ("|Hplayer:%1$s|h[%1$s]|h"):format(playerName), "LeftButton" )
 end
 
-local function ToggleGuildFrame()
-	if IsInGuild() then
-		GuildFrame_LoadUI();
-		GuildFrame_Toggle();
-	else
-		if not LookingForGuildFrame then LookingForGuildFrame_LoadUI() end
-		if LookingForGuildFrame then
-			LookingForGuildFrame_Toggle()
-		end
-	end
-end
-
 local function Click(self, btn)
 	if btn == "RightButton" and IsInGuild() then
 		DT.tooltip:Hide()
@@ -239,7 +261,7 @@ local function OnEnter(self, _, noUpdate)
 		end
 
 		info = guildTable[i]
-		if GetRealZoneText() == info[4] then zonec = activezone else zonec = inactivezone end
+		if E:GetZoneText(GetCurrentMapAreaID()) == info[4] then zonec = activezone else zonec = inactivezone end
 		classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[9]], GetQuestDifficultyColor(info[3])
 
 		if (UnitInParty(info[1]) or UnitInRaid(info[1])) then grouped = 1 else grouped = 2 end

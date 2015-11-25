@@ -2,9 +2,80 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
+
+--Cache global variables
+--Lua functions
+local _G = _G
+local unpack, pairs = unpack, pairs
 local twipe = table.wipe
-local ceil, sqrt = math.ceil, math.sqrt
+local ceil, sqrt, floor = math.ceil, math.sqrt, math.floor
 local format = string.format
+--WoW API / Variables
+local GetTime = GetTime
+local UnitGUID = UnitGUID
+local UnitIsUnit = UnitIsUnit
+local UnitPower = UnitPower
+local UnitPowerMax = UnitPowerMax
+local UnitAlternatePowerTextureInfo = UnitAlternatePowerTextureInfo
+local UnitIsAFK = UnitIsAFK
+local UnitIsDeadOrGhost = UnitIsDeadOrGhost
+local UnitIsConnected = UnitIsConnected
+local UnitHealth = UnitHealth
+local UnitHealthMax = UnitHealthMax
+local UnitIsDead = UnitIsDead
+local UnitIsGhost = UnitIsGhost
+local UnitPowerType = UnitPowerType
+local UnitIsWildBattlePet = UnitIsWildBattlePet
+local UnitIsBattlePetCompanion = UnitIsBattlePetCompanion
+local UnitBattlePetLevel = UnitBattlePetLevel
+local GetRelativeDifficultyColor = GetRelativeDifficultyColor
+local QuestDifficultyColors = QuestDifficultyColors
+local UnitLevel = UnitLevel
+local GetQuestGreenRange = GetQuestGreenRange
+local UnitReaction = UnitReaction
+local UnitClass = UnitClass
+local UnitIsPlayer = UnitIsPlayer
+local UnitDetailedThreatSituation = UnitDetailedThreatSituation
+local IsInGroup = IsInGroup
+local UnitExists = UnitExists
+local GetThreatStatusColor = GetThreatStatusColor
+local UnitIsDND = UnitIsDND
+local UnitIsPVPFreeForAll = UnitIsPVPFreeForAll
+local UnitIsPVP = UnitIsPVP
+local GetPVPTimer = GetPVPTimer
+local GetSpecialization = GetSpecialization
+local GetShapeshiftFormID = GetShapeshiftFormID
+local GetEclipseDirection = GetEclipseDirection
+local UnitGetTotalAbsorbs = UnitGetTotalAbsorbs
+local UnitGetIncomingHeals = UnitGetIncomingHeals
+local IsInRaid = IsInRaid
+local GetNumGroupMembers = GetNumGroupMembers
+local UnitClassification = UnitClassification
+local GetUnitSpeed = GetUnitSpeed
+local C_PetJournalGetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
+local DEFAULT_AFK_MESSAGE = DEFAULT_AFK_MESSAGE
+local UNKNOWN = UNKNOWN
+local UNITNAME_SUMMON_TITLE17 = UNITNAME_SUMMON_TITLE17
+local ALTERNATE_POWER_INDEX = ALTERNATE_POWER_INDEX
+local SPELL_POWER_HOLY_POWER = SPELL_POWER_HOLY_POWER
+local SPELL_POWER_CHI = SPELL_POWER_CHI
+local SPELL_POWER_ECLIPSE = SPELL_POWER_ECLIPSE
+local SPELL_POWER_SHADOW_ORBS = SPELL_POWER_SHADOW_ORBS
+local SPELL_POWER_BURNING_EMBERS = SPELL_POWER_BURNING_EMBERS
+local SPELL_POWER_SOUL_SHARDS = SPELL_POWER_SOUL_SHARDS
+local SPELL_POWER_DEMONIC_FURY = SPELL_POWER_DEMONIC_FURY
+local SPEC_PRIEST_SHADOW = SPEC_PRIEST_SHADOW
+local SPEC_WARLOCK_DESTRUCTION = SPEC_WARLOCK_DESTRUCTION
+local SPEC_WARLOCK_AFFLICTION = SPEC_WARLOCK_AFFLICTION
+local SPEC_WARLOCK_DEMONOLOGY = SPEC_WARLOCK_DEMONOLOGY
+local SHADOW_ORBS_SHOW_LEVEL = SHADOW_ORBS_SHOW_LEVEL
+local MOONKIN_FORM = MOONKIN_FORM
+local DEAD = DEAD
+local PVP = PVP
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: Hex
+
 ------------------------------------------------------------------------
 --	Tags
 ------------------------------------------------------------------------
@@ -281,7 +352,7 @@ ElvUF.Tags.Events['power:deficit'] = 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT
 ElvUF.Tags.Methods['power:deficit'] = function(unit)
 	local pType = UnitPowerType(unit)
 
-	return E:GetFormattedText('DEFICIT', UnitPower(unit, pType), UnitPowerMax(unit, pType), r, g, b)
+	return E:GetFormattedText('DEFICIT', UnitPower(unit, pType), UnitPowerMax(unit, pType))
 end
 
 ElvUF.Tags.Events['power:max'] = 'UNIT_DISPLAYPOWER UNIT_MAXPOWER'
@@ -350,7 +421,7 @@ ElvUF.Tags.Events['mana:deficit'] = 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_
 ElvUF.Tags.Methods['mana:deficit'] = function(unit)
 	local pType = UnitPowerType(unit)
 	if pType == 0 then
-		return E:GetFormattedText('DEFICIT', UnitPower(unit, pType), UnitPowerMax(unit, pType), r, g, b)
+		return E:GetFormattedText('DEFICIT', UnitPower(unit, pType), UnitPowerMax(unit, pType))
 	else
 		return ''
 	end
@@ -371,9 +442,9 @@ ElvUF.Tags.Events['difficultycolor'] = 'UNIT_LEVEL PLAYER_LEVEL_UP'
 ElvUF.Tags.Methods['difficultycolor'] = function(unit)
 	local r, g, b = 0.55, 0.57, 0.61
 	if ( UnitIsWildBattlePet(unit) or UnitIsBattlePetCompanion(unit) ) then
-		level = UnitBattlePetLevel(unit)
+		local level = UnitBattlePetLevel(unit)
 
-		local teamLevel = C_PetJournal.GetPetTeamAverageLevel();
+		local teamLevel = C_PetJournalGetPetTeamAverageLevel();
 		if teamLevel < level or teamLevel > level then
 			local c = GetRelativeDifficultyColor(teamLevel, level)
 			r, g, b = c.r, c.g, c.b
@@ -591,8 +662,8 @@ local function GetClassPower(class)
 		if (spec == SPEC_WARLOCK_DESTRUCTION) then
 			min = UnitPower("player", SPELL_POWER_BURNING_EMBERS, true)
 			max = UnitPowerMax("player", SPELL_POWER_BURNING_EMBERS, true)
-			min = math.floor(min / 10)
-			max = math.floor(max / 10)
+			min = floor(min / 10)
+			max = floor(max / 10)
 			r, g, b = 230/255, 95/255,  95/255
 		elseif ( spec == SPEC_WARLOCK_AFFLICTION ) then
 			min = UnitPower("player", SPELL_POWER_SOUL_SHARDS)
