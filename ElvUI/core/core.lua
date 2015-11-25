@@ -887,33 +887,75 @@ function E:DBConversions()
 	--Try to convert any filter settings the user had to the new format
 	if not E.db.bossAurasConverted then
 		--Buffs
-		E.db.unitframe.units.boss.buffs.playerOnly.friendly = E.db.unitframe.units.boss.buffs.playerOnly
-		E.db.unitframe.units.boss.buffs.playerOnly.enemy = E.db.unitframe.units.boss.buffs.playerOnly
-		E.db.unitframe.units.boss.buffs.noConsolidated.friendly = E.db.unitframe.units.boss.buffs.noConsolidated
-		E.db.unitframe.units.boss.buffs.noConsolidated.enemy = E.db.unitframe.units.boss.buffs.noConsolidated
-		E.db.unitframe.units.boss.buffs.useBlacklist.friendly = E.db.unitframe.units.boss.buffs.useBlacklist
-		E.db.unitframe.units.boss.buffs.useBlacklist.enemy = E.db.unitframe.units.boss.buffs.useBlacklist
-		E.db.unitframe.units.boss.buffs.useWhitelist.friendly = E.db.unitframe.units.boss.buffs.useWhitelist
-		E.db.unitframe.units.boss.buffs.useWhitelist.enemy = E.db.unitframe.units.boss.buffs.useWhitelist
-		E.db.unitframe.units.boss.buffs.noDuration.friendly = E.db.unitframe.units.boss.buffs.noDuration
-		E.db.unitframe.units.boss.buffs.noDuration.enemy = E.db.unitframe.units.boss.buffs.noDuration
-		E.db.unitframe.units.boss.buffs.onlyDispellable.friendly = E.db.unitframe.units.boss.buffs.onlyDispellable
-		E.db.unitframe.units.boss.buffs.onlyDispellable.enemy = E.db.unitframe.units.boss.buffs.onlyDispellable
-		E.db.unitframe.units.boss.buffs.bossAuras.friendly = E.db.unitframe.units.boss.buffs.bossAuras
-		E.db.unitframe.units.boss.buffs.bossAuras.enemy = E.db.unitframe.units.boss.buffs.bossAuras
+		local buffs = E.db.unitframe.units.boss.buffs
+		local debuffs = E.db.unitframe.units.boss.debuffs
+
+		if type(E.db.unitframe.units.boss.buffs.playerOnly) == "boolean" then
+			E.db.unitframe.units.boss.buffs.playerOnly = nil
+			E.db.unitframe.units.boss.buffs.playerOnly.friendly = buffs.playerOnly
+			E.db.unitframe.units.boss.buffs.playerOnly.enemy = buffs.playerOnly
+		end
+		if type(E.db.unitframe.units.boss.buffs.noConsolidated) == "boolean" then
+			E.db.unitframe.units.boss.buffs.noConsolidated = nil
+			E.db.unitframe.units.boss.buffs.noConsolidated.friendly = buffs.noConsolidated
+			E.db.unitframe.units.boss.buffs.noConsolidated.enemy = buffs.noConsolidated
+		end
+		if type(E.db.unitframe.units.boss.buffs.useBlacklist) == "boolean" then
+			E.db.unitframe.units.boss.buffs.useBlacklist = nil
+			E.db.unitframe.units.boss.buffs.useBlacklist.friendly = buffs.useBlacklist
+			E.db.unitframe.units.boss.buffs.useBlacklist.enemy = buffs.useBlacklist
+		end
+		if type(E.db.unitframe.units.boss.buffs.useWhitelist) == "boolean" then
+			E.db.unitframe.units.boss.buffs.useWhitelist = nil
+			E.db.unitframe.units.boss.buffs.useWhitelist.friendly = buffs.useWhitelist
+			E.db.unitframe.units.boss.buffs.useWhitelist.enemy = buffs.useWhitelist
+		end
+		if type(E.db.unitframe.units.boss.buffs.noDuration) == "boolean" then
+			E.db.unitframe.units.boss.buffs.noDuration = nil
+			E.db.unitframe.units.boss.buffs.noDuration.friendly = buffs.noDuration
+			E.db.unitframe.units.boss.buffs.noDuration.enemy = buffs.noDuration
+		end
+		if type(E.db.unitframe.units.boss.buffs.onlyDispellable) == "boolean" then
+			E.db.unitframe.units.boss.buffs.onlyDispellable = nil
+			E.db.unitframe.units.boss.buffs.onlyDispellable.friendly = buffs.onlyDispellable
+			E.db.unitframe.units.boss.buffs.onlyDispellable.enemy = buffs.onlyDispellable
+		end
+		if type(E.db.unitframe.units.boss.buffs.bossAuras) == "boolean" then
+			E.db.unitframe.units.boss.buffs.bossAuras = nil
+			E.db.unitframe.units.boss.buffs.bossAuras.friendly = buffs.bossAuras
+			E.db.unitframe.units.boss.buffs.bossAuras.enemy = buffs.bossAuras
+		end
 		--Debuffs
-		E.db.unitframe.units.boss.debuffs.playerOnly.friendly = E.db.unitframe.units.boss.debuffs.playerOnly
-		E.db.unitframe.units.boss.debuffs.playerOnly.enemy = E.db.unitframe.units.boss.debuffs.playerOnly
-		E.db.unitframe.units.boss.debuffs.useBlacklist.friendly = E.db.unitframe.units.boss.debuffs.useBlacklist
-		E.db.unitframe.units.boss.debuffs.useBlacklist.enemy = E.db.unitframe.units.boss.debuffs.useBlacklist
-		E.db.unitframe.units.boss.debuffs.useWhitelist.friendly = E.db.unitframe.units.boss.debuffs.useWhitelist
-		E.db.unitframe.units.boss.debuffs.useWhitelist.enemy = E.db.unitframe.units.boss.debuffs.useWhitelist
-		E.db.unitframe.units.boss.debuffs.noDuration.friendly = E.db.unitframe.units.boss.debuffs.noDuration
-		E.db.unitframe.units.boss.debuffs.noDuration.enemy = E.db.unitframe.units.boss.debuffs.noDuration
-		E.db.unitframe.units.boss.debuffs.onlyDispellable.friendly = E.db.unitframe.units.boss.debuffs.onlyDispellable
-		E.db.unitframe.units.boss.debuffs.onlyDispellable.enemy = E.db.unitframe.units.boss.debuffs.onlyDispellable
-		E.db.unitframe.units.boss.debuffs.bossAuras.friendly = E.db.unitframe.units.boss.debuffs.bossAuras
-		E.db.unitframe.units.boss.debuffs.bossAuras.enemy = E.db.unitframe.units.boss.debuffs.bossAuras
+		if type(E.db.unitframe.units.boss.buffs.playerOnly) == "boolean" then
+			E.db.unitframe.units.boss.debuffs.playerOnly = nil
+			E.db.unitframe.units.boss.debuffs.playerOnly.friendly = debuffs.playerOnly
+			E.db.unitframe.units.boss.debuffs.playerOnly.enemy = debuffs.playerOnly
+		end
+		if type(E.db.unitframe.units.boss.buffs.useBlacklist) == "boolean" then
+			E.db.unitframe.units.boss.debuffs.useBlacklist = nil
+			E.db.unitframe.units.boss.debuffs.useBlacklist.friendly = debuffs.useBlacklist
+			E.db.unitframe.units.boss.debuffs.useBlacklist.enemy = debuffs.useBlacklist
+		end
+		if type(E.db.unitframe.units.boss.buffs.useWhitelist) == "boolean" then
+			E.db.unitframe.units.boss.debuffs.useWhitelist = nil
+			E.db.unitframe.units.boss.debuffs.useWhitelist.friendly = debuffs.useWhitelist
+			E.db.unitframe.units.boss.debuffs.useWhitelist.enemy = debuffs.useWhitelist
+		end
+		if type(E.db.unitframe.units.boss.buffs.noDuration) == "boolean" then
+			E.db.unitframe.units.boss.debuffs.noDuration = nil
+			E.db.unitframe.units.boss.debuffs.noDuration.friendly = debuffs.noDuration
+			E.db.unitframe.units.boss.debuffs.noDuration.enemy = debuffs.noDuration
+		end
+		if type(E.db.unitframe.units.boss.buffs.onlyDispellable) == "boolean" then
+			E.db.unitframe.units.boss.debuffs.onlyDispellable = nil
+			E.db.unitframe.units.boss.debuffs.onlyDispellable.friendly = debuffs.onlyDispellable
+			E.db.unitframe.units.boss.debuffs.onlyDispellable.enemy = debuffs.onlyDispellable
+		end
+		if type(E.db.unitframe.units.boss.buffs.bossAuras) == "boolean" then
+			E.db.unitframe.units.boss.debuffs.bossAuras = nil
+			E.db.unitframe.units.boss.debuffs.bossAuras.friendly = debuffs.bossAuras
+			E.db.unitframe.units.boss.debuffs.bossAuras.enemy = debuffs.bossAuras
+		end
 		
 		E.db.bossAurasConverted = true
 	end
