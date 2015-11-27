@@ -449,8 +449,16 @@ E.Options.args.actionbar = {
 				AB:UpdateButtonSettings();
 			end,
 		},
-		fontGroup = {
+		hideCooldownBling = {
 			order = 11,
+			type = "toggle",
+			name = L["Hide Cooldown Bling"],
+			desc = L["Hides the bling animation on buttons at the end of the global cooldown."],
+			get = function(info) return E.private.actionbar.hideCooldownBling end,
+			set = function(info, value) E.private.actionbar.hideCooldownBling = value; E:StaticPopup_Show("CONFIG_RL") end,
+		},
+		fontGroup = {
+			order = 12,
 			type = 'group',
 			guiInline = true,
 			disabled = function() return not E.private.actionbar.enable end,
@@ -484,7 +492,7 @@ E.Options.args.actionbar = {
 			},
 		},
 		masque = {
-			order = 12,
+			order = 13,
 			type = "group",
 			guiInline = true,
 			name = L["Masque Support"],
