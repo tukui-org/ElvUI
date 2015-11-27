@@ -9,7 +9,7 @@ local tonumber, pairs, select, tostring, unpack = tonumber, pairs, select, tostr
 local twipe, tsort, tinsert, wipe = table.wipe, table.sort, table.insert, wipe
 local band = bit.band
 local floor = math.floor
-local gsub, tolower, format, strsplit = string.gsub, string.lower, format, strsplit
+local gsub, format, strsplit = string.gsub, format, strsplit
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetTime = GetTime
@@ -38,11 +38,10 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 local UNKNOWN = UNKNOWN
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
-local AURA_TYPE_BUFF, AURA_TYPE_DEBUFF = AURA_TYPE_BUFF, AURA_TYPE_DEBUFF
 local COMBATLOG_OBJECT_CONTROL_PLAYER = COMBATLOG_OBJECT_CONTROL_PLAYER
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: UIParent
+-- GLOBALS: UIParent, AURA_TYPE_BUFF, AURA_TYPE_DEBUFF
 
 local numChildren = -1
 local targetIndicator
