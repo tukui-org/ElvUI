@@ -119,5 +119,4 @@
 					
 
 	<Script file='auras.lua'/>
-	<Script file='consolidatedBuffs.lua'/>
 </Ui>
