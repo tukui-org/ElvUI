@@ -230,9 +230,9 @@ function M:LOOT_OPENED(event, autoloot)
 			local texture, item, quantity, quality, locked, isQuestItem, questId, isActive = GetLootSlotInfo(i)
 			local color = ITEM_QUALITY_COLORS[quality]
 
-			if texture and texture:find('INV_Misc_Coin') then
-				item = item:gsub("\n", ", ")
-			end
+			--if texture and texture:find('INV_Misc_Coin') then
+				--item = item:gsub("\n", ", ")
+			--end
 
 			if quantity and (quantity > 1) then
 				slot.count:SetText(quantity)
