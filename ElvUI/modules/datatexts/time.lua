@@ -91,12 +91,6 @@ local function OnLeave(self)
 	enteredFrame = false;
 end
 
-local function OnEvent(self, event)
-	if event == "UPDATE_INSTANCE_INFO" and enteredFrame then
-		RequestRaidInfo()
-	end
-end
-
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 
@@ -170,6 +164,12 @@ local function OnEnter(self)
 	end
 
 	DT.tooltip:Show()
+end
+
+local function OnEvent(self, event)
+	if event == "UPDATE_INSTANCE_INFO" and enteredFrame then
+		OnEnter(self)
+	end
 end
 
 local int = 3
