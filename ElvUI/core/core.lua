@@ -159,6 +159,9 @@ E.ClassRole = {
 		[2] = "Caster",
 		[3] = "Melee",
 	},
+	DEMONHUNTER = {
+		[1] = "Melee",	
+	},
 }
 
 E.noop = function() end;

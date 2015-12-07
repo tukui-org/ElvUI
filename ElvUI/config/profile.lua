@@ -248,7 +248,7 @@ P['auras'] = {
 	['timeXOffset'] = 0,
 
 	['consolidatedBuffs'] = {
-		['enable'] = true,
+		['enable'] = false, --perm remove?
 		['filter'] = true,
 		['durations'] = true,
 		['position'] = "RIGHT",

@@ -339,13 +339,13 @@ function A:CreateAuraHeader(filter)
 end
 
 function A:Initialize()
-	self:Construct_ConsolidatedBuffs()
+	--self:Construct_ConsolidatedBuffs()
 
 	if(E.private.auras.disableBlizzard) then
 		BuffFrame:Kill()
-		ConsolidatedBuffs:Kill()
+		--ConsolidatedBuffs:Kill()
 		TemporaryEnchantFrame:Kill();
-		InterfaceOptionsFrameCategoriesButton12:SetScale(0.0001)
+		--InterfaceOptionsFrameCategoriesButton12:SetScale(0.0001)
 	end
 
 	if(not E.private.auras.enable) then return end
