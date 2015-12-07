@@ -214,8 +214,14 @@ end)
 	-- TOOLTIP DEFAULT POSITION
 	hooksecurefunc("PetBattleAbilityTooltip_Show", function()
 		local t = PetBattlePrimaryAbilityTooltip
+		local point, x, y = "TOPRIGHT", -4, -4
+		--Position it at the bottom right on low resolution setups
+		--Otherwise the tooltip might overlap enemy team unit info
+		if E.lowversion then
+			point, x, y = "BOTTOMRIGHT", -4, 4
+		end
 		t:ClearAllPoints()
-		t:SetPoint("TOPRIGHT", E.UIParent, "TOPRIGHT", -4, -4)
+		t:SetPoint(point, E.UIParent, point, x, y)
 	end)
 
 

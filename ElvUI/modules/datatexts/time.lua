@@ -4,8 +4,6 @@ local DT = E:GetModule('DataTexts')
 --Cache global variables
 --Lua functions
 local date = date
-local wipe = table.wipe
-local floor = math.floor
 local format, join = string.format, string.join
 --WoW API / Variables
 local GetGameTime = GetGameTime
@@ -21,13 +19,13 @@ local GetSavedWorldBossInfo = GetSavedWorldBossInfo
 local VOICE_CHAT_BATTLEGROUND = VOICE_CHAT_BATTLEGROUND
 local WINTERGRASP_IN_PROGRESS = WINTERGRASP_IN_PROGRESS
 local QUEUE_TIME_UNAVAILABLE = QUEUE_TIME_UNAVAILABLE
-local WORLD_BOSSES_TEXT = RAID_INFO_WORLD_BOSS.."(s)"
 local TIMEMANAGER_TOOLTIP_REALMTIME = TIMEMANAGER_TOOLTIP_REALMTIME
 local TIMEMANAGER_TOOLTIP_LOCALTIME = TIMEMANAGER_TOOLTIP_LOCALTIME
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameTimeFrame
 
+local WORLD_BOSSES_TEXT = RAID_INFO_WORLD_BOSS.."(s)"
 local APM = { TIMEMANAGER_PM, TIMEMANAGER_AM }
 local europeDisplayFormat = '';
 local ukDisplayFormat = '';
@@ -89,12 +87,6 @@ end
 local function OnLeave(self)
 	DT.tooltip:Hide();
 	enteredFrame = false;
-end
-
-local function OnEvent(self, event)
-	if event == "UPDATE_INSTANCE_INFO" and enteredFrame then
-		RequestRaidInfo()
-	end
 end
 
 local function OnEnter(self)
@@ -170,6 +162,12 @@ local function OnEnter(self)
 	end
 
 	DT.tooltip:Show()
+end
+
+local function OnEvent(self, event)
+	if event == "UPDATE_INSTANCE_INFO" and enteredFrame then
+		OnEnter(self)
+	end
 end
 
 local int = 3
