@@ -206,6 +206,12 @@ E.Options.args.general = {
 					get = function(info) return E.global.general.smallerWorldMap end,
 					set = function(info, value) E.global.general.smallerWorldMap = value; E:StaticPopup_Show("GLOBAL_RL") end
 				},
+				enhancedPvpMessages = {
+					order = 17,
+					type = 'toggle',
+					name = L["Enhanced PVP Messages"],
+					desc = L["Display battleground messages in the middle of the screen."]
+				},
 				chatBubbles = {
 					order = 30,
 					type = "group",
