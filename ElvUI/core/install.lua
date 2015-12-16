@@ -610,6 +610,7 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.movers.ElvUF_PlayerCastbarMover = "BOTTOMElvUIParentBOTTOM-2"..(yOffset + 5)
 		end
 	elseif (layout == 'dpsMelee' or layout == 'tank') and not E.db.lowresolutionset and not E.PixelMode then
+		if not E.db.movers then E.db.movers = {}; end
 		E.db.movers.ElvUF_PlayerMover = "BOTTOMElvUIParentBOTTOM-30776"
 		E.db.movers.ElvUF_TargetMover = "BOTTOMElvUIParentBOTTOM30776"
 		E.db.movers.ElvUF_TargetTargetMover = "BOTTOMElvUIParentBOTTOM076"
