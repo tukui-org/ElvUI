@@ -1998,22 +1998,31 @@ function CH:Initialize()
 	frame:Hide()
 	frame:SetMovable(true)
 	frame:EnableMouse(true)
+	frame:SetResizable(true)
+	frame:SetMinResize(350, 100)
 	frame:SetScript("OnMouseDown", function(self, button)
 		if button == "LeftButton" and not self.isMoving then
 			self:StartMoving();
 			self.isMoving = true;
+		elseif button == "RightButton" and not self.isSizing then
+			self:StartSizing();
+			self.isSizing = true;
 		end
 	end)
 	frame:SetScript("OnMouseUp", function(self, button)
 		if button == "LeftButton" and self.isMoving then
 			self:StopMovingOrSizing();
 			self.isMoving = false;
+		elseif button == "RightButton" and self.isSizing then
+			self:StopMovingOrSizing();
+			self.isSizing = false;
 		end
 	end)
 	frame:SetScript("OnHide", function(self)
-		if ( self.isMoving ) then
+		if ( self.isMoving or self.isSizing) then
 			self:StopMovingOrSizing();
 			self.isMoving = false;
+			self.isSizing = false;
 		end
 	end)
 	frame:SetFrameStrata("DIALOG")
@@ -2023,6 +2032,10 @@ function CH:Initialize()
 	scrollArea:Point("TOPLEFT", frame, "TOPLEFT", 8, -30)
 	scrollArea:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -30, 8)
 	S:HandleScrollBar(CopyChatScrollFrameScrollBar)
+	scrollArea:SetScript("OnSizeChanged", function(self)
+		CopyChatFrameEditBox:Width(self:GetWidth())
+		CopyChatFrameEditBox:Height(self:GetHeight())
+	end)
 
 	local editBox = CreateFrame("EditBox", "CopyChatFrameEditBox", frame)
 	editBox:SetMultiLine(true)
