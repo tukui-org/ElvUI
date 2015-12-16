@@ -121,6 +121,7 @@ local function LoadSkin()
 	S:HandleCloseButton(LootFrameCloseButton)
 
 	LootFrame:SetTemplate("Transparent")
+	LootFrame:SetFrameStrata("FULLSCREEN")
 	LootFramePortraitOverlay:SetParent(E.HiddenFrame)
 
 	for i=1, LootFrame:GetNumRegions() do
