@@ -541,6 +541,12 @@ function UF:Update_PlayerFrame(frame, db)
 			if db.power.strataAndLevel.useCustomLevel then
 				power:SetFrameLevel(db.power.strataAndLevel.frameLevel)
 			end
+			
+			if POWERBAR_DETACHED and db.power.parent == "UIPARENT" then
+				power:SetParent(E.UIParent)
+			else
+				power:SetParent(frame)
+			end
 
 		elseif frame:IsElementEnabled('Power') then
 			frame:DisableElement('Power')

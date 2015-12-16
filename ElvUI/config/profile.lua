@@ -535,6 +535,7 @@ P['unitframe'] = {
 					["useCustomLevel"] = false,
 					["frameLevel"] = 1,
 				},
+				["parent"] = "FRAME",
 			},
 			['name'] = {
 				['position'] = 'CENTER',
@@ -683,6 +684,7 @@ P['unitframe'] = {
 					["useCustomLevel"] = false,
 					["frameLevel"] = 1,
 				},
+				["parent"] = "FRAME",
 			},
 			['name'] = {
 				['position'] = 'CENTER',
