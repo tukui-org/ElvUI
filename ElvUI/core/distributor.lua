@@ -1,5 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local D = E:NewModule('Distributor', "AceEvent-3.0","AceTimer-3.0","AceComm-3.0","AceSerializer-3.0")
+local libC = LibStub:GetLibrary("LibCompress")
+local libCE = libC:GetAddonEncodeTable()
 
 --Cache global variables
 local tonumber = tonumber
@@ -232,6 +234,55 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 			E:StaticPopup_Show('DISTRIBUTOR_FAILED')
 		end
 	end
+end
+
+function D:Export(profileType)
+	local profileKey, data
+	
+	if profileType == "profile" then
+		if ElvDB.profileKeys then
+			profileKey = ElvDB.profileKeys[E.myname..' - '..E.myrealm]
+		end
+
+		data = ElvDB.profiles[profileKey]
+
+	elseif profileType == "private" then
+		if ElvPrivateDB.profileKeys then
+			profileKey = ElvPrivateDB.profileKeys[E.myname..' - '..E.myrealm]
+		end
+
+		data = ElvPrivateDB.profiles[profileKey]
+
+	elseif profileType == "global" then
+		profileKey = 'global'
+		data = ElvDB.global
+	end
+	
+	if not data or not profileKey then return end
+	
+	local serialData = self:Serialize(data)
+	local exportString = format("%s:%s:%s", profileType, profileKey, serialData)
+	local compressedData = libC:Compress(exportString)
+	local encodedData = libCE:Encode(compressedData)
+	
+	-- return message
+	return profileType, profileKey, encodedData
+end
+
+function D:Decode(str)
+	local returnStr = ""
+	local decodedData = libCE:Decode(str)
+	local decompressedData, message = libC:Decompress(decodedData)
+	
+	if decompressedData then
+		returnStr = decompressedData
+		-- local success, data = self:Deserialize(decompressedData)
+		-- if success then
+			
+		-- end
+	end
+	
+	return returnStr
 end
 
 E.PopupDialogs['DISTRIBUTOR_SUCCESS'] = {
