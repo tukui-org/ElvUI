@@ -210,7 +210,7 @@ E.Options.args.general = {
 					order = 17,
 					type = 'toggle',
 					name = L["Enhanced PVP Messages"],
-					desc = L["Display battleground messages in the middle of the screen."]
+					desc = L["Display battleground messages in the middle of the screen."],
 				},
 				chatBubbles = {
 					order = 30,
