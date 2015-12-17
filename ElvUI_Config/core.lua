@@ -1208,7 +1208,6 @@ E.Options.args.credits = {
 	},
 }
 
-
 --Create Profiles Table
 E.Options.args.profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(E.data);
 AC:RegisterOptionsTable("ElvProfiles", E.Options.args.profiles)
@@ -1218,57 +1217,6 @@ LibStub('LibDualSpec-1.0'):EnhanceOptions(E.Options.args.profiles, E.data)
 
 if not E.Options.args.profiles.plugins then
 	E.Options.args.profiles.plugins = {}
-end
-
-local AceGUI = LibStub("AceGUI-3.0")
-local importexport = AceGUI:Create("InlineGroup");
-importexport:SetLayout("fill");
-importexport.frame:Hide();
-importexport.frame:SetMovable(true)
-importexport.frame:EnableMouse(true)
-importexport.frame:RegisterForDrag("LeftButton")
-importexport.frame:SetScript("OnDragStart", importexport.frame.StartMoving)
-importexport.frame:SetScript("OnDragStop", importexport.frame.StopMovingOrSizing)
-importexport.frame:SetPoint("CENTER")
-importexport.frame:SetSize(600, 500)
-importexport.frame:SetFrameStrata("TOOLTIP");
-importexport.frame:SetFrameLevel(40)
-
-local importexportbox = AceGUI:Create("MultiLineEditBox");
-importexportbox:SetWidth(400);
-importexportbox.button:Hide();
-importexport:AddChild(importexportbox);
-
-local importexportClose = CreateFrame("Button", nil, importexport.frame, "UIPanelButtonTemplate");
-importexportClose:SetScript("OnClick", function() importexport:Close() end);
-importexportClose:SetPoint("BOTTOMRIGHT", -27, 13);
-importexportClose:SetHeight(20);
-importexportClose:SetWidth(100);
-importexportClose:SetText(L["Done"])
-
-function importexport.Open(self)
-	self.frame:Show()
-	
-	local profileType, profileKey, displayString = E:GetModule("Distributor"):Export("profile")
-	
-	importexportbox.editBox:SetScript("OnEscapePressed", function() importexport:Close(); end);
-	importexportbox.editBox:SetScript("OnChar", function() importexportbox:SetText(displayString); importexportbox.editBox:HighlightText(); end);
-	importexportbox.editBox:SetScript("OnMouseUp", function() importexportbox.editBox:HighlightText(); end);
-	importexportbox.editBox:SetScript("OnTextChanged", nil);
-	importexportbox:SetLabel(profileType.." - "..profileKey);
-	importexportbox.button:Hide();
-	importexportbox:SetText(displayString);
-	importexportbox.editBox:HighlightText();
-	importexportbox:SetFocus();
-end
-
-function importexport.Close(self)
-
-	local encodedData = importexportbox:GetText()
-	local decodedData = E:GetModule("Distributor"):Decode(encodedData)
-	importexportbox:SetText(decodedData)
-	-- importexportbox:ClearFocus();
-	-- self.frame:Hide();
 end
 
 E.Options.args.profiles.plugins["ElvUI"] = {
@@ -1314,10 +1262,18 @@ E.Options.args.profiles.plugins["ElvUI"] = {
 			end
 		end,
 	},
-	test = {
-		name = "Test",
-		type = 'execute',
-		order = 40.7,
-		func = function() importexport:Open() end,
-	},
+}
+
+E.Options.args.profiles.args.exportImport = {
+	order = -10,
+	type = "group",
+	name = "Export / Import",
+	args = {
+		test = {
+			name = "Test",
+			type = 'execute',
+			order = 1,
+			func = function() E:GetModule("Distributor"):Export_Open() end,
+		},
+	}
 }

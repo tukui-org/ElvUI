@@ -43,6 +43,33 @@ function D:Initialize()
 	self.statusBar.text:FontTemplate()
 	self.statusBar.text:SetPoint("CENTER")
 	self.statusBar:Hide()
+
+	--Export / Import interface
+	local AceGUI = LibStub("AceGUI-3.0")
+	local exportImport = AceGUI:Create("Window");
+	exportImport:SetLayout("flow");
+	exportImport:Hide();
+	exportImport:EnableResize(false)
+	exportImport.frame:SetWidth(890)
+	exportImport.frame:SetHeight(650)
+	exportImport.frame:SetFrameStrata("TOOLTIP")
+	self.exportImport = exportImport
+
+	local Box = AceGUI:Create("MultiLineEditBox");
+	Box:SetNumLines(50)
+	-- Box:SetWidth(600)
+	-- Box:SetHeight(400)
+	exportImport:AddChild(Box);
+	self.exportImport.Box = Box
+
+	local closeButton = CreateFrame("Button", nil, exportImport.frame, "UIPanelButtonTemplate");
+	closeButton:SetScript("OnClick", function() self:Export_Close() end);
+	closeButton:SetPoint("BOTTOMRIGHT", -27, 13);
+	closeButton:SetHeight(20);
+	closeButton:SetWidth(100);
+	closeButton:SetText(L["Done"])
+	E:GetModule("Skins"):HandleButton(closeButton)
+	self.exportImport.closeButton = closeButton
 end
 
 -- Used to start uploads
@@ -236,7 +263,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 	end
 end
 
-function D:Export(profileType)
+function D:CreateExportString(profileType)
 	local profileKey, data
 	
 	if profileType == "profile" then
@@ -266,7 +293,7 @@ function D:Export(profileType)
 	local encodedData = libCE:Encode(compressedData)
 	
 	-- return message
-	return profileType, profileKey, encodedData
+	return profileType, profileKey, exportString
 end
 
 function D:Decode(str)
@@ -283,6 +310,35 @@ function D:Decode(str)
 	end
 	
 	return returnStr
+end
+
+function D:Export_Open()
+	self.exportImport:Show()
+
+	local Box = self.exportImport.Box
+	local profileType, profileKey, displayString = self:CreateExportString("profile")
+
+	Box.editBox:SetScript("OnEscapePressed", function() self:Export_Close(); end);
+	Box.editBox:SetScript("OnChar", function() Box:SetText(displayString); Box.editBox:HighlightText(); end);
+	Box.editBox:SetScript("OnMouseUp", function() Box.editBox:HighlightText(); end);
+	Box.editBox:SetScript("OnTextChanged", nil);
+	Box:SetLabel(profileType.." - "..profileKey);
+	Box.button:Hide();
+	Box:SetText(displayString);
+	Box.editBox:HighlightText();
+	Box:SetFocus();
+	Box:SetHeight(400)
+	Box:SetWidth(870)
+	-- Box:SetPoint("BOTTOMLEFT", self.exportImport.frame, 10, 30)
+	Box:SetPoint("TOPRIGHT", self.exportImport.frame, -10, -200)
+end
+
+function D:Export_Close()
+	-- local encodedData = self.exportImport.Box:GetText()
+	-- local decodedData = self:Decode(encodedData)
+	-- self.exportImport.Box:SetText(decodedData)
+	self.exportImport.Box:ClearFocus();
+	self.exportImport:Hide();
 end
 
 E.PopupDialogs['DISTRIBUTOR_SUCCESS'] = {
