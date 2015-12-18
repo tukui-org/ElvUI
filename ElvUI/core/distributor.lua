@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local D = E:NewModule('Distributor', "AceEvent-3.0","AceTimer-3.0","AceComm-3.0","AceSerializer-3.0")
 local libC = LibStub:GetLibrary("LibCompress")
-local libCE = libC:GetAddonEncodeTable()
 
 --Cache global variables
 local tonumber = tonumber
@@ -44,32 +43,33 @@ function D:Initialize()
 	self.statusBar.text:SetPoint("CENTER")
 	self.statusBar:Hide()
 
-	--Export / Import interface
+	--Export Interface
 	local AceGUI = LibStub("AceGUI-3.0")
-	local exportImport = AceGUI:Create("Window");
-	exportImport:SetLayout("flow");
-	exportImport:Hide();
+	local exportImport = AceGUI:Create("Frame");
 	exportImport:EnableResize(false)
 	exportImport.frame:SetWidth(890)
-	exportImport.frame:SetHeight(650)
+	exportImport.frame:SetHeight(651)
 	exportImport.frame:SetFrameStrata("TOOLTIP")
+	exportImport:SetLayout("flow");
+	exportImport:Hide();
 	self.exportImport = exportImport
 
 	local Box = AceGUI:Create("MultiLineEditBox");
-	Box:SetNumLines(50)
-	-- Box:SetWidth(600)
-	-- Box:SetHeight(400)
+	Box:SetNumLines(35)
+	Box:DisableButton(true)
+	Box:SetWidth(870)
 	exportImport:AddChild(Box);
 	self.exportImport.Box = Box
-
-	local closeButton = CreateFrame("Button", nil, exportImport.frame, "UIPanelButtonTemplate");
-	closeButton:SetScript("OnClick", function() self:Export_Close() end);
-	closeButton:SetPoint("BOTTOMRIGHT", -27, 13);
-	closeButton:SetHeight(20);
-	closeButton:SetWidth(100);
-	closeButton:SetText(L["Done"])
-	E:GetModule("Skins"):HandleButton(closeButton)
-	self.exportImport.closeButton = closeButton
+	
+	local importButton = AceGUI:Create("Button")
+	importButton:SetText("Import Profile")
+	importButton:SetAutoWidth(true)
+	importButton:SetCallback("OnClick", function()
+		self:ImportProfile(self.exportImport.Box:GetText())
+	end)
+	exportImport:AddChild(importButton)
+	importButton.frame:Hide()
+	self.exportImport.importButton = importButton
 end
 
 -- Used to start uploads
@@ -263,9 +263,8 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 	end
 end
 
-function D:CreateExportString(profileType)
+local function GetProfileData(profileType)
 	local profileKey, data
-	
 	if profileType == "profile" then
 		if ElvDB.profileKeys then
 			profileKey = ElvDB.profileKeys[E.myname..' - '..E.myrealm]
@@ -285,60 +284,240 @@ function D:CreateExportString(profileType)
 		data = ElvDB.global
 	end
 	
-	if not data or not profileKey then return end
+	return profileKey, data
+end
+
+-- Lua APIs
+local tinsert, tconcat, tremove = table.insert, table.concat, table.remove
+local fmt, tostring, string_char, strsplit = string.format, tostring, string.char, strsplit
+local select, pairs, next, type, unpack = select, pairs, next, type, unpack
+local loadstring, assert, error = loadstring, assert, error
+local setmetatable, getmetatable, rawset, rawget = setmetatable, getmetatable, rawset, rawget
+local bit_band, bit_lshift, bit_rshift = bit.band, bit.lshift, bit.rshift
+local coroutine = coroutine
+
+-- local functions
+local encodeB64, decodeB64, tableAdd, tableSubtract, DisplayStub, removeSpellNames
+local CompressDisplay, DecompressDisplay, ShowTooltip, TableToString, StringToTable
+local RequestDisplay, TransmitError, TransmitDisplay
+
+local bytetoB64 = {
+    [0]="a","b","c","d","e","f","g","h",
+    "i","j","k","l","m","n","o","p",
+    "q","r","s","t","u","v","w","x",
+    "y","z","A","B","C","D","E","F",
+    "G","H","I","J","K","L","M","N",
+    "O","P","Q","R","S","T","U","V",
+    "W","X","Y","Z","0","1","2","3",
+    "4","5","6","7","8","9","(",")"
+}
+
+local B64tobyte = {
+      a =  0,  b =  1,  c =  2,  d =  3,  e =  4,  f =  5,  g =  6,  h =  7,
+      i =  8,  j =  9,  k = 10,  l = 11,  m = 12,  n = 13,  o = 14,  p = 15,
+      q = 16,  r = 17,  s = 18,  t = 19,  u = 20,  v = 21,  w = 22,  x = 23,
+      y = 24,  z = 25,  A = 26,  B = 27,  C = 28,  D = 29,  E = 30,  F = 31,
+      G = 32,  H = 33,  I = 34,  J = 35,  K = 36,  L = 37,  M = 38,  N = 39,
+      O = 40,  P = 41,  Q = 42,  R = 43,  S = 44,  T = 45,  U = 46,  V = 47,
+      W = 48,  X = 49,  Y = 50,  Z = 51,["0"]=52,["1"]=53,["2"]=54,["3"]=55,
+    ["4"]=56,["5"]=57,["6"]=58,["7"]=59,["8"]=60,["9"]=61,["("]=62,[")"]=63
+}
+
+--This code is taken from WeakAuras2, credit goes to Mirrored and the WeakAuras Team
+--This code is based on the Encode7Bit algorithm from LibCompress
+--Credit goes to Galmok of European Stormrage (Horde), galmok@gmail.com
+local encodeB64Table = {};
+function encodeB64(str)
+    local B64 = encodeB64Table;
+    local remainder = 0;
+    local remainder_length = 0;
+    local encoded_size = 0;
+    local l=#str
+    local code
+    for i=1,l do
+        code = string.byte(str, i);
+        remainder = remainder + bit_lshift(code, remainder_length);
+        remainder_length = remainder_length + 8;
+        while(remainder_length) >= 6 do
+            encoded_size = encoded_size + 1;
+            B64[encoded_size] = bytetoB64[bit_band(remainder, 63)];
+            remainder = bit_rshift(remainder, 6);
+            remainder_length = remainder_length - 6;
+        end
+    end
+    if remainder_length > 0 then
+        encoded_size = encoded_size + 1;
+        B64[encoded_size] = bytetoB64[remainder];
+    end
+    return table.concat(B64, "", 1, encoded_size)
+end
+
+local decodeB64Table = {}
+
+function decodeB64(str)
+    local bit8 = decodeB64Table;
+    local decoded_size = 0;
+    local ch;
+    local i = 1;
+    local bitfield_len = 0;
+    local bitfield = 0;
+    local l = #str;
+    while true do
+        if bitfield_len >= 8 then
+            decoded_size = decoded_size + 1;
+            bit8[decoded_size] = string_char(bit_band(bitfield, 255));
+            bitfield = bit_rshift(bitfield, 8);
+            bitfield_len = bitfield_len - 8;
+        end
+        ch = B64tobyte[str:sub(i, i)];
+        bitfield = bitfield + bit_lshift(ch or 0, bitfield_len);
+        bitfield_len = bitfield_len + 6;
+        if i > l then
+            break;
+        end
+        i = i + 1;
+    end
+    return table.concat(bit8, "", 1, decoded_size)
+end
+
+function D:ProfileToString(profileType)
+	local profileKey, data = GetProfileData(profileType)
 	
+	if not profileKey or not data then
+		return "Error exporting profile"
+	end
+
 	local serialData = self:Serialize(data)
 	local exportString = format("%s:%s:%s", profileType, profileKey, serialData)
-	local compressedData = libC:Compress(exportString)
-	local encodedData = libCE:Encode(compressedData)
-	
-	-- return message
-	return profileType, profileKey, exportString
+	local compressedData = libC:CompressHuffman(exportString)
+	local encodedData = encodeB64(compressedData)
+
+	return profileType, profileKey, encodedData
 end
 
 function D:Decode(str)
-	local returnStr = ""
-	local decodedData = libCE:Decode(str)
-	local decompressedData, message = libC:Decompress(decodedData)
+	local decodedData = decodeB64(str)
+	local decompressedData, message = libC:DecompressHuffman(decodedData)
 	
-	if decompressedData then
-		returnStr = decompressedData
-		-- local success, data = self:Deserialize(decompressedData)
-		-- if success then
-			
-		-- end
+	if not decompressedData then
+		print("Error decompressing data: ", message)
+		return 
 	end
 	
-	return returnStr
+	local profileType, profileKey, serialData = split(":", decompressedData)
+	local success, profileData = self:Deserialize(serialData)
+	if not success then
+		print("Error deserializing "..profileData)
+	end
+	
+	return profileType, profileKey, decompressedData
+end
+
+function D:ImportProfile(dataString)
+	local profileType, profileKey, profileData = self:Decode(dataString)
+	
+	if not profileType or not profileKey or not profileData then
+		print("something wrong with profile")
+		return
+	end
+	
+	if type(profileData) == "string" then
+		self.exportImport.Box:SetText(profileData)
+		return
+	end
+	
+	if not ElvDB.profiles[profileKey] then
+		ElvDB.profiles[profileKey] = profileData
+		LibStub("AceAddon-3.0"):GetAddon("ElvUI").data:SetProfile(profileKey)
+		E:UpdateAll(true)
+	else
+		self.tempData = profileData
+		E:StaticPopup_Show('IMPORT_PROFILE_EXISTS')
+	end
 end
 
 function D:Export_Open()
 	self.exportImport:Show()
+	self.exportImport.importButton.frame:Hide()
 
 	local Box = self.exportImport.Box
-	local profileType, profileKey, displayString = self:CreateExportString("profile")
+	local profileType, profileKey, displayString = self:ProfileToString("profile")
+	-- local profileType, profileKey, displayString = self:ProfileToTableString("profile")
 
 	Box.editBox:SetScript("OnEscapePressed", function() self:Export_Close(); end);
 	Box.editBox:SetScript("OnChar", function() Box:SetText(displayString); Box.editBox:HighlightText(); end);
 	Box.editBox:SetScript("OnMouseUp", function() Box.editBox:HighlightText(); end);
 	Box.editBox:SetScript("OnTextChanged", nil);
-	Box:SetLabel(profileType.." - "..profileKey);
+	Box:SetLabel("Profile type: "..profileType.." - Profile name: "..profileKey);
 	Box.button:Hide();
 	Box:SetText(displayString);
 	Box.editBox:HighlightText();
 	Box:SetFocus();
-	Box:SetHeight(400)
-	Box:SetWidth(870)
-	-- Box:SetPoint("BOTTOMLEFT", self.exportImport.frame, 10, 30)
-	Box:SetPoint("TOPRIGHT", self.exportImport.frame, -10, -200)
 end
 
 function D:Export_Close()
-	-- local encodedData = self.exportImport.Box:GetText()
-	-- local decodedData = self:Decode(encodedData)
-	-- self.exportImport.Box:SetText(decodedData)
 	self.exportImport.Box:ClearFocus();
 	self.exportImport:Hide();
+end
+
+function D:Import_Open()
+	self.exportImport:Show()
+	self.exportImport.importButton.frame:Show()
+
+	local Box = self.exportImport.Box
+	Box.editBox:SetScript("OnEscapePressed", nil);
+	Box.editBox:SetScript("OnChar", nil);
+	Box.editBox:SetScript("OnMouseUp", nil);
+	Box.editBox:SetScript("OnTextChanged", nil);
+	Box.button:Hide();
+	Box:SetText("");
+end
+
+function D:ProfileToTableString(data)
+	local ret
+    local function recurse(table, level)
+        for i,v in pairs(table) do
+            ret = ret..strrep("    ", level).."[";
+            if(type(i) == "string") then
+                ret = ret.."\""..i.."\"";
+            else
+                ret = ret..i;
+            end
+            ret = ret.."] = ";
+
+            if(type(v) == "number") then
+                ret = ret..v..",\n"
+            elseif(type(v) == "string") then
+                ret = ret.."\""..v:gsub("\\", "\\\\"):gsub("\n", "\\n"):gsub("\"", "\\\"").."\",\n"
+            elseif(type(v) == "boolean") then
+                if(v) then
+                    ret = ret.."true,\n"
+                else
+                    ret = ret.."false,\n"
+                end
+            elseif(type(v) == "table") then
+                ret = ret.."{\n"
+                recurse(v, level + 1);
+                ret = ret..strrep("    ", level).."},\n"
+            else
+                ret = ret.."\""..tostring(v).."\",\n"
+            end
+        end
+    end
+
+	-- local profileKey = "TestProfile"
+	local profileData = data
+    if type(data) == "string" then
+		_, data = GetProfileData("profile")
+	end
+	-- ret = "[\""..profileKey.."\"] = {\n";
+	ret = "{\n";
+    if(profileData) then
+        recurse(data, 1);
+    end
+    ret = ret.."}";
+    -- return profileType, profileKey, ret;
+	return ret;
 end
 
 E.PopupDialogs['DISTRIBUTOR_SUCCESS'] = {
@@ -371,5 +550,25 @@ E.PopupDialogs['DISTRIBUTOR_FAILED'] = {
 
 E.PopupDialogs['DISTRIBUTOR_RESPONSE'] = {}
 E.PopupDialogs['DISTRIBUTOR_CONFIRM'] = {}
+
+E.PopupDialogs['IMPORT_PROFILE_EXISTS'] = {
+	text = L["The profile you tried to import already exists. Please choose a new name for the imported profile."],
+	button1 = ACCEPT,
+	hasEditBox = 1,
+	editBoxWidth = 350,
+	maxLetters = 127,
+	OnAccept = function(self)
+		if self.editBox:GetText() == "" then return; end
+		ElvDB.profiles[self.editBox:GetText()] = D.tempData
+		D.tempData = nil
+		LibStub("AceAddon-3.0"):GetAddon("ElvUI").data:SetProfile(self.editBox:GetText())
+		E:UpdateAll(true)
+	end,
+	timeout = 0,
+	exclusive = 1,
+	whileDead = 1,
+	hideOnEscape = 1,
+	preferredIndex = 3
+}
 
 E:RegisterModule(D:GetName())

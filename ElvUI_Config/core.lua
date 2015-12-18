@@ -1262,18 +1262,21 @@ E.Options.args.profiles.plugins["ElvUI"] = {
 			end
 		end,
 	},
-}
-
-E.Options.args.profiles.args.exportImport = {
-	order = -10,
-	type = "group",
-	name = "Export / Import",
-	args = {
-		test = {
-			name = "Test",
-			type = 'execute',
-			order = 1,
-			func = function() E:GetModule("Distributor"):Export_Open() end,
-		},
-	}
+	spacer = {
+		order = 40.7,
+		type = 'description',
+		name = '',
+	},
+	exportProfile = {
+		name = "Export Profile",
+		type = 'execute',
+		order = 40.8,
+		func = function() E:GetModule("Distributor"):Export_Open() end,
+	},
+	importProfile = {
+		name = "Import Profile",
+		type = 'execute',
+		order = 40.9,
+		func = function() E:GetModule("Distributor"):Import_Open() end,
+	},
 }
