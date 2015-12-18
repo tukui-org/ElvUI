@@ -566,6 +566,30 @@ function E:CopyTable(currentTable, defaultTable)
 	return currentTable
 end
 
+function E:CleanTableDuplicates(cleanTable, defaultTable)
+	if type(cleanTable) ~= "table" or type(defaultTable) ~=  "table" then
+		print("E:CleanTableDuplicates error")
+		return nil
+	end
+
+	for option, value in pairs(defaultTable) do
+		if type(value) == "table" then
+			value = self:CleanTableDuplicates(cleanTable[option], value)
+		end
+
+		if cleanTable[option] == value then
+			cleanTable[option] = nil
+		end
+		
+		--Remove empty entries
+		if type(cleanTable[option]) == "table" and #cleanTable[option] == 0 then
+			cleanTable[option] = nil
+		end
+	end
+
+	return true, cleanTable
+end
+
 function E:SendMessage()
 	local _, instanceType = IsInInstance()
 	if IsInRaid() then
