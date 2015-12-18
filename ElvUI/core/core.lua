@@ -590,6 +590,47 @@ function E:CleanTableDuplicates(cleanTable, defaultTable)
 	return true, cleanTable
 end
 
+--The code in this function is from WeakAuras, credit goes to Mirrored and the WeakAuras Team
+function E:TableToLuaString(inTable)
+	local ret = "{\n";
+    local function recurse(table, level)
+        for i,v in pairs(table) do
+            ret = ret..strrep("    ", level).."[";
+            if(type(i) == "string") then
+                ret = ret.."\""..i.."\"";
+            else
+                ret = ret..i;
+            end
+            ret = ret.."] = ";
+
+            if(type(v) == "number") then
+                ret = ret..v..",\n"
+            elseif(type(v) == "string") then
+                ret = ret.."\""..v:gsub("\\", "\\\\"):gsub("\n", "\\n"):gsub("\"", "\\\"").."\",\n"
+            elseif(type(v) == "boolean") then
+                if(v) then
+                    ret = ret.."true,\n"
+                else
+                    ret = ret.."false,\n"
+                end
+            elseif(type(v) == "table") then
+                ret = ret.."{\n"
+                recurse(v, level + 1);
+                ret = ret..strrep("    ", level).."},\n"
+            else
+                ret = ret.."\""..tostring(v).."\",\n"
+            end
+        end
+    end
+
+    if(inTable) then
+        recurse(inTable, 1);
+    end
+    ret = ret.."}";
+
+    return ret;
+end
+
 function E:SendMessage()
 	local _, instanceType = IsInInstance()
 	if IsInRaid() then
