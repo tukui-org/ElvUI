@@ -264,217 +264,47 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 end
 
 local function GetProfileData(profileType)
-	local profileKey, data
+	if not profileType or type(profileType) ~= "string" then
+		print("Error getting profile data. You must supply 'profileType' argument (string)")
+	end
+
+	local profileKey, success
+	local data = {}
+
 	if profileType == "profile" then
 		if ElvDB.profileKeys then
 			profileKey = ElvDB.profileKeys[E.myname..' - '..E.myrealm]
 		end
 
-		data = ElvDB.profiles[profileKey]
+		data = table.copy(ElvDB.profiles[profileKey], true)
+		success, data = E:CleanTableDuplicates(data, P)
 
 	elseif profileType == "private" then
 		if ElvPrivateDB.profileKeys then
 			profileKey = ElvPrivateDB.profileKeys[E.myname..' - '..E.myrealm]
 		end
 
-		data = ElvPrivateDB.profiles[profileKey]
+		data = table.copy(ElvPrivateDB.profiles[profileKey], true)
+		success, data = E:CleanTableDuplicates(data, V)
 
 	elseif profileType == "global" then
 		profileKey = 'global'
-		data = ElvDB.global
+
+		data = table.copy(ElvDB.global, true)
+		success, data = E:CleanTableDuplicates(data, G)
+	end
+
+	if not success then
+		print("Error cleaning table:", data)
+		return
 	end
 	
 	return profileKey, data
 end
 
--- Lua APIs
-local tinsert, tconcat, tremove = table.insert, table.concat, table.remove
-local fmt, tostring, string_char, strsplit = string.format, tostring, string.char, strsplit
-local select, pairs, next, type, unpack = select, pairs, next, type, unpack
-local loadstring, assert, error = loadstring, assert, error
-local setmetatable, getmetatable, rawset, rawget = setmetatable, getmetatable, rawset, rawget
-local bit_band, bit_lshift, bit_rshift = bit.band, bit.lshift, bit.rshift
-local coroutine = coroutine
-
--- local functions
-local encodeB64, decodeB64, tableAdd, tableSubtract, DisplayStub, removeSpellNames
-local CompressDisplay, DecompressDisplay, ShowTooltip, TableToString, StringToTable
-local RequestDisplay, TransmitError, TransmitDisplay
-
-local bytetoB64 = {
-    [0]="a","b","c","d","e","f","g","h",
-    "i","j","k","l","m","n","o","p",
-    "q","r","s","t","u","v","w","x",
-    "y","z","A","B","C","D","E","F",
-    "G","H","I","J","K","L","M","N",
-    "O","P","Q","R","S","T","U","V",
-    "W","X","Y","Z","0","1","2","3",
-    "4","5","6","7","8","9","(",")"
-}
-
-local B64tobyte = {
-      a =  0,  b =  1,  c =  2,  d =  3,  e =  4,  f =  5,  g =  6,  h =  7,
-      i =  8,  j =  9,  k = 10,  l = 11,  m = 12,  n = 13,  o = 14,  p = 15,
-      q = 16,  r = 17,  s = 18,  t = 19,  u = 20,  v = 21,  w = 22,  x = 23,
-      y = 24,  z = 25,  A = 26,  B = 27,  C = 28,  D = 29,  E = 30,  F = 31,
-      G = 32,  H = 33,  I = 34,  J = 35,  K = 36,  L = 37,  M = 38,  N = 39,
-      O = 40,  P = 41,  Q = 42,  R = 43,  S = 44,  T = 45,  U = 46,  V = 47,
-      W = 48,  X = 49,  Y = 50,  Z = 51,["0"]=52,["1"]=53,["2"]=54,["3"]=55,
-    ["4"]=56,["5"]=57,["6"]=58,["7"]=59,["8"]=60,["9"]=61,["("]=62,[")"]=63
-}
-
---This code is taken from WeakAuras2, credit goes to Mirrored and the WeakAuras Team
---This code is based on the Encode7Bit algorithm from LibCompress
---Credit goes to Galmok of European Stormrage (Horde), galmok@gmail.com
-local encodeB64Table = {};
-function encodeB64(str)
-    local B64 = encodeB64Table;
-    local remainder = 0;
-    local remainder_length = 0;
-    local encoded_size = 0;
-    local l=#str
-    local code
-    for i=1,l do
-        code = string.byte(str, i);
-        remainder = remainder + bit_lshift(code, remainder_length);
-        remainder_length = remainder_length + 8;
-        while(remainder_length) >= 6 do
-            encoded_size = encoded_size + 1;
-            B64[encoded_size] = bytetoB64[bit_band(remainder, 63)];
-            remainder = bit_rshift(remainder, 6);
-            remainder_length = remainder_length - 6;
-        end
-    end
-    if remainder_length > 0 then
-        encoded_size = encoded_size + 1;
-        B64[encoded_size] = bytetoB64[remainder];
-    end
-    return table.concat(B64, "", 1, encoded_size)
-end
-
-local decodeB64Table = {}
-
-function decodeB64(str)
-    local bit8 = decodeB64Table;
-    local decoded_size = 0;
-    local ch;
-    local i = 1;
-    local bitfield_len = 0;
-    local bitfield = 0;
-    local l = #str;
-    while true do
-        if bitfield_len >= 8 then
-            decoded_size = decoded_size + 1;
-            bit8[decoded_size] = string_char(bit_band(bitfield, 255));
-            bitfield = bit_rshift(bitfield, 8);
-            bitfield_len = bitfield_len - 8;
-        end
-        ch = B64tobyte[str:sub(i, i)];
-        bitfield = bitfield + bit_lshift(ch or 0, bitfield_len);
-        bitfield_len = bitfield_len + 6;
-        if i > l then
-            break;
-        end
-        i = i + 1;
-    end
-    return table.concat(bit8, "", 1, decoded_size)
-end
-
-function D:ProfileToString(profileType)
-	local profileKey, data = GetProfileData(profileType)
-	
-	if not profileKey or not data then
-		return "Error exporting profile"
-	end
-
-	local serialData = self:Serialize(data)
-	local exportString = format("%s:%s:%s", profileType, profileKey, serialData)
-	local compressedData = libC:CompressHuffman(exportString)
-	local encodedData = encodeB64(compressedData)
-
-	return profileType, profileKey, encodedData
-end
-
-function D:Decode(str)
-	local decodedData = decodeB64(str)
-	local decompressedData, message = libC:DecompressHuffman(decodedData)
-	
-	if not decompressedData then
-		print("Error decompressing data: ", message)
-		return 
-	end
-	
-	local profileType, profileKey, serialData = split(":", decompressedData)
-	local success, profileData = self:Deserialize(serialData)
-	if not success then
-		print("Error deserializing "..profileData)
-	end
-	
-	return profileType, profileKey, decompressedData
-end
-
-function D:ImportProfile(dataString)
-	local profileType, profileKey, profileData = self:Decode(dataString)
-	
-	if not profileType or not profileKey or not profileData then
-		print("something wrong with profile")
-		return
-	end
-	
-	if type(profileData) == "string" then
-		self.exportImport.Box:SetText(profileData)
-		return
-	end
-	
-	if not ElvDB.profiles[profileKey] then
-		ElvDB.profiles[profileKey] = profileData
-		LibStub("AceAddon-3.0"):GetAddon("ElvUI").data:SetProfile(profileKey)
-		E:UpdateAll(true)
-	else
-		self.tempData = profileData
-		E:StaticPopup_Show('IMPORT_PROFILE_EXISTS')
-	end
-end
-
-function D:Export_Open()
-	self.exportImport:Show()
-	self.exportImport.importButton.frame:Hide()
-
-	local Box = self.exportImport.Box
-	local profileType, profileKey, displayString = self:ProfileToString("profile")
-	-- local profileType, profileKey, displayString = self:ProfileToTableString("profile")
-
-	Box.editBox:SetScript("OnEscapePressed", function() self:Export_Close(); end);
-	Box.editBox:SetScript("OnChar", function() Box:SetText(displayString); Box.editBox:HighlightText(); end);
-	Box.editBox:SetScript("OnMouseUp", function() Box.editBox:HighlightText(); end);
-	Box.editBox:SetScript("OnTextChanged", nil);
-	Box:SetLabel("Profile type: "..profileType.." - Profile name: "..profileKey);
-	Box.button:Hide();
-	Box:SetText(displayString);
-	Box.editBox:HighlightText();
-	Box:SetFocus();
-end
-
-function D:Export_Close()
-	self.exportImport.Box:ClearFocus();
-	self.exportImport:Hide();
-end
-
-function D:Import_Open()
-	self.exportImport:Show()
-	self.exportImport.importButton.frame:Show()
-
-	local Box = self.exportImport.Box
-	Box.editBox:SetScript("OnEscapePressed", nil);
-	Box.editBox:SetScript("OnChar", nil);
-	Box.editBox:SetScript("OnMouseUp", nil);
-	Box.editBox:SetScript("OnTextChanged", nil);
-	Box.button:Hide();
-	Box:SetText("");
-end
-
-function D:ProfileToTableString(data)
-	local ret
+--The code in this function is from WeakAuras, credit goes to Mirrored and the WeakAuras Team
+local function TableToLuaString(inTable)
+	local ret = "{\n";
     local function recurse(table, level)
         for i,v in pairs(table) do
             ret = ret..strrep("    ", level).."[";
@@ -505,19 +335,129 @@ function D:ProfileToTableString(data)
         end
     end
 
-	-- local profileKey = "TestProfile"
-	local profileData = data
-    if type(data) == "string" then
-		_, data = GetProfileData("profile")
-	end
-	-- ret = "[\""..profileKey.."\"] = {\n";
-	ret = "{\n";
-    if(profileData) then
-        recurse(data, 1);
+    if(inTable) then
+        recurse(inTable, 1);
     end
     ret = ret.."}";
-    -- return profileType, profileKey, ret;
-	return ret;
+
+    return ret;
+end
+
+function D:ProfileToString(profileType)
+	local profileKey, data = GetProfileData(profileType)
+	
+	if not profileKey or not data then
+		return "Error exporting profile"
+	end
+
+	local serialData = self:Serialize(data)
+	local exportString = format("%s:%s:%s", profileType, profileKey, serialData)
+	local compressedData = libC:Compress(exportString)
+	local encodedData = E:EncodeB64(compressedData)
+
+	return profileKey, encodedData
+end
+
+function D:ProfileToLuaString(profileType)
+	local profileKey, profileData = GetProfileData(profileType)
+
+	local profileExport
+	if profileData then
+		profileExport = TableToLuaString(profileData)
+	end
+
+    return profileKey, profileExport
+end
+
+function D:Decode(str)
+	local decodedData = E:DecodeB64(str)
+	local decompressedData, message = libC:Decompress(decodedData)
+	
+	if not decompressedData then
+		print("Error decompressing data:", message)
+		return 
+	end
+	
+	local profileType, profileKey, serialData = split(":", decompressedData)
+	local success, profileData = self:Deserialize(serialData)
+	if not success then
+		print("Error deserializing:", profileData)
+		return
+	end
+	
+	return profileType, profileKey, profileData
+end
+
+function D:ExportProfile(profileType, asString)
+	local profileKey, profileExport
+
+	if asString then
+		profileKey, profileExport = self:ProfileToString(profileType)
+	else
+		profileKey, profileExport = self:ProfileToLuaString(profileType)
+	end
+	
+	return profileKey, profileExport
+end
+
+function D:ImportProfile(dataString)
+	local profileType, profileKey, profileData = self:Decode(dataString)
+	
+	if not profileType or not profileKey or not profileData then
+		print("something wrong with profile")
+		return
+	end
+	
+	if type(profileData) == "string" then
+		self.exportImport.Box:SetText(profileData)
+		return
+	end
+	
+	if not ElvDB.profiles[profileKey] then
+		ElvDB.profiles[profileKey] = profileData
+		LibStub("AceAddon-3.0"):GetAddon("ElvUI").data:SetProfile(profileKey)
+		E:UpdateAll(true)
+	else
+		self.tempData = profileData
+		E:StaticPopup_Show('IMPORT_PROFILE_EXISTS')
+	end
+end
+
+function D:Export_Open()
+	local profileType = "profile" --TODO: Let the user choose profile type
+	local profileKey, profileExport = self:ExportProfile(profileType)
+
+	local Box = self.exportImport.Box
+	Box.editBox:SetScript("OnEscapePressed", function() self:Export_Close(); end);
+	Box.editBox:SetScript("OnChar", function() Box:SetText(profileExport); Box.editBox:HighlightText(); end);
+	Box.editBox:SetScript("OnMouseUp", function() Box.editBox:HighlightText(); end);
+	Box.editBox:SetScript("OnTextChanged", nil);
+	Box:SetLabel("Profile type: "..profileType.." - Profile name: "..profileKey);
+	Box.button:Hide();
+	Box:SetText(profileExport);
+	Box.editBox:HighlightText();
+	Box:SetFocus();
+	
+	self.exportImport:Show()
+	self.exportImport.importButton.frame:Hide()
+end
+
+function D:Export_Close()
+	self.exportImport.Box:ClearFocus();
+	self.exportImport:Hide();
+end
+
+function D:Import_Open()
+	self.exportImport:Show()
+	self.exportImport.importButton.frame:Show()
+
+	local Box = self.exportImport.Box
+	Box.editBox:SetScript("OnEscapePressed", nil);
+	Box.editBox:SetScript("OnChar", nil);
+	Box.editBox:SetScript("OnMouseUp", nil);
+	Box.editBox:SetScript("OnTextChanged", nil);
+	Box.button:Hide();
+	Box:SetText("");
 end
 
 E.PopupDialogs['DISTRIBUTOR_SUCCESS'] = {
