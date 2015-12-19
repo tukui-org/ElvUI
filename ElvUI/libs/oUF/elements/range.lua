@@ -9,6 +9,8 @@ local tinsert, tremove, twipe = table.insert, table.remove, table.wipe
 
 local friendlySpells, resSpells, longEnemySpells, enemySpells, petSpells = {}, {}, {}, {}, {}
 
+local SpellRange = LibStub("SpellRange-1.0")
+
 local function AddSpell(table, spellID)
 	local name = GetSpellInfo(spellID)
 	if name then
@@ -107,7 +109,7 @@ local function friendlyIsInRange(unit)
 
 	if UnitIsDeadOrGhost(unit) and #resSpells > 0 then
 		for _, name in ipairs(resSpells) do
-			if IsSpellInRange(name, unit) == 1 then
+			if SpellRange.IsSpellInRange(name, unit) == 1 then
 				return true
 			end
 		end
@@ -120,7 +122,7 @@ local function friendlyIsInRange(unit)
 		return unit and UnitInRange(unit)
 	else
 		for _, name in ipairs(friendlySpells) do
-			if IsSpellInRange(name, unit) == 1 then
+			if SpellRange.IsSpellInRange(name, unit) == 1 then
 				return true
 			end
 		end
@@ -135,12 +137,12 @@ local function petIsInRange(unit)
 	end
 	
 	for _, name in ipairs(friendlySpells) do
-		if IsSpellInRange(name, unit) == 1 then
+		if SpellRange.IsSpellInRange(name, unit) == 1 then
 			return true
 		end
 	end
 	for _, name in ipairs(petSpells) do
-		if IsSpellInRange(name, unit) == 1 then
+		if SpellRange.IsSpellInRange(name, unit) == 1 then
 			return true
 		end
 	end
@@ -154,7 +156,7 @@ local function enemyIsInRange(unit)
 	end
 	
 	for _, name in ipairs(enemySpells) do
-		if IsSpellInRange(name, unit) == 1 then
+		if SpellRange.IsSpellInRange(name, unit) == 1 then
 			return true
 		end
 	end
@@ -164,7 +166,7 @@ end
 
 local function enemyIsInLongRange(unit)
 	for _, name in ipairs(longEnemySpells) do
-		if IsSpellInRange(name, unit) == 1 then
+		if SpellRange.IsSpellInRange(name, unit) == 1 then
 			return true
 		end
 	end

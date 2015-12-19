@@ -1,0 +1,22 @@
+------------------------------------------------------------------------
+r13 | cybeloras | 2014-10-14 04:20:16 +0000 (Tue, 14 Oct 2014) | 1 line
+Changed paths:
+   A /tags/1.0.007 (from /trunk:12)
+
+Tagging as 1.0.007
+------------------------------------------------------------------------
+r12 | cybeloras | 2014-10-14 04:18:48 +0000 (Tue, 14 Oct 2014) | 1 line
+Changed paths:
+   M /trunk/LibSpellRange-1.0.lua
+   M /trunk/LibSpellRange-1.0.toc
+
+Version bumps for Warlords of Draenor
+------------------------------------------------------------------------
+r11 | cybeloras | 2014-08-19 02:02:03 +0000 (Tue, 19 Aug 2014) | 1 line
+Changed paths:
+   M /trunk/.pkgmeta
+   M /trunk/LibSpellRange-1.0.lua
+   M /trunk/LibSpellRange-1.0.toc
+
+Updated to include an improved version of SpellHasRange()
+------------------------------------------------------------------------
