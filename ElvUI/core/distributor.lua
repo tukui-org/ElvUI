@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local D = E:NewModule('Distributor', "AceEvent-3.0","AceTimer-3.0","AceComm-3.0","AceSerializer-3.0")
-local libC = LibStub:GetLibrary("LibCompress")
+local LibCompress = LibStub:GetLibrary("LibCompress")
+local LibBase64 = LibStub("LibBase64-1.0-ElvUI")
 
 --Cache global variables
 local tonumber = tonumber
@@ -60,6 +61,23 @@ function D:Initialize()
 	Box:SetWidth(870)
 	exportImport:AddChild(Box);
 	self.exportImport.Box = Box
+	
+	local CheckBox = AceGUI:Create("CheckBox")
+	CheckBox:SetLabel("Export As Lua")
+	exportImport:AddChild(CheckBox);
+	self.exportImport.CheckBox = CheckBox
+	
+	local exportButton = AceGUI:Create("Button")
+	exportButton:SetText("Export Profile")
+	exportButton:SetAutoWidth(true)
+	exportButton:SetCallback("OnClick", function()
+		print("exporting profile")
+		-- self:ExportProfile("profile", self.exportImport.CheckBox:GetValue())
+		self:ExportProfile()
+	end)
+	exportImport:AddChild(exportButton)
+	exportButton.frame:Hide()
+	self.exportImport.exportButton = exportButton
 	
 	local importButton = AceGUI:Create("Button")
 	importButton:SetText("Import Profile")
@@ -311,8 +329,8 @@ function D:ProfileToString(profileType)
 
 	local serialData = self:Serialize(data)
 	local exportString = format("%s:%s:%s", profileType, profileKey, serialData)
-	local compressedData = libC:Compress(exportString)
-	local encodedData = E:EncodeB64(compressedData)
+	local compressedData = LibCompress:CompressHuffman(exportString)
+	local encodedData = LibBase64:Encode(compressedData)
 
 	return profileKey, encodedData
 end
@@ -329,28 +347,45 @@ function D:ProfileToLuaString(profileType)
 end
 
 function D:Decode(str)
-	local decodedData = E:DecodeB64(str)
-	local decompressedData, message = libC:Decompress(decodedData)
+	local isBase64 = LibBase64:IsBase64(str)
 	
-	if not decompressedData then
-		print("Error decompressing data:", message)
-		return 
+	if isBase64 then
+		print("base64 detected")
+		local decodedData = LibBase64:Decode(str)
+		local decompressedData, message = LibCompress:DecompressHuffman(decodedData)
+		
+		if not decompressedData then
+			print("Error decompressing data:", message)
+			return
+		end
+		
+		local profileType, profileKey, serialData = split(":", decompressedData)
+		local success, profileData = self:Deserialize(serialData)
+		if not success then
+			print("Error deserializing:", profileData)
+			return
+		end
+		
+		return profileType, profileKey, profileData
+	else
+		print("no base64")
 	end
-	
-	local profileType, profileKey, serialData = split(":", decompressedData)
-	local success, profileData = self:Deserialize(serialData)
-	if not success then
-		print("Error deserializing:", profileData)
-		return
-	end
-	
-	return profileType, profileKey, profileData
 end
 
-function D:ExportProfile(profileType, asString)
-	local profileKey, profileExport
+function D:ExportProfile()
+	local profileType = "profile" --TODO: Let the user choose profile type
+	local profileKey, profileExport = self:GetExportString(profileType, self.exportImport.CheckBox:GetValue())
+	local Box = self.exportImport.Box
+	Box:SetLabel("Profile type: "..profileType.." - Profile name: "..profileKey);
+	Box:SetText(profileExport);
+	Box.editBox:HighlightText();
+	Box:SetFocus();
+	Box.exportString = profileExport
+end
 
-	if asString then
+function D:GetExportString(profileType, asLua)
+	local profileKey, profileExport
+	if not asLua then
 		profileKey, profileExport = self:ProfileToString(profileType)
 	else
 		profileKey, profileExport = self:ProfileToLuaString(profileType)
@@ -383,22 +418,19 @@ function D:ImportProfile(dataString)
 end
 
 function D:Export_Open()
-	local profileType = "profile" --TODO: Let the user choose profile type
-	local profileKey, profileExport = self:ExportProfile(profileType)
+	D:ExportProfile()
 
 	local Box = self.exportImport.Box
 	Box.editBox:SetScript("OnEscapePressed", function() self:Export_Close(); end);
-	Box.editBox:SetScript("OnChar", function() Box:SetText(profileExport); Box.editBox:HighlightText(); end);
+	Box.editBox:SetScript("OnChar", function() Box:SetText(Box.exportString); Box.editBox:HighlightText(); end);
 	Box.editBox:SetScript("OnMouseUp", function() Box.editBox:HighlightText(); end);
 	Box.editBox:SetScript("OnTextChanged", nil);
-	Box:SetLabel("Profile type: "..profileType.." - Profile name: "..profileKey);
 	Box.button:Hide();
-	Box:SetText(profileExport);
-	Box.editBox:HighlightText();
-	Box:SetFocus();
-	
+
 	self.exportImport:Show()
 	self.exportImport.importButton.frame:Hide()
+	self.exportImport.exportButton.frame:Show()
+	self.exportImport.CheckBox.frame:Show()
 end
 
 function D:Export_Close()
@@ -409,6 +441,8 @@ end
 function D:Import_Open()
 	self.exportImport:Show()
 	self.exportImport.importButton.frame:Show()
+	self.exportImport.CheckBox.frame:Hide()
+	self.exportImport.exportButton.frame:Hide()
 
 	local Box = self.exportImport.Box
 	Box.editBox:SetScript("OnEscapePressed", nil);
