@@ -566,6 +566,8 @@ function E:CopyTable(currentTable, defaultTable)
 	return currentTable
 end
 
+
+-- TODO: Fix this function, for some reason it can only handle P tables. It was created late at night so my logic is probably flawed.
 function E:CleanTableDuplicates(cleanTable, defaultTable)
 	if type(cleanTable) ~= "table" or type(defaultTable) ~=  "table" then
 		print("E:CleanTableDuplicates error")
