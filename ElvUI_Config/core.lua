@@ -1,4 +1,6 @@
 ﻿local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local D = E:GetModule("Distributor")
+local AceGUI = LibStub("AceGUI-3.0")
 
 local tsort, tinsert = table.sort, table.insert
 local floor, ceil = math.floor, math.ceil
@@ -1208,6 +1210,86 @@ E.Options.args.credits = {
 	},
 }
 
+local function ExportImport_Open(mode)
+	local Frame = AceGUI:Create("Frame");
+	Frame:EnableResize(false)
+	Frame.frame:SetWidth(890)
+	Frame.frame:SetHeight(651)
+	Frame.frame:SetFrameStrata("FULLSCREEN_DIALOG")
+	Frame:SetLayout("flow");
+	Frame:SetCallback("OnClose", function(widget) AceGUI:Release(widget) end)
+	Frame:SetTitle("")
+
+	local Box = AceGUI:Create("MultiLineEditBox");
+	Box:SetNumLines(30)
+	Box:DisableButton(true)
+	Box:SetWidth(890)
+	Box:SetLabel("")
+	Box.button:Hide();
+	Frame:AddChild(Box);
+
+	if mode == "export" then
+		Frame:SetTitle("ElvUI Profile Export")
+		local Dropdown = AceGUI:Create("Dropdown")
+		local listItems = {
+			["profile"] = "Profile",
+			["private"] = "Private (Character Specific Settings)",
+			["global"] = "Filters",
+		}
+		local listOrder = {
+			"profile",
+			"private",
+			"global",
+		}
+		Dropdown:SetMultiselect(false)
+		Dropdown:SetLabel("Profile Type")
+		Dropdown:SetList(listItems, listOrder)
+		Frame:AddChild(Dropdown)
+		
+		local CheckBox = AceGUI:Create("CheckBox")
+		CheckBox:SetLabel("Export As Lua")
+		CheckBox:SetWidth(CheckBox.text:GetStringWidth() + 50)
+		Frame:AddChild(CheckBox);
+		
+		local exportButton = AceGUI:Create("Button")
+		exportButton:SetText("Export Profile")
+		exportButton:SetAutoWidth(true)
+		exportButton.OnClick = function(self)
+			local profileType, profileKey, profileData = D:ExportProfile(Dropdown:GetValue(), CheckBox:GetValue())
+			Box:SetLabel("Profile type: "..listItems[profileType].." | Profile name: "..profileKey);
+			Box:SetText(profileData);
+			Box.editBox:HighlightText();
+			Box:SetFocus();
+			Box.exportString = profileData
+		end
+		exportButton:SetCallback("OnClick", exportButton.OnClick)
+		Frame:AddChild(exportButton)
+		exportButton.frame:Hide()
+		
+		--Set scripts
+		Box.editBox:SetScript("OnChar", function() Box:SetText(Box.exportString); Box.editBox:HighlightText(); end);
+		Box.editBox:SetScript("OnMouseUp", function() Box.editBox:HighlightText(); end);
+		Box.editBox:SetScript("OnTextChanged", nil);
+	elseif mode == "import" then
+		Frame:SetTitle("ElvUI Profile Import")
+		local importButton = AceGUI:Create("Button")
+		importButton:SetText("Import Profile")
+		importButton:SetAutoWidth(true)
+		importButton:SetCallback("OnClick", function()
+			D:ImportProfile(D.Frame.Box:GetText())
+		end)
+		Frame:AddChild(importButton)
+		importButton.frame:Hide()
+		
+		--Set scripts
+		Box.editBox:SetScript("OnChar", nil);
+		Box.editBox:SetScript("OnMouseUp", nil);
+		Box.editBox:SetScript("OnTextChanged", nil);
+	end
+	
+	GameTooltip_Hide()
+end
+
 --Create Profiles Table
 E.Options.args.profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(E.data);
 AC:RegisterOptionsTable("ElvProfiles", E.Options.args.profiles)
@@ -1237,9 +1319,9 @@ E.Options.args.profiles.plugins["ElvUI"] = {
 			end
 			local name, server = UnitName("target")
 			if name and (not server or server == "") then
-				E:GetModule("Distributor"):Distribute(name)
+				D:Distribute(name)
 			elseif server then
-				E:GetModule("Distributor"):Distribute(name, true)
+				D:Distribute(name, true)
 			end
 		end,
 	},
@@ -1256,9 +1338,9 @@ E.Options.args.profiles.plugins["ElvUI"] = {
 
 			local name, server = UnitName("target")
 			if name and (not server or server == "") then
-				E:GetModule("Distributor"):Distribute(name, false, true)
+				D:Distribute(name, false, true)
 			elseif server then
-				E:GetModule("Distributor"):Distribute(name, true, true)
+				D:Distribute(name, true, true)
 			end
 		end,
 	},
@@ -1271,12 +1353,12 @@ E.Options.args.profiles.plugins["ElvUI"] = {
 		name = "Export Profile",
 		type = 'execute',
 		order = 40.8,
-		func = function() E:GetModule("Distributor"):Export_Open() end,
+		func = function() ExportImport_Open("export") end,
 	},
 	importProfile = {
 		name = "Import Profile",
 		type = 'execute',
 		order = 40.9,
-		func = function() E:GetModule("Distributor"):Import_Open() end,
+		func = function() ExportImport_Open("import") end,
 	},
 }

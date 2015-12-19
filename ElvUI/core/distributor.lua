@@ -14,7 +14,7 @@ local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local ACCEPT, CANCEL, YES, NO = ACCEPT, CANCEL, YES, NO
 
---Global variables that we don't cache, list them here for the mikk's Find Globals script
+--Global variables that we don't cache, list them here for the mikk"s Find Globals script
 -- GLOBALS: LibStub, UIParent, ElvDB
 
 ----------------------------------
@@ -39,55 +39,10 @@ function D:Initialize()
 	self.statusBar:SetStatusBarTexture(E.media.normTex)
 	self.statusBar:SetStatusBarColor(0.95, 0.15, 0.15)
 	self.statusBar:Size(250, 18)
-	self.statusBar.text = self.statusBar:CreateFontString(nil, 'OVERLAY')
+	self.statusBar.text = self.statusBar:CreateFontString(nil, "OVERLAY")
 	self.statusBar.text:FontTemplate()
 	self.statusBar.text:SetPoint("CENTER")
 	self.statusBar:Hide()
-
-	--Export Interface
-	local AceGUI = LibStub("AceGUI-3.0")
-	local exportImport = AceGUI:Create("Frame");
-	exportImport:EnableResize(false)
-	exportImport.frame:SetWidth(890)
-	exportImport.frame:SetHeight(651)
-	exportImport.frame:SetFrameStrata("TOOLTIP")
-	exportImport:SetLayout("flow");
-	exportImport:Hide();
-	self.exportImport = exportImport
-
-	local Box = AceGUI:Create("MultiLineEditBox");
-	Box:SetNumLines(35)
-	Box:DisableButton(true)
-	Box:SetWidth(870)
-	exportImport:AddChild(Box);
-	self.exportImport.Box = Box
-	
-	local CheckBox = AceGUI:Create("CheckBox")
-	CheckBox:SetLabel("Export As Lua")
-	exportImport:AddChild(CheckBox);
-	self.exportImport.CheckBox = CheckBox
-	
-	local exportButton = AceGUI:Create("Button")
-	exportButton:SetText("Export Profile")
-	exportButton:SetAutoWidth(true)
-	exportButton:SetCallback("OnClick", function()
-		print("exporting profile")
-		-- self:ExportProfile("profile", self.exportImport.CheckBox:GetValue())
-		self:ExportProfile()
-	end)
-	exportImport:AddChild(exportButton)
-	exportButton.frame:Hide()
-	self.exportImport.exportButton = exportButton
-	
-	local importButton = AceGUI:Create("Button")
-	importButton:SetText("Import Profile")
-	importButton:SetAutoWidth(true)
-	importButton:SetCallback("OnClick", function()
-		self:ImportProfile(self.exportImport.Box:GetText())
-	end)
-	exportImport:AddChild(importButton)
-	importButton.frame:Hide()
-	self.exportImport.importButton = importButton
 end
 
 -- Used to start uploads
@@ -100,7 +55,7 @@ function D:Distribute(target, otherServer, isGlobal)
 
 		data = ElvDB.profiles[profileKey]
 	else
-		profileKey = 'global'
+		profileKey = "global"
 		data = ElvDB.global
 	end
 
@@ -283,7 +238,7 @@ end
 
 local function GetProfileData(profileType)
 	if not profileType or type(profileType) ~= "string" then
-		print("Error getting profile data. You must supply 'profileType' argument (string)")
+		print("Bad argument #1 to 'GetProfileData' (string expected)")
 	end
 
 	local profileKey, success
@@ -294,21 +249,19 @@ local function GetProfileData(profileType)
 			profileKey = ElvDB.profileKeys[E.myname..' - '..E.myrealm]
 		end
 
-		data = table.copy(ElvDB.profiles[profileKey], true)
+		data = E:CopyTable(data , ElvDB.profiles[profileKey])
 		success, data = E:CleanTableDuplicates(data, P)
 
 	elseif profileType == "private" then
-		if ElvPrivateDB.profileKeys then
-			profileKey = ElvPrivateDB.profileKeys[E.myname..' - '..E.myrealm]
-		end
-
-		data = table.copy(ElvPrivateDB.profiles[profileKey], true)
+		profileKey = "private"
+		local privateProfileKey = E.myname..' - '..E.myrealm
+		data = E:CopyTable(data, ElvPrivateDB.profiles[privateProfileKey])
 		success, data = E:CleanTableDuplicates(data, V)
 
 	elseif profileType == "global" then
-		profileKey = 'global'
+		profileKey = "global"
 
-		data = table.copy(ElvDB.global, true)
+		data = E:CopyTable(data, ElvDB.global)
 		success, data = E:CleanTableDuplicates(data, G)
 	end
 
@@ -328,7 +281,12 @@ function D:ProfileToString(profileType)
 	end
 
 	local serialData = self:Serialize(data)
-	local exportString = format("%s:%s:%s", profileType, profileKey, serialData)
+	local exportString
+	if profileType == "profile" then
+		exportString = format("%s:%s:%s", serialData, profileType, profileKey)
+	else
+		exportString = format("%s:%s", serialData, profileType)
+	end
 	local compressedData = LibCompress:CompressHuffman(exportString)
 	local encodedData = LibBase64:Encode(compressedData)
 
@@ -338,15 +296,21 @@ end
 function D:ProfileToLuaString(profileType)
 	local profileKey, profileData = GetProfileData(profileType)
 
-	local profileExport
+	local profileExport, exportString
 	if profileData then
 		profileExport = E:TableToLuaString(profileData)
+		if profileType == "profile" then
+			exportString = format("%s:%s:%s", profileExport, profileType, profileKey)
+		else
+			exportString = format("%s:%s", profileExport, profileType)
+		end
 	end
 
-    return profileKey, profileExport
+    return profileKey, exportString
 end
 
 function D:Decode(str)
+	local profileType, profileKey, profileData
 	local isBase64 = LibBase64:IsBase64(str)
 	
 	if isBase64 then
@@ -359,28 +323,28 @@ function D:Decode(str)
 			return
 		end
 		
-		local profileType, profileKey, serialData = split(":", decompressedData)
-		local success, profileData = self:Deserialize(serialData)
+		local serialData
+		serialData, profileType, profileKey = split(":", decompressedData)
+		local success, data = self:Deserialize(serialData)
 		if not success then
-			print("Error deserializing:", profileData)
+			print("Error deserializing:", data)
 			return
 		end
 		
-		return profileType, profileKey, profileData
+		profileData = data
 	else
-		print("no base64")
+		local profileDataAsString
+		profileDataAsString, profileType, profileKey = split(":", str)
+		profileData = loadstring(format("%s %s", "return", profileDataAsString))()
 	end
+	
+	return profileType, profileKey, profileData
 end
 
-function D:ExportProfile()
-	local profileType = "profile" --TODO: Let the user choose profile type
-	local profileKey, profileExport = self:GetExportString(profileType, self.exportImport.CheckBox:GetValue())
-	local Box = self.exportImport.Box
-	Box:SetLabel("Profile type: "..profileType.." - Profile name: "..profileKey);
-	Box:SetText(profileExport);
-	Box.editBox:HighlightText();
-	Box:SetFocus();
-	Box.exportString = profileExport
+function D:ExportProfile(profileType, asLua)
+	local profileKey, profileData = self:GetExportString(profileType, asLua)
+	
+	return profileType, profileKey, profileData
 end
 
 function D:GetExportString(profileType, asLua)
@@ -397,60 +361,43 @@ end
 function D:ImportProfile(dataString)
 	local profileType, profileKey, profileData = self:Decode(dataString)
 	
-	if not profileType or not profileKey or not profileData then
-		print("something wrong with profile")
+	if not profileData or type(profileData) ~= "table" then
+		print("Error importing profile: Corrupted string?")
 		return
 	end
 	
-	if type(profileData) == "string" then
-		self.exportImport.Box:SetText(profileData)
-		return
-	end
-	
-	if not ElvDB.profiles[profileKey] then
-		ElvDB.profiles[profileKey] = profileData
-		LibStub("AceAddon-3.0"):GetAddon("ElvUI").data:SetProfile(profileKey)
-		E:UpdateAll(true)
+	if not profileType or (profileType and profileType == "profile" and not profileKey) then
+		
 	else
-		self.tempData = profileData
-		E:StaticPopup_Show('IMPORT_PROFILE_EXISTS')
+		self:SetImportedProfile(profileType, profileKey, profileData)
 	end
 end
 
-function D:Export_Open()
-	D:ExportProfile()
+function D:SetImportedProfile(profileType, profileKey, profileData, force)
+	self.profileType = nil
+	self.profileKey = nil
+	self.profileData = nil
 
-	local Box = self.exportImport.Box
-	Box.editBox:SetScript("OnEscapePressed", function() self:Export_Close(); end);
-	Box.editBox:SetScript("OnChar", function() Box:SetText(Box.exportString); Box.editBox:HighlightText(); end);
-	Box.editBox:SetScript("OnMouseUp", function() Box.editBox:HighlightText(); end);
-	Box.editBox:SetScript("OnTextChanged", nil);
-	Box.button:Hide();
-
-	self.exportImport:Show()
-	self.exportImport.importButton.frame:Hide()
-	self.exportImport.exportButton.frame:Show()
-	self.exportImport.CheckBox.frame:Show()
-end
-
-function D:Export_Close()
-	self.exportImport.Box:ClearFocus();
-	self.exportImport:Hide();
-end
-
-function D:Import_Open()
-	self.exportImport:Show()
-	self.exportImport.importButton.frame:Show()
-	self.exportImport.CheckBox.frame:Hide()
-	self.exportImport.exportButton.frame:Hide()
-
-	local Box = self.exportImport.Box
-	Box.editBox:SetScript("OnEscapePressed", nil);
-	Box.editBox:SetScript("OnChar", nil);
-	Box.editBox:SetScript("OnMouseUp", nil);
-	Box.editBox:SetScript("OnTextChanged", nil);
-	Box.button:Hide();
-	Box:SetText("");
+	if profileType == "profile" then
+		if not ElvDB.profiles[profileKey] or force then
+			ElvDB.profiles[profileKey] = profileData
+			LibStub("AceAddon-3.0"):GetAddon("ElvUI").data:SetProfile(profileKey)
+			E:UpdateAll(true)
+			print("just set profile:", profileKey)
+		else
+			self.profileType = profileType
+			self.profileKey = profileKey
+			self.profileData = profileData
+			E:StaticPopup_Show('IMPORT_PROFILE_EXISTS')
+		end
+	elseif profileType == "private" then
+		local profileKey = ElvPrivateDB.profileKeys[E.myname..' - '..E.myrealm]
+		ElvPrivateDB.profiles[profileKey] = profileData
+		E:StaticPopup_Show('CONFIG_RL')
+	elseif profileType == "global" then
+		E:CopyTable(ElvDB.global, profileData)
+		E:UpdateAll(true)
+	end
 end
 
 E.PopupDialogs['DISTRIBUTOR_SUCCESS'] = {
@@ -491,16 +438,23 @@ E.PopupDialogs['IMPORT_PROFILE_EXISTS'] = {
 	editBoxWidth = 350,
 	maxLetters = 127,
 	OnAccept = function(self)
-		if self.editBox:GetText() == "" then return; end
-		ElvDB.profiles[self.editBox:GetText()] = D.tempData
-		D.tempData = nil
-		LibStub("AceAddon-3.0"):GetAddon("ElvUI").data:SetProfile(self.editBox:GetText())
-		E:UpdateAll(true)
+		local profileType = D.profileType
+		local profileKey = self.editBox:GetText()
+		local profileData = D.profileData
+		D:SetImportedProfile(profileType, profileKey, profileData, true)
 	end,
+	EditBoxOnTextChanged = function(self)
+		if self:GetText() == "" then
+			self:GetParent().button1:Disable()
+		else
+			self:GetParent().button1:Enable()
+		end
+	end,
+	OnShow = function(self) self.editBox:SetText(D.profileKey) self.editBox:SetFocus() end,
 	timeout = 0,
 	exclusive = 1,
 	whileDead = 1,
-	hideOnEscape = 1,
+	hideOnEscape = true,
 	preferredIndex = 3
 }
 
