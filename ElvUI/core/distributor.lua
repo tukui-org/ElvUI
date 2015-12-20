@@ -443,7 +443,7 @@ E.PopupDialogs['DISTRIBUTOR_RESPONSE'] = {}
 E.PopupDialogs['DISTRIBUTOR_CONFIRM'] = {}
 
 E.PopupDialogs['IMPORT_PROFILE_EXISTS'] = {
-	text = L["The profile you tried to import already exists. Please choose a new name for the imported profile."],
+	text = L["The profile you tried to import already exists. If you don't choose a new name, then it will overwrite your current profile."],
 	button1 = ACCEPT,
 	hasEditBox = 1,
 	editBoxWidth = 350,
