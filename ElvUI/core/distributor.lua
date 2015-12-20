@@ -331,6 +331,12 @@ local function SetImportedProfile(profileType, profileKey, profileData, force)
 
 	if profileType == "profile" then
 		if not ElvDB.profiles[profileKey] or force then
+			if force then
+				--Overwriting a profile doesn't update immediately
+				--So make it look like we use a different profile
+				local tempKey = profileKey.."_Temp"
+				LibStub("AceAddon-3.0"):GetAddon("ElvUI").data.keys.profile = tempKey
+			end
 			ElvDB.profiles[profileKey] = profileData
 			LibStub("AceAddon-3.0"):GetAddon("ElvUI").data:SetProfile(profileKey)
 			E:UpdateAll(true)
