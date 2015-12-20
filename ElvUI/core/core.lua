@@ -566,30 +566,59 @@ function E:CopyTable(currentTable, defaultTable)
 	return currentTable
 end
 
+local function IsTableEmpty(tbl)
+    for _, _ in pairs(tbl) do
+        return false
+    end
+    return true
+end
 
--- TODO: Fix this function, for some reason it can only handle P tables. It was created late at night so my logic is probably flawed.
-function E:CleanTableDuplicates(cleanTable, defaultTable)
-	if type(cleanTable) ~= "table" or type(defaultTable) ~=  "table" then
-		print("E:CleanTableDuplicates error")
-		return nil
+function E:RemoveEmptySubTables(tbl)
+	if type(tbl) ~= "table" then
+		E:Print("Bad argument #1 to 'RemoveEmptyTables' (table expected)")
+		return
 	end
 
-	for option, value in pairs(defaultTable) do
-		if type(value) == "table" then
-			value = self:CleanTableDuplicates(cleanTable[option], value)
-		end
-
-		if cleanTable[option] == value then
-			cleanTable[option] = nil
-		end
-		
-		--Remove empty entries
-		if type(cleanTable[option]) == "table" and #cleanTable[option] == 0 then
-			cleanTable[option] = nil
+	for k, v in pairs(tbl) do
+		if type(v) == "table" then
+			if IsTableEmpty(v) then
+				tbl[k] = nil
+			else
+				self:RemoveEmptyTables(v)
+			end
 		end
 	end
+end
 
-	return true, cleanTable
+--Compare 2 tables and remove duplicate key/value pairs
+--param cleanTable : table you want cleaned
+--param checkTable : table you want to check against.
+--return : a copy of cleanTable with duplicate key/value pairs removed
+function E:RemoveTableDuplicates(cleanTable, checkTable)
+	if type(cleanTable) ~= "table" then
+		print("Bad argument #1 to 'RemoveTableDuplicates' (table expected)")
+		return
+	end
+	if type(checkTable) ~=  "table" then
+		print("Bad argument #2 to 'RemoveTableDuplicates' (table expected)")
+		return
+	end
+	
+	local cleaned = {}
+	for option, value in pairs(cleanTable) do
+		if type(value) == "table" and checkTable[option] and type(checkTable[option]) == "table" then
+			cleaned[option] = self:RemoveTableDuplicates(value, checkTable[option])
+		else
+			if cleanTable[option] ~= checkTable[option] then
+				cleaned[option] = value
+			end
+		end
+	end
+	
+	--Clean out empty sub-tables
+	self:RemoveEmptySubTables(cleaned)
+
+	return cleaned
 end
 
 --The code in this function is from WeakAuras, credit goes to Mirrored and the WeakAuras Team
