@@ -238,55 +238,54 @@ end
 
 local function GetProfileData(profileType)
 	if not profileType or type(profileType) ~= "string" then
-		print("Bad argument #1 to 'GetProfileData' (string expected)")
+		print("Bad argument #1 to 'GetProfileprofileData' (string expected)")
 	end
 
-	local profileKey, success
-	local data = {}
+	local profileKey
+	local profileData = {}
 
 	if profileType == "profile" then
 		if ElvDB.profileKeys then
 			profileKey = ElvDB.profileKeys[E.myname..' - '..E.myrealm]
 		end
 
-		data = E:CopyTable(data , ElvDB.profiles[profileKey])
-		success, data = E:CleanTableDuplicates(data, P)
+		profileData = E:CopyTable(profileData , ElvDB.profiles[profileKey])
+		profileData = E:RemoveTableDuplicates(profileData, P)
 
 	elseif profileType == "private" then
-		profileKey = "private"
 		local privateProfileKey = E.myname..' - '..E.myrealm
-		data = E:CopyTable(data, ElvPrivateDB.profiles[privateProfileKey])
-		success, data = E:CleanTableDuplicates(data, V)
+		profileKey = "private"
+
+		profileData = E:CopyTable(profileData, ElvPrivateDB.profiles[privateProfileKey])
+		profileData = E:RemoveTableDuplicates(profileData, V)
 
 	elseif profileType == "global" then
 		profileKey = "global"
 
-		data = E:CopyTable(data, ElvDB.global)
-		success, data = E:CleanTableDuplicates(data, G)
-	end
-
-	if not success then
-		print("Error cleaning table:", data)
-		return
+		profileData = E:CopyTable(profileData, ElvDB.global)
+		profileData = E:RemoveTableDuplicates(profileData, G)
 	end
 	
-	return profileKey, data
+	return profileKey, profileData
 end
 
 local function ProfileToString(profileType)
-	local profileKey, data = GetProfileData(profileType)
+	local profileKey, profileData = GetProfileData(profileType)
 	
-	if not profileKey or not data then
-		return "Error exporting profile"
+	if not profileKey or not profileData then
+		print("Error in ProfileToString, GetProfileData returned nil!")
+		return
 	end
 
-	local serialData = D:Serialize(data)
+	local serialData = D:Serialize(profileData)
 	local exportString
+
 	if profileType == "profile" then
 		exportString = format("%s:%s:%s", serialData, profileType, profileKey)
 	else
 		exportString = format("%s:%s", serialData, profileType)
 	end
+	
 	local compressedData = LibCompress:CompressHuffman(exportString)
 	local encodedData = LibBase64:Encode(compressedData)
 
@@ -295,6 +294,11 @@ end
 
 local function ProfileToLuaString(profileType)
 	local profileKey, profileData = GetProfileData(profileType)
+	
+	if not profileKey or not profileData then
+		print("Error in ProfileToLuaString, GetProfileData returned nil!")
+		return
+	end
 
 	local profileExport, exportString
 	if profileData then
@@ -358,7 +362,7 @@ function D:ExportProfile(profileType, exportType)
 	local profileKey, profileData = GetExportString(profileType, exportType)
 	
 	if not profileKey or not profileData then
-		-- print("Error: something went wrong
+		print("Error: something went wrong")
 	end
 	return profileKey, profileData
 end
@@ -368,7 +372,6 @@ function D:ImportProfile(dataString)
 	local isBase64 = LibBase64:IsBase64(dataString)
 	
 	if isBase64 then
-		print("base64 detected")
 		local decodedData = LibBase64:Decode(dataString)
 		local decompressedData, message = LibCompress:DecompressHuffman(decodedData)
 		
