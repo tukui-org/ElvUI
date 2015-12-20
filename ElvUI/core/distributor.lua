@@ -273,14 +273,14 @@ local function GetProfileData(profileType)
 	return profileKey, data
 end
 
-function D:ProfileToString(profileType)
+local function ProfileToString(profileType)
 	local profileKey, data = GetProfileData(profileType)
 	
 	if not profileKey or not data then
 		return "Error exporting profile"
 	end
 
-	local serialData = self:Serialize(data)
+	local serialData = D:Serialize(data)
 	local exportString
 	if profileType == "profile" then
 		exportString = format("%s:%s:%s", serialData, profileType, profileKey)
@@ -293,90 +293,37 @@ function D:ProfileToString(profileType)
 	return profileKey, encodedData
 end
 
-function D:ProfileToLuaString(profileType)
+local function ProfileToLuaString(profileType)
 	local profileKey, profileData = GetProfileData(profileType)
 
 	local profileExport, exportString
 	if profileData then
-		profileExport = E:TableToLuaString(profileData)
+		exportString = E:TableToLuaString(profileData)
 		if profileType == "profile" then
-			exportString = format("%s:%s:%s", profileExport, profileType, profileKey)
+			profileExport = format("%s:%s:%s", exportString, profileType, profileKey)
 		else
-			exportString = format("%s:%s", profileExport, profileType)
+			profileExport = format("%s:%s", exportString, profileType)
 		end
 	end
 
-    return profileKey, exportString
+    return profileKey, profileExport
 end
 
-function D:Decode(str)
-	local profileType, profileKey, profileData
-	local isBase64 = LibBase64:IsBase64(str)
-	
-	if isBase64 then
-		print("base64 detected")
-		local decodedData = LibBase64:Decode(str)
-		local decompressedData, message = LibCompress:DecompressHuffman(decodedData)
-		
-		if not decompressedData then
-			print("Error decompressing data:", message)
-			return
-		end
-		
-		local serialData
-		serialData, profileType, profileKey = split(":", decompressedData)
-		local success, data = self:Deserialize(serialData)
-		if not success then
-			print("Error deserializing:", data)
-			return
-		end
-		
-		profileData = data
-	else
-		local profileDataAsString
-		profileDataAsString, profileType, profileKey = split(":", str)
-		profileData = loadstring(format("%s %s", "return", profileDataAsString))()
-	end
-	
-	return profileType, profileKey, profileData
-end
-
-function D:ExportProfile(profileType, asLua)
-	local profileKey, profileData = self:GetExportString(profileType, asLua)
-	
-	return profileType, profileKey, profileData
-end
-
-function D:GetExportString(profileType, asLua)
+local function GetExportString(profileType, exportType)
 	local profileKey, profileExport
-	if not asLua then
-		profileKey, profileExport = self:ProfileToString(profileType)
-	else
-		profileKey, profileExport = self:ProfileToLuaString(profileType)
+	if exportType == "text" then
+		profileKey, profileExport = ProfileToString(profileType)
+	elseif exportType == "lua" then
+		profileKey, profileExport = ProfileToLuaString(profileType)
 	end
 	
 	return profileKey, profileExport
 end
 
-function D:ImportProfile(dataString)
-	local profileType, profileKey, profileData = self:Decode(dataString)
-	
-	if not profileData or type(profileData) ~= "table" then
-		print("Error importing profile: Corrupted string?")
-		return
-	end
-	
-	if not profileType or (profileType and profileType == "profile" and not profileKey) then
-		
-	else
-		self:SetImportedProfile(profileType, profileKey, profileData)
-	end
-end
-
-function D:SetImportedProfile(profileType, profileKey, profileData, force)
-	self.profileType = nil
-	self.profileKey = nil
-	self.profileData = nil
+local function SetImportedProfile(profileType, profileKey, profileData, force)
+	D.profileType = nil
+	D.profileKey = nil
+	D.profileData = nil
 
 	if profileType == "profile" then
 		if not ElvDB.profiles[profileKey] or force then
@@ -385,9 +332,9 @@ function D:SetImportedProfile(profileType, profileKey, profileData, force)
 			E:UpdateAll(true)
 			print("just set profile:", profileKey)
 		else
-			self.profileType = profileType
-			self.profileKey = profileKey
-			self.profileData = profileData
+			D.profileType = profileType
+			D.profileKey = profileKey
+			D.profileData = profileData
 			E:StaticPopup_Show('IMPORT_PROFILE_EXISTS')
 		end
 	elseif profileType == "private" then
@@ -397,6 +344,61 @@ function D:SetImportedProfile(profileType, profileKey, profileData, force)
 	elseif profileType == "global" then
 		E:CopyTable(ElvDB.global, profileData)
 		E:UpdateAll(true)
+	end
+end
+
+function D:ExportProfile(profileType, exportType)
+	if not profileType then
+		print("Bad argument #1 to 'ExportProfile' (string expected)")
+	end
+	if not exportType then
+		print("Bad argument #2 to 'ExportProfile' (string expected)")
+	end
+
+	local profileKey, profileData = GetExportString(profileType, exportType)
+	
+	if not profileKey or not profileData then
+		-- print("Error: something went wrong
+	end
+	return profileKey, profileData
+end
+
+function D:ImportProfile(dataString)
+	local profileType, profileKey, profileData
+	local isBase64 = LibBase64:IsBase64(dataString)
+	
+	if isBase64 then
+		print("base64 detected")
+		local decodedData = LibBase64:Decode(dataString)
+		local decompressedData, message = LibCompress:DecompressHuffman(decodedData)
+		
+		if not decompressedData then
+			print("Error decompressing data:", message)
+			return
+		end
+		
+		local serializedData, success
+		serializedData, profileType, profileKey = split(":", decompressedData)
+		success, profileData = D:Deserialize(serializedData)
+		if not success then
+			print("Error deserializing:", profileData)
+			return
+		end
+	else
+		local profileDataAsString
+		profileDataAsString, profileType, profileKey = split(":", dataString)
+		profileData = loadstring(format("%s %s", "return", profileDataAsString))()
+	end
+	
+	if not profileData or type(profileData) ~= "table" then
+		print("Error importing profile: Corrupted string?")
+		return
+	end
+	
+	if not profileType or (profileType and profileType == "profile" and not profileKey) then
+		
+	else
+		SetImportedProfile(profileType, profileKey, profileData)
 	end
 end
 
@@ -441,7 +443,7 @@ E.PopupDialogs['IMPORT_PROFILE_EXISTS'] = {
 		local profileType = D.profileType
 		local profileKey = self.editBox:GetText()
 		local profileData = D.profileData
-		D:SetImportedProfile(profileType, profileKey, profileData, true)
+		SetImportedProfile(profileType, profileKey, profileData, true)
 	end,
 	EditBoxOnTextChanged = function(self)
 		if self:GetText() == "" then
