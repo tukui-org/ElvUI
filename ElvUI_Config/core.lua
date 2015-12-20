@@ -1210,53 +1210,72 @@ E.Options.args.credits = {
 	},
 }
 
+local profileTypeItems = {
+	["profile"] = "Profile",
+	["private"] = "Private (Character Specific Settings)",
+	["global"] = "Filters",
+}
+local profileTypeListOrder = {
+	"profile",
+	"private",
+	"global",
+}
+local exportTypeItems = {
+	["text"] = "Text",
+	["lua"] = "Lua",
+	-- ["global"] = "Filters",
+}
+local exportTypeListOrder = {
+	"text",
+	"lua",
+	-- "global",
+}
+		
 local function ExportImport_Open(mode)
 	local Frame = AceGUI:Create("Frame");
 	Frame:EnableResize(false)
-	Frame.frame:SetWidth(890)
-	Frame.frame:SetHeight(651)
+	Frame.frame:SetWidth(800)
+	Frame.frame:SetHeight(600)
 	Frame.frame:SetFrameStrata("FULLSCREEN_DIALOG")
 	Frame:SetLayout("flow");
-	Frame:SetCallback("OnClose", function(widget) AceGUI:Release(widget) end)
+	Frame:SetCallback("OnClose", function(widget)
+		AceGUI:Release(widget)
+		ACD:Open("ElvUI")
+	end)
 	Frame:SetTitle("")
 
 	local Box = AceGUI:Create("MultiLineEditBox");
 	Box:SetNumLines(30)
 	Box:DisableButton(true)
-	Box:SetWidth(890)
+	Box:SetWidth(800)
 	Box:SetLabel("")
 	Box.button:Hide();
 	Frame:AddChild(Box);
 
 	if mode == "export" then
 		Frame:SetTitle("ElvUI Profile Export")
-		local Dropdown = AceGUI:Create("Dropdown")
-		local listItems = {
-			["profile"] = "Profile",
-			["private"] = "Private (Character Specific Settings)",
-			["global"] = "Filters",
-		}
-		local listOrder = {
-			"profile",
-			"private",
-			"global",
-		}
-		Dropdown:SetMultiselect(false)
-		Dropdown:SetLabel("Profile Type")
-		Dropdown:SetList(listItems, listOrder)
-		Frame:AddChild(Dropdown)
+		local ProfileTypeDropdown = AceGUI:Create("Dropdown")
+		ProfileTypeDropdown:SetMultiselect(false)
+		ProfileTypeDropdown:SetLabel("Profile Type")
+		ProfileTypeDropdown:SetList(profileTypeItems, profileTypeListOrder)
+		ProfileTypeDropdown:SetValue("profile")
+		Frame:AddChild(ProfileTypeDropdown)
 		
-		local CheckBox = AceGUI:Create("CheckBox")
-		CheckBox:SetLabel("Export As Lua")
-		CheckBox:SetWidth(CheckBox.text:GetStringWidth() + 50)
-		Frame:AddChild(CheckBox);
+		local ExportTypeDropdown = AceGUI:Create("Dropdown")
+		ExportTypeDropdown:SetMultiselect(false)
+		ExportTypeDropdown:SetLabel("Export Type")
+		ExportTypeDropdown:SetList(exportTypeItems, exportTypeListOrder)
+		ExportTypeDropdown:SetValue("text")
+		ExportTypeDropdown.frame:SetWidth(150)
+		Frame:AddChild(ExportTypeDropdown)
 		
 		local exportButton = AceGUI:Create("Button")
 		exportButton:SetText("Export Profile")
 		exportButton:SetAutoWidth(true)
 		exportButton.OnClick = function(self)
-			local profileType, profileKey, profileData = D:ExportProfile(Dropdown:GetValue(), CheckBox:GetValue())
-			Box:SetLabel("Profile type: "..listItems[profileType].." | Profile name: "..profileKey);
+			local profileType, exportType = ProfileTypeDropdown:GetValue(), ExportTypeDropdown:GetValue()
+			local profileKey, profileData = D:ExportProfile(profileType, exportType)
+			Box:SetLabel(format("%s: %s | %s: %s", "Profile type", profileTypeItems[profileType], "Profile name", profileKey))
 			Box:SetText(profileData);
 			Box.editBox:HighlightText();
 			Box:SetFocus();
@@ -1270,6 +1289,7 @@ local function ExportImport_Open(mode)
 		Box.editBox:SetScript("OnChar", function() Box:SetText(Box.exportString); Box.editBox:HighlightText(); end);
 		Box.editBox:SetScript("OnMouseUp", function() Box.editBox:HighlightText(); end);
 		Box.editBox:SetScript("OnTextChanged", nil);
+
 	elseif mode == "import" then
 		Frame:SetTitle("ElvUI Profile Import")
 		local importButton = AceGUI:Create("Button")
@@ -1287,7 +1307,8 @@ local function ExportImport_Open(mode)
 		Box.editBox:SetScript("OnTextChanged", nil);
 	end
 	
-	GameTooltip_Hide()
+	ACD:Close("ElvUI")
+	GameTooltip_Hide() --The tooltip from the Export/Import button stays on screen, so hide it
 end
 
 --Create Profiles Table
