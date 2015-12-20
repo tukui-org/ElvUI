@@ -575,7 +575,7 @@ end
 
 function E:RemoveEmptySubTables(tbl)
 	if type(tbl) ~= "table" then
-		E:Print("Bad argument #1 to 'RemoveEmptyTables' (table expected)")
+		E:Print("Bad argument #1 to 'RemoveEmptySubTables' (table expected)")
 		return
 	end
 
@@ -584,7 +584,7 @@ function E:RemoveEmptySubTables(tbl)
 			if IsTableEmpty(v) then
 				tbl[k] = nil
 			else
-				self:RemoveEmptyTables(v)
+				self:RemoveEmptySubTables(v)
 			end
 		end
 	end
