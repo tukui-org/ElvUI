@@ -609,6 +609,7 @@ function E:RemoveTableDuplicates(cleanTable, checkTable)
 		if type(value) == "table" and checkTable[option] and type(checkTable[option]) == "table" then
 			cleaned[option] = self:RemoveTableDuplicates(value, checkTable[option])
 		else
+			-- Add unique data to our clean table
 			if cleanTable[option] ~= checkTable[option] then
 				cleaned[option] = value
 			end
