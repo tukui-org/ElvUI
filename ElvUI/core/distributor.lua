@@ -417,7 +417,7 @@ function D:ImportProfile(dataString)
 	end
 	
 	if not profileType or (profileType and profileType == "profile" and not profileKey) then
-		
+		--Can't remember what I was doing here. Will need to look at it again later.
 	else
 		SetImportedProfile(profileType, profileKey, profileData)
 	end
