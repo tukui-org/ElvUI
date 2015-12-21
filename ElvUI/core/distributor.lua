@@ -249,7 +249,11 @@ local function GetProfileData(profileType)
 			profileKey = ElvDB.profileKeys[E.myname..' - '..E.myrealm]
 		end
 
+		--Copy current profile data
 		profileData = E:CopyTable(profileData , ElvDB.profiles[profileKey])
+		--This table will also hold all default values, not just the changed settings.
+		--This makes the table huge, and will cause the WoW client to lock up for several seconds.
+		--We compare against the default table and remove all duplicates from our table. The table is now much smaller.
 		profileData = E:RemoveTableDuplicates(profileData, P)
 
 	elseif profileType == "private" then
