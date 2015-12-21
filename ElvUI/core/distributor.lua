@@ -400,7 +400,7 @@ function D:ImportProfile(dataString)
 		-- profileDataAsString, profileType, profileKey = split(":", dataString)
 		-- profileData, message = loadstring(format("%s %s", "return", profileDataAsString))()
 		--if not profileData then
-			--print("Error converting lua string to table.")
+			--print("Error converting lua string to table:", message)
 			--return
 		--end
 		E:Print("Sorry, importing a lua string is currently not working. It will be fixed soon(tm)")
