@@ -398,7 +398,11 @@ function D:ImportProfile(dataString)
 		--See http://git.tukui.org/Elv/elvui/commit/f74fa2bdde45328a82689c8f781798dd4af07b12
 		-- local profileDataAsString
 		-- profileDataAsString, profileType, profileKey = split(":", dataString)
-		-- profileData = loadstring(format("%s %s", "return", profileDataAsString))()
+		-- profileData, message = loadstring(format("%s %s", "return", profileDataAsString))()
+		--if not profileData then
+			--print("Error converting lua string to table.")
+			--return
+		--end
 		E:Print("Sorry, importing a lua string is currently not working. It will be fixed soon(tm)")
 		return
 	end
