@@ -238,7 +238,8 @@ end
 
 local function GetProfileData(profileType)
 	if not profileType or type(profileType) ~= "string" then
-		print("Bad argument #1 to 'GetProfileprofileData' (string expected)")
+		E:Print("Bad argument #1 to 'GetProfileData' (string expected)")
+		return
 	end
 
 	local profileKey
@@ -273,40 +274,31 @@ local function GetProfileData(profileType)
 	return profileKey, profileData
 end
 
-local function ProfileToString(profileType)
-	local profileKey, profileData = GetProfileData(profileType)
-	
-	if not profileKey or not profileData then
-		print("Error in ProfileToString, GetProfileData returned nil!")
-		return
-	end
-
-	local serialData = D:Serialize(profileData)
-	local exportString
-
-	if profileType == "profile" then
-		exportString = format("%s:%s:%s", serialData, profileType, profileKey)
-	else
-		exportString = format("%s:%s", serialData, profileType)
-	end
-	
-	local compressedData = LibCompress:CompressHuffman(exportString)
-	local encodedData = LibBase64:Encode(compressedData)
-
-	return profileKey, encodedData
-end
-
-local function ProfileToLuaString(profileType)
-	local profileKey, profileData = GetProfileData(profileType)
-	
-	if not profileKey or not profileData then
-		print("Error in ProfileToLuaString, GetProfileData returned nil!")
-		return
-	end
-
+local function GetProfileExport(profileType, exportFormat)
 	local profileExport, exportString
-	if profileData then
+	local profileKey, profileData = GetProfileData(profileType)
+
+	if not profileKey or not profileData or (profileData and type(profileData) ~= "table") then
+		E:Print("Error getting data from 'GetProfileData'")
+		return
+	end
+
+	if exportFormat == "text" then
+		local serialData = D:Serialize(profileData)
+
+		if profileType == "profile" then
+			exportString = format("%s:%s:%s", serialData, profileType, profileKey)
+		else
+			exportString = format("%s:%s", serialData, profileType)
+		end
+		
+		local compressedData = LibCompress:CompressHuffman(exportString)
+		local encodedData = LibBase64:Encode(compressedData)
+		profileExport = encodedData
+
+	elseif exportFormat == "lua" then
 		exportString = E:TableToLuaString(profileData)
+
 		if profileType == "profile" then
 			profileExport = format("%s:%s:%s", exportString, profileType, profileKey)
 		else
@@ -314,18 +306,44 @@ local function ProfileToLuaString(profileType)
 		end
 	end
 
-    return profileKey, profileExport
+	return profileKey, profileExport
 end
 
-local function GetExportString(profileType, exportType)
-	local profileKey, profileExport
-	if exportType == "text" then
-		profileKey, profileExport = ProfileToString(profileType)
-	elseif exportType == "lua" then
-		profileKey, profileExport = ProfileToLuaString(profileType)
+local function ProfileStringToTable(dataString)
+	local profileType, profileKey, profileData
+	local isBase64 = LibBase64:IsBase64(dataString)
+	
+	if isBase64 then
+		local decodedData = LibBase64:Decode(dataString)
+		local decompressedData, message = LibCompress:DecompressHuffman(decodedData)
+		
+		if not decompressedData then
+			E:Print("Error decompressing data:", message)
+			return
+		end
+		
+		local serializedData, success
+		serializedData, profileType, profileKey = split(":", decompressedData)
+		success, profileData = D:Deserialize(serializedData)
+		if not success then
+			E:Print("Error deserializing:", profileData)
+			return
+		end
+	else
+		--Importing lua strings is currently not working correctly because of how mover strings are saved
+		--See http://git.tukui.org/Elv/elvui/commit/f74fa2bdde45328a82689c8f781798dd4af07b12
+		-- local profileDataAsString
+		-- profileDataAsString, profileType, profileKey = split(":", dataString)
+		-- profileData, message = loadstring(format("%s %s", "return", profileDataAsString))()
+		--if not profileData then
+			--print("Error converting lua string to table:", message)
+			--return
+		--end
+		E:Print("Sorry, importing a lua string is currently not working. It will be fixed soon(tm)")
+		return
 	end
 	
-	return profileKey, profileExport
+	return profileType, profileKey, profileData
 end
 
 local function SetImportedProfile(profileType, profileKey, profileData, force)
@@ -361,66 +379,34 @@ local function SetImportedProfile(profileType, profileKey, profileData, force)
 	end
 end
 
-function D:ExportProfile(profileType, exportType)
-	if not profileType then
-		print("Bad argument #1 to 'ExportProfile' (string expected)")
-	end
-	if not exportType then
-		print("Bad argument #2 to 'ExportProfile' (string expected)")
+function D:ExportProfile(profileType, exportFormat)
+	if not profileType or not exportFormat then
+		E:Print("Bad argument to 'ExportProfile' (string expected)")
+		return
 	end
 
-	local profileKey, profileData = GetExportString(profileType, exportType)
+	local profileKey, profileExport = GetProfileExport(profileType, exportFormat)
 	
-	if not profileKey or not profileData then
-		print("Error: something went wrong")
-	end
-	return profileKey, profileData
+	return profileKey, profileExport
 end
 
 function D:ImportProfile(dataString)
-	local profileType, profileKey, profileData
-	local isBase64 = LibBase64:IsBase64(dataString)
-	
-	if isBase64 then
-		local decodedData = LibBase64:Decode(dataString)
-		local decompressedData, message = LibCompress:DecompressHuffman(decodedData)
-		
-		if not decompressedData then
-			print("Error decompressing data:", message)
-			return
-		end
-		
-		local serializedData, success
-		serializedData, profileType, profileKey = split(":", decompressedData)
-		success, profileData = D:Deserialize(serializedData)
-		if not success then
-			print("Error deserializing:", profileData)
-			return
-		end
-	else
-		--Importing lua strings is currently not working correctly because of how mover strings are saved
-		--See http://git.tukui.org/Elv/elvui/commit/f74fa2bdde45328a82689c8f781798dd4af07b12
-		-- local profileDataAsString
-		-- profileDataAsString, profileType, profileKey = split(":", dataString)
-		-- profileData, message = loadstring(format("%s %s", "return", profileDataAsString))()
-		--if not profileData then
-			--print("Error converting lua string to table:", message)
-			--return
-		--end
-		E:Print("Sorry, importing a lua string is currently not working. It will be fixed soon(tm)")
-		return
-	end
+	local message = ""
+	local profileType, profileKey, profileData = ProfileStringToTable(dataString)
 	
 	if not profileData or type(profileData) ~= "table" then
-		print("Error importing profile: Corrupted string?")
+		E:Print("Error: something went wrong when converting string to table!")
 		return
 	end
 	
 	if not profileType or (profileType and profileType == "profile" and not profileKey) then
-		--Can't remember what I was doing here. Will need to look at it again later.
+		message = "Error importing profile. Import string may be corrupted!"
 	else
 		SetImportedProfile(profileType, profileKey, profileData)
+		message = "Profile import complete!"
 	end
+	
+	return message
 end
 
 E.PopupDialogs['DISTRIBUTOR_SUCCESS'] = {
@@ -455,8 +441,9 @@ E.PopupDialogs['DISTRIBUTOR_RESPONSE'] = {}
 E.PopupDialogs['DISTRIBUTOR_CONFIRM'] = {}
 
 E.PopupDialogs['IMPORT_PROFILE_EXISTS'] = {
-	text = L["The profile you tried to import already exists. If you don't choose a new name, then it will overwrite your current profile."],
+	text = L["The profile you tried to import already exists. Choose a new name or accept to overwrite your current profile."],
 	button1 = ACCEPT,
+	button2 = CANCEL,
 	hasEditBox = 1,
 	editBoxWidth = 350,
 	maxLetters = 127,

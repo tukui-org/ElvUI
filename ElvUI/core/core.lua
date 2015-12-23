@@ -596,11 +596,11 @@ end
 --return : a copy of cleanTable with duplicate key/value pairs removed
 function E:RemoveTableDuplicates(cleanTable, checkTable)
 	if type(cleanTable) ~= "table" then
-		print("Bad argument #1 to 'RemoveTableDuplicates' (table expected)")
+		E:Print("Bad argument #1 to 'RemoveTableDuplicates' (table expected)")
 		return
 	end
 	if type(checkTable) ~=  "table" then
-		print("Bad argument #2 to 'RemoveTableDuplicates' (table expected)")
+		E:Print("Bad argument #2 to 'RemoveTableDuplicates' (table expected)")
 		return
 	end
 	

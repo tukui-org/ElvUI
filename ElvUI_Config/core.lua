@@ -1232,54 +1232,85 @@ local exportTypeListOrder = {
 }
 		
 local function ExportImport_Open(mode)
-	local Frame = AceGUI:Create("Frame");
+	local Frame = AceGUI:Create("Frame")
+	Frame:SetTitle("")
 	Frame:EnableResize(false)
 	Frame.frame:SetWidth(800)
 	Frame.frame:SetHeight(600)
 	Frame.frame:SetFrameStrata("FULLSCREEN_DIALOG")
-	Frame:SetLayout("flow");
+	Frame:SetLayout("flow")
 	Frame:SetCallback("OnClose", function(widget)
 		AceGUI:Release(widget)
 		ACD:Open("ElvUI")
 	end)
-	Frame:SetTitle("")
 
 	local Box = AceGUI:Create("MultiLineEditBox");
 	Box:SetNumLines(30)
 	Box:DisableButton(true)
 	Box:SetWidth(800)
 	Box:SetLabel("")
-	Box.button:Hide();
-	Frame:AddChild(Box);
+	Box.button:Hide()
+	Box.editBox:SetScript("OnEditFocusGained", function() Box.editBox:HighlightText() end)
+	Frame:AddChild(Box)
+	
+	local Label1 = AceGUI:Create("Label")
+	local font = GameFontHighlightSmall:GetFont()
+	Label1:SetFont(font, 14)
+	Label1:SetText(".") --Set temporary text so height is set correctly
+	Label1:SetWidth(770)
+	Label1.label:SetJustifyH("RIGHT")
+	Frame:AddChild(Label1)
+	
+	local Label2 = AceGUI:Create("Label")
+	local font = GameFontHighlightSmall:GetFont()
+	Label2:SetFont(font, 14)
+	Label2:SetText(".")
+	Label2:SetWidth(770)
+	Label2.label:SetJustifyH("RIGHT")
+	Frame:AddChild(Label2)
 
 	if mode == "export" then
-		Frame:SetTitle("ElvUI Profile Export")
+		Frame:SetTitle(L["Export Profile"])
+
 		local ProfileTypeDropdown = AceGUI:Create("Dropdown")
 		ProfileTypeDropdown:SetMultiselect(false)
-		ProfileTypeDropdown:SetLabel("Profile Type")
+		ProfileTypeDropdown:SetLabel(L["Choose What To Export"])
 		ProfileTypeDropdown:SetList(profileTypeItems, profileTypeListOrder)
-		ProfileTypeDropdown:SetValue("profile")
+		ProfileTypeDropdown:SetValue("profile") --Default export
 		Frame:AddChild(ProfileTypeDropdown)
 		
-		local ExportTypeDropdown = AceGUI:Create("Dropdown")
-		ExportTypeDropdown:SetMultiselect(false)
-		ExportTypeDropdown:SetLabel("Export Type")
-		ExportTypeDropdown:SetList(exportTypeItems, exportTypeListOrder)
-		ExportTypeDropdown:SetValue("text")
-		ExportTypeDropdown.frame:SetWidth(150)
-		Frame:AddChild(ExportTypeDropdown)
+		local ExportFormatDropdown = AceGUI:Create("Dropdown")
+		ExportFormatDropdown:SetMultiselect(false)
+		ExportFormatDropdown:SetLabel(L["Choose Export Format"])
+		ExportFormatDropdown:SetList(exportTypeItems, exportTypeListOrder)
+		ExportFormatDropdown:SetValue("text") --Default format
+		ExportFormatDropdown.frame:SetWidth(150)
+		Frame:AddChild(ExportFormatDropdown)
 		
 		local exportButton = AceGUI:Create("Button")
-		exportButton:SetText("Export Profile")
+		exportButton:SetText(L["Export Now"])
 		exportButton:SetAutoWidth(true)
 		exportButton.OnClick = function(self)
-			local profileType, exportType = ProfileTypeDropdown:GetValue(), ExportTypeDropdown:GetValue()
-			local profileKey, profileData = D:ExportProfile(profileType, exportType)
-			Box:SetLabel(format("%s: %s | %s: %s", "Profile type", profileTypeItems[profileType], "Profile name", profileKey))
-			Box:SetText(profileData);
+			--Clear labels
+			Label1:SetText("")
+			Label2:SetText("")
+
+			local profileType, exportFormat = ProfileTypeDropdown:GetValue(), ExportFormatDropdown:GetValue()
+			local profileKey, profileExport = D:ExportProfile(profileType, exportFormat)
+			if not profileKey or not profileExport then
+				Label1:SetText("Error exporting profile!")
+			else
+				if profileType == "profile" then
+					Label1:SetText(format("%s: %s%s|r", L["Exported"], E.media.hexvaluecolor, profileTypeItems[profileType]))
+					Label2:SetText(format("%s: %s%s|r", L["Profile Name"], E.media.hexvaluecolor, profileKey))
+				else
+					Label1:SetText(format("%s: %s%s", L["Exported"], E.media.hexvaluecolor, profileTypeItems[profileType]))
+				end
+			end
+			Box:SetText(profileExport);
 			Box.editBox:HighlightText();
 			Box:SetFocus();
-			Box.exportString = profileData
+			Box.exportString = profileExport
 		end
 		exportButton:SetCallback("OnClick", exportButton.OnClick)
 		Frame:AddChild(exportButton)
@@ -1296,7 +1327,12 @@ local function ExportImport_Open(mode)
 		importButton:SetText("Import Profile")
 		importButton:SetAutoWidth(true)
 		importButton:SetCallback("OnClick", function()
-			D:ImportProfile(Box:GetText())
+			--Clear labels
+			Label1:SetText("")
+			Label2:SetText("")
+
+			local message = D:ImportProfile(Box:GetText())
+			Label1:SetText(message)
 		end)
 		Frame:AddChild(importButton)
 		importButton.frame:Hide()
@@ -1305,9 +1341,16 @@ local function ExportImport_Open(mode)
 		Box.editBox:SetScript("OnChar", nil);
 		Box.editBox:SetScript("OnMouseUp", nil);
 		Box.editBox:SetScript("OnTextChanged", nil);
+		Box.editBox:SetFocus()
 	end
 	
+	--Clear default text
+	Label1:SetText("")
+	Label2:SetText("")
+	
+	--Close ElvUI Config
 	ACD:Close("ElvUI")
+
 	GameTooltip_Hide() --The tooltip from the Export/Import button stays on screen, so hide it
 end
 
@@ -1371,13 +1414,13 @@ E.Options.args.profiles.plugins["ElvUI"] = {
 		name = '',
 	},
 	exportProfile = {
-		name = "Export Profile",
+		name = L["Export Profile"],
 		type = 'execute',
 		order = 40.8,
 		func = function() ExportImport_Open("export") end,
 	},
 	importProfile = {
-		name = "Import Profile",
+		name = L["Import Profile"],
 		type = 'execute',
 		order = 40.9,
 		func = function() ExportImport_Open("import") end,
