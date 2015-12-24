@@ -287,12 +287,12 @@ local function GetProfileExport(profileType, exportFormat)
 		local serialData = D:Serialize(profileData)
 
 		if profileType == "profile" then
-			exportString = format("%s:%s:%s", serialData, profileType, profileKey)
+			exportString = format("%s::%s::%s", serialData, profileType, profileKey)
 		else
-			exportString = format("%s:%s", serialData, profileType)
+			exportString = format("%s::%s", serialData, profileType)
 		end
 		
-		local compressedData = LibCompress:CompressHuffman(exportString)
+		local compressedData = LibCompress:Compress(exportString)
 		local encodedData = LibBase64:Encode(compressedData)
 		profileExport = encodedData
 
@@ -300,9 +300,9 @@ local function GetProfileExport(profileType, exportFormat)
 		exportString = E:TableToLuaString(profileData)
 
 		if profileType == "profile" then
-			profileExport = format("%s:%s:%s", exportString, profileType, profileKey)
+			profileExport = format("%s::%s::%s", exportString, profileType, profileKey)
 		else
-			profileExport = format("%s:%s", exportString, profileType)
+			profileExport = format("%s::%s", exportString, profileType)
 		end
 	end
 
@@ -315,7 +315,7 @@ function D:Decode(dataString)
 	
 	if isBase64 then
 		local decodedData = LibBase64:Decode(dataString)
-		local decompressedData, message = LibCompress:DecompressHuffman(decodedData)
+		local decompressedData, message = LibCompress:Decompress(decodedData)
 		
 		if not decompressedData then
 			E:Print("Error decompressing data:", message)
@@ -323,7 +323,7 @@ function D:Decode(dataString)
 		end
 		
 		local serializedData, success
-		serializedData, profileType, profileKey = split(":", decompressedData)
+		serializedData, profileType, profileKey = E:StringSplitMultiDelim(decompressedData, "::")
 		success, profileData = D:Deserialize(serializedData)
 		if not success then
 			E:Print("Error deserializing:", profileData)
