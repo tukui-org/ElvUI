@@ -289,12 +289,19 @@ function UF:Construct_MageResourceBar(frame)
 	return bars
 end
 
-function UF:UpdateArcaneCharges(event, unit, arcaneCharges, maxCharges)
+function UF:UpdateArcaneCharges(event, arcaneCharges, maxCharges)
 	local frame = self:GetParent()
 	local db = frame.db
 	if not db then return; end
 
 	local point, _, anchorPoint, x, y = frame.Health:GetPoint()
+	
+	if arcaneCharges == 0 and db.classbar.autoHide then
+		self:Hide()
+	else
+		self:Show()
+	end
+
 	if self:IsShown() and point then
 		if db.classbar.fill == 'spaced' then
 			frame.Health:SetPoint(point, frame, anchorPoint, x, -7)
