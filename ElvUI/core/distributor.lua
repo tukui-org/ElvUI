@@ -309,7 +309,7 @@ local function GetProfileExport(profileType, exportFormat)
 	return profileKey, profileExport
 end
 
-local function ProfileStringToTable(dataString)
+function D:Decode(dataString)
 	local profileType, profileKey, profileData
 	local isBase64 = LibBase64:IsBase64(dataString)
 	
@@ -362,12 +362,13 @@ local function SetImportedProfile(profileType, profileKey, profileData, force)
 			ElvDB.profiles[profileKey] = profileData
 			LibStub("AceAddon-3.0"):GetAddon("ElvUI").data:SetProfile(profileKey)
 			E:UpdateAll(true)
-			print("just set profile:", profileKey)
 		else
 			D.profileType = profileType
 			D.profileKey = profileKey
 			D.profileData = profileData
 			E:StaticPopup_Show('IMPORT_PROFILE_EXISTS')
+			
+			return
 		end
 	elseif profileType == "private" then
 		local profileKey = ElvPrivateDB.profileKeys[E.myname..' - '..E.myrealm]
@@ -377,6 +378,8 @@ local function SetImportedProfile(profileType, profileKey, profileData, force)
 		E:CopyTable(ElvDB.global, profileData)
 		E:UpdateAll(true)
 	end
+	
+	return L["Profile imported successfully!"]
 end
 
 function D:ExportProfile(profileType, exportFormat)
@@ -392,7 +395,7 @@ end
 
 function D:ImportProfile(dataString)
 	local message = ""
-	local profileType, profileKey, profileData = ProfileStringToTable(dataString)
+	local profileType, profileKey, profileData = self:Decode(dataString)
 	
 	if not profileData or type(profileData) ~= "table" then
 		E:Print("Error: something went wrong when converting string to table!")
@@ -400,10 +403,9 @@ function D:ImportProfile(dataString)
 	end
 	
 	if not profileType or (profileType and profileType == "profile" and not profileKey) then
-		message = "Error importing profile. Import string may be corrupted!"
+		message = L["Error decoding data. Import string may be corrupted!"]
 	else
-		SetImportedProfile(profileType, profileKey, profileData)
-		message = "Profile import complete!"
+		message = SetImportedProfile(profileType, profileKey, profileData)
 	end
 	
 	return message

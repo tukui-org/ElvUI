@@ -1298,13 +1298,11 @@ local function ExportImport_Open(mode)
 			local profileType, exportFormat = ProfileTypeDropdown:GetValue(), ExportFormatDropdown:GetValue()
 			local profileKey, profileExport = D:ExportProfile(profileType, exportFormat)
 			if not profileKey or not profileExport then
-				Label1:SetText("Error exporting profile!")
+				Label1:SetText(L["Error exporting profile!"])
 			else
+				Label1:SetText(format("%s: %s%s|r", L["Exported"], E.media.hexvaluecolor, profileTypeItems[profileType]))
 				if profileType == "profile" then
-					Label1:SetText(format("%s: %s%s|r", L["Exported"], E.media.hexvaluecolor, profileTypeItems[profileType]))
 					Label2:SetText(format("%s: %s%s|r", L["Profile Name"], E.media.hexvaluecolor, profileKey))
-				else
-					Label1:SetText(format("%s: %s%s", L["Exported"], E.media.hexvaluecolor, profileTypeItems[profileType]))
 				end
 			end
 			Box:SetText(profileExport);
@@ -1322,9 +1320,9 @@ local function ExportImport_Open(mode)
 		Box.editBox:SetScript("OnTextChanged", nil);
 
 	elseif mode == "import" then
-		Frame:SetTitle("ElvUI Profile Import")
+		Frame:SetTitle(L["Import Profile"])
 		local importButton = AceGUI:Create("Button")
-		importButton:SetText("Import Profile")
+		importButton:SetText(L["Import Now"])
 		importButton:SetAutoWidth(true)
 		importButton:SetCallback("OnClick", function()
 			--Clear labels
@@ -1340,7 +1338,19 @@ local function ExportImport_Open(mode)
 		--Set scripts
 		Box.editBox:SetScript("OnChar", nil);
 		Box.editBox:SetScript("OnMouseUp", nil);
-		Box.editBox:SetScript("OnTextChanged", nil);
+		Box.editBox:SetScript("OnTextChanged", function(self, userInput)
+			if userInput then
+				local profileType, profileKey = D:Decode(self:GetText())
+				if not profileType or (profileType and profileType == "profile" and not profileKey) then
+					Label1:SetText(L["Error decoding data. Import string may be corrupted!"])
+				else
+					Label1:SetText(format("%s: %s%s|r", L["Importing"], E.media.hexvaluecolor, profileTypeItems[profileType]))
+					if profileType == "profile" then
+						Label2:SetText(format("%s: %s%s|r", L["Profile Name"], E.media.hexvaluecolor, profileKey))
+					end
+				end
+			end
+		end);
 		Box.editBox:SetFocus()
 	end
 	
