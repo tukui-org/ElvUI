@@ -5,11 +5,11 @@ local Masque = LibStub("Masque", true)
 --Cache global variables
 --Lua functions
 local _G = _G
-local tonumber, pairs, error, unpack, select = tonumber, pairs, error, unpack, select
-local print, type, collectgarbage, pcall, date = print, type, collectgarbage, pcall, date
-local twipe, tinsert= table.wipe, tinsert
+local tonumber, pairs, error, unpack, select, tostring = tonumber, pairs, error, unpack, select, tostring
+local assert, print, type, collectgarbage, pcall, date = assert, print, type, collectgarbage, pcall, date
+local twipe, tinsert = table.wipe, tinsert
 local floor = floor
-local format, find, split, match = string.format, string.find, string.split, string.match
+local format, find, split, match, strrep, len, sub = string.format, string.find, string.split, string.match, strrep, string.len, string.sub
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetCVar, SetCVar, GetCVarBool = GetCVar, SetCVar, GetCVarBool
@@ -665,7 +665,7 @@ end
 
 --Split string by multi-character delimiter (the strsplit / string.split function provided by WoW doesn't allow multi-character delimiter)
 function E:StringSplitMultiDelim(s, delim)
-	assert(type (delim) == "string" and string.len(delim) > 0, "bad delimiter")
+	assert(type (delim) == "string" and len(delim) > 0, "bad delimiter")
 
 	local start = 1
 	local t = {}  -- results table
@@ -673,19 +673,19 @@ function E:StringSplitMultiDelim(s, delim)
 	-- find each instance of a string followed by the delimiter
 
 	while true do
-		local pos = string.find(s, delim, start, true) -- plain find
+		local pos = find(s, delim, start, true) -- plain find
 
 		if not pos then
 			break
 		end
 
-		table.insert(t, string.sub(s, start, pos - 1))
-		start = pos + string.len(delim)
+		tinsert(t, sub(s, start, pos - 1))
+		start = pos + len(delim)
 	end -- while
 
 	-- insert final one (after last delimiter)
 
-	table.insert(t, string.sub(s, start))
+	tinsert(t, sub(s, start))
 
 	return unpack(t)
 end

@@ -4,6 +4,7 @@ local AceGUI = LibStub("AceGUI-3.0")
 
 local tsort, tinsert = table.sort, table.insert
 local floor, ceil = math.floor, math.ceil
+local format = string.format
 local DEFAULT_WIDTH = 890;
 local DEFAULT_HEIGHT = 651;
 local AC = LibStub("AceConfig-3.0-ElvUI")

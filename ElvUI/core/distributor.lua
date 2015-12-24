@@ -4,7 +4,7 @@ local LibCompress = LibStub:GetLibrary("LibCompress")
 local LibBase64 = LibStub("LibBase64-1.0-ElvUI")
 
 --Cache global variables
-local tonumber = tonumber
+local tonumber, type = tonumber, type
 local len, format, split = string.len, string.format, string.split
 --WoW API / Variables
 local CreateFrame = CreateFrame
@@ -15,7 +15,7 @@ local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local ACCEPT, CANCEL, YES, NO = ACCEPT, CANCEL, YES, NO
 
 --Global variables that we don't cache, list them here for the mikk"s Find Globals script
--- GLOBALS: LibStub, UIParent, ElvDB
+-- GLOBALS: LibStub, UIParent, ElvDB, ElvPrivateDB
 
 ----------------------------------
 -- CONSTANTS
