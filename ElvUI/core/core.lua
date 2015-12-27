@@ -163,8 +163,8 @@ E.ClassRole = {
 
 E.noop = function() end;
 
-function E:Print(msg)
-	print(self["media"].hexvaluecolor..'ElvUI:|r', msg)
+function E:Print(...)
+	print(self["media"].hexvaluecolor..'ElvUI:|r', ...)
 end
 
 --Workaround for people wanting to use white and it reverting to their class color.
