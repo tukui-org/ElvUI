@@ -754,12 +754,12 @@ function UF:CreateHeader(parent, groupFilter, overrideName, template, groupName,
 	return header
 end
 
-function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdate, headerTemplate, skipFilterUpdate)
+function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdate, headerTemplate)
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return end
 	local db = self.db['units'][group]
 	local raidFilter = UF.db.smartRaidFilter
 	local numGroups = db.numGroups
-	if(raidFilter and numGroups and not skipFilterUpdate) then
+	if(raidFilter and numGroups and (self[group] and not self[group].blockVisibilityChanges)) then
 		local inInstance, instanceType = IsInInstance()
 		if(inInstance and (instanceType == 'raid' or instanceType == 'pvp')) then
 			local _, _, _, _, maxPlayers, _, _, mapID, maxPlayersInstance = GetInstanceInfo()
@@ -962,14 +962,13 @@ function UF:UpdateAllHeaders(event)
 	for group, header in pairs(self['headers']) do
 		header:Update()
 
-		local skipFilterUpdate = (group == "party")
 		local shouldUpdateHeader
 		if header.numGroups == nil or smartRaidFilterEnabled then
 			shouldUpdateHeader = false
 		elseif header.numGroups ~= nil and not smartRaidFilterEnabled then
 			shouldUpdateHeader = true
 		end
-		self:CreateAndUpdateHeaderGroup(group, nil, nil, shouldUpdateHeader, nil, skipFilterUpdate)
+		self:CreateAndUpdateHeaderGroup(group, nil, nil, shouldUpdateHeader)
 
 		if group == 'party' or group == 'raid' or group == 'raid40' then
 			--Update BuffIndicators on profile change as they might be using profile specific data
