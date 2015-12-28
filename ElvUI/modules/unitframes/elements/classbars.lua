@@ -296,7 +296,7 @@ function UF:UpdateArcaneCharges(event, arcaneCharges, maxCharges)
 
 	local point, _, anchorPoint, x, y = frame.Health:GetPoint()
 	
-	if arcaneCharges == 0
+	if arcaneCharges == 0 then
 		if db.classbar.autoHide then
 			self:Hide()
 		else
