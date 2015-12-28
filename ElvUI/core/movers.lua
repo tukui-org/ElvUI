@@ -6,7 +6,7 @@ local Sticky = LibStub("LibSimpleSticky-1.0")
 local _G = _G
 local type, unpack, pairs = type, unpack, pairs
 local min = math.min
-local format, split = string.format, string.split
+local format, split, find = string.format, string.split, string.find
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
@@ -115,9 +115,9 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 		--Backward compatibility
 		local delim
 		local anchorString = E.db['movers'][name]
-		if string.find(anchorString, "\031") then
+		if find(anchorString, "\031") then
 			delim = "\031"
-		elseif string.find(anchorString, ",") then
+		elseif find(anchorString, ",") then
 			delim = ","
 		end
 		local point, anchor, secondaryPoint, x, y = split(delim, anchorString)
@@ -398,9 +398,9 @@ function E:SetMoversPositions()
 			--Backward compatibility
 			local delim
 			local anchorString = E.db['movers'][name]
-			if string.find(anchorString, "\031") then
+			if find(anchorString, "\031") then
 				delim = "\031"
-			elseif string.find(anchorString, ",") then
+			elseif find(anchorString, ",") then
 				delim = ","
 			end
 			point, anchor, secondaryPoint, x, y = split(delim, anchorString)
