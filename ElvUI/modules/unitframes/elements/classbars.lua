@@ -298,6 +298,8 @@ function UF:UpdateArcaneCharges(event, arcaneCharges, maxCharges)
 	
 	if arcaneCharges == 0 and db.classbar.autoHide then
 		self:Hide()
+	else
+		self:Show()
 	end
 
 	if self:IsShown() and point then
