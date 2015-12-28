@@ -33,7 +33,7 @@ local function GetPoint(obj)
 
 	if not anchor then anchor = ElvUIParent end
 
-	return format('%s\031%s\031%s\031%d\031%d', point, anchor:GetName(), secondaryPoint, E:Round(x), E:Round(y))
+	return format('%s,%s,%s,%d,%d', point, anchor:GetName(), secondaryPoint, E:Round(x), E:Round(y))
 end
 
 local function UpdateCoords(self)
@@ -83,7 +83,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 	if E.CreatedMovers[name].Created then return end
 
 	if overlay == nil then overlay = true end
-	local point, anchor, secondaryPoint, x, y = split('\031', GetPoint(parent))
+	local point, anchor, secondaryPoint, x, y = split(',', GetPoint(parent))
 	local f = CreateFrame("Button", name, E.UIParent)
 	f:SetFrameLevel(parent:GetFrameLevel() + 1)
 	f:SetClampedToScreen(true)
@@ -112,7 +112,15 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 			f:ClearAllPoints()
 		end
 
-		local point, anchor, secondaryPoint, x, y = split('\031', E.db['movers'][name])
+		--Backward compatibility
+		local delim
+		local anchorString = E.db['movers'][name]
+		if string.find(anchorString, "\031") then
+			delim = "\031"
+		elseif string.find(anchorString, ",") then
+			delim = ","
+		end
+		local point, anchor, secondaryPoint, x, y = split(delim, anchorString)
 		f:SetPoint(point, anchor, secondaryPoint, x, y)
 	else
 
@@ -345,7 +353,7 @@ function E:ResetMovers(arg)
 	if arg == "" or arg == nil then
 		for name, _ in pairs(E.CreatedMovers) do
 			local f = _G[name]
-			local point, anchor, secondaryPoint, x, y = split('\031', E.CreatedMovers[name]['point'])
+			local point, anchor, secondaryPoint, x, y = split(',', E.CreatedMovers[name]['point'])
 			f:ClearAllPoints()
 			f:SetPoint(point, anchor, secondaryPoint, x, y)
 
@@ -363,7 +371,7 @@ function E:ResetMovers(arg)
 				if key == "text" then
 					if arg == value then
 						local f = _G[name]
-						local point, anchor, secondaryPoint, x, y = split('\031', E.CreatedMovers[name]['point'])
+						local point, anchor, secondaryPoint, x, y = split(',', E.CreatedMovers[name]['point'])
 						f:ClearAllPoints()
 						f:SetPoint(point, anchor, secondaryPoint, x, y)
 
@@ -387,11 +395,19 @@ function E:SetMoversPositions()
 		local f = _G[name]
 		local point, anchor, secondaryPoint, x, y
 		if E.db["movers"] and E.db["movers"][name] and type(E.db["movers"][name]) == 'string' then
-			point, anchor, secondaryPoint, x, y = split('\031', E.db["movers"][name])
+			--Backward compatibility
+			local delim
+			local anchorString = E.db['movers'][name]
+			if string.find(anchorString, "\031") then
+				delim = "\031"
+			elseif string.find(anchorString, ",") then
+				delim = ","
+			end
+			point, anchor, secondaryPoint, x, y = split(delim, anchorString)
 			f:ClearAllPoints()
 			f:SetPoint(point, anchor, secondaryPoint, x, y)
 		elseif f then
-			point, anchor, secondaryPoint, x, y = split('\031', E.CreatedMovers[name]['point'])
+			point, anchor, secondaryPoint, x, y = split(',', E.CreatedMovers[name]['point'])
 			f:ClearAllPoints()
 			f:SetPoint(point, anchor, secondaryPoint, x, y)
 		end
