@@ -296,10 +296,18 @@ function UF:UpdateArcaneCharges(event, arcaneCharges, maxCharges)
 
 	local point, _, anchorPoint, x, y = frame.Health:GetPoint()
 	
-	if arcaneCharges == 0 and db.classbar.autoHide then
-		self:Hide()
-	else
-		self:Show()
+	if arcaneCharges == 0
+		if db.classbar.autoHide then
+			self:Hide()
+		else
+			--Clear arcane charge statusbars
+			for i = 1, maxCharges do
+				self[i]:SetValue(0)
+				self[i]:SetScript('OnUpdate', nil)
+			end
+			
+			self:Show()
+		end
 	end
 
 	if self:IsShown() and point then
