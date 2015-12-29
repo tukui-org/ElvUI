@@ -44,6 +44,7 @@ local NUM_PET_ACTION_SLOTS = NUM_PET_ACTION_SLOTS
 
 --Constants
 E.myclass = select(2, UnitClass("player"));
+E.myspec = GetSpecialization()
 E.myrace = select(2, UnitRace("player"))
 E.myfaction = select(2, UnitFactionGroup('player'))
 E.myname = UnitName("player");
@@ -473,6 +474,7 @@ function E:CheckRole()
 		IsInPvPGear = true;
 	end
 
+	self.myspec = talentTree
 
 	if type(self.ClassRole[self.myclass]) == "string" then
 		role = self.ClassRole[self.myclass]
