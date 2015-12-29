@@ -4,7 +4,7 @@ local LibCompress = LibStub:GetLibrary("LibCompress")
 local LibBase64 = LibStub("LibBase64-1.0-ElvUI")
 
 --Cache global variables
-local tonumber, type = tonumber, type
+local tonumber, type, pcall, loadstring = tonumber, type, pcall, loadstring
 local len, format, split, find = string.len, string.format, string.split, string.find
 --WoW API / Variables
 local CreateFrame = CreateFrame
@@ -310,7 +310,7 @@ local function GetProfileExport(profileType, exportFormat)
 end
 
 function D:Decode(dataString)
-	local profileType, profileKey, profileData
+	local profileType, profileKey, profileData, message
 
 	if LibBase64:IsBase64(dataString) then
 		local decodedData = LibBase64:Decode(dataString)
