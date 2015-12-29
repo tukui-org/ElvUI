@@ -330,17 +330,13 @@ function D:Decode(dataString)
 			return
 		end
 	else
-		--Importing lua strings is currently not working correctly because of how mover strings are saved
-		--See http://git.tukui.org/Elv/elvui/commit/f74fa2bdde45328a82689c8f781798dd4af07b12
-		-- local profileDataAsString
-		-- profileDataAsString, profileType, profileKey = split(":", dataString)
-		-- profileData, message = loadstring(format("%s %s", "return", profileDataAsString))()
-		--if not profileData then
-			--print("Error converting lua string to table:", message)
-			--return
-		--end
-		E:Print("Sorry, importing a lua string is currently not working. It will be fixed soon(tm)")
-		return
+		local profileDataAsString
+		profileDataAsString, profileType, profileKey = split("::", dataString)
+		profileData, message = loadstring(format("%s %s", "return", profileDataAsString))()
+		if not profileData then
+			E:Print("Error converting lua string to table:", message)
+			return
+		end
 	end
 	
 	return profileType, profileKey, profileData
