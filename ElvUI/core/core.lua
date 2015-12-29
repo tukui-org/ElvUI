@@ -924,6 +924,18 @@ function E:DBConversions()
 		
 		E.db.bossAuraFiltersConverted = true
 	end
+	
+	--Convert stored mover strings to use the new comma delimiter
+	if not E.db.moversConverted then
+		for mover, moverString in pairs(E.db.movers) do
+		   if find(moverString, "\031") then --Old delimiter found
+			  moverString = string.gsub(moverString, "\031", ",") --Replace with new delimiter
+			  E.db.movers[mover] = moverString --Store updated mover string
+		   end
+		end
+		
+		E.db.moversConverted = true
+	end
 end
 
 local CPU_USAGE = {}
