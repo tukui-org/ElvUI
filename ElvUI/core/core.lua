@@ -9,7 +9,7 @@ local tonumber, pairs, error, unpack, select = tonumber, pairs, error, unpack, s
 local print, type, collectgarbage, pcall, date = print, type, collectgarbage, pcall, date
 local twipe, tinsert= table.wipe, tinsert
 local floor = floor
-local format, find, split, match = string.format, string.find, string.split, string.match
+local format, find, split, match, gsub = string.format, string.find, string.split, string.match, string.gsub
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetCVar, SetCVar, GetCVarBool = GetCVar, SetCVar, GetCVarBool
@@ -929,7 +929,7 @@ function E:DBConversions()
 	if not E.db.moversConverted then
 		for mover, moverString in pairs(E.db.movers) do
 		   if find(moverString, "\031") then --Old delimiter found
-			  moverString = string.gsub(moverString, "\031", ",") --Replace with new delimiter
+			  moverString = gsub(moverString, "\031", ",") --Replace with new delimiter
 			  E.db.movers[mover] = moverString --Store updated mover string
 		   end
 		end
