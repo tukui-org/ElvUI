@@ -1323,6 +1323,8 @@ local function ExportImport_Open(mode)
 	elseif mode == "import" then
 		Frame:SetTitle(L["Import Profile"])
 		local importButton = AceGUI:Create("Button")
+		importButton:SetDisabled(true)
+		importButton.text:SetTextColor(0.4, 0.4, 0.4)
 		importButton:SetText(L["Import Now"])
 		importButton:SetAutoWidth(true)
 		importButton:SetCallback("OnClick", function()
@@ -1340,15 +1342,25 @@ local function ExportImport_Open(mode)
 		Box.editBox:SetScript("OnChar", nil);
 		Box.editBox:SetScript("OnMouseUp", nil);
 		Box.editBox:SetScript("OnTextChanged", function(self, userInput)
-			if userInput then
+			if self:GetText() == "" then
+				Label1:SetText("")
+				Label2:SetText("")
+				importButton:SetDisabled(true)
+				importButton.text:SetTextColor(0.4, 0.4, 0.4)
+			elseif userInput then
 				local profileType, profileKey = D:Decode(self:GetText())
 				if not profileType or (profileType and profileType == "profile" and not profileKey) then
 					Label1:SetText(L["Error decoding data. Import string may be corrupted!"])
+					Label2:SetText("")
+					importButton:SetDisabled(true)
+					importButton.text:SetTextColor(0.4, 0.4, 0.4)
 				else
-					Label1:SetText(format("%s: %s%s|r", L["Importing"], E.media.hexvaluecolor, profileTypeItems[profileType]))
+					Label1:SetText(format("%s: %s%s|r", L["Importing"], E.media.hexvaluecolor, profileTypeItems[profileType] or ""))
 					if profileType == "profile" then
 						Label2:SetText(format("%s: %s%s|r", L["Profile Name"], E.media.hexvaluecolor, profileKey))
 					end
+					importButton:SetDisabled(false)
+					importButton.text:SetTextColor(1, 0.82, 0)
 				end
 			end
 		end);
