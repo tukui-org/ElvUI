@@ -5,7 +5,7 @@ local LibBase64 = LibStub("LibBase64-1.0-ElvUI")
 
 --Cache global variables
 local tonumber, type = tonumber, type
-local len, format, split = string.len, string.format, string.split
+local len, format, split, find = string.len, string.format, string.split, string.find
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local IsInRaid, UnitInRaid = IsInRaid, UnitInRaid
@@ -311,9 +311,8 @@ end
 
 function D:Decode(dataString)
 	local profileType, profileKey, profileData
-	local isBase64 = LibBase64:IsBase64(dataString)
-	
-	if isBase64 then
+
+	if LibBase64:IsBase64(dataString) then
 		local decodedData = LibBase64:Decode(dataString)
 		local decompressedData, message = LibCompress:Decompress(decodedData)
 		
@@ -329,10 +328,18 @@ function D:Decode(dataString)
 			E:Print("Error deserializing:", profileData)
 			return
 		end
-	else
+	elseif find(dataString, "{") then --Basic check to weed out obviously wrong strings
 		local profileDataAsString
 		profileDataAsString, profileType, profileKey = E:StringSplitMultiDelim(dataString, "::")
-		profileData, message = loadstring(format("%s %s", "return", profileDataAsString))()
+		if not profileDataAsString then
+			E:Print("Error extracting profile data. Invalid import string!")
+			return
+		end
+
+		local profileToTable = loadstring(format("%s %s", "return", profileDataAsString))
+		if profileToTable then
+			profileData, message = pcall(profileToTable)
+		end
 		if not profileData then
 			E:Print("Error converting lua string to table:", message)
 			return
