@@ -97,7 +97,10 @@ function UF:Update_PartyHeader(header, db)
 end
 
 function UF:PartySmartVisibility(event)
-	if not self.db or (self.db and not self.db.enable) or (UF.db and not UF.db.smartRaidFilter) or self.isForced then return; end
+	if not self.db or (self.db and not self.db.enable) or (UF.db and not UF.db.smartRaidFilter) or self.isForced then
+		self.blockVisibilityChanges = false
+		return
+	end
 	local inInstance, instanceType = IsInInstance()
 	if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
 
@@ -105,8 +108,10 @@ function UF:PartySmartVisibility(event)
 		if inInstance and (instanceType == "raid" or instanceType == "pvp") then
 			UnregisterStateDriver(self, "visibility")
 			self:Hide()
+			self.blockVisibilityChanges = true
 		elseif self.db.visibility then
 			RegisterStateDriver(self, "visibility", self.db.visibility)
+			self.blockVisibilityChanges = false
 		end
 	else
 		self:RegisterEvent("PLAYER_REGEN_ENABLED")

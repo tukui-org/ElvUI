@@ -65,7 +65,10 @@ function UF:Construct_RaidFrames(unitGroup)
 end
 
 function UF:RaidSmartVisibility(event)
-	if not self.db or (self.db and not self.db.enable) or (UF.db and not UF.db.smartRaidFilter) or self.isForced then return; end
+	if not self.db or (self.db and not self.db.enable) or (UF.db and not UF.db.smartRaidFilter) or self.isForced then
+		self.blockVisibilityChanges = false
+		return
+	end
 
 	if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
 
@@ -86,15 +89,18 @@ function UF:RaidSmartVisibility(event)
 
 			if(maxPlayers < 40) then
 				self:Show()
-				--self.isInstanceForced = true
+				self.isInstanceForced = true
+				self.blockVisibilityChanges = false
 				if(ElvUF_Raid.numGroups ~= E:Round(maxPlayers/5) and event) then
 					UF:CreateAndUpdateHeaderGroup('raid')
 				end
 			else
 				self:Hide()
+				self.blockVisibilityChanges = true
 			end
 		elseif self.db.visibility then
 			RegisterStateDriver(self, "visibility", self.db.visibility)
+			self.blockVisibilityChanges = false
 			if(ElvUF_Raid.numGroups ~= self.db.numGroups) then
 				UF:CreateAndUpdateHeaderGroup('raid')
 			end

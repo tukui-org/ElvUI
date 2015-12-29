@@ -9,7 +9,7 @@ local tonumber, pairs, error, unpack, select, tostring = tonumber, pairs, error,
 local assert, print, type, collectgarbage, pcall, date = assert, print, type, collectgarbage, pcall, date
 local twipe, tinsert = table.wipe, tinsert
 local floor = floor
-local format, find, split, match, strrep, len, sub = string.format, string.find, string.split, string.match, strrep, string.len, string.sub
+local format, find, split, match, strrep, len, sub, gsub = string.format, string.find, string.split, string.match, strrep, string.len, string.sub, string.gsub
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetCVar, SetCVar, GetCVarBool = GetCVar, SetCVar, GetCVarBool
@@ -163,8 +163,8 @@ E.ClassRole = {
 
 E.noop = function() end;
 
-function E:Print(msg)
-	print(self["media"].hexvaluecolor..'ElvUI:|r', msg)
+function E:Print(...)
+	print(self["media"].hexvaluecolor..'ElvUI:|r', ...)
 end
 
 --Workaround for people wanting to use white and it reverting to their class color.
@@ -1047,6 +1047,18 @@ function E:DBConversions()
 		end
 		
 		E.db.bossAuraFiltersConverted = true
+	end
+	
+	--Convert stored mover strings to use the new comma delimiter
+	if not E.db.moversConverted then
+		for mover, moverString in pairs(E.db.movers) do
+		   if find(moverString, "\031") then --Old delimiter found
+			  moverString = gsub(moverString, "\031", ",") --Replace with new delimiter
+			  E.db.movers[mover] = moverString --Store updated mover string
+		   end
+		end
+		
+		E.db.moversConverted = true
 	end
 end
 
