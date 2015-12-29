@@ -192,6 +192,10 @@ function LibBase64:IsBase64(text)
 		error(("Bad argument #1 to `IsBase64'. Expected %q, got %q"):format("string", type(text)), 2)
 	end
 
+	if #text % 4 ~= 0 then
+		return false
+	end
+
 	for i = 1, #text do
 		local byte = text:byte(i)
 		if whitespace[byte] or byte == equals_byte then
@@ -203,6 +207,6 @@ function LibBase64:IsBase64(text)
 			end
 		end
 	end
-	
+
 	return true
 end
