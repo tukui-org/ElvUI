@@ -331,7 +331,7 @@ function D:Decode(dataString)
 		end
 	else
 		local profileDataAsString
-		profileDataAsString, profileType, profileKey = split("::", dataString)
+		profileDataAsString, profileType, profileKey = E:StringSplitMultiDelim(dataString, "::")
 		profileData, message = loadstring(format("%s %s", "return", profileDataAsString))()
 		if not profileData then
 			E:Print("Error converting lua string to table:", message)
