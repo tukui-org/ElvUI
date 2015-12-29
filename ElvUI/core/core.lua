@@ -44,6 +44,7 @@ local NUM_PET_ACTION_SLOTS = NUM_PET_ACTION_SLOTS
 
 --Constants
 E.myclass = select(2, UnitClass("player"));
+E.myspec = GetSpecialization()
 E.myrace = select(2, UnitRace("player"))
 E.myfaction = select(2, UnitFactionGroup('player'))
 E.myname = UnitName("player");
@@ -473,6 +474,7 @@ function E:CheckRole()
 		IsInPvPGear = true;
 	end
 
+	self.myspec = talentTree
 
 	if type(self.ClassRole[self.myclass]) == "string" then
 		role = self.ClassRole[self.myclass]
@@ -1050,15 +1052,11 @@ function E:DBConversions()
 	end
 	
 	--Convert stored mover strings to use the new comma delimiter
-	if not E.db.moversConverted then
-		for mover, moverString in pairs(E.db.movers) do
-		   if find(moverString, "\031") then --Old delimiter found
-			  moverString = gsub(moverString, "\031", ",") --Replace with new delimiter
-			  E.db.movers[mover] = moverString --Store updated mover string
-		   end
-		end
-		
-		E.db.moversConverted = true
+	for mover, moverString in pairs(E.db.movers) do
+	   if find(moverString, "\031") then --Old delimiter found
+		  moverString = gsub(moverString, "\031", ",") --Replace with new delimiter
+		  E.db.movers[mover] = moverString --Store updated mover string
+	   end
 	end
 end
 
