@@ -115,9 +115,11 @@ L["Toggles the display of the actionbars backdrop."] = "Aktiviere den Hintergrun
 L["Visibility State"] = "Sichbarkeitszustand"
 L["Width Multiplier"] = "Breitenmultiplikator"
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
-Example: '[combat] 2;']=] ] = "Dies funktioniert wie ein Makro. Du kannst verschiedene Situationen haben um die Aktionsleiste anzuzeigen und zu verbergen.\n Beispiel: '[combat] show;hide'"
+ Example: '[combat] 2;']=] ] = [=[Dieses funktioniert wie ein Makro, du kannst verschiedene Situationen haben um die Aktionsleiste zu wechseln.
+ Beispiel: '[combat] 2;']=]
 L[ [=[This works like a macro, you can run different situations to get the actionbar to show/hide differently.
-Example: '[combat] show;hide']=] ] = "Dies funktioniert wie ein Makro, du kannst verschiedene Situationen haben um die Aktionsleiste zu ändern.\n Beispiel: '[combat] 2;'"
+ Example: '[combat] show;hide']=] ] = [=[Dieses funktioniert wie ein Makro, du kannst verschiedene Situationen haben um die Aktionsleiste ein-/auszublenden.
+ Beispiel: '[combat] show;hide']=]
 
 --Bags
 L["Adjust the width of the bag frame."] = "Passe die Breite des Taschenfensters an."
