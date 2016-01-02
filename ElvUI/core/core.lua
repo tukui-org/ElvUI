@@ -1052,11 +1052,13 @@ function E:DBConversions()
 	end
 	
 	--Convert stored mover strings to use the new comma delimiter
-	for mover, moverString in pairs(E.db.movers) do
-	   if find(moverString, "\031") then --Old delimiter found
-		  moverString = gsub(moverString, "\031", ",") --Replace with new delimiter
-		  E.db.movers[mover] = moverString --Store updated mover string
-	   end
+	if E.db.movers then
+		for mover, moverString in pairs(E.db.movers) do
+		   if find(moverString, "\031") then --Old delimiter found
+			  moverString = gsub(moverString, "\031", ",") --Replace with new delimiter
+			  E.db.movers[mover] = moverString --Store updated mover string
+		   end
+		end
 	end
 end
 
