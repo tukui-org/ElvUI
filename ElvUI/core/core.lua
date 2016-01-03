@@ -7,7 +7,7 @@ local Masque = LibStub("Masque", true)
 local _G = _G
 local tonumber, pairs, error, unpack, select, tostring = tonumber, pairs, error, unpack, select, tostring
 local assert, print, type, collectgarbage, pcall, date = assert, print, type, collectgarbage, pcall, date
-local twipe, tinsert = table.wipe, tinsert
+local twipe, tinsert, tremove = table.wipe, tinsert, tremove
 local floor = floor
 local format, find, split, match, strrep, len, sub, gsub = string.format, string.find, string.split, string.match, strrep, string.len, string.sub, string.gsub
 --WoW API / Variables
@@ -676,19 +676,37 @@ local profileFormat = {
 	["global"] = "E.global",
 }
 
+local lineStructureTable = {}
+
 function E:ProfileTableToPluginFormat(inTable, profileType)
 	local profileText = profileFormat[profileType]
 	if not profileText then
 		return
 	end
-	
+
+	twipe(lineStructureTable)
 	local returnString = ""
+	local lineStructure = ""
 	local sameLine = false
+	
+	local function buildLineStructure()
+		local str = profileText
+		for k, v in ipairs(lineStructureTable) do
+			if type(v) == "string" then
+				str = str.."[\""..v.."\"]"
+			else
+				str = str.."["..v.."]"
+			end
+		end
+		
+		return str
+	end
 
 	local function recurse(tbl)
+		lineStructure = buildLineStructure()
         for k, v in pairs(tbl) do
 			if not sameLine then
-				returnString = returnString..profileText
+				returnString = returnString..lineStructure
 			end
 
             returnString = returnString.."[";
@@ -700,15 +718,9 @@ function E:ProfileTableToPluginFormat(inTable, profileType)
             end
 
 			if type(v) == "table" then
+				tinsert(lineStructureTable, k)
 				sameLine = true
 				returnString = returnString.."]"
-
-				if type(k) == "string" then
-					profileText = profileText.."[\""..k.."\"]"
-				else
-					profileText = profileText.."["..k.."]"
-				end
-	
 				recurse(v)
 			else
 				sameLine = false
@@ -730,7 +742,8 @@ function E:ProfileTableToPluginFormat(inTable, profileType)
 			end
         end
 		
-		profileText = profileFormat[profileType]
+		tremove(lineStructureTable)
+		lineStructure = buildLineStructure()
     end
 	
 	if inTable and profileType then
