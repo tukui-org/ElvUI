@@ -685,7 +685,7 @@ function E:ProfileTableToPluginFormat(inTable, profileType)
 	local returnString = ""
 	local sameLine = false
 
-	local function recurse(tbl, tableKey)
+	local function recurse(tbl)
         for k, v in pairs(tbl) do
 			if not sameLine then
 				returnString = returnString..profileText
