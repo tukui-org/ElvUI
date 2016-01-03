@@ -1223,13 +1223,13 @@ local profileTypeListOrder = {
 }
 local exportTypeItems = {
 	["text"] = "Text",
-	["lua"] = "Lua",
-	-- ["global"] = "Filters",
+	["luaTable"] = "Table",
+	["luaPlugin"] = "Plugin",
 }
 local exportTypeListOrder = {
 	"text",
-	"lua",
-	-- "global",
+	"luaTable",
+	"luaPlugin",
 }
 		
 local function ExportImport_Open(mode)

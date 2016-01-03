@@ -296,7 +296,7 @@ local function GetProfileExport(profileType, exportFormat)
 		local encodedData = LibBase64:Encode(compressedData)
 		profileExport = encodedData
 
-	elseif exportFormat == "lua" then
+	elseif exportFormat == "luaTable" then
 		exportString = E:TableToLuaString(profileData)
 
 		if profileType == "profile" then
@@ -304,6 +304,8 @@ local function GetProfileExport(profileType, exportFormat)
 		else
 			profileExport = format("%s::%s", exportString, profileType)
 		end
+	elseif exportFormat == "luaPlugin" then
+		profileExport = E:ProfileTableToPluginFormat(profileData, profileType)
 	end
 
 	return profileKey, profileExport
