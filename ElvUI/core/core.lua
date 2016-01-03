@@ -569,10 +569,10 @@ function E:CopyTable(currentTable, defaultTable)
 end
 
 local function IsTableEmpty(tbl)
-    for _, _ in pairs(tbl) do
-        return false
-    end
-    return true
+	for _, _ in pairs(tbl) do
+		return false
+	end
+	return true
 end
 
 function E:RemoveEmptySubTables(tbl)
@@ -632,42 +632,42 @@ end
 --The code in this function is from WeakAuras, credit goes to Mirrored and the WeakAuras Team
 function E:TableToLuaString(inTable)
 	local ret = "{\n";
-    local function recurse(table, level)
-        for i,v in pairs(table) do
-            ret = ret..strrep("    ", level).."[";
-            if(type(i) == "string") then
-                ret = ret.."\""..i.."\"";
-            else
-                ret = ret..i;
-            end
-            ret = ret.."] = ";
+	local function recurse(table, level)
+		for i,v in pairs(table) do
+			ret = ret..strrep("	", level).."[";
+			if(type(i) == "string") then
+				ret = ret.."\""..i.."\"";
+			else
+				ret = ret..i;
+			end
+			ret = ret.."] = ";
 
-            if(type(v) == "number") then
-                ret = ret..v..",\n"
-            elseif(type(v) == "string") then
-                ret = ret.."\""..v:gsub("\\", "\\\\"):gsub("\n", "\\n"):gsub("\"", "\\\"").."\",\n"
-            elseif(type(v) == "boolean") then
-                if(v) then
-                    ret = ret.."true,\n"
-                else
-                    ret = ret.."false,\n"
-                end
-            elseif(type(v) == "table") then
-                ret = ret.."{\n"
-                recurse(v, level + 1);
-                ret = ret..strrep("    ", level).."},\n"
-            else
-                ret = ret.."\""..tostring(v).."\",\n"
-            end
-        end
-    end
+			if(type(v) == "number") then
+				ret = ret..v..",\n"
+			elseif(type(v) == "string") then
+				ret = ret.."\""..v:gsub("\\", "\\\\"):gsub("\n", "\\n"):gsub("\"", "\\\"").."\",\n"
+			elseif(type(v) == "boolean") then
+				if(v) then
+					ret = ret.."true,\n"
+				else
+					ret = ret.."false,\n"
+				end
+			elseif(type(v) == "table") then
+				ret = ret.."{\n"
+				recurse(v, level + 1);
+				ret = ret..strrep("	", level).."},\n"
+			else
+				ret = ret.."\""..tostring(v).."\",\n"
+			end
+		end
+	end
 
-    if(inTable) then
-        recurse(inTable, 1);
-    end
-    ret = ret.."}";
+	if(inTable) then
+		recurse(inTable, 1);
+	end
+	ret = ret.."}";
 
-    return ret;
+	return ret;
 end
 
 local profileFormat = {
@@ -704,18 +704,18 @@ function E:ProfileTableToPluginFormat(inTable, profileType)
 
 	local function recurse(tbl)
 		lineStructure = buildLineStructure()
-        for k, v in pairs(tbl) do
+		for k, v in pairs(tbl) do
 			if not sameLine then
 				returnString = returnString..lineStructure
 			end
 
-            returnString = returnString.."[";
+			returnString = returnString.."[";
 
-            if(type(k) == "string") then
-                returnString = returnString.."\""..k.."\"";
-            else
-                returnString = returnString..k;
-            end
+			if(type(k) == "string") then
+				returnString = returnString.."\""..k.."\"";
+			else
+				returnString = returnString..k;
+			end
 
 			if type(v) == "table" then
 				tinsert(lineStructureTable, k)
@@ -740,17 +740,17 @@ function E:ProfileTableToPluginFormat(inTable, profileType)
 					returnString = returnString.."\""..tostring(v).."\"\n"
 				end
 			end
-        end
+		end
 		
 		tremove(lineStructureTable)
 		lineStructure = buildLineStructure()
-    end
+	end
 	
 	if inTable and profileType then
-        recurse(inTable);
-    end
+		recurse(inTable);
+	end
 
-    return returnString;
+	return returnString;
 end
 
 --Split string by multi-character delimiter (the strsplit / string.split function provided by WoW doesn't allow multi-character delimiter)
