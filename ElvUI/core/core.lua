@@ -670,6 +670,76 @@ function E:TableToLuaString(inTable)
     return ret;
 end
 
+local profileFormat = {
+	["profile"] = "E.db",
+	["private"] = "E.private",
+	["global"] = "E.global",
+}
+
+function E:ProfileTableToPluginFormat(inTable, profileType)
+	local profileText = profileFormat[profileType]
+	if not profileText then
+		return
+	end
+	
+	local returnString = ""
+	local sameLine = false
+
+	local function recurse(tbl, tableKey)
+        for k, v in pairs(tbl) do
+			if not sameLine then
+				returnString = returnString..profileText
+			end
+
+            returnString = returnString.."[";
+
+            if(type(k) == "string") then
+                returnString = returnString.."\""..k.."\"";
+            else
+                returnString = returnString..k;
+            end
+
+			if type(v) == "table" then
+				sameLine = true
+				returnString = returnString.."]"
+
+				if type(k) == "string" then
+					profileText = profileText.."[\""..k.."\"]"
+				else
+					profileText = profileText.."["..k.."]"
+				end
+	
+				recurse(v)
+			else
+				sameLine = false
+				returnString = returnString.."] = ";
+				
+				if type(v) == "number" then
+					returnString = returnString..v.."\n"
+				elseif type(v) == "string" then
+					returnString = returnString.."\""..v:gsub("\\", "\\\\"):gsub("\n", "\\n"):gsub("\"", "\\\"").."\"\n"
+				elseif type(v) == "boolean" then
+					if v then
+						returnString = returnString.."true\n"
+					else
+						returnString = returnString.."false\n"
+					end
+				else
+					returnString = returnString.."\""..tostring(v).."\"\n"
+				end
+			end
+        end
+		
+		profileText = profileFormat[profileType]
+    end
+	
+	if inTable and profileType then
+        recurse(inTable);
+    end
+
+    return returnString;
+end
+
 --Split string by multi-character delimiter (the strsplit / string.split function provided by WoW doesn't allow multi-character delimiter)
 function E:StringSplitMultiDelim(s, delim)
 	assert(type (delim) == "string" and len(delim) > 0, "bad delimiter")
