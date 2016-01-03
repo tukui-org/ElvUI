@@ -592,6 +592,11 @@ function E:RemoveEmptySubTables(tbl)
 	end
 end
 
+local blackListedOptions = {
+	["autoScale"] = true,
+	["eyefinity"] = true,
+}
+
 --Compare 2 tables and remove duplicate key/value pairs
 --param cleanTable : table you want cleaned
 --param checkTable : table you want to check against.
@@ -612,7 +617,7 @@ function E:RemoveTableDuplicates(cleanTable, checkTable)
 			cleaned[option] = self:RemoveTableDuplicates(value, checkTable[option])
 		else
 			-- Add unique data to our clean table
-			if cleanTable[option] ~= checkTable[option] then
+			if (cleanTable[option] ~= checkTable[option]) and not blackListedOptions[option] then
 				cleaned[option] = value
 			end
 		end
