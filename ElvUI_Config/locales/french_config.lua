@@ -381,6 +381,7 @@ L["Objective Frame Height"] = "Hauteur du cadre d'objectif";
 L["Party / Raid"] = "Groupe / Raid";
 L["Party Only"] = "Groupe seulement";
 L["Position of bonus quest reward frame relative to the objective tracker."] = "Position de la récompense de l'objectif par rapport à la fenêtre de suivi des objectifs";
+L["Puts coordinates on the world map."] = true;
 L["Raid Only"] = "Raid seulement";
 L["Remove Backdrop"] = 'Supprimer le fond'
 L["Reset all frames to their original positions."] = "Réinitialiser les cadres à leurs positions initiales."
@@ -394,6 +395,7 @@ L["The font that appears on the text above players heads. |cffFF0000WARNING: Thi
 L["Toggle Tutorials"] = "Afficher les tutoriels"
 L["Top Panel"] = "Bandeau en haut"
 L["When you go AFK display the AFK screen."] = "Quand vous êtes AFK, affiche un écran spécial.";
+L["World Map Coordinates"] = true;
 
 --Media
 L["Backdrop color of transparent frames"] = "Couleur de fond pour les cadres estompés."
