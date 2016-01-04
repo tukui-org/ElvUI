@@ -592,10 +592,10 @@ function E:RemoveEmptySubTables(tbl)
 	end
 end
 
-local blackListedOptions = {
-	["autoScale"] = true,
-	["eyefinity"] = true,
-}
+local blackListedOptions = {}
+for option in pairs(G["general"]) do
+	blackListedOptions[option] = true
+end
 
 --Compare 2 tables and remove duplicate key/value pairs
 --param cleanTable : table you want cleaned
