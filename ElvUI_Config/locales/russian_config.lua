@@ -381,7 +381,7 @@ L["Objective Frame Height"] = "Высота списка заданий"
 L["Party / Raid"] = "Группа / Рейд"
 L["Party Only"] = "Только группа"
 L["Position of bonus quest reward frame relative to the objective tracker."] = "Позиция наград за бонусные задания относительно списка квестов."
-L["Puts coordinates on the world map."] = true;
+L["Puts coordinates on the world map."] = "Добавляет координаты на карту мира."
 L["Raid Only"] = "Только рейд"
 L["Remove Backdrop"] = "Скрыть фон"
 L["Reset all frames to their original positions."] = "Установить все фреймы на позиции по умолчанию"
@@ -395,7 +395,7 @@ L["The font that appears on the text above players heads. |cffFF0000WARNING: Thi
 L["Toggle Tutorials"] = "Показать помощь"
 L["Top Panel"] = "Верхняя панель"
 L["When you go AFK display the AFK screen."] = "Отображать специальный экран, когда вы переходите в состояние \"Отсутствует\"."
-L["World Map Coordinates"] = true;
+L["World Map Coordinates"] = "Координаты карты мира"
 
 --Media
 L["Backdrop color of transparent frames"] = "Цвет фона прозрачных фреймов"
