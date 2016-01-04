@@ -381,6 +381,7 @@ L["Objective Frame Height"] = "Questfenster Höhe"
 L["Party / Raid"] = "Gruppe / Schlachtzug"
 L["Party Only"] = "Nur in der Gruppe"
 L["Position of bonus quest reward frame relative to the objective tracker."] = "Position vom Bonusbeute Fenster, relativ zum Questfenster."
+L["Puts coordinates on the world map."] = "Platziert Koordinaten auf der Weltkarte."
 L["Raid Only"] = "Nur im Schlachtzug"
 L["Remove Backdrop"] = "Hintergrund entfernen"
 L["Reset all frames to their original positions."] = "Setze alle Einheiten an ihre ursprüngliche Position zurück."
@@ -394,6 +395,7 @@ L["The font that appears on the text above players heads. |cffFF0000WARNING: Thi
 L["Toggle Tutorials"] = "Tutorial starten"
 L["Top Panel"] = "Obere Leiste"
 L["When you go AFK display the AFK screen."] = "AFK Bildschirm anzeigen wenn du AFK bist."
+L["World Map Coordinates"] = "Weltkarten Koordinaten"
 
 --Media
 L["Backdrop color of transparent frames"] = "Hintergrundfarbe von transparenten Fenstern"
