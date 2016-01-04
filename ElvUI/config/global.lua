@@ -4,6 +4,7 @@
 G['general'] = {
 	["autoScale"] = true,
 	["eyefinity"] = false,
+	['smallerWorldMap'] = true,
 }
 
 G['classtimer'] = {}

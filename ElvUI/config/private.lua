@@ -14,7 +14,6 @@ V['general'] = {
 	['chatBubbleFontSize'] = 14,
 	['pixelPerfect'] = true,
 	['replaceBlizzFonts'] = true,
-	['smallerWorldMap'] = true,
 	['minimap'] = {
 		['enable'] = true,
 		['hideGarrison'] = true,
