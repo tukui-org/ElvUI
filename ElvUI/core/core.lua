@@ -634,7 +634,7 @@ function E:TableToLuaString(inTable)
 	local ret = "{\n";
 	local function recurse(table, level)
 		for i,v in pairs(table) do
-			ret = ret..strrep("	", level).."[";
+			ret = ret..strrep("    ", level).."[";
 			if(type(i) == "string") then
 				ret = ret.."\""..i.."\"";
 			else
@@ -655,7 +655,7 @@ function E:TableToLuaString(inTable)
 			elseif(type(v) == "table") then
 				ret = ret.."{\n"
 				recurse(v, level + 1);
-				ret = ret..strrep("	", level).."},\n"
+				ret = ret..strrep("    ", level).."},\n"
 			else
 				ret = ret.."\""..tostring(v).."\",\n"
 			end
