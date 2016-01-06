@@ -939,26 +939,28 @@ function E:DBConversions()
 	
 	--Convert stored BuffIndicator key/value pairs to use spellID as key
 	local shouldRemove = {}
-	for i, values in pairs(E.global.unitframe.buffwatch[E.myclass]) do
-		if values.id then --Added by user, all info stored in SavedVariables
-			if i ~= values.id then
-				--Mark entry for removal
-				shouldRemove[i] = true
-			end
-			E.global.unitframe.buffwatch[E.myclass][values.id] = values
+	for class in pairs(E.global.unitframe.buffwatch) do
+		for i, values in pairs(E.global.unitframe.buffwatch[class]) do
+			if values.id then --Added by user, all info stored in SavedVariables
+				if i ~= values.id then
+					--Mark entry for removal
+					shouldRemove[i] = true
+				end
+				E.global.unitframe.buffwatch[class][values.id] = values
 
-		elseif G.oldBuffWatch[E.myclass] and G.oldBuffWatch[E.myclass][i] then
-			--Default BuffIndicator, grab info from legacy table
-			local spellID = G.oldBuffWatch[E.myclass][i].id
-			if spellID then
-				E.global.unitframe.buffwatch[E.myclass][spellID] = G.oldBuffWatch[E.myclass][i] --Store info under new spellID key
-				E.global.unitframe.buffwatch[E.myclass][i] = nil --Remove old entry
+			elseif G.oldBuffWatch[class] and G.oldBuffWatch[class][i] then
+				--Default BuffIndicator, grab info from legacy table
+				local spellID = G.oldBuffWatch[class][i].id
+				if spellID then
+					E.global.unitframe.buffwatch[class][spellID] = G.oldBuffWatch[class][i] --Store info under new spellID key
+					E.global.unitframe.buffwatch[class][i] = nil --Remove old entry
+				end
 			end
 		end
-	end
-	--Remove old entries of user-added BuffIndicators
-	for id in pairs(shouldRemove) do
-		E.global.unitframe.buffwatch[E.myclass][id] = nil
+		--Remove old entries of user-added BuffIndicators
+		for id in pairs(shouldRemove) do
+			E.global.unitframe.buffwatch[class][id] = nil
+		end
 	end
 
 	shouldRemove = {}
