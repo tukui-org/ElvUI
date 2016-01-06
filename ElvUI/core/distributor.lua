@@ -398,7 +398,6 @@ local function SetImportedProfile(profileType, profileKey, profileData, force)
 			ElvDB.profiles[profileKey] = profileData
 			--Calling SetProfile will now update all settings correctly
 			E.data:SetProfile(profileKey)
-			E:UpdateAll(true)
 		else
 			D.profileType = profileType
 			D.profileKey = profileKey
@@ -410,12 +409,26 @@ local function SetImportedProfile(profileType, profileKey, profileData, force)
 	elseif profileType == "private" then
 		local profileKey = ElvPrivateDB.profileKeys[E.myname..' - '..E.myrealm]
 		ElvPrivateDB.profiles[profileKey] = profileData
-		E:StaticPopup_Show('CONFIG_RL')
+		E:StaticPopup_Show('IMPORT_RL')
+
 	elseif profileType == "global" then
 		E:CopyTable(ElvDB.global, profileData)
-		E:UpdateAll(true)
+		E:StaticPopup_Show('IMPORT_RL')
+
+	elseif profileType == "filtersNP" then
+		E:CopyTable(ElvDB.global.nameplate, profileData.nameplate)
+	
+	elseif profileType == "filtersUF" then
+		E:CopyTable(ElvDB.global.unitframe, profileData.unitframe)
+	
+	elseif profileType == "filtersAll" then
+		E:CopyTable(ElvDB.global.nameplate, profileData.nameplate)
+		E:CopyTable(ElvDB.global.unitframe, profileData.unitframe)
 	end
 	
+	--Update all ElvUI modules
+	E:UpdateAll(true)
+
 	return L["Profile imported successfully!"]
 end
 
@@ -505,6 +518,16 @@ E.PopupDialogs['IMPORT_PROFILE_EXISTS'] = {
 	whileDead = 1,
 	hideOnEscape = true,
 	preferredIndex = 3
+}
+
+E.PopupDialogs["IMPORT_RL"] = {
+	text = L["You have imported settings that may require a UI reload to take effect. Reload now?"],
+	button1 = ACCEPT,
+	button2 = CANCEL,
+	OnAccept = function() ReloadUI() end,
+	timeout = 0,
+	whileDead = 1,
+	hideOnEscape = false,
 }
 
 E:RegisterModule(D:GetName())
