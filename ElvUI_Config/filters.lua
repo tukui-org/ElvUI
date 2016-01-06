@@ -658,7 +658,7 @@ local function UpdateFilterGroup()
 		-- buffs = nil;
 	elseif selectedFilter == 'Buff Indicator' then
 		-- local buffs = {};
-		-- if not E.global.unitframe.buffwatch[E.myclass] then E.global.unitframe.buffwatch[E.myclass] = {} end
+		if not E.global.unitframe.buffwatch[E.myclass] then E.global.unitframe.buffwatch[E.myclass] = {} end
 		-- for _, value in pairs(E.global.unitframe.buffwatch[E.myclass]) do
 			-- tinsert(buffs, value);
 		-- end
