@@ -774,7 +774,7 @@ local function ClassBuff(id, point, color, anyUnit, onlyShowMissing, style, disp
 end
 
 G.unitframe.buffwatch = {
-		PRIEST = {
+	PRIEST = {
 		[6788] = ClassBuff(6788, "TOPRIGHT", {1, 0, 0}, true),	 -- Weakened Soul
 		[41635] = ClassBuff(41635, "BOTTOMRIGHT", {0.2, 0.7, 0.2}),	 -- Prayer of Mending
 		[139] = ClassBuff(139, "BOTTOMLEFT", {0.4, 0.7, 0.2}), -- Renew
