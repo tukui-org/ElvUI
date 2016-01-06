@@ -654,7 +654,7 @@ function NP:Initialize()
 	self.glowIndicator:Hide()
 
 	self:SetTargetIndicator()
-	self.viewPort = IsAddOnLoaded("SunnArt") or IsAddOnLoaded("CT_Viewport") or IsAddOnLoaded("Btex");
+	self.viewPort = IsAddOnLoaded("SunnArt") or IsAddOnLoaded("CT_Viewport") or IsAddOnLoaded("Btex") or IsAddOnLoaded("LightViewPorter");
 	self:CombatToggle(true)
 end
 
