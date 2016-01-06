@@ -269,6 +269,37 @@ local function GetProfileData(profileType)
 
 		profileData = E:CopyTable(profileData, ElvDB.global)
 		profileData = E:RemoveTableDuplicates(profileData, G)
+	
+	elseif profileType == "filtersNP" then
+		profileKey = "filtersNP"
+
+		profileData["nameplate"] = {}
+		profileData["nameplate"]["filter"] = {}
+		profileData["nameplate"]["filter"] = E:CopyTable(profileData["nameplate"]["filter"], ElvDB.global.nameplate.filter)
+		profileData = E:RemoveTableDuplicates(profileData, G)
+	
+	elseif profileType == "filtersUF" then
+		profileKey = "filtersUF"
+
+		profileData["unitframe"] = {}
+		profileData["unitframe"]["aurafilters"] = {}
+		profileData["unitframe"]["aurafilters"] = E:CopyTable(profileData["unitframe"]["aurafilters"], ElvDB.global.unitframe.aurafilters)
+		profileData["unitframe"]["buffwatch"] = {}
+		profileData["unitframe"]["buffwatch"] = E:CopyTable(profileData["unitframe"]["buffwatch"], ElvDB.global.unitframe.buffwatch)
+		profileData = E:RemoveTableDuplicates(profileData, G)
+	
+	elseif profileType == "filtersAll" then
+		profileKey = "filtersAll"
+
+		profileData["nameplate"] = {}
+		profileData["nameplate"]["filter"] = {}
+		profileData["nameplate"]["filter"] = E:CopyTable(profileData["nameplate"]["filter"], ElvDB.global.nameplate.filter)
+		profileData["unitframe"] = {}
+		profileData["unitframe"]["aurafilters"] = {}
+		profileData["unitframe"]["aurafilters"] = E:CopyTable(profileData["unitframe"]["aurafilters"], ElvDB.global.unitframe.aurafilters)
+		profileData["unitframe"]["buffwatch"] = {}
+		profileData["unitframe"]["buffwatch"] = E:CopyTable(profileData["unitframe"]["buffwatch"], ElvDB.global.unitframe.buffwatch)
+		profileData = E:RemoveTableDuplicates(profileData, G)
 	end
 	
 	return profileKey, profileData

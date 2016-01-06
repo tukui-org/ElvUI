@@ -1222,12 +1222,18 @@ E.Options.args.credits = {
 local profileTypeItems = {
 	["profile"] = "Profile",
 	["private"] = "Private (Character Settings)",
-	["global"] = "Filters",
+	["global"] = "Global (Account Settings)",
+	["filtersNP"] = "Filters (NamePlates)",
+	["filtersUF"] = "Filters (UnitFrames)",
+	["filtersAll"] = "Filters (All)",
 }
 local profileTypeListOrder = {
 	"profile",
 	"private",
 	"global",
+	"filtersNP",
+	"filtersUF",
+	"filtersAll",
 }
 local exportTypeItems = {
 	["text"] = "Text",
