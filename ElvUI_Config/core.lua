@@ -1247,6 +1247,7 @@ local exportTypeListOrder = {
 }
 		
 local function ExportImport_Open(mode)
+	local rev = " rev2"
 	local Frame = AceGUI:Create("Frame")
 	Frame:SetTitle("")
 	Frame:EnableResize(false)
@@ -1285,7 +1286,7 @@ local function ExportImport_Open(mode)
 	Frame:AddChild(Label2)
 
 	if mode == "export" then
-		Frame:SetTitle(L["Export Profile"].." rev1")
+		Frame:SetTitle(L["Export Profile"]..rev)
 
 		local ProfileTypeDropdown = AceGUI:Create("Dropdown")
 		ProfileTypeDropdown:SetMultiselect(false)
@@ -1336,7 +1337,7 @@ local function ExportImport_Open(mode)
 		Box.editBox:SetScript("OnTextChanged", nil);
 
 	elseif mode == "import" then
-		Frame:SetTitle(L["Import Profile"].." rev1")
+		Frame:SetTitle(L["Import Profile"]..rev)
 		local importButton = AceGUI:Create("Button")
 		importButton:SetDisabled(true)
 		importButton.text:SetTextColor(0.4, 0.4, 0.4)
