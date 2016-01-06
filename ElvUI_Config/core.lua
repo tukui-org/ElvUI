@@ -1221,7 +1221,7 @@ E.Options.args.credits = {
 
 local profileTypeItems = {
 	["profile"] = "Profile",
-	["private"] = "Private (Character Specific Settings)",
+	["private"] = "Private (Character Settings)",
 	["global"] = "Filters",
 }
 local profileTypeListOrder = {
