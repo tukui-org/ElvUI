@@ -1321,7 +1321,7 @@ local function ExportImport_Open(mode)
 		end
 		exportButton:SetCallback("OnClick", exportButton.OnClick)
 		Frame:AddChild(exportButton)
-		exportButton.frame:Hide()
+		-- exportButton.frame:Hide()
 		
 		--Set scripts
 		Box.editBox:SetScript("OnChar", function() Box:SetText(Box.exportString); Box.editBox:HighlightText(); end);
@@ -1344,7 +1344,7 @@ local function ExportImport_Open(mode)
 			Label1:SetText(message)
 		end)
 		Frame:AddChild(importButton)
-		importButton.frame:Hide()
+		-- importButton.frame:Hide()
 		
 		--Set scripts
 		Box.editBox:SetScript("OnChar", nil);
