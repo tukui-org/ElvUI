@@ -15,7 +15,7 @@ local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local ACCEPT, CANCEL, YES, NO = ACCEPT, CANCEL, YES, NO
 
 --Global variables that we don't cache, list them here for the mikk"s Find Globals script
--- GLOBALS: LibStub, UIParent, ElvDB, ElvPrivateDB
+-- GLOBALS: LibStub, UIParent, ElvDB, ElvPrivateDB, ReloadUI
 
 ----------------------------------
 -- CONSTANTS
