@@ -1108,8 +1108,9 @@ function E:DBConversions()
 	end
 	
 	--Convert stored BuffIndicator key/value pairs to use spellID as key
-	local shouldRemove = {}
+	local shouldRemove
 	for class in pairs(E.global.unitframe.buffwatch) do
+		shouldRemove = {}
 		for i, values in pairs(E.global.unitframe.buffwatch[class]) do
 			if values.id then --Added by user, all info stored in SavedVariables
 				if i ~= values.id then
