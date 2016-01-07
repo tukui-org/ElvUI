@@ -5,7 +5,7 @@ local Masque = LibStub("Masque", true)
 --Cache global variables
 --Lua functions
 local _G = _G
-local tonumber, pairs, error, unpack, select, tostring = tonumber, pairs, error, unpack, select, tostring
+local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
 local assert, print, type, collectgarbage, pcall, date = assert, print, type, collectgarbage, pcall, date
 local twipe, tinsert, tremove = table.wipe, tinsert, tremove
 local floor = floor
@@ -689,7 +689,7 @@ function E:ProfileTableToPluginFormat(inTable, profileType)
 	
 	local function buildLineStructure()
 		local str = profileText
-		for k, v in ipairs(lineStructureTable) do
+		for _, v in ipairs(lineStructureTable) do
 			if type(v) == "string" then
 				str = str.."[\""..v.."\"]"
 			else
