@@ -962,29 +962,6 @@ function E:DBConversions()
 			E.global.unitframe.buffwatch[class][id] = nil
 		end
 	end
-
-	shouldRemove = {}
-	for i, values in pairs(E.global.unitframe.buffwatch["PET"]) do
-		if values.id then --Added by user, all info stored in SavedVariables
-			if i ~= values.id then
-				--Mark entry for removal
-				shouldRemove[i] = true
-			end
-			E.global.unitframe.buffwatch["PET"][values.id] = values
-
-		elseif G.oldBuffWatch["PET"] and G.oldBuffWatch["PET"][i] then
-			--Default BuffIndicator, grab info from legacy table
-			local spellID = G.oldBuffWatch["PET"][i].id
-			if spellID then
-				E.global.unitframe.buffwatch["PET"][spellID] = G.oldBuffWatch["PET"][i] --Store info under new spellID key
-				E.global.unitframe.buffwatch["PET"][i] = nil --Remove old entry
-			end
-		end
-	end
-	--Remove old entries of user-added BuffIndicators
-	for id in pairs(shouldRemove) do
-		E.global.unitframe.buffwatch["PET"][id] = nil
-	end
 end
 
 local CPU_USAGE = {}
