@@ -543,8 +543,10 @@ function UF:Update_PlayerFrame(frame, db)
 			end
 			
 			if POWERBAR_DETACHED and db.power.parent == "UIPARENT" then
+				E.FrameLocks[power] = true
 				power:SetParent(E.UIParent)
 			else
+				E.FrameLocks[power] = nil
 				power:SetParent(frame)
 			end
 
