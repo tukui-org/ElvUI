@@ -90,8 +90,10 @@ function UF:UpdateHoly(event, unit, powerType)
 	if db.classbar.detachFromFrame then
 		CLASSBAR_WIDTH = db.classbar.detachedWidth - (BORDER*2)
 	end
-
-	self.HolyPower:Width(CLASSBAR_WIDTH)
+    
+    --test fix for high resolution.. not sure why but its a pixel off
+    CLASSBAR_WIDTH = CLASSBAR_WIDTH + 0.5
+	self.HolyPower:SetWidth(CLASSBAR_WIDTH)
 
 	if numHolyPower == 0 and db.classbar.autoHide then
 		self.HolyPower:Hide()
@@ -109,9 +111,9 @@ function UF:UpdateHoly(event, unit, powerType)
 				self.HolyPower[i]:SetAlpha(.2)
 			end
 			if db.classbar.fill == "spaced" then
-				self.HolyPower[i]:Width((self.HolyPower:GetWidth() - ((maxHolyPower == 5 and 7 or 13)*(maxHolyPower - 1))) / maxHolyPower)
+				self.HolyPower[i]:SetWidth((CLASSBAR_WIDTH - ((maxHolyPower == 5 and 7 or 13)*(maxHolyPower - 1))) / maxHolyPower)
 			else
-				self.HolyPower[i]:Width((self.HolyPower:GetWidth() - (maxHolyPower - 1)) / maxHolyPower)
+				self.HolyPower[i]:SetWidth((CLASSBAR_WIDTH - (maxHolyPower - 1)) / maxHolyPower)
 			end
 
 			self.HolyPower[i]:ClearAllPoints()
@@ -119,9 +121,9 @@ function UF:UpdateHoly(event, unit, powerType)
 				self.HolyPower[i]:SetPoint("LEFT", self.HolyPower)
 			else
 				if USE_MINI_CLASSBAR then
-					self.HolyPower[i]:Point("LEFT", self.HolyPower[i-1], "RIGHT", maxHolyPower == 5 and 7 or 13, 0)
+					self.HolyPower[i]:SetPoint("LEFT", self.HolyPower[i-1], "RIGHT", maxHolyPower == 5 and 7 or 13, 0)
 				else
-					self.HolyPower[i]:Point("LEFT", self.HolyPower[i-1], "RIGHT", 1, 0)
+					self.HolyPower[i]:SetPoint("LEFT", self.HolyPower[i-1], "RIGHT", 1, 0)
 				end
 			end
 
