@@ -1333,7 +1333,6 @@ local function ExportImport_Open(mode)
 		
 		--Set scripts
 		Box.editBox:SetScript("OnChar", function() Box:SetText(Box.exportString); Box.editBox:HighlightText(); end);
-		Box.editBox:SetScript("OnMouseUp", function() Box.editBox:HighlightText(); end);
 		Box.editBox:SetScript("OnTextChanged", nil);
 
 	elseif mode == "import" then
