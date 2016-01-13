@@ -752,14 +752,13 @@ function E:ProfileTableToPluginFormat(inTable, profileType)
 end
 
 --Split string by multi-character delimiter (the strsplit / string.split function provided by WoW doesn't allow multi-character delimiter)
-function E:StringSplitMultiDelim(s, delim)
+function E:SplitString(s, delim)
 	assert(type (delim) == "string" and len(delim) > 0, "bad delimiter")
 
 	local start = 1
 	local t = {}  -- results table
 
 	-- find each instance of a string followed by the delimiter
-
 	while true do
 		local pos = find(s, delim, start, true) -- plain find
 
@@ -772,7 +771,6 @@ function E:StringSplitMultiDelim(s, delim)
 	end -- while
 
 	-- insert final one (after last delimiter)
-
 	tinsert(t, sub(s, start))
 
 	return unpack(t)

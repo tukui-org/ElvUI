@@ -355,7 +355,7 @@ function D:Decode(dataString)
 		end
 		
 		local serializedData, success
-		serializedData, profileType, profileKey = E:StringSplitMultiDelim(decompressedData, "::")
+		serializedData, profileType, profileKey = E:SplitString(decompressedData, "::")
 		success, profileData = D:Deserialize(serializedData)
 		if not success then
 			E:Print("Error deserializing:", profileData)
@@ -363,7 +363,7 @@ function D:Decode(dataString)
 		end
 	elseif find(dataString, "{") then --Basic check to weed out obviously wrong strings
 		local profileDataAsString
-		profileDataAsString, profileType, profileKey = E:StringSplitMultiDelim(dataString, "::")
+		profileDataAsString, profileType, profileKey = E:SplitString(dataString, "::")
 		if not profileDataAsString then
 			E:Print("Error extracting profile data. Invalid import string!")
 			return
