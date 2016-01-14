@@ -345,7 +345,7 @@ function AB:PLAYER_REGEN_ENABLED()
 end
 
 local function Vehicle_OnEvent(self, event)
-	if ( CanExitVehicle() and ActionBarController_GetCurrentActionBarState() == LE_ACTIONBAR_STATE_MAIN ) then
+	if ( CanExitVehicle() and ActionBarController_GetCurrentActionBarState() == LE_ACTIONBAR_STATE_MAIN ) and not E.db.general.minimap.icons.vehicleLeave.hide then
 		self:Show()
 		self:GetNormalTexture():SetVertexColor(1, 1, 1)
 		self:EnableMouse(true)
@@ -368,16 +368,11 @@ function AB:UpdateVehicleLeave()
 	local button = LeaveVehicleButton
 	if not button then return; end
 	
-	if E.db.general.minimap.icons.vehicleLeave.hide then
-		button:Hide()
-	else
-		local pos = E.db.general.minimap.icons.vehicleLeave.position or "BOTTOMLEFT"
-		local size = E.db.general.minimap.icons.vehicleLeave.size or 26
-		button:ClearAllPoints()
-		button:SetPoint(pos, Minimap, pos, E.db.general.minimap.icons.vehicleLeave.xOffset or 2, E.db.general.minimap.icons.vehicleLeave.yOffset or 2)
-		button:SetSize(size, size)
-		button:Show()
-	end
+	local pos = E.db.general.minimap.icons.vehicleLeave.position or "BOTTOMLEFT"
+	local size = E.db.general.minimap.icons.vehicleLeave.size or 26
+	button:ClearAllPoints()
+	button:SetPoint(pos, Minimap, pos, E.db.general.minimap.icons.vehicleLeave.xOffset or 2, E.db.general.minimap.icons.vehicleLeave.yOffset or 2)
+	button:SetSize(size, size)
 end
 
 function AB:CreateVehicleLeave()
