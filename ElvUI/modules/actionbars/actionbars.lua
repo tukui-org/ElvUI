@@ -378,6 +378,7 @@ end
 function AB:CreateVehicleLeave()
 	local vehicle = CreateFrame("Button", 'LeaveVehicleButton', E.UIParent)
 	vehicle:Size(26)
+	vehicle:SetFrameStrata("HIGH")
 	vehicle:Point("BOTTOMLEFT", Minimap, "BOTTOMLEFT", 2, 2)
 	vehicle:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
 	vehicle:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
