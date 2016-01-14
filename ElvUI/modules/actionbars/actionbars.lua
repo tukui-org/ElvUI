@@ -368,11 +368,16 @@ function AB:UpdateVehicleLeave()
 	local button = LeaveVehicleButton
 	if not button then return; end
 	
-	local pos = E.db.general.minimap.icons.vehicleLeave.position or "BOTTOMLEFT"
-	local size = E.db.general.minimap.icons.vehicleLeave.size or 26
-	button:ClearAllPoints()
-	button:SetPoint(pos, Minimap, pos, E.db.general.minimap.icons.vehicleLeave.xOffset or 2, E.db.general.minimap.icons.vehicleLeave.yOffset or 2)
-	button:SetSize(size, size)
+	if E.db.general.minimap.icons.vehicleLeave.hide then
+		button:Hide()
+	else
+		local pos = E.db.general.minimap.icons.vehicleLeave.position or "BOTTOMLEFT"
+		local size = E.db.general.minimap.icons.vehicleLeave.size or 26
+		button:ClearAllPoints()
+		button:SetPoint(pos, Minimap, pos, E.db.general.minimap.icons.vehicleLeave.xOffset or 2, E.db.general.minimap.icons.vehicleLeave.yOffset or 2)
+		button:SetSize(size, size)
+		button:Show()
+	end
 end
 
 function AB:CreateVehicleLeave()

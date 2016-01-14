@@ -74,6 +74,7 @@ P['general'] = {
 				['position'] = "BOTTOMLEFT",
 				['xOffset'] = 2,
 				['yOffset'] = 2,
+				["hide"] = false,
 			},
 		}
 	},
