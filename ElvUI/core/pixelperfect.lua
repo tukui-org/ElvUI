@@ -102,6 +102,12 @@ function E:UIScale(event)
 
 		self.UIParent:ClearAllPoints();
 		self.UIParent:SetPoint("CENTER");
+		
+		--Calculate potential coordinate differences
+		self.diffGetLeft = E:Round(abs(UIParent:GetLeft() - self.UIParent:GetLeft()))
+		self.diffGetRight = E:Round(abs(UIParent:GetRight() - self.UIParent:GetRight()))
+		self.diffGetTop = E:Round(abs(UIParent:GetTop() - self.UIParent:GetTop()))
+		self.diffGetBottom = E:Round(abs(UIParent:GetBottom() - self.UIParent:GetBottom()))
 
 		local change
 		if E.Round then
