@@ -124,6 +124,10 @@ local function LoadSkin()
 	QuestGreetingScrollFrame:SetTemplate()
 	StyleScrollFrame(QuestGreetingScrollFrame, 506, 615, true)
 
+	QuestFrameGreetingPanel:StripTextures(true)
+	S:HandleButton(QuestFrameGreetingGoodbyeButton, true)
+	QuestGreetingFrameHorizontalBreak:Kill()
+
 	QuestDetailScrollChildFrame:StripTextures(true)
 	QuestRewardScrollFrame:StripTextures(true)
 	QuestRewardScrollChildFrame:StripTextures(true)

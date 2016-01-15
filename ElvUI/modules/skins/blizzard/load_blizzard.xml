@@ -30,7 +30,6 @@
 	<Script file='help.lua'/>
 	<Script file='trade.lua'/>
 	<Script file='gossip.lua'/>
-	<Script file='greeting.lua'/>
 	<Script file='worldmap.lua'/>
 	<Script file='taxi.lua'/>
 	<Script file='quest.lua'/>

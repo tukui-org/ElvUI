@@ -529,7 +529,6 @@ L["Dressing Room"] = true;
 L["Encounter Journal"] = true;
 L["Glyph Frame"] = true;
 L["Gossip Frame"] = true;
-L["Greeting Frame"] = true;
 L["Guild Bank"] = true;
 L["Guild Control Frame"] = true;
 L["Guild Frame"] = true;
