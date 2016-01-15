@@ -1,6 +1,13 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
+--Cache global variables
+--Lua functions
+local _G = _G
+local unpack = unpack
+--WoW API / Variables
+local ATTACHMENTS_MAX_SEND = ATTACHMENTS_MAX_SEND
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.mail ~= true then return end
 	MailFrame:StripTextures(true)

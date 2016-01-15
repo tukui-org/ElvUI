@@ -1,6 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
+--Cache global variables
+--Lua functions
+local unpack = unpack
+
 local function StyleScrollFrame(scrollFrame, widthOverride, heightOverride, inset)
 	scrollFrame:SetTemplate()
 	scrollFrame.spellTex = scrollFrame:CreateTexture(nil, 'ARTWORK')

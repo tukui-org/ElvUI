@@ -1,6 +1,16 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
+--Cache global variables
+--Lua functions
+local pairs, unpack = pairs, unpack
+--WoW API / Variables
+local C_PetBattles_GetPetType = C_PetBattles.GetPetType
+local C_PetBattles_GetNumAuras = C_PetBattles.GetNumAuras
+local C_PetBattles_GetAuraInfo = C_PetBattles.GetAuraInfo
+local PET_TYPE_SUFFIX = PET_TYPE_SUFFIX
+local PET_BATTLE_PAD_INDEX = PET_BATTLE_PAD_INDEX
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.petbattleui ~= true then return end
 	local f = PetBattleFrame
@@ -120,7 +130,7 @@ local function LoadSkin()
 	-- PETS UNITFRAMES PET TYPE UPDATE
 	hooksecurefunc("PetBattleUnitFrame_UpdatePetType", function(self)
 		if self.PetType then
-			local petType = C_PetBattles.GetPetType(self.petOwner, self.petIndex)
+			local petType = C_PetBattles_GetPetType(self.petOwner, self.petIndex)
 			if self.PetTypeFrame then
 				self.PetTypeFrame.text:SetText(PET_TYPE_SUFFIX[petType])
 			end
@@ -132,8 +142,8 @@ local function LoadSkin()
 		if not self.petOwner or not self.petIndex then return end
 
 		local nextFrame = 1
-		for i=1, C_PetBattles.GetNumAuras(self.petOwner, self.petIndex) do
-			local auraID, instanceID, turnsRemaining, isBuff = C_PetBattles.GetAuraInfo(self.petOwner, self.petIndex, i)
+		for i=1, C_PetBattles_GetNumAuras(self.petOwner, self.petIndex) do
+			local auraID, instanceID, turnsRemaining, isBuff = C_PetBattles_GetAuraInfo(self.petOwner, self.petIndex, i)
 			if (isBuff and self.displayBuffs) or (not isBuff and self.displayDebuffs) then
 				local frame = self.frames[nextFrame]
 
@@ -163,11 +173,11 @@ local function LoadSkin()
 				nextFrame = nextFrame + 1
 			end
 		end
-end)
+	end)
 
 	-- WEATHER
 	hooksecurefunc("PetBattleWeatherFrame_Update", function(self)
-		local weather = C_PetBattles.GetAuraInfo(LE_BATTLE_PET_WEATHER, PET_BATTLE_PAD_INDEX, 1)
+		local weather = C_PetBattles_GetAuraInfo(LE_BATTLE_PET_WEATHER, PET_BATTLE_PAD_INDEX, 1)
 		if weather then
 			self.Icon:Hide()
 			self.Name:Hide()
