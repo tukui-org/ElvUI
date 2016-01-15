@@ -78,23 +78,23 @@ local function LoadSkin()
 	end)
 
 	hooksecurefunc("QuestInfo_Display", function(template, parentFrame)
-	  for i = 1, #QuestInfoRewardsFrame.RewardButtons do
-		local questItem = QuestInfoRewardsFrame.RewardButtons[i]
-		if not questItem:IsShown() then break end
+		for i = 1, #QuestInfoRewardsFrame.RewardButtons do
+			local questItem = QuestInfoRewardsFrame.RewardButtons[i]
+			if not questItem:IsShown() then break end
 
-		local point, relativeTo, relativePoint, x, y = questItem:GetPoint()
-		if point and relativeTo and relativePoint then
-			if i == 1 then
-			    questItem:Point(point, relativeTo, relativePoint, 0, y)
-			elseif relativePoint == "BOTTOMLEFT" then
-			    questItem:Point(point, relativeTo, relativePoint, 0, -4)
-			else
-			    questItem:Point(point, relativeTo, relativePoint, 4, 0)
+			local point, relativeTo, relativePoint, x, y = questItem:GetPoint()
+			if point and relativeTo and relativePoint then
+				if i == 1 then
+					questItem:Point(point, relativeTo, relativePoint, 0, y)
+				elseif relativePoint == "BOTTOMLEFT" then
+					questItem:Point(point, relativeTo, relativePoint, 0, -4)
+				else
+					questItem:Point(point, relativeTo, relativePoint, 4, 0)
+				end
 			end
-		end
 
-		questItem.Name:SetTextColor(1, 1, 1)
-	  end
+			questItem.Name:SetTextColor(1, 1, 1)
+		end
     end)
 
     hooksecurefunc("QuestInfo_GetRewardButton", function(rewardsFrame, index)
@@ -106,6 +106,8 @@ local function LoadSkin()
     		rewardButton.backdrop:SetOutside(rewardButton.Icon)
     		rewardButton.Icon:SetDrawLayer("OVERLAY")
     		rewardButton.Count:SetDrawLayer("OVERLAY")
+
+			rewardButton.skinned = true
     	end
     end)
 
