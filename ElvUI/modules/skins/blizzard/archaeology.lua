@@ -8,14 +8,30 @@ local function LoadSkin()
 	ArchaeologyFrame:CreateBackdrop("Transparent")
 	ArchaeologyFrame.backdrop:SetAllPoints()
 	ArchaeologyFrame.portrait:SetAlpha(0)
-	ArchaeologyFrameInset:CreateBackdrop('Default')
-	ArchaeologyFrameInset.backdrop:SetPoint('TOPLEFT')
-	ArchaeologyFrameInset.backdrop:SetPoint('BOTTOMRIGHT', -3, -1)
 
 	S:HandleButton(ArchaeologyFrameArtifactPageSolveFrameSolveButton, true)
 	S:HandleButton(ArchaeologyFrameArtifactPageBackButton, true)
 	ArchaeologyFrameRaceFilter:SetFrameLevel(ArchaeologyFrameRaceFilter:GetFrameLevel() + 2)
 	S:HandleDropDownBox(ArchaeologyFrameRaceFilter, 125)
+	
+	ArchaeologyFrameBgLeft:Kill()
+	ArchaeologyFrameBgRight:Kill()
+
+	for _, Frame in pairs({ ArchaeologyFrameCompletedPage, ArchaeologyFrameSummaryPage}) do
+		for i = 1, Frame:GetNumRegions() do
+			local Region = select(i, Frame:GetRegions())
+			if Region:IsObjectType("FontString") then
+				Region:SetTextColor(1, 1, 0)
+			end
+		end
+	end
+	
+	ArchaeologyFrameCompletedPage.infoText:SetTextColor(1, 1, 1)
+	ArchaeologyFrameHelpPageTitle:SetTextColor(1, 1, 0)
+	ArchaeologyFrameHelpPageDigTitle:SetTextColor(1, 1, 0)
+	ArchaeologyFrameHelpPageHelpScrollHelpText:SetTextColor(1, 1, 1)
+	ArchaeologyFrameArtifactPageHistoryTitle:SetTextColor(1, 1, 0)
+	ArchaeologyFrameArtifactPageHistoryScrollChildText:SetTextColor(1, 1, 1)
 
 	S:HandleButton(ArchaeologyFrameSummaryPagePrevPageButton)
 	S:HandleButton(ArchaeologyFrameSummaryPageNextPageButton)
@@ -32,20 +48,22 @@ local function LoadSkin()
 	ArchaeologyFrameArtifactPageSolveFrameStatusBar:SetStatusBarColor(0.7, 0.2, 0)
 	ArchaeologyFrameArtifactPageSolveFrameStatusBar:SetFrameLevel(ArchaeologyFrameArtifactPageSolveFrameStatusBar:GetFrameLevel() + 2)
 	ArchaeologyFrameArtifactPageSolveFrameStatusBar:CreateBackdrop("Default")
-
-	for i=1, ARCHAEOLOGY_MAX_COMPLETED_SHOWN do
+	
+	for i = 1, ARCHAEOLOGY_MAX_RACES do
+		local frame = _G["ArchaeologyFrameSummaryPageRace"..i]
 		local artifact = _G["ArchaeologyFrameCompletedPageArtifact"..i]
+		local icon = _G["ArchaeologyFrameCompletedPageArtifact"..i.."Icon"]
 
-		if artifact then
-			_G["ArchaeologyFrameCompletedPageArtifact"..i.."Border"]:Kill()
-			_G["ArchaeologyFrameCompletedPageArtifact"..i.."Bg"]:Kill()
-			_G["ArchaeologyFrameCompletedPageArtifact"..i.."Icon"]:SetTexCoord(unpack(E.TexCoords))
-			_G["ArchaeologyFrameCompletedPageArtifact"..i.."Icon"].backdrop = CreateFrame("Frame", nil, artifact)
-			_G["ArchaeologyFrameCompletedPageArtifact"..i.."Icon"].backdrop:SetTemplate("Default")
-			_G["ArchaeologyFrameCompletedPageArtifact"..i.."Icon"].backdrop:SetOutside(_G["ArchaeologyFrameCompletedPageArtifact"..i.."Icon"])
-			_G["ArchaeologyFrameCompletedPageArtifact"..i.."Icon"].backdrop:SetFrameLevel(artifact:GetFrameLevel() - 2)
-			_G["ArchaeologyFrameCompletedPageArtifact"..i.."Icon"]:SetDrawLayer("OVERLAY")
-		end
+		frame.raceName:SetTextColor(1, 1, 1)
+		artifact.border:SetTexture(nil)
+		_G[artifact:GetName().."Bg"]:Kill()
+		artifact:CreateBackdrop()
+
+		icon:SetTexCoord(unpack(E.TexCoords))
+		artifact.backdrop:SetOutside(icon)
+
+		artifact.artifactName:SetTextColor(1, 1, 0)
+		artifact.artifactSubText:SetTextColor(0.6, 0.6, 0.6)
 	end
 
 	ArchaeologyFrameArtifactPageIcon:SetTexCoord(unpack(E.TexCoords))
