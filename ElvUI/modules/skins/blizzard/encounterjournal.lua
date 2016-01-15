@@ -27,6 +27,7 @@ local function LoadSkin()
 	S:HandleScrollBar(EncounterJournalEncounterFrameInfoLootScrollFrameScrollBar, 4)
 	S:HandleScrollBar(EncounterJournalEncounterFrameInstanceFrameLoreScrollFrameScrollBar, 4)
 	S:HandleScrollBar(EncounterJournalEncounterFrameInfoBossesScrollFrameScrollBar, 4)
+	S:HandleScrollBar(EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollBar, 4)
 
 	EncounterJournalEncounterFrameInfoBossTab:GetNormalTexture():SetTexture(nil)
 	EncounterJournalEncounterFrameInfoBossTab:GetPushedTexture():SetTexture(nil)
