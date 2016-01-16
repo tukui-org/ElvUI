@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.encounterjournal ~= true then return end
-	
+
 	local EJ = EncounterJournal
 	EJ:StripTextures(true)
 	EJ.inset:StripTextures(true)
@@ -65,6 +65,7 @@ local function LoadSkin()
 	
 	EncounterInfo.bossesScroll:CreateBackdrop("Transparent")
 	EncounterInfo.bossesScroll.backdrop:SetPoint("TOPLEFT", EncounterInfo.bossesScroll, "TOPLEFT", -25, E.Border)
+	S:HandleScrollBar(EncounterInfo.bossesScroll.ScrollBar, 4)
 
 	EncounterInfo.overviewScroll:CreateBackdrop("Transparent")
 	EncounterInfo.overviewScroll:SetHeight(EncounterInfo.overviewScroll:GetHeight() - (2 + E.Border))
@@ -73,22 +74,38 @@ local function LoadSkin()
 	EncounterInfo.overviewScroll:SetPoint("BOTTOMRIGHT", EncounterJournalEncounterFrame, "BOTTOMRIGHT", -1, 5)
 	EncounterInfo.overviewScroll.backdrop:SetPoint("TOPLEFT", EncounterInfo.bossesScroll.backdrop, "TOPRIGHT", 5, 0)
 	EncounterInfo.overviewScroll.backdrop:SetPoint("BOTTOMLEFT", EncounterInfo.bossesScroll.backdrop, "BOTTOMRIGHT", 5, 0)
-
-	S:HandleScrollBar(EncounterInfo.detailsScroll.ScrollBar, 4)
-	S:HandleScrollBar(EncounterInfo.lootScroll.scrollBar, 4)
-	S:HandleScrollBar(EncounterInfo.bossesScroll.ScrollBar, 4)
 	S:HandleScrollBar(EncounterInfo.overviewScroll.ScrollBar, 4)
 
+	EncounterInfo.lootScroll:CreateBackdrop("Transparent")
+	EncounterInfo.lootScroll:SetHeight(EncounterInfo.lootScroll:GetHeight() - (2 + E.Border))
+	EncounterInfo.lootScroll:SetWidth(370)
+	EncounterInfo.lootScroll:ClearAllPoints()
+	EncounterInfo.lootScroll:SetPoint("BOTTOMRIGHT", EncounterJournalEncounterFrame, "BOTTOMRIGHT", -1, 5)
+	EncounterInfo.lootScroll.backdrop:SetPoint("TOPLEFT", EncounterInfo.bossesScroll.backdrop, "TOPRIGHT", 5, 0)
+	EncounterInfo.lootScroll.backdrop:SetPoint("BOTTOMLEFT", EncounterInfo.bossesScroll.backdrop, "BOTTOMRIGHT", 5, 0)
+	EncounterInfo.lootScroll.filter:StripTextures()
+	S:HandleButton(EncounterInfo.lootScroll.filter)
+	EncounterInfo.lootScroll.filter:ClearAllPoints()
+	EncounterInfo.lootScroll.filter:SetPoint("BOTTOMLEFT", EncounterInfo.lootScroll.backdrop, "TOPLEFT", 0, 5)
+	S:HandleScrollBar(EncounterInfo.lootScroll.scrollBar, 4)
+	
+	
+	
+	
+	S:HandleScrollBar(EncounterInfo.detailsScroll.ScrollBar, 4)
+
+
+	
+	
 	EncounterInfo.overviewTab:Point('TOPLEFT', EncounterInfo, 'TOPRIGHT', E.PixelMode and -3 or 0, -35)
 	EncounterInfo.overviewTab.SetPoint = E.noop
 	EncounterInfo.overviewTab:GetNormalTexture():SetTexture(nil)
 	EncounterInfo.overviewTab:GetPushedTexture():SetTexture(nil)
 	EncounterInfo.overviewTab:GetDisabledTexture():SetTexture(nil)
 	EncounterInfo.overviewTab:GetHighlightTexture():SetTexture(nil)
-	EncounterInfo.overviewTab:CreateBackdrop('Default')
+	EncounterInfo.overviewTab:CreateBackdrop('Default', true)
 	EncounterInfo.overviewTab.backdrop:Point('TOPLEFT', 11, -8)
 	EncounterInfo.overviewTab.backdrop:Point('BOTTOMRIGHT', -6, 8)
-	EncounterInfo.overviewTab.backdrop.backdropTexture:SetVertexColor(189/255, 159/255, 88/255)
 	
 	EncounterInfo.lootTab:GetNormalTexture():SetTexture(nil)
 	EncounterInfo.lootTab:GetPushedTexture():SetTexture(nil)
@@ -97,7 +114,6 @@ local function LoadSkin()
 	EncounterInfo.lootTab:CreateBackdrop('Default')
 	EncounterInfo.lootTab.backdrop:Point('TOPLEFT', 11, -8)
 	EncounterInfo.lootTab.backdrop:Point('BOTTOMRIGHT', -6, 8)
-	EncounterInfo.lootTab.backdrop.backdropTexture:SetVertexColor(189/255, 159/255, 88/255)
 	
 	EncounterInfo.bossTab:GetNormalTexture():SetTexture(nil)
 	EncounterInfo.bossTab:GetPushedTexture():SetTexture(nil)
@@ -106,7 +122,6 @@ local function LoadSkin()
 	EncounterInfo.bossTab:CreateBackdrop('Default')
 	EncounterInfo.bossTab.backdrop:Point('TOPLEFT', 11, -8)
 	EncounterInfo.bossTab.backdrop:Point('BOTTOMRIGHT', -6, 8)
-	EncounterInfo.bossTab.backdrop.backdropTexture:SetVertexColor(189/255, 159/255, 88/255)
 	
 	EncounterInfo.modelTab:GetNormalTexture():SetTexture(nil)
 	EncounterInfo.modelTab:GetPushedTexture():SetTexture(nil)
@@ -115,7 +130,6 @@ local function LoadSkin()
 	EncounterInfo.modelTab:CreateBackdrop('Default')
 	EncounterInfo.modelTab.backdrop:Point('TOPLEFT', 11, -8)
 	EncounterInfo.modelTab.backdrop:Point('BOTTOMRIGHT', -6, 8)
-	EncounterInfo.modelTab.backdrop.backdropTexture:SetVertexColor(189/255, 159/255, 88/255)
 
 	
 	--Encounter Instance Frame
@@ -131,6 +145,20 @@ local function LoadSkin()
 	EncounterInstance.mapButton:SetPoint("BOTTOMLEFT", EncounterInstance.loreBG, "BOTTOMLEFT", 25, 35)
 	S:HandleScrollBar(EncounterInstance.loreScroll.ScrollBar, 4)
 	EncounterInstance.loreScroll.child.lore:SetTextColor(1,1,1)
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	--Suggestions
 	for i = 1, AJ_MAX_NUM_SUGGESTIONS do
@@ -197,6 +225,39 @@ local function LoadSkin()
 		end
 	end
 	hooksecurefunc("EncounterJournal_DisplayInstance", SkinBosses)
+
+	--Loot buttons
+	local function SkinLoot()
+		local scrollFrame = EncounterJournal.encounter.info.lootScroll;
+		local offset = HybridScrollFrame_GetOffset(scrollFrame);
+		local items = scrollFrame.buttons;
+		local item, index;
+		local numLoot = EJ_GetNumLoot();
+		local buttonSize = 45
+
+		for i = 1, #items do
+			item = items[i];
+			index = offset + i;
+			if index <= numLoot and not item.isSkinned then
+				buttonSize = item:GetHeight()
+				item:SetHeight(buttonSize - 5)
+				S:HandleItemButton(item)
+				item:CreateBackdrop("Default", true)
+				item.icon:SetDrawLayer("OVERLAY")
+				
+				--I need to figure out how to add spacing and still be able to scroll to the bottom of the list
+				-- item:ClearAllPoints()
+				-- if i == 1 then
+					-- item:SetPoint("TOPLEFT", scrollFrame.scrollChild, "TOPLEFT", 5, -10)
+				-- else
+					-- item:SetPoint("TOPLEFT", items[i-1], "BOTTOMLEFT", 0, -5)
+				-- end
+				
+				item.isSkinned = true
+			end
+		end
+	end
+	hooksecurefunc("EncounterJournal_LootUpdate", SkinLoot)
 end
 
 S:RegisterSkin('Blizzard_EncounterJournal', LoadSkin)
