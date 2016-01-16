@@ -3,130 +3,134 @@ local S = E:GetModule('Skins')
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.encounterjournal ~= true then return end
-	EncounterJournal:StripTextures(true)
-	EncounterJournal:CreateBackdrop("Transparent")
+	
+	local EJ = EncounterJournal
+	EJ:StripTextures(true)
+	EJ.inset:StripTextures(true)
+	EJ:CreateBackdrop("Transparent")
 
-	EncounterJournalNavBar:StripTextures(true)
-	EncounterJournalNavBarOverlay:StripTextures(true)
+	EJ.navBar:StripTextures(true)
+	EJ.navBar.overlay:StripTextures(true)
 
-	EncounterJournalNavBar:CreateBackdrop("Default")
-	EncounterJournalNavBar.backdrop:Point("TOPLEFT", -2, 0)
-	EncounterJournalNavBar.backdrop:SetPoint("BOTTOMRIGHT")
-	S:HandleButton(EncounterJournalNavBarHomeButton, true)
+	EJ.navBar:CreateBackdrop("Default")
+	EJ.navBar.backdrop:Point("TOPLEFT", -2, 0)
+	EJ.navBar.backdrop:SetPoint("BOTTOMRIGHT")
+	S:HandleButton(EJ.navBar.home, true)
 
-	S:HandleEditBox(EncounterJournalSearchBox)
+	S:HandleEditBox(EJ.searchBox)
 	S:HandleCloseButton(EncounterJournalCloseButton)
-	S:HandleDropDownBox(EncounterJournalInstanceSelectTierDropDown)
-
-	EncounterJournalInset:StripTextures(true)
-	EncounterJournalInstanceSelectBG:Kill()
+	
+	--Instance Selection Frame
+	local InstanceSelect = EJ.instanceSelect
+	InstanceSelect.bg:Kill()
+	S:HandleDropDownBox(InstanceSelect.tierDropDown)
+	S:HandleScrollBar(InstanceSelect.scroll.ScrollBar, 4)
+	S:HandleTab(InstanceSelect.suggestTab)
+	S:HandleTab(InstanceSelect.dungeonsTab)
+	S:HandleTab(InstanceSelect.raidsTab)
+	InstanceSelect.suggestTab.backdrop:SetTemplate("Default", true)
+	InstanceSelect.dungeonsTab.backdrop:SetTemplate("Default", true)
+	InstanceSelect.raidsTab.backdrop:SetTemplate("Default", true)
+	InstanceSelect.suggestTab:SetWidth(InstanceSelect.suggestTab:GetWidth() + 24)
+	InstanceSelect.dungeonsTab:SetWidth(InstanceSelect.dungeonsTab:GetWidth() + 10)
+	InstanceSelect.dungeonsTab:ClearAllPoints()
+	InstanceSelect.dungeonsTab:SetPoint("BOTTOMLEFT", InstanceSelect.suggestTab, "BOTTOMRIGHT", 0, 0)
+	InstanceSelect.raidsTab:ClearAllPoints()
+	InstanceSelect.raidsTab:SetPoint("BOTTOMLEFT", InstanceSelect.dungeonsTab, "BOTTOMRIGHT", 0, 0)
+	
+	--Encounter Info Frame
+	local EncounterInfo = EJ.encounter.info
 	EncounterJournalEncounterFrameInfoBG:Kill()
-	EncounterJournalEncounterFrameInfoLeftHeaderShadow:Kill()
-	EncounterJournalEncounterFrameInfoBossesScrollFrame:CreateBackdrop("Transparent")
-	EncounterJournalEncounterFrameInfoBossesScrollFrame.backdrop:SetPoint("TOPLEFT", EncounterJournalEncounterFrameInfoBossesScrollFrame, "TOPLEFT", -25, E.Border)
-	EncounterJournalEncounterFrameInfoInstanceButton:ClearAllPoints()
-	EncounterJournalEncounterFrameInfoInstanceButton:SetPoint("TOPLEFT", EncounterJournalEncounterFrameInfo, "TOPLEFT", 0, 15)
-	EncounterJournalEncounterFrameInfoInstanceTitle:SetTextColor(1, 0.5, 0)
-	EncounterJournalEncounterFrameInfoInstanceTitle:ClearAllPoints()
-	EncounterJournalEncounterFrameInfoInstanceTitle:SetPoint("BOTTOM", EncounterJournalEncounterFrameInfoBossesScrollFrame.backdrop, "TOP", 10, 15)
+	EncounterInfo.leftShadow:Kill()
+	EncounterInfo.rightShadow:Kill()
+	EncounterInfo.model.dungeonBG:Kill()
+	EncounterJournalEncounterFrameInfoModelFrameShadow:Kill()
 	
-	S:HandleTab(EncounterJournalInstanceSelectSuggestTab)
-	S:HandleTab(EncounterJournalInstanceSelectDungeonTab)
-	S:HandleTab(EncounterJournalInstanceSelectRaidTab)
-	EncounterJournalInstanceSelectSuggestTab.backdrop:SetTemplate("Default", true)
-	EncounterJournalInstanceSelectDungeonTab.backdrop:SetTemplate("Default", true)
-	EncounterJournalInstanceSelectRaidTab.backdrop:SetTemplate("Default", true)
-	EncounterJournalInstanceSelectSuggestTab:SetWidth(EncounterJournalInstanceSelectSuggestTab:GetWidth() + 24)
-	EncounterJournalInstanceSelectDungeonTab:SetWidth(EncounterJournalInstanceSelectDungeonTab:GetWidth() + 10)
-	EncounterJournalInstanceSelectDungeonTab:ClearAllPoints()
-	EncounterJournalInstanceSelectDungeonTab:SetPoint("BOTTOMLEFT", EncounterJournalInstanceSelectSuggestTab, "BOTTOMRIGHT", 0, 0)
-	EncounterJournalInstanceSelectRaidTab:ClearAllPoints()
-	EncounterJournalInstanceSelectRaidTab:SetPoint("BOTTOMLEFT", EncounterJournalInstanceSelectDungeonTab, "BOTTOMRIGHT", 0, 0)
+	EncounterInfo.instanceButton:ClearAllPoints()
+	EncounterInfo.instanceButton:SetPoint("TOPLEFT", EncounterInfo, "TOPLEFT", 0, 15)
+	EncounterInfo.instanceTitle:SetTextColor(1, 0.5, 0)
+	EncounterInfo.instanceTitle:ClearAllPoints()
+	EncounterInfo.instanceTitle:SetPoint("BOTTOM", EncounterInfo.bossesScroll, "TOP", 10, 15)
 	
-	EncounterJournalEncounterFrameInfoDifficulty:StripTextures(true)
-	S:HandleButton(EncounterJournalEncounterFrameInfoDifficulty)
-	EncounterJournalEncounterFrameInfoDifficulty:ClearAllPoints()
-	EncounterJournalEncounterFrameInfoDifficulty:SetPoint("BOTTOMRIGHT", EncounterJournalEncounterFrameInstanceFrame, "TOPRIGHT", 1, 5)
-	EncounterJournalEncounterFrameInfoResetButton:ClearAllPoints()
-	EncounterJournalEncounterFrameInfoResetButton:SetPoint("TOPRIGHT", EncounterJournalEncounterFrameInfoDifficulty, "TOPLEFT", -10, 0)
-	EncounterJournalEncounterFrameInfoResetButton:StripTextures()
-	S:HandleButton(EncounterJournalEncounterFrameInfoResetButton)
+	EncounterInfo.difficulty:StripTextures()
+	EncounterInfo.reset:StripTextures()
+	S:HandleButton(EncounterInfo.reset)
+	S:HandleButton(EncounterInfo.difficulty)
+	EncounterInfo.difficulty:ClearAllPoints()
+	EncounterInfo.difficulty:SetPoint("BOTTOMRIGHT", EncounterJournalEncounterFrameInstanceFrame, "TOPRIGHT", 1, 5)
+	EncounterInfo.reset:ClearAllPoints()
+	EncounterInfo.reset:SetPoint("TOPRIGHT", EncounterInfo.difficulty, "TOPLEFT", -10, 0)
 	EncounterJournalEncounterFrameInfoResetButtonTexture:SetTexture("Interface\\EncounterJournal\\UI-EncounterJournalTextures")
 	EncounterJournalEncounterFrameInfoResetButtonTexture:SetTexCoord(0.90625000, 0.94726563, 0.00097656, 0.02050781)
 	
+	EncounterInfo.bossesScroll:CreateBackdrop("Transparent")
+	EncounterInfo.bossesScroll.backdrop:SetPoint("TOPLEFT", EncounterInfo.bossesScroll, "TOPLEFT", -25, E.Border)
+
+	EncounterInfo.overviewScroll:CreateBackdrop("Transparent")
+	EncounterInfo.overviewScroll:SetHeight(EncounterInfo.overviewScroll:GetHeight() - (2 + E.Border))
+	EncounterInfo.overviewScroll:SetWidth(360)
+	EncounterInfo.overviewScroll:ClearAllPoints()
+	EncounterInfo.overviewScroll:SetPoint("BOTTOMRIGHT", EncounterJournalEncounterFrame, "BOTTOMRIGHT", -1, 5)
+	EncounterInfo.overviewScroll.backdrop:SetPoint("TOPLEFT", EncounterInfo.bossesScroll.backdrop, "TOPRIGHT", 5, 0)
+	EncounterInfo.overviewScroll.backdrop:SetPoint("BOTTOMLEFT", EncounterInfo.bossesScroll.backdrop, "BOTTOMRIGHT", 5, 0)
+
+	S:HandleScrollBar(EncounterInfo.detailsScroll.ScrollBar, 4)
+	S:HandleScrollBar(EncounterInfo.lootScroll.scrollBar, 4)
+	S:HandleScrollBar(EncounterInfo.bossesScroll.ScrollBar, 4)
+	S:HandleScrollBar(EncounterInfo.overviewScroll.ScrollBar, 4)
+
+	EncounterInfo.overviewTab:Point('TOPLEFT', EncounterInfo, 'TOPRIGHT', E.PixelMode and -3 or 0, -35)
+	EncounterInfo.overviewTab.SetPoint = E.noop
+	EncounterInfo.overviewTab:GetNormalTexture():SetTexture(nil)
+	EncounterInfo.overviewTab:GetPushedTexture():SetTexture(nil)
+	EncounterInfo.overviewTab:GetDisabledTexture():SetTexture(nil)
+	EncounterInfo.overviewTab:GetHighlightTexture():SetTexture(nil)
+	EncounterInfo.overviewTab:CreateBackdrop('Default')
+	EncounterInfo.overviewTab.backdrop:Point('TOPLEFT', 11, -8)
+	EncounterInfo.overviewTab.backdrop:Point('BOTTOMRIGHT', -6, 8)
+	EncounterInfo.overviewTab.backdrop.backdropTexture:SetVertexColor(189/255, 159/255, 88/255)
 	
-	EncounterJournalEncounterFrameInstanceFrame:CreateBackdrop("Transparent")
-	EncounterJournalEncounterFrameInstanceFrame:SetHeight(EncounterJournalEncounterFrameInfoBossesScrollFrame:GetHeight())
-	EncounterJournalEncounterFrameInstanceFrame:ClearAllPoints()
-	EncounterJournalEncounterFrameInstanceFrame:SetPoint("BOTTOMRIGHT", EncounterJournalEncounterFrame, "BOTTOMRIGHT", -1, 3)
-	EncounterJournalEncounterFrameInstanceFrameBG:SetSize(325, 280)
-	EncounterJournalEncounterFrameInstanceFrameBG:ClearAllPoints()
-	EncounterJournalEncounterFrameInstanceFrameBG:SetPoint("TOP", EncounterJournalEncounterFrameInstanceFrame, "TOP", 0, 0)
-	EncounterJournalEncounterFrameInstanceFrameMapButton:ClearAllPoints()
-	EncounterJournalEncounterFrameInstanceFrameMapButton:SetPoint("BOTTOMLEFT", EncounterJournalEncounterFrameInstanceFrameBG, "BOTTOMLEFT", 25, 35)
-	EncounterJournalEncounterFrameInstanceFrameLoreScrollFrameScrollChildLore:SetTextColor(1,1,1)
+	EncounterInfo.lootTab:GetNormalTexture():SetTexture(nil)
+	EncounterInfo.lootTab:GetPushedTexture():SetTexture(nil)
+	EncounterInfo.lootTab:GetDisabledTexture():SetTexture(nil)
+	EncounterInfo.lootTab:GetHighlightTexture():SetTexture(nil)
+	EncounterInfo.lootTab:CreateBackdrop('Default')
+	EncounterInfo.lootTab.backdrop:Point('TOPLEFT', 11, -8)
+	EncounterInfo.lootTab.backdrop:Point('BOTTOMRIGHT', -6, 8)
+	EncounterInfo.lootTab.backdrop.backdropTexture:SetVertexColor(189/255, 159/255, 88/255)
 	
-	EncounterJournalEncounterFrameInfoOverviewScrollFrame:CreateBackdrop("Transparent")
-	EncounterJournalEncounterFrameInfoOverviewScrollFrame:SetHeight(EncounterJournalEncounterFrameInfoOverviewScrollFrame:GetHeight() - (2 + E.Border))
-	EncounterJournalEncounterFrameInfoOverviewScrollFrame:SetWidth(360)
-	EncounterJournalEncounterFrameInfoOverviewScrollFrame:ClearAllPoints()
-	EncounterJournalEncounterFrameInfoOverviewScrollFrame:SetPoint("BOTTOMRIGHT", EncounterJournalEncounterFrame, "BOTTOMRIGHT", -1, 5)
-	EncounterJournalEncounterFrameInfoOverviewScrollFrame.backdrop:SetPoint("TOPLEFT", EncounterJournalEncounterFrameInfoBossesScrollFrame.backdrop, "TOPRIGHT", 5, 0)
-	EncounterJournalEncounterFrameInfoOverviewScrollFrame.backdrop:SetPoint("BOTTOMLEFT", EncounterJournalEncounterFrameInfoBossesScrollFrame.backdrop, "BOTTOMRIGHT", 5, 0)
-	EncounterJournalEncounterFrameInfoRightHeaderShadow:Kill()
-
-	EncounterJournalEncounterFrameInfoModelFrameDungeonBG:Kill()
-	EncounterJournalEncounterFrameInfoModelFrameShadow:Kill()
+	EncounterInfo.bossTab:GetNormalTexture():SetTexture(nil)
+	EncounterInfo.bossTab:GetPushedTexture():SetTexture(nil)
+	EncounterInfo.bossTab:GetDisabledTexture():SetTexture(nil)
+	EncounterInfo.bossTab:GetHighlightTexture():SetTexture(nil)
+	EncounterInfo.bossTab:CreateBackdrop('Default')
+	EncounterInfo.bossTab.backdrop:Point('TOPLEFT', 11, -8)
+	EncounterInfo.bossTab.backdrop:Point('BOTTOMRIGHT', -6, 8)
+	EncounterInfo.bossTab.backdrop.backdropTexture:SetVertexColor(189/255, 159/255, 88/255)
 	
+	EncounterInfo.modelTab:GetNormalTexture():SetTexture(nil)
+	EncounterInfo.modelTab:GetPushedTexture():SetTexture(nil)
+	EncounterInfo.modelTab:GetDisabledTexture():SetTexture(nil)
+	EncounterInfo.modelTab:GetHighlightTexture():SetTexture(nil)
+	EncounterInfo.modelTab:CreateBackdrop('Default')
+	EncounterInfo.modelTab.backdrop:Point('TOPLEFT', 11, -8)
+	EncounterInfo.modelTab.backdrop:Point('BOTTOMRIGHT', -6, 8)
+	EncounterInfo.modelTab.backdrop.backdropTexture:SetVertexColor(189/255, 159/255, 88/255)
+
 	
-	
-	S:HandleScrollBar(EncounterJournalInstanceSelectScrollFrameScrollBar, 4)
-	S:HandleScrollBar(EncounterJournalEncounterFrameInfoDetailsScrollFrameScrollBar, 4)
-	S:HandleScrollBar(EncounterJournalEncounterFrameInfoLootScrollFrameScrollBar, 4)
-	S:HandleScrollBar(EncounterJournalEncounterFrameInstanceFrameLoreScrollFrameScrollBar, 4)
-	S:HandleScrollBar(EncounterJournalEncounterFrameInfoBossesScrollFrameScrollBar, 4)
-	S:HandleScrollBar(EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollBar, 4)
-
-	EncounterJournalEncounterFrameInfoBossTab:GetNormalTexture():SetTexture(nil)
-	EncounterJournalEncounterFrameInfoBossTab:GetPushedTexture():SetTexture(nil)
-	EncounterJournalEncounterFrameInfoBossTab:GetDisabledTexture():SetTexture(nil)
-	EncounterJournalEncounterFrameInfoBossTab:GetHighlightTexture():SetTexture(nil)
-
-	EncounterJournalEncounterFrameInfoLootTab:GetNormalTexture():SetTexture(nil)
-	EncounterJournalEncounterFrameInfoLootTab:GetPushedTexture():SetTexture(nil)
-	EncounterJournalEncounterFrameInfoLootTab:GetDisabledTexture():SetTexture(nil)
-	EncounterJournalEncounterFrameInfoLootTab:GetHighlightTexture():SetTexture(nil)
-
-	EncounterJournalEncounterFrameInfoModelTab:GetNormalTexture():SetTexture(nil)
-	EncounterJournalEncounterFrameInfoModelTab:GetPushedTexture():SetTexture(nil)
-	EncounterJournalEncounterFrameInfoModelTab:GetDisabledTexture():SetTexture(nil)
-	EncounterJournalEncounterFrameInfoModelTab:GetHighlightTexture():SetTexture(nil)
-
-	EncounterJournalEncounterFrameInfoOverviewTab:GetNormalTexture():SetTexture(nil)
-	EncounterJournalEncounterFrameInfoOverviewTab:GetPushedTexture():SetTexture(nil)
-	EncounterJournalEncounterFrameInfoOverviewTab:GetDisabledTexture():SetTexture(nil)
-	EncounterJournalEncounterFrameInfoOverviewTab:GetHighlightTexture():SetTexture(nil)
-
-	EncounterJournalEncounterFrameInfoOverviewTab:Point('TOPLEFT', EncounterJournalEncounterFrameInfo, 'TOPRIGHT', E.PixelMode and -3 or 0, -35)
-	EncounterJournalEncounterFrameInfoOverviewTab.SetPoint = E.noop
-
-	EncounterJournalEncounterFrameInfoBossTab:CreateBackdrop('Default')
-	EncounterJournalEncounterFrameInfoBossTab.backdrop:Point('TOPLEFT', 11, -8)
-	EncounterJournalEncounterFrameInfoBossTab.backdrop:Point('BOTTOMRIGHT', -6, 8)
-	EncounterJournalEncounterFrameInfoLootTab:CreateBackdrop('Default')
-	EncounterJournalEncounterFrameInfoLootTab.backdrop:Point('TOPLEFT', 11, -8)
-	EncounterJournalEncounterFrameInfoLootTab.backdrop:Point('BOTTOMRIGHT', -6, 8)
-	EncounterJournalEncounterFrameInfoModelTab:CreateBackdrop('Default')
-	EncounterJournalEncounterFrameInfoModelTab.backdrop:Point('TOPLEFT', 11, -8)
-	EncounterJournalEncounterFrameInfoModelTab.backdrop:Point('BOTTOMRIGHT', -6, 8)
-	EncounterJournalEncounterFrameInfoOverviewTab:CreateBackdrop('Default')
-	EncounterJournalEncounterFrameInfoOverviewTab.backdrop:Point('TOPLEFT', 11, -8)
-	EncounterJournalEncounterFrameInfoOverviewTab.backdrop:Point('BOTTOMRIGHT', -6, 8)
-
-	EncounterJournalEncounterFrameInfoBossTab.backdrop.backdropTexture:SetVertexColor(189/255, 159/255, 88/255)
-	EncounterJournalEncounterFrameInfoLootTab.backdrop.backdropTexture:SetVertexColor(189/255, 159/255, 88/255)
-	EncounterJournalEncounterFrameInfoModelTab.backdrop.backdropTexture:SetVertexColor(189/255, 159/255, 88/255)
-	EncounterJournalEncounterFrameInfoOverviewTab.backdrop.backdropTexture:SetVertexColor(189/255, 159/255, 88/255)
+	--Encounter Instance Frame
+	local EncounterInstance = EJ.encounter.instance
+	EncounterInstance:CreateBackdrop("Transparent")
+	EncounterInstance:SetHeight(EncounterInfo.bossesScroll:GetHeight())
+	EncounterInstance:ClearAllPoints()
+	EncounterInstance:SetPoint("BOTTOMRIGHT", EncounterJournalEncounterFrame, "BOTTOMRIGHT", -1, 3)
+	EncounterInstance.loreBG:SetSize(325, 280)
+	EncounterInstance.loreBG:ClearAllPoints()
+	EncounterInstance.loreBG:SetPoint("TOP", EncounterInstance, "TOP", 0, 0)
+	EncounterInstance.mapButton:ClearAllPoints()
+	EncounterInstance.mapButton:SetPoint("BOTTOMLEFT", EncounterInstance.loreBG, "BOTTOMLEFT", 25, 35)
+	S:HandleScrollBar(EncounterInstance.loreScroll.ScrollBar, 4)
+	EncounterInstance.loreScroll.child.lore:SetTextColor(1,1,1)
 	
 	--Suggestions
 	for i = 1, AJ_MAX_NUM_SUGGESTIONS do
@@ -144,13 +148,13 @@ local function LoadSkin()
 	local tooltip = EncounterJournalTooltip
 	local item1 = tooltip.Item1
 	local item2 = tooltip.Item2
-	EncounterJournalTooltip:SetTemplate("Transparent")
+	tooltip:SetTemplate("Transparent")
 	S:HandleIcon(item1.icon)
 	S:HandleIcon(item2.icon)
 	item1.IconBorder:SetTexture(nil)
 	item2.IconBorder:SetTexture(nil)
 	
-	--Dungeon/raid selection buttons
+	--Dungeon/raid selection buttons (From AddOnSkins)
 	local function SkinDungeons()
 		local b1 = EncounterJournalInstanceSelectScrollFrameScrollChildInstanceButton1
 		if b1 and not b1.isSkinned then 
@@ -175,6 +179,7 @@ local function LoadSkin()
 	hooksecurefunc("EncounterJournal_ListInstances", SkinDungeons)
 	EncounterJournal_ListInstances()
 	
+	--Boss selection buttons
 	local function SkinBosses()
 		local bossIndex = 1;
 		local name, description, bossID, _, link = EJ_GetEncounterInfoByIndex(bossIndex);
@@ -182,8 +187,9 @@ local function LoadSkin()
 
 		while bossID do
 			bossButton = _G["EncounterJournalBossButton"..bossIndex];
-			if bossButton then
+			if bossButton and not bossButton.isSkinned then
 				S:HandleButton(bossButton)
+				bossButton.isSkinned = true
 			end
 			
 			bossIndex = bossIndex + 1;
