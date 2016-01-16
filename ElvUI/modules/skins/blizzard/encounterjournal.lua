@@ -48,7 +48,6 @@ local function LoadSkin()
 	
 	EncounterInfo.instanceButton:ClearAllPoints()
 	EncounterInfo.instanceButton:SetPoint("TOPLEFT", EncounterInfo, "TOPLEFT", 0, 15)
-	EncounterInfo.instanceTitle:SetTextColor(1, 0.5, 0)
 	EncounterInfo.instanceTitle:ClearAllPoints()
 	EncounterInfo.instanceTitle:SetPoint("BOTTOM", EncounterInfo.bossesScroll, "TOP", 10, 15)
 	
@@ -67,36 +66,39 @@ local function LoadSkin()
 	EncounterInfo.bossesScroll.backdrop:SetPoint("TOPLEFT", EncounterInfo.bossesScroll, "TOPLEFT", -25, E.Border)
 	S:HandleScrollBar(EncounterInfo.bossesScroll.ScrollBar, 4)
 
-	EncounterInfo.overviewScroll:CreateBackdrop("Transparent")
-	EncounterInfo.overviewScroll:SetHeight(EncounterInfo.overviewScroll:GetHeight() - (2 + E.Border))
-	EncounterInfo.overviewScroll:SetWidth(360)
-	EncounterInfo.overviewScroll:ClearAllPoints()
-	EncounterInfo.overviewScroll:SetPoint("BOTTOMRIGHT", EncounterJournalEncounterFrame, "BOTTOMRIGHT", -1, 5)
-	EncounterInfo.overviewScroll.backdrop:SetPoint("TOPLEFT", EncounterInfo.bossesScroll.backdrop, "TOPRIGHT", 5, 0)
-	EncounterInfo.overviewScroll.backdrop:SetPoint("BOTTOMLEFT", EncounterInfo.bossesScroll.backdrop, "BOTTOMRIGHT", 5, 0)
-	S:HandleScrollBar(EncounterInfo.overviewScroll.ScrollBar, 4)
+	
+	local scrollFrames = {
+		EncounterInfo.overviewScroll,
+		EncounterInfo.lootScroll,
+		EncounterInfo.detailsScroll,
+	}
 
-	EncounterInfo.lootScroll:CreateBackdrop("Transparent")
-	EncounterInfo.lootScroll:SetHeight(EncounterInfo.lootScroll:GetHeight() - (2 + E.Border))
-	EncounterInfo.lootScroll:SetWidth(370)
-	EncounterInfo.lootScroll:ClearAllPoints()
-	EncounterInfo.lootScroll:SetPoint("BOTTOMRIGHT", EncounterJournalEncounterFrame, "BOTTOMRIGHT", -1, 5)
-	EncounterInfo.lootScroll.backdrop:SetPoint("TOPLEFT", EncounterInfo.bossesScroll.backdrop, "TOPRIGHT", 5, 0)
-	EncounterInfo.lootScroll.backdrop:SetPoint("BOTTOMLEFT", EncounterInfo.bossesScroll.backdrop, "BOTTOMRIGHT", 5, 0)
+	for _, scrollFrame in pairs(scrollFrames) do
+		scrollFrame:CreateBackdrop("Transparent")
+		scrollFrame:SetHeight(EncounterInfo.overviewScroll:GetHeight() - (2 + E.Border))
+		scrollFrame:SetWidth(370)
+		scrollFrame:ClearAllPoints()
+		scrollFrame:SetPoint("BOTTOMRIGHT", EncounterJournalEncounterFrame, "BOTTOMRIGHT", -1, 5)
+		scrollFrame.backdrop:SetPoint("TOPLEFT", EncounterInfo.bossesScroll.backdrop, "TOPRIGHT", 5, 0)
+		scrollFrame.backdrop:SetPoint("BOTTOMLEFT", EncounterInfo.bossesScroll.backdrop, "BOTTOMRIGHT", 5, 0)
+	end
+	
+	S:HandleScrollBar(EncounterInfo.overviewScroll.ScrollBar, 4)
+	S:HandleScrollBar(EncounterInfo.detailsScroll.ScrollBar, 4)
+	S:HandleScrollBar(EncounterInfo.lootScroll.scrollBar, 4)
+
 	EncounterInfo.lootScroll.filter:StripTextures()
 	S:HandleButton(EncounterInfo.lootScroll.filter)
 	EncounterInfo.lootScroll.filter:ClearAllPoints()
 	EncounterInfo.lootScroll.filter:SetPoint("BOTTOMLEFT", EncounterInfo.lootScroll.backdrop, "TOPLEFT", 0, 5)
-	S:HandleScrollBar(EncounterInfo.lootScroll.scrollBar, 4)
-	
-	
-	
-	
-	S:HandleScrollBar(EncounterInfo.detailsScroll.ScrollBar, 4)
+	EncounterInfo.lootScroll.classClearFilter:ClearAllPoints()
+	EncounterInfo.lootScroll.classClearFilter:SetPoint("BOTTOM", EncounterInfo.lootScroll, "TOP", -10, -8)
 
+	EncounterInfo.detailsScroll.child.description:SetTextColor(1, 1, 1)
+	EncounterInfo.overviewScroll.child.loreDescription:SetTextColor(1, 1, 1)
+	EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChildTitle:SetTextColor(1, 1, 1)
+	EncounterInfo.overviewScroll.child.overviewDescription.Text:SetTextColor(1, 1, 1)
 
-	
-	
 	EncounterInfo.overviewTab:Point('TOPLEFT', EncounterInfo, 'TOPRIGHT', E.PixelMode and -3 or 0, -35)
 	EncounterInfo.overviewTab.SetPoint = E.noop
 	EncounterInfo.overviewTab:GetNormalTexture():SetTexture(nil)
@@ -130,7 +132,6 @@ local function LoadSkin()
 	EncounterInfo.modelTab:CreateBackdrop('Default')
 	EncounterInfo.modelTab.backdrop:Point('TOPLEFT', 11, -8)
 	EncounterInfo.modelTab.backdrop:Point('BOTTOMRIGHT', -6, 8)
-
 	
 	--Encounter Instance Frame
 	local EncounterInstance = EJ.encounter.instance
@@ -144,21 +145,7 @@ local function LoadSkin()
 	EncounterInstance.mapButton:ClearAllPoints()
 	EncounterInstance.mapButton:SetPoint("BOTTOMLEFT", EncounterInstance.loreBG, "BOTTOMLEFT", 25, 35)
 	S:HandleScrollBar(EncounterInstance.loreScroll.ScrollBar, 4)
-	EncounterInstance.loreScroll.child.lore:SetTextColor(1,1,1)
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	EncounterInstance.loreScroll.child.lore:SetTextColor(1, 1, 1)
 	
 	--Suggestions
 	for i = 1, AJ_MAX_NUM_SUGGESTIONS do
@@ -227,37 +214,117 @@ local function LoadSkin()
 	hooksecurefunc("EncounterJournal_DisplayInstance", SkinBosses)
 
 	--Loot buttons
-	local function SkinLoot()
-		local scrollFrame = EncounterJournal.encounter.info.lootScroll;
-		local offset = HybridScrollFrame_GetOffset(scrollFrame);
-		local items = scrollFrame.buttons;
-		local item, index;
-		local numLoot = EJ_GetNumLoot();
-		local buttonSize = 45
+	local items = EncounterJournal.encounter.info.lootScroll.buttons
+	for i = 1, #items do
+		local item = items[i]
 
-		for i = 1, #items do
-			item = items[i];
-			index = offset + i;
-			if index <= numLoot and not item.isSkinned then
-				buttonSize = item:GetHeight()
-				item:SetHeight(buttonSize - 5)
-				S:HandleItemButton(item)
-				item:CreateBackdrop("Default", true)
-				item.icon:SetDrawLayer("OVERLAY")
-				
-				--I need to figure out how to add spacing and still be able to scroll to the bottom of the list
-				-- item:ClearAllPoints()
-				-- if i == 1 then
-					-- item:SetPoint("TOPLEFT", scrollFrame.scrollChild, "TOPLEFT", 5, -10)
-				-- else
-					-- item:SetPoint("TOPLEFT", items[i-1], "BOTTOMLEFT", 0, -5)
-				-- end
-				
-				item.isSkinned = true
+		item.boss:SetTextColor(1, 1, 1)
+		item.boss:ClearAllPoints()
+		item.boss:SetPoint("BOTTOMLEFT", 4, 7)
+		item.slot:SetTextColor(1, 1, 1)
+		item.armorType:SetTextColor(1, 1, 1)
+		item.armorType:ClearAllPoints()
+		item.armorType:SetPoint("BOTTOMRIGHT", item.name, "TOPLEFT", 264, -25)
+
+		item.bossTexture:SetAlpha(0)
+		item.bosslessTexture:SetAlpha(0)
+
+		item.icon:SetSize(36, 36)
+		item.icon:SetPoint("TOPLEFT", E.PixelMode and 1 or 2, -(E.PixelMode and 5 or 7))
+
+		S:HandleIcon(item.icon)
+		item.icon:SetDrawLayer("OVERLAY")
+
+		item:CreateBackdrop("Transparent")
+		item.backdrop:SetPoint("TOPLEFT", 0, -4)
+		item.backdrop:SetPoint("BOTTOMRIGHT", 0, E.PixelMode and 3 or 0)
+
+		if i == 1 then
+			item:ClearAllPoints()
+			item:SetPoint("TOPLEFT", EncounterInfo.lootScroll.scrollChild, "TOPLEFT", 5, 0)
+		end
+	end
+	
+	--Overview Info (From Aurora)
+	local function SkinOverviewInfo(self, role, index)
+		local header = self.overviews[index]
+		if not header.isSkinned then
+
+			header.descriptionBG:SetAlpha(0)
+			header.descriptionBGBottom:SetAlpha(0)
+			for i = 4, 18 do
+				select(i, header.button:GetRegions()):SetTexture("")
+			end
+
+			S:HandleButton(header.button)
+			
+			header.button.title:SetTextColor(unpack(E.media.rgbvaluecolor))
+			header.button.title.SetTextColor = E.noop
+			header.button.expandedIcon:SetTextColor(1, 1, 1)
+			header.button.expandedIcon.SetTextColor = E.noop
+
+			header.isSkinned = true
+		end
+	end
+	hooksecurefunc("EncounterJournal_SetUpOverview", SkinOverviewInfo)
+
+	--Overview Info Bullets (From Aurora)
+	local function SkinOverviewInfoBullets(object, description)
+		local parent = object:GetParent()
+
+		if parent.Bullets then
+			for _, bullet in pairs(parent.Bullets) do
+				if not bullet.styled then
+					bullet.Text:SetTextColor(1, 1, 1)
+					bullet.styled = true
+				end
 			end
 		end
 	end
-	hooksecurefunc("EncounterJournal_LootUpdate", SkinLoot)
+	hooksecurefunc("EncounterJournal_SetBullets", SkinOverviewInfoBullets)
+	
+	--Abilities Info (From Aurora)
+	local function SkinAbilitiesInfo()
+		local index = 1
+		local header = _G["EncounterJournalInfoHeader"..index]
+		while header do
+			if not header.isSkinned then
+				header.flashAnim.Play = E.noop
+
+				header.descriptionBG:SetAlpha(0)
+				header.descriptionBGBottom:SetAlpha(0)
+				for i = 4, 18 do
+					select(i, header.button:GetRegions()):SetTexture("")
+				end
+
+				header.description:SetTextColor(1, 1, 1)
+				header.button.title:SetTextColor(unpack(E.media.rgbvaluecolor))
+				header.button.title.SetTextColor = E.noop
+				header.button.expandedIcon:SetTextColor(1, 1, 1)
+				header.button.expandedIcon.SetTextColor = E.noop
+
+				S:HandleButton(header.button)
+
+				header.button.bg = CreateFrame("Frame", nil, header.button)
+				header.button.bg:SetTemplate("Default")
+				header.button.bg:SetOutside(header.button.abilityIcon)
+				header.button.bg:SetFrameLevel(header.button.bg:GetFrameLevel() - 1)
+				header.button.abilityIcon:SetTexCoord(.08, .92, .08, .92)
+
+				header.isSkinned = true
+			end
+
+			if header.button.abilityIcon:IsShown() then
+				header.button.bg:Show()
+			else
+				header.button.bg:Hide()
+			end
+
+			index = index + 1
+			header = _G["EncounterJournalInfoHeader"..index]
+		end
+	end
+	hooksecurefunc("EncounterJournal_ToggleHeaders", SkinAbilitiesInfo)
 end
 
 S:RegisterSkin('Blizzard_EncounterJournal', LoadSkin)
