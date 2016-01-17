@@ -139,7 +139,7 @@ function UF:Update_FocusFrame(frame, db)
 		
 		health.bg:ClearAllPoints()
 		if not USE_PORTRAIT_OVERLAY then
-			health:Point("TOPRIGHT", -(PORTRAIT_WIDTH+BORDER), -BORDER)
+			health:Point("TOPRIGHT", -(PORTRAIT_WIDTH+BORDER+POWERBAR_OFFSET), -BORDER)
 			health.bg:SetParent(health)
 			health.bg:SetAllPoints()
 		else

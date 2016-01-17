@@ -920,7 +920,8 @@ end
 function E:RemoveNonPetBattleFrames()
 	if InCombatLockdown() then return end
 	for object, _ in pairs(E.FrameLocks) do
-		_G[object]:SetParent(E.HiddenFrame)
+		local obj = _G[object] or object
+		obj:SetParent(E.HiddenFrame)
 	end
 
 	self:RegisterEvent("PLAYER_REGEN_DISABLED", "AddNonPetBattleFrames")
@@ -929,7 +930,8 @@ end
 function E:AddNonPetBattleFrames(event)
 	if InCombatLockdown() then return end
 	for object, _ in pairs(E.FrameLocks) do
-		_G[object]:SetParent(UIParent)
+		local obj = _G[object] or object
+		obj:SetParent(UIParent)
 	end
 
 	self:UnregisterEvent("PLAYER_REGEN_DISABLED")

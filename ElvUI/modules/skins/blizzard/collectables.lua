@@ -1,6 +1,16 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
+--Cache global variables
+--Lua functions
+local _G = _G
+local unpack = unpack
+--WoW API / Variables
+local C_Heirloom_PlayerHasHeirloom = C_Heirloom.PlayerHasHeirloom
+local C_PetJournal_GetPetStats = C_PetJournal.GetPetStats
+local C_PetJournal_GetPetInfoByIndex = C_PetJournal.GetPetInfoByIndex
+local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.mounts ~= true then return end
 	-- global
@@ -18,10 +28,10 @@ local function LoadSkin()
 
 	MountJournalFilterButton:ClearAllPoints()
 	MountJournalFilterButton:SetPoint("LEFT", MountJournalSearchBox, "RIGHT", 5, 0)
+
 	-------------------------------
 	--[[ mount journal (tab 1) ]]--
 	-------------------------------
-
 	MountJournal:StripTextures()
 	MountJournal.LeftInset:StripTextures()
 	MountJournal.RightInset:StripTextures()
@@ -45,12 +55,9 @@ local function LoadSkin()
 		b.favorite:SetSize(32,32)
 	end
 
-
-
 	-----------------------------
 	--[[ pet journal (tab 2) ]]--
 	-----------------------------
-
 	PetJournalSummonButton:StripTextures()
 	PetJournalFindBattle:StripTextures()
 	S:HandleButton(PetJournalSummonButton)
@@ -96,7 +103,7 @@ local function LoadSkin()
 			if not index then break; end
 			local b = _G["PetJournalListScrollFrameButton"..i]
 			local t = _G["PetJournalListScrollFrameButton"..i.."Name"]
-			local petID, speciesID, isOwned, customName, level, favorite, isRevoked, name, icon, petType, creatureID, sourceText, description, isWildPet, canBattle = C_PetJournal.GetPetInfoByIndex(index, isWild);
+			local petID, speciesID, isOwned, customName, level, favorite, isRevoked, name, icon, petType, creatureID, sourceText, description, isWildPet, canBattle = C_PetJournal_GetPetInfoByIndex(index, isWild);
 
 			if b.selectedTexture:IsShown() then
 				t:SetTextColor(1,1,0)
@@ -104,7 +111,7 @@ local function LoadSkin()
 				t:SetTextColor(1,1,1)
 			end
 			if petID ~= nil then
-				local health, maxHealth, attack, speed, rarity = C_PetJournal.GetPetStats(petID);
+				local health, maxHealth, attack, speed, rarity = C_PetJournal_GetPetStats(petID);
 				if rarity then
 					local color = ITEM_QUALITY_COLORS[rarity-1]
 					b.backdrop:SetBackdropBorderColor(color.r, color.g, color.b);
@@ -250,7 +257,6 @@ local function LoadSkin()
 	end
 
 
-
 	--Heirlooms
 	S:HandleButton(HeirloomsJournalFilterButton)
 	HeirloomsJournalFilterButton:SetPoint("TOPRIGHT", HeirloomsJournal, "TOPRIGHT", -15, -34)
@@ -281,7 +287,7 @@ local function LoadSkin()
 				HeirloomsJournal:UpdateButton(button)
 			end
 
-			if(C_Heirloom.PlayerHasHeirloom(button.itemID)) then
+			if(C_Heirloom_PlayerHasHeirloom(button.itemID)) then
 				button.name:SetTextColor(1, 1, 1)
 			else
 				button.name:SetTextColor(0.6, 0.6, 0.6)
@@ -291,7 +297,7 @@ local function LoadSkin()
 
 	hooksecurefunc(HeirloomsJournal, "UpdateButton", function(self, button)
 		button.iconTextureUncollected:SetTexture(button.iconTexture:GetTexture())
-		if(C_Heirloom.PlayerHasHeirloom(button.itemID)) then
+		if(C_Heirloom_PlayerHasHeirloom(button.itemID)) then
 			button.name:SetTextColor(1, 1, 1)
 		else
 			button.name:SetTextColor(0.6, 0.6, 0.6)

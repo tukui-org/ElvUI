@@ -280,7 +280,11 @@ function B:UpdateSlot(bagID, slotID)
 
 	local slot, _ = self.Bags[bagID][slotID], nil;
 	local bagType = self.Bags[bagID].type;
-	local texture, count, locked, _, readable = GetContainerItemInfo(bagID, slotID);
+	
+	slot.name, slot.rarity = nil, nil;
+	local texture, count, locked, readable
+	texture, count, locked, slot.rarity, readable = GetContainerItemInfo(bagID, slotID);
+
 	local clink = GetContainerItemLink(bagID, slotID);
 
 	slot:Show();
@@ -288,14 +292,12 @@ function B:UpdateSlot(bagID, slotID)
 		slot.questIcon:Hide();
 	end
 
-	slot.name, slot.rarity = nil, nil;
-
 	slot.itemLevel:SetText("")
 	if B.ProfessionColors[bagType] then
 		slot:SetBackdropBorderColor(unpack(B.ProfessionColors[bagType]))
 	elseif (clink) then
 		local iLvl, itemEquipLoc
-		slot.name, _, slot.rarity, iLvl, _, _, _, _, itemEquipLoc = GetItemInfo(clink);
+		slot.name, _, _, iLvl, _, _, _, _, itemEquipLoc = GetItemInfo(clink);
 
 		local isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID);
 		local r, g, b
