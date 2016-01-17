@@ -387,16 +387,18 @@ function NP:GetThreatReaction(frame)
 	if frame.threat:IsShown() then
 		local r, g, b = frame.threat:GetVertexColor()
 		if g + b == 0 then
-			return 'FULL_THREAT'
+			return "FULL_THREAT", r, g
 		else
-			if self.threatReaction == 'FULL_THREAT' then
-				return 'GAINING_THREAT'
+			if (r == frame.prevRedValue and g == frame.prevGreenValue) then
+				return frame.threatReaction, r, g
+			elseif (r > frame.prevRedValue) or (r > 0.99 and (g < frame.prevGreenValue)) then
+				return "GAINING_THREAT", r, g
 			else
-				return 'LOSING_THREAT'
+				return "LOSING_THREAT", r, g
 			end
 		end
 	else
-		return 'NO_THREAT'
+		return "NO_THREAT", 0, 0
 	end
 end
 
@@ -415,7 +417,7 @@ function NP:ColorizeAndScale(myPlate)
 		color = NP.db.reactions.tapped
 	elseif unitType == "HOSTILE_NPC" or unitType == "NEUTRAL_NPC" then
 		local classRole = E.role
-		local threatReaction = NP:GetThreatReaction(self)
+		local threatReaction, redValue, greenValue = NP:GetThreatReaction(self)
 		canAttack = true
 		if(not NP.db.threat.enable) then
 			if unitType == "NEUTRAL_NPC" then
@@ -460,6 +462,8 @@ function NP:ColorizeAndScale(myPlate)
 		end
 
 		self.threatReaction = threatReaction
+		self.prevRedValue = redValue
+		self.prevGreenValue = greenValue
 	elseif unitType == "FRIENDLY_NPC" then
 		color = NP.db.reactions.friendlyNPC
 	elseif unitType == "FRIENDLY_PLAYER" then
