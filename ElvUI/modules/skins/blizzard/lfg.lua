@@ -201,7 +201,10 @@ local function LoadSkin()
 	local function ReskinRewards()
 		LFDQueueFrame:StripTextures()
 
-		for i = 1, LFD_MAX_REWARDS do
+		local dungeonID = LFDQueueFrame.type;
+		local _, _, _, _, _, numRewards = GetLFGDungeonRewards(dungeonID);
+
+		for i = 1, numRewards do
 			local button = _G["LFDQueueFrameRandomScrollFrameChildFrameItem"..i]
 			local icon = _G["LFDQueueFrameRandomScrollFrameChildFrameItem"..i.."IconTexture"]
 
