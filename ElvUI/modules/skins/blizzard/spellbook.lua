@@ -34,6 +34,7 @@ local function LoadSkin()
 	pagebackdrop:SetTemplate("Default")
 	pagebackdrop:Point("TOPLEFT", SpellBookPage1, "TOPLEFT", -2, 2)
 	pagebackdrop:Point("BOTTOMRIGHT", SpellBookFrame, "BOTTOMRIGHT", -8, 4)
+	SpellBookFrame.pagebackdrop = pagebackdrop
 
 	for i=1, 2 do
 		_G['SpellBookPage'..i]:SetParent(pagebackdrop)
