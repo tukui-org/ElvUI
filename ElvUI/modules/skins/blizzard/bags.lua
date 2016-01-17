@@ -1,6 +1,20 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
+--Cache global variables
+--Lua functions
+local _G = _G
+local unpack, select = unpack, select
+--WoW API / Variables
+local GetItemInfo = GetItemInfo
+local GetItemQualityColor = GetItemQualityColor
+local GetContainerItemInfo = GetContainerItemInfo
+local GetContainerItemQuestInfo = GetContainerItemQuestInfo
+local GetInventoryItemTexture = GetInventoryItemTexture
+local GetInventorySlotInfo = GetInventorySlotInfo
+local TEXTURE_ITEM_QUEST_BORDER = TEXTURE_ITEM_QUEST_BORDER
+local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.bags ~= true or E.private.bags.enable then return end
 

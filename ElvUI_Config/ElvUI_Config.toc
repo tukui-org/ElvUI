@@ -19,3 +19,4 @@ nameplates.lua
 skins.lua
 tooltip.lua
 unitframes.lua
+tag_info.lua

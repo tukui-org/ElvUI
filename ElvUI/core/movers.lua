@@ -178,20 +178,19 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 			x = x - screenCenter
 		end
 
-
 		if self.positionOverride then
 			if(self.positionOverride == "TOPLEFT") then
-				x = self:GetLeft()
-				y = self:GetTop()
+				x = self:GetLeft() - E.diffGetLeft
+				y = self:GetTop() - E.diffGetTop
 			elseif(self.positionOverride == "TOPRIGHT") then
-				x = self:GetRight()
-				y = self:GetTop()
+				x = self:GetRight() - E.diffGetRight
+				y = self:GetTop() - E.diffGetTop
 			elseif(self.positionOverride == "BOTTOMLEFT") then
-				x = self:GetLeft()
-				y = self:GetBottom()
+				x = self:GetLeft() - E.diffGetLeft
+				y = self:GetBottom() - E.diffGetBottom
 			elseif(self.positionOverride == "BOTTOMRIGHT") then
-				x = self:GetRight()
-				y = self:GetBottom()
+				x = self:GetRight() - E.diffGetRight
+				y = self:GetBottom() - E.diffGetBottom
 			end
 
 			self.parent:ClearAllPoints()

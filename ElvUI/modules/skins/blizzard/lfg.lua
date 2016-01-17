@@ -2,7 +2,14 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local S = E:GetModule('Skins')
 local LBG = LibStub("LibButtonGlow-1.0", true)
 
+--Cache global variables
+--Lua functions
+local _G = _G
+local unpack, pairs = unpack, pairs
 local lower = string.lower
+--WoW API / Variables
+local GetLFGProposal = GetLFGProposal
+local C_LFGList_GetApplicationInfo = C_LFGList.GetApplicationInfo
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.lfg ~= true then return end
@@ -519,7 +526,7 @@ local function LoadSkin()
 	S:HandleButton(LFGListInviteDialog.DeclineButton)
 	LFGListInviteDialog.RoleIcon:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
 	local function SetRoleIcon(self, resultID)
-		local _,_,_,_, role = C_LFGList.GetApplicationInfo(resultID)
+		local _,_,_,_, role = C_LFGList_GetApplicationInfo(resultID)
 		self.RoleIcon:SetTexCoord(GetBackgroundTexCoordsForRole(role))
 	end
 	hooksecurefunc("LFGListInviteDialog_Show", SetRoleIcon)

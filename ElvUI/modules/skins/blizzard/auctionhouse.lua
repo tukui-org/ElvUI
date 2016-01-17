@@ -1,6 +1,13 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
+--Cache global variables
+--Lua functions
+local unpack, select = unpack, select
+--WoW API / Variables
+local GetAuctionSellItemInfo = GetAuctionSellItemInfo
+local BAG_ITEM_QUALITY_COLORS = BAG_ITEM_QUALITY_COLORS
+
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.auctionhouse ~= true then return end
 	S:HandleCloseButton(AuctionFrameCloseButton)

@@ -1,6 +1,12 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
+--Cache global variables
+--WoW API / Variables
+local HybridScrollFrame_GetOffset = HybridScrollFrame_GetOffset
+local C_BlackMarket_GetNumItems = C_BlackMarket.GetNumItems
+local C_BlackMarket_GetItemInfoByIndex = C_BlackMarket.GetItemInfoByIndex
+
 local function SkinTab(tab)
 	tab.Left:SetAlpha(0)
 	if tab.Middle then
@@ -40,12 +46,11 @@ local function LoadSkin()
 		local buttons = BlackMarketScrollFrame.buttons;
 		local numButtons = #buttons;
 		local offset = HybridScrollFrame_GetOffset(BlackMarketScrollFrame);
-		local numItems = C_BlackMarket.GetNumItems();
+		local numItems = C_BlackMarket_GetNumItems();
 
 		for i = 1, numButtons do
 			local button = buttons[i];
 			local index = offset + i; -- adjust index
-
 
 			if not button.skinned then
 				S:HandleItemButton(button.Item)
@@ -55,7 +60,7 @@ local function LoadSkin()
 			end
 
 			if ( index <= numItems ) then
-				local name, texture = C_BlackMarket.GetItemInfoByIndex(index);
+				local name, texture = C_BlackMarket_GetItemInfoByIndex(index);
 				if ( name ) then
 					button.Item.IconTexture:SetTexture(texture);
 				end
@@ -73,7 +78,7 @@ local function LoadSkin()
 
 	for i=1, BlackMarketFrame:GetNumRegions() do
 		local region = select(i, BlackMarketFrame:GetRegions())
-		if region and region:GetObjectType() == 'FontString' and region:GetText() == BLACK_MARKET_TITLE then
+		if region and region:IsObjectType("FontString") and region:GetText() == BLACK_MARKET_TITLE then
 			region:ClearAllPoints()
 			region:SetPoint('TOP', BlackMarketFrame, 'TOP', 0, -4)
 		end

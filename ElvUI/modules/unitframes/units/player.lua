@@ -543,8 +543,10 @@ function UF:Update_PlayerFrame(frame, db)
 			end
 			
 			if POWERBAR_DETACHED and db.power.parent == "UIPARENT" then
+				E.FrameLocks[power] = true
 				power:SetParent(E.UIParent)
 			else
+				E.FrameLocks[power] = nil
 				power:SetParent(frame)
 			end
 
@@ -908,6 +910,14 @@ function UF:Update_PlayerFrame(frame, db)
 				else
 					bars.backdrop:Hide()
 				end
+			end
+			
+			if db.classbar.detachFromFrame and db.classbar.parent == "UIPARENT" then
+				E.FrameLocks[bars] = true
+				bars:SetParent(E.UIParent)
+			else
+				E.FrameLocks[bars] = nil
+				bars:SetParent(frame)
 			end
 
 			if USE_CLASSBAR and not frame:IsElementEnabled(frame.ClassBar) then

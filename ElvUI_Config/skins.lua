@@ -194,11 +194,6 @@ E.Options.args.skins = {
 					name = L["Gossip Frame"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
-				greeting = {
-					type = "toggle",
-					name = L["Greeting Frame"],
-					desc = L["TOGGLESKIN_DESC"],
-				},
 				worldmap = {
 					type = "toggle",
 					name = L["World Map"],

@@ -74,6 +74,7 @@ P['general'] = {
 				['position'] = "BOTTOMLEFT",
 				['xOffset'] = 2,
 				['yOffset'] = 2,
+				["hide"] = false,
 			},
 		}
 	},
@@ -619,6 +620,7 @@ P['unitframe'] = {
 				['detachFromFrame'] = false,
 				['detachedWidth'] = 250,
 				['autoHide'] = false,
+				["parent"] = "FRAME",
 			},
 			['aurabar'] = {
 				['enable'] = true,

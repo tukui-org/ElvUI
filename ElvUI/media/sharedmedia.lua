@@ -19,4 +19,4 @@ LSM:Register("sound","Whisper Alert", [[Interface\AddOns\ElvUI\media\sounds\whis
 LSM:Register("statusbar","ElvUI Gloss", [[Interface\AddOns\ElvUI\media\textures\normTex.tga]])
 LSM:Register("statusbar","ElvUI Norm", [[Interface\AddOns\ElvUI\media\textures\normTex2.tga]])
 LSM:Register("statusbar","Minimalist", [[Interface\AddOns\ElvUI\media\textures\Minimalist.tga]])
-
+LSM:Register("statusbar","ElvUI Blank", [[Interface\BUTTONS\WHITE8X8]])

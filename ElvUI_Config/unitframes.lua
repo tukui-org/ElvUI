@@ -2342,6 +2342,17 @@ E.Options.args.unitframe.args.player = {
 					type = 'toggle',
 					name = L["Auto-Hide"],
 				},
+				parent = {
+					type = 'select',
+					order = 7,
+					name = L["Parent"],
+					desc = L["Choose UIPARENT to prevent it from hiding with the unitframe."],
+					disabled = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
+					values = {
+						["FRAME"] = "FRAME",
+						["UIPARENT"] = "UIPARENT",
+					},
+				},
 			},
 		},
 		pvp = {

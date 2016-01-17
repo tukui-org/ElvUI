@@ -788,6 +788,11 @@ E.Options.args.general = {
 									name = L["yOffset"],
 									min = -50, max = 50, step = 1,
 								},
+								hide = {
+									order = 5,
+									type = 'toggle',
+									name = L["Hide"],
+								},
 							},
 						},
 					},
