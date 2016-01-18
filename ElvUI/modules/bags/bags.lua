@@ -931,7 +931,7 @@ end
 function B:ContructContainerFrame(name, isBank)
 	local f = CreateFrame('Button', name, E.UIParent);
 	f:SetTemplate('Transparent');
-	f:SetFrameStrata('DIALOG');
+	f:SetFrameStrata('HIGH');
 	f.UpdateSlot = B.UpdateSlot;
 	f.UpdateAllSlots = B.UpdateAllSlots;
 	f.UpdateBagSlots = B.UpdateBagSlots;
@@ -995,21 +995,19 @@ function B:ContructContainerFrame(name, isBank)
 		f.reagentFrame.cover = CreateFrame("Button", nil, f.reagentFrame)
 		f.reagentFrame.cover:SetAllPoints(f.reagentFrame)
 		f.reagentFrame.cover:SetTemplate("Default", true)
-		f.reagentFrame.cover:SetFrameStrata("FULLSCREEN_DIALOG")
+		f.reagentFrame.cover:SetFrameLevel(f.reagentFrame:GetFrameLevel() + 10)
 
 		f.reagentFrame.cover.purchaseButton = CreateFrame("Button", nil, f.reagentFrame.cover)
 		f.reagentFrame.cover.purchaseButton:Height(20)
 		f.reagentFrame.cover.purchaseButton:Width(150)
 		f.reagentFrame.cover.purchaseButton:Point('CENTER', f.reagentFrame.cover, 'CENTER')
+		E:GetModule("Skins"):HandleButton(f.reagentFrame.cover.purchaseButton)
 		f.reagentFrame.cover.purchaseButton:SetFrameLevel(f.reagentFrame.cover.purchaseButton:GetFrameLevel() + 2)
-		f.reagentFrame.cover.purchaseButton:SetTemplate('Default', true)
 		f.reagentFrame.cover.purchaseButton.text = f.reagentFrame.cover.purchaseButton:CreateFontString(nil, 'OVERLAY')
 		f.reagentFrame.cover.purchaseButton.text:FontTemplate()
 		f.reagentFrame.cover.purchaseButton.text:SetPoint('CENTER')
 		f.reagentFrame.cover.purchaseButton.text:SetJustifyH('CENTER')
 		f.reagentFrame.cover.purchaseButton.text:SetText(L["Purchase"])
-		f.reagentFrame.cover.purchaseButton:SetScript("OnEnter", self.Tooltip_Show)
-		f.reagentFrame.cover.purchaseButton:SetScript("OnLeave", self.Tooltip_Hide)
 		f.reagentFrame.cover.purchaseButton:SetScript("OnClick", function()
 			PlaySound("igMainMenuOption");
 			StaticPopup_Show("CONFIRM_BUY_REAGENTBANK_TAB");
@@ -1454,8 +1452,6 @@ function B:Initialize()
 	BankFrame:SetAlpha(0)
 	BankFrame:SetPoint("TOPLEFT")
 	BankFrame:SetScript("OnShow", nil)
-
-	StackSplitFrame:SetFrameStrata('DIALOG')
 end
 
 function B:UpdateContainerFrameAnchors()
