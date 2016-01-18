@@ -64,6 +64,7 @@ local function LoadSkin()
 		end
 	end)
 
+	LFDQueueFrame:StripTextures(true)
 	LFDQueueFrameRoleButtonTankIncentiveIcon:SetAlpha(0)
 	LFDQueueFrameRoleButtonHealerIncentiveIcon:SetAlpha(0)
 	LFDQueueFrameRoleButtonDPSIncentiveIcon:SetAlpha(0)
@@ -152,7 +153,6 @@ local function LoadSkin()
 		button.checkButton:SetAlpha(1)
 	end)
 
-
 	hooksecurefunc("LFG_PermanentlyDisableRoleButton", function(self)
 		if self.background then
 			self.background:Show()
@@ -195,48 +195,6 @@ local function LoadSkin()
 
 	LFDParentFrame:StripTextures()
 	LFDParentFrameInset:StripTextures()
-
-
-
-	local function ReskinRewards()
-		LFDQueueFrame:StripTextures()
-
-		for i = 1, LFD_MAX_REWARDS do
-			local button = _G["LFDQueueFrameRandomScrollFrameChildFrameItem"..i]
-			local icon = _G["LFDQueueFrameRandomScrollFrameChildFrameItem"..i.."IconTexture"]
-
-			if button then
-				if not button.reskinned then
-					local cta = _G["LFDQueueFrameRandomScrollFrameChildFrameItem"..i.."ShortageBorder"]
-					local count = _G["LFDQueueFrameRandomScrollFrameChildFrameItem"..i.."Count"]
-					local na = _G["LFDQueueFrameRandomScrollFrameChildFrameItem"..i.."NameFrame"]
-
-					icon:SetTexCoord(unpack(E.TexCoords))
-					icon:SetDrawLayer("OVERLAY")
-					count:SetDrawLayer("OVERLAY")
-					na:SetTexture()
-					na:SetSize(118, 39)
-					cta:SetAlpha(0)
-
-					button.border = CreateFrame("Frame", nil, button)
-					button.border:SetTemplate()
-					button.border:SetOutside(icon)
-					icon:SetParent(button.border)
-					count:SetParent(button.border)
-					button.reskinned = true
-
-					for j=1, 3 do
-						local roleIcon = _G["LFDQueueFrameRandomScrollFrameChildFrameItem"..i.."RoleIcon"..j]
-						if roleIcon then
-							roleIcon:SetParent(button.border)
-						end
-					end
-				end
-			end
-		end
-	end
-
-	hooksecurefunc("LFDQueueFrameRandom_UpdateFrame", ReskinRewards)
 
 	local function HandleGoldIcon(button)
 		_G[button.."IconTexture"]:SetTexCoord(unpack(E.TexCoords))
@@ -281,7 +239,6 @@ local function LoadSkin()
 	ScenarioFinderFrameInset:StripTextures()
 	S:HandleButton(ScenarioQueueFrameFindGroupButton)
 
-
 	-- Raid Finder
 	RaidFinderFrame:StripTextures()
 	RaidFinderFrameBottomInset:StripTextures()
@@ -294,34 +251,6 @@ local function LoadSkin()
 	S:HandleButton(RaidFinderFrameFindRaidButton)
 	RaidFinderQueueFrame:StripTextures()
 
-	for i = 1, LFD_MAX_REWARDS do
-		local button = _G["RaidFinderQueueFrameScrollFrameChildFrameItem"..i]
-		local icon = _G["RaidFinderQueueFrameScrollFrameChildFrameItem"..i.."IconTexture"]
-
-		if button then
-			if not button.reskinned then
-				local cta = _G["RaidFinderQueueFrameScrollFrameChildFrameItem"..i.."ShortageBorder"]
-				local count = _G["RaidFinderQueueFrameScrollFrameChildFrameItem"..i.."Count"]
-				local na = _G["RaidFinderQueueFrameScrollFrameChildFrameItem"..i.."NameFrame"]
-				button:StripTextures()
-
-				icon:SetTexCoord(unpack(E.TexCoords))
-				icon:SetDrawLayer("OVERLAY")
-				count:SetDrawLayer("OVERLAY")
-				na:SetTexture()
-				na:SetSize(118, 39)
-				cta:SetAlpha(0)
-
-				button.border = CreateFrame("Frame", nil, button)
-				button.border:SetTemplate()
-				button.border:SetOutside(icon)
-				icon:SetParent(button.border)
-				count:SetParent(button.border)
-				button.reskinned = true
-			end
-		end
-	end
-
 	-- Scenario finder
 	ScenarioFinderFrameInset:DisableDrawLayer("BORDER")
 	ScenarioFinderFrame.TopTileStreaks:Hide()
@@ -330,38 +259,35 @@ local function LoadSkin()
 	ScenarioQueueFrame.Bg:Hide()
 	ScenarioFinderFrameInset:GetRegions():Hide()
 
-	local function ReskinRewards()
-		LFDQueueFrame:StripTextures()
+	--Skin Reward Items (This works for all frames, LFD, Raid, Scenario)
+	local function SkinItemButton(parentFrame, _, index)
+		local parentName = parentFrame:GetName();
+		local item = _G[parentName.."Item"..index];
+		
+		if item and not item.isSkinned then
+			item.border = CreateFrame("Frame", nil, item)
+			item.border:SetTemplate()
+			item.border:SetOutside(item.Icon)
 
-		for i = 1, LFD_MAX_REWARDS do
-			local button = _G["ScenarioQueueFrameRandomScrollFrameChildFrameItem"..i]
-			local icon = _G["ScenarioQueueFrameRandomScrollFrameChildFrameItem"..i.."IconTexture"]
+			item.Icon:SetTexCoord(unpack(E.TexCoords))
+			item.Icon:SetDrawLayer("OVERLAY")
+			item.Icon:SetParent(item.border)
 
-			if button then
-				if not button.reskinned then
-					local cta = _G["ScenarioQueueFrameRandomScrollFrameChildFrameItem"..i.."ShortageBorder"]
-					local count = _G["ScenarioQueueFrameRandomScrollFrameChildFrameItem"..i.."Count"]
-					local na = _G["ScenarioQueueFrameRandomScrollFrameChildFrameItem"..i.."NameFrame"]
+			item.Count:SetDrawLayer("OVERLAY")
+			item.Count:SetParent(item.border)
 
-					icon:SetTexCoord(unpack(E.TexCoords))
-					icon:SetDrawLayer("OVERLAY")
-					count:SetDrawLayer("OVERLAY")
-					na:SetTexture()
-					na:SetSize(118, 39)
-					cta:SetAlpha(0)
+			item.NameFrame:SetTexture()
+			item.NameFrame:SetSize(118, 39)
 
-					button.border = CreateFrame("Frame", nil, button)
-					button.border:SetTemplate()
-					button.border:SetOutside(icon)
-					icon:SetParent(button.border)
-					count:SetParent(button.border)
-					button.reskinned = true
-				end
-			end
+			item.shortageBorder:SetTexture(nil)
+
+			item.roleIcon1:SetParent(item.border)
+			item.roleIcon2:SetParent(item.border)
+
+			item.isSkinned = true
 		end
 	end
-
-	hooksecurefunc("ScenarioQueueFrameRandom_UpdateFrame", ReskinRewards)
+	hooksecurefunc("LFGRewardsFrame_SetItemButton", SkinItemButton)
 
 	ScenarioQueueFrameFindGroupButton:StripTextures()
 	S:HandleButton(ScenarioQueueFrameFindGroupButton)

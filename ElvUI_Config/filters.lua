@@ -424,11 +424,6 @@ local function UpdateFilterGroup()
 			end
 		end
 	elseif selectedFilter == 'Buff Indicator (Pet)' then
-		-- local buffs = {};
-		-- for _, value in pairs(E.global.unitframe.buffwatch.PET) do
-			-- tinsert(buffs, value);
-		-- end
-
 		if not E.global.unitframe.buffwatch.PET then
 			E.global.unitframe.buffwatch.PET = {};
 		end
@@ -452,7 +447,6 @@ local function UpdateFilterGroup()
 						elseif not GetSpellInfo(value) then
 							E:Print(L["Not valid spell id"])
 						else
-							-- tinsert(E.global.unitframe.buffwatch.PET, {["enabled"] = true, ["id"] = tonumber(value), ["point"] = "TOPRIGHT", ["color"] = {["r"] = 1, ["g"] = 0, ["b"] = 0}, ["anyUnit"] = true, ['style'] = 'coloredIcon', ["xOffset"] = 0, ["yOffset"] = 0})
 							E.global.unitframe.buffwatch.PET[tonumber(value)] = {["enabled"] = true, ["id"] = tonumber(value), ["point"] = "TOPRIGHT", ["color"] = {["r"] = 1, ["g"] = 0, ["b"] = 0}, ["anyUnit"] = true, ['style'] = 'coloredIcon', ["xOffset"] = 0, ["yOffset"] = 0}
 							UpdateFilterGroup();
 							UF:CreateAndUpdateUF('pet');
@@ -479,25 +473,6 @@ local function UpdateFilterGroup()
 							else
 								E.global.unitframe.buffwatch.PET[spellID] = nil
 							end
-							
-							-- local match
-							-- for x, y in pairs(E.global.unitframe.buffwatch.PET) do
-								-- if y["id"] == tonumber(value) then
-									-- match = y
-									-- if G.unitframe.buffwatch.PET[x] then
-										-- E.global.unitframe.buffwatch.PET[x].enabled = false
-										-- E:Print(L["You may not remove a spell from a default filter that is not customly added. Setting spell to false instead."])
-									-- else
-										-- E.global.unitframe.buffwatch.PET[x] = nil
-									-- end
-								-- end
-							-- end
-
-							-- if match == nil then
-								-- E:Print(L["Spell not found in list."])
-							-- else
-								-- UpdateFilterGroup()
-							-- end
 						end
 
 						selectedSpell = nil;
@@ -511,10 +486,6 @@ local function UpdateFilterGroup()
 					order = 3,
 					values = function()
 						local values = {};
-						-- buffs = {};
-						-- for _, value in pairs(E.global.unitframe.buffwatch.PET) do
-							-- tinsert(buffs, value);
-						-- end
 
 						for _, spell in pairs(E.global.unitframe.buffwatch.PET) do
 							if spell.id then
@@ -532,14 +503,7 @@ local function UpdateFilterGroup()
 				},
 			},
 		}
-
-		-- local tableIndex
-		-- for i, spell in pairs(E.global.unitframe.buffwatch.PET) do
-			-- if spell.id == selectedSpell then
-				-- tableIndex = i;
-			-- end
-		-- end
-		if selectedSpell then -- if selectedSpell and tableIndex then
+		if selectedSpell then
 			local name = GetSpellInfo(selectedSpell)
 			E.Options.args.filters.args.filterGroup.args[name] = {
 				name = name..' ('..selectedSpell..')',
@@ -654,14 +618,8 @@ local function UpdateFilterGroup()
 				},
 			}
 		end
-
-		-- buffs = nil;
 	elseif selectedFilter == 'Buff Indicator' then
-		-- local buffs = {};
 		if not E.global.unitframe.buffwatch[E.myclass] then E.global.unitframe.buffwatch[E.myclass] = {} end
-		-- for _, value in pairs(E.global.unitframe.buffwatch[E.myclass]) do
-			-- tinsert(buffs, value);
-		-- end
 
 		E.Options.args.filters.args.filterGroup = {
 			type = 'group',
@@ -682,7 +640,6 @@ local function UpdateFilterGroup()
 						elseif not GetSpellInfo(value) then
 							E:Print(L["Not valid spell id"])
 						else
-							-- tinsert(E.global.unitframe.buffwatch[E.myclass], {["enabled"] = true, ["id"] = tonumber(value), ["point"] = "TOPRIGHT", ["color"] = {["r"] = 1, ["g"] = 0, ["b"] = 0}, ["anyUnit"] = false, ['style'] = 'coloredIcon', ["xOffset"] = 0, ["yOffset"] = 0})
 							E.global.unitframe.buffwatch[E.myclass][tonumber(value)] = {["enabled"] = true, ["id"] = tonumber(value), ["point"] = "TOPRIGHT", ["color"] = {["r"] = 1, ["g"] = 0, ["b"] = 0}, ["anyUnit"] = false, ['style'] = 'coloredIcon', ["xOffset"] = 0, ["yOffset"] = 0}
 							UpdateFilterGroup();
 
@@ -713,24 +670,6 @@ local function UpdateFilterGroup()
 							else
 								E.global.unitframe.buffwatch[E.myclass][spellID] = nil
 							end
-							
-							-- local match
-							-- for x, y in pairs(E.global.unitframe.buffwatch[E.myclass]) do
-								-- if y["id"] == tonumber(value) then
-									-- match = y
-									-- if G.unitframe.buffwatch[E.myclass][x] then
-										-- E.global.unitframe.buffwatch[E.myclass][x].enabled = false
-										-- E:Print(L["You may not remove a spell from a default filter that is not customly added. Setting spell to false instead."])
-									-- else
-										-- E.global.unitframe.buffwatch[E.myclass][x] = nil
-									-- end
-								-- end
-							-- end
-							-- if match == nil then
-								-- E:Print(L["Spell not found in list."])
-							-- else
-								-- UpdateFilterGroup()
-							-- end
 						end
 
 						selectedSpell = nil;
@@ -747,11 +686,6 @@ local function UpdateFilterGroup()
 					order = 3,
 					values = function()
 						local values = {};
-						-- buffs = {};
-						-- for _, value in pairs(E.global.unitframe.buffwatch[E.myclass]) do
-							-- tinsert(buffs, value);
-						-- end
-
 						for _, spell in pairs(E.global.unitframe.buffwatch[E.myclass]) do
 							if spell.id then
 								local name = GetSpellInfo(spell.id)
@@ -769,14 +703,7 @@ local function UpdateFilterGroup()
 			},
 		}
 
-		-- local tableIndex
-		-- for i, spell in pairs(E.global.unitframe.buffwatch[E.myclass]) do
-			-- if spell.id == selectedSpell then
-				-- tableIndex = i;
-			-- end
-		-- end
-
-		if selectedSpell then --if selectedSpell and tableIndex then
+		if selectedSpell then
 			local name = GetSpellInfo(selectedSpell)
 			E.Options.args.filters.args.filterGroup.args[name] = {
 				name = name..' ('..selectedSpell..')',
@@ -905,15 +832,7 @@ local function UpdateFilterGroup()
 				},
 			}
 		end
-
-		-- buffs = nil;
 	elseif selectedFilter == 'Buff Indicator (Profile)' then
-		-- local buffs = {};
-		-- if not E.db.unitframe.filters.buffwatch then E.db.unitframe.filters.buffwatch = {} end
-		-- for _, value in pairs(E.db.unitframe.filters.buffwatch) do
-			-- tinsert(buffs, value);
-		-- end
-
 		E.Options.args.filters.args.filterGroup = {
 			type = 'group',
 			name = selectedFilter,
@@ -933,7 +852,6 @@ local function UpdateFilterGroup()
 						elseif not GetSpellInfo(value) then
 							E:Print(L["Not valid spell id"])
 						else
-							-- tinsert(E.db.unitframe.filters.buffwatch, {["enabled"] = true, ["id"] = tonumber(value), ["point"] = "TOPRIGHT", ["color"] = {["r"] = 1, ["g"] = 0, ["b"] = 0}, ["anyUnit"] = false, ['style'] = 'coloredIcon', ["xOffset"] = 0, ["yOffset"] = 0})
 							E.db.unitframe.filters.buffwatch[tonumber(value)] = {["enabled"] = true, ["id"] = tonumber(value), ["point"] = "TOPRIGHT", ["color"] = {["r"] = 1, ["g"] = 0, ["b"] = 0}, ["anyUnit"] = false, ['style'] = 'coloredIcon', ["xOffset"] = 0, ["yOffset"] = 0}
 							UpdateFilterGroup();
 
@@ -963,24 +881,6 @@ local function UpdateFilterGroup()
 							else
 								E.db.unitframe.filters.buffwatch[spellID] = nil
 							end
-						
-							-- local match
-							-- for x, y in pairs(E.db.unitframe.filters.buffwatch) do
-								-- if y["id"] == tonumber(value) then
-									-- match = y
-									-- if P.unitframe.filters.buffwatch[x] then
-										-- E.db.unitframe.filters.buffwatch[x].enabled = false
-										-- E:Print(L["You may not remove a spell from a default filter that is not customly added. Setting spell to false instead."])
-									-- else
-										-- E.db.unitframe.filters.buffwatch[x] = nil
-									-- end
-								-- end
-							-- end
-							-- if match == nil then
-								-- E:Print(L["Spell not found in list."])
-							-- else
-								-- UpdateFilterGroup()
-							-- end
 						end
 
 						selectedSpell = nil;
@@ -996,11 +896,6 @@ local function UpdateFilterGroup()
 					order = 3,
 					values = function()
 						local values = {};
-						-- buffs = {};
-						-- for _, value in pairs(E.db.unitframe.filters.buffwatch) do
-							-- tinsert(buffs, value);
-						-- end
-
 						for _, spell in pairs(E.db.unitframe.filters.buffwatch) do
 							if spell.id then
 								local name = GetSpellInfo(spell.id)
@@ -1018,14 +913,7 @@ local function UpdateFilterGroup()
 			},
 		}
 
-		-- local tableIndex
-		-- for i, spell in pairs(E.db.unitframe.filters.buffwatch) do
-			-- if spell.id == selectedSpell then
-				-- tableIndex = i;
-			-- end
-		-- end
-
-		if selectedSpell then --if selectedSpell and tableIndex then
+		if selectedSpell then
 			local name = GetSpellInfo(selectedSpell)
 			E.Options.args.filters.args.filterGroup.args[name] = {
 				name = name..' ('..selectedSpell..')',
@@ -1160,8 +1048,6 @@ local function UpdateFilterGroup()
 				},
 			}
 		end
-
-		-- buffs = nil;
 	else
 		if not selectedFilter or not E.global.unitframe['aurafilters'][selectedFilter] then
 			E.Options.args.filters.args.filterGroup = nil

@@ -1108,8 +1108,10 @@ function E:DBConversions()
 	end
 	
 	--Convert stored BuffIndicator key/value pairs to use spellID as key
+	if not E.global.unitframe.buffwatchBackup then E.global.unitframe.buffwatchBackup = {} end
 	local shouldRemove
 	for class in pairs(E.global.unitframe.buffwatch) do
+		if not E.global.unitframe.buffwatchBackup[class] then E.global.unitframe.buffwatchBackup[class] = {} end
 		shouldRemove = {}
 		for i, values in pairs(E.global.unitframe.buffwatch[class]) do
 			if values.id then --Added by user, all info stored in SavedVariables
@@ -1118,12 +1120,19 @@ function E:DBConversions()
 					shouldRemove[i] = true
 				end
 				E.global.unitframe.buffwatch[class][values.id] = values
+				if not E.global.unitframe.buffwatchBackup[class][values.id] then E.global.unitframe.buffwatchBackup[class][values.id] = values end --Store a copy in case something goes wrong
 
 			elseif G.oldBuffWatch[class] and G.oldBuffWatch[class][i] then
 				--Default BuffIndicator, grab info from legacy table
 				local spellID = G.oldBuffWatch[class][i].id
 				if spellID then
-					E.global.unitframe.buffwatch[class][spellID] = G.oldBuffWatch[class][i] --Store info under new spellID key
+					--Store a copy in case something goes wrong
+					if not E.global.unitframe.buffwatchBackup[class][spellID] then
+						E.global.unitframe.buffwatchBackup[class][spellID] = G.oldBuffWatch[class][i]
+						E:CopyTable(E.global.unitframe.buffwatchBackup[class][spellID], values)
+					end
+					E.global.unitframe.buffwatch[class][spellID] = G.oldBuffWatch[class][i] --Store default info under new spellID key
+					E:CopyTable(E.global.unitframe.buffwatch[class][spellID], values) --Transfer user-changed settings to new table
 					E.global.unitframe.buffwatch[class][i] = nil --Remove old entry
 				end
 			end
