@@ -918,7 +918,11 @@ function E:DBConversions()
 				--Default BuffIndicator, grab info from legacy table
 				local spellID = G.oldBuffWatch[class][i].id
 				if spellID then
-					if not E.global.unitframe.buffwatchBackup[class][spellID] then E.global.unitframe.buffwatchBackup[class][spellID] = G.oldBuffWatch[class][i] end --Store a copy in case something goes wrong
+					--Store a copy in case something goes wrong
+					if not E.global.unitframe.buffwatchBackup[class][spellID] then
+						E.global.unitframe.buffwatchBackup[class][spellID] = G.oldBuffWatch[class][i]
+						E:CopyTable(E.global.unitframe.buffwatchBackup[class][spellID], values)
+					end
 					E.global.unitframe.buffwatch[class][spellID] = G.oldBuffWatch[class][i] --Store default info under new spellID key
 					E:CopyTable(E.global.unitframe.buffwatch[class][spellID], values) --Transfer user-changed settings to new table
 					E.global.unitframe.buffwatch[class][i] = nil --Remove old entry
