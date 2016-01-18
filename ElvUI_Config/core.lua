@@ -1252,7 +1252,7 @@ local exportTypeListOrder = {
 }
 		
 local function ExportImport_Open(mode)
-	local rev = " rev2"
+	local rev = " rev4"
 	local Frame = AceGUI:Create("Frame")
 	Frame:SetTitle("")
 	Frame:EnableResize(false)
