@@ -526,6 +526,7 @@ L["You can't remove a default name from the filter, disabling the name."] = "Du 
 
 --Skins
 L["Achievement Frame"] = "Erfolgsfenster"
+L["AddOn Manager"] = true;
 L["Alert Frames"] = "Alarmfenster"
 L["Archaeology Frame"] = "Archäologiefenster"
 L["Auction Frame"] = "Auktionsfenster"
@@ -556,6 +557,7 @@ L["Loss Control"] = "Kontrollverlust"
 L["Macro Frame"] = "Makro Fenster"
 L["Mail Frame"] = "Post Fenster"
 L["Merchant Frame"] = "Handelsfenster"
+L["Mirror Timers"] = true;
 L["Misc Frames"] = "Verschiedene Fenster"
 L["Mounts & Pets"] = "Reittiere & Haustiere"
 L["Non-Raid Frame"] = "Kein-Raid Fenster"

@@ -108,6 +108,8 @@ V['skins'] = {
 		['petbattleui'] = true,
 		['losscontrol'] = true,
 		['itemUpgrade'] = true,
+		["addonManager"] = true,
+		["mirrorTimers"] = true,
 	},
 }
 

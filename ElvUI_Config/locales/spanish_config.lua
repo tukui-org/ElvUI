@@ -525,6 +525,7 @@ L["You can't remove a default name from the filter, disabling the name."] = "No 
 
 --Skins
 L["Achievement Frame"] = "Logros"
+L["AddOn Manager"] = true;
 L["Alert Frames"] = "Alertas"
 L["Archaeology Frame"] = "Arqueología"
 L["Auction Frame"] = "Subastas"
@@ -555,6 +556,7 @@ L["Loss Control"] = "Pérdida de Control"
 L["Macro Frame"] = "Macros"
 L["Mail Frame"] = "Correo"
 L["Merchant Frame"] = "Mercader"
+L["Mirror Timers"] = true;
 L["Misc Frames"] = "Misceláneos"
 L["Mounts & Pets"] = "Monturas y Mascotas"
 L["Non-Raid Frame"] = "No-Banda"

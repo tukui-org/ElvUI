@@ -573,6 +573,7 @@ L["You can't remove a default name from the filter, disabling the name."] = "기
 
 --Skins
 L["Achievement Frame"] = "업적창"
+L["AddOn Manager"] = true;
 L["Alert Frames"] = "알림 프레임"
 L["Archaeology Frame"] = "고고학 창"
 L["Auction Frame"] = "경매장"
@@ -603,6 +604,7 @@ L["Loss Control"] = "제어손실 표시 창"
 L["Macro Frame"] = "매크로 창"
 L["Mail Frame"] = "우편함"
 L["Merchant Frame"] = "상인 창"
+L["Mirror Timers"] = true;
 L["Misc Frames"] = "기타 프레임"
 L["Mounts & Pets"] = "탈것과 애완동물 창"
 L["Non-Raid Frame"] = "비공격대 프레임"

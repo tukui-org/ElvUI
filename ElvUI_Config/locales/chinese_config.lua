@@ -525,6 +525,7 @@ L["You can't remove a default name from the filter, disabling the name."] = "你
 
 --Skins
 L["Achievement Frame"] = "成就"
+L["AddOn Manager"] = true;
 L["Alert Frames"] = "警报"
 L["Archaeology Frame"] = "考古学框架"
 L["Auction Frame"] = "拍卖"
@@ -555,6 +556,7 @@ L["Loss Control"] = "失去控制"
 L["Macro Frame"] = "巨集"
 L["Mail Frame"] = "信箱"
 L["Merchant Frame"] = "商人"
+L["Mirror Timers"] = true;
 L["Misc Frames"] = "其他"
 L["Mounts & Pets"] = "宠物"
 L["Non-Raid Frame"] = "非团队框架"

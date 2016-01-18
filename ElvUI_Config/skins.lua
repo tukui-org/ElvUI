@@ -309,6 +309,16 @@ E.Options.args.skins = {
 					name = L["Quest Choice"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
+				addonManager = {
+					type = "toggle",
+					name = L["AddOn Manager"],
+					desc = L["TOGGLESKIN_DESC"],
+				},
+				mirrorTimers = {
+					type = "toggle",
+					name = L["Mirror Timers"],
+					desc = L["TOGGLESKIN_DESC"],
+				},
 			},
 		},
 	},
