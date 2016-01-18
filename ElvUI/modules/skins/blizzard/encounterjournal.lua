@@ -6,7 +6,6 @@ local S = E:GetModule('Skins')
 local _G = _G
 local select, unpack, pairs = select, unpack, pairs
 
-
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.encounterjournal ~= true then return end
 
