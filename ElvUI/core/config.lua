@@ -372,8 +372,7 @@ function E:CreateMoverPopup()
 	xOffset:SetScript("OnEnterPressed", function(self)
 		local num = self:GetText()
 		if tonumber(num) then
-			local x = xOffset.currentValue
-			local diff = num - x
+			local diff = num - xOffset.currentValue
 			xOffset.currentValue = num
 			Nudge(diff)
 		end
@@ -408,8 +407,7 @@ function E:CreateMoverPopup()
 	yOffset:SetScript("OnEnterPressed", function(self)
 		local num = self:GetText()
 		if tonumber(num) then
-			local y = yOffset.currentValue
-			local diff = num - y
+			local diff = num - yOffset.currentValue
 			yOffset.currentValue = num
 			Nudge(nil, diff)
 		end
