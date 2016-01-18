@@ -193,7 +193,7 @@ function E:UpdateNudgeFrame(mover, x, y)
 	ElvUIMoverNudgeWindow.yOffset:SetText(y)
 	ElvUIMoverNudgeWindow.xOffset.currentValue = x
 	ElvUIMoverNudgeWindow.yOffset.currentValue = y
-	ElvUIMoverNudgeWindow.title:SetText(mover.textSting)
+	ElvUIMoverNudgeWindow.title:SetText(mover.textString)
 end
 
 function E:AssignFrameToNudge()
