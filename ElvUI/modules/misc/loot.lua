@@ -316,7 +316,7 @@ function M:LoadLoot()
 	lootFrame:SetPoint('TOPLEFT')
 	lootFrame:Size(256, 64)
 	lootFrame:SetTemplate('Transparent')
-	lootFrame:SetFrameStrata"FULLSCREEN"
+	lootFrame:SetFrameStrata(LootFrame:GetFrameStrata())
 	lootFrame:SetToplevel(true)
 	lootFrame.title = lootFrame:CreateFontString(nil, 'OVERLAY')
 	lootFrame.title:FontTemplate(nil, nil, 'OUTLINE')
