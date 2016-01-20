@@ -532,7 +532,6 @@ local function buildBlacklist(...)
 		if itemName then
 			blackList[itemName] = true
 		elseif entry ~= "" then
-			print("blacklisting:", entry)
 			blackListQueries[#blackListQueries+1] = entry
 		end
 	end
