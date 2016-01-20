@@ -96,6 +96,16 @@ L["TEXT_FORMAT_DESC"] = [=[글자가 표시되는 형식을 변경할 수 있습
 |cffceff00name:long|r : 최대 20글자
 
 표시하고 싶지 않으면 빈칸으로 두면 되며, 자세한 정보는 |cff2eb7e4www.tukui.org|r 에서 확인하세요.]=];
+L["IGNORE_ITEMS_DESC"] = [=[Valid entries:
+
+Item links or item names
+
+Terms from Search Syntax. Examples:
+q:epic
+s:Tank Set
+q:epic&lvl:>300
+
+See "Bags->Search Syntax" for more.]=];
 
 --ActionBars
 L["Action Paging"] = "페이지 자동전환 조건"
@@ -194,7 +204,7 @@ L["Ignore Items"] = "정렬 예외 아이템 목록"
 L["Item Count Font"] = true;
 L["Item Level Threshold"] = "템렙표시 커트라인"
 L["Item Level"] = "아이템 레벨"
-L["List of items to ignore when sorting. If you wish to add multiple items you must seperate the word with a comma."] = "정렬기능이 실행될 때 여기에 적힌 아이템은 정렬하지 않고 놔둡니다. 여러 아이템을 등록할 수 있으며 쉼표(,)로 이어서 쓰세요."
+L["Items in this list or items that match any Search Syntax query in this list will be ignored when sorting. Separate each entry with a comma."] = true;
 L["Money Format"] = "소지금 표시방법"
 L["Panel Width (Bags)"] = "통합가방 프레임 가로길이"
 L["Panel Width (Bank)"] = "통합은행 프레임 가로길이"
@@ -573,6 +583,7 @@ L["You can't remove a default name from the filter, disabling the name."] = "기
 
 --Skins
 L["Achievement Frame"] = "업적창"
+L["AddOn Manager"] = true;
 L["Alert Frames"] = "알림 프레임"
 L["Archaeology Frame"] = "고고학 창"
 L["Auction Frame"] = "경매장"
@@ -603,6 +614,7 @@ L["Loss Control"] = "제어손실 표시 창"
 L["Macro Frame"] = "매크로 창"
 L["Mail Frame"] = "우편함"
 L["Merchant Frame"] = "상인 창"
+L["Mirror Timers"] = true;
 L["Misc Frames"] = "기타 프레임"
 L["Mounts & Pets"] = "탈것과 애완동물 창"
 L["Non-Raid Frame"] = "비공격대 프레임"

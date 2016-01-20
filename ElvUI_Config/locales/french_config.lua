@@ -59,6 +59,16 @@ Format des Noms:
 'name:long' - Nom limité à 20 caractères
 
 Pour désactiver, laisser le champs vide. Pour plus d'information, merci de visiter http://www.tukui.org]=];
+L["IGNORE_ITEMS_DESC"] = [=[Valid entries:
+
+Item links or item names
+
+Terms from Search Syntax. Examples:
+q:epic
+s:Tank Set
+q:epic&lvl:>300
+
+See "Bags->Search Syntax" for more.]=];
 
 --ActionBars
 L["Action Paging"] = "Pagination d'action"
@@ -147,7 +157,7 @@ L["Ignore Items"] = "Objets ignorés"
 L["Item Count Font"] = true;
 L["Item Level Threshold"] = "Seuil de niveau d'objet";
 L["Item Level"] = "Niveau d'objet";
-L["List of items to ignore when sorting. If you wish to add multiple items you must seperate the word with a comma."] = "Liste des objets à ignorer pendant le tri. Si vous voulez ajouter plusieurs objets, vous devez séparer les mots par une virgule."
+L["Items in this list or items that match any Search Syntax query in this list will be ignored when sorting. Separate each entry with a comma."] = true;
 L["Money Format"] = "Format monétaire";
 L["Panel Width (Bags)"] = "Largeur du panneau (Sac)"
 L["Panel Width (Bank)"] = "Largeur du panneau (Banque)"
@@ -525,6 +535,7 @@ L["You can't remove a default name from the filter, disabling the name."] = "Vou
 
 --Skins
 L["Achievement Frame"] = "Fenêtre des Hauts Faits"
+L["AddOn Manager"] = true;
 L["Alert Frames"] = "Fenêtre d'Alerte"
 L["Archaeology Frame"] = "Fenêtre d'Archéologie"
 L["Auction Frame"] = "Fenêtre de l'Hôtel des ventes"
@@ -555,6 +566,7 @@ L["Loss Control"] = "Perte de contrôle"
 L["Macro Frame"] = "Fenêtre de Macro"
 L["Mail Frame"] = "Fenêtre du Courrier"
 L["Merchant Frame"] = "Marchand"
+L["Mirror Timers"] = true;
 L["Misc Frames"] = "Divers"
 L["Mounts & Pets"] = "Montures et Mascottes"
 L["Non-Raid Frame"] = "Info Raid"

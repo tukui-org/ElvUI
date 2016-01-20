@@ -59,6 +59,16 @@ L["TEXT_FORMAT_DESC"] = [=[Строка для изменения вида те�
 'name:long' - Имя с ограничением длины в 20 символов
 
 Для отключения оставьте поле пустым, для дополнительной информации посетите http://www.tukui.org]=];
+L["IGNORE_ITEMS_DESC"] = [=[Valid entries:
+
+Item links or item names
+
+Terms from Search Syntax. Examples:
+q:epic
+s:Tank Set
+q:epic&lvl:>300
+
+See "Bags->Search Syntax" for more.]=];
 
 --ActionBars
 L["Action Paging"] = "Переключение панелей"
@@ -147,7 +157,7 @@ L["Ignore Items"] = "Игнорировать предметы"
 L["Item Count Font"] = "Шрифт кол-ва предметов"
 L["Item Level Threshold"] = "Ограничение уровня предметов"
 L["Item Level"] = "Уровень предметов"
-L["List of items to ignore when sorting. If you wish to add multiple items you must seperate the word with a comma."] = "Список предметов, игнорируемых при сортироваке. Если Вы хотите добавить несколько предметов, то должны разделять их запятой."
+L["Items in this list or items that match any Search Syntax query in this list will be ignored when sorting. Separate each entry with a comma."] = true;
 L["Money Format"] = "Формат денег"
 L["Panel Width (Bags)"] = "Ширина сумок"
 L["Panel Width (Bank)"] = "Ширина банка"
@@ -525,6 +535,7 @@ L["You can't remove a default name from the filter, disabling the name."] = "В�
 
 --Skins
 L["Achievement Frame"] = "Достижения"
+L["AddOn Manager"] = "Модификации"
 L["Alert Frames"] = "Предупреждения"
 L["Archaeology Frame"] = "Археология"
 L["Auction Frame"] = "Аукцион"
@@ -555,6 +566,7 @@ L["Loss Control"] = "Потеря контроля"
 L["Macro Frame"] = "Макросы"
 L["Mail Frame"] = "Почта"
 L["Merchant Frame"] = "Торговец"
+L["Mirror Timers"] = "Таймеры"
 L["Misc Frames"] = "Прочие фреймы"
 L["Mounts & Pets"] = "Транспорт и питомцы"
 L["Non-Raid Frame"] = "Не рейдовые фреймы"

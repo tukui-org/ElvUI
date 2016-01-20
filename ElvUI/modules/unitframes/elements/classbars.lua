@@ -409,14 +409,9 @@ function UF:UpdateShardBar(spec)
 		end
 	end
 
-	if not db.classbar.detachFromFrame then
-		if db.classbar.fill == 'spaced' and maxBars == 1 then
-			self:ClearAllPoints()
-			self:Point("LEFT", frame.Health.backdrop, "TOPLEFT", 8, 0)
-		elseif db.classbar.fill == 'spaced' then
-			self:ClearAllPoints()
-			self:Point("CENTER", frame.Health.backdrop, "TOP", -12, -2)
-		end
+	if not db.classbar.detachFromFrame and db.classbar.fill == 'spaced' then
+		self:ClearAllPoints()
+		self:Point("CENTER", frame.Health.backdrop, "TOP", 0, -(E.PixelMode and 2 or 1))
 	end
 
 	local SPACING = db.classbar.fill == 'spaced' and 11 or 1

@@ -174,15 +174,29 @@ E.Options.args.bags = {
 						},
 					},
 				},
-				ignoreItems = {
-					order = 100,
-					name = L["Ignore Items"],
-					desc = L["List of items to ignore when sorting. If you wish to add multiple items you must seperate the word with a comma."],
-					type = 'input',
-					width = 'full',
-					multiline = true,
-					set = function(info, value) E.db.bags[ info[#info] ] = value; end,
+				bagSortingGroup = {
+					order = 7,
+					type = "group",
+					guiInline = true,
+					name = L["Bag Sorting"],
+					args = {
+						description = {
+							order = 1,
+							type = "description",
+							name = L["Items in this list or items that match any Search Syntax query in this list will be ignored when sorting. Separate each entry with a comma."],
+						},
+						ignoreItems = {
+							order = 100,
+							name = L["Ignore Items"],
+							desc = L["IGNORE_ITEMS_DESC"],
+							type = 'input',
+							width = 'full',
+							multiline = true,
+							set = function(info, value) E.db.bags.ignoreItems = value; end,
+						},
+					},
 				},
+				
 			},
 		},
 		sizeAndPos = {

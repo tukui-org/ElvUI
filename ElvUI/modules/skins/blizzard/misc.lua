@@ -1156,29 +1156,6 @@ local function LoadSkin()
 	SideDressUpFrame.BGBottomLeft:Hide()
 	S:HandleButton(SideDressUpModelResetButton)
 	SideDressUpFrame:SetTemplate("Transparent")
-
-	--Addon List
-	AddonList:StripTextures()
-	AddonList:SetTemplate("Transparent")
-	AddonListInset:StripTextures()
-
-	S:HandleButton(AddonListEnableAllButton, true)
-	S:HandleButton(AddonListDisableAllButton, true)
-	S:HandleButton(AddonListOkayButton, true)
-	S:HandleButton(AddonListCancelButton, true)
-
-	S:HandleScrollBar(AddonListScrollFrameScrollBar, 5)
-
-	S:HandleCheckBox(AddonListForceLoad)
-	AddonListForceLoad:SetSize(26, 26)
-	S:HandleDropDownBox(AddonCharacterDropDown)
-
-	S:HandleCloseButton(AddonListCloseButton)
-
-	for i=1, MAX_ADDONS_DISPLAYED do
-		S:HandleCheckBox(_G["AddonListEntry"..i.."Enabled"])
-		S:HandleButton(_G["AddonListEntry"..i].LoadAddonButton)
-	end
 	
 	--What's New
 	SplashFrame:CreateBackdrop("Transparent")
@@ -1200,23 +1177,6 @@ local function LoadSkin()
 		end
 	end
 	hooksecurefunc("NavBar_AddButton", SkinNavBarButtons)
-
-	--Mirror Timers (Underwater Breath etc.), credit to Azilroka
-	for i = 1, MIRRORTIMER_NUMTIMERS do
-		local mirrorTimer = _G['MirrorTimer'..i]
-		local statusBar = _G['MirrorTimer'..i..'StatusBar']
-		local text = _G['MirrorTimer'..i.."Text"]
-
-		mirrorTimer:StripTextures()
-		mirrorTimer:Size(222, 18)
-		statusBar:SetStatusBarTexture(E["media"].normTex)
-		statusBar:CreateBackdrop()
-		statusBar:Size(222, 18)
-		text:ClearAllPoints()
-		text:SetPoint('CENTER', statusBar, 'CENTER', 0, 0)
-
-		E:CreateMover(mirrorTimer, "MirrorTimer"..i.."Mover", L["MirrorTimer"]..i, nil, nil, nil, "ALL,SOLO")
-	end
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)

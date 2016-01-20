@@ -59,6 +59,16 @@ Formato de Nomes:
 'name:long' - Nome restringido a 20 caracteres
 
 Para desactivar deixe o espaço em branco, se precisar de mais informações visite o site http://www.tukui.org]=];
+L["IGNORE_ITEMS_DESC"] = [=[Valid entries:
+
+Item links or item names
+
+Terms from Search Syntax. Examples:
+q:epic
+s:Tank Set
+q:epic&lvl:>300
+
+See "Bags->Search Syntax" for more.]=];
 
 --ActionBars
 L["Action Paging"] = "Paginação da Barra de Ação"
@@ -147,7 +157,7 @@ L["Ignore Items"] = "Ignorar Itens"
 L["Item Count Font"] = true;
 L["Item Level Threshold"] = true;
 L["Item Level"] = true;
-L["List of items to ignore when sorting. If you wish to add multiple items you must seperate the word with a comma."] = "Lista de itens a serem ignorados ao organizar. Múltiplos itens deve devem ser separados por vírgulas."
+L["Items in this list or items that match any Search Syntax query in this list will be ignored when sorting. Separate each entry with a comma."] = true;
 L["Money Format"] = true;
 L["Panel Width (Bags)"] = "Largura do Painel (Bolsas)"
 L["Panel Width (Bank)"] = "Largura do Painel (Banco)"
@@ -525,6 +535,7 @@ L["You can't remove a default name from the filter, disabling the name."] = "Nã
 
 --Skins
 L["Achievement Frame"] = "Conquistas"
+L["AddOn Manager"] = true;
 L["Alert Frames"] = "Alertas"
 L["Archaeology Frame"] = "Arqueologia"
 L["Auction Frame"] = "Casa de Leilões"
@@ -555,6 +566,7 @@ L["Loss Control"] = "Perda de Controle"
 L["Macro Frame"] = "Macros"
 L["Mail Frame"] = "Correio"
 L["Merchant Frame"] = "Comerciante"
+L["Mirror Timers"] = true;
 L["Misc Frames"] = "Diversos"
 L["Mounts & Pets"] = "Montarias & Mascotes"
 L["Non-Raid Frame"] = "Quadro Não Raide"

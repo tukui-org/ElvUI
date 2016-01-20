@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule('Bags');
-
+local Search = LibStub('LibItemSearch-1.2-ElvUI');
 --Cache global variables
 --Lua functions
 local ipairs, pairs, tonumber, select, unpack = ipairs, pairs, tonumber, select, unpack
@@ -521,14 +521,18 @@ end
 
 local blackListedSlots = {}
 local blackList = {}
+local blackListQueries = {}
 
 local function buildBlacklist(...)
 	twipe(blackList)
+	twipe(blackListQueries)
 	for index = 1, select('#', ...) do
-		local name = select(index, ...)
-		local isLink = GetItemInfo(name)
-		if isLink then
-			blackList[isLink] = true
+		local entry = select(index, ...)
+		local itemName = GetItemInfo(entry)
+		if itemName then
+			blackList[itemName] = true
+		else
+			blackListQueries[#blackListQueries+1] = entry
 		end
 	end
 end
@@ -549,6 +553,14 @@ function B.Sort(bags, sorter, invertDirection)
 
 		if link and blackList[GetItemInfo(link)] then
 			blackListedSlots[bagSlot] = true
+		end
+		
+		if not blackListedSlots[bagSlot] then
+			for key,itemsearchquery in pairs(blackListQueries) do
+				if Search:Matches(link,itemsearchquery) then					
+					blackListedSlots[bagSlot] = true
+				end
+			end	
 		end
 
 		if not blackListedSlots[bagSlot] then
