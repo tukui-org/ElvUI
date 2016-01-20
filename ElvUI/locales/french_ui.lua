@@ -333,11 +333,13 @@ L["Oh lord, you have got ElvUI and Tukui both enabled at the same time. Select a
 L["One or more of the changes you have made require a ReloadUI."] = "Une ou plusieurs modifications que vous avez effectuées nécessitent un rechargement de l'interface."
 L["One or more of the changes you have made will effect all characters using this addon. You will have to reload the user interface to see the changes you have made."] = "Un ou plusieurs changement(s) que vous avez effectué a une incidence sur tous les personnages qui utilisent cet Addon. Vous devriez recharger l'interface utilisateur pour voir le(s) changement(s) apporté(s)."
 L["Save"] = "Sauvegarder"
+L["The profile you tried to import already exists. Choose a new name or accept to overwrite your current profile."] = true;
 L["Type /hellokitty to revert to old settings."] = "Tapez /hellokitty pour recharger les anciennes configurations";
 L["Using the healer layout it is highly recommended you download the addon Clique if you wish to have the click-to-heal function."] = "Si vous utilisez l'agencement Soigneur, il est hautement recommandé de télécharger l'Addon Clique si vous souhaitez avoir la fonction cliquer-pour-soigner."
 L["Yes, Keep Changes!"] = "Oui, garder les changements!";
 L["You have changed the pixel perfect option. You will have to complete the installation process to remove any graphical bugs."] = "Vous avez modifié l'option Pixel Parfait. Vous devrez compléter le processus d'installation pour éliminer les bugs graphiques."
 L["You have changed your UIScale, however you still have the AutoScale option enabled in ElvUI. Press accept if you would like to disable the Auto Scale option."] = "Vous venez de changer l'échelle de votre interface, alors que votre option d'échelle automatique est encore activée dans ElvUI. Cliquer sur accepter si vous voulez désactiver l'option d'échelle automatique."
+L["You have imported settings which may require a UI reload to take effect. Reload now?"] = true;
 L["You must purchase a bank slot first!"] = "Vous devez d'abord acheter un emplacement de banque!"
 
 --Tooltip
