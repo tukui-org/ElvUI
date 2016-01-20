@@ -59,6 +59,16 @@ Format des Noms:
 'name:long' - Nom limité à 20 caractères
 
 Pour désactiver, laisser le champs vide. Pour plus d'information, merci de visiter http://www.tukui.org]=];
+L["IGNORE_ITEMS_DESC"] = [=[Valid entries:
+
+Item links or item names
+
+Terms from Search Syntax. Examples:
+q:epic
+s:Tank Set
+q:epic&lvl:>300
+
+See "Bags->Search Syntax" for more.]=];
 
 --ActionBars
 L["Action Paging"] = "Pagination d'action"
@@ -147,7 +157,7 @@ L["Ignore Items"] = "Objets ignorés"
 L["Item Count Font"] = true;
 L["Item Level Threshold"] = "Seuil de niveau d'objet";
 L["Item Level"] = "Niveau d'objet";
-L["List of items to ignore when sorting. If you wish to add multiple items you must seperate the word with a comma."] = "Liste des objets à ignorer pendant le tri. Si vous voulez ajouter plusieurs objets, vous devez séparer les mots par une virgule."
+L["List of items or terms from the Search Syntax which should be ignored when sorting. Separate each entry with a comma."] = true;
 L["Money Format"] = "Format monétaire";
 L["Panel Width (Bags)"] = "Largeur du panneau (Sac)"
 L["Panel Width (Bank)"] = "Largeur du panneau (Banque)"

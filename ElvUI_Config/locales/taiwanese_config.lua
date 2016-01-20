@@ -59,6 +59,16 @@ L["TEXT_FORMAT_DESC"] = [=[請填入代碼以變更文字格式。
 'name:long' - 名稱上限為 20 個字元
 
 若要停用此功能，此欄位請留空。如需更多資訊，請至 http://www.tukui.org]=];
+L["IGNORE_ITEMS_DESC"] = [=[Valid entries:
+
+Item links or item names
+
+Terms from Search Syntax. Examples:
+q:epic
+s:Tank Set
+q:epic&lvl:>300
+
+See "Bags->Search Syntax" for more.]=];
 
 --ActionBars
 L["Action Paging"] = "快捷列翻頁"
@@ -147,7 +157,7 @@ L["Ignore Items"] = "忽略項目"
 L["Item Count Font"] = true;
 L["Item Level Threshold"] = true;
 L["Item Level"] = true;
-L["List of items to ignore when sorting. If you wish to add multiple items you must seperate the word with a comma."] = "忽略清單中的項目，如果你想添加多個項目，你必須用逗號將它們分開."
+L["List of items or terms from the Search Syntax which should be ignored when sorting. Separate each entry with a comma."] = true;
 L["Money Format"] = true;
 L["Panel Width (Bags)"] = '框架寬度 (背包)'
 L["Panel Width (Bank)"] = '框架寬度 (銀行)'
