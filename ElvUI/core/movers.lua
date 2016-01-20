@@ -198,6 +198,14 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 	local function OnShow(self)
 		self:SetBackdropBorderColor(unpack(E["media"].rgbvaluecolor))
 	end
+	
+	local function OnMouseWheel(self, delta)
+		if IsShiftKeyDown() then
+			E:Nudge(delta)
+		else
+			E:Nudge(nil, delta)
+		end
+	end
 
 	f:SetScript("OnDragStart", OnDragStart)
 	f:SetScript('OnMouseUp', E.AssignFrameToNudge)
@@ -206,6 +214,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 	f:SetScript("OnMouseDown", OnMouseDown)
 	f:SetScript("OnLeave", OnLeave)
 	f:SetScript('OnShow', OnShow)
+	f:SetScript("OnMouseWheel", OnMouseWheel)
 
 	parent:SetScript('OnSizeChanged', SizeChanged)
 	parent.mover = f
