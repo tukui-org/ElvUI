@@ -626,6 +626,11 @@ end
 
 --The code in this function is from WeakAuras, credit goes to Mirrored and the WeakAuras Team
 function E:TableToLuaString(inTable)
+	if type(inTable) ~= "table" then
+		E:Print("Invalid argument #1 to E:TableToLuaString (table expected)")
+		return
+	end
+
 	local ret = "{\n";
 	local function recurse(table, level)
 		for i,v in pairs(table) do
