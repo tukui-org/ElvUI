@@ -59,16 +59,16 @@ L["TEXT_FORMAT_DESC"] = [=[Строка для изменения вида те�
 'name:long' - Имя с ограничением длины в 20 символов
 
 Для отключения оставьте поле пустым, для дополнительной информации посетите http://www.tukui.org]=];
-L["IGNORE_ITEMS_DESC"] = [=[Valid entries:
+L["IGNORE_ITEMS_DESC"] = [=[Вменяемые параметры:
 
-Item links or item names
+Названия предметов или ссылки на предметы
 
-Terms from Search Syntax. Examples:
+Параметры синтаксиса поиска. Примеры:
 q:epic
 s:Tank Set
 q:epic&lvl:>300
 
-See "Bags->Search Syntax" for more.]=];
+За дополнительной информацией обращаться в "Сумки->Синтаксис поиска".]=];
 
 --ActionBars
 L["Action Paging"] = "Переключение панелей"
@@ -158,11 +158,11 @@ L["Ignore Items"] = "Игнорировать предметы"
 L["Item Count Font"] = "Шрифт кол-ва предметов"
 L["Item Level Threshold"] = "Ограничение уровня предметов"
 L["Item Level"] = "Уровень предметов"
-L["Items in this list or items that match any Search Syntax query in this list will be ignored when sorting. Separate each entry with a comma."] = true;
+L["Items in this list or items that match any Search Syntax query in this list will be ignored when sorting. Separate each entry with a comma."] = "Предметы в списке или предметы, которые попадают под ситаксис поиска в списке, будут проигнорированы при сортировке."
 L["Money Format"] = "Формат денег"
 L["Panel Width (Bags)"] = "Ширина сумок"
 L["Panel Width (Bank)"] = "Ширина банка"
-L["Search Syntax"] = "Синтакс поиска"
+L["Search Syntax"] = "Синтаксис поиска"
 L["Set the size of your bag buttons."] = "Установите размер кнопок на панели."
 L["Short (Whole Numbers)"] = "Короткий (целые)"
 L["Short"] = "Короткий"
@@ -535,19 +535,19 @@ L["Y-Offset"] = "Смещение по Y"
 L["You can't remove a default name from the filter, disabling the name."] = "Вы не можете удалить имя по умолчанию из фильтра. Отключаю использование указанного имени."
 
 --Profiles Export/Import
-L["Choose Export Format"] = true;
-L["Choose What To Export"] = true;
-L["Decode Text"] = true;
-L["Error decoding data. Import string may be corrupted!"] = true;
-L["Error exporting profile!"] = true;
-L["Export Now"] = true;
-L["Export Profile"] = true;
-L["Exported"] = true;
-L["Import Now"] = true;
-L["Import Profile"] = true;
-L["Importing"] = true;
-L["Profile imported successfully!"] = true;
-L["Profile Name"] = true;
+L["Choose Export Format"] = "Выберите формат экспорта"
+L["Choose What To Export"] = "Выберите что экспортировать"
+L["Decode Text"] = "Декодировать"
+L["Error decoding data. Import string may be corrupted!"] = "Ошибка при кодировании. Импортируемая строка может быть повреждена!"
+L["Error exporting profile!"] = "Ошибка при экспорте профиля!"
+L["Export Now"] = "Экспортировать"
+L["Export Profile"] = "Экспорт профиля"
+L["Exported"] = "Экспортировано"
+L["Import Now"] = "Импортировать"
+L["Import Profile"] = "Импорт профиля"
+L["Importing"] = "Импортирую"
+L["Profile imported successfully!"] = "Профиль успешно импортирован!"
+L["Profile Name"] = "Имя профиля"
 
 --Skins
 L["Achievement Frame"] = "Достижения"
