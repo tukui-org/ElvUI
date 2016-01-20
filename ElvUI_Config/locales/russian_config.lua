@@ -543,11 +543,19 @@ L["Error exporting profile!"] = "Ошибка при экспорте профи
 L["Export Now"] = "Экспортировать"
 L["Export Profile"] = "Экспорт профиля"
 L["Exported"] = "Экспортировано"
+L["Filters (All)"] = true;
+L["Filters (NamePlates)"] = true;
+L["Filters (UnitFrames)"] = true;
+L["Global (Account Settings)"] = true;
 L["Import Now"] = "Импортировать"
 L["Import Profile"] = "Импорт профиля"
 L["Importing"] = "Импортирую"
+L["Plugin"] = true;
+L["Private (Character Settings)"] = true;
 L["Profile imported successfully!"] = "Профиль успешно импортирован!"
 L["Profile Name"] = "Имя профиля"
+L["Profile"] = true;
+L["Table"] = true;
 
 --Skins
 L["Achievement Frame"] = "Достижения"

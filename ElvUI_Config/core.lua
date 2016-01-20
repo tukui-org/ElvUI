@@ -1225,12 +1225,12 @@ E.Options.args.credits = {
 }
 
 local profileTypeItems = {
-	["profile"] = "Profile",
-	["private"] = "Private (Character Settings)",
-	["global"] = "Global (Account Settings)",
-	["filtersNP"] = "Filters (NamePlates)",
-	["filtersUF"] = "Filters (UnitFrames)",
-	["filtersAll"] = "Filters (All)",
+	["profile"] = L["Profile"],
+	["private"] = L["Private (Character Settings)"],
+	["global"] = L["Global (Account Settings)"],
+	["filtersNP"] = L["Filters (NamePlates)"],
+	["filtersUF"] = L["Filters (UnitFrames)"],
+	["filtersAll"] = L["Filters (All)"],
 }
 local profileTypeListOrder = {
 	"profile",
@@ -1241,9 +1241,9 @@ local profileTypeListOrder = {
 	"filtersAll",
 }
 local exportTypeItems = {
-	["text"] = "Text",
-	["luaTable"] = "Table",
-	["luaPlugin"] = "Plugin",
+	["text"] = L["Text"],
+	["luaTable"] = L["Table"],
+	["luaPlugin"] = L["Plugin"],
 }
 local exportTypeListOrder = {
 	"text",
