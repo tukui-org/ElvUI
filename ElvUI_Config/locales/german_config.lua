@@ -544,19 +544,19 @@ L["Error exporting profile!"] = "Fehler beim Exportieren des Profils!"
 L["Export Now"] = "Jetzt exportieren"
 L["Export Profile"] = "Exportiere Profil"
 L["Exported"] = "Exportiert"
-L["Filters (All)"] = true;
-L["Filters (NamePlates)"] = true;
-L["Filters (UnitFrames)"] = true;
-L["Global (Account Settings)"] = true;
+L["Filters (All)"] = "Filter (Alle)"
+L["Filters (NamePlates)"] = "Filter (Namensplaketten)"
+L["Filters (UnitFrames)"] = "Filter (Einheitenfenster)"
+L["Global (Account Settings)"] = "Globale (Account Einstellungen"
 L["Import Now"] = "Jetzt importieren"
 L["Import Profile"] = "Importiere Profil"
 L["Importing"] = "Importiere"
-L["Plugin"] = true;
-L["Private (Character Settings)"] = true;
+L["Plugin"] = true; -- no need to translate this
+L["Private (Character Settings)"] = "Private (Charakter Einstellungen)"
 L["Profile imported successfully!"] = "Profil erfolgreich importiert!"
 L["Profile Name"] = "Profil Name"
-L["Profile"] = true;
-L["Table"] = true;
+L["Profile"] = "Profil"
+L["Table"] = "Tabelle"
 
 --Skins
 L["Achievement Frame"] = "Erfolgsfenster"
