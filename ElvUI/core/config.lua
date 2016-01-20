@@ -169,7 +169,7 @@ local function ConfigMode_Initialize()
 	UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, selectedValue);
 end
 
-function E:Nudge(nudgeX, nudgeY)
+function E:NudgeMover(nudgeX, nudgeY)
 	local mover = ElvUIMoverNudgeWindow.child
 	local x, y, point = E:CalculateMoverPoints(mover, nudgeX, nudgeY)
 	
@@ -374,7 +374,7 @@ function E:CreateMoverPopup()
 		if tonumber(num) then
 			local diff = num - xOffset.currentValue
 			xOffset.currentValue = num
-			E:Nudge(diff)
+			E:NudgeMover(diff)
 		end
 		self:SetText(E:Round(xOffset.currentValue))
 		EditBox_ClearFocus(self)
@@ -409,7 +409,7 @@ function E:CreateMoverPopup()
 		if tonumber(num) then
 			local diff = num - yOffset.currentValue
 			yOffset.currentValue = num
-			E:Nudge(nil, diff)
+			E:NudgeMover(nil, diff)
 		end
 		self:SetText(E:Round(yOffset.currentValue))
 		EditBox_ClearFocus(self)
@@ -444,7 +444,7 @@ function E:CreateMoverPopup()
 	local upButton = CreateFrame('Button', nudgeFrame:GetName()..'UpButton', nudgeFrame, 'UIPanelSquareButton')
 	upButton:SetPoint('BOTTOMRIGHT', nudgeFrame, 'BOTTOM', -6, 4)
 	upButton:SetScript('OnClick', function()
-		E:Nudge(nil, 1)
+		E:NudgeMover(nil, 1)
 	end)
 	SquareButton_SetIcon(upButton, "UP");
 	S:HandleButton(upButton)
@@ -452,7 +452,7 @@ function E:CreateMoverPopup()
 	local downButton = CreateFrame('Button', nudgeFrame:GetName()..'DownButton', nudgeFrame, 'UIPanelSquareButton')
 	downButton:SetPoint('BOTTOMLEFT', nudgeFrame, 'BOTTOM', 6, 4)
 	downButton:SetScript('OnClick', function()
-		E:Nudge(nil, -1)
+		E:NudgeMover(nil, -1)
 	end)
 	SquareButton_SetIcon(downButton, "DOWN");
 	S:HandleButton(downButton)
@@ -460,7 +460,7 @@ function E:CreateMoverPopup()
 	local leftButton = CreateFrame('Button', nudgeFrame:GetName()..'LeftButton', nudgeFrame, 'UIPanelSquareButton')
 	leftButton:SetPoint('RIGHT', upButton, 'LEFT', -6, 0)
 	leftButton:SetScript('OnClick', function()
-		E:Nudge(-1)
+		E:NudgeMover(-1)
 	end)
 	SquareButton_SetIcon(leftButton, "LEFT");
 	S:HandleButton(leftButton)
@@ -468,7 +468,7 @@ function E:CreateMoverPopup()
 	local rightButton = CreateFrame('Button', nudgeFrame:GetName()..'RightButton', nudgeFrame, 'UIPanelSquareButton')
 	rightButton:SetPoint('LEFT', downButton, 'RIGHT', 6, 0)
 	rightButton:SetScript('OnClick', function()
-		E:Nudge(1)
+		E:NudgeMover(1)
 	end)
 	SquareButton_SetIcon(rightButton, "RIGHT");
 	S:HandleButton(rightButton)

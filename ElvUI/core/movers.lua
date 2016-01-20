@@ -201,9 +201,9 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 	
 	local function OnMouseWheel(self, delta)
 		if IsShiftKeyDown() then
-			E:Nudge(delta)
+			E:NudgeMover(delta)
 		else
-			E:Nudge(nil, delta)
+			E:NudgeMover(nil, delta)
 		end
 	end
 
