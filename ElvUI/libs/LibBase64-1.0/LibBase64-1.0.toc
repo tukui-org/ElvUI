@@ -1,0 +1,14 @@
+## Interface: 30000
+## Title: Lib: Base64-1.0
+## Notes: A library to encode and decode Base64 strings
+## Author: ckknight
+## X-eMail: ckknight@gmail.com
+## X-Category: Library
+## X-License: MIT
+## X-Curse-Packaged-Version: v1-1-g28f0d3a
+## X-Curse-Project-Name: LibBase64-1.0
+## X-Curse-Project-ID: libbase64-1-0
+## X-Curse-Repository-ID: wow/libbase64-1-0/mainline
+
+LibStub\LibStub.lua
+lib.xml

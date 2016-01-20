@@ -533,6 +533,21 @@ L["X-Offset"] = "Смещение по Х"
 L["Y-Offset"] = "Смещение по Y"
 L["You can't remove a default name from the filter, disabling the name."] = "Вы не можете удалить имя по умолчанию из фильтра. Отключаю использование указанного имени."
 
+--Profiles Export/Import
+L["Choose Export Format"] = true;
+L["Choose What To Export"] = true;
+L["Decode Text"] = true;
+L["Error decoding data. Import string may be corrupted!"] = true;
+L["Error exporting profile!"] = true;
+L["Export Now"] = true;
+L["Export Profile"] = true;
+L["Exported"] = true;
+L["Import Now"] = true;
+L["Import Profile"] = true;
+L["Importing"] = true;
+L["Profile imported successfully!"] = true;
+L["Profile Name"] = true;
+
 --Skins
 L["Achievement Frame"] = "Достижения"
 L["AddOn Manager"] = "Модификации"

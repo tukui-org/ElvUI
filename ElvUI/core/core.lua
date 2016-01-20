@@ -5,11 +5,11 @@ local Masque = LibStub("Masque", true)
 --Cache global variables
 --Lua functions
 local _G = _G
-local tonumber, pairs, error, unpack, select = tonumber, pairs, error, unpack, select
-local print, type, collectgarbage, pcall, date = print, type, collectgarbage, pcall, date
-local twipe, tinsert= table.wipe, tinsert
+local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
+local assert, print, type, collectgarbage, pcall, date = assert, print, type, collectgarbage, pcall, date
+local twipe, tinsert, tremove = table.wipe, tinsert, tremove
 local floor = floor
-local format, find, split, match, gsub = string.format, string.find, string.split, string.match, string.gsub
+local format, find, split, match, strrep, len, sub, gsub = string.format, string.find, string.split, string.match, strrep, string.len, string.sub, string.gsub
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetCVar, SetCVar, GetCVarBool = GetCVar, SetCVar, GetCVarBool
@@ -566,6 +566,219 @@ function E:CopyTable(currentTable, defaultTable)
 	end
 
 	return currentTable
+end
+
+local function IsTableEmpty(tbl)
+	for _, _ in pairs(tbl) do
+		return false
+	end
+	return true
+end
+
+function E:RemoveEmptySubTables(tbl)
+	if type(tbl) ~= "table" then
+		E:Print("Bad argument #1 to 'RemoveEmptySubTables' (table expected)")
+		return
+	end
+
+	for k, v in pairs(tbl) do
+		if type(v) == "table" then
+			if IsTableEmpty(v) then
+				tbl[k] = nil
+			else
+				self:RemoveEmptySubTables(v)
+			end
+		end
+	end
+end
+
+--Compare 2 tables and remove duplicate key/value pairs
+--param cleanTable : table you want cleaned
+--param checkTable : table you want to check against.
+--return : a copy of cleanTable with duplicate key/value pairs removed
+function E:RemoveTableDuplicates(cleanTable, checkTable)
+	if type(cleanTable) ~= "table" then
+		E:Print("Bad argument #1 to 'RemoveTableDuplicates' (table expected)")
+		return
+	end
+	if type(checkTable) ~=  "table" then
+		E:Print("Bad argument #2 to 'RemoveTableDuplicates' (table expected)")
+		return
+	end
+	
+	local cleaned = {}
+	for option, value in pairs(cleanTable) do
+		if type(value) == "table" and checkTable[option] and type(checkTable[option]) == "table" then
+			cleaned[option] = self:RemoveTableDuplicates(value, checkTable[option])
+		else
+			-- Add unique data to our clean table
+			if (cleanTable[option] ~= checkTable[option]) then
+				cleaned[option] = value
+			end
+		end
+	end
+	
+	--Clean out empty sub-tables
+	self:RemoveEmptySubTables(cleaned)
+
+	return cleaned
+end
+
+--The code in this function is from WeakAuras, credit goes to Mirrored and the WeakAuras Team
+function E:TableToLuaString(inTable)
+	if type(inTable) ~= "table" then
+		E:Print("Invalid argument #1 to E:TableToLuaString (table expected)")
+		return
+	end
+
+	local ret = "{\n";
+	local function recurse(table, level)
+		for i,v in pairs(table) do
+			ret = ret..strrep("    ", level).."[";
+			if(type(i) == "string") then
+				ret = ret.."\""..i.."\"";
+			else
+				ret = ret..i;
+			end
+			ret = ret.."] = ";
+
+			if(type(v) == "number") then
+				ret = ret..v..",\n"
+			elseif(type(v) == "string") then
+				ret = ret.."\""..v:gsub("\\", "\\\\"):gsub("\n", "\\n"):gsub("\"", "\\\"").."\",\n"
+			elseif(type(v) == "boolean") then
+				if(v) then
+					ret = ret.."true,\n"
+				else
+					ret = ret.."false,\n"
+				end
+			elseif(type(v) == "table") then
+				ret = ret.."{\n"
+				recurse(v, level + 1);
+				ret = ret..strrep("    ", level).."},\n"
+			else
+				ret = ret.."\""..tostring(v).."\",\n"
+			end
+		end
+	end
+
+	if(inTable) then
+		recurse(inTable, 1);
+	end
+	ret = ret.."}";
+
+	return ret;
+end
+
+local profileFormat = {
+	["profile"] = "E.db",
+	["private"] = "E.private",
+	["global"] = "E.global",
+	["filtersNP"] = "E.global",
+	["filtersUF"] = "E.global",
+	["filtersAll"] = "E.global",
+}
+
+local lineStructureTable = {}
+
+function E:ProfileTableToPluginFormat(inTable, profileType)
+	local profileText = profileFormat[profileType]
+	if not profileText then
+		return
+	end
+
+	twipe(lineStructureTable)
+	local returnString = ""
+	local lineStructure = ""
+	local sameLine = false
+	
+	local function buildLineStructure()
+		local str = profileText
+		for _, v in ipairs(lineStructureTable) do
+			if type(v) == "string" then
+				str = str.."[\""..v.."\"]"
+			else
+				str = str.."["..v.."]"
+			end
+		end
+		
+		return str
+	end
+
+	local function recurse(tbl)
+		lineStructure = buildLineStructure()
+		for k, v in pairs(tbl) do
+			if not sameLine then
+				returnString = returnString..lineStructure
+			end
+
+			returnString = returnString.."[";
+
+			if(type(k) == "string") then
+				returnString = returnString.."\""..k.."\"";
+			else
+				returnString = returnString..k;
+			end
+
+			if type(v) == "table" then
+				tinsert(lineStructureTable, k)
+				sameLine = true
+				returnString = returnString.."]"
+				recurse(v)
+			else
+				sameLine = false
+				returnString = returnString.."] = ";
+				
+				if type(v) == "number" then
+					returnString = returnString..v.."\n"
+				elseif type(v) == "string" then
+					returnString = returnString.."\""..v:gsub("\\", "\\\\"):gsub("\n", "\\n"):gsub("\"", "\\\"").."\"\n"
+				elseif type(v) == "boolean" then
+					if v then
+						returnString = returnString.."true\n"
+					else
+						returnString = returnString.."false\n"
+					end
+				else
+					returnString = returnString.."\""..tostring(v).."\"\n"
+				end
+			end
+		end
+		
+		tremove(lineStructureTable)
+		lineStructure = buildLineStructure()
+	end
+	
+	if inTable and profileType then
+		recurse(inTable);
+	end
+
+	return returnString;
+end
+
+--Split string by multi-character delimiter (the strsplit / string.split function provided by WoW doesn't allow multi-character delimiter)
+function E:SplitString(s, delim)
+	assert(type (delim) == "string" and len(delim) > 0, "bad delimiter")
+
+	local start = 1
+	local t = {}  -- results table
+
+	-- find each instance of a string followed by the delimiter
+	while true do
+		local pos = find(s, delim, start, true) -- plain find
+
+		if not pos then
+			break
+		end
+
+		tinsert(t, sub(s, start, pos - 1))
+		start = pos + len(delim)
+	end -- while
+
+	-- insert final one (after last delimiter)
+	tinsert(t, sub(s, start))
+
+	return unpack(t)
 end
 
 function E:SendMessage()

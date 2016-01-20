@@ -333,11 +333,13 @@ L["Oh lord, you have got ElvUI and Tukui both enabled at the same time. Select a
 L["One or more of the changes you have made require a ReloadUI."] = "Uma ou mais das alterações que fez requerem que recarregue a IU."
 L["One or more of the changes you have made will effect all characters using this addon. You will have to reload the user interface to see the changes you have made."] = "Uma ou mais das alterações que fez afetará todos os personagens que usam este addon. Você terá que recarregar a interface para ver as alterações que fez."
 L["Save"] = "Salvar"
+L["The profile you tried to import already exists. Choose a new name or accept to overwrite the existing profile."] = true;
 L["Type /hellokitty to revert to old settings."] = true;
 L["Using the healer layout it is highly recommended you download the addon Clique if you wish to have the click-to-heal function."] = "Ao usar o leioute de curandeiro é altamente recomendado que você baixe o addon Clique se quiser ter a função de clicar-para-curar.";
 L["Yes, Keep Changes!"] = true;
 L["You have changed the pixel perfect option. You will have to complete the installation process to remove any graphical bugs."] = "Você alterou a opção Perfeição em Píxel. Precisará completar o processo de instalação para remover todos os problemas gráficos."
 L["You have changed your UIScale, however you still have the AutoScale option enabled in ElvUI. Press accept if you would like to disable the Auto Scale option."] = "Você mudou a Escala da sua IU, no entanto ainda tem a opção de dimensionamento automático ativa na ElvUI. Pressione Aceitar se gostaria de desativar a opção de dimensionamento automático."
+L["You have imported settings which may require a UI reload to take effect. Reload now?"] = true;
 L["You must purchase a bank slot first!"] = "Você deve comprar um espaço no banco primeiro!"
 
 --Tooltip

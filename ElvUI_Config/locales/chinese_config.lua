@@ -533,6 +533,21 @@ L["X-Offset"] = true;
 L["Y-Offset"] = true;
 L["You can't remove a default name from the filter, disabling the name."] = "你不能删除过滤器的预设筛选名, 仅能停用此筛选名"
 
+--Profiles Export/Import
+L["Choose Export Format"] = true;
+L["Choose What To Export"] = true;
+L["Decode Text"] = true;
+L["Error decoding data. Import string may be corrupted!"] = true;
+L["Error exporting profile!"] = true;
+L["Export Now"] = true;
+L["Export Profile"] = true;
+L["Exported"] = true;
+L["Import Now"] = true;
+L["Import Profile"] = true;
+L["Importing"] = true;
+L["Profile imported successfully!"] = true;
+L["Profile Name"] = true;
+
 --Skins
 L["Achievement Frame"] = "成就"
 L["AddOn Manager"] = true;

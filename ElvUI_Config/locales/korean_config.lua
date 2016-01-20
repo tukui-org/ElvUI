@@ -581,6 +581,21 @@ L["X-Offset"] = "위치 x 좌표"
 L["Y-Offset"] = "위치 y 좌표"
 L["You can't remove a default name from the filter, disabling the name."] = "기본으로 있었던 이름 필터는 제거할 수 없습니다. 비활성화 처리하세요."
 
+--Profiles Export/Import
+L["Choose Export Format"] = true;
+L["Choose What To Export"] = true;
+L["Decode Text"] = true;
+L["Error decoding data. Import string may be corrupted!"] = true;
+L["Error exporting profile!"] = true;
+L["Export Now"] = true;
+L["Export Profile"] = true;
+L["Exported"] = true;
+L["Import Now"] = true;
+L["Import Profile"] = true;
+L["Importing"] = true;
+L["Profile imported successfully!"] = true;
+L["Profile Name"] = true;
+
 --Skins
 L["Achievement Frame"] = "업적창"
 L["AddOn Manager"] = true;
