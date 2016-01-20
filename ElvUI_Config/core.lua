@@ -1332,7 +1332,7 @@ local function ExportImport_Open(mode)
 
 	elseif mode == "import" then
 		Frame:SetTitle(L["Import Profile"])
-		local importButton = AceGUI:Create("Button")
+		local importButton = AceGUI:Create("Button-ElvUI") --This version changes text color on SetDisabled
 		importButton:SetDisabled(true)
 		importButton:SetText(L["Import Now"])
 		importButton:SetAutoWidth(true)
@@ -1346,7 +1346,7 @@ local function ExportImport_Open(mode)
 		end)
 		Frame:AddChild(importButton)
 		
-		local decodeButton = AceGUI:Create("Button")
+		local decodeButton = AceGUI:Create("Button-ElvUI")
 		decodeButton:SetDisabled(true)
 		decodeButton:SetText(L["Decode Text"])
 		decodeButton:SetAutoWidth(true)
