@@ -137,6 +137,7 @@ L["Adjust the width of the bank frame."] = "Установить размер ф
 L["Align the width of the bag frame to fit inside the chat box."] = "Установить размер сумок/банка по ширине чата"
 L["Align To Chat"] = "По чату"
 L["Ascending"] = "Восходящее"
+L["Bag Sorting"] = true;
 L["Bag-Bar"] = "Панель сумок"
 L["Bar Direction"] = "Направление панели"
 L["Blizzard Style"] = "Стиль Blizzard"

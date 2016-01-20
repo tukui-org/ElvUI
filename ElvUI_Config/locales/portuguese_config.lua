@@ -137,6 +137,7 @@ L["Adjust the width of the bank frame."] = "Ajusta a largura do quadro do banco.
 L["Align the width of the bag frame to fit inside the chat box."] = "Alinha a largura do quadro das bolsas para caber dentro do quadro do bate-papo."
 L["Align To Chat"] = "Alinhar com o Bate-papo"
 L["Ascending"] = "Ascendente"
+L["Bag Sorting"] = true;
 L["Bag-Bar"] = "Barra das Bolsas"
 L["Bar Direction"] = "Direção da Barra"
 L["Blizzard Style"] = true;

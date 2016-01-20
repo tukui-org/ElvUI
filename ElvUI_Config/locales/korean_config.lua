@@ -184,6 +184,7 @@ L["Adjust the width of the bank frame."] = "통합은행 프레임의 가로길�
 L["Align the width of the bag frame to fit inside the chat box."] = "통합은행 프레임의 가로길이를 좌측 패널, 통합가방 프레임의 가로길이를 우측 패널 각각의 가로길이에 맞춥니다."
 L["Align To Chat"] = "패널에 맞춤"
 L["Ascending"] = "오름차순"
+L["Bag Sorting"] = true;
 L["Bag-Bar"] = "가방바"
 L["Bar Direction"] = "바 방향"
 L["Blizzard Style"] = "블리자드 기본"

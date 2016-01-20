@@ -135,6 +135,7 @@ L["Adjust the width of the bank frame."] = true;
 L["Align the width of the bag frame to fit inside the chat box."] = true;
 L["Align To Chat"] = true;
 L["Ascending"] = true;
+L["Bag Sorting"] = true;
 L["Bag-Bar"] = true;
 L["Bar Direction"] = true;
 L["Blizzard Style"] = true;

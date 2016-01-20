@@ -137,6 +137,7 @@ L["Adjust the width of the bank frame."] = '调整银行框架宽度'
 L["Align the width of the bag frame to fit inside the chat box."] = '调整背包框的宽度以适应对话框'
 L["Align To Chat"] = '对齐到对话框'
 L["Ascending"] = "升序"
+L["Bag Sorting"] = true;
 L["Bag-Bar"] = "背包条"
 L["Bar Direction"] = "背包条排序方向"
 L["Blizzard Style"] = true;
