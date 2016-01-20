@@ -333,7 +333,7 @@ L["Oh lord, you have got ElvUI and Tukui both enabled at the same time. Select a
 L["One or more of the changes you have made require a ReloadUI."] = "Une ou plusieurs modifications que vous avez effectuées nécessitent un rechargement de l'interface."
 L["One or more of the changes you have made will effect all characters using this addon. You will have to reload the user interface to see the changes you have made."] = "Un ou plusieurs changement(s) que vous avez effectué a une incidence sur tous les personnages qui utilisent cet Addon. Vous devriez recharger l'interface utilisateur pour voir le(s) changement(s) apporté(s)."
 L["Save"] = "Sauvegarder"
-L["The profile you tried to import already exists. Choose a new name or accept to overwrite your current profile."] = true;
+L["The profile you tried to import already exists. Choose a new name or accept to overwrite the existing profile."] = true;
 L["Type /hellokitty to revert to old settings."] = "Tapez /hellokitty pour recharger les anciennes configurations";
 L["Using the healer layout it is highly recommended you download the addon Clique if you wish to have the click-to-heal function."] = "Si vous utilisez l'agencement Soigneur, il est hautement recommandé de télécharger l'Addon Clique si vous souhaitez avoir la fonction cliquer-pour-soigner."
 L["Yes, Keep Changes!"] = "Oui, garder les changements!";
