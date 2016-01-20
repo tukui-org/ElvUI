@@ -196,6 +196,11 @@ function E:GetColorTable(data)
 	if not data.r or not data.g or not data.b then
 		error("Could not unpack color values.")
 	end
+	
+	if data.r > 1 or data.r < 0 then data.r = 1 end
+	if data.g > 1 or data.g < 0 then data.g = 1 end
+	if data.b > 1 or data.b < 0 then data.b = 1 end
+	if data.a > 1 or data.a < 0 then data.a = 1 end
 
 	if data.a then
 		return {data.r, data.g, data.b, data.a}
