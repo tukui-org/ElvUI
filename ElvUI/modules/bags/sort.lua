@@ -525,13 +525,14 @@ local blackListQueries = {}
 
 local function buildBlacklist(...)
 	twipe(blackList)
+	twipe(blackListQueries)
 	for index = 1, select('#', ...) do
-		local name = select(index, ...)
-		local isLink = GetItemInfo(name)
-		if isLink then
-			blackList[isLink] = true
+		local entry = select(index, ...)
+		local itemName = GetItemInfo(entry)
+		if itemName then
+			blackList[itemName] = true
 		else
-			blackListQueries[#blackListQueries+1] = name
+			blackListQueries[#blackListQueries+1] = entry
 		end
 	end
 end
