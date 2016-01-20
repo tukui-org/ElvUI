@@ -1250,48 +1250,41 @@ local exportTypeListOrder = {
 	"luaTable",
 	"luaPlugin",
 }
-		
+
+local exportString
 local function ExportImport_Open(mode)
-	local rev = " rev4"
 	local Frame = AceGUI:Create("Frame")
 	Frame:SetTitle("")
 	Frame:EnableResize(false)
-	Frame.frame:SetWidth(800)
-	Frame.frame:SetHeight(600)
+	Frame:SetWidth(800)
+	Frame:SetHeight(600)
 	Frame.frame:SetFrameStrata("FULLSCREEN_DIALOG")
 	Frame:SetLayout("flow")
-	Frame:SetCallback("OnClose", function(widget)
-		AceGUI:Release(widget)
-		ACD:Open("ElvUI")
-	end)
+	
 
 	local Box = AceGUI:Create("MultiLineEditBox");
 	Box:SetNumLines(30)
 	Box:DisableButton(true)
 	Box:SetWidth(800)
 	Box:SetLabel("")
-	Box.button:Hide()
-	Box.editBox:SetScript("OnEditFocusGained", function() Box.editBox:HighlightText() end)
 	Frame:AddChild(Box)
 	
 	local Label1 = AceGUI:Create("Label")
 	local font = GameFontHighlightSmall:GetFont()
 	Label1:SetFont(font, 14)
 	Label1:SetText(".") --Set temporary text so height is set correctly
-	Label1:SetWidth(770)
-	Label1.label:SetJustifyH("RIGHT")
+	Label1:SetWidth(800)
 	Frame:AddChild(Label1)
 	
 	local Label2 = AceGUI:Create("Label")
 	local font = GameFontHighlightSmall:GetFont()
 	Label2:SetFont(font, 14)
-	Label2:SetText(".")
-	Label2:SetWidth(770)
-	Label2.label:SetJustifyH("RIGHT")
+	Label2:SetText(".\n.")
+	Label2:SetWidth(800)
 	Frame:AddChild(Label2)
 
 	if mode == "export" then
-		Frame:SetTitle(L["Export Profile"]..rev)
+		Frame:SetTitle(L["Export Profile"])
 
 		local ProfileTypeDropdown = AceGUI:Create("Dropdown")
 		ProfileTypeDropdown:SetMultiselect(false)
@@ -1311,8 +1304,7 @@ local function ExportImport_Open(mode)
 		local exportButton = AceGUI:Create("Button")
 		exportButton:SetText(L["Export Now"])
 		exportButton:SetAutoWidth(true)
-		exportButton.text:SetTextColor(1, 0.82, 0)
-		exportButton.OnClick = function(self)
+		local function OnClick(self)
 			--Clear labels
 			Label1:SetText("")
 			Label2:SetText("")
@@ -1330,21 +1322,18 @@ local function ExportImport_Open(mode)
 			Box:SetText(profileExport);
 			Box.editBox:HighlightText();
 			Box:SetFocus();
-			Box.exportString = profileExport
+			exportString = profileExport
 		end
-		exportButton:SetCallback("OnClick", exportButton.OnClick)
+		exportButton:SetCallback("OnClick", OnClick)
 		Frame:AddChild(exportButton)
-		-- exportButton.frame:Hide()
 		
 		--Set scripts
-		Box.editBox:SetScript("OnChar", function() Box:SetText(Box.exportString); Box.editBox:HighlightText(); end);
-		Box.editBox:SetScript("OnTextChanged", nil);
+		Box.editBox:SetScript("OnChar", function() Box:SetText(exportString); Box.editBox:HighlightText(); end);
 
 	elseif mode == "import" then
-		Frame:SetTitle(L["Import Profile"]..rev)
+		Frame:SetTitle(L["Import Profile"])
 		local importButton = AceGUI:Create("Button")
 		importButton:SetDisabled(true)
-		importButton.text:SetTextColor(0.4, 0.4, 0.4)
 		importButton:SetText(L["Import Now"])
 		importButton:SetAutoWidth(true)
 		importButton:SetCallback("OnClick", function()
@@ -1356,36 +1345,78 @@ local function ExportImport_Open(mode)
 			Label1:SetText(message)
 		end)
 		Frame:AddChild(importButton)
-		-- importButton.frame:Hide()
 		
-		--Set scripts
-		Box.editBox:SetScript("OnChar", nil);
-		Box.editBox:SetScript("OnMouseUp", nil);
-		Box.editBox:SetScript("OnTextChanged", function(self, userInput)
-			if self:GetText() == "" then
+		local decodeButton = AceGUI:Create("Button")
+		decodeButton:SetDisabled(true)
+		decodeButton:SetText(L["Decode Text"])
+		decodeButton:SetAutoWidth(true)
+		decodeButton:SetCallback("OnClick", function()
+			--Clear labels
+			Label1:SetText("")
+			Label2:SetText("")
+			local decodedText
+			local profileType, profileKey, profileData = D:Decode(Box:GetText())
+			if profileData then
+				decodedText = E:TableToLuaString(profileData)
+			end
+			local importText = D:CreateProfileExport(decodedText, profileType, profileKey)
+			Box:SetText(importText)
+		end)
+		Frame:AddChild(decodeButton)
+
+		local function OnTextChanged()
+			local text = Box:GetText()
+			if text == "" then
 				Label1:SetText("")
 				Label2:SetText("")
 				importButton:SetDisabled(true)
-				importButton.text:SetTextColor(0.4, 0.4, 0.4)
-			elseif userInput then
-				local profileType, profileKey = D:Decode(self:GetText())
+				decodeButton:SetDisabled(true)
+			else
+				local stringType = D:GetImportStringType(text)
+				if stringType == "Base64" then
+					decodeButton:SetDisabled(false)
+				else
+					decodeButton:SetDisabled(true)
+				end
+
+				local profileType, profileKey = D:Decode(text)
 				if not profileType or (profileType and profileType == "profile" and not profileKey) then
 					Label1:SetText(L["Error decoding data. Import string may be corrupted!"])
 					Label2:SetText("")
 					importButton:SetDisabled(true)
-					importButton.text:SetTextColor(0.4, 0.4, 0.4)
+					decodeButton:SetDisabled(true)
 				else
 					Label1:SetText(format("%s: %s%s|r", L["Importing"], E.media.hexvaluecolor, profileTypeItems[profileType] or ""))
 					if profileType == "profile" then
 						Label2:SetText(format("%s: %s%s|r", L["Profile Name"], E.media.hexvaluecolor, profileKey))
 					end
 					importButton:SetDisabled(false)
-					importButton.text:SetTextColor(1, 0.82, 0)
 				end
+				
+				--Scroll frame doesn't scroll to the bottom by itself, so let's do that now
+				Box.scrollFrame:SetVerticalScroll(Box.scrollFrame:GetVerticalScrollRange())
 			end
-		end);
+		end
+
 		Box.editBox:SetFocus()
+		--Set scripts
+		Box.editBox.OnTextChangedOrig = Box.editBox:GetScript("OnTextChanged")
+		Box.editBox:SetScript("OnChar", nil);
+		Box.editBox:SetScript("OnTextChanged", OnTextChanged)
 	end
+
+	Frame:SetCallback("OnClose", function(widget)
+		--Restore changed scripts
+		Box.editBox:SetScript("OnChar", nil)
+		Box.editBox:SetScript("OnTextChanged", Box.editBox.OnTextChangedOrig)
+		Box.editBox.OnTextChangedOrig = nil
+
+		--Clear stored export string
+		exportString = nil
+
+		AceGUI:Release(widget)
+		ACD:Open("ElvUI")
+	end)
 	
 	--Clear default text
 	Label1:SetText("")

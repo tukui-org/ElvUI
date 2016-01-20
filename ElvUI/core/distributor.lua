@@ -316,25 +316,15 @@ local function GetProfileExport(profileType, exportFormat)
 
 	if exportFormat == "text" then
 		local serialData = D:Serialize(profileData)
-
-		if profileType == "profile" then
-			exportString = format("%s::%s::%s", serialData, profileType, profileKey)
-		else
-			exportString = format("%s::%s", serialData, profileType)
-		end
-		
+		exportString = D:CreateProfileExport(serialData, profileType, profileKey)
 		local compressedData = LibCompress:Compress(exportString)
 		local encodedData = LibBase64:Encode(compressedData)
 		profileExport = encodedData
 
 	elseif exportFormat == "luaTable" then
 		exportString = E:TableToLuaString(profileData)
+		profileExport = D:CreateProfileExport(exportString, profileType, profileKey)
 
-		if profileType == "profile" then
-			profileExport = format("%s::%s::%s", exportString, profileType, profileKey)
-		else
-			profileExport = format("%s::%s", exportString, profileType)
-		end
 	elseif exportFormat == "luaPlugin" then
 		profileExport = E:ProfileTableToPluginFormat(profileData, profileType)
 	end
@@ -342,10 +332,35 @@ local function GetProfileExport(profileType, exportFormat)
 	return profileKey, profileExport
 end
 
+function D:CreateProfileExport(dataString, profileType, profileKey)
+	local returnString
+	
+	if profileType == "profile" then
+		returnString = format("%s::%s::%s", dataString, profileType, profileKey)
+	else
+		returnString = format("%s::%s", dataString, profileType)
+	end
+	
+	return returnString
+end
+
+function D:GetImportStringType(dataString)
+	local stringType = ""
+	
+	if LibBase64:IsBase64(dataString) then
+		stringType = "Base64"
+	elseif find(dataString, "{") then --Basic check to weed out obviously wrong strings
+		stringType = "Table"
+	end
+
+	return stringType
+end
+
 function D:Decode(dataString)
 	local profileType, profileKey, profileData, message
+	local stringType = self:GetImportStringType(dataString)
 
-	if LibBase64:IsBase64(dataString) then
+	if stringType == "Base64" then
 		local decodedData = LibBase64:Decode(dataString)
 		local decompressedData, message = LibCompress:Decompress(decodedData)
 		
@@ -361,7 +376,7 @@ function D:Decode(dataString)
 			E:Print("Error deserializing:", profileData)
 			return
 		end
-	elseif find(dataString, "{") then --Basic check to weed out obviously wrong strings
+	elseif stringType == "Table" then
 		local profileDataAsString
 		profileDataAsString, profileType, profileKey = E:SplitString(dataString, "::")
 		if not profileDataAsString then
