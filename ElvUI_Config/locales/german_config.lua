@@ -536,19 +536,19 @@ L["Y-Offset"] = "Y-Versatz"
 L["You can't remove a default name from the filter, disabling the name."] = "Du kannst keinen Standardnamen entfernen, schalte den Namen aus."
 
 --Profiles Export/Import
-L["Choose Export Format"] = true;
-L["Choose What To Export"] = true;
-L["Decode Text"] = true;
-L["Error decoding data. Import string may be corrupted!"] = true;
-L["Error exporting profile!"] = true;
-L["Export Now"] = true;
-L["Export Profile"] = true;
-L["Exported"] = true;
-L["Import Now"] = true;
-L["Import Profile"] = true;
-L["Importing"] = true;
-L["Profile imported successfully!"] = true;
-L["Profile Name"] = true;
+L["Choose Export Format"] = "Wähle Export Format"
+L["Choose What To Export"] = "Wähle aus, was exportiert werden soll"
+L["Decode Text"] = "Entschlüsselter Text"
+L["Error decoding data. Import string may be corrupted!"] = "Fehler beim entschlüsseln der Daten. Die importierende Zeichenfolge scheint beschädigt zu sein!"
+L["Error exporting profile!"] = "Fehler beim Exportieren des Profils!"
+L["Export Now"] = "Jetzt exportieren"
+L["Export Profile"] = "Exportiere Profil"
+L["Exported"] = "Exportiert"
+L["Import Now"] = "Jetzt importieren"
+L["Import Profile"] = "Importiere Profil"
+L["Importing"] = "Importiere"
+L["Profile imported successfully!"] = "Profil erfolgreich importiert!"
+L["Profile Name"] = "Profil Name"
 
 --Skins
 L["Achievement Frame"] = "Erfolgsfenster"
