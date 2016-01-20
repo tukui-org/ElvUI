@@ -1300,7 +1300,7 @@ local function ExportImport_Open(mode)
 		ExportFormatDropdown:SetLabel(L["Choose Export Format"])
 		ExportFormatDropdown:SetList(exportTypeItems, exportTypeListOrder)
 		ExportFormatDropdown:SetValue("text") --Default format
-		ExportFormatDropdown.frame:SetWidth(150)
+		ExportFormatDropdown:SetWidth(150)
 		Frame:AddChild(ExportFormatDropdown)
 		
 		local exportButton = AceGUI:Create("Button")
