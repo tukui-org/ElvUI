@@ -186,6 +186,10 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 			else
 				self:StopMovingOrSizing()
 			end
+			--Allow resetting of anchor by Ctrl+RightClick
+			if IsControlKeyDown() and self.textString then
+				E:ResetMovers(self.textString)
+			end
 		end
 	end)
 
