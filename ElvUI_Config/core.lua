@@ -1251,7 +1251,7 @@ local exportTypeListOrder = {
 	"luaPlugin",
 }
 
-local exportString
+local exportString = ""
 local function ExportImport_Open(mode)
 	local Frame = AceGUI:Create("Frame")
 	Frame:SetTitle("")
@@ -1268,6 +1268,8 @@ local function ExportImport_Open(mode)
 	Box:SetWidth(800)
 	Box:SetLabel("")
 	Frame:AddChild(Box)
+	--Save original script so we can restore it later
+	Box.editBox.OnTextChangedOrig = Box.editBox:GetScript("OnTextChanged")
 	
 	local Label1 = AceGUI:Create("Label")
 	local font = GameFontHighlightSmall:GetFont()
@@ -1329,6 +1331,13 @@ local function ExportImport_Open(mode)
 		
 		--Set scripts
 		Box.editBox:SetScript("OnChar", function() Box:SetText(exportString); Box.editBox:HighlightText(); end);
+		Box.editBox:SetScript("OnTextChanged", function(self, userInput)
+			if userInput then
+				--Prevent user from changing export string
+				Box:SetText(exportString)
+				Box.editBox:HighlightText();
+			end
+		end)
 
 	elseif mode == "import" then
 		Frame:SetTitle(L["Import Profile"])
@@ -1341,8 +1350,14 @@ local function ExportImport_Open(mode)
 			Label1:SetText("")
 			Label2:SetText("")
 
-			local message = D:ImportProfile(Box:GetText())
-			Label1:SetText(message)
+			local text
+			local success = D:ImportProfile(Box:GetText())
+			if success then
+				text = L["Profile imported successfully!"]
+			else
+				text = L["Error decoding data. Import string may be corrupted!"]
+			end
+			Label1:SetText(text)
 		end)
 		Frame:AddChild(importButton)
 		
@@ -1400,7 +1415,6 @@ local function ExportImport_Open(mode)
 
 		Box.editBox:SetFocus()
 		--Set scripts
-		Box.editBox.OnTextChangedOrig = Box.editBox:GetScript("OnTextChanged")
 		Box.editBox:SetScript("OnChar", nil);
 		Box.editBox:SetScript("OnTextChanged", OnTextChanged)
 	end
@@ -1412,7 +1426,7 @@ local function ExportImport_Open(mode)
 		Box.editBox.OnTextChangedOrig = nil
 
 		--Clear stored export string
-		exportString = nil
+		exportString = ""
 
 		AceGUI:Release(widget)
 		ACD:Open("ElvUI")

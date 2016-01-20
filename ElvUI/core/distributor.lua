@@ -444,8 +444,6 @@ local function SetImportedProfile(profileType, profileKey, profileData, force)
 	
 	--Update all ElvUI modules
 	E:UpdateAll(true)
-
-	return L["Profile imported successfully!"]
 end
 
 function D:ExportProfile(profileType, exportFormat)
@@ -460,7 +458,6 @@ function D:ExportProfile(profileType, exportFormat)
 end
 
 function D:ImportProfile(dataString)
-	local message = ""
 	local profileType, profileKey, profileData = self:Decode(dataString)
 	
 	if not profileData or type(profileData) ~= "table" then
@@ -468,13 +465,11 @@ function D:ImportProfile(dataString)
 		return
 	end
 	
-	if not profileType or (profileType and profileType == "profile" and not profileKey) then
-		message = L["Error decoding data. Import string may be corrupted!"]
-	else
-		message = SetImportedProfile(profileType, profileKey, profileData)
+	if profileType and ((profileType == "profile" and profileKey) or profileType ~= "profile") then
+		SetImportedProfile(profileType, profileKey, profileData)
 	end
 	
-	return message
+	return true
 end
 
 E.PopupDialogs['DISTRIBUTOR_SUCCESS'] = {
@@ -530,20 +525,20 @@ E.PopupDialogs['IMPORT_PROFILE_EXISTS'] = {
 	end,
 	OnShow = function(self) self.editBox:SetText(D.profileKey) self.editBox:SetFocus() end,
 	timeout = 0,
-	exclusive = 1,
 	whileDead = 1,
 	hideOnEscape = true,
 	preferredIndex = 3
 }
 
 E.PopupDialogs["IMPORT_RL"] = {
-	text = L["You have imported settings that may require a UI reload to take effect. Reload now?"],
+	text = L["You have imported settings which may require a UI reload to take effect. Reload now?"],
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	OnAccept = function() ReloadUI() end,
 	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
+	preferredIndex = 3
 }
 
 E:RegisterModule(D:GetName())
