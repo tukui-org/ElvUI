@@ -303,10 +303,11 @@ function B:UpdateSlot(bagID, slotID)
 		slot.questIcon:Hide();
 	end
 	
-	slot.JunkIcon:Hide()
 	if (slot.rarity) and (slot.JunkIcon) then
 		if (slot.rarity == LE_ITEM_QUALITY_POOR and not noValue) and E.db.bags.junkIcon then
 			slot.JunkIcon:Show();
+		else
+			slot.JunkIcon:Hide()
 		end
 	end
 
