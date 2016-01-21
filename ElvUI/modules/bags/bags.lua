@@ -64,6 +64,7 @@ local CONTAINER_SCALE = CONTAINER_SCALE
 local CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y = CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y
 local CONTAINER_WIDTH = CONTAINER_WIDTH
 local CONTAINER_SPACING, VISIBLE_CONTAINER_SPACING = CONTAINER_SPACING, VISIBLE_CONTAINER_SPACING
+local LE_ITEM_QUALITY_POOR = LE_ITEM_QUALITY_POOR
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameTooltip, BankFrame, ElvUIReagentBankFrameItem1, GuildBankFrame, ElvUIBags
@@ -273,6 +274,16 @@ function B:UpdateCountDisplay()
 	end
 end
 
+function B:UpdateAllBagSlots()
+	if E.private.bags.enable ~= true then return; end
+
+	for _, bagFrame in pairs(self.BagFrames) do
+		if bagFrame.UpdateAllSlots then
+			bagFrame:UpdateAllSlots()
+		end
+	end
+end
+
 function B:UpdateSlot(bagID, slotID)
 	if (self.Bags[bagID] and self.Bags[bagID].numSlots ~= GetContainerNumSlots(bagID)) or not self.Bags[bagID] or not self.Bags[bagID][slotID] then
 		return;
@@ -282,14 +293,21 @@ function B:UpdateSlot(bagID, slotID)
 	local bagType = self.Bags[bagID].type;
 	
 	slot.name, slot.rarity = nil, nil;
-	local texture, count, locked, readable
-	texture, count, locked, slot.rarity, readable = GetContainerItemInfo(bagID, slotID);
+	local texture, count, locked, readable, noValue
+	texture, count, locked, slot.rarity, readable, _, _, _, noValue = GetContainerItemInfo(bagID, slotID);
 
 	local clink = GetContainerItemLink(bagID, slotID);
 
 	slot:Show();
 	if(slot.questIcon) then
 		slot.questIcon:Hide();
+	end
+	
+	slot.JunkIcon:Hide()
+	if (slot.rarity) and (slot.JunkIcon) then
+		if (slot.rarity == LE_ITEM_QUALITY_POOR and not noValue) and E.db.bags.junkIcon then
+			slot.JunkIcon:Show();
+		end
 	end
 
 	slot.itemLevel:SetText("")
@@ -351,6 +369,7 @@ function B:UpdateSlot(bagID, slotID)
 		slot.cooldown:Hide()
 		slot.hasItem = nil;
 	end
+
 	slot.readable = readable;
 
 	SetItemButtonTexture(slot, texture);

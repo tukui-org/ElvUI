@@ -60,14 +60,21 @@ E.Options.args.bags = {
 					desc = L["Use coin icons instead of colored text."],
 					set = function(info, value) E.db.bags[ info[#info] ] = value; B:UpdateGoldText(); end,
 				},
+				junkIcon = {
+					order = 3,
+					type = 'toggle',
+					name = L["Show Junk Icon"],
+					desc = L["Display the junk icon on all grey items that can be vendored."],
+					set = function(info, value) E.db.bags[ info[#info] ] = value; B:UpdateAllBagSlots(); end,
+				},
 				sortInverted = {
-					order = 4,
+					order = 5,
 					type = 'toggle',
 					name = L["Sort Inverted"],
 					desc = L["Direction the bag sorting will use to allocate the items."],
 				},
 				countGroup = {
-					order = 5,
+					order = 6,
 					type = "group",
 					name = L["Item Count Font"],
 					args = {
@@ -117,7 +124,7 @@ E.Options.args.bags = {
 					},
 				},
 				itemLevelGroup = {
-					order = 6,
+					order = 7,
 					type = "group",
 					name = L["Item Level"],
 					args = {
@@ -175,7 +182,7 @@ E.Options.args.bags = {
 					},
 				},
 				bagSortingGroup = {
-					order = 7,
+					order = 8,
 					type = "group",
 					guiInline = true,
 					name = L["Bag Sorting"],

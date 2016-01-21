@@ -129,6 +129,7 @@ P['bags'] = {
 	['currencyFormat'] = 'ICON_TEXT',
 	['moneyFormat'] = 'SMART',
 	['moneyCoins'] = true,
+	["junkIcon"] = false,
 	['ignoreItems'] = '',
 	['itemLevel'] = true,
 	['itemLevelThreshold'] = 1,
