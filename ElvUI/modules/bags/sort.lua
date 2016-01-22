@@ -7,7 +7,7 @@ local ipairs, pairs, tonumber, select, unpack = ipairs, pairs, tonumber, select,
 local tinsert, tremove, tsort, twipe = table.insert, table.remove, table.sort, table.wipe
 local floor = math.floor
 local band = bit.band
-local match, split, gmatch = string.match, string.split, string.gmatch
+local match, split, gmatch, find = string.match, string.split, string.gmatch, string.find
 --WoW API / Variables
 local GetTime = GetTime
 local InCombatLockdown = InCombatLockdown
@@ -532,6 +532,10 @@ local function buildBlacklist(...)
 		if itemName then
 			blackList[itemName] = true
 		elseif entry ~= "" then
+			if find(entry, "%[") and find(entry, "%]") then
+				--For some reason the entry was not treated as a valid item. Extract the item name.
+				entry = string.match(entry, "%[(.*)%]")
+			end
 			blackListQueries[#blackListQueries+1] = entry
 		end
 	end
