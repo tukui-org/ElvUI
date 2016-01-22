@@ -3,9 +3,9 @@
 		An item text search engine of some sort
 --]]
 
-local Search = LibStub('CustomSearch-1.0')
+local Search = LibStub('CustomSearch-1.0-ElvUI')
 local Unfit = LibStub('Unfit-1.0')
-local Lib = LibStub:NewLibrary('LibItemSearch-1.2-ElvUI', 1)
+local Lib = LibStub:NewLibrary('LibItemSearch-1.2-ElvUI', 2)
 if Lib then
 	Lib.Filters = {}
 else
