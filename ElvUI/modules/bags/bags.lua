@@ -576,6 +576,15 @@ function B:Layout(isBank)
 						f.Bags[bagID][slotID].questIcon:Hide();
 					end
 
+					--.JunkIcon only exists for items created through ContainerFrameItemButtonTemplate
+					if not f.Bags[bagID][slotID].JunkIcon then
+						local JunkIcon = f.Bags[bagID][slotID]:CreateTexture(nil, "OVERLAY")
+						JunkIcon:SetAtlas("bags-junkcoin")
+						JunkIcon:SetPoint("TOPLEFT", 1, 0)
+						JunkIcon:Hide()
+						f.Bags[bagID][slotID].JunkIcon = JunkIcon
+					end
+
 					f.Bags[bagID][slotID].iconTexture = _G[f.Bags[bagID][slotID]:GetName()..'IconTexture'];
 					f.Bags[bagID][slotID].iconTexture:SetInside(f.Bags[bagID][slotID]);
 					f.Bags[bagID][slotID].iconTexture:SetTexCoord(unpack(E.TexCoords));
@@ -598,6 +607,7 @@ function B:Layout(isBank)
 
 				f.Bags[bagID][slotID]:SetID(slotID);
 				f.Bags[bagID][slotID]:Size(buttonSize);
+
 				if f.Bags[bagID][slotID].JunkIcon then
 					f.Bags[bagID][slotID].JunkIcon:Size(buttonSize/2)
 				end
