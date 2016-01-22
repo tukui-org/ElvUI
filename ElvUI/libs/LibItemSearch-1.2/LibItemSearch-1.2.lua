@@ -106,7 +106,7 @@ Lib.Filters.quality = {
 
 	canSearch = function(self, _, search)
 		for i, name in pairs(qualities) do
-		  if name:find(search) then
+		  if name:find(search, nil, true) then
 			return i
 		  end
 		end

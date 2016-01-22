@@ -106,7 +106,7 @@ function Lib:Filter(tag, operator, search)
 	if tag then
 		for _, filter in pairs(self.filters) do
 			for _, value in pairs(filter.tags or {}) do
-				if value:find(tag) then
+				if value:find(tag, nil, true) then
 					return self:UseFilter(filter, operator, search)
 				end
 			end
@@ -133,7 +133,7 @@ end
 function Lib:Find(search, ...)
 	for i = 1, select('#', ...) do
 		local text = select(i, ...)
-		if text and self:Clean(text):find(search) then
+		if text and self:Clean(text):find(search, nil, true) then
 			return true
 		end
 	end
