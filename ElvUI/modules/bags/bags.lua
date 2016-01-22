@@ -592,16 +592,15 @@ function B:Layout(isBank)
 					if(f.Bags[bagID][slotID].BattlepayItemTexture) then
 						f.Bags[bagID][slotID].BattlepayItemTexture:Hide()
 					end
-					
-					if f.Bags[bagID][slotID].JunkIcon then
-						f.Bags[bagID][slotID].JunkIcon:SetSize(18, 18)
-					end
 
 					f.Bags[bagID][slotID]:CreateShadow()
 				end
 
 				f.Bags[bagID][slotID]:SetID(slotID);
 				f.Bags[bagID][slotID]:Size(buttonSize);
+				if f.Bags[bagID][slotID].JunkIcon then
+					f.Bags[bagID][slotID].JunkIcon:Size(buttonSize/2)
+				end
 
 				f:UpdateSlot(bagID, slotID);
 
