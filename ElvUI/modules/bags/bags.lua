@@ -303,8 +303,8 @@ function B:UpdateSlot(bagID, slotID)
 		slot.questIcon:Hide();
 	end
 	
-	if (slot.rarity) and (slot.JunkIcon) then
-		if (slot.rarity == LE_ITEM_QUALITY_POOR and not noValue) and E.db.bags.junkIcon then
+	if (slot.JunkIcon) then
+		if (slot.rarity) and (slot.rarity == LE_ITEM_QUALITY_POOR and not noValue) and E.db.bags.junkIcon then
 			slot.JunkIcon:Show();
 		else
 			slot.JunkIcon:Hide()
@@ -591,6 +591,10 @@ function B:Layout(isBank)
 
 					if(f.Bags[bagID][slotID].BattlepayItemTexture) then
 						f.Bags[bagID][slotID].BattlepayItemTexture:Hide()
+					end
+					
+					if f.Bags[bagID][slotID].JunkIcon then
+						f.Bags[bagID][slotID].JunkIcon:SetSize(18, 18)
 					end
 
 					f.Bags[bagID][slotID]:CreateShadow()
