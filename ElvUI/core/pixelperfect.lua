@@ -20,11 +20,15 @@ function E:UIScale(event)
 		self.screenheight = self.global.screenheight
 		self.screenwidth = self.global.screenwidth
 	end
-
+    
+    if(GetCVar('uiScale')) then
+        self.global.uiScale = GetCVar('uiScale')
+    end
+    
 	if self.global.general.autoScale then
-		scale = max(0.64, min(1.15, 768/self.screenheight));
+		scale = max(0.65, min(1.15, 768/self.screenheight));
 	else
-		scale = max(0.64, min(1.15, GetCVar('uiScale') or UIParent:GetScale() or 768/self.screenheight));
+		scale = max(0.65, min(1.15, self.global.uiScale or 768/self.screenheight or UIParent:GetScale()));
 	end
 
 	if self.screenwidth < 1600 then

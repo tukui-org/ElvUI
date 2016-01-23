@@ -92,7 +92,7 @@ function UF:UpdateHoly(event, unit, powerType)
 	end
     
     --test fix for high resolution.. not sure why but its a pixel off
-    CLASSBAR_WIDTH = CLASSBAR_WIDTH + 0.5
+    --CLASSBAR_WIDTH = CLASSBAR_WIDTH + 0.5
 	self.HolyPower:SetWidth(CLASSBAR_WIDTH)
 	--Note from Blazeflack:
 	--	It is now causing issues for regular resolutions.
