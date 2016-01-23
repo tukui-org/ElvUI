@@ -248,15 +248,12 @@ local specialChatIcons = {
 		["Affinitii"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\bathrobe.blp:15:15|t",
 		["Affinity"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\bathrobe.blp:15:15|t"
 	},
-	["ShatteredHand"] = {
+	["Spirestone"] = {
 		["Elv"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\elvui.blp:13:22|t",
-		["Sarah"] =  "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\elvui.blp:13:22|t",
-		["Sara"] =  "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\helloKitty.tga:18:20|t",
-
-		["Vinceypoo"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\illuminati.tga:18:18|t",
-		["Vincey"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\illuminati.tga:18:18|t",
-		["Vinceanity"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\illuminati.tga:18:18|t",
 	},
+    ["Arathor"] = {
+       ["Mallouh"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\elvui.blp:13:22|t",  
+    }
 }
 
 CH.Keywords = {};
