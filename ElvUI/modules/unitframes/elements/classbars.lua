@@ -94,6 +94,10 @@ function UF:UpdateHoly(event, unit, powerType)
     --test fix for high resolution.. not sure why but its a pixel off
     CLASSBAR_WIDTH = CLASSBAR_WIDTH + 0.5
 	self.HolyPower:SetWidth(CLASSBAR_WIDTH)
+	--Note from Blazeflack:
+	--	It is now causing issues for regular resolutions.
+	--	When using uneven numbers for player UF width, the classbar is 1px too wide.
+	--	I suspect the issue stems from the pixel perfect script, it does not handle resolutions over 1920x1080 very well
 
 	if numHolyPower == 0 and db.classbar.autoHide then
 		self.HolyPower:Hide()
