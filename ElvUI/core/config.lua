@@ -172,10 +172,9 @@ end
 function E:NudgeMover(nudgeX, nudgeY)
 	local mover = ElvUIMoverNudgeWindow.child
 	local x, y, point = E:CalculateMoverPoints(mover, nudgeX, nudgeY)
-	
+
 	mover:ClearAllPoints()
-	mover:SetPoint(point, E.UIParent, point, x, y)
-	mover:Point(mover.positionOverride or point, E.UIParent, mover.positionOverride and "BOTTOMLEFT" or point, x, y)
+	mover:Point(point, E.UIParent, point, x, y)
 	E:SaveMoverPosition(mover.name)
 
 	--Update coordinates in Nudge Window
