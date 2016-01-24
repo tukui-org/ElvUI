@@ -675,8 +675,11 @@ function AB:DisableBlizzard()
 		_G['MultiCastActionButton'..i]:SetAttribute("statehidden", true)
 	end
 
-	ActionBarController:UnregisterAllEvents()
-	ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR')
+	--MainMenuBarArtFrame:GetAttribute("actionpage") will not update unless ActionBarController gets to update
+	--I don't think there will be any unwanted side effects from keeping it active
+	--This is in reference to 2nd part of http://www.tukui.org/forums/topic.php?id=35332
+	-- ActionBarController:UnregisterAllEvents()
+	-- ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR')
 
 	MainMenuBar:EnableMouse(false)
 	MainMenuBar:SetAlpha(0)
