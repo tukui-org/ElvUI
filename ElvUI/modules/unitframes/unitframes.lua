@@ -68,6 +68,8 @@ UF['badHeaderPoints'] = {
 	['RIGHT'] = 'LEFT',
 }
 
+UF["headerFunctions"] = {}
+
 UF['classMaxResourceBar'] = {
 	['DEATHKNIGHT'] = 6,
 	['PALADIN'] = 5,
@@ -514,7 +516,7 @@ function UF.groupPrototype:GetAttribute(name)
 	return self.groups[1]:GetAttribute(name)
 end
 
-function UF.groupPrototype:Configure_Groups()
+function UF.groupPrototype:Configure_Groups(self)
 	local db = UF.db.units[self.groupName]
 
 	local point
@@ -644,7 +646,7 @@ function UF.groupPrototype:Configure_Groups()
 	self:SetSize(width - db.horizontalSpacing, height - db.verticalSpacing)
 end
 
-function UF.groupPrototype:Update()
+function UF.groupPrototype:Update(self)
 	local group = self.groupName
 
 	UF[group].db = UF.db['units'][group]
@@ -654,7 +656,7 @@ function UF.groupPrototype:Update()
 	end
 end
 
-function UF.groupPrototype:AdjustVisibility()
+function UF.groupPrototype:AdjustVisibility(self)
 	if not self.isForced then
 		local numGroups = self.numGroups
 		for i=1, #self.groups do
@@ -783,13 +785,14 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 		ElvUF:RegisterStyle("ElvUF_"..stringTitle, UF["Construct_"..stringTitle.."Frames"])
 		ElvUF:SetActiveStyle("ElvUF_"..stringTitle)
 
-
 		if db.numGroups then
 			self[group] = CreateFrame('Frame', 'ElvUF_'..stringTitle, ElvUF_Parent, 'SecureHandlerStateTemplate');
 			self[group].groups = {}
 			self[group].groupName = group
+			if not UF["headerFunctions"][group] then UF["headerFunctions"][group] = {} end
 			for k, v in pairs(self.groupPrototype) do
-				self[group][k] = v
+				-- self[group][k] = v
+				UF["headerFunctions"][group][k] = v
 			end
 		else
 			self[group] = self:CreateHeader(ElvUF_Parent, groupFilter, "ElvUF_"..E:StringTitle(group), template, group, headerTemplate)
@@ -819,10 +822,12 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 			end
 		end
 
-		self[group]:AdjustVisibility()
+		-- self[group]:AdjustVisibility()
+		UF["headerFunctions"][group]:AdjustVisibility(self[group])
 
 		if headerUpdate or not self[group].mover then
-			self[group]:Configure_Groups()
+			-- self[group]:Configure_Groups()
+			UF["headerFunctions"][group]:Configure_Groups(self[group])
 			if not self[group].isForced and not self[group].blockVisibilityChanges then
 				RegisterStateDriver(self[group], "visibility", db.visibility)
 			end
@@ -830,11 +835,14 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 			--This fixes a bug where the party/raid frame will not appear when you enable it
 			--if it was disabled when you logged in/reloaded.
 			if not self[group].mover then
-				self[group]:Update()
+				-- self[group]:Update()
+				UF["headerFunctions"][group]:Update(self[group])
 			end
 		else
-			self[group]:Configure_Groups()
-			self[group]:Update()
+			-- self[group]:Configure_Groups()
+			UF["headerFunctions"][group]:Configure_Groups(self[group])
+			-- self[group]:Update()
+			UF["headerFunctions"][group]:Update(self[group])
 		end
 
 		if db.enable ~= true and group == 'raidpet' then
@@ -845,33 +853,58 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 	else
 		self[group].db = db
 
-		self[group].Update = function()
-			local db = self.db['units'][group]
+		if not UF["headerFunctions"][group] then UF["headerFunctions"][group] = {} end
+		UF["headerFunctions"][group]["Update"] = function()
+			local db = UF.db['units'][group]
 			if db.enable ~= true then
-				UnregisterAttributeDriver(self[group], "state-visibility")
-				self[group]:Hide()
+				UnregisterAttributeDriver(UF[group], "state-visibility")
+				UF[group]:Hide()
 				return
 			end
-			UF["Update_"..E:StringTitle(group).."Header"](self, self[group], db)
+			UF["Update_"..E:StringTitle(group).."Header"](UF, UF[group], db)
 
-			for i=1, self[group]:GetNumChildren() do
-				local child = select(i, self[group]:GetChildren())
-				UF["Update_"..E:StringTitle(group).."Frames"](self, child, self.db['units'][group])
+			for i=1, UF[group]:GetNumChildren() do
+				local child = select(i, UF[group]:GetChildren())
+				UF["Update_"..E:StringTitle(group).."Frames"](UF, child, UF.db['units'][group])
 
 				if _G[child:GetName()..'Target'] then
-					UF["Update_"..E:StringTitle(group).."Frames"](self, _G[child:GetName()..'Target'], self.db['units'][group])
+					UF["Update_"..E:StringTitle(group).."Frames"](UF, _G[child:GetName()..'Target'], UF.db['units'][group])
 				end
 
 				if _G[child:GetName()..'Pet'] then
-					UF["Update_"..E:StringTitle(group).."Frames"](self, _G[child:GetName()..'Pet'], self.db['units'][group])
+					UF["Update_"..E:StringTitle(group).."Frames"](UF, _G[child:GetName()..'Pet'], UF.db['units'][group])
 				end
 			end
 		end
+		
+		-- self[group].Update = function()
+			-- local db = self.db['units'][group]
+			-- if db.enable ~= true then
+				-- UnregisterAttributeDriver(self[group], "state-visibility")
+				-- self[group]:Hide()
+				-- return
+			-- end
+			-- UF["Update_"..E:StringTitle(group).."Header"](self, self[group], db)
+
+			-- for i=1, self[group]:GetNumChildren() do
+				-- local child = select(i, self[group]:GetChildren())
+				-- UF["Update_"..E:StringTitle(group).."Frames"](self, child, self.db['units'][group])
+
+				-- if _G[child:GetName()..'Target'] then
+					-- UF["Update_"..E:StringTitle(group).."Frames"](self, _G[child:GetName()..'Target'], self.db['units'][group])
+				-- end
+
+				-- if _G[child:GetName()..'Pet'] then
+					-- UF["Update_"..E:StringTitle(group).."Frames"](self, _G[child:GetName()..'Pet'], self.db['units'][group])
+				-- end
+			-- end
+		-- end
 
 		if headerUpdate then
 			UF["Update_"..E:StringTitle(group).."Header"](self, self[group], db)
 		else
-			self[group].Update()
+			-- self[group].Update()
+			UF["headerFunctions"][group]:Update(self[group])
 		end
 	end
 end
@@ -960,7 +993,8 @@ function UF:UpdateAllHeaders(event)
 
 	local smartRaidFilterEnabled = self.db.smartRaidFilter
 	for group, header in pairs(self['headers']) do
-		header:Update()
+		-- header:Update()
+		UF["headerFunctions"][group]:Update(header)
 
 		local shouldUpdateHeader
 		if header.numGroups == nil or smartRaidFilterEnabled then
