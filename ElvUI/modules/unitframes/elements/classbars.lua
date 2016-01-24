@@ -93,7 +93,7 @@ function UF:UpdateHoly(event, unit, powerType)
     
     --test fix for high resolution.. not sure why but its a pixel off
     --CLASSBAR_WIDTH = CLASSBAR_WIDTH + 0.5
-	self.HolyPower:SetWidth(CLASSBAR_WIDTH)
+	self.HolyPower:Width(CLASSBAR_WIDTH)
 	--Note from Blazeflack:
 	--	It is now causing issues for regular resolutions.
 	--	When using uneven numbers for player UF width, the classbar is 1px too wide.
@@ -116,19 +116,19 @@ function UF:UpdateHoly(event, unit, powerType)
 				self.HolyPower[i]:SetAlpha(.2)
 			end
 			if db.classbar.fill == "spaced" then
-				self.HolyPower[i]:SetWidth((CLASSBAR_WIDTH - ((maxHolyPower == 5 and 7 or 13)*(maxHolyPower - 1))) / maxHolyPower)
+				self.HolyPower[i]:Width((CLASSBAR_WIDTH - ((maxHolyPower == 5 and 7 or 13)*(maxHolyPower - 1))) / maxHolyPower)
 			else
-				self.HolyPower[i]:SetWidth((CLASSBAR_WIDTH - (maxHolyPower - 1)) / maxHolyPower)
+				self.HolyPower[i]:Width((CLASSBAR_WIDTH - (maxHolyPower - 1)) / maxHolyPower)
 			end
 
 			self.HolyPower[i]:ClearAllPoints()
 			if i == 1 then
-				self.HolyPower[i]:SetPoint("LEFT", self.HolyPower)
+				self.HolyPower[i]:Point("LEFT", self.HolyPower)
 			else
 				if USE_MINI_CLASSBAR then
-					self.HolyPower[i]:SetPoint("LEFT", self.HolyPower[i-1], "RIGHT", maxHolyPower == 5 and 7 or 13, 0)
+					self.HolyPower[i]:Point("LEFT", self.HolyPower[i-1], "RIGHT", maxHolyPower == 5 and 7 or 13, 0)
 				else
-					self.HolyPower[i]:SetPoint("LEFT", self.HolyPower[i-1], "RIGHT", 1, 0)
+					self.HolyPower[i]:Point("LEFT", self.HolyPower[i-1], "RIGHT", 1, 0)
 				end
 			end
 
@@ -222,7 +222,7 @@ function UF:UpdateHarmony()
 		end
 	end
 
-	self:SetWidth(CLASSBAR_WIDTH)
+	self:Width(CLASSBAR_WIDTH)
 	local colors = ElvUF.colors.Harmony
 
 	if numChi == 0 and db.classbar.autoHide then
@@ -234,16 +234,16 @@ function UF:UpdateHarmony()
 		frame.Health:Point("TOPLEFT", frame, "TOPLEFT", BORDER+PORTRAIT_WIDTH, -HEALTH_OFFSET_Y)
 
 		for i = 1, maxBars do
-			self[i]:SetHeight(self:GetHeight())
+			self[i]:Height(self:GetHeight())
 			if db.classbar.fill == "spaced" then
-				self[i]:SetWidth((self:GetWidth() - ((E.PixelMode and (maxBars == 5 and 4 or 7) or (maxBars == 5 and 6 or 9))*(maxBars - 1))) / maxBars)
+				self[i]:Width((self:GetWidth() - ((E.PixelMode and (maxBars == 5 and 4 or 7) or (maxBars == 5 and 6 or 9))*(maxBars - 1))) / maxBars)
 			else
-				self[i]:SetWidth((self:GetWidth() - (maxBars - 1)) / maxBars)
+				self[i]:Width((self:GetWidth() - (maxBars - 1)) / maxBars)
 			end
 			self[i]:ClearAllPoints()
 
 			if i == 1 then
-				self[i]:SetPoint("LEFT", self)
+				self[i]:Point("LEFT", self)
 			else
 				if USE_MINI_CLASSBAR then
 					self[i]:Point("LEFT", self[i-1], "RIGHT", E.PixelMode and (maxBars == 5 and 4 or 7) or (maxBars == 5 and 6 or 9), 0)
@@ -319,12 +319,12 @@ function UF:UpdateArcaneCharges(event, arcaneCharges, maxCharges)
 
 	if self:IsShown() and point then
 		if db.classbar.fill == 'spaced' then
-			frame.Health:SetPoint(point, frame, anchorPoint, x, -7)
+			frame.Health:Point(point, frame, anchorPoint, x, -7)
 		else
-			frame.Health:SetPoint(point, frame, anchorPoint, x, -13)
+			frame.Health:Point(point, frame, anchorPoint, x, -13)
 		end
 	elseif point then
-		frame.Health:SetPoint(point, frame, anchorPoint, x, -2)
+		frame.Health:Point(point, frame, anchorPoint, x, -2)
 	end
 
 	UF:UpdatePlayerFrameAnchors(frame, self:IsShown())
@@ -364,12 +364,12 @@ function UF:UpdateAnticipationCharges(event, unit, numCharges, maxCharges)
 	local point, _, anchorPoint, x, y = frame.Health:GetPoint()
 	if self:IsShown() and point then
 		if db.classbar.fill == 'spaced' then
-			frame.Health:SetPoint(point, frame, anchorPoint, x, -7)
+			frame.Health:Point(point, frame, anchorPoint, x, -7)
 		else
-			frame.Health:SetPoint(point, frame, anchorPoint, x, -13)
+			frame.Health:Point(point, frame, anchorPoint, x, -13)
 		end
 	elseif point then
-		frame.Health:SetPoint(point, frame, anchorPoint, x, -2)
+		frame.Health:Point(point, frame, anchorPoint, x, -2)
 	end
 
 	UF:UpdatePlayerFrameAnchors(frame, self:IsShown())
@@ -421,11 +421,11 @@ function UF:UpdateShardBar(spec)
 
 	local SPACING = db.classbar.fill == 'spaced' and 11 or 1
 	for i = 1, maxBars do
-		self[i]:SetHeight(self:GetHeight())
-		self[i]:SetWidth((self:GetWidth() - (SPACING*(maxBars - 1))) / maxBars)
+		self[i]:Height(self:GetHeight())
+		self[i]:Width((self:GetWidth() - (SPACING*(maxBars - 1))) / maxBars)
 		self[i]:ClearAllPoints()
 		if i == 1 then
-			self[i]:SetPoint("LEFT", self)
+			self[i]:Point("LEFT", self)
 		else
 			self[i]:Point("LEFT", self[i-1], "RIGHT", SPACING, 0)
 		end
@@ -465,12 +465,12 @@ function UF:UpdateShadowOrbs(event, unit, powerType)
 	local point, _, anchorPoint, x, y = frame.Health:GetPoint()
 	if self:IsShown() and point and not db.classbar.detachFromFrame then
 		if db.classbar.fill == 'spaced' then
-			frame.Health:SetPoint(point, frame, anchorPoint, x, -7)
+			frame.Health:Point(point, frame, anchorPoint, x, -7)
 		else
-			frame.Health:SetPoint(point, frame, anchorPoint, x, -13)
+			frame.Health:Point(point, frame, anchorPoint, x, -13)
 		end
 	elseif point then
-		frame.Health:SetPoint(point, frame, anchorPoint, x, -2)
+		frame.Health:Point(point, frame, anchorPoint, x, -2)
 	end
 
 	local BORDER = E.Border
@@ -518,14 +518,14 @@ function UF:UpdateShadowOrbs(event, unit, powerType)
 				self[i]:SetAlpha(.2)
 			end
 			if db.classbar.fill == "spaced" then
-				self[i]:SetWidth((self:GetWidth() - ((maxShadowOrbs == 5 and 7 or 13)*(maxShadowOrbs - 1))) / maxShadowOrbs)
+				self[i]:Width((self:GetWidth() - ((maxShadowOrbs == 5 and 7 or 13)*(maxShadowOrbs - 1))) / maxShadowOrbs)
 			else
-				self[i]:SetWidth((self:GetWidth() - (maxShadowOrbs - 1)) / maxShadowOrbs)
+				self[i]:Width((self:GetWidth() - (maxShadowOrbs - 1)) / maxShadowOrbs)
 			end
 
 			self[i]:ClearAllPoints()
 			if i == 1 then
-				self[i]:SetPoint("LEFT", self)
+				self[i]:Point("LEFT", self)
 			else
 				if USE_MINI_CLASSBAR then
 					self[i]:Point("LEFT", self[i-1], "RIGHT", maxShadowOrbs == 5 and 7 or 13, 0)
@@ -584,20 +584,20 @@ function UF:Construct_DruidResourceBar(frame)
 	eclipseBar.PostUpdateVisibility = UF.DruidResourceBarVisibilityUpdate
 
 	local lunarBar = CreateFrame('StatusBar', nil, eclipseBar)
-	lunarBar:SetPoint('LEFT', eclipseBar)
+	lunarBar:Point('LEFT', eclipseBar)
 	lunarBar:SetStatusBarTexture(E['media'].blankTex)
 	UF['statusbars'][lunarBar] = true
 	eclipseBar.LunarBar = lunarBar
 
 	local solarBar = CreateFrame('StatusBar', nil, eclipseBar)
-	solarBar:SetPoint('LEFT', lunarBar:GetStatusBarTexture(), 'RIGHT')
+	solarBar:Point('LEFT', lunarBar:GetStatusBarTexture(), 'RIGHT')
 	solarBar:SetStatusBarTexture(E['media'].blankTex)
 	UF['statusbars'][solarBar] = true
 	eclipseBar.SolarBar = solarBar
 
 	eclipseBar.Text = lunarBar:CreateFontString(nil, 'OVERLAY')
 	eclipseBar.Text:FontTemplate(nil, 20)
-	eclipseBar.Text:SetPoint("CENTER", lunarBar:GetStatusBarTexture(), "RIGHT")
+	eclipseBar.Text:Point("CENTER", lunarBar:GetStatusBarTexture(), "RIGHT")
 
 	return eclipseBar
 end
@@ -659,14 +659,14 @@ function UF:DruidPostUpdateAltPower(unit, min, max)
 		self.Text:ClearAllPoints()
 		if powerText:GetText() then
 			if select(4, powerText:GetPoint()) < 0 then
-				self.Text:SetPoint("RIGHT", powerText, "LEFT", 3, 0)
+				self.Text:Point("RIGHT", powerText, "LEFT", 3, 0)
 				self.Text:SetFormattedText(color.."%d%%|r |cffD7BEA5- |r", floor(min / max * 100))
 			else
-				self.Text:SetPoint("LEFT", powerText, "RIGHT", -3, 0)
+				self.Text:Point("LEFT", powerText, "RIGHT", -3, 0)
 				self.Text:SetFormattedText("|cffD7BEA5-|r"..color.." %d%%|r", floor(min / max * 100))
 			end
 		else
-			self.Text:SetPoint(powerText:GetPoint())
+			self.Text:Point(powerText:GetPoint())
 			self.Text:SetFormattedText(color.."%d%%|r", floor(min / max * 100))
 		end
 	else

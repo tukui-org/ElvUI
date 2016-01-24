@@ -104,9 +104,9 @@ function BG:CreateFrame()
 	self:HideFrame()
 
 	frame:SetTemplate("Default", nil, true)
-	frame:SetPoint("CENTER", E.UIParent, "CENTER")
-	frame:SetWidth(UF.db.units.bodyguard.width)
-	frame:SetHeight(UF.db.units.bodyguard.height)
+	frame:Point("CENTER", E.UIParent, "CENTER")
+	frame:Width(UF.db.units.bodyguard.width)
+	frame:Height(UF.db.units.bodyguard.height)
 
 	frame.healthBar = CreateFrame("StatusBar", nil, frame)
 	frame.healthBar:SetInside(frame)
@@ -117,7 +117,7 @@ function BG:CreateFrame()
 
 	frame.healthBar.name = frame.healthBar:CreateFontString(nil, 'OVERLAY')
 	UF:Configure_FontString(frame.healthBar.name)
-	frame.healthBar.name:SetPoint("CENTER", frame, "CENTER")
+	frame.healthBar.name:Point("CENTER", frame, "CENTER")
 
 	frame.healthBar.name:SetTextColor(unpack(ElvUF.colors.reaction[5]))
 
@@ -138,8 +138,8 @@ function BG:UpdateSettings()
 	end
 
 	self:HealthUpdate(self.db.Health, self.db.MaxHealth)
-	self.frame:SetWidth(UF.db.units.bodyguard.width)
-	self.frame:SetHeight(UF.db.units.bodyguard.height)
+	self.frame:Width(UF.db.units.bodyguard.width)
+	self.frame:Height(UF.db.units.bodyguard.height)
 end
 
 

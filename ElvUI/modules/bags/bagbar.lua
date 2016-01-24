@@ -59,27 +59,27 @@ function B:SizeAndPositionBagBar()
 		button:ClearAllPoints()
 		if E.db.bags.bagBar.growthDirection == 'HORIZONTAL' and E.db.bags.bagBar.sortDirection == 'ASCENDING' then
 			if i == 1 then
-				button:SetPoint('LEFT', ElvUIBags, 'LEFT', E.db.bags.bagBar.spacing, 0)
+				button:Point('LEFT', ElvUIBags, 'LEFT', E.db.bags.bagBar.spacing, 0)
 			elseif prevButton then
-				button:SetPoint('LEFT', prevButton, 'RIGHT', E.db.bags.bagBar.spacing, 0)
+				button:Point('LEFT', prevButton, 'RIGHT', E.db.bags.bagBar.spacing, 0)
 			end
 		elseif E.db.bags.bagBar.growthDirection == 'VERTICAL' and E.db.bags.bagBar.sortDirection == 'ASCENDING' then
 			if i == 1 then
-				button:SetPoint('TOP', ElvUIBags, 'TOP', 0, -E.db.bags.bagBar.spacing)
+				button:Point('TOP', ElvUIBags, 'TOP', 0, -E.db.bags.bagBar.spacing)
 			elseif prevButton then
-				button:SetPoint('TOP', prevButton, 'BOTTOM', 0, -E.db.bags.bagBar.spacing)
+				button:Point('TOP', prevButton, 'BOTTOM', 0, -E.db.bags.bagBar.spacing)
 			end
 		elseif E.db.bags.bagBar.growthDirection == 'HORIZONTAL' and E.db.bags.bagBar.sortDirection == 'DESCENDING' then
 			if i == 1 then
-				button:SetPoint('RIGHT', ElvUIBags, 'RIGHT', -E.db.bags.bagBar.spacing, 0)
+				button:Point('RIGHT', ElvUIBags, 'RIGHT', -E.db.bags.bagBar.spacing, 0)
 			elseif prevButton then
-				button:SetPoint('RIGHT', prevButton, 'LEFT', -E.db.bags.bagBar.spacing, 0)
+				button:Point('RIGHT', prevButton, 'LEFT', -E.db.bags.bagBar.spacing, 0)
 			end
 		else
 			if i == 1 then
-				button:SetPoint('BOTTOM', ElvUIBags, 'BOTTOM', 0, E.db.bags.bagBar.spacing)
+				button:Point('BOTTOM', ElvUIBags, 'BOTTOM', 0, E.db.bags.bagBar.spacing)
 			elseif prevButton then
-				button:SetPoint('BOTTOM', prevButton, 'TOP', 0, E.db.bags.bagBar.spacing)
+				button:Point('BOTTOM', prevButton, 'TOP', 0, E.db.bags.bagBar.spacing)
 			end
 		end
 	end
@@ -99,7 +99,7 @@ function B:LoadBagBar()
 	end
 
 	local ElvUIBags = CreateFrame("Frame", "ElvUIBags", E.UIParent)
-	ElvUIBags:SetPoint('TOPRIGHT', RightChatPanel, 'TOPLEFT', -4, 0)
+	ElvUIBags:Point('TOPRIGHT', RightChatPanel, 'TOPLEFT', -4, 0)
 	ElvUIBags.buttons = {};
 	ElvUIBags:CreateBackdrop()
 	ElvUIBags.backdrop:SetAllPoints()

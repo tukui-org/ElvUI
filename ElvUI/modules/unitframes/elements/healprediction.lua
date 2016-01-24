@@ -45,18 +45,18 @@ local function UpdateFillBar(frame, previousTexture, bar, amount)
 	local orientation = frame.Health:GetOrientation()
 	bar:ClearAllPoints()
 	if orientation == 'HORIZONTAL' then
-		bar:SetPoint("TOPLEFT", previousTexture, "TOPRIGHT");
-		bar:SetPoint("BOTTOMLEFT", previousTexture, "BOTTOMRIGHT");
+		bar:Point("TOPLEFT", previousTexture, "TOPRIGHT");
+		bar:Point("BOTTOMLEFT", previousTexture, "BOTTOMRIGHT");
 	else
-		bar:SetPoint("BOTTOMRIGHT", previousTexture, "TOPRIGHT");
-		bar:SetPoint("BOTTOMLEFT", previousTexture, "TOPLEFT");
+		bar:Point("BOTTOMRIGHT", previousTexture, "TOPRIGHT");
+		bar:Point("BOTTOMLEFT", previousTexture, "TOPLEFT");
 	end
 
 	local totalWidth, totalHeight = frame.Health:GetSize();
 	if orientation == 'HORIZONTAL' then
-		bar:SetWidth(totalWidth);
+		bar:Width(totalWidth);
 	else
-		bar:SetHeight(totalHeight);
+		bar:Height(totalHeight);
 	end
 
 	return bar:GetStatusBarTexture();

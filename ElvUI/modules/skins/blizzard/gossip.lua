@@ -37,7 +37,7 @@ local function LoadSkin()
 	GossipGreetingScrollFrame:SetTemplate()
 	GossipGreetingScrollFrame.spellTex = GossipGreetingScrollFrame:CreateTexture(nil, 'ARTWORK')
 	GossipGreetingScrollFrame.spellTex:SetTexture([[Interface\QuestFrame\QuestBG]])
-	GossipGreetingScrollFrame.spellTex:SetPoint("TOPLEFT", 2, -2)
+	GossipGreetingScrollFrame.spellTex:Point("TOPLEFT", 2, -2)
 	GossipGreetingScrollFrame.spellTex:Size(506, 615)
 	GossipGreetingScrollFrame.spellTex:SetTexCoord(0, 1, 0.02, 1)
 

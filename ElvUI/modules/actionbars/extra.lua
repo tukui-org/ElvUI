@@ -50,10 +50,10 @@ function AB:SetupExtraButton()
 
 	ExtraActionBarFrame:SetParent(holder)
 	ExtraActionBarFrame:ClearAllPoints()
-	ExtraActionBarFrame:SetPoint('CENTER', holder, 'CENTER')
+	ExtraActionBarFrame:Point('CENTER', holder, 'CENTER')
 	DraenorZoneAbilityFrame:SetParent(holder)
 	DraenorZoneAbilityFrame:ClearAllPoints()
-	DraenorZoneAbilityFrame:SetPoint('CENTER', holder, 'CENTER')
+	DraenorZoneAbilityFrame:Point('CENTER', holder, 'CENTER')
 
 	DraenorZoneAbilityFrame.ignoreFramePositionManager = true
 	ExtraActionBarFrame.ignoreFramePositionManager  = true

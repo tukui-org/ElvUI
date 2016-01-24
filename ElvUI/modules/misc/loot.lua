@@ -124,7 +124,7 @@ local function createSlot(id)
 	local iconFrame = CreateFrame("Frame", nil, frame)
 	iconFrame:Height(iconsize)
 	iconFrame:Width(iconsize)
-	iconFrame:SetPoint("RIGHT", frame)
+	iconFrame:Point("RIGHT", frame)
 	iconFrame:SetTemplate("Default")
 	frame.iconFrame = iconFrame
 	E["frames"][iconFrame] = nil;
@@ -143,16 +143,16 @@ local function createSlot(id)
 
 	local name = frame:CreateFontString(nil, "OVERLAY")
 	name:SetJustifyH("LEFT")
-	name:SetPoint("LEFT", frame)
-	name:SetPoint("RIGHT", icon, "LEFT")
+	name:Point("LEFT", frame)
+	name:Point("RIGHT", icon, "LEFT")
 	name:SetNonSpaceWrap(true)
 	name:FontTemplate(nil, nil, 'OUTLINE')
 	frame.name = name
 
 	local drop = frame:CreateTexture(nil, "ARTWORK")
 	drop:SetTexture"Interface\\QuestFrame\\UI-QuestLogTitleHighlight"
-	drop:SetPoint("LEFT", icon, "RIGHT", 0, 0)
-	drop:SetPoint("RIGHT", frame)
+	drop:Point("LEFT", icon, "RIGHT", 0, 0)
+	drop:Point("RIGHT", frame)
 	drop:SetAllPoints(frame)
 	drop:SetAlpha(.3)
 	frame.drop = drop
@@ -220,7 +220,7 @@ function M:LOOT_OPENED(event, autoloot)
 		lootFrame:Raise()
 	else
 		lootFrame:ClearAllPoints()
-		lootFrame:SetPoint("TOPLEFT", lootFrameHolder, "TOPLEFT")
+		lootFrame:Point("TOPLEFT", lootFrameHolder, "TOPLEFT")
 	end
 
 	local m, w, t = 0, 0, lootFrame.title:GetStringWidth()
@@ -313,7 +313,7 @@ function M:LoadLoot()
 
 	lootFrame = CreateFrame('Button', 'ElvLootFrame', lootFrameHolder)
 	lootFrame:SetClampedToScreen(true)
-	lootFrame:SetPoint('TOPLEFT')
+	lootFrame:Point('TOPLEFT')
 	lootFrame:Size(256, 64)
 	lootFrame:SetTemplate('Transparent')
 	lootFrame:SetFrameStrata(LootFrame:GetFrameStrata())

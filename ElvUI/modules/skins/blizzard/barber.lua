@@ -51,7 +51,7 @@ local function LoadSkin()
 	BarberShopBannerFrame:Kill()
 	
 	BarberShopBannerFrameCaption:ClearAllPoints()
-	BarberShopBannerFrameCaption:SetPoint("TOP", BarberShopFrameMoneyFrame, "BOTTOM", 0, -5)
+	BarberShopBannerFrameCaption:Point("TOP", BarberShopFrameMoneyFrame, "BOTTOM", 0, -5)
 	BarberShopBannerFrameCaption:SetParent(BarberShopFrame)
 
 	BarberShopAltFormFrameBorder:StripTextures()

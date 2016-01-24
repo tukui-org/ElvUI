@@ -135,7 +135,7 @@ local function LoadSkin()
 		hooksecurefunc(GhostFrame, "SetBackdropBorderColor", forceBackdropColor)
 
 		GhostFrame:ClearAllPoints()
-		GhostFrame:SetPoint("TOP", E.UIParent, "TOP", 0, -150)
+		GhostFrame:Point("TOP", E.UIParent, "TOP", 0, -150)
 		S:HandleButton(GhostFrameContentsFrame)
 		GhostFrameContentsFrameIcon:SetTexture(nil)
 		local x = CreateFrame("Frame", nil, GhostFrame)
@@ -162,9 +162,9 @@ local function LoadSkin()
 			title:SetTexture("")
 			title:ClearAllPoints()
 			if title == _G["GameMenuFrameHeader"] then
-				title:SetPoint("TOP", GameMenuFrame, 0, 7)
+				title:Point("TOP", GameMenuFrame, 0, 7)
 			else
-				title:SetPoint("TOP", BlizzardHeader[i], 0, 0)
+				title:Point("TOP", BlizzardHeader[i], 0, 0)
 			end
 		end
 	end
@@ -199,20 +199,20 @@ local function LoadSkin()
 
 	-- if a button position is not really where we want, we move it here
 	VideoOptionsFrameCancel:ClearAllPoints()
-	VideoOptionsFrameCancel:SetPoint("RIGHT",VideoOptionsFrameApply,"LEFT",-4,0)
+	VideoOptionsFrameCancel:Point("RIGHT",VideoOptionsFrameApply,"LEFT",-4,0)
 	VideoOptionsFrameOkay:ClearAllPoints()
-	VideoOptionsFrameOkay:SetPoint("RIGHT",VideoOptionsFrameCancel,"LEFT",-4,0)
+	VideoOptionsFrameOkay:Point("RIGHT",VideoOptionsFrameCancel,"LEFT",-4,0)
 	AudioOptionsFrameOkay:ClearAllPoints()
-	AudioOptionsFrameOkay:SetPoint("RIGHT",AudioOptionsFrameCancel,"LEFT",-4,0)
+	AudioOptionsFrameOkay:Point("RIGHT",AudioOptionsFrameCancel,"LEFT",-4,0)
 	InterfaceOptionsFrameOkay:ClearAllPoints()
-	InterfaceOptionsFrameOkay:SetPoint("RIGHT",InterfaceOptionsFrameCancel,"LEFT", -4,0)
+	InterfaceOptionsFrameOkay:Point("RIGHT",InterfaceOptionsFrameCancel,"LEFT", -4,0)
 	ReadyCheckFrameYesButton:SetParent(ReadyCheckFrame)
 	ReadyCheckFrameNoButton:SetParent(ReadyCheckFrame)
-	ReadyCheckFrameYesButton:SetPoint("RIGHT", ReadyCheckFrame, "CENTER", -1, 0)
-	ReadyCheckFrameNoButton:SetPoint("LEFT", ReadyCheckFrameYesButton, "RIGHT", 3, 0)
+	ReadyCheckFrameYesButton:Point("RIGHT", ReadyCheckFrame, "CENTER", -1, 0)
+	ReadyCheckFrameNoButton:Point("LEFT", ReadyCheckFrameYesButton, "RIGHT", 3, 0)
 	ReadyCheckFrameText:SetParent(ReadyCheckFrame)
 	ReadyCheckFrameText:ClearAllPoints()
-	ReadyCheckFrameText:SetPoint("TOP", 0, -12)
+	ReadyCheckFrameText:Point("TOP", 0, -12)
 
 	-- others
 	StackSplitFrame:GetRegions():Hide()
@@ -282,7 +282,7 @@ local function LoadSkin()
 		end
 
 		if queueType == "ARENA" then
-			self:SetHeight(100)
+			self:Height(100)
 		end
 
 		self.background:Hide()
@@ -426,10 +426,10 @@ local function LoadSkin()
             _G["ChatConfigChannelSettingsLeftCheckBox"..i]:CreateBackdrop()
             _G["ChatConfigChannelSettingsLeftCheckBox"..i].backdrop:Point("TOPLEFT",3,-1)
             _G["ChatConfigChannelSettingsLeftCheckBox"..i].backdrop:Point("BOTTOMRIGHT",-3,1)
-            _G["ChatConfigChannelSettingsLeftCheckBox"..i]:SetHeight(ChatConfigOtherSettingsCombatCheckBox1:GetHeight())
+            _G["ChatConfigChannelSettingsLeftCheckBox"..i]:Height(ChatConfigOtherSettingsCombatCheckBox1:GetHeight())
             S:HandleCheckBox(_G["ChatConfigChannelSettingsLeftCheckBox"..i.."Check"])
             S:HandleCheckBox(_G["ChatConfigChannelSettingsLeftCheckBox"..i.."ColorClasses"])
-            _G["ChatConfigChannelSettingsLeftCheckBox"..i.."ColorClasses"]:SetHeight(ChatConfigChatSettingsLeftCheckBox1Check:GetHeight())
+            _G["ChatConfigChannelSettingsLeftCheckBox"..i.."ColorClasses"]:Height(ChatConfigChatSettingsLeftCheckBox1Check:GetHeight())
         end
     end)
 
@@ -444,10 +444,10 @@ local function LoadSkin()
             _G["ChatConfigChatSettingsLeftCheckBox"..i]:CreateBackdrop()
             _G["ChatConfigChatSettingsLeftCheckBox"..i].backdrop:Point("TOPLEFT",3,-1)
             _G["ChatConfigChatSettingsLeftCheckBox"..i].backdrop:Point("BOTTOMRIGHT",-3,1)
-            _G["ChatConfigChatSettingsLeftCheckBox"..i]:SetHeight(ChatConfigOtherSettingsCombatCheckBox1:GetHeight())
+            _G["ChatConfigChatSettingsLeftCheckBox"..i]:Height(ChatConfigOtherSettingsCombatCheckBox1:GetHeight())
             S:HandleCheckBox(_G["ChatConfigChatSettingsLeftCheckBox"..i.."Check"])
             S:HandleCheckBox(_G["ChatConfigChatSettingsLeftCheckBox"..i.."ColorClasses"])
-            _G["ChatConfigChatSettingsLeftCheckBox"..i.."ColorClasses"]:SetHeight(ChatConfigChatSettingsLeftCheckBox1Check:GetHeight())
+            _G["ChatConfigChatSettingsLeftCheckBox"..i.."ColorClasses"]:Height(ChatConfigChatSettingsLeftCheckBox1Check:GetHeight())
         end
 		-- >> Other >> Combat
         for i = 1,#CHAT_CONFIG_OTHER_COMBAT do
@@ -526,13 +526,13 @@ local function LoadSkin()
         local cctab = _G["CombatConfigTab"..i]
         if cctab then
             S:HandleTab(cctab)
-            cctab:SetHeight(cctab:GetHeight()-2)
-            cctab:SetWidth(ceil(cctab:GetWidth()+1.6))
-            _G["CombatConfigTab"..i.."Text"]:SetPoint("BOTTOM",0,10)
+            cctab:Height(cctab:GetHeight()-2)
+            cctab:Width(ceil(cctab:GetWidth()+1.6))
+            _G["CombatConfigTab"..i.."Text"]:Point("BOTTOM",0,10)
         end
     end
     CombatConfigTab1:ClearAllPoints()
-    CombatConfigTab1:SetPoint("BOTTOMLEFT",ChatConfigBackgroundFrame,"TOPLEFT",6,-2)
+    CombatConfigTab1:Point("BOTTOMLEFT",ChatConfigBackgroundFrame,"TOPLEFT",6,-2)
 
    local ccbuttons = {
 		"ChatConfigFrameOkayButton",
@@ -552,12 +552,12 @@ local function LoadSkin()
         end
     end
 
-	ChatConfigFrameOkayButton:SetPoint("TOPRIGHT",ChatConfigBackgroundFrame,"BOTTOMRIGHT",-3,-5)
-    ChatConfigFrameDefaultButton:SetPoint("TOPLEFT",ChatConfigCategoryFrame,"BOTTOMLEFT",1,-5)
-    CombatLogDefaultButton:SetPoint("TOPLEFT",ChatConfigCategoryFrame,"BOTTOMLEFT",1,-5)
-    ChatConfigCombatSettingsFiltersDeleteButton:SetPoint("TOPRIGHT",ChatConfigCombatSettingsFilters,"BOTTOMRIGHT",-3,-1)
-    ChatConfigCombatSettingsFiltersCopyFilterButton:SetPoint("RIGHT",ChatConfigCombatSettingsFiltersDeleteButton,"LEFT",-2,0)
-    ChatConfigCombatSettingsFiltersAddFilterButton:SetPoint("RIGHT",ChatConfigCombatSettingsFiltersCopyFilterButton,"LEFT",-2,0)
+	ChatConfigFrameOkayButton:Point("TOPRIGHT",ChatConfigBackgroundFrame,"BOTTOMRIGHT",-3,-5)
+    ChatConfigFrameDefaultButton:Point("TOPLEFT",ChatConfigCategoryFrame,"BOTTOMLEFT",1,-5)
+    CombatLogDefaultButton:Point("TOPLEFT",ChatConfigCategoryFrame,"BOTTOMLEFT",1,-5)
+    ChatConfigCombatSettingsFiltersDeleteButton:Point("TOPRIGHT",ChatConfigCombatSettingsFilters,"BOTTOMRIGHT",-3,-1)
+    ChatConfigCombatSettingsFiltersCopyFilterButton:Point("RIGHT",ChatConfigCombatSettingsFiltersDeleteButton,"LEFT",-2,0)
+    ChatConfigCombatSettingsFiltersAddFilterButton:Point("RIGHT",ChatConfigCombatSettingsFiltersCopyFilterButton,"LEFT",-2,0)
 
    local cccheckbox = {
 		"CombatConfigColorsHighlightingLine",
@@ -591,12 +591,12 @@ local function LoadSkin()
     S:HandleNextPrevButton(ChatConfigMoveFilterDownButton,true)
     ChatConfigMoveFilterUpButton:ClearAllPoints()
     ChatConfigMoveFilterDownButton:ClearAllPoints()
-    ChatConfigMoveFilterUpButton:SetPoint("TOPLEFT",ChatConfigCombatSettingsFilters,"BOTTOMLEFT",3,0)
-    ChatConfigMoveFilterDownButton:SetPoint("LEFT",ChatConfigMoveFilterUpButton,24,0)
+    ChatConfigMoveFilterUpButton:Point("TOPLEFT",ChatConfigCombatSettingsFilters,"BOTTOMLEFT",3,0)
+    ChatConfigMoveFilterDownButton:Point("LEFT",ChatConfigMoveFilterUpButton,24,0)
     S:HandleEditBox(CombatConfigSettingsNameEditBox)
     ChatConfigFrame:Size(680,596)
     ChatConfigFrameHeader:ClearAllPoints()
-    ChatConfigFrameHeader:SetPoint("TOP", ChatConfigFrame, 0, -5)
+    ChatConfigFrameHeader:Point("TOP", ChatConfigFrame, 0, -5)
 
 	--DROPDOWN MENU
 	hooksecurefunc("UIDropDownMenu_InitializeHelper", function(frame)
@@ -689,13 +689,13 @@ local function LoadSkin()
         end
     end
     InterfaceOptionsFrameTab1:ClearAllPoints()
-    InterfaceOptionsFrameTab1:SetPoint("BOTTOMLEFT",InterfaceOptionsFrameCategories,"TOPLEFT",-11,-2)
+    InterfaceOptionsFrameTab1:Point("BOTTOMLEFT",InterfaceOptionsFrameCategories,"TOPLEFT",-11,-2)
     VideoOptionsFrameDefaults:ClearAllPoints()
     InterfaceOptionsFrameDefaults:ClearAllPoints()
     InterfaceOptionsFrameCancel:ClearAllPoints()
-    VideoOptionsFrameDefaults:SetPoint("TOPLEFT",VideoOptionsFrameCategoryFrame,"BOTTOMLEFT",-1,-5)
-    InterfaceOptionsFrameDefaults:SetPoint("TOPLEFT",InterfaceOptionsFrameCategories,"BOTTOMLEFT",-1,-5)
-    InterfaceOptionsFrameCancel:SetPoint("TOPRIGHT",InterfaceOptionsFramePanelContainer,"BOTTOMRIGHT",0,-6)
+    VideoOptionsFrameDefaults:Point("TOPLEFT",VideoOptionsFrameCategoryFrame,"BOTTOMLEFT",-1,-5)
+    InterfaceOptionsFrameDefaults:Point("TOPLEFT",InterfaceOptionsFrameCategories,"BOTTOMLEFT",-1,-5)
+    InterfaceOptionsFrameCancel:Point("TOPRIGHT",InterfaceOptionsFramePanelContainer,"BOTTOMRIGHT",0,-6)
 
     local interfacecheckbox = {
         -- Controls
@@ -1129,12 +1129,12 @@ local function LoadSkin()
 	end
 
 	MacOptionsButtonKeybindings:ClearAllPoints()
-	MacOptionsButtonKeybindings:SetPoint("LEFT", MacOptionsFrameDefaults, "RIGHT", 2, 0)
+	MacOptionsButtonKeybindings:Point("LEFT", MacOptionsFrameDefaults, "RIGHT", 2, 0)
 	MacOptionsFrameOkay:ClearAllPoints()
-	MacOptionsFrameOkay:SetPoint("LEFT", MacOptionsButtonKeybindings, "RIGHT", 2, 0)
+	MacOptionsFrameOkay:Point("LEFT", MacOptionsButtonKeybindings, "RIGHT", 2, 0)
 	MacOptionsFrameCancel:ClearAllPoints()
-	MacOptionsFrameCancel:SetPoint("LEFT", MacOptionsFrameOkay, "RIGHT", 2, 0)
-	MacOptionsFrameCancel:SetWidth(MacOptionsFrameCancel:GetWidth() - 6)]]
+	MacOptionsFrameCancel:Point("LEFT", MacOptionsFrameOkay, "RIGHT", 2, 0)
+	MacOptionsFrameCancel:Width(MacOptionsFrameCancel:GetWidth() - 6)]]
 
 	ReportCheatingDialog:StripTextures()
 	ReportCheatingDialogCommentFrame:StripTextures()

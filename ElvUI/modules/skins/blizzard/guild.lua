@@ -37,7 +37,7 @@ local function LoadSkin()
 		"GuildNewsBossModelTextFrame",
 	}
 	GuildRewardsFrameVisitText:ClearAllPoints()
-	GuildRewardsFrameVisitText:SetPoint("TOP", GuildRewardsFrame, "TOP", 0, 30)
+	GuildRewardsFrameVisitText:Point("TOP", GuildRewardsFrame, "TOP", 0, 30)
 	for _, frame in pairs(striptextures) do
 		_G[frame]:StripTextures()
 	end

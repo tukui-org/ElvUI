@@ -69,8 +69,6 @@ E['valueColorUpdateFuncs'] = {};
 E.TexCoords = {.08, .92, .08, .92}
 E.FrameLocks = {}
 E.CreditsList = {};
-E.Spacing = 1;
-E.Border = 2;
 E.PixelMode = false;
 
 E.InversePoints = {
