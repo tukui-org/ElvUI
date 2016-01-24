@@ -44,7 +44,7 @@ function B:MoveObjectiveFrame()
 	local function ObjectiveTrackerFrame_SetPosition(_,_, parent)
 		if parent ~= ObjectiveFrameHolder then
 			ObjectiveTrackerFrame:ClearAllPoints()
-			ObjectiveTrackerFrame:Point('TOP', ObjectiveFrameHolder, 'TOP')
+			ObjectiveTrackerFrame:SetPoint('TOP', ObjectiveFrameHolder, 'TOP')
 		end
 	end
 	hooksecurefunc(ObjectiveTrackerFrame,"SetPoint", ObjectiveTrackerFrame_SetPosition)

@@ -774,7 +774,7 @@ end
 function TT:RepositionBNET(frame, point, anchor, anchorPoint, xOffset, yOffset)
 	if anchor ~= BNETMover then
 		BNToastFrame:ClearAllPoints()
-		BNToastFrame:Point('TOPLEFT', BNETMover, 'TOPLEFT');
+		BNToastFrame:SetPoint('TOPLEFT', BNETMover, 'TOPLEFT');
 	end
 end
 

@@ -429,9 +429,10 @@ function UF:Update_PetFrame(frame, db)
 		local castbar = frame.Castbar
 		castbar:Width(db.castbar.width - (BORDER * 2))
 		castbar:Height(db.castbar.height)
-		castbar.Holder:Width(db.castbar.width)
-		castbar.Holder:Height(db.castbar.height + (E.Border + E.Spacing*4))
-		castbar.Holder:GetScript('OnSizeChanged')(castbar.Holder)
+        local holder = castbar.Holder
+		holder:Width(db.castbar.width)
+		holder:Height(db.castbar.height + (E.Border + E.Spacing*4))
+		holder:GetScript('OnSizeChanged')(holder)
 
 		--Latency
 		if db.castbar.latency then
