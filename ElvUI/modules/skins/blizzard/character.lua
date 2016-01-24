@@ -108,8 +108,8 @@ local function LoadSkin()
 	EquipmentFlyoutFrameHighlight:Kill()
 	EquipmentFlyoutFrame.NavigationFrame:StripTextures()
 	EquipmentFlyoutFrame.NavigationFrame:SetTemplate("Transparent")
-	EquipmentFlyoutFrame.NavigationFrame:Point("TOPLEFT", EquipmentFlyoutFrameButtons, "BOTTOMLEFT", 0, -(E.PixelMode and 1 or 3))
-	EquipmentFlyoutFrame.NavigationFrame:Point("TOPRIGHT", EquipmentFlyoutFrameButtons, "BOTTOMRIGHT", 0, -(E.PixelMode and 1 or 3))
+	EquipmentFlyoutFrame.NavigationFrame:SetPoint("TOPLEFT", EquipmentFlyoutFrameButtons, "BOTTOMLEFT", 0, -(E.PixelMode and 1 or 3))
+	EquipmentFlyoutFrame.NavigationFrame:SetPoint("TOPRIGHT", EquipmentFlyoutFrameButtons, "BOTTOMRIGHT", 0, -(E.PixelMode and 1 or 3))
 	S:HandleNextPrevButton(EquipmentFlyoutFrame.NavigationFrame.PrevButton)
 	S:HandleNextPrevButton(EquipmentFlyoutFrame.NavigationFrame.NextButton)
 
@@ -207,10 +207,10 @@ local function LoadSkin()
 			object.icon:SetTexCoord(unpack(E.TexCoords))
 
 			--Making all icons the same size and position because otherwise BlizzardUI tries to attach itself to itself when it refreshes
-			object.icon:Point("LEFT", object, "LEFT", 4, 0)
+			object.icon:SetPoint("LEFT", object, "LEFT", 4, 0)
 			hooksecurefunc(object.icon, "SetPoint", function(self, point, attachTo, anchorPoint, xOffset, yOffset, isForced)
 				if isForced ~= true then
-					self:Point("LEFT", object, "LEFT", 4, 0, true)
+					self:SetPoint("LEFT", object, "LEFT", 4, 0, true)
 				end
 			end)
 

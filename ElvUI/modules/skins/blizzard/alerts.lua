@@ -281,8 +281,8 @@ local function LoadSkin()
 
 		if not frame.backdrop then
 			frame:CreateBackdrop("Transparent")
-			frame.backdrop:Point('TOPLEFT', frame.Icon.b, 'TOPLEFT', -4, 4)
-			frame.backdrop:Point('BOTTOMRIGHT', frame.Icon.b, 'BOTTOMRIGHT', 180, -4)
+			frame.backdrop:SetPoint('TOPLEFT', frame.Icon.b, 'TOPLEFT', -4, 4)
+			frame.backdrop:SetPoint('BOTTOMRIGHT', frame.Icon.b, 'BOTTOMRIGHT', 180, -4)
 		end
 	end)
 
@@ -304,8 +304,8 @@ local function LoadSkin()
 
 		if not frame.backdrop then
 			frame:CreateBackdrop("Transparent")
-			frame.backdrop:Point('TOPLEFT', frame.Icon.b, 'TOPLEFT', -4, 4)
-			frame.backdrop:Point('BOTTOMRIGHT', frame.Icon.b, 'BOTTOMRIGHT', 180, -4)
+			frame.backdrop:SetPoint('TOPLEFT', frame.Icon.b, 'TOPLEFT', -4, 4)
+			frame.backdrop:SetPoint('BOTTOMRIGHT', frame.Icon.b, 'BOTTOMRIGHT', 180, -4)
 		end
 	end)
 
@@ -331,8 +331,8 @@ local function LoadSkin()
 
 		if not frame.backdrop then
 			frame:CreateBackdrop("Transparent")
-			frame.backdrop:Point('TOPLEFT', frame.Icon.b, 'TOPLEFT', -8, 8)
-			frame.backdrop:Point('BOTTOMRIGHT', frame.Icon.b, 'BOTTOMRIGHT', 180, -8)
+			frame.backdrop:SetPoint('TOPLEFT', frame.Icon.b, 'TOPLEFT', -8, 8)
+			frame.backdrop:SetPoint('BOTTOMRIGHT', frame.Icon.b, 'BOTTOMRIGHT', 180, -8)
 		end
 	end)
 
@@ -351,8 +351,8 @@ local function LoadSkin()
 	frame.Icon:SetParent(frame.Icon.b)
 
 	frame:CreateBackdrop("Transparent")
-	frame.backdrop:Point('TOPLEFT', frame.Icon.b, 'TOPLEFT', -4, 4)
-	frame.backdrop:Point('BOTTOMRIGHT', frame.Icon.b, 'BOTTOMRIGHT', 180, -4)
+	frame.backdrop:SetPoint('TOPLEFT', frame.Icon.b, 'TOPLEFT', -4, 4)
+	frame.backdrop:SetPoint('BOTTOMRIGHT', frame.Icon.b, 'BOTTOMRIGHT', 180, -4)
 
 	local frame = BonusRollLootWonFrame
 	frame:SetAlpha(1)
@@ -371,8 +371,8 @@ local function LoadSkin()
 	frame.Icon:SetParent(frame.Icon.b)
 
 	frame:CreateBackdrop("Transparent")
-	frame.backdrop:Point('TOPLEFT', frame.Icon.b, 'TOPLEFT', -4, 4)
-	frame.backdrop:Point('BOTTOMRIGHT', frame.Icon.b, 'BOTTOMRIGHT', 180, -4)
+	frame.backdrop:SetPoint('TOPLEFT', frame.Icon.b, 'TOPLEFT', -4, 4)
+	frame.backdrop:SetPoint('BOTTOMRIGHT', frame.Icon.b, 'BOTTOMRIGHT', 180, -4)
 
 	-- Garrison building alert
 	local frame = GarrisonBuildingAlertFrame
@@ -380,8 +380,8 @@ local function LoadSkin()
 	frame.shine:Kill()
 	frame:GetRegions():Hide()
 	frame:CreateBackdrop("Transparent")
-	frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 8, -8)
-	frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 8)
+	frame.backdrop:SetPoint('TOPLEFT', frame, 'TOPLEFT', 8, -8)
+	frame.backdrop:SetPoint('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 8)
 
 	frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	frame.Icon:SetDrawLayer("ARTWORK")
@@ -399,8 +399,8 @@ local function LoadSkin()
 	frame.Background:Kill()
 
 	frame:CreateBackdrop("Transparent")
-	frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 8, -8)
-	frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 8)
+	frame.backdrop:SetPoint('TOPLEFT', frame, 'TOPLEFT', 8, -8)
+	frame.backdrop:SetPoint('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 8)
 
 	-- Garrison follower alert
 	local frame = GarrisonFollowerAlertFrame
@@ -410,8 +410,8 @@ local function LoadSkin()
 	frame.FollowerBG:SetAlpha(0)
 
 	frame:CreateBackdrop("Transparent")
-	frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 16, -3)
-	frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -16, 16)
+	frame.backdrop:SetPoint('TOPLEFT', frame, 'TOPLEFT', 16, -3)
+	frame.backdrop:SetPoint('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -16, 16)
 
 	local level = frame.PortraitFrame.Level
 	local cover = frame.PortraitFrame.PortraitRingCover
@@ -422,15 +422,15 @@ local function LoadSkin()
 	frame.PortraitFrame.LevelBorder:SetTexture(0, 0, 0, .5)
 	frame.PortraitFrame.LevelBorder:SetSize(44, 11)
 	frame.PortraitFrame.LevelBorder:ClearAllPoints()
-	frame.PortraitFrame.LevelBorder:Point("BOTTOM", 0, 12)
+	frame.PortraitFrame.LevelBorder:SetPoint("BOTTOM", 0, 12)
 
 	level:ClearAllPoints()
-	level:Point("BOTTOM", frame.PortraitFrame, 0, 12)
+	level:SetPoint("BOTTOM", frame.PortraitFrame, 0, 12)
 
 	local squareBG = CreateFrame("Frame", nil, frame.PortraitFrame)
 	squareBG:SetFrameLevel(frame.PortraitFrame:GetFrameLevel()-1)
-	squareBG:Point("TOPLEFT", 3, -3)
-	squareBG:Point("BOTTOMRIGHT", -3, 11)
+	squareBG:SetPoint("TOPLEFT", 3, -3)
+	squareBG:SetPoint("BOTTOMRIGHT", -3, 11)
 	squareBG:SetTemplate("Default")
 	frame.PortraitFrame.squareBG = squareBG
 

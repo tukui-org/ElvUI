@@ -237,7 +237,7 @@ function UF:Update_TargetFrame(frame, db)
 					E:CreateMover(power, 'TargetPowerBarMover', L["Target Powerbar"], nil, nil, nil, 'ALL,SOLO')
 				else
 					power:ClearAllPoints()
-					power:Point("BOTTOMLEFT", power.mover, "BOTTOMLEFT")
+					power:SetPoint("BOTTOMLEFT", power.mover, "BOTTOMLEFT")
 					power.mover:SetScale(1)
 					power.mover:SetAlpha(1)
 				end
@@ -311,7 +311,7 @@ function UF:Update_TargetFrame(frame, db)
 				portrait:Show()
 				portrait.backdrop:Show()
 				portrait.backdrop:ClearAllPoints()
-				portrait.backdrop:Point("TOPRIGHT", frame, "TOPRIGHT", E.PixelMode and -1 or 0, 0)
+				portrait.backdrop:SetPoint("TOPRIGHT", frame, "TOPRIGHT", E.PixelMode and -1 or 0, 0)
 
 				if db.portrait.style == '3D' then
 					portrait:SetFrameLevel(frame:GetFrameLevel() + 5)
@@ -368,7 +368,7 @@ function UF:Update_TargetFrame(frame, db)
 				point = point:gsub("ICON", "")
 
 				threat.texIcon:ClearAllPoints()
-				threat.texIcon:Point(point, frame.Health, point)
+				threat.texIcon:SetPoint(point, frame.Health, point)
 			end
 		elseif frame:IsElementEnabled('Threat') then
 			frame:DisableElement('Threat')
@@ -398,9 +398,9 @@ function UF:Update_TargetFrame(frame, db)
 		local rows = db.buffs.numrows
 
 		if USE_POWERBAR_OFFSET then
-			buffs:Width(UNIT_WIDTH - POWERBAR_OFFSET)
+			buffs:SetWidth(UNIT_WIDTH - POWERBAR_OFFSET)
 		else
-			buffs:Width(UNIT_WIDTH)
+			buffs:SetWidth(UNIT_WIDTH)
 		end
 
 		buffs.forceShow = frame.forceShowAuras
@@ -408,7 +408,7 @@ function UF:Update_TargetFrame(frame, db)
 		buffs.size = db.buffs.sizeOverride ~= 0 and db.buffs.sizeOverride or ((((buffs:GetWidth() - (buffs.spacing*(buffs.num/rows - 1))) / buffs.num)) * rows)
 
 		if db.buffs.sizeOverride and db.buffs.sizeOverride > 0 then
-			buffs:Width(db.buffs.perrow * db.buffs.sizeOverride)
+			buffs:SetWidth(db.buffs.perrow * db.buffs.sizeOverride)
 		end
 
 		local x, y = E:GetXYOffset(db.buffs.anchorPoint)
@@ -440,9 +440,9 @@ function UF:Update_TargetFrame(frame, db)
 		local rows = db.debuffs.numrows
 
 		if USE_POWERBAR_OFFSET then
-			debuffs:Width(UNIT_WIDTH - POWERBAR_OFFSET)
+			debuffs:SetWidth(UNIT_WIDTH - POWERBAR_OFFSET)
 		else
-			debuffs:Width(UNIT_WIDTH)
+			debuffs:SetWidth(UNIT_WIDTH)
 		end
 
 		debuffs.forceShow = frame.forceShowAuras
@@ -450,7 +450,7 @@ function UF:Update_TargetFrame(frame, db)
 		debuffs.size = db.debuffs.sizeOverride ~= 0 and db.debuffs.sizeOverride or ((((debuffs:GetWidth() - (debuffs.spacing*(debuffs.num/rows - 1))) / debuffs.num)) * rows)
 
 		if db.debuffs.sizeOverride and db.debuffs.sizeOverride > 0 then
-			debuffs:Width(db.debuffs.perrow * db.debuffs.sizeOverride)
+			debuffs:SetWidth(db.debuffs.perrow * db.debuffs.sizeOverride)
 		end
 
 		local x, y = E:GetXYOffset(db.debuffs.anchorPoint)
@@ -586,7 +586,7 @@ function UF:Update_TargetFrame(frame, db)
 				E:CreateMover(CPoints, 'ComboBarMover', L["Combobar"], nil, nil, nil, 'ALL,SOLO')
 			else
 				CPoints:ClearAllPoints()
-				CPoints:Point("BOTTOMLEFT", CPoints.mover, "BOTTOMLEFT")
+				CPoints:SetPoint("BOTTOMLEFT", CPoints.mover, "BOTTOMLEFT")
 				CPoints.mover:SetScale(1)
 				CPoints.mover:SetAlpha(1)
 			end
@@ -599,18 +599,18 @@ function UF:Update_TargetFrame(frame, db)
 
 		for i = 1, MAX_COMBO_POINTS do
 			CPoints[i]:SetStatusBarColor(unpack(ElvUF.colors.ComboPoints[i]))
-			CPoints[i]:Height(CPoints:GetHeight())
+			CPoints[i]:SetHeight(CPoints:GetHeight())
 			if db.combobar.fill == "spaced" then
-				CPoints[i]:Width(E:Scale(CPoints:GetWidth() - ((SPACING+(BORDER*2)+2) * (MAX_COMBO_POINTS - 1))) / MAX_COMBO_POINTS)
+				CPoints[i]:SetWidth(E:Scale(CPoints:GetWidth() - ((SPACING+(BORDER*2)+2) * (MAX_COMBO_POINTS - 1))) / MAX_COMBO_POINTS)
 				CPoints[i].backdrop:Show()
 			else
-				CPoints[i]:Width(E:Scale(CPoints:GetWidth() - (MAX_COMBO_POINTS - 1)) / MAX_COMBO_POINTS)
+				CPoints[i]:SetWidth(E:Scale(CPoints:GetWidth() - (MAX_COMBO_POINTS - 1)) / MAX_COMBO_POINTS)
 				CPoints[i].backdrop:Hide()
 			end
 
 			CPoints[i]:ClearAllPoints()
 			if i == 1 then
-				CPoints[i]:Point("LEFT", CPoints)
+				CPoints[i]:SetPoint("LEFT", CPoints)
 			else
 				if db.combobar.fill == "spaced" then
 					CPoints[i]:Point("LEFT", CPoints[i-1], "RIGHT", SPACING+(BORDER*2)+2, 0)
@@ -701,7 +701,7 @@ function UF:Update_TargetFrame(frame, db)
 			GPS.onMouseOver = db.GPSArrow.onMouseOver
 			GPS.outOfRange = db.GPSArrow.outOfRange
 
-			GPS:Point("CENTER", frame, "CENTER", db.GPSArrow.xOffset, db.GPSArrow.yOffset)
+			GPS:SetPoint("CENTER", frame, "CENTER", db.GPSArrow.xOffset, db.GPSArrow.yOffset)
 		else
 			if frame:IsElementEnabled('GPS') then
 				frame:DisableElement('GPS')
@@ -776,8 +776,8 @@ function UF:Update_TargetFrame(frame, db)
 			end
 
 			auraBars:ClearAllPoints()
-			auraBars:Point(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', attachTo == frame and -POWERBAR_OFFSET * (anchorTo == 'BOTTOM' and 0 or -1) or 0, db.aurabar.attachTo == 'PLAYER_AURABARS' and 5 or yOffset)
-			auraBars:Point(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', (attachTo == frame and anchorTo == 'BOTTOM') and -POWERBAR_OFFSET or 0, db.aurabar.attachTo == 'PLAYER_AURABARS' and 5 or yOffset)
+			auraBars:SetPoint(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', attachTo == frame and -POWERBAR_OFFSET * (anchorTo == 'BOTTOM' and 0 or -1) or 0, db.aurabar.attachTo == 'PLAYER_AURABARS' and 5 or yOffset)
+			auraBars:SetPoint(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', (attachTo == frame and anchorTo == 'BOTTOM') and -POWERBAR_OFFSET or 0, db.aurabar.attachTo == 'PLAYER_AURABARS' and 5 or yOffset)
 
 			auraBars.buffColor = {buffColor.r, buffColor.g, buffColor.b}
 			if UF.db.colors.auraBarByType then
@@ -854,7 +854,7 @@ function UF:Update_TargetFrame(frame, db)
 			frame:Tag(frame.customTexts[objectName], objectDB.text_format or '')
 			frame.customTexts[objectName]:SetJustifyH(objectDB.justifyH or 'CENTER')
 			frame.customTexts[objectName]:ClearAllPoints()
-			frame.customTexts[objectName]:Point(objectDB.justifyH or 'CENTER', frame, objectDB.justifyH or 'CENTER', objectDB.xOffset, objectDB.yOffset)
+			frame.customTexts[objectName]:SetPoint(objectDB.justifyH or 'CENTER', frame, objectDB.justifyH or 'CENTER', objectDB.xOffset, objectDB.yOffset)
 		end
 	end
 

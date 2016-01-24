@@ -54,7 +54,7 @@ local function LoadSkin()
 	AuctionProgressBarIcon:SetParent(backdrop)
 
 	AuctionProgressBarText:ClearAllPoints()
-	AuctionProgressBarText:Point("CENTER")
+	AuctionProgressBarText:SetPoint("CENTER")
 
 	AuctionProgressBar:StripTextures()
 	AuctionProgressBar:CreateBackdrop("Default")
@@ -65,9 +65,9 @@ local function LoadSkin()
 	S:HandleNextPrevButton(BrowsePrevPageButton)
 
 	BrowseNextPageButton:ClearAllPoints()
-	BrowseNextPageButton:Point("TOPRIGHT", AuctionFrameBrowse, "TOPRIGHT", 70, -60)
+	BrowseNextPageButton:SetPoint("TOPRIGHT", AuctionFrameBrowse, "TOPRIGHT", 70, -60)
 	BrowsePrevPageButton:ClearAllPoints()
-	BrowsePrevPageButton:Point("TOPLEFT", AuctionFrameBrowse, "TOPLEFT", 658, -60)
+	BrowsePrevPageButton:SetPoint("TOPLEFT", AuctionFrameBrowse, "TOPLEFT", 658, -60)
 
 	S:HandleCheckBox(ExactMatchCheckButton)
 	local buttons = {
@@ -207,7 +207,7 @@ local function LoadSkin()
 			_G["BrowseButton"..i.."Highlight"] = button:GetHighlightTexture()
 			button:GetHighlightTexture():ClearAllPoints()
 			button:GetHighlightTexture():Point("TOPLEFT", icon, "TOPRIGHT", 2, 0)
-			button:GetHighlightTexture():Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", -2, 5)
+			button:GetHighlightTexture():SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", -2, 5)
 			button:GetPushedTexture():SetAllPoints(button:GetHighlightTexture())
 		end
 	end
@@ -235,7 +235,7 @@ local function LoadSkin()
 		_G["AuctionsButton"..i.."Highlight"] = button:GetHighlightTexture()
 		button:GetHighlightTexture():ClearAllPoints()
 		button:GetHighlightTexture():Point("TOPLEFT", icon, "TOPRIGHT", 2, 0)
-		button:GetHighlightTexture():Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", -2, 5)
+		button:GetHighlightTexture():SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", -2, 5)
 		button:GetPushedTexture():SetAllPoints(button:GetHighlightTexture())
 	end
 
@@ -262,7 +262,7 @@ local function LoadSkin()
 		_G["BidButton"..i.."Highlight"] = button:GetHighlightTexture()
 		button:GetHighlightTexture():ClearAllPoints()
 		button:GetHighlightTexture():Point("TOPLEFT", icon, "TOPRIGHT", 2, 0)
-		button:GetHighlightTexture():Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", -2, 5)
+		button:GetHighlightTexture():SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", -2, 5)
 		button:GetPushedTexture():SetAllPoints(button:GetHighlightTexture())
 	end
 

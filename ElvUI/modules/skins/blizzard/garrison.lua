@@ -141,7 +141,7 @@ local function LoadSkin()
 	end
 
 	GarrisonMissionFrameTab1:ClearAllPoints()
-	GarrisonMissionFrameTab1:Point("BOTTOMLEFT", 11, -40)
+	GarrisonMissionFrameTab1:SetPoint("BOTTOMLEFT", 11, -40)
 
 	-- Follower list
 	local FollowerList = GarrisonMissionFrame.FollowerList
@@ -203,7 +203,7 @@ local function LoadSkin()
 	S:HandleTab(GarrisonLandingPageTab2)
 	S:HandleTab(GarrisonLandingPageTab3)
 	GarrisonLandingPageTab1:ClearAllPoints()
-	GarrisonLandingPageTab1:Point("TOPLEFT", GarrisonLandingPage, "BOTTOMLEFT", 70, 2)
+	GarrisonLandingPageTab1:SetPoint("TOPLEFT", GarrisonLandingPage, "BOTTOMLEFT", 70, 2)
 
 	-- Landing page: Report
 	local Report = GarrisonLandingPage.Report

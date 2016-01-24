@@ -10,9 +10,9 @@ local function StyleScrollFrame(scrollFrame, widthOverride, heightOverride, inse
 	scrollFrame.spellTex = scrollFrame:CreateTexture(nil, 'ARTWORK')
 	scrollFrame.spellTex:SetTexture([[Interface\QuestFrame\QuestBG]])
 	if inset then
-		scrollFrame.spellTex:Point("TOPLEFT", 2, -2)
+		scrollFrame.spellTex:SetPoint("TOPLEFT", 2, -2)
 	else
-		scrollFrame.spellTex:Point("TOPLEFT")
+		scrollFrame.spellTex:SetPoint("TOPLEFT")
 	end
 	scrollFrame.spellTex:Size(widthOverride or 506, heightOverride or 615)
 	scrollFrame.spellTex:SetTexCoord(0, 1, 0.02, 1)
@@ -24,8 +24,8 @@ local function LoadSkin()
 
 	--[[ObjectiveTrackerFrame.HeaderMenu.MinimizeButton:SetAlpha(0)
 	local b = CreateFrame("Button", nil, ObjectiveTrackerFrame.QuestHeader)
-	b:Point("TOPLEFT",ObjectiveTrackerFrame.QuestHeader, "TOPLEFT")
-	b:Point("BOTTOMRIGHT", ObjectiveTrackerFrame.HeaderMenu.MinimizeButton, "BOTTOMRIGHT")
+	b:SetPoint("TOPLEFT",ObjectiveTrackerFrame.QuestHeader, "TOPLEFT")
+	b:SetPoint("BOTTOMRIGHT", ObjectiveTrackerFrame.HeaderMenu.MinimizeButton, "BOTTOMRIGHT")
 	b:SetScript("OnClick", ObjectiveTrackerFrame.HeaderMenu.MinimizeButton:GetScript("OnClick"))]]
 	S:HandleScrollBar(QuestProgressScrollFrameScrollBar)
 	S:HandleScrollBar(QuestRewardScrollFrameScrollBar)
@@ -175,7 +175,7 @@ local function LoadSkin()
 
 	hooksecurefunc("QuestFrame_ShowQuestPortrait", function(parentFrame, portrait, text, name, x, y)
 		QuestNPCModel:ClearAllPoints();
-		QuestNPCModel:Point("TOPLEFT", parentFrame, "TOPRIGHT", x + 18, y);
+		QuestNPCModel:SetPoint("TOPLEFT", parentFrame, "TOPRIGHT", x + 18, y);
 	end)
 
 	QuestLogPopupDetailFrame:StripTextures()
@@ -201,7 +201,7 @@ local function LoadSkin()
 	QuestLogPopupDetailFrame.ShowMapButton:StripTextures()
 	S:HandleButton(QuestLogPopupDetailFrame.ShowMapButton)
 	QuestLogPopupDetailFrame.ShowMapButton.Text:ClearAllPoints()
-	QuestLogPopupDetailFrame.ShowMapButton.Text:Point("CENTER")
+	QuestLogPopupDetailFrame.ShowMapButton.Text:SetPoint("CENTER")
 	QuestLogPopupDetailFrame.ShowMapButton:Size(QuestLogPopupDetailFrame.ShowMapButton:GetWidth() - 30, QuestLogPopupDetailFrame.ShowMapButton:GetHeight(), - 40)
 end
 

@@ -253,7 +253,7 @@ function M:START_LOOT_ROLL(event, rollID, time)
 	f.status:SetMinMaxValues(0, time)
 	f.status:SetValue(time)
 
-	f:Point("CENTER", WorldFrame, "CENTER")
+	f:SetPoint("CENTER", WorldFrame, "CENTER")
 	f:Show()
 	AlertFrame_FixAnchors()
 

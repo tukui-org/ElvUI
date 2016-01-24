@@ -115,7 +115,7 @@ local function LoadSkin()
 			if(not isLeader) then
 				roleButton.background = roleButton:CreateTexture(nil, "BACKGROUND")
 				roleButton.background:SetSize(80, 80)
-				roleButton.background:Point("CENTER")
+				roleButton.background:SetPoint("CENTER")
 				roleButton.background:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
 				roleButton.background:SetAlpha(0.65)
 
@@ -127,13 +127,13 @@ local function LoadSkin()
 
 	LFDQueueFrameRoleButtonLeader.leadIcon = LFDQueueFrameRoleButtonLeader:CreateTexture(nil, 'BACKGROUND')
 	LFDQueueFrameRoleButtonLeader.leadIcon:SetTexture([[Interface\GroupFrame\UI-Group-LeaderIcon]])
-	LFDQueueFrameRoleButtonLeader.leadIcon:Point(LFDQueueFrameRoleButtonLeader:GetNormalTexture():GetPoint())
+	LFDQueueFrameRoleButtonLeader.leadIcon:SetPoint(LFDQueueFrameRoleButtonLeader:GetNormalTexture():GetPoint())
 	LFDQueueFrameRoleButtonLeader.leadIcon:Size(50)
 	LFDQueueFrameRoleButtonLeader.leadIcon:SetAlpha(0.4)
 
 	RaidFinderQueueFrameRoleButtonLeader.leadIcon = RaidFinderQueueFrameRoleButtonLeader:CreateTexture(nil, 'BACKGROUND')
 	RaidFinderQueueFrameRoleButtonLeader.leadIcon:SetTexture([[Interface\GroupFrame\UI-Group-LeaderIcon]])
-	RaidFinderQueueFrameRoleButtonLeader.leadIcon:Point(RaidFinderQueueFrameRoleButtonLeader:GetNormalTexture():GetPoint())
+	RaidFinderQueueFrameRoleButtonLeader.leadIcon:SetPoint(RaidFinderQueueFrameRoleButtonLeader:GetNormalTexture():GetPoint())
 	RaidFinderQueueFrameRoleButtonLeader.leadIcon:Size(50)
 	RaidFinderQueueFrameRoleButtonLeader.leadIcon:SetAlpha(0.4)
 
@@ -171,11 +171,11 @@ local function LoadSkin()
 		bu:StyleButton()
 
 		bu.icon:SetTexCoord(unpack(E.TexCoords))
-		bu.icon:Point("LEFT", bu, "LEFT")
+		bu.icon:SetPoint("LEFT", bu, "LEFT")
 		bu.icon:SetDrawLayer("OVERLAY")
 		bu.icon:Size(40)
 		bu.icon:ClearAllPoints()
-		bu.icon:Point("LEFT", 10, 0)
+		bu.icon:SetPoint("LEFT", 10, 0)
 		bu.border = CreateFrame("Frame", nil, bu)
 		bu.border:SetTemplate('Default')
 		bu.border:SetOutside(bu.icon)
@@ -186,7 +186,7 @@ local function LoadSkin()
 	for i=1, 3 do
 		S:HandleTab(_G['PVEFrameTab'..i])
 	end
-	PVEFrameTab1:Point('BOTTOMLEFT', PVEFrame, 'BOTTOMLEFT', 19, E.PixelMode and -31 or -32)
+	PVEFrameTab1:SetPoint('BOTTOMLEFT', PVEFrame, 'BOTTOMLEFT', 19, E.PixelMode and -31 or -32)
 
 	S:HandleCloseButton(PVEFrameCloseButton)
 
@@ -311,7 +311,7 @@ local function LoadSkin()
 	LFRQueueFrameSpecificListScrollFrameScrollBackgroundBottomRight:Hide()
 	LFRBrowseFrameRoleInsetBg:Hide()
 	LFRQueueFrameCommentScrollFrame:CreateBackdrop()
-	LFRBrowseFrameColumnHeader1:Width(88) --Fix the columns being slightly off
+	LFRBrowseFrameColumnHeader1:SetWidth(88) --Fix the columns being slightly off
 
 	for i = 1, 14 do
 		if i ~= 6 and i ~= 8 then
@@ -496,28 +496,28 @@ local function LoadSkin()
 	S:HandleButton(LFGListFrame.ApplicationViewer.RoleColumnHeader, true)
 	S:HandleButton(LFGListFrame.ApplicationViewer.ItemLevelColumnHeader, true)
 	LFGListFrame.ApplicationViewer.NameColumnHeader:ClearAllPoints()
-	LFGListFrame.ApplicationViewer.NameColumnHeader:Point("BOTTOMLEFT", LFGListFrame.ApplicationViewer.Inset, "TOPLEFT", 0, 1)
+	LFGListFrame.ApplicationViewer.NameColumnHeader:SetPoint("BOTTOMLEFT", LFGListFrame.ApplicationViewer.Inset, "TOPLEFT", 0, 1)
 	LFGListFrame.ApplicationViewer.RoleColumnHeader:ClearAllPoints()
-	LFGListFrame.ApplicationViewer.RoleColumnHeader:Point("LEFT", LFGListFrame.ApplicationViewer.NameColumnHeader, "RIGHT", 1, 0)
+	LFGListFrame.ApplicationViewer.RoleColumnHeader:SetPoint("LEFT", LFGListFrame.ApplicationViewer.NameColumnHeader, "RIGHT", 1, 0)
 	LFGListFrame.ApplicationViewer.ItemLevelColumnHeader:ClearAllPoints()
-	LFGListFrame.ApplicationViewer.ItemLevelColumnHeader:Point("LEFT", LFGListFrame.ApplicationViewer.RoleColumnHeader, "RIGHT", 1, 0)
+	LFGListFrame.ApplicationViewer.ItemLevelColumnHeader:SetPoint("LEFT", LFGListFrame.ApplicationViewer.RoleColumnHeader, "RIGHT", 1, 0)
 
 	S:HandleButton(LFGListFrame.ApplicationViewer.RefreshButton)
 	LFGListFrame.ApplicationViewer.RefreshButton:SetSize(24,24)
 	LFGListFrame.ApplicationViewer.RefreshButton:ClearAllPoints()
-	LFGListFrame.ApplicationViewer.RefreshButton:Point("BOTTOMRIGHT", LFGListFrame.ApplicationViewer.Inset, "TOPRIGHT", 16, 4)
+	LFGListFrame.ApplicationViewer.RefreshButton:SetPoint("BOTTOMRIGHT", LFGListFrame.ApplicationViewer.Inset, "TOPRIGHT", 16, 4)
 
 	S:HandleButton(LFGListFrame.ApplicationViewer.RemoveEntryButton, true)
 	S:HandleButton(LFGListFrame.ApplicationViewer.EditButton, true)
 	LFGListFrame.ApplicationViewer.RemoveEntryButton:ClearAllPoints()
-	LFGListFrame.ApplicationViewer.RemoveEntryButton:Point("BOTTOMLEFT", -1, 3)
+	LFGListFrame.ApplicationViewer.RemoveEntryButton:SetPoint("BOTTOMLEFT", -1, 3)
 	LFGListFrame.ApplicationViewer.EditButton:ClearAllPoints()
-	LFGListFrame.ApplicationViewer.EditButton:Point("BOTTOMRIGHT", -6, 3)
+	LFGListFrame.ApplicationViewer.EditButton:SetPoint("BOTTOMRIGHT", -6, 3)
 
 	S:HandleScrollBar(LFGListApplicationViewerScrollFrameScrollBar)
 	LFGListApplicationViewerScrollFrameScrollBar:ClearAllPoints()
-	LFGListApplicationViewerScrollFrameScrollBar:Point("TOPLEFT", LFGListFrame.ApplicationViewer.Inset, "TOPRIGHT", 0, -14)
-	LFGListApplicationViewerScrollFrameScrollBar:Point("BOTTOMLEFT", LFGListFrame.ApplicationViewer.Inset, "BOTTOMRIGHT", 0, 14)
+	LFGListApplicationViewerScrollFrameScrollBar:SetPoint("TOPLEFT", LFGListFrame.ApplicationViewer.Inset, "TOPRIGHT", 0, -14)
+	LFGListApplicationViewerScrollFrameScrollBar:SetPoint("BOTTOMLEFT", LFGListFrame.ApplicationViewer.Inset, "BOTTOMRIGHT", 0, 14)
 end
 
 S:RegisterSkin("ElvUI", LoadSkin)
@@ -533,7 +533,7 @@ local function LoadSecondarySkin()
 	select(9, ChallengesFrameDetails:GetRegions()):Hide()
 	select(10, ChallengesFrameDetails:GetRegions()):Hide()
 	select(11, ChallengesFrameDetails:GetRegions()):Hide()
-	ChallengesFrameDungeonButton1:Point("TOPLEFT", ChallengesFrame, "TOPLEFT", 8, -83)
+	ChallengesFrameDungeonButton1:SetPoint("TOPLEFT", ChallengesFrame, "TOPLEFT", 8, -83)
 
 	for i = 1, 8 do
 		local bu = ChallengesFrame["button"..i]
@@ -541,8 +541,8 @@ local function LoadSecondarySkin()
 		bu:StyleButton()
 		bu:SetHighlightTexture("")
 		bu.selectedTex:SetAlpha(.2)
-		bu.selectedTex:Point("TOPLEFT", 1, -1)
-		bu.selectedTex:Point("BOTTOMRIGHT", -1, 1)
+		bu.selectedTex:SetPoint("TOPLEFT", 1, -1)
+		bu.selectedTex:SetPoint("BOTTOMRIGHT", -1, 1)
 		bu.NoMedal:Kill()
 	end
 

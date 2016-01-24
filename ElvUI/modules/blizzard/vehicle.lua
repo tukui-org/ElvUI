@@ -21,5 +21,5 @@ function B:PositionVehicleFrame()
 	end
 	hooksecurefunc(VehicleSeatIndicator,"SetPoint", VehicleSeatIndicator_SetPosition)
 
-	VehicleSeatIndicator:Point('TOPLEFT', MinimapCluster, 'TOPLEFT', 2, 2) -- initialize mover
+	VehicleSeatIndicator:SetPoint('TOPLEFT', MinimapCluster, 'TOPLEFT', 2, 2) -- initialize mover
 end

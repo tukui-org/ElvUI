@@ -180,7 +180,7 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 			if USE_MINI_CLASSBAR and USE_CLASSBAR then
 				portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT", 0, -CLASSBAR_HEIGHT_SPACING)
 			else
-				portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT")
+				portrait.backdrop:SetPoint("TOPLEFT", frame, "TOPLEFT")
 			end
 
 			if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or USE_INSET_POWERBAR or not USE_POWERBAR or USE_INSET_POWERBAR or POWERBAR_DETACHED then
@@ -342,7 +342,7 @@ function UF:Update_PlayerFrame(frame, db)
 				point = point:gsub("ICON", "")
 
 				threat.texIcon:ClearAllPoints()
-				threat.texIcon:Point(point, frame.Health, point)
+				threat.texIcon:SetPoint(point, frame.Health, point)
 			end
 		elseif frame:IsElementEnabled('Threat') then
 			frame:DisableElement('Threat')
@@ -506,7 +506,7 @@ function UF:Update_PlayerFrame(frame, db)
 					E:CreateMover(power, 'PlayerPowerBarMover', L["Player Powerbar"], nil, nil, nil, 'ALL,SOLO')
 				else
 					power:ClearAllPoints()
-					power:Point("BOTTOMLEFT", power.mover, "BOTTOMLEFT")
+					power:SetPoint("BOTTOMLEFT", power.mover, "BOTTOMLEFT")
 					power.mover:SetScale(1)
 					power.mover:SetAlpha(1)
 				end
@@ -595,7 +595,7 @@ function UF:Update_PlayerFrame(frame, db)
 				if USE_MINI_CLASSBAR and USE_CLASSBAR and not db.classbar.detachFromFrame then
 					portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT", 0, -((CLASSBAR_HEIGHT/2)))
 				else
-					portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT")
+					portrait.backdrop:SetPoint("TOPLEFT", frame, "TOPLEFT")
 				end
 
 				if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR or USE_INSET_POWERBAR or POWERBAR_DETACHED then
@@ -639,9 +639,9 @@ function UF:Update_PlayerFrame(frame, db)
 		local rows = db.buffs.numrows
 
 		if USE_POWERBAR_OFFSET then
-			buffs:Width(UNIT_WIDTH - POWERBAR_OFFSET)
+			buffs:SetWidth(UNIT_WIDTH - POWERBAR_OFFSET)
 		else
-			buffs:Width(UNIT_WIDTH)
+			buffs:SetWidth(UNIT_WIDTH)
 		end
 
 		buffs.forceShow = frame.forceShowAuras
@@ -649,7 +649,7 @@ function UF:Update_PlayerFrame(frame, db)
 		buffs.size = db.buffs.sizeOverride ~= 0 and db.buffs.sizeOverride or ((((buffs:GetWidth() - (buffs.spacing*(buffs.num/rows - 1))) / buffs.num)) * rows)
 
 		if db.buffs.sizeOverride and db.buffs.sizeOverride > 0 then
-			buffs:Width(db.buffs.perrow * db.buffs.sizeOverride)
+			buffs:SetWidth(db.buffs.perrow * db.buffs.sizeOverride)
 		end
 
 		local x, y = E:GetXYOffset(db.buffs.anchorPoint)
@@ -681,9 +681,9 @@ function UF:Update_PlayerFrame(frame, db)
 		local rows = db.debuffs.numrows
 
 		if USE_POWERBAR_OFFSET then
-			debuffs:Width(UNIT_WIDTH - POWERBAR_OFFSET)
+			debuffs:SetWidth(UNIT_WIDTH - POWERBAR_OFFSET)
 		else
-			debuffs:Width(UNIT_WIDTH)
+			debuffs:SetWidth(UNIT_WIDTH)
 		end
 
 		debuffs.forceShow = frame.forceShowAuras
@@ -691,7 +691,7 @@ function UF:Update_PlayerFrame(frame, db)
 		debuffs.size = db.debuffs.sizeOverride ~= 0 and db.debuffs.sizeOverride or ((((debuffs:GetWidth() - (debuffs.spacing*(debuffs.num/rows - 1))) / debuffs.num)) * rows)
 
 		if db.debuffs.sizeOverride and db.debuffs.sizeOverride > 0 then
-			debuffs:Width(db.debuffs.perrow * db.debuffs.sizeOverride)
+			debuffs:SetWidth(db.debuffs.perrow * db.debuffs.sizeOverride)
 		end
 
 		local x, y = E:GetXYOffset(db.debuffs.anchorPoint)
@@ -836,7 +836,7 @@ function UF:Update_PlayerFrame(frame, db)
 					E:CreateMover(bars, 'ClassBarMover', L["Classbar"], nil, nil, nil, 'ALL,SOLO')
 				else
 					bars:ClearAllPoints()
-					bars:Point("BOTTOMLEFT", bars.mover, "BOTTOMLEFT")
+					bars:SetPoint("BOTTOMLEFT", bars.mover, "BOTTOMLEFT")
 					bars.mover:SetScale(1)
 					bars.mover:SetAlpha(1)
 				end
@@ -855,17 +855,17 @@ function UF:Update_PlayerFrame(frame, db)
 						c = E.db.general.bordercolor
 						bars[i].backdrop:SetBackdropBorderColor(c.r, c.g, c.b)
 					end
-					bars[i]:Height(bars:GetHeight())
+					bars[i]:SetHeight(bars:GetHeight())
 					if db.classbar.fill == "spaced" then
-						bars[i]:Width(E:Scale(bars:GetWidth() - ((SPACING+(BORDER*2)+2)*(MAX_CLASS_BAR - 1)))/MAX_CLASS_BAR)
+						bars[i]:SetWidth(E:Scale(bars:GetWidth() - ((SPACING+(BORDER*2)+2)*(MAX_CLASS_BAR - 1)))/MAX_CLASS_BAR)
 					else
-						bars[i]:Width(E:Scale(bars:GetWidth() - (MAX_CLASS_BAR - 1))/MAX_CLASS_BAR)
+						bars[i]:SetWidth(E:Scale(bars:GetWidth() - (MAX_CLASS_BAR - 1))/MAX_CLASS_BAR)
 					end
 
 					bars[i]:GetStatusBarTexture():SetHorizTile(false)
 					bars[i]:ClearAllPoints()
 					if i == 1 then
-						bars[i]:Point("LEFT", bars)
+						bars[i]:SetPoint("LEFT", bars)
 					else
 						if db.classbar.fill == "spaced" then
 							bars[i]:Point("LEFT", bars[i-1], "RIGHT", SPACING+(BORDER*2)+2, 0)
@@ -1064,8 +1064,8 @@ function UF:Update_PlayerFrame(frame, db)
 
 			auraBars.auraBarHeight = db.aurabar.height
 			auraBars:ClearAllPoints()
-			auraBars:Point(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', (attachTo == frame and anchorTo == 'BOTTOM') and POWERBAR_OFFSET or 0, E.PixelMode and anchorPoint ==  -1 or yOffset)
-			auraBars:Point(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', attachTo == frame and POWERBAR_OFFSET * (anchorTo == 'BOTTOM' and 0 or -1) or 0, E.PixelMode and -1 or yOffset)
+			auraBars:SetPoint(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', (attachTo == frame and anchorTo == 'BOTTOM') and POWERBAR_OFFSET or 0, E.PixelMode and anchorPoint ==  -1 or yOffset)
+			auraBars:SetPoint(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', attachTo == frame and POWERBAR_OFFSET * (anchorTo == 'BOTTOM' and 0 or -1) or 0, E.PixelMode and -1 or yOffset)
 			auraBars.buffColor = {buffColor.r, buffColor.g, buffColor.b}
 			if UF.db.colors.auraBarByType then
 				auraBars.debuffColor = nil;
@@ -1125,7 +1125,7 @@ function UF:Update_PlayerFrame(frame, db)
 			frame:Tag(frame.customTexts[objectName], objectDB.text_format or '')
 			frame.customTexts[objectName]:SetJustifyH(objectDB.justifyH or 'CENTER')
 			frame.customTexts[objectName]:ClearAllPoints()
-			frame.customTexts[objectName]:Point(objectDB.justifyH or 'CENTER', frame, objectDB.justifyH or 'CENTER', objectDB.xOffset, objectDB.yOffset)
+			frame.customTexts[objectName]:SetPoint(objectDB.justifyH or 'CENTER', frame, objectDB.justifyH or 'CENTER', objectDB.xOffset, objectDB.yOffset)
 		end
 	end
 

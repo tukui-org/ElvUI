@@ -27,8 +27,8 @@ function UF:Construct_AuraBars()
 	UF:Update_FontString(bar.spellname)
 
 	bar.spellname:ClearAllPoints()
-	bar.spellname:Point('LEFT', bar, 'LEFT', 2, 0)
-	bar.spellname:Point('RIGHT', bar.spelltime, 'LEFT', -4, 0)
+	bar.spellname:SetPoint('LEFT', bar, 'LEFT', 2, 0)
+	bar.spellname:SetPoint('RIGHT', bar.spelltime, 'LEFT', -4, 0)
 	bar.spellname:SetWordWrap(false)
 
 	bar.iconHolder:SetTemplate('Default')

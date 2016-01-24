@@ -278,7 +278,7 @@ function LO:CreateChatPanels()
 	lchattb:SetScript('OnClick', ChatButton_OnClick)
 	lchattb.text = lchattb:CreateFontString(nil, 'OVERLAY')
 	lchattb.text:FontTemplate()
-	lchattb.text:Point('CENTER')
+	lchattb.text:SetPoint('CENTER')
 	lchattb.text:SetJustifyH('CENTER')
 	lchattb.text:SetText('<')
 
@@ -324,7 +324,7 @@ function LO:CreateChatPanels()
 	rchattb:SetScript('OnClick', ChatButton_OnClick)
 	rchattb.text = rchattb:CreateFontString(nil, 'OVERLAY')
 	rchattb.text:FontTemplate()
-	rchattb.text:Point('CENTER')
+	rchattb.text:SetPoint('CENTER')
 	rchattb.text:SetJustifyH('CENTER')
 	rchattb.text:SetText('>')
 
@@ -344,15 +344,14 @@ end
 
 function LO:CreateMinimapPanels()
 	local lminipanel = CreateFrame('Frame', 'LeftMiniPanel', Minimap)
-
-	lminipanel:Point('TOPLEFT', Minimap, 'BOTTOMLEFT', -E.Border, -E.Spacing*3)
-	lminipanel:Point('BOTTOMRIGHT', Minimap, 'BOTTOM', 0, -(E.Spacing*3 + PANEL_HEIGHT))
+	lminipanel:Point('TOPLEFT', Minimap, 'BOTTOMLEFT', -E.Border, (E.PixelMode and 0 or -3))
+	lminipanel:Point('BOTTOMRIGHT', Minimap, 'BOTTOM', -E.Spacing, -((E.PixelMode and 0 or 3) + PANEL_HEIGHT))
 	lminipanel:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
 	E:GetModule('DataTexts'):RegisterPanel(lminipanel, 1, 'ANCHOR_BOTTOMLEFT', lminipanel:GetWidth() * 2, -4)
 
 	local rminipanel = CreateFrame('Frame', 'RightMiniPanel', Minimap)
-	rminipanel:Point('TOPRIGHT', Minimap, 'BOTTOMRIGHT', E.Border, -(E.Spacing*3))
-	rminipanel:Point('BOTTOMLEFT', lminipanel, 'BOTTOMRIGHT', -E.Border + (E.Spacing*3), 0)
+	rminipanel:Point('TOPRIGHT', Minimap, 'BOTTOMRIGHT', E.Border, (E.PixelMode and 0 or -3))
+	rminipanel:Point('BOTTOMLEFT', lminipanel, 'BOTTOMRIGHT', (E.PixelMode and -1 or 1), 0)
 	rminipanel:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
 	E:GetModule('DataTexts'):RegisterPanel(rminipanel, 1, 'ANCHOR_BOTTOM', 0, -4)
 
@@ -366,19 +365,19 @@ function LO:CreateMinimapPanels()
 
 	local configtoggle = CreateFrame('Button', 'ElvConfigToggle', Minimap)
 	if E.db.auras.consolidatedBuffs.position == "LEFT" then
-		configtoggle:Point('TOPRIGHT', lminipanel, 'TOPLEFT', (E.Border - (E.Spacing*3)), 0)
-		configtoggle:Point('BOTTOMRIGHT', lminipanel, 'BOTTOMLEFT', (E.Border + (E.Spacing*3)), 0)
+		configtoggle:Point('TOPRIGHT', lminipanel, 'TOPLEFT', (E.PixelMode and 1 or -1), 0)
+		configtoggle:Point('BOTTOMRIGHT', lminipanel, 'BOTTOMLEFT', (E.PixelMode and 1 or -1), 0)
 	else
-		configtoggle:Point('TOPLEFT', rminipanel, 'TOPRIGHT', (-E.Border + (E.Spacing*3)), 0)
-		configtoggle:Point('BOTTOMLEFT', rminipanel, 'BOTTOMRIGHT', (-E.Border + (E.Spacing*3)), 0)
+		configtoggle:Point('TOPLEFT', rminipanel, 'TOPRIGHT', (E.PixelMode and -1 or 1), 0)
+		configtoggle:Point('BOTTOMLEFT', rminipanel, 'BOTTOMRIGHT', (E.PixelMode and -1 or 1), 0)
 	end
 	configtoggle:RegisterForClicks('AnyUp')
-	configtoggle:Width(E.ConsolidatedBuffsWidth - (E.Border*2))
+	configtoggle:Width(E.ConsolidatedBuffsWidth)
 	configtoggle:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
 	configtoggle.text = configtoggle:CreateFontString(nil, 'OVERLAY')
 	configtoggle.text:FontTemplate(E.LSM:Fetch("font", E.db.datatexts.font), E.db.datatexts.fontSize, E.db.datatexts.fontOutline)
 	configtoggle.text:SetText('C')
-	configtoggle.text:Point('CENTER')
+	configtoggle.text:SetPoint('CENTER')
 	configtoggle.text:SetJustifyH('CENTER')
 	configtoggle:SetScript('OnClick', function(self, btn)
 		if btn == 'LeftButton' then

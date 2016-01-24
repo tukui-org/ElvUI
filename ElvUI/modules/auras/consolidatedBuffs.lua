@@ -124,7 +124,7 @@ function A:CreateButton(i)
 	button.cd:SetHideCountdownNumbers(true)
 
 	button.timer = button.cd:CreateFontString(nil, 'OVERLAY')
-	button.timer:Point('CENTER')
+	button.timer:SetPoint('CENTER')
 
 	local ButtonData = {
 		FloatingBG = nil,
@@ -195,19 +195,18 @@ function A:Update_ConsolidatedBuffsSettings(isCallback)
 		local button = frame[i]
 		button.t:SetAlpha(1)
 		button:ClearAllPoints()
-        button:Width(E.ConsolidatedBuffsWidth - (E.Border*2))
-		button:Height(E.ConsolidatedBuffsWidth - (E.Border*2))
+		button:Size(E.ConsolidatedBuffsWidth - (E.PixelMode and 0 or 4)) -- 4 needs to be 1
 
 		if i == 1 then
-			button:Point("TOP", ElvUI_ConsolidatedBuffs, "TOP", 0, -E.Border)
+			button:Point("TOP", ElvUI_ConsolidatedBuffs, "TOP", 0, -(E.PixelMode and 0 or 2))
 		else
-			button:Point("TOP", frame[ignoreIcons[i - 1] or (i - 1)], "BOTTOM", 0, -E.Border)
+			button:Point("TOP", frame[ignoreIcons[i - 1] or (i - 1)], "BOTTOM", 0, (E.PixelMode and 2 or -1))
 		end
-        
-        if i == NUM_LE_RAID_BUFF_TYPES then
-            button:Point("BOTTOM", ElvUI_ConsolidatedBuffs, "BOTTOM", 0, E.Border)
-        end
-        
+
+		if i == NUM_LE_RAID_BUFF_TYPES then
+			button:Point("BOTTOM", ElvUI_ConsolidatedBuffs, "BOTTOM", 0, (E.PixelMode and 0 or 2)) --2 needs to be 0
+		end
+
 		if(ignoreIcons[i]) then
 			button:Hide()
 		else
@@ -254,11 +253,11 @@ function A:Construct_ConsolidatedBuffs()
 
 	frame:Width(E.ConsolidatedBuffsWidth)
 	if E.db.auras.consolidatedBuffs.position == "LEFT" then
-		frame:Point('TOPRIGHT', Minimap.backdrop, 'TOPLEFT', -E.Border, 0)
-		frame:Point('BOTTOMRIGHT', Minimap.backdrop, 'BOTTOMLEFT', -E.Border, E.Spacing)
+		frame:Point('TOPRIGHT', Minimap.backdrop, 'TOPLEFT', (E.PixelMode and 1 or -1), 0)
+		frame:Point('BOTTOMRIGHT', Minimap.backdrop, 'BOTTOMLEFT', (E.PixelMode and 1 or -1), 0)
 	else
-		frame:Point('TOPLEFT', Minimap.backdrop, 'TOPRIGHT', E.Spacing, 0)
-		frame:Point('BOTTOMLEFT', Minimap.backdrop, 'BOTTOMRIGHT', E.Spacing, E.Spacing)
+		frame:Point('TOPLEFT', Minimap.backdrop, 'TOPRIGHT', (E.PixelMode and -1 or 1), 0)
+		frame:Point('BOTTOMLEFT', Minimap.backdrop, 'BOTTOMRIGHT', (E.PixelMode and -1 or 1), 0)
 	end
 	self.frame = frame
 

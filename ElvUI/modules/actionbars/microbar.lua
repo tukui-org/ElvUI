@@ -42,8 +42,8 @@ function AB:HandleMicroButton(button)
 	local f = CreateFrame("Frame", nil, button)
 	f:SetFrameLevel(1)
 	f:SetFrameStrata("BACKGROUND")
-	f:Point("BOTTOMLEFT", button, "BOTTOMLEFT", 2, 0)
-	f:Point("TOPRIGHT", button, "TOPRIGHT", -2, -28)
+	f:SetPoint("BOTTOMLEFT", button, "BOTTOMLEFT", 2, 0)
+	f:SetPoint("TOPRIGHT", button, "TOPRIGHT", -2, -28)
 	f:SetTemplate("Default", true)
 	button.backdrop = f
 
@@ -60,11 +60,11 @@ function AB:HandleMicroButton(button)
 end
 
 function AB:MainMenuMicroButton_SetNormal()
-	MainMenuBarPerformanceBar:Point("TOPLEFT", MainMenuMicroButton, "TOPLEFT", 9, -36);
+	MainMenuBarPerformanceBar:SetPoint("TOPLEFT", MainMenuMicroButton, "TOPLEFT", 9, -36);
 end
 
 function AB:MainMenuMicroButton_SetPushed()
-	MainMenuBarPerformanceBar:Point("TOPLEFT", MainMenuMicroButton, "TOPLEFT", 8, -37);
+	MainMenuBarPerformanceBar:SetPoint("TOPLEFT", MainMenuMicroButton, "TOPLEFT", 8, -37);
 end
 
 function AB:UpdateMicroButtonsParent(parent)
@@ -97,7 +97,7 @@ function AB:UpdateMicroPositionDimensions()
 		button:ClearAllPoints();
 
 		if prevButton == ElvUI_MicroBar then
-			button:Point("TOPLEFT", prevButton, "TOPLEFT", -2, 28)
+			button:SetPoint("TOPLEFT", prevButton, "TOPLEFT", -2, 28)
 		elseif (i - 1) % self.db.microbar.buttonsPerRow == 0 then
 			button:Point('TOP', lastColumnButton, 'BOTTOM', 0, 27);
 			numRows = numRows + 1
@@ -114,7 +114,7 @@ function AB:UpdateMicroPositionDimensions()
 		ElvUI_MicroBar:SetAlpha(self.db.microbar.alpha)
 	end
 
-	ElvUI_MicroBar:Width((((CharacterMicroButton:GetWidth() - 0.5) * (#MICRO_BUTTONS - 2)) - 3) / numRows)
+	ElvUI_MicroBar:SetWidth((((CharacterMicroButton:GetWidth() - 0.5) * (#MICRO_BUTTONS - 2)) - 3) / numRows)
 	ElvUI_MicroBar:Height((CharacterMicroButton:GetHeight() - 27) * numRows)
 
 	if self.db.microbar.enabled then
@@ -126,7 +126,7 @@ end
 
 function AB:UpdateMicroButtons()
 	GuildMicroButtonTabard:ClearAllPoints()
-	GuildMicroButtonTabard:Point("TOP", GuildMicroButton.backdrop, "TOP", 0, 25)
+	GuildMicroButtonTabard:SetPoint("TOP", GuildMicroButton.backdrop, "TOP", 0, 25)
 	self:UpdateMicroPositionDimensions()
 end
 

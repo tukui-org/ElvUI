@@ -52,7 +52,7 @@
 
    -- Position and size
    local Health = CreateFrame("StatusBar", nil, self)
-   Health:Height(20)
+   Health:SetHeight(20)
    Health:SetPoint('TOP')
    Health:SetPoint('LEFT')
    Health:SetPoint('RIGHT')

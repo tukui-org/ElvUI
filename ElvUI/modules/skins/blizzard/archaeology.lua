@@ -84,7 +84,7 @@ local function LoadSkin()
 	ArcheologyDigsiteProgressBar.FillBar:CreateBackdrop("Default")
 	ArcheologyDigsiteProgressBar.BarTitle:FontTemplate(nil, nil, 'OUTLINE')
 	ArcheologyDigsiteProgressBar:ClearAllPoints()
-	ArcheologyDigsiteProgressBar:Point("TOP", UIParent, "TOP", 0, -400)
+	ArcheologyDigsiteProgressBar:SetPoint("TOP", UIParent, "TOP", 0, -400)
 	E:CreateMover(ArcheologyDigsiteProgressBar, "DigSiteProgressBarMover", L["Archeology Progress Bar"])
 end
 

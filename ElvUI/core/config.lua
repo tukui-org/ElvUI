@@ -123,30 +123,30 @@ function E:Grid_Create()
 		else
 			tx:SetTexture(0, 0, 0)
 		end
-		tx:Point("TOPLEFT", grid, "TOPLEFT", i*wStep - (size/2), 0)
-		tx:Point('BOTTOMRIGHT', grid, 'BOTTOMLEFT', i*wStep + (size/2), 0)
+		tx:SetPoint("TOPLEFT", grid, "TOPLEFT", i*wStep - (size/2), 0)
+		tx:SetPoint('BOTTOMRIGHT', grid, 'BOTTOMLEFT', i*wStep + (size/2), 0)
 	end
 	height = GetScreenHeight()
 
 	do
 		local tx = grid:CreateTexture(nil, 'BACKGROUND')
 		tx:SetTexture(1, 0, 0)
-		tx:Point("TOPLEFT", grid, "TOPLEFT", 0, -(height/2) + (size/2))
-		tx:Point('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(height/2 + size/2))
+		tx:SetPoint("TOPLEFT", grid, "TOPLEFT", 0, -(height/2) + (size/2))
+		tx:SetPoint('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(height/2 + size/2))
 	end
 
 	for i = 1, floor((height/2)/hStep) do
 		local tx = grid:CreateTexture(nil, 'BACKGROUND')
 		tx:SetTexture(0, 0, 0)
 
-		tx:Point("TOPLEFT", grid, "TOPLEFT", 0, -(height/2+i*hStep) + (size/2))
-		tx:Point('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(height/2+i*hStep + size/2))
+		tx:SetPoint("TOPLEFT", grid, "TOPLEFT", 0, -(height/2+i*hStep) + (size/2))
+		tx:SetPoint('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(height/2+i*hStep + size/2))
 
 		tx = grid:CreateTexture(nil, 'BACKGROUND')
 		tx:SetTexture(0, 0, 0)
 
-		tx:Point("TOPLEFT", grid, "TOPLEFT", 0, -(height/2-i*hStep) + (size/2))
-		tx:Point('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(height/2-i*hStep + size/2))
+		tx:SetPoint("TOPLEFT", grid, "TOPLEFT", 0, -(height/2-i*hStep) + (size/2))
+		tx:SetPoint('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(height/2-i*hStep + size/2))
 	end
 end
 
@@ -174,7 +174,7 @@ function E:NudgeMover(nudgeX, nudgeY)
 	local x, y, point = E:CalculateMoverPoints(mover, nudgeX, nudgeY)
 	
 	mover:ClearAllPoints()
-	mover:Point(mover.positionOverride or point, E.UIParent, mover.positionOverride and "BOTTOMLEFT" or point, x, y)
+	mover:SetPoint(mover.positionOverride or point, E.UIParent, mover.positionOverride and "BOTTOMLEFT" or point, x, y)
 	E:SaveMoverPosition(mover.name)
 
 	--Update coordinates in Nudge Window
@@ -209,10 +209,10 @@ function E:CreateMoverPopup()
 	f:SetMovable(true)
 	f:SetFrameLevel(99)
 	f:SetClampedToScreen(true)
-	f:Width(360)
-	f:Height(130)
+	f:SetWidth(360)
+	f:SetHeight(130)
 	f:SetTemplate('Transparent')
-	f:Point("BOTTOM", UIParent, 'CENTER', 0, 100)
+	f:SetPoint("BOTTOM", UIParent, 'CENTER', 0, 100)
 	f:SetScript('OnHide', function()
 		if ElvUIMoverPopupWindowDropDown then
 			UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, 'ALL');
@@ -224,8 +224,8 @@ function E:CreateMoverPopup()
 
 	local header = CreateFrame('Button', nil, f)
 	header:SetTemplate('Default', true)
-	header:Width(100); header:Height(25)
-	header:Point("CENTER", f, 'TOP')
+	header:SetWidth(100); header:SetHeight(25)
+	header:SetPoint("CENTER", f, 'TOP')
 	header:SetFrameLevel(header:GetFrameLevel() + 2)
 	header:EnableMouse(true)
 	header:RegisterForClicks('AnyUp', 'AnyDown')
@@ -234,15 +234,15 @@ function E:CreateMoverPopup()
 
 	local title = header:CreateFontString("OVERLAY")
 	title:FontTemplate()
-	title:Point("CENTER", header, "CENTER")
+	title:SetPoint("CENTER", header, "CENTER")
 	title:SetText('ElvUI')
 
 	local desc = f:CreateFontString("ARTWORK")
 	desc:SetFontObject("GameFontHighlight")
 	desc:SetJustifyV("TOP")
 	desc:SetJustifyH("LEFT")
-	desc:Point("TOPLEFT", 18, -32)
-	desc:Point("BOTTOMRIGHT", -18, 48)
+	desc:SetPoint("TOPLEFT", 18, -32)
+	desc:SetPoint("BOTTOMRIGHT", -18, 48)
 	desc:SetText(L["Movers unlocked. Move them now and click Lock when you are done."])
 
 	local snapping = CreateFrame("CheckButton", f:GetName()..'CheckButton', f, "OptionsCheckButtonTemplate")
@@ -298,13 +298,13 @@ function E:CreateMoverPopup()
 	end)
 
 	align.text = align:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
-	align.text:Point('RIGHT', align, 'LEFT', -4, 0)
+	align.text:SetPoint('RIGHT', align, 'LEFT', -4, 0)
 	align.text:SetText(L["Grid Size:"])
 
 	--position buttons
-	snapping:Point("BOTTOMLEFT", 14, 10)
-	lock:Point("BOTTOMRIGHT", -14, 14)
-	align:Point('TOPRIGHT', lock, 'TOPLEFT', -4, -2)
+	snapping:SetPoint("BOTTOMLEFT", 14, 10)
+	lock:SetPoint("BOTTOMRIGHT", -14, 14)
+	align:SetPoint('TOPRIGHT', lock, 'TOPLEFT', -4, -2)
 
 	S:HandleCheckBox(snapping)
 	S:HandleButton(lock)
@@ -323,15 +323,15 @@ function E:CreateMoverPopup()
 	configMode:Point('BOTTOMRIGHT', lock, 'TOPRIGHT', 8, -5)
 	S:HandleDropDownBox(configMode, 148)
 	configMode.text = configMode:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
-	configMode.text:Point('RIGHT', configMode.backdrop, 'LEFT', -2, 0)
+	configMode.text:SetPoint('RIGHT', configMode.backdrop, 'LEFT', -2, 0)
 	configMode.text:SetText(L["Config Mode:"])
 
 	UIDropDownMenu_Initialize(configMode, ConfigMode_Initialize);
 
 	local nudgeFrame = CreateFrame('Frame', 'ElvUIMoverNudgeWindow', E.UIParent)
 	nudgeFrame:SetFrameStrata("DIALOG")
-	nudgeFrame:Width(200)
-	nudgeFrame:Height(110)
+	nudgeFrame:SetWidth(200)
+	nudgeFrame:SetHeight(110)
 	nudgeFrame:SetTemplate('Transparent')
 	nudgeFrame:Point('TOP', ElvUIMoverPopupWindow, 'BOTTOM', 0, -15)
 	nudgeFrame:SetFrameLevel(100)
@@ -344,20 +344,20 @@ function E:CreateMoverPopup()
 	desc:SetFontObject("GameFontHighlight")
 	desc:SetJustifyV("TOP")
 	desc:SetJustifyH("LEFT")
-	desc:Point("TOPLEFT", 18, -15)
-	desc:Point("BOTTOMRIGHT", -18, 28)
+	desc:SetPoint("TOPLEFT", 18, -15)
+	desc:SetPoint("BOTTOMRIGHT", -18, 28)
 	desc:SetJustifyH('CENTER')
 	nudgeFrame.title = desc
 
 	local header = CreateFrame('Button', nil, nudgeFrame)
 	header:SetTemplate('Default', true)
-	header:Width(100); header:Height(25)
-	header:Point("CENTER", nudgeFrame, 'TOP')
+	header:SetWidth(100); header:SetHeight(25)
+	header:SetPoint("CENTER", nudgeFrame, 'TOP')
 	header:SetFrameLevel(header:GetFrameLevel() + 2)
 
 	local title = header:CreateFontString("OVERLAY")
 	title:FontTemplate()
-	title:Point("CENTER", header, "CENTER")
+	title:SetPoint("CENTER", header, "CENTER")
 	title:SetText(L["Nudge"])
 
 	local xOffset = CreateFrame('EditBox', nudgeFrame:GetName()..'XEditBox', nudgeFrame, 'InputBoxTemplate')
@@ -389,9 +389,9 @@ function E:CreateMoverPopup()
 	end)
 
 	xOffset.text = xOffset:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
-	xOffset.text:Point('RIGHT', xOffset, 'LEFT', -4, 0)
+	xOffset.text:SetPoint('RIGHT', xOffset, 'LEFT', -4, 0)
 	xOffset.text:SetText('X:')
-	xOffset:Point('BOTTOMRIGHT', nudgeFrame, 'CENTER', -6, 8)
+	xOffset:SetPoint('BOTTOMRIGHT', nudgeFrame, 'CENTER', -6, 8)
 	nudgeFrame.xOffset = xOffset
 	S:HandleEditBox(xOffset)
 
@@ -424,15 +424,15 @@ function E:CreateMoverPopup()
 	end)
 
 	yOffset.text = yOffset:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
-	yOffset.text:Point('RIGHT', yOffset, 'LEFT', -4, 0)
+	yOffset.text:SetPoint('RIGHT', yOffset, 'LEFT', -4, 0)
 	yOffset.text:SetText('Y:')
-	yOffset:Point('BOTTOMLEFT', nudgeFrame, 'CENTER', 16, 8)
+	yOffset:SetPoint('BOTTOMLEFT', nudgeFrame, 'CENTER', 16, 8)
 	nudgeFrame.yOffset = yOffset
 	S:HandleEditBox(yOffset)
 
 	local resetButton = CreateFrame("Button", nudgeFrame:GetName()..'ResetButton', nudgeFrame, "UIPanelButtonTemplate")
 	resetButton:SetText(RESET)
-	resetButton:Point("TOP", nudgeFrame, "CENTER", 0, 2)
+	resetButton:SetPoint("TOP", nudgeFrame, "CENTER", 0, 2)
 	resetButton:Size(100, 25)
 	resetButton:SetScript("OnClick", function()
 		if ElvUIMoverNudgeWindow.child.textString then
@@ -442,7 +442,7 @@ function E:CreateMoverPopup()
 	S:HandleButton(resetButton)
 
 	local upButton = CreateFrame('Button', nudgeFrame:GetName()..'UpButton', nudgeFrame, 'UIPanelSquareButton')
-	upButton:Point('BOTTOMRIGHT', nudgeFrame, 'BOTTOM', -6, 4)
+	upButton:SetPoint('BOTTOMRIGHT', nudgeFrame, 'BOTTOM', -6, 4)
 	upButton:SetScript('OnClick', function()
 		E:NudgeMover(nil, 1)
 	end)
@@ -450,7 +450,7 @@ function E:CreateMoverPopup()
 	S:HandleButton(upButton)
 
 	local downButton = CreateFrame('Button', nudgeFrame:GetName()..'DownButton', nudgeFrame, 'UIPanelSquareButton')
-	downButton:Point('BOTTOMLEFT', nudgeFrame, 'BOTTOM', 6, 4)
+	downButton:SetPoint('BOTTOMLEFT', nudgeFrame, 'BOTTOM', 6, 4)
 	downButton:SetScript('OnClick', function()
 		E:NudgeMover(nil, -1)
 	end)
@@ -458,7 +458,7 @@ function E:CreateMoverPopup()
 	S:HandleButton(downButton)
 
 	local leftButton = CreateFrame('Button', nudgeFrame:GetName()..'LeftButton', nudgeFrame, 'UIPanelSquareButton')
-	leftButton:Point('RIGHT', upButton, 'LEFT', -6, 0)
+	leftButton:SetPoint('RIGHT', upButton, 'LEFT', -6, 0)
 	leftButton:SetScript('OnClick', function()
 		E:NudgeMover(-1)
 	end)
@@ -466,7 +466,7 @@ function E:CreateMoverPopup()
 	S:HandleButton(leftButton)
 
 	local rightButton = CreateFrame('Button', nudgeFrame:GetName()..'RightButton', nudgeFrame, 'UIPanelSquareButton')
-	rightButton:Point('LEFT', downButton, 'RIGHT', 6, 0)
+	rightButton:SetPoint('LEFT', downButton, 'RIGHT', 6, 0)
 	rightButton:SetScript('OnClick', function()
 		E:NudgeMover(1)
 	end)

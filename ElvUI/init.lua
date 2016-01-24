@@ -76,7 +76,7 @@ function AddOn:OnInitialize()
 	end
 
 	if self.private.general.pixelPerfect then
-		self.Border = self.mult;
+		self.Border = 1;
 		self.Spacing = 0;
 		self.PixelMode = true;
 	end

@@ -64,28 +64,28 @@ function E:DropDown(list, frame, xOffset, yOffset)
 		end
 
 		frame.buttons[i]:Show()
-		frame.buttons[i]:Height(BUTTON_HEIGHT)
-		frame.buttons[i]:Width(BUTTON_WIDTH)
+		frame.buttons[i]:SetHeight(BUTTON_HEIGHT)
+		frame.buttons[i]:SetWidth(BUTTON_WIDTH)
 		frame.buttons[i].text:SetText(list[i].text)
 		frame.buttons[i].func = list[i].func
 		frame.buttons[i]:SetScript("OnClick", OnClick)
 
 		if i == 1 then
-			frame.buttons[i]:Point("TOPLEFT", frame, "TOPLEFT", PADDING, -PADDING)
+			frame.buttons[i]:SetPoint("TOPLEFT", frame, "TOPLEFT", PADDING, -PADDING)
 		else
-			frame.buttons[i]:Point("TOPLEFT", frame.buttons[i-1], "BOTTOMLEFT")
+			frame.buttons[i]:SetPoint("TOPLEFT", frame.buttons[i-1], "BOTTOMLEFT")
 		end
 	end
 
-	frame:Height((#list * BUTTON_HEIGHT) + PADDING * 2)
-	frame:Width(BUTTON_WIDTH + PADDING * 2)
+	frame:SetHeight((#list * BUTTON_HEIGHT) + PADDING * 2)
+	frame:SetWidth(BUTTON_WIDTH + PADDING * 2)
 
 	local UIScale = UIParent:GetScale();
 	local x, y = GetCursorPosition();
 	x = x/UIScale
 	y = y/UIScale
 	frame:ClearAllPoints()
-	frame:Point("TOPLEFT", UIParent, "BOTTOMLEFT", x + xOffset, y + yOffset)
+	frame:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", x + xOffset, y + yOffset)
 
 	ToggleFrame(frame)
 end

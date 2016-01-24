@@ -9,7 +9,7 @@ function UF:Construct_NameText(frame)
 	local parent = frame.RaisedElementParent or frame
 	local name = parent:CreateFontString(nil, 'OVERLAY')
 	UF:Configure_FontString(name)
-	name:Point('CENTER', frame.Health)
+	name:SetPoint('CENTER', frame.Health)
 
 	return name
 end
@@ -46,7 +46,7 @@ function UF:PostNamePosition(frame, unit)
 		frame.Power.value:SetAlpha(db.power.hideonnpc and 0 or 1)
 
 		frame.Name:ClearAllPoints()
-		frame.Name:Point(frame.Power.value:GetPoint())
+		frame.Name:SetPoint(frame.Power.value:GetPoint())
 	end
 end
 

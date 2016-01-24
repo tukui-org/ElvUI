@@ -74,8 +74,8 @@ local function LoadSkin()
 
 			if button.shine then
 				button.shine:ClearAllPoints()
-				button.shine:Point('TOPLEFT', button, 'TOPLEFT', -3, 3)
-				button.shine:Point('BOTTOMRIGHT', button, 'BOTTOMRIGHT', 3, -3)
+				button.shine:SetPoint('TOPLEFT', button, 'TOPLEFT', -3, 3)
+				button.shine:SetPoint('BOTTOMRIGHT', button, 'BOTTOMRIGHT', 3, -3)
 			end
 
 			if icon then
@@ -177,7 +177,7 @@ local function LoadSkin()
 		if index > 1 then
 			local point, attachTo, anchorPoint, _, y = button:GetPoint()
 			button:ClearAllPoints()
-			button:Point(point, attachTo, anchorPoint, 0, y)
+			button:SetPoint(point, attachTo, anchorPoint, 0, y)
 		end
 	end
 
@@ -260,7 +260,7 @@ local function LoadSkin()
 		statusbar:CreateBackdrop("Default")
 
 		statusbar.rankText:ClearAllPoints()
-		statusbar.rankText:Point("CENTER")
+		statusbar.rankText:SetPoint("CENTER")
 	end
 
 	--Bottom Tabs
@@ -269,7 +269,7 @@ local function LoadSkin()
 	end
 
 	SpellBookFrameTabButton1:ClearAllPoints()
-	SpellBookFrameTabButton1:Point('TOPLEFT', SpellBookFrame, 'BOTTOMLEFT', 0, 2)
+	SpellBookFrameTabButton1:SetPoint('TOPLEFT', SpellBookFrame, 'BOTTOMLEFT', 0, 2)
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)

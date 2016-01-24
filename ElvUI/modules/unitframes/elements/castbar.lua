@@ -43,7 +43,7 @@ function UF:Construct_Castbar(self, direction, moverName)
 
 	castbar.Text = castbar:CreateFontString(nil, 'OVERLAY')
 	UF:Configure_FontString(castbar.Text)
-	castbar.Text:Point("LEFT", castbar, "LEFT", 4, 0)
+	castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 0)
 	castbar.Text:SetTextColor(0.84, 0.75, 0.65)
 
 	castbar.Spark = castbar:CreateTexture(nil, 'OVERLAY')
@@ -156,20 +156,20 @@ function UF:SetCastTicks(frame, numTicks, extraTickRatio)
 			ticks[i]:SetTexture(E["media"].normTex)
 			ticks[i]:SetVertexColor(0, 0, 0, 0.8)
 			ticks[i]:Width(1)
-			ticks[i]:Height(frame:GetHeight())
+			ticks[i]:SetHeight(frame:GetHeight())
 		end
 
 		--[[if(ms ~= 0) then
 			local perc = (w / frame.max) * (ms / 1e5)
 			if(perc > 1) then perc = 1 end
 
-			ticks[i]:Width((w * perc) / (numTicks + extraTickRatio))
+			ticks[i]:SetWidth((w * perc) / (numTicks + extraTickRatio))
 		else
 			ticks[i]:Width(1)
 		end]]
 
 		ticks[i]:ClearAllPoints()
-		ticks[i]:Point("RIGHT", frame, "LEFT", d * i, 0)
+		ticks[i]:SetPoint("RIGHT", frame, "LEFT", d * i, 0)
 		ticks[i]:Show()
 	end
 end

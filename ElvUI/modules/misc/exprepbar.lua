@@ -196,7 +196,7 @@ function M:CreateBar(name, onEnter, ...)
 
 	bar.text = bar.statusBar:CreateFontString(nil, 'OVERLAY')
 	bar.text:FontTemplate()
-	bar.text:Point('CENTER')
+	bar.text:SetPoint('CENTER')
 
 	E.FrameLocks[name] = true
 

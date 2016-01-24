@@ -234,7 +234,7 @@ function UF:Update_FocusFrame(frame, db)
 				portrait:Show()
 				portrait.backdrop:Show()
 				portrait.backdrop:ClearAllPoints()
-				portrait.backdrop:Point("TOPRIGHT", frame, "TOPRIGHT", (E.PixelMode and -1 or 0) - POWERBAR_OFFSET, 0)
+				portrait.backdrop:SetPoint("TOPRIGHT", frame, "TOPRIGHT", (E.PixelMode and -1 or 0) - POWERBAR_OFFSET, 0)
 
 				if db.portrait.style == '3D' then
 					portrait:SetFrameLevel(frame:GetFrameLevel() + 5)
@@ -291,7 +291,7 @@ function UF:Update_FocusFrame(frame, db)
 				point = point:gsub("ICON", "")
 
 				threat.texIcon:ClearAllPoints()
-				threat.texIcon:Point(point, frame.Health, point)
+				threat.texIcon:SetPoint(point, frame.Health, point)
 			end
 		elseif frame:IsElementEnabled('Threat') then
 			frame:DisableElement('Threat')
@@ -321,9 +321,9 @@ function UF:Update_FocusFrame(frame, db)
 		local rows = db.buffs.numrows
 
 		if USE_POWERBAR_OFFSET then
-			buffs:Width(UNIT_WIDTH - POWERBAR_OFFSET)
+			buffs:SetWidth(UNIT_WIDTH - POWERBAR_OFFSET)
 		else
-			buffs:Width(UNIT_WIDTH)
+			buffs:SetWidth(UNIT_WIDTH)
 		end
 
 		buffs.forceShow = frame.forceShowAuras
@@ -331,7 +331,7 @@ function UF:Update_FocusFrame(frame, db)
 		buffs.size = db.buffs.sizeOverride ~= 0 and db.buffs.sizeOverride or ((((buffs:GetWidth() - (buffs.spacing*(buffs.num/rows - 1))) / buffs.num)) * rows)
 
 		if db.buffs.sizeOverride and db.buffs.sizeOverride > 0 then
-			buffs:Width(db.buffs.perrow * db.buffs.sizeOverride)
+			buffs:SetWidth(db.buffs.perrow * db.buffs.sizeOverride)
 		end
 
 		local x, y = E:GetXYOffset(db.buffs.anchorPoint)
@@ -363,9 +363,9 @@ function UF:Update_FocusFrame(frame, db)
 		local rows = db.debuffs.numrows
 
 		if USE_POWERBAR_OFFSET then
-			debuffs:Width(UNIT_WIDTH - POWERBAR_OFFSET)
+			debuffs:SetWidth(UNIT_WIDTH - POWERBAR_OFFSET)
 		else
-			debuffs:Width(UNIT_WIDTH)
+			debuffs:SetWidth(UNIT_WIDTH)
 		end
 
 		debuffs.forceShow = frame.forceShowAuras
@@ -373,7 +373,7 @@ function UF:Update_FocusFrame(frame, db)
 		debuffs.size = db.debuffs.sizeOverride ~= 0 and db.debuffs.sizeOverride or ((((debuffs:GetWidth() - (debuffs.spacing*(debuffs.num/rows - 1))) / debuffs.num)) * rows)
 
 		if db.debuffs.sizeOverride and db.debuffs.sizeOverride > 0 then
-			debuffs:Width(db.debuffs.perrow * db.debuffs.sizeOverride)
+			debuffs:SetWidth(db.debuffs.perrow * db.debuffs.sizeOverride)
 		end
 
 		local x, y = E:GetXYOffset(db.debuffs.anchorPoint)
@@ -508,7 +508,7 @@ function UF:Update_FocusFrame(frame, db)
 			GPS.onMouseOver = db.GPSArrow.onMouseOver
 			GPS.outOfRange = db.GPSArrow.outOfRange
 
-			GPS:Point("CENTER", frame, "CENTER", db.GPSArrow.xOffset, db.GPSArrow.yOffset)
+			GPS:SetPoint("CENTER", frame, "CENTER", db.GPSArrow.xOffset, db.GPSArrow.yOffset)
 		else
 			if frame:IsElementEnabled('GPS') then
 				frame:DisableElement('GPS')
@@ -582,8 +582,8 @@ function UF:Update_FocusFrame(frame, db)
 			auraBars.auraBarHeight = db.aurabar.height
 
 			auraBars:ClearAllPoints()
-			auraBars:Point(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', POWERBAR_OFFSET, yOffset)
-			auraBars:Point(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', -POWERBAR_OFFSET, yOffset)
+			auraBars:SetPoint(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', POWERBAR_OFFSET, yOffset)
+			auraBars:SetPoint(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', -POWERBAR_OFFSET, yOffset)
 
 			auraBars.buffColor = {buffColor.r, buffColor.g, buffColor.b}
 			if UF.db.colors.auraBarByType then
@@ -661,7 +661,7 @@ function UF:Update_FocusFrame(frame, db)
 			frame:Tag(frame.customTexts[objectName], objectDB.text_format or '')
 			frame.customTexts[objectName]:SetJustifyH(objectDB.justifyH or 'CENTER')
 			frame.customTexts[objectName]:ClearAllPoints()
-			frame.customTexts[objectName]:Point(objectDB.justifyH or 'CENTER', frame, objectDB.justifyH or 'CENTER', objectDB.xOffset, objectDB.yOffset)
+			frame.customTexts[objectName]:SetPoint(objectDB.justifyH or 'CENTER', frame, objectDB.justifyH or 'CENTER', objectDB.xOffset, objectDB.yOffset)
 		end
 	end
 

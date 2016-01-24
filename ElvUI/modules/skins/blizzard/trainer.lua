@@ -69,7 +69,7 @@ local function LoadSkin()
 	ClassTrainerStatusBar:SetStatusBarTexture(E["media"].normTex)
 	ClassTrainerStatusBar:CreateBackdrop("Default")
 	ClassTrainerStatusBar.rankText:ClearAllPoints()
-	ClassTrainerStatusBar.rankText:Point("CENTER", ClassTrainerStatusBar, "CENTER")
+	ClassTrainerStatusBar.rankText:SetPoint("CENTER", ClassTrainerStatusBar, "CENTER")
 end
 
 S:RegisterSkin("Blizzard_TrainerUI", LoadSkin)

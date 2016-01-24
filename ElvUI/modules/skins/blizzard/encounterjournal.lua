@@ -19,7 +19,7 @@ local function LoadSkin()
 
 	EJ.navBar:CreateBackdrop("Default")
 	EJ.navBar.backdrop:Point("TOPLEFT", -2, 0)
-	EJ.navBar.backdrop:Point("BOTTOMRIGHT")
+	EJ.navBar.backdrop:SetPoint("BOTTOMRIGHT")
 	S:HandleButton(EJ.navBar.home, true)
 
 	S:HandleEditBox(EJ.searchBox)
@@ -36,12 +36,12 @@ local function LoadSkin()
 	InstanceSelect.suggestTab.backdrop:SetTemplate("Default", true)
 	InstanceSelect.dungeonsTab.backdrop:SetTemplate("Default", true)
 	InstanceSelect.raidsTab.backdrop:SetTemplate("Default", true)
-	InstanceSelect.suggestTab:Width(InstanceSelect.suggestTab:GetWidth() + 24)
-	InstanceSelect.dungeonsTab:Width(InstanceSelect.dungeonsTab:GetWidth() + 10)
+	InstanceSelect.suggestTab:SetWidth(InstanceSelect.suggestTab:GetWidth() + 24)
+	InstanceSelect.dungeonsTab:SetWidth(InstanceSelect.dungeonsTab:GetWidth() + 10)
 	InstanceSelect.dungeonsTab:ClearAllPoints()
-	InstanceSelect.dungeonsTab:Point("BOTTOMLEFT", InstanceSelect.suggestTab, "BOTTOMRIGHT", 0, 0)
+	InstanceSelect.dungeonsTab:SetPoint("BOTTOMLEFT", InstanceSelect.suggestTab, "BOTTOMRIGHT", 0, 0)
 	InstanceSelect.raidsTab:ClearAllPoints()
-	InstanceSelect.raidsTab:Point("BOTTOMLEFT", InstanceSelect.dungeonsTab, "BOTTOMRIGHT", 0, 0)
+	InstanceSelect.raidsTab:SetPoint("BOTTOMLEFT", InstanceSelect.dungeonsTab, "BOTTOMRIGHT", 0, 0)
 	
 	--Encounter Info Frame
 	local EncounterInfo = EJ.encounter.info
@@ -52,23 +52,23 @@ local function LoadSkin()
 	EncounterJournalEncounterFrameInfoModelFrameShadow:Kill()
 	
 	EncounterInfo.instanceButton:ClearAllPoints()
-	EncounterInfo.instanceButton:Point("TOPLEFT", EncounterInfo, "TOPLEFT", 0, 15)
+	EncounterInfo.instanceButton:SetPoint("TOPLEFT", EncounterInfo, "TOPLEFT", 0, 15)
 	EncounterInfo.instanceTitle:ClearAllPoints()
-	EncounterInfo.instanceTitle:Point("BOTTOM", EncounterInfo.bossesScroll, "TOP", 10, 15)
+	EncounterInfo.instanceTitle:SetPoint("BOTTOM", EncounterInfo.bossesScroll, "TOP", 10, 15)
 	
 	EncounterInfo.difficulty:StripTextures()
 	EncounterInfo.reset:StripTextures()
 	S:HandleButton(EncounterInfo.reset)
 	S:HandleButton(EncounterInfo.difficulty)
 	EncounterInfo.difficulty:ClearAllPoints()
-	EncounterInfo.difficulty:Point("BOTTOMRIGHT", EncounterJournalEncounterFrameInstanceFrame, "TOPRIGHT", 1, 5)
+	EncounterInfo.difficulty:SetPoint("BOTTOMRIGHT", EncounterJournalEncounterFrameInstanceFrame, "TOPRIGHT", 1, 5)
 	EncounterInfo.reset:ClearAllPoints()
-	EncounterInfo.reset:Point("TOPRIGHT", EncounterInfo.difficulty, "TOPLEFT", -10, 0)
+	EncounterInfo.reset:SetPoint("TOPRIGHT", EncounterInfo.difficulty, "TOPLEFT", -10, 0)
 	EncounterJournalEncounterFrameInfoResetButtonTexture:SetTexture("Interface\\EncounterJournal\\UI-EncounterJournalTextures")
 	EncounterJournalEncounterFrameInfoResetButtonTexture:SetTexCoord(0.90625000, 0.94726563, 0.00097656, 0.02050781)
 	
 	EncounterInfo.bossesScroll:CreateBackdrop("Transparent")
-	EncounterInfo.bossesScroll.backdrop:Point("TOPLEFT", EncounterInfo.bossesScroll, "TOPLEFT", -25, E.Border)
+	EncounterInfo.bossesScroll.backdrop:SetPoint("TOPLEFT", EncounterInfo.bossesScroll, "TOPLEFT", -25, E.Border)
 	S:HandleScrollBar(EncounterInfo.bossesScroll.ScrollBar, 4)
 
 	
@@ -80,12 +80,12 @@ local function LoadSkin()
 
 	for _, scrollFrame in pairs(scrollFrames) do
 		scrollFrame:CreateBackdrop("Transparent")
-		scrollFrame:Height(EncounterInfo.overviewScroll:GetHeight() - (2 + E.Border))
-		scrollFrame:Width(370)
+		scrollFrame:SetHeight(EncounterInfo.overviewScroll:GetHeight() - (2 + E.Border))
+		scrollFrame:SetWidth(370)
 		scrollFrame:ClearAllPoints()
-		scrollFrame:Point("BOTTOMRIGHT", EncounterJournalEncounterFrame, "BOTTOMRIGHT", -1, 5)
-		scrollFrame.backdrop:Point("TOPLEFT", EncounterInfo.bossesScroll.backdrop, "TOPRIGHT", 5, 0)
-		scrollFrame.backdrop:Point("BOTTOMLEFT", EncounterInfo.bossesScroll.backdrop, "BOTTOMRIGHT", 5, 0)
+		scrollFrame:SetPoint("BOTTOMRIGHT", EncounterJournalEncounterFrame, "BOTTOMRIGHT", -1, 5)
+		scrollFrame.backdrop:SetPoint("TOPLEFT", EncounterInfo.bossesScroll.backdrop, "TOPRIGHT", 5, 0)
+		scrollFrame.backdrop:SetPoint("BOTTOMLEFT", EncounterInfo.bossesScroll.backdrop, "BOTTOMRIGHT", 5, 0)
 	end
 	
 	S:HandleScrollBar(EncounterInfo.overviewScroll.ScrollBar, 4)
@@ -95,9 +95,9 @@ local function LoadSkin()
 	EncounterInfo.lootScroll.filter:StripTextures()
 	S:HandleButton(EncounterInfo.lootScroll.filter)
 	EncounterInfo.lootScroll.filter:ClearAllPoints()
-	EncounterInfo.lootScroll.filter:Point("BOTTOMLEFT", EncounterInfo.lootScroll.backdrop, "TOPLEFT", 0, 5)
+	EncounterInfo.lootScroll.filter:SetPoint("BOTTOMLEFT", EncounterInfo.lootScroll.backdrop, "TOPLEFT", 0, 5)
 	EncounterInfo.lootScroll.classClearFilter:ClearAllPoints()
-	EncounterInfo.lootScroll.classClearFilter:Point("BOTTOM", EncounterInfo.lootScroll, "TOP", -10, -8)
+	EncounterInfo.lootScroll.classClearFilter:SetPoint("BOTTOM", EncounterInfo.lootScroll, "TOP", -10, -8)
 
 	EncounterInfo.detailsScroll.child.description:SetTextColor(1, 1, 1)
 	EncounterInfo.overviewScroll.child.loreDescription:SetTextColor(1, 1, 1)
@@ -141,14 +141,14 @@ local function LoadSkin()
 	--Encounter Instance Frame
 	local EncounterInstance = EJ.encounter.instance
 	EncounterInstance:CreateBackdrop("Transparent")
-	EncounterInstance:Height(EncounterInfo.bossesScroll:GetHeight())
+	EncounterInstance:SetHeight(EncounterInfo.bossesScroll:GetHeight())
 	EncounterInstance:ClearAllPoints()
-	EncounterInstance:Point("BOTTOMRIGHT", EncounterJournalEncounterFrame, "BOTTOMRIGHT", -1, 3)
+	EncounterInstance:SetPoint("BOTTOMRIGHT", EncounterJournalEncounterFrame, "BOTTOMRIGHT", -1, 3)
 	EncounterInstance.loreBG:SetSize(325, 280)
 	EncounterInstance.loreBG:ClearAllPoints()
-	EncounterInstance.loreBG:Point("TOP", EncounterInstance, "TOP", 0, 0)
+	EncounterInstance.loreBG:SetPoint("TOP", EncounterInstance, "TOP", 0, 0)
 	EncounterInstance.mapButton:ClearAllPoints()
-	EncounterInstance.mapButton:Point("BOTTOMLEFT", EncounterInstance.loreBG, "BOTTOMLEFT", 25, 35)
+	EncounterInstance.mapButton:SetPoint("BOTTOMLEFT", EncounterInstance.loreBG, "BOTTOMLEFT", 25, 35)
 	S:HandleScrollBar(EncounterInstance.loreScroll.ScrollBar, 4)
 	EncounterInstance.loreScroll.child.lore:SetTextColor(1, 1, 1)
 	
@@ -225,28 +225,28 @@ local function LoadSkin()
 
 		item.boss:SetTextColor(1, 1, 1)
 		item.boss:ClearAllPoints()
-		item.boss:Point("BOTTOMLEFT", 4, 7)
+		item.boss:SetPoint("BOTTOMLEFT", 4, 7)
 		item.slot:SetTextColor(1, 1, 1)
 		item.armorType:SetTextColor(1, 1, 1)
 		item.armorType:ClearAllPoints()
-		item.armorType:Point("BOTTOMRIGHT", item.name, "TOPLEFT", 264, -25)
+		item.armorType:SetPoint("BOTTOMRIGHT", item.name, "TOPLEFT", 264, -25)
 
 		item.bossTexture:SetAlpha(0)
 		item.bosslessTexture:SetAlpha(0)
 
 		item.icon:SetSize(36, 36)
-		item.icon:Point("TOPLEFT", E.PixelMode and 1 or 2, -(E.PixelMode and 5 or 7))
+		item.icon:SetPoint("TOPLEFT", E.PixelMode and 1 or 2, -(E.PixelMode and 5 or 7))
 
 		S:HandleIcon(item.icon)
 		item.icon:SetDrawLayer("OVERLAY")
 
 		item:CreateBackdrop("Transparent")
-		item.backdrop:Point("TOPLEFT", 0, -4)
-		item.backdrop:Point("BOTTOMRIGHT", 0, E.PixelMode and 3 or 0)
+		item.backdrop:SetPoint("TOPLEFT", 0, -4)
+		item.backdrop:SetPoint("BOTTOMRIGHT", 0, E.PixelMode and 3 or 0)
 
 		if i == 1 then
 			item:ClearAllPoints()
-			item:Point("TOPLEFT", EncounterInfo.lootScroll.scrollChild, "TOPLEFT", 5, 0)
+			item:SetPoint("TOPLEFT", EncounterInfo.lootScroll.scrollChild, "TOPLEFT", 5, 0)
 		end
 	end
 	
