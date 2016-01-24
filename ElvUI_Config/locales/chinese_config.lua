@@ -59,6 +59,16 @@ L["TEXT_FORMAT_DESC"] = [=[提供一个更改文字格式的方式
 'name:long' - 姓名显示限制于20字节内
 
 空白则为禁用. 如需技术支援请至 http://www.tukui.org]=];
+L["IGNORE_ITEMS_DESC"] = [=[Valid entries:
+
+Item links or item names
+
+Terms from Search Syntax. Examples:
+q:epic
+s:Tank Set
+q:epic&lvl:>300
+
+See "Bags->Search Syntax" for more.]=];
 
 --ActionBars
 L["Action Paging"] = "快捷列翻页"
@@ -127,6 +137,7 @@ L["Adjust the width of the bank frame."] = '调整银行框架宽度'
 L["Align the width of the bag frame to fit inside the chat box."] = '调整背包框的宽度以适应对话框'
 L["Align To Chat"] = '对齐到对话框'
 L["Ascending"] = "升序"
+L["Bag Sorting"] = true;
 L["Bag-Bar"] = "背包条"
 L["Bar Direction"] = "背包条排序方向"
 L["Blizzard Style"] = true;
@@ -138,6 +149,7 @@ L["Currency Format"] = "货币格式"
 L["Descending"] = "降序"
 L["Direction the bag sorting will use to allocate the items."] = '整理背包时物品排序方向.'
 L["Display Item Level"] = true;
+L["Display the junk icon on all grey items that can be vendored."] = true;
 L["Displays item level on equippable items."] = true;
 L["Enable/Disable the all-in-one bag."] = "开/关整合背包。"
 L["Enable/Disable the Bag-Bar."] = "启用/禁用 背包条."
@@ -147,7 +159,7 @@ L["Ignore Items"] = "忽略项目"
 L["Item Count Font"] = true;
 L["Item Level Threshold"] = true;
 L["Item Level"] = true;
-L["List of items to ignore when sorting. If you wish to add multiple items you must seperate the word with a comma."] = "忽略清单中的项目，如果你想添加多个项目，你必须用逗号将它们分开."
+L["Items in this list or items that match any Search Syntax query in this list will be ignored when sorting. Separate each entry with a comma."] = true;
 L["Money Format"] = true;
 L["Panel Width (Bags)"] = '背包面板宽度'
 L["Panel Width (Bank)"] = '银行面板宽度'
@@ -156,6 +168,7 @@ L["Set the size of your bag buttons."] = "设置背包按钮尺寸."
 L["Short (Whole Numbers)"] = true;
 L["Short"] = true;
 L["Show Coins"] = true;
+L["Show Junk Icon"] = true;
 L["Smart"] = true;
 L["Sort Direction"] = "排列方向"
 L["Sort Inverted"] = "倒序"
@@ -359,11 +372,13 @@ L["Chat Bubbles"] = true;
 L["Direction the bar moves on gains/losses"] = true;
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = '显示跨越屏幕底部的面板,仅仅是用于装饰.'
 L["Display a panel across the top of the screen. This is for cosmetic only."] = '显示跨越屏幕顶部的面板,仅仅是用于装饰.'
+L["Display battleground messages in the middle of the screen."] = true;
 L["Display emotion icons in chat."] = "在对话中显示表情图标."
 L["Emotion Icons"] = "表情图标"
 L["Enable/Disable the loot frame."] = "开/关物品掉落框架。"
 L["Enable/Disable the loot roll frame."] = "开/关掷骰子框架。"
 L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the consolidated buffs bar, and prevent you from seeing the minimap datatexts.|r"] = "开/关小地图. |cffFF0000警告: 这将使你无法看见综合增益框和小地图资讯栏.|r"
+L["Enhanced PVP Messages"] = true;
 L["General"] = "一般"
 L["Height of the objective tracker. Increase size to be able to see more objectives."] = true;
 L["Hide Error Text"] = "隐藏错误文字"
@@ -379,6 +394,7 @@ L["Objective Frame Height"] = true;
 L["Party / Raid"] = true;
 L["Party Only"] = true;
 L["Position of bonus quest reward frame relative to the objective tracker."] = true;
+L["Puts coordinates on the world map."] = true;
 L["Raid Only"] = true;
 L["Remove Backdrop"] = "去除背景"
 L["Reset all frames to their original positions."] = "重设所有框架至预设位置."
@@ -392,6 +408,7 @@ L["The font that appears on the text above players heads. |cffFF0000WARNING: Thi
 L["Toggle Tutorials"] = "教学开关"
 L["Top Panel"] = '顶部面板'
 L["When you go AFK display the AFK screen."] = true;
+L["World Map Coordinates"] = true;
 
 --Media
 L["Backdrop color of transparent frames"] = "透明框架的背景颜色"
@@ -519,8 +536,32 @@ L["X-Offset"] = true;
 L["Y-Offset"] = true;
 L["You can't remove a default name from the filter, disabling the name."] = "你不能删除过滤器的预设筛选名, 仅能停用此筛选名"
 
+--Profiles Export/Import
+L["Choose Export Format"] = true;
+L["Choose What To Export"] = true;
+L["Decode Text"] = true;
+L["Error decoding data. Import string may be corrupted!"] = true;
+L["Error exporting profile!"] = true;
+L["Export Now"] = true;
+L["Export Profile"] = true;
+L["Exported"] = true;
+L["Filters (All)"] = true;
+L["Filters (NamePlates)"] = true;
+L["Filters (UnitFrames)"] = true;
+L["Global (Account Settings)"] = true;
+L["Import Now"] = true;
+L["Import Profile"] = true;
+L["Importing"] = true;
+L["Plugin"] = true;
+L["Private (Character Settings)"] = true;
+L["Profile imported successfully!"] = true;
+L["Profile Name"] = true;
+L["Profile"] = true;
+L["Table"] = true;
+
 --Skins
 L["Achievement Frame"] = "成就"
+L["AddOn Manager"] = true;
 L["Alert Frames"] = "警报"
 L["Archaeology Frame"] = "考古学框架"
 L["Auction Frame"] = "拍卖"
@@ -536,7 +577,6 @@ L["Dressing Room"] = "试衣间"
 L["Encounter Journal"] = "地城导览"
 L["Glyph Frame"] = "雕文"
 L["Gossip Frame"] = "闲谈"
-L["Greeting Frame"] = "欢迎"
 L["Guild Bank"] = "公会银行"
 L["Guild Control Frame"] = "公会控制"
 L["Guild Frame"] = "公会"
@@ -552,6 +592,7 @@ L["Loss Control"] = "失去控制"
 L["Macro Frame"] = "巨集"
 L["Mail Frame"] = "信箱"
 L["Merchant Frame"] = "商人"
+L["Mirror Timers"] = true;
 L["Misc Frames"] = "其他"
 L["Mounts & Pets"] = "宠物"
 L["Non-Raid Frame"] = "非团队框架"
@@ -655,6 +696,7 @@ L["Camera Distance Scale"] = "视角镜头的距离"
 L["Castbar"] = "施法条"
 L["Center"] = '置中'
 L["Check if you are in range to cast spells on this specific unit."] = "检查你是否在技能有效范围内."
+L["Choose UIPARENT to prevent it from hiding with the unitframe."] = true;
 L["Class Backdrop"] = "生命条背景职业色"
 L["Class Castbars"] = "施法条职业色"
 L["Class Color Override"] = "职业色覆盖"
@@ -829,6 +871,7 @@ L["Overlay"] = "重叠显示"
 L["Override any custom visibility setting in certain situations, EX: Only show groups 1 and 2 inside a 10 man instance."] = "复写可见性的设定, 例如: 在10人副本里只显示1队和2队"
 L["Override the default class color setting."] = "覆盖默认的职业色设置."
 L["Owners Name"] = true;
+L["Parent"] = true;
 L["Party Pets"] = "队伍宠物"
 L["Party Targets"] = "队伍目标"
 L["Per Row"] = "每行"

@@ -96,6 +96,16 @@ L["TEXT_FORMAT_DESC"] = [=[글자가 표시되는 형식을 변경할 수 있습
 |cffceff00name:long|r : 최대 20글자
 
 표시하고 싶지 않으면 빈칸으로 두면 되며, 자세한 정보는 |cff2eb7e4www.tukui.org|r 에서 확인하세요.]=];
+L["IGNORE_ITEMS_DESC"] = [=[Valid entries:
+
+Item links or item names
+
+Terms from Search Syntax. Examples:
+q:epic
+s:Tank Set
+q:epic&lvl:>300
+
+See "Bags->Search Syntax" for more.]=];
 
 --ActionBars
 L["Action Paging"] = "페이지 자동전환 조건"
@@ -174,6 +184,7 @@ L["Adjust the width of the bank frame."] = "통합은행 프레임의 가로길�
 L["Align the width of the bag frame to fit inside the chat box."] = "통합은행 프레임의 가로길이를 좌측 패널, 통합가방 프레임의 가로길이를 우측 패널 각각의 가로길이에 맞춥니다."
 L["Align To Chat"] = "패널에 맞춤"
 L["Ascending"] = "오름차순"
+L["Bag Sorting"] = true;
 L["Bag-Bar"] = "가방바"
 L["Bar Direction"] = "바 방향"
 L["Blizzard Style"] = "블리자드 기본"
@@ -185,6 +196,7 @@ L["Currency Format"] = "화폐 표시방법"
 L["Descending"] = "내림차순"
 L["Direction the bag sorting will use to allocate the items."] = "정렬기능을 실행할 때 체크 시 아이템이 가방칸의 우측하단을, 체크 해제 시 좌측상단을 기준으로 모아서 정렬됩니다."
 L["Display Item Level"] = "템렙 표시";
+L["Display the junk icon on all grey items that can be vendored."] = true;
 L["Displays item level on equippable items."] = "착용 가능한 아이템의 경우 아이템 슬롯에 템렙을 표시합니다."
 L["Enable/Disable the all-in-one bag."] = "통합가방 기능을 사용할지 여부를 결정합니다."
 L["Enable/Disable the Bag-Bar."] = "가방바를 사용할지 여부를 결정합니다."
@@ -194,7 +206,7 @@ L["Ignore Items"] = "정렬 예외 아이템 목록"
 L["Item Count Font"] = true;
 L["Item Level Threshold"] = "템렙표시 커트라인"
 L["Item Level"] = "아이템 레벨"
-L["List of items to ignore when sorting. If you wish to add multiple items you must seperate the word with a comma."] = "정렬기능이 실행될 때 여기에 적힌 아이템은 정렬하지 않고 놔둡니다. 여러 아이템을 등록할 수 있으며 쉼표(,)로 이어서 쓰세요."
+L["Items in this list or items that match any Search Syntax query in this list will be ignored when sorting. Separate each entry with a comma."] = true;
 L["Money Format"] = "소지금 표시방법"
 L["Panel Width (Bags)"] = "통합가방 프레임 가로길이"
 L["Panel Width (Bank)"] = "통합은행 프레임 가로길이"
@@ -203,6 +215,7 @@ L["Set the size of your bag buttons."] = "가방바에서 슬롯의 크기를 �
 L["Short (Whole Numbers)"] = "골드만"
 L["Short"] = "짧게"
 L["Show Coins"] = "동전 이미지로 보기"
+L["Show Junk Icon"] = true;
 L["Smart"] = "스마트"
 L["Sort Direction"] = "정렬 방법"
 L["Sort Inverted"] = "아래로 정렬"
@@ -407,13 +420,13 @@ L["Chat Bubbles"] = true;
 L["Direction the bar moves on gains/losses"] = "바의 증감방향을 결정합니다."
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = "화면 하단에 꾸미기 용도의 바를 생성합니다."
 L["Display a panel across the top of the screen. This is for cosmetic only."] = "화면 상단에 꾸미기 용도의 바를 생성합니다."
+L["Display battleground messages in the middle of the screen."] = true;
 L["Display emotion icons in chat."] = "메시지 안에 이모티콘이 있으면 그림으로 바꿔 보여줍니다."
 L["Emotion Icons"] = "이모티콘 전환"
 L["Enable/Disable the loot frame."] = "주사위 굴림 및 전리품 획득 확인창의 사용 여부를 결정합니다.|n|n이 창은 |cff2eb7e4/loot|r 명령어로 볼 수 있습니다."
 L["Enable/Disable the loot roll frame."] = "ElvUI 디자인의 입찰 / 차비 / 마력추출을 선택하는 주사위 굴림창 사용 여부를 결정합니다."
 L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the consolidated buffs bar, and prevent you from seeing the minimap datatexts.|r"] = "ElvUI 에서 제공하는 미니맵 기능의 사용 여부를 결정합니다. 사용하지 않을 시 미니맵에 붙어있던 시너지버프바와 정보문자도 같이 사용할 수 없습니다."
-L["Enhance Raid Browser"] = "기타공격대창 향상"
-L["Enhance the raid browser frame by adding item level and talent spec information, also add average item level of group information to tooltips."] = "기타 공격대창 검색탭에 템렙과 특성을 표시하고, 파티의 평균템렙을 툴팁에 추가해줍니다."
+L["Enhanced PVP Messages"] = true;
 L["General"] = "일반"
 L["Height of the objective tracker. Increase size to be able to see more objectives."] = "퀘스트프레임의 길이를 결정합니다."
 L["Hide Error Text"] = "전투중 에러 숨기기"
@@ -429,6 +442,7 @@ L["Objective Frame Height"] = "퀘스트프레임 세로길이"
 L["Party / Raid"] = "파티&레이드 채널로"
 L["Party Only"] = "파티채널만"
 L["Position of bonus quest reward frame relative to the objective tracker."] = "퀘스트프레임에서 표시될 목표보상의 위치를 결정합니다."
+L["Puts coordinates on the world map."] = true;
 L["Raid Only"] = "레이드채널만"
 L["Remove Backdrop"] = "표시하지 않음"
 L["Reset all frames to their original positions."] = "ElvUI 에서 움직일 수 있는 모든 프레임의 위치를 기본 위치로 초기화합니다."
@@ -442,6 +456,7 @@ L["The font that appears on the text above players heads. |cffFF0000WARNING: Thi
 L["Toggle Tutorials"] = "애드온 튜토리얼 확인"
 L["Top Panel"] = "상단 패널 표시"
 L["When you go AFK display the AFK screen."] = "자리비움 시 UI가 자리비움모드로 전환됩니다."
+L["World Map Coordinates"] = true;
 
 --Media
 L["Backdrop color of transparent frames"] = "ElvUI에서 생성하는 모든 반투명한 프레임의 배경 색상과 투명도를 결정합니다."
@@ -569,8 +584,32 @@ L["X-Offset"] = "위치 x 좌표"
 L["Y-Offset"] = "위치 y 좌표"
 L["You can't remove a default name from the filter, disabling the name."] = "기본으로 있었던 이름 필터는 제거할 수 없습니다. 비활성화 처리하세요."
 
+--Profiles Export/Import
+L["Choose Export Format"] = true;
+L["Choose What To Export"] = true;
+L["Decode Text"] = true;
+L["Error decoding data. Import string may be corrupted!"] = true;
+L["Error exporting profile!"] = true;
+L["Export Now"] = true;
+L["Export Profile"] = true;
+L["Exported"] = true;
+L["Filters (All)"] = true;
+L["Filters (NamePlates)"] = true;
+L["Filters (UnitFrames)"] = true;
+L["Global (Account Settings)"] = true;
+L["Import Now"] = true;
+L["Import Profile"] = true;
+L["Importing"] = true;
+L["Plugin"] = true;
+L["Private (Character Settings)"] = true;
+L["Profile imported successfully!"] = true;
+L["Profile Name"] = true;
+L["Profile"] = true;
+L["Table"] = true;
+
 --Skins
 L["Achievement Frame"] = "업적창"
+L["AddOn Manager"] = true;
 L["Alert Frames"] = "알림 프레임"
 L["Archaeology Frame"] = "고고학 창"
 L["Auction Frame"] = "경매장"
@@ -586,7 +625,6 @@ L["Dressing Room"] = "아이템 미리보기 창"
 L["Encounter Journal"] = "던전 도감"
 L["Glyph Frame"] = "문양 창"
 L["Gossip Frame"] = "NPC 대화 창"
-L["Greeting Frame"] = "인사말 프레임"
 L["Guild Bank"] = "길드 은행"
 L["Guild Control Frame"] = "길드 관리 창"
 L["Guild Frame"] = "길드창"
@@ -602,6 +640,7 @@ L["Loss Control"] = "제어손실 표시 창"
 L["Macro Frame"] = "매크로 창"
 L["Mail Frame"] = "우편함"
 L["Merchant Frame"] = "상인 창"
+L["Mirror Timers"] = true;
 L["Misc Frames"] = "기타 프레임"
 L["Mounts & Pets"] = "탈것과 애완동물 창"
 L["Non-Raid Frame"] = "비공격대 프레임"
@@ -705,6 +744,7 @@ L["Camera Distance Scale"] = "3d 모델 크기"
 L["Castbar"] = "시전바"
 L["Center"] = "정 중앙"
 L["Check if you are in range to cast spells on this specific unit."] = "이 유닛이 사거리 밖에 있으면 투명도를 적용합니다.|n|n체크를 해제하면 거리에 상관없이 투명도를 적용하지 않습니다."
+L["Choose UIPARENT to prevent it from hiding with the unitframe."] = true;
 L["Class Backdrop"] = "배경에 직업색상 적용"
 L["Class Castbars"] = "직업색상 사용"
 L["Class Color Override"] = "직업색 적용 여부"
@@ -879,6 +919,7 @@ L["Overlay"] = "덮어씌우기"
 L["Override any custom visibility setting in certain situations, EX: Only show groups 1 and 2 inside a 10 man instance."] = "현재 입던해있는 던전의 상태에 맞춰 표시할 파티수를 자동으로 제한합니다.|n|n예로 10인 인스안에 있으면 1,2파티만 표시됩니다."
 L["Override the default class color setting."] = "이 유닛프레임의 체력바에만 직업색을 적용하도록 따로 설정하는 것이 가능합니다."
 L["Owners Name"] = "주인 이름"
+L["Parent"] = true;
 L["Party Pets"] = "파티원 소환수"
 L["Party Targets"] = "파티원의 대상"
 L["Per Row"] = "한 줄에 표시할 아이콘 수"

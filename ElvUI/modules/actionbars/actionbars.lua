@@ -345,7 +345,7 @@ function AB:PLAYER_REGEN_ENABLED()
 end
 
 local function Vehicle_OnEvent(self, event)
-	if ( CanExitVehicle() and ActionBarController_GetCurrentActionBarState() == LE_ACTIONBAR_STATE_MAIN ) then
+	if ( CanExitVehicle() and ActionBarController_GetCurrentActionBarState() == LE_ACTIONBAR_STATE_MAIN ) and not E.db.general.minimap.icons.vehicleLeave.hide then
 		self:Show()
 		self:GetNormalTexture():SetVertexColor(1, 1, 1)
 		self:EnableMouse(true)
@@ -378,6 +378,7 @@ end
 function AB:CreateVehicleLeave()
 	local vehicle = CreateFrame("Button", 'LeaveVehicleButton', E.UIParent)
 	vehicle:Size(26)
+	vehicle:SetFrameStrata("HIGH")
 	vehicle:Point("BOTTOMLEFT", Minimap, "BOTTOMLEFT", 2, 2)
 	vehicle:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")
 	vehicle:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\vehicleexit")

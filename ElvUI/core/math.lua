@@ -2,9 +2,10 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 
 --Cache global variables
 local select, tonumber, assert, type, unpack = select, tonumber, assert, type, unpack
-local tinsert, tremove = tinsert, tremove
+local tinsert, tremove, tconcat = tinsert, tremove, table.concat
 local atan2, modf, ceil, floor, abs, sqrt, pi, mod = math.atan2, math.modf, math.ceil, math.floor, math.abs, math.sqrt, math.pi, mod
-local format, sub, upper = string.format, string.sub, string.upper
+local bit_band, bit_lshift, bit_rshift = bit.band, bit.lshift, bit.rshift
+local format, sub, upper, string_char, string_byte = string.format, string.sub, string.upper, string.char, string.byte
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local UnitPosition = UnitPosition

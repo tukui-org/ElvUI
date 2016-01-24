@@ -272,6 +272,14 @@ function UF:Update_TargetFrame(frame, db)
 			if db.power.strataAndLevel.useCustomLevel then
 				power:SetFrameLevel(db.power.strataAndLevel.frameLevel)
 			end
+			
+			if POWERBAR_DETACHED and db.power.parent == "UIPARENT" then
+				E.FrameLocks[power] = true
+				power:SetParent(E.UIParent)
+			else
+				E.FrameLocks[power] = nil
+				power:SetParent(frame)
+			end
 		elseif frame:IsElementEnabled('Power') then
 			frame:DisableElement('Power')
 			power:Hide()
@@ -345,7 +353,7 @@ function UF:Update_TargetFrame(frame, db)
 				threat.glow:Point("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
 				threat.glow:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
 
-				if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or USE_INSET_POWERBAR or POWERBAR_DETACHED then
+				if (not USE_POWERBAR) or USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or USE_INSET_POWERBAR or POWERBAR_DETACHED then
 					threat.glow:Point("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
 					threat.glow:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
 				end

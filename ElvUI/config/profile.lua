@@ -15,6 +15,7 @@ P['general'] = {
 	['autoAcceptInvite'] = false,
 	['bottomPanel'] = true,
 	['hideErrorFrame'] = true,
+	['enhancedPvpMessages'] = true,
 	['objectiveFrameHeight'] = 480,
 	['bonusObjectivePosition'] = "LEFT",
 
@@ -73,6 +74,7 @@ P['general'] = {
 				['position'] = "BOTTOMLEFT",
 				['xOffset'] = 2,
 				['yOffset'] = 2,
+				["hide"] = false,
 			},
 		}
 	},
@@ -127,6 +129,7 @@ P['bags'] = {
 	['currencyFormat'] = 'ICON_TEXT',
 	['moneyFormat'] = 'SMART',
 	['moneyCoins'] = true,
+	["junkIcon"] = false,
 	['ignoreItems'] = '',
 	['itemLevel'] = true,
 	['itemLevelThreshold'] = 1,
@@ -535,6 +538,7 @@ P['unitframe'] = {
 					["useCustomLevel"] = false,
 					["frameLevel"] = 1,
 				},
+				["parent"] = "FRAME",
 			},
 			['name'] = {
 				['position'] = 'CENTER',
@@ -566,7 +570,7 @@ P['unitframe'] = {
 				['anchorPoint'] = 'TOPLEFT',
 				['fontSize'] = 10,
 				['sortMethod'] = 'TIME_REMAINING',
-				['sortDirection'] = 'DESCENDING',				
+				['sortDirection'] = 'DESCENDING',
 				['clickThrough'] = false,
 				['playerOnly'] = true,
 				['noConsolidated'] = true,
@@ -617,6 +621,7 @@ P['unitframe'] = {
 				['detachFromFrame'] = false,
 				['detachedWidth'] = 250,
 				['autoHide'] = false,
+				["parent"] = "FRAME",
 			},
 			['aurabar'] = {
 				['enable'] = true,
@@ -683,6 +688,7 @@ P['unitframe'] = {
 					["useCustomLevel"] = false,
 					["frameLevel"] = 1,
 				},
+				["parent"] = "FRAME",
 			},
 			['name'] = {
 				['position'] = 'CENTER',
@@ -1467,7 +1473,7 @@ P['unitframe'] = {
 			['rangeCheck'] = true,
 			['growthDirection'] = 'DOWN',
 			["smartAuraPosition"] = "DISABLED",
-			['spacing'] = 25,		
+			['spacing'] = 25,
 			['width'] = 240,
 			['height'] = 47,
 			['pvpSpecIcon'] = true,

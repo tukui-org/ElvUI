@@ -2,6 +2,23 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local S = E:GetModule('Skins')
 local LBG = LibStub("LibButtonGlow-1.0", true)
 
+--Cache global variables
+--Lua functions
+local _G = _G
+local unpack, select = unpack, select
+local ceil = ceil
+--WoW API / Variables
+local GetNumMissingLootItems = GetNumMissingLootItems
+local GetMissingLootItemInfo = GetMissingLootItemInfo
+local GetItemQualityColor = GetItemQualityColor
+local C_LootHistory_GetNumItems = C_LootHistory.GetNumItems
+local GetLootSlotInfo = GetLootSlotInfo
+local UnitName = UnitName
+local IsFishingLoot = IsFishingLoot
+local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
+local LOOTFRAME_NUMBUTTONS = LOOTFRAME_NUMBUTTONS
+local LOOT = LOOT
+
 local function LoadSkin()
 	LootHistoryFrame:SetFrameStrata('HIGH')
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.loot ~= true then return end
@@ -48,7 +65,7 @@ local function LoadSkin()
 	S:HandleScrollBar(LootHistoryFrameScrollFrameScrollBar)
 
 	local function UpdateLoots(self)
-		local numItems = C_LootHistory.GetNumItems()
+		local numItems = C_LootHistory_GetNumItems()
 		for i=1, numItems do
 			local frame = LootHistoryFrame.itemFrames[i]
 
@@ -72,7 +89,6 @@ local function LoadSkin()
 	--masterloot
 	MasterLooterFrame:StripTextures()
 	MasterLooterFrame:SetTemplate()
-	MasterLooterFrame:SetFrameStrata('FULLSCREEN_DIALOG')
 
 	hooksecurefunc("MasterLooterFrame_Show", function()
 		local b = MasterLooterFrame.Item
@@ -164,7 +180,7 @@ local function LoadSkin()
 		local slot = (numLootToShow * (LootFrame.page - 1)) + index;
 		if(button and button:IsShown()) then
 			local texture, item, quantity, quality, locked, isQuestItem, questId, isActive;
-			if(LootFrame.AutoLootTablLootFramee)then
+			if (LootFrame.AutoLootTable) then
 				local entry = LootFrame.AutoLootTable[slot];
 				if( entry.hide ) then
 					button:Hide();

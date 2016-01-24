@@ -59,6 +59,16 @@ Name Formats:
 'name:long' - Name restricted to 20 characters
 
 To disable leave the field blank, if you need more information visit http://www.tukui.org]=];
+L["IGNORE_ITEMS_DESC"] = [=[Valid entries:
+
+Item links or item names
+
+Terms from Search Syntax. Examples:
+q:epic
+s:Tank Set
+q:epic&lvl:>300
+
+See "Bags->Search Syntax" for more.]=];
 
 --ActionBars
 L["Action Paging"] = true;
@@ -125,6 +135,7 @@ L["Adjust the width of the bank frame."] = true;
 L["Align the width of the bag frame to fit inside the chat box."] = true;
 L["Align To Chat"] = true;
 L["Ascending"] = true;
+L["Bag Sorting"] = true;
 L["Bag-Bar"] = true;
 L["Bar Direction"] = true;
 L["Blizzard Style"] = true;
@@ -136,6 +147,7 @@ L["Currency Format"] = true;
 L["Descending"] = true;
 L["Direction the bag sorting will use to allocate the items."] = true;
 L["Display Item Level"] = true;
+L["Display the junk icon on all grey items that can be vendored."] = true;
 L["Displays item level on equippable items."] = true;
 L["Enable/Disable the all-in-one bag."] = true;
 L["Enable/Disable the Bag-Bar."] = true;
@@ -145,7 +157,7 @@ L["Ignore Items"] = true;
 L["Item Count Font"] = true;
 L["Item Level Threshold"] = true;
 L["Item Level"] = true;
-L["List of items to ignore when sorting. If you wish to add multiple items you must seperate the word with a comma."] = true;
+L["Items in this list or items that match any Search Syntax query in this list will be ignored when sorting. Separate each entry with a comma."] = true;
 L["Money Format"] = true;
 L["Panel Width (Bags)"] = true;
 L["Panel Width (Bank)"] = true;
@@ -154,6 +166,7 @@ L["Set the size of your bag buttons."] = true;
 L["Short (Whole Numbers)"] = true;
 L["Short"] = true;
 L["Show Coins"] = true;
+L["Show Junk Icon"] = true;
 L["Smart"] = true;
 L["Sort Direction"] = true; --Also used in Buffs and Debuffs
 L["Sort Inverted"] = true;
@@ -348,11 +361,13 @@ L["Chat Bubbles"] = true;
 L["Direction the bar moves on gains/losses"] = true;
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = true;
 L["Display a panel across the top of the screen. This is for cosmetic only."] = true;
+L["Display battleground messages in the middle of the screen."] = true;
 L["Display emotion icons in chat."] = true;
 L["Emotion Icons"] = true;
 L["Enable/Disable the loot frame."] = true;
 L["Enable/Disable the loot roll frame."] = true;
 L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the consolidated buffs bar, and prevent you from seeing the minimap datatexts.|r"] = true;
+L["Enhanced PVP Messages"] = true;
 L["General"] = true;
 L["Height of the objective tracker. Increase size to be able to see more objectives."] = true;
 L["Hide Error Text"] = true;
@@ -368,6 +383,7 @@ L["Objective Frame Height"] = true;
 L["Party / Raid"] = true;
 L["Party Only"] = true;
 L["Position of bonus quest reward frame relative to the objective tracker."] = true;
+L["Puts coordinates on the world map."] = true;
 L["Raid Only"] = true;
 L["Remove Backdrop"] = true;
 L["Reset all frames to their original positions."] = true;
@@ -381,6 +397,7 @@ L["The font that appears on the text above players heads. |cffFF0000WARNING: Thi
 L["Toggle Tutorials"] = true;
 L["Top Panel"] = true;
 L["When you go AFK display the AFK screen."] = true;
+L["World Map Coordinates"] = true;
 
 --Media
 L["Backdrop color of transparent frames"] = true;
@@ -508,8 +525,32 @@ L["X-Offset"] = true;
 L["Y-Offset"] = true;
 L["You can't remove a default name from the filter, disabling the name."] = true;
 
+--Profiles Export/Import
+L["Choose Export Format"] = true;
+L["Choose What To Export"] = true;
+L["Decode Text"] = true;
+L["Error decoding data. Import string may be corrupted!"] = true;
+L["Error exporting profile!"] = true;
+L["Export Now"] = true;
+L["Export Profile"] = true;
+L["Exported"] = true;
+L["Filters (All)"] = true;
+L["Filters (NamePlates)"] = true;
+L["Filters (UnitFrames)"] = true;
+L["Global (Account Settings)"] = true;
+L["Import Now"] = true;
+L["Import Profile"] = true;
+L["Importing"] = true;
+L["Plugin"] = true;
+L["Private (Character Settings)"] = true;
+L["Profile imported successfully!"] = true;
+L["Profile Name"] = true;
+L["Profile"] = true;
+L["Table"] = true;
+
 --Skins
 L["Achievement Frame"] = true;
+L["AddOn Manager"] = true;
 L["Alert Frames"] = true;
 L["Archaeology Frame"] = true;
 L["Auction Frame"] = true;
@@ -525,7 +566,6 @@ L["Dressing Room"] = true;
 L["Encounter Journal"] = true;
 L["Glyph Frame"] = true;
 L["Gossip Frame"] = true;
-L["Greeting Frame"] = true;
 L["Guild Bank"] = true;
 L["Guild Control Frame"] = true;
 L["Guild Frame"] = true;
@@ -541,6 +581,7 @@ L["Loss Control"] = true;
 L["Macro Frame"] = true;
 L["Mail Frame"] = true;
 L["Merchant Frame"] = true;
+L["Mirror Timers"] = true;
 L["Misc Frames"] = true;
 L["Mounts & Pets"] = true;
 L["Non-Raid Frame"] = true;
@@ -644,6 +685,7 @@ L["Camera Distance Scale"] = true;
 L["Castbar"] = true;
 L["Center"] = true;
 L["Check if you are in range to cast spells on this specific unit."] = true;
+L["Choose UIPARENT to prevent it from hiding with the unitframe."] = true;
 L["Class Backdrop"] = true;
 L["Class Castbars"] = true;
 L["Class Color Override"] = true;
@@ -818,6 +860,7 @@ L["Overlay"] = true;
 L["Override any custom visibility setting in certain situations, EX: Only show groups 1 and 2 inside a 10 man instance."] = true;
 L["Override the default class color setting."] = true;
 L["Owners Name"] = true;
+L["Parent"] = true;
 L["Party Pets"] = true;
 L["Party Targets"] = true;
 L["Per Row"] = true;

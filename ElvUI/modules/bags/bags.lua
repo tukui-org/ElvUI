@@ -64,6 +64,7 @@ local CONTAINER_SCALE = CONTAINER_SCALE
 local CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y = CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y
 local CONTAINER_WIDTH = CONTAINER_WIDTH
 local CONTAINER_SPACING, VISIBLE_CONTAINER_SPACING = CONTAINER_SPACING, VISIBLE_CONTAINER_SPACING
+local LE_ITEM_QUALITY_POOR = LE_ITEM_QUALITY_POOR
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameTooltip, BankFrame, ElvUIReagentBankFrameItem1, GuildBankFrame, ElvUIBags
@@ -273,6 +274,16 @@ function B:UpdateCountDisplay()
 	end
 end
 
+function B:UpdateAllBagSlots()
+	if E.private.bags.enable ~= true then return; end
+
+	for _, bagFrame in pairs(self.BagFrames) do
+		if bagFrame.UpdateAllSlots then
+			bagFrame:UpdateAllSlots()
+		end
+	end
+end
+
 function B:UpdateSlot(bagID, slotID)
 	if (self.Bags[bagID] and self.Bags[bagID].numSlots ~= GetContainerNumSlots(bagID)) or not self.Bags[bagID] or not self.Bags[bagID][slotID] then
 		return;
@@ -280,22 +291,32 @@ function B:UpdateSlot(bagID, slotID)
 
 	local slot, _ = self.Bags[bagID][slotID], nil;
 	local bagType = self.Bags[bagID].type;
-	local texture, count, locked, _, readable = GetContainerItemInfo(bagID, slotID);
+	
+	slot.name, slot.rarity = nil, nil;
+	local texture, count, locked, readable, noValue
+	texture, count, locked, slot.rarity, readable, _, _, _, noValue = GetContainerItemInfo(bagID, slotID);
+
 	local clink = GetContainerItemLink(bagID, slotID);
 
 	slot:Show();
 	if(slot.questIcon) then
 		slot.questIcon:Hide();
 	end
-
-	slot.name, slot.rarity = nil, nil;
+	
+	if (slot.JunkIcon) then
+		if (slot.rarity) and (slot.rarity == LE_ITEM_QUALITY_POOR and not noValue) and E.db.bags.junkIcon then
+			slot.JunkIcon:Show();
+		else
+			slot.JunkIcon:Hide()
+		end
+	end
 
 	slot.itemLevel:SetText("")
 	if B.ProfessionColors[bagType] then
 		slot:SetBackdropBorderColor(unpack(B.ProfessionColors[bagType]))
 	elseif (clink) then
 		local iLvl, itemEquipLoc
-		slot.name, _, slot.rarity, iLvl, _, _, _, _, itemEquipLoc = GetItemInfo(clink);
+		slot.name, _, _, iLvl, _, _, _, _, itemEquipLoc = GetItemInfo(clink);
 
 		local isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID);
 		local r, g, b
@@ -349,6 +370,7 @@ function B:UpdateSlot(bagID, slotID)
 		slot.cooldown:Hide()
 		slot.hasItem = nil;
 	end
+
 	slot.readable = readable;
 
 	SetItemButtonTexture(slot, texture);
@@ -554,6 +576,15 @@ function B:Layout(isBank)
 						f.Bags[bagID][slotID].questIcon:Hide();
 					end
 
+					--.JunkIcon only exists for items created through ContainerFrameItemButtonTemplate
+					if not f.Bags[bagID][slotID].JunkIcon then
+						local JunkIcon = f.Bags[bagID][slotID]:CreateTexture(nil, "OVERLAY")
+						JunkIcon:SetAtlas("bags-junkcoin")
+						JunkIcon:SetPoint("TOPLEFT", 1, 0)
+						JunkIcon:Hide()
+						f.Bags[bagID][slotID].JunkIcon = JunkIcon
+					end
+
 					f.Bags[bagID][slotID].iconTexture = _G[f.Bags[bagID][slotID]:GetName()..'IconTexture'];
 					f.Bags[bagID][slotID].iconTexture:SetInside(f.Bags[bagID][slotID]);
 					f.Bags[bagID][slotID].iconTexture:SetTexCoord(unpack(E.TexCoords));
@@ -576,6 +607,10 @@ function B:Layout(isBank)
 
 				f.Bags[bagID][slotID]:SetID(slotID);
 				f.Bags[bagID][slotID]:Size(buttonSize);
+
+				if f.Bags[bagID][slotID].JunkIcon then
+					f.Bags[bagID][slotID].JunkIcon:Size(buttonSize/2)
+				end
 
 				f:UpdateSlot(bagID, slotID);
 
@@ -929,7 +964,7 @@ end
 function B:ContructContainerFrame(name, isBank)
 	local f = CreateFrame('Button', name, E.UIParent);
 	f:SetTemplate('Transparent');
-	f:SetFrameStrata('DIALOG');
+	f:SetFrameStrata('HIGH');
 	f.UpdateSlot = B.UpdateSlot;
 	f.UpdateAllSlots = B.UpdateAllSlots;
 	f.UpdateBagSlots = B.UpdateBagSlots;
@@ -993,21 +1028,19 @@ function B:ContructContainerFrame(name, isBank)
 		f.reagentFrame.cover = CreateFrame("Button", nil, f.reagentFrame)
 		f.reagentFrame.cover:SetAllPoints(f.reagentFrame)
 		f.reagentFrame.cover:SetTemplate("Default", true)
-		f.reagentFrame.cover:SetFrameStrata("FULLSCREEN_DIALOG")
+		f.reagentFrame.cover:SetFrameLevel(f.reagentFrame:GetFrameLevel() + 10)
 
 		f.reagentFrame.cover.purchaseButton = CreateFrame("Button", nil, f.reagentFrame.cover)
 		f.reagentFrame.cover.purchaseButton:Height(20)
 		f.reagentFrame.cover.purchaseButton:Width(150)
 		f.reagentFrame.cover.purchaseButton:Point('CENTER', f.reagentFrame.cover, 'CENTER')
+		E:GetModule("Skins"):HandleButton(f.reagentFrame.cover.purchaseButton)
 		f.reagentFrame.cover.purchaseButton:SetFrameLevel(f.reagentFrame.cover.purchaseButton:GetFrameLevel() + 2)
-		f.reagentFrame.cover.purchaseButton:SetTemplate('Default', true)
 		f.reagentFrame.cover.purchaseButton.text = f.reagentFrame.cover.purchaseButton:CreateFontString(nil, 'OVERLAY')
 		f.reagentFrame.cover.purchaseButton.text:FontTemplate()
 		f.reagentFrame.cover.purchaseButton.text:SetPoint('CENTER')
 		f.reagentFrame.cover.purchaseButton.text:SetJustifyH('CENTER')
 		f.reagentFrame.cover.purchaseButton.text:SetText(L["Purchase"])
-		f.reagentFrame.cover.purchaseButton:SetScript("OnEnter", self.Tooltip_Show)
-		f.reagentFrame.cover.purchaseButton:SetScript("OnLeave", self.Tooltip_Hide)
 		f.reagentFrame.cover.purchaseButton:SetScript("OnClick", function()
 			PlaySound("igMainMenuOption");
 			StaticPopup_Show("CONFIRM_BUY_REAGENTBANK_TAB");
@@ -1452,8 +1485,6 @@ function B:Initialize()
 	BankFrame:SetAlpha(0)
 	BankFrame:SetPoint("TOPLEFT")
 	BankFrame:SetScript("OnShow", nil)
-
-	StackSplitFrame:SetFrameStrata('DIALOG')
 end
 
 function B:UpdateContainerFrameAnchors()

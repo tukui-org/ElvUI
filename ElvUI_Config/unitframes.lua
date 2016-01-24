@@ -1311,10 +1311,11 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 				type = 'execute',
 				func = function() ACD:SelectGroup("ElvUI", "unitframe", "general", "allColorsGroup", "powerGroup") end,
 			},
-			spacer = {
-				type = 'description',
-				name = '',
+			position = {
+				type = 'select',
 				order = 5,
+				name = L["Text Position"],
+				values = positionValues,
 			},
 			xOffset = {
 				order = 6,
@@ -1330,32 +1331,37 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 				desc = L["Offset position for text."],
 				min = -300, max = 300, step = 1,
 			},
-			position = {
-				type = 'select',
-				order = 8,
-				name = L["Text Position"],
-				values = positionValues,
-			},
 		},
 	}
 
 	if hasDetatchOption then
 			config.args.attachTextToPower = {
 				type = 'toggle',
-				order = 9,
+				order = 8,
 				name = L["Attach Text to Power"],
 			}
 			config.args.detachFromFrame = {
 				type = 'toggle',
-				order = 10,
+				order = 9,
 				name = L["Detach From Frame"],
 			}
 			config.args.detachedWidth = {
 				type = 'range',
-				order = 11,
+				order = 10,
 				name = L["Detached Width"],
 				disabled = function() return not E.db.unitframe.units[groupName].power.detachFromFrame end,
 				min = 15, max = 450, step = 1,
+			}
+			config.args.parent = {
+				type = 'select',
+				order = 11,
+				name = L["Parent"],
+				desc = L["Choose UIPARENT to prevent it from hiding with the unitframe."],
+				disabled = function() return not E.db.unitframe.units[groupName].power.detachFromFrame end,
+				values = {
+					["FRAME"] = "FRAME",
+					["UIPARENT"] = "UIPARENT",
+				},
 			}
 	end
 	
@@ -2335,6 +2341,17 @@ E.Options.args.unitframe.args.player = {
 					order = 6,
 					type = 'toggle',
 					name = L["Auto-Hide"],
+				},
+				parent = {
+					type = 'select',
+					order = 7,
+					name = L["Parent"],
+					desc = L["Choose UIPARENT to prevent it from hiding with the unitframe."],
+					disabled = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
+					values = {
+						["FRAME"] = "FRAME",
+						["UIPARENT"] = "UIPARENT",
+					},
 				},
 			},
 		},

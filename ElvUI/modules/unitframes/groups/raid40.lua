@@ -67,7 +67,10 @@ end
 
 
 function UF:Raid40SmartVisibility(event)
-	if not self.db or (self.db and not self.db.enable) or (UF.db and not UF.db.smartRaidFilter) or self.isForced then return; end
+	if not self.db or (self.db and not self.db.enable) or (UF.db and not UF.db.smartRaidFilter) or self.isForced then
+		self.blockVisibilityChanges = false
+		return
+	end
 	local inInstance, instanceType = IsInInstance()
 
 	if event == "PLAYER_REGEN_ENABLED" then self:UnregisterEvent("PLAYER_REGEN_ENABLED") end
@@ -89,14 +92,17 @@ function UF:Raid40SmartVisibility(event)
 			if(maxPlayers == 40) then
 				self:Show()
 				self.isInstanceForced = true
+				self.blockVisibilityChanges = false
 				if(ElvUF_Raid40.numGroups ~= E:Round(maxPlayers/5) and event) then
 					UF:CreateAndUpdateHeaderGroup('raid40')
 				end
 			else
 				self:Hide()
+				self.blockVisibilityChanges = true
 			end
 		elseif self.db.visibility then
 			RegisterStateDriver(self, "visibility", self.db.visibility)
+			self.blockVisibilityChanges = false
 			if(ElvUF_Raid40.numGroups ~= self.db.numGroups) then
 				UF:CreateAndUpdateHeaderGroup('raid40')
 			end
@@ -375,7 +381,7 @@ function UF:Update_Raid40Frames(frame, db)
 				threat.glow:Point("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
 				threat.glow:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
 
-				if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or USE_INSET_POWERBAR then
+				if (not USE_POWERBAR) or USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or USE_INSET_POWERBAR then
 					threat.glow:Point("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
 					threat.glow:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
 				end

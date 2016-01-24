@@ -90,9 +90,16 @@ function UF:UpdateHoly(event, unit, powerType)
 	if db.classbar.detachFromFrame then
 		CLASSBAR_WIDTH = db.classbar.detachedWidth - (BORDER*2)
 	end
-
-	self.HolyPower:Width(CLASSBAR_WIDTH)
-
+    
+    --test fix for high resolution.. not sure why but its a pixel off
+    --CLASSBAR_WIDTH = CLASSBAR_WIDTH + 0.5
+	self.HolyPower:SetWidth(CLASSBAR_WIDTH)
+	--Note from Blazeflack:
+	--	It is now causing issues for regular resolutions.
+	--	When using uneven numbers for player UF width, the classbar is 1px too wide.
+	--	I suspect the issue stems from the pixel perfect script, it does not handle resolutions over 1920x1080 very well
+	--	A similar issue has been found with the warlock classbar and 2560x1440 resolution: http://www.tukui.org/forums/topic.php?id=35461
+	
 	if numHolyPower == 0 and db.classbar.autoHide then
 		self.HolyPower:Hide()
 		self.Health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+POWERBAR_OFFSET), -BORDER)
@@ -109,9 +116,9 @@ function UF:UpdateHoly(event, unit, powerType)
 				self.HolyPower[i]:SetAlpha(.2)
 			end
 			if db.classbar.fill == "spaced" then
-				self.HolyPower[i]:Width((self.HolyPower:GetWidth() - ((maxHolyPower == 5 and 7 or 13)*(maxHolyPower - 1))) / maxHolyPower)
+				self.HolyPower[i]:SetWidth((CLASSBAR_WIDTH - ((maxHolyPower == 5 and 7 or 13)*(maxHolyPower - 1))) / maxHolyPower)
 			else
-				self.HolyPower[i]:Width((self.HolyPower:GetWidth() - (maxHolyPower - 1)) / maxHolyPower)
+				self.HolyPower[i]:SetWidth((CLASSBAR_WIDTH - (maxHolyPower - 1)) / maxHolyPower)
 			end
 
 			self.HolyPower[i]:ClearAllPoints()
@@ -119,9 +126,9 @@ function UF:UpdateHoly(event, unit, powerType)
 				self.HolyPower[i]:SetPoint("LEFT", self.HolyPower)
 			else
 				if USE_MINI_CLASSBAR then
-					self.HolyPower[i]:Point("LEFT", self.HolyPower[i-1], "RIGHT", maxHolyPower == 5 and 7 or 13, 0)
+					self.HolyPower[i]:SetPoint("LEFT", self.HolyPower[i-1], "RIGHT", maxHolyPower == 5 and 7 or 13, 0)
 				else
-					self.HolyPower[i]:Point("LEFT", self.HolyPower[i-1], "RIGHT", 1, 0)
+					self.HolyPower[i]:SetPoint("LEFT", self.HolyPower[i-1], "RIGHT", 1, 0)
 				end
 			end
 
@@ -289,12 +296,27 @@ function UF:Construct_MageResourceBar(frame)
 	return bars
 end
 
-function UF:UpdateArcaneCharges(event, unit, arcaneCharges, maxCharges)
+function UF:UpdateArcaneCharges(event, arcaneCharges, maxCharges)
 	local frame = self:GetParent()
 	local db = frame.db
 	if not db then return; end
 
 	local point, _, anchorPoint, x, y = frame.Health:GetPoint()
+	
+	if E.myspec == 1 and arcaneCharges == 0 then
+		if db.classbar.autoHide then
+			self:Hide()
+		else
+			--Clear arcane charge statusbars
+			for i = 1, maxCharges do
+				self[i]:SetValue(0)
+				self[i]:SetScript('OnUpdate', nil)
+			end
+			
+			self:Show()
+		end
+	end
+
 	if self:IsShown() and point then
 		if db.classbar.fill == 'spaced' then
 			frame.Health:SetPoint(point, frame, anchorPoint, x, -7)
@@ -392,14 +414,9 @@ function UF:UpdateShardBar(spec)
 		end
 	end
 
-	if not db.classbar.detachFromFrame then
-		if db.classbar.fill == 'spaced' and maxBars == 1 then
-			self:ClearAllPoints()
-			self:Point("LEFT", frame.Health.backdrop, "TOPLEFT", 8, 0)
-		elseif db.classbar.fill == 'spaced' then
-			self:ClearAllPoints()
-			self:Point("CENTER", frame.Health.backdrop, "TOP", -12, -2)
-		end
+	if not db.classbar.detachFromFrame and db.classbar.fill == 'spaced' then
+		self:ClearAllPoints()
+		self:Point("CENTER", frame.Health.backdrop, "TOP", 0, -(E.PixelMode and 2 or 1))
 	end
 
 	local SPACING = db.classbar.fill == 'spaced' and 11 or 1

@@ -758,7 +758,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 	local db = self.db['units'][group]
 	local raidFilter = UF.db.smartRaidFilter
 	local numGroups = db.numGroups
-	if(raidFilter and numGroups) then
+	if(raidFilter and numGroups and (self[group] and not self[group].blockVisibilityChanges)) then
 		local inInstance, instanceType = IsInInstance()
 		if(inInstance and (instanceType == 'raid' or instanceType == 'pvp')) then
 			local _, _, _, _, maxPlayers, _, _, mapID, maxPlayersInstance = GetInstanceInfo()
@@ -772,7 +772,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 
 			if maxPlayers > 0 then
 				numGroups = E:Round(maxPlayers/5)
-				E:Print("Forcing maxGroups to: "..numGroups.." because maxPlayers is: "..maxPlayers)
+				E:Print(group, "Forcing maxGroups to: "..numGroups.." because maxPlayers is: "..maxPlayers)
 			end
 		end
 	end

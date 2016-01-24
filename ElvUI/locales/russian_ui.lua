@@ -333,11 +333,13 @@ L["Oh lord, you have got ElvUI and Tukui both enabled at the same time. Select a
 L["One or more of the changes you have made require a ReloadUI."] = "Одно или несколько изменений требуют перезагрузки интерфейса"
 L["One or more of the changes you have made will effect all characters using this addon. You will have to reload the user interface to see the changes you have made."] = "Одно или несколько изменений повлияют на всех персонажей, использующих этот аддон. Вы должны перезагрузить интерфейс для отображения этих изменений."
 L["Save"] = "Сохранить"
+L["The profile you tried to import already exists. Choose a new name or accept to overwrite the existing profile."] = "Профиль, который вы хотите импортировать, уже существует. Задайте новой имя или примите для перезаписи существующего профиля."
 L["Type /hellokitty to revert to old settings."] = "Напишите /hellokitty для возврата к предыдущим настройкам."
 L["Using the healer layout it is highly recommended you download the addon Clique if you wish to have the click-to-heal function."] = "Для использования расположения для лекаря крайне рекомендуется установить аддон Clique, если вы хотите иметь возможность лечить по клику мышью."
 L["Yes, Keep Changes!"] = "Да, сохранить изменения!"
 L["You have changed the pixel perfect option. You will have to complete the installation process to remove any graphical bugs."] = "Вы переключились в режим pixel perfect. Вы должны завершить установку для исправления графических багов."
 L["You have changed your UIScale, however you still have the AutoScale option enabled in ElvUI. Press accept if you would like to disable the Auto Scale option."] = "Вы изменили масштаб интерфейса, однако у вас все еще активирована опция автоматического масштабирования в настройках ElvUI. Нажмите 'Принять', если Вы хотите отключить эту опцию."
+L["You have imported settings which may require a UI reload to take effect. Reload now?"] = "Вы импортировали настройки, которые могут потребовать перезагрузки для вступления в силу. Перезагрузить?"
 L["You must purchase a bank slot first!"] = "Сперва Вы должны приобрести дополнительный слот в банке!"
 
 --Tooltip

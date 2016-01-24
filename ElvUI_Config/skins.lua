@@ -194,11 +194,6 @@ E.Options.args.skins = {
 					name = L["Gossip Frame"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
-				greeting = {
-					type = "toggle",
-					name = L["Greeting Frame"],
-					desc = L["TOGGLESKIN_DESC"],
-				},
 				worldmap = {
 					type = "toggle",
 					name = L["World Map"],
@@ -312,6 +307,16 @@ E.Options.args.skins = {
 				questChoice = {
 					type = "toggle",
 					name = L["Quest Choice"],
+					desc = L["TOGGLESKIN_DESC"],
+				},
+				addonManager = {
+					type = "toggle",
+					name = L["AddOn Manager"],
+					desc = L["TOGGLESKIN_DESC"],
+				},
+				mirrorTimers = {
+					type = "toggle",
+					name = L["Mirror Timers"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
 			},

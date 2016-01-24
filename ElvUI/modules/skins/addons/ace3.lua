@@ -1,6 +1,17 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
+--Cache global variables
+--Lua functions
+local _G = _G
+local unpack, select, pairs = unpack, select, pairs
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local SquareButton_SetIcon = SquareButton_SetIcon
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: LibStub
+
 local AceGUI = LibStub("AceGUI-3.0", true)
 local RegisterAsWidget, RegisterAsContainer
 local function SetModifiedBackdrop(self)
@@ -200,6 +211,13 @@ function S:SkinAce3()
 			frame:SetParent(frame.backdrop)
 			SkinButton(button)
 		elseif TYPE == "Button" then
+			local frame = widget.frame
+			SkinButton(frame, nil, true)
+			frame:StripTextures()
+			frame:CreateBackdrop('Default', true)
+			frame.backdrop:SetInside()
+			widget.text:SetParent(frame.backdrop)
+		elseif TYPE == "Button-ElvUI" then
 			local frame = widget.frame
 			SkinButton(frame, nil, true)
 			frame:StripTextures()

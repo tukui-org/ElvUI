@@ -59,6 +59,16 @@ Namensformate:
 'name:long' - Name auf 20 Zeichen beschränkt
 
 Zum Deaktvieren lasse das Feld leer. Brauchst du mehr Informationen besuche http://www.tukui.org]=];
+L["IGNORE_ITEMS_DESC"] = [=[Gültige Einträge:
+
+Gegenstandslinks oder Gegenstandsnamen
+
+Bedingungen vom Suchsyntax. Beispiele:
+q:epic
+s:Tank Set
+q:epic&lvl:>300
+
+Siehe "Taschen->Suchsyntax" für mehr.]=];
 
 --ActionBars
 L["Action Paging"] = "Seitenwechsel der Aktionsleisten"
@@ -115,9 +125,11 @@ L["Toggles the display of the actionbars backdrop."] = "Aktiviere den Hintergrun
 L["Visibility State"] = "Sichbarkeitszustand"
 L["Width Multiplier"] = "Breitenmultiplikator"
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
-Example: '[combat] 2;']=] ] = "Dies funktioniert wie ein Makro. Du kannst verschiedene Situationen haben um die Aktionsleiste anzuzeigen und zu verbergen.\n Beispiel: '[combat] show;hide'"
+ Example: '[combat] 2;']=] ] = [=[Dieses funktioniert wie ein Makro, du kannst verschiedene Situationen haben um die Aktionsleiste zu wechseln.
+ Beispiel: '[combat] 2;']=]
 L[ [=[This works like a macro, you can run different situations to get the actionbar to show/hide differently.
-Example: '[combat] show;hide']=] ] = "Dies funktioniert wie ein Makro, du kannst verschiedene Situationen haben um die Aktionsleiste zu ändern.\n Beispiel: '[combat] 2;'"
+ Example: '[combat] show;hide']=] ] = [=[Dieses funktioniert wie ein Makro, du kannst verschiedene Situationen haben um die Aktionsleiste ein-/auszublenden.
+ Beispiel: '[combat] show;hide']=]
 
 --Bags
 L["Adjust the width of the bag frame."] = "Passe die Breite des Taschenfensters an."
@@ -125,6 +137,7 @@ L["Adjust the width of the bank frame."] = "Passe die Breite des Bankfensters an
 L["Align the width of the bag frame to fit inside the chat box."] = "Passt die Breite der Taschenfenster an, damit diese innerhalb des Chatfensters passen."
 L["Align To Chat"] = "Zum Chat ausrichten"
 L["Ascending"] = "Aufsteigend"
+L["Bag Sorting"] = "Taschen Sortierung"
 L["Bag-Bar"] = "Taschenleiste"
 L["Bar Direction"] = "Ausrichtung Leiste"
 L["Blizzard Style"] = "Blizzard Stil"
@@ -136,6 +149,7 @@ L["Currency Format"] = "Währungsformat"
 L["Descending"] = "Absteigend"
 L["Direction the bag sorting will use to allocate the items."] = "Die Richtung, in welche die Gegenstände in den Taschen sortiert werden."
 L["Display Item Level"] = "Itemlevel anzeigen"
+L["Display the junk icon on all grey items that can be vendored."] = "Zeigt das Müll Symbol auf allen grauen Gegenständen an die verkauft werden können."
 L["Displays item level on equippable items."] = "Zeigt das Itemlevel für ausrüstbare Gegenstände an."
 L["Enable/Disable the all-in-one bag."] = "Einschalten/Ausschalten der zusammengefassten Tasche."
 L["Enable/Disable the Bag-Bar."] = "Aktiviere/Deaktiviere die Taschenleiste."
@@ -145,7 +159,7 @@ L["Ignore Items"] = "Ignoriere Items"
 L["Item Count Font"] = "Gegenstandszähler Schriftart"
 L["Item Level Threshold"] = "Itemlevel Schwellenwert"
 L["Item Level"] = "Itemlevel"
-L["List of items to ignore when sorting. If you wish to add multiple items you must seperate the word with a comma."] = "Liste von Items die beim sortieren ignoriert werden. Wenn du willst kannst du auch mehrere Items hinzufügen du musst nur nachdem Wort ein Komma setzen."
+L["Items in this list or items that match any Search Syntax query in this list will be ignored when sorting. Separate each entry with a comma."] = "Gegenstände in dieser Liste oder Gegenstände die auf den Suchsyntax zutreffen werden ignoriert beim Sortieren. Trenne jeden Eintrag mit einem Komma."
 L["Money Format"] = "Geldformat"
 L["Panel Width (Bags)"] = "Leistenbreite (Taschen)"
 L["Panel Width (Bank)"] = "Leistenbreite (Bank)"
@@ -154,6 +168,7 @@ L["Set the size of your bag buttons."] = "Setze die Größe der Taschenbuttons."
 L["Short (Whole Numbers)"] = "Kurz (ganze Zahlen)"
 L["Short"] = "Kurz"
 L["Show Coins"] = "Währungssymbole anzeigen"
+L["Show Junk Icon"] = "Zeige Müll Symbol"
 L["Smart"] = "Elegant"
 L["Sort Direction"] = "Sortierrichtung" --Also used in Buffs and Debuffs
 L["Sort Inverted"] = "Umgekehrtes sortieren"
@@ -357,11 +372,13 @@ L["Chat Bubbles"] = "Sprechblasen"
 L["Direction the bar moves on gains/losses"] = "Richtung in die der Balken wächst/sinkt"
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = "Zeige eine Leiste am unterem Bildschirmrand. Das ist rein kosmetisch."
 L["Display a panel across the top of the screen. This is for cosmetic only."] = "Zeige eine Leiste am oberen Bildschirmrand. Das ist rein kosmetisch."
+L["Display battleground messages in the middle of the screen."] = "Zeigt Schlachtfeld Nachrichten in der Mitte des Bildschirms."
 L["Display emotion icons in chat."] = "Zeige Emoticons im Chat."
 L["Emotion Icons"] = "Emoticons"
 L["Enable/Disable the loot frame."] = "Aktiviere/Deaktiviere das Beutefenster."
 L["Enable/Disable the loot roll frame."] = "Aktiviere/Deaktiviere das Beutewürfelfenster."
 L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the consolidated buffs bar, and prevent you from seeing the minimap datatexts.|r"] = "Aktiviere/Deaktiviere die Minimap. |cffFF0000Warnung: Durch diese Einstellung wird verhindert, dass die zusammengefassten Stärkungszauber, sowie die Infotextleisten, an der Minimap angezeigt werden.|r"
+L["Enhanced PVP Messages"] = "Erweiterte PvP Nachrichten"
 L["General"] = "Allgemein"
 L["Height of the objective tracker. Increase size to be able to see more objectives."] = "Höhe des Questfenster. Größe verändern um mehr Ziele zu sehen."
 L["Hide Error Text"] = "Fehlertext verstecken"
@@ -377,6 +394,7 @@ L["Objective Frame Height"] = "Questfenster Höhe"
 L["Party / Raid"] = "Gruppe / Schlachtzug"
 L["Party Only"] = "Nur in der Gruppe"
 L["Position of bonus quest reward frame relative to the objective tracker."] = "Position vom Bonusbeute Fenster, relativ zum Questfenster."
+L["Puts coordinates on the world map."] = "Platziert Koordinaten auf der Weltkarte."
 L["Raid Only"] = "Nur im Schlachtzug"
 L["Remove Backdrop"] = "Hintergrund entfernen"
 L["Reset all frames to their original positions."] = "Setze alle Einheiten an ihre ursprüngliche Position zurück."
@@ -390,6 +408,7 @@ L["The font that appears on the text above players heads. |cffFF0000WARNING: Thi
 L["Toggle Tutorials"] = "Tutorial starten"
 L["Top Panel"] = "Obere Leiste"
 L["When you go AFK display the AFK screen."] = "AFK Bildschirm anzeigen wenn du AFK bist."
+L["World Map Coordinates"] = "Weltkarten Koordinaten"
 
 --Media
 L["Backdrop color of transparent frames"] = "Hintergrundfarbe von transparenten Fenstern"
@@ -518,8 +537,32 @@ L["X-Offset"] = "X-Versatz"
 L["Y-Offset"] = "Y-Versatz"
 L["You can't remove a default name from the filter, disabling the name."] = "Du kannst keinen Standardnamen entfernen, schalte den Namen aus."
 
+--Profiles Export/Import
+L["Choose Export Format"] = "Wähle Export Format"
+L["Choose What To Export"] = "Wähle aus, was exportiert werden soll"
+L["Decode Text"] = "Entschlüsselter Text"
+L["Error decoding data. Import string may be corrupted!"] = "Fehler beim entschlüsseln der Daten. Die importierende Zeichenfolge scheint beschädigt zu sein!"
+L["Error exporting profile!"] = "Fehler beim Exportieren des Profils!"
+L["Export Now"] = "Jetzt exportieren"
+L["Export Profile"] = "Exportiere Profil"
+L["Exported"] = "Exportiert"
+L["Filters (All)"] = "Filter (Alle)"
+L["Filters (NamePlates)"] = "Filter (Namensplaketten)"
+L["Filters (UnitFrames)"] = "Filter (Einheitenfenster)"
+L["Global (Account Settings)"] = "Globale (Account Einstellungen)"
+L["Import Now"] = "Jetzt importieren"
+L["Import Profile"] = "Importiere Profil"
+L["Importing"] = "Importiere"
+L["Plugin"] = true; -- no need to translate this
+L["Private (Character Settings)"] = "Private (Charakter Einstellungen)"
+L["Profile imported successfully!"] = "Profil erfolgreich importiert!"
+L["Profile Name"] = "Profil Name"
+L["Profile"] = "Profil"
+L["Table"] = "Tabelle"
+
 --Skins
 L["Achievement Frame"] = "Erfolgsfenster"
+L["AddOn Manager"] = true;
 L["Alert Frames"] = "Alarmfenster"
 L["Archaeology Frame"] = "Archäologiefenster"
 L["Auction Frame"] = "Auktionsfenster"
@@ -535,7 +578,6 @@ L["Dressing Room"] = "Ankleideraum"
 L["Encounter Journal"] = "Dungeonkompendium"
 L["Glyph Frame"] = "Glyphenfenster"
 L["Gossip Frame"] = "Questinhalt Fenster"
-L["Greeting Frame"] = "Begrüßungsfenster"
 L["Guild Bank"] = "Gildenbank"
 L["Guild Control Frame"] = "Gildenkontrollfenster"
 L["Guild Frame"] = "Gildenfenster"
@@ -551,6 +593,7 @@ L["Loss Control"] = "Kontrollverlust"
 L["Macro Frame"] = "Makro Fenster"
 L["Mail Frame"] = "Post Fenster"
 L["Merchant Frame"] = "Handelsfenster"
+L["Mirror Timers"] = "Spiegel Zeitgeber"
 L["Misc Frames"] = "Verschiedene Fenster"
 L["Mounts & Pets"] = "Reittiere & Haustiere"
 L["Non-Raid Frame"] = "Kein-Raid Fenster"
@@ -654,6 +697,7 @@ L["Camera Distance Scale"] = "Kameradistanz"
 L["Castbar"] = "Zauberleiste"
 L["Center"] = "Zentrum"
 L["Check if you are in range to cast spells on this specific unit."] = "Überprüfe ob du dich in Reichweite befindest, um einen Zauber auf eine spezifische Einheit zu wirken."
+L["Choose UIPARENT to prevent it from hiding with the unitframe."] = "Wähle UIPARENT um zu verhindern dass es mit dem Einheitenfenster versteckt wird."
 L["Class Backdrop"] = "Klassen Hintergrund"
 L["Class Castbars"] = "Klassen Zauberleisten"
 L["Class Color Override"] = "Klassenfarben überschreiben"
@@ -828,6 +872,7 @@ L["Overlay"] = "Überblenden"
 L["Override any custom visibility setting in certain situations, EX: Only show groups 1 and 2 inside a 10 man instance."] = "Überschreibe alle benutzerdefinierten Einstellungen für die Sichtbarkeit in bestimmten Situationen. Beispiel: Zeige nur Gruppe 1 und 2 in einer 10er-Instanz."
 L["Override the default class color setting."] = "Überschreibe die Standard Klassenfarben Einstellungen"
 L["Owners Name"] = "Name des Besitzers"
+L["Parent"] = true; -- no need to translate this
 L["Party Pets"] = "Gruppenbegleiter"
 L["Party Targets"] = "Gruppenziele"
 L["Per Row"] = "Pro Reihe"

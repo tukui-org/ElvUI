@@ -13,9 +13,7 @@ V['general'] = {
 	['chatBubbleFont'] = "ElvUI Font",
 	['chatBubbleFontSize'] = 14,
 	['pixelPerfect'] = true,
-	['lfrEnhancement'] = true,
 	['replaceBlizzFonts'] = true,
-	['smallerWorldMap'] = true,
 	['minimap'] = {
 		['enable'] = true,
 		['hideGarrison'] = true,
@@ -110,6 +108,8 @@ V['skins'] = {
 		['petbattleui'] = true,
 		['losscontrol'] = true,
 		['itemUpgrade'] = true,
+		["addonManager"] = true,
+		["mirrorTimers"] = true,
 	},
 }
 

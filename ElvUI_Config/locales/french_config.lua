@@ -59,6 +59,16 @@ Format des Noms:
 'name:long' - Nom limité à 20 caractères
 
 Pour désactiver, laisser le champs vide. Pour plus d'information, merci de visiter http://www.tukui.org]=];
+L["IGNORE_ITEMS_DESC"] = [=[Valid entries:
+
+Item links or item names
+
+Terms from Search Syntax. Examples:
+q:epic
+s:Tank Set
+q:epic&lvl:>300
+
+See "Bags->Search Syntax" for more.]=];
 
 --ActionBars
 L["Action Paging"] = "Pagination d'action"
@@ -127,6 +137,7 @@ L["Adjust the width of the bank frame."] = "Ajuster la largeur de la fenêtre du
 L["Align the width of the bag frame to fit inside the chat box."] = "Aligner la largeur de la fenêtre du sac pour s'adapter à l'intérieur de la zone de chat."
 L["Align To Chat"] = "Aligner sur le Chat"
 L["Ascending"] = "Ascendant"
+L["Bag Sorting"] = true;
 L["Bag-Bar"] = "Barre des sacs"
 L["Bar Direction"] = "Direction de la barre"
 L["Blizzard Style"] = "Style Blizzard";
@@ -138,6 +149,7 @@ L["Currency Format"] = "Format monétaire"
 L["Descending"] = "Descendant"
 L["Direction the bag sorting will use to allocate the items."] = "Direction du tri du sac qui sera utilisé pour allouer les objets."
 L["Display Item Level"] = "Afficher le niveau d'objet";
+L["Display the junk icon on all grey items that can be vendored."] = true;
 L["Displays item level on equippable items."] = "Afficher le niveau d'objet sur les objets qui peuvent être équipés.";
 L["Enable/Disable the all-in-one bag."] = "Activer / désactiver le sac tout-en-un."
 L["Enable/Disable the Bag-Bar."] = "Activer / Désactiver la barre des sacs."
@@ -147,7 +159,7 @@ L["Ignore Items"] = "Objets ignorés"
 L["Item Count Font"] = true;
 L["Item Level Threshold"] = "Seuil de niveau d'objet";
 L["Item Level"] = "Niveau d'objet";
-L["List of items to ignore when sorting. If you wish to add multiple items you must seperate the word with a comma."] = "Liste des objets à ignorer pendant le tri. Si vous voulez ajouter plusieurs objets, vous devez séparer les mots par une virgule."
+L["Items in this list or items that match any Search Syntax query in this list will be ignored when sorting. Separate each entry with a comma."] = true;
 L["Money Format"] = "Format monétaire";
 L["Panel Width (Bags)"] = "Largeur du panneau (Sac)"
 L["Panel Width (Bank)"] = "Largeur du panneau (Banque)"
@@ -156,6 +168,7 @@ L["Set the size of your bag buttons."] = "Définissez la taille de vos boutons d
 L["Short (Whole Numbers)"] = "Court (nombres entiers)";
 L["Short"] = "Court";
 L["Show Coins"] = "Afficher les pièces";
+L["Show Junk Icon"] = true;
 L["Smart"] = "Intelligent";
 L["Sort Direction"] = "Type de direction" --Also used in Buffs and Debuffs
 L["Sort Inverted"] = "Tri inversé"
@@ -359,11 +372,13 @@ L["Chat Bubbles"] = true;
 L["Direction the bar moves on gains/losses"] = "Direction que prend la barre quand gain / perte";
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = "Affiche un bandeau au bas de l'écran. Option purement cosmétique."
 L["Display a panel across the top of the screen. This is for cosmetic only."] = "Affiche un bandeau en haut de l'écran. Option purement cosmétique."
+L["Display battleground messages in the middle of the screen."] = true;
 L["Display emotion icons in chat."] = "Afficher les émoticônes dans le Chat"
 L["Emotion Icons"] = "Emoticônes"
 L["Enable/Disable the loot frame."] = "Activer / désactiver le cadre de butin."
 L["Enable/Disable the loot roll frame."] = "Activer / désactiver le cadre du tirage au sort du butin."
 L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the consolidated buffs bar, and prevent you from seeing the minimap datatexts.|r"] = "Activer / désactiver la minicarte. |cffFF0000Attention: Cela vous empêchera de voir la barre d'améliorations groupées et les textes d'informations sous la minicarte."
+L["Enhanced PVP Messages"] = true;
 L["General"] = "Général"
 L["Height of the objective tracker. Increase size to be able to see more objectives."] = "Hauteur de la fenêtre des suivis d'objectif, augmenter pour afficher plus d'objectifs";
 L["Hide Error Text"] = "Cacher les textes d'erreurs"
@@ -379,6 +394,7 @@ L["Objective Frame Height"] = "Hauteur du cadre d'objectif";
 L["Party / Raid"] = "Groupe / Raid";
 L["Party Only"] = "Groupe seulement";
 L["Position of bonus quest reward frame relative to the objective tracker."] = "Position de la récompense de l'objectif par rapport à la fenêtre de suivi des objectifs";
+L["Puts coordinates on the world map."] = true;
 L["Raid Only"] = "Raid seulement";
 L["Remove Backdrop"] = 'Supprimer le fond'
 L["Reset all frames to their original positions."] = "Réinitialiser les cadres à leurs positions initiales."
@@ -392,6 +408,7 @@ L["The font that appears on the text above players heads. |cffFF0000WARNING: Thi
 L["Toggle Tutorials"] = "Afficher les tutoriels"
 L["Top Panel"] = "Bandeau en haut"
 L["When you go AFK display the AFK screen."] = "Quand vous êtes AFK, affiche un écran spécial.";
+L["World Map Coordinates"] = true;
 
 --Media
 L["Backdrop color of transparent frames"] = "Couleur de fond pour les cadres estompés."
@@ -519,8 +536,32 @@ L["X-Offset"] = "Décalage X";
 L["Y-Offset"] = "Décalage Y";
 L["You can't remove a default name from the filter, disabling the name."] = "Vous ne pouvez pas supprimer un nom qui est par défaut, cependant celui-ci est désormais désactivé."
 
+--Profiles Export/Import
+L["Choose Export Format"] = true;
+L["Choose What To Export"] = true;
+L["Decode Text"] = true;
+L["Error decoding data. Import string may be corrupted!"] = true;
+L["Error exporting profile!"] = true;
+L["Export Now"] = true;
+L["Export Profile"] = true;
+L["Exported"] = true;
+L["Filters (All)"] = true;
+L["Filters (NamePlates)"] = true;
+L["Filters (UnitFrames)"] = true;
+L["Global (Account Settings)"] = true;
+L["Import Now"] = true;
+L["Import Profile"] = true;
+L["Importing"] = true;
+L["Plugin"] = true;
+L["Private (Character Settings)"] = true;
+L["Profile imported successfully!"] = true;
+L["Profile Name"] = true;
+L["Profile"] = true;
+L["Table"] = true;
+
 --Skins
 L["Achievement Frame"] = "Fenêtre des Hauts Faits"
+L["AddOn Manager"] = true;
 L["Alert Frames"] = "Fenêtre d'Alerte"
 L["Archaeology Frame"] = "Fenêtre d'Archéologie"
 L["Auction Frame"] = "Fenêtre de l'Hôtel des ventes"
@@ -536,7 +577,6 @@ L["Dressing Room"] = "Cabine d'essayage"
 L["Encounter Journal"] = "Journal de Rencontre"
 L["Glyph Frame"] = "Fenêtre des Glyphes"
 L["Gossip Frame"] = "Fenêtre PNJ"
-L["Greeting Frame"] = "Fenêtre d'Accueil"
 L["Guild Bank"] = "Banque de Guilde"
 L["Guild Control Frame"] = "Gestion de Guilde"
 L["Guild Frame"] = "Fenêtre de Guilde"
@@ -552,6 +592,7 @@ L["Loss Control"] = "Perte de contrôle"
 L["Macro Frame"] = "Fenêtre de Macro"
 L["Mail Frame"] = "Fenêtre du Courrier"
 L["Merchant Frame"] = "Marchand"
+L["Mirror Timers"] = true;
 L["Misc Frames"] = "Divers"
 L["Mounts & Pets"] = "Montures et Mascottes"
 L["Non-Raid Frame"] = "Info Raid"
@@ -655,6 +696,7 @@ L["Camera Distance Scale"] = "Distance de la caméra"
 L["Castbar"] = "Barre d'incantation"
 L["Center"] = "Centrer"
 L["Check if you are in range to cast spells on this specific unit."] = "Vérifie si vous êtes à portée pour incanter des sorts sur ces unités spécifiques."
+L["Choose UIPARENT to prevent it from hiding with the unitframe."] = true;
 L["Class Backdrop"] = "Fond selon la classe"
 L["Class Castbars"] = "Barres d'incantation selon la classe"
 L["Class Color Override"] = 'Remplacer les couleurs de classes'
@@ -829,6 +871,7 @@ L["Overlay"] = "Superposition"
 L["Override any custom visibility setting in certain situations, EX: Only show groups 1 and 2 inside a 10 man instance."] = "Remplace tout paramètre de visibilité dans certaines situations, Ex: afficher seulement le groupe 1 et 2 quand vous êtes dans un raid à 10 joueurs."
 L["Override the default class color setting."] = 'Remplacer les réglages des couleurs de classes par défaut.'
 L["Owners Name"] = "Nom des propriétaires";
+L["Parent"] = true;
 L["Party Pets"] = "Familiers des coéquipiers"
 L["Party Targets"] = "Cible des coéquipiers"
 L["Per Row"] = "par ligne"

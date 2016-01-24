@@ -59,6 +59,16 @@ Formatos de Nombre:
 'name:long' - Nombre restringido a 20 caracteres
 
 Para desactivarlo dejar el campo en blanco, si necesitas más información visita http://www.tukui.org]=];
+L["IGNORE_ITEMS_DESC"] = [=[Valid entries:
+
+Item links or item names
+
+Terms from Search Syntax. Examples:
+q:epic
+s:Tank Set
+q:epic&lvl:>300
+
+See "Bags->Search Syntax" for more.]=];
 
 --ActionBars
 L["Action Paging"] = "Paginación"
@@ -127,6 +137,7 @@ L["Adjust the width of the bank frame."] = "Ajustar el ancho del marco del banco
 L["Align the width of the bag frame to fit inside the chat box."] = "Alinea el ancho del marco de las bolsas para que quepa dentro del chat"
 L["Align To Chat"] = "Alinear al chat"
 L["Ascending"] = "Ascendente"
+L["Bag Sorting"] = true;
 L["Bag-Bar"] = "Barra de las Bolsas"
 L["Bar Direction"] = "Dirección de la Barra"
 L["Blizzard Style"] = true;
@@ -138,6 +149,7 @@ L["Currency Format"] = "Formato de Moneda"
 L["Descending"] = "Descendente"
 L["Direction the bag sorting will use to allocate the items."] = "Dirección de ordenado que se usará para distribuir los objetos."
 L["Display Item Level"] = true;
+L["Display the junk icon on all grey items that can be vendored."] = true;
 L["Displays item level on equippable items."] = true;
 L["Enable/Disable the all-in-one bag."] = "Habilitar/Deshabilitar la bolsa todo en uno."
 L["Enable/Disable the Bag-Bar."] = "Activa/Desactiva la barra de las bolsas."
@@ -147,7 +159,7 @@ L["Ignore Items"] = "Ignorar Objetos"
 L["Item Count Font"] = true;
 L["Item Level Threshold"] = true;
 L["Item Level"] = true;
-L["List of items to ignore when sorting. If you wish to add multiple items you must seperate the word with a comma."] = "Lista de objetos a ignorar durante el ordenamiento. Para ignorar múltiples objetos sepáralos con una coma."
+L["Items in this list or items that match any Search Syntax query in this list will be ignored when sorting. Separate each entry with a comma."] = true;
 L["Money Format"] = true;
 L["Panel Width (Bags)"] = "Ancho del Panel (Bolsas)"
 L["Panel Width (Bank)"] = "Ancho del Panel (Banco)"
@@ -156,6 +168,7 @@ L["Set the size of your bag buttons."] = "Establece el tamaño de tus botones de
 L["Short (Whole Numbers)"] = true;
 L["Short"] = true;
 L["Show Coins"] = true;
+L["Show Junk Icon"] = true;
 L["Smart"] = true;
 L["Sort Direction"] = "Dirección de Ordenado"
 L["Sort Inverted"] = "Ordenado Invertido"
@@ -359,11 +372,13 @@ L["Chat Bubbles"] = true;
 L["Direction the bar moves on gains/losses"] = true;
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = "Despliega un panel a través de la parte inferior de la pantalla. Es es sólo algo cosmético."
 L["Display a panel across the top of the screen. This is for cosmetic only."] = "Despliega un panel a través de la parte superior de la pantalla. Es es sólo algo cosmético."
+L["Display battleground messages in the middle of the screen."] = true;
 L["Display emotion icons in chat."] = "Muestra emoticonos en el chat."
 L["Emotion Icons"] = "Emoticonos"
 L["Enable/Disable the loot frame."] = "Activa/Desactiva el marco de botín."
 L["Enable/Disable the loot roll frame."] = "Activa/Desactiva el marco de sorteo de botín."
 L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the consolidated buffs bar, and prevent you from seeing the minimap datatexts.|r"] = "Activa/Desactiva el minimapa. |cffFF0000Atención: Esto evita que veas la barra de los beneficios consolidados, y evita que veas los textos de datos del minimapa.|r"
+L["Enhanced PVP Messages"] = true;
 L["General"] = "General"
 L["Height of the objective tracker. Increase size to be able to see more objectives."] = true;
 L["Hide Error Text"] = "Ocultar Texto de Error"
@@ -379,6 +394,7 @@ L["Objective Frame Height"] = true;
 L["Party / Raid"] = true;
 L["Party Only"] = true;
 L["Position of bonus quest reward frame relative to the objective tracker."] = true;
+L["Puts coordinates on the world map."] = true;
 L["Raid Only"] = true;
 L["Remove Backdrop"] = "Quitar Fondo"
 L["Reset all frames to their original positions."] = "Coloca todos los marcos en sus posiciones originales"
@@ -392,6 +408,7 @@ L["The font that appears on the text above players heads. |cffFF0000WARNING: Thi
 L["Toggle Tutorials"] = "Mostrar/Ocultar Tutoriales"
 L["Top Panel"] = "Panel Superior"
 L["When you go AFK display the AFK screen."] = true;
+L["World Map Coordinates"] = true;
 
 --Media
 L["Backdrop color of transparent frames"] = "Color de fondo de los marcos transparentes."
@@ -519,8 +536,32 @@ L["X-Offset"] = true;
 L["Y-Offset"] = true;
 L["You can't remove a default name from the filter, disabling the name."] = "No puedes eliminar un nombre por defecto del filtro, desactivando el nombre."
 
+--Profiles Export/Import
+L["Choose Export Format"] = true;
+L["Choose What To Export"] = true;
+L["Decode Text"] = true;
+L["Error decoding data. Import string may be corrupted!"] = true;
+L["Error exporting profile!"] = true;
+L["Export Now"] = true;
+L["Export Profile"] = true;
+L["Exported"] = true;
+L["Filters (All)"] = true;
+L["Filters (NamePlates)"] = true;
+L["Filters (UnitFrames)"] = true;
+L["Global (Account Settings)"] = true;
+L["Import Now"] = true;
+L["Import Profile"] = true;
+L["Importing"] = true;
+L["Plugin"] = true;
+L["Private (Character Settings)"] = true;
+L["Profile imported successfully!"] = true;
+L["Profile Name"] = true;
+L["Profile"] = true;
+L["Table"] = true;
+
 --Skins
 L["Achievement Frame"] = "Logros"
+L["AddOn Manager"] = true;
 L["Alert Frames"] = "Alertas"
 L["Archaeology Frame"] = "Arqueología"
 L["Auction Frame"] = "Subastas"
@@ -536,7 +577,6 @@ L["Dressing Room"] = "Probador"
 L["Encounter Journal"] = "Diario de Encuentros"
 L["Glyph Frame"] = "Glifos"
 L["Gossip Frame"] = "Actualidad"
-L["Greeting Frame"] = "Bienvenida"
 L["Guild Bank"] = "Banco de Hermandad"
 L["Guild Control Frame"] = "Control de Hermandad"
 L["Guild Frame"] = "Hermandad"
@@ -552,6 +592,7 @@ L["Loss Control"] = "Pérdida de Control"
 L["Macro Frame"] = "Macros"
 L["Mail Frame"] = "Correo"
 L["Merchant Frame"] = "Mercader"
+L["Mirror Timers"] = true;
 L["Misc Frames"] = "Misceláneos"
 L["Mounts & Pets"] = "Monturas y Mascotas"
 L["Non-Raid Frame"] = "No-Banda"
@@ -655,6 +696,7 @@ L["Camera Distance Scale"] = "Escala de la Distancia de la Cámara"
 L["Castbar"] = "Barra de Lanzamiento"
 L["Center"] = "Centro"
 L["Check if you are in range to cast spells on this specific unit."] = "Verifica si estás a distancia de lanzamiento de hechizos de esta unidad en específico"
+L["Choose UIPARENT to prevent it from hiding with the unitframe."] = true;
 L["Class Backdrop"] = "Fondo de Clase"
 L["Class Castbars"] = "Barras de Lanzamiento de Clase"
 L["Class Color Override"] = "Ignorar Color de Clase"
@@ -829,6 +871,7 @@ L["Overlay"] = "Recubrir"
 L["Override any custom visibility setting in certain situations, EX: Only show groups 1 and 2 inside a 10 man instance."] = "Sobrescribir cualquier opción de visibilidad en ciertas situaciones, Ej: Sólo mostrar grupos 1 y 2 dentro de una mazmorra de banda de 10 personas."
 L["Override the default class color setting."] = "Ignorar el ajuste predeterminado del color de clase."
 L["Owners Name"] = true;
+L["Parent"] = true;
 L["Party Pets"] = "Mascotas de Grupo"
 L["Party Targets"] = "Objetivos del Grupo"
 L["Per Row"] = "Por Fila"
