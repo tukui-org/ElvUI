@@ -692,7 +692,6 @@ function UF.headerPrototype:Update(isForced)
 
 	local i = 1
 	local child = self:GetAttribute("child" .. i)
-	print(child)
 
 	while child do
 		UF["Update_"..E:StringTitle(group).."Frames"](UF, child, db)
