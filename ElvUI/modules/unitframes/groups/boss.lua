@@ -241,7 +241,7 @@ function UF:Update_BossFrames(frame, db)
 				portrait:Show()
 				portrait.backdrop:Show()
 				portrait.backdrop:ClearAllPoints()
-				portrait.backdrop:SetPoint("TOPRIGHT", frame, "TOPRIGHT")
+				portrait.backdrop:Point("TOPRIGHT", frame, "TOPRIGHT")
 				if db.portrait.style == '3D' then
 					portrait:SetFrameLevel(frame:GetFrameLevel() + 5)
 				end
@@ -312,9 +312,9 @@ function UF:Update_BossFrames(frame, db)
 		local rows = db.buffs.numrows
 
 		if USE_POWERBAR_OFFSET then
-			buffs:SetWidth(UNIT_WIDTH - POWERBAR_OFFSET)
+			buffs:Width(UNIT_WIDTH - POWERBAR_OFFSET)
 		else
-			buffs:SetWidth(UNIT_WIDTH)
+			buffs:Width(UNIT_WIDTH)
 		end
 
 		buffs.forceShow = frame.forceShowAuras
@@ -322,7 +322,7 @@ function UF:Update_BossFrames(frame, db)
 		buffs.size = db.buffs.sizeOverride ~= 0 and db.buffs.sizeOverride or ((((buffs:GetWidth() - (buffs.spacing*(buffs.num/rows - 1))) / buffs.num)) * rows)
 
 		if db.buffs.sizeOverride and db.buffs.sizeOverride > 0 then
-			buffs:SetWidth(db.buffs.perrow * db.buffs.sizeOverride)
+			buffs:Width(db.buffs.perrow * db.buffs.sizeOverride)
 		end
 
 		local x, y = E:GetXYOffset(db.buffs.anchorPoint)
@@ -354,9 +354,9 @@ function UF:Update_BossFrames(frame, db)
 		local rows = db.debuffs.numrows
 
 		if USE_POWERBAR_OFFSET then
-			debuffs:SetWidth(UNIT_WIDTH - POWERBAR_OFFSET)
+			debuffs:Width(UNIT_WIDTH - POWERBAR_OFFSET)
 		else
-			debuffs:SetWidth(UNIT_WIDTH)
+			debuffs:Width(UNIT_WIDTH)
 		end
 
 		debuffs.forceShow = frame.forceShowAuras
@@ -364,7 +364,7 @@ function UF:Update_BossFrames(frame, db)
 		debuffs.size = db.debuffs.sizeOverride ~= 0 and db.debuffs.sizeOverride or ((((debuffs:GetWidth() - (debuffs.spacing*(debuffs.num/rows - 1))) / debuffs.num)) * rows)
 
 		if db.debuffs.sizeOverride and db.debuffs.sizeOverride > 0 then
-			debuffs:SetWidth(db.debuffs.perrow * db.debuffs.sizeOverride)
+			debuffs:Width(db.debuffs.perrow * db.debuffs.sizeOverride)
 		end
 
 		local x, y = E:GetXYOffset(db.debuffs.anchorPoint)
@@ -550,7 +550,7 @@ function UF:Update_BossFrames(frame, db)
 			frame:Tag(frame.customTexts[objectName], objectDB.text_format or '')
 			frame.customTexts[objectName]:SetJustifyH(objectDB.justifyH or 'CENTER')
 			frame.customTexts[objectName]:ClearAllPoints()
-			frame.customTexts[objectName]:SetPoint(objectDB.justifyH or 'CENTER', frame, objectDB.justifyH or 'CENTER', objectDB.xOffset, objectDB.yOffset)
+			frame.customTexts[objectName]:Point(objectDB.justifyH or 'CENTER', frame, objectDB.justifyH or 'CENTER', objectDB.xOffset, objectDB.yOffset)
 		end
 	end
 
@@ -573,32 +573,32 @@ function UF:Update_BossFrames(frame, db)
 	frame:ClearAllPoints()
 	if INDEX == 1 then
 		if db.growthDirection == 'UP' then
-			frame:SetPoint('BOTTOMRIGHT', BossHeaderMover, 'BOTTOMRIGHT')
+			frame:Point('BOTTOMRIGHT', BossHeaderMover, 'BOTTOMRIGHT')
 		elseif db.growthDirection == 'RIGHT' then
-			frame:SetPoint('LEFT', BossHeaderMover, 'LEFT')
+			frame:Point('LEFT', BossHeaderMover, 'LEFT')
 		elseif db.growthDirection == 'LEFT' then
-			frame:SetPoint('RIGHT', BossHeaderMover, 'RIGHT')
+			frame:Point('RIGHT', BossHeaderMover, 'RIGHT')
 		else --Down
-			frame:SetPoint('TOPRIGHT', BossHeaderMover, 'TOPRIGHT')
+			frame:Point('TOPRIGHT', BossHeaderMover, 'TOPRIGHT')
 		end
 	else
 		if db.growthDirection == 'UP' then
-			frame:SetPoint('BOTTOMRIGHT', _G['ElvUF_Boss'..INDEX-1], 'TOPRIGHT', 0, db.spacing)
+			frame:Point('BOTTOMRIGHT', _G['ElvUF_Boss'..INDEX-1], 'TOPRIGHT', 0, db.spacing)
 		elseif db.growthDirection == 'RIGHT' then
-			frame:SetPoint('LEFT', _G['ElvUF_Boss'..INDEX-1], 'RIGHT', db.spacing, 0)
+			frame:Point('LEFT', _G['ElvUF_Boss'..INDEX-1], 'RIGHT', db.spacing, 0)
 		elseif db.growthDirection == 'LEFT' then
-			frame:SetPoint('RIGHT', _G['ElvUF_Boss'..INDEX-1], 'LEFT', -db.spacing, 0)
+			frame:Point('RIGHT', _G['ElvUF_Boss'..INDEX-1], 'LEFT', -db.spacing, 0)
 		else --Down
-			frame:SetPoint('TOPRIGHT', _G['ElvUF_Boss'..INDEX-1], 'BOTTOMRIGHT', 0, -db.spacing)
+			frame:Point('TOPRIGHT', _G['ElvUF_Boss'..INDEX-1], 'BOTTOMRIGHT', 0, -db.spacing)
 		end
 	end
 	
 	if db.growthDirection == 'UP' or db.growthDirection == 'DOWN' then
-		BossHeader:SetWidth(UNIT_WIDTH)
-		BossHeader:SetHeight(UNIT_HEIGHT + ((UNIT_HEIGHT + db.spacing) * (MAX_BOSS_FRAMES -1)))
+		BossHeader:Width(UNIT_WIDTH)
+		BossHeader:Height(UNIT_HEIGHT + ((UNIT_HEIGHT + db.spacing) * (MAX_BOSS_FRAMES -1)))
 	elseif db.growthDirection == 'LEFT' or db.growthDirection == 'RIGHT' then
-		BossHeader:SetWidth(UNIT_WIDTH + ((UNIT_WIDTH + db.spacing) * (MAX_BOSS_FRAMES -1)))
-		BossHeader:SetHeight(UNIT_HEIGHT)
+		BossHeader:Width(UNIT_WIDTH + ((UNIT_WIDTH + db.spacing) * (MAX_BOSS_FRAMES -1)))
+		BossHeader:Height(UNIT_HEIGHT)
 	end
 
 	if UF.db.colors.transparentHealth then

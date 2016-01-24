@@ -33,13 +33,13 @@ E.PopupDialogs['ELVUI_UPDATE_AVAILABLE'] = {
 	OnShow = function(self)
 		self.editBox:SetAutoFocus(false)
 		self.editBox.width = self.editBox:GetWidth()
-		self.editBox:SetWidth(220)
+		self.editBox:Width(220)
 		self.editBox:SetText("http://www.tukui.org/dl.php")
 		self.editBox:HighlightText()
 		ChatEdit_FocusActiveWindow();
 	end,
 	OnHide = function(self)
-		self.editBox:SetWidth(self.editBox.width or 50)
+		self.editBox:Width(self.editBox.width or 50)
 		self.editBox.width = nil
 	end,
 	hideOnEscape = 1,
@@ -408,9 +408,9 @@ function E:StaticPopup_SetUpPosition(dialog)
 	if ( not tContains(E.StaticPopup_DisplayedFrames, dialog) ) then
 		local lastFrame = E.StaticPopup_DisplayedFrames[#E.StaticPopup_DisplayedFrames];
 		if ( lastFrame ) then
-			dialog:SetPoint("TOP", lastFrame, "BOTTOM", 0, -4);
+			dialog:Point("TOP", lastFrame, "BOTTOM", 0, -4);
 		else
-			dialog:SetPoint("TOP", E.UIParent, "TOP", 0, -100);
+			dialog:Point("TOP", E.UIParent, "TOP", 0, -100);
 		end
 		tinsert(E.StaticPopup_DisplayedFrames, dialog);
 	end
@@ -630,7 +630,7 @@ function E:StaticPopup_Resize(dialog, which)
 	end
 
 	if ( width > maxWidthSoFar )  then
-		dialog:SetWidth(width);
+		dialog:Width(width);
 		dialog.maxWidthSoFar = width;
 	end
 
@@ -647,7 +647,7 @@ function E:StaticPopup_Resize(dialog, which)
 	end
 
 	if ( height > maxHeightSoFar ) then
-		dialog:SetHeight(height);
+		dialog:Height(height);
 		dialog.maxHeightSoFar = height;
 	end
 end
@@ -770,9 +770,9 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 		end
 		editBox:SetText("");
 		if ( info.editBoxWidth ) then
-			editBox:SetWidth(info.editBoxWidth);
+			editBox:Width(info.editBoxWidth);
 		else
-			editBox:SetWidth(130);
+			editBox:Width(130);
 		end
 	else
 		editBox:Hide();
@@ -858,23 +858,23 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 		dialog.numButtons = numButtons;
 
 		if ( numButtons == 3 ) then
-			tempButtonLocs[1]:SetPoint("BOTTOMRIGHT", dialog, "BOTTOM", -72, 16);
+			tempButtonLocs[1]:Point("BOTTOMRIGHT", dialog, "BOTTOM", -72, 16);
 		elseif ( numButtons == 2 ) then
-			tempButtonLocs[1]:SetPoint("BOTTOMRIGHT", dialog, "BOTTOM", -6, 16);
+			tempButtonLocs[1]:Point("BOTTOMRIGHT", dialog, "BOTTOM", -6, 16);
 		elseif ( numButtons == 1 ) then
-			tempButtonLocs[1]:SetPoint("BOTTOM", dialog, "BOTTOM", 0, 16);
+			tempButtonLocs[1]:Point("BOTTOM", dialog, "BOTTOM", 0, 16);
 		end
 
 		for i=1, numButtons do
 			if ( i > 1 ) then
-				tempButtonLocs[i]:SetPoint("LEFT", tempButtonLocs[i-1], "RIGHT", 13, 0);
+				tempButtonLocs[i]:Point("LEFT", tempButtonLocs[i-1], "RIGHT", 13, 0);
 			end
 
 			local width = tempButtonLocs[i]:GetTextWidth();
 			if ( width > 110 ) then
-				tempButtonLocs[i]:SetWidth(width + 20);
+				tempButtonLocs[i]:Width(width + 20);
 			else
-				tempButtonLocs[i]:SetWidth(120);
+				tempButtonLocs[i]:Width(120);
 			end
 			tempButtonLocs[i]:Enable();
 			tempButtonLocs[i]:Show();
@@ -888,17 +888,17 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 	if ( info.showAlert ) then
 		alertIcon:SetTexture(STATICPOPUP_TEXTURE_ALERT);
 		if ( button3:IsShown() )then
-			alertIcon:SetPoint("LEFT", 24, 10);
+			alertIcon:Point("LEFT", 24, 10);
 		else
-			alertIcon:SetPoint("LEFT", 24, 0);
+			alertIcon:Point("LEFT", 24, 0);
 		end
 		alertIcon:Show();
 	elseif ( info.showAlertGear ) then
 		alertIcon:SetTexture(STATICPOPUP_TEXTURE_ALERTGEAR);
 		if ( button3:IsShown() )then
-			alertIcon:SetPoint("LEFT", 24, 0);
+			alertIcon:Point("LEFT", 24, 0);
 		else
-			alertIcon:SetPoint("LEFT", 24, 0);
+			alertIcon:Point("LEFT", 24, 0);
 		end
 		alertIcon:Show();
 	else

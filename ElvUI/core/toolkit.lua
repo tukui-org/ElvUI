@@ -50,7 +50,10 @@ local function Height(frame, height)
 end
 
 local function Point(obj, arg1, arg2, arg3, arg4, arg5)
-	-- anyone has a more elegant way for this?
+    if arg2 == nil then
+        arg2 = obj:GetParent()
+    end
+        
 	if type(arg1)=="number" then arg1 = E:Scale(arg1) end
 	if type(arg2)=="number" then arg2 = E:Scale(arg2) end
 	if type(arg3)=="number" then arg3 = E:Scale(arg3) end

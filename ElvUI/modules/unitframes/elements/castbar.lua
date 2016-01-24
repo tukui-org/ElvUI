@@ -43,7 +43,7 @@ function UF:Construct_Castbar(self, direction, moverName)
 
 	castbar.Text = castbar:CreateFontString(nil, 'OVERLAY')
 	UF:Configure_FontString(castbar.Text)
-	castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 0)
+	castbar.Text:Point("LEFT", castbar, "LEFT", 4, 0)
 	castbar.Text:SetTextColor(0.84, 0.75, 0.65)
 
 	castbar.Spark = castbar:CreateTexture(nil, 'OVERLAY')
@@ -65,11 +65,11 @@ function UF:Construct_Castbar(self, direction, moverName)
 	if direction == "LEFT" then
 		holder:Point("TOPRIGHT", self, "BOTTOMRIGHT", 0, -(E.Border * 3))
 		castbar:Point('BOTTOMRIGHT', holder, 'BOTTOMRIGHT', -E.Border, E.Border)
-		button:Point("RIGHT", castbar, "LEFT", E.PixelMode and 0 or -3, 0)
+		button:Point("RIGHT", castbar, "LEFT", -E.Spacing*3, 0)
 	else
 		holder:Point("TOPLEFT", self, "BOTTOMLEFT", 0, -(E.Border * 3))
 		castbar:Point('BOTTOMLEFT', holder, 'BOTTOMLEFT', E.Border, E.Border)
-		button:Point("LEFT", castbar, "RIGHT", E.PixelMode and 0 or 3, 0)
+		button:Point("LEFT", castbar, "RIGHT", E.Spacing*3, 0)
 	end
 
 	castbar.Holder = holder
@@ -156,20 +156,20 @@ function UF:SetCastTicks(frame, numTicks, extraTickRatio)
 			ticks[i]:SetTexture(E["media"].normTex)
 			ticks[i]:SetVertexColor(0, 0, 0, 0.8)
 			ticks[i]:Width(1)
-			ticks[i]:SetHeight(frame:GetHeight())
+			ticks[i]:Height(frame:GetHeight())
 		end
 
 		--[[if(ms ~= 0) then
 			local perc = (w / frame.max) * (ms / 1e5)
 			if(perc > 1) then perc = 1 end
 
-			ticks[i]:SetWidth((w * perc) / (numTicks + extraTickRatio))
+			ticks[i]:Width((w * perc) / (numTicks + extraTickRatio))
 		else
 			ticks[i]:Width(1)
 		end]]
 
 		ticks[i]:ClearAllPoints()
-		ticks[i]:SetPoint("RIGHT", frame, "LEFT", d * i, 0)
+		ticks[i]:Point("RIGHT", frame, "LEFT", d * i, 0)
 		ticks[i]:Show()
 	end
 end

@@ -100,8 +100,8 @@ Here is an example of how to set oUF_AW up:
 			local icon = CreateFrame("Frame", nil, auras)
 			icon.spellID = sid
 			-- set the dimensions and positions
-			icon:SetWidth(24)
-			icon:SetHeight(24)
+			icon:Width(24)
+			icon:Height(24)
 			icon:SetPoint("BOTTOM", self, "BOTTOM", 0, 28 * i)
 			auras.icons[sid] = icon
 			-- Set any other AuraWatch icon settings

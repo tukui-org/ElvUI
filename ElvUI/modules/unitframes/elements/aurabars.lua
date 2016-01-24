@@ -27,8 +27,8 @@ function UF:Construct_AuraBars()
 	UF:Update_FontString(bar.spellname)
 
 	bar.spellname:ClearAllPoints()
-	bar.spellname:SetPoint('LEFT', bar, 'LEFT', 2, 0)
-	bar.spellname:SetPoint('RIGHT', bar.spelltime, 'LEFT', -4, 0)
+	bar.spellname:Point('LEFT', bar, 'LEFT', 2, 0)
+	bar.spellname:Point('RIGHT', bar.spelltime, 'LEFT', -4, 0)
 	bar.spellname:SetWordWrap(false)
 
 	bar.iconHolder:SetTemplate('Default')
@@ -58,8 +58,8 @@ end
 function UF:Construct_AuraBarHeader(frame)
 	local auraBar = CreateFrame('Frame', nil, frame)
 	auraBar.PostCreateBar = UF.Construct_AuraBars
-	auraBar.gap = (E.PixelMode and -1 or 1)
-	auraBar.spacing = (E.PixelMode and -1 or 1)
+	auraBar.gap = (-E.Border + E.Spacing*3)
+	auraBar.spacing = (-E.Border + E.Spacing*3)
 	auraBar.spark = true
 	auraBar.filter = UF.AuraBarFilter
 	auraBar.PostUpdate = UF.ColorizeAuraBars

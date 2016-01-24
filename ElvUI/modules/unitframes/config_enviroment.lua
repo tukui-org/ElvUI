@@ -261,8 +261,7 @@ function UF:HeaderConfig(header, configMode)
 		end
 	end
 
-	-- header:AdjustVisibility()
-	UF["headerFunctions"][header.groupName]:AdjustVisibility(header)
+	header:AdjustVisibility()
 end
 
 function UF:PLAYER_REGEN_DISABLED()

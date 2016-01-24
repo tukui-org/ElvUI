@@ -40,7 +40,7 @@ function M:SetLargeWorldMap()
 	WorldMapFrameSizeDownButton:Show()
 
 	WorldMapFrame:ClearAllPoints()
-	WorldMapFrame:SetPoint("CENTER", UIParent, "CENTER", 0, 100)
+	WorldMapFrame:Point("CENTER", UIParent, "CENTER", 0, 100)
 	WorldMapFrame:SetSize(1002, 668)
 end
 
@@ -113,9 +113,9 @@ function M:Initialize()
 		CoordsHolder.mouseCoords:SetTextColor(1, 1 ,0)
 		CoordsHolder.playerCoords:SetFontObject(NumberFontNormal)
 		CoordsHolder.mouseCoords:SetFontObject(NumberFontNormal)
-		CoordsHolder.playerCoords:SetPoint("BOTTOMLEFT", WorldMapFrame.BorderFrame.Inset, "BOTTOMLEFT", 5, 5)
+		CoordsHolder.playerCoords:Point("BOTTOMLEFT", WorldMapFrame.BorderFrame.Inset, "BOTTOMLEFT", 5, 5)
 		CoordsHolder.playerCoords:SetText(PLAYER..":   0, 0")
-		CoordsHolder.mouseCoords:SetPoint("BOTTOMLEFT", CoordsHolder.playerCoords, "TOPLEFT", 0, 5)
+		CoordsHolder.mouseCoords:Point("BOTTOMLEFT", CoordsHolder.playerCoords, "TOPLEFT", 0, 5)
 		CoordsHolder.mouseCoords:SetText(MOUSE_LABEL..":   0, 0")
 
 		self:ScheduleRepeatingTimer('UpdateCoords', 0.05)

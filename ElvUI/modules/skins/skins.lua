@@ -139,18 +139,18 @@ function S:HandleNextPrevButton(btn, buttonOverride)
 	if not btn.icon then
 		btn.icon = btn:CreateTexture(nil, 'ARTWORK')
 		btn.icon:Size(13)
-		btn.icon:SetPoint('CENTER')
+		btn.icon:Point('CENTER')
 		btn.icon:SetTexture([[Interface\Buttons\SquareButtonTextures]])
 		btn.icon:SetTexCoord(0.01562500, 0.20312500, 0.01562500, 0.20312500)
 
 		btn:SetScript('OnMouseDown', function(self)
 			if self:IsEnabled() then
-				self.icon:SetPoint("CENTER", -1, -1);
+				self.icon:Point("CENTER", -1, -1);
 			end
 		end)
 
 		btn:SetScript('OnMouseUp', function(self)
-			self.icon:SetPoint("CENTER", 0, 0);
+			self.icon:Point("CENTER", 0, 0);
 		end)
 
 		btn:SetScript('OnDisable', function(self)
@@ -257,7 +257,7 @@ function S:HandleDropDownBox(frame, width)
 		hooksecurefunc(button, "SetPoint", function(self, point, attachTo, anchorPoint, xOffset, yOffset, noReset)
 			if not noReset then
 				button:ClearAllPoints()
-				button:SetPoint("RIGHT", frame, "RIGHT", -10, 3, true)
+				button:Point("RIGHT", frame, "RIGHT", -10, 3, true)
 			end
 		end)
 
@@ -385,7 +385,7 @@ function S:HandleCloseButton(f, point, text)
 		f.text:SetFont([[Interface\AddOns\ElvUI\media\fonts\PT_Sans_Narrow.ttf]], 16, 'OUTLINE')
 		f.text:SetText(text)
 		f.text:SetJustifyH('CENTER')
-		f.text:SetPoint('CENTER', f, 'CENTER')
+		f.text:Point('CENTER', f, 'CENTER')
 	end
 
 	if point then

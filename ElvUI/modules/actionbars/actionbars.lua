@@ -141,8 +141,8 @@ function AB:PositionAndSizeBar(barName)
 		numColumns = 1;
 	end
 
-	bar:SetWidth(spacing + ((size * (buttonsPerRow * widthMult)) + ((spacing * (buttonsPerRow - 1)) * widthMult) + (spacing * widthMult)));
-	bar:SetHeight(spacing + ((size * (numColumns * heightMult)) + ((spacing * (numColumns - 1)) * heightMult) + (spacing * heightMult)));
+	bar:Width(spacing + ((size * (buttonsPerRow * widthMult)) + ((spacing * (buttonsPerRow - 1)) * widthMult) + (spacing * widthMult)));
+	bar:Height(spacing + ((size * (numColumns * heightMult)) + ((spacing * (numColumns - 1)) * heightMult) + (spacing * heightMult)));
 
 	bar.mouseover = self.db[barName].mouseover
 
@@ -371,7 +371,7 @@ function AB:UpdateVehicleLeave()
 	local pos = E.db.general.minimap.icons.vehicleLeave.position or "BOTTOMLEFT"
 	local size = E.db.general.minimap.icons.vehicleLeave.size or 26
 	button:ClearAllPoints()
-	button:SetPoint(pos, Minimap, pos, E.db.general.minimap.icons.vehicleLeave.xOffset or 2, E.db.general.minimap.icons.vehicleLeave.yOffset or 2)
+	button:Point(pos, Minimap, pos, E.db.general.minimap.icons.vehicleLeave.xOffset or 2, E.db.general.minimap.icons.vehicleLeave.yOffset or 2)
 	button:SetSize(size, size)
 end
 
@@ -552,7 +552,7 @@ function AB:StyleButton(button, noBackdrop, useMasque)
 
 	if count then
 		count:ClearAllPoints();
-		count:SetPoint("BOTTOMRIGHT", 0, 2);
+		count:Point("BOTTOMRIGHT", 0, 2);
 		count:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 	end
 
@@ -802,7 +802,7 @@ function AB:FixKeybindText(button)
 
 	if not button.useMasque then
 		hotkey:ClearAllPoints()
-		hotkey:SetPoint("TOPRIGHT", 0, -3);
+		hotkey:Point("TOPRIGHT", 0, -3);
 	end
 end
 
@@ -905,22 +905,22 @@ function AB:StyleFlyout(button)
 
 		if strfind(point, "TOP") then
 			button.FlyoutArrow:ClearAllPoints()
-			button.FlyoutArrow:SetPoint("BOTTOM", button, "BOTTOM", 0, -arrowDistance)
+			button.FlyoutArrow:Point("BOTTOM", button, "BOTTOM", 0, -arrowDistance)
 			SetClampedTextureRotation(button.FlyoutArrow, 180)
 			if not combat then button:SetAttribute("flyoutDirection", "DOWN") end
 		elseif point == "RIGHT" then
 			button.FlyoutArrow:ClearAllPoints()
-			button.FlyoutArrow:SetPoint("LEFT", button, "LEFT", -arrowDistance, 0)
+			button.FlyoutArrow:Point("LEFT", button, "LEFT", -arrowDistance, 0)
 			SetClampedTextureRotation(button.FlyoutArrow, 270)
 			if not combat then button:SetAttribute("flyoutDirection", "LEFT") end
 		elseif point == "LEFT" then
 			button.FlyoutArrow:ClearAllPoints()
-			button.FlyoutArrow:SetPoint("RIGHT", button, "RIGHT", arrowDistance, 0)
+			button.FlyoutArrow:Point("RIGHT", button, "RIGHT", arrowDistance, 0)
 			SetClampedTextureRotation(button.FlyoutArrow, 90)
 			if not combat then button:SetAttribute("flyoutDirection", "RIGHT") end
 		elseif point == "CENTER" or strfind(point, "BOTTOM") then
 			button.FlyoutArrow:ClearAllPoints()
-			button.FlyoutArrow:SetPoint("TOP", button, "TOP", 0, arrowDistance)
+			button.FlyoutArrow:Point("TOP", button, "TOP", 0, arrowDistance)
 			SetClampedTextureRotation(button.FlyoutArrow, 0)
 			if not combat then button:SetAttribute("flyoutDirection", "UP") end
 		end
@@ -942,9 +942,9 @@ function AB:VehicleFix()
 		local heightMult = 1;
 
 		bar.backdrop:ClearAllPoints()
-		bar.backdrop:SetPoint(self.db[barName].point, bar, self.db[barName].point)
-		bar.backdrop:SetWidth(spacing + ((size * (buttonsPerRow * widthMult)) + ((spacing * (buttonsPerRow - 1)) * widthMult) + (spacing * widthMult)));
-		bar.backdrop:SetHeight(spacing + ((size * (numColumns * heightMult)) + ((spacing * (numColumns - 1)) * heightMult) + (spacing * heightMult)));
+		bar.backdrop:Point(self.db[barName].point, bar, self.db[barName].point)
+		bar.backdrop:Width(spacing + ((size * (buttonsPerRow * widthMult)) + ((spacing * (buttonsPerRow - 1)) * widthMult) + (spacing * widthMult)));
+		bar.backdrop:Height(spacing + ((size * (numColumns * heightMult)) + ((spacing * (numColumns - 1)) * heightMult) + (spacing * heightMult)));
 	else
 		bar.backdrop:SetAllPoints()
 	end
