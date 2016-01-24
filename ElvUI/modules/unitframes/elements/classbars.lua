@@ -167,7 +167,7 @@ function UF:Construct_MonkResourceBar(frame)
 end
 
 function UF:UpdateHarmony()
-	local frame = self:GetParent()
+	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 	if not db then return; end
 
@@ -297,7 +297,7 @@ function UF:Construct_MageResourceBar(frame)
 end
 
 function UF:UpdateArcaneCharges(event, arcaneCharges, maxCharges)
-	local frame = self:GetParent()
+	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 	if not db then return; end
 
@@ -357,7 +357,7 @@ function UF:Construct_RogueResourceBar(frame)
 end
 
 function UF:UpdateAnticipationCharges(event, unit, numCharges, maxCharges)
-	local frame = self:GetParent()
+	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 	if not db then return; end
 
@@ -400,7 +400,7 @@ function UF:Construct_WarlockResourceBar(frame)
 end
 
 function UF:UpdateShardBar(spec)
-	local frame = self:GetParent()
+	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 	if not db then return; end
 
@@ -458,7 +458,7 @@ function UF:Construct_PriestResourceBar(frame)
 end
 
 function UF:UpdateShadowOrbs(event, unit, powerType)
-	local frame = self:GetParent()
+	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 	if not db then return; end
 
@@ -642,7 +642,7 @@ function UF:EclipseDirection()
 end
 
 function UF:DruidResourceBarVisibilityUpdate(unit)
-	local parent = self:GetParent()
+	local parent = self.origParent or self:GetParent()
 	local eclipseBar = parent.EclipseBar
 	local druidAltMana = parent.DruidAltMana
 

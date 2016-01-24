@@ -791,6 +791,9 @@ function UF:Update_PlayerFrame(frame, db)
 	do
 		local bars = frame[frame.ClassBar]
 		if bars then
+			--Store original parent reference needed in classbars.lua
+			bars.origParent = frame
+			
 			if bars.UpdateAllRuneTypes then
 				bars.UpdateAllRuneTypes(frame)
 			end
