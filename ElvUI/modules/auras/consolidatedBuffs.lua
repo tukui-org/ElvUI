@@ -254,11 +254,11 @@ function A:Construct_ConsolidatedBuffs()
 
 	frame:Width(E.ConsolidatedBuffsWidth)
 	if E.db.auras.consolidatedBuffs.position == "LEFT" then
-		frame:Point('TOPRIGHT', Minimap.backdrop, 'TOPLEFT', -E.Border, 0)
-		frame:Point('BOTTOMRIGHT', Minimap.backdrop, 'BOTTOMLEFT', -E.Border, E.Spacing)
+		frame:Point('TOPRIGHT', Minimap.backdrop, 'TOPLEFT', E.Border - E.Spacing*3, 0)
+		frame:Point('BOTTOMRIGHT', Minimap.backdrop, 'BOTTOMLEFT', E.Border - E.Spacing*3, 0)
 	else
-		frame:Point('TOPLEFT', Minimap.backdrop, 'TOPRIGHT', E.Spacing, 0)
-		frame:Point('BOTTOMLEFT', Minimap.backdrop, 'BOTTOMRIGHT', E.Spacing, E.Spacing)
+		frame:Point('TOPLEFT', Minimap.backdrop, 'TOPRIGHT', -E.Border + E.Spacing*3, 0)
+		frame:Point('BOTTOMLEFT', Minimap.backdrop, 'BOTTOMRIGHT', -E.Border + E.Spacing*3, 0)
 	end
 	self.frame = frame
 

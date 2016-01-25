@@ -353,11 +353,11 @@ function A:Initialize()
 	self.db = E.db.auras
 
 	self.BuffFrame = self:CreateAuraHeader("HELPFUL")
-	self.BuffFrame:Point("TOPRIGHT", Minimap, "TOPLEFT", -8, E.Border)
+	self.BuffFrame:Point("TOPRIGHT", MMHolder, "TOPLEFT", -(6 + E.Border), -E.Border - E.Spacing)
 	E:CreateMover(self.BuffFrame, "BuffsMover", L["Player Buffs"])
 
 	self.DebuffFrame = self:CreateAuraHeader("HARMFUL")
-	self.DebuffFrame:Point("BOTTOMRIGHT", LeftMiniPanel, "BOTTOMLEFT", -(6 + E.Border), -E.Border)
+	self.DebuffFrame:Point("BOTTOMRIGHT", MMHolder, "BOTTOMLEFT", -(6 + E.Border), E.Border + E.Spacing)
 	E:CreateMover(self.DebuffFrame, "DebuffsMover", L["Player Debuffs"])
 	
 	if Masque then
