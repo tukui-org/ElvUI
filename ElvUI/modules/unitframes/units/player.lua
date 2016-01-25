@@ -860,7 +860,7 @@ function UF:Update_PlayerFrame(frame, db)
 					end
 					bars[i]:Height(bars:GetHeight())
 					if db.classbar.fill == "spaced" then
-						bars[i]:Width(bars:GetWidth() - ((SPACING+(BORDER*2)+BORDER)*(MAX_CLASS_BAR - 1))/MAX_CLASS_BAR)
+						bars[i]:Width((bars:GetWidth() - ((SPACING+(BORDER*2)+BORDER)*(MAX_CLASS_BAR - 1)))/MAX_CLASS_BAR)
 					elseif i ~= MAX_CLASS_BAR then
 						bars[i]:Width((CLASSBAR_WIDTH - (MAX_CLASS_BAR*(BORDER-SPACING))+(BORDER-SPACING)) / MAX_CLASS_BAR)
 					end
