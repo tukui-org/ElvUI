@@ -215,7 +215,7 @@ function M:LOOT_OPENED(event, autoloot)
 		y = y / lootFrame:GetEffectiveScale()
 
 		lootFrame:ClearAllPoints()
-		lootFrame:Point("TOPLEFT", nil, "BOTTOMLEFT", x - 40, y + 20)
+		lootFrame:Point("TOPLEFT", UIParent, "BOTTOMLEFT", x - 40, y + 20)
 		lootFrame:GetCenter()
 		lootFrame:Raise()
 	else
