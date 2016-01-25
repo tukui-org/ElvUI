@@ -828,7 +828,7 @@ function B:UpdateTokens()
 			button.icon:SetTexture(icon);
 
 			if self.db.currencyFormat == 'ICON_TEXT' then
-				button.text:SetText(name..': '..count);
+				button.text:SetText(E:AbbreviateString(name)..': '..count);
 			elseif self.db.currencyFormat == 'ICON' then
 				button.text:SetText(count);
 			end

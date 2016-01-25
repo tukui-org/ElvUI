@@ -5,7 +5,7 @@ local select, tonumber, assert, type, unpack = select, tonumber, assert, type, u
 local tinsert, tremove, tconcat = tinsert, tremove, table.concat
 local atan2, modf, ceil, floor, abs, sqrt, pi, mod = math.atan2, math.modf, math.ceil, math.floor, math.abs, math.sqrt, math.pi, mod
 local bit_band, bit_lshift, bit_rshift = bit.band, bit.lshift, bit.rshift
-local format, sub, upper, string_char, string_byte = string.format, string.sub, string.upper, string.char, string.byte
+local format, sub, upper, string_char, string_byte, split = string.format, string.sub, string.upper, string.char, string.byte, string.split
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local UnitPosition = UnitPosition
@@ -215,6 +215,20 @@ function E:ShortenString(string, numChars, dots)
 			return string
 		end
 	end
+end
+
+function E:AbbreviateString(string, allUpper)
+    local newString = ""
+    local words = {split(" ", string)}
+    for _, word in pairs(words) do
+        word = sub(word, 1, 1) --get only first letter of each word
+        if(allUpper) then
+            word = word:upper()
+        end
+        newString = newString .. word
+    end
+    
+    return newString
 end
 
 --Add time before calling a function
