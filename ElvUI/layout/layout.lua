@@ -171,7 +171,7 @@ end
 function LO:ToggleChatPanels()
 	LeftChatDataPanel:ClearAllPoints()
 	RightChatDataPanel:ClearAllPoints()
-	local SPACING = (E.PixelMode and 3 or 5)
+	local SPACING = E.Border*3 - E.Spacing
 
 	if E.db.datatexts.leftChatPanel then
 		LeftChatDataPanel:Show()
@@ -233,7 +233,7 @@ function LO:ToggleChatPanels()
 end
 
 function LO:CreateChatPanels()
-	local SPACING = (E.PixelMode and 3 or 5)
+	local SPACING = E.Border*3 - E.Spacing
 
 	--Left Chat
 	local lchat = CreateFrame('Frame', 'LeftChatPanel', E.UIParent)
@@ -270,7 +270,7 @@ function LO:CreateChatPanels()
 	local lchattb = CreateFrame('Button', 'LeftChatToggleButton', E.UIParent)
 	lchattb.parent = LeftChatPanel
 	LeftChatPanel.fadeFunc = ChatPanelLeft_OnFade
-	lchattb:Point('TOPRIGHT', lchatdp, 'TOPLEFT', -(E.PixelMode and -1 or 1), 0)
+	lchattb:Point('TOPRIGHT', lchatdp, 'TOPLEFT', E.Border - E.Spacing*3, 0)
 	lchattb:Point('BOTTOMLEFT', lchat, 'BOTTOMLEFT', SPACING, SPACING)
 	lchattb:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
 	lchattb:SetScript('OnEnter', ChatButton_OnEnter)
@@ -315,7 +315,7 @@ function LO:CreateChatPanels()
 	local rchattb = CreateFrame('Button', 'RightChatToggleButton', E.UIParent)
 	rchattb.parent = RightChatPanel
 	RightChatPanel.fadeFunc = ChatPanelRight_OnFade
-	rchattb:Point('TOPLEFT', rchatdp, 'TOPRIGHT', (E.PixelMode and -1 or 1), 0)
+	rchattb:Point('TOPLEFT', rchatdp, 'TOPRIGHT', -E.Border + E.Spacing*3, 0)
 	rchattb:Point('BOTTOMRIGHT', rchat, 'BOTTOMRIGHT', -SPACING, SPACING)
 	rchattb:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
 	rchattb:RegisterForClicks('AnyUp')

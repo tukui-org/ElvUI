@@ -655,10 +655,8 @@ function CH:PositionChat(override)
 	local fadeTabsNoBackdrop = E.db["chat"].fadeTabsNoBackdrop
 
 	for i=1, CreatedFrames do
-		local BASE_OFFSET = 60
-		if E.PixelMode then
-			BASE_OFFSET = BASE_OFFSET - 3
-		end
+		local BASE_OFFSET = 57 + E.Spacing*3
+
 		chat = _G[format("ChatFrame%d", i)]
 		chatbg = format("ChatFrame%dBackground", i)
 		button = _G[format("ButtonCF%d", i)]
