@@ -110,7 +110,10 @@ function UF:UpdateHoly(event, unit, powerType)
 				self.HolyPower[i]:SetAlpha(.2)
 			end
 			if db.classbar.fill == "spaced" then
-				self.HolyPower[i]:Width((CLASSBAR_WIDTH - ((maxHolyPower == 5 and 7 or 13)*(maxHolyPower - 1))) / maxHolyPower)
+				--Using :Width gives weird results where the size doesn't change each time you change the detached classbar width with 1px
+				--This is because the width calculated below is not necessarily a round number,
+				-- but E:Scale rounds the value causing changes to not always affect the size of individual buttons
+				self.HolyPower[i]:SetWidth((CLASSBAR_WIDTH - ((maxHolyPower == 5 and 7 or 13)*(maxHolyPower - 1))) / maxHolyPower)
 			else
                 self.HolyPower[i]:Width((CLASSBAR_WIDTH - (maxHolyPower*(BORDER-SPACING))+(BORDER-SPACING)) / maxHolyPower)
 			end
