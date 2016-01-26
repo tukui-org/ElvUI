@@ -559,8 +559,8 @@ function UF:UpdateAuraWatch(frame, petOverride, db)
 					icon.count:Point("CENTER", unpack(counterOffsets[buffs[i].point]));
 				end
 
-				icon.count:FontTemplate(unitframeFont, db.fontSize, 'OUTLINE');
-				icon.text:FontTemplate(unitframeFont, db.fontSize, 'OUTLINE');
+				icon.count:FontTemplate(unitframeFont, db.fontSize, E.db['unitframe'].fontOutline);
+				icon.text:FontTemplate(unitframeFont, db.fontSize, E.db['unitframe'].fontOutline);
 				icon.text:ClearAllPoints()
 				icon.text:Point(buffs[i].point, icon, buffs[i].point)
 
