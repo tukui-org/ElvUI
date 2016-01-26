@@ -66,7 +66,7 @@ function UF:Update_TargetFrame(frame, db)
 	local SPACING = E.Spacing;
 	local UNIT_WIDTH = db.width
 	local UNIT_HEIGHT = db.height
-	local SHADOW_SPACING = E.PixelMode and 3 or 4
+	local SHADOW_SPACING = BORDER*4
 	local USE_POWERBAR = db.power.enable
 	local USE_INSET_POWERBAR = db.power.width == 'inset' and USE_POWERBAR
 	local USE_MINI_POWERBAR = db.power.width == 'spaced' and USE_POWERBAR

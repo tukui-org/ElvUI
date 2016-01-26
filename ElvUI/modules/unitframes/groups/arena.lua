@@ -348,7 +348,7 @@ function UF:Update_ArenaFrames(frame, db)
 
 	--Target Glow
 	do
-		local SHADOW_SPACING = E.PixelMode and 3 or 4
+		local SHADOW_SPACING = BORDER*4
 		local tGlow = frame.TargetGlow
 		tGlow:ClearAllPoints()
 

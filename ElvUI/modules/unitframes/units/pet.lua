@@ -52,7 +52,7 @@ function UF:Update_PetFrame(frame, db)
 		frame.Portrait.backdrop:Hide()
 	end
 	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
-	local SHADOW_SPACING = E.PixelMode and 3 or 4
+	local SHADOW_SPACING = BORDER*4
 	local BORDER = E.Border;
 	local SPACING = E.Spacing;
 	local UNIT_WIDTH = db.width
