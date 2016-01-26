@@ -474,6 +474,7 @@ function UF:UpdateShadowOrbs(event, unit, powerType)
 	end
 
 	local BORDER = E.Border
+	local SPACING = E.Spacing
 	local numShadowOrbs = UnitPower("player", SPELL_POWER_SHADOW_ORBS);
 	local maxShadowOrbs = IsSpellKnown(SHADOW_ORB_MINOR_TALENT_ID) and 5 or 3
 	local MAX_SHADOW_ORBS = UF['classMaxResourceBar'][E.myclass]
