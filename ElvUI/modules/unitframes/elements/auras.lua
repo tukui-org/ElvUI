@@ -173,14 +173,15 @@ function UF:UpdateAuraIconSettings(auras, noCycle)
 
 	local db = frame.db[type]
 	local unitframeFont = LSM:Fetch("font", E.db['unitframe'].font)
+	local unitframeFontOutline = E.db['unitframe'].fontOutline
 	local index = 1
 	auras.db = db
 	if(db) then
 		if(not noCycle) then
 			while(auras[index]) do
 				local button = auras[index]
-				button.text:FontTemplate(unitframeFont, db.fontSize, 'OUTLINE')
-				button.count:FontTemplate(unitframeFont, db.countFontSize or db.fontSize, 'OUTLINE')
+				button.text:FontTemplate(unitframeFont, db.fontSize, unitframeFontOutline)
+				button.count:FontTemplate(unitframeFont, db.countFontSize or db.fontSize, unitframeFontOutline)
 
 				if db.clickThrough and button:IsMouseEnabled() then
 					button:EnableMouse(false)
@@ -190,8 +191,8 @@ function UF:UpdateAuraIconSettings(auras, noCycle)
 				index = index + 1
 			end
 		else
-			auras.text:FontTemplate(unitframeFont, db.fontSize, 'OUTLINE')
-			auras.count:FontTemplate(unitframeFont, db.countFontSize or db.fontSize, 'OUTLINE')
+			auras.text:FontTemplate(unitframeFont, db.fontSize, unitframeFontOutline)
+			auras.count:FontTemplate(unitframeFont, db.countFontSize or db.fontSize, unitframeFontOutline)
 
 			if db.clickThrough and auras:IsMouseEnabled() then
 				auras:EnableMouse(false)
@@ -284,7 +285,7 @@ function UF:UpdateAuraTimer(elapsed)
 	if self.text:GetFont() then
 		self.text:SetFormattedText(("%s%s|r"):format(E.TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
 	elseif self:GetParent():GetParent().db then
-		self.text:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), self:GetParent():GetParent().db[self:GetParent().type].fontSize, 'OUTLINE')
+		self.text:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), self:GetParent():GetParent().db[self:GetParent().type].fontSize, E.db['unitframe'].fontOutline)
 		self.text:SetFormattedText(("%s%s|r"):format(E.TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
 	end
 end
