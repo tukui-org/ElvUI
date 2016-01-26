@@ -207,7 +207,7 @@ function UF:Update_BossFrames(frame, db)
 				power.value:SetParent(power)
 			else
 				power.value:SetParent(frame.RaisedElementParent)
-				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(E.PixelMode and 0 or (BORDER + SPACING)))
+				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(SPACING*3))
 				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -(BORDER + PORTRAIT_WIDTH), BORDER)
 			end
 		elseif frame:IsElementEnabled('Power') then
@@ -328,7 +328,7 @@ function UF:Update_BossFrames(frame, db)
 		local x, y = E:GetXYOffset(db.buffs.anchorPoint)
 		local attachTo = self:GetAuraAnchorFrame(frame, db.buffs.attachTo)
 
-		buffs:Point(E.InversePoints[db.buffs.anchorPoint], attachTo, db.buffs.anchorPoint, x + db.buffs.xOffset, y + db.buffs.yOffset + (E.PixelMode and (db.buffs.anchorPoint:find('TOP') and -1 or 1) or 0))
+		buffs:Point(E.InversePoints[db.buffs.anchorPoint], attachTo, db.buffs.anchorPoint, x + db.buffs.xOffset, y + db.buffs.yOffset + (db.buffs.anchorPoint:find('TOP') and (BORDER + SPACING*2) or (BORDER + SPACING*2)))
 		buffs:Height(buffs.size * rows)
 		buffs["growth-y"] = db.buffs.anchorPoint:find('TOP') and 'UP' or 'DOWN'
 		buffs["growth-x"] = db.buffs.anchorPoint == 'LEFT' and 'LEFT' or  db.buffs.anchorPoint == 'RIGHT' and 'RIGHT' or (db.buffs.anchorPoint:find('LEFT') and 'RIGHT' or 'LEFT')
@@ -338,7 +338,7 @@ function UF:Update_BossFrames(frame, db)
 		buffs.point = E.InversePoints[db.buffs.anchorPoint]
 		buffs.anchorPoint = db.buffs.anchorPoint
 		buffs.xOffset = x + db.buffs.xOffset
-		buffs.yOffset = y + db.buffs.yOffset + (E.PixelMode and (db.buffs.anchorPoint:find('TOP') and -1 or 1) or 0)
+		buffs.yOffset = y + db.buffs.yOffset + (db.buffs.anchorPoint:find('TOP') and (BORDER + SPACING*2) or (BORDER + SPACING*2))
 
 		if db.buffs.enable then
 			buffs:Show()

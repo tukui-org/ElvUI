@@ -665,7 +665,7 @@ function UF:Update_PlayerFrame(frame, db)
 		buffs.point = E.InversePoints[db.buffs.anchorPoint]
 		buffs.anchorPoint = db.buffs.anchorPoint
 		buffs.xOffset = x + db.buffs.xOffset
-		buffs.yOffset = y + db.buffs.yOffset + (db.buffs.anchorPoint:find('TOP') and -(SPACING*2) or SPACING*2)
+		buffs.yOffset = y + db.buffs.yOffset + (db.buffs.anchorPoint:find('TOP') and (BORDER + SPACING*2) or (BORDER + SPACING*2))
 
 		if db.buffs.enable then
 			buffs:Show()

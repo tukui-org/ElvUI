@@ -265,14 +265,14 @@ function M:EnableDisable_ReputationBar()
 end
 
 function M:LoadExpRepBar()
-	self.expBar = self:CreateBar('ElvUI_ExperienceBar', ExperienceBar_OnEnter, 'LEFT', LeftChatPanel, 'RIGHT', E.PixelMode and -1 or 1, 0)
+	self.expBar = self:CreateBar('ElvUI_ExperienceBar', ExperienceBar_OnEnter, 'LEFT', LeftChatPanel, 'RIGHT', -E.Border + E.Spacing*3, 0)
 	self.expBar.statusBar:SetStatusBarColor(0, 0.4, 1, .8)
 	self.expBar.rested = CreateFrame('StatusBar', nil, self.expBar)
 	self.expBar.rested:SetInside()
 	self.expBar.rested:SetStatusBarTexture(E.media.normTex)
 	self.expBar.rested:SetStatusBarColor(1, 0, 1, 0.2)
 
-	self.repBar = self:CreateBar('ElvUI_ReputationBar', ReputationBar_OnEnter, 'RIGHT', RightChatPanel, 'LEFT', E.PixelMode and 1 or -1, 0)
+	self.repBar = self:CreateBar('ElvUI_ReputationBar', ReputationBar_OnEnter, 'RIGHT', RightChatPanel, 'LEFT', E.Border - E.Spacing*3, 0)
 
 	self:UpdateExpRepDimensions()
 

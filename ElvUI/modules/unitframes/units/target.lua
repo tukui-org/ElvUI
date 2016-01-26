@@ -262,7 +262,7 @@ function UF:Update_TargetFrame(frame, db)
 				power:SetFrameStrata("MEDIUM")
 				power:SetFrameLevel(frame:GetFrameLevel() + 3)
 			else
-				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(E.PixelMode and 0 or (BORDER + SPACING)))
+				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(SPACING*3))
 				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -(BORDER + PORTRAIT_WIDTH), BORDER)
 			end
 			
@@ -414,7 +414,7 @@ function UF:Update_TargetFrame(frame, db)
 		local x, y = E:GetXYOffset(db.buffs.anchorPoint)
 		local attachTo = self:GetAuraAnchorFrame(frame, db.buffs.attachTo)
 
-		buffs:Point(E.InversePoints[db.buffs.anchorPoint], attachTo, db.buffs.anchorPoint, x + db.buffs.xOffset, y + db.buffs.yOffset + (E.PixelMode and (db.buffs.anchorPoint:find('TOP') and -1 or 1) or 0))
+		buffs:Point(E.InversePoints[db.buffs.anchorPoint], attachTo, db.buffs.anchorPoint, x + db.buffs.xOffset, y + db.buffs.yOffset + (db.buffs.anchorPoint:find('TOP') and (BORDER + SPACING*2) or (BORDER + SPACING*2)))
 		buffs:Height(buffs.size * rows)
 		buffs["growth-y"] = db.buffs.anchorPoint:find('TOP') and 'UP' or 'DOWN'
 		buffs["growth-x"] = db.buffs.anchorPoint == 'LEFT' and 'LEFT' or  db.buffs.anchorPoint == 'RIGHT' and 'RIGHT' or (db.buffs.anchorPoint:find('LEFT') and 'RIGHT' or 'LEFT')
@@ -424,7 +424,7 @@ function UF:Update_TargetFrame(frame, db)
 		buffs.point = E.InversePoints[db.buffs.anchorPoint]
 		buffs.anchorPoint = db.buffs.anchorPoint
 		buffs.xOffset = x + db.buffs.xOffset
-		buffs.yOffset = y + db.buffs.yOffset + (E.PixelMode and (db.buffs.anchorPoint:find('TOP') and -1 or 1) or 0)
+		buffs.yOffset = y + db.buffs.yOffset + (db.buffs.anchorPoint:find('TOP') and (BORDER + SPACING*2) or (BORDER + SPACING*2))
 
 		if db.buffs.enable then
 			buffs:Show()
@@ -569,7 +569,7 @@ function UF:Update_TargetFrame(frame, db)
 				CPoints.mover:SetAlpha(0)
 			end
 		elseif not db.combobar.detachFromFrame then
-			CPoints:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, (E.PixelMode and 0 or (BORDER + SPACING)))
+			CPoints:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", BORDER, (SPACING*3))
 			CPoints:SetFrameStrata("LOW")
 			if CPoints.mover then
 				CPoints.mover:SetScale(0.000001)
