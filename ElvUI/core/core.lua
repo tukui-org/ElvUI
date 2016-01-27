@@ -1032,16 +1032,17 @@ function E:DBConversions()
 		end
 	end
 	
-	--Convert spellIDs saved as strings to numbers
-	if E.global.unitframe['aurafilters']['Whitelist (Strict)'].spells then
+	--Move spells from the "Whitelist (Strict)" filter to the "Whitelist" filter
+	if E.global.unitframe['aurafilters']['Whitelist (Strict)'] and E.global.unitframe['aurafilters']['Whitelist (Strict)'].spells then
 		for k, v in pairs(E.global.unitframe['aurafilters']['Whitelist (Strict)'].spells) do
 			if type(v) == 'table' then
-				for k_,v_ in pairs(v) do
-					if k_ == 'spellID' and type(v_) == "string" and tonumber(v_) then
-						E.global.unitframe['aurafilters']['Whitelist (Strict)']['spells'][k].spellID = tonumber(v_)
-					end
+				local spellID = tonumber(v.spellID)
+				local priority = v.priority
+				if spellID then
+					E.global.unitframe['aurafilters']['Whitelist']['spells'][spellID] = {['enable'] = true, ["name"] = ((GetSpellInfo(spellID)) or "Impale"), ['priority'] = priority or 0, ['stackThreshold'] = 0}
 				end
 			end
+			E.global.unitframe['aurafilters']['Whitelist (Strict)']["spells"][k] = nil
 		end
 	end
 
