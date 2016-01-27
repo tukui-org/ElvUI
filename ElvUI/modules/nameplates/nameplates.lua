@@ -1527,23 +1527,16 @@ function NP:SetAuraInstance(guid, spellID, expiration, stacks, caster, duration,
 	if db.additionalFilter and trackFilter then
 		local name = GetSpellInfo(spellID)
 		local spellList = trackFilter.spells
+		local spell = (spellList[spellID] or spellList[name])
 		local type = trackFilter.type
-		if type == 'Blacklist' then
-			if spellList[name] and spellList[name].enable then
+
+		if spell and spell.enable then
+			if type == 'Blacklist' then
 				filter = false;
-			end
-		else
-			if spellList[name] and spellList[name].enable then
+			else
 				filter = true;
 			end
-			if trackFilter == 'Whitelist (Strict)' and spellList[name].spellID and not spellList[name].spellID == spellID then
-				filter = false;
-			end
 		end
-	end
-
-	if E.global.unitframe.InvalidSpells[spellID] then
-		filter = false;
 	end
 
 	if filter ~= true then

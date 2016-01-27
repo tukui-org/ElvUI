@@ -90,10 +90,6 @@ end
 
 function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID)
 	if not self.db then return; end
-	if E.global.unitframe.InvalidSpells[spellID] then
-		return false;
-	end
-
 	local db = self.db.aurabar
 
 	local returnValue = true
@@ -147,7 +143,7 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 	end
 
 	if UF:CheckFilter(db.useBlacklist, isFriend) then
-		local blackList = E.global['unitframe']['aurafilters']['Blacklist'].spells[name]
+		local blackList = (E.global['unitframe']['aurafilters']['Blacklist'].spells[spellID] or E.global['unitframe']['aurafilters']['Blacklist'].spells[name])
 		if blackList and blackList.enable then
 			returnValue = false;
 		end
@@ -156,7 +152,7 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 	end
 
 	if UF:CheckFilter(db.useWhitelist, isFriend) then
-		local whiteList = E.global['unitframe']['aurafilters']['Whitelist'].spells[name]
+		local whiteList = (E.global['unitframe']['aurafilters']['Whitelist'].spells[spellID] or E.global['unitframe']['aurafilters']['Whitelist'].spells[name])
 		if whiteList and whiteList.enable then
 			returnValue = true;
 		elseif not anotherFilterExists and not playerOnlyFilter then
@@ -166,33 +162,18 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 		anotherFilterExists = true
 	end
 
-	if UF:CheckFilter(db.useWhitelist, isFriend) then
-		local whiteList = E.global['unitframe']['aurafilters']['Whitelist (Strict)'].spells[name]
-		if whiteList and whiteList.enable then
-			if whiteList.spellID and whiteList.spellID == spellID then
-				returnValue = true;
-			else
-				returnValue = false
-			end
-		elseif not anotherFilterExists and not playerOnlyFilter then
-			returnValue = false
-		end
-	end
-
 	if db.useFilter and E.global['unitframe']['aurafilters'][db.useFilter] then
 		local type = E.global['unitframe']['aurafilters'][db.useFilter].type
 		local spellList = E.global['unitframe']['aurafilters'][db.useFilter].spells
+		local spell = (spellList[spellID] or spellList[name])
 
 		if type == 'Whitelist' then
-			if spellList[name] and spellList[name].enable and passPlayerOnlyCheck then
+			if spell and spell.enable and passPlayerOnlyCheck then
 				returnValue = true
-				if db.useFilter == 'Whitelist (Strict)' and spellList[name].spellID and not spellList[name].spellID == spellID then
-						returnValue = false
-					end
 			elseif not anotherFilterExists then
 				returnValue = false
 			end
-		elseif type == 'Blacklist' and spellList[name] and spellList[name].enable then
+		elseif type == 'Blacklist' and spell and spell.enable then
 			returnValue = false
 		end
 	end
@@ -209,9 +190,9 @@ function UF:ColorizeAuraBars(event, unit)
 		if not frame:IsVisible() then break end
 		local spellName = frame.statusBar.aura.name
 		local spellID = frame.statusBar.aura.spellID
-		local colors = E.global.unitframe.AuraBarColors[tostring(spellID)] or E.global.unitframe.AuraBarColors[spellName]
+		local colors = E.global.unitframe.AuraBarColors[spellID] or E.global.unitframe.AuraBarColors[tostring(spellID)] or E.global.unitframe.AuraBarColors[spellName]
 
-		if E.db.unitframe.colors.auraBarTurtle and E.global.unitframe.aurafilters.TurtleBuffs.spells[spellName] and not colors and (spellName ~= GOTAK or (spellName == GOTAK and frame.statusBar.aura.spellID == GOTAK_ID)) then
+		if E.db.unitframe.colors.auraBarTurtle and (E.global.unitframe.aurafilters.TurtleBuffs.spells[spellID] or E.global.unitframe.aurafilters.TurtleBuffs.spells[spellName]) and not colors and (spellName ~= GOTAK or (spellName == GOTAK and spellID == GOTAK_ID)) then
 			colors = E.db.unitframe.colors.auraBarTurtleColor
 		end
 
