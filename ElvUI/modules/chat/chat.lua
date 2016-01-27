@@ -593,7 +593,7 @@ local function FindRightChatID()
 		local chat = _G[frameName]
 		local id = chat:GetID()
 
-		if E:FramesOverlap(chat, RightChatPanel) then
+		if E:FramesOverlap(chat, RightChatPanel) and not E:FramesOverlap(chat, LeftChatPanel) then
 			rightChatID = id
 			break
 		end
