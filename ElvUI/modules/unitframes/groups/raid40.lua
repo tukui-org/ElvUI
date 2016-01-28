@@ -144,7 +144,7 @@ function UF:Update_Raid40Frames(frame, db)
 	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
 	local BORDER = E.Border;
 	local SPACING = E.Spacing;
-	local SHADOW_SPACING = BORDER*4
+	local SHADOW_SPACING = (BORDER*3 - SPACING*2)
 	local UNIT_WIDTH = db.width
 	local UNIT_HEIGHT = db.height
 

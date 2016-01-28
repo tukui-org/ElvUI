@@ -74,7 +74,7 @@ function UF:Update_AssistFrames(frame, db)
 	frame.db = db
 	local BORDER = E.Border;
 	local SPACING = E.Spacing;
-	local SHADOW_SPACING = BORDER*4
+	local SHADOW_SPACING = (BORDER*3 - SPACING*2)
 	local UNIT_WIDTH = db.width
 	frame.colors = ElvUF.colors
 	frame.Range.outsideAlpha = E.db.unitframe.OORAlpha
