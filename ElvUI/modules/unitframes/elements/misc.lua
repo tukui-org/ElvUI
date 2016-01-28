@@ -585,6 +585,8 @@ function UF:UpdateAuraWatch(frame, petOverride, db)
 		frame.AuraWatch.Update(frame)
 	end
 
+	frame:UpdateElement("AuraWatch")
+
 	buffs = nil;
 end
 
