@@ -271,7 +271,8 @@ function UF:Update_AssistFrames(frame, db)
 			if db.rdebuffs.enable then
 				local rdebuffsFont = UF.LSM:Fetch("font", db.rdebuffs.font)
 				frame:EnableElement('RaidDebuffs')
-
+				
+				rdebuffs.forceShow = frame.forceShowAuras
 				rdebuffs:Size(db.rdebuffs.size)
 				rdebuffs:Point('BOTTOM', frame, 'BOTTOM', db.rdebuffs.xOffset, db.rdebuffs.yOffset)
 				
