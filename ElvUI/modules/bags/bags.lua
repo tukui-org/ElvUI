@@ -1196,8 +1196,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.editBox:Point('RIGHT', f.purchaseBagButton, 'LEFT', -5, 0);
 		f.editBox:SetAutoFocus(false);
 		f.editBox:SetScript("OnEscapePressed", self.ResetAndClear);
-		f.editBox:SetScript("OnEnterPressed", self.ResetAndClear);
-		f.editBox:SetScript("OnEditFocusLost", self.ResetAndClear);
+		f.editBox:SetScript("OnEnterPressed", function(self) self:ClearFocus() end);
 		f.editBox:SetScript("OnEditFocusGained", f.editBox.HighlightText);
 		f.editBox:SetScript("OnTextChanged", self.UpdateSearch);
 		f.editBox:SetScript('OnChar', self.UpdateSearch);
@@ -1277,8 +1276,7 @@ function B:ContructContainerFrame(name, isBank)
 		f.editBox:Point('RIGHT', f.vendorGraysButton, 'LEFT', -5, 0);
 		f.editBox:SetAutoFocus(false);
 		f.editBox:SetScript("OnEscapePressed", self.ResetAndClear);
-		f.editBox:SetScript("OnEnterPressed", self.ResetAndClear);
-		f.editBox:SetScript("OnEditFocusLost", self.ResetAndClear);
+		f.editBox:SetScript("OnEnterPressed", function(self) self:ClearFocus() end);
 		f.editBox:SetScript("OnEditFocusGained", f.editBox.HighlightText);
 		f.editBox:SetScript("OnTextChanged", self.UpdateSearch);
 		f.editBox:SetScript('OnChar', self.UpdateSearch);
@@ -1433,8 +1431,7 @@ function B:GUILDBANKFRAME_OPENED()
 	E.Skins:HandleButton(button, true)]]
 	if GuildItemSearchBox then
 		GuildItemSearchBox:SetScript("OnEscapePressed", self.ResetAndClear);
-		GuildItemSearchBox:SetScript("OnEnterPressed", self.ResetAndClear);
-		GuildItemSearchBox:SetScript("OnEditFocusLost", self.ResetAndClear);
+		GuildItemSearchBox:SetScript("OnEnterPressed", function(self) self:ClearFocus() end);
 		GuildItemSearchBox:SetScript("OnEditFocusGained", GuildItemSearchBox.HighlightText);
 		GuildItemSearchBox:SetScript("OnTextChanged", self.UpdateSearch);
 		GuildItemSearchBox:SetScript('OnChar', self.UpdateSearch);
