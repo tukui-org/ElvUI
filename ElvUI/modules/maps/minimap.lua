@@ -204,11 +204,11 @@ function M:UpdateSettings()
 	end
 	E.MinimapSize = E.private.general.minimap.enable and E.db.general.minimap.size or Minimap:GetWidth() + 10
  	E.MinimapWidth = E.MinimapSize
-	E.MinimapHeight = E.MinimapSize + (E.Spacing*3)
+	E.MinimapHeight = E.MinimapSize
     
 	if E.db.auras.consolidatedBuffs.enable and E.private.auras.disableBlizzard then
         local numBuffs = E.db.auras.consolidatedBuffs.filter and 7 or 8 --This is one short because I'm just counting the total spaces between icons, add +1 below for the actual amount of buffs
-		E.ConsolidatedBuffsWidth = (E.MinimapHeight + (numBuffs*E.Border) + E.Spacing) / (numBuffs + 1)
+		E.ConsolidatedBuffsWidth = (E.MinimapHeight + (numBuffs*E.Border) + E.Border*2 - (E.Spacing*numBuffs)) / (numBuffs + 1)
 	else
 		E.ConsolidatedBuffsWidth = 0;
 	end
