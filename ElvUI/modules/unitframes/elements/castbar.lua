@@ -154,7 +154,7 @@ function UF:SetCastTicks(frame, numTicks, extraTickRatio)
 		if not ticks[i] then
 			ticks[i] = frame:CreateTexture(nil, 'OVERLAY')
 			ticks[i]:SetTexture(E["media"].normTex)
-            E:RegisterStatusBar(ticks[i])
+			E:RegisterStatusBar(ticks[i])
 			ticks[i]:SetVertexColor(0, 0, 0, 0.8)
 			ticks[i]:Width(1)
 			ticks[i]:Height(frame:GetHeight())
@@ -218,13 +218,13 @@ function UF:PostCastStart(unit, name, rank, castid)
 		local unitframe = E.global.unitframe
 		local baseTicks = unitframe.ChannelTicks[name]
 
-        -- Detect channeling spell and if it's the same as the previously channeled one
-        if baseTicks and name == self.prevSpellCast then
-            self.chainChannel = true
-        elseif baseTicks then
-            self.chainChannel = nil
-            self.prevSpellCast = name
-        end
+		-- Detect channeling spell and if it's the same as the previously channeled one
+		if baseTicks and name == self.prevSpellCast then
+			self.chainChannel = true
+		elseif baseTicks then
+			self.chainChannel = nil
+			self.prevSpellCast = name
+		end
 
 		if baseTicks and unitframe.ChannelTicksSize[name] and unitframe.HastedChannelTicks[name] then
 			local tickIncRate = 1 / baseTicks
@@ -243,18 +243,18 @@ function UF:PostCastStart(unit, name, rank, castid)
 				end
 			end
 
-            local baseTickSize = unitframe.ChannelTicksSize[name]
-            local hastedTickSize = baseTickSize / (1 + curHaste)
-            local extraTick = self.max - hastedTickSize * (baseTicks + bonusTicks)
-            local extraTickRatio = extraTick / hastedTickSize
+			local baseTickSize = unitframe.ChannelTicksSize[name]
+			local hastedTickSize = baseTickSize / (1 + curHaste)
+			local extraTick = self.max - hastedTickSize * (baseTicks + bonusTicks)
+			local extraTickRatio = extraTick / hastedTickSize
 
 			UF:SetCastTicks(self, baseTicks + bonusTicks, extraTickRatio)
 		elseif baseTicks and unitframe.ChannelTicksSize[name] then
 			local curHaste = UnitSpellHaste("player") * 0.01
-            local baseTickSize = unitframe.ChannelTicksSize[name]
-            local hastedTickSize = baseTickSize / (1 +  curHaste)
-            local extraTick = self.max - hastedTickSize * (baseTicks)
-            local extraTickRatio = extraTick / hastedTickSize
+			local baseTickSize = unitframe.ChannelTicksSize[name]
+			local hastedTickSize = baseTickSize / (1 +  curHaste)
+			local extraTick = self.max - hastedTickSize * (baseTicks)
+			local extraTickRatio = extraTick / hastedTickSize
 
 			UF:SetCastTicks(self, baseTicks, extraTickRatio)
 		elseif baseTicks then
@@ -307,7 +307,7 @@ end
 function UF:PostChannelUpdate(unit, name)
 	local db = self:GetParent().db
 	if not db then return; end
-    if not (unit == "player" or unit == "vehicle") then return end
+	if not (unit == "player" or unit == "vehicle") then return end
 
 	if db.castbar.ticks then
 		local unitframe = E.global.unitframe

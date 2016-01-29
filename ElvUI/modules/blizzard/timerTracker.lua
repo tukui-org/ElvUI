@@ -32,7 +32,7 @@ local function SkinIt(bar)
 		bar.backdrop:SetFrameLevel(0)
 		bar.backdrop:SetTemplate("Transparent")
 		bar.backdrop:SetOutside()
-        E:RegisterStatusBar(bar)
+		E:RegisterStatusBar(bar)
 	end
 end
 

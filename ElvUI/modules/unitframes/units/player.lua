@@ -75,7 +75,7 @@ function UF:Construct_PlayerFrame(frame)
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
 
 	frame.CombatFade = true
-	
+
 	frame.customTexts = {}
 
 	frame:Point('BOTTOMLEFT', E.UIParent, 'BOTTOM', -413, 68) --Set to default position
@@ -119,7 +119,7 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 	if USE_MINI_CLASSBAR then
 		CLASSBAR_HEIGHT = CLASSBAR_HEIGHT / 2
 	end
-	
+
 	CLASSBAR_HEIGHT_SPACING = CLASSBAR_HEIGHT + SPACING
 
 	if db.classbar.detachFromFrame then
@@ -290,7 +290,7 @@ function UF:Update_PlayerFrame(frame, db)
 		if USE_MINI_POWERBAR and not POWERBAR_DETACHED then
 			POWERBAR_WIDTH = POWERBAR_WIDTH / 2
 		end
-		
+
 		if not USE_POWERBAR_OFFSET then
 			POWERBAR_OFFSET = 0
 		end
@@ -534,14 +534,14 @@ function UF:Update_PlayerFrame(frame, db)
 				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(SPACING*3))
 				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -BORDER, BORDER)
 			end
-			
+
 			if db.power.strataAndLevel.useCustomStrata then
 				power:SetFrameStrata(db.power.strataAndLevel.frameStrata)
 			end
 			if db.power.strataAndLevel.useCustomLevel then
 				power:SetFrameLevel(db.power.strataAndLevel.frameLevel)
 			end
-			
+
 			if POWERBAR_DETACHED and db.power.parent == "UIPARENT" then
 				E.FrameLocks[power] = true
 				power:SetParent(E.UIParent)
@@ -793,7 +793,7 @@ function UF:Update_PlayerFrame(frame, db)
 		if bars then
 			--Store original parent reference needed in classbars.lua
 			bars.origParent = frame
-			
+
 			if bars.UpdateAllRuneTypes then
 				bars.UpdateAllRuneTypes(frame)
 			end
@@ -868,16 +868,16 @@ function UF:Update_PlayerFrame(frame, db)
 					bars[i]:GetStatusBarTexture():SetHorizTile(false)
 					bars[i]:ClearAllPoints()
 					if i == 1 then
-						bars[i]:Point("LEFT", bars)                   
+						bars[i]:Point("LEFT", bars)
 					else
 						if db.classbar.fill == "spaced" then
 							bars[i]:Point("LEFT", bars[i-1], "RIGHT", SPACING+(BORDER*2)+2, 0)
-                        else
+						else
 							bars[i]:Point("LEFT", bars[i-1], "RIGHT", BORDER-SPACING, 0)
 						end
 
 						if i == MAX_CLASS_BAR then
-                            bars[i]:Point("RIGHT", bars)
+							bars[i]:Point("RIGHT", bars)
 						end
 					end
 
@@ -918,7 +918,7 @@ function UF:Update_PlayerFrame(frame, db)
 					bars.backdrop:Hide()
 				end
 			end
-			
+
 			if db.classbar.detachFromFrame and db.classbar.parent == "UIPARENT" then
 				E.FrameLocks[bars] = true
 				bars:SetParent(E.UIParent)
@@ -1061,11 +1061,11 @@ function UF:Update_PlayerFrame(frame, db)
 			end
 
 			local yOffset = 0;
-            if db.aurabar.anchorPoint == 'BELOW' then
-                yOffset = BORDER - SPACING*2;
-            else
-                yOffset = -BORDER + SPACING*2;
-            end
+			if db.aurabar.anchorPoint == 'BELOW' then
+				yOffset = BORDER - SPACING*2;
+			else
+				yOffset = -BORDER + SPACING*2;
+			end
 
 
 			auraBars.auraBarHeight = db.aurabar.height
@@ -1161,6 +1161,6 @@ local f = CreateFrame("Frame")
 f:RegisterEvent("PLAYER_ENTERING_WORLD")
 f:SetScript("OnEvent", function(self, event)
 	self:UnregisterEvent(event)
-	
+
 	C_TimerAfter(5, UpdateAllRunes) --Delay it, since the WoW client updates Death Runes after PEW
 end)

@@ -49,7 +49,7 @@ local function LoadSkin()
 
 	BarberShopBannerFrameBGTexture:Kill()
 	BarberShopBannerFrame:Kill()
-	
+
 	BarberShopBannerFrameCaption:ClearAllPoints()
 	BarberShopBannerFrameCaption:Point("TOP", BarberShopFrameMoneyFrame, "BOTTOM", 0, -5)
 	BarberShopBannerFrameCaption:SetParent(BarberShopFrame)

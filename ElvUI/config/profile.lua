@@ -116,7 +116,7 @@ P['general'] = {
 
 --Bags
 P['bags'] = {
-    ['sortInverted'] = true,
+	['sortInverted'] = true,
 	['xOffset'] = 0,
 	['yOffset'] = 0,
 	['xOffsetBank'] = 0,

@@ -25,7 +25,7 @@ function UF:Construct_FocusFrame(frame)
 	frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT')
 
 	frame.Name = self:Construct_NameText(frame)
-	
+
 	frame.Portrait3D = self:Construct_Portrait(frame, 'model')
 	frame.Portrait2D = self:Construct_Portrait(frame, 'texture')
 
@@ -48,7 +48,7 @@ end
 
 function UF:Update_FocusFrame(frame, db)
 	frame.db = db
-	
+
 	if frame.Portrait then
 		frame.Portrait:Hide()
 		frame.Portrait:ClearAllPoints()
@@ -86,11 +86,11 @@ function UF:Update_FocusFrame(frame, db)
 		if USE_MINI_POWERBAR then
 			POWERBAR_WIDTH = POWERBAR_WIDTH / 2
 		end
-		
+
 		if USE_PORTRAIT_OVERLAY or not USE_PORTRAIT then
 			PORTRAIT_WIDTH = 0
 		end
-		
+
 		if not USE_POWERBAR_OFFSET then
 			POWERBAR_OFFSET = 0
 		end
@@ -136,7 +136,7 @@ function UF:Update_FocusFrame(frame, db)
 		else
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, (USE_POWERBAR and ((BORDER + SPACING)*2) or BORDER) + POWERBAR_HEIGHT)
 		end
-		
+
 		health.bg:ClearAllPoints()
 		if not USE_PORTRAIT_OVERLAY then
 			health:Point("TOPRIGHT", -(PORTRAIT_WIDTH+BORDER+POWERBAR_OFFSET), -BORDER)
@@ -208,7 +208,7 @@ function UF:Update_FocusFrame(frame, db)
 			power:Hide()
 		end
 	end
-	
+
 	--Portrait
 	do
 		local portrait = frame.Portrait
@@ -280,7 +280,7 @@ function UF:Update_FocusFrame(frame, db)
 					threat.glow:Point("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
 					threat.glow:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
 				end
-				
+
 				if USE_PORTRAIT and not USE_PORTRAIT_OVERLAY then
 					threat.glow:Point("TOPRIGHT", frame.Portrait.backdrop, "TOPRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
 					threat.glow:Point("BOTTOMRIGHT", frame.Portrait.backdrop, "BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
@@ -495,7 +495,7 @@ function UF:Update_FocusFrame(frame, db)
 			end
 		end
 	end
-	
+
 	--GPSArrow
 	do
 		local GPS = frame.GPS
@@ -636,7 +636,7 @@ function UF:Update_FocusFrame(frame, db)
 			end
 		end
 	end
-	
+
 	for objectName, object in pairs(frame.customTexts) do
 		if (not db.customTexts) or (db.customTexts and not db.customTexts[objectName]) then
 			object:Hide()

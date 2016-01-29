@@ -127,7 +127,7 @@ function UF:Update_TargetFrame(frame, db)
 		if USE_MINI_POWERBAR and not POWERBAR_DETACHED then
 			POWERBAR_WIDTH = POWERBAR_WIDTH / 2
 		end
-		
+
 		if not USE_POWERBAR_OFFSET then
 			POWERBAR_OFFSET = 0
 		end
@@ -265,14 +265,14 @@ function UF:Update_TargetFrame(frame, db)
 				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(SPACING*3))
 				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -(BORDER + PORTRAIT_WIDTH), BORDER)
 			end
-			
+
 			if db.power.strataAndLevel.useCustomStrata then
 				power:SetFrameStrata(db.power.strataAndLevel.frameStrata)
 			end
 			if db.power.strataAndLevel.useCustomLevel then
 				power:SetFrameLevel(db.power.strataAndLevel.frameLevel)
 			end
-			
+
 			if POWERBAR_DETACHED and db.power.parent == "UIPARENT" then
 				E.FrameLocks[power] = true
 				power:SetParent(E.UIParent)
@@ -413,13 +413,13 @@ function UF:Update_TargetFrame(frame, db)
 
 		local x, y = E:GetXYOffset(db.buffs.anchorPoint)
 		local attachTo = self:GetAuraAnchorFrame(frame, db.buffs.attachTo)
-        
+
 		buffs:Point(E.InversePoints[db.buffs.anchorPoint], attachTo, db.buffs.anchorPoint, x + db.buffs.xOffset, y + db.buffs.yOffset)
 		buffs:Height(buffs.size * rows)
 		buffs["growth-y"] = db.buffs.anchorPoint:find('TOP') and 'UP' or 'DOWN'
 		buffs["growth-x"] = db.buffs.anchorPoint == 'LEFT' and 'LEFT' or  db.buffs.anchorPoint == 'RIGHT' and 'RIGHT' or (db.buffs.anchorPoint:find('LEFT') and 'RIGHT' or 'LEFT')
 		buffs.initialAnchor = E.InversePoints[db.buffs.anchorPoint]
-		
+
 		buffs.attachTo = attachTo
 		buffs.point = E.InversePoints[db.buffs.anchorPoint]
 		buffs.anchorPoint = db.buffs.anchorPoint
@@ -467,7 +467,7 @@ function UF:Update_TargetFrame(frame, db)
 		debuffs.anchorPoint = db.debuffs.anchorPoint
 		debuffs.xOffset = x + db.debuffs.xOffset
 		debuffs.yOffset = y + db.debuffs.yOffset
-		
+
 		if db.debuffs.enable then
 			debuffs:Show()
 			UF:UpdateAuraIconSettings(debuffs)
@@ -606,8 +606,8 @@ function UF:Update_TargetFrame(frame, db)
 			elseif i ~= MAX_COMBO_POINTS then
 				CPoints[i]:Width((COMBOBAR_WIDTH - (MAX_COMBO_POINTS*(BORDER-SPACING))+(BORDER-SPACING)) / MAX_COMBO_POINTS)
 				CPoints[i].backdrop:Hide()
-            else
-                CPoints[i].backdrop:Hide()
+			else
+				CPoints[i].backdrop:Hide()
 			end
 
 
@@ -618,10 +618,10 @@ function UF:Update_TargetFrame(frame, db)
 				if db.combobar.fill == "spaced" then
 					CPoints[i]:Point("LEFT", CPoints[i-1], "RIGHT", SPACING+(BORDER*2)+2, 0)
 				elseif i == MAX_COMBO_POINTS then
-                    CPoints[i]:Point("LEFT", CPoints[i-1], "RIGHT", BORDER-SPACING, 0)
-                    CPoints[i]:Point("RIGHT", CPoints) 
-                else
-                    CPoints[i]:Point("LEFT", CPoints[i-1], "RIGHT", BORDER-SPACING, 0)
+					CPoints[i]:Point("LEFT", CPoints[i-1], "RIGHT", BORDER-SPACING, 0)
+					CPoints[i]:Point("RIGHT", CPoints)
+				else
+					CPoints[i]:Point("LEFT", CPoints[i-1], "RIGHT", BORDER-SPACING, 0)
 				end
 			end
 
@@ -658,7 +658,7 @@ function UF:Update_TargetFrame(frame, db)
 					frame.DBHGlow:SetAllPoints(frame.Threat.glow)
 				else
 					frame.DebuffHighlightBackdrop = false
-				end				
+				end
 			end
 		else
 			if frame:IsElementEnabled('DebuffHighlight') then
@@ -694,7 +694,7 @@ function UF:Update_TargetFrame(frame, db)
 			end
 		end
 	end
-	
+
 	--GPSArrow
 	do
 		local GPS = frame.GPS

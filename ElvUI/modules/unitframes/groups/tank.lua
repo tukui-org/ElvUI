@@ -188,7 +188,7 @@ function UF:Update_TankFrames(frame, db)
 			end
 		end
 	end
-	
+
 	if not frame.isChild then
 		--Auras Disable/Enable
 		--Only do if both debuffs and buffs aren't being used.
@@ -202,7 +202,7 @@ function UF:Update_TankFrames(frame, db)
 			frame.Buffs:ClearAllPoints()
 			frame.Debuffs:ClearAllPoints()
 		end
-		
+
 		--Buffs
 		do
 			local buffs = frame.Buffs
@@ -277,12 +277,12 @@ function UF:Update_TankFrames(frame, db)
 				rdebuffs.forceShow = frame.forceShowAuras
 				rdebuffs:Size(db.rdebuffs.size)
 				rdebuffs:Point('BOTTOM', frame, 'BOTTOM', db.rdebuffs.xOffset, db.rdebuffs.yOffset)
-				
+
 				rdebuffs.count:FontTemplate(rdebuffsFont, db.rdebuffs.fontSize, db.rdebuffs.fontOutline)
 				rdebuffs.count:ClearAllPoints()
 				rdebuffs.count:Point(db.rdebuffs.stack.position, db.rdebuffs.stack.xOffset, db.rdebuffs.stack.yOffset)
 				rdebuffs.count:SetTextColor(stackColor.r, stackColor.g, stackColor.b)
-				
+
 				rdebuffs.time:FontTemplate(rdebuffsFont, db.rdebuffs.fontSize, db.rdebuffs.fontOutline)
 				rdebuffs.time:ClearAllPoints()
 				rdebuffs.time:Point(db.rdebuffs.duration.position, db.rdebuffs.duration.xOffset, db.rdebuffs.duration.yOffset)
@@ -292,7 +292,7 @@ function UF:Update_TankFrames(frame, db)
 				rdebuffs:Hide()
 			end
 		end
-		
+
 		--Debuff Highlight
 		do
 			local dbh = frame.DebuffHighlight
@@ -304,7 +304,7 @@ function UF:Update_TankFrames(frame, db)
 					frame.DBHGlow:SetAllPoints(frame.Threat.glow)
 				else
 					frame.DebuffHighlightBackdrop = false
-				end		
+				end
 			else
 				frame:DisableElement('DebuffHighlight')
 			end

@@ -251,7 +251,7 @@ function AB:PositionAndSizeBarPet()
 	end
 
 	RegisterStateDriver(bar, "show", self.db['barPet'].visibility);
-	
+
 	if MasqueGroup and E.private.actionbar.masque.petBar then MasqueGroup:ReSkin() end
 end
 
@@ -303,7 +303,7 @@ function AB:CreateBarPet()
 	E:CreateMover(bar, 'PetAB', L["Pet Bar"], nil, nil, nil, 'ALL,ACTIONBARS');
 	self:PositionAndSizeBarPet();
 	self:UpdatePetBindings()
-	
+
 	if MasqueGroup and E.private.actionbar.masque.petBar then
 		for i=1, NUM_PET_ACTION_SLOTS do
 			local button = _G["PetActionButton"..i]

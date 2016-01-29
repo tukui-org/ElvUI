@@ -32,7 +32,7 @@ function UF:Construct_RaidFrames(unitGroup)
 
 	self.Power = UF:Construct_PowerBar(self, true, true, 'LEFT')
 	self.Power.frequentUpdates = false;
-	
+
 	self.Portrait3D = UF:Construct_Portrait(self, 'model')
 	self.Portrait2D = UF:Construct_Portrait(self, 'texture')
 
@@ -178,11 +178,11 @@ function UF:Update_RaidFrames(frame, db)
 		if USE_MINI_POWERBAR then
 			POWERBAR_WIDTH = POWERBAR_WIDTH / 2
 		end
-		
+
 		if USE_PORTRAIT_OVERLAY or not USE_PORTRAIT then
 			PORTRAIT_WIDTH = 0
 		end
-		
+
 		if not USE_POWERBAR_OFFSET then
 			POWERBAR_OFFSET = 0
 		end
@@ -240,7 +240,7 @@ function UF:Update_RaidFrames(frame, db)
 		else
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, (USE_POWERBAR and ((BORDER + SPACING)*2) or BORDER) + POWERBAR_HEIGHT)
 		end
-		
+
 		health.bg:ClearAllPoints()
 		if not USE_PORTRAIT_OVERLAY then
 			health:Point("TOPLEFT", PORTRAIT_WIDTH+BORDER+POWERBAR_OFFSET, -BORDER)
@@ -310,19 +310,19 @@ function UF:Update_RaidFrames(frame, db)
 			power:Hide()
 		end
 	end
-	
+
 	--Portrait
 	do
 		local portrait = frame.Portrait
-	
+
 		--Set Points
 		if USE_PORTRAIT then
 			if not frame:IsElementEnabled('Portrait') then
 				frame:EnableElement('Portrait')
 			end
-	
+
 			portrait:ClearAllPoints()
-	
+
 			if USE_PORTRAIT_OVERLAY then
 				if db.portrait.style == '3D' then
 					portrait:SetFrameLevel(frame.Health:GetFrameLevel() + 1)
@@ -338,16 +338,16 @@ function UF:Update_RaidFrames(frame, db)
 				if db.portrait.style == '3D' then
 					portrait:SetFrameLevel(frame:GetFrameLevel() + 5)
 				end
-				
+
 				portrait.backdrop:ClearAllPoints()
 				portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT", POWERBAR_OFFSET, 0)
-	
+
 				if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR or USE_INSET_POWERBAR then
 					portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", BORDER - SPACING*3, 0)
 				else
 					portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", BORDER - SPACING*3, 0)
 				end
-	
+
 				portrait:Point('BOTTOMLEFT', portrait.backdrop, 'BOTTOMLEFT', BORDER, BORDER)
 				portrait:Point('TOPRIGHT', portrait.backdrop, 'TOPRIGHT', -BORDER, -BORDER)
 			end
@@ -520,12 +520,12 @@ function UF:Update_RaidFrames(frame, db)
 			rdebuffs.forceShow = frame.forceShowAuras
 			rdebuffs:Size(db.rdebuffs.size)
 			rdebuffs:Point('BOTTOM', frame, 'BOTTOM', db.rdebuffs.xOffset, db.rdebuffs.yOffset)
-			
+
 			rdebuffs.count:FontTemplate(rdebuffsFont, db.rdebuffs.fontSize, db.rdebuffs.fontOutline)
 			rdebuffs.count:ClearAllPoints()
 			rdebuffs.count:Point(db.rdebuffs.stack.position, db.rdebuffs.stack.xOffset, db.rdebuffs.stack.yOffset)
 			rdebuffs.count:SetTextColor(stackColor.r, stackColor.g, stackColor.b)
-			
+
 			rdebuffs.time:FontTemplate(rdebuffsFont, db.rdebuffs.fontSize, db.rdebuffs.fontOutline)
 			rdebuffs.time:ClearAllPoints()
 			rdebuffs.time:Point(db.rdebuffs.duration.position, db.rdebuffs.duration.xOffset, db.rdebuffs.duration.yOffset)
@@ -564,7 +564,7 @@ function UF:Update_RaidFrames(frame, db)
 				frame.DBHGlow:SetAllPoints(frame.Threat.glow)
 			else
 				frame.DebuffHighlightBackdrop = false
-			end		
+			end
 		else
 			frame:DisableElement('DebuffHighlight')
 		end
@@ -594,7 +594,7 @@ function UF:Update_RaidFrames(frame, db)
 			if not frame:IsElementEnabled('HealPrediction') then
 				frame:EnableElement('HealPrediction')
 			end
-			
+
 			if not USE_PORTRAIT_OVERLAY then
 				healPrediction.myBar:SetParent(frame)
 				healPrediction.otherBar:SetParent(frame)
@@ -680,7 +680,7 @@ function UF:Update_RaidFrames(frame, db)
 	UF:UpdateAuraWatch(frame)
 
 	frame:EnableElement('ReadyCheck')
-	
+
 	for objectName, object in pairs(frame.customTexts) do
 		if (not db.customTexts) or (db.customTexts and not db.customTexts[objectName]) then
 			object:Hide()

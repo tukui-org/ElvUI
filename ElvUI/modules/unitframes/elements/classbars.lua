@@ -112,7 +112,7 @@ function UF:UpdateHoly(event, unit, powerType)
 			if db.classbar.fill == "spaced" then
 				self.HolyPower[i]:Width((CLASSBAR_WIDTH - ((maxHolyPower == 5 and 7 or 13)*(maxHolyPower - 1))) / maxHolyPower)
 			else
-                self.HolyPower[i]:Width((CLASSBAR_WIDTH - (maxHolyPower*(BORDER-SPACING))+(BORDER-SPACING)) / maxHolyPower)
+				self.HolyPower[i]:Width((CLASSBAR_WIDTH - (maxHolyPower*(BORDER-SPACING))+(BORDER-SPACING)) / maxHolyPower)
 			end
 
 			self.HolyPower[i]:ClearAllPoints()
@@ -121,7 +121,7 @@ function UF:UpdateHoly(event, unit, powerType)
 			else
 				if USE_MINI_CLASSBAR then
 					self.HolyPower[i]:Point("LEFT", self.HolyPower[i-1], "RIGHT", maxHolyPower == 5 and 7 or 13, 0)
-                else
+				else
 					self.HolyPower[i]:Point("LEFT", self.HolyPower[i-1], "RIGHT", E.Border-E.Spacing, 0)
 				end
 
@@ -246,9 +246,9 @@ function UF:UpdateHarmony()
 				if USE_MINI_CLASSBAR then
 					self[i]:Point("LEFT", self[i-1], "RIGHT", E.PixelMode and (maxBars == 5 and 4 or 7) or (maxBars == 5 and 6 or 9), 0)
 				elseif i == maxBars then
-                    self[i]:Point("LEFT", self[i-1], "RIGHT", BORDER-SPACING, 0)
-                    self[i]:Point("RIGHT", self)                 
-                else
+					self[i]:Point("LEFT", self[i-1], "RIGHT", BORDER-SPACING, 0)
+					self[i]:Point("RIGHT", self)
+				else
 					self[i]:Point("LEFT", self[i-1], "RIGHT", BORDER-SPACING, 0)
 				end
 			end
@@ -303,7 +303,7 @@ function UF:UpdateArcaneCharges(event, arcaneCharges, maxCharges)
 	if not db then return; end
 
 	local point, _, anchorPoint, x, y = frame.Health:GetPoint()
-	
+
 	if E.myspec == 1 and arcaneCharges == 0 then
 		if db.classbar.autoHide then
 			self:Hide()
@@ -313,7 +313,7 @@ function UF:UpdateArcaneCharges(event, arcaneCharges, maxCharges)
 				self[i]:SetValue(0)
 				self[i]:SetScript('OnUpdate', nil)
 			end
-			
+
 			self:Show()
 		end
 	end
@@ -532,9 +532,9 @@ function UF:UpdateShadowOrbs(event, unit, powerType)
 				if USE_MINI_CLASSBAR then
 					self[i]:Point("LEFT", self[i-1], "RIGHT", maxShadowOrbs == 5 and 7 or 13, 0)
 				elseif i == maxShadowOrbs then
-                    self[i]:Point("LEFT", self[i-1], "RIGHT", BORDER-SPACING, 0)
-                    self[i]:Point("RIGHT", self)                 
-                else
+					self[i]:Point("LEFT", self[i-1], "RIGHT", BORDER-SPACING, 0)
+					self[i]:Point("RIGHT", self)
+				else
 					self[i]:Point("LEFT", self[i-1], "RIGHT", BORDER-SPACING, 0)
 				end
 			end

@@ -83,7 +83,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 
 	E.CreatedMovers[name].mover = f
 	E['snapBars'][#E['snapBars'] + 1] = f
-	
+
 	local fs = f:CreateFontString(nil, "OVERLAY")
 	fs:FontTemplate()
 	fs:SetJustifyH("CENTER")
@@ -161,7 +161,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 
 		self:SetUserPlaced(false)
 	end
-	
+
 	local function OnEnter(self)
 		if isDragging then return end
 		self.text:SetTextColor(1, 1, 1)
@@ -170,7 +170,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 		coordFrame.child = self
 		coordFrame:GetScript('OnUpdate')(coordFrame)
 	end
-	
+
 	local function OnMouseDown(self, button)
 		if button == "RightButton" then
 			isDragging = false;
@@ -185,16 +185,16 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 			end
 		end
 	end
-	
+
 	local function OnLeave(self)
 		if isDragging then return end
 		self.text:SetTextColor(unpack(E["media"].rgbvaluecolor))
 	end
-	
+
 	local function OnShow(self)
 		self:SetBackdropBorderColor(unpack(E["media"].rgbvaluecolor))
 	end
-	
+
 	local function OnMouseWheel(self, delta)
 		if IsShiftKeyDown() then
 			E:NudgeMover(delta)

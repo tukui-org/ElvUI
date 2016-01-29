@@ -35,7 +35,7 @@ function D:Initialize()
 	self:RegisterEvent("CHAT_MSG_ADDON")
 
 	self.statusBar = CreateFrame("StatusBar", "ElvUI_Download", UIParent)
-    E:RegisterStatusBar(self.statusBar)
+	E:RegisterStatusBar(self.statusBar)
 	self.statusBar:CreateBackdrop('Default')
 	self.statusBar:SetStatusBarTexture(E.media.normTex)
 	self.statusBar:SetStatusBarColor(0.95, 0.15, 0.15)
@@ -270,7 +270,7 @@ local function GetProfileData(profileType)
 
 		profileData = E:CopyTable(profileData, ElvDB.global)
 		profileData = E:RemoveTableDuplicates(profileData, G)
-	
+
 	elseif profileType == "filtersNP" then
 		profileKey = "filtersNP"
 
@@ -278,7 +278,7 @@ local function GetProfileData(profileType)
 		profileData["nameplate"]["filter"] = {}
 		profileData["nameplate"]["filter"] = E:CopyTable(profileData["nameplate"]["filter"], ElvDB.global.nameplate.filter)
 		profileData = E:RemoveTableDuplicates(profileData, G)
-	
+
 	elseif profileType == "filtersUF" then
 		profileKey = "filtersUF"
 
@@ -288,7 +288,7 @@ local function GetProfileData(profileType)
 		profileData["unitframe"]["buffwatch"] = {}
 		profileData["unitframe"]["buffwatch"] = E:CopyTable(profileData["unitframe"]["buffwatch"], ElvDB.global.unitframe.buffwatch)
 		profileData = E:RemoveTableDuplicates(profileData, G)
-	
+
 	elseif profileType == "filtersAll" then
 		profileKey = "filtersAll"
 
@@ -302,7 +302,7 @@ local function GetProfileData(profileType)
 		profileData["unitframe"]["buffwatch"] = E:CopyTable(profileData["unitframe"]["buffwatch"], ElvDB.global.unitframe.buffwatch)
 		profileData = E:RemoveTableDuplicates(profileData, G)
 	end
-	
+
 	return profileKey, profileData
 end
 
@@ -335,19 +335,19 @@ end
 
 function D:CreateProfileExport(dataString, profileType, profileKey)
 	local returnString
-	
+
 	if profileType == "profile" then
 		returnString = format("%s::%s::%s", dataString, profileType, profileKey)
 	else
 		returnString = format("%s::%s", dataString, profileType)
 	end
-	
+
 	return returnString
 end
 
 function D:GetImportStringType(dataString)
 	local stringType = ""
-	
+
 	if LibBase64:IsBase64(dataString) then
 		stringType = "Base64"
 	elseif find(dataString, "{") then --Basic check to weed out obviously wrong strings
@@ -364,12 +364,12 @@ function D:Decode(dataString)
 	if stringType == "Base64" then
 		local decodedData = LibBase64:Decode(dataString)
 		local decompressedData, message = LibCompress:Decompress(decodedData)
-		
+
 		if not decompressedData then
 			E:Print("Error decompressing data:", message)
 			return
 		end
-		
+
 		local serializedData, success
 		serializedData, profileType, profileKey = E:SplitString(decompressedData, "::")
 		success, profileData = D:Deserialize(serializedData)
@@ -395,7 +395,7 @@ function D:Decode(dataString)
 			return
 		end
 	end
-	
+
 	return profileType, profileKey, profileData
 end
 
@@ -420,7 +420,7 @@ local function SetImportedProfile(profileType, profileKey, profileData, force)
 			D.profileKey = profileKey
 			D.profileData = profileData
 			E:StaticPopup_Show('IMPORT_PROFILE_EXISTS')
-			
+
 			return
 		end
 	elseif profileType == "private" then
@@ -434,15 +434,15 @@ local function SetImportedProfile(profileType, profileKey, profileData, force)
 
 	elseif profileType == "filtersNP" then
 		E:CopyTable(ElvDB.global.nameplate, profileData.nameplate)
-	
+
 	elseif profileType == "filtersUF" then
 		E:CopyTable(ElvDB.global.unitframe, profileData.unitframe)
-	
+
 	elseif profileType == "filtersAll" then
 		E:CopyTable(ElvDB.global.nameplate, profileData.nameplate)
 		E:CopyTable(ElvDB.global.unitframe, profileData.unitframe)
 	end
-	
+
 	--Update all ElvUI modules
 	E:UpdateAll(true)
 end
@@ -454,22 +454,22 @@ function D:ExportProfile(profileType, exportFormat)
 	end
 
 	local profileKey, profileExport = GetProfileExport(profileType, exportFormat)
-	
+
 	return profileKey, profileExport
 end
 
 function D:ImportProfile(dataString)
 	local profileType, profileKey, profileData = self:Decode(dataString)
-	
+
 	if not profileData or type(profileData) ~= "table" then
 		E:Print("Error: something went wrong when converting string to table!")
 		return
 	end
-	
+
 	if profileType and ((profileType == "profile" and profileKey) or profileType ~= "profile") then
 		SetImportedProfile(profileType, profileKey, profileData)
 	end
-	
+
 	return true
 end
 

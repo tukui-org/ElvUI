@@ -16,7 +16,7 @@ local function LoadSkin()
 	TabardFrameInset:Kill()
 	TabardFrameMoneyInset:Kill()
 	TabardFrameMoneyBg:StripTextures()
-	
+
 	--Add Tabard Emblem back
 	local emblemFrames = {
 		"TabardFrameEmblemTopRight",

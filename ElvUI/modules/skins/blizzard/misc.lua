@@ -369,7 +369,7 @@ local function LoadSkin()
 
 	S:HandleEditBox(CombatConfigSettingsNameEditBox)
 
-    local frames = {
+	local frames = {
 		"ChatConfigFrame",
 		"ChatConfigCategoryFrame",
 		"ChatConfigBackgroundFrame",
@@ -392,147 +392,147 @@ local function LoadSkin()
 		"CombatConfigMessageSourcesDoneBy",
 		"CombatConfigMessageSourcesDoneTo",
 		"CombatConfigColorsUnitColors",
-    }
+	}
 
-    for i = 1, getn(frames) do
-        local SkinFrames = _G[frames[i]]
-        SkinFrames:StripTextures()
-        SkinFrames:SetTemplate("Transparent")
-    end
+	for i = 1, getn(frames) do
+		local SkinFrames = _G[frames[i]]
+		SkinFrames:StripTextures()
+		SkinFrames:SetTemplate("Transparent")
+	end
 
-    local otherframe = {
+	local otherframe = {
 		"CombatConfigColorsColorizeSpellNames",
 		"CombatConfigColorsColorizeDamageNumber",
 		"CombatConfigColorsColorizeDamageSchool",
 		"CombatConfigColorsColorizeEntireLine",
-    }
+	}
 
-    for i = 1, getn(otherframe) do
-        local SkinFrames = _G[otherframe[i]]
-        SkinFrames:ClearAllPoints()
-        if SkinFrames == CombatConfigColorsColorizeSpellNames then
-            SkinFrames:Point("TOP",CombatConfigColorsColorizeUnitName,"BOTTOM",0,-2)
-        else
-            SkinFrames:Point("TOP",_G[otherframe[i-1]],"BOTTOM",0,-2)
-        end
-    end
+	for i = 1, getn(otherframe) do
+		local SkinFrames = _G[otherframe[i]]
+		SkinFrames:ClearAllPoints()
+		if SkinFrames == CombatConfigColorsColorizeSpellNames then
+			SkinFrames:Point("TOP",CombatConfigColorsColorizeUnitName,"BOTTOM",0,-2)
+		else
+			SkinFrames:Point("TOP",_G[otherframe[i-1]],"BOTTOM",0,-2)
+		end
+	end
 
 	-- >> Chat >> Channel Settings      /!\ I don't know why, but the skin works only after /reload ui, not at first login =(
-    ChatConfigChannelSettingsLeft:RegisterEvent("PLAYER_ENTERING_WORLD")
-    ChatConfigChannelSettingsLeft:SetScript("OnEvent", function(self, event)
-        ChatConfigChannelSettingsLeft:UnregisterEvent("PLAYER_ENTERING_WORLD")
-        for i = 1,#ChatConfigChannelSettingsLeft.checkBoxTable do
-            _G["ChatConfigChannelSettingsLeftCheckBox"..i]:StripTextures()
-            _G["ChatConfigChannelSettingsLeftCheckBox"..i]:CreateBackdrop()
-            _G["ChatConfigChannelSettingsLeftCheckBox"..i].backdrop:Point("TOPLEFT",3,-1)
-            _G["ChatConfigChannelSettingsLeftCheckBox"..i].backdrop:Point("BOTTOMRIGHT",-3,1)
-            _G["ChatConfigChannelSettingsLeftCheckBox"..i]:Height(ChatConfigOtherSettingsCombatCheckBox1:GetHeight())
-            S:HandleCheckBox(_G["ChatConfigChannelSettingsLeftCheckBox"..i.."Check"])
-            S:HandleCheckBox(_G["ChatConfigChannelSettingsLeftCheckBox"..i.."ColorClasses"])
-            _G["ChatConfigChannelSettingsLeftCheckBox"..i.."ColorClasses"]:Height(ChatConfigChatSettingsLeftCheckBox1Check:GetHeight())
-        end
-    end)
+	ChatConfigChannelSettingsLeft:RegisterEvent("PLAYER_ENTERING_WORLD")
+	ChatConfigChannelSettingsLeft:SetScript("OnEvent", function(self, event)
+		ChatConfigChannelSettingsLeft:UnregisterEvent("PLAYER_ENTERING_WORLD")
+		for i = 1,#ChatConfigChannelSettingsLeft.checkBoxTable do
+			_G["ChatConfigChannelSettingsLeftCheckBox"..i]:StripTextures()
+			_G["ChatConfigChannelSettingsLeftCheckBox"..i]:CreateBackdrop()
+			_G["ChatConfigChannelSettingsLeftCheckBox"..i].backdrop:Point("TOPLEFT",3,-1)
+			_G["ChatConfigChannelSettingsLeftCheckBox"..i].backdrop:Point("BOTTOMRIGHT",-3,1)
+			_G["ChatConfigChannelSettingsLeftCheckBox"..i]:Height(ChatConfigOtherSettingsCombatCheckBox1:GetHeight())
+			S:HandleCheckBox(_G["ChatConfigChannelSettingsLeftCheckBox"..i.."Check"])
+			S:HandleCheckBox(_G["ChatConfigChannelSettingsLeftCheckBox"..i.."ColorClasses"])
+			_G["ChatConfigChannelSettingsLeftCheckBox"..i.."ColorClasses"]:Height(ChatConfigChatSettingsLeftCheckBox1Check:GetHeight())
+		end
+	end)
 
 	--Makes the skin work, but only after /reload ui :o   (found in chatconfingframe.xml)
-    CreateChatChannelList(self, GetChannelList())
-    ChatConfig_CreateCheckboxes(ChatConfigChannelSettingsLeft, CHAT_CONFIG_CHANNEL_LIST, "ChatConfigCheckBoxWithSwatchAndClassColorTemplate", CHANNELS)
-    ChatConfig_UpdateCheckboxes(ChatConfigChannelSettingsLeft)
-    ChatConfigBackgroundFrame:SetScript("OnShow", function(self)
+	CreateChatChannelList(self, GetChannelList())
+	ChatConfig_CreateCheckboxes(ChatConfigChannelSettingsLeft, CHAT_CONFIG_CHANNEL_LIST, "ChatConfigCheckBoxWithSwatchAndClassColorTemplate", CHANNELS)
+	ChatConfig_UpdateCheckboxes(ChatConfigChannelSettingsLeft)
+	ChatConfigBackgroundFrame:SetScript("OnShow", function(self)
 		-- >> Chat >> Chat Settings
-        for i = 1,#CHAT_CONFIG_CHAT_LEFT do
-            _G["ChatConfigChatSettingsLeftCheckBox"..i]:StripTextures()
-            _G["ChatConfigChatSettingsLeftCheckBox"..i]:CreateBackdrop()
-            _G["ChatConfigChatSettingsLeftCheckBox"..i].backdrop:Point("TOPLEFT",3,-1)
-            _G["ChatConfigChatSettingsLeftCheckBox"..i].backdrop:Point("BOTTOMRIGHT",-3,1)
-            _G["ChatConfigChatSettingsLeftCheckBox"..i]:Height(ChatConfigOtherSettingsCombatCheckBox1:GetHeight())
-            S:HandleCheckBox(_G["ChatConfigChatSettingsLeftCheckBox"..i.."Check"])
-            S:HandleCheckBox(_G["ChatConfigChatSettingsLeftCheckBox"..i.."ColorClasses"])
-            _G["ChatConfigChatSettingsLeftCheckBox"..i.."ColorClasses"]:Height(ChatConfigChatSettingsLeftCheckBox1Check:GetHeight())
-        end
+		for i = 1,#CHAT_CONFIG_CHAT_LEFT do
+			_G["ChatConfigChatSettingsLeftCheckBox"..i]:StripTextures()
+			_G["ChatConfigChatSettingsLeftCheckBox"..i]:CreateBackdrop()
+			_G["ChatConfigChatSettingsLeftCheckBox"..i].backdrop:Point("TOPLEFT",3,-1)
+			_G["ChatConfigChatSettingsLeftCheckBox"..i].backdrop:Point("BOTTOMRIGHT",-3,1)
+			_G["ChatConfigChatSettingsLeftCheckBox"..i]:Height(ChatConfigOtherSettingsCombatCheckBox1:GetHeight())
+			S:HandleCheckBox(_G["ChatConfigChatSettingsLeftCheckBox"..i.."Check"])
+			S:HandleCheckBox(_G["ChatConfigChatSettingsLeftCheckBox"..i.."ColorClasses"])
+			_G["ChatConfigChatSettingsLeftCheckBox"..i.."ColorClasses"]:Height(ChatConfigChatSettingsLeftCheckBox1Check:GetHeight())
+		end
 		-- >> Other >> Combat
-        for i = 1,#CHAT_CONFIG_OTHER_COMBAT do
-            _G["ChatConfigOtherSettingsCombatCheckBox"..i]:StripTextures()
-            _G["ChatConfigOtherSettingsCombatCheckBox"..i]:CreateBackdrop()
-            _G["ChatConfigOtherSettingsCombatCheckBox"..i].backdrop:Point("TOPLEFT",3,-1)
-            _G["ChatConfigOtherSettingsCombatCheckBox"..i].backdrop:Point("BOTTOMRIGHT",-3,1)
-            S:HandleCheckBox(_G["ChatConfigOtherSettingsCombatCheckBox"..i.."Check"])
-        end
+		for i = 1,#CHAT_CONFIG_OTHER_COMBAT do
+			_G["ChatConfigOtherSettingsCombatCheckBox"..i]:StripTextures()
+			_G["ChatConfigOtherSettingsCombatCheckBox"..i]:CreateBackdrop()
+			_G["ChatConfigOtherSettingsCombatCheckBox"..i].backdrop:Point("TOPLEFT",3,-1)
+			_G["ChatConfigOtherSettingsCombatCheckBox"..i].backdrop:Point("BOTTOMRIGHT",-3,1)
+			S:HandleCheckBox(_G["ChatConfigOtherSettingsCombatCheckBox"..i.."Check"])
+		end
 		-- >> Other >> PvP
-        for i = 1,#CHAT_CONFIG_OTHER_PVP do
-            _G["ChatConfigOtherSettingsPVPCheckBox"..i]:StripTextures()
-            _G["ChatConfigOtherSettingsPVPCheckBox"..i]:CreateBackdrop()
-            _G["ChatConfigOtherSettingsPVPCheckBox"..i].backdrop:Point("TOPLEFT",3,-1)
-            _G["ChatConfigOtherSettingsPVPCheckBox"..i].backdrop:Point("BOTTOMRIGHT",-3,1)
-            S:HandleCheckBox(_G["ChatConfigOtherSettingsPVPCheckBox"..i.."Check"])
-        end
+		for i = 1,#CHAT_CONFIG_OTHER_PVP do
+			_G["ChatConfigOtherSettingsPVPCheckBox"..i]:StripTextures()
+			_G["ChatConfigOtherSettingsPVPCheckBox"..i]:CreateBackdrop()
+			_G["ChatConfigOtherSettingsPVPCheckBox"..i].backdrop:Point("TOPLEFT",3,-1)
+			_G["ChatConfigOtherSettingsPVPCheckBox"..i].backdrop:Point("BOTTOMRIGHT",-3,1)
+			S:HandleCheckBox(_G["ChatConfigOtherSettingsPVPCheckBox"..i.."Check"])
+		end
 		-- >> Other >> System
-        for i = 1,#CHAT_CONFIG_OTHER_SYSTEM do
-            _G["ChatConfigOtherSettingsSystemCheckBox"..i]:StripTextures()
-            _G["ChatConfigOtherSettingsSystemCheckBox"..i]:CreateBackdrop()
-            _G["ChatConfigOtherSettingsSystemCheckBox"..i].backdrop:Point("TOPLEFT",3,-1)
-            _G["ChatConfigOtherSettingsSystemCheckBox"..i].backdrop:Point("BOTTOMRIGHT",-3,1)
-            S:HandleCheckBox(_G["ChatConfigOtherSettingsSystemCheckBox"..i.."Check"])
-        end
+		for i = 1,#CHAT_CONFIG_OTHER_SYSTEM do
+			_G["ChatConfigOtherSettingsSystemCheckBox"..i]:StripTextures()
+			_G["ChatConfigOtherSettingsSystemCheckBox"..i]:CreateBackdrop()
+			_G["ChatConfigOtherSettingsSystemCheckBox"..i].backdrop:Point("TOPLEFT",3,-1)
+			_G["ChatConfigOtherSettingsSystemCheckBox"..i].backdrop:Point("BOTTOMRIGHT",-3,1)
+			S:HandleCheckBox(_G["ChatConfigOtherSettingsSystemCheckBox"..i.."Check"])
+		end
 		-- >> Other >> Creatures
-        for i = 1,#CHAT_CONFIG_CHAT_CREATURE_LEFT do
-            _G["ChatConfigOtherSettingsCreatureCheckBox"..i]:StripTextures()
-            _G["ChatConfigOtherSettingsCreatureCheckBox"..i]:CreateBackdrop()
-            _G["ChatConfigOtherSettingsCreatureCheckBox"..i].backdrop:Point("TOPLEFT",3,-1)
-            _G["ChatConfigOtherSettingsCreatureCheckBox"..i].backdrop:Point("BOTTOMRIGHT",-3,1)
-            S:HandleCheckBox(_G["ChatConfigOtherSettingsCreatureCheckBox"..i.."Check"])
-        end
+		for i = 1,#CHAT_CONFIG_CHAT_CREATURE_LEFT do
+			_G["ChatConfigOtherSettingsCreatureCheckBox"..i]:StripTextures()
+			_G["ChatConfigOtherSettingsCreatureCheckBox"..i]:CreateBackdrop()
+			_G["ChatConfigOtherSettingsCreatureCheckBox"..i].backdrop:Point("TOPLEFT",3,-1)
+			_G["ChatConfigOtherSettingsCreatureCheckBox"..i].backdrop:Point("BOTTOMRIGHT",-3,1)
+			S:HandleCheckBox(_G["ChatConfigOtherSettingsCreatureCheckBox"..i.."Check"])
+		end
 		-- >> Sources >> DoneBy
-        for i = 1,#COMBAT_CONFIG_MESSAGESOURCES_BY do
-            _G["CombatConfigMessageSourcesDoneByCheckBox"..i]:StripTextures()
-            _G["CombatConfigMessageSourcesDoneByCheckBox"..i]:CreateBackdrop()
-            _G["CombatConfigMessageSourcesDoneByCheckBox"..i].backdrop:Point("TOPLEFT",3,-1)
-            _G["CombatConfigMessageSourcesDoneByCheckBox"..i].backdrop:Point("BOTTOMRIGHT",-3,1)
-            S:HandleCheckBox(_G["CombatConfigMessageSourcesDoneByCheckBox"..i.."Check"])
-        end
+		for i = 1,#COMBAT_CONFIG_MESSAGESOURCES_BY do
+			_G["CombatConfigMessageSourcesDoneByCheckBox"..i]:StripTextures()
+			_G["CombatConfigMessageSourcesDoneByCheckBox"..i]:CreateBackdrop()
+			_G["CombatConfigMessageSourcesDoneByCheckBox"..i].backdrop:Point("TOPLEFT",3,-1)
+			_G["CombatConfigMessageSourcesDoneByCheckBox"..i].backdrop:Point("BOTTOMRIGHT",-3,1)
+			S:HandleCheckBox(_G["CombatConfigMessageSourcesDoneByCheckBox"..i.."Check"])
+		end
 		-- >> Sources >> DoneTo
-        for i = 1,#COMBAT_CONFIG_MESSAGESOURCES_TO do
-            _G["CombatConfigMessageSourcesDoneToCheckBox"..i]:StripTextures()
-            _G["CombatConfigMessageSourcesDoneToCheckBox"..i]:CreateBackdrop()
-            _G["CombatConfigMessageSourcesDoneToCheckBox"..i].backdrop:Point("TOPLEFT",3,-1)
-            _G["CombatConfigMessageSourcesDoneToCheckBox"..i].backdrop:Point("BOTTOMRIGHT",-3,1)
-            S:HandleCheckBox(_G["CombatConfigMessageSourcesDoneToCheckBox"..i.."Check"])
-        end
+		for i = 1,#COMBAT_CONFIG_MESSAGESOURCES_TO do
+			_G["CombatConfigMessageSourcesDoneToCheckBox"..i]:StripTextures()
+			_G["CombatConfigMessageSourcesDoneToCheckBox"..i]:CreateBackdrop()
+			_G["CombatConfigMessageSourcesDoneToCheckBox"..i].backdrop:Point("TOPLEFT",3,-1)
+			_G["CombatConfigMessageSourcesDoneToCheckBox"..i].backdrop:Point("BOTTOMRIGHT",-3,1)
+			S:HandleCheckBox(_G["CombatConfigMessageSourcesDoneToCheckBox"..i.."Check"])
+		end
 		-- >> Combat >> Colors >> Unit Colors
-        for i = 1,#COMBAT_CONFIG_UNIT_COLORS do
-            _G["CombatConfigColorsUnitColorsSwatch"..i]:StripTextures()
-            _G["CombatConfigColorsUnitColorsSwatch"..i]:CreateBackdrop()
-            _G["CombatConfigColorsUnitColorsSwatch"..i].backdrop:Point("TOPLEFT",3,-1)
-            _G["CombatConfigColorsUnitColorsSwatch"..i].backdrop:Point("BOTTOMRIGHT",-3,1)
-        end
+		for i = 1,#COMBAT_CONFIG_UNIT_COLORS do
+			_G["CombatConfigColorsUnitColorsSwatch"..i]:StripTextures()
+			_G["CombatConfigColorsUnitColorsSwatch"..i]:CreateBackdrop()
+			_G["CombatConfigColorsUnitColorsSwatch"..i].backdrop:Point("TOPLEFT",3,-1)
+			_G["CombatConfigColorsUnitColorsSwatch"..i].backdrop:Point("BOTTOMRIGHT",-3,1)
+		end
 		-- >> Combat >> Messages Types
-        for i=1,4 do
-            for j=1,4 do
-                if _G["CombatConfigMessageTypesLeftCheckBox"..i] and _G["CombatConfigMessageTypesLeftCheckBox"..i.."_"..j] then
-                    S:HandleCheckBox(_G["CombatConfigMessageTypesLeftCheckBox"..i])
-                    S:HandleCheckBox(_G["CombatConfigMessageTypesLeftCheckBox"..i.."_"..j])
-                end
-            end
-            for j=1,10 do
-                if _G["CombatConfigMessageTypesRightCheckBox"..i] and _G["CombatConfigMessageTypesRightCheckBox"..i.."_"..j] then
-                    S:HandleCheckBox(_G["CombatConfigMessageTypesRightCheckBox"..i])
-                    S:HandleCheckBox(_G["CombatConfigMessageTypesRightCheckBox"..i.."_"..j])
-                end
-            end
-            S:HandleCheckBox(_G["CombatConfigMessageTypesMiscCheckBox"..i])
-        end
-    end)
+		for i=1,4 do
+			for j=1,4 do
+				if _G["CombatConfigMessageTypesLeftCheckBox"..i] and _G["CombatConfigMessageTypesLeftCheckBox"..i.."_"..j] then
+					S:HandleCheckBox(_G["CombatConfigMessageTypesLeftCheckBox"..i])
+					S:HandleCheckBox(_G["CombatConfigMessageTypesLeftCheckBox"..i.."_"..j])
+				end
+			end
+			for j=1,10 do
+				if _G["CombatConfigMessageTypesRightCheckBox"..i] and _G["CombatConfigMessageTypesRightCheckBox"..i.."_"..j] then
+					S:HandleCheckBox(_G["CombatConfigMessageTypesRightCheckBox"..i])
+					S:HandleCheckBox(_G["CombatConfigMessageTypesRightCheckBox"..i.."_"..j])
+				end
+			end
+			S:HandleCheckBox(_G["CombatConfigMessageTypesMiscCheckBox"..i])
+		end
+	end)
 -- >> Combat >> Tabs
-    for i = 1,#COMBAT_CONFIG_TABS do
-        local cctab = _G["CombatConfigTab"..i]
-        if cctab then
-            S:HandleTab(cctab)
-            cctab:Height(cctab:GetHeight()-2)
-            cctab:Width(ceil(cctab:GetWidth()+1.6))
-            _G["CombatConfigTab"..i.."Text"]:Point("BOTTOM",0,10)
-        end
-    end
-    CombatConfigTab1:ClearAllPoints()
-    CombatConfigTab1:Point("BOTTOMLEFT",ChatConfigBackgroundFrame,"TOPLEFT",6,-2)
+	for i = 1,#COMBAT_CONFIG_TABS do
+		local cctab = _G["CombatConfigTab"..i]
+		if cctab then
+			S:HandleTab(cctab)
+			cctab:Height(cctab:GetHeight()-2)
+			cctab:Width(ceil(cctab:GetWidth()+1.6))
+			_G["CombatConfigTab"..i.."Text"]:Point("BOTTOM",0,10)
+		end
+	end
+	CombatConfigTab1:ClearAllPoints()
+	CombatConfigTab1:Point("BOTTOMLEFT",ChatConfigBackgroundFrame,"TOPLEFT",6,-2)
 
    local ccbuttons = {
 		"ChatConfigFrameOkayButton",
@@ -542,22 +542,22 @@ local function LoadSkin()
 		"ChatConfigCombatSettingsFiltersAddFilterButton",
 		"ChatConfigCombatSettingsFiltersCopyFilterButton",
 		"CombatConfigSettingsSaveButton",
-    }
+	}
 
    for i = 1, getn(ccbuttons) do
-        local ccbtn = _G[ccbuttons[i]]
-        if ccbtn then
+		local ccbtn = _G[ccbuttons[i]]
+		if ccbtn then
 			S:HandleButton(ccbtn)
 
-        end
-    end
+		end
+	end
 
 	ChatConfigFrameOkayButton:Point("TOPRIGHT",ChatConfigBackgroundFrame,"BOTTOMRIGHT",-3,-5)
-    ChatConfigFrameDefaultButton:Point("TOPLEFT",ChatConfigCategoryFrame,"BOTTOMLEFT",1,-5)
-    CombatLogDefaultButton:Point("TOPLEFT",ChatConfigCategoryFrame,"BOTTOMLEFT",1,-5)
-    ChatConfigCombatSettingsFiltersDeleteButton:Point("TOPRIGHT",ChatConfigCombatSettingsFilters,"BOTTOMRIGHT",-3,-1)
-    ChatConfigCombatSettingsFiltersCopyFilterButton:Point("RIGHT",ChatConfigCombatSettingsFiltersDeleteButton,"LEFT",-2,0)
-    ChatConfigCombatSettingsFiltersAddFilterButton:Point("RIGHT",ChatConfigCombatSettingsFiltersCopyFilterButton,"LEFT",-2,0)
+	ChatConfigFrameDefaultButton:Point("TOPLEFT",ChatConfigCategoryFrame,"BOTTOMLEFT",1,-5)
+	CombatLogDefaultButton:Point("TOPLEFT",ChatConfigCategoryFrame,"BOTTOMLEFT",1,-5)
+	ChatConfigCombatSettingsFiltersDeleteButton:Point("TOPRIGHT",ChatConfigCombatSettingsFilters,"BOTTOMRIGHT",-3,-1)
+	ChatConfigCombatSettingsFiltersCopyFilterButton:Point("RIGHT",ChatConfigCombatSettingsFiltersDeleteButton,"LEFT",-2,0)
+	ChatConfigCombatSettingsFiltersAddFilterButton:Point("RIGHT",ChatConfigCombatSettingsFiltersCopyFilterButton,"LEFT",-2,0)
 
    local cccheckbox = {
 		"CombatConfigColorsHighlightingLine",
@@ -581,22 +581,22 @@ local function LoadSkin()
 		"CombatConfigSettingsSolo",
 		"CombatConfigSettingsParty",
 		"CombatConfigSettingsRaid",
-    }
-    for i = 1, getn(cccheckbox) do
+	}
+	for i = 1, getn(cccheckbox) do
 		local ccbtn = _G[cccheckbox[i]]
-        S:HandleCheckBox(ccbtn)
-    end
+		S:HandleCheckBox(ccbtn)
+	end
 
-    S:HandleNextPrevButton(ChatConfigMoveFilterUpButton,true)
-    S:HandleNextPrevButton(ChatConfigMoveFilterDownButton,true)
-    ChatConfigMoveFilterUpButton:ClearAllPoints()
-    ChatConfigMoveFilterDownButton:ClearAllPoints()
-    ChatConfigMoveFilterUpButton:Point("TOPLEFT",ChatConfigCombatSettingsFilters,"BOTTOMLEFT",3,0)
-    ChatConfigMoveFilterDownButton:Point("LEFT",ChatConfigMoveFilterUpButton,24,0)
-    S:HandleEditBox(CombatConfigSettingsNameEditBox)
-    ChatConfigFrame:Size(680,596)
-    ChatConfigFrameHeader:ClearAllPoints()
-    ChatConfigFrameHeader:Point("TOP", ChatConfigFrame, 0, -5)
+	S:HandleNextPrevButton(ChatConfigMoveFilterUpButton,true)
+	S:HandleNextPrevButton(ChatConfigMoveFilterDownButton,true)
+	ChatConfigMoveFilterUpButton:ClearAllPoints()
+	ChatConfigMoveFilterDownButton:ClearAllPoints()
+	ChatConfigMoveFilterUpButton:Point("TOPLEFT",ChatConfigCombatSettingsFilters,"BOTTOMLEFT",3,0)
+	ChatConfigMoveFilterDownButton:Point("LEFT",ChatConfigMoveFilterUpButton,24,0)
+	S:HandleEditBox(CombatConfigSettingsNameEditBox)
+	ChatConfigFrame:Size(680,596)
+	ChatConfigFrameHeader:ClearAllPoints()
+	ChatConfigFrameHeader:Point("TOP", ChatConfigFrame, 0, -5)
 
 	--DROPDOWN MENU
 	hooksecurefunc("UIDropDownMenu_InitializeHelper", function(frame)
@@ -647,202 +647,202 @@ local function LoadSkin()
 		end
 	end
 
-    local frames = {
-        "VideoOptionsFrameCategoryFrame",
-        "VideoOptionsFramePanelContainer",
-        "InterfaceOptionsFrameCategories",
-        "InterfaceOptionsFramePanelContainer",
-        "InterfaceOptionsFrameAddOns",
-        "AudioOptionsSoundPanelPlayback",
-        "AudioOptionsSoundPanelVolume",
-        "AudioOptionsSoundPanelHardware",
-        "AudioOptionsVoicePanelTalking",
-        "AudioOptionsVoicePanelBinding",
-        "AudioOptionsVoicePanelListening",
+	local frames = {
+		"VideoOptionsFrameCategoryFrame",
+		"VideoOptionsFramePanelContainer",
+		"InterfaceOptionsFrameCategories",
+		"InterfaceOptionsFramePanelContainer",
+		"InterfaceOptionsFrameAddOns",
+		"AudioOptionsSoundPanelPlayback",
+		"AudioOptionsSoundPanelVolume",
+		"AudioOptionsSoundPanelHardware",
+		"AudioOptionsVoicePanelTalking",
+		"AudioOptionsVoicePanelBinding",
+		"AudioOptionsVoicePanelListening",
 		"Display_",
 		"Graphics_",
 		"RaidGraphics_",
-    }
-    for i = 1, getn(frames) do
-        local SkinFrames = _G[frames[i]]
-        if SkinFrames then
-            SkinFrames:StripTextures()
-            SkinFrames:CreateBackdrop("Transparent")
-            if SkinFrames ~= _G["VideoOptionsFramePanelContainer"] and SkinFrames ~= _G["InterfaceOptionsFramePanelContainer"] then
-                SkinFrames.backdrop:Point("TOPLEFT",-1,0)
-                SkinFrames.backdrop:Point("BOTTOMRIGHT",0,1)
-            else
-                SkinFrames.backdrop:Point("TOPLEFT", 0, 0)
-                SkinFrames.backdrop:Point("BOTTOMRIGHT", 0, 0)
-            end
-        end
-    end
-    local interfacetab = {
-        "InterfaceOptionsFrameTab1",
-        "InterfaceOptionsFrameTab2",
-    }
-    for i = 1, getn(interfacetab) do
-        local itab = _G[interfacetab[i]]
-        if itab then
-            itab:StripTextures()
-            S:HandleTab(itab)
-        end
-    end
-    InterfaceOptionsFrameTab1:ClearAllPoints()
-    InterfaceOptionsFrameTab1:Point("BOTTOMLEFT",InterfaceOptionsFrameCategories,"TOPLEFT",-11,-2)
-    VideoOptionsFrameDefaults:ClearAllPoints()
-    InterfaceOptionsFrameDefaults:ClearAllPoints()
-    InterfaceOptionsFrameCancel:ClearAllPoints()
-    VideoOptionsFrameDefaults:Point("TOPLEFT",VideoOptionsFrameCategoryFrame,"BOTTOMLEFT",-1,-5)
-    InterfaceOptionsFrameDefaults:Point("TOPLEFT",InterfaceOptionsFrameCategories,"BOTTOMLEFT",-1,-5)
-    InterfaceOptionsFrameCancel:Point("TOPRIGHT",InterfaceOptionsFramePanelContainer,"BOTTOMRIGHT",0,-6)
+	}
+	for i = 1, getn(frames) do
+		local SkinFrames = _G[frames[i]]
+		if SkinFrames then
+			SkinFrames:StripTextures()
+			SkinFrames:CreateBackdrop("Transparent")
+			if SkinFrames ~= _G["VideoOptionsFramePanelContainer"] and SkinFrames ~= _G["InterfaceOptionsFramePanelContainer"] then
+				SkinFrames.backdrop:Point("TOPLEFT",-1,0)
+				SkinFrames.backdrop:Point("BOTTOMRIGHT",0,1)
+			else
+				SkinFrames.backdrop:Point("TOPLEFT", 0, 0)
+				SkinFrames.backdrop:Point("BOTTOMRIGHT", 0, 0)
+			end
+		end
+	end
+	local interfacetab = {
+		"InterfaceOptionsFrameTab1",
+		"InterfaceOptionsFrameTab2",
+	}
+	for i = 1, getn(interfacetab) do
+		local itab = _G[interfacetab[i]]
+		if itab then
+			itab:StripTextures()
+			S:HandleTab(itab)
+		end
+	end
+	InterfaceOptionsFrameTab1:ClearAllPoints()
+	InterfaceOptionsFrameTab1:Point("BOTTOMLEFT",InterfaceOptionsFrameCategories,"TOPLEFT",-11,-2)
+	VideoOptionsFrameDefaults:ClearAllPoints()
+	InterfaceOptionsFrameDefaults:ClearAllPoints()
+	InterfaceOptionsFrameCancel:ClearAllPoints()
+	VideoOptionsFrameDefaults:Point("TOPLEFT",VideoOptionsFrameCategoryFrame,"BOTTOMLEFT",-1,-5)
+	InterfaceOptionsFrameDefaults:Point("TOPLEFT",InterfaceOptionsFrameCategories,"BOTTOMLEFT",-1,-5)
+	InterfaceOptionsFrameCancel:Point("TOPRIGHT",InterfaceOptionsFramePanelContainer,"BOTTOMRIGHT",0,-6)
 
-    local interfacecheckbox = {
-        -- Controls
-        "ControlsPanelBlockChatChannelInvites",
-        "ControlsPanelStickyTargeting",
-        "ControlsPanelAutoDismount",
-        "ControlsPanelAutoClearAFK",
-        "ControlsPanelBlockTrades",
-        "ControlsPanelBlockGuildInvites",
-        "ControlsPanelLootAtMouse",
-        "ControlsPanelAutoLootCorpse",
-        "ControlsPanelInteractOnLeftClick",
-        "ControlsPanelAutoOpenLootHistory",
-        "ControlsPanelReverseCleanUpBags",
-        "ControlsPanelReverseNewLoot",
-        -- Combat
-        "CombatPanelEnemyCastBarsOnOnlyTargetNameplates",
-        "CombatPanelEnemyCastBarsNameplateSpellNames",
-        "CombatPanelAttackOnAssist",
-        "CombatPanelStopAutoAttack",
-        "CombatPanelTargetOfTarget",
-        "CombatPanelShowSpellAlerts",
-        "CombatPanelReducedLagTolerance",
-        "CombatPanelActionButtonUseKeyDown",
-        "CombatPanelEnemyCastBarsOnPortrait",
-        "CombatPanelEnemyCastBarsOnNameplates",
-        "CombatPanelAutoSelfCast",
+	local interfacecheckbox = {
+		-- Controls
+		"ControlsPanelBlockChatChannelInvites",
+		"ControlsPanelStickyTargeting",
+		"ControlsPanelAutoDismount",
+		"ControlsPanelAutoClearAFK",
+		"ControlsPanelBlockTrades",
+		"ControlsPanelBlockGuildInvites",
+		"ControlsPanelLootAtMouse",
+		"ControlsPanelAutoLootCorpse",
+		"ControlsPanelInteractOnLeftClick",
+		"ControlsPanelAutoOpenLootHistory",
+		"ControlsPanelReverseCleanUpBags",
+		"ControlsPanelReverseNewLoot",
+		-- Combat
+		"CombatPanelEnemyCastBarsOnOnlyTargetNameplates",
+		"CombatPanelEnemyCastBarsNameplateSpellNames",
+		"CombatPanelAttackOnAssist",
+		"CombatPanelStopAutoAttack",
+		"CombatPanelTargetOfTarget",
+		"CombatPanelShowSpellAlerts",
+		"CombatPanelReducedLagTolerance",
+		"CombatPanelActionButtonUseKeyDown",
+		"CombatPanelEnemyCastBarsOnPortrait",
+		"CombatPanelEnemyCastBarsOnNameplates",
+		"CombatPanelAutoSelfCast",
 	  "CombatPanelLossOfControl",
-        -- Display
-        "DisplayPanelShowCloak",
-        "DisplayPanelShowHelm",
-        "DisplayPanelShowAggroPercentage",
-        "DisplayPanelPlayAggroSounds",
-        "DisplayPanelShowSpellPointsAvg",
-        "DisplayPanelShowFreeBagSpace",
-        "DisplayPanelCinematicSubtitles",
-        "DisplayPanelRotateMinimap",
-        "DisplayPanelShowAccountAchievments",
+		-- Display
+		"DisplayPanelShowCloak",
+		"DisplayPanelShowHelm",
+		"DisplayPanelShowAggroPercentage",
+		"DisplayPanelPlayAggroSounds",
+		"DisplayPanelShowSpellPointsAvg",
+		"DisplayPanelShowFreeBagSpace",
+		"DisplayPanelCinematicSubtitles",
+		"DisplayPanelRotateMinimap",
+		"DisplayPanelShowAccountAchievments",
 		"DisplayPanelAJAlerts",
-        --Objectives
-        "ObjectivesPanelAutoQuestTracking",
-        "ObjectivesPanelMapFade",
-        -- Social
-        "SocialPanelProfanityFilter",
-        "SocialPanelSpamFilter",
-        "SocialPanelChatBubbles",
-        "SocialPanelPartyChat",
-        "SocialPanelChatHoverDelay",
-        "SocialPanelGuildMemberAlert",
-        "SocialPanelChatMouseScroll",
+		--Objectives
+		"ObjectivesPanelAutoQuestTracking",
+		"ObjectivesPanelMapFade",
+		-- Social
+		"SocialPanelProfanityFilter",
+		"SocialPanelSpamFilter",
+		"SocialPanelChatBubbles",
+		"SocialPanelPartyChat",
+		"SocialPanelChatHoverDelay",
+		"SocialPanelGuildMemberAlert",
+		"SocialPanelChatMouseScroll",
 		"SocialPanelEnableTwitter",
 		"SocialPanelWholeChatWindowClickable",
-        -- Action bars
-        "ActionBarsPanelLockActionBars",
-        "ActionBarsPanelSecureAbilityToggle",
-        "ActionBarsPanelAlwaysShowActionBars",
-        "ActionBarsPanelBottomLeft",
-        "ActionBarsPanelBottomRight",
-        "ActionBarsPanelRight",
-        "ActionBarsPanelRightTwo",
-        "ActionBarsPanelCountdownCooldowns",
-        -- Names
-        "NamesPanelMyName",
-        "NamesPanelFriendlyPlayerNames",
-        "NamesPanelFriendlyPets",
-        "NamesPanelFriendlyGuardians",
-        "NamesPanelFriendlyTotems",
-        "NamesPanelUnitNameplatesFriends",
-        "NamesPanelUnitNameplatesFriendlyGuardians",
-        "NamesPanelUnitNameplatesFriendlyPets",
-        "NamesPanelUnitNameplatesFriendlyTotems",
-        "NamesPanelGuilds",
-        "NamesPanelGuildTitles",
-        "NamesPanelTitles",
-        "NamesPanelNonCombatCreature",
-        "NamesPanelEnemyPlayerNames",
-        "NamesPanelEnemyPets",
-        "NamesPanelEnemyGuardians",
-        "NamesPanelEnemyTotems",
-        "NamesPanelUnitNameplatesEnemyPets",
-        "NamesPanelUnitNameplatesEnemies",
-        "NamesPanelUnitNameplatesEnemyGuardians",
-        "NamesPanelUnitNameplatesEnemyTotems",
-        "NamesPanelMinus",
-        "NamesPanelUnitNameplatesEnemyMinus",
+		-- Action bars
+		"ActionBarsPanelLockActionBars",
+		"ActionBarsPanelSecureAbilityToggle",
+		"ActionBarsPanelAlwaysShowActionBars",
+		"ActionBarsPanelBottomLeft",
+		"ActionBarsPanelBottomRight",
+		"ActionBarsPanelRight",
+		"ActionBarsPanelRightTwo",
+		"ActionBarsPanelCountdownCooldowns",
+		-- Names
+		"NamesPanelMyName",
+		"NamesPanelFriendlyPlayerNames",
+		"NamesPanelFriendlyPets",
+		"NamesPanelFriendlyGuardians",
+		"NamesPanelFriendlyTotems",
+		"NamesPanelUnitNameplatesFriends",
+		"NamesPanelUnitNameplatesFriendlyGuardians",
+		"NamesPanelUnitNameplatesFriendlyPets",
+		"NamesPanelUnitNameplatesFriendlyTotems",
+		"NamesPanelGuilds",
+		"NamesPanelGuildTitles",
+		"NamesPanelTitles",
+		"NamesPanelNonCombatCreature",
+		"NamesPanelEnemyPlayerNames",
+		"NamesPanelEnemyPets",
+		"NamesPanelEnemyGuardians",
+		"NamesPanelEnemyTotems",
+		"NamesPanelUnitNameplatesEnemyPets",
+		"NamesPanelUnitNameplatesEnemies",
+		"NamesPanelUnitNameplatesEnemyGuardians",
+		"NamesPanelUnitNameplatesEnemyTotems",
+		"NamesPanelMinus",
+		"NamesPanelUnitNameplatesEnemyMinus",
 
-        -- Combat Text
-        "CombatTextPanelTargetDamage",
-        "CombatTextPanelPeriodicDamage",
-        "CombatTextPanelPetDamage",
-        "CombatTextPanelHealing",
-        "CombatTextPanelHealingAbsorbTarget",
-        "CombatTextPanelHealingAbsorbSelf",
-        "CombatTextPanelTargetEffects",
-        "CombatTextPanelOtherTargetEffects",
-        "CombatTextPanelEnableFCT",
-        "CombatTextPanelDodgeParryMiss",
-        "CombatTextPanelDamageReduction",
-        "CombatTextPanelRepChanges",
-        "CombatTextPanelReactiveAbilities",
-        "CombatTextPanelFriendlyHealerNames",
-        "CombatTextPanelCombatState",
-        "CombatTextPanelComboPoints",
-        "CombatTextPanelLowManaHealth",
-        "CombatTextPanelEnergyGains",
-        "CombatTextPanelPeriodicEnergyGains",
-        "CombatTextPanelHonorGains",
-        "CombatTextPanelAuras",
-        "CombatTextPanelPetBattle",
-        -- Buffs & Debuffs
-        "BuffsPanelDispellableDebuffs",
-        "BuffsPanelCastableBuffs",
-        "BuffsPanelConsolidateBuffs",
-        "BuffsPanelShowAllEnemyDebuffs",
-        -- Camera
-        "CameraPanelFollowTerrain",
-        "CameraPanelHeadBob",
-        "CameraPanelWaterCollision",
-        "CameraPanelSmartPivot",
-        -- Mouse
-        "MousePanelInvertMouse",
-        "MousePanelClickToMove",
-        "MousePanelWoWMouse",
+		-- Combat Text
+		"CombatTextPanelTargetDamage",
+		"CombatTextPanelPeriodicDamage",
+		"CombatTextPanelPetDamage",
+		"CombatTextPanelHealing",
+		"CombatTextPanelHealingAbsorbTarget",
+		"CombatTextPanelHealingAbsorbSelf",
+		"CombatTextPanelTargetEffects",
+		"CombatTextPanelOtherTargetEffects",
+		"CombatTextPanelEnableFCT",
+		"CombatTextPanelDodgeParryMiss",
+		"CombatTextPanelDamageReduction",
+		"CombatTextPanelRepChanges",
+		"CombatTextPanelReactiveAbilities",
+		"CombatTextPanelFriendlyHealerNames",
+		"CombatTextPanelCombatState",
+		"CombatTextPanelComboPoints",
+		"CombatTextPanelLowManaHealth",
+		"CombatTextPanelEnergyGains",
+		"CombatTextPanelPeriodicEnergyGains",
+		"CombatTextPanelHonorGains",
+		"CombatTextPanelAuras",
+		"CombatTextPanelPetBattle",
+		-- Buffs & Debuffs
+		"BuffsPanelDispellableDebuffs",
+		"BuffsPanelCastableBuffs",
+		"BuffsPanelConsolidateBuffs",
+		"BuffsPanelShowAllEnemyDebuffs",
+		-- Camera
+		"CameraPanelFollowTerrain",
+		"CameraPanelHeadBob",
+		"CameraPanelWaterCollision",
+		"CameraPanelSmartPivot",
+		-- Mouse
+		"MousePanelInvertMouse",
+		"MousePanelClickToMove",
+		"MousePanelWoWMouse",
 		"MousePanelEnableMouseSpeed",
-        -- Help
-        "HelpPanelShowTutorials",
-        "HelpPanelEnhancedTooltips",
-        "HelpPanelShowLuaErrors",
-        "BattlenetPanelOnlineFriends",
-        "BattlenetPanelOfflineFriends",
-        "BattlenetPanelBroadcasts",
-        "BattlenetPanelFriendRequests",
-        "BattlenetPanelConversations",
-        "BattlenetPanelShowToastWindow",
-        -- Status Text
-        "StatusTextPanelPlayer",
-        "StatusTextPanelPet",
-        "StatusTextPanelParty",
-        "StatusTextPanelTarget",
-        "StatusTextPanelAlternateResource",
-        "StatusTextPanelXP",
-        -- Unit Frames
-        "UnitFramePanelPartyPets",
-        "UnitFramePanelArenaEnemyFrames",
-        "UnitFramePanelArenaEnemyCastBar",
-        "UnitFramePanelArenaEnemyPets",
-        "UnitFramePanelFullSizeFocusFrame",
+		-- Help
+		"HelpPanelShowTutorials",
+		"HelpPanelEnhancedTooltips",
+		"HelpPanelShowLuaErrors",
+		"BattlenetPanelOnlineFriends",
+		"BattlenetPanelOfflineFriends",
+		"BattlenetPanelBroadcasts",
+		"BattlenetPanelFriendRequests",
+		"BattlenetPanelConversations",
+		"BattlenetPanelShowToastWindow",
+		-- Status Text
+		"StatusTextPanelPlayer",
+		"StatusTextPanelPet",
+		"StatusTextPanelParty",
+		"StatusTextPanelTarget",
+		"StatusTextPanelAlternateResource",
+		"StatusTextPanelXP",
+		-- Unit Frames
+		"UnitFramePanelPartyPets",
+		"UnitFramePanelArenaEnemyFrames",
+		"UnitFramePanelArenaEnemyCastBar",
+		"UnitFramePanelArenaEnemyPets",
+		"UnitFramePanelFullSizeFocusFrame",
 
 		--Assessability
 		"AccessibilityPanelMovePad",
@@ -850,227 +850,227 @@ local function LoadSkin()
 
 		--Watev
 		"NamesPanelUnitNameplatesNameplateClassColors",
-    }
+	}
 
-    for i = 1, getn(interfacecheckbox) do
-        local icheckbox = _G["InterfaceOptions"..interfacecheckbox[i]]
-        if icheckbox then
-            S:HandleCheckBox(icheckbox)
-         else
-         	print(interfacecheckbox[i])
-        end
-    end
-    local interfacedropdown ={
-        -- Controls
-        "ControlsPanelAutoLootKeyDropDown",
-        -- Combat
-        "CombatPanelTOTDropDown",
-        "CombatPanelFocusCastKeyDropDown",
-        "CombatPanelSelfCastKeyDropDown",
+	for i = 1, getn(interfacecheckbox) do
+		local icheckbox = _G["InterfaceOptions"..interfacecheckbox[i]]
+		if icheckbox then
+			S:HandleCheckBox(icheckbox)
+		 else
+			print(interfacecheckbox[i])
+		end
+	end
+	local interfacedropdown ={
+		-- Controls
+		"ControlsPanelAutoLootKeyDropDown",
+		-- Combat
+		"CombatPanelTOTDropDown",
+		"CombatPanelFocusCastKeyDropDown",
+		"CombatPanelSelfCastKeyDropDown",
 		"CombatPanelLossOfControlFullDropDown",
 		"CombatPanelLossOfControlSilenceDropDown",
 		"CombatPanelLossOfControlInterruptDropDown",
 		"CombatPanelLossOfControlDisarmDropDown",
 		"CombatPanelLossOfControlRootDropDown",
-        --Objectives
-        "ObjectivesPanelQuestSorting",
-        -- Social
-        "SocialPanelChatStyle",
-        "SocialPanelWhisperMode",
-        "SocialPanelTimestamps",
-        "SocialPanelBnWhisperMode",
-        "SocialPanelConversationMode",
-        -- Action bars
-        "ActionBarsPanelPickupActionKeyDropDown",
-        -- Names
-        "NamesPanelNPCNamesDropDown",
-        "NamesPanelUnitNameplatesMotionDropDown",
-        -- Combat Text
-        "CombatTextPanelFCTDropDown",
-        "CombatTextPanelTargetModeDropDown",
-        -- Camera
-        "CameraPanelStyleDropDown",
-        -- Mouse
-        "MousePanelClickMoveStyleDropDown",
+		--Objectives
+		"ObjectivesPanelQuestSorting",
+		-- Social
+		"SocialPanelChatStyle",
+		"SocialPanelWhisperMode",
+		"SocialPanelTimestamps",
+		"SocialPanelBnWhisperMode",
+		"SocialPanelConversationMode",
+		-- Action bars
+		"ActionBarsPanelPickupActionKeyDropDown",
+		-- Names
+		"NamesPanelNPCNamesDropDown",
+		"NamesPanelUnitNameplatesMotionDropDown",
+		-- Combat Text
+		"CombatTextPanelFCTDropDown",
+		"CombatTextPanelTargetModeDropDown",
+		-- Camera
+		"CameraPanelStyleDropDown",
+		-- Mouse
+		"MousePanelClickMoveStyleDropDown",
 		-- Language
-        "LanguagesPanelLocaleDropDown",
+		"LanguagesPanelLocaleDropDown",
 		"LanguagesPanelAudioLocaleDropDown",
-        -- Status Text
-        "StatusTextPanelDisplayDropDown",
+		-- Status Text
+		"StatusTextPanelDisplayDropDown",
 
 		--Assess-ability
 		"AccessibilityPanelColorFilterDropDown",
 
 		--Locales
 		"InterfaceOptionsLanguagesPanelAudioLocaleDropDown",
-    }
-    for i = 1, getn(interfacedropdown) do
-        local idropdown = _G["InterfaceOptions"..interfacedropdown[i]]
-        if idropdown then
-            S:HandleDropDownBox(idropdown)
-            DropDownList1:SetTemplate("Transparent")
-        end
-    end
+	}
+	for i = 1, getn(interfacedropdown) do
+		local idropdown = _G["InterfaceOptions"..interfacedropdown[i]]
+		if idropdown then
+			S:HandleDropDownBox(idropdown)
+			DropDownList1:SetTemplate("Transparent")
+		end
+	end
 
 	-- Display
 	S:HandleDropDownBox(InterfaceOptionsDisplayPanelOutlineDropDown, 210)
 
-    S:HandleButton(InterfaceOptionsHelpPanelResetTutorials)
-    local optioncheckbox = {
-    	-- Display
-    	"Display_RaidSettingsEnabledCheckBox",
-        -- Advanced
-        "Advanced_MaxFPSCheckBox",
-        "Advanced_MaxFPSBKCheckBox",
-        "Advanced_UseUIScale",
-        "Advanced_ShowHDModels",
-        --Network
-        "NetworkOptionsPanelAdvancedCombatLogging",
-        -- Audio
-        "AudioOptionsSoundPanelEnableSound",
-        "AudioOptionsSoundPanelSoundEffects",
-        "AudioOptionsSoundPanelErrorSpeech",
-        "AudioOptionsSoundPanelEmoteSounds",
-        "AudioOptionsSoundPanelPetSounds",
-        "AudioOptionsSoundPanelMusic",
-        "AudioOptionsSoundPanelLoopMusic",
-        "AudioOptionsSoundPanelAmbientSounds",
-        "AudioOptionsSoundPanelSoundInBG",
-        "AudioOptionsSoundPanelReverb",
-        "AudioOptionsSoundPanelHRTF",
-        "AudioOptionsSoundPanelEnableDSPs",
-        "AudioOptionsSoundPanelUseHardware",
-        "AudioOptionsVoicePanelEnableVoice",
-        "AudioOptionsVoicePanelEnableMicrophone",
-        "AudioOptionsVoicePanelPushToTalkSound",
+	S:HandleButton(InterfaceOptionsHelpPanelResetTutorials)
+	local optioncheckbox = {
+		-- Display
+		"Display_RaidSettingsEnabledCheckBox",
+		-- Advanced
+		"Advanced_MaxFPSCheckBox",
+		"Advanced_MaxFPSBKCheckBox",
+		"Advanced_UseUIScale",
+		"Advanced_ShowHDModels",
+		--Network
+		"NetworkOptionsPanelAdvancedCombatLogging",
+		-- Audio
+		"AudioOptionsSoundPanelEnableSound",
+		"AudioOptionsSoundPanelSoundEffects",
+		"AudioOptionsSoundPanelErrorSpeech",
+		"AudioOptionsSoundPanelEmoteSounds",
+		"AudioOptionsSoundPanelPetSounds",
+		"AudioOptionsSoundPanelMusic",
+		"AudioOptionsSoundPanelLoopMusic",
+		"AudioOptionsSoundPanelAmbientSounds",
+		"AudioOptionsSoundPanelSoundInBG",
+		"AudioOptionsSoundPanelReverb",
+		"AudioOptionsSoundPanelHRTF",
+		"AudioOptionsSoundPanelEnableDSPs",
+		"AudioOptionsSoundPanelUseHardware",
+		"AudioOptionsVoicePanelEnableVoice",
+		"AudioOptionsVoicePanelEnableMicrophone",
+		"AudioOptionsVoicePanelPushToTalkSound",
 		"AudioOptionsSoundPanelPetBattleMusic",
 		"AudioOptionsSoundPanelDialogSounds",
 
-        -- Network
-        "NetworkOptionsPanelOptimizeSpeed",
-        "NetworkOptionsPanelUseIPv6",
-    }
-    for i = 1, getn(optioncheckbox) do
-        local ocheckbox = _G[optioncheckbox[i]]
-        if ocheckbox then
-            S:HandleCheckBox(ocheckbox)
-        end
-    end
-    local optiondropdown = {
-        -- Graphics
-        "Display_DisplayModeDropDown",
-        "Display_ResolutionDropDown",
-        "Display_RefreshDropDown",
-        "Display_PrimaryMonitorDropDown",
-        "Display_AntiAliasingDropDown",
-        "Display_VerticalSyncDropDown",
-        "Graphics_TextureResolutionDropDown",
-        "Graphics_FilteringDropDown",
-        "Graphics_ProjectedTexturesDropDown",
-        "Graphics_ViewDistanceDropDown",
-        "Graphics_EnvironmentalDetailDropDown",
-        "Graphics_GroundClutterDropDown",
-        "Graphics_ShadowsDropDown",
-        "Graphics_LiquidDetailDropDown",
-        "Graphics_SunshaftsDropDown",
-        "Graphics_ParticleDensityDropDown",
-        "Graphics_SSAODropDown",
-        "Graphics_RefractionDropDown",
+		-- Network
+		"NetworkOptionsPanelOptimizeSpeed",
+		"NetworkOptionsPanelUseIPv6",
+	}
+	for i = 1, getn(optioncheckbox) do
+		local ocheckbox = _G[optioncheckbox[i]]
+		if ocheckbox then
+			S:HandleCheckBox(ocheckbox)
+		end
+	end
+	local optiondropdown = {
+		-- Graphics
+		"Display_DisplayModeDropDown",
+		"Display_ResolutionDropDown",
+		"Display_RefreshDropDown",
+		"Display_PrimaryMonitorDropDown",
+		"Display_AntiAliasingDropDown",
+		"Display_VerticalSyncDropDown",
+		"Graphics_TextureResolutionDropDown",
+		"Graphics_FilteringDropDown",
+		"Graphics_ProjectedTexturesDropDown",
+		"Graphics_ViewDistanceDropDown",
+		"Graphics_EnvironmentalDetailDropDown",
+		"Graphics_GroundClutterDropDown",
+		"Graphics_ShadowsDropDown",
+		"Graphics_LiquidDetailDropDown",
+		"Graphics_SunshaftsDropDown",
+		"Graphics_ParticleDensityDropDown",
+		"Graphics_SSAODropDown",
+		"Graphics_RefractionDropDown",
 		"Graphics_DepthEffectsDropDown",
 		"Graphics_LightingQualityDropDown",
 		"Graphics_OutlineModeDropDown",
 
-        "RaidGraphics_TextureResolutionDropDown",
-        "RaidGraphics_FilteringDropDown",
-        "RaidGraphics_ProjectedTexturesDropDown",
-        "RaidGraphics_ViewDistanceDropDown",
-        "RaidGraphics_EnvironmentalDetailDropDown",
-        "RaidGraphics_GroundClutterDropDown",
-        "RaidGraphics_ShadowsDropDown",
-        "RaidGraphics_LiquidDetailDropDown",
-        "RaidGraphics_SunshaftsDropDown",
-        "RaidGraphics_ParticleDensityDropDown",
-        "RaidGraphics_SSAODropDown",
-        "RaidGraphics_RefractionDropDown",
+		"RaidGraphics_TextureResolutionDropDown",
+		"RaidGraphics_FilteringDropDown",
+		"RaidGraphics_ProjectedTexturesDropDown",
+		"RaidGraphics_ViewDistanceDropDown",
+		"RaidGraphics_EnvironmentalDetailDropDown",
+		"RaidGraphics_GroundClutterDropDown",
+		"RaidGraphics_ShadowsDropDown",
+		"RaidGraphics_LiquidDetailDropDown",
+		"RaidGraphics_SunshaftsDropDown",
+		"RaidGraphics_ParticleDensityDropDown",
+		"RaidGraphics_SSAODropDown",
+		"RaidGraphics_RefractionDropDown",
 		"RaidGraphics_DepthEffectsDropDown",
 		"RaidGraphics_LightingQualityDropDown",
 		"RaidGraphics_OutlineModeDropDown",
 
-        -- Advanced
-        "Advanced_BufferingDropDown",
-        "Advanced_LagDropDown",
-        "Advanced_HardwareCursorDropDown",
-        "Advanced_GraphicsAPIDropDown",
+		-- Advanced
+		"Advanced_BufferingDropDown",
+		"Advanced_LagDropDown",
+		"Advanced_HardwareCursorDropDown",
+		"Advanced_GraphicsAPIDropDown",
 		"Advanced_ResampleQualityDropDown",
 		"Advanced_MultisampleAlphaTest",
 		"Advanced_PostProcessAntiAliasingDropDown",
 		"Advanced_MultisampleAntiAliasingDropDown",
 
-        -- Audio
-        "AudioOptionsSoundPanelHardwareDropDown",
-        "AudioOptionsSoundPanelSoundChannelsDropDown",
-        "AudioOptionsVoicePanelInputDeviceDropDown",
-        "AudioOptionsVoicePanelChatModeDropDown",
-        "AudioOptionsVoicePanelOutputDeviceDropDown",
-        -- Raid Profiles
-        "CompactUnitFrameProfilesProfileSelector",
-        "CompactUnitFrameProfilesGeneralOptionsFrameHealthTextDropdown",
-        "CompactUnitFrameProfilesGeneralOptionsFrameSortByDropdown",
-    }
-    for i = 1, getn(optiondropdown) do
-        local odropdown = _G[optiondropdown[i]]
-        if odropdown then
-            S:HandleDropDownBox(odropdown,165)
-            DropDownList1:SetTemplate("Transparent")
-        end
-    end
-    local buttons = {
-        "RecordLoopbackSoundButton",
-        "PlayLoopbackSoundButton",
-        "AudioOptionsVoicePanelChatMode1KeyBindingButton",
-        "CompactUnitFrameProfilesSaveButton",
-        "CompactUnitFrameProfilesDeleteButton",
+		-- Audio
+		"AudioOptionsSoundPanelHardwareDropDown",
+		"AudioOptionsSoundPanelSoundChannelsDropDown",
+		"AudioOptionsVoicePanelInputDeviceDropDown",
+		"AudioOptionsVoicePanelChatModeDropDown",
+		"AudioOptionsVoicePanelOutputDeviceDropDown",
+		-- Raid Profiles
+		"CompactUnitFrameProfilesProfileSelector",
+		"CompactUnitFrameProfilesGeneralOptionsFrameHealthTextDropdown",
+		"CompactUnitFrameProfilesGeneralOptionsFrameSortByDropdown",
+	}
+	for i = 1, getn(optiondropdown) do
+		local odropdown = _G[optiondropdown[i]]
+		if odropdown then
+			S:HandleDropDownBox(odropdown,165)
+			DropDownList1:SetTemplate("Transparent")
+		end
+	end
+	local buttons = {
+		"RecordLoopbackSoundButton",
+		"PlayLoopbackSoundButton",
+		"AudioOptionsVoicePanelChatMode1KeyBindingButton",
+		"CompactUnitFrameProfilesSaveButton",
+		"CompactUnitFrameProfilesDeleteButton",
 		"InterfaceOptionsSocialPanelTwitterLoginButton"
-    }
-    for _, button in pairs(buttons) do
-        S:HandleButton(_G[button])
-    end
-    AudioOptionsVoicePanelChatMode1KeyBindingButton:ClearAllPoints()
-    AudioOptionsVoicePanelChatMode1KeyBindingButton:Point("CENTER", AudioOptionsVoicePanelBinding, "CENTER", 0, -10)
-    S:HandleCheckBox(CompactUnitFrameProfilesRaidStylePartyFrames)
-    S:HandleButton(CompactUnitFrameProfilesGeneralOptionsFrameResetPositionButton)
-    GraphicsButton:StripTextures()
-    RaidButton:StripTextures()
-    local raidcheckbox = {
-        "KeepGroupsTogether",
-        "DisplayIncomingHeals",
-        "DisplayPowerBar",
-        "DisplayAggroHighlight",
-        "UseClassColors",
-        "DisplayPets",
-        "DisplayMainTankAndAssist",
-        "DisplayBorder",
-        "ShowDebuffs",
-        "DisplayOnlyDispellableDebuffs",
-        "AutoActivate2Players",
-        "AutoActivate3Players",
-        "AutoActivate5Players",
-        "AutoActivate10Players",
-        "AutoActivate15Players",
-        "AutoActivate25Players",
-        "AutoActivate40Players",
-        "AutoActivateSpec1",
-        "AutoActivateSpec2",
-        "AutoActivatePvP",
-        "AutoActivatePvE",
-    }
-    for i = 1, getn(raidcheckbox) do
-        local icheckbox = _G["CompactUnitFrameProfilesGeneralOptionsFrame"..raidcheckbox[i]]
-        if icheckbox then
-            S:HandleCheckBox(icheckbox)
-            icheckbox:SetFrameLevel(40)
-        end
-    end
+	}
+	for _, button in pairs(buttons) do
+		S:HandleButton(_G[button])
+	end
+	AudioOptionsVoicePanelChatMode1KeyBindingButton:ClearAllPoints()
+	AudioOptionsVoicePanelChatMode1KeyBindingButton:Point("CENTER", AudioOptionsVoicePanelBinding, "CENTER", 0, -10)
+	S:HandleCheckBox(CompactUnitFrameProfilesRaidStylePartyFrames)
+	S:HandleButton(CompactUnitFrameProfilesGeneralOptionsFrameResetPositionButton)
+	GraphicsButton:StripTextures()
+	RaidButton:StripTextures()
+	local raidcheckbox = {
+		"KeepGroupsTogether",
+		"DisplayIncomingHeals",
+		"DisplayPowerBar",
+		"DisplayAggroHighlight",
+		"UseClassColors",
+		"DisplayPets",
+		"DisplayMainTankAndAssist",
+		"DisplayBorder",
+		"ShowDebuffs",
+		"DisplayOnlyDispellableDebuffs",
+		"AutoActivate2Players",
+		"AutoActivate3Players",
+		"AutoActivate5Players",
+		"AutoActivate10Players",
+		"AutoActivate15Players",
+		"AutoActivate25Players",
+		"AutoActivate40Players",
+		"AutoActivateSpec1",
+		"AutoActivateSpec2",
+		"AutoActivatePvP",
+		"AutoActivatePvE",
+	}
+	for i = 1, getn(raidcheckbox) do
+		local icheckbox = _G["CompactUnitFrameProfilesGeneralOptionsFrame"..raidcheckbox[i]]
+		if icheckbox then
+			S:HandleCheckBox(icheckbox)
+			icheckbox:SetFrameLevel(40)
+		end
+	end
 
 	local sliders = {
 		"Graphics_Quality",
@@ -1156,7 +1156,7 @@ local function LoadSkin()
 	SideDressUpFrame.BGBottomLeft:Hide()
 	S:HandleButton(SideDressUpModelResetButton)
 	SideDressUpFrame:SetTemplate("Transparent")
-	
+
 	--What's New
 	SplashFrame:CreateBackdrop("Transparent")
 	S:HandleButton(SplashFrame.BottomCloseButton)

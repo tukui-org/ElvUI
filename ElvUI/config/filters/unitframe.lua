@@ -659,7 +659,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 			-- Hellfire Assault
 				[SpellName(184369)] = Defaults(), -- Howling Axe (Target)
 				[SpellName(180079)] = Defaults(), -- Felfire Munitions
-			
+
 			-- Iron Reaver
 				[SpellName(179897)] = Defaults(), -- Blitz
 				[SpellName(185978)] = Defaults(), -- Firebomb Vulnerability
@@ -667,11 +667,11 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 				[SpellName(182280)] = Defaults(), -- Artillery (Target)
 				[SpellName(182074)] = Defaults(), -- Immolation
 				[SpellName(182001)] = Defaults(), -- Unstable Orb
-			
+
 			-- Kormrok
 				[SpellName(187819)] = Defaults(), -- Crush
 				[SpellName(181345)] = Defaults(), -- Foul Crush
-			
+
 			-- Hellfire High Council
 				[SpellName(184360)] = Defaults(), -- Fel Rage
 				[SpellName(184449)] = Defaults(), -- Mark of the Necromancer
@@ -680,12 +680,12 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 				[SpellName(185066)] = Defaults(), -- Mark of the Necromancer
 				[SpellName(184676)] = Defaults(), -- Mark of the Necromancer
 				[SpellName(184652)] = Defaults(), -- Reap
-			
+
 			-- Kilrogg Deadeye
 				[SpellName(181488)] = Defaults(), -- Vision of Death
 				[SpellName(188929)] = Defaults(), -- Heart Seeker (Target)
 				[SpellName(180389)] = Defaults(), -- Heart Seeker (DoT)
-			
+
 			-- Gorefiend
 				[SpellName(179867)] = Defaults(), -- Gorefiend's Corruption
 				[SpellName(181295)] = Defaults(), -- Digest
@@ -693,7 +693,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 				[SpellName(179864)] = Defaults(), -- Shadow of Death
 				[SpellName(179909)] = Defaults(), -- Shared Fate (self root)
 				[SpellName(179908)] = Defaults(), -- Shared Fate (other players root)
-			
+
 			-- Shadow-Lord Iskar
 				[SpellName(181957)] = Defaults(), -- Phantasmal Winds
 				[SpellName(182200)] = Defaults(), -- Fel Chakram
@@ -704,26 +704,26 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 				[SpellName(182600)] = Defaults(), -- Fel Fire
 				[SpellName(179219)] = Defaults(), -- Phantasmal Fel Bomb
 				[SpellName(181753)] = Defaults(), -- Fel Bomb
-			
+
 			-- Soulbound Construct (Socrethar)
 				[SpellName(182038)] = Defaults(), -- Shattered Defenses
 				[SpellName(188666)] = Defaults(), -- Eternal Hunger (Add fixate, Mythic only)
 				[SpellName(189627)] = Defaults(), -- Volatile Fel Orb (Fixated)
 				[SpellName(180415)] = Defaults(), -- Fel Prison
-			
+
 			-- Tyrant Velhari
 				[SpellName(185237)] = Defaults(), -- Touch of Harm
 				[SpellName(185238)] = Defaults(), -- Touch of Harm
 				[SpellName(185241)] = Defaults(), -- Edict of Condemnation
 				[SpellName(180526)] = Defaults(), -- Font of Corruption
-			
+
 			-- Fel Lord Zakuun
 				[SpellName(181508)] = Defaults(), -- Seed of Destruction
 				[SpellName(181653)] = Defaults(), -- Fel Crystals (Too Close)
 				[SpellName(179428)] = Defaults(), -- Rumbling Fissure (Soak)
 				[SpellName(182008)] = Defaults(), -- Latent Energy (Cannot soak)
 				[SpellName(179407)] = Defaults(), -- Disembodied (Player in Shadow Realm)
-			
+
 			-- Xhul'horac
 				[SpellName(188208)] = Defaults(), -- Ablaze
 				[SpellName(186073)] = Defaults(), -- Felsinged
@@ -731,7 +731,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 				[SpellName(186500)] = Defaults(), -- Chains of Fel
 				[SpellName(186063)] = Defaults(), -- Wasting Void
 				[SpellName(186333)] = Defaults(), -- Void Surge
-			
+
 			-- Mannoroth
 				[SpellName(181275)] = Defaults(), -- Curse of the Legion
 				[SpellName(181099)] = Defaults(), -- Mark of Doom
@@ -739,7 +739,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 				[SpellName(182006)] = Defaults(), -- Empowered Mannoroth's Gaze
 				[SpellName(181841)] = Defaults(), -- Shadowforce
 				[SpellName(182088)] = Defaults(), -- Empowered Shadowforce
-			
+
 			-- Archimonde
 				[SpellName(184964)] = Defaults(), -- Shackled Torment
 				[SpellName(186123)] = Defaults(), -- Wrought Chaos
@@ -896,9 +896,9 @@ f:SetScript("OnEvent", function(self, event)
 end)
 
 G.unitframe.ChannelTicksSize = {
-    --Warlock
+	--Warlock
    --[SpellName(1120)] = 2, --"Drain Soul"
-    [SpellName(689)] = 1, -- "Drain Life"
+	[SpellName(689)] = 1, -- "Drain Life"
 	[SpellName(108371)] = 1, -- "Harvest Life"
 	[SpellName(103103)] = 1, -- "Malefic Grasp"
 }

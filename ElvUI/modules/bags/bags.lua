@@ -291,7 +291,7 @@ function B:UpdateSlot(bagID, slotID)
 
 	local slot, _ = self.Bags[bagID][slotID], nil;
 	local bagType = self.Bags[bagID].type;
-	
+
 	slot.name, slot.rarity = nil, nil;
 	local texture, count, locked, readable, noValue
 	texture, count, locked, slot.rarity, readable, _, _, _, noValue = GetContainerItemInfo(bagID, slotID);
@@ -302,7 +302,7 @@ function B:UpdateSlot(bagID, slotID)
 	if(slot.questIcon) then
 		slot.questIcon:Hide();
 	end
-	
+
 	if (slot.JunkIcon) then
 		if (slot.rarity) and (slot.rarity == LE_ITEM_QUALITY_POOR and not noValue) and E.db.bags.junkIcon then
 			slot.JunkIcon:Show();
@@ -356,7 +356,7 @@ function B:UpdateSlot(bagID, slotID)
 		slot.shadow:Hide()
 		E:StopFlash(slot.shadow)
 	end
-	
+
 	if (texture) then
 		local start, duration, enable = GetContainerItemCooldown(bagID, slotID)
 		CooldownFrame_SetTimer(slot.cooldown, start, duration, enable)

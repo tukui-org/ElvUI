@@ -41,7 +41,7 @@ local function LoadSkin()
 		infoBar.HealthBarBackdrop:SetTemplate("Transparent")
 		infoBar.HealthBarBackdrop:Width(infoBar.healthBarWidth + (E.Border * 2))
 		infoBar.ActualHealthBar:SetTexture(E.media.normTex)
-        E:RegisterStatusBar(infoBar.ActualHealthBar)
+		E:RegisterStatusBar(infoBar.ActualHealthBar)
 		infoBar.PetTypeFrame = CreateFrame("Frame", nil, infoBar)
 		infoBar.PetTypeFrame:Size(100, 23)
 		infoBar.PetTypeFrame.text = infoBar.PetTypeFrame:CreateFontString(nil, 'OVERLAY')
@@ -317,7 +317,7 @@ local function LoadSkin()
 	bf.xpBar:ClearAllPoints()
 	bf.xpBar:Point("BOTTOM", bf.TurnTimer.SkipButton, "TOP", 0, E.PixelMode and 0 or 3)
 	bf.xpBar:SetScript("OnShow", function(self) self:StripTextures() self:SetStatusBarTexture(E.media.normTex) end)
-    E:RegisterStatusBar(bf.xpBar)
+	E:RegisterStatusBar(bf.xpBar)
 	-- PETS SELECTION SKIN
 	for i = 1, 3 do
 		local pet = bf.PetSelectionFrame["Pet"..i]

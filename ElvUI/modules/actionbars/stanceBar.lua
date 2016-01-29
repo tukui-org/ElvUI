@@ -23,7 +23,7 @@ local C_PetBattlesIsInBattle = C_PetBattles.IsInBattle
 local NUM_STANCE_SLOTS = NUM_STANCE_SLOTS
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: StanceBarFrame 
+-- GLOBALS: StanceBarFrame
 
 local Masque = LibStub("Masque", true)
 local MasqueGroup = Masque and Masque:Group("ElvUI", "Stance Bar")
@@ -59,7 +59,7 @@ function AB:StyleShapeShift(event)
 
 		if i <= numForms then
 			texture, name, isActive, isCastable = GetShapeshiftFormInfo(i);
-			
+
 			if not texture then
 				texture = "Interface\\Icons\\Spell_Nature_WispSplode"
 			end
@@ -74,7 +74,7 @@ function AB:StyleShapeShift(event)
 				else
 					cooldown:SetAlpha(0);
 				end
-				
+
 				if isActive then
 					StanceBarFrame.lastSelected = button:GetID();
 					if numForms == 1 then
@@ -104,7 +104,7 @@ function AB:StyleShapeShift(event)
 					button:SetChecked(false)
 				end
 			end
-			
+
 			icon:SetTexture(texture);
 
 			if isCastable then
@@ -258,7 +258,7 @@ function AB:PositionAndSizeBarShapeShift()
 			self:StyleButton(button, nil, MasqueGroup and E.private.actionbar.masque.stanceBar and true or nil);
 		end
 	end
-	
+
 	if MasqueGroup and E.private.actionbar.masque.stanceBar then MasqueGroup:ReSkin() end
 end
 

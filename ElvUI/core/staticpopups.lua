@@ -303,13 +303,13 @@ E.PopupDialogs["HELLO_KITTY_END"] = {
 		E:Print(L["Type /hellokitty to revert to old settings."])
 		StopMusic()
 		SetCVar("Sound_EnableAllSound", E.oldEnableAllSound)
-		SetCVar("Sound_EnableMusic", E.oldEnableMusic)		
+		SetCVar("Sound_EnableMusic", E.oldEnableMusic)
 	end,
 	OnCancel = function()
 		E:RestoreHelloKitty()
 		StopMusic()
 		SetCVar("Sound_EnableAllSound", E.oldEnableAllSound)
-		SetCVar("Sound_EnableMusic", E.oldEnableMusic)				
+		SetCVar("Sound_EnableMusic", E.oldEnableMusic)
 	end,
 	timeout = 0,
 	whileDead = 1,

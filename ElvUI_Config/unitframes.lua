@@ -181,7 +181,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 			},
 		},
 	}
-	
+
 	if groupName == "target" then
 		config.args.attachTo.values['PLAYER_AURABARS'] = L["Player Frame Aura Bars"]
 	end
@@ -486,7 +486,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 				desc = L["Ascending or Descending order."],
 				type = 'select',
 				values = auraSortMethodValues,
-			},			
+			},
 			filters = {
 				name = L["Filters"],
 				guiInline = true,
@@ -992,7 +992,7 @@ local function GetOptionsTable_CustomText(updateFunc, groupName, numUnits, order
 			if not E.db.unitframe.units[groupName].customTexts then
 				E.db.unitframe.units[groupName].customTexts = {};
 			end
-			
+
 			local frameName = "ElvUF_"..E:StringTitle(groupName)
 			if E.db.unitframe.units[groupName].customTexts[textName] or (_G[frameName] and _G[frameName]["customTexts"] and _G[frameName]["customTexts"][textName] or _G[frameName.."Group1UnitButton1"] and _G[frameName.."Group1UnitButton1"]["customTexts"] and _G[frameName.."Group1UnitButton1"][textName]) then
 				E:Print(L["The name you have selected is already in use by another element."])
@@ -1364,7 +1364,7 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 				},
 			}
 	end
-	
+
 	if hasStrataLevel then
 		config.args.strataAndLevel = {
 			order = 101,
@@ -2169,8 +2169,8 @@ E.Options.args.unitframe.args.player = {
 			type = 'toggle',
 			order = 1,
 			name = L["Enable"],
-			set = function(info, value) 
-				E.db.unitframe.units['player'][ info[#info] ] = value; 
+			set = function(info, value)
+				E.db.unitframe.units['player'][ info[#info] ] = value;
 				UF:CreateAndUpdateUF('player');
 				LibStub("LibBodyguard-1.0"):UpdateSettings();
 				if value == true and E.db.unitframe.units.player.combatfade then
@@ -3774,7 +3774,7 @@ E.Options.args.unitframe.args.party = {
 				configureButton = {
 					type = 'execute',
 					name = L["Configure Auras"],
-					func = function() 
+					func = function()
 						if E.db.unitframe.units['party']['buffIndicator'].profileSpecific then
 							E:SetToFilterConfig('Buff Indicator (Profile)')
 						else
@@ -4488,7 +4488,7 @@ E.Options.args.unitframe.args['raid'] = {
 				configureButton = {
 					type = 'execute',
 					name = L["Configure Auras"],
-					func = function() 
+					func = function()
 						if E.db.unitframe.units['raid']['buffIndicator'].profileSpecific then
 							E:SetToFilterConfig('Buff Indicator (Profile)')
 						else
@@ -5026,7 +5026,7 @@ E.Options.args.unitframe.args['raid40'] = {
 				configureButton = {
 					type = 'execute',
 					name = L["Configure Auras"],
-					func = function() 
+					func = function()
 						if E.db.unitframe.units['raid40']['buffIndicator'].profileSpecific then
 							E:SetToFilterConfig('Buff Indicator (Profile)')
 						else
@@ -5856,7 +5856,7 @@ E.Options.args.unitframe.args.tank = {
 				configureButton = {
 					type = 'execute',
 					name = L["Configure Auras"],
-					func = function() 
+					func = function()
 						if E.db.unitframe.units['tank']['buffIndicator'].profileSpecific then
 							E:SetToFilterConfig('Buff Indicator (Profile)')
 						else
@@ -6175,7 +6175,7 @@ E.Options.args.unitframe.args.assist = {
 				configureButton = {
 					type = 'execute',
 					name = L["Configure Auras"],
-					func = function() 
+					func = function()
 						if E.db.unitframe.units['assist']['buffIndicator'].profileSpecific then
 							E:SetToFilterConfig('Buff Indicator (Profile)')
 						else

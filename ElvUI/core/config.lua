@@ -44,11 +44,11 @@ E.ConfigModeLocalizedStrings = {
 
 function E:Grid_Show()
 	if not grid then
-        E:Grid_Create()
+		E:Grid_Create()
 	elseif grid.boxSize ~= E.db.gridSize then
-        grid:Hide()
-        E:Grid_Create()
-    else
+		grid:Hide()
+		E:Grid_Create()
+	else
 		grid:Show()
 	end
 end

@@ -263,7 +263,7 @@ local function LoadSkin()
 	local function SkinItemButton(parentFrame, _, index)
 		local parentName = parentFrame:GetName();
 		local item = _G[parentName.."Item"..index];
-		
+
 		if item and not item.isSkinned then
 			item.border = CreateFrame("Frame", nil, item)
 			item.border:SetTemplate()
@@ -404,7 +404,7 @@ local function LoadSkin()
 	LFGListFrame.CategorySelection.Inset:StripTextures()
 	S:HandleButton(LFGListFrame.CategorySelection.StartGroupButton, true)
 	S:HandleButton(LFGListFrame.CategorySelection.FindGroupButton, true)
-	
+
 	--Fix issue with labels not following changes to GameFontNormal as they should
 	local function SetLabelFontObject(self, btnIndex)
 		local button = self.CategoryButtons[btnIndex]

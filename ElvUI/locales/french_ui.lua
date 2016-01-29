@@ -131,7 +131,7 @@ L["%s is attempting to share his filters with you. Would you like to accept the 
 L["%s is attempting to share the profile %s with you. Would you like to accept the request?"] = "%s tente de partager le profil %s avec vous. Voulez-vous accepter la demande?"
 L["Data From: %s"] = "Donnée de: %s"
 L["Filter download complete from %s, would you like to apply changes now?"] = "Téléchargement du filtre de %s complet, voulez-vous appliquer les changements maintenant ?" --Need review
-L["Lord! It's a miracle! The download up and vanished like a fart in the wind! Try Again!"] = "Seigneur ! C'est un miracle ! Le téléchargement s'est envolé et a disparu comme un pet dans le vent! Essayez encore !" 
+L["Lord! It's a miracle! The download up and vanished like a fart in the wind! Try Again!"] = "Seigneur ! C'est un miracle ! Le téléchargement s'est envolé et a disparu comme un pet dans le vent! Essayez encore !"
 L["Profile download complete from %s, but the profile %s already exists. Change the name or else it will overwrite the existing profile."] = "Téléchargement du profil de %s complet, mais le profil de % existe déjà. Changez le nom ou il écrasera le profil existant."
 L["Profile download complete from %s, would you like to load the profile %s now?"] = "Téléchargement du profil de %s complet, voulez-vous charger le profil %s maintenant?"
 L["Profile request sent. Waiting for response from player."] = "Requête du profil envoyé. En attente de la réponse du joueur."

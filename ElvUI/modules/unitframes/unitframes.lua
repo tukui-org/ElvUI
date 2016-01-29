@@ -833,7 +833,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 			if not self[group].isForced and not self[group].blockVisibilityChanges then
 				RegisterStateDriver(self[group], "visibility", db.visibility)
 			end
-			
+
 			--This fixes a bug where the party/raid frame will not appear when you enable it
 			--if it was disabled when you logged in/reloaded.
 			if not self[group].mover then
@@ -878,7 +878,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 				end
 			end
 		end
-		
+
 		-- self[group].Update = function()
 			-- local db = self.db['units'][group]
 			-- if db.enable ~= true then
@@ -1147,30 +1147,30 @@ end
 function UF:PLAYER_ENTERING_WORLD(event)
 	self:Update_AllFrames()
 
-    local showing = BG:IsShowing()
+	local showing = BG:IsShowing()
 
-    if not BG:Exists() and not BG.db.Active then
-        if showing then BG:HideFrame() end
-        return
-    end
+	if not BG:Exists() and not BG.db.Active then
+		if showing then BG:HideFrame() end
+		return
+	end
 
-    if(not BG:IsValidZone()) then
+	if(not BG:IsValidZone()) then
 		BG:HideFrame()
-    elseif showing then
-        BG:UpdateSettings()
-    elseif BG:GetStatus() ~= BG.Status.Inactive and BG.db.Active then
-        BG:ShowFrame()
-    end
+	elseif showing then
+		BG:UpdateSettings()
+	elseif BG:GetStatus() ~= BG.Status.Inactive and BG.db.Active then
+		BG:ShowFrame()
+	end
 end
 
 function UF:ZONE_CHANGED_NEW_AREA()
-    local validZone = BG:IsValidZone()
-    if not validZone then
-        if not BG:IsShowing() then return end
+	local validZone = BG:IsValidZone()
+	if not validZone then
+		if not BG:IsShowing() then return end
 		BG:HideFrame()
-    elseif BG.db.Active and BG:GetStatus() ~= BG.Status.Inactive then
-        BG:ShowFrame()
-    end
+	elseif BG.db.Active and BG:GetStatus() ~= BG.Status.Inactive then
+		BG:ShowFrame()
+	end
 end
 
 function UF:UnitFrameThreatIndicator_Initialize(_, unitFrame)
@@ -1234,14 +1234,14 @@ function UF:Initialize()
 	else
 		CompactUnitFrameProfiles:RegisterEvent('VARIABLES_LOADED')
 	end
-	
+
 	if (not E.private["unitframe"]["disabledBlizzardFrames"].party) and (not E.private["unitframe"]["disabledBlizzardFrames"].raid) then
 		E.RaidUtility.Initialize = E.noop
 	end
 
 	if E.private["unitframe"]["disabledBlizzardFrames"].arena then
 		self:SecureHook('UnitFrameThreatIndicator_Initialize')
-		
+
 		if not IsAddOnLoaded('Blizzard_ArenaUI') then
 			self:RegisterEvent('ADDON_LOADED')
 		else
@@ -1273,14 +1273,14 @@ function UF:Initialize()
 	BG:RegisterCallback('gossip_closed', BG.GossipClosed)
 	BG.db = ElvCharacterDB.BodyGuard
 
-    if type(BG.db.IsInValidZone) ~= "boolean" then
-        BG.db.IsInValidZone = BG:IsValidZone()
-    end
+	if type(BG.db.IsInValidZone) ~= "boolean" then
+		BG.db.IsInValidZone = BG:IsValidZone()
+	end
 
 	if BG.db.Active and BG.db.IsInValidZone then
 		BG:ShowFrame()
-        BG:HealthUpdate(BG.db.Health, BG.db.MaxHealth)
-    end
+		BG:HealthUpdate(BG.db.Health, BG.db.MaxHealth)
+	end
 end
 
 function UF:ResetUnitSettings(unit)
@@ -1436,8 +1436,8 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 			if statusBarOrientation == 'VERTICAL' then
 				backdropTex:Point("TOPLEFT", statusBar, "TOPLEFT")
 				backdropTex:Point("BOTTOMLEFT", statusBarTex, "TOPLEFT")
-				backdropTex:Point("BOTTOMRIGHT", statusBarTex, "TOPRIGHT")				
-			else			
+				backdropTex:Point("BOTTOMRIGHT", statusBarTex, "TOPRIGHT")
+			else
 				backdropTex:Point("TOPLEFT", statusBarTex, "TOPRIGHT")
 				backdropTex:Point("BOTTOMLEFT", statusBarTex, "BOTTOMRIGHT")
 				backdropTex:Point("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT")

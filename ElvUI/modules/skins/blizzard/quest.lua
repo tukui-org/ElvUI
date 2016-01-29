@@ -99,21 +99,21 @@ local function LoadSkin()
 
 			questItem.Name:SetTextColor(1, 1, 1)
 		end
-    end)
+	end)
 
-    hooksecurefunc("QuestInfo_GetRewardButton", function(rewardsFrame, index)
-    	local rewardButton = rewardsFrame.RewardButtons[index];
-    	if(not rewardButton.skinned) then
-    		rewardButton.NameFrame:Hide()
-    		rewardButton.Icon:SetTexCoord(unpack(E.TexCoords))
-    		rewardButton:CreateBackdrop("Default")
-    		rewardButton.backdrop:SetOutside(rewardButton.Icon)
-    		rewardButton.Icon:SetDrawLayer("OVERLAY")
-    		rewardButton.Count:SetDrawLayer("OVERLAY")
+	hooksecurefunc("QuestInfo_GetRewardButton", function(rewardsFrame, index)
+		local rewardButton = rewardsFrame.RewardButtons[index];
+		if(not rewardButton.skinned) then
+			rewardButton.NameFrame:Hide()
+			rewardButton.Icon:SetTexCoord(unpack(E.TexCoords))
+			rewardButton:CreateBackdrop("Default")
+			rewardButton.backdrop:SetOutside(rewardButton.Icon)
+			rewardButton.Icon:SetDrawLayer("OVERLAY")
+			rewardButton.Count:SetDrawLayer("OVERLAY")
 
 			rewardButton.skinned = true
-    	end
-    end)
+		end
+	end)
 
 
 	--Quest Frame

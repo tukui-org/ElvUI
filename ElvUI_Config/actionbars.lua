@@ -139,7 +139,7 @@ local function BuildABConfig()
 				},
 			},
 		}
-		
+
 		--Update Bar 1 paging when Bar 6 is enabled/disabled
 		if i == 6 then
 			group['bar'..i].args.enabled.set = function(info, value)

@@ -35,7 +35,7 @@ local CHARACTER_SPECIFIC_KEYBINDINGS = CHARACTER_SPECIFIC_KEYBINDINGS
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: UIParent, ElvUIBindPopupWindow, GameTooltip, StanceButton1, PetActionButton1
 -- GLOBALS: ShoppingTooltip1, SpellBookFrame, MacroFrameTab1Text, SpellFlyout
--- GLOBALS: ElvUIBindPopupWindowCheckButton 
+-- GLOBALS: ElvUIBindPopupWindowCheckButton
 
 local bind = CreateFrame("Frame", "ElvUI_KeyBinder", E.UIParent);
 

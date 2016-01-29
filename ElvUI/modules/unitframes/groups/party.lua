@@ -39,7 +39,7 @@ function UF:Construct_PartyFrames(unitGroup)
 
 		self.Power = UF:Construct_PowerBar(self, true, true, 'LEFT')
 		self.Power.frequentUpdates = false;
-		
+
 		self.Portrait3D = UF:Construct_Portrait(self, 'model')
 		self.Portrait2D = UF:Construct_Portrait(self, 'texture')
 
@@ -154,11 +154,11 @@ function UF:Update_PartyFrames(frame, db)
 		if USE_MINI_POWERBAR then
 			POWERBAR_WIDTH = POWERBAR_WIDTH / 2
 		end
-		
+
 		if USE_PORTRAIT_OVERLAY or not USE_PORTRAIT then
 			PORTRAIT_WIDTH = 0
 		end
-		
+
 		if not USE_POWERBAR_OFFSET then
 			POWERBAR_OFFSET = 0
 		end
@@ -288,7 +288,7 @@ function UF:Update_PartyFrames(frame, db)
 			else
 				health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, (USE_POWERBAR and ((BORDER + SPACING)*2) or BORDER) + POWERBAR_HEIGHT)
 			end
-			
+
 			health.bg:ClearAllPoints()
 			if not USE_PORTRAIT_OVERLAY then
 				health:Point("TOPLEFT", PORTRAIT_WIDTH+BORDER+POWERBAR_OFFSET, -BORDER)
@@ -360,7 +360,7 @@ function UF:Update_PartyFrames(frame, db)
 				power:Hide()
 			end
 		end
-		
+
 		--Portrait
 		do
 			local portrait = frame.Portrait
@@ -388,7 +388,7 @@ function UF:Update_PartyFrames(frame, db)
 					if db.portrait.style == '3D' then
 						portrait:SetFrameLevel(frame:GetFrameLevel() + 5)
 					end
-					
+
 					portrait.backdrop:ClearAllPoints()
 					portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT", POWERBAR_OFFSET, 0)
 
@@ -558,7 +558,7 @@ function UF:Update_PartyFrames(frame, db)
 				debuffs:Hide()
 			end
 		end
-		
+
 		--RaidDebuffs
 		do
 			local rdebuffs = frame.RaidDebuffs
@@ -567,16 +567,16 @@ function UF:Update_PartyFrames(frame, db)
 			if db.rdebuffs.enable then
 				local rdebuffsFont = UF.LSM:Fetch("font", db.rdebuffs.font)
 				frame:EnableElement('RaidDebuffs')
-				
+
 				rdebuffs.forceShow = frame.forceShowAuras
 				rdebuffs:Size(db.rdebuffs.size)
 				rdebuffs:Point('BOTTOM', frame, 'BOTTOM', db.rdebuffs.xOffset, db.rdebuffs.yOffset)
-				
+
 				rdebuffs.count:FontTemplate(rdebuffsFont, db.rdebuffs.fontSize, db.rdebuffs.fontOutline)
 				rdebuffs.count:ClearAllPoints()
 				rdebuffs.count:Point(db.rdebuffs.stack.position, db.rdebuffs.stack.xOffset, db.rdebuffs.stack.yOffset)
 				rdebuffs.count:SetTextColor(stackColor.r, stackColor.g, stackColor.b)
-				
+
 				rdebuffs.time:FontTemplate(rdebuffsFont, db.rdebuffs.fontSize, db.rdebuffs.fontOutline)
 				rdebuffs.time:ClearAllPoints()
 				rdebuffs.time:Point(db.rdebuffs.duration.position, db.rdebuffs.duration.xOffset, db.rdebuffs.duration.yOffset)
@@ -615,7 +615,7 @@ function UF:Update_PartyFrames(frame, db)
 					frame.DBHGlow:SetAllPoints(frame.Threat.glow)
 				else
 					frame.DebuffHighlightBackdrop = false
-				end		
+				end
 			else
 				frame:DisableElement('DebuffHighlight')
 			end
@@ -645,7 +645,7 @@ function UF:Update_PartyFrames(frame, db)
 				if not frame:IsElementEnabled('HealPrediction') then
 					frame:EnableElement('HealPrediction')
 				end
-				
+
 				if not USE_PORTRAIT_OVERLAY then
 					healPrediction.myBar:SetParent(frame)
 					healPrediction.otherBar:SetParent(frame)
@@ -714,7 +714,7 @@ function UF:Update_PartyFrames(frame, db)
 
 		UF:UpdateAuraWatch(frame)
 		frame:EnableElement('ReadyCheck')
-		
+
 		for objectName, object in pairs(frame.customTexts) do
 			if (not db.customTexts) or (db.customTexts and not db.customTexts[objectName]) then
 				object:Hide()

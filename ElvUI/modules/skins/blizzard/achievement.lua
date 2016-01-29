@@ -59,7 +59,7 @@ local function LoadSkin(event)
 			Achievement.tracked:ClearAllPoints()
 			Achievement.tracked:Point('TOPLEFT', Achievement.icon, 'BOTTOMLEFT', 0, -2)
 		end
-		
+
 		Achievement.isSkinned = true
 	end
 
@@ -103,11 +103,11 @@ local function LoadSkin(event)
 			end
 		end)
 	end
-	
+
 	if (not IsAddOnLoaded("Blizzard_AchievementUI")) then
 		return;
 	end
-	
+
 	local frames = {
 		"AchievementFrame",
 		"AchievementFrameCategories",
@@ -181,7 +181,7 @@ local function LoadSkin(event)
 		bar:SetStatusBarTexture(E["media"].normTex)
 		bar:SetStatusBarColor(4/255, 179/255, 30/255)
 		bar:CreateBackdrop("Default")
-        E:RegisterStatusBar(bar)
+		E:RegisterStatusBar(bar)
 		local StatusBarName = bar:GetName()
 
 		if _G[StatusBarName.."Title"] then
@@ -279,7 +279,7 @@ local function LoadSkin(event)
 			if not frame.skinned then
 				frame:StripTextures()
 				frame:SetStatusBarTexture(E["media"].normTex)
-                E:RegisterStatusBar(frame)
+				E:RegisterStatusBar(frame)
 				frame:SetStatusBarColor(4/255, 179/255, 30/255)
 				frame:CreateBackdrop("Transparent")
 				frame:SetFrameLevel(frame:GetFrameLevel() + 3)
@@ -337,9 +337,9 @@ local function LoadSkin(event)
 			end
 		end
 	end)
-	
+
 	--The section below is usually handled in our hook, but another addon may have loaded the AchievementUI before we were ready
-	--Categories 
+	--Categories
 	for i = 1, 20 do
 		local button = _G["AchievementFrameCategoriesContainerButton"..i]
 		if not button or (button and button.isSkinned) then return end
@@ -347,7 +347,7 @@ local function LoadSkin(event)
 		button:StyleButton()
 		button.isSkinned = true
 	end
-	
+
 	--Comparison
 	for i = 1, 10 do
 		local Achievement = _G["AchievementFrameComparisonContainerButton"..i]
@@ -365,7 +365,7 @@ local function LoadSkin(event)
 				Achievement.friend.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 			end
 		end)
-		
+
 		Achievement.isSkinned = true
 	end
 end

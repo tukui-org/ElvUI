@@ -159,7 +159,7 @@ function UF:Construct_DebuffHighlight(frame)
 	x:Hide();
 
 	frame.DBHGlow = x
-	
+
 	if frame.Health then
 		dbh:SetParent(frame.Health)
 		frame.DBHGlow:SetParent(frame.Health)
@@ -628,7 +628,7 @@ function UF:UpdateRoleIcon()
 		lfdrole:Hide()
 		return
 	end
-	
+
 	local isInstance, instanceType = IsInInstance()
 	local role
 

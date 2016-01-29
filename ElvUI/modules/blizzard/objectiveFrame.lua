@@ -40,7 +40,7 @@ function B:MoveObjectiveFrame()
 	ObjectiveTrackerFrame:Point('TOP', ObjectiveFrameHolder, 'TOP')
 	B:ObjectiveFrameHeight()
 	ObjectiveTrackerFrame:SetClampedToScreen(false)
-	
+
 	local function ObjectiveTrackerFrame_SetPosition(_,_, parent)
 		if parent ~= ObjectiveFrameHolder then
 			ObjectiveTrackerFrame:ClearAllPoints()

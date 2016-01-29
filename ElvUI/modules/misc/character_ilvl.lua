@@ -15,7 +15,7 @@ mod.ignoreSlots = {
 	[7] = true,
 }
 mod.InvSlotID = { 1,2,3,6,5,10,11,12,8,9,13,14,15,16,4,17,18,7 }
-mod.emptySockets = { 
+mod.emptySockets = {
 		["Meta "] = "INTERFACE/ITEMSOCKETINGFRAME/UI-EmptySocket-Meta",
 		["Red "] = "INTERFACE/ITEMSOCKETINGFRAME/UI-EmptySocket-Red",
 		["Blue "] = "INTERFACE/ITEMSOCKETINGFRAME/UI-EmptySocket-Blue",
@@ -69,7 +69,7 @@ function mod:CreatePlayerObjects(frame)
 			button.gem1:SetSize(15, 15)
 			button.gem1:Point("BOTTOM"..point, button, "BOTTOM"..anchorPoint, (mult * 4), 0)
 			button.gem1:SetScript("OnEnter", TODO_SCRIPT)
-			button.gem1:SetTemplate()	
+			button.gem1:SetTemplate()
 			button.gem1.texture = button.gem1:CreateTexture(nil, 'OVERLAY')
 			button.gem1.texture:SetInside()
 			button.gem1.texture:SetTexture(mod.emptySockets["Prismatic "])
@@ -79,7 +79,7 @@ function mod:CreatePlayerObjects(frame)
 			button.gem2:SetSize(15, 15)
 			button.gem2:Point(point, button.gem1, anchorPoint, (mult * 2), 0)
 			button.gem2:SetScript("OnEnter", TODO_SCRIPT)
-			button.gem2:SetTemplate()	
+			button.gem2:SetTemplate()
 			button.gem2.texture = button.gem2:CreateTexture(nil, 'OVERLAY')
 			button.gem2.texture:SetInside()
 			button.gem2.texture:SetTexture(mod.emptySockets["Prismatic "])
@@ -89,11 +89,11 @@ function mod:CreatePlayerObjects(frame)
 			button.gem3:SetSize(15, 15)
 			button.gem3:Point(point, button.gem2, anchorPoint, (mult * 2), 0)
 			button.gem3:SetScript("OnEnter", TODO_SCRIPT)
-			button.gem3:SetTemplate()	
+			button.gem3:SetTemplate()
 			button.gem3.texture = button.gem3:CreateTexture(nil, 'OVERLAY')
 			button.gem3.texture:SetInside()
 			button.gem3.texture:SetTexture(mod.emptySockets["Prismatic "])
-			button.gem3.texture:SetTexCoord(unpack(E.TexCoords))			
+			button.gem3.texture:SetTexCoord(unpack(E.TexCoords))
 		end
 	end
 end

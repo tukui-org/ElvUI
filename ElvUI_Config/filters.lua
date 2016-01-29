@@ -10,7 +10,7 @@ local format = string.format
 local UNKNOWN = UNKNOWN
 
 local function UpdateFilterGroup()
-	--Prevent errors when choosing a new filter, by doing a reset of the groups 
+	--Prevent errors when choosing a new filter, by doing a reset of the groups
 	E.Options.args.filters.args.filterGroup = nil
 	E.Options.args.filters.args.spellGroup = nil
 
@@ -93,8 +93,8 @@ local function UpdateFilterGroup()
 					set = function(info, value)
 						E.global.unitframe.DebuffHighlightColors[selectedSpell].enable = value
 						UF:Update_AllFrames();
-					end,					
-				},		
+					end,
+				},
 				style = {
 					name = L["Style"],
 					type = 'select',
@@ -109,8 +109,8 @@ local function UpdateFilterGroup()
 					set = function(info, value)
 						E.global.unitframe.DebuffHighlightColors[selectedSpell].style = value
 						UF:Update_AllFrames();
-					end,						
-				},				
+					end,
+				},
 				color = {
 					name = L["Color"],
 					type = 'color',
@@ -411,7 +411,7 @@ local function UpdateFilterGroup()
 				},
 			},
 		}
-		
+
 		for spell, value in pairs(E.global.unitframe['aurafilters']['Whitelist (Strict)']['spells']) do
 			local id = value.spellID
 			if id then
@@ -921,7 +921,7 @@ local function UpdateFilterGroup()
 				hidden = function() return not E.db.unitframe.filters.buffwatch[selectedSpell] end,
 				get = function(info)
 					if E.db.unitframe.filters.buffwatch[selectedSpell] then
-						return E.db.unitframe.filters.buffwatch[selectedSpell][ info[#info] ]						
+						return E.db.unitframe.filters.buffwatch[selectedSpell][ info[#info] ]
 					end
 				end,
 				set = function(info, value)
