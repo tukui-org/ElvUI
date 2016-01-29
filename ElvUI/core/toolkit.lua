@@ -91,11 +91,19 @@ end
 
 local function SetTemplate(f, t, glossTex, ignoreUpdates)
 	GetTemplate(t)
-
-	f.template = t
-	f.glossTex = glossTex
-	f.ignoreUpdates = ignoreUpdates
-
+    
+    if(t) then
+	   f.template = t
+    end
+    
+    if(glossTex) then
+	   f.glossTex = glossTex
+    end
+    
+    if(ignoreUpdates) then
+	   f.ignoreUpdates = ignoreUpdates
+    end
+    
 	if E.private.general.pixelPerfect then
 		f:SetBackdrop({
 		  bgFile = E["media"].blankTex,
@@ -164,7 +172,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates)
 
 	f:SetBackdropBorderColor(borderr, borderg, borderb)
 
-	if not ignoreUpdates then
+	if not f.ignoreUpdates then
 		E["frames"][f] = true
 	end
 end

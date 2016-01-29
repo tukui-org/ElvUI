@@ -292,9 +292,54 @@ E.Options.args.general = {
 							values = AceGUIWidgetLSMlists.font,
 							set = function(info, value) E.db.general[ info[#info] ] = value; E:UpdateMedia(); E:UpdateFontTemplates(); end,
 						},
+                        applyFontToAll = {
+                            order = 3,
+                            type = 'execute',
+                            name = L["Apply Font To All"],
+                            desc = L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."],
+                            func = function()
+                                local font = E.db.general.font
+                                local fontSize = E.db.general.fontSize
+                                
+                                E.db.bags.itemLevelFont = font
+                                E.db.bags.itemLevelFontSize = fontSize
+                                E.db.bags.countFont = font
+                                E.db.bags.countFontSize = fontSize    
+                                E.db.nameplate.font = font
+                                --E.db.nameplate.fontSize = fontSize --Dont use this because nameplate font it somewhat smaller than the rest of the font sizes
+                                E.db.nameplate.buffs.font = font
+                                --E.db.nameplate.buffs.fontSize = fontSize  --Dont use this because nameplate font it somewhat smaller than the rest of the font sizes
+                                E.db.nameplate.debuffs.font = font
+                                --E.db.nameplate.debuffs.fontSize = fontSize   --Dont use this because nameplate font it somewhat smaller than the rest of the font sizes      
+                                E.db.auras.font = font
+                                E.db.auras.fontSize = fontSize
+                                E.db.auras.consolidatedBuffs.font = font
+                                --E.db.auras.consolidatedBuffs.fontSize = fontSize --Size is smaller by default
+                                E.db.chat.font = font
+                                E.db.chat.fontSize = fontSize
+                                E.db.chat.tabFont = font
+                                E.db.chat.tapFontSize = fontSize
+                                E.db.datatexts.font = font  
+                                E.db.datatexts.fontSize = fontSize
+                                E.db.tooltip.font = font
+                                E.db.tooltip.fontSize = fontSize     
+                                E.db.tooltip.headerFontSize = fontSize
+                                E.db.tooltip.textFontSize = fontSize
+                                E.db.tooltip.smallTextFontSize = fontSize 
+                                E.db.tooltip.healthBar.font = font
+                                --E.db.tooltip.healthbar.fontSize = fontSize -- Size is smaller than default  
+                                E.db.unitframe.font = font
+                                --E.db.unitframe.fontSize = fontSize  -- Size is smaller than default
+                                E.db.unitframe.units.party.rdebuffs.font = font    
+                                E.db.unitframe.units.raid.rdebuffs.font = font   
+                                E.db.unitframe.units.raid40.rdebuffs.font = font    
+                                
+                                E:UpdateAll(true)    
+                            end,
+                        },                        
 						dmgfont = {
 							type = "select", dialogControl = 'LSM30_Font',
-							order = 3,
+							order = 4,
 							name = L["CombatText Font"],
 							desc = L["The font that combat text will use. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"],
 							values = AceGUIWidgetLSMlists.font,
@@ -303,7 +348,7 @@ E.Options.args.general = {
 						},
 						namefont = {
 							type = "select", dialogControl = 'LSM30_Font',
-							order = 4,
+							order = 5,
 							name = L["Name Font"],
 							desc = L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"],
 							values = AceGUIWidgetLSMlists.font,
@@ -311,7 +356,7 @@ E.Options.args.general = {
 							set = function(info, value) E.private.general[ info[#info] ] = value; E:UpdateMedia(); E:UpdateFontTemplates(); E:StaticPopup_Show("PRIVATE_RL"); end,
 						},
 						replaceBlizzFonts = {
-							order = 5,
+							order = 6,
 							type = 'toggle',
 							name = L["Replace Blizzard Fonts"],
 							desc = L["Replaces the default Blizzard fonts on various panels and frames with the fonts chosen in the Media section of the ElvUI config. NOTE: Any font that inherits from the fonts ElvUI usually replaces will be affected as well if you disable this. Enabled by default."],
@@ -333,7 +378,19 @@ E.Options.args.general = {
 							desc = L["The texture that will be used mainly for statusbars."],
 							values = AceGUIWidgetLSMlists.statusbar,
 							get = function(info) return E.private.general[ info[#info] ] end,
-							set = function(info, value) E.private.general[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end
+							set = function(info, value)
+                                local previousValue = E.private.general[ info[#info] ]
+                                E.private.general[ info[#info] ] = value; 
+                                
+                                if(E.db.unitframe.statusbar == previousValue) then
+                                    E.db.unitframe.statusbar = value  
+                                    E:UpdateAll(true)  
+                                else                       
+                                    E:UpdateMedia()
+                                    E:UpdateStatusBars()                                
+                                end
+
+                            end
 						},
 						glossTex = {
 							type = "select", dialogControl = 'LSM30_Statusbar',
@@ -342,8 +399,23 @@ E.Options.args.general = {
 							desc = L["This texture will get used on objects like chat windows and dropdown menus."],
 							values = AceGUIWidgetLSMlists.statusbar,
 							get = function(info) return E.private.general[ info[#info] ] end,
-							set = function(info, value) E.private.general[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end
+							set = function(info, value) 
+                                E.private.general[ info[#info] ] = value; 
+                                E:UpdateMedia()
+                                E:UpdateFrameTemplates()   
+                            end
 						},
+                        applyFontToAll = {
+                            order = 3,
+                            type = 'execute',
+                            name = L["Apply Texture To All"],
+                            desc = L["Applies the primary texture to all statusbars."],
+                            func = function()
+                                local texture = E.private.general.normTex
+                                E.db.unitframe.statusbar = texture   
+                                E:UpdateAll(true)    
+                            end,
+                        },                           
 					},
 				},
 				colors = {

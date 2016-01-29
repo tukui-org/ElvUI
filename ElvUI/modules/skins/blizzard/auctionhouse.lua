@@ -60,7 +60,7 @@ local function LoadSkin()
 	AuctionProgressBar:CreateBackdrop("Default")
 	AuctionProgressBar:SetStatusBarTexture(E["media"].normTex)
 	AuctionProgressBar:SetStatusBarColor(1, 1, 0)
-
+    E:RegisterStatusBar(AuctionProgressBar)
 	S:HandleNextPrevButton(BrowseNextPageButton)
 	S:HandleNextPrevButton(BrowsePrevPageButton)
 

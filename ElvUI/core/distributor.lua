@@ -35,6 +35,7 @@ function D:Initialize()
 	self:RegisterEvent("CHAT_MSG_ADDON")
 
 	self.statusBar = CreateFrame("StatusBar", "ElvUI_Download", UIParent)
+    E:RegisterStatusBar(self.statusBar)
 	self.statusBar:CreateBackdrop('Default')
 	self.statusBar:SetStatusBarTexture(E.media.normTex)
 	self.statusBar:SetStatusBarColor(0.95, 0.15, 0.15)

@@ -997,6 +997,7 @@ end
 
 function NP:CreatePlate(frame)
 	frame.healthBar = frame.ArtContainer.HealthBar
+
 	-- frame.healthBar.texture = frame.healthBar:GetRegions() --No parentKey, yet?
 
 	-- frame.absorbBar = frame.ArtContainer.AbsorbBar
@@ -1028,6 +1029,7 @@ function NP:CreatePlate(frame)
 
 	--HealthBar
 	myPlate.healthBar = CreateFrame("StatusBar", nil, myPlate)
+    E:RegisterStatusBar(myPlate.healthBar)
 	myPlate.healthBar:SetPoint('BOTTOM', myPlate, 'BOTTOM', 0, 5)
 	myPlate.healthBar:SetFrameStrata("BACKGROUND")
 	myPlate.healthBar:SetFrameLevel(0)
@@ -1040,6 +1042,7 @@ function NP:CreatePlate(frame)
 
 	--CastBar
 	myPlate.castBar = CreateFrame("StatusBar", nil, myPlate)
+    E:RegisterStatusBar(myPlate.castBar)
 	myPlate.castBar:SetPoint('TOPLEFT', myPlate.healthBar, 'BOTTOMLEFT', 0, -5)
 	myPlate.castBar:SetPoint('TOPRIGHT', myPlate.healthBar, 'BOTTOMRIGHT', 0, -5)
 	myPlate.castBar:SetFrameStrata("BACKGROUND")

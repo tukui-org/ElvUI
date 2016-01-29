@@ -154,6 +154,7 @@ function UF:SetCastTicks(frame, numTicks, extraTickRatio)
 		if not ticks[i] then
 			ticks[i] = frame:CreateTexture(nil, 'OVERLAY')
 			ticks[i]:SetTexture(E["media"].normTex)
+            E:RegisterStatusBar(ticks[i])
 			ticks[i]:SetVertexColor(0, 0, 0, 0.8)
 			ticks[i]:Width(1)
 			ticks[i]:Height(frame:GetHeight())

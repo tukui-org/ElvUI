@@ -61,6 +61,7 @@ E.LSM = LSM
 --Tables
 E["media"] = {};
 E["frames"] = {};
+E["statusBars"] = {};
 E["texts"] = {};
 E['snapBars'] = {}
 E["RegisteredModules"] = {}
@@ -421,6 +422,20 @@ function E:UpdateFontTemplates()
 			self["texts"][text] = nil;
 		end
 	end
+end
+
+function E:RegisterStatusBar(statusBar)
+    tinsert(self.statusBars, statusBar)
+end
+
+function E:UpdateStatusBars()
+    for _, statusBar in pairs(self.statusBars) do
+        if statusBar and statusBar:GetObjectType() == "StatusBar" then
+            statusBar:SetStatusBarTexture(self.media.normTex)
+        elseif statusBar and statusBar:GetObjectType() == "Texture" then
+            statusBar:SetTexture(self.media.normTex)
+        end
+    end
 end
 
 --This frame everything in ElvUI should be anchored to for Eyefinity support.
@@ -912,8 +927,9 @@ function E:UpdateAll(ignoreInstall)
 
 	self:UpdateBorderColors()
 	self:UpdateBackdropColors()
-	--self:UpdateFrameTemplates()
-
+	self:UpdateFrameTemplates()
+    self:UpdateStatusBars()
+    
 	local LO = E:GetModule('Layout')
 	LO:ToggleChatPanels()
 	LO:BottomPanelVisibility()

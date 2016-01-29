@@ -181,7 +181,7 @@ local function LoadSkin(event)
 		bar:SetStatusBarTexture(E["media"].normTex)
 		bar:SetStatusBarColor(4/255, 179/255, 30/255)
 		bar:CreateBackdrop("Default")
-
+        E:RegisterStatusBar(bar)
 		local StatusBarName = bar:GetName()
 
 		if _G[StatusBarName.."Title"] then
@@ -279,6 +279,7 @@ local function LoadSkin(event)
 			if not frame.skinned then
 				frame:StripTextures()
 				frame:SetStatusBarTexture(E["media"].normTex)
+                E:RegisterStatusBar(frame)
 				frame:SetStatusBarColor(4/255, 179/255, 30/255)
 				frame:CreateBackdrop("Transparent")
 				frame:SetFrameLevel(frame:GetFrameLevel() + 3)

@@ -694,6 +694,7 @@ function TT:GameTooltip_ShowStatusBar(tt, min, max, value, text)
 	if statusBar and not statusBar.skinned then
 		statusBar:StripTextures()
 		statusBar:SetStatusBarTexture(E['media'].normTex)
+        E:RegisterStatusBar(statusBar)
 		statusBar:CreateBackdrop('Default')
 		statusBar.skinned = true;
 	end
@@ -842,6 +843,7 @@ function TT:Initialize()
 
 	GameTooltipStatusBar:Height(self.db.healthBar.height)
 	GameTooltipStatusBar:SetStatusBarTexture(E["media"].normTex)
+    E:RegisterStatusBar(GameTooltipStatusBar)
 	GameTooltipStatusBar:CreateBackdrop('Transparent')
 	GameTooltipStatusBar:SetScript("OnValueChanged", self.OnValueChanged)
 	GameTooltipStatusBar:ClearAllPoints()
