@@ -138,13 +138,12 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 		end
 
 		local x, y, point = E:CalculateMoverPoints(self)
-
+		self:ClearAllPoints()
+		self:Point(self.positionOverride or point, E.UIParent, self.positionOverride and "BOTTOMLEFT" or point, x, y)
 		if self.positionOverride then
 			self.parent:ClearAllPoints()
 			self.parent:Point(self.positionOverride, self, self.positionOverride)
 		end
-		self:ClearAllPoints()
-		self:Point(point, E.UIParent, point, x, y)
 
 		E:SaveMoverPosition(name)
 
@@ -264,23 +263,21 @@ function E:CalculateMoverPoints(mover, nudgeX, nudgeY)
 		x = x - screenCenter
 	end
 
-	--I'm not really sure why we are even doing this
-	--It seems to cause nothing but problems
-	-- if mover.positionOverride then
-		-- if(mover.positionOverride == "TOPLEFT") then
-			-- x = mover:GetLeft() - E.diffGetLeft
-			-- y = mover:GetTop() - E.diffGetTop
-		-- elseif(self.positionOverride == "TOPRIGHT") then
-			-- x = mover:GetRight() - E.diffGetRight
-			-- y = mover:GetTop() - E.diffGetTop
-		-- elseif(mover.positionOverride == "BOTTOMLEFT") then
-			-- x = mover:GetLeft() - E.diffGetLeft
-			-- y = mover:GetBottom() - E.diffGetBottom
-		-- elseif(mover.positionOverride == "BOTTOMRIGHT") then
-			-- x = mover:GetRight() - E.diffGetRight
-			-- y = mover:GetBottom() - E.diffGetBottom
-		-- end
-	-- end
+	if mover.positionOverride then
+		if(mover.positionOverride == "TOPLEFT") then
+			x = mover:GetLeft() - E.diffGetLeft
+			y = mover:GetTop() - E.diffGetTop
+		elseif(mover.positionOverride == "TOPRIGHT") then
+			x = mover:GetRight() - E.diffGetRight
+			y = mover:GetTop() - E.diffGetTop
+		elseif(mover.positionOverride == "BOTTOMLEFT") then
+			x = mover:GetLeft() - E.diffGetLeft
+			y = mover:GetBottom() - E.diffGetBottom
+		elseif(mover.positionOverride == "BOTTOMRIGHT") then
+			x = mover:GetRight() - E.diffGetRight
+			y = mover:GetBottom() - E.diffGetBottom
+		end
+	end
 
 	--Update coordinates if nudged
 	x = x + (nudgeX or 0)
