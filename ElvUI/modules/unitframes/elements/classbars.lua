@@ -112,7 +112,7 @@ function UF:UpdateHoly(event, unit, powerType)
 			if db.classbar.fill == "spaced" then
 				self.HolyPower[i]:Width((CLASSBAR_WIDTH - ((maxHolyPower == 5 and 7 or 13)*(maxHolyPower - 1))) / maxHolyPower)
 			else
-				self.HolyPower[i]:Width((CLASSBAR_WIDTH - (maxHolyPower*(BORDER-SPACING))+(BORDER-SPACING)) / maxHolyPower)
+				self.HolyPower[i]:SetWidth((CLASSBAR_WIDTH - (maxHolyPower*(BORDER-SPACING))+(BORDER-SPACING)) / maxHolyPower) -- :SetWidth and not :Width as we don't want to use E:Scale on the value
 			end
 
 			self.HolyPower[i]:ClearAllPoints()
@@ -123,10 +123,6 @@ function UF:UpdateHoly(event, unit, powerType)
 					self.HolyPower[i]:Point("LEFT", self.HolyPower[i-1], "RIGHT", maxHolyPower == 5 and 7 or 13, 0)
 				else
 					self.HolyPower[i]:Point("LEFT", self.HolyPower[i-1], "RIGHT", E.Border-E.Spacing, 0)
-				end
-
-				if i == maxHolyPower then
-					self.HolyPower[i]:Point("RIGHT", self.HolyPower)
 				end
 			end
 
@@ -236,7 +232,7 @@ function UF:UpdateHarmony()
 			if db.classbar.fill == "spaced" then
 				self[i]:Width((self:GetWidth() - ((E.PixelMode and (maxBars == 5 and 4 or 7) or (maxBars == 5 and 6 or 9))*(maxBars - 1))) / maxBars)
 			elseif i ~= maxBars then
-				self[i]:Width((CLASSBAR_WIDTH - (maxBars*(BORDER-SPACING))+(BORDER-SPACING)) / maxBars)
+				self[i]:SetWidth((CLASSBAR_WIDTH - (maxBars*(BORDER-SPACING))+(BORDER-SPACING)) / maxBars) -- :SetWidth and not :Width as we don't want to use E:Scale on the value
 			end
 			self[i]:ClearAllPoints()
 
@@ -244,10 +240,7 @@ function UF:UpdateHarmony()
 				self[i]:Point("LEFT", self)
 			else
 				if USE_MINI_CLASSBAR then
-					self[i]:Point("LEFT", self[i-1], "RIGHT", E.PixelMode and (maxBars == 5 and 4 or 7) or (maxBars == 5 and 6 or 9), 0)
-				elseif i == maxBars then
-					self[i]:Point("LEFT", self[i-1], "RIGHT", BORDER-SPACING, 0)
-					self[i]:Point("RIGHT", self)
+					self[i]:Point("LEFT", self[i-1], "RIGHT", (maxBars == 5 and (BORDER*4-SPACING*2) or (BORDER*7 - SPACING*5)), 0)
 				else
 					self[i]:Point("LEFT", self[i-1], "RIGHT", BORDER-SPACING, 0)
 				end
@@ -417,13 +410,13 @@ function UF:UpdateShardBar(spec)
 
 	if not db.classbar.detachFromFrame and db.classbar.fill == 'spaced' then
 		self:ClearAllPoints()
-		self:Point("CENTER", frame.Health.backdrop, "TOP", 0, -(E.PixelMode and 2 or 1))
+		self:Point("CENTER", frame.Health.backdrop, "TOP", 0, -(E.Border*2 - E.Spacing*3))
 	end
 
 	local SPACING = db.classbar.fill == 'spaced' and 11 or 1
 	for i = 1, maxBars do
 		self[i]:Height(self:GetHeight())
-		self[i]:Width((self:GetWidth() - (SPACING*(maxBars - 1))) / maxBars)
+		self[i]:SetWidth((self:GetWidth() - (SPACING*(maxBars - 1))) / maxBars) -- :SetWidth and not :Width as we don't want to use E:Scale on the value
 		self[i]:ClearAllPoints()
 		if i == 1 then
 			self[i]:Point("LEFT", self)
@@ -522,7 +515,7 @@ function UF:UpdateShadowOrbs(event, unit, powerType)
 			if db.classbar.fill == "spaced" then
 				self[i]:Width((self:GetWidth() - ((maxShadowOrbs == 5 and 7 or 13)*(maxShadowOrbs - 1))) / maxShadowOrbs)
 			elseif i ~= maxShadowOrbs then
-				self[i]:Width((CLASSBAR_WIDTH - (maxShadowOrbs*(BORDER-SPACING))+(BORDER-SPACING)) / maxShadowOrbs)
+				self[i]:SetWidth((CLASSBAR_WIDTH - (maxShadowOrbs*(BORDER-SPACING))+(BORDER-SPACING)) / maxShadowOrbs) -- :SetWidth and not :Width as we don't want to use E:Scale on the value
 			end
 
 			self[i]:ClearAllPoints()
@@ -531,9 +524,6 @@ function UF:UpdateShadowOrbs(event, unit, powerType)
 			else
 				if USE_MINI_CLASSBAR then
 					self[i]:Point("LEFT", self[i-1], "RIGHT", maxShadowOrbs == 5 and 7 or 13, 0)
-				elseif i == maxShadowOrbs then
-					self[i]:Point("LEFT", self[i-1], "RIGHT", BORDER-SPACING, 0)
-					self[i]:Point("RIGHT", self)
 				else
 					self[i]:Point("LEFT", self[i-1], "RIGHT", BORDER-SPACING, 0)
 				end
