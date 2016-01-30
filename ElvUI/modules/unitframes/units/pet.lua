@@ -429,10 +429,10 @@ function UF:Update_PetFrame(frame, db)
 	do
 		local castbar = frame.Castbar
 		castbar:Width(db.castbar.width - (BORDER * 2))
-		castbar:Height(db.castbar.height)
+		castbar:Height(db.castbar.height - (BORDER * 2))
 		local holder = castbar.Holder
 		holder:Width(db.castbar.width)
-		holder:Height(db.castbar.height + (E.Border + E.Spacing*4))
+		holder:Height(db.castbar.height)
 		holder:GetScript('OnSizeChanged')(holder)
 
 		--Latency
@@ -447,10 +447,10 @@ function UF:Update_PetFrame(frame, db)
 		--Icon
 		if db.castbar.icon then
 			castbar.Icon = castbar.ButtonIcon
-			castbar.Icon.bg:Width(db.castbar.height + (E.Border * 2))
-			castbar.Icon.bg:Height(db.castbar.height + (E.Border * 2))
+			castbar.Icon.bg:Width(db.castbar.height)
+			castbar.Icon.bg:Height(db.castbar.height)
 
-			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - (E.Border + E.Spacing*3))
+			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - (BORDER + SPACING*3))
 			castbar.Icon.bg:Show()
 		else
 			castbar.ButtonIcon.bg:Hide()

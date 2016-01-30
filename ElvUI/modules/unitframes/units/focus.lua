@@ -428,9 +428,9 @@ function UF:Update_FocusFrame(frame, db)
 	do
 		local castbar = frame.Castbar
 		castbar:Width(db.castbar.width - (BORDER * 2))
-		castbar:Height(db.castbar.height)
+		castbar:Height(db.castbar.height - (BORDER * 2))
 		castbar.Holder:Width(db.castbar.width)
-		castbar.Holder:Height(db.castbar.height + (E.PixelMode and 2 or (BORDER * 2)))
+		castbar.Holder:Height(db.castbar.height)
 		castbar.Holder:GetScript('OnSizeChanged')(castbar.Holder)
 
 		--Latency
@@ -445,10 +445,10 @@ function UF:Update_FocusFrame(frame, db)
 		--Icon
 		if db.castbar.icon then
 			castbar.Icon = castbar.ButtonIcon
-			castbar.Icon.bg:Width(db.castbar.height + (E.Border * 2))
-			castbar.Icon.bg:Height(db.castbar.height + (E.Border * 2))
+			castbar.Icon.bg:Width(db.castbar.height)
+			castbar.Icon.bg:Height(db.castbar.height)
 
-			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - (E.PixelMode and 1 or 5))
+			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - (BORDER + SPACING*3))
 			castbar.Icon.bg:Show()
 		else
 			castbar.ButtonIcon.bg:Hide()
