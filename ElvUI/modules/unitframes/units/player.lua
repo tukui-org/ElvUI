@@ -861,8 +861,8 @@ function UF:Update_PlayerFrame(frame, db)
 					bars[i]:Height(bars:GetHeight())
 					if db.classbar.fill == "spaced" then
 						bars[i]:Width((bars:GetWidth() - ((SPACING+(BORDER*2)+BORDER)*(MAX_CLASS_BAR - 1)))/MAX_CLASS_BAR)
-					else--if i ~= MAX_CLASS_BAR then
-						bars[i]:SetWidth((CLASSBAR_WIDTH - (MAX_CLASS_BAR*(BORDER-SPACING))+(BORDER-SPACING)) / MAX_CLASS_BAR)
+					elseif i ~= MAX_CLASS_BAR then
+						bars[i]:Width((CLASSBAR_WIDTH - (MAX_CLASS_BAR*(BORDER-SPACING))+(BORDER-SPACING)) / MAX_CLASS_BAR)
 					end
 
 					bars[i]:GetStatusBarTexture():SetHorizTile(false)
@@ -876,9 +876,9 @@ function UF:Update_PlayerFrame(frame, db)
 							bars[i]:Point("LEFT", bars[i-1], "RIGHT", BORDER-SPACING, 0)
 						end
 
-						-- if i == MAX_CLASS_BAR then
-							-- bars[i]:Point("RIGHT", bars)
-						-- end
+						if i == MAX_CLASS_BAR then
+							bars[i]:Point("RIGHT", bars)
+						end
 					end
 
 					if db.classbar.fill ~= "spaced" then
