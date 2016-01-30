@@ -872,12 +872,11 @@ function UF:Update_PlayerFrame(frame, db)
 					else
 						if db.classbar.fill == "spaced" then
 							bars[i]:Point("LEFT", bars[i-1], "RIGHT", SPACING+(BORDER*2)+2, 0)
+						elseif i == MAX_CLASS_BAR then
+							bars[i]:Point("LEFT", bars[i-1], "RIGHT", BORDER-SPACING, 0)
+							bars[i]:Point("RIGHT", bars)
 						else
 							bars[i]:Point("LEFT", bars[i-1], "RIGHT", BORDER-SPACING, 0)
-						end
-
-						if i == MAX_CLASS_BAR then
-							bars[i]:Point("RIGHT", bars)
 						end
 					end
 
