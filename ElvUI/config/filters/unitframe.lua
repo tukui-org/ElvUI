@@ -381,6 +381,7 @@ G.unitframe.aurafilters['Blacklist'] = {
 		[15007] = Defaults(15007), -- Ress Sickness
 		[113942] = Defaults(113942), -- Demonic: Gateway
 		[89140] = Defaults(89140), -- Demonic Rebirth: Cooldown
+		[95809] = Defaults(95809), --Insanity debuff (Hunter Pet heroism)
 	},
 }
 
