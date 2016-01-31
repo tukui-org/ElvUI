@@ -915,7 +915,6 @@ L["Select an additional filter to use. If the selected filter is a whitelist and
 L["Select Filter"] = "Выбрать фильтр"
 L["Select Spell"] = "Выбрать заклинание"
 L["Select the display method of the portrait."] = "Выбирите метод отображения портрета"
-L["Set space between each aura icon."] = "Расстояние между иконками аур."
 L["Set the filter type. Blacklist will hide any auras in the list and show all others. Whitelist will show any auras in the filter and hide all others."] = true;
 L["Set the font size for unitframes."] = "Устанавливает шрифт для рамок юнитов."
 L["Set the order that the group will sort."] = "Устанавливает метод сортировки в группе."

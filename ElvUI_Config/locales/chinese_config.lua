@@ -915,7 +915,6 @@ L["Select an additional filter to use. If the selected filter is a whitelist and
 L["Select Filter"] = "选择过滤器"
 L["Select Spell"] = "选择技能"
 L["Select the display method of the portrait."] = "选择头像的显示方式"
-L["Set space between each aura icon."] = true;
 L["Set the filter type. Blacklist will hide any auras in the list and show all others. Whitelist will show any auras in the filter and hide all others."] = true;
 L["Set the font size for unitframes."] = "设置单位框架字体尺寸."
 L["Set the order that the group will sort."] = "设置组排序的顺序."

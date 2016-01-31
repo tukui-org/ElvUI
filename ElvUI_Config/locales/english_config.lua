@@ -904,7 +904,6 @@ L["Select an additional filter to use. If the selected filter is a whitelist and
 L["Select Filter"] = true;
 L["Select Spell"] = true;
 L["Select the display method of the portrait."] = true;
-L["Set space between each aura icon."] = true;
 L["Set the filter type. Blacklist will hide any auras in the list and show all others. Whitelist will show any auras in the filter and hide all others."] = true;
 L["Set the font size for unitframes."] = true;
 L["Set the order that the group will sort."] = true;

@@ -963,7 +963,6 @@ L["Select an additional filter to use. If the selected filter is a whitelist and
 L["Select Filter"] = "필터 선택"
 L["Select Spell"] = "주문 선택"
 L["Select the display method of the portrait."] = "초상화 표시 방법을 결정합니다."
-L["Set space between each aura icon."] = "각 아이콘 사이의 여백을 지정합니다."
 L["Set the filter type. Blacklist will hide any auras in the list and show all others. Whitelist will show any auras in the filter and hide all others."] = true;
 L["Set the font size for unitframes."] = "유닛프레임 내에서 쓰이는 모든 글자의 크기를 결정합니다."
 L["Set the order that the group will sort."] = "이 유닛프레임에서 그룹을 어떤 기준으로 묶을지를 결정합니다.|n|n|cffceff00해석불완전|r : 기능을 제가 아직 확인해보지 못했습니다."
