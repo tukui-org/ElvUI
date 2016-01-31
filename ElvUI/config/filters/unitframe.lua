@@ -769,7 +769,7 @@ P['unitframe']['filters'] = {
 --List of spells to display ticks
 G.unitframe.ChannelTicks = {
 	--Warlock
-	[SpellName(689))] = 6, -- "Drain Life"
+	[SpellName(689)] = 6, -- "Drain Life"
 	[SpellName(108371)] = 6, -- "Harvest Life"
 	[SpellName(5740)] = 4, -- "Rain of Fire"
 	[SpellName(755)] = 6, -- Health Funnel
