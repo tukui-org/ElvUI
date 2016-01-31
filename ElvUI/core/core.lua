@@ -1158,18 +1158,18 @@ function E:DBConversions()
 	
 	--Move spells from the "Whitelist (Strict)" filter to the "Whitelist" filter
 	if E.global.unitframe['aurafilters']['Whitelist (Strict)'] and E.global.unitframe['aurafilters']['Whitelist (Strict)'].spells then
-		for k, v in pairs(E.global.unitframe['aurafilters']['Whitelist (Strict)'].spells) do
-			if type(v) == 'table' then
-				local enabledValue = v.enable
+		for spell, spellInfo in pairs(E.global.unitframe['aurafilters']['Whitelist (Strict)'].spells) do
+			if type(spellInfo) == 'table' then
+				local enabledValue = spellInfo.enable
 				--We don't care about old defaults, as the only default entries in the Whitelist (Strict) filter were from an MoP raid instance. No need to copy that information over.
 
-				if v.spellID then --Spell the user added himself, all needed info is available and should be copied over
-					local spellID = tonumber(v.spellID)
+				if spellInfo.spellID then --Spell the user added himself, all needed info is available and should be copied over
+					local spellID = tonumber(spellInfo.spellID)
 					E.global.unitframe['aurafilters']['Whitelist']['spells'][spellID] = {['enable'] = enabledValue}
 				end
 			end
 			--Remove old entry
-			E.global.unitframe['aurafilters']['Whitelist (Strict)']["spells"][k] = nil
+			E.global.unitframe['aurafilters']['Whitelist (Strict)']["spells"][spell] = nil
 		end
 		--Finally remove old table
 		E.global.unitframe['aurafilters']['Whitelist (Strict)'] = nil
