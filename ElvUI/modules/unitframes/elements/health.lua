@@ -81,7 +81,7 @@ function UF:SizeAndPosition_HealthBar(frame)
 	
 	--Position
 	health:ClearAllPoints()
-	health:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER - frame.STAGGER_WIDTH - frame.PORTRAIT_WIDTH_RIGHT, -frame.BORDER)
+	health:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER - frame.STAGGER_WIDTH - frame.PORTRAIT_WIDTH_RIGHT - frame.POWERBAR_OFFSET_RIGHT, -frame.BORDER)
 
 	if frame.POWERBAR_DETACHED then
 		health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.PORTRAIT_WIDTH_LEFT + frame.BORDER, frame.BORDER)
@@ -112,14 +112,7 @@ function UF:SizeAndPosition_HealthBar(frame)
 			DEPTH = -(frame.BORDER+(frame.CLASSBAR_HEIGHT/2))
 		end
 
-		if frame.USE_POWERBAR_OFFSET then
-			if frame.POWERBAR_OFFSET_DIRECTION == "RIGHT" then
-				health:Point("TOPRIGHT", frame, "TOPRIGHT", -(frame.BORDER+frame.POWERBAR_OFFSET+frame.PORTRAIT_WIDTH_RIGHT), DEPTH)
-			end
-		else
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(frame.BORDER+frame.PORTRAIT_WIDTH_RIGHT), DEPTH)
-		end
-
+		health:Point("TOPRIGHT", frame, "TOPRIGHT", -(frame.BORDER+frame.PORTRAIT_WIDTH_RIGHT+frame.POWERBAR_OFFSET_RIGHT), DEPTH)
 		health:Point("TOPLEFT", frame, "TOPLEFT", frame.PORTRAIT_WIDTH_LEFT+frame.BORDER, DEPTH)
 	end	
 end

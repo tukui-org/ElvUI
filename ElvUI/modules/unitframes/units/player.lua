@@ -38,7 +38,7 @@ function UF:Construct_PlayerFrame(frame)
 	frame.Castbar = self:Construct_Castbar(frame, 'LEFT', L["Player Castbar"])
 
 	if E.myclass == "PALADIN" then
-		frame.HolyPower = self:Construct_PaladinResourceBar(frame)
+		frame.HolyPower = self:Construct_ResourceBar(frame)
 		frame.ClassBar = 'HolyPower'
 	elseif E.myclass == "WARLOCK" then
 		frame.ShardBar = self:Construct_WarlockResourceBar(frame)

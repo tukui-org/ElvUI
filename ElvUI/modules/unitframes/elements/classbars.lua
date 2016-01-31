@@ -24,14 +24,18 @@ local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
 
+local SPELL_POWER = {
+	PALADIN = SPELL_POWER_HOLY_POWER
+}
+
 -------------------------------------------------------------
 -- PALADIN
 -------------------------------------------------------------
 
-function UF:Construct_PaladinResourceBar(frame)
+function UF:Construct_ResourceBar(frame)
 	local bars = CreateFrame("Frame", nil, frame)
 	bars:CreateBackdrop('Default')
-
+	
 	for i = 1, UF['classMaxResourceBar'][E.myclass] do
 		bars[i] = CreateFrame("StatusBar", frame:GetName().."ClassBarButton"..i, bars)
 		bars[i]:SetStatusBarTexture(E['media'].blankTex) --Dummy really, this needs to be set so we can change the color
@@ -42,42 +46,43 @@ function UF:Construct_PaladinResourceBar(frame)
 		bars[i].backdrop:SetParent(bars)
 	end
 
-	bars.Override = UF.UpdateHoly
+	bars.Override = UF.UpdateClassBar
 
 	return bars
 end
 
-function UF:UpdateHoly(event, unit, powerType)
-	if (self.unit ~= unit or (powerType and powerType ~= 'HOLY_POWER')) then return end
+
+function UF:UpdateClassBar(event, unit, powerType)
 	local db = self.db
 	if not db then return; end
-	local numHolyPower = UnitPower('player', SPELL_POWER_HOLY_POWER);
-	local maxHolyPower = UnitPowerMax('player', SPELL_POWER_HOLY_POWER);
-	
-	local isShown = self.HolyPower:IsShown()
-	if numHolyPower == 0 and db.classbar.autoHide then
+	local numPower = UnitPower('player', SPELL_POWER[E.myclass]);
+	local maxPower = UnitPowerMax('player', SPELL_POWER[E.myclass]);
+
+	local bars = self[self.ClassBar]
+	local isShown = bars:IsShown()
+	if numPower == 0 and db.classbar.autoHide then
 		if isShown then
-			self.HolyPower:Hide()
-			self.HolyPower.changedState = true
+			bars:Hide()
+			bars.changedState = true
 		end
 	else
 		if not isShown then
-			self.HolyPower:Show()
-			self.HolyPower.changedState = true
+			bars:Show()
+			bars.changedState = true
 		end
-		for i = 1, maxHolyPower do
-			if(i <= numHolyPower) then
-				self.HolyPower[i]:SetAlpha(1)
+		for i = 1, maxPower do
+			if(i <= numPower) then
+				bars[i]:SetAlpha(1)
 			else
-				self.HolyPower[i]:SetAlpha(.2)
+				bars[i]:SetAlpha(.2)
 			end
 		end
 	end
 	
-	self.USE_CLASSBAR = self.HolyPower:IsShown()
+	self.USE_CLASSBAR = bars:IsShown()
 	
 	--Lets only run this if it's state has changed.
-	if(self.HolyPower.changedState ~= false) then
+	if(bars.changedState ~= false) then
 		UF:SizeAndPosition_HealthBar(self)
 	end
 end
