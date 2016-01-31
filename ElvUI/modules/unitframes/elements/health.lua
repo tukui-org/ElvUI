@@ -54,6 +54,7 @@ end
 function UF:SizeAndPosition_HealthBar(frame)
 	local db = frame.db
 	local health = frame.Health
+	
 	health.Smooth = self.db.smoothbars
 	
 	--Text
@@ -80,13 +81,13 @@ function UF:SizeAndPosition_HealthBar(frame)
 	
 	--Position
 	health:ClearAllPoints()
-	health:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER, -frame.BORDER)
+	health:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER - frame.STAGGER_WIDTH, -frame.BORDER)
 
 	if frame.POWERBAR_DETACHED then
 		health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER, frame.BORDER)
 	elseif frame.USE_POWERBAR_OFFSET then
 		if frame.POWERBAR_OFFSET_DIRECTION == "RIGHT" then
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(frame.BORDER+frame.POWERBAR_OFFSET), -frame.BORDER)
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(frame.BORDER+frame.POWERBAR_OFFSET) - frame.STAGGER_WIDTH, -frame.BORDER)
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER, frame.BORDER+frame.POWERBAR_OFFSET)
 		end
 	elseif frame.USE_INSET_POWERBAR then

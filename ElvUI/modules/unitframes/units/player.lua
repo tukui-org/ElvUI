@@ -82,7 +82,13 @@ function UF:Construct_PlayerFrame(frame)
 	E:CreateMover(frame, frame:GetName()..'Mover', L["Player Frame"], nil, nil, nil, 'ALL,SOLO')
 end
 
+
 function UF:UpdatePlayerFrameAnchors(frame, isShown)
+	frame.USE_CLASSBAR = isShown
+	UF:SizeAndPosition_HealthBar(frame)
+	
+	
+	--Everything below here is going away
 	local db = E.db['unitframe']['units'].player
 	local health = frame.Health
 	local threat = frame.Threat
@@ -144,13 +150,6 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 	end
 
 	if isShown then
-		if POWERBAR_OFFSET ~= 0 then
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER+POWERBAR_OFFSET) - STAGGER_WIDTH, -(BORDER + CLASSBAR_HEIGHT_SPACING))
-		else
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER - STAGGER_WIDTH, -(BORDER + CLASSBAR_HEIGHT_SPACING))
-		end
-		health:Point("TOPLEFT", frame, "TOPLEFT", PORTRAIT_WIDTH + BORDER, -(BORDER + CLASSBAR_HEIGHT_SPACING))
-
 		local mini_classbarY = 0
 		if USE_MINI_CLASSBAR then
 			mini_classbarY = -(CLASSBAR_HEIGHT_SPACING)
@@ -191,13 +190,6 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 			end
 		end
 	else
-		if POWERBAR_OFFSET ~= 0 then
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(BORDER + POWERBAR_OFFSET) - STAGGER_WIDTH, -BORDER)
-		else
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -BORDER - STAGGER_WIDTH, -BORDER)
-		end
-		health:Point("TOPLEFT", frame, "TOPLEFT", PORTRAIT_WIDTH + BORDER, -BORDER)
-
 		if db.threatStyle == "GLOW" then
 			threat.glow:Point("TOPLEFT", -SHADOW_SPACING, SHADOW_SPACING)
 			threat.glow:Point("TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING)
@@ -296,6 +288,8 @@ function UF:Update_PlayerFrame(frame, db)
 		frame.USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and frame.USE_CLASSBAR and frame.CLASSBAR_DETACHED ~= true
 		frame.CLASSBAR_HEIGHT = db.classbar.height
 		frame.CLASSBAR_WIDTH = UNIT_WIDTH - (frame.BORDER*2) - frame.PORTRAIT_WIDTH - frame.POWERBAR_OFFSET	
+		
+		frame.STAGGER_WIDTH = frame.Stagger and frame.Stagger:IsShown() and (db.stagger.width + (frame.BORDER*2)) or 0;
 	end
 	
 	
