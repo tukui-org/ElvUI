@@ -110,6 +110,7 @@ V['skins'] = {
 		['itemUpgrade'] = true,
 		["addonManager"] = true,
 		["mirrorTimers"] = true,
+		["objectiveTracker"] = true,
 	},
 }
 

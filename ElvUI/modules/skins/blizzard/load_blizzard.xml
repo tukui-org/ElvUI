@@ -57,4 +57,5 @@
 	<Script file='transmogrification.lua'/>
 	<Script file='voidstorage.lua'/>
 	<Script file='worldmap.lua'/>
+	<Script file='objectivetracker.lua'/>
 </Ui>

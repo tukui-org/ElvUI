@@ -319,6 +319,11 @@ E.Options.args.skins = {
 					name = L["Mirror Timers"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
+				objectiveTracker = {
+					type = "toggle",
+					name = OBJECTIVES_TRACKER_LABEL,
+					desc = L["TOGGLESKIN_DESC"],
+				},
 			},
 		},
 	},
