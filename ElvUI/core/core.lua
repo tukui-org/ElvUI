@@ -1179,9 +1179,8 @@ function E:DBConversions()
 	--This one is easier, as all spells have been stored with spellID as key
 	if E.global.unitframe.InvalidSpells then
 		for spellID, enabledValue in pairs(E.global.unitframe.InvalidSpells) do
-			if spellID then
-				E.global.unitframe['aurafilters']['Blacklist']['spells'][spellID] = {['enable'] = enabledValue}
-			end
+			--Copy over information
+			E.global.unitframe['aurafilters']['Blacklist']['spells'][spellID] = {['enable'] = enabledValue}
 			--Remove old entry
 			E.global.unitframe.InvalidSpells[spellID] = nil
 		end
