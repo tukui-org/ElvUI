@@ -357,7 +357,6 @@ G.unitframe.aurafilters['Blacklist'] = {
 		[57724] = Defaults(), --Sated
 		[25771] = Defaults(), --forbearance
 		[57723] = Defaults(), --Exhaustion
-		[36032] = Defaults(), --arcane blast
 		[58539] = Defaults(), --watchers corpse
 		[26013] = Defaults(), --deserter
 		[6788] = Defaults(), --weakended soul
