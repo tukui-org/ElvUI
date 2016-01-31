@@ -1063,6 +1063,17 @@ function E:DBConversions()
 			E.global.unitframe['aurafilters']['Whitelist (Strict)']["spells"][k] = nil
 		end
 	end
+	
+	--Move spells from the "Blacklist (Strict)" filter to the "Blacklist" filter
+	if E.global.unitframe.InvalidSpells then
+		for spellID, enabledValue in pairs(E.global.unitframe.InvalidSpells) do
+			if spellID then
+				E.global.unitframe['aurafilters']['Blacklist']['spells'][spellID] = {['enable'] = enabledValue,}
+			end
+
+			E.global.unitframe.InvalidSpells[spellID] = nil
+		end
+	end
 
 	if E.db.general.experience.width > 100 and E.db.general.experience.height > 100 then
 		E.db.general.experience.width = P.general.experience.width
