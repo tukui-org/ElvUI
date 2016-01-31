@@ -1221,7 +1221,21 @@ local function GetOptionsTable_Portrait(updateFunc, groupName, numUnits)
 			},
 		},
 	}
-
+	
+	if groupName == "player" then
+		config.args.overlay = nil
+		config.args.position = {
+			order = 3,
+			name = L["Position"],
+			desc = L["Position the portrait frame."],
+			type = 'select',
+			values = {
+				['LEFT'] = L["Left"],
+				['RIGHT'] = L["Right"],
+				['OVERLAY'] = L["Overlay"],
+			}
+		}
+	end
 	return config
 end
 

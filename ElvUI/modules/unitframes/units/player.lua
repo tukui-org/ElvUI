@@ -84,8 +84,7 @@ end
 
 
 function UF:UpdatePlayerFrameAnchors(frame, isShown)
-	frame.USE_CLASSBAR = isShown
-	UF:SizeAndPosition_HealthBar(frame)
+
 	
 	
 	--Everything below here is going away
@@ -94,9 +93,10 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 	local threat = frame.Threat
 	local power = frame.Power
 	local stagger = frame.Stagger
-	local PORTRAIT_WIDTH = db.portrait.width
 	local USE_PORTRAIT = db.portrait.enable
-	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
+	local PORTRAIT_POSITION = db.portrait.position
+	local USE_PORTRAIT_OVERLAY = USE_PORTRAIT and PORTRAIT_POSITION == "OVERLAY"
+	local PORTRAIT_WIDTH = (USE_PORTRAIT_OVERLAY or not USE_PORTRAIT) and 0 or db.portrait.width
 	local CLASSBAR_HEIGHT = db.classbar.height
 	local CLASSBAR_HEIGHT_SPACING
 	local CLASSBAR_DETACHED = db.classbar.detachFromFrame
@@ -250,7 +250,8 @@ function UF:Update_PlayerFrame(frame, db)
 	local POWERBAR_WIDTH = USE_MINI_POWERBAR and (db.width - (BORDER*2))/2 or (POWERBAR_DETACHED and db.power.detachedWidth or (db.width - (BORDER*2)))
 
 	local USE_PORTRAIT = db.portrait.enable
-	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
+	local PORTRAIT_POSITION = db.portrait.position
+	local USE_PORTRAIT_OVERLAY = USE_PORTRAIT and PORTRAIT_POSITION == "OVERLAY"
 	local PORTRAIT_WIDTH = (USE_PORTRAIT_OVERLAY or not USE_PORTRAIT) and 0 or db.portrait.width
 	
 	local USE_CLASSBAR = db.classbar.enable and CAN_HAVE_CLASSBAR
@@ -274,20 +275,24 @@ function UF:Update_PlayerFrame(frame, db)
 		frame.USE_INSET_POWERBAR = not frame.POWERBAR_DETACHED and db.power.width == 'inset' and frame.USE_POWERBAR
 		frame.USE_MINI_POWERBAR = not frame.POWERBAR_DETACHED and db.power.width == 'spaced' and frame.USE_POWERBAR
 		frame.USE_POWERBAR_OFFSET = db.power.offset ~= 0 and frame.USE_POWERBAR and not frame.POWERBAR_DETACHED
-		frame.POWERBAR_OFFSET = db.power.offset
 		frame.POWERBAR_OFFSET_DIRECTION = db.power.offsetDirection
+		frame.POWERBAR_OFFSET_RIGHT = (frame.USE_POWERBAR_OFFSET and frame.POWERBAR_OFFSET_DIRECTION == "RIGHT") and db.power.offset or 0
+		frame.POWERBAR_OFFSET_LEFT = (frame.USE_POWERBAR_OFFSET and frame.POWERBAR_OFFSET_DIRECTION == "LEFT") and db.power.offset or 0
+		
 		frame.POWERBAR_HEIGHT = not frame.USE_POWERBAR and 0 or db.power.height
 		frame.POWERBAR_WIDTH = frame.USE_MINI_POWERBAR and (frame.UNIT_WIDTH - (BORDER*2))/2 or (frame.POWERBAR_DETACHED and db.power.detachedWidth or (frame.UNIT_WIDTH - (frame.BORDER*2)))
 
 		frame.USE_PORTRAIT = db.portrait and db.portrait.enable
-		frame.USE_PORTRAIT_OVERLAY = db.portrait and db.portrait.overlay and frame.USE_PORTRAIT
-		frame.PORTRAIT_WIDTH = (frame.USE_PORTRAIT_OVERLAY or not frame.USE_PORTRAIT) and 0 or db.portrait.width
-		
+		frame.PORTRAIT_POSITION = db.portrait.position
+		frame.USE_PORTRAIT_OVERLAY = frame.USE_PORTRAIT and frame.PORTRAIT_POSITION == "OVERLAY"
+		frame.PORTRAIT_WIDTH_LEFT = (frame.USE_PORTRAIT_OVERLAY or not frame.USE_PORTRAIT or frame.PORTRAIT_POSITION == "RIGHT") and 0 or db.portrait.width
+		frame.PORTRAIT_WIDTH_RIGHT = (frame.USE_PORTRAIT_OVERLAY or not frame.USE_PORTRAIT or frame.PORTRAIT_POSITION == "LEFT") and 0 or db.portrait.width
+
 		frame.USE_CLASSBAR = db.classbar.enable and CAN_HAVE_CLASSBAR
 		frame.CLASSBAR_DETACHED = db.classbar.detachFromFrame
 		frame.USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and frame.USE_CLASSBAR and frame.CLASSBAR_DETACHED ~= true
 		frame.CLASSBAR_HEIGHT = db.classbar.height
-		frame.CLASSBAR_WIDTH = UNIT_WIDTH - (frame.BORDER*2) - frame.PORTRAIT_WIDTH - frame.POWERBAR_OFFSET	
+		frame.CLASSBAR_WIDTH = UNIT_WIDTH - (frame.BORDER*2) - frame.PORTRAIT_WIDTH_LEFT - frame.PORTRAIT_WIDTH_RIGHT - frame.POWERBAR_OFFSET_LEFT - frame.POWERBAR_OFFSET_RIGHT	
 		
 		frame.STAGGER_WIDTH = frame.Stagger and frame.Stagger:IsShown() and (db.stagger.width + (frame.BORDER*2)) or 0;
 	end
@@ -337,7 +342,7 @@ function UF:Update_PlayerFrame(frame, db)
 					threat.glow:Point("TOPRIGHT", SHADOW_SPACING-POWERBAR_OFFSET, SHADOW_SPACING+mini_classbarY)
 					threat.glow:Point("BOTTOMRIGHT", SHADOW_SPACING-POWERBAR_OFFSET, -SHADOW_SPACING)
 
-					if USE_PORTRAIT == true and not USE_PORTRAIT_OVERLAY then
+					if USE_PORTRAIT and not USE_PORTRAIT_OVERLAY then
 						threat.glow:Point("BOTTOMLEFT", frame.Portrait.backdrop, "BOTTOMLEFT", -4, -4)
 					else
 						threat.glow:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", -5, -5)
