@@ -51,6 +51,77 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 	return health
 end
 
+function UF:SizeAndPosition_HealthBar(frame)
+	local db = frame.db
+	local health = frame.Health
+	health.Smooth = self.db.smoothbars
+	
+	--Text
+	local x, y = self:GetPositionOffset(db.health.position)
+	health.value:ClearAllPoints()
+	health.value:Point(db.health.position, health, db.health.position, x + db.health.xOffset, y + db.health.yOffset)
+	frame:Tag(health.value, db.health.text_format)	
+	
+	--Colors
+	health.colorSmooth = nil
+	health.colorHealth = nil
+	health.colorClass = nil
+	health.colorReaction = nil
+	if self.db.colors.healthclass ~= true then
+		if self.db.colors.colorhealthbyvalue == true then
+			health.colorSmooth = true
+		else
+			health.colorHealth = true
+		end
+	else
+		health.colorClass = (not self.db.colors.forcehealthreaction)
+		health.colorReaction = true
+	end	
+	
+	--Position
+	health:ClearAllPoints()
+	health:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER, -frame.BORDER)
+
+	if POWERBAR_DETACHED then
+		health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER, frame.BORDER)
+	elseif USE_POWERBAR_OFFSET then
+		health:Point("TOPRIGHT", frame, "TOPRIGHT", -(frame.BORDER+frame.POWERBAR_OFFSET), -frame.BORDER)
+		health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER, frame.BORDER+frame.POWERBAR_OFFSET)
+	elseif USE_INSET_POWERBAR then
+		health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER, frame.BORDER)
+	elseif USE_MINI_POWERBAR then
+		health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER, frame.BORDER + (frame.POWERBAR_HEIGHT/2))
+	else
+		health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER, (frame.USE_POWERBAR and ((frame.BORDER + frame.SPACING)*2) or frame.BORDER) + frame.POWERBAR_HEIGHT)
+	end
+
+	health.bg:ClearAllPoints()
+	if not frame.USE_PORTRAIT_OVERLAY then
+		health:Point("TOPLEFT", frame.PORTRAIT_WIDTH+frame.BORDER, -frame.BORDER)
+		health.bg:SetParent(health)
+		health.bg:SetAllPoints()
+	else
+		health.bg:Point('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMRIGHT')
+		health.bg:Point('TOPRIGHT', health)
+		health.bg:SetParent(frame.Portrait.overlay)
+	end
+
+	if frame.USE_CLASSBAR and not frame.CLASSBAR_DETACHED then
+		local DEPTH = -(frame.BORDER+frame.CLASSBAR_HEIGHT+frame.SPACING)
+		if frame.USE_MINI_CLASSBAR then
+			DEPTH = -(frame.BORDER+(frame.CLASSBAR_HEIGHT/2))
+		end
+
+		if USE_POWERBAR_OFFSET then
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(frame.BORDER+frame.POWERBAR_OFFSET), DEPTH)
+		else
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER, DEPTH)
+		end
+
+		health:Point("TOPLEFT", frame, "TOPLEFT", frame.PORTRAIT_WIDTH+frame.BORDER, DEPTH)
+	end	
+end
+
 function UF:PostUpdateHealth(unit, min, max)
 	local parent = self:GetParent()
 	if parent.isForced then
