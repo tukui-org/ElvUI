@@ -916,7 +916,6 @@ L["Select an additional filter to use. If the selected filter is a whitelist and
 L["Select Filter"] = "Seleccionar filtros"
 L["Select Spell"] = "Seleccionar feitiço"
 L["Select the display method of the portrait."] = "Seleciona o método de exibição do retrato."
-L["Set space between each aura icon."] = true;
 L["Set the filter type, blacklisted filters hide any aura on the like and show all else, whitelisted filters show any aura on the filter and hide all else."] = "Define o tipo de filtro, filtros de listas negras escondem qualquer aura que você queira e mostram todas as outras, filtros de listas brancas mostram qualquer aura neles e escondem todas as outras."
 L["Set the font size for unitframes."] = "Define o tamanho da fonte para o quadro de unidades."
 L["Set the order that the group will sort."] = "Define a ordem em que o grupo vai se organizar."

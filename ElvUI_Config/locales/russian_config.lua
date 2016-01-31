@@ -916,7 +916,6 @@ L["Select an additional filter to use. If the selected filter is a whitelist and
 L["Select Filter"] = "Выбрать фильтр"
 L["Select Spell"] = "Выбрать заклинание"
 L["Select the display method of the portrait."] = "Выбирите метод отображения портрета"
-L["Set space between each aura icon."] = "Расстояние между иконками аур."
 L["Set the filter type, blacklisted filters hide any aura on the like and show all else, whitelisted filters show any aura on the filter and hide all else."] = "Выберите тип фильтра. Фильтры типа 'черный список' скрывают все баффы в них и показывают остальные, фильтры типа 'белый список' показывают только присутствующие в них баффы"
 L["Set the font size for unitframes."] = "Устанавливает шрифт для рамок юнитов."
 L["Set the order that the group will sort."] = "Устанавливает метод сортировки в группе."
