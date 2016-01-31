@@ -1210,9 +1210,9 @@ function E:DBConversions()
 				local stackThreshold = spell.stackThreshold
 				
 				--Fallback to default values if value is nil
-				if enabledValue == nil then enabledValue = (E.global.unitframe["aurafilters"][filterName]["spells"][key].enable or true) end
-				if priority == nil then priority = (E.global.unitframe["aurafilters"][filterName]["spells"][key].priority or 0) end
-				if stackThreshold == nil then stackThreshold = (E.global.unitframe["aurafilters"][filterName]["spells"][key].stackThreshold or 0) end
+				if enabledValue == nil then enabledValue = (infoTable.enable or true) end
+				if priority == nil then priority = (infoTable.priority or 0) end
+				if stackThreshold == nil then stackThreshold = (infoTable.stackThreshold or 0) end
 
 				--Copy over information from old entry to new entry stored with spellID as key
 				E.global.unitframe["aurafilters"][filterName]["spells"][key] = {["enabled"] = enabledValue, ["priority"] = priority, ["stackThreshold"] = stackThreshold}
