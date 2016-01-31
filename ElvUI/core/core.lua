@@ -1054,10 +1054,11 @@ function E:DBConversions()
 	if E.global.unitframe['aurafilters']['Whitelist (Strict)'] and E.global.unitframe['aurafilters']['Whitelist (Strict)'].spells then
 		for k, v in pairs(E.global.unitframe['aurafilters']['Whitelist (Strict)'].spells) do
 			if type(v) == 'table' then
+				local enabledValue = v.enable
 				local spellID = tonumber(v.spellID)
 				local priority = v.priority
 				if spellID then
-					E.global.unitframe['aurafilters']['Whitelist']['spells'][spellID] = {['enable'] = true, ['priority'] = priority or 0}
+					E.global.unitframe['aurafilters']['Whitelist']['spells'][spellID] = {['enable'] = enabledValue, ['priority'] = priority or 0}
 				end
 			end
 			E.global.unitframe['aurafilters']['Whitelist (Strict)']["spells"][k] = nil
