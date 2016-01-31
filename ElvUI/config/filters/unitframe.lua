@@ -591,7 +591,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 			-- Hellfire Assault
 				[184369] = Defaults(184369), -- Howling Axe (Target)
 				[180079] = Defaults(180079), -- Felfire Munitions
-			
+
 			-- Iron Reaver
 				[179897] = Defaults(179897), -- Blitz
 				[185978] = Defaults(185978), -- Firebomb Vulnerability
@@ -599,11 +599,11 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 				[182280] = Defaults(182280), -- Artillery (Target)
 				[182074] = Defaults(182074), -- Immolation
 				[182001] = Defaults(182001), -- Unstable Orb
-			
+
 			-- Kormrok
 				[187819] = Defaults(187819), -- Crush
 				[181345] = Defaults(181345), -- Foul Crush
-			
+
 			-- Hellfire High Council
 				[184360] = Defaults(184360), -- Fel Rage
 				[184449] = Defaults(184449), -- Mark of the Necromancer
@@ -612,12 +612,12 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 				[185066] = Defaults(185066), -- Mark of the Necromancer
 				[184676] = Defaults(184676), -- Mark of the Necromancer
 				[184652] = Defaults(184652), -- Reap
-			
+
 			-- Kilrogg Deadeye
 				[181488] = Defaults(181488), -- Vision of Death
 				[188929] = Defaults(188929), -- Heart Seeker (Target)
 				[180389] = Defaults(180389), -- Heart Seeker (DoT)
-			
+
 			-- Gorefiend
 				[179867] = Defaults(179867), -- Gorefiend's Corruption
 				[181295] = Defaults(181295), -- Digest
@@ -625,7 +625,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 				[179864] = Defaults(179864), -- Shadow of Death
 				[179909] = Defaults(179909), -- Shared Fate (self root)
 				[179908] = Defaults(179908), -- Shared Fate (other players root)
-			
+
 			-- Shadow-Lord Iskar
 				[181957] = Defaults(181957), -- Phantasmal Winds
 				[182200] = Defaults(182200), -- Fel Chakram
@@ -636,26 +636,26 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 				[182600] = Defaults(182600), -- Fel Fire
 				[179219] = Defaults(179219), -- Phantasmal Fel Bomb
 				[181753] = Defaults(181753), -- Fel Bomb
-			
+
 			-- Soulbound Construct (Socrethar)
 				[182038] = Defaults(182038), -- Shattered Defenses
 				[188666] = Defaults(188666), -- Eternal Hunger (Add fixate, Mythic only)
 				[189627] = Defaults(189627), -- Volatile Fel Orb (Fixated)
 				[180415] = Defaults(180415), -- Fel Prison
-			
+
 			-- Tyrant Velhari
 				[185237] = Defaults(185237), -- Touch of Harm
 				[185238] = Defaults(185238), -- Touch of Harm
 				[185241] = Defaults(185241), -- Edict of Condemnation
 				[180526] = Defaults(180526), -- Font of Corruption
-			
+
 			-- Fel Lord Zakuun
 				[181508] = Defaults(181508), -- Seed of Destruction
 				[181653] = Defaults(181653), -- Fel Crystals (Too Close)
 				[179428] = Defaults(179428), -- Rumbling Fissure (Soak)
 				[182008] = Defaults(182008), -- Latent Energy (Cannot soak)
 				[179407] = Defaults(179407), -- Disembodied (Player in Shadow Realm)
-			
+
 			-- Xhul'horac
 				[188208] = Defaults(188208), -- Ablaze
 				[186073] = Defaults(186073), -- Felsinged
@@ -663,7 +663,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 				[186500] = Defaults(186500), -- Chains of Fel
 				[186063] = Defaults(186063), -- Wasting Void
 				[186333] = Defaults(186333), -- Void Surge
-			
+
 			-- Mannoroth
 				[181275] = Defaults(181275), -- Curse of the Legion
 				[181099] = Defaults(181099), -- Mark of Doom
@@ -671,7 +671,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 				[182006] = Defaults(182006), -- Empowered Mannoroth's Gaze
 				[181841] = Defaults(181841), -- Shadowforce
 				[182088] = Defaults(182088), -- Empowered Shadowforce
-			
+
 			-- Archimonde
 				[184964] = Defaults(184964), -- Shackled Torment
 				[186123] = Defaults(186123), -- Wrought Chaos
@@ -825,8 +825,8 @@ f:SetScript("OnEvent", function(self, event)
 end)
 
 G.unitframe.ChannelTicksSize = {
-    --Warlock
-    [689] = 1, -- "Drain Life"
+	--Warlock
+	[689] = 1, -- "Drain Life"
 	[108371] = 1, -- "Harvest Life"
 	[103103] = 1, -- "Malefic Grasp"
 }
