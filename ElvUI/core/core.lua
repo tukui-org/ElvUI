@@ -1168,6 +1168,11 @@ function E:DBConversions()
 			E.global.unitframe.buffwatch[class][id] = nil
 		end
 	end
+	
+	--Change portrait overlay to portrait position option.
+	if self.db.unitframe.units.player.portrait.overlay then
+		self.db.unitframe.units.player.portrait.position = "OVERLAY"
+	end
 end
 
 local CPU_USAGE = {}
