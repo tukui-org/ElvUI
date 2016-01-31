@@ -1082,6 +1082,34 @@ function E:DBConversions()
 		--Finally remove old table
 		E.global.unitframe.InvalidSpells = nil
 	end
+	
+	--Because default filters now store spells with spellID as key, any default spells the user has changed will show up as a duplicate entry but with spellName as key.
+	--We will copy over the information and remove old default entries stored with spell name as key.
+	local filters = {
+		"CCDebuffs",
+		"TurtleBuffs",
+		"PlayerBuffs",
+		"Blacklist",
+		"Whitelist",
+		"RaidDebuffs",
+	}
+	for _, filterName in pairs(filters) do
+		for key, infoTable in pairs(G.unitframe["aurafilters"][filterName].spells) do --Use spellIDs from current default table
+			local spellName = GetSpellInfo(key) --Get spell name and try to match it to existing entry in table
+
+			if spellName and E.global.unitframe["aurafilters"][filterName]["spells"][spellName] then --Match found
+				local spell = E.global.unitframe["aurafilters"][filterName]["spells"][spellName]
+				local enabledValue = spell.enable or E.global.unitframe["aurafilters"][filterName]["spells"][key].enable --Fallback to default value
+				local priority = spell.priority or E.global.unitframe["aurafilters"][filterName]["spells"][key].priority
+				local stackThreshold = spell.stackThreshold or E.global.unitframe["aurafilters"][filterName]["spells"][key].stackThreshold
+
+				--Copy over information from old entry to new entry stored with spellID as key
+				E.global.unitframe["aurafilters"][filterName]["spells"][key] = {["enabled"] = enabledValue, ["priority"] = priority, ["stackThreshold"] = stackThreshold}
+				--Remove old entry
+				E.global.unitframe["aurafilters"][filterName]["spells"][spellName] = nil
+			end
+		end
+	end
 
 	if E.db.general.experience.width > 100 and E.db.general.experience.height > 100 then
 		E.db.general.experience.width = P.general.experience.width
