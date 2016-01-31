@@ -1064,7 +1064,7 @@ function E:DBConversions()
 			E.global.unitframe['aurafilters']['Whitelist (Strict)']["spells"][k] = nil
 		end
 	end
-	
+
 	--Move spells from the "Blacklist (Strict)" filter to the "Blacklist" filter
 	if E.global.unitframe.InvalidSpells then
 		for spellID, enabledValue in pairs(E.global.unitframe.InvalidSpells) do

@@ -220,7 +220,7 @@ local function UpdateFilterGroup()
 				},
 			},
 		}
-		
+
 		local spellID = selectedSpell and string.match(selectedSpell, "%((%d+)%)")
 		if spellID then spellID = tonumber(spellID) end
 
@@ -1004,7 +1004,7 @@ local function UpdateFilterGroup()
 				},
 			},
 		}
-		
+
 		local spellID = selectedSpell and string.match(selectedSpell, "%((%d+)%)")
 		if spellID then spellID = tonumber(spellID) end
 
@@ -1064,7 +1064,6 @@ local function UpdateFilterGroup()
 				desc = L["The debuff needs to reach this amount of stacks before it is shown. Set to 0 to always show the debuff."],
 			}
 		end
-
 	end
 
 	 UF:Update_AllFrames();
