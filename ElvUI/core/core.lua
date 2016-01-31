@@ -1099,9 +1099,14 @@ function E:DBConversions()
 
 			if spellName and E.global.unitframe["aurafilters"][filterName]["spells"][spellName] then --Match found
 				local spell = E.global.unitframe["aurafilters"][filterName]["spells"][spellName]
-				local enabledValue = spell.enable or E.global.unitframe["aurafilters"][filterName]["spells"][key].enable --Fallback to default value
-				local priority = spell.priority or E.global.unitframe["aurafilters"][filterName]["spells"][key].priority
-				local stackThreshold = spell.stackThreshold or E.global.unitframe["aurafilters"][filterName]["spells"][key].stackThreshold
+				local enabledValue = spell.enable
+				local priority = spell.priority
+				local stackThreshold = spell.stackThreshold
+				
+				--Fallback to default values if value is nil
+				if enabledValue == nil then enabledValue = (E.global.unitframe["aurafilters"][filterName]["spells"][key].enable or true) end
+				if priority == nil then priority = (E.global.unitframe["aurafilters"][filterName]["spells"][key].priority or 0) end
+				if stackThreshold == nil then stackThreshold = (E.global.unitframe["aurafilters"][filterName]["spells"][key].stackThreshold or 0) end
 
 				--Copy over information from old entry to new entry stored with spellID as key
 				E.global.unitframe["aurafilters"][filterName]["spells"][key] = {["enabled"] = enabledValue, ["priority"] = priority, ["stackThreshold"] = stackThreshold}
