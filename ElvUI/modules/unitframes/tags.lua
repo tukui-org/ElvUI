@@ -894,7 +894,7 @@ ElvUF.Tags.OnUpdateThrottle['speed:percent-moving'] = 0.1
 ElvUF.Tags.Methods['speed:percent-moving'] = function(unit)
 	local currentSpeedInYards = GetUnitSpeed(unit)
 	local currentSpeedInPercent = currentSpeedInYards > 0 and ((currentSpeedInYards / baseSpeed) * 100)
-	
+
 	if currentSpeedInPercent then
 		currentSpeedInPercent = format("%s: %d%%", speedText, currentSpeedInPercent)
 	end
@@ -914,7 +914,7 @@ ElvUF.Tags.OnUpdateThrottle['speed:percent-moving-raw'] = 0.1
 ElvUF.Tags.Methods['speed:percent-moving-raw'] = function(unit)
 	local currentSpeedInYards = GetUnitSpeed(unit)
 	local currentSpeedInPercent = currentSpeedInYards > 0 and ((currentSpeedInYards / baseSpeed) * 100)
-	
+
 	if currentSpeedInPercent then
 		currentSpeedInPercent = format("%d%%", currentSpeedInPercent)
 	end
@@ -945,7 +945,7 @@ end
 ElvUF.Tags.OnUpdateThrottle['speed:yardspersec-moving-raw'] = 0.1
 ElvUF.Tags.Methods['speed:yardspersec-moving-raw'] = function(unit)
 	local currentSpeedInYards = GetUnitSpeed(unit)
-	
+
 	return currentSpeedInYards > 0 and format("%.1f", currentSpeedInYards) or ''
 end
 

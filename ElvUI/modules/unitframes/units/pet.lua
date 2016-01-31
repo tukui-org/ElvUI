@@ -23,7 +23,7 @@ function UF:Construct_PetFrame(frame)
 	frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT')
 
 	frame.Name = self:Construct_NameText(frame)
-	
+
 	frame.Portrait3D = self:Construct_Portrait(frame, 'model')
 	frame.Portrait2D = self:Construct_Portrait(frame, 'texture')
 
@@ -53,8 +53,8 @@ function UF:Update_PetFrame(frame, db)
 	end
 	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
 	local BORDER = E.Border;
-	local SPACING = E.Spacing;    
-	local SHADOW_SPACING = BORDER*4
+	local SPACING = E.Spacing;
+	local SHADOW_SPACING = (BORDER*3 - SPACING*2)
 
 	local UNIT_WIDTH = db.width
 	local UNIT_HEIGHT = db.height
@@ -85,11 +85,11 @@ function UF:Update_PetFrame(frame, db)
 		if USE_MINI_POWERBAR then
 			POWERBAR_WIDTH = POWERBAR_WIDTH / 2
 		end
-		
+
 		if USE_PORTRAIT_OVERLAY or not USE_PORTRAIT then
 			PORTRAIT_WIDTH = 0
 		end
-		
+
 		if not USE_POWERBAR_OFFSET then
 			POWERBAR_OFFSET = 0
 		end
@@ -136,7 +136,7 @@ function UF:Update_PetFrame(frame, db)
 		else
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", BORDER, (USE_POWERBAR and ((BORDER + SPACING)*2) or BORDER) + POWERBAR_HEIGHT)
 		end
-		
+
 		health.bg:ClearAllPoints()
 		if not USE_PORTRAIT_OVERLAY then
 			health:Point("TOPRIGHT", -(PORTRAIT_WIDTH+BORDER+POWERBAR_OFFSET), -BORDER)
@@ -208,19 +208,19 @@ function UF:Update_PetFrame(frame, db)
 			power:Hide()
 		end
 	end
-	
+
 	--Portrait
 	do
 		local portrait = frame.Portrait
-	
+
 		--Set Points
 		if USE_PORTRAIT then
 			if not frame:IsElementEnabled('Portrait') then
 				frame:EnableElement('Portrait')
 			end
-	
+
 			portrait:ClearAllPoints()
-	
+
 			if USE_PORTRAIT_OVERLAY then
 				if db.portrait.style == '3D' then
 					portrait:SetFrameLevel(frame.Health:GetFrameLevel() + 1)
@@ -235,17 +235,17 @@ function UF:Update_PetFrame(frame, db)
 				portrait.backdrop:Show()
 				portrait.backdrop:ClearAllPoints()
 				portrait.backdrop:Point("TOPRIGHT", frame, "TOPRIGHT", (E.PixelMode and -1 or 0) - POWERBAR_OFFSET, 0)
-	
+
 				if db.portrait.style == '3D' then
 					portrait:SetFrameLevel(frame:GetFrameLevel() + 5)
 				end
-	
+
 				if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR or USE_INSET_POWERBAR then
 					portrait.backdrop:Point("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMRIGHT", E.PixelMode and -1 or SPACING, 0)
 				else
 					portrait.backdrop:Point("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMRIGHT", E.PixelMode and -1 or SPACING, 0)
 				end
-	
+
 				portrait:Point('BOTTOMLEFT', portrait.backdrop, 'BOTTOMLEFT', BORDER, BORDER)
 				portrait:Point('TOPRIGHT', portrait.backdrop, 'TOPRIGHT', -BORDER, -BORDER)
 			end
@@ -280,7 +280,7 @@ function UF:Update_PetFrame(frame, db)
 					threat.glow:Point("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
 					threat.glow:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
 				end
-				
+
 				if USE_PORTRAIT and not USE_PORTRAIT_OVERLAY then
 					threat.glow:Point("TOPRIGHT", frame.Portrait.backdrop, "TOPRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
 					threat.glow:Point("BOTTOMRIGHT", frame.Portrait.backdrop, "BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
@@ -337,7 +337,7 @@ function UF:Update_PetFrame(frame, db)
 		local x, y = E:GetXYOffset(db.buffs.anchorPoint)
 		local attachTo = self:GetAuraAnchorFrame(frame, db.buffs.attachTo)
 
-		buffs:Point(E.InversePoints[db.buffs.anchorPoint], attachTo, db.buffs.anchorPoint, x + db.buffs.xOffset, y + db.buffs.yOffset + (db.buffs.anchorPoint:find('TOP') and (BORDER + SPACING*2) or (BORDER + SPACING*2)))
+		buffs:Point(E.InversePoints[db.buffs.anchorPoint], attachTo, db.buffs.anchorPoint, x + db.buffs.xOffset, y + db.buffs.yOffset)
 		buffs:Height(buffs.size * rows)
 		buffs["growth-y"] = db.buffs.anchorPoint:find('TOP') and 'UP' or 'DOWN'
 		buffs["growth-x"] = db.buffs.anchorPoint == 'LEFT' and 'LEFT' or  db.buffs.anchorPoint == 'RIGHT' and 'RIGHT' or (db.buffs.anchorPoint:find('LEFT') and 'RIGHT' or 'LEFT')
@@ -347,7 +347,7 @@ function UF:Update_PetFrame(frame, db)
 		buffs.point = E.InversePoints[db.buffs.anchorPoint]
 		buffs.anchorPoint = db.buffs.anchorPoint
 		buffs.xOffset = x + db.buffs.xOffset
-		buffs.yOffset = y + db.buffs.yOffset + (db.buffs.anchorPoint:find('TOP') and (BORDER + SPACING*2) or (BORDER + SPACING*2))
+		buffs.yOffset = y + db.buffs.yOffset
 
 		if db.buffs.enable then
 			buffs:Show()
@@ -429,10 +429,10 @@ function UF:Update_PetFrame(frame, db)
 	do
 		local castbar = frame.Castbar
 		castbar:Width(db.castbar.width - (BORDER * 2))
-		castbar:Height(db.castbar.height)
-        local holder = castbar.Holder
+		castbar:Height(db.castbar.height - (BORDER * 2))
+		local holder = castbar.Holder
 		holder:Width(db.castbar.width)
-		holder:Height(db.castbar.height + (E.Border + E.Spacing*4))
+		holder:Height(db.castbar.height)
 		holder:GetScript('OnSizeChanged')(holder)
 
 		--Latency
@@ -447,10 +447,10 @@ function UF:Update_PetFrame(frame, db)
 		--Icon
 		if db.castbar.icon then
 			castbar.Icon = castbar.ButtonIcon
-			castbar.Icon.bg:Width(db.castbar.height + (E.Border * 2))
-			castbar.Icon.bg:Height(db.castbar.height + (E.Border * 2))
+			castbar.Icon.bg:Width(db.castbar.height)
+			castbar.Icon.bg:Height(db.castbar.height)
 
-			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - (E.Border + E.Spacing*3))
+			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - (BORDER + SPACING*3))
 			castbar.Icon.bg:Show()
 		else
 			castbar.ButtonIcon.bg:Hide()
@@ -478,7 +478,7 @@ function UF:Update_PetFrame(frame, db)
 			if not frame:IsElementEnabled('HealPrediction') then
 				frame:EnableElement('HealPrediction')
 			end
-			
+
 			if not USE_PORTRAIT_OVERLAY then
 				healPrediction.myBar:SetParent(frame)
 				healPrediction.otherBar:SetParent(frame)
@@ -521,7 +521,7 @@ function UF:Update_PetFrame(frame, db)
 			end
 		end
 	end
-	
+
 	for objectName, object in pairs(frame.customTexts) do
 		if (not db.customTexts) or (db.customTexts and not db.customTexts[objectName]) then
 			object:Hide()

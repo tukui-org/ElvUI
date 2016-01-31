@@ -96,6 +96,7 @@ local function LoadSkin()
 
 	GuildFactionBar:StripTextures()
 	GuildFactionBar.progress:SetTexture(E["media"].normTex)
+	E:RegisterStatusBar(GuildFactionBar.progress)
 	GuildFactionBar:CreateBackdrop("Default")
 	GuildFactionBar.backdrop:Point("TOPLEFT", GuildFactionBar.progress, "TOPLEFT", -E.Border, E.Border)
 	GuildFactionBar.backdrop:Point("BOTTOMRIGHT", GuildFactionBar, "BOTTOMRIGHT", E.Spacing, E.PixelMode and 1 or 0)

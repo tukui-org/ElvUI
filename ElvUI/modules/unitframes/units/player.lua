@@ -75,7 +75,7 @@ function UF:Construct_PlayerFrame(frame)
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
 
 	frame.CombatFade = true
-	
+
 	frame.customTexts = {}
 
 	frame:Point('BOTTOMLEFT', E.UIParent, 'BOTTOM', -413, 68) --Set to default position
@@ -104,7 +104,7 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 	local POWERBAR_HEIGHT = db.power.height
 	local SPACING = E.Spacing;
 	local BORDER = E.Border;
-	local SHADOW_SPACING = BORDER*4
+	local SHADOW_SPACING = (BORDER*3 - SPACING*2)
 	local USE_STAGGER = stagger and stagger:IsShown();
 	local STAGGER_WIDTH = USE_STAGGER and (db.stagger.width + (BORDER*2)) or 0;
 
@@ -119,7 +119,7 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 	if USE_MINI_CLASSBAR then
 		CLASSBAR_HEIGHT = CLASSBAR_HEIGHT / 2
 	end
-	
+
 	CLASSBAR_HEIGHT_SPACING = CLASSBAR_HEIGHT + SPACING
 
 	if db.classbar.detachFromFrame then
@@ -184,9 +184,9 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 			end
 
 			if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or USE_INSET_POWERBAR or not USE_POWERBAR or USE_INSET_POWERBAR or POWERBAR_DETACHED then
-				portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", BORDER - SPACING*2, 0)
+				portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", BORDER - SPACING*3, 0)
 			else
-				portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", BORDER - SPACING*2, 0)
+				portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", BORDER - SPACING*3, 0)
 			end
 		end
 	else
@@ -221,9 +221,9 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 			portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT")
 
 			if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR or USE_INSET_POWERBAR or POWERBAR_DETACHED then
-				portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", BORDER - SPACING*2, 0)
+				portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", BORDER - SPACING*3, 0)
 			else
-				portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", BORDER - SPACING*2, 0)
+				portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", BORDER - SPACING*3, 0)
 			end
 		end
 	end
@@ -241,7 +241,7 @@ function UF:Update_PlayerFrame(frame, db)
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	local BORDER = E.Border
 	local SPACING = E.Spacing
-	local SHADOW_SPACING = BORDER*4
+	local SHADOW_SPACING = (BORDER*3 - SPACING*2)
 	local UNIT_WIDTH = db.width
 	local UNIT_HEIGHT = db.height
 
@@ -290,7 +290,7 @@ function UF:Update_PlayerFrame(frame, db)
 		if USE_MINI_POWERBAR and not POWERBAR_DETACHED then
 			POWERBAR_WIDTH = POWERBAR_WIDTH / 2
 		end
-		
+
 		if not USE_POWERBAR_OFFSET then
 			POWERBAR_OFFSET = 0
 		end
@@ -534,14 +534,14 @@ function UF:Update_PlayerFrame(frame, db)
 				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(SPACING*3))
 				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -BORDER, BORDER)
 			end
-			
+
 			if db.power.strataAndLevel.useCustomStrata then
 				power:SetFrameStrata(db.power.strataAndLevel.frameStrata)
 			end
 			if db.power.strataAndLevel.useCustomLevel then
 				power:SetFrameLevel(db.power.strataAndLevel.frameLevel)
 			end
-			
+
 			if POWERBAR_DETACHED and db.power.parent == "UIPARENT" then
 				E.FrameLocks[power] = true
 				power:SetParent(E.UIParent)
@@ -599,9 +599,9 @@ function UF:Update_PlayerFrame(frame, db)
 				end
 
 				if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR or USE_INSET_POWERBAR or POWERBAR_DETACHED then
-					portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", BORDER - SPACING*2, 0)
+					portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", BORDER - SPACING*3, 0)
 				else
-					portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", BORDER - SPACING*2, 0)
+					portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", BORDER - SPACING*3, 0)
 				end
 
 				portrait:Point('BOTTOMLEFT', portrait.backdrop, 'BOTTOMLEFT', BORDER, BORDER)
@@ -655,7 +655,7 @@ function UF:Update_PlayerFrame(frame, db)
 		local x, y = E:GetXYOffset(db.buffs.anchorPoint)
 		local attachTo = self:GetAuraAnchorFrame(frame, db.buffs.attachTo)
 
-		buffs:Point(E.InversePoints[db.buffs.anchorPoint], attachTo, db.buffs.anchorPoint, x + db.buffs.xOffset, y + db.buffs.yOffset + (db.buffs.anchorPoint:find('TOP') and (-BORDER + SPACING*2) or (BORDER + SPACING*2)))
+		buffs:Point(E.InversePoints[db.buffs.anchorPoint], attachTo, db.buffs.anchorPoint, x + db.buffs.xOffset, y + db.buffs.yOffset)
 		buffs:Height(buffs.size * rows)
 		buffs["growth-y"] = db.buffs.anchorPoint:find('TOP') and 'UP' or 'DOWN'
 		buffs["growth-x"] = db.buffs.anchorPoint == 'LEFT' and 'LEFT' or  db.buffs.anchorPoint == 'RIGHT' and 'RIGHT' or (db.buffs.anchorPoint:find('LEFT') and 'RIGHT' or 'LEFT')
@@ -665,7 +665,7 @@ function UF:Update_PlayerFrame(frame, db)
 		buffs.point = E.InversePoints[db.buffs.anchorPoint]
 		buffs.anchorPoint = db.buffs.anchorPoint
 		buffs.xOffset = x + db.buffs.xOffset
-		buffs.yOffset = y + db.buffs.yOffset + (db.buffs.anchorPoint:find('TOP') and (BORDER + SPACING*2) or (BORDER + SPACING*2))
+		buffs.yOffset = y + db.buffs.yOffset
 
 		if db.buffs.enable then
 			buffs:Show()
@@ -746,10 +746,10 @@ function UF:Update_PlayerFrame(frame, db)
 	--Castbar
 	do
 		local castbar = frame.Castbar
-		castbar:Width(db.castbar.width - (SPACING * 4))
-		castbar:Height(db.castbar.height)
+		castbar:Width(db.castbar.width - (BORDER*2))
+		castbar:Height(db.castbar.height - (BORDER*2))
 		castbar.Holder:Width(db.castbar.width)
-		castbar.Holder:Height(db.castbar.height + (E.Border + E.Spacing*4))
+		castbar.Holder:Height(db.castbar.height)
 		castbar.Holder:GetScript('OnSizeChanged')(castbar.Holder)
 
 		--Latency
@@ -764,10 +764,10 @@ function UF:Update_PlayerFrame(frame, db)
 		--Icon
 		if db.castbar.icon then
 			castbar.Icon = castbar.ButtonIcon
-			castbar.Icon.bg:Width(db.castbar.height + (E.Border * 2))
-			castbar.Icon.bg:Height(db.castbar.height + (E.Border * 2))
+			castbar.Icon.bg:Width(db.castbar.height)
+			castbar.Icon.bg:Height(db.castbar.height)
 
-			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - (E.Border + E.Spacing*3))
+			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - (BORDER + SPACING*3))
 			castbar.Icon.bg:Show()
 		else
 			castbar.ButtonIcon.bg:Hide()
@@ -793,7 +793,7 @@ function UF:Update_PlayerFrame(frame, db)
 		if bars then
 			--Store original parent reference needed in classbars.lua
 			bars.origParent = frame
-			
+
 			if bars.UpdateAllRuneTypes then
 				bars.UpdateAllRuneTypes(frame)
 			end
@@ -868,16 +868,15 @@ function UF:Update_PlayerFrame(frame, db)
 					bars[i]:GetStatusBarTexture():SetHorizTile(false)
 					bars[i]:ClearAllPoints()
 					if i == 1 then
-						bars[i]:Point("LEFT", bars)                   
+						bars[i]:Point("LEFT", bars)
 					else
 						if db.classbar.fill == "spaced" then
 							bars[i]:Point("LEFT", bars[i-1], "RIGHT", SPACING+(BORDER*2)+2, 0)
-                        else
+						elseif i == MAX_CLASS_BAR then
 							bars[i]:Point("LEFT", bars[i-1], "RIGHT", BORDER-SPACING, 0)
-						end
-
-						if i == MAX_CLASS_BAR then
-                            bars[i]:Point("RIGHT", bars)
+							bars[i]:Point("RIGHT", bars)
+						else
+							bars[i]:Point("LEFT", bars[i-1], "RIGHT", BORDER-SPACING, 0)
 						end
 					end
 
@@ -918,7 +917,7 @@ function UF:Update_PlayerFrame(frame, db)
 					bars.backdrop:Hide()
 				end
 			end
-			
+
 			if db.classbar.detachFromFrame and db.classbar.parent == "UIPARENT" then
 				E.FrameLocks[bars] = true
 				bars:SetParent(E.UIParent)
@@ -1061,11 +1060,11 @@ function UF:Update_PlayerFrame(frame, db)
 			end
 
 			local yOffset = 0;
-            if db.aurabar.anchorPoint == 'BELOW' then
-                yOffset = BORDER - SPACING*2;
-            else
-                yOffset = -BORDER + SPACING*2;
-            end
+			if db.aurabar.anchorPoint == 'BELOW' then
+				yOffset = BORDER - SPACING*2;
+			else
+				yOffset = -BORDER + SPACING*2;
+			end
 
 
 			auraBars.auraBarHeight = db.aurabar.height
@@ -1161,6 +1160,6 @@ local f = CreateFrame("Frame")
 f:RegisterEvent("PLAYER_ENTERING_WORLD")
 f:SetScript("OnEvent", function(self, event)
 	self:UnregisterEvent(event)
-	
+
 	C_TimerAfter(5, UpdateAllRunes) --Delay it, since the WoW client updates Death Runes after PEW
 end)

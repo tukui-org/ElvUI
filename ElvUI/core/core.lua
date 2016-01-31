@@ -28,6 +28,7 @@ local DoEmote = DoEmote
 local SendChatMessage = SendChatMessage
 local GetFunctionCPUUsage = GetFunctionCPUUsage
 local GetMapNameByID = GetMapNameByID
+local GetBonusBarOffset = GetBonusBarOffset
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 local COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN = COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN
@@ -61,6 +62,7 @@ E.LSM = LSM
 --Tables
 E["media"] = {};
 E["frames"] = {};
+E["statusBars"] = {};
 E["texts"] = {};
 E['snapBars'] = {}
 E["RegisteredModules"] = {}
@@ -423,6 +425,20 @@ function E:UpdateFontTemplates()
 	end
 end
 
+function E:RegisterStatusBar(statusBar)
+	tinsert(self.statusBars, statusBar)
+end
+
+function E:UpdateStatusBars()
+	for _, statusBar in pairs(self.statusBars) do
+		if statusBar and statusBar:GetObjectType() == "StatusBar" then
+			statusBar:SetStatusBarTexture(self.media.normTex)
+		elseif statusBar and statusBar:GetObjectType() == "Texture" then
+			statusBar:SetTexture(self.media.normTex)
+		end
+	end
+end
+
 --This frame everything in ElvUI should be anchored to for Eyefinity support.
 E.UIParent = CreateFrame('Frame', 'ElvUIParent', UIParent);
 E.UIParent:SetFrameLevel(UIParent:GetFrameLevel());
@@ -485,7 +501,8 @@ function E:CheckRole()
 		role = self.ClassRole[self.myclass][talentTree]
 	end
 
-	if role == "Tank" and IsInPvPGear then
+	--Check for PvP gear or gladiator stance
+	if role == "Tank" and (IsInPvPGear or (E.myclass == "WARRIOR" and GetBonusBarOffset() == 3)) then
 		role = "Melee"
 	end
 
@@ -912,7 +929,8 @@ function E:UpdateAll(ignoreInstall)
 
 	self:UpdateBorderColors()
 	self:UpdateBackdropColors()
-	--self:UpdateFrameTemplates()
+	self:UpdateFrameTemplates()
+	self:UpdateStatusBars()
 
 	local LO = E:GetModule('Layout')
 	LO:ToggleChatPanels()

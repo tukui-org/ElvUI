@@ -60,7 +60,7 @@ local function LoadSkin()
 	AuctionProgressBar:CreateBackdrop("Default")
 	AuctionProgressBar:SetStatusBarTexture(E["media"].normTex)
 	AuctionProgressBar:SetStatusBarColor(1, 1, 0)
-
+	E:RegisterStatusBar(AuctionProgressBar)
 	S:HandleNextPrevButton(BrowseNextPageButton)
 	S:HandleNextPrevButton(BrowsePrevPageButton)
 
@@ -142,7 +142,7 @@ local function LoadSkin()
 	for i=1, AuctionFrame.numTabs do
 		S:HandleTab(_G["AuctionFrameTab"..i])
 	end
-	
+
 	for i=1, NUM_FILTERS_TO_DISPLAY do
 		local tab = _G["AuctionFilterButton"..i]
 		tab:StyleButton()
@@ -309,7 +309,7 @@ local function LoadSkin()
 	AuctionFrameAuctions.bg2:Point("TOPLEFT", AuctionFrameAuctions.bg1, "TOPRIGHT", 3, 0)
 	AuctionFrameAuctions.bg2:Point("BOTTOMRIGHT", AuctionFrame, -8, 35)
 	AuctionFrameAuctions.bg2:SetFrameLevel(AuctionFrameAuctions.bg2:GetFrameLevel() - 2)
-	
+
 	--WoW Token Category
 	S:HandleButton(BrowseWowTokenResults.Buyout)
 	BrowseWowTokenResultsToken:CreateBackdrop("Default")
@@ -319,7 +319,7 @@ local function LoadSkin()
 	BrowseWowTokenResultsToken.backdrop:SetFrameLevel(BrowseWowTokenResultsToken:GetFrameLevel())
 	BrowseWowTokenResultsToken.IconBorder:SetTexture(nil)
 	BrowseWowTokenResultsToken.ItemBorder:SetTexture(nil)
-	
+
 	--WoW Token Tutorial Frame
 	WowTokenGameTimeTutorial:CreateBackdrop("Transparent")
 	S:HandleCloseButton(WowTokenGameTimeTutorial.CloseButton)

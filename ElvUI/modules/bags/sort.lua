@@ -558,13 +558,13 @@ function B.Sort(bags, sorter, invertDirection)
 		if link and blackList[GetItemInfo(link)] then
 			blackListedSlots[bagSlot] = true
 		end
-		
+
 		if not blackListedSlots[bagSlot] then
 			for key,itemsearchquery in pairs(blackListQueries) do
-				if Search:Matches(link,itemsearchquery) then					
+				if Search:Matches(link,itemsearchquery) then
 					blackListedSlots[bagSlot] = true
 				end
-			end	
+			end
 		end
 
 		if not blackListedSlots[bagSlot] then

@@ -44,11 +44,11 @@ E.ConfigModeLocalizedStrings = {
 
 function E:Grid_Show()
 	if not grid then
-        E:Grid_Create()
+		E:Grid_Create()
 	elseif grid.boxSize ~= E.db.gridSize then
-        grid:Hide()
-        E:Grid_Create()
-    else
+		grid:Hide()
+		E:Grid_Create()
+	else
 		grid:Show()
 	end
 end
@@ -174,7 +174,7 @@ function E:NudgeMover(nudgeX, nudgeY)
 	local x, y, point = E:CalculateMoverPoints(mover, nudgeX, nudgeY)
 
 	mover:ClearAllPoints()
-	mover:Point(point, E.UIParent, point, x, y)
+	mover:Point(mover.positionOverride or point, E.UIParent, mover.positionOverride and "BOTTOMLEFT" or point, x, y)
 	E:SaveMoverPosition(mover.name)
 
 	--Update coordinates in Nudge Window

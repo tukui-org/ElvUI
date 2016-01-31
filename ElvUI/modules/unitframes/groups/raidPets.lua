@@ -103,7 +103,7 @@ function UF:Update_RaidpetFrames(frame, db)
 	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
 	local BORDER = E.Border;
 	local SPACING = E.Spacing;
-	local SHADOW_SPACING = BORDER*4
+	local SHADOW_SPACING = (BORDER*3 - SPACING*2)
 	local UNIT_WIDTH = db.width
 	local UNIT_HEIGHT = db.height
 	local USE_PORTRAIT = db.portrait.enable
@@ -120,7 +120,7 @@ function UF:Update_RaidpetFrames(frame, db)
 	if not frame:IsElementEnabled('Range') then
 		frame:EnableElement('Range')
 	end
-	
+
 	--Adjust some variables
 	do
 		if USE_PORTRAIT_OVERLAY or not USE_PORTRAIT then
@@ -189,7 +189,7 @@ function UF:Update_RaidpetFrames(frame, db)
 
 	--Name
 	UF:UpdateNameSettings(frame)
-	
+
 	--Portrait
 	do
 		local portrait = frame.Portrait
@@ -251,7 +251,7 @@ function UF:Update_RaidpetFrames(frame, db)
 				threat.glow:Point("TOPRIGHT", frame.Health.backdrop, "TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING)
 				threat.glow:Point("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
 				threat.glow:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
-				
+
 				if USE_PORTRAIT and not USE_PORTRAIT_OVERLAY then
 					threat.glow:Point("TOPLEFT", frame.Portrait.backdrop, "TOPLEFT", -SHADOW_SPACING, SHADOW_SPACING)
 					threat.glow:Point("BOTTOMLEFT", frame.Portrait.backdrop, "BOTTOMLEFT", -SHADOW_SPACING, SHADOW_SPACING)
@@ -310,7 +310,7 @@ function UF:Update_RaidpetFrames(frame, db)
 		local x, y = E:GetXYOffset(db.buffs.anchorPoint)
 		local attachTo = self:GetAuraAnchorFrame(frame, db.buffs.attachTo)
 
-		buffs:Point(E.InversePoints[db.buffs.anchorPoint], attachTo, db.buffs.anchorPoint, x + db.buffs.xOffset, y + db.buffs.yOffset + (db.buffs.anchorPoint:find('TOP') and (BORDER + SPACING*2) or (BORDER + SPACING*2)))
+		buffs:Point(E.InversePoints[db.buffs.anchorPoint], attachTo, db.buffs.anchorPoint, x + db.buffs.xOffset, y + db.buffs.yOffset)
 		buffs:Height(buffs.size * rows)
 		buffs["growth-y"] = db.buffs.anchorPoint:find('TOP') and 'UP' or 'DOWN'
 		buffs["growth-x"] = db.buffs.anchorPoint == 'LEFT' and 'LEFT' or  db.buffs.anchorPoint == 'RIGHT' and 'RIGHT' or (db.buffs.anchorPoint:find('LEFT') and 'RIGHT' or 'LEFT')
@@ -365,14 +365,15 @@ function UF:Update_RaidpetFrames(frame, db)
 			local rdebuffsFont = UF.LSM:Fetch("font", db.rdebuffs.font)
 			frame:EnableElement('RaidDebuffs')
 
+			rdebuffs.forceShow = frame.forceShowAuras
 			rdebuffs:Size(db.rdebuffs.size)
 			rdebuffs:Point('BOTTOM', frame, 'BOTTOM', db.rdebuffs.xOffset, db.rdebuffs.yOffset)
-			
+
 			rdebuffs.count:FontTemplate(rdebuffsFont, db.rdebuffs.fontSize, db.rdebuffs.fontOutline)
 			rdebuffs.count:ClearAllPoints()
 			rdebuffs.count:Point(db.rdebuffs.stack.position, db.rdebuffs.stack.xOffset, db.rdebuffs.stack.yOffset)
 			rdebuffs.count:SetTextColor(stackColor.r, stackColor.g, stackColor.b)
-			
+
 			rdebuffs.time:FontTemplate(rdebuffsFont, db.rdebuffs.fontSize, db.rdebuffs.fontOutline)
 			rdebuffs.time:ClearAllPoints()
 			rdebuffs.time:Point(db.rdebuffs.duration.position, db.rdebuffs.duration.xOffset, db.rdebuffs.duration.yOffset)
@@ -412,7 +413,7 @@ function UF:Update_RaidpetFrames(frame, db)
 				frame.DBHGlow:SetAllPoints(frame.Threat.glow)
 			else
 				frame.DebuffHighlightBackdrop = false
-			end					
+			end
 		else
 			frame:DisableElement('DebuffHighlight')
 		end

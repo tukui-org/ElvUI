@@ -159,7 +159,7 @@ function UF:Construct_DebuffHighlight(frame)
 	x:Hide();
 
 	frame.DBHGlow = x
-	
+
 	if frame.Health then
 		dbh:SetParent(frame.Health)
 		frame.DBHGlow:SetParent(frame.Health)
@@ -585,6 +585,8 @@ function UF:UpdateAuraWatch(frame, petOverride, db)
 		frame.AuraWatch.Update(frame)
 	end
 
+	frame:UpdateElement("AuraWatch")
+
 	buffs = nil;
 end
 
@@ -626,7 +628,7 @@ function UF:UpdateRoleIcon()
 		lfdrole:Hide()
 		return
 	end
-	
+
 	local isInstance, instanceType = IsInInstance()
 	local role
 

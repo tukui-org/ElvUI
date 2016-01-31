@@ -20,7 +20,7 @@ local DoReadyCheck = DoReadyCheck
 local ToggleFriendsFrame = ToggleFriendsFrame
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: DisbandRaidButton, ROLE_POLL, RoleCheckButton, READY_CHECK, ReadyCheckButton 
+-- GLOBALS: DisbandRaidButton, ROLE_POLL, RoleCheckButton, READY_CHECK, ReadyCheckButton
 -- GLOBALS: RaidControlButton, CompactRaidFrameManager, RaidUtilityPanel, RAID_CONTROL
 -- GLOBALS: CompactRaidFrameManagerDisplayFrameHiddenModeToggle, RaidUtility_ShowButton
 -- GLOBALS: CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
@@ -214,7 +214,7 @@ function RU:Initialize()
 	RaidControlButton:SetScript("OnMouseUp", function(self)
 		ToggleFriendsFrame(4)
 	end)
-	
+
 	local buttons = {
 		"DisbandRaidButton",
 		"RoleCheckButton",
@@ -239,7 +239,7 @@ function RU:Initialize()
 		CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateRolePoll:ClearAllPoints()
 		CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateRolePoll:Point("BOTTOMLEFT", CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck, "TOPLEFT", 0, 1)
 		CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateRolePoll:Point("BOTTOMRIGHT", CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck, "TOPRIGHT", 0, 1)
-		
+
 		tinsert(buttons, "CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton")
 	else
 		E:StaticPopup_Show("WARNING_BLIZZARD_ADDONS")

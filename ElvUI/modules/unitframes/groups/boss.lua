@@ -63,7 +63,7 @@ function UF:Update_BossFrames(frame, db)
 	local INDEX = frame.index
 	local UNIT_WIDTH = db.width
 	local UNIT_HEIGHT = db.height
-	local SHADOW_SPACING = BORDER*4
+	local SHADOW_SPACING = (BORDER*3 - SPACING*2)
 	local USE_POWERBAR = db.power.enable
 	local USE_MINI_POWERBAR = db.power.width == 'spaced' and USE_POWERBAR
 	local USE_INSET_POWERBAR = db.power.width == 'inset' and USE_POWERBAR
@@ -94,7 +94,7 @@ function UF:Update_BossFrames(frame, db)
 		if USE_MINI_POWERBAR then
 			POWERBAR_WIDTH = POWERBAR_WIDTH / 2
 		end
-		
+
 		if not USE_POWERBAR_OFFSET then
 			POWERBAR_OFFSET = 0
 		end
@@ -517,7 +517,7 @@ function UF:Update_BossFrames(frame, db)
 					frame.DebuffHighlightBackdrop = true
 				else
 					frame.DebuffHighlightBackdrop = false
-				end						
+				end
 			end
 		else
 			if frame:IsElementEnabled('DebuffHighlight') then
@@ -525,7 +525,7 @@ function UF:Update_BossFrames(frame, db)
 			end
 		end
 	end
-	
+
 	for objectName, object in pairs(frame.customTexts) do
 		if (not db.customTexts) or (db.customTexts and not db.customTexts[objectName]) then
 			object:Hide()
@@ -592,7 +592,7 @@ function UF:Update_BossFrames(frame, db)
 			frame:Point('TOPRIGHT', _G['ElvUF_Boss'..INDEX-1], 'BOTTOMRIGHT', 0, -db.spacing)
 		end
 	end
-	
+
 	if db.growthDirection == 'UP' or db.growthDirection == 'DOWN' then
 		BossHeader:Width(UNIT_WIDTH)
 		BossHeader:Height(UNIT_HEIGHT + ((UNIT_HEIGHT + db.spacing) * (MAX_BOSS_FRAMES -1)))

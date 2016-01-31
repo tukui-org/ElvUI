@@ -694,6 +694,7 @@ function TT:GameTooltip_ShowStatusBar(tt, min, max, value, text)
 	if statusBar and not statusBar.skinned then
 		statusBar:StripTextures()
 		statusBar:SetStatusBarTexture(E['media'].normTex)
+		E:RegisterStatusBar(statusBar)
 		statusBar:CreateBackdrop('Default')
 		statusBar.skinned = true;
 	end
@@ -796,7 +797,7 @@ function TT:SetTooltipFonts()
 	local headerSize = E.db.tooltip.headerFontSize
 	local textSize = E.db.tooltip.textFontSize
 	local smallTextSize = E.db.tooltip.smallTextFontSize
-	
+
 	GameTooltipHeaderText:SetFont(font, headerSize, fontOutline)
 	GameTooltipText:SetFont(font, textSize, fontOutline)
 	GameTooltipTextSmall:SetFont(font, smallTextSize, fontOutline)
@@ -809,7 +810,7 @@ function TT:SetTooltipFonts()
 			_G["GameTooltipMoneyFrame"..i.."CopperButtonText"]:SetFont(font, textSize, fontOutline)
 		end
 	end
-	
+
 	--These show when you compare items ("Currently Equipped", name of item, item level)
 	--Since they appear at the top of the tooltip, we set it to use the header font size.
 	ShoppingTooltip1TextLeft1:SetFont(font, headerSize, fontOutline)
@@ -842,6 +843,7 @@ function TT:Initialize()
 
 	GameTooltipStatusBar:Height(self.db.healthBar.height)
 	GameTooltipStatusBar:SetStatusBarTexture(E["media"].normTex)
+	E:RegisterStatusBar(GameTooltipStatusBar)
 	GameTooltipStatusBar:CreateBackdrop('Transparent')
 	GameTooltipStatusBar:SetScript("OnValueChanged", self.OnValueChanged)
 	GameTooltipStatusBar:ClearAllPoints()
@@ -850,7 +852,7 @@ function TT:Initialize()
 	GameTooltipStatusBar.text = GameTooltipStatusBar:CreateFontString(nil, "OVERLAY")
 	GameTooltipStatusBar.text:Point("CENTER", GameTooltipStatusBar, 0, -3)
 	GameTooltipStatusBar.text:FontTemplate(E.LSM:Fetch("font", self.db.healthBar.font), self.db.healthBar.fontSize, "OUTLINE")
-	
+
 	--Tooltip Fonts
 	if not GameTooltip.hasMoney then
 		 --Force creation of the money lines, so we can set font for it
@@ -888,7 +890,7 @@ function TT:Initialize()
 	for _, tt in pairs(tooltips) do
 		self:HookScript(tt, 'OnShow', 'SetStyle')
 	end
-	
+
 	--Variable is localized at top of file, then set here when we're sure the frame has been created
 	--Used to check if keybinding is active, if so then don't hide tooltips on actionbars
 	keybindFrame = ElvUI_KeyBinder

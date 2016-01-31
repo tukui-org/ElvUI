@@ -247,7 +247,7 @@ local blackList = {
 
 local function Update(self, event, unit)
 	if unit ~= self.unit then return end
-	local _name, _icon, _count, _dtype, _duration, _endTime, _spellId
+	local _name, _icon, _count, _dtype, _duration, _endTime, _spellId, _stackThreshold
 	local _priority, priority = 0, 0
 	
 	--store if the unit its charmed, mind controlled units (Imperial Vizier Zor'lok: Convert)
@@ -284,8 +284,15 @@ local function Update(self, event, unit)
 		end
 	end
 
-	local stackThreshold = _name and ElvUI[1].global.unitframe['aurafilters']['RaidDebuffs']['spells'][_name] and ElvUI[1].global.unitframe['aurafilters']['RaidDebuffs']['spells'][_name].stackThreshold or 0
-	UpdateDebuff(self, _name, _icon, _count, _dtype, _duration, _endTime, _spellId, stackThreshold)
+	_stackThreshold = _name and ElvUI[1].global.unitframe['aurafilters']['RaidDebuffs']['spells'][_name] and ElvUI[1].global.unitframe['aurafilters']['RaidDebuffs']['spells'][_name].stackThreshold or 0
+
+	if self.RaidDebuffs.forceShow then
+		_spellId = 47540
+		_name, _, _icon = GetSpellInfo(_spellId)
+		_count, _dtype, _duration, _endTime, _stackThreshold = 5, 'Magic', 0, 60, 0
+	end
+
+	UpdateDebuff(self, _name, _icon, _count, _dtype, _duration, _endTime, _spellId, _stackThreshold)
 	
 	--Reset the DispellPriority
 	DispellPriority = {

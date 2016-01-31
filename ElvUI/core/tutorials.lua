@@ -10,7 +10,7 @@ local DISABLE = DISABLE
 local HIDE = HIDE
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: UIParent, ElvUITutorialWindow 
+-- GLOBALS: UIParent, ElvUITutorialWindow
 
 E.TutorialList = {
 	L["For technical support visit us at http://www.tukui.org."],

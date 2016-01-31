@@ -195,19 +195,18 @@ function A:Update_ConsolidatedBuffsSettings(isCallback)
 		local button = frame[i]
 		button.t:SetAlpha(1)
 		button:ClearAllPoints()
-        button:Width(E.ConsolidatedBuffsWidth - (E.Border*2))
-		button:Height(E.ConsolidatedBuffsWidth - (E.Border*2))
+
+		--Use :SetWidth and :SetHeight so it doesn't get rounded by E:Scale
+		--This is important because E.ConsolidatedBuffsWidth is usually not a round number
+		button:SetWidth(E.ConsolidatedBuffsWidth)
+		button:SetHeight(E.ConsolidatedBuffsWidth)
 
 		if i == 1 then
-			button:Point("TOP", ElvUI_ConsolidatedBuffs, "TOP", 0, -E.Border)
+			button:Point("TOP", ElvUI_ConsolidatedBuffs, "TOP", 0, 0)
 		else
-			button:Point("TOP", frame[ignoreIcons[i - 1] or (i - 1)], "BOTTOM", 0, -E.Border)
+			button:Point("TOP", frame[ignoreIcons[i - 1] or (i - 1)], "BOTTOM", 0, E.Border - E.Spacing)
 		end
-        
-        if i == NUM_LE_RAID_BUFF_TYPES then
-            button:Point("BOTTOM", ElvUI_ConsolidatedBuffs, "BOTTOM", 0, E.Border)
-        end
-        
+
 		if(ignoreIcons[i]) then
 			button:Hide()
 		else
@@ -241,7 +240,7 @@ function A:Update_ConsolidatedBuffsSettings(isCallback)
 			E:GetModule('Auras'):DisableCB()
 		end
 	end
-	
+
 	if MasqueGroup and E.private.auras.masque.consolidatedBuffs and E.db.auras.consolidatedBuffs.enable then MasqueGroup:ReSkin() end
 end
 
@@ -266,7 +265,7 @@ function A:Construct_ConsolidatedBuffs()
 		frame[i] = self:CreateButton(i)
 		frame[i]:SetID(i)
 	end
-	
+
 	if Masque and MasqueGroup then
 		A.CBMasqueGroup = MasqueGroup
 	end

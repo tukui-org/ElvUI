@@ -89,7 +89,7 @@ function UF:Construct_AuraIcon(button)
 end
 
 local function SortAurasByPriority(a, b)
-    if (a and b) then
+	if (a and b) then
 		if a.isPlayer and not b.isPlayer then
 			return true
 		elseif not a.isPlayer and b.isPlayer then
@@ -99,14 +99,14 @@ local function SortAurasByPriority(a, b)
 		if (a.priority and b.priority) then
 			return a.priority > b.priority
 		end
-    end
+	end
 end
 
 local function SortAurasByTime(a, b)
-    if (a and b and a:GetParent().db) then
-    	local sortDirection = a:GetParent().db.sortDirection
-    	local aTime = a.expiration or -1
-    	local bTime = b.expiration or -1
+	if (a and b and a:GetParent().db) then
+		local sortDirection = a:GetParent().db.sortDirection
+		local aTime = a.expiration or -1
+		local bTime = b.expiration or -1
 		if (aTime and bTime) then
 			if(sortDirection == "DESCENDING") then
 				return aTime < bTime
@@ -114,14 +114,14 @@ local function SortAurasByTime(a, b)
 				return aTime > bTime
 			end
 		end
-    end
+	end
 end
 
 local function SortAurasByName(a, b)
-    if (a and b and a:GetParent().db) then
-    	local sortDirection = a:GetParent().db.sortDirection
-    	local aName = a.spell or ""
-    	local bName = b.spell or ""
+	if (a and b and a:GetParent().db) then
+		local sortDirection = a:GetParent().db.sortDirection
+		local aName = a.spell or ""
+		local bName = b.spell or ""
 		if (aName and bName) then
 			if(sortDirection == "DESCENDING") then
 				return aName < bName
@@ -129,14 +129,14 @@ local function SortAurasByName(a, b)
 				return aName > bName
 			end
 		end
-    end
+	end
 end
 
 local function SortAurasByDuration(a, b)
-    if (a and b and a:GetParent().db) then
-    	local sortDirection = a:GetParent().db.sortDirection
-    	local aTime = a.duration or -1
-    	local bTime = b.duration or -1
+	if (a and b and a:GetParent().db) then
+		local sortDirection = a:GetParent().db.sortDirection
+		local aTime = a.duration or -1
+		local bTime = b.duration or -1
 		if (aTime and bTime) then
 			if(sortDirection == "DESCENDING") then
 				return aTime < bTime
@@ -144,7 +144,7 @@ local function SortAurasByDuration(a, b)
 				return aTime > bTime
 			end
 		end
-    end
+	end
 end
 
 function UF:SortAuras()
@@ -159,7 +159,7 @@ function UF:SortAuras()
 		tsort(self, SortAurasByDuration)
 	end
 
-	--Look into possibly applying filter priorities for auras here. 
+	--Look into possibly applying filter priorities for auras here.
 end
 
 function UF:UpdateAuraIconSettings(auras, noCycle)

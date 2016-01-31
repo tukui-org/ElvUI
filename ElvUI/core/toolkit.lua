@@ -50,10 +50,10 @@ local function Height(frame, height)
 end
 
 local function Point(obj, arg1, arg2, arg3, arg4, arg5)
-    if arg2 == nil then
-        arg2 = obj:GetParent()
-    end
-        
+	if arg2 == nil then
+		arg2 = obj:GetParent()
+	end
+
 	if type(arg1)=="number" then arg1 = E:Scale(arg1) end
 	if type(arg2)=="number" then arg2 = E:Scale(arg2) end
 	if type(arg3)=="number" then arg3 = E:Scale(arg3) end
@@ -92,9 +92,17 @@ end
 local function SetTemplate(f, t, glossTex, ignoreUpdates)
 	GetTemplate(t)
 
-	f.template = t
-	f.glossTex = glossTex
-	f.ignoreUpdates = ignoreUpdates
+	if(t) then
+	   f.template = t
+	end
+
+	if(glossTex) then
+	   f.glossTex = glossTex
+	end
+
+	if(ignoreUpdates) then
+	   f.ignoreUpdates = ignoreUpdates
+	end
 
 	if E.private.general.pixelPerfect then
 		f:SetBackdrop({
@@ -164,7 +172,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates)
 
 	f:SetBackdropBorderColor(borderr, borderg, borderb)
 
-	if not ignoreUpdates then
+	if not f.ignoreUpdates then
 		E["frames"][f] = true
 	end
 end

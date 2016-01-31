@@ -703,9 +703,9 @@ local function SetPage(PageNum)
 	CURRENT_PAGE = PageNum
 	ResetAll()
 	InstallStatus:SetValue(PageNum)
-    
-    local r, g, b = E:ColorGradient(CURRENT_PAGE / MAX_PAGE, 1, 0, 0, 1, 1, 0, 0, 1, 0)
-    ElvUIInstallFrame.Status:SetStatusBarColor(r, g, b)
+
+	local r, g, b = E:ColorGradient(CURRENT_PAGE / MAX_PAGE, 1, 0, 0, 1, 1, 0, 0, 1, 0)
+	ElvUIInstallFrame.Status:SetStatusBarColor(r, g, b)
 	local f = ElvUIInstallFrame
 
 	if PageNum == MAX_PAGE then
@@ -916,6 +916,7 @@ function E:Install()
 		f.Status:SetFrameLevel(f.Status:GetFrameLevel() + 2)
 		f.Status:CreateBackdrop("Default")
 		f.Status:SetStatusBarTexture(E["media"].normTex)
+		E:RegisterStatusBar(f.Status)
 		f.Status:SetStatusBarColor(1, 0, 0)
 		f.Status:SetMinMaxValues(0, MAX_PAGE)
 		f.Status:Point("TOPLEFT", f.Prev, "TOPRIGHT", 6, -2)

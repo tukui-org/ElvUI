@@ -1,6 +1,6 @@
 --[[
 	Collection of previous april fools pranks
-	
+
 	Garrison Missions: 	Would create fake Garrison Missions with very rare mounts as rewards.
 	Harlem Shake: 		Try it out with the command /harlemshake
 	Hello Kitty: 		Try it out with the command /hellokitty (pay attention to the popups, read what it says)
@@ -252,7 +252,7 @@ do
 		elseif(event == "GARRISON_MISSION_BONUS_ROLL_COMPLETE") then
 			local missionID, success = ...
 			if(success and missionID == E.db.missionID) then
-				E.db.missionID = nil; 
+				E.db.missionID = nil;
 				E.db.aprilFoolsMount = nil;
 				E.global.aprilFools = true;
 				-- AprilFoolsFrame:Show()
@@ -367,7 +367,7 @@ do
 			end
 		end
 	end
-	
+
 	function E:HarlemShakeToggle()
 		self:StaticPopup_Show("HARLEM_SHAKE");
 	end
@@ -521,7 +521,7 @@ do
 
 		self:UpdateAll()
 	end
-	
+
 	function E:CreateKittys()
 		if(HelloKittyLeft) then
 			HelloKittyLeft:Show()
@@ -609,7 +609,7 @@ do
 		self.db.tempSettings = nil
 		self:UpdateAll()
 	end
-	
+
 	function E:HelloKittyToggle()
 		if(HelloKittyLeft and HelloKittyLeft:IsShown()) then
 			self:RestoreHelloKitty()

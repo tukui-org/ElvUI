@@ -20,7 +20,7 @@ local lastPanel
 
 local function OnEvent(self, event, ...)
 	lastPanel = self
-	
+
 	if event == "PLAYER_ENTERING_WORLD" then
 		for i = 1, GetNumAddOns() do
 			local name, _, _, enabled = GetAddOnInfo(i)
@@ -31,7 +31,7 @@ local function OnEvent(self, event, ...)
 			end
 		end
 	end
-	
+
 	self.text:SetFormattedText(displayString, configText)
 end
 

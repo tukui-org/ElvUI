@@ -251,9 +251,9 @@ local specialChatIcons = {
 	["Spirestone"] = {
 		["Elv"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\elvui.blp:13:22|t",
 	},
-    ["Arathor"] = {
-       ["Mallouh"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\elvui.blp:13:22|t",  
-    }
+	["Arathor"] = {
+	   ["Mallouh"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\elvui.blp:13:22|t",
+	}
 }
 
 CH.Keywords = {};
@@ -588,24 +588,24 @@ end
 
 local function FindRightChatID()
 	local rightChatID
-	
+
 	for _, frameName in pairs(CHAT_FRAMES) do
 		local chat = _G[frameName]
 		local id = chat:GetID()
 
-		if E:FramesOverlap(chat, RightChatPanel) then
+		if E:FramesOverlap(chat, RightChatPanel) and not E:FramesOverlap(chat, LeftChatPanel) then
 			rightChatID = id
 			break
 		end
 	end
-	
+
 	return rightChatID
 end
 
 function CH:UpdateChatTabs()
 	local fadeUndockedTabs = E.db["chat"].fadeUndockedTabs
 	local fadeTabsNoBackdrop = E.db["chat"].fadeTabsNoBackdrop
-		
+
 	for i = 1, CreatedFrames do
 		local chat = _G[format("ChatFrame%d", i)]
 		local tab = _G[format("ChatFrame%sTab", i)]
@@ -621,7 +621,7 @@ function CH:UpdateChatTabs()
 				isDocked = false
 			end
 		end
-		
+
 		if chat:IsShown() and not (id > NUM_CHAT_WINDOWS) and (id == self.RightChatWindowID) then
 			if E.db.chat.panelBackdrop == 'HIDEBOTH' or E.db.chat.panelBackdrop == 'LEFT' then
 				CH:SetupChatTabs(tab, fadeTabsNoBackdrop and true or false)
@@ -717,7 +717,7 @@ function CH:PositionChat(override)
 					chat:Point("BOTTOMLEFT", LeftChatToggleButton, "BOTTOMLEFT", 1, 1)
 				end
 				chat:SetSize(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - BASE_OFFSET))
-				
+
 				--Pass a 2nd argument which prevents an infinite loop in our ON_FCF_SavePositionAndDimensions function
 				FCF_SavePositionAndDimensions(chat, true)
 			end
@@ -940,17 +940,17 @@ function GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, a
 		chatType = "CHANNEL"..arg8;
 	end
 	local info = ChatTypeInfo[chatType];
-	
+
 	--ambiguate guild chat names
 	if (chatType == "GUILD") then
 		arg2 = Ambiguate(arg2, "guild")
 	else
 		arg2 = Ambiguate(arg2, "none")
 	end
-	
+
 	if ( info and info.colorNameByClass and arg12 ) then
 		local _, localizedClass, englishClass, localizedRace, englishRace, sex = pcall(GetPlayerInfoByGUID, arg12)
-		
+
 		if ( englishClass ) then
 			local classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[englishClass] or RAID_CLASS_COLORS[englishClass];
 			if ( not classColorTable ) then
@@ -959,7 +959,7 @@ function GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, a
 			return format("\124cff%.2x%.2x%.2x", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255)..arg2.."\124r"
 		end
 	end
-	
+
 	return arg2;
 end
 
@@ -1229,51 +1229,51 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			end
 
 			-- Add AFK/DND flags
-            local pflag;
-            local pluginIcon, flags = CH:GetPluginReplacementIcon(arg2, arg6, type)
-            if(pluginIcon and flags) then
-                pflag = pluginIcon
-            else
-                if(strlen(arg6) > 0) then
-                    if ( arg6 == "GM" ) then
-                        --If it was a whisper, dispatch it to the GMChat addon.
-                        if ( type == "WHISPER" ) then
-                            return;
-                        end
-                        --Add Blizzard Icon, this was sent by a GM
-                        pflag = "|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t ";
-                    elseif ( arg6 == "DEV" ) then
-                        --Add Blizzard Icon, this was sent by a Dev
-                        pflag = "|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t ";
-                    else
-                        pflag = _G["CHAT_FLAG_"..arg6];
-                    end
-                else
-                    if(specialChatIcons[PLAYER_REALM] and specialChatIcons[PLAYER_REALM][E.myname] ~= true) then
-                        for realm, _ in pairs(specialChatIcons) do
-                            for character, texture in pairs(specialChatIcons[realm]) do
-                                if arg2 == character.."-"..realm then
-                                    pflag = texture
-                                end
-                            end
-                        end
-                    else
-                        if(pluginIcon) then
-                            pflag = pluginIcon
-                        end
-                    end
+			local pflag;
+			local pluginIcon, flags = CH:GetPluginReplacementIcon(arg2, arg6, type)
+			if(pluginIcon and flags) then
+				pflag = pluginIcon
+			else
+				if(strlen(arg6) > 0) then
+					if ( arg6 == "GM" ) then
+						--If it was a whisper, dispatch it to the GMChat addon.
+						if ( type == "WHISPER" ) then
+							return;
+						end
+						--Add Blizzard Icon, this was sent by a GM
+						pflag = "|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t ";
+					elseif ( arg6 == "DEV" ) then
+						--Add Blizzard Icon, this was sent by a Dev
+						pflag = "|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t ";
+					else
+						pflag = _G["CHAT_FLAG_"..arg6];
+					end
+				else
+					if(specialChatIcons[PLAYER_REALM] and specialChatIcons[PLAYER_REALM][E.myname] ~= true) then
+						for realm, _ in pairs(specialChatIcons) do
+							for character, texture in pairs(specialChatIcons[realm]) do
+								if arg2 == character.."-"..realm then
+									pflag = texture
+								end
+							end
+						end
+					else
+						if(pluginIcon) then
+							pflag = pluginIcon
+						end
+					end
 
-                    if(pflag == true) then
-                        pflag = nil
-                    end
+					if(pflag == true) then
+						pflag = nil
+					end
 
-                    if(not pflag and lfgRoles[arg2] and (type == "PARTY_LEADER" or type == "PARTY" or type == "RAID" or type == "RAID_LEADER" or type == "INSTANCE_CHAT" or type == "INSTANCE_CHAT_LEADER")) then
-                        pflag = lfgRoles[arg2]
-                    end
-                end
+					if(not pflag and lfgRoles[arg2] and (type == "PARTY_LEADER" or type == "PARTY" or type == "RAID" or type == "RAID_LEADER" or type == "INSTANCE_CHAT" or type == "INSTANCE_CHAT_LEADER")) then
+						pflag = lfgRoles[arg2]
+					end
+				end
 
-                pflag = pflag or ""
-            end
+				pflag = pflag or ""
+			end
 
 			if ( type == "WHISPER_INFORM" and GMChatFrame_IsGM and GMChatFrame_IsGM(arg2) ) then
 				return;
@@ -1597,10 +1597,10 @@ end
 
 function CH:AddLines(lines, ...)
   for i=select("#", ...),1,-1 do
-    local x = select(i, ...)
-    if x:GetObjectType() == "FontString" and not x:GetName() then
-        tinsert(lines, x:GetText())
-    end
+	local x = select(i, ...)
+	if x:GetObjectType() == "FontString" and not x:GetName() then
+		tinsert(lines, x:GetText())
+	end
   end
 end
 
@@ -1876,10 +1876,10 @@ function CH:Initialize()
 	ChatFrameMenuButton:Kill()
 
 
-    if WIM then
-      WIM.RegisterWidgetTrigger("chat_display", "whisper,chat,w2w,demo", "OnHyperlinkClick", function(self) CH.clickedframe = self end);
+	if WIM then
+	  WIM.RegisterWidgetTrigger("chat_display", "whisper,chat,w2w,demo", "OnHyperlinkClick", function(self) CH.clickedframe = self end);
 	  WIM.RegisterItemRefHandler('url', WIM_URLLink)
-    end
+	end
 
 	self:SecureHook('FCF_SetChatWindowFontSize', 'SetChatFont')
 	self:SecureHook("FCF_SavePositionAndDimensions", "ON_FCF_SavePositionAndDimensions")
@@ -2067,8 +2067,8 @@ function CH:Initialize()
 	InterfaceOptionsSocialPanelChatStyleButton:Hide()
 	InterfaceOptionsSocialPanelChatStyle:SetAlpha(0)
 
- 	CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Size(20, 22)
- 	CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Point("TOPRIGHT", CombatLogQuickButtonFrame_Custom, "TOPRIGHT", 0, -1)
+	CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Size(20, 22)
+	CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Point("TOPRIGHT", CombatLogQuickButtonFrame_Custom, "TOPRIGHT", 0, -1)
 end
 
 E:RegisterModule(CH:GetName())

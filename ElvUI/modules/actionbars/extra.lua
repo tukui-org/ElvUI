@@ -97,7 +97,7 @@ function AB:SetupExtraButton()
 	if HasExtraActionBar() then
 		ExtraActionBarFrame:Show();
 	end
-	
+
 	AB:Extra_SetAlpha()
 	AB:Extra_SetScale()
 

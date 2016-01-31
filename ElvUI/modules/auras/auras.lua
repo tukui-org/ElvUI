@@ -4,7 +4,7 @@ local LSM = LibStub("LibSharedMedia-3.0")
 
 --Cache global variables
 --Lua functions
-local GetTime = GetTime 
+local GetTime = GetTime
 local select, unpack = select, unpack
 local floor = math.floor
 local format, find, join = string.format, string.find, string.join
@@ -127,7 +127,7 @@ function A:CreateIcon(button)
 	E:SetUpAnimGroup(button)
 
 	button:SetScript("OnAttributeChanged", A.OnAttributeChanged)
-	
+
 	local ButtonData = {
 		FloatingBG = nil,
 		Icon = button.texture,
@@ -309,7 +309,7 @@ function A:UpdateHeader(header)
 		index = index + 1
 		child = select(index, header:GetChildren())
 	end
-	
+
 	if MasqueGroupBuffs and E.private.auras.masque.buffs then MasqueGroupBuffs:ReSkin() end
 	if MasqueGroupDebuffs and E.private.auras.masque.debuffs then MasqueGroupDebuffs:ReSkin() end
 end
@@ -359,7 +359,7 @@ function A:Initialize()
 	self.DebuffFrame = self:CreateAuraHeader("HARMFUL")
 	self.DebuffFrame:Point("BOTTOMRIGHT", MMHolder, "BOTTOMLEFT", -(6 + E.Border), E.Border + E.Spacing)
 	E:CreateMover(self.DebuffFrame, "DebuffsMover", L["Player Debuffs"])
-	
+
 	if Masque then
 		if MasqueGroupBuffs then A.BuffsMasqueGroup = MasqueGroupBuffs end
 		if MasqueGroupDebuffs then A.DebuffsMasqueGroup = MasqueGroupDebuffs end

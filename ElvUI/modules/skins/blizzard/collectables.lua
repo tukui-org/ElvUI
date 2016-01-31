@@ -154,9 +154,11 @@ local function LoadSkin()
 		_G['PetJournalLoadoutPet'..i..'HealthFrame'].healthBar:StripTextures()
 		_G['PetJournalLoadoutPet'..i..'HealthFrame'].healthBar:CreateBackdrop('Default')
 		_G['PetJournalLoadoutPet'..i..'HealthFrame'].healthBar:SetStatusBarTexture(E.media.normTex)
+		 E:RegisterStatusBar(_G['PetJournalLoadoutPet'..i..'HealthFrame'].healthBar)
 		_G['PetJournalLoadoutPet'..i..'XPBar']:StripTextures()
 		_G['PetJournalLoadoutPet'..i..'XPBar']:CreateBackdrop('Default')
 		_G['PetJournalLoadoutPet'..i..'XPBar']:SetStatusBarTexture(E.media.normTex)
+		E:RegisterStatusBar(_G['PetJournalLoadoutPet'..i..'XPBar'])
 		_G['PetJournalLoadoutPet'..i..'XPBar']:SetFrameLevel(_G['PetJournalLoadoutPet'..i..'XPBar']:GetFrameLevel() + 2)
 
 		for index = 1, 3 do
@@ -217,10 +219,11 @@ local function LoadSkin()
 	PetJournalPetCardHealthFrame.healthBar:StripTextures()
 	PetJournalPetCardHealthFrame.healthBar:CreateBackdrop('Default')
 	PetJournalPetCardHealthFrame.healthBar:SetStatusBarTexture(E.media.normTex)
+	E:RegisterStatusBar(PetJournalPetCardHealthFrame.healthBar)
 	PetJournalPetCardXPBar:StripTextures()
 	PetJournalPetCardXPBar:CreateBackdrop('Default')
 	PetJournalPetCardXPBar:SetStatusBarTexture(E.media.normTex)
-
+	E:RegisterStatusBar(PetJournalPetCardXPBar)
 
 	--Toy Box
 	S:HandleButton(ToyBoxFilterButton)

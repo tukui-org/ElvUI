@@ -22,19 +22,19 @@ local UnitName = UnitName
 
 local CONTINENT_DRAENOR = 7
 local BODYGUARD_BANNED_ZONES = {
-    [978] = true,  -- Ashran
-    [1009] = true, -- Stormshield
-    [1011] = true  -- Warspear
+	[978] = true,  -- Ashran
+	[1009] = true, -- Stormshield
+	[1011] = true  -- Warspear
 }
 
 function BG:IsValidZone()
-    SetMapToCurrentZone()
-    local currentContinent = GetCurrentMapContinent()
-    local currentMapAreaID = GetCurrentMapAreaID()
-    local valid = currentContinent == CONTINENT_DRAENOR and not BODYGUARD_BANNED_ZONES[currentMapAreaID]
-    BG.db.IsInValidZone = valid
+	SetMapToCurrentZone()
+	local currentContinent = GetCurrentMapContinent()
+	local currentMapAreaID = GetCurrentMapAreaID()
+	local valid = currentContinent == CONTINENT_DRAENOR and not BODYGUARD_BANNED_ZONES[currentMapAreaID]
+	BG.db.IsInValidZone = valid
 
-    return valid
+	return valid
 end
 
 function BG:IsShowing()

@@ -55,7 +55,7 @@ local function OnEnter(self, _, noUpdate)
 			end
 		end
 	end
-	
+
 	--Missions
 	local inProgressMissions = C_GarrisonGetInProgressMissions(LE_FOLLOWER_TYPE_GARRISON_6_0)
 	local numMissions = #inProgressMissions

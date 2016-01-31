@@ -56,7 +56,7 @@ end
 
 --Truncate a number off to n places
 function E:Truncate(v, decimals)
-    return v - (v % (0.1 ^ (decimals or 0)))
+	return v - (v % (0.1 ^ (decimals or 0)))
 end
 
 --RGB to Hex
@@ -84,7 +84,7 @@ function E:FramesOverlap(frameA, frameB)
 	local frameARight = frameA:GetRight()
 	local frameABottom = frameA:GetBottom()
 	local frameATop = frameA:GetTop()
-	
+
 	local frameBLeft = frameB:GetLeft()
 	local frameBRight = frameB:GetRight()
 	local frameBBottom = frameB:GetBottom()
@@ -92,7 +92,7 @@ function E:FramesOverlap(frameA, frameB)
 
 	if not frameALeft or not frameARight or not frameABottom or not frameATop then return end
 	if not frameBLeft or not frameBRight or not frameBBottom or not frameBTop then return end
-	
+
 	return ((frameALeft*sA) < (frameBRight*sB))
 		and ((frameBLeft*sB) < (frameARight*sA))
 		and ((frameABottom*sA) < (frameBTop*sB))
@@ -218,17 +218,17 @@ function E:ShortenString(string, numChars, dots)
 end
 
 function E:AbbreviateString(string, allUpper)
-    local newString = ""
-    local words = {split(" ", string)}
-    for _, word in pairs(words) do
-        word = sub(word, 1, 1) --get only first letter of each word
-        if(allUpper) then
-            word = word:upper()
-        end
-        newString = newString .. word
-    end
-    
-    return newString
+	local newString = ""
+	local words = {split(" ", string)}
+	for _, word in pairs(words) do
+		word = sub(word, 1, 1) --get only first letter of each word
+		if(allUpper) then
+			word = word:upper()
+		end
+		newString = newString .. word
+	end
+
+	return newString
 end
 
 --Add time before calling a function

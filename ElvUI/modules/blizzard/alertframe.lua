@@ -199,51 +199,51 @@ function B:AlertFrame_SetGuildChallengeAnchors(alertAnchor)
 end
 
 function B:AlertFrame_SetDigsiteCompleteToastFrameAnchors(alertAnchor)
-    if ( DigsiteCompleteToastFrame and DigsiteCompleteToastFrame:IsShown() ) then
+	if ( DigsiteCompleteToastFrame and DigsiteCompleteToastFrame:IsShown() ) then
 		DigsiteCompleteToastFrame:ClearAllPoints()
-        DigsiteCompleteToastFrame:Point(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
-        alertAnchor = DigsiteCompleteToastFrame;
-    end
+		DigsiteCompleteToastFrame:Point(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
+		alertAnchor = DigsiteCompleteToastFrame;
+	end
 end
 
 function B:AlertFrame_SetGarrisonBuildingAlertFrameAnchors(alertAnchor)
-    if ( GarrisonBuildingAlertFrame and GarrisonBuildingAlertFrame:IsShown() ) then
+	if ( GarrisonBuildingAlertFrame and GarrisonBuildingAlertFrame:IsShown() ) then
 		GarrisonBuildingAlertFrame:ClearAllPoints()
-        GarrisonBuildingAlertFrame:Point(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
-        alertAnchor = GarrisonBuildingAlertFrame;
-    end
+		GarrisonBuildingAlertFrame:Point(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
+		alertAnchor = GarrisonBuildingAlertFrame;
+	end
 end
 
 function B:AlertFrame_SetGarrisonMissionAlertFrameAnchors(alertAnchor)
-    if ( GarrisonMissionAlertFrame and GarrisonMissionAlertFrame:IsShown() ) then
+	if ( GarrisonMissionAlertFrame and GarrisonMissionAlertFrame:IsShown() ) then
 		GarrisonMissionAlertFrame:ClearAllPoints()
-        GarrisonMissionAlertFrame:Point(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
-        alertAnchor = GarrisonMissionAlertFrame;
-    end
+		GarrisonMissionAlertFrame:Point(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
+		alertAnchor = GarrisonMissionAlertFrame;
+	end
 end
 
 function B:AlertFrame_SetGarrisonFollowerAlertFrameAnchors(alertAnchor)
-    if ( GarrisonFollowerAlertFrame and GarrisonFollowerAlertFrame:IsShown() ) then
+	if ( GarrisonFollowerAlertFrame and GarrisonFollowerAlertFrame:IsShown() ) then
 		GarrisonFollowerAlertFrame:ClearAllPoints()
-        GarrisonFollowerAlertFrame:Point(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
-        alertAnchor = GarrisonFollowerAlertFrame;
-    end
+		GarrisonFollowerAlertFrame:Point(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
+		alertAnchor = GarrisonFollowerAlertFrame;
+	end
 end
 
 function B:AlertFrame_SetGarrisonShipFollowerAlertFrameAnchors(alertAnchor)
-    if ( GarrisonShipFollowerAlertFrame and GarrisonShipFollowerAlertFrame:IsShown() ) then
+	if ( GarrisonShipFollowerAlertFrame and GarrisonShipFollowerAlertFrame:IsShown() ) then
 		GarrisonShipFollowerAlertFrame:ClearAllPoints()
-        GarrisonShipFollowerAlertFrame:Point(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
-        alertAnchor = GarrisonShipFollowerAlertFrame;
-    end
+		GarrisonShipFollowerAlertFrame:Point(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
+		alertAnchor = GarrisonShipFollowerAlertFrame;
+	end
 end
 
 function B:AlertFrame_SetGarrisonShipMissionAlertFrameAnchors(alertAnchor)
-    if ( GarrisonShipMissionAlertFrame and GarrisonShipMissionAlertFrame:IsShown() ) then
+	if ( GarrisonShipMissionAlertFrame and GarrisonShipMissionAlertFrame:IsShown() ) then
 		GarrisonShipMissionAlertFrame:ClearAllPoints()
-        GarrisonShipMissionAlertFrame:Point(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
-        alertAnchor = GarrisonShipMissionAlertFrame;
-    end
+		GarrisonShipMissionAlertFrame:Point(POSITION, alertAnchor, ANCHOR_POINT, 0, YOFFSET);
+		alertAnchor = GarrisonShipMissionAlertFrame;
+	end
 end
 
 function B:AlertMovers()

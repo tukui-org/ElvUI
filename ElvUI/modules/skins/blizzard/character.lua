@@ -309,6 +309,7 @@ local function LoadSkin()
 
 				if not statusbar.backdrop then
 					statusbar:CreateBackdrop("Default")
+					E:RegisterStatusBar(statusbar)
 				end
 
 				_G["ReputationBar"..i.."Background"]:SetTexture(nil)
