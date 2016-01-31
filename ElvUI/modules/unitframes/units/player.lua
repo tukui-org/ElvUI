@@ -173,22 +173,6 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 			end
 		end
 
-
-		if db.portrait.enable and not USE_PORTRAIT_OVERLAY and frame.Portrait then
-			local portrait = frame.Portrait
-			portrait.backdrop:ClearAllPoints()
-			if USE_MINI_CLASSBAR and USE_CLASSBAR then
-				portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT", 0, -CLASSBAR_HEIGHT_SPACING)
-			else
-				portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT")
-			end
-
-			if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or USE_INSET_POWERBAR or not USE_POWERBAR or USE_INSET_POWERBAR or POWERBAR_DETACHED then
-				portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", BORDER - SPACING*3, 0)
-			else
-				portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", BORDER - SPACING*3, 0)
-			end
-		end
 	else
 		if db.threatStyle == "GLOW" then
 			threat.glow:Point("TOPLEFT", -SHADOW_SPACING, SHADOW_SPACING)
@@ -207,31 +191,13 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 				threat.glow:Point("BOTTOMRIGHT", SHADOW_SPACING-POWERBAR_OFFSET, -SHADOW_SPACING)
 			end
 		end
-
-		if USE_PORTRAIT and not USE_PORTRAIT_OVERLAY and frame.Portrait then
-			local portrait = frame.Portrait
-			portrait.backdrop:ClearAllPoints()
-			portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT")
-
-			if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR or USE_INSET_POWERBAR or POWERBAR_DETACHED then
-				portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", BORDER - SPACING*3, 0)
-			else
-				portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", BORDER - SPACING*3, 0)
-			end
-		end
 	end
 end
 
 function UF:Update_PlayerFrame(frame, db)
 	frame.db = db
-
-	if frame.Portrait then
-		frame.Portrait:Hide()
-		frame.Portrait:ClearAllPoints()
-		frame.Portrait.backdrop:Hide()
-	end
-	
 	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
+	
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	local BORDER = E.Border
 	local SPACING = E.Spacing
@@ -273,7 +239,7 @@ function UF:Update_PlayerFrame(frame, db)
 		frame.USE_POWERBAR = db.power.enable
 		frame.POWERBAR_DETACHED = db.power.detachFromFrame
 		frame.USE_INSET_POWERBAR = not frame.POWERBAR_DETACHED and db.power.width == 'inset' and frame.USE_POWERBAR
-		frame.USE_MINI_POWERBAR = not frame.POWERBAR_DETACHED and db.power.width == 'spaced' and frame.USE_POWERBAR
+		frame.USE_MINI_POWERBAR = (not frame.POWERBAR_DETACHED and db.power.width == 'spaced' and frame.USE_POWERBAR)
 		frame.USE_POWERBAR_OFFSET = db.power.offset ~= 0 and frame.USE_POWERBAR and not frame.POWERBAR_DETACHED
 		frame.POWERBAR_OFFSET_DIRECTION = db.power.offsetDirection
 		frame.POWERBAR_OFFSET_RIGHT = (frame.USE_POWERBAR_OFFSET and frame.POWERBAR_OFFSET_DIRECTION == "RIGHT") and db.power.offset or 0
@@ -512,53 +478,7 @@ function UF:Update_PlayerFrame(frame, db)
 
 	--Portrait
 	do
-		local portrait = frame.Portrait
-
-		--Set Points
-		if USE_PORTRAIT then
-			if not frame:IsElementEnabled('Portrait') then
-				frame:EnableElement('Portrait')
-			end
-
-			portrait:ClearAllPoints()
-
-			if USE_PORTRAIT_OVERLAY then
-				if db.portrait.style == '3D' then
-					portrait:SetFrameLevel(frame.Health:GetFrameLevel() + 1)
-				end
-				portrait:SetAllPoints(frame.Health)
-				portrait:SetAlpha(0.3)
-				portrait:Show()
-				portrait.backdrop:Hide()
-			else
-				portrait:SetAlpha(1)
-				portrait:Show()
-				portrait.backdrop:Show()
-				if db.portrait.style == '3D' then
-					portrait:SetFrameLevel(frame:GetFrameLevel() + 5)
-				end
-				if USE_MINI_CLASSBAR and USE_CLASSBAR and not CLASSBAR_DETACHED then
-					portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT", 0, -((CLASSBAR_HEIGHT/2)))
-				else
-					portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT")
-				end
-
-				if USE_MINI_POWERBAR or USE_POWERBAR_OFFSET or not USE_POWERBAR or USE_INSET_POWERBAR or POWERBAR_DETACHED then
-					portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", BORDER - SPACING*3, 0)
-				else
-					portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", BORDER - SPACING*3, 0)
-				end
-
-				portrait:Point('BOTTOMLEFT', portrait.backdrop, 'BOTTOMLEFT', BORDER, BORDER)
-				portrait:Point('TOPRIGHT', portrait.backdrop, 'TOPRIGHT', -BORDER, -BORDER)
-			end
-		else
-			if frame:IsElementEnabled('Portrait') then
-				frame:DisableElement('Portrait')
-				portrait:Hide()
-				portrait.backdrop:Hide()
-			end
-		end
+		UF:SizeAndPosition_Portrait(frame)
 	end
 
 	--Auras Disable/Enable

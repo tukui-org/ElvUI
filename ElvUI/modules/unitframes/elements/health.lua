@@ -105,7 +105,7 @@ function UF:SizeAndPosition_HealthBar(frame)
 		health.bg:Point('TOPRIGHT', health)
 		health.bg:SetParent(frame.Portrait.overlay)
 	end
-
+	
 	if frame.USE_CLASSBAR and not frame.CLASSBAR_DETACHED then
 		local DEPTH = -(frame.BORDER+frame.CLASSBAR_HEIGHT+frame.SPACING)
 		if frame.USE_MINI_CLASSBAR then
