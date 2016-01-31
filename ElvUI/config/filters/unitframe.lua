@@ -772,24 +772,24 @@ P['unitframe']['filters'] = {
 --List of spells to display ticks
 G.unitframe.ChannelTicks = {
 	--Warlock
-	[689] = 6, -- "Drain Life"
-	[108371] = 6, -- "Harvest Life"
-	[5740] = 4, -- "Rain of Fire"
-	[755] = 6, -- Health Funnel
-	[103103] = 4, --Malefic Grasp
+	[SpellName(689))] = 6, -- "Drain Life"
+	[SpellName(108371)] = 6, -- "Harvest Life"
+	[SpellName(5740)] = 4, -- "Rain of Fire"
+	[SpellName(755)] = 6, -- Health Funnel
+	[SpellName(103103)] = 4, --Malefic Grasp
 	--Druid
-	[16914] = 10, -- "Hurricane"
+	[SpellName(16914)] = 10, -- "Hurricane"
 	--Priest
-	[48045] = 5, -- "Mind Sear"
-	[179338] = 5, -- "Searing insanity"
-	[64843] = 4, -- Divine Hymn
+	[SpellName(48045)] = 5, -- "Mind Sear"
+	[SpellName(179338)] = 5, -- "Searing insanity"
+	[SpellName(64843)] = 4, -- Divine Hymn
 	--Mage
-	[5143] = 5, -- "Arcane Missiles"
-	[10] = 8, -- "Blizzard"
-	[12051] = 3, -- "Evocation"
+	[SpellName(5143)] = 5, -- "Arcane Missiles"
+	[SpellName(10)] = 8, -- "Blizzard"
+	[SpellName(12051)] = 3, -- "Evocation"
 
 	--Monk
-	[115175] = 9, -- "Smoothing Mist"
+	[SpellName(115175)] = 9, -- "Smoothing Mist"
 }
 
 local priestTier17 = {115560,115561,115562,115563,115564}
@@ -807,8 +807,8 @@ f:SetScript("OnEvent", function(self, event)
 		if IsSpellKnown(157223) then --Enhanced Mind Flay
 			mfTicks = 4
 		end
-		E.global.unitframe.ChannelTicks[15407] = mfTicks -- "Mind Flay"
-		E.global.unitframe.ChannelTicks[129197] = mfTicks -- "Mind Flay (Insanity)"
+		E.global.unitframe.ChannelTicks[SpellName(15407)] = mfTicks -- "Mind Flay"
+		E.global.unitframe.ChannelTicks[SpellName(129197)] = mfTicks -- "Mind Flay (Insanity)"
 	end
 
 	local penanceTicks = 2
@@ -821,14 +821,14 @@ f:SetScript("OnEvent", function(self, event)
 	if equippedPriestTier17 >= 2 then
 		penanceTicks = 3
 	end
-	E.global.unitframe.ChannelTicks[47540] = penanceTicks --Penance
+	E.global.unitframe.ChannelTicks[SpellName(47540)] = penanceTicks --Penance
 end)
 
 G.unitframe.ChannelTicksSize = {
 	--Warlock
-	[689] = 1, -- "Drain Life"
-	[108371] = 1, -- "Harvest Life"
-	[103103] = 1, -- "Malefic Grasp"
+	[SpellName(689)] = 1, -- "Drain Life"
+	[SpellName(108371)] = 1, -- "Harvest Life"
+	[SpellName(103103)] = 1, -- "Malefic Grasp"
 }
 
 --Spells Effected By Haste
