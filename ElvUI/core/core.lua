@@ -1055,16 +1055,9 @@ function E:DBConversions()
 		for k, v in pairs(E.global.unitframe['aurafilters']['Whitelist (Strict)'].spells) do
 			if type(v) == 'table' then
 				local enabledValue = v.enable
+				--We don't care about old defaults, as the only default entries in the Whitelist (Strict) filter were from an MoP raid instance. No need to copy that information over.
 
-				if not v.spellID then --User-changed default spell, only enabled state is available
-					for _k in pairs(G.unitframe["aurafilters"]["Whitelist"].spells) do --Loop through all default spells and look for a match
-						local spellName = GetSpellInfo(_k)
-						if spellName and spellName == k then --A match was found
-							E.global.unitframe['aurafilters']['Whitelist']['spells'][_k] = {['enable'] = enabledValue} --Update default spell with saved enabled state
-						end
-					end
-				else
-					--Spells the user added himself, all needed info is available
+				if v.spellID then --Spell the user added himself, all needed info is available and should be copied over
 					local spellID = tonumber(v.spellID)
 					E.global.unitframe['aurafilters']['Whitelist']['spells'][spellID] = {['enable'] = enabledValue}
 				end
