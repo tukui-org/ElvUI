@@ -1057,7 +1057,7 @@ function E:DBConversions()
 				local spellID = tonumber(v.spellID)
 				local priority = v.priority
 				if spellID then
-					E.global.unitframe['aurafilters']['Whitelist']['spells'][spellID] = {['enable'] = true, ["name"] = ((GetSpellInfo(spellID)) or "Impale"), ['priority'] = priority or 0, ['stackThreshold'] = 0}
+					E.global.unitframe['aurafilters']['Whitelist']['spells'][spellID] = {['enable'] = true, ['priority'] = priority or 0}
 				end
 			end
 			E.global.unitframe['aurafilters']['Whitelist (Strict)']["spells"][k] = nil
