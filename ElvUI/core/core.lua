@@ -1199,8 +1199,8 @@ function E:DBConversions()
 		"RaidDebuffs",
 	}
 	for _, filterName in pairs(filters) do
-		for key, infoTable in pairs(G.unitframe["aurafilters"][filterName].spells) do --Use spellIDs from current default table
-			local spellName = GetSpellInfo(key) --Get spell name and try to match it to existing entry in table
+		for spellID, spellInfo in pairs(G.unitframe["aurafilters"][filterName].spells) do --Use spellIDs from current default table
+			local spellName = GetSpellInfo(spellID) --Get spell name and try to match it to existing entry in table
 
 			if spellName and E.global.unitframe["aurafilters"][filterName]["spells"][spellName] then --Match found
 				local spell = E.global.unitframe["aurafilters"][filterName]["spells"][spellName]
@@ -1209,12 +1209,12 @@ function E:DBConversions()
 				local stackThreshold = spell.stackThreshold
 				
 				--Fallback to default values if value is nil
-				if enabledValue == nil then enabledValue = (infoTable.enable or true) end
-				if priority == nil then priority = (infoTable.priority or 0) end
-				if stackThreshold == nil then stackThreshold = (infoTable.stackThreshold or 0) end
+				if enabledValue == nil then enabledValue = (spellInfo.enable or true) end
+				if priority == nil then priority = (spellInfo.priority or 0) end
+				if stackThreshold == nil then stackThreshold = (spellInfo.stackThreshold or 0) end
 
 				--Copy over information from old entry to new entry stored with spellID as key
-				E.global.unitframe["aurafilters"][filterName]["spells"][key] = {["enabled"] = enabledValue, ["priority"] = priority, ["stackThreshold"] = stackThreshold}
+				E.global.unitframe["aurafilters"][filterName]["spells"][spellID] = {["enabled"] = enabledValue, ["priority"] = priority, ["stackThreshold"] = stackThreshold}
 				--Remove old entry
 				E.global.unitframe["aurafilters"][filterName]["spells"][spellName] = nil
 			end
