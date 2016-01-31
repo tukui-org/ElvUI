@@ -19,8 +19,7 @@ local function SpellName(id)
 end
 
 local function Defaults(spellID, priorityOverride)
-	local spellName = SpellName(spellID)
-	return {['enable'] = true, ["name"] = spellName, ['priority'] = priorityOverride or 0, ['stackThreshold'] = 0}
+	return {['enable'] = true, ['priority'] = priorityOverride or 0, ['stackThreshold'] = 0}
 end
 
 local function DefaultsID(spellID, priorityOverride)
@@ -839,14 +838,14 @@ G.unitframe.HastedChannelTicks = {
 
 --This should probably be the same as the whitelist filter + any personal class ones that may be important to watch
 G.unitframe.AuraBarColors = {
-	[2825] = {r = 250/255, g = 146/255, b = 27/255},	--Bloodlust
+	[2825] = {r = 250/255, g = 146/255, b = 27/255},  --Bloodlust
 	[32182] = {r = 250/255, g = 146/255, b = 27/255}, --Heroism
 	[80353] = {r = 250/255, g = 146/255, b = 27/255}, --Time Warp
 	[90355] = {r = 250/255, g = 146/255, b = 27/255}, --Ancient Hysteria
 }
 
 G.unitframe.DebuffHighlightColors = {
-	[25771] = {enable = false, style = "FILL", color = {r = 0.85, g = 0, b = 0, a = 0.85}},
+	[SpellName(25771)] = {enable = false, style = "FILL", color = {r = 0.85, g = 0, b = 0, a = 0.85}},
 }
 
 --G.oldBuffWatch is only used for data retrieval by E:DBConversions()
