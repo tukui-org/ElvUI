@@ -1055,25 +1055,39 @@ function E:DBConversions()
 		for k, v in pairs(E.global.unitframe['aurafilters']['Whitelist (Strict)'].spells) do
 			if type(v) == 'table' then
 				local enabledValue = v.enable
-				local spellID = tonumber(v.spellID)
-				local priority = v.priority
-				if spellID then
-					E.global.unitframe['aurafilters']['Whitelist']['spells'][spellID] = {['enable'] = enabledValue, ['priority'] = priority or 0}
+
+				if not v.spellID then --User-changed default spell, only enabled state is available
+					for _k in pairs(G.unitframe["aurafilters"]["Whitelist"].spells) do --Loop through all default spells and look for a match
+						local spellName = GetSpellInfo(_k)
+						if spellName and spellName == k then --A match was found
+							E.global.unitframe['aurafilters']['Whitelist']['spells'][_k] = {['enable'] = enabledValue} --Update default spell with saved enabled state
+						end
+					end
+				else
+					--Spells the user added himself, all needed info is available
+					local spellID = tonumber(v.spellID)
+					E.global.unitframe['aurafilters']['Whitelist']['spells'][spellID] = {['enable'] = enabledValue}
 				end
 			end
+			--Remove old entry
 			E.global.unitframe['aurafilters']['Whitelist (Strict)']["spells"][k] = nil
 		end
+		--Finally remove old table
+		E.global.unitframe['aurafilters']['Whitelist (Strict)'] = nil
 	end
 
 	--Move spells from the "Blacklist (Strict)" filter to the "Blacklist" filter
+	--This one is easier, as all spells have been stored with spellID as key
 	if E.global.unitframe.InvalidSpells then
 		for spellID, enabledValue in pairs(E.global.unitframe.InvalidSpells) do
 			if spellID then
-				E.global.unitframe['aurafilters']['Blacklist']['spells'][spellID] = {['enable'] = enabledValue,}
+				E.global.unitframe['aurafilters']['Blacklist']['spells'][spellID] = {['enable'] = enabledValue}
 			end
-
+			--Remove old entry
 			E.global.unitframe.InvalidSpells[spellID] = nil
 		end
+		--Finally remove old table
+		E.global.unitframe.InvalidSpells = nil
 	end
 
 	if E.db.general.experience.width > 100 and E.db.general.experience.height > 100 then
