@@ -64,11 +64,7 @@ function UF:SizeAndPosition_Portrait(frame)
 			end
 			
 			if frame.ORIENTATION == "LEFT" then
-				if frame.USE_MINI_CLASSBAR and frame.USE_CLASSBAR and not frame.CLASSBAR_DETACHED then
-					portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT", 0, -((frame.CLASSBAR_HEIGHT/2)))
-				else
-					portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT")
-				end
+				portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT", 0, frame.USE_MINI_CLASSBAR and -frame.CLASSBAR_YOFFSET or 0)
 
 				if frame.USE_MINI_POWERBAR or frame.USE_POWERBAR_OFFSET or not frame.USE_POWERBAR or frame.USE_INSET_POWERBAR or frame.POWERBAR_DETACHED then
 					portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", frame.BORDER - frame.SPACING*3, 0)
@@ -76,11 +72,7 @@ function UF:SizeAndPosition_Portrait(frame)
 					portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", frame.BORDER - frame.SPACING*3, 0)
 				end
 			elseif frame.ORIENTATION == "RIGHT" then
-				if frame.USE_MINI_CLASSBAR and frame.USE_CLASSBAR and not frame.CLASSBAR_DETACHED then
-					portrait.backdrop:Point("TOPRIGHT", frame, "TOPRIGHT", 0, -((frame.CLASSBAR_HEIGHT/2)))
-				else
-					portrait.backdrop:Point("TOPRIGHT", frame, "TOPRIGHT")
-				end
+				portrait.backdrop:Point("TOPRIGHT", frame, "TOPRIGHT", 0, frame.USE_MINI_CLASSBAR and -frame.CLASSBAR_YOFFSET or 0)
 				
 				if frame.USE_MINI_POWERBAR or frame.USE_POWERBAR_OFFSET or not frame.USE_POWERBAR or frame.USE_INSET_POWERBAR or frame.POWERBAR_DETACHED then
 					portrait.backdrop:Point("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMRIGHT", -frame.BORDER + frame.SPACING*3, 0)

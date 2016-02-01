@@ -80,10 +80,13 @@ function UF:UpdateClassBar(event, unit, powerType)
 	end
 	
 	self.USE_CLASSBAR = bars:IsShown()
-	
+	self.CLASSBAR_HEIGHT = self.USE_CLASSBAR and db.classbar.height or 0
+	self.CLASSBAR_YOFFSET = not self.USE_CLASSBAR and 0 or (self.USE_MINI_CLASSBAR and ((self.SPACING+(self.CLASSBAR_HEIGHT/2))) or self.CLASSBAR_HEIGHT)
 	--Lets only run this if it's state has changed.
 	if(bars.changedState ~= false) then
 		UF:SizeAndPosition_HealthBar(self)
+		UF:SizeAndPosition_Portrait(self)
+		UF:SizeAndPosition_Threat(self)
 	end
 end
 
