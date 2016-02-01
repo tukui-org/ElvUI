@@ -534,7 +534,7 @@ local function buildBlacklist(...)
 		elseif entry ~= "" then
 			if find(entry, "%[") and find(entry, "%]") then
 				--For some reason the entry was not treated as a valid item. Extract the item name.
-				entry = string.match(entry, "%[(.*)%]")
+				entry = match(entry, "%[(.*)%]")
 			end
 			blackListQueries[#blackListQueries+1] = entry
 		end
