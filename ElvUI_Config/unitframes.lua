@@ -1221,21 +1221,7 @@ local function GetOptionsTable_Portrait(updateFunc, groupName, numUnits)
 			},
 		},
 	}
-	
-	if groupName == "player" then
-		config.args.overlay = nil
-		config.args.position = {
-			order = 3,
-			name = L["Position"],
-			desc = L["Position the portrait frame."],
-			type = 'select',
-			values = {
-				['LEFT'] = L["Left"],
-				['RIGHT'] = L["Right"],
-				['OVERLAY'] = L["Overlay"],
-			}
-		}
-	end
+
 	return config
 end
 
@@ -2301,6 +2287,18 @@ E.Options.args.unitframe.args.player = {
 				["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
 				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 			},
+		},
+		orientation = {
+			order = 14,
+			type = "select",
+			name = L["Frame Orientation"],
+			desc = L["Set the orientation of the UnitFrame. If set to automatic it will adjust based on where the frame is located on the screen."],
+			values = {
+				["AUTOMATIC"] = L["Automatic"],
+				["LEFT"] = L["Left"],
+				["MIDDLE"] = L["Middle"],
+				["RIGHT"] = L["Right"],
+			},			
 		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'player'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'player'),

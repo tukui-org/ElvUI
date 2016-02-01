@@ -230,6 +230,7 @@ function UF:Update_PlayerFrame(frame, db)
 	
 	--new method for storing frame variables, will remove other variables when done
 	do
+		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
 		frame.BORDER = E.Border
 		frame.SPACING = E.Spacing
 		frame.SHADOW_SPACING = (frame.BORDER*3 - frame.SPACING*2)
@@ -242,23 +243,21 @@ function UF:Update_PlayerFrame(frame, db)
 		frame.USE_MINI_POWERBAR = (not frame.POWERBAR_DETACHED and db.power.width == 'spaced' and frame.USE_POWERBAR)
 		frame.USE_POWERBAR_OFFSET = db.power.offset ~= 0 and frame.USE_POWERBAR and not frame.POWERBAR_DETACHED
 		frame.POWERBAR_OFFSET_DIRECTION = db.power.offsetDirection
-		frame.POWERBAR_OFFSET_RIGHT = (frame.USE_POWERBAR_OFFSET and frame.POWERBAR_OFFSET_DIRECTION == "RIGHT") and db.power.offset or 0
-		frame.POWERBAR_OFFSET_LEFT = (frame.USE_POWERBAR_OFFSET and frame.POWERBAR_OFFSET_DIRECTION == "LEFT") and db.power.offset or 0
-		
+		frame.POWERBAR_OFFSET = frame.USE_POWERBAR_OFFSET and db.power.offset or 0
+
 		frame.POWERBAR_HEIGHT = not frame.USE_POWERBAR and 0 or db.power.height
 		frame.POWERBAR_WIDTH = frame.USE_MINI_POWERBAR and (frame.UNIT_WIDTH - (BORDER*2))/2 or (frame.POWERBAR_DETACHED and db.power.detachedWidth or (frame.UNIT_WIDTH - (frame.BORDER*2)))
 
 		frame.USE_PORTRAIT = db.portrait and db.portrait.enable
 		frame.PORTRAIT_POSITION = db.portrait.position
-		frame.USE_PORTRAIT_OVERLAY = frame.USE_PORTRAIT and frame.PORTRAIT_POSITION == "OVERLAY"
-		frame.PORTRAIT_WIDTH_LEFT = (frame.USE_PORTRAIT_OVERLAY or not frame.USE_PORTRAIT or frame.PORTRAIT_POSITION == "RIGHT") and 0 or db.portrait.width
-		frame.PORTRAIT_WIDTH_RIGHT = (frame.USE_PORTRAIT_OVERLAY or not frame.USE_PORTRAIT or frame.PORTRAIT_POSITION == "LEFT") and 0 or db.portrait.width
-
+		frame.USE_PORTRAIT_OVERLAY = frame.USE_PORTRAIT and (db.portrait.overlay or frame.ORIENTATION == "MIDDLE")
+		frame.PORTRAIT_WIDTH = (frame.USE_PORTRAIT_OVERLAY or not frame.USE_PORTRAIT) and 0 or db.portrait.width
+		
 		frame.USE_CLASSBAR = db.classbar.enable and CAN_HAVE_CLASSBAR
 		frame.CLASSBAR_DETACHED = db.classbar.detachFromFrame
 		frame.USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and frame.USE_CLASSBAR and frame.CLASSBAR_DETACHED ~= true
 		frame.CLASSBAR_HEIGHT = db.classbar.height
-		frame.CLASSBAR_WIDTH = UNIT_WIDTH - (frame.BORDER*2) - frame.PORTRAIT_WIDTH_LEFT - frame.PORTRAIT_WIDTH_RIGHT - frame.POWERBAR_OFFSET_LEFT - frame.POWERBAR_OFFSET_RIGHT	
+		frame.CLASSBAR_WIDTH = UNIT_WIDTH - (frame.BORDER*2) - frame.PORTRAIT_WIDTH  - frame.POWERBAR_OFFSET	
 		
 		frame.STAGGER_WIDTH = frame.Stagger and frame.Stagger:IsShown() and (db.stagger.width + (frame.BORDER*2)) or 0;
 	end
@@ -372,108 +371,7 @@ function UF:Update_PlayerFrame(frame, db)
 
 	--Power
 	do
-		local power = frame.Power
-		if USE_POWERBAR then
-			if not frame:IsElementEnabled('Power') then
-				frame:EnableElement('Power')
-
-				power:Show()
-			end
-
-			power.Smooth = self.db.smoothbars
-
-			--Text
-			local x, y = self:GetPositionOffset(db.power.position)
-			power.value:ClearAllPoints()
-			power.value:Point(db.power.position, db.power.attachTextToPower and power or frame.Health, db.power.position, x + db.power.xOffset, y + db.power.yOffset)
-			frame:Tag(power.value, db.power.text_format)
-
-
-			if db.power.attachTextToPower then
-				power.value:SetParent(power)
-			else
-				power.value:SetParent(frame.RaisedElementParent)
-			end
-
-			--Colors
-			power.colorClass = nil
-			power.colorReaction = nil
-			power.colorPower = nil
-			if self.db['colors'].powerclass then
-				power.colorClass = true
-				power.colorReaction = true
-			else
-				power.colorPower = true
-			end
-
-			--Position
-			power:ClearAllPoints()
-			if POWERBAR_DETACHED then
-				power:Width(POWERBAR_WIDTH)
-				power:Height(POWERBAR_HEIGHT)
-				if not power.mover then
-					power:ClearAllPoints()
-					power:Point("BOTTOM", frame, "BOTTOM", 0, -20)
-					E:CreateMover(power, 'PlayerPowerBarMover', L["Player Powerbar"], nil, nil, nil, 'ALL,SOLO')
-				else
-					power:ClearAllPoints()
-					power:Point("BOTTOMLEFT", power.mover, "BOTTOMLEFT")
-					power.mover:SetScale(1)
-					power.mover:SetAlpha(1)
-				end
-
-				power:SetFrameStrata("MEDIUM")
-				power:SetFrameLevel(frame:GetFrameLevel() + 3)
-			elseif USE_POWERBAR_OFFSET then
-				power:Point("TOPRIGHT", frame.Health, "TOPRIGHT", POWERBAR_OFFSET, -POWERBAR_OFFSET)
-				power:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", POWERBAR_OFFSET, -POWERBAR_OFFSET)
-				power:SetFrameStrata("LOW")
-				power:SetFrameLevel(2)
-			elseif USE_INSET_POWERBAR then
-				power:Height(POWERBAR_HEIGHT)
-				power:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", BORDER + (BORDER*2), BORDER + (BORDER*2))
-				power:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", -(BORDER + (BORDER*2)), BORDER + (BORDER*2))
-				power:SetFrameStrata("MEDIUM")
-				power:SetFrameLevel(frame:GetFrameLevel() + 3)
-			elseif USE_MINI_POWERBAR then
-				power:Width(POWERBAR_WIDTH - BORDER*2)
-				power:Height(POWERBAR_HEIGHT)
-				power:Point("RIGHT", frame, "BOTTOMRIGHT", -(BORDER*2 + 4), BORDER + (POWERBAR_HEIGHT/2))
-				power:SetFrameStrata("MEDIUM")
-				power:SetFrameLevel(frame:GetFrameLevel() + 3)
-			else
-				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", BORDER, -(SPACING*3))
-				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -BORDER, BORDER)
-			end
-
-			if db.power.strataAndLevel.useCustomStrata then
-				power:SetFrameStrata(db.power.strataAndLevel.frameStrata)
-			end
-			if db.power.strataAndLevel.useCustomLevel then
-				power:SetFrameLevel(db.power.strataAndLevel.frameLevel)
-			end
-
-			if POWERBAR_DETACHED and db.power.parent == "UIPARENT" then
-				E.FrameLocks[power] = true
-				power:SetParent(E.UIParent)
-			else
-				E.FrameLocks[power] = nil
-				power:SetParent(frame)
-			end
-
-		elseif frame:IsElementEnabled('Power') then
-			frame:DisableElement('Power')
-			power:Hide()
-		end
-
-		if frame.DruidAltMana then
-			if db.power.druidMana then
-				frame:EnableElement('DruidAltMana')
-			else
-				frame:DisableElement('DruidAltMana')
-				frame.DruidAltMana:Hide()
-			end
-		end
+		UF:SizeAndPosition_Power(frame)
 	end
 
 	--Portrait

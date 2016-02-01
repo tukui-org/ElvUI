@@ -81,21 +81,48 @@ function UF:SizeAndPosition_HealthBar(frame)
 	
 	--Position
 	health:ClearAllPoints()
-	health:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER - frame.STAGGER_WIDTH - frame.PORTRAIT_WIDTH_RIGHT - frame.POWERBAR_OFFSET_RIGHT, -frame.BORDER)
+	if frame.ORIENTATION == "LEFT" then
+		health:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER - frame.STAGGER_WIDTH - frame.POWERBAR_OFFSET, -frame.BORDER)
 
-	if frame.POWERBAR_DETACHED then
-		health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.PORTRAIT_WIDTH_LEFT + frame.BORDER, frame.BORDER)
-	elseif frame.USE_POWERBAR_OFFSET then
-		health:Point("TOPRIGHT", frame, "TOPRIGHT", -(frame.BORDER+frame.POWERBAR_OFFSET_RIGHT+frame.PORTRAIT_WIDTH_RIGHT) - frame.STAGGER_WIDTH, -frame.BORDER)
-		health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.PORTRAIT_WIDTH_LEFT + frame.BORDER + frame.POWERBAR_OFFSET_LEFT, frame.BORDER+frame.POWERBAR_OFFSET_RIGHT+frame.POWERBAR_OFFSET_LEFT)
-	elseif frame.USE_INSET_POWERBAR then
-		health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.PORTRAIT_WIDTH_LEFT + frame.BORDER, frame.BORDER)
-	elseif frame.USE_MINI_POWERBAR then
-		health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.PORTRAIT_WIDTH_LEFT + frame.BORDER, frame.BORDER + (frame.POWERBAR_HEIGHT/2))
-	else
-		health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.PORTRAIT_WIDTH_LEFT + frame.BORDER, (frame.USE_POWERBAR and ((frame.BORDER + frame.SPACING)*2) or frame.BORDER) + frame.POWERBAR_HEIGHT)
+		if frame.POWERBAR_DETACHED then
+			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.PORTRAIT_WIDTH + frame.BORDER, frame.BORDER)
+		elseif frame.USE_POWERBAR_OFFSET then
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(frame.BORDER+frame.POWERBAR_OFFSET) - frame.STAGGER_WIDTH, -frame.BORDER)
+			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.PORTRAIT_WIDTH + frame.BORDER, frame.BORDER+frame.POWERBAR_OFFSET+frame.POWERBAR_OFFSET)
+		elseif frame.USE_INSET_POWERBAR then
+			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.PORTRAIT_WIDTH + frame.BORDER, frame.BORDER)
+		elseif frame.USE_MINI_POWERBAR then
+			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.PORTRAIT_WIDTH + frame.BORDER, frame.BORDER + (frame.POWERBAR_HEIGHT/2))
+		else
+			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.PORTRAIT_WIDTH + frame.BORDER, (frame.USE_POWERBAR and ((frame.BORDER + frame.SPACING)*2) or frame.BORDER) + frame.POWERBAR_HEIGHT)
+		end
+	elseif frame.ORIENTATION == "RIGHT" then
+		health:Point("TOPLEFT", frame, "TOPLEFT", frame.BORDER + frame.STAGGER_WIDTH + frame.POWERBAR_OFFSET, -frame.BORDER)
+
+		if frame.POWERBAR_DETACHED or frame.USE_INSET_POWERBAR then
+			health:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -frame.PORTRAIT_WIDTH - frame.BORDER, frame.BORDER)
+		elseif frame.USE_POWERBAR_OFFSET then
+			health:Point("TOPLEFT", frame, "TOPLEFT", frame.BORDER+frame.POWERBAR_OFFSET + frame.STAGGER_WIDTH, -frame.BORDER)
+			health:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -(frame.PORTRAIT_WIDTH + frame.BORDER), frame.BORDER+frame.POWERBAR_OFFSET+frame.POWERBAR_OFFSET)
+		elseif frame.USE_MINI_POWERBAR then
+			health:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -frame.BORDER - frame.PORTRAIT_WIDTH, frame.BORDER + (frame.POWERBAR_HEIGHT/2))
+		else
+			health:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -(frame.PORTRAIT_WIDTH + frame.BORDER), (frame.USE_POWERBAR and ((frame.BORDER + frame.SPACING)*2) or frame.BORDER) + frame.POWERBAR_HEIGHT)
+		end
+	elseif frame.ORIENTATION == "MIDDLE" then
+		health:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER, -frame.BORDER)
+		if frame.USE_POWERBAR_OFFSET then
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(frame.BORDER+frame.POWERBAR_OFFSET), -frame.BORDER)
+			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER+frame.POWERBAR_OFFSET, frame.BORDER+frame.POWERBAR_OFFSET)
+		elseif frame.USE_MINI_POWERBAR then
+			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER, frame.BORDER + (frame.POWERBAR_HEIGHT/2))
+		elseif frame.USE_INSET_POWERBAR then
+			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER, frame.BORDER)
+		else
+			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER, (frame.USE_POWERBAR and ((frame.BORDER + frame.SPACING)*2) or frame.BORDER) + frame.POWERBAR_HEIGHT)
+		end	
 	end
-
+	
 	health.bg:ClearAllPoints()
 	if not frame.USE_PORTRAIT_OVERLAY then
 		health.bg:SetParent(health)
@@ -112,8 +139,8 @@ function UF:SizeAndPosition_HealthBar(frame)
 			DEPTH = -(frame.BORDER+(frame.CLASSBAR_HEIGHT/2))
 		end
 
-		health:Point("TOPRIGHT", frame, "TOPRIGHT", -(frame.BORDER+frame.PORTRAIT_WIDTH_RIGHT+frame.POWERBAR_OFFSET_RIGHT), DEPTH)
-		health:Point("TOPLEFT", frame, "TOPLEFT", frame.PORTRAIT_WIDTH_LEFT+frame.BORDER, DEPTH)
+		health:Point("TOPRIGHT", frame, "TOPRIGHT", -(frame.BORDER+frame.PORTRAIT_WIDTH+frame.POWERBAR_OFFSET), DEPTH)
+		health:Point("TOPLEFT", frame, "TOPLEFT", frame.PORTRAIT_WIDTH+frame.BORDER, DEPTH)
 	end	
 end
 

@@ -63,7 +63,7 @@ function UF:SizeAndPosition_Portrait(frame)
 				portrait:SetFrameLevel(frame:GetFrameLevel() + 5)
 			end
 			
-			if frame.PORTRAIT_POSITION == "LEFT" then
+			if frame.ORIENTATION == "LEFT" then
 				if frame.USE_MINI_CLASSBAR and frame.USE_CLASSBAR and not frame.CLASSBAR_DETACHED then
 					portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT", 0, -((frame.CLASSBAR_HEIGHT/2)))
 				else
@@ -75,7 +75,7 @@ function UF:SizeAndPosition_Portrait(frame)
 				else
 					portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", frame.BORDER - frame.SPACING*3, 0)
 				end
-			else
+			elseif frame.ORIENTATION == "RIGHT" then
 				if frame.USE_MINI_CLASSBAR and frame.USE_CLASSBAR and not frame.CLASSBAR_DETACHED then
 					portrait.backdrop:Point("TOPRIGHT", frame, "TOPRIGHT", 0, -((frame.CLASSBAR_HEIGHT/2)))
 				else
@@ -106,7 +106,7 @@ function UF:PortraitUpdate(unit)
 	if not db then return end
 
 	local portrait = db.portrait
-	if portrait.enable and portrait.overlay then
+	if portrait.enable and self:GetParent().USE_PORTRAIT_OVERLAY then
 		self:SetAlpha(0);
 		self:SetAlpha(0.35);
 	else
