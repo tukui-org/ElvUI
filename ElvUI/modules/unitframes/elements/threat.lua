@@ -38,14 +38,16 @@ function UF:SizeAndPosition_Threat(frame)
 			threat.glow:SetFrameStrata('BACKGROUND')
 			threat.glow:ClearAllPoints()
 			if frame.USE_POWERBAR_OFFSET then
-				threat.glow:Point("TOPLEFT", -frame.SHADOW_SPACING, frame.SHADOW_SPACING-(frame.USE_MINI_CLASSBAR and frame.CLASSBAR_YOFFSET or 0))
-				
-				if USE_PORTRAIT and not USE_PORTRAIT_OVERLAY and frame.ORIENTATION == "RIGHT" then
-					threat.glow:Point("BOTTOMRIGHT", frame.Portrait.backdrop, "BOTTOMRIGHT", -frame.SHADOW_SPACING, -frame.SHADOW_SPACING)
-				else
+				if frame.ORIENTATION == "LEFT" then
+					threat.glow:Point("TOPLEFT", -frame.SHADOW_SPACING, frame.SHADOW_SPACING-(frame.USE_MINI_CLASSBAR and frame.CLASSBAR_YOFFSET or 0))
 					threat.glow:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", frame.SHADOW_SPACING, -frame.SHADOW_SPACING)
+				elseif frame.ORIENTATION == "RIGHT" then
+					threat.glow:Point("TOPRIGHT", frame.SHADOW_SPACING, frame.SHADOW_SPACING-(frame.USE_MINI_CLASSBAR and frame.CLASSBAR_YOFFSET or 0))
+					threat.glow:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", -frame.SHADOW_SPACING, -frame.SHADOW_SPACING)
+				else
+					threat.glow:Point("TOPRIGHT", frame.Health.backdrop, "TOPRIGHT", frame.SHADOW_SPACING, frame.SHADOW_SPACING)
+					threat.glow:Point("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMLEFT", -frame.SHADOW_SPACING, -frame.SHADOW_SPACING)
 				end
-				
 			else
 				threat.glow:SetBackdropBorderColor(0, 0, 0, 0)
 				threat.glow:Point("TOPLEFT", -frame.SHADOW_SPACING, frame.SHADOW_SPACING-(frame.USE_MINI_CLASSBAR and frame.CLASSBAR_YOFFSET or 0))
@@ -78,8 +80,7 @@ function UF:UpdateThreat(unit, status, r, g, b)
 
 	local db = parent.db
 	if not db then return end
-	status = 3 --temp
-	r, g, b = 1, 0, 0 --temp
+
 	if status and status > 1 then
 		if db.threatStyle == 'GLOW' then
 			self.glow:Show()
