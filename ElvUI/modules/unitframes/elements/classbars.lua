@@ -28,11 +28,19 @@ local SPELL_POWER = {
 	PALADIN = SPELL_POWER_HOLY_POWER
 }
 
--------------------------------------------------------------
--- PALADIN
--------------------------------------------------------------
+local function ToggleResourceBar(bars)
+	local frame = bars:GetParent()
+	local db = frame.db
+	frame.USE_CLASSBAR = bars:IsShown()
 
-function UF:Construct_ResourceBar(frame)
+	frame.CLASSBAR_HEIGHT = frame.USE_CLASSBAR and db.classbar.height or 0
+	frame.CLASSBAR_YOFFSET = not frame.USE_CLASSBAR and 0 or (frame.USE_MINI_CLASSBAR and ((frame.SPACING+(frame.CLASSBAR_HEIGHT/2))) or frame.CLASSBAR_HEIGHT)	
+	UF:SizeAndPosition_HealthBar(frame)
+	UF:SizeAndPosition_Portrait(frame, true) --running :Hide on portrait makes the frame all funky
+	UF:SizeAndPosition_Threat(frame)
+end
+
+function UF:Construct_PaladinResourceBar(frame, useBG, overrideFunc)
 	local bars = CreateFrame("Frame", nil, frame)
 	bars:CreateBackdrop('Default')
 	
@@ -44,15 +52,26 @@ function UF:Construct_ResourceBar(frame)
 
 		bars[i]:CreateBackdrop('Default')
 		bars[i].backdrop:SetParent(bars)
+		
+		if useBG then
+			bars[i].bg = bars[i]:CreateTexture(nil, 'BORDER')
+			bars[i].bg:SetAllPoints()
+			bars[i].bg:SetTexture(E['media'].blankTex)
+			bars[i].bg.multiplier = 0.3		
+		end
 	end
-
-	bars.Override = UF.UpdateClassBar
+	
+	bars.Override = UF.Update_HolyPower
+	bars:SetScript("OnShow", ToggleResourceBar)
+	bars:SetScript("OnHide", ToggleResourceBar)	
 
 	return bars
 end
 
 
-function UF:UpdateClassBar(event, unit, powerType)
+function UF:Update_HolyPower(event, unit, powerType)
+	if not (powerType == nil or powerType == 'HOLY_POWER') then return end
+	
 	local db = self.db
 	if not db then return; end
 	local numPower = UnitPower('player', SPELL_POWER[E.myclass]);

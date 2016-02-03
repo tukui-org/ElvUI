@@ -30,9 +30,9 @@ function UF:Construct_Portrait(frame, type)
 	return portrait
 end
 
-function UF:SizeAndPosition_Portrait(frame)
+function UF:SizeAndPosition_Portrait(frame, dontHide)
 	local db = frame.db
-	if frame.Portrait then
+	if frame.Portrait and not dontHide then
 		frame.Portrait:Hide()
 		frame.Portrait:ClearAllPoints()
 		frame.Portrait.backdrop:Hide()
@@ -51,13 +51,18 @@ function UF:SizeAndPosition_Portrait(frame)
 			if db.portrait.style == '3D' then
 				portrait:SetFrameLevel(frame.Health:GetFrameLevel() + 1)
 			end
+			
 			portrait:SetAllPoints(frame.Health)
 			portrait:SetAlpha(0.3)
-			portrait:Show()
+			if not dontHide then
+				portrait:Show()
+			end
 			portrait.backdrop:Hide()
 		else
 			portrait:SetAlpha(1)
-			portrait:Show()
+			if not dontHide then
+				portrait:Show()
+			end
 			portrait.backdrop:Show()
 			if db.portrait.style == '3D' then
 				portrait:SetFrameLevel(frame:GetFrameLevel() + 5)

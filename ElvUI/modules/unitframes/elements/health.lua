@@ -78,7 +78,7 @@ function UF:SizeAndPosition_HealthBar(frame)
 		health.colorClass = (not self.db.colors.forcehealthreaction)
 		health.colorReaction = true
 	end	
-	
+
 	--Position
 	health:ClearAllPoints()
 	if frame.ORIENTATION == "LEFT" then

@@ -38,13 +38,13 @@ function UF:Construct_PlayerFrame(frame)
 	frame.Castbar = self:Construct_Castbar(frame, 'LEFT', L["Player Castbar"])
 
 	if E.myclass == "PALADIN" then
-		frame.HolyPower = self:Construct_ResourceBar(frame)
+		frame.HolyPower = self:Construct_PaladinResourceBar(frame, nil, UF.UpdateClassBar)
 		frame.ClassBar = 'HolyPower'
 	elseif E.myclass == "WARLOCK" then
-		frame.ShardBar = self:Construct_WarlockResourceBar(frame)
+		frame.ShardBar = self:Construct_DeathKnightResourceBar(frame)
 		frame.ClassBar = 'ShardBar'
 	elseif E.myclass == "DEATHKNIGHT" then
-		frame.Runes = self:Construct_DeathKnightResourceBar(frame)
+		frame.Runes = self:Construct_RuneBar(frame, true)
 		frame.ClassBar = 'Runes'
 	elseif E.myclass == "DRUID" then
 		frame.EclipseBar = self:Construct_DruidResourceBar(frame)
@@ -168,7 +168,8 @@ function UF:Update_PlayerFrame(frame, db)
 	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and USE_CLASSBAR and CLASSBAR_DETACHED ~= true
 	local CLASSBAR_HEIGHT = db.classbar.height
 	local CLASSBAR_WIDTH = UNIT_WIDTH - (BORDER*2) - PORTRAIT_WIDTH - POWERBAR_OFFSET
-
+	local MAX_CLASS_BAR = UF.classMaxResourceBar[E.myclass]
+	
 	local unit = self.unit
 	
 	--new method for storing frame variables, will remove other variables when done
@@ -196,12 +197,13 @@ function UF:Update_PlayerFrame(frame, db)
 		frame.USE_PORTRAIT_OVERLAY = frame.USE_PORTRAIT and (db.portrait.overlay or frame.ORIENTATION == "MIDDLE")
 		frame.PORTRAIT_WIDTH = (frame.USE_PORTRAIT_OVERLAY or not frame.USE_PORTRAIT) and 0 or db.portrait.width
 		
-		frame.USE_CLASSBAR = db.classbar.enable and CAN_HAVE_CLASSBAR
+		frame.MAX_CLASS_BAR = UF.classMaxResourceBar[E.myclass] or 0
+		frame.USE_CLASSBAR = db.classbar.enable and CAN_HAVE_CLASSBAR and frame[frame.ClassBar]:IsShown()
 		frame.CLASSBAR_DETACHED = db.classbar.detachFromFrame
 		frame.USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and frame.USE_CLASSBAR and frame.CLASSBAR_DETACHED ~= true
-		frame.CLASSBAR_HEIGHT = self.USE_CLASSBAR and db.classbar.height or 0
+		frame.CLASSBAR_HEIGHT = frame.USE_CLASSBAR and db.classbar.height or 0
 		frame.CLASSBAR_WIDTH = frame.UNIT_WIDTH - (frame.BORDER*2) - frame.PORTRAIT_WIDTH  - frame.POWERBAR_OFFSET	
-		frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR) and 0 or (frame.USE_MINI_CLASSBAR and ((frame.SPACING+(frame.CLASSBAR_HEIGHT/2))) or frame.CLASSBAR_HEIGHT)
+		frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR) and 0 or (frame.USE_MINI_CLASSBAR and (frame.SPACING+(frame.CLASSBAR_HEIGHT/2)) or frame.CLASSBAR_HEIGHT)
 
 		frame.STAGGER_SHOWN = frame.Stagger and frame.Stagger:IsShown()
 		frame.STAGGER_WIDTH = frame.STAGGER_SHOWN and (db.stagger.width + (frame.BORDER*2)) or 0;
@@ -295,7 +297,7 @@ function UF:Update_PlayerFrame(frame, db)
 
 	--Resource Bars
 	do
-		local bars = frame[frame.ClassBar]
+		
 		if bars then
 			--Store original parent reference needed in classbars.lua
 			bars.origParent = frame
@@ -310,7 +312,6 @@ function UF:Update_PlayerFrame(frame, db)
 				c = E.db.general.bordercolor
 				bars.backdrop:SetBackdropBorderColor(c.r, c.g, c.b)
 			end
-			local MAX_CLASS_BAR = UF.classMaxResourceBar[E.myclass]
 			if USE_MINI_CLASSBAR and not CLASSBAR_DETACHED then
 				bars:ClearAllPoints()
 				bars:Point("CENTER", frame.Health.backdrop, "TOP", 0, 0)
