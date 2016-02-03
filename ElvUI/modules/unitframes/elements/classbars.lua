@@ -207,19 +207,6 @@ function UF:UpdateHarmony()
 	end
 end
 
-function UF:Construct_Stagger(frame)
-	local stagger = CreateFrame("Statusbar", nil, frame)
-	UF['statusbars'][stagger] = true
-	stagger:CreateBackdrop("Default")
-	stagger:SetOrientation("VERTICAL")
-	stagger.PostUpdate = UF.PostUpdateStagger
-	return stagger
-end
-
-function UF:PostUpdateStagger()
-	UF:UpdatePlayerFrameAnchors(ElvUF_Player, (ElvUF_Player.Harmony and ElvUF_Player.Harmony:IsShown()))
-end
-
 -------------------------------------------------------------
 -- MAGE
 -------------------------------------------------------------

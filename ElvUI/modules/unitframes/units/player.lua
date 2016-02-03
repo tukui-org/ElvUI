@@ -92,7 +92,6 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 	local health = frame.Health
 	local threat = frame.Threat
 	local power = frame.Power
-	local stagger = frame.Stagger
 	local USE_PORTRAIT = db.portrait.enable
 	local PORTRAIT_POSITION = db.portrait.position
 	local USE_PORTRAIT_OVERLAY = USE_PORTRAIT and PORTRAIT_POSITION == "OVERLAY"
@@ -112,8 +111,6 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 	local SPACING = E.Spacing;
 	local BORDER = E.Border;
 	local SHADOW_SPACING = (BORDER*3 - SPACING*2)
-	local USE_STAGGER = stagger and stagger:IsShown();
-	local STAGGER_WIDTH = USE_STAGGER and (db.stagger.width + (BORDER*2)) or 0;
 
 	if not USE_POWERBAR then
 		POWERBAR_HEIGHT = 0
@@ -134,17 +131,7 @@ function UF:UpdatePlayerFrameAnchors(frame, isShown)
 	end
 
 	if USE_STAGGER then
-		if not USE_MINI_POWERBAR and not USE_INSET_POWERBAR and not POWERBAR_DETACHED then
-			stagger:Point('BOTTOMLEFT', power, 'BOTTOMRIGHT', BORDER*2 + (-BORDER + SPACING*3), 0)
-		else
-			stagger:Point('BOTTOMLEFT', health, 'BOTTOMRIGHT', BORDER*2 + (-BORDER + SPACING*3), 0)
-		end
-		stagger:Point('TOPRIGHT', health, 'TOPRIGHT', STAGGER_WIDTH, 0)
-
-
-		if not USE_POWERBAR_OFFSET and not USE_MINI_POWERBAR and not USE_INSET_POWERBAR and not POWERBAR_DETACHED then
-			power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -BORDER - STAGGER_WIDTH, BORDER)
-		end
+		
 	elseif not USE_POWERBAR_OFFSET and not USE_MINI_POWERBAR and not USE_INSET_POWERBAR and not POWERBAR_DETACHED then
 	
 	end
@@ -216,7 +203,8 @@ function UF:Update_PlayerFrame(frame, db)
 		frame.CLASSBAR_WIDTH = frame.UNIT_WIDTH - (frame.BORDER*2) - frame.PORTRAIT_WIDTH  - frame.POWERBAR_OFFSET	
 		frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR) and 0 or (frame.USE_MINI_CLASSBAR and ((frame.SPACING+(frame.CLASSBAR_HEIGHT/2))) or frame.CLASSBAR_HEIGHT)
 
-		frame.STAGGER_WIDTH = frame.Stagger and frame.Stagger:IsShown() and (db.stagger.width + (frame.BORDER*2)) or 0;
+		frame.STAGGER_SHOWN = frame.Stagger and frame.Stagger:IsShown()
+		frame.STAGGER_WIDTH = frame.STAGGER_SHOWN and (db.stagger.width + (frame.BORDER*2)) or 0;
 	end
 	
 	
@@ -457,16 +445,7 @@ function UF:Update_PlayerFrame(frame, db)
 	--Stagger
 	do
 		if E.myclass == "MONK" then
-			local stagger = frame.Stagger
-			if db.stagger.enable then
-				if not frame:IsElementEnabled('Stagger') then
-					frame:EnableElement('Stagger')
-				end
-			else
-				if frame:IsElementEnabled('Stagger') then
-					frame:DisableElement('Stagger')
-				end
-			end
+			UF:SizeAndPosition_Stagger(frame)
 		end
 	end
 

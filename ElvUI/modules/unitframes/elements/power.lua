@@ -104,13 +104,13 @@ function UF:SizeAndPosition_Power(frame)
 			power:SetFrameLevel(frame:GetFrameLevel() + 3)
 		elseif frame.USE_POWERBAR_OFFSET then
 			if frame.ORIENTATION == "LEFT" then
-				power:Point("TOPRIGHT", frame.Health, "TOPRIGHT", frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
+				power:Point("TOPRIGHT", frame.Health, "TOPRIGHT", frame.POWERBAR_OFFSET + frame.STAGGER_WIDTH, -frame.POWERBAR_OFFSET)
 				power:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
 			elseif frame.ORIENTATION == "MIDDLE" then
 				power:Point("TOPLEFT", frame, "TOPLEFT", frame.BORDER, -frame.POWERBAR_OFFSET)
 				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -frame.BORDER, frame.BORDER)
 			else
-				power:Point("TOPLEFT", frame.Health, "TOPLEFT", -frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
+				power:Point("TOPLEFT", frame.Health, "TOPLEFT", -frame.POWERBAR_OFFSET - frame.STAGGER_WIDTH, -frame.POWERBAR_OFFSET)
 				power:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", -frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)					
 			end
 			power:SetFrameStrata("LOW")
@@ -140,10 +140,10 @@ function UF:SizeAndPosition_Power(frame)
 		else
 			if frame.ORIENTATION == "LEFT" then
 				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", frame.BORDER, -(frame.SPACING*3))
-				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -frame.BORDER, frame.BORDER)
+				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -frame.BORDER - frame.STAGGER_WIDTH, frame.BORDER)
 			else
 				power:Point("TOPRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", -frame.BORDER, -(frame.SPACING*3))
-				power:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER, frame.BORDER)			
+				power:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER + frame.STAGGER_WIDTH, frame.BORDER)			
 			end
 		end
 
