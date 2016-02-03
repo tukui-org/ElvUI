@@ -103,7 +103,7 @@ function UF:EnableDisable_Auras(frame)
 	frame.Debuffs:ClearAllPoints()
 end
 
-function UF:PositionAndSize_Auras(frame, auraType)
+function UF:SizeAndPosition_Auras(frame, auraType)
 	local db = frame.db
 	
 	local auras = frame[auraType]

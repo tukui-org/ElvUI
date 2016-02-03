@@ -296,8 +296,8 @@ function UF:Update_PlayerFrame(frame, db)
 	--Auras
 	do
 		UF:EnableDisable_Auras(frame)
-		UF:PositionAndSize_Auras(frame, 'Buffs')
-		UF:PositionAndSize_Auras(frame, 'Debuffs')
+		UF:SizeAndPosition_Auras(frame, 'Buffs')
+		UF:SizeAndPosition_Auras(frame, 'Debuffs')
 	end
 
 	--Castbar
