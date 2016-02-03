@@ -110,9 +110,9 @@ function UF:SizeAndPosition_HealthBar(frame)
 			health:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -(frame.PORTRAIT_WIDTH + frame.BORDER), (frame.USE_POWERBAR and ((frame.BORDER + frame.SPACING)*2) or frame.BORDER) + frame.POWERBAR_HEIGHT)
 		end
 	elseif frame.ORIENTATION == "MIDDLE" then
-		health:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER, -frame.BORDER - frame.CLASSBAR_YOFFSET)
+		health:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER-frame.STAGGER_WIDTH, -frame.BORDER - frame.CLASSBAR_YOFFSET)
 		if frame.USE_POWERBAR_OFFSET then
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(frame.BORDER+frame.POWERBAR_OFFSET), -frame.BORDER)
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(frame.BORDER+frame.POWERBAR_OFFSET+frame.STAGGER_WIDTH), -frame.BORDER)
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER+frame.POWERBAR_OFFSET, frame.BORDER+frame.POWERBAR_OFFSET)
 		elseif frame.USE_MINI_POWERBAR then
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER, frame.BORDER + (frame.POWERBAR_HEIGHT/2))

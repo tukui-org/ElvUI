@@ -19,39 +19,37 @@ end
 function UF:SizeAndPosition_Stagger(frame)
 	local stagger = frame.Stagger
 	local db = frame.db
-
+	
 	frame.STAGGER_WIDTH = stagger and frame.STAGGER_SHOWN and (db.stagger.width + (frame.BORDER*2)) or 0;
 
-	--TODO: Account for MIDDLE/RIGHT orientation
-	if stagger and frame.STAGGER_SHOWN then
-		if not frame.USE_MINI_POWERBAR and not frame.USE_INSET_POWERBAR and not frame.POWERBAR_DETACHED and not frame.USE_POWERBAR_OFFSET then
-			if frame.ORIENTATION == "LEFT" then
-				stagger:Point('BOTTOMLEFT', frame.Power, 'BOTTOMRIGHT', frame.BORDER*2 + (-frame.BORDER + frame.SPACING*3), 0)
-			elseif frame.ORIENTATION == "MIDDLE" then
-			
-			else
-			
-			end
-		else
-			if frame.ORIENTATION == "LEFT" then
-				stagger:Point('BOTTOMLEFT', frame.Health, 'BOTTOMRIGHT', frame.BORDER*2 + (-frame.BORDER + frame.SPACING*3), 0)
-			elseif frame.ORIENTATION == "MIDDLE" then
-			
-			else
-			
-			end
+	if db.stagger.enable then
+		if not frame:IsElementEnabled('Stagger') then
+			frame:EnableElement('Stagger')
 		end
 
-		if frame.ORIENTATION == "LEFT" or frame.ORIENTATION == "MIDDLE" then
-			stagger:Point('TOPRIGHT', frame.Health, 'TOPRIGHT', frame.STAGGER_WIDTH, 0)
+		stagger:ClearAllPoints()
+		if not frame.USE_MINI_POWERBAR and not frame.USE_INSET_POWERBAR and not frame.POWERBAR_DETACHED and not frame.USE_POWERBAR_OFFSET then
+			if frame.ORIENTATION == "RIGHT" then
+				--Position on left side of health because portrait is on right side
+				stagger:Point('BOTTOMRIGHT', frame.Power, 'BOTTOMLEFT', -frame.BORDER*2 + (frame.BORDER - frame.SPACING*3), 0)
+				stagger:Point('TOPLEFT', frame.Health, 'TOPLEFT', -frame.STAGGER_WIDTH, 0)
+			else
+				--Position on right side
+				stagger:Point('BOTTOMLEFT', frame.Power, 'BOTTOMRIGHT', frame.BORDER*2 + (-frame.BORDER + frame.SPACING*3), 0)
+				stagger:Point('TOPRIGHT', frame.Health, 'TOPRIGHT', frame.STAGGER_WIDTH, 0)
+			end
 		else
-			
+			if frame.ORIENTATION == "RIGHT" then
+				--Position on left side of health because portrait is on right side
+				stagger:Point('BOTTOMRIGHT', frame.Health, 'BOTTOMLEFT', -frame.BORDER*2 + (frame.BORDER - frame.SPACING*3), 0)
+				stagger:Point('TOPLEFT', frame.Health, 'TOPLEFT', -frame.STAGGER_WIDTH, 0)
+			else
+				--Position on right side
+				stagger:Point('BOTTOMLEFT', frame.Health, 'BOTTOMRIGHT', frame.BORDER*2 + (-frame.BORDER + frame.SPACING*3), 0)
+				stagger:Point('TOPRIGHT', frame.Health, 'TOPRIGHT', frame.STAGGER_WIDTH, 0)
+			end
 		end
-	end
-	
-	if db.stagger.enable and not frame:IsElementEnabled('Stagger') then
-		frame:EnableElement('Stagger')
-	elseif not db.stagger.enable and frame:IsElementEnabled('Stagger') then
+	elseif frame:IsElementEnabled('Stagger') then
 		frame:DisableElement('Stagger')
 	end
 end
@@ -69,6 +67,16 @@ function UF:PostUpdateStagger()
 	end
 
 	frame.STAGGER_SHOWN = isShown
+	
+	--[[
+		--Use this to force it to show for testing purposes
+		self.Hide = self.Show
+		self:SetMinMaxValues(0, 100)
+		self:SetValue(50)
+		self.SetValue = function() end
+		self:Show()
+		frame.STAGGER_SHOWN = true
+	]]
 	
 	--Only update when necessary
 	if stateChanged then

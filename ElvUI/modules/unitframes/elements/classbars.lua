@@ -176,11 +176,13 @@ function UF:UpdateHarmony()
 
 	if numChi == 0 and db.classbar.autoHide then
 		self:Hide()
-		frame.Health:Point("TOPRIGHT", frame, "TOPRIGHT", -HEALTH_OFFSET_X, -BORDER)
-		frame.Health:Point("TOPLEFT", frame, "TOPLEFT", BORDER+PORTRAIT_WIDTH, -BORDER)
+		--Comment out this code so we can test Stagger position
+		-- frame.Health:Point("TOPRIGHT", frame, "TOPRIGHT", -HEALTH_OFFSET_X, -BORDER)
+		-- frame.Health:Point("TOPLEFT", frame, "TOPLEFT", BORDER+PORTRAIT_WIDTH, -BORDER)
 	else
-		frame.Health:Point("TOPRIGHT", frame, "TOPRIGHT", -HEALTH_OFFSET_X, -HEALTH_OFFSET_Y)
-		frame.Health:Point("TOPLEFT", frame, "TOPLEFT", BORDER+PORTRAIT_WIDTH, -HEALTH_OFFSET_Y)
+		--Comment out this code so we can test Stagger position
+		-- frame.Health:Point("TOPRIGHT", frame, "TOPRIGHT", -HEALTH_OFFSET_X, -HEALTH_OFFSET_Y)
+		-- frame.Health:Point("TOPLEFT", frame, "TOPLEFT", BORDER+PORTRAIT_WIDTH, -HEALTH_OFFSET_Y)
 
 		for i = 1, maxBars do
 			self[i]:Height(self:GetHeight())

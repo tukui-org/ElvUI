@@ -126,13 +126,13 @@ function UF:SizeAndPosition_Power(frame)
 			
 			if frame.ORIENTATION == "LEFT" then
 				power:Width(frame.POWERBAR_WIDTH - frame.BORDER*2)
-				power:Point("RIGHT", frame, "BOTTOMRIGHT", -(frame.BORDER*2 + 4), frame.BORDER + (frame.POWERBAR_HEIGHT/2))
+				power:Point("RIGHT", frame, "BOTTOMRIGHT", -(frame.BORDER*2 + 4) -frame.STAGGER_WIDTH, frame.BORDER + (frame.POWERBAR_HEIGHT/2))
 			elseif frame.ORIENTATION == "RIGHT" then
 				power:Width(frame.POWERBAR_WIDTH - frame.BORDER*2)
-				power:Point("LEFT", frame, "BOTTOMLEFT", (frame.BORDER*2 + 4), frame.BORDER + (frame.POWERBAR_HEIGHT/2))
+				power:Point("LEFT", frame, "BOTTOMLEFT", (frame.BORDER*2 + 4) +frame.STAGGER_WIDTH, frame.BORDER + (frame.POWERBAR_HEIGHT/2))
 			else
 				power:Point("LEFT", frame, "BOTTOMLEFT", (frame.BORDER*2 + 4), frame.BORDER + (frame.POWERBAR_HEIGHT/2))
-				power:Point("RIGHT", frame, "BOTTOMRIGHT", -(frame.BORDER*2 + 4), frame.BORDER + (frame.POWERBAR_HEIGHT/2))
+				power:Point("RIGHT", frame, "BOTTOMRIGHT", -(frame.BORDER*2 + 4) -frame.STAGGER_WIDTH, frame.BORDER + (frame.POWERBAR_HEIGHT/2))
 			end
 			
 			power:SetFrameStrata("MEDIUM")
@@ -141,9 +141,12 @@ function UF:SizeAndPosition_Power(frame)
 			if frame.ORIENTATION == "LEFT" then
 				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", frame.BORDER, -(frame.SPACING*3))
 				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -frame.BORDER - frame.STAGGER_WIDTH, frame.BORDER)
+			elseif frame.ORIENTATION == "RIGHT" then
+				power:Point("TOPRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", -frame.BORDER, -(frame.SPACING*3))
+				power:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER + frame.STAGGER_WIDTH, frame.BORDER)
 			else
 				power:Point("TOPRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", -frame.BORDER, -(frame.SPACING*3))
-				power:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER + frame.STAGGER_WIDTH, frame.BORDER)			
+				power:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER, frame.BORDER)
 			end
 		end
 
