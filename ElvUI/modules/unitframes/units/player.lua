@@ -297,7 +297,7 @@ function UF:Update_PlayerFrame(frame, db)
 
 	--Resource Bars
 	do
-		
+		local bars = frame[frame.ClassBar]
 		if bars then
 			--Store original parent reference needed in classbars.lua
 			bars.origParent = frame
@@ -312,6 +312,7 @@ function UF:Update_PlayerFrame(frame, db)
 				c = E.db.general.bordercolor
 				bars.backdrop:SetBackdropBorderColor(c.r, c.g, c.b)
 			end
+
 			if USE_MINI_CLASSBAR and not CLASSBAR_DETACHED then
 				bars:ClearAllPoints()
 				bars:Point("CENTER", frame.Health.backdrop, "TOP", 0, 0)
