@@ -1477,30 +1477,35 @@ local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
 		set = function(info, value) E.db.unitframe.units[groupName]['rdebuffs'][ info[#info] ] = value; updateFunc(UF, groupName) end,
 		args = {
 			enable = {
+				order = 1,
 				type = 'toggle',
 				name = L["Enable"],
-				order = 1,
+			},
+			showDispellableDebuff = {
+				order = 2,
+				type = "toggle",
+				name = L["Show Dispellable Debuffs"],
 			},
 			size = {
+				order = 3,
 				type = 'range',
 				name = L["Size"],
-				order = 2,
 				min = 8, max = 35, step = 1,
 			},
 			font = {
-				order = 3,
+				order = 4,
 				type = "select", dialogControl = "LSM30_Font",
 				name = L["Font"],
 				values = AceGUIWidgetLSMlists.font,
 			},
 			fontSize = {
+				order = 5,
 				type = 'range',
 				name = L["Font Size"],
-				order = 4,
 				min = 7, max = 22, step = 1,
 			},
 			fontOutline = {
-				order = 5,
+				order = 6,
 				type = "select",
 				name = L["Font Outline"],
 				values = {
@@ -1511,22 +1516,22 @@ local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
 				},
 			},
 			xOffset = {
-				order = 6,
+				order = 7,
 				type = 'range',
 				name = L["xOffset"],
 				min = -300, max = 300, step = 1,
 			},
 			yOffset = {
-				order = 7,
+				order = 8,
 				type = 'range',
 				name = L["yOffset"],
 				min = -300, max = 300, step = 1,
 			},
 			configureButton = {
+				order = 9,
 				type = 'execute',
 				name = L["Configure Auras"],
 				func = function() E:SetToFilterConfig('RaidDebuffs') end,
-				order = 8
 			},
 			duration = {
 				order = 11,

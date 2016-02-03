@@ -1681,6 +1681,7 @@ P['unitframe'] = {
 			},
 			['rdebuffs'] = {
 				['enable'] = false,
+				["showDispellableDebuff"] = true,
 				['fontSize'] = 10,
 				["font"] = "ElvUI Font",
 				["fontOutline"] = "OUTLINE",
@@ -1859,6 +1860,7 @@ P['unitframe'] = {
 			},
 			['rdebuffs'] = {
 				['enable'] = true,
+				["showDispellableDebuff"] = true,
 				['fontSize'] = 10,
 				["font"] = "ElvUI Font",
 				["fontOutline"] = "OUTLINE",
@@ -2003,6 +2005,7 @@ P['unitframe'] = {
 			},
 			['rdebuffs'] = {
 				['enable'] = false,
+				["showDispellableDebuff"] = true,
 				['fontSize'] = 10,
 				["font"] = "ElvUI Font",
 				["fontOutline"] = "OUTLINE",
@@ -2149,6 +2152,7 @@ P['unitframe'] = {
 			},
 			['rdebuffs'] = {
 				['enable'] = true,
+				["showDispellableDebuff"] = true,
 				['fontSize'] = 10,
 				["font"] = "ElvUI Font",
 				["fontOutline"] = "OUTLINE",
@@ -2240,6 +2244,7 @@ P['unitframe'] = {
 			},
 			['rdebuffs'] = {
 				['enable'] = true,
+				["showDispellableDebuff"] = true,
 				['fontSize'] = 10,
 				["font"] = "ElvUI Font",
 				["fontOutline"] = "OUTLINE",
@@ -2327,6 +2332,7 @@ P['unitframe'] = {
 			},
 			['rdebuffs'] = {
 				['enable'] = true,
+				["showDispellableDebuff"] = true,
 				['fontSize'] = 10,
 				["font"] = "ElvUI Font",
 				["fontOutline"] = "OUTLINE",

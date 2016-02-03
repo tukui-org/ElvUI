@@ -916,6 +916,7 @@ L["Shadow Orbs"] = true;
 L["Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."] = true;
 L["Show Aura From Other Players"] = true;
 L["Show Auras"] = true;
+L["Show Dispellable Debuffs"] = true;
 L["Show For DPS"] = true;
 L["Show For Healers"] = true;
 L["Show For Tanks"] = true;

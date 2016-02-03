@@ -928,6 +928,7 @@ L["Shadow Orbs"] = "Schattenkugeln"
 L["Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."] = "Zeige eingehende Heilung im Einheitenfenster. Zeigt eine etwas anders farbige Leiste für eingehende Überheilung."
 L["Show Aura From Other Players"] = "Zeige Auren von anderen Spielern"
 L["Show Auras"] = "Zeige Auren"
+L["Show Dispellable Debuffs"] = true;
 L["Show For DPS"] = "Zeige für Schadensklassen"
 L["Show For Healers"] = "Zeige für Heiler"
 L["Show For Tanks"] = "Zeige für Tanks"
