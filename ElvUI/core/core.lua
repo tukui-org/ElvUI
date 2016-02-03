@@ -1168,7 +1168,6 @@ function E:DBConversions()
 			E.global.unitframe.buffwatch[class][id] = nil
 		end
 	end
-	
 end
 
 local CPU_USAGE = {}
