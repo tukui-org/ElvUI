@@ -660,6 +660,7 @@ P['unitframe'] = {
 			['enable'] = true,
 			['width'] = 270,
 			['height'] = 54,
+			['orientation'] = 'RIGHT',
 			['threatStyle'] = 'GLOW',
 			["smartAuraPosition"] = "DISABLED",
 			['rangeCheck'] = true,

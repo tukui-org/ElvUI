@@ -119,7 +119,7 @@ function UF:Update_PlayerFrame(frame, db)
 		frame.CAN_HAVE_CLASSBAR = CAN_HAVE_CLASSBAR
 		frame.MAX_CLASS_BAR = frame.MAX_CLASS_BAR or UF.classMaxResourceBar[E.myclass] or 0 --only set this initially
 		frame.USE_CLASSBAR = db.classbar.enable and frame.CAN_HAVE_CLASSBAR
-		frame.CLASSBAR_SHOWN = CAN_HAVE_CLASSBAR and frame[frame.ClassBar]:IsShown()
+		frame.CLASSBAR_SHOWN = frame.CAN_HAVE_CLASSBAR and frame[frame.ClassBar]:IsShown()
 		frame.CLASSBAR_DETACHED = db.classbar.detachFromFrame
 		frame.USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and frame.USE_CLASSBAR
 		frame.CLASSBAR_HEIGHT = frame.USE_CLASSBAR and db.classbar.height or 0
@@ -229,7 +229,9 @@ function UF:Update_PlayerFrame(frame, db)
 	do
 		UF:Configure_CustomTexts(frame)
 	end
-
+	
+	
+	--Transparency Settings
 	if UF.db.colors.transparentHealth then
 		UF:ToggleTransparentStatusBar(true, frame.Health, frame.Health.bg)
 	else

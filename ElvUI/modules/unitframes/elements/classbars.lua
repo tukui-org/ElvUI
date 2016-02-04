@@ -167,8 +167,8 @@ function UF:Configure_ClassBar(frame)
 		bars.SolarBar:SetMinMaxValues(0, 0)
 		bars.LunarBar:SetStatusBarColor(unpack(ElvUF.colors.EclipseBar[1]))
 		bars.SolarBar:SetStatusBarColor(unpack(ElvUF.colors.EclipseBar[2]))
-		bars.LunarBar:Size(CLASSBAR_WIDTH, frame.CLASSBAR_HEIGHT - (frame.BORDER + frame.SPACING*2))
-		bars.SolarBar:Size(CLASSBAR_WIDTH, frame.CLASSBAR_HEIGHT - (frame.BORDER + frame.SPACING*2))
+		bars.LunarBar:Size(CLASSBAR_WIDTH, frame.CLASSBAR_HEIGHT - (frame.BORDER + frame.SPACING*4))
+		bars.SolarBar:Size(CLASSBAR_WIDTH, frame.CLASSBAR_HEIGHT - (frame.BORDER + frame.SPACING*4))
 	end
 
 
@@ -202,8 +202,15 @@ local function ToggleResourceBar(bars)
 	local db = frame.db
 	if not db then return end
 	frame.CLASSBAR_SHOWN = bars:IsShown()
-
-	frame.CLASSBAR_HEIGHT = frame.USE_CLASSBAR and frame.CLASSBAR_SHOWN and db.classbar.height or 0
+	
+	local height
+	if db.classbar then
+		height = db.classbar.height
+	elseif db.combobar then
+		height = db.combobar.height
+	end
+	
+	frame.CLASSBAR_HEIGHT = frame.USE_CLASSBAR and frame.CLASSBAR_SHOWN and height or 0
 	frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN or frame.CLASSBAR_DETACHED) and 0 or (frame.USE_MINI_CLASSBAR and ((frame.SPACING+(frame.CLASSBAR_HEIGHT/2))) or (frame.CLASSBAR_HEIGHT + frame.SPACING))
 
 	if not frame.CLASSBAR_DETACHED then --Only update when necessary
@@ -212,6 +219,7 @@ local function ToggleResourceBar(bars)
 		UF:Configure_Threat(frame)
 	end
 end
+UF.ToggleResourceBar = ToggleResourceBar --Make available to combobar
 
 function UF:Construct_PaladinResourceBar(frame, useBG, overrideFunc)
 	local bars = CreateFrame("Frame", nil, frame)
@@ -525,7 +533,7 @@ function UF:Construct_DruidResourceBar(frame)
 	local eclipseBar = CreateFrame('Frame', nil, frame)
 	eclipseBar:CreateBackdrop('Default')
 	eclipseBar.PostUpdatePower = UF.EclipseDirection
-	eclipseBar.PostUpdateVisibility = UF.DruidResourceBarVisibilityUpdate
+	eclipseBar.PostUpdateVisibility = ToggleResourceBar
 
 	local lunarBar = CreateFrame('StatusBar', nil, eclipseBar)
 	lunarBar:Point('LEFT', eclipseBar)
@@ -553,7 +561,7 @@ function UF:Construct_DruidAltManaBar(frame)
 	dpower:SetTemplate("Default")
 	dpower:SetFrameLevel(dpower:GetFrameLevel() + 1)
 	dpower.colorPower = true
-	dpower.PostUpdateVisibility = UF.DruidResourceBarVisibilityUpdate
+	dpower.PostUpdateVisibility = ToggleResourceBar
 	dpower.PostUpdatePower = UF.DruidPostUpdateAltPower
 
 	dpower.ManaBar = CreateFrame('StatusBar', nil, dpower)
@@ -583,14 +591,6 @@ function UF:EclipseDirection()
 	else
 		self.Text:SetText("")
 	end
-end
-
-function UF:DruidResourceBarVisibilityUpdate(unit)
-	local parent = self.origParent or self:GetParent()
-	local eclipseBar = parent.EclipseBar
-	local druidAltMana = parent.DruidAltMana
-
-	UF:UpdatePlayerFrameAnchors(parent, eclipseBar:IsShown() or druidAltMana:IsShown())
 end
 
 function UF:DruidPostUpdateAltPower(unit, min, max)
