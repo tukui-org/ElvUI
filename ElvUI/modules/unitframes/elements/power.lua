@@ -140,13 +140,13 @@ function UF:Configure_Power(frame)
 		else
 			if frame.ORIENTATION == "LEFT" then
 				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", frame.BORDER, -(frame.SPACING*3))
-				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -frame.BORDER - frame.STAGGER_WIDTH, frame.BORDER)
+				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -frame.BORDER -frame.SPACING - frame.STAGGER_WIDTH, frame.BORDER +frame.SPACING)
 			elseif frame.ORIENTATION == "RIGHT" then
 				power:Point("TOPRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", -frame.BORDER, -(frame.SPACING*3))
-				power:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER + frame.STAGGER_WIDTH, frame.BORDER)
+				power:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER +frame.SPACING + frame.STAGGER_WIDTH, frame.BORDER +frame.SPACING)
 			else
 				power:Point("TOPRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", -frame.BORDER, -(frame.SPACING*3))
-				power:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER, frame.BORDER)
+				power:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER +frame.SPACING, frame.BORDER +frame.SPACING)
 			end
 		end
 
