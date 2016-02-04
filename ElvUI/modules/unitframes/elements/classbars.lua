@@ -73,26 +73,30 @@ function UF:Configure_ClassBar(frame)
 			bars.mover:SetAlpha(0)
 		end
 	else
-		frame.CLASSBAR_WIDTH = db.classbar.detachedWidth - (frame.BORDER*2 + frame.SPACING*2)
+		frame.CLASSBAR_WIDTH = db.classbar.detachedWidth - ((frame.BORDER)*2)
+		if bars.Holder then bars.Holder:Size(db.classbar.detachedWidth, db.classbar.height) end
 
-		if not bars.mover then
+		if not bars.Holder or (bars.Holder and not bars.Holder.mover) then
+			bars.Holder = CreateFrame("Frame", nil, bars)
+			bars.Holder:Point("BOTTOM", E.UIParent, "BOTTOM", 0, 150)
+			bars.Holder:Size(db.classbar.detachedWidth, db.classbar.height)
 			bars:Width(frame.CLASSBAR_WIDTH)
-			bars:Height(frame.CLASSBAR_HEIGHT - (frame.BORDER + frame.SPACING*2))
+			bars:Height(frame.CLASSBAR_HEIGHT - (frame.BORDER*2))
 			bars:ClearAllPoints()
-			bars:Point("BOTTOM", E.UIParent, "BOTTOM", 0, 150)
-			E:CreateMover(bars, 'ClassBarMover', L["Classbar"], nil, nil, nil, 'ALL,SOLO')
+			bars:Point("BOTTOMLEFT", bars.Holder, "BOTTOMLEFT", frame.BORDER, frame.BORDER)
+			E:CreateMover(bars.Holder, 'ClassBarMover', L["Classbar"], nil, nil, nil, 'ALL,SOLO')
 		else
 			bars:ClearAllPoints()
-			bars:Point("BOTTOMLEFT", bars.mover, "BOTTOMLEFT")
-			bars.mover:SetScale(1)
-			bars.mover:SetAlpha(1)
+			bars:Point("BOTTOMLEFT", bars.Holder, "BOTTOMLEFT", frame.BORDER, frame.BORDER)
+			bars.Holder.mover:SetScale(1)
+			bars.Holder.mover:SetAlpha(1)
 		end
 
 		bars:SetFrameStrata("LOW")
 	end
 
 	bars:Width(frame.CLASSBAR_WIDTH)
-	bars:Height(frame.CLASSBAR_HEIGHT - (frame.BORDER + frame.SPACING*2))
+	bars:Height(frame.CLASSBAR_HEIGHT - ((frame.BORDER + frame.SPACING)*2))
 
 	if E.myclass ~= 'DRUID' then
 		for i = 1, (UF.classMaxResourceBar[E.myclass] or 0) do
