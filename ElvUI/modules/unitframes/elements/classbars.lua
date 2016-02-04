@@ -514,7 +514,6 @@ function UF:UpdateShadowOrbs(event, unit, powerType)
 	if numPower == 0 and db.classbar.autoHide then
 		bars:Hide()
 	else
-		bars:Show()
 		for i = 1, maxPower do
 			if(i <= numPower) then
 				bars[i]:SetAlpha(1)
