@@ -185,7 +185,7 @@ function UF:Configure_ClassBar(frame)
 end
 
 local function ToggleResourceBar(bars)
-	local frame = bars:GetParent()
+	local frame = bars.origParent or bars:GetParent()
 	local db = frame.db
 	if not db then return end
 	frame.USE_CLASSBAR = bars:IsShown()
