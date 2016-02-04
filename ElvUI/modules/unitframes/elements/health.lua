@@ -54,15 +54,15 @@ end
 function UF:Configure_HealthBar(frame)
 	local db = frame.db
 	local health = frame.Health
-	
+
 	health.Smooth = self.db.smoothbars
-	
+
 	--Text
 	local x, y = self:GetPositionOffset(db.health.position)
 	health.value:ClearAllPoints()
 	health.value:Point(db.health.position, health, db.health.position, x + db.health.xOffset, y + db.health.yOffset)
-	frame:Tag(health.value, db.health.text_format)	
-	
+	frame:Tag(health.value, db.health.text_format)
+
 	--Colors
 	health.colorSmooth = nil
 	health.colorHealth = nil
@@ -77,7 +77,7 @@ function UF:Configure_HealthBar(frame)
 	else
 		health.colorClass = (not self.db.colors.forcehealthreaction)
 		health.colorReaction = true
-	end	
+	end
 
 	--Position
 	health:ClearAllPoints()
@@ -120,9 +120,9 @@ function UF:Configure_HealthBar(frame)
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER +frame.SPACING, frame.BORDER +frame.SPACING)
 		else
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER, (frame.USE_POWERBAR and ((frame.BORDER + frame.SPACING)*2) or (frame.BORDER +frame.SPACING)) + frame.POWERBAR_HEIGHT)
-		end	
+		end
 	end
-	
+
 	health.bg:ClearAllPoints()
 	if not frame.USE_PORTRAIT_OVERLAY then
 		health.bg:SetParent(health)

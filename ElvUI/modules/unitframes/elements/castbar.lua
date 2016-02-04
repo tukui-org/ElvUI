@@ -140,7 +140,7 @@ function UF:Configure_Castbar(frame)
 			end
 		end
 	end
-	
+
 	if db.castbar.enable and not frame:IsElementEnabled('Castbar') then
 		frame:EnableElement('Castbar')
 	elseif not db.castbar.enable and frame:IsElementEnabled('Castbar') then

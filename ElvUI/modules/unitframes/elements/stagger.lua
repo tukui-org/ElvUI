@@ -19,7 +19,7 @@ end
 function UF:Configure_Stagger(frame)
 	local stagger = frame.Stagger
 	local db = frame.db
-	
+
 	frame.STAGGER_WIDTH = stagger and frame.STAGGER_SHOWN and (db.stagger.width + (frame.BORDER*2)) or 0;
 
 	if db.stagger.enable then
@@ -67,7 +67,7 @@ function UF:PostUpdateStagger()
 	end
 
 	frame.STAGGER_SHOWN = isShown
-	
+
 	--[[
 		--Use this to force it to show for testing purposes
 		self.Hide = self.Show
@@ -77,7 +77,7 @@ function UF:PostUpdateStagger()
 		self:Show()
 		frame.STAGGER_SHOWN = true
 	]]
-	
+
 	--Only update when necessary
 	if stateChanged then
 		UF:Configure_Stagger(frame)

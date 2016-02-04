@@ -90,7 +90,7 @@ end
 function UF:Update_PlayerFrame(frame, db)
 	frame.db = db
 	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
-	
+
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	local BORDER = E.Border
 	local SPACING = E.Spacing
@@ -102,7 +102,7 @@ function UF:Update_PlayerFrame(frame, db)
 	local POWERBAR_DETACHED = db.power.detachFromFrame
 	local USE_INSET_POWERBAR = not POWERBAR_DETACHED and db.power.width == 'inset' and USE_POWERBAR
 	local USE_MINI_POWERBAR = not POWERBAR_DETACHED and db.power.width == 'spaced' and USE_POWERBAR
-	
+
 	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR and not POWERBAR_DETACHED
 	local POWERBAR_OFFSET = db.power.offset
 	local POWERBAR_HEIGHT = not USE_POWERBAR and 0 or db.power.height
@@ -112,16 +112,16 @@ function UF:Update_PlayerFrame(frame, db)
 	local PORTRAIT_POSITION = db.portrait.position
 	local USE_PORTRAIT_OVERLAY = USE_PORTRAIT and PORTRAIT_POSITION == "OVERLAY"
 	local PORTRAIT_WIDTH = (USE_PORTRAIT_OVERLAY or not USE_PORTRAIT) and 0 or db.portrait.width
-	
+
 	local USE_CLASSBAR = db.classbar.enable and CAN_HAVE_CLASSBAR
 	local CLASSBAR_DETACHED = db.classbar.detachFromFrame
 	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and USE_CLASSBAR
 	local CLASSBAR_HEIGHT = db.classbar.height
 	local CLASSBAR_WIDTH = UNIT_WIDTH - (BORDER*2) - PORTRAIT_WIDTH - POWERBAR_OFFSET
 	local MAX_CLASS_BAR = UF.classMaxResourceBar[E.myclass]
-	
+
 	local unit = self.unit
-	
+
 	--new method for storing frame variables, will remove other variables when done
 	do
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
@@ -146,7 +146,7 @@ function UF:Update_PlayerFrame(frame, db)
 		frame.PORTRAIT_POSITION = db.portrait.position
 		frame.USE_PORTRAIT_OVERLAY = frame.USE_PORTRAIT and (db.portrait.overlay or frame.ORIENTATION == "MIDDLE")
 		frame.PORTRAIT_WIDTH = (frame.USE_PORTRAIT_OVERLAY or not frame.USE_PORTRAIT) and 0 or db.portrait.width
-		
+
 		frame.CAN_HAVE_CLASSBAR = CAN_HAVE_CLASSBAR
 		frame.MAX_CLASS_BAR = frame.MAX_CLASS_BAR or UF.classMaxResourceBar[E.myclass] or 0 --only set this initially
 		frame.USE_CLASSBAR = db.classbar.enable and frame.CAN_HAVE_CLASSBAR
@@ -154,14 +154,14 @@ function UF:Update_PlayerFrame(frame, db)
 		frame.CLASSBAR_DETACHED = db.classbar.detachFromFrame
 		frame.USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and frame.USE_CLASSBAR
 		frame.CLASSBAR_HEIGHT = frame.USE_CLASSBAR and db.classbar.height or 0
-		frame.CLASSBAR_WIDTH = frame.UNIT_WIDTH - ((frame.BORDER+frame.SPACING)*2) - frame.PORTRAIT_WIDTH  - frame.POWERBAR_OFFSET	
+		frame.CLASSBAR_WIDTH = frame.UNIT_WIDTH - ((frame.BORDER+frame.SPACING)*2) - frame.PORTRAIT_WIDTH  - frame.POWERBAR_OFFSET
 		frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN or frame.CLASSBAR_DETACHED) and 0 or (frame.USE_MINI_CLASSBAR and (frame.SPACING+(frame.CLASSBAR_HEIGHT/2)) or (frame.CLASSBAR_HEIGHT + frame.SPACING))
 
 		frame.STAGGER_SHOWN = frame.Stagger and frame.Stagger:IsShown()
 		frame.STAGGER_WIDTH = frame.STAGGER_SHOWN and (db.stagger.width + (frame.BORDER*2)) or 0;
 	end
-	
-	
+
+
 	frame.colors = ElvUF.colors
 	frame:Size(UNIT_WIDTH, UNIT_HEIGHT)
 	_G[frame:GetName()..'Mover']:Size(frame:GetSize())

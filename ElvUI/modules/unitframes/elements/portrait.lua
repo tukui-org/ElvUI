@@ -38,7 +38,7 @@ function UF:Configure_Portrait(frame, dontHide)
 		frame.Portrait.backdrop:Hide()
 	end
 	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
-	
+
 	local portrait = frame.Portrait
 	if frame.USE_PORTRAIT then
 		if not frame:IsElementEnabled('Portrait') then
@@ -51,7 +51,7 @@ function UF:Configure_Portrait(frame, dontHide)
 			if db.portrait.style == '3D' then
 				portrait:SetFrameLevel(frame.Health:GetFrameLevel() + 1)
 			end
-			
+
 			portrait:SetAllPoints(frame.Health)
 			portrait:SetAlpha(0.3)
 			if not dontHide then
@@ -67,7 +67,7 @@ function UF:Configure_Portrait(frame, dontHide)
 			if db.portrait.style == '3D' then
 				portrait:SetFrameLevel(frame:GetFrameLevel() + 5)
 			end
-			
+
 			if frame.ORIENTATION == "LEFT" then
 				portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT", frame.SPACING, frame.USE_MINI_CLASSBAR and -(frame.CLASSBAR_YOFFSET+frame.SPACING) or -frame.SPACING)
 
@@ -78,16 +78,16 @@ function UF:Configure_Portrait(frame, dontHide)
 				end
 			elseif frame.ORIENTATION == "RIGHT" then
 				portrait.backdrop:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.SPACING, frame.USE_MINI_CLASSBAR and -(frame.CLASSBAR_YOFFSET+frame.SPACING) or -frame.SPACING)
-				
+
 				if frame.USE_MINI_POWERBAR or frame.USE_POWERBAR_OFFSET or not frame.USE_POWERBAR or frame.USE_INSET_POWERBAR or frame.POWERBAR_DETACHED then
 					portrait.backdrop:Point("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMRIGHT", -frame.BORDER + frame.SPACING*3, 0)
 				else
 					portrait.backdrop:Point("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMRIGHT", -frame.BORDER + frame.SPACING*3, 0)
 				end
 			end
-			
-			
-			portrait:SetInside(portrait.backdrop, frame.BORDER)	
+
+
+			portrait:SetInside(portrait.backdrop, frame.BORDER)
 		end
 	else
 		if frame:IsElementEnabled('Portrait') then
@@ -95,7 +95,7 @@ function UF:Configure_Portrait(frame, dontHide)
 			portrait:Hide()
 			portrait.backdrop:Hide()
 		end
-	end	
+	end
 end
 
 function UF:PortraitUpdate(unit)

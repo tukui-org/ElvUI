@@ -36,18 +36,18 @@ function UF:Configure_ClassBar(frame)
 	if not bars then return end
 	local db = frame.db
 	bars.origParent = frame
-	
+
 	if bars.UpdateAllRuneTypes then
 		bars.UpdateAllRuneTypes(frame)
-	end	
-	
+	end
+
 	local c = self.db.colors.classResources.bgColor
 	bars.backdrop.ignoreUpdates = true
 	bars.backdrop.backdropTexture:SetVertexColor(c.r, c.g, c.b)
 	if(not E.PixelMode) then
 		c = E.db.general.bordercolor
 		bars.backdrop:SetBackdropBorderColor(c.r, c.g, c.b)
-	end	
+	end
 
 	if frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then
 		bars:ClearAllPoints()
@@ -92,8 +92,8 @@ function UF:Configure_ClassBar(frame)
 	end
 
 	bars:Width(frame.CLASSBAR_WIDTH)
-	bars:Height(frame.CLASSBAR_HEIGHT - (frame.BORDER + frame.SPACING*2))	
-	
+	bars:Height(frame.CLASSBAR_HEIGHT - (frame.BORDER + frame.SPACING*2))
+
 	if E.myclass ~= 'DRUID' then
 		for i = 1, (UF.classMaxResourceBar[E.myclass] or 0) do
 			bars[i]:Hide()
@@ -157,8 +157,8 @@ function UF:Configure_ClassBar(frame)
 		bars.SolarBar:SetStatusBarColor(unpack(ElvUF.colors.EclipseBar[2]))
 		bars.LunarBar:Size(frame.CLASSBAR_WIDTH, frame.CLASSBAR_HEIGHT - (frame.BORDER + frame.SPACING*2))
 		bars.SolarBar:Size(frame.CLASSBAR_WIDTH, frame.CLASSBAR_HEIGHT - (frame.BORDER + frame.SPACING*2))
-	end	
-	
+	end
+
 
 	if E.myclass ~= 'DRUID' then
 		if not frame.USE_MINI_CLASSBAR then
@@ -182,7 +182,7 @@ function UF:Configure_ClassBar(frame)
 	elseif not frame.USE_CLASSBAR and frame:IsElementEnabled(frame.ClassBar) then
 		frame:DisableElement(frame.ClassBar)
 		bars:Hide()
-	end	
+	end
 end
 
 local function ToggleResourceBar(bars)
@@ -192,7 +192,7 @@ local function ToggleResourceBar(bars)
 	frame.CLASSBAR_SHOWN = bars:IsShown()
 
 	frame.CLASSBAR_HEIGHT = frame.USE_CLASSBAR and frame.CLASSBAR_SHOWN and db.classbar.height or 0
-	frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN or frame.CLASSBAR_DETACHED) and 0 or (frame.USE_MINI_CLASSBAR and ((frame.SPACING+(frame.CLASSBAR_HEIGHT/2))) or (frame.CLASSBAR_HEIGHT + frame.SPACING))	
+	frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN or frame.CLASSBAR_DETACHED) and 0 or (frame.USE_MINI_CLASSBAR and ((frame.SPACING+(frame.CLASSBAR_HEIGHT/2))) or (frame.CLASSBAR_HEIGHT + frame.SPACING))
 	UF:Configure_HealthBar(frame)
 	UF:Configure_Portrait(frame, true) --running :Hide on portrait makes the frame all funky
 	UF:Configure_Threat(frame)
@@ -201,7 +201,7 @@ end
 function UF:Construct_PaladinResourceBar(frame, useBG, overrideFunc)
 	local bars = CreateFrame("Frame", nil, frame)
 	bars:CreateBackdrop('Default')
-	
+
 	for i = 1, UF['classMaxResourceBar'][E.myclass] do
 		bars[i] = CreateFrame("StatusBar", frame:GetName().."ClassBarButton"..i, bars)
 		bars[i]:SetStatusBarTexture(E['media'].blankTex) --Dummy really, this needs to be set so we can change the color
@@ -210,18 +210,18 @@ function UF:Construct_PaladinResourceBar(frame, useBG, overrideFunc)
 
 		bars[i]:CreateBackdrop('Default')
 		bars[i].backdrop:SetParent(bars)
-		
+
 		if useBG then
 			bars[i].bg = bars[i]:CreateTexture(nil, 'BORDER')
 			bars[i].bg:SetAllPoints()
 			bars[i].bg:SetTexture(E['media'].blankTex)
-			bars[i].bg.multiplier = 0.3		
+			bars[i].bg.multiplier = 0.3
 		end
 	end
-	
+
 	bars.Override = UF.Update_HolyPower
 	bars:SetScript("OnShow", ToggleResourceBar)
-	bars:SetScript("OnHide", ToggleResourceBar)	
+	bars:SetScript("OnHide", ToggleResourceBar)
 
 	return bars
 end
@@ -229,7 +229,7 @@ end
 
 function UF:Update_HolyPower(event, unit, powerType)
 	if not (powerType == nil or powerType == 'HOLY_POWER') then return end
-	
+
 	local db = self.db
 	if not db then return; end
 	local numPower = UnitPower('player', SPELL_POWER[E.myclass]);
@@ -249,7 +249,7 @@ function UF:Update_HolyPower(event, unit, powerType)
 			end
 		end
 	end
-	
+
 	if maxPower ~= self.MAX_CLASS_BAR then
 		self.MAX_CLASS_BAR = maxPower
 		UF:Configure_ClassBar(self)
@@ -398,7 +398,7 @@ function UF:Construct_MageResourceBar(frame)
 
 	bars.PostUpdate = UF.UpdateArcaneCharges
 	bars:SetScript("OnShow", ToggleResourceBar)
-	bars:SetScript("OnHide", ToggleResourceBar)	
+	bars:SetScript("OnHide", ToggleResourceBar)
 	return bars
 end
 
@@ -441,8 +441,8 @@ function UF:Construct_RogueResourceBar(frame)
 	end
 
 	bars:SetScript("OnShow", ToggleResourceBar)
-	bars:SetScript("OnHide", ToggleResourceBar)	
-	
+	bars:SetScript("OnHide", ToggleResourceBar)
+
 	return bars
 end
 
@@ -467,8 +467,8 @@ function UF:Construct_WarlockResourceBar(frame)
 	end
 
 	bars:SetScript("OnShow", ToggleResourceBar)
-	bars:SetScript("OnHide", ToggleResourceBar)	
-	
+	bars:SetScript("OnHide", ToggleResourceBar)
+
 	return bars
 end
 
@@ -516,11 +516,11 @@ function UF:UpdateShadowOrbs(event, unit, powerType)
 			end
 		end
 	end
-	
+
 	if maxPower ~= self.MAX_CLASS_BAR then
 		self.MAX_CLASS_BAR = maxPower
 		UF:Configure_ClassBar(self)
-	end	
+	end
 end
 
 -------------------------------------------------------------

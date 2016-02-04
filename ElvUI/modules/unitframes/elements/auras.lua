@@ -105,7 +105,7 @@ end
 
 function UF:Configure_Auras(frame, auraType)
 	local db = frame.db
-	
+
 	local auras = frame[auraType]
 	auraType = auraType:lower()
 	local rows = db[auraType].numrows
@@ -115,7 +115,7 @@ function UF:Configure_Auras(frame, auraType)
 	else
 		auras:Width(frame.UNIT_WIDTH)
 	end
-	
+
 	auras.forceShow = frame.forceShowAuras
 	auras.num = db[auraType].perrow * rows
 	auras.size = db[auraType].sizeOverride ~= 0 and db[auraType].sizeOverride or ((((auras:GetWidth() - (auras.spacing*(auras.num/rows - 1))) / auras.num)) * rows)
@@ -145,7 +145,7 @@ function UF:Configure_Auras(frame, auraType)
 	else
 		auras:Hide()
 	end
-	
+
 	local position = db.smartAuraPosition
 	if position == "BUFFS_ON_DEBUFFS" then
 		if db.debuffs.attachTo == "BUFFS" then
@@ -166,7 +166,7 @@ function UF:Configure_Auras(frame, auraType)
 	else
 		frame.Buffs.PostUpdate = nil
 		frame.Debuffs.PostUpdate = nil
-	end	
+	end
 end
 
 local function SortAurasByPriority(a, b)

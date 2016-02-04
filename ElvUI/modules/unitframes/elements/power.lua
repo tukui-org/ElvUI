@@ -111,7 +111,7 @@ function UF:Configure_Power(frame)
 				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -frame.BORDER, frame.BORDER)
 			else
 				power:Point("TOPLEFT", frame.Health, "TOPLEFT", -frame.POWERBAR_OFFSET - frame.STAGGER_WIDTH, -frame.POWERBAR_OFFSET)
-				power:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", -frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)					
+				power:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", -frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
 			end
 			power:SetFrameStrata("LOW")
 			power:SetFrameLevel(2)
@@ -123,7 +123,7 @@ function UF:Configure_Power(frame)
 			power:SetFrameLevel(frame:GetFrameLevel() + 3)
 		elseif frame.USE_MINI_POWERBAR then
 			power:Height(frame.POWERBAR_HEIGHT)
-			
+
 			if frame.ORIENTATION == "LEFT" then
 				power:Width(frame.POWERBAR_WIDTH - frame.BORDER*2)
 				power:Point("RIGHT", frame, "BOTTOMRIGHT", -(frame.BORDER*2 + 4) -frame.STAGGER_WIDTH, frame.BORDER + (frame.POWERBAR_HEIGHT/2))
@@ -134,7 +134,7 @@ function UF:Configure_Power(frame)
 				power:Point("LEFT", frame, "BOTTOMLEFT", (frame.BORDER*2 + 4), frame.BORDER + (frame.POWERBAR_HEIGHT/2))
 				power:Point("RIGHT", frame, "BOTTOMRIGHT", -(frame.BORDER*2 + 4) -frame.STAGGER_WIDTH, frame.BORDER + (frame.POWERBAR_HEIGHT/2))
 			end
-			
+
 			power:SetFrameStrata("MEDIUM")
 			power:SetFrameLevel(frame:GetFrameLevel() + 3)
 		else

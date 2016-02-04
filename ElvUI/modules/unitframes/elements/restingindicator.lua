@@ -9,7 +9,7 @@ local UF = E:GetModule('UnitFrames');
 function UF:Construct_RestingIndicator(frame)
 	local resting = frame:CreateTexture(nil, "OVERLAY")
 	resting:Size(22)
-	
+
 	return resting
 end
 
@@ -20,7 +20,7 @@ function UF:Configure_RestingIndicator(frame)
 		if not frame:IsElementEnabled('Resting') then
 			frame:EnableElement('Resting')
 		end
-		
+
 		rIcon:ClearAllPoints()
 		if frame.ORIENTATION == "RIGHT" then
 			rIcon:Point("CENTER", frame.Health, "TOPLEFT", -3, 6)
