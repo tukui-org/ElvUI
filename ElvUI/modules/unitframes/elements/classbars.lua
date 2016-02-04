@@ -55,7 +55,7 @@ function UF:Configure_ClassBar(frame)
 		if E.myclass == 'DRUID' then
 			frame.CLASSBAR_WIDTH = frame.CLASSBAR_WIDTH * 2/3
 		else
-			frame.CLASSBAR_WIDTH = frame.CLASSBAR_WIDTH * (frame.MAX_CLASS_BAR - frame.BORDER) / frame.MAX_CLASS_BAR
+			frame.CLASSBAR_WIDTH = frame.CLASSBAR_WIDTH * (frame.MAX_CLASS_BAR - 1) / frame.MAX_CLASS_BAR
 		end
 		bars:SetFrameStrata("MEDIUM")
 
