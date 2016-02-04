@@ -506,7 +506,7 @@ function UF:UpdateShadowOrbs(event, unit, powerType)
 	local numPower = UnitPower('player', SPELL_POWER[E.myclass]);
 	local maxPower = UnitPowerMax('player', SPELL_POWER[E.myclass]);
 
-	local bars = self[self.ClassBar]
+	local bars = frame[frame.ClassBar]
 	local isShown = bars:IsShown()
 	if numPower == 0 and db.classbar.autoHide then
 		bars:Hide()
@@ -521,9 +521,9 @@ function UF:UpdateShadowOrbs(event, unit, powerType)
 		end
 	end
 
-	if maxPower ~= self.MAX_CLASS_BAR then
-		self.MAX_CLASS_BAR = maxPower
-		UF:Configure_ClassBar(self)
+	if maxPower ~= frame.MAX_CLASS_BAR then
+		frame.MAX_CLASS_BAR = maxPower
+		UF:Configure_ClassBar(frame)
 	end
 end
 
