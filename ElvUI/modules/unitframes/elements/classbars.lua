@@ -193,6 +193,7 @@ function UF:Configure_ClassBar(frame)
 end
 
 local function ToggleResourceBar(bars)
+	print("ToggleResourceBar")
 	local frame = bars.origParent or bars:GetParent()
 	local db = frame.db
 	if not db then return end
@@ -202,6 +203,7 @@ local function ToggleResourceBar(bars)
 	frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN or frame.CLASSBAR_DETACHED) and 0 or (frame.USE_MINI_CLASSBAR and ((frame.SPACING+(frame.CLASSBAR_HEIGHT/2))) or (frame.CLASSBAR_HEIGHT + frame.SPACING))
 
 	if not frame.CLASSBAR_DETACHED then --Only update when necessary
+		print("ToggleResourceBar not detached")
 		UF:Configure_HealthBar(frame)
 		UF:Configure_Portrait(frame, true) --running :Hide on portrait makes the frame all funky
 		UF:Configure_Threat(frame)
@@ -516,17 +518,15 @@ function UF:UpdateShadowOrbs()
 	local isShown = bars:IsShown()
 
 	if numPower == 0 and db.classbar.autoHide then
-		if isShown then
-			bars:Hide()
-			if bars.updateOnHide ~= false then
-				ToggleResourceBar(bars)
-				bars.updateOnHide = false
-			end
+		bars:Hide()
+		if bars.updateOnHide ~= false then --Only update when necessary
+			ToggleResourceBar(bars)
+			bars.updateOnHide = false
 		end
 	else
 		if frame.CLASSBAR_SHOWN ~= isShown then
 			ToggleResourceBar(bars)
-			bars.updateOnHide = true
+			bars.updateOnHide = true --Make sure we update next time we hide it
 		end
 		for i = 1, maxPower do
 			if(i <= numPower) then
