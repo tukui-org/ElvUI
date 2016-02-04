@@ -90,7 +90,6 @@ function UF:Configure_ClassBar(frame)
 
 		bars:SetFrameStrata("LOW")
 	end
-	print(frame.CLASSBAR_WIDTH)
 
 	bars:Width(frame.CLASSBAR_WIDTH)
 	bars:Height(frame.CLASSBAR_HEIGHT - (frame.BORDER + frame.SPACING*2))	
@@ -108,7 +107,7 @@ function UF:Configure_ClassBar(frame)
 				end
 				bars[i]:Height(bars:GetHeight())
 				if frame.USE_MINI_CLASSBAR then
-					bars[i]:SetWidth((bars:GetWidth() - ((frame.SPACING+(frame.BORDER*2)+frame.BORDER)*(frame.MAX_CLASS_BAR - 1)))/frame.MAX_CLASS_BAR)
+					bars[i]:SetWidth((frame.CLASSBAR_WIDTH - ((5 + (frame.BORDER*2 + frame.SPACING*2))*(frame.MAX_CLASS_BAR - 1)))/frame.MAX_CLASS_BAR) --Width accounts for 5px spacing between each button, excluding borders
 				elseif i ~= frame.MAX_CLASS_BAR then
 					bars[i]:SetWidth((frame.CLASSBAR_WIDTH - (frame.MAX_CLASS_BAR*(frame.BORDER-frame.SPACING))+(frame.BORDER-frame.SPACING)) / frame.MAX_CLASS_BAR)
 				end
@@ -119,7 +118,7 @@ function UF:Configure_ClassBar(frame)
 					bars[i]:Point("LEFT", bars)
 				else
 					if frame.USE_MINI_CLASSBAR then
-						bars[i]:Point("LEFT", bars[i-1], "RIGHT", frame.SPACING+(frame.BORDER*2)+2, 0)
+						bars[i]:Point("LEFT", bars[i-1], "RIGHT", (5 + frame.BORDER*2 + frame.SPACING*2), 0) --5px spacing between borders of each button
 					elseif i == frame.MAX_CLASS_BAR then
 						bars[i]:Point("LEFT", bars[i-1], "RIGHT", frame.BORDER-frame.SPACING, 0)
 						bars[i]:Point("RIGHT", bars)
