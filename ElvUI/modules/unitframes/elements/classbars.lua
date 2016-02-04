@@ -502,7 +502,7 @@ function UF:Construct_PriestResourceBar(frame)
 	return bars
 end
 
-function UF:UpdateShadowOrbs(event, unit, powerType)
+function UF:UpdateShadowOrbs()
 	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 	if not db then return; end
@@ -524,7 +524,9 @@ function UF:UpdateShadowOrbs(event, unit, powerType)
 	end
 
 	if maxPower ~= frame.MAX_CLASS_BAR then
+		print(frame.MAX_CLASS_BAR)
 		frame.MAX_CLASS_BAR = maxPower
+		print(frame.MAX_CLASS_BAR)
 		UF:Configure_ClassBar(frame)
 	end
 end
