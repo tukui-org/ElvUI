@@ -73,7 +73,7 @@ function UF:Configure_ClassBar(frame)
 			bars.mover:SetAlpha(0)
 		end
 	else
-		frame.CLASSBAR_WIDTH = db.classbar.detachedWidth - (frame.BORDER*2)
+		frame.CLASSBAR_WIDTH = db.classbar.detachedWidth - (frame.BORDER*2 + frame.SPACING*2)
 
 		if not bars.mover then
 			bars:Width(frame.CLASSBAR_WIDTH)
@@ -90,6 +90,7 @@ function UF:Configure_ClassBar(frame)
 
 		bars:SetFrameStrata("LOW")
 	end
+	print(frame.CLASSBAR_WIDTH)
 
 	bars:Width(frame.CLASSBAR_WIDTH)
 	bars:Height(frame.CLASSBAR_HEIGHT - (frame.BORDER + frame.SPACING*2))	
@@ -107,9 +108,9 @@ function UF:Configure_ClassBar(frame)
 				end
 				bars[i]:Height(bars:GetHeight())
 				if frame.USE_MINI_CLASSBAR then
-					bars[i]:Width((bars:GetWidth() - ((frame.SPACING+(frame.BORDER*2)+frame.BORDER)*(frame.MAX_CLASS_BAR - 1)))/frame.MAX_CLASS_BAR)
+					bars[i]:SetWidth((bars:GetWidth() - ((frame.SPACING+(frame.BORDER*2)+frame.BORDER)*(frame.MAX_CLASS_BAR - 1)))/frame.MAX_CLASS_BAR)
 				elseif i ~= frame.MAX_CLASS_BAR then
-					bars[i]:Width((frame.CLASSBAR_WIDTH - (frame.MAX_CLASS_BAR*(frame.BORDER-frame.SPACING))+(frame.BORDER-frame.SPACING)) / frame.MAX_CLASS_BAR)
+					bars[i]:SetWidth((frame.CLASSBAR_WIDTH - (frame.MAX_CLASS_BAR*(frame.BORDER-frame.SPACING))+(frame.BORDER-frame.SPACING)) / frame.MAX_CLASS_BAR)
 				end
 
 				bars[i]:GetStatusBarTexture():SetHorizTile(false)
