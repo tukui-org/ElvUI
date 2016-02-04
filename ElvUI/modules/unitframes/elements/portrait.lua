@@ -30,7 +30,7 @@ function UF:Construct_Portrait(frame, type)
 	return portrait
 end
 
-function UF:SizeAndPosition_Portrait(frame, dontHide)
+function UF:Configure_Portrait(frame, dontHide)
 	local db = frame.db
 	if frame.Portrait and not dontHide then
 		frame.Portrait:Hide()

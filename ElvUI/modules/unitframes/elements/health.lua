@@ -51,7 +51,7 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 	return health
 end
 
-function UF:SizeAndPosition_HealthBar(frame)
+function UF:Configure_HealthBar(frame)
 	local db = frame.db
 	local health = frame.Health
 	

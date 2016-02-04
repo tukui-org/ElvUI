@@ -83,7 +83,7 @@ function UF:Construct_Castbar(self, direction, moverName)
 	return castbar
 end
 
-function UF:SizeAndPosition_Castbar(frame)
+function UF:Configure_Castbar(frame)
 	local castbar = frame.Castbar
 	local db = frame.db
 	castbar:Width(db.castbar.width - (frame.BORDER*2))

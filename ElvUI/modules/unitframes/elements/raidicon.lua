@@ -11,7 +11,7 @@ function UF:Construct_RaidIcon(frame)
 	return tex
 end
 
-function UF:SizeAndPosition_RaidIcon(frame)
+function UF:Configure_RaidIcon(frame)
 	local RI = frame.RaidIcon
 	if frame.db.raidicon.enable then
 		frame:EnableElement('RaidIcon')

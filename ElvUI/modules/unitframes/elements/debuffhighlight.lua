@@ -31,7 +31,7 @@ function UF:Construct_DebuffHighlight(frame)
 	return dbh
 end
 
-function UF:SizeAndPosition_DebuffHighlight(frame)
+function UF:Configure_DebuffHighlight(frame)
 	local dbh = frame.DebuffHighlight
 	if E.db.unitframe.debuffHighlighting ~= 'NONE' then
 		frame:EnableElement('DebuffHighlight')

@@ -16,7 +16,7 @@ function UF:Construct_Stagger(frame)
 	return stagger
 end
 
-function UF:SizeAndPosition_Stagger(frame)
+function UF:Configure_Stagger(frame)
 	local stagger = frame.Stagger
 	local db = frame.db
 	
@@ -80,9 +80,9 @@ function UF:PostUpdateStagger()
 	
 	--Only update when necessary
 	if stateChanged then
-		UF:SizeAndPosition_Stagger(frame)
-		UF:SizeAndPosition_HealthBar(frame)
-		UF:SizeAndPosition_Power(frame)
+		UF:Configure_Stagger(frame)
+		UF:Configure_HealthBar(frame)
+		UF:Configure_Power(frame)
 		--TODO: There should be a call to update classbar as well if it is not detached. Add this when classbars are ready.
 	end
 end

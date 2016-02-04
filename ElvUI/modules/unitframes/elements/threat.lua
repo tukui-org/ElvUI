@@ -24,7 +24,7 @@ function UF:Construct_Threat(frame, glow)
 	return threat
 end
 
-function UF:SizeAndPosition_Threat(frame)
+function UF:Configure_Threat(frame)
 	local threat = frame.Threat
 	local db = frame.db
 

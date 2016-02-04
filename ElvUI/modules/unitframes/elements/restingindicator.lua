@@ -13,7 +13,7 @@ function UF:Construct_RestingIndicator(frame)
 	return resting
 end
 
-function UF:SizeAndPosition_RestingIndicator(frame)
+function UF:Configure_RestingIndicator(frame)
 	local rIcon = frame.Resting
 	local db = frame.db
 	if db.restIcon then

@@ -179,22 +179,22 @@ function UF:Update_PlayerFrame(frame, db)
 
 	--Threat
 	do
-		UF:SizeAndPosition_Threat(frame)
+		UF:Configure_Threat(frame)
 	end
 
 	--Rest Icon
 	do
-		UF:SizeAndPosition_RestingIndicator(frame)
+		UF:Configure_RestingIndicator(frame)
 	end
 
 	--Combat Icon
 	do
-		UF:SizeAndPosition_CombatIndicator(frame)
+		UF:Configure_CombatIndicator(frame)
 	end
 
 	--Health
 	do
-		UF:SizeAndPosition_HealthBar(frame)
+		UF:Configure_HealthBar(frame)
 	end
 
 	--Name
@@ -202,40 +202,40 @@ function UF:Update_PlayerFrame(frame, db)
 
 	--PvP
 	do
-		UF:SizeAndPosition_PVPIndicator(frame)
+		UF:Configure_PVPIndicator(frame)
 	end
 
 	--Power
 	do
-		UF:SizeAndPosition_Power(frame)
+		UF:Configure_Power(frame)
 	end
 
 	--Portrait
 	do
-		UF:SizeAndPosition_Portrait(frame)
+		UF:Configure_Portrait(frame)
 	end
 
 	--Auras
 	do
 		UF:EnableDisable_Auras(frame)
-		UF:SizeAndPosition_Auras(frame, 'Buffs')
-		UF:SizeAndPosition_Auras(frame, 'Debuffs')
+		UF:Configure_Auras(frame, 'Buffs')
+		UF:Configure_Auras(frame, 'Debuffs')
 	end
 
 	--Castbar
 	do
-		UF:SizeAndPosition_Castbar(frame)
+		UF:Configure_Castbar(frame)
 	end
 
 	--Resource Bars
 	do
-		UF:SizeAndPosition_ClassBar(frame)
+		UF:Configure_ClassBar(frame)
 	end
 
 	--Stagger
 	do
 		if E.myclass == "MONK" then
-			UF:SizeAndPosition_Stagger(frame)
+			UF:Configure_Stagger(frame)
 		end
 	end
 
@@ -250,22 +250,22 @@ function UF:Update_PlayerFrame(frame, db)
 
 	--Debuff Highlight
 	do
-		UF:SizeAndPosition_DebuffHighlight(frame)
+		UF:Configure_DebuffHighlight(frame)
 	end
 
 	--Raid Icon
 	do
-		UF:SizeAndPosition_RaidIcon(frame)
+		UF:Configure_RaidIcon(frame)
 	end
 
 	--OverHealing
 	do
-		UF:SizeAndPosition_HealComm(frame)
+		UF:Configure_HealComm(frame)
 	end
 
 	--AuraBars
 	do
-		UF:SizeAndPosition_AuraBars(frame)
+		UF:Configure_AuraBars(frame)
 	end
 
 	for objectName, object in pairs(frame.customTexts) do

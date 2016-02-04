@@ -36,7 +36,7 @@ function UF:Construct_HealComm(frame)
 	}
 end
 
-function UF:SizeAndPosition_HealComm(frame)
+function UF:Configure_HealComm(frame)
 	local healPrediction = frame.HealPrediction
 	local c = self.db.colors.healPrediction
 

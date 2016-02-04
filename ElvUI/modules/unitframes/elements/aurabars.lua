@@ -68,7 +68,7 @@ function UF:Construct_AuraBarHeader(frame)
 	return auraBar
 end
 
-function UF:SizeAndPosition_AuraBars(frame)
+function UF:Configure_AuraBars(frame)
 	local auraBars = frame.AuraBars
 	local db = frame.db
 	if db.aurabar.enable then

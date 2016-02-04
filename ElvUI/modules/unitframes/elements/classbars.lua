@@ -31,7 +31,7 @@ local SPELL_POWER = {
 }
 
 
-function UF:SizeAndPosition_ClassBar(frame)
+function UF:Configure_ClassBar(frame)
 	local bars = frame[frame.ClassBar]
 	if not bars then return end
 	bars.origParent = frame
@@ -192,9 +192,9 @@ local function ToggleResourceBar(bars)
 
 	frame.CLASSBAR_HEIGHT = frame.USE_CLASSBAR and db.classbar.height or 0
 	frame.CLASSBAR_YOFFSET = not frame.USE_CLASSBAR and 0 or (frame.USE_MINI_CLASSBAR and ((frame.SPACING+(frame.CLASSBAR_HEIGHT/2))) or frame.CLASSBAR_HEIGHT)	
-	UF:SizeAndPosition_HealthBar(frame)
-	UF:SizeAndPosition_Portrait(frame, true) --running :Hide on portrait makes the frame all funky
-	UF:SizeAndPosition_Threat(frame)
+	UF:Configure_HealthBar(frame)
+	UF:Configure_Portrait(frame, true) --running :Hide on portrait makes the frame all funky
+	UF:Configure_Threat(frame)
 end
 
 function UF:Construct_PaladinResourceBar(frame, useBG, overrideFunc)
@@ -251,7 +251,7 @@ function UF:Update_HolyPower(event, unit, powerType)
 	
 	if maxPower ~= self.MAX_CLASS_BAR then
 		self.MAX_CLASS_BAR = maxPower
-		UF:SizeAndPosition_ClassBar(self)
+		UF:Configure_ClassBar(self)
 	end
 end
 
@@ -518,7 +518,7 @@ function UF:UpdateShadowOrbs(event, unit, powerType)
 	
 	if maxPower ~= self.MAX_CLASS_BAR then
 		self.MAX_CLASS_BAR = maxPower
-		UF:SizeAndPosition_ClassBar(self)
+		UF:Configure_ClassBar(self)
 	end	
 end
 

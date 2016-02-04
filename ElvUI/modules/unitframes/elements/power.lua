@@ -47,7 +47,7 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 	return power
 end
 
-function UF:SizeAndPosition_Power(frame)
+function UF:Configure_Power(frame)
 	local db = frame.db
 	local power = frame.Power
 
