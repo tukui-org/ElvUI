@@ -411,6 +411,10 @@ L["When you go AFK display the AFK screen."] = "Quand vous êtes AFK, affiche un
 L["World Map Coordinates"] = "Coordonnées de la Carte du Monde";
 
 --Media
+L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."] = true;
+L["Applies the primary texture to all statusbars."] = true;
+L["Apply Font To All"] = true;
+L["Apply Texture To All"] = true;
 L["Backdrop color of transparent frames"] = "Couleur de fond pour les cadres estompés."
 L["Backdrop Color"] = "Couleur de fond"
 L["Backdrop Faded Color"] = "Couleur de fond estompé"

@@ -411,6 +411,10 @@ L["When you go AFK display the AFK screen."] = "AFK Bildschirm anzeigen wenn du 
 L["World Map Coordinates"] = "Weltkarten Koordinaten"
 
 --Media
+L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."] = "Wendet die Schrift und Schriftgröße überall im Interface an. Hinweis: Einige Schriftarten werden übersprungen, weil sie eine kleinere Schriftgröße als Standard haben."
+L["Applies the primary texture to all statusbars."] = "Wendet die Primäre Textur auf alle Statusbars an."
+L["Apply Font To All"] = "Schriftart auf alles anwenden."
+L["Apply Texture To All"] = "Textur auf alles anwenden"
 L["Backdrop color of transparent frames"] = "Hintergrundfarbe von transparenten Fenstern"
 L["Backdrop Color"] = "Hintergrundfarbe"
 L["Backdrop Faded Color"] = "Transparente Hintergrundfarbe"
