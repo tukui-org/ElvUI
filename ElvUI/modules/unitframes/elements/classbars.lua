@@ -25,8 +25,163 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 
 
 local SPELL_POWER = {
-	PALADIN = SPELL_POWER_HOLY_POWER
+	PALADIN = SPELL_POWER_HOLY_POWER,
+	MONK = SPELL_POWER_CHI,
 }
+
+
+function UF:SizeAndPosition_ClassBar(frame)
+	local bars = frame[frame.ClassBar]
+	if not bars then return end
+	bars.origParent = frame
+	
+	if bars.UpdateAllRuneTypes then
+		bars.UpdateAllRuneTypes(frame)
+	end	
+	
+	local c = self.db.colors.classResources.bgColor
+	bars.backdrop.ignoreUpdates = true
+	bars.backdrop.backdropTexture:SetVertexColor(c.r, c.g, c.b)
+	if(not E.PixelMode) then
+		c = E.db.general.bordercolor
+		bars.backdrop:SetBackdropBorderColor(c.r, c.g, c.b)
+	end	
+
+	if frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then
+		bars:ClearAllPoints()
+		bars:Point("CENTER", frame.Health.backdrop, "TOP", 0, 0)
+		if E.myclass == 'DRUID' then
+			frame.CLASSBAR_WIDTH = frame.CLASSBAR_WIDTH * 2/3
+		else
+			frame.CLASSBAR_WIDTH = frame.CLASSBAR_WIDTH * (frame.MAX_CLASS_BAR - frame.BORDER) / frame.MAX_CLASS_BAR
+		end
+		bars:SetFrameStrata("MEDIUM")
+
+		if bars.mover then
+			bars.mover:SetScale(0.000001)
+			bars.mover:SetAlpha(0)
+		end
+	elseif not frame.CLASSBAR_DETACHED then
+		bars:ClearAllPoints()
+		bars:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", frame.BORDER, frame.SPACING*3)
+		bars:SetFrameStrata("LOW")
+
+		if bars.mover then
+			bars.mover:SetScale(0.000001)
+			bars.mover:SetAlpha(0)
+		end
+	else
+		frame.CLASSBAR_WIDTH = db.classbar.detachedWidth - (frame.BORDER*2)
+
+		if not bars.mover then
+			bars:Width(frame.CLASSBAR_WIDTH)
+			bars:Height(frame.CLASSBAR_HEIGHT - (frame.BORDER + frame.SPACING*2))
+			bars:ClearAllPoints()
+			bars:Point("BOTTOM", E.UIParent, "BOTTOM", 0, 150)
+			E:CreateMover(bars, 'ClassBarMover', L["Classbar"], nil, nil, nil, 'ALL,SOLO')
+		else
+			bars:ClearAllPoints()
+			bars:Point("BOTTOMLEFT", bars.mover, "BOTTOMLEFT")
+			bars.mover:SetScale(1)
+			bars.mover:SetAlpha(1)
+		end
+
+		bars:SetFrameStrata("LOW")
+	end
+
+	bars:Width(frame.CLASSBAR_WIDTH)
+	bars:Height(frame.CLASSBAR_HEIGHT - (frame.BORDER + frame.SPACING*2))	
+	
+	if E.myclass ~= 'DRUID' then
+		for i = 1, (UF.classMaxResourceBar[E.myclass] or 0) do
+			bars[i]:Hide()
+			print(i, frame.MAX_CLASS_BAR)
+			if i <= frame.MAX_CLASS_BAR then
+				bars[i].backdrop.ignoreUpdates = true
+				bars[i].backdrop.backdropTexture:SetVertexColor(c.r, c.g, c.b)
+				if(not E.PixelMode) then
+					c = E.db.general.bordercolor
+					bars[i].backdrop:SetBackdropBorderColor(c.r, c.g, c.b)
+				end
+				bars[i]:Height(bars:GetHeight())
+				if frame.USE_MINI_CLASSBAR then
+					bars[i]:Width((bars:GetWidth() - ((frame.SPACING+(frame.BORDER*2)+frame.BORDER)*(frame.MAX_CLASS_BAR - 1)))/frame.MAX_CLASS_BAR)
+				elseif i ~= frame.MAX_CLASS_BAR then
+					bars[i]:Width((frame.CLASSBAR_WIDTH - (frame.MAX_CLASS_BAR*(frame.BORDER-frame.SPACING))+(frame.BORDER-frame.SPACING)) / frame.MAX_CLASS_BAR)
+				end
+
+				bars[i]:GetStatusBarTexture():SetHorizTile(false)
+				bars[i]:ClearAllPoints()
+				if i == 1 then
+					bars[i]:Point("LEFT", bars)
+				else
+					if frame.USE_MINI_CLASSBAR then
+						bars[i]:Point("LEFT", bars[i-1], "RIGHT", frame.SPACING+(frame.BORDER*2)+2, 0)
+					elseif i == frame.MAX_CLASS_BAR then
+						bars[i]:Point("LEFT", bars[i-1], "RIGHT", frame.BORDER-frame.SPACING, 0)
+						bars[i]:Point("RIGHT", bars)
+					else
+						bars[i]:Point("LEFT", bars[i-1], "RIGHT", frame.BORDER-frame.SPACING, 0)
+					end
+				end
+
+				if not frame.USE_MINI_CLASSBAR then
+					bars[i].backdrop:Hide()
+				else
+					bars[i].backdrop:Show()
+				end
+
+				if E.myclass == 'ROGUE' then
+					bars[i]:SetStatusBarColor(unpack(ElvUF.colors[frame.ClassBar][i]))
+
+					if bars[i].bg then
+						bars[i].bg:SetTexture(unpack(ElvUF.colors[frame.ClassBar][i]))
+					end
+				elseif E.myclass ~= 'DEATHKNIGHT' then
+					bars[i]:SetStatusBarColor(unpack(ElvUF.colors[frame.ClassBar]))
+
+					if bars[i].bg then
+						bars[i].bg:SetTexture(unpack(ElvUF.colors[frame.ClassBar]))
+					end
+				end
+				bars[i]:Show()
+			end
+		end
+	else
+		--?? Apparent bug fix for the width after in-game settings change
+		bars.LunarBar:SetMinMaxValues(0, 0)
+		bars.SolarBar:SetMinMaxValues(0, 0)
+		bars.LunarBar:SetStatusBarColor(unpack(ElvUF.colors.EclipseBar[1]))
+		bars.SolarBar:SetStatusBarColor(unpack(ElvUF.colors.EclipseBar[2]))
+		bars.LunarBar:Size(frame.CLASSBAR_WIDTH, frame.CLASSBAR_HEIGHT - (frame.BORDER + frame.SPACING*2))
+		bars.SolarBar:Size(frame.CLASSBAR_WIDTH, frame.CLASSBAR_HEIGHT - (frame.BORDER + frame.SPACING*2))
+	end	
+	
+
+	if E.myclass ~= 'DRUID' then
+		if not frame.USE_MINI_CLASSBAR then
+			bars.backdrop:Show()
+		else
+			bars.backdrop:Hide()
+		end
+	end
+
+	if frame.CLASSBAR_DETACHED and db.classbar.parent == "UIPARENT" then
+		E.FrameLocks[bars] = true
+		bars:SetParent(E.UIParent)
+	else
+		E.FrameLocks[bars] = nil
+		bars:SetParent(frame)
+	end
+
+	if frame.db.classbar.enable and frame.CAN_HAVE_CLASSBAR and not frame:IsElementEnabled(frame.ClassBar) then
+		frame:EnableElement(frame.ClassBar)
+		bars:Show()
+	elseif not frame.USE_CLASSBAR and frame:IsElementEnabled(frame.ClassBar) then
+		frame:DisableElement(frame.ClassBar)
+		bars:Hide()
+	end	
+end
 
 local function ToggleResourceBar(bars)
 	local frame = bars:GetParent()
@@ -79,18 +234,10 @@ function UF:Update_HolyPower(event, unit, powerType)
 
 	local bars = self[self.ClassBar]
 	local isShown = bars:IsShown()
-	local changedState = false
-
 	if numPower == 0 and db.classbar.autoHide then
-		if isShown then
-			bars:Hide()
-			changedState = true
-		end
+		bars:Hide()
 	else
-		if not isShown then
-			bars:Show()
-			changedState = true
-		end
+		bars:Show()
 		for i = 1, maxPower do
 			if(i <= numPower) then
 				bars[i]:SetAlpha(1)
@@ -100,14 +247,9 @@ function UF:Update_HolyPower(event, unit, powerType)
 		end
 	end
 	
-	self.USE_CLASSBAR = bars:IsShown()
-	self.CLASSBAR_HEIGHT = self.USE_CLASSBAR and db.classbar.height or 0
-	self.CLASSBAR_YOFFSET = not self.USE_CLASSBAR and 0 or (self.USE_MINI_CLASSBAR and ((self.SPACING+(self.CLASSBAR_HEIGHT/2))) or self.CLASSBAR_HEIGHT)
-	--Lets only run this if it's state has changed.
-	if(changedState ~= false) then
-		UF:SizeAndPosition_HealthBar(self)
-		UF:SizeAndPosition_Portrait(self)
-		UF:SizeAndPosition_Threat(self)
+	if maxPower ~= self.MAX_CLASS_BAR then
+		self.MAX_CLASS_BAR = maxPower
+		UF:SizeAndPosition_ClassBar(self)
 	end
 end
 
