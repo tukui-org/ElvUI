@@ -68,7 +68,12 @@ function UF:Configure_ClassBar(frame)
 		end
 	elseif not frame.CLASSBAR_DETACHED then
 		bars:ClearAllPoints()
-		bars:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", frame.BORDER, frame.SPACING*3)
+		--Account for Stagger by anchoring classbar to opposite side of where Stagger is
+		if frame.ORIENTATION == "RIGHT" then
+			bars:Point("BOTTOMRIGHT", frame.Health.backdrop, "TOPRIGHT", -frame.BORDER, frame.SPACING*3)
+		else
+			bars:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", frame.BORDER, frame.SPACING*3)
+		end
 		bars:SetFrameStrata("LOW")
 
 		if bars.mover then
@@ -140,7 +145,7 @@ function UF:Configure_ClassBar(frame)
 					bars[i].backdrop:Show()
 				end
 
-				if E.myclass == 'ROGUE' then
+				if E.myclass == 'ROGUE' or E.myclass == 'MONK' then
 					bars[i]:SetStatusBarColor(unpack(ElvUF.colors[frame.ClassBar][i]))
 
 					if bars[i].bg then
@@ -295,95 +300,35 @@ function UF:UpdateHarmony()
 	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 	if not db then return; end
-
+	
 	local maxBars = self.numPoints
 	local numChi = UnitPower("player", SPELL_POWER_CHI)
-	local UNIT_WIDTH = db.width
-	local BORDER = E.Border
-	local SPACING = E.Spacing
-	local CLASSBAR_WIDTH = db.width - (BORDER*2)
-	local USE_PORTRAIT = db.portrait.enable
-	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
-	local PORTRAIT_WIDTH = db.portrait.width
-	local POWERBAR_OFFSET = db.power.offset
-	local USE_POWERBAR = db.power.enable
-	local POWERBAR_DETACHED = db.power.detachFromFrame
-	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR and not POWERBAR_DETACHED
-	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and db.classbar.enable
-	local stagger = frame.Stagger
-	local USE_STAGGER = stagger and stagger:IsShown();
-	local STAGGER_WIDTH = USE_STAGGER and (db.stagger.width + (BORDER*2)) or 0;
-	local CLASSBAR_HEIGHT = db.classbar.height
-	local DETACHED = db.classbar.detachFromFrame
-	local HEALTH_OFFSET_X = BORDER + STAGGER_WIDTH
-	local HEALTH_OFFSET_Y = DETACHED and BORDER or USE_MINI_CLASSBAR and (BORDER+(CLASSBAR_HEIGHT/2)) or (BORDER+CLASSBAR_HEIGHT+SPACING)
-
-	if USE_PORTRAIT_OVERLAY or not USE_PORTRAIT then
-		PORTRAIT_WIDTH = 0
-	end
-
-	if USE_PORTRAIT then
-		CLASSBAR_WIDTH = ceil((CLASSBAR_WIDTH) - PORTRAIT_WIDTH)
-	end
-
-	if USE_POWERBAR_OFFSET then
-		CLASSBAR_WIDTH = CLASSBAR_WIDTH - POWERBAR_OFFSET
-		HEALTH_OFFSET_X = HEALTH_OFFSET_X + POWERBAR_OFFSET
-	end
-
-	if db.classbar.fill == 'spaced' then
-		CLASSBAR_WIDTH = CLASSBAR_WIDTH * (maxBars - 1) / maxBars
-	end
-
-	if db.classbar.detachFromFrame then
-		CLASSBAR_WIDTH = db.classbar.detachedWidth - (BORDER*2)
-	end
-
-	for i=1, UF['classMaxResourceBar'][E.myclass] do
-		if self[i]:IsShown() and db.classbar.fill == 'spaced' then
-			self[i].backdrop:Show()
-		else
-			self[i].backdrop:Hide()
-		end
-	end
-
-	self:Width(CLASSBAR_WIDTH)
-	local colors = ElvUF.colors.Harmony
+	local isShown = self:IsShown()
 
 	if numChi == 0 and db.classbar.autoHide then
 		self:Hide()
-		--Comment out this code so we can test Stagger position
-		-- frame.Health:Point("TOPRIGHT", frame, "TOPRIGHT", -HEALTH_OFFSET_X, -BORDER)
-		-- frame.Health:Point("TOPLEFT", frame, "TOPLEFT", BORDER+PORTRAIT_WIDTH, -BORDER)
-	else
-		--Comment out this code so we can test Stagger position
-		-- frame.Health:Point("TOPRIGHT", frame, "TOPRIGHT", -HEALTH_OFFSET_X, -HEALTH_OFFSET_Y)
-		-- frame.Health:Point("TOPLEFT", frame, "TOPLEFT", BORDER+PORTRAIT_WIDTH, -HEALTH_OFFSET_Y)
-
-		for i = 1, maxBars do
-			self[i]:Height(self:GetHeight())
-			if db.classbar.fill == "spaced" then
-				self[i]:Width((self:GetWidth() - ((E.PixelMode and (maxBars == 5 and 4 or 7) or (maxBars == 5 and 6 or 9))*(maxBars - 1))) / maxBars)
-			elseif i ~= maxBars then
-				self[i]:Width((CLASSBAR_WIDTH - (maxBars*(BORDER-SPACING))+(BORDER-SPACING)) / maxBars)
-			end
-			self[i]:ClearAllPoints()
-
-			if i == 1 then
-				self[i]:Point("LEFT", self)
-			else
-				if USE_MINI_CLASSBAR then
-					self[i]:Point("LEFT", self[i-1], "RIGHT", E.PixelMode and (maxBars == 5 and 4 or 7) or (maxBars == 5 and 6 or 9), 0)
-				elseif i == maxBars then
-					self[i]:Point("LEFT", self[i-1], "RIGHT", BORDER-SPACING, 0)
-					self[i]:Point("RIGHT", self)
-				else
-					self[i]:Point("LEFT", self[i-1], "RIGHT", BORDER-SPACING, 0)
-				end
-			end
-
-			self[i]:SetStatusBarColor(colors[i][1], colors[i][2], colors[i][3])
+		--We need to handle ToggleResourceBar manually, otherwise it gets called repeatedly
+		if self.updateOnHide ~= false then --Only update when necessary
+			ToggleResourceBar(self)
+			self.updateOnHide = false
 		end
+	else
+		if frame.CLASSBAR_SHOWN ~= isShown then
+			ToggleResourceBar(self)
+			self.updateOnHide = true --Make sure we update next time we hide it
+		end
+	end
+	
+	if maxBars ~= frame.MAX_CLASS_BAR then
+		for i=1, frame.MAX_CLASS_BAR do
+			if self[i]:IsShown() and frame.USE_MINI_CLASSBAR then
+				self[i].backdrop:Show()
+			else
+				self[i].backdrop:Hide()
+			end
+		end
+		frame.MAX_CLASS_BAR = maxBars
+		UF:Configure_ClassBar(frame)
 	end
 end
 

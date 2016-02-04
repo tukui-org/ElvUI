@@ -76,13 +76,12 @@ function UF:PostUpdateStagger()
 		self.SetValue = function() end
 		self:Show()
 		frame.STAGGER_SHOWN = true
-	]]
+	--]]
 
 	--Only update when necessary
 	if stateChanged then
 		UF:Configure_Stagger(frame)
 		UF:Configure_HealthBar(frame)
 		UF:Configure_Power(frame)
-		--TODO: There should be a call to update classbar as well if it is not detached. Add this when classbars are ready.
 	end
 end
