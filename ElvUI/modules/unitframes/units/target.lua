@@ -57,7 +57,7 @@ function UF:Update_TargetFrame(frame, db)
 
 	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
-=
+
 	do
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
 		frame.BORDER = E.Border
@@ -95,8 +95,10 @@ function UF:Update_TargetFrame(frame, db)
 		frame.STAGGER_WIDTH = 0
 	end
 
+	local unit = self.unit
+
 	frame.colors = ElvUF.colors
-	frame:Size(UNIT_WIDTH, UNIT_HEIGHT)
+	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
 
 	if not IsAddOnLoaded("Clique") then

@@ -140,7 +140,11 @@ function UF:Configure_Castbar(frame)
 	--TODO: Create an option to position the icon on different sides
 	if castbar.Icon then
 		castbar.Icon.bg:ClearAllPoints()
-		castbar.Icon.bg:Point("RIGHT", castbar, "LEFT", -frame.SPACING*3, 0)
+		if frame.ORIENTATION ~= "RIGHT" then
+			castbar.Icon.bg:Point("RIGHT", castbar, "LEFT", -frame.SPACING*3, 0)
+		else
+			castbar.Icon.bg:Point("LEFT", castbar, "RIGHT", frame.SPACING*3, 0)
+		end
 	end
 
 	if db.castbar.enable and not frame:IsElementEnabled('Castbar') then
