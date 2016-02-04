@@ -122,25 +122,25 @@ function UF:Configure_Castbar(frame)
 
 	local isMoved = E:HasMoverBeenMoved(frame:GetName()..'CastbarMover')
 	if not isMoved then	castbar.Holder.mover:ClearAllPoints() end
-	if castbar.Icon then castbar.Icon.bg:ClearAllPoints() end
+	
 	castbar:ClearAllPoints()
 
 	if frame.ORIENTATION ~= "RIGHT"  then
 		castbar:Point('BOTTOMRIGHT', castbar.Holder, 'BOTTOMRIGHT', -(frame.BORDER+frame.SPACING), frame.BORDER+frame.SPACING)
 		if not isMoved then
 			castbar.Holder.mover:Point("TOPRIGHT", frame, "BOTTOMRIGHT", 0, -(frame.BORDER * 3))
-			if castbar.Icon then
-				castbar.Icon.bg:Point("RIGHT", castbar, "LEFT", -frame.SPACING*3, 0)
-			end
 		end
 	else
 		castbar:Point('BOTTOMLEFT', castbar.Holder, 'BOTTOMLEFT', frame.BORDER+frame.SPACING, frame.BORDER+frame.SPACING)
 		if not isMoved then
 			castbar.Holder.mover:Point("TOPLEFT", frame, "BOTTOMLEFT", 0, -(frame.BORDER * 3))
-			if castbar.Icon then
-				castbar.Icon.bg:Point("LEFT", castbar, "RIGHT", frame.SPACING*3, 0)
-			end
 		end
+	end
+
+	--TODO: Create an option to position the icon on different sides
+	if castbar.Icon then
+		castbar.Icon.bg:ClearAllPoints()
+		castbar.Icon.bg:Point("RIGHT", castbar, "LEFT", -frame.SPACING*3, 0)
 	end
 
 	if db.castbar.enable and not frame:IsElementEnabled('Castbar') then
