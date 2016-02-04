@@ -7,6 +7,7 @@
 	<Script file='classbars.lua'/>
 	<Script file='combatindicator.lua'/>
 	<Script file='combopoints.lua'/>
+	<Script file='customtext.lua'/>
 	<Script file='debuffhighlight.lua'/>
 	<Script file='gps.lua'/>
 	<Script file='healprediction.lua'/>

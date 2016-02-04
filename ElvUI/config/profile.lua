@@ -558,7 +558,6 @@ P['unitframe'] = {
 				['enable'] = false,
 				['width'] = 45,
 				['overlay'] = false,
-				['position'] = 'LEFT',
 				['camDistanceScale'] = 1,
 				['rotation'] = 0,
 				['style'] = '3D',

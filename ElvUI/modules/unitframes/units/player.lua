@@ -90,37 +90,7 @@ end
 function UF:Update_PlayerFrame(frame, db)
 	frame.db = db
 	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
-
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
-	local BORDER = E.Border
-	local SPACING = E.Spacing
-	local SHADOW_SPACING = (BORDER*3 - SPACING*2)
-	local UNIT_WIDTH = db.width
-	local UNIT_HEIGHT = db.height
-
-	local USE_POWERBAR = db.power.enable
-	local POWERBAR_DETACHED = db.power.detachFromFrame
-	local USE_INSET_POWERBAR = not POWERBAR_DETACHED and db.power.width == 'inset' and USE_POWERBAR
-	local USE_MINI_POWERBAR = not POWERBAR_DETACHED and db.power.width == 'spaced' and USE_POWERBAR
-
-	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR and not POWERBAR_DETACHED
-	local POWERBAR_OFFSET = db.power.offset
-	local POWERBAR_HEIGHT = not USE_POWERBAR and 0 or db.power.height
-	local POWERBAR_WIDTH = USE_MINI_POWERBAR and (db.width - (BORDER*2))/2 or (POWERBAR_DETACHED and db.power.detachedWidth or (db.width - (BORDER*2)))
-
-	local USE_PORTRAIT = db.portrait.enable
-	local PORTRAIT_POSITION = db.portrait.position
-	local USE_PORTRAIT_OVERLAY = USE_PORTRAIT and PORTRAIT_POSITION == "OVERLAY"
-	local PORTRAIT_WIDTH = (USE_PORTRAIT_OVERLAY or not USE_PORTRAIT) and 0 or db.portrait.width
-
-	local USE_CLASSBAR = db.classbar.enable and CAN_HAVE_CLASSBAR
-	local CLASSBAR_DETACHED = db.classbar.detachFromFrame
-	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and USE_CLASSBAR
-	local CLASSBAR_HEIGHT = db.classbar.height
-	local CLASSBAR_WIDTH = UNIT_WIDTH - (BORDER*2) - PORTRAIT_WIDTH - POWERBAR_OFFSET
-	local MAX_CLASS_BAR = UF.classMaxResourceBar[E.myclass]
-
-	local unit = self.unit
 
 	--new method for storing frame variables, will remove other variables when done
 	do
@@ -143,7 +113,6 @@ function UF:Update_PlayerFrame(frame, db)
 		frame.POWERBAR_WIDTH = frame.USE_MINI_POWERBAR and (frame.UNIT_WIDTH - (BORDER*2))/2 or (frame.POWERBAR_DETACHED and db.power.detachedWidth or (frame.UNIT_WIDTH - ((frame.BORDER+frame.SPACING)*2)))
 
 		frame.USE_PORTRAIT = db.portrait and db.portrait.enable
-		frame.PORTRAIT_POSITION = db.portrait.position
 		frame.USE_PORTRAIT_OVERLAY = frame.USE_PORTRAIT and (db.portrait.overlay or frame.ORIENTATION == "MIDDLE")
 		frame.PORTRAIT_WIDTH = (frame.USE_PORTRAIT_OVERLAY or not frame.USE_PORTRAIT) and 0 or db.portrait.width
 
@@ -161,22 +130,9 @@ function UF:Update_PlayerFrame(frame, db)
 		frame.STAGGER_WIDTH = frame.STAGGER_SHOWN and (db.stagger.width + (frame.BORDER*2)) or 0;
 	end
 
-
 	frame.colors = ElvUF.colors
-	frame:Size(UNIT_WIDTH, UNIT_HEIGHT)
+	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
-
-	--Adjust some variables
-	do
-		if not USE_POWERBAR_OFFSET then
-			POWERBAR_OFFSET = 0
-		end
-	end
-
-	local mini_classbarY = 0
-	if USE_MINI_CLASSBAR then
-		mini_classbarY = -(SPACING+(CLASSBAR_HEIGHT/2))
-	end
 
 	--Threat
 	do
@@ -269,38 +225,15 @@ function UF:Update_PlayerFrame(frame, db)
 		UF:Configure_AuraBars(frame)
 	end
 
-	for objectName, object in pairs(frame.customTexts) do
-		if (not db.customTexts) or (db.customTexts and not db.customTexts[objectName]) then
-			object:Hide()
-			frame.customTexts[objectName] = nil
-		end
-	end
-
-	if db.customTexts then
-		local customFont = UF.LSM:Fetch("font", UF.db.font)
-		for objectName, _ in pairs(db.customTexts) do
-			if not frame.customTexts[objectName] then
-				frame.customTexts[objectName] = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
-			end
-
-			local objectDB = db.customTexts[objectName]
-
-			if objectDB.font then
-				customFont = UF.LSM:Fetch("font", objectDB.font)
-			end
-
-			frame.customTexts[objectName]:FontTemplate(customFont, objectDB.size or UF.db.fontSize, objectDB.fontOutline or UF.db.fontOutline)
-			frame:Tag(frame.customTexts[objectName], objectDB.text_format or '')
-			frame.customTexts[objectName]:SetJustifyH(objectDB.justifyH or 'CENTER')
-			frame.customTexts[objectName]:ClearAllPoints()
-			frame.customTexts[objectName]:Point(objectDB.justifyH or 'CENTER', frame, objectDB.justifyH or 'CENTER', objectDB.xOffset, objectDB.yOffset)
-		end
+	--CustomTexts
+	do
+		UF:Configure_CustomTexts(frame)
 	end
 
 	if UF.db.colors.transparentHealth then
 		UF:ToggleTransparentStatusBar(true, frame.Health, frame.Health.bg)
 	else
-		UF:ToggleTransparentStatusBar(false, frame.Health, frame.Health.bg, (USE_PORTRAIT and USE_PORTRAIT_OVERLAY) ~= true)
+		UF:ToggleTransparentStatusBar(false, frame.Health, frame.Health.bg, (frame.USE_PORTRAIT and frame.USE_PORTRAIT_OVERLAY) ~= true)
 	end
 
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)
