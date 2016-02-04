@@ -38,14 +38,17 @@ local function GetTemplate(t)
 end
 
 local function Size(frame, width, height)
+	assert(width)
 	frame:SetSize(E:Scale(width), E:Scale(height or width))
 end
 
 local function Width(frame, width)
+	assert(width)
 	frame:SetWidth(E:Scale(width))
 end
 
 local function Height(frame, height)
+	assert(height)
 	frame:SetHeight(E:Scale(height))
 end
 
@@ -67,7 +70,8 @@ local function SetOutside(obj, anchor, xOffset, yOffset)
 	xOffset = xOffset or E.Border
 	yOffset = yOffset or E.Border
 	anchor = anchor or obj:GetParent()
-
+	
+	assert(anchor)
 	if obj:GetPoint() then
 		obj:ClearAllPoints()
 	end
@@ -80,7 +84,8 @@ local function SetInside(obj, anchor, xOffset, yOffset)
 	xOffset = xOffset or E.Border
 	yOffset = yOffset or E.Border
 	anchor = anchor or obj:GetParent()
-
+	
+	assert(anchor)
 	if obj:GetPoint() then
 		obj:ClearAllPoints()
 	end
