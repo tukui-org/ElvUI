@@ -57,29 +57,7 @@ function UF:Update_TargetFrame(frame, db)
 
 	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
-	local BORDER = E.Border;
-	local SPACING = E.Spacing;
-	local UNIT_WIDTH = db.width
-	local UNIT_HEIGHT = db.height
-	local SHADOW_SPACING = (BORDER*3 - SPACING*2)
-	local USE_POWERBAR = db.power.enable
-	local USE_INSET_POWERBAR = db.power.width == 'inset' and USE_POWERBAR
-	local USE_MINI_POWERBAR = db.power.width == 'spaced' and USE_POWERBAR
-	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR
-	local POWERBAR_DETACHED = db.power.detachFromFrame
-	local POWERBAR_OFFSET = db.power.offset
-	local POWERBAR_HEIGHT = db.power.height
-	local POWERBAR_WIDTH = POWERBAR_DETACHED and db.power.detachedWidth or (db.width - (BORDER*2))
-
-	local USE_COMBOBAR = db.combobar.enable
-	local USE_MINI_COMBOBAR = db.combobar.fill == "spaced" and USE_COMBOBAR and not db.combobar.detachFromFrame
-	local COMBOBAR_HEIGHT = db.combobar.height
-	local COMBOBAR_WIDTH = db.width - (BORDER*2)
-
-	local USE_PORTRAIT = db.portrait.enable
-	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
-	local PORTRAIT_WIDTH = db.portrait.width
-
+=
 	do
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
 		frame.BORDER = E.Border
@@ -116,8 +94,6 @@ function UF:Update_TargetFrame(frame, db)
 		frame.STAGGER_SHOWN = false
 		frame.STAGGER_WIDTH = 0
 	end
-
-	local unit = self.unit
 
 	frame.colors = ElvUF.colors
 	frame:Size(UNIT_WIDTH, UNIT_HEIGHT)
@@ -184,22 +160,7 @@ function UF:Update_TargetFrame(frame, db)
 
 	--GPSArrow
 	do
-		local GPS = frame.GPS
-		if db.GPSArrow.enable then
-			if not frame:IsElementEnabled('GPS') then
-				frame:EnableElement('GPS')
-			end
-
-			GPS:Size(db.GPSArrow.size)
-			GPS.onMouseOver = db.GPSArrow.onMouseOver
-			GPS.outOfRange = db.GPSArrow.outOfRange
-
-			GPS:Point("CENTER", frame, "CENTER", db.GPSArrow.xOffset, db.GPSArrow.yOffset)
-		else
-			if frame:IsElementEnabled('GPS') then
-				frame:DisableElement('GPS')
-			end
-		end
+		UF:Configure_GPS(frame)
 	end
 
 	--Raid Icon
@@ -214,18 +175,7 @@ function UF:Update_TargetFrame(frame, db)
 
 	--Range
 	do
-		local range = frame.Range
-		if db.rangeCheck then
-			if not frame:IsElementEnabled('Range') then
-				frame:EnableElement('Range')
-			end
-
-			range.outsideAlpha = E.db.unitframe.OORAlpha
-		else
-			if frame:IsElementEnabled('Range') then
-				frame:DisableElement('Range')
-			end
-		end
+		UF:Configure_Range(frame)
 	end
 
 	

@@ -20,3 +20,22 @@ function UF:Construct_GPS(frame)
 
 	return gps
 end
+
+function UF:Configure_GPS(frame)
+	local GPS = frame.GPS
+	if frame.db.GPSArrow.enable then
+		if not frame:IsElementEnabled('GPS') then
+			frame:EnableElement('GPS')
+		end
+
+		GPS:Size(frame.db.GPSArrow.size)
+		GPS.onMouseOver = frame.db.GPSArrow.onMouseOver
+		GPS.outOfRange = frame.db.GPSArrow.outOfRange
+
+		GPS:Point("CENTER", frame, "CENTER", frame.db.GPSArrow.xOffset, frame.db.GPSArrow.yOffset)
+	else
+		if frame:IsElementEnabled('GPS') then
+			frame:DisableElement('GPS')
+		end
+	end
+end
