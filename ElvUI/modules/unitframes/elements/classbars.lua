@@ -495,6 +495,9 @@ function UF:Construct_PriestResourceBar(frame)
 	end
 
 	bars.PostUpdate = UF.UpdateShadowOrbs
+	
+	bars:SetScript("OnShow", ToggleResourceBar)
+	bars:SetScript("OnHide", ToggleResourceBar)
 
 	return bars
 end
