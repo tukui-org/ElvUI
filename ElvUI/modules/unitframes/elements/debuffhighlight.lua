@@ -30,3 +30,19 @@ function UF:Construct_DebuffHighlight(frame)
 
 	return dbh
 end
+
+function UF:SizeAndPosition_DebuffHighlight(frame)
+	local dbh = frame.DebuffHighlight
+	if E.db.unitframe.debuffHighlighting ~= 'NONE' then
+		frame:EnableElement('DebuffHighlight')
+		frame.DebuffHighlightFilterTable = E.global.unitframe.DebuffHighlightColors
+		if E.db.unitframe.debuffHighlighting == 'GLOW' then
+			frame.DebuffHighlightBackdrop = true
+			frame.DBHGlow:SetAllPoints(frame.Threat.glow)
+		else
+			frame.DebuffHighlightBackdrop = false
+		end
+	else
+		frame:DisableElement('DebuffHighlight')
+	end
+end

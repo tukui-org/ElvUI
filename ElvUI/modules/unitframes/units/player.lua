@@ -238,13 +238,7 @@ function UF:Update_PlayerFrame(frame, db)
 
 	--Combat Icon
 	do
-		local cIcon = frame.Combat
-		if db.combatIcon and not frame:IsElementEnabled('Combat') then
-			frame:EnableElement('Combat')
-		elseif not db.combatIcon and frame:IsElementEnabled('Combat') then
-			frame:DisableElement('Combat')
-			cIcon:Hide()
-		end
+		UF:SizeAndPosition_CombatIndicator(frame)
 	end
 
 	--Health
@@ -257,12 +251,7 @@ function UF:Update_PlayerFrame(frame, db)
 
 	--PvP
 	do
-		local pvp = frame.PvPText
-		local x, y = self:GetPositionOffset(db.pvp.position)
-		pvp:ClearAllPoints()
-		pvp:Point(db.pvp.position, frame.Health, db.pvp.position, x, y)
-
-		frame:Tag(pvp, db.pvp.text_format)
+		UF:SizeAndPosition_PVPIndicator(frame)
 	end
 
 	--Power
@@ -454,147 +443,22 @@ function UF:Update_PlayerFrame(frame, db)
 
 	--Debuff Highlight
 	do
-		local dbh = frame.DebuffHighlight
-		if E.db.unitframe.debuffHighlighting ~= 'NONE' then
-			frame:EnableElement('DebuffHighlight')
-			frame.DebuffHighlightFilterTable = E.global.unitframe.DebuffHighlightColors
-			if E.db.unitframe.debuffHighlighting == 'GLOW' then
-				frame.DebuffHighlightBackdrop = true
-				frame.DBHGlow:SetAllPoints(frame.Threat.glow)
-			else
-				frame.DebuffHighlightBackdrop = false
-			end
-		else
-			frame:DisableElement('DebuffHighlight')
-		end
+		UF:SizeAndPosition_DebuffHighlight(frame)
 	end
 
 	--Raid Icon
 	do
-		local RI = frame.RaidIcon
-		if db.raidicon.enable then
-			frame:EnableElement('RaidIcon')
-			RI:Show()
-			RI:Size(db.raidicon.size)
-
-			local x, y = self:GetPositionOffset(db.raidicon.attachTo)
-			RI:ClearAllPoints()
-			RI:Point(db.raidicon.attachTo, frame, db.raidicon.attachTo, x + db.raidicon.xOffset, y + db.raidicon.yOffset)
-		else
-			frame:DisableElement('RaidIcon')
-			RI:Hide()
-		end
+		UF:SizeAndPosition_RaidIcon(frame)
 	end
 
 	--OverHealing
 	do
-		local healPrediction = frame.HealPrediction
-		local c = UF.db.colors.healPrediction
-		if db.healPrediction then
-			if not frame:IsElementEnabled('HealPrediction') then
-				frame:EnableElement('HealPrediction')
-			end
-
-			if not USE_PORTRAIT_OVERLAY then
-				healPrediction.myBar:SetParent(frame)
-				healPrediction.otherBar:SetParent(frame)
-				healPrediction.absorbBar:SetParent(frame)
-			else
-				healPrediction.myBar:SetParent(frame.Portrait.overlay)
-				healPrediction.otherBar:SetParent(frame.Portrait.overlay)
-				healPrediction.absorbBar:SetParent(frame.Portrait.overlay)
-			end
-			healPrediction.myBar:SetStatusBarColor(c.personal.r, c.personal.g, c.personal.b, c.personal.a)
-			healPrediction.otherBar:SetStatusBarColor(c.others.r, c.others.g, c.others.b, c.others.a)
-			healPrediction.absorbBar:SetStatusBarColor(c.absorbs.r, c.absorbs.g, c.absorbs.b, c.absorbs.a)
-		else
-			if frame:IsElementEnabled('HealPrediction') then
-				frame:DisableElement('HealPrediction')
-			end
-		end
+		UF:SizeAndPosition_HealComm(frame)
 	end
 
 	--AuraBars
 	do
-		local auraBars = frame.AuraBars
-
-		if db.aurabar.enable then
-			if not frame:IsElementEnabled('AuraBars') then
-				frame:EnableElement('AuraBars')
-			end
-			auraBars:Show()
-			auraBars.friendlyAuraType = db.aurabar.friendlyAuraType
-			auraBars.enemyAuraType = db.aurabar.enemyAuraType
-			auraBars.scaleTime = db.aurabar.uniformThreshold
-
-			local buffColor = UF.db.colors.auraBarBuff
-			local debuffColor = UF.db.colors.auraBarDebuff
-			local attachTo = frame
-
-			if(E:CheckClassColor(buffColor.r, buffColor.g, buffColor.b)) then
-				buffColor = E.myclass == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
-			end
-
-			if(E:CheckClassColor(debuffColor.r, debuffColor.g, debuffColor.b)) then
-				debuffColor = E.myclass == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
-			end
-
-			if db.aurabar.attachTo == 'BUFFS' then
-				attachTo = frame.Buffs
-			elseif db.aurabar.attachTo == 'DEBUFFS' then
-				attachTo = frame.Debuffs
-			end
-
-			local anchorPoint, anchorTo = 'BOTTOM', 'TOP'
-			if db.aurabar.anchorPoint == 'BELOW' then
-				anchorPoint, anchorTo = 'TOP', 'BOTTOM'
-			end
-
-			local yOffset = 0;
-			if db.aurabar.anchorPoint == 'BELOW' then
-				yOffset = BORDER - SPACING*2;
-			else
-				yOffset = -BORDER + SPACING*2;
-			end
-
-
-			auraBars.auraBarHeight = db.aurabar.height
-			auraBars:ClearAllPoints()
-			auraBars:Point(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', (attachTo == frame and anchorTo == 'BOTTOM') and POWERBAR_OFFSET or 0, yOffset)
-			auraBars:Point(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', attachTo == frame and POWERBAR_OFFSET * (anchorTo == 'BOTTOM' and 0 or -1) or 0, yOffset)
-			auraBars.buffColor = {buffColor.r, buffColor.g, buffColor.b}
-			if UF.db.colors.auraBarByType then
-				auraBars.debuffColor = nil;
-				auraBars.defaultDebuffColor = {debuffColor.r, debuffColor.g, debuffColor.b}
-			else
-				auraBars.debuffColor = {debuffColor.r, debuffColor.g, debuffColor.b}
-				auraBars.defaultDebuffColor = nil;
-			end
-			auraBars.down = db.aurabar.anchorPoint == 'BELOW'
-
-			if db.aurabar.sort == 'TIME_REMAINING' then
-				auraBars.sort = true --default function
-			elseif db.aurabar.sort == 'TIME_REMAINING_REVERSE' then
-				auraBars.sort = UF.SortAuraBarReverse
-			elseif db.aurabar.sort == 'TIME_DURATION' then
-				auraBars.sort = UF.SortAuraBarDuration
-			elseif db.aurabar.sort == 'TIME_DURATION_REVERSE' then
-				auraBars.sort = UF.SortAuraBarDurationReverse
-			elseif db.aurabar.sort == 'NAME' then
-				auraBars.sort = UF.SortAuraBarName
-			else
-				auraBars.sort = nil
-			end
-
-			auraBars.maxBars = db.aurabar.maxBars
-			auraBars.forceShow = frame.forceShowAuras
-			auraBars:SetAnchors()
-		else
-			if frame:IsElementEnabled('AuraBars') then
-				frame:DisableElement('AuraBars')
-				auraBars:Hide()
-			end
-		end
+		UF:SizeAndPosition_AuraBars(frame)
 	end
 
 	for objectName, object in pairs(frame.customTexts) do

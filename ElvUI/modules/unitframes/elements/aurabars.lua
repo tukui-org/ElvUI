@@ -68,6 +68,87 @@ function UF:Construct_AuraBarHeader(frame)
 	return auraBar
 end
 
+function UF:SizeAndPosition_AuraBars(frame)
+	local auraBars = frame.AuraBars
+	local db = frame.db
+	if db.aurabar.enable then
+		if not frame:IsElementEnabled('AuraBars') then
+			frame:EnableElement('AuraBars')
+		end
+		auraBars:Show()
+		auraBars.friendlyAuraType = db.aurabar.friendlyAuraType
+		auraBars.enemyAuraType = db.aurabar.enemyAuraType
+		auraBars.scaleTime = db.aurabar.uniformThreshold
+
+		local buffColor = self.db.colors.auraBarBuff
+		local debuffColor = self.db.colors.auraBarDebuff
+		local attachTo = frame
+
+		if(E:CheckClassColor(buffColor.r, buffColor.g, buffColor.b)) then
+			buffColor = E.myclass == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
+		end
+
+		if(E:CheckClassColor(debuffColor.r, debuffColor.g, debuffColor.b)) then
+			debuffColor = E.myclass == 'PRIEST' and E.PriestColors or (CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[E.myclass] or RAID_CLASS_COLORS[E.myclass])
+		end
+
+		if db.aurabar.attachTo == 'BUFFS' then
+			attachTo = frame.Buffs
+		elseif db.aurabar.attachTo == 'DEBUFFS' then
+			attachTo = frame.Debuffs
+		end
+
+		local anchorPoint, anchorTo = 'BOTTOM', 'TOP'
+		if db.aurabar.anchorPoint == 'BELOW' then
+			anchorPoint, anchorTo = 'TOP', 'BOTTOM'
+		end
+
+		local yOffset = 0;
+		if db.aurabar.anchorPoint == 'BELOW' then
+			yOffset = frame.BORDER - frame.SPACING*2;
+		else
+			yOffset = -frame.BORDER + frame.SPACING*2;
+		end
+
+		auraBars.auraBarHeight = db.aurabar.height
+		auraBars:ClearAllPoints()
+		auraBars:Point(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', (attachTo == frame and anchorTo == 'BOTTOM') and frame.POWERBAR_OFFSET or 0, yOffset)
+		auraBars:Point(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', attachTo == frame and frame.POWERBAR_OFFSET * (anchorTo == 'BOTTOM' and 0 or -1) or 0, yOffset)
+		auraBars.buffColor = {buffColor.r, buffColor.g, buffColor.b}
+		if UF.db.colors.auraBarByType then
+			auraBars.debuffColor = nil;
+			auraBars.defaultDebuffColor = {debuffColor.r, debuffColor.g, debuffColor.b}
+		else
+			auraBars.debuffColor = {debuffColor.r, debuffColor.g, debuffColor.b}
+			auraBars.defaultDebuffColor = nil;
+		end
+		auraBars.down = db.aurabar.anchorPoint == 'BELOW'
+
+		if db.aurabar.sort == 'TIME_REMAINING' then
+			auraBars.sort = true --default function
+		elseif db.aurabar.sort == 'TIME_REMAINING_REVERSE' then
+			auraBars.sort = self.SortAuraBarReverse
+		elseif db.aurabar.sort == 'TIME_DURATION' then
+			auraBars.sort = self.SortAuraBarDuration
+		elseif db.aurabar.sort == 'TIME_DURATION_REVERSE' then
+			auraBars.sort = self.SortAuraBarDurationReverse
+		elseif db.aurabar.sort == 'NAME' then
+			auraBars.sort = self.SortAuraBarName
+		else
+			auraBars.sort = nil
+		end
+
+		auraBars.maxBars = db.aurabar.maxBars
+		auraBars.forceShow = frame.forceShowAuras
+		auraBars:SetAnchors()
+	else
+		if frame:IsElementEnabled('AuraBars') then
+			frame:DisableElement('AuraBars')
+			auraBars:Hide()
+		end
+	end
+end
+
 local huge = math.huge
 function UF.SortAuraBarReverse(a, b)
 	local compa, compb = a.noTime and huge or a.expirationTime, b.noTime and huge or b.expirationTime

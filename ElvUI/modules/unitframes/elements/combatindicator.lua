@@ -14,3 +14,12 @@ function UF:Construct_CombatIndicator(frame)
 
 	return combat
 end
+
+function UF:SizeAndPosition_CombatIndicator(frame)
+	if frame.db.combatIcon and not frame:IsElementEnabled('Combat') then
+		frame:EnableElement('Combat')
+	elseif not frame.db.combatIcon and frame:IsElementEnabled('Combat') then
+		frame:DisableElement('Combat')
+		frame.Combat:Hide()
+	end
+end

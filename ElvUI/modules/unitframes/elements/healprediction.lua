@@ -36,6 +36,34 @@ function UF:Construct_HealComm(frame)
 	}
 end
 
+function UF:SizeAndPosition_HealComm(frame)
+	local healPrediction = frame.HealPrediction
+	local c = self.db.colors.healPrediction
+
+	if frame.db.healPrediction then
+		if not frame:IsElementEnabled('HealPrediction') then
+			frame:EnableElement('HealPrediction')
+		end
+
+		if not frame.USE_PORTRAIT_OVERLAY then
+			healPrediction.myBar:SetParent(frame)
+			healPrediction.otherBar:SetParent(frame)
+			healPrediction.absorbBar:SetParent(frame)
+		else
+			healPrediction.myBar:SetParent(frame.Portrait.overlay)
+			healPrediction.otherBar:SetParent(frame.Portrait.overlay)
+			healPrediction.absorbBar:SetParent(frame.Portrait.overlay)
+		end
+		healPrediction.myBar:SetStatusBarColor(c.personal.r, c.personal.g, c.personal.b, c.personal.a)
+		healPrediction.otherBar:SetStatusBarColor(c.others.r, c.others.g, c.others.b, c.others.a)
+		healPrediction.absorbBar:SetStatusBarColor(c.absorbs.r, c.absorbs.g, c.absorbs.b, c.absorbs.a)
+	else
+		if frame:IsElementEnabled('HealPrediction') then
+			frame:DisableElement('HealPrediction')
+		end
+	end
+end
+
 local function UpdateFillBar(frame, previousTexture, bar, amount)
 	if ( amount == 0 ) then
 		bar:Hide();
