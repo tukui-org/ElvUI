@@ -86,8 +86,8 @@ end
 function UF:Configure_Castbar(frame)
 	local castbar = frame.Castbar
 	local db = frame.db
-	castbar:Width(db.castbar.width - (frame.BORDER*2))
-	castbar:Height(db.castbar.height - (frame.BORDER*2))
+	castbar:Width(db.castbar.width - ((frame.BORDER+frame.SPACING)*2))
+	castbar:Height(db.castbar.height - ((frame.BORDER+frame.SPACING)*2))
 	castbar.Holder:Width(db.castbar.width)
 	castbar.Holder:Height(db.castbar.height)
 	castbar.Holder:GetScript('OnSizeChanged')(castbar.Holder)
@@ -104,10 +104,10 @@ function UF:Configure_Castbar(frame)
 	--Icon
 	if db.castbar.icon then
 		castbar.Icon = castbar.ButtonIcon
-		castbar.Icon.bg:Width(db.castbar.height)
-		castbar.Icon.bg:Height(db.castbar.height)
+		castbar.Icon.bg:Width(db.castbar.height-frame.SPACING*2)
+		castbar.Icon.bg:Height(db.castbar.height-frame.SPACING*2)
 
-		castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - (frame.BORDER + frame.SPACING*3))
+		castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - (frame.BORDER + frame.SPACING*5))
 		castbar.Icon.bg:Show()
 	else
 		castbar.ButtonIcon.bg:Hide()
@@ -126,7 +126,7 @@ function UF:Configure_Castbar(frame)
 	castbar:ClearAllPoints()
 
 	if frame.ORIENTATION ~= "RIGHT"  then
-		castbar:Point('BOTTOMRIGHT', castbar.Holder, 'BOTTOMRIGHT', -frame.BORDER, frame.BORDER)
+		castbar:Point('BOTTOMRIGHT', castbar.Holder, 'BOTTOMRIGHT', -(frame.BORDER+frame.SPACING), frame.BORDER+frame.SPACING)
 		if not isMoved then
 			castbar.Holder.mover:Point("TOPRIGHT", frame, "BOTTOMRIGHT", 0, -(frame.BORDER * 3))
 		end
@@ -134,7 +134,7 @@ function UF:Configure_Castbar(frame)
 			castbar.Icon.bg:Point("RIGHT", castbar, "LEFT", -frame.SPACING*3, 0)
 		end
 	else
-		castbar:Point('BOTTOMLEFT', castbar.Holder, 'BOTTOMLEFT', frame.BORDER, frame.BORDER)
+		castbar:Point('BOTTOMLEFT', castbar.Holder, 'BOTTOMLEFT', frame.BORDER+frame.SPACING, frame.BORDER+frame.SPACING)
 		if not isMoved then
 			castbar.Holder.mover:Point("TOPLEFT", frame, "BOTTOMLEFT", 0, -(frame.BORDER * 3))
 		end
