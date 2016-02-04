@@ -40,6 +40,9 @@ function UF:Configure_ClassBar(frame)
 	if bars.UpdateAllRuneTypes then
 		bars.UpdateAllRuneTypes(frame)
 	end
+	
+	--We don't want to modify the original frame.CLASSBAR_WIDTH value, as it bugs out when the classbar gains more buttons
+	local CLASSBAR_WIDTH = frame.CLASSBAR_WIDTH
 
 	local c = self.db.colors.classResources.bgColor
 	bars.backdrop.ignoreUpdates = true
@@ -53,9 +56,9 @@ function UF:Configure_ClassBar(frame)
 		bars:ClearAllPoints()
 		bars:Point("CENTER", frame.Health.backdrop, "TOP", 0, 0)
 		if E.myclass == 'DRUID' then
-			frame.CLASSBAR_WIDTH = frame.CLASSBAR_WIDTH * 2/3
+			CLASSBAR_WIDTH = CLASSBAR_WIDTH * 2/3
 		else
-			frame.CLASSBAR_WIDTH = frame.CLASSBAR_WIDTH * (frame.MAX_CLASS_BAR - 1) / frame.MAX_CLASS_BAR
+			CLASSBAR_WIDTH = CLASSBAR_WIDTH * (frame.MAX_CLASS_BAR - 1) / frame.MAX_CLASS_BAR
 		end
 		bars:SetFrameStrata("MEDIUM")
 
@@ -73,14 +76,14 @@ function UF:Configure_ClassBar(frame)
 			bars.mover:SetAlpha(0)
 		end
 	else
-		frame.CLASSBAR_WIDTH = db.classbar.detachedWidth - ((frame.BORDER)*2)
+		CLASSBAR_WIDTH = db.classbar.detachedWidth - ((frame.BORDER)*2)
 		if bars.Holder then bars.Holder:Size(db.classbar.detachedWidth, db.classbar.height) end
 
 		if not bars.Holder or (bars.Holder and not bars.Holder.mover) then
 			bars.Holder = CreateFrame("Frame", nil, bars)
 			bars.Holder:Point("BOTTOM", E.UIParent, "BOTTOM", 0, 150)
 			bars.Holder:Size(db.classbar.detachedWidth, db.classbar.height)
-			bars:Width(frame.CLASSBAR_WIDTH)
+			bars:Width(CLASSBAR_WIDTH)
 			bars:Height(frame.CLASSBAR_HEIGHT - (frame.BORDER*2))
 			bars:ClearAllPoints()
 			bars:Point("BOTTOMLEFT", bars.Holder, "BOTTOMLEFT", frame.BORDER, frame.BORDER)
@@ -95,7 +98,7 @@ function UF:Configure_ClassBar(frame)
 		bars:SetFrameStrata("LOW")
 	end
 
-	bars:Width(frame.CLASSBAR_WIDTH)
+	bars:Width(CLASSBAR_WIDTH)
 	bars:Height(frame.CLASSBAR_HEIGHT - ((frame.BORDER + frame.SPACING)*2))
 
 	if E.myclass ~= 'DRUID' then
@@ -111,9 +114,9 @@ function UF:Configure_ClassBar(frame)
 				end
 				bars[i]:Height(bars:GetHeight())
 				if frame.USE_MINI_CLASSBAR then
-					bars[i]:SetWidth((frame.CLASSBAR_WIDTH - ((5 + (frame.BORDER*2 + frame.SPACING*2))*(frame.MAX_CLASS_BAR - 1)))/frame.MAX_CLASS_BAR) --Width accounts for 5px spacing between each button, excluding borders
+					bars[i]:SetWidth((CLASSBAR_WIDTH - ((5 + (frame.BORDER*2 + frame.SPACING*2))*(frame.MAX_CLASS_BAR - 1)))/frame.MAX_CLASS_BAR) --Width accounts for 5px spacing between each button, excluding borders
 				elseif i ~= frame.MAX_CLASS_BAR then
-					bars[i]:SetWidth((frame.CLASSBAR_WIDTH - (frame.MAX_CLASS_BAR*(frame.BORDER-frame.SPACING))+(frame.BORDER-frame.SPACING)) / frame.MAX_CLASS_BAR)
+					bars[i]:SetWidth((CLASSBAR_WIDTH - (frame.MAX_CLASS_BAR*(frame.BORDER-frame.SPACING))+(frame.BORDER-frame.SPACING)) / frame.MAX_CLASS_BAR)
 				end
 
 				bars[i]:GetStatusBarTexture():SetHorizTile(false)
@@ -159,8 +162,8 @@ function UF:Configure_ClassBar(frame)
 		bars.SolarBar:SetMinMaxValues(0, 0)
 		bars.LunarBar:SetStatusBarColor(unpack(ElvUF.colors.EclipseBar[1]))
 		bars.SolarBar:SetStatusBarColor(unpack(ElvUF.colors.EclipseBar[2]))
-		bars.LunarBar:Size(frame.CLASSBAR_WIDTH, frame.CLASSBAR_HEIGHT - (frame.BORDER + frame.SPACING*2))
-		bars.SolarBar:Size(frame.CLASSBAR_WIDTH, frame.CLASSBAR_HEIGHT - (frame.BORDER + frame.SPACING*2))
+		bars.LunarBar:Size(CLASSBAR_WIDTH, frame.CLASSBAR_HEIGHT - (frame.BORDER + frame.SPACING*2))
+		bars.SolarBar:Size(CLASSBAR_WIDTH, frame.CLASSBAR_HEIGHT - (frame.BORDER + frame.SPACING*2))
 	end
 
 
@@ -197,9 +200,12 @@ local function ToggleResourceBar(bars)
 
 	frame.CLASSBAR_HEIGHT = frame.USE_CLASSBAR and frame.CLASSBAR_SHOWN and db.classbar.height or 0
 	frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN or frame.CLASSBAR_DETACHED) and 0 or (frame.USE_MINI_CLASSBAR and ((frame.SPACING+(frame.CLASSBAR_HEIGHT/2))) or (frame.CLASSBAR_HEIGHT + frame.SPACING))
-	UF:Configure_HealthBar(frame)
-	UF:Configure_Portrait(frame, true) --running :Hide on portrait makes the frame all funky
-	UF:Configure_Threat(frame)
+
+	if not frame.CLASSBAR_DETACHED then --Only update when necessary
+		UF:Configure_HealthBar(frame)
+		UF:Configure_Portrait(frame, true) --running :Hide on portrait makes the frame all funky
+		UF:Configure_Threat(frame)
+	end
 end
 
 function UF:Construct_PaladinResourceBar(frame, useBG, overrideFunc)
@@ -495,9 +501,6 @@ function UF:Construct_PriestResourceBar(frame)
 	end
 
 	bars.PostUpdate = UF.UpdateShadowOrbs
-	
-	bars:SetScript("OnShow", ToggleResourceBar)
-	bars:SetScript("OnHide", ToggleResourceBar)
 
 	return bars
 end
@@ -510,10 +513,21 @@ function UF:UpdateShadowOrbs()
 	local maxPower = UnitPowerMax('player', SPELL_POWER[E.myclass]);
 
 	local bars = frame[frame.ClassBar]
+	local isShown = bars:IsShown()
 
 	if numPower == 0 and db.classbar.autoHide then
-		bars:Hide()
+		if isShown then
+			bars:Hide()
+			if bars.updateOnHide ~= false then
+				ToggleResourceBar(bars)
+				bars.updateOnHide = false
+			end
+		end
 	else
+		if frame.CLASSBAR_SHOWN ~= isShown then
+			ToggleResourceBar(bars)
+			bars.updateOnHide = true
+		end
 		for i = 1, maxPower do
 			if(i <= numPower) then
 				bars[i]:SetAlpha(1)
@@ -523,10 +537,13 @@ function UF:UpdateShadowOrbs()
 		end
 	end
 
-	if maxPower ~= frame.MAX_CLASS_BAR then
-		print(frame.MAX_CLASS_BAR)
+	if maxPower ~= frame.MAX_CLASS_BAR or (bars.checkSpell ~= false) then
+		if bars.checkSpell ~= false then
+			--When you first learn the shadow specialization, UnitPowerMax doesn't return the updated value right away
+			maxPower = IsSpellKnown(SHADOW_ORB_MINOR_TALENT_ID) and 5 or 3
+			bars.checkSpell = false
+		end
 		frame.MAX_CLASS_BAR = maxPower
-		print(frame.MAX_CLASS_BAR)
 		UF:Configure_ClassBar(frame)
 	end
 end
