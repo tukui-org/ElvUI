@@ -192,7 +192,7 @@ local function ToggleResourceBar(bars)
 	frame.CLASSBAR_SHOWN = bars:IsShown()
 
 	frame.CLASSBAR_HEIGHT = frame.USE_CLASSBAR and frame.CLASSBAR_SHOWN and db.classbar.height or 0
-	frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN or frame.CLASSBAR_DETACHED) and 0 or (frame.USE_MINI_CLASSBAR and ((frame.SPACING+(frame.CLASSBAR_HEIGHT/2))) or frame.CLASSBAR_HEIGHT)	
+	frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN or frame.CLASSBAR_DETACHED) and 0 or (frame.USE_MINI_CLASSBAR and ((frame.SPACING+(frame.CLASSBAR_HEIGHT/2))) or (frame.CLASSBAR_HEIGHT + frame.SPACING))	
 	UF:Configure_HealthBar(frame)
 	UF:Configure_Portrait(frame, true) --running :Hide on portrait makes the frame all funky
 	UF:Configure_Threat(frame)
