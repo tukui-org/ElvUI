@@ -41,10 +41,10 @@ function UF:Construct_PlayerFrame(frame)
 		frame.HolyPower = self:Construct_PaladinResourceBar(frame, nil, UF.UpdateClassBar)
 		frame.ClassBar = 'HolyPower'
 	elseif E.myclass == "WARLOCK" then
-		frame.ShardBar = self:Construct_DeathKnightResourceBar(frame)
+		frame.ShardBar = self:Construct_WarlockResourceBar(frame)
 		frame.ClassBar = 'ShardBar'
 	elseif E.myclass == "DEATHKNIGHT" then
-		frame.Runes = self:Construct_RuneBar(frame, true)
+		frame.Runes = self:Construct_DeathKnightResourceBar(frame)
 		frame.ClassBar = 'Runes'
 	elseif E.myclass == "DRUID" then
 		frame.EclipseBar = self:Construct_DruidResourceBar(frame)
@@ -84,57 +84,7 @@ end
 
 
 function UF:UpdatePlayerFrameAnchors(frame, isShown)
-
-	
-	
-	--Everything below here is going away
-	local db = E.db['unitframe']['units'].player
-	local health = frame.Health
-	local threat = frame.Threat
-	local power = frame.Power
-	local USE_PORTRAIT = db.portrait.enable
-	local PORTRAIT_POSITION = db.portrait.position
-	local USE_PORTRAIT_OVERLAY = USE_PORTRAIT and PORTRAIT_POSITION == "OVERLAY"
-	local PORTRAIT_WIDTH = (USE_PORTRAIT_OVERLAY or not USE_PORTRAIT) and 0 or db.portrait.width
-	local CLASSBAR_HEIGHT = db.classbar.height
-	local CLASSBAR_HEIGHT_SPACING
-	local CLASSBAR_DETACHED = db.classbar.detachFromFrame
-	local USE_CLASSBAR = db.classbar.enable
-	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and USE_CLASSBAR
-	local USE_POWERBAR = db.power.enable
-	local USE_INSET_POWERBAR = db.power.width == 'inset' and USE_POWERBAR
-	local USE_MINI_POWERBAR = db.power.width == 'spaced' and USE_POWERBAR
-	local POWERBAR_DETACHED = db.power.detachFromFrame
-	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR and not POWERBAR_DETACHED
-	local POWERBAR_OFFSET = db.power.offset
-	local POWERBAR_HEIGHT = db.power.height
-	local SPACING = E.Spacing;
-	local BORDER = E.Border;
-	local SHADOW_SPACING = (BORDER*3 - SPACING*2)
-
-	if not USE_POWERBAR then
-		POWERBAR_HEIGHT = 0
-	end
-
-	if USE_PORTRAIT_OVERLAY or not USE_PORTRAIT then
-		PORTRAIT_WIDTH = 0
-	end
-
-	if USE_MINI_CLASSBAR then
-		CLASSBAR_HEIGHT = CLASSBAR_HEIGHT / 2
-	end
-
-	CLASSBAR_HEIGHT_SPACING = CLASSBAR_HEIGHT + SPACING
-
-	if CLASSBAR_DETACHED then
-		CLASSBAR_HEIGHT_SPACING = 0
-	end
-
-	if USE_STAGGER then
-		
-	elseif not USE_POWERBAR_OFFSET and not USE_MINI_POWERBAR and not USE_INSET_POWERBAR and not POWERBAR_DETACHED then
-	
-	end
+	print('old method still in effect')
 end
 
 function UF:Update_PlayerFrame(frame, db)

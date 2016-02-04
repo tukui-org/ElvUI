@@ -27,6 +27,7 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 local SPELL_POWER = {
 	PALADIN = SPELL_POWER_HOLY_POWER,
 	MONK = SPELL_POWER_CHI,
+	PRIEST = SPELL_POWER_SHADOW_ORBS
 }
 
 
@@ -95,7 +96,7 @@ function UF:SizeAndPosition_ClassBar(frame)
 	if E.myclass ~= 'DRUID' then
 		for i = 1, (UF.classMaxResourceBar[E.myclass] or 0) do
 			bars[i]:Hide()
-			print(i, frame.MAX_CLASS_BAR)
+
 			if i <= frame.MAX_CLASS_BAR then
 				bars[i].backdrop.ignoreUpdates = true
 				bars[i].backdrop.backdropTexture:SetVertexColor(c.r, c.g, c.b)
@@ -186,6 +187,7 @@ end
 local function ToggleResourceBar(bars)
 	local frame = bars:GetParent()
 	local db = frame.db
+	if not db then return end
 	frame.USE_CLASSBAR = bars:IsShown()
 
 	frame.CLASSBAR_HEIGHT = frame.USE_CLASSBAR and db.classbar.height or 0
@@ -394,19 +396,15 @@ function UF:Construct_MageResourceBar(frame)
 	end
 
 	bars.PostUpdate = UF.UpdateArcaneCharges
-
+	bars:SetScript("OnShow", ToggleResourceBar)
+	bars:SetScript("OnHide", ToggleResourceBar)	
 	return bars
 end
 
 function UF:UpdateArcaneCharges(event, arcaneCharges, maxCharges)
 	local frame = self.origParent or self:GetParent()
-	local db = frame.db
-	if not db then return; end
-
-	local point, _, anchorPoint, x, y = frame.Health:GetPoint()
-
 	if E.myspec == 1 and arcaneCharges == 0 then
-		if db.classbar.autoHide then
+		if frame.db.classbar.autoHide then
 			self:Hide()
 		else
 			--Clear arcane charge statusbars
@@ -418,18 +416,6 @@ function UF:UpdateArcaneCharges(event, arcaneCharges, maxCharges)
 			self:Show()
 		end
 	end
-
-	if self:IsShown() and point then
-		if db.classbar.fill == 'spaced' then
-			frame.Health:Point(point, frame, anchorPoint, x, -7)
-		else
-			frame.Health:Point(point, frame, anchorPoint, x, -13)
-		end
-	elseif point then
-		frame.Health:Point(point, frame, anchorPoint, x, -2)
-	end
-
-	UF:UpdatePlayerFrameAnchors(frame, self:IsShown())
 end
 
 -------------------------------------------------------------
@@ -453,29 +439,12 @@ function UF:Construct_RogueResourceBar(frame)
 		bars[i].backdrop:SetParent(bars)
 	end
 
-	bars.PostUpdate = UF.UpdateAnticipationCharges
-
+	bars:SetScript("OnShow", ToggleResourceBar)
+	bars:SetScript("OnHide", ToggleResourceBar)	
+	
 	return bars
 end
 
-function UF:UpdateAnticipationCharges(event, unit, numCharges, maxCharges)
-	local frame = self.origParent or self:GetParent()
-	local db = frame.db
-	if not db then return; end
-
-	local point, _, anchorPoint, x, y = frame.Health:GetPoint()
-	if self:IsShown() and point then
-		if db.classbar.fill == 'spaced' then
-			frame.Health:Point(point, frame, anchorPoint, x, -7)
-		else
-			frame.Health:Point(point, frame, anchorPoint, x, -13)
-		end
-	elseif point then
-		frame.Health:Point(point, frame, anchorPoint, x, -2)
-	end
-
-	UF:UpdatePlayerFrameAnchors(frame, self:IsShown())
-end
 
 -------------------------------------------------------------
 -- WARLOCK
@@ -496,47 +465,10 @@ function UF:Construct_WarlockResourceBar(frame)
 		bars[i].backdrop:SetParent(bars)
 	end
 
-	bars.PostUpdate = UF.UpdateShardBar
-
+	bars:SetScript("OnShow", ToggleResourceBar)
+	bars:SetScript("OnHide", ToggleResourceBar)	
+	
 	return bars
-end
-
-function UF:UpdateShardBar(spec)
-	local frame = self.origParent or self:GetParent()
-	local db = frame.db
-	if not db then return; end
-
-	local maxBars = self.number
-
-	for i=1, UF['classMaxResourceBar'][E.myclass] do
-		if self[i]:IsShown() and db.classbar.fill == 'spaced' then
-			self[i].backdrop:Show()
-		else
-			self[i].backdrop:Hide()
-		end
-	end
-
-	if not db.classbar.detachFromFrame and db.classbar.fill == 'spaced' then
-		self:ClearAllPoints()
-		self:Point("CENTER", frame.Health.backdrop, "TOP", 0, -(E.PixelMode and 2 or 1))
-	end
-
-	local SPACING = db.classbar.fill == 'spaced' and 11 or 1
-	for i = 1, maxBars do
-		self[i]:Height(self:GetHeight())
-		self[i]:Width((self:GetWidth() - (SPACING*(maxBars - 1))) / maxBars)
-		self[i]:ClearAllPoints()
-		if i == 1 then
-			self[i]:Point("LEFT", self)
-		elseif i == maxBars then
-			self[i]:Point("LEFT", self[i-1], "RIGHT", SPACING, 0)
-			self[i]:Point("RIGHT", self)
-		else
-			self[i]:Point("LEFT", self[i-1], "RIGHT", SPACING, 0)
-		end
-	end
-
-	UF:UpdatePlayerFrameAnchors(frame, self:IsShown())
 end
 
 -------------------------------------------------------------
@@ -566,94 +498,28 @@ function UF:UpdateShadowOrbs(event, unit, powerType)
 	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 	if not db then return; end
+	local numPower = UnitPower('player', SPELL_POWER[E.myclass]);
+	local maxPower = UnitPowerMax('player', SPELL_POWER[E.myclass]);
 
-	local point, _, anchorPoint, x, y = frame.Health:GetPoint()
-	if self:IsShown() and point and not db.classbar.detachFromFrame then
-		if db.classbar.fill == 'spaced' then
-			frame.Health:Point(point, frame, anchorPoint, x, -7)
-		else
-			frame.Health:Point(point, frame, anchorPoint, x, -13)
-		end
-	elseif point then
-		frame.Health:Point(point, frame, anchorPoint, x, -2)
-	end
-
-	local BORDER = E.Border
-	local SPACING = E.Spacing
-	local numShadowOrbs = UnitPower("player", SPELL_POWER_SHADOW_ORBS);
-	local maxShadowOrbs = IsSpellKnown(SHADOW_ORB_MINOR_TALENT_ID) and 5 or 3
-	local MAX_SHADOW_ORBS = UF['classMaxResourceBar'][E.myclass]
-	local USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and db.classbar.enable
-	local USE_PORTRAIT = db.portrait.enable
-	local USE_PORTRAIT_OVERLAY = db.portrait.overlay and USE_PORTRAIT
-	local PORTRAIT_WIDTH = db.portrait.width
-	local USE_POWERBAR = db.power.enable
-	local POWERBAR_DETACHED = db.power.detachFromFrame
-	local USE_POWERBAR_OFFSET = db.power.offset ~= 0 and USE_POWERBAR and not POWERBAR_DETACHED
-
-	if USE_PORTRAIT_OVERLAY or not USE_PORTRAIT then
-		PORTRAIT_WIDTH = 0
-	end
-
-	local CLASSBAR_WIDTH = db.width - (BORDER * 2)
-	if USE_PORTRAIT then
-		CLASSBAR_WIDTH = ceil((db.width - (BORDER*2)) - PORTRAIT_WIDTH)
-	end
-
-	if USE_POWERBAR_OFFSET then
-		CLASSBAR_WIDTH = CLASSBAR_WIDTH - db.power.offset
-	end
-
-	if USE_MINI_CLASSBAR then
-		CLASSBAR_WIDTH = CLASSBAR_WIDTH * (maxShadowOrbs - 1) / maxShadowOrbs
-	end
-
-	if db.classbar.detachFromFrame then
-		CLASSBAR_WIDTH = db.classbar.detachedWidth - (BORDER*2)
-	end
-
-	self:Width(CLASSBAR_WIDTH)
-
-	if numShadowOrbs == 0 and db.classbar.autoHide then
-		self:Hide()
+	local bars = self[self.ClassBar]
+	local isShown = bars:IsShown()
+	if numPower == 0 and db.classbar.autoHide then
+		bars:Hide()
 	else
-		for i = 1, MAX_SHADOW_ORBS do
-			if(i <= numShadowOrbs) then
-				self[i]:SetAlpha(1)
+		bars:Show()
+		for i = 1, maxPower do
+			if(i <= numPower) then
+				bars[i]:SetAlpha(1)
 			else
-				self[i]:SetAlpha(.2)
-			end
-			if db.classbar.fill == "spaced" then
-				self[i]:Width((self:GetWidth() - ((maxShadowOrbs == 5 and 7 or 13)*(maxShadowOrbs - 1))) / maxShadowOrbs)
-			elseif i ~= maxShadowOrbs then
-				self[i]:Width((CLASSBAR_WIDTH - (maxShadowOrbs*(BORDER-SPACING))+(BORDER-SPACING)) / maxShadowOrbs)
-			end
-
-			self[i]:ClearAllPoints()
-			if i == 1 then
-				self[i]:Point("LEFT", self)
-			else
-				if USE_MINI_CLASSBAR then
-					self[i]:Point("LEFT", self[i-1], "RIGHT", maxShadowOrbs == 5 and 7 or 13, 0)
-				elseif i == maxShadowOrbs then
-					self[i]:Point("LEFT", self[i-1], "RIGHT", BORDER-SPACING, 0)
-					self[i]:Point("RIGHT", self)
-				else
-					self[i]:Point("LEFT", self[i-1], "RIGHT", BORDER-SPACING, 0)
-				end
-			end
-
-			if i > maxShadowOrbs then
-				self[i]:Hide()
-				self[i].backdrop:SetAlpha(0)
-			else
-				self[i]:Show()
-				self[i].backdrop:SetAlpha(1)
+				bars[i]:SetAlpha(.2)
 			end
 		end
 	end
-
-	UF:UpdatePlayerFrameAnchors(frame, self:IsShown())
+	
+	if maxPower ~= self.MAX_CLASS_BAR then
+		self.MAX_CLASS_BAR = maxPower
+		UF:SizeAndPosition_ClassBar(self)
+	end	
 end
 
 -------------------------------------------------------------

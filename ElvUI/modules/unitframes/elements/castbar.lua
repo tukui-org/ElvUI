@@ -119,20 +119,24 @@ function UF:SizeAndPosition_Castbar(frame)
 	else
 		castbar.Spark:Hide()
 	end
-	
-	castbar.Holder:ClearAllPoints()
-	castbar:ClearAllPoints()
-	castbar.Icon.bg:ClearAllPoints()
-	if frame.ORIENTATION ~= "RIGHT" then
-		castbar.Holder:Point("TOPRIGHT", frame, "BOTTOMRIGHT", 0, -(frame.BORDER * 3))
-		castbar:Point('BOTTOMRIGHT', castbar.Holder, 'BOTTOMRIGHT', -frame.BORDER, frame.BORDER)
-		castbar.Icon.bg:Point("RIGHT", castbar, "LEFT", -frame.SPACING*3, 0)
-	else
-		castbar.Holder:Point("TOPLEFT", frame, "BOTTOMLEFT", 0, -(frame.BORDER * 3))
-		castbar:Point('BOTTOMLEFT', castbar.Holder, 'BOTTOMLEFT', frame.BORDER, frame.BORDER)
-		castbar.Icon.bg:Point("LEFT", castbar, "RIGHT", frame.SPACING*3, 0)
-	end
 
+	local isMoved = E:HasMoverBeenMoved(frame:GetName()..'CastbarMover')
+	if(not isMoved) then
+		castbar.Holder:ClearAllPoints()
+		castbar:ClearAllPoints()
+		castbar.Icon.bg:ClearAllPoints()
+
+		if frame.ORIENTATION ~= "RIGHT"  then
+			castbar.Holder:Point("TOPRIGHT", frame, "BOTTOMRIGHT", 0, -(frame.BORDER * 3))
+			castbar.Icon.bg:Point("RIGHT", castbar, "LEFT", -frame.SPACING*3, 0)
+			castbar:Point('BOTTOMRIGHT', castbar.Holder, 'BOTTOMRIGHT', -frame.BORDER, frame.BORDER)
+		else
+			castbar.Holder:Point("TOPLEFT", frame, "BOTTOMLEFT", 0, -(frame.BORDER * 3))
+			castbar.Icon.bg:Point("LEFT", castbar, "RIGHT", frame.SPACING*3, 0)
+			castbar:Point('BOTTOMLEFT', castbar.Holder, 'BOTTOMLEFT', frame.BORDER, frame.BORDER)
+		end
+	end
+	
 	if db.castbar.enable and not frame:IsElementEnabled('Castbar') then
 		frame:EnableElement('Castbar')
 	elseif not db.castbar.enable and frame:IsElementEnabled('Castbar') then
