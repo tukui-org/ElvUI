@@ -22,6 +22,7 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 	UF['statusbars'][health] = true
 
 	health:SetFrameStrata("LOW")
+	health:SetFrameLevel(10) --Make room for Portrait and Power which should be lower by default
 	health.PostUpdate = self.PostUpdateHealth
 
 	if bg then

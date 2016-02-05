@@ -39,7 +39,6 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 		power.value:Point(textPos, frame.Health, textPos, x, 0)
 	end
 
-
 	power.colorDisconnected = false
 	power.colorTapping = false
 	power:CreateBackdrop('Default')
@@ -121,7 +120,7 @@ function UF:Configure_Power(frame)
 				power:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", -frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
 			end
 			power:SetFrameStrata("LOW")
-			power:SetFrameLevel(2)
+			power:SetFrameLevel(frame.Health:GetFrameLevel() -2)
 		elseif frame.USE_INSET_POWERBAR then
 			power:Height(frame.POWERBAR_HEIGHT)
 			power:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", frame.BORDER + (frame.BORDER*2), frame.BORDER + (frame.BORDER*2))
@@ -155,6 +154,9 @@ function UF:Configure_Power(frame)
 				power:Point("TOPRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", -frame.BORDER, -(frame.SPACING*3))
 				power:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER +frame.SPACING, frame.BORDER +frame.SPACING)
 			end
+
+			power:SetFrameStrata("LOW")
+			power:SetFrameLevel(frame.Health:GetFrameLevel() -2)
 		end
 		
 		--Hide mover until we detach again

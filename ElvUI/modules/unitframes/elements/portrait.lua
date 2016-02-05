@@ -65,7 +65,7 @@ function UF:Configure_Portrait(frame, dontHide)
 			end
 			portrait.backdrop:Show()
 			if db.portrait.style == '3D' then
-				portrait:SetFrameLevel(frame.Health:GetFrameLevel()-2) --Make sure Health backdrop shows above portrait
+				portrait:SetFrameLevel(frame.Health:GetFrameLevel() -4) --Make sure portrait is behind Health and Power
 			end
 
 			if frame.ORIENTATION == "LEFT" then
