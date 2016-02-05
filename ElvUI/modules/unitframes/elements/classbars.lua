@@ -62,9 +62,9 @@ function UF:Configure_ClassBar(frame)
 		end
 		bars:SetFrameStrata("MEDIUM")
 
-		if bars.mover then
-			bars.mover:SetScale(0.000001)
-			bars.mover:SetAlpha(0)
+		if bars.Holder and bars.Holder.mover then
+			bars.Holder.mover:SetScale(0.000001)
+			bars.Holder.mover:SetAlpha(0)
 		end
 	elseif not frame.CLASSBAR_DETACHED then
 		bars:ClearAllPoints()
@@ -76,9 +76,9 @@ function UF:Configure_ClassBar(frame)
 		end
 		bars:SetFrameStrata("LOW")
 
-		if bars.mover then
-			bars.mover:SetScale(0.000001)
-			bars.mover:SetAlpha(0)
+		if bars.Holder and bars.Holder.mover then
+			bars.Holder.mover:SetScale(0.000001)
+			bars.Holder.mover:SetAlpha(0)
 		end
 	else
 		CLASSBAR_WIDTH = db.classbar.detachedWidth - ((frame.BORDER)*2)
