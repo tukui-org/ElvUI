@@ -98,7 +98,7 @@ function UF:Configure_ComboPoints(frame)
 			CPoints[i]:Point("LEFT", CPoints)
 		else
 			if frame.USE_MINI_CLASSBAR then
-				CPoints[i]:Point("LEFT", bars[i-1], "RIGHT", (5 + frame.BORDER*2 + frame.SPACING*2), 0) 
+				CPoints[i]:Point("LEFT", CPoints[i-1], "RIGHT", (5 + frame.BORDER*2 + frame.SPACING*2), 0) 
 			elseif i == frame.MAX_CLASS_BAR then
 				CPoints[i]:Point("LEFT", CPoints[i-1], "RIGHT", frame.BORDER-frame.SPACING, 0)
 				CPoints[i]:Point("RIGHT", CPoints)
