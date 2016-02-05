@@ -98,9 +98,6 @@ function UF:EnableDisable_Auras(frame)
 			frame:DisableElement('Aura')
 		end
 	end
-
-	frame.Buffs:ClearAllPoints()
-	frame.Debuffs:ClearAllPoints()
 end
 
 function UF:Configure_Auras(frame, auraType)
@@ -127,12 +124,14 @@ function UF:Configure_Auras(frame, auraType)
 	local x, y = E:GetXYOffset(db[auraType].anchorPoint)
 	local attachTo = self:GetAuraAnchorFrame(frame, db[auraType].attachTo)
 
+	auras:ClearAllPoints()
 	auras:Point(E.InversePoints[db[auraType].anchorPoint], attachTo, db[auraType].anchorPoint, x + db[auraType].xOffset, y + db[auraType].yOffset)
 	auras:Height(auras.size * rows)
 	auras["growth-y"] = db[auraType].anchorPoint:find('TOP') and 'UP' or 'DOWN'
 	auras["growth-x"] = db[auraType].anchorPoint == 'LEFT' and 'LEFT' or  db[auraType].anchorPoint == 'RIGHT' and 'RIGHT' or (db[auraType].anchorPoint:find('LEFT') and 'RIGHT' or 'LEFT')
 	auras.initialAnchor = E.InversePoints[db[auraType].anchorPoint]
 
+	--These are needed for SmartAuraPosition
 	auras.attachTo = attachTo
 	auras.point = E.InversePoints[db[auraType].anchorPoint]
 	auras.anchorPoint = db[auraType].anchorPoint
