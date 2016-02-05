@@ -35,3 +35,33 @@ function UF:Construct_RaidDebuffs(frame)
 
 	return rdebuff
 end
+
+function UF:Configure_RaidDebuffs(frame)
+	local db = frame.db
+	local rdebuffs = frame.RaidDebuffs
+	local stackColor = db.rdebuffs.stack.color
+	local durationColor = db.rdebuffs.duration.color
+
+	if db.rdebuffs.enable then
+		local rdebuffsFont = UF.LSM:Fetch("font", db.rdebuffs.font)
+		frame:EnableElement('RaidDebuffs')
+
+		rdebuffs.showDispellableDebuff = db.rdebuffs.showDispellableDebuff
+		rdebuffs.forceShow = frame.forceShowAuras
+		rdebuffs:Size(db.rdebuffs.size)
+		rdebuffs:Point('BOTTOM', frame, 'BOTTOM', db.rdebuffs.xOffset, db.rdebuffs.yOffset)
+
+		rdebuffs.count:FontTemplate(rdebuffsFont, db.rdebuffs.fontSize, db.rdebuffs.fontOutline)
+		rdebuffs.count:ClearAllPoints()
+		rdebuffs.count:Point(db.rdebuffs.stack.position, db.rdebuffs.stack.xOffset, db.rdebuffs.stack.yOffset)
+		rdebuffs.count:SetTextColor(stackColor.r, stackColor.g, stackColor.b)
+
+		rdebuffs.time:FontTemplate(rdebuffsFont, db.rdebuffs.fontSize, db.rdebuffs.fontOutline)
+		rdebuffs.time:ClearAllPoints()
+		rdebuffs.time:Point(db.rdebuffs.duration.position, db.rdebuffs.duration.xOffset, db.rdebuffs.duration.yOffset)
+		rdebuffs.time:SetTextColor(durationColor.r, durationColor.g, durationColor.b)
+	else
+		frame:DisableElement('RaidDebuffs')
+		rdebuffs:Hide()
+	end
+end
