@@ -66,7 +66,6 @@ function UF:Configure_Power(frame)
 		power.value:Point(db.power.position, db.power.attachTextToPower and power or frame.Health, db.power.position, x + db.power.xOffset, y + db.power.yOffset)
 		frame:Tag(power.value, db.power.text_format)
 
-
 		if db.power.attachTextToPower then
 			power.value:SetParent(power)
 		else
@@ -89,20 +88,23 @@ function UF:Configure_Power(frame)
 		if frame.POWERBAR_DETACHED then
 			power:Width(frame.POWERBAR_WIDTH)
 			power:Height(frame.POWERBAR_HEIGHT)
-			if not power.mover then
+			if not power.Holder or (power.Holder and not power.Holder.mover) then
+				power.Holder = CreateFrame("Frame", nil, power)
+				power.Holder:Size(frame.POWERBAR_WIDTH + (frame.BORDER*2), frame.POWERBAR_HEIGHT + (frame.BORDER*2))
+				power.Holder:Point("BOTTOM", frame, "BOTTOM", 0, -20)
 				power:ClearAllPoints()
-				power:Point("BOTTOM", frame, "BOTTOM", 0, -20)
+				power:Point("BOTTOMLEFT", power.Holder, "BOTTOMLEFT", frame.BORDER, frame.BORDER)
 				--Currently only Player and Target can detach power bars, so doing it this way is okay for now
 				if frame.unit == "player" then 
-					E:CreateMover(power, 'PlayerPowerBarMover', L["Player Powerbar"], nil, nil, nil, 'ALL,SOLO')
+					E:CreateMover(power.Holder, 'PlayerPowerBarMover', L["Player Powerbar"], nil, nil, nil, 'ALL,SOLO')
 				elseif frame.unit == "target" then
-					E:CreateMover(power, 'TargetPowerBarMover', L["Target Powerbar"], nil, nil, nil, 'ALL,SOLO')
+					E:CreateMover(power.Holder, 'TargetPowerBarMover', L["Target Powerbar"], nil, nil, nil, 'ALL,SOLO')
 				end
 			else
 				power:ClearAllPoints()
-				power:Point("BOTTOMLEFT", power.mover, "BOTTOMLEFT")
-				power.mover:SetScale(1)
-				power.mover:SetAlpha(1)
+				power:Point("BOTTOMLEFT", power.Holder, "BOTTOMLEFT", frame.BORDER, frame.BORDER)
+				power.Holder.mover:SetScale(1)
+				power.Holder.mover:SetAlpha(1)
 			end
 
 			power:SetFrameStrata("MEDIUM")
@@ -152,6 +154,14 @@ function UF:Configure_Power(frame)
 			else
 				power:Point("TOPRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", -frame.BORDER, -(frame.SPACING*3))
 				power:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER +frame.SPACING, frame.BORDER +frame.SPACING)
+			end
+		end
+		
+		--Hide mover until we detach again
+		if not frame.POWERBAR_DETACHED then
+			if power.Holder and power.Holder.mover then
+				power.Holder.mover:SetScale(0.000001)
+				power.Holder.mover:SetAlpha(0)
 			end
 		end
 
