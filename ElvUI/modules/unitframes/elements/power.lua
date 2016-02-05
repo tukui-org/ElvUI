@@ -92,7 +92,12 @@ function UF:Configure_Power(frame)
 			if not power.mover then
 				power:ClearAllPoints()
 				power:Point("BOTTOM", frame, "BOTTOM", 0, -20)
-				E:CreateMover(power, 'PlayerPowerBarMover', L["Player Powerbar"], nil, nil, nil, 'ALL,SOLO')
+				--Currently only Player and Target can detach power bars, so doing it this way is okay for now
+				if frame.unit == "player" then 
+					E:CreateMover(power, 'PlayerPowerBarMover', L["Player Powerbar"], nil, nil, nil, 'ALL,SOLO')
+				elseif frame.unit == "target" then
+					E:CreateMover(power, 'TargetPowerBarMover', L["Target Powerbar"], nil, nil, nil, 'ALL,SOLO')
+				end
 			else
 				power:ClearAllPoints()
 				power:Point("BOTTOMLEFT", power.mover, "BOTTOMLEFT")
