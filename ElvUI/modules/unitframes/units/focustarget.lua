@@ -95,9 +95,9 @@ function UF:Update_FocusTargetFrame(frame, db)
 
 	--Auras
 	do
-		--[[UF:EnableDisable_Auras(frame)
+		UF:EnableDisable_Auras(frame)
 		UF:Configure_Auras(frame, 'Buffs')
-		UF:Configure_Auras(frame, 'Debuffs')]]
+		UF:Configure_Auras(frame, 'Debuffs')
 	end
 
 	--Raid Icon

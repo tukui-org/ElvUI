@@ -89,7 +89,7 @@ function UF:Construct_AuraIcon(button)
 end
 
 function UF:EnableDisable_Auras(frame)
-	if frame.db.debuffs.enable or frame.db[auraType].enable then
+	if frame.db.debuffs.enable or frame.db.buffs.enable then
 		if not frame:IsElementEnabled('Aura') then
 			frame:EnableElement('Aura')
 		end
