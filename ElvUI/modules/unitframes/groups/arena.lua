@@ -127,7 +127,6 @@ function UF:Update_ArenaFrames(frame, db)
 
 	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
 	do
-		
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
 		frame.BORDER = E.Border
 		frame.SPACING = E.Spacing

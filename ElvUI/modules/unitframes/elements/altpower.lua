@@ -9,6 +9,8 @@ local floor = math.floor
 local CreateFrame = CreateFrame
 local UnitAlternatePowerInfo = UnitAlternatePowerInfo
 
+
+
 function UF:Construct_AltPowerBar(frame)
 	local altpower = CreateFrame("StatusBar", nil, frame)
 	altpower:SetStatusBarTexture(E['media'].blankTex)
@@ -24,6 +26,9 @@ function UF:Construct_AltPowerBar(frame)
 	altpower.text:SetJustifyH("CENTER")
 	UF:Configure_FontString(altpower.text)
 
+	altpower:SetScript("OnShow", UF.ToggleResourceBar)
+	altpower:SetScript("OnHide", UF.ToggleResourceBar)
+	
 	return altpower
 end
 
@@ -61,5 +66,25 @@ function UF:AltPowerBarPostUpdate(min, cur, max)
 		else
 			self.text:SetText(nil)
 		end
+	end
+end
+
+function UF:Configure_AltPower(frame)
+	local altpower = frame.AltPowerBar
+
+	if frame.USE_POWERBAR then
+		frame:EnableElement('AltPowerBar')
+		altpower.text:SetAlpha(1)
+		altpower:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", frame.BORDER, frame.SPACING+frame.BORDER)
+		if not frame.USE_PORTRAIT_OVERLAY then
+			altpower:Point("TOPRIGHT", frame, "TOPRIGHT", -(frame.PORTRAIT_WIDTH+frame.BORDER), -frame.BORDER)
+		else
+			altpower:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER, -frame.BORDER)
+		end
+		altpower.Smooth = UF.db.smoothbars
+	else
+		frame:DisableElement('AltPowerBar')
+		altpower.text:SetAlpha(0)
+		altpower:Hide()
 	end
 end

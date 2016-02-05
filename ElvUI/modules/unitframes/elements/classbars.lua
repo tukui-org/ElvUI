@@ -208,11 +208,21 @@ local function ToggleResourceBar(bars)
 		height = db.classbar.height
 	elseif db.combobar then
 		height = db.combobar.height
+	elseif frame.AltPowerBar then
+		height = db.power.height
+	end
+	
+	if bars.text then
+		if frame.CLASSBAR_SHOWN then
+			bars.text:SetAlpha(1)
+		else
+			bars.text:SetAlpha(0)
+		end
 	end
 	
 	frame.CLASSBAR_HEIGHT = frame.USE_CLASSBAR and frame.CLASSBAR_SHOWN and height or 0
 	frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN or frame.CLASSBAR_DETACHED) and 0 or (frame.USE_MINI_CLASSBAR and ((frame.SPACING+(frame.CLASSBAR_HEIGHT/2))) or (frame.CLASSBAR_HEIGHT + frame.SPACING))
-
+	print(frame.USE_CLASSBAR, frame.CLASSBAR_SHOWN)
 	if not frame.CLASSBAR_DETACHED then --Only update when necessary
 		UF:Configure_HealthBar(frame)
 		UF:Configure_Portrait(frame, true) --running :Hide on portrait makes the frame all funky
