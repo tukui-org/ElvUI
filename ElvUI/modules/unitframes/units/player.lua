@@ -97,7 +97,7 @@ function UF:Update_PlayerFrame(frame, db)
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
 		frame.BORDER = E.Border
 		frame.SPACING = E.Spacing
-		frame.SHADOW_SPACING = (frame.BORDER*7 - frame.SPACING*6)
+		frame.SHADOW_SPACING = (frame.BORDER*3 - frame.SPACING*3)
 		frame.UNIT_WIDTH = db.width
 		frame.UNIT_HEIGHT = db.height
 
