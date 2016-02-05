@@ -58,10 +58,12 @@ function UF:Configure_HealthBar(frame)
 	health.Smooth = self.db.smoothbars
 
 	--Text
-	local x, y = self:GetPositionOffset(db.health.position)
-	health.value:ClearAllPoints()
-	health.value:Point(db.health.position, health, db.health.position, x + db.health.xOffset, y + db.health.yOffset)
-	frame:Tag(health.value, db.health.text_format)
+	if health.value then
+		local x, y = self:GetPositionOffset(db.health.position)
+		health.value:ClearAllPoints()
+		health.value:Point(db.health.position, health, db.health.position, x + db.health.xOffset, y + db.health.yOffset)
+		frame:Tag(health.value, db.health.text_format)
+	end
 
 	--Colors
 	health.colorSmooth = nil
