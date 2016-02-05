@@ -40,13 +40,13 @@ function UF:Configure_Threat(frame)
 			if frame.USE_POWERBAR_OFFSET then
 				if frame.ORIENTATION == "LEFT" then
 					threat.glow:Point("TOPLEFT", -frame.SHADOW_SPACING, frame.SHADOW_SPACING-(frame.USE_MINI_CLASSBAR and frame.CLASSBAR_YOFFSET or 0))
-					threat.glow:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", frame.SHADOW_SPACING, -frame.SHADOW_SPACING)
+					threat.glow:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", frame.SHADOW_SPACING + frame.BORDER + frame.SPACING, -frame.SHADOW_SPACING - frame.BORDER - frame.SPACING)
 				elseif frame.ORIENTATION == "RIGHT" then
 					threat.glow:Point("TOPRIGHT", frame.SHADOW_SPACING, frame.SHADOW_SPACING-(frame.USE_MINI_CLASSBAR and frame.CLASSBAR_YOFFSET or 0))
-					threat.glow:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", -frame.SHADOW_SPACING, -frame.SHADOW_SPACING)
+					threat.glow:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", -frame.SHADOW_SPACING -frame.BORDER - frame.SPACING, -frame.SHADOW_SPACING -frame.BORDER - frame.SPACING)
 				else
-					threat.glow:Point("TOPRIGHT", frame.Health.backdrop, "TOPRIGHT", frame.SHADOW_SPACING, frame.SHADOW_SPACING)
-					threat.glow:Point("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMLEFT", -frame.SHADOW_SPACING, -frame.SHADOW_SPACING)
+					threat.glow:Point("TOPRIGHT", frame.Health.backdrop, "TOPRIGHT", frame.SHADOW_SPACING +frame.SPACING, frame.SHADOW_SPACING +frame.SPACING)
+					threat.glow:Point("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMLEFT", -frame.SHADOW_SPACING -frame.SPACING, -frame.SHADOW_SPACING -frame.SPACING)
 				end
 			else
 				threat.glow:SetBackdropBorderColor(0, 0, 0, 0)
