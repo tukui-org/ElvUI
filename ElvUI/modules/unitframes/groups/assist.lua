@@ -79,6 +79,10 @@ function UF:Update_AssistFrames(frame, db)
 	do
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
 
+		frame.BORDER = E.Border
+		frame.SPACING = E.Spacing
+		frame.SHADOW_SPACING = 3
+		
 		frame.UNIT_WIDTH = db.width
 		frame.UNIT_HEIGHT = db.height
 
@@ -103,8 +107,10 @@ function UF:Update_AssistFrames(frame, db)
 		frame.USE_MINI_CLASSBAR = false
 		frame.CLASSBAR_HEIGHT = 0
 		frame.CLASSBAR_WIDTH = 0
+		frame.CLASSBAR_YOFFSET = 0
 
 		frame.STAGGER_SHOWN = false
+		frame.STAGGER_WIDTH = 0
 	end
 
 	if frame.isChild and frame.originalParent then
