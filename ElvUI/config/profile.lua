@@ -525,7 +525,6 @@ P['unitframe'] = {
 				['width'] = 'fill',
 				['height'] = 10,
 				['offset'] = 0,
-				['offsetDirection'] = 'RIGHT',
 				['position'] = 'RIGHT',
 				['hideonnpc'] = false,
 				['xOffset'] = 0,
