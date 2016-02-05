@@ -56,9 +56,6 @@ function UF:Update_BossFrames(frame, db)
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	do
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
-		frame.BORDER = E.Border
-		frame.SPACING = E.Spacing
-		frame.SHADOW_SPACING = (frame.BORDER*7 - frame.SPACING*6)
 		frame.UNIT_WIDTH = db.width
 		frame.UNIT_HEIGHT = db.height
 
@@ -77,7 +74,6 @@ function UF:Update_BossFrames(frame, db)
 		frame.USE_PORTRAIT_OVERLAY = frame.USE_PORTRAIT and (db.portrait.overlay or frame.ORIENTATION == "MIDDLE")
 		frame.PORTRAIT_WIDTH = (frame.USE_PORTRAIT_OVERLAY or not frame.USE_PORTRAIT) and 0 or db.portrait.width
 
-		frame.STAGGER_WIDTH = 0
 		frame.CAN_HAVE_CLASSBAR = true
 		frame.MAX_CLASS_BAR = 0
 		frame.USE_CLASSBAR = true

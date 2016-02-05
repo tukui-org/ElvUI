@@ -60,9 +60,6 @@ function UF:Update_TargetFrame(frame, db)
 
 	do
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
-		frame.BORDER = E.Border
-		frame.SPACING = E.Spacing
-		frame.SHADOW_SPACING = (frame.BORDER*7 - frame.SPACING*6)
 		frame.UNIT_WIDTH = db.width
 		frame.UNIT_HEIGHT = db.height
 
@@ -90,9 +87,6 @@ function UF:Update_TargetFrame(frame, db)
 		frame.CLASSBAR_HEIGHT = frame.USE_CLASSBAR and db.combobar.height or 0
 		frame.CLASSBAR_WIDTH = frame.UNIT_WIDTH - ((frame.BORDER+frame.SPACING)*2) - frame.PORTRAIT_WIDTH  - frame.POWERBAR_OFFSET
 		frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN or frame.CLASSBAR_DETACHED) and 0 or (frame.USE_MINI_CLASSBAR and (frame.SPACING+(frame.CLASSBAR_HEIGHT/2)) or (frame.CLASSBAR_HEIGHT + frame.SPACING))
-
-		frame.STAGGER_SHOWN = false
-		frame.STAGGER_WIDTH = 0
 	end
 
 	local unit = self.unit

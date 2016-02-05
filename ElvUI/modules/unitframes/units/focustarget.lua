@@ -39,9 +39,6 @@ function UF:Update_FocusTargetFrame(frame, db)
 
 	do
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
-		frame.BORDER = E.Border
-		frame.SPACING = E.Spacing
-		frame.SHADOW_SPACING = (frame.BORDER*7 - frame.SPACING*6)
 		frame.UNIT_WIDTH = db.width
 		frame.UNIT_HEIGHT = db.height
 
@@ -59,9 +56,6 @@ function UF:Update_FocusTargetFrame(frame, db)
 		frame.USE_PORTRAIT = db.portrait and db.portrait.enable
 		frame.USE_PORTRAIT_OVERLAY = frame.USE_PORTRAIT and (db.portrait.overlay or frame.ORIENTATION == "MIDDLE")
 		frame.PORTRAIT_WIDTH = (frame.USE_PORTRAIT_OVERLAY or not frame.USE_PORTRAIT) and 0 or db.portrait.width
-		
-		frame.STAGGER_WIDTH = 0
-		frame.CLASSBAR_YOFFSET = 0
 	end
 	
 	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D

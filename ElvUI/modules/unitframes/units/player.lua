@@ -95,9 +95,7 @@ function UF:Update_PlayerFrame(frame, db)
 	--new method for storing frame variables, will remove other variables when done
 	do
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
-		frame.BORDER = E.Border
-		frame.SPACING = E.Spacing
-		frame.SHADOW_SPACING = 3 --This needs to be looked at, producing weird results on different resolutions
+
 		frame.UNIT_WIDTH = db.width
 		frame.UNIT_HEIGHT = db.height
 
