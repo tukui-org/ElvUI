@@ -81,7 +81,7 @@ function UF:Update_PetTargetFrame(frame, db)
 
 	--Power
 	do
-		UF:Configure_PowerBar(frame)
+		UF:Configure_Power(frame)
 	end
 
 	--Portrait
