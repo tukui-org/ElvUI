@@ -3181,6 +3181,18 @@ E.Options.args.unitframe.args.focustarget = {
 				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 			},
 		},
+		orientation = {
+			order = 10,
+			type = "select",
+			name = L["Frame Orientation"],
+			desc = L["Set the orientation of the UnitFrame. If set to automatic it will adjust based on where the frame is located on the screen."],
+			values = {
+				--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
+				["LEFT"] = L["Left"],
+				["MIDDLE"] = L["Middle"],
+				["RIGHT"] = L["Right"],
+			},			
+		},			
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'focustarget'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'focustarget'),
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUF, 'focustarget'),
@@ -3284,6 +3296,18 @@ E.Options.args.unitframe.args.pet = {
 				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 			},
 		},
+		orientation = {
+			order = 13,
+			type = "select",
+			name = L["Frame Orientation"],
+			desc = L["Set the orientation of the UnitFrame. If set to automatic it will adjust based on where the frame is located on the screen."],
+			values = {
+				--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
+				["LEFT"] = L["Left"],
+				["MIDDLE"] = L["Middle"],
+				["RIGHT"] = L["Right"],
+			},			
+		},				
 		buffIndicator = {
 			order = 600,
 			type = 'group',
@@ -3408,6 +3432,18 @@ E.Options.args.unitframe.args.pettarget = {
 				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 			},
 		},
+		orientation = {
+			order = 10,
+			type = "select",
+			name = L["Frame Orientation"],
+			desc = L["Set the orientation of the UnitFrame. If set to automatic it will adjust based on where the frame is located on the screen."],
+			values = {
+				--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
+				["LEFT"] = L["Left"],
+				["MIDDLE"] = L["Middle"],
+				["RIGHT"] = L["Right"],
+			},			
+		},		
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'pettarget'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'pettarget'),
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUF, 'pettarget'),
@@ -3524,6 +3560,18 @@ E.Options.args.unitframe.args.boss = {
 				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 			},
 		},
+		orientation = {
+			order = 12,
+			type = "select",
+			name = L["Frame Orientation"],
+			desc = L["Set the orientation of the UnitFrame. If set to automatic it will adjust based on where the frame is located on the screen."],
+			values = {
+				--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
+				["LEFT"] = L["Left"],
+				["MIDDLE"] = L["Middle"],
+				["RIGHT"] = L["Right"],
+			},			
+		},		
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
@@ -3659,8 +3707,20 @@ E.Options.args.unitframe.args.arena = {
 				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 			},
 		},
-		pvpTrinket = {
+		orientation = {
 			order = 14,
+			type = "select",
+			name = L["Frame Orientation"],
+			desc = L["Set the orientation of the UnitFrame. If set to automatic it will adjust based on where the frame is located on the screen."],
+			values = {
+				--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
+				["LEFT"] = L["Left"],
+				["MIDDLE"] = L["Middle"],
+				["RIGHT"] = L["Right"],
+			},			
+		},		
+		pvpTrinket = {
+			order = 15,
 			type = 'group',
 			name = L["PVP Trinket"],
 			get = function(info) return E.db.unitframe.units['arena']['pvpTrinket'][ info[#info] ] end,
@@ -3800,6 +3860,18 @@ E.Options.args.unitframe.args.party = {
 						['FORCE_OFF'] = L["Force Off"],
 					},
 				},
+				orientation = {
+					order = 7,
+					type = "select",
+					name = L["Frame Orientation"],
+					desc = L["Set the orientation of the UnitFrame. If set to automatic it will adjust based on where the frame is located on the screen."],
+					values = {
+						--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
+						["LEFT"] = L["Left"],
+						["MIDDLE"] = L["Middle"],
+						["RIGHT"] = L["Right"],
+					},			
+				},				
 				positionsGroup = {
 					order = 100,
 					name = L["Size and Positions"],
@@ -4338,6 +4410,18 @@ E.Options.args.unitframe.args['raid'] = {
 						['FORCE_OFF'] = L["Force Off"],
 					},
 				},
+				orientation = {
+					order = 7,
+					type = "select",
+					name = L["Frame Orientation"],
+					desc = L["Set the orientation of the UnitFrame. If set to automatic it will adjust based on where the frame is located on the screen."],
+					values = {
+						--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
+						["LEFT"] = L["Left"],
+						["MIDDLE"] = L["Middle"],
+						["RIGHT"] = L["Right"],
+					},			
+				},				
 				positionsGroup = {
 					order = 100,
 					name = L["Size and Positions"],
@@ -4708,6 +4792,18 @@ E.Options.args.unitframe.args['raid40'] = {
 						['FORCE_OFF'] = L["Force Off"],
 					},
 				},
+				orientation = {
+					order = 7,
+					type = "select",
+					name = L["Frame Orientation"],
+					desc = L["Set the orientation of the UnitFrame. If set to automatic it will adjust based on where the frame is located on the screen."],
+					values = {
+						--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
+						["LEFT"] = L["Left"],
+						["MIDDLE"] = L["Middle"],
+						["RIGHT"] = L["Right"],
+					},			
+				},				
 				positionsGroup = {
 					order = 100,
 					name = L["Size and Positions"],

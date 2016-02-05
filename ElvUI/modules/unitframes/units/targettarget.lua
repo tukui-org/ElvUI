@@ -90,7 +90,7 @@ function UF:Update_TargetTargetFrame(frame, db)
 
 	--Threat
 	do
-		UF:Configure_Portrait(frame)
+		UF:Configure_Threat(frame)
 	end
 
 	--Auras
