@@ -16,3 +16,29 @@ function UF:Construct_PVPSpecIcon(frame)
 
 	return specIcon
 end
+
+function UF:Configure_PVPSpecIcon(frame)
+	local specIcon = frame.PVPSpecIcon
+	
+	specIcon.bg:ClearAllPoints()
+	if frame.ORIENTATION == "LEFT" then
+		specIcon.bg:Point("TOPRIGHT", frame, "TOPRIGHT")
+		if frame.USE_MINI_POWERBAR or frame.USE_POWERBAR_OFFSET or frame.USE_INSET_POWERBAR then
+			specIcon.bg:Point("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMRIGHT", (-frame.BORDER + frame.SPACING*3) + frame.PORTRAIT_WIDTH, 0)
+		else
+			specIcon.bg:Point("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMRIGHT", (-frame.BORDER + frame.SPACING*3) + frame.PORTRAIT_WIDTH, 0)
+		end
+	else
+		specIcon.bg:Point("TOPLEFT", frame, "TOPLEFT")
+		if frame.USE_MINI_POWERBAR or frame.USE_POWERBAR_OFFSET or frame.USE_INSET_POWERBAR then
+			specIcon.bg:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", (frame.BORDER - frame.SPACING*3) - frame.PORTRAIT_WIDTH, 0)
+		else
+			specIcon.bg:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", (frame.BORDER - frame.SPACING*3) - frame.PORTRAIT_WIDTH, 0)
+		end	
+	end
+	if frame.db.pvpSpecIcon and not frame:IsElementEnabled('PVPSpecIcon') then
+		frame:EnableElement('PVPSpecIcon')
+	elseif not frame.db.pvpSpecIcon and frame:IsElementEnabled('PVPSpecIcon') then
+		frame:DisableElement('PVPSpecIcon')
+	end
+end

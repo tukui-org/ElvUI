@@ -3727,7 +3727,7 @@ E.Options.args.unitframe.args.arena = {
 			values = {
 				--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
 				["LEFT"] = L["Left"],
-				["MIDDLE"] = L["Middle"],
+				--["MIDDLE"] = L["Middle"], --no way to handle this with trinket 
 				["RIGHT"] = L["Right"],
 			},
 		},

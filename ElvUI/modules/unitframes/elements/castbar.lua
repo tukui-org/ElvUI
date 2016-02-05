@@ -90,8 +90,10 @@ function UF:Configure_Castbar(frame)
 	castbar:Height(db.castbar.height - ((frame.BORDER+frame.SPACING)*2))
 	castbar.Holder:Width(db.castbar.width)
 	castbar.Holder:Height(db.castbar.height)
-	castbar.Holder:GetScript('OnSizeChanged')(castbar.Holder)
-
+	if(castbar.Holder:GetScript('OnSizeChanged')) then
+		castbar.Holder:GetScript('OnSizeChanged')(castbar.Holder)
+	end
+	
 	--Latency
 	if db.castbar.latency then
 		castbar.SafeZone = castbar.LatencyTexture
@@ -120,11 +122,12 @@ function UF:Configure_Castbar(frame)
 		castbar.Spark:Hide()
 	end
 
-	local isMoved = E:HasMoverBeenMoved(frame:GetName()..'CastbarMover')
-	if not isMoved then	castbar.Holder.mover:ClearAllPoints() end
+	local isMoved = E:HasMoverBeenMoved(frame:GetName()..'CastbarMover') or not castbar.Holder.mover
+	if not isMoved then	
+		castbar.Holder.mover:ClearAllPoints()
+	end
 	
 	castbar:ClearAllPoints()
-
 	if frame.ORIENTATION ~= "RIGHT"  then
 		castbar:Point('BOTTOMRIGHT', castbar.Holder, 'BOTTOMRIGHT', -(frame.BORDER+frame.SPACING), frame.BORDER+frame.SPACING)
 		if not isMoved then

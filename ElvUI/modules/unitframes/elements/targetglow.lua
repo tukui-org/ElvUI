@@ -49,3 +49,27 @@ function UF:UpdateTargetGlow(event)
 		self.TargetGlow:Hide()
 	end
 end
+
+function UF:Configure_TargetGlow(frame)
+		local SHADOW_SPACING = frame.SHADOW_SPACING
+		local tGlow = frame.TargetGlow
+		tGlow:ClearAllPoints()
+
+		tGlow:Point("TOPLEFT", -SHADOW_SPACING, SHADOW_SPACING)
+		tGlow:Point("TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING)
+
+		if frame.USE_MINI_POWERBAR then
+			tGlow:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING + (frame.POWERBAR_HEIGHT/2))
+			tGlow:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING + (frame.POWERBAR_HEIGHT/2))
+		else
+			tGlow:Point("BOTTOMLEFT", -SHADOW_SPACING, -SHADOW_SPACING)
+			tGlow:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING)
+		end
+
+		if USE_POWERBAR_OFFSET then
+			tGlow:Point("TOPLEFT", -SHADOW_SPACING+frame.POWERBAR_OFFSET, SHADOW_SPACING)
+			tGlow:Point("TOPRIGHT", SHADOW_SPACING, SHADOW_SPACING)
+			tGlow:Point("BOTTOMLEFT", -SHADOW_SPACING+frame.POWERBAR_OFFSET, -SHADOW_SPACING+frame.POWERBAR_OFFSET)
+			tGlow:Point("BOTTOMRIGHT", SHADOW_SPACING, -SHADOW_SPACING+frame.POWERBAR_OFFSET)
+		end
+end
