@@ -411,6 +411,10 @@ L["When you go AFK display the AFK screen."] = true;
 L["World Map Coordinates"] = true;
 
 --Media
+L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."] = true;
+L["Applies the primary texture to all statusbars."] = true;
+L["Apply Font To All"] = true;
+L["Apply Texture To All"] = true;
 L["Backdrop color of transparent frames"] = "Color de fondo de los marcos transparentes."
 L["Backdrop Color"] = "Color de Fondo"
 L["Backdrop Faded Color"] = "Color Atenuado de Fondo"

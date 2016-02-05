@@ -459,6 +459,10 @@ L["When you go AFK display the AFK screen."] = "자리비움 시 UI가 자리비
 L["World Map Coordinates"] = true;
 
 --Media
+L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."] = true;
+L["Applies the primary texture to all statusbars."] = true;
+L["Apply Font To All"] = true;
+L["Apply Texture To All"] = true;
 L["Backdrop color of transparent frames"] = "ElvUI에서 생성하는 모든 반투명한 프레임의 배경 색상과 투명도를 결정합니다."
 L["Backdrop Color"] = "배경 색상"
 L["Backdrop Faded Color"] = "반투명 배경 색상"

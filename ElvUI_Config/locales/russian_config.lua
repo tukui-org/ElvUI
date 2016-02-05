@@ -411,6 +411,10 @@ L["When you go AFK display the AFK screen."] = "Отображать специ�
 L["World Map Coordinates"] = "Координаты карты мира"
 
 --Media
+L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."] = true;
+L["Applies the primary texture to all statusbars."] = true;
+L["Apply Font To All"] = true;
+L["Apply Texture To All"] = true;
 L["Backdrop color of transparent frames"] = "Цвет фона прозрачных фреймов"
 L["Backdrop Color"] = "Цвет фона"
 L["Backdrop Faded Color"] = "Цвет прозрачного фона"
@@ -927,7 +931,7 @@ L["Shadow Orbs"] = "Сферы Тьмы"
 L["Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."] = "Отображать объем входящего исцеления на рамках. Также отображает немного иначе окрашенную полосу для избыточного исцеления."
 L["Show Aura From Other Players"] = "Отображать чужие"
 L["Show Auras"] = "Показать ауры"
-L["Show Dispellable Debuffs"] = true;
+L["Show Dispellable Debuffs"] = "Показывать развеиваемые дебаффы"
 L["Show For DPS"] = "Показывать для бойцов"
 L["Show For Healers"] = "Показывать для лекарей"
 L["Show For Tanks"] = "Показывать для танков"
