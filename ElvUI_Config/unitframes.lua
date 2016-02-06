@@ -3823,19 +3823,7 @@ E.Options.args.unitframe.args.party = {
 				['raid40'] = L["Raid40 Frames"],
 			},
 			set = function(info, value) UF:MergeUnitSettings(value, 'party', true); end,
-		},
-		orientation = {
-			order = 4,
-			type = "select",
-			name = L["Frame Orientation"],
-			desc = L["Set the orientation of the UnitFrame. If set to automatic it will adjust based on where the frame is located on the screen."],
-			values = {
-				--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
-				["LEFT"] = L["Left"],
-				["MIDDLE"] = L["Middle"],
-				["RIGHT"] = L["Right"],
-			},
-		},		
+		},	
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateHeaderGroup, 'party', nil, 4),
 		general = {
 			order = 5,
