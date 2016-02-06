@@ -131,69 +131,11 @@ function UF:Update_BossFrames(frame, db)
 		UF:Configure_AltPower(frame)
 	end
 
-	--Debuff Highlight
-	do
-		local dbh = frame.DebuffHighlight
-		if E.db.unitframe.debuffHighlighting ~= 'NONE' then
-			if not frame:IsElementEnabled('DebuffHighlight') then
-				frame:EnableElement('DebuffHighlight')
-				frame.DebuffHighlightFilterTable = E.global.unitframe.DebuffHighlightColors
-				if E.db.unitframe.debuffHighlighting == 'GLOW' then
-					frame.DebuffHighlightBackdrop = true
-				else
-					frame.DebuffHighlightBackdrop = false
-				end
-			end
-		else
-			if frame:IsElementEnabled('DebuffHighlight') then
-				frame:DisableElement('DebuffHighlight')
-			end
-		end
-	end
+	UF:Configure_DebuffHighlight(frame)
 
-	for objectName, object in pairs(frame.customTexts) do
-		if (not db.customTexts) or (db.customTexts and not db.customTexts[objectName]) then
-			object:Hide()
-			frame.customTexts[objectName] = nil
-		end
-	end
+	UF:Configure_CustomTexts(frame)
 
-	if db.customTexts then
-		local customFont = UF.LSM:Fetch("font", UF.db.font)
-		for objectName, _ in pairs(db.customTexts) do
-			if not frame.customTexts[objectName] then
-				frame.customTexts[objectName] = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
-			end
-
-			local objectDB = db.customTexts[objectName]
-
-			if objectDB.font then
-				customFont = UF.LSM:Fetch("font", objectDB.font)
-			end
-
-			frame.customTexts[objectName]:FontTemplate(customFont, objectDB.size or UF.db.fontSize, objectDB.fontOutline or UF.db.fontOutline)
-			frame:Tag(frame.customTexts[objectName], objectDB.text_format or '')
-			frame.customTexts[objectName]:SetJustifyH(objectDB.justifyH or 'CENTER')
-			frame.customTexts[objectName]:ClearAllPoints()
-			frame.customTexts[objectName]:Point(objectDB.justifyH or 'CENTER', frame, objectDB.justifyH or 'CENTER', objectDB.xOffset, objectDB.yOffset)
-		end
-	end
-
-	--Range
-	do
-		local range = frame.Range
-		if db.rangeCheck then
-			if not frame:IsElementEnabled('Range') then
-				frame:EnableElement('Range')
-			end
-
-			range.outsideAlpha = E.db.unitframe.OORAlpha
-		else
-			if frame:IsElementEnabled('Range') then
-				frame:DisableElement('Range')
-			end
-		end
-	end
+	UF:Configure_Range(frame)
 
 	frame:ClearAllPoints()
 	if frame.index == 1 then
