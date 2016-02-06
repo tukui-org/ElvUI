@@ -137,7 +137,7 @@ function UF:Configure_HealthBar(frame)
 	end
 	
 	--Party/Raid Frames allow to change statusbar orientation
-	if db.health.orientation then
+	if db.health and db.health.orientation then
 		health:SetOrientation(db.health.orientation)
 	end
 end
