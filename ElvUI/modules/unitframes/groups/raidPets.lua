@@ -179,4 +179,4 @@ function UF:Update_RaidpetFrames(frame, db)
 end
 
 --Added an additional argument at the end, specifying the header Template we want to use
-UF['headerstoload']['raidpet'] = {nil, nil, 'SecureGroupPetHeaderTemplate'}
+UF['headerstoload']['raidpet'] = {nil, 'ELVUI_UNITPET', 'SecureGroupPetHeaderTemplate'}
