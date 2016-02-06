@@ -27,7 +27,9 @@ function UF:Construct_PartyFrames(unitGroup)
 	self.RaisedElementParent = CreateFrame('Frame', nil, self)
 	self.RaisedElementParent:SetFrameStrata("MEDIUM")
 	self.RaisedElementParent:SetFrameLevel(self:GetFrameLevel() + 10)
-
+	self.BORDER = E.Border
+	self.SPACING = E.Spacing
+	self.SHADOW_SPACING = 3
 	if self.isChild then
 		self.Health = UF:Construct_HealthBar(self, true)
 
@@ -128,9 +130,6 @@ function UF:Update_PartyFrames(frame, db)
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	
 	do
-		frame.BORDER = E.Border
-		frame.SPACING = E.Spacing
-		frame.SHADOW_SPACING = 3
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
 		frame.UNIT_WIDTH = db.width
 		frame.UNIT_HEIGHT = db.height
