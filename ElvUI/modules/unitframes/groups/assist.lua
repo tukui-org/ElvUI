@@ -99,17 +99,8 @@ function UF:Update_AssistFrames(frame, db)
 		frame.USE_PORTRAIT_OVERLAY = false
 		frame.PORTRAIT_WIDTH = 0
 
-		frame.CAN_HAVE_CLASSBAR = false
-		frame.MAX_CLASS_BAR = 0
-		frame.USE_CLASSBAR = false
-		frame.CLASSBAR_SHOWN = false
-		frame.CLASSBAR_DETACHED = false
-		frame.USE_MINI_CLASSBAR = false
-		frame.CLASSBAR_HEIGHT = 0
 		frame.CLASSBAR_WIDTH = 0
 		frame.CLASSBAR_YOFFSET = 0
-
-		frame.STAGGER_SHOWN = false
 		frame.STAGGER_WIDTH = 0
 	end
 
