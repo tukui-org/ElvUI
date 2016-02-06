@@ -25,6 +25,29 @@ function UF:Construct_RaidRoleFrames(frame)
 	return anchor
 end
 
+function UF:Configure_RaidRoleIcons(frame)
+	local raidRoleFrameAnchor = frame.RaidRoleFramesAnchor
+
+	if frame.db.raidRoleIcons.enable then
+		raidRoleFrameAnchor:Show()
+		if not frame:IsElementEnabled('Leader') then
+			frame:EnableElement('Leader')
+			frame:EnableElement('MasterLooter')
+		end
+		
+		raidRoleFrameAnchor:ClearAllPoints()
+		if frame.db.raidRoleIcons.position == 'TOPLEFT' then
+			raidRoleFrameAnchor:Point('LEFT', frame.Health, 'TOPLEFT', 2, 0)
+		else
+			raidRoleFrameAnchor:Point('RIGHT', frame, 'TOPRIGHT', -2, 0)
+		end
+	elseif frame:IsElementEnabled('Leader') then
+		raidRoleFrameAnchor:Hide()
+		frame:DisableElement('Leader')
+		frame:DisableElement('MasterLooter')
+	end
+end
+
 function UF:RaidRoleUpdate()
 	local anchor = self:GetParent()
 	local leader = anchor:GetParent().Leader

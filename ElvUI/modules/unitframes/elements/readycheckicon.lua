@@ -18,3 +18,9 @@ function UF:Construct_ReadyCheckIcon(frame)
 
 	return tex
 end
+
+function UF:Configure_ReadyCheckIcon(frame)
+	if not frame:IsElementEnabled('ReadyCheck') then
+			frame:EnableElement('ReadyCheck')
+	end
+end

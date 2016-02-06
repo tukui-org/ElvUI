@@ -44,8 +44,10 @@ function UF:Configure_RaidDebuffs(frame)
 
 	if db.rdebuffs.enable then
 		local rdebuffsFont = UF.LSM:Fetch("font", db.rdebuffs.font)
-		frame:EnableElement('RaidDebuffs')
-
+		if not frame:IsElementEnabled('RaidDebuffs') then
+			frame:EnableElement('RaidDebuffs')
+		end
+		
 		rdebuffs.showDispellableDebuff = db.rdebuffs.showDispellableDebuff
 		rdebuffs.forceShow = frame.forceShowAuras
 		rdebuffs:Size(db.rdebuffs.size)
@@ -60,7 +62,7 @@ function UF:Configure_RaidDebuffs(frame)
 		rdebuffs.time:ClearAllPoints()
 		rdebuffs.time:Point(db.rdebuffs.duration.position, db.rdebuffs.duration.xOffset, db.rdebuffs.duration.yOffset)
 		rdebuffs.time:SetTextColor(durationColor.r, durationColor.g, durationColor.b)
-	else
+	elseif frame:IsElementEnabled('RaidDebuffs') then
 		frame:DisableElement('RaidDebuffs')
 		rdebuffs:Hide()
 	end

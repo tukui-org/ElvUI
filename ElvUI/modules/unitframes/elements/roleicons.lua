@@ -94,3 +94,18 @@ function UF:UpdateRoleIcon()
 		lfdrole:Hide()
 	end
 end
+
+function UF:Configure_RoleIcon(frame)
+	local role = frame.LFDRole
+	if frame.db.roleIcon.enable then
+		frame:EnableElement('LFDRole')
+
+		local x, y = self:GetPositionOffset(frame.db.roleIcon.position, 1)
+		role:ClearAllPoints()
+		role:Point(frame.db.roleIcon.position, frame.Health, frame.db.roleIcon.position, x, y)
+		role:Size(frame.db.roleIcon.size)
+	else
+		frame:DisableElement('LFDRole')
+		role:Hide()
+	end
+end
