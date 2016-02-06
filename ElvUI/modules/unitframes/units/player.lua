@@ -113,6 +113,7 @@ function UF:Update_PlayerFrame(frame, db)
 		frame.USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and frame.USE_CLASSBAR
 		frame.CLASSBAR_HEIGHT = frame.USE_CLASSBAR and db.classbar.height or 0
 		frame.CLASSBAR_WIDTH = frame.UNIT_WIDTH - ((frame.BORDER+frame.SPACING)*2) - frame.PORTRAIT_WIDTH  -(frame.ORIENTATION == "MIDDLE" and (frame.POWERBAR_OFFSET*2) or frame.POWERBAR_OFFSET)
+		--If formula for frame.CLASSBAR_YOFFSET changes, then remember to update it in classbars.lua too
 		frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN or frame.CLASSBAR_DETACHED) and 0 or (frame.USE_MINI_CLASSBAR and (frame.SPACING+(frame.CLASSBAR_HEIGHT/2)) or (frame.CLASSBAR_HEIGHT - (frame.BORDER-frame.SPACING)))
 
 		frame.STAGGER_SHOWN = frame.Stagger and frame.Stagger:IsShown()
