@@ -135,6 +135,11 @@ function UF:Configure_HealthBar(frame)
 		health.bg:Point('TOPRIGHT', health)
 		health.bg:SetParent(frame.Portrait.overlay)
 	end
+	
+	--Party/Raid Frames allow to change statusbar orientation
+	if db.health.orientation then
+		health:SetOrientation(db.health.orientation)
+	end
 end
 
 function UF:PostUpdateHealth(unit, min, max)
