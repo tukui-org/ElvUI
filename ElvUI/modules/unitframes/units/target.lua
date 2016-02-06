@@ -55,9 +55,6 @@ end
 function UF:Update_TargetFrame(frame, db)
 	frame.db = db
 
-	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
-	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
-
 	do
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
 		frame.UNIT_WIDTH = db.width
@@ -88,9 +85,9 @@ function UF:Update_TargetFrame(frame, db)
 		frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN or frame.CLASSBAR_DETACHED) and 0 or (frame.USE_MINI_CLASSBAR and (frame.SPACING+(frame.CLASSBAR_HEIGHT/2)) or (frame.CLASSBAR_HEIGHT + frame.SPACING))
 	end
 
-	local unit = self.unit
-
 	frame.colors = ElvUF.colors
+	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
+	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
 
@@ -102,82 +99,52 @@ function UF:Update_TargetFrame(frame, db)
 		end
 	end
 
-
 	--Health
-	do
-		UF:Configure_HealthBar(frame)
-	end
+	UF:Configure_HealthBar(frame)
 
 	--Name
 	UF:UpdateNameSettings(frame)
 
 	--Power
-	do
-		UF:Configure_Power(frame)
-	end
+	UF:Configure_Power(frame)
 
 	--Portrait
-	do
-		UF:Configure_Portrait(frame)
-	end
+	UF:Configure_Portrait(frame)
 
 	--Threat
-	do
-		UF:Configure_Threat(frame)
-	end
+	UF:Configure_Threat(frame)
 
 	--Auras
-	do
-		UF:EnableDisable_Auras(frame)
-		UF:Configure_Auras(frame, 'Buffs')
-		UF:Configure_Auras(frame, 'Debuffs')
-	end
+	UF:EnableDisable_Auras(frame)
+	UF:Configure_Auras(frame, 'Buffs')
+	UF:Configure_Auras(frame, 'Debuffs')
 
 	--Castbar
-	do
-		UF:Configure_Castbar(frame)
-	end
+	UF:Configure_Castbar(frame)
 
 	--Combo Bar
-	do
-		UF:Configure_ComboPoints(frame)
-	end
+	UF:Configure_ComboPoints(frame)
 
 	--Debuff Highlight
-	do
-		UF:Configure_DebuffHighlight(frame)
-	end
+	UF:Configure_DebuffHighlight(frame)
 
 	--OverHealing
-	do
-		UF:Configure_HealComm(frame)
-	end
+	UF:Configure_HealComm(frame)
 
 	--GPSArrow
-	do
-		UF:Configure_GPS(frame)
-	end
+	UF:Configure_GPS(frame)
 
 	--Raid Icon
-	do
-		UF:Configure_RaidIcon(frame)
-	end
+	UF:Configure_RaidIcon(frame)
 
 	--AuraBars
-	do
-		UF:Configure_AuraBars(frame)
-	end
+	UF:Configure_AuraBars(frame)
 
 	--Range
-	do
-		UF:Configure_Range(frame)
-	end
+	UF:Configure_Range(frame)
 
-	
 	--CustomTexts
-	do
-		UF:Configure_CustomTexts(frame)
-	end
+	UF:Configure_CustomTexts(frame)
 
 	if UF.db.colors.transparentHealth then
 		UF:ToggleTransparentStatusBar(true, frame.Health, frame.Health.bg)

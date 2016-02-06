@@ -36,8 +36,6 @@ end
 function UF:Update_PetTargetFrame(frame, db)
 	frame.db = db
 
-
-	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
 	do
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
 		frame.UNIT_WIDTH = db.width
@@ -58,47 +56,36 @@ function UF:Update_PetTargetFrame(frame, db)
 		frame.PORTRAIT_WIDTH = (frame.USE_PORTRAIT_OVERLAY or not frame.USE_PORTRAIT) and 0 or db.portrait.width
 	end
 
-	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	frame.colors = ElvUF.colors
+	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
+	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
 
-
 	--Health
-	do
-		UF:Configure_HealthBar(frame)
-	end
+	UF:Configure_HealthBar(frame)
 
 	--Name
 	UF:UpdateNameSettings(frame)
 
 	--Power
-	do
-		UF:Configure_Power(frame)
-	end
+	UF:Configure_Power(frame)
 
 	--Portrait
-	do
-		UF:Configure_Portrait(frame)
-	end
+	UF:Configure_Portrait(frame)
 
 	--Threat
-	do
-		UF:Configure_Threat(frame)
-	end
+	UF:Configure_Threat(frame)
 
 	--Auras
-	do
-		UF:EnableDisable_Auras(frame)
-		UF:Configure_Auras(frame, 'Buffs')
-		UF:Configure_Auras(frame, 'Debuffs')
-	end
+	UF:EnableDisable_Auras(frame)
+	UF:Configure_Auras(frame, 'Buffs')
+	UF:Configure_Auras(frame, 'Debuffs')
 
 	--Range
-	do
-		UF:Configure_Range(frame)
-	end
+	UF:Configure_Range(frame)
 
+	--CustomTexts
 	UF:Configure_CustomTexts(frame)
 
 	if UF.db.colors.transparentHealth then

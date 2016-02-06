@@ -51,9 +51,6 @@ end
 function UF:Update_BossFrames(frame, db)
 	frame.db = db
 
-
-	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
-	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	do
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
 		frame.UNIT_WIDTH = db.width
@@ -83,53 +80,40 @@ function UF:Update_BossFrames(frame, db)
 		frame.CLASSBAR_WIDTH = frame.UNIT_WIDTH - ((frame.BORDER+frame.SPACING)*2) - frame.PORTRAIT_WIDTH  - frame.POWERBAR_OFFSET
 		frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN) and 0 or (frame.CLASSBAR_HEIGHT + frame.SPACING)
 	end
+
 	frame.colors = ElvUF.colors
+	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
+	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 
 	--Health
-	do
-		UF:Configure_HealthBar(frame)
-	end
+	UF:Configure_HealthBar(frame)
 
 	--Name
 	UF:UpdateNameSettings(frame)
 
 	--Power
-	do
-		UF:Configure_Power(frame)
-	end
+	UF:Configure_Power(frame)
 
 	--Portrait
-	do
-		UF:Configure_Portrait(frame)
-	end
+	UF:Configure_Portrait(frame)
 
 	--Target Glow
-	do
-		UF:Configure_TargetGlow(frame)
-	end
+	UF:Configure_TargetGlow(frame)
 
 	--Auras
-	do
-		UF:EnableDisable_Auras(frame)
-		UF:Configure_Auras(frame, 'Buffs')
-		UF:Configure_Auras(frame, 'Debuffs')
-	end
+	UF:EnableDisable_Auras(frame)
+	UF:Configure_Auras(frame, 'Buffs')
+	UF:Configure_Auras(frame, 'Debuffs')
 
 	--Castbar
-	do
-		UF:Configure_Castbar(frame)
-	end
+	UF:Configure_Castbar(frame)
 
 	--Raid Icon
-	do
-		UF:Configure_RaidIcon(frame)
-	end
+	UF:Configure_RaidIcon(frame)
 
 	--AltPowerBar
-	do
-		UF:Configure_AltPower(frame)
-	end
+	UF:Configure_AltPower(frame)
 
 	UF:Configure_DebuffHighlight(frame)
 

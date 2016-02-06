@@ -125,7 +125,6 @@ end
 function UF:Update_ArenaFrames(frame, db)
 	frame.db = db
 
-	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
 	do
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
 		frame.UNIT_WIDTH = db.width
@@ -149,65 +148,45 @@ function UF:Update_ArenaFrames(frame, db)
 		frame.CLASSBAR_YOFFSET = 0
 	end
 
-
 	frame.colors = ElvUF.colors
-	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
+	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
+	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 
 	--Health
-	do
-		UF:Configure_HealthBar(frame)
-	end
+	UF:Configure_HealthBar(frame)
 
 	--Name
 	UF:UpdateNameSettings(frame)
 
 	--Power
-	do
-		UF:Configure_Power(frame)
-	end
+	UF:Configure_Power(frame)
 
 	--Portrait
-	do
-		UF:Configure_Portrait(frame)
-	end
+	UF:Configure_Portrait(frame)
 
 	--Target Glow
-	do
-		UF:Configure_TargetGlow(frame)
-	end
+	UF:Configure_TargetGlow(frame)
 
 	--Auras
-	do
-		UF:EnableDisable_Auras(frame)
-		UF:Configure_Auras(frame, 'Buffs')
-		UF:Configure_Auras(frame, 'Debuffs')
-	end
+	UF:EnableDisable_Auras(frame)
+	UF:Configure_Auras(frame, 'Buffs')
+	UF:Configure_Auras(frame, 'Debuffs')
 
 	--Castbar
-	do
-		UF:Configure_Castbar(frame)
-	end
+	UF:Configure_Castbar(frame)
 
 	--PVPSpecIcon
-	do
-		UF:Configure_PVPSpecIcon(frame)
-	end
+	UF:Configure_PVPSpecIcon(frame)
 
 	--Range
-	do
-		UF:Configure_Range(frame)
-	end
+	UF:Configure_Range(frame)
 
 	--Heal Prediction
-	do
-		UF:Configure_HealComm(frame)
-	end
-	
+	UF:Configure_HealComm(frame)
+
 	--CustomTexts
-	do
-		UF:Configure_CustomTexts(frame)
-	end	
+	UF:Configure_CustomTexts(frame)
 
 	frame:ClearAllPoints()
 	if frame.index == 1 then

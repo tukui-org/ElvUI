@@ -124,11 +124,9 @@ function UF:Update_PartyFrames(frame, db)
 	frame.db = db
 
 	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
-
-	frame.db = db
 	frame.colors = ElvUF.colors
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
-	
+
 	do
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
 		frame.UNIT_WIDTH = db.width
@@ -151,7 +149,7 @@ function UF:Update_PartyFrames(frame, db)
 		frame.CLASSBAR_WIDTH = 0
 		frame.CLASSBAR_YOFFSET = 0
 	end
-	
+
 	if frame.isChild then
 		frame.USE_PORTAIT = false
 		frame.USE_PORTRAIT_OVERLAY = false
@@ -189,9 +187,7 @@ function UF:Update_PartyFrames(frame, db)
 		end
 
 		--Health
-		do
-			UF:Configure_HealthBar(frame)
-		end
+		UF:Configure_HealthBar(frame)
 
 		--Name
 		UF:UpdateNameSettings(frame, childType)
@@ -231,9 +227,9 @@ function UF:Update_PartyFrames(frame, db)
 		UF:Configure_RaidRoleIcons(frame)
 
 		UF:UpdateAuraWatch(frame)
-		
+
 		UF:Configure_ReadyCheckIcon(frame)
-		
+
 		UF:Configure_CustomTexts(frame)
 	end
 

@@ -48,6 +48,7 @@ end
 
 function UF:Update_FocusFrame(frame, db)
 	frame.db = db
+
 	do
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
 		frame.UNIT_WIDTH = db.width
@@ -74,71 +75,45 @@ function UF:Update_FocusFrame(frame, db)
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
 
-
-
 	--Health
-	do
-		UF:Configure_HealthBar(frame)
-	end
+	UF:Configure_HealthBar(frame)
 
 	--Name
 	UF:UpdateNameSettings(frame)
 
 	--Power
-	do
-		UF:Configure_Power(frame)
-	end
+	UF:Configure_Power(frame)
 
 	--Portrait
-	do
-		UF:Configure_Portrait(frame)
-	end
+	UF:Configure_Portrait(frame)
 
 	--Threat
-	do
-		UF:Configure_Portrait(frame)
-	end
+	UF:Configure_Portrait(frame)
 
 	--Auras
-	do
-		UF:EnableDisable_Auras(frame)
-		UF:Configure_Auras(frame, 'Buffs')
-		UF:Configure_Auras(frame, 'Debuffs')
-	end
+	UF:EnableDisable_Auras(frame)
+	UF:Configure_Auras(frame, 'Buffs')
+	UF:Configure_Auras(frame, 'Debuffs')
 
-	do
-		UF:Configure_Castbar(frame)
-	end
+	UF:Configure_Castbar(frame)
 
 	--OverHealing
-	do
-		UF:Configure_HealComm(frame)
-	end
+	UF:Configure_HealComm(frame)
 
 	--GPSArrow
-	do
-		UF:Configure_GPS(frame)
-	end
+	UF:Configure_GPS(frame)
 
 	--Raid Icon
-	do
-		UF:Configure_RaidIcon(frame)
-	end
+	UF:Configure_RaidIcon(frame)
 
 	--AuraBars
-	do
-		UF:Configure_AuraBars(frame)
-	end
+	UF:Configure_AuraBars(frame)
 
 	--Range
-	do
-		UF:Configure_Range(frame)
-	end
+	UF:Configure_Range(frame)
 
 	--CustomTexts
-	do
-		UF:Configure_CustomTexts(frame)
-	end	
+	UF:Configure_CustomTexts(frame)
 
 	if UF.db.colors.transparentHealth then
 		UF:ToggleTransparentStatusBar(true, frame.Health, frame.Health.bg)

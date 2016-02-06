@@ -75,14 +75,13 @@ function UF:Update_AssistFrames(frame, db)
 	frame.colors = ElvUF.colors
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 
-	--new method for storing frame variables, will remove other variables when done
 	do
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
 
 		frame.BORDER = E.Border
 		frame.SPACING = E.Spacing
 		frame.SHADOW_SPACING = 3
-		
+
 		frame.UNIT_WIDTH = db.width
 		frame.UNIT_HEIGHT = db.height
 
@@ -123,19 +122,14 @@ function UF:Update_AssistFrames(frame, db)
 			end
 		end
 	elseif not InCombatLockdown() then
-		frame.db = db
 		frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	end
 
 	--Health
-	do
-		UF:Configure_HealthBar(frame)
-	end
+	UF:Configure_HealthBar(frame)
 
 	--Threat
-	do
-		UF:Configure_Threat(frame)
-	end
+	UF:Configure_Threat(frame)
 
 	--Name
 	do
@@ -149,27 +143,19 @@ function UF:Update_AssistFrames(frame, db)
 	end
 
 	--Range
-	do
-		UF:Configure_Range(frame)
-	end
+	UF:Configure_Range(frame)
 
 	if not frame.isChild then
 		--Auras
-		do
-			UF:EnableDisable_Auras(frame)
-			UF:Configure_Auras(frame, "Buffs")
-			UF:Configure_Auras(frame, "Debuffs")
-		end
+		UF:EnableDisable_Auras(frame)
+		UF:Configure_Auras(frame, "Buffs")
+		UF:Configure_Auras(frame, "Debuffs")
 
 		--RaidDebuffs
-		do
-			UF:Configure_RaidDebuffs(frame)
-		end
+		UF:Configure_RaidDebuffs(frame)
 
 		--Debuff Highlight
-		do
-			UF:Configure_DebuffHighlight(frame)
-		end
+		UF:Configure_DebuffHighlight(frame)
 
 		--Buff Indicator
 		UF:UpdateAuraWatch(frame)

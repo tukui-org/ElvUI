@@ -82,17 +82,9 @@ function UF:Construct_PlayerFrame(frame)
 	E:CreateMover(frame, frame:GetName()..'Mover', L["Player Frame"], nil, nil, nil, 'ALL,SOLO')
 end
 
-
-function UF:UpdatePlayerFrameAnchors(frame, isShown)
-	print('old method still in effect')
-end
-
 function UF:Update_PlayerFrame(frame, db)
 	frame.db = db
-	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
-	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 
-	--new method for storing frame variables, will remove other variables when done
 	do
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
 
@@ -128,113 +120,79 @@ function UF:Update_PlayerFrame(frame, db)
 	end
 
 	frame.colors = ElvUF.colors
+	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
+	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
 
 	--Threat
-	do
-		UF:Configure_Threat(frame)
-	end
+	UF:Configure_Threat(frame)
 
 	--Rest Icon
-	do
-		UF:Configure_RestingIndicator(frame)
-	end
+	UF:Configure_RestingIndicator(frame)
 
 	--Combat Icon
-	do
-		UF:Configure_CombatIndicator(frame)
-	end
+	UF:Configure_CombatIndicator(frame)
 
 	--Health
-	do
-		UF:Configure_HealthBar(frame)
-	end
+	UF:Configure_HealthBar(frame)
 
 	--Name
 	UF:UpdateNameSettings(frame)
 
 	--PvP
-	do
-		UF:Configure_PVPIndicator(frame)
-	end
+	UF:Configure_PVPIndicator(frame)
 
 	--Power
-	do
-		UF:Configure_Power(frame)
-	end
+	UF:Configure_Power(frame)
 
 	--Portrait
-	do
-		UF:Configure_Portrait(frame)
-	end
+	UF:Configure_Portrait(frame)
 
 	--Auras
-	do
-		UF:EnableDisable_Auras(frame)
-		UF:Configure_Auras(frame, 'Buffs')
-		UF:Configure_Auras(frame, 'Debuffs')
-	end
+	UF:EnableDisable_Auras(frame)
+	UF:Configure_Auras(frame, 'Buffs')
+	UF:Configure_Auras(frame, 'Debuffs')
 
 	--Castbar
-	do
-		UF:Configure_Castbar(frame)
-	end
+	UF:Configure_Castbar(frame)
 
 	--Resource Bars
-	do
-		UF:Configure_ClassBar(frame)
-	end
+	UF:Configure_ClassBar(frame)
 
 	--Stagger
-	do
-		if E.myclass == "MONK" then
-			UF:Configure_Stagger(frame)
-		end
+	if E.myclass == "MONK" then
+		UF:Configure_Stagger(frame)
 	end
 
 	--Combat Fade
-	do
-		if db.combatfade and not frame:IsElementEnabled('CombatFade') then
-			frame:EnableElement('CombatFade')
-		elseif not db.combatfade and frame:IsElementEnabled('CombatFade') then
-			frame:DisableElement('CombatFade')
-		end
+	if db.combatfade and not frame:IsElementEnabled('CombatFade') then
+		frame:EnableElement('CombatFade')
+	elseif not db.combatfade and frame:IsElementEnabled('CombatFade') then
+		frame:DisableElement('CombatFade')
 	end
 
 	--Debuff Highlight
-	do
-		UF:Configure_DebuffHighlight(frame)
-	end
+	UF:Configure_DebuffHighlight(frame)
 
 	--Raid Icon
-	do
-		UF:Configure_RaidIcon(frame)
-	end
+	UF:Configure_RaidIcon(frame)
 
 	--OverHealing
-	do
-		UF:Configure_HealComm(frame)
-	end
+	UF:Configure_HealComm(frame)
 
 	--AuraBars
-	do
-		UF:Configure_AuraBars(frame)
-	end
+	UF:Configure_AuraBars(frame)
 
 	--CustomTexts
-	do
-		UF:Configure_CustomTexts(frame)
-	end
-	
-	
+	UF:Configure_CustomTexts(frame)
+
 	--Transparency Settings
 	if UF.db.colors.transparentHealth then
 		UF:ToggleTransparentStatusBar(true, frame.Health, frame.Health.bg)
 	else
 		UF:ToggleTransparentStatusBar(false, frame.Health, frame.Health.bg, (frame.USE_PORTRAIT and frame.USE_PORTRAIT_OVERLAY) ~= true)
 	end
-
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)
 
 	E:SetMoverSnapOffset(frame:GetName()..'Mover', -(12 + db.castbar.height))
