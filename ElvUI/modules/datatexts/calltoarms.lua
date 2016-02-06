@@ -44,7 +44,7 @@ local function OnEvent(self, event, ...)
 	local healerReward = false
 	local dpsReward = false
 	local unavailable = true
-	
+
 	--Dungeons
 	for i=1, GetNumRandomDungeons() do
 		local id, name = GetLFGRandomDungeonInfo(i)
@@ -55,7 +55,7 @@ local function OnEvent(self, event, ...)
 			if eligible and forDamage and itemCount > 0 then dpsReward = true; unavailable = false; end
 		end
 	end
-	
+
 	--LFR
 	for i = 1, GetNumRFDungeons() do
 		local id, name = GetRFDungeonInfo(i)
@@ -132,7 +132,7 @@ local function OnEnter(self)
 		local healerReward = false
 		local dpsReward = false
 		local unavailable = true
-		
+
 		for x = 1, LFG_ROLE_NUM_SHORTAGE_TYPES do
 			local eligible, forTank, forHealer, forDamage, itemCount = GetLFGRoleShortageRewards(id, x)
 			if eligible then unavailable = false end
@@ -140,7 +140,7 @@ local function OnEnter(self)
 			if eligible and forHealer and itemCount > 0 then healerReward = true end
 			if eligible and forDamage and itemCount > 0 then dpsReward = true end
 		end
-		
+
 		if not unavailable then
 			allUnavailable = false
 			local rolesString = MakeIconString(tankReward, healerReward, dpsReward)
@@ -159,18 +159,19 @@ local function OnEnter(self)
 	DT.tooltip:Show()
 end
 
-local timeToUpdate = 10
+local updateInterval = 10
 local function Update(self, elapsed)
-	timeToUpdate = timeToUpdate - elapsed
-	if timeToUpdate > 0 then return end
+	if self.timeSinceUpdate and self.timeSinceUpdate > updateInterval then
+		OnEvent(self)
 
-	OnEvent(self)
+		if enteredFrame then
+			OnEnter(self)
+		end
 
-	if enteredFrame then
-		OnEnter(self)
+		self.timeSinceUpdate = 0
+	else
+		self.timeSinceUpdate = (self.timeSinceUpdate or 0) + elapsed
 	end
-	
-	timeToUpdate = 10
 end
 
 local function OnLeave(self)
