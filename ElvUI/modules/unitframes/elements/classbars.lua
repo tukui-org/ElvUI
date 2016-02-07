@@ -55,7 +55,7 @@ function UF:Configure_ClassBar(frame)
 	if frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then
 		bars:ClearAllPoints()
 		bars:Point("CENTER", frame.Health.backdrop, "TOP", 0, 0)
-		if E.myclass == 'DRUID' then
+		if E.myclass == 'DRUID' or frame.MAX_CLASS_BAR == 1 then
 			CLASSBAR_WIDTH = CLASSBAR_WIDTH * 2/3
 		else
 			CLASSBAR_WIDTH = CLASSBAR_WIDTH * (frame.MAX_CLASS_BAR - 1) / frame.MAX_CLASS_BAR
@@ -109,6 +109,7 @@ function UF:Configure_ClassBar(frame)
 	if E.myclass ~= 'DRUID' then
 		for i = 1, (UF.classMaxResourceBar[E.myclass] or 0) do
 			bars[i]:Hide()
+			bars[i].backdrop:Hide()
 
 			if i <= frame.MAX_CLASS_BAR then
 				bars[i].backdrop.ignoreUpdates = true
@@ -438,11 +439,24 @@ function UF:Construct_WarlockResourceBar(frame)
 		bars[i]:CreateBackdrop('Default')
 		bars[i].backdrop:SetParent(bars)
 	end
+	
+	bars.PostUpdate = UF.UpdateShardBar
 
 	bars:SetScript("OnShow", ToggleResourceBar)
 	bars:SetScript("OnHide", ToggleResourceBar)
 
 	return bars
+end
+
+function UF:UpdateShardBar()
+	local frame = self.origParent or self:GetParent()
+	
+	--The number of classbar buttons may be different for each spec
+	if frame.MAX_CLASS_BAR ~= self.number then
+		frame.MAX_CLASS_BAR = self.number
+		UF:Configure_ClassBar(frame)
+		ToggleResourceBar(self)
+	end
 end
 
 -------------------------------------------------------------
