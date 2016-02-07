@@ -2526,7 +2526,7 @@ E.Options.args.unitframe.args.player = {
 					order = 5,
 					name = L["Detached Width"],
 					disabled = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
-					min = 15, max = 450, step = 1,
+					min = 15, max = 800, step = 1,
 				},
 				autoHide = {
 					order = 6,
