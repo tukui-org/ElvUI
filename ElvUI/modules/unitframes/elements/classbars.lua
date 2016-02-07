@@ -119,7 +119,9 @@ function UF:Configure_ClassBar(frame)
 					bars[i].backdrop:SetBackdropBorderColor(c.r, c.g, c.b)
 				end
 				bars[i]:Height(bars:GetHeight())
-				if frame.USE_MINI_CLASSBAR then
+				if frame.MAX_CLASS_BAR == 1 then
+					bars[i]:SetWidth(CLASSBAR_WIDTH)
+				elseif frame.USE_MINI_CLASSBAR then
 					bars[i]:SetWidth((CLASSBAR_WIDTH - ((5 + (frame.BORDER*2 + frame.SPACING*2))*(frame.MAX_CLASS_BAR - 1)))/frame.MAX_CLASS_BAR) --Width accounts for 5px spacing between each button, excluding borders
 				elseif i ~= frame.MAX_CLASS_BAR then
 					bars[i]:SetWidth((CLASSBAR_WIDTH - (frame.MAX_CLASS_BAR*(frame.BORDER-frame.SPACING))+(frame.BORDER-frame.SPACING)) / frame.MAX_CLASS_BAR)
