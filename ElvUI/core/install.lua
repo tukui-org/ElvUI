@@ -464,7 +464,8 @@ function E:SetupLayout(layout, noDataReset)
 		end
 
 		if not E.db.movers then E.db.movers = {}; end
-		local xOffset = GetScreenWidth() * 0.34375 --This may not be working as intended on EyeFinity setups: http://www.tukui.org/forums/topic.php?id=35307
+		 --Make sure we account for EyeFinity or other scenarious where ElvUIParent is not the same size as UIParent
+		local xOffset = ((GetScreenWidth() - E.diffGetLeft - E.diffGetRight) * 0.34375)
 
 		if E.PixelMode then
 			E.db.movers.ElvAB_3 = "BOTTOM,ElvUIParent,BOTTOM,312,4"
