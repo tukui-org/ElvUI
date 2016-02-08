@@ -152,6 +152,7 @@ L["Displays item level on equippable items."] = true;
 L["Enable/Disable the all-in-one bag."] = true;
 L["Enable/Disable the Bag-Bar."] = true;
 L["Full"] = true;
+L["Icons and Text (Short)"] = true;
 L["Icons and Text"] = true;
 L["Ignore Items"] = true;
 L["Item Count Font"] = true;

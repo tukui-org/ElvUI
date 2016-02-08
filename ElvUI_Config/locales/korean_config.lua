@@ -201,6 +201,7 @@ L["Displays item level on equippable items."] = "착용 가능한 아이템의 �
 L["Enable/Disable the all-in-one bag."] = "통합가방 기능을 사용할지 여부를 결정합니다."
 L["Enable/Disable the Bag-Bar."] = "가방바를 사용할지 여부를 결정합니다."
 L["Full"] = "전체"
+L["Icons and Text (Short)"] = true;
 L["Icons and Text"] = "아이콘 + 문자"
 L["Ignore Items"] = "정렬 예외 아이템 목록"
 L["Item Count Font"] = true;
