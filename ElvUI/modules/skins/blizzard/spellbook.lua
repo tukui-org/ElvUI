@@ -18,16 +18,12 @@ local function LoadSkin()
 		"SpellBookPageNavigationFrame",
 	}
 
-	local Kill = {
-		"SpellBookFrameTutorialButton",
-	}
-
 	for _, object in pairs(StripAllTextures) do
 		_G[object]:StripTextures()
 	end
 
-	for _, object in pairs(Kill) do
-		_G[object]:Kill()
+	if E.global.general.disableTutorialButtons then
+		SpellBookFrameTutorialButton:Kill()
 	end
 
 	local pagebackdrop = CreateFrame("Frame", nil, SpellBookFrame)

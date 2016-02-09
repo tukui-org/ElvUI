@@ -70,7 +70,10 @@ local function LoadSkin()
 		f:StripTextures()
 	end
 
-	PetJournalTutorialButton:Kill()
+	if E.global.general.disableTutorialButtons then
+		PetJournalTutorialButton:Kill()
+	end
+
 	PetJournal.PetCount:StripTextures()
 	S:HandleEditBox(PetJournalSearchBox)
 	PetJournalSearchBox:ClearAllPoints()

@@ -36,10 +36,12 @@ local function DisableStupidFuckingButtons(self)
 end]]
 
 function B:KillBlizzard()
-	HelpOpenTicketButtonTutorial:Kill()
+	if E.global.general.disableTutorialButtons then
+		HelpOpenTicketButtonTutorial:Kill()
+		HelpPlate:Kill()
+		HelpPlateTooltip:Kill()
+	end
 	TalentMicroButtonAlert:Kill()
-	HelpPlate:Kill()
-	HelpPlateTooltip:Kill()
 	EJMicroButtonAlert:Kill()
 	--CompanionsMicroButtonAlert:Kill()
 	--DropDownList1:HookScript('OnShow', DisableStupidFuckingButtons)
