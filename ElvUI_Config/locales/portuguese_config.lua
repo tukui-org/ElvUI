@@ -154,6 +154,7 @@ L["Displays item level on equippable items."] = true;
 L["Enable/Disable the all-in-one bag."] = "Ativar/Desativar a Bolsa tudo-em-um."
 L["Enable/Disable the Bag-Bar."] = "Ativar/Desativar a Barra das Bolsas."
 L["Full"] = true;
+L["Icons and Text (Short)"] = true;
 L["Icons and Text"] = "Texto e Ícones"
 L["Ignore Items"] = "Ignorar Itens"
 L["Item Count Font"] = true;

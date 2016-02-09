@@ -132,9 +132,11 @@ function UF:UpdateAuraWatch(frame, petOverride, db)
 
 				icon:Width(db.size);
 				icon:Height(db.size);
+				--Protect against missing .point value
+				if not buffs[i].point then buffs[i].point = "TOPLEFT" end
+				
 				icon:ClearAllPoints()
 				icon:Point(buffs[i].point or "TOPLEFT", frame.Health, buffs[i].point or "TOPLEFT", buffs[i].xOffset, buffs[i].yOffset);
-
 
 				if not icon.icon then
 					icon.icon = icon:CreateTexture(nil, "BORDER");

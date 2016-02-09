@@ -154,6 +154,7 @@ L["Displays item level on equippable items."] = "Отображает урове
 L["Enable/Disable the all-in-one bag."] = 'Включить/выключить режим сумки "все в одной". '
 L["Enable/Disable the Bag-Bar."] = "Включить/выключить панель сумок"
 L["Full"] = "Полный"
+L["Icons and Text (Short)"] = true;
 L["Icons and Text"] = "Иконки и текст"
 L["Ignore Items"] = "Игнорировать предметы"
 L["Item Count Font"] = "Шрифт кол-ва предметов"

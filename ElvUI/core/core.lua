@@ -1168,7 +1168,15 @@ function E:DBConversions()
 			E.global.unitframe.buffwatch[class][id] = nil
 		end
 	end
-	
+
+	--Add missing .point, .xOffset and .yOffset values to Buff Indicators that are missing them for whatever reason
+	for class in pairs(E.global.unitframe.buffwatch) do
+		for _, values in pairs(E.global.unitframe.buffwatch[class]) do
+			if not values.point then values.point = "TOPLEFT" end
+			if not values.xOffset then values.xOffset = 0 end
+			if not values.yOffset then values.yOffset = 0 end
+		end
+	end
 end
 
 local CPU_USAGE = {}

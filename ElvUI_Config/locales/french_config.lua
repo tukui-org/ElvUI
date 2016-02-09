@@ -154,6 +154,7 @@ L["Displays item level on equippable items."] = "Afficher le niveau d'objet sur 
 L["Enable/Disable the all-in-one bag."] = "Activer / désactiver le sac tout-en-un."
 L["Enable/Disable the Bag-Bar."] = "Activer / Désactiver la barre des sacs."
 L["Full"] = "Plein"; -- we talk about bags, so full means "plein" instead of "complet"
+L["Icons and Text (Short)"] = true;
 L["Icons and Text"] = "Icônes et textes"
 L["Ignore Items"] = "Objets ignorés"
 L["Item Count Font"] = "Police d'équipement du compteur";  --need review

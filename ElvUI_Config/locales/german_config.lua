@@ -154,6 +154,7 @@ L["Displays item level on equippable items."] = "Zeigt das Itemlevel für ausrü
 L["Enable/Disable the all-in-one bag."] = "Einschalten/Ausschalten der zusammengefassten Tasche."
 L["Enable/Disable the Bag-Bar."] = "Aktiviere/Deaktiviere die Taschenleiste."
 L["Full"] = "Voll"
+L["Icons and Text (Short)"] = "Symbole und Text (Kurz)"
 L["Icons and Text"] = "Symbole und Text"
 L["Ignore Items"] = "Ignoriere Items"
 L["Item Count Font"] = "Gegenstandszähler Schriftart"

@@ -154,6 +154,7 @@ L["Displays item level on equippable items."] = true;
 L["Enable/Disable the all-in-one bag."] = "开/关整合背包。"
 L["Enable/Disable the Bag-Bar."] = "启用/禁用 背包条."
 L["Full"] = true;
+L["Icons and Text (Short)"] = true;
 L["Icons and Text"] = "图标和文字"
 L["Ignore Items"] = "忽略项目"
 L["Item Count Font"] = true;
