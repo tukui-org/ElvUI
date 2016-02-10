@@ -50,6 +50,8 @@ function UF:Construct_TargetFrame(frame)
 	frame.customTexts = {}
 	frame:Point('BOTTOMRIGHT', E.UIParent, 'BOTTOM', 413, 68)
 	E:CreateMover(frame, frame:GetName()..'Mover', L["Target Frame"], nil, nil, nil, 'ALL,SOLO')
+	
+	frame.unitframeType = "target"
 end
 
 function UF:Update_TargetFrame(frame, db)

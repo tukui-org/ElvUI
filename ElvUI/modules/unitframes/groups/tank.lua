@@ -31,6 +31,10 @@ function UF:Construct_TankFrames(unitGroup)
 		self.AuraWatch = UF:Construct_AuraWatch(self)
 		self.RaidDebuffs = UF:Construct_RaidDebuffs(self)
 		self.DebuffHighlight = UF:Construct_DebuffHighlight(self)
+		
+		self.unitframeType = "tank"
+	else
+		self.unitframeType = "tanktarget"
 	end
 
 	UF:Update_TankFrames(self, E.db['unitframe']['units']['tank'])

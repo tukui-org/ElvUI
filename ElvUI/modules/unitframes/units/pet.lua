@@ -41,6 +41,8 @@ function UF:Construct_PetFrame(frame)
 	frame.customTexts = {}
 	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 118)
 	E:CreateMover(frame, frame:GetName()..'Mover', L["Pet Frame"], nil, nil, nil, 'ALL,SOLO')
+	
+	frame.unitframeType = "pet"
 end
 
 function UF:Update_PetFrame(frame, db)

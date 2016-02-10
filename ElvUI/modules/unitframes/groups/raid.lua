@@ -60,6 +60,8 @@ function UF:Construct_RaidFrames(unitGroup)
 
 	UF:Update_StatusBars()
 	UF:Update_FontStrings()
+	
+	self.unitframeType = "raid"
 
 	return self
 end

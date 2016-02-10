@@ -44,6 +44,8 @@ function UF:Construct_FocusFrame(frame)
 	frame.customTexts = {}
 	frame:Point('BOTTOMRIGHT', ElvUF_Target, 'TOPRIGHT', 0, 220)
 	E:CreateMover(frame, frame:GetName()..'Mover', L["Focus Frame"], nil, nil, nil, 'ALL,SOLO')
+	
+	frame.unitframeType = "focus"
 end
 
 function UF:Update_FocusFrame(frame, db)

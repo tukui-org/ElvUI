@@ -49,6 +49,8 @@ function UF:Construct_RaidpetFrames(unitGroup)
 
 	UF:Update_StatusBars()
 	UF:Update_FontStrings()
+	
+	self.unitframeType = "raidpet"
 
 	return self
 end

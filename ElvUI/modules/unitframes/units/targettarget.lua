@@ -29,6 +29,8 @@ function UF:Construct_TargetTargetFrame(frame)
 	frame.customTexts = {}
 	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 75) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', L["TargetTarget Frame"], nil, nil, nil, 'ALL,SOLO')
+	
+	frame.unitframeType = "targettarget"
 end
 
 function UF:Update_TargetTargetFrame(frame, db)

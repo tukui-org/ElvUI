@@ -29,6 +29,10 @@ function UF:Construct_AssistFrames(unitGroup)
 		self.AuraWatch = UF:Construct_AuraWatch(self)
 		self.RaidDebuffs = UF:Construct_RaidDebuffs(self)
 		self.DebuffHighlight = UF:Construct_DebuffHighlight(self)
+		
+		self.unitframeType = "assist"
+	else
+		self.unitframeType = "assisttarget"
 	end
 
 	UF:Update_AssistFrames(self, E.db['unitframe']['units']['assist'])

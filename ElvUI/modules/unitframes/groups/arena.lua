@@ -82,6 +82,8 @@ function UF:Construct_ArenaFrames(frame)
 		frame:RegisterEvent('GROUP_ROSTER_UPDATE', UF.UpdateTargetGlow)
 
 		frame.customTexts = {}
+		
+		frame.unitframeType = "arena"
 	end
 
 	if not frame.PrepFrame and not frame.isChild then

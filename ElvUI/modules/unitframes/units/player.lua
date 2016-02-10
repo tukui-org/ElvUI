@@ -80,6 +80,8 @@ function UF:Construct_PlayerFrame(frame)
 
 	frame:Point('BOTTOMLEFT', E.UIParent, 'BOTTOM', -413, 68) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', L["Player Frame"], nil, nil, nil, 'ALL,SOLO')
+	
+	frame.unitframeType = "player"
 end
 
 function UF:Update_PlayerFrame(frame, db)

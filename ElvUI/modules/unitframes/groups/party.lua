@@ -35,8 +35,14 @@ function UF:Construct_PartyFrames(unitGroup)
 
 		self.Name = UF:Construct_NameText(self)
 		self.originalParent = self:GetParent()
+		
+		self.childType = "pet"
+		if self == _G[self.originalParent:GetName()..'Target'] then
+			self.childType = "target"
+		end
+		
+		self.unitframeType = "party"..self.childType
 	else
-
 		self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
 
 		self.Power = UF:Construct_PowerBar(self, true, true, 'LEFT')
@@ -67,6 +73,8 @@ function UF:Construct_PartyFrames(unitGroup)
 		self.customTexts = {}
 		self.Sparkle = CreateFrame("Frame", nil, self)
 		self.Sparkle:SetAllPoints(self.Health)
+		
+		self.unitframeType = "party"
 	end
 
 	self.Range = UF:Construct_Range(self)
@@ -164,10 +172,8 @@ function UF:Update_PartyFrames(frame, db)
 		frame.POWERBAR_WIDTH = 0
 
 		local childDB = db.petsGroup
-		local childType = "pet"
-		if frame == _G[frame.originalParent:GetName()..'Target'] then
+		if frame.childType == "target" then
 			childDB = db.targetsGroup
-			childType = "target"
 		end
 
 		if not frame.originalParent.childList then
