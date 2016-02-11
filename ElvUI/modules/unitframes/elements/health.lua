@@ -122,7 +122,7 @@ function UF:Configure_HealthBar(frame)
 		elseif frame.USE_INSET_POWERBAR then
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER +frame.SPACING, frame.BORDER +frame.SPACING)
 		else
-			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER, (frame.USE_POWERBAR and ((frame.BORDER + frame.SPACING)*2) or (frame.BORDER +frame.SPACING)) + frame.POWERBAR_HEIGHT)
+			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER +frame.SPACING, (frame.USE_POWERBAR and ((frame.BORDER + frame.SPACING)*2) or (frame.BORDER +frame.SPACING)) + frame.POWERBAR_HEIGHT)
 		end
 	end
 
