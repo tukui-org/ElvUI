@@ -9,10 +9,19 @@ local CreateFrame = CreateFrame
 function UF:Construct_Threat(frame, glow)
 	local threat = CreateFrame("Frame", nil, frame)
 
+	--Main ThreatGlow
 	frame:CreateShadow('Default')
 	threat.glow = frame.shadow
 	threat.glow:SetParent(frame)
 	threat.glow:Hide()
+	frame.shadow = nil
+
+	--Secondary ThreatGlow, for power frame when using power offset
+	frame:CreateShadow('Default')
+	threat.powerGlow = frame.shadow
+	threat.powerGlow:SetParent(frame)
+	threat.powerGlow:SetFrameStrata('BACKGROUND')
+	threat.powerGlow:Hide()
 	frame.shadow = nil
 
 	threat.texIcon = threat:CreateTexture(nil, 'OVERLAY')
@@ -38,18 +47,18 @@ function UF:Configure_Threat(frame)
 			threat.glow:SetFrameStrata('BACKGROUND')
 			threat.glow:ClearAllPoints()
 			if frame.USE_POWERBAR_OFFSET then
-				if frame.ORIENTATION == "LEFT" then
-					threat.glow:Point("TOPLEFT", -frame.SHADOW_SPACING, frame.SHADOW_SPACING-(frame.USE_MINI_CLASSBAR and frame.CLASSBAR_YOFFSET or 0))
-					threat.glow:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", frame.SHADOW_SPACING + frame.BORDER + frame.SPACING, -frame.SHADOW_SPACING - frame.BORDER - frame.SPACING)
-				elseif frame.ORIENTATION == "RIGHT" then
-					threat.glow:Point("TOPRIGHT", frame.SHADOW_SPACING, frame.SHADOW_SPACING-(frame.USE_MINI_CLASSBAR and frame.CLASSBAR_YOFFSET or 0))
-					threat.glow:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", -frame.SHADOW_SPACING -frame.BORDER - frame.SPACING, -frame.SHADOW_SPACING -frame.BORDER - frame.SPACING)
+				if frame.ORIENTATION == "RIGHT" then
+					threat.glow:Point("TOPLEFT", frame.Health.backdrop, "TOPLEFT", -frame.SHADOW_SPACING - frame.SPACING - frame.STAGGER_WIDTH, frame.SHADOW_SPACING + frame.SPACING + (frame.USE_MINI_CLASSBAR and 0 or frame.CLASSBAR_HEIGHT))
+					threat.glow:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", frame.SHADOW_SPACING + frame.SPACING, -frame.SHADOW_SPACING - frame.SPACING)
 				else
-					threat.glow:Point("TOPRIGHT", frame.Health.backdrop, "TOPRIGHT", frame.SHADOW_SPACING +frame.SPACING, frame.SHADOW_SPACING +frame.SPACING)
-					threat.glow:Point("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMLEFT", -frame.SHADOW_SPACING -frame.SPACING, -frame.SHADOW_SPACING -frame.SPACING)
+					threat.glow:Point("TOPLEFT", frame.Health.backdrop, "TOPLEFT", -frame.SHADOW_SPACING - frame.SPACING, frame.SHADOW_SPACING + frame.SPACING + (frame.USE_MINI_CLASSBAR and 0 or frame.CLASSBAR_HEIGHT))
+					threat.glow:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", frame.SHADOW_SPACING + frame.SPACING + frame.STAGGER_WIDTH, -frame.SHADOW_SPACING - frame.SPACING)
 				end
+
+				threat.powerGlow:ClearAllPoints()
+				threat.powerGlow:Point("TOPLEFT", frame.Power.backdrop, "TOPLEFT", -frame.SHADOW_SPACING - frame.SPACING, frame.SHADOW_SPACING + frame.SPACING)
+				threat.powerGlow:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMRIGHT", frame.SHADOW_SPACING + frame.SPACING, -frame.SHADOW_SPACING - frame.SPACING)
 			else
-				threat.glow:SetBackdropBorderColor(0, 0, 0, 0)
 				threat.glow:Point("TOPLEFT", -frame.SHADOW_SPACING, frame.SHADOW_SPACING-(frame.USE_MINI_CLASSBAR and frame.CLASSBAR_YOFFSET or 0))
 
 				if frame.USE_MINI_POWERBAR then
@@ -85,6 +94,11 @@ function UF:UpdateThreat(unit, status, r, g, b)
 		if db.threatStyle == 'GLOW' then
 			self.glow:Show()
 			self.glow:SetBackdropBorderColor(r, g, b)
+
+			if parent.USE_POWERBAR_OFFSET then
+				self.powerGlow:Show()
+				self.powerGlow:SetBackdropBorderColor(r, g, b)
+			end
 		elseif db.threatStyle == 'BORDERS' then
 			parent.Health.backdrop:SetBackdropBorderColor(r, g, b)
 
@@ -105,6 +119,7 @@ function UF:UpdateThreat(unit, status, r, g, b)
 		r, g, b = unpack(E.media.bordercolor)
 		if db.threatStyle == 'GLOW' then
 			self.glow:Hide()
+			self.powerGlow:Hide()
 		elseif db.threatStyle == 'BORDERS' then
 			parent.Health.backdrop:SetBackdropBorderColor(r, g, b)
 
