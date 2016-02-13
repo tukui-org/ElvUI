@@ -155,8 +155,8 @@ function UF:Configure_Power(frame)
 				power:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER +frame.SPACING, frame.BORDER +frame.SPACING)
 			end
 
-			power:SetFrameStrata("LOW")
-			power:SetFrameLevel(frame.Health:GetFrameLevel() -2)
+			power:SetFrameStrata(frame.Health:GetFrameStrata())
+			power:SetFrameLevel(frame.Health:GetFrameLevel())
 		end
 		
 		--Hide mover until we detach again
