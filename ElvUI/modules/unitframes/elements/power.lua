@@ -61,8 +61,9 @@ function UF:Configure_Power(frame)
 
 		--Text
 		local x, y = self:GetPositionOffset(db.power.position)
+		local attachPoint = self:GetTextAnchorPoint(frame, db.power.attachTextTo)
 		power.value:ClearAllPoints()
-		power.value:Point(db.power.position, db.power.attachTextToPower and power or frame.Health, db.power.position, x + db.power.xOffset, y + db.power.yOffset)
+		power.value:Point(db.power.position, attachPoint, db.power.position, x + db.power.xOffset, y + db.power.yOffset)
 		frame:Tag(power.value, db.power.text_format)
 
 		if db.power.attachTextToPower then
@@ -144,17 +145,10 @@ function UF:Configure_Power(frame)
 			power:SetFrameStrata("MEDIUM")
 			power:SetFrameLevel(frame:GetFrameLevel() + 3)
 		else
-			if frame.ORIENTATION == "LEFT" then
-				power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", frame.BORDER, -(frame.SPACING*3))
-				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -frame.BORDER -frame.SPACING - frame.STAGGER_WIDTH, frame.BORDER +frame.SPACING)
-			elseif frame.ORIENTATION == "RIGHT" then
-				power:Point("TOPRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", -frame.BORDER, -(frame.SPACING*3))
-				power:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER +frame.SPACING + frame.STAGGER_WIDTH, frame.BORDER +frame.SPACING)
-			else
-				power:Point("TOPRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", -frame.BORDER, -(frame.SPACING*3))
-				power:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER +frame.SPACING, frame.BORDER +frame.SPACING)
-			end
-
+			power:Point("TOPRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", -frame.BORDER, -frame.BORDER - frame.SPACING)
+			power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", frame.BORDER, -frame.BORDER- frame.SPACING)
+			power:Height(frame.POWERBAR_HEIGHT)
+			
 			power:SetFrameStrata(frame.Health:GetFrameStrata())
 			power:SetFrameLevel(frame.Health:GetFrameLevel())
 		end

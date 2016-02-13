@@ -128,6 +128,7 @@ function UF:Update_RaidpetFrames(frame, db)
 		frame.STAGGER_WIDTH = 0
 		frame.CLASSBAR_WIDTH = 0
 		frame.CLASSBAR_YOFFSET = 0
+		frame.BOTTOM_OFFSET = 0
 	end
 
 	if not InCombatLockdown() then

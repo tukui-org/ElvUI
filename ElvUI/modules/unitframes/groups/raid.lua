@@ -57,7 +57,8 @@ function UF:Construct_RaidFrames(unitGroup)
 	self.GPS = UF:Construct_GPS(self)
 	self.Range = UF:Construct_Range(self)
 	self.customTexts = {}
-
+	self.InfoPanel = UF:Construct_InfoPanel(self)
+	
 	UF:Update_StatusBars()
 	UF:Update_FontStrings()
 	
@@ -168,12 +169,17 @@ function UF:Update_RaidFrames(frame, db)
 		frame.STAGGER_WIDTH = 0
 		frame.CLASSBAR_WIDTH = 0
 		frame.CLASSBAR_YOFFSET = 0
+		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and db.infoPanel.enable
+		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0		
+		frame.BOTTOM_OFFSET = not frame.POWERBAR_DETACHED and (frame.POWERBAR_HEIGHT + frame.INFO_PANEL_HEIGHT) or frame.INFO_PANEL_HEIGHT
+			
 	end
 
 	if not InCombatLockdown() then
 		frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	end
-
+	
+	UF:Configure_InfoPanel(frame)
 	--Health
 	UF:Configure_HealthBar(frame)
 

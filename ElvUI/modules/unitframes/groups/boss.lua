@@ -27,9 +27,9 @@ function UF:Construct_BossFrames(frame)
 
 	frame.Portrait3D = self:Construct_Portrait(frame, 'model')
 	frame.Portrait2D = self:Construct_Portrait(frame, 'texture')
-
+	frame.InfoPanel = self:Construct_InfoPanel(frame)
 	frame.Buffs = self:Construct_Buffs(frame)
-
+	
 	frame.Debuffs = self:Construct_Debuffs(frame)
 	frame.DebuffHighlight = self:Construct_DebuffHighlight(frame)
 	frame.TargetGlow = UF:Construct_TargetGlow(frame)
@@ -81,13 +81,17 @@ function UF:Update_BossFrames(frame, db)
 		frame.CLASSBAR_HEIGHT = frame.CLASSBAR_SHOWN and db.power.height or 0
 		frame.CLASSBAR_WIDTH = frame.UNIT_WIDTH - ((frame.BORDER+frame.SPACING)*2) - frame.PORTRAIT_WIDTH  - frame.POWERBAR_OFFSET
 		frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN) and 0 or (frame.CLASSBAR_HEIGHT + frame.SPACING)
+		
+		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and db.infoPanel.enable
+		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0		
+		frame.BOTTOM_OFFSET = not frame.POWERBAR_DETACHED and (frame.POWERBAR_HEIGHT + frame.INFO_PANEL_HEIGHT) or frame.INFO_PANEL_HEIGHT	
 	end
 
 	frame.colors = ElvUF.colors
 	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
-
+	UF:Configure_InfoPanel(frame)
 	--Health
 	UF:Configure_HealthBar(frame)
 

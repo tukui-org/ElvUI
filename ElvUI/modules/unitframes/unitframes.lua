@@ -244,6 +244,8 @@ function UF:ConvertGroupDB(group)
 	end
 end
 
+
+
 function UF:Construct_UF(frame, unit)
 	frame:SetScript('OnEnter', UnitFrame_OnEnter)
 	frame:SetScript('OnLeave', UnitFrame_OnLeave)
@@ -252,6 +254,7 @@ function UF:Construct_UF(frame, unit)
 	frame.SHADOW_SPACING = 3
 	frame.STAGGER_WIDTH = 0	--placeholder
 	frame.CLASSBAR_YOFFSET = 0	--placeholder
+	frame.BOTTOM_OFFSET = 0 --placeholder
 	frame:SetFrameLevel(5)
 
 	frame.RaisedElementParent = CreateFrame('Frame', nil, frame)
@@ -271,6 +274,14 @@ function UF:Construct_UF(frame, unit)
 	self:Update_StatusBars()
 	self:Update_FontStrings()
 	return frame
+end
+
+function UF:GetTextAnchorPoint(frame, point)
+	if not frame[point] or point == "Frame" then
+		return frame
+	else
+		return frame[point]
+	end
 end
 
 function UF:GetPositionOffset(position, offset)

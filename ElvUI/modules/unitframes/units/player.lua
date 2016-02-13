@@ -75,7 +75,7 @@ function UF:Construct_PlayerFrame(frame)
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
 
 	frame.CombatFade = true
-
+	frame.InfoPanel = self:Construct_InfoPanel(frame)
 	frame.customTexts = {}
 
 	frame:Point('BOTTOMLEFT', E.UIParent, 'BOTTOM', -413, 68) --Set to default position
@@ -92,7 +92,7 @@ function UF:Update_PlayerFrame(frame, db)
 
 		frame.UNIT_WIDTH = db.width
 		frame.UNIT_HEIGHT = db.height
-
+			
 		frame.USE_POWERBAR = db.power.enable
 		frame.POWERBAR_DETACHED = db.power.detachFromFrame
 		frame.USE_INSET_POWERBAR = not frame.POWERBAR_DETACHED and db.power.width == 'inset' and frame.USE_POWERBAR
@@ -120,6 +120,10 @@ function UF:Update_PlayerFrame(frame, db)
 
 		frame.STAGGER_SHOWN = frame.Stagger and frame.Stagger:IsShown()
 		frame.STAGGER_WIDTH = frame.STAGGER_SHOWN and (db.stagger.width + (frame.BORDER*2)) or 0;
+		
+		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and db.infoPanel.enable
+		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0		
+		frame.BOTTOM_OFFSET = not frame.POWERBAR_DETACHED and (frame.POWERBAR_HEIGHT + frame.INFO_PANEL_HEIGHT) or frame.INFO_PANEL_HEIGHT
 	end
 
 	frame.colors = ElvUF.colors
@@ -127,7 +131,9 @@ function UF:Update_PlayerFrame(frame, db)
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
-
+	
+	UF:Configure_InfoPanel(frame)
+	
 	--Threat
 	UF:Configure_Threat(frame)
 

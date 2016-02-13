@@ -906,6 +906,33 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 	return config
 end
 
+
+local function GetOptionsTable_InformationPanel(updateFunc, groupName, numUnits)
+
+	local config = {
+		order = 4000,
+		type = 'group',
+		name = L["Information Panel"],
+		get = function(info) return E.db.unitframe.units[groupName]['infoPanel'][ info[#info] ] end,
+		set = function(info, value) E.db.unitframe.units[groupName]['infoPanel'][ info[#info] ] = value; updateFunc(UF, groupName, numUnits) end,
+		args = {
+			enable = {
+				type = 'toggle',
+				order = 1,
+				name = L["Enable"],
+			},
+			height = {
+				type = 'range',
+				name = L["Height"],
+				order = 2,
+				min = 4, max = 30, step = 1,
+			},
+		}
+	}
+
+	return config
+end
+
 local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUnits)
 	local config = {
 		order = 100,
@@ -934,6 +961,17 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 				desc = L["Offset position for text."],
 				min = -300, max = 300, step = 1,
 			},
+			attachTextTo = {
+				type = 'select',
+				order = 4,
+				name = L["Attach Text To"],
+				values = {
+					['Health'] = L["Health"],
+					['Power'] = L["Power"],
+					['InfoPanel'] = L["Information Bar"],	
+					['Frame'] = L["Frame"],		
+				},
+			},			
 			text_format = {
 				order = 100,
 				name = L["Text Format"],
@@ -973,6 +1011,8 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 
 	return config
 end
+
+
 local function GetOptionsTable_CustomText(updateFunc, groupName, numUnits, orderOverride)
 	local config = {
 		order = orderOverride or 50,
@@ -1006,7 +1046,8 @@ local function GetOptionsTable_CustomText(updateFunc, groupName, numUnits, order
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 				['justifyH'] = 'CENTER',
-				['fontOutline'] = E.db.unitframe.fontOutline
+				['fontOutline'] = E.db.unitframe.fontOutline,
+				['attachTextTo'] = 'HEALTH'
 			};
 
 			UF:CreateCustomTextGroup(groupName, textName)
@@ -1143,6 +1184,17 @@ local function GetOptionsTable_Name(updateFunc, groupName, numUnits)
 				desc = L["Offset position for text."],
 				min = -300, max = 300, step = 1,
 			},
+			attachTextTo = {
+				type = 'select',
+				order = 4,
+				name = L["Attach Text To"],
+				values = {
+					['Health'] = L["Health"],
+					['Power'] = L["Power"],
+					['InfoPanel'] = L["Information Bar"],	
+					['Frame'] = L["Frame"],	
+				},
+			},				
 			text_format = {
 				order = 100,
 				name = L["Text Format"],
@@ -1331,15 +1383,21 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 				desc = L["Offset position for text."],
 				min = -300, max = 300, step = 1,
 			},
+			attachTextTo = {
+				type = 'select',
+				order = 8,
+				name = L["Attach Text To"],
+				values = {
+					['Health'] = L["Health"],
+					['Power'] = L["Power"],
+					['InfoPanel'] = L["Information Bar"],	
+					['Frame'] = L["Frame"],	
+				},
+			},
 		},
 	}
 
 	if hasDetatchOption then
-			config.args.attachTextToPower = {
-				type = 'toggle',
-				order = 8,
-				name = L["Attach Text to Power"],
-			}
 			config.args.detachFromFrame = {
 				type = 'toggle',
 				order = 9,
@@ -1760,6 +1818,17 @@ function UF:CreateCustomTextGroup(unit, objectName)
 				name = L["yOffset"],
 				min = -400, max = 400, step = 1,
 			},
+			attachTextTo = {
+				type = 'select',
+				order = 8,
+				name = L["Attach Text To"],
+				values = {
+					['Health'] = L["Health"],
+					['Power'] = L["Power"],
+					['InfoPanel'] = L["Information Bar"],	
+					['Frame'] = L["Frame"],	
+				},
+			},	
 			text_format = {
 				order = 100,
 				name = L["Text Format"],
@@ -2481,6 +2550,7 @@ E.Options.args.unitframe.args.player = {
 		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'player'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'player'),
+		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'player'),
 		power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'player', nil, true),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'player'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'player'),
@@ -2759,6 +2829,7 @@ E.Options.args.unitframe.args.target = {
 		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'target'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'target'),
+		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'target'),
 		power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'target', nil, true),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'target'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'target'),
@@ -2871,6 +2942,7 @@ E.Options.args.unitframe.args.targettarget = {
 		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'targettarget'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'targettarget'),
+		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'targettarget'),
 		power = GetOptionsTable_Power(nil, UF.CreateAndUpdateUF, 'targettarget'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'targettarget'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'targettarget'),
@@ -2980,6 +3052,7 @@ E.Options.args.unitframe.args.targettargettarget = {
 		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'targettargettarget'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'targettargettarget'),
+		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'targettargettarget'),
 		power = GetOptionsTable_Power(nil, UF.CreateAndUpdateUF, 'targettargettarget'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'targettargettarget'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'targettargettarget'),
@@ -3095,6 +3168,7 @@ E.Options.args.unitframe.args.focus = {
 		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'focus'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'focus'),
+		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'focus'),
 		power = GetOptionsTable_Power(nil, UF.CreateAndUpdateUF, 'focus'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'focus'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'focus'),
@@ -3207,6 +3281,7 @@ E.Options.args.unitframe.args.focustarget = {
 		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'focustarget'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'focustarget'),
+		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'focusttarget'),
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUF, 'focustarget'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'focustarget'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'focustarget'),
@@ -3349,6 +3424,7 @@ E.Options.args.unitframe.args.pet = {
 		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'pet'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'pet'),
+		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'pet'),
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUF, 'pet'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'pet'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'pet'),
@@ -3458,6 +3534,7 @@ E.Options.args.unitframe.args.pettarget = {
 		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'pettarget'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'pettarget'),
+		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'pettarget'),
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUF, 'pettarget'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'pettarget'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'pettarget'),
@@ -3587,6 +3664,7 @@ E.Options.args.unitframe.args.boss = {
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
+		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
 		buffs = GetOptionsTable_Auras(false, 'buffs', false, UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
@@ -3774,6 +3852,7 @@ E.Options.args.unitframe.args.arena = {
 		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUFGroup, 'arena', 5),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUFGroup, 'arena', 5),
+		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUFGroup, 'arena', 5),
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUFGroup, 'arena', 5),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUFGroup, 'arena', 5),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUFGroup, 'arena', 5),
@@ -4161,6 +4240,7 @@ E.Options.args.unitframe.args.party = {
 			},
 		},
 		health = GetOptionsTable_Health(true, UF.CreateAndUpdateHeaderGroup, 'party'),
+		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateHeaderGroup, 'party'),
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateHeaderGroup, 'party'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'party'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateHeaderGroup, 'party'),
@@ -4602,6 +4682,7 @@ E.Options.args.unitframe.args['raid'] = {
 			},
 		},
 		health = GetOptionsTable_Health(true, UF.CreateAndUpdateHeaderGroup, 'raid'),
+		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateHeaderGroup, 'raid'),
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateHeaderGroup, 'raid'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'raid'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateHeaderGroup, 'raid'),
@@ -4984,6 +5065,7 @@ E.Options.args.unitframe.args['raid40'] = {
 			},
 		},
 		health = GetOptionsTable_Health(true, UF.CreateAndUpdateHeaderGroup, 'raid40'),
+		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateHeaderGroup, 'raid40'),

@@ -82,7 +82,7 @@ function UF:Construct_ArenaFrames(frame)
 		frame:RegisterEvent('GROUP_ROSTER_UPDATE', UF.UpdateTargetGlow)
 
 		frame.customTexts = {}
-		
+		frame.InfoPanel = self:Construct_InfoPanel(frame)
 		frame.unitframeType = "arena"
 	end
 
@@ -148,13 +148,19 @@ function UF:Update_ArenaFrames(frame, db)
 
 		frame.STAGGER_WIDTH = db.pvpSpecIcon and frame.UNIT_HEIGHT or 0
 		frame.CLASSBAR_YOFFSET = 0
+		
+		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and db.infoPanel.enable
+		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0		
+		frame.BOTTOM_OFFSET = not frame.POWERBAR_DETACHED and (frame.POWERBAR_HEIGHT + frame.INFO_PANEL_HEIGHT) or frame.INFO_PANEL_HEIGHT		
 	end
 
 	frame.colors = ElvUF.colors
 	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
-
+	
+	UF:Configure_InfoPanel(frame)
+	
 	--Health
 	UF:Configure_HealthBar(frame)
 

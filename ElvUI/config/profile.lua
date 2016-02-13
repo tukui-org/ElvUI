@@ -541,6 +541,10 @@ P['unitframe'] = {
 				},
 				["parent"] = "FRAME",
 			},
+			['infoPanel'] = {
+				['enable'] = true,
+				['height'] = 12,	
+			},
 			['name'] = {
 				['position'] = 'CENTER',
 				['text_format'] = '',
@@ -692,6 +696,10 @@ P['unitframe'] = {
 				},
 				["parent"] = "FRAME",
 			},
+			['infoPanel'] = {
+				['enable'] = true,
+				['height'] = 12,	
+			},			
 			['name'] = {
 				['position'] = 'CENTER',
 				['text_format'] = '[namecolor][name:medium] [difficultycolor][smartlevel] [shortclassification]',
@@ -825,6 +833,10 @@ P['unitframe'] = {
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
+			['infoPanel'] = {
+				['enable'] = true,
+				['height'] = 12,	
+			},
 			['name'] = {
 				['position'] = 'CENTER',
 				['text_format'] = '[namecolor][name:medium]',
@@ -914,6 +926,10 @@ P['unitframe'] = {
 				['hideonnpc'] = false,
 				['xOffset'] = 0,
 				['yOffset'] = 0,
+			},
+			['infoPanel'] = {
+				['enable'] = true,
+				['height'] = 12,	
 			},
 			['name'] = {
 				['position'] = 'CENTER',
@@ -1005,6 +1021,10 @@ P['unitframe'] = {
 				['hideonnpc'] = false,
 				['xOffset'] = 0,
 				['yOffset'] = 0,
+			},
+			['infoPanel'] = {
+				['enable'] = true,
+				['height'] = 12,	
 			},
 			['name'] = {
 				['position'] = 'CENTER',
@@ -1131,6 +1151,10 @@ P['unitframe'] = {
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
+			['infoPanel'] = {
+				['enable'] = true,
+				['height'] = 12,	
+			},
 			['name'] = {
 				['position'] = 'CENTER',
 				['text_format'] = '[namecolor][name:medium]',
@@ -1221,6 +1245,10 @@ P['unitframe'] = {
 				['hideonnpc'] = false,
 				['yOffset'] = 0,
 				['xOffset'] = 0,
+			},
+			['infoPanel'] = {
+				['enable'] = true,
+				['height'] = 12,	
 			},
 			['name'] = {
 				['position'] = 'CENTER',
@@ -1318,6 +1346,10 @@ P['unitframe'] = {
 				['yOffset'] = 0,
 				['xOffset'] = 0,
 			},
+			['infoPanel'] = {
+				['enable'] = true,
+				['height'] = 12,	
+			},
 			['name'] = {
 				['position'] = 'CENTER',
 				['text_format'] = '[namecolor][name:medium]',
@@ -1412,6 +1444,10 @@ P['unitframe'] = {
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
+			['infoPanel'] = {
+				['enable'] = true,
+				['height'] = 12,	
+			},
 			['name'] = {
 				['position'] = 'LEFT',
 				['text_format'] = '[namecolor][name:medium]',
@@ -1505,6 +1541,10 @@ P['unitframe'] = {
 				['hideonnpc'] = false,
 				['yOffset'] = 0,
 				['xOffset'] = 0,
+			},
+			['infoPanel'] = {
+				['enable'] = true,
+				['height'] = 12,	
 			},
 			['name'] = {
 				['position'] = 'LEFT',
@@ -1620,6 +1660,10 @@ P['unitframe'] = {
 				['hideonnpc'] = false,
 				['yOffset'] = 0,
 				['xOffset'] = 0,
+			},
+			['infoPanel'] = {
+				['enable'] = true,
+				['height'] = 12,	
 			},
 			['name'] = {
 				['position'] = 'LEFT',
@@ -1802,6 +1846,10 @@ P['unitframe'] = {
 				['yOffset'] = 0,
 				['xOffset'] = 0,
 			},
+			['infoPanel'] = {
+				['enable'] = true,
+				['height'] = 12,	
+			},
 			['name'] = {
 				['position'] = 'TOP',
 				['text_format'] = '[namecolor][name:short]',
@@ -1953,6 +2001,10 @@ P['unitframe'] = {
 				['hideonnpc'] = false,
 				['yOffset'] = 0,
 				['xOffset'] = 0,
+			},
+			['infoPanel'] = {
+				['enable'] = true,
+				['height'] = 12,	
 			},
 			['name'] = {
 				['position'] = 'CENTER',

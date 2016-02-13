@@ -50,7 +50,7 @@ function UF:Construct_PartyFrames(unitGroup)
 
 		self.Portrait3D = UF:Construct_Portrait(self, 'model')
 		self.Portrait2D = UF:Construct_Portrait(self, 'texture')
-
+		self.InfoPanel = UF:Construct_InfoPanel(self)
 		self.Name = UF:Construct_NameText(self)
 		self.Buffs = UF:Construct_Buffs(self)
 		self.Debuffs = UF:Construct_Debuffs(self)
@@ -156,6 +156,11 @@ function UF:Update_PartyFrames(frame, db)
 		frame.STAGGER_WIDTH = 0
 		frame.CLASSBAR_WIDTH = 0
 		frame.CLASSBAR_YOFFSET = 0
+		
+		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and db.infoPanel.enable
+		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0		
+		frame.BOTTOM_OFFSET = not frame.POWERBAR_DETACHED and (frame.POWERBAR_HEIGHT + frame.INFO_PANEL_HEIGHT) or frame.INFO_PANEL_HEIGHT
+			
 	end
 
 	if frame.isChild then
@@ -201,7 +206,8 @@ function UF:Update_PartyFrames(frame, db)
 		if not InCombatLockdown() then
 			frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 		end
-
+		
+		UF:Configure_InfoPanel(frame)
 		UF:Configure_HealthBar(frame)
 
 		UF:UpdateNameSettings(frame)

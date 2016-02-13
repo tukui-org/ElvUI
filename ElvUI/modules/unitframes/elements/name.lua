@@ -25,8 +25,9 @@ function UF:UpdateNameSettings(frame, childType)
 	local name = frame.Name
 	if not db.power or not db.power.hideonnpc then
 		local x, y = self:GetPositionOffset(db.name.position)
+		local attachPoint = self:GetTextAnchorPoint(frame, db.name.attachTextTo)
 		name:ClearAllPoints()
-		name:Point(db.name.position, frame.Health, db.name.position, x + db.name.xOffset, y + db.name.yOffset)
+		name:Point(db.name.position, attachPoint, db.name.position, x + db.name.xOffset, y + db.name.yOffset)
 	end
 
 	frame:Tag(name, db.name.text_format)
@@ -38,10 +39,11 @@ function UF:PostNamePosition(frame, unit)
 	if UnitIsPlayer(unit) then
 		local position = db.name.position
 		local x, y = self:GetPositionOffset(position)
+		local attachPoint = self:GetTextAnchorPoint(frame, db.name.attachTextTo)
 		frame.Power.value:SetAlpha(1)
 
 		frame.Name:ClearAllPoints()
-		frame.Name:Point(position, frame.Health, position, x + db.name.xOffset, y + db.name.yOffset)
+		frame.Name:Point(position, attachPoint, position, x + db.name.xOffset, y + db.name.yOffset)
 	else
 		frame.Power.value:SetAlpha(db.power.hideonnpc and 0 or 1)
 

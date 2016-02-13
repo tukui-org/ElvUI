@@ -44,7 +44,7 @@ function UF:Construct_TargetFrame(frame)
 	frame.HealPrediction = self:Construct_HealComm(frame)
 	frame.DebuffHighlight = self:Construct_DebuffHighlight(frame)
 	frame.GPS = self:Construct_GPS(frame)
-
+	frame.InfoPanel = self:Construct_InfoPanel(frame)
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
 	frame.Range = UF:Construct_Range(frame)
 	frame.customTexts = {}
@@ -85,6 +85,10 @@ function UF:Update_TargetFrame(frame, db)
 		frame.CLASSBAR_HEIGHT = frame.USE_CLASSBAR and db.combobar.height or 0
 		frame.CLASSBAR_WIDTH = frame.UNIT_WIDTH - ((frame.BORDER+frame.SPACING)*2) - frame.PORTRAIT_WIDTH  - frame.POWERBAR_OFFSET
 		frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN or frame.CLASSBAR_DETACHED) and 0 or (frame.USE_MINI_CLASSBAR and (frame.SPACING+(frame.CLASSBAR_HEIGHT/2)) or (frame.CLASSBAR_HEIGHT + frame.SPACING))
+		
+		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and db.infoPanel.enable
+		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0		
+		frame.BOTTOM_OFFSET = not frame.POWERBAR_DETACHED and (frame.POWERBAR_HEIGHT + frame.INFO_PANEL_HEIGHT) or frame.INFO_PANEL_HEIGHT
 	end
 
 	frame.colors = ElvUF.colors
@@ -100,7 +104,9 @@ function UF:Update_TargetFrame(frame, db)
 			frame:SetAttribute("type3", nil)
 		end
 	end
-
+	
+	UF:Configure_InfoPanel(frame)
+	
 	--Health
 	UF:Configure_HealthBar(frame)
 

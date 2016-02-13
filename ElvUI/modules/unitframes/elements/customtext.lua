@@ -30,12 +30,14 @@ function UF:Configure_CustomTexts(frame)
 			if objectDB.font then
 				customFont = UF.LSM:Fetch("font", objectDB.font)
 			end
-
+			
+			
+			local attachPoint = self:GetTextAnchorPoint(frame, objectDB.attachTextTo)
 			frame.customTexts[objectName]:FontTemplate(customFont, objectDB.size or UF.db.fontSize, objectDB.fontOutline or UF.db.fontOutline)
 			frame:Tag(frame.customTexts[objectName], objectDB.text_format or '')
 			frame.customTexts[objectName]:SetJustifyH(objectDB.justifyH or 'CENTER')
 			frame.customTexts[objectName]:ClearAllPoints()
-			frame.customTexts[objectName]:Point(objectDB.justifyH or 'CENTER', frame, objectDB.justifyH or 'CENTER', objectDB.xOffset, objectDB.yOffset)
+			frame.customTexts[objectName]:Point(objectDB.justifyH or 'CENTER', attachPoint, objectDB.justifyH or 'CENTER', objectDB.xOffset, objectDB.yOffset)
 		end
 	end
 end
