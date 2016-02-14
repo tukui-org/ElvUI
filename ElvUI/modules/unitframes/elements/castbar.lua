@@ -22,6 +22,7 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 
 function UF:Construct_Castbar(self, direction, moverName)
 	local castbar = CreateFrame("StatusBar", nil, self)
+	castbar:SetFrameStrata("HIGH")
 	UF['statusbars'][castbar] = true
 	castbar.CustomDelayText = UF.CustomCastDelayText
 	castbar.CustomTimeText = UF.CustomTimeText
@@ -121,35 +122,47 @@ function UF:Configure_Castbar(frame)
 	else
 		castbar.Spark:Hide()
 	end
-
-	local isMoved = E:HasMoverBeenMoved(frame:GetName()..'CastbarMover') or not castbar.Holder.mover
-	if not isMoved then	
-		castbar.Holder.mover:ClearAllPoints()
-	end
 	
 	castbar:ClearAllPoints()
-	if frame.ORIENTATION ~= "RIGHT"  then
-		castbar:Point('BOTTOMRIGHT', castbar.Holder, 'BOTTOMRIGHT', -(frame.BORDER+frame.SPACING), frame.BORDER+frame.SPACING)
-		if not isMoved then
-			castbar.Holder.mover:Point("TOPRIGHT", frame, "BOTTOMRIGHT", 0, -(frame.BORDER * 3))
+	castbar.Icon.bg:ClearAllPoints()
+	if db.castbar.insideInfoPanel and frame.USE_INFO_PANEL then
+		castbar:SetInside(frame.InfoPanel)
+		castbar.Icon.bg:Size(db.castbar.iconSize)
+		if(frame.ORIENTATION == "LEFT") then
+			castbar.Icon.bg:Point("RIGHT", frame, "LEFT", -10, 0)
+		else
+			castbar.Icon.bg:Point("LEFT", frame, "RIGHT", 10, 0)
 		end
 	else
-		castbar:Point('BOTTOMLEFT', castbar.Holder, 'BOTTOMLEFT', frame.BORDER+frame.SPACING, frame.BORDER+frame.SPACING)
-		if not isMoved then
-			castbar.Holder.mover:Point("TOPLEFT", frame, "BOTTOMLEFT", 0, -(frame.BORDER * 3))
+		local isMoved = E:HasMoverBeenMoved(frame:GetName()..'CastbarMover') or not castbar.Holder.mover
+		if not isMoved then	
+			castbar.Holder.mover:ClearAllPoints()
 		end
-	end
-
-	--TODO: Create an option to position the icon on different sides
-	if castbar.Icon then
-		castbar.Icon.bg:ClearAllPoints()
-		if frame.ORIENTATION ~= "RIGHT" then
-			castbar.Icon.bg:Point("RIGHT", castbar, "LEFT", -frame.SPACING*3, 0)
+		
+		castbar:ClearAllPoints()
+		if frame.ORIENTATION ~= "RIGHT"  then
+			castbar:Point('BOTTOMRIGHT', castbar.Holder, 'BOTTOMRIGHT', -(frame.BORDER+frame.SPACING), frame.BORDER+frame.SPACING)
+			if not isMoved then
+				castbar.Holder.mover:Point("TOPRIGHT", frame, "BOTTOMRIGHT", 0, -(frame.BORDER * 3))
+			end
 		else
-			castbar.Icon.bg:Point("LEFT", castbar, "RIGHT", frame.SPACING*3, 0)
+			castbar:Point('BOTTOMLEFT', castbar.Holder, 'BOTTOMLEFT', frame.BORDER+frame.SPACING, frame.BORDER+frame.SPACING)
+			if not isMoved then
+				castbar.Holder.mover:Point("TOPLEFT", frame, "BOTTOMLEFT", 0, -(frame.BORDER * 3))
+			end
+		end
+
+		--TODO: Create an option to position the icon on different sides
+		if castbar.Icon then
+			castbar.Icon.bg:ClearAllPoints()
+			if frame.ORIENTATION ~= "RIGHT" then
+				castbar.Icon.bg:Point("RIGHT", castbar, "LEFT", -frame.SPACING*3, 0)
+			else
+				castbar.Icon.bg:Point("LEFT", castbar, "RIGHT", frame.SPACING*3, 0)
+			end
 		end
 	end
-
+	
 	if db.castbar.enable and not frame:IsElementEnabled('Castbar') then
 		frame:EnableElement('Castbar')
 	elseif not db.castbar.enable and frame:IsElementEnabled('Castbar') then

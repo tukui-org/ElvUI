@@ -50,7 +50,7 @@ function UF:Construct_Raid40Frames(unitGroup)
 	tinsert(self.__elements, UF.UpdateTargetGlow)
 	self:RegisterEvent('PLAYER_TARGET_CHANGED', UF.UpdateTargetGlow)
 	self:RegisterEvent('PLAYER_ENTERING_WORLD', UF.UpdateTargetGlow)
-
+	self.InfoPanel = UF:Construct_InfoPanel(self)
 	self.Threat = UF:Construct_Threat(self)
 	self.RaidIcon = UF:Construct_RaidIcon(self)
 	self.ReadyCheck = UF:Construct_ReadyCheckIcon(self)
@@ -170,12 +170,17 @@ function UF:Update_Raid40Frames(frame, db)
 		frame.STAGGER_WIDTH = 0
 		frame.CLASSBAR_WIDTH = 0
 		frame.CLASSBAR_YOFFSET = 0
+		
+		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and db.infoPanel.enable
+		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0		
+		frame.BOTTOM_OFFSET = not frame.POWERBAR_DETACHED and (frame.POWERBAR_HEIGHT + frame.INFO_PANEL_HEIGHT) or frame.INFO_PANEL_HEIGHT
+					
 	end
 
 	if not InCombatLockdown() then
 		frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	end
-
+	UF:Configure_InfoPanel(frame)
 	--Health
 	UF:Configure_HealthBar(frame)
 

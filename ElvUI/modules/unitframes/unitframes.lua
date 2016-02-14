@@ -279,6 +279,8 @@ end
 function UF:GetTextAnchorPoint(frame, point)
 	if not frame[point] or point == "Frame" then
 		return frame
+	elseif frame[point] and not frame[point]:IsShown() then
+		return frame.Health
 	else
 		return frame[point]
 	end

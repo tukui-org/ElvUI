@@ -38,6 +38,7 @@ function UF:Construct_PetFrame(frame)
 	frame.HealPrediction = self:Construct_HealComm(frame)
 	frame.AuraWatch = UF:Construct_AuraWatch(frame)
 	frame.Range = UF:Construct_Range(frame)
+	frame.InfoPanel = self:Construct_InfoPanel(frame)
 	frame.customTexts = {}
 	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 118)
 	E:CreateMover(frame, frame:GetName()..'Mover', L["Pet Frame"], nil, nil, nil, 'ALL,SOLO')
@@ -66,6 +67,10 @@ function UF:Update_PetFrame(frame, db)
 		frame.USE_PORTRAIT = db.portrait and db.portrait.enable
 		frame.USE_PORTRAIT_OVERLAY = frame.USE_PORTRAIT and (db.portrait.overlay or frame.ORIENTATION == "MIDDLE")
 		frame.PORTRAIT_WIDTH = (frame.USE_PORTRAIT_OVERLAY or not frame.USE_PORTRAIT) and 0 or db.portrait.width
+		
+		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and db.infoPanel.enable
+		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0		
+		frame.BOTTOM_OFFSET = not frame.POWERBAR_DETACHED and (frame.POWERBAR_HEIGHT + frame.INFO_PANEL_HEIGHT) or frame.INFO_PANEL_HEIGHT			
 	end
 
 	frame.colors = ElvUF.colors
@@ -73,7 +78,8 @@ function UF:Update_PetFrame(frame, db)
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
-
+	
+	UF:Configure_InfoPanel(frame)	
 	--Health
 	UF:Configure_HealthBar(frame)
 
