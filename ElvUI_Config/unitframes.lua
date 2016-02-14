@@ -446,13 +446,13 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 				order = 4,
 				type = 'range',
 				name = L["xOffset"],
-				min = -300, max = 300, step = 1,
+				min = -1000, max = 1000, step = 1,
 			},
 			yOffset = {
 				order = 5,
 				type = 'range',
 				name = L["yOffset"],
-				min = -300, max = 300, step = 1,
+				min = -1000, max = 1000, step = 1,
 			},
 			anchorPoint = {
 				type = 'select',
