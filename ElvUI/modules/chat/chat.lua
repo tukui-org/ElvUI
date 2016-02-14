@@ -35,7 +35,8 @@ local ChatEdit_ChooseBoxForSend = ChatEdit_ChooseBoxForSend
 local ChatEdit_ActivateChat = ChatEdit_ActivateChat
 local ShowUIPanel, HideUIPanel = ShowUIPanel, HideUIPanel
 local BetterDate = BetterDate
-local BNGetToonInfo = BNGetToonInfo
+local BNGetToonInfo = BNGetToonInfo --Removed in 6.2.4
+local BNGetGameAccountInfo = BNGetGameAccountInfo --Added in 6.2.4
 local BNGetFriendInfo = BNGetFriendInfo
 local BNGetNumFriends = BNGetNumFriends
 local Ambiguate = Ambiguate
@@ -892,13 +893,28 @@ end
 
 
 function CH:GetBNFriendColor(name, id)
-	local _, _, _, _, _, _, _, class = BNGetToonInfo(id)
+	local _, class
+	if E.wowbuild >= 21073 then
+		--6.2.4
+		_, _, _, _, _, _, _, class = BNGetGameAccountInfo(id)
+	else
+		--Live, remove when 6.2.4 goes live
+		_, _, _, _, _, _, _, class = BNGetToonInfo(id)
+	end
+
 	if(not class or class == "") then
-		local presenceName, toonID
+		local accountName, bnetIDGameAccount
 		for i=1, BNGetNumFriends() do
-			_, presenceName, _, _, _, toonID = BNGetFriendInfo(i)
-			if (toonID) and (presenceName and presenceName == name) then
-				_, _, _, _, _, _, _, class = BNGetToonInfo(toonID)
+			_, accountName, _, _, _, bnetIDGameAccount = BNGetFriendInfo(i)
+			if (bnetIDGameAccount) and (accountName and accountName == name) then
+				if E.wowbuild >= 21073 then
+					--6.2.4
+					_, _, _, _, _, _, _, class = BNGetGameAccountInfo(bnetIDGameAccount)
+				else
+					--Live, remove when 6.2.4 goes live
+					_, _, _, _, _, _, _, class = BNGetToonInfo(bnetIDGameAccount)
+				end
+
 				if(class) then
 					break;
 				end
@@ -1026,7 +1042,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 
 		local chatGroup = Chat_GetChatCategory(type);
 		local chatTarget;
-		if ( chatGroup == "CHANNEL" or chatGroup == "BN_CONVERSATION" ) then
+		if ( chatGroup == "CHANNEL" or (E.wowbuild < 21073 and chatGroup == "BN_CONVERSATION") ) then
 			chatTarget = tostring(arg8);
 		elseif ( chatGroup == "WHISPER" or chatGroup == "BN_WHISPER" ) then
 			if(not(strsub(arg2, 1, 2) == "|K")) then
@@ -1047,7 +1063,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				and ( (chatGroup == "WHISPER" and GetCVar("whisperMode") ~= "popout_and_inline") or (chatGroup == "BN_WHISPER" and GetCVar("bnWhisperMode") ~= "popout_and_inline") ) ) then
 				return true;
 			end
-		elseif ( chatGroup == "BN_CONVERSATION" ) then
+		elseif ( E.wowbuild < 21073 and chatGroup == "BN_CONVERSATION" ) then
 			if ( self.bnConversationList and not self.bnConversationList[arg8] ) then
 				return true;
 			elseif ( self.excludeBNConversationList and self.excludeBNConversationList[arg8] and GetCVar("conversationMode") ~= "popout_and_inline") then
@@ -1161,7 +1177,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			local accessID = ChatHistory_GetAccessID(Chat_GetChatCategory(type), arg8);
 			local typeID = ChatHistory_GetAccessID(infoType, arg8, arg12);
 			self:AddMessage(format(CH:ConcatenateTimeStamp(globalstring), arg8, arg4), info.r, info.g, info.b, info.id, false, accessID, typeID);
-		elseif ( type == "BN_CONVERSATION_NOTICE" ) then
+		elseif ( E.wowbuild < 21073 and type == "BN_CONVERSATION_NOTICE" ) then
 			local channelLink = format(Var.CHAT_BN_CONVERSATION_GET_LINK, arg8, Var.MAX_WOW_CHAT_CHANNELS + arg8);
 			local playerLink = format("|HBNplayer:%s:%s:%s:%s:%s|h[%s]|h", arg2, arg13, arg11, Chat_GetChatCategory(type), arg8, arg2);
 			local message = format(_G["CHAT_CONVERSATION_"..arg1.."_NOTICE"], channelLink, playerLink)
@@ -1169,14 +1185,14 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			local accessID = ChatHistory_GetAccessID(Chat_GetChatCategory(type), arg8);
 			local typeID = ChatHistory_GetAccessID(infoType, arg8, arg12);
 			self:AddMessage(CH:ConcatenateTimeStamp(message), info.r, info.g, info.b, info.id, false, accessID, typeID);
-		elseif ( type == "BN_CONVERSATION_LIST" ) then
+		elseif ( E.wowbuild < 21073 and type == "BN_CONVERSATION_LIST" ) then
 			local channelLink = format(Var.CHAT_BN_CONVERSATION_GET_LINK, arg8, Var.MAX_WOW_CHAT_CHANNELS + arg8);
 			local message = format(Var.CHAT_BN_CONVERSATION_LIST, channelLink, arg1);
 			local accessID = ChatHistory_GetAccessID(Chat_GetChatCategory(type), arg8);
 			local typeID = ChatHistory_GetAccessID(infoType, arg8, arg12);
 			self:AddMessage(CH:ConcatenateTimeStamp(message), info.r, info.g, info.b, info.id, false, accessID, typeID);
 		elseif ( type == "BN_INLINE_TOAST_ALERT" ) then
-			if ( arg1 == "FRIEND_OFFLINE" and not BNet_ShouldProcessOfflineEvents() ) then
+			if ( E.wowbuild < 21073 and arg1 == "FRIEND_OFFLINE" and not BNet_ShouldProcessOfflineEvents() ) then
 				return true;
 			end
 			local globalstring = _G["BN_INLINE_TOAST_"..arg1];
@@ -1187,13 +1203,25 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				message = format(Var.BN_INLINE_TOAST_FRIEND_PENDING, BNGetNumFriendInvites());
 			elseif ( arg1 == "FRIEND_REMOVED" or arg1 == "BATTLETAG_FRIEND_REMOVED" ) then
 				message = format(globalstring, arg2);
-			elseif ( arg1 == "FRIEND_ONLINE" or arg1 == "FRIEND_OFFLINE") then
+			elseif ( E.wowbuild < 21073 and arg1 == "FRIEND_ONLINE" or arg1 == "FRIEND_OFFLINE") then --Remove this entire block when 6.2.4 goes live
 				local hasFocus, toonName, client, realmName, realmID, faction, race, class, guild, zoneName, level, gameText = BNGetToonInfo(arg13);
 				if (toonName and toonName ~= "" and client and client ~= "") then
 					local _, _, battleTag = BNGetFriendInfoByID(arg13);
 					toonName = BNet_GetValidatedCharacterName(toonName, battleTag, client) or "";
 					local toonNameText = BNet_GetClientEmbeddedTexture(client, 14)..toonName;
 					local playerLink = format("|HBNplayer:%s:%s:%s:%s:%s|h[%s] (%s)|h", arg2, arg13, arg11, Chat_GetChatCategory(type), 0, arg2, toonNameText);
+					message = format(globalstring, playerLink);
+				else
+					local playerLink = format("|HBNplayer:%s:%s:%s:%s:%s|h[%s]|h", arg2, arg13, arg11, Chat_GetChatCategory(type), 0, arg2);
+					message = format(globalstring, playerLink);
+				end
+			elseif ( E.wowbuild >= 21073 and arg1 == "FRIEND_ONLINE" or arg1 == "FRIEND_OFFLINE") then
+				local _, accountName, battleTag, _, characterName, _, client = BNGetFriendInfoByID(arg13);
+				if (client and client ~= "") then
+					local _, _, battleTag = BNGetFriendInfoByID(arg13);
+					characterName = BNet_GetValidatedCharacterName(characterName, battleTag, client) or "";
+					local characterNameText = BNet_GetClientEmbeddedTexture(client, 14)..characterName;
+					local playerLink = format("|HBNplayer:%s:%s:%s:%s:%s|h[%s] (%s)|h", arg2, arg13, arg11, Chat_GetChatCategory(type), 0, arg2, characterNameText);
 					message = format(globalstring, playerLink);
 				else
 					local playerLink = format("|HBNplayer:%s:%s:%s:%s:%s|h[%s]|h", arg2, arg13, arg11, Chat_GetChatCategory(type), 0, arg2);
@@ -1216,7 +1244,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				arg1 = RemoveExtraSpaces(arg1);
 				self:AddMessage(CH:ConcatenateTimeStamp(Var.BN_INLINE_TOAST_BROADCAST_INFORM), info.r, info.g, info.b, info.id);
 			end
-		elseif ( type == "BN_INLINE_TOAST_CONVERSATION" ) then
+		elseif ( E.wowbuild < 21073 and type == "BN_INLINE_TOAST_CONVERSATION" ) then
 			self:AddMessage(format(CH:ConcatenateTimeStamp(Var.BN_INLINE_TOAST_CONVERSATION), arg1), info.r, info.g, info.b, info.id);
 		else
 			local body;
@@ -1316,6 +1344,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			local playerLink;
 
 			if ( type ~= "BN_WHISPER" and type ~= "BN_WHISPER_INFORM" and type ~= "BN_CONVERSATION" ) then
+			-- if ( type ~= "BN_WHISPER" and type ~= "BN_WHISPER_INFORM" ) then --Use this when 6.2.4 goes live
 				playerLink = "|Hplayer:"..arg2..":"..arg11..":"..chatGroup..(chatTarget and ":"..chatTarget or "").."|h";
 			else
 				coloredName = CH:GetBNFriendColor(arg2, arg13)
@@ -1358,7 +1387,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 
 			-- Add Channel
 			arg4 = gsub(arg4, "%s%-%s.*", "");
-			if( chatGroup  == "BN_CONVERSATION" ) then
+			if( E.wowbuild < 21073 and chatGroup  == "BN_CONVERSATION" ) then --Remove this block when 6.2.4 goes live
 				body = format(Var.CHAT_BN_CONVERSATION_GET_LINK, arg8, Var.MAX_WOW_CHAT_CHANNELS + arg8)..body;
 			elseif(channelLength > 0) then
 				body = "|Hchannel:channel:"..arg8.."|h["..arg4.."]|h "..body;
@@ -1394,7 +1423,13 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 		if ( not self:IsShown() ) then
 			if ( (self == DEFAULT_CHAT_FRAME and info.flashTabOnGeneral) or (self ~= DEFAULT_CHAT_FRAME and info.flashTab) ) then
 				if ( not CHAT_OPTIONS.HIDE_FRAME_ALERTS or type == "WHISPER" or type == "BN_WHISPER" ) then	--BN_WHISPER FIXME
-					if (not (type == "BN_CONVERSATION" and BNIsSelf(arg13))) then
+					if E.wowbuild < 21073 then
+						if (not (type == "BN_CONVERSATION" and BNIsSelf(arg13))) then
+							if (not FCFManager_ShouldSuppressMessageFlash(self, chatGroup, chatTarget) ) then
+								FCF_StartAlertFlash(self); --This would taint if we were not using LibChatAnims
+							end
+						end
+					else
 						if (not FCFManager_ShouldSuppressMessageFlash(self, chatGroup, chatTarget) ) then
 							FCF_StartAlertFlash(self); --This would taint if we were not using LibChatAnims
 						end
