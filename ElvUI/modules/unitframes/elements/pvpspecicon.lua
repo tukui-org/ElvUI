@@ -10,7 +10,7 @@ local CreateFrame = CreateFrame
 function UF:Construct_PVPSpecIcon(frame)
 	local specIcon = CreateFrame("Frame", nil, frame)
 	specIcon.bg = CreateFrame("Frame", nil, specIcon)
-	specIcon.bg:SetTemplate("Default")
+	specIcon.bg:SetTemplate("Default", nil, nil, E.global.tukuiMode)
 	specIcon.bg:SetFrameLevel(specIcon:GetFrameLevel() - 1)
 	specIcon:SetInside(specIcon.bg)
 

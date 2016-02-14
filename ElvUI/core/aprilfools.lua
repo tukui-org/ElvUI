@@ -617,4 +617,36 @@ do
 			self:StaticPopup_Show("HELLO_KITTY")
 		end
 	end
+	
+	function E:ShowTukuiFrame()
+		local f = CreateFrame("Button", "TukuiThanks", E.UIParent)
+		f.SetPage = SetPage
+		f:Size(550, 260)
+		f:SetTemplate("Transparent")
+		f:Point("CENTER")
+		f:SetFrameStrata('TOOLTIP')
+		
+		f.Title = f:CreateFontString(nil, 'OVERLAY')
+		f.Title:FontTemplate(nil, 17, nil)
+		f.Title:Point("TOP", 0, -5)
+		f.Title:SetText("Thanks For Testing!")
+		
+		f.Desc1 = f:CreateFontString(nil, 'OVERLAY')
+		f.Desc1:FontTemplate()
+		f.Desc1:Point("TOPLEFT", 20, -75)
+		f.Desc1:Width(f:GetWidth() - 40)		
+		f.Desc1:SetText("Thank you for the five years of testing the experimental version of Tukui codenamed 'ElvUI'. The testing period has now ended your user interface has been adjusted accordingly.")
+	
+		local close = CreateFrame("Button", "InstallCloseButton", f, "UIPanelCloseButton")
+		close:Point("TOPRIGHT", f, "TOPRIGHT")
+		close:SetScript("OnClick", function()
+			f:Hide()
+		end)
+		E.Skins:HandleCloseButton(close)	
+		
+		f.tutorialImage = f:CreateTexture('InstallTutorialImage', 'OVERLAY')
+		f.tutorialImage:Size(256, 128)
+		f.tutorialImage:SetTexture('Interface\\AddOns\\ElvUI\\media\\textures\\tukui_logo.tga')	
+		f.tutorialImage:Point('BOTTOM', 0, 10)	
+	end
 end

@@ -249,8 +249,15 @@ end
 function UF:Construct_UF(frame, unit)
 	frame:SetScript('OnEnter', UnitFrame_OnEnter)
 	frame:SetScript('OnLeave', UnitFrame_OnLeave)
-	frame.BORDER = E.Border
-	frame.SPACING = E.Spacing
+
+	if(E.global.tukuiMode) then
+		frame.SPACING = 0
+		frame.BORDER = E.mult
+	else
+		frame.BORDER = E.Border
+		frame.SPACING = E.Spacing		
+	end
+	
 	frame.SHADOW_SPACING = 3
 	frame.STAGGER_WIDTH = 0	--placeholder
 	frame.CLASSBAR_YOFFSET = 0	--placeholder
@@ -1408,10 +1415,10 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 		end
 	else
 		if statusBar.backdrop then
-			statusBar.backdrop:SetTemplate("Default")
+			statusBar.backdrop:SetTemplate("Default", nil, nil, not statusBar.PostCastStart and E.global.tukuiMode)
 			statusBar.backdrop.ignoreUpdates = nil
 		elseif statusBar:GetParent().template then
-			statusBar:GetParent():SetTemplate("Default")
+			statusBar:GetParent():SetTemplate("Default", nil, nil, E.global.tukuiMode)
 			statusBar:GetParent().ignoreUpdates = nil
 		end
 		statusBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))

@@ -127,6 +127,7 @@ function UF:Configure_Castbar(frame)
 	castbar.Icon.bg:ClearAllPoints()
 	if db.castbar.insideInfoPanel and frame.USE_INFO_PANEL then
 		castbar:SetInside(frame.InfoPanel)
+		
 		castbar.Icon.bg:Size(db.castbar.iconSize)
 		if(frame.ORIENTATION == "LEFT") then
 			castbar.Icon.bg:Point("RIGHT", frame, "LEFT", -10, 0)

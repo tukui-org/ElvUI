@@ -19,7 +19,7 @@ function E:RefreshGUI()
 	self:RefreshCustomTextsConfigs()
 	ACR:NotifyChange("ElvUI")
 end
-
+E.Options.name = E.UIName
 E.Options.args = {
 	ElvUI_Header = {
 		order = 1,
@@ -74,7 +74,7 @@ E.Options.args.general = {
 		intro = {
 			order = 1,
 			type = "description",
-			name = L["ELVUI_DESC"],
+			name = L["ELVUI_DESC"]:gsub('ElvUI', E.UIName),
 		},
 		general = {
 			order = 2,

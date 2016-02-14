@@ -19,7 +19,7 @@ function UF:Construct_Portrait(frame, type)
 	else
 		portrait = CreateFrame("PlayerModel", nil, frame)
 		portrait:SetFrameStrata('LOW')
-		portrait:CreateBackdrop('Default')
+		portrait:CreateBackdrop('Default', nil, nil, E.global.tukuiMode)
 	end
 
 	portrait.PostUpdate = self.PortraitUpdate

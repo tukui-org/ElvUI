@@ -103,8 +103,13 @@ function UF:Update_RaidpetFrames(frame, db)
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 
 	do
-		frame.BORDER = E.Border
-		frame.SPACING = E.Spacing
+		if(E.global.tukuiMode) then
+			frame.SPACING = 0
+			frame.BORDER = E.mult
+		else
+			frame.BORDER = E.Border
+			frame.SPACING = E.Spacing		
+		end
 		frame.SHADOW_SPACING = 3
 
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?

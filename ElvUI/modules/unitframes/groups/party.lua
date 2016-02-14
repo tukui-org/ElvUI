@@ -136,6 +136,14 @@ function UF:Update_PartyFrames(frame, db)
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 
 	do
+		if(E.global.tukuiMode) then
+			frame.SPACING = 0
+			frame.BORDER = E.mult
+		else
+			frame.BORDER = E.Border
+			frame.SPACING = E.Spacing		
+		end
+	
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
 		frame.UNIT_WIDTH = db.width
 		frame.UNIT_HEIGHT = db.height

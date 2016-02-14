@@ -47,7 +47,7 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 
 	health.colorTapping = true
 	health.colorDisconnected = true
-	health:CreateBackdrop('Default')
+	health:CreateBackdrop('Default', nil, nil, E.global.tukuiMode)
 
 	return health
 end
@@ -82,7 +82,7 @@ function UF:Configure_HealthBar(frame)
 		health.colorClass = (not self.db.colors.forcehealthreaction)
 		health.colorReaction = true
 	end
-
+	
 	--Position
 	health:ClearAllPoints()
 	if frame.ORIENTATION == "LEFT" then

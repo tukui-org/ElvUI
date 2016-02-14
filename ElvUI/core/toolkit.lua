@@ -15,9 +15,11 @@ local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 E.mult = 1;
 local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0, 0, 0, 1, 0, 0, 0
 
-local function GetTemplate(t)
+local function GetTemplate(t, isPixelPerfectForced)
 	backdropa = 1
-	if t == "ClassColor" then
+	if(isPixelPerfectForced) then
+		borderr, borderg, borderb = 0, 0, 0
+	elseif t == "ClassColor" then
 		if CUSTOM_CLASS_COLORS then
 			borderr, borderg, borderb = CUSTOM_CLASS_COLORS[E.myclass].r, CUSTOM_CLASS_COLORS[E.myclass].g, CUSTOM_CLASS_COLORS[E.myclass].b
 		else
@@ -100,8 +102,8 @@ local function SetInside(obj, anchor, xOffset, yOffset)
 	obj:Point('BOTTOMRIGHT', anchor, 'BOTTOMRIGHT', -xOffset, yOffset)
 end
 
-local function SetTemplate(f, t, glossTex, ignoreUpdates)
-	GetTemplate(t)
+local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode)
+	GetTemplate(t, forcePixelMode)
 	if(E.global.tukuiMode) then
 		glossTex = nil
 	end
@@ -116,8 +118,12 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates)
 	if(ignoreUpdates) then
 	   f.ignoreUpdates = ignoreUpdates
 	end
-
-	if E.private.general.pixelPerfect and not E.global.tukuiMode then
+	
+	if(forcePixelMode) then
+		f.forcePixelMode = forcePixelMode
+	end
+	
+	if (E.private.general.pixelPerfect and not E.global.tukuiMode) or forcePixelMode then
 		f:SetBackdrop({
 		  bgFile = E["media"].blankTex,
 		  edgeFile = E["media"].blankTex,
@@ -145,7 +151,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates)
 			f.backdropTexture = nil
 		end
 
-		if not f.oborder and not f.iborder and (not E.private.general.pixelPerfect or E.global.tukuiMode) then
+		if not f.oborder and not f.iborder and (not E.private.general.pixelPerfect or E.global.tukuiMode) and not forcePixelMode then
 			local border = CreateFrame("Frame", nil, f)
 			border:SetInside(f, E.mult, E.mult)
 			border:SetBackdrop({
@@ -190,12 +196,16 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates)
 	end
 end
 
-local function CreateBackdrop(f, t, tex)
+local function CreateBackdrop(f, t, tex, ignoreUpdates, forcePixelMode)
 	if not t then t = "Default" end
 
 	local b = CreateFrame("Frame", nil, f)
-	b:SetOutside()
-	b:SetTemplate(t, tex)
+	if(forcePixelMode) then
+		b:SetOutside(nil, E.mult, E.mult)
+	else
+		b:SetOutside()
+	end
+	b:SetTemplate(t, tex, ignoreUpdates, forcePixelMode)
 
 	if f:GetFrameLevel() - 1 >= 0 then
 		b:SetFrameLevel(f:GetFrameLevel() - 1)

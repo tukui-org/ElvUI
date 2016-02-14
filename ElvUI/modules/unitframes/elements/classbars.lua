@@ -50,7 +50,7 @@ function UF:Configure_ClassBar(frame)
 	if(not E.PixelMode) then
 		c = E.db.general.bordercolor
 		if(E.global.tukuiMode) then
-			bars.backdrop:SetBackdropBorderColor(0.6, 0.6, 0.6)
+			bars.backdrop:SetBackdropBorderColor(0, 0, 0)
 		else
 			bars.backdrop:SetBackdropBorderColor(c.r, c.g, c.b)
 		end
@@ -241,7 +241,7 @@ UF.ToggleResourceBar = ToggleResourceBar --Make available to combobar
 
 function UF:Construct_PaladinResourceBar(frame, useBG, overrideFunc)
 	local bars = CreateFrame("Frame", nil, frame)
-	bars:CreateBackdrop('Default')
+	bars:CreateBackdrop('Default', nil, nil, E.global.tukuiMode)
 
 	for i = 1, UF['classMaxResourceBar'][E.myclass] do
 		bars[i] = CreateFrame("StatusBar", frame:GetName().."ClassBarButton"..i, bars)
@@ -249,7 +249,7 @@ function UF:Construct_PaladinResourceBar(frame, useBG, overrideFunc)
 		bars[i]:GetStatusBarTexture():SetHorizTile(false)
 		UF['statusbars'][bars[i]] = true
 
-		bars[i]:CreateBackdrop('Default')
+		bars[i]:CreateBackdrop('Default', nil, nil, E.global.tukuiMode)
 		bars[i].backdrop:SetParent(bars)
 
 		if useBG then
@@ -303,7 +303,7 @@ end
 
 function UF:Construct_MonkResourceBar(frame)
 	local bars = CreateFrame("Frame", nil, frame)
-	bars:CreateBackdrop('Default')
+	bars:CreateBackdrop('Default', nil, nil, E.global.tukuiMode)
 
 	for i = 1, UF['classMaxResourceBar'][E.myclass] do
 		bars[i] = CreateFrame("StatusBar", frame:GetName().."ClassBarButton"..i, bars)
@@ -311,7 +311,7 @@ function UF:Construct_MonkResourceBar(frame)
 		bars[i]:GetStatusBarTexture():SetHorizTile(false)
 		UF['statusbars'][bars[i]] = true
 
-		bars[i]:CreateBackdrop('Default')
+		bars[i]:CreateBackdrop('Default', nil, nil, E.global.tukuiMode)
 		bars[i].backdrop:SetParent(bars)
 	end
 
@@ -362,7 +362,7 @@ end
 
 function UF:Construct_MageResourceBar(frame)
 	local bars = CreateFrame("Frame", nil, frame)
-	bars:CreateBackdrop('Default')
+	bars:CreateBackdrop('Default', nil, nil, E.global.tukuiMode)
 
 	for i = 1, UF['classMaxResourceBar'][E.myclass] do
 		bars[i] = CreateFrame("StatusBar", frame:GetName().."ClassBarButton"..i, bars)
@@ -373,7 +373,7 @@ function UF:Construct_MageResourceBar(frame)
 
 		UF['statusbars'][bars[i]] = true
 
-		bars[i]:CreateBackdrop('Default')
+		bars[i]:CreateBackdrop('Default', nil, nil, E.global.tukuiMode)
 		bars[i].backdrop:SetParent(bars)
 	end
 
@@ -406,7 +406,7 @@ end
 
 function UF:Construct_RogueResourceBar(frame)
 	local bars = CreateFrame("Frame", nil, frame)
-	bars:CreateBackdrop('Default')
+	bars:CreateBackdrop('Default', nil, nil, E.global.tukuiMode)
 
 	for i = 1, UF['classMaxResourceBar'][E.myclass] do
 		bars[i] = CreateFrame("StatusBar", frame:GetName().."ClassBarButton"..i, bars)
@@ -417,7 +417,7 @@ function UF:Construct_RogueResourceBar(frame)
 
 		UF['statusbars'][bars[i]] = true
 
-		bars[i]:CreateBackdrop('Default')
+		bars[i]:CreateBackdrop('Default', nil, nil, E.global.tukuiMode)
 		bars[i].backdrop:SetParent(bars)
 	end
 
@@ -434,7 +434,7 @@ end
 
 function UF:Construct_WarlockResourceBar(frame)
 	local bars = CreateFrame("Frame", nil, frame)
-	bars:CreateBackdrop('Default')
+	bars:CreateBackdrop('Default', nil, nil, E.global.tukuiMode)
 
 	for i = 1, UF['classMaxResourceBar'][E.myclass] do
 		bars[i] = CreateFrame("StatusBar", frame:GetName().."ClassBarButton"..i, bars)
@@ -443,7 +443,7 @@ function UF:Construct_WarlockResourceBar(frame)
 		bars[i].bg = bars[i]:CreateTexture(nil, 'ARTWORK')
 		UF['statusbars'][bars[i]] = true
 
-		bars[i]:CreateBackdrop('Default')
+		bars[i]:CreateBackdrop('Default', nil, nil, E.global.tukuiMode)
 		bars[i].backdrop:SetParent(bars)
 	end
 	
@@ -472,7 +472,7 @@ end
 
 function UF:Construct_PriestResourceBar(frame)
 	local bars = CreateFrame("Frame", nil, frame)
-	bars:CreateBackdrop('Default')
+	bars:CreateBackdrop('Default', nil, nil, E.global.tukuiMode)
 
 	for i = 1, UF['classMaxResourceBar'][E.myclass] do
 		bars[i] = CreateFrame("StatusBar", frame:GetName().."ClassBarButton"..i, bars)
@@ -480,7 +480,7 @@ function UF:Construct_PriestResourceBar(frame)
 		bars[i]:GetStatusBarTexture():SetHorizTile(false)
 		UF['statusbars'][bars[i]] = true
 
-		bars[i]:CreateBackdrop('Default')
+		bars[i]:CreateBackdrop('Default', nil, nil, E.global.tukuiMode)
 		bars[i].backdrop:SetParent(bars)
 	end
 
@@ -536,7 +536,7 @@ end
 
 function UF:Construct_DeathKnightResourceBar(frame)
 	local runes = CreateFrame("Frame", nil, frame)
-	runes:CreateBackdrop('Default')
+	runes:CreateBackdrop('Default', nil, nil, E.global.tukuiMode)
 
 	for i = 1, UF['classMaxResourceBar'][E.myclass] do
 		runes[i] = CreateFrame("StatusBar", frame:GetName().."ClassBarButton"..i, runes)
@@ -544,7 +544,7 @@ function UF:Construct_DeathKnightResourceBar(frame)
 		runes[i]:SetStatusBarTexture(E['media'].blankTex)
 		runes[i]:GetStatusBarTexture():SetHorizTile(false)
 
-		runes[i]:CreateBackdrop('Default')
+		runes[i]:CreateBackdrop('Default', nil, nil, E.global.tukuiMode)
 		runes[i].backdrop:SetParent(runes)
 
 		runes[i].bg = runes[i]:CreateTexture(nil, 'BORDER')
@@ -562,7 +562,7 @@ end
 
 function UF:Construct_DruidResourceBar(frame)
 	local eclipseBar = CreateFrame('Frame', nil, frame)
-	eclipseBar:CreateBackdrop('Default')
+	eclipseBar:CreateBackdrop('Default', nil, nil, E.global.tukuiMode)
 	eclipseBar.PostUpdatePower = UF.EclipseDirection
 	eclipseBar.PostUpdateVisibility = ToggleResourceBar
 
