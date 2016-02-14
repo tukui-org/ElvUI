@@ -28,9 +28,11 @@ local function LoadSkin()
 	PlayerTalentFrameInset:CreateBackdrop('Default')
 	PlayerTalentFrameInset.backdrop:Hide()
 
-	PlayerTalentFrameSpecializationTutorialButton:Kill()
-	PlayerTalentFrameTalentsTutorialButton:Kill()
-	PlayerTalentFramePetSpecializationTutorialButton:Kill()
+	if E.global.general.disableTutorialButtons then
+		PlayerTalentFrameSpecializationTutorialButton:Kill()
+		PlayerTalentFrameTalentsTutorialButton:Kill()
+		PlayerTalentFramePetSpecializationTutorialButton:Kill()
+	end
 
 	S:HandleCloseButton(PlayerTalentFrameCloseButton)
 

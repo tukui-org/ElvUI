@@ -223,6 +223,14 @@ E.Options.args.general = {
 					name = L["Enhanced PVP Messages"],
 					desc = L["Display battleground messages in the middle of the screen."],
 				},
+				disableTutorialButtons = {
+					order = 19,
+					type = 'toggle',
+					name = L["Disable Tutorial Buttons"],
+					desc = L["Disables the tutorial button found on some frames."],
+					get = function(info) return E.global.general.disableTutorialButtons end,
+					set = function(info, value) E.global.general.disableTutorialButtons = value; E:StaticPopup_Show("GLOBAL_RL") end,
+				},
 				chatBubbles = {
 					order = 30,
 					type = "group",
