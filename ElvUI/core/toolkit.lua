@@ -17,9 +17,8 @@ local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0,
 
 local function GetTemplate(t, isPixelPerfectForced)
 	backdropa = 1
-	if(isPixelPerfectForced) then
-		borderr, borderg, borderb = 0, 0, 0
-	elseif t == "ClassColor" then
+
+	if t == "ClassColor" then
 		if CUSTOM_CLASS_COLORS then
 			borderr, borderg, borderb = CUSTOM_CLASS_COLORS[E.myclass].r, CUSTOM_CLASS_COLORS[E.myclass].g, CUSTOM_CLASS_COLORS[E.myclass].b
 		else
@@ -37,6 +36,10 @@ local function GetTemplate(t, isPixelPerfectForced)
 		borderr, borderg, borderb = unpack(E["media"].bordercolor)
 		backdropr, backdropg, backdropb = unpack(E["media"].backdropcolor)
 	end
+	
+	if(isPixelPerfectForced) then
+		borderr, borderg, borderb = 0, 0, 0
+	end	
 end
 
 local function Size(frame, width, height)
