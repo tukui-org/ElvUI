@@ -409,7 +409,7 @@ P['unitframe'] = {
 	["smartRaidFilter"] = true,
 	['targetOnMouseDown'] = false,
 	["auraBlacklistModifier"] = "SHIFT",
-
+	["thinBorders"] = true,
 	['colors'] = {
 		['healthclass'] = false,
 		['forcehealthreaction'] = false,

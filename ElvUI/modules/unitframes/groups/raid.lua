@@ -143,7 +143,7 @@ function UF:Update_RaidFrames(frame, db)
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 
 	do
-		if(E.global.tukuiMode) then
+		if(self.thinBorders) then
 			frame.SPACING = 0
 			frame.BORDER = E.mult
 		else

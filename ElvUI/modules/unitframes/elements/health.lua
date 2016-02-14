@@ -47,7 +47,7 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 
 	health.colorTapping = true
 	health.colorDisconnected = true
-	health:CreateBackdrop('Default', nil, nil, E.global.tukuiMode)
+	health:CreateBackdrop('Default', nil, nil, self.thinBorders)
 
 	return health
 end

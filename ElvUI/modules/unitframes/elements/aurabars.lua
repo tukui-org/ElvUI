@@ -15,12 +15,12 @@ local UnitIsFriend = UnitIsFriend
 function UF:Construct_AuraBars()
 	local bar = self.statusBar
 
-	self:SetTemplate('Default')
-
-	bar:SetInside(self)
+	self:SetTemplate('Default', nil, nil, UF.thinBorders)
+	local inset = UF.thinBorders and 0 or nil
+	bar:SetInside(self, inset, inset)
 	UF['statusbars'][bar] = true
 	UF:Update_StatusBar(bar)
-
+	
 	UF:Configure_FontString(bar.spelltime)
 	UF:Configure_FontString(bar.spellname)
 	UF:Update_FontString(bar.spelltime)
@@ -31,8 +31,8 @@ function UF:Construct_AuraBars()
 	bar.spellname:Point('RIGHT', bar.spelltime, 'LEFT', -4, 0)
 	bar.spellname:SetWordWrap(false)
 
-	bar.iconHolder:SetTemplate('Default')
-	bar.icon:SetInside(bar.iconHolder)
+	bar.iconHolder:SetTemplate('Default', nil, nil, UF.thinBorders)
+	bar.icon:SetInside(bar.iconHolder, inset, inset)
 	bar.icon:SetDrawLayer('OVERLAY')
 
 	bar.bg = bar:CreateTexture(nil, 'BORDER')

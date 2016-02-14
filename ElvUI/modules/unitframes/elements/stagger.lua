@@ -10,7 +10,7 @@ local CreateFrame = CreateFrame
 function UF:Construct_Stagger(frame)
 	local stagger = CreateFrame("Statusbar", nil, frame)
 	UF['statusbars'][stagger] = true
-	stagger:CreateBackdrop("Default",nil, nil, E.global.tukuiMode)
+	stagger:CreateBackdrop("Default",nil, nil, self.thinBorders)
 	stagger:SetOrientation("VERTICAL")
 	stagger.PostUpdate = UF.PostUpdateStagger
 	return stagger

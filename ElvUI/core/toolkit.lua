@@ -103,7 +103,7 @@ local function SetInside(obj, anchor, xOffset, yOffset)
 end
 
 local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode)
-	GetTemplate(t, forcePixelMode)
+	GetTemplate(t, f.forcePixelMode or forcePixelMode)
 	if(E.global.tukuiMode) then
 		glossTex = nil
 	end
@@ -123,7 +123,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode)
 		f.forcePixelMode = forcePixelMode
 	end
 	
-	if (E.private.general.pixelPerfect and not E.global.tukuiMode) or forcePixelMode then
+	if (E.private.general.pixelPerfect and not E.global.tukuiMode) or f.forcePixelMode then
 		f:SetBackdrop({
 		  bgFile = E["media"].blankTex,
 		  edgeFile = E["media"].blankTex,
@@ -151,7 +151,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode)
 			f.backdropTexture = nil
 		end
 
-		if not f.oborder and not f.iborder and (not E.private.general.pixelPerfect or E.global.tukuiMode) and not forcePixelMode then
+		if not f.oborder and not f.iborder and (not E.private.general.pixelPerfect or E.global.tukuiMode) and not f.forcePixelMode then
 			local border = CreateFrame("Frame", nil, f)
 			border:SetInside(f, E.mult, E.mult)
 			border:SetBackdrop({
@@ -198,9 +198,9 @@ end
 
 local function CreateBackdrop(f, t, tex, ignoreUpdates, forcePixelMode)
 	if not t then t = "Default" end
-
+	
 	local b = CreateFrame("Frame", nil, f)
-	if(forcePixelMode) then
+	if(f.forcePixelMode or forcePixelMode) then
 		b:SetOutside(nil, E.mult, E.mult)
 	else
 		b:SetOutside()

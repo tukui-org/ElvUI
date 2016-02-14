@@ -250,7 +250,7 @@ function UF:Construct_UF(frame, unit)
 	frame:SetScript('OnEnter', UnitFrame_OnEnter)
 	frame:SetScript('OnLeave', UnitFrame_OnLeave)
 
-	if(E.global.tukuiMode) then
+	if(self.thinBorders) then
 		frame.SPACING = 0
 		frame.BORDER = E.mult
 	else
@@ -1170,7 +1170,7 @@ end
 
 function UF:Initialize()
 	self.db = E.db["unitframe"]
-
+	self.thinBorders = E.global.tukuiMode or self.db.thinBorders
 	if E.private["unitframe"].enable ~= true then return; end
 	E.UnitFrames = UF;
 
@@ -1415,10 +1415,10 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 		end
 	else
 		if statusBar.backdrop then
-			statusBar.backdrop:SetTemplate("Default", nil, nil, not statusBar.PostCastStart and E.global.tukuiMode)
+			statusBar.backdrop:SetTemplate("Default", nil, nil, not statusBar.PostCastStart and self.thinBorders)
 			statusBar.backdrop.ignoreUpdates = nil
 		elseif statusBar:GetParent().template then
-			statusBar:GetParent():SetTemplate("Default", nil, nil, E.global.tukuiMode)
+			statusBar:GetParent():SetTemplate("Default", nil, nil, self.thinBorders)
 			statusBar:GetParent().ignoreUpdates = nil
 		end
 		statusBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))

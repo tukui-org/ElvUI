@@ -1933,6 +1933,14 @@ E.Options.args.unitframe = {
 					guiInline = true,
 					name = L["General"],
 					args = {
+						thinBorders = {
+							order = 1,
+							name = L["Thin Borders"],
+							desc = L["Use thin borders on certain unitframe elements."],
+							type = 'toggle',
+							disabled = function() return E.PixelMode end,	
+							set = function(info, value) E.db.unitframe[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
+						},
 						OORAlpha = {
 							order = 2,
 							name = L["OOR Alpha"],

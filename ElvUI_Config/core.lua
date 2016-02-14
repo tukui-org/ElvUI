@@ -83,8 +83,8 @@ E.Options.args.general = {
 			args = {
 				pixelPerfect = {
 					order = 1,
-					name = L["Pixel Perfect"],
-					desc = L["The Pixel Perfect option will change the overall apperance of your UI. Using Pixel Perfect is a slight performance increase over the traditional layout."],
+					name = L["Thin Border Theme"],
+					desc = L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."],
 					type = 'toggle',
 					get = function(info) return E.private.general.pixelPerfect end,
 					set = function(info, value) E.private.general.pixelPerfect = value; E:StaticPopup_Show("PRIVATE_RL") end

@@ -41,7 +41,7 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 
 	power.colorDisconnected = false
 	power.colorTapping = false
-	power:CreateBackdrop('Default', nil, nil, E.global.tukuiMode)
+	power:CreateBackdrop('Default', nil, nil, self.thinBorders)
 
 	return power
 end
