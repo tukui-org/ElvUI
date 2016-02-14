@@ -227,7 +227,9 @@ function UF:HeaderConfig(header, configMode)
 
 		RegisterStateDriver(header, "visibility", header.db.visibility)
 
-		header:GetScript("OnEvent")(header, "PLAYER_ENTERING_WORLD")
+		if header:GetScript("OnEvent") then
+			header:GetScript("OnEvent")(header, "PLAYER_ENTERING_WORLD")
+		end
 	end
 
 	for i=1, #header.groups do
