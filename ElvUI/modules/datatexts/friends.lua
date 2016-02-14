@@ -165,7 +165,7 @@ local function BuildBNTable(total)
 			hasFocus, _, _, realmName, realmID, faction, race, class, guild, zoneName, level, gameText = BNGetGameAccountInfo(bnetIDGameAccount or bnetIDAccount);
 		else
 			--Live, remove when 6.2.4 goes live
-			hasFocus, _, _, realmName, realmID, faction, race, class, guild, zoneName, level, gameText = BNGetToonInfo(toonID or presenceID);
+			hasFocus, _, _, realmName, realmID, faction, race, class, guild, zoneName, level, gameText = BNGetToonInfo(bnetIDGameAccount or bnetIDAccount);
 		end
 		if isOnline then
 			characterName = BNet_GetValidatedCharacterName(characterName, battleTag, client) or "";
