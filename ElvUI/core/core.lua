@@ -231,6 +231,11 @@ function E:UpdateMedia()
 	elseif E.PixelMode then
 		border = {r = 0, g = 0, b = 0}
 	end
+	
+	if(self.global.tukuiMode) then
+		border = {r=0.6, g = 0.6, b = 0.6}
+	end
+	
 	self["media"].bordercolor = {border.r, border.g, border.b}
 
 	--Backdrop Color
@@ -248,6 +253,11 @@ function E:UpdateMedia()
 		self.db['general'].valuecolor.g = value.g
 		self.db['general'].valuecolor.b = value.b
 	end
+	
+	if(self.global.tukuiMode) then
+		value = {r = 1, g = 1, b = 1}
+	end
+	
 	self["media"].hexvaluecolor = self:RGBToHex(value.r, value.g, value.b)
 	self["media"].rgbvaluecolor = {value.r, value.g, value.b}
 

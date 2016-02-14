@@ -324,7 +324,7 @@ function E:SetupResolution(noDataReset)
 			E.db.unitframe.units.arena.castbar.width = 200;
 		end
 
-		local isPixel = E.private.general.pixelPerfect
+		local isPixel = E.private.general.pixelPerfect and not E.global.tukuiMode
 		local xOffset = isPixel and 103 or 106;
 		local yOffset = isPixel and 125 or 135;
 		local yOffsetSmall = isPixel and 76 or 80;
@@ -451,7 +451,7 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.party.healPrediction = true;
 			E.db.unitframe.units.raid.healPrediction = true;
 			E.db.unitframe.units.raid40.healPrediction = true
-
+			E.db.unitframe.units.player.castbar.insideInfoPanel = false
 			E.db.actionbar.bar2.enabled = true
 			if not E.db.lowresolutionset then
 				E.db.actionbar.bar3.buttons = 12
@@ -564,6 +564,7 @@ function E:SetupLayout(layout, noDataReset)
 		if not E.db.movers then E.db.movers = {}; end
 		E.db.unitframe.units.player.castbar.width = E.PixelMode and 406 or 436
 		E.db.unitframe.units.player.castbar.height = 28
+		E.db.unitframe.units.player.castbar.insideInfoPanel = false
 		local yOffset = 80
 		if not E.db.lowresolutionset then
 			if layout ~= 'healer' then
@@ -602,7 +603,7 @@ function E:SetupLayout(layout, noDataReset)
 
 			E.db.movers["BossButton"] = "TOP,ElvUIParent,TOP,0,-138"
 		end
-
+		
 		if E.PixelMode then
 			E.db.movers.ElvUF_PlayerCastbarMover = "BOTTOM,ElvUIParent,BOTTOM,0,"..yOffset
 		else

@@ -75,7 +75,7 @@ function AddOn:OnInitialize()
 		end
 	end
 
-	if self.private.general.pixelPerfect then
+	if self.private.general.pixelPerfect and not self.global.tukuiMode then
 		self.Border = self.mult;
 		self.Spacing = 0;
 		self.PixelMode = true;

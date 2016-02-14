@@ -49,7 +49,12 @@ function UF:Configure_ClassBar(frame)
 	bars.backdrop.backdropTexture:SetVertexColor(c.r, c.g, c.b)
 	if(not E.PixelMode) then
 		c = E.db.general.bordercolor
-		bars.backdrop:SetBackdropBorderColor(c.r, c.g, c.b)
+		if(E.global.tukuiMode) then
+			bars.backdrop:SetBackdropBorderColor(0.6, 0.6, 0.6)
+		else
+			bars.backdrop:SetBackdropBorderColor(c.r, c.g, c.b)
+		end
+		
 	end
 
 	if frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then

@@ -285,6 +285,17 @@ E.PopupDialogs["HARLEM_SHAKE"] = {
 	whileDead = 1,
 }
 
+E.PopupDialogs["TUKUI_MODE"] = {
+	text = L["ElvUI needs to perform database optimizations please be patient."],
+	button1 = OKAY,
+	OnAccept = function()
+		E.global.tukuiMode = true
+		ReloadUI()
+	end,
+	timeout = 0,
+	whileDead = 1,
+}
+
 E.PopupDialogs["HELLO_KITTY"] = {
 	text = L["ElvUI needs to perform database optimizations please be patient."],
 	button1 = OKAY,

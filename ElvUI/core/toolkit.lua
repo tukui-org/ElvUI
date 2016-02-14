@@ -102,7 +102,9 @@ end
 
 local function SetTemplate(f, t, glossTex, ignoreUpdates)
 	GetTemplate(t)
-
+	if(E.global.tukuiMode) then
+		glossTex = nil
+	end
 	if(t) then
 	   f.template = t
 	end
@@ -115,7 +117,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates)
 	   f.ignoreUpdates = ignoreUpdates
 	end
 
-	if E.private.general.pixelPerfect then
+	if E.private.general.pixelPerfect and not E.global.tukuiMode then
 		f:SetBackdrop({
 		  bgFile = E["media"].blankTex,
 		  edgeFile = E["media"].blankTex,
@@ -143,7 +145,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates)
 			f.backdropTexture = nil
 		end
 
-		if not f.oborder and not f.iborder and not E.private.general.pixelPerfect then
+		if not f.oborder and not f.iborder and (not E.private.general.pixelPerfect or E.global.tukuiMode) then
 			local border = CreateFrame("Frame", nil, f)
 			border:SetInside(f, E.mult, E.mult)
 			border:SetBackdrop({
