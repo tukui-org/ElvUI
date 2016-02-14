@@ -560,7 +560,7 @@ P['unitframe'] = {
 				['yOffset'] = 0,
 			},
 			['portrait'] = {
-				['enable'] = true,
+				['enable'] = false,
 				['width'] = 45,
 				['overlay'] = true,
 				['camDistanceScale'] = 2,
@@ -713,7 +713,7 @@ P['unitframe'] = {
 				['attachTextTo'] = 'InfoPanel',
 			},
 			['portrait'] = {
-				['enable'] = true,
+				['enable'] = false,
 				['width'] = 45,
 				['overlay'] = true,
 				['rotation'] = 0,
@@ -853,7 +853,7 @@ P['unitframe'] = {
 				['attachTextTo'] = 'InfoPanel',
 			},
 			['portrait'] = {
-				['enable'] = true,
+				['enable'] = false,
 				['width'] = 45,
 				['overlay'] = true,
 				['camDistanceScale'] = 2,
@@ -1045,7 +1045,7 @@ P['unitframe'] = {
 				['attachTextTo'] = 'InfoPanel',
 			},
 			['portrait'] = {
-				['enable'] = true,
+				['enable'] = false,
 				['width'] = 45,
 				['overlay'] = true,
 				['camDistanceScale'] = 2,
@@ -1453,7 +1453,7 @@ P['unitframe'] = {
 				['attachTextTo'] = 'InfoPanel',
 			},
 			['portrait'] = {
-				['enable'] = true,
+				['enable'] = false,
 				['width'] = 35,
 				['overlay'] = true,
 				['rotation'] = 0,
@@ -1577,7 +1577,7 @@ P['unitframe'] = {
 				['attachTextTo'] = 'InfoPanel',
 			},
 			['portrait'] = {
-				['enable'] = true,
+				['enable'] = false,
 				['width'] = 45,
 				['overlay'] = true,
 				['camDistanceScale'] = 2,
@@ -1701,7 +1701,7 @@ P['unitframe'] = {
 				['xOffset'] = 0,
 			},
 			['portrait'] = {
-				['enable'] = true,
+				['enable'] = false,
 				['width'] = 45,
 				['overlay'] = true,
 				['camDistanceScale'] = 2,
@@ -1888,7 +1888,7 @@ P['unitframe'] = {
 				['xOffset'] = 0,
 			},
 			['portrait'] = {
-				['enable'] = true,
+				['enable'] = false,
 				['width'] = 45,
 				['overlay'] = true,
 				['camDistanceScale'] = 2,

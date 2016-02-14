@@ -16,7 +16,7 @@ function UF:Construct_AuraBars()
 	local bar = self.statusBar
 
 	self:SetTemplate('Default', nil, nil, UF.thinBorders)
-	local inset = UF.thinBorders and 0 or nil
+	local inset = UF.thinBorders and E.mult or nil
 	bar:SetInside(self, inset, inset)
 	UF['statusbars'][bar] = true
 	UF:Update_StatusBar(bar)
@@ -58,8 +58,8 @@ end
 function UF:Construct_AuraBarHeader(frame)
 	local auraBar = CreateFrame('Frame', nil, frame)
 	auraBar.PostCreateBar = UF.Construct_AuraBars
-	auraBar.gap = (-E.Border + E.Spacing*3)
-	auraBar.spacing = (-E.Border + E.Spacing*3)
+	auraBar.gap = (-frame.BORDER + frame.SPACING*3)
+	auraBar.spacing = (-frame.BORDER + frame.SPACING*3)
 	auraBar.spark = true
 	auraBar.filter = UF.AuraBarFilter
 	auraBar.PostUpdate = UF.ColorizeAuraBars
