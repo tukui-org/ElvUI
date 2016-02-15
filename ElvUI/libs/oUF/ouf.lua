@@ -92,7 +92,7 @@ for k, v in pairs{
 	UpdateElement = function(self, name)
 		local unit = self.unit
 		if(not unit or not UnitExists(unit)) then return end	
-
+		
 		local element = elements[name]
 		if(not element or not self:IsElementEnabled(name) or not activeElements[self]) then return end
 		if(element.update) then
@@ -292,7 +292,6 @@ end
 
 local walkObject = function(object, unit)
 	local parent = object:GetParent()
-	if not parent then print(object:GetName(), unit) end
 	local style = parent.style or style
 	local styleFunc = styles[style]
 
