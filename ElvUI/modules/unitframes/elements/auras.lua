@@ -104,45 +104,57 @@ end
 
 local function SortAurasByTime(a, b)
 	if (a and b and a:GetParent().db) then
-		local sortDirection = a:GetParent().db.sortDirection
-		local aTime = a.expiration or -1
-		local bTime = b.expiration or -1
-		if (aTime and bTime) then
-			if(sortDirection == "DESCENDING") then
-				return aTime < bTime
-			else
-				return aTime > bTime
+		if a:IsShown() and b:IsShown() then
+			local sortDirection = a:GetParent().db.sortDirection
+			local aTime = a.expiration or -1
+			local bTime = b.expiration or -1
+			if (aTime and bTime) then
+				if(sortDirection == "DESCENDING") then
+					return aTime < bTime
+				else
+					return aTime > bTime
+				end
 			end
+		elseif a:IsShown() then
+			return true
 		end
 	end
 end
 
 local function SortAurasByName(a, b)
 	if (a and b and a:GetParent().db) then
-		local sortDirection = a:GetParent().db.sortDirection
-		local aName = a.spell or ""
-		local bName = b.spell or ""
-		if (aName and bName) then
-			if(sortDirection == "DESCENDING") then
-				return aName < bName
-			else
-				return aName > bName
+		if a:IsShown() and b:IsShown() then
+			local sortDirection = a:GetParent().db.sortDirection
+			local aName = a.spell or ""
+			local bName = b.spell or ""
+			if (aName and bName) then
+				if(sortDirection == "DESCENDING") then
+					return aName < bName
+				else
+					return aName > bName
+				end
 			end
+		elseif a:IsShown() then
+			return true
 		end
 	end
 end
 
 local function SortAurasByDuration(a, b)
 	if (a and b and a:GetParent().db) then
-		local sortDirection = a:GetParent().db.sortDirection
-		local aTime = a.duration or -1
-		local bTime = b.duration or -1
-		if (aTime and bTime) then
-			if(sortDirection == "DESCENDING") then
-				return aTime < bTime
-			else
-				return aTime > bTime
+		if a:IsShown() and b:IsShown() then
+			local sortDirection = a:GetParent().db.sortDirection
+			local aTime = a.duration or -1
+			local bTime = b.duration or -1
+			if (aTime and bTime) then
+				if(sortDirection == "DESCENDING") then
+					return aTime < bTime
+				else
+					return aTime > bTime
+				end
 			end
+		elseif a:IsShown() then
+			return true
 		end
 	end
 end
