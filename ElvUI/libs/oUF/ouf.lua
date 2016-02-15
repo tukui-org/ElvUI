@@ -89,12 +89,23 @@ local frame_metatable = {
 Private.frame_metatable = frame_metatable
 
 for k, v in pairs{
+	UpdateElement = function(self, name)
+		local unit = self.unit
+		if(not unit or not UnitExists(unit)) then return end	
+
+		local element = elements[name]
+		if(not element or not self:IsElementEnabled(name) or not activeElements[self]) then return end
+		if(element.update) then
+			element.update(self, 'OnShow', unit)
+		end
+	end,
+
 	EnableElement = function(self, name, unit)
 		argcheck(name, 2, 'string')
 		argcheck(unit, 3, 'string', 'nil')
 
 		local element = elements[name]
-		if(not element or self:IsElementEnabled(name)) then return end
+		if(not element or self:IsElementEnabled(name) or not activeElements[self]) then return end
 
 		if(element.enable(self, unit or self.unit)) then
 			activeElements[self][name] = true
@@ -541,14 +552,14 @@ do
 	end
 end
 
-function oUF:Spawn(unit, overrideName)
+function oUF:Spawn(unit, overrideName, overrideTemplate)
 	argcheck(unit, 2, 'string')
 	if(not style) then return error("Unable to create frame. No styles have been registered.") end
 
 	unit = unit:lower()
 
 	local name = overrideName or generateName(unit)
-	local object = CreateFrame("Button", name, oUF_PetBattleFrameHider, "SecureUnitButtonTemplate")
+	local object = CreateFrame("Button", name, oUF_PetBattleFrameHider, overrideTemplate or "SecureUnitButtonTemplate")
 	Private.UpdateUnits(object, unit)
 
 	self:DisableBlizzard(unit)
