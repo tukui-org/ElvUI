@@ -48,10 +48,11 @@ function oUF:DisableBlizzard(unit)
 		HandleFrame(PlayerFrame)
 
 		-- For the damn vehicle support:
-		PlayerFrame:RegisterUnitEvent('UNIT_ENTERING_VEHICLE', "player")
-		PlayerFrame:RegisterUnitEvent('UNIT_ENTERED_VEHICLE', "player")
-		PlayerFrame:RegisterUnitEvent('UNIT_EXITING_VEHICLE', "player")
-		PlayerFrame:RegisterUnitEvent('UNIT_EXITED_VEHICLE', "player")
+		PlayerFrame:RegisterEvent('PLAYER_ENTERING_WORLD')
+		PlayerFrame:RegisterEvent('UNIT_ENTERING_VEHICLE')
+		PlayerFrame:RegisterEvent('UNIT_ENTERED_VEHICLE')
+		PlayerFrame:RegisterEvent('UNIT_EXITING_VEHICLE')
+		PlayerFrame:RegisterEvent('UNIT_EXITED_VEHICLE')
 
 		-- User placed frames don't animate
 		PlayerFrame:SetUserPlaced(true)
