@@ -49,26 +49,12 @@ local updateActiveUnit = function(self, event, unit)
 	if(modUnit == "pet" and realUnit ~= "pet") then
 		modUnit = "vehicle"
 	end
-	
-	local shouldPrint = false
-	if self:GetName() == "ElvUF_Player" then shouldPrint = true end
-	
-	if shouldPrint then
-		print("not UnitExists(modUnit):", not UnitExists(modUnit))
-		print("unit and unit ~= realUnit and unit ~= modUnit:", (unit and unit ~= realUnit and unit ~= modUnit))
-	end
 
 	-- Drop out if the event unit doesn't match any of the frame units.
-	if(not UnitExists(modUnit) or unit and unit ~= realUnit and unit ~= modUnit) then
-		if shouldPrint then
-			print("it did not update")
-		end
-		return
-	end
+	if(not UnitExists(modUnit) or unit and unit ~= realUnit and unit ~= modUnit) then return end
 
 	-- Change the active unit and run a full update.
 	if Private.UpdateUnits(self, modUnit, realUnit) then
-		if shouldPrint then print(self:GetName(), "UpdateAllElements") end
 		self:UpdateAllElements('RefreshUnit')
 
 		return true
