@@ -1,14 +1,72 @@
+--[[ Element: Auras
+
+ Handles creation and updating of aura icons.
+
+ Widget
+
+ Auras   - A Frame to hold icons representing both buffs and debuffs.
+ Buffs   - A Frame to hold icons representing buffs.
+ Debuffs - A Frame to hold icons representing debuffs.
+
+ Options
+
+ .disableCooldown    - Disables the cooldown spiral. Defaults to false.
+ .size               - Aura icon size. Defaults to 16.
+ .onlyShowPlayer     - Only show auras created by player/vehicle.
+ .showStealableBuffs - Display the stealable texture on buffs that can be
+                       stolen.
+ .spacing            - Spacing between each icon. Defaults to 0.
+ .['spacing-x']      - Horizontal spacing between each icon. Takes priority over
+                       `spacing`.
+ .['spacing-y']      - Vertical spacing between each icon. Takes priority over
+                       `spacing`.
+ .['growth-x']       - Horizontal growth direction. Defaults to RIGHT.
+ .['growth-y']       - Vertical growth direction. Defaults to UP.
+ .initialAnchor      - Anchor point for the icons. Defaults to BOTTOMLEFT.
+ .filter             - Custom filter list for auras to display. Defaults to
+                       HELPFUL on buffs and HARMFUL on debuffs.
+
+ Options Auras
+
+ .numBuffs     - The maximum number of buffs to display. Defaults to 32.
+ .numDebuffs   - The maximum number of debuffs to display. Defaults to 40.
+ .gap          - Controls the creation of an invisible icon between buffs and
+                 debuffs. Defaults to false.
+ .buffFilter   - Custom filter list for buffs to display. Takes priority over
+                 `filter`.
+ .debuffFilter - Custom filter list for debuffs to display. Takes priority over
+                 `filter`.
+
+ Options Buffs
+
+ .num - Number of buffs to display. Defaults to 32.
+
+ Options Debuffs
+
+ .num - Number of debuffs to display. Defaults to 40.
+
+ Examples
+
+   -- Position and size
+   local Buffs = CreateFrame("Frame", nil, self)
+   Buffs:SetPoint("RIGHT", self, "LEFT")
+   Buffs:SetSize(16 * 2, 16 * 16)
+   
+   -- Register with oUF
+   self.Buffs = Buffs
+
+ Hooks and Callbacks
+
+]]
+
 local parent, ns = ...
 local oUF = ns.oUF
 
 local VISIBLE = 1
 local HIDDEN = 0
 
-local floor = math.floor
-local tinsert = table.insert
-
 local UpdateTooltip = function(self)
-	GameTooltip:SetUnitAura(self.parent.__owner.unit, self:GetID(), self.filter)
+	GameTooltip:SetUnitAura(self:GetParent().__owner.unit, self:GetID(), self.filter)
 end
 
 local OnEnter = function(self)
@@ -23,12 +81,8 @@ local OnLeave = function()
 end
 
 local createAuraIcon = function(icons, index)
-	local button = CreateFrame("Button", icons:GetName().."Button"..index, icons)
-	button:EnableMouse(true)
+	local button = CreateFrame("Button", nil, icons)
 	button:RegisterForClicks'RightButtonUp'
-
-	button:Width(icons.size or 16)
-	button:Height(icons.size or 16)
 
 	local cd = CreateFrame("Cooldown", nil, button, "CooldownFrameTemplate")
 	cd:SetAllPoints(button)
@@ -57,53 +111,88 @@ local createAuraIcon = function(icons, index)
 	button:SetScript("OnEnter", OnEnter)
 	button:SetScript("OnLeave", OnLeave)
 
-	tinsert(icons, button)
 
-	button.parent = icons
 	button.icon = icon
 	button.count = count
 	button.cd = cd
 
+	--[[ :PostCreateIcon(button)
+
+	 Callback which is called after a new aura icon button has been created.
+
+	 Arguments
+
+	 button - The newly created aura icon button.
+	 ]]
 	if(icons.PostCreateIcon) then icons:PostCreateIcon(button) end
 
 	return button
 end
 
 local customFilter = function(icons, unit, icon, name, rank, texture, count, dtype, duration, timeLeft, caster)
-	local isPlayer
-
-	if(caster == 'player' or caster == 'vehicle') then
-		isPlayer = true
-	end
-
-	if((icons.onlyShowPlayer and isPlayer) or (not icons.onlyShowPlayer and name)) then
-		icon.isPlayer = isPlayer
-		icon.owner = caster
+	if((icons.onlyShowPlayer and icon.isPlayer) or (not icons.onlyShowPlayer and name)) then
 		return true
 	end
 end
 
 local updateIcon = function(unit, icons, index, offset, filter, isDebuff, visible)
-	if not unit then return; end
 	local name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff = UnitAura(unit, index, filter)
-	
-	if icons.forceShow then
-		spellID = 47540
-		name, rank, texture = GetSpellInfo(spellID)
-		count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, canApplyAura, isBossDebuff = 5, 'Magic', 0, 60, 'player', nil, nil, nil, nil
-	end
-	
 	if(name) then
 		local n = visible + offset + 1
 		local icon = icons[n]
 		if(not icon) then
+			--[[ :CreateIcon(index)
+
+			 A function which creates the aura icon for a given index.
+
+			 Arguments
+
+			 index - The offset the icon should be created at.
+
+			 Returns
+
+			 A button used to represent aura icons.
+			]]
+			local prev = icons.createdIcons
 			icon = (icons.CreateIcon or createAuraIcon) (icons, n)
+
+			-- XXX: Update the counters if the layout doesn't.
+			if(prev == icons.createdIcons) then
+				table.insert(icons, icon)
+				icons.createdIcons = icons.createdIcons + 1
+			end
 		end
-		
-		local show = true
-		if not icons.forceShow then
-			show = (icons.CustomFilter or customFilter) (icons, unit, icon, name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff)
+
+		local isPlayer
+		if(caster == 'player' or caster == 'vehicle') then
+			isPlayer = true
 		end
+
+		icon.owner = caster
+		icon.filter = filter
+		icon.isDebuff = isDebuff
+		icon.isPlayer = isPlayer
+
+
+		--[[ :CustomFilter(unit, icon, ...)
+
+		 Defines a custom filter which controls if the aura icon should be shown
+		 or not.
+
+		 Arguments
+
+		 self - The widget that holds the aura icon.
+		 unit - The unit that has the aura.
+		 icon - The button displaying the aura.
+		 ...  - The return values from
+		 [UnitAura](http://wowprogramming.com/docs/api/UnitAura).
+
+		 Returns
+
+		 A boolean value telling the aura element if it should be show the icon
+		 or not.
+		]]
+		local show = (icons.CustomFilter or customFilter) (icons, unit, icon, name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff)
 		if(show) then
 			-- We might want to consider delaying the creation of an actual cooldown
 			-- object to this point, but I think that will just make things needlessly
@@ -127,27 +216,37 @@ local updateIcon = function(unit, icons, index, offset, filter, isDebuff, visibl
 				icon.overlay:Hide()
 			end
 
-			-- XXX: Avoid popping errors on layouts without icon.stealable.
-			if(icon.stealable) then
-				local stealable = not isDebuff and isStealable
-				if(stealable and icons.showStealableBuffs and not UnitIsUnit('player', unit)) then
-					icon.stealable:Show()
-				else
-					icon.stealable:Hide()
-				end
+			local stealable = not isDebuff and isStealable
+			if(stealable and icons.showStealableBuffs and not UnitIsUnit('player', unit)) then
+				icon.stealable:Show()
+			else
+				icon.stealable:Hide()
 			end
 
 			icon.icon:SetTexture(texture)
 			icon.count:SetText((count > 1 and count))
 
-			icon.filter = filter
-			icon.isDebuff = isDebuff
+			local size = icons.size or 16
+			icon:SetSize(size, size)
 
+			icon:EnableMouse(true)
 			icon:SetID(index)
 			icon:Show()
 
+			--[[ :PostUpdateIcon(unit, icon, index, offest)
+
+			 Callback which is called after the aura icon was updated.
+
+			 Arguments
+
+			 self   - The widget that holds the aura icon.
+			 unit   - The unit that has the aura.
+			 icon   - The button that was updated.
+			 index  - The index of the aura.
+			 offset - The offset the button was created at.
+			 ]]
 			if(icons.PostUpdateIcon) then
-				icons:PostUpdateIcon(unit, icon, index, offset)
+				icons:PostUpdateIcon(unit, icon, index, n)
 			end
 
 			return VISIBLE
@@ -157,42 +256,35 @@ local updateIcon = function(unit, icons, index, offset, filter, isDebuff, visibl
 	end
 end
 
-local SetPosition = function(icons, x)
-	if(icons and x > 0) then
-		local col = 0
-		local row = 0
-		local gap = icons.gap
-		local sizex = (icons.size or 16) + (icons['spacing-x'] or icons.spacing or 0)
-		local sizey = (icons.size or 16) + (icons['spacing-y'] or icons.spacing or 0)
-		local anchor = icons.initialAnchor or "BOTTOMLEFT"
-		local growthx = (icons["growth-x"] == "LEFT" and -1) or 1
-		local growthy = (icons["growth-y"] == "DOWN" and -1) or 1
-		local cols = floor(icons:GetWidth() / sizex + .5)
-		local rows = floor(icons:GetHeight() / sizey + .5)
+--[[ :SetPosition(from, to)
 
-		for i = 1, #icons do
-			local button = icons[i]
-			if(button and button:IsShown()) then
-				if(gap and button.debuff) then
-					if(col > 0) then
-						col = col + 1
-					end
+ Function used to (re-)anchor aura icons. This function is only called when
+ new aura icons have been created or if :PreSetPosition is defined.
 
-					gap = false
-				end
+ Arguments
 
-				if(col >= cols) then
-					col = 0
-					row = row + 1
-				end
-				button:ClearAllPoints()
-				button:SetPoint(anchor, icons, anchor, col * sizex * growthx, row * sizey * growthy)
+ self - The widget that holds the aura icons.
+ from - The aura icon before the new aura icon.
+ to   - The current number of created icons.
+]]
+local SetPosition = function(icons, from, to)
+	local sizex = (icons.size or 16) + (icons['spacing-x'] or icons.spacing or 0)
+	local sizey = (icons.size or 16) + (icons['spacing-y'] or icons.spacing or 0)
+	local anchor = icons.initialAnchor or "BOTTOMLEFT"
+	local growthx = (icons["growth-x"] == "LEFT" and -1) or 1
+	local growthy = (icons["growth-y"] == "DOWN" and -1) or 1
+	local cols = math.floor(icons:GetWidth() / sizex + .5)
 
-				col = col + 1
-			elseif(not button) then
-				break
-			end
-		end
+	for i = from, to do
+		local button = icons[i]
+
+		-- Bail out if the to range is out of scope.
+		if(not button) then break end
+		local col = (i - 1) % cols
+		local row = math.floor((i - 1) / cols)
+
+		button:ClearAllPoints()
+		button:SetPoint(anchor, icons, anchor, col * sizex * growthx, row * sizey * growthy)
 	end
 end
 
@@ -200,12 +292,15 @@ local filterIcons = function(unit, icons, filter, limit, isDebuff, offset, dontH
 	if(not offset) then offset = 0 end
 	local index = 1
 	local visible = 0
+	local hidden = 0
 	while(visible < limit) do
 		local result = updateIcon(unit, icons, index, offset, filter, isDebuff, visible)
 		if(not result) then
 			break
 		elseif(result == VISIBLE) then
 			visible = visible + 1
+		elseif(result == HIDDEN) then
+			hidden = hidden + 1
 		end
 
 		index = index + 1
@@ -217,11 +312,11 @@ local filterIcons = function(unit, icons, filter, limit, isDebuff, offset, dontH
 		end
 	end
 
-	return visible
+	return visible, hidden
 end
 
-local Update = function(self, event, unit)
-	if(self.unit ~= unit) or not unit then return end
+local UpdateAuras = function(self, event, unit)
+	if(self.unit ~= unit) then return end
 
 	local auras = self.Auras
 	if(auras) then
@@ -231,14 +326,70 @@ local Update = function(self, event, unit)
 		local numDebuffs = auras.numDebuffs or 40
 		local max = numBuffs + numDebuffs
 
-		local visibleBuffs = filterIcons(unit, auras, auras.buffFilter or auras.filter or 'HELPFUL', numBuffs, nil, 0, true)
-		auras.visibleBuffs = visibleBuffs
+		local visibleBuffs, hiddenBuffs = filterIcons(unit, auras, auras.buffFilter or auras.filter or 'HELPFUL', numBuffs, nil, 0, true)
 
-		auras.visibleDebuffs = filterIcons(unit, auras, auras.debuffFilter or auras.filter or 'HARMFUL', numDebuffs, true, visibleBuffs)
+		local hasGap
+		if(visibleBuffs ~= 0 and auras.gap) then
+			hasGap = true
+			visibleBuffs = visibleBuffs + 1
+
+			local icon = auras[visibleBuffs]
+			if(not icon) then
+				local prev = auras.createdIcons
+				icon = (auras.CreateIcon or createAuraIcon) (auras, visibleBuffs)
+				-- XXX: Update the counters if the layout doesn't.
+				if(prev == auras.createdIcons) then
+					table.insert(auras, icon)
+					auras.createdIcons = auras.createdIcons + 1
+				end
+			end
+
+			-- Prevent the icon from displaying anything.
+			if(icon.cd) then icon.cd:Hide() end
+			icon:EnableMouse(false)
+			icon.icon:SetTexture()
+			icon.overlay:Hide()
+			icon.stealable:Hide()
+			icon.count:SetText()
+			icon:Show()
+
+			--[[ :PostUpdateGapIcon(unit, icon, visibleBuffs)
+
+			 Callback which is called after an invisible aura icon has been
+			 created. This is only used by Auras when the `gap` option is enabled.
+
+			 Arguments
+
+			 self         - The widget that holds the aura icon.
+			 unit         - The unit that has the aura icon.
+			 icon         - The invisible aura icon / gap.
+			 visibleBuffs - The number of currently visible buffs.
+			]]
+			if(auras.PostUpdateGapIcon) then
+				auras:PostUpdateGapIcon(unit, icon, visibleBuffs)
+			end
+		end
+
+		local visibleDebuffs, hiddenDebuffs = filterIcons(unit, auras, auras.debuffFilter or auras.filter or 'HARMFUL', numDebuffs, true, visibleBuffs)
+		auras.visibleDebuffs = visibleDebuffs
+
+		if(hasGap and visibleDebuffs == 0) then
+			auras[visibleBuffs]:Hide()
+			visibleBuffs = visibleBuffs - 1
+		end
+
+		auras.visibleBuffs = visibleBuffs
 		auras.visibleAuras = auras.visibleBuffs + auras.visibleDebuffs
 
-		if(auras.PreSetPosition) then auras:PreSetPosition(max) end
-		(auras.SetPosition or SetPosition) (auras, max)
+		local fromRange, toRange
+		if(auras.PreSetPosition) then
+			fromRange, toRange = auras:PreSetPosition(max)
+		end
+
+		if(fromRange or auras.createdIcons > auras.anchoredIcons) then
+			(auras.SetPosition or SetPosition) (auras, fromRange or auras.anchoredIcons + 1, toRange or auras.createdIcons)
+			auras.anchoredIcons = auras.createdIcons
+		end
 
 		if(auras.PostUpdate) then auras:PostUpdate(unit) end
 	end
@@ -248,10 +399,18 @@ local Update = function(self, event, unit)
 		if(buffs.PreUpdate) then buffs:PreUpdate(unit) end
 
 		local numBuffs = buffs.num or 32
-		buffs.visibleBuffs = filterIcons(unit, buffs, buffs.filter or 'HELPFUL', numBuffs)
+		local visibleBuffs, hiddenBuffs = filterIcons(unit, buffs, buffs.filter or 'HELPFUL', numBuffs)
+		buffs.visibleBuffs = visibleBuffs
 
-		if(buffs.PreSetPosition) then buffs:PreSetPosition(numBuffs) end
-		(buffs.SetPosition or SetPosition) (buffs, numBuffs)
+		local fromRange, toRange
+		if(buffs.PreSetPosition) then
+			fromRange, toRange = buffs:PreSetPosition(numBuffs)
+		end
+
+		if(fromRange or buffs.createdIcons > buffs.anchoredIcons) then
+			(buffs.SetPosition or SetPosition) (buffs, fromRange or buffs.anchoredIcons + 1, toRange or buffs.createdIcons)
+			buffs.anchoredIcons = buffs.createdIcons
+		end
 
 		if(buffs.PostUpdate) then buffs:PostUpdate(unit) end
 	end
@@ -261,12 +420,45 @@ local Update = function(self, event, unit)
 		if(debuffs.PreUpdate) then debuffs:PreUpdate(unit) end
 
 		local numDebuffs = debuffs.num or 40
-		debuffs.visibleDebuffs = filterIcons(unit, debuffs, debuffs.filter or 'HARMFUL', numDebuffs, true)
+		local visibleDebuffs, hiddenDebuffs = filterIcons(unit, debuffs, debuffs.filter or 'HARMFUL', numDebuffs, true)
+		debuffs.visibleDebuffs = visibleDebuffs
 
-		if(debuffs.PreSetPosition) then debuffs:PreSetPosition(numDebuffs) end
-		(debuffs.SetPosition or SetPosition) (debuffs, numDebuffs)
+		local fromRange, toRange
+		if(debuffs.PreSetPosition) then
+			fromRange, toRange = debuffs:PreSetPosition(numDebuffs)
+		end
+
+		if(fromRange or debuffs.createdIcons > debuffs.anchoredIcons) then
+			(debuffs.SetPosition or SetPosition) (debuffs, fromRange or debuffs.anchoredIcons + 1, toRange or debuffs.createdIcons)
+			debuffs.anchoredIcons = debuffs.createdIcons
+		end
 
 		if(debuffs.PostUpdate) then debuffs:PostUpdate(unit) end
+	end
+end
+
+local Update = function(self, event, unit)
+	if(self.unit ~= unit) then return end
+
+	UpdateAuras(self, event, unit)
+
+	-- Assume no event means someone wants to re-anchor things. This is usually
+	-- done by UpdateAllElements and :ForceUpdate.
+	if(event == 'ForceUpdate' or not event) then
+		local buffs = self.Buffs
+		if(buffs) then
+			(buffs.SetPosition or SetPosition) (buffs, 1, buffs.createdIcons)
+		end
+
+		local debuffs = self.Debuffs
+		if(debuffs) then
+			(debuffs.SetPosition or SetPosition) (debuffs, 1, debuffs.createdIcons)
+		end
+
+		local auras = self.Auras
+		if(auras) then
+			(auras.SetPosition or SetPosition) (auras, 1, auras.createdIcons)
+		end
 	end
 end
 
@@ -276,24 +468,33 @@ end
 
 local Enable = function(self)
 	if(self.Buffs or self.Debuffs or self.Auras) then
-		self:RegisterEvent("UNIT_AURA", Update)
+		self:RegisterEvent("UNIT_AURA", UpdateAuras)
 
 		local buffs = self.Buffs
 		if(buffs) then
 			buffs.__owner = self
 			buffs.ForceUpdate = ForceUpdate
+
+			buffs.createdIcons = 0
+			buffs.anchoredIcons = 0
 		end
 
 		local debuffs = self.Debuffs
 		if(debuffs) then
 			debuffs.__owner = self
 			debuffs.ForceUpdate = ForceUpdate
+
+			debuffs.createdIcons = 0
+			debuffs.anchoredIcons = 0
 		end
 
 		local auras = self.Auras
 		if(auras) then
 			auras.__owner = self
 			auras.ForceUpdate = ForceUpdate
+
+			auras.createdIcons = 0
+			auras.anchoredIcons = 0
 		end
 
 		return true
@@ -302,7 +503,7 @@ end
 
 local Disable = function(self)
 	if(self.Buffs or self.Debuffs or self.Auras) then
-		self:UnregisterEvent("UNIT_AURA", Update)
+		self:UnregisterEvent("UNIT_AURA", UpdateAuras)
 	end
 end
 
