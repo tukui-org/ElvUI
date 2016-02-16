@@ -101,6 +101,7 @@ function UF:Configure_Power(frame)
 					E:CreateMover(power.Holder, 'TargetPowerBarMover', L["Target Powerbar"], nil, nil, nil, 'ALL,SOLO')
 				end
 			else
+				power.Holder:Size(frame.POWERBAR_WIDTH, frame.POWERBAR_HEIGHT)
 				power:ClearAllPoints()
 				power:Point("BOTTOMLEFT", power.Holder, "BOTTOMLEFT", frame.BORDER+frame.SPACING, frame.BORDER+frame.SPACING)
 				power.Holder.mover:SetScale(1)
