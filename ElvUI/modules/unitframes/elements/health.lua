@@ -94,7 +94,7 @@ function UF:Configure_HealthBar(frame)
 			health:Point("TOPRIGHT", frame, "TOPRIGHT", -(frame.BORDER+frame.SPACING+frame.POWERBAR_OFFSET) - frame.STAGGER_WIDTH, -frame.BORDER -frame.SPACING - frame.CLASSBAR_YOFFSET)
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.PORTRAIT_WIDTH + frame.BORDER +frame.SPACING, frame.BORDER+frame.SPACING+frame.POWERBAR_OFFSET)
 		elseif frame.USE_MINI_POWERBAR then
-			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.PORTRAIT_WIDTH + frame.BORDER +frame.SPACING, frame.BORDER +frame.SPACING + (frame.POWERBAR_HEIGHT/2))
+			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.PORTRAIT_WIDTH + frame.BORDER +frame.SPACING, frame.SPACING + (frame.POWERBAR_HEIGHT/2))
 		else
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.PORTRAIT_WIDTH + frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING + frame.BOTTOM_OFFSET)
 		end
