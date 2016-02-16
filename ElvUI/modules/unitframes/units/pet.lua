@@ -70,7 +70,7 @@ function UF:Update_PetFrame(frame, db)
 		
 		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and db.infoPanel.enable
 		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0		
-		frame.BOTTOM_OFFSET = not frame.POWERBAR_DETACHED and not frame.USE_INSET_POWERBAR and (frame.POWERBAR_HEIGHT + frame.INFO_PANEL_HEIGHT) or frame.INFO_PANEL_HEIGHT			
+		frame.BOTTOM_OFFSET = not frame.POWERBAR_DETACHED and not frame.USE_INSET_POWERBAR and (frame.POWERBAR_HEIGHT + frame.INFO_PANEL_HEIGHT - ((frame.BORDER-frame.SPACING)*2)) or (frame.INFO_PANEL_HEIGHT - (frame.BORDER-frame.SPACING))			
 	end
 
 	frame.colors = ElvUF.colors
