@@ -124,15 +124,17 @@ function UF:Configure_Castbar(frame)
 	end
 	
 	castbar:ClearAllPoints()
-	castbar.Icon.bg:ClearAllPoints()
 	if db.castbar.insideInfoPanel and frame.USE_INFO_PANEL then
 		castbar:SetInside(frame.InfoPanel, 0, 0)
 		
-		castbar.Icon.bg:Size(db.castbar.iconSize)
-		if(frame.ORIENTATION == "LEFT") then
-			castbar.Icon.bg:Point("RIGHT", frame, "LEFT", -10, 0)
-		else
-			castbar.Icon.bg:Point("LEFT", frame, "RIGHT", 10, 0)
+		if db.castbar.icon then
+			castbar.Icon.bg:ClearAllPoints()
+			castbar.Icon.bg:Size(db.castbar.iconSize)
+			if(frame.ORIENTATION == "LEFT") then
+				castbar.Icon.bg:Point("RIGHT", frame, "LEFT", -10, 0)
+			else
+				castbar.Icon.bg:Point("LEFT", frame, "RIGHT", 10, 0)
+			end
 		end
 	else
 		local isMoved = E:HasMoverBeenMoved(frame:GetName()..'CastbarMover') or not castbar.Holder.mover
