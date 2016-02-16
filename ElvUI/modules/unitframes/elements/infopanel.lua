@@ -13,14 +13,14 @@ function UF:Configure_InfoPanel(frame)
 		frame.InfoPanel:Show()
 		
 		if frame.ORIENTATION == "RIGHT" and not (frame.unitframeType == "arena") then
-			frame.InfoPanel:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -frame.SPACING, frame.BORDER)
+			frame.InfoPanel:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -frame.SPACING, frame.SPACING)
 			if(frame.USE_POWERBAR and not frame.USE_INSET_POWERBAR) then
 				frame.InfoPanel:SetPoint("TOPLEFT", frame.Power.backdrop, "BOTTOMLEFT", 0, -frame.SPACING)
 			else
 				frame.InfoPanel:SetPoint("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", 0, -frame.SPACING)
 			end
 		else
-			frame.InfoPanel:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.SPACING, frame.BORDER)
+			frame.InfoPanel:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.SPACING, frame.SPACING)
 			if(frame.USE_POWERBAR and not frame.USE_INSET_POWERBAR) then
 				frame.InfoPanel:SetPoint("TOPRIGHT", frame.Power.backdrop, "BOTTOMRIGHT", 0, -frame.SPACING)
 			else
