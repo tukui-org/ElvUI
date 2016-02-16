@@ -86,7 +86,7 @@ function UF:Configure_ClassBar(frame)
 			bars.Holder.mover:SetAlpha(0)
 		end
 	else
-		CLASSBAR_WIDTH = db.classbar.detachedWidth - ((frame.BORDER)*2)
+		CLASSBAR_WIDTH = db.classbar.detachedWidth - ((frame.BORDER + frame.SPACING)*2)
 		if bars.Holder then bars.Holder:Size(db.classbar.detachedWidth, db.classbar.height) end
 
 		if not bars.Holder or (bars.Holder and not bars.Holder.mover) then
@@ -96,11 +96,11 @@ function UF:Configure_ClassBar(frame)
 			bars:Width(CLASSBAR_WIDTH)
 			bars:Height(frame.CLASSBAR_HEIGHT - (frame.BORDER*2))
 			bars:ClearAllPoints()
-			bars:Point("BOTTOMLEFT", bars.Holder, "BOTTOMLEFT", frame.BORDER, frame.BORDER)
+			bars:Point("BOTTOMLEFT", bars.Holder, "BOTTOMLEFT", frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING)
 			E:CreateMover(bars.Holder, 'ClassBarMover', L["Classbar"], nil, nil, nil, 'ALL,SOLO')
 		else
 			bars:ClearAllPoints()
-			bars:Point("BOTTOMLEFT", bars.Holder, "BOTTOMLEFT", frame.BORDER, frame.BORDER)
+			bars:Point("BOTTOMLEFT", bars.Holder, "BOTTOMLEFT", frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING)
 			bars.Holder.mover:SetScale(1)
 			bars.Holder.mover:SetAlpha(1)
 		end
