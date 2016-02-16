@@ -116,9 +116,11 @@ function UF:PortraitUpdate(unit)
 		local camDistanceScale = portrait.camDistanceScale or 1
 		local xOffset, yOffset = (portrait.xOffset or 0), (portrait.yOffset or 0)
 
+		--[[Looks like this is no longer needed
 		if model and model.find and model:find("worgenmale") then
 			self:SetCamera(1)
 		end
+		--]]
 
 		if self:GetFacing() ~= (rotation / 60) then
 			self:SetFacing(rotation / 60)
