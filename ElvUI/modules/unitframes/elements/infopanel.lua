@@ -13,6 +13,7 @@ function UF:Configure_InfoPanel(frame)
 
 	if(frame.USE_INFO_PANEL) then
 		frame.InfoPanel:Show()
+		frame.InfoPanel:ClearAllPoints()
 		
 		if frame.ORIENTATION == "RIGHT" and not (frame.unitframeType == "arena") then
 			frame.InfoPanel:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -frame.BORDER - frame.SPACING, frame.BORDER + frame.SPACING)
