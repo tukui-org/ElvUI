@@ -50,38 +50,42 @@ function UF:Configure_ComboPoints(frame)
 	if frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then
 		CPoints:Point("CENTER", frame.Health.backdrop, "TOP", -(frame.BORDER*3 + 6), -frame.SPACING)
 		CPoints:SetFrameStrata("MEDIUM")
-		if CPoints.mover then
-			CPoints.mover:SetScale(0.000001)
-			CPoints.mover:SetAlpha(0)
+		if CPoints.Holder and CPoints.Holder.mover then
+			CPoints.Holder.mover:SetScale(0.000001)
+			CPoints.Holder.mover:SetAlpha(0)
 		end
 	elseif not frame.CLASSBAR_DETACHED then
 		CPoints:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", frame.BORDER, (frame.SPACING*3))
 		CPoints:SetFrameStrata("LOW")
-		if CPoints.mover then
-			CPoints.mover:SetScale(0.000001)
-			CPoints.mover:SetAlpha(0)
+		if CPoints.Holder and CPoints.Holder.mover then
+			CPoints.Holder.mover:SetScale(0.000001)
+			CPoints.Holder.mover:SetAlpha(0)
 		end
 	else
 		CLASSBAR_WIDTH = db.combobar.detachedWidth - (frame.BORDER*2)
 
-		if not CPoints.mover then
+		if not CPoints.Holder or (CPoints.Holder and not CPoints.Holder.mover) then
+			CPoints.Holder = CreateFrame("Frame", nil, CPoints)
+			CPoints.Holder:Point("BOTTOM", E.UIParent, "BOTTOM", 0, 150)
+			CPoints.Holder:Size(db.combobar.detachedWidth, db.combobar.height)
 			CPoints:Width(CLASSBAR_WIDTH)
-			CPoints:Height(frame.CLASSBAR_HEIGHT - (frame.BORDER + frame.SPACING*2))
+			CPoints:Height(frame.CLASSBAR_HEIGHT - ((frame.BORDER + frame.SPACING)*2))
 			CPoints:ClearAllPoints()
-			CPoints:Point("BOTTOM", E.UIParent, "BOTTOM", 0, 150)
-			E:CreateMover(CPoints, 'ComboBarMover', L["Combobar"], nil, nil, nil, 'ALL,SOLO')
+			CPoints:Point("BOTTOMLEFT", CPoints.Holder, "BOTTOMLEFT", frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING)
+			E:CreateMover(CPoints.Holder, 'ComboBarMover', L["Combobar"], nil, nil, nil, 'ALL,SOLO')
 		else
+			CPoints.Holder:Size(db.combobar.detachedWidth, db.combobar.height)
 			CPoints:ClearAllPoints()
-			CPoints:Point("BOTTOMLEFT", CPoints.mover, "BOTTOMLEFT")
-			CPoints.mover:SetScale(1)
-			CPoints.mover:SetAlpha(1)
+			CPoints:Point("BOTTOMLEFT", CPoints.Holder.mover, "BOTTOMLEFT", frame.BORDER+frame.SPACING, frame.BORDER+frame.SPACING)
+			CPoints.Holder.mover:SetScale(1)
+			CPoints.Holder.mover:SetAlpha(1)
 		end
 
 		CPoints:SetFrameStrata("LOW")
 	end
 
 	CPoints:Width(CLASSBAR_WIDTH)
-	CPoints:Height(frame.CLASSBAR_HEIGHT - (frame.BORDER + frame.SPACING*2))
+	CPoints:Height(frame.CLASSBAR_HEIGHT - ((frame.BORDER + frame.SPACING)*2))
 
 	for i = 1, frame.MAX_CLASS_BAR do
 		CPoints[i]:SetStatusBarColor(unpack(ElvUF.colors.ComboPoints[i]))
