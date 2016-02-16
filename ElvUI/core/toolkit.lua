@@ -189,7 +189,11 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode)
 			f.backdropTexture:SetTexture(E["media"].blankTex)
 		end
 
-		f.backdropTexture:SetInside(f)
+		if(f.forcePixelMode or forcePixelMode) then
+			f.backdropTexture:SetInside(f, E.mult, E.mult)
+		else
+			f.backdropTexture:SetInside(f)
+		end
 	end
 
 	f:SetBackdropBorderColor(borderr, borderg, borderb)
