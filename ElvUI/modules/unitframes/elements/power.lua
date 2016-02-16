@@ -86,14 +86,14 @@ function UF:Configure_Power(frame)
 		--Position
 		power:ClearAllPoints()
 		if frame.POWERBAR_DETACHED then
-			power:Width(frame.POWERBAR_WIDTH)
-			power:Height(frame.POWERBAR_HEIGHT)
+			power:Width(frame.POWERBAR_WIDTH - ((frame.BORDER + frame.SPACING)*2))
+			power:Height(frame.POWERBAR_HEIGHT - ((frame.BORDER + frame.SPACING)*2))
 			if not power.Holder or (power.Holder and not power.Holder.mover) then
 				power.Holder = CreateFrame("Frame", nil, power)
-				power.Holder:Size(frame.POWERBAR_WIDTH + (frame.BORDER*2), frame.POWERBAR_HEIGHT + (frame.BORDER*2))
+				power.Holder:Size(frame.POWERBAR_WIDTH, frame.POWERBAR_HEIGHT)
 				power.Holder:Point("BOTTOM", frame, "BOTTOM", 0, -20)
 				power:ClearAllPoints()
-				power:Point("BOTTOMLEFT", power.Holder, "BOTTOMLEFT", frame.BORDER, frame.BORDER)
+				power:Point("BOTTOMLEFT", power.Holder, "BOTTOMLEFT", frame.BORDER+frame.SPACING, frame.BORDER+frame.SPACING)
 				--Currently only Player and Target can detach power bars, so doing it this way is okay for now
 				if frame.unit == "player" then 
 					E:CreateMover(power.Holder, 'PlayerPowerBarMover', L["Player Powerbar"], nil, nil, nil, 'ALL,SOLO')
@@ -102,7 +102,7 @@ function UF:Configure_Power(frame)
 				end
 			else
 				power:ClearAllPoints()
-				power:Point("BOTTOMLEFT", power.Holder, "BOTTOMLEFT", frame.BORDER, frame.BORDER)
+				power:Point("BOTTOMLEFT", power.Holder, "BOTTOMLEFT", frame.BORDER+frame.SPACING, frame.BORDER+frame.SPACING)
 				power.Holder.mover:SetScale(1)
 				power.Holder.mover:SetAlpha(1)
 			end
@@ -123,13 +123,13 @@ function UF:Configure_Power(frame)
 			power:SetFrameStrata("LOW")
 			power:SetFrameLevel(frame.Health:GetFrameLevel() -2)
 		elseif frame.USE_INSET_POWERBAR then
-			power:Height(frame.POWERBAR_HEIGHT)
+			power:Height(frame.POWERBAR_HEIGHT  - ((frame.BORDER + frame.SPACING)*2))
 			power:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", frame.BORDER + (frame.BORDER*2), frame.BORDER + (frame.BORDER*2))
 			power:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", -(frame.BORDER + (frame.BORDER*2)), frame.BORDER + (frame.BORDER*2))
 			power:SetFrameStrata("MEDIUM")
 			power:SetFrameLevel(frame:GetFrameLevel() + 3)
 		elseif frame.USE_MINI_POWERBAR then
-			power:Height(frame.POWERBAR_HEIGHT)
+			power:Height(frame.POWERBAR_HEIGHT  - ((frame.BORDER + frame.SPACING)*2))
 
 			if frame.ORIENTATION == "LEFT" then
 				power:Width(frame.POWERBAR_WIDTH - frame.BORDER*2)
@@ -147,7 +147,7 @@ function UF:Configure_Power(frame)
 		else
 			power:Point("TOPRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", -frame.BORDER, -frame.BORDER - frame.SPACING)
 			power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", frame.BORDER, -frame.BORDER- frame.SPACING)
-			power:Height(frame.POWERBAR_HEIGHT)
+			power:Height(frame.POWERBAR_HEIGHT  - ((frame.BORDER + frame.SPACING)*2))
 			
 			power:SetFrameStrata(frame.Health:GetFrameStrata())
 			power:SetFrameLevel(frame.Health:GetFrameLevel())
