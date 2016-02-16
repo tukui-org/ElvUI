@@ -198,7 +198,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode)
 
 	f:SetBackdropBorderColor(borderr, borderg, borderb)
 
-	if not f.ignoreUpdates then
+	if not f.ignoreUpdates and not f.forcePixelMode then
 		E["frames"][f] = true
 	end
 end
