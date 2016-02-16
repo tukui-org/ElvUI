@@ -109,6 +109,10 @@ function UF:UpdateThreat(unit, status, r, g, b)
 			if parent.ClassBar and parent[parent.ClassBar] and parent[parent.ClassBar].backdrop then
 				parent[parent.ClassBar].backdrop:SetBackdropBorderColor(r, g, b)
 			end
+
+			if parent.InfoPanel and parent.InfoPanel.backdrop then
+				parent.InfoPanel.backdrop:SetBackdropBorderColor(r, g, b)
+			end
 		elseif db.threatStyle == 'HEALTHBORDER' then
 			parent.Health.backdrop:SetBackdropBorderColor(r, g, b)
 		elseif db.threatStyle ~= 'NONE' and self.texIcon then
@@ -129,6 +133,10 @@ function UF:UpdateThreat(unit, status, r, g, b)
 
 			if parent.ClassBar and parent[parent.ClassBar] and parent[parent.ClassBar].backdrop then
 				parent[parent.ClassBar].backdrop:SetBackdropBorderColor(r, g, b)
+			end
+
+			if parent.InfoPanel and parent.InfoPanel.backdrop then
+				parent.InfoPanel.backdrop:SetBackdropBorderColor(r, g, b)
 			end
 		elseif db.threatStyle == 'HEALTHBORDER' then
 			parent.Health.backdrop:SetBackdropBorderColor(r, g, b)
