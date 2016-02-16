@@ -126,7 +126,7 @@ function UF:Configure_Castbar(frame)
 	castbar:ClearAllPoints()
 	castbar.Icon.bg:ClearAllPoints()
 	if db.castbar.insideInfoPanel and frame.USE_INFO_PANEL then
-		castbar:SetInside(frame.InfoPanel, frame.BORDER, frame.BORDER) --use frame.BORDER since it may be different from E.Border due to forced thin borders
+		castbar:SetInside(frame.InfoPanel, 0, 0)
 		
 		castbar.Icon.bg:Size(db.castbar.iconSize)
 		if(frame.ORIENTATION == "LEFT") then
