@@ -936,10 +936,15 @@ local function GetOptionsTable_InformationPanel(updateFunc, groupName, numUnits)
 				order = 1,
 				name = L["Enable"],
 			},
+			transparent = {
+				type = "toggle",
+				order = 2,
+				name = L["Transparent"],
+			},
 			height = {
 				type = 'range',
+				order = 3,
 				name = L["Height"],
-				order = 2,
 				min = 4, max = 30, step = 1,
 			},
 		}

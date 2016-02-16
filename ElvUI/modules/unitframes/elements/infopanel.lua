@@ -9,9 +9,11 @@ function UF:Construct_InfoPanel(frame)
 end
 
 function UF:Configure_InfoPanel(frame)
+	local db = frame.db
+
 	if(frame.USE_INFO_PANEL) then
 		frame.InfoPanel:Show()
-
+		
 		if frame.ORIENTATION == "RIGHT" and not (frame.unitframeType == "arena") then
 			frame.InfoPanel:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -frame.BORDER - frame.SPACING, frame.BORDER + frame.SPACING)
 			if(frame.USE_POWERBAR and not frame.USE_INSET_POWERBAR and not frame.POWERBAR_DETACHED) then
@@ -28,6 +30,11 @@ function UF:Configure_InfoPanel(frame)
 			end		
 		end
 		
+		if db.infoPanel.transparent then
+			frame.InfoPanel.backdrop:SetTemplate("Transparent", nil, nil, self.thinBorders)
+		else
+			frame.InfoPanel.backdrop:SetTemplate("Default", true, nil, self.thinBorders)
+		end
 		frame.InfoPanel:SetFrameStrata(frame.Health:GetFrameStrata())
 		frame.InfoPanel:SetFrameLevel(frame.Health:GetFrameLevel())
 	else

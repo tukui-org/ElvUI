@@ -544,7 +544,8 @@ P['unitframe'] = {
 			},
 			['infoPanel'] = {
 				['enable'] = true,
-				['height'] = 20,	
+				['height'] = 20,
+				["transparent"] = false,
 			},
 			['name'] = {
 				['position'] = 'CENTER',
@@ -703,8 +704,9 @@ P['unitframe'] = {
 			},
 			['infoPanel'] = {
 				['enable'] = true,
-				['height'] = 20,	
-			},			
+				['height'] = 20,
+				["transparent"] = false,
+			},
 			['name'] = {
 				['position'] = 'CENTER',
 				['text_format'] = '[namecolor][name:medium] [difficultycolor][smartlevel] [shortclassification]',
@@ -771,7 +773,7 @@ P['unitframe'] = {
 				['format'] = 'REMAINING',
 				['spark'] = true,
 				['iconSize'] = 42,
-				['insideInfoPanel'] = true,				
+				['insideInfoPanel'] = true,
 			},
 			['combobar'] = {
 				['enable'] = true,
@@ -843,7 +845,8 @@ P['unitframe'] = {
 			},
 			['infoPanel'] = {
 				['enable'] = true,
-				['height'] = 14,	
+				['height'] = 14,
+				["transparent"] = false,
 			},
 			['name'] = {
 				['position'] = 'CENTER',
@@ -938,7 +941,8 @@ P['unitframe'] = {
 			},
 			['infoPanel'] = {
 				['enable'] = true,
-				['height'] = 12,	
+				['height'] = 12,
+				["transparent"] = false,
 			},
 			['name'] = {
 				['position'] = 'CENTER',
@@ -1035,7 +1039,8 @@ P['unitframe'] = {
 			},
 			['infoPanel'] = {
 				['enable'] = true,
-				['height'] = 14,	
+				['height'] = 14,
+				["transparent"] = false,
 			},
 			['name'] = {
 				['position'] = 'CENTER',
@@ -1103,7 +1108,7 @@ P['unitframe'] = {
 				['format'] = 'REMAINING',
 				['spark'] = true,
 				['iconSize'] = 32,
-				['insideInfoPanel'] = true,				
+				['insideInfoPanel'] = true,
 			},
 			['aurabar'] = {
 				['enable'] = false,
@@ -1167,7 +1172,8 @@ P['unitframe'] = {
 			},
 			['infoPanel'] = {
 				['enable'] = true,
-				['height'] = 12,	
+				['height'] = 12,
+				["transparent"] = false,
 			},
 			['name'] = {
 				['position'] = 'CENTER',
@@ -1262,7 +1268,8 @@ P['unitframe'] = {
 			},
 			['infoPanel'] = {
 				['enable'] = true,
-				['height'] = 12,	
+				['height'] = 12,
+				["transparent"] = false,
 			},
 			['name'] = {
 				['position'] = 'CENTER',
@@ -1334,7 +1341,7 @@ P['unitframe'] = {
 				['format'] = 'REMAINING',
 				['spark'] = true,
 				['iconSize'] = 26,
-				['insideInfoPanel'] = true,				
+				['insideInfoPanel'] = true,
 			},
 		},
 		['pettarget'] = {
@@ -1364,7 +1371,8 @@ P['unitframe'] = {
 			},
 			['infoPanel'] = {
 				['enable'] = true,
-				['height'] = 12,	
+				['height'] = 12,
+				["transparent"] = false,
 			},
 			['name'] = {
 				['position'] = 'CENTER',
@@ -1464,7 +1472,8 @@ P['unitframe'] = {
 			},
 			['infoPanel'] = {
 				['enable'] = true,
-				['height'] = 16,	
+				['height'] = 16,
+				["transparent"] = false,
 			},
 			['name'] = {
 				['position'] = 'CENTER',
@@ -1567,7 +1576,8 @@ P['unitframe'] = {
 			},
 			['infoPanel'] = {
 				['enable'] = true,
-				['height'] = 17,	
+				['height'] = 17,
+				["transparent"] = false,
 			},
 			['name'] = {
 				['position'] = 'CENTER',
@@ -1637,7 +1647,7 @@ P['unitframe'] = {
 				['format'] = 'REMAINING',
 				['spark'] = true,
 				['iconSize'] = 32,
-				['insideInfoPanel'] = true,				
+				['insideInfoPanel'] = true,
 			},
 			['pvpTrinket'] = {
 				['enable'] = true,
@@ -1691,7 +1701,8 @@ P['unitframe'] = {
 			},
 			['infoPanel'] = {
 				['enable'] = true,
-				['height'] = 15,	
+				['height'] = 15,
+				["transparent"] = false,
 			},
 			['name'] = {
 				['position'] = 'CENTER',
@@ -1878,7 +1889,8 @@ P['unitframe'] = {
 			},
 			['infoPanel'] = {
 				['enable'] = true,
-				['height'] = 12,	
+				['height'] = 12,
+				["transparent"] = false,
 			},
 			['name'] = {
 				['position'] = 'LEFT',
@@ -2036,7 +2048,8 @@ P['unitframe'] = {
 			},
 			['infoPanel'] = {
 				['enable'] = true,
-				['height'] = 12,	
+				['height'] = 12,
+				["transparent"] = false,
 			},
 			['name'] = {
 				['position'] = 'LEFT',
