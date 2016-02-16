@@ -62,7 +62,7 @@ function UF:Configure_ComboPoints(frame)
 			CPoints.Holder.mover:SetAlpha(0)
 		end
 	else
-		CLASSBAR_WIDTH = db.combobar.detachedWidth - (frame.BORDER*2)
+		CLASSBAR_WIDTH = db.combobar.detachedWidth - ((frame.BORDER+frame.SPACING)*2)
 
 		if not CPoints.Holder or (CPoints.Holder and not CPoints.Holder.mover) then
 			CPoints.Holder = CreateFrame("Frame", nil, CPoints)
