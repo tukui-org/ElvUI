@@ -106,8 +106,8 @@ function UF:UpdateThreat(unit, status, r, g, b)
 				parent.Power.backdrop:SetBackdropBorderColor(r, g, b)
 			end
 
-			if parent.ClassBar and parent.ClassBar.backdrop then
-				parent.ClassBar.backdrop:SetBackdropBorderColor(r, g, b)
+			if parent.ClassBar and parent[parent.ClassBar] and parent[parent.ClassBar].backdrop then
+				parent[parent.ClassBar].backdrop:SetBackdropBorderColor(r, g, b)
 			end
 		elseif db.threatStyle == 'HEALTHBORDER' then
 			parent.Health.backdrop:SetBackdropBorderColor(r, g, b)
@@ -127,8 +127,8 @@ function UF:UpdateThreat(unit, status, r, g, b)
 				parent.Power.backdrop:SetBackdropBorderColor(r, g, b)
 			end
 
-			if parent.ClassBar and parent.ClassBar.backdrop then
-				parent.ClassBar.backdrop:SetBackdropBorderColor(r, g, b)
+			if parent.ClassBar and parent[parent.ClassBar] and parent[parent.ClassBar].backdrop then
+				parent[parent.ClassBar].backdrop:SetBackdropBorderColor(r, g, b)
 			end
 		elseif db.threatStyle == 'HEALTHBORDER' then
 			parent.Health.backdrop:SetBackdropBorderColor(r, g, b)
