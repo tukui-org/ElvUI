@@ -122,7 +122,7 @@ function UF:Configure_Auras(frame, auraType)
 	end
 
 	local x, y = E:GetXYOffset(db[auraType].anchorPoint)
-	local attachTo = self:GetAuraAnchorFrame(frame, db[auraType].attachTo)
+	local attachTo = self:GetAuraAnchorFrame(frame, db[auraType].attachTo, db.debuffs.attachTo == 'BUFFS' and db.buffs.attachTo == 'DEBUFFS')
 
 	auras:ClearAllPoints()
 	auras:Point(E.InversePoints[db[auraType].anchorPoint], attachTo, db[auraType].anchorPoint, x + db[auraType].xOffset, y + db[auraType].yOffset)
