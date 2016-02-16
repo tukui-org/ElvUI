@@ -3,7 +3,7 @@ local UF = E:GetModule('UnitFrames');
 
 function UF:Construct_InfoPanel(frame)
 	local infoPanel = CreateFrame("Frame", nil, frame)
-	infoPanel:SetTemplate("Default", true)
+	infoPanel:SetTemplate("Default", true, nil, self.thinBorders)
 	
 	return infoPanel
 end
