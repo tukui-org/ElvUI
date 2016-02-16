@@ -230,6 +230,7 @@ function NP:OnUpdate(elapsed)
 				NP.SetUnitInfo(blizzPlate, plate)
 				NP.ColorizeAndScale(blizzPlate, plate)
 				NP.UpdateLevelAndName(blizzPlate, plate)
+				plate:SetDepth(25) --See http://git.tukui.org/Elv/elvui/issues/7#note_288
 			end
 		end
 
@@ -533,6 +534,7 @@ function NP:SetUnitInfo(myPlate)
 		if(NP.db.targetIndicator.enable) then
 			targetIndicator:Show()
 			NP:PositionTargetIndicator(myPlate)
+			targetIndicator:SetDepth(myPlate:GetDepth())
 		end
 
 		NP:UpdateComboPointsByUnitID('target')
