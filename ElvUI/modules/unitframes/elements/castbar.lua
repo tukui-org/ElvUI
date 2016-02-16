@@ -20,30 +20,30 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
-function UF:Construct_Castbar(self, direction, moverName)
-	local castbar = CreateFrame("StatusBar", nil, self)
+function UF:Construct_Castbar(frame, direction, moverName)
+	local castbar = CreateFrame("StatusBar", nil, frame)
 	castbar:SetFrameStrata("HIGH")
-	UF['statusbars'][castbar] = true
-	castbar.CustomDelayText = UF.CustomCastDelayText
-	castbar.CustomTimeText = UF.CustomTimeText
-	castbar.PostCastStart = UF.PostCastStart
-	castbar.PostChannelStart = UF.PostCastStart
-	castbar.PostCastStop = UF.PostCastStop
-	castbar.PostChannelStop = UF.PostCastStop
-	castbar.PostChannelUpdate = UF.PostChannelUpdate
-	castbar.PostCastInterruptible = UF.PostCastInterruptible
-	castbar.PostCastNotInterruptible = UF.PostCastNotInterruptible
+	self['statusbars'][castbar] = true
+	castbar.CustomDelayText = self.CustomCastDelayText
+	castbar.CustomTimeText = self.CustomTimeText
+	castbar.PostCastStart = self.PostCastStart
+	castbar.PostChannelStart = self.PostCastStart
+	castbar.PostCastStop = self.PostCastStop
+	castbar.PostChannelStop = self.PostCastStop
+	castbar.PostChannelUpdate = self.PostChannelUpdate
+	castbar.PostCastInterruptible = self.PostCastInterruptible
+	castbar.PostCastNotInterruptible = self.PostCastNotInterruptible
 	castbar:SetClampedToScreen(true)
-	castbar:CreateBackdrop('Default')
+	castbar:CreateBackdrop('Default', nil, nil, self.thinBorders)
 
 	castbar.Time = castbar:CreateFontString(nil, 'OVERLAY')
-	UF:Configure_FontString(castbar.Time)
+	self:Configure_FontString(castbar.Time)
 	castbar.Time:Point("RIGHT", castbar, "RIGHT", -4, 0)
 	castbar.Time:SetTextColor(0.84, 0.75, 0.65)
 	castbar.Time:SetJustifyH("RIGHT")
 
 	castbar.Text = castbar:CreateFontString(nil, 'OVERLAY')
-	UF:Configure_FontString(castbar.Text)
+	self:Configure_FontString(castbar.Text)
 	castbar.Text:Point("LEFT", castbar, "LEFT", 4, 0)
 	castbar.Text:SetTextColor(0.84, 0.75, 0.65)
 
@@ -61,20 +61,20 @@ function UF:Construct_Castbar(self, direction, moverName)
 
 	local button = CreateFrame("Frame", nil, castbar)
 	local holder = CreateFrame('Frame', nil, castbar)
-	button:SetTemplate("Default")
+	button:SetTemplate("Default", nil, nil, self.thinBorders)
 
 	castbar.Holder = holder
 	--these are placeholder so the mover can be created.. it will be changed.
-	castbar.Holder:Point("TOPLEFT", self, "BOTTOMLEFT", 0, -(E.Border * 3))
+	castbar.Holder:Point("TOPLEFT", frame, "BOTTOMLEFT", 0, -(E.Border * 3))
 	castbar:Point('BOTTOMLEFT', castbar.Holder, 'BOTTOMLEFT', E.Border, E.Border)
 	button:Point("RIGHT", castbar, "LEFT", -E.Spacing*3, 0)
 
 	if moverName then
-		E:CreateMover(castbar.Holder, self:GetName()..'CastbarMover', moverName, nil, -6, nil, 'ALL,SOLO')
+		E:CreateMover(castbar.Holder, frame:GetName()..'CastbarMover', moverName, nil, -6, nil, 'ALL,SOLO')
 	end
 
 	local icon = button:CreateTexture(nil, "ARTWORK")
-	icon:SetInside()
+	icon:SetInside(nil, frame.BORDER, frame.BORDER) --use frame.BORDER since it may be different from E.Border due to forced thin borders
 	icon:SetTexCoord(unpack(E.TexCoords))
 	icon.bg = button
 
@@ -126,7 +126,7 @@ function UF:Configure_Castbar(frame)
 	castbar:ClearAllPoints()
 	castbar.Icon.bg:ClearAllPoints()
 	if db.castbar.insideInfoPanel and frame.USE_INFO_PANEL then
-		castbar:SetInside(frame.InfoPanel)
+		castbar:SetInside(frame.InfoPanel, frame.BORDER, frame.BORDER) --use frame.BORDER since it may be different from E.Border due to forced thin borders
 		
 		castbar.Icon.bg:Size(db.castbar.iconSize)
 		if(frame.ORIENTATION == "LEFT") then
