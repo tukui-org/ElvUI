@@ -45,6 +45,8 @@ function UF:Construct_Castbar(self, direction, moverName)
 	UF:Configure_FontString(castbar.Text)
 	castbar.Text:Point("LEFT", castbar, "LEFT", 4, 0)
 	castbar.Text:SetTextColor(0.84, 0.75, 0.65)
+	castbar.Text:SetJustifyH("LEFT")
+	castbar.Text:SetWordWrap(false)
 
 	castbar.Spark = castbar:CreateTexture(nil, 'OVERLAY')
 	castbar.Spark:SetBlendMode('ADD')
@@ -184,30 +186,22 @@ function UF:PostCastStart(unit, name, rank, castid)
 
 	if unit == "vehicle" then unit = "player" end
 
-	--Get length of time, then calculate available length for textLen
-	--Re-calculate and omit timeLen constraint if text length would otherwise be lower than 1
-	local timeLen = utf8len(self.Time:GetText() or "")
-	local textLen = floor(((((32/245) * self:GetWidth()) / E.db['unitframe'].fontSize) * 12) - timeLen)
-	if textLen <1 then textLen = floor((((32/245) * self:GetWidth()) / E.db['unitframe'].fontSize) * 12) end
+	if db.castbar.displayTarget and self.curTarget then
+		self.Text:SetText(name..' --> '..self.curTarget)
+	else
+		self.Text:SetText(name)
+	end
 
-	if timeLen == 0 then
-		E:Delay(0.03, function() --Delay may need tweaking
-			timeLen = utf8len(self.Time:GetText() or "")
-			textLen = floor(((((32/245) * self:GetWidth()) / E.db['unitframe'].fontSize) * 12) - timeLen)
-			if textLen <1 then textLen = floor((((32/245) * self:GetWidth()) / E.db['unitframe'].fontSize) * 12) end
+	-- Get length of Time, then calculate available length for Text
+	local timeWidth = self.Time:GetStringWidth()
 
-			if db.castbar.displayTarget and self.curTarget then
-				self.Text:SetText(utf8sub(name..' --> '..self.curTarget, 0, textLen))
-			else
-				self.Text:SetText(utf8sub(name, 0, textLen))
-			end
+	if timeWidth == 0 then
+		E:Delay(0.05, function() -- Delay may need tweaking
+			local textWidth = self:GetWidth() - self.Time:GetStringWidth() - 5
+			if textWidth > 0 then self.Text:SetWidth(textWidth) end
 		end)
 	else
-		if db.castbar.displayTarget and self.curTarget then
-			self.Text:SetText(utf8sub(name..' --> '..self.curTarget, 0, textLen))
-		else
-			self.Text:SetText(utf8sub(name, 0, textLen))
-		end
+		self.Text:SetWidth(self:GetWidth() - timeWidth - 5)
 	end
 
 	self.Spark:Height(self:GetHeight() * 2)
