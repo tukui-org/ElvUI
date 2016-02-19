@@ -93,7 +93,7 @@ function UF:Configure_ComboPoints(frame)
 		if frame.USE_MINI_CLASSBAR then
 			CPoints[i]:SetWidth((CLASSBAR_WIDTH - ((5 + (frame.BORDER*2 + frame.SPACING*2))*(frame.MAX_CLASS_BAR - 1)))/frame.MAX_CLASS_BAR) --Width accounts for 5px spacing between each button, excluding borders
 		elseif i ~= MAX_COMBO_POINTS then
-			CPoints[i]:SetWidth((CLASSBAR_WIDTH - ((frame.MAX_CLASS_BAR-1)*(frame.BORDER-frame.SPACING))+(frame.BORDER-frame.SPACING)) / frame.MAX_CLASS_BAR)
+			CPoints[i]:Width((CLASSBAR_WIDTH - ((frame.MAX_CLASS_BAR-1)*(frame.BORDER-frame.SPACING))) / frame.MAX_CLASS_BAR) --classbar width minus total width of dividers between each button, divided by number of buttons
 		end
 
 
