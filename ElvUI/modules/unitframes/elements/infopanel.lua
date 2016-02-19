@@ -4,7 +4,7 @@ local UF = E:GetModule('UnitFrames');
 function UF:Construct_InfoPanel(frame)
 	local infoPanel = CreateFrame("Frame", nil, frame)
 	infoPanel:CreateBackdrop("Default", true, nil, self.thinBorders)
-	
+
 	return infoPanel
 end
 
@@ -14,7 +14,7 @@ function UF:Configure_InfoPanel(frame)
 	if(frame.USE_INFO_PANEL) then
 		frame.InfoPanel:Show()
 		frame.InfoPanel:ClearAllPoints()
-		
+
 		if frame.ORIENTATION == "RIGHT" and not (frame.unitframeType == "arena") then
 			frame.InfoPanel:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -frame.BORDER - frame.SPACING, frame.BORDER + frame.SPACING)
 			if(frame.USE_POWERBAR and not frame.USE_INSET_POWERBAR and not frame.POWERBAR_DETACHED) then
@@ -28,16 +28,23 @@ function UF:Configure_InfoPanel(frame)
 				frame.InfoPanel:SetPoint("TOPRIGHT", frame.Power.backdrop, "BOTTOMRIGHT", -frame.BORDER, -(frame.SPACING*3))
 			else
 				frame.InfoPanel:SetPoint("TOPRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", -frame.BORDER, -(frame.SPACING*3))
-			end		
+			end
 		end
-		
+
 		if db.infoPanel.transparent then
 			frame.InfoPanel.backdrop:SetTemplate("Transparent", nil, nil, self.thinBorders)
 		else
 			frame.InfoPanel.backdrop:SetTemplate("Default", true, nil, self.thinBorders)
 		end
-		frame.InfoPanel:SetFrameStrata(frame.Health:GetFrameStrata())
-		frame.InfoPanel:SetFrameLevel(frame.Health:GetFrameLevel())
+
+		if frame.USE_POWERBAR and not frame.USE_INSET_POWERBAR and not frame.POWERBAR_DETACHED then
+			--Make it spawn just above power so InfoPanel threat border isn't cut off
+			frame.InfoPanel:SetFrameStrata(frame.Power:GetFrameStrata())
+			frame.InfoPanel:SetFrameLevel(frame.Power:GetFrameLevel() + 1)
+		else
+			frame.InfoPanel:SetFrameStrata(frame.Health:GetFrameStrata())
+			frame.InfoPanel:SetFrameLevel(frame.Health:GetFrameLevel())
+		end
 	else
 		frame.InfoPanel:Hide()
 	end
