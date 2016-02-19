@@ -78,11 +78,7 @@ local function UpdateFillBar(frame, previousTexture, bar, amount)
 		return previousTexture;
 	end
 
-	-- print(frame:GetName(), previousTexture:GetName(), bar, amount)
-	print(previousTexture:GetSize(), previousTexture:GetPoint())
-
 	local orientation = frame.Health:GetOrientation()
-	print("orientation:", orientation)
 	bar:ClearAllPoints()
 	if orientation == 'HORIZONTAL' then
 		bar:Point("TOPLEFT", previousTexture, "TOPRIGHT");
@@ -107,6 +103,6 @@ function UF:UpdateHealComm(unit, myIncomingHeal, allIncomingHeal, totalAbsorb)
 	local previousTexture = frame.Health:GetStatusBarTexture();
 
 	previousTexture = UpdateFillBar(frame, previousTexture, self.myBar, myIncomingHeal);
-	-- previousTexture = UpdateFillBar(frame, previousTexture, self.otherBar, allIncomingHeal);
-	-- previousTexture = UpdateFillBar(frame, previousTexture, self.absorbBar, totalAbsorb);
+	previousTexture = UpdateFillBar(frame, previousTexture, self.otherBar, allIncomingHeal);
+	previousTexture = UpdateFillBar(frame, previousTexture, self.absorbBar, totalAbsorb);
 end
