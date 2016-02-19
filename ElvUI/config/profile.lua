@@ -706,6 +706,7 @@ P['unitframe'] = {
 				['enable'] = false,
 				['height'] = 20,
 				["transparent"] = false,
+			},
 			['name'] = {
 				['position'] = 'CENTER',
 				['text_format'] = '[namecolor][name:medium] [difficultycolor][smartlevel] [shortclassification]',
