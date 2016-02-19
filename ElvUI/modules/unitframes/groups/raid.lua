@@ -155,7 +155,7 @@ function UF:Update_RaidFrames(frame, db)
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
 
 		frame.UNIT_WIDTH = db.width
-		frame.UNIT_HEIGHT = db.height
+		frame.UNIT_HEIGHT = not E.global.tukuiMode and db.height or db.height + db.infoPanel.height
 
 		frame.USE_POWERBAR = db.power.enable
 		frame.POWERBAR_DETACHED = db.power.detachFromFrame
@@ -174,7 +174,7 @@ function UF:Update_RaidFrames(frame, db)
 		frame.STAGGER_WIDTH = 0
 		frame.CLASSBAR_WIDTH = 0
 		frame.CLASSBAR_YOFFSET = 0
-		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and db.infoPanel.enable
+		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and (db.infoPanel.enable or E.global.tukuiMode)
 		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0		
 		frame.BOTTOM_OFFSET = not frame.POWERBAR_DETACHED and not frame.USE_INSET_POWERBAR and (frame.POWERBAR_HEIGHT + frame.INFO_PANEL_HEIGHT - ((frame.BORDER-frame.SPACING)*2)) or (frame.INFO_PANEL_HEIGHT - (frame.BORDER-frame.SPACING))
 			

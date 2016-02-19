@@ -124,7 +124,7 @@ function UF:Configure_Castbar(frame)
 	end
 	
 	castbar:ClearAllPoints()
-	if db.castbar.insideInfoPanel and frame.USE_INFO_PANEL then
+	if (db.castbar.insideInfoPanel and frame.USE_INFO_PANEL) or E.global.tukuiMode then
 		castbar:SetInside(frame.InfoPanel, 0, 0)
 		
 		if db.castbar.icon then

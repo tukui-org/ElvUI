@@ -26,6 +26,9 @@ function UF:UpdateNameSettings(frame, childType)
 	if not db.power or not db.power.hideonnpc then
 		local x, y = self:GetPositionOffset(db.name.position)
 		local attachPoint = self:GetTextAnchorPoint(frame, db.name.attachTextTo)
+		if(E.global.tukuiMode and frame.InfoPanel and frame.InfoPanel:IsShown()) then
+			attachPoint = frame.InfoPanel
+		end		
 		name:ClearAllPoints()
 		name:Point(db.name.position, attachPoint, db.name.position, x + db.name.xOffset, y + db.name.yOffset)
 	end

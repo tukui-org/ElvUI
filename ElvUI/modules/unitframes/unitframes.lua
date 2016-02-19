@@ -550,6 +550,7 @@ function UF.groupPrototype:Configure_Groups(self)
 	local direction = db.growthDirection
 	local xMult, yMult = DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction], DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction]
 	local SPACING = E.Spacing
+	local UNIT_HEIGHT = (E.global.tukuiMode and db.infoPanel) and db.height + db.infoPanel.height or db.height
 
 
 	local numGroups = self.numGroups
@@ -617,8 +618,7 @@ function UF.groupPrototype:Configure_Groups(self)
 				if group then
 					group:Point(point, self, point, 0, height * yMult)
 				end
-				height = height + (db.height + db.verticalSpacing + SPACING)
-
+				height = height + (UNIT_HEIGHT + db.verticalSpacing + SPACING)
 				newRows = newRows + 1
 			else
 				if group then
@@ -637,23 +637,23 @@ function UF.groupPrototype:Configure_Groups(self)
 					width = width + ((db.width + db.horizontalSpacing + SPACING) * 5)
 					newCols = newCols + 1
 				elseif group then
-					group:Point(point, self, point, (((db.width + db.horizontalSpacing + SPACING) * 5) * ((i-1) % db.groupsPerRowCol)) * xMult, ((db.height + db.verticalSpacing + SPACING) * (newRows - 1)) * yMult)
+					group:Point(point, self, point, (((db.width + db.horizontalSpacing + SPACING) * 5) * ((i-1) % db.groupsPerRowCol)) * xMult, ((UNIT_HEIGHT + db.verticalSpacing + SPACING) * (newRows - 1)) * yMult)
 				end
 			else
 				if newCols == 1 then
 					if group then
 						group:Point(point, self, point, 0, (height + (SPACING*5)) * yMult)
 					end
-					height = height + ((db.height + db.verticalSpacing + SPACING) * 5)
+					height = height + ((UNIT_HEIGHT + db.verticalSpacing + SPACING) * 5)
 					newRows = newRows + 1
 				elseif group then
-					group:Point(point, self, point, ((db.width + db.horizontalSpacing + SPACING) * (newCols - 1)) * xMult, (((db.height + db.verticalSpacing + SPACING) * 5) * ((i-1) % db.groupsPerRowCol)) * yMult)
+					group:Point(point, self, point, ((db.width + db.horizontalSpacing + SPACING) * (newCols - 1)) * xMult, (((UNIT_HEIGHT + db.verticalSpacing + SPACING) * 5) * ((i-1) % db.groupsPerRowCol)) * yMult)
 				end
 			end
 		end
 
 		if height == 0 then
-			height = height + ((db.height + db.verticalSpacing) * 5)
+			height = height + ((UNIT_HEIGHT + db.verticalSpacing) * 5)
 		elseif width == 0 then
 			width = width + ((db.width + db.horizontalSpacing) * 5)
 		end

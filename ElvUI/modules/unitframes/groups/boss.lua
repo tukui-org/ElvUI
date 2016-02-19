@@ -56,7 +56,7 @@ function UF:Update_BossFrames(frame, db)
 	do
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
 		frame.UNIT_WIDTH = db.width
-		frame.UNIT_HEIGHT = db.height
+		frame.UNIT_HEIGHT = not E.global.tukuiMode and db.height or db.height + db.infoPanel.height
 
 		frame.USE_POWERBAR = db.power.enable
 		frame.POWERBAR_DETACHED = db.power.detachFromFrame
@@ -82,7 +82,7 @@ function UF:Update_BossFrames(frame, db)
 		frame.CLASSBAR_WIDTH = frame.UNIT_WIDTH - ((frame.BORDER+frame.SPACING)*2) - frame.PORTRAIT_WIDTH  - frame.POWERBAR_OFFSET
 		frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN) and 0 or (frame.CLASSBAR_HEIGHT + frame.SPACING)
 		
-		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and db.infoPanel.enable
+		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and (db.infoPanel.enable or E.global.tukuiMode)
 		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0		
 		frame.BOTTOM_OFFSET = not frame.POWERBAR_DETACHED and not frame.USE_INSET_POWERBAR and (frame.POWERBAR_HEIGHT + frame.INFO_PANEL_HEIGHT - ((frame.BORDER-frame.SPACING)*2)) or (frame.INFO_PANEL_HEIGHT - (frame.BORDER-frame.SPACING))	
 	end

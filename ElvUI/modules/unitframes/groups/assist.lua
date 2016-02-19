@@ -92,7 +92,7 @@ function UF:Update_AssistFrames(frame, db)
 
 		frame.UNIT_WIDTH = db.width
 		frame.UNIT_HEIGHT = db.height
-
+		
 		frame.USE_POWERBAR = false
 		frame.POWERBAR_DETACHED = false
 		frame.USE_INSET_POWERBAR = false
