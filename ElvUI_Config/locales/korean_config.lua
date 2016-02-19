@@ -887,6 +887,7 @@ L["If the unit is an enemy to you."] = "만약 유닛이 적군이라면"
 L["If the unit is friendly to you."] = "만약 유닛이 아군이라면"
 L["If you have a lot of 3D Portraits active then it will likely have a big impact on your FPS. Disable some portraits if you experience FPS issues."] = true;
 L["Ignore mouse events."] = "아이콘이 마우스에 전혀 반응하지 않도록 합니다. 클릭 입력도 아이콘을 통과하게 됩니다."
+L["InfoPanel Border"] = true;
 L["Inset"] = "내부에 분리"
 L["Interruptable"] = "차단이 가능한 기술"
 L["Invert Grouping Order"] = "역순정렬"

@@ -839,6 +839,7 @@ L["If the unit is an enemy to you."] = "如果是你的敵對目標"
 L["If the unit is friendly to you."] = "如果是你的友好目標"
 L["If you have a lot of 3D Portraits active then it will likely have a big impact on your FPS. Disable some portraits if you experience FPS issues."] = true;
 L["Ignore mouse events."] = "忽略滑鼠事件.";
+L["InfoPanel Border"] = true;
 L["Inset"] = "插入"
 L["Interruptable"] = "可斷法的施法顏色"
 L["Invert Grouping Order"] = "反轉隊伍排序"

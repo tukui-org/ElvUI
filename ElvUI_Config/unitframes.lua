@@ -31,6 +31,7 @@ local threatValues = {
 	['GLOW'] = L["Glow"],
 	['BORDERS'] = L["Borders"],
 	['HEALTHBORDER'] = L["Health Border"],
+	["INFOPANELBORDER"] = L["InfoPanel Border"],
 	['ICONTOPLEFT'] = L["Icon: TOPLEFT"],
 	['ICONTOPRIGHT'] = L["Icon: TOPRIGHT"],
 	['ICONBOTTOMLEFT'] = L["Icon: BOTTOMLEFT"],

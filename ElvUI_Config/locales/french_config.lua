@@ -839,6 +839,7 @@ L["If the unit is an enemy to you."] ="Si l'unité est votre ennemi."
 L["If the unit is friendly to you."] = "Si l'unité vous est amicale."
 L["If you have a lot of 3D Portraits active then it will likely have a big impact on your FPS. Disable some portraits if you experience FPS issues."] = true;
 L["Ignore mouse events."] = "Ignorer les évènements de la souris."
+L["InfoPanel Border"] = true;
 L["Inset"] = "Insérer"
 L["Interruptable"] = "Interruptible"
 L["Invert Grouping Order"] = "Inverser l'ordre des groupes"
