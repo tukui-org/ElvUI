@@ -55,7 +55,7 @@ function UF:Configure_HealComm(frame)
 			healPrediction.absorbBar:SetParent(frame.Portrait.overlay)
 		end
 
-		local orientation = frame.db.health.orientation
+		local orientation = frame.db.health and frame.db.health.orientation
 		if orientation then
 			healPrediction.myBar:SetOrientation(orientation)
 			healPrediction.otherBar:SetOrientation(orientation)
