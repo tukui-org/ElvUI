@@ -54,6 +54,14 @@ function UF:Configure_HealComm(frame)
 			healPrediction.otherBar:SetParent(frame.Portrait.overlay)
 			healPrediction.absorbBar:SetParent(frame.Portrait.overlay)
 		end
+
+		local orientation = frame.db.health.orientation
+		if orientation then
+			healPrediction.myBar:SetOrientation(orientation)
+			healPrediction.otherBar:SetOrientation(orientation)
+			healPrediction.absorbBar:SetOrientation(orientation)
+		end
+
 		healPrediction.myBar:SetStatusBarColor(c.personal.r, c.personal.g, c.personal.b, c.personal.a)
 		healPrediction.otherBar:SetStatusBarColor(c.others.r, c.others.g, c.others.b, c.others.a)
 		healPrediction.absorbBar:SetStatusBarColor(c.absorbs.r, c.absorbs.g, c.absorbs.b, c.absorbs.a)
