@@ -143,7 +143,7 @@ function UF:UpdateThreat(unit, status, r, g, b)
 		elseif db.threatStyle == 'HEALTHBORDER' then
 			parent.Health.backdrop:SetBackdropBorderColor(r, g, b)
 		elseif db.threatStyle == 'INFOPANELBORDER' then
-			parent.Health.backdrop:SetBackdropBorderColor(r, g, b)
+			parent.InfoPanel.backdrop:SetBackdropBorderColor(r, g, b)
 		elseif db.threatStyle ~= 'NONE' and self.texIcon then
 			self.texIcon:Hide()
 		end
