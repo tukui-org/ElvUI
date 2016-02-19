@@ -68,7 +68,7 @@ function UF:Configure_HealthBar(frame)
 			else
 				attachPoint = frame.InfoPanel
 			end
-		end				
+		end
 		health.value:ClearAllPoints()
 		health.value:Point(db.health.position, attachPoint, db.health.position, x + db.health.xOffset, y + db.health.yOffset)
 		frame:Tag(health.value, db.health.text_format)
@@ -89,17 +89,17 @@ function UF:Configure_HealthBar(frame)
 		health.colorClass = (not self.db.colors.forcehealthreaction)
 		health.colorReaction = true
 	end
-	
+
 	--Position
 	health:ClearAllPoints()
 	if frame.ORIENTATION == "LEFT" then
-		health:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER - frame.SPACING - frame.STAGGER_WIDTH - frame.POWERBAR_OFFSET, -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
+		health:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER - frame.SPACING - frame.STAGGER_WIDTH, -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
 
-		if frame.POWERBAR_DETACHED or not frame.USE_POWERBAR or frame.USE_INSET_POWERBAR then
-			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.PORTRAIT_WIDTH + frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING + frame.BOTTOM_OFFSET)
-		elseif frame.USE_POWERBAR_OFFSET then
+		if frame.USE_POWERBAR_OFFSET then
 			health:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER - frame.SPACING - frame.POWERBAR_OFFSET - frame.STAGGER_WIDTH, -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.PORTRAIT_WIDTH + frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING + frame.POWERBAR_OFFSET)
+		elseif frame.POWERBAR_DETACHED or not frame.USE_POWERBAR or frame.USE_INSET_POWERBAR then
+			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.PORTRAIT_WIDTH + frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING + frame.BOTTOM_OFFSET)
 		elseif frame.USE_MINI_POWERBAR then
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.PORTRAIT_WIDTH + frame.BORDER + frame.SPACING, frame.SPACING + (frame.POWERBAR_HEIGHT/2))
 		else
@@ -108,24 +108,24 @@ function UF:Configure_HealthBar(frame)
 	elseif frame.ORIENTATION == "RIGHT" then
 		health:Point("TOPLEFT", frame, "TOPLEFT", frame.BORDER + frame.SPACING + frame.STAGGER_WIDTH + frame.POWERBAR_OFFSET, -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
 
-		if frame.POWERBAR_DETACHED or not frame.USE_POWERBAR or frame.USE_INSET_POWERBAR then
-			health:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -frame.PORTRAIT_WIDTH - frame.BORDER - frame.SPACING, frame.BORDER + frame.SPACING + frame.BOTTOM_OFFSET)
-		elseif frame.USE_POWERBAR_OFFSET then
+		if frame.USE_POWERBAR_OFFSET then
 			health:Point("TOPLEFT", frame, "TOPLEFT", frame.BORDER + frame.SPACING + frame.POWERBAR_OFFSET + frame.STAGGER_WIDTH, -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
 			health:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -frame.PORTRAIT_WIDTH - frame.BORDER - frame.SPACING, frame.BORDER + frame.SPACING + frame.POWERBAR_OFFSET)
+		elseif frame.POWERBAR_DETACHED or not frame.USE_POWERBAR or frame.USE_INSET_POWERBAR then
+			health:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -frame.PORTRAIT_WIDTH - frame.BORDER - frame.SPACING, frame.BORDER + frame.SPACING + frame.BOTTOM_OFFSET)
 		elseif frame.USE_MINI_POWERBAR then
-			health:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -frame.BORDER - frame.SPACING - frame.PORTRAIT_WIDTH, frame.BORDER + frame.SPACING + (frame.POWERBAR_HEIGHT/2))
+			health:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -frame.PORTRAIT_WIDTH - frame.BORDER - frame.SPACING, frame.BORDER + frame.SPACING + (frame.POWERBAR_HEIGHT/2))
 		else
 			health:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -frame.PORTRAIT_WIDTH - frame.BORDER - frame.SPACING, frame.BORDER + frame.SPACING + frame.BOTTOM_OFFSET)
 		end
 	elseif frame.ORIENTATION == "MIDDLE" then
-		health:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER - frame.SPACING - frame.STAGGER_WIDTH, - frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
-		if frame.POWERBAR_DETACHED or not frame.USE_POWERBAR or frame.USE_INSET_POWERBAR then
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER - frame.SPACING - frame.POWERBAR_OFFSET - frame.STAGGER_WIDTH, -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
-			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER + frame.SPACING + frame.POWERBAR_OFFSET, frame.BORDER + frame.SPACING + frame.BOTTOM_OFFSET)
-		elseif frame.USE_POWERBAR_OFFSET then
-			health:Point("TOPLEFT", frame, "TOPLEFT", frame.BORDER + frame.SPACING + frame.POWERBAR_OFFSET + frame.STAGGER_WIDTH, -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
-			health:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -frame.PORTRAIT_WIDTH - frame.BORDER - frame.SPACING - frame.POWERBAR_OFFSET, frame.BORDER + frame.SPACING + frame.POWERBAR_OFFSET)		
+		health:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER - frame.SPACING - frame.STAGGER_WIDTH, -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
+
+		if frame.USE_POWERBAR_OFFSET then
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER - frame.SPACING - frame.POWERBAR_OFFSET, -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
+			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER + frame.SPACING + frame.POWERBAR_OFFSET, frame.BORDER + frame.SPACING + frame.POWERBAR_OFFSET)
+		elseif frame.POWERBAR_DETACHED or not frame.USE_POWERBAR or frame.USE_INSET_POWERBAR then
+			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING + frame.BOTTOM_OFFSET)
 		elseif frame.USE_MINI_POWERBAR then
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING + (frame.POWERBAR_HEIGHT/2))
 		else
@@ -142,7 +142,7 @@ function UF:Configure_HealthBar(frame)
 		health.bg:Point('TOPRIGHT', health)
 		health.bg:SetParent(frame.Portrait.overlay)
 	end
-	
+
 	--Party/Raid Frames allow to change statusbar orientation
 	if db.health and db.health.orientation then
 		health:SetOrientation(db.health.orientation)
