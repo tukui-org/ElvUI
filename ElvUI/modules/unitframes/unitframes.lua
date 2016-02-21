@@ -839,7 +839,9 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 		if db.enable ~= true and group ~= 'raidpet' then
 			UnregisterStateDriver(self[group], "visibility")
 			self[group]:Hide()
-			E:DisableMover(self[group].mover:GetName())
+			if(self[group].mover) then
+				E:DisableMover(self[group].mover:GetName())
+			end
 			return
 		end
 
