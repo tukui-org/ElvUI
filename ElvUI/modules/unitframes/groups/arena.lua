@@ -122,6 +122,7 @@ function UF:Construct_ArenaFrames(frame)
 
 	ArenaHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165)
 	E:CreateMover(ArenaHeader, ArenaHeader:GetName()..'Mover', L["Arena Frames"], nil, nil, nil, 'ALL,ARENA')
+	frame.mover = ArenaHeader.mover
 end
 
 function UF:Update_ArenaFrames(frame, db)

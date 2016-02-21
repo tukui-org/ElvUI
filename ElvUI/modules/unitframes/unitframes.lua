@@ -475,8 +475,10 @@ function UF:Update_AllFrames()
 		if self.db['units'][unit].enable then
 			self[unit]:Enable()
 			self[unit]:Update()
+			E:EnableMover(self[unit].mover:GetName())
 		else
 			self[unit]:Disable()
+			E:DisableMover(self[unit].mover:GetName())
 		end
 	end
 
@@ -484,11 +486,13 @@ function UF:Update_AllFrames()
 		if self.db['units'][group].enable then
 			self[unit]:Enable()
 			self[unit]:Update()
+			E:EnableMover(self[unit].mover:GetName())
 		else
 			self[unit]:Disable()
+			E:DisableMover(self[unit].mover:GetName())
 		end
 	end
-
+	
 	self:UpdateAllHeaders()
 end
 
@@ -516,12 +520,14 @@ function UF:CreateAndUpdateUFGroup(group, numGroup, template)
 		if self.db['units'][group].enable then
 			self[unit]:Enable()
 			self[unit].Update()
-
+			
 			if self[unit].isForced then
 				self:ForceShow(self[unit])
 			end
+			E:EnableMover(self[unit].mover:GetName())
 		else
 			self[unit]:Disable()
+			E:DisableMover(self[unit].mover:GetName())
 		end
 	end
 end
@@ -833,6 +839,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 		if db.enable ~= true and group ~= 'raidpet' then
 			UnregisterStateDriver(self[group], "visibility")
 			self[group]:Hide()
+			E:DisableMover(self[group].mover:GetName())
 			return
 		end
 
@@ -863,7 +870,14 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 			UF["headerFunctions"][group]:Configure_Groups(self[group])
 			UF["headerFunctions"][group]:Update(self[group])
 		end
-
+		
+		
+		if(db.enable) then
+			E:EnableMover(self[group].mover:GetName())
+		else
+			E:DisableMover(self[group].mover:GetName())
+		end
+		
 		if db.enable ~= true and group == 'raidpet' then
 			UnregisterStateDriver(self[group], "visibility")
 			self[group]:Hide()
@@ -931,8 +945,10 @@ function UF:CreateAndUpdateUF(unit)
 	if self.db['units'][unit].enable then
 		self[unit]:Enable()
 		self[unit].Update()
+		E:EnableMover(self[unit].mover:GetName())
 	else
 		self[unit]:Disable()
+		E:DisableMover(self[unit].mover:GetName())
 	end
 end
 
