@@ -154,7 +154,7 @@ function UF:Configure_Power(frame)
 			power:Height(frame.POWERBAR_HEIGHT  - ((frame.BORDER + frame.SPACING)*2))
 			
 			power:SetFrameStrata(frame.Health:GetFrameStrata())
-			power:SetFrameLevel(frame.Health:GetFrameLevel())
+			power:SetFrameLevel(frame.Health:GetFrameLevel() - 1)
 		end
 		
 		--Hide mover until we detach again
