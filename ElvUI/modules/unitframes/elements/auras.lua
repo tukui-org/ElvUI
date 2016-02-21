@@ -108,9 +108,9 @@ function UF:Configure_Auras(frame, auraType)
 	local rows = db[auraType].numrows
 
 	if frame.USE_POWERBAR_OFFSET then
-		auras:Width(frame.UNIT_WIDTH - frame.POWERBAR_OFFSET)
+		auras:Width(frame.UNIT_WIDTH - frame.POWERBAR_OFFSET - frame.SPACING*2)
 	else
-		auras:Width(frame.UNIT_WIDTH)
+		auras:Width(frame.UNIT_WIDTH - frame.SPACING*2)
 	end
 
 	auras.forceShow = frame.forceShowAuras
