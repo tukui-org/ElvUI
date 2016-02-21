@@ -270,7 +270,9 @@ function AB:PositionAndSizeBar(barName)
 			AB:PositionAndSizeBar(barName)
 			return
 		end
+		E:EnableMover(bar.mover:GetName())
 	else
+		E:DisableMover(bar.mover:GetName())
 		bar:Hide()
 		UnregisterStateDriver(bar, "visibility");
 	end
@@ -334,8 +336,8 @@ function AB:CreateBar(id)
 
 
 	self["handledBars"]['bar'..id] = bar;
-	self:PositionAndSizeBar('bar'..id);
 	E:CreateMover(bar, 'ElvAB_'..id, L["Bar "]..id, nil, nil, nil,'ALL,ACTIONBARS')
+	self:PositionAndSizeBar('bar'..id);
 	return bar
 end
 
