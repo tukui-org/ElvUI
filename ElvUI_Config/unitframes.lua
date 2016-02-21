@@ -1368,7 +1368,7 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 				type = 'range',
 				name = L["Height"],
 				order = 2,
-				min = 1, max = 50, step = 1,
+				min = (E.db.unitframe.thinBorders and 3 or 7), max = 50, step = 1,
 			},
 			offset = {
 				type = 'range',
