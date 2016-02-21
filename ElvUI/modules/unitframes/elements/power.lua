@@ -64,7 +64,7 @@ function UF:Configure_Power(frame)
 		local attachPoint = self:GetTextAnchorPoint(frame, db.power.attachTextTo)
 		if(E.global.tukuiMode and frame.InfoPanel and frame.InfoPanel:IsShown()) then
 			attachPoint = frame.InfoPanel
-		end		
+		end
 		power.value:ClearAllPoints()
 		power.value:Point(db.power.position, attachPoint, db.power.position, x + db.power.xOffset, y + db.power.yOffset)
 		frame:Tag(power.value, db.power.text_format)
@@ -98,7 +98,7 @@ function UF:Configure_Power(frame)
 				power:ClearAllPoints()
 				power:Point("BOTTOMLEFT", power.Holder, "BOTTOMLEFT", frame.BORDER+frame.SPACING, frame.BORDER+frame.SPACING)
 				--Currently only Player and Target can detach power bars, so doing it this way is okay for now
-				if frame.unit == "player" then 
+				if frame.unit == "player" then
 					E:CreateMover(power.Holder, 'PlayerPowerBarMover', L["Player Powerbar"], nil, nil, nil, 'ALL,SOLO')
 				elseif frame.unit == "target" then
 					E:CreateMover(power.Holder, 'TargetPowerBarMover', L["Target Powerbar"], nil, nil, nil, 'ALL,SOLO')
@@ -152,11 +152,11 @@ function UF:Configure_Power(frame)
 			power:Point("TOPRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", -frame.BORDER,  -frame.SPACING*3)
 			power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", frame.BORDER, -frame.SPACING*3)
 			power:Height(frame.POWERBAR_HEIGHT  - ((frame.BORDER + frame.SPACING)*2))
-			
+
 			power:SetFrameStrata(frame.Health:GetFrameStrata())
-			power:SetFrameLevel(frame.Health:GetFrameLevel() - 1)
+			power:SetFrameLevel(frame.Health:GetFrameLevel() - 5)
 		end
-		
+
 		--Hide mover until we detach again
 		if not frame.POWERBAR_DETACHED then
 			if power.Holder and power.Holder.mover then

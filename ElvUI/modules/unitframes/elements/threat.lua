@@ -76,6 +76,14 @@ function UF:Configure_Threat(frame)
 
 			threat.texIcon:ClearAllPoints()
 			threat.texIcon:Point(point, frame.Health, point)
+		elseif db.threatStyle == "HEALTHBORDER" then
+			if frame.InfoPanel then
+				frame.InfoPanel:SetFrameLevel(frame.Health:GetFrameLevel() - 3)
+			end
+		elseif db.threatStyle == "INFOPANELBORDER" then
+			if frame.InfoPanel then
+				frame.InfoPanel:SetFrameLevel(frame.Health:GetFrameLevel() + 3)
+			end
 		end
 	elseif frame:IsElementEnabled('Threat') then
 		frame:DisableElement('Threat')
@@ -89,7 +97,7 @@ function UF:UpdateThreat(unit, status, r, g, b)
 
 	local db = parent.db
 	if not db then return end
-status,r,g,b = 2,1,0,0
+
 	if status and status > 1 then
 		if db.threatStyle == 'GLOW' then
 			self.glow:Show()
