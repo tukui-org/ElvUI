@@ -3,7 +3,11 @@ local UF = E:GetModule('UnitFrames');
 
 function UF:Construct_InfoPanel(frame)
 	local infoPanel = CreateFrame("Frame", nil, frame)
-	infoPanel:CreateBackdrop("Default", true, nil, self.thinBorders)
+	local thinBorders = self.thinBorders
+	if(E.global.tukuiMode) then
+		thinBorders = false
+	end	
+	infoPanel:CreateBackdrop("Default", true, nil, thinBorders)
 
 	return infoPanel
 end
@@ -30,17 +34,22 @@ function UF:Configure_InfoPanel(frame)
 				frame.InfoPanel:SetPoint("TOPRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", -frame.BORDER, -(frame.SPACING*3))
 			end
 		end
-
-		if db.infoPanel.transparent then
-			frame.InfoPanel.backdrop:SetTemplate("Transparent", nil, nil, self.thinBorders)
-		else
-			frame.InfoPanel.backdrop:SetTemplate("Default", true, nil, self.thinBorders)
+		
+		local thinBorders = self.thinBorders
+		if(E.global.tukuiMode) then
+			thinBorders = false
 		end
-
+		
+		if db.infoPanel.transparent then
+			frame.InfoPanel.backdrop:SetTemplate("Transparent", nil, nil, thinBorders)
+		else
+			frame.InfoPanel.backdrop:SetTemplate("Default", true, nil, thinBorders)
+		end
+		
 		if frame.USE_POWERBAR and not frame.USE_INSET_POWERBAR and not frame.POWERBAR_DETACHED then
 			--Make it spawn just above power so InfoPanel threat border isn't cut off
 			frame.InfoPanel:SetFrameStrata(frame.Power:GetFrameStrata())
-			frame.InfoPanel:SetFrameLevel(frame.Power:GetFrameLevel() + 1)
+			frame.InfoPanel:SetFrameLevel(frame.Power:GetFrameLevel() + 5)
 		else
 			frame.InfoPanel:SetFrameStrata(frame.Health:GetFrameStrata())
 			frame.InfoPanel:SetFrameLevel(frame.Health:GetFrameLevel())
