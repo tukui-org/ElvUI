@@ -1945,7 +1945,7 @@ E.Options.args.unitframe = {
 							desc = L["Use thin borders on certain unitframe elements."],
 							type = 'toggle',
 							disabled = function() return E.private.general.pixelPerfect end,	
-							set = function(info, value) E.db.unitframe[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
+							set = function(info, value) E.db.unitframe[ info[#info] ] = value; E:StaticPopup_Show("CONFIG_RL") end,
 						},
 						OORAlpha = {
 							order = 2,
