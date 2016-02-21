@@ -584,10 +584,21 @@ function CH:UpdateAnchors()
 	for _, frameName in pairs(CHAT_FRAMES) do
 		local frame = _G[frameName..'EditBox']
 		if not frame then break; end
-		if E.db.datatexts.leftChatPanel and E.db.chat.editBoxPosition == 'BELOW_CHAT' then
-			frame:SetAllPoints(LeftChatDataPanel)
+		if(not E.db.datatexts.leftChatPanel and (self.db.panelBackdrop == "HIDEBOTH" or self.db.panelBackdrop == "RIGHT")) then
+			frame:ClearAllPoints()
+			if(E.db.chat.editBoxPosition == 'BELOW_CHAT') then
+				frame:SetPoint("TOPLEFT", ChatFrame1, "BOTTOMLEFT")
+				frame:SetPoint("BOTTOMRIGHT", ChatFrame1, "BOTTOMRIGHT", 0, -LeftChatTab:GetHeight())
+			else
+				frame:SetPoint("BOTTOMLEFT", ChatFrame1, "TOPLEFT")
+				frame:SetPoint("TOPRIGHT", ChatFrame1, "TOPRIGHT", 0, LeftChatTab:GetHeight())			
+			end
 		else
-			frame:SetAllPoints(LeftChatTab)
+			if E.db.datatexts.leftChatPanel and E.db.chat.editBoxPosition == 'BELOW_CHAT' then
+				frame:SetAllPoints(LeftChatDataPanel)
+			else
+				frame:SetAllPoints(LeftChatTab)
+			end
 		end
 	end
 
