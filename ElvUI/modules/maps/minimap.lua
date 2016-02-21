@@ -495,7 +495,7 @@ function M:Initialize()
 			FarmModeMap:Hide()
 		end
 	end)
-
+	
 	--PET JOURNAL TAINT FIX AS OF 5.1
 	--[[local info = UIPanelWindows['PetJournalParent'];
 	for name, value in pairs(info) do
@@ -503,6 +503,42 @@ function M:Initialize()
 	end
 
 	PetJournalParent:SetAttribute("UIPanelLayout-defined", true);]]
+	
+	local f = CreateFrame("Frame", 'BottomMiniPanel', Minimap)
+	f:SetPoint("BOTTOM", Minimap, "BOTTOM", 0, 2)
+	f:Width(100)
+	f:Height(15)
+	E:GetModule('DataTexts'):RegisterPanel(f, 1, 'ANCHOR_BOTTOM', 0, -10)	
+	
+	f = CreateFrame("Frame", 'TopMiniPanel', Minimap)
+	f:SetPoint("TOP", Minimap, "TOP", 0, -2)
+	f:Width(100)
+	f:Height(15)
+	E:GetModule('DataTexts'):RegisterPanel(f, 1, 'ANCHOR_BOTTOM', 0, -10)		
+	
+	f = CreateFrame("Frame", 'TopLeftMiniPanel', Minimap)
+	f:SetPoint("TOPLEFT", Minimap, "TOPLEFT", 2, -2)
+	f:Width(100)
+	f:Height(15)
+	E:GetModule('DataTexts'):RegisterPanel(f, 1, 'ANCHOR_BOTTOMLEFT', 0, -10)	
+
+	f = CreateFrame("Frame", 'TopRightMiniPanel', Minimap)
+	f:SetPoint("TOPRIGHT", Minimap, "TOPRIGHT", -2, -2)
+	f:Width(100)
+	f:Height(15)
+	E:GetModule('DataTexts'):RegisterPanel(f, 1, 'ANCHOR_BOTTOMRIGHT', 0, -10)	
+	
+	f = CreateFrame("Frame", 'BottomLeftMiniPanel', Minimap)
+	f:SetPoint("BOTTOMLEFT", Minimap, "BOTTOMLEFT", 2, 2)
+	f:Width(100)
+	f:Height(15)
+	E:GetModule('DataTexts'):RegisterPanel(f, 1, 'ANCHOR_BOTTOMLEFT', 0, -10)	
+
+	f = CreateFrame("Frame", 'BottomRightMiniPanel', Minimap)
+	f:SetPoint("BOTTOMRIGHT", Minimap, "BOTTOMRIGHT", -2, 2)
+	f:Width(100)
+	f:Height(15)
+	E:GetModule('DataTexts'):RegisterPanel(f, 1, 'ANCHOR_BOTTOMRIGHT', 0, -10)			
 end
 
 E:RegisterInitialModule(M:GetName())

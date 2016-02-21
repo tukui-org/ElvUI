@@ -367,4 +367,4 @@ L["You can use the /resetui command to reset all of your movers. You can also us
 
 --UnitFrames
 L["Ghost"] = true;
-L["Offline"] = true;
+L["Offline"] = true;	
