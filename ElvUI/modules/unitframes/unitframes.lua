@@ -894,6 +894,9 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 			if db.enable ~= true then
 				UnregisterAttributeDriver(UF[group], "state-visibility")
 				UF[group]:Hide()
+				if(UF[group].mover) then
+					E:DisableMover(UF[group].mover:GetName())
+				end
 				return
 			end
 			UF["Update_"..E:StringTitle(group).."Header"](UF, UF[group], db)
@@ -910,6 +913,8 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 					UF["Update_"..E:StringTitle(group).."Frames"](UF, _G[child:GetName()..'Pet'], UF.db['units'][group])
 				end
 			end
+			
+			E:EnableMover(UF[group].mover:GetName())
 		end
 
 		if headerUpdate then

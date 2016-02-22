@@ -136,6 +136,10 @@ function UF:Configure_Castbar(frame)
 				castbar.Icon.bg:Point("LEFT", frame, "RIGHT", 10, 0)
 			end
 		end
+		
+		if(castbar.Holder.mover) then
+			E:DisableMover(castbar.Holder.mover:GetName())
+		end
 	else
 		local isMoved = E:HasMoverBeenMoved(frame:GetName()..'CastbarMover') or not castbar.Holder.mover
 		if not isMoved then	
@@ -164,12 +168,20 @@ function UF:Configure_Castbar(frame)
 				castbar.Icon.bg:Point("LEFT", castbar, "RIGHT", frame.SPACING*3, 0)
 			end
 		end
+		
+		if(castbar.Holder.mover) then
+			E:EnableMover(castbar.Holder.mover:GetName())
+		end
 	end
 	
 	if db.castbar.enable and not frame:IsElementEnabled('Castbar') then
 		frame:EnableElement('Castbar')
 	elseif not db.castbar.enable and frame:IsElementEnabled('Castbar') then
 		frame:DisableElement('Castbar')
+		
+		if(castbar.Holder.mover) then
+			E:DisableMover(castbar.Holder.mover:GetName())
+		end
 	end
 end
 
