@@ -134,7 +134,7 @@ function BG:UpdateSettings()
 			self.frame:SetParent(E.UIParent)
 		end
 		E:EnableMover(self.frame.mover:GetName())
-	else
+	elseif self.frame then
 		self.frame:SetParent(E.HiddenFrame)
 		E:DisableMover(self.frame.mover:GetName())
 	end
