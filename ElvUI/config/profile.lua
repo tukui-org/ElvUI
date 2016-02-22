@@ -2530,7 +2530,7 @@ P["actionbar"] = {
 		["buttonsize"] = 32,
 		["buttonspacing"] = 2,
 		['alpha'] = 1,
-		['inheritGlobalFade'] = true,
+		['inheritGlobalFade'] = false,
 		['paging'] = {
 			["DRUID"] = "[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 8; [bonusbar:3] 9; [bonusbar:4] 10;",
 			["PRIEST"] = "[bonusbar:1] 7;",
@@ -2552,7 +2552,7 @@ P["actionbar"] = {
 		["buttonsize"] = 32,
 		["buttonspacing"] = 2,
 		['alpha'] = 1,
-		['inheritGlobalFade'] = true,
+		['inheritGlobalFade'] = false,
 		['paging'] = {},
 		['visibility'] = "[vehicleui] hide; [overridebar] hide; [petbattle] hide; show",
 	},
