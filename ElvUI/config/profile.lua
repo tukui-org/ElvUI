@@ -2515,6 +2515,9 @@ P["actionbar"] = {
 		['buttonsPerRow'] = 12,
 		['alpha'] = 1,
 	},
+	
+	['globalFadeAlpha'] = 0,
+
 	['bar1'] = {
 		['enabled'] = true,
 		['buttons'] = 12,
@@ -2527,6 +2530,7 @@ P["actionbar"] = {
 		["buttonsize"] = 32,
 		["buttonspacing"] = 2,
 		['alpha'] = 1,
+		['inheritGlobalFade'] = true,
 		['paging'] = {
 			["DRUID"] = "[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 8; [bonusbar:3] 9; [bonusbar:4] 10;",
 			["PRIEST"] = "[bonusbar:1] 7;",
@@ -2548,6 +2552,7 @@ P["actionbar"] = {
 		["buttonsize"] = 32,
 		["buttonspacing"] = 2,
 		['alpha'] = 1,
+		['inheritGlobalFade'] = true,
 		['paging'] = {},
 		['visibility'] = "[vehicleui] hide; [overridebar] hide; [petbattle] hide; show",
 	},
@@ -2563,6 +2568,7 @@ P["actionbar"] = {
 		["buttonsize"] = 32,
 		["buttonspacing"] = 2,
 		['alpha'] = 1,
+		['inheritGlobalFade'] = false,
 		['paging'] = {},
 		['visibility'] = "[vehicleui] hide; [overridebar] hide; [petbattle] hide; show",
 	},
@@ -2578,6 +2584,7 @@ P["actionbar"] = {
 		["buttonsize"] = 32,
 		["buttonspacing"] = 2,
 		['alpha'] = 1,
+		['inheritGlobalFade'] = false,
 		['paging'] = {},
 		['visibility'] = "[vehicleui] hide; [overridebar] hide; [petbattle] hide; show",
 	},
@@ -2593,6 +2600,7 @@ P["actionbar"] = {
 		["buttonsize"] = 32,
 		["buttonspacing"] = 2,
 		['alpha'] = 1,
+		['inheritGlobalFade'] = false,
 		['paging'] = {},
 		['visibility'] = "[vehicleui] hide; [overridebar] hide; [petbattle] hide; show",
 	},
@@ -2608,6 +2616,7 @@ P["actionbar"] = {
 		["buttonsize"] = 32,
 		["buttonspacing"] = 2,
 		['alpha'] = 1,
+		['inheritGlobalFade'] = false,
 		['paging'] = {},
 		['visibility'] = "[vehicleui] hide; [overridebar] hide; [petbattle] hide; show",
 	},
@@ -2623,6 +2632,7 @@ P["actionbar"] = {
 		["buttonsize"] = 32,
 		["buttonspacing"] = 2,
 		['alpha'] = 1,
+		['inheritGlobalFade'] = false,
 		['visibility'] = "[petbattle] hide;[pet,novehicleui,nooverridebar,nopossessbar] show;hide",
 	},
 	['stanceBar'] = {
@@ -2638,9 +2648,11 @@ P["actionbar"] = {
 		["buttonsize"] = 32,
 		["buttonspacing"] = 2,
 		['alpha'] = 1,
+		['inheritGlobalFade'] = false,
 	},
 	['extraActionButton'] = {
 		['alpha'] = 1,
 		["scale"] = 1,
+		['inheritGlobalFade'] = false,
 	},
 };

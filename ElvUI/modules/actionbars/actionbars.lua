@@ -164,7 +164,18 @@ function AB:PositionAndSizeBar(barName)
 	else
 		horizontalGrowth = "LEFT";
 	end
-
+	
+	if self.db[barName].mouseover then
+		bar:SetAlpha(0);
+	else
+		bar:SetAlpha(self.db[barName].alpha);
+	end
+	
+	if(self.db[barName].inheritGlobalFade) then
+		bar:SetParent(self.fadeParent)
+	else
+		bar:SetParent(E.UIParent)
+	end
 	local button, lastButton, lastColumnButton ;
 	for i=1, NUM_ACTIONBAR_BUTTONS do
 		button = bar.buttons[i];
@@ -174,30 +185,6 @@ function AB:PositionAndSizeBar(barName)
 		button:ClearAllPoints();
 		button:Size(size)
 		button:SetAttribute("showgrid", 1);
-
-		if self.db[barName].mouseover == true then
-			bar:SetAlpha(0);
-			if not self.hooks[bar] then
-				self:HookScript(bar, 'OnEnter', 'Bar_OnEnter');
-				self:HookScript(bar, 'OnLeave', 'Bar_OnLeave');
-			end
-
-			if not self.hooks[button] then
-				self:HookScript(button, 'OnEnter', 'Button_OnEnter');
-				self:HookScript(button, 'OnLeave', 'Button_OnLeave');
-			end
-		else
-			bar:SetAlpha(self.db[barName].alpha);
-			if self.hooks[bar] then
-				self:Unhook(bar, 'OnEnter');
-				self:Unhook(bar, 'OnLeave');
-			end
-
-			if self.hooks[button] then
-				self:Unhook(button, 'OnEnter');
-				self:Unhook(button, 'OnLeave');
-			end
-		end
 
 		if i == 1 then
 			local x, y;
@@ -292,6 +279,8 @@ function AB:CreateBar(id)
 	bar.backdrop:SetAllPoints();
 	bar.buttons = {}
 	bar.bindButtons = self['barDefaults']['bar'..id].bindButtons
+	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter');
+	self:HookScript(bar, 'OnLeave', 'Bar_OnLeave');	
 
 	for i=1, 12 do
 		bar.buttons[i] = LAB:CreateButton(i, format(bar:GetName().."Button%d", i), bar, nil)
@@ -307,6 +296,9 @@ function AB:CreateBar(id)
 		if MasqueGroup and E.private.actionbar.masque.actionbars then
 			bar.buttons[i]:AddToMasque(MasqueGroup)
 		end
+		
+		self:HookScript(bar.buttons[i], 'OnEnter', 'Button_OnEnter');
+		self:HookScript(bar.buttons[i], 'OnLeave', 'Button_OnLeave');		
 	end
 	self:UpdateButtonConfig(bar, bar.bindButtons)
 
@@ -599,21 +591,45 @@ function AB:StyleButton(button, noBackdrop, useMasque)
 end
 
 function AB:Bar_OnEnter(bar)
-	E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), bar.db.alpha)
+	if bar:GetParent() == self.fadeParent then
+		if(not self.fadeParent.lockTarget and not self.fadeParent.lockCombat) then
+			E:UIFrameFadeIn(self.fadeParent, 0.2, self.fadeParent:GetAlpha(), 1)
+		end
+	elseif(bar.mouseover) then
+		E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), bar.db.alpha)
+	end
 end
 
 function AB:Bar_OnLeave(bar)
-	E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
+	if bar:GetParent() == self.fadeParent then
+		if(not self.fadeParent.lockTarget and not self.fadeParent.lockCombat) then
+			E:UIFrameFadeOut(self.fadeParent, 0.2, self.fadeParent:GetAlpha(), 1 - self.db.globalFadeAlpha)
+		end
+	elseif(bar.mouseover) then
+		E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
+	end
 end
 
 function AB:Button_OnEnter(button)
 	local bar = button:GetParent()
-	E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), bar.db.alpha)
+	if bar:GetParent() == self.fadeParent then
+		if(not self.fadeParent.lockTarget and not self.fadeParent.lockCombat) then
+			E:UIFrameFadeIn(self.fadeParent, 0.2, self.fadeParent:GetAlpha(), 1)
+		end
+	elseif(bar.mouseover) then
+		E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), bar.db.alpha)
+	end
 end
 
 function AB:Button_OnLeave(button)
 	local bar = button:GetParent()
-	E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
+	if bar:GetParent() == self.fadeParent then
+		if(not self.fadeParent.lockTarget and not self.fadeParent.lockCombat) then
+			E:UIFrameFadeOut(self.fadeParent, 0.2, self.fadeParent:GetAlpha(), 1 - self.db.globalFadeAlpha)
+		end
+	elseif(bar.mouseover) then
+		E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
+	end
 end
 
 function AB:BlizzardOptionsPanel_OnEvent()
@@ -626,6 +642,20 @@ function AB:BlizzardOptionsPanel_OnEvent()
 	InterfaceOptionsActionBarsPanelBottomLeft:SetScript('OnEnter', nil)
 	InterfaceOptionsActionBarsPanelRightTwo:SetScript('OnEnter', nil)
 	InterfaceOptionsActionBarsPanelRight:SetScript('OnEnter', nil)
+end
+
+function AB:FadeParent_OnEvent(event)
+	local cur, max = UnitHealth("player"), UnitHealthMax("player")
+	local cast, channel = UnitCastingInfo("player"), UnitChannelInfo("player")
+	local target, focus = UnitExists("target"), UnitExists("focus")
+	local combat = UnitAffectingCombat("player")
+	if (cast or channel) or (cur ~= max) or (target or focus) or combat then
+		self.mouseLock = true
+		E:UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
+	else
+		self.mouseLock = false
+		E:UIFrameFadeOut(self, 0.2, self:GetAlpha(), 1 - AB.db.globalFadeAlpha)
+	end	
 end
 
 function AB:DisableBlizzard()
@@ -821,9 +851,7 @@ local function SetupFlyoutButton()
 				if not AB["handledbuttons"][parentAnchorButton] then return end
 
 				local parentAnchorBar = parentAnchorButton:GetParent()
-				if parentAnchorBar.mouseover then
-					AB:Bar_OnEnter(parentAnchorBar)
-				end
+				AB:Bar_OnEnter(parentAnchorBar)
 			end)
 			_G["SpellFlyoutButton"..i]:HookScript('OnLeave', function(self)
 				local parent = self:GetParent()
@@ -831,10 +859,7 @@ local function SetupFlyoutButton()
 				if not AB["handledbuttons"][parentAnchorButton] then return end
 
 				local parentAnchorBar = parentAnchorButton:GetParent()
-
-				if parentAnchorBar.mouseover then
-					AB:Bar_OnLeave(parentAnchorBar)
-				end
+				AB:Bar_OnLeave(parentAnchorBar)
 			end)
 
 			if MasqueGroup and E.private.actionbar.masque.actionbars then
@@ -849,9 +874,7 @@ local function SetupFlyoutButton()
 		if not AB["handledbuttons"][anchorButton] then return end
 
 		local parentAnchorBar = anchorButton:GetParent()
-		if parentAnchorBar.mouseover then
-			AB:Bar_OnEnter(parentAnchorBar)
-		end
+		AB:Bar_OnEnter(parentAnchorBar)
 	end)
 
 	SpellFlyout:HookScript('OnLeave', function(self)
@@ -859,9 +882,7 @@ local function SetupFlyoutButton()
 		if not AB["handledbuttons"][anchorButton] then return end
 
 		local parentAnchorBar = anchorButton:GetParent()
-		if parentAnchorBar.mouseover then
-			AB:Bar_OnLeave(parentAnchorBar)
-		end
+		AB:Bar_OnLeave(parentAnchorBar)
 	end)
 end
 
@@ -957,6 +978,20 @@ function AB:Initialize()
 	if E.private.actionbar.enable ~= true then return; end
 	E.ActionBars = AB;
 
+	self.fadeParent = CreateFrame("Frame", "Elv_ABFade", UIParent)
+	self.fadeParent:SetAlpha(1 - self.db.globalFadeAlpha)
+	self.fadeParent:RegisterEvent("PLAYER_REGEN_DISABLED")
+	self.fadeParent:RegisterEvent("PLAYER_REGEN_ENABLED")	
+	self.fadeParent:RegisterEvent("PLAYER_TARGET_CHANGED")
+	self.fadeParent:RegisterUnitEvent("UNIT_SPELLCAST_START", "player")
+	self.fadeParent:RegisterUnitEvent("UNIT_SPELLCAST_STOP", "player")
+	self.fadeParent:RegisterUnitEvent("UNIT_SPELLCAST_CHANNEL_START", "player")
+	self.fadeParent:RegisterUnitEvent("UNIT_SPELLCAST_CHANNEL_STOP", "player")	
+	self.fadeParent:RegisterUnitEvent("UNIT_HEALTH", "player")
+	self.fadeParent:RegisterEvent("PLAYER_FOCUS_CHANGED")
+	self.fadeParent:SetScript("OnEvent", self.FadeParent_OnEvent)
+	
+	
 	self:DisableBlizzard()
 
 	self:SetupExtraButton()
