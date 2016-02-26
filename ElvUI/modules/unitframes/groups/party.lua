@@ -219,7 +219,7 @@ function UF:Update_PartyFrames(frame, db)
 		UF:Configure_HealthBar(frame)
 
 		--Name
-		UF:UpdateNameSettings(frame, childType)
+		UF:UpdateNameSettings(frame, frame.childType)
 	else
 		if not InCombatLockdown() then
 			frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
