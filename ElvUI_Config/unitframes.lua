@@ -1523,6 +1523,17 @@ local function GetOptionsTable_RaidIcon(updateFunc, groupName, numUnits)
 				name = L["Position"],
 				values = positionValues,
 			},
+			attachToObject = {
+				type = 'select',
+				order = 4,
+				name = L["Attach To"],
+				values = {
+					['Health'] = L["Health"],
+					['Power'] = L["Power"],
+					['InfoPanel'] = L["Information Bar"],	
+					['Frame'] = L["Frame"],		
+				},
+			},
 			size = {
 				type = 'range',
 				name = L["Size"],
