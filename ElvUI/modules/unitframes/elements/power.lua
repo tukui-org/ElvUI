@@ -60,13 +60,12 @@ function UF:Configure_Power(frame)
 		power.Smooth = self.db.smoothbars
 
 		--Text
-		local x, y = self:GetPositionOffset(db.power.position)
 		local attachPoint = self:GetObjectAnchorPoint(frame, db.power.attachTextTo)
 		if(E.global.tukuiMode and frame.InfoPanel and frame.InfoPanel:IsShown()) then
 			attachPoint = frame.InfoPanel
 		end
 		power.value:ClearAllPoints()
-		power.value:Point(db.power.position, attachPoint, db.power.position, x + db.power.xOffset, y + db.power.yOffset)
+		power.value:Point(db.power.position, attachPoint, db.power.position, db.power.xOffset, db.power.yOffset)
 		frame:Tag(power.value, db.power.text_format)
 
 		if db.power.attachTextToPower then
@@ -85,7 +84,7 @@ function UF:Configure_Power(frame)
 		else
 			power.colorPower = true
 		end
-		
+
 		--Fix height in case it is lower than the theme allows
 		if not self.thinBorders and frame.POWERBAR_HEIGHT < 7 then --A height of 7 means 6px for borders and just 1px for the actual power statusbar
 			frame.POWERBAR_HEIGHT = 7
