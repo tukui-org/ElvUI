@@ -226,4 +226,3 @@ function UF:PostUpdatePower(unit, min, max)
 		UF:PostNamePosition(parent, unit)
 	end
 end
-

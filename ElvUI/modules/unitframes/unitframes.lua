@@ -255,9 +255,9 @@ function UF:Construct_UF(frame, unit)
 		frame.BORDER = E.mult
 	else
 		frame.BORDER = E.Border
-		frame.SPACING = E.Spacing		
+		frame.SPACING = E.Spacing
 	end
-	
+
 	frame.SHADOW_SPACING = 3
 	frame.STAGGER_WIDTH = 0	--placeholder
 	frame.CLASSBAR_YOFFSET = 0	--placeholder
@@ -492,7 +492,7 @@ function UF:Update_AllFrames()
 			E:DisableMover(self[unit].mover:GetName())
 		end
 	end
-	
+
 	self:UpdateAllHeaders()
 end
 
@@ -520,7 +520,7 @@ function UF:CreateAndUpdateUFGroup(group, numGroup, template)
 		if self.db['units'][group].enable then
 			self[unit]:Enable()
 			self[unit].Update()
-			
+
 			if self[unit].isForced then
 				self:ForceShow(self[unit])
 			end
@@ -872,14 +872,14 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 			UF["headerFunctions"][group]:Configure_Groups(self[group])
 			UF["headerFunctions"][group]:Update(self[group])
 		end
-		
-		
+
+
 		if(db.enable) then
 			E:EnableMover(self[group].mover:GetName())
 		else
 			E:DisableMover(self[group].mover:GetName())
 		end
-		
+
 		if db.enable ~= true and group == 'raidpet' then
 			UnregisterStateDriver(self[group], "visibility")
 			self[group]:Hide()
@@ -913,7 +913,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 					UF["Update_"..E:StringTitle(group).."Frames"](UF, _G[child:GetName()..'Pet'], UF.db['units'][group])
 				end
 			end
-			
+
 			E:EnableMover(UF[group].mover:GetName())
 		end
 

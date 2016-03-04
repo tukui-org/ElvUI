@@ -2535,7 +2535,7 @@ P["actionbar"] = {
 		['buttonsPerRow'] = 12,
 		['alpha'] = 1,
 	},
-	
+
 	['globalFadeAlpha'] = 0,
 
 	['bar1'] = {

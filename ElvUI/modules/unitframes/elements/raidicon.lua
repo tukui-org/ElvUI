@@ -19,7 +19,7 @@ function UF:Configure_RaidIcon(frame)
 		frame:EnableElement('RaidIcon')
 		RI:Show()
 		RI:Size(db.raidicon.size)
-		
+
 		local attachPoint = self:GetObjectAnchorPoint(frame, db.raidicon.attachToObject)
 		RI:ClearAllPoints()
 		RI:Point(db.raidicon.attachTo, attachPoint, db.raidicon.attachTo, db.raidicon.xOffset, db.raidicon.yOffset)

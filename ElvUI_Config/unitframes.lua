@@ -989,10 +989,10 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 				values = {
 					['Health'] = L["Health"],
 					['Power'] = L["Power"],
-					['InfoPanel'] = L["Information Bar"],	
-					['Frame'] = L["Frame"],		
+					['InfoPanel'] = L["Information Bar"],
+					['Frame'] = L["Frame"],
 				},
-			},			
+			},
 			text_format = {
 				order = 100,
 				name = L["Text Format"],
@@ -1212,10 +1212,10 @@ local function GetOptionsTable_Name(updateFunc, groupName, numUnits)
 				values = {
 					['Health'] = L["Health"],
 					['Power'] = L["Power"],
-					['InfoPanel'] = L["Information Bar"],	
-					['Frame'] = L["Frame"],	
+					['InfoPanel'] = L["Information Bar"],
+					['Frame'] = L["Frame"],
 				},
-			},				
+			},
 			text_format = {
 				order = 100,
 				name = L["Text Format"],
@@ -1411,8 +1411,8 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 				values = {
 					['Health'] = L["Health"],
 					['Power'] = L["Power"],
-					['InfoPanel'] = L["Information Bar"],	
-					['Frame'] = L["Frame"],	
+					['InfoPanel'] = L["Information Bar"],
+					['Frame'] = L["Frame"],
 				},
 			},
 		},
@@ -1530,8 +1530,8 @@ local function GetOptionsTable_RaidIcon(updateFunc, groupName, numUnits)
 				values = {
 					['Health'] = L["Health"],
 					['Power'] = L["Power"],
-					['InfoPanel'] = L["Information Bar"],	
-					['Frame'] = L["Frame"],		
+					['InfoPanel'] = L["Information Bar"],
+					['Frame'] = L["Frame"],
 				},
 			},
 			size = {
@@ -1857,10 +1857,10 @@ function UF:CreateCustomTextGroup(unit, objectName)
 				values = {
 					['Health'] = L["Health"],
 					['Power'] = L["Power"],
-					['InfoPanel'] = L["Information Bar"],	
-					['Frame'] = L["Frame"],	
+					['InfoPanel'] = L["Information Bar"],
+					['Frame'] = L["Frame"],
 				},
-			},	
+			},
 			text_format = {
 				order = 100,
 				name = L["Text Format"],
@@ -1955,7 +1955,7 @@ E.Options.args.unitframe = {
 							name = L["Thin Borders"],
 							desc = L["Use thin borders on certain unitframe elements."],
 							type = 'toggle',
-							disabled = function() return E.private.general.pixelPerfect end,	
+							disabled = function() return E.private.general.pixelPerfect end,
 							set = function(info, value) E.db.unitframe[ info[#info] ] = value; E:StaticPopup_Show("CONFIG_RL") end,
 						},
 						OORAlpha = {
@@ -3845,7 +3845,7 @@ E.Options.args.unitframe.args.arena = {
 			values = {
 				--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
 				["LEFT"] = L["Left"],
-				--["MIDDLE"] = L["Middle"], --no way to handle this with trinket 
+				--["MIDDLE"] = L["Middle"], --no way to handle this with trinket
 				["RIGHT"] = L["Right"],
 			},
 		},
@@ -3942,7 +3942,7 @@ E.Options.args.unitframe.args.party = {
 				['raid40'] = L["Raid40 Frames"],
 			},
 			set = function(info, value) UF:MergeUnitSettings(value, 'party', true); end,
-		},	
+		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateHeaderGroup, 'party', nil, 4),
 		general = {
 			order = 5,
@@ -4240,8 +4240,8 @@ E.Options.args.unitframe.args.party = {
 					values = {
 						['Health'] = L["Health"],
 						['Power'] = L["Power"],
-						['InfoPanel'] = L["Information Bar"],	
-						['Frame'] = L["Frame"],		
+						['InfoPanel'] = L["Information Bar"],
+						['Frame'] = L["Frame"],
 					},
 				},
 				xOffset = {
@@ -4821,8 +4821,8 @@ E.Options.args.unitframe.args['raid'] = {
 					values = {
 						['Health'] = L["Health"],
 						['Power'] = L["Power"],
-						['InfoPanel'] = L["Information Bar"],	
-						['Frame'] = L["Frame"],		
+						['InfoPanel'] = L["Information Bar"],
+						['Frame'] = L["Frame"],
 					},
 				},
 				xOffset = {
@@ -5227,8 +5227,8 @@ E.Options.args.unitframe.args['raid40'] = {
 					values = {
 						['Health'] = L["Health"],
 						['Power'] = L["Power"],
-						['InfoPanel'] = L["Information Bar"],	
-						['Frame'] = L["Frame"],		
+						['InfoPanel'] = L["Information Bar"],
+						['Frame'] = L["Frame"],
 					},
 				},
 				xOffset = {
