@@ -663,7 +663,7 @@ P['unitframe'] = {
 				['size'] = 18,
 				['attachTo'] = 'TOP',
 				['xOffset'] = 0,
-				['yOffset'] = 10,
+				['yOffset'] = 8,
 			},
 			['stagger'] = {
 				['enable'] = true,
@@ -813,7 +813,7 @@ P['unitframe'] = {
 				['size'] = 18,
 				['attachTo'] = 'TOP',
 				['xOffset'] = 0,
-				['yOffset'] = 10,
+				['yOffset'] = 8,
 			},
 			['GPSArrow'] = {
 				['enable'] = false,
@@ -917,7 +917,7 @@ P['unitframe'] = {
 				['size'] = 18,
 				['attachTo'] = 'TOP',
 				['xOffset'] = 0,
-				['yOffset'] = 10,
+				['yOffset'] = 8,
 			},
 		},
 		['targettargettarget'] = {
@@ -1012,7 +1012,7 @@ P['unitframe'] = {
 				['size'] = 18,
 				['attachTo'] = 'TOP',
 				['xOffset'] = 0,
-				['yOffset'] = 10,
+				['yOffset'] = 8,
 			},
 		},
 		['focus'] = {
@@ -1140,7 +1140,7 @@ P['unitframe'] = {
 				['size'] = 18,
 				['attachTo'] = 'TOP',
 				['xOffset'] = 0,
-				['yOffset'] = 10,
+				['yOffset'] = 8,
 			},
 			['GPSArrow'] = {
 				['enable'] = false,
@@ -1243,7 +1243,7 @@ P['unitframe'] = {
 				['size'] = 18,
 				['attachTo'] = 'TOP',
 				['xOffset'] = 0,
-				['yOffset'] = 10,
+				['yOffset'] = 8,
 			},
 		},
 		['pet'] = {
@@ -1546,7 +1546,7 @@ P['unitframe'] = {
 				['size'] = 18,
 				['attachTo'] = 'TOP',
 				['xOffset'] = 0,
-				['yOffset'] = 10,
+				['yOffset'] = 8,
 			},
 		},
 		['arena'] = {
@@ -1847,7 +1847,7 @@ P['unitframe'] = {
 				['size'] = 18,
 				['attachTo'] = 'TOP',
 				['xOffset'] = 0,
-				['yOffset'] = 10,
+				['yOffset'] = 8,
 			},
 			['GPSArrow'] = {
 				['enable'] = true,
@@ -2009,7 +2009,7 @@ P['unitframe'] = {
 				['size'] = 18,
 				['attachTo'] = 'TOP',
 				['xOffset'] = 0,
-				['yOffset'] = 10,
+				['yOffset'] = 8,
 			},
 			['GPSArrow'] = {
 				['enable'] = true,
@@ -2171,7 +2171,7 @@ P['unitframe'] = {
 				['size'] = 18,
 				['attachTo'] = 'TOP',
 				['xOffset'] = 0,
-				['yOffset'] = 10,
+				['yOffset'] = 8,
 			},
 			['GPSArrow'] = {
 				['enable'] = false,
@@ -2303,7 +2303,7 @@ P['unitframe'] = {
 				['size'] = 18,
 				['attachTo'] = 'TOP',
 				['xOffset'] = 0,
-				['yOffset'] = 10,
+				['yOffset'] = 8,
 			},
 		},
 		['bodyguard'] = {

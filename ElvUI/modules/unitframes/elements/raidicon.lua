@@ -18,9 +18,8 @@ function UF:Configure_RaidIcon(frame)
 		RI:Show()
 		RI:Size(frame.db.raidicon.size)
 
-		local x, y = self:GetPositionOffset(frame.db.raidicon.attachTo)
 		RI:ClearAllPoints()
-		RI:Point(frame.db.raidicon.attachTo, frame, frame.db.raidicon.attachTo, x + frame.db.raidicon.xOffset, y + frame.db.raidicon.yOffset)
+		RI:Point(frame.db.raidicon.attachTo, frame, frame.db.raidicon.attachTo, frame.db.raidicon.xOffset, frame.db.raidicon.yOffset)
 	else
 		frame:DisableElement('RaidIcon')
 		RI:Hide()
