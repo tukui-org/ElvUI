@@ -522,7 +522,7 @@ P['unitframe'] = {
 			['health'] = {
 				['text_format'] = '[healthcolor][health:current-percent]',
 				['position'] = 'LEFT',
-				['xOffset'] = 0,
+				['xOffset'] = 2,
 				['yOffset'] = 0,
 				['attachTextTo'] = 'Health',
 			},
@@ -683,7 +683,7 @@ P['unitframe'] = {
 			['health'] = {
 				['text_format'] = '[healthcolor][health:current-percent]',
 				['position'] = 'RIGHT',
-				['xOffset'] = 0,
+				['xOffset'] = -2,
 				['yOffset'] = 0,
 				['attachTextTo'] = 'Health',
 			},
@@ -835,7 +835,7 @@ P['unitframe'] = {
 			['health'] = {
 				['text_format'] = '',
 				['position'] = 'RIGHT',
-				['xOffset'] = 0,
+				['xOffset'] = -2,
 				['yOffset'] = 0,
 			},
 			['power'] = {
@@ -931,7 +931,7 @@ P['unitframe'] = {
 			['health'] = {
 				['text_format'] = '',
 				['position'] = 'RIGHT',
-				['xOffset'] = 0,
+				['xOffset'] = -2,
 				['yOffset'] = 0,
 			},
 			['power'] = {
@@ -1027,7 +1027,7 @@ P['unitframe'] = {
 			['health'] = {
 				['text_format'] = '',
 				['position'] = 'RIGHT',
-				['xOffset'] = 0,
+				['xOffset'] = -2,
 				['yOffset'] = 0,
 				['attachTextTo'] = 'Health',
 			},
@@ -1162,7 +1162,7 @@ P['unitframe'] = {
 			['health'] = {
 				['text_format'] = '',
 				['position'] = 'RIGHT',
-				['xOffset'] = 0,
+				['xOffset'] = -2,
 				['yOffset'] = 0,
 			},
 			['power'] = {
@@ -1259,7 +1259,7 @@ P['unitframe'] = {
 				['text_format'] = '',
 				['position'] = 'RIGHT',
 				['yOffset'] = 0,
-				['xOffset'] = 0,
+				['xOffset'] = -2,
 			},
 			['power'] = {
 				['enable'] = true,
@@ -1362,7 +1362,7 @@ P['unitframe'] = {
 				['text_format'] = '',
 				['position'] = 'RIGHT',
 				['yOffset'] = 0,
-				['xOffset'] = 0,
+				['xOffset'] = -2,
 			},
 			['power'] = {
 				['enable'] = false,
@@ -1451,7 +1451,7 @@ P['unitframe'] = {
 				['text_format'] = '[healthcolor][health:current]',
 				['position'] = 'LEFT',
 				['yOffset'] = 0,
-				['xOffset'] = 0,
+				['xOffset'] = 2,
 				['attachTextTo'] = 'Health',
 			},
 			['power'] = {
@@ -1565,7 +1565,7 @@ P['unitframe'] = {
 				['text_format'] = '[healthcolor][health:current]',
 				['position'] = 'LEFT',
 				['yOffset'] = 0,
-				['xOffset'] = 0,
+				['xOffset'] = 2,
 				['attachTextTo'] = 'Health',
 			},
 			['power'] = {
@@ -1691,7 +1691,7 @@ P['unitframe'] = {
 				['attachTextTo'] = 'Health',
 				['frequentUpdates'] = false,
 				['yOffset'] = 0,
-				['xOffset'] = 0,
+				['xOffset'] = 2,
 			},
 			['power'] = {
 				['enable'] = true,
@@ -1882,7 +1882,7 @@ P['unitframe'] = {
 				['orientation'] = 'HORIZONTAL',
 				['attachTextTo'] = 'Health',
 				['frequentUpdates'] = false,
-				['yOffset'] = 0,
+				['yOffset'] = 2,
 				['xOffset'] = 0,
 			},
 			['power'] = {
@@ -2044,7 +2044,7 @@ P['unitframe'] = {
 				['orientation'] = 'HORIZONTAL',
 				['frequentUpdates'] = false,
 				['attachTextTo'] = 'Health',
-				['yOffset'] = 0,
+				['yOffset'] = 2,
 				['xOffset'] = 0,
 			},
 			['power'] = {
@@ -2207,7 +2207,7 @@ P['unitframe'] = {
 				['position'] = 'BOTTOM',
 				['orientation'] = 'HORIZONTAL',
 				['frequentUpdates'] = true,
-				['yOffset'] = 0,
+				['yOffset'] = 2,
 				['xOffset'] = 0,
 				['attachTextTo'] = 'Health',
 			},
