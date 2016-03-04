@@ -97,13 +97,15 @@ end
 
 function UF:Configure_RoleIcon(frame)
 	local role = frame.LFDRole
-	if frame.db.roleIcon.enable then
-		frame:EnableElement('LFDRole')
+	local db = frame.db
 
-		local x, y = self:GetPositionOffset(frame.db.roleIcon.position, 1)
+	if db.roleIcon.enable then
+		frame:EnableElement('LFDRole')
+		local attachPoint = self:GetObjectAnchorPoint(frame, db.roleIcon.attachTo)
+
 		role:ClearAllPoints()
-		role:Point(frame.db.roleIcon.position, frame.Health, frame.db.roleIcon.position, x, y)
-		role:Size(frame.db.roleIcon.size)
+		role:Point(db.roleIcon.position, attachPoint, db.roleIcon.position, db.roleIcon.xOffset, db.roleIcon.yOffset)
+		role:Size(db.roleIcon.size)
 	else
 		frame:DisableElement('LFDRole')
 		role:Hide()
