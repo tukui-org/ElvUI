@@ -2214,7 +2214,7 @@ P['unitframe'] = {
 			['name'] = {
 				['position'] = 'TOP',
 				['text_format'] = '[namecolor][name:short]',
-				['yOffset'] = 0,
+				['yOffset'] = -2,
 				['xOffset'] = 0,
 				['attachTextTo'] = 'Health',
 			},
