@@ -283,7 +283,7 @@ function UF:Construct_UF(frame, unit)
 	return frame
 end
 
-function UF:GetTextAnchorPoint(frame, point)
+function UF:GetObjectAnchorPoint(frame, point)
 	if not frame[point] or point == "Frame" then
 		return frame
 	elseif frame[point] and not frame[point]:IsShown() then

@@ -61,7 +61,7 @@ function UF:Configure_HealthBar(frame)
 	--Text
 	if health.value then
 		local x, y = self:GetPositionOffset(db.health.position)
-		local attachPoint = self:GetTextAnchorPoint(frame, db.health.attachTextTo)
+		local attachPoint = self:GetObjectAnchorPoint(frame, db.health.attachTextTo)
 		if(E.global.tukuiMode and frame.InfoPanel and frame.InfoPanel:IsShown()) then
 			if(frame.unitframeType == 'raid') then
 				attachPoint = frame.Health
