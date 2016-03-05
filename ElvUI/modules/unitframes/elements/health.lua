@@ -149,6 +149,8 @@ function UF:Configure_HealthBar(frame)
 	
 	--Transparency Settings
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg, (frame.USE_PORTRAIT and frame.USE_PORTRAIT_OVERLAY) ~= true)
+	
+	frame:UpdateElement("Health")
 end
 
 function UF:PostUpdateHealth(unit, min, max)
