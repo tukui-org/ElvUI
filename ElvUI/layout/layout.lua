@@ -49,7 +49,7 @@ function LO:Initialize()
 end
 
 function LO:BottomPanelVisibility()
-	if E.db.general.bottomPanel then
+	if E.db.general.bottomPanel and not E.global.tukuiMode then
 		self.BottomPanel:Show()
 	else
 		self.BottomPanel:Hide()
@@ -188,8 +188,15 @@ function LO:ToggleChatPanels()
 		RightChatDataPanel:Hide()
 		RightChatToggleButton:Hide()
 	end
-
-	if E.db.chat.panelBackdrop == 'SHOWBOTH' then
+	
+	local panelBackdrop = E.db.chat.panelBackdrop
+	if(E.global.tukuiMode) then
+		panelBackdrop = 'HIDEBOTH'
+		RightChatToggleButton:Hide()
+		LeftChatToggleButton:Hide()
+	end
+	
+	if panelBackdrop == 'SHOWBOTH' then
 		LeftChatPanel.backdrop:Show()
 		RightChatPanel.backdrop:Show()
 		LeftChatDataPanel:Point('BOTTOMLEFT', LeftChatPanel, 'BOTTOMLEFT', SPACING + SIDE_BUTTON_WIDTH, SPACING)
@@ -199,7 +206,7 @@ function LO:ToggleChatPanels()
 		LeftChatToggleButton:Point('BOTTOMLEFT', LeftChatPanel, 'BOTTOMLEFT', SPACING, SPACING)
 		RightChatToggleButton:Point('BOTTOMRIGHT', RightChatPanel, 'BOTTOMRIGHT', -SPACING, SPACING)
 		LO:ToggleChatTabPanels()
-	elseif E.db.chat.panelBackdrop == 'HIDEBOTH' then
+	elseif panelBackdrop == 'HIDEBOTH' then
 		LeftChatPanel.backdrop:Hide()
 		RightChatPanel.backdrop:Hide()
 		LeftChatDataPanel:Point('BOTTOMLEFT', LeftChatPanel, 'BOTTOMLEFT', SIDE_BUTTON_WIDTH, 0)
@@ -209,7 +216,7 @@ function LO:ToggleChatPanels()
 		LeftChatToggleButton:Point('BOTTOMLEFT', LeftChatPanel, 'BOTTOMLEFT')
 		RightChatToggleButton:Point('BOTTOMRIGHT', RightChatPanel, 'BOTTOMRIGHT')
 		LO:ToggleChatTabPanels(true, true)
-	elseif E.db.chat.panelBackdrop == 'LEFT' then
+	elseif panelBackdrop == 'LEFT' then
 		LeftChatPanel.backdrop:Show()
 		RightChatPanel.backdrop:Hide()
 		LeftChatDataPanel:Point('BOTTOMLEFT', LeftChatPanel, 'BOTTOMLEFT', SPACING + SIDE_BUTTON_WIDTH, SPACING)
@@ -400,6 +407,59 @@ function LO:CreateMinimapPanels()
 	configtoggle:SetScript('OnLeave', function(self)
 		GameTooltip:Hide()
 	end)
+	
+	if(E.global.tukuiMode) then
+		local BottomLine = CreateFrame("Frame", nil, E.UIParent)
+		BottomLine:SetTemplate()
+		BottomLine:Size(2)
+		BottomLine:Point("BOTTOMLEFT", 15, 15)
+		BottomLine:Point("BOTTOMRIGHT", -15, 15)
+		BottomLine:SetFrameStrata("BACKGROUND")
+		BottomLine:SetFrameLevel(0)
+
+		local LeftVerticalLine = CreateFrame("Frame", nil, BottomLine)
+		LeftVerticalLine:SetTemplate()
+		LeftVerticalLine:Point("BOTTOMLEFT", 0, 0)
+		LeftVerticalLine:SetFrameLevel(0)
+		LeftVerticalLine:SetFrameStrata("BACKGROUND")
+
+
+		local RightVerticalLine = CreateFrame("Frame", nil, BottomLine)
+		RightVerticalLine:SetTemplate()
+		RightVerticalLine:Point("BOTTOMRIGHT", 0, 0)
+		RightVerticalLine:SetFrameLevel(0)
+		RightVerticalLine:SetFrameStrata("BACKGROUND")
+
+
+		local CubeLeft = CreateFrame("Frame", nil, LeftVerticalLine)
+		CubeLeft:SetTemplate()
+		CubeLeft:Size(10)
+		CubeLeft:Point("BOTTOM", LeftVerticalLine, "TOP", 0, 0)
+		CubeLeft:EnableMouse(true)
+		CubeLeft:SetFrameLevel(0)
+		CubeLeft:SetScript("OnMouseDown", function(self, Button)
+			if (Button == "LeftButton") then	
+				ToggleFrame(ChatMenu)
+			end
+		end)
+
+		local CubeRight = CreateFrame("Frame", nil, RightVerticalLine)
+		CubeRight:SetTemplate()
+		CubeRight:Size(10)
+		CubeRight:Point("BOTTOM", RightVerticalLine, "TOP", 0, 0)
+		CubeRight:EnableMouse(true)
+		CubeRight:SetFrameLevel(0)
+		CubeRight:SetScript("OnMouseDown", function(self, Button)
+			if (Button == "LeftButton") then	
+				ToggleCharacter("ReputationFrame")
+			end
+		end)
+		
+		hooksecurefunc(E:GetModule("Chat"), "PositionChat", function()
+			LeftVerticalLine:Size(2, E.db.chat.panelHeight - 40)
+			RightVerticalLine:Size(2, (E.db.chat.separateSizes and E.db.chat.panelHeightRight or E.db.chat.panelHeight) - 40)	
+		end)
+	end
 end
 
 E:RegisterModule(LO:GetName())

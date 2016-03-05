@@ -31,6 +31,7 @@ local threatValues = {
 	['GLOW'] = L["Glow"],
 	['BORDERS'] = L["Borders"],
 	['HEALTHBORDER'] = L["Health Border"],
+	["INFOPANELBORDER"] = L["InfoPanel Border"],
 	['ICONTOPLEFT'] = L["Icon: TOPLEFT"],
 	['ICONTOPRIGHT'] = L["Icon: TOPRIGHT"],
 	['ICONBOTTOMLEFT'] = L["Icon: BOTTOMLEFT"],
@@ -885,9 +886,31 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				name = L["Spark"],
 				desc = L["Display a spark texture at the end of the castbar statusbar to help show the differance between castbar and backdrop."],
 			},
+			iconAttached = {
+				order = 16,
+				name = L["Attach Icon to Bar"],
+				desc = L["Display the castbar icon on the castbar, if not set it will appear next to the unitframe seperately."],
+				type = "toggle",
+			},
+			insideInfoPanel = {
+				order = 17,
+				name = L["Inside Information Panel"],
+				desc = L["Display the castbar inside the information panel, the icon will be displayed outside the main unitframe."],
+				type = "toggle",
+				disabled = function() return not E.db.unitframe.units[groupName].infoPanel or not E.db.unitframe.units[groupName].infoPanel.enable end,
+			},		
+			iconSize = {
+				order = 18,
+				name = L["Icon Size"],
+				desc = L["This dictates the size of the icon when it is bound to the Information Panel."],
+				type = "range",
+				disabled = function() return E.db.unitframe.units[groupName].castbar.iconAttached end,
+				min = 8, max = 150, step = 1,
+			},			
 		},
 	}
 
+	
 	if hasTicks then
 		config.args.ticks = {
 			order = 13,
@@ -902,6 +925,38 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 			desc = L["Display the target of your current cast. Useful for mouseover casts."],
 		}
 	end
+
+	return config
+end
+
+
+local function GetOptionsTable_InformationPanel(updateFunc, groupName, numUnits)
+
+	local config = {
+		order = 4000,
+		type = 'group',
+		name = L["Information Panel"],
+		get = function(info) return E.db.unitframe.units[groupName]['infoPanel'][ info[#info] ] end,
+		set = function(info, value) E.db.unitframe.units[groupName]['infoPanel'][ info[#info] ] = value; updateFunc(UF, groupName, numUnits) end,
+		args = {
+			enable = {
+				type = 'toggle',
+				order = 1,
+				name = L["Enable"],
+			},
+			transparent = {
+				type = "toggle",
+				order = 2,
+				name = L["Transparent"],
+			},
+			height = {
+				type = 'range',
+				order = 3,
+				name = L["Height"],
+				min = 4, max = 30, step = 1,
+			},
+		}
+	}
 
 	return config
 end
@@ -933,6 +988,17 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 				name = L["Text yOffset"],
 				desc = L["Offset position for text."],
 				min = -300, max = 300, step = 1,
+			},
+			attachTextTo = {
+				type = 'select',
+				order = 4,
+				name = L["Attach Text To"],
+				values = {
+					['Health'] = L["Health"],
+					['Power'] = L["Power"],
+					['InfoPanel'] = L["Information Bar"],
+					['Frame'] = L["Frame"],
+				},
 			},
 			text_format = {
 				order = 100,
@@ -973,6 +1039,8 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 
 	return config
 end
+
+
 local function GetOptionsTable_CustomText(updateFunc, groupName, numUnits, orderOverride)
 	local config = {
 		order = orderOverride or 50,
@@ -1006,7 +1074,8 @@ local function GetOptionsTable_CustomText(updateFunc, groupName, numUnits, order
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 				['justifyH'] = 'CENTER',
-				['fontOutline'] = E.db.unitframe.fontOutline
+				['fontOutline'] = E.db.unitframe.fontOutline,
+				['attachTextTo'] = 'HEALTH'
 			};
 
 			UF:CreateCustomTextGroup(groupName, textName)
@@ -1142,6 +1211,17 @@ local function GetOptionsTable_Name(updateFunc, groupName, numUnits)
 				name = L["Text yOffset"],
 				desc = L["Offset position for text."],
 				min = -300, max = 300, step = 1,
+			},
+			attachTextTo = {
+				type = 'select',
+				order = 4,
+				name = L["Attach Text To"],
+				values = {
+					['Health'] = L["Health"],
+					['Power'] = L["Power"],
+					['InfoPanel'] = L["Information Bar"],
+					['Frame'] = L["Frame"],
+				},
 			},
 			text_format = {
 				order = 100,
@@ -1295,7 +1375,7 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 				type = 'range',
 				name = L["Height"],
 				order = 2,
-				min = 1, max = 50, step = 1,
+				min = (E.db.unitframe.thinBorders and 3 or 7), max = 50, step = 1,
 			},
 			offset = {
 				type = 'range',
@@ -1331,15 +1411,21 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 				desc = L["Offset position for text."],
 				min = -300, max = 300, step = 1,
 			},
+			attachTextTo = {
+				type = 'select',
+				order = 8,
+				name = L["Attach Text To"],
+				values = {
+					['Health'] = L["Health"],
+					['Power'] = L["Power"],
+					['InfoPanel'] = L["Information Bar"],
+					['Frame'] = L["Frame"],
+				},
+			},
 		},
 	}
 
 	if hasDetatchOption then
-			config.args.attachTextToPower = {
-				type = 'toggle',
-				order = 8,
-				name = L["Attach Text to Power"],
-			}
 			config.args.detachFromFrame = {
 				type = 'toggle',
 				order = 9,
@@ -1443,6 +1529,17 @@ local function GetOptionsTable_RaidIcon(updateFunc, groupName, numUnits)
 				order = 2,
 				name = L["Position"],
 				values = positionValues,
+			},
+			attachToObject = {
+				type = 'select',
+				order = 4,
+				name = L["Attach To"],
+				values = {
+					['Health'] = L["Health"],
+					['Power'] = L["Power"],
+					['InfoPanel'] = L["Information Bar"],
+					['Frame'] = L["Frame"],
+				},
 			},
 			size = {
 				type = 'range',
@@ -1760,6 +1857,17 @@ function UF:CreateCustomTextGroup(unit, objectName)
 				name = L["yOffset"],
 				min = -400, max = 400, step = 1,
 			},
+			attachTextTo = {
+				type = 'select',
+				order = 8,
+				name = L["Attach Text To"],
+				values = {
+					['Health'] = L["Health"],
+					['Power'] = L["Power"],
+					['InfoPanel'] = L["Information Bar"],
+					['Frame'] = L["Frame"],
+				},
+			},
 			text_format = {
 				order = 100,
 				name = L["Text Format"],
@@ -1849,6 +1957,14 @@ E.Options.args.unitframe = {
 					guiInline = true,
 					name = L["General"],
 					args = {
+						thinBorders = {
+							order = 1,
+							name = L["Thin Borders"],
+							desc = L["Use thin borders on certain unitframe elements."],
+							type = 'toggle',
+							disabled = function() return E.private.general.pixelPerfect end,
+							set = function(info, value) E.db.unitframe[ info[#info] ] = value; E:StaticPopup_Show("CONFIG_RL") end,
+						},
 						OORAlpha = {
 							order = 2,
 							name = L["OOR Alpha"],
@@ -2467,8 +2583,21 @@ E.Options.args.unitframe.args.player = {
 				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 			},
 		},
+		orientation = {
+			order = 14,
+			type = "select",
+			name = L["Frame Orientation"],
+			desc = L["Set the orientation of the UnitFrame. If set to automatic it will adjust based on where the frame is located on the screen."],
+			values = {
+				--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
+				["LEFT"] = L["Left"],
+				["MIDDLE"] = L["Middle"],
+				["RIGHT"] = L["Right"],
+			},
+		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'player'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'player'),
+		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'player'),
 		power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'player', nil, true),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'player'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'player'),
@@ -2514,7 +2643,7 @@ E.Options.args.unitframe.args.player = {
 					order = 5,
 					name = L["Detached Width"],
 					disabled = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
-					min = 15, max = 450, step = 1,
+					min = 15, max = 800, step = 1,
 				},
 				autoHide = {
 					order = 6,
@@ -2687,6 +2816,18 @@ E.Options.args.unitframe.args.target = {
 				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 			},
 		},
+		orientation = {
+			order = 13,
+			type = "select",
+			name = L["Frame Orientation"],
+			desc = L["Set the orientation of the UnitFrame. If set to automatic it will adjust based on where the frame is located on the screen."],
+			values = {
+				--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
+				["LEFT"] = L["Left"],
+				["MIDDLE"] = L["Middle"],
+				["RIGHT"] = L["Right"],
+			},
+		},
 		combobar = {
 			order = 800,
 			type = 'group',
@@ -2735,6 +2876,7 @@ E.Options.args.unitframe.args.target = {
 		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'target'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'target'),
+		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'target'),
 		power = GetOptionsTable_Power(true, UF.CreateAndUpdateUF, 'target', nil, true),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'target'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'target'),
@@ -2833,8 +2975,21 @@ E.Options.args.unitframe.args.targettarget = {
 				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 			},
 		},
+		orientation = {
+			order = 10,
+			type = "select",
+			name = L["Frame Orientation"],
+			desc = L["Set the orientation of the UnitFrame. If set to automatic it will adjust based on where the frame is located on the screen."],
+			values = {
+				--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
+				["LEFT"] = L["Left"],
+				["MIDDLE"] = L["Middle"],
+				["RIGHT"] = L["Right"],
+			},
+		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'targettarget'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'targettarget'),
+		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'targettarget'),
 		power = GetOptionsTable_Power(nil, UF.CreateAndUpdateUF, 'targettarget'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'targettarget'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'targettarget'),
@@ -2930,8 +3085,21 @@ E.Options.args.unitframe.args.targettargettarget = {
 				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 			},
 		},
+		orientation = {
+			order = 10,
+			type = "select",
+			name = L["Frame Orientation"],
+			desc = L["Set the orientation of the UnitFrame. If set to automatic it will adjust based on where the frame is located on the screen."],
+			values = {
+				--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
+				["LEFT"] = L["Left"],
+				["MIDDLE"] = L["Middle"],
+				["RIGHT"] = L["Right"],
+			},
+		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'targettargettarget'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'targettargettarget'),
+		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'targettargettarget'),
 		power = GetOptionsTable_Power(nil, UF.CreateAndUpdateUF, 'targettargettarget'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'targettargettarget'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'targettargettarget'),
@@ -3033,8 +3201,21 @@ E.Options.args.unitframe.args.focus = {
 				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 			},
 		},
+		orientation = {
+			order = 13,
+			type = "select",
+			name = L["Frame Orientation"],
+			desc = L["Set the orientation of the UnitFrame. If set to automatic it will adjust based on where the frame is located on the screen."],
+			values = {
+				--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
+				["LEFT"] = L["Left"],
+				["MIDDLE"] = L["Middle"],
+				["RIGHT"] = L["Right"],
+			},
+		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'focus'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'focus'),
+		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'focus'),
 		power = GetOptionsTable_Power(nil, UF.CreateAndUpdateUF, 'focus'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'focus'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'focus'),
@@ -3133,8 +3314,21 @@ E.Options.args.unitframe.args.focustarget = {
 				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 			},
 		},
+		orientation = {
+			order = 10,
+			type = "select",
+			name = L["Frame Orientation"],
+			desc = L["Set the orientation of the UnitFrame. If set to automatic it will adjust based on where the frame is located on the screen."],
+			values = {
+				--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
+				["LEFT"] = L["Left"],
+				["MIDDLE"] = L["Middle"],
+				["RIGHT"] = L["Right"],
+			},
+		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'focustarget'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'focustarget'),
+		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'focustarget'),
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUF, 'focustarget'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'focustarget'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'focustarget'),
@@ -3236,6 +3430,18 @@ E.Options.args.unitframe.args.pet = {
 				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 			},
 		},
+		orientation = {
+			order = 13,
+			type = "select",
+			name = L["Frame Orientation"],
+			desc = L["Set the orientation of the UnitFrame. If set to automatic it will adjust based on where the frame is located on the screen."],
+			values = {
+				--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
+				["LEFT"] = L["Left"],
+				["MIDDLE"] = L["Middle"],
+				["RIGHT"] = L["Right"],
+			},
+		},
 		buffIndicator = {
 			order = 600,
 			type = 'group',
@@ -3265,6 +3471,7 @@ E.Options.args.unitframe.args.pet = {
 		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'pet'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'pet'),
+		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'pet'),
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUF, 'pet'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'pet'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'pet'),
@@ -3360,8 +3567,21 @@ E.Options.args.unitframe.args.pettarget = {
 				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 			},
 		},
+		orientation = {
+			order = 10,
+			type = "select",
+			name = L["Frame Orientation"],
+			desc = L["Set the orientation of the UnitFrame. If set to automatic it will adjust based on where the frame is located on the screen."],
+			values = {
+				--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
+				["LEFT"] = L["Left"],
+				["MIDDLE"] = L["Middle"],
+				["RIGHT"] = L["Right"],
+			},
+		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'pettarget'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'pettarget'),
+		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'pettarget'),
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUF, 'pettarget'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUF, 'pettarget'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUF, 'pettarget'),
@@ -3476,9 +3696,22 @@ E.Options.args.unitframe.args.boss = {
 				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 			},
 		},
+		orientation = {
+			order = 12,
+			type = "select",
+			name = L["Frame Orientation"],
+			desc = L["Set the orientation of the UnitFrame. If set to automatic it will adjust based on where the frame is located on the screen."],
+			values = {
+				--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
+				["LEFT"] = L["Left"],
+				["MIDDLE"] = L["Middle"],
+				["RIGHT"] = L["Right"],
+			},
+		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
+		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
 		buffs = GetOptionsTable_Auras(false, 'buffs', false, UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
@@ -3611,8 +3844,20 @@ E.Options.args.unitframe.args.arena = {
 				["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
 			},
 		},
-		pvpTrinket = {
+		orientation = {
 			order = 14,
+			type = "select",
+			name = L["Frame Orientation"],
+			desc = L["Set the orientation of the UnitFrame. If set to automatic it will adjust based on where the frame is located on the screen."],
+			values = {
+				--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
+				["LEFT"] = L["Left"],
+				--["MIDDLE"] = L["Middle"], --no way to handle this with trinket
+				["RIGHT"] = L["Right"],
+			},
+		},
+		pvpTrinket = {
+			order = 15,
 			type = 'group',
 			name = L["PVP Trinket"],
 			get = function(info) return E.db.unitframe.units['arena']['pvpTrinket'][ info[#info] ] end,
@@ -3654,6 +3899,7 @@ E.Options.args.unitframe.args.arena = {
 		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUFGroup, 'arena', 5),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUFGroup, 'arena', 5),
+		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUFGroup, 'arena', 5),
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUFGroup, 'arena', 5),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateUFGroup, 'arena', 5),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUFGroup, 'arena', 5),
@@ -3750,6 +3996,18 @@ E.Options.args.unitframe.args.party = {
 						['USE_DEFAULT'] = L["Use Default"],
 						['FORCE_ON'] = L["Force On"],
 						['FORCE_OFF'] = L["Force Off"],
+					},
+				},
+				orientation = {
+					order = 7,
+					type = "select",
+					name = L["Frame Orientation"],
+					desc = L["Set the orientation of the UnitFrame. If set to automatic it will adjust based on where the frame is located on the screen."],
+					values = {
+						--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
+						["LEFT"] = L["Left"],
+						["MIDDLE"] = L["Middle"],
+						["RIGHT"] = L["Right"],
 					},
 				},
 				positionsGroup = {
@@ -3982,24 +4240,47 @@ E.Options.args.unitframe.args.party = {
 					name = L["Position"],
 					values = positionValues,
 				},
+				attachTo = {
+					type = 'select',
+					order = 3,
+					name = L["Attach To"],
+					values = {
+						['Health'] = L["Health"],
+						['Power'] = L["Power"],
+						['InfoPanel'] = L["Information Bar"],
+						['Frame'] = L["Frame"],
+					},
+				},
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L["xOffset"],
+					min = -300, max = 300, step = 1,
+				},
+				yOffset = {
+					order = 5,
+					type = 'range',
+					name = L["yOffset"],
+					min = -300, max = 300, step = 1,
+				},
 				size = {
 					type = 'range',
-					order = 3,
+					order = 6,
 					name = L["Size"],
 					min = 4, max = 100, step = 1,
 				},
 				tank = {
-					order = 4,
+					order = 7,
 					type = "toggle",
 					name = L["Show For Tanks"],
 				},
 				healer = {
-					order = 5,
+					order = 8,
 					type = "toggle",
 					name = L["Show For Healers"],
 				},
 				damager = {
-					order = 6,
+					order = 9,
 					type = "toggle",
 					name = L["Show For DPS"],
 				},
@@ -4029,6 +4310,7 @@ E.Options.args.unitframe.args.party = {
 			},
 		},
 		health = GetOptionsTable_Health(true, UF.CreateAndUpdateHeaderGroup, 'party'),
+		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateHeaderGroup, 'party'),
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateHeaderGroup, 'party'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'party'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateHeaderGroup, 'party'),
@@ -4290,6 +4572,18 @@ E.Options.args.unitframe.args['raid'] = {
 						['FORCE_OFF'] = L["Force Off"],
 					},
 				},
+				orientation = {
+					order = 7,
+					type = "select",
+					name = L["Frame Orientation"],
+					desc = L["Set the orientation of the UnitFrame. If set to automatic it will adjust based on where the frame is located on the screen."],
+					values = {
+						--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
+						["LEFT"] = L["Left"],
+						["MIDDLE"] = L["Middle"],
+						["RIGHT"] = L["Right"],
+					},
+				},
 				positionsGroup = {
 					order = 100,
 					name = L["Size and Positions"],
@@ -4458,6 +4752,7 @@ E.Options.args.unitframe.args['raid'] = {
 			},
 		},
 		health = GetOptionsTable_Health(true, UF.CreateAndUpdateHeaderGroup, 'raid'),
+		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateHeaderGroup, 'raid'),
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateHeaderGroup, 'raid'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'raid'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateHeaderGroup, 'raid'),
@@ -4526,24 +4821,47 @@ E.Options.args.unitframe.args['raid'] = {
 					name = L["Position"],
 					values = positionValues,
 				},
+				attachTo = {
+					type = 'select',
+					order = 3,
+					name = L["Attach To"],
+					values = {
+						['Health'] = L["Health"],
+						['Power'] = L["Power"],
+						['InfoPanel'] = L["Information Bar"],
+						['Frame'] = L["Frame"],
+					},
+				},
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L["xOffset"],
+					min = -300, max = 300, step = 1,
+				},
+				yOffset = {
+					order = 5,
+					type = 'range',
+					name = L["yOffset"],
+					min = -300, max = 300, step = 1,
+				},
 				size = {
 					type = 'range',
-					order = 3,
+					order = 6,
 					name = L["Size"],
 					min = 4, max = 100, step = 1,
 				},
 				tank = {
-					order = 4,
+					order = 7,
 					type = "toggle",
 					name = L["Show For Tanks"],
 				},
 				healer = {
-					order = 5,
+					order = 8,
 					type = "toggle",
 					name = L["Show For Healers"],
 				},
 				damager = {
-					order = 6,
+					order = 9,
 					type = "toggle",
 					name = L["Show For DPS"],
 				},
@@ -4658,6 +4976,18 @@ E.Options.args.unitframe.args['raid40'] = {
 						['USE_DEFAULT'] = L["Use Default"],
 						['FORCE_ON'] = L["Force On"],
 						['FORCE_OFF'] = L["Force Off"],
+					},
+				},
+				orientation = {
+					order = 7,
+					type = "select",
+					name = L["Frame Orientation"],
+					desc = L["Set the orientation of the UnitFrame. If set to automatic it will adjust based on where the frame is located on the screen."],
+					values = {
+						--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
+						["LEFT"] = L["Left"],
+						["MIDDLE"] = L["Middle"],
+						["RIGHT"] = L["Right"],
 					},
 				},
 				positionsGroup = {
@@ -4828,6 +5158,7 @@ E.Options.args.unitframe.args['raid40'] = {
 			},
 		},
 		health = GetOptionsTable_Health(true, UF.CreateAndUpdateHeaderGroup, 'raid40'),
+		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateHeaderGroup, 'raid40'),
@@ -4896,24 +5227,47 @@ E.Options.args.unitframe.args['raid40'] = {
 					name = L["Position"],
 					values = positionValues,
 				},
+				attachTo = {
+					type = 'select',
+					order = 3,
+					name = L["Attach To"],
+					values = {
+						['Health'] = L["Health"],
+						['Power'] = L["Power"],
+						['InfoPanel'] = L["Information Bar"],
+						['Frame'] = L["Frame"],
+					},
+				},
+				xOffset = {
+					order = 4,
+					type = 'range',
+					name = L["xOffset"],
+					min = -300, max = 300, step = 1,
+				},
+				yOffset = {
+					order = 5,
+					type = 'range',
+					name = L["yOffset"],
+					min = -300, max = 300, step = 1,
+				},
 				size = {
 					type = 'range',
-					order = 3,
+					order = 6,
 					name = L["Size"],
 					min = 4, max = 100, step = 1,
 				},
 				tank = {
-					order = 4,
+					order = 7,
 					type = "toggle",
 					name = L["Show For Tanks"],
 				},
 				healer = {
-					order = 5,
+					order = 8,
 					type = "toggle",
 					name = L["Show For Healers"],
 				},
 				damager = {
-					order = 6,
+					order = 9,
 					type = "toggle",
 					name = L["Show For DPS"],
 				},
@@ -5020,6 +5374,18 @@ E.Options.args.unitframe.args.raidpet = {
 						['USE_DEFAULT'] = L["Use Default"],
 						['FORCE_ON'] = L["Force On"],
 						['FORCE_OFF'] = L["Force Off"],
+					},
+				},
+				orientation = {
+					order = 7,
+					type = "select",
+					name = L["Frame Orientation"],
+					desc = L["Set the orientation of the UnitFrame. If set to automatic it will adjust based on where the frame is located on the screen."],
+					values = {
+						--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
+						["LEFT"] = L["Left"],
+						["MIDDLE"] = L["Middle"],
+						["RIGHT"] = L["Right"],
 					},
 				},
 				positionsGroup = {
@@ -5276,6 +5642,18 @@ E.Options.args.unitframe.args.tank = {
 					desc = L["Forces Debuff Highlight to be disabled for these frames"],
 					disabled = function() return E.db.unitframe.debuffHighlighting == "NONE" end,
 				},
+				orientation = {
+					order = 6,
+					type = "select",
+					name = L["Frame Orientation"],
+					desc = L["Set the orientation of the UnitFrame. If set to automatic it will adjust based on where the frame is located on the screen."],
+					values = {
+						--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
+						["LEFT"] = L["Left"],
+						["MIDDLE"] = L["Middle"],
+						["RIGHT"] = L["Right"],
+					},
+				},
 			},
 		},
 		targetsGroup = {
@@ -5426,6 +5804,18 @@ E.Options.args.unitframe.args.assist = {
 					name = L["Disable Debuff Highlight"],
 					desc = L["Forces Debuff Highlight to be disabled for these frames"],
 					disabled = function() return E.db.unitframe.debuffHighlighting == "NONE" end,
+				},
+				orientation = {
+					order = 6,
+					type = "select",
+					name = L["Frame Orientation"],
+					desc = L["Set the orientation of the UnitFrame. If set to automatic it will adjust based on where the frame is located on the screen."],
+					values = {
+						--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
+						["LEFT"] = L["Left"],
+						["MIDDLE"] = L["Middle"],
+						["RIGHT"] = L["Right"],
+					},
 				},
 			},
 		},

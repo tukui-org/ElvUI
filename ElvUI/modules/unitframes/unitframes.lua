@@ -244,10 +244,24 @@ function UF:ConvertGroupDB(group)
 	end
 end
 
+
+
 function UF:Construct_UF(frame, unit)
 	frame:SetScript('OnEnter', UnitFrame_OnEnter)
 	frame:SetScript('OnLeave', UnitFrame_OnLeave)
 
+	if(self.thinBorders) then
+		frame.SPACING = 0
+		frame.BORDER = E.mult
+	else
+		frame.BORDER = E.Border
+		frame.SPACING = E.Spacing
+	end
+
+	frame.SHADOW_SPACING = 3
+	frame.STAGGER_WIDTH = 0	--placeholder
+	frame.CLASSBAR_YOFFSET = 0	--placeholder
+	frame.BOTTOM_OFFSET = 0 --placeholder
 	frame:SetFrameLevel(5)
 
 	frame.RaisedElementParent = CreateFrame('Frame', nil, frame)
@@ -267,6 +281,16 @@ function UF:Construct_UF(frame, unit)
 	self:Update_StatusBars()
 	self:Update_FontStrings()
 	return frame
+end
+
+function UF:GetObjectAnchorPoint(frame, point)
+	if not frame[point] or point == "Frame" then
+		return frame
+	elseif frame[point] and not frame[point]:IsShown() then
+		return frame.Health
+	else
+		return frame[point]
+	end
 end
 
 function UF:GetPositionOffset(position, offset)
@@ -451,8 +475,10 @@ function UF:Update_AllFrames()
 		if self.db['units'][unit].enable then
 			self[unit]:Enable()
 			self[unit]:Update()
+			E:EnableMover(self[unit].mover:GetName())
 		else
 			self[unit]:Disable()
+			E:DisableMover(self[unit].mover:GetName())
 		end
 	end
 
@@ -460,8 +486,10 @@ function UF:Update_AllFrames()
 		if self.db['units'][group].enable then
 			self[unit]:Enable()
 			self[unit]:Update()
+			E:EnableMover(self[unit].mover:GetName())
 		else
 			self[unit]:Disable()
+			E:DisableMover(self[unit].mover:GetName())
 		end
 	end
 
@@ -496,8 +524,10 @@ function UF:CreateAndUpdateUFGroup(group, numGroup, template)
 			if self[unit].isForced then
 				self:ForceShow(self[unit])
 			end
+			E:EnableMover(self[unit].mover:GetName())
 		else
 			self[unit]:Disable()
+			E:DisableMover(self[unit].mover:GetName())
 		end
 	end
 end
@@ -526,6 +556,7 @@ function UF.groupPrototype:Configure_Groups(self)
 	local direction = db.growthDirection
 	local xMult, yMult = DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction], DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction]
 	local SPACING = E.Spacing
+	local UNIT_HEIGHT = (E.global.tukuiMode and db.infoPanel) and db.height + db.infoPanel.height or db.height
 
 
 	local numGroups = self.numGroups
@@ -593,8 +624,7 @@ function UF.groupPrototype:Configure_Groups(self)
 				if group then
 					group:Point(point, self, point, 0, height * yMult)
 				end
-				height = height + (db.height + db.verticalSpacing + SPACING)
-
+				height = height + (UNIT_HEIGHT + db.verticalSpacing + SPACING)
 				newRows = newRows + 1
 			else
 				if group then
@@ -613,23 +643,23 @@ function UF.groupPrototype:Configure_Groups(self)
 					width = width + ((db.width + db.horizontalSpacing + SPACING) * 5)
 					newCols = newCols + 1
 				elseif group then
-					group:Point(point, self, point, (((db.width + db.horizontalSpacing + SPACING) * 5) * ((i-1) % db.groupsPerRowCol)) * xMult, ((db.height + db.verticalSpacing + SPACING) * (newRows - 1)) * yMult)
+					group:Point(point, self, point, (((db.width + db.horizontalSpacing + SPACING) * 5) * ((i-1) % db.groupsPerRowCol)) * xMult, ((UNIT_HEIGHT + db.verticalSpacing + SPACING) * (newRows - 1)) * yMult)
 				end
 			else
 				if newCols == 1 then
 					if group then
 						group:Point(point, self, point, 0, (height + (SPACING*5)) * yMult)
 					end
-					height = height + ((db.height + db.verticalSpacing + SPACING) * 5)
+					height = height + ((UNIT_HEIGHT + db.verticalSpacing + SPACING) * 5)
 					newRows = newRows + 1
 				elseif group then
-					group:Point(point, self, point, ((db.width + db.horizontalSpacing + SPACING) * (newCols - 1)) * xMult, (((db.height + db.verticalSpacing + SPACING) * 5) * ((i-1) % db.groupsPerRowCol)) * yMult)
+					group:Point(point, self, point, ((db.width + db.horizontalSpacing + SPACING) * (newCols - 1)) * xMult, (((UNIT_HEIGHT + db.verticalSpacing + SPACING) * 5) * ((i-1) % db.groupsPerRowCol)) * yMult)
 				end
 			end
 		end
 
 		if height == 0 then
-			height = height + ((db.height + db.verticalSpacing) * 5)
+			height = height + ((UNIT_HEIGHT + db.verticalSpacing) * 5)
 		elseif width == 0 then
 			width = width + ((db.width + db.horizontalSpacing) * 5)
 		end
@@ -809,6 +839,9 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 		if db.enable ~= true and group ~= 'raidpet' then
 			UnregisterStateDriver(self[group], "visibility")
 			self[group]:Hide()
+			if(self[group].mover) then
+				E:DisableMover(self[group].mover:GetName())
+			end
 			return
 		end
 
@@ -840,6 +873,13 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 			UF["headerFunctions"][group]:Update(self[group])
 		end
 
+
+		if(db.enable) then
+			E:EnableMover(self[group].mover:GetName())
+		else
+			E:DisableMover(self[group].mover:GetName())
+		end
+
 		if db.enable ~= true and group == 'raidpet' then
 			UnregisterStateDriver(self[group], "visibility")
 			self[group]:Hide()
@@ -854,6 +894,9 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 			if db.enable ~= true then
 				UnregisterAttributeDriver(UF[group], "state-visibility")
 				UF[group]:Hide()
+				if(UF[group].mover) then
+					E:DisableMover(UF[group].mover:GetName())
+				end
 				return
 			end
 			UF["Update_"..E:StringTitle(group).."Header"](UF, UF[group], db)
@@ -870,6 +913,8 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 					UF["Update_"..E:StringTitle(group).."Frames"](UF, _G[child:GetName()..'Pet'], UF.db['units'][group])
 				end
 			end
+
+			E:EnableMover(UF[group].mover:GetName())
 		end
 
 		if headerUpdate then
@@ -907,8 +952,10 @@ function UF:CreateAndUpdateUF(unit)
 	if self.db['units'][unit].enable then
 		self[unit]:Enable()
 		self[unit].Update()
+		E:EnableMover(self[unit].mover:GetName())
 	else
 		self[unit]:Disable()
+		E:DisableMover(self[unit].mover:GetName())
 	end
 end
 
@@ -1146,7 +1193,7 @@ end
 
 function UF:Initialize()
 	self.db = E.db["unitframe"]
-
+	self.thinBorders = E.global.tukuiMode or self.db.thinBorders
 	if E.private["unitframe"].enable ~= true then return; end
 	E.UnitFrames = UF;
 
@@ -1391,10 +1438,10 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 		end
 	else
 		if statusBar.backdrop then
-			statusBar.backdrop:SetTemplate("Default")
+			statusBar.backdrop:SetTemplate("Default", nil, nil, not statusBar.PostCastStart and self.thinBorders)
 			statusBar.backdrop.ignoreUpdates = nil
 		elseif statusBar:GetParent().template then
-			statusBar:GetParent():SetTemplate("Default")
+			statusBar:GetParent():SetTemplate("Default", nil, nil, self.thinBorders)
 			statusBar:GetParent().ignoreUpdates = nil
 		end
 		statusBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))

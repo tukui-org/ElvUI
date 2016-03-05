@@ -24,9 +24,12 @@ function UF:UpdateNameSettings(frame, childType)
 
 	local name = frame.Name
 	if not db.power or not db.power.hideonnpc then
-		local x, y = self:GetPositionOffset(db.name.position)
+		local attachPoint = self:GetObjectAnchorPoint(frame, db.name.attachTextTo)
+		if(E.global.tukuiMode and frame.InfoPanel and frame.InfoPanel:IsShown()) then
+			attachPoint = frame.InfoPanel
+		end
 		name:ClearAllPoints()
-		name:Point(db.name.position, frame.Health, db.name.position, x + db.name.xOffset, y + db.name.yOffset)
+		name:Point(db.name.position, attachPoint, db.name.position, db.name.xOffset, db.name.yOffset)
 	end
 
 	frame:Tag(name, db.name.text_format)
@@ -37,11 +40,11 @@ function UF:PostNamePosition(frame, unit)
 	local db = frame.db
 	if UnitIsPlayer(unit) then
 		local position = db.name.position
-		local x, y = self:GetPositionOffset(position)
+		local attachPoint = self:GetObjectAnchorPoint(frame, db.name.attachTextTo)
 		frame.Power.value:SetAlpha(1)
 
 		frame.Name:ClearAllPoints()
-		frame.Name:Point(position, frame.Health, position, x + db.name.xOffset, y + db.name.yOffset)
+		frame.Name:Point(position, attachPoint, position, db.name.xOffset, db.name.yOffset)
 	else
 		frame.Power.value:SetAlpha(db.power.hideonnpc and 0 or 1)
 
@@ -49,5 +52,3 @@ function UF:PostNamePosition(frame, unit)
 		frame.Name:Point(frame.Power.value:GetPoint())
 	end
 end
-
-

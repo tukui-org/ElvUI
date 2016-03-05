@@ -133,8 +133,10 @@ function BG:UpdateSettings()
 		elseif not E.db.unitframe.units.player.enable then
 			self.frame:SetParent(E.UIParent)
 		end
-	else
+		E:EnableMover(self.frame.mover:GetName())
+	elseif self.frame then
 		self.frame:SetParent(E.HiddenFrame)
+		E:DisableMover(self.frame.mover:GetName())
 	end
 
 	self:HealthUpdate(self.db.Health, self.db.MaxHealth)

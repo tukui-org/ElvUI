@@ -119,8 +119,10 @@ function AB:UpdateMicroPositionDimensions()
 
 	if self.db.microbar.enabled then
 		ElvUI_MicroBar:Show()
+		E:EnableMover(ElvUI_MicroBar.mover:GetName())
 	else
 		ElvUI_MicroBar:Hide()
+		E:DisableMover(ElvUI_MicroBar.mover:GetName())
 	end
 end
 
@@ -133,6 +135,7 @@ end
 function AB:SetupMicroBar()
 	local microBar = CreateFrame('Frame', 'ElvUI_MicroBar', E.UIParent)
 	microBar:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -48)
+	E:CreateMover(microBar, 'MicrobarMover', L["Micro Bar"], nil, nil, nil, 'ALL,ACTIONBARS');
 	E.FrameLocks["ElvUI_MicroBar"] = true;
 	for i=1, #MICRO_BUTTONS do
 		self:HandleMicroButton(_G[MICRO_BUTTONS[i]])
@@ -150,5 +153,5 @@ function AB:SetupMicroBar()
 	self:UpdateMicroPositionDimensions()
 	MainMenuBarPerformanceBar:Kill()
 
-	E:CreateMover(microBar, 'MicrobarMover', L["Micro Bar"], nil, nil, nil, 'ALL,ACTIONBARS');
+	
 end

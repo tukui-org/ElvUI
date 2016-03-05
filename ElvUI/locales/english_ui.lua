@@ -173,7 +173,6 @@ L["low"] = true;
 L["Movers unlocked. Move them now and click Lock when you are done."] = true;
 L["Nudge"] = true;
 L["Physical DPS"] = true;
-L["Pixel Perfect"] = true;
 L["Please click the button below so you can setup variables and ReloadUI."] = true;
 L["Please click the button below to setup your CVars."] = true;
 L["Please press the continue button to go onto the next step."] = true;
@@ -187,9 +186,10 @@ L["Sticky Frames"] = true;
 L["Tank"] = true;
 L["The chat windows function the same as Blizzard standard chat windows, you can right click the tabs and drag them around, rename, etc. Please click the button below to setup your chat windows."] = true;
 L["The in-game configuration menu can be accesses by typing the /ec command or by clicking the 'C' button on the minimap. Press the button below if you wish to skip the installation process."] = true;
-L["The Pixel Perfect option will change the overall apperance of your UI. Using Pixel Perfect is a slight performance increase over the traditional layout."] = true;
+L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."] = true;
 L["Theme Set"] = true;
 L["Theme Setup"] = true;
+L["Thin Border Theme"] = true;
 L["This install process will help you learn some of the features in ElvUI has to offer and also prepare your user interface for usage."] = true;
 L["This is completely optional."] = true;
 L["This part of the installation process sets up your chat windows names, positions and colors."] = true;
@@ -367,4 +367,4 @@ L["You can use the /resetui command to reset all of your movers. You can also us
 
 --UnitFrames
 L["Ghost"] = true;
-L["Offline"] = true;
+L["Offline"] = true;	

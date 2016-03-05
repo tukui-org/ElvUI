@@ -43,6 +43,7 @@ local NUM_PET_ACTION_SLOTS = NUM_PET_ACTION_SLOTS
 -- GLOBALS: ElvUI_StaticPopup1, ElvUI_StaticPopup1Button1, LeftChatToggleButton, RightChatToggleButton
 -- GLOBALS: ElvUI_StanceBar, ObjectiveTrackerFrame, GameTooltip, Minimap
 
+
 --Constants
 E.myclass = select(2, UnitClass("player"));
 E.myspec = GetSpecialization()
@@ -165,7 +166,7 @@ E.ClassRole = {
 E.noop = function() end;
 
 function E:Print(...)
-	print(self["media"].hexvaluecolor..'ElvUI:|r', ...)
+	print(self["media"].hexvaluecolor..self.UIName..':|r', ...)
 end
 
 --Workaround for people wanting to use white and it reverting to their class color.
@@ -231,6 +232,11 @@ function E:UpdateMedia()
 	elseif E.PixelMode then
 		border = {r = 0, g = 0, b = 0}
 	end
+	
+	if(self.global.tukuiMode) then
+		border = {r=0.6, g = 0.6, b = 0.6}
+	end
+	
 	self["media"].bordercolor = {border.r, border.g, border.b}
 
 	--Backdrop Color
@@ -248,6 +254,11 @@ function E:UpdateMedia()
 		self.db['general'].valuecolor.g = value.g
 		self.db['general'].valuecolor.b = value.b
 	end
+	
+	if(self.global.tukuiMode) then
+		value = {r = 1, g = 1, b = 1}
+	end
+	
 	self["media"].hexvaluecolor = self:RGBToHex(value.r, value.g, value.b)
 	self["media"].rgbvaluecolor = {value.r, value.g, value.b}
 
@@ -818,13 +829,15 @@ end
 local myName = E.myname.."-"..E.myrealm;
 myName = myName:gsub("%s+", "")
 local frames = {}
+
 local function SendRecieve(self, event, prefix, message, channel, sender)
+	
 	if event == "CHAT_MSG_ADDON" then
 		if(sender == myName) then return end
-
+		
 		if prefix == "ELVUI_VERSIONCHK" and not E.recievedOutOfDateMessage then
 			if(tonumber(message) ~= nil and tonumber(message) > tonumber(E.version)) then
-				E:Print(L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"])
+				E:Print(L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"]:gsub("ElvUI", E.UIName))
 
 				if((tonumber(message) - tonumber(E.version)) >= 0.05) then
 					E:StaticPopup_Show("ELVUI_UPDATE_AVAILABLE")
@@ -1258,7 +1271,11 @@ function E:Initialize()
 	if(self:HelloKittyFixCheck()) then
 		self:HelloKittyFix()
 	end
-
+	
+	if(self.global.tukuiMode) then
+		self.UIName = "Tukui"	
+	end
+	
 	self:UpdateMedia()
 	self:UpdateFrameTemplates()
 	self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED", "CheckRole");
@@ -1285,7 +1302,19 @@ function E:Initialize()
 	self:RefreshModulesDB()
 	collectgarbage("collect");
 
-	if self.db.general.loginmessage then
-		print(select(2, E:GetModule('Chat'):FindURL("CHAT_MSG_DUMMY", format(L["LOGIN_MSG"], self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version)))..'.')
+	if self:IsFoolsDay() and not E.global.aprilFools and not self.global.tukuiMode then
+		self:StaticPopup_Show("TUKUI_MODE")
 	end
+
+
+	if self.db.general.loginmessage then
+		print(select(2, E:GetModule('Chat'):FindURL("CHAT_MSG_DUMMY", format(L["LOGIN_MSG"]:gsub("ElvUI", E.UIName), self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version)))..'.')
+	end
+	
+	if self.global.tukuiMode then
+		if(self:IsFoolsDay()) then
+			self:ShowTukuiFrame()
+		end
+		self:Print("Thank you for being a good sport, type /aprilfools to revert the changes.")
+	end	
 end

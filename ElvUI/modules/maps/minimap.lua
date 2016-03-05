@@ -206,7 +206,7 @@ function M:UpdateSettings()
 	E.MinimapWidth = E.MinimapSize
 	E.MinimapHeight = E.MinimapSize
 
-	if E.db.auras.consolidatedBuffs.enable and E.private.auras.disableBlizzard then
+	if E.db.auras.consolidatedBuffs.enable and E.private.auras.disableBlizzard and not E.global.tukuiMode then
 		local numBuffs = E.db.auras.consolidatedBuffs.filter and 7 or 8 --This is one short because I'm just counting the total spaces between icons, add +1 below for the actual amount of buffs
 		E.ConsolidatedBuffsWidth = (E.MinimapHeight + (numBuffs*E.Border) + E.Border*2 - (E.Spacing*numBuffs)) / (numBuffs + 1)
 	else
@@ -252,7 +252,7 @@ function M:UpdateSettings()
 	end
 
 	if ElvConfigToggle then
-		if E.db.auras.consolidatedBuffs.enable and E.db.datatexts.minimapPanels and E.private.general.minimap.enable and E.private.auras.disableBlizzard then
+		if E.db.auras.consolidatedBuffs.enable and E.db.datatexts.minimapPanels and E.private.general.minimap.enable and E.private.auras.disableBlizzard and not E.global.tukuiMode then
 			ElvConfigToggle:Show()
 			ElvConfigToggle:Width(E.ConsolidatedBuffsWidth)
 		else
@@ -495,7 +495,7 @@ function M:Initialize()
 			FarmModeMap:Hide()
 		end
 	end)
-
+	
 	--PET JOURNAL TAINT FIX AS OF 5.1
 	--[[local info = UIPanelWindows['PetJournalParent'];
 	for name, value in pairs(info) do
@@ -503,6 +503,42 @@ function M:Initialize()
 	end
 
 	PetJournalParent:SetAttribute("UIPanelLayout-defined", true);]]
+	
+	local f = CreateFrame("Frame", 'BottomMiniPanel', Minimap)
+	f:SetPoint("BOTTOM", Minimap, "BOTTOM")
+	f:Width(75)
+	f:Height(20)
+	E:GetModule('DataTexts'):RegisterPanel(f, 1, 'ANCHOR_BOTTOM', 0, -10)	
+	
+	f = CreateFrame("Frame", 'TopMiniPanel', Minimap)
+	f:SetPoint("TOP", Minimap, "TOP")
+	f:Width(75)
+	f:Height(20)
+	E:GetModule('DataTexts'):RegisterPanel(f, 1, 'ANCHOR_BOTTOM', 0, -10)		
+	
+	f = CreateFrame("Frame", 'TopLeftMiniPanel', Minimap)
+	f:SetPoint("TOPLEFT", Minimap, "TOPLEFT")
+	f:Width(75)
+	f:Height(20)
+	E:GetModule('DataTexts'):RegisterPanel(f, 1, 'ANCHOR_BOTTOMLEFT', 0, -10)	
+
+	f = CreateFrame("Frame", 'TopRightMiniPanel', Minimap)
+	f:SetPoint("TOPRIGHT", Minimap, "TOPRIGHT")
+	f:Width(75)
+	f:Height(20)
+	E:GetModule('DataTexts'):RegisterPanel(f, 1, 'ANCHOR_BOTTOMRIGHT', 0, -10)	
+	
+	f = CreateFrame("Frame", 'BottomLeftMiniPanel', Minimap)
+	f:SetPoint("BOTTOMLEFT", Minimap, "BOTTOMLEFT")
+	f:Width(75)
+	f:Height(20)
+	E:GetModule('DataTexts'):RegisterPanel(f, 1, 'ANCHOR_BOTTOMLEFT', 0, -10)	
+
+	f = CreateFrame("Frame", 'BottomRightMiniPanel', Minimap)
+	f:SetPoint("BOTTOMRIGHT", Minimap, "BOTTOMRIGHT")
+	f:Width(75)
+	f:Height(20)
+	E:GetModule('DataTexts'):RegisterPanel(f, 1, 'ANCHOR_BOTTOMRIGHT', 0, -10)			
 end
 
 E:RegisterInitialModule(M:GetName())
