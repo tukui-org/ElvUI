@@ -782,7 +782,7 @@ L["Display icon on arena frame indicating the units talent specialization or the
 L["Display Player"] = "Показывать себя"
 L["Display Target"] = "Показывать цель"
 L["Display Text"] = "Показывать текст"
-L["Display the castbar icon inside the castbar."] = true;
+L["Display the castbar icon inside the castbar."] = "Отображать иконку на полосе заклинаний."
 L["Display the castbar inside the information panel, the icon will be displayed outside the main unitframe."] = "Отображать полосу заклинаний на информационной панели, иконка будет отображатсья рядом с рамкой."
 L["Display the combat icon on the unitframe."] = "Отображать иконку боя на рамке игрока."
 L["Display the rested icon on the unitframe."] = "Отображать иконку отдыха на рамке игрока"
@@ -840,7 +840,7 @@ L["Holy Power"] = "Сила Света"
 L["Horizontal Spacing"] = "Отступ по горизонтали"
 L["Horizontal"] = "Горизонтально" --Also used in bags module
 L["How far away the portrait is from the camera."] = "Как далеко от персонажа находится камера."
-L["Icon Inside Castbar"] = true;
+L["Icon Inside Castbar"] = "Иконка на полосе"
 L["Icon Size"] = "Размер иконки"
 L["Icon"] = "Иконка"
 L["Icon: BOTTOM"] = "Иконка: внизу"
