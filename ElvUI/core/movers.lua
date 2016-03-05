@@ -112,7 +112,6 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 		local point, anchor, secondaryPoint, x, y = split(delim, anchorString)
 		f:Point(point, anchor, secondaryPoint, x, y)
 	else
-
 		f:Point(point, anchor, secondaryPoint, x, y)
 	end
 
@@ -365,17 +364,17 @@ function E:DisableMover(name)
 	if(self.DisabledMovers[name]) then return end
 	if(not self.CreatedMovers[name]) then
 		error("mover doesn't exist")
-	end	
-		
+	end
+
 	self.DisabledMovers[name] = {}
 	for x, y in pairs(self.CreatedMovers[name]) do
 		self.DisabledMovers[name][x] = y
 	end
-	
+
 	if self.configMode then
 		_G[name]:Hide()
 	end
-	
+
 	self.CreatedMovers[name] = nil
 end
 
@@ -383,17 +382,22 @@ function E:EnableMover(name)
 	if(self.CreatedMovers[name]) then return end
 	if(not self.DisabledMovers[name]) then
 		error("mover doesn't exist")
-	end	
-	
+	end
+
 	self.CreatedMovers[name] = {}
 	for x, y in pairs(self.DisabledMovers[name]) do
 		self.CreatedMovers[name][x] = y
 	end
-	
+
+	--Make sure we add anchor information from a potential profile switch
+	if E.db["movers"] and E.db["movers"][name] and type(E.db["movers"][name]) == 'string' then
+		self.CreatedMovers[name]["point"] = E.db["movers"][name]
+	end
+
 	if self.configMode then
 		_G[name]:Show()
-	end	
-	
+	end
+
 	self.DisabledMovers[name] = nil
 end
 
@@ -439,6 +443,13 @@ end
 
 --Profile Change
 function E:SetMoversPositions()
+	--E:SetMoversPositions() is the first function called in E:UpdateAll().
+	--Because of that, we can allow ourselves to re-enable all disabled movers here,
+	--as the subsequent updates to these elements will disable them again if needed.
+	for name in pairs(E.DisabledMovers) do
+		E:EnableMover(name)
+	end
+
 	for name, _ in pairs(E.CreatedMovers) do
 		local f = _G[name]
 		local point, anchor, secondaryPoint, x, y
