@@ -628,6 +628,7 @@ P['unitframe'] = {
 				['spark'] = true,
 				['displayTarget'] = false,
 				['iconSize'] = 42,
+				['iconAttached'] = true,
 				['insideInfoPanel'] = true,
 			},
 			['classbar'] = {
@@ -780,6 +781,7 @@ P['unitframe'] = {
 				['format'] = 'REMAINING',
 				['spark'] = true,
 				['iconSize'] = 42,
+				['iconAttached'] = true,
 				['insideInfoPanel'] = true,
 			},
 			['combobar'] = {
@@ -1118,6 +1120,7 @@ P['unitframe'] = {
 				['format'] = 'REMAINING',
 				['spark'] = true,
 				['iconSize'] = 32,
+				['iconAttached'] = true,
 				['insideInfoPanel'] = true,
 			},
 			['aurabar'] = {
@@ -1353,6 +1356,7 @@ P['unitframe'] = {
 				['format'] = 'REMAINING',
 				['spark'] = true,
 				['iconSize'] = 26,
+				['iconAttached'] = true,
 				['insideInfoPanel'] = true,
 			},
 		},
@@ -1545,6 +1549,7 @@ P['unitframe'] = {
 				['format'] = 'REMAINING',
 				['spark'] = true,
 				['iconSize'] = 32,
+				['iconAttached'] = true,
 				['insideInfoPanel'] = true,
 			},
 			['raidicon'] = {
@@ -1660,6 +1665,7 @@ P['unitframe'] = {
 				['format'] = 'REMAINING',
 				['spark'] = true,
 				['iconSize'] = 32,
+				['iconAttached'] = true,
 				['insideInfoPanel'] = true,
 			},
 			['pvpTrinket'] = {

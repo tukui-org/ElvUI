@@ -831,9 +831,10 @@ myName = myName:gsub("%s+", "")
 local frames = {}
 
 local function SendRecieve(self, event, prefix, message, channel, sender)
+	
 	if event == "CHAT_MSG_ADDON" then
 		if(sender == myName) then return end
-
+		
 		if prefix == "ELVUI_VERSIONCHK" and not E.recievedOutOfDateMessage then
 			if(tonumber(message) ~= nil and tonumber(message) > tonumber(E.version)) then
 				E:Print(L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"]:gsub("ElvUI", E.UIName))

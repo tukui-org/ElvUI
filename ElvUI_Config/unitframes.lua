@@ -886,24 +886,31 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				name = L["Spark"],
 				desc = L["Display a spark texture at the end of the castbar statusbar to help show the differance between castbar and backdrop."],
 			},
+			iconAttached = {
+				order = 16,
+				name = L["Attach Icon to Bar"],
+				desc = L["Display the castbar icon on the castbar, if not set it will appear next to the unitframe seperately."],
+				type = "toggle",
+			},
 			insideInfoPanel = {
-				order = 15,
+				order = 17,
 				name = L["Inside Information Panel"],
 				desc = L["Display the castbar inside the information panel, the icon will be displayed outside the main unitframe."],
 				type = "toggle",
 				disabled = function() return not E.db.unitframe.units[groupName].infoPanel or not E.db.unitframe.units[groupName].infoPanel.enable end,
-			},
+			},		
 			iconSize = {
-				order = 16,
+				order = 18,
 				name = L["Icon Size"],
 				desc = L["This dictates the size of the icon when it is bound to the Information Panel."],
 				type = "range",
-				disabled = function() return not E.db.unitframe.units[groupName].infoPanel or not E.db.unitframe.units[groupName].infoPanel.enable or not E.db.unitframe.units[groupName].castbar.insideInfoPanel end,
+				disabled = function() return E.db.unitframe.units[groupName].castbar.iconAttached end,
 				min = 8, max = 150, step = 1,
-			},
+			},			
 		},
 	}
 
+	
 	if hasTicks then
 		config.args.ticks = {
 			order = 13,
