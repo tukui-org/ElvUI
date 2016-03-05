@@ -5,7 +5,7 @@ local LSM = LibStub("LibSharedMedia-3.0");
 --Cache global variables
 --Lua functions
 local unpack, tonumber = unpack, tonumber
-local floor, abs = math.floor, abs
+local floor, abs, min = math.floor, abs, math.min
 local sub, utf8sub, utf8len = string.sub, string.utf8sub, string.utf8len
 --WoW API / Variables
 local CreateFrame = CreateFrame
@@ -327,14 +327,17 @@ function UF:PostCastStart(unit, name, rank, castid)
 
 	-- Get length of Time, then calculate available length for Text
 	local timeWidth = self.Time:GetStringWidth()
+	local textWidth = self:GetWidth() - timeWidth - 10
+	local textStringWidth = self.Text:GetStringWidth()
 
-	if timeWidth == 0 then
+	if timeWidth == 0 or textStringWidth == 0 then
 		E:Delay(0.05, function() -- Delay may need tweaking
-			local textWidth = self:GetWidth() - self.Time:GetStringWidth() - 5
-			if textWidth > 0 then self.Text:SetWidth(textWidth) end
+			textWidth = self:GetWidth() - self.Time:GetStringWidth() - 10
+			textStringWidth = self.Text:GetStringWidth()
+			if textWidth > 0 then self.Text:SetWidth(min(textWidth, textStringWidth)) end
 		end)
 	else
-		self.Text:SetWidth(self:GetWidth() - timeWidth - 5)
+		self.Text:SetWidth(min(textWidth, textStringWidth))
 	end
 
 	self.Spark:Height(self:GetHeight() * 2)
