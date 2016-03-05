@@ -50,7 +50,7 @@ function UF:Construct_AuraIcon(button)
 	button.text:Point('CENTER', 1, 1)
 	button.text:SetJustifyH('CENTER')
 
-	button:SetTemplate('Default')
+	button:SetTemplate('Default', nil, nil, UF.thinBorders)
 
 	button.cd.noOCC = true
 	button.cd.noCooldownCount = true
@@ -121,7 +121,7 @@ function UF:Configure_Auras(frame, auraType)
 		auras:Width(db[auraType].perrow * db[auraType].sizeOverride)
 	end
 
-	local x, y = E:GetXYOffset(db[auraType].anchorPoint)
+	local x, y = E:GetXYOffset(db[auraType].anchorPoint, frame.SPACING) --Use frame.SPACING override since it may be different from E.Spacing due to forced thin borders
 	local attachTo = self:GetAuraAnchorFrame(frame, db[auraType].attachTo, db.debuffs.attachTo == 'BUFFS' and db.buffs.attachTo == 'DEBUFFS')
 
 	auras:ClearAllPoints()
