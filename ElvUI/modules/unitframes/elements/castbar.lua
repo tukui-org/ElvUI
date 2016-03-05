@@ -100,7 +100,7 @@ function UF:Configure_Castbar(frame)
 	if(castbar.Holder:GetScript('OnSizeChanged')) then
 		castbar.Holder:GetScript('OnSizeChanged')(castbar.Holder)
 	end
-	
+
 	--Latency
 	if db.castbar.latency then
 		castbar.SafeZone = castbar.LatencyTexture
@@ -121,10 +121,10 @@ function UF:Configure_Castbar(frame)
 			else
 				castbar.Icon.bg:Size(db.castbar.height-frame.SPACING*2)
 			end
-			
+
 			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - (frame.BORDER + frame.SPACING*5))
 		end
-		
+
 		castbar.Icon.bg:Show()
 	else
 		castbar.ButtonIcon.bg:Hide()
@@ -136,30 +136,31 @@ function UF:Configure_Castbar(frame)
 	else
 		castbar.Spark:Hide()
 	end
-	
+
 	castbar:ClearAllPoints()
 	if (db.castbar.insideInfoPanel and frame.USE_INFO_PANEL) or E.global.tukuiMode then
 		if(not db.castbar.iconAttached) or E.global.tukuiMode then
 			castbar:SetInside(frame.InfoPanel, 0, 0)
 		else
+			local iconWidth = db.castbar.icon and castbar.Icon.bg:GetWidth() or 0
 			if(frame.ORIENTATION == "LEFT") then
-				castbar:SetPoint("TOPLEFT", frame.InfoPanel, "TOPLEFT",  castbar.Icon.bg:GetWidth() + frame.SPACING, 0)
+				castbar:SetPoint("TOPLEFT", frame.InfoPanel, "TOPLEFT",  iconWidth + frame.SPACING, 0)
 				castbar:SetPoint("BOTTOMRIGHT", frame.InfoPanel, "BOTTOMRIGHT")
 			else
 				castbar:SetPoint("TOPLEFT", frame.InfoPanel, "TOPLEFT")
-				castbar:SetPoint("BOTTOMRIGHT", frame.InfoPanel, "BOTTOMRIGHT", -castbar.Icon.bg:GetWidth() - frame.SPACING, 0)			
+				castbar:SetPoint("BOTTOMRIGHT", frame.InfoPanel, "BOTTOMRIGHT", -iconWidth - frame.SPACING, 0)
 			end
 		end
-		
+
 		if(castbar.Holder.mover) then
 			E:DisableMover(castbar.Holder.mover:GetName())
 		end
 	else
 		local isMoved = E:HasMoverBeenMoved(frame:GetName()..'CastbarMover') or not castbar.Holder.mover
-		if not isMoved then	
+		if not isMoved then
 			castbar.Holder.mover:ClearAllPoints()
 		end
-		
+
 		castbar:ClearAllPoints()
 		if frame.ORIENTATION ~= "RIGHT"  then
 			castbar:Point('BOTTOMRIGHT', castbar.Holder, 'BOTTOMRIGHT', -(frame.BORDER+frame.SPACING), frame.BORDER+frame.SPACING)
@@ -177,8 +178,8 @@ function UF:Configure_Castbar(frame)
 			E:EnableMover(castbar.Holder.mover:GetName())
 		end
 	end
-	
-	
+
+
 	if(not db.castbar.iconAttached or E.global.tukuiMode) and db.castbar.icon then
 		castbar.Icon.bg:ClearAllPoints()
 		if(frame.ORIENTATION == "LEFT") then
@@ -192,14 +193,14 @@ function UF:Configure_Castbar(frame)
 			castbar.Icon.bg:Point("RIGHT", castbar, "LEFT", -frame.SPACING*3, 0)
 		else
 			castbar.Icon.bg:Point("LEFT", castbar, "RIGHT", frame.SPACING*3, 0)
-		end	
+		end
 	end
-	
+
 	if db.castbar.enable and not frame:IsElementEnabled('Castbar') then
 		frame:EnableElement('Castbar')
 	elseif not db.castbar.enable and frame:IsElementEnabled('Castbar') then
 		frame:DisableElement('Castbar')
-		
+
 		if(castbar.Holder.mover) then
 			E:DisableMover(castbar.Holder.mover:GetName())
 		end
