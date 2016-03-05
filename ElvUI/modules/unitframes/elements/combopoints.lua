@@ -13,7 +13,7 @@ local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 
 function UF:Construct_Combobar(frame)
 	local CPoints = CreateFrame("Frame", nil, frame)
-	CPoints:CreateBackdrop('Default')
+	CPoints:CreateBackdrop('Default', nil, nil, UF.thinBorders)
 	CPoints.Override = UF.UpdateComboDisplay
 
 	for i = 1, MAX_COMBO_POINTS do
@@ -22,7 +22,7 @@ function UF:Construct_Combobar(frame)
 		CPoints[i]:SetStatusBarTexture(E['media'].blankTex)
 		CPoints[i]:GetStatusBarTexture():SetHorizTile(false)
 		CPoints[i]:SetAlpha(0.15)
-		CPoints[i]:CreateBackdrop('Default')
+		CPoints[i]:CreateBackdrop('Default', nil, nil, UF.thinBorders)
 		CPoints[i].backdrop:SetParent(CPoints)
 	end
 
@@ -48,7 +48,8 @@ function UF:Configure_ComboPoints(frame)
 	
 	local CLASSBAR_WIDTH = frame.CLASSBAR_WIDTH
 	if frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then
-		CPoints:Point("CENTER", frame.Health.backdrop, "TOP", -(frame.BORDER*3 + 6), -frame.SPACING)
+		CPoints:Point("CENTER", frame.Health.backdrop, "TOP", 0, 0)
+		CLASSBAR_WIDTH = CLASSBAR_WIDTH * (frame.MAX_CLASS_BAR - 1) / frame.MAX_CLASS_BAR
 		CPoints:SetFrameStrata("MEDIUM")
 		if CPoints.Holder and CPoints.Holder.mover then
 			CPoints.Holder.mover:SetScale(0.000001)
@@ -95,7 +96,6 @@ function UF:Configure_ComboPoints(frame)
 		elseif i ~= MAX_COMBO_POINTS then
 			CPoints[i]:Width((CLASSBAR_WIDTH - ((frame.MAX_CLASS_BAR-1)*(frame.BORDER-frame.SPACING))) / frame.MAX_CLASS_BAR) --classbar width minus total width of dividers between each button, divided by number of buttons
 		end
-
 
 		CPoints[i]:ClearAllPoints()
 		if i == 1 then
