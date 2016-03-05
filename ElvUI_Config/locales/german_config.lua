@@ -783,7 +783,7 @@ L["Display icon on arena frame indicating the units talent specialization or the
 L["Display Player"] = "Zeige Spieler"
 L["Display Target"] = "Zeige Ziel"
 L["Display Text"] = "Zeige Text"
-L["Display the castbar icon inside the castbar."] = true;
+L["Display the castbar icon inside the castbar."] = "Zeigt das Zauberleisten Symbol in der Zauberleiste."
 L["Display the castbar inside the information panel, the icon will be displayed outside the main unitframe."] = "Zeige die Zauberleiste im Information Panel, das Symbol wird ausserhalb des Einheitenfenster angezeigt."
 L["Display the combat icon on the unitframe."] = "Zeige das Kampfsymbol auf den Einheitenfenster."
 L["Display the rested icon on the unitframe."] = "Zeige das Ausgeruht-Symbol auf den Einheitenfenstern."
@@ -841,7 +841,7 @@ L["Holy Power"] = "Heilige Kraft"
 L["Horizontal Spacing"] = "Horizontaler Abstand"
 L["Horizontal"] = "Horizontal" --Also used in bags module
 L["How far away the portrait is from the camera."] = "Entfernung der Kamera vom Portrait."
-L["Icon Inside Castbar"] = true;
+L["Icon Inside Castbar"] = "Symbol innerhalb Zauberleiste"
 L["Icon Size"] = "Symbol Größe"
 L["Icon"] = "Symbol"
 L["Icon: BOTTOM"] = "Symbol: UNTEN"
