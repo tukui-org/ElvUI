@@ -20,6 +20,18 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
+local INVERT_ANCHORPOINT = {
+	TOPLEFT = 'BOTTOMRIGHT',
+	LEFT = 'RIGHT',
+	BOTTOMLEFT = 'TOPRIGHT',
+	RIGHT = 'LEFT',
+	TOPRIGHT = 'BOTTOMLEFT',
+	BOTTOMRIGHT = 'TOPLEFT',
+	CENTER = 'CENTER',
+	TOP = 'BOTTOM',
+	BOTTOM = 'TOP',
+}
+
 function UF:Construct_Castbar(frame, direction, moverName)
 	local castbar = CreateFrame("StatusBar", nil, frame)
 	castbar:SetFrameStrata("HIGH")
@@ -179,14 +191,18 @@ function UF:Configure_Castbar(frame)
 		end
 	end
 
-
-	if(not db.castbar.iconAttached or E.global.tukuiMode) and db.castbar.icon then
+	if E.global.tukuiMode and db.castbar.icon then
 		castbar.Icon.bg:ClearAllPoints()
 		if(frame.ORIENTATION == "LEFT") then
 			castbar.Icon.bg:Point("RIGHT", frame, "LEFT", -10, 0)
 		else
 			castbar.Icon.bg:Point("LEFT", frame, "RIGHT", 10, 0)
 		end
+	elseif not db.castbar.iconAttached and db.castbar.icon then
+		local attachPoint = db.castbar.iconAttachedTo == "Frame" and frame or frame.Castbar
+		local anchorPoint = db.castbar.iconPosition
+		castbar.Icon.bg:ClearAllPoints()
+		castbar.Icon.bg:Point(INVERT_ANCHORPOINT[anchorPoint], attachPoint, anchorPoint, db.castbar.iconXOffset, db.castbar.iconYOffset)
 	elseif(db.castbar.icon) then
 		castbar.Icon.bg:ClearAllPoints()
 		if frame.ORIENTATION == "LEFT" then
@@ -514,4 +530,3 @@ function UF:PostCastNotInterruptible(unit)
 	local colors = ElvUF.colors
 	self:SetStatusBarColor(colors.castNoInterrupt[1], colors.castNoInterrupt[2], colors.castNoInterrupt[3])
 end
-

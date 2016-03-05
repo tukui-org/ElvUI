@@ -794,19 +794,14 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 		get = function(info) return E.db.unitframe.units[groupName]['castbar'][ info[#info] ] end,
 		set = function(info, value) E.db.unitframe.units[groupName]['castbar'][ info[#info] ] = value; updateFunc(UF, groupName, numUnits) end,
 		args = {
-			enable = {
-				type = 'toggle',
-				order = 1,
-				name = L["Enable"],
-			},
 			matchsize = {
-				order = 2,
+				order = 1,
 				type = 'execute',
 				name = L["Match Frame Width"],
 				func = function() E.db.unitframe.units[groupName]['castbar']['width'] = E.db.unitframe.units[groupName]['width']; updateFunc(UF, groupName, numUnits) end,
 			},
 			forceshow = {
-				order = 3,
+				order = 2,
 				name = SHOW..' / '..HIDE,
 				func = function()
 					local frameName = E:StringTitle(groupName)
@@ -842,11 +837,16 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				type = 'execute',
 			},
 			configureButton = {
-				order = 4,
+				order = 3,
 				name = L["Coloring"],
 				desc = L["This opens the UnitFrames Color settings. These settings affect all unitframes."],
 				type = 'execute',
 				func = function() ACD:SelectGroup("ElvUI", "unitframe", "general", "allColorsGroup", "castBars") end,
+			},
+			enable = {
+				type = 'toggle',
+				order = 4,
+				name = L["Enable"],
 			},
 			width = {
 				order = 5,
@@ -860,18 +860,13 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				type = 'range',
 				min = 10, max = 85, step = 1,
 			},
-			icon = {
-				order = 7,
-				name = L["Icon"],
-				type = 'toggle',
-			},
 			latency = {
-				order = 9,
+				order = 7,
 				name = L["Latency"],
 				type = 'toggle',
 			},
 			format = {
-				order = 12,
+				order = 8,
 				type = 'select',
 				name = L["Format"],
 				values = {
@@ -881,45 +876,91 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				},
 			},
 			spark = {
-				order = 14,
+				order = 9,
 				type = 'toggle',
 				name = L["Spark"],
 				desc = L["Display a spark texture at the end of the castbar statusbar to help show the differance between castbar and backdrop."],
 			},
-			iconAttached = {
-				order = 16,
-				name = L["Attach Icon to Bar"],
-				desc = L["Display the castbar icon on the castbar, if not set it will appear next to the unitframe seperately."],
-				type = "toggle",
-			},
 			insideInfoPanel = {
-				order = 17,
+				order = 10,
 				name = L["Inside Information Panel"],
 				desc = L["Display the castbar inside the information panel, the icon will be displayed outside the main unitframe."],
 				type = "toggle",
 				disabled = function() return not E.db.unitframe.units[groupName].infoPanel or not E.db.unitframe.units[groupName].infoPanel.enable end,
 			},		
-			iconSize = {
-				order = 18,
-				name = L["Icon Size"],
-				desc = L["This dictates the size of the icon when it is not attached to the castbar."],
-				type = "range",
-				disabled = function() return E.db.unitframe.units[groupName].castbar.iconAttached end,
-				min = 8, max = 150, step = 1,
-			},			
+			iconSettings = {
+				order = 13,
+				type = "group",
+				name = L["Icon"],
+				guiInline = true,
+				get = function(info) return E.db.unitframe.units[groupName]['castbar'][ info[#info] ] end,
+				set = function(info, value) E.db.unitframe.units[groupName]['castbar'][ info[#info] ] = value; updateFunc(UF, groupName, numUnits) end,
+				args = {
+					icon = {
+						order = 1,
+						name = L["Enable"],
+						type = 'toggle',
+					},
+					iconAttached = {
+						order = 2,
+						name = L["Icon Inside Castbar"],
+						desc = L["Display the castbar icon inside the castbar."],
+						type = "toggle",
+					},
+					iconSize = {
+						order = 3,
+						name = L["Icon Size"],
+						desc = L["This dictates the size of the icon when it is not attached to the castbar."],
+						type = "range",
+						disabled = function() return E.db.unitframe.units[groupName].castbar.iconAttached end,
+						min = 8, max = 150, step = 1,
+					},
+					iconAttachedTo = {
+						order = 4,
+						type = "select",
+						name = L["Attach To"],
+						disabled = function() return E.db.unitframe.units[groupName].castbar.iconAttached end,
+						values = {
+							["Frame"] = L["Frame"],
+							["Castbar"] = L["Castbar"],
+						},
+					},
+					iconPosition = {
+						type = 'select',
+						order = 5,
+						name = L["Position"],
+						values = positionValues,
+						disabled = function() return E.db.unitframe.units[groupName].castbar.iconAttached end,
+					},
+					iconXOffset = {
+						order = 5,
+						type = "range",
+						name = L["xOffset"],
+						min = -300, max = 300, step = 1,
+						disabled = function() return E.db.unitframe.units[groupName].castbar.iconAttached end,
+					},
+					iconYOffset = {
+						order = 6,
+						type = "range",
+						name = L["yOffset"],
+						min = -300, max = 300, step = 1,
+						disabled = function() return E.db.unitframe.units[groupName].castbar.iconAttached end,
+					},
+				},
+			},
 		},
 	}
 
 	
 	if hasTicks then
 		config.args.ticks = {
-			order = 13,
+			order = 11,
 			type = 'toggle',
 			name = L["Ticks"],
 			desc = L["Display tick marks on the castbar for channelled spells. This will adjust automatically for spells like Drain Soul and add additional ticks based on haste."],
 		}
 		config.args.displayTarget = {
-			order = 14,
+			order = 12,
 			type = 'toggle',
 			name = L["Display Target"],
 			desc = L["Display the target of your current cast. Useful for mouseover casts."],
