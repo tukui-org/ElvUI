@@ -1044,6 +1044,37 @@ end
 
 --DATABASE CONVERSIONS
 function E:DBConversions()
+	--Font Conversions
+
+	local fonts = {
+		["ElvUI Alt-Font"] = "Continuum Medium",
+		["ElvUI Alt-Combat"] = "Die Die Die!",
+		["ElvUI Combat"] = "Action Man",
+		["ElvUI Font"] = "PT Sans Narrow",
+		["ElvUI Pixel"] = "Homespun"
+	}	
+	
+	if fonts[E.db.general.font] then E.db.general.font = fonts[E.db.general.font] end
+	if fonts[E.db.general.itemLevelFont] then E.db.general.itemLevelFont = fonts[E.db.general.itemLevelFont] end
+	if fonts[E.db.general.countFont] then E.db.general.itemLevelFont = fonts[E.db.general.countFont] end
+	if fonts[E.db.nameplate.font] then E.db.nameplate.font = fonts[E.db.nameplate.font] end
+	if fonts[E.db.nameplate.buffs.font] then E.db.nameplate.buffs.font = fonts[E.db.nameplate.buffs.font] end
+	if fonts[E.db.nameplate.debuffs.font] then E.db.nameplate.debuffs.font = fonts[E.db.nameplate.debuffs.font] end
+	if fonts[E.db.bags.itemLevelFont] then E.db.bags.itemLevelFont = fonts[E.db.bags.itemLevelFont] end
+	if fonts[E.db.bags.countFont] then E.db.bags.countFont = fonts[E.db.bags.countFont] end
+	if fonts[E.db.auras.font] then E.db.auras.font = fonts[E.db.auras.font] end
+	if fonts[E.db.auras.consolidatedBuffs.font] then E.db.auras.consolidatedBuffs.font = fonts[E.db.auras.consolidatedBuffs.font] end
+	if fonts[E.db.chat.font] then E.db.chat.font = fonts[E.db.chat.font] end
+	if fonts[E.db.chat.tabFont] then E.db.chat.tabFont = fonts[E.db.chat.tabFont] end
+	if fonts[E.db.datatexts.font] then E.db.datatexts.font = fonts[E.db.datatexts.font] end
+	if fonts[E.db.tooltip.font] then E.db.tooltip.font = fonts[E.db.tooltip.font] end
+	if fonts[E.db.tooltip.healthBar.font] then E.db.tooltip.healthBar.font = fonts[E.db.tooltip.healthBar.font] end
+	if fonts[E.db.unitframe.font] then E.db.unitframe.font = fonts[E.db.unitframe.font] end
+	if fonts[E.db.unitframe.units.party.rdebuffs.font] then E.db.unitframe.units.party.rdebuffs.font = fonts[E.db.unitframe.units.party.rdebuffs.font] end
+	if fonts[E.db.unitframe.units.raid.rdebuffs.font] then E.db.unitframe.units.raid.rdebuffs.font = fonts[E.db.unitframe.units.raid.rdebuffs.font] end
+	if fonts[E.db.unitframe.units.raid40.rdebuffs.font] then E.db.unitframe.units.raid40.rdebuffs.font = fonts[E.db.unitframe.units.raid40.rdebuffs.font] end
+	
+	
 	--Add missing Stack Threshold
 	if E.global.unitframe['aurafilters']['RaidDebuffs'].spells then
 		local matchFound
