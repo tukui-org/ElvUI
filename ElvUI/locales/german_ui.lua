@@ -189,7 +189,6 @@ L["The in-game configuration menu can be accesses by typing the /ec command or b
 L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."] = true;
 L["Theme Set"] = "Thema gesetzt"
 L["Theme Setup"] = "Thema Setup"
-L["Thin Border Theme"] = true;
 L["This install process will help you learn some of the features in ElvUI has to offer and also prepare your user interface for usage."] = "Dieser Installationsprozess wird dir helfen, die Funktionen von ElvUI für deine Benutzeroberfläche besser kennenzulernen."
 L["This is completely optional."] = "Das ist komplett Optional."
 L["This part of the installation process sets up your chat windows names, positions and colors."] = "Dieser Abschnitt der Installation stellt die Chat Fenster Namen, Positionen und Farben ein."
