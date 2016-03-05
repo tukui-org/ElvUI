@@ -902,7 +902,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 			iconSize = {
 				order = 18,
 				name = L["Icon Size"],
-				desc = L["This dictates the size of the icon when it is bound to the Information Panel."],
+				desc = L["This dictates the size of the icon when it is not attached to the castbar."],
 				type = "range",
 				disabled = function() return E.db.unitframe.units[groupName].castbar.iconAttached end,
 				min = 8, max = 150, step = 1,
@@ -996,7 +996,7 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 				values = {
 					['Health'] = L["Health"],
 					['Power'] = L["Power"],
-					['InfoPanel'] = L["Information Bar"],
+					['InfoPanel'] = L["Information Panel"],
 					['Frame'] = L["Frame"],
 				},
 			},
@@ -1219,7 +1219,7 @@ local function GetOptionsTable_Name(updateFunc, groupName, numUnits)
 				values = {
 					['Health'] = L["Health"],
 					['Power'] = L["Power"],
-					['InfoPanel'] = L["Information Bar"],
+					['InfoPanel'] = L["Information Panel"],
 					['Frame'] = L["Frame"],
 				},
 			},
@@ -1418,7 +1418,7 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 				values = {
 					['Health'] = L["Health"],
 					['Power'] = L["Power"],
-					['InfoPanel'] = L["Information Bar"],
+					['InfoPanel'] = L["Information Panel"],
 					['Frame'] = L["Frame"],
 				},
 			},
@@ -1537,7 +1537,7 @@ local function GetOptionsTable_RaidIcon(updateFunc, groupName, numUnits)
 				values = {
 					['Health'] = L["Health"],
 					['Power'] = L["Power"],
-					['InfoPanel'] = L["Information Bar"],
+					['InfoPanel'] = L["Information Panel"],
 					['Frame'] = L["Frame"],
 				},
 			},
@@ -1864,7 +1864,7 @@ function UF:CreateCustomTextGroup(unit, objectName)
 				values = {
 					['Health'] = L["Health"],
 					['Power'] = L["Power"],
-					['InfoPanel'] = L["Information Bar"],
+					['InfoPanel'] = L["Information Panel"],
 					['Frame'] = L["Frame"],
 				},
 			},
@@ -2587,7 +2587,7 @@ E.Options.args.unitframe.args.player = {
 			order = 14,
 			type = "select",
 			name = L["Frame Orientation"],
-			desc = L["Set the orientation of the UnitFrame. If set to automatic it will adjust based on where the frame is located on the screen."],
+			desc = L["Set the orientation of the UnitFrame."],
 			values = {
 				--["AUTOMATIC"] = L["Automatic"], not sure if i will use this yet
 				["LEFT"] = L["Left"],
@@ -4247,7 +4247,7 @@ E.Options.args.unitframe.args.party = {
 					values = {
 						['Health'] = L["Health"],
 						['Power'] = L["Power"],
-						['InfoPanel'] = L["Information Bar"],
+						['InfoPanel'] = L["Information Panel"],
 						['Frame'] = L["Frame"],
 					},
 				},
@@ -4828,7 +4828,7 @@ E.Options.args.unitframe.args['raid'] = {
 					values = {
 						['Health'] = L["Health"],
 						['Power'] = L["Power"],
-						['InfoPanel'] = L["Information Bar"],
+						['InfoPanel'] = L["Information Panel"],
 						['Frame'] = L["Frame"],
 					},
 				},
@@ -5234,7 +5234,7 @@ E.Options.args.unitframe.args['raid40'] = {
 					values = {
 						['Health'] = L["Health"],
 						['Power'] = L["Power"],
-						['InfoPanel'] = L["Information Bar"],
+						['InfoPanel'] = L["Information Panel"],
 						['Frame'] = L["Frame"],
 					},
 				},
