@@ -154,13 +154,13 @@ function UF:Configure_Castbar(frame)
 		if(not db.castbar.iconAttached) or E.global.tukuiMode then
 			castbar:SetInside(frame.InfoPanel, 0, 0)
 		else
-			local iconWidth = db.castbar.icon and castbar.Icon.bg:GetWidth() or 0
+			local iconWidth = db.castbar.icon and (castbar.Icon.bg:GetWidth() - frame.BORDER) or 0
 			if(frame.ORIENTATION == "LEFT") then
-				castbar:SetPoint("TOPLEFT", frame.InfoPanel, "TOPLEFT",  iconWidth + frame.SPACING, 0)
+				castbar:SetPoint("TOPLEFT", frame.InfoPanel, "TOPLEFT",  iconWidth + frame.SPACING*3, 0)
 				castbar:SetPoint("BOTTOMRIGHT", frame.InfoPanel, "BOTTOMRIGHT")
 			else
 				castbar:SetPoint("TOPLEFT", frame.InfoPanel, "TOPLEFT")
-				castbar:SetPoint("BOTTOMRIGHT", frame.InfoPanel, "BOTTOMRIGHT", -iconWidth - frame.SPACING, 0)
+				castbar:SetPoint("BOTTOMRIGHT", frame.InfoPanel, "BOTTOMRIGHT", -iconWidth - frame.SPACING*3, 0)
 			end
 		end
 
