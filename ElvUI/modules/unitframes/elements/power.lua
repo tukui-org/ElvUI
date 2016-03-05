@@ -201,6 +201,9 @@ function UF:Configure_Power(frame)
 			frame.DruidAltMana:Hide()
 		end
 	end
+	
+	--Transparency Settings
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)
 end
 
 local tokens = { [0] = "MANA", "RAGE", "FOCUS", "ENERGY", "RUNIC_POWER" }

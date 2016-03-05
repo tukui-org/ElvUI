@@ -80,7 +80,7 @@ function UF:Construct_PlayerFrame(frame)
 
 	frame:Point('BOTTOMLEFT', E.UIParent, 'BOTTOM', -413, 68) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', L["Player Frame"], nil, nil, nil, 'ALL,SOLO')
-	
+
 	frame.unitframeType = "player"
 end
 
@@ -92,7 +92,7 @@ function UF:Update_PlayerFrame(frame, db)
 
 		frame.UNIT_WIDTH = db.width
 		frame.UNIT_HEIGHT = (E.global.tukuiMode and not db.infoPanel.enable) and db.height + db.infoPanel.height or db.height
-			
+
 		frame.USE_POWERBAR = db.power.enable
 		frame.POWERBAR_DETACHED = db.power.detachFromFrame
 		frame.USE_INSET_POWERBAR = not frame.POWERBAR_DETACHED and db.power.width == 'inset' and frame.USE_POWERBAR
@@ -120,10 +120,10 @@ function UF:Update_PlayerFrame(frame, db)
 
 		frame.STAGGER_SHOWN = frame.Stagger and frame.Stagger:IsShown()
 		frame.STAGGER_WIDTH = frame.STAGGER_SHOWN and (db.stagger.width + (frame.BORDER*2)) or 0;
-		
+
 		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and (db.infoPanel.enable or E.global.tukuiMode)
-		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0		
-		
+		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0
+
 		local bottomOffset = 0
 		if frame.USE_POWERBAR and not frame.POWERBAR_DETACHED and not frame.USE_INSET_POWERBAR then
 			bottomOffset = bottomOffset + frame.POWERBAR_HEIGHT - (frame.BORDER-frame.SPACING)
@@ -139,9 +139,9 @@ function UF:Update_PlayerFrame(frame, db)
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
-	
+
 	UF:Configure_InfoPanel(frame)
-	
+
 	--Threat
 	UF:Configure_Threat(frame)
 
@@ -203,14 +203,6 @@ function UF:Update_PlayerFrame(frame, db)
 
 	--CustomTexts
 	UF:Configure_CustomTexts(frame)
-
-	--Transparency Settings
-	if UF.db.colors.transparentHealth then
-		UF:ToggleTransparentStatusBar(true, frame.Health, frame.Health.bg)
-	else
-		UF:ToggleTransparentStatusBar(false, frame.Health, frame.Health.bg, (frame.USE_PORTRAIT and frame.USE_PORTRAIT_OVERLAY) ~= true)
-	end
-	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)
 
 	E:SetMoverSnapOffset(frame:GetName()..'Mover', -(12 + db.castbar.height))
 	frame:UpdateAllElements()

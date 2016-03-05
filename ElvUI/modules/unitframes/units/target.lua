@@ -50,7 +50,7 @@ function UF:Construct_TargetFrame(frame)
 	frame.customTexts = {}
 	frame:Point('BOTTOMRIGHT', E.UIParent, 'BOTTOM', 413, 68)
 	E:CreateMover(frame, frame:GetName()..'Mover', L["Target Frame"], nil, nil, nil, 'ALL,SOLO')
-	
+
 	frame.unitframeType = "target"
 end
 
@@ -85,10 +85,10 @@ function UF:Update_TargetFrame(frame, db)
 		frame.CLASSBAR_HEIGHT = frame.USE_CLASSBAR and db.combobar.height or 0
 		frame.CLASSBAR_WIDTH = frame.UNIT_WIDTH - ((frame.BORDER+frame.SPACING)*2) - frame.PORTRAIT_WIDTH  - frame.POWERBAR_OFFSET
 		frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN or frame.CLASSBAR_DETACHED) and 0 or (frame.USE_MINI_CLASSBAR and (frame.SPACING+(frame.CLASSBAR_HEIGHT/2)) or (frame.CLASSBAR_HEIGHT + frame.SPACING))
-		
+
 		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and (db.infoPanel.enable or E.global.tukuiMode)
-		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0		
-		
+		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0
+
 		local bottomOffset = 0
 		if frame.USE_POWERBAR and not frame.POWERBAR_DETACHED and not frame.USE_INSET_POWERBAR then
 			bottomOffset = bottomOffset + frame.POWERBAR_HEIGHT - (frame.BORDER-frame.SPACING)
@@ -112,9 +112,9 @@ function UF:Update_TargetFrame(frame, db)
 			frame:SetAttribute("type3", nil)
 		end
 	end
-	
+
 	UF:Configure_InfoPanel(frame)
-	
+
 	--Health
 	UF:Configure_HealthBar(frame)
 
@@ -161,14 +161,6 @@ function UF:Update_TargetFrame(frame, db)
 
 	--CustomTexts
 	UF:Configure_CustomTexts(frame)
-
-	if UF.db.colors.transparentHealth then
-		UF:ToggleTransparentStatusBar(true, frame.Health, frame.Health.bg)
-	else
-		UF:ToggleTransparentStatusBar(false, frame.Health, frame.Health.bg, (frame.USE_PORTRAIT and frame.USE_PORTRAIT_OVERLAY) ~= true)
-	end
-
-	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)
 
 	E:SetMoverSnapOffset(frame:GetName()..'Mover', -(12 + db.castbar.height))
 	frame:UpdateAllElements()

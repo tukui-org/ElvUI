@@ -149,10 +149,10 @@ function UF:Update_ArenaFrames(frame, db)
 
 		frame.STAGGER_WIDTH = db.pvpSpecIcon and frame.UNIT_HEIGHT or 0
 		frame.CLASSBAR_YOFFSET = 0
-		
+
 		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and (db.infoPanel.enable or E.global.tukuiMode)
 		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0
-		
+
 		local bottomOffset = 0
 		if frame.USE_POWERBAR and not frame.POWERBAR_DETACHED and not frame.USE_INSET_POWERBAR then
 			bottomOffset = bottomOffset + frame.POWERBAR_HEIGHT - (frame.BORDER-frame.SPACING)
@@ -167,9 +167,9 @@ function UF:Update_ArenaFrames(frame, db)
 	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
-	
+
 	UF:Configure_InfoPanel(frame)
-	
+
 	--Health
 	UF:Configure_HealthBar(frame)
 
@@ -235,9 +235,6 @@ function UF:Update_ArenaFrames(frame, db)
 		ArenaHeader:Width(frame.UNIT_WIDTH + ((frame.UNIT_WIDTH + db.spacing) * 4))
 		ArenaHeader:Height(frame.UNIT_HEIGHT)
 	end
-
-	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg, (USE_PORTRAIT and USE_PORTRAIT_OVERLAY) ~= true)
-	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)
 
 	frame:UpdateAllElements()
 end

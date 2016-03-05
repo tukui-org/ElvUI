@@ -29,7 +29,7 @@ function UF:Construct_AssistFrames(unitGroup)
 		self.AuraWatch = UF:Construct_AuraWatch(self)
 		self.RaidDebuffs = UF:Construct_RaidDebuffs(self)
 		self.DebuffHighlight = UF:Construct_DebuffHighlight(self)
-		
+
 		self.unitframeType = "assist"
 	else
 		self.unitframeType = "assisttarget"
@@ -86,13 +86,13 @@ function UF:Update_AssistFrames(frame, db)
 			frame.BORDER = E.mult
 		else
 			frame.BORDER = E.Border
-			frame.SPACING = E.Spacing		
+			frame.SPACING = E.Spacing
 		end
 		frame.SHADOW_SPACING = 3
 
 		frame.UNIT_WIDTH = db.width
 		frame.UNIT_HEIGHT = db.height
-		
+
 		frame.USE_POWERBAR = false
 		frame.POWERBAR_DETACHED = false
 		frame.USE_INSET_POWERBAR = false
@@ -169,8 +169,6 @@ function UF:Update_AssistFrames(frame, db)
 		--Buff Indicator
 		UF:UpdateAuraWatch(frame)
 	end
-
-	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg, true)
 
 	frame:UpdateAllElements()
 end

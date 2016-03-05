@@ -49,7 +49,7 @@ function UF:Construct_RaidpetFrames(unitGroup)
 
 	UF:Update_StatusBars()
 	UF:Update_FontStrings()
-	
+
 	self.unitframeType = "raidpet"
 
 	return self
@@ -108,7 +108,7 @@ function UF:Update_RaidpetFrames(frame, db)
 			frame.BORDER = E.mult
 		else
 			frame.BORDER = E.Border
-			frame.SPACING = E.Spacing		
+			frame.SPACING = E.Spacing
 		end
 		frame.SHADOW_SPACING = 3
 
@@ -180,8 +180,6 @@ function UF:Update_RaidpetFrames(frame, db)
 
 	--CustomTexts
 	UF:Configure_CustomTexts(frame)
-
-	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg, (frame.USE_PORTRAIT and frame.USE_PORTRAIT_OVERLAY) ~= true)
 
 	frame:UpdateAllElements()
 end

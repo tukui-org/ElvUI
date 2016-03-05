@@ -31,7 +31,7 @@ function UF:Construct_PetTargetFrame(frame)
 	frame.customTexts = {}
 	frame:Point('BOTTOM', ElvUF_Pet, 'TOP', 0, 7) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', L["PetTarget Frame"], nil, -7, nil, 'ALL,SOLO')
-	
+
 	frame.unitframeType = "pettarget"
 end
 
@@ -56,10 +56,10 @@ function UF:Update_PetTargetFrame(frame, db)
 		frame.USE_PORTRAIT = db.portrait and db.portrait.enable
 		frame.USE_PORTRAIT_OVERLAY = frame.USE_PORTRAIT and (db.portrait.overlay or frame.ORIENTATION == "MIDDLE")
 		frame.PORTRAIT_WIDTH = (frame.USE_PORTRAIT_OVERLAY or not frame.USE_PORTRAIT) and 0 or db.portrait.width
-		
+
 		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and (db.infoPanel.enable or E.global.tukuiMode)
-		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0		
-		
+		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0
+
 		local bottomOffset = 0
 		if frame.USE_POWERBAR and not frame.POWERBAR_DETACHED and not frame.USE_INSET_POWERBAR then
 			bottomOffset = bottomOffset + frame.POWERBAR_HEIGHT - (frame.BORDER-frame.SPACING)
@@ -67,7 +67,7 @@ function UF:Update_PetTargetFrame(frame, db)
 		if frame.USE_INFO_PANEL then
 			bottomOffset = bottomOffset + frame.INFO_PANEL_HEIGHT - (frame.BORDER-frame.SPACING)
 		end
-		frame.BOTTOM_OFFSET = bottomOffset			
+		frame.BOTTOM_OFFSET = bottomOffset
 	end
 
 	frame.colors = ElvUF.colors
@@ -75,7 +75,7 @@ function UF:Update_PetTargetFrame(frame, db)
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
-	UF:Configure_InfoPanel(frame)	
+	UF:Configure_InfoPanel(frame)
 	--Health
 	UF:Configure_HealthBar(frame)
 
@@ -101,13 +101,6 @@ function UF:Update_PetTargetFrame(frame, db)
 
 	--CustomTexts
 	UF:Configure_CustomTexts(frame)
-
-	if UF.db.colors.transparentHealth then
-		UF:ToggleTransparentStatusBar(true, frame.Health, frame.Health.bg)
-	else
-		UF:ToggleTransparentStatusBar(false, frame.Health, frame.Health.bg, (frame.USE_PORTRAIT and frame.USE_PORTRAIT_OVERLAY) ~= true)
-	end
-	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)
 
 	frame:UpdateAllElements()
 end

@@ -58,10 +58,10 @@ function UF:Construct_RaidFrames(unitGroup)
 	self.Range = UF:Construct_Range(self)
 	self.customTexts = {}
 	self.InfoPanel = UF:Construct_InfoPanel(self)
-	
+
 	UF:Update_StatusBars()
 	UF:Update_FontStrings()
-	
+
 	self.unitframeType = "raid"
 
 	return self
@@ -148,7 +148,7 @@ function UF:Update_RaidFrames(frame, db)
 			frame.BORDER = E.mult
 		else
 			frame.BORDER = E.Border
-			frame.SPACING = E.Spacing		
+			frame.SPACING = E.Spacing
 		end
 		frame.SHADOW_SPACING = 3
 
@@ -175,8 +175,8 @@ function UF:Update_RaidFrames(frame, db)
 		frame.CLASSBAR_WIDTH = 0
 		frame.CLASSBAR_YOFFSET = 0
 		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and (db.infoPanel.enable or E.global.tukuiMode)
-		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0		
-		
+		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0
+
 		local bottomOffset = 0
 		if frame.USE_POWERBAR and not frame.POWERBAR_DETACHED and not frame.USE_INSET_POWERBAR then
 			bottomOffset = bottomOffset + frame.POWERBAR_HEIGHT - (frame.BORDER-frame.SPACING)
@@ -185,13 +185,13 @@ function UF:Update_RaidFrames(frame, db)
 			bottomOffset = bottomOffset + frame.INFO_PANEL_HEIGHT - (frame.BORDER-frame.SPACING)
 		end
 		frame.BOTTOM_OFFSET = bottomOffset
-			
+
 	end
 
 	if not InCombatLockdown() then
 		frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	end
-	
+
 	UF:Configure_InfoPanel(frame)
 	--Health
 	UF:Configure_HealthBar(frame)
@@ -248,13 +248,6 @@ function UF:Update_RaidFrames(frame, db)
 
 	--CustomTexts
 	UF:Configure_CustomTexts(frame)
-
-	if UF.db.colors.transparentHealth then
-		UF:ToggleTransparentStatusBar(true, frame.Health, frame.Health.bg)
-	else
-		UF:ToggleTransparentStatusBar(false, frame.Health, frame.Health.bg, (frame.USE_PORTRAIT and frame.USE_PORTRAIT_OVERLAY) ~= true)
-	end
-	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)
 
 	frame:UpdateAllElements()
 end

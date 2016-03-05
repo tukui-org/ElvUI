@@ -31,7 +31,7 @@ function UF:Construct_TankFrames(unitGroup)
 		self.AuraWatch = UF:Construct_AuraWatch(self)
 		self.RaidDebuffs = UF:Construct_RaidDebuffs(self)
 		self.DebuffHighlight = UF:Construct_DebuffHighlight(self)
-		
+
 		self.unitframeType = "tank"
 	else
 		self.unitframeType = "tanktarget"
@@ -89,7 +89,7 @@ function UF:Update_TankFrames(frame, db)
 			frame.BORDER = E.mult
 		else
 			frame.BORDER = E.Border
-			frame.SPACING = E.Spacing		
+			frame.SPACING = E.Spacing
 		end
 		frame.SHADOW_SPACING = 3
 
@@ -172,8 +172,6 @@ function UF:Update_TankFrames(frame, db)
 		--Buff Indicator
 		UF:UpdateAuraWatch(frame)
 	end
-
-	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg, true)
 
 	frame:UpdateAllElements()
 end

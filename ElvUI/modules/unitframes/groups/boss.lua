@@ -29,7 +29,7 @@ function UF:Construct_BossFrames(frame)
 	frame.Portrait2D = self:Construct_Portrait(frame, 'texture')
 	frame.InfoPanel = self:Construct_InfoPanel(frame)
 	frame.Buffs = self:Construct_Buffs(frame)
-	
+
 	frame.Debuffs = self:Construct_Debuffs(frame)
 	frame.DebuffHighlight = self:Construct_DebuffHighlight(frame)
 	frame.TargetGlow = UF:Construct_TargetGlow(frame)
@@ -44,11 +44,11 @@ function UF:Construct_BossFrames(frame)
 	frame.Range = UF:Construct_Range(frame)
 	frame:SetAttribute("type2", "focus")
 	frame.customTexts = {}
-	
+
 	BossHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165)
 	E:CreateMover(BossHeader, BossHeader:GetName()..'Mover', L["Boss Frames"], nil, nil, nil, 'ALL,PARTY,RAID')
 	frame.mover = BossHeader.mover
-	
+
 	frame.unitframeType = "boss"
 end
 
@@ -83,10 +83,10 @@ function UF:Update_BossFrames(frame, db)
 		frame.CLASSBAR_HEIGHT = frame.CLASSBAR_SHOWN and db.power.height or 0
 		frame.CLASSBAR_WIDTH = frame.UNIT_WIDTH - ((frame.BORDER+frame.SPACING)*2) - frame.PORTRAIT_WIDTH  - frame.POWERBAR_OFFSET
 		frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN) and 0 or (frame.CLASSBAR_HEIGHT + frame.SPACING)
-		
+
 		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and (db.infoPanel.enable or E.global.tukuiMode)
-		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0		
-		
+		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0
+
 		local bottomOffset = 0
 		if frame.USE_POWERBAR and not frame.POWERBAR_DETACHED and not frame.USE_INSET_POWERBAR then
 			bottomOffset = bottomOffset + frame.POWERBAR_HEIGHT - (frame.BORDER-frame.SPACING)
@@ -94,7 +94,7 @@ function UF:Update_BossFrames(frame, db)
 		if frame.USE_INFO_PANEL then
 			bottomOffset = bottomOffset + frame.INFO_PANEL_HEIGHT - (frame.BORDER-frame.SPACING)
 		end
-		frame.BOTTOM_OFFSET = bottomOffset	
+		frame.BOTTOM_OFFSET = bottomOffset
 	end
 
 	frame.colors = ElvUF.colors
@@ -167,21 +167,6 @@ function UF:Update_BossFrames(frame, db)
 		BossHeader:Width(frame.UNIT_WIDTH + ((frame.UNIT_WIDTH + db.spacing) * (MAX_BOSS_FRAMES -1)))
 		BossHeader:Height(frame.UNIT_HEIGHT)
 	end
-
-	if UF.db.colors.transparentHealth then
-		UF:ToggleTransparentStatusBar(true, frame.Health, frame.Health.bg)
-	else
-		UF:ToggleTransparentStatusBar(false, frame.Health, frame.Health.bg, (frame.USE_PORTRAIT and frame.USE_PORTRAIT_OVERLAY) ~= true)
-	end
-
-	if UF.db.colors.transparentPower then
-		UF:ToggleTransparentStatusBar(true, frame.Power, frame.Power.bg)
-	else
-		UF:ToggleTransparentStatusBar(false, frame.Power, frame.Power.bg, true)
-	end
-
-	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg, true)
-	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)
 
 	frame:UpdateAllElements()
 end
