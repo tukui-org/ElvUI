@@ -63,7 +63,7 @@ function UF:Construct_Castbar(frame, direction, moverName)
 
 	local button = CreateFrame("Frame", nil, castbar)
 	local holder = CreateFrame('Frame', nil, castbar)
-	button:SetTemplate("Default", nil, nil, self.thinBorders)
+	button:SetTemplate("Default", nil, nil, self.thinBorders and not E.global.tukuiMode)
 
 	castbar.Holder = holder
 	--these are placeholder so the mover can be created.. it will be changed.
@@ -76,7 +76,11 @@ function UF:Construct_Castbar(frame, direction, moverName)
 	end
 
 	local icon = button:CreateTexture(nil, "ARTWORK")
-	icon:SetInside(nil, frame.BORDER, frame.BORDER) --use frame.BORDER since it may be different from E.Border due to forced thin borders
+	if(E.global.tukuiMode) then
+		icon:SetInside(nil, E.Border, E.Border)
+	else
+		icon:SetInside(nil, frame.BORDER, frame.BORDER) --use frame.BORDER since it may be different from E.Border due to forced thin borders
+	end
 	icon:SetTexCoord(unpack(E.TexCoords))
 	icon.bg = button
 
@@ -109,11 +113,10 @@ function UF:Configure_Castbar(frame)
 	--Icon
 	if db.castbar.icon then
 		castbar.Icon = castbar.ButtonIcon
-		if(not db.castbar.iconAttached) then
+		if(not db.castbar.iconAttached) or E.global.tukuiMode then
 			castbar.Icon.bg:Size(db.castbar.iconSize)
 		else
-			if (db.castbar.insideInfoPanel and frame.USE_INFO_PANEL) or E.global.tukuiMode then
-
+			if (db.castbar.insideInfoPanel and frame.USE_INFO_PANEL) then
 				castbar.Icon.bg:Size(db.infoPanel.height - frame.SPACING*2)
 			else
 				castbar.Icon.bg:Size(db.castbar.height-frame.SPACING*2)
@@ -136,7 +139,7 @@ function UF:Configure_Castbar(frame)
 	
 	castbar:ClearAllPoints()
 	if (db.castbar.insideInfoPanel and frame.USE_INFO_PANEL) or E.global.tukuiMode then
-		if(not db.castbar.iconAttached) then
+		if(not db.castbar.iconAttached) or E.global.tukuiMode then
 			castbar:SetInside(frame.InfoPanel, 0, 0)
 		else
 			if(frame.ORIENTATION == "LEFT") then
@@ -176,7 +179,7 @@ function UF:Configure_Castbar(frame)
 	end
 	
 	
-	if(not db.castbar.iconAttached) and db.castbar.icon then
+	if(not db.castbar.iconAttached or E.global.tukuiMode) and db.castbar.icon then
 		castbar.Icon.bg:ClearAllPoints()
 		if(frame.ORIENTATION == "LEFT") then
 			castbar.Icon.bg:Point("RIGHT", frame, "LEFT", -10, 0)
