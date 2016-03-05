@@ -94,10 +94,6 @@ if(not ElvDB.profiles["Minimalistic"]) then
 		},
 		["unitframe"] = {
 			["statusbar"] = "ElvUI Blank",
-			["colors"] = {
-				["transparentPower"] = true,
-				["transparentHealth"] = true,
-			},
 			["fontOutline"] = "THICKOUTLINE",
 			["smoothbars"] = true,
 			["font"] = "Expressway",
