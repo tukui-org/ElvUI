@@ -64,7 +64,6 @@ function UF:Construct_AuraBarHeader(frame)
 	auraBar.filter = UF.AuraBarFilter
 	auraBar.PostUpdate = UF.ColorizeAuraBars
 
-
 	return auraBar
 end
 
@@ -105,17 +104,24 @@ function UF:Configure_AuraBars(frame)
 			anchorPoint, anchorTo = 'TOP', 'BOTTOM'
 		end
 
-		local yOffset = 0;
+		local yOffset
+		local spacing = (((db.aurabar.attachTo == "FRAME" and 3) or (db.aurabar.attachTo == "PLAYER_AURABARS" and 4) or 2) * frame.SPACING)
+		local border = (((db.aurabar.attachTo == "FRAME" or db.aurabar.attachTo == "PLAYER_AURABARS") and 2 or 1) * frame.BORDER)
+
 		if db.aurabar.anchorPoint == 'BELOW' then
-			yOffset = frame.BORDER - frame.SPACING*2;
+			yOffset = -spacing + border
 		else
-			yOffset = -frame.BORDER + frame.SPACING*2;
+			yOffset = spacing - border
 		end
+
+		local xOffset = (db.aurabar.attachTo == "FRAME" and frame.SPACING or 0)
+		local offsetLeft = xOffset + ((db.aurabar.attachTo == "FRAME" and ((anchorTo == "TOP" and frame.ORIENTATION ~= "LEFT") or (anchorTo == "BOTTOM" and frame.ORIENTATION == "LEFT"))) and frame.POWERBAR_OFFSET or 0)
+		local offsetRight = -xOffset - ((db.aurabar.attachTo == "FRAME" and ((anchorTo == "TOP" and frame.ORIENTATION ~= "RIGHT") or (anchorTo == "BOTTOM" and frame.ORIENTATION == "RIGHT"))) and frame.POWERBAR_OFFSET or 0)
 
 		auraBars.auraBarHeight = db.aurabar.height
 		auraBars:ClearAllPoints()
-		auraBars:Point(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', (attachTo == frame and anchorTo == 'BOTTOM') and frame.POWERBAR_OFFSET or 0, yOffset)
-		auraBars:Point(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', attachTo == frame and frame.POWERBAR_OFFSET * (anchorTo == 'BOTTOM' and 0 or -1) or 0, yOffset)
+		auraBars:Point(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', offsetLeft, yOffset)
+		auraBars:Point(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', offsetRight, yOffset)
 		auraBars.buffColor = {buffColor.r, buffColor.g, buffColor.b}
 		if UF.db.colors.auraBarByType then
 			auraBars.debuffColor = nil;

@@ -200,6 +200,11 @@ function UF:Update_PlayerFrame(frame, db)
 
 	--AuraBars
 	UF:Configure_AuraBars(frame)
+	--We need to update Target AuraBars if attached to Player AuraBars
+	--mainly because of issues when using power offset on player and switching to/from middle orientation
+	if E.db.unitframe.units.target.aurabar.attachTo == "PLAYER_AURABARS" and ElvUF_Target then
+		UF:Configure_AuraBars(ElvUF_Target)
+	end
 
 	--CustomTexts
 	UF:Configure_CustomTexts(frame)
