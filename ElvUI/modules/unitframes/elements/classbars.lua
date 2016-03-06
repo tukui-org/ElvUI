@@ -663,8 +663,6 @@ end
 
 local druidManaIsShown = false
 function UF:DruidManaPostUpdateVisibility()
-	local form = GetShapeshiftFormID()
-	
 	local isShown = self:IsShown()
 	if druidManaIsShown ~= isShown then
 		druidManaIsShown = isShown
