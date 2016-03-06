@@ -3,7 +3,7 @@ local UF = E:GetModule('UnitFrames');
 
 --Cache global variables
 --Lua functions
-local select = select
+local select, unpack = select, unpack
 local ceil, floor = math.ceil, math.floor
 --WoW API / Variables
 local CreateFrame = CreateFrame
@@ -11,6 +11,9 @@ local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local IsSpellKnown = IsSpellKnown
 local GetEclipseDirection = GetEclipseDirection
+local GetShapeshiftFormID = GetShapeshiftFormID
+local BEAR_FORM = BEAR_FORM
+local CAT_FORM = CAT_FORM
 local SPELL_POWER_HOLY_POWER = SPELL_POWER_HOLY_POWER
 local SPELL_POWER_SHADOW_ORBS = SPELL_POWER_SHADOW_ORBS
 local SHADOW_ORB_MINOR_TALENT_ID = SHADOW_ORB_MINOR_TALENT_ID
