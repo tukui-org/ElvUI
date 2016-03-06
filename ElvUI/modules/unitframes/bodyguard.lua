@@ -103,7 +103,7 @@ function BG:CreateFrame()
 
 	self:HideFrame()
 
-	frame:SetTemplate("Default", nil, true)
+	frame:SetTemplate("Default", nil, true, UF.thinBorders)
 	frame:Point("CENTER", E.UIParent, "CENTER")
 	frame:Width(UF.db.units.bodyguard.width)
 	frame:Height(UF.db.units.bodyguard.height)
