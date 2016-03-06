@@ -195,6 +195,9 @@ function UF:Update_ArenaFrames(frame, db)
 
 	--PVPSpecIcon
 	UF:Configure_PVPSpecIcon(frame)
+	
+	--Trinket
+	UF:Configure_Trinket(frame)
 
 	--Range
 	UF:Configure_Range(frame)
