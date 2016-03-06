@@ -50,7 +50,7 @@ function UF:Construct_AuraIcon(button)
 	button.text:Point('CENTER', 1, 1)
 	button.text:SetJustifyH('CENTER')
 
-	button:SetTemplate('Default', nil, nil, UF.thinBorders and not E.global.tukuiMode)
+	button:SetTemplate('Default', nil, nil, (UF.thinBorders and not E.global.tukuiMode))
 
 	button.cd.noOCC = true
 	button.cd.noCooldownCount = true
@@ -58,7 +58,8 @@ function UF:Construct_AuraIcon(button)
 	button.cd:SetInside()
 	button.cd:SetHideCountdownNumbers(true)
 
-	button.icon:SetInside()
+	local offset = (UF.thinBorders and not E.global.tukuiMode) and E.mult or E.Border
+	button.icon:SetInside(button, offset, offset)
 	button.icon:SetTexCoord(unpack(E.TexCoords))
 	button.icon:SetDrawLayer('ARTWORK')
 
