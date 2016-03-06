@@ -108,8 +108,9 @@ function BG:CreateFrame()
 	frame:Width(UF.db.units.bodyguard.width)
 	frame:Height(UF.db.units.bodyguard.height)
 
+	local offset = UF.thinBorders and E.mult or E.Border
 	frame.healthBar = CreateFrame("StatusBar", nil, frame)
-	frame.healthBar:SetInside(frame)
+	frame.healthBar:SetInside(frame, offset, offset)
 	frame.healthBar:SetMinMaxValues(0, 1)
 	frame.healthBar:SetValue(1)
 	frame.healthBar:SetStatusBarTexture(LSM:Fetch("statusbar", UF.db.statusbar))
