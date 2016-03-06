@@ -564,7 +564,7 @@ function UF:Construct_DruidResourceBar(frame)
 	local eclipseBar = CreateFrame('Frame', nil, frame)
 	eclipseBar:CreateBackdrop('Default', nil, nil, self.thinBorders)
 	eclipseBar.PostUpdatePower = UF.EclipseDirection
-	eclipseBar.PostUpdateVisibility = ToggleResourceBar
+	eclipseBar.PostUpdateVisibility = UF.EclipsePostUpdateVisibility
 
 	local lunarBar = CreateFrame('StatusBar', nil, eclipseBar)
 	lunarBar:Point('LEFT', eclipseBar)
@@ -592,7 +592,7 @@ function UF:Construct_DruidAltManaBar(frame)
 	dpower:SetTemplate("Default")
 	dpower:SetFrameLevel(dpower:GetFrameLevel() + 1)
 	dpower.colorPower = true
-	dpower.PostUpdateVisibility = ToggleResourceBar
+	dpower.PostUpdateVisibility = UF.DruidManaPostUpdateVisibility
 	dpower.PostUpdatePower = UF.DruidPostUpdateAltPower
 
 	dpower.ManaBar = CreateFrame('StatusBar', nil, dpower)
@@ -646,5 +646,28 @@ function UF:DruidPostUpdateAltPower(unit, min, max)
 		end
 	else
 		self.Text:SetText()
+	end
+end
+
+local druidEclipseIsShown = false
+function UF:EclipsePostUpdateVisibility()
+	local form = GetShapeshiftFormID()
+	local isShown = self:IsShown()
+	if druidEclipseIsShown ~= isShown then
+		druidEclipseIsShown = isShown
+
+		if (form == BEAR_FORM or form == CAT_FORM) then return; end --Don't toggle, as the EclipseBar will be replaced with DruidMana
+		ToggleResourceBar(self)
+	end
+end
+
+local druidManaIsShown = false
+function UF:DruidManaPostUpdateVisibility()
+	local form = GetShapeshiftFormID()
+	
+	local isShown = self:IsShown()
+	if druidManaIsShown ~= isShown then
+		druidManaIsShown = isShown
+		ToggleResourceBar(self)
 	end
 end
