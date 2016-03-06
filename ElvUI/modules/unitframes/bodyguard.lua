@@ -176,9 +176,11 @@ end
 function BG:HealthUpdate(health, maxHealth)
 	self.frame.healthBar:SetMinMaxValues(0, maxHealth)
 	self.frame.healthBar:SetValue(health)
+	local colorOverride = UF.db.units.bodyguard.colorOverride
 
 	local r, g, b = unpack(ElvUF.colors.health)
-	if E.db.unitframe.colors.healthclass then
+	
+	if (colorOverride and colorOverride == "FORCE_ON") or (E.db.unitframe.colors.healthclass and not (colorOverride and colorOverride == "FORCE_OFF")) then
 		r, g, b = unpack(ElvUF.colors.reaction[5])
 	end
 
