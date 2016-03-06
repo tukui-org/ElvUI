@@ -206,10 +206,10 @@ function UF:Configure_Castbar(frame)
 		castbar.Icon.bg:SetFrameStrata("HIGH")
 	elseif(db.castbar.icon) then
 		castbar.Icon.bg:ClearAllPoints()
-		if frame.ORIENTATION == "LEFT" then
-			castbar.Icon.bg:Point("RIGHT", castbar, "LEFT", -frame.SPACING*3, 0)
-		else
+		if frame.ORIENTATION == "RIGHT" then
 			castbar.Icon.bg:Point("LEFT", castbar, "RIGHT", frame.SPACING*3, 0)
+		else
+			castbar.Icon.bg:Point("RIGHT", castbar, "LEFT", -frame.SPACING*3, 0)
 		end
 	end
 
