@@ -68,7 +68,7 @@ function UF:Configure_Power(frame)
 		power.value:Point(db.power.position, attachPoint, db.power.position, db.power.xOffset, db.power.yOffset)
 		frame:Tag(power.value, db.power.text_format)
 
-		if db.power.attachTextToPower then
+		if db.power.attachTextTo == "Power" then
 			power.value:SetParent(power)
 		else
 			power.value:SetParent(frame.RaisedElementParent)
