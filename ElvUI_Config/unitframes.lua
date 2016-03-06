@@ -507,6 +507,8 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 			values = {
 				['FRAME'] = L["Frame"],
 				['DEBUFFS'] = L["Debuffs"],
+				["HEALTH"] = L["Health"],
+				["POWER"] = L["Power"],
 			},
 		}
 	else
@@ -518,6 +520,8 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 			values = {
 				['FRAME'] = L["Frame"],
 				['BUFFS'] = L["Buffs"],
+				["HEALTH"] = L["Health"],
+				["POWER"] = L["Power"],
 			},
 		}
 	end

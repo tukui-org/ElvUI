@@ -345,6 +345,10 @@ function UF:GetAuraAnchorFrame(frame, attachTo, isConflict)
 		return frame.Buffs
 	elseif attachTo == 'DEBUFFS' then
 		return frame.Debuffs
+	elseif attachTo == 'HEALTH' then
+		return frame.Health
+	elseif attachTo == 'POWER' and frame.Power then
+		return frame.Power
 	else
 		return frame
 	end
