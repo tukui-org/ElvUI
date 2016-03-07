@@ -42,25 +42,19 @@ function UF:Configure_ComboPoints(frame)
 		CPoints:SetParent(E.UIParent)
 	end
 
-	if not frame.USE_CLASSBAR or db.combobar.autoHide then
-		CPoints:Hide()
-	end
-	
 	local CLASSBAR_WIDTH = frame.CLASSBAR_WIDTH
 	if frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then
 		CPoints:Point("CENTER", frame.Health.backdrop, "TOP", 0, 0)
 		CLASSBAR_WIDTH = CLASSBAR_WIDTH * (frame.MAX_CLASS_BAR - 1) / frame.MAX_CLASS_BAR
 		CPoints:SetFrameStrata("MEDIUM")
 		if CPoints.Holder and CPoints.Holder.mover then
-			CPoints.Holder.mover:SetScale(0.000001)
-			CPoints.Holder.mover:SetAlpha(0)
+			E:DisableMover(CPoints.Holder.mover:GetName())
 		end
 	elseif not frame.CLASSBAR_DETACHED then
 		CPoints:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", frame.BORDER, (frame.SPACING*3))
 		CPoints:SetFrameStrata("LOW")
 		if CPoints.Holder and CPoints.Holder.mover then
-			CPoints.Holder.mover:SetScale(0.000001)
-			CPoints.Holder.mover:SetAlpha(0)
+			E:DisableMover(CPoints.Holder.mover:GetName())
 		end
 	else
 		CLASSBAR_WIDTH = db.combobar.detachedWidth - ((frame.BORDER+frame.SPACING)*2)
@@ -78,8 +72,7 @@ function UF:Configure_ComboPoints(frame)
 			CPoints.Holder:Size(db.combobar.detachedWidth, db.combobar.height)
 			CPoints:ClearAllPoints()
 			CPoints:Point("BOTTOMLEFT", CPoints.Holder.mover, "BOTTOMLEFT", frame.BORDER+frame.SPACING, frame.BORDER+frame.SPACING)
-			CPoints.Holder.mover:SetScale(1)
-			CPoints.Holder.mover:SetAlpha(1)
+			E:EnableMover(CPoints.Holder.mover:GetName())
 		end
 
 		CPoints:SetFrameStrata("LOW")
