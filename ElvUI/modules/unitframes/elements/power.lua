@@ -86,10 +86,10 @@ function UF:Configure_Power(frame)
 		end
 
 		--Fix height in case it is lower than the theme allows
-		if not self.thinBorders and not E.PixelMode and frame.POWERBAR_HEIGHT < 7 then --A height of 7 means 6px for borders and just 1px for the actual power statusbar
+		if (not self.thinBorders and not E.PixelMode) and frame.POWERBAR_HEIGHT < 7 then --A height of 7 means 6px for borders and just 1px for the actual power statusbar
 			frame.POWERBAR_HEIGHT = 7
 			if db.power then db.power.height = 7 end
-		elseif self.thinBorders or E.PixelMode and frame.POWERBAR_HEIGHT < 3 then --A height of 3 means 2px for borders and just 1px for the actual power statusbar
+		elseif (self.thinBorders or E.PixelMode) and frame.POWERBAR_HEIGHT < 3 then --A height of 3 means 2px for borders and just 1px for the actual power statusbar
 			frame.POWERBAR_HEIGHT = 3
 			if db.power then db.power.height = 3 end
 		end
