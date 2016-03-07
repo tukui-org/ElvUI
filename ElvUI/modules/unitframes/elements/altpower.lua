@@ -9,8 +9,6 @@ local floor = math.floor
 local CreateFrame = CreateFrame
 local UnitAlternatePowerInfo = UnitAlternatePowerInfo
 
-
-
 function UF:Construct_AltPowerBar(frame)
 	local altpower = CreateFrame("StatusBar", nil, frame)
 	altpower:SetStatusBarTexture(E['media'].blankTex)
@@ -47,7 +45,7 @@ function UF:AltPowerBarPostUpdate(min, cur, max)
 	local unit = parent.unit
 
 	if unit == "player" and self.text then
-		local type = select(10, UnitAlternatePowerInfo(unit))
+		local type = select(11, UnitAlternatePowerInfo(unit))
 
 		if perc > 0 then
 			self.text:SetFormattedText("%s: %d%%", type, perc)
