@@ -232,11 +232,11 @@ function E:UpdateMedia()
 	elseif E.PixelMode then
 		border = {r = 0, g = 0, b = 0}
 	end
-	
+
 	if(self.global.tukuiMode) then
 		border = {r=0.6, g = 0.6, b = 0.6}
 	end
-	
+
 	self["media"].bordercolor = {border.r, border.g, border.b}
 
 	--Backdrop Color
@@ -254,11 +254,11 @@ function E:UpdateMedia()
 		self.db['general'].valuecolor.g = value.g
 		self.db['general'].valuecolor.b = value.b
 	end
-	
+
 	if(self.global.tukuiMode) then
 		value = {r = 1, g = 1, b = 1}
 	end
-	
+
 	self["media"].hexvaluecolor = self:RGBToHex(value.r, value.g, value.b)
 	self["media"].rgbvaluecolor = {value.r, value.g, value.b}
 
@@ -831,10 +831,10 @@ myName = myName:gsub("%s+", "")
 local frames = {}
 
 local function SendRecieve(self, event, prefix, message, channel, sender)
-	
+
 	if event == "CHAT_MSG_ADDON" then
 		if(sender == myName) then return end
-		
+
 		if prefix == "ELVUI_VERSIONCHK" and not E.recievedOutOfDateMessage then
 			if(tonumber(message) ~= nil and tonumber(message) > tonumber(E.version)) then
 				E:Print(L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"]:gsub("ElvUI", E.UIName))
@@ -1052,11 +1052,9 @@ function E:DBConversions()
 		["ElvUI Combat"] = "Action Man",
 		["ElvUI Font"] = "PT Sans Narrow",
 		["ElvUI Pixel"] = "Homespun"
-	}	
-	
+	}
+
 	if fonts[E.db.general.font] then E.db.general.font = fonts[E.db.general.font] end
-	if fonts[E.db.general.itemLevelFont] then E.db.general.itemLevelFont = fonts[E.db.general.itemLevelFont] end
-	if fonts[E.db.general.countFont] then E.db.general.itemLevelFont = fonts[E.db.general.countFont] end
 	if fonts[E.db.nameplate.font] then E.db.nameplate.font = fonts[E.db.nameplate.font] end
 	if fonts[E.db.nameplate.buffs.font] then E.db.nameplate.buffs.font = fonts[E.db.nameplate.buffs.font] end
 	if fonts[E.db.nameplate.debuffs.font] then E.db.nameplate.debuffs.font = fonts[E.db.nameplate.debuffs.font] end
@@ -1073,8 +1071,15 @@ function E:DBConversions()
 	if fonts[E.db.unitframe.units.party.rdebuffs.font] then E.db.unitframe.units.party.rdebuffs.font = fonts[E.db.unitframe.units.party.rdebuffs.font] end
 	if fonts[E.db.unitframe.units.raid.rdebuffs.font] then E.db.unitframe.units.raid.rdebuffs.font = fonts[E.db.unitframe.units.raid.rdebuffs.font] end
 	if fonts[E.db.unitframe.units.raid40.rdebuffs.font] then E.db.unitframe.units.raid40.rdebuffs.font = fonts[E.db.unitframe.units.raid40.rdebuffs.font] end
-	
-	
+	if fonts[E.db.unitframe.units.raidpet.rdebuffs.font] then E.db.unitframe.units.raidpet.rdebuffs.font = fonts[E.db.unitframe.units.raidpet.rdebuffs.font] end
+	if fonts[E.db.unitframe.units.tank.rdebuffs.font] then E.db.unitframe.units.tank.rdebuffs.font = fonts[E.db.unitframe.units.tank.rdebuffs.font] end
+	if fonts[E.db.unitframe.units.assist.rdebuffs.font] then E.db.unitframe.units.assist.rdebuffs.font = fonts[E.db.unitframe.units.assist.rdebuffs.font] end
+	if fonts[E.db.actionbar.font] then E.db.actionbar.font = fonts[E.db.actionbar.font] end
+	if fonts[E.private.dmgfont] then E.private.dmgfont = fonts[E.private.dmgfont] end
+	if fonts[E.private.namefont] then E.private.namefont = fonts[E.private.namefont] end
+	if fonts[E.private.chatBubbleFont] then E.private.chatBubbleFont = fonts[E.private.chatBubbleFont] end
+
+
 	--Add missing Stack Threshold
 	if E.global.unitframe['aurafilters']['RaidDebuffs'].spells then
 		local matchFound
@@ -1302,11 +1307,11 @@ function E:Initialize()
 	if(self:HelloKittyFixCheck()) then
 		self:HelloKittyFix()
 	end
-	
+
 	if(self.global.tukuiMode) then
-		self.UIName = "Tukui"	
+		self.UIName = "Tukui"
 	end
-	
+
 	self:UpdateMedia()
 	self:UpdateFrameTemplates()
 	self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED", "CheckRole");
@@ -1341,11 +1346,11 @@ function E:Initialize()
 	if self.db.general.loginmessage then
 		print(select(2, E:GetModule('Chat'):FindURL("CHAT_MSG_DUMMY", format(L["LOGIN_MSG"]:gsub("ElvUI", E.UIName), self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version)))..'.')
 	end
-	
+
 	if self.global.tukuiMode then
 		if(self:IsFoolsDay()) then
 			self:ShowTukuiFrame()
 		end
 		self:Print("Thank you for being a good sport, type /aprilfools to revert the changes.")
-	end	
+	end
 end
