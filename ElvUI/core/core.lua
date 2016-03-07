@@ -1045,7 +1045,6 @@ end
 --DATABASE CONVERSIONS
 function E:DBConversions()
 	--Font Conversions
-
 	local fonts = {
 		["ElvUI Alt-Font"] = "Continuum Medium",
 		["ElvUI Alt-Combat"] = "Die Die Die!",
@@ -1053,7 +1052,6 @@ function E:DBConversions()
 		["ElvUI Font"] = "PT Sans Narrow",
 		["ElvUI Pixel"] = "Homespun"
 	}
-
 	if fonts[E.db.general.font] then E.db.general.font = fonts[E.db.general.font] end
 	if fonts[E.db.nameplate.font] then E.db.nameplate.font = fonts[E.db.nameplate.font] end
 	if fonts[E.db.nameplate.buffs.font] then E.db.nameplate.buffs.font = fonts[E.db.nameplate.buffs.font] end
@@ -1078,7 +1076,6 @@ function E:DBConversions()
 	if fonts[E.private.dmgfont] then E.private.dmgfont = fonts[E.private.dmgfont] end
 	if fonts[E.private.namefont] then E.private.namefont = fonts[E.private.namefont] end
 	if fonts[E.private.chatBubbleFont] then E.private.chatBubbleFont = fonts[E.private.chatBubbleFont] end
-
 
 	--Add missing Stack Threshold
 	if E.global.unitframe['aurafilters']['RaidDebuffs'].spells then
