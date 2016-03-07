@@ -42,6 +42,10 @@ function UF:Configure_ComboPoints(frame)
 		CPoints:SetParent(E.UIParent)
 	end
 
+	if not frame.USE_CLASSBAR then
+		CPoints:Hide()
+	end
+
 	local CLASSBAR_WIDTH = frame.CLASSBAR_WIDTH
 	if frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then
 		CPoints:Point("CENTER", frame.Health.backdrop, "TOP", 0, 0)
@@ -95,7 +99,7 @@ function UF:Configure_ComboPoints(frame)
 			CPoints[i]:Point("LEFT", CPoints)
 		else
 			if frame.USE_MINI_CLASSBAR then
-				CPoints[i]:Point("LEFT", CPoints[i-1], "RIGHT", (5 + frame.BORDER*2 + frame.SPACING*2), 0) 
+				CPoints[i]:Point("LEFT", CPoints[i-1], "RIGHT", (5 + frame.BORDER*2 + frame.SPACING*2), 0)
 			elseif i == frame.MAX_CLASS_BAR then
 				CPoints[i]:Point("LEFT", CPoints[i-1], "RIGHT", frame.BORDER-frame.SPACING, 0)
 				CPoints[i]:Point("RIGHT", CPoints)
@@ -135,7 +139,7 @@ function UF:UpdateComboDisplay(event, unit)
 	--Some bosses require the old API and return 0 constantly with the new API (Malygos is one example)
 	local cpOldApi = (UnitHasVehicleUI("player") or UnitHasVehicleUI("vehicle")) and GetComboPoints('vehicle', 'target') or GetComboPoints('player', 'target')
 	if cpOldApi and cp and (cpOldApi > cp) then cp = cpOldApi end
-	
+
 	if cp == 0 and db.combobar.autoHide then
 		cpoints:Hide()
 	else
