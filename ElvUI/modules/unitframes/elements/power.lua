@@ -86,12 +86,20 @@ function UF:Configure_Power(frame)
 		end
 
 		--Fix height in case it is lower than the theme allows
+		local heightChanged = false
 		if (not self.thinBorders and not E.PixelMode) and frame.POWERBAR_HEIGHT < 7 then --A height of 7 means 6px for borders and just 1px for the actual power statusbar
 			frame.POWERBAR_HEIGHT = 7
 			if db.power then db.power.height = 7 end
+			heightChanged = true
 		elseif (self.thinBorders or E.PixelMode) and frame.POWERBAR_HEIGHT < 3 then --A height of 3 means 2px for borders and just 1px for the actual power statusbar
 			frame.POWERBAR_HEIGHT = 3
 			if db.power then db.power.height = 3 end
+			heightChanged = true
+		end
+		if heightChanged then
+			--Update health size
+			frame.BOTTOM_OFFSET = UF:GetHealthBottomOffset(frame)
+			UF:Configure_HealthBar(frame)
 		end
 
 		--Position
@@ -201,7 +209,7 @@ function UF:Configure_Power(frame)
 			frame.DruidAltMana:Hide()
 		end
 	end
-	
+
 	--Transparency Settings
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)
 end
