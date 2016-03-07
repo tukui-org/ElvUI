@@ -20,7 +20,6 @@ local LOOTFRAME_NUMBUTTONS = LOOTFRAME_NUMBUTTONS
 local LOOT = LOOT
 
 local function LoadSkin()
-	LootHistoryFrame:SetFrameStrata('HIGH')
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.loot ~= true then return end
 	local frame = MissingLootFrame
 
