@@ -42,6 +42,17 @@ function UF:Configure_ComboPoints(frame)
 		CPoints:SetParent(E.UIParent)
 	end
 
+	--Fix height in case it is lower than the theme allows
+	if (not self.thinBorders and not E.PixelMode) and frame.CLASSBAR_HEIGHT < 7 then --A height of 7 means 6px for borders and just 1px for the actual power statusbar
+		frame.CLASSBAR_HEIGHT = 7
+		if db.combobar then db.combobar.height = 7 end
+		UF.ToggleResourceBar(bars)  --Trigger update to health if needed
+	elseif (self.thinBorders or E.PixelMode) and frame.CLASSBAR_HEIGHT < 3 then --A height of 3 means 2px for borders and just 1px for the actual power statusbar
+		frame.CLASSBAR_HEIGHT = 3
+		if db.combobar then db.combobar.height = 3 end
+		UF.ToggleResourceBar(bars)  --Trigger update to health if needed
+	end
+
 	if not frame.USE_CLASSBAR then
 		CPoints:Hide()
 	end

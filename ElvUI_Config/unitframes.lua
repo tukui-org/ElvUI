@@ -891,7 +891,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				desc = L["Display the castbar inside the information panel, the icon will be displayed outside the main unitframe."],
 				type = "toggle",
 				disabled = function() return not E.db.unitframe.units[groupName].infoPanel or not E.db.unitframe.units[groupName].infoPanel.enable end,
-			},		
+			},
 			iconSettings = {
 				order = 13,
 				type = "group",
@@ -955,7 +955,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 		},
 	}
 
-	
+
 	if hasTicks then
 		config.args.ticks = {
 			order = 11,
@@ -2678,7 +2678,7 @@ E.Options.args.unitframe.args.player = {
 					type = 'range',
 					order = 2,
 					name = L["Height"],
-					min = 5, max = 30, step = 1,
+					min = ((E.db.unitframe.thinBorders or E.PixelMode) and 3 or 7), max = 30, step = 1,
 				},
 				fill = {
 					type = 'select',
@@ -2911,7 +2911,7 @@ E.Options.args.unitframe.args.target = {
 					type = 'range',
 					order = 2,
 					name = L["Height"],
-					min = 5, max = 15, step = 1,
+					min = ((E.db.unitframe.thinBorders or E.PixelMode) and 3 or 7), max = 15, step = 1,
 				},
 				fill = {
 					type = 'select',

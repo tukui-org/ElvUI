@@ -43,7 +43,18 @@ function UF:Configure_ClassBar(frame)
 	if bars.UpdateAllRuneTypes then
 		bars.UpdateAllRuneTypes(frame)
 	end
-	
+
+	--Fix height in case it is lower than the theme allows
+	if (not self.thinBorders and not E.PixelMode) and frame.CLASSBAR_HEIGHT < 7 then --A height of 7 means 6px for borders and just 1px for the actual power statusbar
+		frame.CLASSBAR_HEIGHT = 7
+		if db.classbar then db.classbar.height = 7 end
+		UF.ToggleResourceBar(bars) --Trigger update to health if needed
+	elseif (self.thinBorders or E.PixelMode) and frame.CLASSBAR_HEIGHT < 3 then --A height of 3 means 2px for borders and just 1px for the actual power statusbar
+		frame.CLASSBAR_HEIGHT = 3
+		if db.classbar then db.classbar.height = 3 end
+		UF.ToggleResourceBar(bars)  --Trigger update to health if needed
+	end
+
 	--We don't want to modify the original frame.CLASSBAR_WIDTH value, as it bugs out when the classbar gains more buttons
 	local CLASSBAR_WIDTH = frame.CLASSBAR_WIDTH
 
@@ -57,7 +68,7 @@ function UF:Configure_ClassBar(frame)
 		else
 			bars.backdrop:SetBackdropBorderColor(c.r, c.g, c.b)
 		end
-		
+
 	end
 
 	if frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then
@@ -213,7 +224,7 @@ local function ToggleResourceBar(bars)
 	local db = frame.db
 	if not db then return end
 	frame.CLASSBAR_SHOWN = bars:IsShown()
-	
+
 	local height
 	if db.classbar then
 		height = db.classbar.height
@@ -222,7 +233,7 @@ local function ToggleResourceBar(bars)
 	elseif frame.AltPowerBar then
 		height = db.power.height
 	end
-	
+
 	if bars.text then
 		if frame.CLASSBAR_SHOWN then
 			bars.text:SetAlpha(1)
@@ -230,7 +241,7 @@ local function ToggleResourceBar(bars)
 			bars.text:SetAlpha(0)
 		end
 	end
-	
+
 	frame.CLASSBAR_HEIGHT = frame.USE_CLASSBAR and frame.CLASSBAR_SHOWN and height or 0
 	frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN or frame.CLASSBAR_DETACHED) and 0 or (frame.USE_MINI_CLASSBAR and ((frame.SPACING+(frame.CLASSBAR_HEIGHT/2))) or (frame.CLASSBAR_HEIGHT - (frame.BORDER-frame.SPACING)))
 
@@ -327,7 +338,7 @@ function UF:UpdateHarmony()
 	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 	if not db then return; end
-	
+
 	local maxBars = self.numPoints
 	local numChi = UnitPower("player", SPELL_POWER_CHI)
 	local isShown = self:IsShown()
@@ -345,7 +356,7 @@ function UF:UpdateHarmony()
 			self.updateOnHide = true --Make sure we update next time we hide it
 		end
 	end
-	
+
 	if maxBars ~= frame.MAX_CLASS_BAR then
 		for i=1, frame.MAX_CLASS_BAR do
 			if self[i]:IsShown() and frame.USE_MINI_CLASSBAR then
@@ -449,7 +460,7 @@ function UF:Construct_WarlockResourceBar(frame)
 		bars[i]:CreateBackdrop('Default', nil, nil, self.thinBorders)
 		bars[i].backdrop:SetParent(bars)
 	end
-	
+
 	bars.PostUpdate = UF.UpdateShardBar
 
 	bars:SetScript("OnShow", ToggleResourceBar)
@@ -460,7 +471,7 @@ end
 
 function UF:UpdateShardBar()
 	local frame = self.origParent or self:GetParent()
-	
+
 	--The number of classbar buttons may be different for each spec
 	if frame.MAX_CLASS_BAR ~= self.number then
 		frame.MAX_CLASS_BAR = self.number
