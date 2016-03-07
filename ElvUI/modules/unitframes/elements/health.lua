@@ -165,6 +165,18 @@ function UF:Configure_HealthBar(frame)
 	frame:UpdateElement("Health")
 end
 
+function UF:GetHealthBottomOffset(frame)
+	local bottomOffset = 0
+	if frame.USE_POWERBAR and not frame.POWERBAR_DETACHED and not frame.USE_INSET_POWERBAR then
+		bottomOffset = bottomOffset + frame.POWERBAR_HEIGHT - (frame.BORDER-frame.SPACING)
+	end
+	if frame.USE_INFO_PANEL then
+		bottomOffset = bottomOffset + frame.INFO_PANEL_HEIGHT - (frame.BORDER-frame.SPACING)
+	end
+
+	return bottomOffset
+end
+
 function UF:PostUpdateHealth(unit, min, max)
 	local parent = self:GetParent()
 	if parent.isForced then

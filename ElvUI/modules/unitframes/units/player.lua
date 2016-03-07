@@ -124,14 +124,7 @@ function UF:Update_PlayerFrame(frame, db)
 		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and (db.infoPanel.enable or E.global.tukuiMode)
 		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0
 
-		local bottomOffset = 0
-		if frame.USE_POWERBAR and not frame.POWERBAR_DETACHED and not frame.USE_INSET_POWERBAR then
-			bottomOffset = bottomOffset + frame.POWERBAR_HEIGHT - (frame.BORDER-frame.SPACING)
-		end
-		if frame.USE_INFO_PANEL then
-			bottomOffset = bottomOffset + frame.INFO_PANEL_HEIGHT - (frame.BORDER-frame.SPACING)
-		end
-		frame.BOTTOM_OFFSET = bottomOffset
+		frame.BOTTOM_OFFSET = UF:GetHealthBottomOffset(frame)
 	end
 
 	frame.colors = ElvUF.colors
