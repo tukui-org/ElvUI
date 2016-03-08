@@ -15,6 +15,7 @@ function UF:Construct_Combobar(frame)
 	local CPoints = CreateFrame("Frame", nil, frame)
 	CPoints:CreateBackdrop('Default', nil, nil, UF.thinBorders)
 	CPoints.Override = UF.UpdateComboDisplay
+	CPoints.origParent = frame
 
 	for i = 1, MAX_COMBO_POINTS do
 		CPoints[i] = CreateFrame("StatusBar", frame:GetName().."ComboBarButton"..i, CPoints)
@@ -138,6 +139,11 @@ function UF:Configure_ComboPoints(frame)
 		frame:DisableElement('CPoints')
 		CPoints:Hide()
 	end
+
+	--OnHide will not execute if Target Frame is not shown (logging in / reloading), so force an update
+	if not frame:IsShown() then
+		CPoints:ForceUpdate()
+	end
 end
 
 function UF:UpdateComboDisplay(event, unit)
@@ -153,6 +159,7 @@ function UF:UpdateComboDisplay(event, unit)
 
 	if cp == 0 and db.combobar.autoHide then
 		cpoints:Hide()
+		UF.ToggleResourceBar(cpoints) --Call update manually too, as the OnShow/OnHide will not execute if there is currently no target
 	else
 		cpoints:Show()
 		for i=1, MAX_COMBO_POINTS do
@@ -162,5 +169,6 @@ function UF:UpdateComboDisplay(event, unit)
 				cpoints[i]:SetAlpha(.2)
 			end
 		end
+		UF.ToggleResourceBar(cpoints)
 	end
 end
