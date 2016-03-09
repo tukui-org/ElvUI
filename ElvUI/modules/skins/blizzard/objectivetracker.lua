@@ -10,19 +10,40 @@ local function LoadSkin()
 
 	ObjectiveTrackerBlocksFrame.QuestHeader:StripTextures()
 	ObjectiveTrackerBlocksFrame.QuestHeader.Text:FontTemplate()
-	
-	
+
+
 	ObjectiveTrackerBlocksFrame.AchievementHeader:StripTextures()
 	ObjectiveTrackerBlocksFrame.AchievementHeader.Text:FontTemplate()
-	
-	
+
+
 	ObjectiveTrackerBlocksFrame.ScenarioHeader:StripTextures()
 	ObjectiveTrackerBlocksFrame.ScenarioHeader.Text:FontTemplate()
-	
+
 	BONUS_OBJECTIVE_TRACKER_MODULE.Header:StripTextures()
 	BONUS_OBJECTIVE_TRACKER_MODULE.Header.Text:FontTemplate()
 
-	
+	local function OnClick(self)
+		local textObject = self.text
+		local text = textObject:GetText()
+
+		if (text and text == "-") then
+			textObject:SetText("+")
+		else
+			textObject:SetText("-")
+		end
+	end
+
+	local minimizeButton = ObjectiveTrackerFrame.HeaderMenu.MinimizeButton
+	S:HandleButton(minimizeButton)
+	minimizeButton:Size(16, 14)
+	minimizeButton.text = minimizeButton:CreateFontString(nil, "OVERLAY")
+	minimizeButton.text:FontTemplate()
+	minimizeButton.text:Point("CENTER", minimizeButton, "CENTER", 0, 0)
+	minimizeButton.text:SetText("-")
+	minimizeButton.text:SetJustifyH("CENTER")
+	minimizeButton.text:SetJustifyV("MIDDLE")
+	minimizeButton:HookScript('OnClick', OnClick)
+
 	-- Various stuff I experimented with
 	--[[
 	ObjectiveTrackerBlocksFrame:CreateBackdrop("Transparent")
