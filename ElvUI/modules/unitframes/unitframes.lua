@@ -570,12 +570,12 @@ function UF.groupPrototype:Configure_Groups(self)
 		if group then
 			UF:ConvertGroupDB(group)
 			if point == "LEFT" or point == "RIGHT" then
-				group:SetAttribute("xOffset", (db.horizontalSpacing) * DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction])
+				group:SetAttribute("xOffset", db.horizontalSpacing * DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction])
 				group:SetAttribute("yOffset", 0)
 				group:SetAttribute("columnSpacing", db.verticalSpacing)
 			else
 				group:SetAttribute("xOffset", 0)
-				group:SetAttribute("yOffset", (db.verticalSpacing) * DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction])
+				group:SetAttribute("yOffset", db.verticalSpacing * DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction])
 				group:SetAttribute("columnSpacing", db.horizontalSpacing)
 			end
 
@@ -625,13 +625,13 @@ function UF.groupPrototype:Configure_Groups(self)
 				if group then
 					group:Point(point, self, point, 0, height * yMult)
 				end
-				height = height + (UNIT_HEIGHT + db.verticalSpacing)
+				height = height + UNIT_HEIGHT + db.verticalSpacing
 				newRows = newRows + 1
 			else
 				if group then
 					group:Point(point, self, point, width * xMult, 0)
 				end
-				width = width + (db.width + db.horizontalSpacing)
+				width = width + db.width + db.horizontalSpacing
 
 				newCols = newCols + 1
 			end
@@ -639,7 +639,7 @@ function UF.groupPrototype:Configure_Groups(self)
 			if DIRECTION_TO_POINT[direction] == "LEFT" or DIRECTION_TO_POINT[direction] == "RIGHT" then
 				if newRows == 1 then
 					if group then
-						group:Point(point, self, point, (width) * xMult, 0)
+						group:Point(point, self, point, width * xMult, 0)
 					end
 					width = width + ((db.width + db.horizontalSpacing) * 5)
 					newCols = newCols + 1
@@ -649,7 +649,7 @@ function UF.groupPrototype:Configure_Groups(self)
 			else
 				if newCols == 1 then
 					if group then
-						group:Point(point, self, point, 0, (height) * yMult)
+						group:Point(point, self, point, 0, height * yMult)
 					end
 					height = height + ((UNIT_HEIGHT + db.verticalSpacing) * 5)
 					newRows = newRows + 1
