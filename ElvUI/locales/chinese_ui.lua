@@ -335,7 +335,7 @@ L["The profile you tried to import already exists. Choose a new name or accept t
 L["Type /hellokitty to revert to old settings."] = true;
 L["Using the healer layout it is highly recommended you download the addon Clique if you wish to have the click-to-heal function."] = true;
 L["Yes, Keep Changes!"] = true;
-L["You have changed the pixel perfect option. You will have to complete the installation process to remove any graphical bugs."] = "你已改变了像素完美中的选项, 你必须完成安装过程以消除任何图形错误."
+L["You have changed the Thin Border Theme option. You will have to complete the installation process to remove any graphical bugs."] = true;
 L["You have changed your UIScale, however you still have the AutoScale option enabled in ElvUI. Press accept if you would like to disable the Auto Scale option."] = "你改变了界面缩放比例，然而ElvUI的自动缩放选项是开启的。点击接受以关闭ElvUI的自动缩放。"
 L["You have imported settings which may require a UI reload to take effect. Reload now?"] = true;
 L["You must purchase a bank slot first!"] = "你必需购买一个银行背包栏位"

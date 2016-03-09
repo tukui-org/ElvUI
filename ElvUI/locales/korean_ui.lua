@@ -335,7 +335,7 @@ L["The profile you tried to import already exists. Choose a new name or accept t
 L["Type /hellokitty to revert to old settings."] = "/hellokitty 를 입력해서 예전 세팅으로 돌릴 수 있습니다."
 L["Using the healer layout it is highly recommended you download the addon Clique if you wish to have the click-to-heal function."] = "힐러 레이아웃을 사용할 거라면 Clique 애드온을 같이 써 클릭캐스팅 기능을 이용할 것을 강력히 추천합니다."
 L["Yes, Keep Changes!"] = "네! 이대로 할래요!"
-L["You have changed the pixel perfect option. You will have to complete the installation process to remove any graphical bugs."] = "Pixel Perfect 선택을 바꾸었습니다. 설치과정을 끝까지 밟아 그래픽 관련 버그를 미연에 방지하는 걸 추천합니다."
+L["You have changed the Thin Border Theme option. You will have to complete the installation process to remove any graphical bugs."] = "Thin Border Theme 선택을 바꾸었습니다. 설치과정을 끝까지 밟아 그래픽 관련 버그를 미연에 방지하는 걸 추천합니다."
 L["You have changed your UIScale, however you still have the AutoScale option enabled in ElvUI. Press accept if you would like to disable the Auto Scale option."] = "UI 배율이 변경되었지만 ElvUI의 UI크기 자동조절 기능이 켜져있습니다. UI크기 자동조절 기능을 끄고 싶다면 '수락'을 누르세요."
 L["You have imported settings which may require a UI reload to take effect. Reload now?"] = true;
 L["You must purchase a bank slot first!"] = "우선 은행가방 칸을 구입해야됩니다!"
