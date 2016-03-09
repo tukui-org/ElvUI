@@ -154,9 +154,17 @@ function UF:Configure_HealthBar(frame)
 		health.bg:SetParent(frame.Portrait.overlay)
 	end
 
-	--Party/Raid Frames allow to change statusbar orientation
-	if db.health and db.health.orientation then
-		health:SetOrientation(db.health.orientation)
+
+	if db.health then
+		--Party/Raid Frames allow to change statusbar orientation
+		if db.health.orientation then
+			health:SetOrientation(db.health.orientation)
+		end
+
+		--Party/Raid Frames can toggle frequent updates
+		if db.health.frequentUpdates then
+			health.frequentUpdates = db.health.frequentUpdates
+		end
 	end
 
 	--Transparency Settings
