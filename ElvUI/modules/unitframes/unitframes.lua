@@ -1199,7 +1199,7 @@ end
 
 function UF:Initialize()
 	self.db = E.db["unitframe"]
-	self.thinBorders = E.global.tukuiMode or self.db.thinBorders
+	self.thinBorders = E.global.tukuiMode or self.db.thinBorders or E.PixelMode
 	if E.private["unitframe"].enable ~= true then return; end
 	E.UnitFrames = UF;
 
