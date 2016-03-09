@@ -342,6 +342,7 @@ L["Panels"] = "對話框"
 L["right"] = "右"
 L["RightChatDataPanel"] = "右對話框"
 L["RightMiniPanel"] = "小地圖右側"
+L["Small Panels"] = true;
 L["The display format of the money text that is shown in the gold datatext and its tooltip."] = true;
 L["Toggle 24-hour mode for the time datatext."] = "切換時間顯示為24小時制."
 L["TopMiniPanel"] = "Minimap Top (Inside)"

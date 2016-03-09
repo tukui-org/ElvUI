@@ -331,6 +331,7 @@ L["Panels"] = true;
 L["right"] = "Right"
 L["RightChatDataPanel"] = "Right Chat"
 L["RightMiniPanel"] = "Minimap Right"
+L["Small Panels"] = true;
 L["The display format of the money text that is shown in the gold datatext and its tooltip."] = true;
 L["Toggle 24-hour mode for the time datatext."] = true;
 L["TopMiniPanel"] = "Minimap Top (Inside)"

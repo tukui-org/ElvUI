@@ -390,6 +390,7 @@ L["Panels"] = "패널"
 L["right"] = "오른쪽"
 L["RightChatDataPanel"] = "우측 패널 정보문자 탭"
 L["RightMiniPanel"] = "미니맵 오른쪽 정보문자"
+L["Small Panels"] = true;
 L["The display format of the money text that is shown in the gold datatext and its tooltip."] = "정보문자와 툴팁에서 표시될 골드의 형식을 결정합니다."
 L["Toggle 24-hour mode for the time datatext."] = "시간을 24시제 표기법으로 표시합니다. 체크 해제 시 오전/오후 로 표시합니다."
 L["TopMiniPanel"] = "Minimap Top (Inside)"

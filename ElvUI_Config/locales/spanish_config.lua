@@ -342,6 +342,7 @@ L["Panels"] = "Paneles"
 L["right"] = "Derecha"
 L["RightChatDataPanel"] = "Panel de Chat Derecho"
 L["RightMiniPanel"] = "Panel Derecho del Minimapa"
+L["Small Panels"] = true;
 L["The display format of the money text that is shown in the gold datatext and its tooltip."] = true;
 L["Toggle 24-hour mode for the time datatext."] = "Ver formato de 24 horas para el texto de datos de tiempo."
 L["TopMiniPanel"] = "Minimap Top (Inside)"
