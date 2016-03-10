@@ -335,7 +335,7 @@ L["The profile you tried to import already exists. Choose a new name or accept t
 L["Type /hellokitty to revert to old settings."] = "Напишите /hellokitty для возврата к предыдущим настройкам."
 L["Using the healer layout it is highly recommended you download the addon Clique if you wish to have the click-to-heal function."] = "Для использования расположения для лекаря крайне рекомендуется установить аддон Clique, если вы хотите иметь возможность лечить по клику мышью."
 L["Yes, Keep Changes!"] = "Да, сохранить изменения!"
-L["You have changed the Thin Border Theme option. You will have to complete the installation process to remove any graphical bugs."] = "Вы переключились в режим Thin Border Theme. Вы должны завершить установку для исправления графических багов."
+L["You have changed the Thin Border Theme option. You will have to complete the installation process to remove any graphical bugs."] = "Вы переключились в режим тонких границ. Вы должны завершить установку для исправления графических багов."
 L["You have changed your UIScale, however you still have the AutoScale option enabled in ElvUI. Press accept if you would like to disable the Auto Scale option."] = "Вы изменили масштаб интерфейса, однако у вас все еще активирована опция автоматического масштабирования в настройках ElvUI. Нажмите 'Принять', если Вы хотите отключить эту опцию."
 L["You have imported settings which may require a UI reload to take effect. Reload now?"] = "Вы импортировали настройки, которые могут потребовать перезагрузки для вступления в силу. Перезагрузить?"
 L["You must purchase a bank slot first!"] = "Сперва Вы должны приобрести дополнительный слот в банке!"
