@@ -101,6 +101,11 @@ function UF:EnableDisable_Auras(frame)
 	end
 end
 
+local function ReverseUpdate(frame)
+	UF:Configure_Auras(frame, "Debuffs")
+	UF:Configure_Auras(frame, "Buffs")
+end
+
 function UF:Configure_Auras(frame, auraType)
 	local db = frame.db
 
@@ -126,7 +131,6 @@ function UF:Configure_Auras(frame, auraType)
 		auras:Width(db[auraType].perrow * db[auraType].sizeOverride)
 	end
 
-	local override = ((db[auraType].attachTo == "HEALTH" or db[auraType].attachTo == "POWER") and (frame.BORDER - frame.SPACING) or frame.SPACING)
 	local attachTo = self:GetAuraAnchorFrame(frame, db[auraType].attachTo, db.debuffs.attachTo == 'BUFFS' and db.buffs.attachTo == 'DEBUFFS')
 	local x, y = E:GetXYOffset(db[auraType].anchorPoint, (not E.global.tukuiMode and frame.SPACING)) --Use frame.SPACING override since it may be different from E.Spacing due to forced thin borders
 
@@ -139,6 +143,13 @@ function UF:Configure_Auras(frame, auraType)
 		y = newY
 	else
 		x = 0
+	end
+
+	if (auraType == "buffs" and frame.Debuffs.attachTo and frame.Debuffs.attachTo == frame.Buffs and db[auraType].attachTo == "DEBUFFS") then
+		--Update Debuffs first, as we would otherwise get conflicting anchor points
+		--This is usually only an issue on profile change
+		ReverseUpdate(frame)
+		return
 	end
 
 	auras:ClearAllPoints()
