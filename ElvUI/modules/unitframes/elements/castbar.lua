@@ -79,8 +79,8 @@ function UF:Construct_Castbar(frame, direction, moverName)
 
 	castbar.Holder = holder
 	--these are placeholder so the mover can be created.. it will be changed.
-	castbar.Holder:Point("TOPLEFT", frame, "BOTTOMLEFT", 0, -(E.Border * 3))
-	castbar:Point('BOTTOMLEFT', castbar.Holder, 'BOTTOMLEFT', E.Border, E.Border)
+	castbar.Holder:Point("TOPLEFT", frame, "BOTTOMLEFT", 0, -(frame.BORDER - frame.SPACING))
+	castbar:Point('BOTTOMLEFT', castbar.Holder, 'BOTTOMLEFT', frame.BORDER, frame.BORDER)
 	button:Point("RIGHT", castbar, "LEFT", -E.Spacing*3, 0)
 
 	if moverName then
@@ -88,11 +88,8 @@ function UF:Construct_Castbar(frame, direction, moverName)
 	end
 
 	local icon = button:CreateTexture(nil, "ARTWORK")
-	if(E.global.tukuiMode) then
-		icon:SetInside(nil, E.Border, E.Border)
-	else
-		icon:SetInside(nil, frame.BORDER, frame.BORDER) --use frame.BORDER since it may be different from E.Border due to forced thin borders
-	end
+	local offset = (not E.global.tukuiMode and frame.BORDER or E.Border) --use frame.BORDER since it may be different from E.Border due to forced thin borders
+	icon:SetInside(nil, offset, offset)
 	icon:SetTexCoord(unpack(E.TexCoords))
 	icon.bg = button
 
@@ -177,12 +174,12 @@ function UF:Configure_Castbar(frame)
 		if frame.ORIENTATION ~= "RIGHT"  then
 			castbar:Point('BOTTOMRIGHT', castbar.Holder, 'BOTTOMRIGHT', -(frame.BORDER+frame.SPACING), frame.BORDER+frame.SPACING)
 			if not isMoved then
-				castbar.Holder.mover:Point("TOPRIGHT", frame, "BOTTOMRIGHT", 0, -(frame.BORDER * 3))
+				castbar.Holder.mover:Point("TOPRIGHT", frame, "BOTTOMRIGHT", 0, -(frame.BORDER - frame.SPACING))
 			end
 		else
 			castbar:Point('BOTTOMLEFT', castbar.Holder, 'BOTTOMLEFT', frame.BORDER+frame.SPACING, frame.BORDER+frame.SPACING)
 			if not isMoved then
-				castbar.Holder.mover:Point("TOPLEFT", frame, "BOTTOMLEFT", 0, -(frame.BORDER * 3))
+				castbar.Holder.mover:Point("TOPLEFT", frame, "BOTTOMLEFT", 0, -(frame.BORDER - frame.SPACING))
 			end
 		end
 
