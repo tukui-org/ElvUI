@@ -141,8 +141,8 @@ function AB:PositionAndSizeBar(barName)
 		numColumns = 1;
 	end
 
-	bar:Width(spacing + ((size * (buttonsPerRow * widthMult)) + ((spacing * (buttonsPerRow - 1)) * widthMult) + (spacing * widthMult)));
-	bar:Height(spacing + ((size * (numColumns * heightMult)) + ((spacing * (numColumns - 1)) * heightMult) + (spacing * heightMult)));
+	bar:Width(((E.Border - E.Spacing)*2) + spacing + ((size * (buttonsPerRow * widthMult)) + ((spacing * (buttonsPerRow - 1)) * widthMult) + (spacing * widthMult)));
+	bar:Height(((E.Border - E.Spacing)*2) + spacing + ((size * (numColumns * heightMult)) + ((spacing * (numColumns - 1)) * heightMult) + (spacing * heightMult)));
 
 	bar.mouseover = self.db[barName].mouseover
 
@@ -189,13 +189,13 @@ function AB:PositionAndSizeBar(barName)
 		if i == 1 then
 			local x, y;
 			if point == "BOTTOMLEFT" then
-				x, y = spacing, spacing;
+				x, y = spacing + (E.Border - E.Spacing), spacing + (E.Border - E.Spacing);
 			elseif point == "TOPRIGHT" then
-				x, y = -spacing, -spacing;
+				x, y = -spacing - (E.Border - E.Spacing), -spacing - (E.Border - E.Spacing);
 			elseif point == "TOPLEFT" then
-				x, y = spacing, -spacing;
+				x, y = spacing + (E.Border - E.Spacing), -spacing - (E.Border - E.Spacing);
 			else
-				x, y = -spacing, spacing;
+				x, y = -spacing - (E.Border - E.Spacing), spacing + (E.Border - E.Spacing);
 			end
 
 			button:Point(point, bar, point, x, y);
