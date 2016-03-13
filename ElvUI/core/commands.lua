@@ -170,51 +170,51 @@ function E:GetCPUImpact()
 end
 
 local BLIZZARD_ADDONS = {
-    "Blizzard_AchievementUI",
-    "Blizzard_ArchaeologyUI",
-    "Blizzard_ArenaUI",
-    "Blizzard_AuctionUI",
-    "Blizzard_AuthChallengeUI",
-    "Blizzard_BarbershopUI",
-    "Blizzard_BattlefieldMinimap",
-    "Blizzard_BindingUI",
-    "Blizzard_BlackMarketUI",
-    "Blizzard_Calendar",
-    "Blizzard_ChallengesUI",
-    "Blizzard_ClientSavedVariables",
-    "Blizzard_CombatLog",
-    "Blizzard_CombatText",
-    "Blizzard_CompactRaidFrames",
-    "Blizzard_CUFProfiles",
-    "Blizzard_DebugTools",
-    "Blizzard_EncounterJournal",
-    "Blizzard_GarrisonUI",
-    "Blizzard_GlyphUI",
-    "Blizzard_GMChatUI",
-    "Blizzard_GMSurveyUI",
-    "Blizzard_GuildBankUI",
-    "Blizzard_GuildControlUI",
-    "Blizzard_GuildUI",
-    "Blizzard_InspectUI",
-    "Blizzard_ItemAlterationUI",
-    "Blizzard_ItemSocketingUI",
-    "Blizzard_ItemUpgradeUI",
-    "Blizzard_LookingForGuildUI",
-    "Blizzard_MacroUI",
-    "Blizzard_MovePad",
-    "Blizzard_ObjectiveTracker",
-    "Blizzard_PetBattleUI",
-    "Blizzard_PetJournal",
-    "Blizzard_PVPUI",
-    "Blizzard_QuestChoice",
-    "Blizzard_RaidUI",
-    "Blizzard_StoreUI",
-    "Blizzard_TalentUI",
-    "Blizzard_TimeManager",
-    "Blizzard_TokenUI",
-    "Blizzard_TradeSkillUI",
-    "Blizzard_TrainerUI",
-    "Blizzard_VoidStorageUI",
+	"Blizzard_AchievementUI",
+	"Blizzard_ArchaeologyUI",
+	"Blizzard_ArenaUI",
+	"Blizzard_AuctionUI",
+	"Blizzard_AuthChallengeUI",
+	"Blizzard_BarbershopUI",
+	"Blizzard_BattlefieldMinimap",
+	"Blizzard_BindingUI",
+	"Blizzard_BlackMarketUI",
+	"Blizzard_Calendar",
+	"Blizzard_ChallengesUI",
+	"Blizzard_ClientSavedVariables",
+	"Blizzard_CombatLog",
+	"Blizzard_CombatText",
+	"Blizzard_CompactRaidFrames",
+	"Blizzard_CUFProfiles",
+	"Blizzard_DebugTools",
+	"Blizzard_EncounterJournal",
+	"Blizzard_GarrisonUI",
+	"Blizzard_GlyphUI",
+	"Blizzard_GMChatUI",
+	"Blizzard_GMSurveyUI",
+	"Blizzard_GuildBankUI",
+	"Blizzard_GuildControlUI",
+	"Blizzard_GuildUI",
+	"Blizzard_InspectUI",
+	"Blizzard_ItemAlterationUI",
+	"Blizzard_ItemSocketingUI",
+	"Blizzard_ItemUpgradeUI",
+	"Blizzard_LookingForGuildUI",
+	"Blizzard_MacroUI",
+	"Blizzard_MovePad",
+	"Blizzard_ObjectiveTracker",
+	"Blizzard_PetBattleUI",
+	"Blizzard_PetJournal",
+	"Blizzard_PVPUI",
+	"Blizzard_QuestChoice",
+	"Blizzard_RaidUI",
+	"Blizzard_StoreUI",
+	"Blizzard_TalentUI",
+	"Blizzard_TimeManager",
+	"Blizzard_TokenUI",
+	"Blizzard_TradeSkillUI",
+	"Blizzard_TrainerUI",
+	"Blizzard_VoidStorageUI",
 }
 function E:EnableBlizzardAddOns()
 	for _, addon in pairs(BLIZZARD_ADDONS) do
@@ -224,6 +224,21 @@ function E:EnableBlizzardAddOns()
 			E:Print("The following addon was re-enabled: "..addon)
 		end
 	end
+end
+
+function E:ToggleTukuiMode()
+	if(E.global.tukuiMode) then
+		E.global.tukuiMode = nil
+	else
+		E.global.tukuiMode = true
+	end
+	ReloadUI()
+end
+
+function E:DisableTukuiMode()
+	E.global.tukuiMode = nil
+	E.global.aprilFools = true
+	ReloadUI()
 end
 
 function E:LoadCommands()
@@ -243,6 +258,9 @@ function E:LoadCommands()
 	self:RegisterChatCommand('farmmode', 'FarmMode')
 	self:RegisterChatCommand('cleanguild', 'MassGuildKick')
 	self:RegisterChatCommand('enableblizzard', 'EnableBlizzardAddOns')
+	self:RegisterChatCommand('aprilfools', 'DisableTukuiMode')
+	self:RegisterChatCommand('tukuimode', 'ToggleTukuiMode')
+	
 	if E.ActionBars then
 		self:RegisterChatCommand('kb', E.ActionBars.ActivateBindMode)
 	end

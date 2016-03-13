@@ -7,10 +7,10 @@ V['general'] = {
 	['lootRoll'] = true,
 	["normTex"] = "ElvUI Norm",
 	["glossTex"] = "ElvUI Norm",
-	["dmgfont"] = "ElvUI Combat",
-	["namefont"] = "ElvUI Font",
+	["dmgfont"] = "Action Man",
+	["namefont"] = "PT Sans Narrow",
 	['chatBubbles'] = 'backdrop',
-	['chatBubbleFont'] = "ElvUI Font",
+	['chatBubbleFont'] = "PT Sans Narrow",
 	['chatBubbleFontSize'] = 14,
 	['pixelPerfect'] = true,
 	['replaceBlizzFonts'] = true,
@@ -33,7 +33,7 @@ V["nameplate"] = {
 V['auras'] = {
 	['enable'] = true,
 	['disableBlizzard'] = true,
-	
+
 	["masque"] = {
 		["buffs"] = false,
 		["debuffs"] = false,
@@ -110,6 +110,7 @@ V['skins'] = {
 		['itemUpgrade'] = true,
 		["addonManager"] = true,
 		["mirrorTimers"] = true,
+		["objectiveTracker"] = true,
 	},
 }
 

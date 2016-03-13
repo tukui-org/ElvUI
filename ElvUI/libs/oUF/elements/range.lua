@@ -87,6 +87,7 @@ local function UpdateSpellList()
 		AddSpell(longEnemySpells, 355) -- Taunt
 	elseif class == "MONK" then
 		AddSpell(enemySpells, 115546) -- Provoke
+		AddSpell(longEnemySpells, 117952) -- Crackling Jade Lightning (not available until lvl 54)
 		AddSpell(friendlySpells, 115450) -- Detox
 		AddSpell(resSpells, 115178) -- Resuscitate
 	end	

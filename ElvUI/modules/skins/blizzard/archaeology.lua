@@ -13,7 +13,7 @@ local function LoadSkin()
 	S:HandleButton(ArchaeologyFrameArtifactPageBackButton, true)
 	ArchaeologyFrameRaceFilter:SetFrameLevel(ArchaeologyFrameRaceFilter:GetFrameLevel() + 2)
 	S:HandleDropDownBox(ArchaeologyFrameRaceFilter, 125)
-	
+
 	ArchaeologyFrameBgLeft:Kill()
 	ArchaeologyFrameBgRight:Kill()
 
@@ -25,7 +25,7 @@ local function LoadSkin()
 			end
 		end
 	end
-	
+
 	ArchaeologyFrameCompletedPage.infoText:SetTextColor(1, 1, 1)
 	ArchaeologyFrameHelpPageTitle:SetTextColor(1, 1, 0)
 	ArchaeologyFrameHelpPageDigTitle:SetTextColor(1, 1, 0)
@@ -40,15 +40,17 @@ local function LoadSkin()
 
 	ArchaeologyFrameRankBar:StripTextures()
 	ArchaeologyFrameRankBar:SetStatusBarTexture(E["media"].normTex)
+	E:RegisterStatusBar(ArchaeologyFrameRankBar)
 	ArchaeologyFrameRankBar:SetFrameLevel(ArchaeologyFrameRankBar:GetFrameLevel() + 2)
 	ArchaeologyFrameRankBar:CreateBackdrop("Default")
 
 	ArchaeologyFrameArtifactPageSolveFrameStatusBar:StripTextures()
 	ArchaeologyFrameArtifactPageSolveFrameStatusBar:SetStatusBarTexture(E["media"].normTex)
+	E:RegisterStatusBar(ArchaeologyFrameArtifactPageSolveFrameStatusBar)
 	ArchaeologyFrameArtifactPageSolveFrameStatusBar:SetStatusBarColor(0.7, 0.2, 0)
 	ArchaeologyFrameArtifactPageSolveFrameStatusBar:SetFrameLevel(ArchaeologyFrameArtifactPageSolveFrameStatusBar:GetFrameLevel() + 2)
 	ArchaeologyFrameArtifactPageSolveFrameStatusBar:CreateBackdrop("Default")
-	
+
 	for i = 1, ARCHAEOLOGY_MAX_RACES do
 		local frame = _G["ArchaeologyFrameSummaryPageRace"..i]
 		local artifact = _G["ArchaeologyFrameCompletedPageArtifact"..i]
@@ -79,12 +81,13 @@ local function LoadSkin()
 	ArcheologyDigsiteProgressBar:StripTextures()
 	ArcheologyDigsiteProgressBar.FillBar:StripTextures()
 	ArcheologyDigsiteProgressBar.FillBar:SetStatusBarTexture(E["media"].normTex)
+	E:RegisterStatusBar(ArcheologyDigsiteProgressBar.FillBar)
 	ArcheologyDigsiteProgressBar.FillBar:SetStatusBarColor(0.7, 0.2, 0)
 	ArcheologyDigsiteProgressBar.FillBar:SetFrameLevel(ArchaeologyFrameArtifactPageSolveFrameStatusBar:GetFrameLevel() + 2)
 	ArcheologyDigsiteProgressBar.FillBar:CreateBackdrop("Default")
 	ArcheologyDigsiteProgressBar.BarTitle:FontTemplate(nil, nil, 'OUTLINE')
 	ArcheologyDigsiteProgressBar:ClearAllPoints()
-	ArcheologyDigsiteProgressBar:SetPoint("TOP", UIParent, "TOP", 0, -400)
+	ArcheologyDigsiteProgressBar:Point("TOP", UIParent, "TOP", 0, -400)
 	E:CreateMover(ArcheologyDigsiteProgressBar, "DigSiteProgressBarMover", L["Archeology Progress Bar"])
 end
 

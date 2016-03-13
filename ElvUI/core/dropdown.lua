@@ -8,7 +8,7 @@ local ToggleFrame = ToggleFrame
 local GetCursorPosition = GetCursorPosition
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: UIParent, UISpecialFrames, 
+-- GLOBALS: UIParent, UISpecialFrames,
 
 local PADDING = 10
 local BUTTON_HEIGHT = 16
@@ -64,28 +64,28 @@ function E:DropDown(list, frame, xOffset, yOffset)
 		end
 
 		frame.buttons[i]:Show()
-		frame.buttons[i]:SetHeight(BUTTON_HEIGHT)
-		frame.buttons[i]:SetWidth(BUTTON_WIDTH)
+		frame.buttons[i]:Height(BUTTON_HEIGHT)
+		frame.buttons[i]:Width(BUTTON_WIDTH)
 		frame.buttons[i].text:SetText(list[i].text)
 		frame.buttons[i].func = list[i].func
 		frame.buttons[i]:SetScript("OnClick", OnClick)
 
 		if i == 1 then
-			frame.buttons[i]:SetPoint("TOPLEFT", frame, "TOPLEFT", PADDING, -PADDING)
+			frame.buttons[i]:Point("TOPLEFT", frame, "TOPLEFT", PADDING, -PADDING)
 		else
-			frame.buttons[i]:SetPoint("TOPLEFT", frame.buttons[i-1], "BOTTOMLEFT")
+			frame.buttons[i]:Point("TOPLEFT", frame.buttons[i-1], "BOTTOMLEFT")
 		end
 	end
 
-	frame:SetHeight((#list * BUTTON_HEIGHT) + PADDING * 2)
-	frame:SetWidth(BUTTON_WIDTH + PADDING * 2)
+	frame:Height((#list * BUTTON_HEIGHT) + PADDING * 2)
+	frame:Width(BUTTON_WIDTH + PADDING * 2)
 
 	local UIScale = UIParent:GetScale();
 	local x, y = GetCursorPosition();
 	x = x/UIScale
 	y = y/UIScale
 	frame:ClearAllPoints()
-	frame:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", x + xOffset, y + yOffset)
+	frame:Point("TOPLEFT", UIParent, "BOTTOMLEFT", x + xOffset, y + yOffset)
 
 	ToggleFrame(frame)
 end

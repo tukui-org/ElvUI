@@ -80,7 +80,7 @@ local function LoadSkin()
 		local region = select(i, BlackMarketFrame:GetRegions())
 		if region and region:IsObjectType("FontString") and region:GetText() == BLACK_MARKET_TITLE then
 			region:ClearAllPoints()
-			region:SetPoint('TOP', BlackMarketFrame, 'TOP', 0, -4)
+			region:Point('TOP', BlackMarketFrame, 'TOP', 0, -4)
 		end
 	end
 end

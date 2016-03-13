@@ -102,7 +102,7 @@ local menuList = {
 	{text = ENCOUNTER_JOURNAL,
 	func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then EncounterJournal_LoadUI(); end ToggleFrame(EncounterJournal) end},
 	{text = MAINMENU_BUTTON,
-	func = function() 
+	func = function()
 		if ( not GameMenuFrame:IsShown() ) then
 			if ( VideoOptionsFrame:IsShown() ) then
 				VideoOptionsFrameCancel:Click();
@@ -110,7 +110,7 @@ local menuList = {
 				AudioOptionsFrameCancel:Click();
 			elseif ( InterfaceOptionsFrame:IsShown() ) then
 				InterfaceOptionsFrameCancel:Click();
-			end		
+			end
 			CloseMenus();
 			CloseAllWindows()
 			PlaySound("igMainMenuOpen");
@@ -148,7 +148,7 @@ function M:GetLocTextColor()
 	elseif pvpType == "combat" then
 		return 0.84, 0.03, 0.03
 	else
-		return 0.84, 0.03, 0.03
+		return 0.9, 0.85, 0.05
 	end
 end
 
@@ -203,15 +203,15 @@ function M:UpdateSettings()
 		self:RegisterEvent('PLAYER_REGEN_ENABLED')
 	end
 	E.MinimapSize = E.private.general.minimap.enable and E.db.general.minimap.size or Minimap:GetWidth() + 10
+	E.MinimapWidth = E.MinimapSize
+	E.MinimapHeight = E.MinimapSize
 
-	if E.db.auras.consolidatedBuffs.enable and E.private.auras.disableBlizzard then
-		E.ConsolidatedBuffsWidth = ((E.MinimapSize - (E.db.auras.consolidatedBuffs.filter and 8 or 9)) / (E.db.auras.consolidatedBuffs.filter and 8 or 9)) + (E.PixelMode and 3 or 4)-- 4 needs to be 3
+	if E.db.auras.consolidatedBuffs.enable and E.private.auras.disableBlizzard and not E.global.tukuiMode then
+		local numBuffs = E.db.auras.consolidatedBuffs.filter and 7 or 8 --This is one short because I'm just counting the total spaces between icons, add +1 below for the actual amount of buffs
+		E.ConsolidatedBuffsWidth = (E.MinimapHeight + (numBuffs*E.Border) + E.Border*2 - (E.Spacing*numBuffs)) / (numBuffs + 1)
 	else
 		E.ConsolidatedBuffsWidth = 0;
 	end
-
-	E.MinimapWidth = E.MinimapSize
-	E.MinimapHeight = E.MinimapSize + 5
 
 	if E.private.general.minimap.enable then
 		Minimap:Size(E.MinimapSize, E.MinimapSize)
@@ -226,14 +226,62 @@ function M:UpdateSettings()
 			RightMiniPanel:Hide()
 		end
 	end
+	
+	if BottomMiniPanel then
+		if E.db.datatexts.minimapBottom and E.private.general.minimap.enable then
+			BottomMiniPanel:Show()
+		else
+			BottomMiniPanel:Hide()
+		end
+	end
+	
+	if BottomLeftMiniPanel then
+		if E.db.datatexts.minimapBottomLeft and E.private.general.minimap.enable then
+			BottomLeftMiniPanel:Show()
+		else
+			BottomLeftMiniPanel:Hide()
+		end
+	end
+	
+	if BottomRightMiniPanel then
+		if E.db.datatexts.minimapBottomRight and E.private.general.minimap.enable then
+			BottomRightMiniPanel:Show()
+		else
+			BottomRightMiniPanel:Hide()
+		end
+	end
+	
+	if TopMiniPanel then
+		if E.db.datatexts.minimapTop and E.private.general.minimap.enable then
+			TopMiniPanel:Show()
+		else
+			TopMiniPanel:Hide()
+		end
+	end
+	
+	if TopLeftMiniPanel then
+		if E.db.datatexts.minimapTopLeft and E.private.general.minimap.enable then
+			TopLeftMiniPanel:Show()
+		else
+			TopLeftMiniPanel:Hide()
+		end
+	end
+	
+	if TopRightMiniPanel then
+		if E.db.datatexts.minimapTopRight and E.private.general.minimap.enable then
+			TopRightMiniPanel:Show()
+		else
+			TopRightMiniPanel:Hide()
+		end
+	end
 
 	if MMHolder then
-		MMHolder:Width((Minimap:GetWidth() + (E.PixelMode and 2 or 4)) + E.ConsolidatedBuffsWidth)
+		MMHolder:Width((Minimap:GetWidth() + E.Border + E.Spacing*3) + E.ConsolidatedBuffsWidth)
 
 		if E.db.datatexts.minimapPanels then
-			MMHolder:Height(Minimap:GetHeight() + (E.PixelMode and 24 or 27))
+			MMHolder:Height(Minimap:GetHeight() + (LeftMiniPanel and (LeftMiniPanel:GetHeight() + E.Border) or 24) + E.Spacing*3)
 		else
-			MMHolder:Height(Minimap:GetHeight() + (E.PixelMode and 2 or 5))
+			MMHolder:Height(Minimap:GetHeight() + E.Border + E.Spacing*3)
 		end
 	end
 
@@ -251,21 +299,8 @@ function M:UpdateSettings()
 		MinimapMover:Size(MMHolder:GetSize())
 	end
 
-	if AurasHolder then
-		AurasHolder:Height(E.MinimapHeight)
-		if AurasMover and not E:HasMoverBeenMoved('AurasMover') and not E:HasMoverBeenMoved('MinimapMover') then
-			AurasMover:ClearAllPoints()
-			AurasMover:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -((E.MinimapSize + 4) + E.ConsolidatedBuffsWidth + 7), -3)
-			--E:SaveMoverDefaultPosition('AurasMover')
-		end
-
-		if AurasMover then
-			AurasMover:Height(E.MinimapHeight)
-		end
-	end
-
 	if ElvConfigToggle then
-		if E.db.auras.consolidatedBuffs.enable and E.db.datatexts.minimapPanels and E.private.general.minimap.enable and E.private.auras.disableBlizzard then
+		if E.db.auras.consolidatedBuffs.enable and E.db.datatexts.minimapPanels and E.private.general.minimap.enable and E.private.auras.disableBlizzard and not E.global.tukuiMode then
 			ElvConfigToggle:Show()
 			ElvConfigToggle:Width(E.ConsolidatedBuffsWidth)
 		else
@@ -286,7 +321,7 @@ function M:UpdateSettings()
 		local pos = E.db.general.minimap.icons.garrison.position or "TOPLEFT"
 		local scale = E.db.general.minimap.icons.garrison.scale or 1
 		GarrisonLandingPageMinimapButton:ClearAllPoints()
-		GarrisonLandingPageMinimapButton:SetPoint(pos, Minimap, pos, E.db.general.minimap.icons.garrison.xOffset or 0, E.db.general.minimap.icons.garrison.yOffset or 0)
+		GarrisonLandingPageMinimapButton:Point(pos, Minimap, pos, E.db.general.minimap.icons.garrison.xOffset or 0, E.db.general.minimap.icons.garrison.yOffset or 0)
 		GarrisonLandingPageMinimapButton:SetScale(scale)
 		if GarrisonLandingPageTutorialBox then
 			GarrisonLandingPageTutorialBox:SetScale(1/scale)
@@ -301,7 +336,7 @@ function M:UpdateSettings()
 			local pos = E.db.general.minimap.icons.calendar.position or "TOPRIGHT"
 			local scale = E.db.general.minimap.icons.calendar.scale or 1
 			GameTimeFrame:ClearAllPoints()
-			GameTimeFrame:SetPoint(pos, Minimap, pos, E.db.general.minimap.icons.calendar.xOffset or 0, E.db.general.minimap.icons.calendar.yOffset or 0)
+			GameTimeFrame:Point(pos, Minimap, pos, E.db.general.minimap.icons.calendar.xOffset or 0, E.db.general.minimap.icons.calendar.yOffset or 0)
 			GameTimeFrame:SetScale(scale)
 			GameTimeFrame:Show()
 		end
@@ -311,7 +346,7 @@ function M:UpdateSettings()
 		local pos = E.db.general.minimap.icons.mail.position or "TOPRIGHT"
 		local scale = E.db.general.minimap.icons.mail.scale or 1
 		MiniMapMailFrame:ClearAllPoints()
-		MiniMapMailFrame:SetPoint(pos, Minimap, pos, E.db.general.minimap.icons.mail.xOffset or 3, E.db.general.minimap.icons.mail.yOffset or 4)
+		MiniMapMailFrame:Point(pos, Minimap, pos, E.db.general.minimap.icons.mail.xOffset or 3, E.db.general.minimap.icons.mail.yOffset or 4)
 		MiniMapMailFrame:SetScale(scale)
 	end
 
@@ -319,7 +354,7 @@ function M:UpdateSettings()
 		local pos = E.db.general.minimap.icons.lfgEye.position or "BOTTOMRIGHT"
 		local scale = E.db.general.minimap.icons.lfgEye.scale or 1
 		QueueStatusMinimapButton:ClearAllPoints()
-		QueueStatusMinimapButton:SetPoint(pos, Minimap, pos, E.db.general.minimap.icons.lfgEye.xOffset or 3, E.db.general.minimap.icons.lfgEye.yOffset or 0)
+		QueueStatusMinimapButton:Point(pos, Minimap, pos, E.db.general.minimap.icons.lfgEye.xOffset or 3, E.db.general.minimap.icons.lfgEye.yOffset or 0)
 		QueueStatusMinimapButton:SetScale(scale)
 		QueueStatusFrame:SetScale(1/scale)
 	end
@@ -330,10 +365,10 @@ function M:UpdateSettings()
 		local x = E.db.general.minimap.icons.difficulty.xOffset or 0
 		local y = E.db.general.minimap.icons.difficulty.yOffset or 0
 		MiniMapInstanceDifficulty:ClearAllPoints()
-		MiniMapInstanceDifficulty:SetPoint(pos, Minimap, pos, x, y)
+		MiniMapInstanceDifficulty:Point(pos, Minimap, pos, x, y)
 		MiniMapInstanceDifficulty:SetScale(scale)
 		GuildInstanceDifficulty:ClearAllPoints()
-		GuildInstanceDifficulty:SetPoint(pos, Minimap, pos, x, y)
+		GuildInstanceDifficulty:Point(pos, Minimap, pos, x, y)
 		GuildInstanceDifficulty:SetScale(scale)
 	end
 
@@ -341,7 +376,7 @@ function M:UpdateSettings()
 		local pos = E.db.general.minimap.icons.challengeMode.position or "TOPLEFT"
 		local scale = E.db.general.minimap.icons.challengeMode.scale or 1
 		MiniMapChallengeMode:ClearAllPoints()
-		MiniMapChallengeMode:SetPoint(pos, Minimap, pos, E.db.general.minimap.icons.challengeMode.xOffset or 8, E.db.general.minimap.icons.challengeMode.yOffset or -8)
+		MiniMapChallengeMode:Point(pos, Minimap, pos, E.db.general.minimap.icons.challengeMode.xOffset or 8, E.db.general.minimap.icons.challengeMode.yOffset or -8)
 		MiniMapChallengeMode:SetScale(scale)
 	end
 end
@@ -361,9 +396,9 @@ function M:Initialize()
 
 	Minimap:ClearAllPoints()
 	if E.db.auras.consolidatedBuffs.position == "LEFT" then
-		Minimap:Point("TOPRIGHT", mmholder, "TOPRIGHT", -2, -2)
+		Minimap:Point("TOPRIGHT", mmholder, "TOPRIGHT", -E.Border, -E.Border)
 	else
-		Minimap:Point("TOPLEFT", mmholder, "TOPLEFT", 2, -2)
+		Minimap:Point("TOPLEFT", mmholder, "TOPLEFT", E.Border, -E.Border)
 	end
 	Minimap:SetMaskTexture('Interface\\ChatFrame\\ChatFrameBackground')
 	Minimap:SetQuestBlobRingAlpha(0)
@@ -508,7 +543,7 @@ function M:Initialize()
 			FarmModeMap:Hide()
 		end
 	end)
-
+	
 	--PET JOURNAL TAINT FIX AS OF 5.1
 	--[[local info = UIPanelWindows['PetJournalParent'];
 	for name, value in pairs(info) do

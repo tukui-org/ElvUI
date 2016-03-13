@@ -28,6 +28,7 @@ local DoEmote = DoEmote
 local SendChatMessage = SendChatMessage
 local GetFunctionCPUUsage = GetFunctionCPUUsage
 local GetMapNameByID = GetMapNameByID
+local GetBonusBarOffset = GetBonusBarOffset
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 local COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN = COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN
@@ -41,6 +42,7 @@ local NUM_PET_ACTION_SLOTS = NUM_PET_ACTION_SLOTS
 -- GLOBALS: ElvUIPlayerBuffs, ElvUIPlayerDebuffs, LeftChatPanel, RightChatPanel
 -- GLOBALS: ElvUI_StaticPopup1, ElvUI_StaticPopup1Button1, LeftChatToggleButton, RightChatToggleButton
 -- GLOBALS: ElvUI_StanceBar, ObjectiveTrackerFrame, GameTooltip, Minimap
+
 
 --Constants
 E.myclass = select(2, UnitClass("player"));
@@ -61,6 +63,7 @@ E.LSM = LSM
 --Tables
 E["media"] = {};
 E["frames"] = {};
+E["statusBars"] = {};
 E["texts"] = {};
 E['snapBars'] = {}
 E["RegisteredModules"] = {}
@@ -69,8 +72,6 @@ E['valueColorUpdateFuncs'] = {};
 E.TexCoords = {.08, .92, .08, .92}
 E.FrameLocks = {}
 E.CreditsList = {};
-E.Spacing = 1;
-E.Border = 2;
 E.PixelMode = false;
 
 E.InversePoints = {
@@ -160,15 +161,12 @@ E.ClassRole = {
 		[2] = "Caster",
 		[3] = "Melee",
 	},
-	DEMONHUNTER = {
-		[1] = "Melee",	
-	},
 }
 
 E.noop = function() end;
 
 function E:Print(...)
-	print(self["media"].hexvaluecolor..'ElvUI:|r', ...)
+	print(self["media"].hexvaluecolor..self.UIName..':|r', ...)
 end
 
 --Workaround for people wanting to use white and it reverting to their class color.
@@ -199,7 +197,7 @@ function E:GetColorTable(data)
 	if not data.r or not data.g or not data.b then
 		error("Could not unpack color values.")
 	end
-	
+
 	if data.r > 1 or data.r < 0 then data.r = 1 end
 	if data.g > 1 or data.g < 0 then data.g = 1 end
 	if data.b > 1 or data.b < 0 then data.b = 1 end
@@ -234,6 +232,11 @@ function E:UpdateMedia()
 	elseif E.PixelMode then
 		border = {r = 0, g = 0, b = 0}
 	end
+
+	if(self.global.tukuiMode) then
+		border = {r=0.6, g = 0.6, b = 0.6}
+	end
+
 	self["media"].bordercolor = {border.r, border.g, border.b}
 
 	--Backdrop Color
@@ -251,6 +254,11 @@ function E:UpdateMedia()
 		self.db['general'].valuecolor.g = value.g
 		self.db['general'].valuecolor.b = value.b
 	end
+
+	if(self.global.tukuiMode) then
+		value = {r = 1, g = 1, b = 1}
+	end
+
 	self["media"].hexvaluecolor = self:RGBToHex(value.r, value.g, value.b)
 	self["media"].rgbvaluecolor = {value.r, value.g, value.b}
 
@@ -428,6 +436,20 @@ function E:UpdateFontTemplates()
 	end
 end
 
+function E:RegisterStatusBar(statusBar)
+	tinsert(self.statusBars, statusBar)
+end
+
+function E:UpdateStatusBars()
+	for _, statusBar in pairs(self.statusBars) do
+		if statusBar and statusBar:GetObjectType() == "StatusBar" then
+			statusBar:SetStatusBarTexture(self.media.normTex)
+		elseif statusBar and statusBar:GetObjectType() == "Texture" then
+			statusBar:SetTexture(self.media.normTex)
+		end
+	end
+end
+
 --This frame everything in ElvUI should be anchored to for Eyefinity support.
 E.UIParent = CreateFrame('Frame', 'ElvUIParent', UIParent);
 E.UIParent:SetFrameLevel(UIParent:GetFrameLevel());
@@ -490,7 +512,8 @@ function E:CheckRole()
 		role = self.ClassRole[self.myclass][talentTree]
 	end
 
-	if role == "Tank" and IsInPvPGear then
+	--Check for PvP gear or gladiator stance
+	if role == "Tank" and (IsInPvPGear or (E.myclass == "WARRIOR" and GetBonusBarOffset() == 3)) then
 		role = "Melee"
 	end
 
@@ -613,7 +636,7 @@ function E:RemoveTableDuplicates(cleanTable, checkTable)
 		E:Print("Bad argument #2 to 'RemoveTableDuplicates' (table expected)")
 		return
 	end
-	
+
 	local cleaned = {}
 	for option, value in pairs(cleanTable) do
 		if type(value) == "table" and checkTable[option] and type(checkTable[option]) == "table" then
@@ -625,7 +648,7 @@ function E:RemoveTableDuplicates(cleanTable, checkTable)
 			end
 		end
 	end
-	
+
 	--Clean out empty sub-tables
 	self:RemoveEmptySubTables(cleaned)
 
@@ -699,7 +722,7 @@ function E:ProfileTableToPluginFormat(inTable, profileType)
 	local returnString = ""
 	local lineStructure = ""
 	local sameLine = false
-	
+
 	local function buildLineStructure()
 		local str = profileText
 		for _, v in ipairs(lineStructureTable) do
@@ -709,7 +732,7 @@ function E:ProfileTableToPluginFormat(inTable, profileType)
 				str = str.."["..v.."]"
 			end
 		end
-		
+
 		return str
 	end
 
@@ -736,7 +759,7 @@ function E:ProfileTableToPluginFormat(inTable, profileType)
 			else
 				sameLine = false
 				returnString = returnString.."] = ";
-				
+
 				if type(v) == "number" then
 					returnString = returnString..v.."\n"
 				elseif type(v) == "string" then
@@ -752,11 +775,11 @@ function E:ProfileTableToPluginFormat(inTable, profileType)
 				end
 			end
 		end
-		
+
 		tremove(lineStructureTable)
 		lineStructure = buildLineStructure()
 	end
-	
+
 	if inTable and profileType then
 		recurse(inTable);
 	end
@@ -806,13 +829,15 @@ end
 local myName = E.myname.."-"..E.myrealm;
 myName = myName:gsub("%s+", "")
 local frames = {}
+
 local function SendRecieve(self, event, prefix, message, channel, sender)
+
 	if event == "CHAT_MSG_ADDON" then
 		if(sender == myName) then return end
 
 		if prefix == "ELVUI_VERSIONCHK" and not E.recievedOutOfDateMessage then
 			if(tonumber(message) ~= nil and tonumber(message) > tonumber(E.version)) then
-				E:Print(L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"])
+				E:Print(L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"]:gsub("ElvUI", E.UIName))
 
 				if((tonumber(message) - tonumber(E.version)) >= 0.05) then
 					E:StaticPopup_Show("ELVUI_UPDATE_AVAILABLE")
@@ -917,7 +942,8 @@ function E:UpdateAll(ignoreInstall)
 
 	self:UpdateBorderColors()
 	self:UpdateBackdropColors()
-	--self:UpdateFrameTemplates()
+	self:UpdateFrameTemplates()
+	self:UpdateStatusBars()
 
 	local LO = E:GetModule('Layout')
 	LO:ToggleChatPanels()
@@ -1018,6 +1044,39 @@ end
 
 --DATABASE CONVERSIONS
 function E:DBConversions()
+	--Font Conversions
+	local fonts = {
+		["ElvUI Alt-Font"] = "Continuum Medium",
+		["ElvUI Alt-Combat"] = "Die Die Die!",
+		["ElvUI Combat"] = "Action Man",
+		["ElvUI Font"] = "PT Sans Narrow",
+		["ElvUI Pixel"] = "Homespun"
+	}
+	if fonts[E.db.general.font] then E.db.general.font = fonts[E.db.general.font] end
+	if fonts[E.db.nameplate.font] then E.db.nameplate.font = fonts[E.db.nameplate.font] end
+	if fonts[E.db.nameplate.buffs.font] then E.db.nameplate.buffs.font = fonts[E.db.nameplate.buffs.font] end
+	if fonts[E.db.nameplate.debuffs.font] then E.db.nameplate.debuffs.font = fonts[E.db.nameplate.debuffs.font] end
+	if fonts[E.db.bags.itemLevelFont] then E.db.bags.itemLevelFont = fonts[E.db.bags.itemLevelFont] end
+	if fonts[E.db.bags.countFont] then E.db.bags.countFont = fonts[E.db.bags.countFont] end
+	if fonts[E.db.auras.font] then E.db.auras.font = fonts[E.db.auras.font] end
+	if fonts[E.db.auras.consolidatedBuffs.font] then E.db.auras.consolidatedBuffs.font = fonts[E.db.auras.consolidatedBuffs.font] end
+	if fonts[E.db.chat.font] then E.db.chat.font = fonts[E.db.chat.font] end
+	if fonts[E.db.chat.tabFont] then E.db.chat.tabFont = fonts[E.db.chat.tabFont] end
+	if fonts[E.db.datatexts.font] then E.db.datatexts.font = fonts[E.db.datatexts.font] end
+	if fonts[E.db.tooltip.font] then E.db.tooltip.font = fonts[E.db.tooltip.font] end
+	if fonts[E.db.tooltip.healthBar.font] then E.db.tooltip.healthBar.font = fonts[E.db.tooltip.healthBar.font] end
+	if fonts[E.db.unitframe.font] then E.db.unitframe.font = fonts[E.db.unitframe.font] end
+	if fonts[E.db.unitframe.units.party.rdebuffs.font] then E.db.unitframe.units.party.rdebuffs.font = fonts[E.db.unitframe.units.party.rdebuffs.font] end
+	if fonts[E.db.unitframe.units.raid.rdebuffs.font] then E.db.unitframe.units.raid.rdebuffs.font = fonts[E.db.unitframe.units.raid.rdebuffs.font] end
+	if fonts[E.db.unitframe.units.raid40.rdebuffs.font] then E.db.unitframe.units.raid40.rdebuffs.font = fonts[E.db.unitframe.units.raid40.rdebuffs.font] end
+	if fonts[E.db.unitframe.units.raidpet.rdebuffs.font] then E.db.unitframe.units.raidpet.rdebuffs.font = fonts[E.db.unitframe.units.raidpet.rdebuffs.font] end
+	if fonts[E.db.unitframe.units.tank.rdebuffs.font] then E.db.unitframe.units.tank.rdebuffs.font = fonts[E.db.unitframe.units.tank.rdebuffs.font] end
+	if fonts[E.db.unitframe.units.assist.rdebuffs.font] then E.db.unitframe.units.assist.rdebuffs.font = fonts[E.db.unitframe.units.assist.rdebuffs.font] end
+	if fonts[E.db.actionbar.font] then E.db.actionbar.font = fonts[E.db.actionbar.font] end
+	if fonts[E.private.dmgfont] then E.private.dmgfont = fonts[E.private.dmgfont] end
+	if fonts[E.private.namefont] then E.private.namefont = fonts[E.private.namefont] end
+	if fonts[E.private.chatBubbleFont] then E.private.chatBubbleFont = fonts[E.private.chatBubbleFont] end
+
 	--Add missing Stack Threshold
 	if E.global.unitframe['aurafilters']['RaidDebuffs'].spells then
 		local matchFound
@@ -1030,13 +1089,13 @@ function E:DBConversions()
 					end
 				end
 			end
-			
+
 			if not matchFound then
 				E.global.unitframe['aurafilters']['RaidDebuffs']['spells'][k].stackThreshold = 0
 			end
 		end
 	end
-	
+
 	--Convert spellIDs saved as strings to numbers
 	if E.global.unitframe['aurafilters']['Whitelist (Strict)'].spells then
 		for k, v in pairs(E.global.unitframe['aurafilters']['Whitelist (Strict)'].spells) do
@@ -1061,13 +1120,13 @@ function E:DBConversions()
 		E.db.general.reputation.height = P.general.reputation.height
 		E:Print("Reputation bar appears to be an odd shape. Resetting to default size.")
 	end
-	
+
 	--Turns out that a chat height lower than 58 will cause the following error: Message: ..\FrameXML\FloatingChatFrame.lua line 1147: attempt to perform arithmetic on a nil value
 	--This only happens if the datatext panel for the respective chat panel is enabled, leaving no room for the chat frame.
 	--Minimum height has been increased to 60, convert any setting lower than this to the new minimum height.
 	if E.db.chat.panelHeight < 60 then E.db.chat.panelHeight = 60 end
 	if E.db.chat.panelHeightRight < 60 then E.db.chat.panelHeightRight = 60 end
-	
+
 	--Boss Frame auras have been changed to support friendly/enemy filters in case there is an encounter with a friendly boss
 	--Try to convert any filter settings the user had to the new format
 	if not E.db.bossAuraFiltersConverted then
@@ -1106,10 +1165,10 @@ function E:DBConversions()
 				end
 			end
 		end
-		
+
 		E.db.bossAuraFiltersConverted = true
 	end
-	
+
 	--Convert stored mover strings to use the new comma delimiter
 	if E.db.movers then
 		for mover, moverString in pairs(E.db.movers) do
@@ -1119,7 +1178,7 @@ function E:DBConversions()
 		   end
 		end
 	end
-	
+
 	--Convert stored BuffIndicator key/value pairs to use spellID as key
 	if not E.global.unitframe.buffwatchBackup then E.global.unitframe.buffwatchBackup = {} end
 	local shouldRemove
@@ -1153,6 +1212,15 @@ function E:DBConversions()
 		--Remove old entries of user-added BuffIndicators
 		for id in pairs(shouldRemove) do
 			E.global.unitframe.buffwatch[class][id] = nil
+		end
+	end
+
+	--Add missing .point, .xOffset and .yOffset values to Buff Indicators that are missing them for whatever reason
+	for class in pairs(E.global.unitframe.buffwatch) do
+		for _, values in pairs(E.global.unitframe.buffwatch[class]) do
+			if not values.point then values.point = "TOPLEFT" end
+			if not values.xOffset then values.xOffset = 0 end
+			if not values.yOffset then values.yOffset = 0 end
 		end
 	end
 end
@@ -1237,6 +1305,10 @@ function E:Initialize()
 		self:HelloKittyFix()
 	end
 
+	if(self.global.tukuiMode) then
+		self.UIName = "Tukui"
+	end
+
 	self:UpdateMedia()
 	self:UpdateFrameTemplates()
 	self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED", "CheckRole");
@@ -1263,7 +1335,19 @@ function E:Initialize()
 	self:RefreshModulesDB()
 	collectgarbage("collect");
 
+	if self:IsFoolsDay() and not E.global.aprilFools and not self.global.tukuiMode then
+		self:StaticPopup_Show("TUKUI_MODE")
+	end
+
+
 	if self.db.general.loginmessage then
-		print(select(2, E:GetModule('Chat'):FindURL("CHAT_MSG_DUMMY", format(L["LOGIN_MSG"], self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version)))..'.')
+		print(select(2, E:GetModule('Chat'):FindURL("CHAT_MSG_DUMMY", format(L["LOGIN_MSG"]:gsub("ElvUI", E.UIName), self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version)))..'.')
+	end
+
+	if self.global.tukuiMode then
+		if(self:IsFoolsDay()) then
+			self:ShowTukuiFrame()
+		end
+		self:Print("Thank you for being a good sport, type /aprilfools to revert the changes.")
 	end
 end

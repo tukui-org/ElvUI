@@ -49,7 +49,7 @@ function LO:Initialize()
 end
 
 function LO:BottomPanelVisibility()
-	if E.db.general.bottomPanel then
+	if E.db.general.bottomPanel and not E.global.tukuiMode then
 		self.BottomPanel:Show()
 	else
 		self.BottomPanel:Hide()
@@ -171,7 +171,7 @@ end
 function LO:ToggleChatPanels()
 	LeftChatDataPanel:ClearAllPoints()
 	RightChatDataPanel:ClearAllPoints()
-	local SPACING = (E.PixelMode and 3 or 5)
+	local SPACING = E.Border*3 - E.Spacing
 
 	if E.db.datatexts.leftChatPanel then
 		LeftChatDataPanel:Show()
@@ -188,8 +188,15 @@ function LO:ToggleChatPanels()
 		RightChatDataPanel:Hide()
 		RightChatToggleButton:Hide()
 	end
-
-	if E.db.chat.panelBackdrop == 'SHOWBOTH' then
+	
+	local panelBackdrop = E.db.chat.panelBackdrop
+	if(E.global.tukuiMode) then
+		panelBackdrop = 'HIDEBOTH'
+		RightChatToggleButton:Hide()
+		LeftChatToggleButton:Hide()
+	end
+	
+	if panelBackdrop == 'SHOWBOTH' then
 		LeftChatPanel.backdrop:Show()
 		RightChatPanel.backdrop:Show()
 		LeftChatDataPanel:Point('BOTTOMLEFT', LeftChatPanel, 'BOTTOMLEFT', SPACING + SIDE_BUTTON_WIDTH, SPACING)
@@ -199,7 +206,7 @@ function LO:ToggleChatPanels()
 		LeftChatToggleButton:Point('BOTTOMLEFT', LeftChatPanel, 'BOTTOMLEFT', SPACING, SPACING)
 		RightChatToggleButton:Point('BOTTOMRIGHT', RightChatPanel, 'BOTTOMRIGHT', -SPACING, SPACING)
 		LO:ToggleChatTabPanels()
-	elseif E.db.chat.panelBackdrop == 'HIDEBOTH' then
+	elseif panelBackdrop == 'HIDEBOTH' then
 		LeftChatPanel.backdrop:Hide()
 		RightChatPanel.backdrop:Hide()
 		LeftChatDataPanel:Point('BOTTOMLEFT', LeftChatPanel, 'BOTTOMLEFT', SIDE_BUTTON_WIDTH, 0)
@@ -209,7 +216,7 @@ function LO:ToggleChatPanels()
 		LeftChatToggleButton:Point('BOTTOMLEFT', LeftChatPanel, 'BOTTOMLEFT')
 		RightChatToggleButton:Point('BOTTOMRIGHT', RightChatPanel, 'BOTTOMRIGHT')
 		LO:ToggleChatTabPanels(true, true)
-	elseif E.db.chat.panelBackdrop == 'LEFT' then
+	elseif panelBackdrop == 'LEFT' then
 		LeftChatPanel.backdrop:Show()
 		RightChatPanel.backdrop:Hide()
 		LeftChatDataPanel:Point('BOTTOMLEFT', LeftChatPanel, 'BOTTOMLEFT', SPACING + SIDE_BUTTON_WIDTH, SPACING)
@@ -233,7 +240,7 @@ function LO:ToggleChatPanels()
 end
 
 function LO:CreateChatPanels()
-	local SPACING = (E.PixelMode and 3 or 5)
+	local SPACING = E.Border*3 - E.Spacing
 
 	--Left Chat
 	local lchat = CreateFrame('Frame', 'LeftChatPanel', E.UIParent)
@@ -270,7 +277,7 @@ function LO:CreateChatPanels()
 	local lchattb = CreateFrame('Button', 'LeftChatToggleButton', E.UIParent)
 	lchattb.parent = LeftChatPanel
 	LeftChatPanel.fadeFunc = ChatPanelLeft_OnFade
-	lchattb:Point('TOPRIGHT', lchatdp, 'TOPLEFT', -(E.PixelMode and -1 or 1), 0)
+	lchattb:Point('TOPRIGHT', lchatdp, 'TOPLEFT', E.Border - E.Spacing*3, 0)
 	lchattb:Point('BOTTOMLEFT', lchat, 'BOTTOMLEFT', SPACING, SPACING)
 	lchattb:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
 	lchattb:SetScript('OnEnter', ChatButton_OnEnter)
@@ -278,7 +285,7 @@ function LO:CreateChatPanels()
 	lchattb:SetScript('OnClick', ChatButton_OnClick)
 	lchattb.text = lchattb:CreateFontString(nil, 'OVERLAY')
 	lchattb.text:FontTemplate()
-	lchattb.text:SetPoint('CENTER')
+	lchattb.text:Point('CENTER')
 	lchattb.text:SetJustifyH('CENTER')
 	lchattb.text:SetText('<')
 
@@ -315,7 +322,7 @@ function LO:CreateChatPanels()
 	local rchattb = CreateFrame('Button', 'RightChatToggleButton', E.UIParent)
 	rchattb.parent = RightChatPanel
 	RightChatPanel.fadeFunc = ChatPanelRight_OnFade
-	rchattb:Point('TOPLEFT', rchatdp, 'TOPRIGHT', (E.PixelMode and -1 or 1), 0)
+	rchattb:Point('TOPLEFT', rchatdp, 'TOPRIGHT', -E.Border + E.Spacing*3, 0)
 	rchattb:Point('BOTTOMRIGHT', rchat, 'BOTTOMRIGHT', -SPACING, SPACING)
 	rchattb:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
 	rchattb:RegisterForClicks('AnyUp')
@@ -324,7 +331,7 @@ function LO:CreateChatPanels()
 	rchattb:SetScript('OnClick', ChatButton_OnClick)
 	rchattb.text = rchattb:CreateFontString(nil, 'OVERLAY')
 	rchattb.text:FontTemplate()
-	rchattb.text:SetPoint('CENTER')
+	rchattb.text:Point('CENTER')
 	rchattb.text:SetJustifyH('CENTER')
 	rchattb.text:SetText('>')
 
@@ -344,14 +351,15 @@ end
 
 function LO:CreateMinimapPanels()
 	local lminipanel = CreateFrame('Frame', 'LeftMiniPanel', Minimap)
-	lminipanel:Point('TOPLEFT', Minimap, 'BOTTOMLEFT', -E.Border, (E.PixelMode and 0 or -3))
-	lminipanel:Point('BOTTOMRIGHT', Minimap, 'BOTTOM', -E.Spacing, -((E.PixelMode and 0 or 3) + PANEL_HEIGHT))
+
+	lminipanel:Point('TOPLEFT', Minimap, 'BOTTOMLEFT', -E.Border, -E.Spacing*3)
+	lminipanel:Point('BOTTOMRIGHT', Minimap, 'BOTTOM', 0, -(E.Spacing*3 + PANEL_HEIGHT))
 	lminipanel:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
 	E:GetModule('DataTexts'):RegisterPanel(lminipanel, 1, 'ANCHOR_BOTTOMLEFT', lminipanel:GetWidth() * 2, -4)
 
 	local rminipanel = CreateFrame('Frame', 'RightMiniPanel', Minimap)
-	rminipanel:Point('TOPRIGHT', Minimap, 'BOTTOMRIGHT', E.Border, (E.PixelMode and 0 or -3))
-	rminipanel:Point('BOTTOMLEFT', lminipanel, 'BOTTOMRIGHT', (E.PixelMode and -1 or 1), 0)
+	rminipanel:Point('TOPRIGHT', Minimap, 'BOTTOMRIGHT', E.Border, -(E.Spacing*3))
+	rminipanel:Point('BOTTOMLEFT', lminipanel, 'BOTTOMRIGHT', -E.Border + (E.Spacing*3), 0)
 	rminipanel:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
 	E:GetModule('DataTexts'):RegisterPanel(rminipanel, 1, 'ANCHOR_BOTTOM', 0, -4)
 
@@ -365,19 +373,19 @@ function LO:CreateMinimapPanels()
 
 	local configtoggle = CreateFrame('Button', 'ElvConfigToggle', Minimap)
 	if E.db.auras.consolidatedBuffs.position == "LEFT" then
-		configtoggle:Point('TOPRIGHT', lminipanel, 'TOPLEFT', (E.PixelMode and 1 or -1), 0)
-		configtoggle:Point('BOTTOMRIGHT', lminipanel, 'BOTTOMLEFT', (E.PixelMode and 1 or -1), 0)
+		configtoggle:Point('TOPRIGHT', lminipanel, 'TOPLEFT', (E.Border - (E.Spacing*3)), 0)
+		configtoggle:Point('BOTTOMRIGHT', lminipanel, 'BOTTOMLEFT', (E.Border + (E.Spacing*3)), 0)
 	else
-		configtoggle:Point('TOPLEFT', rminipanel, 'TOPRIGHT', (E.PixelMode and -1 or 1), 0)
-		configtoggle:Point('BOTTOMLEFT', rminipanel, 'BOTTOMRIGHT', (E.PixelMode and -1 or 1), 0)
+		configtoggle:Point('TOPLEFT', rminipanel, 'TOPRIGHT', (-E.Border + (E.Spacing*3)), 0)
+		configtoggle:Point('BOTTOMLEFT', rminipanel, 'BOTTOMRIGHT', (-E.Border + (E.Spacing*3)), 0)
 	end
 	configtoggle:RegisterForClicks('AnyUp')
-	configtoggle:Width(E.ConsolidatedBuffsWidth)
+	configtoggle:Width(E.ConsolidatedBuffsWidth - (E.Border*2))
 	configtoggle:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
 	configtoggle.text = configtoggle:CreateFontString(nil, 'OVERLAY')
 	configtoggle.text:FontTemplate(E.LSM:Fetch("font", E.db.datatexts.font), E.db.datatexts.fontSize, E.db.datatexts.fontOutline)
 	configtoggle.text:SetText('C')
-	configtoggle.text:SetPoint('CENTER')
+	configtoggle.text:Point('CENTER')
 	configtoggle.text:SetJustifyH('CENTER')
 	configtoggle:SetScript('OnClick', function(self, btn)
 		if btn == 'LeftButton' then
@@ -399,6 +407,101 @@ function LO:CreateMinimapPanels()
 	configtoggle:SetScript('OnLeave', function(self)
 		GameTooltip:Hide()
 	end)
+	
+	if(E.global.tukuiMode) then
+		local BottomLine = CreateFrame("Frame", nil, E.UIParent)
+		BottomLine:SetTemplate()
+		BottomLine:Size(2)
+		BottomLine:Point("BOTTOMLEFT", 15, 15)
+		BottomLine:Point("BOTTOMRIGHT", -15, 15)
+		BottomLine:SetFrameStrata("BACKGROUND")
+		BottomLine:SetFrameLevel(0)
+
+		local LeftVerticalLine = CreateFrame("Frame", nil, BottomLine)
+		LeftVerticalLine:SetTemplate()
+		LeftVerticalLine:Point("BOTTOMLEFT", 0, 0)
+		LeftVerticalLine:SetFrameLevel(0)
+		LeftVerticalLine:SetFrameStrata("BACKGROUND")
+
+
+		local RightVerticalLine = CreateFrame("Frame", nil, BottomLine)
+		RightVerticalLine:SetTemplate()
+		RightVerticalLine:Point("BOTTOMRIGHT", 0, 0)
+		RightVerticalLine:SetFrameLevel(0)
+		RightVerticalLine:SetFrameStrata("BACKGROUND")
+
+
+		local CubeLeft = CreateFrame("Frame", nil, LeftVerticalLine)
+		CubeLeft:SetTemplate()
+		CubeLeft:Size(10)
+		CubeLeft:Point("BOTTOM", LeftVerticalLine, "TOP", 0, 0)
+		CubeLeft:EnableMouse(true)
+		CubeLeft:SetFrameLevel(0)
+		CubeLeft:SetScript("OnMouseDown", function(self, Button)
+			if (Button == "LeftButton") then	
+				ToggleFrame(ChatMenu)
+			end
+		end)
+
+		local CubeRight = CreateFrame("Frame", nil, RightVerticalLine)
+		CubeRight:SetTemplate()
+		CubeRight:Size(10)
+		CubeRight:Point("BOTTOM", RightVerticalLine, "TOP", 0, 0)
+		CubeRight:EnableMouse(true)
+		CubeRight:SetFrameLevel(0)
+		CubeRight:SetScript("OnMouseDown", function(self, Button)
+			if (Button == "LeftButton") then	
+				ToggleCharacter("ReputationFrame")
+			end
+		end)
+		
+		hooksecurefunc(E:GetModule("Chat"), "PositionChat", function()
+			LeftVerticalLine:Size(2, E.db.chat.panelHeight - 40)
+			RightVerticalLine:Size(2, (E.db.chat.separateSizes and E.db.chat.panelHeightRight or E.db.chat.panelHeight) - 40)	
+		end)
+	end
+	
+	local f = CreateFrame("Frame", 'BottomMiniPanel', Minimap)
+	f:SetPoint("BOTTOM", Minimap, "BOTTOM")
+	f:Width(75)
+	f:Height(20)
+	f:SetFrameLevel(Minimap:GetFrameLevel() + 5)
+	E:GetModule('DataTexts'):RegisterPanel(f, 1, 'ANCHOR_BOTTOM', 0, -10)
+	
+	f = CreateFrame("Frame", 'TopMiniPanel', Minimap)
+	f:SetPoint("TOP", Minimap, "TOP")
+	f:Width(75)
+	f:Height(20)
+	f:SetFrameLevel(Minimap:GetFrameLevel() + 5)
+	E:GetModule('DataTexts'):RegisterPanel(f, 1, 'ANCHOR_BOTTOM', 0, -10)		
+	
+	f = CreateFrame("Frame", 'TopLeftMiniPanel', Minimap)
+	f:SetPoint("TOPLEFT", Minimap, "TOPLEFT")
+	f:Width(75)
+	f:Height(20)
+	f:SetFrameLevel(Minimap:GetFrameLevel() + 5)
+	E:GetModule('DataTexts'):RegisterPanel(f, 1, 'ANCHOR_BOTTOMLEFT', 0, -10)	
+
+	f = CreateFrame("Frame", 'TopRightMiniPanel', Minimap)
+	f:SetPoint("TOPRIGHT", Minimap, "TOPRIGHT")
+	f:Width(75)
+	f:Height(20)
+	f:SetFrameLevel(Minimap:GetFrameLevel() + 5)
+	E:GetModule('DataTexts'):RegisterPanel(f, 1, 'ANCHOR_BOTTOMRIGHT', 0, -10)	
+	
+	f = CreateFrame("Frame", 'BottomLeftMiniPanel', Minimap)
+	f:SetPoint("BOTTOMLEFT", Minimap, "BOTTOMLEFT")
+	f:Width(75)
+	f:Height(20)
+	f:SetFrameLevel(Minimap:GetFrameLevel() + 5)
+	E:GetModule('DataTexts'):RegisterPanel(f, 1, 'ANCHOR_BOTTOMLEFT', 0, -10)	
+
+	f = CreateFrame("Frame", 'BottomRightMiniPanel', Minimap)
+	f:SetPoint("BOTTOMRIGHT", Minimap, "BOTTOMRIGHT")
+	f:Width(75)
+	f:Height(20)
+	f:SetFrameLevel(Minimap:GetFrameLevel() + 5)
+	E:GetModule('DataTexts'):RegisterPanel(f, 1, 'ANCHOR_BOTTOMRIGHT', 0, -10)
 end
 
 E:RegisterModule(LO:GetName())

@@ -16,6 +16,7 @@ local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 -- GLOBALS: ElvUIParent, ElvUIMoverNudgeWindow
 
 E.CreatedMovers = {}
+E.DisabledMovers = {}
 
 local function SizeChanged(frame)
 	if InCombatLockdown() then return; end
@@ -42,7 +43,7 @@ local function UpdateCoords(self)
 
 	local coordX, coordY = E:GetXYOffset(nudgeInversePoint, 1)
 	ElvUIMoverNudgeWindow:ClearAllPoints()
-	ElvUIMoverNudgeWindow:SetPoint(nudgePoint, mover, nudgeInversePoint, coordX, coordY)
+	ElvUIMoverNudgeWindow:Point(nudgePoint, mover, nudgeInversePoint, coordX, coordY)
 	E:UpdateNudgeFrame(mover, x, y)
 end
 
@@ -63,8 +64,8 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 	f:RegisterForDrag("LeftButton", "RightButton")
 	f:EnableMouseWheel(true)
 	f:SetMovable(true)
-	f:SetWidth(parent:GetWidth())
-	f:SetHeight(parent:GetHeight())
+	f:Width(parent:GetWidth())
+	f:Height(parent:GetHeight())
 	f:SetTemplate("Transparent", nil, nil, true)
 	f:Hide()
 	f.parent = parent
@@ -83,11 +84,11 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 
 	E.CreatedMovers[name].mover = f
 	E['snapBars'][#E['snapBars'] + 1] = f
-	
+
 	local fs = f:CreateFontString(nil, "OVERLAY")
 	fs:FontTemplate()
 	fs:SetJustifyH("CENTER")
-	fs:SetPoint("CENTER")
+	fs:Point("CENTER")
 	fs:SetText(text or name)
 	fs:SetTextColor(unpack(E["media"].rgbvaluecolor))
 	f:SetFontString(fs)
@@ -95,7 +96,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 
 	if E.db['movers'] and E.db['movers'][name] then
 		if type(E.db['movers'][name]) == 'table' then
-			f:SetPoint(E.db["movers"][name]["p"], E.UIParent, E.db["movers"][name]["p2"], E.db["movers"][name]["p3"], E.db["movers"][name]["p4"])
+			f:Point(E.db["movers"][name]["p"], E.UIParent, E.db["movers"][name]["p2"], E.db["movers"][name]["p3"], E.db["movers"][name]["p4"])
 			E.db['movers'][name] = GetPoint(f)
 			f:ClearAllPoints()
 		end
@@ -109,10 +110,9 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 			delim = ","
 		end
 		local point, anchor, secondaryPoint, x, y = split(delim, anchorString)
-		f:SetPoint(point, anchor, secondaryPoint, x, y)
+		f:Point(point, anchor, secondaryPoint, x, y)
 	else
-
-		f:SetPoint(point, anchor, secondaryPoint, x, y)
+		f:Point(point, anchor, secondaryPoint, x, y)
 	end
 
 	local function OnDragStart(self)
@@ -138,13 +138,12 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 		end
 
 		local x, y, point = E:CalculateMoverPoints(self)
-
+		self:ClearAllPoints()
+		self:Point(self.positionOverride or point, E.UIParent, self.positionOverride and "BOTTOMLEFT" or point, x, y)
 		if self.positionOverride then
 			self.parent:ClearAllPoints()
 			self.parent:Point(self.positionOverride, self, self.positionOverride)
 		end
-		self:ClearAllPoints()
-		self:Point(point, E.UIParent, point, x, y)
 
 		E:SaveMoverPosition(name)
 
@@ -161,7 +160,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 
 		self:SetUserPlaced(false)
 	end
-	
+
 	local function OnEnter(self)
 		if isDragging then return end
 		self.text:SetTextColor(1, 1, 1)
@@ -170,7 +169,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 		coordFrame.child = self
 		coordFrame:GetScript('OnUpdate')(coordFrame)
 	end
-	
+
 	local function OnMouseDown(self, button)
 		if button == "RightButton" then
 			isDragging = false;
@@ -185,16 +184,16 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 			end
 		end
 	end
-	
+
 	local function OnLeave(self)
 		if isDragging then return end
 		self.text:SetTextColor(unpack(E["media"].rgbvaluecolor))
 	end
-	
+
 	local function OnShow(self)
 		self:SetBackdropBorderColor(unpack(E["media"].rgbvaluecolor))
 	end
-	
+
 	local function OnMouseWheel(self, delta)
 		if IsShiftKeyDown() then
 			E:NudgeMover(delta)
@@ -216,7 +215,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 	parent.mover = f
 
 	parent:ClearAllPoints()
-	parent:SetPoint(point, f, 0, 0)
+	parent:Point(point, f, 0, 0)
 
 	if postdrag ~= nil and type(postdrag) == 'function' then
 		f:RegisterEvent("PLAYER_ENTERING_WORLD")
@@ -264,23 +263,21 @@ function E:CalculateMoverPoints(mover, nudgeX, nudgeY)
 		x = x - screenCenter
 	end
 
-	--I'm not really sure why we are even doing this
-	--It seems to cause nothing but problems
-	-- if mover.positionOverride then
-		-- if(mover.positionOverride == "TOPLEFT") then
-			-- x = mover:GetLeft() - E.diffGetLeft
-			-- y = mover:GetTop() - E.diffGetTop
-		-- elseif(self.positionOverride == "TOPRIGHT") then
-			-- x = mover:GetRight() - E.diffGetRight
-			-- y = mover:GetTop() - E.diffGetTop
-		-- elseif(mover.positionOverride == "BOTTOMLEFT") then
-			-- x = mover:GetLeft() - E.diffGetLeft
-			-- y = mover:GetBottom() - E.diffGetBottom
-		-- elseif(mover.positionOverride == "BOTTOMRIGHT") then
-			-- x = mover:GetRight() - E.diffGetRight
-			-- y = mover:GetBottom() - E.diffGetBottom
-		-- end
-	-- end
+	if mover.positionOverride then
+		if(mover.positionOverride == "TOPLEFT") then
+			x = mover:GetLeft() - E.diffGetLeft
+			y = mover:GetTop() - E.diffGetTop
+		elseif(mover.positionOverride == "TOPRIGHT") then
+			x = mover:GetRight() - E.diffGetRight
+			y = mover:GetTop() - E.diffGetTop
+		elseif(mover.positionOverride == "BOTTOMLEFT") then
+			x = mover:GetLeft() - E.diffGetLeft
+			y = mover:GetBottom() - E.diffGetBottom
+		elseif(mover.positionOverride == "BOTTOMRIGHT") then
+			x = mover:GetRight() - E.diffGetRight
+			y = mover:GetBottom() - E.diffGetBottom
+		end
+	end
 
 	--Update coordinates if nudged
 	x = x + (nudgeX or 0)
@@ -348,6 +345,8 @@ function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag, moverT
 end
 
 function E:ToggleMovers(show, moverType)
+	self.configMode = show
+
 	for name, _ in pairs(E.CreatedMovers) do
 		if not show then
 			_G[name]:Hide()
@@ -361,13 +360,54 @@ function E:ToggleMovers(show, moverType)
 	end
 end
 
+function E:DisableMover(name)
+	if(self.DisabledMovers[name]) then return end
+	if(not self.CreatedMovers[name]) then
+		error("mover doesn't exist")
+	end
+
+	self.DisabledMovers[name] = {}
+	for x, y in pairs(self.CreatedMovers[name]) do
+		self.DisabledMovers[name][x] = y
+	end
+
+	if self.configMode then
+		_G[name]:Hide()
+	end
+
+	self.CreatedMovers[name] = nil
+end
+
+function E:EnableMover(name)
+	if(self.CreatedMovers[name]) then return end
+	if(not self.DisabledMovers[name]) then
+		error("mover doesn't exist")
+	end
+
+	self.CreatedMovers[name] = {}
+	for x, y in pairs(self.DisabledMovers[name]) do
+		self.CreatedMovers[name][x] = y
+	end
+
+	--Make sure we add anchor information from a potential profile switch
+	if E.db["movers"] and E.db["movers"][name] and type(E.db["movers"][name]) == 'string' then
+		self.CreatedMovers[name]["point"] = E.db["movers"][name]
+	end
+
+	if self.configMode then
+		_G[name]:Show()
+	end
+
+	self.DisabledMovers[name] = nil
+end
+
 function E:ResetMovers(arg)
 	if arg == "" or arg == nil then
 		for name, _ in pairs(E.CreatedMovers) do
 			local f = _G[name]
 			local point, anchor, secondaryPoint, x, y = split(',', E.CreatedMovers[name]['point'])
 			f:ClearAllPoints()
-			f:SetPoint(point, anchor, secondaryPoint, x, y)
+			f:Point(point, anchor, secondaryPoint, x, y)
 
 			for key, value in pairs(E.CreatedMovers[name]) do
 				if key == "postdrag" and type(value) == 'function' then
@@ -385,7 +425,7 @@ function E:ResetMovers(arg)
 						local f = _G[name]
 						local point, anchor, secondaryPoint, x, y = split(',', E.CreatedMovers[name]['point'])
 						f:ClearAllPoints()
-						f:SetPoint(point, anchor, secondaryPoint, x, y)
+						f:Point(point, anchor, secondaryPoint, x, y)
 
 						if self.db.movers then
 							self.db.movers[name] = nil
@@ -403,6 +443,13 @@ end
 
 --Profile Change
 function E:SetMoversPositions()
+	--E:SetMoversPositions() is the first function called in E:UpdateAll().
+	--Because of that, we can allow ourselves to re-enable all disabled movers here,
+	--as the subsequent updates to these elements will disable them again if needed.
+	for name in pairs(E.DisabledMovers) do
+		E:EnableMover(name)
+	end
+
 	for name, _ in pairs(E.CreatedMovers) do
 		local f = _G[name]
 		local point, anchor, secondaryPoint, x, y
@@ -417,11 +464,11 @@ function E:SetMoversPositions()
 			end
 			point, anchor, secondaryPoint, x, y = split(delim, anchorString)
 			f:ClearAllPoints()
-			f:SetPoint(point, anchor, secondaryPoint, x, y)
+			f:Point(point, anchor, secondaryPoint, x, y)
 		elseif f then
 			point, anchor, secondaryPoint, x, y = split(',', E.CreatedMovers[name]['point'])
 			f:ClearAllPoints()
-			f:SetPoint(point, anchor, secondaryPoint, x, y)
+			f:Point(point, anchor, secondaryPoint, x, y)
 		end
 	end
 end

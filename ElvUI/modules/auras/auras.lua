@@ -4,7 +4,7 @@ local LSM = LibStub("LibSharedMedia-3.0")
 
 --Cache global variables
 --Lua functions
-local GetTime = GetTime 
+local GetTime = GetTime
 local select, unpack = select, unpack
 local floor = math.floor
 local format, find, join = string.format, string.find, string.join
@@ -113,11 +113,11 @@ function A:CreateIcon(button)
 	button.texture:SetTexCoord(unpack(E.TexCoords))
 
 	button.count = button:CreateFontString(nil, "ARTWORK")
-	button.count:SetPoint("BOTTOMRIGHT", -1 + self.db.countXOffset, 1 + self.db.countYOffset)
+	button.count:Point("BOTTOMRIGHT", -1 + self.db.countXOffset, 1 + self.db.countYOffset)
 	button.count:FontTemplate(font, self.db.fontSize, self.db.fontOutline)
 
 	button.time = button:CreateFontString(nil, "ARTWORK")
-	button.time:SetPoint("TOP", button, 'BOTTOM', 1 + self.db.timeXOffset, 0 + self.db.timeYOffset)
+	button.time:Point("TOP", button, 'BOTTOM', 1 + self.db.timeXOffset, 0 + self.db.timeYOffset)
 	button.time:FontTemplate(font, self.db.fontSize, self.db.fontOutline)
 
 	button.highlight = button:CreateTexture(nil, "HIGHLIGHT")
@@ -127,7 +127,7 @@ function A:CreateIcon(button)
 	E:SetUpAnimGroup(button)
 
 	button:SetScript("OnAttributeChanged", A.OnAttributeChanged)
-	
+
 	local ButtonData = {
 		FloatingBG = nil,
 		Icon = button.texture,
@@ -293,11 +293,11 @@ function A:UpdateHeader(header)
 		if(child.time) then
 			local font = LSM:Fetch("font", self.db.font)
 			child.time:ClearAllPoints()
-			child.time:SetPoint("TOP", child, 'BOTTOM', 1 + self.db.timeXOffset, 0 + self.db.timeYOffset)
+			child.time:Point("TOP", child, 'BOTTOM', 1 + self.db.timeXOffset, 0 + self.db.timeYOffset)
 			child.time:FontTemplate(font, self.db.fontSize, self.db.fontOutline)
 
 			child.count:ClearAllPoints()
-			child.count:SetPoint("BOTTOMRIGHT", -1 + self.db.countXOffset, 0 + self.db.countYOffset)
+			child.count:Point("BOTTOMRIGHT", -1 + self.db.countXOffset, 0 + self.db.countYOffset)
 			child.count:FontTemplate(font, self.db.fontSize, self.db.fontOutline)
 		end
 
@@ -309,7 +309,7 @@ function A:UpdateHeader(header)
 		index = index + 1
 		child = select(index, header:GetChildren())
 	end
-	
+
 	if MasqueGroupBuffs and E.private.auras.masque.buffs then MasqueGroupBuffs:ReSkin() end
 	if MasqueGroupDebuffs and E.private.auras.masque.debuffs then MasqueGroupDebuffs:ReSkin() end
 end
@@ -339,13 +339,13 @@ function A:CreateAuraHeader(filter)
 end
 
 function A:Initialize()
-	--self:Construct_ConsolidatedBuffs()
+	self:Construct_ConsolidatedBuffs()
 
 	if(E.private.auras.disableBlizzard) then
 		BuffFrame:Kill()
-		--ConsolidatedBuffs:Kill()
+		ConsolidatedBuffs:Kill()
 		TemporaryEnchantFrame:Kill();
-		--InterfaceOptionsFrameCategoriesButton12:SetScale(0.0001)
+		InterfaceOptionsFrameCategoriesButton12:SetScale(0.0001)
 	end
 
 	if(not E.private.auras.enable) then return end
@@ -353,13 +353,13 @@ function A:Initialize()
 	self.db = E.db.auras
 
 	self.BuffFrame = self:CreateAuraHeader("HELPFUL")
-	self.BuffFrame:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", -8, 0)
+	self.BuffFrame:Point("TOPRIGHT", MMHolder, "TOPLEFT", -(6 + E.Border), -E.Border - E.Spacing)
 	E:CreateMover(self.BuffFrame, "BuffsMover", L["Player Buffs"])
 
 	self.DebuffFrame = self:CreateAuraHeader("HARMFUL")
-	self.DebuffFrame:SetPoint("BOTTOMRIGHT", LeftMiniPanel, "BOTTOMLEFT", -(6 + E.Border), 0)
+	self.DebuffFrame:Point("BOTTOMRIGHT", MMHolder, "BOTTOMLEFT", -(6 + E.Border), E.Border + E.Spacing)
 	E:CreateMover(self.DebuffFrame, "DebuffsMover", L["Player Debuffs"])
-	
+
 	if Masque then
 		if MasqueGroupBuffs then A.BuffsMasqueGroup = MasqueGroupBuffs end
 		if MasqueGroupDebuffs then A.DebuffsMasqueGroup = MasqueGroupDebuffs end
