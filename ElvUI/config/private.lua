@@ -50,7 +50,7 @@ V['skins'] = {
 		['enable'] = true,
 	},
 	['blizzard'] = {
-		['enable'] = true,
+		['enable'] = false,
 		["deathRecap"] = true,
 		["bags"] = true,
 		["bmah"] = true, --black market ah

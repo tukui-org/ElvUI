@@ -22,7 +22,7 @@ P['general'] = {
 	['afk'] = true,
 
 	["fontSize"] = 12,
-	["font"] = "PT Sans Narrow",
+	["font"] = "Arial Narrow",
 
 	["bordercolor"] = { r = 0.1,g = 0.1,b = 0.1 },
 	["backdropcolor"] = { r = 0.1,g = 0.1,b = 0.1 },
@@ -133,10 +133,10 @@ P['bags'] = {
 	['ignoreItems'] = '',
 	['itemLevel'] = true,
 	['itemLevelThreshold'] = 1,
-	['itemLevelFont'] = 'Homespun',
+	['itemLevelFont'] = 'Arial Narrow',
 	['itemLevelFontSize'] = 10,
 	['itemLevelFontOutline'] = "MONOCHROMEOUTLINE",
-	["countFont"] = 'Homespun',
+	["countFont"] = 'Arial Narrow',
 	["countFontSize"] = 10,
 	["countFontOutline"] = "MONOCHROMEOUTLINE",
 	["countFontColor"] = {r = 1, g = 1, b = 1},
@@ -152,7 +152,7 @@ P['bags'] = {
 
 --NamePlate
 P["nameplate"] = {
-	['font'] = 'Homespun',
+	['font'] = 'Arial Narrow',
 	['fontSize'] = 7,
 	['fontOutline'] = 'MONOCHROMEOUTLINE',
 	["smallPlates"] = true,
@@ -214,7 +214,7 @@ P["nameplate"] = {
 		["badTransitionColor"] = {r = 240/255, g = 154/255, b = 17/255},
 	},
 	['buffs'] = {
-		['font'] = 'Homespun',
+		['font'] = 'Arial Narrow',
 		['fontSize'] = 7,
 		['fontOutline'] = 'MONOCHROMEOUTLINE',
 		['numAuras'] = 4,
@@ -223,7 +223,7 @@ P["nameplate"] = {
 		['additionalFilter'] = 'TurtleBuffs',
 	},
 	['debuffs'] = {
-		['font'] = 'Homespun',
+		['font'] = 'Arial Narrow',
 		['fontSize'] = 7,
 		['fontOutline'] = 'MONOCHROMEOUTLINE',
 		['numAuras'] = 4,
@@ -242,25 +242,13 @@ P["nameplate"] = {
 
 --Auras
 P['auras'] = {
-	['font'] = 'Homespun',
+	['font'] = 'Arial Narrow',
 	['fontSize'] = 10,
 	['fontOutline'] = 'MONOCHROMEOUTLINE',
 	['countYOffset'] = 0,
 	['countXOffset'] = 0,
 	['timeYOffset'] = 0,
 	['timeXOffset'] = 0,
-
-	['consolidatedBuffs'] = {
-		['enable'] = true,
-		['filter'] = true,
-		['durations'] = true,
-		['position'] = "RIGHT",
-		['font'] = 'Homespun',
-		['fontSize'] = 10,
-		['fontOutline'] = 'MONOCHROMEOUTLINE',
-		['reverseStyle'] = false,
-	},
-
 	['fadeThreshold'] = 5,
 	['buffs'] = {
 		['growthDirection'] = 'LEFT_DOWN',
@@ -295,7 +283,7 @@ P['chat'] = {
 	['throttleInterval'] = 45,
 	['scrollDownInterval'] = 15,
 	['fade'] = true,
-	['font'] = 'PT Sans Narrow',
+	['font'] = 'Arial Narrow',
 	['fontOutline'] = 'NONE',
 	['sticky'] = true,
 	['emotionIcons'] = true,
@@ -320,14 +308,14 @@ P['chat'] = {
 	['fadeUndockedTabs'] = true,
 	['fadeTabsNoBackdrop'] = true,
 
-	['tabFont'] = 'Homespun',
+	['tabFont'] = 'Arial Narrow',
 	['tabFontSize'] = 10,
 	['tabFontOutline'] = 'NONE',
 }
 
 --Datatexts
 P['datatexts'] = {
-	['font'] = 'Homespun',
+	['font'] = 'Arial Narrow',
 	['fontSize'] = 10,
 	['fontOutline'] = 'NONE',
 	["wordWrap"] = false,
@@ -382,7 +370,7 @@ P['tooltip'] = {
 	['inspectInfo'] = true,
 	['itemCount'] = 'BAGS_ONLY',
 	['spellID'] = true,
-	["font"] = "PT Sans Narrow",
+	["font"] = "Arial Narrow",
 	["fontOutline"] = "NONE",
 	["headerFontSize"] = 12,
 	["textFontSize"] = 12,
@@ -396,7 +384,7 @@ P['tooltip'] = {
 	['healthBar'] = {
 		['text'] = true,
 		['height'] = 7,
-		['font'] = 'Homespun',
+		['font'] = 'Arial Narrow',
 		['fontSize'] = 10,
 	},
 	["useCustomFactionColors"] = false,
@@ -415,7 +403,7 @@ P['tooltip'] = {
 P['unitframe'] = {
 	['smoothbars'] = false,
 	['statusbar'] = "ElvUI Norm",
-	['font'] = 'Homespun',
+	['font'] = 'Arial Narrow',
 	['fontSize'] = 10,
 	['fontOutline'] = 'MONOCHROMEOUTLINE',
 	['OORAlpha'] = 0.35,
@@ -458,6 +446,7 @@ P['unitframe'] = {
 			["FOCUS"] = {r = 0.71, g = 0.43, b = 0.27},
 			["ENERGY"] = {r = 0.65, g = 0.63, b = 0.35},
 			["RUNIC_POWER"] = {r = 0, g = 0.82, b = 1},
+			["PAIN"] = {r = 227/255, g = 126/255, b = 39/255},
 		},
 		['reaction'] = {
 			['BAD'] = { r = 0.78, g = 0.25, b = 0.25 },
@@ -1835,7 +1824,7 @@ P['unitframe'] = {
 				['enable'] = false,
 				["showDispellableDebuff"] = true,
 				['fontSize'] = 10,
-				["font"] = "PT Sans Narrow",
+				["font"] = "Arial Narrow",
 				["fontOutline"] = "OUTLINE",
 				['size'] = 26,
 				['xOffset'] = 0,
@@ -2026,7 +2015,7 @@ P['unitframe'] = {
 				['enable'] = true,
 				["showDispellableDebuff"] = true,
 				['fontSize'] = 10,
-				["font"] = "PT Sans Narrow",
+				["font"] = "Arial Narrow",
 				["fontOutline"] = "OUTLINE",
 				['size'] = 26,
 				['xOffset'] = 0,
@@ -2183,7 +2172,7 @@ P['unitframe'] = {
 				['enable'] = false,
 				["showDispellableDebuff"] = true,
 				['fontSize'] = 10,
-				["font"] = "PT Sans Narrow",
+				["font"] = "Arial Narrow",
 				["fontOutline"] = "OUTLINE",
 				['size'] = 22,
 				['xOffset'] = 0,
@@ -2337,7 +2326,7 @@ P['unitframe'] = {
 				['enable'] = true,
 				["showDispellableDebuff"] = true,
 				['fontSize'] = 10,
-				["font"] = "PT Sans Narrow",
+				["font"] = "Arial Narrow",
 				["fontOutline"] = "OUTLINE",
 				['size'] = 26,
 				['xOffset'] = 0,
@@ -2433,7 +2422,7 @@ P['unitframe'] = {
 				['enable'] = true,
 				["showDispellableDebuff"] = true,
 				['fontSize'] = 10,
-				["font"] = "PT Sans Narrow",
+				["font"] = "Arial Narrow",
 				["fontOutline"] = "OUTLINE",
 				['size'] = 26,
 				['xOffset'] = 0,
@@ -2524,7 +2513,7 @@ P['unitframe'] = {
 				['enable'] = true,
 				["showDispellableDebuff"] = true,
 				['fontSize'] = 10,
-				["font"] = "PT Sans Narrow",
+				["font"] = "Arial Narrow",
 				["fontOutline"] = "OUTLINE",
 				['size'] = 26,
 				['xOffset'] = 0,
@@ -2567,7 +2556,7 @@ P["cooldown"] = {
 
 --Actionbar
 P["actionbar"] = {
-	['font'] = 'Homespun',
+	['font'] = 'Arial Narrow',
 	['fontSize'] = 10,
 	['fontOutline'] = 'MONOCHROMEOUTLINE',
 

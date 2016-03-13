@@ -20,8 +20,8 @@
 	<Script file="LibDualSpec-1.0\LibDualSpec-1.0.lua"/>
 	<Script file="LibElvUIPlugin-1.0\LibElvUIPlugin-1.0.lua"/>
 	<Include file="UTF8\UTF8.xml"/>
-	<Include file="LibItemSearch-1.2\LibItemSearch-1.2.xml"/>
-	<Include file="LibBodyGuard-1.0\load.xml"/>
+	<!--<Include file="LibItemSearch-1.2\LibItemSearch-1.2.xml"/>
+	<Include file="LibBodyGuard-1.0\load.xml"/>-->
 	<Include file="LibChatAnims\LibChatAnims\LibChatAnims.xml"/>
 	<Include file="LibCompress\lib.xml"/>
 	<Include file="LibBase64-1.0\lib.xml"/>

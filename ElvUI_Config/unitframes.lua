@@ -2283,6 +2283,11 @@ E.Options.args.unitframe = {
 									name = RUNIC_POWER,
 									type = 'color',
 								},
+								PAIN = {
+									order = 7,
+									name = PAIN,
+									type = 'color',									
+								},
 							},
 						},
 						reactionGroup = {

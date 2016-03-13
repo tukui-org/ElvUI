@@ -54,7 +54,7 @@ E.myguid = UnitGUID('player');
 E.version = GetAddOnMetadata("ElvUI", "Version");
 E.myrealm = GetRealmName();
 E.wowbuild = select(2, GetBuildInfo()); E.wowbuild = tonumber(E.wowbuild);
-E.resolution = GetCVar("gxResolution")
+E.resolution = GetCVar("gxWindowedResolution")
 E.screenheight = tonumber(match(E.resolution, "%d+x(%d+)"))
 E.screenwidth = tonumber(match(E.resolution, "(%d+)x+%d"))
 E.isMacClient = IsMacClient()
@@ -160,6 +160,10 @@ E.ClassRole = {
 		[1] = "Tank",
 		[2] = "Caster",
 		[3] = "Melee",
+	},
+	DEMONHUNTER = {
+		[1] = "Melee",
+		[2] = "Tank"	
 	},
 }
 
@@ -1059,7 +1063,7 @@ function E:DBConversions()
 	if fonts[E.db.bags.itemLevelFont] then E.db.bags.itemLevelFont = fonts[E.db.bags.itemLevelFont] end
 	if fonts[E.db.bags.countFont] then E.db.bags.countFont = fonts[E.db.bags.countFont] end
 	if fonts[E.db.auras.font] then E.db.auras.font = fonts[E.db.auras.font] end
-	if fonts[E.db.auras.consolidatedBuffs.font] then E.db.auras.consolidatedBuffs.font = fonts[E.db.auras.consolidatedBuffs.font] end
+	--if fonts[E.db.auras.consolidatedBuffs.font] then E.db.auras.consolidatedBuffs.font = fonts[E.db.auras.consolidatedBuffs.font] end
 	if fonts[E.db.chat.font] then E.db.chat.font = fonts[E.db.chat.font] end
 	if fonts[E.db.chat.tabFont] then E.db.chat.tabFont = fonts[E.db.chat.tabFont] end
 	if fonts[E.db.datatexts.font] then E.db.datatexts.font = fonts[E.db.datatexts.font] end
