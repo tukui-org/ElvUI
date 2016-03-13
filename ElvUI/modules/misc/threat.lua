@@ -142,13 +142,12 @@ function THREAT:Initialize()
 
 	self.bar = CreateFrame('StatusBar', 'ElvUI_ThreatBar', UIParent)
 	self.bar:SetStatusBarTexture(E['media'].normTex)
-	E:RegisterStatusBar(self.bar)
 	self.bar:SetMinMaxValues(0, 100)
 	self.bar:CreateBackdrop('Default')
 
 	self.bar.text = self.bar:CreateFontString(nil, 'OVERLAY')
 	self.bar.text:FontTemplate(nil, self.db.textSize)
-	self.bar.text:Point('CENTER', self.bar, 'CENTER')
+	self.bar.text:SetPoint('CENTER', self.bar, 'CENTER')
 
 	self:UpdatePosition()
 	self:ToggleEnable()

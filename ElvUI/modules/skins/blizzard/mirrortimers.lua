@@ -12,7 +12,7 @@ local function LoadSkin()
 		if ( frame.paused ) then
 			return;
 		end
-
+		
 		if frame.timeSinceUpdate >= 0.3 then
 			local minutes = frame.value/60
 			local seconds = frame.value%60
@@ -35,7 +35,6 @@ local function LoadSkin()
 		mirrorTimer:Size(222, 18)
 		mirrorTimer.label = text
 		statusBar:SetStatusBarTexture(E["media"].normTex)
-		E:RegisterStatusBar(statusBar)
 		statusBar:CreateBackdrop()
 		statusBar:Size(222, 18)
 		text:Hide()

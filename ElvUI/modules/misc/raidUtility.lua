@@ -20,7 +20,7 @@ local DoReadyCheck = DoReadyCheck
 local ToggleFriendsFrame = ToggleFriendsFrame
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: DisbandRaidButton, ROLE_POLL, RoleCheckButton, READY_CHECK, ReadyCheckButton
+-- GLOBALS: DisbandRaidButton, ROLE_POLL, RoleCheckButton, READY_CHECK, ReadyCheckButton 
 -- GLOBALS: RaidControlButton, CompactRaidFrameManager, RaidUtilityPanel, RAID_CONTROL
 -- GLOBALS: CompactRaidFrameManagerDisplayFrameHiddenModeToggle, RaidUtility_ShowButton
 -- GLOBALS: CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
@@ -64,15 +64,15 @@ function RU:CreateUtilButton(name, parent, template, width, height, point, relat
 	if text then
 		local t = b:CreateFontString(nil,"OVERLAY",b)
 		t:FontTemplate()
-		t:Point("CENTER", b, 'CENTER', 0, -1)
+		t:SetPoint("CENTER", b, 'CENTER', 0, -1)
 		t:SetJustifyH("CENTER")
 		t:SetText(text)
 		b:SetFontString(t)
 	elseif texture then
 		local t = b:CreateTexture(nil,"OVERLAY",nil)
 		t:SetTexture(texture)
-		t:Point("TOPLEFT", b, "TOPLEFT", E.mult, -E.mult)
-		t:Point("BOTTOMRIGHT", b, "BOTTOMRIGHT", -E.mult, E.mult)
+		t:SetPoint("TOPLEFT", b, "TOPLEFT", E.mult, -E.mult)
+		t:SetPoint("BOTTOMRIGHT", b, "BOTTOMRIGHT", -E.mult, E.mult)
 	end
 end
 
@@ -139,7 +139,7 @@ function RU:Initialize()
 		closeButton:ClearAllPoints()
 		raidUtil:SetPoint(raidUtilPoint, self, raidUtilPoint)
 		closeButton:SetPoint(raidUtilPoint, raidUtil, closeButtonPoint, 0, yOffset)
-	]=]):format(-E.Border + E.Spacing*3))
+	]=]):format(E.PixelMode and -1 or 1))
 	RaidUtility_ShowButton:SetScript("OnMouseUp", function(self) RaidUtilityPanel.toggled = true end)
 	RaidUtility_ShowButton:SetMovable(true)
 	RaidUtility_ShowButton:SetClampedToScreen(true)
@@ -160,9 +160,9 @@ function RU:Initialize()
 		xOffset = xOffset - screenWidth
 		self:ClearAllPoints()
 		if find(point, "BOTTOM") then
-			self:Point('BOTTOM', E.UIParent, 'BOTTOM', xOffset, -1)
+			self:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', xOffset, -1)
 		else
-			self:Point('TOP', E.UIParent, 'TOP', xOffset, 1)
+			self:SetPoint('TOP', E.UIParent, 'TOP', xOffset, 1)
 		end
 	end)
 
@@ -214,7 +214,7 @@ function RU:Initialize()
 	RaidControlButton:SetScript("OnMouseUp", function(self)
 		ToggleFriendsFrame(4)
 	end)
-
+	
 	local buttons = {
 		"DisbandRaidButton",
 		"RoleCheckButton",
@@ -227,19 +227,19 @@ function RU:Initialize()
 	if CompactRaidFrameManager then
 		--Reposition/Resize and Reuse the World Marker Button
 		CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:ClearAllPoints()
-		CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:Point("TOPRIGHT", RoleCheckButton, "BOTTOMRIGHT", 0, -5)
+		CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:SetPoint("TOPRIGHT", RoleCheckButton, "BOTTOMRIGHT", 0, -5)
 		CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:SetParent("RaidUtilityPanel")
 		CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:Height(18)
-		CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:Width(RoleCheckButton:GetWidth() * 0.22)
+		CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton:SetWidth(RoleCheckButton:GetWidth() * 0.22)
 
 		--Put other stuff back
 		CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck:ClearAllPoints()
-		CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck:Point("BOTTOMLEFT", CompactRaidFrameManagerDisplayFrameLockedModeToggle, "TOPLEFT", 0, 1)
-		CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck:Point("BOTTOMRIGHT", CompactRaidFrameManagerDisplayFrameHiddenModeToggle, "TOPRIGHT", 0, 1)
+		CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck:SetPoint("BOTTOMLEFT", CompactRaidFrameManagerDisplayFrameLockedModeToggle, "TOPLEFT", 0, 1)
+		CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck:SetPoint("BOTTOMRIGHT", CompactRaidFrameManagerDisplayFrameHiddenModeToggle, "TOPRIGHT", 0, 1)
 		CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateRolePoll:ClearAllPoints()
-		CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateRolePoll:Point("BOTTOMLEFT", CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck, "TOPLEFT", 0, 1)
-		CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateRolePoll:Point("BOTTOMRIGHT", CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck, "TOPRIGHT", 0, 1)
-
+		CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateRolePoll:SetPoint("BOTTOMLEFT", CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck, "TOPLEFT", 0, 1)
+		CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateRolePoll:SetPoint("BOTTOMRIGHT", CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck, "TOPRIGHT", 0, 1)
+		
 		tinsert(buttons, "CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton")
 	else
 		E:StaticPopup_Show("WARNING_BLIZZARD_ADDONS")

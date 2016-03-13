@@ -18,8 +18,7 @@ local ChatFrame_SendSmartTell = ChatFrame_SendSmartTell
 local SetItemRef = SetItemRef
 local GetFriendInfo = GetFriendInfo
 local BNGetFriendInfo = BNGetFriendInfo
-local BNGetToonInfo = BNGetToonInfo --Removed in 6.2.4
-local BNGetGameAccountInfo = BNGetGameAccountInfo --Added in 6.2.4
+local BNGetToonInfo = BNGetToonInfo
 local BNet_GetValidatedCharacterName = BNet_GetValidatedCharacterName
 local GetNumFriends = GetNumFriends
 local BNGetNumFriends = BNGetNumFriends
@@ -138,7 +137,7 @@ local function BuildFriendTable(total)
 	sort(friendTable, SortAlphabeticName)
 end
 
---Sort alphabetic by accountName or characterName
+--Sort alphabetic by presenceName or toonName
 local function Sort(a, b)
 	if a[2] and b[2] and a[3] and b[3] then
 		if a[2] == b[2] then return a[3] < b[3] end
@@ -155,35 +154,29 @@ local function BuildBNTable(total)
 	wipe(BNTableApp)
 	wipe(BNTableHOTS)
 
-	local _, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText
+	local _, presenceID, presenceName, battleTag, isBattleTagPresence, toonName, toonID, client, isOnline, lastOnline, isAFK, isDND, messageText, noteText, isRIDFriend, messageTime, canSoR
 	local hasFocus, realmName, realmID, faction, race, class, guild, zoneName, level, gameText
 	for i = 1, total do
-		bnetIDAccount, accountName, battleTag, _, characterName, bnetIDGameAccount, client, isOnline, _, isAFK, isDND, _, noteText = BNGetFriendInfo(i)
+		presenceID, presenceName, battleTag, isBattleTagPresence, toonName, toonID, client, isOnline, lastOnline, isAFK, isDND, messageText, noteText, isRIDFriend, messageTime, canSoR = BNGetFriendInfo(i)
 
-		if E.wowbuild >= 21073 then
-			--6.2.4
-			hasFocus, _, _, realmName, realmID, faction, race, class, guild, zoneName, level, gameText = BNGetGameAccountInfo(bnetIDGameAccount or bnetIDAccount);
-		else
-			--Live, remove when 6.2.4 goes live
-			hasFocus, _, _, realmName, realmID, faction, race, class, guild, zoneName, level, gameText = BNGetToonInfo(bnetIDGameAccount or bnetIDAccount);
-		end
+		hasFocus, _, _, realmName, realmID, faction, race, class, guild, zoneName, level, gameText = BNGetToonInfo(toonID or presenceID);
 		if isOnline then
-			characterName = BNet_GetValidatedCharacterName(characterName, battleTag, client) or "";
+			toonName = BNet_GetValidatedCharacterName(toonName, battleTag, client) or "";
 			for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
-			BNTable[i] = { bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
+			BNTable[i] = { presenceID, presenceName, battleTag, toonName, toonID, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
 
 			if client == scString then
-				BNTableSC[#BNTableSC + 1] = { bnetIDAccount, accountName, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
+				BNTableSC[#BNTableSC + 1] = { presenceID, presenceName, toonName, toonID, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
 			elseif client == d3String then
-				BNTableD3[#BNTableD3 + 1] = { bnetIDAccount, accountName, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
+				BNTableD3[#BNTableD3 + 1] = { presenceID, presenceName, toonName, toonID, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
 			elseif client == wtcgString then
-				BNTableWTCG[#BNTableWTCG + 1] = { bnetIDAccount, accountName, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
+				BNTableWTCG[#BNTableWTCG + 1] = { presenceID, presenceName, toonName, toonID, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
 			elseif client == appString then
-				BNTableApp[#BNTableApp + 1] = { bnetIDAccount, accountName, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
+				BNTableApp[#BNTableApp + 1] = { presenceID, presenceName, toonName, toonID, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
 			elseif client == hotsString then
-				BNTableHOTS[#BNTableHOTS + 1] = { bnetIDAccount, accountName, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
+				BNTableHOTS[#BNTableHOTS + 1] = { presenceID, presenceName, toonName, toonID, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
 			else
-				BNTableWoW[#BNTableWoW + 1] = { bnetIDAccount, accountName, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
+				BNTableWoW[#BNTableWoW + 1] = { presenceID, presenceName, toonName, toonID, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
 			end
 		end
 	end

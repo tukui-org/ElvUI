@@ -27,8 +27,8 @@ local createAuraIcon = function(icons, index)
 	button:EnableMouse(true)
 	button:RegisterForClicks'RightButtonUp'
 
-	button:Width(icons.size or 16)
-	button:Height(icons.size or 16)
+	button:SetWidth(icons.size or 16)
+	button:SetHeight(icons.size or 16)
 
 	local cd = CreateFrame("Cooldown", nil, button, "CooldownFrameTemplate")
 	cd:SetAllPoints(button)

@@ -6,11 +6,11 @@ local B = E:GetModule('Blizzard');
 
 function B:PositionAltPowerBar()
 	local holder = CreateFrame('Frame', 'AltPowerBarHolder', UIParent)
-	holder:Point('TOP', E.UIParent, 'TOP', 0, -18)
+	holder:SetPoint('TOP', E.UIParent, 'TOP', 0, -18)
 	holder:Size(128, 50)
 
 	PlayerPowerBarAlt:ClearAllPoints()
-	PlayerPowerBarAlt:Point('CENTER', holder, 'CENTER')
+	PlayerPowerBarAlt:SetPoint('CENTER', holder, 'CENTER')
 	PlayerPowerBarAlt:SetParent(holder)
 	PlayerPowerBarAlt.ignoreFramePositionManager = true
 
@@ -18,7 +18,7 @@ function B:PositionAltPowerBar()
 	--calls :ClearAllPoints on PlayerPowerBarAlt under certain conditions.
 	--Doing ".ClearAllPoints = function() end" causes error when you enter combat.
 	local function Position(self)
-		self:Point('CENTER', AltPowerBarHolder, 'CENTER')
+		self:SetPoint('CENTER', AltPowerBarHolder, 'CENTER')
 	end
 	hooksecurefunc(PlayerPowerBarAlt, "ClearAllPoints", Position)
 

@@ -51,7 +51,7 @@ local Update = function(self, arg1, arg2)
 		return
 	end		
 		
-	local combat = UnitAffectingCombat("player")
+	local combat = InCombatLockdown()
 	local cur, max = UnitHealth("player"), UnitHealthMax("player")
 	local cast, channel = UnitCastingInfo("player"), UnitChannelInfo("player")
 	local target, focus = UnitExists("target"), UnitExists("focus")

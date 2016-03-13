@@ -38,10 +38,7 @@ local function OnEvent(self, event)
 	lastPanel = self
 
 	local specIndex = GetSpecialization();
-	if not specIndex then 
-		self.text:SetText('N/A')
-		return 
-	end
+	if not specIndex then return end
 
 	active = GetActiveSpecGroup()
 

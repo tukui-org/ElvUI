@@ -114,7 +114,7 @@ function M:UpdateReputation(event)
 				end
 			end
 		end
-
+		
 		if ID then
 			standingLabel = _G['FACTION_STANDING_LABEL'..ID]
 		else
@@ -193,10 +193,10 @@ function M:CreateBar(name, onEnter, ...)
 	bar.statusBar = CreateFrame('StatusBar', nil, bar)
 	bar.statusBar:SetInside()
 	bar.statusBar:SetStatusBarTexture(E.media.normTex)
-	E:RegisterStatusBar(bar.statusBar)
+
 	bar.text = bar.statusBar:CreateFontString(nil, 'OVERLAY')
 	bar.text:FontTemplate()
-	bar.text:Point('CENTER')
+	bar.text:SetPoint('CENTER')
 
 	E.FrameLocks[name] = true
 
@@ -243,7 +243,6 @@ function M:EnableDisable_ExperienceBar()
 		self:RegisterEvent('UPDATE_EXHAUSTION', 'UpdateExperience')
 		self:UnregisterEvent("UPDATE_EXPANSION_LEVEL")
 		self:UpdateExperience()
-		E:EnableMover(self.expBar.mover:GetName())
 	else
 		self:UnregisterEvent('PLAYER_XP_UPDATE')
 		self:UnregisterEvent('PLAYER_LEVEL_UP')
@@ -252,7 +251,6 @@ function M:EnableDisable_ExperienceBar()
 		self:UnregisterEvent('UPDATE_EXHAUSTION')
 		self:RegisterEvent("UPDATE_EXPANSION_LEVEL", "EnableDisable_ExperienceBar")
 		self.expBar:Hide()
-		E:DisableMover(self.expBar.mover:GetName())
 	end
 end
 
@@ -260,31 +258,27 @@ function M:EnableDisable_ReputationBar()
 	if E.db.general.reputation.enable then
 		self:RegisterEvent('UPDATE_FACTION', 'UpdateReputation')
 		self:UpdateReputation()
-		E:EnableMover(self.repBar.mover:GetName())
 	else
 		self:UnregisterEvent('UPDATE_FACTION')
 		self.repBar:Hide()
-		E:DisableMover(self.repBar.mover:GetName())
 	end
 end
 
 function M:LoadExpRepBar()
-	self.expBar = self:CreateBar('ElvUI_ExperienceBar', ExperienceBar_OnEnter, 'LEFT', LeftChatPanel, 'RIGHT', -E.Border + E.Spacing*3, 0)
+	self.expBar = self:CreateBar('ElvUI_ExperienceBar', ExperienceBar_OnEnter, 'LEFT', LeftChatPanel, 'RIGHT', E.PixelMode and -1 or 1, 0)
 	self.expBar.statusBar:SetStatusBarColor(0, 0.4, 1, .8)
 	self.expBar.rested = CreateFrame('StatusBar', nil, self.expBar)
 	self.expBar.rested:SetInside()
 	self.expBar.rested:SetStatusBarTexture(E.media.normTex)
-	E:RegisterStatusBar(self.expBar.statusBar)
-	E:RegisterStatusBar(self.expBar.rested)
 	self.expBar.rested:SetStatusBarColor(1, 0, 1, 0.2)
 
-	self.repBar = self:CreateBar('ElvUI_ReputationBar', ReputationBar_OnEnter, 'RIGHT', RightChatPanel, 'LEFT', E.Border - E.Spacing*3, 0)
-	E:RegisterStatusBar(self.repBar.statusBar)
+	self.repBar = self:CreateBar('ElvUI_ReputationBar', ReputationBar_OnEnter, 'RIGHT', RightChatPanel, 'LEFT', E.PixelMode and 1 or -1, 0)
+
 	self:UpdateExpRepDimensions()
-	
-	E:CreateMover(self.expBar, "ExperienceBarMover", L["Experience Bar"])
-	E:CreateMover(self.repBar, "ReputationBarMover", L["Reputation Bar"])
-	
+
 	self:EnableDisable_ExperienceBar()
 	self:EnableDisable_ReputationBar()
+
+	E:CreateMover(self.expBar, "ExperienceBarMover", L["Experience Bar"])
+	E:CreateMover(self.repBar, "ReputationBarMover", L["Reputation Bar"])
 end

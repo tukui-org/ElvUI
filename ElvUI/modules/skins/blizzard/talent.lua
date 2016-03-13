@@ -22,17 +22,15 @@ local function LoadSkin()
 	PlayerTalentFrame:CreateBackdrop('Transparent')
 	PlayerTalentFrame.backdrop:SetAllPoints()
 	PlayerTalentFrame.backdrop:SetFrameLevel(0)
-	PlayerTalentFrame.backdrop:Point('BOTTOMRIGHT', PlayerTalentFrame, 'BOTTOMRIGHT', 0, -6)
+	PlayerTalentFrame.backdrop:SetPoint('BOTTOMRIGHT', PlayerTalentFrame, 'BOTTOMRIGHT', 0, -6)
 
 	PlayerTalentFrameInset:StripTextures()
 	PlayerTalentFrameInset:CreateBackdrop('Default')
 	PlayerTalentFrameInset.backdrop:Hide()
 
-	if E.global.general.disableTutorialButtons then
-		PlayerTalentFrameSpecializationTutorialButton:Kill()
-		PlayerTalentFrameTalentsTutorialButton:Kill()
-		PlayerTalentFramePetSpecializationTutorialButton:Kill()
-	end
+	PlayerTalentFrameSpecializationTutorialButton:Kill()
+	PlayerTalentFrameTalentsTutorialButton:Kill()
+	PlayerTalentFramePetSpecializationTutorialButton:Kill()
 
 	S:HandleCloseButton(PlayerTalentFrameCloseButton)
 

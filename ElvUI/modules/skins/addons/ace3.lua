@@ -119,10 +119,10 @@ function S:SkinAce3()
 
 			SkinButton(widget.button)
 			SkinScrollBar(widget.scrollBar)
-			widget.scrollBar:Point("RIGHT", frame, "RIGHT", 0 -4)
-			widget.scrollBG:Point("TOPRIGHT", widget.scrollBar, "TOPLEFT", -2, 19)
-			widget.scrollBG:Point("BOTTOMLEFT", widget.button, "TOPLEFT")
-			widget.scrollFrame:Point("BOTTOMRIGHT", widget.scrollBG, "BOTTOMRIGHT", -4, 8)
+			widget.scrollBar:SetPoint("RIGHT", frame, "RIGHT", 0 -4)
+			widget.scrollBG:SetPoint("TOPRIGHT", widget.scrollBar, "TOPLEFT", -2, 19)
+			widget.scrollBG:SetPoint("BOTTOMLEFT", widget.button, "TOPLEFT")
+			widget.scrollFrame:SetPoint("BOTTOMRIGHT", widget.scrollBG, "BOTTOMRIGHT", -4, 8)
 		elseif TYPE == "CheckBox" then
 			widget.checkbg:Kill()
 			widget.highlight:Kill()
@@ -242,8 +242,8 @@ function S:SkinAce3()
 			editbox:Height(15)
 			editbox:Point("TOP", frame, "BOTTOM", 0, -1)
 
-			lowtext:Point("TOPLEFT", frame, "BOTTOMLEFT", 2, -2)
-			hightext:Point("TOPRIGHT", frame, "BOTTOMRIGHT", -2, -2)
+			lowtext:SetPoint("TOPLEFT", frame, "BOTTOMLEFT", 2, -2)
+			hightext:SetPoint("TOPRIGHT", frame, "BOTTOMRIGHT", -2, -2)
 
 
 		--[[elseif TYPE == "ColorPicker" then
@@ -294,7 +294,7 @@ function S:SkinAce3()
 					button.toggle.SetPushedTexture = E.noop
 					button.toggleText = button.toggle:CreateFontString(nil, 'OVERLAY')
 					button.toggleText:FontTemplate(nil, 19)
-					button.toggleText:Point('CENTER')
+					button.toggleText:SetPoint('CENTER')
 					button.toggleText:SetText('+')
 					return button
 				end

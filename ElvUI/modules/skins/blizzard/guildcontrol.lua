@@ -67,7 +67,6 @@ local function LoadSkin()
 			frame.bg1 = frame:CreateTexture(nil, "BACKGROUND")
 			frame.bg1:SetDrawLayer("BACKGROUND", 4)
 			frame.bg1:SetTexture(E["media"].normTex) --Default TukUI users this is normTex, normTex doesn't exist
-			E:RegisterStatusBar(frame.bg1)
 			frame.bg1:SetVertexColor(unpack(E['media'].backdropcolor))
 			frame.bg1:Point("TOPLEFT", frame.backdrop, 'TOPLEFT', E.mult*4, -E.mult*4)
 			frame.bg1:Point("BOTTOMRIGHT", frame.backdrop, 'BOTTOMRIGHT', -E.mult*4, E.mult*4)
@@ -93,7 +92,6 @@ local function LoadSkin()
 			frame.bg1 = frame:CreateTexture(nil, "BACKGROUND")
 			frame.bg1:SetDrawLayer("BACKGROUND", 4)
 			frame.bg1:SetTexture(E["media"].normTex) --Default TukUI users this is normTex, normTex doesn't exist
-			E:RegisterStatusBar(frame.bg1)
 			frame.bg1:SetVertexColor(unpack(E['media'].backdropcolor))
 			frame.bg1:SetInside(frame.backdrop, E.mult)
 

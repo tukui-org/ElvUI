@@ -66,7 +66,7 @@ local function LoadSkin()
 
 		if _G[buttons[i]].text then
 			_G[buttons[i]].text:ClearAllPoints()
-			_G[buttons[i]].text:Point("CENTER")
+			_G[buttons[i]].text:SetPoint("CENTER")
 			_G[buttons[i]].text:SetJustifyH("CENTER")
 		end
 	end
@@ -76,7 +76,7 @@ local function LoadSkin()
 		local b = _G["HelpFrameButton"..i]
 		S:HandleButton(b, true)
 		b.text:ClearAllPoints()
-		b.text:Point("CENTER")
+		b.text:SetPoint("CENTER")
 		b.text:SetJustifyH("CENTER")
 	end
 

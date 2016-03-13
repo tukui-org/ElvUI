@@ -235,13 +235,14 @@ E.Options.args.chat = {
 						['ABOVE_CHAT'] = L["Above Chat"],
 					},
 					set = function(info, value) E.db.chat[ info[#info] ] = value; CH:UpdateAnchors() end,
+					disabled = function() return not E.db.datatexts.leftChatPanel end,
 				},
 				panelBackdrop = {
 					order = 5,
 					type = 'select',
 					name = L["Panel Backdrop"],
 					desc = L["Toggle showing of the left and right chat panels."],
-					set = function(info, value) E.db.chat.panelBackdrop = value; E:GetModule('Layout'):ToggleChatPanels(); E:GetModule('Chat'):PositionChat(true); E:GetModule('Chat'):UpdateAnchors() end,
+					set = function(info, value) E.db.chat.panelBackdrop = value; E:GetModule('Layout'):ToggleChatPanels(); E:GetModule('Chat'):PositionChat(true) end,
 					values = {
 						['HIDEBOTH'] = L["Hide Both"],
 						['SHOWBOTH'] = L["Show Both"],

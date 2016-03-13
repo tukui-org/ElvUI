@@ -35,7 +35,7 @@ local CHARACTER_SPECIFIC_KEYBINDINGS = CHARACTER_SPECIFIC_KEYBINDINGS
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: UIParent, ElvUIBindPopupWindow, GameTooltip, StanceButton1, PetActionButton1
 -- GLOBALS: ShoppingTooltip1, SpellBookFrame, MacroFrameTab1Text, SpellFlyout
--- GLOBALS: ElvUIBindPopupWindowCheckButton
+-- GLOBALS: ElvUIBindPopupWindowCheckButton 
 
 local bind = CreateFrame("Frame", "ElvUI_KeyBinder", E.UIParent);
 
@@ -389,14 +389,14 @@ function AB:LoadKeyBinder()
 	f:SetMovable(true)
 	f:SetFrameLevel(99)
 	f:SetClampedToScreen(true)
-	f:Width(360)
-	f:Height(130)
+	f:SetWidth(360)
+	f:SetHeight(130)
 	f:SetTemplate('Transparent')
 	f:Hide()
 
 	local header = CreateFrame('Button', nil, f)
 	header:SetTemplate('Default', true)
-	header:Width(100); header:Height(25)
+	header:SetWidth(100); header:SetHeight(25)
 	header:SetPoint("CENTER", f, 'TOP')
 	header:SetFrameLevel(header:GetFrameLevel() + 2)
 	header:EnableMouse(true)

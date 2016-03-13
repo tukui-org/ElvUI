@@ -57,9 +57,9 @@ local function LoadSkin(event)
 			S:HandleCheckBox(Achievement.tracked, true)
 			Achievement.tracked:Size(14, 14)
 			Achievement.tracked:ClearAllPoints()
-			Achievement.tracked:Point('TOPLEFT', Achievement.icon, 'BOTTOMLEFT', 0, -2)
+			Achievement.tracked:SetPoint('TOPLEFT', Achievement.icon, 'BOTTOMLEFT', 0, -2)
 		end
-
+		
 		Achievement.isSkinned = true
 	end
 
@@ -103,11 +103,11 @@ local function LoadSkin(event)
 			end
 		end)
 	end
-
+	
 	if (not IsAddOnLoaded("Blizzard_AchievementUI")) then
 		return;
 	end
-
+	
 	local frames = {
 		"AchievementFrame",
 		"AchievementFrameCategories",
@@ -145,7 +145,7 @@ local function LoadSkin(event)
 
 	AchievementFrame:CreateBackdrop("Transparent")
 	AchievementFrame.backdrop:Point("TOPLEFT", 0, 6)
-	AchievementFrame.backdrop:Point("BOTTOMRIGHT")
+	AchievementFrame.backdrop:SetPoint("BOTTOMRIGHT")
 	AchievementFrameHeaderTitle:ClearAllPoints()
 	AchievementFrameHeaderTitle:Point("TOPLEFT", AchievementFrame.backdrop, "TOPLEFT", -30, -8)
 	AchievementFrameHeaderPoints:ClearAllPoints()
@@ -181,19 +181,19 @@ local function LoadSkin(event)
 		bar:SetStatusBarTexture(E["media"].normTex)
 		bar:SetStatusBarColor(4/255, 179/255, 30/255)
 		bar:CreateBackdrop("Default")
-		E:RegisterStatusBar(bar)
+
 		local StatusBarName = bar:GetName()
 
 		if _G[StatusBarName.."Title"] then
-			_G[StatusBarName.."Title"]:Point("LEFT", 4, 0)
+			_G[StatusBarName.."Title"]:SetPoint("LEFT", 4, 0)
 		end
 
 		if _G[StatusBarName.."Label"] then
-			_G[StatusBarName.."Label"]:Point("LEFT", 4, 0)
+			_G[StatusBarName.."Label"]:SetPoint("LEFT", 4, 0)
 		end
 
 		if _G[StatusBarName.."Text"] then
-			_G[StatusBarName.."Text"]:Point("RIGHT", -4, 0)
+			_G[StatusBarName.."Text"]:SetPoint("RIGHT", -4, 0)
 		end
 	end
 
@@ -201,7 +201,7 @@ local function LoadSkin(event)
 	SkinStatusBar(AchievementFrameComparisonSummaryPlayerStatusBar)
 	SkinStatusBar(AchievementFrameComparisonSummaryFriendStatusBar)
 	AchievementFrameComparisonSummaryFriendStatusBar.text:ClearAllPoints()
-	AchievementFrameComparisonSummaryFriendStatusBar.text:Point("CENTER")
+	AchievementFrameComparisonSummaryFriendStatusBar.text:SetPoint("CENTER")
 	AchievementFrameComparisonHeader:Point("BOTTOMRIGHT", AchievementFrameComparison, "TOPRIGHT", 45, -20)
 
 	for i=1, 12 do
@@ -241,8 +241,8 @@ local function LoadSkin(event)
 			local prevFrame = _G["AchievementFrameSummaryAchievement"..i-1]
 			if i ~= 1 then
 				frame:ClearAllPoints()
-				frame:Point("TOPLEFT", prevFrame, "BOTTOMLEFT", 0, 1)
-				frame:Point("TOPRIGHT", prevFrame, "BOTTOMRIGHT", 0, 1)
+				frame:SetPoint("TOPLEFT", prevFrame, "BOTTOMLEFT", 0, 1)
+				frame:SetPoint("TOPRIGHT", prevFrame, "BOTTOMRIGHT", 0, 1)
 			end
 
 			if frame.accountWide then
@@ -279,14 +279,13 @@ local function LoadSkin(event)
 			if not frame.skinned then
 				frame:StripTextures()
 				frame:SetStatusBarTexture(E["media"].normTex)
-				E:RegisterStatusBar(frame)
 				frame:SetStatusBarColor(4/255, 179/255, 30/255)
 				frame:CreateBackdrop("Transparent")
 				frame:SetFrameLevel(frame:GetFrameLevel() + 3)
 				frame:Height(frame:GetHeight() - 2)
 
 				frame.text:ClearAllPoints()
-				frame.text:Point("CENTER", frame, "CENTER", 0, -1)
+				frame.text:SetPoint("CENTER", frame, "CENTER", 0, -1)
 				frame.text:SetJustifyH("CENTER")
 
 				if index > 1 then
@@ -337,9 +336,9 @@ local function LoadSkin(event)
 			end
 		end
 	end)
-
+	
 	--The section below is usually handled in our hook, but another addon may have loaded the AchievementUI before we were ready
-	--Categories
+	--Categories 
 	for i = 1, 20 do
 		local button = _G["AchievementFrameCategoriesContainerButton"..i]
 		if not button or (button and button.isSkinned) then return end
@@ -347,7 +346,7 @@ local function LoadSkin(event)
 		button:StyleButton()
 		button.isSkinned = true
 	end
-
+	
 	--Comparison
 	for i = 1, 10 do
 		local Achievement = _G["AchievementFrameComparisonContainerButton"..i]
@@ -365,7 +364,7 @@ local function LoadSkin(event)
 				Achievement.friend.backdrop:SetBackdropBorderColor(unpack(E["media"].bordercolor))
 			end
 		end)
-
+		
 		Achievement.isSkinned = true
 	end
 end

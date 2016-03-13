@@ -23,7 +23,7 @@ local C_PetBattlesIsInBattle = C_PetBattles.IsInBattle
 local NUM_STANCE_SLOTS = NUM_STANCE_SLOTS
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: StanceBarFrame
+-- GLOBALS: StanceBarFrame 
 
 local Masque = LibStub("Masque", true)
 local MasqueGroup = Masque and Masque:Group("ElvUI", "Stance Bar")
@@ -59,7 +59,7 @@ function AB:StyleShapeShift(event)
 
 		if i <= numForms then
 			texture, name, isActive, isCastable = GetShapeshiftFormInfo(i);
-
+			
 			if not texture then
 				texture = "Interface\\Icons\\Spell_Nature_WispSplode"
 			end
@@ -74,7 +74,7 @@ function AB:StyleShapeShift(event)
 				else
 					cooldown:SetAlpha(0);
 				end
-
+				
 				if isActive then
 					StanceBarFrame.lastSelected = button:GetID();
 					if numForms == 1 then
@@ -104,7 +104,7 @@ function AB:StyleShapeShift(event)
 					button:SetChecked(false)
 				end
 			end
-
+			
 			icon:SetTexture(texture);
 
 			if isCastable then
@@ -147,17 +147,15 @@ function AB:PositionAndSizeBarShapeShift()
 		numColumns = 1;
 	end
 
-	bar:Width(spacing + ((size * (buttonsPerRow * widthMult)) + ((spacing * (buttonsPerRow - 1)) * widthMult) + (spacing * widthMult)));
-	bar:Height(spacing + ((size * (numColumns * heightMult)) + ((spacing * (numColumns - 1)) * heightMult) + (spacing * heightMult)));
+	bar:SetWidth(spacing + ((size * (buttonsPerRow * widthMult)) + ((spacing * (buttonsPerRow - 1)) * widthMult) + (spacing * widthMult)));
+	bar:SetHeight(spacing + ((size * (numColumns * heightMult)) + ((spacing * (numColumns - 1)) * heightMult) + (spacing * heightMult)));
 	bar.mouseover = self.db['stanceBar'].mouseover
 	if self.db['stanceBar'].enabled then
 		bar:SetScale(1);
 		bar:SetAlpha(bar.db.alpha);
-		E:EnableMover(bar.mover:GetName())
 	else
 		bar:SetScale(0.000001);
 		bar:SetAlpha(0);
-		E:DisableMover(bar.mover:GetName())
 	end
 
 	if self.db['stanceBar'].backdrop == true then
@@ -178,12 +176,6 @@ function AB:PositionAndSizeBarShapeShift()
 	else
 		horizontalGrowth = "LEFT";
 	end
-	
-	if(self.db['stanceBar'].inheritGlobalFade) then
-		bar:SetParent(self.fadeParent)
-	else
-		bar:SetParent(E.UIParent)
-	end	
 
 	local button, lastButton, lastColumnButton;
 	for i=1, NUM_STANCE_SLOTS do
@@ -196,8 +188,26 @@ function AB:PositionAndSizeBarShapeShift()
 
 		if self.db['stanceBar'].mouseover == true then
 			bar:SetAlpha(0);
+			if not self.hooks[bar] then
+				self:HookScript(bar, 'OnEnter', 'Bar_OnEnter');
+				self:HookScript(bar, 'OnLeave', 'Bar_OnLeave');
+			end
+
+			if not self.hooks[button] then
+				self:HookScript(button, 'OnEnter', 'Button_OnEnter');
+				self:HookScript(button, 'OnLeave', 'Button_OnLeave');
+			end
 		else
 			bar:SetAlpha(bar.db.alpha);
+			if self.hooks[bar] then
+				self:Unhook(bar, 'OnEnter');
+				self:Unhook(bar, 'OnLeave');
+			end
+
+			if self.hooks[button] then
+				self:Unhook(button, 'OnEnter');
+				self:Unhook(button, 'OnLeave');
+			end
 		end
 
 		if i == 1 then
@@ -248,7 +258,7 @@ function AB:PositionAndSizeBarShapeShift()
 			self:StyleButton(button, nil, MasqueGroup and E.private.actionbar.masque.stanceBar and true or nil);
 		end
 	end
-
+	
 	if MasqueGroup and E.private.actionbar.masque.stanceBar then MasqueGroup:ReSkin() end
 end
 
@@ -267,8 +277,6 @@ function AB:AdjustMaxStanceButtons(event)
 			if MasqueGroup and E.private.actionbar.masque.stanceBar then
 				MasqueGroup:AddButton(bar.buttons[i])
 			end
-			self:HookScript(bar.buttons[i], 'OnEnter', 'Button_OnEnter');
-			self:HookScript(bar.buttons[i], 'OnLeave', 'Button_OnLeave');			
 			initialCreate = true;
 		end
 
@@ -322,10 +330,6 @@ function AB:CreateBarShapeShift()
 			self:Show();
 		end
 	]]);
-
-	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter');
-	self:HookScript(bar, 'OnLeave', 'Bar_OnLeave');
-
 
 	self:RegisterEvent('UPDATE_SHAPESHIFT_FORMS', 'AdjustMaxStanceButtons');
 	self:RegisterEvent('UPDATE_SHAPESHIFT_COOLDOWN');

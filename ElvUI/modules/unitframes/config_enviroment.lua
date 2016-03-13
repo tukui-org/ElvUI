@@ -227,9 +227,7 @@ function UF:HeaderConfig(header, configMode)
 
 		RegisterStateDriver(header, "visibility", header.db.visibility)
 
-		if header:GetScript("OnEvent") then
-			header:GetScript("OnEvent")(header, "PLAYER_ENTERING_WORLD")
-		end
+		header:GetScript("OnEvent")(header, "PLAYER_ENTERING_WORLD")
 	end
 
 	for i=1, #header.groups do
@@ -263,7 +261,7 @@ function UF:HeaderConfig(header, configMode)
 		end
 	end
 
-	UF["headerFunctions"][header.groupName]:AdjustVisibility(header)
+	header:AdjustVisibility()
 end
 
 function UF:PLAYER_REGEN_DISABLED()

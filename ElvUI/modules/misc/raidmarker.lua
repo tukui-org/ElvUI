@@ -46,7 +46,7 @@ function M:RaidMarkShowIcons()
 	end
 	local x, y = GetCursorPosition();
 	local scale = E.UIParent:GetEffectiveScale();
-	self.RaidMarkFrame:Point("CENTER", E.UIParent, "BOTTOMLEFT", x / scale, y / scale);
+	self.RaidMarkFrame:SetPoint("CENTER", E.UIParent, "BOTTOMLEFT", x / scale, y / scale);
 	self.RaidMarkFrame:Show();
 end
 
@@ -101,10 +101,10 @@ function M:LoadRaidMarker()
 		button:SetScript("OnEnter", M.RaidMarkButton_OnEnter);
 		button:SetScript("OnLeave", M.RaidMarkButton_OnLeave);
 		if i == 8 then
-			button:Point("CENTER");
+			button:SetPoint("CENTER");
 		else
 			local angle = 360 / 7 * i;
-			button:Point("CENTER", sin(angle) * 60, cos(angle) * 60);
+			button:SetPoint("CENTER", sin(angle) * 60, cos(angle) * 60);
 		end
 	end
 

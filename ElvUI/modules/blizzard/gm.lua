@@ -6,11 +6,11 @@ local B = E:GetModule('Blizzard');
 
 function B:PositionGMFrames()
 	TicketStatusFrame:ClearAllPoints()
-	TicketStatusFrame:Point("TOPLEFT", E.UIParent, 'TOPLEFT', 250, -5)
+	TicketStatusFrame:SetPoint("TOPLEFT", E.UIParent, 'TOPLEFT', 250, -5)
 
 	E:CreateMover(TicketStatusFrame, "GMMover", L["GM Ticket Frame"])
 
 	HelpOpenTicketButton:SetParent(Minimap)
 	HelpOpenTicketButton:ClearAllPoints()
-	HelpOpenTicketButton:Point("TOPRIGHT", Minimap, "TOPRIGHT")
+	HelpOpenTicketButton:SetPoint("TOPRIGHT", Minimap, "TOPRIGHT")
 end

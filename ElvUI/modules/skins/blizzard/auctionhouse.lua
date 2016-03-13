@@ -54,20 +54,20 @@ local function LoadSkin()
 	AuctionProgressBarIcon:SetParent(backdrop)
 
 	AuctionProgressBarText:ClearAllPoints()
-	AuctionProgressBarText:Point("CENTER")
+	AuctionProgressBarText:SetPoint("CENTER")
 
 	AuctionProgressBar:StripTextures()
 	AuctionProgressBar:CreateBackdrop("Default")
 	AuctionProgressBar:SetStatusBarTexture(E["media"].normTex)
 	AuctionProgressBar:SetStatusBarColor(1, 1, 0)
-	E:RegisterStatusBar(AuctionProgressBar)
+
 	S:HandleNextPrevButton(BrowseNextPageButton)
 	S:HandleNextPrevButton(BrowsePrevPageButton)
 
 	BrowseNextPageButton:ClearAllPoints()
-	BrowseNextPageButton:Point("TOPRIGHT", AuctionFrameBrowse, "TOPRIGHT", 70, -60)
+	BrowseNextPageButton:SetPoint("TOPRIGHT", AuctionFrameBrowse, "TOPRIGHT", 70, -60)
 	BrowsePrevPageButton:ClearAllPoints()
-	BrowsePrevPageButton:Point("TOPLEFT", AuctionFrameBrowse, "TOPLEFT", 658, -60)
+	BrowsePrevPageButton:SetPoint("TOPLEFT", AuctionFrameBrowse, "TOPLEFT", 658, -60)
 
 	S:HandleCheckBox(ExactMatchCheckButton)
 	local buttons = {
@@ -142,7 +142,7 @@ local function LoadSkin()
 	for i=1, AuctionFrame.numTabs do
 		S:HandleTab(_G["AuctionFrameTab"..i])
 	end
-
+	
 	for i=1, NUM_FILTERS_TO_DISPLAY do
 		local tab = _G["AuctionFilterButton"..i]
 		tab:StyleButton()
@@ -207,7 +207,7 @@ local function LoadSkin()
 			_G["BrowseButton"..i.."Highlight"] = button:GetHighlightTexture()
 			button:GetHighlightTexture():ClearAllPoints()
 			button:GetHighlightTexture():Point("TOPLEFT", icon, "TOPRIGHT", 2, 0)
-			button:GetHighlightTexture():Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", -2, 5)
+			button:GetHighlightTexture():SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", -2, 5)
 			button:GetPushedTexture():SetAllPoints(button:GetHighlightTexture())
 		end
 	end
@@ -235,7 +235,7 @@ local function LoadSkin()
 		_G["AuctionsButton"..i.."Highlight"] = button:GetHighlightTexture()
 		button:GetHighlightTexture():ClearAllPoints()
 		button:GetHighlightTexture():Point("TOPLEFT", icon, "TOPRIGHT", 2, 0)
-		button:GetHighlightTexture():Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", -2, 5)
+		button:GetHighlightTexture():SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", -2, 5)
 		button:GetPushedTexture():SetAllPoints(button:GetHighlightTexture())
 	end
 
@@ -262,7 +262,7 @@ local function LoadSkin()
 		_G["BidButton"..i.."Highlight"] = button:GetHighlightTexture()
 		button:GetHighlightTexture():ClearAllPoints()
 		button:GetHighlightTexture():Point("TOPLEFT", icon, "TOPRIGHT", 2, 0)
-		button:GetHighlightTexture():Point("BOTTOMRIGHT", button, "BOTTOMRIGHT", -2, 5)
+		button:GetHighlightTexture():SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", -2, 5)
 		button:GetPushedTexture():SetAllPoints(button:GetHighlightTexture())
 	end
 
@@ -309,7 +309,7 @@ local function LoadSkin()
 	AuctionFrameAuctions.bg2:Point("TOPLEFT", AuctionFrameAuctions.bg1, "TOPRIGHT", 3, 0)
 	AuctionFrameAuctions.bg2:Point("BOTTOMRIGHT", AuctionFrame, -8, 35)
 	AuctionFrameAuctions.bg2:SetFrameLevel(AuctionFrameAuctions.bg2:GetFrameLevel() - 2)
-
+	
 	--WoW Token Category
 	S:HandleButton(BrowseWowTokenResults.Buyout)
 	BrowseWowTokenResultsToken:CreateBackdrop("Default")
@@ -319,7 +319,7 @@ local function LoadSkin()
 	BrowseWowTokenResultsToken.backdrop:SetFrameLevel(BrowseWowTokenResultsToken:GetFrameLevel())
 	BrowseWowTokenResultsToken.IconBorder:SetTexture(nil)
 	BrowseWowTokenResultsToken.ItemBorder:SetTexture(nil)
-
+	
 	--WoW Token Tutorial Frame
 	WowTokenGameTimeTutorial:CreateBackdrop("Transparent")
 	S:HandleCloseButton(WowTokenGameTimeTutorial.CloseButton)

@@ -9,7 +9,7 @@ function UF:Construct_NameText(frame)
 	local parent = frame.RaisedElementParent or frame
 	local name = parent:CreateFontString(nil, 'OVERLAY')
 	UF:Configure_FontString(name)
-	name:Point('CENTER', frame.Health)
+	name:SetPoint('CENTER', frame.Health)
 
 	return name
 end
@@ -24,12 +24,9 @@ function UF:UpdateNameSettings(frame, childType)
 
 	local name = frame.Name
 	if not db.power or not db.power.hideonnpc then
-		local attachPoint = self:GetObjectAnchorPoint(frame, db.name.attachTextTo)
-		if(E.global.tukuiMode and frame.InfoPanel and frame.InfoPanel:IsShown()) then
-			attachPoint = frame.InfoPanel
-		end
+		local x, y = self:GetPositionOffset(db.name.position)
 		name:ClearAllPoints()
-		name:Point(db.name.position, attachPoint, db.name.position, db.name.xOffset, db.name.yOffset)
+		name:Point(db.name.position, frame.Health, db.name.position, x + db.name.xOffset, y + db.name.yOffset)
 	end
 
 	frame:Tag(name, db.name.text_format)
@@ -40,15 +37,17 @@ function UF:PostNamePosition(frame, unit)
 	local db = frame.db
 	if UnitIsPlayer(unit) then
 		local position = db.name.position
-		local attachPoint = self:GetObjectAnchorPoint(frame, db.name.attachTextTo)
+		local x, y = self:GetPositionOffset(position)
 		frame.Power.value:SetAlpha(1)
 
 		frame.Name:ClearAllPoints()
-		frame.Name:Point(position, attachPoint, position, db.name.xOffset, db.name.yOffset)
+		frame.Name:Point(position, frame.Health, position, x + db.name.xOffset, y + db.name.yOffset)
 	else
 		frame.Power.value:SetAlpha(db.power.hideonnpc and 0 or 1)
 
 		frame.Name:ClearAllPoints()
-		frame.Name:Point(frame.Power.value:GetPoint())
+		frame.Name:SetPoint(frame.Power.value:GetPoint())
 	end
 end
+
+

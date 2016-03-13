@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:NewModule('UnitFrames', 'AceTimer-3.0', 'AceEvent-3.0', 'AceHook-3.0');
 local LSM = LibStub("LibSharedMedia-3.0");
-local BG = LibStub("LibBodyguard-1.0");
+
 UF.LSM = LSM
 
 --Cache global variables
@@ -67,8 +67,6 @@ UF['badHeaderPoints'] = {
 	['BOTTOM'] = 'TOP',
 	['RIGHT'] = 'LEFT',
 }
-
-UF["headerFunctions"] = {}
 
 UF['classMaxResourceBar'] = {
 	['DEATHKNIGHT'] = 6,
@@ -244,24 +242,10 @@ function UF:ConvertGroupDB(group)
 	end
 end
 
-
-
 function UF:Construct_UF(frame, unit)
 	frame:SetScript('OnEnter', UnitFrame_OnEnter)
 	frame:SetScript('OnLeave', UnitFrame_OnLeave)
 
-	if(self.thinBorders) then
-		frame.SPACING = 0
-		frame.BORDER = E.mult
-	else
-		frame.BORDER = E.Border
-		frame.SPACING = E.Spacing
-	end
-
-	frame.SHADOW_SPACING = 3
-	frame.STAGGER_WIDTH = 0	--placeholder
-	frame.CLASSBAR_YOFFSET = 0	--placeholder
-	frame.BOTTOM_OFFSET = 0 --placeholder
 	frame:SetFrameLevel(5)
 
 	frame.RaisedElementParent = CreateFrame('Frame', nil, frame)
@@ -281,16 +265,6 @@ function UF:Construct_UF(frame, unit)
 	self:Update_StatusBars()
 	self:Update_FontStrings()
 	return frame
-end
-
-function UF:GetObjectAnchorPoint(frame, point)
-	if not frame[point] or point == "Frame" then
-		return frame
-	elseif frame[point] and not frame[point]:IsShown() then
-		return frame.Health
-	else
-		return frame[point]
-	end
 end
 
 function UF:GetPositionOffset(position, offset)
@@ -345,10 +319,6 @@ function UF:GetAuraAnchorFrame(frame, attachTo, isConflict)
 		return frame.Buffs
 	elseif attachTo == 'DEBUFFS' then
 		return frame.Debuffs
-	elseif attachTo == 'HEALTH' then
-		return frame.Health
-	elseif attachTo == 'POWER' and frame.Power then
-		return frame.Power
 	else
 		return frame
 	end
@@ -473,16 +443,13 @@ function UF:Update_AllFrames()
 	self:UpdateColors()
 	self:Update_FontStrings()
 	self:Update_StatusBars()
-	BG:UpdateSettings()
 
 	for unit in pairs(self['units']) do
 		if self.db['units'][unit].enable then
 			self[unit]:Enable()
 			self[unit]:Update()
-			E:EnableMover(self[unit].mover:GetName())
 		else
 			self[unit]:Disable()
-			E:DisableMover(self[unit].mover:GetName())
 		end
 	end
 
@@ -490,10 +457,8 @@ function UF:Update_AllFrames()
 		if self.db['units'][group].enable then
 			self[unit]:Enable()
 			self[unit]:Update()
-			E:EnableMover(self[unit].mover:GetName())
 		else
 			self[unit]:Disable()
-			E:DisableMover(self[unit].mover:GetName())
 		end
 	end
 
@@ -528,10 +493,8 @@ function UF:CreateAndUpdateUFGroup(group, numGroup, template)
 			if self[unit].isForced then
 				self:ForceShow(self[unit])
 			end
-			E:EnableMover(self[unit].mover:GetName())
 		else
 			self[unit]:Disable()
-			E:DisableMover(self[unit].mover:GetName())
 		end
 	end
 end
@@ -546,13 +509,11 @@ function UF:HeaderUpdateSpecificElement(group, elementName)
 	end
 end
 
---Keep an eye on this one, it may need to be changed too
---Reference: http://www.tukui.org/forums/topic.php?id=35332
 function UF.groupPrototype:GetAttribute(name)
 	return self.groups[1]:GetAttribute(name)
 end
 
-function UF.groupPrototype:Configure_Groups(self)
+function UF.groupPrototype:Configure_Groups()
 	local db = UF.db.units[self.groupName]
 
 	local point
@@ -560,7 +521,6 @@ function UF.groupPrototype:Configure_Groups(self)
 	local direction = db.growthDirection
 	local xMult, yMult = DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction], DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction]
 	local SPACING = E.Spacing
-	local UNIT_HEIGHT = (E.global.tukuiMode and db.infoPanel) and db.height + db.infoPanel.height or db.height
 
 
 	local numGroups = self.numGroups
@@ -626,13 +586,14 @@ function UF.groupPrototype:Configure_Groups(self)
 		if (i - 1) % db.groupsPerRowCol == 0 then
 			if DIRECTION_TO_POINT[direction] == "LEFT" or DIRECTION_TO_POINT[direction] == "RIGHT" then
 				if group then
-					group:Point(point, self, point, 0, height * yMult)
+					group:SetPoint(point, self, point, 0, height * yMult)
 				end
-				height = height + (UNIT_HEIGHT + db.verticalSpacing + SPACING)
+				height = height + (db.height + db.verticalSpacing + SPACING)
+
 				newRows = newRows + 1
 			else
 				if group then
-					group:Point(point, self, point, width * xMult, 0)
+					group:SetPoint(point, self, point, width * xMult, 0)
 				end
 				width = width + (db.width + db.horizontalSpacing + SPACING)
 
@@ -642,28 +603,28 @@ function UF.groupPrototype:Configure_Groups(self)
 			if DIRECTION_TO_POINT[direction] == "LEFT" or DIRECTION_TO_POINT[direction] == "RIGHT" then
 				if newRows == 1 then
 					if group then
-						group:Point(point, self, point, (width + (SPACING * 5)) * xMult, 0)
+						group:SetPoint(point, self, point, (width + (SPACING * 5)) * xMult, 0)
 					end
 					width = width + ((db.width + db.horizontalSpacing + SPACING) * 5)
 					newCols = newCols + 1
 				elseif group then
-					group:Point(point, self, point, (((db.width + db.horizontalSpacing + SPACING) * 5) * ((i-1) % db.groupsPerRowCol)) * xMult, ((UNIT_HEIGHT + db.verticalSpacing + SPACING) * (newRows - 1)) * yMult)
+					group:SetPoint(point, self, point, (((db.width + db.horizontalSpacing + SPACING) * 5) * ((i-1) % db.groupsPerRowCol)) * xMult, ((db.height + db.verticalSpacing + SPACING) * (newRows - 1)) * yMult)
 				end
 			else
 				if newCols == 1 then
 					if group then
-						group:Point(point, self, point, 0, (height + (SPACING*5)) * yMult)
+						group:SetPoint(point, self, point, 0, (height + (SPACING*5)) * yMult)
 					end
-					height = height + ((UNIT_HEIGHT + db.verticalSpacing + SPACING) * 5)
+					height = height + ((db.height + db.verticalSpacing + SPACING) * 5)
 					newRows = newRows + 1
 				elseif group then
-					group:Point(point, self, point, ((db.width + db.horizontalSpacing + SPACING) * (newCols - 1)) * xMult, (((UNIT_HEIGHT + db.verticalSpacing + SPACING) * 5) * ((i-1) % db.groupsPerRowCol)) * yMult)
+					group:SetPoint(point, self, point, ((db.width + db.horizontalSpacing + SPACING) * (newCols - 1)) * xMult, (((db.height + db.verticalSpacing + SPACING) * 5) * ((i-1) % db.groupsPerRowCol)) * yMult)
 				end
 			end
 		end
 
 		if height == 0 then
-			height = height + ((UNIT_HEIGHT + db.verticalSpacing) * 5)
+			height = height + ((db.height + db.verticalSpacing) * 5)
 		elseif width == 0 then
 			width = width + ((db.width + db.horizontalSpacing) * 5)
 		end
@@ -682,7 +643,7 @@ function UF.groupPrototype:Configure_Groups(self)
 	self:SetSize(width - db.horizontalSpacing, height - db.verticalSpacing)
 end
 
-function UF.groupPrototype:Update(self)
+function UF.groupPrototype:Update()
 	local group = self.groupName
 
 	UF[group].db = UF.db['units'][group]
@@ -692,7 +653,7 @@ function UF.groupPrototype:Update(self)
 	end
 end
 
-function UF.groupPrototype:AdjustVisibility(self)
+function UF.groupPrototype:AdjustVisibility()
 	if not self.isForced then
 		local numGroups = self.numGroups
 		for i=1, #self.groups do
@@ -821,13 +782,13 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 		ElvUF:RegisterStyle("ElvUF_"..stringTitle, UF["Construct_"..stringTitle.."Frames"])
 		ElvUF:SetActiveStyle("ElvUF_"..stringTitle)
 
+
 		if db.numGroups then
 			self[group] = CreateFrame('Frame', 'ElvUF_'..stringTitle, ElvUF_Parent, 'SecureHandlerStateTemplate');
 			self[group].groups = {}
 			self[group].groupName = group
-			if not UF["headerFunctions"][group] then UF["headerFunctions"][group] = {} end
 			for k, v in pairs(self.groupPrototype) do
-				UF["headerFunctions"][group][k] = v
+				self[group][k] = v
 			end
 		else
 			self[group] = self:CreateHeader(ElvUF_Parent, groupFilter, "ElvUF_"..E:StringTitle(group), template, group, headerTemplate)
@@ -843,9 +804,6 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 		if db.enable ~= true and group ~= 'raidpet' then
 			UnregisterStateDriver(self[group], "visibility")
 			self[group]:Hide()
-			if(self[group].mover) then
-				E:DisableMover(self[group].mover:GetName())
-			end
 			return
 		end
 
@@ -860,28 +818,22 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 			end
 		end
 
-		UF["headerFunctions"][group]:AdjustVisibility(self[group])
+		self[group]:AdjustVisibility()
 
 		if headerUpdate or not self[group].mover then
-			UF["headerFunctions"][group]:Configure_Groups(self[group])
+			self[group]:Configure_Groups()
 			if not self[group].isForced and not self[group].blockVisibilityChanges then
 				RegisterStateDriver(self[group], "visibility", db.visibility)
 			end
-
-			--This fixes a bug where the party/raid frame will not appear when you enable it if it was disabled when you logged in/reloaded.
+			
+			--This fixes a bug where the party/raid frame will not appear when you enable it
+			--if it was disabled when you logged in/reloaded.
 			if not self[group].mover then
-				UF["headerFunctions"][group]:Update(self[group])
+				self[group]:Update()
 			end
 		else
-			UF["headerFunctions"][group]:Configure_Groups(self[group])
-			UF["headerFunctions"][group]:Update(self[group])
-		end
-
-
-		if(db.enable) then
-			E:EnableMover(self[group].mover:GetName())
-		else
-			E:DisableMover(self[group].mover:GetName())
+			self[group]:Configure_Groups()
+			self[group]:Update()
 		end
 
 		if db.enable ~= true and group == 'raidpet' then
@@ -892,39 +844,33 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 	else
 		self[group].db = db
 
-		if not UF["headerFunctions"][group] then UF["headerFunctions"][group] = {} end
-		UF["headerFunctions"][group]["Update"] = function()
-			local db = UF.db['units'][group]
+		self[group].Update = function()
+			local db = self.db['units'][group]
 			if db.enable ~= true then
-				UnregisterAttributeDriver(UF[group], "state-visibility")
-				UF[group]:Hide()
-				if(UF[group].mover) then
-					E:DisableMover(UF[group].mover:GetName())
-				end
+				UnregisterAttributeDriver(self[group], "state-visibility")
+				self[group]:Hide()
 				return
 			end
-			UF["Update_"..E:StringTitle(group).."Header"](UF, UF[group], db)
+			UF["Update_"..E:StringTitle(group).."Header"](self, self[group], db)
 
-			for i=1, UF[group]:GetNumChildren() do
-				local child = select(i, UF[group]:GetChildren())
-				UF["Update_"..E:StringTitle(group).."Frames"](UF, child, UF.db['units'][group])
+			for i=1, self[group]:GetNumChildren() do
+				local child = select(i, self[group]:GetChildren())
+				UF["Update_"..E:StringTitle(group).."Frames"](self, child, self.db['units'][group])
 
 				if _G[child:GetName()..'Target'] then
-					UF["Update_"..E:StringTitle(group).."Frames"](UF, _G[child:GetName()..'Target'], UF.db['units'][group])
+					UF["Update_"..E:StringTitle(group).."Frames"](self, _G[child:GetName()..'Target'], self.db['units'][group])
 				end
 
 				if _G[child:GetName()..'Pet'] then
-					UF["Update_"..E:StringTitle(group).."Frames"](UF, _G[child:GetName()..'Pet'], UF.db['units'][group])
+					UF["Update_"..E:StringTitle(group).."Frames"](self, _G[child:GetName()..'Pet'], self.db['units'][group])
 				end
 			end
-
-			E:EnableMover(UF[group].mover:GetName())
 		end
 
 		if headerUpdate then
 			UF["Update_"..E:StringTitle(group).."Header"](self, self[group], db)
 		else
-			UF["headerFunctions"][group]:Update(self[group])
+			self[group].Update()
 		end
 	end
 end
@@ -956,12 +902,11 @@ function UF:CreateAndUpdateUF(unit)
 	if self.db['units'][unit].enable then
 		self[unit]:Enable()
 		self[unit].Update()
-		E:EnableMover(self[unit].mover:GetName())
 	else
 		self[unit]:Disable()
-		E:DisableMover(self[unit].mover:GetName())
 	end
 end
+
 
 function UF:LoadUnits()
 	for _, unit in pairs(self['unitstoload']) do
@@ -1014,7 +959,7 @@ function UF:UpdateAllHeaders(event)
 
 	local smartRaidFilterEnabled = self.db.smartRaidFilter
 	for group, header in pairs(self['headers']) do
-		UF["headerFunctions"][group]:Update(header)
+		header:Update()
 
 		local shouldUpdateHeader
 		if header.numGroups == nil or smartRaidFilterEnabled then
@@ -1164,32 +1109,8 @@ end
 
 function UF:PLAYER_ENTERING_WORLD(event)
 	self:Update_AllFrames()
-
-	local showing = BG:IsShowing()
-
-	if not BG:Exists() and not BG.db.Active then
-		if showing then BG:HideFrame() end
-		return
-	end
-
-	if(not BG:IsValidZone()) then
-		BG:HideFrame()
-	elseif showing then
-		BG:UpdateSettings()
-	elseif BG:GetStatus() ~= BG.Status.Inactive and BG.db.Active then
-		BG:ShowFrame()
-	end
 end
 
-function UF:ZONE_CHANGED_NEW_AREA()
-	local validZone = BG:IsValidZone()
-	if not validZone then
-		if not BG:IsShowing() then return end
-		BG:HideFrame()
-	elseif BG.db.Active and BG:GetStatus() ~= BG.Status.Inactive then
-		BG:ShowFrame()
-	end
-end
 
 function UF:UnitFrameThreatIndicator_Initialize(_, unitFrame)
 	unitFrame:UnregisterAllEvents() --Arena Taint Fix
@@ -1197,7 +1118,7 @@ end
 
 function UF:Initialize()
 	self.db = E.db["unitframe"]
-	self.thinBorders = E.global.tukuiMode or self.db.thinBorders
+
 	if E.private["unitframe"].enable ~= true then return; end
 	E.UnitFrames = UF;
 
@@ -1211,7 +1132,6 @@ function UF:Initialize()
 
 	self:LoadUnits()
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
-	self:RegisterEvent('ZONE_CHANGED_NEW_AREA')
 
 	--InterfaceOptionsFrameCategoriesButton9:SetScale(0.0001)
 	if E.private["unitframe"]["disabledBlizzardFrames"].arena and E.private["unitframe"]["disabledBlizzardFrames"].focus and E.private["unitframe"]["disabledBlizzardFrames"].party then
@@ -1231,7 +1151,7 @@ function UF:Initialize()
 		InterfaceOptionsCombatPanelEnemyCastBarsOnPortrait:SetAlpha(0)
 		InterfaceOptionsCombatPanelEnemyCastBarsOnPortrait:EnableMouse(false)
 		InterfaceOptionsCombatPanelEnemyCastBarsOnNameplates:ClearAllPoints()
-		InterfaceOptionsCombatPanelEnemyCastBarsOnNameplates:Point(InterfaceOptionsCombatPanelEnemyCastBarsOnPortrait:GetPoint())
+		InterfaceOptionsCombatPanelEnemyCastBarsOnNameplates:SetPoint(InterfaceOptionsCombatPanelEnemyCastBarsOnPortrait:GetPoint())
 		InterfaceOptionsCombatPanelTargetOfTarget:SetScale(0.0001)
 		InterfaceOptionsCombatPanelTargetOfTarget:SetAlpha(0)
 		InterfaceOptionsDisplayPanelShowAggroPercentage:SetScale(0.0001)
@@ -1252,14 +1172,14 @@ function UF:Initialize()
 	else
 		CompactUnitFrameProfiles:RegisterEvent('VARIABLES_LOADED')
 	end
-
+	
 	if (not E.private["unitframe"]["disabledBlizzardFrames"].party) and (not E.private["unitframe"]["disabledBlizzardFrames"].raid) then
 		E.RaidUtility.Initialize = E.noop
 	end
 
 	if E.private["unitframe"]["disabledBlizzardFrames"].arena then
 		self:SecureHook('UnitFrameThreatIndicator_Initialize')
-
+		
 		if not IsAddOnLoaded('Blizzard_ArenaUI') then
 			self:RegisterEvent('ADDON_LOADED')
 		else
@@ -1277,28 +1197,6 @@ function UF:Initialize()
 	ElvCharacterDB.BodyGuard.MaxHealth = ElvCharacterDB.BodyGuard.MaxHealth or 0
 	ElvCharacterDB.BodyGuard.Health = ElvCharacterDB.BodyGuard.Health or 0
 	ElvCharacterDB.BodyGuard.Active = ElvCharacterDB.BodyGuard.Active or false
-
-	BG:UpdateFromBuilding()
-
-	BG:CreateFrame()
-	BG.LoginHealth = true
-	BG:RegisterCallback('guid', BG.GUIDUpdate)
-	BG:RegisterCallback('status', BG.StatusUpdate)
-	BG:RegisterCallback('name', BG.NameUpdate)
-	BG:RegisterCallback('level', BG.LevelUpdate)
-	BG:RegisterCallback('health', BG.HealthUpdate)
-	BG:RegisterCallback('gossip_opened', BG.GossipOpened)
-	BG:RegisterCallback('gossip_closed', BG.GossipClosed)
-	BG.db = ElvCharacterDB.BodyGuard
-
-	if type(BG.db.IsInValidZone) ~= "boolean" then
-		BG.db.IsInValidZone = BG:IsValidZone()
-	end
-
-	if BG.db.Active and BG.db.IsInValidZone then
-		BG:ShowFrame()
-		BG:HealthUpdate(BG.db.Health, BG.db.MaxHealth)
-	end
 end
 
 function UF:ResetUnitSettings(unit)
@@ -1419,13 +1317,13 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 		statusBar:SetStatusBarTexture(0, 0, 0, 0)
 		backdropTex:ClearAllPoints()
 		if statusBarOrientation == 'VERTICAL' then
-			backdropTex:Point("TOPLEFT", statusBar, "TOPLEFT")
-			backdropTex:Point("BOTTOMLEFT", statusBarTex, "TOPLEFT")
-			backdropTex:Point("BOTTOMRIGHT", statusBarTex, "TOPRIGHT")
+			backdropTex:SetPoint("TOPLEFT", statusBar, "TOPLEFT")
+			backdropTex:SetPoint("BOTTOMLEFT", statusBarTex, "TOPLEFT")
+			backdropTex:SetPoint("BOTTOMRIGHT", statusBarTex, "TOPRIGHT")
 		else
-			backdropTex:Point("TOPLEFT", statusBarTex, "TOPRIGHT")
-			backdropTex:Point("BOTTOMLEFT", statusBarTex, "BOTTOMRIGHT")
-			backdropTex:Point("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT")
+			backdropTex:SetPoint("TOPLEFT", statusBarTex, "TOPRIGHT")
+			backdropTex:SetPoint("BOTTOMLEFT", statusBarTex, "BOTTOMRIGHT")
+			backdropTex:SetPoint("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT")
 		end
 
 		if invertBackdropTex then
@@ -1442,23 +1340,23 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 		end
 	else
 		if statusBar.backdrop then
-			statusBar.backdrop:SetTemplate("Default", nil, nil, not statusBar.PostCastStart and self.thinBorders)
+			statusBar.backdrop:SetTemplate("Default")
 			statusBar.backdrop.ignoreUpdates = nil
 		elseif statusBar:GetParent().template then
-			statusBar:GetParent():SetTemplate("Default", nil, nil, self.thinBorders)
+			statusBar:GetParent():SetTemplate("Default")
 			statusBar:GetParent().ignoreUpdates = nil
 		end
 		statusBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
 		if adjustBackdropPoints then
 			backdropTex:ClearAllPoints()
 			if statusBarOrientation == 'VERTICAL' then
-				backdropTex:Point("TOPLEFT", statusBar, "TOPLEFT")
-				backdropTex:Point("BOTTOMLEFT", statusBarTex, "TOPLEFT")
-				backdropTex:Point("BOTTOMRIGHT", statusBarTex, "TOPRIGHT")
-			else
-				backdropTex:Point("TOPLEFT", statusBarTex, "TOPRIGHT")
-				backdropTex:Point("BOTTOMLEFT", statusBarTex, "BOTTOMRIGHT")
-				backdropTex:Point("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT")
+				backdropTex:SetPoint("TOPLEFT", statusBar, "TOPLEFT")
+				backdropTex:SetPoint("BOTTOMLEFT", statusBarTex, "TOPLEFT")
+				backdropTex:SetPoint("BOTTOMRIGHT", statusBarTex, "TOPRIGHT")				
+			else			
+				backdropTex:SetPoint("TOPLEFT", statusBarTex, "TOPRIGHT")
+				backdropTex:SetPoint("BOTTOMLEFT", statusBarTex, "BOTTOMRIGHT")
+				backdropTex:SetPoint("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT")
 			end
 		end
 

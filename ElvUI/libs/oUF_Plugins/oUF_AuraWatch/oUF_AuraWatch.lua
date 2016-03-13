@@ -100,8 +100,8 @@ Here is an example of how to set oUF_AW up:
 			local icon = CreateFrame("Frame", nil, auras)
 			icon.spellID = sid
 			-- set the dimensions and positions
-			icon:Width(24)
-			icon:Height(24)
+			icon:SetWidth(24)
+			icon:SetHeight(24)
 			icon:SetPoint("BOTTOM", self, "BOTTOM", 0, 28 * i)
 			auras.icons[sid] = icon
 			-- Set any other AuraWatch icon settings
@@ -251,14 +251,12 @@ local function Update(frame, event, unit)
 	for key, icon in pairs(icons) do
 		if not icon.onlyShowMissing then
 			icon:Hide()
-		else
-			icon:Show()
 		end
 	end
 	
 	while true do
 		name, _, texture, count, _, duration, remaining, caster, _, _, spellID = UnitAura(unit, index, filter)
-		if not name then
+		if not name then 
 			if filter == "HELPFUL" then
 				filter = "HARMFUL"
 				index = 1

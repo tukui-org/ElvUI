@@ -22,7 +22,7 @@ local function LoadSkin()
 
 	CalendarFilterFrame:StripTextures()
 	CalendarFilterFrame:Width(155)
-
+	
 	CalendarFilterFrameText:ClearAllPoints()
 	CalendarFilterFrameText:Point("RIGHT", CalendarFilterButton, "LEFT", -2, 0)
 
@@ -94,7 +94,7 @@ local function LoadSkin()
 			buttonIcon:SetTexCoord(tcoords[1] + 0.015, tcoords[2] - 0.02, tcoords[3] + 0.018, tcoords[4] - 0.02) --F U C K I N G H A X
 		end
 	end)
-
+	
 	CalendarClassButton1:Point("TOPLEFT", CalendarClassButtonContainer, "TOPLEFT", 5, 0)
 
 	for i = 1, #CLASS_SORT_ORDER do
@@ -103,7 +103,7 @@ local function LoadSkin()
 		button:CreateBackdrop("Default")
 		button:Size(24)
 	end
-
+	
 	CalendarClassTotalsButton:StripTextures()
 	CalendarClassTotalsButton:CreateBackdrop("Default")
 	CalendarClassTotalsButton:Width(24)

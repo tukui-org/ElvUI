@@ -35,7 +35,6 @@ E.Options.args.bags = {
 					values = {
 						['ICON'] = L["Icons Only"],
 						['ICON_TEXT'] = L["Icons and Text"],
-						["ICON_TEXT_ABBR"] = L["Icons and Text (Short)"],
 					},
 					set = function(info, value) E.db.bags[ info[#info] ] = value; B:UpdateTokens(); end,
 				},
@@ -204,7 +203,7 @@ E.Options.args.bags = {
 						},
 					},
 				},
-
+				
 			},
 		},
 		sizeAndPos = {

@@ -16,12 +16,12 @@ local x, y = 0, 0
 
 local function Update(self, elapsed)
 	self.timeSinceUpdate = (self.timeSinceUpdate or 0) + elapsed
-
+	
 	if self.timeSinceUpdate > 0.1 then
 		x, y = GetPlayerMapPosition("player")
 		x = E:Round(100 * x, 1)
 		y = E:Round(100 * y, 1)
-
+		
 		self.text:SetFormattedText(displayString, x, y)
 		self.timeSinceUpdate = 0
 	end
