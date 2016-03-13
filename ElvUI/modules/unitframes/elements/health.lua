@@ -6,8 +6,8 @@ local UF = E:GetModule('UnitFrames');
 local random = random
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local UnitIsTapDenied = UnitIsTapDenied
-local UnitIsTapDeniedByPlayer = UnitIsTapDeniedByPlayer
+local UnitIsTapped = UnitIsTapped
+local UnitIsTappedByPlayer = UnitIsTappedByPlayer
 local UnitReaction = UnitReaction
 local UnitIsPlayer = UnitIsPlayer
 local UnitClass = UnitClass
@@ -178,7 +178,7 @@ function UF:PostUpdateHealth(unit, min, max)
 
 	local r, g, b = self:GetStatusBarColor()
 	local colors = E.db['unitframe']['colors'];
-	if (colors.healthclass == true and colors.colorhealthbyvalue == true) or (colors.colorhealthbyvalue and parent.isForced) and not (UnitIsTapDenied(unit) and not UnitIsTapDeniedByPlayer(unit)) then
+	if (colors.healthclass == true and colors.colorhealthbyvalue == true) or (colors.colorhealthbyvalue and parent.isForced) and not (UnitIsTapped(unit) and not UnitIsTappedByPlayer(unit)) then
 		local newr, newg, newb = ElvUF.ColorGradient(min, max, 1, 0, 0, 1, 1, 0, r, g, b)
 
 		self:SetStatusBarColor(newr, newg, newb)

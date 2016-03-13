@@ -14,24 +14,20 @@ function E:SetUpAnimGroup(object, type, ...)
 	if type == 'Flash' then
 		object.anim = object:CreateAnimationGroup("Flash")
 		object.anim.fadein = object.anim:CreateAnimation("ALPHA", "FadeIn")
-		object.anim.fadein:SetFromAlpha(0)
-		object.anim.fadein:SetToAlpha(1)
+		object.anim.fadein:SetChange(1)
 		object.anim.fadein:SetOrder(2)
 
 		object.anim.fadeout = object.anim:CreateAnimation("ALPHA", "FadeOut")
-		object.anim.fadeout:SetFromAlpha(1)
-		object.anim.fadeout:SetToAlpha(0)		
+		object.anim.fadeout:SetChange(-1)
 		object.anim.fadeout:SetOrder(1)
 	elseif type == 'FlashLoop' then
 		object.anim = object:CreateAnimationGroup("Flash")
 		object.anim.fadein = object.anim:CreateAnimation("ALPHA", "FadeIn")
-		object.anim.fadein:SetFromAlpha(0)
-		object.anim.fadein:SetToAlpha(1)
+		object.anim.fadein:SetChange(1)
 		object.anim.fadein:SetOrder(2)
 
 		object.anim.fadeout = object.anim:CreateAnimation("ALPHA", "FadeOut")
-		object.anim.fadeout:SetFromAlpha(1)
-		object.anim.fadeout:SetToAlpha(0)		
+		object.anim.fadeout:SetChange(-1)
 		object.anim.fadeout:SetOrder(1)
 
 		object.anim:SetScript("OnFinished", function(self, requested)

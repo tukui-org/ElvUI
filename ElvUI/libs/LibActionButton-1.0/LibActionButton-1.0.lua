@@ -1200,8 +1200,7 @@ function UpdateUsable(self)
 	else
 		local isUsable, notEnoughMana = self:IsUsable()
 		local action = self._state_action
-		--print(type(UnitPower('player', SPELL_POWER_HOLY_POWER)))
-		if PLAYERCLASS == 'PALADIN' and IsHolyPowerAbility(action) and not (UnitPower('player', SPELL_POWER_HOLY_POWER) >= 3) then
+		if PLAYERCLASS == 'PALADIN' and IsHolyPowerAbility(action) and not(UnitPower('player', SPELL_POWER_HOLY_POWER) >= 3 or UnitBuff('player', HAND_OF_LIGHT) or UnitBuff('player', DIVINE_CRUSADER)) then
 			self.icon:SetVertexColor(unpack(self.config.colors.hp))
 		elseif isUsable then
 			self.icon:SetVertexColor(1.0, 1.0, 1.0)

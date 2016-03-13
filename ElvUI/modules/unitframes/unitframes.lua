@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:NewModule('UnitFrames', 'AceTimer-3.0', 'AceEvent-3.0', 'AceHook-3.0');
 local LSM = LibStub("LibSharedMedia-3.0");
---local BG = LibStub("LibBodyguard-1.0");
+local BG = LibStub("LibBodyguard-1.0");
 UF.LSM = LSM
 
 --Cache global variables
@@ -376,7 +376,6 @@ function UF:UpdateColors()
 	ElvUF.colors.power.FOCUS = E:GetColorTable(db.power.FOCUS);
 	ElvUF.colors.power.ENERGY = E:GetColorTable(db.power.ENERGY);
 	ElvUF.colors.power.RUNIC_POWER = E:GetColorTable(db.power.RUNIC_POWER);
-	ElvUF.colors.power.PAIN = E:GetColorTable(db.power.PAIN);
 
 	ElvUF.colors.Runes = {}
 	ElvUF.colors.Runes[1] = E:GetColorTable(db.classResources.DEATHKNIGHT[1])
@@ -474,7 +473,7 @@ function UF:Update_AllFrames()
 	self:UpdateColors()
 	self:Update_FontStrings()
 	self:Update_StatusBars()
-	--BG:UpdateSettings()
+	BG:UpdateSettings()
 
 	for unit in pairs(self['units']) do
 		if self.db['units'][unit].enable then
@@ -1166,7 +1165,7 @@ end
 function UF:PLAYER_ENTERING_WORLD(event)
 	self:Update_AllFrames()
 
-	--[[local showing = BG:IsShowing()
+	local showing = BG:IsShowing()
 
 	if not BG:Exists() and not BG.db.Active then
 		if showing then BG:HideFrame() end
@@ -1179,17 +1178,17 @@ function UF:PLAYER_ENTERING_WORLD(event)
 		BG:UpdateSettings()
 	elseif BG:GetStatus() ~= BG.Status.Inactive and BG.db.Active then
 		BG:ShowFrame()
-	end]]
+	end
 end
 
 function UF:ZONE_CHANGED_NEW_AREA()
-	--[[local validZone = BG:IsValidZone()
+	local validZone = BG:IsValidZone()
 	if not validZone then
 		if not BG:IsShowing() then return end
 		BG:HideFrame()
 	elseif BG.db.Active and BG:GetStatus() ~= BG.Status.Inactive then
 		BG:ShowFrame()
-	end]]
+	end
 end
 
 function UF:UnitFrameThreatIndicator_Initialize(_, unitFrame)
@@ -1279,7 +1278,7 @@ function UF:Initialize()
 	ElvCharacterDB.BodyGuard.Health = ElvCharacterDB.BodyGuard.Health or 0
 	ElvCharacterDB.BodyGuard.Active = ElvCharacterDB.BodyGuard.Active or false
 
-	--[[BG:UpdateFromBuilding()
+	BG:UpdateFromBuilding()
 
 	BG:CreateFrame()
 	BG.LoginHealth = true
@@ -1299,7 +1298,7 @@ function UF:Initialize()
 	if BG.db.Active and BG.db.IsInValidZone then
 		BG:ShowFrame()
 		BG:HealthUpdate(BG.db.Health, BG.db.MaxHealth)
-	end]]
+	end
 end
 
 function UF:ResetUnitSettings(unit)
