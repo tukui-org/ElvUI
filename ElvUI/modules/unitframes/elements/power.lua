@@ -216,7 +216,7 @@ function UF:PostUpdatePower(unit, min, max)
 		pType = random(0, 4)
 		self:SetValue(min)
 		local color = ElvUF['colors'].power[tokens[pType]]
-
+		
 		if not self.colorClass then
 			self:SetStatusBarColor(color[1], color[2], color[3])
 			local mu = self.bg.multiplier or 1

@@ -69,10 +69,6 @@ local menuList = {
 			TalentFrame_LoadUI()
 		end
 
-		if not GlyphFrame then
-			GlyphFrame_LoadUI()
-		end
-
 		if not PlayerTalentFrame:IsShown() then
 			ShowUIPanel(PlayerTalentFrame)
 		else
@@ -206,13 +202,6 @@ function M:UpdateSettings()
 	E.MinimapWidth = E.MinimapSize
 	E.MinimapHeight = E.MinimapSize
 
-	if E.db.auras.consolidatedBuffs.enable and E.private.auras.disableBlizzard and not E.global.tukuiMode then
-		local numBuffs = E.db.auras.consolidatedBuffs.filter and 7 or 8 --This is one short because I'm just counting the total spaces between icons, add +1 below for the actual amount of buffs
-		E.ConsolidatedBuffsWidth = (E.MinimapHeight + (numBuffs*E.Border) + E.Border*2 - (E.Spacing*numBuffs)) / (numBuffs + 1)
-	else
-		E.ConsolidatedBuffsWidth = 0;
-	end
-
 	if E.private.general.minimap.enable then
 		Minimap:Size(E.MinimapSize, E.MinimapSize)
 	end
@@ -228,7 +217,7 @@ function M:UpdateSettings()
 	end
 
 	if MMHolder then
-		MMHolder:Width((Minimap:GetWidth() + E.Border + E.Spacing*3) + E.ConsolidatedBuffsWidth)
+		MMHolder:Width((Minimap:GetWidth() + E.Border + E.Spacing*3))
 
 		if E.db.datatexts.minimapPanels then
 			MMHolder:Height(Minimap:GetHeight() + (LeftMiniPanel and (LeftMiniPanel:GetHeight() + E.Border) or 24) + E.Spacing*3)
@@ -249,19 +238,6 @@ function M:UpdateSettings()
 
 	if MinimapMover then
 		MinimapMover:Size(MMHolder:GetSize())
-	end
-
-	if ElvConfigToggle then
-		if E.db.auras.consolidatedBuffs.enable and E.db.datatexts.minimapPanels and E.private.general.minimap.enable and E.private.auras.disableBlizzard and not E.global.tukuiMode then
-			ElvConfigToggle:Show()
-			ElvConfigToggle:Width(E.ConsolidatedBuffsWidth)
-		else
-			ElvConfigToggle:Hide()
-		end
-	end
-
-	if ElvUI_ConsolidatedBuffs then
-		E:GetModule('Auras'):Update_ConsolidatedBuffsSettings()
 	end
 
 	--Stop here if ElvUI Minimap is disabled.
@@ -343,15 +319,11 @@ function M:Initialize()
 
 	local mmholder = CreateFrame('Frame', 'MMHolder', Minimap)
 	mmholder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -3, -3)
-	mmholder:Width((Minimap:GetWidth() + 29) + E.ConsolidatedBuffsWidth)
+	mmholder:Width((Minimap:GetWidth() + 29))
 	mmholder:Height(Minimap:GetHeight() + 53)
 
 	Minimap:ClearAllPoints()
-	if E.db.auras.consolidatedBuffs.position == "LEFT" then
-		Minimap:Point("TOPRIGHT", mmholder, "TOPRIGHT", -E.Border, -E.Border)
-	else
-		Minimap:Point("TOPLEFT", mmholder, "TOPLEFT", E.Border, -E.Border)
-	end
+	Minimap:Point("TOPRIGHT", mmholder, "TOPRIGHT", -E.Border, -E.Border)
 	Minimap:SetMaskTexture('Interface\\ChatFrame\\ChatFrameBackground')
 	Minimap:SetQuestBlobRingAlpha(0)
 	Minimap:SetArchBlobRingAlpha(0)

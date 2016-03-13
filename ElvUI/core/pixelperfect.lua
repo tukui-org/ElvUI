@@ -63,7 +63,7 @@ function E:UIScale(event)
 		self.eyefinity = width;
 	end
 
-	self.mult = 768/match(GetCVar("gxResolution"), "%d+x(%d+)")/scale;
+	self.mult = 768/match(self.resolution, "%d+x(%d+)")/scale;
 	self.Spacing = self.PixelMode and 0 or self.mult
 	self.Border = (self.PixelMode and self.mult or self.mult*2)
 	--Set UIScale, NOTE: SetCVar for UIScale can cause taints so only do this when we need to..

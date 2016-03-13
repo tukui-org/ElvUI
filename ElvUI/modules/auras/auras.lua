@@ -254,7 +254,7 @@ function A:UpdateHeader(header)
 	local db = self.db.debuffs
 	if header:GetAttribute('filter') == 'HELPFUL' then
 		db = self.db.buffs
-		header:SetAttribute("consolidateTo", self.db.consolidatedBuffs.enable == true and E.private.general.minimap.enable == true and 1 or 0)
+		header:SetAttribute("consolidateTo", 0)
 		header:SetAttribute('weaponTemplate', ("ElvUIAuraTemplate%d"):format(db.size))
 	end
 
@@ -339,11 +339,11 @@ function A:CreateAuraHeader(filter)
 end
 
 function A:Initialize()
-	self:Construct_ConsolidatedBuffs()
+	--self:Construct_ConsolidatedBuffs()
 
 	if(E.private.auras.disableBlizzard) then
 		BuffFrame:Kill()
-		ConsolidatedBuffs:Kill()
+		--ConsolidatedBuffs:Kill()
 		TemporaryEnchantFrame:Kill();
 		InterfaceOptionsFrameCategoriesButton12:SetScale(0.0001)
 	end

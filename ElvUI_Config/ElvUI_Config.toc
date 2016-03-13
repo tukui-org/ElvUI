@@ -15,7 +15,6 @@ bags.lua
 chat.lua
 datatexts.lua 
 filters.lua
-nameplates.lua
 skins.lua
 tooltip.lua
 unitframes.lua

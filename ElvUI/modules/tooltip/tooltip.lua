@@ -41,8 +41,8 @@ local UnitIsDND = UnitIsDND
 local GetQuestDifficultyColor = GetQuestDifficultyColor
 local UnitRace = UnitRace
 local UnitFactionGroup = UnitFactionGroup
-local UnitIsTapped = UnitIsTapped
-local UnitIsTappedByPlayer = UnitIsTappedByPlayer
+local UnitIsTapDenied = UnitIsTapDenied
+local UnitIsTapDeniedByPlayer = UnitIsTapDeniedByPlayer
 local UnitReaction = UnitReaction
 local UnitIsWildBattlePet = UnitIsWildBattlePet
 local UnitIsBattlePetCompanion = UnitIsBattlePetCompanion
@@ -544,7 +544,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 			self:ShowInspectInfo(tt, unit, level, color.r, color.g, color.b, 0)
 		end
 	else
-		if(UnitIsTapped(unit) and not UnitIsTappedByPlayer(unit)) then
+		if UnitIsTapDenied(unit) then
 			color = TAPPED_COLOR
 		else
 			local unitReaction = UnitReaction(unit, "player")
@@ -883,7 +883,7 @@ function TT:Initialize()
 	self:SecureHook(GameTooltip, "SetUnitAura")
 	self:SecureHook(GameTooltip, "SetUnitBuff", "SetUnitAura")
 	self:SecureHook(GameTooltip, "SetUnitDebuff", "SetUnitAura")
-	self:SecureHook(GameTooltip, "SetUnitConsolidatedBuff", "SetConsolidatedUnitAura")
+	--self:SecureHook(GameTooltip, "SetUnitConsolidatedBuff", "SetConsolidatedUnitAura")
 	self:HookScript(GameTooltip, "OnTooltipSetSpell", "GameTooltip_OnTooltipSetSpell")
 	self:HookScript(GameTooltip, 'OnTooltipCleared', 'GameTooltip_OnTooltipCleared')
 	self:HookScript(GameTooltip, 'OnTooltipSetItem', 'GameTooltip_OnTooltipSetItem')

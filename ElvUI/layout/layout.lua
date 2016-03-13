@@ -371,43 +371,6 @@ function LO:CreateMinimapPanels()
 		RightMiniPanel:Hide()
 	end
 
-	local configtoggle = CreateFrame('Button', 'ElvConfigToggle', Minimap)
-	if E.db.auras.consolidatedBuffs.position == "LEFT" then
-		configtoggle:Point('TOPRIGHT', lminipanel, 'TOPLEFT', (E.Border - (E.Spacing*3)), 0)
-		configtoggle:Point('BOTTOMRIGHT', lminipanel, 'BOTTOMLEFT', (E.Border + (E.Spacing*3)), 0)
-	else
-		configtoggle:Point('TOPLEFT', rminipanel, 'TOPRIGHT', (-E.Border + (E.Spacing*3)), 0)
-		configtoggle:Point('BOTTOMLEFT', rminipanel, 'BOTTOMRIGHT', (-E.Border + (E.Spacing*3)), 0)
-	end
-	configtoggle:RegisterForClicks('AnyUp')
-	configtoggle:Width(E.ConsolidatedBuffsWidth - (E.Border*2))
-	configtoggle:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
-	configtoggle.text = configtoggle:CreateFontString(nil, 'OVERLAY')
-	configtoggle.text:FontTemplate(E.LSM:Fetch("font", E.db.datatexts.font), E.db.datatexts.fontSize, E.db.datatexts.fontOutline)
-	configtoggle.text:SetText('C')
-	configtoggle.text:Point('CENTER')
-	configtoggle.text:SetJustifyH('CENTER')
-	configtoggle:SetScript('OnClick', function(self, btn)
-		if btn == 'LeftButton' then
-			E:ToggleConfig()
-		else
-			E:BGStats()
-		end
-	end)
-	configtoggle:SetScript('OnEnter', function(self)
-		GameTooltip:SetOwner(self, 'ANCHOR_BOTTOMRIGHT', 0, -4)
-		GameTooltip:ClearLines()
-		GameTooltip:AddDoubleLine(L["Left Click:"], L["Toggle Configuration"], 1, 1, 1)
-
-		if E.db.datatexts.battleground then
-			GameTooltip:AddDoubleLine(L["Right Click:"], L["Show BG Texts"], 1, 1, 1)
-		end
-		GameTooltip:Show()
-	end)
-	configtoggle:SetScript('OnLeave', function(self)
-		GameTooltip:Hide()
-	end)
-	
 	if(E.global.tukuiMode) then
 		local BottomLine = CreateFrame("Frame", nil, E.UIParent)
 		BottomLine:SetTemplate()

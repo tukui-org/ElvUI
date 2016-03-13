@@ -83,7 +83,7 @@ local UnitName = UnitName
 local GetTime = GetTime
 local UnitCastingInfo = UnitCastingInfo
 local UnitChannelInfo = UnitChannelInfo
-local tradeskillCurrent, tradeskillTotal, mergeTradeskill = 0, 0, false
+--local tradeskillCurrent, tradeskillTotal, mergeTradeskill = 0, 0, false
 
 local updateSafeZone = function(self)
 	local sz = self.SafeZone
@@ -133,7 +133,7 @@ local UNIT_SPELLCAST_START = function(self, event, unit, spell)
 	castbar.interrupt = interrupt
 	castbar.isTradeSkill = isTradeSkill
 
-	if(mergeTradeskill and isTradeSkill and UnitIsUnit(unit, "player")) then
+	--[[if(mergeTradeskill and isTradeSkill and UnitIsUnit(unit, "player")) then
 		castbar.duration = castbar.duration + (castbar.max * tradeskillCurrent);
 		castbar.max = max * tradeskillTotal;
 
@@ -143,7 +143,8 @@ local UNIT_SPELLCAST_START = function(self, event, unit, spell)
 		castbar:SetValue(castbar.duration)
 	else
 		castbar:SetValue(0)		
-	end
+	end]]
+	castbar:SetValue(0)
 
 	castbar:SetMinMaxValues(0, castbar.max)
 
@@ -570,10 +571,10 @@ local Disable = function(object, unit)
 	end
 end
 
-hooksecurefunc("DoTradeSkill", function(index, num, ...)
+--[[hooksecurefunc("DoTradeSkill", function(index, num, ...)
 	tradeskillCurrent = 0
 	tradeskillTotal = tonumber(num) or 1
 	mergeTradeskill = true
-end)
+end)]]
 
 oUF:AddElement('Castbar', Update, Enable, Disable)
