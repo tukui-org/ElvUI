@@ -337,7 +337,6 @@ function CH:GetSmileyReplacementText(msg)
 	return outstr;
 end
 
-
 function CH:StyleChat(frame)
 	local name = frame:GetName()
 	_G[name.."TabText"]:FontTemplate(LSM:Fetch("font", self.db.tabFont), self.db.tabFontSize, self.db.tabFontOutline)
@@ -464,7 +463,7 @@ function CH:StyleChat(frame)
 	_G[format(editbox:GetName().."FocusMid", id)]:Kill()
 	_G[format(editbox:GetName().."FocusRight", id)]:Kill()
 	editbox:SetTemplate('Default', true)
-	editbox:SetAltArrowKeyMode(false)
+	editbox:SetAltArrowKeyMode(CH.db.useAltKey)
 	editbox:HookScript("OnEditFocusGained", function(self) self:Show(); if not LeftChatPanel:IsShown() then LeftChatPanel.editboxforced = true; LeftChatToggleButton:GetScript('OnEnter')(LeftChatToggleButton) end end)
 	editbox:HookScript("OnEditFocusLost", function(self) if LeftChatPanel.editboxforced then LeftChatPanel.editboxforced = nil; if LeftChatPanel:IsShown() then LeftChatToggleButton:GetScript('OnLeave')(LeftChatToggleButton) end end self:Hide() end)
 	editbox:SetAllPoints(LeftChatDataPanel)
@@ -524,6 +523,15 @@ function CH:StyleChat(frame)
 
 	CreatedFrames = id
 	frame.styled = true
+end
+
+function CH:UpdateSettings()
+	for i = 1, CreatedFrames do
+		local chat = _G[format("ChatFrame%d", i)]
+		local name = chat:GetName()
+		local editbox = _G[name..'EditBox']
+		editbox:SetAltArrowKeyMode(CH.db.useAltKey)
+	end
 end
 
 local function removeIconFromLine(text)
@@ -957,8 +965,6 @@ function CH:ConcatenateTimeStamp(msg)
 	return msg
 end
 
-
-
 function CH:GetBNFriendColor(name, id)
 	local _, class
 	if E.wowbuild >= 21073 then
@@ -1006,7 +1012,6 @@ function CH:GetBNFriendColor(name, id)
 		return name
 	end
 end
-
 
 function CH:GetPluginReplacementIcon(nameRealm)
 	return

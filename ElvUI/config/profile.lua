@@ -319,6 +319,7 @@ P['chat'] = {
 	['editBoxPosition'] = 'BELOW_CHAT',
 	['fadeUndockedTabs'] = true,
 	['fadeTabsNoBackdrop'] = true,
+	["useAltKey"] = false,
 
 	['tabFont'] = 'Homespun',
 	['tabFontSize'] = 10,
