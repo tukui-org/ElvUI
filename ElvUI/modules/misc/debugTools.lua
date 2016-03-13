@@ -65,10 +65,10 @@ function D:ModifyErrorFrame()
 
 	-- Add a first button
 	local firstButton = CreateFrame("Button", nil, ScriptErrorsFrame, "UIPanelButtonTemplate")
-	firstButton:SetPoint("BOTTOM", ScriptErrorsFrame, "BOTTOM", -((BUTTON_WIDTH + BUTTON_WIDTH/2) + (BUTTON_SPACING * 4)), 8)
+	firstButton:Point("BOTTOM", ScriptErrorsFrame, "BOTTOM", -((BUTTON_WIDTH + BUTTON_WIDTH/2) + (BUTTON_SPACING * 4)), 8)
 	firstButton:SetText("First")
-	firstButton:SetHeight(BUTTON_HEIGHT)
-	firstButton:SetWidth(BUTTON_WIDTH)
+	firstButton:Height(BUTTON_HEIGHT)
+	firstButton:Width(BUTTON_WIDTH)
 	firstButton:SetScript("OnClick", function(self)
 		ScriptErrorsFrame.index = 1
 		ScriptErrorsFrame_Update()
@@ -77,9 +77,9 @@ function D:ModifyErrorFrame()
 
 	-- Also add a Last button for errors
 	local lastButton = CreateFrame("Button", nil, ScriptErrorsFrame, "UIPanelButtonTemplate")
-	lastButton:SetPoint("BOTTOMLEFT", ScriptErrorsFrame.next, "BOTTOMRIGHT", BUTTON_SPACING, 0)
-	lastButton:SetHeight(BUTTON_HEIGHT)
-	lastButton:SetWidth(BUTTON_WIDTH)
+	lastButton:Point("BOTTOMLEFT", ScriptErrorsFrame.next, "BOTTOMRIGHT", BUTTON_SPACING, 0)
+	lastButton:Height(BUTTON_HEIGHT)
+	lastButton:Width(BUTTON_WIDTH)
 	lastButton:SetText("Last")
 	lastButton:SetScript("OnClick", function(self)
 		ScriptErrorsFrame.index = #(ScriptErrorsFrame.order)
@@ -88,21 +88,21 @@ function D:ModifyErrorFrame()
 	ScriptErrorsFrame.lastButton = lastButton
 
 	ScriptErrorsFrame.previous:ClearAllPoints()
-	ScriptErrorsFrame.previous:SetPoint("BOTTOMLEFT", firstButton, "BOTTOMRIGHT", BUTTON_SPACING, 0)
-	ScriptErrorsFrame.previous:SetWidth(BUTTON_WIDTH)
-	ScriptErrorsFrame.previous:SetHeight(BUTTON_HEIGHT)
+	ScriptErrorsFrame.previous:Point("BOTTOMLEFT", firstButton, "BOTTOMRIGHT", BUTTON_SPACING, 0)
+	ScriptErrorsFrame.previous:Width(BUTTON_WIDTH)
+	ScriptErrorsFrame.previous:Height(BUTTON_HEIGHT)
 
 	ScriptErrorsFrame.next:ClearAllPoints()
-	ScriptErrorsFrame.next:SetPoint("BOTTOMLEFT", ScriptErrorsFrame.previous, "BOTTOMRIGHT", BUTTON_SPACING, 0)
-	ScriptErrorsFrame.next:SetWidth(BUTTON_WIDTH)
-	ScriptErrorsFrame.next:SetHeight(BUTTON_HEIGHT)
+	ScriptErrorsFrame.next:Point("BOTTOMLEFT", ScriptErrorsFrame.previous, "BOTTOMRIGHT", BUTTON_SPACING, 0)
+	ScriptErrorsFrame.next:Width(BUTTON_WIDTH)
+	ScriptErrorsFrame.next:Height(BUTTON_HEIGHT)
 
 	ScriptErrorsFrame.close:ClearAllPoints()
-	ScriptErrorsFrame.close:SetPoint("BOTTOMRIGHT", ScriptErrorsFrame, "BOTTOMRIGHT", -8, 8)
+	ScriptErrorsFrame.close:Point("BOTTOMRIGHT", ScriptErrorsFrame, "BOTTOMRIGHT", -8, 8)
 	ScriptErrorsFrame.close:SetSize(75, BUTTON_HEIGHT)
 
 	ScriptErrorsFrame.indexLabel:ClearAllPoints()
-	ScriptErrorsFrame.indexLabel:SetPoint("BOTTOMLEFT", ScriptErrorsFrame, "BOTTOMLEFT", -6, 8)
+	ScriptErrorsFrame.indexLabel:Point("BOTTOMLEFT", ScriptErrorsFrame, "BOTTOMLEFT", -6, 8)
 end
 
 function D:ScriptErrorsFrame_UpdateButtons()

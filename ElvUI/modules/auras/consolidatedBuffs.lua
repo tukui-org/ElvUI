@@ -124,7 +124,7 @@ function A:CreateButton(i)
 	button.cd:SetHideCountdownNumbers(true)
 
 	button.timer = button.cd:CreateFontString(nil, 'OVERLAY')
-	button.timer:SetPoint('CENTER')
+	button.timer:Point('CENTER')
 
 	local ButtonData = {
 		FloatingBG = nil,
@@ -195,16 +195,16 @@ function A:Update_ConsolidatedBuffsSettings(isCallback)
 		local button = frame[i]
 		button.t:SetAlpha(1)
 		button:ClearAllPoints()
-		button:Size(E.ConsolidatedBuffsWidth - (E.PixelMode and 0 or 4)) -- 4 needs to be 1
+
+		--Use :SetWidth and :SetHeight so it doesn't get rounded by E:Scale
+		--This is important because E.ConsolidatedBuffsWidth is usually not a round number
+		button:SetWidth(E.ConsolidatedBuffsWidth)
+		button:SetHeight(E.ConsolidatedBuffsWidth)
 
 		if i == 1 then
-			button:Point("TOP", ElvUI_ConsolidatedBuffs, "TOP", 0, -(E.PixelMode and 0 or 2))
+			button:Point("TOP", ElvUI_ConsolidatedBuffs, "TOP", 0, 0)
 		else
-			button:Point("TOP", frame[ignoreIcons[i - 1] or (i - 1)], "BOTTOM", 0, (E.PixelMode and 2 or -1))
-		end
-
-		if i == NUM_LE_RAID_BUFF_TYPES then
-			button:Point("BOTTOM", ElvUI_ConsolidatedBuffs, "BOTTOM", 0, (E.PixelMode and 0 or 2)) --2 needs to be 0
+			button:Point("TOP", frame[ignoreIcons[i - 1] or (i - 1)], "BOTTOM", 0, E.Border - E.Spacing)
 		end
 
 		if(ignoreIcons[i]) then
@@ -240,7 +240,7 @@ function A:Update_ConsolidatedBuffsSettings(isCallback)
 			E:GetModule('Auras'):DisableCB()
 		end
 	end
-	
+
 	if MasqueGroup and E.private.auras.masque.consolidatedBuffs and E.db.auras.consolidatedBuffs.enable then MasqueGroup:ReSkin() end
 end
 
@@ -253,11 +253,11 @@ function A:Construct_ConsolidatedBuffs()
 
 	frame:Width(E.ConsolidatedBuffsWidth)
 	if E.db.auras.consolidatedBuffs.position == "LEFT" then
-		frame:Point('TOPRIGHT', Minimap.backdrop, 'TOPLEFT', (E.PixelMode and 1 or -1), 0)
-		frame:Point('BOTTOMRIGHT', Minimap.backdrop, 'BOTTOMLEFT', (E.PixelMode and 1 or -1), 0)
+		frame:Point('TOPRIGHT', Minimap.backdrop, 'TOPLEFT', E.Border - E.Spacing*3, 0)
+		frame:Point('BOTTOMRIGHT', Minimap.backdrop, 'BOTTOMLEFT', E.Border - E.Spacing*3, 0)
 	else
-		frame:Point('TOPLEFT', Minimap.backdrop, 'TOPRIGHT', (E.PixelMode and -1 or 1), 0)
-		frame:Point('BOTTOMLEFT', Minimap.backdrop, 'BOTTOMRIGHT', (E.PixelMode and -1 or 1), 0)
+		frame:Point('TOPLEFT', Minimap.backdrop, 'TOPRIGHT', -E.Border + E.Spacing*3, 0)
+		frame:Point('BOTTOMLEFT', Minimap.backdrop, 'BOTTOMRIGHT', -E.Border + E.Spacing*3, 0)
 	end
 	self.frame = frame
 
@@ -265,7 +265,7 @@ function A:Construct_ConsolidatedBuffs()
 		frame[i] = self:CreateButton(i)
 		frame[i]:SetID(i)
 	end
-	
+
 	if Masque and MasqueGroup then
 		A.CBMasqueGroup = MasqueGroup
 	end

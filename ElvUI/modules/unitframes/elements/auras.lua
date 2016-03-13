@@ -50,7 +50,7 @@ function UF:Construct_AuraIcon(button)
 	button.text:Point('CENTER', 1, 1)
 	button.text:SetJustifyH('CENTER')
 
-	button:SetTemplate('Default')
+	button:SetTemplate('Default', nil, nil, (UF.thinBorders and not E.global.tukuiMode))
 
 	button.cd.noOCC = true
 	button.cd.noCooldownCount = true
@@ -58,7 +58,8 @@ function UF:Construct_AuraIcon(button)
 	button.cd:SetInside()
 	button.cd:SetHideCountdownNumbers(true)
 
-	button.icon:SetInside()
+	local offset = (UF.thinBorders and not E.global.tukuiMode) and E.mult or E.Border
+	button.icon:SetInside(button, offset, offset)
 	button.icon:SetTexCoord(unpack(E.TexCoords))
 	button.icon:SetDrawLayer('ARTWORK')
 
@@ -88,8 +89,104 @@ function UF:Construct_AuraIcon(button)
 	UF:UpdateAuraIconSettings(button, true)
 end
 
+function UF:EnableDisable_Auras(frame)
+	if frame.db.debuffs.enable or frame.db.buffs.enable then
+		if not frame:IsElementEnabled('Aura') then
+			frame:EnableElement('Aura')
+		end
+	else
+		if frame:IsElementEnabled('Aura') then
+			frame:DisableElement('Aura')
+		end
+	end
+end
+
+function UF:Configure_Auras(frame, auraType)
+	local db = frame.db
+
+	local auras = frame[auraType]
+	auraType = auraType:lower()
+	local rows = db[auraType].numrows
+
+	local totalWidth = frame.UNIT_WIDTH - frame.SPACING*2
+	if frame.USE_POWERBAR_OFFSET then
+		local powerOffset = ((frame.ORIENTATION == "MIDDLE" and 2 or 1) * frame.POWERBAR_OFFSET)
+
+		if not (db[auraType].attachTo == "POWER" and frame.ORIENTATION == "MIDDLE") then
+			totalWidth = totalWidth - powerOffset
+		end
+	end
+	auras:Width(totalWidth)
+
+	auras.forceShow = frame.forceShowAuras
+	auras.num = db[auraType].perrow * rows
+	auras.size = db[auraType].sizeOverride ~= 0 and db[auraType].sizeOverride or ((((auras:GetWidth() - (auras.spacing*(auras.num/rows - 1))) / auras.num)) * rows)
+
+	if db[auraType].sizeOverride and db[auraType].sizeOverride > 0 then
+		auras:Width(db[auraType].perrow * db[auraType].sizeOverride)
+	end
+
+	local override = ((db[auraType].attachTo == "HEALTH" or db[auraType].attachTo == "POWER") and (frame.BORDER - frame.SPACING) or frame.SPACING)
+	local attachTo = self:GetAuraAnchorFrame(frame, db[auraType].attachTo, db.debuffs.attachTo == 'BUFFS' and db.buffs.attachTo == 'DEBUFFS')
+	local x, y = E:GetXYOffset(db[auraType].anchorPoint, (not E.global.tukuiMode and frame.SPACING)) --Use frame.SPACING override since it may be different from E.Spacing due to forced thin borders
+
+	if db[auraType].attachTo == "FRAME" then
+		y = 0
+	elseif db[auraType].attachTo == "HEALTH" or db[auraType].attachTo == "POWER" then
+		local newX = E:GetXYOffset(db[auraType].anchorPoint, -frame.BORDER)
+		local _, newY = E:GetXYOffset(db[auraType].anchorPoint, (frame.BORDER + frame.SPACING))
+		x = newX
+		y = newY
+	else
+		x = 0
+	end
+
+	auras:ClearAllPoints()
+	auras:Point(E.InversePoints[db[auraType].anchorPoint], attachTo, db[auraType].anchorPoint, x + db[auraType].xOffset, y + db[auraType].yOffset)
+	auras:Height(auras.size * rows)
+	auras["growth-y"] = db[auraType].anchorPoint:find('TOP') and 'UP' or 'DOWN'
+	auras["growth-x"] = db[auraType].anchorPoint == 'LEFT' and 'LEFT' or  db[auraType].anchorPoint == 'RIGHT' and 'RIGHT' or (db[auraType].anchorPoint:find('LEFT') and 'RIGHT' or 'LEFT')
+	auras.initialAnchor = E.InversePoints[db[auraType].anchorPoint]
+
+	--These are needed for SmartAuraPosition
+	auras.attachTo = attachTo
+	auras.point = E.InversePoints[db[auraType].anchorPoint]
+	auras.anchorPoint = db[auraType].anchorPoint
+	auras.xOffset = x + db[auraType].xOffset
+	auras.yOffset = y + db[auraType].yOffset
+
+	if db[auraType].enable then
+		auras:Show()
+		UF:UpdateAuraIconSettings(auras)
+	else
+		auras:Hide()
+	end
+
+	local position = db.smartAuraPosition
+	if position == "BUFFS_ON_DEBUFFS" then
+		if db.debuffs.attachTo == "BUFFS" then
+			E:Print(format(L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Buffs"], L["Debuffs"], L["Frame"]))
+			db.debuffs.attachTo = "FRAME"
+			frame.Debuffs.attachTo = frame
+		end
+		frame.Buffs.PostUpdate = nil
+		frame.Debuffs.PostUpdate = UF.UpdateBuffsHeaderPosition
+	elseif position == "DEBUFFS_ON_BUFFS" then
+		if db.buffs.attachTo == "DEBUFFS" then
+			E:Print(format(L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Debuffs"], L["Buffs"], L["Frame"]))
+			db.buffs.attachTo = "FRAME"
+			frame.Buffs.attachTo = frame
+		end
+		frame.Buffs.PostUpdate = UF.UpdateDebuffsHeaderPosition
+		frame.Debuffs.PostUpdate = nil
+	else
+		frame.Buffs.PostUpdate = nil
+		frame.Debuffs.PostUpdate = nil
+	end
+end
+
 local function SortAurasByPriority(a, b)
-    if (a and b) then
+	if (a and b) then
 		if a.isPlayer and not b.isPlayer then
 			return true
 		elseif not a.isPlayer and b.isPlayer then
@@ -99,14 +196,14 @@ local function SortAurasByPriority(a, b)
 		if (a.priority and b.priority) then
 			return a.priority > b.priority
 		end
-    end
+	end
 end
 
 local function SortAurasByTime(a, b)
-    if (a and b and a:GetParent().db) then
-    	local sortDirection = a:GetParent().db.sortDirection
-    	local aTime = a.expiration or -1
-    	local bTime = b.expiration or -1
+	if (a and b and a:GetParent().db) then
+		local sortDirection = a:GetParent().db.sortDirection
+		local aTime = a.expiration or -1
+		local bTime = b.expiration or -1
 		if (aTime and bTime) then
 			if(sortDirection == "DESCENDING") then
 				return aTime < bTime
@@ -114,14 +211,14 @@ local function SortAurasByTime(a, b)
 				return aTime > bTime
 			end
 		end
-    end
+	end
 end
 
 local function SortAurasByName(a, b)
-    if (a and b and a:GetParent().db) then
-    	local sortDirection = a:GetParent().db.sortDirection
-    	local aName = a.spell or ""
-    	local bName = b.spell or ""
+	if (a and b and a:GetParent().db) then
+		local sortDirection = a:GetParent().db.sortDirection
+		local aName = a.spell or ""
+		local bName = b.spell or ""
 		if (aName and bName) then
 			if(sortDirection == "DESCENDING") then
 				return aName < bName
@@ -129,14 +226,14 @@ local function SortAurasByName(a, b)
 				return aName > bName
 			end
 		end
-    end
+	end
 end
 
 local function SortAurasByDuration(a, b)
-    if (a and b and a:GetParent().db) then
-    	local sortDirection = a:GetParent().db.sortDirection
-    	local aTime = a.duration or -1
-    	local bTime = b.duration or -1
+	if (a and b and a:GetParent().db) then
+		local sortDirection = a:GetParent().db.sortDirection
+		local aTime = a.duration or -1
+		local bTime = b.duration or -1
 		if (aTime and bTime) then
 			if(sortDirection == "DESCENDING") then
 				return aTime < bTime
@@ -144,7 +241,7 @@ local function SortAurasByDuration(a, b)
 				return aTime > bTime
 			end
 		end
-    end
+	end
 end
 
 function UF:SortAuras()
@@ -159,7 +256,7 @@ function UF:SortAuras()
 		tsort(self, SortAurasByDuration)
 	end
 
-	--Look into possibly applying filter priorities for auras here. 
+	--Look into possibly applying filter priorities for auras here.
 end
 
 function UF:UpdateAuraIconSettings(auras, noCycle)
@@ -173,14 +270,15 @@ function UF:UpdateAuraIconSettings(auras, noCycle)
 
 	local db = frame.db[type]
 	local unitframeFont = LSM:Fetch("font", E.db['unitframe'].font)
+	local unitframeFontOutline = E.db['unitframe'].fontOutline
 	local index = 1
 	auras.db = db
 	if(db) then
 		if(not noCycle) then
 			while(auras[index]) do
 				local button = auras[index]
-				button.text:FontTemplate(unitframeFont, db.fontSize, 'OUTLINE')
-				button.count:FontTemplate(unitframeFont, db.countFontSize or db.fontSize, 'OUTLINE')
+				button.text:FontTemplate(unitframeFont, db.fontSize, unitframeFontOutline)
+				button.count:FontTemplate(unitframeFont, db.countFontSize or db.fontSize, unitframeFontOutline)
 
 				if db.clickThrough and button:IsMouseEnabled() then
 					button:EnableMouse(false)
@@ -190,8 +288,8 @@ function UF:UpdateAuraIconSettings(auras, noCycle)
 				index = index + 1
 			end
 		else
-			auras.text:FontTemplate(unitframeFont, db.fontSize, 'OUTLINE')
-			auras.count:FontTemplate(unitframeFont, db.countFontSize or db.fontSize, 'OUTLINE')
+			auras.text:FontTemplate(unitframeFont, db.fontSize, unitframeFontOutline)
+			auras.count:FontTemplate(unitframeFont, db.countFontSize or db.fontSize, unitframeFontOutline)
 
 			if db.clickThrough and auras:IsMouseEnabled() then
 				auras:EnableMouse(false)
@@ -284,7 +382,7 @@ function UF:UpdateAuraTimer(elapsed)
 	if self.text:GetFont() then
 		self.text:SetFormattedText(("%s%s|r"):format(E.TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
 	elseif self:GetParent():GetParent().db then
-		self.text:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), self:GetParent():GetParent().db[self:GetParent().type].fontSize, 'OUTLINE')
+		self.text:FontTemplate(LSM:Fetch("font", E.db['unitframe'].font), self:GetParent():GetParent().db[self:GetParent().type].fontSize, E.db['unitframe'].fontOutline)
 		self.text:SetFormattedText(("%s%s|r"):format(E.TimeColors[formatid], E.TimeFormats[formatid][2]), timervalue)
 	end
 end
@@ -449,10 +547,10 @@ function UF:UpdateBuffsHeaderPosition()
 
 	if numDebuffs == 0 then
 		buffs:ClearAllPoints()
-		buffs:SetPoint(debuffs.point, debuffs.attachTo, debuffs.anchorPoint, debuffs.xOffset, debuffs.yOffset)
+		buffs:Point(debuffs.point, debuffs.attachTo, debuffs.anchorPoint, debuffs.xOffset, debuffs.yOffset)
 	else
 		buffs:ClearAllPoints()
-		buffs:SetPoint(buffs.point, buffs.attachTo, buffs.anchorPoint, buffs.xOffset, buffs.yOffset)
+		buffs:Point(buffs.point, buffs.attachTo, buffs.anchorPoint, buffs.xOffset, buffs.yOffset)
 	end
 end
 
@@ -464,9 +562,9 @@ function UF:UpdateDebuffsHeaderPosition()
 
 	if numBuffs == 0 then
 		debuffs:ClearAllPoints()
-		debuffs:SetPoint(buffs.point, buffs.attachTo, buffs.anchorPoint, buffs.xOffset, buffs.yOffset)
+		debuffs:Point(buffs.point, buffs.attachTo, buffs.anchorPoint, buffs.xOffset, buffs.yOffset)
 	else
 		debuffs:ClearAllPoints()
-		debuffs:SetPoint(debuffs.point, debuffs.attachTo, debuffs.anchorPoint, debuffs.xOffset, debuffs.yOffset)
+		debuffs:Point(debuffs.point, debuffs.attachTo, debuffs.anchorPoint, debuffs.xOffset, debuffs.yOffset)
 	end
 end

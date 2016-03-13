@@ -139,8 +139,8 @@ local TimeColors = {
 
 function NP:SetTargetIndicatorDimensions()
 	if(self.db.targetIndicator.style == 'arrow') then
-		targetIndicator:SetHeight(self.db.targetIndicator.height)
-		targetIndicator:SetWidth(self.db.targetIndicator.width)
+		targetIndicator.arrow:SetHeight(self.db.targetIndicator.height)
+		targetIndicator.arrow:SetWidth(self.db.targetIndicator.width)
 	elseif(self.db.targetIndicator.style == 'doubleArrow' or self.db.targetIndicator.style == 'doubleArrowInverted') then
 		targetIndicator.left:SetHeight(self.db.targetIndicator.height)
 		targetIndicator.left:SetWidth(self.db.targetIndicator.width)
@@ -152,8 +152,8 @@ end
 function NP:PositionTargetIndicator(myPlate)
 	targetIndicator:SetParent(myPlate)
 	if(self.db.targetIndicator.style == 'arrow') then
-		targetIndicator:ClearAllPoints()
-		targetIndicator:SetPoint("BOTTOM", myPlate.healthBar, "TOP", 0, 30 + self.db.targetIndicator.yOffset)
+		targetIndicator.arrow:ClearAllPoints()
+		targetIndicator.arrow:SetPoint("BOTTOM", myPlate.healthBar, "TOP", 0, 30 + self.db.targetIndicator.yOffset)
 	elseif(self.db.targetIndicator.style == 'doubleArrow') then
 		targetIndicator.left:SetPoint("RIGHT", myPlate.healthBar, "LEFT", -self.db.targetIndicator.xOffset, 0)
 		targetIndicator.right:SetPoint("LEFT", myPlate.healthBar, "RIGHT", self.db.targetIndicator.xOffset, 0)
@@ -175,7 +175,7 @@ end
 
 function NP:ColorTargetIndicator(r, g, b)
 	if(self.db.targetIndicator.style == 'arrow') then
-		targetIndicator:SetVertexColor(r, g, b)
+		targetIndicator.arrow:SetVertexColor(r, g, b)
 	elseif(self.db.targetIndicator.style == 'doubleArrow' or self.db.targetIndicator.style == 'doubleArrowInverted') then
 		targetIndicator.left:SetVertexColor(r, g, b)
 		targetIndicator.right:SetVertexColor(r, g, b)
@@ -230,6 +230,7 @@ function NP:OnUpdate(elapsed)
 				NP.SetUnitInfo(blizzPlate, plate)
 				NP.ColorizeAndScale(blizzPlate, plate)
 				NP.UpdateLevelAndName(blizzPlate, plate)
+				plate:SetDepth(25) --See http://git.tukui.org/Elv/elvui/issues/7#note_288
 			end
 		end
 
@@ -471,7 +472,7 @@ function NP:ColorizeAndScale(myPlate)
 	else
 		color = NP.db.reactions.enemy
 	end
-	
+
 	if self.raidIcon:IsShown() and NP.db.healthBar.colorByRaidIcon then
 		NP:CheckRaidIcon(self)
 		local raidColor = NP.RaidMarkColors[self.raidIconType]
@@ -533,6 +534,7 @@ function NP:SetUnitInfo(myPlate)
 		if(NP.db.targetIndicator.enable) then
 			targetIndicator:Show()
 			NP:PositionTargetIndicator(myPlate)
+			targetIndicator:SetDepth(myPlate:GetDepth())
 		end
 
 		NP:UpdateComboPointsByUnitID('target')
@@ -635,8 +637,9 @@ function NP:Initialize()
 	self:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
 	self:RegisterEvent("UNIT_COMBO_POINTS")
 
-	self.arrowIndicator = WorldFrame:CreateTexture(nil, 'BORDER', -1)
-	self.arrowIndicator:SetTexture([[Interface\AddOns\ElvUI\media\textures\nameplateTargetIndicator.tga]])
+	self.arrowIndicator = CreateFrame("Frame", nil, WorldFrame)
+	self.arrowIndicator.arrow = self.arrowIndicator:CreateTexture(nil, 'BORDER', -1)
+	self.arrowIndicator.arrow:SetTexture([[Interface\AddOns\ElvUI\media\textures\nameplateTargetIndicator.tga]])
 	self.arrowIndicator:Hide()
 
 	self.doubleArrowIndicator = CreateFrame("Frame", nil, WorldFrame)
@@ -650,9 +653,9 @@ function NP:Initialize()
 	self.glowIndicator:SetFrameLevel(0)
 	self.glowIndicator:SetFrameStrata("BACKGROUND")
 	self.glowIndicator:SetBackdrop( {
- 		edgeFile = LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = 3,
- 		insets = {left = 5, right = 5, top = 5, bottom = 5},
- 	})
+		edgeFile = LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = 3,
+		insets = {left = 5, right = 5, top = 5, bottom = 5},
+	})
 	self.glowIndicator:SetBackdropColor(0, 0, 0, 0)
 	self.glowIndicator:SetScale(E.PixelMode and 2.5 or 3)
 	self.glowIndicator:Hide()
@@ -997,6 +1000,7 @@ end
 
 function NP:CreatePlate(frame)
 	frame.healthBar = frame.ArtContainer.HealthBar
+
 	-- frame.healthBar.texture = frame.healthBar:GetRegions() --No parentKey, yet?
 
 	-- frame.absorbBar = frame.ArtContainer.AbsorbBar
@@ -1008,7 +1012,7 @@ function NP:CreatePlate(frame)
 	frame.threat = frame.ArtContainer.AggroWarningTexture
 	frame.bossIcon = frame.ArtContainer.HighLevelIcon
 	frame.name = frame.NameContainer.NameText
-	
+
 	frame.castBar = frame.ArtContainer.CastBar
 	-- frame.castBar.texture = frame.castBar:GetRegions() --No parentKey, yet?
 	frame.castBar.border = frame.ArtContainer.CastBarBorder
@@ -1021,13 +1025,14 @@ function NP:CreatePlate(frame)
 	if(self.viewPort) then
 		myPlate:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT")
 	end
-	
+
 	--Hidden Frame (used to hide castbar icon)
 	myPlate.hiddenFrame = CreateFrame("Frame", nil, myPlate)
 	myPlate.hiddenFrame:Hide()
 
 	--HealthBar
 	myPlate.healthBar = CreateFrame("StatusBar", nil, myPlate)
+	E:RegisterStatusBar(myPlate.healthBar)
 	myPlate.healthBar:SetPoint('BOTTOM', myPlate, 'BOTTOM', 0, 5)
 	myPlate.healthBar:SetFrameStrata("BACKGROUND")
 	myPlate.healthBar:SetFrameLevel(0)
@@ -1040,6 +1045,7 @@ function NP:CreatePlate(frame)
 
 	--CastBar
 	myPlate.castBar = CreateFrame("StatusBar", nil, myPlate)
+	E:RegisterStatusBar(myPlate.castBar)
 	myPlate.castBar:SetPoint('TOPLEFT', myPlate.healthBar, 'BOTTOMLEFT', 0, -5)
 	myPlate.castBar:SetPoint('TOPRIGHT', myPlate.healthBar, 'BOTTOMRIGHT', 0, -5)
 	myPlate.castBar:SetFrameStrata("BACKGROUND")
@@ -1119,9 +1125,9 @@ function NP:CreatePlate(frame)
 	myPlate.lowHealth:SetFrameLevel(0)
 	myPlate.lowHealth:SetOutside(myPlate.healthBar, 3, 3)
 	myPlate.lowHealth:SetBackdrop( {
- 		edgeFile = LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = 3,
- 		insets = {left = 5, right = 5, top = 5, bottom = 5},
- 	})
+		edgeFile = LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = 3,
+		insets = {left = 5, right = 5, top = 5, bottom = 5},
+	})
 	myPlate.lowHealth:SetBackdropColor(0, 0, 0, 0)
 	myPlate.lowHealth:SetBackdropBorderColor(1, 1, 0, 0.9)
 	myPlate.lowHealth:SetScale(E.PixelMode and 1.5 or 2)
@@ -1785,7 +1791,7 @@ function NP:UpdateAuras(frame)
 end
 
 function NP:UpdateAuraByLookup(guid)
- 	if guid == UnitGUID("target") then
+	if guid == UnitGUID("target") then
 		NP:UpdateAurasByUnitID("target")
 	elseif guid == UnitGUID("mouseover") then
 		NP:UpdateAurasByUnitID("mouseover")

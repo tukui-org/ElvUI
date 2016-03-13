@@ -12,7 +12,7 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.mail ~= true then return end
 	MailFrame:StripTextures(true)
 	MailFrame:SetTemplate("Transparent")
-	--MailFrame:SetWidth(360)
+	--MailFrame:Width(360)
 
 	for i = 1, INBOXITEMS_TO_DISPLAY do
 		local bg = _G["MailItem"..i]

@@ -44,5 +44,7 @@
 	<Script file='tags.lua'/>
 	<Include file='elements\load_elements.xml'/>
 	<Include file='units\load_units.xml'/>
+	<Script file='construct_units.lua'/>
 	<Include file='groups\load_groups.xml'/>
+	<Script file='bodyguard.lua'/>
 </Ui>

@@ -124,7 +124,7 @@ local function createSlot(id)
 	local iconFrame = CreateFrame("Frame", nil, frame)
 	iconFrame:Height(iconsize)
 	iconFrame:Width(iconsize)
-	iconFrame:SetPoint("RIGHT", frame)
+	iconFrame:Point("RIGHT", frame)
 	iconFrame:SetTemplate("Default")
 	frame.iconFrame = iconFrame
 	E["frames"][iconFrame] = nil;
@@ -143,16 +143,16 @@ local function createSlot(id)
 
 	local name = frame:CreateFontString(nil, "OVERLAY")
 	name:SetJustifyH("LEFT")
-	name:SetPoint("LEFT", frame)
-	name:SetPoint("RIGHT", icon, "LEFT")
+	name:Point("LEFT", frame)
+	name:Point("RIGHT", icon, "LEFT")
 	name:SetNonSpaceWrap(true)
 	name:FontTemplate(nil, nil, 'OUTLINE')
 	frame.name = name
 
 	local drop = frame:CreateTexture(nil, "ARTWORK")
 	drop:SetTexture"Interface\\QuestFrame\\UI-QuestLogTitleHighlight"
-	drop:SetPoint("LEFT", icon, "RIGHT", 0, 0)
-	drop:SetPoint("RIGHT", frame)
+	drop:Point("LEFT", icon, "RIGHT", 0, 0)
+	drop:Point("RIGHT", frame)
 	drop:SetAllPoints(frame)
 	drop:SetAlpha(.3)
 	frame.drop = drop
@@ -215,12 +215,14 @@ function M:LOOT_OPENED(event, autoloot)
 		y = y / lootFrame:GetEffectiveScale()
 
 		lootFrame:ClearAllPoints()
-		lootFrame:Point("TOPLEFT", nil, "BOTTOMLEFT", x - 40, y + 20)
+		lootFrame:Point("TOPLEFT", UIParent, "BOTTOMLEFT", x - 40, y + 20)
 		lootFrame:GetCenter()
 		lootFrame:Raise()
+		E:DisableMover("LootFrameMover")
 	else
 		lootFrame:ClearAllPoints()
-		lootFrame:SetPoint("TOPLEFT", lootFrameHolder, "TOPLEFT")
+		lootFrame:Point("TOPLEFT", lootFrameHolder, "TOPLEFT")
+		E:EnableMover("LootFrameMover")
 	end
 
 	local m, w, t = 0, 0, lootFrame.title:GetStringWidth()
@@ -230,9 +232,9 @@ function M:LOOT_OPENED(event, autoloot)
 			local texture, item, quantity, quality, locked, isQuestItem, questId, isActive = GetLootSlotInfo(i)
 			local color = ITEM_QUALITY_COLORS[quality]
 
-			--if texture and texture:find('INV_Misc_Coin') then
-				--item = item:gsub("\n", ", ")
-			--end
+			if texture and texture:find('INV_Misc_Coin') then
+				item = item:gsub("\n", ", ")
+			end
 
 			if quantity and (quantity > 1) then
 				slot.count:SetText(quantity)
@@ -313,7 +315,7 @@ function M:LoadLoot()
 
 	lootFrame = CreateFrame('Button', 'ElvLootFrame', lootFrameHolder)
 	lootFrame:SetClampedToScreen(true)
-	lootFrame:SetPoint('TOPLEFT')
+	lootFrame:Point('TOPLEFT')
 	lootFrame:Size(256, 64)
 	lootFrame:SetTemplate('Transparent')
 	lootFrame:SetFrameStrata(LootFrame:GetFrameStrata())
@@ -335,7 +337,10 @@ function M:LoadLoot()
 	self:RegisterEvent("UPDATE_MASTER_LOOT_LIST")
 
 	E:CreateMover(lootFrameHolder, "LootFrameMover", L["Loot Frame"])
-
+	if(GetCVar("lootUnderMouse") == "1") then
+		E:DisableMover("LootFrameMover")
+	end
+	
 	-- Fuzz
 	LootFrame:UnregisterAllEvents()
 	tinsert(UISpecialFrames, 'ElvLootFrame')

@@ -1,6 +1,6 @@
 --[[
 	Collection of previous april fools pranks
-	
+
 	Garrison Missions: 	Would create fake Garrison Missions with very rare mounts as rewards.
 	Harlem Shake: 		Try it out with the command /harlemshake
 	Hello Kitty: 		Try it out with the command /hellokitty (pay attention to the popups, read what it says)
@@ -108,7 +108,7 @@ do
 
 				button.id = index;
 				button.info = mission;
-				button.Title:SetWidth(0);
+				button.Title:Width(0);
 				button.Title:SetText(mission.name);
 				button.Level:SetText(mission.level);
 				if ( mission.durationSeconds >= GARRISON_LONG_MISSION_TIME ) then
@@ -118,14 +118,14 @@ do
 					button.Summary:SetFormattedText(PARENS_TEMPLATE, mission.duration);
 				end
 				if ( button.Title:GetWidth() + button.Summary:GetWidth() + 8 < 655 - mission.numRewards * 65 ) then
-					button.Title:SetPoint("LEFT", 165, 0);
+					button.Title:Point("LEFT", 165, 0);
 					button.Summary:ClearAllPoints();
-					button.Summary:SetPoint("BOTTOMLEFT", button.Title, "BOTTOMRIGHT", 8, 0);
+					button.Summary:Point("BOTTOMLEFT", button.Title, "BOTTOMRIGHT", 8, 0);
 				else
-					button.Title:SetPoint("LEFT", 165, 10);
-					button.Title:SetWidth(655 - mission.numRewards * 65);
+					button.Title:Point("LEFT", 165, 10);
+					button.Title:Width(655 - mission.numRewards * 65);
 					button.Summary:ClearAllPoints();
-					button.Summary:SetPoint("TOPLEFT", button.Title, "BOTTOMLEFT", 0, -4);
+					button.Summary:Point("TOPLEFT", button.Title, "BOTTOMLEFT", 0, -4);
 				end
 				if ( mission.locPrefix ) then
 					button.LocBG:Show();
@@ -151,9 +151,9 @@ do
 					button.ItemLevel:Hide();
 				end
 				if ( showingItemLevel and mission.isRare ) then
-					button.Level:SetPoint("CENTER", button, "TOPLEFT", 40, -22);
+					button.Level:Point("CENTER", button, "TOPLEFT", 40, -22);
 				else
-					button.Level:SetPoint("CENTER", button, "TOPLEFT", 40, -36);
+					button.Level:Point("CENTER", button, "TOPLEFT", 40, -36);
 				end
 
 				button:Enable();
@@ -192,7 +192,7 @@ do
 
 		af.bg = af:CreateTexture(nil, 'BACKGROUND')
 		af.bg:SetTexture([[Interface\LevelUp\LevelUpTex]])
-		af.bg:SetPoint('BOTTOM')
+		af.bg:Point('BOTTOM')
 		af.bg:Size(326, 103)
 		af.bg:SetTexCoord(0.00195313, 0.63867188, 0.03710938, 0.23828125)
 		af.bg:SetVertexColor(1, 1, 1, 0.6)
@@ -200,14 +200,14 @@ do
 		af.lineTop = af:CreateTexture(nil, 'BACKGROUND')
 		af.lineTop:SetDrawLayer('BACKGROUND', 2)
 		af.lineTop:SetTexture([[Interface\LevelUp\LevelUpTex]])
-		af.lineTop:SetPoint("TOP")
+		af.lineTop:Point("TOP")
 		af.lineTop:Size(418, 7)
 		af.lineTop:SetTexCoord(0.00195313, 0.81835938, 0.01953125, 0.03320313)
 
 		af.lineBottom = af:CreateTexture(nil, 'BACKGROUND')
 		af.lineBottom:SetDrawLayer('BACKGROUND', 2)
 		af.lineBottom:SetTexture([[Interface\LevelUp\LevelUpTex]])
-		af.lineBottom:SetPoint("BOTTOM")
+		af.lineBottom:Point("BOTTOM")
 		af.lineBottom:Size(418, 7)
 		af.lineBottom:SetTexCoord(0.00195313, 0.81835938, 0.01953125, 0.03320313)
 
@@ -252,7 +252,7 @@ do
 		elseif(event == "GARRISON_MISSION_BONUS_ROLL_COMPLETE") then
 			local missionID, success = ...
 			if(success and missionID == E.db.missionID) then
-				E.db.missionID = nil; 
+				E.db.missionID = nil;
 				E.db.aprilFoolsMount = nil;
 				E.global.aprilFools = true;
 				-- AprilFoolsFrame:Show()
@@ -367,7 +367,7 @@ do
 			end
 		end
 	end
-	
+
 	function E:HarlemShakeToggle()
 		self:StaticPopup_Show("HARLEM_SHAKE");
 	end
@@ -521,7 +521,7 @@ do
 
 		self:UpdateAll()
 	end
-	
+
 	function E:CreateKittys()
 		if(HelloKittyLeft) then
 			HelloKittyLeft:Show()
@@ -533,7 +533,7 @@ do
 		helloKittyLeft:SetMovable(true)
 		helloKittyLeft:EnableMouse(true)
 		helloKittyLeft:RegisterForDrag("LeftButton")
-		helloKittyLeft:SetPoint("BOTTOMLEFT", LeftChatPanel, "BOTTOMRIGHT", 2, -4)
+		helloKittyLeft:Point("BOTTOMLEFT", LeftChatPanel, "BOTTOMRIGHT", 2, -4)
 		helloKittyLeft.tex = helloKittyLeft:CreateTexture(nil, "OVERLAY")
 		helloKittyLeft.tex:SetAllPoints()
 		helloKittyLeft.tex:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\helloKitty.tga")
@@ -550,7 +550,7 @@ do
 		helloKittyRight:SetMovable(true)
 		helloKittyRight:EnableMouse(true)
 		helloKittyRight:RegisterForDrag("LeftButton")
-		helloKittyRight:SetPoint("BOTTOMRIGHT", RightChatPanel, "BOTTOMLEFT", -2, -4)
+		helloKittyRight:Point("BOTTOMRIGHT", RightChatPanel, "BOTTOMLEFT", -2, -4)
 		helloKittyRight.tex = helloKittyRight:CreateTexture(nil, "OVERLAY")
 		helloKittyRight.tex:SetAllPoints()
 		helloKittyRight.tex:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\helloKitty.tga")
@@ -609,12 +609,44 @@ do
 		self.db.tempSettings = nil
 		self:UpdateAll()
 	end
-	
+
 	function E:HelloKittyToggle()
 		if(HelloKittyLeft and HelloKittyLeft:IsShown()) then
 			self:RestoreHelloKitty()
 		else
 			self:StaticPopup_Show("HELLO_KITTY")
 		end
+	end
+	
+	function E:ShowTukuiFrame()
+		local f = CreateFrame("Button", "TukuiThanks", E.UIParent)
+		f.SetPage = SetPage
+		f:Size(550, 260)
+		f:SetTemplate("Transparent")
+		f:Point("CENTER")
+		f:SetFrameStrata('TOOLTIP')
+		
+		f.Title = f:CreateFontString(nil, 'OVERLAY')
+		f.Title:FontTemplate(nil, 17, nil)
+		f.Title:Point("TOP", 0, -5)
+		f.Title:SetText("Thanks For Testing!")
+		
+		f.Desc1 = f:CreateFontString(nil, 'OVERLAY')
+		f.Desc1:FontTemplate()
+		f.Desc1:Point("TOPLEFT", 20, -75)
+		f.Desc1:Width(f:GetWidth() - 40)		
+		f.Desc1:SetText("Thank you for the five years of testing the experimental version of Tukui codenamed 'ElvUI'. The testing period has now ended your user interface has been adjusted accordingly.")
+	
+		local close = CreateFrame("Button", "InstallCloseButton", f, "UIPanelCloseButton")
+		close:Point("TOPRIGHT", f, "TOPRIGHT")
+		close:SetScript("OnClick", function()
+			f:Hide()
+		end)
+		E.Skins:HandleCloseButton(close)	
+		
+		f.tutorialImage = f:CreateTexture('InstallTutorialImage', 'OVERLAY')
+		f.tutorialImage:Size(256, 128)
+		f.tutorialImage:SetTexture('Interface\\AddOns\\ElvUI\\media\\textures\\tukui_logo.tga')	
+		f.tutorialImage:Point('BOTTOM', 0, 10)	
 	end
 end

@@ -45,7 +45,7 @@ local function LoadSkin()
 		end
 
 		local numRows = ceil(numItems / 2);
-		MissingLootFrame:SetHeight(numRows * 43 + 38 + MissingLootFrameLabel:GetHeight());
+		MissingLootFrame:Height(numRows * 43 + 38 + MissingLootFrameLabel:GetHeight());
 	end
 	hooksecurefunc("MissingLootFrame_Show", SkinButton)
 
@@ -133,7 +133,7 @@ local function LoadSkin()
 
 	LootFrame:StripTextures()
 	LootFrameInset:StripTextures()
-	LootFrame:SetHeight(LootFrame:GetHeight() - 30)
+	LootFrame:Height(LootFrame:GetHeight() - 30)
 	S:HandleCloseButton(LootFrameCloseButton)
 
 	LootFrame:SetTemplate("Transparent")
@@ -149,7 +149,7 @@ local function LoadSkin()
 	end
 
 	LootFrame.Title:ClearAllPoints()
-	LootFrame.Title:SetPoint("TOPLEFT", LootFrame, "TOPLEFT", 4, -4)
+	LootFrame.Title:Point("TOPLEFT", LootFrame, "TOPLEFT", 4, -4)
 	LootFrame.Title:SetJustifyH("LEFT")
 
 	for i=1, LOOTFRAME_NUMBUTTONS do
@@ -161,7 +161,7 @@ local function LoadSkin()
 
 		local point, attachTo, point2, x, y = button:GetPoint()
 		button:ClearAllPoints()
-		button:SetPoint(point, attachTo, point2, x, y+30)
+		button:Point(point, attachTo, point2, x, y+30)
 	end
 
 	hooksecurefunc("LootFrame_UpdateButton", function(index)

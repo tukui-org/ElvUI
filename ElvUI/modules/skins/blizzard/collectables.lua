@@ -27,7 +27,7 @@ local function LoadSkin()
 	S:HandleButton(MountJournalFilterButton)
 
 	MountJournalFilterButton:ClearAllPoints()
-	MountJournalFilterButton:SetPoint("LEFT", MountJournalSearchBox, "RIGHT", 5, 0)
+	MountJournalFilterButton:Point("LEFT", MountJournalSearchBox, "RIGHT", 5, 0)
 
 	-------------------------------
 	--[[ mount journal (tab 1) ]]--
@@ -51,7 +51,7 @@ local function LoadSkin()
 		local b = _G["MountJournalListScrollFrameButton"..i];
 		S:HandleItemButton(b)
 		b.favorite:SetTexture("Interface\\COMMON\\FavoritesIcon")
-		b.favorite:SetPoint("TOPLEFT",b.DragButton,"TOPLEFT",-8,8)
+		b.favorite:Point("TOPLEFT",b.DragButton,"TOPLEFT",-8,8)
 		b.favorite:SetSize(32,32)
 	end
 
@@ -70,16 +70,19 @@ local function LoadSkin()
 		f:StripTextures()
 	end
 
-	PetJournalTutorialButton:Kill()
+	if E.global.general.disableTutorialButtons then
+		PetJournalTutorialButton:Kill()
+	end
+
 	PetJournal.PetCount:StripTextures()
 	S:HandleEditBox(PetJournalSearchBox)
 	PetJournalSearchBox:ClearAllPoints()
-	PetJournalSearchBox:SetPoint("TOPLEFT", PetJournalLeftInset, "TOPLEFT", (E.PixelMode and 13 or 10), -9)
+	PetJournalSearchBox:Point("TOPLEFT", PetJournalLeftInset, "TOPLEFT", (E.PixelMode and 13 or 10), -9)
 	PetJournalFilterButton:StripTextures(true)
 	S:HandleButton(PetJournalFilterButton)
 	PetJournalFilterButton:Height(E.PixelMode and 22 or 24)
 	PetJournalFilterButton:ClearAllPoints()
-	PetJournalFilterButton:SetPoint("TOPRIGHT", PetJournalLeftInset, "TOPRIGHT", -5, -(E.PixelMode and 8 or 7))
+	PetJournalFilterButton:Point("TOPRIGHT", PetJournalLeftInset, "TOPRIGHT", -5, -(E.PixelMode and 8 or 7))
 	PetJournalListScrollFrame:StripTextures()
 	S:HandleScrollBar(PetJournalListScrollFrameScrollBar)
 
@@ -137,7 +140,7 @@ local function LoadSkin()
 		_G['PetJournalLoadoutPet'..i]:StripTextures()
 		_G['PetJournalLoadoutPet'..i]:CreateBackdrop()
 		_G['PetJournalLoadoutPet'..i].backdrop:SetAllPoints()
-		_G['PetJournalLoadoutPet'..i].petTypeIcon:SetPoint('BOTTOMLEFT', 2, 2)
+		_G['PetJournalLoadoutPet'..i].petTypeIcon:Point('BOTTOMLEFT', 2, 2)
 
 
 		_G['PetJournalLoadoutPet'..i].dragButton:SetOutside(_G['PetJournalLoadoutPet'..i..'Icon'])
@@ -154,9 +157,11 @@ local function LoadSkin()
 		_G['PetJournalLoadoutPet'..i..'HealthFrame'].healthBar:StripTextures()
 		_G['PetJournalLoadoutPet'..i..'HealthFrame'].healthBar:CreateBackdrop('Default')
 		_G['PetJournalLoadoutPet'..i..'HealthFrame'].healthBar:SetStatusBarTexture(E.media.normTex)
+		 E:RegisterStatusBar(_G['PetJournalLoadoutPet'..i..'HealthFrame'].healthBar)
 		_G['PetJournalLoadoutPet'..i..'XPBar']:StripTextures()
 		_G['PetJournalLoadoutPet'..i..'XPBar']:CreateBackdrop('Default')
 		_G['PetJournalLoadoutPet'..i..'XPBar']:SetStatusBarTexture(E.media.normTex)
+		E:RegisterStatusBar(_G['PetJournalLoadoutPet'..i..'XPBar'])
 		_G['PetJournalLoadoutPet'..i..'XPBar']:SetFrameLevel(_G['PetJournalLoadoutPet'..i..'XPBar']:GetFrameLevel() + 2)
 
 		for index = 1, 3 do
@@ -217,14 +222,15 @@ local function LoadSkin()
 	PetJournalPetCardHealthFrame.healthBar:StripTextures()
 	PetJournalPetCardHealthFrame.healthBar:CreateBackdrop('Default')
 	PetJournalPetCardHealthFrame.healthBar:SetStatusBarTexture(E.media.normTex)
+	E:RegisterStatusBar(PetJournalPetCardHealthFrame.healthBar)
 	PetJournalPetCardXPBar:StripTextures()
 	PetJournalPetCardXPBar:CreateBackdrop('Default')
 	PetJournalPetCardXPBar:SetStatusBarTexture(E.media.normTex)
-
+	E:RegisterStatusBar(PetJournalPetCardXPBar)
 
 	--Toy Box
 	S:HandleButton(ToyBoxFilterButton)
-	ToyBoxFilterButton:SetPoint("TOPRIGHT", ToyBox, "TOPRIGHT", -15, -34)
+	ToyBoxFilterButton:Point("TOPRIGHT", ToyBox, "TOPRIGHT", -15, -34)
 
 	S:HandleEditBox(ToyBox.searchBox)
 	ToyBox.iconsFrame:StripTextures()
@@ -259,7 +265,7 @@ local function LoadSkin()
 
 	--Heirlooms
 	S:HandleButton(HeirloomsJournalFilterButton)
-	HeirloomsJournalFilterButton:SetPoint("TOPRIGHT", HeirloomsJournal, "TOPRIGHT", -15, -34)
+	HeirloomsJournalFilterButton:Point("TOPRIGHT", HeirloomsJournal, "TOPRIGHT", -15, -34)
 
 	S:HandleEditBox(HeirloomsJournal.SearchBox)
 	HeirloomsJournal.iconsFrame:StripTextures()

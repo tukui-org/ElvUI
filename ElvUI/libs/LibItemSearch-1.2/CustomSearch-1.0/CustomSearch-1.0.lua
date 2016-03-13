@@ -18,7 +18,7 @@ along with the library. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
 This file is part of CustomSearch.
 --]]
 
-local Lib = LibStub:NewLibrary('CustomSearch-1.0-ElvUI', 1)
+local Lib = LibStub:NewLibrary('CustomSearch-1.0', 7)
 if not Lib then
 	return
 end
@@ -106,7 +106,7 @@ function Lib:Filter(tag, operator, search)
 	if tag then
 		for _, filter in pairs(self.filters) do
 			for _, value in pairs(filter.tags or {}) do
-				if value:find(tag, nil, true) then
+				if value:find(tag) then
 					return self:UseFilter(filter, operator, search)
 				end
 			end
@@ -133,7 +133,7 @@ end
 function Lib:Find(search, ...)
 	for i = 1, select('#', ...) do
 		local text = select(i, ...)
-		if text and self:Clean(text):find(search, nil, true) then
+		if text and self:Clean(text):find(search) then
 			return true
 		end
 	end

@@ -130,7 +130,7 @@ local function LoadSkin()
 	FriendsFrameBattlenetFrame.BroadcastButton:CreateBackdrop()
 	FriendsFrameBattlenetFrame.BroadcastButton:Size(17)
 	FriendsFrameBattlenetFrame.BroadcastButton:ClearAllPoints()
-	FriendsFrameBattlenetFrame.BroadcastButton:SetPoint('RIGHT', FriendsFrameStatusDropDown.backdrop, 'LEFT', -23, 0)
+	FriendsFrameBattlenetFrame.BroadcastButton:Point('RIGHT', FriendsFrameStatusDropDown.backdrop, 'LEFT', -23, 0)
 	FriendsFrameBattlenetFrame.BroadcastButton:GetNormalTexture():SetTexCoord(.28, .72, .28, .72)
 	FriendsFrameBattlenetFrame.BroadcastButton:GetPushedTexture():SetTexCoord(.28, .72, .28, .72)
 	FriendsFrameBattlenetFrame.BroadcastButton:GetHighlightTexture():SetTexCoord(.28, .72, .28, .72)
@@ -219,15 +219,17 @@ local function LoadSkin()
 	S:HandleEditBox(FriendsFriendsNoteFrame)
 	S:HandleDropDownBox(FriendsFriendsFrameDropDown,150)
 
-	BNConversationInviteDialog:StripTextures()
-	BNConversationInviteDialog:CreateBackdrop('Transparent')
-	BNConversationInviteDialogList:StripTextures()
-	BNConversationInviteDialogList:SetTemplate('Default')
-	S:HandleButton(BNConversationInviteDialogInviteButton)
-	S:HandleButton(BNConversationInviteDialogCancelButton)
+	if E.wowbuild < 21073 then --Remove this when 6.2.4 goes live
+		BNConversationInviteDialog:StripTextures()
+		BNConversationInviteDialog:CreateBackdrop('Transparent')
+		BNConversationInviteDialogList:StripTextures()
+		BNConversationInviteDialogList:SetTemplate('Default')
+		S:HandleButton(BNConversationInviteDialogInviteButton)
+		S:HandleButton(BNConversationInviteDialogCancelButton)
 
-	for i=1, BN_CONVERSATION_INVITE_NUM_DISPLAYED do
-		S:HandleCheckBox(_G["BNConversationInviteDialogListFriend"..i].checkButton)
+		for i=1, BN_CONVERSATION_INVITE_NUM_DISPLAYED do
+			S:HandleCheckBox(_G["BNConversationInviteDialogListFriend"..i].checkButton)
+		end
 	end
 
 	FriendsTabHeaderSoRButton:SetTemplate('Default')
