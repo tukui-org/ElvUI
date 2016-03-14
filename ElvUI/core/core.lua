@@ -1224,6 +1224,27 @@ function E:DBConversions()
 	if fonts[E.private.namefont] then E.private.namefont = fonts[E.private.namefont] end
 	if fonts[E.private.chatBubbleFont] then E.private.chatBubbleFont = fonts[E.private.chatBubbleFont] end
 	
+	--Convert fonts for custom texts too
+	local function ConvertCustomTextFont(unit)
+		local db = E.db.unitframe.units[unit]
+		
+		if db and db.customTexts then
+			for objectName in pairs(db.customTexts) do
+				local objectDB = db.customTexts[objectName]
+				if objectDB.font and fonts[objectDB.font] then
+					objectDB.font = fonts[objectDB.font]
+				end
+			end
+		end
+	end
+	local units = {
+		"player", "target", "targettarget", "targettargettarget", "focus", "focustarget",
+		"pet", "pettarget", "boss", "arena", "party", "raid", "raid40", "raidpet",
+	}
+	for _, unit in pairs(units) do
+		ConvertCustomTextFont(unit)
+	end
+
 	--Convert actionbar button spacing to backdrop spacing, so users don't get any unwanted changes
 	if not E.db.actionbar.backdropSpacingConverted then
 		for i = 1, 10 do
