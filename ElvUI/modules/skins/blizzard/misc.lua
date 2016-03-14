@@ -1173,10 +1173,21 @@ local function LoadSkin()
 			if navButton.MenuArrowButton then
 				S:HandleNextPrevButton(navButton.MenuArrowButton, true)
 			end
+
+			navButton.xoffset = 1 --Make a 1px gap between each navbutton
 			navButton.isSkinned = true
 		end
 	end
 	hooksecurefunc("NavBar_AddButton", SkinNavBarButtons)
+	
+	--This is necessary to fix position of button right next to homebutton.
+	local function SetHomeButtonOffsetX(self)
+		local homeButton = self.homeButton
+		if homeButton then
+			homeButton.xoffset = 1
+		end
+	end
+	hooksecurefunc("NavBar_Initialize", SetHomeButtonOffsetX)
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)
