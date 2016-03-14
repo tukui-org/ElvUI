@@ -120,7 +120,8 @@ AB.customExitButton = {
 }
 
 function AB:PositionAndSizeBar(barName)
-	local spacing = E:Scale(self.db[barName].buttonspacing);
+	local buttonSpacing = E:Scale(self.db[barName].buttonspacing);
+	local backdropSpacing = E:Scale((self.db[barName].backdropSpacing or self.db[barName].buttonspacing))
 	local buttonsPerRow = self.db[barName].buttonsPerRow;
 	local numButtons = self.db[barName].buttons;
 	local size = E:Scale(self.db[barName].buttonsize);
@@ -141,8 +142,11 @@ function AB:PositionAndSizeBar(barName)
 		numColumns = 1;
 	end
 
-	bar:Width(((E.Border - E.Spacing)*2) + spacing + ((size * (buttonsPerRow * widthMult)) + ((spacing * (buttonsPerRow - 1)) * widthMult) + (spacing * widthMult)));
-	bar:Height(((E.Border - E.Spacing)*2) + spacing + ((size * (numColumns * heightMult)) + ((spacing * (numColumns - 1)) * heightMult) + (spacing * heightMult)));
+	--Size of all buttons + Spacing between all buttons + Spacing between additional rows of buttons + Spacing between backdrop and buttons + Spacing on end borders with non-thin borders
+	local barWidth = (size * (buttonsPerRow * widthMult)) + ((buttonSpacing * (buttonsPerRow - 1)) * widthMult) + (buttonSpacing * (widthMult-1)) + (backdropSpacing*2) + (self.db[barName].backdrop == true and ((E.Border - E.Spacing)*2) or 0)
+	local barHeight = (size * (numColumns * heightMult)) + ((buttonSpacing * (numColumns - 1)) * heightMult) + (buttonSpacing * (heightMult-1)) + (backdropSpacing*2) + (self.db[barName].backdrop == true and ((E.Border - E.Spacing)*2) or 0)
+	bar:Width(barWidth);
+	bar:Height(barHeight);
 
 	bar.mouseover = self.db[barName].mouseover
 
@@ -164,19 +168,20 @@ function AB:PositionAndSizeBar(barName)
 	else
 		horizontalGrowth = "LEFT";
 	end
-	
+
 	if self.db[barName].mouseover then
 		bar:SetAlpha(0);
 	else
 		bar:SetAlpha(self.db[barName].alpha);
 	end
-	
+
 	if(self.db[barName].inheritGlobalFade) then
 		bar:SetParent(self.fadeParent)
 	else
 		bar:SetParent(E.UIParent)
 	end
-	local button, lastButton, lastColumnButton ;
+	local button, lastButton, lastColumnButton;
+	local firstButtonSpacing = backdropSpacing + (self.db[barName].backdrop == true and (E.Border - E.Spacing) or E.Spacing)
 	for i=1, NUM_ACTIONBAR_BUTTONS do
 		button = bar.buttons[i];
 		lastButton = bar.buttons[i-1];
@@ -189,32 +194,32 @@ function AB:PositionAndSizeBar(barName)
 		if i == 1 then
 			local x, y;
 			if point == "BOTTOMLEFT" then
-				x, y = spacing + (E.Border - E.Spacing), spacing + (E.Border - E.Spacing);
+				x, y = firstButtonSpacing, firstButtonSpacing;
 			elseif point == "TOPRIGHT" then
-				x, y = -spacing - (E.Border - E.Spacing), -spacing - (E.Border - E.Spacing);
+				x, y = -firstButtonSpacing, -firstButtonSpacing;
 			elseif point == "TOPLEFT" then
-				x, y = spacing + (E.Border - E.Spacing), -spacing - (E.Border - E.Spacing);
+				x, y = firstButtonSpacing, -firstButtonSpacing;
 			else
-				x, y = -spacing - (E.Border - E.Spacing), spacing + (E.Border - E.Spacing);
+				x, y = -firstButtonSpacing, firstButtonSpacing;
 			end
 
 			button:Point(point, bar, point, x, y);
 		elseif (i - 1) % buttonsPerRow == 0 then
 			local x = 0;
-			local y = -spacing;
+			local y = -buttonSpacing;
 			local buttonPoint, anchorPoint = "TOP", "BOTTOM";
 			if verticalGrowth == 'UP' then
-				y = spacing;
+				y = buttonSpacing;
 				buttonPoint = "BOTTOM";
 				anchorPoint = "TOP";
 			end
 			button:Point(buttonPoint, lastColumnButton, anchorPoint, x, y);
 		else
-			local x = spacing;
+			local x = buttonSpacing;
 			local y = 0;
 			local buttonPoint, anchorPoint = "LEFT", "RIGHT";
 			if horizontalGrowth == 'LEFT' then
-				x = -spacing;
+				x = -buttonSpacing;
 				buttonPoint = "RIGHT";
 				anchorPoint = "LEFT";
 			end
@@ -280,7 +285,7 @@ function AB:CreateBar(id)
 	bar.buttons = {}
 	bar.bindButtons = self['barDefaults']['bar'..id].bindButtons
 	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter');
-	self:HookScript(bar, 'OnLeave', 'Bar_OnLeave');	
+	self:HookScript(bar, 'OnLeave', 'Bar_OnLeave');
 
 	for i=1, 12 do
 		bar.buttons[i] = LAB:CreateButton(i, format(bar:GetName().."Button%d", i), bar, nil)
@@ -296,9 +301,9 @@ function AB:CreateBar(id)
 		if MasqueGroup and E.private.actionbar.masque.actionbars then
 			bar.buttons[i]:AddToMasque(MasqueGroup)
 		end
-		
+
 		self:HookScript(bar.buttons[i], 'OnEnter', 'Button_OnEnter');
-		self:HookScript(bar.buttons[i], 'OnLeave', 'Button_OnLeave');		
+		self:HookScript(bar.buttons[i], 'OnLeave', 'Button_OnLeave');
 	end
 	self:UpdateButtonConfig(bar, bar.bindButtons)
 
@@ -655,7 +660,7 @@ function AB:FadeParent_OnEvent(event)
 	else
 		self.mouseLock = false
 		E:UIFrameFadeOut(self, 0.2, self:GetAlpha(), 1 - AB.db.globalFadeAlpha)
-	end	
+	end
 end
 
 function AB:DisableBlizzard()
@@ -953,7 +958,7 @@ end
 function AB:VehicleFix()
 	local barName = 'bar1'
 	local bar = self["handledBars"][barName]
-	local spacing = E:Scale(self.db[barName].buttonspacing);
+	local buttonSpacing = E:Scale(self.db[barName].buttonspacing);
 	local numButtons = self.db[barName].buttons;
 	local buttonsPerRow = self.db[barName].buttonsPerRow;
 	local size = E:Scale(self.db[barName].buttonsize);
@@ -966,8 +971,8 @@ function AB:VehicleFix()
 
 		bar.backdrop:ClearAllPoints()
 		bar.backdrop:Point(self.db[barName].point, bar, self.db[barName].point)
-		bar.backdrop:Width(spacing + ((size * (buttonsPerRow * widthMult)) + ((spacing * (buttonsPerRow - 1)) * widthMult) + (spacing * widthMult)));
-		bar.backdrop:Height(spacing + ((size * (numColumns * heightMult)) + ((spacing * (numColumns - 1)) * heightMult) + (spacing * heightMult)));
+		bar.backdrop:Width(buttonSpacing + ((size * (buttonsPerRow * widthMult)) + ((buttonSpacing * (buttonsPerRow - 1)) * widthMult) + (buttonSpacing * widthMult)));
+		bar.backdrop:Height(buttonSpacing + ((size * (numColumns * heightMult)) + ((buttonSpacing * (numColumns - 1)) * heightMult) + (buttonSpacing * heightMult)));
 	else
 		bar.backdrop:SetAllPoints()
 	end
@@ -981,17 +986,17 @@ function AB:Initialize()
 	self.fadeParent = CreateFrame("Frame", "Elv_ABFade", UIParent)
 	self.fadeParent:SetAlpha(1 - self.db.globalFadeAlpha)
 	self.fadeParent:RegisterEvent("PLAYER_REGEN_DISABLED")
-	self.fadeParent:RegisterEvent("PLAYER_REGEN_ENABLED")	
+	self.fadeParent:RegisterEvent("PLAYER_REGEN_ENABLED")
 	self.fadeParent:RegisterEvent("PLAYER_TARGET_CHANGED")
 	self.fadeParent:RegisterUnitEvent("UNIT_SPELLCAST_START", "player")
 	self.fadeParent:RegisterUnitEvent("UNIT_SPELLCAST_STOP", "player")
 	self.fadeParent:RegisterUnitEvent("UNIT_SPELLCAST_CHANNEL_START", "player")
-	self.fadeParent:RegisterUnitEvent("UNIT_SPELLCAST_CHANNEL_STOP", "player")	
+	self.fadeParent:RegisterUnitEvent("UNIT_SPELLCAST_CHANNEL_STOP", "player")
 	self.fadeParent:RegisterUnitEvent("UNIT_HEALTH", "player")
 	self.fadeParent:RegisterEvent("PLAYER_FOCUS_CHANGED")
 	self.fadeParent:SetScript("OnEvent", self.FadeParent_OnEvent)
-	
-	
+
+
 	self:DisableBlizzard()
 
 	self:SetupExtraButton()
