@@ -479,6 +479,12 @@ function M:Initialize()
 	self:RegisterEvent("ZONE_CHANGED_INDOORS", "Update_ZoneText")
 	self:RegisterEvent('ADDON_LOADED')
 	self:UpdateSettings()
+	
+	--Make sure these invisible frames follow the minimap.
+	MinimapCluster:ClearAllPoints()
+	MinimapCluster:SetAllPoints(Minimap)
+	MinimapBackdrop:ClearAllPoints()
+	MinimapBackdrop:SetAllPoints(Minimap)
 
 	--Create Farmmode Minimap
 	local fm = CreateFrame('Minimap', 'FarmModeMap', E.UIParent)
