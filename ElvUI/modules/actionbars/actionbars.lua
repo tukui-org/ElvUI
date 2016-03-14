@@ -281,7 +281,9 @@ function AB:CreateBar(id)
 	bar.id = id
 	bar:CreateBackdrop('Default');
 	bar:SetFrameStrata("LOW")
-	bar.backdrop:SetAllPoints();
+	local offset = E.Spacing
+	bar.backdrop:SetPoint("TOPLEFT", bar, "TOPLEFT", offset, -offset)
+	bar.backdrop:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", -offset, offset)
 	bar.buttons = {}
 	bar.bindButtons = self['barDefaults']['bar'..id].bindButtons
 	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter');
