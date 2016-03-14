@@ -146,10 +146,12 @@ local function BuildABConfig()
 			},
 		}
 
-		--Update Bar 1 paging when Bar 6 is enabled/disabled
 		if i == 6 then
 			group['bar'..i].args.enabled.set = function(info, value)
 				E.db.actionbar['bar'..i].enabled = value;
+				AB:PositionAndSizeBar("bar6")
+				
+				--Update Bar 1 paging when Bar 6 is enabled/disabled
 				AB:UpdateBar1Paging()
 				AB:PositionAndSizeBar("bar1")
 			end
