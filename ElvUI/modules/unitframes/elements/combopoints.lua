@@ -38,8 +38,10 @@ function UF:Configure_ComboPoints(frame)
 	CPoints:ClearAllPoints()
 	local db = frame.db
 	if not frame.CLASSBAR_DETACHED then
+		E.FrameLocks[CPoints] = nil
 		CPoints:SetParent(frame)
 	else
+		E.FrameLocks[CPoints] = true
 		CPoints:SetParent(E.UIParent)
 	end
 

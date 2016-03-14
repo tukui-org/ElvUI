@@ -337,7 +337,6 @@ function CH:GetSmileyReplacementText(msg)
 	return outstr;
 end
 
-
 function CH:StyleChat(frame)
 	local name = frame:GetName()
 	_G[name.."TabText"]:FontTemplate(LSM:Fetch("font", self.db.tabFont), self.db.tabFontSize, self.db.tabFontOutline)
@@ -392,17 +391,7 @@ function CH:StyleChat(frame)
 	frame:StripTextures(true)
 	_G[name..'ButtonFrame']:Kill()
 
-	local a, b, c = select(6, editbox:GetRegions()); a:Kill(); b:Kill(); c:Kill()
-	_G[format(editbox:GetName().."FocusLeft", id)]:Kill()
-	_G[format(editbox:GetName().."FocusMid", id)]:Kill()
-	_G[format(editbox:GetName().."FocusRight", id)]:Kill()
-	editbox:SetTemplate('Default', true)
-	editbox:SetAltArrowKeyMode(false)
-	editbox:HookScript("OnEditFocusGained", function(self) self:Show(); if not LeftChatPanel:IsShown() then LeftChatPanel.editboxforced = true; LeftChatToggleButton:GetScript('OnEnter')(LeftChatToggleButton) end end)
-	editbox:HookScript("OnEditFocusLost", function(self) if LeftChatPanel.editboxforced then LeftChatPanel.editboxforced = nil; if LeftChatPanel:IsShown() then LeftChatToggleButton:GetScript('OnLeave')(LeftChatToggleButton) end end self:Hide() end)
-	editbox:SetAllPoints(LeftChatDataPanel)
-	self:SecureHook(editbox, "AddHistoryLine", "ChatEdit_AddHistory")
-	editbox:HookScript("OnTextChanged", function(self)
+	local function OnTextChanged(self)
 		local text = self:GetText()
 
 		if InCombatLockdown() then
@@ -443,7 +432,48 @@ function CH:StyleChat(frame)
 			new = new:gsub('|', '')
 			self:SetText(new)
 		end
-	end)
+	end
+	
+	--Work around broken SetAltArrowKeyMode API. Code from Prat
+	local function OnArrowPressed(self, key)
+		if #self.historyLines == 0 then
+			return
+		end
+
+		if key == "DOWN" then
+			self.historyIndex = self.historyIndex - 1
+
+			if self.historyIndex < 1 then
+				self.historyIndex = #self.historyLines
+			end
+		elseif key == "UP" then
+			self.historyIndex = self.historyIndex + 1
+
+			if self.historyIndex > #self.historyLines then
+				self.historyIndex = 1
+			end
+		else
+			return
+		end
+		self:SetText(self.historyLines[self.historyIndex])
+	end
+
+	local a, b, c = select(6, editbox:GetRegions()); a:Kill(); b:Kill(); c:Kill()
+	_G[format(editbox:GetName().."FocusLeft", id)]:Kill()
+	_G[format(editbox:GetName().."FocusMid", id)]:Kill()
+	_G[format(editbox:GetName().."FocusRight", id)]:Kill()
+	editbox:SetTemplate('Default', true)
+	editbox:SetAltArrowKeyMode(CH.db.useAltKey)
+	editbox:HookScript("OnEditFocusGained", function(self) self:Show(); if not LeftChatPanel:IsShown() then LeftChatPanel.editboxforced = true; LeftChatToggleButton:GetScript('OnEnter')(LeftChatToggleButton) end end)
+	editbox:HookScript("OnEditFocusLost", function(self) if LeftChatPanel.editboxforced then LeftChatPanel.editboxforced = nil; if LeftChatPanel:IsShown() then LeftChatToggleButton:GetScript('OnLeave')(LeftChatToggleButton) end end self:Hide() end)
+	editbox:SetAllPoints(LeftChatDataPanel)
+	self:SecureHook(editbox, "AddHistoryLine", "ChatEdit_AddHistory")
+	editbox:HookScript("OnTextChanged", OnTextChanged)
+	
+	--Work around broken SetAltArrowKeyMode API
+	editbox.historyLines = ElvCharacterDB.ChatEditHistory
+	editbox.historyIndex = 0
+	editbox:HookScript("OnArrowPressed", OnArrowPressed)
 
 	for i, text in pairs(ElvCharacterDB.ChatEditHistory) do
 		editbox:AddHistoryLine(text)
@@ -493,6 +523,15 @@ function CH:StyleChat(frame)
 
 	CreatedFrames = id
 	frame.styled = true
+end
+
+function CH:UpdateSettings()
+	for i = 1, CreatedFrames do
+		local chat = _G[format("ChatFrame%d", i)]
+		local name = chat:GetName()
+		local editbox = _G[name..'EditBox']
+		editbox:SetAltArrowKeyMode(CH.db.useAltKey)
+	end
 end
 
 local function removeIconFromLine(text)
@@ -926,8 +965,6 @@ function CH:ConcatenateTimeStamp(msg)
 	return msg
 end
 
-
-
 function CH:GetBNFriendColor(name, id)
 	local _, class
 	if E.wowbuild >= 21073 then
@@ -975,7 +1012,6 @@ function CH:GetBNFriendColor(name, id)
 		return name
 	end
 end
-
 
 function CH:GetPluginReplacementIcon(nameRealm)
 	return
