@@ -556,14 +556,17 @@ function B.Sort(bags, sorter, invertDirection)
 		local bagSlot = B:Encode_BagSlot(bag, slot)
 		local link = B:GetItemLink(bag, slot);
 
-		if link and blackList[GetItemInfo(link)] then
-			blackListedSlots[bagSlot] = true
-		end
-
-		if not blackListedSlots[bagSlot] then
-			for key,itemsearchquery in pairs(blackListQueries) do
-				if Search:Matches(link,itemsearchquery) then
-					blackListedSlots[bagSlot] = true
+		if link then
+			if blackList[GetItemInfo(link)] then
+				blackListedSlots[bagSlot] = true
+			end
+			
+			if not blackListedSlots[bagSlot] then
+				for _,itemsearchquery in pairs(blackListQueries) do
+					local success, result = pcall(Search.Matches, Search, link, itemsearchquery)
+					if success then
+						blackListedSlots[bagSlot] = result
+					end
 				end
 			end
 		end

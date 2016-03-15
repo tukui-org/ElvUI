@@ -1048,39 +1048,6 @@ end
 
 --DATABASE CONVERSIONS
 function E:DBConversions()
-	--Font Conversions
-	local fonts = {
-		["ElvUI Alt-Font"] = "Continuum Medium",
-		["ElvUI Alt-Combat"] = "Die Die Die!",
-		["ElvUI Combat"] = "Action Man",
-		["ElvUI Font"] = "PT Sans Narrow",
-		["ElvUI Pixel"] = "Homespun"
-	}
-	if fonts[E.db.general.font] then E.db.general.font = fonts[E.db.general.font] end
-	if fonts[E.db.nameplate.font] then E.db.nameplate.font = fonts[E.db.nameplate.font] end
-	if fonts[E.db.nameplate.buffs.font] then E.db.nameplate.buffs.font = fonts[E.db.nameplate.buffs.font] end
-	if fonts[E.db.nameplate.debuffs.font] then E.db.nameplate.debuffs.font = fonts[E.db.nameplate.debuffs.font] end
-	if fonts[E.db.bags.itemLevelFont] then E.db.bags.itemLevelFont = fonts[E.db.bags.itemLevelFont] end
-	if fonts[E.db.bags.countFont] then E.db.bags.countFont = fonts[E.db.bags.countFont] end
-	if fonts[E.db.auras.font] then E.db.auras.font = fonts[E.db.auras.font] end
-	--if fonts[E.db.auras.consolidatedBuffs.font] then E.db.auras.consolidatedBuffs.font = fonts[E.db.auras.consolidatedBuffs.font] end
-	if fonts[E.db.chat.font] then E.db.chat.font = fonts[E.db.chat.font] end
-	if fonts[E.db.chat.tabFont] then E.db.chat.tabFont = fonts[E.db.chat.tabFont] end
-	if fonts[E.db.datatexts.font] then E.db.datatexts.font = fonts[E.db.datatexts.font] end
-	if fonts[E.db.tooltip.font] then E.db.tooltip.font = fonts[E.db.tooltip.font] end
-	if fonts[E.db.tooltip.healthBar.font] then E.db.tooltip.healthBar.font = fonts[E.db.tooltip.healthBar.font] end
-	if fonts[E.db.unitframe.font] then E.db.unitframe.font = fonts[E.db.unitframe.font] end
-	if fonts[E.db.unitframe.units.party.rdebuffs.font] then E.db.unitframe.units.party.rdebuffs.font = fonts[E.db.unitframe.units.party.rdebuffs.font] end
-	if fonts[E.db.unitframe.units.raid.rdebuffs.font] then E.db.unitframe.units.raid.rdebuffs.font = fonts[E.db.unitframe.units.raid.rdebuffs.font] end
-	if fonts[E.db.unitframe.units.raid40.rdebuffs.font] then E.db.unitframe.units.raid40.rdebuffs.font = fonts[E.db.unitframe.units.raid40.rdebuffs.font] end
-	if fonts[E.db.unitframe.units.raidpet.rdebuffs.font] then E.db.unitframe.units.raidpet.rdebuffs.font = fonts[E.db.unitframe.units.raidpet.rdebuffs.font] end
-	if fonts[E.db.unitframe.units.tank.rdebuffs.font] then E.db.unitframe.units.tank.rdebuffs.font = fonts[E.db.unitframe.units.tank.rdebuffs.font] end
-	if fonts[E.db.unitframe.units.assist.rdebuffs.font] then E.db.unitframe.units.assist.rdebuffs.font = fonts[E.db.unitframe.units.assist.rdebuffs.font] end
-	if fonts[E.db.actionbar.font] then E.db.actionbar.font = fonts[E.db.actionbar.font] end
-	if fonts[E.private.dmgfont] then E.private.dmgfont = fonts[E.private.dmgfont] end
-	if fonts[E.private.namefont] then E.private.namefont = fonts[E.private.namefont] end
-	if fonts[E.private.chatBubbleFont] then E.private.chatBubbleFont = fonts[E.private.chatBubbleFont] end
-
 	--Add missing Stack Threshold
 	if E.global.unitframe['aurafilters']['RaidDebuffs'].spells then
 		local matchFound
@@ -1226,6 +1193,73 @@ function E:DBConversions()
 			if not values.xOffset then values.xOffset = 0 end
 			if not values.yOffset then values.yOffset = 0 end
 		end
+	end
+	
+	--Font Conversions
+	local fonts = {
+		["ElvUI Alt-Font"] = "Continuum Medium",
+		["ElvUI Alt-Combat"] = "Die Die Die!",
+		["ElvUI Combat"] = "Action Man",
+		["ElvUI Font"] = "PT Sans Narrow",
+		["ElvUI Pixel"] = "Homespun"
+	}
+	if fonts[E.db.general.font] then E.db.general.font = fonts[E.db.general.font] end
+	if fonts[E.db.nameplate.font] then E.db.nameplate.font = fonts[E.db.nameplate.font] end
+	if fonts[E.db.nameplate.buffs.font] then E.db.nameplate.buffs.font = fonts[E.db.nameplate.buffs.font] end
+	if fonts[E.db.nameplate.debuffs.font] then E.db.nameplate.debuffs.font = fonts[E.db.nameplate.debuffs.font] end
+	if fonts[E.db.bags.itemLevelFont] then E.db.bags.itemLevelFont = fonts[E.db.bags.itemLevelFont] end
+	if fonts[E.db.bags.countFont] then E.db.bags.countFont = fonts[E.db.bags.countFont] end
+	if fonts[E.db.auras.font] then E.db.auras.font = fonts[E.db.auras.font] end
+	if fonts[E.db.auras.consolidatedBuffs.font] then E.db.auras.consolidatedBuffs.font = fonts[E.db.auras.consolidatedBuffs.font] end
+	if fonts[E.db.chat.font] then E.db.chat.font = fonts[E.db.chat.font] end
+	if fonts[E.db.chat.tabFont] then E.db.chat.tabFont = fonts[E.db.chat.tabFont] end
+	if fonts[E.db.datatexts.font] then E.db.datatexts.font = fonts[E.db.datatexts.font] end
+	if fonts[E.db.tooltip.font] then E.db.tooltip.font = fonts[E.db.tooltip.font] end
+	if fonts[E.db.tooltip.healthBar.font] then E.db.tooltip.healthBar.font = fonts[E.db.tooltip.healthBar.font] end
+	if fonts[E.db.unitframe.font] then E.db.unitframe.font = fonts[E.db.unitframe.font] end
+	if fonts[E.db.unitframe.units.party.rdebuffs.font] then E.db.unitframe.units.party.rdebuffs.font = fonts[E.db.unitframe.units.party.rdebuffs.font] end
+	if fonts[E.db.unitframe.units.raid.rdebuffs.font] then E.db.unitframe.units.raid.rdebuffs.font = fonts[E.db.unitframe.units.raid.rdebuffs.font] end
+	if fonts[E.db.unitframe.units.raid40.rdebuffs.font] then E.db.unitframe.units.raid40.rdebuffs.font = fonts[E.db.unitframe.units.raid40.rdebuffs.font] end
+	if fonts[E.db.unitframe.units.raidpet.rdebuffs.font] then E.db.unitframe.units.raidpet.rdebuffs.font = fonts[E.db.unitframe.units.raidpet.rdebuffs.font] end
+	if fonts[E.db.unitframe.units.tank.rdebuffs.font] then E.db.unitframe.units.tank.rdebuffs.font = fonts[E.db.unitframe.units.tank.rdebuffs.font] end
+	if fonts[E.db.unitframe.units.assist.rdebuffs.font] then E.db.unitframe.units.assist.rdebuffs.font = fonts[E.db.unitframe.units.assist.rdebuffs.font] end
+	if fonts[E.db.actionbar.font] then E.db.actionbar.font = fonts[E.db.actionbar.font] end
+	if fonts[E.private.dmgfont] then E.private.dmgfont = fonts[E.private.dmgfont] end
+	if fonts[E.private.namefont] then E.private.namefont = fonts[E.private.namefont] end
+	if fonts[E.private.chatBubbleFont] then E.private.chatBubbleFont = fonts[E.private.chatBubbleFont] end
+	
+	--Convert fonts for custom texts too
+	local function ConvertCustomTextFont(unit)
+		local db = E.db.unitframe.units[unit]
+		
+		if db and db.customTexts then
+			for objectName in pairs(db.customTexts) do
+				local objectDB = db.customTexts[objectName]
+				if objectDB.font and fonts[objectDB.font] then
+					objectDB.font = fonts[objectDB.font]
+				end
+			end
+		end
+	end
+	local units = {
+		"player", "target", "targettarget", "targettargettarget", "focus", "focustarget",
+		"pet", "pettarget", "boss", "arena", "party", "raid", "raid40", "raidpet",
+	}
+	for _, unit in pairs(units) do
+		ConvertCustomTextFont(unit)
+	end
+
+	--Convert actionbar button spacing to backdrop spacing, so users don't get any unwanted changes
+	if not E.db.actionbar.backdropSpacingConverted then
+		for i = 1, 10 do
+			if E.db.actionbar["bar"..i] then
+				E.db.actionbar["bar"..i].backdropSpacing = E.db.actionbar["bar"..i].buttonspacing
+			end
+		end
+		E.db.actionbar.barPet.backdropSpacing = E.db.actionbar.barPet.buttonspacing
+		E.db.actionbar.stanceBar.backdropSpacing = E.db.actionbar.stanceBar.buttonspacing
+		
+		E.db.actionbar.backdropSpacingConverted = true
 	end
 end
 
