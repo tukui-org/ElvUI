@@ -131,7 +131,6 @@ end
 function UF:Update_PartyFrames(frame, db)
 	frame.db = db
 
-	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
 	frame.colors = ElvUF.colors
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 
