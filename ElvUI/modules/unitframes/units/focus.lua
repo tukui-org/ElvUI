@@ -78,7 +78,7 @@ function UF:Update_FocusFrame(frame, db)
 		frame.BOTTOM_OFFSET = UF:GetHealthBottomOffset(frame)
 	end
 
-	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
+	frame.Portrait = frame.Portrait or (db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D)
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	frame.colors = ElvUF.colors
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
@@ -97,7 +97,7 @@ function UF:Update_FocusFrame(frame, db)
 	UF:Configure_Portrait(frame)
 
 	--Threat
-	UF:Configure_Portrait(frame)
+	UF:Configure_Threat(frame)
 
 	--Auras
 	UF:EnableDisable_Auras(frame)
