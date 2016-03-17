@@ -64,6 +64,7 @@ function UF:Update_PetTargetFrame(frame, db)
 	end
 
 	frame.colors = ElvUF.colors
+	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
