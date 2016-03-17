@@ -97,7 +97,7 @@ function UF:Update_FocusFrame(frame, db)
 	UF:Configure_Portrait(frame)
 
 	--Threat
-	UF:Configure_Portrait(frame)
+	UF:Configure_Threat(frame)
 
 	--Auras
 	UF:EnableDisable_Auras(frame)
