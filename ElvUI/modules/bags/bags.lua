@@ -1504,6 +1504,11 @@ function B:GUILDBANKFRAME_OPENED()
 	self:UnregisterEvent("GUILDBANKFRAME_OPENED")
 end
 
+function B:PLAYER_ENTERING_WORLD()
+	self:UpdateGoldText()
+	self:Layout() --Update bag types for bagslot coloring
+end
+
 function B:Initialize()
 	self:LoadBagBar();
 
@@ -1534,8 +1539,8 @@ function B:Initialize()
 
 	self:DisableBlizzard();
 	self:RegisterEvent("GUILDBANKBAGSLOTS_CHANGED")
+	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 	self:RegisterEvent("PLAYER_MONEY", "UpdateGoldText")
-	self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateGoldText")
 	self:RegisterEvent("PLAYER_TRADE_MONEY", "UpdateGoldText")
 	self:RegisterEvent("TRADE_MONEY_CHANGED", "UpdateGoldText")
 	self:RegisterEvent("BANKFRAME_OPENED", "OpenBank")
