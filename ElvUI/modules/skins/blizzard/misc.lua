@@ -1188,6 +1188,11 @@ local function LoadSkin()
 		end
 	end
 	hooksecurefunc("NavBar_Initialize", SetHomeButtonOffsetX)
+
+	--WorldMapFrameNavBar loads before this file, so our hook has no effect on this one.
+	if WorldMapFrameNavBar then
+		SetHomeButtonOffsetX(WorldMapFrameNavBar)
+	end
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)
