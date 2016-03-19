@@ -143,8 +143,8 @@ function AB:PositionAndSizeBar(barName)
 	end
 
 	--Size of all buttons + Spacing between all buttons + Spacing between additional rows of buttons + Spacing between backdrop and buttons + Spacing on end borders with non-thin borders
-	local barWidth = (size * (buttonsPerRow * widthMult)) + ((buttonSpacing * (buttonsPerRow - 1)) * widthMult) + (buttonSpacing * (widthMult-1)) + (backdropSpacing*2) + (self.db[barName].backdrop == true and ((E.Border - E.Spacing)*2) or 0)
-	local barHeight = (size * (numColumns * heightMult)) + ((buttonSpacing * (numColumns - 1)) * heightMult) + (buttonSpacing * (heightMult-1)) + (backdropSpacing*2) + (self.db[barName].backdrop == true and ((E.Border - E.Spacing)*2) or 0)
+	local barWidth = (size * (buttonsPerRow * widthMult)) + ((buttonSpacing * (buttonsPerRow - 1)) * widthMult) + (buttonSpacing * (widthMult-1)) + (backdropSpacing*2) + ((self.db[barName].backdrop == true and E.Border or E.Spacing)*2)
+	local barHeight = (size * (numColumns * heightMult)) + ((buttonSpacing * (numColumns - 1)) * heightMult) + (buttonSpacing * (heightMult-1)) + (backdropSpacing*2) + ((self.db[barName].backdrop == true and E.Border or E.Spacing)*2)
 	bar:Width(barWidth);
 	bar:Height(barHeight);
 
@@ -181,7 +181,7 @@ function AB:PositionAndSizeBar(barName)
 		bar:SetParent(E.UIParent)
 	end
 	local button, lastButton, lastColumnButton;
-	local firstButtonSpacing = backdropSpacing + (self.db[barName].backdrop == true and (E.Border - E.Spacing) or E.Spacing)
+	local firstButtonSpacing = backdropSpacing + (self.db[barName].backdrop == true and E.Border or E.Spacing)
 	for i=1, NUM_ACTIONBAR_BUTTONS do
 		button = bar.buttons[i];
 		lastButton = bar.buttons[i-1];

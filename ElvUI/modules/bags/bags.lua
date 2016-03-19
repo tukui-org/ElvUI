@@ -5,7 +5,7 @@ local B = E:NewModule('Bags', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
 --Cache global variables
 --Lua functions
 local _G = _G
-local type, ipairs, pairs, unpack, select, assert = type, ipairs, pairs, unpack, select, assert
+local type, ipairs, pairs, unpack, select, assert, pcall, tonumber = type, ipairs, pairs, unpack, select, assert, pcall, tonumber
 local tinsert = table.insert
 local floor, abs, ceil = math.floor, math.abs, math.ceil
 local len, sub, find, format, gsub = string.len, string.sub, string.find, string.format, string.gsub
@@ -52,6 +52,7 @@ local StaticPopup_Show = StaticPopup_Show
 local SortReagentBankBags = SortReagentBankBags
 local DepositReagentBank = DepositReagentBank
 local C_NewItemsIsNewItem = C_NewItems.IsNewItem
+local C_Timer_After = C_Timer.After
 local SEARCH = SEARCH
 local REAGENTBANK_CONTAINER = REAGENTBANK_CONTAINER
 local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES
@@ -326,6 +327,15 @@ function B:UpdateCountDisplay()
 		end
 		if bagFrame.UpdateAllSlots then
 			bagFrame:UpdateAllSlots()
+		end
+	end
+end
+
+function B:UpdateBagTypes(isBank)
+	local f = self:GetContainerFrame(isBank);
+	for _, bagID in ipairs(f.BagIDs) do
+		if f.Bags[bagID] then
+			f.Bags[bagID].type = select(2, GetContainerNumFreeSlots(bagID));
 		end
 	end
 end
@@ -1504,6 +1514,11 @@ function B:GUILDBANKFRAME_OPENED()
 	self:UnregisterEvent("GUILDBANKFRAME_OPENED")
 end
 
+function B:PLAYER_ENTERING_WORLD()
+	self:UpdateGoldText()
+	C_Timer_After(2, function() B:UpdateBagTypes() end) --Update bag types for bagslot coloring
+end
+
 function B:Initialize()
 	self:LoadBagBar();
 
@@ -1534,8 +1549,8 @@ function B:Initialize()
 
 	self:DisableBlizzard();
 	self:RegisterEvent("GUILDBANKBAGSLOTS_CHANGED")
+	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 	self:RegisterEvent("PLAYER_MONEY", "UpdateGoldText")
-	self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateGoldText")
 	self:RegisterEvent("PLAYER_TRADE_MONEY", "UpdateGoldText")
 	self:RegisterEvent("TRADE_MONEY_CHANGED", "UpdateGoldText")
 	self:RegisterEvent("BANKFRAME_OPENED", "OpenBank")
