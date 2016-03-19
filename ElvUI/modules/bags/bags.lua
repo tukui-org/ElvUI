@@ -330,6 +330,16 @@ function B:UpdateCountDisplay()
 	end
 end
 
+function B:UpdateBagTypes(isBank)
+	local f = self:GetContainerFrame(isBank);
+	for _, bagID in ipairs(f.BagIDs) do
+		if f.Bags[bagID] then
+			f.Bags[bagID].type = select(2, GetContainerNumFreeSlots(bagID));
+			print(bagID, f.Bags[bagID].type)
+		end
+	end
+end
+
 function B:UpdateAllBagSlots()
 	if E.private.bags.enable ~= true then return; end
 
@@ -1506,7 +1516,7 @@ end
 
 function B:PLAYER_ENTERING_WORLD()
 	self:UpdateGoldText()
-	self:Layout() --Update bag types for bagslot coloring
+	C_Timer.After(2, function() B:UpdateBagTypes() end) --Update bag types for bagslot coloring
 end
 
 function B:Initialize()
