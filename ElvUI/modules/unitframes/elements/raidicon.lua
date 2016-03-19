@@ -11,3 +11,20 @@ function UF:Construct_RaidIcon(frame)
 	return tex
 end
 
+function UF:Configure_RaidIcon(frame)
+	local RI = frame.RaidIcon
+	local db = frame.db
+
+	if db.raidicon.enable then
+		frame:EnableElement('RaidIcon')
+		RI:Show()
+		RI:Size(db.raidicon.size)
+
+		local attachPoint = self:GetObjectAnchorPoint(frame, db.raidicon.attachToObject)
+		RI:ClearAllPoints()
+		RI:Point(db.raidicon.attachTo, attachPoint, db.raidicon.attachTo, db.raidicon.xOffset, db.raidicon.yOffset)
+	else
+		frame:DisableElement('RaidIcon')
+		RI:Hide()
+	end
+end

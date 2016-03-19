@@ -1,11 +1,11 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 --Cache global variables
-local select, tonumber, assert, type, unpack = select, tonumber, assert, type, unpack
+local select, tonumber, assert, type, unpack, pairs = select, tonumber, assert, type, unpack, pairs
 local tinsert, tremove, tconcat = tinsert, tremove, table.concat
 local atan2, modf, ceil, floor, abs, sqrt, pi, mod = math.atan2, math.modf, math.ceil, math.floor, math.abs, math.sqrt, math.pi, mod
 local bit_band, bit_lshift, bit_rshift = bit.band, bit.lshift, bit.rshift
-local format, sub, upper, string_char, string_byte, split = string.format, string.sub, string.upper, string.char, string.byte, string.split
+local format, sub, upper, string_char, string_byte, split, utf8sub = string.format, string.sub, string.upper, string.char, string.byte, string.split, string.utf8sub
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local UnitPosition = UnitPosition
@@ -136,14 +136,24 @@ function E:GetXYOffset(position, override)
 	local default = E.Spacing
 	local x, y = override or default, override or default
 
-	if position == 'TOP' or position == 'TOPLEFT' or position == 'TOPRIGHT' then
+	if position == 'TOP' then
 		return 0, y
-	elseif position == 'BOTTOM' or position == 'BOTTOMLEFT' or position == 'BOTTOMRIGHT' then
+	elseif position == 'TOPLEFT' then
+		return x, y
+	elseif position == 'TOPRIGHT' then
+		return -x, y
+	elseif position == 'BOTTOM' then --or  or  then
 		return 0, -y
+	elseif position == 'BOTTOMLEFT' then
+		return x, -y
+	elseif position == 'BOTTOMRIGHT' then
+		return -x, -y
 	elseif position == 'LEFT' then
 		return -x, 0
-	else
+	elseif position == 'RIGHT' then
 		return x, 0
+	elseif position == "CENTER" then
+		return 0, 0
 	end
 end
 
@@ -221,7 +231,7 @@ function E:AbbreviateString(string, allUpper)
 	local newString = ""
 	local words = {split(" ", string)}
 	for _, word in pairs(words) do
-		word = sub(word, 1, 1) --get only first letter of each word
+		word = utf8sub(word, 1, 1) --get only first letter of each word
 		if(allUpper) then
 			word = word:upper()
 		end

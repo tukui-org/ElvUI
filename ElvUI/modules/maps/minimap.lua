@@ -148,7 +148,7 @@ function M:GetLocTextColor()
 	elseif pvpType == "combat" then
 		return 0.84, 0.03, 0.03
 	else
-		return 0.84, 0.03, 0.03
+		return 0.9, 0.85, 0.05
 	end
 end
 
@@ -206,7 +206,7 @@ function M:UpdateSettings()
 	E.MinimapWidth = E.MinimapSize
 	E.MinimapHeight = E.MinimapSize
 
-	if E.db.auras.consolidatedBuffs.enable and E.private.auras.disableBlizzard then
+	if E.db.auras.consolidatedBuffs.enable and E.private.auras.disableBlizzard and not E.global.tukuiMode then
 		local numBuffs = E.db.auras.consolidatedBuffs.filter and 7 or 8 --This is one short because I'm just counting the total spaces between icons, add +1 below for the actual amount of buffs
 		E.ConsolidatedBuffsWidth = (E.MinimapHeight + (numBuffs*E.Border) + E.Border*2 - (E.Spacing*numBuffs)) / (numBuffs + 1)
 	else
@@ -224,6 +224,54 @@ function M:UpdateSettings()
 		else
 			LeftMiniPanel:Hide()
 			RightMiniPanel:Hide()
+		end
+	end
+	
+	if BottomMiniPanel then
+		if E.db.datatexts.minimapBottom and E.private.general.minimap.enable then
+			BottomMiniPanel:Show()
+		else
+			BottomMiniPanel:Hide()
+		end
+	end
+	
+	if BottomLeftMiniPanel then
+		if E.db.datatexts.minimapBottomLeft and E.private.general.minimap.enable then
+			BottomLeftMiniPanel:Show()
+		else
+			BottomLeftMiniPanel:Hide()
+		end
+	end
+	
+	if BottomRightMiniPanel then
+		if E.db.datatexts.minimapBottomRight and E.private.general.minimap.enable then
+			BottomRightMiniPanel:Show()
+		else
+			BottomRightMiniPanel:Hide()
+		end
+	end
+	
+	if TopMiniPanel then
+		if E.db.datatexts.minimapTop and E.private.general.minimap.enable then
+			TopMiniPanel:Show()
+		else
+			TopMiniPanel:Hide()
+		end
+	end
+	
+	if TopLeftMiniPanel then
+		if E.db.datatexts.minimapTopLeft and E.private.general.minimap.enable then
+			TopLeftMiniPanel:Show()
+		else
+			TopLeftMiniPanel:Hide()
+		end
+	end
+	
+	if TopRightMiniPanel then
+		if E.db.datatexts.minimapTopRight and E.private.general.minimap.enable then
+			TopRightMiniPanel:Show()
+		else
+			TopRightMiniPanel:Hide()
 		end
 	end
 
@@ -252,7 +300,7 @@ function M:UpdateSettings()
 	end
 
 	if ElvConfigToggle then
-		if E.db.auras.consolidatedBuffs.enable and E.db.datatexts.minimapPanels and E.private.general.minimap.enable and E.private.auras.disableBlizzard then
+		if E.db.auras.consolidatedBuffs.enable and E.db.datatexts.minimapPanels and E.private.general.minimap.enable and E.private.auras.disableBlizzard and not E.global.tukuiMode then
 			ElvConfigToggle:Show()
 			ElvConfigToggle:Width(E.ConsolidatedBuffsWidth)
 		else
@@ -431,6 +479,12 @@ function M:Initialize()
 	self:RegisterEvent("ZONE_CHANGED_INDOORS", "Update_ZoneText")
 	self:RegisterEvent('ADDON_LOADED')
 	self:UpdateSettings()
+	
+	--Make sure these invisible frames follow the minimap.
+	MinimapCluster:ClearAllPoints()
+	MinimapCluster:SetAllPoints(Minimap)
+	MinimapBackdrop:ClearAllPoints()
+	MinimapBackdrop:SetAllPoints(Minimap)
 
 	--Create Farmmode Minimap
 	local fm = CreateFrame('Minimap', 'FarmModeMap', E.UIParent)
@@ -495,7 +549,7 @@ function M:Initialize()
 			FarmModeMap:Hide()
 		end
 	end)
-
+	
 	--PET JOURNAL TAINT FIX AS OF 5.1
 	--[[local info = UIPanelWindows['PetJournalParent'];
 	for name, value in pairs(info) do

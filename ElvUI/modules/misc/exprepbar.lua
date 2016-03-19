@@ -243,6 +243,7 @@ function M:EnableDisable_ExperienceBar()
 		self:RegisterEvent('UPDATE_EXHAUSTION', 'UpdateExperience')
 		self:UnregisterEvent("UPDATE_EXPANSION_LEVEL")
 		self:UpdateExperience()
+		E:EnableMover(self.expBar.mover:GetName())
 	else
 		self:UnregisterEvent('PLAYER_XP_UPDATE')
 		self:UnregisterEvent('PLAYER_LEVEL_UP')
@@ -251,6 +252,7 @@ function M:EnableDisable_ExperienceBar()
 		self:UnregisterEvent('UPDATE_EXHAUSTION')
 		self:RegisterEvent("UPDATE_EXPANSION_LEVEL", "EnableDisable_ExperienceBar")
 		self.expBar:Hide()
+		E:DisableMover(self.expBar.mover:GetName())
 	end
 end
 
@@ -258,9 +260,11 @@ function M:EnableDisable_ReputationBar()
 	if E.db.general.reputation.enable then
 		self:RegisterEvent('UPDATE_FACTION', 'UpdateReputation')
 		self:UpdateReputation()
+		E:EnableMover(self.repBar.mover:GetName())
 	else
 		self:UnregisterEvent('UPDATE_FACTION')
 		self.repBar:Hide()
+		E:DisableMover(self.repBar.mover:GetName())
 	end
 end
 
@@ -277,10 +281,10 @@ function M:LoadExpRepBar()
 	self.repBar = self:CreateBar('ElvUI_ReputationBar', ReputationBar_OnEnter, 'RIGHT', RightChatPanel, 'LEFT', E.Border - E.Spacing*3, 0)
 	E:RegisterStatusBar(self.repBar.statusBar)
 	self:UpdateExpRepDimensions()
-
-	self:EnableDisable_ExperienceBar()
-	self:EnableDisable_ReputationBar()
-
+	
 	E:CreateMover(self.expBar, "ExperienceBarMover", L["Experience Bar"])
 	E:CreateMover(self.repBar, "ReputationBarMover", L["Reputation Bar"])
+	
+	self:EnableDisable_ExperienceBar()
+	self:EnableDisable_ReputationBar()
 end

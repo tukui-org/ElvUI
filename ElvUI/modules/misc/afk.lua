@@ -210,7 +210,11 @@ local function Chat_OnEvent(self, event, arg1, arg2, arg3, arg4, arg5, arg6, arg
 		message = ChatFrame_GetMobileEmbeddedTexture(info.r, info.g, info.b)..message;
 	end
 
-	body = format(_G["CHAT_"..type.."_GET"]..message, playerLink.."["..coloredName.."]".."|h");
+	local success
+	success, body = pcall(format, _G["CHAT_"..type.."_GET"]..message, playerLink.."["..coloredName.."]".."|h");
+	if not success then
+		E:Print("An error happened in the AFK Chat module. Please screenshot this message and report it. Info:", type, message, _G["CHAT_"..type.."_GET"])
+	end
 
 	local accessID = ChatHistory_GetAccessID(chatGroup, chatTarget);
 	local typeID = ChatHistory_GetAccessID(type, chatTarget, arg12 == "" and arg13 or arg12);

@@ -534,7 +534,7 @@ local function buildBlacklist(...)
 		elseif entry ~= "" then
 			if find(entry, "%[") and find(entry, "%]") then
 				--For some reason the entry was not treated as a valid item. Extract the item name.
-				entry = string.match(entry, "%[(.*)%]")
+				entry = match(entry, "%[(.*)%]")
 			end
 			blackListQueries[#blackListQueries+1] = entry
 		end
@@ -549,20 +549,24 @@ function B.Sort(bags, sorter, invertDirection)
 
 	local ignoreItems = B.db.ignoreItems
 	ignoreItems = ignoreItems:gsub(',%s', ',') --remove spaces that follow a comma
+	ignoreItems = ignoreItems:gsub("\n", "") --remove accidental newlines
 	buildBlacklist(split(",", ignoreItems))
 
 	for i, bag, slot in B.IterateBags(bags, nil, 'both') do
 		local bagSlot = B:Encode_BagSlot(bag, slot)
 		local link = B:GetItemLink(bag, slot);
 
-		if link and blackList[GetItemInfo(link)] then
-			blackListedSlots[bagSlot] = true
-		end
-
-		if not blackListedSlots[bagSlot] then
-			for key,itemsearchquery in pairs(blackListQueries) do
-				if Search:Matches(link,itemsearchquery) then
-					blackListedSlots[bagSlot] = true
+		if link then
+			if blackList[GetItemInfo(link)] then
+				blackListedSlots[bagSlot] = true
+			end
+			
+			if not blackListedSlots[bagSlot] then
+				for _,itemsearchquery in pairs(blackListQueries) do
+					local success, result = pcall(Search.Matches, Search, link, itemsearchquery)
+					if success then
+						blackListedSlots[bagSlot] = result
+					end
 				end
 			end
 		end

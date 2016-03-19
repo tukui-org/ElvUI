@@ -29,7 +29,9 @@ local function LoadSkin()
 	S:HandleScrollBar(QuestScrollFrameScrollBar)
 	S:HandleButton(QuestScrollFrame.ViewAll)
 
-	WorldMapFrameTutorialButton:Kill()
+	if E.global.general.disableTutorialButtons then
+		WorldMapFrameTutorialButton:Kill()
+	end
 
 	S:HandleButton(QuestMapFrame.DetailsFrame.BackButton)
 	S:HandleButton(QuestMapFrame.DetailsFrame.AbandonButton)

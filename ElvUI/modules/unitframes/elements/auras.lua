@@ -50,7 +50,7 @@ function UF:Construct_AuraIcon(button)
 	button.text:Point('CENTER', 1, 1)
 	button.text:SetJustifyH('CENTER')
 
-	button:SetTemplate('Default')
+	button:SetTemplate('Default', nil, nil, (UF.thinBorders and not E.global.tukuiMode))
 
 	button.cd.noOCC = true
 	button.cd.noCooldownCount = true
@@ -58,7 +58,8 @@ function UF:Construct_AuraIcon(button)
 	button.cd:SetInside()
 	button.cd:SetHideCountdownNumbers(true)
 
-	button.icon:SetInside()
+	local offset = (UF.thinBorders and not E.global.tukuiMode) and E.mult or E.Border
+	button.icon:SetInside(button, offset, offset)
 	button.icon:SetTexCoord(unpack(E.TexCoords))
 	button.icon:SetDrawLayer('ARTWORK')
 
@@ -86,6 +87,113 @@ function UF:Construct_AuraIcon(button)
 	end)
 
 	UF:UpdateAuraIconSettings(button, true)
+end
+
+function UF:EnableDisable_Auras(frame)
+	if frame.db.debuffs.enable or frame.db.buffs.enable then
+		if not frame:IsElementEnabled('Aura') then
+			frame:EnableElement('Aura')
+		end
+	else
+		if frame:IsElementEnabled('Aura') then
+			frame:DisableElement('Aura')
+		end
+	end
+end
+
+local function ReverseUpdate(frame)
+	UF:Configure_Auras(frame, "Debuffs")
+	UF:Configure_Auras(frame, "Buffs")
+end
+
+function UF:Configure_Auras(frame, auraType)
+	local db = frame.db
+
+	local auras = frame[auraType]
+	auraType = auraType:lower()
+	local rows = db[auraType].numrows
+
+	local totalWidth = frame.UNIT_WIDTH - frame.SPACING*2
+	if frame.USE_POWERBAR_OFFSET then
+		local powerOffset = ((frame.ORIENTATION == "MIDDLE" and 2 or 1) * frame.POWERBAR_OFFSET)
+
+		if not (db[auraType].attachTo == "POWER" and frame.ORIENTATION == "MIDDLE") then
+			totalWidth = totalWidth - powerOffset
+		end
+	end
+	auras:Width(totalWidth)
+
+	auras.forceShow = frame.forceShowAuras
+	auras.num = db[auraType].perrow * rows
+	auras.size = db[auraType].sizeOverride ~= 0 and db[auraType].sizeOverride or ((((auras:GetWidth() - (auras.spacing*(auras.num/rows - 1))) / auras.num)) * rows)
+
+	if db[auraType].sizeOverride and db[auraType].sizeOverride > 0 then
+		auras:Width(db[auraType].perrow * db[auraType].sizeOverride)
+	end
+
+	local attachTo = self:GetAuraAnchorFrame(frame, db[auraType].attachTo, db.debuffs.attachTo == 'BUFFS' and db.buffs.attachTo == 'DEBUFFS')
+	local x, y = E:GetXYOffset(db[auraType].anchorPoint, (not E.global.tukuiMode and frame.SPACING)) --Use frame.SPACING override since it may be different from E.Spacing due to forced thin borders
+
+	if db[auraType].attachTo == "FRAME" then
+		y = 0
+	elseif db[auraType].attachTo == "HEALTH" or db[auraType].attachTo == "POWER" then
+		local newX = E:GetXYOffset(db[auraType].anchorPoint, -frame.BORDER)
+		local _, newY = E:GetXYOffset(db[auraType].anchorPoint, (frame.BORDER + frame.SPACING))
+		x = newX
+		y = newY
+	else
+		x = 0
+	end
+
+	if (auraType == "buffs" and frame.Debuffs.attachTo and frame.Debuffs.attachTo == frame.Buffs and db[auraType].attachTo == "DEBUFFS") then
+		--Update Debuffs first, as we would otherwise get conflicting anchor points
+		--This is usually only an issue on profile change
+		ReverseUpdate(frame)
+		return
+	end
+
+	auras:ClearAllPoints()
+	auras:Point(E.InversePoints[db[auraType].anchorPoint], attachTo, db[auraType].anchorPoint, x + db[auraType].xOffset, y + db[auraType].yOffset)
+	auras:Height(auras.size * rows)
+	auras["growth-y"] = db[auraType].anchorPoint:find('TOP') and 'UP' or 'DOWN'
+	auras["growth-x"] = db[auraType].anchorPoint == 'LEFT' and 'LEFT' or  db[auraType].anchorPoint == 'RIGHT' and 'RIGHT' or (db[auraType].anchorPoint:find('LEFT') and 'RIGHT' or 'LEFT')
+	auras.initialAnchor = E.InversePoints[db[auraType].anchorPoint]
+
+	--These are needed for SmartAuraPosition
+	auras.attachTo = attachTo
+	auras.point = E.InversePoints[db[auraType].anchorPoint]
+	auras.anchorPoint = db[auraType].anchorPoint
+	auras.xOffset = x + db[auraType].xOffset
+	auras.yOffset = y + db[auraType].yOffset
+
+	if db[auraType].enable then
+		auras:Show()
+		UF:UpdateAuraIconSettings(auras)
+	else
+		auras:Hide()
+	end
+
+	local position = db.smartAuraPosition
+	if position == "BUFFS_ON_DEBUFFS" then
+		if db.debuffs.attachTo == "BUFFS" then
+			E:Print(format(L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Buffs"], L["Debuffs"], L["Frame"]))
+			db.debuffs.attachTo = "FRAME"
+			frame.Debuffs.attachTo = frame
+		end
+		frame.Buffs.PostUpdate = nil
+		frame.Debuffs.PostUpdate = UF.UpdateBuffsHeaderPosition
+	elseif position == "DEBUFFS_ON_BUFFS" then
+		if db.buffs.attachTo == "DEBUFFS" then
+			E:Print(format(L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Debuffs"], L["Buffs"], L["Frame"]))
+			db.buffs.attachTo = "FRAME"
+			frame.Buffs.attachTo = frame
+		end
+		frame.Buffs.PostUpdate = UF.UpdateDebuffsHeaderPosition
+		frame.Debuffs.PostUpdate = nil
+	else
+		frame.Buffs.PostUpdate = nil
+		frame.Debuffs.PostUpdate = nil
+	end
 end
 
 local function SortAurasByPriority(a, b)

@@ -138,7 +138,7 @@ E.PopupDialogs['INCOMPATIBLE_ADDON'] = {
 }
 
 E.PopupDialogs['PIXELPERFECT_CHANGED'] = {
-	text = L["You have changed the pixel perfect option. You will have to complete the installation process to remove any graphical bugs."],
+	text = L["You have changed the Thin Border Theme option. You will have to complete the installation process to remove any graphical bugs."],
 	button1 = ACCEPT,
 	OnAccept = E.noop,
 	timeout = 0,
@@ -280,6 +280,17 @@ E.PopupDialogs["HARLEM_SHAKE"] = {
 			E:BeginHarlemShake()
 			return true
 		end
+	end,
+	timeout = 0,
+	whileDead = 1,
+}
+
+E.PopupDialogs["TUKUI_MODE"] = {
+	text = L["ElvUI needs to perform database optimizations please be patient."],
+	button1 = OKAY,
+	OnAccept = function()
+		E.global.tukuiMode = true
+		ReloadUI()
 	end,
 	timeout = 0,
 	whileDead = 1,

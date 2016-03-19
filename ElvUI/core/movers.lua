@@ -16,6 +16,7 @@ local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 -- GLOBALS: ElvUIParent, ElvUIMoverNudgeWindow
 
 E.CreatedMovers = {}
+E.DisabledMovers = {}
 
 local function SizeChanged(frame)
 	if InCombatLockdown() then return; end
@@ -111,7 +112,6 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 		local point, anchor, secondaryPoint, x, y = split(delim, anchorString)
 		f:Point(point, anchor, secondaryPoint, x, y)
 	else
-
 		f:Point(point, anchor, secondaryPoint, x, y)
 	end
 
@@ -345,6 +345,8 @@ function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag, moverT
 end
 
 function E:ToggleMovers(show, moverType)
+	self.configMode = show
+
 	for name, _ in pairs(E.CreatedMovers) do
 		if not show then
 			_G[name]:Hide()
@@ -356,6 +358,47 @@ function E:ToggleMovers(show, moverType)
 			end
 		end
 	end
+end
+
+function E:DisableMover(name)
+	if(self.DisabledMovers[name]) then return end
+	if(not self.CreatedMovers[name]) then
+		error("mover doesn't exist")
+	end
+
+	self.DisabledMovers[name] = {}
+	for x, y in pairs(self.CreatedMovers[name]) do
+		self.DisabledMovers[name][x] = y
+	end
+
+	if self.configMode then
+		_G[name]:Hide()
+	end
+
+	self.CreatedMovers[name] = nil
+end
+
+function E:EnableMover(name)
+	if(self.CreatedMovers[name]) then return end
+	if(not self.DisabledMovers[name]) then
+		error("mover doesn't exist")
+	end
+
+	self.CreatedMovers[name] = {}
+	for x, y in pairs(self.DisabledMovers[name]) do
+		self.CreatedMovers[name][x] = y
+	end
+
+	--Make sure we add anchor information from a potential profile switch
+	if E.db["movers"] and E.db["movers"][name] and type(E.db["movers"][name]) == 'string' then
+		self.CreatedMovers[name]["point"] = E.db["movers"][name]
+	end
+
+	if self.configMode then
+		_G[name]:Show()
+	end
+
+	self.DisabledMovers[name] = nil
 end
 
 function E:ResetMovers(arg)
@@ -400,6 +443,13 @@ end
 
 --Profile Change
 function E:SetMoversPositions()
+	--E:SetMoversPositions() is the first function called in E:UpdateAll().
+	--Because of that, we can allow ourselves to re-enable all disabled movers here,
+	--as the subsequent updates to these elements will disable them again if needed.
+	for name in pairs(E.DisabledMovers) do
+		E:EnableMover(name)
+	end
+
 	for name, _ in pairs(E.CreatedMovers) do
 		local f = _G[name]
 		local point, anchor, secondaryPoint, x, y

@@ -103,13 +103,14 @@ function BG:CreateFrame()
 
 	self:HideFrame()
 
-	frame:SetTemplate("Default", nil, true)
+	frame:SetTemplate("Default", nil, true, UF.thinBorders)
 	frame:Point("CENTER", E.UIParent, "CENTER")
 	frame:Width(UF.db.units.bodyguard.width)
 	frame:Height(UF.db.units.bodyguard.height)
 
+	local offset = UF.thinBorders and E.mult or E.Border
 	frame.healthBar = CreateFrame("StatusBar", nil, frame)
-	frame.healthBar:SetInside(frame)
+	frame.healthBar:SetInside(frame, offset, offset)
 	frame.healthBar:SetMinMaxValues(0, 1)
 	frame.healthBar:SetValue(1)
 	frame.healthBar:SetStatusBarTexture(LSM:Fetch("statusbar", UF.db.statusbar))
@@ -133,8 +134,10 @@ function BG:UpdateSettings()
 		elseif not E.db.unitframe.units.player.enable then
 			self.frame:SetParent(E.UIParent)
 		end
-	else
+		E:EnableMover(self.frame.mover:GetName())
+	elseif self.frame then
 		self.frame:SetParent(E.HiddenFrame)
+		E:DisableMover(self.frame.mover:GetName())
 	end
 
 	self:HealthUpdate(self.db.Health, self.db.MaxHealth)
@@ -174,9 +177,11 @@ end
 function BG:HealthUpdate(health, maxHealth)
 	self.frame.healthBar:SetMinMaxValues(0, maxHealth)
 	self.frame.healthBar:SetValue(health)
+	local colorOverride = UF.db.units.bodyguard.colorOverride
 
 	local r, g, b = unpack(ElvUF.colors.health)
-	if E.db.unitframe.colors.healthclass then
+	
+	if (colorOverride and colorOverride == "FORCE_ON") or (E.db.unitframe.colors.healthclass and not (colorOverride and colorOverride == "FORCE_OFF")) then
 		r, g, b = unpack(ElvUF.colors.reaction[5])
 	end
 

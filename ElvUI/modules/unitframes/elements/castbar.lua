@@ -5,7 +5,7 @@ local LSM = LibStub("LibSharedMedia-3.0");
 --Cache global variables
 --Lua functions
 local unpack, tonumber = unpack, tonumber
-local floor, abs = math.floor, abs
+local floor, abs, min = math.floor, abs, math.min
 local sub, utf8sub, utf8len = string.sub, string.utf8sub, string.utf8len
 --WoW API / Variables
 local CreateFrame = CreateFrame
@@ -20,31 +20,46 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
-function UF:Construct_Castbar(self, direction, moverName)
-	local castbar = CreateFrame("StatusBar", nil, self)
-	UF['statusbars'][castbar] = true
-	castbar.CustomDelayText = UF.CustomCastDelayText
-	castbar.CustomTimeText = UF.CustomTimeText
-	castbar.PostCastStart = UF.PostCastStart
-	castbar.PostChannelStart = UF.PostCastStart
-	castbar.PostCastStop = UF.PostCastStop
-	castbar.PostChannelStop = UF.PostCastStop
-	castbar.PostChannelUpdate = UF.PostChannelUpdate
-	castbar.PostCastInterruptible = UF.PostCastInterruptible
-	castbar.PostCastNotInterruptible = UF.PostCastNotInterruptible
+local INVERT_ANCHORPOINT = {
+	TOPLEFT = 'BOTTOMRIGHT',
+	LEFT = 'RIGHT',
+	BOTTOMLEFT = 'TOPRIGHT',
+	RIGHT = 'LEFT',
+	TOPRIGHT = 'BOTTOMLEFT',
+	BOTTOMRIGHT = 'TOPLEFT',
+	CENTER = 'CENTER',
+	TOP = 'BOTTOM',
+	BOTTOM = 'TOP',
+}
+
+function UF:Construct_Castbar(frame, direction, moverName)
+	local castbar = CreateFrame("StatusBar", nil, frame)
+	castbar:SetFrameStrata("HIGH")
+	self['statusbars'][castbar] = true
+	castbar.CustomDelayText = self.CustomCastDelayText
+	castbar.CustomTimeText = self.CustomTimeText
+	castbar.PostCastStart = self.PostCastStart
+	castbar.PostChannelStart = self.PostCastStart
+	castbar.PostCastStop = self.PostCastStop
+	castbar.PostChannelStop = self.PostCastStop
+	castbar.PostChannelUpdate = self.PostChannelUpdate
+	castbar.PostCastInterruptible = self.PostCastInterruptible
+	castbar.PostCastNotInterruptible = self.PostCastNotInterruptible
 	castbar:SetClampedToScreen(true)
-	castbar:CreateBackdrop('Default')
+	castbar:CreateBackdrop('Default', nil, nil, self.thinBorders)
 
 	castbar.Time = castbar:CreateFontString(nil, 'OVERLAY')
-	UF:Configure_FontString(castbar.Time)
+	self:Configure_FontString(castbar.Time)
 	castbar.Time:Point("RIGHT", castbar, "RIGHT", -4, 0)
 	castbar.Time:SetTextColor(0.84, 0.75, 0.65)
 	castbar.Time:SetJustifyH("RIGHT")
 
 	castbar.Text = castbar:CreateFontString(nil, 'OVERLAY')
-	UF:Configure_FontString(castbar.Text)
+	self:Configure_FontString(castbar.Text)
 	castbar.Text:Point("LEFT", castbar, "LEFT", 4, 0)
 	castbar.Text:SetTextColor(0.84, 0.75, 0.65)
+	castbar.Text:SetJustifyH("LEFT")
+	castbar.Text:SetWordWrap(false)
 
 	castbar.Spark = castbar:CreateTexture(nil, 'OVERLAY')
 	castbar.Spark:SetBlendMode('ADD')
@@ -60,26 +75,21 @@ function UF:Construct_Castbar(self, direction, moverName)
 
 	local button = CreateFrame("Frame", nil, castbar)
 	local holder = CreateFrame('Frame', nil, castbar)
-	button:SetTemplate("Default")
-
-	if direction == "LEFT" then
-		holder:Point("TOPRIGHT", self, "BOTTOMRIGHT", 0, -(E.Border * 3))
-		castbar:Point('BOTTOMRIGHT', holder, 'BOTTOMRIGHT', -E.Border, E.Border)
-		button:Point("RIGHT", castbar, "LEFT", -E.Spacing*3, 0)
-	else
-		holder:Point("TOPLEFT", self, "BOTTOMLEFT", 0, -(E.Border * 3))
-		castbar:Point('BOTTOMLEFT', holder, 'BOTTOMLEFT', E.Border, E.Border)
-		button:Point("LEFT", castbar, "RIGHT", E.Spacing*3, 0)
-	end
+	button:SetTemplate("Default", nil, nil, self.thinBorders and not E.global.tukuiMode)
 
 	castbar.Holder = holder
+	--these are placeholder so the mover can be created.. it will be changed.
+	castbar.Holder:Point("TOPLEFT", frame, "BOTTOMLEFT", 0, -(frame.BORDER - frame.SPACING))
+	castbar:Point('BOTTOMLEFT', castbar.Holder, 'BOTTOMLEFT', frame.BORDER, frame.BORDER)
+	button:Point("RIGHT", castbar, "LEFT", -E.Spacing*3, 0)
 
 	if moverName then
-		E:CreateMover(castbar.Holder, self:GetName()..'CastbarMover', moverName, nil, -6, nil, 'ALL,SOLO')
+		E:CreateMover(castbar.Holder, frame:GetName()..'CastbarMover', moverName, nil, -6, nil, 'ALL,SOLO')
 	end
 
 	local icon = button:CreateTexture(nil, "ARTWORK")
-	icon:SetInside()
+	local offset = (not E.global.tukuiMode and frame.BORDER or E.Border) --use frame.BORDER since it may be different from E.Border due to forced thin borders
+	icon:SetInside(nil, offset, offset)
 	icon:SetTexCoord(unpack(E.TexCoords))
 	icon.bg = button
 
@@ -87,6 +97,128 @@ function UF:Construct_Castbar(self, direction, moverName)
 	castbar.ButtonIcon = icon
 
 	return castbar
+end
+
+function UF:Configure_Castbar(frame)
+	local castbar = frame.Castbar
+	local db = frame.db
+	castbar:Width(db.castbar.width - ((frame.BORDER+frame.SPACING)*2))
+	castbar:Height(db.castbar.height - ((frame.BORDER+frame.SPACING)*2))
+	castbar.Holder:Width(db.castbar.width)
+	castbar.Holder:Height(db.castbar.height)
+	if(castbar.Holder:GetScript('OnSizeChanged')) then
+		castbar.Holder:GetScript('OnSizeChanged')(castbar.Holder)
+	end
+
+	--Latency
+	if db.castbar.latency then
+		castbar.SafeZone = castbar.LatencyTexture
+		castbar.LatencyTexture:Show()
+	else
+		castbar.SafeZone = nil
+		castbar.LatencyTexture:Hide()
+	end
+
+	--Icon
+	if db.castbar.icon then
+		castbar.Icon = castbar.ButtonIcon
+		if(not db.castbar.iconAttached) or E.global.tukuiMode then
+			castbar.Icon.bg:Size(db.castbar.iconSize)
+		else
+			if (db.castbar.insideInfoPanel and frame.USE_INFO_PANEL) then
+				castbar.Icon.bg:Size(db.infoPanel.height - frame.SPACING*2)
+			else
+				castbar.Icon.bg:Size(db.castbar.height-frame.SPACING*2)
+			end
+
+			castbar:Width(db.castbar.width - castbar.Icon.bg:GetWidth() - (frame.BORDER + frame.SPACING*5))
+		end
+
+		castbar.Icon.bg:Show()
+	else
+		castbar.ButtonIcon.bg:Hide()
+		castbar.Icon = nil
+	end
+
+	if db.castbar.spark then
+		castbar.Spark:Show()
+	else
+		castbar.Spark:Hide()
+	end
+
+	castbar:ClearAllPoints()
+	if (db.castbar.insideInfoPanel and frame.USE_INFO_PANEL) or E.global.tukuiMode then
+		if(not db.castbar.iconAttached) or E.global.tukuiMode then
+			castbar:SetInside(frame.InfoPanel, 0, 0)
+		else
+			local iconWidth = db.castbar.icon and (castbar.Icon.bg:GetWidth() - frame.BORDER) or 0
+			if(frame.ORIENTATION == "RIGHT") then
+				castbar:SetPoint("TOPLEFT", frame.InfoPanel, "TOPLEFT")
+				castbar:SetPoint("BOTTOMRIGHT", frame.InfoPanel, "BOTTOMRIGHT", -iconWidth - frame.SPACING*3, 0)
+			else
+				castbar:SetPoint("TOPLEFT", frame.InfoPanel, "TOPLEFT",  iconWidth + frame.SPACING*3, 0)
+				castbar:SetPoint("BOTTOMRIGHT", frame.InfoPanel, "BOTTOMRIGHT")
+			end
+		end
+
+		if(castbar.Holder.mover) then
+			E:DisableMover(castbar.Holder.mover:GetName())
+		end
+	else
+		local isMoved = E:HasMoverBeenMoved(frame:GetName()..'CastbarMover') or not castbar.Holder.mover
+		if not isMoved then
+			castbar.Holder.mover:ClearAllPoints()
+		end
+
+		castbar:ClearAllPoints()
+		if frame.ORIENTATION ~= "RIGHT"  then
+			castbar:Point('BOTTOMRIGHT', castbar.Holder, 'BOTTOMRIGHT', -(frame.BORDER+frame.SPACING), frame.BORDER+frame.SPACING)
+			if not isMoved then
+				castbar.Holder.mover:Point("TOPRIGHT", frame, "BOTTOMRIGHT", 0, -(frame.BORDER - frame.SPACING))
+			end
+		else
+			castbar:Point('BOTTOMLEFT', castbar.Holder, 'BOTTOMLEFT', frame.BORDER+frame.SPACING, frame.BORDER+frame.SPACING)
+			if not isMoved then
+				castbar.Holder.mover:Point("TOPLEFT", frame, "BOTTOMLEFT", 0, -(frame.BORDER - frame.SPACING))
+			end
+		end
+
+		if(castbar.Holder.mover) then
+			E:EnableMover(castbar.Holder.mover:GetName())
+		end
+	end
+
+	if E.global.tukuiMode and db.castbar.icon then
+		castbar.Icon.bg:ClearAllPoints()
+		if(frame.ORIENTATION == "LEFT") then
+			castbar.Icon.bg:Point("RIGHT", frame, "LEFT", -10, 0)
+		else
+			castbar.Icon.bg:Point("LEFT", frame, "RIGHT", 10, 0)
+		end
+	elseif not db.castbar.iconAttached and db.castbar.icon then
+		local attachPoint = db.castbar.iconAttachedTo == "Frame" and frame or frame.Castbar
+		local anchorPoint = db.castbar.iconPosition
+		castbar.Icon.bg:ClearAllPoints()
+		castbar.Icon.bg:Point(INVERT_ANCHORPOINT[anchorPoint], attachPoint, anchorPoint, db.castbar.iconXOffset, db.castbar.iconYOffset)
+		castbar.Icon.bg:SetFrameStrata("HIGH")
+	elseif(db.castbar.icon) then
+		castbar.Icon.bg:ClearAllPoints()
+		if frame.ORIENTATION == "RIGHT" then
+			castbar.Icon.bg:Point("LEFT", castbar, "RIGHT", frame.SPACING*3, 0)
+		else
+			castbar.Icon.bg:Point("RIGHT", castbar, "LEFT", -frame.SPACING*3, 0)
+		end
+	end
+
+	if db.castbar.enable and not frame:IsElementEnabled('Castbar') then
+		frame:EnableElement('Castbar')
+	elseif not db.castbar.enable and frame:IsElementEnabled('Castbar') then
+		frame:DisableElement('Castbar')
+
+		if(castbar.Holder.mover) then
+			E:DisableMover(castbar.Holder.mover:GetName())
+		end
+	end
 end
 
 function UF:CustomCastDelayText(duration)
@@ -184,30 +316,25 @@ function UF:PostCastStart(unit, name, rank, castid)
 
 	if unit == "vehicle" then unit = "player" end
 
-	--Get length of time, then calculate available length for textLen
-	--Re-calculate and omit timeLen constraint if text length would otherwise be lower than 1
-	local timeLen = utf8len(self.Time:GetText() or "")
-	local textLen = floor(((((32/245) * self:GetWidth()) / E.db['unitframe'].fontSize) * 12) - timeLen)
-	if textLen <1 then textLen = floor((((32/245) * self:GetWidth()) / E.db['unitframe'].fontSize) * 12) end
+	if db.castbar.displayTarget and self.curTarget then
+		self.Text:SetText(name..' --> '..self.curTarget)
+	else
+		self.Text:SetText(name)
+	end
 
-	if timeLen == 0 then
-		E:Delay(0.03, function() --Delay may need tweaking
-			timeLen = utf8len(self.Time:GetText() or "")
-			textLen = floor(((((32/245) * self:GetWidth()) / E.db['unitframe'].fontSize) * 12) - timeLen)
-			if textLen <1 then textLen = floor((((32/245) * self:GetWidth()) / E.db['unitframe'].fontSize) * 12) end
+	-- Get length of Time, then calculate available length for Text
+	local timeWidth = self.Time:GetStringWidth()
+	local textWidth = self:GetWidth() - timeWidth - 10
+	local textStringWidth = self.Text:GetStringWidth()
 
-			if db.castbar.displayTarget and self.curTarget then
-				self.Text:SetText(utf8sub(name..' --> '..self.curTarget, 0, textLen))
-			else
-				self.Text:SetText(utf8sub(name, 0, textLen))
-			end
+	if timeWidth == 0 or textStringWidth == 0 then
+		E:Delay(0.05, function() -- Delay may need tweaking
+			textWidth = self:GetWidth() - self.Time:GetStringWidth() - 10
+			textStringWidth = self.Text:GetStringWidth()
+			if textWidth > 0 then self.Text:SetWidth(min(textWidth, textStringWidth)) end
 		end)
 	else
-		if db.castbar.displayTarget and self.curTarget then
-			self.Text:SetText(utf8sub(name..' --> '..self.curTarget, 0, textLen))
-		else
-			self.Text:SetText(utf8sub(name, 0, textLen))
-		end
+		self.Text:SetWidth(min(textWidth, textStringWidth))
 	end
 
 	self.Spark:Height(self:GetHeight() * 2)
@@ -404,4 +531,3 @@ function UF:PostCastNotInterruptible(unit)
 	local colors = ElvUF.colors
 	self:SetStatusBarColor(colors.castNoInterrupt[1], colors.castNoInterrupt[2], colors.castNoInterrupt[3])
 end
-

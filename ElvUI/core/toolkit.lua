@@ -15,8 +15,9 @@ local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 E.mult = 1;
 local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0, 0, 0, 1, 0, 0, 0
 
-local function GetTemplate(t)
+local function GetTemplate(t, isPixelPerfectForced)
 	backdropa = 1
+
 	if t == "ClassColor" then
 		if CUSTOM_CLASS_COLORS then
 			borderr, borderg, borderb = CUSTOM_CLASS_COLORS[E.myclass].r, CUSTOM_CLASS_COLORS[E.myclass].g, CUSTOM_CLASS_COLORS[E.myclass].b
@@ -35,17 +36,30 @@ local function GetTemplate(t)
 		borderr, borderg, borderb = unpack(E["media"].bordercolor)
 		backdropr, backdropg, backdropb = unpack(E["media"].backdropcolor)
 	end
+	
+	if(isPixelPerfectForced) then
+		borderr, borderg, borderb = 0, 0, 0
+	end	
 end
 
 local function Size(frame, width, height)
+	assert(width)
 	frame:SetSize(E:Scale(width), E:Scale(height or width))
 end
 
 local function Width(frame, width)
+	--[[if(not width) then
+		if frame:GetName() then
+			assert(width,frame:GetName()..' Width not set properly.')
+		end
+		assert(width,'Width not set properly.')
+	end]]
+	
 	frame:SetWidth(E:Scale(width))
 end
 
 local function Height(frame, height)
+	assert(height)
 	frame:SetHeight(E:Scale(height))
 end
 
@@ -67,7 +81,8 @@ local function SetOutside(obj, anchor, xOffset, yOffset)
 	xOffset = xOffset or E.Border
 	yOffset = yOffset or E.Border
 	anchor = anchor or obj:GetParent()
-
+	
+	assert(anchor)
 	if obj:GetPoint() then
 		obj:ClearAllPoints()
 	end
@@ -80,7 +95,8 @@ local function SetInside(obj, anchor, xOffset, yOffset)
 	xOffset = xOffset or E.Border
 	yOffset = yOffset or E.Border
 	anchor = anchor or obj:GetParent()
-
+	
+	assert(anchor)
 	if obj:GetPoint() then
 		obj:ClearAllPoints()
 	end
@@ -89,9 +105,11 @@ local function SetInside(obj, anchor, xOffset, yOffset)
 	obj:Point('BOTTOMRIGHT', anchor, 'BOTTOMRIGHT', -xOffset, yOffset)
 end
 
-local function SetTemplate(f, t, glossTex, ignoreUpdates)
-	GetTemplate(t)
-
+local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode)
+	GetTemplate(t, f.forcePixelMode or forcePixelMode)
+	if(E.global.tukuiMode) then
+		glossTex = nil
+	end
 	if(t) then
 	   f.template = t
 	end
@@ -103,8 +121,12 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates)
 	if(ignoreUpdates) then
 	   f.ignoreUpdates = ignoreUpdates
 	end
-
-	if E.private.general.pixelPerfect then
+	
+	if(forcePixelMode) then
+		f.forcePixelMode = forcePixelMode
+	end
+	
+	if (E.private.general.pixelPerfect and not E.global.tukuiMode) or f.forcePixelMode then
 		f:SetBackdrop({
 		  bgFile = E["media"].blankTex,
 		  edgeFile = E["media"].blankTex,
@@ -132,7 +154,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates)
 			f.backdropTexture = nil
 		end
 
-		if not f.oborder and not f.iborder and not E.private.general.pixelPerfect then
+		if not f.oborder and not f.iborder and (not E.private.general.pixelPerfect or E.global.tukuiMode) and not f.forcePixelMode then
 			local border = CreateFrame("Frame", nil, f)
 			border:SetInside(f, E.mult, E.mult)
 			border:SetBackdrop({
@@ -167,22 +189,30 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates)
 			f.backdropTexture:SetTexture(E["media"].blankTex)
 		end
 
-		f.backdropTexture:SetInside(f)
+		if(f.forcePixelMode or forcePixelMode) then
+			f.backdropTexture:SetInside(f, E.mult, E.mult)
+		else
+			f.backdropTexture:SetInside(f)
+		end
 	end
 
 	f:SetBackdropBorderColor(borderr, borderg, borderb)
 
-	if not f.ignoreUpdates then
+	if not f.ignoreUpdates and not f.forcePixelMode then
 		E["frames"][f] = true
 	end
 end
 
-local function CreateBackdrop(f, t, tex)
+local function CreateBackdrop(f, t, tex, ignoreUpdates, forcePixelMode)
 	if not t then t = "Default" end
-
+	
 	local b = CreateFrame("Frame", nil, f)
-	b:SetOutside()
-	b:SetTemplate(t, tex)
+	if(f.forcePixelMode or forcePixelMode) then
+		b:SetOutside(nil, E.mult, E.mult)
+	else
+		b:SetOutside()
+	end
+	b:SetTemplate(t, tex, ignoreUpdates, forcePixelMode)
 
 	if f:GetFrameLevel() - 1 >= 0 then
 		b:SetFrameLevel(f:GetFrameLevel() - 1)

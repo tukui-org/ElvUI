@@ -547,7 +547,15 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		if(UnitIsTapped(unit) and not UnitIsTappedByPlayer(unit)) then
 			color = TAPPED_COLOR
 		else
-			color = E.db.tooltip.useCustomFactionColors and E.db.tooltip.factionColors[""..UnitReaction(unit, "player")] or FACTION_BAR_COLORS[UnitReaction(unit, "player")]
+			local unitReaction = UnitReaction(unit, "player")
+			if E.db.tooltip.useCustomFactionColors then
+				if unitReaction then
+					unitReaction = format("%s", unitReaction) --Cast to string because our table is indexed by string keys
+					color = E.db.tooltip.factionColors[unitReaction]
+				end
+			else
+				color = FACTION_BAR_COLORS[unitReaction]
+			end
 		end
 
 		local levelLine = self:GetLevelLine(tt, 2)
