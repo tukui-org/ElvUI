@@ -471,6 +471,7 @@ end
 
 function UF:UpdateShardBar()
 	local frame = self.origParent or self:GetParent()
+	if not frame.USE_CLASSBAR then return; end
 
 	--The number of classbar buttons may be different for each spec
 	if frame.MAX_CLASS_BAR ~= self.number then
