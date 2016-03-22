@@ -828,7 +828,6 @@ local function LoadSkin()
 		"BattlenetPanelOfflineFriends",
 		"BattlenetPanelBroadcasts",
 		"BattlenetPanelFriendRequests",
-		"BattlenetPanelConversations",
 		"BattlenetPanelShowToastWindow",
 		-- Status Text
 		"StatusTextPanelPlayer",
