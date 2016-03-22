@@ -1275,7 +1275,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				message = format(Var.BN_INLINE_TOAST_FRIEND_PENDING, BNGetNumFriendInvites());
 			elseif ( arg1 == "FRIEND_REMOVED" or arg1 == "BATTLETAG_FRIEND_REMOVED" ) then
 				message = format(globalstring, arg2);
-			elseif ( E.wowbuild < 21073 and arg1 == "FRIEND_ONLINE" or arg1 == "FRIEND_OFFLINE") then --Remove this entire block when 6.2.4 goes live
+			elseif ( E.wowbuild < 21073 and (arg1 == "FRIEND_ONLINE" or arg1 == "FRIEND_OFFLINE") ) then --Remove this entire block when 6.2.4 goes live
 				local hasFocus, toonName, client, realmName, realmID, faction, race, class, guild, zoneName, level, gameText = BNGetToonInfo(arg13);
 				if (toonName and toonName ~= "" and client and client ~= "") then
 					local _, _, battleTag = BNGetFriendInfoByID(arg13);
@@ -1287,7 +1287,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 					local playerLink = format("|HBNplayer:%s:%s:%s:%s:%s|h[%s]|h", arg2, arg13, arg11, Chat_GetChatCategory(type), 0, arg2);
 					message = format(globalstring, playerLink);
 				end
-			elseif ( E.wowbuild >= 21073 and arg1 == "FRIEND_ONLINE" or arg1 == "FRIEND_OFFLINE") then
+			elseif ( E.wowbuild >= 21073 and (arg1 == "FRIEND_ONLINE" or arg1 == "FRIEND_OFFLINE") ) then
 				local _, accountName, battleTag, _, characterName, _, client = BNGetFriendInfoByID(arg13);
 				if (client and client ~= "") then
 					local _, _, battleTag = BNGetFriendInfoByID(arg13);
