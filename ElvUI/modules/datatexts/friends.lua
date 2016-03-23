@@ -313,7 +313,6 @@ local function OnEnter(self)
 						if info[5] == wowString then
 							if (info[7] == true) then status = 1 elseif (info[8] == true) then status = 2 else status = 3 end
 							classc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[13]]
-							print("info 13:", info[13])
 							if info[15] ~= '' then
 								levelc = GetQuestDifficultyColor(info[15])
 							else
