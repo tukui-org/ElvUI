@@ -9,6 +9,7 @@ local function LoadSkin()
 		"ClassTrainerScrollFrameScrollChild",
 		"ClassTrainerFrameSkillStepButton",
 		"ClassTrainerFrameBottomInset",
+		"ClassTrainerFrameInset",
 	}
 
 	local buttons = {
@@ -16,7 +17,6 @@ local function LoadSkin()
 	}
 
 	local KillTextures = {
-		"ClassTrainerFrameInset",
 		"ClassTrainerFramePortrait",
 		"ClassTrainerScrollFrameScrollBarBG",
 		"ClassTrainerScrollFrameScrollBarTop",
@@ -24,16 +24,16 @@ local function LoadSkin()
 		"ClassTrainerScrollFrameScrollBarMiddle",
 	}
 
-	for i=1,8 do
-		_G["ClassTrainerScrollFrameButton"..i]:StripTextures()
-		_G["ClassTrainerScrollFrameButton"..i]:StyleButton()
-		_G["ClassTrainerScrollFrameButton"..i.."Icon"]:SetTexCoord(unpack(E.TexCoords))
-		_G["ClassTrainerScrollFrameButton"..i]:CreateBackdrop()
-		_G["ClassTrainerScrollFrameButton"..i].backdrop:SetOutside(_G["ClassTrainerScrollFrameButton"..i.."Icon"])
-		_G["ClassTrainerScrollFrameButton"..i.."Icon"]:SetParent(_G["ClassTrainerScrollFrameButton"..i].backdrop)
-
-		_G["ClassTrainerScrollFrameButton"..i].selectedTex:SetTexture(1, 1, 1, 0.3)
-		_G["ClassTrainerScrollFrameButton"..i].selectedTex:SetInside()
+	for i= 1, #ClassTrainerFrame.scrollFrame.buttons do
+		local button = _G["ClassTrainerScrollFrameButton"..i]
+		button:StripTextures()
+		button:StyleButton()
+		button.icon:SetTexCoord(unpack(E.TexCoords))
+		button:CreateBackdrop()
+		button.backdrop:SetOutside(button.icon)
+		button.icon:SetParent(button.backdrop)
+		button.selectedTex:SetTexture(1, 1, 1, 0.3)
+		button.selectedTex:SetInside()
 	end
 
 	S:HandleScrollBar(ClassTrainerScrollFrameScrollBar, 5)
@@ -53,7 +53,7 @@ local function LoadSkin()
 
 	S:HandleDropDownBox(ClassTrainerFrameFilterDropDown, 155)
 
-	ClassTrainerFrame:SetHeight(ClassTrainerFrame:GetHeight() + 42)
+	ClassTrainerFrame:SetHeight(ClassTrainerFrame:GetHeight() + 5)
 	ClassTrainerFrame:CreateBackdrop("Transparent")
 	ClassTrainerFrame.backdrop:Point("TOPLEFT", ClassTrainerFrame, "TOPLEFT")
 	ClassTrainerFrame.backdrop:Point("BOTTOMRIGHT", ClassTrainerFrame, "BOTTOMRIGHT")
@@ -64,8 +64,6 @@ local function LoadSkin()
 	ClassTrainerFrameSkillStepButton.icon:SetParent(ClassTrainerFrameSkillStepButton.backdrop)
 	ClassTrainerFrameSkillStepButtonHighlight:SetTexture(1,1,1,0.3)
 	ClassTrainerFrameSkillStepButton.selectedTex:SetTexture(1,1,1,0.3)
-	ClassTrainerFrameSkillStepButton:ClearAllPoints()
-	ClassTrainerFrameSkillStepButton:Point("TOPLEFT", ClassTrainerFrameInset, "TOPLEFT", 6, 15)
 
 	ClassTrainerStatusBar:StripTextures()
 	ClassTrainerStatusBar:SetStatusBarTexture(E["media"].normTex)
@@ -73,18 +71,6 @@ local function LoadSkin()
 	ClassTrainerStatusBar.rankText:ClearAllPoints()
 	ClassTrainerStatusBar.rankText:Point("CENTER", ClassTrainerStatusBar, "CENTER")
 	E:RegisterStatusBar(ClassTrainerStatusBar)
-	
-	local function PositionSkillButtons()
-		local tradeSkillStepIndex = GetTrainerServiceStepIndex();
-		if tradeSkillStepIndex then
-			ClassTrainerScrollFrame:ClearAllPoints()
-			ClassTrainerScrollFrame:Point("TOPLEFT", ClassTrainerFrameBottomInset, "TOPLEFT", 5, 25)
-		else
-			ClassTrainerScrollFrame:ClearAllPoints()
-			ClassTrainerScrollFrame:Point("TOPLEFT", ClassTrainerFrameInset, "TOPLEFT", 5, 25)
-		end
-	end
-	hooksecurefunc("ClassTrainerFrame_Update", PositionSkillButtons)
 end
 
 S:RegisterSkin("Blizzard_TrainerUI", LoadSkin)
