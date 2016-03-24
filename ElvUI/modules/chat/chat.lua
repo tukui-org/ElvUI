@@ -1230,7 +1230,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			end
 			local accessID = ChatHistory_GetAccessID(Chat_GetChatCategory(type), arg8);
 			local typeID = ChatHistory_GetAccessID(infoType, arg8, arg12);
-			self:AddMessage(CH:ConcatenateTimeStamp(message), info.r, info.g, info.b, info.id, false, accessID, typeID);
+			self:AddMessage(format(CH:ConcatenateTimeStamp(globalstring), arg8, arg4), info.r, info.g, info.b, info.id, false, accessID, typeID)
 		elseif ( type == "BN_INLINE_TOAST_ALERT" ) then
 			local globalstring = _G["BN_INLINE_TOAST_"..arg1];
 			local message;
