@@ -64,6 +64,8 @@ local function LoadSkin()
 	ClassTrainerFrameSkillStepButton.icon:SetParent(ClassTrainerFrameSkillStepButton.backdrop)
 	ClassTrainerFrameSkillStepButtonHighlight:SetTexture(1,1,1,0.3)
 	ClassTrainerFrameSkillStepButton.selectedTex:SetTexture(1,1,1,0.3)
+	ClassTrainerFrameSkillStepButton:ClearAllPoints()
+	ClassTrainerFrameSkillStepButton:Point("TOPLEFT", ClassTrainerFrameInset, "TOPLEFT", 6, 15)
 
 	ClassTrainerStatusBar:StripTextures()
 	ClassTrainerStatusBar:SetStatusBarTexture(E["media"].normTex)
@@ -71,6 +73,18 @@ local function LoadSkin()
 	ClassTrainerStatusBar.rankText:ClearAllPoints()
 	ClassTrainerStatusBar.rankText:Point("CENTER", ClassTrainerStatusBar, "CENTER")
 	E:RegisterStatusBar(ClassTrainerStatusBar)
+	
+	local function PositionSkillButtons()
+		local tradeSkillStepIndex = GetTrainerServiceStepIndex();
+		if tradeSkillStepIndex then
+			ClassTrainerScrollFrame:ClearAllPoints()
+			ClassTrainerScrollFrame:Point("TOPLEFT", ClassTrainerFrameBottomInset, "TOPLEFT", 5, 25)
+		else
+			ClassTrainerScrollFrame:ClearAllPoints()
+			ClassTrainerScrollFrame:Point("TOPLEFT", ClassTrainerFrameInset, "TOPLEFT", 5, 25)
+		end
+	end
+	hooksecurefunc("ClassTrainerFrame_Update", PositionSkillButtons)
 end
 
 S:RegisterSkin("Blizzard_TrainerUI", LoadSkin)
