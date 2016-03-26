@@ -217,22 +217,6 @@ local function LoadSkin()
 	S:HandleEditBox(FriendsFriendsList)
 	S:HandleDropDownBox(FriendsFriendsFrameDropDown,150)
 
-	if E.wowbuild < 21073 then --Remove this when 6.2.4 goes live
-		BNConversationInviteDialog:StripTextures()
-		BNConversationInviteDialog:CreateBackdrop('Transparent')
-		BNConversationInviteDialogList:StripTextures()
-		BNConversationInviteDialogList:SetTemplate('Default')
-		S:HandleButton(BNConversationInviteDialogInviteButton)
-		S:HandleButton(BNConversationInviteDialogCancelButton)
-
-		for i=1, BN_CONVERSATION_INVITE_NUM_DISPLAYED do
-			S:HandleCheckBox(_G["BNConversationInviteDialogListFriend"..i].checkButton)
-		end
-
-		FriendsFriendsNoteFrame:StripTextures()
-		S:HandleEditBox(FriendsFriendsNoteFrame)
-	end
-
 	FriendsTabHeaderSoRButton:SetTemplate('Default')
 	FriendsTabHeaderSoRButton:StyleButton()
 	FriendsTabHeaderSoRButtonIcon:SetDrawLayer('OVERLAY')

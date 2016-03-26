@@ -18,8 +18,7 @@ local ChatFrame_SendSmartTell = ChatFrame_SendSmartTell
 local SetItemRef = SetItemRef
 local GetFriendInfo = GetFriendInfo
 local BNGetFriendInfo = BNGetFriendInfo
-local BNGetToonInfo = BNGetToonInfo --Removed in 6.2.4
-local BNGetGameAccountInfo = BNGetGameAccountInfo --Added in 6.2.4
+local BNGetGameAccountInfo = BNGetGameAccountInfo
 local BNet_GetValidatedCharacterName = BNet_GetValidatedCharacterName
 local GetNumFriends = GetNumFriends
 local BNGetNumFriends = BNGetNumFriends
@@ -159,17 +158,12 @@ local function BuildBNTable(total)
 	local hasFocus, realmName, realmID, faction, race, class, guild, zoneName, level, gameText
 	for i = 1, total do
 		bnetIDAccount, accountName, battleTag, _, characterName, bnetIDGameAccount, client, isOnline, _, isAFK, isDND, _, noteText = BNGetFriendInfo(i)
+		hasFocus, _, _, realmName, realmID, faction, race, class, guild, zoneName, level, gameText = BNGetGameAccountInfo(bnetIDGameAccount or bnetIDAccount);
 
-		if E.wowbuild >= 21073 then
-			--6.2.4
-			hasFocus, _, _, realmName, realmID, faction, race, class, guild, zoneName, level, gameText = BNGetGameAccountInfo(bnetIDGameAccount or bnetIDAccount);
-		else
-			--Live, remove when 6.2.4 goes live
-			hasFocus, _, _, realmName, realmID, faction, race, class, guild, zoneName, level, gameText = BNGetToonInfo(bnetIDGameAccount or bnetIDAccount);
-		end
 		if isOnline then
 			characterName = BNet_GetValidatedCharacterName(characterName, battleTag, client) or "";
 			for k,v in pairs(LOCALIZED_CLASS_NAMES_MALE) do if class == v then class = k end end
+			for k,v in pairs(LOCALIZED_CLASS_NAMES_FEMALE) do if class == v then class = k end end
 			BNTable[i] = { bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isAFK, isDND, noteText, realmName, faction, race, class, zoneName, level }
 
 			if client == scString then
