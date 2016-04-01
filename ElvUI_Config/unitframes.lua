@@ -3857,6 +3857,11 @@ E.Options.args.unitframe.args.boss = {
 				['FORCE_OFF'] = L["Force Off"],
 			},
 		},
+		targetGlow = {
+			order = 15,
+			type = "toggle",
+			name = L["Target Glow"],
+		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
 		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
@@ -4004,6 +4009,11 @@ E.Options.args.unitframe.args.arena = {
 				--["MIDDLE"] = L["Middle"], --no way to handle this with trinket
 				["RIGHT"] = L["Right"],
 			},
+		},
+		targetGlow = {
+			order = 16,
+			type = "toggle",
+			name = L["Target Glow"],
 		},
 		pvpTrinket = {
 			order = 16,
@@ -4158,6 +4168,11 @@ E.Options.args.unitframe.args.party = {
 						["MIDDLE"] = L["Middle"],
 						["RIGHT"] = L["Right"],
 					},
+				},
+				targetGlow = {
+					order = 8,
+					type = "toggle",
+					name = L["Target Glow"],
 				},
 				positionsGroup = {
 					order = 100,
@@ -4733,6 +4748,11 @@ E.Options.args.unitframe.args['raid'] = {
 						["RIGHT"] = L["Right"],
 					},
 				},
+				targetGlow = {
+					order = 8,
+					type = "toggle",
+					name = L["Target Glow"],
+				},
 				positionsGroup = {
 					order = 100,
 					name = L["Size and Positions"],
@@ -5138,6 +5158,11 @@ E.Options.args.unitframe.args['raid40'] = {
 						["MIDDLE"] = L["Middle"],
 						["RIGHT"] = L["Right"],
 					},
+				},
+				targetGlow = {
+					order = 8,
+					type = "toggle",
+					name = L["Target Glow"],
 				},
 				positionsGroup = {
 					order = 100,

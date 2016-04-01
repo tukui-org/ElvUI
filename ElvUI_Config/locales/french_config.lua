@@ -992,6 +992,7 @@ L["Style"] = "Style" --Need review
 L["Tank Frames"] = "Cadre des Tanks"
 L["Tank Target"] = "Cible de Tank"
 L["Tapped"] = "Collé"
+L["Target Glow"] = true;
 L["Target On Mouse-Down"] =  "Cibler lors d'un appui sur le clic (et non pas en relachant le clic)" --Need review
 L["Target units on mouse down rather than mouse up. \n\n|cffFF0000Warning: If you are using the addon 'Clique' you may have to adjust your clique settings when changing this."] = "Cible les unités avec un appui sur le clic souris plutôt qu'au relâchement du clic. \n\n|cffFF0000Attention: Si vous utilisez l'addon 'Clique' vous devrez peut-être ajuster vos paramètres de clic lors du changement de celui-ci."
 L["Text Color"] = "Couleur du texte"

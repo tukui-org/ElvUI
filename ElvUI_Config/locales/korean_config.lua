@@ -1040,6 +1040,7 @@ L["Style"] = "디자인"
 L["Tank Frames"] = "방어전담 프레임"
 L["Tank Target"] = "방어전담 프레임"
 L["Tapped"] = "선점되었을 때의 색상"
+L["Target Glow"] = true;
 L["Target On Mouse-Down"] = "마우스를 누를 때 작동"
 L["Target units on mouse down rather than mouse up. \n\n|cffFF0000Warning: If you are using the addon 'Clique' you may have to adjust your clique settings when changing this."] = "마우스를 뗄 때 대상으로 잡는 게 아니라 마우스를 누를 때에 대상으로 잡습니다.|n|n|cff2eb7e4Clique|r 애드온을 쓰고 있다면 이 설정을 바꾼 후에 Clique 설정도 다시 해야 합니다."
 L["Text Color"] = "글자 색"

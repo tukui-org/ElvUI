@@ -13,6 +13,7 @@ function UF:Construct_Stagger(frame)
 	stagger:CreateBackdrop("Default",nil, nil, self.thinBorders)
 	stagger:SetOrientation("VERTICAL")
 	stagger.PostUpdate = UF.PostUpdateStagger
+	stagger:SetFrameStrata("LOW")
 	return stagger
 end
 
@@ -83,5 +84,6 @@ function UF:PostUpdateStagger()
 		UF:Configure_Stagger(frame)
 		UF:Configure_HealthBar(frame)
 		UF:Configure_Power(frame)
+		UF:Configure_InfoPanel(frame, true) --2nd argument is to prevent it from setting template, which removes threat border
 	end
 end

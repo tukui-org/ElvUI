@@ -992,6 +992,7 @@ L["Style"] = "風格"
 L["Tank Frames"] = "坦克框架"
 L["Tank Target"] = "坦克目標"
 L["Tapped"] = "被攻擊"
+L["Target Glow"] = true;
 L["Target On Mouse-Down"] = "鼠標按下設為目標"
 L["Target units on mouse down rather than mouse up. \n\n|cffFF0000Warning: If you are using the addon 'Clique' you may have to adjust your clique settings when changing this."] = "按下滑鼠時設為目標,而不是鬆開滑鼠按鍵時. \n\n|cffFF0000警告: 如果使用'Clique'等點擊施法插件, 你可能需要調整這些插件的設置."
 L["Text Color"] = "文字顔色"

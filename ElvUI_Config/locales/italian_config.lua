@@ -981,6 +981,7 @@ L["Style"] = true;
 L["Tank Frames"] = true;
 L["Tank Target"] = true;
 L["Tapped"] = true;
+L["Target Glow"] = true;
 L["Target On Mouse-Down"] = true;
 L["Target units on mouse down rather than mouse up. \n\n|cffFF0000Warning: If you are using the addon 'Clique' you may have to adjust your clique settings when changing this."] = true;
 L["Text Color"] = true;

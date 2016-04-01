@@ -154,6 +154,8 @@ function UF:Update_ArenaFrames(frame, db)
 		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0
 
 		frame.BOTTOM_OFFSET = UF:GetHealthBottomOffset(frame)
+
+		frame.USE_TARGET_GLOW = db.targetGlow
 	end
 
 	frame.colors = ElvUF.colors
