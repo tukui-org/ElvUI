@@ -14,7 +14,7 @@ function UF:Construct_InfoPanel(frame)
 	return infoPanel
 end
 
-function UF:Configure_InfoPanel(frame)
+function UF:Configure_InfoPanel(frame, noTemplateChange)
 	local db = frame.db
 
 	if(frame.USE_INFO_PANEL) then
@@ -37,15 +37,17 @@ function UF:Configure_InfoPanel(frame)
 			end
 		end
 
-		local thinBorders = self.thinBorders
-		if(E.global.tukuiMode) then
-			thinBorders = false
-		end
+		if (not noTemplateChange) then
+			local thinBorders = self.thinBorders
+			if(E.global.tukuiMode) then
+				thinBorders = false
+			end
 
-		if db.infoPanel.transparent then
-			frame.InfoPanel.backdrop:SetTemplate("Transparent", nil, nil, thinBorders)
-		else
-			frame.InfoPanel.backdrop:SetTemplate("Default", true, nil, thinBorders)
+			if db.infoPanel.transparent then
+				frame.InfoPanel.backdrop:SetTemplate("Transparent", nil, nil, thinBorders)
+			else
+				frame.InfoPanel.backdrop:SetTemplate("Default", true, nil, thinBorders)
+			end
 		end
 	else
 		frame.InfoPanel:Hide()
