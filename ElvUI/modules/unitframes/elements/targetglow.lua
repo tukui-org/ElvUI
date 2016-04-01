@@ -34,7 +34,7 @@ function UF:UpdateTargetGlow(event)
 	if not self.unit then return; end
 	local unit = self.unit
 
-	if UnitIsUnit(unit, 'target') then
+	if UnitIsUnit(unit, 'target') and UF.db.units[self.unitframeType].targetGlow then
 		self.TargetGlow:Show()
 		if self.USE_POWERBAR_OFFSET then
 			self.TargetGlow.powerGlow:Show()
