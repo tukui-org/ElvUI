@@ -83,5 +83,6 @@ function UF:PostUpdateStagger()
 		UF:Configure_Stagger(frame)
 		UF:Configure_HealthBar(frame)
 		UF:Configure_Power(frame)
+		UF:Configure_InfoPanel(frame)
 	end
 end
