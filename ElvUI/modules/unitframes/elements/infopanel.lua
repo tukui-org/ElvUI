@@ -22,18 +22,18 @@ function UF:Configure_InfoPanel(frame)
 		frame.InfoPanel:ClearAllPoints()
 
 		if frame.ORIENTATION == "RIGHT" and not (frame.unitframeType == "arena") then
-			frame.InfoPanel:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -frame.BORDER - frame.SPACING, frame.BORDER + frame.SPACING)
+			frame.InfoPanel:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -frame.BORDER - frame.SPACING - (E.global.tukuiMode and frame.BORDER*2 or 0), frame.BORDER + frame.SPACING + (E.global.tukuiMode and frame.BORDER*2 or 0))
 			if(frame.USE_POWERBAR and not frame.USE_INSET_POWERBAR and not frame.POWERBAR_DETACHED) then
-				frame.InfoPanel:SetPoint("TOPLEFT", frame.Power.backdrop, "BOTTOMLEFT", frame.BORDER, -(frame.SPACING*3))
+				frame.InfoPanel:SetPoint("TOPLEFT", frame.Power.backdrop, "BOTTOMLEFT", frame.BORDER + (E.global.tukuiMode and frame.BORDER*2 or 0), -(frame.SPACING*3) - (E.global.tukuiMode and frame.BORDER*2 or 0))
 			else
-				frame.InfoPanel:SetPoint("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", frame.BORDER, -(frame.SPACING*3))
+				frame.InfoPanel:SetPoint("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", frame.BORDER + (E.global.tukuiMode and frame.BORDER*2 or 0), -(frame.SPACING*3) - (E.global.tukuiMode and frame.BORDER*2 or 0))
 			end
 		else
-			frame.InfoPanel:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING)
+			frame.InfoPanel:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER + frame.SPACING + (E.global.tukuiMode and frame.BORDER*2 or 0), frame.BORDER + frame.SPACING + (E.global.tukuiMode and frame.BORDER*2 or 0))
 			if(frame.USE_POWERBAR and not frame.USE_INSET_POWERBAR and not frame.POWERBAR_DETACHED) then
-				frame.InfoPanel:SetPoint("TOPRIGHT", frame.Power.backdrop, "BOTTOMRIGHT", -frame.BORDER, -(frame.SPACING*3))
+				frame.InfoPanel:SetPoint("TOPRIGHT", frame.Power.backdrop, "BOTTOMRIGHT", -frame.BORDER - (E.global.tukuiMode and frame.BORDER*2 or 0), -(frame.SPACING*3) - (E.global.tukuiMode and frame.BORDER*2 or 0))
 			else
-				frame.InfoPanel:SetPoint("TOPRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", -frame.BORDER, -(frame.SPACING*3))
+				frame.InfoPanel:SetPoint("TOPRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", -frame.BORDER - (E.global.tukuiMode and frame.BORDER*2 or 0), -(frame.SPACING*3) - (E.global.tukuiMode and frame.BORDER*2 or 0))
 			end
 		end
 
