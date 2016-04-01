@@ -13,7 +13,7 @@ function UF:Construct_Stagger(frame)
 	stagger:CreateBackdrop("Default",nil, nil, self.thinBorders)
 	stagger:SetOrientation("VERTICAL")
 	stagger.PostUpdate = UF.PostUpdateStagger
-	stagger:SetFrameLevel("LOW")
+	stagger:SetFrameStrata("LOW")
 	return stagger
 end
 
