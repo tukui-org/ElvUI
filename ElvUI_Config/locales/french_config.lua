@@ -960,7 +960,6 @@ L["Set the type of auras to show when a unit is friendly."] = "Définir le type 
 L["Sets the font instance's horizontal text alignment style."] = "Réglages de l'alignement horizontal du texte de la police d'écriture."
 L["Shadow Orbs"] = "Orbres d'ombre"
 L["Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."] = "Affiche une barre sur la prédiction des soins à venir sur le cadre d'unité. Ainsi qu'une barre de couleur légèrement différente pour les soins entrants excédants."
-L["Show target glow indicator from this group of frames."] = true;
 L["Show Aura From Other Players"] = "N'importe quelle unité"
 L["Show Auras"] = "Afficher les auras"
 L["Show Dispellable Debuffs"] = true;

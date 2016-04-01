@@ -960,7 +960,6 @@ L["Set the type of auras to show when a unit is friendly."] = "當單位是友�
 L["Sets the font instance's horizontal text alignment style."] = "設定橫向字體的對齊方式."
 L["Shadow Orbs"] = "暗影寶珠"
 L["Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals."] = "在單位框架中顯示即將回复的的預測治療量, 過量治療則以不同顏色顯示. "
-L["Show target glow indicator from this group of frames."] = true;
 L["Show Aura From Other Players"] = "顯示其他玩家的光環"
 L["Show Auras"] = "顯示光環"
 L["Show Dispellable Debuffs"] = true;

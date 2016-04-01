@@ -361,7 +361,7 @@ P['datatexts'] = {
 	['goldCoins'] = false,
 	["noCombatClick"] = false,
 	["noCombatHover"] = false,
-	
+
 	--Enabled/Disabled Panels
 	['minimapPanels'] = true,
 	['leftChatPanel'] = true,

@@ -19,7 +19,7 @@ function UF:Construct_TargetGlow(frame)
 	frame.shadow = nil
 	--x:SetFrameStrata('BACKGROUND')
 	x:Hide();
-	
+
 	--Secondary TargetGlow, for power frame when using power offset
 	frame:CreateShadow('Default')
 	local shadow = frame.shadow
@@ -34,7 +34,7 @@ function UF:UpdateTargetGlow(event)
 	if not self.unit then return; end
 	local unit = self.unit
 
-	if UnitIsUnit(unit, 'target') and UF.db.units[self.unitframeType].targetGlow then
+	if UnitIsUnit(unit, 'target') and self.USE_TARGET_GLOW then
 		self.TargetGlow:Show()
 		if self.USE_POWERBAR_OFFSET then
 			self.TargetGlow.powerGlow:Show()

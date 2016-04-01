@@ -3856,7 +3856,6 @@ E.Options.args.unitframe.args.boss = {
 			order = 15,
 			type = "toggle",
 			name = L["Target Glow"],
-			desc = L["Show target glow indicator from this group of frames."],
 		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES),
@@ -4010,7 +4009,6 @@ E.Options.args.unitframe.args.arena = {
 			order = 16,
 			type = "toggle",
 			name = L["Target Glow"],
-			desc = L["Show target glow indicator from this group of frames."],
 		},
 		pvpTrinket = {
 			order = 16,
@@ -4170,7 +4168,6 @@ E.Options.args.unitframe.args.party = {
 					order = 8,
 					type = "toggle",
 					name = L["Target Glow"],
-					desc = L["Show target glow indicator from this group of frames."],
 				},
 				positionsGroup = {
 					order = 100,
@@ -4750,7 +4747,6 @@ E.Options.args.unitframe.args['raid'] = {
 					order = 8,
 					type = "toggle",
 					name = L["Target Glow"],
-					desc = L["Show target glow indicator from this group of frames."],
 				},
 				positionsGroup = {
 					order = 100,
@@ -5162,7 +5158,6 @@ E.Options.args.unitframe.args['raid40'] = {
 					order = 8,
 					type = "toggle",
 					name = L["Target Glow"],
-					desc = L["Show target glow indicator from this group of frames."],
 				},
 				positionsGroup = {
 					order = 100,
