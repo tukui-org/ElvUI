@@ -337,7 +337,6 @@ function CH:GetSmileyReplacementText(msg)
 	return outstr;
 end
 
-
 function CH:StyleChat(frame)
 	local name = frame:GetName()
 	_G[name.."TabText"]:FontTemplate(LSM:Fetch("font", self.db.tabFont), self.db.tabFontSize, self.db.tabFontOutline)
@@ -366,10 +365,17 @@ function CH:StyleChat(frame)
 	end)
 
 	tab.text = _G[name.."TabText"]
-	tab.text:SetTextColor(unpack(E["media"].rgbvaluecolor))
+	if(not E.global.tukuiMode) then
+		tab.text:SetTextColor(unpack(E["media"].rgbvaluecolor))
+	else
+		tab.text:SetTextColor(0.8, 0.8, 0)
+	end
 	hooksecurefunc(tab.text, "SetTextColor", function(t, r, g, b, a)
 		local rR, gG, bB = unpack(E["media"].rgbvaluecolor)
-
+		if(E.global.tukuiMode) then
+			rR, gG, bB = 0.8, 0.8, 0
+		end
+		
 		if r ~= rR or g ~= gG or b ~= bB then
 			t:SetTextColor(rR, gG, bB)
 		end
@@ -385,17 +391,7 @@ function CH:StyleChat(frame)
 	frame:StripTextures(true)
 	_G[name..'ButtonFrame']:Kill()
 
-	local a, b, c = select(6, editbox:GetRegions()); a:Kill(); b:Kill(); c:Kill()
-	_G[format(editbox:GetName().."FocusLeft", id)]:Kill()
-	_G[format(editbox:GetName().."FocusMid", id)]:Kill()
-	_G[format(editbox:GetName().."FocusRight", id)]:Kill()
-	editbox:SetTemplate('Default', true)
-	editbox:SetAltArrowKeyMode(false)
-	editbox:HookScript("OnEditFocusGained", function(self) self:Show(); if not LeftChatPanel:IsShown() then LeftChatPanel.editboxforced = true; LeftChatToggleButton:GetScript('OnEnter')(LeftChatToggleButton) end end)
-	editbox:HookScript("OnEditFocusLost", function(self) if LeftChatPanel.editboxforced then LeftChatPanel.editboxforced = nil; if LeftChatPanel:IsShown() then LeftChatToggleButton:GetScript('OnLeave')(LeftChatToggleButton) end end self:Hide() end)
-	editbox:SetAllPoints(LeftChatDataPanel)
-	self:SecureHook(editbox, "AddHistoryLine", "ChatEdit_AddHistory")
-	editbox:HookScript("OnTextChanged", function(self)
+	local function OnTextChanged(self)
 		local text = self:GetText()
 
 		if InCombatLockdown() then
@@ -436,7 +432,48 @@ function CH:StyleChat(frame)
 			new = new:gsub('|', '')
 			self:SetText(new)
 		end
-	end)
+	end
+	
+	--Work around broken SetAltArrowKeyMode API. Code from Prat
+	local function OnArrowPressed(self, key)
+		if #self.historyLines == 0 then
+			return
+		end
+
+		if key == "DOWN" then
+			self.historyIndex = self.historyIndex - 1
+
+			if self.historyIndex < 1 then
+				self.historyIndex = #self.historyLines
+			end
+		elseif key == "UP" then
+			self.historyIndex = self.historyIndex + 1
+
+			if self.historyIndex > #self.historyLines then
+				self.historyIndex = 1
+			end
+		else
+			return
+		end
+		self:SetText(self.historyLines[self.historyIndex])
+	end
+
+	local a, b, c = select(6, editbox:GetRegions()); a:Kill(); b:Kill(); c:Kill()
+	_G[format(editbox:GetName().."FocusLeft", id)]:Kill()
+	_G[format(editbox:GetName().."FocusMid", id)]:Kill()
+	_G[format(editbox:GetName().."FocusRight", id)]:Kill()
+	editbox:SetTemplate('Default', true)
+	editbox:SetAltArrowKeyMode(CH.db.useAltKey)
+	editbox:HookScript("OnEditFocusGained", function(self) self:Show(); if not LeftChatPanel:IsShown() then LeftChatPanel.editboxforced = true; LeftChatToggleButton:GetScript('OnEnter')(LeftChatToggleButton) end end)
+	editbox:HookScript("OnEditFocusLost", function(self) if LeftChatPanel.editboxforced then LeftChatPanel.editboxforced = nil; if LeftChatPanel:IsShown() then LeftChatToggleButton:GetScript('OnLeave')(LeftChatToggleButton) end end self:Hide() end)
+	editbox:SetAllPoints(LeftChatDataPanel)
+	self:SecureHook(editbox, "AddHistoryLine", "ChatEdit_AddHistory")
+	editbox:HookScript("OnTextChanged", OnTextChanged)
+	
+	--Work around broken SetAltArrowKeyMode API
+	editbox.historyLines = ElvCharacterDB.ChatEditHistory
+	editbox.historyIndex = 0
+	editbox:HookScript("OnArrowPressed", OnArrowPressed)
 
 	for i, text in pairs(ElvCharacterDB.ChatEditHistory) do
 		editbox:AddHistoryLine(text)
@@ -486,6 +523,15 @@ function CH:StyleChat(frame)
 
 	CreatedFrames = id
 	frame.styled = true
+end
+
+function CH:UpdateSettings()
+	for i = 1, CreatedFrames do
+		local chat = _G[format("ChatFrame%d", i)]
+		local name = chat:GetName()
+		local editbox = _G[name..'EditBox']
+		editbox:SetAltArrowKeyMode(CH.db.useAltKey)
+	end
 end
 
 local function removeIconFromLine(text)
@@ -577,10 +623,21 @@ function CH:UpdateAnchors()
 	for _, frameName in pairs(CHAT_FRAMES) do
 		local frame = _G[frameName..'EditBox']
 		if not frame then break; end
-		if E.db.datatexts.leftChatPanel and E.db.chat.editBoxPosition == 'BELOW_CHAT' then
-			frame:SetAllPoints(LeftChatDataPanel)
+		if(not E.db.datatexts.leftChatPanel and (self.db.panelBackdrop == "HIDEBOTH" or self.db.panelBackdrop == "RIGHT")) then
+			frame:ClearAllPoints()
+			if(E.db.chat.editBoxPosition == 'BELOW_CHAT') then
+				frame:SetPoint("TOPLEFT", ChatFrame1, "BOTTOMLEFT")
+				frame:SetPoint("BOTTOMRIGHT", ChatFrame1, "BOTTOMRIGHT", 0, -LeftChatTab:GetHeight())
+			else
+				frame:SetPoint("BOTTOMLEFT", ChatFrame1, "TOPLEFT")
+				frame:SetPoint("TOPRIGHT", ChatFrame1, "TOPRIGHT", 0, LeftChatTab:GetHeight())			
+			end
 		else
-			frame:SetAllPoints(LeftChatTab)
+			if E.db.datatexts.leftChatPanel and E.db.chat.editBoxPosition == 'BELOW_CHAT' then
+				frame:SetAllPoints(LeftChatDataPanel)
+			else
+				frame:SetAllPoints(LeftChatTab)
+			end
 		end
 	end
 
@@ -678,18 +735,27 @@ function CH:PositionChat(override)
 
 		if chat:IsShown() and not (id > NUM_CHAT_WINDOWS) and id == self.RightChatWindowID then
 			chat:ClearAllPoints()
-			if E.db.datatexts.rightChatPanel then
+			if(E.global.tukuiMode) then
 				chat:Point("BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 1, 3)
+				if id ~= 2 then
+					chat:SetSize((E.db.chat.separateSizes and E.db.chat.panelWidthRight or E.db.chat.panelWidth) - 11 - LeftChatToggleButton:GetWidth(), (E.db.chat.separateSizes and E.db.chat.panelHeightRight or E.db.chat.panelHeight) - BASE_OFFSET)
+				else
+					chat:SetSize(E.db.chat.panelWidth - 11 - LeftChatToggleButton:GetWidth(), (E.db.chat.panelHeight - BASE_OFFSET) - CombatLogQuickButtonFrame_Custom:GetHeight())
+				end				
 			else
-				BASE_OFFSET = BASE_OFFSET - 24
-				chat:Point("BOTTOMLEFT", RightChatDataPanel, "BOTTOMLEFT", 1, 1)
+				if E.db.datatexts.rightChatPanel then
+					chat:Point("BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 1, 3)
+				else
+					BASE_OFFSET = BASE_OFFSET - 24
+					chat:Point("BOTTOMLEFT", RightChatDataPanel, "BOTTOMLEFT", 1, 1)
+				end
+				if id ~= 2 then
+					chat:SetSize((E.db.chat.separateSizes and E.db.chat.panelWidthRight or E.db.chat.panelWidth) - 11, (E.db.chat.separateSizes and E.db.chat.panelHeightRight or E.db.chat.panelHeight) - BASE_OFFSET)
+				else
+					chat:SetSize(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - BASE_OFFSET) - CombatLogQuickButtonFrame_Custom:GetHeight())
+				end
 			end
-			if id ~= 2 then
-				chat:SetSize((E.db.chat.separateSizes and E.db.chat.panelWidthRight or E.db.chat.panelWidth) - 11, (E.db.chat.separateSizes and E.db.chat.panelHeightRight or E.db.chat.panelHeight) - BASE_OFFSET)
-			else
-				chat:SetSize(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - BASE_OFFSET) - CombatLogQuickButtonFrame_Custom:GetHeight())
-			end
-
+			
 			--Pass a 2nd argument which prevents an infinite loop in our ON_FCF_SavePositionAndDimensions function
 			FCF_SavePositionAndDimensions(chat, true)
 
@@ -711,14 +777,19 @@ function CH:PositionChat(override)
 		else
 			if id ~= 2 and not (id > NUM_CHAT_WINDOWS) then
 				chat:ClearAllPoints()
-				if E.db.datatexts.leftChatPanel then
-					chat:Point("BOTTOMLEFT", LeftChatToggleButton, "TOPLEFT", 1, 3)
+				if(E.global.tukuiMode) then
+					chat:Point("BOTTOMLEFT", LeftChatToggleButton, "TOPRIGHT", 1, 3)	
+					chat:SetSize(E.db.chat.panelWidth - 11 - LeftChatToggleButton:GetWidth(), (E.db.chat.panelHeight - BASE_OFFSET))			
 				else
-					BASE_OFFSET = BASE_OFFSET - 24
-					chat:Point("BOTTOMLEFT", LeftChatToggleButton, "BOTTOMLEFT", 1, 1)
+					if E.db.datatexts.leftChatPanel then
+						chat:Point("BOTTOMLEFT", LeftChatToggleButton, "TOPLEFT", 1, 3)
+					else
+						BASE_OFFSET = BASE_OFFSET - 24
+						chat:Point("BOTTOMLEFT", LeftChatToggleButton, "BOTTOMLEFT", 1, 1)
+					end
+					chat:SetSize(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - BASE_OFFSET))
 				end
-				chat:SetSize(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - BASE_OFFSET))
-
+				
 				--Pass a 2nd argument which prevents an infinite loop in our ON_FCF_SavePositionAndDimensions function
 				FCF_SavePositionAndDimensions(chat, true)
 			end
@@ -744,6 +815,10 @@ function CH:PositionChat(override)
 end
 
 local function UpdateChatTabColor(hex, r, g, b)
+	if(E.global.tukuiMode) then
+		r, g, b = 0.8, 0.8, 0
+	end
+	
 	for i=1, CreatedFrames do
 		_G['ChatFrame'..i..'TabText']:SetTextColor(r, g, b)
 	end
@@ -890,30 +965,16 @@ function CH:ConcatenateTimeStamp(msg)
 	return msg
 end
 
-
-
 function CH:GetBNFriendColor(name, id)
 	local _, class
-	if E.wowbuild >= 21073 then
-		--6.2.4
-		_, _, _, _, _, _, _, class = BNGetGameAccountInfo(id)
-	else
-		--Live, remove when 6.2.4 goes live
-		_, _, _, _, _, _, _, class = BNGetToonInfo(id)
-	end
+	_, _, _, _, _, _, _, class = BNGetGameAccountInfo(id)
 
 	if(not class or class == "") then
 		local accountName, bnetIDGameAccount
 		for i=1, BNGetNumFriends() do
 			_, accountName, _, _, _, bnetIDGameAccount = BNGetFriendInfo(i)
 			if (bnetIDGameAccount) and (accountName and accountName == name) then
-				if E.wowbuild >= 21073 then
-					--6.2.4
-					_, _, _, _, _, _, _, class = BNGetGameAccountInfo(bnetIDGameAccount)
-				else
-					--Live, remove when 6.2.4 goes live
-					_, _, _, _, _, _, _, class = BNGetToonInfo(bnetIDGameAccount)
-				end
+				_, _, _, _, _, _, _, class = BNGetGameAccountInfo(bnetIDGameAccount)
 
 				if(class) then
 					break;
@@ -939,7 +1000,6 @@ function CH:GetBNFriendColor(name, id)
 		return name
 	end
 end
-
 
 function CH:GetPluginReplacementIcon(nameRealm)
 	return
@@ -1042,7 +1102,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 
 		local chatGroup = Chat_GetChatCategory(type);
 		local chatTarget;
-		if ( chatGroup == "CHANNEL" or (E.wowbuild < 21073 and chatGroup == "BN_CONVERSATION") ) then
+		if ( chatGroup == "CHANNEL" ) then
 			chatTarget = tostring(arg8);
 		elseif ( chatGroup == "WHISPER" or chatGroup == "BN_WHISPER" ) then
 			if(not(strsub(arg2, 1, 2) == "|K")) then
@@ -1061,12 +1121,6 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				return true;
 			elseif ( self.excludePrivateMessageList and self.excludePrivateMessageList[strlower(arg2)]
 				and ( (chatGroup == "WHISPER" and GetCVar("whisperMode") ~= "popout_and_inline") or (chatGroup == "BN_WHISPER" and GetCVar("bnWhisperMode") ~= "popout_and_inline") ) ) then
-				return true;
-			end
-		elseif ( E.wowbuild < 21073 and chatGroup == "BN_CONVERSATION" ) then
-			if ( self.bnConversationList and not self.bnConversationList[arg8] ) then
-				return true;
-			elseif ( self.excludeBNConversationList and self.excludeBNConversationList[arg8] and GetCVar("conversationMode") ~= "popout_and_inline") then
 				return true;
 			end
 		end
@@ -1176,25 +1230,8 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			end
 			local accessID = ChatHistory_GetAccessID(Chat_GetChatCategory(type), arg8);
 			local typeID = ChatHistory_GetAccessID(infoType, arg8, arg12);
-			self:AddMessage(format(CH:ConcatenateTimeStamp(globalstring), arg8, arg4), info.r, info.g, info.b, info.id, false, accessID, typeID);
-		elseif ( E.wowbuild < 21073 and type == "BN_CONVERSATION_NOTICE" ) then
-			local channelLink = format(Var.CHAT_BN_CONVERSATION_GET_LINK, arg8, Var.MAX_WOW_CHAT_CHANNELS + arg8);
-			local playerLink = format("|HBNplayer:%s:%s:%s:%s:%s|h[%s]|h", arg2, arg13, arg11, Chat_GetChatCategory(type), arg8, arg2);
-			local message = format(_G["CHAT_CONVERSATION_"..arg1.."_NOTICE"], channelLink, playerLink)
-
-			local accessID = ChatHistory_GetAccessID(Chat_GetChatCategory(type), arg8);
-			local typeID = ChatHistory_GetAccessID(infoType, arg8, arg12);
-			self:AddMessage(CH:ConcatenateTimeStamp(message), info.r, info.g, info.b, info.id, false, accessID, typeID);
-		elseif ( E.wowbuild < 21073 and type == "BN_CONVERSATION_LIST" ) then
-			local channelLink = format(Var.CHAT_BN_CONVERSATION_GET_LINK, arg8, Var.MAX_WOW_CHAT_CHANNELS + arg8);
-			local message = format(Var.CHAT_BN_CONVERSATION_LIST, channelLink, arg1);
-			local accessID = ChatHistory_GetAccessID(Chat_GetChatCategory(type), arg8);
-			local typeID = ChatHistory_GetAccessID(infoType, arg8, arg12);
-			self:AddMessage(CH:ConcatenateTimeStamp(message), info.r, info.g, info.b, info.id, false, accessID, typeID);
+			self:AddMessage(format(CH:ConcatenateTimeStamp(globalstring), arg8, arg4), info.r, info.g, info.b, info.id, false, accessID, typeID)
 		elseif ( type == "BN_INLINE_TOAST_ALERT" ) then
-			if ( E.wowbuild < 21073 and arg1 == "FRIEND_OFFLINE" and not BNet_ShouldProcessOfflineEvents() ) then
-				return true;
-			end
 			local globalstring = _G["BN_INLINE_TOAST_"..arg1];
 			local message;
 			if ( arg1 == "FRIEND_REQUEST" ) then
@@ -1203,19 +1240,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				message = format(Var.BN_INLINE_TOAST_FRIEND_PENDING, BNGetNumFriendInvites());
 			elseif ( arg1 == "FRIEND_REMOVED" or arg1 == "BATTLETAG_FRIEND_REMOVED" ) then
 				message = format(globalstring, arg2);
-			elseif ( E.wowbuild < 21073 and arg1 == "FRIEND_ONLINE" or arg1 == "FRIEND_OFFLINE") then --Remove this entire block when 6.2.4 goes live
-				local hasFocus, toonName, client, realmName, realmID, faction, race, class, guild, zoneName, level, gameText = BNGetToonInfo(arg13);
-				if (toonName and toonName ~= "" and client and client ~= "") then
-					local _, _, battleTag = BNGetFriendInfoByID(arg13);
-					toonName = BNet_GetValidatedCharacterName(toonName, battleTag, client) or "";
-					local toonNameText = BNet_GetClientEmbeddedTexture(client, 14)..toonName;
-					local playerLink = format("|HBNplayer:%s:%s:%s:%s:%s|h[%s] (%s)|h", arg2, arg13, arg11, Chat_GetChatCategory(type), 0, arg2, toonNameText);
-					message = format(globalstring, playerLink);
-				else
-					local playerLink = format("|HBNplayer:%s:%s:%s:%s:%s|h[%s]|h", arg2, arg13, arg11, Chat_GetChatCategory(type), 0, arg2);
-					message = format(globalstring, playerLink);
-				end
-			elseif ( E.wowbuild >= 21073 and arg1 == "FRIEND_ONLINE" or arg1 == "FRIEND_OFFLINE") then
+			elseif ( arg1 == "FRIEND_ONLINE" or arg1 == "FRIEND_OFFLINE" ) then
 				local _, accountName, battleTag, _, characterName, _, client = BNGetFriendInfoByID(arg13);
 				if (client and client ~= "") then
 					local _, _, battleTag = BNGetFriendInfoByID(arg13);
@@ -1244,8 +1269,6 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				arg1 = RemoveExtraSpaces(arg1);
 				self:AddMessage(CH:ConcatenateTimeStamp(Var.BN_INLINE_TOAST_BROADCAST_INFORM), info.r, info.g, info.b, info.id);
 			end
-		elseif ( E.wowbuild < 21073 and type == "BN_INLINE_TOAST_CONVERSATION" ) then
-			self:AddMessage(format(CH:ConcatenateTimeStamp(Var.BN_INLINE_TOAST_CONVERSATION), arg1), info.r, info.g, info.b, info.id);
 		else
 			local body;
 
@@ -1343,8 +1366,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 
 			local playerLink;
 
-			if ( type ~= "BN_WHISPER" and type ~= "BN_WHISPER_INFORM" and type ~= "BN_CONVERSATION" ) then
-			-- if ( type ~= "BN_WHISPER" and type ~= "BN_WHISPER_INFORM" ) then --Use this when 6.2.4 goes live
+			if ( type ~= "BN_WHISPER" and type ~= "BN_WHISPER_INFORM" ) then --Use this when 6.2.4 goes live
 				playerLink = "|Hplayer:"..arg2..":"..arg11..":"..chatGroup..(chatTarget and ":"..chatTarget or "").."|h";
 			else
 				coloredName = CH:GetBNFriendColor(arg2, arg13)
@@ -1387,9 +1409,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 
 			-- Add Channel
 			arg4 = gsub(arg4, "%s%-%s.*", "");
-			if( E.wowbuild < 21073 and chatGroup  == "BN_CONVERSATION" ) then --Remove this block when 6.2.4 goes live
-				body = format(Var.CHAT_BN_CONVERSATION_GET_LINK, arg8, Var.MAX_WOW_CHAT_CHANNELS + arg8)..body;
-			elseif(channelLength > 0) then
+			if(channelLength > 0) then
 				body = "|Hchannel:channel:"..arg8.."|h["..arg4.."]|h "..body;
 			end
 
@@ -1423,16 +1443,8 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 		if ( not self:IsShown() ) then
 			if ( (self == DEFAULT_CHAT_FRAME and info.flashTabOnGeneral) or (self ~= DEFAULT_CHAT_FRAME and info.flashTab) ) then
 				if ( not CHAT_OPTIONS.HIDE_FRAME_ALERTS or type == "WHISPER" or type == "BN_WHISPER" ) then	--BN_WHISPER FIXME
-					if E.wowbuild < 21073 then
-						if (not (type == "BN_CONVERSATION" and BNIsSelf(arg13))) then
-							if (not FCFManager_ShouldSuppressMessageFlash(self, chatGroup, chatTarget) ) then
-								FCF_StartAlertFlash(self); --This would taint if we were not using LibChatAnims
-							end
-						end
-					else
-						if (not FCFManager_ShouldSuppressMessageFlash(self, chatGroup, chatTarget) ) then
-							FCF_StartAlertFlash(self); --This would taint if we were not using LibChatAnims
-						end
+					if (not FCFManager_ShouldSuppressMessageFlash(self, chatGroup, chatTarget) ) then
+						FCF_StartAlertFlash(self); --This would taint if we were not using LibChatAnims
 					end
 				end
 			end

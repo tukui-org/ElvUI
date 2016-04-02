@@ -153,9 +153,11 @@ function AB:PositionAndSizeBarShapeShift()
 	if self.db['stanceBar'].enabled then
 		bar:SetScale(1);
 		bar:SetAlpha(bar.db.alpha);
+		E:EnableMover(bar.mover:GetName())
 	else
 		bar:SetScale(0.000001);
 		bar:SetAlpha(0);
+		E:DisableMover(bar.mover:GetName())
 	end
 
 	if self.db['stanceBar'].backdrop == true then
@@ -176,6 +178,12 @@ function AB:PositionAndSizeBarShapeShift()
 	else
 		horizontalGrowth = "LEFT";
 	end
+	
+	if(self.db['stanceBar'].inheritGlobalFade) then
+		bar:SetParent(self.fadeParent)
+	else
+		bar:SetParent(E.UIParent)
+	end	
 
 	local button, lastButton, lastColumnButton;
 	for i=1, NUM_STANCE_SLOTS do
@@ -188,26 +196,8 @@ function AB:PositionAndSizeBarShapeShift()
 
 		if self.db['stanceBar'].mouseover == true then
 			bar:SetAlpha(0);
-			if not self.hooks[bar] then
-				self:HookScript(bar, 'OnEnter', 'Bar_OnEnter');
-				self:HookScript(bar, 'OnLeave', 'Bar_OnLeave');
-			end
-
-			if not self.hooks[button] then
-				self:HookScript(button, 'OnEnter', 'Button_OnEnter');
-				self:HookScript(button, 'OnLeave', 'Button_OnLeave');
-			end
 		else
 			bar:SetAlpha(bar.db.alpha);
-			if self.hooks[bar] then
-				self:Unhook(bar, 'OnEnter');
-				self:Unhook(bar, 'OnLeave');
-			end
-
-			if self.hooks[button] then
-				self:Unhook(button, 'OnEnter');
-				self:Unhook(button, 'OnLeave');
-			end
 		end
 
 		if i == 1 then
@@ -277,6 +267,8 @@ function AB:AdjustMaxStanceButtons(event)
 			if MasqueGroup and E.private.actionbar.masque.stanceBar then
 				MasqueGroup:AddButton(bar.buttons[i])
 			end
+			self:HookScript(bar.buttons[i], 'OnEnter', 'Button_OnEnter');
+			self:HookScript(bar.buttons[i], 'OnLeave', 'Button_OnLeave');			
 			initialCreate = true;
 		end
 
@@ -330,6 +322,10 @@ function AB:CreateBarShapeShift()
 			self:Show();
 		end
 	]]);
+
+	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter');
+	self:HookScript(bar, 'OnLeave', 'Bar_OnLeave');
+
 
 	self:RegisterEvent('UPDATE_SHAPESHIFT_FORMS', 'AdjustMaxStanceButtons');
 	self:RegisterEvent('UPDATE_SHAPESHIFT_COOLDOWN');

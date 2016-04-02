@@ -128,7 +128,7 @@ end
 
 function S:HandleNextPrevButton(btn, buttonOverride)
 	local norm, pushed, disabled
-	local inverseDirection = btn:GetName() and (find(btn:GetName():lower(), 'left') or find(btn:GetName():lower(), 'prev') or find(btn:GetName():lower(), 'decrement'))
+	local inverseDirection = btn:GetName() and (find(btn:GetName():lower(), 'left') or find(btn:GetName():lower(), 'prev') or find(btn:GetName():lower(), 'decrement') or find(btn:GetName():lower(), 'back'))
 
 	btn:StripTextures()
 	btn:SetNormalTexture(nil)

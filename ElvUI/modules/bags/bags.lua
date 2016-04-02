@@ -5,7 +5,7 @@ local Search = LibStub('LibItemSearch-1.2-ElvUI')
 --Cache global variables
 --Lua functions
 local _G = _G
-local type, ipairs, pairs, unpack, select, assert = type, ipairs, pairs, unpack, select, assert
+local type, ipairs, pairs, unpack, select, assert, pcall, tonumber = type, ipairs, pairs, unpack, select, assert, pcall, tonumber
 local tinsert = table.insert
 local floor, abs, ceil = math.floor, math.abs, math.ceil
 local len, sub, find, format, gsub = string.len, string.sub, string.find, string.format, string.gsub
@@ -52,6 +52,7 @@ local StaticPopup_Show = StaticPopup_Show
 local SortReagentBankBags = SortReagentBankBags
 local DepositReagentBank = DepositReagentBank
 local C_NewItemsIsNewItem = C_NewItems.IsNewItem
+local C_Timer_After = C_Timer.After
 local SEARCH = SEARCH
 local REAGENTBANK_CONTAINER = REAGENTBANK_CONTAINER
 local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES
@@ -83,6 +84,59 @@ B.ProfessionColors = {
 	[0x0200] = {8/255, 180/255, 207/255}, -- Gems
 	[0x0400] = {105/255, 79/255,  7/255}, -- Mining
 	[0x010000] = {222/255, 13/255,  65/255} -- Cooking
+}
+
+--From http://mods.curse.com/addons/wow/libitemupgradeinfo-1-0
+local UpgradeTable = {
+	[  0] = {                       ilevel = 0 },
+	[  1] = { upgrade = 1, max = 1, ilevel = 8 },
+	[373] = { upgrade = 1, max = 3, ilevel = 4 },
+	[374] = { upgrade = 2, max = 3, ilevel = 8 },
+	[375] = { upgrade = 1, max = 3, ilevel = 4 },
+	[376] = { upgrade = 2, max = 3, ilevel = 4 },
+	[377] = { upgrade = 3, max = 3, ilevel = 4 },
+	[378] = {                       ilevel = 7 },
+	[379] = { upgrade = 1, max = 2, ilevel = 4 },
+	[380] = { upgrade = 2, max = 2, ilevel = 4 },
+	[445] = { upgrade = 0, max = 2, ilevel = 0 },
+	[446] = { upgrade = 1, max = 2, ilevel = 4 },
+	[447] = { upgrade = 2, max = 2, ilevel = 8 },
+	[451] = { upgrade = 0, max = 1, ilevel = 0 },
+	[452] = { upgrade = 1, max = 1, ilevel = 8 },
+	[453] = { upgrade = 0, max = 2, ilevel = 0 },
+	[454] = { upgrade = 1, max = 2, ilevel = 4 },
+	[455] = { upgrade = 2, max = 2, ilevel = 8 },
+	[456] = { upgrade = 0, max = 1, ilevel = 0 },
+	[457] = { upgrade = 1, max = 1, ilevel = 8 },
+	[458] = { upgrade = 0, max = 4, ilevel = 0 },
+	[459] = { upgrade = 1, max = 4, ilevel = 4 },
+	[460] = { upgrade = 2, max = 4, ilevel = 8 },
+	[461] = { upgrade = 3, max = 4, ilevel = 12 },
+	[462] = { upgrade = 4, max = 4, ilevel = 16 },
+	[465] = { upgrade = 0, max = 2, ilevel = 0 },
+	[466] = { upgrade = 1, max = 2, ilevel = 4 },
+	[467] = { upgrade = 2, max = 2, ilevel = 8 },
+	[468] = { upgrade = 0, max = 4, ilevel = 0 },
+	[469] = { upgrade = 1, max = 4, ilevel = 4 },
+	[470] = { upgrade = 2, max = 4, ilevel = 8 },
+	[471] = { upgrade = 3, max = 4, ilevel = 12 },
+	[472] = { upgrade = 4, max = 4, ilevel = 16 },
+	[491] = { upgrade = 0, max = 4, ilevel = 0 },
+	[492] = { upgrade = 1, max = 4, ilevel = 4 },
+	[493] = { upgrade = 2, max = 4, ilevel = 8 },
+	[494] = { upgrade = 0, max = 6, ilevel = 0 },
+	[495] = { upgrade = 1, max = 6, ilevel = 4 },
+	[496] = { upgrade = 2, max = 6, ilevel = 8 },
+	[497] = { upgrade = 3, max = 6, ilevel = 12 },
+	[498] = { upgrade = 4, max = 6, ilevel = 16 },
+	[503] = { upgrade = 3, max = 3, ilevel = 1 },
+	[504] = { upgrade = 3, max = 4, ilevel = 12 },
+	[505] = { upgrade = 4, max = 4, ilevel = 16 },
+	[506] = { upgrade = 5, max = 6, ilevel = 20 },
+	[507] = { upgrade = 6, max = 6, ilevel = 24 },
+	[529] = { upgrade = 0, max = 2, ilevel = 0 },
+	[530] = { upgrade = 1, max = 2, ilevel = 5 },
+	[531] = { upgrade = 2, max = 2, ilevel = 10 },
 }
 
 function B:GetContainerFrame(arg)
@@ -184,7 +238,8 @@ function B:SetSearch(query)
 			for slotID = 1, GetContainerNumSlots(bagID) do
 				local _, _, _, _, _, _, link = GetContainerItemInfo(bagID, slotID);
 				local button = bagFrame.Bags[bagID][slotID];
-				if ( empty or Search:Matches(link, query) ) then
+				local success, result = pcall(Search.Matches, Search, link, query)
+				if ( empty or (success and result) ) then
 					SetItemButtonDesaturated(button);
 					button:SetAlpha(1);
 				else
@@ -199,7 +254,8 @@ function B:SetSearch(query)
 		for slotID=1, 98 do
 			local _, _, _, _, _, _, link = GetContainerItemInfo(REAGENTBANK_CONTAINER, slotID);
 			local button = _G["ElvUIReagentBankFrameItem"..slotID]
-			if ( empty or Search:Matches(link, query) ) then
+			local success, result = pcall(Search.Matches, Search, link, query)
+			if ( empty or (success and result) ) then
 				SetItemButtonDesaturated(button);
 				button:SetAlpha(1);
 			else
@@ -225,7 +281,8 @@ function B:SetGuildBankSearch(query)
 				if col == 0 then col = 1 end
 				if btn == 0 then btn = 14 end
 				local button = _G["GuildBankColumn"..col.."Button"..btn]
-				if (empty or Search:Matches(link, query) ) then
+				local success, result = pcall(Search.Matches, Search, link, query)
+				if (empty or (success and result) ) then
 					SetItemButtonDesaturated(button);
 					button:SetAlpha(1);
 				else
@@ -270,6 +327,15 @@ function B:UpdateCountDisplay()
 		end
 		if bagFrame.UpdateAllSlots then
 			bagFrame:UpdateAllSlots()
+		end
+	end
+end
+
+function B:UpdateBagTypes(isBank)
+	local f = self:GetContainerFrame(isBank);
+	for _, bagID in ipairs(f.BagIDs) do
+		if f.Bags[bagID] then
+			f.Bags[bagID].type = select(2, GetContainerNumFreeSlots(bagID));
 		end
 	end
 end
@@ -327,9 +393,16 @@ function B:UpdateSlot(bagID, slotID)
 		end
 
 		--Item Level
-		if (iLvl and iLvl >= E.db.bags.itemLevelThreshold) and (itemEquipLoc ~= nil and itemEquipLoc ~= "" and itemEquipLoc ~= "INVTYPE_BAG" and itemEquipLoc ~= "INVTYPE_QUIVER" and itemEquipLoc ~= "INVTYPE_TABARD") and (slot.rarity and slot.rarity > 1) and B.db.itemLevel then
-			slot.itemLevel:SetText(iLvl)
-			slot.itemLevel:SetTextColor(r, g, b)
+		if iLvl and B.db.itemLevel and (itemEquipLoc ~= nil and itemEquipLoc ~= "" and itemEquipLoc ~= "INVTYPE_BAG" and itemEquipLoc ~= "INVTYPE_QUIVER" and itemEquipLoc ~= "INVTYPE_TABARD") and (slot.rarity and slot.rarity > 1) then
+			-- Adjust Item Level if upgraded
+			local upgradeBonus = tonumber(clink:match(":(%d+)\124h%["));
+			local iLvlBonus = UpgradeTable[upgradeBonus] and UpgradeTable[upgradeBonus].ilevel or 0
+			iLvl = iLvl + iLvlBonus;
+
+			if (iLvl >= E.db.bags.itemLevelThreshold) then
+				slot.itemLevel:SetText(iLvl)
+				slot.itemLevel:SetTextColor(r, g, b)
+			end
 		end
 
 		-- color slot according to item quality
@@ -1441,6 +1514,11 @@ function B:GUILDBANKFRAME_OPENED()
 	self:UnregisterEvent("GUILDBANKFRAME_OPENED")
 end
 
+function B:PLAYER_ENTERING_WORLD()
+	self:UpdateGoldText()
+	C_Timer_After(2, function() B:UpdateBagTypes() end) --Update bag types for bagslot coloring
+end
+
 function B:Initialize()
 	self:LoadBagBar();
 
@@ -1471,8 +1549,8 @@ function B:Initialize()
 
 	self:DisableBlizzard();
 	self:RegisterEvent("GUILDBANKBAGSLOTS_CHANGED")
+	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 	self:RegisterEvent("PLAYER_MONEY", "UpdateGoldText")
-	self:RegisterEvent("PLAYER_ENTERING_WORLD", "UpdateGoldText")
 	self:RegisterEvent("PLAYER_TRADE_MONEY", "UpdateGoldText")
 	self:RegisterEvent("TRADE_MONEY_CHANGED", "UpdateGoldText")
 	self:RegisterEvent("BANKFRAME_OPENED", "OpenBank")
