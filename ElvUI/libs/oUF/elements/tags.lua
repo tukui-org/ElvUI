@@ -584,6 +584,7 @@ local Tag = function(self, fs, tagstr)
 			containsOnUpdate = onUpdateDelay[tag:sub(2, -2)] or 0.15;
 		end	
 	end
+
 	local func = tagPool[tagstr]
 	if(not func) then
 		local format, numTags = tagstr:gsub('%%', '%%%%'):gsub(_PATTERN, '%%s')
@@ -591,6 +592,7 @@ local Tag = function(self, fs, tagstr)
 
 		for bracket in tagstr:gmatch(_PATTERN) do
 			local tagFunc = funcPool[bracket] or tags[bracket:sub(2, -2)]
+
 			if(not tagFunc) then
 				local tagName, s, e = getTagName(bracket)
 				local tag = tags[tagName]
@@ -713,6 +715,7 @@ local Tag = function(self, fs, tagstr)
 		end
 	end
 	fs.UpdateTag = func
+
 	local unit = self.unit
 	if(self.__eventless or fs.frequentUpdates) or containsOnUpdate then
 		local timer
