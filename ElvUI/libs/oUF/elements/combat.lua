@@ -1,3 +1,33 @@
+--[[ Element: Combat Icon
+ Toggles the visibility of `self.Combat` based on the player's combat status.
+
+ Widget
+
+ Combat - Any UI widget.
+
+ Notes
+
+ The default assistant icon will be applied if the UI widget is a texture and
+ doesn't have a texture or color defined.
+
+ Examples
+
+   -- Position and size
+   local Combat = self:CreateTexture(nil, "OVERLAY")
+   Combat:SetSize(16, 16)
+   Combat:SetPoint('TOP', self)
+   
+   -- Register it with oUF
+   self.Combat = Combat
+
+ Hooks
+
+ Override(self) - Used to completely override the internal update function.
+                  Removing the table key entry will make the element fall-back
+                  to its internal function again.
+
+]]
+
 local parent, ns = ...
 local oUF = ns.oUF
 
@@ -47,6 +77,7 @@ end
 
 local Disable = function(self)
 	if(self.Combat) then
+		self.Combat:Hide()
 		self:UnregisterEvent("PLAYER_REGEN_DISABLED", Path)
 		self:UnregisterEvent("PLAYER_REGEN_ENABLED", Path)
 	end
