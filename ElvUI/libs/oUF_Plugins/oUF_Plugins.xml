@@ -11,4 +11,5 @@
 	<Script file='oUF_Anticipation\oUF_Anticipation.lua'/>
 	<Script file='oUF_PVPSpecIcons\oUF_PVPSpecIcons.lua'/>
 	<Script file='oUF_GPS\oUF_GPS.lua'/>
+	<Script file='oUF_SpellRange\oUF_SpellRange.lua'/>
 </Ui>
