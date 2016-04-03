@@ -33,6 +33,7 @@ function UF:Configure_RaidRoleIcons(frame)
 		if not frame:IsElementEnabled('Leader') then
 			frame:EnableElement('Leader')
 			frame:EnableElement('MasterLooter')
+			frame:EnableElement('Assistant')
 		end
 		
 		raidRoleFrameAnchor:ClearAllPoints()
@@ -45,6 +46,7 @@ function UF:Configure_RaidRoleIcons(frame)
 		raidRoleFrameAnchor:Hide()
 		frame:DisableElement('Leader')
 		frame:DisableElement('MasterLooter')
+		frame:DisableElement('Assistant')
 	end
 end
 
