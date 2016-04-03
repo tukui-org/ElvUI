@@ -1,157 +1,188 @@
+--[[ Element: Monk Stagger Bar
+
+ Handles updating and visibility of the monk's stagger bar.
+
+ Widget
+
+ Stagger - A StatusBar
+
+ Sub-Widgets
+
+ .bg - A Texture that functions as a background. It will inherit the color
+       of the main StatusBar.
+
+ Notes
+
+ The default StatusBar texture will be applied if the UI widget doesn't have a
+ status bar texture or color defined.
+
+ In order to override the internal update define the 'OnUpdate' script on the
+ widget in the layout
+
+ Sub-Widgets Options
+
+ .multiplier - Defines a multiplier, which is used to tint the background based
+               on the main widgets R, G and B values. Defaults to 1 if not
+               present.
+
+ Examples
+
+   local Stagger = CreateFrame('StatusBar', nil, self)
+   Stagger:SetSize(120, 20)
+   Stagger:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, 0)
+
+   -- Register with oUF
+   self.Stagger = Stagger
+
+ Hooks
+
+ OverrideVisibility(self) - Used to completely override the internal visibility
+                            function. Removing the table key entry will make
+                            the element fall-back to its internal function
+                            again.
+ Override(self)           - Used to completely override the internal
+                            update function. Removing the table key entry will
+                            make the element fall-back to its internal function
+                            again.
+]]
+
 local parent, ns = ...
 local oUF = ns.oUF
 
-oUF.colors.Stagger = {.52, 1, .52, 1, .98, .22, 1, .42, .42}
+-- percentages at which the bar should change color
+local STAGGER_YELLOW_TRANSITION = STAGGER_YELLOW_TRANSITION
+local STAGGER_RED_TRANSITION = STAGGER_RED_TRANSITION
 
-local staggerSpells = {
-	[GetSpellInfo(124275)] = true,
-	[GetSpellInfo(124274)] = true,
-	[GetSpellInfo(124273)] = true,
+-- table indices of bar colors
+local GREEN_INDEX = 1;
+local YELLOW_INDEX = 2;
+local RED_INDEX = 3;
+
+local STANCE_OF_THE_STURY_OX_ID = 23
+
+local UnitHealthMax = UnitHealthMax
+local UnitStagger = UnitStagger
+
+local _, playerClass = UnitClass("player")
+
+-- TODO: fix color in the power element
+oUF.colors.power[BREWMASTER_POWER_BAR_NAME] = {
+	{0.52, 1.0, 0.52},
+	{1.0, 0.98, 0.72},
+	{1.0, 0.42, 0.42},
 }
+local color
 
-local function UpdateMaxValues(self)
-	local stagger = self.Stagger
-	if(stagger) then
-		local maxhealth = UnitHealthMax("player");
-		stagger:SetMinMaxValues(0, maxhealth);
+local Update = function(self, event, unit)
+	if unit and unit ~= self.unit then return end
+	local element = self.Stagger
+
+	if(element.PreUpdate) then
+		element:PreUpdate()
+	end
+
+
+	local maxHealth = UnitHealthMax("player")
+	local stagger = UnitStagger("player")
+	local staggerPercent = stagger / maxHealth
+
+	element:SetMinMaxValues(0, maxHealth)
+	element:SetValue(stagger)
+
+	local rgb
+	if(staggerPercent >= STAGGER_RED_TRANSITION) then
+		rgb = color[RED_INDEX]
+	elseif(staggerPercent > STAGGER_YELLOW_TRANSITION) then
+		rgb = color[YELLOW_INDEX]
+	else
+		rgb = color[GREEN_INDEX]
+	end
+
+	local r, g, b = rgb[1], rgb[2], rgb[3]
+	element:SetStatusBarColor(r, g, b)
+
+	local bg = element.bg
+	if(bg) then
+		local mu = bg.multiplier or 1
+		bg:SetVertexColor(r * mu, g * mu, b * mu)
+	end
+
+	if(element.PostUpdate) then
+		element:PostUpdate(maxHealth, stagger, staggerPercent, r, g, b)
 	end
 end
 
-local function OnEnter(self)
-	if(not self:IsVisible()) then return end
-	GameTooltip:SetOwner(self, "ANCHOR_TOPLEFT")
-	GameTooltip:SetUnitAura("player", self.spellName, self.rank, "HARMFUL")
-	self.isMoused = true
+local Path = function(self, ...)
+	return (self.Stagger.Override or Update)(self, ...)
 end
 
-local function OnLeave(self)
-	GameTooltip:Hide()
-	self.isMoused = nil
-end
-
-local Update = function(self, elapsed)
-	local stagger = self.Stagger or self
-
-	if(stagger) then
-		--if(stagger.elapsed and stagger.elapsed > 0.2) then
-			local curStagger = UnitStagger("player") or 0;
-			local _, maxStagger = stagger:GetMinMaxValues();
-			
-			stagger:SetValue(curStagger);
-
-			local r, g, b = oUF.ColorGradient(curStagger, maxStagger, unpack(oUF.colors.Stagger))
-			stagger:SetStatusBarColor(r, g, b);
-
-			if stagger.isMoused then
-				OnEnter(stagger)
-			end
-		--[[	stagger.elapsed = 0
-		elseif elapsed then
-			stagger.elapsed = (stagger.elapsed or 0) + elapsed
-		end]]
-	end
-end
-
-local function CheckAuras(self)
-	local staggerExists = false
-	
-	local index = 1
-	local spellName, rank = UnitDebuff("player", index)
-	while spellName do
-		if staggerSpells[spellName] then
-			staggerExists = true
-			self.rank = rank
-			self.spellName = spellName
+local Visibility = function(self, event, unit)
+	if(STANCE_OF_THE_STURY_OX_ID ~= GetShapeshiftFormID() or UnitHasVehiclePlayerFrameUI("player")) then
+		if self.Stagger:IsShown() then
+			self.Stagger:Hide()
+			self:UnregisterEvent('UNIT_AURA', Path)
 		end
-		index = index + 1
-		spellName, rank = UnitDebuff("player", index)
-	end
-	
-	return staggerExists
-end
-
-local function UpdatePowerType(self)
-	local stagger = self.Stagger
-	if(stagger) then
-		if ( stagger.class == "MONK" and stagger.specRestriction == GetSpecialization() and not UnitHasVehiclePlayerFrameUI("player") and CheckAuras(stagger) ) then
-			stagger:Show();
-		else
-			stagger:Hide();
+	else
+		if(not self.Stagger:IsShown()) then
+			self.Stagger:Show()
+			self:RegisterEvent('UNIT_AURA', Path)
 		end
 
-		if(stagger.PostUpdate) then
-			stagger:PostUpdate()
-		end		
+		return Path(self, event, unit)
 	end
 end
 
-local function OnEvent(self, event, arg1)
-	local stagger = self.Stagger
-	if ( event == "UNIT_DISPLAYPOWER" or event == "UPDATE_VEHICLE_ACTIONBAR" ) then
-		UpdatePowerType(self);
-	elseif ( (event == "PLAYER_SPECIALIZATION_CHANGED" or event == "UNIT_AURA") and arg1 == self.unit ) then
-		UpdatePowerType(self);
-	elseif ( event == "UNIT_MAXHEALTH" and arg1 == self.unit ) then
-		UpdateMaxValues(self);
-	elseif ( event == "PLAYER_ENTERING_WORLD" ) then
-		stagger.specRestriction = SPEC_MONK_BREWMASTER;
-		self:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED", OnEvent);
-		UpdateMaxValues(self);
-		UpdatePowerType(self);
-	end
+local VisibilityPath = function(self, ...)
+	return (self.Stagger.OverrideVisibility or Visibility)(self, ...)
 end
 
---Bugfix: http://git.tukui.org/Elv/elvui/issues/526
-local enteredWorld = false
-local f = CreateFrame("Frame")
-f:RegisterEvent("PLAYER_ENTERING_WORLD")
-f:SetScript("OnEvent", function(self, event)
-	self:UnregisterEvent(event)
-	enteredWorld = true
-end)
+local ForceUpdate = function(element)
+	return VisibilityPath(element.__owner, "ForceUpdate", element.__owner.unit)
+end
 
 local Enable = function(self, unit)
-	local stagger = self.Stagger
-	if(stagger) then
-		self:RegisterEvent("PLAYER_ENTERING_WORLD", OnEvent);
-		self:RegisterEvent("UNIT_DISPLAYPOWER", OnEvent);
-		self:RegisterEvent("UPDATE_VEHICLE_ACTIONBAR", OnEvent);
-		self:RegisterEvent("UNIT_MAXHEALTH", OnEvent)
-		self:RegisterEvent("UNIT_AURA", OnEvent)
-		
-		if not stagger:GetScript("OnUpdate") then
-			stagger:SetScript("OnUpdate", Update)
-			stagger:SetScript("OnEnter", OnEnter)
-			stagger:SetScript("OnLeave", OnLeave)
+	if(playerClass ~= "MONK") then return end
+
+	local element = self.Stagger
+	if(element) then
+		element.__owner = self
+		element.ForceUpdate = ForceUpdate
+		element:Hide()
+
+		color = self.colors.power[BREWMASTER_POWER_BAR_NAME]
+
+		self:RegisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
+		self:RegisterEvent('UPDATE_SHAPESHIFT_FORM', VisibilityPath)
+
+		if(element:IsObjectType'StatusBar' and not element:GetStatusBarTexture()) then
+			element:SetStatusBarTexture[[Interface\TargetingFrame\UI-StatusBar]]
 		end
-		
-		if not stagger.class then
-			stagger.class = select(2, UnitClass("player"))
-		end
-		
-		--Bugfix: http://git.tukui.org/Elv/elvui/issues/526
-		if enteredWorld and not self:IsEventRegistered("PLAYER_SPECIALIZATION_CHANGED") then
-			stagger.specRestriction = SPEC_MONK_BREWMASTER;
-			self:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED", OnEvent);
-			UpdateMaxValues(self);
-			UpdatePowerType(self);
-		end
-		UpdatePowerType(self)
+
+		MonkStaggerBar.Show = MonkStaggerBar.Hide
+		MonkStaggerBar:UnregisterEvent'PLAYER_ENTERING_WORLD'
+		MonkStaggerBar:UnregisterEvent'PLAYER_SPECIALIZATION_CHANGED'
+		MonkStaggerBar:UnregisterEvent'UNIT_DISPLAYPOWER'
+		MonkStaggerBar:UnregisterEvent'UPDATE_VEHICLE_ACTION_BAR'
+
 		return true
 	end
 end
 
 local Disable = function(self)
-	local stagger = self.Stagger
-	if(stagger) then
-		self:UnregisterEvent("PLAYER_ENTERING_WORLD", OnEvent);
-		self:UnregisterEvent("UNIT_DISPLAYPOWER", OnEvent);
-		self:UnregisterEvent("UPDATE_VEHICLE_ACTIONBAR", OnEvent);
-		self:UnregisterEvent("PLAYER_SPECIALIZATION_CHANGED", OnEvent);
-		self:UnregisterEvent("UNIT_AURA", OnEvent)
-		self:UnregisterEvent("UNIT_MAXHEALTH", OnEvent)
-		stagger:Hide()
+	local element = self.Stagger
+	if(element) then
+		element:Hide()
+		self:UnregisterEvent('UNIT_AURA', Path)
+		self:UnregisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
+		self:UnregisterEvent('UPDATE_SHAPESHIFT_FORM', VisibilityPath)
+
+		MonkStaggerBar.Show = nil
+		MonkStaggerBar:Show()
+		MonkStaggerBar:UnregisterEvent'PLAYER_ENTERING_WORLD'
+		MonkStaggerBar:UnregisterEvent'PLAYER_SPECIALIZATION_CHANGED'
+		MonkStaggerBar:UnregisterEvent'UNIT_DISPLAYPOWER'
+		MonkStaggerBar:UnregisterEvent'UPDATE_VEHICLE_ACTION_BAR'
 	end
 end
 
-oUF:AddElement('Stagger', Update, Enable, Disable)
+oUF:AddElement("Stagger", VisibilityPath, Enable, Disable)
