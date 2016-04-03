@@ -38,11 +38,11 @@ function UF:Construct_PlayerFrame(frame)
 	frame.Castbar = self:Construct_Castbar(frame, 'LEFT', L["Player Castbar"])
 
 	if E.myclass == "PALADIN" then
-		frame.HolyPower = self:Construct_PaladinResourceBar(frame, nil, UF.UpdateClassBar)
-		frame.ClassBar = 'HolyPower'
+		frame.ClassIcons = self:Construct_ClassBar(frame)
+		frame.ClassBar = 'ClassIcons'
 	elseif E.myclass == "WARLOCK" then
-		frame.ShardBar = self:Construct_WarlockResourceBar(frame)
-		frame.ClassBar = 'ShardBar'
+		frame.ClassIcons = self:Construct_ClassBar(frame)
+		frame.ClassBar = 'ClassIcons'
 	elseif E.myclass == "DEATHKNIGHT" then
 		frame.Runes = self:Construct_DeathKnightResourceBar(frame)
 		frame.ClassBar = 'Runes'
@@ -51,12 +51,12 @@ function UF:Construct_PlayerFrame(frame)
 		frame.DruidAltMana = self:Construct_DruidAltManaBar(frame)
 		frame.ClassBar = 'EclipseBar'
 	elseif E.myclass == "MONK" then
-		frame.Harmony = self:Construct_MonkResourceBar(frame)
+		frame.ClassIcons = self:Construct_ClassBar(frame)
 		frame.Stagger = self:Construct_Stagger(frame)
-		frame.ClassBar = 'Harmony'
+		frame.ClassBar = 'ClassIcons'
 	elseif E.myclass == "PRIEST" then
-		frame.ShadowOrbs = self:Construct_PriestResourceBar(frame)
-		frame.ClassBar = 'ShadowOrbs'
+		frame.ClassIcons = self:Construct_ClassBar(frame)
+		frame.ClassBar = 'ClassIcons'
 	elseif E.myclass == 'MAGE' then
 		frame.ArcaneChargeBar = self:Construct_MageResourceBar(frame)
 		frame.ClassBar = 'ArcaneChargeBar'
