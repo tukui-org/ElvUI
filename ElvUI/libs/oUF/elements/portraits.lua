@@ -1,3 +1,42 @@
+--[[ Element: Portraits
+
+ Handles updating of the unit's portrait.
+
+ Widget
+
+ Portrait - A PlayerModel or Texture used to represent the unit's portrait.
+
+ Notes
+
+ The quest delivery question mark will be used instead of the unit's model when
+ the client doesn't have the model information for the unit.
+
+ Examples
+
+   -- 3D Portrait
+   -- Position and size
+   local Portrait = CreateFrame('PlayerModel', nil, self)
+   Portrait:SetSize(32, 32)
+   Portrait:SetPoint('RIGHT', self, 'LEFT')
+   
+   -- Register it with oUF
+   self.Portrait = Portrait
+
+   -- 2D Portrait
+   local Portrait = self:CreateTexture(nil, 'OVERLAY')
+   Portrait:SetSize(32, 32)
+   Portrait:SetPoint('RIGHT', self, 'LEFT')
+   
+   -- Register it with oUF
+   self.Portrait = Portrait
+
+ Hooks
+
+ Override(self) - Used to completely override the internal update function.
+                  Removing the table key entry will make the element fall-back
+                  to its internal function again.
+]]
+
 local parent, ns = ...
 local oUF = ns.oUF
 
@@ -44,6 +83,7 @@ end
 local Enable = function(self, unit)
 	local portrait = self.Portrait
 	if(portrait) then
+		portrait:Show()
 		portrait.__owner = self
 		portrait.ForceUpdate = ForceUpdate
 
@@ -68,6 +108,7 @@ end
 local Disable = function(self)
 	local portrait = self.Portrait
 	if(portrait) then
+		portrait:Hide()
 		self:UnregisterEvent("UNIT_PORTRAIT_UPDATE", Path)
 		self:UnregisterEvent("UNIT_MODEL_CHANGED", Path)
 		self:UnregisterEvent('PARTY_MEMBER_ENABLE', Path)
