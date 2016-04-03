@@ -1,3 +1,37 @@
+--[[ Element: LFD Role Icon
+
+ Toggles visibility of the LFD role icon based upon the units current dungeon
+ role.
+
+ Widget
+
+ LFDRole - A Texture containing the LFD role icons at specific locations. Look
+           at the default LFD role icon texture for an example of this.
+           Alternatively you can look at the return values of
+           GetTexCoordsForRoleSmallCircle(role).
+
+ Notes
+
+ The default LFD role texture will be applied if the UI widget is a texture and
+ doesn't have a texture or color defined.
+
+ Examples
+
+   -- Position and size
+   local LFDRole = self:CreateTexture(nil, "OVERLAY")
+   LFDRole:SetSize(16, 16)
+   LFDRole:SetPoint("LEFT", self)
+   
+   -- Register it with oUF
+   self.LFDRole = LFDRole
+
+ Hooks
+
+ Override(self) - Used to completely override the internal update function.
+                  Removing the table key entry will make the element fall-back
+                  to its internal function again.
+]]
+
 local parent, ns = ...
 local oUF = ns.oUF
 
@@ -51,6 +85,7 @@ end
 local Disable = function(self)
 	local lfdrole = self.LFDRole
 	if(lfdrole) then
+		lfdrole:Hide()
 		self:UnregisterEvent("PLAYER_ROLES_ASSIGNED", Path)
 		self:UnregisterEvent("GROUP_ROSTER_UPDATE", Path)
 	end
