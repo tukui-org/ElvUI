@@ -1,3 +1,38 @@
+--[[ Element: Combo Point Icons
+ Toggles visibility of the player and vehicles combo points.
+
+ Widget
+
+ CPoints - An array consisting of five UI widgets.
+
+ Notes
+
+ The default combo point texture will be applied to textures within the CPoints
+ array that don't have a texture or color defined.
+
+ Examples
+
+   local CPoints = {}
+   for index = 1, MAX_COMBO_POINTS do
+      local CPoint = self:CreateTexture(nil, 'BACKGROUND')
+   
+      -- Position and size of the combo point.
+      CPoint:SetSize(12, 16)
+      CPoint:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', index * CPoint:GetWidth(), 0)
+   
+      CPoints[index] = CPoint
+   end
+   
+   -- Register with oUF
+   self.CPoints = CPoints
+
+ Hooks
+
+ Override(self) - Used to completely override the internal update function.
+                  Removing the table key entry will make the element fall-back
+                  to its internal function again.
+]]
+
 local parent, ns = ...
 local oUF = ns.oUF
 
@@ -64,6 +99,9 @@ end
 local Disable = function(self)
 	local cpoints = self.CPoints
 	if(cpoints) then
+		for index = 1, MAX_COMBO_POINTS do
+			cpoints[index]:Hide()
+		end
 		self:UnregisterEvent('UNIT_COMBO_POINTS', Path)
 		self:UnregisterEvent('PLAYER_TARGET_CHANGED', Path)
 	end
