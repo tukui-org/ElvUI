@@ -65,7 +65,7 @@ local OnLeave = function()
 end
 
 local UpdatePower = function(self, event, unit, powerType)
-	if(self.unit ~= unit or powerType ~= 'ALTERNATE') then return end
+	if(self.unit ~= unit or powerType ~= 'ALTERNATE') or not unit then return end
 
 	local altpowerbar = self.AltPowerBar
 
@@ -132,7 +132,7 @@ local ForceUpdate = function(element)
 end
 
 local Toggler = function(self, event, unit)
-	if(unit ~= self.unit) then return end
+	if(unit ~= self.unit) or not unit then return end
 	local altpowerbar = self.AltPowerBar
 
 	local barType, _, _, _, _, hideFromOthers, showOnRaid = UnitAlternatePowerInfo(unit)
