@@ -183,12 +183,6 @@ function AddOn:ToggleConfig()
 		mode = 'Open'
 	end
 
-	if mode == 'Open' then
-		ElvConfigToggle.text:SetTextColor(unpack(AddOn.media.rgbvaluecolor))
-	else
-		ElvConfigToggle.text:SetTextColor(1, 1, 1)
-	end
-
 	ACD[mode](ACD, AddOnName)
 	GameTooltip:Hide() --Just in case you're mouseovered something and it closes.
 end

@@ -54,7 +54,7 @@ E.myguid = UnitGUID('player');
 E.version = GetAddOnMetadata("ElvUI", "Version");
 E.myrealm = GetRealmName();
 E.wowbuild = select(2, GetBuildInfo()); E.wowbuild = tonumber(E.wowbuild);
-E.resolution = GetCVar("gxResolution")
+E.resolution = GetCVar("gxWindowedResolution")
 E.screenheight = tonumber(match(E.resolution, "%d+x(%d+)"))
 E.screenwidth = tonumber(match(E.resolution, "(%d+)x+%d"))
 E.isMacClient = IsMacClient()
@@ -160,6 +160,10 @@ E.ClassRole = {
 		[1] = "Tank",
 		[2] = "Caster",
 		[3] = "Melee",
+	},
+	DEMONHUNTER = {
+		[1] = "Melee",
+		[2] = "Tank"	
 	},
 }
 
