@@ -399,8 +399,11 @@ end
 
 function UF:UpdateArcaneCharges(event, arcaneCharges, maxCharges)
 	local frame = self.origParent or self:GetParent()
+	local db = frame.db
+	if not db then return; end
+
 	if E.myspec == 1 and arcaneCharges == 0 then
-		if frame.db.classbar.autoHide then
+		if db.classbar.autoHide then
 			self:Hide()
 		else
 			--Clear arcane charge statusbars
