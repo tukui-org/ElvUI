@@ -663,7 +663,7 @@ local function LoadSkin()
 		"Graphics_",
 		"RaidGraphics_",
 	}
-	for i = 1, getn(frames) do
+	for i = 1, #frames do
 		local SkinFrames = _G[frames[i]]
 		if SkinFrames then
 			SkinFrames:StripTextures()
@@ -681,11 +681,12 @@ local function LoadSkin()
 		"InterfaceOptionsFrameTab1",
 		"InterfaceOptionsFrameTab2",
 	}
-	for i = 1, getn(interfacetab) do
+	for i = 1, #interfacetab do
 		local itab = _G[interfacetab[i]]
 		if itab then
 			itab:StripTextures()
 			S:HandleTab(itab)
+			itab.backdrop:Point("TOPLEFT", 10, E.PixelMode and -4 or -6)
 		end
 	end
 	InterfaceOptionsFrameTab1:ClearAllPoints()
