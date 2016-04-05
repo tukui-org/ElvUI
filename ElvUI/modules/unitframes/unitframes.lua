@@ -1217,29 +1217,9 @@ function UF:Initialize()
 		InterfaceOptionsFrameCategoriesButton10:SetScale(0.0001)
 	end
 
-	if E.private["unitframe"]["disabledBlizzardFrames"].player then
-		InterfaceOptionsStatusTextPanelPlayer:SetScale(0.0001)
-		InterfaceOptionsStatusTextPanelPlayer:SetAlpha(0)
-		InterfaceOptionsStatusTextPanelPet:SetScale(0.0001)
-		InterfaceOptionsStatusTextPanelPet:SetAlpha(0)
-	end
-
 	if E.private["unitframe"]["disabledBlizzardFrames"].target then
-		InterfaceOptionsStatusTextPanelTarget:SetScale(0.0001)
-		InterfaceOptionsStatusTextPanelTarget:SetAlpha(0)
-		InterfaceOptionsCombatPanelEnemyCastBarsOnPortrait:SetAlpha(0)
-		InterfaceOptionsCombatPanelEnemyCastBarsOnPortrait:EnableMouse(false)
-		InterfaceOptionsCombatPanelEnemyCastBarsOnNameplates:ClearAllPoints()
-		InterfaceOptionsCombatPanelEnemyCastBarsOnNameplates:Point(InterfaceOptionsCombatPanelEnemyCastBarsOnPortrait:GetPoint())
 		InterfaceOptionsCombatPanelTargetOfTarget:SetScale(0.0001)
 		InterfaceOptionsCombatPanelTargetOfTarget:SetAlpha(0)
-		InterfaceOptionsDisplayPanelShowAggroPercentage:SetScale(0.0001)
-		InterfaceOptionsDisplayPanelShowAggroPercentage:SetAlpha(0)
-	end
-
-	if E.private["unitframe"]["disabledBlizzardFrames"].party then
-		InterfaceOptionsStatusTextPanelParty:SetScale(0.0001)
-		InterfaceOptionsStatusTextPanelParty:SetAlpha(0)
 	end
 
 	if E.private["unitframe"]["disabledBlizzardFrames"].party and E.private["unitframe"]["disabledBlizzardFrames"].raid then

@@ -911,9 +911,9 @@ function E:UpdateAll(ignoreInstall)
 	DT.db = self.db.datatexts
 	DT:LoadDataTexts()
 
-	local NP = self:GetModule('NamePlates')
-	NP.db = self.db.nameplate
-	NP:UpdateAllPlates()
+	-- local NP = self:GetModule('NamePlates')
+	-- NP.db = self.db.nameplate
+	-- NP:UpdateAllPlates()
 
 	local M = self:GetModule("Misc")
 	M:UpdateExpRepDimensions()
@@ -1210,7 +1210,6 @@ function E:DBConversions()
 	if fonts[E.db.bags.itemLevelFont] then E.db.bags.itemLevelFont = fonts[E.db.bags.itemLevelFont] end
 	if fonts[E.db.bags.countFont] then E.db.bags.countFont = fonts[E.db.bags.countFont] end
 	if fonts[E.db.auras.font] then E.db.auras.font = fonts[E.db.auras.font] end
-	if fonts[E.db.auras.consolidatedBuffs.font] then E.db.auras.consolidatedBuffs.font = fonts[E.db.auras.consolidatedBuffs.font] end
 	if fonts[E.db.chat.font] then E.db.chat.font = fonts[E.db.chat.font] end
 	if fonts[E.db.chat.tabFont] then E.db.chat.tabFont = fonts[E.db.chat.tabFont] end
 	if fonts[E.db.datatexts.font] then E.db.datatexts.font = fonts[E.db.datatexts.font] end

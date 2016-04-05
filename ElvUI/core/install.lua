@@ -191,7 +191,6 @@ local function SetupChat()
 end
 
 local function SetupCVars()
-	SetCVar("alternateResourceText", 1)
 	SetCVar("statusTextDisplay", "BOTH")
 	SetCVar("ShowClassColorInNameplate", 1)
 	SetCVar("screenshotQuality", 10)
