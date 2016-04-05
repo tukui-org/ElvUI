@@ -11,9 +11,6 @@ local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local IsSpellKnown = IsSpellKnown
 local GetEclipseDirection = GetEclipseDirection
-local GetShapeshiftFormID = GetShapeshiftFormID
-local BEAR_FORM = BEAR_FORM
-local CAT_FORM = CAT_FORM
 local SPELL_POWER_HOLY_POWER = SPELL_POWER_HOLY_POWER
 local SPELL_POWER_SHADOW_ORBS = SPELL_POWER_SHADOW_ORBS
 local SHADOW_ORB_MINOR_TALENT_ID = SHADOW_ORB_MINOR_TALENT_ID
@@ -670,7 +667,6 @@ end
 local druidEclipseIsShown = false
 local druidManaIsShown = false
 function UF:EclipsePostUpdateVisibility()
-	local form = GetShapeshiftFormID()
 	local isShown = self:IsShown()
 	if druidEclipseIsShown ~= isShown then
 		druidEclipseIsShown = isShown
