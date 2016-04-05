@@ -11,9 +11,6 @@ local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local IsSpellKnown = IsSpellKnown
 local GetEclipseDirection = GetEclipseDirection
-local GetShapeshiftFormID = GetShapeshiftFormID
-local BEAR_FORM = BEAR_FORM
-local CAT_FORM = CAT_FORM
 local SPELL_POWER_HOLY_POWER = SPELL_POWER_HOLY_POWER
 local SPELL_POWER_SHADOW_ORBS = SPELL_POWER_SHADOW_ORBS
 local SHADOW_ORB_MINOR_TALENT_ID = SHADOW_ORB_MINOR_TALENT_ID
@@ -399,8 +396,11 @@ end
 
 function UF:UpdateArcaneCharges(event, arcaneCharges, maxCharges)
 	local frame = self.origParent or self:GetParent()
+	local db = frame.db
+	if not db then return; end
+
 	if E.myspec == 1 and arcaneCharges == 0 then
-		if frame.db.classbar.autoHide then
+		if db.classbar.autoHide then
 			self:Hide()
 		else
 			--Clear arcane charge statusbars
@@ -665,22 +665,27 @@ function UF:DruidPostUpdateAltPower(unit, min, max)
 end
 
 local druidEclipseIsShown = false
+local druidManaIsShown = false
 function UF:EclipsePostUpdateVisibility()
-	local form = GetShapeshiftFormID()
 	local isShown = self:IsShown()
 	if druidEclipseIsShown ~= isShown then
 		druidEclipseIsShown = isShown
-
-		if (form == BEAR_FORM or form == CAT_FORM) then return; end --Don't toggle, as the EclipseBar will be replaced with DruidMana
-		ToggleResourceBar(self)
+		
+		--Only toggle if the eclipse bar was not replaced with druid mana
+		if not druidManaIsShown then
+			ToggleResourceBar(self)
+		end
 	end
 end
 
-local druidManaIsShown = false
 function UF:DruidManaPostUpdateVisibility()
 	local isShown = self:IsShown()
 	if druidManaIsShown ~= isShown then
 		druidManaIsShown = isShown
-		ToggleResourceBar(self)
+
+		--Only toggle if the druid mana bar was not replaced with eclipse bar
+		if not druidEclipseIsShown then
+			ToggleResourceBar(self)
+		end
 	end
 end
