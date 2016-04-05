@@ -523,6 +523,7 @@ local OnLeave = function(self)
 	end
 end
 
+local onUpdateDelay = {}
 local tagPool = {}
 local funcPool = {}
 local tmp = {}
