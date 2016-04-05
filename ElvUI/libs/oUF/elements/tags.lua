@@ -57,9 +57,11 @@ local tagStrings = {
 
 	["level"] = [[function(u)
 		local l = UnitLevel(u)
-		if ( UnitIsWildBattlePet(u) or UnitIsBattlePetCompanion(u) ) then
-			return UnitBattlePetLevel(u);
-		elseif(l > 0) then
+		if(UnitIsWildBattlePet(u) or UnitIsBattlePetCompanion(u)) then
+			l = UnitBattlePetLevel(u)
+		end
+
+		if(l > 0) then
 			return l
 		else
 			return '??'
@@ -223,6 +225,8 @@ local tagStrings = {
 			return 'Elite'
 		elseif(c == 'worldboss') then
 			return 'Boss'
+		elseif(c == 'minus') then
+			return 'Affix'
 		end
 	end]],
 
@@ -236,6 +240,8 @@ local tagStrings = {
 			return '+'
 		elseif(c == 'worldboss') then
 			return 'B'
+		elseif(c == 'minus') then
+			return '-'
 		end
 	end]],
 
@@ -280,16 +286,43 @@ local tagStrings = {
 	end]],
 
 	['soulshards'] = [[function()
-		local num = UnitPower('player', SPELL_POWER_SOUL_SHARDS)
+		if(IsPlayerSpell(WARLOCK_SOULBURN)) then
+			local num = UnitPower('player', SPELL_POWER_SOUL_SHARDS)
+			if(num > 0) then
+				return num
+			end
+		end
+	end]],
+
+	['holypower'] = [[function()
+		if(IsPlayerSpell(85673)) then
+			local num = UnitPower('player', SPELL_POWER_HOLY_POWER)
+			if(num > 0) then
+				return num
+			end
+		end
+	end]],
+
+	['chi'] = [[function()
+		local num = UnitPower('player', SPELL_POWER_CHI)
 		if(num > 0) then
 			return num
 		end
 	end]],
 
-	['holypower'] = [[funtion()
-		local num = UnitPower('player', SPELL_POWER_HOLY_POWER)
-		if(num > 0) then
-			return num
+	['shadoworbs'] = [[function()
+		if(IsPlayerSpell(95740)) then
+			local num = UnitPower('player', SPELL_POWER_SHADOW_ORBS)
+			if(num > 0) then
+				return num
+			end
+		end
+	end]],
+
+	['affix'] = [[function(u)
+		local c = UnitClassification(u)
+		if(c == 'minus') then
+			return 'Affix'
 		end
 	end]],
 }
@@ -340,7 +373,6 @@ local tags = setmetatable(
 
 _ENV._TAGS = tags
 
-local onUpdateDelay = {}
 local tagEvents = {
 	["curhp"]               = "UNIT_HEALTH",
 	["dead"]                = "UNIT_HEALTH",
@@ -357,6 +389,8 @@ local tagEvents = {
 	["threat"]              = "UNIT_THREAT_SITUATION_UPDATE",
 	["threatcolor"]         = "UNIT_THREAT_SITUATION_UPDATE",
 	['cpoints']             = 'UNIT_COMBO_POINTS PLAYER_TARGET_CHANGED',
+	['affix']				= 'UNIT_CLASSIFICATION_CHANGED',
+	['plus']				= 'UNIT_CLASSIFICATION_CHANGED',
 	['rare']                = 'UNIT_CLASSIFICATION_CHANGED',
 	['classification']      = 'UNIT_CLASSIFICATION_CHANGED',
 	['shortclassification'] = 'UNIT_CLASSIFICATION_CHANGED',
@@ -370,8 +404,10 @@ local tagEvents = {
 	["pereclipse"]          = 'UNIT_POWER',
 	['curmana']             = 'UNIT_POWER UNIT_MAXPOWER',
 	['maxmana']             = 'UNIT_POWER UNIT_MAXPOWER',
-	['soulshards']          = 'UNIT_POWER',
-	['holypower']           = 'UNIT_POWER',
+	['soulshards']          = 'UNIT_POWER SPELLS_CHANGED',
+	['holypower']           = 'UNIT_POWER SPELLS_CHANGED',
+	['chi']                 = 'UNIT_POWER',
+	['shadoworbs']          = 'UNIT_POWER SPELLS_CHANGED',
 }
 
 local unitlessEvents = {
@@ -548,7 +584,7 @@ local Tag = function(self, fs, tagstr)
 			containsOnUpdate = onUpdateDelay[tag:sub(2, -2)] or 0.15;
 		end	
 	end
-	
+
 	local func = tagPool[tagstr]
 	if(not func) then
 		local format, numTags = tagstr:gsub('%%', '%%%%'):gsub(_PATTERN, '%%s')
@@ -556,7 +592,7 @@ local Tag = function(self, fs, tagstr)
 
 		for bracket in tagstr:gmatch(_PATTERN) do
 			local tagFunc = funcPool[bracket] or tags[bracket:sub(2, -2)]
-			
+
 			if(not tagFunc) then
 				local tagName, s, e = getTagName(bracket)
 				local tag = tags[tagName]
@@ -679,9 +715,9 @@ local Tag = function(self, fs, tagstr)
 		end
 	end
 	fs.UpdateTag = func
-	
+
 	local unit = self.unit
-	if((unit and unit:match'%w+target') or fs.frequentUpdates) or containsOnUpdate then
+	if(self.__eventless or fs.frequentUpdates) or containsOnUpdate then
 		local timer
 		if(type(fs.frequentUpdates) == 'number') then
 			timer = fs.frequentUpdates

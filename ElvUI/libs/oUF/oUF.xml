@@ -28,19 +28,16 @@
 	<Script file='elements\runebar.lua' />
 	<Script file='elements\lfdrole.lua' />
 	<Script file='elements\healprediction.lua' />
-	<Script file='elements\holypower.lua' />
-	<Script file='elements\shardbar.lua' />
 	<Script file='elements\picon.lua' />
 	<Script file='elements\readycheck.lua' />
 	<Script file='elements\qicon.lua' />
 	<Script file='elements\eclipsebar.lua' />
 	<Script file='elements\altpowerbar.lua' />
-	<Script file='elements\harmony.lua' />
 	<Script file='elements\totems.lua' />
 	<Script file='elements\resurrect.lua' />
-	<Script file='elements\shadoworbs.lua' />
-	<Script file='elements\maintank.lua' />
+	<Script file='elements\raidrole.lua' />
 	<Script file='elements\druidmana.lua' />
+	<Script file='elements\classicons.lua' />
 	<Script file='elements\stagger.lua' />
 
 	<!-- Clique support -->
@@ -51,9 +48,18 @@
 		</Attributes>
 	</Button>
 
+	<!-- Pet Battle Hider Frame -->
+	<Frame name="oUF_PetBattleFrameHider" inherits="SecureHandlerStateTemplate" parent="UIParent" setAllPoints="true">
+		<Scripts>
+			<OnLoad>
+				RegisterStateDriver(self, "visibility", "[petbattle] hide; show")
+			</OnLoad>
+		</Scripts>
+	</Frame>
+
 	<!--
 		Sub-object as a child of the parent unit frame:
-	<Button name="oUF_HeaderTargetTemplate" inherits="SecureUnitButtonTemplate" hidden="true" virtual="true">
+	<Button name="oUF_HeaderTargetTemplate" inherits="SecureUnitButtonTemplate" virtual="true">
 		<Frames>
 			<Button name="$parentTarget" inherits="SecureUnitButtonTemplate">
 				<Attributes>
@@ -65,7 +71,7 @@
 	</Button>
 
 		Separate unit template example:
-	<Button name="oUF_HeaderSeparateSubOjectsTemplate" inherits="SecureUnitButtonTemplate" hidden="true" virtual="true">
+	<Button name="oUF_HeaderSeparateSubOjectsTemplate" inherits="SecureUnitButtonTemplate" virtual="true">
 		<Attributes>
 			<Attribute name="oUF-onlyProcessChildren" type="boolean" value="true"/>
 		</Attributes>

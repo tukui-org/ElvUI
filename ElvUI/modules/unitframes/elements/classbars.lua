@@ -23,13 +23,11 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
-
 local SPELL_POWER = {
 	PALADIN = SPELL_POWER_HOLY_POWER,
 	MONK = SPELL_POWER_CHI,
 	PRIEST = SPELL_POWER_SHADOW_ORBS
 }
-
 
 function UF:Configure_ClassBar(frame)
 	local bars = frame[frame.ClassBar]
@@ -164,7 +162,19 @@ function UF:Configure_ClassBar(frame)
 					bars[i].backdrop:Show()
 				end
 
-				if E.myclass == 'ROGUE' or E.myclass == 'MONK' then
+				if E.myclass == "MONK" or E.myclass == "WARLOCK" then
+					bars[i]:SetStatusBarColor(unpack(ElvUF.colors.ClassBars[E.myclass][i]))
+
+					if bars[i].bg then
+						bars[i].bg:SetTexture(unpack(ElvUF.colors.ClassBars[E.myclass][i]))
+					end
+				elseif E.myclass == "PRIEST" or E.myclass == "PALADIN" then
+					bars[i]:SetStatusBarColor(unpack(ElvUF.colors.ClassBars[E.myclass]))
+
+					if bars[i].bg then
+						bars[i].bg:SetTexture(unpack(ElvUF.colors.ClassBars[E.myclass]))
+					end
+				elseif E.myclass == 'ROGUE' then
 					bars[i]:SetStatusBarColor(unpack(ElvUF.colors[frame.ClassBar][i]))
 
 					if bars[i].bg then
@@ -189,7 +199,6 @@ function UF:Configure_ClassBar(frame)
 		bars.LunarBar:Size(CLASSBAR_WIDTH, frame.CLASSBAR_HEIGHT - ((frame.BORDER + frame.SPACING)*2))
 		bars.SolarBar:Size(CLASSBAR_WIDTH, frame.CLASSBAR_HEIGHT - ((frame.BORDER + frame.SPACING)*2))
 	end
-
 
 	if E.myclass ~= 'DRUID' then
 		if not frame.USE_MINI_CLASSBAR then
@@ -250,7 +259,10 @@ local function ToggleResourceBar(bars)
 end
 UF.ToggleResourceBar = ToggleResourceBar --Make available to combobar
 
-function UF:Construct_PaladinResourceBar(frame, useBG, overrideFunc)
+-------------------------------------------------------------
+-- MONK, PALADIN, PRIEST, WARLOCK
+-------------------------------------------------------------
+function UF:Construct_ClassBar(frame)
 	local bars = CreateFrame("Frame", nil, frame)
 	bars:CreateBackdrop('Default', nil, nil, self.thinBorders)
 
@@ -262,107 +274,31 @@ function UF:Construct_PaladinResourceBar(frame, useBG, overrideFunc)
 
 		bars[i]:CreateBackdrop('Default', nil, nil, self.thinBorders)
 		bars[i].backdrop:SetParent(bars)
-
-		if useBG then
-			bars[i].bg = bars[i]:CreateTexture(nil, 'BORDER')
-			bars[i].bg:SetAllPoints()
-			bars[i].bg:SetTexture(E['media'].blankTex)
-			bars[i].bg.multiplier = 0.3
-		end
 	end
 
-	bars.Override = UF.Update_HolyPower
+	bars.PostUpdate = UF.UpdateClassBar
+	bars.UpdateTexture = function() return end --We don't use textures but statusbars, so prevent errors
+
 	bars:SetScript("OnShow", ToggleResourceBar)
 	bars:SetScript("OnHide", ToggleResourceBar)
 
 	return bars
 end
 
-
-function UF:Update_HolyPower(event, unit, powerType)
-	if not (powerType == nil or powerType == 'HOLY_POWER') then return end
-
-	local db = self.db
-	if not db then return; end
-	local numPower = UnitPower('player', SPELL_POWER[E.myclass]);
-	local maxPower = UnitPowerMax('player', SPELL_POWER[E.myclass]);
-
-	local bars = self[self.ClassBar]
-	local isShown = bars:IsShown()
-	if numPower == 0 and db.classbar.autoHide then
-		bars:Hide()
-	else
-		bars:Show()
-		for i = 1, maxPower do
-			if(i <= numPower) then
-				bars[i]:SetAlpha(1)
-			else
-				bars[i]:SetAlpha(.2)
-			end
-		end
-	end
-
-	if maxPower ~= self.MAX_CLASS_BAR then
-		self.MAX_CLASS_BAR = maxPower
-		UF:Configure_ClassBar(self)
-	end
-end
-
--------------------------------------------------------------
--- MONK
--------------------------------------------------------------
-
-function UF:Construct_MonkResourceBar(frame)
-	local bars = CreateFrame("Frame", nil, frame)
-	bars:CreateBackdrop('Default', nil, nil, self.thinBorders)
-
-	for i = 1, UF['classMaxResourceBar'][E.myclass] do
-		bars[i] = CreateFrame("StatusBar", frame:GetName().."ClassBarButton"..i, bars)
-		bars[i]:SetStatusBarTexture(E['media'].blankTex) --Dummy really, this needs to be set so we can change the color
-		bars[i]:GetStatusBarTexture():SetHorizTile(false)
-		UF['statusbars'][bars[i]] = true
-
-		bars[i]:CreateBackdrop('Default', nil, nil, self.thinBorders)
-		bars[i].backdrop:SetParent(bars)
-	end
-
-	bars.PostUpdate = UF.UpdateHarmony
-
-	return bars
-end
-
-function UF:UpdateHarmony()
+function UF:UpdateClassBar(cur, max, hasMaxChanged, event)
 	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 	if not db then return; end
 
-	local maxBars = self.numPoints
-	local numChi = UnitPower("player", SPELL_POWER_CHI)
 	local isShown = self:IsShown()
-
-	if numChi == 0 and db.classbar.autoHide then
+	if cur == 0 and db.classbar.autoHide then
 		self:Hide()
-		--We need to handle ToggleResourceBar manually, otherwise it gets called repeatedly
-		if self.updateOnHide ~= false then --Only update when necessary
-			ToggleResourceBar(self)
-			self.updateOnHide = false
-		end
 	else
-		if frame.CLASSBAR_SHOWN ~= isShown then
-			ToggleResourceBar(self)
-			self.updateOnHide = true --Make sure we update next time we hide it
-		end
+		self:Show()
 	end
 
-	if maxBars ~= frame.MAX_CLASS_BAR then
-		for i=1, frame.MAX_CLASS_BAR do
-			if self[i]:IsShown() and frame.USE_MINI_CLASSBAR then
-				self[i].backdrop:Show()
-			else
-				self[i].backdrop:Hide()
-			end
-		end
-		frame.MAX_CLASS_BAR = maxBars
+	if hasMaxChanged then
+		frame.MAX_CLASS_BAR = max
 		UF:Configure_ClassBar(frame)
 	end
 end
@@ -370,7 +306,6 @@ end
 -------------------------------------------------------------
 -- MAGE
 -------------------------------------------------------------
-
 function UF:Construct_MageResourceBar(frame)
 	local bars = CreateFrame("Frame", nil, frame)
 	bars:CreateBackdrop('Default', nil, nil, self.thinBorders)
@@ -417,7 +352,6 @@ end
 -------------------------------------------------------------
 -- ROGUE
 -------------------------------------------------------------
-
 function UF:Construct_RogueResourceBar(frame)
 	local bars = CreateFrame("Frame", nil, frame)
 	bars:CreateBackdrop('Default', nil, nil, self.thinBorders)
@@ -441,114 +375,9 @@ function UF:Construct_RogueResourceBar(frame)
 	return bars
 end
 
-
--------------------------------------------------------------
--- WARLOCK
--------------------------------------------------------------
-
-function UF:Construct_WarlockResourceBar(frame)
-	local bars = CreateFrame("Frame", nil, frame)
-	bars:CreateBackdrop('Default', nil, nil, self.thinBorders)
-
-	for i = 1, UF['classMaxResourceBar'][E.myclass] do
-		bars[i] = CreateFrame("StatusBar", frame:GetName().."ClassBarButton"..i, bars)
-		bars[i]:SetStatusBarTexture(E['media'].blankTex) --Dummy really, this needs to be set so we can change the color
-		bars[i]:GetStatusBarTexture():SetHorizTile(false)
-		bars[i].bg = bars[i]:CreateTexture(nil, 'ARTWORK')
-		UF['statusbars'][bars[i]] = true
-
-		bars[i]:CreateBackdrop('Default', nil, nil, self.thinBorders)
-		bars[i].backdrop:SetParent(bars)
-	end
-
-	bars.PostUpdate = UF.UpdateShardBar
-
-	bars:SetScript("OnShow", ToggleResourceBar)
-	bars:SetScript("OnHide", ToggleResourceBar)
-
-	return bars
-end
-
-function UF:UpdateShardBar()
-	local frame = self.origParent or self:GetParent()
-	if not frame.USE_CLASSBAR then return; end
-
-	--The number of classbar buttons may be different for each spec
-	if frame.MAX_CLASS_BAR ~= self.number then
-		frame.MAX_CLASS_BAR = self.number
-		UF:Configure_ClassBar(frame)
-		ToggleResourceBar(self)
-	end
-end
-
--------------------------------------------------------------
--- PRIEST
--------------------------------------------------------------
-
-function UF:Construct_PriestResourceBar(frame)
-	local bars = CreateFrame("Frame", nil, frame)
-	bars:CreateBackdrop('Default', nil, nil, self.thinBorders)
-
-	for i = 1, UF['classMaxResourceBar'][E.myclass] do
-		bars[i] = CreateFrame("StatusBar", frame:GetName().."ClassBarButton"..i, bars)
-		bars[i]:SetStatusBarTexture(E['media'].blankTex) --Dummy really, this needs to be set so we can change the color
-		bars[i]:GetStatusBarTexture():SetHorizTile(false)
-		UF['statusbars'][bars[i]] = true
-
-		bars[i]:CreateBackdrop('Default', nil, nil, self.thinBorders)
-		bars[i].backdrop:SetParent(bars)
-	end
-
-	bars.PostUpdate = UF.UpdateShadowOrbs
-
-	return bars
-end
-
-function UF:UpdateShadowOrbs()
-	local frame = self.origParent or self:GetParent()
-	local db = frame.db
-	if not db then return; end
-	local numPower = UnitPower('player', SPELL_POWER[E.myclass]);
-	local maxPower = UnitPowerMax('player', SPELL_POWER[E.myclass]);
-
-	local bars = frame[frame.ClassBar]
-	local isShown = bars:IsShown()
-
-	if numPower == 0 and db.classbar.autoHide then
-		bars:Hide()
-		if bars.updateOnHide ~= false then --Only update when necessary
-			ToggleResourceBar(bars)
-			bars.updateOnHide = false
-		end
-	else
-		if frame.CLASSBAR_SHOWN ~= isShown then
-			ToggleResourceBar(bars)
-			bars.updateOnHide = true --Make sure we update next time we hide it
-		end
-		for i = 1, maxPower do
-			if(i <= numPower) then
-				bars[i]:SetAlpha(1)
-			else
-				bars[i]:SetAlpha(.2)
-			end
-		end
-	end
-
-	if maxPower ~= frame.MAX_CLASS_BAR or (bars.checkSpell ~= false) then
-		if bars.checkSpell ~= false then
-			--When you first learn the shadow specialization, UnitPowerMax doesn't return the updated value right away
-			maxPower = IsSpellKnown(SHADOW_ORB_MINOR_TALENT_ID) and 5 or 3
-			bars.checkSpell = false
-		end
-		frame.MAX_CLASS_BAR = maxPower
-		UF:Configure_ClassBar(frame)
-	end
-end
-
 -------------------------------------------------------------
 -- DEATHKNIGHT
 -------------------------------------------------------------
-
 function UF:Construct_DeathKnightResourceBar(frame)
 	local runes = CreateFrame("Frame", nil, frame)
 	runes:CreateBackdrop('Default', nil, nil, self.thinBorders)
@@ -574,7 +403,6 @@ end
 -------------------------------------------------------------
 -- DRUID
 -------------------------------------------------------------
-
 function UF:Construct_DruidResourceBar(frame)
 	local eclipseBar = CreateFrame('Frame', nil, frame)
 	eclipseBar:CreateBackdrop('Default', nil, nil, self.thinBorders)

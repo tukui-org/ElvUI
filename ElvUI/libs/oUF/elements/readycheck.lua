@@ -1,3 +1,40 @@
+--[[ Element: Ready Check Icon
+
+ Handles updating and visibility of `self.ReadyCheck` based upon the units
+ ready check status.
+
+ Widget
+
+ ReadyCheck - A Texture representing ready check status.
+
+ Notes
+
+ This element updates by changing the texture.
+
+ Options
+
+ .finishedTime - The number of seconds the icon should stick after a check has
+                 completed. Defaults to 10 seconds.
+ .fadeTime     - The number of seconds the icon should used to fade away after
+                 the stick duration has completed. Defaults to 1.5 seconds.
+
+ Examples
+
+   -- Position and size
+   local ReadyCheck = self:CreateTexture(nil, 'OVERLAY')
+   ReadyCheck:SetSize(16, 16)
+   ReadyCheck:SetPoint('TOP')
+   
+   -- Register with oUF
+   self.ReadyCheck = ReadyCheck
+
+ Hooks
+
+ Override(self) - Used to completely override the internal update function.
+                  Removing the table key entry will make the element fall-back
+                  to its internal function again.
+]]
+
 local parent, ns = ...
 local oUF = ns.oUF
 
@@ -49,17 +86,14 @@ local Finish = function(self)
 end
 
 local OnUpdate = function(self, elapsed)
-	self.elapsed = (self.elapsed or 0) + elapsed
-	if self.elapsed < .25 then return end
-	
 	for icon in next, _TIMERS do
 		if(icon.finishedTimer) then
-			icon.finishedTimer = icon.finishedTimer - self.elapsed
+			icon.finishedTimer = icon.finishedTimer - elapsed
 			if(icon.finishedTimer <= 0) then
 				icon.finishedTimer = nil
 			end
 		elseif(icon.fadeTimer) then
-			icon.fadeTimer = icon.fadeTimer - self.elapsed
+			icon.fadeTimer = icon.fadeTimer - elapsed
 			icon:SetAlpha(icon.fadeTimer / (icon.fadeTime or 1.5))
 
 			if(icon.fadeTimer <= 0) then
@@ -68,8 +102,6 @@ local OnUpdate = function(self, elapsed)
 			end
 		end
 	end
-	
-	self.elapsed = 0
 end
 
 local Update = function(self, event)
@@ -121,6 +153,7 @@ end
 local Disable = function(self)
 	local readyCheck = self.ReadyCheck
 	if(readyCheck) then
+		readyCheck:Hide()
 		self:UnregisterEvent('READY_CHECK', Path)
 		self:UnregisterEvent('READY_CHECK_CONFIRM', Path)
 		self:UnregisterEvent('READY_CHECK_FINISHED', Path)

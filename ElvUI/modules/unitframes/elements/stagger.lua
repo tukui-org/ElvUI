@@ -55,10 +55,16 @@ function UF:Configure_Stagger(frame)
 	end
 end
 
-function UF:PostUpdateStagger()
+function UF:PostUpdateStagger(maxHealth, stagger, staggerPercent, r, g, b)
 	local frame = self:GetParent()
 	local db = frame.db
 
+	if (stagger and stagger > 0) then
+		self:Show()
+	else
+		self:Hide()
+	end
+	
 	local stateChanged = false
 	local isShown = self:IsShown()
 

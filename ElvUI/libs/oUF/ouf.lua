@@ -10,12 +10,8 @@ local argcheck = Private.argcheck
 local print = Private.print
 local error = Private.error
 
-local upper = string.upper
-local split = string.split
-local tinsert, tremove = table.insert, table.remove
-
 local styles, style = {}
-local callback, objects = {}, {}
+local callback, objects, headers = {}, {}, {}
 
 local elements = {}
 local activeElements = {}
@@ -101,23 +97,21 @@ for k, v in pairs{
 		if(not element or not self:IsElementEnabled(name) or not activeElements[self]) then return end
 		if(element.update) then
 			element.update(self, 'OnShow', unit)
-		end	
+		end
 	end,
-	
+
 	EnableElement = function(self, name, unit)
 		argcheck(name, 2, 'string')
 		argcheck(unit, 3, 'string', 'nil')
-		
+
 		local element = elements[name]
-		
-		
 		if(not element or self:IsElementEnabled(name) or not activeElements[self]) then return end
 
 		if(element.enable(self, unit or self.unit)) then
 			activeElements[self][name] = true
 
 			if(element.update) then
-				tinsert(self.__elements, element.update)
+				table.insert(self.__elements, element.update)
 			end
 		end
 	end,
@@ -131,7 +125,7 @@ for k, v in pairs{
 		local update = elements[name].update
 		for k, func in next, self.__elements do
 			if(func == update) then
-				tremove(self.__elements, k)
+				table.remove(self.__elements, k)
 				break
 			end
 		end
@@ -165,7 +159,7 @@ for k, v in pairs{
 
 	UpdateAllElements = function(self, event)
 		local unit = self.unit
-		if(not unit or not UnitExists(unit)) then return end
+		if(not UnitExists(unit)) then return end
 
 		if(self.PreUpdate) then
 			self:PreUpdate(event)
@@ -218,26 +212,26 @@ local initObject = function(unit, style, styleFunc, header, ...)
 		object = setmetatable(object, frame_metatable)
 
 		-- Expose the frame through oUF.objects.
-		tinsert(objects, object)
+		table.insert(objects, object)
 
 		-- We have to force update the frames when PEW fires.
 		object:RegisterEvent("PLAYER_ENTERING_WORLD", object.UpdateAllElements)
 
 		-- Handle the case where someone has modified the unitsuffix attribute in
 		-- oUF-initialConfigFunction.
-		if(suffix and objectUnit and not objectUnit:match(suffix)) then
+		if(suffix and not objectUnit:match(suffix)) then
 			objectUnit = objectUnit .. suffix
 		end
 
 		if(not (suffix == 'target' or objectUnit and objectUnit:match'target')) then
-			object:RegisterEvent('UNIT_ENTERED_VEHICLE', updateActiveUnit)
-			object:RegisterEvent('UNIT_EXITED_VEHICLE', updateActiveUnit)
+			object:RegisterEvent('UNIT_ENTERED_VEHICLE', updateActiveUnit, true)
+			object:RegisterEvent('UNIT_EXITED_VEHICLE', updateActiveUnit, true)
 
 			-- We don't need to register UNIT_PET for the player unit. We register it
 			-- mainly because UNIT_EXITED_VEHICLE and UNIT_ENTERED_VEHICLE doesn't always
 			-- have pet information when they fire for party and raid units.
 			if(objectUnit ~= 'player') then
-				object:RegisterEvent('UNIT_PET', UpdatePet)
+				object:RegisterEvent('UNIT_PET', UpdatePet, true)
 			end
 		end
 
@@ -314,7 +308,7 @@ local walkObject = function(object, unit)
 end
 
 function oUF:RegisterInitCallback(func)
-	tinsert(callback, func)
+	table.insert(callback, func)
 end
 
 function oUF:RegisterMetaFunction(name, func)
@@ -421,7 +415,7 @@ local generateName = function(unit, ...)
 	elseif(party) then
 		append = 'Party'
 	elseif(unit) then
-		append = unit:gsub("^%l", upper)
+		append = unit:gsub("^%l", string.upper)
 	end
 
 	if(append) then
@@ -517,7 +511,7 @@ do
 
 		local isPetHeader = template:match'PetHeader'
 		local name = overrideName or generateName(nil, ...)
-		local header = CreateFrame('Frame', name, UIParent, template)
+		local header = CreateFrame('Frame', name, oUF_PetBattleFrameHider, template)
 
 		header:SetAttribute("template", "oUF_ClickCastUnitTemplate")
 		for i=1, select("#", ...), 2 do
@@ -528,6 +522,9 @@ do
 
 		header.style = style
 		header.styleFunction = styleProxy
+
+		-- Expose the header through oUF.headers.
+		table.insert(headers, header)
 
 		-- We set it here so layouts can't directly override it.
 		header:SetAttribute('initialConfigFunction', initialConfigFunction)
@@ -542,11 +539,11 @@ do
 		end
 
 		if(visibility) then
-			local type, list = split(' ', visibility, 2)
+			local type, list = string.split(' ', visibility, 2)
 			if(list and type == 'custom') then
 				RegisterAttributeDriver(header, 'state-visibility', list)
 			else
-				local condition = getCondition(split(',', visibility))
+				local condition = getCondition(string.split(',', visibility))
 				RegisterAttributeDriver(header, 'state-visibility', condition)
 			end
 		end
@@ -562,7 +559,7 @@ function oUF:Spawn(unit, overrideName, overrideTemplate)
 	unit = unit:lower()
 
 	local name = overrideName or generateName(unit)
-	local object = CreateFrame("Button", name, UIParent, overrideTemplate or "SecureUnitButtonTemplate")
+	local object = CreateFrame("Button", name, oUF_PetBattleFrameHider, overrideTemplate or "SecureUnitButtonTemplate")
 	Private.UpdateUnits(object, unit)
 
 	self:DisableBlizzard(unit)
@@ -590,6 +587,7 @@ end
 
 oUF.version = _VERSION
 oUF.objects = objects
+oUF.headers = headers
 
 if(global) then
 	if(parent ~= 'oUF' and global == 'oUF') then

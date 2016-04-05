@@ -1,19 +1,67 @@
+--[[ Element: Totem Indicator
+
+ Handles updating and visibility of Shaman totems, Druid mushrooms and Death
+ Knight ghouls.
+
+ Widget
+
+ Totems - A table to hold sub-widgets.
+
+ Sub-Widgets
+
+ Totem     - Any UI widget.
+ .Icon     - A Texture representing the totem icon.
+ .Cooldown - A Cooldown representing the duration of the totem.
+
+ Notes
+
+ OnEnter and OnLeave will be set to display the default Tooltip, if the
+ `Totem` widget is mouse enabled.
+
+ Options
+
+ :UpdateTooltip - The function that should populate the tooltip, when the
+                  `Totem` widget is hovered. A default function, which calls
+                  `:SetTotem(id)`, will be used if none is defined.
+
+ Examples
+
+   local Totems = {}
+   for index = 1, MAX_TOTEMS do
+      -- Position and size of the totem indicator
+      local Totem = CreateFrame('Button', nil, self)
+      Totem:SetSize(40, 40)
+      Totem:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', index * Totem:GetWidth(), 0)
+      
+      local Icon = Totem:CreateTexture(nil, "OVERLAY")
+      Icon:SetAllPoints()
+      
+      local Cooldown = CreateFrame("Cooldown", nil, Totem, "CooldownFrameTemplate")
+      Cooldown:SetAllPoints()
+      
+      Totem.Icon = Icon
+      Totem.Cooldown = Cooldown
+      
+      Totems[index] = Totem
+   end
+   
+   -- Register with oUF
+   self.Totems = Totems
+
+ Hooks
+
+ Override(self) - Used to completely override the internal update function.
+                  Removing the table key entry will make the element fall-back
+                  to its internal function again.
+]]
+
 local parent, ns = ...
 local oUF = ns.oUF
 
--- colors
--- from Interface/BUTTONS/UI-TotemBar.blp
-oUF.colors.totems = {
-	[FIRE_TOTEM_SLOT] = { 181/255, 073/255, 033/255 },
-	[EARTH_TOTEM_SLOT] = { 074/255, 142/255, 041/255 },
-	[WATER_TOTEM_SLOT] = { 057/255, 146/255, 181/255 },
-	[AIR_TOTEM_SLOT] = { 132/255, 056/255, 231/255 }
-}
-
-local tmap = SHAMAN_TOTEM_PRIORITIES
-
-local OnClick = function(self)
-	DestroyTotem(self:GetID())
+-- Order the list based upon the default UIs priorities.
+local priorities = STANDARD_TOTEM_PRIORITIES
+if(select(2, UnitClass'player') == 'SHAMAN') then
+	priorities = SHAMAN_TOTEM_PRIORITIES
 end
 
 local UpdateTooltip = function(self)
@@ -32,11 +80,12 @@ local OnLeave = function()
 end
 
 local UpdateTotem = function(self, event, slot)
+	if(slot > MAX_TOTEMS) then return end
 	local totems = self.Totems
 
-	if(totems.PreUpdate) then totems:PreUpdate(tmap[slot]) end
+	if(totems.PreUpdate) then totems:PreUpdate(priorities[slot]) end
 
-	local totem = totems[tmap[slot]]
+	local totem = totems[priorities[slot]]
 	local haveTotem, name, start, duration, icon = GetTotemInfo(slot)
 	if(duration > 0) then
 		if(totem.Icon) then
@@ -53,7 +102,7 @@ local UpdateTotem = function(self, event, slot)
 	end
 
 	if(totems.PostUpdate) then
-		return totems:PostUpdate(tmap[slot], haveTotem, name, start, duration, icon)
+		return totems:PostUpdate(priorities[slot], haveTotem, name, start, duration, icon)
 	end
 end
 
@@ -76,16 +125,13 @@ local Enable = function(self)
 
 	if(totems) then
 		totems.__owner = self
+		totems.__map = { unpack(priorities) }
 		totems.ForceUpdate = ForceUpdate
 
 		for i = 1, MAX_TOTEMS do
 			local totem = totems[i]
 
-			totem:SetID(tmap[i])
-
-			if(totem:HasScript'OnClick') then
-				totem:SetScript('OnClick', OnClick)
-			end
+			totem:SetID(priorities[i])
 
 			if(totem:IsMouseEnabled()) then
 				totem:SetScript('OnEnter', OnEnter)
@@ -113,6 +159,9 @@ end
 
 local Disable = function(self)
 	if(self.Totems) then
+		for i = 1, MAX_TOTEMS do
+			self.Totems[i]:Hide()
+		end
 		TotemFrame.Show = nil
 		TotemFrame:Show()
 
