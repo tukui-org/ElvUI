@@ -668,22 +668,28 @@ function UF:DruidPostUpdateAltPower(unit, min, max)
 end
 
 local druidEclipseIsShown = false
+local druidManaIsShown = false
 function UF:EclipsePostUpdateVisibility()
 	local form = GetShapeshiftFormID()
 	local isShown = self:IsShown()
 	if druidEclipseIsShown ~= isShown then
 		druidEclipseIsShown = isShown
-
-		if (form == BEAR_FORM or form == CAT_FORM) then return; end --Don't toggle, as the EclipseBar will be replaced with DruidMana
-		ToggleResourceBar(self)
+		
+		--Only toggle if the eclipse bar was not replaced with druid mana
+		if not druidManaIsShown then
+			ToggleResourceBar(self)
+		end
 	end
 end
 
-local druidManaIsShown = false
 function UF:DruidManaPostUpdateVisibility()
 	local isShown = self:IsShown()
 	if druidManaIsShown ~= isShown then
 		druidManaIsShown = isShown
-		ToggleResourceBar(self)
+
+		--Only toggle if the druid mana bar was not replaced with eclipse bar
+		if not druidEclipseIsShown then
+			ToggleResourceBar(self)
+		end
 	end
 end
