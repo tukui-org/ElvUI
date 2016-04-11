@@ -803,7 +803,7 @@ f:SetScript("OnEvent", function(self, event)
 			mfTicks = 4
 		end
 		E.global.unitframe.ChannelTicks[SpellName(15407)] = mfTicks -- "Mind Flay"
-		E.global.unitframe.ChannelTicks[SpellName(129197)] = mfTicks -- "Mind Flay (Insanity)"
+		--E.global.unitframe.ChannelTicks[SpellName(129197)] = mfTicks -- "Mind Flay (Insanity)"
 	end
 
 	local penanceTicks = 2
