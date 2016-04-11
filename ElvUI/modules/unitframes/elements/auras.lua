@@ -428,10 +428,6 @@ function UF:CheckFilter(filterType, isFriend)
 end
 
 function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, timeLeft, unitCaster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura)
-	if E.global.unitframe.InvalidSpells[spellID] then
-		return false;
-	end
-
 	local isPlayer, isFriend
 	local db = self:GetParent().db
 	if not db or not db[self.type] then return true; end
@@ -451,7 +447,7 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 	icon.name = name
 	icon.priority = 0
 
-	local turtleBuff = E.global['unitframe']['aurafilters']['TurtleBuffs'].spells[name]
+	local turtleBuff = (E.global['unitframe']['aurafilters']['TurtleBuffs'].spells[spellID] or E.global['unitframe']['aurafilters']['TurtleBuffs'].spells[name])
 	if turtleBuff and turtleBuff.enable then
 		icon.priority = turtleBuff.priority
 	end
@@ -500,7 +496,7 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 	end]]
 
 	if UF:CheckFilter(db.useBlacklist, isFriend) then
-		local blackList = E.global['unitframe']['aurafilters']['Blacklist'].spells[name]
+		local blackList = (E.global['unitframe']['aurafilters']['Blacklist'].spells[spellID] or E.global['unitframe']['aurafilters']['Blacklist'].spells[name])
 		if blackList and blackList.enable then
 			returnValue = false;
 		end
@@ -509,7 +505,7 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 	end
 
 	if UF:CheckFilter(db.useWhitelist, isFriend) then
-		local whiteList = E.global['unitframe']['aurafilters']['Whitelist'].spells[name]
+		local whiteList = (E.global['unitframe']['aurafilters']['Whitelist'].spells[spellID] or E.global['unitframe']['aurafilters']['Whitelist'].spells[name])
 		if whiteList and whiteList.enable then
 			returnValue = true;
 			icon.priority = whiteList.priority
@@ -520,41 +516,19 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 		anotherFilterExists = true
 	end
 
-	if UF:CheckFilter(db.useWhitelist, isFriend) then
-		local whiteList = E.global['unitframe']['aurafilters']['Whitelist (Strict)'].spells[name]
-		if whiteList and whiteList.enable then
-			if whiteList.spellID and whiteList.spellID == spellID then
-				returnValue = true;
-			else
-				returnValue = false;
-			end
-			icon.priority = whiteList.priority
-		elseif not anotherFilterExists and not playerOnlyFilter then
-			returnValue = false
-		end
-	end
-
 	if db.useFilter and E.global['unitframe']['aurafilters'][db.useFilter] then
 		local type = E.global['unitframe']['aurafilters'][db.useFilter].type
 		local spellList = E.global['unitframe']['aurafilters'][db.useFilter].spells
+		local spell = (spellList[spellID] or spellList[name])
 
 		if type == 'Whitelist' then
-			if spellList[name] and spellList[name].enable and passPlayerOnlyCheck then
+			if spell and spell.enable and passPlayerOnlyCheck then
 				returnValue = true
 				icon.priority = spellList[name].priority
-
-				--bit hackish fix to this
-				if db.useFilter == 'TurtleBuffs' and (spellID == 86698 or spellID == 86669) then
-					returnValue = false
-				end
-
-				if db.useFilter == 'Whitelist (Strict)' and spellList[name].spellID and not spellList[name].spellID == spellID then
-					returnValue = false
-				end
 			elseif not anotherFilterExists then
 				returnValue = false
 			end
-		elseif type == 'Blacklist' and spellList[name] and spellList[name].enable then
+		elseif type == 'Blacklist' and spell and spell.enable then
 			returnValue = false
 		end
 	end

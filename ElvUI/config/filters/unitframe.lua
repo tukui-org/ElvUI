@@ -22,9 +22,6 @@ local function Defaults(priorityOverride)
 	return {['enable'] = true, ['priority'] = priorityOverride or 0, ['stackThreshold'] = 0}
 end
 
-local function DefaultsID(spellID, priorityOverride)
-	return {['enable'] = true, ['spellID'] = spellID, ['priority'] = priorityOverride or 0}
-end
 G.unitframe.aurafilters = {};
 
 --[[
@@ -34,135 +31,99 @@ G.unitframe.aurafilters['CCDebuffs'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
 		-- Death Knight
-			[SpellName(47476)] = Defaults(), --Strangulate
-			[SpellName(91800)] = Defaults(), --Gnaw (Pet)
-			[SpellName(91807)] = Defaults(), --Shambling Rush (Pet)
-			[SpellName(91797)] = Defaults(), --Monstrous Blow (Pet)
-			[SpellName(108194)] = Defaults(), --Asphyxiate
-			-- [SpellName(115001)] = Defaults(), --Remorseless Winter
+			[47476] = Defaults(), --Strangulate
+			[91800] = Defaults(), --Gnaw (Pet)
+			[91807] = Defaults(), --Shambling Rush (Pet)
+			[91797] = Defaults(), --Monstrous Blow (Pet)
+			[108194] = Defaults(), --Asphyxiate
+			--[115001] = Defaults(), --Remorseless Winter
 		-- Druid
-			[SpellName(33786)] = Defaults(), --Cyclone
-			--[SpellName(2637)] = Defaults(), --Hibernate
-			[SpellName(339)] = Defaults(), --Entangling Roots
-			[SpellName(78675)] = Defaults(), --Solar Beam
-			[SpellName(22570)] = Defaults(), --Maim
-			[SpellName(5211)] = Defaults(), --Mighty Bash
-			--[SpellName(9005)] = Defaults(), --Pounce
-			[SpellName(102359)] = Defaults(), --Mass Entanglement
-			[SpellName(99)] = Defaults(), --Disorienting Roar
-			[SpellName(127797)] = Defaults(), --Ursol's Vortex
-			[SpellName(45334)] = Defaults(), --Immobilized
-			--[SpellName(102795)] = Defaults(), --Bear Hug
-			-- [SpellName(114238)] = Defaults(), --Fae Silence
-			--[SpellName(113004)] = Defaults(), --Intimidating Roar (Warrior Symbiosis)
+			[33786] = Defaults(), --Cyclone
+			[339] = Defaults(), --Entangling Roots
+			[78675] = Defaults(), --Solar Beam
+			[22570] = Defaults(), --Maim
+			[5211] = Defaults(), --Mighty Bash
+			[102359] = Defaults(), --Mass Entanglement
+			[99] = Defaults(), --Disorienting Roar
+			[127797] = Defaults(), --Ursol's Vortex
+			[45334] = Defaults(), --Immobilized
+			--[114238] = Defaults(), --Fae Silence
 		-- Hunter
-			[SpellName(3355)] = Defaults(), --Freezing Trap
-			--[SpellName(1513)] = Defaults(), --Scare Beast
-			--[SpellName(19503)] = Defaults(), --Scatter Shot
-			--[SpellName(34490)] = Defaults(), --Silencing Shot
-			[SpellName(24394)] = Defaults(), --Intimidation
-			[SpellName(64803)] = Defaults(), --Entrapment
-			[SpellName(19386)] = Defaults(), --Wyvern Sting
-			[SpellName(117405)] = Defaults(), --Binding Shot
-			[SpellName(128405)] = Defaults(), --Narrow Escape
-			--[SpellName(50519)] = Defaults(), --Sonic Blast (Bat)
-			--[SpellName(91644)] = Defaults(), --Snatch (Bird of Prey)
-			--[SpellName(90337)] = Defaults(), --Bad Manner (Monkey)
-			--[SpellName(54706)] = Defaults(), --Venom Web Spray (Silithid)
-			--[SpellName(4167)] = Defaults(), --Web (Spider)
-			--[SpellName(90327)] = Defaults(), --Lock Jaw (Dog)
-			--[SpellName(56626)] = Defaults(), --Sting (Wasp)
-			--[SpellName(50245)] = Defaults(), --Pin (Crab)
-			--[SpellName(50541)] = Defaults(), --Clench (Scorpid)
-			--[SpellName(96201)] = Defaults(), --Web Wrap (Shale Spider)
-			--[SpellName(96201)] = Defaults(), --Lullaby (Crane)
+			[3355] = Defaults(), --Freezing Trap
+			[24394] = Defaults(), --Intimidation
+			[64803] = Defaults(), --Entrapment
+			[19386] = Defaults(), --Wyvern Sting
+			[117405] = Defaults(), --Binding Shot
+			[128405] = Defaults(), --Narrow Escape
 		-- Mage
-			[SpellName(31661)] = Defaults(), --Dragon's Breath
-			[SpellName(118)] = Defaults(), --Polymorph
-			--[SpellName(55021)] = Defaults(), --Silenced - Improved Counterspell
-			[SpellName(122)] = Defaults(), --Frost Nova
-			[SpellName(82691)] = Defaults(), --Ring of Frost
-			--[SpellName(118271)] = Defaults(), --Combustion Impact
-			[SpellName(44572)] = Defaults(), --Deep Freeze
-			[SpellName(33395)] = Defaults(), --Freeze (Water Ele)
-			[SpellName(102051)] = Defaults(), --Frostjaw
+			[31661] = Defaults(), --Dragon's Breath
+			[118] = Defaults(), --Polymorph
+			[122] = Defaults(), --Frost Nova
+			[82691] = Defaults(), --Ring of Frost
+			[44572] = Defaults(), --Deep Freeze
+			[33395] = Defaults(), --Freeze (Water Ele)
+			[102051] = Defaults(), --Frostjaw
 		-- Paladin
-			[SpellName(20066)] = Defaults(), --Repentance
-			-- [SpellName(10326)] = Defaults(), --Turn Evil
-			[SpellName(853)] = Defaults(), --Hammer of Justice
-			-- [SpellName(105593)] = Defaults(), --Fist of Justice
-			[SpellName(31935)] = Defaults(), --Avenger's Shield
-			[SpellName(105421)] = Defaults(), --Blinding Light
+			[20066] = Defaults(), --Repentance
+			--[10326] = Defaults(), --Turn Evil
+			[853] = Defaults(), --Hammer of Justice
+			--[105593] = Defaults(), --Fist of Justice
+			[31935] = Defaults(), --Avenger's Shield
+			[105421] = Defaults(), --Blinding Light
 		-- Priest
-			[SpellName(605)] = Defaults(), --Dominate Mind
-			[SpellName(64044)] = Defaults(), --Psychic Horror
-			--[SpellName(64058)] = Defaults(), --Psychic Horror (Disarm)
-			[SpellName(8122)] = Defaults(), --Psychic Scream
-			[SpellName(9484)] = Defaults(), --Shackle Undead
-			[SpellName(15487)] = Defaults(), --Silence
-			[SpellName(114404)] = Defaults(), --Void Tendrils
-			[SpellName(88625)] = Defaults(), --Holy Word: Chastise
-			--[SpellName(113792)] = Defaults(), --Psychic Terror (Psyfiend)
-			-- [SpellName(87194)] = Defaults(), --Sin and Punishment
+			[605] = Defaults(), --Dominate Mind
+			[64044] = Defaults(), --Psychic Horror
+			[8122] = Defaults(), --Psychic Scream
+			[9484] = Defaults(), --Shackle Undead
+			[15487] = Defaults(), --Silence
+			[114404] = Defaults(), --Void Tendrils
+			[88625] = Defaults(), --Holy Word: Chastise
+			--[87194] = Defaults(), --Sin and Punishment
 		-- Rogue
-			[SpellName(2094)] = Defaults(), --Blind
-			[SpellName(1776)] = Defaults(), --Gouge
-			[SpellName(6770)] = Defaults(), --Sap
-			[SpellName(1833)] = Defaults(), --Cheap Shot
-			--[SpellName(51722)] = Defaults(), --Dismantle
-			[SpellName(1330)] = Defaults(), --Garrote - Silence
-			[SpellName(408)] = Defaults(), --Kidney Shot
-			[SpellName(88611)] = Defaults(), --Smoke Bomb
-			--[SpellName(115197)] = Defaults(), --Partial Paralytic
-			--[SpellName(113953)] = Defaults(), --Paralysis
+			[2094] = Defaults(), --Blind
+			[1776] = Defaults(), --Gouge
+			[6770] = Defaults(), --Sap
+			[1833] = Defaults(), --Cheap Shot
+			[1330] = Defaults(), --Garrote - Silence
+			[408] = Defaults(), --Kidney Shot
+			[88611] = Defaults(), --Smoke Bomb
 		-- Shaman
-			[SpellName(51514)] = Defaults(), --Hex
-			[SpellName(64695)] = Defaults(), --Earthgrab
-			-- [SpellName(63685)] = Defaults(), --Freeze (Frozen Power)
-			--[SpellName(76780)] = Defaults(), --Bind Elemental
-			[SpellName(118905)] = Defaults(), --Static Charge
-			[SpellName(118345)] = Defaults(), --Pulverize (Earth Elemental)
+			[51514] = Defaults(), --Hex
+			[64695] = Defaults(), --Earthgrab
+			--[63685] = Defaults(), --Freeze (Frozen Power)
+			[118905] = Defaults(), --Static Charge
+			[118345] = Defaults(), --Pulverize (Earth Elemental)
 		-- Warlock
-			[SpellName(710)] = Defaults(), --Banish
-			[SpellName(6789)] = Defaults(), --Mortal Coil
-			[SpellName(118699)] = Defaults(), --Fear
-			[SpellName(5484)] = Defaults(), --Howl of Terror
-			[SpellName(6358)] = Defaults(), --Seduction
-			[SpellName(30283)] = Defaults(), --Shadowfury
-			--[SpellName(24259)] = Defaults(), --Spell Lock (Felhunter)
-			--[SpellName(115782)] = Defaults(), --Optical Blast (Observer)
-			[SpellName(115268)] = Defaults(), --Mesmerize (Shivarra)
-			--[SpellName(118093)] = Defaults(), --Disarm (Voidwalker)
-			[SpellName(89766)] = Defaults(), --Axe Toss (Felguard)
-			-- [SpellName(137143)] = Defaults(), --Blood Horror
+			[710] = Defaults(), --Banish
+			[6789] = Defaults(), --Mortal Coil
+			[118699] = Defaults(), --Fear
+			[5484] = Defaults(), --Howl of Terror
+			[6358] = Defaults(), --Seduction
+			[30283] = Defaults(), --Shadowfury
+			[115268] = Defaults(), --Mesmerize (Shivarra)
+			[89766] = Defaults(), --Axe Toss (Felguard)
+			--[137143] = Defaults(), --Blood Horror
 		-- Warrior
-			--[SpellName(20511)] = Defaults(), --Intimidating Shout
-			[SpellName(7922)] = Defaults(), --Charge Stun
-			--[SpellName(676)] = Defaults(), --Disarm
-			[SpellName(105771)] = Defaults(), --Warbringer
-			[SpellName(107566)] = Defaults(), --Staggering Shout
-			[SpellName(132168)] = Defaults(), --Shockwave
-			[SpellName(107570)] = Defaults(), --Storm Bolt
-			-- [SpellName(118895)] = Defaults(), --Dragon Roar
-			-- [SpellName(18498)] = Defaults(), --Gag Order
+			[7922] = Defaults(), --Charge Stun
+			[105771] = Defaults(), --Warbringer
+			[107566] = Defaults(), --Staggering Shout
+			[132168] = Defaults(), --Shockwave
+			[107570] = Defaults(), --Storm Bolt
+			--[118895] = Defaults(), --Dragon Roar
+			--[18498] = Defaults(), --Gag Order
 		-- Monk
-			[SpellName(116706)] = Defaults(), --Disable
-			--[SpellName(117368)] = Defaults(), --Grapple Weapon
-			[SpellName(115078)] = Defaults(), --Paralysis
-			--[SpellName(122242)] = Defaults(), --Clash
-			-- [SpellName(119392)] = Defaults(), --Charging Ox Wave
-			[SpellName(119381)] = Defaults(), --Leg Sweep
-			[SpellName(120086)] = Defaults(), --Fists of Fury
-			--[SpellName(116709)] = Defaults(), --Spear Hand Strike
-			--[SpellName(123407)] = Defaults(), --Spinning Fire Blossom
-			[SpellName(140023)] = Defaults(), --Ring of Peace
+			[116706] = Defaults(), --Disable
+			[115078] = Defaults(), --Paralysis
+			--[119392] = Defaults(), --Charging Ox Wave
+			[119381] = Defaults(), --Leg Sweep
+			[120086] = Defaults(), --Fists of Fury
+			[140023] = Defaults(), --Ring of Peace
 		-- Racial
-			[SpellName(25046)] = Defaults(), --Arcane Torrent
-			[SpellName(20549)] = Defaults(), --War Stomp
-			[SpellName(107079)] = Defaults(), --Quaking Palm
+			[25046] = Defaults(), --Arcane Torrent
+			[20549] = Defaults(), --War Stomp
+			[107079] = Defaults(), --Quaking Palm
 	},
 }
-
 
 --[[
 	These are buffs that can be considered "protection" buffs
@@ -171,68 +132,65 @@ G.unitframe.aurafilters['TurtleBuffs'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
 		--Mage
-			[SpellName(45438)] = Defaults(5), -- Ice Block
-			[SpellName(115610)] = Defaults(), -- Temporal Shield
+			[45438] = Defaults(5), -- Ice Block
+			[115610] = Defaults(), -- Temporal Shield
 		--Death Knight
-			[SpellName(48797)] = Defaults(5), -- Anti-Magic Shell
-			[SpellName(48792)] = Defaults(), -- Icebound Fortitude
-			[SpellName(49039)] = Defaults(), -- Lichborne
-			[SpellName(87256)] = Defaults(4), -- Dancing Rune Weapon
-			[SpellName(55233)] = Defaults(), -- Vampiric Blood
-			[SpellName(50461)] = Defaults(), -- Anti-Magic Zone
+			[48797] = Defaults(5), -- Anti-Magic Shell
+			[48792] = Defaults(), -- Icebound Fortitude
+			[49039] = Defaults(), -- Lichborne
+			[87256] = Defaults(4), -- Dancing Rune Weapon
+			[55233] = Defaults(), -- Vampiric Blood
+			[50461] = Defaults(), -- Anti-Magic Zone
 		--Priest
-			[SpellName(33206)] = Defaults(3), -- Pain Suppression
-			[SpellName(47788)] = Defaults(), -- Guardian Spirit
-			[SpellName(62618)] = Defaults(), -- Power Word: Barrier
-			[SpellName(47585)] = Defaults(5), -- Dispersion
+			[33206] = Defaults(3), -- Pain Suppression
+			[47788] = Defaults(), -- Guardian Spirit
+			[62618] = Defaults(), -- Power Word: Barrier
+			[47585] = Defaults(5), -- Dispersion
 		--Warlock
-			[SpellName(104773)] = Defaults(), -- Unending Resolve
-			-- [SpellName(110913)] = Defaults(), -- Dark Bargain
-			[SpellName(108359)] = Defaults(), -- Dark Regeneration
+			[104773] = Defaults(), -- Unending Resolve
+			--[110913] = Defaults(), -- Dark Bargain
+			[108359] = Defaults(), -- Dark Regeneration
 		--Druid
-			[SpellName(22812)] = Defaults(2), -- Barkskin
-			[SpellName(102342)] = Defaults(2), -- Ironbark
-			[SpellName(61336)] = Defaults(), -- Survival Instincts
+			[22812] = Defaults(2), -- Barkskin
+			[102342] = Defaults(2), -- Ironbark
+			[61336] = Defaults(), -- Survival Instincts
 		--Hunter
-			[SpellName(19263)] = Defaults(5), -- Deterrence
-			[SpellName(53480)] = Defaults(), -- Roar of Sacrifice (Cunning)
+			[19263] = Defaults(5), -- Deterrence
+			[53480] = Defaults(), -- Roar of Sacrifice (Cunning)
 		--Rogue
-			[SpellName(1966)] = Defaults(), -- Feint
-			[SpellName(31224)] = Defaults(), -- Cloak of Shadows
-			[SpellName(74001)] = Defaults(), -- Combat Readiness
-			--[SpellName(74002)] = Defaults(), -- Combat Insight (stacking buff from CR)
-			[SpellName(5277)] = Defaults(5), -- Evasion
-			[SpellName(45182)] = Defaults(), -- Cheating Death
+			[1966] = Defaults(), -- Feint
+			[31224] = Defaults(), -- Cloak of Shadows
+			[74001] = Defaults(), -- Combat Readiness
+			[5277] = Defaults(5), -- Evasion
+			[45182] = Defaults(), -- Cheating Death
 		--Shaman
-			[SpellName(98007)] = Defaults(), -- Spirit Link Totem
-			[SpellName(30823)] = Defaults(), -- Shamanistic Rage
-			-- [SpellName(108271)] = Defaults(), -- Astral Shift
+			[98007] = Defaults(), -- Spirit Link Totem
+			[30823] = Defaults(), -- Shamanistic Rage
+			--[108271] = Defaults(), -- Astral Shift
 		--Paladin
-			[SpellName(1022)] = Defaults(5), -- Hand of Protection
-			[SpellName(6940)] = Defaults(), -- Hand of Sacrifice
-			-- [SpellName(114039)] = Defaults(), -- Hand of Purity
-			[SpellName(31821)] = Defaults(3), -- Devotion Aura
-			[SpellName(498)] = Defaults(2), -- Divine Protection
-			[SpellName(642)] = Defaults(5), -- Divine Shield
-			[SpellName(86659)] = Defaults(4), -- Guardian of the Ancient Kings (Prot)
-			[SpellName(31850)] = Defaults(4), -- Ardent Defender
+			[1022] = Defaults(5), -- Hand of Protection
+			[6940] = Defaults(), -- Hand of Sacrifice
+			--[114039] = Defaults(), -- Hand of Purity
+			[31821] = Defaults(3), -- Devotion Aura
+			[498] = Defaults(2), -- Divine Protection
+			[642] = Defaults(5), -- Divine Shield
+			[86659] = Defaults(4), -- Guardian of the Ancient Kings (Prot)
+			[31850] = Defaults(4), -- Ardent Defender
 		--Warrior
-			[SpellName(118038)] = Defaults(5), -- Die by the Sword
-			-- [SpellName(55694)] = Defaults(), -- Enraged Regeneration
-			[SpellName(97463)] = Defaults(), -- Rallying Cry
-			[SpellName(12975)] = Defaults(), -- Last Stand
-			[SpellName(114029)] = Defaults(2), -- Safeguard
-			[SpellName(871)] = Defaults(3), -- Shield Wall
-			[SpellName(114030)] = Defaults(), -- Vigilance
+			[118038] = Defaults(5), -- Die by the Sword
+			--[55694] = Defaults(), -- Enraged Regeneration
+			[97463] = Defaults(), -- Rallying Cry
+			[12975] = Defaults(), -- Last Stand
+			[114029] = Defaults(2), -- Safeguard
+			[871] = Defaults(3), -- Shield Wall
+			[114030] = Defaults(), -- Vigilance
 		--Monk
-			[SpellName(120954)] = Defaults(2), -- Fortifying Brew
-			--[SpellName(131523)] = Defaults(5), -- Zen Meditation
-			[SpellName(122783)] = Defaults(), -- Diffuse Magic
-			[SpellName(122278)] = Defaults(), -- Dampen Harm
-			--[SpellName(115213)] = Defaults(), -- Avert Harm
-			[SpellName(116849)] = Defaults(), -- Life Cocoon
+			[120954] = Defaults(2), -- Fortifying Brew
+			[122783] = Defaults(), -- Diffuse Magic
+			[122278] = Defaults(), -- Dampen Harm
+			[116849] = Defaults(), -- Life Cocoon
 		--Racial
-			[SpellName(20594)] = Defaults(), -- Stoneform
+			[20594] = Defaults(), -- Stoneform
 	},
 }
 
@@ -240,153 +198,142 @@ G.unitframe.aurafilters['PlayerBuffs'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
 		--Mage
-			[SpellName(45438)] = Defaults(), -- Ice Block
-			[SpellName(115610)] = Defaults(), -- Temporal Shield
-			[SpellName(110909)] = Defaults(), -- Alter Time
-			[SpellName(12051)] = Defaults(), -- Evocation
-			[SpellName(12472)] = Defaults(), -- Icy Veins
-			[SpellName(80353)] = Defaults(), -- Time Warp
-			[SpellName(12042)] = Defaults(), -- Arcane Power
-			[SpellName(32612)] = Defaults(), -- Invisibility
-			[SpellName(110960)] = Defaults(), -- Greater Invisibility
-			[SpellName(108839)] = Defaults(), -- Ice Flows
-			-- [SpellName(111264)] = Defaults(), -- Ice Ward
-			[SpellName(108843)] = Defaults(), -- Blazing Speed
+			[45438] = Defaults(), -- Ice Block
+			[115610] = Defaults(), -- Temporal Shield
+			[110909] = Defaults(), -- Alter Time
+			[12051] = Defaults(), -- Evocation
+			[12472] = Defaults(), -- Icy Veins
+			[80353] = Defaults(), -- Time Warp
+			[12042] = Defaults(), -- Arcane Power
+			[32612] = Defaults(), -- Invisibility
+			[110960] = Defaults(), -- Greater Invisibility
+			[108839] = Defaults(), -- Ice Flows
+			--[111264] = Defaults(), -- Ice Ward
+			[108843] = Defaults(), -- Blazing Speed
 		--Death Knight
-			[SpellName(48797)] = Defaults(), -- Anti-Magic Shell
-			[SpellName(48792)] = Defaults(), -- Icebound Fortitude
-			[SpellName(49039)] = Defaults(), -- Lichborne
-			[SpellName(87256)] = Defaults(), -- Dancing Rune Weapon
-			-- [SpellName(49222)] = Defaults(), -- Bone Shield
-			[SpellName(55233)] = Defaults(), -- Vampiric Blood
-			[SpellName(50461)] = Defaults(), -- Anti-Magic Zone
-			--[SpellName(49016)] = Defaults(), -- Unholy Frenzy
-			[SpellName(51271)] = Defaults(), -- Pillar of Frost
-			-- [SpellName(96268)] = Defaults(), -- Death's Advance
+			[48797] = Defaults(), -- Anti-Magic Shell
+			[48792] = Defaults(), -- Icebound Fortitude
+			[49039] = Defaults(), -- Lichborne
+			[87256] = Defaults(), -- Dancing Rune Weapon
+			--[49222] = Defaults(), -- Bone Shield
+			[55233] = Defaults(), -- Vampiric Blood
+			[50461] = Defaults(), -- Anti-Magic Zone
+			[51271] = Defaults(), -- Pillar of Frost
+			--[96268] = Defaults(), -- Death's Advance
 		--Priest
-			[SpellName(33206)] = Defaults(), -- Pain Suppression
-			[SpellName(47788)] = Defaults(), -- Guardian Spirit
-			[SpellName(62618)] = Defaults(), -- Power Word: Barrier
-			[SpellName(47585)] = Defaults(), -- Dispersion
-			-- [SpellName(6346)] = Defaults(), -- Fear Ward
-			[SpellName(10060)] = Defaults(), -- Power Infusion
-			[SpellName(114239)] = Defaults(), -- Phantasm
-			[SpellName(119032)] = Defaults(), -- Spectral Guise
-			[SpellName(27827)] = Defaults(), -- Spirit of Redemption
+			[33206] = Defaults(), -- Pain Suppression
+			[47788] = Defaults(), -- Guardian Spirit
+			[62618] = Defaults(), -- Power Word: Barrier
+			[47585] = Defaults(), -- Dispersion
+			--[6346] = Defaults(), -- Fear Ward
+			[10060] = Defaults(), -- Power Infusion
+			[114239] = Defaults(), -- Phantasm
+			[119032] = Defaults(), -- Spectral Guise
+			[27827] = Defaults(), -- Spirit of Redemption
 		--Warlock
-			[SpellName(104773)] = Defaults(), -- Unending Resolve
-			-- [SpellName(110913)] = Defaults(), -- Dark Bargain
-			[SpellName(108359)] = Defaults(), -- Dark Regeneration
-			-- [SpellName(113860)] = Defaults(), -- Dark Sould: Misery
-			-- [SpellName(113861)] = Defaults(), -- Dark Soul: Knowledge
-			-- [SpellName(113858)] = Defaults(), -- Dark Soul: Instability
-			[SpellName(88448)] = Defaults(), -- Demonic Rebirth
+			[104773] = Defaults(), -- Unending Resolve
+			--[110913] = Defaults(), -- Dark Bargain
+			[108359] = Defaults(), -- Dark Regeneration
+			--[113860] = Defaults(), -- Dark Sould: Misery
+			--[113861] = Defaults(), -- Dark Soul: Knowledge
+			--[113858] = Defaults(), -- Dark Soul: Instability
+			[88448] = Defaults(), -- Demonic Rebirth
 		--Druid
-			[SpellName(22812)] = Defaults(), -- Barkskin
-			[SpellName(102342)] = Defaults(), -- Ironbark
-			[SpellName(61336)] = Defaults(), -- Survival Instincts
-			[SpellName(117679)] = Defaults(), -- Incarnation (Tree of Life)
-			[SpellName(102543)] = Defaults(), -- Incarnation: King of the Jungle
-			[SpellName(102558)] = Defaults(), -- Incarnation: Son of Ursoc
-			[SpellName(102560)] = Defaults(), -- Incarnation: Chosen of Elune
-			--[SpellName(16689)] = Defaults(), -- Nature's Grasp
-			-- [SpellName(132158)] = Defaults(), -- Nature's Swiftness
-			[SpellName(106898)] = Defaults(), -- Stampeding Roar
-			[SpellName(1850)] = Defaults(), -- Dash
-			[SpellName(106951)] = Defaults(), -- Berserk
-			--[SpellName(29166)] = Defaults(), -- Innervate
-			[SpellName(52610)] = Defaults(), -- Savage Roar
-			[SpellName(69369)] = Defaults(), -- Predatory Swiftness
-			-- [SpellName(112071)] = Defaults(), -- Celestial Alignment
-			[SpellName(124974)] = Defaults(), -- Nature's Vigil
+			[22812] = Defaults(), -- Barkskin
+			[102342] = Defaults(), -- Ironbark
+			[61336] = Defaults(), -- Survival Instincts
+			[117679] = Defaults(), -- Incarnation (Tree of Life)
+			[102543] = Defaults(), -- Incarnation: King of the Jungle
+			[102558] = Defaults(), -- Incarnation: Son of Ursoc
+			[102560] = Defaults(), -- Incarnation: Chosen of Elune
+			--[132158] = Defaults(), -- Nature's Swiftness
+			[106898] = Defaults(), -- Stampeding Roar
+			[1850] = Defaults(), -- Dash
+			[106951] = Defaults(), -- Berserk
+			[52610] = Defaults(), -- Savage Roar
+			[69369] = Defaults(), -- Predatory Swiftness
+			--[112071] = Defaults(), -- Celestial Alignment
+			[124974] = Defaults(), -- Nature's Vigil
 		--Hunter
-			[SpellName(19263)] = Defaults(), -- Deterrence
-			[SpellName(53480)] = Defaults(), -- Roar of Sacrifice (Cunning)
-			-- [SpellName(51755)] = Defaults(), -- Camouflage
-			[SpellName(54216)] = Defaults(), -- Master's Call
-			--[SpellName(34471)] = Defaults(), -- The Beast Within
-			[SpellName(3045)] = Defaults(), -- Rapid Fire
-			[SpellName(3584)] = Defaults(), -- Feign Death
-			[SpellName(131894)] = Defaults(), -- A Murder of Crows
-			[SpellName(90355)] = Defaults(), -- Ancient Hysteria
-			[SpellName(90361)] = Defaults(), -- Spirit Mend
+			[19263] = Defaults(), -- Deterrence
+			[53480] = Defaults(), -- Roar of Sacrifice (Cunning)
+			--[51755] = Defaults(), -- Camouflage
+			[54216] = Defaults(), -- Master's Call
+			[3045] = Defaults(), -- Rapid Fire
+			[3584] = Defaults(), -- Feign Death
+			[131894] = Defaults(), -- A Murder of Crows
+			[90355] = Defaults(), -- Ancient Hysteria
+			[90361] = Defaults(), -- Spirit Mend
 		--Rogue
-			[SpellName(31224)] = Defaults(), -- Cloak of Shadows
-			[SpellName(74001)] = Defaults(), -- Combat Readiness
-			--[SpellName(74002)] = Defaults(), -- Combat Insight (stacking buff from CR)
-			[SpellName(5277)] = Defaults(), -- Evasion
-			[SpellName(45182)] = Defaults(), -- Cheating Death
-			-- [SpellName(51713)] = Defaults(), -- Shadow Dance
-			-- [SpellName(114018)] = Defaults(), -- Shroud of Concealment
-			[SpellName(2983)] = Defaults(), -- Sprint
-			--[SpellName(121471)] = Defaults(), -- Shadow Blades
-			[SpellName(11327)] = Defaults(), -- Vanish
-			[SpellName(108212)] = Defaults(), -- Burst of Speed
-			-- [SpellName(57933)] = Defaults(), -- Tricks of the Trade
-			[SpellName(79140)] = Defaults(), -- Vendetta
-			[SpellName(13750)] = Defaults(), -- Adrenaline Rush
+			[31224] = Defaults(), -- Cloak of Shadows
+			[74001] = Defaults(), -- Combat Readiness
+			[5277] = Defaults(), -- Evasion
+			[45182] = Defaults(), -- Cheating Death
+			--[51713] = Defaults(), -- Shadow Dance
+			--[114018] = Defaults(), -- Shroud of Concealment
+			[2983] = Defaults(), -- Sprint
+			[11327] = Defaults(), -- Vanish
+			[108212] = Defaults(), -- Burst of Speed
+			--[57933] = Defaults(), -- Tricks of the Trade
+			[79140] = Defaults(), -- Vendetta
+			[13750] = Defaults(), -- Adrenaline Rush
 		--Shaman
-			[SpellName(98007)] = Defaults(), -- Spirit Link Totem
-			[SpellName(30823)] = Defaults(), -- Shamanistic Rage
-			-- [SpellName(108271)] = Defaults(), -- Astral Shift
-			-- [SpellName(16188)] = Defaults(), -- Ancestral Swiftness
-			[SpellName(2825)] = Defaults(), -- Bloodlust
-			[SpellName(79206)] = Defaults(), -- Spiritwalker's Grace
-			--[SpellName(16191)] = Defaults(), -- Mana Tide
-			[SpellName(8178)] = Defaults(), -- Grounding Totem Effect
-			[SpellName(58875)] = Defaults(), -- Spirit Walk
-			[SpellName(108281)] = Defaults(), -- Ancestral Guidance
-			[SpellName(16166)] = Defaults(), -- Elemental Mastery
-			[SpellName(114896)] = Defaults(), -- Windwalk Totem
+			[98007] = Defaults(), -- Spirit Link Totem
+			[30823] = Defaults(), -- Shamanistic Rage
+			--[108271] = Defaults(), -- Astral Shift
+			--[16188] = Defaults(), -- Ancestral Swiftness
+			[2825] = Defaults(), -- Bloodlust
+			[79206] = Defaults(), -- Spiritwalker's Grace
+			[8178] = Defaults(), -- Grounding Totem Effect
+			[58875] = Defaults(), -- Spirit Walk
+			[108281] = Defaults(), -- Ancestral Guidance
+			[16166] = Defaults(), -- Elemental Mastery
+			[114896] = Defaults(), -- Windwalk Totem
 		--Paladin
-			[SpellName(1044)] = Defaults(), -- Hand of Freedom
-			[SpellName(1022)] = Defaults(), -- Hand of Protection
-			-- [SpellName(1038)] = Defaults(), -- Hand of Salvation
-			[SpellName(6940)] = Defaults(), -- Hand of Sacrifice
-			-- [SpellName(114039)] = Defaults(), -- Hand of Purity
-			[SpellName(31821)] = Defaults(), -- Devotion Aura
-			[SpellName(498)] = Defaults(), -- Divine Protection
-			[SpellName(642)] = Defaults(), -- Divine Shield
-			[SpellName(86659)] = Defaults(), -- Guardian of the Ancient Kings (Prot)
-			-- [SpellName(20925)] = Defaults(), -- Sacred Shield
-			[SpellName(31850)] = Defaults(), -- Ardent Defender
-			[SpellName(31884)] = Defaults(), -- Avenging Wrath
-			[SpellName(53563)] = Defaults(), -- Beacon of Light
-			[SpellName(31842)] = Defaults(), -- Divine Favor
-			--[SpellName(54428)] = Defaults(), -- Divine Plea
-			[SpellName(105809)] = Defaults(), -- Holy Avenger
-			[SpellName(85499)] = Defaults(), -- Speed of Light
+			[1044] = Defaults(), -- Hand of Freedom
+			[1022] = Defaults(), -- Hand of Protection
+			--[1038] = Defaults(), -- Hand of Salvation
+			[6940] = Defaults(), -- Hand of Sacrifice
+			--[114039] = Defaults(), -- Hand of Purity
+			[31821] = Defaults(), -- Devotion Aura
+			[498] = Defaults(), -- Divine Protection
+			[642] = Defaults(), -- Divine Shield
+			[86659] = Defaults(), -- Guardian of the Ancient Kings (Prot)
+			--[20925] = Defaults(), -- Sacred Shield
+			[31850] = Defaults(), -- Ardent Defender
+			[31884] = Defaults(), -- Avenging Wrath
+			[53563] = Defaults(), -- Beacon of Light
+			[31842] = Defaults(), -- Divine Favor
+			[105809] = Defaults(), -- Holy Avenger
+			[85499] = Defaults(), -- Speed of Light
 		--Warrior
-			[SpellName(118038)] = Defaults(), -- Die by the Sword
-			-- [SpellName(55694)] = Defaults(), -- Enraged Regeneration
-			[SpellName(97463)] = Defaults(), -- Rallying Cry
-			[SpellName(12975)] = Defaults(), -- Last Stand
-			[SpellName(114029)] = Defaults(), -- Safeguard
-			[SpellName(871)] = Defaults(), -- Shield Wall
-			[SpellName(114030)] = Defaults(), -- Vigilance
-			[SpellName(18499)] = Defaults(), -- Berserker Rage
-			--[SpellName(85730)] = Defaults(), -- Deadly Calm
-			[SpellName(1719)] = Defaults(), -- Recklessness
-			[SpellName(23920)] = Defaults(), -- Spell Reflection
-			[SpellName(114028)] = Defaults(), -- Mass Spell Reflection
-			[SpellName(46924)] = Defaults(), -- Bladestorm
-			[SpellName(3411)] = Defaults(), -- Intervene
-			[SpellName(107574)] = Defaults(), -- Avatar
+			[118038] = Defaults(), -- Die by the Sword
+			--[55694] = Defaults(), -- Enraged Regeneration
+			[97463] = Defaults(), -- Rallying Cry
+			[12975] = Defaults(), -- Last Stand
+			[114029] = Defaults(), -- Safeguard
+			[871] = Defaults(), -- Shield Wall
+			[114030] = Defaults(), -- Vigilance
+			[18499] = Defaults(), -- Berserker Rage
+			[1719] = Defaults(), -- Recklessness
+			[23920] = Defaults(), -- Spell Reflection
+			[114028] = Defaults(), -- Mass Spell Reflection
+			[46924] = Defaults(), -- Bladestorm
+			[3411] = Defaults(), -- Intervene
+			[107574] = Defaults(), -- Avatar
 		--Monk
-			[SpellName(120954)] = Defaults(), -- Fortifying Brew
-			--[SpellName(131523)] = Defaults(), -- Zen Meditation
-			[SpellName(122783)] = Defaults(), -- Diffuse Magic
-			[SpellName(122278)] = Defaults(), -- Dampen Harm
-			--[SpellName(115213)] = Defaults(), -- Avert Harm
-			[SpellName(116849)] = Defaults(), -- Life Cocoon
-			[SpellName(125174)] = Defaults(), -- Touch of Karma
-			[SpellName(116841)] = Defaults(), -- Tiger's Lust
+			[120954] = Defaults(), -- Fortifying Brew
+			[122783] = Defaults(), -- Diffuse Magic
+			[122278] = Defaults(), -- Dampen Harm
+			[116849] = Defaults(), -- Life Cocoon
+			[125174] = Defaults(), -- Touch of Karma
+			[116841] = Defaults(), -- Tiger's Lust
 		--Racial
-			[SpellName(20594)] = Defaults(), -- Stoneform
-			[SpellName(59545)] = Defaults(), -- Gift of the Naaru
-			[SpellName(20572)] = Defaults(), -- Blood Fury
-			[SpellName(26297)] = Defaults(), -- Berserking
-			[SpellName(68992)] = Defaults(), -- Darkflight
+			[20594] = Defaults(), -- Stoneform
+			[59545] = Defaults(), -- Gift of the Naaru
+			[20572] = Defaults(), -- Blood Fury
+			[26297] = Defaults(), -- Berserking
+			[68992] = Defaults(), -- Darkflight
 	},
 }
 
@@ -399,38 +346,37 @@ G.unitframe.aurafilters['PlayerBuffs'] = {
 G.unitframe.aurafilters['Blacklist'] = {
 	['type'] = 'Blacklist',
 	['spells'] = {
-		[SpellName(36900)] = Defaults(), --Soul Split: Evil!
-		[SpellName(36901)] = Defaults(), --Soul Split: Good
-		[SpellName(36893)] = Defaults(), --Transporter Malfunction
-		[SpellName(114216)] = Defaults(), --Angelic Bulwark
-		[SpellName(97821)] = Defaults(), --Void-Touched
-		[SpellName(36032)] = Defaults(), -- Arcane Charge
-		--[SpellName(132365)] = Defaults(), -- Vengeance
-		[SpellName(8733)] = Defaults(), --Blessing of Blackfathom
-		[SpellName(57724)] = Defaults(), --Sated
-		[SpellName(25771)] = Defaults(), --forbearance
-		[SpellName(57723)] = Defaults(), --Exhaustion
-		[SpellName(36032)] = Defaults(), --arcane blast
-		[SpellName(58539)] = Defaults(), --watchers corpse
-		[SpellName(26013)] = Defaults(), --deserter
-		[SpellName(6788)] = Defaults(), --weakended soul
-		[SpellName(71041)] = Defaults(), --dungeon deserter
-		[SpellName(41425)] = Defaults(), --"Hypothermia"
-		[SpellName(55711)] = Defaults(), --Weakened Heart
-		[SpellName(8326)] = Defaults(), --ghost
-		[SpellName(23445)] = Defaults(), --evil twin
-		[SpellName(24755)] = Defaults(), --gay homosexual tricked or treated debuff
-		[SpellName(25163)] = Defaults(), --fucking annoying pet debuff oozeling disgusting aura
-		[SpellName(80354)] = Defaults(), --timewarp debuff
-		[SpellName(95223)] = Defaults(), --group res debuff
-		[SpellName(124275)] = Defaults(), -- Stagger
-		[SpellName(124274)] = Defaults(), -- Stagger
-		[SpellName(124273)] = Defaults(), -- Stagger
-		[SpellName(117870)] = Defaults(), -- Touch of The Titans
-		[SpellName(123981)] = Defaults(), -- Perdition
-		[SpellName(15007)] = Defaults(), -- Ress Sickness
-		[SpellName(113942)] = Defaults(), -- Demonic: Gateway
-		[SpellName(89140)] = Defaults(), -- Demonic Rebirth: Cooldown
+		[36900] = Defaults(), --Soul Split: Evil!
+		[36901] = Defaults(), --Soul Split: Good
+		[36893] = Defaults(), --Transporter Malfunction
+		[114216] = Defaults(), --Angelic Bulwark
+		[97821] = Defaults(), --Void-Touched
+		[36032] = Defaults(), -- Arcane Charge
+		[8733] = Defaults(), --Blessing of Blackfathom
+		[57724] = Defaults(), --Sated
+		[25771] = Defaults(), --forbearance
+		[57723] = Defaults(), --Exhaustion
+		[58539] = Defaults(), --watchers corpse
+		[26013] = Defaults(), --deserter
+		[6788] = Defaults(), --weakended soul
+		[71041] = Defaults(), --dungeon deserter
+		[41425] = Defaults(), --"Hypothermia"
+		[55711] = Defaults(), --Weakened Heart
+		[8326] = Defaults(), --ghost
+		[23445] = Defaults(), --evil twin
+		[24755] = Defaults(), --gay homosexual tricked or treated debuff
+		[25163] = Defaults(), --fucking annoying pet debuff oozeling disgusting aura
+		[80354] = Defaults(), --timewarp debuff
+		[95223] = Defaults(), --group res debuff
+		[124275] = Defaults(), -- Stagger
+		[124274] = Defaults(), -- Stagger
+		[124273] = Defaults(), -- Stagger
+		[117870] = Defaults(), -- Touch of The Titans
+		[123981] = Defaults(), -- Perdition
+		[15007] = Defaults(), -- Ress Sickness
+		[113942] = Defaults(), -- Demonic: Gateway
+		[89140] = Defaults(), -- Demonic Rebirth: Cooldown
+		[95809] = Defaults(), --Insanity debuff (Hunter Pet heroism)
 	},
 }
 
@@ -438,36 +384,18 @@ G.unitframe.aurafilters['Blacklist'] = {
 	This should be a list of important buffs that we always want to see when they are active
 	bloodlust, paladin hand spells, raid cooldowns, etc..
 ]]
-
 G.unitframe.aurafilters['Whitelist'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
-		[SpellName(31821)] = Defaults(), -- Devotion Aura
-		[SpellName(2825)] = Defaults(), -- Bloodlust
-		[SpellName(32182)] = Defaults(), -- Heroism
-		[SpellName(80353)] = Defaults(), --Time Warp
-		[SpellName(90355)] = Defaults(), --Ancient Hysteria
-		[SpellName(47788)] = Defaults(), --Guardian Spirit
-		[SpellName(33206)] = Defaults(), --Pain Suppression
-		[SpellName(116849)] = Defaults(), --Life Cocoon
-		[SpellName(22812)] = Defaults(), --Barkskin
-		--[SpellName(1490)] = Defaults(), --Curse of the Elements (5% magic damage taken debuff)
-		--[SpellName(116202)] = Defaults(), --Aura of the Elements (5% magic damage taken debuff)
-	},
-}
-
-G.unitframe.aurafilters['Whitelist (Strict)'] = {
-	['type'] = 'Whitelist',
-	['spells'] = {
-		[SpellName(123059)] = DefaultsID(123059), --Destabilize (Amber-Shaper Un'sok)
-		[SpellName(136431)] = DefaultsID(136431), --Shell Concussion (Tortos)
-		[SpellName(137332)] = DefaultsID(137332), --Beast of Nightmares (Twin Consorts)
-		[SpellName(137375)] = DefaultsID(137375), --Beast of Nightmares (Twin Consorts)
-		[SpellName(144351)] = DefaultsID(144351), --Mark of Arrogance (Norushen)
-		[SpellName(142863)] = DefaultsID(142863), --Weak Ancient Barrier (Malkorok)
-		[SpellName(142864)] = DefaultsID(142864), --Ancient Barrier (Malkorok)
-		[SpellName(142865)] = DefaultsID(142865), --Strong Ancient Barrier (Malkorok)
-		[SpellName(143198)] = DefaultsID(143198), --Garrote (Fallen Protectors)
+		[31821] = Defaults(), -- Devotion Aura
+		[2825] = Defaults(), -- Bloodlust
+		[32182] = Defaults(), -- Heroism
+		[80353] = Defaults(), --Time Warp
+		[90355] = Defaults(), --Ancient Hysteria
+		[47788] = Defaults(), --Guardian Spirit
+		[33206] = Defaults(), --Pain Suppression
+		[116849] = Defaults(), --Life Cocoon
+		[22812] = Defaults(), --Barkskin
 	},
 }
 
@@ -480,275 +408,275 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 	['spells'] = {
 		--Highmaul
 			--Trash
-				[SpellName(175601)] = Defaults(), --Tainted Claws
-				[SpellName(175599)] = Defaults(), --Devour
-				[SpellName(172069)] = Defaults(), --Radiating Poison
-				[SpellName(172066)] = Defaults(), --Radiating Poison
-				[SpellName(166779)] = Defaults(), --Staggering Blow
-				[SpellName(56037)] = Defaults(), --Rune of Destruction
-				[SpellName(175654)] = Defaults(), --Rune of Disintegration
-				[SpellName(166185)] = Defaults(), --Rending Slash
-				[SpellName(166175)] = Defaults(), --Earth Devastating Slam
-				[SpellName(174404)] = Defaults(), --Frozen Core
-				[SpellName(173763)] = Defaults(), --Wild Flames
-				[SpellName(174500)] = Defaults(), --Rending Throw
-				[SpellName(174939)] = Defaults(), --Time Stop
-				[SpellName(172115)] = Defaults(), --Earthen Thrust
-				[SpellName(166200)] = Defaults(), --Arcane Volatility
-				[SpellName(174473)] = Defaults(), --Corrupted Blood
+				[175601] = Defaults(), --Tainted Claws
+				[175599] = Defaults(), --Devour
+				[172069] = Defaults(), --Radiating Poison
+				[172066] = Defaults(), --Radiating Poison
+				[166779] = Defaults(), --Staggering Blow
+				[56037] = Defaults(), --Rune of Destruction
+				[175654] = Defaults(), --Rune of Disintegration
+				[166185] = Defaults(), --Rending Slash
+				[166175] = Defaults(), --Earth Devastating Slam
+				[174404] = Defaults(), --Frozen Core
+				[173763] = Defaults(), --Wild Flames
+				[174500] = Defaults(), --Rending Throw
+				[174939] = Defaults(), --Time Stop
+				[172115] = Defaults(), --Earthen Thrust
+				[166200] = Defaults(), --Arcane Volatility
+				[174473] = Defaults(), --Corrupted Blood
 
 			--Kargath Bladefist
-				[SpellName(158986)] = Defaults(), --Berserker Rush
-				[SpellName(159113)] = Defaults(), --Impale
-				[SpellName(159178)] = Defaults(), --Open Wounds
-				[SpellName(159213)] = Defaults(), --Monsters Brawl
-				[SpellName(159410)] = Defaults(), --Mauling Brew
-				[SpellName(160521)] = Defaults(), --Vile Breath
-				[SpellName(159386)] = Defaults(), --Iron Bomb
-				[SpellName(159188)] = Defaults(), --Grapple
-				[SpellName(162497)] = Defaults(), --On the hunt
-				[SpellName(159202)] = Defaults(), --Flame jet
+				[158986] = Defaults(), --Berserker Rush
+				[159113] = Defaults(), --Impale
+				[159178] = Defaults(), --Open Wounds
+				[159213] = Defaults(), --Monsters Brawl
+				[159410] = Defaults(), --Mauling Brew
+				[160521] = Defaults(), --Vile Breath
+				[159386] = Defaults(), --Iron Bomb
+				[159188] = Defaults(), --Grapple
+				[162497] = Defaults(), --On the hunt
+				[159202] = Defaults(), --Flame jet
 
 			--The Butcher
-				[SpellName(156152)] = Defaults(), --Gushing Wounds
-				[SpellName(156151)] = Defaults(), --The Tenderizer
-				[SpellName(156143)] = Defaults(), --The Cleaver
-				[SpellName(163046)] = Defaults(), --Pale Vitriol
+				[156152] = Defaults(), --Gushing Wounds
+				[156151] = Defaults(), --The Tenderizer
+				[156143] = Defaults(), --The Cleaver
+				[163046] = Defaults(), --Pale Vitriol
 
 			--Brackenspore
-				[SpellName(159220)] = Defaults(), --Necrotic Breath
-				[SpellName(163242)] = Defaults(), --Infesting Spores
-				[SpellName(163590)] = Defaults(), --Creeping Moss
-				[SpellName(163241)] = Defaults(), --Rot
-				[SpellName(160179)] = Defaults(), --Mind Fungus
-				[SpellName(159972)] = Defaults(), --Flesh Eater
+				[159220] = Defaults(), --Necrotic Breath
+				[163242] = Defaults(), --Infesting Spores
+				[163590] = Defaults(), --Creeping Moss
+				[163241] = Defaults(), --Rot
+				[160179] = Defaults(), --Mind Fungus
+				[159972] = Defaults(), --Flesh Eater
 
 			--Tectus
-				[SpellName(162346)] = Defaults(), --Crystalline Barrage
-				[SpellName(162892)] = Defaults(), --Petrification
-				[SpellName(162475)] = Defaults(), --Tectonic Upheaval
+				[162346] = Defaults(), --Crystalline Barrage
+				[162892] = Defaults(), --Petrification
+				[162475] = Defaults(), --Tectonic Upheaval
 
 			--Twin Ogrons
-				[SpellName(155569)] = Defaults(), --Injured
-				[SpellName(158241)] = Defaults(), --Blaze
-				[SpellName(158026)] = Defaults(), --Enfeebling Roar
-				[SpellName(167200)] = Defaults(), --Arcane Wound
-				[SpellName(159709)] = Defaults(), --Weakened Defenses
-				[SpellName(167179)] = Defaults(), --Weakened Defenses
-				[SpellName(163374)] = Defaults(), --Arcane Volatility
-				[SpellName(158200)] = Defaults(), --Quake
+				[155569] = Defaults(), --Injured
+				[158241] = Defaults(), --Blaze
+				[158026] = Defaults(), --Enfeebling Roar
+				[167200] = Defaults(), --Arcane Wound
+				[159709] = Defaults(), --Weakened Defenses
+				[167179] = Defaults(), --Weakened Defenses
+				[163374] = Defaults(), --Arcane Volatility
+				[158200] = Defaults(), --Quake
 
 			--Ko'ragh
-				[SpellName(163472)] = Defaults(), --Dominating Power
-				[SpellName(172895)] = Defaults(), --Expel Magic: Fel
-				[SpellName(162185)] = Defaults(), --Expel Magic: Fire
-				[SpellName(162184)] = Defaults(), --Expel Magic: Shadow
-				[SpellName(161242)] = Defaults(), --Caustic Energy
-				[SpellName(161358)] = Defaults(), --Suppression Field
-				[SpellName(156803)] = Defaults(), --Nullification Barrier
+				[163472] = Defaults(), --Dominating Power
+				[172895] = Defaults(), --Expel Magic: Fel
+				[162185] = Defaults(), --Expel Magic: Fire
+				[162184] = Defaults(), --Expel Magic: Shadow
+				[161242] = Defaults(), --Caustic Energy
+				[161358] = Defaults(), --Suppression Field
+				[156803] = Defaults(), --Nullification Barrier
 
 			--Imperator Mar'gok
-				[SpellName(164004)] = Defaults(), --Branded: Displacement
-				[SpellName(164005)] = Defaults(), --Branded: Fortification
-				[SpellName(164006)] = Defaults(), --Branded: Replication
-				[SpellName(158619)] = Defaults(), --Fetter
-				[SpellName(164176)] = Defaults(), --Mark of Chaos: Displacement
-				[SpellName(164178)] = Defaults(), --Mark of Chaos: Fortification
-				[SpellName(164191)] = Defaults(), --Mark of Chaos: Replication
-				[SpellName(157349)] = Defaults(), --Force Nova
-				[SpellName(164232)] = Defaults(), --Force Nova
-				[SpellName(164235)] = Defaults(), --Force Nova
-				[SpellName(164240)] = Defaults(), --Force Nova
-				[SpellName(158553)] = Defaults(), --Crush Armor
-				[SpellName(165102)] = Defaults(), --Infinite Darkness
-				[SpellName(157801)] = Defaults(), --Slow
+				[164004] = Defaults(), --Branded: Displacement
+				[164005] = Defaults(), --Branded: Fortification
+				[164006] = Defaults(), --Branded: Replication
+				[158619] = Defaults(), --Fetter
+				[164176] = Defaults(), --Mark of Chaos: Displacement
+				[164178] = Defaults(), --Mark of Chaos: Fortification
+				[164191] = Defaults(), --Mark of Chaos: Replication
+				[157349] = Defaults(), --Force Nova
+				[164232] = Defaults(), --Force Nova
+				[164235] = Defaults(), --Force Nova
+				[164240] = Defaults(), --Force Nova
+				[158553] = Defaults(), --Crush Armor
+				[165102] = Defaults(), --Infinite Darkness
+				[157801] = Defaults(), --Slow
 
 		--Blackrock Foundry
 			--Trash
 
 			--Blackhand
-				[SpellName(156096)] = Defaults(), --Marked for Death
-				[SpellName(156743)] = Defaults(), --Impaled
-				[SpellName(156047)] = Defaults(), --Slagged
-				[SpellName(156401)] = Defaults(), --Molten Slag
-				[SpellName(156404)] = Defaults(), --Burned
-				[SpellName(158054)] = Defaults(), --Shattering Smash
-				[SpellName(156888)] = Defaults(), --Overheated
-				[SpellName(157000)] = Defaults(), --Attach Slag Bombs
-				[SpellName(156999)] = Defaults(), --Throw Slag Bombs
+				[156096] = Defaults(), --Marked for Death
+				[156743] = Defaults(), --Impaled
+				[156047] = Defaults(), --Slagged
+				[156401] = Defaults(), --Molten Slag
+				[156404] = Defaults(), --Burned
+				[158054] = Defaults(), --Shattering Smash
+				[156888] = Defaults(), --Overheated
+				[157000] = Defaults(), --Attach Slag Bombs
+				[156999] = Defaults(), --Throw Slag Bombs
 
 			--Beastlord Darmac
-				[SpellName(155365)] = Defaults(), --Pinned Down
-				[SpellName(155061)] = Defaults(), --Rend and Tear
-				[SpellName(155030)] = Defaults(), --Seared Flesh
-				[SpellName(155236)] = Defaults(), --Crush Armor
-				[SpellName(159044)] = Defaults(), --Epicentre
-				[SpellName(162276)] = Defaults(), --Unsteady Mythic
-				[SpellName(155657)] = Defaults(), --Flame Infusion
-				[SpellName(155222)] = Defaults(), --Tantrum
-				[SpellName(155399)] = Defaults(), --Conflagration
-				[SpellName(154989)] = Defaults(), --Inferno Breath
-				[SpellName(155499)] = Defaults(), --Superheated Shrapnel
+				[155365] = Defaults(), --Pinned Down
+				[155061] = Defaults(), --Rend and Tear
+				[155030] = Defaults(), --Seared Flesh
+				[155236] = Defaults(), --Crush Armor
+				[159044] = Defaults(), --Epicentre
+				[162276] = Defaults(), --Unsteady Mythic
+				[155657] = Defaults(), --Flame Infusion
+				[155222] = Defaults(), --Tantrum
+				[155399] = Defaults(), --Conflagration
+				[154989] = Defaults(), --Inferno Breath
+				[155499] = Defaults(), --Superheated Shrapnel
 
 			--Flamebender Ka'graz
-				[SpellName(155318)] = Defaults(), --Lava Slash
-				[SpellName(155277)] = Defaults(), --Blazing Radiance
-				[SpellName(154952)] = Defaults(), --Fixate
-				[SpellName(155074)] = Defaults(), --Charring Breath
-				[SpellName(163284)] = Defaults(), --Rising Flame
-				[SpellName(162293)] = Defaults(), --Empowered Armament
-				[SpellName(155493)] = Defaults(), --Firestorm
-				[SpellName(163633)] = Defaults(), --Magma Monsoon
+				[155318] = Defaults(), --Lava Slash
+				[155277] = Defaults(), --Blazing Radiance
+				[154952] = Defaults(), --Fixate
+				[155074] = Defaults(), --Charring Breath
+				[163284] = Defaults(), --Rising Flame
+				[162293] = Defaults(), --Empowered Armament
+				[155493] = Defaults(), --Firestorm
+				[163633] = Defaults(), --Magma Monsoon
 
 			--Operator Thogar
-				[SpellName(155921)] = Defaults(), --Enkindle
-				[SpellName(165195)] = Defaults(), --Prototype Pulse Grenade
-				[SpellName(155701)] = Defaults(), --Serrated Slash
-				[SpellName(156310)] = Defaults(), --Lava Shock
-				[SpellName(164380)] = Defaults(), --Burning
+				[155921] = Defaults(), --Enkindle
+				[165195] = Defaults(), --Prototype Pulse Grenade
+				[155701] = Defaults(), --Serrated Slash
+				[156310] = Defaults(), --Lava Shock
+				[164380] = Defaults(), --Burning
 
 			--The Blast Furnace
-				[SpellName(155240)] = Defaults(), --Tempered
-				[SpellName(155242)] = Defaults(), --Heath
-				[SpellName(176133)] = Defaults(), --Bomb
-				[SpellName(156934)] = Defaults(), --Rupture
-				[SpellName(175104)] = Defaults(), --Melt Armor
-				[SpellName(176121)] = Defaults(), --Volatile Fire
-				[SpellName(158702)] = Defaults(), --Fixate
-				[SpellName(155225)] = Defaults(), --Melt
+				[155240] = Defaults(), --Tempered
+				[155242] = Defaults(), --Heath
+				[176133] = Defaults(), --Bomb
+				[156934] = Defaults(), --Rupture
+				[175104] = Defaults(), --Melt Armor
+				[176121] = Defaults(), --Volatile Fire
+				[158702] = Defaults(), --Fixate
+				[155225] = Defaults(), --Melt
 
 			--Hans'gar and Franzok
-				[SpellName(157139)] = Defaults(), --Shattered Vertebrae
-				[SpellName(161570)] = Defaults(), --Searing Plates
-				[SpellName(157853)] = Defaults(), --Aftershock
+				[157139] = Defaults(), --Shattered Vertebrae
+				[161570] = Defaults(), --Searing Plates
+				[157853] = Defaults(), --Aftershock
 
 			--Gruul
-				[SpellName(155080)] = Defaults(), --Inferno Slice
-				[SpellName(143962)] = Defaults(), --Inferno Strike
-				[SpellName(155078)] = Defaults(), --Overwhelming Blows
-				[SpellName(36240)] = Defaults(), --Cave In
-				[SpellName(155326)] = Defaults(), --Petrifying Slam
-				[SpellName(165300)] = Defaults(), --Flare Mythic
+				[155080] = Defaults(), --Inferno Slice
+				[143962] = Defaults(), --Inferno Strike
+				[155078] = Defaults(), --Overwhelming Blows
+				[36240] = Defaults(), --Cave In
+				[155326] = Defaults(), --Petrifying Slam
+				[165300] = Defaults(), --Flare Mythic
 
 			--Kromog
-				[SpellName(157060)] = Defaults(), --Rune of Grasping Earth
-				[SpellName(156766)] = Defaults(), --Warped Armor
-				[SpellName(161839)] = Defaults(), --Rune of Crushing Earth
-				[SpellName(156844)] = Defaults(), --Stone Breath
+				[157060] = Defaults(), --Rune of Grasping Earth
+				[156766] = Defaults(), --Warped Armor
+				[161839] = Defaults(), --Rune of Crushing Earth
+				[156844] = Defaults(), --Stone Breath
 
 			--Oregorger
-				[SpellName(156309)] = Defaults(), --ACid Torrent
-				[SpellName(156203)] = Defaults(), --Retched Blackrock
-				[SpellName(173471)] = Defaults(), --Acidmaw
+				[156309] = Defaults(), --ACid Torrent
+				[156203] = Defaults(), --Retched Blackrock
+				[173471] = Defaults(), --Acidmaw
 
 			--The Iron Maidens
-				[SpellName(164271)] = Defaults(), --Penetrating Shot
-				[SpellName(158315)] = Defaults(), --Dark hunt
-				[SpellName(156601)] = Defaults(), --Sanguine Strikes
-				[SpellName(170395)] = Defaults(), --Sorka Sprey
-				[SpellName(170405)] = Defaults(), --Maraks Blood Calling
-				[SpellName(158692)] = Defaults(), --Deadly Throw
-				[SpellName(158702)] = Defaults(), --Fixate
-				[SpellName(158686)] = Defaults(), --Expose Armor
-				[SpellName(158683)] = Defaults(), --Corrupted Blood
-				[SpellName(159585)] = Defaults(), --Deploy Turret
-				[SpellName(156112)] = Defaults(), --Convulsive Shadows
+				[164271] = Defaults(), --Penetrating Shot
+				[158315] = Defaults(), --Dark hunt
+				[156601] = Defaults(), --Sanguine Strikes
+				[170395] = Defaults(), --Sorka Sprey
+				[170405] = Defaults(), --Maraks Blood Calling
+				[158692] = Defaults(), --Deadly Throw
+				[158702] = Defaults(), --Fixate
+				[158686] = Defaults(), --Expose Armor
+				[158683] = Defaults(), --Corrupted Blood
+				[159585] = Defaults(), --Deploy Turret
+				[156112] = Defaults(), --Convulsive Shadows
 
 		-- Hellfire Citadel
 			-- Hellfire Assault
-				[SpellName(184369)] = Defaults(), -- Howling Axe (Target)
-				[SpellName(180079)] = Defaults(), -- Felfire Munitions
+				[184369] = Defaults(), -- Howling Axe (Target)
+				[180079] = Defaults(), -- Felfire Munitions
 
 			-- Iron Reaver
-				[SpellName(179897)] = Defaults(), -- Blitz
-				[SpellName(185978)] = Defaults(), -- Firebomb Vulnerability
-				[SpellName(182373)] = Defaults(), -- Flame Vulnerability
-				[SpellName(182280)] = Defaults(), -- Artillery (Target)
-				[SpellName(182074)] = Defaults(), -- Immolation
-				[SpellName(182001)] = Defaults(), -- Unstable Orb
+				[179897] = Defaults(), -- Blitz
+				[185978] = Defaults(), -- Firebomb Vulnerability
+				[182373] = Defaults(), -- Flame Vulnerability
+				[182280] = Defaults(), -- Artillery (Target)
+				[182074] = Defaults(), -- Immolation
+				[182001] = Defaults(), -- Unstable Orb
 
 			-- Kormrok
-				[SpellName(187819)] = Defaults(), -- Crush
-				[SpellName(181345)] = Defaults(), -- Foul Crush
+				[187819] = Defaults(), -- Crush
+				[181345] = Defaults(), -- Foul Crush
 
 			-- Hellfire High Council
-				[SpellName(184360)] = Defaults(), -- Fel Rage
-				[SpellName(184449)] = Defaults(), -- Mark of the Necromancer
-				[SpellName(185065)] = Defaults(), -- Mark of the Necromancer
-				[SpellName(184450)] = Defaults(), -- Mark of the Necromancer
-				[SpellName(185066)] = Defaults(), -- Mark of the Necromancer
-				[SpellName(184676)] = Defaults(), -- Mark of the Necromancer
-				[SpellName(184652)] = Defaults(), -- Reap
+				[184360] = Defaults(), -- Fel Rage
+				[184449] = Defaults(), -- Mark of the Necromancer
+				[185065] = Defaults(), -- Mark of the Necromancer
+				[184450] = Defaults(), -- Mark of the Necromancer
+				[185066] = Defaults(), -- Mark of the Necromancer
+				[184676] = Defaults(), -- Mark of the Necromancer
+				[184652] = Defaults(), -- Reap
 
 			-- Kilrogg Deadeye
-				[SpellName(181488)] = Defaults(), -- Vision of Death
-				[SpellName(188929)] = Defaults(), -- Heart Seeker (Target)
-				[SpellName(180389)] = Defaults(), -- Heart Seeker (DoT)
+				[181488] = Defaults(), -- Vision of Death
+				[188929] = Defaults(), -- Heart Seeker (Target)
+				[180389] = Defaults(), -- Heart Seeker (DoT)
 
 			-- Gorefiend
-				[SpellName(179867)] = Defaults(), -- Gorefiend's Corruption
-				[SpellName(181295)] = Defaults(), -- Digest
-				[SpellName(179977)] = Defaults(), -- Touch of Doom
-				[SpellName(179864)] = Defaults(), -- Shadow of Death
-				[SpellName(179909)] = Defaults(), -- Shared Fate (self root)
-				[SpellName(179908)] = Defaults(), -- Shared Fate (other players root)
+				[179867] = Defaults(), -- Gorefiend's Corruption
+				[181295] = Defaults(), -- Digest
+				[179977] = Defaults(), -- Touch of Doom
+				[179864] = Defaults(), -- Shadow of Death
+				[179909] = Defaults(), -- Shared Fate (self root)
+				[179908] = Defaults(), -- Shared Fate (other players root)
 
 			-- Shadow-Lord Iskar
-				[SpellName(181957)] = Defaults(), -- Phantasmal Winds
-				[SpellName(182200)] = Defaults(), -- Fel Chakram
-				[SpellName(182178)] = Defaults(), -- Fel Chakram
-				[SpellName(182325)] = Defaults(), -- Phantasmal Wounds
-				[SpellName(185239)] = Defaults(), -- Radiance of Anzu
-				[SpellName(185510)] = Defaults(), -- Dark Bindings
-				[SpellName(182600)] = Defaults(), -- Fel Fire
-				[SpellName(179219)] = Defaults(), -- Phantasmal Fel Bomb
-				[SpellName(181753)] = Defaults(), -- Fel Bomb
+				[181957] = Defaults(), -- Phantasmal Winds
+				[182200] = Defaults(), -- Fel Chakram
+				[182178] = Defaults(), -- Fel Chakram
+				[182325] = Defaults(), -- Phantasmal Wounds
+				[185239] = Defaults(), -- Radiance of Anzu
+				[185510] = Defaults(), -- Dark Bindings
+				[182600] = Defaults(), -- Fel Fire
+				[179219] = Defaults(), -- Phantasmal Fel Bomb
+				[181753] = Defaults(), -- Fel Bomb
 
 			-- Soulbound Construct (Socrethar)
-				[SpellName(182038)] = Defaults(), -- Shattered Defenses
-				[SpellName(188666)] = Defaults(), -- Eternal Hunger (Add fixate, Mythic only)
-				[SpellName(189627)] = Defaults(), -- Volatile Fel Orb (Fixated)
-				[SpellName(180415)] = Defaults(), -- Fel Prison
+				[182038] = Defaults(), -- Shattered Defenses
+				[188666] = Defaults(), -- Eternal Hunger (Add fixate, Mythic only)
+				[189627] = Defaults(), -- Volatile Fel Orb (Fixated)
+				[180415] = Defaults(), -- Fel Prison
 
 			-- Tyrant Velhari
-				[SpellName(185237)] = Defaults(), -- Touch of Harm
-				[SpellName(185238)] = Defaults(), -- Touch of Harm
-				[SpellName(185241)] = Defaults(), -- Edict of Condemnation
-				[SpellName(180526)] = Defaults(), -- Font of Corruption
+				[185237] = Defaults(), -- Touch of Harm
+				[185238] = Defaults(), -- Touch of Harm
+				[185241] = Defaults(), -- Edict of Condemnation
+				[180526] = Defaults(), -- Font of Corruption
 
 			-- Fel Lord Zakuun
-				[SpellName(181508)] = Defaults(), -- Seed of Destruction
-				[SpellName(181653)] = Defaults(), -- Fel Crystals (Too Close)
-				[SpellName(179428)] = Defaults(), -- Rumbling Fissure (Soak)
-				[SpellName(182008)] = Defaults(), -- Latent Energy (Cannot soak)
-				[SpellName(179407)] = Defaults(), -- Disembodied (Player in Shadow Realm)
+				[181508] = Defaults(), -- Seed of Destruction
+				[181653] = Defaults(), -- Fel Crystals (Too Close)
+				[179428] = Defaults(), -- Rumbling Fissure (Soak)
+				[182008] = Defaults(), -- Latent Energy (Cannot soak)
+				[179407] = Defaults(), -- Disembodied (Player in Shadow Realm)
 
 			-- Xhul'horac
-				[SpellName(188208)] = Defaults(), -- Ablaze
-				[SpellName(186073)] = Defaults(), -- Felsinged
-				[SpellName(186407)] = Defaults(), -- Fel Surge
-				[SpellName(186500)] = Defaults(), -- Chains of Fel
-				[SpellName(186063)] = Defaults(), -- Wasting Void
-				[SpellName(186333)] = Defaults(), -- Void Surge
+				[188208] = Defaults(), -- Ablaze
+				[186073] = Defaults(), -- Felsinged
+				[186407] = Defaults(), -- Fel Surge
+				[186500] = Defaults(), -- Chains of Fel
+				[186063] = Defaults(), -- Wasting Void
+				[186333] = Defaults(), -- Void Surge
 
 			-- Mannoroth
-				[SpellName(181275)] = Defaults(), -- Curse of the Legion
-				[SpellName(181099)] = Defaults(), -- Mark of Doom
-				[SpellName(181597)] = Defaults(), -- Mannoroth's Gaze
-				[SpellName(182006)] = Defaults(), -- Empowered Mannoroth's Gaze
-				[SpellName(181841)] = Defaults(), -- Shadowforce
-				[SpellName(182088)] = Defaults(), -- Empowered Shadowforce
+				[181275] = Defaults(), -- Curse of the Legion
+				[181099] = Defaults(), -- Mark of Doom
+				[181597] = Defaults(), -- Mannoroth's Gaze
+				[182006] = Defaults(), -- Empowered Mannoroth's Gaze
+				[181841] = Defaults(), -- Shadowforce
+				[182088] = Defaults(), -- Empowered Shadowforce
 
 			-- Archimonde
-				[SpellName(184964)] = Defaults(), -- Shackled Torment
-				[SpellName(186123)] = Defaults(), -- Wrought Chaos
-				[SpellName(185014)] = Defaults(), -- Focused Chaos
-				[SpellName(186952)] = Defaults(), -- Nether Banish
-				[SpellName(186961)] = Defaults(), -- Nether Banish
-				[SpellName(189891)] = Defaults(), -- Nether Tear
-				[SpellName(183634)] = Defaults(), -- Shadowfel Burst
-				[SpellName(189895)] = Defaults(), -- Void Star Fixate
-				[SpellName(190049)] = Defaults(), -- Nether Corruption
+				[184964] = Defaults(), -- Shackled Torment
+				[186123] = Defaults(), -- Wrought Chaos
+				[185014] = Defaults(), -- Focused Chaos
+				[186952] = Defaults(), -- Nether Banish
+				[186961] = Defaults(), -- Nether Banish
+				[189891] = Defaults(), -- Nether Tear
+				[183634] = Defaults(), -- Shadowfel Burst
+				[189895] = Defaults(), -- Void Star Fixate
+				[190049] = Defaults(), -- Nether Corruption
 	},
 }
 
@@ -839,19 +767,16 @@ P['unitframe']['filters'] = {
 --List of spells to display ticks
 G.unitframe.ChannelTicks = {
 	--Warlock
-	--[SpellName(1120)] = 6, --"Drain Soul"
 	[SpellName(689)] = 6, -- "Drain Life"
 	-- [SpellName(108371)] = 6, -- "Harvest Life"
 	[SpellName(5740)] = 4, -- "Rain of Fire"
 	[SpellName(755)] = 6, -- Health Funnel
 	-- [SpellName(103103)] = 4, --Malefic Grasp
 	--Druid
-	--[SpellName(44203)] = 4, -- "Tranquility"
 	[SpellName(16914)] = 10, -- "Hurricane"
 	--Priest
 	[SpellName(48045)] = 5, -- "Mind Sear"
 	[SpellName(179338)] = 5, -- "Searing insanity"
-	--[SpellName(64901)] = 4, -- Hymn of Hope
 	[SpellName(64843)] = 4, -- Divine Hymn
 	--Mage
 	[SpellName(5143)] = 5, -- "Arcane Missiles"
@@ -896,7 +821,6 @@ end)
 
 G.unitframe.ChannelTicksSize = {
 	--Warlock
-   --[SpellName(1120)] = 2, --"Drain Soul"
 	[SpellName(689)] = 1, -- "Drain Life"
 	-- [SpellName(108371)] = 1, -- "Harvest Life"
 	-- [SpellName(103103)] = 1, -- "Malefic Grasp"
@@ -910,20 +834,14 @@ G.unitframe.HastedChannelTicks = {
 
 --This should probably be the same as the whitelist filter + any personal class ones that may be important to watch
 G.unitframe.AuraBarColors = {
-	[SpellName(2825)] = {r = 250/255, g = 146/255, b = 27/255},	--Bloodlust
-	[SpellName(32182)] = {r = 250/255, g = 146/255, b = 27/255}, --Heroism
-	[SpellName(80353)] = {r = 250/255, g = 146/255, b = 27/255}, --Time Warp
-	[SpellName(90355)] = {r = 250/255, g = 146/255, b = 27/255}, --Ancient Hysteria
+	[2825] = {r = 250/255, g = 146/255, b = 27/255},  --Bloodlust
+	[32182] = {r = 250/255, g = 146/255, b = 27/255}, --Heroism
+	[80353] = {r = 250/255, g = 146/255, b = 27/255}, --Time Warp
+	[90355] = {r = 250/255, g = 146/255, b = 27/255}, --Ancient Hysteria
 }
-
-G.unitframe.InvalidSpells = {
-	[65148] = true, --Sacred Shield
-	[95809] = true, --Insanity debuff (Hunter Pet heroism)
-}
-
 
 G.unitframe.DebuffHighlightColors = {
-	[SpellName(25771)] = {enable = false, style = "FILL", color = {r = 0.85, g = 0, b = 0, a = 0.85}},
+	[25771] = {enable = false, style = "FILL", color = {r = 0.85, g = 0, b = 0, a = 0.85}},
 }
 
 --G.oldBuffWatch is only used for data retrieval by E:DBConversions()

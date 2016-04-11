@@ -1067,19 +1067,6 @@ function E:DBConversions()
 		end
 	end
 
-	--Convert spellIDs saved as strings to numbers
-	if E.global.unitframe['aurafilters']['Whitelist (Strict)'].spells then
-		for k, v in pairs(E.global.unitframe['aurafilters']['Whitelist (Strict)'].spells) do
-			if type(v) == 'table' then
-				for k_,v_ in pairs(v) do
-					if k_ == 'spellID' and type(v_) == "string" and tonumber(v_) then
-						E.global.unitframe['aurafilters']['Whitelist (Strict)']['spells'][k].spellID = tonumber(v_)
-					end
-				end
-			end
-		end
-	end
-
 	if E.db.general.experience.width > 100 and E.db.general.experience.height > 100 then
 		E.db.general.experience.width = P.general.experience.width
 		E.db.general.experience.height = P.general.experience.height
@@ -1183,6 +1170,71 @@ function E:DBConversions()
 		--Remove old entries of user-added BuffIndicators
 		for id in pairs(shouldRemove) do
 			E.global.unitframe.buffwatch[class][id] = nil
+		end
+	end
+	
+	--Move spells from the "Whitelist (Strict)" filter to the "Whitelist" filter
+	if E.global.unitframe['aurafilters']['Whitelist (Strict)'] and E.global.unitframe['aurafilters']['Whitelist (Strict)'].spells then
+		for spell, spellInfo in pairs(E.global.unitframe['aurafilters']['Whitelist (Strict)'].spells) do
+			if type(spellInfo) == 'table' then
+				local enabledValue = spellInfo.enable
+				--We don't care about old defaults, as the only default entries in the Whitelist (Strict) filter were from an MoP raid instance. No need to copy that information over.
+
+				if spellInfo.spellID then --Spell the user added himself, all needed info is available and should be copied over
+					local spellID = tonumber(spellInfo.spellID)
+					E.global.unitframe['aurafilters']['Whitelist']['spells'][spellID] = {['enable'] = enabledValue}
+				end
+			end
+			--Remove old entry
+			E.global.unitframe['aurafilters']['Whitelist (Strict)']["spells"][spell] = nil
+		end
+		--Finally remove old table
+		E.global.unitframe['aurafilters']['Whitelist (Strict)'] = nil
+	end
+
+	--Move spells from the "Blacklist (Strict)" filter to the "Blacklist" filter
+	--This one is easier, as all spells have been stored with spellID as key
+	if E.global.unitframe.InvalidSpells then
+		for spellID, enabledValue in pairs(E.global.unitframe.InvalidSpells) do
+			--Copy over information
+			E.global.unitframe['aurafilters']['Blacklist']['spells'][spellID] = {['enable'] = enabledValue}
+			--Remove old entry
+			E.global.unitframe.InvalidSpells[spellID] = nil
+		end
+		--Finally remove old table
+		E.global.unitframe.InvalidSpells = nil
+	end
+	
+	--Because default filters now store spells with spellID as key, any default spells the user has changed will show up as a duplicate entry but with spellName as key.
+	--We will copy over the information and remove old default entries stored with spell name as key.
+	local filters = {
+		"CCDebuffs",
+		"TurtleBuffs",
+		"PlayerBuffs",
+		"Blacklist",
+		"Whitelist",
+		"RaidDebuffs",
+	}
+	for _, filterName in pairs(filters) do
+		for spellID, spellInfo in pairs(G.unitframe["aurafilters"][filterName].spells) do --Use spellIDs from current default table
+			local spellName = GetSpellInfo(spellID) --Get spell name and try to match it to existing entry in table
+
+			if spellName and E.global.unitframe["aurafilters"][filterName]["spells"][spellName] then --Match found
+				local spell = E.global.unitframe["aurafilters"][filterName]["spells"][spellName]
+				local enabledValue = spell.enable
+				local priority = spell.priority
+				local stackThreshold = spell.stackThreshold
+				
+				--Fallback to default values if value is nil
+				if enabledValue == nil then enabledValue = (spellInfo.enable or true) end
+				if priority == nil then priority = (spellInfo.priority or 0) end
+				if stackThreshold == nil then stackThreshold = (spellInfo.stackThreshold or 0) end
+
+				--Copy over information from old entry to new entry stored with spellID as key
+				E.global.unitframe["aurafilters"][filterName]["spells"][spellID] = {["enabled"] = enabledValue, ["priority"] = priority, ["stackThreshold"] = stackThreshold}
+				--Remove old entry
+				E.global.unitframe["aurafilters"][filterName]["spells"][spellName] = nil
+			end
 		end
 	end
 
