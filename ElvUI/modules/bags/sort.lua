@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule('Bags');
---local Search = LibStub('LibItemSearch-1.2-ElvUI');
+local Search = LibStub('LibItemSearch-1.2-ElvUI');
+
 --Cache global variables
 --Lua functions
 local ipairs, pairs, tonumber, select, unpack = ipairs, pairs, tonumber, select, unpack
