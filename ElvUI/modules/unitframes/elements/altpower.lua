@@ -57,7 +57,7 @@ function UF:AltPowerBarPostUpdate(min, cur, max)
 		if not parent.Power.value:GetText() or parent.Power.value:GetText() == "" then
 			self.text:Point("BOTTOMRIGHT", parent.Health, "BOTTOMRIGHT")
 		else
-			self.text:Point("RIGHT", parent.Power.value.value, "LEFT", 2, E.mult)
+			self.text:Point("RIGHT", parent.Power.value, "LEFT", 2, E.mult)
 		end
 		if perc > 0 then
 			self.text:SetFormattedText("|cffD7BEA5[|r%d%%|cffD7BEA5]|r", perc)
