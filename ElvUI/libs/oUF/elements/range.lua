@@ -104,8 +104,8 @@ local function friendlyIsInRange(unit)
 	end
 
 	if UnitIsDeadOrGhost(unit) and #resSpells > 0 then
-		for _, name in ipairs(resSpells) do
-			if SpellRange.IsSpellInRange(name, unit) == 1 then
+		for _, spellID in ipairs(resSpells) do
+			if SpellRange.IsSpellInRange(spellID, unit) == 1 then
 				return true
 			end
 		end
@@ -117,8 +117,8 @@ local function friendlyIsInRange(unit)
 		unit = getUnit(unit)
 		return unit and UnitInRange(unit)
 	else
-		for _, name in ipairs(friendlySpells) do
-			if SpellRange.IsSpellInRange(name, unit) == 1 then
+		for _, spellID in ipairs(friendlySpells) do
+			if SpellRange.IsSpellInRange(spellID, unit) == 1 then
 				return true
 			end
 		end
@@ -132,13 +132,13 @@ local function petIsInRange(unit)
 		return true
 	end
 	
-	for _, name in ipairs(friendlySpells) do
-		if SpellRange.IsSpellInRange(name, unit) == 1 then
+	for _, spellID in ipairs(friendlySpells) do
+		if SpellRange.IsSpellInRange(spellID, unit) == 1 then
 			return true
 		end
 	end
-	for _, name in ipairs(petSpells) do
-		if SpellRange.IsSpellInRange(name, unit) == 1 then
+	for _, spellID in ipairs(petSpells) do
+		if SpellRange.IsSpellInRange(spellID, unit) == 1 then
 			return true
 		end
 	end
@@ -151,8 +151,8 @@ local function enemyIsInRange(unit)
 		return true
 	end
 	
-	for _, name in ipairs(enemySpells) do
-		if SpellRange.IsSpellInRange(name, unit) == 1 then
+	for _, spellID in ipairs(enemySpells) do
+		if SpellRange.IsSpellInRange(spellID, unit) == 1 then
 			return true
 		end
 	end
@@ -161,8 +161,8 @@ local function enemyIsInRange(unit)
 end
 
 local function enemyIsInLongRange(unit)
-	for _, name in ipairs(longEnemySpells) do
-		if SpellRange.IsSpellInRange(name, unit) == 1 then
+	for _, spellID in ipairs(longEnemySpells) do
+		if SpellRange.IsSpellInRange(spellID, unit) == 1 then
 			return true
 		end
 	end
