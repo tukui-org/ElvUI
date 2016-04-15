@@ -13,20 +13,7 @@ local addSpellRetry = {}
 local SpellRange = LibStub("SpellRange-1.0")
 
 local function AddSpell(table, spellID)
-	local name = GetSpellInfo(spellID)
-	if name then
-		local usable, nomana = IsUsableSpell(name)
-		if usable or nomana then
-			table[#table + 1] = name
-		end
-	else --What happened here? Try again in a few seconds
-		if addSpellRetry[spellID] and addSpellRetry[spellID] > 5 then
-			print("ElvUI: Issue adding spell to range check. Please report this. SpellID:", spellID)
-			return
-		end
-		C_Timer.After(2, function() AddSpell(table, spellID) end)
-		addSpellRetry[spellID] = ((addSpellRetry[spellID] or 0) + 1)
-	end
+	table[#table + 1] = spellID
 end
 
 local _,class = UnitClass("player")
@@ -235,7 +222,13 @@ local Enable = function(self)
 			OnRangeFrame:RegisterEvent("LEARNED_SPELL_IN_TAB");
 			OnRangeFrame:RegisterEvent("PLAYER_ENTERING_WORLD");
 			OnRangeFrame:SetScript("OnUpdate", OnRangeUpdate)
-			OnRangeFrame:SetScript("OnEvent", function() C_Timer.After(5, UpdateSpellList) end)
+			OnRangeFrame:SetScript("OnEvent", function(self, event)				
+				UpdateSpellList()
+
+				if event == "PLAYER_ENTERING_WORLD" then
+					self:UnregisterEvent(event)
+				end
+			end)
 		end
 
 		OnRangeFrame:Show()
