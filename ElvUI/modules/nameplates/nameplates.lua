@@ -500,7 +500,7 @@ function NP:ColorizeAndScale(myPlate)
 			w = NP.db.healthBar.lowHPScale.width * scale
 			h = NP.db.healthBar.lowHPScale.height * scale
 			if NP.db.healthBar.lowHPScale.toFront then
-				myPlate:SetFrameStrata("HIGH")
+				myPlate:SetFrameStrata("MEDIUM")
 			end
 		else
 			if NP.db.healthBar.lowHPScale.toFront then
