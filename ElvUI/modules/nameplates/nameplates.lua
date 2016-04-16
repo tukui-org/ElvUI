@@ -508,7 +508,8 @@ function NP:ColorizeAndScale(myPlate)
 			end
 		end
 	end
-	if(not self.customScale and not self.isSmall and myPlate.healthBar:GetWidth() ~= w) then
+	if(not self.customScale and not self.isSmall and (not myPlate.healthBar.prevWidth or (myPlate.healthBar.prevWidth ~= w or myPlate.healthBar.prevHeight ~= h))) then
+		myPlate.healthBar.prevWidth, myPlate.healthBar.prevHeight = w, h
 		myPlate.healthBar:SetSize(w, h)
 		myPlate.castBar.icon:SetSize(NP.db.castBar.height + h + 5, NP.db.castBar.height + h + 5)
 	end
