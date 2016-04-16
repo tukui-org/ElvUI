@@ -925,7 +925,12 @@ function NP:UpdateSettings()
 
 	--HealthBar
 	if not self.customScale and not self.isSmall then
-		myPlate.healthBar:SetSize(NP.db.healthBar.width, NP.db.healthBar.height)
+		local width, height = NP.db.healthBar.width, NP.db.healthBar.height
+		if NP.db.healthBar.lowHPScale.enable and myPlate.lowHealth:IsShown() then
+			width = NP.db.healthBar.lowHPScale.width
+			height = NP.db.healthBar.lowHPScale.height
+		end
+		myPlate.healthBar:SetSize(width, height)
 	end
 
 	myPlate.healthBar:SetStatusBarTexture(E.media.normTex)
