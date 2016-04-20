@@ -373,7 +373,7 @@ function CH:StyleChat(frame)
 		if(E.global.tukuiMode) then
 			rR, gG, bB = 0.8, 0.8, 0
 		end
-		
+
 		if r ~= rR or g ~= gG or b ~= bB then
 			t:SetTextColor(rR, gG, bB)
 		end
@@ -431,7 +431,7 @@ function CH:StyleChat(frame)
 			self:SetText(new)
 		end
 	end
-	
+
 	--Work around broken SetAltArrowKeyMode API. Code from Prat
 	local function OnArrowPressed(self, key)
 		if #self.historyLines == 0 then
@@ -467,7 +467,7 @@ function CH:StyleChat(frame)
 	editbox:SetAllPoints(LeftChatDataPanel)
 	self:SecureHook(editbox, "AddHistoryLine", "ChatEdit_AddHistory")
 	editbox:HookScript("OnTextChanged", OnTextChanged)
-	
+
 	--Work around broken SetAltArrowKeyMode API
 	editbox.historyLines = ElvCharacterDB.ChatEditHistory
 	editbox.historyIndex = 0
@@ -628,7 +628,7 @@ function CH:UpdateAnchors()
 				frame:SetPoint("BOTTOMRIGHT", ChatFrame1, "BOTTOMRIGHT", 0, -LeftChatTab:GetHeight())
 			else
 				frame:SetPoint("BOTTOMLEFT", ChatFrame1, "TOPLEFT")
-				frame:SetPoint("TOPRIGHT", ChatFrame1, "TOPRIGHT", 0, LeftChatTab:GetHeight())			
+				frame:SetPoint("TOPRIGHT", ChatFrame1, "TOPRIGHT", 0, LeftChatTab:GetHeight())
 			end
 		else
 			if E.db.datatexts.leftChatPanel and E.db.chat.editBoxPosition == 'BELOW_CHAT' then
@@ -739,7 +739,7 @@ function CH:PositionChat(override)
 					chat:SetSize((E.db.chat.separateSizes and E.db.chat.panelWidthRight or E.db.chat.panelWidth) - 11 - LeftChatToggleButton:GetWidth(), (E.db.chat.separateSizes and E.db.chat.panelHeightRight or E.db.chat.panelHeight) - BASE_OFFSET)
 				else
 					chat:SetSize(E.db.chat.panelWidth - 11 - LeftChatToggleButton:GetWidth(), (E.db.chat.panelHeight - BASE_OFFSET) - CombatLogQuickButtonFrame_Custom:GetHeight())
-				end				
+				end
 			else
 				if E.db.datatexts.rightChatPanel then
 					chat:Point("BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 1, 3)
@@ -753,7 +753,7 @@ function CH:PositionChat(override)
 					chat:SetSize(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - BASE_OFFSET) - CombatLogQuickButtonFrame_Custom:GetHeight())
 				end
 			end
-			
+
 			--Pass a 2nd argument which prevents an infinite loop in our ON_FCF_SavePositionAndDimensions function
 			FCF_SavePositionAndDimensions(chat, true)
 
@@ -776,8 +776,8 @@ function CH:PositionChat(override)
 			if id ~= 2 and not (id > NUM_CHAT_WINDOWS) then
 				chat:ClearAllPoints()
 				if(E.global.tukuiMode) then
-					chat:Point("BOTTOMLEFT", LeftChatToggleButton, "TOPRIGHT", 1, 3)	
-					chat:SetSize(E.db.chat.panelWidth - 11 - LeftChatToggleButton:GetWidth(), (E.db.chat.panelHeight - BASE_OFFSET))			
+					chat:Point("BOTTOMLEFT", LeftChatToggleButton, "TOPRIGHT", 1, 3)
+					chat:SetSize(E.db.chat.panelWidth - 11 - LeftChatToggleButton:GetWidth(), (E.db.chat.panelHeight - BASE_OFFSET))
 				else
 					if E.db.datatexts.leftChatPanel then
 						chat:Point("BOTTOMLEFT", LeftChatToggleButton, "TOPLEFT", 1, 3)
@@ -787,7 +787,7 @@ function CH:PositionChat(override)
 					end
 					chat:SetSize(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - BASE_OFFSET))
 				end
-				
+
 				--Pass a 2nd argument which prevents an infinite loop in our ON_FCF_SavePositionAndDimensions function
 				FCF_SavePositionAndDimensions(chat, true)
 			end
@@ -816,7 +816,7 @@ local function UpdateChatTabColor(hex, r, g, b)
 	if(E.global.tukuiMode) then
 		r, g, b = 0.8, 0.8, 0
 	end
-	
+
 	for i=1, CreatedFrames do
 		_G['ChatFrame'..i..'TabText']:SetTextColor(r, g, b)
 	end
@@ -1740,8 +1740,20 @@ function CH:DisplayChatHistory()
 		data = ElvCharacterDB.ChatLog[tostring(temp[i])]
 
 		if type(data) == "table" and data[20] ~= nil then
+			local event = data[20]
+
+			if event == "CHAT_MSG_BN_WHISPER" or event == "CHAT_MSG_BN_WHISPER_INFORM" then
+				--Sender info is stored as |Kf#|k0000000000|k, which is a unique identifier for the current session only
+				--We need to update it in case the WoW client has been closed between the time the message was saved and now
+				local bnetIDAccount = data[13] --Unique identifier which persists between sessions (integer)
+				local _, presenceName = BNGetFriendInfoByID(bnetIDAccount)
+				if presenceName then
+					data[2] = presenceName --Update sender with correct name
+				end
+			end
+
 			CH.timeOverride = temp[i]
-			CH.ChatFrame_MessageEventHandler(DEFAULT_CHAT_FRAME, data[20], unpack(data))
+			CH.ChatFrame_MessageEventHandler(DEFAULT_CHAT_FRAME, event, unpack(data))
 		end
 	end
 end
@@ -1770,9 +1782,9 @@ function CH:SaveChatHistory(event, ...)
 	end
 
 	if #temp > 0 then
-	  temp[20] = event
-	  local timeForMessage = GetTimeForSavedMessage()
-	  ElvCharacterDB.ChatLog[timeForMessage] = temp
+		temp[20] = event
+		local timeForMessage = GetTimeForSavedMessage()
+		ElvCharacterDB.ChatLog[timeForMessage] = temp
 
 		local c, k = 0
 		for id, data in pairs(ElvCharacterDB.ChatLog) do

@@ -484,6 +484,11 @@ function AB:UpdateBar1Paging()
 	end
 end
 
+function AB:UpdateButtonSettingsForBar(barName)
+	local bar = self["handledBars"][barName]
+	self:UpdateButtonConfig(bar, bar.bindButtons)
+end
+
 function AB:UpdateButtonSettings()
 	if E.private.actionbar.enable ~= true then return end
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return; end
@@ -790,7 +795,7 @@ function AB:UpdateButtonConfig(bar, buttonName)
 	if not bar.buttonConfig then bar.buttonConfig = { hideElements = {}, colors = {} } end
 	bar.buttonConfig.hideElements.macro = not self.db.macrotext
 	bar.buttonConfig.hideElements.hotkey = not self.db.hotkeytext
-	bar.buttonConfig.showGrid = self.db.showGrid
+	bar.buttonConfig.showGrid = self.db["bar"..bar.id].showGrid
 	bar.buttonConfig.clickOnDown = self.db.keyDown
 	SetModifiedClick("PICKUPACTION", self.db.movementModifier)
 	bar.buttonConfig.colors.range = E:GetColorTable(self.db.noRangeColor)
@@ -801,7 +806,7 @@ function AB:UpdateButtonConfig(bar, buttonName)
 		bar.buttonConfig.keyBoundTarget = format(buttonName.."%d", i)
 		button.keyBoundTarget = bar.buttonConfig.keyBoundTarget
 		button.postKeybind = AB.FixKeybindText
-		button:SetAttribute("buttonlock", true)
+		button:SetAttribute("buttonlock", self.db.lockActionBars)
 		button:SetAttribute("checkselfcast", true)
 		button:SetAttribute("checkfocuscast", true)
 
@@ -1022,9 +1027,9 @@ function AB:Initialize()
 		self:ReassignBindings()
 	end
 
-	if not GetCVarBool('lockActionBars') then
-		SetCVar('lockActionBars', 1)
-	end
+	--We handle actionbar lock for regular bars, but the lock on PetBar needs to be handled by WoW so make some necessary updates
+	SetCVar('lockActionBars', (self.db.lockActionBars == true and 1 or 0))
+	LOCK_ACTIONBAR = (value == true and "1" or "0")
 
 	SpellFlyout:HookScript("OnShow", SetupFlyoutButton)
 end

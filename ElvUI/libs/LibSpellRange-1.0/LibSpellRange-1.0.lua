@@ -10,7 +10,7 @@
 -- @name LibSpellRange-1.0.lua
 
 local major = "SpellRange-1.0"
-local minor = 7
+local minor = 9
 
 assert(LibStub, format("%s requires LibStub.", major))
 
@@ -76,7 +76,13 @@ local spellsByID_pet = Lib.spellsByID_pet
 
 -- Updates spellsByName and spellsByID
 local function UpdateBook(bookType)
-	local _, _, offs, numspells = GetSpellTabInfo(GetNumSpellTabs())
+	local _, _, offs, numspells = GetSpellTabInfo(3)
+	local max = offs -- The offset of the next tab is the max ID of the previous tab.
+	if numspells == 0 then
+		-- New characters pre level 10 only have 2 tabs.
+		local _, _, offs, numspells = GetSpellTabInfo(2)
+		max = offs + numspells 
+	end
 
 	local spellsByName = Lib["spellsByName_" .. bookType]
 	local spellsByID = Lib["spellsByID_" .. bookType]
@@ -84,7 +90,7 @@ local function UpdateBook(bookType)
 	wipe(spellsByName)
 	wipe(spellsByID)
 	
-	for spellBookID = 1, offs + numspells do
+	for spellBookID = 1, max do
 		local type, baseSpellID = GetSpellBookItemInfo(spellBookID, bookType)
 		
 		if type == "SPELL" then

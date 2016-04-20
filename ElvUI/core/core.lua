@@ -1312,6 +1312,17 @@ function E:DBConversions()
 		
 		E.db.actionbar.backdropSpacingConverted = true
 	end
+	
+	--Convert E.db.actionbar.showGrid to E.db.actionbar["barX"].showGrid
+	if E.db.actionbar.showGrid ~= nil then
+		local gridEnabled = E.db.actionbar.showGrid
+		for i = 1, 10 do
+			if E.db.actionbar["bar"..i] then
+				E.db.actionbar["bar"..i].showGrid = gridEnabled
+			end
+		end
+		E.db.actionbar.showGrid = nil
+	end
 end
 
 local CPU_USAGE = {}
