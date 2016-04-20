@@ -1780,12 +1780,11 @@ function CH:SaveChatHistory(event, ...)
 	end
 
 	if #temp > 0 then
+		temp[20] = event
+		local timeForMessage = GetTimeForSavedMessage()
+		ElvCharacterDB.ChatLog[timeForMessage] = temp
 
-	temp[20] = event
-	local timeForMessage = GetTimeForSavedMessage()
-	ElvCharacterDB.ChatLog[timeForMessage] = temp
-
-	local c, k = 0
+		local c, k = 0
 		for id, data in pairs(ElvCharacterDB.ChatLog) do
 			c = c + 1
 			if (not k) or k > id then
