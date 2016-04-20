@@ -448,6 +448,14 @@ E.Options.args.actionbar = {
 			type = "toggle",
 			name = LOCK_ACTIONBAR_TEXT,
 			desc = L["If you unlock actionbars then trying to move a spell might instantly cast it if you cast spells on key press instead of key release."],
+			set = function(info, value)
+				E.db.actionbar[ info[#info] ] = value;
+				AB:UpdateButtonSettings()
+				
+				--Make it work for PetBar too
+				SetCVar('lockActionBars', (value == true and 1 or 0))
+				LOCK_ACTIONBAR = (value == true and "1" or "0")
+			end,
 		},
 		movementModifier = {
 			type = 'select',
