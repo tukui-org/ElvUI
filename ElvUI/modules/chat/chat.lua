@@ -1747,7 +1747,9 @@ function CH:DisplayChatHistory()
 				--We need to update it in case the WoW client has been closed between the time the message was saved and now
 				local bnetIDAccount = data[13] --Unique identifier which persists between sessions (integer)
 				local _, presenceName = BNGetFriendInfoByID(bnetIDAccount)
-				data[2] = presenceName --Update sender with correct name
+				if presenceName then
+					data[2] = presenceName --Update sender with correct name
+				end
 			end
 
 			CH.timeOverride = temp[i]
