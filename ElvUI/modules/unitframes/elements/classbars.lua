@@ -291,12 +291,11 @@ function UF:UpdateClassBar(cur, max, hasMaxChanged, event)
 	if not db then return; end
 
 	local isShown = self:IsShown()
-	if cur == 0 and db.classbar.autoHide then
+	if cur == 0 and db.classbar.autoHide or max == nil then
 		self:Hide()
 	else
 		self:Show()
 	end
-
 	if hasMaxChanged then
 		frame.MAX_CLASS_BAR = max
 		UF:Configure_ClassBar(frame)
