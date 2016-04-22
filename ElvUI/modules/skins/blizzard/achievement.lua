@@ -161,7 +161,13 @@ local function LoadSkin(event)
 
 	S:HandleCloseButton(AchievementFrameCloseButton, AchievementFrame.backdrop)
 	S:HandleDropDownBox(AchievementFrameFilterDropDown)
-	AchievementFrameFilterDropDown:Point("TOPRIGHT", AchievementFrame, "TOPRIGHT", -44, 5)
+	S:HandleEditBox(AchievementFrame.searchBox)
+	AchievementFrame.searchBox.backdrop:Point("TOPLEFT", AchievementFrame.searchBox, "TOPLEFT", -5, -5)
+	AchievementFrame.searchBox.backdrop:Point("BOTTOMRIGHT", AchievementFrame.searchBox, "BOTTOMRIGHT", 0, 5)
+	AchievementFrame.searchBox:ClearAllPoints()
+	AchievementFrame.searchBox:Point("BOTTOMRIGHT", AchievementFrameAchievementsContainer, "TOPRIGHT", -2, 0)
+	AchievementFrameFilterDropDown:ClearAllPoints()
+	AchievementFrameFilterDropDown:Point("RIGHT", AchievementFrame.searchBox.backdrop, "LEFT", 2, -3)
 
 	-- ScrollBars
 	S:HandleScrollBar(AchievementFrameCategoriesContainerScrollBar, 5)
