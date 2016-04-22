@@ -345,7 +345,6 @@ function A:Initialize()
 		BuffFrame:Kill()
 		--ConsolidatedBuffs:Kill()
 		TemporaryEnchantFrame:Kill();
-		InterfaceOptionsFrameCategoriesButton12:SetScale(0.0001)
 	end
 
 	if(not E.private.auras.enable) then return end

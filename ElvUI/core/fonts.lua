@@ -44,11 +44,6 @@ function E:UpdateBlizzardFonts()
 	end
 
 	if self.eyefinity then
-		-- damage are huge on eyefinity, so we disable it
-		InterfaceOptionsCombatTextPanelTargetDamage:Hide()
-		InterfaceOptionsCombatTextPanelPeriodicDamage:Hide()
-		InterfaceOptionsCombatTextPanelPetDamage:Hide()
-		InterfaceOptionsCombatTextPanelHealing:Hide()
 		SetCVar("CombatLogPeriodicSpells",0)
 		SetCVar("PetMeleeDamage",0)
 		SetCVar("CombatDamage",0)

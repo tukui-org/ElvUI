@@ -32,12 +32,7 @@ local MAX_BOSS_FRAMES = MAX_BOSS_FRAMES
 -- GLOBALS: UIParent, ElvCharacterDB, ElvUF_Parent, oUF_RaidDebuffs, CompactRaidFrameManager
 -- GLOBALS: PlayerFrame, RuneFrame, PetFrame, TargetFrame, ComboFrame, FocusFrame
 -- GLOBALS: FocusFrameToT, TargetFrameToT, CompactUnitFrameProfiles
--- GLOBALS: InterfaceOptionsFrameCategoriesButton10, InterfaceOptionsStatusTextPanelPlayer
--- GLOBALS: InterfaceOptionsStatusTextPanelPet, InterfaceOptionsStatusTextPanelTarget
--- GLOBALS: InterfaceOptionsCombatPanelEnemyCastBarsOnPortrait
--- GLOBALS: InterfaceOptionsCombatPanelEnemyCastBarsOnNameplates
--- GLOBALS: InterfaceOptionsCombatPanelTargetOfTarget, InterfaceOptionsDisplayPanelShowAggroPercentage
--- GLOBALS: InterfaceOptionsStatusTextPanelParty, InterfaceOptionsFrameCategoriesButton11
+
 
 local _, ns = ...
 local ElvUF = ns.oUF
@@ -1213,18 +1208,18 @@ function UF:Initialize()
 	self:RegisterEvent('ZONE_CHANGED_NEW_AREA')
 
 	--InterfaceOptionsFrameCategoriesButton9:SetScale(0.0001)
-	if E.private["unitframe"]["disabledBlizzardFrames"].arena and E.private["unitframe"]["disabledBlizzardFrames"].focus and E.private["unitframe"]["disabledBlizzardFrames"].party then
+	--[[if E.private["unitframe"]["disabledBlizzardFrames"].arena and E.private["unitframe"]["disabledBlizzardFrames"].focus and E.private["unitframe"]["disabledBlizzardFrames"].party then
 		InterfaceOptionsFrameCategoriesButton10:SetScale(0.0001)
 	end
 
 	if E.private["unitframe"]["disabledBlizzardFrames"].target then
 		InterfaceOptionsCombatPanelTargetOfTarget:SetScale(0.0001)
 		InterfaceOptionsCombatPanelTargetOfTarget:SetAlpha(0)
-	end
+	end]]
 
 	if E.private["unitframe"]["disabledBlizzardFrames"].party and E.private["unitframe"]["disabledBlizzardFrames"].raid then
 		self:DisableBlizzard()
-		InterfaceOptionsFrameCategoriesButton11:SetScale(0.0001)
+		--InterfaceOptionsFrameCategoriesButton11:SetScale(0.0001)
 
 		self:RegisterEvent('GROUP_ROSTER_UPDATE', 'DisableBlizzard')
 		UIParent:UnregisterEvent('GROUP_ROSTER_UPDATE') --This may fuck shit up.. we'll see...
