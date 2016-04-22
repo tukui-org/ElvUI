@@ -26,20 +26,12 @@ function AB:Extra_SetAlpha()
 			button:SetAlpha(alpha)
 		end
 	end
-
-	local button = DraenorZoneAbilityFrame.SpellButton
-	if button then
-		button:SetAlpha(alpha)
-	end
 end
 
 function AB:Extra_SetScale()
 	local scale = E.db.actionbar.extraActionButton.scale
 	if ExtraActionBarFrame then
 		ExtraActionBarFrame:SetScale(scale)
-	end
-	if DraenorZoneAbilityFrame then
-		DraenorZoneAbilityFrame:SetScale(scale)
 	end
 end
 
@@ -51,11 +43,6 @@ function AB:SetupExtraButton()
 	ExtraActionBarFrame:SetParent(holder)
 	ExtraActionBarFrame:ClearAllPoints()
 	ExtraActionBarFrame:Point('CENTER', holder, 'CENTER')
-	DraenorZoneAbilityFrame:SetParent(holder)
-	DraenorZoneAbilityFrame:ClearAllPoints()
-	DraenorZoneAbilityFrame:Point('CENTER', holder, 'CENTER')
-
-	DraenorZoneAbilityFrame.ignoreFramePositionManager = true
 	ExtraActionBarFrame.ignoreFramePositionManager  = true
 
 	for i=1, ExtraActionBarFrame:GetNumChildren() do
@@ -77,20 +64,6 @@ function AB:SetupExtraButton()
 				E:RegisterCooldown(button.cooldown)
 				button.cooldown:HookScript("OnShow", FixExtraActionCD)
 			end
-		end
-	end
-
-	local button = DraenorZoneAbilityFrame.SpellButton
-	if button then
-		button:SetNormalTexture('')
-		button:StyleButton(nil, nil, nil, true)
-		button:SetTemplate()
-		button.Icon:SetDrawLayer('ARTWORK')
-		button.Icon:SetTexCoord(unpack(E.TexCoords))
-		button.Icon:SetInside()
-
-		if(button.Cooldown and E.private.cooldown.enable) then
-			E:RegisterCooldown(button.Cooldown)
 		end
 	end
 

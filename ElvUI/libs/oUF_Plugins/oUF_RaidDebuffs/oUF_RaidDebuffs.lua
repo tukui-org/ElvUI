@@ -30,7 +30,9 @@ local function add(spell, priority)
 		spell = GetSpellInfo(spell)
 	end
 	
-	debuff_data[spell] = addon.priority + priority
+	if(spell) then
+		debuff_data[spell] = addon.priority + priority
+	end
 end
 
 function addon:RegisterDebuffs(t)
