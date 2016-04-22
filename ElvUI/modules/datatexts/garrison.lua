@@ -27,7 +27,7 @@ local function sortFunction(a, b)
 end
 
 local function OnEnter(self, _, noUpdate)
-	DT:SetupTooltip(self)
+	--[[DT:SetupTooltip(self)
 
 	if(not noUpdate) then
 		DT.tooltip:Hide()
@@ -112,7 +112,7 @@ local function OnEnter(self, _, noUpdate)
 		DT.tooltip:Show()
 	else
 		DT.tooltip:Hide()
-	end
+	end]]
 end
 
 local function OnEvent(self, event, ...)
