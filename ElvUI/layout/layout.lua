@@ -9,7 +9,7 @@ local UIFrameFadeIn, UIFrameFadeOut = UIFrameFadeIn, UIFrameFadeOut
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: HideLeftChat, HideRightChat, HideBothChat, LeftChatPanel, RightChatPanel, Minimap
--- GLOBALS: GameTooltip, LeftChatToggleButton, RightChatToggleButton, LeftChatTab, RightChatTab
+-- GLOBALS: GameTooltip, LeftChatTab, RightChatTab
 -- GLOBALS: LeftChatDataPanel, LeftMiniPanel, RightChatDataPanel, RightMiniPanel, ElvConfigToggle
 
 local PANEL_HEIGHT = 22;
@@ -155,8 +155,6 @@ function LO:ToggleChatPanels()
 	local panelBackdrop = E.db.chat.panelBackdrop
 	if(E.global.tukuiMode) then
 		panelBackdrop = 'HIDEBOTH'
-		RightChatToggleButton:Hide()
-		LeftChatToggleButton:Hide()
 	end
 	
 	if panelBackdrop == 'SHOWBOTH' then
@@ -261,12 +259,10 @@ function LO:CreateChatPanels()
 
 	--Load Settings
 	if E.db['LeftChatPanelFaded'] then
-		LeftChatToggleButton:SetAlpha(0)
 		LeftChatPanel:Hide()
 	end
 
 	if E.db['RightChatPanelFaded'] then
-		RightChatToggleButton:SetAlpha(0)
 		RightChatPanel:Hide()
 	end
 

@@ -40,7 +40,7 @@ local NUM_PET_ACTION_SLOTS = NUM_PET_ACTION_SLOTS
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: LibStub, UIParent, MAX_PLAYER_LEVEL, ScriptErrorsFrame_OnError
 -- GLOBALS: ElvUIPlayerBuffs, ElvUIPlayerDebuffs, LeftChatPanel, RightChatPanel
--- GLOBALS: ElvUI_StaticPopup1, ElvUI_StaticPopup1Button1, LeftChatToggleButton, RightChatToggleButton
+-- GLOBALS: ElvUI_StaticPopup1, ElvUI_StaticPopup1Button1
 -- GLOBALS: ElvUI_StanceBar, ObjectiveTrackerFrame, GameTooltip, Minimap
 
 
