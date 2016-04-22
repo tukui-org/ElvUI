@@ -108,7 +108,7 @@ local Var = {
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GetColoredName, LeftChatDataPanel, ElvCharacterDB, GeneralDockManager
--- GLOBALS: LeftChatPanel, LeftChatToggleButton, ChatFrame1, ChatTypeInfo, ChatMenu
+-- GLOBALS: LeftChatPanel, ChatFrame1, ChatTypeInfo, ChatMenu
 -- GLOBALS: CopyChatFrame, CopyChatFrameEditBox, CHAT_FRAMES, LeftChatTab, RightChatPanel
 -- GLOBALS: CopyChatScrollFrame, CopyChatScrollFrameScrollBar, RightChatDataPanel
 -- GLOBALS: GeneralDockManagerOverflowButton, CombatLogQuickButtonFrame_Custom
@@ -353,7 +353,7 @@ function CH:StyleChat(frame)
 		_G[tab:GetName()..texName..'Middle']:SetTexture(nil)
 		_G[tab:GetName()..texName..'Right']:SetTexture(nil)
 	end
-
+	
 	hooksecurefunc(tab, "SetAlpha", function(t, alpha)
 		if alpha ~= 1 and (not t.isDocked or GeneralDockManager.selected:GetID() == t:GetID()) then
 			t:SetAlpha(1)
@@ -378,7 +378,7 @@ function CH:StyleChat(frame)
 			t:SetTextColor(rR, gG, bB)
 		end
 	end)
-
+	
 	if tab.conversationIcon then
 		tab.conversationIcon:ClearAllPoints()
 		tab.conversationIcon:Point('RIGHT', tab.text, 'LEFT', -1, 0)
@@ -431,7 +431,7 @@ function CH:StyleChat(frame)
 			self:SetText(new)
 		end
 	end
-
+	
 	--Work around broken SetAltArrowKeyMode API. Code from Prat
 	local function OnArrowPressed(self, key)
 		if #self.historyLines == 0 then
@@ -457,13 +457,13 @@ function CH:StyleChat(frame)
 	end
 
 	local a, b, c = select(6, editbox:GetRegions()); a:Kill(); b:Kill(); c:Kill()
-	_G[format(editbox:GetName().."FocusLeft", id)]:Kill()
-	_G[format(editbox:GetName().."FocusMid", id)]:Kill()
-	_G[format(editbox:GetName().."FocusRight", id)]:Kill()
+	_G[format(editbox:GetName().."Left", id)]:Kill()
+	_G[format(editbox:GetName().."Mid", id)]:Kill()
+	_G[format(editbox:GetName().."Right", id)]:Kill()
 	editbox:SetTemplate('Default', true)
 	editbox:SetAltArrowKeyMode(CH.db.useAltKey)
-	editbox:HookScript("OnEditFocusGained", function(self) self:Show(); if not LeftChatPanel:IsShown() then LeftChatPanel.editboxforced = true; LeftChatToggleButton:GetScript('OnEnter')(LeftChatToggleButton) end end)
-	editbox:HookScript("OnEditFocusLost", function(self) if LeftChatPanel.editboxforced then LeftChatPanel.editboxforced = nil; if LeftChatPanel:IsShown() then LeftChatToggleButton:GetScript('OnLeave')(LeftChatToggleButton) end end self:Hide() end)
+	editbox:HookScript("OnEditFocusGained", function(self) self:Show(); if not LeftChatPanel:IsShown() then LeftChatPanel.editboxforced = true; LeftChatDataPanel:GetScript('OnEnter')(LeftChatDataPanel) end end)
+	editbox:HookScript("OnEditFocusLost", function(self) if LeftChatPanel.editboxforced then LeftChatPanel.editboxforced = nil; if LeftChatPanel:IsShown() then LeftChatDataPanel:GetScript('OnLeave')(LeftChatDataPanel) end end self:Hide() end)
 	editbox:SetAllPoints(LeftChatDataPanel)
 	self:SecureHook(editbox, "AddHistoryLine", "ChatEdit_AddHistory")
 	editbox:HookScript("OnTextChanged", OnTextChanged)
@@ -474,7 +474,7 @@ function CH:StyleChat(frame)
 	editbox:HookScript("OnArrowPressed", OnArrowPressed)
 
 	for i, text in pairs(ElvCharacterDB.ChatEditHistory) do
-		editbox:AddHistoryLine(text)
+		--editbox:AddHistoryLine(text)
 	end
 
 	hooksecurefunc("ChatEdit_UpdateHeader", function()
@@ -736,9 +736,9 @@ function CH:PositionChat(override)
 			if(E.global.tukuiMode) then
 				chat:Point("BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 1, 3)
 				if id ~= 2 then
-					chat:SetSize((E.db.chat.separateSizes and E.db.chat.panelWidthRight or E.db.chat.panelWidth) - 11 - LeftChatToggleButton:GetWidth(), (E.db.chat.separateSizes and E.db.chat.panelHeightRight or E.db.chat.panelHeight) - BASE_OFFSET)
+					chat:SetSize((E.db.chat.separateSizes and E.db.chat.panelWidthRight or E.db.chat.panelWidth) - 11 - LeftChatDataPanel:GetWidth(), (E.db.chat.separateSizes and E.db.chat.panelHeightRight or E.db.chat.panelHeight) - BASE_OFFSET)
 				else
-					chat:SetSize(E.db.chat.panelWidth - 11 - LeftChatToggleButton:GetWidth(), (E.db.chat.panelHeight - BASE_OFFSET) - CombatLogQuickButtonFrame_Custom:GetHeight())
+					chat:SetSize(E.db.chat.panelWidth - 11 - LeftChatDataPanel:GetWidth(), (E.db.chat.panelHeight - BASE_OFFSET) - CombatLogQuickButtonFrame_Custom:GetHeight())
 				end
 			else
 				if E.db.datatexts.rightChatPanel then
@@ -757,8 +757,6 @@ function CH:PositionChat(override)
 			--Pass a 2nd argument which prevents an infinite loop in our ON_FCF_SavePositionAndDimensions function
 			FCF_SavePositionAndDimensions(chat, true)
 
-			tab:SetParent(RightChatPanel)
-			chat:SetParent(RightChatPanel)
 
 			if chat:IsMovable() then
 				chat:SetUserPlaced(true)
@@ -769,21 +767,19 @@ function CH:PositionChat(override)
 				CH:SetupChatTabs(tab, false)
 			end
 		elseif not isDocked and chat:IsShown() then
-			tab:SetParent(UIParent)
-			chat:SetParent(UIParent)
 			CH:SetupChatTabs(tab, fadeUndockedTabs and true or false)
 		else
 			if id ~= 2 and not (id > NUM_CHAT_WINDOWS) then
 				chat:ClearAllPoints()
 				if(E.global.tukuiMode) then
-					chat:Point("BOTTOMLEFT", LeftChatToggleButton, "TOPRIGHT", 1, 3)
-					chat:SetSize(E.db.chat.panelWidth - 11 - LeftChatToggleButton:GetWidth(), (E.db.chat.panelHeight - BASE_OFFSET))
+					chat:Point("BOTTOMLEFT", LeftChatDataPanel, "TOPRIGHT", 1, 3)
+					chat:SetSize(E.db.chat.panelWidth - 11 - LeftChatDataPanel:GetWidth(), (E.db.chat.panelHeight - BASE_OFFSET))
 				else
 					if E.db.datatexts.leftChatPanel then
-						chat:Point("BOTTOMLEFT", LeftChatToggleButton, "TOPLEFT", 1, 3)
+						chat:Point("BOTTOMLEFT", LeftChatDataPanel, "TOPLEFT", 1, 3)
 					else
 						BASE_OFFSET = BASE_OFFSET - 24
-						chat:Point("BOTTOMLEFT", LeftChatToggleButton, "BOTTOMLEFT", 1, 1)
+						chat:Point("BOTTOMLEFT", LeftChatDataPanel, "BOTTOMLEFT", 1, 1)
 					end
 					chat:SetSize(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - BASE_OFFSET))
 				end
@@ -791,12 +787,7 @@ function CH:PositionChat(override)
 				--Pass a 2nd argument which prevents an infinite loop in our ON_FCF_SavePositionAndDimensions function
 				FCF_SavePositionAndDimensions(chat, true)
 			end
-			chat:SetParent(LeftChatPanel)
-			if i > 2 then
-				tab:SetParent(GeneralDockManagerScrollFrameChild)
-			else
-				tab:SetParent(GeneralDockManager)
-			end
+
 			if chat:IsMovable() then
 				chat:SetUserPlaced(true)
 			end
@@ -1509,7 +1500,6 @@ function CH:SetupChat(event, ...)
 		self:EnableHyperlink()
 	end
 
-	GeneralDockManager:SetParent(LeftChatPanel)
 	-- self:ScheduleRepeatingTimer('PositionChat', 1)
 	self:PositionChat(true)
 

@@ -69,8 +69,8 @@ local LE_ITEM_QUALITY_POOR = LE_ITEM_QUALITY_POOR
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameTooltip, BankFrame, ElvUIReagentBankFrameItem1, GuildBankFrame, ElvUIBags
--- GLOBALS: ContainerFrame1, RightChatToggleButton, GuildItemSearchBox, StackSplitFrame
--- GLOBALS: LeftChatToggleButton, MAX_GUILDBANK_SLOTS_PER_TAB, UISpecialFrames
+-- GLOBALS: ContainerFrame1, GuildItemSearchBox, StackSplitFrame
+-- GLOBALS: MAX_GUILDBANK_SLOTS_PER_TAB, UISpecialFrames
 -- GLOBALS: ElvUIReagentBankFrame, MerchantFrame, BagItemAutoSortButton
 
 local SEARCH_STRING = ""
@@ -1411,18 +1411,18 @@ function B:PositionBagFrames()
 	if self.BagFrame then
 		self.BagFrame:ClearAllPoints()
 		if E.db.datatexts.rightChatPanel then
-			self.BagFrame:Point('BOTTOMRIGHT', RightChatToggleButton, 'TOPRIGHT', 0 + E.db.bags.xOffset, 4 + E.db.bags.yOffset);
+			self.BagFrame:Point('BOTTOMRIGHT', RightChatDataPanel, 'TOPRIGHT', 0 + E.db.bags.xOffset, 4 + E.db.bags.yOffset);
 		else
-			self.BagFrame:Point('BOTTOMRIGHT', RightChatToggleButton, 'BOTTOMRIGHT', 0 + E.db.bags.xOffset, 0 + E.db.bags.yOffset);
+			self.BagFrame:Point('BOTTOMRIGHT', RightChatDataPanel, 'BOTTOMRIGHT', 0 + E.db.bags.xOffset, 0 + E.db.bags.yOffset);
 		end
 	end
 
 	if self.BankFrame then
 		self.BankFrame:ClearAllPoints()
 		if E.db.datatexts.leftChatPanel then
-			self.BankFrame:Point('BOTTOMLEFT', LeftChatToggleButton, 'TOPLEFT', 0 + E.db.bags.xOffsetBank, 4 + E.db.bags.yOffsetBank);
+			self.BankFrame:Point('BOTTOMLEFT', LeftChatDataPanel, 'TOPLEFT', 0 + E.db.bags.xOffsetBank, 4 + E.db.bags.yOffsetBank);
 		else
-			self.BankFrame:Point('BOTTOMLEFT', LeftChatToggleButton, 'BOTTOMLEFT', 0 + E.db.bags.xOffsetBank, 0 + E.db.bags.yOffsetBank);
+			self.BankFrame:Point('BOTTOMLEFT', LeftChatDataPanel, 'BOTTOMLEFT', 0 + E.db.bags.xOffsetBank, 0 + E.db.bags.yOffsetBank);
 		end
 	end
 end
@@ -1618,7 +1618,7 @@ function B:UpdateContainerFrameAnchors()
 		frame:SetScale(1);
 		if ( index == 1 ) then
 			-- First bag
-			frame:Point("BOTTOMRIGHT", RightChatToggleButton, "TOPRIGHT", 2, 2);
+			frame:Point("BOTTOMRIGHT", RightChatDataPanel, "TOPRIGHT", 2, 2);
 			bagsPerColumn = bagsPerColumn + 1
 		elseif ( freeScreenHeight < frame:GetHeight() ) then
 			-- Start a new column
