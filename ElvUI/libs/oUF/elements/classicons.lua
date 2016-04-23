@@ -14,6 +14,7 @@
  Paladin - Holy Power
  Priest  - Shadow Orbs
  Warlock - Soul Shards
+ Mage - Arcane Charges
 
  Examples
 
@@ -70,6 +71,8 @@ local UpdateTexture = function(element)
 	elseif(PlayerClass == 'PALADIN') then
 		red, green, blue = 1, .96, .41
 		desaturated = true
+	elseif(PlayerClass == 'Mage') then
+		red, green, blue = 0.12, .12, .61	
 	end
 
 	for i = 1, #element do
@@ -220,6 +223,11 @@ do
 		ClassPowerType = "SOUL_SHARDS"
 		RequireSpec = SPEC_WARLOCK_AFFLICTION
 		RequireSpell = WARLOCK_SOULBURN
+	elseif(PlayerClass == 'MAGE') then
+		ClassPowerID = SPELL_POWER_ARCANE_CHARGES
+		ClassPowerType = "ARCANE_CHARGES"
+		RequireSpec = SPEC_MAGE_ARCANE
+		RequireSpell = 30451
 	end
 end
 

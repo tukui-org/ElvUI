@@ -379,8 +379,6 @@ function UF:UpdateColors()
 	ElvUF.colors.Runes[3] = E:GetColorTable(db.classResources.DEATHKNIGHT[3])
 	ElvUF.colors.Runes[4] = E:GetColorTable(db.classResources.DEATHKNIGHT[4])
 
-	ElvUF.colors.ArcaneChargeBar = E:GetColorTable(db.classResources.MAGE);
-
 	ElvUF.colors.ComboPoints = {}
 	ElvUF.colors.ComboPoints[1] = E:GetColorTable(db.classResources.comboPoints[1])
 	ElvUF.colors.ComboPoints[2] = E:GetColorTable(db.classResources.comboPoints[2])
@@ -399,12 +397,13 @@ function UF:UpdateColors()
 	ElvUF.colors.EclipseBar[1] = E:GetColorTable(db.classResources.DRUID[1])
 	ElvUF.colors.EclipseBar[2] = E:GetColorTable(db.classResources.DRUID[2])
 
-	--Monk, Paladin, Priest and Warlock
+	--Monk, Mage,Paladin, Priest and Warlock
 	ElvUF.colors.ClassBars = {}
 	ElvUF.colors.ClassBars.MONK = {}
 	ElvUF.colors.ClassBars.WARLOCK = {}
 	ElvUF.colors.ClassBars.PALADIN = E:GetColorTable(db.classResources.PALADIN);
 	ElvUF.colors.ClassBars.PRIEST = E:GetColorTable(db.classResources.PRIEST);
+	ElvUF.colors.ClassBars.MAGE = E:GetColorTable(db.classResources.MAGE);
 	ElvUF.colors.ClassBars.MONK[1] = E:GetColorTable(db.classResources.MONK[1])
 	ElvUF.colors.ClassBars.MONK[2] = E:GetColorTable(db.classResources.MONK[2])
 	ElvUF.colors.ClassBars.MONK[3] = E:GetColorTable(db.classResources.MONK[3])

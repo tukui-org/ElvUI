@@ -58,8 +58,8 @@ function UF:Construct_PlayerFrame(frame)
 		frame.ClassIcons = self:Construct_ClassBar(frame)
 		frame.ClassBar = 'ClassIcons'
 	elseif E.myclass == 'MAGE' then
-		frame.ArcaneChargeBar = self:Construct_MageResourceBar(frame)
-		frame.ClassBar = 'ArcaneChargeBar'
+		frame.ClassIcons = self:Construct_ClassBar(frame)
+		frame.ClassBar = 'ClassIcons'
 	elseif E.myclass == 'ROGUE' then
 		frame.Anticipation = self:Construct_RogueResourceBar(frame)
 		frame.ClassBar = 'Anticipation'

@@ -26,7 +26,8 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 local SPELL_POWER = {
 	PALADIN = SPELL_POWER_HOLY_POWER,
 	MONK = SPELL_POWER_CHI,
-	PRIEST = SPELL_POWER_SHADOW_ORBS
+	PRIEST = SPELL_POWER_SHADOW_ORBS,
+	MAGE = SPELL_POWER_ARCANE_CHARGES
 }
 
 function UF:Configure_ClassBar(frame)
@@ -168,7 +169,7 @@ function UF:Configure_ClassBar(frame)
 					if bars[i].bg then
 						bars[i].bg:SetTexture(unpack(ElvUF.colors.ClassBars[E.myclass][i]))
 					end
-				elseif E.myclass == "PRIEST" or E.myclass == "PALADIN" then
+				elseif E.myclass == "PRIEST" or E.myclass == "PALADIN" or E.myclass == "MAGE" then
 					bars[i]:SetStatusBarColor(unpack(ElvUF.colors.ClassBars[E.myclass]))
 
 					if bars[i].bg then
@@ -260,7 +261,7 @@ end
 UF.ToggleResourceBar = ToggleResourceBar --Make available to combobar
 
 -------------------------------------------------------------
--- MONK, PALADIN, PRIEST, WARLOCK
+-- MONK, PALADIN, PRIEST, WARLOCK, MAGE
 -------------------------------------------------------------
 function UF:Construct_ClassBar(frame)
 	local bars = CreateFrame("Frame", nil, frame)
@@ -299,52 +300,6 @@ function UF:UpdateClassBar(cur, max, hasMaxChanged, event)
 	if hasMaxChanged then
 		frame.MAX_CLASS_BAR = max
 		UF:Configure_ClassBar(frame)
-	end
-end
-
--------------------------------------------------------------
--- MAGE
--------------------------------------------------------------
-function UF:Construct_MageResourceBar(frame)
-	local bars = CreateFrame("Frame", nil, frame)
-	bars:CreateBackdrop('Default', nil, nil, self.thinBorders)
-
-	for i = 1, UF['classMaxResourceBar'][E.myclass] do
-		bars[i] = CreateFrame("StatusBar", frame:GetName().."ClassBarButton"..i, bars)
-		bars[i]:SetStatusBarTexture(E['media'].blankTex) --Dummy really, this needs to be set so we can change the color
-		bars[i]:GetStatusBarTexture():SetHorizTile(false)
-
-		bars[i].bg = bars[i]:CreateTexture(nil, 'ARTWORK')
-
-		UF['statusbars'][bars[i]] = true
-
-		bars[i]:CreateBackdrop('Default', nil, nil, self.thinBorders)
-		bars[i].backdrop:SetParent(bars)
-	end
-
-	bars.PostUpdate = UF.UpdateArcaneCharges
-	bars:SetScript("OnShow", ToggleResourceBar)
-	bars:SetScript("OnHide", ToggleResourceBar)
-	return bars
-end
-
-function UF:UpdateArcaneCharges(event, arcaneCharges, maxCharges)
-	local frame = self.origParent or self:GetParent()
-	local db = frame.db
-	if not db then return; end
-
-	if E.myspec == 1 and arcaneCharges == 0 then
-		if db.classbar.autoHide then
-			self:Hide()
-		else
-			--Clear arcane charge statusbars
-			for i = 1, maxCharges do
-				self[i]:SetValue(0)
-				self[i]:SetScript('OnUpdate', nil)
-			end
-
-			self:Show()
-		end
 	end
 end
 
