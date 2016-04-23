@@ -117,17 +117,29 @@ local Path = function(self, ...)
 end
 
 local Visibility = function(self, event, unit)
-	if(STANCE_OF_THE_STURY_OX_ID ~= GetShapeshiftFormID() or UnitHasVehiclePlayerFrameUI("player")) then
-		if self.Stagger:IsShown() then
+	local isShown = self.Stagger:IsShown()
+	local stateChanged = false
+	if(SPEC_MONK_BREWMASTER ~= GetSpecialization() or UnitHasVehiclePlayerFrameUI("player")) then
+		if isShown then
 			self.Stagger:Hide()
 			self:UnregisterEvent('UNIT_AURA', Path)
+			stateChanged = true
+		end
+		
+		if(self.Stagger.PostUpdateVisibility) then
+			self.Stagger.PostUpdateVisibility(self, event, unit, false, stateChanged)
 		end
 	else
-		if(not self.Stagger:IsShown()) then
+		if(not isShown) then
 			self.Stagger:Show()
 			self:RegisterEvent('UNIT_AURA', Path)
+			stateChanged = true
 		end
-
+		
+		if(self.Stagger.PostUpdateVisibility) then
+			self.Stagger.PostUpdateVisibility(self, event, unit, true, stateChanged)
+		end
+		
 		return Path(self, event, unit)
 	end
 end
@@ -152,7 +164,7 @@ local Enable = function(self, unit)
 		color = self.colors.power[BREWMASTER_POWER_BAR_NAME]
 
 		self:RegisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
-		self:RegisterEvent('UPDATE_SHAPESHIFT_FORM', VisibilityPath)
+		self:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', VisibilityPath)
 
 		if(element:IsObjectType'StatusBar' and not element:GetStatusBarTexture()) then
 			element:SetStatusBarTexture[[Interface\TargetingFrame\UI-StatusBar]]
@@ -174,7 +186,7 @@ local Disable = function(self)
 		element:Hide()
 		self:UnregisterEvent('UNIT_AURA', Path)
 		self:UnregisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
-		self:UnregisterEvent('UPDATE_SHAPESHIFT_FORM', VisibilityPath)
+		self:UnregisterEvent('PLAYER_SPECIALIZATION_CHANGED', VisibilityPath)
 
 		MonkStaggerBar.Show = nil
 		MonkStaggerBar:Show()

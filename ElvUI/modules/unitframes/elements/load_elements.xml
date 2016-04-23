@@ -25,7 +25,6 @@
 	<Script file='restingindicator.lua'/>
 	<Script file='resurrectionicon.lua'/>
 	<Script file='roleicons.lua'/>
-	<Script file='stagger.lua'/>
 	<Script file='targetglow.lua'/>
 	<Script file='threat.lua'/>
 	<Script file='trinket.lua'/>

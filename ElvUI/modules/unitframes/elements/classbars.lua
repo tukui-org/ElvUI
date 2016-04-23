@@ -79,7 +79,6 @@ function UF:Configure_ClassBar(frame)
 		end
 	elseif not frame.CLASSBAR_DETACHED then
 		bars:ClearAllPoints()
-		--Account for Stagger by anchoring classbar to opposite side of where Stagger is
 		if frame.ORIENTATION == "RIGHT" then
 			bars:Point("BOTTOMRIGHT", frame.Health.backdrop, "TOPRIGHT", -frame.BORDER, frame.SPACING*3)
 		else
@@ -117,7 +116,7 @@ function UF:Configure_ClassBar(frame)
 	bars:Width(CLASSBAR_WIDTH)
 	bars:Height(frame.CLASSBAR_HEIGHT - ((frame.BORDER + frame.SPACING)*2))
 
-	if E.myclass ~= 'DRUID' and E.myclass ~= 'PRIEST' then
+	if (E.myclass ~= 'DRUID' and E.myclass ~= 'PRIEST' and frame.ClassBar ~= 'Stagger') then
 		for i = 1, (UF.classMaxResourceBar[E.myclass] or 0) do
 			bars[i]:Hide()
 			bars[i].backdrop:Hide()
@@ -394,4 +393,36 @@ end
 
 function UF:AltManaPostUpdateVisibility()
 	ToggleResourceBar(self)
+end
+
+-----------------------------------------------------------
+-- Stagger Bar
+-----------------------------------------------------------
+function UF:Construct_Stagger(frame)
+	local stagger = CreateFrame("Statusbar", nil, frame)
+	UF['statusbars'][stagger] = true
+	stagger:CreateBackdrop("Default",nil, nil, self.thinBorders)
+	stagger.PostUpdateVisibility = UF.PostUpdateStagger
+	stagger:SetFrameStrata("LOW")
+	return stagger
+end
+
+function UF:PostUpdateStagger(event, unit, isShown, stateChanged)
+	local frame = self
+	local db = frame.db
+
+	if(isShown) then
+		frame.ClassBar = 'Stagger'
+	else
+		frame.ClassBar = 'ClassIcons'
+	end
+	
+	--Only update when necessary
+	if(stateChanged) then
+		ToggleResourceBar(frame.Stagger)
+		UF:Configure_ClassBar(frame)
+		UF:Configure_HealthBar(frame)
+		UF:Configure_Power(frame)
+		UF:Configure_InfoPanel(frame, true) --2nd argument is to prevent it from setting template, which removes threat border
+	end
 end

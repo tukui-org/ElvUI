@@ -171,7 +171,6 @@ function UF:Update_RaidFrames(frame, db)
 		frame.USE_PORTRAIT_OVERLAY = frame.USE_PORTRAIT and (db.portrait.overlay or frame.ORIENTATION == "MIDDLE")
 		frame.PORTRAIT_WIDTH = (frame.USE_PORTRAIT_OVERLAY or not frame.USE_PORTRAIT) and 0 or db.portrait.width
 
-		frame.STAGGER_WIDTH = 0
 		frame.CLASSBAR_WIDTH = 0
 		frame.CLASSBAR_YOFFSET = 0
 		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and (db.infoPanel.enable or E.global.tukuiMode)

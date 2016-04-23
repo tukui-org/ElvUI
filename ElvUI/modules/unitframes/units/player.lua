@@ -52,7 +52,11 @@ function UF:Construct_PlayerFrame(frame)
 	elseif E.myclass == "MONK" then
 		frame.ClassIcons = self:Construct_ClassBar(frame)
 		frame.Stagger = self:Construct_Stagger(frame)
-		frame.ClassBar = 'ClassIcons'
+		if(GetSpecialization() == SPEC_MONK_BREWMASTER) then
+			frame.ClassBar = 'Stagger'
+		else
+			frame.ClassBar = 'ClassIcons'
+		end
 	elseif E.myclass == 'MAGE' then
 		frame.ClassIcons = self:Construct_ClassBar(frame)
 		frame.ClassBar = 'ClassIcons'
@@ -114,9 +118,6 @@ function UF:Update_PlayerFrame(frame, db)
 		--If formula for frame.CLASSBAR_YOFFSET changes, then remember to update it in classbars.lua too
 		frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN or frame.CLASSBAR_DETACHED) and 0 or (frame.USE_MINI_CLASSBAR and (frame.SPACING+(frame.CLASSBAR_HEIGHT/2)) or (frame.CLASSBAR_HEIGHT - (frame.BORDER-frame.SPACING)))
 
-		frame.STAGGER_SHOWN = frame.Stagger and frame.Stagger:IsShown()
-		frame.STAGGER_WIDTH = frame.STAGGER_SHOWN and (db.stagger.width + (frame.BORDER*2)) or 0;
-
 		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and (db.infoPanel.enable or E.global.tukuiMode)
 		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0
 
@@ -165,11 +166,6 @@ function UF:Update_PlayerFrame(frame, db)
 
 	--Resource Bars
 	UF:Configure_ClassBar(frame)
-
-	--Stagger
-	if E.myclass == "MONK" then
-		UF:Configure_Stagger(frame)
-	end
 
 	--Combat Fade
 	if db.combatfade and not frame:IsElementEnabled('CombatFade') then
