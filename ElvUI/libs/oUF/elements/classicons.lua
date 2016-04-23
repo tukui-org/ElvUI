@@ -208,6 +208,7 @@ do
 	if(PlayerClass == 'MONK') then
 		ClassPowerID = SPELL_POWER_CHI
 		ClassPowerType = "CHI"
+		RequireSpec = SPEC_MONK_WINDWALKER
 	elseif(PlayerClass == 'PALADIN') then
 		ClassPowerID = SPELL_POWER_HOLY_POWER
 		ClassPowerType = "HOLY_POWER"
@@ -219,7 +220,6 @@ do
 		ClassPowerID = SPELL_POWER_ARCANE_CHARGES
 		ClassPowerType = "ARCANE_CHARGES"
 		RequireSpec = SPEC_MAGE_ARCANE
-		RequireSpell = 30451
 	end
 end
 
