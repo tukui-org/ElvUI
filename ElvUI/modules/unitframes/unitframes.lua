@@ -371,6 +371,7 @@ function UF:UpdateColors()
 	ElvUF.colors.power.ENERGY = E:GetColorTable(db.power.ENERGY);
 	ElvUF.colors.power.RUNIC_POWER = E:GetColorTable(db.power.RUNIC_POWER);
 	ElvUF.colors.power.PAIN = E:GetColorTable(db.power.PAIN);
+	ElvUF.colors.power.FURY = E:GetColorTable(db.power.FURY);
 	ElvUF.colors.power.LUNAR_POWER = E:GetColorTable(db.power.LUNAR_POWER)
 	ElvUF.colors.power.INSANITY = E:GetColorTable(db.power.INSANITY)
 	

@@ -2288,13 +2288,18 @@ E.Options.args.unitframe = {
 									name = PAIN,
 									type = 'color',									
 								},
+								FURY = {
+									order = 7,
+									name = FURY,
+									type = 'color',									
+								},								
 								LUNAR_POWER = {
 									order = 8,
 									name = LUNAR_POWER,
 									type = 'color'									
 								},
 								INSANITY = {
-									order = 8,
+									order = 9,
 									name = INSANITY,
 									type = 'color'									
 								},								
