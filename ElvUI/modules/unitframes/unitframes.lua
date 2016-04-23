@@ -253,7 +253,6 @@ function UF:Construct_UF(frame, unit)
 	end
 
 	frame.SHADOW_SPACING = 3
-	frame.STAGGER_WIDTH = 0	--placeholder
 	frame.CLASSBAR_YOFFSET = 0	--placeholder
 	frame.BOTTOM_OFFSET = 0 --placeholder
 	frame:SetFrameLevel(5)
