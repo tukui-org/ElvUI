@@ -45,12 +45,7 @@ local parent, ns = ...
 local oUF = ns.oUF
 local floor = math.floor
 
-oUF.colors.Runes = {
-	{1, 0, 0},   -- blood
-	{0, .5, 0},  -- unholy
-	{0, 1, 1},   -- frost
-	{.9, .1, 1}, -- death
-}
+oUF.colors.Runes = {0, 1, 1}
 
 local runemap = { 1, 2, 5, 6, 3, 4 }
 
@@ -67,10 +62,8 @@ end
 local UpdateType = function(self, event, rid, alt)
 	local runes = self.Runes
 	local rune = self.Runes[runemap[rid]]
-	local runeType = GetRuneType(rid) or alt
-	if not runeType then return; end
-	local colors = oUF.colors.Runes[runeType]
-	local r, g, b = colors[1], colors[2], colors[3]
+	local r, g, b = unpack(oUF.colors.Runes)
+
 	rune:SetStatusBarColor(r, g, b)
 
 	if(rune.bg) then
@@ -122,13 +115,6 @@ local Update = function(self, event)
 	end
 end
 
-local function UpdateAllRuneTypes(self)
-	if(self) then
-		for i=1, 6 do
-			UpdateType(self, nil, i)
-		end
-	end
-end
 
 local ForceUpdate = function(element)
 	return Update(element.__owner, 'ForceUpdate')
@@ -141,10 +127,6 @@ local Enable = function(self, unit)
 		runes.ForceUpdate = ForceUpdate
 
 		self:RegisterEvent("RUNE_POWER_UPDATE", UpdateRune, true)
-		self:RegisterEvent("RUNE_TYPE_UPDATE", UpdateType, true)	--I have no idea why this won't fire on initial login.
-		self:RegisterEvent("PLAYER_ENTERING_WORLD", UpdateAllRuneTypes)
-		
-		if not runes.UpdateAllRuneTypes then runes.UpdateAllRuneTypes = UpdateAllRuneTypes end;
 		
 		for i=1, 6 do
 			local rune = runes[runemap[i]]
@@ -178,7 +160,6 @@ local Disable = function(self)
 
 		self:UnregisterEvent("RUNE_POWER_UPDATE", UpdateRune)
 		self:UnregisterEvent("RUNE_TYPE_UPDATE", UpdateType)
-		self:UnregisterEvent("PLAYER_ENTERING_WORLD", UpdateAllRuneTypes)
 	end	
 end
 

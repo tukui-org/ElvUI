@@ -6292,12 +6292,6 @@ if P.unitframe.colors.classResources[E.myclass] then
 				end,
 			}
 		end
-	elseif E.myclass == 'PRIEST' then
-		E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args[E.myclass] = {
-			type = 'color',
-			name = L["Shadow Orbs"],
-			order = ORDER,
-		}
 	elseif E.myclass == 'MONK' then
 		for i = 1, 6 do
 			E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args['resource'..i] = {
@@ -6318,54 +6312,17 @@ if P.unitframe.colors.classResources[E.myclass] then
 			}
 		end
 	elseif E.myclass == 'WARLOCK' then
-		local names = {
-			[1] = L["Affliction"],
-			[2] = L["Demonology"],
-			[3] = L["Destruction"]
+		E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args[E.myclass] = {
+			type = 'color',
+			name = L["Soul Shards"],
+			order = ORDER,
 		}
-		for i = 1, 3 do
-			E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args['resource'..i] = {
-				type = 'color',
-				name = names[i],
-				order = ORDER + i,
-				get = function(info)
-					local t = E.db.unitframe.colors.classResources.WARLOCK[i]
-					local d = P.unitframe.colors.classResources.WARLOCK[i]
-					return t.r, t.g, t.b, t.a, d.r, d.g, d.b
-				end,
-				set = function(info, r, g, b)
-					E.db.unitframe.colors.classResources.WARLOCK[i] = {}
-					local t = E.db.unitframe.colors.classResources.WARLOCK[i]
-					t.r, t.g, t.b = r, g, b
-					UF:Update_AllFrames()
-				end,
-			}
-		end
 	elseif E.myclass == 'DEATHKNIGHT' then
-		local names = {
-			[1] = L["Blood"],
-			[2] = L["Unholy"],
-			[3] = L["Frost"],
-			[4] = L["Death"],
+		E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args[E.myclass] = {
+			type = 'color',
+			name = L["Runes"],
+			order = ORDER,
 		}
-		for i = 1, 4 do
-			E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args['resource'..i] = {
-				type = 'color',
-				name = names[i],
-				order = ORDER + i,
-				get = function(info)
-					local t = E.db.unitframe.colors.classResources.DEATHKNIGHT[i]
-					local d = P.unitframe.colors.classResources.DEATHKNIGHT[i]
-					return t.r, t.g, t.b, t.a, d.r, d.g, d.b
-				end,
-				set = function(info, r, g, b)
-					E.db.unitframe.colors.classResources.DEATHKNIGHT[i] = {}
-					local t = E.db.unitframe.colors.classResources.DEATHKNIGHT[i]
-					t.r, t.g, t.b = r, g, b
-					UF:Update_AllFrames()
-				end,
-			}
-		end
 	end
 end
 

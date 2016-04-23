@@ -211,13 +211,10 @@ do
 	elseif(PlayerClass == 'PALADIN') then
 		ClassPowerID = SPELL_POWER_HOLY_POWER
 		ClassPowerType = "HOLY_POWER"
-		RequireSpell = 85256 -- Templar's Verdict
 		RequireSpec = SPEC_PALADIN_RETRIBUTION
 	elseif(PlayerClass == 'WARLOCK') then
 		ClassPowerID = SPELL_POWER_SOUL_SHARDS
 		ClassPowerType = "SOUL_SHARDS"
-		RequireSpec = SPEC_WARLOCK_AFFLICTION
-		RequireSpell = WARLOCK_SOULBURN
 	elseif(PlayerClass == 'MAGE') then
 		ClassPowerID = SPELL_POWER_ARCANE_CHARGES
 		ClassPowerType = "ARCANE_CHARGES"

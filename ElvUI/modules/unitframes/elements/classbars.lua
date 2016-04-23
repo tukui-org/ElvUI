@@ -159,13 +159,13 @@ function UF:Configure_ClassBar(frame)
 					bars[i].backdrop:Show()
 				end
 
-				if E.myclass == "MONK" or E.myclass == "WARLOCK" then
+				if E.myclass == "MONK" then
 					bars[i]:SetStatusBarColor(unpack(ElvUF.colors.ClassBars[E.myclass][i]))
 
 					if bars[i].bg then
 						bars[i].bg:SetTexture(unpack(ElvUF.colors.ClassBars[E.myclass][i]))
 					end
-				elseif E.myclass == "PALADIN" or E.myclass == "MAGE" then
+				elseif E.myclass == "PALADIN" or E.myclass == "MAGE" or E.myclass == "WARLOCK" then
 					bars[i]:SetStatusBarColor(unpack(ElvUF.colors.ClassBars[E.myclass]))
 
 					if bars[i].bg then
