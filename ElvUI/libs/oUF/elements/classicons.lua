@@ -213,11 +213,6 @@ do
 		ClassPowerType = "HOLY_POWER"
 		RequireSpell = 85256 -- Templar's Verdict
 		RequireSpec = SPEC_PALADIN_RETRIBUTION
-	elseif(PlayerClass == 'PRIEST') then
-		ClassPowerID = SPELL_POWER_SHADOW_ORBS
-		ClassPowerType = "SHADOW_ORBS"
-		RequireSpec = SPEC_PRIEST_SHADOW
-		RequireSpell = 95740 -- Shadow Orbs
 	elseif(PlayerClass == 'WARLOCK') then
 		ClassPowerID = SPELL_POWER_SOUL_SHARDS
 		ClassPowerType = "SOUL_SHARDS"

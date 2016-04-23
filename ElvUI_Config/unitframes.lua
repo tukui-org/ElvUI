@@ -2293,6 +2293,11 @@ E.Options.args.unitframe = {
 									name = LUNAR_POWER,
 									type = 'color'									
 								},
+								INSANITY = {
+									order = 8,
+									name = INSANITY,
+									type = 'color'									
+								},								
 							},
 						},
 						reactionGroup = {

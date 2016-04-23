@@ -10,10 +10,7 @@ local CreateFrame = CreateFrame
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local IsSpellKnown = IsSpellKnown
-local GetEclipseDirection = GetEclipseDirection
 local SPELL_POWER_HOLY_POWER = SPELL_POWER_HOLY_POWER
-local SPELL_POWER_SHADOW_ORBS = SPELL_POWER_SHADOW_ORBS
-local SHADOW_ORB_MINOR_TALENT_ID = SHADOW_ORB_MINOR_TALENT_ID
 local SPELL_POWER_CHI = SPELL_POWER_CHI
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
@@ -26,7 +23,6 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 local SPELL_POWER = {
 	PALADIN = SPELL_POWER_HOLY_POWER,
 	MONK = SPELL_POWER_CHI,
-	PRIEST = SPELL_POWER_SHADOW_ORBS,
 	MAGE = SPELL_POWER_ARCANE_CHARGES
 }
 
@@ -70,7 +66,7 @@ function UF:Configure_ClassBar(frame)
 	if frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then
 		bars:ClearAllPoints()
 		bars:Point("CENTER", frame.Health.backdrop, "TOP", 0, 0)
-		if E.myclass == 'DRUID' or frame.MAX_CLASS_BAR == 1 then
+		if E.myclass == 'DRUID' or E.myclass == 'PRIEST' then
 			CLASSBAR_WIDTH = CLASSBAR_WIDTH
 		else
 			CLASSBAR_WIDTH = CLASSBAR_WIDTH * (frame.MAX_CLASS_BAR - 1) / frame.MAX_CLASS_BAR
@@ -121,7 +117,7 @@ function UF:Configure_ClassBar(frame)
 	bars:Width(CLASSBAR_WIDTH)
 	bars:Height(frame.CLASSBAR_HEIGHT - ((frame.BORDER + frame.SPACING)*2))
 
-	if E.myclass ~= 'DRUID' then
+	if E.myclass ~= 'DRUID' and E.myclass ~= 'PRIEST' then
 		for i = 1, (UF.classMaxResourceBar[E.myclass] or 0) do
 			bars[i]:Hide()
 			bars[i].backdrop:Hide()
@@ -169,7 +165,7 @@ function UF:Configure_ClassBar(frame)
 					if bars[i].bg then
 						bars[i].bg:SetTexture(unpack(ElvUF.colors.ClassBars[E.myclass][i]))
 					end
-				elseif E.myclass == "PRIEST" or E.myclass == "PALADIN" or E.myclass == "MAGE" then
+				elseif E.myclass == "PALADIN" or E.myclass == "MAGE" then
 					bars[i]:SetStatusBarColor(unpack(ElvUF.colors.ClassBars[E.myclass]))
 
 					if bars[i].bg then
@@ -191,15 +187,14 @@ function UF:Configure_ClassBar(frame)
 				bars[i]:Show()
 			end
 		end
-	end
-
-	if E.myclass ~= 'DRUID' then
+	else
 		if not frame.USE_MINI_CLASSBAR then
 			bars.backdrop:Show()
 		else
 			bars.backdrop:Hide()
-		end
+		end	
 	end
+
 
 	if frame.CLASSBAR_DETACHED and db.classbar.parent == "UIPARENT" then
 		E.FrameLocks[bars] = true
@@ -253,7 +248,7 @@ end
 UF.ToggleResourceBar = ToggleResourceBar --Make available to combobar
 
 -------------------------------------------------------------
--- MONK, PALADIN, PRIEST, WARLOCK, MAGE
+-- MONK, PALADIN, WARLOCK, MAGE
 -------------------------------------------------------------
 function UF:Construct_ClassBar(frame)
 	local bars = CreateFrame("Frame", nil, frame)
@@ -347,31 +342,31 @@ function UF:Construct_DeathKnightResourceBar(frame)
 end
 
 -------------------------------------------------------------
--- DRUID
+-- ALTERNATIVE MANA BAR
 -------------------------------------------------------------
-function UF:Construct_DruidAltManaBar(frame)
-	local dpower = CreateFrame('StatusBar', nil, frame)
-	dpower:SetFrameStrata("LOW")
-	dpower:SetFrameLevel(dpower:GetFrameLevel() + 1)
-	dpower.colorPower = true
-	dpower.PostUpdateVisibility = UF.DruidManaPostUpdateVisibility
-	dpower.PostUpdatePower = UF.DruidPostUpdateAltPower
-	dpower:CreateBackdrop('Default')
-	UF['statusbars'][dpower] = true
-	dpower:SetStatusBarTexture(E["media"].blankTex)
+function UF:Construct_AltManaBar(frame)
+	local altPower = CreateFrame('StatusBar', nil, frame)
+	altPower:SetFrameStrata("LOW")
+	altPower:SetFrameLevel(altPower:GetFrameLevel() + 1)
+	altPower.colorPower = true
+	altPower.PostUpdateVisibility = UF.AltManaPostUpdateVisibility
+	altPower.PostUpdatePower = UF.PostUpdateAltMana
+	altPower:CreateBackdrop('Default')
+	UF['statusbars'][altPower] = true
+	altPower:SetStatusBarTexture(E["media"].blankTex)
 
-	dpower.bg = dpower:CreateTexture(nil, "BORDER")
-	dpower.bg:SetAllPoints(dpower)
-	dpower.bg:SetTexture(E["media"].blankTex)
-	dpower.bg.multiplier = 0.3
+	altPower.bg = altPower:CreateTexture(nil, "BORDER")
+	altPower.bg:SetAllPoints(altPower)
+	altPower.bg:SetTexture(E["media"].blankTex)
+	altPower.bg.multiplier = 0.3
 
-	dpower.Text = dpower:CreateFontString(nil, 'OVERLAY')
-	UF:Configure_FontString(dpower.Text)
+	altPower.Text = altPower:CreateFontString(nil, 'OVERLAY')
+	UF:Configure_FontString(altPower.Text)
 
-	return dpower
+	return altPower
 end
 
-function UF:DruidPostUpdateAltPower(unit, min, max)
+function UF:PostUpdateAltMana(unit, min, max)
 	local powerText = self:GetParent().Power.value
 
 	if min ~= max then
@@ -397,6 +392,6 @@ function UF:DruidPostUpdateAltPower(unit, min, max)
 end
 
 
-function UF:DruidManaPostUpdateVisibility()
+function UF:AltManaPostUpdateVisibility()
 	ToggleResourceBar(self)
 end

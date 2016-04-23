@@ -69,7 +69,6 @@ UF['classMaxResourceBar'] = {
 	['DEATHKNIGHT'] = 6,
 	['PALADIN'] = 5,
 	['WARLOCK'] = 4,
-	['PRIEST'] = 5,
 	['MONK'] = 6,
 	['MAGE'] = 4,
 	['ROGUE'] = 5,
@@ -373,7 +372,8 @@ function UF:UpdateColors()
 	ElvUF.colors.power.RUNIC_POWER = E:GetColorTable(db.power.RUNIC_POWER);
 	ElvUF.colors.power.PAIN = E:GetColorTable(db.power.PAIN);
 	ElvUF.colors.power.LUNAR_POWER = E:GetColorTable(db.power.LUNAR_POWER)
-
+	ElvUF.colors.power.INSANITY = E:GetColorTable(db.power.INSANITY)
+	
 	ElvUF.colors.Runes = {}
 	ElvUF.colors.Runes[1] = E:GetColorTable(db.classResources.DEATHKNIGHT[1])
 	ElvUF.colors.Runes[2] = E:GetColorTable(db.classResources.DEATHKNIGHT[2])
@@ -394,12 +394,11 @@ function UF:UpdateColors()
 	ElvUF.colors.Anticipation[4] = E:GetColorTable(db.classResources.ROGUE[4])
 	ElvUF.colors.Anticipation[5] = E:GetColorTable(db.classResources.ROGUE[5])
 
-	--Monk, Mage,Paladin, Priest and Warlock
+	--Monk, Mage,Paladin and Warlock
 	ElvUF.colors.ClassBars = {}
 	ElvUF.colors.ClassBars.MONK = {}
 	ElvUF.colors.ClassBars.WARLOCK = {}
 	ElvUF.colors.ClassBars.PALADIN = E:GetColorTable(db.classResources.PALADIN);
-	ElvUF.colors.ClassBars.PRIEST = E:GetColorTable(db.classResources.PRIEST);
 	ElvUF.colors.ClassBars.MAGE = E:GetColorTable(db.classResources.MAGE);
 	ElvUF.colors.ClassBars.MONK[1] = E:GetColorTable(db.classResources.MONK[1])
 	ElvUF.colors.ClassBars.MONK[2] = E:GetColorTable(db.classResources.MONK[2])

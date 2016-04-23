@@ -15,7 +15,7 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
-local CAN_HAVE_CLASSBAR = (E.myclass == "PALADIN" or E.myclass == "DRUID" or E.myclass == "DEATHKNIGHT" or E.myclass == "WARLOCK" or E.myclass == "PRIEST" or E.myclass == "MONK" or E.myclass == 'MAGE' or E.myclass == 'ROGUE')
+local CAN_HAVE_CLASSBAR = (E.myclass == "PALADIN" or E.myclass == "DRUID" or E.myclass == "PRIEST" or E.myclass == "DEATHKNIGHT" or E.myclass == "WARLOCK" or E.myclass == "MONK" or E.myclass == 'MAGE' or E.myclass == 'ROGUE')
 
 function UF:Construct_PlayerFrame(frame)
 	frame.Threat = self:Construct_Threat(frame, true)
@@ -46,15 +46,12 @@ function UF:Construct_PlayerFrame(frame)
 	elseif E.myclass == "DEATHKNIGHT" then
 		frame.Runes = self:Construct_DeathKnightResourceBar(frame)
 		frame.ClassBar = 'Runes'
-	elseif E.myclass == "DRUID" then
-		frame.DruidAltMana = self:Construct_DruidAltManaBar(frame)
-		frame.ClassBar = 'DruidAltMana'
+	elseif E.myclass == "DRUID" or E.myclass == "PRIEST" then
+		frame.AltMana = self:Construct_AltManaBar(frame)
+		frame.ClassBar = 'AltMana'
 	elseif E.myclass == "MONK" then
 		frame.ClassIcons = self:Construct_ClassBar(frame)
 		frame.Stagger = self:Construct_Stagger(frame)
-		frame.ClassBar = 'ClassIcons'
-	elseif E.myclass == "PRIEST" then
-		frame.ClassIcons = self:Construct_ClassBar(frame)
 		frame.ClassBar = 'ClassIcons'
 	elseif E.myclass == 'MAGE' then
 		frame.ClassIcons = self:Construct_ClassBar(frame)
