@@ -679,6 +679,9 @@ function AB:DisableBlizzard()
 	MultiBarBottomRight:SetParent(UIHider)
 	MultiBarLeft:SetParent(UIHider)
 	MultiBarRight:SetParent(UIHider)
+	
+	--Look into what this does
+	ArtifactWatchBar:SetParent(UIHider)
 
 	-- Hide MultiBar Buttons, but keep the bars alive
 	for i=1,12 do
