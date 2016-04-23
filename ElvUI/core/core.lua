@@ -197,7 +197,7 @@ function E:CheckClassColor(r, g, b)
 	return matchFound
 end
 
-function E:GetColorTable(data)
+function E:GetColorTable(data)	
 	if not data.r or not data.g or not data.b then
 		error("Could not unpack color values.")
 	end

@@ -71,7 +71,7 @@ function UF:Configure_ClassBar(frame)
 		bars:ClearAllPoints()
 		bars:Point("CENTER", frame.Health.backdrop, "TOP", 0, 0)
 		if E.myclass == 'DRUID' or frame.MAX_CLASS_BAR == 1 then
-			CLASSBAR_WIDTH = CLASSBAR_WIDTH * 2/3
+			CLASSBAR_WIDTH = CLASSBAR_WIDTH
 		else
 			CLASSBAR_WIDTH = CLASSBAR_WIDTH * (frame.MAX_CLASS_BAR - 1) / frame.MAX_CLASS_BAR
 		end
@@ -191,14 +191,6 @@ function UF:Configure_ClassBar(frame)
 				bars[i]:Show()
 			end
 		end
-	else
-		--?? Apparent bug fix for the width after in-game settings change
-		bars.LunarBar:SetMinMaxValues(0, 0)
-		bars.SolarBar:SetMinMaxValues(0, 0)
-		bars.LunarBar:SetStatusBarColor(unpack(ElvUF.colors.EclipseBar[1]))
-		bars.SolarBar:SetStatusBarColor(unpack(ElvUF.colors.EclipseBar[2]))
-		bars.LunarBar:Size(CLASSBAR_WIDTH, frame.CLASSBAR_HEIGHT - ((frame.BORDER + frame.SPACING)*2))
-		bars.SolarBar:Size(CLASSBAR_WIDTH, frame.CLASSBAR_HEIGHT - ((frame.BORDER + frame.SPACING)*2))
 	end
 
 	if E.myclass ~= 'DRUID' then
@@ -357,48 +349,19 @@ end
 -------------------------------------------------------------
 -- DRUID
 -------------------------------------------------------------
-function UF:Construct_DruidResourceBar(frame)
-	local eclipseBar = CreateFrame('Frame', nil, frame)
-	eclipseBar:CreateBackdrop('Default', nil, nil, self.thinBorders)
-	eclipseBar.PostUpdatePower = UF.EclipseDirection
-	eclipseBar.PostUpdateVisibility = UF.EclipsePostUpdateVisibility
-
-	local lunarBar = CreateFrame('StatusBar', nil, eclipseBar)
-	lunarBar:Point('LEFT', eclipseBar)
-	lunarBar:SetStatusBarTexture(E['media'].blankTex)
-	UF['statusbars'][lunarBar] = true
-	eclipseBar.LunarBar = lunarBar
-
-	local solarBar = CreateFrame('StatusBar', nil, eclipseBar)
-	solarBar:Point('LEFT', lunarBar:GetStatusBarTexture(), 'RIGHT')
-	solarBar:SetStatusBarTexture(E['media'].blankTex)
-	UF['statusbars'][solarBar] = true
-	eclipseBar.SolarBar = solarBar
-
-	eclipseBar.Text = lunarBar:CreateFontString(nil, 'OVERLAY')
-	eclipseBar.Text:FontTemplate(nil, 20)
-	eclipseBar.Text:Point("CENTER", lunarBar:GetStatusBarTexture(), "RIGHT")
-
-	return eclipseBar
-end
-
 function UF:Construct_DruidAltManaBar(frame)
-	local dpower = CreateFrame('Frame', nil, frame)
+	local dpower = CreateFrame('StatusBar', nil, frame)
 	dpower:SetFrameStrata("LOW")
-	dpower:SetAllPoints(frame.EclipseBar.backdrop)
-	dpower:SetTemplate("Default")
 	dpower:SetFrameLevel(dpower:GetFrameLevel() + 1)
 	dpower.colorPower = true
 	dpower.PostUpdateVisibility = UF.DruidManaPostUpdateVisibility
 	dpower.PostUpdatePower = UF.DruidPostUpdateAltPower
-
-	dpower.ManaBar = CreateFrame('StatusBar', nil, dpower)
-	UF['statusbars'][dpower.ManaBar] = true
-	dpower.ManaBar:SetStatusBarTexture(E["media"].blankTex)
-	dpower.ManaBar:SetInside(dpower)
+	dpower:CreateBackdrop('Default')
+	UF['statusbars'][dpower] = true
+	dpower:SetStatusBarTexture(E["media"].blankTex)
 
 	dpower.bg = dpower:CreateTexture(nil, "BORDER")
-	dpower.bg:SetAllPoints(dpower.ManaBar)
+	dpower.bg:SetAllPoints(dpower)
 	dpower.bg:SetTexture(E["media"].blankTex)
 	dpower.bg.multiplier = 0.3
 
@@ -406,19 +369,6 @@ function UF:Construct_DruidAltManaBar(frame)
 	UF:Configure_FontString(dpower.Text)
 
 	return dpower
-end
-
-function UF:EclipseDirection()
-	local direction = GetEclipseDirection()
-	if direction == "sun" then
-		self.Text:SetText(">")
-		self.Text:SetTextColor(.2,.2,1,1)
-	elseif direction == "moon" then
-		self.Text:SetText("<")
-		self.Text:SetTextColor(1,1,.3, 1)
-	else
-		self.Text:SetText("")
-	end
 end
 
 function UF:DruidPostUpdateAltPower(unit, min, max)
@@ -446,28 +396,7 @@ function UF:DruidPostUpdateAltPower(unit, min, max)
 	end
 end
 
-local druidEclipseIsShown = false
-local druidManaIsShown = false
-function UF:EclipsePostUpdateVisibility()
-	local isShown = self:IsShown()
-	if druidEclipseIsShown ~= isShown then
-		druidEclipseIsShown = isShown
-		
-		--Only toggle if the eclipse bar was not replaced with druid mana
-		if not druidManaIsShown then
-			ToggleResourceBar(self)
-		end
-	end
-end
 
 function UF:DruidManaPostUpdateVisibility()
-	local isShown = self:IsShown()
-	if druidManaIsShown ~= isShown then
-		druidManaIsShown = isShown
-
-		--Only toggle if the druid mana bar was not replaced with eclipse bar
-		if not druidEclipseIsShown then
-			ToggleResourceBar(self)
-		end
-	end
+	ToggleResourceBar(self)
 end

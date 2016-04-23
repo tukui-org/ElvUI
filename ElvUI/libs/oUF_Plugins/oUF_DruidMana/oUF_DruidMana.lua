@@ -9,14 +9,12 @@ local UPDATE_VISIBILITY = function(self, event)
 	local druidmana = self.DruidAltMana
 	-- check form
 	local form = GetShapeshiftFormID()
-	local min, max = druidmana.ManaBar:GetMinMaxValues()
+	local min, max = druidmana:GetMinMaxValues()
 
-	if druidmana.ManaBar:GetValue() == max then
+	if druidmana:GetValue() == max then
 		druidmana:Hide()
-	elseif (form == BEAR_FORM or form == CAT_FORM) then
+	elseif form == CAT_FORM or form == BEAR_FORM or form == MOONKIN_FORM then
 		druidmana:Show()
-	else
-		druidmana:Hide()
 	end
 	
 	if(druidmana.PostUpdateVisibility) then
@@ -28,15 +26,15 @@ local UNIT_POWER = function(self, event, unit, powerType)
 	if(self.unit ~= unit) then return end
 	local druidmana = self.DruidAltMana
 	
-	if not (druidmana.ManaBar) then return end
+	if not (druidmana) then return end
 	
 	if(druidmana.PreUpdate) then
 		druidmana:PreUpdate(unit)
 	end
 	local min, max = UnitPower('player', SPELL_POWER_MANA), UnitPowerMax('player', SPELL_POWER_MANA)
 
-	druidmana.ManaBar:SetMinMaxValues(0, max)
-	druidmana.ManaBar:SetValue(min)
+	druidmana:SetMinMaxValues(0, max)
+	druidmana:SetValue(min)
 
 	local r, g, b, t
 	if(druidmana.colorPower) then
@@ -57,7 +55,7 @@ local UNIT_POWER = function(self, event, unit, powerType)
 	end
 
 	if(b) then
-		druidmana.ManaBar:SetStatusBarColor(r, g, b)
+		druidmana:SetStatusBarColor(r, g, b)
 
 		local bg = druidmana.bg
 		if(bg) then
