@@ -13,6 +13,10 @@ To load the AddOn engine inside another addon add this to the top of your file:
 --Cache global variables
 local _G = _G
 local pairs, unpack = pairs, unpack
+local GameMenuFrame = GameMenuFrame
+local GameMenuFrameHeader = GameMenuFrameHeader
+local GameMenuButtonLogout = GameMenuButtonLogout
+local GameMenuButtonAddons = GameMenuButtonAddons
 
 BINDING_HEADER_ELVUI = GetAddOnMetadata(..., "Title");
 
@@ -91,6 +95,30 @@ function AddOn:OnInitialize()
 
 	if IsAddOnLoaded("Tukui") then
 		self:StaticPopup_Show("TUKUI_ELVUI_INCOMPATIBLE")
+	end
+	
+	local GameMenuButton = CreateFrame("Button", nil, GameMenuFrame, "GameMenuButtonTemplate")
+	GameMenuButton:Size(GameMenuButtonLogout:GetWidth(), GameMenuButtonLogout:GetHeight())
+
+	GameMenuButton:Point("TOPLEFT", GameMenuButtonAddons, "BOTTOMLEFT", 0, -1)
+	GameMenuButton:SetText(AddOnName)
+	GameMenuButton:SetScript("OnClick", function(self)
+		AddOn:ToggleConfig()
+		HideUIPanel(GameMenuFrame)
+	end)
+	GameMenuFrame[AddOnName] = GameMenuButton
+
+	hooksecurefunc('GameMenuFrame_UpdateVisibleButtons', self.PositionGameMenuButton)	
+end
+
+function AddOn:PositionGameMenuButton()
+	GameMenuFrame:SetHeight(GameMenuFrame:GetHeight() + GameMenuButtonLogout:GetHeight() - 4)
+	local _, relTo, _, _, offY = GameMenuButtonLogout:GetPoint()
+	if relTo ~= GameMenuFrame[AddOnName] then
+		GameMenuFrame[AddOnName]:ClearAllPoints()
+		GameMenuFrame[AddOnName]:Point("TOPLEFT", relTo, "BOTTOMLEFT", 0, -1)
+		GameMenuButtonLogout:ClearAllPoints()
+		GameMenuButtonLogout:Point("TOPLEFT", GameMenuFrame[AddOnName], "BOTTOMLEFT", 0, offY)
 	end
 end
 
