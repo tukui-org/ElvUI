@@ -40,7 +40,6 @@ function UF:Construct_TargetFrame(frame)
 	frame.Castbar.SafeZone = nil
 	frame.Castbar.LatencyTexture:Hide()
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)
-	frame.CPoints = self:Construct_Combobar(frame)
 	frame.HealPrediction = self:Construct_HealComm(frame)
 	frame.DebuffHighlight = self:Construct_DebuffHighlight(frame)
 	frame.GPS = self:Construct_GPS(frame)
@@ -79,7 +78,6 @@ function UF:Update_TargetFrame(frame, db)
 		frame.CAN_HAVE_CLASSBAR = db.combobar.enable
 		frame.MAX_CLASS_BAR = MAX_COMBO_POINTS
 		frame.USE_CLASSBAR = db.combobar.enable
-		frame.CLASSBAR_SHOWN = frame.CAN_HAVE_CLASSBAR and frame.CPoints:IsShown()
 		frame.CLASSBAR_DETACHED = db.combobar.detachFromFrame
 		frame.USE_MINI_CLASSBAR = db.combobar.fill == "spaced" and frame.USE_CLASSBAR
 		frame.CLASSBAR_HEIGHT = frame.USE_CLASSBAR and db.combobar.height or 0
@@ -130,9 +128,6 @@ function UF:Update_TargetFrame(frame, db)
 
 	--Castbar
 	UF:Configure_Castbar(frame)
-
-	--Combo Bar
-	UF:Configure_ComboPoints(frame)
 
 	--Debuff Highlight
 	UF:Configure_DebuffHighlight(frame)

@@ -7,7 +7,6 @@
 	<Script file="oUF_Trinkets\oUF_Trinkets.lua"/>
 	<Script file="oUF_AltMana\oUF_AltMana.lua"/>
 	<Script file="oUF_CombatFader\oUF_CombatFader.lua"/>
-	<Script file='oUF_Anticipation\oUF_Anticipation.lua'/>
 	<Script file='oUF_PVPSpecIcons\oUF_PVPSpecIcons.lua'/>
 	<Script file='oUF_GPS\oUF_GPS.lua'/>
 </Ui>

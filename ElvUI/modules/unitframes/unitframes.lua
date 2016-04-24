@@ -71,7 +71,8 @@ UF['classMaxResourceBar'] = {
 	['WARLOCK'] = 5,
 	['MONK'] = 6,
 	['MAGE'] = 4,
-	['ROGUE'] = 5,
+	['ROGUE'] = 8,
+	["DRUID"] = 5
 }
 
 UF['mapIDs'] = {
@@ -380,15 +381,6 @@ function UF:UpdateColors()
 	ElvUF.colors.ComboPoints[1] = E:GetColorTable(db.classResources.comboPoints[1])
 	ElvUF.colors.ComboPoints[2] = E:GetColorTable(db.classResources.comboPoints[2])
 	ElvUF.colors.ComboPoints[3] = E:GetColorTable(db.classResources.comboPoints[3])
-	ElvUF.colors.ComboPoints[4] = E:GetColorTable(db.classResources.comboPoints[4])
-	ElvUF.colors.ComboPoints[5] = E:GetColorTable(db.classResources.comboPoints[5])
-
-	ElvUF.colors.Anticipation = {}
-	ElvUF.colors.Anticipation[1] = E:GetColorTable(db.classResources.ROGUE[1])
-	ElvUF.colors.Anticipation[2] = E:GetColorTable(db.classResources.ROGUE[2])
-	ElvUF.colors.Anticipation[3] = E:GetColorTable(db.classResources.ROGUE[3])
-	ElvUF.colors.Anticipation[4] = E:GetColorTable(db.classResources.ROGUE[4])
-	ElvUF.colors.Anticipation[5] = E:GetColorTable(db.classResources.ROGUE[5])
 
 	--Monk, Mage,Paladin and Warlock
 	ElvUF.colors.ClassBars = {}

@@ -13,7 +13,7 @@ local UPDATE_VISIBILITY = function(self, event)
 
 	if altmana:GetValue() == max then
 		altmana:Hide()
-	elseif(playerClass == "DRUID" and (form == CAT_FORM or form == BEAR_FORM or form == MOONKIN_FORM)) then
+	elseif(playerClass == "DRUID" and (form == BEAR_FORM or form == MOONKIN_FORM)) then --cat form requires combopoints to be displayed
 		altmana:Show()
 	elseif(playerClass == "PRIEST" and SPEC_PRIEST_SHADOW == GetSpecialization()) then
 		altmana:Show()

@@ -7,11 +7,6 @@ local select, unpack = select, unpack
 local ceil, floor = math.ceil, math.floor
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local UnitPower = UnitPower
-local UnitPowerMax = UnitPowerMax
-local IsSpellKnown = IsSpellKnown
-local SPELL_POWER_HOLY_POWER = SPELL_POWER_HOLY_POWER
-local SPELL_POWER_CHI = SPELL_POWER_CHI
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: ElvUF_Player
@@ -19,12 +14,6 @@ local SPELL_POWER_CHI = SPELL_POWER_CHI
 local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
-
-local SPELL_POWER = {
-	PALADIN = SPELL_POWER_HOLY_POWER,
-	MONK = SPELL_POWER_CHI,
-	MAGE = SPELL_POWER_ARCANE_CHARGES
-}
 
 function UF:Configure_ClassBar(frame)
 	local bars = frame[frame.ClassBar]
@@ -66,7 +55,7 @@ function UF:Configure_ClassBar(frame)
 	if frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then
 		bars:ClearAllPoints()
 		bars:Point("CENTER", frame.Health.backdrop, "TOP", 0, 0)
-		if E.myclass == 'DRUID' or E.myclass == 'PRIEST' then
+		if frame.ClassBar ~= "ClassIcons" then
 			CLASSBAR_WIDTH = CLASSBAR_WIDTH
 		else
 			CLASSBAR_WIDTH = CLASSBAR_WIDTH * (frame.MAX_CLASS_BAR - 1) / frame.MAX_CLASS_BAR
@@ -116,7 +105,7 @@ function UF:Configure_ClassBar(frame)
 	bars:Width(CLASSBAR_WIDTH)
 	bars:Height(frame.CLASSBAR_HEIGHT - ((frame.BORDER + frame.SPACING)*2))
 
-	if (E.myclass ~= 'DRUID' and E.myclass ~= 'PRIEST' and frame.ClassBar ~= 'Stagger') then
+	if (frame.ClassBar == 'ClassIcons') then
 		for i = 1, (UF.classMaxResourceBar[E.myclass] or 0) do
 			bars[i]:Hide()
 			bars[i].backdrop:Hide()
@@ -170,18 +159,23 @@ function UF:Configure_ClassBar(frame)
 					if bars[i].bg then
 						bars[i].bg:SetTexture(unpack(ElvUF.colors.ClassBars[E.myclass]))
 					end
-				elseif E.myclass == 'ROGUE' then
-					bars[i]:SetStatusBarColor(unpack(ElvUF.colors[frame.ClassBar][i]))
+				elseif E.myclass == "ROGUE" or E.myclass == "DRUID" then
+					local r1, g1, b1 = unpack(ElvUF.colors.ComboPoints[1])
+					local r2, g2, b2 = unpack(ElvUF.colors.ComboPoints[2])
+					local r3, g3, b3 = unpack(ElvUF.colors.ComboPoints[3])
+					
+					local r, g, b = ElvUF.ColorGradient(i, frame.MAX_CLASS_BAR > 5 and 6 or 5, r1, g1, b1, r2, g2, b2, r3, g3, b3)
+					bars[i]:SetStatusBarColor(r, g, b)
 
 					if bars[i].bg then
-						bars[i].bg:SetTexture(unpack(ElvUF.colors[frame.ClassBar][i]))
-					end
+						bars[i].bg:SetTexture(r, g, b)
+					end			
 				elseif E.myclass ~= 'DEATHKNIGHT' then
 					bars[i]:SetStatusBarColor(unpack(ElvUF.colors[frame.ClassBar]))
 
 					if bars[i].bg then
 						bars[i].bg:SetTexture(unpack(ElvUF.colors[frame.ClassBar]))
-					end
+					end							
 				end
 				bars[i]:Show()
 			end
@@ -247,12 +241,12 @@ end
 UF.ToggleResourceBar = ToggleResourceBar --Make available to combobar
 
 -------------------------------------------------------------
--- MONK, PALADIN, WARLOCK, MAGE
+-- MONK, PALADIN, WARLOCK, MAGE, and COMBOS
 -------------------------------------------------------------
 function UF:Construct_ClassBar(frame)
 	local bars = CreateFrame("Frame", nil, frame)
 	bars:CreateBackdrop('Default', nil, nil, self.thinBorders)
-
+	
 	for i = 1, UF['classMaxResourceBar'][E.myclass] do
 		bars[i] = CreateFrame("StatusBar", frame:GetName().."ClassBarButton"..i, bars)
 		bars[i]:SetStatusBarTexture(E['media'].blankTex) --Dummy really, this needs to be set so we can change the color
@@ -289,31 +283,6 @@ function UF:UpdateClassBar(cur, max, hasMaxChanged, event)
 	end
 end
 
--------------------------------------------------------------
--- ROGUE
--------------------------------------------------------------
-function UF:Construct_RogueResourceBar(frame)
-	local bars = CreateFrame("Frame", nil, frame)
-	bars:CreateBackdrop('Default', nil, nil, self.thinBorders)
-
-	for i = 1, UF['classMaxResourceBar'][E.myclass] do
-		bars[i] = CreateFrame("StatusBar", frame:GetName().."ClassBarButton"..i, bars)
-		bars[i]:SetStatusBarTexture(E['media'].blankTex) --Dummy really, this needs to be set so we can change the color
-		bars[i]:GetStatusBarTexture():SetHorizTile(false)
-
-		bars[i].bg = bars[i]:CreateTexture(nil, 'ARTWORK')
-
-		UF['statusbars'][bars[i]] = true
-
-		bars[i]:CreateBackdrop('Default', nil, nil, self.thinBorders)
-		bars[i].backdrop:SetParent(bars)
-	end
-
-	bars:SetScript("OnShow", ToggleResourceBar)
-	bars:SetScript("OnHide", ToggleResourceBar)
-
-	return bars
-end
 
 -------------------------------------------------------------
 -- DEATHKNIGHT
