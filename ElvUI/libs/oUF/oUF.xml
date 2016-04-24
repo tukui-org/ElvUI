@@ -12,7 +12,6 @@
 	<Script file='elements\power.lua' />
 	<Script file='elements\aura.lua' />
 	<Script file='elements\health.lua' />
-	<Script file='elements\cpoints.lua' />
 	<Script file='elements\ricons.lua' />
 	<Script file='elements\leader.lua' />
 	<Script file='elements\combat.lua' />
