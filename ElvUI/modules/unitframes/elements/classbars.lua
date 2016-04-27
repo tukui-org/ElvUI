@@ -5,6 +5,7 @@ local UF = E:GetModule('UnitFrames');
 --Lua functions
 local select, unpack = select, unpack
 local ceil, floor = math.ceil, math.floor
+local find = string.find
 --WoW API / Variables
 local CreateFrame = CreateFrame
 
@@ -334,21 +335,37 @@ function UF:Construct_AltManaBar(frame)
 	return altPower
 end
 
+
 function UF:PostUpdateAltMana(unit, min, max)
-	local powerText = self:GetParent().Power.value
+	local parent = self:GetParent()
+	local powerText = parent.Power.value
+	local powerTextParent = powerText:GetParent()
+	local db = parent.db
+
+	local powerTextPosition = db.power.position
 
 	if min ~= max then
 		local color = ElvUF['colors'].power['MANA']
 		color = E:RGBToHex(color[1], color[2], color[3])
 
+		self.Text:SetParent(powerTextParent)
+
 		self.Text:ClearAllPoints()
 		if powerText:GetText() then
-			if select(4, powerText:GetPoint()) < 0 then
+			if find(powerTextPosition, "RIGHT") then
 				self.Text:Point("RIGHT", powerText, "LEFT", 3, 0)
 				self.Text:SetFormattedText(color.."%d%%|r |cffD7BEA5- |r", floor(min / max * 100))
-			else
+			elseif find(powerTextPosition, "LEFT") then
 				self.Text:Point("LEFT", powerText, "RIGHT", -3, 0)
 				self.Text:SetFormattedText("|cffD7BEA5-|r"..color.." %d%%|r", floor(min / max * 100))
+			else
+				if select(4, powerText:GetPoint()) <= 0 then
+					self.Text:Point("LEFT", powerText, "RIGHT", -3, 0)
+					self.Text:SetFormattedText("|cffD7BEA5-|r"..color.." %d%%|r", floor(min / max * 100))
+				else
+					self.Text:Point("RIGHT", powerText, "LEFT", 3, 0)
+					self.Text:SetFormattedText(color.."%d%%|r |cffD7BEA5- |r", floor(min / max * 100))
+				end
 			end
 		else
 			self.Text:Point(powerText:GetPoint())
@@ -358,7 +375,6 @@ function UF:PostUpdateAltMana(unit, min, max)
 		self.Text:SetText()
 	end
 end
-
 
 function UF:AltManaPostUpdateVisibility()
 	ToggleResourceBar(self)
