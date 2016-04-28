@@ -43,7 +43,7 @@ local coinTextureIDs = {
 	[133787] = true,
 	[133788] = true,
 	[133789] = true,
-},
+}
 
 --Credit Haste
 local lootFrame, lootFrameHolder
