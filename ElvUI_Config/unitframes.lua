@@ -6237,7 +6237,7 @@ E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGrou
 	width = 'full',
 }
 
-for i = 1, 5 do
+for i = 1, 3 do
 	E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args['combo'..i] = {
 		order = i + 2,
 		type = 'color',
