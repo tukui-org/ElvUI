@@ -419,7 +419,7 @@ function UF:PostCastStart(unit, name, rank, castid)
 	self:SetStatusBarColor(r, g, b)
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentCastbar, self, self.bg, nil, true)
 	if self.bg:IsShown() then
-		self.bg:SetTexture(r * 0.25, g * 0.25, b * 0.25)
+		self.bg:SetColorTexture(r * 0.25, g * 0.25, b * 0.25)
 
 		local _, _, _, alpha = self.backdrop:GetBackdropColor()
 		self.backdrop:SetBackdropColor(r * 0.58, g * 0.58, b * 0.58, alpha)
@@ -520,7 +520,7 @@ function UF:PostCastInterruptible(unit)
 
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentCastbar, self, self.bg, nil, true)
 	if self.bg:IsShown() then
-		self.bg:SetTexture(r * 0.25, g * 0.25, b * 0.25)
+		self.bg:SetColorTexture(r * 0.25, g * 0.25, b * 0.25)
 
 		local _, _, _, alpha = self.backdrop:GetBackdropColor()
 		self.backdrop:SetBackdropColor(r * 0.58, g * 0.58, b * 0.58, alpha)

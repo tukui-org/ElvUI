@@ -218,7 +218,7 @@ local function LoadSkin(event)
 		button:StripTextures()
 		highlight:StripTextures()
 
-		_G[highlight:GetName().."Middle"]:SetTexture(1, 1, 1, 0.3)
+		_G[highlight:GetName().."Middle"]:SetColorTexture(1, 1, 1, 0.3)
 		_G[highlight:GetName().."Middle"]:SetAllPoints(frame)
 	end
 
@@ -263,7 +263,7 @@ local function LoadSkin(event)
 		local frame = _G["AchievementFrameStatsContainerButton"..i]
 		frame:StyleButton()
 
-		_G["AchievementFrameStatsContainerButton"..i.."BG"]:SetTexture(1, 1, 1, 0.2)
+		_G["AchievementFrameStatsContainerButton"..i.."BG"]:SetColorTexture(1, 1, 1, 0.2)
 		_G["AchievementFrameStatsContainerButton"..i.."HeaderLeft"]:Kill()
 		_G["AchievementFrameStatsContainerButton"..i.."HeaderRight"]:Kill()
 		_G["AchievementFrameStatsContainerButton"..i.."HeaderMiddle"]:Kill()
@@ -272,7 +272,7 @@ local function LoadSkin(event)
 		_G[frame]:StripTextures()
 		_G[frame]:StyleButton()
 
-		_G[frame.."BG"]:SetTexture(1, 1, 1, 0.2)
+		_G[frame.."BG"]:SetColorTexture(1, 1, 1, 0.2)
 		_G[frame.."HeaderLeft"]:Kill()
 		_G[frame.."HeaderRight"]:Kill()
 		_G[frame.."HeaderMiddle"]:Kill()

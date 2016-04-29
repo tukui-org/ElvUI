@@ -200,10 +200,10 @@ local function LoadSkin()
 
 
 		--[[if highlight and not highlight.skinned then
-			highlight:SetTexture(unpack(E["media"].rgbvaluecolor), 0.3)
+			highlight:SetColorTexture(unpack(E["media"].rgbvaluecolor), 0.3)
 			hooksecurefunc(highlight, "SetTexture", function(self, r, g, b, a)
 				if a ~= 0.3 then
-					highlight:SetTexture(unpack(E["media"].rgbvaluecolor), 0.3)
+					highlight:SetColorTexture(unpack(E["media"].rgbvaluecolor), 0.3)
 				end
 			end)
 			highlight:SetInside()

@@ -56,7 +56,7 @@ function AB:SetupExtraButton()
 			button:SetTemplate()
 			_G["ExtraActionButton"..i..'Icon']:SetDrawLayer('ARTWORK')
 			local tex = button:CreateTexture(nil, 'OVERLAY')
-			tex:SetTexture(0.9, 0.8, 0.1, 0.3)
+			tex:SetColorTexture(0.9, 0.8, 0.1, 0.3)
 			tex:SetInside()
 			button:SetCheckedTexture(tex)
 

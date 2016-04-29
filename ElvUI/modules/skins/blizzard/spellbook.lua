@@ -63,7 +63,7 @@ local function LoadSkin()
 			end
 
 			if _G["SpellButton"..i.."Highlight"] then
-				_G["SpellButton"..i.."Highlight"]:SetTexture(1, 1, 1, 0.3)
+				_G["SpellButton"..i.."Highlight"]:SetColorTexture(1, 1, 1, 0.3)
 				_G["SpellButton"..i.."Highlight"]:ClearAllPoints()
 				_G["SpellButton"..i.."Highlight"]:SetAllPoints(icon)
 			end
@@ -111,9 +111,9 @@ local function LoadSkin()
 				end
 			end
 			if button.highlightTexture then
-				hooksecurefunc(button.highlightTexture,"SetTexture",function(self, texOrR, G, B)
+				hooksecurefunc(button.highlightTexture,"SetColorTexture",function(self, texOrR, G, B)
 					if texOrR == [[Interface\Buttons\ButtonHilight-Square]] then
-						button.highlightTexture:SetTexture(1, 1, 1, 0.3)
+						button.highlightTexture:SetColorTexture(1, 1, 1, 0.3)
 					end
 				end)
 			end

@@ -1352,7 +1352,7 @@ local function updateColor(self, r, g, b)
 	end
 
 	if self.bg and self.bg:GetObjectType() == 'Texture' and not self.bg.multiplier then
-		self.bg:SetTexture(r * 0.35, g * 0.35, b * 0.35)
+		self.bg:SetColorTexture(r * 0.35, g * 0.35, b * 0.35)
 	end
 end
 

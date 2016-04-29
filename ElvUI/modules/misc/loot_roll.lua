@@ -249,7 +249,7 @@ function M:START_LOOT_ROLL(event, rollID, time)
 	local color = ITEM_QUALITY_COLORS[quality]
 	f.fsloot:SetText(name)
 	f.status:SetStatusBarColor(color.r, color.g, color.b, .7)
-	f.status.bg:SetTexture(color.r, color.g, color.b)
+	f.status.bg:SetColorTexture(color.r, color.g, color.b)
 
 	f.status:SetMinMaxValues(0, time)
 	f.status:SetValue(time)

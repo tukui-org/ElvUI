@@ -127,7 +127,7 @@ local function LoadSkin()
 	BonusRollFrame.PromptFrame.IconBackdrop:SetFrameLevel(BonusRollFrame.PromptFrame.IconBackdrop:GetFrameLevel() - 1)
 	BonusRollFrame.PromptFrame.IconBackdrop:SetOutside(BonusRollFrame.PromptFrame.Icon)
 	BonusRollFrame.PromptFrame.IconBackdrop:SetTemplate()
-	BonusRollFrame.PromptFrame.Timer.Bar:SetTexture(1, 1, 1)
+	BonusRollFrame.PromptFrame.Timer.Bar:SetColorTexture(1, 1, 1)
 	BonusRollFrame.PromptFrame.Timer.Bar:SetVertexColor(1, 1, 1)
 
 	LootFrame:StripTextures()

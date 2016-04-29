@@ -287,10 +287,10 @@ function UF:ColorizeAuraBars(event, unit)
 
 		if colors then
 			frame.statusBar:SetStatusBarColor(colors.r, colors.g, colors.b)
-			frame.statusBar.bg:SetTexture(colors.r * 0.25, colors.g * 0.25, colors.b * 0.25)
+			frame.statusBar.bg:SetColorTexture(colors.r * 0.25, colors.g * 0.25, colors.b * 0.25)
 		else
 			local r, g, b = frame.statusBar:GetStatusBarColor()
-			frame.statusBar.bg:SetTexture(r * 0.25, g * 0.25, b * 0.25)
+			frame.statusBar.bg:SetColorTexture(r * 0.25, g * 0.25, b * 0.25)
 		end
 
 		if UF.db.colors.transparentAurabars and not frame.statusBar.isTransparent then

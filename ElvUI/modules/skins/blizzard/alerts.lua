@@ -419,7 +419,7 @@ local function LoadSkin()
 	frame.PortraitFrame.PortraitRing:Hide()
 	frame.PortraitFrame.PortraitRingQuality:SetTexture("")
 
-	frame.PortraitFrame.LevelBorder:SetTexture(0, 0, 0, .5)
+	frame.PortraitFrame.LevelBorder:SetColorTexture(0, 0, 0, .5)
 	frame.PortraitFrame.LevelBorder:SetSize(44, 11)
 	frame.PortraitFrame.LevelBorder:ClearAllPoints()
 	frame.PortraitFrame.LevelBorder:Point("BOTTOM", 0, 12)
@@ -435,7 +435,7 @@ local function LoadSkin()
 	frame.PortraitFrame.squareBG = squareBG
 
 	if cover then
-		cover:SetTexture(0, 0, 0)
+		cover:SetColorTexture(0, 0, 0)
 		cover:SetAllPoints(squareBG)
 	end
 

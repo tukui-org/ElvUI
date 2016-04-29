@@ -265,10 +265,10 @@ local function LoadSkin()
 		for i=1, #PAPERDOLL_SIDEBARS do
 			local tab = _G["PaperDollSidebarTab"..i]
 			if tab and not tab.backdrop then
-				tab.Highlight:SetTexture(1, 1, 1, 0.3)
+				tab.Highlight:SetColorTexture(1, 1, 1, 0.3)
 				tab.Highlight:Point("TOPLEFT", 3, -4)
 				tab.Highlight:Point("BOTTOMRIGHT", -1, 0)
-				tab.Hider:SetTexture(0.4,0.4,0.4,0.4)
+				tab.Hider:SetColorTexture(0.4,0.4,0.4,0.4)
 				tab.Hider:Point("TOPLEFT", 3, -4)
 				tab.Hider:Point("BOTTOMRIGHT", -1, 0)
 				tab.TabBg:Kill()
