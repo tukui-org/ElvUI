@@ -75,7 +75,7 @@ local bagStacks = {};
 local bagMaxStacks = {};
 local bagGroups = {};
 local initialOrder = {};
-local itemTypes, itemSubTypes
+--local itemTypes, itemSubTypes
 local bagSorted, bagLocked = {}, {};
 local bagRole
 local moves = {};
@@ -139,7 +139,7 @@ local function IsGuildBankBag(bagid)
 	return (bagid > 50 and bagid <= 58)
 end
 
-local function BuildSortOrder()
+--[[local function BuildSortOrder()
 	itemTypes = {}
 	itemSubTypes = {}
 	for i, iType in ipairs({GetAuctionItemClasses()}) do
@@ -149,7 +149,7 @@ local function BuildSortOrder()
 			itemSubTypes[iType][isType] = ii
 		end
 	end
-end
+end]]
 
 local function UpdateLocation(from, to)
 	if (bagIDs[from] == bagIDs[to]) and (bagStacks[to] < bagMaxStacks[to]) then
@@ -233,9 +233,9 @@ local function DefaultSort(a, b)
 		return aRarity > bRarity
 	end
 
-	if itemTypes[aType] ~= itemTypes[bType] then
+	--[[if itemTypes[aType] ~= itemTypes[bType] then
 		return (itemTypes[aType] or 99) < (itemTypes[bType] or 99)
-	end
+	end]]
 
 	if aType == ARMOR or aType == ENCHSLOT_WEAPON then
 		local aEquipLoc = inventorySlots[aEquipLoc] or -1
@@ -252,7 +252,8 @@ local function DefaultSort(a, b)
 		return PrimarySort(a, b)
 	end
 
-	return ((itemSubTypes[aType] or {})[aSubType] or 99) < ((itemSubTypes[bType] or {})[bSubType] or 99)
+	--return (({})[aSubType] or 99) < (({})[bSubType] or 99)
+	return false
 end
 
 local function ReverseSort(a, b)
@@ -544,7 +545,7 @@ end
 
 function B.Sort(bags, sorter, invertDirection)
 	if not sorter then sorter = invertDirection and ReverseSort or DefaultSort end
-	if not itemTypes then BuildSortOrder() end
+	--if not itemTypes then BuildSortOrder() end
 
 	twipe(blackListedSlots)
 
