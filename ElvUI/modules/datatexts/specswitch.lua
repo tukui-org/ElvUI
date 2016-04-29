@@ -46,8 +46,12 @@ local function OnEvent(self, event)
 	active = GetActiveSpecGroup()
 
 	local talent, loot = '', ''
-	if GetSpecialization(false, false, active) then
-		talent = format('|T%s:14:14:0:0:64:64:4:60:4:60|t', select(4, GetSpecializationInfo(GetSpecialization(false, false, active))))
+	local i = GetSpecialization(false, false, active)
+	if i then
+		i = select(4, GetSpecializationInfo(i))
+		if(i) then
+			talent = format('|T%s:14:14:0:0:64:64:4:60:4:60|t', i)
+		end
 	end
 
 	local specialization = GetLootSpecialization()
