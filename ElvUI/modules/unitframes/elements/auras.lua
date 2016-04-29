@@ -524,7 +524,7 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 		if type == 'Whitelist' then
 			if spell and spell.enable and passPlayerOnlyCheck then
 				returnValue = true
-				icon.priority = spellList[name].priority
+				icon.priority = spell.priority
 			elseif not anotherFilterExists then
 				returnValue = false
 			end
