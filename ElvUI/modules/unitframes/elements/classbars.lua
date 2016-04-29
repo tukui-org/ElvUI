@@ -271,7 +271,7 @@ function UF:UpdateClassBar(cur, max, hasMaxChanged, event)
 	for i=1, #self do
 		r, g, b = self[i]:GetStatusBarColor()
 		self[i].bg:SetVertexColor(r, g, b, 0.15)
-		if i <= max then
+		if(max and (i <= max)) then
 			self[i].bg:Show()
 		else
 			self[i].bg:Hide()
