@@ -315,9 +315,8 @@ local function StyleButton(button, noHover, noPushed, noChecked)
 
 	if button.SetCheckedTexture and not button.checked and not noChecked then
 		local checked = button:CreateTexture()
-		checked:SetColorTexture(1, 1, 1)
+		checked:SetColorTexture(1, 1, 1, 0.3)
 		checked:SetInside()
-		checked:SetAlpha(0.3)
 		button.checked = checked
 		button:SetCheckedTexture(checked)
 	end
