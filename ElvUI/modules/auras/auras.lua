@@ -121,7 +121,8 @@ function A:CreateIcon(button)
 	button.time:FontTemplate(font, self.db.fontSize, self.db.fontOutline)
 
 	button.highlight = button:CreateTexture(nil, "HIGHLIGHT")
-	button.highlight:SetTexture(1, 1, 1, 0.45)
+	button.highlight:SetTexture(E.media.blankTex)
+	button.highlight:SetVertexColor(1, 1, 1, 0.45)
 	button.highlight:SetInside()
 
 	E:SetUpAnimGroup(button)
