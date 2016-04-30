@@ -37,10 +37,16 @@ end
 function M:UpdateExperience(event)
 	local bar = self.expBar
 
-	if(UnitLevel('player') == MAX_PLAYER_LEVEL) or IsXPUserDisabled() then
+	if (UnitLevel('player') == MAX_PLAYER_LEVEL and E.db.general.experience.hideAtMaxLevel) or IsXPUserDisabled() then
 		bar:Hide()
 	else
 		bar:Show()
+		
+		if E.db.general.experience.hideInVehicle then
+			E:RegisterObjectForVehicleLock(bar, E.UIParent)
+		else
+			E:UnregisterObjectForVehicleLock(bar)
+		end
 
 		local cur, max = self:GetXP('player')
 		bar.statusBar:SetMinMaxValues(0, max)
@@ -93,6 +99,12 @@ function M:UpdateReputation(event)
 		bar:Hide()
 	else
 		bar:Show()
+		
+		if E.db.general.reputation.hideInVehicle then
+			E:RegisterObjectForVehicleLock(bar, E.UIParent)
+		else
+			E:UnregisterObjectForVehicleLock(bar)
+		end
 
 		local text = ''
 		local textFormat = E.db.general.reputation.textFormat
@@ -235,7 +247,7 @@ end
 
 function M:EnableDisable_ExperienceBar()
 	local maxLevel = MAX_PLAYER_LEVEL_TABLE[GetExpansionLevel()];
-	if UnitLevel('player') ~= maxLevel and E.db.general.experience.enable then
+	if (UnitLevel('player') ~= maxLevel or not E.db.general.experience.hideAtMaxLevel) and E.db.general.experience.enable then
 		self:RegisterEvent('PLAYER_XP_UPDATE', 'UpdateExperience')
 		self:RegisterEvent('PLAYER_LEVEL_UP', 'UpdateExperience')
 		self:RegisterEvent("DISABLE_XP_GAIN", 'UpdateExperience')

@@ -898,22 +898,22 @@ E.Options.args.general = {
 					type = "toggle",
 					name = L["Mouseover"],
 				},
-				spacer = {
+				hideAtMaxLevel = {
 					order = 2,
-					type = 'description',
-					name = ' '
+					type = "toggle",
+					name = L["Hide At Max Level"],
+					set = function(info, value) E.db.general.experience[ info[#info] ] = value; E:GetModule('Misc'):UpdateExperience() end,
 				},
-				width = {
+				hideInVehicle = {
 					order = 3,
-					type = "range",
-					name = L["Width"],
-					min = 5, max = ceil(GetScreenWidth() or 800), step = 1,
+					type = "toggle",
+					name = L["Hide In Vehicle"],
+					set = function(info, value) E.db.general.experience[ info[#info] ] = value; E:GetModule('Misc'):UpdateExperience() end,
 				},
-				height = {
+				reverseFill = {
 					order = 4,
-					type = "range",
-					name = L["Height"],
-					min = 5, max = ceil(GetScreenHeight() or 800), step = 1,
+					type = "toggle",
+					name = L["Reverse Fill Direction"],
 				},
 				orientation = {
 					order = 5,
@@ -925,13 +925,26 @@ E.Options.args.general = {
 						['VERTICAL'] = L["Vertical"]
 					}
 				},
-				reverseFill = {
+				width = {
 					order = 6,
-					type = "toggle",
-					name = L["Reverse Fill Direction"],
+					type = "range",
+					name = L["Width"],
+					min = 5, max = ceil(GetScreenWidth() or 800), step = 1,
+				},
+				height = {
+					order = 7,
+					type = "range",
+					name = L["Height"],
+					min = 5, max = ceil(GetScreenHeight() or 800), step = 1,
+				},
+				textSize = {
+					order = 8,
+					name = L["Font Size"],
+					type = "range",
+					min = 6, max = 22, step = 1,
 				},
 				textFormat = {
-					order = 7,
+					order = 9,
 					type = 'select',
 					name = L["Text Format"],
 					values = {
@@ -941,12 +954,6 @@ E.Options.args.general = {
 						CURPERC = L["Current - Percent"],
 					},
 					set = function(info, value) E.db.general.experience[ info[#info] ] = value; E:GetModule('Misc'):UpdateExperience() end,
-				},
-				textSize = {
-					order = 8,
-					name = L["Font Size"],
-					type = "range",
-					min = 6, max = 22, step = 1,
 				},
 			},
 		},
@@ -968,25 +975,19 @@ E.Options.args.general = {
 					type = "toggle",
 					name = L["Mouseover"],
 				},
-				spacer = {
+				hideInVehicle = {
 					order = 2,
-					type = 'description',
-					name = ' '
+					type = "toggle",
+					name = L["Hide In Vehicle"],
+					set = function(info, value) E.db.general.reputation[ info[#info] ] = value; E:GetModule('Misc'):UpdateReputation() end,
 				},
-				width = {
+				reverseFill = {
 					order = 3,
-					type = "range",
-					name = L["Width"],
-					min = 5, max = ceil(GetScreenWidth() or 800), step = 1,
-				},
-				height = {
-					order = 4,
-					type = "range",
-					name = L["Height"],
-					min = 5, max = ceil(GetScreenHeight() or 800), step = 1,
+					type = "toggle",
+					name = L["Reverse Fill Direction"],
 				},
 				orientation = {
-					order = 5,
+					order = 4,
 					type = "select",
 					name = L["Orientation"],
 					desc = L["Direction the bar moves on gains/losses"],
@@ -995,13 +996,8 @@ E.Options.args.general = {
 						['VERTICAL'] = L["Vertical"]
 					}
 				},
-				reverseFill = {
-					order = 6,
-					type = "toggle",
-					name = L["Reverse Fill Direction"],
-				},
 				textFormat = {
-					order = 7,
+					order = 5,
 					type = 'select',
 					name = L["Text Format"],
 					values = {
@@ -1011,6 +1007,18 @@ E.Options.args.general = {
 						CURPERC = L["Current - Percent"],
 					},
 					set = function(info, value) E.db.general.reputation[ info[#info] ] = value; E:GetModule('Misc'):UpdateReputation() end,
+				},
+				width = {
+					order = 6,
+					type = "range",
+					name = L["Width"],
+					min = 5, max = ceil(GetScreenWidth() or 800), step = 1,
+				},
+				height = {
+					order = 7,
+					type = "range",
+					name = L["Height"],
+					min = 5, max = ceil(GetScreenHeight() or 800), step = 1,
 				},
 				textSize = {
 					order = 8,

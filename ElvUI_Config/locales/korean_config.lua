@@ -449,7 +449,9 @@ L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from see
 L["Enhanced PVP Messages"] = true;
 L["General"] = "일반"
 L["Height of the objective tracker. Increase size to be able to see more objectives."] = "퀘스트프레임의 길이를 결정합니다."
+L["Hide At Max Level"] = true;
 L["Hide Error Text"] = "전투중 에러 숨기기"
+L["Hide In Vehicle"] = true;
 L["Hides the red error text at the top of the screen while in combat."] = "화면 중앙 상단에 뜨는 여러 에러메시지(ex : 사정거리 부족)를 전투 중에는 띄우지 않게 합니다."
 L["Log Taints"] = "Taint 에러 표시"
 L["Login Message"] = "로그인 메세지 표시"

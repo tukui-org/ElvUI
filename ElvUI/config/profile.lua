@@ -88,6 +88,8 @@ P['general'] = {
 		['mouseover'] = false,
 		['orientation'] = 'VERTICAL',
 		["reverseFill"] = false,
+		["hideAtMaxLevel"] = true,
+		["hideInVehicle"] = false,
 	},
 	['reputation'] = {
 		['enable'] = true,
@@ -98,6 +100,7 @@ P['general'] = {
 		['mouseover'] = false,
 		['orientation'] = 'VERTICAL',
 		["reverseFill"] = false,
+		["hideInVehicle"] = false,
 	},
 	['threat'] = {
 		['enable'] = true,

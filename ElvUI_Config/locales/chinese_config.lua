@@ -402,7 +402,9 @@ L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from see
 L["Enhanced PVP Messages"] = true;
 L["General"] = "一般"
 L["Height of the objective tracker. Increase size to be able to see more objectives."] = true;
+L["Hide At Max Level"] = true;
 L["Hide Error Text"] = "隐藏错误文字"
+L["Hide In Vehicle"] = true;
 L["Hides the red error text at the top of the screen while in combat."] = "战斗中隐藏屏幕顶部红字错误信息."
 L["Log Taints"] = "错误记录"
 L["Login Message"] = "登入资讯"
