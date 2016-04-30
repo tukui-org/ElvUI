@@ -88,6 +88,7 @@ P['general'] = {
 		['mouseover'] = false,
 		['orientation'] = 'VERTICAL',
 		["reverseFill"] = false,
+		["hideAtMaxLevel"] = true,
 	},
 	['reputation'] = {
 		['enable'] = true,

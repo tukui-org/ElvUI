@@ -401,6 +401,7 @@ L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from see
 L["Enhanced PVP Messages"] = true;
 L["General"] = "Geral"
 L["Height of the objective tracker. Increase size to be able to see more objectives."] = true;
+L["Hide at Max Level"] = true;
 L["Hide Error Text"] = "Esconder Texto de Erro"
 L["Hides the red error text at the top of the screen while in combat."] = "Esconde o texto de erro vermelho do topo da tela quando em combate."
 L["Log Taints"] = "Capturar Problemas"

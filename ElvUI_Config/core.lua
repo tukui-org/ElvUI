@@ -900,10 +900,11 @@ E.Options.args.general = {
 					type = "toggle",
 					name = L["Mouseover"],
 				},
-				spacer = {
+				hideAtMaxLevel = {
 					order = 2,
-					type = 'description',
-					name = ' '
+					type = "toggle",
+					name = L["Hide at Max Level"],
+					set = function(info, value) E.db.general.experience[ info[#info] ] = value; E:GetModule('Misc'):UpdateExperience() end,
 				},
 				width = {
 					order = 3,

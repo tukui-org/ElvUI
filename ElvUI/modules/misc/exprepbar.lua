@@ -37,7 +37,7 @@ end
 function M:UpdateExperience(event)
 	local bar = self.expBar
 
-	if(UnitLevel('player') == MAX_PLAYER_LEVEL) or IsXPUserDisabled() then
+	if (UnitLevel('player') == MAX_PLAYER_LEVEL and E.db.general.experience.hideAtMaxLevel) or IsXPUserDisabled() then
 		bar:Hide()
 	else
 		bar:Show()
@@ -235,7 +235,7 @@ end
 
 function M:EnableDisable_ExperienceBar()
 	local maxLevel = MAX_PLAYER_LEVEL_TABLE[GetExpansionLevel()];
-	if UnitLevel('player') ~= maxLevel and E.db.general.experience.enable then
+	if (UnitLevel('player') ~= maxLevel or not E.db.general.experience.hideAtMaxLevel) and E.db.general.experience.enable then
 		self:RegisterEvent('PLAYER_XP_UPDATE', 'UpdateExperience')
 		self:RegisterEvent('PLAYER_LEVEL_UP', 'UpdateExperience')
 		self:RegisterEvent("DISABLE_XP_GAIN", 'UpdateExperience')
