@@ -41,6 +41,12 @@ function M:UpdateExperience(event)
 		bar:Hide()
 	else
 		bar:Show()
+		
+		if E.db.general.experience.hideInVehicle then
+			E:RegisterObjectForVehicleLock(bar, E.UIParent)
+		else
+			E:UnregisterObjectForVehicleLock(bar)
+		end
 
 		local cur, max = self:GetXP('player')
 		bar.statusBar:SetMinMaxValues(0, max)
@@ -93,6 +99,12 @@ function M:UpdateReputation(event)
 		bar:Hide()
 	else
 		bar:Show()
+		
+		if E.db.general.reputation.hideInVehicle then
+			E:RegisterObjectForVehicleLock(bar, E.UIParent)
+		else
+			E:UnregisterObjectForVehicleLock(bar)
+		end
 
 		local text = ''
 		local textFormat = E.db.general.reputation.textFormat

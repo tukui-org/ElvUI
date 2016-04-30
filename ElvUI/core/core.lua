@@ -29,6 +29,7 @@ local SendChatMessage = SendChatMessage
 local GetFunctionCPUUsage = GetFunctionCPUUsage
 local GetMapNameByID = GetMapNameByID
 local GetBonusBarOffset = GetBonusBarOffset
+local UnitHasVehicleUI = UnitHasVehicleUI
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 local COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN = COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN
@@ -71,6 +72,7 @@ E['RegisteredInitialModules'] = {}
 E['valueColorUpdateFuncs'] = {};
 E.TexCoords = {.08, .92, .08, .92}
 E.FrameLocks = {}
+E.VehicleLocks = {}
 E.CreditsList = {};
 E.PixelMode = false;
 
@@ -976,6 +978,67 @@ function E:AddNonPetBattleFrames(event)
 	self:UnregisterEvent("PLAYER_REGEN_DISABLED")
 end
 
+function E:EnterVehicleHideFrames(event, unit)
+	if unit ~= "player" then return; end
+	
+	for object in pairs(E.VehicleLocks) do
+		object:SetParent(E.HiddenFrame)
+	end
+end
+
+function E:ExitVehicleShowFrames(event, unit)
+	if unit ~= "player" then return; end
+	
+	for object, originalParent in pairs(E.VehicleLocks) do
+		object:SetParent(originalParent)
+	end
+end
+
+function E:RegisterObjectForVehicleLock(object, originalParent)
+	if not object or not originalParent then
+		E:Print("Error. Usage: RegisterObjectForVehicleLock(object, originalParent)")
+		return
+	end
+
+	local object = _G[object] or object
+	--Entering/Exiting vehicles will often happen in combat.
+	--For this reason we cannot allow protected objects.
+	if object.IsProtected and object:IsProtected() then
+		E:Print("Error. Object is protected and cannot be changed in combat.")
+		return
+	end
+
+	--Check if we are already in a vehicles
+	if UnitHasVehicleUI("player") then
+		object:SetParent(E.HiddenFrame)
+	end
+
+	--Add object to table
+	E.VehicleLocks[object] = originalParent
+end
+
+function E:UnregisterObjectForVehicleLock(object)
+	if not object then
+		E:Print("Error. Usage: UnregisterObjectForVehicleLock(object)")
+		return
+	end
+
+	local object = _G[object] or object
+	--Check if object was registered to begin with
+	if not E.VehicleLocks[object] then
+		return
+	end
+
+	--Change parent of object back to original parent
+	local originalParent = E.VehicleLocks[object]
+	if originalParent then
+		object:SetParent(originalParent)
+	end
+
+	--Remove object from table
+	E.VehicleLocks[object] = nil
+end
+
 function E:ResetAllUI()
 	self:ResetMovers()
 
@@ -1365,6 +1428,8 @@ function E:Initialize()
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 	self:RegisterEvent("PET_BATTLE_CLOSE", 'AddNonPetBattleFrames')
 	self:RegisterEvent('PET_BATTLE_OPENING_START', "RemoveNonPetBattleFrames")
+	self:RegisterEvent("UNIT_ENTERED_VEHICLE", "EnterVehicleHideFrames")
+	self:RegisterEvent("UNIT_EXITED_VEHICLE", "ExitVehicleShowFrames")
 
 	if self.myclass == "DRUID" then
 		self:RegisterEvent("SPELLS_CHANGED")
