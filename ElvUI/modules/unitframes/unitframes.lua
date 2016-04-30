@@ -1024,7 +1024,7 @@ function UF:DisableBlizzard(event)
 		CompactRaidFrameContainer:UnregisterAllEvents()
 
 		HideRaid()
-		hooksecurefunc("CompactUnitFrame_RegisterEvents", CompactUnitFrame_UnregisterEvents)
+		--hooksecurefunc("CompactUnitFrame_RegisterEvents", CompactUnitFrame_UnregisterEvents) -- breaks nameplates names
 	end
 end
 

@@ -155,6 +155,7 @@ P["nameplate"] = {
 	['font'] = 'Arial Narrow',
 	['fontSize'] = 7,
 	['fontOutline'] = 'MONOCHROMEOUTLINE',
+	["statusbar"] = "ElvUI Norm",
 	["smallPlates"] = true,
 	["comboPoints"] = false,
 	['nonTargetAlpha'] = 0.6,
