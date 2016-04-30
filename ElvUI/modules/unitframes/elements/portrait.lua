@@ -53,7 +53,7 @@ function UF:Configure_Portrait(frame, dontHide)
 			end
 
 			portrait:SetAllPoints(frame.Health)
-			portrait:SetAlpha(0.3)
+			portrait:SetAlpha(0.35)
 			if not dontHide then
 				portrait:Show()
 			end
