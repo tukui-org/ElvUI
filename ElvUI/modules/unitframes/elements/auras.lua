@@ -280,6 +280,8 @@ function UF:SortAuras()
 	end
 
 	--Look into possibly applying filter priorities for auras here.
+	
+	return 1, #self --from/to range needed for the :SetPosition call in oUF aura element. Without this aura icon position gets all whacky when not sorted by index
 end
 
 function UF:UpdateAuraIconSettings(auras, noCycle)
