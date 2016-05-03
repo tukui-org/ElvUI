@@ -429,7 +429,7 @@ function UF:CheckFilter(filterType, isFriend)
 	return false
 end
 
-function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, timeLeft, unitCaster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura)
+function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, timeLeft, unitCaster, isStealable, _, spellID, canApplyAura, isBossAura)
 	local isPlayer, isFriend
 	local db = self:GetParent().db
 	if not db or not db[self.type] then return true; end
@@ -473,13 +473,13 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 	end
 
 
-	if UF:CheckFilter(db.noConsolidated, isFriend) then
-		if shouldConsolidate == true then
-			returnValue = false;
+	--[[if UF:CheckFilter(db.selfBuffs, isFriend) then
+		if SpellIsSelfBuff(spellID) then
+			returnValue = true;
 		end
 
 		anotherFilterExists = true
-	end
+	end]]
 
 	if UF:CheckFilter(db.noDuration, isFriend) then
 		if (duration == 0 or not duration) then
