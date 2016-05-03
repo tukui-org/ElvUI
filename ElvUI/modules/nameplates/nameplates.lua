@@ -116,6 +116,11 @@ function NP:Initialize()
 	self:RegisterEvent("NAME_PLATE_REMOVED")
 	
 	self:RegisterEvent("NAME_PLATE_UNIT_ADDED")
+	
+	hooksecurefunc(NamePlateDriverFrame, "SetupClassNameplateBar", function(...)
+		--muahaha true method to hook onto nameplate stuff. will rewrite all this stuff later
+		--print('test')
+	end)
 end
 
 
