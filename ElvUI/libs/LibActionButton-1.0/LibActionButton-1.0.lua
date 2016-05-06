@@ -126,7 +126,6 @@ local PLAYERCLASS = select(2, UnitClass('player'))
 local HOLY_POWER_SPELLS = {
 	[85256] = GetSpellInfo(85256), --Templar's Verdict
 	[53385] = GetSpellInfo(53385), --Divine Storm
-	[53600] = GetSpellInfo(53600), --Shield of the Righteous
 	[157048] = GetSpellInfo(157048), -- Final Verdict
 	[152262] = GetSpellInfo(152262), --Seraphim
 };

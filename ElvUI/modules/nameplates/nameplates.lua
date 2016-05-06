@@ -31,41 +31,46 @@ function NP:NAME_PLATE_CREATED(event, plate)
 	plate.UnitFrame.name:SetPoint("BOTTOMLEFT", healthBar, "TOPLEFT", 0, 2)
 	plate.UnitFrame.name:SetJustifyH("LEFT")
 	
+	local font, fontSize, fontOutline = LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline
+	hooksecurefunc(plate.UnitFrame.name, "SetFont", function(_, _, fS)
+		if(fS ~= fontSize) then
+			plate.UnitFrame.name:SetFont(font, fontSize, fontOutline)
+		end
+	end)
+	
 	plate.UnitFrame.level = plate.UnitFrame:CreateFontString(nil, 'OVERLAY')
 	plate.UnitFrame.level:SetPoint("BOTTOMRIGHT", healthBar, "TOPRIGHT", 0, 2)
 	
 	plate.UnitFrame.name:SetPoint("BOTTOMRIGHT", plate.UnitFrame.level, "BOTTOMLEFT")
-	
-	if(not border.bordertop) then
-		border.bordertop = border:CreateTexture(nil, "BORDER")
-		border.bordertop:SetPoint("TOPLEFT", healthBar, "TOPLEFT", -self.mult, self.mult)
-		border.bordertop:SetPoint("TOPRIGHT", healthBar, "TOPRIGHT", self.mult, self.mult)
-		border.bordertop:SetHeight(self.mult)
-		border.bordertop:SetColorTexture(unpack(E["media"].bordercolor))
-		border.bordertop:SetDrawLayer("BORDER", 1)
 
-		border.borderbottom = border:CreateTexture(nil, "BORDER")
-		border.borderbottom:SetPoint("BOTTOMLEFT", healthBar, "BOTTOMLEFT", -self.mult, -self.mult)
-		border.borderbottom:SetPoint("BOTTOMRIGHT", healthBar, "BOTTOMRIGHT", self.mult, -self.mult)
-		border.borderbottom:SetHeight(self.mult)
-		border.borderbottom:SetColorTexture(unpack(E["media"].bordercolor))
-		border.borderbottom:SetDrawLayer("BORDER", 1)
+	border.bordertop = border:CreateTexture(nil, "BORDER")
+	border.bordertop:SetPoint("TOPLEFT", healthBar, "TOPLEFT", -self.mult, self.mult)
+	border.bordertop:SetPoint("TOPRIGHT", healthBar, "TOPRIGHT", self.mult, self.mult)
+	border.bordertop:SetHeight(self.mult)
+	border.bordertop:SetColorTexture(unpack(E["media"].bordercolor))
+	border.bordertop:SetDrawLayer("BORDER", 1)
 
-		border.borderleft = border:CreateTexture(nil, "BORDER")
-		border.borderleft:SetPoint("TOPLEFT", healthBar, "TOPLEFT", -self.mult, self.mult)
-		border.borderleft:SetPoint("BOTTOMLEFT", healthBar, "BOTTOMLEFT", self.mult, -self.mult)
-		border.borderleft:SetWidth(self.mult)
-		border.borderleft:SetColorTexture(unpack(E["media"].bordercolor))
-		border.borderleft:SetDrawLayer("BORDER", 1)
+	border.borderbottom = border:CreateTexture(nil, "BORDER")
+	border.borderbottom:SetPoint("BOTTOMLEFT", healthBar, "BOTTOMLEFT", -self.mult, -self.mult)
+	border.borderbottom:SetPoint("BOTTOMRIGHT", healthBar, "BOTTOMRIGHT", self.mult, -self.mult)
+	border.borderbottom:SetHeight(self.mult)
+	border.borderbottom:SetColorTexture(unpack(E["media"].bordercolor))
+	border.borderbottom:SetDrawLayer("BORDER", 1)
 
-		border.borderright = border:CreateTexture(nil, "BORDER")
-		border.borderright:SetPoint("TOPRIGHT", healthBar, "TOPRIGHT", self.mult, self.mult)
-		border.borderright:SetPoint("BOTTOMRIGHT", healthBar, "BOTTOMRIGHT", -self.mult, -self.mult)
-		border.borderright:SetWidth(self.mult)
-		border.borderright:SetColorTexture(unpack(E["media"].bordercolor))
-		border.borderright:SetDrawLayer("BORDER", 1)
-	end
-	
+	border.borderleft = border:CreateTexture(nil, "BORDER")
+	border.borderleft:SetPoint("TOPLEFT", healthBar, "TOPLEFT", -self.mult, self.mult)
+	border.borderleft:SetPoint("BOTTOMLEFT", healthBar, "BOTTOMLEFT", self.mult, -self.mult)
+	border.borderleft:SetWidth(self.mult)
+	border.borderleft:SetColorTexture(unpack(E["media"].bordercolor))
+	border.borderleft:SetDrawLayer("BORDER", 1)
+
+	border.borderright = border:CreateTexture(nil, "BORDER")
+	border.borderright:SetPoint("TOPRIGHT", healthBar, "TOPRIGHT", self.mult, self.mult)
+	border.borderright:SetPoint("BOTTOMRIGHT", healthBar, "BOTTOMRIGHT", -self.mult, -self.mult)
+	border.borderright:SetWidth(self.mult)
+	border.borderright:SetColorTexture(unpack(E["media"].bordercolor))
+	border.borderright:SetDrawLayer("BORDER", 1)
+
 	self:ApplySettings(plate)
 end
 
@@ -86,15 +91,19 @@ function NP:NAME_PLATE_UNIT_ADDED(event, unit)
 	--Level
 	local level = UnitLevel(unit)
 	local color = GetQuestDifficultyColor(level)
-	plate.UnitFrame.level:SetText(level)
-	plate.UnitFrame.level:SetTextColor(color.r, color.g, color.b)
+
+	if level == UnitLevel("player") then
+		plate.UnitFrame.level:SetText("")
+	elseif level == -1 then
+		plate.UnitFrame.level:SetText('??')
+		plate.UnitFrame.level:SetTextColor(0.9, 0, 0)	
+	else
+		plate.UnitFrame.level:SetText(level)
+		plate.UnitFrame.level:SetTextColor(color.r, color.g, color.b)
+	end
 end
 
 function NP:NAME_PLATE_UNIT_REMOVED(event, unit)
-
-end
-
-function NP:UpdateSettings()
 
 end
 
@@ -107,6 +116,11 @@ function NP:Initialize()
 	self:RegisterEvent("NAME_PLATE_REMOVED")
 	
 	self:RegisterEvent("NAME_PLATE_UNIT_ADDED")
+	
+	hooksecurefunc(NamePlateDriverFrame, "SetupClassNameplateBar", function(...)
+		--muahaha true method to hook onto nameplate stuff. will rewrite all this stuff later
+		--print('test')
+	end)
 end
 
 

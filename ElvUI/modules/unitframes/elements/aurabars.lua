@@ -177,7 +177,7 @@ function UF.SortAuraBarName(a, b)
 	return a.name > b.name
 end
 
-function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID)
+function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, _, spellID)
 	if not self.db then return; end
 	local db = self.db.aurabar
 
@@ -207,13 +207,13 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 		anotherFilterExists = true
 	end
 
-	if UF:CheckFilter(db.noConsolidated, isFriend) then
-		if shouldConsolidate == true then
-			returnValue = false;
+	--[[if UF:CheckFilter(db.selfBuffs, isFriend) then
+		if SpellIsSelfBuff(spellID) then
+			returnValue = true;
 		end
 
 		anotherFilterExists = true
-	end
+	end]]
 
 	if UF:CheckFilter(db.noDuration, isFriend) then
 		if (duration == 0 or not duration) then

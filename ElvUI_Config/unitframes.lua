@@ -218,12 +218,11 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 			name = L["Block Non-Dispellable Auras"],
 			desc = L["Don't display auras that cannot be purged or dispelled by your class."],
 		}
-		config.args.filters.args.noConsolidated = {
+		--[[config.args.filters.args.selfBuffs = {
 			order = 14,
 			type = 'toggle',
-			name = L["Block Raid Buffs"],
-			desc = L["Don't display raid buffs such as Blessing of Kings or Mark of the Wild."],
-		}
+			name = L["Allow Self Buffs"],
+		}]]
 		config.args.filters.args.useFilter = {
 			order = 16,
 			name = L["Additional Filter"],
@@ -359,30 +358,30 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 				}
 			},
 		}
-		config.args.filters.args.noConsolidated = {
+		--[[config.args.filters.args.selfBuffs = {
 			order = 14,
 			guiInline = true,
 			type = 'group',
-			name = L["Block Raid Buffs"],
+			name = L["Allow Self-Buffs"],
 			args = {
 				friendly = {
 					order = 2,
 					type = 'toggle',
 					name = L["Friendly"],
-					desc = L["If the unit is friendly to you."].." "..L["Don't display raid buffs such as Blessing of Kings or Mark of the Wild."],
-					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].noConsolidated.friendly end,
-					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].noConsolidated.friendly = value; updateFunc(UF, groupName) end,
+					desc = L["If the unit is friendly to you."].." "..L["Display self-buffs"],
+					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].selfBuffs.friendly end,
+					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].selfBuffs.friendly = value; updateFunc(UF, groupName) end,
 				},
 				enemy = {
 					order = 3,
 					type = 'toggle',
 					name = L["Enemy"],
-					desc = L["If the unit is an enemy to you."].." "..L["Don't display raid buffs such as Blessing of Kings or Mark of the Wild."],
-					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].noConsolidated.enemy end,
-					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].noConsolidated.enemy = value; updateFunc(UF, groupName) end,
+					desc = L["If the unit is an enemy to you."].." "..L["Display self-buffs"],
+					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].selfBuffs.enemy end,
+					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].selfBuffs.enemy = value; updateFunc(UF, groupName) end,
 				}
 			},
-		}
+		}]]
 		config.args.filters.args.useFilter = {
 			order = 16,
 			name = L["Additional Filter"],
