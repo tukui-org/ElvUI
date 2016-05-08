@@ -2,6 +2,16 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local mod = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
 local LSM = LibStub("LibSharedMedia-3.0")
 
+function mod:SetTargetScale(frame)
+	if(UnitIsUnit(frame.unit, "target")) then
+		frame.HealthBar:SetHeight(self.db.healthbar.height * self.db.targetScale)
+		frame.HealthBar:SetWidth(self.db.healthbar.width * (self.db.targetScale + 0.15))	
+	else
+		frame.HealthBar:SetHeight(self.db.healthbar.height)
+		frame.HealthBar:SetWidth(self.db.healthbar.width)		
+	end
+end
+
 --Get Data For All Group Members Threat on Each Nameplate
 function mod:Update_ThreatList(frame)
 	local unit = frame.unit
@@ -217,8 +227,8 @@ function mod:UpdateElement_Cast(frame, event, ...)
 			frame.CastBar.Name:SetText(text)
 			frame.CastBar.value = ((endTime / 1000) - GetTime());
 			frame.CastBar.maxValue = (endTime - startTime) / 1000;
-			frame:SetMinMaxValues(0, frame.CastBar.maxValue);
-			frame:SetValue(frame.CastBar.value);
+			frame.CastBar:SetMinMaxValues(0, frame.CastBar.maxValue);
+			frame.CastBar:SetValue(frame.CastBar.value);
 		end
 	elseif ( event == "UNIT_SPELLCAST_INTERRUPTIBLE" ) then
 		frame.CastBar.canInterrupt = true
@@ -318,10 +328,10 @@ end
 function mod:ConfigureElement_Glow(frame)
 	frame.Glow:SetFrameLevel(0)
 	frame.Glow:SetFrameStrata("BACKGROUND")
-	frame.Glow:SetOutside(frame.HealthBar, 3, 3)
+	frame.Glow:SetOutside(frame.HealthBar, 3 + mod.mult, 3 + mod.mult)
 	frame.Glow:SetBackdrop( {
-		edgeFile = LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = 3 + mod.mult,
-		insets = {left = 6, right = 6, top = 6, bottom = 6},
+		edgeFile = LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = E:Scale(3),
+		insets = {left = E:Scale(5), right = E:Scale(5), top = E:Scale(5), bottom = E:Scale(5)},
 	})
 	frame.Glow:SetBackdropBorderColor(0, 0, 0)
 end
@@ -452,9 +462,9 @@ function mod:ConfigureElement_HealthBar(frame)
 	local healthBar = frame.HealthBar
 
 	--Position
-	healthBar:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 20, self.db.castbar.height + 3)
-	healthBar:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -20, self.db.castbar.height + 3)
+	healthBar:SetPoint("BOTTOM", frame, "BOTTOM", 0, self.db.castbar.height + 3)
 	healthBar:SetHeight(self.db.healthbar.height)
+	healthBar:SetWidth(self.db.healthbar.width)
 
 	--Texture
 	healthBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
@@ -475,6 +485,7 @@ function mod:UpdateElement_All(frame, unit)
 	mod:UpdateElement_Level(frame)
 	mod:UpdateElement_Glow(frame)
 	mod:UpdateElement_Cast(frame)
+	mod:SetTargetScale(frame)
 end
 
 function mod:RegisterEvents(frame, unit)
@@ -555,6 +566,7 @@ function mod:OnEvent(event, unit, ...)
 		mod:UpdateElement_HealthColor(self)
 		mod:UpdateElement_Glow(self)
 	elseif(event == "PLAYER_TARGET_CHANGED") then
+		mod:SetTargetScale(self)
 		mod:UpdateElement_Glow(self)
 	else --Cast Events
 		mod:UpdateElement_Cast(self, event, unit, ...)
@@ -562,11 +574,12 @@ function mod:OnEvent(event, unit, ...)
 end
 
 function mod:NAME_PLATE_CREATED(event, frame)
-	frame.UnitFrame = CreateFrame("BUTTON", "$parentUnitFrame", frame);
+	frame.UnitFrame = CreateFrame("BUTTON", "$parentUnitFrame", UIParent);
 	frame.UnitFrame:EnableMouse(false);
 	frame.UnitFrame:SetAllPoints(frame)
+	frame.UnitFrame:SetFrameStrata("BACKGROUND")
 	frame.UnitFrame:SetScript("OnEvent", mod.OnEvent)
-	
+
 	frame.UnitFrame.HealthBar = self:ConstructElement_HealthBar(frame.UnitFrame)
 	self:ConfigureElement_HealthBar(frame.UnitFrame)
 	
@@ -584,22 +597,25 @@ function mod:NAME_PLATE_CREATED(event, frame)
 end
 
 function mod:DISPLAY_SIZE_CHANGED()
-	self.mult = E.mult * UIParent:GetScale()	
+	self.mult = E.mult --[[* UIParent:GetScale()]]	
 end
 
 function mod:NAME_PLATE_UNIT_ADDED(event, unit)
 	local frame = C_NamePlate.GetNamePlateForUnit(unit);
 	frame.UnitFrame.unit = unit
-
+	
 	self:RegisterEvents(frame.UnitFrame, unit)
 	self:UpdateElement_All(frame.UnitFrame, unit)
+	frame.UnitFrame:Show()
 end
 
 function mod:NAME_PLATE_UNIT_REMOVED(event, unit)
 	local frame = C_NamePlate.GetNamePlateForUnit(unit);
 	frame.UnitFrame.unit = nil
+
 	
 	frame.UnitFrame:UnregisterAllEvents()
+	frame.UnitFrame:Hide()
 	
 	frame.ThreatData = nil
 end
@@ -613,6 +629,7 @@ function mod:ForEachPlate(functionToRun, ...)
 end
 
 function mod:SetBaseNamePlateSize()
+	local self = mod
 	local baseWidth = self.db.healthbar.width
 	local baseHeight = self.db.castbar.height + self.db.healthbar.height + 30
 	NamePlateDriverFrame:SetBaseNamePlateSize(baseWidth, baseHeight)
@@ -624,6 +641,7 @@ function mod:Initialize()
 	E.NamePlates = NP
 
 	NamePlateDriverFrame:UnregisterAllEvents()
+	NamePlateDriverFrame.ApplyFrameOptions = E.noop
 	self:RegisterEvent("NAME_PLATE_CREATED");
 	self:RegisterEvent("NAME_PLATE_UNIT_ADDED");
 	self:RegisterEvent("NAME_PLATE_UNIT_REMOVED");

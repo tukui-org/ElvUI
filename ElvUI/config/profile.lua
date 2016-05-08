@@ -157,22 +157,16 @@ P['bags'] = {
 P["nameplate"] = {
 
 	["statusbar"] = "ElvUI Norm",
-	["smallPlates"] = true,
-	["comboPoints"] = false,
-	['nonTargetAlpha'] = 0.6,
-	['targetAlpha'] = 1,
-	['combatHide'] = false,
-	['colorNameByValue'] =  true,
-	['showName'] = true,
 	['wrapName'] = false,
 	['showLevel'] = true,
 	['font'] = 'Arial Narrow',
-	['fontSize'] = 7,
-	['fontOutline'] = 'MONOCHROMEOUTLINE',		
+	['fontSize'] = 11,
+	['fontOutline'] = 'MONOCHROMEOUTLINE',
+	['targetScale'] = 1.25,
 	['healthbar'] = {
 		['lowThreshold'] =  0.40,
-		['height'] = 5,
-		['width'] = 100,
+		['height'] = 8,
+		['width'] = 140,
 		["colorByRaidIcon"] = false,
 		['lowHPScale'] = {
 			['enable'] = false,
@@ -188,7 +182,7 @@ P["nameplate"] = {
 		}
 	},
 	['castbar'] = {
-		['height'] = 5,
+		['height'] = 8,
 		['color'] = { r = 1,g = 208/255,b = 0 },
 		['noInterrupt'] = { r = 0.78, g = 0.25, b = 0.25 },
 	},
