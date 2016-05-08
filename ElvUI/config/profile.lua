@@ -155,9 +155,7 @@ P['bags'] = {
 
 --NamePlate
 P["nameplate"] = {
-	['font'] = 'Arial Narrow',
-	['fontSize'] = 7,
-	['fontOutline'] = 'MONOCHROMEOUTLINE',
+
 	["statusbar"] = "ElvUI Norm",
 	["smallPlates"] = true,
 	["comboPoints"] = false,
@@ -168,20 +166,13 @@ P["nameplate"] = {
 	['showName'] = true,
 	['wrapName'] = false,
 	['showLevel'] = true,
-	['targetIndicator'] = {
-		['enable'] = true,
-		['style'] = 'glow',
-		['colorMatchHealthBar'] = false,
-		['color'] = {r= 1, g = 1, b = 1},
-		['width'] = 50,
-		['height'] = 50,
-		['yOffset'] = 0,
-		['xOffset'] = 0
-	},
-	['healthBar'] = {
+	['font'] = 'Arial Narrow',
+	['fontSize'] = 7,
+	['fontOutline'] = 'MONOCHROMEOUTLINE',		
+	['healthbar'] = {
 		['lowThreshold'] =  0.40,
-		['width'] = 108,
-		['height'] = 9,
+		['height'] = 6,
+		['width'] = 110,
 		["colorByRaidIcon"] = false,
 		['lowHPScale'] = {
 			['enable'] = false,
@@ -196,7 +187,7 @@ P["nameplate"] = {
 			['format'] = 'CURRENT',
 		}
 	},
-	['castBar'] = {
+	['castbar'] = {
 		['height'] = 6,
 		['color'] = { r = 1,g = 208/255,b = 0 },
 		['noInterrupt'] = { r = 0.78, g = 0.25, b = 0.25 },
@@ -209,13 +200,8 @@ P["nameplate"] = {
 		['attachTo'] = 'LEFT',
 	},
 	['threat'] = {
-		['enable'] = true,
-		['goodScale'] = 1,
-		['badScale'] = 1,
 		["goodColor"] = {r = 75/255,  g = 175/255, b = 76/255},
 		["badColor"] = {r = 0.78, g = 0.25, b = 0.25},
-		["goodTransitionColor"] = {r = 218/255, g = 197/255, b = 92/255},
-		["badTransitionColor"] = {r = 240/255, g = 154/255, b = 17/255},
 	},
 	['buffs'] = {
 		['font'] = 'Arial Narrow',
@@ -237,10 +223,10 @@ P["nameplate"] = {
 	},
 	['reactions'] = {
 		["tapped"] = {r = 0.6, g = 0.6, b = 0.6},
-		["friendlyNPC"] = {r = 0.31, g = 0.45, b = 0.63},
-		["friendlyPlayer"] = {r = 75/255,  g = 175/255, b = 76/255},
+		["good"] = {r = 0.31, g = 0.45, b = 0.63},
 		["neutral"] = { r = 218/255, g = 197/255, b = 92/255 },
-		["enemy"] = { r = 0.78, g = 0.25, b = 0.25 },
+		["bad"] = { r = 0.78, g = 0.25, b = 0.25 },
+		["offline"] = {r = 0.3, g = 0.3, b = 0.3},
 	},
 };
 

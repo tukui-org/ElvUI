@@ -183,6 +183,16 @@ E.PriestColors = {
 	colorStr = 'fcfcfc'
 }
 
+function E:GetPlayerRole()
+	local assignedRole = UnitGroupRolesAssigned("player");
+	if ( assignedRole == "NONE" ) then
+		local spec = GetSpecialization();
+		return GetSpecializationRole(spec);
+	end
+
+	return assignedRole;
+end
+
 --Basically check if another class border is being used on a class that doesn't match. And then return true if a match is found.
 function E:CheckClassColor(r, g, b)
 	r, g, b = floor(r*100+.5)/100, floor(g*100+.5)/100, floor(b*100+.5)/100

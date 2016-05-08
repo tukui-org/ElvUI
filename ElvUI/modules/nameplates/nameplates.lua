@@ -1,231 +1,326 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local NP = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
+local mod = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
 local LSM = LibStub("LibSharedMedia-3.0")
 
-local NamePlateDriverMixin = NamePlateDriverMixin
-
-local DefaultCompactUnitFrameOptions = {
-	displayNameWhenSelected = false,
-	displayNameByPlayerNameRules = true,
-}
-
-function NP:IsPlayerEffectivelyTank()
-	local assignedRole = UnitGroupRolesAssigned("player");
-	if ( assignedRole == "NONE" ) then
-		local spec = GetSpecialization();
-		return spec and GetSpecializationRole(spec) == "TANK";
+function mod:UpdateElement_Glow(frame)
+	local r, g, b, shouldShow;
+	if ( UnitIsUnit(frame.unit, "target") ) then
+		r, g, b = 1, 1, 1
+		shouldShow = true
+	else
+		-- Use color based on the type of unit (neutral, etc.)
+		local isTanking, status = UnitDetailedThreatSituation("player", frame.unit)
+		if status then
+			if(isTanking) then
+				if(E:GetPlayerRole() == "TANK") then
+					r, g, b = self.db.threat.goodColor.r, self.db.threat.goodColor.g, self.db.threat.goodColor.b
+				else
+					r, g, b = self.db.threat.badColor.r, self.db.threat.badColor.g, self.db.threat.badColor.b
+				end
+			else
+				if(E:GetPlayerRole() == "TANK") then
+					r, g, b = self.db.threat.badColor.r, self.db.threat.badColor.g, self.db.threat.badColor.b
+				else
+					r, g, b = self.db.threat.goodColor.r, self.db.threat.goodColor.g, self.db.threat.goodColor.b
+				end
+			end
+			shouldShow = true
+		end
 	end
-
-	return assignedRole == "TANK";
-end
-
-
-function NP:ApplySettings(plate)
-	local statusBarTex = LSM:Fetch("statusbar", self.db.statusbar)
-	plate.UnitFrame.healthBar:SetStatusBarTexture(statusBarTex)
-	plate.UnitFrame.castBar:SetStatusBarTexture(statusBarTex)
 	
-	local font, fontSize, fontOutline = LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline
-	plate.UnitFrame.name:SetFont(font, fontSize, fontOutline)
-	plate.UnitFrame.level:SetFont(font, fontSize, fontOutline)
-	
-	plate.UnitFrame.name:SetWordWrap(self.db.wrapName)
-end
-
-NAMEPLATE_VERTICAL_SCALE = 1.0
-NAMEPLATE_HORIZONTAL_SCALE = 1.0
-function Test(self)
-	DefaultCompactNamePlateEnemyFrameOptions.useClassColors = GetCVarBool("ShowClassColorInNameplate");
-	DefaultCompactNamePlateEnemyFrameOptions.playLoseAggroHighlight = GetCVarBool("ShowNamePlateLoseAggroFlash");
-
-	local namePlateVerticalScale = tonumber(NAMEPLATE_VERTICAL_SCALE);
-	DefaultCompactNamePlateFrameSetUpOptions.healthBarHeight = 4 * namePlateVerticalScale;
-
-	local zeroBasedScale = namePlateVerticalScale - 1.0;
-	local clampedZeroBasedScale = Saturate(zeroBasedScale);
-	DefaultCompactNamePlateFrameSetUpOptions.useLargeNameFont = clampedZeroBasedScale > .25;
-
-	DefaultCompactNamePlateFrameSetUpOptions.castBarHeight = math.min(Lerp(12, 16, zeroBasedScale), DefaultCompactNamePlateFrameSetUpOptions.healthBarHeight * 2);
-	DefaultCompactNamePlateFrameSetUpOptions.castBarFontHeight = Lerp(8, 12, clampedZeroBasedScale);
-
-	DefaultCompactNamePlateFrameSetUpOptions.castBarShieldWidth = Lerp(10, 15, clampedZeroBasedScale);
-	DefaultCompactNamePlateFrameSetUpOptions.castBarShieldHeight = Lerp(12, 18, clampedZeroBasedScale);
-
-	DefaultCompactNamePlateFrameSetUpOptions.castIconWidth = Lerp(10, 15, clampedZeroBasedScale);
-	DefaultCompactNamePlateFrameSetUpOptions.castIconHeight = Lerp(10, 15, clampedZeroBasedScale);
-
-	local horizontalScale = tonumber(NAMEPLATE_HORIZONTAL_SCALE);
-	C_NamePlate.SetNamePlateOtherSize(self.baseNamePlateWidth, self.baseNamePlateHeight);
-
-	C_NamePlate.SetNamePlateSelfSize(self.baseNamePlateWidth, self.baseNamePlateHeight);
-
-	for i, frame in ipairs(C_NamePlate.GetNamePlates()) do
-		self:ApplyFrameOptions(frame, frame.namePlateUnitToken);
-		CompactUnitFrame_UpdateAll(frame.UnitFrame);
+	if(shouldShow) then
+		frame.Glow:Show()
+		if ( (r ~= frame.Glow.r or g ~= frame.Glow.g or b ~= frame.Glow.b) ) then
+			frame.Glow:SetBackdropBorderColor(r, g, b);
+			frame.Glow.r, frame.Glow.g, frame.Glow.b = r, g, b;
+		end
+	elseif(frame.Glow:IsShown()) then
+		frame.Glow:Hide()
 	end
 end
 
-
-function NP:NAME_PLATE_CREATED(event, plate)
-	local healthBar = plate.UnitFrame.healthBar
-	local castBar = plate.UnitFrame.castBar
-	local border = plate.UnitFrame.healthBar.border
-	border:StripTextures(true)
-	self.mult = E.mult * UIParent:GetScale()
-	
-	plate.UnitFrame.name:ClearAllPoints()
-	plate.UnitFrame.name:SetPoint("BOTTOMLEFT", healthBar, "TOPLEFT", 0, 2)
-	plate.UnitFrame.name:SetJustifyH("LEFT")
-	
-	plate.UnitFrame.level = plate.UnitFrame:CreateFontString(nil, 'OVERLAY')
-	plate.UnitFrame.level:SetPoint("BOTTOMRIGHT", healthBar, "TOPRIGHT", 0, 2)
-	
-	plate.UnitFrame.name:SetPoint("BOTTOMRIGHT", plate.UnitFrame.level, "BOTTOMLEFT")
-
-	border.bordertop = border:CreateTexture(nil, "BORDER")
-	border.bordertop:SetPoint("TOPLEFT", healthBar, "TOPLEFT", -self.mult, self.mult)
-	border.bordertop:SetPoint("TOPRIGHT", healthBar, "TOPRIGHT", self.mult, self.mult)
-	border.bordertop:SetHeight(self.mult)
-	border.bordertop:SetColorTexture(unpack(E["media"].bordercolor))
-	border.bordertop:SetDrawLayer("BORDER", 1)
-
-	border.borderbottom = border:CreateTexture(nil, "BORDER")
-	border.borderbottom:SetPoint("BOTTOMLEFT", healthBar, "BOTTOMLEFT", -self.mult, -self.mult)
-	border.borderbottom:SetPoint("BOTTOMRIGHT", healthBar, "BOTTOMRIGHT", self.mult, -self.mult)
-	border.borderbottom:SetHeight(self.mult)
-	border.borderbottom:SetColorTexture(unpack(E["media"].bordercolor))
-	border.borderbottom:SetDrawLayer("BORDER", 1)
-
-	border.borderleft = border:CreateTexture(nil, "BORDER")
-	border.borderleft:SetPoint("TOPLEFT", healthBar, "TOPLEFT", -self.mult, self.mult)
-	border.borderleft:SetPoint("BOTTOMLEFT", healthBar, "BOTTOMLEFT", self.mult, -self.mult)
-	border.borderleft:SetWidth(self.mult)
-	border.borderleft:SetColorTexture(unpack(E["media"].bordercolor))
-	border.borderleft:SetDrawLayer("BORDER", 1)
-
-	border.borderright = border:CreateTexture(nil, "BORDER")
-	border.borderright:SetPoint("TOPRIGHT", healthBar, "TOPRIGHT", self.mult, self.mult)
-	border.borderright:SetPoint("BOTTOMRIGHT", healthBar, "BOTTOMRIGHT", -self.mult, -self.mult)
-	border.borderright:SetWidth(self.mult)
-	border.borderright:SetColorTexture(unpack(E["media"].bordercolor))
-	border.borderright:SetDrawLayer("BORDER", 1)
-
-	self:ApplySettings(plate)
+function mod:ConfigureElement_Glow(frame)
+	frame.Glow:SetFrameLevel(0)
+	frame.Glow:SetFrameStrata("BACKGROUND")
+	frame.Glow:SetOutside(frame.HealthBar, 3, 3)
+	frame.Glow:SetBackdrop( {
+		edgeFile = LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = 3 + mod.mult,
+		insets = {left = 6, right = 6, top = 6, bottom = 6},
+	})
+	frame.Glow:SetBackdropBorderColor(0, 0, 0)
 end
 
-function NP:NAME_PLATE_REMOVED(even, plate)
-
+function mod:ConstructElement_Glow(frame)
+	return CreateFrame("Frame", nil, frame)
 end
 
-function NP:NAME_PLATE_UNIT_ADDED(event, unit)
-	--Name
-	local plate = C_NamePlate.GetNamePlateForUnit(unit)
-	--plate:SetTemplate()
-	if(plate.UnitFrame.optionTable.displayNameWhenSelected) then
-		plate.UnitFrame.optionTable.displayNameWhenSelected = false
-		plate.UnitFrame.optionTable.displayName = true
-		plate.UnitFrame.optionTable.displayNameByPlayerNameRules = false
-		CompactUnitFrame_UpdateName(plate.UnitFrame)
-	end
-
-	--Level
-	local level = UnitLevel(unit)
-	if level == UnitLevel("player") then
-		plate.UnitFrame.level:SetText("")
-	elseif level == -1 then
-		plate.UnitFrame.level:SetText('??')
-		plate.UnitFrame.level:SetTextColor(0.9, 0, 0)	
+function mod:UpdateElement_Level(frame)
+	local level = UnitLevel(frame.unit)
+	
+	if(level == -1 or not level) then
+		frame.Level:SetText('??')
+		frame.Level:SetTextColor(0.9, 0, 0)	
 	else
 		local color = GetQuestDifficultyColor(level)
-		plate.UnitFrame.level:SetText(level)
-		plate.UnitFrame.level:SetTextColor(color.r, color.g, color.b)
+		frame.Level:SetText(level)
+		frame.Level:SetTextColor(color.r, color.g, color.b)
 	end
-
 end
 
-function NP:NAME_PLATE_UNIT_REMOVED(event, unit)
-
+function mod:ConfigureElement_Level(frame)
+	local level = frame.Level
+	
+	level:SetJustifyH("RIGHT")
+	level:SetPoint("BOTTOMRIGHT", frame.HealthBar, "TOPRIGHT", 0, 2)
+	level:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 end
 
-function NP:UpdateNameColor()
+function mod:ConstructElement_Level(frame)
+	return frame:CreateFontString(nil, "OVERLAY")
+end
+
+function mod:UpdateElement_Name(frame)
+	local name = GetUnitName(frame.unit, true)
+	frame.Name:SetText(name)
+end
+
+function mod:ConfigureElement_Name(frame)
+	local name = frame.Name
+	
+	name:SetJustifyH("LEFT")
+	name:SetPoint("BOTTOMLEFT", frame.HealthBar, "TOPLEFT", 0, 2)
+	name:SetPoint("BOTTOMRIGHT", frame.Level, "BOTTOMLEFT")
+	name:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
+end
+
+function mod:ConstructElement_Name(frame)
+	return frame:CreateFontString(nil, "OVERLAY")
+end
+
+function mod:UpdateElement_HealthColor(frame)
 	local r, g, b;
-	if ( not UnitIsConnected(self.unit) ) then
-		--Color it gray
-		r, g, b = 0.5, 0.5, 0.5;
+	if ( not UnitIsConnected(frame.unit) ) then
+		r, g, b = self.db.reactions.offline.r, self.db.reactions.offline.g, self.db.reactions.offline.b
 	else
-		if ( self.optionTable.healthBarColorOverride ) then
-			local healthBarColorOverride = self.optionTable.healthBarColorOverride;
-			r, g, b = healthBarColorOverride.r, healthBarColorOverride.g, healthBarColorOverride.b;
+		if ( frame.HealthBar.ColorOverride ) then
+			--[[local healthBarColorOverride = frame.optionTable.healthBarColorOverride;
+			r, g, b = healthBarColorOverride.r, healthBarColorOverride.g, healthBarColorOverride.b;]]
 		else
 			--Try to color it by class.
-			local localizedClass, englishClass = UnitClass(self.unit);
-			local classColor = RAID_CLASS_COLORS[englishClass];
-			if ( UnitIsPlayer(self.unit) and classColor and self.optionTable.useClassColors ) then
+			local _, class = UnitClass(frame.unit);
+			local classColor = RAID_CLASS_COLORS[class];
+			if ( UnitIsPlayer(frame.unit) and classColor ) then
 				-- Use class colors for players if class color option is turned on
 				r, g, b = classColor.r, classColor.g, classColor.b;
-			elseif ( CompactUnitFrame_IsTapDenied(self) ) then
+			elseif ( not UnitPlayerControlled(frame.unit) and UnitIsTapDenied(frame.unit) ) then
 				-- Use grey if not a player and can't get tap on unit
-				r, g, b = 0.1, 0.1, 0.1;
-			elseif ( self.optionTable.colorHealthBySelection ) then
+				r, g, b = self.db.reactions.tapped.r, self.db.reactions.tapped.g, self.db.reactions.tapped.b	
+			else
 				-- Use color based on the type of unit (neutral, etc.)
-				if ( self.optionTable.considerSelectionInCombatAsHostile and UnitAffectingCombat(self.unit)) then
-					if(CompactUnitFrame_IsOnThreatListWithPlayer(self.displayedUnit)) then
-						if(NP:IsPlayerEffectivelyTank()) then
-							r, g, b = 0.0, 1.0, 0.0;
+				local isTanking, status = UnitDetailedThreatSituation("player", frame.unit)
+				if status then
+					if(isTanking) then
+						if(E:GetPlayerRole() == "TANK") then
+							r, g, b = self.db.threat.goodColor.r, self.db.threat.goodColor.g, self.db.threat.goodColor.b
 						else
-							r, g, b = 1.0, 0.0, 0.0;
+							r, g, b = self.db.threat.badColor.r, self.db.threat.badColor.g, self.db.threat.badColor.b
 						end
 					else
-						if(NP:IsPlayerEffectivelyTank()) then
-							r, g, b = 1.0, 0.0, 0.0;
+						if(E:GetPlayerRole() == "TANK") then
+							r, g, b = self.db.threat.badColor.r, self.db.threat.badColor.g, self.db.threat.badColor.b
 						else
-							r, g, b = 0.0, 1.0, 0.0;
-						end					
+							r, g, b = self.db.threat.goodColor.r, self.db.threat.goodColor.g, self.db.threat.goodColor.b
+						end
 					end
 				else
-					r, g, b = UnitSelectionColor(self.unit, self.optionTable.colorHealthWithExtendedColors);
+					--By Reaction
+					local reactionType = UnitReaction(frame.unit, "player")
+					if(reactionType == 4) then
+						r, g, b = self.db.reactions.neutral.r, self.db.reactions.neutral.g, self.db.reactions.neutral.b
+					elseif(reactionType > 4) then
+						r, g, b = self.db.reactions.good.r, self.db.reactions.good.g, self.db.reactions.good.b
+					else
+						r, g, b = self.db.reactions.bad.r, self.db.reactions.bad.g, self.db.reactions.bad.b
+					end
 				end
-			elseif ( UnitIsFriend("player", self.unit) ) then
-				r, g, b = 0.0, 1.0, 0.0;
-			else
-				r, g, b = 1.0, 0.0, 0.0;
 			end
 		end
 	end
-	if ( r ~= self.healthBar.r or g ~= self.healthBar.g or b ~= self.healthBar.b ) then
-		self.healthBar:SetStatusBarColor(r, g, b);
+	
+	if ( r ~= frame.HealthBar.r or g ~= frame.HealthBar.g or b ~= frame.HealthBar.b ) then
+		frame.HealthBar:SetStatusBarColor(r, g, b);
+		frame.HealthBar.r, frame.HealthBar.g, frame.HealthBar.b = r, g, b;
+	end
+end
 
-		if (self.optionTable.colorHealthWithExtendedColors) then
-			self.selectionHighlight:SetVertexColor(r, g, b);
-		else
-			self.selectionHighlight:SetVertexColor(1, 1, 1);
+function mod:UpdateElement_MaxHealth(frame)
+	local maxHealth = UnitHealthMax(frame.unit);
+	frame.HealthBar:SetMinMaxValues(0, maxHealth)
+end
+
+function mod:UpdateElement_Health(frame)
+	local health = UnitHealth(frame.unit);
+	frame.HealthBar:SetValue(health)
+end
+
+function mod:ConfigureElement_HealthBar(frame)
+	local healthBar = frame.HealthBar
+
+	--Position
+	healthBar:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 20, self.db.castbar.height + 3)
+	healthBar:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -20, self.db.castbar.height + 3)
+	healthBar:SetHeight(self.db.healthbar.height)
+
+	--Texture
+	healthBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
+end
+
+function mod:ConstructElement_HealthBar(parent)
+	local frame = CreateFrame("StatusBar", "$parentHealthBar", parent)
+	self:StyleFrame(frame, true)
+	
+	return frame
+end
+
+function mod:UpdateElement_All(frame, unit)
+	mod:UpdateElement_MaxHealth(frame)
+	mod:UpdateElement_Health(frame)
+	mod:UpdateElement_HealthColor(frame)
+	mod:UpdateElement_Name(frame)
+	mod:UpdateElement_Level(frame)
+	mod:UpdateElement_Glow(frame)
+end
+
+function mod:RegisterEvents(frame, unit)
+	frame:RegisterUnitEvent("UNIT_MAXHEALTH", unit);
+	frame:RegisterUnitEvent("UNIT_HEALTH", unit);
+	frame:RegisterUnitEvent("UNIT_HEALTH_FREQUENT", unit);
+	frame:RegisterUnitEvent("UNIT_NAME_UPDATE", unit);
+	frame:RegisterUnitEvent("UNIT_LEVEL", unit);
+	frame:RegisterUnitEvent("UNIT_THREAT_LIST_UPDATE", unit);
+	frame:RegisterEvent("PLAYER_TARGET_CHANGED");
+end
+
+function mod:StyleFrame(frame, useBackdrop)
+	if(useBackdrop) then
+		frame.backdropTex = frame:CreateTexture(nil, "BACKGROUND")
+		frame.backdropTex:SetAllPoints()
+		frame.backdropTex:SetColorTexture(0.1, 0.1, 0.1, 0.85)
+	end
+	
+	frame.top = frame:CreateTexture(nil, "BORDER")
+	frame.top:SetPoint("TOPLEFT", frame, "TOPLEFT", -self.mult, self.mult)
+	frame.top:SetPoint("TOPRIGHT", frame, "TOPRIGHT", self.mult, self.mult)
+	frame.top:SetHeight(self.mult)
+	frame.top:SetColorTexture(0, 0, 0, 1)
+	frame.top:SetDrawLayer("BORDER", 1)
+
+	frame.bottom = frame:CreateTexture(nil, "BORDER")
+	frame.bottom:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", -self.mult, -self.mult)
+	frame.bottom:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", self.mult, -self.mult)
+	frame.bottom:SetHeight(self.mult)
+	frame.bottom:SetColorTexture(0, 0, 0, 1)
+	frame.bottom:SetDrawLayer("BORDER", 1)
+
+	frame.left = frame:CreateTexture(nil, "BORDER")
+	frame.left:SetPoint("TOPLEFT", frame, "TOPLEFT", -self.mult, self.mult)
+	frame.left:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", self.mult, -self.mult)
+	frame.left:SetWidth(self.mult)
+	frame.left:SetColorTexture(0, 0, 0, 1)
+	frame.left:SetDrawLayer("BORDER", 1)
+
+	frame.right = frame:CreateTexture(nil, "BORDER")
+	frame.right:SetPoint("TOPRIGHT", frame, "TOPRIGHT", self.mult, self.mult)
+	frame.right:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -self.mult, -self.mult)
+	frame.right:SetWidth(self.mult)
+	frame.right:SetColorTexture(0, 0, 0, 1)
+	frame.right:SetDrawLayer("BORDER", 1)
+end
+
+function mod:OnEvent(event, unit)
+	if(event == "UNIT_HEALTH" or event == "UNIT_HEALTH_FREQUENT") then
+		mod:UpdateElement_Health(self)
+	elseif(event == "UNIT_MAXHEALTH") then
+		mod:UpdateElement_MaxHealth(self)
+	elseif(event == "UNIT_NAME_UPDATE") then
+		mod:UpdateElement_Name(self)
+		mod:UpdateElement_HealthColor(self) --Unit class sometimes takes a bit to load
+		mod:UpdateElement_Glow(self)
+	elseif(event == "UNIT_LEVEL") then
+		mod:UpdateElement_Level(self)
+	elseif(event == "UNIT_THREAT_LIST_UPDATE") then
+		mod:UpdateElement_HealthColor(self)
+		mod:UpdateElement_Glow(self)
+	elseif(event == "PLAYER_TARGET_CHANGED") then
+		mod:UpdateElement_Glow(self)
+	end
+end
+
+function mod:NAME_PLATE_CREATED(event, frame)
+	frame.UnitFrame = CreateFrame("BUTTON", "$parentUnitFrame", frame);
+	frame.UnitFrame:EnableMouse(false);
+	frame.UnitFrame:SetAllPoints(frame)
+	frame.UnitFrame:SetScript("OnEvent", mod.OnEvent)
+	
+	frame.UnitFrame.HealthBar = self:ConstructElement_HealthBar(frame.UnitFrame)
+	self:ConfigureElement_HealthBar(frame.UnitFrame)
+	
+	frame.UnitFrame.Level = self:ConstructElement_Level(frame.UnitFrame)
+	self:ConfigureElement_Level(frame.UnitFrame)
+	
+	frame.UnitFrame.Name = self:ConstructElement_Name(frame.UnitFrame)
+	self:ConfigureElement_Name(frame.UnitFrame)
+	
+	frame.UnitFrame.Glow = self:ConstructElement_Glow(frame.UnitFrame)
+	self:ConfigureElement_Glow(frame.UnitFrame)
+end
+
+function mod:DISPLAY_SIZE_CHANGED()
+	self.mult = E.mult * UIParent:GetScale()	
+end
+
+function mod:NAME_PLATE_UNIT_ADDED(event, unit)
+	local frame = C_NamePlate.GetNamePlateForUnit(unit);
+	frame.UnitFrame.unit = unit
+	
+	self:RegisterEvents(frame.UnitFrame, unit)
+	self:UpdateElement_All(frame.UnitFrame, unit)
+end
+
+function mod:NAME_PLATE_UNIT_REMOVED(event, unit)
+	local frame = C_NamePlate.GetNamePlateForUnit(unit);
+	frame.UnitFrame.unit = nil
+	
+	frame.UnitFrame:UnregisterAllEvents()
+end
+
+function mod:ForEachPlate(functionToRun, ...)
+	for _, frame in pairs(C_NamePlate.GetNamePlates()) do
+		if(frame) then
+			self[functionToRun](frame.UnitFrame, ...)
 		end
-		
-		self.healthBar.r, self.healthBar.g, self.healthBar.b = r, g, b;
 	end
 end
 
-function NP:EventHook(event)
-	if event == "UNIT_THREAT_SITUATION_UPDATE" then
-		if ( self.optionTable.considerSelectionInCombatAsHostile ) then
-			NP:UpdateNameColor(self)
-		end	
-	end
+function mod:SetBaseNamePlateSize()
+	local baseWidth = self.db.healthbar.width
+	local baseHeight = self.db.castbar.height + self.db.healthbar.height + 30
+	NamePlateDriverFrame:SetBaseNamePlateSize(baseWidth, baseHeight)
 end
 
-function NP:Initialize()
+function mod:Initialize()
 	self.db = E.db["nameplate"]
 	if E.private["nameplate"].enable ~= true then return end
 	E.NamePlates = NP
-	
-	self:RegisterEvent("NAME_PLATE_CREATED")
-	self:RegisterEvent("NAME_PLATE_REMOVED")
-	self:RegisterEvent("NAME_PLATE_UNIT_ADDED")
-	
-	--hooksecurefunc(NamePlateDriverFrame, "UpdateNamePlateOptions", Test)
-	hooksecurefunc("CompactUnitFrame_UpdateHealthColor", NP.UpdateNameColor)
-	hooksecurefunc("CompactUnitFrame_OnEvent", NP.EventHook)
+
+	NamePlateDriverFrame:UnregisterAllEvents()
+	self:RegisterEvent("NAME_PLATE_CREATED");
+	self:RegisterEvent("NAME_PLATE_UNIT_ADDED");
+	self:RegisterEvent("NAME_PLATE_UNIT_REMOVED");
+	self:RegisterEvent("DISPLAY_SIZE_CHANGED");
+
+	self:DISPLAY_SIZE_CHANGED() --Run once for good measure.
+	self:SetBaseNamePlateSize()
 end
 
-
-E:RegisterModule(NP:GetName())
+E:RegisterModule(mod:GetName())
