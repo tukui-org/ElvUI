@@ -16,8 +16,6 @@ function mod:Update_ThreatList(frame)
 	
 	if(status and (isInRaid or isInGroup)) then --We don't care about units we have no threat on at all
 		if isInRaid then
-			frame.ThreatData = {}
-			frame.ThreatData.player = {UnitDetailedThreatSituation('player', unit)}
 			for i=1, 40 do
 				if UnitExists('raid'..i) and not UnitIsUnit('raid'..i, 'player') then
 					frame.ThreatData['raid'..i] = frame.ThreatData['raid'..i] or {}
