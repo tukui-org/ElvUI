@@ -11,7 +11,7 @@ function mod:UpdateElement_CastBarOnUpdate(elapsed)
 			return;
 		end
 		self:SetValue(self.value);
-
+		self.Time:SetFormattedText("%.1f ", self.value)
 		if ( self.Spark ) then
 			local sparkPosition = (self.value / self.maxValue) * self:GetWidth();
 			self.Spark:SetPoint("CENTER", self, "LEFT", sparkPosition, self.Spark.offsetY or 2);
@@ -23,6 +23,7 @@ function mod:UpdateElement_CastBarOnUpdate(elapsed)
 			return;
 		end
 		self:SetValue(self.value);
+		self.Time:SetFormattedText("%.1f ", self.value)
 	end
 end
 
@@ -59,6 +60,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 		if ( frame.CastBar.Spark ) then
 			frame.CastBar.Spark:Show();
 		end
+		frame.CastBar.Name:SetText(text)
 		frame.CastBar.value = (GetTime() - (startTime / 1000));
 		frame.CastBar.maxValue = (endTime - startTime) / 1000;
 		frame.CastBar:SetMinMaxValues(0, frame.CastBar.maxValue);
@@ -121,9 +123,10 @@ function mod:UpdateElement_Cast(frame, event, ...)
 				return;
 			end
 			frame.canInterrupt = not notInterruptible
+			frame.CastBar.Name:SetText(text)
 			frame.CastBar.value = (GetTime() - (startTime / 1000));
 			frame.CastBar.maxValue = (endTime - startTime) / 1000;
-			frame:SetMinMaxValues(0, frame.CastBar.maxValue);
+			frame.CastBar:SetMinMaxValues(0, frame.CastBar.maxValue);
 			frame.CastBar.canInterrupt = not notInterruptible
 			if ( not frame.CastBar.casting ) then
 				if ( frame.CastBar.Spark ) then
@@ -141,7 +144,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 			return;
 		end
 
-
+		frame.CastBar.Name:SetText(text)
 		frame.CastBar.value = (endTime / 1000) - GetTime();
 		frame.CastBar.maxValue = (endTime - startTime) / 1000;
 		frame.CastBar:SetMinMaxValues(0, frame.CastBar.maxValue);
@@ -168,6 +171,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 				frame.CastBar:Hide();
 				return;
 			end
+			frame.CastBar.Name:SetText(text)
 			frame.CastBar.value = ((endTime / 1000) - GetTime());
 			frame.CastBar.maxValue = (endTime - startTime) / 1000;
 			frame:SetMinMaxValues(0, frame.CastBar.maxValue);
@@ -197,8 +201,18 @@ function mod:ConfigureElement_CastBar(frame)
 
 	castBar.Icon:SetPoint("TOPLEFT", frame.HealthBar, "TOPRIGHT", 3, 0)
 	castBar.Icon:SetPoint("BOTTOMLEFT", castBar, "BOTTOMRIGHT", 3, 0)
-	castBar.Icon:SetWidth(castBar.Icon:GetHeight())
-
+	castBar.Icon:SetWidth(self.db.castbar.height + self.db.healthbar.height + 3)
+	castBar.Icon:SetTexCoord(unpack(E.TexCoords))
+	
+	castBar.Name:SetPoint("TOPLEFT", castBar, "BOTTOMLEFT", 0, -2)
+	castBar.Time:SetPoint("TOPRIGHT", castBar, "BOTTOMRIGHT", 0, -2)
+	castBar.Name:SetPoint("TOPRIGHT", castBar.Time, "TOPLEFT")
+	
+	castBar.Name:SetJustifyH("LEFT")
+	castBar.Name:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)	
+	castBar.Time:SetJustifyH("RIGHT")
+	castBar.Time:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)	
+		
 	--Texture
 	castBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
 end
@@ -210,6 +224,11 @@ function mod:ConstructElement_CastBar(parent)
 	
 	frame.Icon = frame:CreateTexture(nil, "BORDER")
 	self:StyleFrame(frame.Icon, false)
+	
+	frame.Name = frame:CreateFontString(nil, "OVERLAY")
+	frame.Time = frame:CreateFontString(nil, "OVERLAY")
+	
+	
 	
 	return frame	
 end
@@ -477,7 +496,6 @@ function mod:OnEvent(event, unit, ...)
 	elseif(event == "UNIT_NAME_UPDATE") then
 		mod:UpdateElement_Name(self)
 		mod:UpdateElement_HealthColor(self) --Unit class sometimes takes a bit to load
-		mod:UpdateElement_Glow(self)
 	elseif(event == "UNIT_LEVEL") then
 		mod:UpdateElement_Level(self)
 	elseif(event == "UNIT_THREAT_LIST_UPDATE") then
