@@ -171,8 +171,8 @@ P["nameplate"] = {
 	['fontOutline'] = 'MONOCHROMEOUTLINE',		
 	['healthbar'] = {
 		['lowThreshold'] =  0.40,
-		['height'] = 6,
-		['width'] = 110,
+		['height'] = 5,
+		['width'] = 100,
 		["colorByRaidIcon"] = false,
 		['lowHPScale'] = {
 			['enable'] = false,
@@ -188,7 +188,7 @@ P["nameplate"] = {
 		}
 	},
 	['castbar'] = {
-		['height'] = 6,
+		['height'] = 5,
 		['color'] = { r = 1,g = 208/255,b = 0 },
 		['noInterrupt'] = { r = 0.78, g = 0.25, b = 0.25 },
 	},

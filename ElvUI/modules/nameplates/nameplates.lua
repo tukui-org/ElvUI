@@ -2,6 +2,51 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local mod = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
 local LSM = LibStub("LibSharedMedia-3.0")
 
+--Get Data For All Group Members Threat on Each Nameplate
+function mod:Update_ThreatList(frame)
+	local unit = frame.unit
+	local isTanking, status, percent = UnitDetailedThreatSituation('player', unit)
+	local isInGroup, isInRaid = IsInGroup(), IsInRaid()
+	frame.ThreatData = {}
+	frame.ThreatData.player = {isTanking, status, percent}
+	frame.isBeingTanked = false
+	if(isTanking and E:GetPlayerRole() == "TANK") then
+		frame.isBeingTanked = true
+	end
+	
+	if(status and (isInRaid or isInGroup)) then --We don't care about units we have no threat on at all
+		if isInRaid then
+			frame.ThreatData = {}
+			frame.ThreatData.player = {UnitDetailedThreatSituation('player', unit)}
+			for i=1, 40 do
+				if UnitExists('raid'..i) and not UnitIsUnit('raid'..i, 'player') then
+					frame.ThreatData['raid'..i] = frame.ThreatData['raid'..i] or {}
+					isTanking, status, percent = UnitDetailedThreatSituation('raid'..i, unit)
+					frame.ThreatData['raid'..i] = {isTanking, status, percent}
+					
+					if(frame.isBeingTanked ~= true and isTanking and UnitGroupRolesAssigned('raid'..i) == "TANK") then
+						frame.isBeingTanked = true
+					end
+				end
+			end
+		else
+			frame.ThreatData = {}
+			frame.ThreatData.player = {UnitDetailedThreatSituation('player', unit)}
+			for i=1, 4 do
+				if UnitExists('party'..i) --[[and not UnitIsUnit('party'..i, 'player')]] then
+					frame.ThreatData['party'..i] = frame.ThreatData['party'..i] or {}
+					isTanking, status, percent = UnitDetailedThreatSituation('party'..i, unit)
+					frame.ThreatData['party'..i] = {isTanking, status, percent}
+					
+					if(frame.isBeingTanked ~= true and isTanking and UnitGroupRolesAssigned('party'..i) == "TANK") then
+						frame.isBeingTanked = true
+					end					
+				end
+			end
+		end	
+	end
+end
+
 function mod:UpdateElement_CastBarOnUpdate(elapsed)
 	if ( self.casting ) then
 		self.value = self.value + elapsed;
@@ -14,7 +59,7 @@ function mod:UpdateElement_CastBarOnUpdate(elapsed)
 		self.Time:SetFormattedText("%.1f ", self.value)
 		if ( self.Spark ) then
 			local sparkPosition = (self.value / self.maxValue) * self:GetWidth();
-			self.Spark:SetPoint("CENTER", self, "LEFT", sparkPosition, self.Spark.offsetY or 2);
+			self.Spark:SetPoint("CENTER", self, "LEFT", sparkPosition, 0);
 		end
 	elseif ( self.channeling ) then
 		self.value = self.value - elapsed;
@@ -227,8 +272,10 @@ function mod:ConstructElement_CastBar(parent)
 	
 	frame.Name = frame:CreateFontString(nil, "OVERLAY")
 	frame.Time = frame:CreateFontString(nil, "OVERLAY")
-	
-	
+	frame.Spark = frame:CreateTexture(nil, "OVERLAY")
+	frame.Spark:SetTexture([[Interface\CastingBar\UI-CastingBar-Spark]])
+	frame.Spark:SetBlendMode("ADD")
+	frame.Spark:SetSize(15, 15)
 	
 	return frame	
 end
@@ -358,9 +405,18 @@ function mod:UpdateElement_HealthColor(frame)
 						end
 					else
 						if(E:GetPlayerRole() == "TANK") then
-							r, g, b = self.db.threat.badColor.r, self.db.threat.badColor.g, self.db.threat.badColor.b
+							--Check if it is being tanked by an offtank.
+							if (IsInRaid() or IsInGroup()) and frame.isBeingTanked then
+								r, g, b = .8, 0.1, 1
+							else
+								r, g, b = self.db.threat.badColor.r, self.db.threat.badColor.g, self.db.threat.badColor.b
+							end
 						else
-							r, g, b = self.db.threat.goodColor.r, self.db.threat.goodColor.g, self.db.threat.goodColor.b
+							if (IsInRaid() or IsInGroup()) and frame.isBeingTanked then
+								r, g, b = .8, 0.1, 1
+							else
+								r, g, b = self.db.threat.goodColor.r, self.db.threat.goodColor.g, self.db.threat.goodColor.b
+							end	
 						end
 					end
 				else
@@ -412,8 +468,6 @@ function mod:ConstructElement_HealthBar(parent)
 	
 	return frame
 end
-
-
 
 function mod:UpdateElement_All(frame, unit)
 	mod:UpdateElement_MaxHealth(frame)
@@ -499,6 +553,7 @@ function mod:OnEvent(event, unit, ...)
 	elseif(event == "UNIT_LEVEL") then
 		mod:UpdateElement_Level(self)
 	elseif(event == "UNIT_THREAT_LIST_UPDATE") then
+		mod:Update_ThreatList(self)
 		mod:UpdateElement_HealthColor(self)
 		mod:UpdateElement_Glow(self)
 	elseif(event == "PLAYER_TARGET_CHANGED") then
@@ -537,7 +592,7 @@ end
 function mod:NAME_PLATE_UNIT_ADDED(event, unit)
 	local frame = C_NamePlate.GetNamePlateForUnit(unit);
 	frame.UnitFrame.unit = unit
-	
+
 	self:RegisterEvents(frame.UnitFrame, unit)
 	self:UpdateElement_All(frame.UnitFrame, unit)
 end
@@ -547,6 +602,8 @@ function mod:NAME_PLATE_UNIT_REMOVED(event, unit)
 	frame.UnitFrame.unit = nil
 	
 	frame.UnitFrame:UnregisterAllEvents()
+	
+	frame.ThreatData = nil
 end
 
 function mod:ForEachPlate(functionToRun, ...)
