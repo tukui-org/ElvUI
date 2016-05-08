@@ -2,6 +2,218 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local mod = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
 local LSM = LibStub("LibSharedMedia-3.0")
 
+function mod:UpdateElement_CastBarOnUpdate(elapsed)
+	if ( self.casting ) then
+		self.value = self.value + elapsed;
+		if ( self.value >= self.maxValue ) then
+			self:SetValue(self.maxValue);
+			self:Hide()
+			return;
+		end
+		self:SetValue(self.value);
+
+		if ( self.Spark ) then
+			local sparkPosition = (self.value / self.maxValue) * self:GetWidth();
+			self.Spark:SetPoint("CENTER", self, "LEFT", sparkPosition, self.Spark.offsetY or 2);
+		end
+	elseif ( self.channeling ) then
+		self.value = self.value - elapsed;
+		if ( self.value <= 0 ) then
+			self:Hide()
+			return;
+		end
+		self:SetValue(self.value);
+	end
+end
+
+function mod:UpdateElement_Cast(frame, event, ...)
+	local arg1 = ...;
+	local unit = frame.unit
+	if ( event == "PLAYER_ENTERING_WORLD" ) then
+		local nameChannel = UnitChannelInfo(unit);
+		local nameSpell = UnitCastingInfo(unit);
+		if ( nameChannel ) then
+			event = "UNIT_SPELLCAST_CHANNEL_START";
+			arg1 = unit;
+		elseif ( nameSpell ) then
+			event = "UNIT_SPELLCAST_START";
+			arg1 = unit;
+		else
+		    frame.CastBar:Hide()
+		end
+	end
+	
+	if ( arg1 ~= unit ) then
+		return;
+	end		
+	
+	if ( event == "UNIT_SPELLCAST_START" ) then
+		local name, nameSubtext, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible = UnitCastingInfo(unit);
+		if ( not name) then
+			frame.CastBar:Hide();
+			return;
+		end
+
+		frame.CastBar.canInterrupt = not notInterruptible
+		
+		if ( frame.CastBar.Spark ) then
+			frame.CastBar.Spark:Show();
+		end
+		frame.CastBar.value = (GetTime() - (startTime / 1000));
+		frame.CastBar.maxValue = (endTime - startTime) / 1000;
+		frame.CastBar:SetMinMaxValues(0, frame.CastBar.maxValue);
+		frame.CastBar:SetValue(frame.CastBar.value);
+		if ( frame.CastBar.Text ) then
+			frame.CastBar.Text:SetText(text);
+		end
+		if ( frame.CastBar.Icon ) then
+			frame.CastBar.Icon:SetTexture(texture);
+		end
+
+		frame.CastBar.casting = true;
+		frame.CastBar.castID = castID;
+		frame.CastBar.channeling = nil;
+
+		frame.CastBar:Show()
+	elseif ( event == "UNIT_SPELLCAST_STOP" or event == "UNIT_SPELLCAST_CHANNEL_STOP") then
+		if ( not frame.CastBar:IsVisible() ) then
+			frame.CastBar:Hide();
+		end
+		if ( (frame.CastBar.casting and event == "UNIT_SPELLCAST_STOP" and select(4, ...) == frame.CastBar.castID) or
+		     (frame.CastBar.channeling and event == "UNIT_SPELLCAST_CHANNEL_STOP") ) then
+			if ( frame.CastBar.Spark ) then
+				frame.CastBar.Spark:Hide();
+			end
+
+			frame.CastBar:SetValue(frame.CastBar.maxValue);
+			if ( event == "UNIT_SPELLCAST_STOP" ) then
+				frame.CastBar.casting = nil;
+			else
+				frame.CastBar.channeling = nil;
+			end
+			frame.CastBar.canInterrupt = nil
+			frame.CastBar:Hide()
+		end
+	elseif ( event == "UNIT_SPELLCAST_FAILED" or event == "UNIT_SPELLCAST_INTERRUPTED" ) then
+		if ( frame.CastBar:IsShown() and (frame.CastBar.casting and select(4, ...) == frame.CastBar.castID) ) then
+			frame.CastBar:SetValue(frame.CastBar.maxValue);
+			if ( frame.CastBar.Spark ) then
+				frame.CastBar.Spark:Hide();
+			end
+			if ( frame.CastBar.Text ) then
+				if ( event == "UNIT_SPELLCAST_FAILED" ) then
+					frame.CastBar.Text:SetText(FAILED);
+				else
+					frame.CastBar.Text:SetText(INTERRUPTED);
+				end
+			end
+			frame.CastBar.casting = nil;
+			frame.CastBar.channeling = nil;
+			frame.CastBar.canInterrupt = nil
+			frame.CastBar:Hide()
+		end
+	elseif ( event == "UNIT_SPELLCAST_DELAYED" ) then
+		if ( frame:IsShown() ) then
+			local name, nameSubtext, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible = UnitCastingInfo(unit);
+			if ( not name ) then
+				-- if there is no name, there is no bar
+				frame.CastBar:Hide();
+				return;
+			end
+			frame.canInterrupt = not notInterruptible
+			frame.CastBar.value = (GetTime() - (startTime / 1000));
+			frame.CastBar.maxValue = (endTime - startTime) / 1000;
+			frame:SetMinMaxValues(0, frame.CastBar.maxValue);
+			frame.CastBar.canInterrupt = not notInterruptible
+			if ( not frame.CastBar.casting ) then
+				if ( frame.CastBar.Spark ) then
+					frame.CastBar.Spark:Show();
+				end			
+				
+				frame.CastBar.casting = true;
+				frame.CastBar.channeling = nil;
+			end
+		end
+	elseif ( event == "UNIT_SPELLCAST_CHANNEL_START" ) then
+		local name, nameSubtext, text, texture, startTime, endTime, isTradeSkill, notInterruptible = UnitChannelInfo(unit);
+		if ( not name) then
+			frame.CastBar:Hide();
+			return;
+		end
+
+
+		frame.CastBar.value = (endTime / 1000) - GetTime();
+		frame.CastBar.maxValue = (endTime - startTime) / 1000;
+		frame.CastBar:SetMinMaxValues(0, frame.CastBar.maxValue);
+		frame.CastBar:SetValue(frame.CastBar.value);
+		
+		if ( frame.CastBar.Text ) then
+			frame.CastBar.Text:SetText(text);
+		end
+		if ( frame.CastBar.Icon ) then
+			frame.CastBar.Icon:SetTexture(texture);
+		end
+		if ( frame.CastBar.Spark ) then
+			frame.CastBar.Spark:Hide();
+		end
+		frame.CastBar.canInterrupt = not notInterruptible
+		frame.CastBar.casting = nil;
+		frame.CastBar.channeling = true;
+
+		frame.CastBar:Show();
+	elseif ( event == "UNIT_SPELLCAST_CHANNEL_UPDATE" ) then
+		if ( frame.CastBar:IsShown() ) then
+			local name, nameSubtext, text, texture, startTime, endTime, isTradeSkill = UnitChannelInfo(unit);
+			if ( not name ) then
+				frame.CastBar:Hide();
+				return;
+			end
+			frame.CastBar.value = ((endTime / 1000) - GetTime());
+			frame.CastBar.maxValue = (endTime - startTime) / 1000;
+			frame:SetMinMaxValues(0, frame.CastBar.maxValue);
+			frame:SetValue(frame.CastBar.value);
+		end
+	elseif ( event == "UNIT_SPELLCAST_INTERRUPTIBLE" ) then
+		frame.CastBar.canInterrupt = true
+	elseif ( event == "UNIT_SPELLCAST_NOT_INTERRUPTIBLE" ) then
+		frame.CastBar.canInterrupt = nil
+	end
+	
+	if(frame.CastBar.canInterrupt) then
+		frame.CastBar:SetStatusBarColor(self.db.castbar.color.r, self.db.castbar.color.g, self.db.castbar.color.b)
+	else
+		frame.CastBar:SetStatusBarColor(self.db.castbar.noInterrupt.r, self.db.castbar.noInterrupt.g, self.db.castbar.noInterrupt.b)
+	end
+	frame.CastBar.canInterrupt = nil
+end
+
+function mod:ConfigureElement_CastBar(frame)
+	local castBar = frame.CastBar
+
+	--Position
+	castBar:SetPoint("TOPLEFT", frame.HealthBar, "BOTTOMLEFT", 0, -3)
+	castBar:SetPoint("TOPRIGHT", frame.HealthBar, "BOTTOMRIGHT", 0, -3)
+	castBar:SetHeight(self.db.castbar.height)
+
+	castBar.Icon:SetPoint("TOPLEFT", frame.HealthBar, "TOPRIGHT", 3, 0)
+	castBar.Icon:SetPoint("BOTTOMLEFT", castBar, "BOTTOMRIGHT", 3, 0)
+	castBar.Icon:SetWidth(castBar.Icon:GetHeight())
+
+	--Texture
+	castBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
+end
+
+function mod:ConstructElement_CastBar(parent)
+	local frame = CreateFrame("StatusBar", "$parentCastBar", parent)
+	self:StyleFrame(frame, true)
+	frame:SetScript("OnUpdate", mod.UpdateElement_CastBarOnUpdate)
+	
+	frame.Icon = frame:CreateTexture(nil, "BORDER")
+	self:StyleFrame(frame.Icon, false)
+	
+	return frame	
+end
+
 function mod:UpdateElement_Glow(frame)
 	local r, g, b, shouldShow;
 	if ( UnitIsUnit(frame.unit, "target") ) then
@@ -182,6 +394,8 @@ function mod:ConstructElement_HealthBar(parent)
 	return frame
 end
 
+
+
 function mod:UpdateElement_All(frame, unit)
 	mod:UpdateElement_MaxHealth(frame)
 	mod:UpdateElement_Health(frame)
@@ -189,6 +403,7 @@ function mod:UpdateElement_All(frame, unit)
 	mod:UpdateElement_Name(frame)
 	mod:UpdateElement_Level(frame)
 	mod:UpdateElement_Glow(frame)
+	mod:UpdateElement_Cast(frame)
 end
 
 function mod:RegisterEvents(frame, unit)
@@ -199,37 +414,54 @@ function mod:RegisterEvents(frame, unit)
 	frame:RegisterUnitEvent("UNIT_LEVEL", unit);
 	frame:RegisterUnitEvent("UNIT_THREAT_LIST_UPDATE", unit);
 	frame:RegisterEvent("PLAYER_TARGET_CHANGED");
+	frame:RegisterEvent("UNIT_SPELLCAST_INTERRUPTED");
+	frame:RegisterEvent("UNIT_SPELLCAST_DELAYED");
+	frame:RegisterEvent("UNIT_SPELLCAST_CHANNEL_START");
+	frame:RegisterEvent("UNIT_SPELLCAST_CHANNEL_UPDATE");
+	frame:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP");
+	frame:RegisterEvent("UNIT_SPELLCAST_INTERRUPTIBLE");
+	frame:RegisterEvent("UNIT_SPELLCAST_NOT_INTERRUPTIBLE");
+	frame:RegisterEvent("PLAYER_ENTERING_WORLD");
+	frame:RegisterUnitEvent("UNIT_SPELLCAST_START", unit);
+	frame:RegisterUnitEvent("UNIT_SPELLCAST_STOP", unit);
+	frame:RegisterUnitEvent("UNIT_SPELLCAST_FAILED", unit);	
+	
+	mod.OnEvent(frame, "PLAYER_ENTERING_WORLD")
 end
 
 function mod:StyleFrame(frame, useBackdrop)
+	local parent = frame
+	if(parent:GetObjectType() == "Texture") then
+		parent = frame:GetParent()
+	end
 	if(useBackdrop) then
-		frame.backdropTex = frame:CreateTexture(nil, "BACKGROUND")
+		frame.backdropTex = parent:CreateTexture(nil, "BACKGROUND")
 		frame.backdropTex:SetAllPoints()
 		frame.backdropTex:SetColorTexture(0.1, 0.1, 0.1, 0.85)
 	end
 	
-	frame.top = frame:CreateTexture(nil, "BORDER")
+	frame.top = parent:CreateTexture(nil, "BORDER")
 	frame.top:SetPoint("TOPLEFT", frame, "TOPLEFT", -self.mult, self.mult)
 	frame.top:SetPoint("TOPRIGHT", frame, "TOPRIGHT", self.mult, self.mult)
 	frame.top:SetHeight(self.mult)
 	frame.top:SetColorTexture(0, 0, 0, 1)
 	frame.top:SetDrawLayer("BORDER", 1)
 
-	frame.bottom = frame:CreateTexture(nil, "BORDER")
+	frame.bottom = parent:CreateTexture(nil, "BORDER")
 	frame.bottom:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", -self.mult, -self.mult)
 	frame.bottom:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", self.mult, -self.mult)
 	frame.bottom:SetHeight(self.mult)
 	frame.bottom:SetColorTexture(0, 0, 0, 1)
 	frame.bottom:SetDrawLayer("BORDER", 1)
 
-	frame.left = frame:CreateTexture(nil, "BORDER")
+	frame.left = parent:CreateTexture(nil, "BORDER")
 	frame.left:SetPoint("TOPLEFT", frame, "TOPLEFT", -self.mult, self.mult)
 	frame.left:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", self.mult, -self.mult)
 	frame.left:SetWidth(self.mult)
 	frame.left:SetColorTexture(0, 0, 0, 1)
 	frame.left:SetDrawLayer("BORDER", 1)
 
-	frame.right = frame:CreateTexture(nil, "BORDER")
+	frame.right = parent:CreateTexture(nil, "BORDER")
 	frame.right:SetPoint("TOPRIGHT", frame, "TOPRIGHT", self.mult, self.mult)
 	frame.right:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -self.mult, -self.mult)
 	frame.right:SetWidth(self.mult)
@@ -237,7 +469,7 @@ function mod:StyleFrame(frame, useBackdrop)
 	frame.right:SetDrawLayer("BORDER", 1)
 end
 
-function mod:OnEvent(event, unit)
+function mod:OnEvent(event, unit, ...)
 	if(event == "UNIT_HEALTH" or event == "UNIT_HEALTH_FREQUENT") then
 		mod:UpdateElement_Health(self)
 	elseif(event == "UNIT_MAXHEALTH") then
@@ -253,6 +485,8 @@ function mod:OnEvent(event, unit)
 		mod:UpdateElement_Glow(self)
 	elseif(event == "PLAYER_TARGET_CHANGED") then
 		mod:UpdateElement_Glow(self)
+	else --Cast Events
+		mod:UpdateElement_Cast(self, event, unit, ...)
 	end
 end
 
@@ -264,6 +498,9 @@ function mod:NAME_PLATE_CREATED(event, frame)
 	
 	frame.UnitFrame.HealthBar = self:ConstructElement_HealthBar(frame.UnitFrame)
 	self:ConfigureElement_HealthBar(frame.UnitFrame)
+	
+	frame.UnitFrame.CastBar = self:ConstructElement_CastBar(frame.UnitFrame)
+	self:ConfigureElement_CastBar(frame.UnitFrame)
 	
 	frame.UnitFrame.Level = self:ConstructElement_Level(frame.UnitFrame)
 	self:ConfigureElement_Level(frame.UnitFrame)
