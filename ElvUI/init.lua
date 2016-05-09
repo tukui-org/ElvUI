@@ -184,10 +184,12 @@ function AddOn:ToggleConfig()
 		self:RegisterEvent('PLAYER_REGEN_ENABLED')
 		return;
 	end
-
+	
 	if not IsAddOnLoaded("ElvUI_Config") then
+
 		local _, _, _, _, reason = GetAddOnInfo("ElvUI_Config")
 		if reason ~= "MISSING" and reason ~= "DISABLED" then
+			self.GUIFrame = false
 			LoadAddOn("ElvUI_Config")
 			--For some reason, GetAddOnInfo reason is "DEMAND_LOADED" even if the addon is disabled.
 			--Workaround: Try to load addon and check if it is loaded right after.
@@ -210,7 +212,27 @@ function AddOn:ToggleConfig()
 	if not ACD.OpenFrames[AddOnName] then
 		mode = 'Open'
 	end
-
 	ACD[mode](ACD, AddOnName)
+	
+	if self.GUIFrame and mode == "Open" then
+		if(not self.GUIFrame.bounce) then
+			self.GUIFrame.bounce = CreateAnimationGroup(self.GUIFrame)
+			
+			self.GUIFrame.bounce.width = self.GUIFrame.bounce:CreateAnimation("Width")
+			self.GUIFrame.bounce.width:SetDuration(2)
+			self.GUIFrame.bounce.width:SetSmoothing("bounce")
+			self.GUIFrame.bounce.width:SetOrder(1)
+			self.GUIFrame.bounce.width:SetChange(self.GUIFrame:GetWidth() * 1.1)
+			
+			self.GUIFrame.bounce.height = self.GUIFrame.bounce:CreateAnimation("Height")
+			self.GUIFrame.bounce.height:SetDuration(2)
+			self.GUIFrame.bounce.height:SetSmoothing("bounce")
+			self.GUIFrame.bounce.height:SetOrder(1)
+			self.GUIFrame.bounce.height:SetChange(self.GUIFrame:GetHeight() * 1.1)			
+		end
+
+		self.GUIFrame.bounce:Play()
+	end
+
 	GameTooltip:Hide() --Just in case you're mouseovered something and it closes.
 end

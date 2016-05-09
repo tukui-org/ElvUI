@@ -25,4 +25,5 @@
 	<Include file="LibChatAnims\LibChatAnims\LibChatAnims.xml"/>
 	<Include file="LibCompress\lib.xml"/>
 	<Include file="LibBase64-1.0\lib.xml"/>
+	<Script file="LibAnim\LibAnim.lua"/>
 </Ui>

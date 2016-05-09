@@ -2,16 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local mod = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
 local LSM = LibStub("LibSharedMedia-3.0")
 
-function mod:SetTargetScale(frame)
-	if(UnitIsUnit(frame.unit, "target")) then
-		frame.HealthBar:SetHeight(self.db.healthbar.height * self.db.targetScale)
-		frame.HealthBar:SetWidth(self.db.healthbar.width * (self.db.targetScale + 0.15))	
-	else
-		frame.HealthBar:SetHeight(self.db.healthbar.height)
-		frame.HealthBar:SetWidth(self.db.healthbar.width)		
-	end
-end
-
 --Get Data For All Group Members Threat on Each Nameplate
 function mod:Update_ThreatList(frame)
 	local unit = frame.unit
@@ -470,10 +460,38 @@ function mod:ConfigureElement_HealthBar(frame)
 	healthBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
 end
 
+function mod:SetTargetScale(frame)
+	if(UnitIsUnit(frame.unit, "target") and not frame.isTarget and self.db.targetScale ~= 1) then
+		if(frame.HealthBar.grow:IsPlaying()) then
+			frame.HealthBar.grow:Stop()
+		end	
+		frame.HealthBar.grow.width:SetChange(self.db.healthbar.width  * self.db.targetScale)
+		frame.HealthBar.grow.height:SetChange(self.db.healthbar.height * self.db.targetScale)	
+		frame.HealthBar.grow:Play()
+		frame.isTarget = true
+	elseif(frame.isTarget) then
+		if(frame.HealthBar.grow:IsPlaying()) then
+			frame.HealthBar.grow:Stop()
+		end	
+		frame.HealthBar.grow.width:SetChange(self.db.healthbar.width)
+		frame.HealthBar.grow.height:SetChange(self.db.healthbar.height)			
+		frame.HealthBar.grow:Play()
+		frame.isTarget = nil
+	end
+end
+
+
 function mod:ConstructElement_HealthBar(parent)
 	local frame = CreateFrame("StatusBar", "$parentHealthBar", parent)
 	self:StyleFrame(frame, true)
 	
+	frame.grow = CreateAnimationGroup(frame)
+	
+	frame.grow.width = frame.grow:CreateAnimation("Width")
+	frame.grow.width:SetDuration(0.2)
+	frame.grow.height = frame.grow:CreateAnimation("Height")
+	frame.grow.height:SetDuration(0.2)	
+
 	return frame
 end
 
@@ -616,7 +634,7 @@ function mod:NAME_PLATE_UNIT_REMOVED(event, unit)
 	
 	frame.UnitFrame:UnregisterAllEvents()
 	frame.UnitFrame:Hide()
-	
+	frame.UnitFrame.isTarget = nil
 	frame.ThreatData = nil
 end
 
@@ -650,5 +668,6 @@ function mod:Initialize()
 	self:DISPLAY_SIZE_CHANGED() --Run once for good measure.
 	self:SetBaseNamePlateSize()
 end
+
 
 E:RegisterModule(mod:GetName())
