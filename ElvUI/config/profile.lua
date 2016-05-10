@@ -22,7 +22,7 @@ P['general'] = {
 	['afk'] = true,
 
 	["fontSize"] = 12,
-	["font"] = "Arial Narrow",
+	["font"] = "PT Sans Narrow",
 
 	["bordercolor"] = { r = 0.1,g = 0.1,b = 0.1 },
 	["backdropcolor"] = { r = 0.1,g = 0.1,b = 0.1 },
@@ -159,8 +159,8 @@ P["nameplate"] = {
 	["statusbar"] = "ElvUI Norm",
 	['wrapName'] = false,
 	['showLevel'] = true,
-	['font'] = 'Arial Narrow',
-	['fontSize'] = 11,
+	['font'] = 'PT Sans Narrow',
+	['fontSize'] = 9,
 	['fontOutline'] = 'MONOCHROMEOUTLINE',
 	['targetScale'] = 1.25,
 	['healthbar'] = {

@@ -470,7 +470,7 @@ function CH:StyleChat(frame)
 	editbox.historyLines = ElvCharacterDB.ChatEditHistory
 	editbox.historyIndex = 0
 	editbox:HookScript("OnArrowPressed", OnArrowPressed)
-
+	
 	for i, text in pairs(ElvCharacterDB.ChatEditHistory) do
 		--editbox:AddHistoryLine(text)
 	end

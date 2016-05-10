@@ -17,7 +17,7 @@ local PANEL_HEIGHT = 22;
 E.Layout = LO;
 
 local function Panel_OnShow(self)
-	self:SetFrameLevel(0)
+	self:SetFrameLevel(200)
 	self:SetFrameStrata('BACKGROUND')
 end
 
@@ -28,7 +28,6 @@ function LO:Initialize()
 
 	self.BottomPanel = CreateFrame('Frame', 'ElvUI_BottomPanel', E.UIParent)
 	self.BottomPanel:SetTemplate('Transparent')
-	self.BottomPanel:SetFrameLevel(2)
 	self.BottomPanel:Point('BOTTOMLEFT', E.UIParent, 'BOTTOMLEFT', -1, -1)
 	self.BottomPanel:Point('BOTTOMRIGHT', E.UIParent, 'BOTTOMRIGHT', 1, -1)
 	self.BottomPanel:Height(PANEL_HEIGHT)
@@ -39,7 +38,6 @@ function LO:Initialize()
 
 	self.TopPanel = CreateFrame('Frame', 'ElvUI_TopPanel', E.UIParent)
 	self.TopPanel:SetTemplate('Transparent')
-	self.TopPanel:SetFrameLevel(2)
 	self.TopPanel:Point('TOPLEFT', E.UIParent, 'TOPLEFT', -1, 1)
 	self.TopPanel:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', 1, 1)
 	self.TopPanel:Height(PANEL_HEIGHT)
@@ -201,10 +199,9 @@ function LO:CreateChatPanels()
 	--Left Chat
 	local lchat = CreateFrame('Frame', 'LeftChatPanel', E.UIParent)
 	lchat:SetFrameStrata('BACKGROUND')
-	lchat:SetFrameLevel(3)
+	lchat:SetFrameLevel(300)
 	lchat:Size(E.db.chat.panelWidth, E.db.chat.panelHeight)
 	lchat:Point('BOTTOMLEFT', E.UIParent, 4, 4)
-	lchat:SetFrameLevel(lchat:GetFrameLevel() + 2)
 	lchat:CreateBackdrop('Transparent')
 	lchat.backdrop:SetAllPoints()
 	E:CreateMover(lchat, "LeftChatMover", L["Left Chat"])
@@ -227,17 +224,16 @@ function LO:CreateChatPanels()
 	lchatdp:Point('BOTTOMLEFT', lchat, 'BOTTOMLEFT', SPACING, SPACING)
 	lchatdp:Point('TOPRIGHT', lchat, 'BOTTOMRIGHT', -SPACING, (SPACING + PANEL_HEIGHT))
 	lchatdp:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
-
+	
 	E:GetModule('DataTexts'):RegisterPanel(lchatdp, 3, 'ANCHOR_TOPLEFT', -17, 4)
 
 
 	--Right Chat
 	local rchat = CreateFrame('Frame', 'RightChatPanel', E.UIParent)
 	rchat:SetFrameStrata('BACKGROUND')
-	rchat:SetFrameLevel(3)
+	rchat:SetFrameLevel(300)
 	rchat:Size(E.db.chat.separateSizes and E.db.chat.panelWidthRight or E.db.chat.panelWidth, E.db.chat.separateSizes and E.db.chat.panelHeightRight or E.db.chat.panelHeight)
 	rchat:Point('BOTTOMRIGHT', E.UIParent, -4, 4)
-	rchat:SetFrameLevel(rchat:GetFrameLevel() + 2)
 	rchat:CreateBackdrop('Transparent')
 	rchat.backdrop:SetAllPoints()
 	E:CreateMover(rchat, "RightChatMover", L["Right Chat"])

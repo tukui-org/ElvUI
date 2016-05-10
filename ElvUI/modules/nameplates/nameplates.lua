@@ -2,6 +2,178 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local mod = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
 local LSM = LibStub("LibSharedMedia-3.0")
 
+function mod:SetAura(aura, index, name, filter, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, spellId, isBossAura)
+	aura.icon:SetTexture(icon);
+	aura.name = name
+	if ( count > 1 ) then
+		local countText = count;
+		if ( count >= 10 ) then
+			countText = BUFF_STACKS_OVERFLOW;
+		end
+		aura.count:Show();
+		aura.count:SetText(countText);
+	else
+		aura.count:Hide();
+	end
+	aura:SetID(index);
+	if ( expirationTime and expirationTime ~= 0 ) then
+		local startTime = expirationTime - duration;
+		aura.cooldown:SetCooldown(startTime, duration);
+		aura.cooldown:Show();
+	else
+		aura.cooldown:Hide();
+	end
+	aura:Show();
+end
+
+function mod:HideAuraIcons(auras)
+	for i=1, #auras.icons do
+		auras.icons[i]:Hide()
+	end
+end
+
+function mod:UpdateElement_Auras(frame)
+	--Debuffs
+	local index = 1;
+	local frameNum = 1;
+	local filter = nil;
+	local maxDebuffs = #frame.Debuffs.icons;
+	--Show both Boss buffs & debuffs in the debuff location
+	--First, we go through all the debuffs looking for any boss flagged ones.
+	
+	self:HideAuraIcons(frame.Debuffs)
+	while ( frameNum <= maxDebuffs ) do
+		local name, _, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, _, isBossAura = UnitDebuff(frame.unit, index, filter);
+		if ( name ) then
+			if ( isBossAura ) then
+				local debuffFrame = frame.Debuffs.icons[frameNum];
+				mod:SetAura(debuffFrame, index, name, filter, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, spellId, isBossAura)
+				frameNum = frameNum + 1;
+			end
+		else
+			break;
+		end
+		index = index + 1;
+	end
+	
+	index = 1
+	--Now look for personal debuffs
+	while ( frameNum <= maxDebuffs ) do
+		local name, _, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, _, isBossAura = UnitDebuff(frame.unit, index, filter);
+		if ( name ) then
+			if (unitCaster == "player" and not isBossAura and duration > 0) then
+				local debuffFrame = frame.Debuffs.icons[frameNum];
+				mod:SetAura(debuffFrame, index, name, filter, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, spellId, isBossAura)
+				frameNum = frameNum + 1;
+			end
+		else
+			break;
+		end
+		index = index + 1;
+	end
+
+	--Buffs
+	index = 1
+	maxBuffs = #frame.Buffs.icons
+	self:HideAuraIcons(frame.Buffs)
+	--Now look for boss buffs
+	while ( frameNum <= maxBuffs ) do
+		local name, _, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, _, isBossAura = UnitBuff(frame.unit, index, filter);
+		if ( name ) then
+			if ( isBossAura ) then
+				local buffFrame = frame.Buffs.icons[frameNum];
+				mod:SetAura(buffFrame, index, name, filter, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, spellId, isBossAura)
+				frameNum = frameNum + 1;
+			end
+		else
+			break;
+		end
+		index = index + 1;
+	end	
+	
+	index = 1
+	--Now look the rest of buffs
+	while ( frameNum <= maxBuffs ) do
+		local name, _, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, _, isBossAura = UnitBuff(frame.unit, index, filter);
+		if ( name ) then
+			if ( unitCaster == "player" and not isBossAura and duration > 0 ) then
+				local buffFrame = frame.Buffs.icons[frameNum];
+				mod:SetAura(buffFrame, index, name, filter, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, spellId, isBossAura)
+				frameNum = frameNum + 1;
+			end
+		else
+			break;
+		end
+		index = index + 1;
+	end		
+end
+
+function mod:CreateAuraIcon(parent)
+	local aura = CreateFrame("Frame", nil, parent)
+	self:StyleFrame(aura, false)
+	aura:SetHeight(18)
+
+	aura.icon = aura:CreateTexture(nil, "OVERLAY")
+	aura.icon:SetAllPoints()
+	aura.icon:SetTexCoord(unpack(E.TexCoords))
+	
+	aura.cooldown = CreateFrame("Cooldown", nil, aura, "CooldownFrameTemplate")
+	aura.cooldown:SetAllPoints(aura)
+	aura.cooldown:SetReverse(true)
+	aura.cooldown.SizeOverride = 10
+	E:RegisterCooldown(aura.cooldown)
+	--aura.cooldown:SetHideCountdownNumbers(true)
+	aura:Hide()
+	
+	aura.count = aura:CreateFontString(nil, "OVERLAY")
+	aura.count:SetPoint("BOTTOMRIGHT")
+	aura.count:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
+	
+	return aura
+end
+
+function mod:Auras_SizeChanged(width, height)
+	local numAuras = #self.icons
+	for i=1, numAuras do
+		self.icons[i]:SetWidth((width - (mod.mult*numAuras)) / numAuras)
+	end
+end
+
+function mod:ConstructElement_Auras(frame, maxAuras, side)
+	local auras = CreateFrame("FRAME", nil, frame)
+	if(side == "LEFT") then
+		auras:SetPoint("BOTTOMLEFT", frame.HealthBar, "TOPLEFT", 0, 15)
+		auras:SetPoint("BOTTOMRIGHT", frame.HealthBar, "TOP", -2, 15)
+	else
+		auras:SetPoint("BOTTOMRIGHT", frame.HealthBar, "TOPRIGHT", 0, 15)
+		auras:SetPoint("BOTTOMLEFT", frame.HealthBar, "TOP", 2, 15)	
+	end
+
+	auras:SetScript("OnSizeChanged", mod.Auras_SizeChanged)
+	auras:SetHeight(18)
+	auras:EnableMouse(true)
+	
+	auras.icons = {}
+	for i=1, maxAuras do
+		auras.icons[i] = mod:CreateAuraIcon(auras)
+		if(side == "LEFT") then
+			if(i == 1) then
+				auras.icons[i]:SetPoint("LEFT", auras, "LEFT")
+			else
+				auras.icons[i]:SetPoint("LEFT", auras.icons[i-1], "RIGHT", self.mult, 0)
+			end
+		else
+			if(i == 1) then
+				auras.icons[i]:SetPoint("RIGHT", auras, "RIGHT")
+			else
+				auras.icons[i]:SetPoint("RIGHT", auras.icons[i-1], "LEFT", -self.mult, 0)
+			end		
+		end
+	end
+	
+	return auras
+end
+
 --Get Data For All Group Members Threat on Each Nameplate
 function mod:Update_ThreatList(frame)
 	local unit = frame.unit
@@ -356,7 +528,7 @@ function mod:ConstructElement_Level(frame)
 end
 
 function mod:UpdateElement_Name(frame)
-	local name = GetUnitName(frame.unit, true)
+	local name, realm = UnitName(frame.unit)
 	frame.Name:SetText(name)
 end
 
@@ -366,7 +538,7 @@ function mod:ConfigureElement_Name(frame)
 	name:SetJustifyH("LEFT")
 	name:SetPoint("BOTTOMLEFT", frame.HealthBar, "TOPLEFT", 0, 2)
 	name:SetPoint("BOTTOMRIGHT", frame.Level, "BOTTOMLEFT")
-	name:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
+	name:SetFont([[Interface\AddOns\ElvUI\media\fonts\Homespun.ttf]], 10, "MONOCHROMEOUTLINE")
 end
 
 function mod:ConstructElement_Name(frame)
@@ -461,6 +633,11 @@ function mod:ConfigureElement_HealthBar(frame)
 end
 
 function mod:SetTargetScale(frame)
+	--Match parent's frame level for targetting purposes. Best time to do it is here.
+	local parent = C_NamePlate.GetNamePlateForUnit(frame.unit);
+	frame:SetFrameLevel(parent:GetFrameLevel())
+	--frame:SetFrameStrata(parent:GetFrameStrata())
+
 	if(UnitIsUnit(frame.unit, "target") and not frame.isTarget and self.db.targetScale ~= 1) then
 		if(frame.HealthBar.grow:IsPlaying()) then
 			frame.HealthBar.grow:Stop()
@@ -480,11 +657,10 @@ function mod:SetTargetScale(frame)
 	end
 end
 
-
 function mod:ConstructElement_HealthBar(parent)
 	local frame = CreateFrame("StatusBar", "$parentHealthBar", parent)
 	self:StyleFrame(frame, true)
-	
+
 	frame.grow = CreateAnimationGroup(frame)
 	
 	frame.grow.width = frame.grow:CreateAnimation("Width")
@@ -504,6 +680,7 @@ function mod:UpdateElement_All(frame, unit)
 	mod:UpdateElement_Glow(frame)
 	mod:UpdateElement_Cast(frame)
 	mod:SetTargetScale(frame)
+	mod:UpdateElement_Auras(frame)
 end
 
 function mod:RegisterEvents(frame, unit)
@@ -525,6 +702,7 @@ function mod:RegisterEvents(frame, unit)
 	frame:RegisterUnitEvent("UNIT_SPELLCAST_START", unit);
 	frame:RegisterUnitEvent("UNIT_SPELLCAST_STOP", unit);
 	frame:RegisterUnitEvent("UNIT_SPELLCAST_FAILED", unit);	
+	frame:RegisterUnitEvent("UNIT_AURA", unit)
 	
 	mod.OnEvent(frame, "PLAYER_ENTERING_WORLD")
 end
@@ -586,18 +764,21 @@ function mod:OnEvent(event, unit, ...)
 	elseif(event == "PLAYER_TARGET_CHANGED") then
 		mod:SetTargetScale(self)
 		mod:UpdateElement_Glow(self)
+	elseif(event == "UNIT_AURA") then
+		mod:UpdateElement_Auras(self)
 	else --Cast Events
 		mod:UpdateElement_Cast(self, event, unit, ...)
 	end
 end
 
 function mod:NAME_PLATE_CREATED(event, frame)
-	frame.UnitFrame = CreateFrame("BUTTON", "$parentUnitFrame", UIParent);
+	frame.UnitFrame = CreateFrame("BUTTON", frame:GetName().."UnitFrame", UIParent);
 	frame.UnitFrame:EnableMouse(false);
 	frame.UnitFrame:SetAllPoints(frame)
 	frame.UnitFrame:SetFrameStrata("BACKGROUND")
 	frame.UnitFrame:SetScript("OnEvent", mod.OnEvent)
 
+	
 	frame.UnitFrame.HealthBar = self:ConstructElement_HealthBar(frame.UnitFrame)
 	self:ConfigureElement_HealthBar(frame.UnitFrame)
 	
@@ -612,6 +793,9 @@ function mod:NAME_PLATE_CREATED(event, frame)
 	
 	frame.UnitFrame.Glow = self:ConstructElement_Glow(frame.UnitFrame)
 	self:ConfigureElement_Glow(frame.UnitFrame)
+	
+	frame.UnitFrame.Buffs = self:ConstructElement_Auras(frame.UnitFrame, 3, "LEFT")
+	frame.UnitFrame.Debuffs = self:ConstructElement_Auras(frame.UnitFrame, 3, "RIGHT")
 end
 
 function mod:DISPLAY_SIZE_CHANGED()
