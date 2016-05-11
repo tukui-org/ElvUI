@@ -3,65 +3,50 @@ local mod = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3
 local LSM = LibStub("LibSharedMedia-3.0")
 
 
-function mod:SetTargetScale(frame)
+function mod:ClassBar_Update(frame)
+	local targetFrame = C_NamePlate.GetNamePlateForUnit("target")
+	
+	if(UnitIsUnit(frame.unit, "target")) then
+		self.ClassBar:SetParent(frame)
+		self.ClassBar:ClearAllPoints()
+		if(frame.hasAnAura) then
+			self.ClassBar:SetPoint("BOTTOM", frame.HealthBar, "TOP", 0, 30)
+		else
+			self.ClassBar:SetPoint("BOTTOM", frame.HealthBar, "TOP", 0, 13)
+		end
+		self.ClassBar:Show()
+	elseif(not targetFrame) then
+		self.ClassBar:Hide()
+	end	
+end
+
+function mod:SetTargetFrame(frame)
 	--Match parent's frame level for targetting purposes. Best time to do it is here.
 	local parent = C_NamePlate.GetNamePlateForUnit(frame.unit);
 	frame:SetFrameLevel(parent:GetFrameLevel())
-	--frame:SetFrameStrata(parent:GetFrameStrata())
-
-	if(UnitIsUnit(frame.unit, "target") and not frame.isTarget and self.db.targetScale ~= 1) then
+	
+	
+	if(UnitIsUnit(frame.unit, "target") and not frame.isTarget) then
 		if(frame.HealthBar.grow:IsPlaying()) then
 			frame.HealthBar.grow:Stop()
 		end	
 		frame.HealthBar.grow.width:SetChange(self.db.healthbar.width  * self.db.targetScale)
 		frame.HealthBar.grow.height:SetChange(self.db.healthbar.height * self.db.targetScale)	
 		frame.HealthBar.grow:Play()
+		frame.HealthBar.scale = self.db.targetScale
 		frame.isTarget = true
-	elseif(frame.isTarget) then
+	elseif (frame.isTarget) then
 		if(frame.HealthBar.grow:IsPlaying()) then
 			frame.HealthBar.grow:Stop()
 		end	
 		frame.HealthBar.grow.width:SetChange(self.db.healthbar.width)
 		frame.HealthBar.grow.height:SetChange(self.db.healthbar.height)			
 		frame.HealthBar.grow:Play()
+		frame.HealthBar.scale = 1
 		frame.isTarget = nil
 	end
-end
-
-function mod:UpdateElement_All(frame, unit)
-	mod:UpdateElement_MaxHealth(frame)
-	mod:UpdateElement_Health(frame)
-	mod:UpdateElement_HealthColor(frame)
-	mod:UpdateElement_Name(frame)
-	mod:UpdateElement_Level(frame)
-	mod:UpdateElement_Glow(frame)
-	mod:UpdateElement_Cast(frame)
-	mod:SetTargetScale(frame)
-	mod:UpdateElement_Auras(frame)
-end
-
-function mod:RegisterEvents(frame, unit)
-	frame:RegisterUnitEvent("UNIT_MAXHEALTH", unit);
-	frame:RegisterUnitEvent("UNIT_HEALTH", unit);
-	frame:RegisterUnitEvent("UNIT_HEALTH_FREQUENT", unit);
-	frame:RegisterUnitEvent("UNIT_NAME_UPDATE", unit);
-	frame:RegisterUnitEvent("UNIT_LEVEL", unit);
-	frame:RegisterUnitEvent("UNIT_THREAT_LIST_UPDATE", unit);
-	frame:RegisterEvent("PLAYER_TARGET_CHANGED");
-	frame:RegisterEvent("UNIT_SPELLCAST_INTERRUPTED");
-	frame:RegisterEvent("UNIT_SPELLCAST_DELAYED");
-	frame:RegisterEvent("UNIT_SPELLCAST_CHANNEL_START");
-	frame:RegisterEvent("UNIT_SPELLCAST_CHANNEL_UPDATE");
-	frame:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP");
-	frame:RegisterEvent("UNIT_SPELLCAST_INTERRUPTIBLE");
-	frame:RegisterEvent("UNIT_SPELLCAST_NOT_INTERRUPTIBLE");
-	frame:RegisterEvent("PLAYER_ENTERING_WORLD");
-	frame:RegisterUnitEvent("UNIT_SPELLCAST_START", unit);
-	frame:RegisterUnitEvent("UNIT_SPELLCAST_STOP", unit);
-	frame:RegisterUnitEvent("UNIT_SPELLCAST_FAILED", unit);	
-	frame:RegisterUnitEvent("UNIT_AURA", unit)
 	
-	mod.OnEvent(frame, "PLAYER_ENTERING_WORLD")
+	mod:ClassBar_Update(frame)
 end
 
 function mod:StyleFrame(frame, useBackdrop)
@@ -104,56 +89,6 @@ function mod:StyleFrame(frame, useBackdrop)
 	frame.right:SetDrawLayer("BORDER", 1)
 end
 
-function mod:OnEvent(event, unit, ...)
-	if(event == "UNIT_HEALTH" or event == "UNIT_HEALTH_FREQUENT") then
-		mod:UpdateElement_Health(self)
-	elseif(event == "UNIT_MAXHEALTH") then
-		mod:UpdateElement_MaxHealth(self)
-	elseif(event == "UNIT_NAME_UPDATE") then
-		mod:UpdateElement_Name(self)
-		mod:UpdateElement_HealthColor(self) --Unit class sometimes takes a bit to load
-	elseif(event == "UNIT_LEVEL") then
-		mod:UpdateElement_Level(self)
-	elseif(event == "UNIT_THREAT_LIST_UPDATE") then
-		mod:Update_ThreatList(self)
-		mod:UpdateElement_HealthColor(self)
-		mod:UpdateElement_Glow(self)
-	elseif(event == "PLAYER_TARGET_CHANGED") then
-		mod:SetTargetScale(self)
-		mod:UpdateElement_Glow(self)
-	elseif(event == "UNIT_AURA") then
-		mod:UpdateElement_Auras(self)
-	else --Cast Events
-		mod:UpdateElement_Cast(self, event, unit, ...)
-	end
-end
-
-function mod:NAME_PLATE_CREATED(event, frame)
-	frame.UnitFrame = CreateFrame("BUTTON", frame:GetName().."UnitFrame", UIParent);
-	frame.UnitFrame:EnableMouse(false);
-	frame.UnitFrame:SetAllPoints(frame)
-	frame.UnitFrame:SetFrameStrata("BACKGROUND")
-	frame.UnitFrame:SetScript("OnEvent", mod.OnEvent)
-
-	
-	frame.UnitFrame.HealthBar = self:ConstructElement_HealthBar(frame.UnitFrame)
-	self:ConfigureElement_HealthBar(frame.UnitFrame)
-	
-	frame.UnitFrame.CastBar = self:ConstructElement_CastBar(frame.UnitFrame)
-	self:ConfigureElement_CastBar(frame.UnitFrame)
-	
-	frame.UnitFrame.Level = self:ConstructElement_Level(frame.UnitFrame)
-	self:ConfigureElement_Level(frame.UnitFrame)
-	
-	frame.UnitFrame.Name = self:ConstructElement_Name(frame.UnitFrame)
-	self:ConfigureElement_Name(frame.UnitFrame)
-	
-	frame.UnitFrame.Glow = self:ConstructElement_Glow(frame.UnitFrame)
-	self:ConfigureElement_Glow(frame.UnitFrame)
-	
-	frame.UnitFrame.Buffs = self:ConstructElement_Auras(frame.UnitFrame, 3, "LEFT")
-	frame.UnitFrame.Debuffs = self:ConstructElement_Auras(frame.UnitFrame, 3, "RIGHT")
-end
 
 function mod:DISPLAY_SIZE_CHANGED()
 	self.mult = E.mult --[[* UIParent:GetScale()]]	
@@ -194,6 +129,101 @@ function mod:SetBaseNamePlateSize()
 	NamePlateDriverFrame:SetBaseNamePlateSize(baseWidth, baseHeight)
 end
 
+function mod:UpdateElement_All(frame, unit)
+	mod:UpdateElement_MaxHealth(frame)
+	mod:UpdateElement_Health(frame)
+	mod:UpdateElement_HealthColor(frame)
+	mod:UpdateElement_Name(frame)
+	mod:UpdateElement_Level(frame)
+	mod:UpdateElement_Glow(frame)
+	mod:UpdateElement_Cast(frame)
+	mod:UpdateElement_Auras(frame)
+	mod:UpdateElement_RaidIcon(frame)
+	
+	mod:SetTargetFrame(frame)
+end
+
+function mod:NAME_PLATE_CREATED(event, frame)
+	frame.UnitFrame = CreateFrame("BUTTON", frame:GetName().."UnitFrame", UIParent);
+	frame.UnitFrame:EnableMouse(false);
+	frame.UnitFrame:SetAllPoints(frame)
+	frame.UnitFrame:SetFrameStrata("BACKGROUND")
+	frame.UnitFrame:SetScript("OnEvent", mod.OnEvent)
+
+	
+	frame.UnitFrame.HealthBar = self:ConstructElement_HealthBar(frame.UnitFrame)
+	self:ConfigureElement_HealthBar(frame.UnitFrame)
+	
+	frame.UnitFrame.CastBar = self:ConstructElement_CastBar(frame.UnitFrame)
+	self:ConfigureElement_CastBar(frame.UnitFrame)
+	
+	frame.UnitFrame.Level = self:ConstructElement_Level(frame.UnitFrame)
+	self:ConfigureElement_Level(frame.UnitFrame)
+	
+	frame.UnitFrame.Name = self:ConstructElement_Name(frame.UnitFrame)
+	self:ConfigureElement_Name(frame.UnitFrame)
+	
+	frame.UnitFrame.Glow = self:ConstructElement_Glow(frame.UnitFrame)
+	self:ConfigureElement_Glow(frame.UnitFrame)
+	
+	frame.UnitFrame.Buffs = self:ConstructElement_Auras(frame.UnitFrame, 3, "LEFT")
+	frame.UnitFrame.Debuffs = self:ConstructElement_Auras(frame.UnitFrame, 3, "RIGHT")
+	
+	frame.UnitFrame.RaidIcon = self:ConstructElement_RaidIcon(frame.UnitFrame)
+end
+
+function mod:OnEvent(event, unit, ...)
+	if(event == "UNIT_HEALTH" or event == "UNIT_HEALTH_FREQUENT") then
+		mod:UpdateElement_Health(self)
+	elseif(event == "UNIT_MAXHEALTH") then
+		mod:UpdateElement_MaxHealth(self)
+	elseif(event == "UNIT_NAME_UPDATE") then
+		mod:UpdateElement_Name(self)
+		mod:UpdateElement_HealthColor(self) --Unit class sometimes takes a bit to load
+	elseif(event == "UNIT_LEVEL") then
+		mod:UpdateElement_Level(self)
+	elseif(event == "UNIT_THREAT_LIST_UPDATE") then
+		mod:Update_ThreatList(self)
+		mod:UpdateElement_HealthColor(self)
+		mod:UpdateElement_Glow(self)
+	elseif(event == "PLAYER_TARGET_CHANGED") then
+		mod:SetTargetFrame(self)
+		mod:UpdateElement_Glow(self)
+	elseif(event == "UNIT_AURA") then
+		mod:UpdateElement_Auras(self)
+	elseif(event == "RAID_TARGET_UPDATE") then
+		mod:UpdateElement_RaidIcon(self)
+	else --Cast Events
+		mod:UpdateElement_Cast(self, event, unit, ...)
+	end
+end
+
+function mod:RegisterEvents(frame, unit)
+	frame:RegisterUnitEvent("UNIT_MAXHEALTH", unit);
+	frame:RegisterUnitEvent("UNIT_HEALTH", unit);
+	frame:RegisterUnitEvent("UNIT_HEALTH_FREQUENT", unit);
+	frame:RegisterUnitEvent("UNIT_NAME_UPDATE", unit);
+	frame:RegisterUnitEvent("UNIT_LEVEL", unit);
+	frame:RegisterUnitEvent("UNIT_THREAT_LIST_UPDATE", unit);
+	frame:RegisterEvent("PLAYER_TARGET_CHANGED");
+	frame:RegisterEvent("UNIT_SPELLCAST_INTERRUPTED");
+	frame:RegisterEvent("UNIT_SPELLCAST_DELAYED");
+	frame:RegisterEvent("UNIT_SPELLCAST_CHANNEL_START");
+	frame:RegisterEvent("UNIT_SPELLCAST_CHANNEL_UPDATE");
+	frame:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP");
+	frame:RegisterEvent("UNIT_SPELLCAST_INTERRUPTIBLE");
+	frame:RegisterEvent("UNIT_SPELLCAST_NOT_INTERRUPTIBLE");
+	frame:RegisterEvent("PLAYER_ENTERING_WORLD");
+	frame:RegisterUnitEvent("UNIT_SPELLCAST_START", unit);
+	frame:RegisterUnitEvent("UNIT_SPELLCAST_STOP", unit);
+	frame:RegisterUnitEvent("UNIT_SPELLCAST_FAILED", unit);	
+	frame:RegisterUnitEvent("UNIT_AURA", unit)
+	frame:RegisterEvent("RAID_TARGET_UPDATE")
+	
+	mod.OnEvent(frame, "PLAYER_ENTERING_WORLD")
+end
+
+
 function mod:Initialize()
 	self.db = E.db["nameplate"]
 	if E.private["nameplate"].enable ~= true then return end
@@ -205,7 +235,10 @@ function mod:Initialize()
 	self:RegisterEvent("NAME_PLATE_UNIT_ADDED");
 	self:RegisterEvent("NAME_PLATE_UNIT_REMOVED");
 	self:RegisterEvent("DISPLAY_SIZE_CHANGED");
-
+	
+	self.ClassBar = NamePlateDriverFrame.nameplateBar
+	self.ClassBar:SetScale(1.35)
+	
 	self:DISPLAY_SIZE_CHANGED() --Run once for good measure.
 	self:SetBaseNamePlateSize()
 end

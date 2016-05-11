@@ -33,6 +33,8 @@ function mod:HideAuraIcons(auras)
 end
 
 function mod:UpdateElement_Auras(frame)
+	local hasAnAura = false
+	
 	--Debuffs
 	local index = 1;
 	local frameNum = 1;
@@ -49,6 +51,7 @@ function mod:UpdateElement_Auras(frame)
 				local debuffFrame = frame.Debuffs.icons[frameNum];
 				mod:SetAura(debuffFrame, index, name, filter, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, spellId, isBossAura)
 				frameNum = frameNum + 1;
+				hasAnAura = true
 			end
 		else
 			break;
@@ -65,6 +68,7 @@ function mod:UpdateElement_Auras(frame)
 				local debuffFrame = frame.Debuffs.icons[frameNum];
 				mod:SetAura(debuffFrame, index, name, filter, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, spellId, isBossAura)
 				frameNum = frameNum + 1;
+				hasAnAura = true
 			end
 		else
 			break;
@@ -84,6 +88,7 @@ function mod:UpdateElement_Auras(frame)
 				local buffFrame = frame.Buffs.icons[frameNum];
 				mod:SetAura(buffFrame, index, name, filter, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, spellId, isBossAura)
 				frameNum = frameNum + 1;
+				hasAnAura = true
 			end
 		else
 			break;
@@ -100,12 +105,18 @@ function mod:UpdateElement_Auras(frame)
 				local buffFrame = frame.Buffs.icons[frameNum];
 				mod:SetAura(buffFrame, index, name, filter, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, spellId, isBossAura)
 				frameNum = frameNum + 1;
+				hasAnAura = true
 			end
 		else
 			break;
 		end
 		index = index + 1;
 	end		
+	
+	if(frame.hasAnAura ~= hasAnAura) then
+		frame.hasAnAura = hasAnAura
+		mod:ClassBar_Update(frame)
+	end
 end
 
 function mod:CreateAuraIcon(parent)
@@ -122,7 +133,7 @@ function mod:CreateAuraIcon(parent)
 	aura.cooldown:SetReverse(true)
 	aura.cooldown.SizeOverride = 10
 	E:RegisterCooldown(aura.cooldown)
-	--aura.cooldown:SetHideCountdownNumbers(true)
+
 	aura:Hide()
 	
 	aura.count = aura:CreateFontString(nil, "OVERLAY")
