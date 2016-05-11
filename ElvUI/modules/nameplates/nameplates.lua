@@ -4,6 +4,7 @@ local LSM = LibStub("LibSharedMedia-3.0")
 
 
 function mod:ClassBar_Update(frame)
+	if(not self.ClassBar) then return end
 	local targetFrame = C_NamePlate.GetNamePlateForUnit("target")
 	
 	if(UnitIsUnit(frame.unit, "target")) then
@@ -223,7 +224,6 @@ function mod:RegisterEvents(frame, unit)
 	mod.OnEvent(frame, "PLAYER_ENTERING_WORLD")
 end
 
-
 function mod:Initialize()
 	self.db = E.db["nameplate"]
 	if E.private["nameplate"].enable ~= true then return end
@@ -236,8 +236,11 @@ function mod:Initialize()
 	self:RegisterEvent("NAME_PLATE_UNIT_REMOVED");
 	self:RegisterEvent("DISPLAY_SIZE_CHANGED");
 	
+	--Best to just Hijack Blizzard's nameplate classbar
 	self.ClassBar = NamePlateDriverFrame.nameplateBar
-	self.ClassBar:SetScale(1.35)
+	if(self.ClassBar) then
+		self.ClassBar:SetScale(1.35)
+	end
 	
 	self:DISPLAY_SIZE_CHANGED() --Run once for good measure.
 	self:SetBaseNamePlateSize()
