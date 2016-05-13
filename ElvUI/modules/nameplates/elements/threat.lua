@@ -4,6 +4,8 @@ local LSM = LibStub("LibSharedMedia-3.0")
 
 --Get Data For All Group Members Threat on Each Nameplate
 function mod:Update_ThreatList(frame)
+	if frame.IsPlayer or frame.IsFriendly then return end
+
 	local unit = frame.unit
 	local isTanking, status, percent = UnitDetailedThreatSituation('player', unit)
 	local isInGroup, isInRaid = IsInGroup(), IsInRaid()

@@ -4,7 +4,19 @@ local LSM = LibStub("LibSharedMedia-3.0")
 
 function mod:UpdateElement_Name(frame)
 	local name, realm = UnitName(frame.unit)
+
 	frame.Name:SetText(name)
+	if(frame.IsFriendlyPlayer) then
+		local _, class = UnitClass(frame.unit)
+		local color = RAID_CLASS_COLORS[class]
+		if(class and color) then
+			frame.Name:SetTextColor(color.r, color.g, color.b)
+		end
+	elseif(frame.IsEnemyPlayer) then
+		frame.Name:SetTextColor(0.9, 0.05, 0.05)
+	else
+		frame.Name:SetTextColor(1, 1, 1)
+	end
 end
 
 function mod:ConfigureElement_Name(frame)
