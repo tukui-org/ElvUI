@@ -292,6 +292,13 @@ function mod:RegisterEvents(frame, unit)
 	mod.OnEvent(frame, "PLAYER_ENTERING_WORLD")
 end
 
+function mod:SetClassNameplateBar(frame)
+	mod.ClassBar = frame
+	if(frame) then
+		frame:SetScale(1.35)
+	end
+end
+
 function mod:Initialize()
 	self.db = E.db["nameplate"]
 	if E.private["nameplate"].enable ~= true then return end
@@ -306,10 +313,10 @@ function mod:Initialize()
 	
 	--Best to just Hijack Blizzard's nameplate classbar
 	self.ClassBar = NamePlateDriverFrame.nameplateBar
-	self.ManaBar = NamePlateDriverFrame.nameplateManaBar
 	if(self.ClassBar) then
 		self.ClassBar:SetScale(1.35)
 	end
+	hooksecurefunc(NamePlateDriverFrame, "SetClassNameplateBar", mod.SetClassNameplateBar)
 
 	self:DISPLAY_SIZE_CHANGED() --Run once for good measure.
 	self:SetBaseNamePlateSize()
