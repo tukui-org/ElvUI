@@ -172,8 +172,7 @@ function mod:UpdateElement_All(frame, unit)
 	
 	if(frame.IsPlayerFrame) then
 		frame.PowerBar:Show()
-		--mod:UpdateElement_Power(frame)
-		--mod:UpdateElement_MaxPower(frame)
+		mod.OnEvent(frame, "UNIT_DISPLAYPOWER", "player")
 	end
 	
 	mod:SetTargetFrame(frame)
@@ -236,7 +235,7 @@ function mod:OnEvent(event, unit, ...)
 	elseif(event == "RAID_TARGET_UPDATE") then
 		mod:UpdateElement_RaidIcon(self)
 	elseif(event == "UNIT_MAXPOWER") then
-		mod:UpdateElementMaxPower(self)
+		mod:UpdateElement_MaxPower(self)
 	elseif(event == "UNIT_POWER" or event == "UNIT_POWER_FREQUENT" or event == "UNIT_DISPLAYPOWER") then
 		local powerType, powerToken = UnitPowerType(unit)
 		local arg1 = ...

@@ -13,8 +13,8 @@ function mod:UpdateElement_Power(frame)
 	
 	local curValue = UnitPower(frame.unit, frame.PowerToken);
 	frame.PowerBar:SetValue(curValue);	
-	
-	local color = PowerBarColor[frame.PowerToken]
+
+	local color = E.db.unitframe.colors.power[frame.PowerToken] or PowerBarColor[frame.PowerToken]
 	frame.PowerBar:SetStatusBarColor(color.r, color.g, color.b)
 end 
 
