@@ -162,7 +162,6 @@ function mod:ConstructElement_Auras(frame, maxAuras, side)
 
 	auras:SetScript("OnSizeChanged", mod.Auras_SizeChanged)
 	auras:SetHeight(18)
-	auras:EnableMouse(true)
 	
 	auras.icons = {}
 	for i=1, maxAuras do

@@ -6,6 +6,7 @@ local max = math.max
 function mod:UpdateElement_HealthColor(frame)
 	if(not frame.HealthBar:IsShown()) then return end
 	local r, g, b;
+	local scale = 1
 	if ( not UnitIsConnected(frame.unit) ) then
 		r, g, b = self.db.reactions.offline.r, self.db.reactions.offline.g, self.db.reactions.offline.b
 	else
@@ -29,22 +30,28 @@ function mod:UpdateElement_HealthColor(frame)
 					if(isTanking) then
 						if(E:GetPlayerRole() == "TANK") then
 							r, g, b = self.db.threat.goodColor.r, self.db.threat.goodColor.g, self.db.threat.goodColor.b
+							scale = self.db.threat.goodScale
 						else
 							r, g, b = self.db.threat.badColor.r, self.db.threat.badColor.g, self.db.threat.badColor.b
+							scale = self.db.threat.badScale
 						end
 					else
 						if(E:GetPlayerRole() == "TANK") then
 							--Check if it is being tanked by an offtank.
 							if (IsInRaid() or IsInGroup()) and frame.isBeingTanked then
 								r, g, b = .8, 0.1, 1
+								scale = self.db.threat.goodScale
 							else
 								r, g, b = self.db.threat.badColor.r, self.db.threat.badColor.g, self.db.threat.badColor.b
+								scale = self.db.threat.badScale
 							end
 						else
 							if (IsInRaid() or IsInGroup()) and frame.isBeingTanked then
 								r, g, b = .8, 0.1, 1
+								scale = self.db.threat.goodScale
 							else
 								r, g, b = self.db.threat.goodColor.r, self.db.threat.goodColor.g, self.db.threat.goodColor.b
+								scale = self.db.threat.goodScale
 							end	
 						end
 					end
@@ -66,6 +73,10 @@ function mod:UpdateElement_HealthColor(frame)
 	if ( r ~= frame.HealthBar.r or g ~= frame.HealthBar.g or b ~= frame.HealthBar.b ) then
 		frame.HealthBar:SetStatusBarColor(r, g, b);
 		frame.HealthBar.r, frame.HealthBar.g, frame.HealthBar.b = r, g, b;
+	end
+	
+	if(not frame.isTarget) then
+		self:SetFrameScale(frame, scale)
 	end
 end
 

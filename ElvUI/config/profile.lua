@@ -372,7 +372,7 @@ P["nameplate"] = {
 				}		
 			},
 			['castbar'] = {
-				['enable'] = true,
+				['enable'] = false,
 				['height'] = 8,
 			},			
 			['buffs'] = {
@@ -456,8 +456,8 @@ P["nameplate"] = {
 	['threat'] = {
 		["goodColor"] = {r = 75/255,  g = 175/255, b = 76/255},
 		["badColor"] = {r = 0.78, g = 0.25, b = 0.25},
-		["goodScale"] = 1,
-		["badScale"] = 1,
+		["goodScale"] = 0.8,
+		["badScale"] = 1.2,
 	},				
 };
 
