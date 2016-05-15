@@ -22,7 +22,7 @@ function mod:ConfigureElement_PowerBar(frame)
 	local powerBar = frame.PowerBar
 	powerBar:SetPoint("TOPLEFT", frame.HealthBar, "BOTTOMLEFT", 0, -3)
 	powerBar:SetPoint("TOPRIGHT", frame.HealthBar, "BOTTOMRIGHT", 0, -3)
-	powerBar:SetHeight(self.db.castbar.height)
+	powerBar:SetHeight(self.db.units[frame.UnitType].castbar.height)
 	powerBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
 end
 

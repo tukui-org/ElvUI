@@ -14,7 +14,7 @@ function mod:UpdateElement_HealthColor(frame)
 			--Try to color it by class.
 			local _, class = UnitClass(frame.unit);
 			local classColor = RAID_CLASS_COLORS[class];
-			if ( frame.IsPlayer and classColor ) then
+			if ( (frame.UnitType == "FRIENDLY_PLAYER" or frame.UnitType == "ENEMY_PLAYER" or frame.UnitType == "PLAYER") and classColor ) then
 				-- Use class colors for players if class color option is turned on
 				r, g, b = classColor.r, classColor.g, classColor.b;
 			elseif ( not UnitPlayerControlled(frame.unit) and UnitIsTapDenied(frame.unit) ) then
@@ -81,12 +81,13 @@ function mod:ConfigureElement_HealthBar(frame)
 	local healthBar = frame.HealthBar
 
 	--Position
-	healthBar:SetPoint("BOTTOM", frame, "BOTTOM", 0, self.db.castbar.height + 3)
-	healthBar:SetHeight(self.db.healthbar.height)
-	healthBar:SetWidth(self.db.healthbar.width)
+	healthBar:SetPoint("BOTTOM", frame, "BOTTOM", 0, self.db.units[frame.UnitType].castbar.height + 3)
+	healthBar:SetHeight(self.db.units[frame.UnitType].healthbar.height)
+	healthBar:SetWidth(self.db.units[frame.UnitType].healthbar.width)
 
 	--Texture
 	healthBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
+	healthBar:Show()
 end
 
 
@@ -94,12 +95,12 @@ function mod:ConstructElement_HealthBar(parent)
 	local frame = CreateFrame("StatusBar", "$parentHealthBar", parent)
 	self:StyleFrame(frame, true)
 
-	frame.grow = CreateAnimationGroup(frame)
+	frame.scale = CreateAnimationGroup(frame)
 	
-	frame.grow.width = frame.grow:CreateAnimation("Width")
-	frame.grow.width:SetDuration(0.2)
-	frame.grow.height = frame.grow:CreateAnimation("Height")
-	frame.grow.height:SetDuration(0.2)	
+	frame.scale.width = frame.scale:CreateAnimation("Width")
+	frame.scale.width:SetDuration(0.2)
+	frame.scale.height = frame.scale:CreateAnimation("Height")
+	frame.scale.height:SetDuration(0.2)	
 
 	return frame
 end

@@ -7,7 +7,7 @@ function mod:ClassBar_Update(frame)
 	local targetFrame = C_NamePlate.GetNamePlateForUnit("target")
 	
 	if(UnitIsUnit(frame.unit, "target") or self.PlayerFrame) then
-		if(frame.IsFriendly and not self.PlayerFrame) then
+		if(not self.PlayerFrame and (frame.UnitType == "FRIENDLY_NPC" or frame.UnitType == "FRIENDLY_PLAYER")) then
 			self.ClassBar:Hide()
 		else
 			if(self.PlayerFrame) then
@@ -28,6 +28,18 @@ function mod:ClassBar_Update(frame)
 	end	
 end
 
+function mod:SetFrameScale(frame, scale)
+	if(frame.HealthBar.currentScale ~= scale) then
+		if(frame.HealthBar.scale:IsPlaying()) then
+			frame.HealthBar.scale:Stop()
+		end	
+		frame.HealthBar.scale.width:SetChange(self.db.units[frame.UnitType].healthbar.width  * scale)
+		frame.HealthBar.scale.height:SetChange(self.db.units[frame.UnitType].healthbar.height * scale)	
+		frame.HealthBar.scale:Play()
+		frame.HealthBar.currentScale = scale
+	end
+end
+
 function mod:SetTargetFrame(frame)
 	--Match parent's frame level for targetting purposes. Best time to do it is here.
 	local parent = C_NamePlate.GetNamePlateForUnit(frame.unit);
@@ -35,22 +47,10 @@ function mod:SetTargetFrame(frame)
 	
 	
 	if(UnitIsUnit(frame.unit, "target") and not frame.isTarget) then
-		if(frame.HealthBar.grow:IsPlaying()) then
-			frame.HealthBar.grow:Stop()
-		end	
-		frame.HealthBar.grow.width:SetChange(self.db.healthbar.width  * self.db.targetScale)
-		frame.HealthBar.grow.height:SetChange(self.db.healthbar.height * self.db.targetScale)	
-		frame.HealthBar.grow:Play()
-		frame.HealthBar.scale = self.db.targetScale
+		self:SetFrameScale(frame, self.db.targetScale)
 		frame.isTarget = true
 	elseif (frame.isTarget) then
-		if(frame.HealthBar.grow:IsPlaying()) then
-			frame.HealthBar.grow:Stop()
-		end	
-		frame.HealthBar.grow.width:SetChange(self.db.healthbar.width)
-		frame.HealthBar.grow.height:SetChange(self.db.healthbar.height)			
-		frame.HealthBar.grow:Play()
-		frame.HealthBar.scale = 1
+		self:SetFrameScale(frame, 1)
 		frame.isTarget = nil
 	end
 	
@@ -102,20 +102,52 @@ function mod:DISPLAY_SIZE_CHANGED()
 	self.mult = E.mult --[[* UIParent:GetScale()]]	
 end
 
+function mod:CheckUnitType(frame)
+	local role = UnitGroupRolesAssigned(frame.unit)
+	if(role == "HEALER" and frame.UnitType ~= "HEALER") then
+		mod:NAME_PLATE_UNIT_REMOVED("NAME_PLATE_UNIT_REMOVED", frame.unit)
+		mod:NAME_PLATE_UNIT_REMOVED("NAME_PLATE_UNIT_ADDED", frame.unit)
+	end
+end
+
 function mod:NAME_PLATE_UNIT_ADDED(event, unit)
 	local frame = C_NamePlate.GetNamePlateForUnit(unit);
 	frame.UnitFrame.unit = unit
-	frame.UnitFrame.IsFriendly = UnitIsFriend(unit, "player")
-	frame.UnitFrame.IsEnemy = not frame.UnitFrame.IsFriendly
-	frame.UnitFrame.IsPlayer = UnitIsPlayer(unit)
-	frame.UnitFrame.IsFriendlyPlayer = frame.UnitFrame.IsFriendly and frame.UnitFrame.IsPlayer
-	frame.UnitFrame.IsEnemyPlayer = not frame.UnitFrame.IsFriendly and frame.UnitFrame.IsPlayer
-	frame.UnitFrame.IsFriendlyNPC = frame.UnitFrame.IsFriendly and not frame.UnitFrame.IsPlayer
-	frame.UnitFrame.IsEnemyNPC = not frame.UnitFrame.IsFriendly and not frame.UnitFrame.IsPlayer
-	frame.UnitFrame.IsPlayerFrame = UnitIsUnit(unit, "player")
-	if(frame.UnitFrame.IsPlayerFrame) then
+	
+	local isFriendly = UnitIsFriend(unit, "player")
+	local isPlayer = UnitIsPlayer(unit)
+	
+	if(UnitIsUnit(unit, "player")) then
+		frame.UnitFrame.UnitType = "PLAYER"
+	elseif(isFriendly and isPlayer) then
+		local role = UnitGroupRolesAssigned(unit)
+		if(role == "HEALER") then
+			frame.UnitFrame.UnitType = role
+		else
+			frame.UnitFrame.UnitType = "FRIENDLY_PLAYER"
+		end
+	elseif(isFriendly and not isPlayer) then
+		frame.UnitFrame.UnitType = "FRIENDLY_NPC"
+	elseif(not isFriendly and isPlayer) then
+		frame.UnitFrame.UnitType = "ENEMY_PLAYER"
+	else
+		frame.UnitFrame.UnitType = "ENEMY_NPC"
+	end
+
+	if(frame.UnitFrame.UnitType == "PLAYER") then
 		mod.PlayerFrame = frame
 	end
+	
+	if(self.db.units[frame.UnitFrame.UnitType].healthbar.enable) then
+		self:ConfigureElement_HealthBar(frame.UnitFrame)
+		self:ConfigureElement_PowerBar(frame.UnitFrame)
+		self:ConfigureElement_CastBar(frame.UnitFrame)
+		self:ConfigureElement_Glow(frame.UnitFrame)	
+	end
+	
+	self:ConfigureElement_Level(frame.UnitFrame)
+	self:ConfigureElement_Name(frame.UnitFrame)
+
 	self:RegisterEvents(frame.UnitFrame, unit)
 	self:UpdateElement_All(frame.UnitFrame, unit)
 	frame.UnitFrame:Show()
@@ -125,23 +157,20 @@ function mod:NAME_PLATE_UNIT_REMOVED(event, unit)
 	local frame = C_NamePlate.GetNamePlateForUnit(unit);
 	frame.UnitFrame.unit = nil
 	
-	if(frame.UnitFrame.IsPlayerFrame) then
+	if(frame.UnitFrame.UnitType == "PLAYER") then
 		mod.PlayerFrame = nil
 	end
 	
+	frame.UnitFrame.HealthBar:Hide()
 	frame.UnitFrame.PowerBar:Hide()
+	frame.UnitFrame.CastBar:Hide()
+	frame.UnitFrame.Name:ClearAllPoints()
+	frame.UnitFrame.Level:ClearAllPoints()
 	frame.UnitFrame:UnregisterAllEvents()
 	frame.UnitFrame:Hide()
 	frame.UnitFrame.isTarget = nil
 	frame.ThreatData = nil
-	frame.UnitFrame.IsFriendly = nil
-	frame.UnitFrame.IsEnemy = nil
-	frame.UnitFrame.IsPlayer = nil
-	frame.UnitFrame.IsFriendlyPlayer = nil
-	frame.UnitFrame.IsEnemyPlayer = nil
-	frame.UnitFrame.IsFriendlyNPC = nil
-	frame.UnitFrame.IsEnemyNPC = nil
-	frame.UnitFrame.IsPlayerFrame = nil	
+	frame.UnitFrame.UnitType = nil
 end
 
 function mod:ForEachPlate(functionToRun, ...)
@@ -154,8 +183,8 @@ end
 
 function mod:SetBaseNamePlateSize()
 	local self = mod
-	local baseWidth = self.db.healthbar.width
-	local baseHeight = self.db.castbar.height + self.db.healthbar.height + 30
+	local baseWidth = self.db.units["ENEMY_NPC"].healthbar.width
+	local baseHeight = self.db.units["ENEMY_NPC"].castbar.height + self.db.units["ENEMY_NPC"].healthbar.height + 30
 	NamePlateDriverFrame:SetBaseNamePlateSize(baseWidth, baseHeight)
 end
 
@@ -170,7 +199,7 @@ function mod:UpdateElement_All(frame, unit)
 	mod:UpdateElement_Auras(frame)
 	mod:UpdateElement_RaidIcon(frame)
 	
-	if(frame.IsPlayerFrame) then
+	if(self.db.units[frame.UnitType].powerbar.enable) then
 		frame.PowerBar:Show()
 		mod.OnEvent(frame, "UNIT_DISPLAYPOWER", "player")
 	end
@@ -185,28 +214,14 @@ function mod:NAME_PLATE_CREATED(event, frame)
 	frame.UnitFrame:SetFrameStrata("BACKGROUND")
 	frame.UnitFrame:SetScript("OnEvent", mod.OnEvent)
 
-	
 	frame.UnitFrame.HealthBar = self:ConstructElement_HealthBar(frame.UnitFrame)
-	self:ConfigureElement_HealthBar(frame.UnitFrame)
-	
 	frame.UnitFrame.PowerBar = self:ConstructElement_PowerBar(frame.UnitFrame)
-	self:ConfigureElement_PowerBar(frame.UnitFrame)
-	
 	frame.UnitFrame.CastBar = self:ConstructElement_CastBar(frame.UnitFrame)
-	self:ConfigureElement_CastBar(frame.UnitFrame)
-	
 	frame.UnitFrame.Level = self:ConstructElement_Level(frame.UnitFrame)
-	self:ConfigureElement_Level(frame.UnitFrame)
-	
 	frame.UnitFrame.Name = self:ConstructElement_Name(frame.UnitFrame)
-	self:ConfigureElement_Name(frame.UnitFrame)
-	
 	frame.UnitFrame.Glow = self:ConstructElement_Glow(frame.UnitFrame)
-	self:ConfigureElement_Glow(frame.UnitFrame)
-	
 	frame.UnitFrame.Buffs = self:ConstructElement_Auras(frame.UnitFrame, 3, "LEFT")
 	frame.UnitFrame.Debuffs = self:ConstructElement_Auras(frame.UnitFrame, 3, "RIGHT")
-	
 	frame.UnitFrame.RaidIcon = self:ConstructElement_RaidIcon(frame.UnitFrame)
 end
 
@@ -232,6 +247,8 @@ function mod:OnEvent(event, unit, ...)
 		if(self.IsPlayerFrame) then
 			mod:ClassBar_Update(self)
 		end
+	elseif(event == "PLAYER_ROLES_ASSIGNED") then
+		mod:CheckUnitType(self)
 	elseif(event == "RAID_TARGET_UPDATE") then
 		mod:UpdateElement_RaidIcon(self)
 	elseif(event == "UNIT_MAXPOWER") then
@@ -250,46 +267,53 @@ function mod:OnEvent(event, unit, ...)
 		if arg1 == powerToken or event == "UNIT_DISPLAYPOWER" then
 			mod:UpdateElement_Power(self)
 		end
-	else --Cast Events
+	else
 		mod:UpdateElement_Cast(self, event, unit, ...)
 	end
 end
 
 function mod:RegisterEvents(frame, unit)
-	frame:RegisterUnitEvent("UNIT_MAXHEALTH", unit);
-	frame:RegisterUnitEvent("UNIT_HEALTH", unit);
-	frame:RegisterUnitEvent("UNIT_HEALTH_FREQUENT", unit);
+	if(self.db.units[frame.UnitType].healthbar.enable) then
+		frame:RegisterUnitEvent("UNIT_MAXHEALTH", unit);
+		frame:RegisterUnitEvent("UNIT_HEALTH", unit);
+		frame:RegisterUnitEvent("UNIT_HEALTH_FREQUENT", unit);
+	end
+	
 	frame:RegisterUnitEvent("UNIT_NAME_UPDATE", unit);
 	frame:RegisterUnitEvent("UNIT_LEVEL", unit);
-	
-	if(not frame.IsPlayer and not frame.IsFriendly) then
-		frame:RegisterUnitEvent("UNIT_THREAT_LIST_UPDATE", unit);
+
+	if(self.db.units[frame.UnitType].healthbar.enable) then
+		if(frame.UnitType == "ENEMY_NPC") then
+			frame:RegisterUnitEvent("UNIT_THREAT_LIST_UPDATE", unit);
+		end
+		
+		if(self.db.units[frame.UnitType].powerbar.enable) then
+			frame:RegisterUnitEvent("UNIT_POWER", unit)
+			frame:RegisterUnitEvent("UNIT_POWER_FREQUENT", unit)
+			frame:RegisterUnitEvent("UNIT_DISPLAYPOWER", unit)
+			frame:RegisterUnitEvent("UNIT_MAXPOWER", unit)
+		else
+			frame:RegisterEvent("UNIT_SPELLCAST_INTERRUPTED");
+			frame:RegisterEvent("UNIT_SPELLCAST_DELAYED");
+			frame:RegisterEvent("UNIT_SPELLCAST_CHANNEL_START");
+			frame:RegisterEvent("UNIT_SPELLCAST_CHANNEL_UPDATE");
+			frame:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP");
+			frame:RegisterEvent("UNIT_SPELLCAST_INTERRUPTIBLE");
+			frame:RegisterEvent("UNIT_SPELLCAST_NOT_INTERRUPTIBLE");	
+			frame:RegisterUnitEvent("UNIT_SPELLCAST_START", unit);
+			frame:RegisterUnitEvent("UNIT_SPELLCAST_STOP", unit);
+			frame:RegisterUnitEvent("UNIT_SPELLCAST_FAILED", unit);	
+		end
+		frame:RegisterEvent("PLAYER_TARGET_CHANGED");
+		frame:RegisterEvent("PLAYER_ENTERING_WORLD");
+		frame:RegisterUnitEvent("UNIT_AURA", unit)
+		frame:RegisterEvent("RAID_TARGET_UPDATE")	
+		mod.OnEvent(frame, "PLAYER_ENTERING_WORLD")	
 	end
-	
-	if(frame.IsPlayerFrame) then
-		frame:RegisterUnitEvent("UNIT_POWER", unit)
-		frame:RegisterUnitEvent("UNIT_POWER_FREQUENT", unit)
-		frame:RegisterUnitEvent("UNIT_DISPLAYPOWER", unit)
-		frame:RegisterUnitEvent("UNIT_MAXPOWER", unit)
-	else
-		frame:RegisterEvent("UNIT_SPELLCAST_INTERRUPTED");
-		frame:RegisterEvent("UNIT_SPELLCAST_DELAYED");
-		frame:RegisterEvent("UNIT_SPELLCAST_CHANNEL_START");
-		frame:RegisterEvent("UNIT_SPELLCAST_CHANNEL_UPDATE");
-		frame:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP");
-		frame:RegisterEvent("UNIT_SPELLCAST_INTERRUPTIBLE");
-		frame:RegisterEvent("UNIT_SPELLCAST_NOT_INTERRUPTIBLE");	
-		frame:RegisterUnitEvent("UNIT_SPELLCAST_START", unit);
-		frame:RegisterUnitEvent("UNIT_SPELLCAST_STOP", unit);
-		frame:RegisterUnitEvent("UNIT_SPELLCAST_FAILED", unit);	
+		
+	if(frame.UnitType == "FRIENDLY_PLAYER") then
+		frame:RegisterEvent("PLAYER_ROLES_ASSIGNED")
 	end
-	
-	frame:RegisterEvent("PLAYER_TARGET_CHANGED");
-	frame:RegisterEvent("PLAYER_ENTERING_WORLD");
-	frame:RegisterUnitEvent("UNIT_AURA", unit)
-	frame:RegisterEvent("RAID_TARGET_UPDATE")
-	
-	mod.OnEvent(frame, "PLAYER_ENTERING_WORLD")
 end
 
 function mod:SetClassNameplateBar(frame)

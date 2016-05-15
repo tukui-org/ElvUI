@@ -183,9 +183,9 @@ function mod:UpdateElement_Cast(frame, event, ...)
 	end
 	
 	if(frame.CastBar.canInterrupt) then
-		frame.CastBar:SetStatusBarColor(self.db.castbar.color.r, self.db.castbar.color.g, self.db.castbar.color.b)
+		frame.CastBar:SetStatusBarColor(self.db.castColor.r, self.db.castColor.g, self.db.castColor.b)
 	else
-		frame.CastBar:SetStatusBarColor(self.db.castbar.noInterrupt.r, self.db.castbar.noInterrupt.g, self.db.castbar.noInterrupt.b)
+		frame.CastBar:SetStatusBarColor(self.db.castNoInterruptColor.r, self.db.castNoInterruptColor.g, self.db.castNoInterruptColor.b)
 	end
 	frame.CastBar.canInterrupt = nil
 end
@@ -196,11 +196,11 @@ function mod:ConfigureElement_CastBar(frame)
 	--Position
 	castBar:SetPoint("TOPLEFT", frame.HealthBar, "BOTTOMLEFT", 0, -3)
 	castBar:SetPoint("TOPRIGHT", frame.HealthBar, "BOTTOMRIGHT", 0, -3)
-	castBar:SetHeight(self.db.castbar.height)
+	castBar:SetHeight(self.db.units[frame.UnitType].castbar.height)
 
 	castBar.Icon:SetPoint("TOPLEFT", frame.HealthBar, "TOPRIGHT", 3, 0)
 	castBar.Icon:SetPoint("BOTTOMLEFT", castBar, "BOTTOMRIGHT", 3, 0)
-	castBar.Icon:SetWidth(self.db.castbar.height + self.db.healthbar.height + 3)
+	castBar.Icon:SetWidth(self.db.units[frame.UnitType].castbar.height + self.db.units[frame.UnitType].healthbar.height + 3)
 	castBar.Icon:SetTexCoord(unpack(E.TexCoords))
 	
 	castBar.Name:SetPoint("TOPLEFT", castBar, "BOTTOMLEFT", 0, -2)

@@ -8,7 +8,7 @@ function mod:UpdateElement_Glow(frame)
 	if ( UnitIsUnit(frame.unit, "target") ) then
 		r, g, b = 1, 1, 1
 		shouldShow = true
-	else
+	elseif(frame.UnitType == "ENEMY_NPC") then
 		-- Use color based on the type of unit (neutral, etc.)
 		local isTanking, status = UnitDetailedThreatSituation("player", frame.unit)
 		if status then

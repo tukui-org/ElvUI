@@ -5,21 +5,34 @@ local LSM = LibStub("LibSharedMedia-3.0")
 function mod:UpdateElement_Level(frame)
 	local level = UnitLevel(frame.unit)
 	
+	local r, g, b
 	if(level == -1 or not level) then
-		frame.Level:SetText('??')
-		frame.Level:SetTextColor(0.9, 0, 0)	
+		level = '??'
+		r, g, b = 0.9, 0, 0
 	else
 		local color = GetQuestDifficultyColor(level)
-		frame.Level:SetText(level)
-		frame.Level:SetTextColor(color.r, color.g, color.b)
+		r, g, b = color.r, color.g, color.b
 	end
+	
+	if(self.db.units[frame.UnitType].healthbar.enable) then
+		frame.Level:SetText(level)
+	else
+		frame.Level:SetFormattedText(" [%s]", level)
+	end
+	frame.Level:SetTextColor(r, g, b)
 end
 
 function mod:ConfigureElement_Level(frame)
 	local level = frame.Level
 	
-	level:SetJustifyH("RIGHT")
-	level:SetPoint("BOTTOMRIGHT", frame.HealthBar, "TOPRIGHT", 0, 2)
+	level:ClearAllPoints()
+	if(self.db.units[frame.UnitType].healthbar.enable) then
+		level:SetJustifyH("RIGHT")
+		level:SetPoint("BOTTOMRIGHT", frame.HealthBar, "TOPRIGHT", 0, 2)
+	else
+		level:SetPoint("LEFT", frame.Name, "RIGHT")
+		level:SetJustifyH("LEFT")
+	end
 	level:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 end
 
