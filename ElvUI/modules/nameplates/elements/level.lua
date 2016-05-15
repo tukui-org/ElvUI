@@ -3,6 +3,7 @@ local mod = E:GetModule('NamePlates')
 local LSM = LibStub("LibSharedMedia-3.0")
 
 function mod:UpdateElement_Level(frame)
+	if(not self.db.units[frame.UnitType].showLevel) then return end
 	local level = UnitLevel(frame.unit)
 	
 	local r, g, b

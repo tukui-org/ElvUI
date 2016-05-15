@@ -174,6 +174,7 @@ P["nameplate"] = {
 					['format'] = 'CURRENT',
 				}
 			},
+			['showLevel'] = false,
 			['powerbar'] = {
 				['enable'] = false,
 				['costPrediction'] = true,
@@ -220,6 +221,7 @@ P["nameplate"] = {
 					['format'] = 'CURRENT',
 				}
 			},
+			['showLevel'] = false,
 			['powerbar'] = {
 				['enable'] = false,
 				['costPrediction'] = true,
@@ -266,6 +268,7 @@ P["nameplate"] = {
 					['format'] = 'CURRENT',
 				}
 			},
+			['showLevel'] = false,
 			['powerbar'] = {
 				['enable'] = false,
 				['costPrediction'] = true,
@@ -312,6 +315,7 @@ P["nameplate"] = {
 					['format'] = 'CURRENT',
 				}
 			},
+			['showLevel'] = true,
 			['powerbar'] = {
 				['enable'] = false,
 				['costPrediction'] = true,
@@ -358,6 +362,7 @@ P["nameplate"] = {
 					['format'] = 'CURRENT',
 				}
 			},
+			['showLevel'] = true,
 			['powerbar'] = {
 				['enable'] = false,
 				['costPrediction'] = true,
@@ -404,6 +409,7 @@ P["nameplate"] = {
 					['format'] = 'CURRENT',
 				}
 			},
+			['showLevel'] = true,
 			['powerbar'] = {
 				['enable'] = false,
 				['costPrediction'] = true,

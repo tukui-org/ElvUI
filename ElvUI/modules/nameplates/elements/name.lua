@@ -40,7 +40,7 @@ function mod:ConfigureElement_Name(frame)
 		name:SetPoint("BOTTOMRIGHT", frame.Level, "BOTTOMLEFT")
 	else
 		name:SetJustifyH("CENTER")
-		name:SetPoint("BOTTOM", frame, "BOTTOM")
+		name:SetPoint("TOP", frame, "CENTER")
 	end
 	
 	name:SetFont([[Interface\AddOns\ElvUI\media\fonts\Homespun.ttf]], 10, "MONOCHROMEOUTLINE")

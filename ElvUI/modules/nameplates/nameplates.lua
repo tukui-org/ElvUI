@@ -103,10 +103,23 @@ function mod:DISPLAY_SIZE_CHANGED()
 end
 
 function mod:CheckUnitType(frame)
-	local role = UnitGroupRolesAssigned(frame.unit)
+	local unit = frame.unit
+	local role = UnitGroupRolesAssigned(unit)
+	local isFriendly = UnitIsFriend(unit, "player")
+	
 	if(role == "HEALER" and frame.UnitType ~= "HEALER") then
-		mod:NAME_PLATE_UNIT_REMOVED("NAME_PLATE_UNIT_REMOVED", frame.unit)
-		mod:NAME_PLATE_UNIT_REMOVED("NAME_PLATE_UNIT_ADDED", frame.unit)
+		mod:NAME_PLATE_UNIT_REMOVED("NAME_PLATE_UNIT_REMOVED", unit)
+		mod:NAME_PLATE_UNIT_ADDED("NAME_PLATE_UNIT_ADDED", unit)	
+	elseif(frame.UnitType == "FRIENDLY_PLAYER" or frame.UnitType == "FRIENDLY_NPC" or frame.UnitType == "HEALER") then
+		if(not isFriendly) then
+			mod:NAME_PLATE_UNIT_REMOVED("NAME_PLATE_UNIT_REMOVED", unit)
+			mod:NAME_PLATE_UNIT_ADDED("NAME_PLATE_UNIT_ADDED", unit)
+		end
+	elseif(frame.UnitType == "ENEMY_PLAYER" or frame.UnitType == "ENEMY_NPC") then
+		if(isFriendly) then
+			mod:NAME_PLATE_UNIT_REMOVED("NAME_PLATE_UNIT_REMOVED", unit)
+			mod:NAME_PLATE_UNIT_ADDED("NAME_PLATE_UNIT_ADDED", unit)
+		end	
 	end
 end
 
@@ -153,7 +166,7 @@ function mod:NAME_PLATE_UNIT_ADDED(event, unit)
 	frame.UnitFrame:Show()
 end
 
-function mod:NAME_PLATE_UNIT_REMOVED(event, unit)
+function mod:NAME_PLATE_UNIT_REMOVED(event, unit, ...)
 	local frame = C_NamePlate.GetNamePlateForUnit(unit);
 	frame.UnitFrame.unit = nil
 	
@@ -166,6 +179,8 @@ function mod:NAME_PLATE_UNIT_REMOVED(event, unit)
 	frame.UnitFrame.CastBar:Hide()
 	frame.UnitFrame.Name:ClearAllPoints()
 	frame.UnitFrame.Level:ClearAllPoints()
+	frame.UnitFrame.Level:SetText("")
+	frame.UnitFrame.Name:SetText("")
 	frame.UnitFrame:UnregisterAllEvents()
 	frame.UnitFrame:Hide()
 	frame.UnitFrame.isTarget = nil
@@ -247,7 +262,7 @@ function mod:OnEvent(event, unit, ...)
 		if(self.IsPlayerFrame) then
 			mod:ClassBar_Update(self)
 		end
-	elseif(event == "PLAYER_ROLES_ASSIGNED") then
+	elseif(event == "PLAYER_ROLES_ASSIGNED" or event == "UNIT_FACTION") then
 		mod:CheckUnitType(self)
 	elseif(event == "RAID_TARGET_UPDATE") then
 		mod:UpdateElement_RaidIcon(self)
@@ -313,6 +328,7 @@ function mod:RegisterEvents(frame, unit)
 		
 	if(frame.UnitType == "FRIENDLY_PLAYER") then
 		frame:RegisterEvent("PLAYER_ROLES_ASSIGNED")
+		frame:RegisterEvent("UNIT_FACTION")
 	end
 end
 
