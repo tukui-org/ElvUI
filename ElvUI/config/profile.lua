@@ -2598,6 +2598,7 @@ P["actionbar"] = {
 	},
 
 	['globalFadeAlpha'] = 0,
+	["lockActionBars"] = true,
 
 	['bar1'] = {
 		['enabled'] = true,
