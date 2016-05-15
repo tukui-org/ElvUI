@@ -4,16 +4,21 @@ local LSM = LibStub("LibSharedMedia-3.0")
 
 function mod:ClassBar_Update(frame)
 	if(not self.ClassBar) then return end
-	local targetFrame = C_NamePlate.GetNamePlateForUnit("target")
 	
-	if(UnitIsUnit(frame.unit, "target") or self.PlayerFrame) then
-		if(not self.PlayerFrame and (frame.UnitType == "FRIENDLY_NPC" or frame.UnitType == "FRIENDLY_PLAYER")) then
+	if(self.PlayerFrame) then
+		frame = self.PlayerFrame.UnitFrame
+		self.ClassBar:SetParent(frame)
+		self.ClassBar:ClearAllPoints()
+		if(frame.hasAnAura) then
+			self.ClassBar:SetPoint("BOTTOM", frame.HealthBar, "TOP", 0, 30)
+		else
+			self.ClassBar:SetPoint("BOTTOM", frame.HealthBar, "TOP", 0, 13)
+		end
+		self.ClassBar:Show()		
+	elseif(UnitIsUnit(frame.unit, "target")) then
+		if(frame.UnitType == "FRIENDLY_NPC" or frame.UnitType == "FRIENDLY_PLAYER") then
 			self.ClassBar:Hide()
 		else
-			if(self.PlayerFrame) then
-				frame = self.PlayerFrame.UnitFrame
-			end
-
 			self.ClassBar:SetParent(frame)
 			self.ClassBar:ClearAllPoints()
 			if(frame.hasAnAura) then
@@ -23,7 +28,7 @@ function mod:ClassBar_Update(frame)
 			end
 			self.ClassBar:Show()
 		end
-	elseif(not targetFrame) then
+	else
 		self.ClassBar:Hide()
 	end	
 end
@@ -189,6 +194,12 @@ function mod:NAME_PLATE_UNIT_REMOVED(event, unit, ...)
 	frame.UnitFrame.isTarget = nil
 	frame.ThreatData = nil
 	frame.UnitFrame.UnitType = nil
+	
+	if(self.ClassBar) then
+		if(self.ClassBar:GetParent() == frame) then
+			mod:ClassBar_Update(frame)
+		end
+	end
 end
 
 function mod:ForEachPlate(functionToRun, ...)
