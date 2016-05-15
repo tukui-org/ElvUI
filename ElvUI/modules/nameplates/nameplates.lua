@@ -105,18 +105,18 @@ end
 function mod:CheckUnitType(frame)
 	local unit = frame.unit
 	local role = UnitGroupRolesAssigned(unit)
-	local isFriendly = UnitIsFriend(unit, "player")
-	
+	local CanAttack = UnitCanAttack("player", unit)
+
 	if(role == "HEALER" and frame.UnitType ~= "HEALER") then
 		mod:NAME_PLATE_UNIT_REMOVED("NAME_PLATE_UNIT_REMOVED", unit)
 		mod:NAME_PLATE_UNIT_ADDED("NAME_PLATE_UNIT_ADDED", unit)	
 	elseif(frame.UnitType == "FRIENDLY_PLAYER" or frame.UnitType == "FRIENDLY_NPC" or frame.UnitType == "HEALER") then
-		if(not isFriendly) then
+		if(CanAttack) then
 			mod:NAME_PLATE_UNIT_REMOVED("NAME_PLATE_UNIT_REMOVED", unit)
 			mod:NAME_PLATE_UNIT_ADDED("NAME_PLATE_UNIT_ADDED", unit)
 		end
 	elseif(frame.UnitType == "ENEMY_PLAYER" or frame.UnitType == "ENEMY_NPC") then
-		if(isFriendly) then
+		if(not CanAttack) then
 			mod:NAME_PLATE_UNIT_REMOVED("NAME_PLATE_UNIT_REMOVED", unit)
 			mod:NAME_PLATE_UNIT_ADDED("NAME_PLATE_UNIT_ADDED", unit)
 		end	
@@ -127,21 +127,21 @@ function mod:NAME_PLATE_UNIT_ADDED(event, unit)
 	local frame = C_NamePlate.GetNamePlateForUnit(unit);
 	frame.UnitFrame.unit = unit
 	
-	local isFriendly = UnitIsFriend(unit, "player")
+	local CanAttack = UnitCanAttack(unit, "player")
 	local isPlayer = UnitIsPlayer(unit)
 	
 	if(UnitIsUnit(unit, "player")) then
 		frame.UnitFrame.UnitType = "PLAYER"
-	elseif(isFriendly and isPlayer) then
+	elseif(not CanAttack and isPlayer) then
 		local role = UnitGroupRolesAssigned(unit)
 		if(role == "HEALER") then
 			frame.UnitFrame.UnitType = role
 		else
 			frame.UnitFrame.UnitType = "FRIENDLY_PLAYER"
 		end
-	elseif(isFriendly and not isPlayer) then
+	elseif(not CanAttack and not isPlayer) then
 		frame.UnitFrame.UnitType = "FRIENDLY_NPC"
-	elseif(not isFriendly and isPlayer) then
+	elseif(CanAttack and isPlayer) then
 		frame.UnitFrame.UnitType = "ENEMY_PLAYER"
 	else
 		frame.UnitFrame.UnitType = "ENEMY_NPC"
@@ -173,7 +173,10 @@ function mod:NAME_PLATE_UNIT_REMOVED(event, unit, ...)
 	if(frame.UnitFrame.UnitType == "PLAYER") then
 		mod.PlayerFrame = nil
 	end
-	
+
+	frame.UnitFrame.Glow.r, frame.UnitFrame.Glow.g, frame.UnitFrame.Glow.b = nil, nil, nil
+	frame.UnitFrame.Glow:Hide()	
+	frame.UnitFrame.HealthBar.r, frame.UnitFrame.HealthBar.g, frame.UnitFrame.HealthBar.b = nil, nil, nil
 	frame.UnitFrame.HealthBar:Hide()
 	frame.UnitFrame.PowerBar:Hide()
 	frame.UnitFrame.CastBar:Hide()
@@ -326,10 +329,8 @@ function mod:RegisterEvents(frame, unit)
 		mod.OnEvent(frame, "PLAYER_ENTERING_WORLD")	
 	end
 		
-	if(frame.UnitType == "FRIENDLY_PLAYER") then
-		frame:RegisterEvent("PLAYER_ROLES_ASSIGNED")
-		frame:RegisterEvent("UNIT_FACTION")
-	end
+	frame:RegisterEvent("PLAYER_ROLES_ASSIGNED")
+	frame:RegisterEvent("UNIT_FACTION")
 end
 
 function mod:SetClassNameplateBar(frame)

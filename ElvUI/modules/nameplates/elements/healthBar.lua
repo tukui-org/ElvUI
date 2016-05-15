@@ -3,6 +3,7 @@ local mod = E:GetModule('NamePlates')
 local LSM = LibStub("LibSharedMedia-3.0")
 
 function mod:UpdateElement_HealthColor(frame)
+	if(not frame.HealthBar:IsShown()) then return end
 	local r, g, b;
 	if ( not UnitIsConnected(frame.unit) ) then
 		r, g, b = self.db.reactions.offline.r, self.db.reactions.offline.g, self.db.reactions.offline.b
@@ -60,7 +61,7 @@ function mod:UpdateElement_HealthColor(frame)
 			end
 		end
 	end
-	
+
 	if ( r ~= frame.HealthBar.r or g ~= frame.HealthBar.g or b ~= frame.HealthBar.b ) then
 		frame.HealthBar:SetStatusBarColor(r, g, b);
 		frame.HealthBar.r, frame.HealthBar.g, frame.HealthBar.b = r, g, b;
