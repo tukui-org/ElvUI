@@ -36,6 +36,7 @@ function mod:UpdateElement_Glow(frame)
 			frame.Glow:SetBackdropBorderColor(r, g, b);
 			frame.Glow.r, frame.Glow.g, frame.Glow.b = r, g, b;
 		end
+		frame.Glow:SetOutside(frame.HealthBar, 3 + mod.mult, 3 + mod.mult, frame.PowerBar:IsShown() and frame.PowerBar)
 	elseif(frame.Glow:IsShown()) then
 		frame.Glow:Hide()
 	end
@@ -45,7 +46,7 @@ end
 function mod:ConfigureElement_Glow(frame)
 	frame.Glow:SetFrameLevel(0)
 	frame.Glow:SetFrameStrata("BACKGROUND")
-	frame.Glow:SetOutside(frame.HealthBar, 3 + mod.mult, 3 + mod.mult)
+	frame.Glow:SetOutside(frame.HealthBar, 3 + mod.mult, 3 + mod.mult, frame.PowerBar:IsShown() and frame.PowerBar)
 	frame.Glow:SetBackdrop( {
 		edgeFile = LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = E:Scale(3),
 		insets = {left = E:Scale(5), right = E:Scale(5), top = E:Scale(5), bottom = E:Scale(5)},

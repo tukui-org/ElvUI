@@ -194,13 +194,22 @@ function mod:ConfigureElement_CastBar(frame)
 	local castBar = frame.CastBar
 
 	--Position
-	castBar:SetPoint("TOPLEFT", frame.HealthBar, "BOTTOMLEFT", 0, -3)
-	castBar:SetPoint("TOPRIGHT", frame.HealthBar, "BOTTOMRIGHT", 0, -3)
+	if(self.db.units[frame.UnitType].powerbar.enable) then
+		castBar:SetPoint("TOPLEFT", frame.PowerBar, "BOTTOMLEFT", 0, -3)
+		castBar:SetPoint("TOPRIGHT", frame.PowerBar, "BOTTOMRIGHT", 0, -3)	
+	else
+		castBar:SetPoint("TOPLEFT", frame.HealthBar, "BOTTOMLEFT", 0, -3)
+		castBar:SetPoint("TOPRIGHT", frame.HealthBar, "BOTTOMRIGHT", 0, -3)
+	end
 	castBar:SetHeight(self.db.units[frame.UnitType].castbar.height)
 
 	castBar.Icon:SetPoint("TOPLEFT", frame.HealthBar, "TOPRIGHT", 3, 0)
 	castBar.Icon:SetPoint("BOTTOMLEFT", castBar, "BOTTOMRIGHT", 3, 0)
-	castBar.Icon:SetWidth(self.db.units[frame.UnitType].castbar.height + self.db.units[frame.UnitType].healthbar.height + 3)
+	if(self.db.units[frame.UnitType].powerbar.enable) then
+		castBar.Icon:SetWidth(self.db.units[frame.UnitType].castbar.height + self.db.units[frame.UnitType].healthbar.height + self.db.units[frame.UnitType].powerbar.height + mod.mult + 3)
+	else
+		castBar.Icon:SetWidth(self.db.units[frame.UnitType].castbar.height + self.db.units[frame.UnitType].healthbar.height + 3)
+	end
 	castBar.Icon:SetTexCoord(unpack(E.TexCoords))
 	
 	castBar.Name:SetPoint("TOPLEFT", castBar, "BOTTOMLEFT", 0, -2)

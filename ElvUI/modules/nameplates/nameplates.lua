@@ -189,6 +189,9 @@ function mod:NAME_PLATE_UNIT_REMOVED(event, unit, ...)
 	frame.UnitFrame.HealthBar:Hide()
 	frame.UnitFrame.PowerBar:Hide()
 	frame.UnitFrame.CastBar:Hide()
+	frame.UnitFrame.AbsorbBar:Hide()
+	frame.UnitFrame.HealPrediction:Hide()
+	frame.UnitFrame.PersonalHealPrediction:Hide()
 	frame.UnitFrame.Name:ClearAllPoints()
 	frame.UnitFrame.Level:ClearAllPoints()
 	frame.UnitFrame.Level:SetText("")
@@ -230,10 +233,11 @@ function mod:UpdateElement_All(frame, unit)
 	mod:UpdateElement_Cast(frame)
 	mod:UpdateElement_Auras(frame)
 	mod:UpdateElement_RaidIcon(frame)
+	mod:UpdateElement_HealPrediction(frame)
 	
 	if(self.db.units[frame.UnitType].powerbar.enable) then
 		frame.PowerBar:Show()
-		mod.OnEvent(frame, "UNIT_DISPLAYPOWER", "player")
+		mod.OnEvent(frame, "UNIT_DISPLAYPOWER", unit)
 	end
 	
 	mod:SetTargetFrame(frame)
@@ -260,8 +264,12 @@ end
 function mod:OnEvent(event, unit, ...)
 	if(event == "UNIT_HEALTH" or event == "UNIT_HEALTH_FREQUENT") then
 		mod:UpdateElement_Health(self)
+		mod:UpdateElement_HealPrediction(self)
+	elseif(event == "UNIT_ABSORB_AMOUNT_CHANGED" or event == "UNIT_HEAL_ABSORB_AMOUNT_CHANGED" or event == "UNIT_HEAL_PREDICTION") then
+		mod:UpdateElement_HealPrediction(self)
 	elseif(event == "UNIT_MAXHEALTH") then
 		mod:UpdateElement_MaxHealth(self)
+		mod:UpdateElement_HealPrediction(self)
 	elseif(event == "UNIT_NAME_UPDATE") then
 		mod:UpdateElement_Name(self)
 		mod:UpdateElement_HealthColor(self) --Unit class sometimes takes a bit to load
@@ -309,6 +317,9 @@ function mod:RegisterEvents(frame, unit)
 		frame:RegisterUnitEvent("UNIT_MAXHEALTH", unit);
 		frame:RegisterUnitEvent("UNIT_HEALTH", unit);
 		frame:RegisterUnitEvent("UNIT_HEALTH_FREQUENT", unit);
+		frame:RegisterUnitEvent("UNIT_ABSORB_AMOUNT_CHANGED", unit);
+		frame:RegisterUnitEvent("UNIT_HEAL_ABSORB_AMOUNT_CHANGED", unit);
+		frame:RegisterUnitEvent("UNIT_HEAL_PREDICTION", unit);
 	end
 	
 	frame:RegisterUnitEvent("UNIT_NAME_UPDATE", unit);

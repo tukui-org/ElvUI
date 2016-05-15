@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('NamePlates')
 local LSM = LibStub("LibSharedMedia-3.0")
+local max = math.max
 
 function mod:UpdateElement_HealthColor(frame)
 	if(not frame.HealthBar:IsShown()) then return end
@@ -68,6 +69,89 @@ function mod:UpdateElement_HealthColor(frame)
 	end
 end
 
+local function UpdateFillBar(frame, previousTexture, bar, amount)
+	if ( amount == 0 ) then
+		bar:Hide();
+		return previousTexture;
+	end
+
+	bar:ClearAllPoints()
+	bar:Point("TOPLEFT", previousTexture, "TOPRIGHT");
+	bar:Point("BOTTOMLEFT", previousTexture, "BOTTOMRIGHT");
+
+	local totalWidth = frame:GetSize();
+	bar:SetWidth(totalWidth);
+
+	return bar:GetStatusBarTexture();
+end
+
+function mod:UpdateElement_HealPrediction(frame)
+	local unit = frame.unit
+	local myIncomingHeal = UnitGetIncomingHeals(unit, 'player') or 0
+	local allIncomingHeal = UnitGetIncomingHeals(unit) or 0
+	local totalAbsorb = UnitGetTotalAbsorbs(unit) or 0
+	local myCurrentHealAbsorb = UnitGetTotalHealAbsorbs(unit) or 0
+	local health, maxHealth = UnitHealth(unit), UnitHealthMax(unit)
+
+	local overHealAbsorb = false
+	if(health < myCurrentHealAbsorb) then
+		overHealAbsorb = true
+		myCurrentHealAbsorb = health
+	end
+	
+	local maxOverflow = 1
+	if(health - myCurrentHealAbsorb + allIncomingHeal > maxHealth * maxOverflow) then
+		allIncomingHeal = maxHealth * maxOverflow - health + myCurrentHealAbsorb
+	end
+
+	local otherIncomingHeal = 0
+	if(allIncomingHeal < myIncomingHeal) then
+		myIncomingHeal = allIncomingHeal
+	else
+		otherIncomingHeal = allIncomingHeal - myIncomingHeal
+	end
+
+	local overAbsorb = false
+	if(health - myCurrentHealAbsorb + allIncomingHeal + totalAbsorb >= maxHealth or health + totalAbsorb >= maxHealth) then
+		if(totalAbsorb > 0) then
+			overAbsorb = true
+		end
+
+
+		if(allIncomingHeal > myCurrentHealAbsorb) then
+			totalAbsorb = max(0, maxHealth - (health - myCurrentHealAbsorb + allIncomingHeal))
+		else
+			totalAbsorb = max(0, maxHealth - health)
+		end
+	end
+
+	if(myCurrentHealAbsorb > allIncomingHeal) then
+		myCurrentHealAbsorb = myCurrentHealAbsorb - allIncomingHeal
+	else
+		myCurrentHealAbsorb = 0
+	end
+	
+
+	frame.PersonalHealPrediction:SetMinMaxValues(0, maxHealth)
+	frame.PersonalHealPrediction:SetValue(myIncomingHeal)
+	frame.PersonalHealPrediction:Show()
+
+	frame.HealPrediction:SetMinMaxValues(0, maxHealth)
+	frame.HealPrediction:SetValue(otherIncomingHeal)
+	frame.HealPrediction:Show()
+
+
+	frame.AbsorbBar:SetMinMaxValues(0, maxHealth)
+	frame.AbsorbBar:SetValue(totalAbsorb)
+	frame.AbsorbBar:Show()
+	
+	local previousTexture = frame.HealthBar:GetStatusBarTexture();
+	previousTexture = UpdateFillBar(frame.HealthBar, previousTexture, frame.PersonalHealPrediction , myIncomingHeal);
+	previousTexture = UpdateFillBar(frame.HealthBar, previousTexture, frame.HealPrediction, allIncomingHeal);
+	previousTexture = UpdateFillBar(frame.HealthBar, previousTexture, frame.AbsorbBar, totalAbsorb);	
+end
+
+
 function mod:UpdateElement_MaxHealth(frame)
 	local maxHealth = UnitHealthMax(frame.unit);
 	frame.HealthBar:SetMinMaxValues(0, maxHealth)
@@ -80,7 +164,7 @@ end
 
 function mod:ConfigureElement_HealthBar(frame)
 	local healthBar = frame.HealthBar
-
+	local absorbBar = frame.AbsorbBar
 	--Position
 	healthBar:SetPoint("BOTTOM", frame, "BOTTOM", 0, self.db.units[frame.UnitType].castbar.height + 3)
 	healthBar:SetHeight(self.db.units[frame.UnitType].healthbar.height)
@@ -89,13 +173,28 @@ function mod:ConfigureElement_HealthBar(frame)
 	--Texture
 	healthBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
 	healthBar:Show()
+
+	absorbBar:Hide()
 end
 
 
 function mod:ConstructElement_HealthBar(parent)
 	local frame = CreateFrame("StatusBar", "$parentHealthBar", parent)
 	self:StyleFrame(frame, true)
+	
+	parent.AbsorbBar = CreateFrame("StatusBar", "$parentAbsorbBar", frame)
+	parent.AbsorbBar:SetStatusBarTexture(LSM:Fetch("background", "ElvUI Blank"))
+	parent.AbsorbBar:SetStatusBarColor(1, 1, 0, 0.25)
 
+	parent.HealPrediction = CreateFrame("StatusBar", "$parentHealPrediction", frame)
+	parent.HealPrediction:SetStatusBarTexture(LSM:Fetch("background", "ElvUI Blank"))
+	parent.HealPrediction:SetStatusBarColor(0, 1, 0, 0.25)
+	
+	parent.PersonalHealPrediction = CreateFrame("StatusBar", "$parentPersonalHealPrediction", frame)
+	parent.PersonalHealPrediction:SetStatusBarTexture(LSM:Fetch("background", "ElvUI Blank"))
+	parent.PersonalHealPrediction:SetStatusBarColor(0, 1, 0.5, 0.25)
+		
+	
 	frame.scale = CreateAnimationGroup(frame)
 	
 	frame.scale.width = frame.scale:CreateAnimation("Width")
