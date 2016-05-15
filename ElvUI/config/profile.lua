@@ -257,7 +257,7 @@ P["nameplate"] = {
 		},
 		['FRIENDLY_PLAYER'] = {
 			['healthbar'] = {
-				['enable'] = true,
+				['enable'] = false,
 				['height'] = 10,
 				['width'] = 150,
 				['healPrediction'] = true,
