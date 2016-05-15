@@ -184,7 +184,7 @@ P["nameplate"] = {
 				}		
 			},
 			['castbar'] = {
-				['enable'] = false,
+				['enable'] = true,
 				['height'] = 8,
 			},			
 			['buffs'] = {

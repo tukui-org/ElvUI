@@ -27,6 +27,8 @@ function mod:UpdateElement_CastBarOnUpdate(elapsed)
 end
 
 function mod:UpdateElement_Cast(frame, event, ...)
+	if(self.db.units[frame.UnitType].castbar.enable ~= true) then return end
+	
 	local arg1 = ...;
 	local unit = frame.unit
 	if ( event == "PLAYER_ENTERING_WORLD" ) then
@@ -46,7 +48,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 	if ( arg1 ~= unit ) then
 		return;
 	end		
-	print(event)
+
 	if ( event == "UNIT_SPELLCAST_START" ) then
 		local name, nameSubtext, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible = UnitCastingInfo(unit);
 		if ( not name) then

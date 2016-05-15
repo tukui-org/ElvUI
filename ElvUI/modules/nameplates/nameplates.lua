@@ -181,7 +181,7 @@ function mod:NAME_PLATE_UNIT_REMOVED(event, unit, ...)
 	if(frame.UnitFrame.UnitType == "PLAYER") then
 		mod.PlayerFrame = nil
 	end
-	
+
 	frame.UnitFrame:UnregisterAllEvents()
 	frame.UnitFrame.Glow.r, frame.UnitFrame.Glow.g, frame.UnitFrame.Glow.b = nil, nil, nil
 	frame.UnitFrame.Glow:Hide()	
@@ -336,7 +336,7 @@ function mod:RegisterEvents(frame, unit)
 			frame:RegisterUnitEvent("UNIT_DISPLAYPOWER", unit)
 			frame:RegisterUnitEvent("UNIT_MAXPOWER", unit)
 		end
-		
+
 		if(self.db.units[frame.UnitType].castbar.enable) then
 			frame:RegisterEvent("UNIT_SPELLCAST_INTERRUPTED");
 			frame:RegisterEvent("UNIT_SPELLCAST_DELAYED");
