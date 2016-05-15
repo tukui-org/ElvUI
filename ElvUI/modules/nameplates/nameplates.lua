@@ -18,7 +18,7 @@ function mod:ClassBar_Update(frame)
 		self.ClassBar:Show()		
 	elseif(targetFrame) then
 		frame = targetFrame.UnitFrame
-		if(frame.UnitType == "FRIENDLY_NPC" or frame.UnitType == "FRIENDLY_PLAYER") then
+		if(frame.UnitType == "FRIENDLY_NPC" or frame.UnitType == "FRIENDLY_PLAYER" or frame.UnitType == "HEALER") then
 			self.ClassBar:Hide()
 		else
 			self.ClassBar:SetParent(frame)
