@@ -4,6 +4,7 @@ local LSM = LibStub("LibSharedMedia-3.0")
 
 
 function mod:UpdateElement_Glow(frame)
+	if(not frame.HealthBar:IsShown()) then return end
 	local r, g, b, shouldShow;
 	if ( UnitIsUnit(frame.unit, "target") ) then
 		r, g, b = 1, 1, 1
@@ -28,7 +29,7 @@ function mod:UpdateElement_Glow(frame)
 			shouldShow = true
 		end
 	end
-	
+
 	if(shouldShow) then
 		frame.Glow:Show()
 		if ( (r ~= frame.Glow.r or g ~= frame.Glow.g or b ~= frame.Glow.b) ) then
@@ -38,6 +39,7 @@ function mod:UpdateElement_Glow(frame)
 	elseif(frame.Glow:IsShown()) then
 		frame.Glow:Hide()
 	end
+	
 end
 
 function mod:ConfigureElement_Glow(frame)

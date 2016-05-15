@@ -176,7 +176,7 @@ P["nameplate"] = {
 			},
 			['showLevel'] = false,
 			['powerbar'] = {
-				['enable'] = false,
+				['enable'] = true,
 				['costPrediction'] = true,
 				['text'] = {
 					['enable'] = false,
@@ -184,7 +184,7 @@ P["nameplate"] = {
 				}		
 			},
 			['castbar'] = {
-				['enable'] = true,
+				['enable'] = false,
 				['height'] = 8,
 			},			
 			['buffs'] = {

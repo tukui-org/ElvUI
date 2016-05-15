@@ -173,7 +173,8 @@ function mod:NAME_PLATE_UNIT_REMOVED(event, unit, ...)
 	if(frame.UnitFrame.UnitType == "PLAYER") then
 		mod.PlayerFrame = nil
 	end
-
+	
+	frame.UnitFrame:UnregisterAllEvents()
 	frame.UnitFrame.Glow.r, frame.UnitFrame.Glow.g, frame.UnitFrame.Glow.b = nil, nil, nil
 	frame.UnitFrame.Glow:Hide()	
 	frame.UnitFrame.HealthBar.r, frame.UnitFrame.HealthBar.g, frame.UnitFrame.HealthBar.b = nil, nil, nil
@@ -184,7 +185,6 @@ function mod:NAME_PLATE_UNIT_REMOVED(event, unit, ...)
 	frame.UnitFrame.Level:ClearAllPoints()
 	frame.UnitFrame.Level:SetText("")
 	frame.UnitFrame.Name:SetText("")
-	frame.UnitFrame:UnregisterAllEvents()
 	frame.UnitFrame:Hide()
 	frame.UnitFrame.isTarget = nil
 	frame.ThreatData = nil
