@@ -4,6 +4,7 @@ local LSM = LibStub("LibSharedMedia-3.0")
 
 function mod:ClassBar_Update(frame)
 	if(not self.ClassBar) then return end
+	local targetFrame = C_NamePlate.GetNamePlateForUnit("target")
 	
 	if(self.PlayerFrame) then
 		frame = self.PlayerFrame.UnitFrame
@@ -15,7 +16,8 @@ function mod:ClassBar_Update(frame)
 			self.ClassBar:SetPoint("BOTTOM", frame.HealthBar, "TOP", 0, 13)
 		end
 		self.ClassBar:Show()		
-	elseif(UnitIsUnit(frame.unit, "target")) then
+	elseif(targetFrame) then
+		frame = targetFrame.UnitFrame
 		if(frame.UnitType == "FRIENDLY_NPC" or frame.UnitType == "FRIENDLY_PLAYER") then
 			self.ClassBar:Hide()
 		else
@@ -175,6 +177,7 @@ function mod:NAME_PLATE_UNIT_REMOVED(event, unit, ...)
 	local frame = C_NamePlate.GetNamePlateForUnit(unit);
 	frame.UnitFrame.unit = nil
 	
+	local unitType = frame.UnitFrame.UnitType
 	if(frame.UnitFrame.UnitType == "PLAYER") then
 		mod.PlayerFrame = nil
 	end
@@ -196,7 +199,7 @@ function mod:NAME_PLATE_UNIT_REMOVED(event, unit, ...)
 	frame.UnitFrame.UnitType = nil
 	
 	if(self.ClassBar) then
-		if(self.ClassBar:GetParent() == frame) then
+		if(unitType == "PLAYER") then
 			mod:ClassBar_Update(frame)
 		end
 	end
