@@ -335,7 +335,9 @@ function mod:RegisterEvents(frame, unit)
 			frame:RegisterUnitEvent("UNIT_POWER_FREQUENT", unit)
 			frame:RegisterUnitEvent("UNIT_DISPLAYPOWER", unit)
 			frame:RegisterUnitEvent("UNIT_MAXPOWER", unit)
-		else
+		end
+		
+		if(self.db.units[frame.UnitType].castbar.enable) then
 			frame:RegisterEvent("UNIT_SPELLCAST_INTERRUPTED");
 			frame:RegisterEvent("UNIT_SPELLCAST_DELAYED");
 			frame:RegisterEvent("UNIT_SPELLCAST_CHANNEL_START");
@@ -347,6 +349,7 @@ function mod:RegisterEvents(frame, unit)
 			frame:RegisterUnitEvent("UNIT_SPELLCAST_STOP", unit);
 			frame:RegisterUnitEvent("UNIT_SPELLCAST_FAILED", unit);	
 		end
+		
 		frame:RegisterEvent("PLAYER_TARGET_CHANGED");
 		frame:RegisterEvent("PLAYER_ENTERING_WORLD");
 		frame:RegisterUnitEvent("UNIT_AURA", unit)

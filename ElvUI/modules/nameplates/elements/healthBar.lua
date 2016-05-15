@@ -16,7 +16,7 @@ function mod:UpdateElement_HealthColor(frame)
 			--Try to color it by class.
 			local _, class = UnitClass(frame.unit);
 			local classColor = RAID_CLASS_COLORS[class];
-			if ( (frame.UnitType == "FRIENDLY_PLAYER" or frame.UnitType == "ENEMY_PLAYER" or frame.UnitType == "PLAYER") and classColor ) then
+			if ( (frame.UnitType == "FRIENDLY_PLAYER" or frame.UnitType == "HEALER" or frame.UnitType == "ENEMY_PLAYER" or frame.UnitType == "PLAYER") and classColor ) then
 				-- Use class colors for players if class color option is turned on
 				r, g, b = classColor.r, classColor.g, classColor.b;
 			elseif ( not UnitPlayerControlled(frame.unit) and UnitIsTapDenied(frame.unit) ) then

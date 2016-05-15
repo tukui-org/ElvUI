@@ -46,7 +46,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 	if ( arg1 ~= unit ) then
 		return;
 	end		
-	
+	print(event)
 	if ( event == "UNIT_SPELLCAST_START" ) then
 		local name, nameSubtext, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible = UnitCastingInfo(unit);
 		if ( not name) then
@@ -194,6 +194,7 @@ function mod:ConfigureElement_CastBar(frame)
 	local castBar = frame.CastBar
 
 	--Position
+	castBar:ClearAllPoints()
 	if(self.db.units[frame.UnitType].powerbar.enable) then
 		castBar:SetPoint("TOPLEFT", frame.PowerBar, "BOTTOMLEFT", 0, -3)
 		castBar:SetPoint("TOPRIGHT", frame.PowerBar, "BOTTOMRIGHT", 0, -3)	

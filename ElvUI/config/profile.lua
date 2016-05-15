@@ -222,7 +222,7 @@ P["nameplate"] = {
 			},
 			['showLevel'] = false,
 			['powerbar'] = {
-				['enable'] = false,
+				['enable'] = true,
 				['costPrediction'] = true,
 				['height'] = 8,
 				['text'] = {
@@ -269,7 +269,7 @@ P["nameplate"] = {
 			},
 			['showLevel'] = false,
 			['powerbar'] = {
-				['enable'] = true,
+				['enable'] = false,
 				['costPrediction'] = true,
 				['height'] = 8,
 				['text'] = {
