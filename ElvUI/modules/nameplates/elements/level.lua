@@ -27,7 +27,8 @@ function mod:ConfigureElement_Level(frame)
 	local level = frame.Level
 	
 	level:ClearAllPoints()
-	if(self.db.units[frame.UnitType].healthbar.enable) then
+
+	if(self.db.units[frame.UnitType].healthbar.enable or frame.isTarget) then
 		level:SetJustifyH("RIGHT")
 		level:SetPoint("BOTTOMRIGHT", frame.HealthBar, "TOPRIGHT", 0, 2)
 	else

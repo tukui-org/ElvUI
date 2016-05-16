@@ -33,7 +33,8 @@ function mod:HideAuraIcons(auras)
 end
 
 function mod:UpdateElement_Auras(frame)
-	local hasAnAura = false
+	local hasBuffs = false
+	local hasDebuffs = false
 	
 	--Debuffs
 	local index = 1;
@@ -51,7 +52,7 @@ function mod:UpdateElement_Auras(frame)
 				local debuffFrame = frame.Debuffs.icons[frameNum];
 				mod:SetAura(debuffFrame, index, name, filter, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, spellId, isBossAura)
 				frameNum = frameNum + 1;
-				hasAnAura = true
+				hasDebuffs = true
 			end
 		else
 			break;
@@ -68,7 +69,7 @@ function mod:UpdateElement_Auras(frame)
 				local debuffFrame = frame.Debuffs.icons[frameNum];
 				mod:SetAura(debuffFrame, index, name, filter, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, spellId, isBossAura)
 				frameNum = frameNum + 1;
-				hasAnAura = true
+				hasDebuffs = true
 			end
 		else
 			break;
@@ -79,6 +80,7 @@ function mod:UpdateElement_Auras(frame)
 	--Buffs
 	index = 1
 	maxBuffs = #frame.Buffs.icons
+	frameNum = 1
 	self:HideAuraIcons(frame.Buffs)
 	--Now look for boss buffs
 	while ( frameNum <= maxBuffs ) do
@@ -88,7 +90,7 @@ function mod:UpdateElement_Auras(frame)
 				local buffFrame = frame.Buffs.icons[frameNum];
 				mod:SetAura(buffFrame, index, name, filter, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, spellId, isBossAura)
 				frameNum = frameNum + 1;
-				hasAnAura = true
+				hasBuffs = true
 			end
 		else
 			break;
@@ -105,16 +107,33 @@ function mod:UpdateElement_Auras(frame)
 				local buffFrame = frame.Buffs.icons[frameNum];
 				mod:SetAura(buffFrame, index, name, filter, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, spellId, isBossAura)
 				frameNum = frameNum + 1;
-				hasAnAura = true
+				hasBuffs = true
 			end
 		else
 			break;
 		end
 		index = index + 1;
-	end		
+	end
 	
-	if(frame.hasAnAura ~= hasAnAura) then
-		frame.hasAnAura = hasAnAura
+	local TopLevel = frame.HealthBar
+	local TopOffset = 12
+	if(hasDebuffs) then
+		frame.Debuffs:SetPoint("BOTTOMLEFT", TopLevel, "TOPLEFT", 0, TopOffset)
+		frame.Debuffs:SetPoint("BOTTOMRIGHT", TopLevel, "TOPRIGHT", 0, TopOffset)
+		TopLevel = frame.Debuffs
+		TopOffset = 3
+	end
+	
+	if(hasBuffs) then
+		frame.Buffs:SetPoint("BOTTOMLEFT", TopLevel, "TOPLEFT", 0, TopOffset)
+		frame.Buffs:SetPoint("BOTTOMRIGHT", TopLevel, "TOPRIGHT", 0, TopOffset)
+		TopLevel = frame.Buffs	
+		TopOffset = 3
+	end
+	
+	if(frame.TopLevelFrame ~= TopLevel) then
+		frame.TopLevelFrame = TopLevel
+		frame.TopOffset = TopOffset
 		mod:ClassBar_Update(frame)
 	end
 end
@@ -122,7 +141,7 @@ end
 function mod:CreateAuraIcon(parent)
 	local aura = CreateFrame("Frame", nil, parent)
 	self:StyleFrame(aura, false)
-	aura:SetHeight(18)
+	aura:SetHeight(20)
 
 	aura.icon = aura:CreateTexture(nil, "OVERLAY")
 	aura.icon:SetAllPoints()
@@ -152,21 +171,15 @@ end
 
 function mod:ConstructElement_Auras(frame, maxAuras, side)
 	local auras = CreateFrame("FRAME", nil, frame)
-	if(side == "LEFT") then
-		auras:SetPoint("BOTTOMLEFT", frame.HealthBar, "TOPLEFT", 0, 15)
-		auras:SetPoint("BOTTOMRIGHT", frame.HealthBar, "TOP", -2, 15)
-	else
-		auras:SetPoint("BOTTOMRIGHT", frame.HealthBar, "TOPRIGHT", 0, 15)
-		auras:SetPoint("BOTTOMLEFT", frame.HealthBar, "TOP", 2, 15)	
-	end
 
 	auras:SetScript("OnSizeChanged", mod.Auras_SizeChanged)
 	auras:SetHeight(18)
+	auras.side = side
 	
 	auras.icons = {}
 	for i=1, maxAuras do
 		auras.icons[i] = mod:CreateAuraIcon(auras)
-		if(side == "LEFT") then
+		if(auras.side == "LEFT") then
 			if(i == 1) then
 				auras.icons[i]:SetPoint("LEFT", auras, "LEFT")
 			else

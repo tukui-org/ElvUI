@@ -5,6 +5,7 @@ local max = math.max
 
 function mod:UpdateElement_HealthColor(frame)
 	if(not frame.HealthBar:IsShown()) then return end
+
 	local r, g, b;
 	local scale = 1
 	if ( not UnitIsConnected(frame.unit) ) then

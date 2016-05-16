@@ -10,11 +10,8 @@ function mod:ClassBar_Update(frame)
 		frame = self.PlayerFrame.UnitFrame
 		self.ClassBar:SetParent(frame)
 		self.ClassBar:ClearAllPoints()
-		if(frame.hasAnAura) then
-			self.ClassBar:SetPoint("BOTTOM", frame.HealthBar, "TOP", 0, 30)
-		else
-			self.ClassBar:SetPoint("BOTTOM", frame.HealthBar, "TOP", 0, 13)
-		end
+		self.ClassBar:ClearAllPoints()
+		self.ClassBar:SetPoint("BOTTOM", frame.TopLevelFrame or frame.HealthBar, "TOP", 0, frame.TopOffset or 12)
 		self.ClassBar:Show()		
 	elseif(targetFrame) then
 		frame = targetFrame.UnitFrame
@@ -23,11 +20,7 @@ function mod:ClassBar_Update(frame)
 		else
 			self.ClassBar:SetParent(frame)
 			self.ClassBar:ClearAllPoints()
-			if(frame.hasAnAura) then
-				self.ClassBar:SetPoint("BOTTOM", frame.HealthBar, "TOP", 0, 30)
-			else
-				self.ClassBar:SetPoint("BOTTOM", frame.HealthBar, "TOP", 0, 13)
-			end
+			self.ClassBar:SetPoint("BOTTOM", frame.TopLevelFrame or frame.HealthBar, "TOP", 0, frame.TopOffset or 12)
 			self.ClassBar:Show()
 		end
 	else
@@ -52,13 +45,32 @@ function mod:SetTargetFrame(frame)
 	local parent = C_NamePlate.GetNamePlateForUnit(frame.unit);
 	frame:SetFrameLevel(parent:GetFrameLevel())
 	
-	
 	if(UnitIsUnit(frame.unit, "target") and not frame.isTarget) then
 		self:SetFrameScale(frame, self.db.targetScale)
 		frame.isTarget = true
+		if(self.db.units[frame.UnitType].healthbar.enable ~= true) then
+			frame.Name:ClearAllPoints()
+			frame.Level:ClearAllPoints()
+			frame.HealthBar.r, frame.HealthBar.g, frame.HealthBar.b = nil, nil, nil
+			frame.CastBar:Hide()
+			self:ConfigureElement_HealthBar(frame)
+			self:ConfigureElement_PowerBar(frame)
+			self:ConfigureElement_CastBar(frame)
+			self:ConfigureElement_Glow(frame)	
+
+			self:ConfigureElement_Level(frame)
+			self:ConfigureElement_Name(frame)
+			self:RegisterEvents(frame, frame.unit)
+			self:UpdateElement_All(frame, frame.unit, true)
+		end
 	elseif (frame.isTarget) then
 		self:SetFrameScale(frame, 1)
 		frame.isTarget = nil
+		if(self.db.units[frame.UnitType].healthbar.enable ~= true) then
+			local unit = frame.unit
+			mod:NAME_PLATE_UNIT_REMOVED("NAME_PLATE_UNIT_REMOVED", unit)
+			mod:NAME_PLATE_UNIT_ADDED("NAME_PLATE_UNIT_ADDED", unit)		
+		end		
 	end
 	
 	mod:ClassBar_Update(frame)
@@ -223,7 +235,7 @@ function mod:SetBaseNamePlateSize()
 	NamePlateDriverFrame:SetBaseNamePlateSize(baseWidth, baseHeight)
 end
 
-function mod:UpdateElement_All(frame, unit)
+function mod:UpdateElement_All(frame, unit, noTargetFrame)
 	mod:UpdateElement_MaxHealth(frame)
 	mod:UpdateElement_Health(frame)
 	mod:UpdateElement_HealthColor(frame)
@@ -240,7 +252,9 @@ function mod:UpdateElement_All(frame, unit)
 		mod.OnEvent(frame, "UNIT_DISPLAYPOWER", unit)
 	end
 	
-	mod:SetTargetFrame(frame)
+	if(not noTargetFrame) then --infinite loop lol
+		mod:SetTargetFrame(frame)
+	end
 end
 
 function mod:NAME_PLATE_CREATED(event, frame)
@@ -256,8 +270,8 @@ function mod:NAME_PLATE_CREATED(event, frame)
 	frame.UnitFrame.Level = self:ConstructElement_Level(frame.UnitFrame)
 	frame.UnitFrame.Name = self:ConstructElement_Name(frame.UnitFrame)
 	frame.UnitFrame.Glow = self:ConstructElement_Glow(frame.UnitFrame)
-	frame.UnitFrame.Buffs = self:ConstructElement_Auras(frame.UnitFrame, 3, "LEFT")
-	frame.UnitFrame.Debuffs = self:ConstructElement_Auras(frame.UnitFrame, 3, "RIGHT")
+	frame.UnitFrame.Buffs = self:ConstructElement_Auras(frame.UnitFrame, 5, "LEFT")
+	frame.UnitFrame.Debuffs = self:ConstructElement_Auras(frame.UnitFrame, 5, "RIGHT")
 	frame.UnitFrame.RaidIcon = self:ConstructElement_RaidIcon(frame.UnitFrame)
 end
 
@@ -313,7 +327,7 @@ function mod:OnEvent(event, unit, ...)
 end
 
 function mod:RegisterEvents(frame, unit)
-	if(self.db.units[frame.UnitType].healthbar.enable) then
+	if(self.db.units[frame.UnitType].healthbar.enable or frame.isTarget) then
 		frame:RegisterUnitEvent("UNIT_MAXHEALTH", unit);
 		frame:RegisterUnitEvent("UNIT_HEALTH", unit);
 		frame:RegisterUnitEvent("UNIT_HEALTH_FREQUENT", unit);
@@ -325,7 +339,7 @@ function mod:RegisterEvents(frame, unit)
 	frame:RegisterUnitEvent("UNIT_NAME_UPDATE", unit);
 	frame:RegisterUnitEvent("UNIT_LEVEL", unit);
 
-	if(self.db.units[frame.UnitType].healthbar.enable) then
+	if(self.db.units[frame.UnitType].healthbar.enable or frame.isTarget) then
 		if(frame.UnitType == "ENEMY_NPC") then
 			frame:RegisterUnitEvent("UNIT_THREAT_LIST_UPDATE", unit);
 		end
@@ -350,13 +364,13 @@ function mod:RegisterEvents(frame, unit)
 			frame:RegisterUnitEvent("UNIT_SPELLCAST_FAILED", unit);	
 		end
 		
-		frame:RegisterEvent("PLAYER_TARGET_CHANGED");
 		frame:RegisterEvent("PLAYER_ENTERING_WORLD");
 		frame:RegisterUnitEvent("UNIT_AURA", unit)
 		frame:RegisterEvent("RAID_TARGET_UPDATE")	
 		mod.OnEvent(frame, "PLAYER_ENTERING_WORLD")	
 	end
-		
+	
+	frame:RegisterEvent("PLAYER_TARGET_CHANGED");	
 	frame:RegisterEvent("PLAYER_ROLES_ASSIGNED")
 	frame:RegisterEvent("UNIT_FACTION")
 end
