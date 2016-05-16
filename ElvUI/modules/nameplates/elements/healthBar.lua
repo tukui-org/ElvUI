@@ -77,6 +77,7 @@ function mod:UpdateElement_HealthColor(frame)
 	end
 	
 	if(not frame.isTarget) then
+		frame.ThreatScale = scale
 		self:SetFrameScale(frame, scale)
 	end
 end

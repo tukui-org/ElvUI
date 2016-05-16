@@ -64,7 +64,7 @@ function mod:SetTargetFrame(frame)
 			self:UpdateElement_All(frame, frame.unit, true)
 		end
 	elseif (frame.isTarget) then
-		self:SetFrameScale(frame, 1)
+		self:SetFrameScale(frame, frame.ThreatScale or 1)
 		frame.isTarget = nil
 		if(self.db.units[frame.UnitType].healthbar.enable ~= true) then
 			local unit = frame.unit

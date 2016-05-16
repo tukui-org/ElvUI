@@ -92,8 +92,8 @@ function M:UpdateCoords()
 end
 
 function M:ResetDropDownListPosition(frame)
-	DropDownList1:ClearAllPoints()
-	DropDownList1:Point("TOPRIGHT", frame, "BOTTOMRIGHT", -17, -4)
+	--DropDownList1:ClearAllPoints()
+	--DropDownList1:Point("TOPRIGHT", frame, "BOTTOMRIGHT", -17, -4)
 end
 
 

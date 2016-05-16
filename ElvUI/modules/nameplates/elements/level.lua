@@ -15,7 +15,7 @@ function mod:UpdateElement_Level(frame)
 		r, g, b = color.r, color.g, color.b
 	end
 	
-	if(self.db.units[frame.UnitType].healthbar.enable) then
+	if(self.db.units[frame.UnitType].healthbar.enable or frame.isTarget) then
 		frame.Level:SetText(level)
 	else
 		frame.Level:SetFormattedText(" [%s]", level)
