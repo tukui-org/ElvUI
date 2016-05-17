@@ -145,6 +145,56 @@ function M:UpdateReputation(event)
 	end
 end
 
+function M:UpdateArtifact(event)
+	local bar = self.artifactBar
+	local showArtifact = HasArtifactEquipped();
+	if not showArtifact then
+		bar:Hide()
+	else
+		bar:Show()
+		
+		if E.db.general.artifact.hideInVehicle then
+			E:RegisterObjectForVehicleLock(bar, E.UIParent)
+		else
+			E:UnregisterObjectForVehicleLock(bar)
+		end
+		
+		local itemID, altItemID, name, icon, totalXP, pointsSpent, quality, artifactAppearanceID, appearanceModID, itemAppearanceID, altItemAppearanceID, altOnTop = C_ArtifactUI.GetEquippedArtifactInfo();
+		local numPointsAvailableToSpend, xp, xpForNextPoint = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(pointsSpent, totalXP);
+		bar.statusBar:SetMinMaxValues(0, xpForNextPoint)
+		bar.statusBar:SetValue(xp)
+		
+		local textFormat = E.db.general.artifact.textFormat
+		if textFormat == 'PERCENT' then
+			text = format('%d%%', xp / xpForNextPoint * 100)
+		elseif textFormat == 'CURMAX' then
+			text = format('%s - %s', E:ShortValue(xp), E:ShortValue(xpForNextPoint))
+		elseif textFormat == 'CURPERC' then
+			text = format('%s - %d%%', E:ShortValue(xp), xp / xpForNextPoint * 100)
+		end		
+	end
+end
+
+local function ArtifactBar_OnEnter(self)
+	if E.db.general.experience.mouseover then
+		E:UIFrameFadeIn(self, 0.4, self:GetAlpha(), 1)
+	end
+	GameTooltip:ClearLines()
+	GameTooltip:SetOwner(self, 'ANCHOR_CURSOR', 0, -4)
+
+	GameTooltip:AddLine(ARTIFACT_POWER)
+	GameTooltip:AddLine(' ')
+	
+	local itemID, altItemID, name, icon, totalXP, pointsSpent, quality, artifactAppearanceID, appearanceModID, itemAppearanceID, altItemAppearanceID, altOnTop = C_ArtifactUI.GetEquippedArtifactInfo();
+	local numPointsAvailableToSpend, xp, xpForNextPoint = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(pointsSpent, totalXP);
+	
+	GameTooltip:AddDoubleLine(L["XP:"], format(' %d / %d (%d%%)', xp, xpForNextPoint, xp/xpForNextPoint * 100), 1, 1, 1)
+	GameTooltip:AddDoubleLine(L["Remaining:"], format(' %d (%d%% - %d '..L["Bars"]..')', xpForNextPoint - xp, (xpForNextPoint - xp) / xpForNextPoint * 100, 20 * (xpForNextPoint - xp) / xpForNextPoint), 1, 1, 1)
+
+	
+	GameTooltip:Show()
+end
+
 local function ExperienceBar_OnEnter(self)
 	if E.db.general.experience.mouseover then
 		E:UIFrameFadeIn(self, 0.4, self:GetAlpha(), 1)
@@ -215,23 +265,29 @@ function M:CreateBar(name, onEnter, ...)
 	return bar
 end
 
-function M:UpdateExpRepDimensions()
+function M:UpdateWatchBarDimensions()
 	self.expBar:Width(E.db.general.experience.width)
 	self.expBar:Height(E.db.general.experience.height)
 
 	self.repBar:Width(E.db.general.reputation.width)
 	self.repBar:Height(E.db.general.reputation.height)
 
+	self.artifactBar:Width(E.db.general.reputation.width)
+	self.artifactBar:Height(E.db.general.reputation.height)
+
 	self.repBar.text:FontTemplate(nil, E.db.general.reputation.textSize)
 	self.expBar.text:FontTemplate(nil, E.db.general.experience.textSize)
-
+	self.artifactBar.text:FontTemplate(nil, E.db.general.experience.textSize)
+	
 	self.expBar.statusBar:SetOrientation(E.db.general.experience.orientation)
 	self.repBar.statusBar:SetOrientation(E.db.general.reputation.orientation)
 	self.expBar.rested:SetOrientation(E.db.general.experience.orientation)
 	self.expBar.statusBar:SetReverseFill(E.db.general.experience.reverseFill)
 	self.repBar.statusBar:SetReverseFill(E.db.general.reputation.reverseFill)
 	self.expBar.rested:SetReverseFill(E.db.general.experience.reverseFill)
-
+	self.artifactBar.statusBar:SetOrientation(E.db.general.experience.orientation)
+	self.artifactBar.statusBar:SetReverseFill(E.db.general.reputation.reverseFill)
+	
 	if E.db.general.experience.mouseover then
 		self.expBar:SetAlpha(0)
 	else
@@ -243,6 +299,12 @@ function M:UpdateExpRepDimensions()
 	else
 		self.repBar:SetAlpha(1)
 	end
+	
+	if E.db.general.artifact.mouseover then
+		self.repBar:SetAlpha(0)
+	else
+		self.repBar:SetAlpha(1)
+	end	
 end
 
 function M:EnableDisable_ExperienceBar()
@@ -280,7 +342,21 @@ function M:EnableDisable_ReputationBar()
 	end
 end
 
-function M:LoadExpRepBar()
+function M:EnableDisable_ArtifactBar()
+	if E.db.general.artifact.enable then
+		self:RegisterEvent('ARTIFACT_XP_UPDATE', 'UpdateArtifact')
+		self:RegisterEvent('UNIT_INVENTORY_CHANGED', 'UpdateArtifact')
+		self:UpdateArtifact()
+		E:EnableMover(self.artifactBar.mover:GetName())
+	else
+		self:UnregisterEvent('ARTIFACT_XP_UPDATE')
+		self:UnregisterEvent('UNIT_INVENTORY_CHANGED')
+		self.artifactBar:Hide()
+		E:DisableMover(self.artifactBar.mover:GetName())
+	end
+end
+
+function M:LoadWatchBars()
 	self.expBar = self:CreateBar('ElvUI_ExperienceBar', ExperienceBar_OnEnter, 'LEFT', LeftChatPanel, 'RIGHT', -E.Border + E.Spacing*3, 0)
 	self.expBar.statusBar:SetStatusBarColor(0, 0.4, 1, .8)
 	self.expBar.rested = CreateFrame('StatusBar', nil, self.expBar)
@@ -292,11 +368,18 @@ function M:LoadExpRepBar()
 
 	self.repBar = self:CreateBar('ElvUI_ReputationBar', ReputationBar_OnEnter, 'RIGHT', RightChatPanel, 'LEFT', E.Border - E.Spacing*3, 0)
 	E:RegisterStatusBar(self.repBar.statusBar)
-	self:UpdateExpRepDimensions()
+
+	self.artifactBar = self:CreateBar('ElvUI_ArtifactBar', ArtifactBar_OnEnter, 'RIGHT', RightChatPanel, 'LEFT', E.Border - E.Spacing*3, 0)
+	E:RegisterStatusBar(self.artifactBar.statusBar)
+	self.artifactBar.statusBar:SetStatusBarColor(.901, .8, .601)
+	self.artifactBar.statusBar:SetMinMaxValues(0, 325)
+	self:UpdateWatchBarDimensions()
 	
 	E:CreateMover(self.expBar, "ExperienceBarMover", L["Experience Bar"])
 	E:CreateMover(self.repBar, "ReputationBarMover", L["Reputation Bar"])
+	E:CreateMover(self.artifactBar, "ArtifactBarMover", L["Artifact Bar"])
 	
 	self:EnableDisable_ExperienceBar()
 	self:EnableDisable_ReputationBar()
+	self:EnableDisable_ArtifactBar()
 end

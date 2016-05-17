@@ -92,7 +92,7 @@ P['general'] = {
 		["hideInVehicle"] = false,
 	},
 	['reputation'] = {
-		['enable'] = true,
+		['enable'] = false,
 		['width'] = 10,
 		['height'] = 180,
 		['textFormat'] = 'NONE',
@@ -102,6 +102,17 @@ P['general'] = {
 		["reverseFill"] = false,
 		["hideInVehicle"] = false,
 	},
+	['artifact'] = {
+		['enable'] = true,
+		['width'] = 10,
+		['height'] = 180,
+		['textFormat'] = 'NONE',
+		['textSize'] = 11,
+		['mouseover'] = false,
+		['orientation'] = 'VERTICAL',
+		["reverseFill"] = false,
+		["hideInVehicle"] = false,
+	},	
 	['threat'] = {
 		['enable'] = true,
 		['position'] = 'RIGHTCHAT',

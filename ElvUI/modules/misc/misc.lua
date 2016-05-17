@@ -214,7 +214,7 @@ end
 
 function M:Initialize()
 	self:LoadRaidMarker()
-	self:LoadExpRepBar()
+	self:LoadWatchBars()
 	self:LoadLootRoll()
 	self:LoadChatBubbles()
 	self:LoadLoot()
