@@ -168,8 +168,7 @@ function M:Minimap_OnMouseUp(btn)
 		local xoff = -1
 
 		if position:match("RIGHT") then xoff = E:Scale(-16) end
-
-		ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, self, xoff, E:Scale(-3))
+		ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, "cursor")
 	else
 		Minimap_OnClick(self)
 	end

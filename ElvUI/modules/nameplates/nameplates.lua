@@ -296,6 +296,7 @@ function mod:OnEvent(event, unit, ...)
 	elseif(event == "PLAYER_TARGET_CHANGED") then
 		mod:SetTargetFrame(self)
 		mod:UpdateElement_Glow(self)
+		mod:UpdateElement_HealthColor(self)
 	elseif(event == "UNIT_AURA") then
 		mod:UpdateElement_Auras(self)
 		if(self.IsPlayerFrame) then
