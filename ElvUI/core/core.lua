@@ -928,10 +928,11 @@ function E:UpdateAll(ignoreInstall)
 	-- NP:UpdateAllPlates()
 
 	local M = self:GetModule("Misc")
-	M:UpdateExpRepDimensions()
+	M:UpdateWatchBarDimensions()
 	M:EnableDisable_ExperienceBar()
 	M:EnableDisable_ReputationBar()
-
+	M:EnableDisable_ArtifactBar()
+	
 	local T = self:GetModule('Threat')
 	T.db = self.db.general.threat
 	T:UpdatePosition()
