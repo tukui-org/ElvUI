@@ -47,7 +47,7 @@ local floor = math.floor
 
 oUF.colors.Runes = {0, 1, 1}
 
-local runemap = { 1, 2, 5, 6, 3, 4 }
+local runemap = { 1, 2, 3, 4, 5, 6 }
 
 local OnUpdate = function(self, elapsed)
 	local duration = self.duration + elapsed
