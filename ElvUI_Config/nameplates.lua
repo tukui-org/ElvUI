@@ -79,10 +79,213 @@ local function UpdateFilterGroup()
 	}
 end
 
+local ORDER = 100
+local function GetUnitSettings(unit, name)
+	local group = {
+		type = "group",
+		order = ORDER,
+		name = name,
+		get = function(info) return E.db.nameplate.units[unit][ info[#info] ] end,
+		set = function(info, value) E.db.nameplate.units[unit][ info[#info] ] = value; NP:ConfigureAll() end,		
+		args = {
+			showLevel = {
+				order = 1,
+				name = L["Display Level"],
+				type = "toggle",	
+			},
+			healthGroup = {
+				order = 2,
+				name = L["Health"],
+				guiInline = true,
+				type = "group",
+				get = function(info) return E.db.nameplate.units[unit].healthbar[ info[#info] ] end,
+				set = function(info, value) E.db.nameplate.units[unit].healthbar[ info[#info] ] = value; NP:ConfigureAll() end,		
+				args = {
+					enable = {
+						order = 1,
+						name = L["Enable"],
+						type = "toggle",	
+					},
+					height = {
+						order = 2,
+						name = L["Height"],
+						type = "range",
+						min = 4, max = 20, step = 1,	
+					},
+					width = {
+						order = 3,
+						name = L["Width"],
+						type = "range",
+						min = 50, max = 200, step = 1,	
+					},					
+				},			
+			},
+			powerGroup = {
+				order = 3,
+				name = L["Power"],
+				guiInline = true,
+				type = "group",
+				get = function(info) return E.db.nameplate.units[unit].powerbar[ info[#info] ] end,
+				set = function(info, value) E.db.nameplate.units[unit].powerbar[ info[#info] ] = value; NP:ConfigureAll() end,
+				disabled = function() return not E.db.nameplate.units[unit].healthbar.enable end,	
+				args = {
+					enable = {
+						order = 1,
+						name = L["Enable"],
+						type = "toggle",	
+					},
+					height = {
+						order = 2,
+						name = L["Height"],
+						type = "range",
+						min = 4, max = 20, step = 1,	
+					},			
+				},			
+			},			
+			castGroup = {
+				order = 4,
+				name = L["Cast Bar"],
+				guiInline = true,
+				type = "group",
+				get = function(info) return E.db.nameplate.units[unit].castbar[ info[#info] ] end,
+				set = function(info, value) E.db.nameplate.units[unit].castbar[ info[#info] ] = value; NP:ConfigureAll() end,	
+				disabled = function() return not E.db.nameplate.units[unit].healthbar.enable end,		
+				args = {
+					enable = {
+						order = 1,
+						name = L["Enable"],
+						type = "toggle",	
+					},
+					height = {
+						order = 2,
+						name = L["Height"],
+						type = "range",
+						min = 4, max = 20, step = 1,	
+					},			
+				},			
+			},	
+			buffsGroup = {
+				order = 5,
+				name = L["Buffs"],
+				guiInline = true,
+				type = "group",
+				get = function(info) return E.db.nameplate.units[unit].buffs.filters[ info[#info] ] end,
+				set = function(info, value) E.db.nameplate.units[unit].buffs.filters[ info[#info] ] = value; NP:ConfigureAll() end,
+				disabled = function() return not E.db.nameplate.units[unit].healthbar.enable end,		
+				args = {
+					enable = {
+						order = 1,
+						name = L["Enable"],
+						type = "toggle",	
+						get = function(info) return E.db.nameplate.units[unit].buffs[ info[#info] ] end,
+						set = function(info, value) E.db.nameplate.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,							
+					},
+					filtersGroup = {
+						name = L["Filters"],
+						order = 2,
+						type = "group",
+						guiInline = true,
+						args = {
+							personal = {
+								order = 1,
+								type = "toggle",
+								name = L["Personal Auras"],	
+							},
+							boss = {
+								order = 2,
+								type = "toggle",
+								name = L["Boss Auras"],	
+							},	
+							maxDuration = {
+								order = 3,
+								type = "range",
+								name = L["Maximum Duration"],
+								min = 5, max = 3000, step = 1,	
+							},
+							filter = {
+								order = 4,
+								type = "select",
+								name = L["Filter"],	
+								values = function()
+									local filters = {}
+									filters[''] = NONE
+									for filter in pairs(E.global.unitframe['aurafilters']) do
+										filters[filter] = filter
+									end
+									return filters
+								end,
+							},													
+						},
+					},
+				},			
+			},	
+			debuffsGroup = {
+				order = 6,
+				name = L["Debuffs"],
+				guiInline = true,
+				type = "group",
+				get = function(info) return E.db.nameplate.units[unit].debuffs.filters[ info[#info] ] end,
+				set = function(info, value) E.db.nameplate.units[unit].debuffs.filters[ info[#info] ] = value; NP:ConfigureAll() end,	
+				disabled = function() return not E.db.nameplate.units[unit].healthbar.enable end,	
+				args = {
+					enable = {
+						order = 1,
+						name = L["Enable"],
+						type = "toggle",	
+						get = function(info) return E.db.nameplate.units[unit].debuffs[ info[#info] ] end,
+						set = function(info, value) E.db.nameplate.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,							
+					},
+					filtersGroup = {
+						name = L["Filters"],
+						order = 2,
+						type = "group",
+						guiInline = true,
+						args = {
+							personal = {
+								order = 1,
+								type = "toggle",
+								name = L["Personal Auras"],	
+							},
+							boss = {
+								order = 2,
+								type = "toggle",
+								name = L["Boss Auras"],	
+							},	
+							maxDuration = {
+								order = 3,
+								type = "range",
+								name = L["Maximum Duration"],
+								min = 5, max = 3000, step = 1,	
+							},
+							filter = {
+								order = 4,
+								type = "select",
+								name = L["Filter"],	
+								values = function()
+									local filters = {}
+									filters[''] = NONE
+									for filter in pairs(E.global.unitframe['aurafilters']) do
+										filters[filter] = filter
+									end
+									return filters
+								end,
+							},													
+						},
+					},
+				},			
+			},									
+		},
+	}
+	
+	
+	ORDER = ORDER + 100
+	return group
+end
+
 E.Options.args.nameplate = {
 	type = "group",
 	name = L["NamePlates"],
-	childGroups = "select",
+	childGroups = "tree",
 	get = function(info) return E.db.nameplate[ info[#info] ] end,
 	set = function(info, value) E.db.nameplate[ info[#info] ] = value; NP:ConfigureAll() end,
 	args = {
@@ -102,6 +305,8 @@ E.Options.args.nameplate = {
 			order = 1,
 			type = "group",
 			name = L["General"],
+			guiInline = true,
+			order = 3,
 			disabled = function() return not E.NamePlates; end,
 			args = {
 				threatGroup = {
@@ -276,9 +481,15 @@ E.Options.args.nameplate = {
 				},
 			},
 		},
+		playerGroup = GetUnitSettings("PLAYER", L["Player Frame"]),
+		healerGroup = GetUnitSettings("HEALER", L["Healer Frames"]),
+		friendlyPlayerGroup = GetUnitSettings("FRIENDLY_PLAYER", L["Friendly Player Frames"]),
+		enemyPlayerGroup = GetUnitSettings("ENEMY_PLAYER", L["Enemy Player Frames"]),
+		friendlyNPCGroup = GetUnitSettings("FRIENDLY_NPC", L["Friendly NPC Frames"]),
+		enemyNPCGroup = GetUnitSettings("ENEMY_NPC", L["Enemy NPC Frames"]),
 		filters = {
 			type = "group",
-			order = 200,
+			order = -100,
 			name = L["Filters"],
 			disabled = function() return not E.NamePlates; end,
 			args = {
