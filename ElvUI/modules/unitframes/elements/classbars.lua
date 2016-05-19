@@ -106,7 +106,7 @@ function UF:Configure_ClassBar(frame)
 	bars:Width(CLASSBAR_WIDTH)
 	bars:Height(frame.CLASSBAR_HEIGHT - ((frame.BORDER + frame.SPACING)*2))
 
-	if (frame.ClassBar == 'ClassIcons') then
+	if (frame.ClassBar == 'ClassIcons' or frame.ClassBar == 'Runes') then
 		for i = 1, (UF.classMaxResourceBar[E.myclass] or 0) do
 			bars[i]:Hide()
 			bars[i].backdrop:Hide()
@@ -160,6 +160,7 @@ function UF:Configure_ClassBar(frame)
 					local r, g, b = ElvUF.ColorGradient(i, frame.MAX_CLASS_BAR > 5 and 6 or 5, r1, g1, b1, r2, g2, b2, r3, g3, b3)
 					bars[i]:SetStatusBarColor(r, g, b)	
 				elseif E.myclass ~= 'DEATHKNIGHT' then
+					print(unpack(ElvUF.colors[frame.ClassBar]))
 					bars[i]:SetStatusBarColor(unpack(ElvUF.colors[frame.ClassBar]))			
 				end
 				bars[i]:Show()
