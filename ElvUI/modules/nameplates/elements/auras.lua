@@ -70,7 +70,7 @@ function mod:UpdateElement_Auras(frame)
 		while ( frameNum <= maxDebuffs ) do
 			local name, _, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, _, isBossAura = UnitDebuff(frame.unit, index, filter);
 			if ( name ) then
-				if (unitCaster == "player" and not frame.Debuffs.shownIDs[spellId] and duration <= self.db.units[frame.UnitType].debuffs.filters.maxDuration) then
+				if (unitCaster == "player" and not frame.Debuffs.shownIDs[spellId] and duration > 0 and duration <= self.db.units[frame.UnitType].debuffs.filters.maxDuration) then
 					local debuffFrame = frame.Debuffs.icons[frameNum];
 					mod:SetAura(debuffFrame, index, name, filter, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, spellId, isBossAura)
 					frameNum = frameNum + 1;
@@ -115,7 +115,7 @@ function mod:UpdateElement_Auras(frame)
 		while ( frameNum <= maxBuffs ) do
 			local name, _, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, _, isBossAura = UnitBuff(frame.unit, index, filter);
 			if ( name ) then
-				if ( unitCaster == "player" and not frame.Buffs.shownIDs[spellId] and duration <= self.db.units[frame.UnitType].buffs.filters.maxDuration ) then
+				if ( unitCaster == "player" and not frame.Buffs.shownIDs[spellId] and duration > 0 and duration <= self.db.units[frame.UnitType].buffs.filters.maxDuration ) then
 					local buffFrame = frame.Buffs.icons[frameNum];
 					mod:SetAura(buffFrame, index, name, filter, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, spellId, isBossAura)
 					frameNum = frameNum + 1;
