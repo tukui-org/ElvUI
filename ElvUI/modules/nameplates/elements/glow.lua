@@ -55,5 +55,7 @@ function mod:ConfigureElement_Glow(frame)
 end
 
 function mod:ConstructElement_Glow(frame)
-	return CreateFrame("Frame", nil, frame)
+	local f = CreateFrame("Frame", nil, frame)
+	f:Hide()
+	return f
 end

@@ -242,6 +242,6 @@ function mod:ConstructElement_CastBar(parent)
 	frame.Spark:SetTexture([[Interface\CastingBar\UI-CastingBar-Spark]])
 	frame.Spark:SetBlendMode("ADD")
 	frame.Spark:SetSize(15, 15)
-	
+	frame:Hide()
 	return frame	
 end

@@ -19,4 +19,5 @@ skins.lua
 tooltip.lua
 unitframes.lua
 tag_info.lua
+nameplates.lua
 profiles.lua

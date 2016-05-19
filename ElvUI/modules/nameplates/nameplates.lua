@@ -220,10 +220,20 @@ function mod:NAME_PLATE_UNIT_REMOVED(event, unit, ...)
 	end
 end
 
+function mod:ConfigureAll()
+	self:ForEachPlate("ConfigureElement_HealthBar", true)
+	self:ForEachPlate("ConfigureElement_PowerBar")
+	self:ForEachPlate("ConfigureElement_CastBar")
+	self:ForEachPlate("ConfigureElement_Glow")
+	self:ForEachPlate("ConfigureElement_Level")
+	self:ForEachPlate("ConfigureElement_Name")
+	self:ForEachPlate("UpdateElement_All")
+end
+
 function mod:ForEachPlate(functionToRun, ...)
 	for _, frame in pairs(C_NamePlate.GetNamePlates()) do
-		if(frame) then
-			self[functionToRun](frame.UnitFrame, ...)
+		if(frame and frame.UnitFrame) then
+			self[functionToRun](self, frame.UnitFrame, ...)
 		end
 	end
 end
@@ -249,7 +259,7 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame)
 	
 	if(self.db.units[frame.UnitType].powerbar.enable) then
 		frame.PowerBar:Show()
-		mod.OnEvent(frame, "UNIT_DISPLAYPOWER", unit)
+		mod.OnEvent(frame, "UNIT_DISPLAYPOWER", unit or frame.unit)
 	end
 	
 	if(not noTargetFrame) then --infinite loop lol
@@ -404,6 +414,8 @@ function mod:Initialize()
 
 	self:DISPLAY_SIZE_CHANGED() --Run once for good measure.
 	self:SetBaseNamePlateSize()
+	
+	E.NamePlates = self
 end
 
 

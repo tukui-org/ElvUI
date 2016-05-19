@@ -175,9 +175,11 @@ function mod:UpdateElement_Health(frame)
 	frame.HealthBar:SetValue(health)
 end
 
-function mod:ConfigureElement_HealthBar(frame)
+function mod:ConfigureElement_HealthBar(frame, configuring)
 	local healthBar = frame.HealthBar
 	local absorbBar = frame.AbsorbBar
+	local isShown = healthBar:IsShown()
+	
 	--Position
 	healthBar:SetPoint("BOTTOM", frame, "BOTTOM", 0, self.db.units[frame.UnitType].castbar.height + 3)
 	healthBar:SetHeight(self.db.units[frame.UnitType].healthbar.height)
@@ -185,11 +187,11 @@ function mod:ConfigureElement_HealthBar(frame)
 
 	--Texture
 	healthBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
-	healthBar:Show()
-
+	if(not configuring) then
+		healthBar:Show()
+	end
 	absorbBar:Hide()
 end
-
 
 function mod:ConstructElement_HealthBar(parent)
 	local frame = CreateFrame("StatusBar", "$parentHealthBar", parent)
@@ -214,6 +216,6 @@ function mod:ConstructElement_HealthBar(parent)
 	frame.scale.width:SetDuration(0.2)
 	frame.scale.height = frame.scale:CreateAnimation("Height")
 	frame.scale.height:SetDuration(0.2)	
-
+	frame:Hide()
 	return frame
 end

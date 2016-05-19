@@ -43,7 +43,7 @@ function mod:ConfigureElement_Name(frame)
 		name:SetPoint("TOP", frame, "CENTER")
 	end
 	
-	name:SetFont([[Interface\AddOns\ElvUI\media\fonts\Homespun.ttf]], 10, "MONOCHROMEOUTLINE")
+	name:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 end
 
 function mod:ConstructElement_Name(frame)
