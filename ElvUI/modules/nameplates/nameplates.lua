@@ -67,9 +67,7 @@ function mod:SetTargetFrame(frame)
 		self:SetFrameScale(frame, frame.ThreatScale or 1)
 		frame.isTarget = nil
 		if(self.db.units[frame.UnitType].healthbar.enable ~= true) then
-			local unit = frame.unit
-			mod:NAME_PLATE_UNIT_REMOVED("NAME_PLATE_UNIT_REMOVED", unit)
-			mod:NAME_PLATE_UNIT_ADDED("NAME_PLATE_UNIT_ADDED", unit)		
+			self:UpdateAllFrame(frame)
 		end		
 	end
 	
@@ -122,22 +120,18 @@ function mod:DISPLAY_SIZE_CHANGED()
 end
 
 function mod:CheckUnitType(frame)
-	local unit = frame.unit
 	local role = UnitGroupRolesAssigned(unit)
 	local CanAttack = UnitCanAttack("player", unit)
 
 	if(role == "HEALER" and frame.UnitType ~= "HEALER") then
-		mod:NAME_PLATE_UNIT_REMOVED("NAME_PLATE_UNIT_REMOVED", unit)
-		mod:NAME_PLATE_UNIT_ADDED("NAME_PLATE_UNIT_ADDED", unit)	
+		self:UpdateAllFrame(frame)
 	elseif(frame.UnitType == "FRIENDLY_PLAYER" or frame.UnitType == "FRIENDLY_NPC" or frame.UnitType == "HEALER") then
 		if(CanAttack) then
-			mod:NAME_PLATE_UNIT_REMOVED("NAME_PLATE_UNIT_REMOVED", unit)
-			mod:NAME_PLATE_UNIT_ADDED("NAME_PLATE_UNIT_ADDED", unit)
+			self:UpdateAllFrame(frame)
 		end
 	elseif(frame.UnitType == "ENEMY_PLAYER" or frame.UnitType == "ENEMY_NPC") then
 		if(not CanAttack) then
-			mod:NAME_PLATE_UNIT_REMOVED("NAME_PLATE_UNIT_REMOVED", unit)
-			mod:NAME_PLATE_UNIT_ADDED("NAME_PLATE_UNIT_ADDED", unit)
+			self:UpdateAllFrame(frame)
 		end	
 	end
 end
@@ -220,14 +214,14 @@ function mod:NAME_PLATE_UNIT_REMOVED(event, unit, ...)
 	end
 end
 
+function mod:UpdateAllFrame(frame)
+	local unit = frame.unit
+	mod:NAME_PLATE_UNIT_REMOVED("NAME_PLATE_UNIT_REMOVED", unit)
+	mod:NAME_PLATE_UNIT_ADDED("NAME_PLATE_UNIT_ADDED", unit)		
+end
+
 function mod:ConfigureAll()
-	self:ForEachPlate("ConfigureElement_HealthBar", true)
-	self:ForEachPlate("ConfigureElement_PowerBar")
-	self:ForEachPlate("ConfigureElement_CastBar")
-	self:ForEachPlate("ConfigureElement_Glow")
-	self:ForEachPlate("ConfigureElement_Level")
-	self:ForEachPlate("ConfigureElement_Name")
-	self:ForEachPlate("UpdateElement_All")
+	self:ForEachPlate("UpdateAllFrame")
 end
 
 function mod:ForEachPlate(functionToRun, ...)

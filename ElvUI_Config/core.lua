@@ -883,7 +883,7 @@ E.Options.args.general = {
 		experience = {
 			order = 5,
 			get = function(info) return E.db.general.experience[ info[#info] ] end,
-			set = function(info, value) E.db.general.experience[ info[#info] ] = value; E:GetModule('Misc'):UpdateWatchBarDimensions()) end,
+			set = function(info, value) E.db.general.experience[ info[#info] ] = value; E:GetModule('Misc'):UpdateWatchBarDimensions() end,
 			type = "group",
 			name = XPBAR_LABEL,
 			args = {
