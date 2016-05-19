@@ -120,8 +120,8 @@ function mod:DISPLAY_SIZE_CHANGED()
 end
 
 function mod:CheckUnitType(frame)
-	local role = UnitGroupRolesAssigned(unit)
-	local CanAttack = UnitCanAttack("player", unit)
+	local role = UnitGroupRolesAssigned(frame.unit)
+	local CanAttack = UnitCanAttack("player", frame.unit)
 
 	if(role == "HEALER" and frame.UnitType ~= "HEALER") then
 		self:UpdateAllFrame(frame)
