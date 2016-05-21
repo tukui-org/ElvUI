@@ -217,18 +217,21 @@ function AddOn:ToggleConfig()
 	if self.GUIFrame and mode == "Open" then
 		if(not self.GUIFrame.bounce) then
 			self.GUIFrame.bounce = CreateAnimationGroup(self.GUIFrame)
+			local width, height = self.GUIFrame:GetSize()
+			self.GUIFrame:SetWidth(width - 40)
+			self.GUIFrame:SetHeight(height - 40)
 			
 			self.GUIFrame.bounce.width = self.GUIFrame.bounce:CreateAnimation("Width")
-			self.GUIFrame.bounce.width:SetDuration(2)
-			self.GUIFrame.bounce.width:SetSmoothing("bounce")
+			self.GUIFrame.bounce.width:SetDuration(1.3)
+			self.GUIFrame.bounce.width:SetSmoothing("elastic")
 			self.GUIFrame.bounce.width:SetOrder(1)
-			self.GUIFrame.bounce.width:SetChange(self.GUIFrame:GetWidth() * 1.1)
+			self.GUIFrame.bounce.width:SetChange(width)
 			
 			self.GUIFrame.bounce.height = self.GUIFrame.bounce:CreateAnimation("Height")
-			self.GUIFrame.bounce.height:SetDuration(2)
-			self.GUIFrame.bounce.height:SetSmoothing("bounce")
+			self.GUIFrame.bounce.height:SetDuration(1.3)
+			self.GUIFrame.bounce.height:SetSmoothing("elastic")
 			self.GUIFrame.bounce.height:SetOrder(1)
-			self.GUIFrame.bounce.height:SetChange(self.GUIFrame:GetHeight() * 1.1)			
+			self.GUIFrame.bounce.height:SetChange(height)			
 		end
 
 		self.GUIFrame.bounce:Play()
