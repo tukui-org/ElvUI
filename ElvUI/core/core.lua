@@ -291,6 +291,37 @@ function E:UpdateMedia()
 	self:UpdateBlizzardFonts()
 end
 
+E.LockedCVars = {}
+function E:PLAYER_REGEN_ENABLED(event)
+	if(self.CVarUpdate) then
+		for cvarName, value in pairs(self.LockedCVars) do
+			if(GetCVar(cvarName) ~= value) then
+				SetCVar(cvarName, value)
+			end			
+		end
+		self.CVarUpdate = nil
+	end
+end
+
+local function CVAR_UPDATE(cvarName, value)
+	if(E.LockedCVars[cvarName] and E.LockedCVars[cvarName] ~= value) then
+		if(InCombatLockdown()) then
+			E.CVarUpdate = true
+			return
+		end
+		
+		SetCVar(cvarName, E.LockedCVars[cvarName])
+	end
+end
+
+hooksecurefunc("SetCVar", CVAR_UPDATE)
+function E:LockCVar(cvarName, value)
+	if(GetCVar(cvarName) ~= value) then
+		SetCVar(cvarName, value)
+	end
+	self.LockedCVars[cvarName] = value
+end
+
 --Update font/texture paths when they are registered by the addon providing them
 --This helps fix most of the issues with fonts or textures reverting to default because the addon providing them is loading after ElvUI.
 --We use a wrapper to avoid errors in :UpdateMedia because "self" is passed to the function with a value other than ElvUI.
@@ -1406,7 +1437,7 @@ function E:Initialize()
 	self:RegisterEvent('PET_BATTLE_OPENING_START', "RemoveNonPetBattleFrames")
 	self:RegisterEvent("UNIT_ENTERED_VEHICLE", "EnterVehicleHideFrames")
 	self:RegisterEvent("UNIT_EXITED_VEHICLE", "ExitVehicleShowFrames")
-
+	self:RegisterEvent("PLAYER_REGEN_ENABLED")
 	if self.myclass == "DRUID" then
 		self:RegisterEvent("SPELLS_CHANGED")
 	end
