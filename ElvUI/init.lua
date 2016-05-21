@@ -215,12 +215,12 @@ function AddOn:ToggleConfig()
 	ACD[mode](ACD, AddOnName)
 	
 	if self.GUIFrame and mode == "Open" then
+		local width, height = self.GUIFrame:GetSize()
+		self.GUIFrame:SetWidth(width - 40)
+		self.GUIFrame:SetHeight(height - 40)	
 		if(not self.GUIFrame.bounce) then
 			self.GUIFrame.bounce = CreateAnimationGroup(self.GUIFrame)
-			local width, height = self.GUIFrame:GetSize()
-			self.GUIFrame:SetWidth(width - 40)
-			self.GUIFrame:SetHeight(height - 40)
-			
+
 			self.GUIFrame.bounce.width = self.GUIFrame.bounce:CreateAnimation("Width")
 			self.GUIFrame.bounce.width:SetDuration(1.3)
 			self.GUIFrame.bounce.width:SetSmoothing("elastic")
