@@ -191,7 +191,9 @@ function mod:NAME_PLATE_UNIT_REMOVED(event, unit, ...)
 	if(frame.UnitFrame.UnitType == "PLAYER") then
 		mod.PlayerFrame = nil
 	end
-
+	
+	self:HideAuraIcons(frame.UnitFrame.Buffs)
+	self:HideAuraIcons(frame.UnitFrame.Debuffs)
 	frame.UnitFrame:UnregisterAllEvents()
 	frame.UnitFrame.Glow.r, frame.UnitFrame.Glow.g, frame.UnitFrame.Glow.b = nil, nil, nil
 	frame.UnitFrame.Glow:Hide()	
