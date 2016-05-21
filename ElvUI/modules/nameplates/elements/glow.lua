@@ -9,23 +9,17 @@ function mod:UpdateElement_Glow(frame)
 	if ( UnitIsUnit(frame.unit, "target") ) then
 		r, g, b = 1, 1, 1
 		shouldShow = true
-	elseif(frame.UnitType == "ENEMY_NPC") then
+	else
 		-- Use color based on the type of unit (neutral, etc.)
-		local isTanking, status = UnitDetailedThreatSituation("player", frame.unit)
-		if status then
-			if(isTanking) then
-				if(E:GetPlayerRole() == "TANK") then
-					r, g, b = self.db.threat.goodColor.r, self.db.threat.goodColor.g, self.db.threat.goodColor.b
-				else
-					r, g, b = self.db.threat.badColor.r, self.db.threat.badColor.g, self.db.threat.badColor.b
-				end
+		local health, maxHealth = UnitHealth(frame.unit), UnitHealthMax(frame.unit)
+		local perc = health/maxHealth
+		if perc <= self.db.lowHealthThreshold then
+			if perc <= self.db.lowHealthThreshold / 2 then
+				r, g, b = 1, 0, 0
 			else
-				if(E:GetPlayerRole() == "TANK") then
-					r, g, b = self.db.threat.badColor.r, self.db.threat.badColor.g, self.db.threat.badColor.b
-				else
-					r, g, b = self.db.threat.goodColor.r, self.db.threat.goodColor.g, self.db.threat.goodColor.b
-				end
+				r, g, b = 1, 1, 0
 			end
+			
 			shouldShow = true
 		end
 	end

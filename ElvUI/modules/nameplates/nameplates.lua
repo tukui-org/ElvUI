@@ -292,11 +292,13 @@ function mod:OnEvent(event, unit, ...)
 	if(event == "UNIT_HEALTH" or event == "UNIT_HEALTH_FREQUENT") then
 		mod:UpdateElement_Health(self)
 		mod:UpdateElement_HealPrediction(self)
+		mod:UpdateElement_Glow(self)
 	elseif(event == "UNIT_ABSORB_AMOUNT_CHANGED" or event == "UNIT_HEAL_ABSORB_AMOUNT_CHANGED" or event == "UNIT_HEAL_PREDICTION") then
 		mod:UpdateElement_HealPrediction(self)
 	elseif(event == "UNIT_MAXHEALTH") then
 		mod:UpdateElement_MaxHealth(self)
 		mod:UpdateElement_HealPrediction(self)
+		mod:UpdateElement_Glow(self)
 	elseif(event == "UNIT_NAME_UPDATE") then
 		mod:UpdateElement_Name(self)
 		mod:UpdateElement_HealthColor(self) --Unit class sometimes takes a bit to load
@@ -305,7 +307,6 @@ function mod:OnEvent(event, unit, ...)
 	elseif(event == "UNIT_THREAT_LIST_UPDATE") then
 		mod:Update_ThreatList(self)
 		mod:UpdateElement_HealthColor(self)
-		mod:UpdateElement_Glow(self)
 	elseif(event == "PLAYER_TARGET_CHANGED") then
 		mod:SetTargetFrame(self)
 		mod:UpdateElement_Glow(self)

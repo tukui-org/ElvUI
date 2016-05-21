@@ -28,7 +28,7 @@ function mod:UpdateElement_HealthColor(frame)
 				-- Use color based on the type of unit (neutral, etc.)
 				local isTanking, status = UnitDetailedThreatSituation("player", frame.unit)
 				if status then
-					if(isTanking) then
+					if(status == 3) then --Securely Tanking
 						if(E:GetPlayerRole() == "TANK") then
 							r, g, b = self.db.threat.goodColor.r, self.db.threat.goodColor.g, self.db.threat.goodColor.b
 							scale = self.db.threat.goodScale
@@ -36,19 +36,33 @@ function mod:UpdateElement_HealthColor(frame)
 							r, g, b = self.db.threat.badColor.r, self.db.threat.badColor.g, self.db.threat.badColor.b
 							scale = self.db.threat.badScale
 						end
-					else
+					elseif(status == 2) then --insecurely tanking
+						if(E:GetPlayerRole() == "TANK") then
+							r, g, b = self.db.threat.badTransition.r, self.db.threat.badTransition.g, self.db.threat.badTransition.b
+						else
+							r, g, b = self.db.threat.goodTransition.r, self.db.threat.goodTransition.g, self.db.threat.goodTransition.b
+						end			
+						scale = 1			
+					elseif(status == 1) then --not tanking but threat higher than tank
+						if(E:GetPlayerRole() == "TANK") then
+							r, g, b = self.db.threat.goodTransition.r, self.db.threat.goodTransition.g, self.db.threat.goodTransition.b
+						else
+							r, g, b = self.db.threat.badTransition.r, self.db.threat.badTransition.g, self.db.threat.badTransition.b
+						end			
+						scale = 1		
+					else -- not tanking at all
 						if(E:GetPlayerRole() == "TANK") then
 							--Check if it is being tanked by an offtank.
-							if (IsInRaid() or IsInGroup()) and frame.isBeingTanked then
-								r, g, b = .8, 0.1, 1
+							if (IsInRaid() or IsInGroup()) and frame.isBeingTanked and self.db.threat.beingTankedByTank then
+								r, g, b = self.db.threat.beingTankedByTankColor.r, self.db.threat.beingTankedByTankColor.g, self.db.threat.beingTankedByTankColor.b
 								scale = self.db.threat.goodScale
 							else
 								r, g, b = self.db.threat.badColor.r, self.db.threat.badColor.g, self.db.threat.badColor.b
 								scale = self.db.threat.badScale
 							end
 						else
-							if (IsInRaid() or IsInGroup()) and frame.isBeingTanked then
-								r, g, b = .8, 0.1, 1
+							if (IsInRaid() or IsInGroup()) and frame.isBeingTanked and self.db.threat.beingTankedByTank then
+								r, g, b = self.db.threat.beingTankedByTankColor.r, self.db.threat.beingTankedByTankColor.g, self.db.threat.beingTankedByTankColor.b
 								scale = self.db.threat.goodScale
 							else
 								r, g, b = self.db.threat.goodColor.r, self.db.threat.goodColor.g, self.db.threat.goodColor.b
