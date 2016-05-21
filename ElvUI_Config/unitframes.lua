@@ -465,7 +465,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 				order = 9,
 				name = L["Font Size"],
 				type = "range",
-				min = 6, max = 22, step = 1,
+				min = 6, max = 212, step = 1,
 			},
 			clickThrough = {
 				order = 15,
@@ -530,7 +530,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 			order = 10,
 			name = L["Count Font Size"],
 			type = "range",
-			min = 6, max = 22, step = 1,
+			min = 6, max = 212, step = 1,
 		}
 	end
 
@@ -1643,7 +1643,7 @@ local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
 				order = 5,
 				type = 'range',
 				name = L["Font Size"],
-				min = 7, max = 22, step = 1,
+				min = 7, max = 212, step = 1,
 			},
 			fontOutline = {
 				order = 6,
@@ -1863,7 +1863,7 @@ function UF:CreateCustomTextGroup(unit, objectName)
 				order = 3,
 				name = L["Font Size"],
 				type = "range",
-				min = 4, max = 32, step = 1,
+				min = 4, max = 212, step = 1,
 			},
 			fontOutline = {
 				order = 4,
@@ -2096,7 +2096,7 @@ E.Options.args.unitframe = {
 							name = L["Font Size"],
 							desc = L["Set the font size for unitframes."],
 							type = "range",
-							min = 4, max = 22, step = 1,
+							min = 4, max = 212, step = 1,
 							set = function(info, value) E.db.unitframe[ info[#info] ] = value; UF:Update_FontStrings() end,
 						},
 						fontOutline = {
@@ -3606,7 +3606,7 @@ E.Options.args.unitframe.args.pet = {
 					type = 'range',
 					name = L["Font Size"],
 					order = 4,
-					min = 7, max = 22, step = 1,
+					min = 7, max = 212, step = 1,
 				},
 			},
 		},
@@ -4378,7 +4378,7 @@ E.Options.args.unitframe.args.party = {
 					type = 'range',
 					name = L["Font Size"],
 					order = 4,
-					min = 7, max = 22, step = 1,
+					min = 7, max = 212, step = 1,
 				},
 				profileSpecific = {
 					type = 'toggle',
@@ -4964,7 +4964,7 @@ E.Options.args.unitframe.args['raid'] = {
 					type = 'range',
 					name = L["Font Size"],
 					order = 4,
-					min = 7, max = 22, step = 1,
+					min = 7, max = 212, step = 1,
 				},
 				profileSpecific = {
 					type = 'toggle',
@@ -5375,7 +5375,7 @@ E.Options.args.unitframe.args['raid40'] = {
 					type = 'range',
 					name = L["Font Size"],
 					order = 4,
-					min = 7, max = 22, step = 1,
+					min = 7, max = 212, step = 1,
 				},
 				profileSpecific = {
 					type = 'toggle',
@@ -5765,7 +5765,7 @@ E.Options.args.unitframe.args.raidpet = {
 					type = 'range',
 					name = L["Font Size"],
 					order = 4,
-					min = 7, max = 22, step = 1,
+					min = 7, max = 212, step = 1,
 				},
 				configureButton = {
 					type = 'execute',
@@ -5939,7 +5939,7 @@ E.Options.args.unitframe.args.tank = {
 					type = 'range',
 					name = L["Font Size"],
 					order = 4,
-					min = 7, max = 22, step = 1,
+					min = 7, max = 212, step = 1,
 				},
 				profileSpecific = {
 					type = 'toggle',
@@ -6124,7 +6124,7 @@ E.Options.args.unitframe.args.assist = {
 					type = 'range',
 					name = L["Font Size"],
 					order = 4,
-					min = 7, max = 22, step = 1,
+					min = 7, max = 212, step = 1,
 				},
 				profileSpecific = {
 					type = 'toggle',

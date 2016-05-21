@@ -265,7 +265,7 @@ E.Options.args.general = {
 							name = L["Font Size"],
 							get = function(info) return E.private.general.chatBubbleFontSize end,
 							set = function(info, value) E.private.general.chatBubbleFontSize = value; E:StaticPopup_Show("PRIVATE_RL") end,
-							min = 4, max = 20, step = 1,
+							min = 4, max = 212, step = 1,
 						},
 					},
 				},
@@ -289,7 +289,7 @@ E.Options.args.general = {
 							name = L["Font Size"],
 							desc = L["Set the font size for everything in UI. Note: This doesn't effect somethings that have their own seperate options (UnitFrame Font, Datatext Font, ect..)"],
 							type = "range",
-							min = 4, max = 22, step = 1,
+							min = 4, max = 212, step = 1,
 							set = function(info, value) E.db.general[ info[#info] ] = value; E:UpdateMedia(); E:UpdateFontTemplates(); end,
 						},
 						font = {
