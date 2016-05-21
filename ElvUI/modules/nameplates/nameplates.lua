@@ -245,22 +245,24 @@ function mod:SetBaseNamePlateSize()
 end
 
 function mod:UpdateElement_All(frame, unit, noTargetFrame)
-	mod:UpdateElement_MaxHealth(frame)
-	mod:UpdateElement_Health(frame)
-	mod:UpdateElement_HealthColor(frame)
+	if(self.db.units[frame.UnitType].healthbar.enable) then
+		mod:UpdateElement_MaxHealth(frame)
+		mod:UpdateElement_Health(frame)
+		mod:UpdateElement_HealthColor(frame)
+
+		mod:UpdateElement_Glow(frame)
+		mod:UpdateElement_Cast(frame)
+		mod:UpdateElement_Auras(frame)
+		mod:UpdateElement_HealPrediction(frame)	
+		if(self.db.units[frame.UnitType].powerbar.enable) then
+			frame.PowerBar:Show()
+			mod.OnEvent(frame, "UNIT_DISPLAYPOWER", unit or frame.unit)
+		end
+	end
+	mod:UpdateElement_RaidIcon(frame)
 	mod:UpdateElement_Name(frame)
 	mod:UpdateElement_Level(frame)
-	mod:UpdateElement_Glow(frame)
-	mod:UpdateElement_Cast(frame)
-	mod:UpdateElement_Auras(frame)
-	mod:UpdateElement_RaidIcon(frame)
-	mod:UpdateElement_HealPrediction(frame)
-	
-	if(self.db.units[frame.UnitType].powerbar.enable) then
-		frame.PowerBar:Show()
-		mod.OnEvent(frame, "UNIT_DISPLAYPOWER", unit or frame.unit)
-	end
-	
+		
 	if(not noTargetFrame) then --infinite loop lol
 		mod:SetTargetFrame(frame)
 	end
