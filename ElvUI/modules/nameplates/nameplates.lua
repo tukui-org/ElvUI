@@ -46,7 +46,9 @@ function mod:SetTargetFrame(frame)
 	frame:SetFrameLevel(parent:GetFrameLevel())
 	
 	if(UnitIsUnit(frame.unit, "target") and not frame.isTarget) then
-		self:SetFrameScale(frame, self.db.targetScale)
+		if(self.db.useTargetScale) then
+			self:SetFrameScale(frame, self.db.targetScale)
+		end
 		frame.isTarget = true
 		if(self.db.units[frame.UnitType].healthbar.enable ~= true) then
 			frame.Name:ClearAllPoints()
@@ -64,7 +66,9 @@ function mod:SetTargetFrame(frame)
 			self:UpdateElement_All(frame, frame.unit, true)
 		end
 	elseif (frame.isTarget) then
-		self:SetFrameScale(frame, frame.ThreatScale or 1)
+		if(self.db.useTargetScale) then
+			self:SetFrameScale(frame, frame.ThreatScale or 1)
+		end
 		frame.isTarget = nil
 		if(self.db.units[frame.UnitType].healthbar.enable ~= true) then
 			self:UpdateAllFrame(frame)
@@ -222,6 +226,7 @@ end
 
 function mod:ConfigureAll()
 	self:ForEachPlate("UpdateAllFrame")
+	self:UpdateCVars()
 end
 
 function mod:ForEachPlate(functionToRun, ...)
@@ -387,11 +392,22 @@ function mod:SetClassNameplateBar(frame)
 	end
 end
 
+function mod:UpdateCVars()
+	E:LockCVar("nameplateShowSelf", self.db.units.PLAYER.enable == true and "1" or "0")
+	E:LockCVar("nameplateMotion", self.db.motionType == "STACKED" and "1" or "0")
+	E:LockCVar("nameplateShowAll", self.db.onlyShowTarget == true and "0" or "1")
+	E:LockCVar("nameplateShowFriendlyMinions", self.db.units.FRIENDLY_PLAYER.minions == true and "1" or "0")
+	E:LockCVar("nameplateShowEnemyMinions", self.db.units.ENEMY_PLAYER.minions == true and "1" or "0")
+	E:LockCVar("nameplateShowEnemyMinus", self.db.units.ENEMY_NPC.minors == true and "1" or "0")
+end
+
 function mod:Initialize()
 	self.db = E.db["nameplate"]
 	if E.private["nameplate"].enable ~= true then return end
 	E.NamePlates = NP
-
+	
+	self:UpdateCVars()
+	InterfaceOptionsNamesPanelUnitNameplates:Kill()
 	NamePlateDriverFrame:UnregisterAllEvents()
 	NamePlateDriverFrame.ApplyFrameOptions = E.noop
 	self:RegisterEvent("NAME_PLATE_CREATED");

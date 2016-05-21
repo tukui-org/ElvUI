@@ -170,9 +170,13 @@ P["nameplate"] = {
 	['font'] = 'PT Sans Narrow',
 	['fontSize'] = 9,
 	['fontOutline'] = 'MONOCHROMEOUTLINE',
+	['useTargetScale'] = true,
 	['targetScale'] = 1.15,
+	["motionType"] =  "STACKED",
+	["onlyShowTarget"] = false,
 	['units'] = {
 		['PLAYER'] = {
+			['enable'] = true,
 			['healthbar'] = {
 				['enable'] = true,
 				['height'] = 10,
@@ -267,6 +271,7 @@ P["nameplate"] = {
 			},				
 		},
 		['FRIENDLY_PLAYER'] = {
+			["minions"] = true,
 			['healthbar'] = {
 				['enable'] = false,
 				['height'] = 10,
@@ -314,6 +319,7 @@ P["nameplate"] = {
 			},				
 		},
 		['ENEMY_PLAYER'] = {
+			["minions"] = false,
 			['healthbar'] = {
 				['enable'] = true,
 				['height'] = 10,
@@ -408,6 +414,7 @@ P["nameplate"] = {
 			},				
 		},
 		['ENEMY_NPC'] = {
+			["minors"] = true,
 			['healthbar'] = {
 				['enable'] = true,
 				['height'] = 10,

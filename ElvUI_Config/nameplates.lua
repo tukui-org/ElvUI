@@ -85,22 +85,41 @@ local function GetUnitSettings(unit, name)
 		type = "group",
 		order = ORDER,
 		name = name,
+		childGroups = "tab",
 		get = function(info) return E.db.nameplate.units[unit][ info[#info] ] end,
 		set = function(info, value) E.db.nameplate.units[unit][ info[#info] ] = value; NP:ConfigureAll() end,		
 		args = {
-			showLevel = {
-				order = 1,
-				name = L["Display Level"],
-				type = "toggle",	
-			},
+			levelGroup = {
+				order = -1,
+				name = L["Level"],
+				type = "group",	
+				args = {
+					header = {
+						order = 0,
+						type = "header",
+						name = L["Level"],
+					},					
+					enable = {
+						order = 1,
+						name = L["Enable"],
+						type = "toggle",	
+						get = function(info) return E.db.nameplate.units[unit].showLevel end,
+						set = function(info, value) E.db.nameplate.units[unit].showLevel = value; NP:ConfigureAll() end,	
+					},				
+				},			
+			},			
 			healthGroup = {
 				order = 2,
 				name = L["Health"],
-				guiInline = true,
 				type = "group",
 				get = function(info) return E.db.nameplate.units[unit].healthbar[ info[#info] ] end,
 				set = function(info, value) E.db.nameplate.units[unit].healthbar[ info[#info] ] = value; NP:ConfigureAll() end,		
 				args = {
+					header = {
+						order = 0,
+						type = "header",
+						name = L["Health"],
+					},						
 					enable = {
 						order = 1,
 						name = L["Enable"],
@@ -123,12 +142,16 @@ local function GetUnitSettings(unit, name)
 			powerGroup = {
 				order = 3,
 				name = L["Power"],
-				guiInline = true,
 				type = "group",
 				get = function(info) return E.db.nameplate.units[unit].powerbar[ info[#info] ] end,
 				set = function(info, value) E.db.nameplate.units[unit].powerbar[ info[#info] ] = value; NP:ConfigureAll() end,
 				disabled = function() return not E.db.nameplate.units[unit].healthbar.enable end,	
 				args = {
+					header = {
+						order = 0,
+						type = "header",
+						name = L["Power"],
+					},						
 					enable = {
 						order = 1,
 						name = L["Enable"],
@@ -145,12 +168,16 @@ local function GetUnitSettings(unit, name)
 			castGroup = {
 				order = 4,
 				name = L["Cast Bar"],
-				guiInline = true,
 				type = "group",
 				get = function(info) return E.db.nameplate.units[unit].castbar[ info[#info] ] end,
 				set = function(info, value) E.db.nameplate.units[unit].castbar[ info[#info] ] = value; NP:ConfigureAll() end,	
 				disabled = function() return not E.db.nameplate.units[unit].healthbar.enable end,		
 				args = {
+					header = {
+						order = 0,
+						type = "header",
+						name = L["Cast Bar"],
+					},						
 					enable = {
 						order = 1,
 						name = L["Enable"],
@@ -167,12 +194,16 @@ local function GetUnitSettings(unit, name)
 			buffsGroup = {
 				order = 5,
 				name = L["Buffs"],
-				guiInline = true,
 				type = "group",
 				get = function(info) return E.db.nameplate.units[unit].buffs.filters[ info[#info] ] end,
 				set = function(info, value) E.db.nameplate.units[unit].buffs.filters[ info[#info] ] = value; NP:ConfigureAll() end,
 				disabled = function() return not E.db.nameplate.units[unit].healthbar.enable end,		
 				args = {
+					header = {
+						order = 0,
+						type = "header",
+						name = L["Buffs"],
+					},						
 					enable = {
 						order = 1,
 						name = L["Enable"],
@@ -222,12 +253,16 @@ local function GetUnitSettings(unit, name)
 			debuffsGroup = {
 				order = 6,
 				name = L["Debuffs"],
-				guiInline = true,
 				type = "group",
 				get = function(info) return E.db.nameplate.units[unit].debuffs.filters[ info[#info] ] end,
 				set = function(info, value) E.db.nameplate.units[unit].debuffs.filters[ info[#info] ] = value; NP:ConfigureAll() end,	
 				disabled = function() return not E.db.nameplate.units[unit].healthbar.enable end,	
 				args = {
+					header = {
+						order = 0,
+						type = "header",
+						name = L["Debuffs"],
+					},						
 					enable = {
 						order = 1,
 						name = L["Enable"],
@@ -277,7 +312,27 @@ local function GetUnitSettings(unit, name)
 		},
 	}
 	
-	
+	if unit == "PLAYER" then
+		group.args.enable = {
+			order = 0,
+			name = L["Enable"],
+			type = "toggle",
+		}
+	elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
+		group.args.minions = {
+			order = 0,
+			name = L["Display Minions"],
+			desc = unit == "FRIENDLY_PLAYER" and OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_MINIONS or OPTION_TOOLTIP_UNIT_NAME_ENEMY_MINIONS,
+			type = "toggle",
+		}	
+	elseif unit == "ENEMY_NPC" then
+		group.args.minors = {
+			order = 0,
+			name = L["Display Minor Units"],
+			desc = OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS,
+			type = "toggle",
+		}		
+	end
 	ORDER = ORDER + 100
 	return group
 end
@@ -309,11 +364,48 @@ E.Options.args.nameplate = {
 			order = 3,
 			disabled = function() return not E.NamePlates; end,
 			args = {
+				onlyShowTarget = {
+					type = "toggle",
+					order = 1,
+					name = L["Only Show Target"],
+					desc = L["Only show a nameplate for the unit you have targetted."],
+				},
+				motionType = {
+					type = "select",
+					order = 2,
+					name = UNIT_NAMEPLATES_TYPES,
+					desc = L["Set to either stack nameplates vertically or allow them to overlap."],
+					values = {
+						['STACKED'] = UNIT_NAMEPLATES_TYPE_2,
+						['OVERLAP'] = UNIT_NAMEPLATES_TYPE_1,
+					},
+				},
+				useTargetScale = {
+					name = L["Use Target Scale"],
+					desc = L["Enable/Disable the scaling of targetted nameplates."],
+					type = "toggle",
+					order = 3,
+				},
+				targetScale = {
+					name = L["Target Scale"],
+					desc = L["Scale of the nameplate that is targetted"],
+					type = "range",
+					min = 0.3, max = 2, step = 0.01,		
+					isPercent = true,
+					order = 4,			
+					disabled = function() return E.db.nameplate.useTargetScale ~= true end,	
+				},
+				statusbar = {
+					order = 0,
+					type = "select", 
+					dialogControl = 'LSM30_Statusbar',
+					name = L["StatusBar Texture"],
+					values = AceGUIWidgetLSMlists.statusbar,						
+				},				
 				threatGroup = {
 					order = 150,
 					type = "group",
 					name = L["Threat"],
-					guiInline = true,
 					get = function(info)
 						local t = E.db.nameplate.threat[ info[#info] ]
 						local d = P.nameplate.threat[info[#info]]
@@ -360,9 +452,8 @@ E.Options.args.nameplate = {
 				fontGroup = {
 					order = 100,
 					type = 'group',
-					guiInline = true,
 					name = L["Fonts"],
-					args = {
+					args = {				
 						font = {
 							type = "select", dialogControl = 'LSM30_Font',
 							order = 4,
@@ -392,8 +483,7 @@ E.Options.args.nameplate = {
 				castGroup = {
 					order = 200,
 					type = "group",
-					name = L["Cast Bar"],
-					guiInline = true,
+					name = L["Cast Bar"],				
 					get = function(info)
 						local t = E.db.nameplate[ info[#info] ]
 						local d = P.nameplate[info[#info]]
@@ -405,7 +495,7 @@ E.Options.args.nameplate = {
 						t.r, t.g, t.b = r, g, b
 						NP:ForEachPlate("ConfigureElement_CastBar")
 					end,
-					args = {
+					args = {						
 						castColor = {
 							type = "color",
 							order = 1,
@@ -423,8 +513,7 @@ E.Options.args.nameplate = {
 				reactions = {
 					order = 150,
 					type = "group",
-					name = L["Health Bar"],
-					guiInline = true,
+					name = L["Reaction Colors"],
 					get = function(info)
 						local t = E.db.nameplate.reactions[ info[#info] ]
 						local d = P.nameplate.reactions[info[#info]]
@@ -437,16 +526,7 @@ E.Options.args.nameplate = {
 						NP:ForEachPlate("UpdateElement_HealthColor", true)
 						NP:ForEachPlate("UpdateElement_Name", true)
 					end,
-					args = {
-						statusbar = {
-							order = 0,
-							type = "select", 
-							dialogControl = 'LSM30_Statusbar',
-							name = L["StatusBar Texture"],
-							values = AceGUIWidgetLSMlists.statusbar,
-							get = function(info) return E.db.nameplate[ info[#info] ] end,
-							set = function(info, value) E.db.nameplate[ info[#info] ] = value; NP:ConfigureAll() end,							
-						},
+					args = {							
 						--[[offline = {
 							type = "color",
 							order = 1,
