@@ -478,6 +478,13 @@ L["Unlock various elements of the UI to be repositioned."] = true;
 L["Version"] = true;
 
 --NamePlates
+L["ENEMY_NPC"] = "Enemy NPC"
+L["ENEMY_PLAYER"] = "Enemy Player"
+L["FRIENDLY_PLAYER"] = "Friendly Player"
+L["HEALER"] = "Healer"
+L["PLAYER"] = "Player"
+L["FRIENDLY_NPC"] = "Friendly NPC"
+
 L["Add Name"] = true;
 L["Adjust nameplate size on low health"] = true;
 L["Adjust nameplate size on smaller mobs to scale down. This will only adjust the health bar width not the actual nameplate hitbox you click on."] = true;

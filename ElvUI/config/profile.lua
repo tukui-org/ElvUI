@@ -271,7 +271,7 @@ P["nameplate"] = {
 			},				
 		},
 		['FRIENDLY_PLAYER'] = {
-			["minions"] = true,
+			["minions"] = false,
 			['healthbar'] = {
 				['enable'] = false,
 				['height'] = 10,

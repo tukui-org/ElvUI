@@ -403,6 +403,28 @@ function mod:UpdateCVars()
 	E:LockCVar("nameplateShowEnemyMinus", self.db.units.ENEMY_NPC.minors == true and "1" or "0")
 end
 
+local function CopySettings(from, to)
+	for setting, value in pairs(from) do
+		if(type(value) == "table") then
+			CopySettings(from[setting], to[setting])
+		else
+			if(to[setting] ~= nil) then
+				to[setting] = from[setting]
+			end		
+		end
+	end
+end
+
+function mod:ResetSettings(unit)
+	CopySettings(P.nameplate.units[unit], self.db.units[unit])
+end
+
+function mod:CopySettings(from, to)
+	if(from == to) then return end
+
+	CopySettings(self.db.units[from], self.db.units[to])
+end
+
 function mod:Initialize()
 	self.db = E.db["nameplate"]
 	if E.private["nameplate"].enable ~= true then return end

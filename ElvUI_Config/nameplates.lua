@@ -81,6 +81,12 @@ end
 
 local ORDER = 100
 local function GetUnitSettings(unit, name)
+	local copyValues = {}
+	for x, y in pairs(NP.db.units) do
+		if(type(y) == "table" and x ~= unit) then
+			copyValues[x] = L[x]
+		end
+	end
 	local group = {
 		type = "group",
 		order = ORDER,
@@ -89,6 +95,28 @@ local function GetUnitSettings(unit, name)
 		get = function(info) return E.db.nameplate.units[unit][ info[#info] ] end,
 		set = function(info, value) E.db.nameplate.units[unit][ info[#info] ] = value; NP:ConfigureAll() end,		
 		args = {
+			copySettings = {
+				order = -10,
+				name = L["Copy Settings From"],
+				desc = L["Copy settings from another unit."],
+				type = "select",
+				values = copyValues,
+				get = function() return '' end,
+				set = function(info, value)
+					NP:CopySettings(value, unit)
+					NP:ConfigureAll()
+				end,
+			},
+			defaultSettings = {
+				order = -9,
+				name = L["Default Settings"],
+				desc = L["Set Settings to Default"],
+				type = "execute",
+				func = function(info, value)
+					NP:ResetSettings(unit)
+					NP:ConfigureAll()
+				end,
+			},			
 			levelGroup = {
 				order = -1,
 				name = L["Level"],
@@ -333,6 +361,8 @@ local function GetUnitSettings(unit, name)
 			type = "toggle",
 		}		
 	end
+	
+	
 	ORDER = ORDER + 100
 	return group
 end
