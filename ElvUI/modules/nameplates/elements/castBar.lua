@@ -30,7 +30,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 	if(self.db.units[frame.UnitType].castbar.enable ~= true) then return end
 	
 	local arg1 = ...;
-	local unit = frame.unit
+	local unit = frame.displayedUnit
 	if ( event == "PLAYER_ENTERING_WORLD" ) then
 		local nameChannel = UnitChannelInfo(unit);
 		local nameSpell = UnitCastingInfo(unit);

@@ -402,7 +402,6 @@ E.Options.args.nameplate = {
 			type = "group",
 			name = L["General"],
 			guiInline = true,
-			childGroups = "selects",
 			order = 3,
 			disabled = function() return not E.NamePlates; end,
 			args = {

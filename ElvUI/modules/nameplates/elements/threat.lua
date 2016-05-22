@@ -6,8 +6,8 @@ local LSM = LibStub("LibSharedMedia-3.0")
 function mod:Update_ThreatList(frame)
 	if frame.UnitType ~= "ENEMY_NPC" then return end
 
-	local unit = frame.unit
-	local isTanking, status, percent = UnitDetailedThreatSituation('player', unit)
+	local unit = frame.displayedUnit
+	local isTanking, status, percent = UnitDetailedThreatSituation(mod.playerUnitToken, unit)
 	local isInGroup, isInRaid = IsInGroup(), IsInRaid()
 	frame.ThreatData = {}
 	frame.ThreatData.player = {isTanking, status, percent}

@@ -4,7 +4,7 @@ local LSM = LibStub("LibSharedMedia-3.0")
 
 function mod:UpdateElement_Level(frame)
 	if(not self.db.units[frame.UnitType].showLevel) then return end
-	local level = UnitLevel(frame.unit)
+	local level = UnitLevel(frame.displayedUnit)
 	
 	local r, g, b
 	if(level == -1 or not level) then

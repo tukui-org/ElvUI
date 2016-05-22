@@ -16,9 +16,9 @@ function mod:UpdateElement_HealthColor(frame)
 			r, g, b = healthBarColorOverride.r, healthBarColorOverride.g, healthBarColorOverride.b;]]
 		else
 			--Try to color it by class.
-			local _, class = UnitClass(frame.unit);
+			local _, class = UnitClass(frame.displayedUnit);
 			local classColor = RAID_CLASS_COLORS[class];
-			if ( (frame.UnitType == "FRIENDLY_PLAYER" or frame.UnitType == "HEALER" or frame.UnitType == "ENEMY_PLAYER" or frame.UnitType == "PLAYER") and classColor ) then
+			if ( (frame.UnitType == "FRIENDLY_PLAYER" or frame.UnitType == "HEALER" or frame.UnitType == "ENEMY_PLAYER" or frame.UnitType == "PLAYER") and classColor and not frame.inVehicle ) then
 				-- Use class colors for players if class color option is turned on
 				r, g, b = classColor.r, classColor.g, classColor.b;
 			elseif ( not UnitPlayerControlled(frame.unit) and UnitIsTapDenied(frame.unit) ) then
@@ -113,7 +113,7 @@ local function UpdateFillBar(frame, previousTexture, bar, amount)
 end
 
 function mod:UpdateElement_HealPrediction(frame)
-	local unit = frame.unit
+	local unit = frame.displayedUnit or frame.unit
 	local myIncomingHeal = UnitGetIncomingHeals(unit, 'player') or 0
 	local allIncomingHeal = UnitGetIncomingHeals(unit) or 0
 	local totalAbsorb = UnitGetTotalAbsorbs(unit) or 0
@@ -180,12 +180,12 @@ end
 
 
 function mod:UpdateElement_MaxHealth(frame)
-	local maxHealth = UnitHealthMax(frame.unit);
+	local maxHealth = UnitHealthMax(frame.displayedUnit);
 	frame.HealthBar:SetMinMaxValues(0, maxHealth)
 end
 
 function mod:UpdateElement_Health(frame)
-	local health = UnitHealth(frame.unit);
+	local health = UnitHealth(frame.displayedUnit);
 	frame.HealthBar:SetValue(health)
 end
 

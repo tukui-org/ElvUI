@@ -8,7 +8,7 @@ function mod:ClassBar_Update(frame)
 	if(self.db.classbar.enable) then
 		local targetFrame = self:GetNamePlateForUnit("target")
 		
-		if(self.PlayerFrame and self.db.classbar.attachTo == "PLAYER") then
+		if(self.PlayerFrame and self.db.classbar.attachTo == "PLAYER" and not UnitHasVehicleUI("player")) then
 			frame = self.PlayerFrame.UnitFrame
 			self.ClassBar:SetParent(frame)
 			self.ClassBar:ClearAllPoints()
@@ -29,7 +29,7 @@ function mod:ClassBar_Update(frame)
 				self.ClassBar:SetPoint("TOP", frame.BottomLevelFrame or frame.CastBar, "BOTTOM", 3, frame.BottomOffset or -2)
 			end
 			self.ClassBar:Show()		
-		elseif(targetFrame and self.db.classbar.attachTo == "TARGET") then
+		elseif(targetFrame and self.db.classbar.attachTo == "TARGET" and not UnitHasVehicleUI("player")) then
 			frame = targetFrame.UnitFrame
 			if(frame.UnitType == "FRIENDLY_NPC" or frame.UnitType == "FRIENDLY_PLAYER" or frame.UnitType == "HEALER") then
 				self.ClassBar:Hide()
@@ -169,7 +169,7 @@ end
 
 function mod:CheckUnitType(frame)
 	local role = UnitGroupRolesAssigned(frame.unit)
-	local CanAttack = UnitCanAttack("player", frame.unit)
+	local CanAttack = UnitCanAttack(self.playerUnitToken, frame.displayedUnit)
 
 	if(role == "HEALER" and frame.UnitType ~= "HEALER") then
 		self:UpdateAllFrame(frame)
@@ -185,10 +185,12 @@ function mod:CheckUnitType(frame)
 end
 
 function mod:NAME_PLATE_UNIT_ADDED(event, unit, frame)
-	local frame = frame or C_NamePlate.GetNamePlateForUnit(unit);
+	local frame = frame or self:GetNamePlateForUnit(unit);
 	frame.UnitFrame.unit = unit
-	
-	local CanAttack = UnitCanAttack(unit, "player")
+	frame.UnitFrame.displayedUnit = unit
+	self:UpdateInVehicle(frame, true)
+
+	local CanAttack = UnitCanAttack(unit, self.playerUnitToken)
 	local isPlayer = UnitIsPlayer(unit)
 	
 	if(UnitIsUnit(unit, "player")) then
@@ -221,7 +223,8 @@ function mod:NAME_PLATE_UNIT_ADDED(event, unit, frame)
 	
 	self:ConfigureElement_Level(frame.UnitFrame)
 	self:ConfigureElement_Name(frame.UnitFrame)
-
+	
+	
 	self:RegisterEvents(frame.UnitFrame, unit)
 	self:UpdateElement_All(frame.UnitFrame, unit)
 	frame.UnitFrame:Show()
@@ -254,6 +257,7 @@ function mod:NAME_PLATE_UNIT_REMOVED(event, unit, frame, ...)
 	frame.UnitFrame.Name:SetText("")
 	frame.UnitFrame:Hide()
 	frame.UnitFrame.isTarget = nil
+	frame.UnitFrame.displayedUnit = nil
 	frame.ThreatData = nil
 	frame.UnitFrame.UnitType = nil
 	frame.UnitFrame.TopLevelFrame = nil
@@ -293,6 +297,33 @@ function mod:SetBaseNamePlateSize()
 	local baseHeight = self.db.units["ENEMY_NPC"].castbar.height + self.db.units["ENEMY_NPC"].healthbar.height + 30
 	NamePlateDriverFrame:SetBaseNamePlateSize(baseWidth, baseHeight)
 	self.PlayerFrame__:SetSize(baseWidth, baseHeight)
+end
+
+function mod:UpdateInVehicle(frame, noEvents)
+	if ( UnitHasVehicleUI(frame.unit) ) then
+		if ( not frame.inVehicle ) then
+			frame.inVehicle = true;
+			if(UnitIsUnit(frame.unit, "player")) then
+				frame.displayedUnit = "vehicle"
+			else
+				local prefix, id, suffix = string.match(frame.unit, "([^%d]+)([%d]*)(.*)")
+				frame.displayedUnit = prefix.."pet"..id..suffix;
+			end
+			if(not noEvents) then
+				self:RegisterEvents(frame, frame.unit)
+				self:UpdateElement_All(frame)
+			end
+		end
+	else
+		if ( frame.inVehicle ) then
+			frame.inVehicle = false;
+			frame.displayedUnit = frame.unit;
+			if(not noEvents) then
+				self:RegisterEvents(frame, frame.unit)
+				self:UpdateElement_All(frame)
+			end
+		end
+	end
 end
 
 function mod:UpdateElement_All(frame, unit, noTargetFrame)
@@ -372,7 +403,7 @@ function mod:OnEvent(event, unit, ...)
 	elseif(event == "UNIT_MAXPOWER") then
 		mod:UpdateElement_MaxPower(self)
 	elseif(event == "UNIT_POWER" or event == "UNIT_POWER_FREQUENT" or event == "UNIT_DISPLAYPOWER") then
-		local powerType, powerToken = UnitPowerType(unit)
+		local powerType, powerToken = UnitPowerType(self.displayedUnit)
 		local arg1 = ...
 		self.PowerToken = powerToken
 		self.PowerType = powerType
@@ -385,34 +416,43 @@ function mod:OnEvent(event, unit, ...)
 		if arg1 == powerToken or event == "UNIT_DISPLAYPOWER" then
 			mod:UpdateElement_Power(self)
 		end
+	elseif ( event == "UNIT_ENTERED_VEHICLE" or event == "UNIT_EXITED_VEHICLE" or event == "UNIT_PET" ) then
+		mod:UpdateInVehicle(self)
+		mod:UpdateElement_All(self)
 	else
 		mod:UpdateElement_Cast(self, event, unit, ...)
 	end
 end
 
 function mod:RegisterEvents(frame, unit)
-	if(self.db.units[frame.UnitType].healthbar.enable or frame.isTarget) then
-		frame:RegisterUnitEvent("UNIT_MAXHEALTH", unit);
-		frame:RegisterUnitEvent("UNIT_HEALTH", unit);
-		frame:RegisterUnitEvent("UNIT_HEALTH_FREQUENT", unit);
-		frame:RegisterUnitEvent("UNIT_ABSORB_AMOUNT_CHANGED", unit);
-		frame:RegisterUnitEvent("UNIT_HEAL_ABSORB_AMOUNT_CHANGED", unit);
-		frame:RegisterUnitEvent("UNIT_HEAL_PREDICTION", unit);
+	local unit = frame.unit;
+	local displayedUnit;
+	if ( unit ~= frame.displayedUnit ) then
+		displayedUnit = frame.displayedUnit;
 	end
 	
-	frame:RegisterUnitEvent("UNIT_NAME_UPDATE", unit);
-	frame:RegisterUnitEvent("UNIT_LEVEL", unit);
+	if(self.db.units[frame.UnitType].healthbar.enable or frame.isTarget) then
+		frame:RegisterUnitEvent("UNIT_MAXHEALTH", unit, displayedUnit);
+		frame:RegisterUnitEvent("UNIT_HEALTH", unit, displayedUnit);
+		frame:RegisterUnitEvent("UNIT_HEALTH_FREQUENT", unit, displayedUnit);
+		frame:RegisterUnitEvent("UNIT_ABSORB_AMOUNT_CHANGED", unit, displayedUnit);
+		frame:RegisterUnitEvent("UNIT_HEAL_ABSORB_AMOUNT_CHANGED", unit, displayedUnit);
+		frame:RegisterUnitEvent("UNIT_HEAL_PREDICTION", unit, displayedUnit);
+	end
+
+	frame:RegisterEvent("UNIT_NAME_UPDATE");
+	frame:RegisterUnitEvent("UNIT_LEVEL", unit, displayedUnit);
 
 	if(self.db.units[frame.UnitType].healthbar.enable or frame.isTarget) then
 		if(frame.UnitType == "ENEMY_NPC") then
-			frame:RegisterUnitEvent("UNIT_THREAT_LIST_UPDATE", unit);
+			frame:RegisterUnitEvent("UNIT_THREAT_LIST_UPDATE", unit, displayedUnit);
 		end
 		
 		if(self.db.units[frame.UnitType].powerbar.enable) then
-			frame:RegisterUnitEvent("UNIT_POWER", unit)
-			frame:RegisterUnitEvent("UNIT_POWER_FREQUENT", unit)
-			frame:RegisterUnitEvent("UNIT_DISPLAYPOWER", unit)
-			frame:RegisterUnitEvent("UNIT_MAXPOWER", unit)
+			frame:RegisterUnitEvent("UNIT_POWER", unit, displayedUnit)
+			frame:RegisterUnitEvent("UNIT_POWER_FREQUENT", unit, displayedUnit)
+			frame:RegisterUnitEvent("UNIT_DISPLAYPOWER", unit, displayedUnit)
+			frame:RegisterUnitEvent("UNIT_MAXPOWER", unit, displayedUnit)
 		end
 
 		if(self.db.units[frame.UnitType].castbar.enable) then
@@ -423,17 +463,23 @@ function mod:RegisterEvents(frame, unit)
 			frame:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP");
 			frame:RegisterEvent("UNIT_SPELLCAST_INTERRUPTIBLE");
 			frame:RegisterEvent("UNIT_SPELLCAST_NOT_INTERRUPTIBLE");	
-			frame:RegisterUnitEvent("UNIT_SPELLCAST_START", unit);
-			frame:RegisterUnitEvent("UNIT_SPELLCAST_STOP", unit);
-			frame:RegisterUnitEvent("UNIT_SPELLCAST_FAILED", unit);	
+			frame:RegisterUnitEvent("UNIT_SPELLCAST_START", unit, displayedUnit);
+			frame:RegisterUnitEvent("UNIT_SPELLCAST_STOP", unit, displayedUnit);
+			frame:RegisterUnitEvent("UNIT_SPELLCAST_FAILED", unit, displayedUnit);	
 		end
 		
 		frame:RegisterEvent("PLAYER_ENTERING_WORLD");
-		frame:RegisterUnitEvent("UNIT_AURA", unit)
+		
+		if(self.db.units[frame.UnitType].buffs.enable and self.db.units[frame.UnitType].debuffs.enable) then
+			frame:RegisterUnitEvent("UNIT_AURA", unit, displayedUnit)
+		end
 		frame:RegisterEvent("RAID_TARGET_UPDATE")	
 		mod.OnEvent(frame, "PLAYER_ENTERING_WORLD")	
 	end
 	
+	frame:RegisterEvent("UNIT_ENTERED_VEHICLE")
+	frame:RegisterEvent("UNIT_EXITED_VEHICLE")
+	frame:RegisterEvent("UNIT_PET")
 	frame:RegisterEvent("PLAYER_TARGET_CHANGED");	
 	frame:RegisterEvent("PLAYER_ROLES_ASSIGNED")
 	frame:RegisterEvent("UNIT_FACTION")
@@ -493,10 +539,20 @@ function mod:TogglePlayerDisplayType()
 	end
 end
 
+function mod:UpdateVehicleStatus(event, unit)
+	if ( UnitHasVehicleUI("player") ) then
+		self.playerUnitToken = "vehicle"
+	else
+		self.playerUnitToken = "player"
+	end
+end
+
 function mod:Initialize()
 	self.db = E.db["nameplate"]
 	if E.private["nameplate"].enable ~= true then return end
 	E.NamePlates = NP
+	
+	self:UpdateVehicleStatus()
 	
 	--Hacked Nameplate
 	self.PlayerFrame__ = CreateFrame("BUTTON", "ElvNamePlate", E.UIParent, "SecureUnitButtonTemplate")
@@ -517,6 +573,9 @@ function mod:Initialize()
 	self:RegisterEvent("NAME_PLATE_UNIT_ADDED");
 	self:RegisterEvent("NAME_PLATE_UNIT_REMOVED");
 	self:RegisterEvent("DISPLAY_SIZE_CHANGED");
+	self:RegisterEvent("UNIT_ENTERED_VEHICLE", "UpdateVehicleStatus")
+	self:RegisterEvent("UNIT_EXITED_VEHICLE", "UpdateVehicleStatus")
+	self:RegisterEvent("UNIT_PET", "UpdateVehicleStatus")
 	
 	--Best to just Hijack Blizzard's nameplate classbar
 	self.ClassBar = NamePlateDriverFrame.nameplateBar
