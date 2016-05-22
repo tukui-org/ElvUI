@@ -183,6 +183,7 @@ P["nameplate"] = {
 	['units'] = {
 		['PLAYER'] = {
 			['enable'] = true,
+			["alwaysShow"] = false,
 			['healthbar'] = {
 				['enable'] = true,
 				['height'] = 10,

@@ -339,13 +339,24 @@ local function GetUnitSettings(unit, name)
 			},									
 		},
 	}
-	
+
 	if unit == "PLAYER" then
 		group.args.enable = {
-			order = 0,
+			order = -15,
 			name = L["Enable"],
 			type = "toggle",
 		}
+		group.args.alwaysShow = {
+			order = -13,
+			name = L["Always Display"],
+			desc = L["By forcing the nameplate to always show it will not move on the screen to stay below your characters feet."],
+			type = "toggle"
+		}
+		group.args.spacer = {
+			order = -14,
+			type = "description",
+			name = ""
+		}			
 	elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
 		group.args.minions = {
 			order = 0,

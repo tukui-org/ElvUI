@@ -6,7 +6,7 @@ function mod:ClassBar_Update(frame)
 	if(not self.ClassBar) then return end
 
 	if(self.db.classbar.enable) then
-		local targetFrame = C_NamePlate.GetNamePlateForUnit("target")
+		local targetFrame = self:GetNamePlateForUnit("target")
 		
 		if(self.PlayerFrame and self.db.classbar.attachTo == "PLAYER") then
 			frame = self.PlayerFrame.UnitFrame
@@ -74,11 +74,21 @@ function mod:SetFrameScale(frame, scale)
 	end
 end
 
+function mod:GetNamePlateForUnit(unit)
+	if(unit == "player" and self.db.units.PLAYER.alwaysShow and self.db.units.PLAYER.enable) then
+		return self.PlayerFrame__
+	else
+		return C_NamePlate.GetNamePlateForUnit(unit)
+	end
+end
+
 function mod:SetTargetFrame(frame)
 	--Match parent's frame level for targetting purposes. Best time to do it is here.
-	local parent = C_NamePlate.GetNamePlateForUnit(frame.unit);
-	frame:SetFrameLevel(parent:GetFrameLevel())
-	
+	local parent = self:GetNamePlateForUnit(frame.unit);
+	if(parent) then
+		frame:SetFrameLevel(parent:GetFrameLevel())
+	end
+
 	if(UnitIsUnit(frame.unit, "target") and not frame.isTarget) then
 		if(self.db.useTargetScale) then
 			self:SetFrameScale(frame, self.db.targetScale)
@@ -174,8 +184,8 @@ function mod:CheckUnitType(frame)
 	end
 end
 
-function mod:NAME_PLATE_UNIT_ADDED(event, unit)
-	local frame = C_NamePlate.GetNamePlateForUnit(unit);
+function mod:NAME_PLATE_UNIT_ADDED(event, unit, frame)
+	local frame = frame or C_NamePlate.GetNamePlateForUnit(unit);
 	frame.UnitFrame.unit = unit
 	
 	local CanAttack = UnitCanAttack(unit, "player")
@@ -217,8 +227,8 @@ function mod:NAME_PLATE_UNIT_ADDED(event, unit)
 	frame.UnitFrame:Show()
 end
 
-function mod:NAME_PLATE_UNIT_REMOVED(event, unit, ...)
-	local frame = C_NamePlate.GetNamePlateForUnit(unit);
+function mod:NAME_PLATE_UNIT_REMOVED(event, unit, frame, ...)
+	local frame = frame or self:GetNamePlateForUnit(unit);
 	frame.UnitFrame.unit = nil
 	
 	local unitType = frame.UnitFrame.UnitType
@@ -256,6 +266,8 @@ function mod:NAME_PLATE_UNIT_REMOVED(event, unit, ...)
 end
 
 function mod:UpdateAllFrame(frame)
+	if(frame == self.PlayerFrame__) then return end
+	
 	local unit = frame.unit
 	mod:NAME_PLATE_UNIT_REMOVED("NAME_PLATE_UNIT_REMOVED", unit)
 	mod:NAME_PLATE_UNIT_ADDED("NAME_PLATE_UNIT_ADDED", unit)		
@@ -264,6 +276,7 @@ end
 function mod:ConfigureAll()
 	self:ForEachPlate("UpdateAllFrame")
 	self:UpdateCVars()
+	self:TogglePlayerDisplayType()
 end
 
 function mod:ForEachPlate(functionToRun, ...)
@@ -271,7 +284,7 @@ function mod:ForEachPlate(functionToRun, ...)
 		if(frame and frame.UnitFrame) then
 			self[functionToRun](self, frame.UnitFrame, ...)
 		end
-	end
+	end		
 end
 
 function mod:SetBaseNamePlateSize()
@@ -279,6 +292,7 @@ function mod:SetBaseNamePlateSize()
 	local baseWidth = self.db.units["ENEMY_NPC"].healthbar.width
 	local baseHeight = self.db.units["ENEMY_NPC"].castbar.height + self.db.units["ENEMY_NPC"].healthbar.height + 30
 	NamePlateDriverFrame:SetBaseNamePlateSize(baseWidth, baseHeight)
+	self.PlayerFrame__:SetSize(baseWidth, baseHeight)
 end
 
 function mod:UpdateElement_All(frame, unit, noTargetFrame)
@@ -433,7 +447,7 @@ function mod:SetClassNameplateBar(frame)
 end
 
 function mod:UpdateCVars()
-	E:LockCVar("nameplateShowSelf", self.db.units.PLAYER.enable == true and "1" or "0")
+	E:LockCVar("nameplateShowSelf", (self.db.units.PLAYER.alwaysShow == true or self.db.units.PLAYER.enable ~= true) and "0" or "1")
 	E:LockCVar("nameplateMotion", self.db.motionType == "STACKED" and "1" or "0")
 	E:LockCVar("nameplateShowAll", self.db.onlyShowTarget == true and "0" or "1")
 	E:LockCVar("nameplateShowFriendlyMinions", self.db.units.FRIENDLY_PLAYER.minions == true and "1" or "0")
@@ -463,10 +477,37 @@ function mod:CopySettings(from, to)
 	CopySettings(self.db.units[from], self.db.units[to])
 end
 
+function mod:TogglePlayerDisplayType()
+	if(self.db.units.PLAYER.enable and self.db.units.PLAYER.alwaysShow) then
+		self.PlayerFrame__:Show()
+		RegisterUnitWatch(self.PlayerFrame__)
+		E:EnableMover("PlayerNameplate")
+		self:NAME_PLATE_UNIT_ADDED("NAME_PLATE_UNIT_ADDED", "player", self.PlayerFrame__)
+	else
+		UnregisterUnitWatch(self.PlayerFrame__)
+		E:DisableMover("PlayerNameplate")
+		if(self.PlayerFrame__:IsShown()) then
+			self:NAME_PLATE_UNIT_REMOVED("NAME_PLATE_UNIT_REMOVED", "player", self.PlayerFrame__)
+			self.PlayerFrame__:Hide()
+		end
+	end
+end
+
 function mod:Initialize()
 	self.db = E.db["nameplate"]
 	if E.private["nameplate"].enable ~= true then return end
 	E.NamePlates = NP
+	
+	--Hacked Nameplate
+	self.PlayerFrame__ = CreateFrame("BUTTON", "ElvNamePlate", E.UIParent, "SecureUnitButtonTemplate")
+	self.PlayerFrame__:SetAttribute("unit", "player")
+	self.PlayerFrame__:RegisterForClicks("LeftButtonDown", "RightButtonDown")
+	self.PlayerFrame__:SetAttribute("*type1", "target")
+	self.PlayerFrame__:SetAttribute("*type2", "togglemenu")	
+	self.PlayerFrame__:SetAttribute("toggleForVehicle", true)
+	self.PlayerFrame__:SetPoint("TOP", UIParent, "CENTER", 0, -150)
+	self.PlayerFrame__:Hide()
+	
 	
 	self:UpdateCVars()
 	InterfaceOptionsNamesPanelUnitNameplates:Kill()
@@ -486,6 +527,12 @@ function mod:Initialize()
 
 	self:DISPLAY_SIZE_CHANGED() --Run once for good measure.
 	self:SetBaseNamePlateSize()
+	
+	self:NAME_PLATE_CREATED("NAME_PLATE_CREATED", self.PlayerFrame__)
+	self:NAME_PLATE_UNIT_ADDED("NAME_PLATE_UNIT_ADDED", "player", self.PlayerFrame__)	
+	self:NAME_PLATE_UNIT_REMOVED("NAME_PLATE_UNIT_REMOVED", "player", self.PlayerFrame__)	
+	E:CreateMover(self.PlayerFrame__, "PlayerNameplate", L["Player Nameplate"])
+	self:TogglePlayerDisplayType()
 	
 	E.NamePlates = self
 end
