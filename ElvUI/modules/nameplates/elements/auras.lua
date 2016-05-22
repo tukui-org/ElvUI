@@ -134,8 +134,9 @@ function mod:UpdateElement_Auras(frame)
 	end
 	
 	local TopLevel = frame.HealthBar
-	local TopOffset = 12
+	local TopOffset = select(2, frame.Name:GetFont())
 	if(hasDebuffs) then
+		TopOffset = TopOffset + 3
 		frame.Debuffs:SetPoint("BOTTOMLEFT", TopLevel, "TOPLEFT", 0, TopOffset)
 		frame.Debuffs:SetPoint("BOTTOMRIGHT", TopLevel, "TOPRIGHT", 0, TopOffset)
 		TopLevel = frame.Debuffs
@@ -143,13 +144,16 @@ function mod:UpdateElement_Auras(frame)
 	end
 	
 	if(hasBuffs) then
+		if(not hasDebuffs) then
+			TopOffset = TopOffset + 3
+		end
 		frame.Buffs:SetPoint("BOTTOMLEFT", TopLevel, "TOPLEFT", 0, TopOffset)
 		frame.Buffs:SetPoint("BOTTOMRIGHT", TopLevel, "TOPRIGHT", 0, TopOffset)
 		TopLevel = frame.Buffs	
 		TopOffset = 3
 	end
 	
-	if(frame.TopLevelFrame ~= TopLevel) then
+	if(frame.TopLevelFrame ~= TopLevel and self.db.classbar.enable and self.db.classbar.position ~= "BELOW") then
 		frame.TopLevelFrame = TopLevel
 		frame.TopOffset = TopOffset
 		mod:ClassBar_Update(frame)

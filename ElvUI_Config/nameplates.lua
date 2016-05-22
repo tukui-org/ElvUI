@@ -391,6 +391,7 @@ E.Options.args.nameplate = {
 			type = "group",
 			name = L["General"],
 			guiInline = true,
+			childGroups = "selects",
 			order = 3,
 			disabled = function() return not E.NamePlates; end,
 			args = {
@@ -439,6 +440,69 @@ E.Options.args.nameplate = {
 					dialogControl = 'LSM30_Statusbar',
 					name = L["StatusBar Texture"],
 					values = AceGUIWidgetLSMlists.statusbar,						
+				},	
+				fontGroup = {
+					order = 100,
+					type = 'group',
+					name = L["Fonts"],
+					args = {				
+						font = {
+							type = "select", dialogControl = 'LSM30_Font',
+							order = 4,
+							name = L["Font"],
+							values = AceGUIWidgetLSMlists.font,
+						},
+						fontSize = {
+							order = 5,
+							name = L["Font Size"],
+							type = "range",
+							min = 4, max = 212, step = 1,
+						},
+						fontOutline = {
+							order = 6,
+							name = L["Font Outline"],
+							desc = L["Set the font outline."],
+							type = "select",
+							values = {
+								['NONE'] = L["None"],
+								['OUTLINE'] = 'OUTLINE',
+								['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
+								['THICKOUTLINE'] = 'THICKOUTLINE',
+							},
+						},
+					},
+				},		
+				classBarGroup = {
+					order = 125,
+					type = "group",
+					name = L["Classbar"],
+					get = function(info) return E.db.nameplate.classbar[ info[#info] ] end,
+					set = function(info, value) E.db.nameplate.classbar[ info[#info] ] = value; NP:ConfigureAll() end,					
+					args = {
+						enable = {
+							type = "toggle",
+							order = 1,
+							name = L["Enable"]	
+						},
+						attachTo = {
+							type = "select",
+							order = 2,
+							name = L["Attach To"],
+							values = {
+								PLAYER = L["Player Nameplate"],
+								TARGET = L["Targeted Nameplate"],
+							},
+						},
+						position = {
+							type = "select",
+							order = 3,
+							name = L["Position"],
+							values = {
+								ABOVE = L["Above"],
+								BELOW = L["Below"],	
+							},	
+						},
+					},
 				},				
 				threatGroup = {
 					order = 150,
@@ -514,37 +578,7 @@ E.Options.args.nameplate = {
 						},																			
 					},
 				},	
-				fontGroup = {
-					order = 100,
-					type = 'group',
-					name = L["Fonts"],
-					args = {				
-						font = {
-							type = "select", dialogControl = 'LSM30_Font',
-							order = 4,
-							name = L["Font"],
-							values = AceGUIWidgetLSMlists.font,
-						},
-						fontSize = {
-							order = 5,
-							name = L["Font Size"],
-							type = "range",
-							min = 4, max = 212, step = 1,
-						},
-						fontOutline = {
-							order = 6,
-							name = L["Font Outline"],
-							desc = L["Set the font outline."],
-							type = "select",
-							values = {
-								['NONE'] = L["None"],
-								['OUTLINE'] = 'OUTLINE',
-								['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
-								['THICKOUTLINE'] = 'THICKOUTLINE',
-							},
-						},
-					},
-				},
+
 				castGroup = {
 					order = 200,
 					type = "group",

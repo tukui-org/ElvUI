@@ -190,6 +190,10 @@ function mod:UpdateElement_Cast(frame, event, ...)
 		frame.CastBar:SetStatusBarColor(self.db.castNoInterruptColor.r, self.db.castNoInterruptColor.g, self.db.castNoInterruptColor.b)
 	end
 	frame.CastBar.canInterrupt = nil
+	
+	if(self.db.classbar.enable and self.db.classbar.position == "BELOW") then
+		self:ClassBar_Update(frame)
+	end
 end
 
 function mod:ConfigureElement_CastBar(frame)

@@ -16,6 +16,10 @@ function mod:UpdateElement_Power(frame)
 
 	local color = E.db.unitframe.colors.power[frame.PowerToken] or PowerBarColor[frame.PowerToken]
 	frame.PowerBar:SetStatusBarColor(color.r, color.g, color.b)
+	
+	if(self.db.classbar.enable and self.db.classbar.position == "BELOW") then
+		self:ClassBar_Update(frame)
+	end			
 end 
 
 function mod:ConfigureElement_PowerBar(frame)

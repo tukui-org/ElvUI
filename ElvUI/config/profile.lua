@@ -175,6 +175,11 @@ P["nameplate"] = {
 	["motionType"] =  "STACKED",
 	["onlyShowTarget"] = false,
 	["lowHealthThreshold"] = 0.4,
+	["classbar"] = {
+		["enable"] = true,
+		["attachTo"] = "TARGET",
+		["position"] = "ABOVE"	
+	},
 	['units'] = {
 		['PLAYER'] = {
 			['enable'] = true,
