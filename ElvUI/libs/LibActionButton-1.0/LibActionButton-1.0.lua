@@ -29,11 +29,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ]]
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 2
+local MINOR_VERSION = 3
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
 if not lib then return end
+
+local IsLegion = select(4, GetBuildInfo()) >= 70000
 
 -- Lua functions
 local _G = _G
@@ -1299,7 +1301,11 @@ function UpdateCooldown(self)
 			self.cooldown:SetHideCountdownNumbers(true)
 			self.cooldown.currentCooldownType = COOLDOWN_TYPE_LOSS_OF_CONTROL
 		end
-		CooldownFrame_SetTimer(self.cooldown, locStart, locDuration, 1, true)
+		if IsLegion then
+			CooldownFrame_Set(self.cooldown, locStart, locDuration, true, true)
+		else
+			CooldownFrame_SetTimer(self.cooldown, locStart, locDuration, 1, true)
+		end
 	else
 		if self.cooldown.currentCooldownType ~= COOLDOWN_TYPE_NORMAL then
 			self.cooldown:SetEdgeTexture("Interface\\Cooldown\\edge")
@@ -1317,7 +1323,11 @@ function UpdateCooldown(self)
 			EndChargeCooldown(self.chargeCooldown)
 		end
 
-		CooldownFrame_SetTimer(self.cooldown, start, duration, enable)
+		if IsLegion then
+			CooldownFrame_Set(self.cooldown, start, duration, enable)
+		else
+			CooldownFrame_SetTimer(self.cooldown, start, duration, enable)
+		end
 	end
 end
 
