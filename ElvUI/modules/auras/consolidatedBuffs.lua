@@ -12,7 +12,7 @@ local format = string.format
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetRaidBuffTrayAuraInfo = GetRaidBuffTrayAuraInfo
-local CooldownFrame_SetTimer = CooldownFrame_SetTimer
+local CooldownFrame_Set = CooldownFrame_Set
 local NUM_LE_RAID_BUFF_TYPES = NUM_LE_RAID_BUFF_TYPES
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
@@ -70,16 +70,16 @@ function A:UpdateReminder(event, unit)
 				button.t:SetAlpha(reverseStyle == true and 1 or 0.3)
 				button:SetScript('OnUpdate', nil)
 				button.timer:SetText(nil)
-				CooldownFrame_SetTimer(button.cd, 0, 0, 0)
+				CooldownFrame_Set(button.cd, 0, 0, 0)
 			else
-				CooldownFrame_SetTimer(button.cd, expirationTime - duration, duration, 1)
+				CooldownFrame_Set(button.cd, expirationTime - duration, duration, 1)
 				button.t:SetAlpha(1)
 				button.cd:SetReverse(reverseStyle == true and true or false)
 				button:SetScript('OnUpdate', A.UpdateConsolidatedTime)
 			end
 			button.spellName = spellName
 		else
-			CooldownFrame_SetTimer(button.cd, 0, 0, 0)
+			CooldownFrame_Set(button.cd, 0, 0, 0)
 			button.spellName = nil
 			button.t:SetAlpha(reverseStyle == true and 0.3 or 1)
 			button:SetScript('OnUpdate', nil)

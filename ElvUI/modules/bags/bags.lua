@@ -32,7 +32,7 @@ local GetContainerItemCooldown = GetContainerItemCooldown
 local SetItemButtonCount = SetItemButtonCount
 local SetItemButtonTexture = SetItemButtonTexture
 local SetItemButtonTextureVertexColor = SetItemButtonTextureVertexColor
-local CooldownFrame_SetTimer = CooldownFrame_SetTimer
+local CooldownFrame_Set = CooldownFrame_Set
 local BankFrameItemButton_Update = BankFrameItemButton_Update
 local BankFrameItemButton_UpdateLocked = BankFrameItemButton_UpdateLocked
 local UpdateSlot = UpdateSlot
@@ -432,7 +432,7 @@ function B:UpdateSlot(bagID, slotID)
 
 	if (texture) then
 		local start, duration, enable = GetContainerItemCooldown(bagID, slotID)
-		CooldownFrame_SetTimer(slot.cooldown, start, duration, enable)
+		CooldownFrame_Set(slot.cooldown, start, duration, enable)
 		if ( duration > 0 and enable == 0 ) then
 			SetItemButtonTextureVertexColor(slot, 0.4, 0.4, 0.4);
 		else
@@ -475,7 +475,7 @@ function B:UpdateCooldowns()
 	for _, bagID in ipairs(self.BagIDs) do
 		for slotID = 1, GetContainerNumSlots(bagID) do
 			local start, duration, enable = GetContainerItemCooldown(bagID, slotID)
-			CooldownFrame_SetTimer(self.Bags[bagID][slotID].cooldown, start, duration, enable)
+			CooldownFrame_Set(self.Bags[bagID][slotID].cooldown, start, duration, enable)
 			if ( duration > 0 and enable == 0 ) then
 				SetItemButtonTextureVertexColor(self.Bags[bagID][slotID], 0.4, 0.4, 0.4);
 			else
@@ -802,7 +802,7 @@ function B:UpdateReagentSlot(slotID)
 	slot.name, slot.rarity = nil, nil;
 
 	local start, duration, enable = GetContainerItemCooldown(bagID, slotID)
-	CooldownFrame_SetTimer(slot.Cooldown, start, duration, enable)
+	CooldownFrame_Set(slot.Cooldown, start, duration, enable)
 	if ( duration > 0 and enable == 0 ) then
 		SetItemButtonTextureVertexColor(slot, 0.4, 0.4, 0.4);
 	else

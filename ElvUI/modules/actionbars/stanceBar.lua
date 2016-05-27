@@ -14,7 +14,7 @@ local GetShapeshiftForm = GetShapeshiftForm
 local GetNumShapeshiftForms = GetNumShapeshiftForms
 local GetShapeshiftFormCooldown = GetShapeshiftFormCooldown
 local GetShapeshiftFormInfo = GetShapeshiftFormInfo
-local CooldownFrame_SetTimer = CooldownFrame_SetTimer
+local CooldownFrame_Set = CooldownFrame_Set
 local InCombatLockdown = InCombatLockdown
 local RegisterStateDriver = RegisterStateDriver
 local UnregisterStateDriver = UnregisterStateDriver
@@ -37,7 +37,7 @@ function AB:UPDATE_SHAPESHIFT_COOLDOWN()
 		if i <= numForms then
 			cooldown = _G["ElvUI_StanceBarButton"..i.."Cooldown"];
 			start, duration, enable = GetShapeshiftFormCooldown(i);
-			CooldownFrame_SetTimer(cooldown, start, duration, enable);
+			CooldownFrame_Set(cooldown, start, duration, enable);
 			cooldown:SetDrawBling(cooldown:GetEffectiveAlpha() > 0.5) --Cooldown Bling Fix
 		end
 	end
