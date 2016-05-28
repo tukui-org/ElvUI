@@ -1204,9 +1204,7 @@ function UpdateUsable(self)
 		local isUsable, notEnoughMana = self:IsUsable()
 		local action = self._state_action
 		--print(type(UnitPower('player', SPELL_POWER_HOLY_POWER)))
-		if PLAYERCLASS == 'PALADIN' and IsHolyPowerAbility(action) and not (UnitPower('player', SPELL_POWER_HOLY_POWER) >= 3) and not UnitBuff("player", DIVINE_PURPOSE) then
-			self.icon:SetVertexColor(unpack(self.config.colors.hp))
-		elseif isUsable then
+		if isUsable then
 			self.icon:SetVertexColor(1.0, 1.0, 1.0)
 			--self.NormalTexture:SetVertexColor(1.0, 1.0, 1.0)
 		elseif notEnoughMana then
