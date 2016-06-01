@@ -604,7 +604,7 @@ end
 
 function AB:Bar_OnEnter(bar)
 	if bar:GetParent() == self.fadeParent then
-		if(not self.fadeParent.lockTarget and not self.fadeParent.lockCombat) then
+		if(not self.fadeParent.mouseLock) then
 			E:UIFrameFadeIn(self.fadeParent, 0.2, self.fadeParent:GetAlpha(), 1)
 		end
 	elseif(bar.mouseover) then
@@ -614,7 +614,7 @@ end
 
 function AB:Bar_OnLeave(bar)
 	if bar:GetParent() == self.fadeParent then
-		if(not self.fadeParent.lockTarget and not self.fadeParent.lockCombat) then
+		if(not self.fadeParent.mouseLock) then
 			E:UIFrameFadeOut(self.fadeParent, 0.2, self.fadeParent:GetAlpha(), 1 - self.db.globalFadeAlpha)
 		end
 	elseif(bar.mouseover) then
@@ -625,7 +625,7 @@ end
 function AB:Button_OnEnter(button)
 	local bar = button:GetParent()
 	if bar:GetParent() == self.fadeParent then
-		if(not self.fadeParent.lockTarget and not self.fadeParent.lockCombat) then
+		if(not self.fadeParent.mouseLock) then
 			E:UIFrameFadeIn(self.fadeParent, 0.2, self.fadeParent:GetAlpha(), 1)
 		end
 	elseif(bar.mouseover) then
@@ -636,7 +636,7 @@ end
 function AB:Button_OnLeave(button)
 	local bar = button:GetParent()
 	if bar:GetParent() == self.fadeParent then
-		if(not self.fadeParent.lockTarget and not self.fadeParent.lockCombat) then
+		if(not self.fadeParent.mouseLock) then
 			E:UIFrameFadeOut(self.fadeParent, 0.2, self.fadeParent:GetAlpha(), 1 - self.db.globalFadeAlpha)
 		end
 	elseif(bar.mouseover) then
