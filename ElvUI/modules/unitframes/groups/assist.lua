@@ -59,7 +59,7 @@ function UF:Update_AssistHeader(header, db)
 	header:SetAttribute('point', 'BOTTOM')
 	header:SetAttribute('columnAnchorPoint', 'LEFT')
 
-	UF:ClearChildPoints(header:GetChildren())
+	-- UF:ClearChildPoints(header:GetChildren()) --Why do it twice?
 	header:SetAttribute("yOffset", db.verticalSpacing)
 
 	if not header.positioned then
