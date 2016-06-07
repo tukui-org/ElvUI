@@ -61,7 +61,7 @@ function UF:Update_TankHeader(header, db)
 	header:SetAttribute('point', 'BOTTOM')
 	header:SetAttribute('columnAnchorPoint', 'LEFT')
 
-	-- UF:ClearChildPoints(header:GetChildren()) --Why do it twice?
+	UF:ClearChildPoints(header:GetChildren())
 	header:SetAttribute("yOffset", db.verticalSpacing)
 
 	if not header.positioned then
