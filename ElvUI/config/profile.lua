@@ -180,6 +180,25 @@ P["nameplate"] = {
 		["attachTo"] = "TARGET",
 		["position"] = "ABOVE"	
 	},
+	['castColor'] = { r = 1,g = 208/255,b = 0 },
+	['castNoInterruptColor'] = { r = 0.78, g = 0.25, b = 0.25 },	
+	['reactions'] = {
+		["tapped"] = {r = 0.6, g = 0.6, b = 0.6},
+		["good"] = {r = 75/255,  g = 175/255, b = 76/255},
+		["neutral"] = { r = 218/255, g = 197/255, b = 92/255 },
+		["bad"] = { r = 0.78, g = 0.25, b = 0.25 },
+		["offline"] = {r = 0.3, g = 0.3, b = 0.3},
+	},
+	['threat'] = {
+		["goodColor"] = {r = 75/255,  g = 175/255, b = 76/255},
+		["badColor"] = {r = 0.78, g = 0.25, b = 0.25},
+		["goodTransition"] = { r = 218/255, g = 197/255, b = 92/255 },
+		["badTransition"] ={ r = 235/255, g = 163/255, b = 40/255 },
+		["beingTankedByTankColor"] = {r =.8, g = 0.1,b = 1},
+		["beingTankedByTank"] = true,
+		["goodScale"] = 0.8,
+		["badScale"] = 1.2,
+	},			
 	['units'] = {
 		['PLAYER'] = {
 			['enable'] = true,
@@ -468,26 +487,7 @@ P["nameplate"] = {
 				},
 			},				
 		},
-	},
-	['castColor'] = { r = 1,g = 208/255,b = 0 },
-	['castNoInterruptColor'] = { r = 0.78, g = 0.25, b = 0.25 },	
-	['reactions'] = {
-		["tapped"] = {r = 0.6, g = 0.6, b = 0.6},
-		["good"] = {r = 75/255,  g = 175/255, b = 76/255},
-		["neutral"] = { r = 218/255, g = 197/255, b = 92/255 },
-		["bad"] = { r = 0.78, g = 0.25, b = 0.25 },
-		["offline"] = {r = 0.3, g = 0.3, b = 0.3},
-	},
-	['threat'] = {
-		["goodColor"] = {r = 75/255,  g = 175/255, b = 76/255},
-		["badColor"] = {r = 0.78, g = 0.25, b = 0.25},
-		["goodTransition"] = { r = 218/255, g = 197/255, b = 92/255 },
-		["badTransition"] ={ r = 235/255, g = 163/255, b = 40/255 },
-		["beingTankedByTankColor"] = {r =.8, g = 0.1,b = 1},
-		["beingTankedByTank"] = true,
-		["goodScale"] = 0.8,
-		["badScale"] = 1.2,
-	},				
+	},		
 };
 
 --Auras

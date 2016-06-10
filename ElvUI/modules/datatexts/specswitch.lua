@@ -13,7 +13,6 @@ local GetSpecializationInfo = GetSpecializationInfo
 local GetLootSpecialization = GetLootSpecialization
 local GetSpecializationInfoByID = GetSpecializationInfoByID
 local GetNumSpecGroups = GetNumSpecGroups
-local SetActiveSpecGroup = SetActiveSpecGroup
 local EasyMenu = EasyMenu
 local LOOT = LOOT
 local SELECT_LOOT_SPECIALIZATION = SELECT_LOOT_SPECIALIZATION
@@ -106,7 +105,7 @@ local function OnEnter(self)
 	end
 
 	DT.tooltip:AddLine(' ')
-	DT.tooltip:AddLine(L["|cffFFFFFFLeft Click:|r Change Talent Specialization"])
+	DT.tooltip:AddLine(L["|cffFFFFFFLeft Click:|r Show Talent Specialization UI"])
 	DT.tooltip:AddLine(L["|cffFFFFFFRight Click:|r Change Loot Specialization"])
 
 	DT.tooltip:Show()
@@ -117,7 +116,15 @@ local function OnClick(self, button)
 	if not specIndex then return end
 
 	if button == "LeftButton" then
-		SetActiveSpecGroup(active == 1 and 2 or 1)
+		if not PlayerTalentFrame then
+			TalentFrame_LoadUI()
+		end
+
+		if not PlayerTalentFrame:IsShown() then
+			ShowUIPanel(PlayerTalentFrame)
+		else
+			HideUIPanel(PlayerTalentFrame)
+		end
 	else
 		DT.tooltip:Hide()
 		local specID, specName = GetSpecializationInfo(specIndex);
