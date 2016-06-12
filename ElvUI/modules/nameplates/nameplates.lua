@@ -14,7 +14,7 @@ function mod:ClassBar_Update(frame)
 			self.ClassBar:ClearAllPoints()
 	
 			if(self.db.classbar.position == "ABOVE") then
-				self.ClassBar:SetPoint("BOTTOM", frame.TopLevelFrame or frame.HealthBar, "TOP", 0, frame.TopOffset or 12)
+				self.ClassBar:SetPoint("BOTTOM", frame.TopLevelFrame or frame.HealthBar, "TOP", 0, frame.TopOffset or 15)
 			else
 				if(frame.CastBar:IsShown()) then
 					frame.BottomOffset = -8
@@ -38,7 +38,7 @@ function mod:ClassBar_Update(frame)
 				self.ClassBar:ClearAllPoints()
 
 				if(self.db.classbar.position == "ABOVE") then
-					self.ClassBar:SetPoint("BOTTOM", frame.TopLevelFrame or frame.HealthBar, "TOP", 0, frame.TopOffset or 12)
+					self.ClassBar:SetPoint("BOTTOM", frame.TopLevelFrame or frame.HealthBar, "TOP", 0, frame.TopOffset or 15)
 				else
 					if(frame.CastBar:IsShown()) then
 						frame.BottomOffset = -8

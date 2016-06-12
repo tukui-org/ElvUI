@@ -134,7 +134,7 @@ function mod:UpdateElement_Auras(frame)
 	end
 	
 	local TopLevel = frame.HealthBar
-	local TopOffset = select(2, frame.Name:GetFont())
+	local TopOffset = select(2, frame.Name:GetFont()) + 5
 	if(hasDebuffs) then
 		TopOffset = TopOffset + 3
 		frame.Debuffs:SetPoint("BOTTOMLEFT", TopLevel, "TOPLEFT", 0, TopOffset)

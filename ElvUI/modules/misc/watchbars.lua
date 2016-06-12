@@ -159,6 +159,7 @@ function M:UpdateArtifact(event)
 			E:UnregisterObjectForVehicleLock(bar)
 		end
 		
+		local text = ''
 		local itemID, altItemID, name, icon, totalXP, pointsSpent, quality, artifactAppearanceID, appearanceModID, itemAppearanceID, altItemAppearanceID, altOnTop = C_ArtifactUI.GetEquippedArtifactInfo();
 		local numPointsAvailableToSpend, xp, xpForNextPoint = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(pointsSpent, totalXP);
 		bar.statusBar:SetMinMaxValues(0, xpForNextPoint)
@@ -172,7 +173,99 @@ function M:UpdateArtifact(event)
 		elseif textFormat == 'CURPERC' then
 			text = format('%s - %d%%', E:ShortValue(xp), xp / xpForNextPoint * 100)
 		end		
+
+		bar.text:SetText(text)
 	end
+end
+
+function M:UpdateHonor(event)
+	local bar = self.honorBar
+	local showHonor = UnitLevel("player") >= MAX_PLAYER_LEVEL
+	if not showHonor then
+		bar:Hide()
+	else
+		bar:Show()
+
+		local current = UnitHonor("player");
+		local max = UnitHonorMax("player");
+		local level = UnitHonorLevel("player");
+        local levelmax = GetMaxPlayerHonorLevel();
+
+		
+        if (level == levelmax) then
+			-- Force the bar to full for the max level
+			bar.statusBar:SetMinMaxValues(0, 1)
+			bar.statusBar:SetValue(1)
+		else
+			bar.statusBar:SetMinMaxValues(0, max)
+			bar.statusBar:SetValue(current)
+		end
+
+		if E.db.general.honor.hideInVehicle then
+			E:RegisterObjectForVehicleLock(bar, E.UIParent)
+		else
+			E:UnregisterObjectForVehicleLock(bar)
+		end
+
+		local text = ''
+		local textFormat = E.db.general.honor.textFormat
+
+		if textFormat == 'PERCENT' then
+			if (CanPrestige()) then
+				text = PVP_HONOR_PRESTIGE_AVAILABLE
+			elseif (level == levelmax) then
+				text = MAX_HONOR_LEVEL
+			else
+				text = format('%d%%', current / max * 100)
+			end
+		elseif textFormat == 'CURMAX' then
+			if (CanPrestige()) then
+				text = PVP_HONOR_PRESTIGE_AVAILABLE
+			elseif (level == levelmax) then
+				text = MAX_HONOR_LEVEL
+			else		
+				text = format('%s - %s', E:ShortValue(current), E:ShortValue(max))
+			end
+		elseif textFormat == 'CURPERC' then
+			if (CanPrestige()) then
+				text = PVP_HONOR_PRESTIGE_AVAILABLE
+			elseif (level == levelmax) then
+				text = MAX_HONOR_LEVEL
+			else
+				text = format('%s - %d%%', E:ShortValue(current), current / max * 100)
+			end
+		end		
+
+		bar.text:SetText(text)	
+	end
+end
+
+local function HonorBar_OnEnter(self)
+	if E.db.general.honor.mouseover then
+		E:UIFrameFadeIn(self, 0.4, self:GetAlpha(), 1)
+	end
+	GameTooltip:ClearLines()
+	GameTooltip:SetOwner(self, 'ANCHOR_CURSOR', 0, -4)
+
+	local current = UnitHonor("player");
+	local max = UnitHonorMax("player");
+	local level = UnitHonorLevel("player");
+	local levelmax = GetMaxPlayerHonorLevel();
+
+	GameTooltip:AddLine(HONOR)
+
+	GameTooltip:AddDoubleLine(L["Current Level:"], level, 1, 1, 1)
+	GameTooltip:AddLine(' ')
+
+	if (CanPrestige()) then
+		GameTooltip:AddLine(PVP_HONOR_PRESTIGE_AVAILABLE);
+	elseif (level == levelmax) then
+		GameTooltip:AddLine(MAX_HONOR_LEVEL);
+	else
+		GameTooltip:AddDoubleLine(L["Honor XP:"], format(' %d / %d (%d%%)', current, max, current/max * 100), 1, 1, 1)
+		GameTooltip:AddDoubleLine(L["Honor Remaining:"], format(' %d (%d%% - %d '..L["Bars"]..')', max - current, (max - current) / max * 100, 20 * (max - current) / max), 1, 1, 1)
+	end
+	GameTooltip:Show()
 end
 
 local function ArtifactBar_OnEnter(self)
@@ -237,7 +330,7 @@ local function ReputationBar_OnEnter(self)
 end
 
 local function OnLeave(self)
-	if (self == ElvUI_ExperienceBar and E.db.general.experience.mouseover) or (self == ElvUI_ReputationBar and E.db.general.reputation.mouseover) then
+	if (self == ElvUI_ExperienceBar and E.db.general.experience.mouseover) or (self == ElvUI_ReputationBar and E.db.general.reputation.mouseover) or (self == ElvUI_ArtifactBar and E.db.general.artifact.mouseover) or (self == ElvUI_HonorBar and E.db.general.honor.mouseover) then
 		E:UIFrameFadeOut(self, 1, self:GetAlpha(), 0)
 	end
 	GameTooltip:Hide()
@@ -272,8 +365,12 @@ function M:UpdateWatchBarDimensions()
 	self.repBar:Width(E.db.general.reputation.width)
 	self.repBar:Height(E.db.general.reputation.height)
 
-	self.artifactBar:Width(E.db.general.reputation.width)
-	self.artifactBar:Height(E.db.general.reputation.height)
+	self.artifactBar:Width(E.db.general.artifact.width)
+	self.artifactBar:Height(E.db.general.artifact.height)
+
+	self.honorBar:Width(E.db.general.honor.width)
+	self.honorBar:Height(E.db.general.honor.height)
+
 
 	self.repBar.text:FontTemplate(nil, E.db.general.reputation.textSize)
 	self.expBar.text:FontTemplate(nil, E.db.general.experience.textSize)
@@ -285,9 +382,11 @@ function M:UpdateWatchBarDimensions()
 	self.expBar.statusBar:SetReverseFill(E.db.general.experience.reverseFill)
 	self.repBar.statusBar:SetReverseFill(E.db.general.reputation.reverseFill)
 	self.expBar.rested:SetReverseFill(E.db.general.experience.reverseFill)
-	self.artifactBar.statusBar:SetOrientation(E.db.general.experience.orientation)
-	self.artifactBar.statusBar:SetReverseFill(E.db.general.reputation.reverseFill)
-	
+	self.artifactBar.statusBar:SetOrientation(E.db.general.artifact.orientation)
+	self.artifactBar.statusBar:SetReverseFill(E.db.general.artifact.reverseFill)
+	self.honorBar.statusBar:SetOrientation(E.db.general.honor.orientation)
+	self.honorBar.statusBar:SetReverseFill(E.db.general.honor.reverseFill)
+
 	if E.db.general.experience.mouseover then
 		self.expBar:SetAlpha(0)
 	else
@@ -301,17 +400,22 @@ function M:UpdateWatchBarDimensions()
 	end
 	
 	if E.db.general.artifact.mouseover then
-		self.repBar:SetAlpha(0)
+		self.artifactBar:SetAlpha(0)
 	else
-		self.repBar:SetAlpha(1)
+		self.artifactBar:SetAlpha(1)
 	end	
+	
+	if E.db.general.honor.mouseover then
+		self.honorBar:SetAlpha(0)
+	else
+		self.honorBar:SetAlpha(1)
+	end		
 end
 
 function M:EnableDisable_ExperienceBar()
 	local maxLevel = MAX_PLAYER_LEVEL_TABLE[GetExpansionLevel()];
 	if (UnitLevel('player') ~= maxLevel or not E.db.general.experience.hideAtMaxLevel) and E.db.general.experience.enable then
 		self:RegisterEvent('PLAYER_XP_UPDATE', 'UpdateExperience')
-		self:RegisterEvent('PLAYER_LEVEL_UP', 'UpdateExperience')
 		self:RegisterEvent("DISABLE_XP_GAIN", 'UpdateExperience')
 		self:RegisterEvent("ENABLE_XP_GAIN", 'UpdateExperience')
 		self:RegisterEvent('UPDATE_EXHAUSTION', 'UpdateExperience')
@@ -320,7 +424,6 @@ function M:EnableDisable_ExperienceBar()
 		E:EnableMover(self.expBar.mover:GetName())
 	else
 		self:UnregisterEvent('PLAYER_XP_UPDATE')
-		self:UnregisterEvent('PLAYER_LEVEL_UP')
 		self:UnregisterEvent("DISABLE_XP_GAIN")
 		self:UnregisterEvent("ENABLE_XP_GAIN")
 		self:UnregisterEvent('UPDATE_EXHAUSTION')
@@ -356,13 +459,39 @@ function M:EnableDisable_ArtifactBar()
 	end
 end
 
+function M:EnableDisable_HonorBar()
+	if E.db.general.honor.enable then
+		self:RegisterEvent("HONOR_XP_UPDATE", "UpdateHonor")
+		self:UpdateHonor()
+		E:EnableMover(self.honorBar.mover:GetName())
+	else
+		self:UnregisterEvent("HONOR_XP_UPDATE")
+		self.honorBar:Hide()
+		E:DisableMover(self.honorBar.mover:GetName())
+	end
+end
+
+function M:PLAYER_LEVEL_UP(level)
+	local maxLevel = MAX_PLAYER_LEVEL_TABLE[GetExpansionLevel()];
+	if (level ~= maxLevel or not E.db.general.experience.hideAtMaxLevel) and E.db.general.experience.enable then
+		self:UpdateExperience("PLAYER_LEVEL_UP", level)
+	else
+		self.expBar:Hide()
+	end
+
+	if(E.db.general.honor.enable) then
+		self:UpdateHonor("PLAYER_LEVEL_UP", level)
+	else
+		self.honorBar:Hide()
+	end
+end
+
 function M:LoadWatchBars()
 	self.expBar = self:CreateBar('ElvUI_ExperienceBar', ExperienceBar_OnEnter, 'LEFT', LeftChatPanel, 'RIGHT', -E.Border + E.Spacing*3, 0)
 	self.expBar.statusBar:SetStatusBarColor(0, 0.4, 1, .8)
 	self.expBar.rested = CreateFrame('StatusBar', nil, self.expBar)
 	self.expBar.rested:SetInside()
 	self.expBar.rested:SetStatusBarTexture(E.media.normTex)
-	E:RegisterStatusBar(self.expBar.statusBar)
 	E:RegisterStatusBar(self.expBar.rested)
 	self.expBar.rested:SetStatusBarColor(1, 0, 1, 0.2)
 
@@ -370,16 +499,24 @@ function M:LoadWatchBars()
 	E:RegisterStatusBar(self.repBar.statusBar)
 
 	self.artifactBar = self:CreateBar('ElvUI_ArtifactBar', ArtifactBar_OnEnter, 'RIGHT', RightChatPanel, 'LEFT', E.Border - E.Spacing*3, 0)
-	E:RegisterStatusBar(self.artifactBar.statusBar)
 	self.artifactBar.statusBar:SetStatusBarColor(.901, .8, .601)
 	self.artifactBar.statusBar:SetMinMaxValues(0, 325)
+
+	self.honorBar = self:CreateBar('ElvUI_HonorBar', HonorBar_OnEnter, 'RIGHT', self.artifactBar, 'LEFT', E.Border - E.Spacing*3, 0)
+	self.honorBar.statusBar:SetStatusBarColor(240/255, 114/255, 65/255)
+	self.honorBar.statusBar:SetMinMaxValues(0, 325)
+
 	self:UpdateWatchBarDimensions()
 	
 	E:CreateMover(self.expBar, "ExperienceBarMover", L["Experience Bar"])
 	E:CreateMover(self.repBar, "ReputationBarMover", L["Reputation Bar"])
 	E:CreateMover(self.artifactBar, "ArtifactBarMover", L["Artifact Bar"])
-	
+	E:CreateMover(self.honorBar, "HonorBarMover", L["Honor Bar"])
+
+	self:EnableDisable_HonorBar()
 	self:EnableDisable_ExperienceBar()
 	self:EnableDisable_ReputationBar()
 	self:EnableDisable_ArtifactBar()
+
+	self:RegisterEvent("PLAYER_LEVEL_UP")
 end

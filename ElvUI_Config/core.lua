@@ -1029,8 +1029,162 @@ E.Options.args.general = {
 				},
 			},
 		},
-		threat = {
+		artifact = {
+			order = 6,
+			get = function(info) return E.db.general.artifact[ info[#info] ] end,
+			set = function(info, value) E.db.general.artifact[ info[#info] ] = value; E:GetModule('Misc'):UpdateWatchBarDimensions() end,
+			type = "group",
+			name = L["Artifact Bar"],
+			args = {
+				enable = {
+					order = 0,
+					type = "toggle",
+					name = L["Enable"],
+					set = function(info, value) E.db.general.artifact[ info[#info] ] = value; E:GetModule('Misc'):EnableDisable_ArtifactBar() end,
+				},
+				mouseover = {
+					order = 1,
+					type = "toggle",
+					name = L["Mouseover"],
+				},
+				hideAtMaxLevel = {
+					order = 2,
+					type = "toggle",
+					name = L["Hide At Max Level"],
+					set = function(info, value) E.db.general.artifact[ info[#info] ] = value; E:GetModule('Misc'):UpdateArtifact() end,
+				},
+				hideInVehicle = {
+					order = 3,
+					type = "toggle",
+					name = L["Hide In Vehicle"],
+					set = function(info, value) E.db.general.artifact[ info[#info] ] = value; E:GetModule('Misc'):UpdateArtifact() end,
+				},
+				reverseFill = {
+					order = 4,
+					type = "toggle",
+					name = L["Reverse Fill Direction"],
+				},
+				orientation = {
+					order = 5,
+					type = "select",
+					name = L["Orientation"],
+					desc = L["Direction the bar moves on gains/losses"],
+					values = {
+						['HORIZONTAL'] = L["Horizontal"],
+						['VERTICAL'] = L["Vertical"]
+					}
+				},
+				width = {
+					order = 6,
+					type = "range",
+					name = L["Width"],
+					min = 5, max = ceil(GetScreenWidth() or 800), step = 1,
+				},
+				height = {
+					order = 7,
+					type = "range",
+					name = L["Height"],
+					min = 5, max = ceil(GetScreenHeight() or 800), step = 1,
+				},
+				textSize = {
+					order = 8,
+					name = L["Font Size"],
+					type = "range",
+					min = 6, max = 22, step = 1,
+				},
+				textFormat = {
+					order = 9,
+					type = 'select',
+					name = L["Text Format"],
+					values = {
+						NONE = NONE,
+						PERCENT = L["Percent"],
+						CURMAX = L["Current - Max"],
+						CURPERC = L["Current - Percent"],
+					},
+					set = function(info, value) E.db.general.artifact[ info[#info] ] = value; E:GetModule('Misc'):UpdateArtifact() end,
+				},
+			},
+		},
+		honor = {
 			order = 7,
+			get = function(info) return E.db.general.honor[ info[#info] ] end,
+			set = function(info, value) E.db.general.honor[ info[#info] ] = value; E:GetModule('Misc'):UpdateWatchBarDimensions() end,
+			type = "group",
+			name = HONOR,
+			args = {
+				enable = {
+					order = 0,
+					type = "toggle",
+					name = L["Enable"],
+					set = function(info, value) E.db.general.honor[ info[#info] ] = value; E:GetModule('Misc'):EnableDisable_HonorBar() end,
+				},
+				mouseover = {
+					order = 1,
+					type = "toggle",
+					name = L["Mouseover"],
+				},
+				hideAtMaxLevel = {
+					order = 2,
+					type = "toggle",
+					name = L["Hide At Max Level"],
+					set = function(info, value) E.db.general.honor[ info[#info] ] = value; E:GetModule('Misc'):UpdateHonor() end,
+				},
+				hideInVehicle = {
+					order = 3,
+					type = "toggle",
+					name = L["Hide In Vehicle"],
+					set = function(info, value) E.db.general.honor[ info[#info] ] = value; E:GetModule('Misc'):UpdateHonor() end,
+				},
+				reverseFill = {
+					order = 4,
+					type = "toggle",
+					name = L["Reverse Fill Direction"],
+				},
+				orientation = {
+					order = 5,
+					type = "select",
+					name = L["Orientation"],
+					desc = L["Direction the bar moves on gains/losses"],
+					values = {
+						['HORIZONTAL'] = L["Horizontal"],
+						['VERTICAL'] = L["Vertical"]
+					}
+				},
+				width = {
+					order = 6,
+					type = "range",
+					name = L["Width"],
+					min = 5, max = ceil(GetScreenWidth() or 800), step = 1,
+				},
+				height = {
+					order = 7,
+					type = "range",
+					name = L["Height"],
+					min = 5, max = ceil(GetScreenHeight() or 800), step = 1,
+				},
+				textSize = {
+					order = 8,
+					name = L["Font Size"],
+					type = "range",
+					min = 6, max = 22, step = 1,
+				},
+				textFormat = {
+					order = 9,
+					type = 'select',
+					name = L["Text Format"],
+					values = {
+						NONE = NONE,
+						PERCENT = L["Percent"],
+						CURMAX = L["Current - Max"],
+						CURPERC = L["Current - Percent"],
+					},
+					set = function(info, value) E.db.general.honor[ info[#info] ] = value; E:GetModule('Misc'):UpdateHonor() end,
+				},
+			},
+		},				
+		threat = {
+			order = 9,
 			get = function(info) return E.db.general.threat[ info[#info] ] end,
 			set = function(info, value) E.db.general.threat[ info[#info] ] = value; E:GetModule('Threat'):ToggleEnable()end,
 			type = "group",
@@ -1062,7 +1216,7 @@ E.Options.args.general = {
 			},
 		},
 		totems = {
-			order = 8,
+			order = 10,
 			type = "group",
 			name = L["Class Bar"],
 			get = function(info) return E.db.general.totems[ info[#info] ] end,
@@ -1108,7 +1262,7 @@ E.Options.args.general = {
 		},
 		cooldown = {
 			type = "group",
-			order = 10,
+			order = 11,
 			name = L["Cooldown Text"],
 			get = function(info)
 				local t = E.db.cooldown[ info[#info] ]
@@ -1175,7 +1329,7 @@ E.Options.args.general = {
 			},
 		},
 		objectiveFrame = {
-			order = 11,
+			order = 12,
 			type = "group",
 			name = L["Objective Frame"],
 			get = function(info) return E.db.general[ info[#info] ] end,
