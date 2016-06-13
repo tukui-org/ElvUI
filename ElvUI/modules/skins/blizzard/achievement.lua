@@ -217,15 +217,12 @@ local function LoadSkin(event)
 	end
 
 	hooksecurefunc('AchievementButton_DisplayAchievement', function(frame)
-		--If another addon loads Blizzard_AchievementUI as a dependency, our hook might be executed too late.
-		if not frame.isSkinned then
-			SkinAchievement(frame, true)
-		end
-
-		if frame.accountWide then
-			frame.backdrop:SetBackdropBorderColor(ACHIEVEMENTUI_BLUEBORDER_R, ACHIEVEMENTUI_BLUEBORDER_G, ACHIEVEMENTUI_BLUEBORDER_B)
-		else
-			frame.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		if frame.backdrop then
+			if frame.accountWide then
+				frame.backdrop:SetBackdropBorderColor(ACHIEVEMENTUI_BLUEBORDER_R, ACHIEVEMENTUI_BLUEBORDER_G, ACHIEVEMENTUI_BLUEBORDER_B)
+			else
+				frame.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			end
 		end
 	end)
 
