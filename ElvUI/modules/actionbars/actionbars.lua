@@ -281,9 +281,12 @@ function AB:CreateBar(id)
 	bar.id = id
 	bar:CreateBackdrop('Default');
 	bar:SetFrameStrata("LOW")
+	
+	--Use this method instead of :SetAllPoints, as the size of the mover would otherwise be incorrect
 	local offset = E.Spacing
 	bar.backdrop:SetPoint("TOPLEFT", bar, "TOPLEFT", offset, -offset)
 	bar.backdrop:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", -offset, offset)
+
 	bar.buttons = {}
 	bar.bindButtons = self['barDefaults']['bar'..id].bindButtons
 	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter');
@@ -964,6 +967,7 @@ function AB:VehicleFix()
 	local barName = 'bar1'
 	local bar = self["handledBars"][barName]
 	local buttonSpacing = E:Scale(self.db[barName].buttonspacing);
+	local backdropSpacing = E:Scale((self.db[barName].backdropSpacing or self.db[barName].buttonspacing))
 	local numButtons = self.db[barName].buttons;
 	local buttonsPerRow = self.db[barName].buttonsPerRow;
 	local size = E:Scale(self.db[barName].buttonsize);
@@ -974,12 +978,29 @@ function AB:VehicleFix()
 		local widthMult = 1;
 		local heightMult = 1;
 
+		local offset = E.Spacing
+		local x, y
+		if point == "BOTTOMLEFT" then
+			x, y = offset, offset
+		elseif point == "BOTTOMRIGHT" then
+			x, y = -offset, offset
+		elseif point == "TOPLEFT" then
+			x, y = offset, -offset
+		elseif point == "TOPRIGHT" then
+			x, y = -offset, -offset
+		end
 		bar.backdrop:ClearAllPoints()
-		bar.backdrop:Point(self.db[barName].point, bar, self.db[barName].point)
-		bar.backdrop:Width(buttonSpacing + ((size * (buttonsPerRow * widthMult)) + ((buttonSpacing * (buttonsPerRow - 1)) * widthMult) + (buttonSpacing * widthMult)));
-		bar.backdrop:Height(buttonSpacing + ((size * (numColumns * heightMult)) + ((buttonSpacing * (numColumns - 1)) * heightMult) + (buttonSpacing * heightMult)));
+		bar.backdrop:Point(point, bar, point, x, y)
+
+		local backdropWidth = (size * (buttonsPerRow * widthMult)) + ((buttonSpacing * (buttonsPerRow - 1)) * widthMult) + (backdropSpacing*2) + (E.Border*2) - (E.Spacing*2)
+		local backdropeight = (size * (numColumns * heightMult)) + ((buttonSpacing * (numColumns - 1)) * heightMult) + (backdropSpacing*2) + (E.Border*2) - (E.Spacing*2)
+		bar.backdrop:Width(backdropWidth)
+		bar.backdrop:Height(backdropeight)
 	else
-		bar.backdrop:SetAllPoints()
+		--Use this method instead of :SetAllPoints, as the size of the mover would otherwise be incorrect
+		local offset = E.Spacing
+		bar.backdrop:SetPoint("TOPLEFT", bar, "TOPLEFT", offset, -offset)
+		bar.backdrop:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", -offset, offset)
 	end
 end
 
