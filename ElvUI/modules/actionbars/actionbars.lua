@@ -122,7 +122,6 @@ AB.customExitButton = {
 function AB:PositionAndSizeBar(barName)
 	local buttonSpacing = E:Scale(self.db[barName].buttonspacing);
 	local backdropSpacing = E:Scale((self.db[barName].backdropSpacing or self.db[barName].buttonspacing))
-
 	local buttonsPerRow = self.db[barName].buttonsPerRow;
 	local numButtons = self.db[barName].buttons;
 	local size = E:Scale(self.db[barName].buttonsize);
@@ -282,8 +281,9 @@ function AB:CreateBar(id)
 	bar.id = id
 	bar:CreateBackdrop('Default');
 	bar:SetFrameStrata("LOW")
-	bar.backdrop:Hide()
-	bar.backdrop:SetAllPoints(bar)
+	local offset = E.Spacing
+	bar.backdrop:SetPoint("TOPLEFT", bar, "TOPLEFT", offset, -offset)
+	bar.backdrop:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", -offset, offset)
 	bar.buttons = {}
 	bar.bindButtons = self['barDefaults']['bar'..id].bindButtons
 	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter');
