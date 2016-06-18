@@ -957,11 +957,12 @@ function E:UpdateAll(ignoreInstall)
 	-- NP.db = self.db.nameplate
 	-- NP:UpdateAllPlates()
 
-	local M = self:GetModule("Misc")
-	M:UpdateDataBarDimensions()
-	M:EnableDisable_ExperienceBar()
-	M:EnableDisable_ReputationBar()
-	M:EnableDisable_ArtifactBar()
+	local DataBars = self:GetModule("DataBars")
+	DataBars:UpdateDataBarDimensions()
+	DataBars:EnableDisable_ExperienceBar()
+	DataBars:EnableDisable_ReputationBar()
+	DataBars:EnableDisable_ArtifactBar()
+	DataBars:EnableDisable_HonorBar()
 	
 	local T = self:GetModule('Threat')
 	T.db = self.db.general.threat
