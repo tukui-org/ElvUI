@@ -77,8 +77,23 @@ P['general'] = {
 				["hide"] = false,
 			},
 		}
+	},		
+	['threat'] = {
+		['enable'] = true,
+		['position'] = 'RIGHTCHAT',
+		['textSize'] = 12,
 	},
+	['totems'] = {
+		['enable'] = true,
+		['growthDirection'] = 'VERTICAL',
+		['sortDirection'] = 'ASCENDING',
+		['size'] = 40,
+		['spacing'] = 4,
+	},
+	['kittys'] = false
+};
 
+P['databars'] = {
 	['experience'] = {
 		['enable'] = true,
 		['width'] = 10,
@@ -123,21 +138,8 @@ P['general'] = {
 		['orientation'] = 'VERTICAL',
 		["reverseFill"] = false,
 		["hideInVehicle"] = false,
-	},		
-	['threat'] = {
-		['enable'] = true,
-		['position'] = 'RIGHTCHAT',
-		['textSize'] = 12,
 	},
-	['totems'] = {
-		['enable'] = true,
-		['growthDirection'] = 'VERTICAL',
-		['sortDirection'] = 'ASCENDING',
-		['size'] = 40,
-		['spacing'] = 4,
-	},
-	['kittys'] = false
-};
+}
 
 --Bags
 P['bags'] = {

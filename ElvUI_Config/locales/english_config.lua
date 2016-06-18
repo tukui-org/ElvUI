@@ -308,6 +308,9 @@ L["Donations:"] = true;
 L["ELVUI_CREDITS"] = "I would like to give out a special shout out to the following people for helping me maintain this addon with testing and coding and people who also have helped me through donations. Please note for donations I'm only posting the names of people who PM'd me on the forums, if your name is missing and you wish to have your name added please PM me."
 L["Testing:"] = true;
 
+--DataBars
+L["DATABAR_DESC"] = "Setup on-screen display of information bars."
+
 --DataTexts
 L["24-Hour Time"] = true;
 L["Battleground Texts"] = true;
