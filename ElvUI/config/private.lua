@@ -26,7 +26,7 @@ V['bags'] = {
 	['bagBar'] = false,
 }
 
-V["nameplate"] = {
+V["nameplates"] = {
 	["enable"] = true,
 }
 

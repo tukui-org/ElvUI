@@ -176,7 +176,7 @@ P['bags'] = {
 };
 
 --NamePlate
-P["nameplate"] = {
+P["nameplates"] = {
 	["statusbar"] = "ElvUI Norm",
 	['font'] = 'PT Sans Narrow',
 	['fontSize'] = 9,

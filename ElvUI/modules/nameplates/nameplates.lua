@@ -548,8 +548,8 @@ function mod:UpdateVehicleStatus(event, unit)
 end
 
 function mod:Initialize()
-	self.db = E.db["nameplate"]
-	if E.private["nameplate"].enable ~= true then return end
+	self.db = E.db["nameplates"]
+	if E.private["nameplates"].enable ~= true then return end
 	E.NamePlates = NP
 	
 	self:UpdateVehicleStatus()

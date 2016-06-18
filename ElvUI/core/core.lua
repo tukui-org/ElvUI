@@ -55,9 +55,8 @@ E.myguid = UnitGUID('player');
 E.version = GetAddOnMetadata("ElvUI", "Version");
 E.myrealm = GetRealmName();
 E.wowbuild = select(2, GetBuildInfo()); E.wowbuild = tonumber(E.wowbuild);
-E.resolution = GetCVar("gxWindowedResolution")
-E.screenheight = tonumber(match(E.resolution, "%d+x(%d+)"))
-E.screenwidth = tonumber(match(E.resolution, "(%d+)x+%d"))
+E.resolution = ({GetScreenResolutions()})[GetCurrentResolution()]
+E.screenwidth, E.screenheight = DecodeResolution(E.resolution)
 E.isMacClient = IsMacClient()
 E.LSM = LSM
 
