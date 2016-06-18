@@ -9,7 +9,7 @@ function mod:UpdateReputation(event)
 
 	local ID
 	local isFriend, friendText, standingLabel
-	local name, reaction, min, max, value = GetDataedFactionInfo()
+	local name, reaction, min, max, value = GetWatchedFactionInfo()
 	local numFactions = GetNumFactions();
 
 	if not name then
@@ -69,7 +69,7 @@ function mod:ReputationBar_OnEnter()
 	GameTooltip:ClearLines()
 	GameTooltip:SetOwner(self, 'ANCHOR_CURSOR', 0, -4)
 
-	local name, reaction, min, max, value, factionID = GetDataedFactionInfo()
+	local name, reaction, min, max, value, factionID = GetWatchedFactionInfo()
 	local friendID, _, _, _, _, _, friendTextLevel = GetFriendshipReputation(factionID);
 	if name then
 		GameTooltip:AddLine(name)
