@@ -1,0 +1,9 @@
+## Interface: 50001
+## Title: oUF GPS
+## Notes: Adds GPS arrow to frames.
+## Author: Elv, Omega1970
+## Version: 1.00
+## X-Category: oUF
+## Dependencies: oUF
+
+oUF_GPS.lua

@@ -1,0 +1,8 @@
+## Interface: 60100
+## Title: LibItemSearch
+## Notes: An item search library
+## OptionalDeps: LibStub, Unfit-1.0, CustomSearch-1.0, ItemRack, Wardrobe
+## Author: Jaliborc (João Cardoso), Tuller, Yewbacca
+## LoadOnDemand: 1
+
+LibItemSearch-1.2.lua

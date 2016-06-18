@@ -1,0 +1,13 @@
+## Interface: 60200
+## Title: Lib: Bodyguard-1.0
+## Notes: Provides information about the player's bodyguard.
+## Author: Sharparam
+## Version: v1.3.1
+## X-Category: Library
+## X-Curse-Packaged-Version: v1.3.1
+## X-Curse-Project-Name: LibBodyguard-1.0
+## X-Curse-Project-ID: libbodyguard-1-0
+## X-Curse-Repository-ID: wow/libbodyguard-1-0/mainline
+
+LibStub\LibStub.lua
+load.xml

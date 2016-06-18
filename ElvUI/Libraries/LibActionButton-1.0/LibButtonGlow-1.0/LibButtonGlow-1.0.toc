@@ -1,0 +1,18 @@
+## Interface: 60200
+## Title: Lib: ButtonGlow-1.0
+## Notes: Replacement for ActionButton_Show/HideOverlayGlow APIs
+## Author: Nevcairiel
+## X-eMail: h.leppkes@gmail.com
+## X-Category: Library
+## X-License: BSD
+## X-Website: http://www.wowace.com/addons/libbuttonglow-1-0/
+## Version: 1.2.2
+## OptionalDeps: Masque
+## X-Curse-Packaged-Version: 1.2.2
+## X-Curse-Project-Name: LibButtonGlow-1.0
+## X-Curse-Project-ID: libbuttonglow-1-0
+## X-Curse-Repository-ID: wow/libbuttonglow-1-0/mainline
+
+LibStub\LibStub.lua
+
+LibButtonGlow-1.0.lua

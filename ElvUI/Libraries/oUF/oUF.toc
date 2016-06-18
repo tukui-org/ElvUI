@@ -1,0 +1,11 @@
+## Interface: 60000
+## Title: oUF
+## Author: Haste
+## Version: 1.6.8
+## OptionalDeps: Clique
+## X-eMail: troeks@gmail.com
+## X-oUF: oUF
+## Notes: Unit frame framework. Does nothing by itself.
+## Notes-ruRU: Каркас для модификации фреймов игроков. Сам по себе не делает ничего.
+
+oUF.xml

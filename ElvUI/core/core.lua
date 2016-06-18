@@ -608,16 +608,16 @@ function E:CheckIncompatible()
 		E:IncompatibleAddOn('Chatter', 'Chat')
 	end
 
-	if IsAddOnLoaded('TidyPlates') and E.private.nameplate.enable then
-		E:IncompatibleAddOn('TidyPlates', 'NamePlate')
+	if IsAddOnLoaded('TidyPlates') and E.private.nameplates.enable then
+		E:IncompatibleAddOn('TidyPlates', 'NamePlates')
 	end
 
-	if IsAddOnLoaded('Aloft') and E.private.nameplate.enable then
-		E:IncompatibleAddOn('Aloft', 'NamePlate')
+	if IsAddOnLoaded('Aloft') and E.private.nameplates.enable then
+		E:IncompatibleAddOn('Aloft', 'NamePlates')
 	end
 
-	if IsAddOnLoaded('Healers-Have-To-Die') and E.private.nameplate.enable then
-		E:IncompatibleAddOn('Healers-Have-To-Die', 'NamePlate')
+	if IsAddOnLoaded('Healers-Have-To-Die') and E.private.nameplates.enable then
+		E:IncompatibleAddOn('Healers-Have-To-Die', 'NamePlates')
 	end
 end
 

@@ -1,0 +1,32 @@
+------------------------------------------------------------------------
+r67 | nebula169 | 2015-08-24 02:15:16 +0000 (Mon, 24 Aug 2015) | 1 line
+Changed paths:
+   M /trunk/LibCompress.toc
+   M /trunk/lib.xml
+
+load LibStub from the toc, not lib.xml
+------------------------------------------------------------------------
+r65 | nevcairiel | 2015-08-23 12:09:36 +0000 (Sun, 23 Aug 2015) | 1 line
+Changed paths:
+   M /trunk/LibCompress.lua
+
+Make use of upvalues more consistent
+------------------------------------------------------------------------
+r64 | nevcairiel | 2015-08-23 11:58:53 +0000 (Sun, 23 Aug 2015) | 1 line
+Changed paths:
+   M /trunk/LibCompress.toc
+
+Update TOC for 6.2
+------------------------------------------------------------------------
+r63 | nevcairiel | 2015-08-23 11:57:58 +0000 (Sun, 23 Aug 2015) | 1 line
+Changed paths:
+   M /trunk
+
+Remove svn:externals
+------------------------------------------------------------------------
+r62 | nevcairiel | 2015-08-23 11:53:54 +0000 (Sun, 23 Aug 2015) | 1 line
+Changed paths:
+   M /trunk/LibCompress.lua
+
+Fix leaked globals
+------------------------------------------------------------------------
