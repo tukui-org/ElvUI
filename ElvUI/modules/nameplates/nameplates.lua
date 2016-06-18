@@ -124,42 +124,14 @@ end
 
 function mod:StyleFrame(frame, useBackdrop)
 	local parent = frame
+
 	if(parent:GetObjectType() == "Texture") then
 		parent = frame:GetParent()
+		parent:CreateBackdrop("Transparent")
+		parent.backdrop:SetOutside(frame)
 	end
-	if(useBackdrop) then
-		frame.backdropTex = parent:CreateTexture(nil, "BACKGROUND")
-		frame.backdropTex:SetAllPoints()
-		frame.backdropTex:SetColorTexture(0.1, 0.1, 0.1, 0.85)
-	end
-	
-	frame.top = parent:CreateTexture(nil, "BORDER")
-	frame.top:SetPoint("TOPLEFT", frame, "TOPLEFT", -self.mult, self.mult)
-	frame.top:SetPoint("TOPRIGHT", frame, "TOPRIGHT", self.mult, self.mult)
-	frame.top:SetHeight(self.mult)
-	frame.top:SetColorTexture(0, 0, 0, 1)
-	frame.top:SetDrawLayer("BORDER", 1)
 
-	frame.bottom = parent:CreateTexture(nil, "BORDER")
-	frame.bottom:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", -self.mult, -self.mult)
-	frame.bottom:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", self.mult, -self.mult)
-	frame.bottom:SetHeight(self.mult)
-	frame.bottom:SetColorTexture(0, 0, 0, 1)
-	frame.bottom:SetDrawLayer("BORDER", 1)
-
-	frame.left = parent:CreateTexture(nil, "BORDER")
-	frame.left:SetPoint("TOPLEFT", frame, "TOPLEFT", -self.mult, self.mult)
-	frame.left:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", self.mult, -self.mult)
-	frame.left:SetWidth(self.mult)
-	frame.left:SetColorTexture(0, 0, 0, 1)
-	frame.left:SetDrawLayer("BORDER", 1)
-
-	frame.right = parent:CreateTexture(nil, "BORDER")
-	frame.right:SetPoint("TOPRIGHT", frame, "TOPRIGHT", self.mult, self.mult)
-	frame.right:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -self.mult, -self.mult)
-	frame.right:SetWidth(self.mult)
-	frame.right:SetColorTexture(0, 0, 0, 1)
-	frame.right:SetDrawLayer("BORDER", 1)
+	parent:CreateBackdrop("Transparent")
 end
 
 
@@ -339,6 +311,8 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame)
 		if(self.db.units[frame.UnitType].powerbar.enable) then
 			frame.PowerBar:Show()	
 			mod.OnEvent(frame, "UNIT_DISPLAYPOWER", unit or frame.unit)
+		else
+			frame.PowerBar:Hide()	
 		end
 	end
 	mod:UpdateElement_RaidIcon(frame)

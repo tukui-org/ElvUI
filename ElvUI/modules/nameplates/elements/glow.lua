@@ -40,12 +40,13 @@ end
 function mod:ConfigureElement_Glow(frame)
 	frame.Glow:SetFrameLevel(0)
 	frame.Glow:SetFrameStrata("BACKGROUND")
-	frame.Glow:SetOutside(frame.HealthBar, 3 + mod.mult, 3 + mod.mult, frame.PowerBar:IsShown() and frame.PowerBar)
+	frame.Glow:SetOutside(frame.HealthBar.backdrop, E.Border*2 + E.Spacing*3, E.Border*2 + E.Spacing*3, frame.PowerBar:IsShown() and frame.PowerBar)
 	frame.Glow:SetBackdrop( {
 		edgeFile = LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = E:Scale(3),
 		insets = {left = E:Scale(5), right = E:Scale(5), top = E:Scale(5), bottom = E:Scale(5)},
 	})
 	frame.Glow:SetBackdropBorderColor(0, 0, 0)
+	frame.Glow:SetScale(E.PixelMode and 1.5 or 2)
 end
 
 function mod:ConstructElement_Glow(frame)
