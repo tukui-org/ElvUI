@@ -958,7 +958,7 @@ function E:UpdateAll(ignoreInstall)
 	-- NP:UpdateAllPlates()
 
 	local M = self:GetModule("Misc")
-	M:UpdateWatchBarDimensions()
+	M:UpdateDataBarDimensions()
 	M:EnableDisable_ExperienceBar()
 	M:EnableDisable_ReputationBar()
 	M:EnableDisable_ArtifactBar()
