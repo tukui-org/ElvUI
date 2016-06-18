@@ -23,7 +23,7 @@ E.Options.args.databars = {
 		experience = {
 			order = 5,
 			get = function(info) return mod.db.experience[ info[#info] ] end,
-			set = function(info, value) mod.db.experience[ info[#info] ] = value; mod:UpdateWatchBarDimensions() end,
+			set = function(info, value) mod.db.experience[ info[#info] ] = value; mod:UpdateExperienceDimensions() end,
 			type = "group",
 			name = XPBAR_LABEL,
 			args = {
@@ -100,7 +100,7 @@ E.Options.args.databars = {
 		reputation = {
 			order = 6,
 			get = function(info) return mod.db.reputation[ info[#info] ] end,
-			set = function(info, value) mod.db.reputation[ info[#info] ] = value; mod:UpdateWatchBarDimensions() end,
+			set = function(info, value) mod.db.reputation[ info[#info] ] = value; mod:UpdateReputationDimensions() end,
 			type = "group",
 			name = REPUTATION,
 			args = {
@@ -171,7 +171,7 @@ E.Options.args.databars = {
 		artifact = {
 			order = 6,
 			get = function(info) return mod.db.artifact[ info[#info] ] end,
-			set = function(info, value) mod.db.artifact[ info[#info] ] = value; mod:UpdateWatchBarDimensions() end,
+			set = function(info, value) mod.db.artifact[ info[#info] ] = value; mod:UpdateArtifactDimensions() end,
 			type = "group",
 			name = L["Artifact Bar"],
 			args = {
@@ -248,7 +248,7 @@ E.Options.args.databars = {
 		honor = {
 			order = 7,
 			get = function(info) return mod.db.honor[ info[#info] ] end,
-			set = function(info, value) mod.db.honor[ info[#info] ] = value; mod:UpdateWatchBarDimensions() end,
+			set = function(info, value) mod.db.honor[ info[#info] ] = value; mod:UpdateHonorDimensions() end,
 			type = "group",
 			name = HONOR,
 			args = {
