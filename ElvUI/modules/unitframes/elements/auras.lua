@@ -21,7 +21,12 @@ local UnitIsFriend = UnitIsFriend
 
 function UF:Construct_Buffs(frame)
 	local buffs = CreateFrame('Frame', frame:GetName().."Buffs", frame)
-	buffs.spacing = E.Spacing
+	if(self.thinBorders) then
+		buffs.spacing = -E.mult*2
+	else
+		buffs.spacing = E.mult
+	end	
+	
 	buffs.PreSetPosition = (not frame:GetScript("OnUpdate")) and self.SortAuras or nil
 	buffs.PostCreateIcon = self.Construct_AuraIcon
 	buffs.PostUpdateIcon = self.PostUpdateAura
@@ -34,7 +39,11 @@ end
 
 function UF:Construct_Debuffs(frame)
 	local debuffs = CreateFrame('Frame', frame:GetName().."Debuffs", frame)
-	debuffs.spacing = E.Spacing
+	if(self.thinBorders) then
+		debuffs.spacing = -E.mult*2
+	else
+		debuffs.spacing = E.mult
+	end	
 	debuffs.PreSetPosition = (not frame:GetScript("OnUpdate")) and self.SortAuras or nil
 	debuffs.PostCreateIcon = self.Construct_AuraIcon
 	debuffs.PostUpdateIcon = self.PostUpdateAura
@@ -51,7 +60,7 @@ function UF:Construct_AuraIcon(button)
 	button.text:SetJustifyH('CENTER')
 
 	button:SetTemplate('Default', nil, nil, (UF.thinBorders and not E.global.tukuiMode))
-
+	
 	button.cd.noOCC = true
 	button.cd.noCooldownCount = true
 	button.cd:SetReverse(true)
