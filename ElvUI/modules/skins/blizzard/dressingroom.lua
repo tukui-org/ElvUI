@@ -10,6 +10,9 @@ local function LoadSkin()
 
 	S:HandleButton(DressUpFrameResetButton)
 	S:HandleButton(DressUpFrameCancelButton)
+	S:HandleButton(DressUpFrameOutfitDropDown.SaveButton)
+	-- needs review
+	-- S:HandleDropDownBox(DressUpFrameOutfitDropDown)
 	S:HandleCloseButton(DressUpFrameCloseButton, DressUpFrame.backdrop)
 
 	DressUpFrameResetButton:Point("RIGHT", DressUpFrameCancelButton, "LEFT", -2, 0)
