@@ -35,7 +35,7 @@ function mod:UpdateArtifact(event)
 end
 
 function mod:ArtifactBar_OnEnter()
-	if mod.db.experience.mouseover then
+	if mod.db.artifact.mouseover then
 		E:UIFrameFadeIn(self, 0.4, self:GetAlpha(), 1)
 	end
 	GameTooltip:ClearLines()
@@ -59,7 +59,7 @@ function mod:UpdateArtifactDimensions()
 	self.artifactBar:Height(self.db.artifact.height)
 	self.artifactBar.statusBar:SetOrientation(self.db.artifact.orientation)
 	self.artifactBar.statusBar:SetReverseFill(self.db.artifact.reverseFill)	
-	self.artifactBar.text:FontTemplate(nil, self.db.experience.textSize)
+	self.artifactBar.text:FontTemplate(nil, self.db.artifact.textSize)
 	if self.db.artifact.mouseover then
 		self.artifactBar:SetAlpha(0)
 	else
@@ -82,7 +82,7 @@ function mod:EnableDisable_ArtifactBar()
 end
 
 function mod:LoadArtifactBar()
-	self.artifactBar = self:CreateBar('ElvUI_ArtifactBar', ArtifactBar_OnEnter, 'RIGHT', RightChatPanel, 'LEFT', E.Border - E.Spacing*3, 0)
+	self.artifactBar = self:CreateBar('ElvUI_ArtifactBar', self.ArtifactBar_OnEnter, 'RIGHT', RightChatPanel, 'LEFT', E.Border - E.Spacing*3, 0)
 	self.artifactBar.statusBar:SetStatusBarColor(.901, .8, .601)
 	self.artifactBar.statusBar:SetMinMaxValues(0, 325)
 
