@@ -46,21 +46,27 @@ local function LoadSkin()
 	AuctionProgressFrameCancelButton:Size(28, 28)
 	AuctionProgressFrameCancelButton:Point("LEFT", AuctionProgressBar, "RIGHT", 8, 0)
 
-	AuctionProgressBarIcon:SetTexCoord(unpack(E.TexCoords))
+	if AuctionProgressBarIcon then
+		AuctionProgressBarIcon:SetTexCoord(unpack(E.TexCoords))
 
-	local backdrop = CreateFrame("Frame", nil, AuctionProgressBarIcon:GetParent())
-	backdrop:SetOutside(AuctionProgressBarIcon)
-	backdrop:SetTemplate("Default")
-	AuctionProgressBarIcon:SetParent(backdrop)
+		local backdrop = CreateFrame("Frame", nil, AuctionProgressBarIcon:GetParent())
+		backdrop:SetOutside(AuctionProgressBarIcon)
+		backdrop:SetTemplate("Default")
+		AuctionProgressBarIcon:SetParent(backdrop)
+	end
 
-	AuctionProgressBarText:ClearAllPoints()
-	AuctionProgressBarText:Point("CENTER")
+	if AuctionProgressBarText then
+		AuctionProgressBarText:ClearAllPoints()
+		AuctionProgressBarText:Point("CENTER")
+	end
 
-	AuctionProgressBar:StripTextures()
-	AuctionProgressBar:CreateBackdrop("Default")
-	AuctionProgressBar:SetStatusBarTexture(E["media"].normTex)
-	AuctionProgressBar:SetStatusBarColor(1, 1, 0)
-	E:RegisterStatusBar(AuctionProgressBar)
+	if AuctionProgressBar then
+		AuctionProgressBar:StripTextures()
+		AuctionProgressBar:CreateBackdrop("Default")
+		AuctionProgressBar:SetStatusBarTexture(E["media"].normTex)
+		AuctionProgressBar:SetStatusBarColor(1, 1, 0)
+		E:RegisterStatusBar(AuctionProgressBar)
+	end
 	S:HandleNextPrevButton(BrowseNextPageButton)
 	S:HandleNextPrevButton(BrowsePrevPageButton)
 
