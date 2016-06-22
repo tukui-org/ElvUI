@@ -55,17 +55,8 @@ E.myguid = UnitGUID('player');
 E.version = GetAddOnMetadata("ElvUI", "Version");
 E.myrealm = GetRealmName();
 E.wowbuild = select(2, GetBuildInfo()); E.wowbuild = tonumber(E.wowbuild);
-
---This is hacky as fuck, but for now it seems necessary
-if GetCurrentResolution() == 0 then
-	--In Legion, logging in while in Windowed mode will cause the game to use "Custom" resolution and GetCurrentResolution() returns 0
-	--We need to force a resolution refresh so GetCurrentResolution() will return the right index
-	Graphics_Refresh(Display_);
-	VideoOptionsDropDownMenu_dependtarget_refreshtable(Display_ResolutionDropDown)
-	OptionsFrameOkay_OnClick(VideoOptionsFrame, true);
-end
-
-E.resolution = ({GetScreenResolutions()})[GetCurrentResolution()]
+--Currently in Legion logging in while in Windowed mode will cause the game to use "Custom" resolution and GetCurrentResolution() returns 0. We use GetCVar("gxWindowedResolution") as fail safe
+E.resolution = ({GetScreenResolutions()})[GetCurrentResolution()] or GetCVar("gxWindowedResolution")
 E.screenwidth, E.screenheight = DecodeResolution(E.resolution)
 E.isMacClient = IsMacClient()
 E.LSM = LSM
