@@ -3,9 +3,10 @@ local mod = E:GetModule('NamePlates')
 local LSM = LibStub("LibSharedMedia-3.0")
 
 function mod:UpdateElement_Level(frame)
-	if(not self.db.units[frame.UnitType].showLevel) then return end
+	if(not self.db.units[frame.UnitType].showLevel and frame.UnitType ~= "PLAYER") then return end
+	if frame.UnitType == "PLAYER" and not self.db.units[frame.UnitType].showLevel then frame.Level:SetText() return end 
 	local level = UnitLevel(frame.displayedUnit)
-	
+
 	local r, g, b
 	if(level == -1 or not level) then
 		level = '??'
