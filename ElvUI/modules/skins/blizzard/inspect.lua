@@ -14,6 +14,7 @@ local function LoadSkin()
 	InspectFrameInset:StripTextures(true)
 	InspectFrame:SetTemplate('Transparent')
 	S:HandleCloseButton(InspectFrameCloseButton)
+	S:HandleButton(InspectPaperDollFrame.ViewButton)
 
 	for i=1, 4 do
 		S:HandleTab(_G["InspectFrameTab"..i])
