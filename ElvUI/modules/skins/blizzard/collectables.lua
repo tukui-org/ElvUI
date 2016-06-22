@@ -18,7 +18,7 @@ local function LoadSkin()
 	CollectionsJournal:SetTemplate('Transparent')
 	CollectionsJournalPortrait:SetAlpha(0)
 
-	for i=1, 4 do
+	for i=1, 5 do
 		S:HandleTab(_G['CollectionsJournalTab'..i])
 	end
 
@@ -309,6 +309,18 @@ local function LoadSkin()
 			button.name:SetTextColor(0.6, 0.6, 0.6)
 		end
 	end)
+	
+	-- Appearances Tab
+	WardrobeCollectionFrame.progressBar:StripTextures()
+	S:HandleEditBox(WardrobeCollectionFrameSearchBox)
+	S:HandleButton(WardrobeCollectionFrame.FilterButton)
+	S:HandleDropDownBox(WardrobeCollectionFrameWeaponDropDown)
+	
+	WardrobeCollectionFrame.ModelsFrame:StripTextures()
+
+	-- needs review (don't have global names)
+	-- S:HandleNextPrevButton(WardrobeCollectionFrame.NavigationFrame.PrevPageButton)
+	-- S:HandleNextPrevButton(WardrobeCollectionFrame.NavigationFrame.NextPageButton)
 end
 
 S:RegisterSkin("Blizzard_Collections", LoadSkin)
