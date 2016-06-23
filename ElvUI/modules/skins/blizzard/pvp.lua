@@ -90,7 +90,8 @@ local function LoadSkin()
 	HonorFrame.RoleInset.DPSIcon.bg:SetAlpha(0.5)
 
 	-- HonorBar
-	-- PLACEHOLDER
+	local honorBar = HonorFrame.XPBar
+	honorBar:StripTextures()
 
 	hooksecurefunc("LFG_PermanentlyDisableRoleButton", function(self)
 		if self.bg then
@@ -137,7 +138,8 @@ local function LoadSkin()
 	ConquestFrame.RoleInset.DPSIcon.bg:SetAlpha(0.5)
 
 	-- ConquestBar
-	-- PLACEHOLDER
+	local conquestBar = ConquestFrame.XPBar
+	conquestBar:StripTextures()
 
 	local function handleButton(button)
 		button:StripTextures()
