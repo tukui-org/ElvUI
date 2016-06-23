@@ -36,7 +36,11 @@ local function LoadSkin()
 	S:HandleButton(QuestMapFrame.DetailsFrame.AbandonButton)
 	S:HandleButton(QuestMapFrame.DetailsFrame.ShareButton, true)
 	S:HandleButton(QuestMapFrame.DetailsFrame.TrackButton)
+	-- This button is flashing. Needs review
+	S:HandleButton(QuestMapFrame.DetailsFrame.CompleteQuestFrame.CompleteButton, true)
+
 	QuestMapFrame.QuestsFrame.StoryTooltip:SetTemplate("Transparent")
+	QuestMapFrame.DetailsFrame.CompleteQuestFrame:StripTextures()
 
 	S:HandleCloseButton(WorldMapFrameCloseButton)
 	S:HandleButton(WorldMapFrameSizeDownButton, true)
