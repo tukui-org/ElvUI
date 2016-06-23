@@ -11,7 +11,9 @@ local function LoadSkin()
 	local objects = {
 		PlayerTalentFrame,
 		PlayerTalentFrameInset,
-		PlayerTalentFrameTalents
+		PlayerTalentFrameTalents,
+		-- Honor Talents
+		PlayerTalentFramePVPTalents.Talents
 	}
 
 	for _, object in pairs(objects) do
@@ -49,14 +51,6 @@ local function LoadSkin()
 		local point, anchor, anchorPoint, x = button:GetPoint()
 		button:Point(point, anchor, anchorPoint, x, -28)
 	end
-
-
-	PlayerTalentFrameTalentsClearInfoFrame:CreateBackdrop('Default')
-	PlayerTalentFrameTalentsClearInfoFrame.icon:SetTexCoord(unpack(E.TexCoords))
-	PlayerTalentFrameTalentsClearInfoFrame:Width(PlayerTalentFrameTalentsClearInfoFrame:GetWidth() - 2)
-	PlayerTalentFrameTalentsClearInfoFrame:Height(PlayerTalentFrameTalentsClearInfoFrame:GetHeight() - 2)
-	PlayerTalentFrameTalentsClearInfoFrame.icon:Size(PlayerTalentFrameTalentsClearInfoFrame:GetSize())
-	PlayerTalentFrameTalentsClearInfoFrame:Point('TOPLEFT', PlayerTalentFrameTalents, 'BOTTOMLEFT', 8, -8)
 
 	for i=1, 4 do
 		S:HandleTab(_G['PlayerTalentFrameTab'..i])
@@ -146,10 +140,11 @@ local function LoadSkin()
 				else
 					bu.bg.SelectedTexture:Hide()
 				end
-				if bu.learnSelection:IsShown() then
+				-- needs review
+				--[[if bu.learnSelection:IsShown() then
 					bu.bg.SelectedTexture:Show()
 					bu.bg.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
-				end
+				end]]
 			end
 		end
 	end)
