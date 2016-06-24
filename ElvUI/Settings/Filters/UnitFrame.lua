@@ -677,6 +677,188 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 				[183634] = Defaults(), -- Shadowfel Burst
 				[189895] = Defaults(), -- Void Star Fixate
 				[190049] = Defaults(), -- Nether Corruption
+
+	-- Legion
+		-- The Nighthold
+			-- Skorpyron
+				[204766] = Defaults(), -- Energy Surge
+				[214718] = Defaults(), -- Acidic Fragments
+				[211801] = Defaults(), -- Volatile Fragments
+				[204284] = Defaults(), -- Broken Shard (Protection)
+				[204275] = Defaults(), -- Arcanoslash (Tank)
+				[211659] = Defaults(), -- Arcane Tether (Tank debuff)
+				[204483] = Defaults(), -- Focused Blast (Stun)
+
+			-- Chronomatic Anomaly
+				[206607] = Defaults(), -- Chronometric Particles (Tank stack debuff)
+				[206609] = Defaults(), -- Time Release (Heal buff/debuff)
+				[205653] = Defaults(), -- Passage of Time
+				[225901] = Defaults(), -- Time Bomb
+				[207871] = Defaults(), -- Vortex (Mythic)
+				[212099] = Defaults(), -- Temporal Charge
+
+			-- Trilliax
+				[206488] = Defaults(), -- Arcane Seepage
+				[206641] = Defaults(), -- Arcane Spear (Tank)
+				[206798] = Defaults(), -- Toxic Slice
+				[214672] = Defaults(), -- Annihilation
+				[214573] = Defaults(), -- Stuffed
+				[214583] = Defaults(), -- Sterilize
+				[208910] = Defaults(), -- Arcing Bonds
+				[206838] = Defaults(), -- Succulent Feast
+
+			-- Spellblade Aluriel
+				[212492] = Defaults(), -- Annihilate (Tank)
+				[212494] = Defaults(), -- Annihilated (Main Tank debuff)
+				[212587] = Defaults(), -- Mark of Frost
+				[212531] = Defaults(), -- Mark of Frost (marked)
+				[212530] = Defaults(), -- Replicate: Mark of Frost 
+				[212647] = Defaults(), -- Frostbitten
+				[212736] = Defaults(), -- Pool of Frost
+				[213085] = Defaults(), -- Frozen Tempest
+				[213621] = Defaults(), -- Entombed in Ice
+				[213148] = Defaults(), -- Searing Brand Chosen
+				[213181] = Defaults(), -- Searing Brand Stunned
+				[213166] = Defaults(), -- Searing Brand
+				[213278] = Defaults(), -- Burning Ground
+				[213504] = Defaults(), -- Arcane Fog
+
+			-- Tichondrius
+				[206480] = Defaults(), -- Carrion Plague
+				[215988] = Defaults(), -- Carrion Nightmare
+				[208230] = Defaults(), -- Feast of Blood
+				[212794] = Defaults(), -- Brand of Argus
+				[216685] = Defaults(), -- Flames of Argus
+				[206311] = Defaults(), -- Illusionary Night
+				[206466] = Defaults(), -- Essence of Night
+				[216024] = Defaults(), -- Volatile Wound
+				[216027] = Defaults(), -- Nether Zone
+				[216039] = Defaults(), -- Fel Storm
+				[216726] = Defaults(), -- Ring of Shadows
+				[216040] = Defaults(), -- Burning Soul
+
+			-- Krosus
+				[206677] = Defaults(), -- Searing Brand
+				[205344] = Defaults(), -- Orb of Destruction
+
+			-- High Botanist Tel'arn
+				[218503] = Defaults(), -- Recursive Strikes (Tank)
+				[219235] = Defaults(), -- Toxic Spores
+				[218809] = Defaults(), -- Call of Night
+				[218342] = Defaults(), -- Parasitic Fixate
+				[218304] = Defaults(), -- Parasitic Fetter
+				[218780] = Defaults(), -- Plasma Explosion
+
+			-- Star Augur Etraeus
+				[205984] = Defaults(), -- Gravitaional Pull
+				[214167] = Defaults(), -- Gravitaional Pull
+				[214335] = Defaults(), -- Gravitaional Pull
+				[206936] = Defaults(), -- Icy Ejection
+				[206388] = Defaults(), -- Felburst
+				[206585] = Defaults(), -- Absolute Zero
+				[206398] = Defaults(), -- Felflame
+				[206589] = Defaults(), -- Chilled
+				[205649] = Defaults(), -- Fel Ejection
+				[206965] = Defaults(), -- Voidburst
+				[206464] = Defaults(), -- Coronal Ejection
+				[207143] = Defaults(), -- Void Ejection
+				[206603] = Defaults(), -- Frozen Solid
+				[207720] = Defaults(), -- Witness the Void
+				[216697] = Defaults(), -- Frigid Pulse
+
+			-- Grand Magistrix Elisande
+				[209166] = Defaults(), -- Fast Time
+				[211887] = Defaults(), -- Ablated
+				[209615] = Defaults(), -- Ablation
+				[209244] = Defaults(), -- Delphuric Beam
+				[209165] = Defaults(), -- Slow Time
+				[209598] = Defaults(), -- Conflexive Burst
+				[209433] = Defaults(), -- Spanning Singularity
+				[209973] = Defaults(), -- Ablating Explosion
+				[209549] = Defaults(), -- Lingering Burn
+				[211261] = Defaults(), -- Permaliative Torment
+				[208659] = Defaults(), -- Arcanetic Ring
+
+			-- Gul'dan
+				[210339] = Defaults(), -- Time Dilation
+				[180079] = Defaults(), -- Felfire Munitions
+				[206875] = Defaults(), -- Fel Obelisk (Tank)
+				[206840] = Defaults(), -- Gaze of Vethriz
+				[206896] = Defaults(), -- Torn Soul
+				[206221] = Defaults(), -- Empowered Bonds of Fel
+				[208802] = Defaults(), -- Soul Corrosion
+				[212686] = Defaults(), -- Flames of Sargeras
+
+		-- The Emerald Nightmare
+			-- Nythendra
+				[204504] = Defaults(), -- Infested
+				[205043] = Defaults(), -- Infested mind
+				[203096] = Defaults(), -- Rot
+				[204463] = Defaults(), -- Volatile Rot
+				[203045] = Defaults(), -- Infested Ground
+				[203646] = Defaults(), -- Burst of Corruption
+
+			-- Elerethe Renferal
+				[210228] = Defaults(), -- Dripping Fangs
+				[215307] = Defaults(), -- Web of Pain
+				[215300] = Defaults(), -- Web of Pain
+				[215460] = Defaults(), -- Necrotic Venom
+				[213124] = Defaults(), -- Venomous Pool
+				[210850] = Defaults(), -- Twisting Shadows
+				[215489] = Defaults(), -- Venomous Pool
+
+			-- Il'gynoth, Heart of the Corruption
+				[210279] = Defaults(), -- Creeping Nightmares
+				[213162] = Defaults(), -- Nightmare Blast
+				[212681] = Defaults(), -- Cleansed Ground
+				[210315] = Defaults(), -- Nightmare Brambles
+				[211507] = Defaults(), -- Nightmare Javelin
+				[211471] = Defaults(), -- Scorned Touch
+				[208697] = Defaults(), -- Mind Flay
+				[215143] = Defaults(), -- Cursed Blood
+
+			-- Ursoc
+				[198108] = Defaults(), -- Unbalanced
+				[197943] = Defaults(), -- Overwhelm
+				[204859] = Defaults(), -- Rend Flesh
+				[205611] = Defaults(), -- Miasma
+				[198006] = Defaults(), -- Focused Gaze
+				[197980] = Defaults(), -- Nightmarish Cacophony
+
+			-- Dragons of Nightmare
+				[203102] = Defaults(), -- Mark of Ysondre
+				[203121] = Defaults(), -- Mark of Taerar
+				[203125] = Defaults(), -- Mark of Emeriss
+				[203124] = Defaults(), -- Mark of Lethon
+				[204731] = Defaults(), -- Wasting Dread
+				[203110] = Defaults(), -- Slumbering Nightmare
+				[207681] = Defaults(), -- Nightmare Bloom
+				[205341] = Defaults(), -- Sleeping Fog
+				[203770] = Defaults(), -- Defiled Vines
+				[203787] = Defaults(), -- Volatile Infection
+
+			-- Cenarius
+				[210279] = Defaults(), -- Creeping Nightmares
+				[213162] = Defaults(), -- Nightmare Blast
+				[210315] = Defaults(), -- Nightmare Brambles
+				[212681] = Defaults(), -- Cleansed Ground
+				[211507] = Defaults(), -- Nightmare Javelin
+				[211471] = Defaults(), -- Scorned Touch
+				[211612] = Defaults(), -- Replenishing Roots
+				[216516] = Defaults(), -- Ancient Dream
+
+			-- Xavius
+				[206005] = Defaults(), -- Dream Simulacrum
+				[206651] = Defaults(), -- Darkening Soul
+				[209158] = Defaults(), -- Blackening Soul
+				[211802] = Defaults(), -- Nightmare Blades
+				[206109] = Defaults(), -- Awakening to the Nightmare
+				[209034] = Defaults(), -- Bonds of Terror
+				[210451] = Defaults(), -- Bonds of Terror
+				[208431] = Defaults(), -- Corruption: Descent into Madness
+				[207409] = Defaults(), -- Madness
+				[211634] = Defaults(), -- The Infinite Dark
+				[208385] = Defaults(), -- Tainted Discharge
 	},
 }
 
