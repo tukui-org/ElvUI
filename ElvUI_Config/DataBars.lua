@@ -186,12 +186,6 @@ E.Options.args.databars = {
 					type = "toggle",
 					name = L["Mouseover"],
 				},
-				hideAtMaxLevel = {
-					order = 2,
-					type = "toggle",
-					name = L["Hide At Max Level"],
-					set = function(info, value) mod.db.artifact[ info[#info] ] = value; mod:UpdateArtifact() end,
-				},
 				hideInVehicle = {
 					order = 3,
 					type = "toggle",
