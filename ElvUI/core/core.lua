@@ -1339,6 +1339,17 @@ function E:DBConversions()
 		end
 		E.db.actionbar.showGrid = nil
 	end
+	
+	--Convert old WorldMapCoordinates from boolean to new table format
+	if type(E.global.general.WorldMapCoordinates) == "boolean" then
+		local enabledState = E.global.general.WorldMapCoordinates
+		
+		--Remove boolean value
+		E.global.general.WorldMapCoordinates = nil
+		
+		--Add old enabled state
+		E.global.general.WorldMapCoordinates.enable = enabledState
+	end
 end
 
 local CPU_USAGE = {}

@@ -3,6 +3,8 @@ local M = E:NewModule('WorldMap', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
 E.WorldMap = M
 
 --Cache global variables
+--Lua functions
+local find = string.find
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
@@ -14,7 +16,6 @@ local PLAYER = PLAYER
 local MOUSE_LABEL = MOUSE_LABEL
 local WORLDMAP_FULLMAP_SIZE = WORLDMAP_FULLMAP_SIZE
 local WORLDMAP_WINDOWED_SIZE = WORLDMAP_WINDOWED_SIZE
-local find = string.find
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: WorldMapFrame, WorldMapFrameSizeUpButton, WorldMapFrameSizeDownButton
@@ -96,14 +97,14 @@ function M:PositionCoords()
 	local db = E.global.general.WorldMapCoordinates
 	CoordsHolder.playerCoords:ClearAllPoints()
 	CoordsHolder.mouseCoords:ClearAllPoints()
-	local playerPos, mousePos = db.position, db.mousePos
-	local m1 = mousePos == "TOP" and "BOTTOM" or "TOP"
-	local m2 = mousePos == "BOTTOM" and "BOTTOM" or "TOP"
+	local playerPosition, mousePosition = db.playerPosition, db.mousePosition
+	local m1 = mousePosition == "TOP" and "BOTTOM" or "TOP"
+	local m2 = mousePosition == "BOTTOM" and "BOTTOM" or "TOP"
 	local x, y = 5, 5
-	if find(playerPos, "RIGHT") then x = -5 end
-	if find(playerPos, "TOP") then y = -5 end
+	if find(playerPosition, "RIGHT") then x = -5 end
+	if find(playerPosition, "TOP") then y = -5 end
 
-	CoordsHolder.playerCoords:Point(playerPos, WorldMapScrollFrame, playerPos, x + db.xOffset, y + db.yOffset)
+	CoordsHolder.playerCoords:Point(playerPosition, WorldMapScrollFrame, playerPosition, x + db.xOffset, y + db.yOffset)
 	CoordsHolder.mouseCoords:Point(m1.."LEFT", CoordsHolder.playerCoords, m2.."LEFT", 0, mousePos == "TOP" and 5 or -5)
 end
 

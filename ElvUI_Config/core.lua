@@ -237,12 +237,12 @@ E.Options.args.general = {
 							get = function(info) return E.global.general.WorldMapCoordinates.enable end,
 							set = function(info, value) E.global.general.WorldMapCoordinates.enable = value; E:StaticPopup_Show("GLOBAL_RL") end
 						},
-						position = {
+						playerPosition = {
 							order = 2,
 							type = "select",
 							name = L["Player Position"],
-							get = function(info) return E.global.general.WorldMapCoordinates.position end,
-							set = function(info, value) E.global.general.WorldMapCoordinates.position = value; E:GetModule('WorldMap'):PositionCoords() end,
+							get = function(info) return E.global.general.WorldMapCoordinates.playerPosition end,
+							set = function(info, value) E.global.general.WorldMapCoordinates.playerPosition = value; E:GetModule('WorldMap'):PositionCoords() end,
 							values = {
 								["TOP"] = "TOP",
 								["TOPLEFT"] = "TOPLEFT",
@@ -254,13 +254,13 @@ E.Options.args.general = {
 								["RIGHT"] = "RIGHT",
 							},
 						},
-						mousePos = {
+						mousePosition = {
 							order = 3,
 							type = "select",
 							name = L["Mouse Position"],
 							desc = L["If mouse cursor coordinates should appear on top or below player coordinates."],
-							get = function(info) return E.global.general.WorldMapCoordinates.mousePos end,
-							set = function(info, value) E.global.general.WorldMapCoordinates.mousePos = value; E:GetModule('WorldMap'):PositionCoords() end,
+							get = function(info) return E.global.general.WorldMapCoordinates.mousePosition end,
+							set = function(info, value) E.global.general.WorldMapCoordinates.mousePosition = value; E:GetModule('WorldMap'):PositionCoords() end,
 							values = {
 								["TOP"] = "TOP",
 								["BOTTOM"] = "BOTTOM",

@@ -7,8 +7,8 @@ G['general'] = {
 	['smallerWorldMap'] = true,
 	['WorldMapCoordinates'] = {
 		["enable"] = true,
-		["position"] = "BOTTOMLEFT",
-		["mousePos"] = "TOP",
+		["playerPosition"] = "BOTTOMLEFT",
+		["mousePosition"] = "TOP",
 		["xOffset"] = 0,
 		["yOffset"] = 0,
 	},
