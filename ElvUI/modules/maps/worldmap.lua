@@ -107,19 +107,14 @@ function M:PositionCoords()
 	local xOffset = db.xOffset
 	local yOffset = db.yOffset
 
-	local playerX, playerY = 5, 5
-	if find(position, "RIGHT") then playerX = -5 end
-	if find(position, "TOP") then playerY = -5 end
-
-	local mouseY = 5
-	if find(position, "TOP") then
-		mouseY = -5
-	end
+	local x, y = 5, 5
+	if find(position, "RIGHT") then	x = -5 end
+	if find(position, "TOP") then y = -5 end
 
 	CoordsHolder.playerCoords:ClearAllPoints()
-	CoordsHolder.playerCoords:Point(position, WorldMapScrollFrame, position, playerX + xOffset, playerY + yOffset)
+	CoordsHolder.playerCoords:Point(position, WorldMapScrollFrame, position, x + xOffset, y + yOffset)
 	CoordsHolder.mouseCoords:ClearAllPoints()
-	CoordsHolder.mouseCoords:Point(position, CoordsHolder.playerCoords, INVERTED_POINTS[position], 0, mouseY)
+	CoordsHolder.mouseCoords:Point(position, CoordsHolder.playerCoords, INVERTED_POINTS[position], 0, y)
 end
 
 function M:ResetDropDownListPosition(frame)
