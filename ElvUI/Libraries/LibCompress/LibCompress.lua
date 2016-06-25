@@ -5,12 +5,12 @@
 -- Authors: jjsheets and Galmok of European Stormrage (Horde)
 -- Email : sheets.jeff@gmail.com and galmok@gmail.com
 -- Licence: GPL version 2 (General Public License)
--- Revision: $Revision: 65 $
--- Date: $Date: 2015-08-23 12:09:36 +0000 (Sun, 23 Aug 2015) $
+-- Revision: $Revision: 68 $
+-- Date: $Date: 2016-04-13 00:10:13 +0000 (Wed, 13 Apr 2016) $
 ----------------------------------------------------------------------------------
 
 
-local LibCompress = LibStub:NewLibrary("LibCompress", 90000 + tonumber(("$Revision: 65 $"):match("%d+")))
+local LibCompress = LibStub:NewLibrary("LibCompress", 90000 + tonumber(("$Revision: 68 $"):match("%d+")))
 
 if not LibCompress then return end
 

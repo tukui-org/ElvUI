@@ -1,0 +1,25 @@
+------------------------------------------------------------------------
+r69 | myrroddin | 2016-04-13 00:16:18 +0000 (Wed, 13 Apr 2016) | 1 line
+Changed paths:
+   A /tags/r69-release (from /trunk:68)
+
+Tagging as r69-release
+------------------------------------------------------------------------
+r68 | myrroddin | 2016-04-13 00:10:13 +0000 (Wed, 13 Apr 2016) | 3 lines
+Changed paths:
+   M /trunk/.pkgmeta
+   M /trunk/LibCompress.lua
+   M /trunk/LibCompress.toc
+   M /trunk/lib.xml
+
+---
+- ToC: make lib load on demand
+- Use SVN keywords to update date, revision, etc
+------------------------------------------------------------------------
+r67 | nebula169 | 2015-08-24 02:15:16 +0000 (Mon, 24 Aug 2015) | 1 line
+Changed paths:
+   M /trunk/LibCompress.toc
+   M /trunk/lib.xml
+
+load LibStub from the toc, not lib.xml
+------------------------------------------------------------------------
