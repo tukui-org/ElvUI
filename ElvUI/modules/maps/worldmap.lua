@@ -111,16 +111,9 @@ function M:PositionCoords()
 	if find(position, "RIGHT") then playerX = -5 end
 	if find(position, "TOP") then playerY = -5 end
 
-	local point
-	local relativePoint
 	local mouseY = 5
 	if find(position, "TOP") then
-		point = INVERTED_POINTS[position]
-		relativePoint = position
 		mouseY = -5
-	else
-		point = position
-		relativePoint = INVERTED_POINTS[position]
 	end
 
 	CoordsHolder.playerCoords:ClearAllPoints()
