@@ -250,8 +250,6 @@ E.Options.args.general = {
 								["BOTTOM"] = "BOTTOM",
 								["BOTTOMLEFT"] = "BOTTOMLEFT",
 								["BOTTOMRIGHT"] = "BOTTOMRIGHT",
-								["LEFT"] = "LEFT",
-								["RIGHT"] = "RIGHT",
 							},
 						},
 						xOffset = {

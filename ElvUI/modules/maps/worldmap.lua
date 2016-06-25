@@ -22,6 +22,15 @@ local WORLDMAP_WINDOWED_SIZE = WORLDMAP_WINDOWED_SIZE
 -- GLOBALS: UIParent, CoordsHolder, WorldMapDetailFrame, DropDownList1
 -- GLOBALS: NumberFontNormal, WORLDMAP_SETTINGS, BlackoutWorld
 
+local INVERTED_POINTS = {
+	["TOPLEFT"] = "BOTTOMLEFT",
+	["TOPRIGHT"] = "BOTTOMRIGHT",
+	["BOTTOMLEFT"] = "TOPLEFT",
+	["BOTTOMRIGHT"] = "TOPRIGHT",
+	["TOP"] = "BOTTOM",
+	["BOTTOM"] = "TOP",
+}
+
 function M:SetLargeWorldMap()
 	if InCombatLockdown() then return end
 
@@ -102,33 +111,22 @@ function M:PositionCoords()
 	if find(position, "RIGHT") then playerX = -5 end
 	if find(position, "TOP") then playerY = -5 end
 
-	local point = "BOTTOMLEFT"
-	local relativePoint = "TOPLEFT"
+	local point
+	local relativePoint
 	local mouseY = 5
-	if position == "TOPRIGHT" then
-		point = "TOPRIGHT"
-		relativePoint = "BOTTOMRIGHT"
+	if find(position, "TOP") then
+		point = INVERTED_POINTS[position]
+		relativePoint = position
 		mouseY = -5
-	elseif position == "TOP" then
-		point = "TOP"
-		relativePoint = "BOTTOM"
-		mouseY = -5
-	elseif position == "BOTTOM" then
-		point = "BOTTOM"
-		relativePoint = "TOP"
-	elseif find(position, "TOP") then
-		point = "TOPLEFT"
-		relativePoint = "BOTTOMLEFT"
-		mouseY = -5
-	elseif find(position, "RIGHT") then
-		point = "BOTTOMRIGHT"
-		relativePoint = "TOPRIGHT"
+	else
+		point = position
+		relativePoint = INVERTED_POINTS[position]
 	end
 
 	CoordsHolder.playerCoords:ClearAllPoints()
 	CoordsHolder.playerCoords:Point(position, WorldMapScrollFrame, position, playerX + xOffset, playerY + yOffset)
 	CoordsHolder.mouseCoords:ClearAllPoints()
-	CoordsHolder.mouseCoords:Point(point, CoordsHolder.playerCoords, relativePoint, 0, mouseY)
+	CoordsHolder.mouseCoords:Point(position, CoordsHolder.playerCoords, INVERTED_POINTS[position], 0, mouseY)
 end
 
 function M:ResetDropDownListPosition(frame)
