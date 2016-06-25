@@ -209,14 +209,6 @@ E.Options.args.general = {
 					get = function(info) return E.global.general.smallerWorldMap end,
 					set = function(info, value) E.global.general.smallerWorldMap = value; E:StaticPopup_Show("GLOBAL_RL") end
 				},
-				WorldMapCoordinates = {
-					order = 17,
-					type = 'toggle',
-					name = L["World Map Coordinates"],
-					desc = L["Puts coordinates on the world map."],
-					get = function(info) return E.global.general.WorldMapCoordinates end,
-					set = function(info, value) E.global.general.WorldMapCoordinates = value; E:StaticPopup_Show("GLOBAL_RL") end
-				},
 				enhancedPvpMessages = {
 					order = 18,
 					type = 'toggle',
@@ -230,6 +222,67 @@ E.Options.args.general = {
 					desc = L["Disables the tutorial button found on some frames."],
 					get = function(info) return E.global.general.disableTutorialButtons end,
 					set = function(info, value) E.global.general.disableTutorialButtons = value; E:StaticPopup_Show("GLOBAL_RL") end,
+				},
+				WorldMapCoordinates = {
+					order = 25,
+					type = "group",
+					guiInline = true,
+					name = L["World Map Coordinates"],
+					args = {
+						enable = {
+							order = 1,
+							type = 'toggle',
+							name = L["Enable"],
+							desc = L["Puts coordinates on the world map."],
+							get = function(info) return E.global.general.WorldMapCoordinates.enable end,
+							set = function(info, value) E.global.general.WorldMapCoordinates.enable = value; E:StaticPopup_Show("GLOBAL_RL") end
+						},
+						position = {
+							order = 2,
+							type = "select",
+							name = L["Player Position"],
+							get = function(info) return E.global.general.WorldMapCoordinates.position end,
+							set = function(info, value) E.global.general.WorldMapCoordinates.position = value; E:GetModule('WorldMap'):PositionCoords() end,
+							values = {
+								["TOP"] = "TOP",
+								["TOPLEFT"] = "TOPLEFT",
+								["TOPRIGHT"] = "TOPRIGHT",
+								["BOTTOM"] = "BOTTOM",
+								["BOTTOMLEFT"] = "BOTTOMLEFT",
+								["BOTTOMRIGHT"] = "BOTTOMRIGHT",
+								["LEFT"] = "LEFT",
+								["RIGHT"] = "RIGHT",
+							},
+						},
+						mousePos = {
+							order = 3,
+							type = "select",
+							name = L["Mouse Position"],
+							desc = L["If mouse cursor coordinates should appear on top or below player coordinates."],
+							get = function(info) return E.global.general.WorldMapCoordinates.mousePos end,
+							set = function(info, value) E.global.general.WorldMapCoordinates.mousePos = value; E:GetModule('WorldMap'):PositionCoords() end,
+							values = {
+								["TOP"] = "TOP",
+								["BOTTOM"] = "BOTTOM",
+							},
+						},
+						xOffset = {
+							order = 4,
+							type = "range",
+							name = L["X-Offset"],
+							get = function(info) return E.global.general.WorldMapCoordinates.xOffset end,
+							set = function(info, value) E.global.general.WorldMapCoordinates.xOffset = value; E:GetModule('WorldMap'):PositionCoords()end,
+							min = -200, max = 200, step = 1,
+						},
+						yOffset = {
+							order = 5,
+							type = "range",
+							name = L["Y-Offset"],
+							get = function(info) return E.global.general.WorldMapCoordinates.yOffset end,
+							set = function(info, value) E.global.general.WorldMapCoordinates.yOffset = value; E:GetModule('WorldMap'):PositionCoords() end,
+							min = -200, max = 200, step = 1,
+						},
+					},
 				},
 				chatBubbles = {
 					order = 30,

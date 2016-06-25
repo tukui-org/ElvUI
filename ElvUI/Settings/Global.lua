@@ -5,7 +5,13 @@ G['general'] = {
 	["autoScale"] = true,
 	["eyefinity"] = false,
 	['smallerWorldMap'] = true,
-	['WorldMapCoordinates'] = true,
+	['WorldMapCoordinates'] = {
+		["enable"] = true,
+		["position"] = "BOTTOMLEFT",
+		["mousePos"] = "TOP",
+		["xOffset"] = 0,
+		["yOffset"] = 0,
+	},
 	["disableTutorialButtons"] = true,
 }
 

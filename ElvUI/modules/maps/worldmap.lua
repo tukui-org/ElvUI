@@ -14,6 +14,7 @@ local PLAYER = PLAYER
 local MOUSE_LABEL = MOUSE_LABEL
 local WORLDMAP_FULLMAP_SIZE = WORLDMAP_FULLMAP_SIZE
 local WORLDMAP_WINDOWED_SIZE = WORLDMAP_WINDOWED_SIZE
+local find = string.find
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: WorldMapFrame, WorldMapFrameSizeUpButton, WorldMapFrameSizeDownButton
@@ -91,19 +92,30 @@ function M:UpdateCoords()
 	end
 end
 
+function M:PositionCoords()
+	local db = E.global.general.WorldMapCoordinates
+	CoordsHolder.playerCoords:ClearAllPoints()
+	CoordsHolder.mouseCoords:ClearAllPoints()
+	local playerPos, mousePos = db.position, db.mousePos
+	local m1 = mousePos == "TOP" and "BOTTOM" or "TOP"
+	local m2 = mousePos == "BOTTOM" and "BOTTOM" or "TOP"
+	local x, y = 5, 5
+	if find(playerPos, "RIGHT") then x = -5 end
+	if find(playerPos, "TOP") then y = -5 end
+
+	CoordsHolder.playerCoords:Point(playerPos, WorldMapScrollFrame, playerPos, x + db.xOffset, y + db.yOffset)
+	CoordsHolder.mouseCoords:Point(m1.."LEFT", CoordsHolder.playerCoords, m2.."LEFT", 0, mousePos == "TOP" and 5 or -5)
+end
+
 function M:ResetDropDownListPosition(frame)
 	--DropDownList1:ClearAllPoints()
 	--DropDownList1:Point("TOPRIGHT", frame, "BOTTOMRIGHT", -17, -4)
 end
 
-
-
-
-
 function M:Initialize()
 	--setfenv(WorldMapFrame_OnShow, setmetatable({ UpdateMicroButtons = function() end }, { __index = _G })) --blizzard taint fix
 
-	if(E.global.general.WorldMapCoordinates) then
+	if(E.global.general.WorldMapCoordinates.enable) then
 		local CoordsHolder = CreateFrame('Frame', 'CoordsHolder', WorldMapFrame)
 		CoordsHolder:SetFrameLevel(WorldMapDetailFrame:GetFrameLevel() + 1)
 		CoordsHolder:SetFrameStrata(WorldMapDetailFrame:GetFrameStrata())
@@ -113,9 +125,8 @@ function M:Initialize()
 		CoordsHolder.mouseCoords:SetTextColor(1, 1 ,0)
 		CoordsHolder.playerCoords:SetFontObject(NumberFontNormal)
 		CoordsHolder.mouseCoords:SetFontObject(NumberFontNormal)
-		CoordsHolder.playerCoords:Point("BOTTOMLEFT", WorldMapFrame.BorderFrame.Inset, "BOTTOMLEFT", 5, 5)
+		M:PositionCoords()
 		CoordsHolder.playerCoords:SetText(PLAYER..":   0, 0")
-		CoordsHolder.mouseCoords:Point("BOTTOMLEFT", CoordsHolder.playerCoords, "TOPLEFT", 0, 5)
 		CoordsHolder.mouseCoords:SetText(MOUSE_LABEL..":   0, 0")
 
 		self:ScheduleRepeatingTimer('UpdateCoords', 0.05)
