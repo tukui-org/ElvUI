@@ -65,7 +65,6 @@ end
 
 function M:UpdateCoords()
 	if(not WorldMapFrame:IsShown()) then return end
-	local inInstance, _ = IsInInstance()
 	local x, y = GetPlayerMapPosition("player")
 	x = E:Round(100 * x, 2)
 	y = E:Round(100 * y, 2)
@@ -95,17 +94,41 @@ end
 
 function M:PositionCoords()
 	local db = E.global.general.WorldMapCoordinates
-	CoordsHolder.playerCoords:ClearAllPoints()
-	CoordsHolder.mouseCoords:ClearAllPoints()
-	local playerPosition, mousePosition = db.playerPosition, db.mousePosition
-	local m1 = mousePosition == "TOP" and "BOTTOM" or "TOP"
-	local m2 = mousePosition == "BOTTOM" and "BOTTOM" or "TOP"
-	local x, y = 5, 5
-	if find(playerPosition, "RIGHT") then x = -5 end
-	if find(playerPosition, "TOP") then y = -5 end
+	local position = db.position
+	local xOffset = db.xOffset
+	local yOffset = db.yOffset
 
-	CoordsHolder.playerCoords:Point(playerPosition, WorldMapScrollFrame, playerPosition, x + db.xOffset, y + db.yOffset)
-	CoordsHolder.mouseCoords:Point(m1.."LEFT", CoordsHolder.playerCoords, m2.."LEFT", 0, mousePos == "TOP" and 5 or -5)
+	local playerX, playerY = 5, 5
+	if find(position, "RIGHT") then playerX = -5 end
+	if find(position, "TOP") then playerY = -5 end
+
+	local point = "BOTTOMLEFT"
+	local relativePoint = "TOPLEFT"
+	local mouseY = 5
+	if position == "TOPRIGHT" then
+		point = "TOPRIGHT"
+		relativePoint = "BOTTOMRIGHT"
+		mouseY = -5
+	elseif position == "TOP" then
+		point = "TOP"
+		relativePoint = "BOTTOM"
+		mouseY = -5
+	elseif position == "BOTTOM" then
+		point = "BOTTOM"
+		relativePoint = "TOP"
+	elseif find(position, "TOP") then
+		point = "TOPLEFT"
+		relativePoint = "BOTTOMLEFT"
+		mouseY = -5
+	elseif find(position, "RIGHT") then
+		point = "BOTTOMRIGHT"
+		relativePoint = "TOPRIGHT"
+	end
+
+	CoordsHolder.playerCoords:ClearAllPoints()
+	CoordsHolder.playerCoords:Point(position, WorldMapScrollFrame, position, playerX + xOffset, playerY + yOffset)
+	CoordsHolder.mouseCoords:ClearAllPoints()
+	CoordsHolder.mouseCoords:Point(point, CoordsHolder.playerCoords, relativePoint, 0, mouseY)
 end
 
 function M:ResetDropDownListPosition(frame)
@@ -126,11 +149,11 @@ function M:Initialize()
 		CoordsHolder.mouseCoords:SetTextColor(1, 1 ,0)
 		CoordsHolder.playerCoords:SetFontObject(NumberFontNormal)
 		CoordsHolder.mouseCoords:SetFontObject(NumberFontNormal)
-		M:PositionCoords()
 		CoordsHolder.playerCoords:SetText(PLAYER..":   0, 0")
 		CoordsHolder.mouseCoords:SetText(MOUSE_LABEL..":   0, 0")
 
 		self:ScheduleRepeatingTimer('UpdateCoords', 0.05)
+		M:PositionCoords()
 	end
 
 	if(E.global.general.smallerWorldMap) then
