@@ -18,7 +18,7 @@ along with the library. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
 This file is part of CustomSearch.
 --]]
 
-local Lib = LibStub:NewLibrary('CustomSearch-1.0', 7)
+local Lib = LibStub:NewLibrary('CustomSearch-1.0', 9)
 if not Lib then
 	return
 end
@@ -121,7 +121,7 @@ function Lib:Filter(tag, operator, search)
 end
 
 function Lib:UseFilter(filter, operator, search)
-	local data = {filter:canSearch(operator, search)}
+	local data = {filter:canSearch(operator, search, self.object)}
 	if data[1] then
 		return filter:match(self.object, operator, unpack(data))
 	end
@@ -141,6 +141,7 @@ end
 
 function Lib:Clean(string)
 	string = string:lower()
+	string = string:gsub('[%(%)%.%%%+%-%*%?%[%]%^%$]', function(c) return '%'..c end)
 
 	for accent, char in pairs(self.ACCENTS) do
 		string = string:gsub(accent, char)

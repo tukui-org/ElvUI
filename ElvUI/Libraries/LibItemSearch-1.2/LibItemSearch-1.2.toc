@@ -1,4 +1,4 @@
-## Interface: 60100
+## Interface: 60200
 ## Title: LibItemSearch
 ## Notes: An item search library
 ## OptionalDeps: LibStub, Unfit-1.0, CustomSearch-1.0, ItemRack, Wardrobe

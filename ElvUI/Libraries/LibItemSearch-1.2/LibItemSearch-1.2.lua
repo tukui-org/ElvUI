@@ -208,9 +208,10 @@ Lib.Filters.tipPhrases = {
 		[MINIMAP_TRACKING_VENDOR_REAGENT:lower()] = PROFESSIONS_USED_IN_COOKING,
 		['reagent'] = PROFESSIONS_USED_IN_COOKING,
 		['crafting'] = PROFESSIONS_USED_IN_COOKING,
+		['naval'] = 'naval equipment',
 		['follower'] = 'follower',
 		['followe'] = 'follower',
-		['follow'] = 'follower'
+		['follow'] = 'follower',
 	}
 }
 
