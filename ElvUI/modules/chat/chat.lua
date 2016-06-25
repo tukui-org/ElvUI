@@ -471,6 +471,7 @@ function CH:StyleChat(frame)
 	editbox.historyLines = ElvCharacterDB.ChatEditHistory
 	editbox.historyIndex = 0
 	editbox:HookScript("OnArrowPressed", OnArrowPressed)
+	editbox:Hide()
 	
 	for i, text in pairs(ElvCharacterDB.ChatEditHistory) do
 		--editbox:AddHistoryLine(text)
@@ -684,6 +685,8 @@ function CH:UpdateChatTabs()
 				CH:SetupChatTabs(tab, false)
 			end
 		elseif not isDocked and chat:IsShown() then
+			tab:SetParent(RightChatPanel)
+			chat:SetParent(RightChatPanel)
 			CH:SetupChatTabs(tab, fadeUndockedTabs and true or false)
 		else
 			if E.db.chat.panelBackdrop == 'HIDEBOTH' or E.db.chat.panelBackdrop == 'RIGHT' then
@@ -756,7 +759,9 @@ function CH:PositionChat(override)
 			--Pass a 2nd argument which prevents an infinite loop in our ON_FCF_SavePositionAndDimensions function
 			FCF_SavePositionAndDimensions(chat, true)
 
-
+			-- chat:SetParent(LeftChatPanel)
+			tab:SetParent(RightChatPanel)
+			chat:SetParent(RightChatPanel)
 			if chat:IsMovable() then
 				chat:SetUserPlaced(true)
 			end
@@ -766,6 +771,8 @@ function CH:PositionChat(override)
 				CH:SetupChatTabs(tab, false)
 			end
 		elseif not isDocked and chat:IsShown() then
+			tab:SetParent(UIParent)
+			chat:SetParent(UIParent)
 			CH:SetupChatTabs(tab, fadeUndockedTabs and true or false)
 		else
 			if id ~= 2 and not (id > NUM_CHAT_WINDOWS) then
@@ -786,7 +793,11 @@ function CH:PositionChat(override)
 				--Pass a 2nd argument which prevents an infinite loop in our ON_FCF_SavePositionAndDimensions function
 				FCF_SavePositionAndDimensions(chat, true)
 			end
-
+			if i > 2 then
+				tab:SetParent(GeneralDockManagerScrollFrameChild)
+			else
+				tab:SetParent(GeneralDockManager)
+			end
 			if chat:IsMovable() then
 				chat:SetUserPlaced(true)
 			end
@@ -1499,7 +1510,7 @@ function CH:SetupChat(event, ...)
 	if self.db.hyperlinkHover then
 		self:EnableHyperlink()
 	end
-
+	GeneralDockManager:SetParent(LeftChatPanel)
 	-- self:ScheduleRepeatingTimer('PositionChat', 1)
 	self:PositionChat(true)
 
