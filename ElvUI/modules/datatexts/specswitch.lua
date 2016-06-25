@@ -32,6 +32,13 @@ local menuList = {
 	{ notCheckable = true },
 	{ notCheckable = true }
 }
+local specList = {
+	{ text = SPECIALIZATION, isTitle = true, notCheckable = true },
+	{ notCheckable = true },
+	{ notCheckable = true },
+	{ notCheckable = true },
+	{ notCheckable = true }
+}
 
 local function OnEvent(self, event)
 	lastPanel = self
@@ -105,10 +112,19 @@ local function OnEnter(self)
 	end
 
 	DT.tooltip:AddLine(' ')
-	DT.tooltip:AddLine(L["|cffFFFFFFLeft Click:|r Show Talent Specialization UI"])
+	DT.tooltip:AddLine(L["|cffFFFFFFLeft Click:|r Change Talent Specialization"])
+	DT.tooltip:AddLine(L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"])
 	DT.tooltip:AddLine(L["|cffFFFFFFRight Click:|r Change Loot Specialization"])
 
 	DT.tooltip:Show()
+end
+
+local function SetSpec(id)
+	local spec = _G["PlayerTalentFrameSpecializationSpecButton"..id]
+	SpecButton_OnClick(spec)
+	local learn = PlayerTalentFrameSpecializationLearnButton
+
+	StaticPopup_Show("CONFIRM_LEARN_SPEC", nil, nil, learn:GetParent())
 end
 
 local function OnClick(self, button)
@@ -116,14 +132,27 @@ local function OnClick(self, button)
 	if not specIndex then return end
 
 	if button == "LeftButton" then
+		DT.tooltip:Hide()
 		if not PlayerTalentFrame then
-			TalentFrame_LoadUI()
+			LoadAddOn("Blizzard_TalentUI")
 		end
-
-		if not PlayerTalentFrame:IsShown() then
-			ShowUIPanel(PlayerTalentFrame)
+		if IsShiftKeyDown() then 
+			if not PlayerTalentFrame:IsShown() then
+				ShowUIPanel(PlayerTalentFrame)
+			else
+				HideUIPanel(PlayerTalentFrame)
+			end
 		else
-			HideUIPanel(PlayerTalentFrame)
+			for index = 1, 4 do
+				local id, name, _, texture = GetSpecializationInfo(index);
+				if ( id ) then
+					specList[index + 1].text = format('|T%s:14:14:0:0:64:64:4:60:4:60|t  %s', texture, name)
+					specList[index + 1].func = function() SetSpec(index) end
+				else
+					specList[index + 1] = nil
+				end
+			end
+			EasyMenu(specList, menuFrame, "cursor", -15, -7, "MENU", 2)
 		end
 	else
 		DT.tooltip:Hide()
