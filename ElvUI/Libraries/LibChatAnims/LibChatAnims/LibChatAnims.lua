@@ -1,6 +1,6 @@
 
-local MAJOR, MINOR = "LibChatAnims", 1 -- Bump minor on changes
-local LCA, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
+local MAJOR, MINOR = "LibChatAnims", 2 -- Bump minor on changes
+local LCA = LibStub:NewLibrary(MAJOR, MINOR)
 if not LCA then return end -- No upgrade needed
 
 LCA.animations = LCA.animations or {} -- Animation storage
@@ -39,12 +39,14 @@ FCFDockOverflowButton_UpdatePulseState = function(self)
 
 			local fade1 = anims[tex]:CreateAnimation("Alpha")
 			fade1:SetDuration(1)
-			fade1:SetChange(1)
+			fade1:SetFromAlpha(0)
+			fade1:SetToAlpha(1)
 			fade1:SetOrder(1)
 
 			local fade2 = anims[tex]:CreateAnimation("Alpha")
 			fade2:SetDuration(1)
-			fade2:SetChange(-1)
+			fade2:SetFromAlpha(1)
+			fade2:SetToAlpha(0)
 			fade2:SetOrder(2)
 		end
 		tex:Show()
@@ -99,12 +101,14 @@ FCFDockOverflowListButton_SetValue = function(button, chatFrame)
 
 			local fade1 = anims[button.glow]:CreateAnimation("Alpha")
 			fade1:SetDuration(1)
-			fade1:SetChange(1)
+			fade1:SetFromAlpha(0)
+			fade1:SetToAlpha(1)
 			fade1:SetOrder(1)
 
 			local fade2 = anims[button.glow]:CreateAnimation("Alpha")
 			fade2:SetDuration(1)
-			fade2:SetChange(-1)
+			fade2:SetFromAlpha(1)
+			fade2:SetToAlpha(0)
 			fade2:SetOrder(2)
 		end
 		button.glow:Show()
@@ -130,12 +134,14 @@ FCF_StartAlertFlash = function(chatFrame)
 
 			local fade1 = anims[chatFrame.minFrame]:CreateAnimation("Alpha")
 			fade1:SetDuration(1)
-			fade1:SetChange(1)
+			fade1:SetFromAlpha(0)
+			fade1:SetToAlpha(1)
 			fade1:SetOrder(1)
 
 			local fade2 = anims[chatFrame.minFrame]:CreateAnimation("Alpha")
 			fade2:SetDuration(1)
-			fade2:SetChange(-1)
+			fade2:SetFromAlpha(1)
+			fade2:SetToAlpha(0)
 			fade2:SetOrder(2)
 		end
 		chatFrame.minFrame.glow:Show()
@@ -150,12 +156,14 @@ FCF_StartAlertFlash = function(chatFrame)
 
 		local fade1 = anims[chatTab.glow]:CreateAnimation("Alpha")
 		fade1:SetDuration(1)
-		fade1:SetChange(1)
+		fade1:SetFromAlpha(0)
+		fade1:SetToAlpha(1)
 		fade1:SetOrder(1)
 
 		local fade2 = anims[chatTab.glow]:CreateAnimation("Alpha")
 		fade2:SetDuration(1)
-		fade2:SetChange(-1)
+		fade2:SetFromAlpha(1)
+		fade2:SetToAlpha(0)
 		fade2:SetOrder(2)
 	end
 	chatTab.glow:Show()

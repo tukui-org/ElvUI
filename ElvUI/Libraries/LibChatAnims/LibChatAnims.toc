@@ -5,7 +5,7 @@
 ## X-Category: Library
 ## OptionalDeps: LibStub
 ## X-License: CC BY-NC-SA 3.0
-## X-Curse-Packaged-Version: r20-release
+## X-Curse-Packaged-Version: r24-release
 ## X-Curse-Project-Name: LibChatAnims
 ## X-Curse-Project-ID: libchatanims
 ## X-Curse-Repository-ID: wow/libchatanims/mainline
