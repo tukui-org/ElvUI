@@ -135,7 +135,26 @@ local function GetUnitSettings(unit, name)
 						set = function(info, value) E.db.nameplates.units[unit].showLevel = value; NP:ConfigureAll() end,	
 					},				
 				},			
-			},			
+			},	
+			nameGroup = {
+				order = -1,
+				name = L["Name"],
+				type = "group",	
+				args = {
+					header = {
+						order = 0,
+						type = "header",
+						name = L["Name"],
+					},					
+					enable = {
+						order = 1,
+						name = L["Enable"],
+						type = "toggle",	
+						get = function(info) return E.db.nameplates.units[unit].showName end,
+						set = function(info, value) E.db.nameplates.units[unit].showName = value; NP:ConfigureAll() end,	
+					},				
+				},			
+			},							
 			healthGroup = {
 				order = 2,
 				name = L["Health"],

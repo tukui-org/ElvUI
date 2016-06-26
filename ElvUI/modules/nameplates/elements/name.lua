@@ -4,7 +4,7 @@ local LSM = LibStub("LibSharedMedia-3.0")
 
 function mod:UpdateElement_Name(frame)
 	local name, realm = UnitName(frame.displayedUnit)
-	if(not name) then return end
+	if(not self.db.units[frame.UnitType].showName or not name) then return end
 	
 	frame.Name:SetText(name)
 	

@@ -227,6 +227,7 @@ P["nameplates"] = {
 					['format'] = 'CURRENT',
 				}
 			},
+			['showName'] = false,
 			['showLevel'] = false,
 			['powerbar'] = {
 				['enable'] = true,
@@ -274,6 +275,7 @@ P["nameplates"] = {
 					['format'] = 'CURRENT',
 				}
 			},
+			['showName'] = true,
 			['showLevel'] = false,
 			['powerbar'] = {
 				['enable'] = true,
@@ -322,6 +324,7 @@ P["nameplates"] = {
 					['format'] = 'CURRENT',
 				}
 			},
+			['showName'] = true,
 			['showLevel'] = false,
 			['powerbar'] = {
 				['enable'] = false,
@@ -370,6 +373,7 @@ P["nameplates"] = {
 					['format'] = 'CURRENT',
 				}
 			},
+			['showName'] = true,
 			['showLevel'] = true,
 			['powerbar'] = {
 				['enable'] = false,
@@ -417,6 +421,7 @@ P["nameplates"] = {
 					['format'] = 'CURRENT',
 				}
 			},
+			['showName'] = true,
 			['showLevel'] = true,
 			['powerbar'] = {
 				['enable'] = false,
@@ -465,6 +470,7 @@ P["nameplates"] = {
 					['format'] = 'CURRENT',
 				}
 			},
+			['showName'] = true,
 			['showLevel'] = true,
 			['powerbar'] = {
 				['enable'] = false,
