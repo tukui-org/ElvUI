@@ -163,7 +163,7 @@ end
 function mod:CreateAuraIcon(parent)
 	local aura = CreateFrame("Frame", nil, parent)
 	self:StyleFrame(aura, false)
-	aura:SetHeight(20)
+	aura:SetHeight(18)
 
 	aura.icon = aura:CreateTexture(nil, "OVERLAY")
 	aura.icon:SetAllPoints()
@@ -188,6 +188,7 @@ function mod:Auras_SizeChanged(width, height)
 	local numAuras = #self.icons
 	for i=1, numAuras do
 		self.icons[i]:SetWidth((width - (mod.mult*numAuras)) / numAuras)
+		self.icons[i]:SetHeight(18 * self:GetParent().HealthBar.currentScale or 1)
 	end
 end
 
