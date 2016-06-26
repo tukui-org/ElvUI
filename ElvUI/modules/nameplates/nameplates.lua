@@ -86,7 +86,7 @@ function mod:SetTargetFrame(frame)
 	--Match parent's frame level for targetting purposes. Best time to do it is here.
 	local parent = self:GetNamePlateForUnit(frame.unit);
 	if(parent) then
-		frame:SetFrameLevel(parent:GetFrameLevel())
+		frame:SetFrameLevel(parent:GetFrameLevel() + 2)
 	end
 
 	if(UnitIsUnit(frame.unit, "target") and not frame.isTarget) then
@@ -129,9 +129,11 @@ function mod:StyleFrame(frame, useBackdrop)
 		parent = frame:GetParent()
 		parent:CreateBackdrop("Transparent")
 		parent.backdrop:SetOutside(frame)
+		parent.backdrop:SetFrameLevel(1)
 	end
 
 	parent:CreateBackdrop("Transparent")
+	parent.backdrop:SetFrameLevel(1)
 end
 
 
