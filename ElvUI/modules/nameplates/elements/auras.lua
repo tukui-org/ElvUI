@@ -205,13 +205,13 @@ function mod:ConstructElement_Auras(frame, maxAuras, side)
 			if(i == 1) then
 				auras.icons[i]:SetPoint("LEFT", auras, "LEFT")
 			else
-				auras.icons[i]:SetPoint("LEFT", auras.icons[i-1], "RIGHT", self.mult, 0)
+				auras.icons[i]:SetPoint("LEFT", auras.icons[i-1], "RIGHT", E.Border + E.Spacing*3, 0)
 			end
 		else
 			if(i == 1) then
 				auras.icons[i]:SetPoint("RIGHT", auras, "RIGHT")
 			else
-				auras.icons[i]:SetPoint("RIGHT", auras.icons[i-1], "LEFT", -self.mult, 0)
+				auras.icons[i]:SetPoint("RIGHT", auras.icons[i-1], "LEFT", -(E.Border + E.Spacing*3), 0)
 			end		
 		end
 	end
