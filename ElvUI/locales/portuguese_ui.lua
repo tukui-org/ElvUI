@@ -212,7 +212,6 @@ L["Can't Roll"] = "Não pode rolar"
 L["Disband Group"] = "Dissolver Grupo"
 L["Enable"] = "Ativar"
 L["Experience"] = "Experiência"
-L["Farm Mode"] = true; -- Minimap middle click menu
 L["Fishy Loot"] = "Saque de Peixes"
 L["iLvl"] = true; --Column header in raidbrowser
 L["Important Group Members:"] = true;

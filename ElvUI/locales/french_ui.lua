@@ -212,7 +212,6 @@ L["Can't Roll"] = "Ne peut pas jeter les dés"
 L["Disband Group"] = "Dissoudre le groupe"
 L["Enable"] = "Activer" --Doesn't fit a section since it's used a lot of places
 L["Experience"] = "Expérience"
-L["Farm Mode"] = "Mode farm"; -- wu use 'farm' in french, 'ferme' is aplace full of sheep and chicken.
 L["Fishy Loot"] = "Butin de pêche"
 L["iLvl"] = "iLvl"; --Column header in raidbrowser
 L["Important Group Members:"] = "Membres importants du groupe";
@@ -356,7 +355,6 @@ L["The buff panel to the right of minimap is a list of your consolidated buffs. 
 L["The focus unit can be set by typing /focus when you are targeting the unit you want to focus. It is recommended you make a macro to do this."] = "Le cadre de focus peut être défini en tapant /focus quand vous êtes en train de cibler une unité que vous voulez focus. Il est recommandé de faire une macro pour cela."
 L["To move abilities on the actionbars by default hold shift + drag. You can change the modifier key from the actionbar options menu."] = "Pour déplacer par défaut les capacités des barres d'actions, maintenez MAJ + déplacer. Vous pouvez modifier la touche de modification dans le menu des barres d'actions."
 L["To setup which channels appear in which chat frame, right click the chat tab and go to settings."] = "Pour configurer quels canaux de discussions doivent apparaitre dans les fenêtres de Chat, faites un clic droit sur l'onglet de Chat et allez dans les paramètres."
-L["Using the /farmmode <size> command will spawn a larger minimap on your screen that can be moved around, very useful when farming."] = "En utilisant la commande /farmmode <taille>, vous pouvez afficher une minicarte plus grande qui peut être déplacée. Très utile pour les métiers de récolte."
 L["You can access copy chat and chat menu functions by mouse over the top right corner of chat panel and left/right click on the button that will appear."] = "Vous pouvez accéder à une copie du Chat et des fonctions du Chat en survolant avec votre souris le coin haut droit de la fenêtre de discussion. Cliquez ensuite sur le bouton."
 L["You can see someones average item level of their gear by holding shift and mousing over them. It should appear inside the tooltip."] = "Vous pouvez voir le niveau d'objet moyen de n'importe qui en maintenant la touche MAJ enfoncée puis en passant votre souris sur un joueur. Le score apparaitra dans la bulle d'information."
 L["You can set your keybinds quickly by typing /kb."] = "Vous pouvez assignez rapidement vos raccourcis en tapant /kb."

@@ -212,7 +212,6 @@ L["Can't Roll"] = "주사위를 굴릴 수 없습니다."
 L["Disband Group"] = "그룹 해산"
 L["Enable"] = "사용"
 L["Experience"] = "경험치"
-L["Farm Mode"] = "채집 모드" -- Minimap middle click menu
 L["Fishy Loot"] = "낚시 전리품"
 L["iLvl"] = "템렙" --Column header in raidbrowser
 L["Important Group Members:"] = "중요 멤버"
@@ -356,7 +355,6 @@ L["The buff panel to the right of minimap is a list of your consolidated buffs. 
 L["The focus unit can be set by typing /focus when you are targeting the unit you want to focus. It is recommended you make a macro to do this."] = "ElvUI의 특정 기능만 따로 독립애드온으로 분리하는 것은 불가능합니다."
 L["To move abilities on the actionbars by default hold shift + drag. You can change the modifier key from the actionbar options menu."] = "기본적으로 단축바에서 스킬을 뺄려면 |cff2eb7e4Shift 키를 누른 상태에서 드래그|r해야 합니다. 수정키는 /ec -> 행동단축바 항목에서 바꿀 수 있습니다."
 L["To setup which channels appear in which chat frame, right click the chat tab and go to settings."] = "채팅창에 표시할 채널은 채팅탭을 우클릭하면 뜨는 메뉴의 설정에서 변경할 수 있습니다."
-L["Using the /farmmode <size> command will spawn a larger minimap on your screen that can be moved around, very useful when farming."] = "|cff2eb7e4/farmmode|r 를 입력하면 미니맵을 채집 모드로 전환합니다. 미니맵으로 채광이나 약초의 위치를 확인하는데 아주 유용합니다."
 L["You can access copy chat and chat menu functions by mouse over the top right corner of chat panel and left/right click on the button that will appear."] = "채팅창 우측상단의 문서 아이콘을 클릭하면 대화 내역을 복사할 수 있습니다. 우클릭하면 채팅에 관련된 메뉴가 나옵니다."
 L["You can see someones average item level of their gear by holding shift and mousing over them. It should appear inside the tooltip."] = "/ec -> 툴팁 항목에서 |cff2eb7e4[특성/아이템레벨 표시]|r 기능을 체크하고 Shift를 누른 상태로 마우스를 대면 그 유저의 템렙과 특성을 툴팁에 표시합니다."
 L["You can set your keybinds quickly by typing /kb."] = "|cff2eb7e4/kb|r 를 입력하면 간편하게 단축키를 설정할 수 있는 기능이 실행됩니다."

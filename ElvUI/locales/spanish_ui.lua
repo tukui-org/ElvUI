@@ -212,7 +212,6 @@ L["Can't Roll"] = "No puede tirar dados"
 L["Disband Group"] = "Disolver Grupo"
 L["Enable"] = "Habilitar"
 L["Experience"] = "Experiencia"
-L["Farm Mode"] = true; -- Minimap middle click menu
 L["Fishy Loot"] = "Botín Sospechoso"
 L["iLvl"] = true; --Column header in raidbrowser
 L["Important Group Members:"] = true;
@@ -356,7 +355,6 @@ L["The buff panel to the right of minimap is a list of your consolidated buffs. 
 L["The focus unit can be set by typing /focus when you are targeting the unit you want to focus. It is recommended you make a macro to do this."] = "El foco puede establecerse escribiendo /enfoque cuando tienes seleccionado al objetivo al cual quieres hacer foco. Es recomendable que hagas una macro para esto."
 L["To move abilities on the actionbars by default hold shift + drag. You can change the modifier key from the actionbar options menu."] = "Para mover habilidades a las barras de acción mantener shift + arrastrar. Puedes cambiar la tecla de modificación desde el menú de opciones de la barra de acción."
 L["To setup which channels appear in which chat frame, right click the chat tab and go to settings."] = "Para configurar que canales aparecen en el chat, haz clic con el botón derecho en la pestaña del chat y elige opciones."
-L["Using the /farmmode <size> command will spawn a larger minimap on your screen that can be moved around, very useful when farming."] = "El comando /farmmode <tamaño> hace aparecer un minimapa más grande en su pantalla que puede moverse, muy útil para recolectar."
 L["You can access copy chat and chat menu functions by mouse over the top right corner of chat panel and left/right click on the button that will appear."] = "Puedes acceder a copiar y a las opciones del chat pasando el ratón sobre la esquina superior derecha del panel del chat y haciendo click en el botón que aparece."
 L["You can see someones average item level of their gear by holding shift and mousing over them. It should appear inside the tooltip."] = "Puedes ver la media de nivel de objeto de un objetivo manteniendo pulsado shift mientras pasas el ratón por encima de él. El iNvl aparecerá en la descripción emergente."
 L["You can set your keybinds quickly by typing /kb."] = "Puedes establecer tus atajos rapidamente escribiendo /kb."

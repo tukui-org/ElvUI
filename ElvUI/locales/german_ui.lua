@@ -212,7 +212,6 @@ L["Can't Roll"] = "Es kann nicht gewürfelt werden."
 L["Disband Group"] = "Gruppe auflösen"
 L["Enable"] = "Eingeschaltet" --Doesn't fit a section since it's used a lot of places
 L["Experience"] = "Erfahrung"
-L["Farm Mode"] = "Farmmodus" -- Minimap middle click menu
 L["Fishy Loot"] = "Faule Beute"
 L["iLvl"] = "iLvl" --Column header in raidbrowse
 L["Important Group Members:"] = "Wichtige Gruppenmitglieder:"
@@ -356,7 +355,6 @@ L["The buff panel to the right of minimap is a list of your consolidated buffs. 
 L["The focus unit can be set by typing /focus when you are targeting the unit you want to focus. It is recommended you make a macro to do this."] = "Du kannst, während du ein Ziel hast, das Fokusfenster durch die Eingabe von /fokus setzen. Es wird empfohlen ein Makro dafür zu nutzen."
 L["To move abilities on the actionbars by default hold shift + drag. You can change the modifier key from the actionbar options menu."] = "Um Fähigkeiten auf der Aktionsleiste zu verschieben nutze Shift und bewege zeitgleich die Maus. Du kannst die Modifier-Taste im Aktionsleistenmenü umstellen."
 L["To setup which channels appear in which chat frame, right click the chat tab and go to settings."] = "Um einzustellen welcher Kanal im welchem Chatfenster angezeigt werden soll, klicke rechts auf das Chattab und gehe auf Einstellungen."
-L["Using the /farmmode <size> command will spawn a larger minimap on your screen that can be moved around, very useful when farming."] = "Benutze das /farmmode <Größe> Kommando um eine größere Minimap auf dem Bildschirm erscheinen zu lassen, die sich verschieben lässt. Sehr nützlich zum Farmen."
 L["You can access copy chat and chat menu functions by mouse over the top right corner of chat panel and left/right click on the button that will appear."] = "Du kannst die Funktionen Chat Kopieren und Chatmenü aufrufen, wenn du die Maus in die obere rechte Ecke des Chatfensters bewegst und links-/rechtsklickst."
 L["You can see someones average item level of their gear by holding shift and mousing over them. It should appear inside the tooltip."] = "Du kannst die durchschnittliche Gegenstandsstufe von jemanden sehen, wenn du bei gedrückter Shift-Taste mit der Maus über ihn fährst. Die Gegenstandsstufe wird dann im Tooltip angezeigt."
 L["You can set your keybinds quickly by typing /kb."] = "Du kannst deine Tastaturbelegung schnell ändern, wenn du /kb eintippst."

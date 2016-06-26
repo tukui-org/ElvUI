@@ -212,7 +212,6 @@ L["Can't Roll"] = "无法需求此装备"
 L["Disband Group"] = "解散队伍"
 L["Enable"] = "启用"
 L["Experience"] = "经验/声望条"
-L["Farm Mode"] = true; -- Minimap middle click menu
 L["Fishy Loot"] = "贪婪"
 L["iLvl"] = true; --Column header in raidbrowser
 L["Important Group Members:"] = true;
@@ -356,7 +355,6 @@ L["The buff panel to the right of minimap is a list of your consolidated buffs. 
 L["The focus unit can be set by typing /focus when you are targeting the unit you want to focus. It is recommended you make a macro to do this."] = "你可以通过 /focus 命令设置焦点目标."
 L["To move abilities on the actionbars by default hold shift + drag. You can change the modifier key from the actionbar options menu."] = "你可以通过按住Shift拖动技能条中的按键. 你可以在 Blizzard 的快捷列设置中更改按键."
 L["To setup which channels appear in which chat frame, right click the chat tab and go to settings."] = "你可以通过右键点击对话框标签栏设置你需要在对话框内显示的频道."
-L["Using the /farmmode <size> command will spawn a larger minimap on your screen that can be moved around, very useful when farming."] = "使用 /farmmode 命令可以切换小地图的显示模式为大型可移动小地图, 这在你Farm的时候会很有用."
 L["You can access copy chat and chat menu functions by mouse over the top right corner of chat panel and left/right click on the button that will appear."] = "你可以通过鼠标滑过对话框右上角点击复制图标打开对话复制窗口."
 L["You can see someones average item level of their gear by holding shift and mousing over them. It should appear inside the tooltip."] = "你可以通过按住Shift并将鼠标滑过目标看到目标的装备等级, 这将显示在你的鼠标提示框内."
 L["You can set your keybinds quickly by typing /kb."] = "你可以通过输入 /kb 快速绑定按键."
