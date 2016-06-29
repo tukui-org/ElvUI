@@ -500,8 +500,9 @@ end
 --This frame everything in ElvUI should be anchored to for Eyefinity support.
 E.UIParent = CreateFrame('Frame', 'ElvUIParent', UIParent);
 E.UIParent:SetFrameLevel(UIParent:GetFrameLevel());
-E.UIParent:SetPoint('CENTER', UIParent, 'CENTER');
+E.UIParent:SetPoint('BOTTOM', UIParent, 'BOTTOM');
 E.UIParent:SetSize(UIParent:GetSize());
+E.UIParent.origHeight = E.UIParent:GetHeight()
 E['snapBars'][#E['snapBars'] + 1] = E.UIParent
 
 E.HiddenFrame = CreateFrame('Frame')
@@ -1478,5 +1479,28 @@ function E:Initialize()
 			self:ShowTukuiFrame()
 		end
 		self:Print("Thank you for being a good sport, type /aprilfools to revert the changes.")
+	end
+
+	--Resize ElvUIParent when entering/leaving Class Hall (stupid Class Hall Command Bar)
+	local function HookForResize()
+		OrderHallCommandBar:HookScript("OnShow", function()
+			local height = E.UIParent.origHeight - OrderHallCommandBar:GetHeight()
+			E.UIParent:SetHeight(height)
+		end)
+		OrderHallCommandBar:HookScript("OnHide", function()
+			E.UIParent:SetHeight(E.UIParent.origHeight)
+		end)
+	end
+
+	if OrderHallCommandBar then
+		HookForResize()
+	else
+		local f = CreateFrame("Frame")
+		f:RegisterEvent("ADDON_LOADED")
+		f:SetScript("OnEvent", function(self, event, addon)
+			if addon == "Blizzard_OrderHallUI" then
+				HookForResize()
+			end
+		end)
 	end
 end
