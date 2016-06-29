@@ -414,7 +414,7 @@ function M:Initialize()
 	MiniMapMailBorder:Hide()
 	MiniMapMailIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\mail")
 
-	if E.private.general.minimap.hideGarrison then
+	if E.private.general.minimap.hideClassHallReport then
 		GarrisonLandingPageMinimapButton:Kill()
 		GarrisonLandingPageMinimapButton.IsShown = function() return true end
 	end

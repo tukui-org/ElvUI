@@ -16,7 +16,7 @@ V['general'] = {
 	['replaceBlizzFonts'] = true,
 	['minimap'] = {
 		['enable'] = true,
-		['hideGarrison'] = true,
+		['hideClassHallReport'] = false,
 		['hideCalendar'] = true,
 	},
 }
