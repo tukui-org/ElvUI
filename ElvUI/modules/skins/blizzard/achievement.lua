@@ -12,6 +12,7 @@ local function LoadSkin(event)
 	local function SkinAchievement(Achievement, BiggerIcon)
 		if Achievement.isSkinned then return; end
 
+		Achievement:SetFrameLevel(Achievement:GetFrameLevel() + 2)
 		Achievement:StripTextures(true)
 		Achievement:CreateBackdrop("Default", true)
 		Achievement.backdrop:SetInside()
