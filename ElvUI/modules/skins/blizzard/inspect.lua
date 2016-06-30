@@ -38,8 +38,8 @@ local function LoadSkin()
 	--Update texture according to prestige
 	hooksecurefunc("InspectPVPFrame_Update", function()
 		local level = UnitLevel(INSPECTED_UNIT);
-		local prestigeLevel = UnitPrestige(INSPECTED_UNIT);
 		if not (level < MAX_PLAYER_LEVEL_TABLE[LE_EXPANSION_LEVEL_CURRENT]) then
+			local prestigeLevel = UnitPrestige(INSPECTED_UNIT);
 			if (prestigeLevel > 0) then
 				portrait:SetTexture(GetPrestigeInfo(prestigeLevel));
 			end
