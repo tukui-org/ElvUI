@@ -75,7 +75,7 @@ local function LoadSkin()
 		end
 	end)
 
-	--InspectPVPFrameBottom:Kill()
+	InspectPVPFrame.BG:Kill()
 	InspectGuildFrameBG:Kill()
 
 	InspectTalentFrame:StripTextures()
