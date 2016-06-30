@@ -63,7 +63,7 @@ function AFK:SetAFK(status)
 	if(status) then
 		MoveViewLeftStart(CAMERA_SPEED);
 		self.AFKMode:Show()
-		CloseAllBags()
+		CloseAllWindows()
 		UIParent:Hide()
 
 		if(IsInGuild()) then
