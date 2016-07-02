@@ -394,7 +394,7 @@ function AB:PLAYER_REGEN_ENABLED()
 end
 
 local function Vehicle_OnEvent(self, event)
-	if ( CanExitVehicle() and ActionBarController_GetCurrentActionBarState() == LE_ACTIONBAR_STATE_MAIN ) and not E.db.general.minimap.icons.vehicleLeave.hide then
+	if ( CanExitVehicle() ) and not E.db.general.minimap.icons.vehicleLeave.hide then
 		self:Show()
 		self:GetNormalTexture():SetVertexColor(1, 1, 1)
 		self:EnableMouse(true)
