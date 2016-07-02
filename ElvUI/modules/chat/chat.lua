@@ -1002,7 +1002,7 @@ end
 
 
 local PluginIconsCalls = {}
-function CH:AddPluginIcons(Plugin, func)
+function CH:AddPluginIcons(func)
 	tinsert(PluginIconsCalls, func)
 end
 
