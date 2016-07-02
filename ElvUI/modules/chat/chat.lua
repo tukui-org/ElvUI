@@ -249,7 +249,7 @@ local specialChatIcons = {
 		["Elv"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\elvui.blp:13:22|t",
 	},
 	["Arathor"] = {
-	   ["Mallouh"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\elvui.blp:13:22|t",
+		["Mallouh"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\elvui.blp:13:22|t",
 	}
 }
 
@@ -1000,8 +1000,32 @@ function CH:GetBNFriendColor(name, id)
 	end
 end
 
-function CH:GetPluginReplacementIcon(nameRealm)
-	return
+
+local PluginIconsCalls = {}
+function CH:AddPluginIcons(Plugin, func)
+	tinsert(PluginIconsCalls, func)
+end
+
+function CH:GetPluginIcon(sender)
+	local icon
+	for i = 1, #PluginIconsCalls do
+		icon = PluginIconsCalls[i](sender)
+		if icon then break end
+	end
+	return icon
+end
+
+local function GetChatIcons(sender)
+	local pflag
+	if(specialChatIcons[PLAYER_REALM] and specialChatIcons[PLAYER_REALM][E.myname] ~= true) then
+		for realm, _ in pairs(specialChatIcons) do
+			for character, texture in pairs(specialChatIcons[realm]) do
+				if sender == character.."-"..realm then
+					return texture
+				end
+			end
+		end
+	end
 end
 
 --Copied from FrameXML/ChatFrame.lua and modified to use pcall on GetPlayerInfoByGUID
@@ -1280,51 +1304,39 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			end
 
 			-- Add AFK/DND flags
-			local pflag;
-			local pluginIcon, flags = CH:GetPluginReplacementIcon(arg2, arg6, type)
-			if(pluginIcon and flags) then
-				pflag = pluginIcon
-			else
-				if(strlen(arg6) > 0) then
-					if ( arg6 == "GM" ) then
-						--If it was a whisper, dispatch it to the GMChat addon.
-						if ( type == "WHISPER" ) then
-							return;
-						end
-						--Add Blizzard Icon, this was sent by a GM
-						pflag = "|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t ";
-					elseif ( arg6 == "DEV" ) then
-						--Add Blizzard Icon, this was sent by a Dev
-						pflag = "|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t ";
-					else
-						pflag = _G["CHAT_FLAG_"..arg6];
+			local pflag = GetChatIcons(arg2);
+			local pluginIcon = CH:GetPluginIcon(arg2)
+			if(strlen(arg6) > 0) then
+				if ( arg6 == "GM" ) then
+					--If it was a whisper, dispatch it to the GMChat addon.
+					if ( type == "WHISPER" ) then
+						return;
 					end
+					--Add Blizzard Icon, this was sent by a GM
+					pflag = "|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t ";
+				elseif ( arg6 == "DEV" ) then
+					--Add Blizzard Icon, this was sent by a Dev
+					pflag = "|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t ";
+				elseif ( arg6 == "DND" or arg6 == "AFK") then
+					pflag = (pflag or pluginIcon or "").._G["CHAT_FLAG_"..arg6];
 				else
-					if(specialChatIcons[PLAYER_REALM] and specialChatIcons[PLAYER_REALM][E.myname] ~= true) then
-						for realm, _ in pairs(specialChatIcons) do
-							for character, texture in pairs(specialChatIcons[realm]) do
-								if arg2 == character.."-"..realm then
-									pflag = texture
-								end
-							end
-						end
-					else
-						if(pluginIcon) then
-							pflag = pluginIcon
-						end
-					end
-
-					if(pflag == true) then
-						pflag = nil
-					end
-
-					if(not pflag and lfgRoles[arg2] and (type == "PARTY_LEADER" or type == "PARTY" or type == "RAID" or type == "RAID_LEADER" or type == "INSTANCE_CHAT" or type == "INSTANCE_CHAT_LEADER")) then
-						pflag = lfgRoles[arg2]
-					end
+					pflag = _G["CHAT_FLAG_"..arg6];
+				end
+			else
+				if not pflag and pluginIcon then
+					pflag = pluginIcon
 				end
 
-				pflag = pflag or ""
+				if(pflag == true) then
+					pflag = ""
+				end
+
+				if(lfgRoles[arg2] and (type == "PARTY_LEADER" or type == "PARTY" or type == "RAID" or type == "RAID_LEADER" or type == "INSTANCE_CHAT" or type == "INSTANCE_CHAT_LEADER")) then
+					pflag = lfgRoles[arg2]..(pflag or "")
+				end
 			end
+
+			pflag = pflag or ""
 
 			if ( type == "WHISPER_INFORM" and GMChatFrame_IsGM and GMChatFrame_IsGM(arg2) ) then
 				return;
