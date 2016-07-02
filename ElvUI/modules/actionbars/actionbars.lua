@@ -362,6 +362,12 @@ function AB:CreateBar(id)
 			newstate = GetTempShapeshiftBarIndex() or newstate
 		end
 
+		--Don't change to vehicle page if vehicle has no spells
+		--Instead we use self:GetAttribute("state") to capture the current page
+		if newstate == 12 and not HasVehicleActionBar() then
+			newstate = self:GetAttribute("state")
+		end
+
 		if newstate ~= 0 then
 			self:SetAttribute("state", newstate)
 			control:ChildUpdate("state", newstate)
