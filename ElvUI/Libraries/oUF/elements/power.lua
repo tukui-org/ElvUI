@@ -155,7 +155,7 @@ local Update = function(self, event, unit)
 	end
 
 	local r, g, b, t
-	if(power.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit) and not UnitIsTapDeniedByPlayer(unit) and not UnitIsTapDeniedByAllThreatList(unit)) then
+	if(power.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
 		t = self.colors.tapped
 	elseif(power.colorDisconnected and disconnected) then
 		t = self.colors.disconnected
