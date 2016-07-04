@@ -809,8 +809,6 @@ local function LoadSkin()
 
 	-- Display
 	S:HandleDropDownBox(InterfaceOptionsDisplayPanelOutlineDropDown, 210)
-
-	S:HandleButton(InterfaceOptionsHelpPanelResetTutorials)
 	local optioncheckbox = {
 		-- Display
 		"Display_RaidSettingsEnabledCheckBox",
@@ -862,15 +860,11 @@ local function LoadSkin()
 		"Graphics_TextureResolutionDropDown",
 		"Graphics_FilteringDropDown",
 		"Graphics_ProjectedTexturesDropDown",
-		"Graphics_ViewDistanceDropDown",
-		"Graphics_EnvironmentalDetailDropDown",
-		"Graphics_GroundClutterDropDown",
 		"Graphics_ShadowsDropDown",
 		"Graphics_LiquidDetailDropDown",
 		"Graphics_SunshaftsDropDown",
 		"Graphics_ParticleDensityDropDown",
 		"Graphics_SSAODropDown",
-		"Graphics_RefractionDropDown",
 		"Graphics_DepthEffectsDropDown",
 		"Graphics_LightingQualityDropDown",
 		"Graphics_OutlineModeDropDown",
@@ -878,15 +872,11 @@ local function LoadSkin()
 		"RaidGraphics_TextureResolutionDropDown",
 		"RaidGraphics_FilteringDropDown",
 		"RaidGraphics_ProjectedTexturesDropDown",
-		"RaidGraphics_ViewDistanceDropDown",
-		"RaidGraphics_EnvironmentalDetailDropDown",
-		"RaidGraphics_GroundClutterDropDown",
 		"RaidGraphics_ShadowsDropDown",
 		"RaidGraphics_LiquidDetailDropDown",
 		"RaidGraphics_SunshaftsDropDown",
 		"RaidGraphics_ParticleDensityDropDown",
 		"RaidGraphics_SSAODropDown",
-		"RaidGraphics_RefractionDropDown",
 		"RaidGraphics_DepthEffectsDropDown",
 		"RaidGraphics_LightingQualityDropDown",
 		"RaidGraphics_OutlineModeDropDown",
@@ -900,13 +890,16 @@ local function LoadSkin()
 		"Advanced_MultisampleAlphaTest",
 		"Advanced_PostProcessAntiAliasingDropDown",
 		"Advanced_MultisampleAntiAliasingDropDown",
+		"Advanced_PhysicsInteractionDropDown",
 
 		-- Audio
 		"AudioOptionsSoundPanelHardwareDropDown",
 		"AudioOptionsSoundPanelSoundChannelsDropDown",
+		"AudioOptionsSoundPanelSoundCacheSizeDropDown",
 		"AudioOptionsVoicePanelInputDeviceDropDown",
 		"AudioOptionsVoicePanelChatModeDropDown",
 		"AudioOptionsVoicePanelOutputDeviceDropDown",
+
 		-- Raid Profiles
 		"CompactUnitFrameProfilesProfileSelector",
 		"CompactUnitFrameProfilesGeneralOptionsFrameHealthTextDropdown",
@@ -927,7 +920,9 @@ local function LoadSkin()
 		"AudioOptionsVoicePanelChatMode1KeyBindingButton",
 		"CompactUnitFrameProfilesSaveButton",
 		"CompactUnitFrameProfilesDeleteButton",
-		"InterfaceOptionsSocialPanelTwitterLoginButton"
+		"InterfaceOptionsSocialPanelTwitterLoginButton",
+		"InterfaceOptionsDisplayPanelResetTutorials",
+		"InterfaceOptionsSocialPanelRedockChat"
 	}
 	for _, button in pairs(buttons) do
 		S:HandleButton(_G[button])
@@ -996,8 +991,7 @@ local function LoadSkin()
 		"InterfaceOptionsAccessibilityPanelColorblindStrengthSlider",
 		"OpacityFrameSlider",
 	}
-	Graphics_RightQuality:Kill()
-	RaidGraphics_RightQuality:Kill()
+
 	for _, slider in pairs(sliders) do
 		S:HandleSliderFrame(_G[slider])
 	end
