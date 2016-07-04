@@ -600,7 +600,7 @@ E.Options.args.general = {
 						garrison = {
 							order = 1,
 							type = 'group',
-							name = GARRISON_LOCATION_TOOLTIP,
+							name = ORDER_HALL_LANDING_PAGE_TITLE,
 							get = function(info) return E.db.general.minimap.icons.garrison[ info[#info] ] end,
 							set = function(info, value) E.db.general.minimap.icons.garrison[ info[#info] ] = value; E:GetModule('Minimap'):UpdateSettings() end,
 							args = {
