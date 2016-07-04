@@ -28,7 +28,6 @@ local function LoadSkin()
 		"DropDownList1Backdrop",
 		"DropDownList2Backdrop",
 		"AutoCompleteBox",
-		-- "ConsolidatedBuffsTooltip",
 		"ReadyCheckFrame",
 		"StackSplitFrame",
 		"QueueStatusFrame",
@@ -113,6 +112,9 @@ local function LoadSkin()
 			S:HandleButton(ElvuiMenuButtons)
 		end
 	end
+
+	-- Skin the ElvUI Menu Button
+	S:HandleButton(GameMenuFrame.ElvUI)
 
 	if IsAddOnLoaded("OptionHouse") then
 		S:HandleButton(GameMenuButtonOptionHouse)
@@ -700,58 +702,38 @@ local function LoadSkin()
 
 	local interfacecheckbox = {
 		-- Controls
-		"ControlsPanelBlockChatChannelInvites",
 		"ControlsPanelStickyTargeting",
 		"ControlsPanelAutoDismount",
 		"ControlsPanelAutoClearAFK",
-		"ControlsPanelBlockTrades",
-		"ControlsPanelBlockGuildInvites",
 		"ControlsPanelLootAtMouse",
 		"ControlsPanelAutoLootCorpse",
 		"ControlsPanelInteractOnLeftClick",
-		"ControlsPanelAutoOpenLootHistory",
-		"ControlsPanelReverseCleanUpBags",
-		"ControlsPanelReverseNewLoot",
 		-- Combat
-		"CombatPanelEnemyCastBarsOnOnlyTargetNameplates",
-		"CombatPanelEnemyCastBarsNameplateSpellNames",
-		"CombatPanelAttackOnAssist",
-		"CombatPanelStopAutoAttack",
 		"CombatPanelTargetOfTarget",
-		"CombatPanelShowSpellAlerts",
-		"CombatPanelReducedLagTolerance",
-		"CombatPanelActionButtonUseKeyDown",
-		"CombatPanelEnemyCastBarsOnPortrait",
-		"CombatPanelEnemyCastBarsOnNameplates",
+		"CombatPanelFlashLowHealthWarning",
 		"CombatPanelAutoSelfCast",
-	  "CombatPanelLossOfControl",
+		"CombatPanelLossOfControl",
+		"CombatPanelEnableFloatingCombatText",
 		-- Display
-		"DisplayPanelShowCloak",
-		"DisplayPanelShowHelm",
-		"DisplayPanelShowAggroPercentage",
-		"DisplayPanelPlayAggroSounds",
-		"DisplayPanelShowSpellPointsAvg",
-		"DisplayPanelShowFreeBagSpace",
-		"DisplayPanelCinematicSubtitles",
 		"DisplayPanelRotateMinimap",
-		"DisplayPanelShowAccountAchievments",
 		"DisplayPanelAJAlerts",
-		--Objectives
-		"ObjectivesPanelAutoQuestTracking",
-		"ObjectivesPanelMapFade",
+		"DisplayPanelShowTutorials",
 		-- Social
+		"SocialPanelBlockTrades",
+		"SocialPanelBlockGuildInvites",
+		"SocialPanelBlockChatChannelInvites",
+		"SocialPanelShowAccountAchievments",
+		"SocialPanelOnlineFriends",
+		"SocialPanelOfflineFriends",
+		"SocialPanelBroadcasts",
+		"SocialPanelFriendRequests",
+		"SocialPanelShowToastWindow",
+		"SocialPanelGuildMemberAlert",
 		"SocialPanelProfanityFilter",
 		"SocialPanelSpamFilter",
-		"SocialPanelChatBubbles",
-		"SocialPanelPartyChat",
-		"SocialPanelChatHoverDelay",
-		"SocialPanelGuildMemberAlert",
-		"SocialPanelChatMouseScroll",
 		"SocialPanelEnableTwitter",
-		"SocialPanelWholeChatWindowClickable",
-		-- Action bars
+		-- ActionBars
 		"ActionBarsPanelLockActionBars",
-		"ActionBarsPanelSecureAbilityToggle",
 		"ActionBarsPanelAlwaysShowActionBars",
 		"ActionBarsPanelBottomLeft",
 		"ActionBarsPanelBottomRight",
@@ -760,96 +742,21 @@ local function LoadSkin()
 		"ActionBarsPanelCountdownCooldowns",
 		-- Names
 		"NamesPanelMyName",
-		"NamesPanelFriendlyPlayerNames",
-		"NamesPanelFriendlyPets",
-		"NamesPanelFriendlyGuardians",
-		"NamesPanelFriendlyTotems",
-		"NamesPanelUnitNameplatesFriends",
-		"NamesPanelUnitNameplatesFriendlyGuardians",
-		"NamesPanelUnitNameplatesFriendlyPets",
-		"NamesPanelUnitNameplatesFriendlyTotems",
-		"NamesPanelGuilds",
-		"NamesPanelGuildTitles",
-		"NamesPanelTitles",
 		"NamesPanelNonCombatCreature",
+		"NamesPanelFriendlyPlayerNames",
+		"NamesPanelFriendlyMinions",
 		"NamesPanelEnemyPlayerNames",
-		"NamesPanelEnemyPets",
-		"NamesPanelEnemyGuardians",
-		"NamesPanelEnemyTotems",
-		"NamesPanelUnitNameplatesEnemyPets",
-		"NamesPanelUnitNameplatesEnemies",
-		"NamesPanelUnitNameplatesEnemyGuardians",
-		"NamesPanelUnitNameplatesEnemyTotems",
-		"NamesPanelMinus",
-		"NamesPanelUnitNameplatesEnemyMinus",
-
-		-- Combat Text
-		"CombatTextPanelTargetDamage",
-		"CombatTextPanelPeriodicDamage",
-		"CombatTextPanelPetDamage",
-		"CombatTextPanelHealing",
-		"CombatTextPanelHealingAbsorbTarget",
-		"CombatTextPanelHealingAbsorbSelf",
-		"CombatTextPanelTargetEffects",
-		"CombatTextPanelOtherTargetEffects",
-		"CombatTextPanelEnableFCT",
-		"CombatTextPanelDodgeParryMiss",
-		"CombatTextPanelDamageReduction",
-		"CombatTextPanelRepChanges",
-		"CombatTextPanelReactiveAbilities",
-		"CombatTextPanelFriendlyHealerNames",
-		"CombatTextPanelCombatState",
-		"CombatTextPanelComboPoints",
-		"CombatTextPanelLowManaHealth",
-		"CombatTextPanelEnergyGains",
-		"CombatTextPanelPeriodicEnergyGains",
-		"CombatTextPanelHonorGains",
-		"CombatTextPanelAuras",
-		"CombatTextPanelPetBattle",
-		-- Buffs & Debuffs
-		"BuffsPanelDispellableDebuffs",
-		"BuffsPanelCastableBuffs",
-		"BuffsPanelConsolidateBuffs",
-		"BuffsPanelShowAllEnemyDebuffs",
+		"NamesPanelEnemyMinions",
 		-- Camera
-		"CameraPanelFollowTerrain",
-		"CameraPanelHeadBob",
 		"CameraPanelWaterCollision",
-		"CameraPanelSmartPivot",
 		-- Mouse
 		"MousePanelInvertMouse",
 		"MousePanelClickToMove",
-		"MousePanelWoWMouse",
 		"MousePanelEnableMouseSpeed",
-		-- Help
-		"HelpPanelShowTutorials",
-		"HelpPanelEnhancedTooltips",
-		"HelpPanelShowLuaErrors",
-		"BattlenetPanelOnlineFriends",
-		"BattlenetPanelOfflineFriends",
-		"BattlenetPanelBroadcasts",
-		"BattlenetPanelFriendRequests",
-		"BattlenetPanelShowToastWindow",
-		-- Status Text
-		"StatusTextPanelPlayer",
-		"StatusTextPanelPet",
-		"StatusTextPanelParty",
-		"StatusTextPanelTarget",
-		"StatusTextPanelAlternateResource",
-		"StatusTextPanelXP",
-		-- Unit Frames
-		"UnitFramePanelPartyPets",
-		"UnitFramePanelArenaEnemyFrames",
-		"UnitFramePanelArenaEnemyCastBar",
-		"UnitFramePanelArenaEnemyPets",
-		"UnitFramePanelFullSizeFocusFrame",
-
-		--Assessability
+		-- Accessability
 		"AccessibilityPanelMovePad",
+		"AccessibilityPanelCinematicSubtitles",
 		"AccessibilityPanelColorblindMode",
-
-		--Watev
-		"NamesPanelUnitNameplatesNameplateClassColors",
 	}
 
 	for i = 1, getn(interfacecheckbox) do
@@ -860,34 +767,25 @@ local function LoadSkin()
 			print(interfacecheckbox[i])
 		end
 	end
+
 	local interfacedropdown ={
 		-- Controls
 		"ControlsPanelAutoLootKeyDropDown",
 		-- Combat
-		"CombatPanelTOTDropDown",
 		"CombatPanelFocusCastKeyDropDown",
 		"CombatPanelSelfCastKeyDropDown",
-		"CombatPanelLossOfControlFullDropDown",
-		"CombatPanelLossOfControlSilenceDropDown",
-		"CombatPanelLossOfControlInterruptDropDown",
-		"CombatPanelLossOfControlDisarmDropDown",
-		"CombatPanelLossOfControlRootDropDown",
-		--Objectives
-		"ObjectivesPanelQuestSorting",
+		-- Display
+		"DisplayPanelSelfHighlightDropDown",
+		"DisplayPanelDisplayDropDown",
+		"DisplayPanelChatBubblesDropDown",
 		-- Social
-		"SocialPanelChatStyle",
 		"SocialPanelWhisperMode",
 		"SocialPanelTimestamps",
-		"SocialPanelBnWhisperMode",
-		"SocialPanelConversationMode",
 		-- Action bars
 		"ActionBarsPanelPickupActionKeyDropDown",
 		-- Names
 		"NamesPanelNPCNamesDropDown",
 		"NamesPanelUnitNameplatesMotionDropDown",
-		-- Combat Text
-		"CombatTextPanelFCTDropDown",
-		"CombatTextPanelTargetModeDropDown",
 		-- Camera
 		"CameraPanelStyleDropDown",
 		-- Mouse
@@ -895,20 +793,17 @@ local function LoadSkin()
 		-- Language
 		"LanguagesPanelLocaleDropDown",
 		"LanguagesPanelAudioLocaleDropDown",
-		-- Status Text
-		"StatusTextPanelDisplayDropDown",
-
-		--Assess-ability
+		-- Assessability
 		"AccessibilityPanelColorFilterDropDown",
-
-		--Locales
-		"InterfaceOptionsLanguagesPanelAudioLocaleDropDown",
 	}
+
 	for i = 1, getn(interfacedropdown) do
 		local idropdown = _G["InterfaceOptions"..interfacedropdown[i]]
 		if idropdown then
 			S:HandleDropDownBox(idropdown)
 			DropDownList1:SetTemplate("Transparent")
+		else
+			print(interfacedropdown[i])
 		end
 	end
 
@@ -1022,6 +917,8 @@ local function LoadSkin()
 		if odropdown then
 			S:HandleDropDownBox(odropdown,165)
 			DropDownList1:SetTemplate("Transparent")
+		else
+			print(optiondropdown[i])
 		end
 	end
 	local buttons = {
