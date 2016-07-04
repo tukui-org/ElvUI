@@ -982,14 +982,14 @@ local function LoadSkin()
 		"AudioOptionsVoicePanelAmbienceFade",
 		"AudioOptionsSoundPanelDialogVolume",
 		"InterfaceOptionsCombatPanelSpellAlertOpacitySlider",
-		"InterfaceOptionsCombatPanelMaxSpellStartRecoveryOffset",
-		"InterfaceOptionsBattlenetPanelToastDurationSlider",
 		"InterfaceOptionsCameraPanelMaxDistanceSlider",
 		"InterfaceOptionsCameraPanelFollowSpeedSlider",
 		"InterfaceOptionsMousePanelMouseSensitivitySlider",
 		"InterfaceOptionsMousePanelMouseLookSpeedSlider",
 		"InterfaceOptionsAccessibilityPanelColorblindStrengthSlider",
 		"OpacityFrameSlider",
+		"CompactUnitFrameProfilesGeneralOptionsFrameHeightSlider",
+		"CompactUnitFrameProfilesGeneralOptionsFrameWidthSlider"
 	}
 
 	for _, slider in pairs(sliders) do
