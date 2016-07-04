@@ -21,8 +21,8 @@ local GetInventoryItemTexture = GetInventoryItemTexture
 local IsAddOnLoaded = IsAddOnLoaded
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: BuffFrame, ConsolidatedBuffs, TemporaryEnchantFrame, DebuffTypeColor
--- GLOBALS: Minimap, LeftMiniPanel, InterfaceOptionsFrameCategoriesButton12
+-- GLOBALS: BuffFrame, TemporaryEnchantFrame, DebuffTypeColor, Minimap 
+-- GLOBALS: LeftMiniPanel, InterfaceOptionsFrameCategoriesButton12
 
 local Masque = LibStub("Masque", true)
 local MasqueGroupBuffs = Masque and Masque:Group("ElvUI", "Buffs")
@@ -339,11 +339,8 @@ function A:CreateAuraHeader(filter)
 end
 
 function A:Initialize()
-	--self:Construct_ConsolidatedBuffs()
-
 	if(E.private.auras.disableBlizzard) then
 		BuffFrame:Kill()
-		--ConsolidatedBuffs:Kill()
 		TemporaryEnchantFrame:Kill();
 	end
 
