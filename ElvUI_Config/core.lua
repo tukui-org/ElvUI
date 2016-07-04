@@ -597,12 +597,12 @@ E.Options.args.general = {
 					type = 'group',
 					name = L["Minimap Buttons"],
 					args = {
-						garrison = {
+						classHall = {
 							order = 1,
 							type = 'group',
 							name = ORDER_HALL_LANDING_PAGE_TITLE,
-							get = function(info) return E.db.general.minimap.icons.garrison[ info[#info] ] end,
-							set = function(info, value) E.db.general.minimap.icons.garrison[ info[#info] ] = value; E:GetModule('Minimap'):UpdateSettings() end,
+							get = function(info) return E.db.general.minimap.icons.classHall[ info[#info] ] end,
+							set = function(info, value) E.db.general.minimap.icons.classHall[ info[#info] ] = value; E:GetModule('Minimap'):UpdateSettings() end,
 							args = {
 								scale = {
 									order = 1,

@@ -291,10 +291,10 @@ function M:UpdateSettings()
 	end
 
 	if GarrisonLandingPageMinimapButton then
-		local pos = E.db.general.minimap.icons.garrison.position or "TOPLEFT"
-		local scale = E.db.general.minimap.icons.garrison.scale or 1
+		local pos = E.db.general.minimap.icons.classHall.position or "TOPLEFT"
+		local scale = E.db.general.minimap.icons.classHall.scale or 1
 		GarrisonLandingPageMinimapButton:ClearAllPoints()
-		GarrisonLandingPageMinimapButton:Point(pos, Minimap, pos, E.db.general.minimap.icons.garrison.xOffset or 0, E.db.general.minimap.icons.garrison.yOffset or 0)
+		GarrisonLandingPageMinimapButton:Point(pos, Minimap, pos, E.db.general.minimap.icons.classHall.xOffset or 0, E.db.general.minimap.icons.classHall.yOffset or 0)
 		GarrisonLandingPageMinimapButton:SetScale(scale)
 		if GarrisonLandingPageTutorialBox then
 			GarrisonLandingPageTutorialBox:SetScale(1/scale)
