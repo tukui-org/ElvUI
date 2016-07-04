@@ -337,7 +337,6 @@ local MasqueGroupToTableElement = {
 	["Stance Bar"] = {"actionbar", "stanceBar"},
 	["Buffs"] = {"auras", "buffs"},
 	["Debuffs"] = {"auras", "debuffs"},
-	["Consolidated Buffs"] = {"auras", "consolidatedBuffs"},
 }
 
 local function MasqueCallback(Addon, Group, SkinID, Gloss, Backdrop, Colors, Disabled)
@@ -1162,7 +1161,6 @@ function E:DBConversions()
 		local tempDebuffs = E.db.unitframe.units.boss.debuffs
 		local filterSettings = {
 			"playerOnly",
-			"noConsolidated",
 			"useBlacklist",
 			"useWhitelist",
 			"noDuration",

@@ -560,7 +560,7 @@ E.Options.args.general = {
 					order = 1,
 					type = "toggle",
 					name = L["Enable"],
-					desc = L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the consolidated buffs bar, and prevent you from seeing the minimap datatexts.|r"],
+					desc = L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the minimap datatexts.|r"],
 					get = function(info) return E.private.general.minimap[ info[#info] ] end,
 					set = function(info, value) E.private.general.minimap[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
 				},

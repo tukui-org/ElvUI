@@ -28,7 +28,7 @@ local function LoadSkin()
 		"DropDownList1Backdrop",
 		"DropDownList2Backdrop",
 		"AutoCompleteBox",
-		"ConsolidatedBuffsTooltip",
+		-- "ConsolidatedBuffsTooltip",
 		"ReadyCheckFrame",
 		"StackSplitFrame",
 		"QueueStatusFrame",

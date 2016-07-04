@@ -391,7 +391,6 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.raid.debuffs.xOffset = -4;
 			E.db.unitframe.units.raid.debuffs.yOffset = -7;
 			E.db.unitframe.units.raid.height = 45;
-			E.db.unitframe.units.raid.buffs.noConsolidated = false
 			E.db.unitframe.units.raid.buffs.xOffset = 50;
 			E.db.unitframe.units.raid.buffs.yOffset = -6;
 			E.db.unitframe.units.raid.buffs.clickThrough = true
@@ -413,7 +412,6 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.party.debuffs.xOffset = -4;
 			E.db.unitframe.units.party.debuffs.yOffset = -7;
 			E.db.unitframe.units.party.height = 45;
-			E.db.unitframe.units.party.buffs.noConsolidated = false
 			E.db.unitframe.units.party.buffs.xOffset = 50;
 			E.db.unitframe.units.party.buffs.yOffset = -6;
 			E.db.unitframe.units.party.buffs.clickThrough = true

@@ -37,7 +37,6 @@ V['auras'] = {
 	["masque"] = {
 		["buffs"] = false,
 		["debuffs"] = false,
-		["consolidatedBuffs"] = false,
 	},
 }
 

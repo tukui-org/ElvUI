@@ -107,7 +107,7 @@ local tooltips = {
 	ItemRefShoppingTooltip3,
 	AutoCompleteBox,
 	FriendsTooltip,
-	ConsolidatedBuffsTooltip,
+	-- ConsolidatedBuffsTooltip,
 	ShoppingTooltip1,
 	ShoppingTooltip2,
 	ShoppingTooltip3,
@@ -734,7 +734,7 @@ function TT:SetUnitAura(tt, unit, index, filter)
 	end
 end
 
-function TT:SetConsolidatedUnitAura(tt, unit, index)
+--[[function TT:SetConsolidatedUnitAura(tt, unit, index)
 	local name = GetRaidBuffTrayAuraInfo(index)
 	local _, _, _, _, _, _, _, caster, _, _, id = UnitAura(unit, name)
 	if id and self.db.spellID then
@@ -749,7 +749,7 @@ function TT:SetConsolidatedUnitAura(tt, unit, index)
 
 		tt:Show()
 	end
-end
+end]]
 
 function TT:GameTooltip_OnTooltipSetSpell(tt)
 	local id = select(3, tt:GetSpell())
