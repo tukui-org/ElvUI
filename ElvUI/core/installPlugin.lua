@@ -27,10 +27,14 @@ local function ResetAll()
 	PluginInstallFrame:Size(550, 400)
 end
 
-local function SetPage(PageNum)
+local function SetPage(PageNum, PrevPage)
 	f.CurrentPage = PageNum
+	f.PrevPage = PrevPage
 	ResetAll()
 	PluginInstallStatus:SetValue(PageNum)
+	
+	local r, g, b = E:ColorGradient(f.CurrentPage / f.MaxPage, 1, 0, 0, 1, 1, 0, 0, 1, 0)
+	f.Status:SetStatusBarColor(r, g, b)
 
 	if PageNum == f.MaxPage then
 		PluginInstallNextButton:Disable()
@@ -51,14 +55,14 @@ end
 local function NextPage()
 	if f.CurrentPage ~= f.MaxPage then
 		f.CurrentPage = f.CurrentPage + 1
-		SetPage(f.CurrentPage)
+		SetPage(f.CurrentPage, f.CurrentPage - 1)
 	end
 end
 
 local function PreviousPage()
 	if f.CurrentPage ~= 1 then
 		f.CurrentPage = f.CurrentPage - 1
-		SetPage(f.CurrentPage)
+		SetPage(f.CurrentPage, f.CurrentPage + 1)
 	end
 end
 
@@ -280,6 +284,7 @@ end
 
 function PI:CloseInstall()
 	tremove(self.Installs, 1)
+	if #(self.Installs) > 0 then E:Delay(1, function() PI:RunInstall() end) end
 end
 
 function PI:RunInstall()
