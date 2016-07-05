@@ -242,11 +242,39 @@ function PI:CreateFrame()
 	f:Hide()
 end
 
+--Plugins pass their info using the table like:
+--[[ 
+	addon = {
+		Name = "AddOnName",
+		tutorialImage = "TexturePath",
+		Pages = {
+			[1] = function1,
+			[2] = function2,
+			[3] = function3,
+		}
+	}
+	where function is what previously was used to set layout
+	function function1()
+		PluginInstallFrame.SubTitle:SetText("Title Text")
+		PluginInstallFrame.Desc1:SetText("Desc 1 Tet")
+		PluginInstallFrame.Desc2:SetText("Desc 2 Tet")
+		PluginInstallFrame.Desc3:SetText("Desc 3 Tet")
+
+		PluginInstallFrame.Option1:Show()
+		PluginInstallFrame.Option1:SetScript('OnClick', function() <Do Some Stuff> end)
+		PluginInstallFrame.Option1:SetText("Text 1")
+
+		PluginInstallFrame.Option2:Show()
+		PluginInstallFrame.Option2:SetScript('OnClick', function() <Do Some Other Stuff> end)
+		PluginInstallFrame.Option2:SetText("Text 2")
+	end
+]]
 function PI:Queue(addon)
 	local queue = true
 	for k, v in pairs(self.Installs) do
 		if v.Name == addon.Name then queue = false end
 	end
+
 	if queue then tinsert(self.Installs, #(self.Installs)+1, addon); self:RunInstall() end
 end
 
