@@ -312,7 +312,7 @@ function PI:PendingList()
 	GameTooltip:AddLine(L["List of installations in queue:"], 1, 1, 1)
 	GameTooltip:AddLine(" ")
 	for i = 1, #(self.Installs) do
-		GameTooltip:AddDoubleLine(i..". "..self.Installs[i].Name or UNKNOWN, i == 1 and "|cff00FF00"..L["In Progress"].."|r" or "|cffFF0000"..L["Pending"].."|r")
+		GameTooltip:AddDoubleLine(i..". "..(self.Installs[i].Name or UNKNOWN), i == 1 and "|cff00FF00"..L["In Progress"].."|r" or "|cffFF0000"..L["Pending"].."|r")
 	end
 end
 
