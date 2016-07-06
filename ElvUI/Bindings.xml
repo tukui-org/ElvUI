@@ -2,7 +2,4 @@
   <Binding name="Raid Marker" runOnUp="true" category="BINDING_HEADER_ELVUI">
     RaidMark_HotkeyPressed(keystate)
   </Binding>
-   <Binding name="Farm Mode" runOnUp="false" category="BINDING_HEADER_ELVUI">
-    FarmMode()
-  </Binding> 
 </Bindings>
