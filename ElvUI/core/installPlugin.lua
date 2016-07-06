@@ -286,10 +286,10 @@ function PI:CloseInstall()
 	if #(self.Installs) > 0 then E:Delay(1, function() PI:RunInstall() end) end
 end
 
-function PI:RunInstall(pluginTable)
+function PI:RunInstall()
 	if not E.private.install_complete then return end
-	if (pluginTable or self.Installs[1]) and not PluginInstallFrame:IsShown() and not (ElvUIInstallFrame and ElvUIInstallFrame:IsShown()) then
-		local db = pluginTable or self.Installs[1]
+	if self.Installs[1] and not PluginInstallFrame:IsShown() and not (ElvUIInstallFrame and ElvUIInstallFrame:IsShown()) then
+		local db = self.Installs[1]
 		f.CurrentPage = 0
 		f.MaxPage = #(db.Pages)
 
