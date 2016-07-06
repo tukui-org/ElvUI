@@ -9,11 +9,12 @@ local unpack = unpack
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.tradeskill ~= true then return end
 	TradeSkillFramePortrait:Kill()
-	TradeSkillFrame:StripTextures()
-	TradeSkillFrame.DetailsFrame:StripTextures(true)
+	TradeSkillFrame:StripTextures(true)
+	TradeSkillFrame.DetailsFrame:StripTextures()
 	TradeSkillFrame.DetailsInset:StripTextures()
 	TradeSkillFrame.RecipeInset:StripTextures()
-	
+	TradeSkillFrame.DetailsFrame.Background:Hide()
+
 	TradeSkillFrame:SetTemplate("Transparent")
 	TradeSkillFrame:Height(TradeSkillFrame:GetHeight() + 12)
 	TradeSkillFrame.RankFrame:StripTextures()
@@ -23,9 +24,13 @@ local function LoadSkin()
 	TradeSkillFrame.FilterButton:StripTextures(true)
 	TradeSkillFrame.FilterButton:CreateBackdrop('Default', true)
 	TradeSkillFrame.FilterButton.backdrop:SetAllPoints()
+
 	-- Needs Review
 	-- S:HandleTab(TradeSkillFrame.RecipeList.LearnedTab)
+	TradeSkillFrame.RecipeList.LearnedTab:StripTextures()
 	-- S:HandleTab(TradeSkillFrame.RecipeList.UnlearnedTab)
+	TradeSkillFrame.RecipeList.UnlearnedTab:StripTextures()
+
 	S:HandleButton(TradeSkillFrame.DetailsFrame.CreateAllButton, true)
 	S:HandleButton(TradeSkillFrame.DetailsFrame.CreateButton, true)
 	S:HandleButton(TradeSkillFrame.DetailsFrame.ExitButton, true)
@@ -35,24 +40,23 @@ local function LoadSkin()
 	-- S:HandleScrollBar(TradeSkillFrame.RecipeList.scrollBar)
 	-- S:HandleScrollBar(TradeSkillFrame.DetailsFrame.ScrollBar)
 
-	-- LinkToButton needs Review
 	TradeSkillFrame.LinkToButton:GetNormalTexture():SetTexCoord(0.25, 0.7, 0.37, 0.75)
 	TradeSkillFrame.LinkToButton:GetPushedTexture():SetTexCoord(0.25, 0.7, 0.45, 0.8)
 	TradeSkillFrame.LinkToButton:GetHighlightTexture():Kill()
 	TradeSkillFrame.LinkToButton:CreateBackdrop("Default")
 	TradeSkillFrame.LinkToButton:Size(17, 14)
-	-- TradeSkillLinkButton:Point("LEFT", TradeSkillLinkFrame, "LEFT", 5, -1)
-	
+	TradeSkillFrame.LinkToButton:SetPoint("BOTTOMRIGHT", TradeSkillFrame.FilterButton, "TOPRIGHT", -2, 4)
+
 	-- Needs review
 	-- S:HandleNextPrevButton(TradeSkillFrame.DetailsFrame.CreateMultipleInputBox.DecrementButton)
 	-- S:HandleNextPrevButton(TradeSkillFrame.DetailsFrame.CreateMultipleInputBox.IncrementButton)
-	-- TradeSkillIncrementButton:Point("RIGHT", TradeSkillCreateButton, "LEFT", -13, 0)
-	TradeSkillFrame.DetailsFrame.CreateMultipleInputBox:StripTextures()
+	-- TradeSkillFrame.DetailsFrame.CreateMultipleInputBox.IncrementButton:Point("LEFT", TradeSkillFrame.DetailsFrame.CreateMultipleInputBox, "RIGHT", 4, 0)
 	S:HandleEditBox(TradeSkillFrame.DetailsFrame.CreateMultipleInputBox)
+	TradeSkillFrame.DetailsFrame.CreateMultipleInputBox:DisableDrawLayer("BACKGROUND")
 
 	S:HandleCloseButton(TradeSkillFrameCloseButton)
 
-	-- Delete!?
+	-- Needs Review
 	--[[local once = false
 	hooksecurefunc("TradeSkillFrame_SetSelection", function(id)
 		TradeSkillSkillIcon:StyleButton()
