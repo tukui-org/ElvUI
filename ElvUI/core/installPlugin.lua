@@ -1,34 +1,49 @@
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local PI = E:NewModule("PluginInstaller")
 
+--Cache global variables
+--Lua functions
+local _G = _G
+local pairs, tinsert, tremove, unpack = pairs, tinsert, tremove, unpack
+
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local PlaySoundFile = PlaySoundFile
+local UIFrameFadeOut = UIFrameFadeOut
+local CreateAnimationGroup = CreateAnimationGroup
+local CONTINUE, PREVIOUS, UNKNOWN = CONTINUE, PREVIOUS, UNKNOWN
+
+--Global variables that we don't cache, list them here for the mikk's Find Globals script
+-- GLOBALS: PluginInstallFrame
+
 --Installation Functions
 PI.Installs = {}
 local f
 local BUTTON_HEIGHT = 20
 
 local function ResetAll()
-	PluginInstallNextButton:Disable()
-	PluginInstallPrevButton:Disable()
-	PluginInstallOption1Button:Hide()
-	PluginInstallOption1Button:SetScript("OnClick", nil)
-	PluginInstallOption1Button:SetText("")
-	PluginInstallOption2Button:Hide()
-	PluginInstallOption2Button:SetScript('OnClick', nil)
-	PluginInstallOption2Button:SetText('')
-	PluginInstallOption3Button:Hide()
-	PluginInstallOption3Button:SetScript('OnClick', nil)
-	PluginInstallOption3Button:SetText('')
-	PluginInstallOption4Button:Hide()
-	PluginInstallOption4Button:SetScript('OnClick', nil)
-	PluginInstallOption4Button:SetText('')
-	PluginInstallFrame.SubTitle:SetText("")
-	PluginInstallFrame.Desc1:SetText("")
-	PluginInstallFrame.Desc2:SetText("")
-	PluginInstallFrame.Desc3:SetText("")
-	PluginInstallFrame.Desc4:SetText("")
-	PluginInstallFrame:Size(550, 400)
-	if PluginInstallFrame.StepTitles then
-		for i = 1, #PluginInstallFrame.side.Lines do PluginInstallFrame.side.Lines[i].text:SetText("") end
+	f.Next:Disable()
+	f.Prev:Disable()
+	f.Option1:Hide()
+	f.Option1:SetScript("OnClick", nil)
+	f.Option1:SetText("")
+	f.Option2:Hide()
+	f.Option2:SetScript('OnClick', nil)
+	f.Option2:SetText('')
+	f.Option3:Hide()
+	f.Option3:SetScript('OnClick', nil)
+	f.Option3:SetText('')
+	f.Option4:Hide()
+	f.Option4:SetScript('OnClick', nil)
+	f.Option4:SetText('')
+	f.SubTitle:SetText("")
+	f.Desc1:SetText("")
+	f.Desc2:SetText("")
+	f.Desc3:SetText("")
+	f.Desc4:SetText("")
+	f:Size(550, 400)
+	if f.StepTitles then
+		for i = 1, #f.side.Lines do f.side.Lines[i].text:SetText("") end
 	end
 end
 
@@ -36,22 +51,22 @@ local function SetPage(PageNum, PrevPage)
 	f.CurrentPage = PageNum
 	f.PrevPage = PrevPage
 	ResetAll()
-	PluginInstallStatus.anim.progress:SetChange(PageNum)
-	PluginInstallStatus.anim.progress:Play()
+	f.Status.anim.progress:SetChange(PageNum)
+	f.Status.anim.progress:Play()
 	
 	local r, g, b = E:ColorGradient(f.CurrentPage / f.MaxPage, 1, 0, 0, 1, 1, 0, 0, 1, 0)
 	f.Status:SetStatusBarColor(r, g, b)
 
 	if PageNum == f.MaxPage then
-		PluginInstallNextButton:Disable()
+		f.Next:Disable()
 	else
-		PluginInstallNextButton:Enable()
+		f.Next:Enable()
 	end
 
 	if PageNum == 1 then
-		PluginInstallPrevButton:Disable()
+		f.Prev:Disable()
 	else
-		PluginInstallPrevButton:Enable()
+		f.Prev:Enable()
 	end
 
 	f.Pages[f.CurrentPage]()
@@ -172,7 +187,7 @@ function PI:CreateFrame()
 	f.Status.anim.progress = f.Status.anim:CreateAnimation("Progress")
 	f.Status.anim.progress:SetSmoothing("Out")
 	f.Status.anim.progress:SetDuration(.3)
-	
+
 	f.Status.text = f.Status:CreateFontString(nil, 'OVERLAY')
 	f.Status.text:FontTemplate()
 	f.Status.text:SetPoint("CENTER")
@@ -252,16 +267,16 @@ function PI:CreateFrame()
 	close:SetScript("OnClick", function() f:Hide() end)
 	E.Skins:HandleCloseButton(close)
 
-	local pending = CreateFrame("Frame", "PluginInstallPendingButton", f)
-	pending:Size(20, 20)
-	pending:SetPoint("TOPLEFT", f, "TOPLEFT", 8, -8)
-	pending:SetScript("OnEnter", function(self) GameTooltip:SetOwner(self, "ANCHOR_BOTTOMLEFT", E.PixelMode and -7 or -9); PI:PendingList(); GameTooltip:Show() end)
-	pending:SetScript("OnLeave", function() GameTooltip:Hide() end)
-	pending.tex = pending:CreateTexture(nil, 'OVERLAY')
-	pending.tex:Point('TOPLEFT', pending, 'TOPLEFT', 2, -2)
-	pending.tex:Point('BOTTOMRIGHT', pending, 'BOTTOMRIGHT', -2, 2)
-	pending.tex:SetTexture([[Interface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon]])
-	pending:CreateBackdrop("Transparent")
+	f.pending = CreateFrame("Frame", "PluginInstallPendingButton", f)
+	f.pending:Size(20, 20)
+	f.pending:SetPoint("TOPLEFT", f, "TOPLEFT", 8, -8)
+	f.pending:SetScript("OnEnter", function(self) _G["GameTooltip"]:SetOwner(self, "ANCHOR_BOTTOMLEFT", E.PixelMode and -7 or -9); PI:PendingList(); _G["GameTooltip"]:Show() end)
+	f.pending:SetScript("OnLeave", function() _G["GameTooltip"]:Hide() end)
+	f.pending.tex = f.pending:CreateTexture(nil, 'OVERLAY')
+	f.pending.tex:Point('TOPLEFT', f.pending, 'TOPLEFT', 2, -2)
+	f.pending.tex:Point('BOTTOMRIGHT', f.pending, 'BOTTOMRIGHT', -2, 2)
+	f.pending.tex:SetTexture([[Interface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon]])
+	f.pending:CreateBackdrop("Transparent")
 
 	f.tutorialImage = f:CreateTexture('PluginInstallTutorialImage', 'OVERLAY')
 	f.tutorialImage:Size(256, 128)
@@ -360,7 +375,7 @@ end
 
 function PI:RunInstall()
 	if not E.private.install_complete then return end
-	if self.Installs[1] and not PluginInstallFrame:IsShown() and not (ElvUIInstallFrame and ElvUIInstallFrame:IsShown()) then
+	if self.Installs[1] and not PluginInstallFrame:IsShown() and not (_G["ElvUIInstallFrame"] and _G["ElvUIInstallFrame"]:IsShown()) then
 		f.StepTitles = nil
 		local db = self.Installs[1]
 		f.CurrentPage = 0
@@ -386,19 +401,19 @@ function PI:RunInstall()
 		NextPage()
 	end
 	if #(self.Installs) > 1 then
-		PluginInstallPendingButton:Show()
-		E:Flash(PluginInstallPendingButton, 0.53, true)
+		f.pending:Show()
+		E:Flash(f.pending, 0.53, true)
 	else
-		PluginInstallPendingButton:Hide()
-		E:StopFlash(PluginInstallPendingButton)
+		f.pending:Hide()
+		E:StopFlash(f.pending)
 	end
 end
 
 function PI:PendingList()
-	GameTooltip:AddLine(L["List of installations in queue:"], 1, 1, 1)
-	GameTooltip:AddLine(" ")
+	_G["GameTooltip"]:AddLine(L["List of installations in queue:"], 1, 1, 1)
+	_G["GameTooltip"]:AddLine(" ")
 	for i = 1, #(self.Installs) do
-		GameTooltip:AddDoubleLine(i..". "..(self.Installs[i].Name or UNKNOWN), i == 1 and "|cff00FF00"..L["In Progress"].."|r" or "|cffFF0000"..L["Pending"].."|r")
+		_G["GameTooltip"]:AddDoubleLine(i..". "..(self.Installs[i].Name or UNKNOWN), i == 1 and "|cff00FF00"..L["In Progress"].."|r" or "|cffFF0000"..L["Pending"].."|r")
 	end
 end
 
