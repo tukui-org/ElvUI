@@ -12,7 +12,6 @@ local function LoadSkin()
 		PlayerTalentFrame,
 		PlayerTalentFrameInset,
 		PlayerTalentFrameTalents,
-		-- Honor Talents
 		PlayerTalentFramePVPTalents.Talents
 	}
 
@@ -20,6 +19,7 @@ local function LoadSkin()
 		object:StripTextures()
 	end
 
+	PlayerTalentFramePortrait:Kill()
 	PlayerTalentFrame:StripTextures()
 	PlayerTalentFrame:CreateBackdrop('Transparent')
 	PlayerTalentFrame.backdrop:SetAllPoints()
@@ -29,6 +29,9 @@ local function LoadSkin()
 	PlayerTalentFrameInset:StripTextures()
 	PlayerTalentFrameInset:CreateBackdrop('Default')
 	PlayerTalentFrameInset.backdrop:Hide()
+
+	-- PVP Talents
+	S:HandleButton(PlayerTalentFramePVPTalents.XPBar.PrestigeReward.Accept)
 
 	if E.global.general.disableTutorialButtons then
 		PlayerTalentFrameSpecializationTutorialButton:Kill()
@@ -140,11 +143,6 @@ local function LoadSkin()
 				else
 					bu.bg.SelectedTexture:Hide()
 				end
-				-- needs review
-				--[[if bu.learnSelection:IsShown() then
-					bu.bg.SelectedTexture:Show()
-					bu.bg.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
-				end]]
 			end
 		end
 	end)
