@@ -222,10 +222,7 @@ function PI:CreateFrame()
 
 	local close = CreateFrame("Button", "PluginInstallCloseButton", f, "UIPanelCloseButton")
 	close:SetPoint("TOPRIGHT", f, "TOPRIGHT")
-	close:SetScript("OnClick", function()
-		PI:CloseInstall()
-		f:Hide()
-	end)
+	close:SetScript("OnClick", function() f:Hide() end)
 	E.Skins:HandleCloseButton(close)
 
 	local pending = CreateFrame("Frame", "PluginInstallPendingButton", f)
@@ -244,6 +241,8 @@ function PI:CreateFrame()
 	f.tutorialImage:Point('BOTTOM', 0, 70)
 
 	f:Hide()
+	
+	f:SetScript("OnHide", function() PI:CloseInstall() end)
 end
 
 --Plugins pass their info using the table like:
@@ -287,10 +286,10 @@ function PI:CloseInstall()
 	if #(self.Installs) > 0 then E:Delay(1, function() PI:RunInstall() end) end
 end
 
-function PI:RunInstall()
+function PI:RunInstall(pluginTable)
 	if not E.private.install_complete then return end
-	if self.Installs[1] and not PluginInstallFrame:IsShown() and not (ElvUIInstallFrame and ElvUIInstallFrame:IsShown()) then
-		local db = self.Installs[1]
+	if (pluginTable or self.Installs[1]) and not PluginInstallFrame:IsShown() and not (ElvUIInstallFrame and ElvUIInstallFrame:IsShown()) then
+		local db = pluginTable or self.Installs[1]
 		f.CurrentPage = 0
 		f.MaxPage = #(db.Pages)
 
