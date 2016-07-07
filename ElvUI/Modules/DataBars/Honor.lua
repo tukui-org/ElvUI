@@ -1,7 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('DataBars');
 
-function mod:UpdateHonor(event)
+function mod:UpdateHonor(event, unit)
+	if event == "HONOR_PRESTIGE_UPDATE"  and unit ~= "player" then return end
 	local bar = self.honorBar
 	local showHonor = UnitLevel("player") >= MAX_PLAYER_LEVEL
 	if not showHonor then
@@ -107,6 +108,7 @@ end
 function mod:EnableDisable_HonorBar()
 	if self.db.honor.enable then
 		self:RegisterEvent("HONOR_XP_UPDATE", "UpdateHonor")
+		self:RegisterEvent("HONOR_PRESTIGE_UPDATE", "UpdateHonor")
 		self:UpdateHonor()
 		E:EnableMover(self.honorBar.mover:GetName())
 	else
