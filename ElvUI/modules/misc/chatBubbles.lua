@@ -164,7 +164,7 @@ function M:IsChatBubble(frame)
 	for i = 1, frame:GetNumRegions() do
 		local region = select(i, frame:GetRegions())
 
-		if (region.GetTexture and region:GetTexture() and type(region:GetTexture() == "string") and strlower(region:GetTexture()) == [[interface\tooltips\chatbubble-background.blp]]) then return true end;
+		if (region.GetTexture and region:GetTexture() and type(region:GetTexture() == "string") and strlower(region:GetTexture()) == "interface\\tooltips\\chatbubble-background") then return true end;
 	end
 	return false
 end
@@ -172,7 +172,7 @@ end
 function M:HookBubbles(...)
 	for index = 1, select('#', ...) do
 		local frame = select(index, ...)
-		if M:IsChatBubble(frame) and not frame.isBubblePowered then	M:SkinBubble(frame) end
+		if M:IsChatBubble(frame) and not frame.isBubblePowered then M:SkinBubble(frame) end
 	end
 end
 
