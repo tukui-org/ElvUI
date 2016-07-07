@@ -58,8 +58,9 @@ function mod:Initialize()
 
 	self:LoadExperienceBar()
 	self:LoadReputationBar()
-	self:LoadArtifactBar()
 	self:LoadHonorBar()
+	self:LoadArtifactBar()
+	
 	self:RegisterEvent("PLAYER_LEVEL_UP")
 end
 

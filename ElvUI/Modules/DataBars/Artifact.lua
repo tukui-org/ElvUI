@@ -82,7 +82,7 @@ function mod:EnableDisable_ArtifactBar()
 end
 
 function mod:LoadArtifactBar()
-	self.artifactBar = self:CreateBar('ElvUI_ArtifactBar', self.ArtifactBar_OnEnter, 'RIGHT', RightChatPanel, 'LEFT', E.Border - E.Spacing*3, 0)
+	self.artifactBar = self:CreateBar('ElvUI_ArtifactBar', self.ArtifactBar_OnEnter, 'RIGHT', self.honorBar, 'LEFT', E.Border - E.Spacing*3, 0)
 	self.artifactBar.statusBar:SetStatusBarColor(.901, .8, .601)
 	self.artifactBar.statusBar:SetMinMaxValues(0, 325)
 
