@@ -336,9 +336,21 @@ end
 
 function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, duration, timeLeft)
 	local name, _, _, _, dtype, duration, expiration, _, isStealable = UnitAura(unit, index, button.filter)
-
-
 	local isFriend = UnitIsFriend('player', unit)
+	
+	local auras = button:GetParent()
+	local frame = auras:GetParent()
+	local type = auras.type
+	local db = frame.db and frame.db[type]
+
+	if db then
+		if db.clickThrough and button:IsMouseEnabled() then
+			button:EnableMouse(false)
+		elseif not db.clickThrough and not button:IsMouseEnabled() then
+			button:EnableMouse(true)
+		end
+	end
+
 	if button.isDebuff then
 		if(not isFriend and button.owner ~= "player" and button.owner ~= "vehicle") --[[and (not E.isDebuffWhiteList[name])]] then
 			button:SetBackdropBorderColor(0.9, 0.1, 0.1)
