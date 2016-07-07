@@ -43,6 +43,7 @@ local function LoadSkin()
 	end
 
 	local function HandleShipFollowerPage(followerTab)
+		-- Needs Review
 		local traits = followerTab.Traits
 		for i = 1, #traits do
 			local icon = traits[i].Portrait
@@ -252,7 +253,7 @@ local function LoadSkin()
 	HandleShipFollowerPage(ShipFollowerList.followerTab)
 
 
-	-- ShipYard
+	-- Needs Review: ShipYard
 	GarrisonShipyardFrame:StripTextures(true)
 	GarrisonShipyardFrame.BorderFrame:StripTextures(true)
 	GarrisonShipyardFrame:CreateBackdrop("Transparent")
