@@ -226,7 +226,6 @@ local function LoadSkin()
 		end
 	end)
 
-
 	RolePollPopup:SetTemplate("Transparent")
 
 	InterfaceOptionsFrame:SetClampedToScreen(true)
@@ -784,6 +783,7 @@ local function LoadSkin()
 		-- Social
 		"SocialPanelWhisperMode",
 		"SocialPanelTimestamps",
+		"SocialPanelChatStyle",
 		-- Action bars
 		"ActionBarsPanelPickupActionKeyDropDown",
 		-- Names
