@@ -17,6 +17,23 @@ local function LoadSkin()
 	OrderHallCommandBar.AreaName:SetVertexColor(classColor.r, classColor.g, classColor.b)
 	OrderHallCommandBar.WorldMapButton:ClearAllPoints()
 	OrderHallCommandBar.WorldMapButton:SetPoint("RIGHT", OrderHallCommandBar, -5, -2)
+	
+	-- MissionFrame
+	OrderHallMissionFrame.ClassHallIcon:Kill()
+	OrderHallMissionFrame:StripTextures()
+	OrderHallMissionFrame:CreateBackdrop("Transparent")
+	OrderHallMissionFrame.backdrop:SetOutside(OrderHallMissionFrame.BorderFrame)
+	S:HandleCloseButton(OrderHallMissionFrame.CloseButton)
+	
+	-- Needs Review
+	-- Scouting Map Quest Choise
+	AdventureMapQuestChoiceDialog:StripTextures()
+	AdventureMapQuestChoiceDialog:SetTemplate("Default")
+	
+	S:HandleCloseButton(AdventureMapQuestChoiceDialog.CloseButton)
+	-- S:HandleScrollBar(AdventureMapQuestChoiceDialog.Details.ScrollBar)
+	S:HandleButton(AdventureMapQuestChoiceDialog.AcceptButton)
+	S:HandleButton(AdventureMapQuestChoiceDialog.DeclineButton)
 end
 
 S:RegisterSkin('Blizzard_OrderHallUI', LoadSkin)
