@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local B = E:GetModule('Blizzard');
 
 --No point caching anything here, but list them here for mikk's FindGlobals script
--- GLOBALS: 
+-- GLOBALS: IsAddOnLoaded, CreateFrame, TalkingHeadFrame, UIPARENT_MANAGED_FRAME_POSITIONS
 
 function B:PositionTalkingHead()
 	local function CreateMover()
