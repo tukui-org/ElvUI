@@ -39,6 +39,8 @@
 	<Script file='mirrortimers.lua'/>
 	<Script file='misc.lua'/>
 	<Script file='nonraid.lua'/>
+	<Script file='objectivetracker.lua'/>
+	<Script file='orderhall.lua'/>
 	<Script file='petbattle.lua'/>
 	<Script file='petition.lua'/>
 	<Script file='pvp.lua'/>
@@ -58,5 +60,4 @@
 	<Script file='transmogrification.lua'/>
 	<Script file='voidstorage.lua'/>
 	<Script file='worldmap.lua'/>
-	<Script file='objectivetracker.lua'/>
 </Ui>
