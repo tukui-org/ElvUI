@@ -336,8 +336,8 @@ function AB:PositionAndSizeBar(barName)
 					local newCondition = bar:GetAttribute("newCondition")
 					if newCondition then
 						newstate = SecureCmdOptionParse(newCondition)
-						bar:SetAttribute("state", ParsedText)
-						bar:ChildUpdate("state", ParsedText)
+						bar:SetAttribute("state", newCondition)
+						bar:ChildUpdate("state", newCondition)
 					end
 				end
 			end
