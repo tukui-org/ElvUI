@@ -3,6 +3,7 @@
 	<Script file='addonmanager.lua'/>
 	<Script file='alerts.lua'/>
 	<Script file='archaeology.lua'/>
+	<Script file='artifact.lua'/>
 	<Script file='auctionhouse.lua'/>
 	<Script file='bags.lua'/>
 	<Script file='barber.lua'/>

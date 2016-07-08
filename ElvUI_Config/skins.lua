@@ -329,6 +329,11 @@ E.Options.args.skins = {
 					name = L["Orderhall"], -- Temp Name
 					desc = L["TOGGLESKIN_DESC"],
 				},
+				artifact = {
+					type = "toggle",
+					name = L["Artifact"], -- Temp Name
+					desc = L["TOGGLESKIN_DESC"],
+				},
 			},
 		},
 	},

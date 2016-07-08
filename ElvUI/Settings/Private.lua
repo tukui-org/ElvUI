@@ -111,6 +111,7 @@ V['skins'] = {
 		["mirrorTimers"] = true,
 		["objectiveTracker"] = true,
 		["orderhall"] = true,
+		["artifact"] = true,
 	},
 }
 
