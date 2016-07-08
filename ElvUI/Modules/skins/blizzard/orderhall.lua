@@ -29,6 +29,8 @@ local function LoadSkin()
 	-- Scouting Map Quest Choise
 	AdventureMapQuestChoiceDialog:StripTextures()
 	AdventureMapQuestChoiceDialog:SetTemplate("Default")
+	-- The portrait driving me nuts
+	-- AdventureMapQuestChoiceDialog.Portrait:
 	
 	S:HandleCloseButton(AdventureMapQuestChoiceDialog.CloseButton)
 	-- S:HandleScrollBar(AdventureMapQuestChoiceDialog.Details.ScrollBar)
