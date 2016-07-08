@@ -184,6 +184,13 @@ function B:SearchReset()
 	SEARCH_STRING = ""
 end
 
+function B:IsSearching()
+	if SEARCH_STRING ~= "" and SEARCH_STRING ~= SEARCH then
+		return true
+	end
+	return false
+end
+
 function B:UpdateSearch()
 	if self.Instructions then self.Instructions:SetShown(self:GetText() == "") end
 	local MIN_REPEAT_CHARACTERS = 3;
@@ -877,6 +884,11 @@ function B:OnEvent(event, ...)
 		end
 
 		self:UpdateBagSlots(...);
+
+		--Refresh search in case we moved items around
+		if B:IsSearching() then
+			B:SetSearch(SEARCH_STRING);
+		end
 	elseif event == 'BAG_UPDATE_COOLDOWN' then
 		self:UpdateCooldowns();
 	elseif event == 'PLAYERBANKSLOTS_CHANGED' then
