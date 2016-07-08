@@ -14,11 +14,10 @@ local GetInventoryItemTexture = GetInventoryItemTexture
 local GetInventorySlotInfo = GetInventorySlotInfo
 local TEXTURE_ITEM_QUEST_BORDER = TEXTURE_ITEM_QUEST_BORDER
 local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES
+local QUESTS_LABEL = QUESTS_LABEL
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.bags ~= true or E.private.bags.enable then return end
-
-	local QUEST_ITEM_STRING = select(10, GetAuctionItemClasses())
 
 	BankSlotsFrame:StripTextures()
 
@@ -32,7 +31,7 @@ local function LoadSkin()
 	local function UpdateBorderColors(button)
 		button:SetBackdropBorderColor(unpack(E['media'].bordercolor))
 
-		if button.type and button.type == QUEST_ITEM_STRING then
+		if button.type and button.type == QUESTS_LABEL then
 			button:SetBackdropBorderColor(1, 0.2, 0.2)
 		elseif button.quality and button.quality > 1 then
 			local r, g, b = GetItemQualityColor(button.quality)
@@ -94,7 +93,7 @@ local function LoadSkin()
 		end
 
 		if questId or isQuestItem then
-			button.type = QUEST_ITEM_STRING
+			button.type = QUESTS_LABEL
 		end
 
 		UpdateBorderColors(button)
@@ -192,7 +191,7 @@ local function LoadSkin()
 			end
 
 			if isQuestItem or questId then
-				button.type = QUEST_ITEM_STRING
+				button.type = QUESTS_LABEL
 			end
 
 			UpdateBorderColors(button)
