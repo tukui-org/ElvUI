@@ -66,6 +66,7 @@ local LEFT_ACTIONBAR_PAGE = LEFT_ACTIONBAR_PAGE
 -- GLOBALS: VIEWABLE_ACTION_BAR_PAGES, SHOW_MULTI_ACTIONBAR_1, SHOW_MULTI_ACTIONBAR_2
 -- GLOBALS: SHOW_MULTI_ACTIONBAR_3, SHOW_MULTI_ACTIONBAR_4
 
+
 --This is a modified version of the Blizzard equivalent, which leaves out the check for "IsNormalActionBarState()"
 --Without this the available action pages update to incorrect values when exiting a vehicle
 function AB:MultiActionBar_Update()
@@ -295,6 +296,52 @@ function AB:PositionAndSizeBar(barName)
 		bar:Show()
 		RegisterStateDriver(bar, "visibility", self.db[barName].visibility); -- this is ghetto
 		RegisterStateDriver(bar, "page", page);
+		bar:SetAttribute("page", page)
+
+		RegisterStateDriver(bar.vehicleFix, "vehicleFix", "[vehicleui] 1;0")
+		bar.vehicleFix:SetAttribute("_onstate-vehicleFix", [[
+			local bar = self:GetParent()
+			local ParsedText = SecureCmdOptionParse(self:GetParent():GetAttribute("page"))
+
+			if newstate == 1 then
+				if(HasVehicleActionBar()) then
+					bar:SetAttribute("state", 12)
+					bar:ChildUpdate("state", 12)
+				else
+					if HasTempShapeshiftActionBar() and self:GetAttribute("hasTempBar") then
+						ParsedText = GetTempShapeshiftBarIndex() or ParsedText
+					end
+
+					if ParsedText ~= 0 then
+						bar:SetAttribute("state", ParsedText)
+						bar:ChildUpdate("state", ParsedText)
+					else
+						local newCondition = bar:GetAttribute("newCondition")
+						if newCondition then
+							newstate = SecureCmdOptionParse(newCondition)
+							bar:SetAttribute("state", ParsedText)
+							bar:ChildUpdate("state", ParsedText)
+						end
+					end
+				end
+			else
+				if HasTempShapeshiftActionBar() and self:GetAttribute("hasTempBar") then
+					ParsedText = GetTempShapeshiftBarIndex() or ParsedText
+				end
+
+				if ParsedText ~= 0 then
+					bar:SetAttribute("state", ParsedText)
+					bar:ChildUpdate("state", ParsedText)
+				else
+					local newCondition = bar:GetAttribute("newCondition")
+					if newCondition then
+						newstate = SecureCmdOptionParse(newCondition)
+						bar:SetAttribute("state", newCondition)
+						bar:ChildUpdate("state", newCondition)
+					end
+				end
+			end
+		]]);	
 
 		if not bar.initialized then
 			bar.initialized = true;
@@ -315,6 +362,8 @@ end
 
 function AB:CreateBar(id)
 	local bar = CreateFrame('Frame', 'ElvUI_Bar'..id, E.UIParent, 'SecureHandlerStateTemplate');
+	bar.vehicleFix = CreateFrame("Frame", nil, bar, "SecureHandlerStateTemplate")
+	
 	local point, anchor, attachTo, x, y = split(',', self['barDefaults']['bar'..id].position)
 	bar:Point(point, anchor, attachTo, x, y)
 	bar.id = id
@@ -357,11 +406,12 @@ function AB:CreateBar(id)
 		bar:SetAttribute("hasTempBar", false)
 	end
 
+
 	bar:SetAttribute("_onstate-page", [[
 		if HasTempShapeshiftActionBar() and self:GetAttribute("hasTempBar") then
 			newstate = GetTempShapeshiftBarIndex() or newstate
 		end
-
+		
 		if newstate ~= 0 then
 			self:SetAttribute("state", newstate)
 			control:ChildUpdate("state", newstate)
@@ -375,7 +425,6 @@ function AB:CreateBar(id)
 		end
 	]]);
 
-
 	self["handledBars"]['bar'..id] = bar;
 	E:CreateMover(bar, 'ElvAB_'..id, L["Bar "]..id, nil, nil, nil,'ALL,ACTIONBARS')
 	self:PositionAndSizeBar('bar'..id);
@@ -388,7 +437,7 @@ function AB:PLAYER_REGEN_ENABLED()
 end
 
 local function Vehicle_OnEvent(self, event)
-	if ( CanExitVehicle() and ActionBarController_GetCurrentActionBarState() == LE_ACTIONBAR_STATE_MAIN ) and not E.db.general.minimap.icons.vehicleLeave.hide then
+	if ( CanExitVehicle() ) and not E.db.general.minimap.icons.vehicleLeave.hide then
 		self:Show()
 		self:GetNormalTexture():SetVertexColor(1, 1, 1)
 		self:EnableMouse(true)
@@ -484,9 +533,9 @@ end
 
 function AB:UpdateBar1Paging()
 	if self.db.bar6.enabled then
-		E.ActionBars.barDefaults.bar1.conditions = format("[vehicleui] %d; [possessbar] %d; [overridebar] %d; [shapeshift] 13; [form,noform] 0; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;", GetVehicleBarIndex(), GetVehicleBarIndex(), GetOverrideBarIndex())
+		E.ActionBars.barDefaults.bar1.conditions = format("[possessbar] %d; [overridebar] %d; [shapeshift] 13; [form,noform] 0; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;", GetVehicleBarIndex(), GetOverrideBarIndex())
 	else
-		E.ActionBars.barDefaults.bar1.conditions = format("[vehicleui] %d; [possessbar] %d; [overridebar] %d; [shapeshift] 13; [form,noform] 0; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;", GetVehicleBarIndex(), GetVehicleBarIndex(), GetOverrideBarIndex())
+		E.ActionBars.barDefaults.bar1.conditions = format("[possessbar] %d; [overridebar] %d; [shapeshift] 13; [form,noform] 0; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;", GetVehicleBarIndex(), GetOverrideBarIndex())
 	end
 
 	if (E.private.actionbar.enable ~= true or InCombatLockdown()) or not self.isInitialized then return; end
