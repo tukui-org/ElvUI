@@ -25,7 +25,7 @@ function UF:Construct_Portrait(frame, type)
 	portrait.PostUpdate = self.PortraitUpdate
 
 	portrait.overlay = CreateFrame("Frame", nil, frame)
-	portrait.overlay:SetFrameLevel(frame:GetFrameLevel() - 5)
+	portrait.overlay:SetFrameLevel(frame:GetFrameLevel() - 1)
 
 	return portrait
 end
