@@ -343,17 +343,6 @@ function AB:PositionAndSizeBar(barName)
 			end
 		]]);	
 
---[[
-			if newstate == 1 then
-				if(not HasVehicleActionBar()) then
-					self:GetParent():RunAttribute("_onstate-page", 12)
-				else
-					self:GetParent():RunAttribute("_onstate-page", SecureCmdOptionParse(self:GetParent():GetAttribute("page")))
-				end
-			else
-				self:GetParent():RunAttribute("_onstate-page", SecureCmdOptionParse(self:GetParent():GetAttribute("page")))
-			end
-]]
 		if not bar.initialized then
 			bar.initialized = true;
 			AB:PositionAndSizeBar(barName)
