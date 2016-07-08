@@ -650,6 +650,7 @@ end
 
 function TT:GameTooltip_OnTooltipCleared(tt)
 	tt.itemCleared = nil
+	tt:Hide()
 end
 
 function TT:GameTooltip_OnTooltipSetItem(tt)
