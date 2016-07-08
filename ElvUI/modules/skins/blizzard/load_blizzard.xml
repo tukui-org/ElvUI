@@ -18,6 +18,7 @@
 	<Script file='dressingroom.lua'/>
 	<Script file='encounterjournal.lua'/>
 	<Script file='friends.lua'/>
+	<Script file='flightmap.lua'/>
 	<Script file='garrison.lua'/>
 	<Script file='gbank.lua'/>
 	<Script file='glyph.lua'/>
@@ -50,7 +51,7 @@
 	<Script file='tabard.lua'/>
 	<Script file='talent.lua'/>
 	<Script file='taxi.lua'/>
-	<Script file='timemanager.lua'/>	
+	<Script file='timemanager.lua'/>
 	<Script file='trade.lua'/>
 	<Script file='tradeskill.lua'/>
 	<Script file='trainer.lua'/>
