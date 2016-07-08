@@ -98,7 +98,6 @@ L["lvl"] = "niveau"
 L["Main Hand"] = "Main droite"
 L["Mission(s) Report:"] = "Rapport de mission";
 L["Mitigation By Level: "] = "Réduction par niveau: "
-L["Multistrike"] = "Frape multiple";
 L["Naval Mission(s) Report:"] = "Rapport de mission naval";
 L["No Guild"] = "Pas de Guilde"
 L["Offhand"] = "Main gauche"

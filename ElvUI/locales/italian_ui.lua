@@ -98,7 +98,6 @@ L["lvl"] = true;
 L["Main Hand"] = true;
 L["Mission(s) Report:"] = true;
 L["Mitigation By Level: "] = true;
-L["Multistrike"] = true;
 L["Naval Mission(s) Report:"] = true;
 L["No Guild"] = true;
 L["Offhand"] = true;

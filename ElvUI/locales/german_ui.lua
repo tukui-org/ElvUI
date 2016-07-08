@@ -98,7 +98,6 @@ L["lvl"] = "lvl"
 L["Main Hand"] = "Waffenhand"
 L["Mission(s) Report:"] = "Missionsbericht";
 L["Mitigation By Level: "] = "Milderung durch Stufe:"
-L["Multistrike"] = "Mehrfachschlag"
 L["Naval Mission(s) Report:"] = "Marine Missionsbericht:"
 L["No Guild"] = "Keine Gilde"
 L["Offhand"] = "Schildhand"

@@ -98,7 +98,6 @@ L["lvl"] = "等級"
 L["Main Hand"] = "主手"
 L["Mission(s) Report:"] = true;
 L["Mitigation By Level: "] = "等級減傷: "
-L["Multistrike"] = true;
 L["Naval Mission(s) Report:"] = true;
 L["No Guild"] = "沒有公會"
 L["Offhand"] = "副手"

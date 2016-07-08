@@ -98,7 +98,6 @@ L["lvl"] = "nível"
 L["Main Hand"] = "Mão Principal"
 L["Mission(s) Report:"] = true;
 L["Mitigation By Level: "] = "Mitigação por nível"
-L["Multistrike"] = true;
 L["Naval Mission(s) Report:"] = true;
 L["No Guild"] = "Sem Guilda"
 L["Offhand"] = "Mão Secundária"
