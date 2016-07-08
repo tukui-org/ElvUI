@@ -91,7 +91,7 @@ local ID = ID
 
 local GameTooltip, GameTooltipStatusBar = _G["GameTooltip"], _G["GameTooltipStatusBar"]
 local S_ITEM_LEVEL = ITEM_LEVEL:gsub( "%%d", "(%%d+)" )
-local playerGUID = UnitGUID("player")
+local playerGUID --Will be set in Initialize
 local targetList, inspectCache = {}, {}
 local NIL_COLOR = { r=1, g=1, b=1 }
 local TAPPED_COLOR = { r=.6, g=.6, b=.6 }
@@ -885,6 +885,9 @@ function TT:Initialize()
 	--Variable is localized at top of file, then set here when we're sure the frame has been created
 	--Used to check if keybinding is active, if so then don't hide tooltips on actionbars
 	keybindFrame = ElvUI_KeyBinder
+	
+	--Variable is localized at top of file, but setting it right away doesn't work on first session after opening up WoW
+	playerGUID = UnitGUID("player")
 end
 
 E:RegisterModule(TT:GetName())
