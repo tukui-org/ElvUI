@@ -456,6 +456,10 @@ function B:UpdateSlot(bagID, slotID)
 	SetItemButtonTexture(slot, texture);
 	SetItemButtonCount(slot, count);
 	SetItemButtonDesaturated(slot, locked, 0.5, 0.5, 0.5);
+
+	if GameTooltip:GetOwner() == slot and not slot.hasItem then
+		B:Tooltip_Hide()
+	end
 end
 
 function B:UpdateBagSlots(bagID)
