@@ -1,6 +1,20 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('DataBars');
 
+--Cache global variables
+--Lua functions
+local _G = _G
+local format = format
+
+--WoW API / Variables
+local GetWatchedFactionInfo, GetNumFactions, GetFactionInfo = GetWatchedFactionInfo, GetNumFactions, GetFactionInfo
+local GetFriendshipReputation = GetFriendshipReputation
+
+local REPUTATION, STANDING = REPUTATION, STANDING
+local FACTION_BAR_COLORS = FACTION_BAR_COLORS
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: GameTooltip, RightChatPanel
+
 
 local backupColor = FACTION_BAR_COLORS[1]
 local FactionStandingLabelUnknown = UNKNOWN

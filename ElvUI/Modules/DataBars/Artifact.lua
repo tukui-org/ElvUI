@@ -1,6 +1,20 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('DataBars');
 
+--Cache global variables
+--Lua functions
+local _G = _G
+local format = format
+
+--WoW API / Variables
+local HasArtifactEquipped = HasArtifactEquipped
+local MainMenuBar_GetNumArtifactTraitsPurchasableFromXP = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP
+local C_ArtifactUIGetEquippedArtifactInfo = C_ArtifactUI.GetEquippedArtifactInfo
+
+local ARTIFACT_POWER = ARTIFACT_POWER
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: GameTooltip, RightChatPanel
+
 function mod:UpdateArtifact(event)
 	local bar = self.artifactBar
 	local showArtifact = HasArtifactEquipped();
@@ -8,19 +22,19 @@ function mod:UpdateArtifact(event)
 		bar:Hide()
 	else
 		bar:Show()
-		
+
 		if self.db.artifact.hideInVehicle then
 			E:RegisterObjectForVehicleLock(bar, E.UIParent)
 		else
 			E:UnregisterObjectForVehicleLock(bar)
 		end
-		
+
 		local text = ''
-		local itemID, altItemID, name, icon, totalXP, pointsSpent, quality, artifactAppearanceID, appearanceModID, itemAppearanceID, altItemAppearanceID, altOnTop = C_ArtifactUI.GetEquippedArtifactInfo();
+		local itemID, altItemID, name, icon, totalXP, pointsSpent, quality, artifactAppearanceID, appearanceModID, itemAppearanceID, altItemAppearanceID, altOnTop = C_ArtifactUIGetEquippedArtifactInfo();
 		local numPointsAvailableToSpend, xp, xpForNextPoint = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(pointsSpent, totalXP);
 		bar.statusBar:SetMinMaxValues(0, xpForNextPoint)
 		bar.statusBar:SetValue(xp)
-		
+
 		local textFormat = self.db.artifact.textFormat
 		if textFormat == 'PERCENT' then
 			text = format('%d%%', xp / xpForNextPoint * 100)
@@ -28,7 +42,7 @@ function mod:UpdateArtifact(event)
 			text = format('%s - %s', E:ShortValue(xp), E:ShortValue(xpForNextPoint))
 		elseif textFormat == 'CURPERC' then
 			text = format('%s - %d%%', E:ShortValue(xp), xp / xpForNextPoint * 100)
-		end		
+		end
 
 		bar.text:SetText(text)
 	end
@@ -43,14 +57,13 @@ function mod:ArtifactBar_OnEnter()
 
 	GameTooltip:AddLine(ARTIFACT_POWER)
 	GameTooltip:AddLine(' ')
-	
-	local itemID, altItemID, name, icon, totalXP, pointsSpent, quality, artifactAppearanceID, appearanceModID, itemAppearanceID, altItemAppearanceID, altOnTop = C_ArtifactUI.GetEquippedArtifactInfo();
+
+	local itemID, altItemID, name, icon, totalXP, pointsSpent, quality, artifactAppearanceID, appearanceModID, itemAppearanceID, altItemAppearanceID, altOnTop = C_ArtifactUIGetEquippedArtifactInfo();
 	local numPointsAvailableToSpend, xp, xpForNextPoint = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(pointsSpent, totalXP);
-	
+
 	GameTooltip:AddDoubleLine(L["XP:"], format(' %d / %d (%d%%)', xp, xpForNextPoint, xp/xpForNextPoint * 100), 1, 1, 1)
 	GameTooltip:AddDoubleLine(L["Remaining:"], format(' %d (%d%% - %d '..L["Bars"]..')', xpForNextPoint - xp, (xpForNextPoint - xp) / xpForNextPoint * 100, 20 * (xpForNextPoint - xp) / xpForNextPoint), 1, 1, 1)
 
-	
 	GameTooltip:Show()
 end
 
@@ -82,7 +95,7 @@ function mod:EnableDisable_ArtifactBar()
 end
 
 function mod:LoadArtifactBar()
-	self.artifactBar = self:CreateBar('ElvUI_ArtifactBar', self.ArtifactBar_OnEnter, 'RIGHT', self.honorBar, 'LEFT', E.Border - E.Spacing*3, 0)
+	self.artifactBar = self:CreateBar('ElvUI_ArtifactBar', self.ArtifactBar_OnEnter, 'RIGHT', RightChatPanel, 'LEFT', E.Border - E.Spacing*3, 0)
 	self.artifactBar.statusBar:SetStatusBarColor(.901, .8, .601)
 	self.artifactBar.statusBar:SetMinMaxValues(0, 325)
 

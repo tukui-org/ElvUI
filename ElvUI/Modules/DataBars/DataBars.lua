@@ -2,6 +2,15 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local mod = E:NewModule("DataBars", 'AceEvent-3.0')
 E.DataBars = mod
 
+--Cache global variables
+--Lua functions
+local _G = _G
+--WoW API / Variables
+local GetExpansionLevel = GetExpansionLevel
+local MAX_PLAYER_LEVEL_TABLE = MAX_PLAYER_LEVEL_TABLE
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: GameTooltip, ElvUI_ExperienceBar, ElvUI_ReputationBar, ElvUI_ArtifactBar, ElvUI_HonorBar, CreateFrame
+
 function mod:OnLeave()
 	if (self == ElvUI_ExperienceBar and mod.db.experience.mouseover) or (self == ElvUI_ReputationBar and mod.db.reputation.mouseover) or (self == ElvUI_ArtifactBar and mod.db.artifact.mouseover) or (self == ElvUI_HonorBar and mod.db.honor.mouseover) then
 		E:UIFrameFadeOut(self, 1, self:GetAlpha(), 0)

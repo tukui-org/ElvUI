@@ -1,6 +1,22 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('DataBars');
 
+--Cache global variables
+--Lua functions
+local _G = _G
+local format = format
+
+--WoW API / Variables
+local UnitHonor, UnitHonorMax, UnitHonorLevel, GetMaxPlayerHonorLevel, CanPrestige = UnitHonor, UnitHonorMax, UnitHonorLevel, GetMaxPlayerHonorLevel, CanPrestige
+local UnitLevel = UnitLevel
+
+local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL
+local PVP_HONOR_PRESTIGE_AVAILABLE = PVP_HONOR_PRESTIGE_AVAILABLE
+local HONOR = HONOR
+local MAX_HONOR_LEVEL = MAX_HONOR_LEVEL
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: GameTooltip
+
 function mod:UpdateHonor(event, unit)
 	if event == "HONOR_PRESTIGE_UPDATE"  and unit ~= "player" then return end
 	local bar = self.honorBar
@@ -119,7 +135,7 @@ function mod:EnableDisable_HonorBar()
 end
 
 function mod:LoadHonorBar()
-	self.honorBar = self:CreateBar('ElvUI_HonorBar', self.HonorBar_OnEnter, 'RIGHT', RightChatPanel, 'LEFT', E.Border - E.Spacing*3, 0)
+	self.honorBar = self:CreateBar('ElvUI_HonorBar', self.HonorBar_OnEnter, 'RIGHT', self.artifactBar, 'LEFT', E.Border - E.Spacing*3, 0)
 	self.honorBar.statusBar:SetStatusBarColor(240/255, 114/255, 65/255)
 	self.honorBar.statusBar:SetMinMaxValues(0, 325)
 

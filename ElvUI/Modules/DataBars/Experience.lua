@@ -1,6 +1,22 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('DataBars');
 
+--Cache global variables
+--Lua functions
+local _G = _G
+local format = format
+local min = min
+--WoW API / Variables
+local GetPetExperience, UnitXP, UnitXPMax = GetPetExperience, UnitXP, UnitXPMax
+local UnitLevel = UnitLevel
+local IsXPUserDisabled, GetXPExhaustion = IsXPUserDisabled, GetXPExhaustion
+local GetExpansionLevel = GetExpansionLevel
+
+local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL
+local MAX_PLAYER_LEVEL_TABLE = MAX_PLAYER_LEVEL_TABLE
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: GameTooltip, LeftChatPanel, CreateFrame
+
 function mod:GetXP(unit)
 	if(unit == 'pet') then
 		return GetPetExperience()
