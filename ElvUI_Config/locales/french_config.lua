@@ -710,7 +710,6 @@ L["Block Auras Without Duration"] = "Bloquer les Auras sans durée"
 L["Block Blacklisted Auras"] = "Bloquer les Auras sur liste Noir"
 L["Block Non-Dispellable Auras"] = "Bloquer les Auras non dissipable"
 L["Block Non-Personal Auras"] = "Bloquer les Auras non personnelle"
-L["Block Raid Buffs"] = "Bloquer les Améliorations de Raid"
 L["Blood"] = "Sang"
 L["Borders"] = "Bordures"
 L["Buff Indicator"] = "Indicateur d'amélioration"
@@ -797,7 +796,6 @@ L["Don't display auras that are longer than this duration (in seconds). Set to z
 L["Don't display auras that are not yours."] = "Ne pas afficher les auras qui ne sont pas les votres."
 L["Don't display auras that cannot be purged or dispelled by your class."] = "Ne pas afficher les auras qui ne peuvent pas être purgé ou dissipé votre classe." ;
 L["Don't display auras that have no duration."] = "Ne pas afficher les auras qui n'ont pas de durée."
-L["Don't display raid buffs such as Blessing of Kings or Mark of the Wild."] = "Ne pas afficher les améliorations de raid comme la Bénédiction des Rois ou La Marque du Fauve."
 L["Down"] = "En bas"
 L["Druid Mana"] = "Mana du druide"; --need review
 L["Duration Reverse"] = "Durée inversée"

@@ -709,7 +709,6 @@ L["Block Auras Without Duration"] = true;
 L["Block Blacklisted Auras"] = true;
 L["Block Non-Dispellable Auras"] = true;
 L["Block Non-Personal Auras"] = true;
-L["Block Raid Buffs"] = true;
 L["Blood"] = true;
 L["Borders"] = true;
 L["Buff Indicator"] = true;
@@ -796,7 +795,6 @@ L["Don't display auras that are longer than this duration (in seconds). Set to z
 L["Don't display auras that are not yours."] = true;
 L["Don't display auras that cannot be purged or dispelled by your class."] = true;
 L["Don't display auras that have no duration."] = true;
-L["Don't display raid buffs such as Blessing of Kings or Mark of the Wild."] = true;
 L["Down"] = true;
 L["Druid Mana"] = true;
 L["Duration Reverse"] = true;
