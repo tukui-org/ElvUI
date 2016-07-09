@@ -19,12 +19,11 @@ function B:PositionTalkingHead()
 		CreateMover()
 	else
 		local f = CreateFrame("Frame")
-		f:RegisterEvent("ADDON_LOADED")
-		f:SetScript("OnEvent", function(self, event, addon)
-			if addon == "Blizzard_TalkingHeadUI" then
-				self:UnregisterEvent(event)
-				CreateMover()
-			end
+		f:RegisterEvent("PLAYER_ENTERING_WORLD")
+		f:SetScript("OnEvent", function(self, event)
+			TalkingHead_LoadUI();
+			CreateMover()
+			self:UnregisterEvent(event)
 		end)
 	end
 end
