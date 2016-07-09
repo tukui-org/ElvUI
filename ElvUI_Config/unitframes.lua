@@ -566,15 +566,6 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 			desc = L["Don't display auras that cannot be purged or dispelled by your class."],
 		}
 
-		if auraType == 'buffs' then
-			config.args.filters.args.noConsolidated = {
-				order = 14,
-				type = 'toggle',
-				name = L["Block Raid Buffs"],
-				desc = L["Don't display raid buffs such as Blessing of Kings or Mark of the Wild."],
-			}
-		end
-
 		config.args.filters.args.bossAuras = {
 			order = 15,
 			type = 'toggle',
@@ -718,32 +709,6 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 				}
 			},
 		}
-		if auraType == 'buffs' then
-			config.args.filters.args.noConsolidated = {
-				order = 14,
-				guiInline = true,
-				type = 'group',
-				name = L["Block Raid Buffs"],
-				args = {
-					friendly = {
-						order = 2,
-						type = 'toggle',
-						name = L["Friendly"],
-						desc = L["If the unit is friendly to you."].." "..L["Don't display raid buffs such as Blessing of Kings or Mark of the Wild."],
-						get = function(info) return E.db.unitframe.units[groupName][auraType].noConsolidated.friendly end,
-						set = function(info, value) E.db.unitframe.units[groupName][auraType].noConsolidated.friendly = value; updateFunc(UF, groupName, numUnits) end,
-					},
-					enemy = {
-						order = 3,
-						type = 'toggle',
-						name = L["Enemy"],
-						desc = L["If the unit is an enemy to you."].." "..L["Don't display raid buffs such as Blessing of Kings or Mark of the Wild."],
-						get = function(info) return E.db.unitframe.units[groupName][auraType].noConsolidated.enemy end,
-						set = function(info, value) E.db.unitframe.units[groupName][auraType].noConsolidated.enemy = value; updateFunc(UF, groupName, numUnits) end,
-					}
-				},
-			}
-		end
 
 		config.args.filters.args.bossAuras = {
 			order = 15,
