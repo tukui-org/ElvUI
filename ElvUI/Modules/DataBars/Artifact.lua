@@ -13,7 +13,7 @@ local C_ArtifactUIGetEquippedArtifactInfo = C_ArtifactUI.GetEquippedArtifactInfo
 
 local ARTIFACT_POWER = ARTIFACT_POWER
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: GameTooltip, RightChatPanel
+-- GLOBALS: GameTooltip
 
 function mod:UpdateArtifact(event)
 	local bar = self.artifactBar
