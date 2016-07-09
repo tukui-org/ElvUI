@@ -25,8 +25,8 @@ local function LoadSkin()
 	OrderHallCommandBar.ClassIcon:SetTexture("Interface\\TargetingFrame\\UI-Classes-Circles")
 	OrderHallCommandBar.ClassIcon:SetSize(46, 20)
 	OrderHallCommandBar.CurrencyIcon:SetAtlas("legionmission-icon-currency", false)
-	-- A bit ClassColor - It's a ClassHall ;)
 	OrderHallCommandBar.AreaName:SetVertexColor(classColor.r, classColor.g, classColor.b)
+	-- maybe we should kill the WorldMapButton, it looks ugly as fuck and dont know why blizz adds it there
 	OrderHallCommandBar.WorldMapButton:ClearAllPoints()
 	OrderHallCommandBar.WorldMapButton:SetPoint("RIGHT", OrderHallCommandBar, -5, -2)
 
@@ -42,12 +42,9 @@ local function LoadSkin()
 		S:HandleTab(_G["OrderHallMissionFrameTab" .. i])
 	end
 
-	OrderHallMissionFrame.GarrCorners:StripTextures()
 	OrderHallMissionFrameMissions:StripTextures()
 	OrderHallMissionFrameMissionsListScrollFrame:StripTextures()
 	OrderHallMissionFrameMissions.CombatAllyUI:StripTextures()
-	-- looks not god
-	OrderHallMissionFrameMissions.MaterialFrame:StripTextures()
 	OrderHallMissionFrame.MissionTab:StripTextures()
 	OrderHallMissionFrame.MissionTab.ZoneSupportMissionPage:StripTextures()
 
@@ -56,12 +53,6 @@ local function LoadSkin()
 	S:HandleCloseButton(OrderHallMissionFrame.MissionTab.ZoneSupportMissionPage.CloseButton)
 	S:HandleButton(OrderHallMissionFrame.MissionTab.ZoneSupportMissionPage.StartMissionButton)
 
-	for i = 1, 2 do
-		_G["OrderHallMissionFrameMissionsTab" .. i]:StripTextures()
-		S:HandleButton(_G["OrderHallMissionFrameMissionsTab" .. i])
-		_G["OrderHallMissionFrameMissionsTab" .. i]:Height(_G["GarrisonMissionFrameMissionsTab" .. i]:GetHeight() - 10)
-	end
-	
 	for i, v in ipairs(OrderHallMissionFrame.MissionTab.MissionList.listScroll.buttons) do
 		local Button = _G["OrderHallMissionFrameMissionsListScrollFrameButton" .. i]
 		if Button and not Button.skinned then
@@ -89,7 +80,6 @@ local function LoadSkin()
 	local follower = OrderHallMissionFrameFollowers
 	follower:StripTextures()
 	follower.MaterialFrame:StripTextures()
-	OrderHallMissionFrame.MissionTab.MissionPage:StripTextures()
 
 	S:HandleEditBox(follower.SearchBox)
 	S:HandleCloseButton(OrderHallMissionFrame.MissionTab.MissionPage.CloseButton)
