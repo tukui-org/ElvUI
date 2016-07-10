@@ -7,6 +7,7 @@ local format = string.format
 local tsort = table.sort
 --WoW API / Variables
 local GetCurrencyInfo = GetCurrencyInfo
+local C_GarrisonRequestLandingPageShipmentInfo = C_Garrison.RequestLandingPageShipmentInfo
 local C_GarrisonGetInProgressMissions = C_Garrison.GetInProgressMissions
 local COMPLETE = COMPLETE
 local LE_FOLLOWER_TYPE_GARRISON_7_0 = LE_FOLLOWER_TYPE_GARRISON_7_0
@@ -23,6 +24,7 @@ local function OnEnter(self, _, noUpdate)
 
 	if(not noUpdate) then
 		DT.tooltip:Hide()
+		C_GarrisonRequestLandingPageShipmentInfo();
 		return
 	end
 
@@ -63,4 +65,4 @@ local function OnEvent(self, event, ...)
 	self.text:SetFormattedText("%s %s", GARRISON_ICON, numGarrisonResources)
 end
 
-DT:RegisterDatatext('Orderhall', {"PLAYER_ENTERING_WORLD", "CURRENCY_DISPLAY_UPDATE"}, OnEvent, nil, GarrisonLandingPage_Toggle, OnEnter)
+DT:RegisterDatatext('Orderhall', {"PLAYER_ENTERING_WORLD", "CURRENCY_DISPLAY_UPDATE", "GARRISON_LANDINGPAGE_SHIPMENTS"}, OnEvent, nil, GarrisonLandingPage_Toggle, OnEnter)
