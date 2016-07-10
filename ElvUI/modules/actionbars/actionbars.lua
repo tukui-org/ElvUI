@@ -66,34 +66,15 @@ local LEFT_ACTIONBAR_PAGE = LEFT_ACTIONBAR_PAGE
 -- GLOBALS: VIEWABLE_ACTION_BAR_PAGES, SHOW_MULTI_ACTIONBAR_1, SHOW_MULTI_ACTIONBAR_2
 -- GLOBALS: SHOW_MULTI_ACTIONBAR_3, SHOW_MULTI_ACTIONBAR_4
 
-
---This is a modified version of the Blizzard equivalent, which leaves out the check for "IsNormalActionBarState()"
---Without this the available action pages update to incorrect values when exiting a vehicle
-function AB:MultiActionBar_Update()
-	if ( SHOW_MULTI_ACTIONBAR_1 ) then
-		MultiBarBottomLeft.isShowing = 1;
-		VIEWABLE_ACTION_BAR_PAGES[BOTTOMLEFT_ACTIONBAR_PAGE] = nil;
-	else
-		MultiBarBottomLeft.isShowing = nil;
-		VIEWABLE_ACTION_BAR_PAGES[BOTTOMLEFT_ACTIONBAR_PAGE] = 1;
-	end
-	if ( SHOW_MULTI_ACTIONBAR_2 ) then
-		VIEWABLE_ACTION_BAR_PAGES[BOTTOMRIGHT_ACTIONBAR_PAGE] = nil;
-	else
-		VIEWABLE_ACTION_BAR_PAGES[BOTTOMRIGHT_ACTIONBAR_PAGE] = 1;
-	end
-	if ( SHOW_MULTI_ACTIONBAR_3 ) then
-		VIEWABLE_ACTION_BAR_PAGES[RIGHT_ACTIONBAR_PAGE] = nil;
-	else
-		VIEWABLE_ACTION_BAR_PAGES[RIGHT_ACTIONBAR_PAGE] = 1;
-	end
-	if ( SHOW_MULTI_ACTIONBAR_3 and SHOW_MULTI_ACTIONBAR_4 ) then
-		VIEWABLE_ACTION_BAR_PAGES[LEFT_ACTIONBAR_PAGE] = nil;
-	else
-		VIEWABLE_ACTION_BAR_PAGES[LEFT_ACTIONBAR_PAGE] = 1;
+--When WoW calls "MultiActionBar_Update", it checks if MainMenuBar:IsShown() returns true
+--This is not the case for us, after exiting a vehicle the MainMenuBar is not set to shown,
+--due to us disabling some Blizzard functionality, so we have to force the update ourselves.
+function AB:MultiActionBar_Update(preventLoop)
+	if not preventLoop then
+		BeginActionBarTransition(MainMenuBar, 1); --Make MainMenuBar:IsShown() return true
+		MultiActionBar_Update(true) --Update again and supply "true" argument to prevent loop
 	end
 end
-
 
 local Sticky = LibStub("LibSimpleSticky-1.0");
 local _LOCK
