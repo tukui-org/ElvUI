@@ -292,8 +292,8 @@ function AB:PositionAndSizeBar(barName)
 						local newCondition = bar:GetAttribute("newCondition")
 						if newCondition then
 							newstate = SecureCmdOptionParse(newCondition)
-							bar:SetAttribute("state", ParsedText)
-							bar:ChildUpdate("state", ParsedText)
+							bar:SetAttribute("state", newstate)
+							bar:ChildUpdate("state", newstate)
 							self:GetFrameRef("MainMenuBarArtFrame"):SetAttribute("actionpage", newstate)
 						end
 					end
@@ -311,8 +311,8 @@ function AB:PositionAndSizeBar(barName)
 					local newCondition = bar:GetAttribute("newCondition")
 					if newCondition then
 						newstate = SecureCmdOptionParse(newCondition)
-						bar:SetAttribute("state", newCondition)
-						bar:ChildUpdate("state", newCondition)
+						bar:SetAttribute("state", newstate)
+						bar:ChildUpdate("state", newstate)
 						self:GetFrameRef("MainMenuBarArtFrame"):SetAttribute("actionpage", newstate)
 					end
 				end
