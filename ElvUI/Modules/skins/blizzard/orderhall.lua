@@ -44,9 +44,7 @@ local function LoadSkin()
 
 	OrderHallMissionFrameMissions:StripTextures()
 	OrderHallMissionFrameMissionsListScrollFrame:StripTextures()
-	OrderHallMissionFrameMissions.CombatAllyUI:StripTextures()
 	OrderHallMissionFrame.MissionTab:StripTextures()
-	OrderHallMissionFrame.MissionTab.ZoneSupportMissionPage:StripTextures()
 
 	S:HandleScrollBar(OrderHallMissionFrameMissionsListScrollFrameScrollBar)
 	S:HandleButton(OrderHallMissionFrameMissions.CombatAllyUI.InProgress.Unassign)
