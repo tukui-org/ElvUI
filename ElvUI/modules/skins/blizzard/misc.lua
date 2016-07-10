@@ -969,6 +969,9 @@ local function LoadSkin()
 
 	local sliders = {
 		"Graphics_Quality",
+		"Graphics_ViewDistanceSlider",
+		"Graphics_EnvironmentalDetailSlider",
+		"Graphics_GroundClutterSlider",
 		"RaidGraphics_Quality",
 		"Advanced_UIScaleSlider",
 		"Advanced_MaxFPSSlider",
