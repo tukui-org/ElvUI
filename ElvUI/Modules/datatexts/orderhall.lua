@@ -63,4 +63,4 @@ local function OnEvent(self, event, ...)
 	self.text:SetFormattedText("%s %s", GARRISON_ICON, numGarrisonResources)
 end
 
-DT:RegisterDatatext('Orderhall', {"PLAYER_ENTERING_WORLD", "CURRENCY_DISPLAY_UPDATE", "GARRISON_LANDINGPAGE_SHIPMENTS"}, OnEvent, nil, GarrisonLandingPage_Toggle, OnEnter)
+DT:RegisterDatatext('Orderhall', {"PLAYER_ENTERING_WORLD", "CURRENCY_DISPLAY_UPDATE"}, OnEvent, nil, GarrisonLandingPage_Toggle, OnEnter)
