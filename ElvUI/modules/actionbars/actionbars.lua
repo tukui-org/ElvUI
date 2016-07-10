@@ -66,16 +66,6 @@ local LEFT_ACTIONBAR_PAGE = LEFT_ACTIONBAR_PAGE
 -- GLOBALS: VIEWABLE_ACTION_BAR_PAGES, SHOW_MULTI_ACTIONBAR_1, SHOW_MULTI_ACTIONBAR_2
 -- GLOBALS: SHOW_MULTI_ACTIONBAR_3, SHOW_MULTI_ACTIONBAR_4
 
---When WoW calls "MultiActionBar_Update", it checks if MainMenuBar:IsShown() returns true
---This is not the case for us, after exiting a vehicle the MainMenuBar is not set to shown,
---due to us disabling some Blizzard functionality, so we have to force the update ourselves.
-function AB:MultiActionBar_Update(preventLoop)
-	if not preventLoop then
-		BeginActionBarTransition(MainMenuBar, 1); --Make MainMenuBar:IsShown() return true
-		MultiActionBar_Update(true) --Update again and supply "true" argument to prevent loop
-	end
-end
-
 local Sticky = LibStub("LibSimpleSticky-1.0");
 local _LOCK
 local LAB = LibStub("LibActionButton-1.0-ElvUI")
@@ -288,6 +278,7 @@ function AB:PositionAndSizeBar(barName)
 				if(HasVehicleActionBar()) then
 					bar:SetAttribute("state", 12)
 					bar:ChildUpdate("state", 12)
+					self:GetFrameRef("MainMenuBarArtFrame"):SetAttribute("actionpage", 12) --Update MainMenuBarArtFrame too. See http://www.tukui.org/forums/topic.php?id=35332
 				else
 					if HasTempShapeshiftActionBar() and self:GetAttribute("hasTempBar") then
 						ParsedText = GetTempShapeshiftBarIndex() or ParsedText
@@ -296,12 +287,14 @@ function AB:PositionAndSizeBar(barName)
 					if ParsedText ~= 0 then
 						bar:SetAttribute("state", ParsedText)
 						bar:ChildUpdate("state", ParsedText)
+						self:GetFrameRef("MainMenuBarArtFrame"):SetAttribute("actionpage", ParsedText)
 					else
 						local newCondition = bar:GetAttribute("newCondition")
 						if newCondition then
 							newstate = SecureCmdOptionParse(newCondition)
 							bar:SetAttribute("state", ParsedText)
 							bar:ChildUpdate("state", ParsedText)
+							self:GetFrameRef("MainMenuBarArtFrame"):SetAttribute("actionpage", newstate)
 						end
 					end
 				end
@@ -313,12 +306,14 @@ function AB:PositionAndSizeBar(barName)
 				if ParsedText ~= 0 then
 					bar:SetAttribute("state", ParsedText)
 					bar:ChildUpdate("state", ParsedText)
+					self:GetFrameRef("MainMenuBarArtFrame"):SetAttribute("actionpage", ParsedText)
 				else
 					local newCondition = bar:GetAttribute("newCondition")
 					if newCondition then
 						newstate = SecureCmdOptionParse(newCondition)
 						bar:SetAttribute("state", newCondition)
 						bar:ChildUpdate("state", newCondition)
+						self:GetFrameRef("MainMenuBarArtFrame"):SetAttribute("actionpage", newstate)
 					end
 				end
 			end
@@ -344,6 +339,8 @@ end
 function AB:CreateBar(id)
 	local bar = CreateFrame('Frame', 'ElvUI_Bar'..id, E.UIParent, 'SecureHandlerStateTemplate');
 	bar.vehicleFix = CreateFrame("Frame", nil, bar, "SecureHandlerStateTemplate")
+	bar:SetFrameRef("MainMenuBarArtFrame", MainMenuBarArtFrame)
+	bar.vehicleFix:SetFrameRef("MainMenuBarArtFrame", MainMenuBarArtFrame)
 	
 	local point, anchor, attachTo, x, y = split(',', self['barDefaults']['bar'..id].position)
 	bar:Point(point, anchor, attachTo, x, y)
@@ -396,12 +393,14 @@ function AB:CreateBar(id)
 		if newstate ~= 0 then
 			self:SetAttribute("state", newstate)
 			control:ChildUpdate("state", newstate)
+			self:GetFrameRef("MainMenuBarArtFrame"):SetAttribute("actionpage", newstate) --Update MainMenuBarArtFrame too. See http://www.tukui.org/forums/topic.php?id=35332
 		else
 			local newCondition = self:GetAttribute("newCondition")
 			if newCondition then
 				newstate = SecureCmdOptionParse(newCondition)
 				self:SetAttribute("state", newstate)
 				control:ChildUpdate("state", newstate)
+				self:GetFrameRef("MainMenuBarArtFrame"):SetAttribute("actionpage", newstate)
 			end
 		end
 	]]);
@@ -791,11 +790,8 @@ function AB:DisableBlizzard()
 		_G['MultiCastActionButton'..i]:SetAttribute("statehidden", true)
 	end
 
-	--MainMenuBarArtFrame:GetAttribute("actionpage") will not update unless ActionBarController gets to update
-	--I don't think there will be any unwanted side effects from keeping it active
-	--This is in reference to 2nd part of http://www.tukui.org/forums/topic.php?id=35332
-	-- ActionBarController:UnregisterAllEvents()
-	-- ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR')
+	ActionBarController:UnregisterAllEvents()
+	ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR')
 
 	MainMenuBar:EnableMouse(false)
 	MainMenuBar:SetAlpha(0)
@@ -859,7 +855,6 @@ function AB:DisableBlizzard()
 	InterfaceOptionsStatusTextPanelXP:SetAlpha(0)
 	InterfaceOptionsStatusTextPanelXP:SetScale(0.00001)
 	self:SecureHook('BlizzardOptionsPanel_OnEvent')
-	self:SecureHook("MultiActionBar_Update")
 	--InterfaceOptionsFrameCategoriesButton6:SetScale(0.00001)
 	if PlayerTalentFrame then
 		PlayerTalentFrame:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
