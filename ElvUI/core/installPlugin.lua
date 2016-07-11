@@ -74,11 +74,14 @@ local function SetPage(PageNum, PrevPage)
 	if f.StepTitles then 
 		for i = 1, #f.side.Lines do
 			local b = f.side.Lines[i]
+			local color
+			b.text:SetText(f.StepTitles[i])
 			if i == f.CurrentPage then
-				b.text:SetText("|cff1784d1"..f.StepTitles[i].."|r")
+				color = f.StepTitlesColorSelected or {.09,.52,.82}
 			else
-				b.text:SetText(f.StepTitles[i])
+				color = f.StepTitlesColor or {1,1,1}
 			end
+			b.text:SetTextColor(color[1] or color.r,color[2] or color.g,color[3] or color.b)
 		end
 	end
 end
@@ -377,6 +380,8 @@ function PI:RunInstall()
 	if not E.private.install_complete then return end
 	if self.Installs[1] and not PluginInstallFrame:IsShown() and not (_G["ElvUIInstallFrame"] and _G["ElvUIInstallFrame"]:IsShown()) then
 		f.StepTitles = nil
+		f.StepTitlesColor = nil
+		f.StepTitlesColorSelected = nil
 		local db = self.Installs[1]
 		f.CurrentPage = 0
 		f.MaxPage = #(db.Pages)
@@ -397,6 +402,8 @@ function PI:RunInstall()
 				if db.StepTitles[i] then f.side.Lines[i]:Show() end
 			end
 			f:SetPoint("CENTER", E.UIParent, "CENTER", -70, 0)
+			f.StepTitlesColor = db.StepTitlesColor
+			f.StepTitlesColorSelected = db.StepTitlesColorSelected
 		end
 		NextPage()
 	end
