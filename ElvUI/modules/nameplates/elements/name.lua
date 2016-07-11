@@ -4,10 +4,11 @@ local LSM = LibStub("LibSharedMedia-3.0")
 
 function mod:UpdateElement_Name(frame)
 	local name, realm = UnitName(frame.displayedUnit)
-	if(not self.db.units[frame.UnitType].showName or not name) then return end
-	
+	if((not self.db.units[frame.UnitType].showName and frame.UnitType ~= "PLAYER") or not name) then return end
+	if frame.UnitType == "PLAYER" and not self.db.units[frame.UnitType].showName then frame.Name:SetText() return end 
+
 	frame.Name:SetText(name)
-	
+
 	if(frame.UnitType == "FRIENDLY_PLAYER" or frame.UnitType == "ENEMY_PLAYER") then
 		local _, class = UnitClass(frame.displayedUnit)
 		local color = RAID_CLASS_COLORS[class]
@@ -39,7 +40,7 @@ function mod:ConfigureElement_Name(frame)
 	if(self.db.units[frame.UnitType].healthbar.enable or frame.isTarget) then
 		name:SetJustifyH("LEFT")
 		name:SetPoint("BOTTOMLEFT", frame.HealthBar, "TOPLEFT", 0, E.Border*2)
-		name:SetPoint("BOTTOMRIGHT", frame.Level, "BOTTOMLEFT")
+		-- name:SetPoint("BOTTOMRIGHT", frame.Level, "BOTTOMLEFT")
 	else
 		name:SetJustifyH("CENTER")
 		name:SetPoint("TOP", frame, "CENTER")
