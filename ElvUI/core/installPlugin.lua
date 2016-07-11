@@ -335,6 +335,8 @@ end
 			[2] = "Title 2",
 			[3] = "Title 3",
 		},
+		StepTitlesColor = {r,g,b},
+		StepTitlesColorSelected = {r,g,b},
 	}
 	Title is wat displayed on top of the window. By default it's ""ElvUI Plugin Installation""
 	Name is how your installation will be showin in "pending list", Default is "Unknown"
@@ -356,6 +358,8 @@ end
 		end
 	StepTitles - a table to specify "titles" for your install steps. If specified and number of lines here = number of pages then you'll get an additional frame to the right of main frame
 	with a list of steps (current one being highlighted), clicking on those will open respective step. BenikUI style of doing stuff.
+	StepTitlesColor - a table with color values to color "titles" when they are not active
+	StepTitlesColorSelected - a table with color values to color "titles" when they are active
 ]]
 function PI:Queue(addon)
 	local queue = true
