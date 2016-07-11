@@ -356,9 +356,12 @@ local function LoadSkin()
 	S:HandleButton(WardrobeTransmogFrame.ApplyButton)
 	S:HandleButton(WardrobeTransmogFrame.Model.ClearAllPendingButton)
 	
-	-- Needs Review
 	-- Outfit Edit Frame
 	WardrobeOutfitEditFrame:StripTextures()
+	WardrobeOutfitEditFrame:CreateBackdrop("Transparent")
+	-- Needs Review
+	WardrobeOutfitEditFrame.EditBox:StripTextures()
+	S:HandleEditBox(WardrobeOutfitEditFrame.EditBox)
 	S:HandleButton(WardrobeOutfitEditFrame.AcceptButton)
 	S:HandleButton(WardrobeOutfitEditFrame.CancelButton)
 	S:HandleButton(WardrobeOutfitEditFrame.DeleteButton)
