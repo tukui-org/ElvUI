@@ -321,6 +321,47 @@ local function LoadSkin()
 	-- needs review (don't have global names)
 	-- S:HandleNextPrevButton(WardrobeCollectionFrame.NavigationFrame.PrevPageButton)
 	-- S:HandleNextPrevButton(WardrobeCollectionFrame.NavigationFrame.NextPageButton)
+
+	-- Transmogrify NPC
+	WardrobeFrame:StripTextures()
+	WardrobeFrame:SetTemplate("Transparent")
+	WardrobeOutfitFrame:StripTextures()
+	WardrobeOutfitFrame:SetTemplate("Transparent")
+	S:HandleCloseButton(WardrobeFrameCloseButton)
+	S:HandleDropDownBox(WardrobeOutfitDropDown)
+	WardrobeOutfitDropDown:SetSize(200, 32)
+	WardrobeOutfitDropDownText:ClearAllPoints()
+	WardrobeOutfitDropDownText:SetPoint("CENTER", WardrobeOutfitDropDown, 10, 2)
+	S:HandleButton(WardrobeOutfitDropDown.SaveButton)
+	WardrobeOutfitDropDown.SaveButton:ClearAllPoints()
+	WardrobeOutfitDropDown.SaveButton:SetPoint("LEFT", WardrobeOutfitDropDown, "RIGHT", 1, 4)
+
+	WardrobeTransmogFrame:StripTextures()
+	WardrobeTransmogFrame.Inset:StripTextures()
+	
+	for i = 1, #WardrobeTransmogFrame.Model.SlotButtons do
+		WardrobeTransmogFrame.Model.SlotButtons[i]:StripTextures()
+		WardrobeTransmogFrame.Model.SlotButtons[i].Icon:SetTexCoord(unpack(E.TexCoords))
+	end
+	
+	local function OnEnter_Button(self)
+		S:HandleButton(self)
+	end
+	
+	S:HandleButton(WardrobeTransmogFrame.SpecButton)
+	WardrobeTransmogFrame.SpecButton:SetScript("OnEnter", OnEnter_Button)
+	WardrobeTransmogFrame.SpecButton:SetScript("OnLeave", OnEnter_Button)
+	WardrobeTransmogFrame.SpecButton:ClearAllPoints()
+	WardrobeTransmogFrame.SpecButton:SetPoint("RIGHT", WardrobeTransmogFrame.ApplyButton, "LEFT", -2, 0)
+	S:HandleButton(WardrobeTransmogFrame.ApplyButton)
+	S:HandleButton(WardrobeTransmogFrame.Model.ClearAllPendingButton)
+	
+	-- Needs Review
+	-- Outfit Edit Frame
+	WardrobeOutfitEditFrame:StripTextures()
+	S:HandleButton(WardrobeOutfitEditFrame.AcceptButton)
+	S:HandleButton(WardrobeOutfitEditFrame.CancelButton)
+	S:HandleButton(WardrobeOutfitEditFrame.DeleteButton)
 end
 
 S:RegisterSkin("Blizzard_Collections", LoadSkin)
