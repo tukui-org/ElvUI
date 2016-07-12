@@ -21,35 +21,30 @@ local UnitIsFriend = UnitIsFriend
 
 function UF:Construct_Buffs(frame)
 	local buffs = CreateFrame('Frame', frame:GetName().."Buffs", frame)
-	if(self.thinBorders) then
-		buffs.spacing = -E.mult*2
-	else
-		buffs.spacing = E.mult
-	end	
-	
+	buffs.spacing = E.Spacing
 	buffs.PreSetPosition = (not frame:GetScript("OnUpdate")) and self.SortAuras or nil
 	buffs.PostCreateIcon = self.Construct_AuraIcon
 	buffs.PostUpdateIcon = self.PostUpdateAura
 	buffs.CustomFilter = self.AuraFilter
 	buffs:SetFrameLevel(10)
 	buffs.type = 'buffs'
+	--Set initial width to prevent division by zero. This value doesn't matter, as it will be updated later
+	buffs:Width(frame:GetWidth())
 
 	return buffs
 end
 
 function UF:Construct_Debuffs(frame)
 	local debuffs = CreateFrame('Frame', frame:GetName().."Debuffs", frame)
-	if(self.thinBorders) then
-		debuffs.spacing = -E.mult*2
-	else
-		debuffs.spacing = E.mult
-	end	
+	debuffs.spacing = E.Spacing
 	debuffs.PreSetPosition = (not frame:GetScript("OnUpdate")) and self.SortAuras or nil
 	debuffs.PostCreateIcon = self.Construct_AuraIcon
 	debuffs.PostUpdateIcon = self.PostUpdateAura
 	debuffs.CustomFilter = self.AuraFilter
 	debuffs.type = 'debuffs'
 	debuffs:SetFrameLevel(10)
+	--Set initial width to prevent division by zero. This value doesn't matter, as it will be updated later
+	debuffs:Width(frame:GetWidth())
 
 	return debuffs
 end
@@ -110,6 +105,26 @@ function UF:EnableDisable_Auras(frame)
 	end
 end
 
+function UF:PreUpdateAura()
+	local frame = self:GetParent()
+	local db = frame.db
+	if not db then return; end
+	
+	if frame.unitframeType == "party" then print("preupdate") end
+	
+	local type = self.type
+	
+	local totalWidth = frame.UNIT_WIDTH - frame.SPACING*2
+	if frame.USE_POWERBAR_OFFSET then
+		local powerOffset = ((frame.ORIENTATION == "MIDDLE" and 2 or 1) * frame.POWERBAR_OFFSET)
+
+		if not (db[type].attachTo == "POWER" and frame.ORIENTATION == "MIDDLE") then
+			totalWidth = totalWidth - powerOffset
+		end
+	end
+	self:Width(totalWidth)
+end
+
 local function ReverseUpdate(frame)
 	UF:Configure_Auras(frame, "Debuffs")
 	UF:Configure_Auras(frame, "Buffs")
@@ -134,6 +149,7 @@ function UF:Configure_Auras(frame, auraType)
 
 	auras.forceShow = frame.forceShowAuras
 	auras.num = db[auraType].perrow * rows
+	-- if frame.unitframeType == "party" then print("Configure_Auras:", frame:GetName(), auras:GetWidth(), (auras.spacing*(auras.num/rows - 1))) end
 	auras.size = db[auraType].sizeOverride ~= 0 and db[auraType].sizeOverride or ((((auras:GetWidth() - (auras.spacing*(auras.num/rows - 1))) / auras.num)) * rows)
 
 	if db[auraType].sizeOverride and db[auraType].sizeOverride > 0 then
@@ -374,7 +390,7 @@ function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, durati
 
 	local size = button:GetParent().size
 	if size then
-		button:Size(size)
+		button:SetSize(size, size)
 	end
 
 	button.spell = name

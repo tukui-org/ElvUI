@@ -279,12 +279,11 @@ end
 ]]
 local SetPosition = function(icons, from, to)
 	local sizex = (icons.size or 16) + (icons['spacing-x'] or icons.spacing or 0)
-	if sizex == 0 then sizex = 1 end
 	local sizey = (icons.size or 16) + (icons['spacing-y'] or icons.spacing or 0)
 	local anchor = icons.initialAnchor or "BOTTOMLEFT"
 	local growthx = (icons["growth-x"] == "LEFT" and -1) or 1
 	local growthy = (icons["growth-y"] == "DOWN" and -1) or 1
-	local cols = math.max(1, math.floor(icons:GetWidth() / sizex + .5))
+	local cols = math.floor(icons:GetWidth() / sizex + .5)
 
 	for i = from, to do
 		local button = icons[i]
