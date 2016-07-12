@@ -86,8 +86,10 @@
 local parent, ns = ...
 local oUF = ns.oUF
 local updateFrequentUpdates
-oUF.colors.health = {49/255, 207/255, 37/255}
 
+local isBetaClient = select(4, GetBuildInfo()) >= 70000
+
+oUF.colors.health = {49/255, 207/255, 37/255}
 
 local Update = function(self, event, unit)
 	if(self.unit ~= unit) or not unit then return end
@@ -113,7 +115,9 @@ local Update = function(self, event, unit)
 	end
 
 	local r, g, b, t
-	if(health.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
+	if(health.colorTapping and not UnitPlayerControlled(unit) and
+		(isBetaClient and UnitIsTapDenied(unit) or not isBetaClient and UnitIsTapped(unit) and
+		not UnitIsTappedByPlayer(unit) and not UnitIsTappedByAllThreatList(unit))) then
 		t = self.colors.tapped
 	elseif(health.colorDisconnected and not UnitIsConnected(unit)) then
 		t = self.colors.disconnected
@@ -136,6 +140,7 @@ local Update = function(self, event, unit)
 
 	if(b) then
 		health:SetStatusBarColor(r, g, b)
+
 		local bg = health.bg
 		if(bg) then local mu = bg.multiplier or 1
 			bg:SetVertexColor(r * mu, g * mu, b * mu)
