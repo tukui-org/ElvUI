@@ -150,18 +150,17 @@ function UF:Configure_ClassBar(frame)
 
 				if E.myclass == "MONK" then
 					bars[i]:SetStatusBarColor(unpack(ElvUF.colors.ClassBars[E.myclass][i]))
-				elseif E.myclass == "PALADIN" or E.myclass == "MAGE" or E.myclass == "WARLOCK" then
+				elseif E.myclass == "PALADIN" or E.myclass == "MAGE" or E.myclass == "WARLOCK" or E.myclass == "DEATHKNIGHT" then
 					bars[i]:SetStatusBarColor(unpack(ElvUF.colors.ClassBars[E.myclass]))
 				elseif E.myclass == "ROGUE" or E.myclass == "DRUID" then
 					local r1, g1, b1 = unpack(ElvUF.colors.ComboPoints[1])
 					local r2, g2, b2 = unpack(ElvUF.colors.ComboPoints[2])
 					local r3, g3, b3 = unpack(ElvUF.colors.ComboPoints[3])
-					
+
 					local r, g, b = ElvUF.ColorGradient(i, frame.MAX_CLASS_BAR > 5 and 6 or 5, r1, g1, b1, r2, g2, b2, r3, g3, b3)
-					bars[i]:SetStatusBarColor(r, g, b)	
-				elseif E.myclass ~= 'DEATHKNIGHT' then
-					print(unpack(ElvUF.colors[frame.ClassBar]))
-					bars[i]:SetStatusBarColor(unpack(ElvUF.colors[frame.ClassBar]))			
+					bars[i]:SetStatusBarColor(r, g, b)
+				else
+					bars[i]:SetStatusBarColor(unpack(ElvUF.colors[frame.ClassBar]))
 				end
 				bars[i]:Show()
 			end
@@ -171,7 +170,7 @@ function UF:Configure_ClassBar(frame)
 			bars.backdrop:Show()
 		else
 			bars.backdrop:Hide()
-		end	
+		end
 	end
 
 
@@ -232,7 +231,7 @@ UF.ToggleResourceBar = ToggleResourceBar --Make available to combobar
 function UF:Construct_ClassBar(frame)
 	local bars = CreateFrame("Frame", nil, frame)
 	bars:CreateBackdrop('Default', nil, nil, self.thinBorders)
-	
+
 	for i = 1, UF['classMaxResourceBar'][E.myclass] do
 		bars[i] = CreateFrame("StatusBar", frame:GetName().."ClassBarButton"..i, bars)
 		bars[i]:SetStatusBarTexture(E['media'].blankTex) --Dummy really, this needs to be set so we can change the color
@@ -241,7 +240,7 @@ function UF:Construct_ClassBar(frame)
 
 		bars[i]:CreateBackdrop('Default', nil, nil, self.thinBorders)
 		bars[i].backdrop:SetParent(bars)
-		
+
 		bars[i].bg = bars:CreateTexture(nil, 'OVERLAY')
 		bars[i].bg:SetAllPoints(bars[i])
 		bars[i].bg:SetTexture(E['media'].blankTex)
@@ -256,7 +255,7 @@ function UF:Construct_ClassBar(frame)
 	return bars
 end
 
-function UF:UpdateClassBar(cur, max, hasMaxChanged, event)
+function UF:UpdateClassBar(cur, max, hasMaxChanged, powerType, event)
 	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 	if not db then return; end
@@ -267,8 +266,8 @@ function UF:UpdateClassBar(cur, max, hasMaxChanged, event)
 	else
 		self:Show()
 	end
-	
-	local r, g, b 
+
+	local r, g, b
 	for i=1, #self do
 		r, g, b = self[i]:GetStatusBarColor()
 		self[i].bg:SetVertexColor(r, g, b, 0.15)
@@ -278,9 +277,8 @@ function UF:UpdateClassBar(cur, max, hasMaxChanged, event)
 			self[i].bg:Hide()
 		end
 	end
-	
+
 	if hasMaxChanged then
-		
 		frame.MAX_CLASS_BAR = max
 		UF:Configure_ClassBar(frame)
 	end
@@ -403,7 +401,7 @@ function UF:PostUpdateStagger(event, unit, isShown, stateChanged)
 	else
 		frame.ClassBar = 'ClassIcons'
 	end
-	
+
 	--Only update when necessary
 	if(stateChanged) then
 		ToggleResourceBar(frame.Stagger)
