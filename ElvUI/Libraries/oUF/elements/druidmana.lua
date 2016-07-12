@@ -73,7 +73,7 @@ local function Update(self, event, unit, powertype)
 	if(druidmana.PreUpdate) then druidmana:PreUpdate(unit) end
 
 	-- Hide the bar if the active power type is the same as the alternate.
-	if(select(2, UnitPowerType('player')) == ADDITIONAL_POWER_BAR_NAME) then
+	if(UnitPowerType('player') == ADDITIONAL_POWER_BAR_INDEX) then
 		return druidmana:Hide()
 	elseif (not event) or (event and event ~= "ElementDisable") then
 		druidmana:Show()
