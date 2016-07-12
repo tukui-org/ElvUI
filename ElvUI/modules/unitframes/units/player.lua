@@ -213,15 +213,6 @@ end
 
 tinsert(UF['unitstoload'], 'player')
 
---Bugfix: Death Runes show as Blood Runes on first login ( http://git.tukui.org/Elv/elvui/issues/411 )
---For some reason the registered "PLAYER_ENTERING_WORLD" in runebar.lua doesn't trigger on first login.
-local function UpdateAllRunes()
-	local frame = _G["ElvUF_Player"]
-	if frame and frame.Runes and frame.Runes.UpdateAllRuneTypes then
-		frame.Runes.UpdateAllRuneTypes(frame)
-	end
-end
-
 --Bugfix: Classbar is not updated correctly on initial login ( http://git.tukui.org/Elv/elvui/issues/987 )
 --ToggleResourceBar(bars) is called before the classbar has been updated, so we call it manually once.
 local function UpdateClassBar()
@@ -237,5 +228,4 @@ f:RegisterEvent("PLAYER_ENTERING_WORLD")
 f:SetScript("OnEvent", function(self, event)
 	self:UnregisterEvent(event)
 	UpdateClassBar()
-	C_TimerAfter(5, UpdateAllRunes) --Delay it, since the WoW client updates Death Runes after PEW
 end)
