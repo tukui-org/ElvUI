@@ -27,11 +27,11 @@
    mainBar:SetPoint('RIGHT', self.Power:GetStatusBarTexture(), 'RIGHT')
    mainBar:SetWidth(200)
 
-   local altBar = CreateFrame('StatusBar', nil, self.DruidMana)
+   local altBar = CreateFrame('StatusBar', nil, self.AdditionalPower)
    altBar:SetReverseFill(true)
    altBar:SetPoint('TOP')
    altBar:SetPoint('BOTTOM')
-   altBar:SetPoint('RIGHT', self.DruidMana:GetStatusBarTexture(), 'RIGHT')
+   altBar:SetPoint('RIGHT', self.AdditionalPower:GetStatusBarTexture(), 'RIGHT')
    altBar:SetWidth(200)
 
    -- Register with oUF
