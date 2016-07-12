@@ -47,15 +47,20 @@ function UF:Construct_PlayerFrame(frame)
 		frame.Runes = self:Construct_DeathKnightResourceBar(frame)
 		frame.ClassBar = 'Runes'
 	elseif E.myclass == "DRUID" then
+		frame.DruidMana = self:Construct_AltManaBar(frame)
 		frame.ClassIcons = self:Construct_ClassBar(frame)
-		frame.ClassBar = 'ClassIcons'
+		if (GetSpecialization() == 1) then --Balance
+			frame.ClassBar = 'DruidMana'
+		else
+			frame.ClassBar = 'ClassIcons'
+		end
 	elseif E.myclass == "ROGUE" then
 		frame.ClassIcons = self:Construct_ClassBar(frame)
 		frame.ClassBar = 'ClassIcons'
 	elseif E.myclass == "MONK" then
 		frame.ClassIcons = self:Construct_ClassBar(frame)
 		frame.Stagger = self:Construct_Stagger(frame)
-		if(GetSpecialization() == SPEC_MONK_BREWMASTER) then
+		if (GetSpecialization() == SPEC_MONK_BREWMASTER) then
 			frame.ClassBar = 'Stagger'
 		else
 			frame.ClassBar = 'ClassIcons'

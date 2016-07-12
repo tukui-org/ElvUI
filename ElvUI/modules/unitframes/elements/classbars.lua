@@ -319,6 +319,7 @@ function UF:Construct_AltManaBar(frame)
 	altPower:SetFrameLevel(altPower:GetFrameLevel() + 1)
 	altPower.colorPower = true
 	altPower.PostUpdate = UF.PostUpdateAltMana
+	altPower.PostUpdateVisibility = UF.PostUpdateVisibilityAltMana
 	altPower:CreateBackdrop('Default')
 	UF['statusbars'][altPower] = true
 	altPower:SetStatusBarTexture(E["media"].blankTex)
@@ -337,15 +338,15 @@ function UF:Construct_AltManaBar(frame)
 	return altPower
 end
 
-function UF:PostUpdateAltMana(unit, min, max)
-	local parent = self:GetParent()
-	local powerText = parent.Power.value
+function UF:PostUpdateAltMana(unit, min, max, event)
+	local frame = self:GetParent()
+	local powerText = frame.Power.value
 	local powerTextParent = powerText:GetParent()
-	local db = parent.db
+	local db = frame.db
 
 	local powerTextPosition = db.power.position
 
-	if min ~= max then
+	if min ~= max and (event ~= "ElementDisable") then
 		local color = ElvUF['colors'].power['MANA']
 		color = E:RGBToHex(color[1], color[2], color[3])
 
@@ -375,6 +376,27 @@ function UF:PostUpdateAltMana(unit, min, max)
 	else
 		self.Text:SetText()
 		self:Hide()
+	end
+end
+
+function UF:PostVisibilityAltMana(enabled, stateChanged)
+	local frame = self:GetParent()
+
+	if enabled then
+		frame.ClassBar = 'DruidMana'
+	else
+		frame.ClassBar = 'ClassIcons'
+		self.Text:SetText()
+		ToggleResourceBar(frame.ClassIcons)
+		return
+	end
+
+	if stateChanged then
+		ToggleResourceBar(frame.DruidMana)
+		UF:Configure_ClassBar(frame)
+		UF:Configure_HealthBar(frame)
+		UF:Configure_Power(frame)
+		UF:Configure_InfoPanel(frame, true) --2nd argument is to prevent it from setting template, which removes threat border
 	end
 end
 
