@@ -108,7 +108,7 @@ local function Update(self, event, unit, powertype)
 	end
 
 	if(druidmana.PostUpdate) then
-		return druidmana:PostUpdate(unit, cur, max)
+		return druidmana:PostUpdate(unit, cur, max, event)
 	end
 end
 
