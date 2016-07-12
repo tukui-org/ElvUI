@@ -2524,7 +2524,7 @@ E.Options.args.unitframe.args.player = {
 			set = function(info, value)
 				E.db.unitframe.units['player'][ info[#info] ] = value;
 				UF:CreateAndUpdateUF('player');
-				LibStub("LibBodyguard-1.0"):UpdateSettings();
+				-- LibStub("LibBodyguard-1.0"):UpdateSettings();
 				if value == true and E.db.unitframe.units.player.combatfade then
 					ElvUF_Pet:SetParent(ElvUF_Player)
 				else
@@ -2560,7 +2560,7 @@ E.Options.args.unitframe.args.player = {
 			set = function(info, value)
 				E.db.unitframe.units['player'][ info[#info] ] = value;
 				UF:CreateAndUpdateUF('player');
-				LibStub("LibBodyguard-1.0"):UpdateSettings();
+				-- LibStub("LibBodyguard-1.0"):UpdateSettings();
 				if value == true and E.db.unitframe.units.player.enable then
 					ElvUF_Pet:SetParent(ElvUF_Player)
 				else
@@ -6113,6 +6113,7 @@ E.Options.args.unitframe.args.assist = {
 	},
 }
 
+--[[
 --Bodyguard Frame
 E.Options.args.unitframe.args.bodyguard = {
 	name = L["BodyGuard Frame"],
@@ -6165,6 +6166,7 @@ E.Options.args.unitframe.args.bodyguard = {
 		},
 	},
 }
+]]
 
 --MORE COLORING STUFF YAY
 E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup = {
