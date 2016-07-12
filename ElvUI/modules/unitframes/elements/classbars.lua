@@ -336,8 +336,8 @@ function UF:Construct_AltManaBar(frame)
 	altPower.bg:SetTexture(E["media"].blankTex)
 	altPower.bg.multiplier = 0.3
 
-	altPower.Text = altPower:CreateFontString(nil, 'OVERLAY')
-	UF:Configure_FontString(altPower.Text)
+	altPower.text = altPower:CreateFontString(nil, 'OVERLAY')
+	UF:Configure_FontString(altPower.text)
 	
 	altPower:SetScript("OnShow", ToggleResourceBar)
 	altPower:SetScript("OnHide", ToggleResourceBar)
@@ -360,31 +360,31 @@ function UF:PostUpdateAltMana(unit, min, max, event)
 		local color = ElvUF['colors'].power['MANA']
 		color = E:RGBToHex(color[1], color[2], color[3])
 
-		self.Text:SetParent(powerValueParent)
-		self.Text:ClearAllPoints()
+		self.text:SetParent(powerValueParent)
+		self.text:ClearAllPoints()
 
 		if (powerValueText ~= "" and powerValueText ~= " ") then
 			if find(powerTextPosition, "RIGHT") then
-				self.Text:Point("RIGHT", powerValue, "LEFT", 3, 0)
-				self.Text:SetFormattedText(color.."%d%%|r |cffD7BEA5- |r", floor(min / max * 100))
+				self.text:Point("RIGHT", powerValue, "LEFT", 3, 0)
+				self.text:SetFormattedText(color.."%d%%|r |cffD7BEA5- |r", floor(min / max * 100))
 			elseif find(powerTextPosition, "LEFT") then
-				self.Text:Point("LEFT", powerValue, "RIGHT", -3, 0)
-				self.Text:SetFormattedText("|cffD7BEA5-|r"..color.." %d%%|r", floor(min / max * 100))
+				self.text:Point("LEFT", powerValue, "RIGHT", -3, 0)
+				self.text:SetFormattedText("|cffD7BEA5-|r"..color.." %d%%|r", floor(min / max * 100))
 			else
 				if select(4, powerValue:GetPoint()) <= 0 then
-					self.Text:Point("LEFT", powerValue, "RIGHT", -3, 0)
-					self.Text:SetFormattedText("|cffD7BEA5-|r"..color.." %d%%|r", floor(min / max * 100))
+					self.text:Point("LEFT", powerValue, "RIGHT", -3, 0)
+					self.text:SetFormattedText("|cffD7BEA5-|r"..color.." %d%%|r", floor(min / max * 100))
 				else
-					self.Text:Point("RIGHT", powerValue, "LEFT", 3, 0)
-					self.Text:SetFormattedText(color.."%d%%|r |cffD7BEA5- |r", floor(min / max * 100))
+					self.text:Point("RIGHT", powerValue, "LEFT", 3, 0)
+					self.text:SetFormattedText(color.."%d%%|r |cffD7BEA5- |r", floor(min / max * 100))
 				end
 			end
 		else
-			self.Text:Point(powerValue:GetPoint())
-			self.Text:SetFormattedText(color.."%d%%|r", floor(min / max * 100))
+			self.text:Point(powerValue:GetPoint())
+			self.text:SetFormattedText(color.."%d%%|r", floor(min / max * 100))
 		end
 	else
-		self.Text:SetText()
+		self.text:SetText()
 		self:Hide()
 	end
 end
@@ -396,7 +396,7 @@ function UF:PostVisibilityAltMana(enabled, stateChanged)
 		frame.ClassBar = 'DruidMana'
 	else
 		frame.ClassBar = 'ClassIcons'
-		self.Text:SetText()
+		self.text:SetText()
 		ToggleResourceBar(frame.ClassIcons)
 		return
 	end
