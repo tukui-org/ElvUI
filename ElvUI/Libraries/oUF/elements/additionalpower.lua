@@ -4,7 +4,7 @@
 
  Widget
 
- DruidMana - A StatusBar to represent current caster mana.
+ AdditionalPower - A StatusBar to represent current caster mana.
 
  Sub-Widgets
 
@@ -34,20 +34,20 @@
  Examples
 
    -- Position and size
-   local DruidMana = CreateFrame("StatusBar", nil, self)
-   DruidMana:SetSize(20, 20)
-   DruidMana:SetPoint('TOP')
-   DruidMana:SetPoint('LEFT')
-   DruidMana:SetPoint('RIGHT')
+   local AdditionalPower = CreateFrame("StatusBar", nil, self)
+   AdditionalPower:SetSize(20, 20)
+   AdditionalPower:SetPoint('TOP')
+   AdditionalPower:SetPoint('LEFT')
+   AdditionalPower:SetPoint('RIGHT')
    
    -- Add a background
-   local Background = DruidMana:CreateTexture(nil, 'BACKGROUND')
-   Background:SetAllPoints(DruidMana)
+   local Background = AdditionalPower:CreateTexture(nil, 'BACKGROUND')
+   Background:SetAllPoints(AdditionalPower)
    Background:SetTexture(1, 1, 1, .5)
    
    -- Register it with oUF
-   self.DruidMana = DruidMana
-   self.DruidMana.bg = Background
+   self.AdditionalPower = AdditionalPower
+   self.AdditionalPower.bg = Background
 
  Hooks
 
@@ -69,27 +69,27 @@ local ADDITIONAL_POWER_BAR_INDEX = ADDITIONAL_POWER_BAR_INDEX
 local function Update(self, event, unit, powertype)
 	if(unit ~= 'player' or (powertype and powertype ~= ADDITIONAL_POWER_BAR_NAME)) then return end
 
-	local druidmana = self.DruidMana
-	if(druidmana.PreUpdate) then druidmana:PreUpdate(unit) end
+	local additionalpower = self.AdditionalPower
+	if(additionalpower.PreUpdate) then additionalpower:PreUpdate(unit) end
 
 	-- Hide the bar if the active power type is the same as the alternate.
 	if(UnitPowerType('player') == ADDITIONAL_POWER_BAR_INDEX) then
-		return druidmana:Hide()
+		return additionalpower:Hide()
 	elseif (not event) or (event and event ~= "ElementDisable") then
-		druidmana:Show()
+		additionalpower:Show()
 	end
 
 	local cur = UnitPower('player', ADDITIONAL_POWER_BAR_INDEX)
 	local max = UnitPowerMax('player', ADDITIONAL_POWER_BAR_INDEX)
-	druidmana:SetMinMaxValues(0, max)
-	druidmana:SetValue(cur)
+	additionalpower:SetMinMaxValues(0, max)
+	additionalpower:SetValue(cur)
 
 	local r, g, b, t
-	if(druidmana.colorClass) then
+	if(additionalpower.colorClass) then
 		t = self.colors.class[playerClass]
-	elseif(druidmana.colorSmooth) then
-		r, g, b = self.ColorGradient(cur, max, unpack(druidmana.smoothGradient or self.colors.smooth))
-	elseif(druidmana.colorPower) then
+	elseif(additionalpower.colorSmooth) then
+		r, g, b = self.ColorGradient(cur, max, unpack(additionalpower.smoothGradient or self.colors.smooth))
+	elseif(additionalpower.colorPower) then
 		t = self.colors.power[ADDITIONAL_POWER_BAR_NAME]
 	end
 
@@ -98,22 +98,22 @@ local function Update(self, event, unit, powertype)
 	end
 
 	if(b) then
-		druidmana:SetStatusBarColor(r, g, b)
+		additionalpower:SetStatusBarColor(r, g, b)
 
-		local bg = druidmana.bg
+		local bg = additionalpower.bg
 		if(bg) then
 			local mu = bg.multiplier or 1
 			bg:SetVertexColor(r * mu, g * mu, b * mu)
 		end
 	end
 
-	if(druidmana.PostUpdate) then
-		return druidmana:PostUpdate(unit, cur, max, event)
+	if(additionalpower.PostUpdate) then
+		return additionalpower:PostUpdate(unit, cur, max, event)
 	end
 end
 
 local function Path(self, ...)
-	return (self.DruidMana.Override or Update) (self, ...)
+	return (self.AdditionalPower.Override or Update) (self, ...)
 end
 
 local function ElementEnable(self)
@@ -121,13 +121,13 @@ local function ElementEnable(self)
 	self:RegisterEvent('UNIT_DISPLAYPOWER', Path)
 	self:RegisterEvent('UNIT_MAXPOWER', Path)
 
-	self.DruidMana:Show()
+	self.AdditionalPower:Show()
 
-	if self.DruidMana.PostUpdateVisibility then
-		self.DruidMana:PostUpdateVisibility(true, not self.DruidMana.isEnabled)
+	if self.AdditionalPower.PostUpdateVisibility then
+		self.AdditionalPower:PostUpdateVisibility(true, not self.AdditionalPower.isEnabled)
 	end
 	
-	self.DruidMana.isEnabled = true
+	self.AdditionalPower.isEnabled = true
 
 	Path(self, 'ElementEnable', 'player', ADDITIONAL_POWER_BAR_NAME)
 end
@@ -137,19 +137,19 @@ local function ElementDisable(self)
 	self:UnregisterEvent('UNIT_DISPLAYPOWER', Path)
 	self:UnregisterEvent('UNIT_MAXPOWER', Path)
 
-	self.DruidMana:Hide()
+	self.AdditionalPower:Hide()
 	
-	if self.DruidMana.PostUpdateVisibility then
-		self.DruidMana:PostUpdateVisibility(false, self.DruidMana.isEnabled)
+	if self.AdditionalPower.PostUpdateVisibility then
+		self.AdditionalPower:PostUpdateVisibility(false, self.AdditionalPower.isEnabled)
 	end
 
-	self.DruidMana.isEnabled = nil
+	self.AdditionalPower.isEnabled = nil
 
 	Path(self, 'ElementDisable', 'player', ADDITIONAL_POWER_BAR_NAME)
 end
 
 local function Visibility(self, event, unit)
-	local druidmana = self.DruidMana
+	local additionalpower = self.AdditionalPower
 	local shouldEnable
 
 	if(not UnitHasVehicleUI('player')) then
@@ -177,7 +177,7 @@ local function Visibility(self, event, unit)
 end
 
 local VisibilityPath = function(self, ...)
-	return (self.DruidMana.OverrideVisibility or Visibility) (self, ...)
+	return (self.AdditionalPower.OverrideVisibility or Visibility) (self, ...)
 end
 
 local function ForceUpdate(element)
@@ -185,15 +185,15 @@ local function ForceUpdate(element)
 end
 
 local Enable = function(self, unit)
-	local druidmana = self.DruidMana
-	if(druidmana and unit == 'player') then
-		druidmana.__owner = self
-		druidmana.ForceUpdate = ForceUpdate
+	local additionalpower = self.AdditionalPower
+	if(additionalpower and unit == 'player') then
+		additionalpower.__owner = self
+		additionalpower.ForceUpdate = ForceUpdate
 
 		self:RegisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
 
-		if(druidmana:IsObjectType'StatusBar' and not druidmana:GetStatusBarTexture()) then
-			druidmana:SetStatusBarTexture[[Interface\TargetingFrame\UI-StatusBar]]
+		if(additionalpower:IsObjectType'StatusBar' and not additionalpower:GetStatusBarTexture()) then
+			additionalpower:SetStatusBarTexture[[Interface\TargetingFrame\UI-StatusBar]]
 		end
 
 		return true
@@ -201,12 +201,12 @@ local Enable = function(self, unit)
 end
 
 local Disable = function(self)
-	local druidmana = self.DruidMana
-	if(druidmana) then
+	local additionalpower = self.AdditionalPower
+	if(additionalpower) then
 		ElementDisable(self)
 
 		self:UnregisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
 	end
 end
 
-oUF:AddElement('DruidMana', VisibilityPath, Enable, Disable)
+oUF:AddElement('AdditionalPower', VisibilityPath, Enable, Disable)
