@@ -374,15 +374,13 @@ function UF:UpdateColors()
 	ElvUF.colors.power.FURY = E:GetColorTable(db.power.FURY);
 	ElvUF.colors.power.LUNAR_POWER = E:GetColorTable(db.power.LUNAR_POWER)
 	ElvUF.colors.power.INSANITY = E:GetColorTable(db.power.INSANITY)
-	
-	ElvUF.colors.Runes = E:GetColorTable(db.classResources.DEATHKNIGHT)
 
 	ElvUF.colors.ComboPoints = {}
 	ElvUF.colors.ComboPoints[1] = E:GetColorTable(db.classResources.comboPoints[1])
 	ElvUF.colors.ComboPoints[2] = E:GetColorTable(db.classResources.comboPoints[2])
 	ElvUF.colors.ComboPoints[3] = E:GetColorTable(db.classResources.comboPoints[3])
 
-	--Monk, Mage,Paladin and Warlock
+	--Monk, Mage, Paladin and Warlock, Death Knight
 	ElvUF.colors.ClassBars = {}
 	ElvUF.colors.ClassBars.MONK = {}
 	ElvUF.colors.ClassBars.PALADIN = E:GetColorTable(db.classResources.PALADIN);
@@ -393,6 +391,7 @@ function UF:UpdateColors()
 	ElvUF.colors.ClassBars.MONK[4] = E:GetColorTable(db.classResources.MONK[4])
 	ElvUF.colors.ClassBars.MONK[5] = E:GetColorTable(db.classResources.MONK[5])
 	ElvUF.colors.ClassBars.MONK[6] = E:GetColorTable(db.classResources.MONK[6])
+	ElvUF.colors.ClassBars.DEATHKNIGHT = E:GetColorTable(db.classResources.DEATHKNIGHT)
 	ElvUF.colors.ClassBars.WARLOCK = E:GetColorTable(db.classResources.WARLOCK)
 
 	ElvUF.colors.reaction[1] = bad

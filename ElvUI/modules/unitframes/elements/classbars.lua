@@ -156,12 +156,18 @@ function UF:Configure_ClassBar(frame)
 					local r1, g1, b1 = unpack(ElvUF.colors.ComboPoints[1])
 					local r2, g2, b2 = unpack(ElvUF.colors.ComboPoints[2])
 					local r3, g3, b3 = unpack(ElvUF.colors.ComboPoints[3])
-					
+
 					local r, g, b = ElvUF.ColorGradient(i, frame.MAX_CLASS_BAR > 5 and 6 or 5, r1, g1, b1, r2, g2, b2, r3, g3, b3)
-					bars[i]:SetStatusBarColor(r, g, b)	
-				elseif E.myclass ~= 'DEATHKNIGHT' then
-					print(unpack(ElvUF.colors[frame.ClassBar]))
-					bars[i]:SetStatusBarColor(unpack(ElvUF.colors[frame.ClassBar]))			
+					bars[i]:SetStatusBarColor(r, g, b)
+				elseif E.myclass == "DEATHKNIGHT" then
+					local r, g, b = unpack(ElvUF.colors.ClassBars.DEATHKNIGHT)
+					bars[i]:SetStatusBarColor(r, g, b)
+					if (bars[i].bg) then
+						local mu = bars[i].bg.multiplier or 1
+						bars[i].bg:SetVertexColor(r * mu, g * mu, b * mu)
+					end
+				else
+					bars[i]:SetStatusBarColor(unpack(ElvUF.colors[frame.ClassBar]))
 				end
 				bars[i]:Show()
 			end
@@ -171,7 +177,7 @@ function UF:Configure_ClassBar(frame)
 			bars.backdrop:Show()
 		else
 			bars.backdrop:Hide()
-		end	
+		end
 	end
 
 
@@ -232,7 +238,7 @@ UF.ToggleResourceBar = ToggleResourceBar --Make available to combobar
 function UF:Construct_ClassBar(frame)
 	local bars = CreateFrame("Frame", nil, frame)
 	bars:CreateBackdrop('Default', nil, nil, self.thinBorders)
-	
+
 	for i = 1, UF['classMaxResourceBar'][E.myclass] do
 		bars[i] = CreateFrame("StatusBar", frame:GetName().."ClassBarButton"..i, bars)
 		bars[i]:SetStatusBarTexture(E['media'].blankTex) --Dummy really, this needs to be set so we can change the color
@@ -241,7 +247,7 @@ function UF:Construct_ClassBar(frame)
 
 		bars[i]:CreateBackdrop('Default', nil, nil, self.thinBorders)
 		bars[i].backdrop:SetParent(bars)
-		
+
 		bars[i].bg = bars:CreateTexture(nil, 'OVERLAY')
 		bars[i].bg:SetAllPoints(bars[i])
 		bars[i].bg:SetTexture(E['media'].blankTex)
@@ -256,7 +262,7 @@ function UF:Construct_ClassBar(frame)
 	return bars
 end
 
-function UF:UpdateClassBar(cur, max, hasMaxChanged, event)
+function UF:UpdateClassBar(cur, max, hasMaxChanged, powerType, event)
 	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 	if not db then return; end
@@ -267,8 +273,8 @@ function UF:UpdateClassBar(cur, max, hasMaxChanged, event)
 	else
 		self:Show()
 	end
-	
-	local r, g, b 
+
+	local r, g, b
 	for i=1, #self do
 		r, g, b = self[i]:GetStatusBarColor()
 		self[i].bg:SetVertexColor(r, g, b, 0.15)
@@ -278,9 +284,8 @@ function UF:UpdateClassBar(cur, max, hasMaxChanged, event)
 			self[i].bg:Hide()
 		end
 	end
-	
+
 	if hasMaxChanged then
-		
 		frame.MAX_CLASS_BAR = max
 		UF:Configure_ClassBar(frame)
 	end
@@ -320,8 +325,8 @@ function UF:Construct_AltManaBar(frame)
 	altPower:SetFrameStrata("LOW")
 	altPower:SetFrameLevel(altPower:GetFrameLevel() + 1)
 	altPower.colorPower = true
-	altPower.PostUpdateVisibility = UF.AltManaPostUpdateVisibility
-	altPower.PostUpdatePower = UF.PostUpdateAltMana
+	altPower.PostUpdate = UF.PostUpdateAltMana
+	altPower.PostUpdateVisibility = UF.PostUpdateVisibilityAltMana
 	altPower:CreateBackdrop('Default')
 	UF['statusbars'][altPower] = true
 	altPower:SetStatusBarTexture(E["media"].blankTex)
@@ -333,53 +338,76 @@ function UF:Construct_AltManaBar(frame)
 
 	altPower.Text = altPower:CreateFontString(nil, 'OVERLAY')
 	UF:Configure_FontString(altPower.Text)
+	
+	altPower:SetScript("OnShow", ToggleResourceBar)
+	altPower:SetScript("OnHide", ToggleResourceBar)
 
 	return altPower
 end
 
-
-function UF:PostUpdateAltMana(unit, min, max)
-	local parent = self:GetParent()
-	local powerText = parent.Power.value
-	local powerTextParent = powerText:GetParent()
-	local db = parent.db
+function UF:PostUpdateAltMana(unit, min, max, event)
+	local frame = self:GetParent()
+	local powerValue = frame.Power.value
+	local powerValueText = powerValue:GetText()
+	local powerValueParent = powerValue:GetParent()
+	local db = frame.db
 
 	local powerTextPosition = db.power.position
 
-	if min ~= max then
+	if powerValueText then powerValueText = powerValueText:gsub("|cff(.*) ", "") end --Remove possible [powercolor] tag
+
+	if min ~= max and (event ~= "ElementDisable") then
 		local color = ElvUF['colors'].power['MANA']
 		color = E:RGBToHex(color[1], color[2], color[3])
 
-		self.Text:SetParent(powerTextParent)
-
+		self.Text:SetParent(powerValueParent)
 		self.Text:ClearAllPoints()
-		if powerText:GetText() then
+
+		if (powerValueText ~= "" and powerValueText ~= " ") then
 			if find(powerTextPosition, "RIGHT") then
-				self.Text:Point("RIGHT", powerText, "LEFT", 3, 0)
+				self.Text:Point("RIGHT", powerValue, "LEFT", 3, 0)
 				self.Text:SetFormattedText(color.."%d%%|r |cffD7BEA5- |r", floor(min / max * 100))
 			elseif find(powerTextPosition, "LEFT") then
-				self.Text:Point("LEFT", powerText, "RIGHT", -3, 0)
+				self.Text:Point("LEFT", powerValue, "RIGHT", -3, 0)
 				self.Text:SetFormattedText("|cffD7BEA5-|r"..color.." %d%%|r", floor(min / max * 100))
 			else
-				if select(4, powerText:GetPoint()) <= 0 then
-					self.Text:Point("LEFT", powerText, "RIGHT", -3, 0)
+				if select(4, powerValue:GetPoint()) <= 0 then
+					self.Text:Point("LEFT", powerValue, "RIGHT", -3, 0)
 					self.Text:SetFormattedText("|cffD7BEA5-|r"..color.." %d%%|r", floor(min / max * 100))
 				else
-					self.Text:Point("RIGHT", powerText, "LEFT", 3, 0)
+					self.Text:Point("RIGHT", powerValue, "LEFT", 3, 0)
 					self.Text:SetFormattedText(color.."%d%%|r |cffD7BEA5- |r", floor(min / max * 100))
 				end
 			end
 		else
-			self.Text:Point(powerText:GetPoint())
+			self.Text:Point(powerValue:GetPoint())
 			self.Text:SetFormattedText(color.."%d%%|r", floor(min / max * 100))
 		end
 	else
 		self.Text:SetText()
+		self:Hide()
 	end
 end
 
-function UF:AltManaPostUpdateVisibility()
-	ToggleResourceBar(self)
+function UF:PostVisibilityAltMana(enabled, stateChanged)
+	local frame = self:GetParent()
+
+	if enabled then
+		frame.ClassBar = 'DruidMana'
+	else
+		frame.ClassBar = 'ClassIcons'
+		self.Text:SetText()
+		ToggleResourceBar(frame.ClassIcons)
+		return
+	end
+
+	if stateChanged then
+		ToggleResourceBar(frame.DruidMana)
+		UF:Configure_ClassBar(frame)
+		UF:Configure_HealthBar(frame)
+		UF:Configure_Power(frame)
+		UF:Configure_InfoPanel(frame, true) --2nd argument is to prevent it from setting template, which removes threat border
+	end
 end
 
 -----------------------------------------------------------
@@ -403,7 +431,7 @@ function UF:PostUpdateStagger(event, unit, isShown, stateChanged)
 	else
 		frame.ClassBar = 'ClassIcons'
 	end
-	
+
 	--Only update when necessary
 	if(stateChanged) then
 		ToggleResourceBar(frame.Stagger)

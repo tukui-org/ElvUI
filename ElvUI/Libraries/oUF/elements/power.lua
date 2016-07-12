@@ -98,24 +98,54 @@
 local parent, ns = ...
 local oUF = ns.oUF
 
+local isBetaClient = select(4, GetBuildInfo()) >= 70000
+
 local updateFrequentUpdates
 oUF.colors.power = {}
 for power, color in next, PowerBarColor do
 	if (type(power) == "string") then
-		oUF.colors.power[power] = {color.r, color.g, color.b}
+		if(type(select(2, next(color))) == 'table') then
+			oUF.colors.power[power] = {}
+
+			for index, color in next, color do
+				oUF.colors.power[power][index] = {color.r, color.g, color.b}
+			end
+		else
+			oUF.colors.power[power] = {color.r, color.g, color.b}
+		end
 	end
 end
 
-oUF.colors.power[0] = oUF.colors.power["MANA"]
-oUF.colors.power[1] = oUF.colors.power["RAGE"]
-oUF.colors.power[2] = oUF.colors.power["FOCUS"]
-oUF.colors.power[3] = oUF.colors.power["ENERGY"]
-oUF.colors.power[4] = oUF.colors.power["CHI"]
-oUF.colors.power[5] = oUF.colors.power["RUNES"]
-oUF.colors.power[6] = oUF.colors.power["RUNIC_POWER"]
-oUF.colors.power[7] = oUF.colors.power["SOUL_SHARDS"]
-oUF.colors.power[8] = oUF.colors.power["ECLIPSE"]
-oUF.colors.power[9] = oUF.colors.power["HOLY_POWER"]
+if(isBetaClient) then
+	-- COMBO_POINTS don't have a color pre-Legion so we need to supply that color
+	oUF.colors.power.COMBO_POINTS = {1, 0.96, 0.41}
+end
+
+-- sourced from FrameXML/Constants.lua
+oUF.colors.power[0] = oUF.colors.power.MANA
+oUF.colors.power[1] = oUF.colors.power.RAGE
+oUF.colors.power[2] = oUF.colors.power.FOCUS
+oUF.colors.power[3] = oUF.colors.power.ENERGY
+oUF.colors.power[4] = oUF.colors.power.COMBO_POINTS
+oUF.colors.power[5] = oUF.colors.power.RUNES
+oUF.colors.power[6] = oUF.colors.power.RUNIC_POWER
+oUF.colors.power[7] = oUF.colors.power.SOUL_SHARDS
+oUF.colors.power[9] = oUF.colors.power.HOLY_POWER
+oUF.colors.power[12] = oUF.colors.power.CHI
+
+if(isBetaClient) then
+	oUF.colors.power[8] = oUF.colors.power.LUNAR_POWER
+	oUF.colors.power[11] = oUF.colors.power.MAELSTROM
+	oUF.colors.power[13] = oUF.colors.power.INSANITY
+	oUF.colors.power[16] = oUF.colors.power.ARCANE_CHARGES
+	oUF.colors.power[17] = oUF.colors.power.FURY
+	oUF.colors.power[18] = oUF.colors.power.PAIN
+else
+	oUF.colors.power[8] = oUF.colors.power.ECLIPSE
+	oUF.colors.power[13] = oUF.colors.power.SHADOW_ORBS
+	oUF.colors.power[14] = oUF.colors.power.BURNING_EMBERS
+	oUF.colors.power[15] = oUF.colors.power.DEMONIC_FURY
+end
 
 local GetDisplayPower = function(unit)
 	if not unit then return; end
@@ -155,7 +185,9 @@ local Update = function(self, event, unit)
 	end
 
 	local r, g, b, t
-	if(power.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
+	if(power.colorTapping and not UnitPlayerControlled(unit) and
+		(isBetaClient and UnitIsTapDenied(unit) or not isBetaClient and UnitIsTapped(unit) and
+		not UnitIsTappedByPlayer(unit) and not UnitIsTappedByAllThreatList(unit))) then
 		t = self.colors.tapped
 	elseif(power.colorDisconnected and disconnected) then
 		t = self.colors.disconnected
@@ -163,7 +195,6 @@ local Update = function(self, event, unit)
 		t = power.altPowerColor
 	elseif(power.colorPower) then
 		local ptype, ptoken, altR, altG, altB = UnitPowerType(unit)
-		
 		t = self.colors.power[ptoken]
 		if(not t) then
 			if(power.GetAlternativeColor) then
