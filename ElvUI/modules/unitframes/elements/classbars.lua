@@ -414,6 +414,7 @@ function UF:ToggleAdditionalPower(frame)
 	if frame.AdditionalPower then
 		if frame.db.power.additionalPower then
 			frame:EnableElement('AdditionalPower')
+			UF.PostVisibilityAdditionalPower(frame.AdditionalPower, true) --This fixes issue where the bar will not show on initial login
 		else
 			frame:DisableElement('AdditionalPower')
 		end
