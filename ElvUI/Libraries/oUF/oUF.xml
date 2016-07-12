@@ -35,7 +35,7 @@
 	<Script file='elements\totems.lua' />
 	<Script file='elements\resurrect.lua' />
 	<Script file='elements\raidrole.lua' />
-	<Script file='elements\druidmana.lua' />
+	<Script file='elements\additionalpower.lua' />
 	<Script file='elements\classicons.lua' />
 	<Script file='elements\stagger.lua' />
 
