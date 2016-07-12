@@ -105,26 +105,6 @@ function UF:EnableDisable_Auras(frame)
 	end
 end
 
-function UF:PreUpdateAura()
-	local frame = self:GetParent()
-	local db = frame.db
-	if not db then return; end
-	
-	if frame.unitframeType == "party" then print("preupdate") end
-	
-	local type = self.type
-	
-	local totalWidth = frame.UNIT_WIDTH - frame.SPACING*2
-	if frame.USE_POWERBAR_OFFSET then
-		local powerOffset = ((frame.ORIENTATION == "MIDDLE" and 2 or 1) * frame.POWERBAR_OFFSET)
-
-		if not (db[type].attachTo == "POWER" and frame.ORIENTATION == "MIDDLE") then
-			totalWidth = totalWidth - powerOffset
-		end
-	end
-	self:Width(totalWidth)
-end
-
 local function ReverseUpdate(frame)
 	UF:Configure_Auras(frame, "Debuffs")
 	UF:Configure_Auras(frame, "Buffs")
@@ -149,7 +129,6 @@ function UF:Configure_Auras(frame, auraType)
 
 	auras.forceShow = frame.forceShowAuras
 	auras.num = db[auraType].perrow * rows
-	-- if frame.unitframeType == "party" then print("Configure_Auras:", frame:GetName(), auras:GetWidth(), (auras.spacing*(auras.num/rows - 1))) end
 	auras.size = db[auraType].sizeOverride ~= 0 and db[auraType].sizeOverride or ((((auras:GetWidth() - (auras.spacing*(auras.num/rows - 1))) / auras.num)) * rows)
 
 	if db[auraType].sizeOverride and db[auraType].sizeOverride > 0 then
