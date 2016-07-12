@@ -5,7 +5,7 @@ local UF = E:GetModule('UnitFrames');
 --Lua functions
 local select, unpack = select, unpack
 local ceil, floor = math.ceil, math.floor
-local find = string.find
+local find, sub, gsub = string.find, string.sub, string.gsub
 --WoW API / Variables
 local CreateFrame = CreateFrame
 
@@ -354,7 +354,15 @@ function UF:PostUpdateAdditionalPower(unit, min, max, event)
 
 	local powerTextPosition = db.power.position
 
-	if powerValueText then powerValueText = powerValueText:gsub("|cff(.*) ", "") end --Remove possible [powercolor] tag
+	--Attempt to remove |cFFXXXXXX color codes in order to determine if power text is really empty
+	if powerValueText then
+		local _, endIndex = find(powerValueText, "|cff")
+		if endIndex then
+			endIndex = endIndex + 7 --Add hex code
+			powerValueText = sub(powerValueText, endIndex)
+			powerValueText = gsub(powerValueText, "%s+", "")
+		end
+	end
 
 	if min ~= max and (event ~= "ElementDisable") then
 		local color = ElvUF['colors'].power['MANA']
