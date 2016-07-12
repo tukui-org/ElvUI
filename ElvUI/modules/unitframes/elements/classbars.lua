@@ -410,6 +410,16 @@ function UF:PostVisibilityAltMana(enabled, stateChanged)
 	end
 end
 
+function UF:ToggleDruidMana(frame)
+	if frame.DruidMana then
+		if frame.db.power.druidMana then
+			frame:EnableElement('DruidMana')
+		else
+			frame:DisableElement('DruidMana')
+		end
+	end
+end
+
 -----------------------------------------------------------
 -- Stagger Bar
 -----------------------------------------------------------

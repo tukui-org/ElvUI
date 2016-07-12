@@ -201,15 +201,6 @@ function UF:Configure_Power(frame)
 		power:Hide()
 	end
 
-	if frame.DruidAltMana then
-		if db.power.druidMana then
-			frame:EnableElement('DruidAltMana')
-		else
-			frame:DisableElement('DruidAltMana')
-			frame.DruidAltMana:Hide()
-		end
-	end
-
 	--Transparency Settings
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)
 end

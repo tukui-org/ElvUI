@@ -177,6 +177,9 @@ function UF:Update_PlayerFrame(frame, db)
 	--Resource Bars
 	UF:Configure_ClassBar(frame)
 
+	--Alternate Power
+	UF:ToggleDruidMana(frame)
+
 	--Combat Fade
 	if db.combatfade and not frame:IsElementEnabled('CombatFade') then
 		frame:EnableElement('CombatFade')
