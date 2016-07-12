@@ -75,7 +75,7 @@ local function Update(self, event, unit, powertype)
 	-- Hide the bar if the active power type is the same as the alternate.
 	if(select(2, UnitPowerType('player')) == ADDITIONAL_POWER_BAR_NAME) then
 		return druidmana:Hide()
-	else
+	elseif (not event) or (event and event ~= "ElementDisable") then
 		druidmana:Show()
 	end
 
@@ -123,6 +123,12 @@ local function ElementEnable(self)
 
 	self.DruidMana:Show()
 
+	if self.DruidMana.PostUpdateVisibility then
+		self.DruidMana:PostUpdateVisibility(true, not self.DruidMana.isEnabled)
+	end
+	
+	self.DruidMana.isEnabled = true
+
 	Path(self, 'ElementEnable', 'player', ADDITIONAL_POWER_BAR_NAME)
 end
 
@@ -132,6 +138,12 @@ local function ElementDisable(self)
 	self:UnregisterEvent('UNIT_MAXPOWER', Path)
 
 	self.DruidMana:Hide()
+	
+	if self.DruidMana.PostUpdateVisibility then
+		self.DruidMana:PostUpdateVisibility(false, self.DruidMana.isEnabled)
+	end
+
+	self.DruidMana.isEnabled = nil
 
 	Path(self, 'ElementDisable', 'player', ADDITIONAL_POWER_BAR_NAME)
 end
@@ -143,9 +155,11 @@ local function Visibility(self, event, unit)
 	if(not UnitHasVehicleUI('player')) then
 		if(UnitPowerMax(unit, ADDITIONAL_POWER_BAR_INDEX) ~= 0) then
 			if(isBetaClient) then
-				if(ALT_MANA_BAR_PAIR_DISPLAY_INFO[playerClass]) then
-					local powerType = UnitPowerType(unit)
-					shouldEnable = ALT_MANA_BAR_PAIR_DISPLAY_INFO[playerClass][powerType]
+				if (playerClass == "DRUID" and GetSpecialization() == 1) or (playerClass ~= "DRUID") then
+					if(ALT_MANA_BAR_PAIR_DISPLAY_INFO[playerClass]) then
+						local powerType = UnitPowerType(unit)
+						shouldEnable = ALT_MANA_BAR_PAIR_DISPLAY_INFO[playerClass][powerType]
+					end
 				end
 			else
 				if(playerClass == 'DRUID' and UnitPowerType(unit) == ADDITIONAL_POWER_BAR_INDEX) then
