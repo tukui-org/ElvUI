@@ -279,6 +279,7 @@ end
 ]]
 local SetPosition = function(icons, from, to)
 	local sizex = (icons.size or 16) + (icons['spacing-x'] or icons.spacing or 0)
+	if sizex == 0 then sizex = 1 end
 	local sizey = (icons.size or 16) + (icons['spacing-y'] or icons.spacing or 0)
 	local anchor = icons.initialAnchor or "BOTTOMLEFT"
 	local growthx = (icons["growth-x"] == "LEFT" and -1) or 1
