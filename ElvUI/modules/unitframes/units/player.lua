@@ -47,10 +47,10 @@ function UF:Construct_PlayerFrame(frame)
 		frame.Runes = self:Construct_DeathKnightResourceBar(frame)
 		frame.ClassBar = 'Runes'
 	elseif E.myclass == "DRUID" then
-		frame.DruidMana = self:Construct_AltManaBar(frame)
+		frame.AdditionalPower = self:Construct_AdditionalPowerBar(frame)
 		frame.ClassIcons = self:Construct_ClassBar(frame)
 		if (GetSpecialization() == 1) then --Balance
-			frame.ClassBar = 'DruidMana'
+			frame.ClassBar = 'AdditionalPower'
 		else
 			frame.ClassBar = 'ClassIcons'
 		end
@@ -69,8 +69,8 @@ function UF:Construct_PlayerFrame(frame)
 		frame.ClassIcons = self:Construct_ClassBar(frame)
 		frame.ClassBar = 'ClassIcons'
 	elseif E.myclass == 'PRIEST' then
-		frame.DruidMana = self:Construct_AltManaBar(frame)
-		frame.ClassBar = 'DruidMana'
+		frame.AdditionalPower = self:Construct_AdditionalPowerBar(frame)
+		frame.ClassBar = 'AdditionalPower'
 	end
 	
 	
@@ -178,7 +178,7 @@ function UF:Update_PlayerFrame(frame, db)
 	UF:Configure_ClassBar(frame)
 
 	--Alternate Power
-	UF:ToggleDruidMana(frame)
+	UF:ToggleAdditionalPower(frame)
 
 	--Combat Fade
 	if db.combatfade and not frame:IsElementEnabled('CombatFade') then

@@ -1336,7 +1336,7 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 			},
 			width = {
 				type = 'select',
-				order = 1,
+				order = 3,
 				name = L["Style"],
 				values = fillValues,
 				set = function(info, value)
@@ -1383,18 +1383,18 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 			height = {
 				type = 'range',
 				name = L["Height"],
-				order = 2,
+				order = 4,
 				min = ((E.db.unitframe.thinBorders or E.PixelMode) and 3 or 7), max = 50, step = 1,
 			},
 			offset = {
 				type = 'range',
 				name = L["Offset"],
 				desc = L["Offset of the powerbar to the healthbar, set to 0 to disable."],
-				order = 3,
+				order = 5,
 				min = 0, max = 20, step = 1,
 			},
 			configureButton = {
-				order = 4,
+				order = 6,
 				name = L["Coloring"],
 				desc = L["This opens the UnitFrames Color settings. These settings affect all unitframes."],
 				type = 'execute',
@@ -1402,19 +1402,19 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 			},
 			position = {
 				type = 'select',
-				order = 5,
+				order = 7,
 				name = L["Text Position"],
 				values = positionValues,
 			},
 			xOffset = {
-				order = 6,
+				order = 8,
 				type = 'range',
 				name = L["Text xOffset"],
 				desc = L["Offset position for text."],
 				min = -300, max = 300, step = 1,
 			},
 			yOffset = {
-				order = 7,
+				order = 9,
 				type = 'range',
 				name = L["Text yOffset"],
 				desc = L["Offset position for text."],
@@ -1422,7 +1422,7 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 			},
 			attachTextTo = {
 				type = 'select',
-				order = 8,
+				order = 10,
 				name = L["Attach Text To"],
 				values = {
 					['Health'] = L["Health"],
@@ -1437,19 +1437,19 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 	if hasDetatchOption then
 			config.args.detachFromFrame = {
 				type = 'toggle',
-				order = 9,
+				order = 11,
 				name = L["Detach From Frame"],
 			}
 			config.args.detachedWidth = {
 				type = 'range',
-				order = 10,
+				order = 12,
 				name = L["Detached Width"],
 				disabled = function() return not E.db.unitframe.units[groupName].power.detachFromFrame end,
 				min = 15, max = 450, step = 1,
 			}
 			config.args.parent = {
 				type = 'select',
-				order = 11,
+				order = 13,
 				name = L["Parent"],
 				desc = L["Choose UIPARENT to prevent it from hiding with the unitframe."],
 				disabled = function() return not E.db.unitframe.units[groupName].power.detachFromFrame end,
@@ -1507,14 +1507,13 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 		}
 	end
 
-	if groupName == 'player' and E.myclass == 'DRUID' then
-		config.args.druidMana = {
+	if groupName == 'player' then
+		config.args.additionalPower = {
 			type = 'toggle',
-			order = 12,
-			name = L["Druid Mana"],
-			desc = L["Display druid mana bar when in cat or bear form and when mana is not 100%."]
+			order = 2,
+			name = L["Additional Power"],
+			desc = L["Display mana on an additional power bar for Balance Druids and Shadow Priests."],
 		}
-
 	end
 
 	return config

@@ -320,32 +320,32 @@ end
 -------------------------------------------------------------
 -- ALTERNATIVE MANA BAR
 -------------------------------------------------------------
-function UF:Construct_AltManaBar(frame)
-	local altPower = CreateFrame('StatusBar', nil, frame)
-	altPower:SetFrameStrata("LOW")
-	altPower:SetFrameLevel(altPower:GetFrameLevel() + 1)
-	altPower.colorPower = true
-	altPower.PostUpdate = UF.PostUpdateAltMana
-	altPower.PostUpdateVisibility = UF.PostUpdateVisibilityAltMana
-	altPower:CreateBackdrop('Default')
-	UF['statusbars'][altPower] = true
-	altPower:SetStatusBarTexture(E["media"].blankTex)
+function UF:Construct_AdditionalPowerBar(frame)
+	local additionalPower = CreateFrame('StatusBar', nil, frame)
+	additionalPower:SetFrameStrata("LOW")
+	additionalPower:SetFrameLevel(additionalPower:GetFrameLevel() + 1)
+	additionalPower.colorPower = true
+	additionalPower.PostUpdate = UF.PostUpdateAdditionalPower
+	additionalPower.PostUpdateVisibility = UF.PostUpdateVisibilityAdditionalPower
+	additionalPower:CreateBackdrop('Default')
+	UF['statusbars'][additionalPower] = true
+	additionalPower:SetStatusBarTexture(E["media"].blankTex)
 
-	altPower.bg = altPower:CreateTexture(nil, "BORDER")
-	altPower.bg:SetAllPoints(altPower)
-	altPower.bg:SetTexture(E["media"].blankTex)
-	altPower.bg.multiplier = 0.3
+	additionalPower.bg = additionalPower:CreateTexture(nil, "BORDER")
+	additionalPower.bg:SetAllPoints(additionalPower)
+	additionalPower.bg:SetTexture(E["media"].blankTex)
+	additionalPower.bg.multiplier = 0.3
 
-	altPower.text = altPower:CreateFontString(nil, 'OVERLAY')
-	UF:Configure_FontString(altPower.text)
+	additionalPower.text = additionalPower:CreateFontString(nil, 'OVERLAY')
+	UF:Configure_FontString(additionalPower.text)
 	
-	altPower:SetScript("OnShow", ToggleResourceBar)
-	altPower:SetScript("OnHide", ToggleResourceBar)
+	additionalPower:SetScript("OnShow", ToggleResourceBar)
+	additionalPower:SetScript("OnHide", ToggleResourceBar)
 
-	return altPower
+	return additionalPower
 end
 
-function UF:PostUpdateAltMana(unit, min, max, event)
+function UF:PostUpdateAdditionalPower(unit, min, max, event)
 	local frame = self:GetParent()
 	local powerValue = frame.Power.value
 	local powerValueText = powerValue:GetText()
@@ -389,11 +389,11 @@ function UF:PostUpdateAltMana(unit, min, max, event)
 	end
 end
 
-function UF:PostVisibilityAltMana(enabled, stateChanged)
+function UF:PostVisibilityAdditionalPower(enabled, stateChanged)
 	local frame = self:GetParent()
 
 	if enabled then
-		frame.ClassBar = 'DruidMana'
+		frame.ClassBar = 'AdditionalPower'
 	else
 		frame.ClassBar = 'ClassIcons'
 		self.text:SetText()
@@ -402,7 +402,7 @@ function UF:PostVisibilityAltMana(enabled, stateChanged)
 	end
 
 	if stateChanged then
-		ToggleResourceBar(frame.DruidMana)
+		ToggleResourceBar(frame.AdditionalPower)
 		UF:Configure_ClassBar(frame)
 		UF:Configure_HealthBar(frame)
 		UF:Configure_Power(frame)
@@ -410,12 +410,12 @@ function UF:PostVisibilityAltMana(enabled, stateChanged)
 	end
 end
 
-function UF:ToggleDruidMana(frame)
-	if frame.DruidMana then
-		if frame.db.power.druidMana then
-			frame:EnableElement('DruidMana')
+function UF:ToggleAdditionalPower(frame)
+	if frame.AdditionalPower then
+		if frame.db.power.additionalPower then
+			frame:EnableElement('AdditionalPower')
 		else
-			frame:DisableElement('DruidMana')
+			frame:DisableElement('AdditionalPower')
 		end
 	end
 end
