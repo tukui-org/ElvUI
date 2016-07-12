@@ -959,6 +959,7 @@ function E:UpdateAll(ignoreInstall)
 	-- NP:UpdateAllPlates()
 
 	local DataBars = self:GetModule("DataBars")
+	DataBars.db = E.db.databars
 	DataBars:UpdateDataBarDimensions()
 	DataBars:EnableDisable_ExperienceBar()
 	DataBars:EnableDisable_ReputationBar()
