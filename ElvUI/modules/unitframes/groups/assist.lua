@@ -52,7 +52,6 @@ function UF:Update_AssistHeader(header, db)
 
 	header:SetAttribute("startingIndex", -1)
 	RegisterAttributeDriver(header, 'state-visibility', 'show')
-	header.dirtyWidth, header.dirtyHeight = header:GetSize()
 	RegisterAttributeDriver(header, 'state-visibility', '[@raid1,exists] show;hide')
 	header:SetAttribute("startingIndex", 1)
 
@@ -61,6 +60,9 @@ function UF:Update_AssistHeader(header, db)
 
 	UF:ClearChildPoints(header:GetChildren())
 	header:SetAttribute("yOffset", db.verticalSpacing)
+	
+	local width, height = header:GetSize()
+	header.dirtyWidth, header.dirtyHeight = width, max(height, 2*db.height + db.verticalSpacing)
 
 	if not header.positioned then
 		header:ClearAllPoints()
@@ -108,7 +110,6 @@ function UF:Update_AssistFrames(frame, db)
 
 		frame.CLASSBAR_WIDTH = 0
 		frame.CLASSBAR_YOFFSET = 0
-		frame.STAGGER_WIDTH = 0
 		frame.BOTTOM_OFFSET = 0
 	end
 

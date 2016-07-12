@@ -74,19 +74,19 @@ local function LoadSkin()
 
 			frame.bg2 = frame:CreateTexture(nil, "BACKGROUND")
 			frame.bg2:SetDrawLayer("BACKGROUND", 3)
-			frame.bg2:SetTexture(0,0,0)
+			frame.bg2:SetColorTexture(0,0,0)
 			frame.bg2:Point("TOPLEFT", frame.backdrop, 'TOPLEFT', E.mult*3, -E.mult*3)
 			frame.bg2:Point("BOTTOMRIGHT", frame.backdrop, 'BOTTOMRIGHT', -E.mult*3, E.mult*3)
 
 			frame.bg3 = frame:CreateTexture(nil, "BACKGROUND")
 			frame.bg3:SetDrawLayer("BACKGROUND", 2)
-			frame.bg3:SetTexture(unpack(E['media'].bordercolor))
+			frame.bg3:SetColorTexture(unpack(E['media'].bordercolor))
 			frame.bg3:Point("TOPLEFT", frame.backdrop, 'TOPLEFT', E.mult*2, -E.mult*2)
 			frame.bg3:Point("BOTTOMRIGHT", frame.backdrop, 'BOTTOMRIGHT', -E.mult*2, E.mult*2)
 
 			frame.bg4 = frame:CreateTexture(nil, "BACKGROUND")
 			frame.bg4:SetDrawLayer("BACKGROUND", 1)
-			frame.bg4:SetTexture(0,0,0)
+			frame.bg4:SetColorTexture(0,0,0)
 			frame.bg4:Point("TOPLEFT", frame.backdrop, 'TOPLEFT', E.mult, -E.mult)
 			frame.bg4:Point("BOTTOMRIGHT", frame.backdrop, 'BOTTOMRIGHT', -E.mult, E.mult)
 		else
@@ -99,7 +99,7 @@ local function LoadSkin()
 
 			frame.bg3 = frame:CreateTexture(nil, "BACKGROUND")
 			frame.bg3:SetDrawLayer("BACKGROUND", 2)
-			frame.bg3:SetTexture(unpack(E['media'].bordercolor))
+			frame.bg3:SetColorTexture(unpack(E['media'].bordercolor))
 			frame.bg3:SetAllPoints(frame.backdrop)
 		end
 	end

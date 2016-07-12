@@ -63,7 +63,7 @@ function AFK:SetAFK(status)
 	if(status) then
 		MoveViewLeftStart(CAMERA_SPEED);
 		self.AFKMode:Show()
-		CloseAllBags()
+		CloseAllWindows()
 		UIParent:Hide()
 
 		if(IsInGuild()) then
@@ -209,6 +209,9 @@ local function Chat_OnEvent(self, event, arg1, arg2, arg3, arg4, arg5, arg6, arg
 	if ( arg14 ) then	--isMobile
 		message = ChatFrame_GetMobileEmbeddedTexture(info.r, info.g, info.b)..message;
 	end
+	
+	--Escape any % characters, as it may otherwise cause an "invalid option in format" error in the next step
+	message = gsub(message, "%%", "%%%%");
 
 	local success
 	success, body = pcall(format, _G["CHAT_"..type.."_GET"]..message, playerLink.."["..coloredName.."]".."|h");

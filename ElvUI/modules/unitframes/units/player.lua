@@ -15,7 +15,7 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
-local CAN_HAVE_CLASSBAR = (E.myclass == "PALADIN" or E.myclass == "DRUID" or E.myclass == "DEATHKNIGHT" or E.myclass == "WARLOCK" or E.myclass == "PRIEST" or E.myclass == "MONK" or E.myclass == 'MAGE' or E.myclass == 'ROGUE')
+local CAN_HAVE_CLASSBAR = (E.myclass == "PALADIN" or E.myclass == "DRUID" or E.myclass == "PRIEST" or E.myclass == "DEATHKNIGHT" or E.myclass == "WARLOCK" or E.myclass == "MONK" or E.myclass == 'MAGE' or E.myclass == "ROGUE")
 
 function UF:Construct_PlayerFrame(frame)
 	frame.Threat = self:Construct_Threat(frame, true)
@@ -47,23 +47,28 @@ function UF:Construct_PlayerFrame(frame)
 		frame.Runes = self:Construct_DeathKnightResourceBar(frame)
 		frame.ClassBar = 'Runes'
 	elseif E.myclass == "DRUID" then
-		frame.EclipseBar = self:Construct_DruidResourceBar(frame)
-		frame.DruidAltMana = self:Construct_DruidAltManaBar(frame)
-		frame.ClassBar = 'EclipseBar'
+		frame.ClassIcons = self:Construct_ClassBar(frame)
+		frame.ClassBar = 'ClassIcons'
+	elseif E.myclass == "ROGUE" then
+		frame.ClassIcons = self:Construct_ClassBar(frame)
+		frame.ClassBar = 'ClassIcons'
 	elseif E.myclass == "MONK" then
 		frame.ClassIcons = self:Construct_ClassBar(frame)
 		frame.Stagger = self:Construct_Stagger(frame)
-		frame.ClassBar = 'ClassIcons'
-	elseif E.myclass == "PRIEST" then
+		if(GetSpecialization() == SPEC_MONK_BREWMASTER) then
+			frame.ClassBar = 'Stagger'
+		else
+			frame.ClassBar = 'ClassIcons'
+		end
+	elseif E.myclass == 'MAGE' then
 		frame.ClassIcons = self:Construct_ClassBar(frame)
 		frame.ClassBar = 'ClassIcons'
-	elseif E.myclass == 'MAGE' then
-		frame.ArcaneChargeBar = self:Construct_MageResourceBar(frame)
-		frame.ClassBar = 'ArcaneChargeBar'
-	elseif E.myclass == 'ROGUE' then
-		frame.Anticipation = self:Construct_RogueResourceBar(frame)
-		frame.ClassBar = 'Anticipation'
+	elseif E.myclass == 'PRIEST' then
+		frame.AltMana = self:Construct_AltManaBar(frame)
+		frame.ClassBar = 'AltMana'
 	end
+	
+	
 
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)
 	frame.Resting = self:Construct_RestingIndicator(frame)
@@ -118,9 +123,6 @@ function UF:Update_PlayerFrame(frame, db)
 		--If formula for frame.CLASSBAR_YOFFSET changes, then remember to update it in classbars.lua too
 		frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN or frame.CLASSBAR_DETACHED) and 0 or (frame.USE_MINI_CLASSBAR and (frame.SPACING+(frame.CLASSBAR_HEIGHT/2)) or (frame.CLASSBAR_HEIGHT - (frame.BORDER-frame.SPACING)))
 
-		frame.STAGGER_SHOWN = frame.Stagger and frame.Stagger:IsShown()
-		frame.STAGGER_WIDTH = frame.STAGGER_SHOWN and (db.stagger.width + (frame.BORDER*2)) or 0;
-
 		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and (db.infoPanel.enable or E.global.tukuiMode)
 		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0
 
@@ -169,11 +171,6 @@ function UF:Update_PlayerFrame(frame, db)
 
 	--Resource Bars
 	UF:Configure_ClassBar(frame)
-
-	--Stagger
-	if E.myclass == "MONK" then
-		UF:Configure_Stagger(frame)
-	end
 
 	--Combat Fade
 	if db.combatfade and not frame:IsElementEnabled('CombatFade') then

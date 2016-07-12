@@ -80,9 +80,6 @@ if(not ElvDB.profiles["Minimalistic"]) then
 		["hideTutorial"] = true,
 		["auras"] = {
 			["font"] = "Expressway",
-			["consolidatedBuffs"] = {
-				["font"] = "Expressway",
-			},
 			["buffs"] = {
 				["maxWraps"] = 2,
 			},

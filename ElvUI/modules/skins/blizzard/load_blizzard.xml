@@ -3,6 +3,7 @@
 	<Script file='addonmanager.lua'/>
 	<Script file='alerts.lua'/>
 	<Script file='archaeology.lua'/>
+	<Script file='artifact.lua'/>
 	<Script file='auctionhouse.lua'/>
 	<Script file='bags.lua'/>
 	<Script file='barber.lua'/>
@@ -18,6 +19,7 @@
 	<Script file='dressingroom.lua'/>
 	<Script file='encounterjournal.lua'/>
 	<Script file='friends.lua'/>
+	<Script file='flightmap.lua'/>
 	<Script file='garrison.lua'/>
 	<Script file='gbank.lua'/>
 	<Script file='glyph.lua'/>
@@ -38,6 +40,8 @@
 	<Script file='mirrortimers.lua'/>
 	<Script file='misc.lua'/>
 	<Script file='nonraid.lua'/>
+	<Script file='objectivetracker.lua'/>
+	<Script file='orderhall.lua'/>
 	<Script file='petbattle.lua'/>
 	<Script file='petition.lua'/>
 	<Script file='pvp.lua'/>
@@ -50,12 +54,11 @@
 	<Script file='tabard.lua'/>
 	<Script file='talent.lua'/>
 	<Script file='taxi.lua'/>
-	<Script file='timemanager.lua'/>	
+	<Script file='timemanager.lua'/>
 	<Script file='trade.lua'/>
 	<Script file='tradeskill.lua'/>
 	<Script file='trainer.lua'/>
 	<Script file='transmogrification.lua'/>
 	<Script file='voidstorage.lua'/>
 	<Script file='worldmap.lua'/>
-	<Script file='objectivetracker.lua'/>
 </Ui>

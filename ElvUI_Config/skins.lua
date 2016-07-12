@@ -324,6 +324,16 @@ E.Options.args.skins = {
 					name = OBJECTIVES_TRACKER_LABEL,
 					desc = L["TOGGLESKIN_DESC"],
 				},
+				orderhall = {
+					type = "toggle",
+					name = L["Orderhall"], -- Temp Name
+					desc = L["TOGGLESKIN_DESC"],
+				},
+				artifact = {
+					type = "toggle",
+					name = L["Artifact"], -- Temp Name
+					desc = L["TOGGLESKIN_DESC"],
+				},
 			},
 		},
 	},

@@ -5,19 +5,9 @@ local UF = E:GetModule('UnitFrames');
 --Lua functions
 local select, unpack = select, unpack
 local ceil, floor = math.ceil, math.floor
+local find = string.find
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local UnitPower = UnitPower
-local UnitPowerMax = UnitPowerMax
-local IsSpellKnown = IsSpellKnown
-local GetEclipseDirection = GetEclipseDirection
-local GetShapeshiftFormID = GetShapeshiftFormID
-local BEAR_FORM = BEAR_FORM
-local CAT_FORM = CAT_FORM
-local SPELL_POWER_HOLY_POWER = SPELL_POWER_HOLY_POWER
-local SPELL_POWER_SHADOW_ORBS = SPELL_POWER_SHADOW_ORBS
-local SHADOW_ORB_MINOR_TALENT_ID = SHADOW_ORB_MINOR_TALENT_ID
-local SPELL_POWER_CHI = SPELL_POWER_CHI
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: ElvUF_Player
@@ -25,12 +15,6 @@ local SPELL_POWER_CHI = SPELL_POWER_CHI
 local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
-
-local SPELL_POWER = {
-	PALADIN = SPELL_POWER_HOLY_POWER,
-	MONK = SPELL_POWER_CHI,
-	PRIEST = SPELL_POWER_SHADOW_ORBS
-}
 
 function UF:Configure_ClassBar(frame)
 	local bars = frame[frame.ClassBar]
@@ -72,8 +56,8 @@ function UF:Configure_ClassBar(frame)
 	if frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then
 		bars:ClearAllPoints()
 		bars:Point("CENTER", frame.Health.backdrop, "TOP", 0, 0)
-		if E.myclass == 'DRUID' or frame.MAX_CLASS_BAR == 1 then
-			CLASSBAR_WIDTH = CLASSBAR_WIDTH * 2/3
+		if frame.ClassBar ~= "ClassIcons" then
+			CLASSBAR_WIDTH = CLASSBAR_WIDTH
 		else
 			CLASSBAR_WIDTH = CLASSBAR_WIDTH * (frame.MAX_CLASS_BAR - 1) / frame.MAX_CLASS_BAR
 		end
@@ -85,7 +69,6 @@ function UF:Configure_ClassBar(frame)
 		end
 	elseif not frame.CLASSBAR_DETACHED then
 		bars:ClearAllPoints()
-		--Account for Stagger by anchoring classbar to opposite side of where Stagger is
 		if frame.ORIENTATION == "RIGHT" then
 			bars:Point("BOTTOMRIGHT", frame.Health.backdrop, "TOPRIGHT", -frame.BORDER, frame.SPACING*3)
 		else
@@ -123,7 +106,7 @@ function UF:Configure_ClassBar(frame)
 	bars:Width(CLASSBAR_WIDTH)
 	bars:Height(frame.CLASSBAR_HEIGHT - ((frame.BORDER + frame.SPACING)*2))
 
-	if E.myclass ~= 'DRUID' then
+	if (frame.ClassBar == 'ClassIcons' or frame.ClassBar == 'Runes') then
 		for i = 1, (UF.classMaxResourceBar[E.myclass] or 0) do
 			bars[i]:Hide()
 			bars[i].backdrop:Hide()
@@ -165,51 +148,32 @@ function UF:Configure_ClassBar(frame)
 					bars[i].backdrop:Show()
 				end
 
-				if E.myclass == "MONK" or E.myclass == "WARLOCK" then
+				if E.myclass == "MONK" then
 					bars[i]:SetStatusBarColor(unpack(ElvUF.colors.ClassBars[E.myclass][i]))
-
-					if bars[i].bg then
-						bars[i].bg:SetTexture(unpack(ElvUF.colors.ClassBars[E.myclass][i]))
-					end
-				elseif E.myclass == "PRIEST" or E.myclass == "PALADIN" then
+				elseif E.myclass == "PALADIN" or E.myclass == "MAGE" or E.myclass == "WARLOCK" then
 					bars[i]:SetStatusBarColor(unpack(ElvUF.colors.ClassBars[E.myclass]))
-
-					if bars[i].bg then
-						bars[i].bg:SetTexture(unpack(ElvUF.colors.ClassBars[E.myclass]))
-					end
-				elseif E.myclass == 'ROGUE' then
-					bars[i]:SetStatusBarColor(unpack(ElvUF.colors[frame.ClassBar][i]))
-
-					if bars[i].bg then
-						bars[i].bg:SetTexture(unpack(ElvUF.colors[frame.ClassBar][i]))
-					end
+				elseif E.myclass == "ROGUE" or E.myclass == "DRUID" then
+					local r1, g1, b1 = unpack(ElvUF.colors.ComboPoints[1])
+					local r2, g2, b2 = unpack(ElvUF.colors.ComboPoints[2])
+					local r3, g3, b3 = unpack(ElvUF.colors.ComboPoints[3])
+					
+					local r, g, b = ElvUF.ColorGradient(i, frame.MAX_CLASS_BAR > 5 and 6 or 5, r1, g1, b1, r2, g2, b2, r3, g3, b3)
+					bars[i]:SetStatusBarColor(r, g, b)	
 				elseif E.myclass ~= 'DEATHKNIGHT' then
-					bars[i]:SetStatusBarColor(unpack(ElvUF.colors[frame.ClassBar]))
-
-					if bars[i].bg then
-						bars[i].bg:SetTexture(unpack(ElvUF.colors[frame.ClassBar]))
-					end
+					print(unpack(ElvUF.colors[frame.ClassBar]))
+					bars[i]:SetStatusBarColor(unpack(ElvUF.colors[frame.ClassBar]))			
 				end
 				bars[i]:Show()
 			end
 		end
 	else
-		--?? Apparent bug fix for the width after in-game settings change
-		bars.LunarBar:SetMinMaxValues(0, 0)
-		bars.SolarBar:SetMinMaxValues(0, 0)
-		bars.LunarBar:SetStatusBarColor(unpack(ElvUF.colors.EclipseBar[1]))
-		bars.SolarBar:SetStatusBarColor(unpack(ElvUF.colors.EclipseBar[2]))
-		bars.LunarBar:Size(CLASSBAR_WIDTH, frame.CLASSBAR_HEIGHT - ((frame.BORDER + frame.SPACING)*2))
-		bars.SolarBar:Size(CLASSBAR_WIDTH, frame.CLASSBAR_HEIGHT - ((frame.BORDER + frame.SPACING)*2))
-	end
-
-	if E.myclass ~= 'DRUID' then
 		if not frame.USE_MINI_CLASSBAR then
 			bars.backdrop:Show()
 		else
 			bars.backdrop:Hide()
-		end
+		end	
 	end
+
 
 	if frame.CLASSBAR_DETACHED and db.classbar.parent == "UIPARENT" then
 		E.FrameLocks[bars] = true
@@ -263,12 +227,12 @@ end
 UF.ToggleResourceBar = ToggleResourceBar --Make available to combobar
 
 -------------------------------------------------------------
--- MONK, PALADIN, PRIEST, WARLOCK
+-- MONK, PALADIN, WARLOCK, MAGE, and COMBOS
 -------------------------------------------------------------
 function UF:Construct_ClassBar(frame)
 	local bars = CreateFrame("Frame", nil, frame)
 	bars:CreateBackdrop('Default', nil, nil, self.thinBorders)
-
+	
 	for i = 1, UF['classMaxResourceBar'][E.myclass] do
 		bars[i] = CreateFrame("StatusBar", frame:GetName().."ClassBarButton"..i, bars)
 		bars[i]:SetStatusBarTexture(E['media'].blankTex) --Dummy really, this needs to be set so we can change the color
@@ -277,6 +241,10 @@ function UF:Construct_ClassBar(frame)
 
 		bars[i]:CreateBackdrop('Default', nil, nil, self.thinBorders)
 		bars[i].backdrop:SetParent(bars)
+		
+		bars[i].bg = bars:CreateTexture(nil, 'OVERLAY')
+		bars[i].bg:SetAllPoints(bars[i])
+		bars[i].bg:SetTexture(E['media'].blankTex)
 	end
 
 	bars.PostUpdate = UF.UpdateClassBar
@@ -294,86 +262,30 @@ function UF:UpdateClassBar(cur, max, hasMaxChanged, event)
 	if not db then return; end
 
 	local isShown = self:IsShown()
-	if cur == 0 and db.classbar.autoHide then
+	if cur == 0 and db.classbar.autoHide or max == nil then
 		self:Hide()
 	else
 		self:Show()
 	end
-
+	
+	local r, g, b 
+	for i=1, #self do
+		r, g, b = self[i]:GetStatusBarColor()
+		self[i].bg:SetVertexColor(r, g, b, 0.15)
+		if(max and (i <= max)) then
+			self[i].bg:Show()
+		else
+			self[i].bg:Hide()
+		end
+	end
+	
 	if hasMaxChanged then
+		
 		frame.MAX_CLASS_BAR = max
 		UF:Configure_ClassBar(frame)
 	end
 end
 
--------------------------------------------------------------
--- MAGE
--------------------------------------------------------------
-function UF:Construct_MageResourceBar(frame)
-	local bars = CreateFrame("Frame", nil, frame)
-	bars:CreateBackdrop('Default', nil, nil, self.thinBorders)
-
-	for i = 1, UF['classMaxResourceBar'][E.myclass] do
-		bars[i] = CreateFrame("StatusBar", frame:GetName().."ClassBarButton"..i, bars)
-		bars[i]:SetStatusBarTexture(E['media'].blankTex) --Dummy really, this needs to be set so we can change the color
-		bars[i]:GetStatusBarTexture():SetHorizTile(false)
-
-		bars[i].bg = bars[i]:CreateTexture(nil, 'ARTWORK')
-
-		UF['statusbars'][bars[i]] = true
-
-		bars[i]:CreateBackdrop('Default', nil, nil, self.thinBorders)
-		bars[i].backdrop:SetParent(bars)
-	end
-
-	bars.PostUpdate = UF.UpdateArcaneCharges
-	bars:SetScript("OnShow", ToggleResourceBar)
-	bars:SetScript("OnHide", ToggleResourceBar)
-	return bars
-end
-
-function UF:UpdateArcaneCharges(event, arcaneCharges, maxCharges)
-	local frame = self.origParent or self:GetParent()
-	if E.myspec == 1 and arcaneCharges == 0 then
-		if frame.db.classbar.autoHide then
-			self:Hide()
-		else
-			--Clear arcane charge statusbars
-			for i = 1, maxCharges do
-				self[i]:SetValue(0)
-				self[i]:SetScript('OnUpdate', nil)
-			end
-
-			self:Show()
-		end
-	end
-end
-
--------------------------------------------------------------
--- ROGUE
--------------------------------------------------------------
-function UF:Construct_RogueResourceBar(frame)
-	local bars = CreateFrame("Frame", nil, frame)
-	bars:CreateBackdrop('Default', nil, nil, self.thinBorders)
-
-	for i = 1, UF['classMaxResourceBar'][E.myclass] do
-		bars[i] = CreateFrame("StatusBar", frame:GetName().."ClassBarButton"..i, bars)
-		bars[i]:SetStatusBarTexture(E['media'].blankTex) --Dummy really, this needs to be set so we can change the color
-		bars[i]:GetStatusBarTexture():SetHorizTile(false)
-
-		bars[i].bg = bars[i]:CreateTexture(nil, 'ARTWORK')
-
-		UF['statusbars'][bars[i]] = true
-
-		bars[i]:CreateBackdrop('Default', nil, nil, self.thinBorders)
-		bars[i].backdrop:SetParent(bars)
-	end
-
-	bars:SetScript("OnShow", ToggleResourceBar)
-	bars:SetScript("OnHide", ToggleResourceBar)
-
-	return bars
-end
 
 -------------------------------------------------------------
 -- DEATHKNIGHT
@@ -401,87 +313,61 @@ function UF:Construct_DeathKnightResourceBar(frame)
 end
 
 -------------------------------------------------------------
--- DRUID
+-- ALTERNATIVE MANA BAR
 -------------------------------------------------------------
-function UF:Construct_DruidResourceBar(frame)
-	local eclipseBar = CreateFrame('Frame', nil, frame)
-	eclipseBar:CreateBackdrop('Default', nil, nil, self.thinBorders)
-	eclipseBar.PostUpdatePower = UF.EclipseDirection
-	eclipseBar.PostUpdateVisibility = UF.EclipsePostUpdateVisibility
+function UF:Construct_AltManaBar(frame)
+	local altPower = CreateFrame('StatusBar', nil, frame)
+	altPower:SetFrameStrata("LOW")
+	altPower:SetFrameLevel(altPower:GetFrameLevel() + 1)
+	altPower.colorPower = true
+	altPower.PostUpdateVisibility = UF.AltManaPostUpdateVisibility
+	altPower.PostUpdatePower = UF.PostUpdateAltMana
+	altPower:CreateBackdrop('Default')
+	UF['statusbars'][altPower] = true
+	altPower:SetStatusBarTexture(E["media"].blankTex)
 
-	local lunarBar = CreateFrame('StatusBar', nil, eclipseBar)
-	lunarBar:Point('LEFT', eclipseBar)
-	lunarBar:SetStatusBarTexture(E['media'].blankTex)
-	UF['statusbars'][lunarBar] = true
-	eclipseBar.LunarBar = lunarBar
+	altPower.bg = altPower:CreateTexture(nil, "BORDER")
+	altPower.bg:SetAllPoints(altPower)
+	altPower.bg:SetTexture(E["media"].blankTex)
+	altPower.bg.multiplier = 0.3
 
-	local solarBar = CreateFrame('StatusBar', nil, eclipseBar)
-	solarBar:Point('LEFT', lunarBar:GetStatusBarTexture(), 'RIGHT')
-	solarBar:SetStatusBarTexture(E['media'].blankTex)
-	UF['statusbars'][solarBar] = true
-	eclipseBar.SolarBar = solarBar
+	altPower.Text = altPower:CreateFontString(nil, 'OVERLAY')
+	UF:Configure_FontString(altPower.Text)
 
-	eclipseBar.Text = lunarBar:CreateFontString(nil, 'OVERLAY')
-	eclipseBar.Text:FontTemplate(nil, 20)
-	eclipseBar.Text:Point("CENTER", lunarBar:GetStatusBarTexture(), "RIGHT")
-
-	return eclipseBar
+	return altPower
 end
 
-function UF:Construct_DruidAltManaBar(frame)
-	local dpower = CreateFrame('Frame', nil, frame)
-	dpower:SetFrameStrata("LOW")
-	dpower:SetAllPoints(frame.EclipseBar.backdrop)
-	dpower:SetTemplate("Default")
-	dpower:SetFrameLevel(dpower:GetFrameLevel() + 1)
-	dpower.colorPower = true
-	dpower.PostUpdateVisibility = UF.DruidManaPostUpdateVisibility
-	dpower.PostUpdatePower = UF.DruidPostUpdateAltPower
 
-	dpower.ManaBar = CreateFrame('StatusBar', nil, dpower)
-	UF['statusbars'][dpower.ManaBar] = true
-	dpower.ManaBar:SetStatusBarTexture(E["media"].blankTex)
-	dpower.ManaBar:SetInside(dpower)
+function UF:PostUpdateAltMana(unit, min, max)
+	local parent = self:GetParent()
+	local powerText = parent.Power.value
+	local powerTextParent = powerText:GetParent()
+	local db = parent.db
 
-	dpower.bg = dpower:CreateTexture(nil, "BORDER")
-	dpower.bg:SetAllPoints(dpower.ManaBar)
-	dpower.bg:SetTexture(E["media"].blankTex)
-	dpower.bg.multiplier = 0.3
-
-	dpower.Text = dpower:CreateFontString(nil, 'OVERLAY')
-	UF:Configure_FontString(dpower.Text)
-
-	return dpower
-end
-
-function UF:EclipseDirection()
-	local direction = GetEclipseDirection()
-	if direction == "sun" then
-		self.Text:SetText(">")
-		self.Text:SetTextColor(.2,.2,1,1)
-	elseif direction == "moon" then
-		self.Text:SetText("<")
-		self.Text:SetTextColor(1,1,.3, 1)
-	else
-		self.Text:SetText("")
-	end
-end
-
-function UF:DruidPostUpdateAltPower(unit, min, max)
-	local powerText = self:GetParent().Power.value
+	local powerTextPosition = db.power.position
 
 	if min ~= max then
 		local color = ElvUF['colors'].power['MANA']
 		color = E:RGBToHex(color[1], color[2], color[3])
 
+		self.Text:SetParent(powerTextParent)
+
 		self.Text:ClearAllPoints()
 		if powerText:GetText() then
-			if select(4, powerText:GetPoint()) < 0 then
+			if find(powerTextPosition, "RIGHT") then
 				self.Text:Point("RIGHT", powerText, "LEFT", 3, 0)
 				self.Text:SetFormattedText(color.."%d%%|r |cffD7BEA5- |r", floor(min / max * 100))
-			else
+			elseif find(powerTextPosition, "LEFT") then
 				self.Text:Point("LEFT", powerText, "RIGHT", -3, 0)
 				self.Text:SetFormattedText("|cffD7BEA5-|r"..color.." %d%%|r", floor(min / max * 100))
+			else
+				if select(4, powerText:GetPoint()) <= 0 then
+					self.Text:Point("LEFT", powerText, "RIGHT", -3, 0)
+					self.Text:SetFormattedText("|cffD7BEA5-|r"..color.." %d%%|r", floor(min / max * 100))
+				else
+					self.Text:Point("RIGHT", powerText, "LEFT", 3, 0)
+					self.Text:SetFormattedText(color.."%d%%|r |cffD7BEA5- |r", floor(min / max * 100))
+				end
 			end
 		else
 			self.Text:Point(powerText:GetPoint())
@@ -492,23 +378,38 @@ function UF:DruidPostUpdateAltPower(unit, min, max)
 	end
 end
 
-local druidEclipseIsShown = false
-function UF:EclipsePostUpdateVisibility()
-	local form = GetShapeshiftFormID()
-	local isShown = self:IsShown()
-	if druidEclipseIsShown ~= isShown then
-		druidEclipseIsShown = isShown
-
-		if (form == BEAR_FORM or form == CAT_FORM) then return; end --Don't toggle, as the EclipseBar will be replaced with DruidMana
-		ToggleResourceBar(self)
-	end
+function UF:AltManaPostUpdateVisibility()
+	ToggleResourceBar(self)
 end
 
-local druidManaIsShown = false
-function UF:DruidManaPostUpdateVisibility()
-	local isShown = self:IsShown()
-	if druidManaIsShown ~= isShown then
-		druidManaIsShown = isShown
-		ToggleResourceBar(self)
+-----------------------------------------------------------
+-- Stagger Bar
+-----------------------------------------------------------
+function UF:Construct_Stagger(frame)
+	local stagger = CreateFrame("Statusbar", nil, frame)
+	UF['statusbars'][stagger] = true
+	stagger:CreateBackdrop("Default",nil, nil, self.thinBorders)
+	stagger.PostUpdateVisibility = UF.PostUpdateStagger
+	stagger:SetFrameStrata("LOW")
+	return stagger
+end
+
+function UF:PostUpdateStagger(event, unit, isShown, stateChanged)
+	local frame = self
+	local db = frame.db
+
+	if(isShown) then
+		frame.ClassBar = 'Stagger'
+	else
+		frame.ClassBar = 'ClassIcons'
+	end
+	
+	--Only update when necessary
+	if(stateChanged) then
+		ToggleResourceBar(frame.Stagger)
+		UF:Configure_ClassBar(frame)
+		UF:Configure_HealthBar(frame)
+		UF:Configure_Power(frame)
+		UF:Configure_InfoPanel(frame, true) --2nd argument is to prevent it from setting template, which removes threat border
 	end
 end

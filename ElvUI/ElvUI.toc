@@ -1,6 +1,6 @@
 ## Interface: 60200
 ## Author: Elv
-## Version: 9.17
+## Version: 10.00
 ## Title: |cff1784d1ElvUI|r
 ## Notes: User Interface replacement AddOn for World of Warcraft.
 ## SavedVariables: ElvDB, ElvPrivateDB
@@ -9,11 +9,11 @@
 ## X-oUF: ElvUF
 
 developer\load_developer.xml
-libs\load_libs.xml
+libraries\load_libraries.xml
 locales\load_locales.xml
 media\load_media.xml
 init.lua
-config\load_config.xml
+settings\load_config.xml
 core\load_core.xml 
 layout\load_layout.xml
 modules\load_modules.xml

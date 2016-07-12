@@ -4,6 +4,7 @@
 	<Script file='aprilfools.lua'/>
 	<Script file='fonts.lua'/>
 	<Script file='install.lua'/>
+	<Script file='installPlugin.lua'/>
 	<Script file='pixelperfect.lua'/>
 	<Script file='toolkit.lua'/>
 	<Script file='commands.lua'/>

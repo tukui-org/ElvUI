@@ -88,6 +88,7 @@ local function LoadSkin()
 	ArcheologyDigsiteProgressBar.BarTitle:FontTemplate(nil, nil, 'OUTLINE')
 	ArcheologyDigsiteProgressBar:ClearAllPoints()
 	ArcheologyDigsiteProgressBar:Point("TOP", UIParent, "TOP", 0, -400)
+	UIPARENT_MANAGED_FRAME_POSITIONS["ArcheologyDigsiteProgressBar"] = nil
 	E:CreateMover(ArcheologyDigsiteProgressBar, "DigSiteProgressBarMover", L["Archeology Progress Bar"])
 end
 

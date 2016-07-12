@@ -8,8 +8,6 @@ local SetCVar = SetCVar
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: CHAT_FONT_HEIGHTS, UNIT_NAME_FONT, DAMAGE_TEXT_FONT, STANDARD_TEXT_FONT
--- GLOBALS: InterfaceOptionsCombatTextPanelTargetDamage, InterfaceOptionsCombatTextPanelPeriodicDamage
--- GLOBALS: InterfaceOptionsCombatTextPanelPetDamage, InterfaceOptionsCombatTextPanelHealing
 -- GLOBALS: GameTooltipHeader, SystemFont_Shadow_Large_Outline, NumberFont_OutlineThick_Mono_Small
 -- GLOBALS: NumberFont_Outline_Huge, NumberFont_Outline_Large, NumberFont_Outline_Med
 -- GLOBALS: NumberFont_Shadow_Med, NumberFont_Shadow_Small, QuestFont, QuestFont_Large
@@ -44,11 +42,6 @@ function E:UpdateBlizzardFonts()
 	end
 
 	if self.eyefinity then
-		-- damage are huge on eyefinity, so we disable it
-		InterfaceOptionsCombatTextPanelTargetDamage:Hide()
-		InterfaceOptionsCombatTextPanelPeriodicDamage:Hide()
-		InterfaceOptionsCombatTextPanelPetDamage:Hide()
-		InterfaceOptionsCombatTextPanelHealing:Hide()
 		SetCVar("CombatLogPeriodicSpells",0)
 		SetCVar("PetMeleeDamage",0)
 		SetCVar("CombatDamage",0)

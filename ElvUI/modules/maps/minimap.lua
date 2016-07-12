@@ -37,13 +37,13 @@ local GuildInstanceDifficulty = GuildInstanceDifficulty
 -- GLOBALS: GetMinimapShape, SpellBookFrame, PlayerTalentFrame, TalentFrame_LoadUI
 -- GLOBALS: GlyphFrame, GlyphFrame_LoadUI, PlayerTalentFrame, TimeManagerFrame
 -- GLOBALS: GameTimeFrame, GuildFrame, GuildFrame_LoadUI, Minimap, MinimapCluster
--- GLOBALS: FarmModeMap, BuffsMover, DebuffsMover, LookingForGuildFrame, MiniMapWorldMapButton
+-- GLOBALS: BuffsMover, DebuffsMover, LookingForGuildFrame, MiniMapWorldMapButton
 -- GLOBALS: LookingForGuildFrame_LoadUI, EncounterJournal_LoadUI, EncounterJournal
 -- GLOBALS: GameMenuFrame, VideoOptionsFrame, VideoOptionsFrameCancel, AudioOptionsFrame
 -- GLOBALS: AudioOptionsFrameCancel, InterfaceOptionsFrame, InterfaceOptionsFrameCancel
 -- GLOBALS: LibStub, ElvUIPlayerBuffs, MMHolder, StoreMicroButton, TimeManagerClockButton
 -- GLOBALS: FeedbackUIButton, MiniMapTrackingDropDown, LeftMiniPanel, RightMiniPanel
--- GLOBALS: MinimapMover, AurasHolder, AurasMover, ElvConfigToggle, ElvUI_ConsolidatedBuffs
+-- GLOBALS: MinimapMover, AurasHolder, AurasMover, ElvConfigToggle
 -- GLOBALS: GarrisonLandingPageMinimapButton, GarrisonLandingPageTutorialBox, MiniMapMailFrame
 -- GLOBALS: QueueStatusMinimapButton, QueueStatusFrame, MiniMapInstanceDifficulty
 -- GLOBALS: MiniMapChallengeMode, MinimapBorder, MinimapBorderTop, MinimapZoomIn, MinimapZoomOut
@@ -79,8 +79,6 @@ local menuList = {
 	func = function()
 		ToggleCollectionsJournal()
 	end},
-	{text = L["Farm Mode"],
-	func = FarmMode},
 	{text = TIMEMANAGER_TITLE,
 	func = function() ToggleFrame(TimeManagerFrame) end},
 	{text = ACHIEVEMENT_BUTTON,
@@ -168,8 +166,7 @@ function M:Minimap_OnMouseUp(btn)
 		local xoff = -1
 
 		if position:match("RIGHT") then xoff = E:Scale(-16) end
-
-		ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, self, xoff, E:Scale(-3))
+		ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, "cursor")
 	else
 		Minimap_OnClick(self)
 	end
@@ -294,10 +291,10 @@ function M:UpdateSettings()
 	end
 
 	if GarrisonLandingPageMinimapButton then
-		local pos = E.db.general.minimap.icons.garrison.position or "TOPLEFT"
-		local scale = E.db.general.minimap.icons.garrison.scale or 1
+		local pos = E.db.general.minimap.icons.classHall.position or "TOPLEFT"
+		local scale = E.db.general.minimap.icons.classHall.scale or 1
 		GarrisonLandingPageMinimapButton:ClearAllPoints()
-		GarrisonLandingPageMinimapButton:Point(pos, Minimap, pos, E.db.general.minimap.icons.garrison.xOffset or 0, E.db.general.minimap.icons.garrison.yOffset or 0)
+		GarrisonLandingPageMinimapButton:Point(pos, Minimap, pos, E.db.general.minimap.icons.classHall.xOffset or 0, E.db.general.minimap.icons.classHall.yOffset or 0)
 		GarrisonLandingPageMinimapButton:SetScale(scale)
 		if GarrisonLandingPageTutorialBox then
 			GarrisonLandingPageTutorialBox:SetScale(1/scale)
@@ -417,7 +414,7 @@ function M:Initialize()
 	MiniMapMailBorder:Hide()
 	MiniMapMailIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\mail")
 
-	if E.private.general.minimap.hideGarrison then
+	if E.private.general.minimap.hideClassHallReport then
 		GarrisonLandingPageMinimapButton:Kill()
 		GarrisonLandingPageMinimapButton.IsShown = function() return true end
 	end
@@ -457,78 +454,6 @@ function M:Initialize()
 	MinimapCluster:SetAllPoints(Minimap)
 	MinimapBackdrop:ClearAllPoints()
 	MinimapBackdrop:SetAllPoints(Minimap)
-
-	--Create Farmmode Minimap
-	local fm = CreateFrame('Minimap', 'FarmModeMap', E.UIParent)
-	fm:Size(E.db.farmSize)
-	fm:Point('TOP', E.UIParent, 'TOP', 0, -120)
-	fm:SetClampedToScreen(true)
-	fm:CreateBackdrop('Default')
-	fm:EnableMouseWheel(true)
-	fm:SetScript("OnMouseWheel", M.Minimap_OnMouseWheel)
-	fm:SetScript("OnMouseUp", M.Minimap_OnMouseUp)
-	fm:RegisterForDrag("LeftButton", "RightButton")
-	fm:SetMovable(true)
-	fm:SetScript("OnDragStart", function(self) self:StartMoving() end)
-	fm:SetScript("OnDragStop", function(self) self:StopMovingOrSizing() end)
-	if AstrolabeMapMonitor then AstrolabeMapMonitor:MonitorWorldMap(fm) end
-	fm:Hide()
-	E.FrameLocks['FarmModeMap'] = true;
-
-	FarmModeMap:SetScript('OnShow', function()
-		if BuffsMover and not E:HasMoverBeenMoved('BuffsMover') then
-			BuffsMover:ClearAllPoints()
-			BuffsMover:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -3, -3)
-		end
-		if DebuffsMover and not E:HasMoverBeenMoved('DebuffsMover') then
-			DebuffsMover:ClearAllPoints()
-			DebuffsMover:Point("TOPRIGHT", ElvUIPlayerBuffs, "BOTTOMRIGHT", 0, -3)
-		end
-		MinimapCluster:ClearAllPoints()
-		MinimapCluster:SetAllPoints(FarmModeMap)
-		if IsAddOnLoaded('Routes') then
-			LibStub("AceAddon-3.0"):GetAddon('Routes'):ReparentMinimap(FarmModeMap)
-		end
-
-		if IsAddOnLoaded('GatherMate2') then
-			LibStub('AceAddon-3.0'):GetAddon('GatherMate2'):GetModule('Display'):ReparentMinimapPins(FarmModeMap)
-		end
-		if Astrolabe then Astrolabe:SetTargetMinimap(FarmModeMap) end
-	end)
-
-	FarmModeMap:SetScript('OnHide', function()
-		if BuffsMover and not E:HasMoverBeenMoved('BuffsMover') then
-			E:ResetMovers(L["Player Buffs"])
-		end
-		if DebuffsMover and not E:HasMoverBeenMoved('DebuffsMover') then
-			E:ResetMovers(L["Player Debuffs"])
-		end
-		MinimapCluster:ClearAllPoints()
-		MinimapCluster:SetAllPoints(Minimap)
-		if IsAddOnLoaded('Routes') then
-			LibStub("AceAddon-3.0"):GetAddon('Routes'):ReparentMinimap(Minimap)
-		end
-
-		if IsAddOnLoaded('GatherMate2') then
-			LibStub('AceAddon-3.0'):GetAddon('GatherMate2'):GetModule('Display'):ReparentMinimapPins(Minimap)
-		end
-		if Astrolabe then Astrolabe:SetTargetMinimap(Minimap) end
-	end)
-
-
-	UIParent:HookScript('OnShow', function()
-		if not FarmModeMap.enabled then
-			FarmModeMap:Hide()
-		end
-	end)
-	
-	--PET JOURNAL TAINT FIX AS OF 5.1
-	--[[local info = UIPanelWindows['PetJournalParent'];
-	for name, value in pairs(info) do
-		PetJournalParent:SetAttribute("UIPanelLayout-"..name, value);
-	end
-
-	PetJournalParent:SetAttribute("UIPanelLayout-defined", true);]]
 end
 
 E:RegisterInitialModule(M:GetName())

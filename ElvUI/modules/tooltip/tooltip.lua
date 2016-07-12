@@ -80,7 +80,7 @@ local ID = ID
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: ElvUI_ContainerFrame, RightChatPanel, TooltipMover, UIParent, ElvUI_KeyBinder
--- GLOBALS: ItemRefCloseButton, RightChatToggleButton, BNToastFrame, MMHolder, GameTooltipText
+-- GLOBALS: ItemRefCloseButton, BNToastFrame, MMHolder, GameTooltipText
 -- GLOBALS: BNETMover, ItemRefTooltip, InspectFrame,  GameTooltipHeaderText, GameTooltipTextSmall
 -- GLOBALS: ShoppingTooltip1TextLeft1, ShoppingTooltip1TextLeft2, ShoppingTooltip1TextLeft3
 -- GLOBALS: ShoppingTooltip1TextLeft4, ShoppingTooltip1TextRight1, ShoppingTooltip1TextRight2
@@ -91,7 +91,7 @@ local ID = ID
 
 local GameTooltip, GameTooltipStatusBar = _G["GameTooltip"], _G["GameTooltipStatusBar"]
 local S_ITEM_LEVEL = ITEM_LEVEL:gsub( "%%d", "(%%d+)" )
-local playerGUID = UnitGUID("player")
+local playerGUID --Will be set in Initialize
 local targetList, inspectCache = {}, {}
 local NIL_COLOR = { r=1, g=1, b=1 }
 local TAPPED_COLOR = { r=.6, g=.6, b=.6 }
@@ -107,7 +107,6 @@ local tooltips = {
 	ItemRefShoppingTooltip3,
 	AutoCompleteBox,
 	FriendsTooltip,
-	ConsolidatedBuffsTooltip,
 	ShoppingTooltip1,
 	ShoppingTooltip2,
 	ShoppingTooltip3,
@@ -734,23 +733,6 @@ function TT:SetUnitAura(tt, unit, index, filter)
 	end
 end
 
-function TT:SetConsolidatedUnitAura(tt, unit, index)
-	local name = GetRaidBuffTrayAuraInfo(index)
-	local _, _, _, _, _, _, _, caster, _, _, id = UnitAura(unit, name)
-	if id and self.db.spellID then
-		if caster then
-			local name = UnitName(caster)
-			local _, class = UnitClass(caster)
-			local color = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
-			tt:AddDoubleLine(("|cFFCA3C3C%s|r %d"):format(ID, id), format("|c%s%s|r", color.colorStr, name))
-		else
-			tt:AddLine(("|cFFCA3C3C%s|r %d"):format(ID, id))
-		end
-
-		tt:Show()
-	end
-end
-
 function TT:GameTooltip_OnTooltipSetSpell(tt)
 	local id = select(3, tt:GetSpell())
 	if not id or not self.db.spellID then return end
@@ -871,7 +853,7 @@ function TT:Initialize()
 	self:SetTooltipFonts()
 
 	local GameTooltipAnchor = CreateFrame('Frame', 'GameTooltipAnchor', E.UIParent)
-	GameTooltipAnchor:Point('BOTTOMRIGHT', RightChatToggleButton, 'BOTTOMRIGHT')
+	GameTooltipAnchor:Point('BOTTOMRIGHT', RightChatDataPanel, 'BOTTOMRIGHT')
 	GameTooltipAnchor:Size(130, 20)
 	GameTooltipAnchor:SetFrameLevel(GameTooltipAnchor:GetFrameLevel() + 50)
 	E:CreateMover(GameTooltipAnchor, 'TooltipMover', L["Tooltip"])
@@ -902,6 +884,9 @@ function TT:Initialize()
 	--Variable is localized at top of file, then set here when we're sure the frame has been created
 	--Used to check if keybinding is active, if so then don't hide tooltips on actionbars
 	keybindFrame = ElvUI_KeyBinder
+	
+	--Variable is localized at top of file, but setting it right away doesn't work on first session after opening up WoW
+	playerGUID = UnitGUID("player")
 end
 
 E:RegisterModule(TT:GetName())

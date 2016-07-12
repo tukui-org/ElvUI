@@ -1,0 +1,7 @@
+## Interface: 60200
+## Author: Hydra
+## Version: 2.01
+## Title: LibAnim
+## Notes: Animations!
+
+LibAnim.lua

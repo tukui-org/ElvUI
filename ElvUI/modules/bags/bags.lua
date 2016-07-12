@@ -1,6 +1,6 @@
 ﻿local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:NewModule('Bags', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0');
---local Search = LibStub('LibItemSearch-1.2-ElvUI')
+local Search = LibStub('LibItemSearch-1.2-ElvUI')
 
 --Cache global variables
 --Lua functions
@@ -32,7 +32,7 @@ local GetContainerItemCooldown = GetContainerItemCooldown
 local SetItemButtonCount = SetItemButtonCount
 local SetItemButtonTexture = SetItemButtonTexture
 local SetItemButtonTextureVertexColor = SetItemButtonTextureVertexColor
-local CooldownFrame_SetTimer = CooldownFrame_SetTimer
+local CooldownFrame_Set = CooldownFrame_Set
 local BankFrameItemButton_Update = BankFrameItemButton_Update
 local BankFrameItemButton_UpdateLocked = BankFrameItemButton_UpdateLocked
 local UpdateSlot = UpdateSlot
@@ -69,8 +69,8 @@ local LE_ITEM_QUALITY_POOR = LE_ITEM_QUALITY_POOR
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameTooltip, BankFrame, ElvUIReagentBankFrameItem1, GuildBankFrame, ElvUIBags
--- GLOBALS: ContainerFrame1, RightChatToggleButton, GuildItemSearchBox, StackSplitFrame
--- GLOBALS: LeftChatToggleButton, MAX_GUILDBANK_SLOTS_PER_TAB, UISpecialFrames
+-- GLOBALS: ContainerFrame1, GuildItemSearchBox, StackSplitFrame
+-- GLOBALS: MAX_GUILDBANK_SLOTS_PER_TAB, UISpecialFrames
 -- GLOBALS: ElvUIReagentBankFrame, MerchantFrame, BagItemAutoSortButton
 
 local SEARCH_STRING = ""
@@ -137,6 +137,10 @@ local UpgradeTable = {
 	[529] = { upgrade = 0, max = 2, ilevel = 0 },
 	[530] = { upgrade = 1, max = 2, ilevel = 5 },
 	[531] = { upgrade = 2, max = 2, ilevel = 10 },
+	[535] = { upgrade = 1, max = 3, ilevel = 15 },
+	[536] = { upgrade = 2, max = 3, ilevel = 30 },
+	[537] = { upgrade = 3, max = 3, ilevel = 45 },
+	[538] = { upgrade = 0, max = 3, ilevel = 0 },
 }
 
 function B:GetContainerFrame(arg)
@@ -182,6 +186,13 @@ end
 
 function B:SearchReset()
 	SEARCH_STRING = ""
+end
+
+function B:IsSearching()
+	if SEARCH_STRING ~= "" and SEARCH_STRING ~= SEARCH then
+		return true
+	end
+	return false
 end
 
 function B:UpdateSearch()
@@ -432,7 +443,7 @@ function B:UpdateSlot(bagID, slotID)
 
 	if (texture) then
 		local start, duration, enable = GetContainerItemCooldown(bagID, slotID)
-		CooldownFrame_SetTimer(slot.cooldown, start, duration, enable)
+		CooldownFrame_Set(slot.cooldown, start, duration, enable)
 		if ( duration > 0 and enable == 0 ) then
 			SetItemButtonTextureVertexColor(slot, 0.4, 0.4, 0.4);
 		else
@@ -449,6 +460,10 @@ function B:UpdateSlot(bagID, slotID)
 	SetItemButtonTexture(slot, texture);
 	SetItemButtonCount(slot, count);
 	SetItemButtonDesaturated(slot, locked, 0.5, 0.5, 0.5);
+
+	if GameTooltip:GetOwner() == slot and not slot.hasItem then
+		B:Tooltip_Hide()
+	end
 end
 
 function B:UpdateBagSlots(bagID)
@@ -475,7 +490,7 @@ function B:UpdateCooldowns()
 	for _, bagID in ipairs(self.BagIDs) do
 		for slotID = 1, GetContainerNumSlots(bagID) do
 			local start, duration, enable = GetContainerItemCooldown(bagID, slotID)
-			CooldownFrame_SetTimer(self.Bags[bagID][slotID].cooldown, start, duration, enable)
+			CooldownFrame_Set(self.Bags[bagID][slotID].cooldown, start, duration, enable)
 			if ( duration > 0 and enable == 0 ) then
 				SetItemButtonTextureVertexColor(self.Bags[bagID][slotID], 0.4, 0.4, 0.4);
 			else
@@ -802,7 +817,7 @@ function B:UpdateReagentSlot(slotID)
 	slot.name, slot.rarity = nil, nil;
 
 	local start, duration, enable = GetContainerItemCooldown(bagID, slotID)
-	CooldownFrame_SetTimer(slot.Cooldown, start, duration, enable)
+	CooldownFrame_Set(slot.Cooldown, start, duration, enable)
 	if ( duration > 0 and enable == 0 ) then
 		SetItemButtonTextureVertexColor(slot, 0.4, 0.4, 0.4);
 	else
@@ -877,6 +892,11 @@ function B:OnEvent(event, ...)
 		end
 
 		self:UpdateBagSlots(...);
+
+		--Refresh search in case we moved items around
+		if B:IsSearching() then
+			B:SetSearch(SEARCH_STRING);
+		end
 	elseif event == 'BAG_UPDATE_COOLDOWN' then
 		self:UpdateCooldowns();
 	elseif event == 'PLAYERBANKSLOTS_CHANGED' then
@@ -1411,18 +1431,18 @@ function B:PositionBagFrames()
 	if self.BagFrame then
 		self.BagFrame:ClearAllPoints()
 		if E.db.datatexts.rightChatPanel then
-			self.BagFrame:Point('BOTTOMRIGHT', RightChatToggleButton, 'TOPRIGHT', 0 + E.db.bags.xOffset, 4 + E.db.bags.yOffset);
+			self.BagFrame:Point('BOTTOMRIGHT', RightChatDataPanel, 'TOPRIGHT', 0 + E.db.bags.xOffset, 4 + E.db.bags.yOffset);
 		else
-			self.BagFrame:Point('BOTTOMRIGHT', RightChatToggleButton, 'BOTTOMRIGHT', 0 + E.db.bags.xOffset, 0 + E.db.bags.yOffset);
+			self.BagFrame:Point('BOTTOMRIGHT', RightChatDataPanel, 'BOTTOMRIGHT', 0 + E.db.bags.xOffset, 0 + E.db.bags.yOffset);
 		end
 	end
 
 	if self.BankFrame then
 		self.BankFrame:ClearAllPoints()
 		if E.db.datatexts.leftChatPanel then
-			self.BankFrame:Point('BOTTOMLEFT', LeftChatToggleButton, 'TOPLEFT', 0 + E.db.bags.xOffsetBank, 4 + E.db.bags.yOffsetBank);
+			self.BankFrame:Point('BOTTOMLEFT', LeftChatDataPanel, 'TOPLEFT', 0 + E.db.bags.xOffsetBank, 4 + E.db.bags.yOffsetBank);
 		else
-			self.BankFrame:Point('BOTTOMLEFT', LeftChatToggleButton, 'BOTTOMLEFT', 0 + E.db.bags.xOffsetBank, 0 + E.db.bags.yOffsetBank);
+			self.BankFrame:Point('BOTTOMLEFT', LeftChatDataPanel, 'BOTTOMLEFT', 0 + E.db.bags.xOffsetBank, 0 + E.db.bags.yOffsetBank);
 		end
 	end
 end
@@ -1618,7 +1638,7 @@ function B:UpdateContainerFrameAnchors()
 		frame:SetScale(1);
 		if ( index == 1 ) then
 			-- First bag
-			frame:Point("BOTTOMRIGHT", RightChatToggleButton, "TOPRIGHT", 2, 2);
+			frame:Point("BOTTOMRIGHT", RightChatDataPanel, "TOPRIGHT", 2, 2);
 			bagsPerColumn = bagsPerColumn + 1
 		elseif ( freeScreenHeight < frame:GetHeight() ) then
 			-- Start a new column

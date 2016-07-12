@@ -28,6 +28,8 @@ function UF:Construct_Buffs(frame)
 	buffs.CustomFilter = self.AuraFilter
 	buffs:SetFrameLevel(10)
 	buffs.type = 'buffs'
+	--Set initial width to prevent division by zero. This value doesn't matter, as it will be updated later
+	buffs:Width(frame:GetWidth())
 
 	return buffs
 end
@@ -41,6 +43,8 @@ function UF:Construct_Debuffs(frame)
 	debuffs.CustomFilter = self.AuraFilter
 	debuffs.type = 'debuffs'
 	debuffs:SetFrameLevel(10)
+	--Set initial width to prevent division by zero. This value doesn't matter, as it will be updated later
+	debuffs:Width(frame:GetWidth())
 
 	return debuffs
 end
@@ -51,7 +55,7 @@ function UF:Construct_AuraIcon(button)
 	button.text:SetJustifyH('CENTER')
 
 	button:SetTemplate('Default', nil, nil, (UF.thinBorders and not E.global.tukuiMode))
-
+	
 	button.cd.noOCC = true
 	button.cd.noCooldownCount = true
 	button.cd:SetReverse(true)
@@ -280,6 +284,8 @@ function UF:SortAuras()
 	end
 
 	--Look into possibly applying filter priorities for auras here.
+	
+	return 1, #self --from/to range needed for the :SetPosition call in oUF aura element. Without this aura icon position gets all whacky when not sorted by index
 end
 
 function UF:UpdateAuraIconSettings(auras, noCycle)
@@ -325,9 +331,21 @@ end
 
 function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, duration, timeLeft)
 	local name, _, _, _, dtype, duration, expiration, _, isStealable = UnitAura(unit, index, button.filter)
-
-
 	local isFriend = UnitIsFriend('player', unit)
+	
+	local auras = button:GetParent()
+	local frame = auras:GetParent()
+	local type = auras.type
+	local db = frame.db and frame.db[type]
+
+	if db then
+		if db.clickThrough and button:IsMouseEnabled() then
+			button:EnableMouse(false)
+		elseif not db.clickThrough and not button:IsMouseEnabled() then
+			button:EnableMouse(true)
+		end
+	end
+
 	if button.isDebuff then
 		if(not isFriend and button.owner ~= "player" and button.owner ~= "vehicle") --[[and (not E.isDebuffWhiteList[name])]] then
 			button:SetBackdropBorderColor(0.9, 0.1, 0.1)
@@ -351,7 +369,7 @@ function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, durati
 
 	local size = button:GetParent().size
 	if size then
-		button:Size(size)
+		button:SetSize(size, size)
 	end
 
 	button.spell = name
@@ -427,11 +445,7 @@ function UF:CheckFilter(filterType, isFriend)
 	return false
 end
 
-function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, timeLeft, unitCaster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossAura)
-	if E.global.unitframe.InvalidSpells[spellID] then
-		return false;
-	end
-
+function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, timeLeft, unitCaster, isStealable, _, spellID, canApplyAura, isBossAura)
 	local isPlayer, isFriend
 	local db = self:GetParent().db
 	if not db or not db[self.type] then return true; end
@@ -451,7 +465,7 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 	icon.name = name
 	icon.priority = 0
 
-	local turtleBuff = E.global['unitframe']['aurafilters']['TurtleBuffs'].spells[name]
+	local turtleBuff = (E.global['unitframe']['aurafilters']['TurtleBuffs'].spells[spellID] or E.global['unitframe']['aurafilters']['TurtleBuffs'].spells[name])
 	if turtleBuff and turtleBuff.enable then
 		icon.priority = turtleBuff.priority
 	end
@@ -475,13 +489,13 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 	end
 
 
-	if UF:CheckFilter(db.noConsolidated, isFriend) then
-		if shouldConsolidate == true then
-			returnValue = false;
+	--[[if UF:CheckFilter(db.selfBuffs, isFriend) then
+		if SpellIsSelfBuff(spellID) then
+			returnValue = true;
 		end
 
 		anotherFilterExists = true
-	end
+	end]]
 
 	if UF:CheckFilter(db.noDuration, isFriend) then
 		if (duration == 0 or not duration) then
@@ -500,7 +514,7 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 	end]]
 
 	if UF:CheckFilter(db.useBlacklist, isFriend) then
-		local blackList = E.global['unitframe']['aurafilters']['Blacklist'].spells[name]
+		local blackList = (E.global['unitframe']['aurafilters']['Blacklist'].spells[spellID] or E.global['unitframe']['aurafilters']['Blacklist'].spells[name])
 		if blackList and blackList.enable then
 			returnValue = false;
 		end
@@ -509,7 +523,7 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 	end
 
 	if UF:CheckFilter(db.useWhitelist, isFriend) then
-		local whiteList = E.global['unitframe']['aurafilters']['Whitelist'].spells[name]
+		local whiteList = (E.global['unitframe']['aurafilters']['Whitelist'].spells[spellID] or E.global['unitframe']['aurafilters']['Whitelist'].spells[name])
 		if whiteList and whiteList.enable then
 			returnValue = true;
 			icon.priority = whiteList.priority
@@ -520,41 +534,19 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 		anotherFilterExists = true
 	end
 
-	if UF:CheckFilter(db.useWhitelist, isFriend) then
-		local whiteList = E.global['unitframe']['aurafilters']['Whitelist (Strict)'].spells[name]
-		if whiteList and whiteList.enable then
-			if whiteList.spellID and whiteList.spellID == spellID then
-				returnValue = true;
-			else
-				returnValue = false;
-			end
-			icon.priority = whiteList.priority
-		elseif not anotherFilterExists and not playerOnlyFilter then
-			returnValue = false
-		end
-	end
-
 	if db.useFilter and E.global['unitframe']['aurafilters'][db.useFilter] then
 		local type = E.global['unitframe']['aurafilters'][db.useFilter].type
 		local spellList = E.global['unitframe']['aurafilters'][db.useFilter].spells
+		local spell = (spellList[spellID] or spellList[name])
 
 		if type == 'Whitelist' then
-			if spellList[name] and spellList[name].enable and passPlayerOnlyCheck then
+			if spell and spell.enable and passPlayerOnlyCheck then
 				returnValue = true
-				icon.priority = spellList[name].priority
-
-				--bit hackish fix to this
-				if db.useFilter == 'TurtleBuffs' and (spellID == 86698 or spellID == 86669) then
-					returnValue = false
-				end
-
-				if db.useFilter == 'Whitelist (Strict)' and spellList[name].spellID and not spellList[name].spellID == spellID then
-					returnValue = false
-				end
+				icon.priority = spell.priority
 			elseif not anotherFilterExists then
 				returnValue = false
 			end
-		elseif type == 'Blacklist' and spellList[name] and spellList[name].enable then
+		elseif type == 'Blacklist' and spell and spell.enable then
 			returnValue = false
 		end
 	end

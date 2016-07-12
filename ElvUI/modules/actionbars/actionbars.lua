@@ -11,6 +11,11 @@ local format, gsub, split, strfind = string.format, string.gsub, string.split, s
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
+local UnitHealth = UnitHealth
+local UnitHealthMax = UnitHealthMax
+local UnitCastingInfo = UnitCastingInfo
+local UnitChannelInfo = UnitChannelInfo
+local UnitAffectingCombat = UnitAffectingCombat
 local UnitExists = UnitExists
 local UnitOnTaxi = UnitOnTaxi
 local VehicleExit = VehicleExit
@@ -38,6 +43,10 @@ local GetCVarBool, SetCVar = GetCVarBool, SetCVar
 local C_PetBattlesIsInBattle = C_PetBattles.IsInBattle
 local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
 local LE_ACTIONBAR_STATE_MAIN = LE_ACTIONBAR_STATE_MAIN
+local BOTTOMLEFT_ACTIONBAR_PAGE = BOTTOMLEFT_ACTIONBAR_PAGE
+local BOTTOMRIGHT_ACTIONBAR_PAGE = BOTTOMRIGHT_ACTIONBAR_PAGE
+local RIGHT_ACTIONBAR_PAGE = RIGHT_ACTIONBAR_PAGE
+local LEFT_ACTIONBAR_PAGE = LEFT_ACTIONBAR_PAGE
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: LeaveVehicleButton, Minimap, SpellFlyout, SpellFlyoutHorizontalBackground
@@ -53,7 +62,9 @@ local LE_ACTIONBAR_STATE_MAIN = LE_ACTIONBAR_STATE_MAIN
 -- GLOBALS: InterfaceOptionsActionBarsPanelLockActionBars
 -- GLOBALS: InterfaceOptionsActionBarsPanelPickupActionKeyDropDown
 -- GLOBALS: InterfaceOptionsStatusTextPanelXP
--- GLOBALS: PlayerTalentFrame, SpellFlyoutBackgroundEnd
+-- GLOBALS: PlayerTalentFrame, SpellFlyoutBackgroundEnd, UIParent
+-- GLOBALS: VIEWABLE_ACTION_BAR_PAGES, SHOW_MULTI_ACTIONBAR_1, SHOW_MULTI_ACTIONBAR_2
+-- GLOBALS: SHOW_MULTI_ACTIONBAR_3, SHOW_MULTI_ACTIONBAR_4
 
 local Sticky = LibStub("LibSimpleSticky-1.0");
 local _LOCK
@@ -256,6 +267,57 @@ function AB:PositionAndSizeBar(barName)
 		bar:Show()
 		RegisterStateDriver(bar, "visibility", self.db[barName].visibility); -- this is ghetto
 		RegisterStateDriver(bar, "page", page);
+		bar:SetAttribute("page", page)
+
+		RegisterStateDriver(bar.vehicleFix, "vehicleFix", "[vehicleui] 1;0")
+		bar.vehicleFix:SetAttribute("_onstate-vehicleFix", [[
+			local bar = self:GetParent()
+			local ParsedText = SecureCmdOptionParse(self:GetParent():GetAttribute("page"))
+
+			if newstate == 1 then
+				if(HasVehicleActionBar()) then
+					bar:SetAttribute("state", 12)
+					bar:ChildUpdate("state", 12)
+					self:GetFrameRef("MainMenuBarArtFrame"):SetAttribute("actionpage", 12) --Update MainMenuBarArtFrame too. See http://www.tukui.org/forums/topic.php?id=35332
+				else
+					if HasTempShapeshiftActionBar() and self:GetAttribute("hasTempBar") then
+						ParsedText = GetTempShapeshiftBarIndex() or ParsedText
+					end
+
+					if ParsedText ~= 0 then
+						bar:SetAttribute("state", ParsedText)
+						bar:ChildUpdate("state", ParsedText)
+						self:GetFrameRef("MainMenuBarArtFrame"):SetAttribute("actionpage", ParsedText)
+					else
+						local newCondition = bar:GetAttribute("newCondition")
+						if newCondition then
+							newstate = SecureCmdOptionParse(newCondition)
+							bar:SetAttribute("state", newstate)
+							bar:ChildUpdate("state", newstate)
+							self:GetFrameRef("MainMenuBarArtFrame"):SetAttribute("actionpage", newstate)
+						end
+					end
+				end
+			else
+				if HasTempShapeshiftActionBar() and self:GetAttribute("hasTempBar") then
+					ParsedText = GetTempShapeshiftBarIndex() or ParsedText
+				end
+
+				if ParsedText ~= 0 then
+					bar:SetAttribute("state", ParsedText)
+					bar:ChildUpdate("state", ParsedText)
+					self:GetFrameRef("MainMenuBarArtFrame"):SetAttribute("actionpage", ParsedText)
+				else
+					local newCondition = bar:GetAttribute("newCondition")
+					if newCondition then
+						newstate = SecureCmdOptionParse(newCondition)
+						bar:SetAttribute("state", newstate)
+						bar:ChildUpdate("state", newstate)
+						self:GetFrameRef("MainMenuBarArtFrame"):SetAttribute("actionpage", newstate)
+					end
+				end
+			end
+		]]);	
 
 		if not bar.initialized then
 			bar.initialized = true;
@@ -276,14 +338,21 @@ end
 
 function AB:CreateBar(id)
 	local bar = CreateFrame('Frame', 'ElvUI_Bar'..id, E.UIParent, 'SecureHandlerStateTemplate');
+	bar.vehicleFix = CreateFrame("Frame", nil, bar, "SecureHandlerStateTemplate")
+	bar:SetFrameRef("MainMenuBarArtFrame", MainMenuBarArtFrame)
+	bar.vehicleFix:SetFrameRef("MainMenuBarArtFrame", MainMenuBarArtFrame)
+	
 	local point, anchor, attachTo, x, y = split(',', self['barDefaults']['bar'..id].position)
 	bar:Point(point, anchor, attachTo, x, y)
 	bar.id = id
 	bar:CreateBackdrop('Default');
 	bar:SetFrameStrata("LOW")
+	
+	--Use this method instead of :SetAllPoints, as the size of the mover would otherwise be incorrect
 	local offset = E.Spacing
 	bar.backdrop:SetPoint("TOPLEFT", bar, "TOPLEFT", offset, -offset)
 	bar.backdrop:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", -offset, offset)
+
 	bar.buttons = {}
 	bar.bindButtons = self['barDefaults']['bar'..id].bindButtons
 	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter');
@@ -315,24 +384,26 @@ function AB:CreateBar(id)
 		bar:SetAttribute("hasTempBar", false)
 	end
 
+
 	bar:SetAttribute("_onstate-page", [[
 		if HasTempShapeshiftActionBar() and self:GetAttribute("hasTempBar") then
 			newstate = GetTempShapeshiftBarIndex() or newstate
 		end
-
+		
 		if newstate ~= 0 then
 			self:SetAttribute("state", newstate)
 			control:ChildUpdate("state", newstate)
+			self:GetFrameRef("MainMenuBarArtFrame"):SetAttribute("actionpage", newstate) --Update MainMenuBarArtFrame too. See http://www.tukui.org/forums/topic.php?id=35332
 		else
 			local newCondition = self:GetAttribute("newCondition")
 			if newCondition then
 				newstate = SecureCmdOptionParse(newCondition)
 				self:SetAttribute("state", newstate)
 				control:ChildUpdate("state", newstate)
+				self:GetFrameRef("MainMenuBarArtFrame"):SetAttribute("actionpage", newstate)
 			end
 		end
 	]]);
-
 
 	self["handledBars"]['bar'..id] = bar;
 	E:CreateMover(bar, 'ElvAB_'..id, L["Bar "]..id, nil, nil, nil,'ALL,ACTIONBARS')
@@ -346,7 +417,7 @@ function AB:PLAYER_REGEN_ENABLED()
 end
 
 local function Vehicle_OnEvent(self, event)
-	if ( CanExitVehicle() and ActionBarController_GetCurrentActionBarState() == LE_ACTIONBAR_STATE_MAIN ) and not E.db.general.minimap.icons.vehicleLeave.hide then
+	if ( CanExitVehicle() ) and not E.db.general.minimap.icons.vehicleLeave.hide then
 		self:Show()
 		self:GetNormalTexture():SetVertexColor(1, 1, 1)
 		self:EnableMouse(true)
@@ -442,9 +513,9 @@ end
 
 function AB:UpdateBar1Paging()
 	if self.db.bar6.enabled then
-		E.ActionBars.barDefaults.bar1.conditions = format("[vehicleui] %d; [possessbar] %d; [overridebar] %d; [shapeshift] 13; [form,noform] 0; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;", GetVehicleBarIndex(), GetVehicleBarIndex(), GetOverrideBarIndex())
+		E.ActionBars.barDefaults.bar1.conditions = format("[possessbar] %d; [overridebar] %d; [shapeshift] 13; [form,noform] 0; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;", GetVehicleBarIndex(), GetOverrideBarIndex())
 	else
-		E.ActionBars.barDefaults.bar1.conditions = format("[vehicleui] %d; [possessbar] %d; [overridebar] %d; [shapeshift] 13; [form,noform] 0; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;", GetVehicleBarIndex(), GetVehicleBarIndex(), GetOverrideBarIndex())
+		E.ActionBars.barDefaults.bar1.conditions = format("[possessbar] %d; [overridebar] %d; [shapeshift] 13; [form,noform] 0; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;", GetVehicleBarIndex(), GetOverrideBarIndex())
 	end
 
 	if (E.private.actionbar.enable ~= true or InCombatLockdown()) or not self.isInitialized then return; end
@@ -482,6 +553,11 @@ function AB:UpdateBar1Paging()
 	elseif (self.db.bar5.enabled and not bar5Option:GetChecked()) or (not self.db.bar5.enabled and bar5Option:GetChecked()) then
 		bar5Option:Click()
 	end
+end
+
+function AB:UpdateButtonSettingsForBar(barName)
+	local bar = self["handledBars"][barName]
+	self:UpdateButtonConfig(bar, bar.bindButtons)
 end
 
 function AB:UpdateButtonSettings()
@@ -599,7 +675,7 @@ end
 
 function AB:Bar_OnEnter(bar)
 	if bar:GetParent() == self.fadeParent then
-		if(not self.fadeParent.lockTarget and not self.fadeParent.lockCombat) then
+		if(not self.fadeParent.mouseLock) then
 			E:UIFrameFadeIn(self.fadeParent, 0.2, self.fadeParent:GetAlpha(), 1)
 		end
 	elseif(bar.mouseover) then
@@ -609,7 +685,7 @@ end
 
 function AB:Bar_OnLeave(bar)
 	if bar:GetParent() == self.fadeParent then
-		if(not self.fadeParent.lockTarget and not self.fadeParent.lockCombat) then
+		if(not self.fadeParent.mouseLock) then
 			E:UIFrameFadeOut(self.fadeParent, 0.2, self.fadeParent:GetAlpha(), 1 - self.db.globalFadeAlpha)
 		end
 	elseif(bar.mouseover) then
@@ -620,7 +696,7 @@ end
 function AB:Button_OnEnter(button)
 	local bar = button:GetParent()
 	if bar:GetParent() == self.fadeParent then
-		if(not self.fadeParent.lockTarget and not self.fadeParent.lockCombat) then
+		if(not self.fadeParent.mouseLock) then
 			E:UIFrameFadeIn(self.fadeParent, 0.2, self.fadeParent:GetAlpha(), 1)
 		end
 	elseif(bar.mouseover) then
@@ -631,7 +707,7 @@ end
 function AB:Button_OnLeave(button)
 	local bar = button:GetParent()
 	if bar:GetParent() == self.fadeParent then
-		if(not self.fadeParent.lockTarget and not self.fadeParent.lockCombat) then
+		if(not self.fadeParent.mouseLock) then
 			E:UIFrameFadeOut(self.fadeParent, 0.2, self.fadeParent:GetAlpha(), 1 - self.db.globalFadeAlpha)
 		end
 	elseif(bar.mouseover) then
@@ -674,6 +750,9 @@ function AB:DisableBlizzard()
 	MultiBarBottomRight:SetParent(UIHider)
 	MultiBarLeft:SetParent(UIHider)
 	MultiBarRight:SetParent(UIHider)
+	
+	--Look into what this does
+	ArtifactWatchBar:SetParent(UIHider)
 
 	-- Hide MultiBar Buttons, but keep the bars alive
 	for i=1,12 do
@@ -714,11 +793,8 @@ function AB:DisableBlizzard()
 		_G['MultiCastActionButton'..i]:SetAttribute("statehidden", true)
 	end
 
-	--MainMenuBarArtFrame:GetAttribute("actionpage") will not update unless ActionBarController gets to update
-	--I don't think there will be any unwanted side effects from keeping it active
-	--This is in reference to 2nd part of http://www.tukui.org/forums/topic.php?id=35332
-	-- ActionBarController:UnregisterAllEvents()
-	-- ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR')
+	ActionBarController:UnregisterAllEvents()
+	ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR')
 
 	MainMenuBar:EnableMouse(false)
 	MainMenuBar:SetAlpha(0)
@@ -769,8 +845,6 @@ function AB:DisableBlizzard()
 	IconIntroTracker:Hide()
 	IconIntroTracker:SetParent(UIHider)
 
-	InterfaceOptionsCombatPanelActionButtonUseKeyDown:SetScale(0.0001)
-	InterfaceOptionsCombatPanelActionButtonUseKeyDown:SetAlpha(0)
 	InterfaceOptionsActionBarsPanelAlwaysShowActionBars:EnableMouse(false)
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton:SetScale(0.0001)
 	InterfaceOptionsActionBarsPanelLockActionBars:SetScale(0.0001)
@@ -779,8 +853,6 @@ function AB:DisableBlizzard()
 	InterfaceOptionsActionBarsPanelLockActionBars:SetAlpha(0)
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetAlpha(0)
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetScale(0.00001)
-	InterfaceOptionsStatusTextPanelXP:SetAlpha(0)
-	InterfaceOptionsStatusTextPanelXP:SetScale(0.00001)
 	self:SecureHook('BlizzardOptionsPanel_OnEvent')
 	--InterfaceOptionsFrameCategoriesButton6:SetScale(0.00001)
 	if PlayerTalentFrame then
@@ -795,7 +867,7 @@ function AB:UpdateButtonConfig(bar, buttonName)
 	if not bar.buttonConfig then bar.buttonConfig = { hideElements = {}, colors = {} } end
 	bar.buttonConfig.hideElements.macro = not self.db.macrotext
 	bar.buttonConfig.hideElements.hotkey = not self.db.hotkeytext
-	bar.buttonConfig.showGrid = self.db.showGrid
+	bar.buttonConfig.showGrid = self.db["bar"..bar.id].showGrid
 	bar.buttonConfig.clickOnDown = self.db.keyDown
 	SetModifiedClick("PICKUPACTION", self.db.movementModifier)
 	bar.buttonConfig.colors.range = E:GetColorTable(self.db.noRangeColor)
@@ -806,7 +878,7 @@ function AB:UpdateButtonConfig(bar, buttonName)
 		bar.buttonConfig.keyBoundTarget = format(buttonName.."%d", i)
 		button.keyBoundTarget = bar.buttonConfig.keyBoundTarget
 		button.postKeybind = AB.FixKeybindText
-		button:SetAttribute("buttonlock", true)
+		button:SetAttribute("buttonlock", self.db.lockActionBars)
 		button:SetAttribute("checkselfcast", true)
 		button:SetAttribute("checkfocuscast", true)
 
@@ -961,6 +1033,7 @@ function AB:VehicleFix()
 	local barName = 'bar1'
 	local bar = self["handledBars"][barName]
 	local buttonSpacing = E:Scale(self.db[barName].buttonspacing);
+	local backdropSpacing = E:Scale((self.db[barName].backdropSpacing or self.db[barName].buttonspacing))
 	local numButtons = self.db[barName].buttons;
 	local buttonsPerRow = self.db[barName].buttonsPerRow;
 	local size = E:Scale(self.db[barName].buttonsize);
@@ -971,12 +1044,29 @@ function AB:VehicleFix()
 		local widthMult = 1;
 		local heightMult = 1;
 
+		local offset = E.Spacing
+		local x, y
+		if point == "BOTTOMLEFT" then
+			x, y = offset, offset
+		elseif point == "BOTTOMRIGHT" then
+			x, y = -offset, offset
+		elseif point == "TOPLEFT" then
+			x, y = offset, -offset
+		elseif point == "TOPRIGHT" then
+			x, y = -offset, -offset
+		end
 		bar.backdrop:ClearAllPoints()
-		bar.backdrop:Point(self.db[barName].point, bar, self.db[barName].point)
-		bar.backdrop:Width(buttonSpacing + ((size * (buttonsPerRow * widthMult)) + ((buttonSpacing * (buttonsPerRow - 1)) * widthMult) + (buttonSpacing * widthMult)));
-		bar.backdrop:Height(buttonSpacing + ((size * (numColumns * heightMult)) + ((buttonSpacing * (numColumns - 1)) * heightMult) + (buttonSpacing * heightMult)));
+		bar.backdrop:Point(point, bar, point, x, y)
+
+		local backdropWidth = (size * (buttonsPerRow * widthMult)) + ((buttonSpacing * (buttonsPerRow - 1)) * widthMult) + (backdropSpacing*2) + (E.Border*2) - (E.Spacing*2)
+		local backdropeight = (size * (numColumns * heightMult)) + ((buttonSpacing * (numColumns - 1)) * heightMult) + (backdropSpacing*2) + (E.Border*2) - (E.Spacing*2)
+		bar.backdrop:Width(backdropWidth)
+		bar.backdrop:Height(backdropeight)
 	else
-		bar.backdrop:SetAllPoints()
+		--Use this method instead of :SetAllPoints, as the size of the mover would otherwise be incorrect
+		local offset = E.Spacing
+		bar.backdrop:SetPoint("TOPLEFT", bar, "TOPLEFT", offset, -offset)
+		bar.backdrop:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", -offset, offset)
 	end
 end
 
@@ -1027,9 +1117,9 @@ function AB:Initialize()
 		self:ReassignBindings()
 	end
 
-	if not GetCVarBool('lockActionBars') then
-		SetCVar('lockActionBars', 1)
-	end
+	--We handle actionbar lock for regular bars, but the lock on PetBar needs to be handled by WoW so make some necessary updates
+	SetCVar('lockActionBars', (self.db.lockActionBars == true and 1 or 0))
+	LOCK_ACTIONBAR = (self.db.lockActionBars == true and "1" or "0")
 
 	SpellFlyout:HookScript("OnShow", SetupFlyoutButton)
 end

@@ -116,7 +116,7 @@ E.Options.args.tooltip = {
 							order = 4,
 							type = "range",
 							name = L["Header Font Size"],
-							min = 4, max = 50, step = 1,
+							min = 4, max = 212, step = 1,
 							get = function(info) return E.db.tooltip.headerFontSize end,
 							set = function(info, value) E.db.tooltip.headerFontSize = value; TT:SetTooltipFonts() end,
 						},
@@ -124,7 +124,7 @@ E.Options.args.tooltip = {
 							order = 5,
 							type = "range",
 							name = L["Text Font Size"],
-							min = 4, max = 30, step = 1,
+							min = 4, max = 212, step = 1,
 							get = function(info) return E.db.tooltip.textFontSize end,
 							set = function(info, value) E.db.tooltip.textFontSize = value; TT:SetTooltipFonts() end,
 						},
@@ -133,7 +133,7 @@ E.Options.args.tooltip = {
 							type = "range",
 							name = L["Comparison Font Size"],
 							desc = L["This setting controls the size of text in item comparison tooltips."],
-							min = 4, max = 30, step = 1,
+							min = 4, max = 212, step = 1,
 							get = function(info) return E.db.tooltip.smallTextFontSize end,
 							set = function(info, value) E.db.tooltip.smallTextFontSize = value; TT:SetTooltipFonts() end,
 						},
@@ -252,7 +252,7 @@ E.Options.args.tooltip = {
 							order = 3,
 							name = L["Font Size"],
 							type = "range",
-							min = 4, max = 22, step = 1,
+							min = 4, max = 500, step = 1,
 							set = function(info, value)
 								E.db.tooltip.healthBar.fontSize = value;
 								GameTooltipStatusBar.text:FontTemplate(E.LSM:Fetch("font", E.db.tooltip.healthBar.font), E.db.tooltip.healthBar.fontSize, "OUTLINE")

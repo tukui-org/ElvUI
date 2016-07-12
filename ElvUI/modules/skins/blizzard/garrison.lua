@@ -42,13 +42,14 @@ local function LoadSkin()
 		end
 	end
 
-	local function HandleShipFollowerPage(followerTab)
+	-- Needs Review
+	--[[local function HandleShipFollowerPage(followerTab)
 		local traits = followerTab.Traits
 		for i = 1, #traits do
 			local icon = traits[i].Portrait
 			local border = traits[i].Border
-			-- border:SetTexture(nil) -- I think the default border looks nice, not sure if we want to replace that
-			--The landing page icons display inner borders
+			border:SetTexture(nil) -- I think the default border looks nice, not sure if we want to replace that
+			-- The landing page icons display inner borders
 			if followerTab.isLandingPage then
 				icon:SetTexCoord(unpack(E.TexCoords))
 			end
@@ -59,12 +60,12 @@ local function LoadSkin()
 			local icon = equipment[i].Icon
 			local border = equipment[i].Border
 			border:SetAtlas("ShipMission_ShipFollower-TypeFrame") -- This border is ugly though, use the traits border instead
-			--The landing page icons display inner borders
+			-- The landing page icons display inner borders
 			if followerTab.isLandingPage then
 				icon:SetTexCoord(unpack(E.TexCoords))
 			end
 		end
-	end
+	end]]
 
 	-- Building frame
 	GarrisonBuildingFrame:StripTextures(true)
@@ -249,10 +250,10 @@ local function LoadSkin()
 	S:HandleEditBox(ShipFollowerList.SearchBox)
 	local scrollFrame = ShipFollowerList.listScroll
 	S:HandleScrollBar(scrollFrame.scrollBar)
-	HandleShipFollowerPage(ShipFollowerList.followerTab)
+	-- HandleShipFollowerPage(ShipFollowerList.followerTab)
 
 
-	-- ShipYard
+	-- Needs Review: ShipYard
 	GarrisonShipyardFrame:StripTextures(true)
 	GarrisonShipyardFrame.BorderFrame:StripTextures(true)
 	GarrisonShipyardFrame:CreateBackdrop("Transparent")
@@ -292,7 +293,7 @@ local function LoadSkin()
 	S:HandleEditBox(FollowerList.SearchBox)
 	FollowerList.MaterialFrame:StripTextures()
 	FollowerList.MaterialFrame.Icon:SetAtlas("ShipMission_CurrencyIcon-Oil", false) --Re-add the material icon
-	HandleShipFollowerPage(FollowerList.followerTab)
+	-- HandleShipFollowerPage(FollowerList.followerTab)
 
 	-- ShipYard: Mission Tooltip
 	local tooltip = GarrisonShipyardMapMissionTooltip

@@ -268,6 +268,9 @@ function S:SkinAce3()
 			local frame = widget.content:GetParent()
 			if TYPE == "Frame" then
 				frame:StripTextures()
+				if not E.GUIFrame then
+					E.GUIFrame = frame
+				end
 				for i=1, frame:GetNumChildren() do
 					local child = select(i, frame:GetChildren())
 					if child:GetObjectType() == "Button" and child:GetText() then

@@ -214,9 +214,8 @@ end
 
 function M:Initialize()
 	self:LoadRaidMarker()
-	self:LoadExpRepBar()
 	self:LoadLootRoll()
-	--self:LoadChatBubbles()
+	self:LoadChatBubbles()
 	self:LoadLoot()
 	self:RegisterEvent('MERCHANT_SHOW')
 	self:RegisterEvent('PLAYER_REGEN_DISABLED', 'ErrorFrameToggle')

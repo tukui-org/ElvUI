@@ -30,8 +30,6 @@ end
 
 local function GetPoint(obj)
 	local point, anchor, secondaryPoint, x, y = obj:GetPoint()
-
-
 	if not anchor then anchor = ElvUIParent end
 
 	return format('%s,%s,%s,%d,%d', point, anchor:GetName(), secondaryPoint, E:Round(x), E:Round(y))
@@ -59,13 +57,17 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 	if overlay == nil then overlay = true end
 	local point, anchor, secondaryPoint, x, y = split(',', GetPoint(parent))
 
+	--Use dirtyWidth / dirtyHeight to set initial size if possible
+	local width = parent.dirtyWidth or parent:GetWidth()
+	local height = parent.dirtyHeight or parent:GetHeight()
+
 	local f = CreateFrame("Button", name, E.UIParent)
 	f:SetClampedToScreen(true)
 	f:RegisterForDrag("LeftButton", "RightButton")
 	f:EnableMouseWheel(true)
 	f:SetMovable(true)
-	f:Width(parent:GetWidth())
-	f:Height(parent:GetHeight())
+	f:Width(width)
+	f:Height(height)
 	f:SetTemplate("Transparent", nil, nil, true)
 	f:Hide()
 	f.parent = parent

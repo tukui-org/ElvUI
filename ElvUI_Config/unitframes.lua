@@ -218,12 +218,11 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 			name = L["Block Non-Dispellable Auras"],
 			desc = L["Don't display auras that cannot be purged or dispelled by your class."],
 		}
-		config.args.filters.args.noConsolidated = {
+		--[[config.args.filters.args.selfBuffs = {
 			order = 14,
 			type = 'toggle',
-			name = L["Block Raid Buffs"],
-			desc = L["Don't display raid buffs such as Blessing of Kings or Mark of the Wild."],
-		}
+			name = L["Allow Self Buffs"],
+		}]]
 		config.args.filters.args.useFilter = {
 			order = 16,
 			name = L["Additional Filter"],
@@ -359,30 +358,30 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 				}
 			},
 		}
-		config.args.filters.args.noConsolidated = {
+		--[[config.args.filters.args.selfBuffs = {
 			order = 14,
 			guiInline = true,
 			type = 'group',
-			name = L["Block Raid Buffs"],
+			name = L["Allow Self-Buffs"],
 			args = {
 				friendly = {
 					order = 2,
 					type = 'toggle',
 					name = L["Friendly"],
-					desc = L["If the unit is friendly to you."].." "..L["Don't display raid buffs such as Blessing of Kings or Mark of the Wild."],
-					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].noConsolidated.friendly end,
-					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].noConsolidated.friendly = value; updateFunc(UF, groupName) end,
+					desc = L["If the unit is friendly to you."].." "..L["Display self-buffs"],
+					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].selfBuffs.friendly end,
+					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].selfBuffs.friendly = value; updateFunc(UF, groupName) end,
 				},
 				enemy = {
 					order = 3,
 					type = 'toggle',
 					name = L["Enemy"],
-					desc = L["If the unit is an enemy to you."].." "..L["Don't display raid buffs such as Blessing of Kings or Mark of the Wild."],
-					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].noConsolidated.enemy end,
-					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].noConsolidated.enemy = value; updateFunc(UF, groupName) end,
+					desc = L["If the unit is an enemy to you."].." "..L["Display self-buffs"],
+					get = function(info) return E.db.unitframe.units[groupName]['aurabar'].selfBuffs.enemy end,
+					set = function(info, value) E.db.unitframe.units[groupName]['aurabar'].selfBuffs.enemy = value; updateFunc(UF, groupName) end,
 				}
 			},
-		}
+		}]]
 		config.args.filters.args.useFilter = {
 			order = 16,
 			name = L["Additional Filter"],
@@ -466,7 +465,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 				order = 9,
 				name = L["Font Size"],
 				type = "range",
-				min = 6, max = 22, step = 1,
+				min = 6, max = 212, step = 1,
 			},
 			clickThrough = {
 				order = 15,
@@ -531,7 +530,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 			order = 10,
 			name = L["Count Font Size"],
 			type = "range",
-			min = 6, max = 22, step = 1,
+			min = 6, max = 212, step = 1,
 		}
 	end
 
@@ -566,15 +565,6 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 			name = L["Block Non-Dispellable Auras"],
 			desc = L["Don't display auras that cannot be purged or dispelled by your class."],
 		}
-
-		if auraType == 'buffs' then
-			config.args.filters.args.noConsolidated = {
-				order = 14,
-				type = 'toggle',
-				name = L["Block Raid Buffs"],
-				desc = L["Don't display raid buffs such as Blessing of Kings or Mark of the Wild."],
-			}
-		end
 
 		config.args.filters.args.bossAuras = {
 			order = 15,
@@ -719,32 +709,6 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 				}
 			},
 		}
-		if auraType == 'buffs' then
-			config.args.filters.args.noConsolidated = {
-				order = 14,
-				guiInline = true,
-				type = 'group',
-				name = L["Block Raid Buffs"],
-				args = {
-					friendly = {
-						order = 2,
-						type = 'toggle',
-						name = L["Friendly"],
-						desc = L["If the unit is friendly to you."].." "..L["Don't display raid buffs such as Blessing of Kings or Mark of the Wild."],
-						get = function(info) return E.db.unitframe.units[groupName][auraType].noConsolidated.friendly end,
-						set = function(info, value) E.db.unitframe.units[groupName][auraType].noConsolidated.friendly = value; updateFunc(UF, groupName, numUnits) end,
-					},
-					enemy = {
-						order = 3,
-						type = 'toggle',
-						name = L["Enemy"],
-						desc = L["If the unit is an enemy to you."].." "..L["Don't display raid buffs such as Blessing of Kings or Mark of the Wild."],
-						get = function(info) return E.db.unitframe.units[groupName][auraType].noConsolidated.enemy end,
-						set = function(info, value) E.db.unitframe.units[groupName][auraType].noConsolidated.enemy = value; updateFunc(UF, groupName, numUnits) end,
-					}
-				},
-			}
-		end
 
 		config.args.filters.args.bossAuras = {
 			order = 15,
@@ -1644,7 +1608,7 @@ local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
 				order = 5,
 				type = 'range',
 				name = L["Font Size"],
-				min = 7, max = 22, step = 1,
+				min = 7, max = 212, step = 1,
 			},
 			fontOutline = {
 				order = 6,
@@ -1864,7 +1828,7 @@ function UF:CreateCustomTextGroup(unit, objectName)
 				order = 3,
 				name = L["Font Size"],
 				type = "range",
-				min = 4, max = 32, step = 1,
+				min = 4, max = 212, step = 1,
 			},
 			fontOutline = {
 				order = 4,
@@ -2097,7 +2061,7 @@ E.Options.args.unitframe = {
 							name = L["Font Size"],
 							desc = L["Set the font size for unitframes."],
 							type = "range",
-							min = 4, max = 22, step = 1,
+							min = 4, max = 212, step = 1,
 							set = function(info, value) E.db.unitframe[ info[#info] ] = value; UF:Update_FontStrings() end,
 						},
 						fontOutline = {
@@ -2288,6 +2252,21 @@ E.Options.args.unitframe = {
 									name = PAIN,
 									type = 'color',									
 								},
+								FURY = {
+									order = 7,
+									name = FURY,
+									type = 'color',									
+								},								
+								LUNAR_POWER = {
+									order = 8,
+									name = LUNAR_POWER,
+									type = 'color'									
+								},
+								INSANITY = {
+									order = 9,
+									name = INSANITY,
+									type = 'color'									
+								},								
 							},
 						},
 						reactionGroup = {
@@ -3592,7 +3571,7 @@ E.Options.args.unitframe.args.pet = {
 					type = 'range',
 					name = L["Font Size"],
 					order = 4,
-					min = 7, max = 22, step = 1,
+					min = 7, max = 212, step = 1,
 				},
 			},
 		},
@@ -4364,7 +4343,7 @@ E.Options.args.unitframe.args.party = {
 					type = 'range',
 					name = L["Font Size"],
 					order = 4,
-					min = 7, max = 22, step = 1,
+					min = 7, max = 212, step = 1,
 				},
 				profileSpecific = {
 					type = 'toggle',
@@ -4950,7 +4929,7 @@ E.Options.args.unitframe.args['raid'] = {
 					type = 'range',
 					name = L["Font Size"],
 					order = 4,
-					min = 7, max = 22, step = 1,
+					min = 7, max = 212, step = 1,
 				},
 				profileSpecific = {
 					type = 'toggle',
@@ -5361,7 +5340,7 @@ E.Options.args.unitframe.args['raid40'] = {
 					type = 'range',
 					name = L["Font Size"],
 					order = 4,
-					min = 7, max = 22, step = 1,
+					min = 7, max = 212, step = 1,
 				},
 				profileSpecific = {
 					type = 'toggle',
@@ -5751,7 +5730,7 @@ E.Options.args.unitframe.args.raidpet = {
 					type = 'range',
 					name = L["Font Size"],
 					order = 4,
-					min = 7, max = 22, step = 1,
+					min = 7, max = 212, step = 1,
 				},
 				configureButton = {
 					type = 'execute',
@@ -5925,7 +5904,7 @@ E.Options.args.unitframe.args.tank = {
 					type = 'range',
 					name = L["Font Size"],
 					order = 4,
-					min = 7, max = 22, step = 1,
+					min = 7, max = 212, step = 1,
 				},
 				profileSpecific = {
 					type = 'toggle',
@@ -6110,7 +6089,7 @@ E.Options.args.unitframe.args.assist = {
 					type = 'range',
 					name = L["Font Size"],
 					order = 4,
-					min = 7, max = 22, step = 1,
+					min = 7, max = 212, step = 1,
 				},
 				profileSpecific = {
 					type = 'toggle',
@@ -6222,7 +6201,7 @@ E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGrou
 	width = 'full',
 }
 
-for i = 1, 5 do
+for i = 1, 3 do
 	E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args['combo'..i] = {
 		order = i + 2,
 		type = 'color',
@@ -6282,12 +6261,6 @@ if P.unitframe.colors.classResources[E.myclass] then
 				end,
 			}
 		end
-	elseif E.myclass == 'PRIEST' then
-		E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args[E.myclass] = {
-			type = 'color',
-			name = L["Shadow Orbs"],
-			order = ORDER,
-		}
 	elseif E.myclass == 'MONK' then
 		for i = 1, 6 do
 			E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args['resource'..i] = {
@@ -6308,77 +6281,17 @@ if P.unitframe.colors.classResources[E.myclass] then
 			}
 		end
 	elseif E.myclass == 'WARLOCK' then
-		local names = {
-			[1] = L["Affliction"],
-			[2] = L["Demonology"],
-			[3] = L["Destruction"]
+		E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args[E.myclass] = {
+			type = 'color',
+			name = L["Soul Shards"],
+			order = ORDER,
 		}
-		for i = 1, 3 do
-			E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args['resource'..i] = {
-				type = 'color',
-				name = names[i],
-				order = ORDER + i,
-				get = function(info)
-					local t = E.db.unitframe.colors.classResources.WARLOCK[i]
-					local d = P.unitframe.colors.classResources.WARLOCK[i]
-					return t.r, t.g, t.b, t.a, d.r, d.g, d.b
-				end,
-				set = function(info, r, g, b)
-					E.db.unitframe.colors.classResources.WARLOCK[i] = {}
-					local t = E.db.unitframe.colors.classResources.WARLOCK[i]
-					t.r, t.g, t.b = r, g, b
-					UF:Update_AllFrames()
-				end,
-			}
-		end
-	elseif E.myclass == 'DRUID' then
-		local names = {
-			[1] = L["Lunar"],
-			[2] = L["Solar"],
-		}
-		for i = 1, 2 do
-			E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args['resource'..i] = {
-				type = 'color',
-				name = names[i],
-				order = ORDER + i,
-				get = function(info)
-					local t = E.db.unitframe.colors.classResources.DRUID[i]
-					local d = P.unitframe.colors.classResources.DRUID[i]
-					return t.r, t.g, t.b, t.a, d.r, d.g, d.b
-				end,
-				set = function(info, r, g, b)
-					E.db.unitframe.colors.classResources.DRUID[i] = {}
-					local t = E.db.unitframe.colors.classResources.DRUID[i]
-					t.r, t.g, t.b = r, g, b
-					UF:Update_AllFrames()
-				end,
-			}
-		end
 	elseif E.myclass == 'DEATHKNIGHT' then
-		local names = {
-			[1] = L["Blood"],
-			[2] = L["Unholy"],
-			[3] = L["Frost"],
-			[4] = L["Death"],
+		E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args[E.myclass] = {
+			type = 'color',
+			name = L["Runes"],
+			order = ORDER,
 		}
-		for i = 1, 4 do
-			E.Options.args.unitframe.args.general.args.allColorsGroup.args.classResourceGroup.args['resource'..i] = {
-				type = 'color',
-				name = names[i],
-				order = ORDER + i,
-				get = function(info)
-					local t = E.db.unitframe.colors.classResources.DEATHKNIGHT[i]
-					local d = P.unitframe.colors.classResources.DEATHKNIGHT[i]
-					return t.r, t.g, t.b, t.a, d.r, d.g, d.b
-				end,
-				set = function(info, r, g, b)
-					E.db.unitframe.colors.classResources.DEATHKNIGHT[i] = {}
-					local t = E.db.unitframe.colors.classResources.DEATHKNIGHT[i]
-					t.r, t.g, t.b = r, g, b
-					UF:Update_AllFrames()
-				end,
-			}
-		end
 	end
 end
 

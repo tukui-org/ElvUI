@@ -345,7 +345,7 @@ function AB:LoadKeyBinder()
 	bind:EnableMouseWheel(true);
 	bind.texture = bind:CreateTexture();
 	bind.texture:SetAllPoints(bind);
-	bind.texture:SetTexture(0, 0, 0, .25);
+	bind.texture:SetColorTexture(0, 0, 0, .25);
 	bind:Hide();
 
 	self:HookScript(GameTooltip, "OnUpdate", "Tooltip_OnUpdate");

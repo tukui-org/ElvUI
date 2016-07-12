@@ -11,13 +11,15 @@ local function LoadSkin()
 	local objects = {
 		PlayerTalentFrame,
 		PlayerTalentFrameInset,
-		PlayerTalentFrameTalents
+		PlayerTalentFrameTalents,
+		PlayerTalentFramePVPTalents.Talents
 	}
 
 	for _, object in pairs(objects) do
 		object:StripTextures()
 	end
 
+	PlayerTalentFramePortrait:Kill()
 	PlayerTalentFrame:StripTextures()
 	PlayerTalentFrame:CreateBackdrop('Transparent')
 	PlayerTalentFrame.backdrop:SetAllPoints()
@@ -27,6 +29,9 @@ local function LoadSkin()
 	PlayerTalentFrameInset:StripTextures()
 	PlayerTalentFrameInset:CreateBackdrop('Default')
 	PlayerTalentFrameInset.backdrop:Hide()
+
+	-- PVP Talents
+	S:HandleButton(PlayerTalentFramePVPTalents.XPBar.PrestigeReward.Accept)
 
 	if E.global.general.disableTutorialButtons then
 		PlayerTalentFrameSpecializationTutorialButton:Kill()
@@ -50,14 +55,6 @@ local function LoadSkin()
 		button:Point(point, anchor, anchorPoint, x, -28)
 	end
 
-
-	PlayerTalentFrameTalentsClearInfoFrame:CreateBackdrop('Default')
-	PlayerTalentFrameTalentsClearInfoFrame.icon:SetTexCoord(unpack(E.TexCoords))
-	PlayerTalentFrameTalentsClearInfoFrame:Width(PlayerTalentFrameTalentsClearInfoFrame:GetWidth() - 2)
-	PlayerTalentFrameTalentsClearInfoFrame:Height(PlayerTalentFrameTalentsClearInfoFrame:GetHeight() - 2)
-	PlayerTalentFrameTalentsClearInfoFrame.icon:Size(PlayerTalentFrameTalentsClearInfoFrame:GetSize())
-	PlayerTalentFrameTalentsClearInfoFrame:Point('TOPLEFT', PlayerTalentFrameTalents, 'BOTTOMLEFT', 8, -8)
-
 	for i=1, 4 do
 		S:HandleTab(_G['PlayerTalentFrameTab'..i])
 
@@ -74,7 +71,7 @@ local function LoadSkin()
 		end
 	end)
 
-	PlayerTalentFrameSpecializationSpellScrollFrameScrollChild.Seperator:SetTexture(1, 1, 1)
+	PlayerTalentFrameSpecializationSpellScrollFrameScrollChild.Seperator:SetColorTexture(1, 1, 1)
 	PlayerTalentFrameSpecializationSpellScrollFrameScrollChild.Seperator:SetAlpha(0.2)
 
 	for i=1, 2 do
@@ -142,13 +139,9 @@ local function LoadSkin()
 				local bu = _G["PlayerTalentFrameTalentsTalentRow"..i.."Talent"..j]
 				if bu.knownSelection:IsShown() then
 					bu.bg.SelectedTexture:Show()
-					bu.bg.SelectedTexture:SetTexture(0, 1, 0, 0.1)
+					bu.bg.SelectedTexture:SetColorTexture(0, 1, 0, 0.1)
 				else
 					bu.bg.SelectedTexture:Hide()
-				end
-				if bu.learnSelection:IsShown() then
-					bu.bg.SelectedTexture:Show()
-					bu.bg.SelectedTexture:SetTexture(1, 1, 0, 0.1)
 				end
 			end
 		end
@@ -228,7 +221,7 @@ local function LoadSkin()
 		bu.specIcon:SetSize(50, 50)
 		bu.specIcon:Point("LEFT", bu, "LEFT", 15, 0)
 		bu.SelectedTexture = bu:CreateTexture(nil, 'ARTWORK')
-		bu.SelectedTexture:SetTexture(1, 1, 0, 0.1)
+		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 	end
 
 	local buttons = {"PlayerTalentFrameSpecializationSpecButton", "PlayerTalentFramePetSpecializationSpecButton"}
@@ -239,7 +232,7 @@ local function LoadSkin()
 			_G["PlayerTalentFrameSpecializationSpecButton"..i.."Glow"]:Kill()
 
 			local tex = bu:CreateTexture(nil, 'ARTWORK')
-			tex:SetTexture(1, 1, 1, 0.1)
+			tex:SetColorTexture(1, 1, 1, 0.1)
 			bu:SetHighlightTexture(tex)
 			bu.bg:SetAlpha(0)
 			bu.learnedTex:SetAlpha(0)
@@ -283,11 +276,10 @@ local function LoadSkin()
 			bu.specIcon:Point("LEFT", bu, "LEFT", 15, 0)
 
 			bu.SelectedTexture = bu:CreateTexture(nil, 'ARTWORK')
-			bu.SelectedTexture:SetTexture(1, 1, 0, 0.1)
+			bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 		end
 
-		PlayerTalentFramePetSpecializationSpellScrollFrameScrollChild.Seperator:SetTexture(1, 1, 1)
-		PlayerTalentFramePetSpecializationSpellScrollFrameScrollChild.Seperator:SetAlpha(0.2)
+		PlayerTalentFramePetSpecializationSpellScrollFrameScrollChild.Seperator:SetColorTexture(1, 1, 1, 0.2)
 	end
 
 	PlayerTalentFrameSpecialization:DisableDrawLayer('ARTWORK')

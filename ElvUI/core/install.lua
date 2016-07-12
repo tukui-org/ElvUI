@@ -38,7 +38,7 @@ local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: ElvUIInstallFrame, InstallStepComplete, InstallStatus, InstallNextButton, InstallPrevButton
 -- GLOBALS: InstallOption1Button, InstallOption2Button, InstallOption3Button, InstallOption4Button
--- GLOBALS: LeftChatToggleButton, RightChatToggleButton, RightChatDataPanel
+-- GLOBALS: RightChatDataPanel
 -- GLOBALS: ChatFrame1, ChatFrame2, ChatFrame3, InterfaceOptionsActionBarsPanelPickupActionKeyDropDown
 
 local CURRENT_PAGE = 0
@@ -47,7 +47,8 @@ local MAX_PAGE = 8
 local function SetupChat()
 	InstallStepComplete.message = L["Chat Set"]
 	InstallStepComplete:Show()
-	FCF_ResetChatWindows()
+	--FCF_ResetChatWindows() TEMP DISABLE.. ERROR
+	
 	FCF_SetLocked(ChatFrame1, 1)
 	FCF_DockFrame(ChatFrame2)
 	FCF_SetLocked(ChatFrame2, 1)
@@ -56,7 +57,7 @@ local function SetupChat()
 	FCF_UnDockFrame(ChatFrame3)
 	FCF_SetLocked(ChatFrame3, 1)
 	ChatFrame3:Show()
-
+	
 	for i = 1, NUM_CHAT_WINDOWS do
 		local frame = _G[format("ChatFrame%s", i)]
 		local chatFrameId = frame:GetID()
@@ -65,7 +66,7 @@ local function SetupChat()
 		-- move general bottom left
 		if i == 1 then
 			frame:ClearAllPoints()
-			frame:Point("BOTTOMLEFT", LeftChatToggleButton, "TOPLEFT", 1, 3)
+			frame:Point("BOTTOMLEFT", LeftChatDataPanel, "TOPLEFT", 1, 3)
 		elseif i == 3 then
 			frame:ClearAllPoints()
 			frame:Point("BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 1, 3)
@@ -180,18 +181,10 @@ local function SetupChat()
 
 	if E.Chat then
 		E.Chat:PositionChat(true)
-		if E.db['RightChatPanelFaded'] then
-			RightChatToggleButton:Click()
-		end
-
-		if E.db['LeftChatPanelFaded'] then
-			LeftChatToggleButton:Click()
-		end
 	end
 end
 
 local function SetupCVars()
-	SetCVar("alternateResourceText", 1)
 	SetCVar("statusTextDisplay", "BOTH")
 	SetCVar("ShowClassColorInNameplate", 1)
 	SetCVar("screenshotQuality", 10)
@@ -204,6 +197,8 @@ local function SetupCVars()
 	SetCVar('alwaysShowActionBars', 1)
 	SetCVar('lockActionBars', 1)
 	SetCVar('SpamFilter', 0)
+	SetCVar("nameplateShowSelf", 0)
+	
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetValue('SHIFT')
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:RefreshValue()
 
@@ -396,7 +391,6 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.raid.debuffs.xOffset = -4;
 			E.db.unitframe.units.raid.debuffs.yOffset = -7;
 			E.db.unitframe.units.raid.height = 45;
-			E.db.unitframe.units.raid.buffs.noConsolidated = false
 			E.db.unitframe.units.raid.buffs.xOffset = 50;
 			E.db.unitframe.units.raid.buffs.yOffset = -6;
 			E.db.unitframe.units.raid.buffs.clickThrough = true
@@ -418,7 +412,6 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.party.debuffs.xOffset = -4;
 			E.db.unitframe.units.party.debuffs.yOffset = -7;
 			E.db.unitframe.units.party.height = 45;
-			E.db.unitframe.units.party.buffs.noConsolidated = false
 			E.db.unitframe.units.party.buffs.xOffset = 50;
 			E.db.unitframe.units.party.buffs.yOffset = -6;
 			E.db.unitframe.units.party.buffs.clickThrough = true
@@ -722,7 +715,9 @@ end
 local function SetPage(PageNum)
 	CURRENT_PAGE = PageNum
 	ResetAll()
-	InstallStatus:SetValue(PageNum)
+	InstallStatus.anim.progress:SetChange(PageNum)
+	InstallStatus.anim.progress:Play()
+	InstallStatus.text:SetText(CURRENT_PAGE.." / "..MAX_PAGE)
 
 	local r, g, b = E:ColorGradient(CURRENT_PAGE / MAX_PAGE, 1, 0, 0, 1, 1, 0, 0, 1, 0)
 	ElvUIInstallFrame.Status:SetStatusBarColor(r, g, b)
@@ -941,13 +936,16 @@ function E:Install()
 		f.Status:SetMinMaxValues(0, MAX_PAGE)
 		f.Status:Point("TOPLEFT", f.Prev, "TOPRIGHT", 6, -2)
 		f.Status:Point("BOTTOMRIGHT", f.Next, "BOTTOMLEFT", -6, 2)
+		-- Setup StatusBar Animation
+		f.Status.anim = CreateAnimationGroup(f.Status)
+		f.Status.anim.progress = f.Status.anim:CreateAnimation("Progress")
+		f.Status.anim.progress:SetSmoothing("Out")
+		f.Status.anim.progress:SetDuration(.3)
+
 		f.Status.text = f.Status:CreateFontString(nil, 'OVERLAY')
 		f.Status.text:FontTemplate()
 		f.Status.text:Point("CENTER")
 		f.Status.text:SetText(CURRENT_PAGE.." / "..MAX_PAGE)
-		f.Status:SetScript("OnValueChanged", function(self)
-			self.text:SetText(self:GetValue().." / "..MAX_PAGE)
-		end)
 
 		f.Option1 = CreateFrame("Button", "InstallOption1Button", f, "UIPanelButtonTemplate")
 		f.Option1:StripTextures()

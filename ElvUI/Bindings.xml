@@ -2,16 +2,4 @@
   <Binding name="Raid Marker" runOnUp="true" category="BINDING_HEADER_ELVUI">
     RaidMark_HotkeyPressed(keystate)
   </Binding>
-   <Binding name="Farm Mode" runOnUp="false" category="BINDING_HEADER_ELVUI">
-    FarmMode()
-  </Binding> 
-   <Binding name="Toggle Chat (Left)" runOnUp="false" category="BINDING_HEADER_ELVUI">
-    HideLeftChat()
-  </Binding> 
-   <Binding name="Toggle Chat (Right)" runOnUp="false" category="BINDING_HEADER_ELVUI">
-    HideRightChat()
-  </Binding> 
-   <Binding name="Toggle Chat (Both)" runOnUp="false" category="BINDING_HEADER_ELVUI">
-    HideBothChat()
-  </Binding>   
 </Bindings>

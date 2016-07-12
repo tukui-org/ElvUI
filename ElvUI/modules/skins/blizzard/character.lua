@@ -12,7 +12,6 @@ local SquareButton_SetIcon = SquareButton_SetIcon
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.character ~= true then return end
 	S:HandleCloseButton(CharacterFrameCloseButton)
-	S:HandleScrollBar(CharacterStatsPaneScrollBar)
 	S:HandleScrollBar(ReputationListScrollFrameScrollBar)
 	S:HandleScrollBar(TokenFrameContainerScrollBar)
 	S:HandleScrollBar(GearManagerDialogPopupScrollFrameScrollBar)
@@ -70,30 +69,6 @@ local function LoadSkin()
 		"PaperDollSidebarTabs",
 		"PaperDollEquipmentManagerPane",
 	}
-
-
-	CharacterFrameExpandButton:Size(CharacterFrameExpandButton:GetWidth() - 7, CharacterFrameExpandButton:GetHeight() - 7)
-	S:HandleNextPrevButton(CharacterFrameExpandButton)
-
-	hooksecurefunc('CharacterFrame_Collapse', function()
-		CharacterFrameExpandButton:SetNormalTexture(nil);
-		CharacterFrameExpandButton:SetPushedTexture(nil);
-		CharacterFrameExpandButton:SetDisabledTexture(nil);
-		SquareButton_SetIcon(CharacterFrameExpandButton, 'RIGHT')
-	end)
-
-	hooksecurefunc('CharacterFrame_Expand', function()
-		CharacterFrameExpandButton:SetNormalTexture(nil);
-		CharacterFrameExpandButton:SetPushedTexture(nil);
-		CharacterFrameExpandButton:SetDisabledTexture(nil);
-		SquareButton_SetIcon(CharacterFrameExpandButton, 'LEFT');
-	end)
-
-	if (GetCVar("characterFrameCollapsed") ~= "0") then
-		SquareButton_SetIcon(CharacterFrameExpandButton, 'RIGHT')
-	else
-		SquareButton_SetIcon(CharacterFrameExpandButton, 'LEFT');
-	end
 
 	S:HandleCloseButton(ReputationDetailCloseButton)
 	S:HandleCloseButton(TokenFramePopupCloseButton)
@@ -221,9 +196,10 @@ local function LoadSkin()
 				end
 			end)
 
-			if not object.icon.bordertop then
+			-- Is this still needed?
+			--[[if not object.icon.bordertop then
 				E:GetModule("NamePlates"):CreateBackdrop(object, object.icon)
-			end
+			end]]
 		end
 		GearManagerDialogPopup:StripTextures()
 		GearManagerDialogPopup:SetTemplate("Transparent")
@@ -265,10 +241,10 @@ local function LoadSkin()
 		for i=1, #PAPERDOLL_SIDEBARS do
 			local tab = _G["PaperDollSidebarTab"..i]
 			if tab and not tab.backdrop then
-				tab.Highlight:SetTexture(1, 1, 1, 0.3)
+				tab.Highlight:SetColorTexture(1, 1, 1, 0.3)
 				tab.Highlight:Point("TOPLEFT", 3, -4)
 				tab.Highlight:Point("BOTTOMRIGHT", -1, 0)
-				tab.Hider:SetTexture(0.4,0.4,0.4,0.4)
+				tab.Hider:SetColorTexture(0.4,0.4,0.4,0.4)
 				tab.Hider:Point("TOPLEFT", 3, -4)
 				tab.Hider:Point("BOTTOMRIGHT", -1, 0)
 				tab.TabBg:Kill()
@@ -292,10 +268,11 @@ local function LoadSkin()
 	end
 	hooksecurefunc("PaperDollFrame_UpdateSidebarTabs", FixSidebarTabCoords)
 
+	-- Must be redone?!
 	--Stat panels, atm it looks like 7 is the max
-	for i=1, 7 do
-		_G["CharacterStatsPaneCategory"..i]:StripTextures()
-	end
+	--[[for i=1, 7 do
+		_G["CharacterStatsPaneCategory.."..i]:StripTextures()
+	end]]
 
 	--Reputation
 	local function UpdateFactionSkins()
@@ -352,18 +329,6 @@ local function LoadSkin()
 		TokenFramePopup:SetTemplate("Transparent")
 		TokenFramePopup:Point("TOPLEFT", TokenFrame, "TOPRIGHT", 4, -28)
 	end)
-
-	--Pet
-	PetModelFrame:CreateBackdrop("Default")
-	S:HandleRotateButton(PetModelFrameRotateRightButton)
-	S:HandleRotateButton(PetModelFrameRotateLeftButton)
-	PetModelFrameRotateRightButton:ClearAllPoints()
-	PetModelFrameRotateRightButton:Point("LEFT", PetModelFrameRotateLeftButton, "RIGHT", 4, 0)
-
-	local xtex = PetPaperDollPetInfo:GetRegions()
-	xtex:SetTexCoord(.12, .63, .15, .55)
-	PetPaperDollPetInfo:CreateBackdrop("Default")
-	PetPaperDollPetInfo:Size(24, 24)
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)
