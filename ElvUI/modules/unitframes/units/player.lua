@@ -64,8 +64,8 @@ function UF:Construct_PlayerFrame(frame)
 		frame.ClassIcons = self:Construct_ClassBar(frame)
 		frame.ClassBar = 'ClassIcons'
 	elseif E.myclass == 'PRIEST' then
-		frame.AltMana = self:Construct_AltManaBar(frame)
-		frame.ClassBar = 'AltMana'
+		frame.DruidMana = self:Construct_AltManaBar(frame)
+		frame.ClassBar = 'DruidMana'
 	end
 	
 	

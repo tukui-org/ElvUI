@@ -318,8 +318,7 @@ function UF:Construct_AltManaBar(frame)
 	altPower:SetFrameStrata("LOW")
 	altPower:SetFrameLevel(altPower:GetFrameLevel() + 1)
 	altPower.colorPower = true
-	altPower.PostUpdateVisibility = UF.AltManaPostUpdateVisibility
-	altPower.PostUpdatePower = UF.PostUpdateAltMana
+	altPower.PostUpdate = UF.PostUpdateAltMana
 	altPower:CreateBackdrop('Default')
 	UF['statusbars'][altPower] = true
 	altPower:SetStatusBarTexture(E["media"].blankTex)
@@ -331,10 +330,12 @@ function UF:Construct_AltManaBar(frame)
 
 	altPower.Text = altPower:CreateFontString(nil, 'OVERLAY')
 	UF:Configure_FontString(altPower.Text)
+	
+	altPower:SetScript("OnShow", ToggleResourceBar)
+	altPower:SetScript("OnHide", ToggleResourceBar)
 
 	return altPower
 end
-
 
 function UF:PostUpdateAltMana(unit, min, max)
 	local parent = self:GetParent()
@@ -373,11 +374,8 @@ function UF:PostUpdateAltMana(unit, min, max)
 		end
 	else
 		self.Text:SetText()
+		self:Hide()
 	end
-end
-
-function UF:AltManaPostUpdateVisibility()
-	ToggleResourceBar(self)
 end
 
 -----------------------------------------------------------
