@@ -150,7 +150,7 @@ function UF:Configure_ClassBar(frame)
 
 				if E.myclass == "MONK" then
 					bars[i]:SetStatusBarColor(unpack(ElvUF.colors.ClassBars[E.myclass][i]))
-				elseif E.myclass == "PALADIN" or E.myclass == "MAGE" or E.myclass == "WARLOCK" or E.myclass == "DEATHKNIGHT" then
+				elseif E.myclass == "PALADIN" or E.myclass == "MAGE" or E.myclass == "WARLOCK" then
 					bars[i]:SetStatusBarColor(unpack(ElvUF.colors.ClassBars[E.myclass]))
 				elseif E.myclass == "ROGUE" or E.myclass == "DRUID" then
 					local r1, g1, b1 = unpack(ElvUF.colors.ComboPoints[1])
@@ -159,6 +159,13 @@ function UF:Configure_ClassBar(frame)
 
 					local r, g, b = ElvUF.ColorGradient(i, frame.MAX_CLASS_BAR > 5 and 6 or 5, r1, g1, b1, r2, g2, b2, r3, g3, b3)
 					bars[i]:SetStatusBarColor(r, g, b)
+				elseif E.myclass == "DEATHKNIGHT" then
+					local r, g, b = unpack(ElvUF.colors.ClassBars.DEATHKNIGHT)
+					bars[i]:SetStatusBarColor(r, g, b)
+					if (bars[i].bg) then
+						local mu = bars[i].bg.multiplier or 1
+						bars[i].bg:SetVertexColor(r * mu, g * mu, b * mu)
+					end
 				else
 					bars[i]:SetStatusBarColor(unpack(ElvUF.colors[frame.ClassBar]))
 				end
