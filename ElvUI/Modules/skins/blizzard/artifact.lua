@@ -6,15 +6,16 @@ local function LoadSkin()
 	
 	ArtifactFrame:StripTextures()
 	ArtifactFrame:SetTemplate("Transparent")
+	ArtifactFrame:CreateBackdrop()
 	ArtifactFrame.BorderFrame:StripTextures()
 	S:HandleCloseButton(ArtifactFrame.CloseButton)
 	
 	for i = 1, 2 do
-		-- Needs Review
-		-- _G["ArtifactFrameTab" .. i]:ClearAllPoints()
-		-- _G["ArtifactFrameTab" .. i]:SetAllPoints(ArtifactFrame)
 		S:HandleTab(_G["ArtifactFrameTab" .. i])
 	end
+	
+	ArtifactFrameTab1:ClearAllPoints()
+	ArtifactFrameTab1:SetPoint("TOPLEFT", ArtifactFrame, "BOTTOMLEFT", 0, 0)
 end
 
 S:RegisterSkin("Blizzard_ArtifactUI", LoadSkin)
