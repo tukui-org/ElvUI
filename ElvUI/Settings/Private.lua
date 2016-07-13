@@ -112,6 +112,7 @@ V['skins'] = {
 		["objectiveTracker"] = true,
 		["orderhall"] = true,
 		["artifact"] = true,
+		["talkinghead"] = true,
 	},
 }
 

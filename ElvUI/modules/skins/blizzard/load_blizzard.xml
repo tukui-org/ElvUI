@@ -54,6 +54,7 @@
 	<Script file='tabard.lua'/>
 	<Script file='talent.lua'/>
 	<Script file='taxi.lua'/>
+	<Script file='talkinghead.lua'/>
 	<Script file='timemanager.lua'/>
 	<Script file='trade.lua'/>
 	<Script file='tradeskill.lua'/>
