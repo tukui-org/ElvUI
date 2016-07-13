@@ -4,9 +4,7 @@ local S = E:GetModule('Skins')
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.talkinghead ~= true then return end
 	
-	-- Needs Review, i like it
 	TalkingHeadFrame:StripTextures()
-	-- TalkingHeadFrame:SetTemplate("Transparent")
 	TalkingHeadFrame.MainFrame:StripTextures()
 	TalkingHeadFrame.PortraitFrame:StripTextures()
 	
