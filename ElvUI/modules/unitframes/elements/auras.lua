@@ -29,7 +29,7 @@ function UF:Construct_Buffs(frame)
 	buffs:SetFrameLevel(10)
 	buffs.type = 'buffs'
 	--Set initial width to prevent division by zero. This value doesn't matter, as it will be updated later
-	buffs:Width(frame:GetWidth())
+	buffs:Width(100)
 
 	return buffs
 end
@@ -44,7 +44,7 @@ function UF:Construct_Debuffs(frame)
 	debuffs.type = 'debuffs'
 	debuffs:SetFrameLevel(10)
 	--Set initial width to prevent division by zero. This value doesn't matter, as it will be updated later
-	debuffs:Width(frame:GetWidth())
+	debuffs:Width(100)
 
 	return debuffs
 end
