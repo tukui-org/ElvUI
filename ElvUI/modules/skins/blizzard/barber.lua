@@ -20,7 +20,7 @@ local function LoadSkin()
 	for i = 1, 5 do
 		local f = _G["BarberShopFrameSelector"..i]
 		local f2 = _G["BarberShopFrameSelector"..i-1]
-		-- needs review
+		-- Next-/Prev. Button will be fixed in 7.1 see: http://git.tukui.org/Elv/elvui-beta/issues/5#note_10079
 		-- S:HandleNextPrevButton(_G["BarberShopFrameSelector"..i.."Prev"])
 		-- S:HandleNextPrevButton(_G["BarberShopFrameSelector"..i.."Next"])
 

@@ -318,7 +318,7 @@ local function LoadSkin()
 	
 	WardrobeCollectionFrame.ModelsFrame:StripTextures()
 
-	-- needs review (don't have global names)
+	-- Next-/Prev. Button will be fixed in 7.1 see: http://git.tukui.org/Elv/elvui-beta/issues/5#note_10079
 	-- S:HandleNextPrevButton(WardrobeCollectionFrame.NavigationFrame.PrevPageButton)
 	-- S:HandleNextPrevButton(WardrobeCollectionFrame.NavigationFrame.NextPageButton)
 
