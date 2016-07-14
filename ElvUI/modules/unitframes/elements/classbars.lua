@@ -383,7 +383,7 @@ function UF:PostUpdateAdditionalPower(unit, min, max, event)
 		end
 	end
 
-	if min ~= max and (event ~= "ElementDisable") then
+	if ((min ~= max or not db.classbar.autoHide) and (event ~= "ElementDisable")) then
 		local color = ElvUF['colors'].power['MANA']
 		color = E:RGBToHex(color[1], color[2], color[3])
 
@@ -411,10 +411,8 @@ function UF:PostUpdateAdditionalPower(unit, min, max, event)
 			self.text:SetFormattedText(color.."%d%%|r", floor(min / max * 100))
 		end
 	else
-		if (db.classbar.autoHide or max == nil) then
-			self.text:SetText()
-			self:Hide()
-		end
+		self.text:SetText()
+		self:Hide()
 	end
 end
 
