@@ -346,7 +346,7 @@ function UF:Construct_AdditionalPowerBar(frame)
 end
 
 function UF:PostUpdateAdditionalPower(unit, min, max, event)
-	local frame = self:GetParent()
+	local frame = self.origParent or self:GetParent()
 	local powerValue = frame.Power.value
 	local powerValueText = powerValue:GetText()
 	local powerValueParent = powerValue:GetParent()
