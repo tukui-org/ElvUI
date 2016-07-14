@@ -177,6 +177,14 @@ local function LoadSkin(event)
 	S:HandleScrollBar(AchievementFrameComparisonContainerScrollBar, 5)
 	S:HandleScrollBar(AchievementFrameComparisonStatsContainerScrollBar, 5)
 
+	-- Search
+	AchievementFrame.searchResults:StripTextures()
+	AchievementFrame.searchResults:SetTemplate("Default")
+	AchievementFrame.searchPreviewContainer:StripTextures()
+	
+	S:HandleCloseButton(AchievementFrame.searchResults.closeButton)
+	S:HandleScrollBar(AchievementFrameScrollFrameScrollBar)
+
 	--Tabs
 	for i = 1, 3 do
 		S:HandleTab(_G["AchievementFrameTab"..i])
