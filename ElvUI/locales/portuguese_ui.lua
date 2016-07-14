@@ -234,7 +234,6 @@ L["Arena Frames"] = "Quadros de Arenas"
 L["Bags"] = "Bolsas"
 L["Bar "] = "Barra "
 L["BNet Frame"] = "Quadro do Bnet"
-L["BodyGuard Frame"] = true;
 L["Boss Button"] = "Botão de Chefe"
 L["Boss Frames"] = "Quadros dos Chefes"
 L["Class Bar"] = true;

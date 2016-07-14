@@ -234,7 +234,6 @@ L["Arena Frames"] = "Marcos de Arena"
 L["Bags"] = "Bolsas"
 L["Bar "] = "Barra "
 L["BNet Frame"] = "Marco BNet"
-L["BodyGuard Frame"] = true;
 L["Boss Button"] = "Botón de Jefe"
 L["Boss Frames"] = "Marco de Jefe"
 L["Class Bar"] = true;

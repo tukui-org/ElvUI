@@ -64,7 +64,6 @@ if(not ElvDB.profiles["Minimalistic"]) then
 			["BNETMover"] = "BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,50,232",
 			["ShiftAB"] = "TOPLEFT,ElvUIParent,BOTTOMLEFT,50,1150",
 			["ElvUF_PartyMover"] = "TOPLEFT,ElvUIParent,BOTTOMLEFT,184,773",
-			["ElvUF_BodyGuardMover"] = "TOPRIGHT,ElvUIParent,TOPRIGHT,-651,-586",
 			["ElvAB_6"] = "BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-488,330",
 			["TooltipMover"] = "BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-50,50",
 			["ElvUF_TankMover"] = "TOPLEFT,ElvUIParent,BOTTOMLEFT,50,995",
@@ -97,9 +96,6 @@ if(not ElvDB.profiles["Minimalistic"]) then
 			["fontSize"] = 9,
 			["units"] = {
 				["tank"] = {
-					["enable"] = false,
-				},
-				["bodyguard"] = {
 					["enable"] = false,
 				},
 				["party"] = {

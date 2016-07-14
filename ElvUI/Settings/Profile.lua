@@ -2604,12 +2604,6 @@ P['unitframe'] = {
 				['yOffset'] = 8,
 			},
 		},
-		['bodyguard'] = {
-			['enable'] = true,
-			['width'] = 120,
-			['height'] = 28,
-			["colorOverride"] = "USE_DEFAULT",
-		},
 		['tank'] = {
 			['enable'] = true,
 			['orientation'] = "LEFT",

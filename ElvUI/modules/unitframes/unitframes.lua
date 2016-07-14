@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:NewModule('UnitFrames', 'AceTimer-3.0', 'AceEvent-3.0', 'AceHook-3.0');
 local LSM = LibStub("LibSharedMedia-3.0");
---local BG = LibStub("LibBodyguard-1.0");
 UF.LSM = LSM
 
 --Cache global variables
@@ -447,7 +446,6 @@ function UF:Update_AllFrames()
 	self:UpdateColors()
 	self:Update_FontStrings()
 	self:Update_StatusBars()
-	--BG:UpdateSettings()
 
 	for unit in pairs(self['units']) do
 		if self.db['units'][unit].enable then
@@ -1137,31 +1135,6 @@ end
 
 function UF:PLAYER_ENTERING_WORLD(event)
 	self:Update_AllFrames()
-
-	--[[local showing = BG:IsShowing()
-
-	if not BG:Exists() and not BG.db.Active then
-		if showing then BG:HideFrame() end
-		return
-	end
-
-	if(not BG:IsValidZone()) then
-		BG:HideFrame()
-	elseif showing then
-		BG:UpdateSettings()
-	elseif BG:GetStatus() ~= BG.Status.Inactive and BG.db.Active then
-		BG:ShowFrame()
-	end]]
-end
-
-function UF:ZONE_CHANGED_NEW_AREA()
-	--[[local validZone = BG:IsValidZone()
-	if not validZone then
-		if not BG:IsShowing() then return end
-		BG:HideFrame()
-	elseif BG.db.Active and BG:GetStatus() ~= BG.Status.Inactive then
-		BG:ShowFrame()
-	end]]
 end
 
 function UF:UnitFrameThreatIndicator_Initialize(_, unitFrame)
@@ -1184,7 +1157,6 @@ function UF:Initialize()
 
 	self:LoadUnits()
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
-	self:RegisterEvent('ZONE_CHANGED_NEW_AREA')
 
 	--InterfaceOptionsFrameCategoriesButton9:SetScale(0.0001)
 	--[[if E.private["unitframe"]["disabledBlizzardFrames"].arena and E.private["unitframe"]["disabledBlizzardFrames"].focus and E.private["unitframe"]["disabledBlizzardFrames"].party then
@@ -1225,33 +1197,6 @@ function UF:Initialize()
 	ORD.ShowDispelableDebuff = true
 	ORD.FilterDispellableDebuff = true
 	ORD.MatchBySpellName = true
-
-	ElvCharacterDB.BodyGuard = ElvCharacterDB.BodyGuard or {}
-	ElvCharacterDB.BodyGuard.MaxHealth = ElvCharacterDB.BodyGuard.MaxHealth or 0
-	ElvCharacterDB.BodyGuard.Health = ElvCharacterDB.BodyGuard.Health or 0
-	ElvCharacterDB.BodyGuard.Active = ElvCharacterDB.BodyGuard.Active or false
-
-	--[[BG:UpdateFromBuilding()
-
-	BG:CreateFrame()
-	BG.LoginHealth = true
-	BG:RegisterCallback('guid', BG.GUIDUpdate)
-	BG:RegisterCallback('status', BG.StatusUpdate)
-	BG:RegisterCallback('name', BG.NameUpdate)
-	BG:RegisterCallback('level', BG.LevelUpdate)
-	BG:RegisterCallback('health', BG.HealthUpdate)
-	BG:RegisterCallback('gossip_opened', BG.GossipOpened)
-	BG:RegisterCallback('gossip_closed', BG.GossipClosed)
-	BG.db = ElvCharacterDB.BodyGuard
-
-	if type(BG.db.IsInValidZone) ~= "boolean" then
-		BG.db.IsInValidZone = BG:IsValidZone()
-	end
-
-	if BG.db.Active and BG.db.IsInValidZone then
-		BG:ShowFrame()
-		BG:HealthUpdate(BG.db.Health, BG.db.MaxHealth)
-	end]]
 end
 
 function UF:ResetUnitSettings(unit)

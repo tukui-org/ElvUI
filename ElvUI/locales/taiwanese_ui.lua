@@ -234,7 +234,6 @@ L["Arena Frames"] = "競技場框架" --Also used in UnitFrames
 L["Bags"] = "背包" --Also in DataTexts
 L["Bar "] = "快捷列 " --Also in ActionBars
 L["BNet Frame"] = "戰網提示資訊"
-L["BodyGuard Frame"] = true;
 L["Boss Button"] = "特殊技能鍵"
 L["Boss Frames"] = "首領框架" --Also used in UnitFrames
 L["Class Bar"] = true;
