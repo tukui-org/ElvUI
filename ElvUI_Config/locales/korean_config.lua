@@ -792,7 +792,6 @@ L["Coloring"] = "색상 설정 (공통)"
 L["Combat Fade"] = "평상시 숨기기"
 L["Combat Icon"] = true;
 L["Combo Point"] = true;
-L["Combobar"] = "연계점수 바"
 L["Configure Auras"] = "오라 설정"
 L["Copy From"] = "복사해오기"
 L["Count Font Size"] = "중첩수 글꼴 크기"

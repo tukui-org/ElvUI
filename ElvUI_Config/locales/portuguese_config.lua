@@ -744,7 +744,6 @@ L["Coloring"] = "Coloração"
 L["Combat Fade"] = "Desvanecer em Combate"
 L["Combat Icon"] = true;
 L["Combo Point"] = true;
-L["Combobar"] = "Barra de Combos"
 L["Configure Auras"] = "Configurar Auras"
 L["Copy From"] = "Copiar de"
 L["Count Font Size"] = "Tamanho da Fonte do Contador"

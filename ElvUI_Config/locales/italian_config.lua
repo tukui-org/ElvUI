@@ -733,7 +733,6 @@ L["Coloring"] = true
 L["Combat Fade"] = true;
 L["Combat Icon"] = true;
 L["Combo Point"] = true;
-L["Combobar"] = true;
 L["Configure Auras"] = true;
 L["Copy From"] = true;
 L["Count Font Size"] = true;

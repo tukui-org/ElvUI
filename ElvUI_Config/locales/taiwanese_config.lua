@@ -744,7 +744,6 @@ L["Coloring"] = "著色"
 L["Combat Fade"] = "戰鬥隱藏"
 L["Combat Icon"] = true;
 L["Combo Point"] = true;
-L["Combobar"] = "連擊點"
 L["Configure Auras"] = "設置光環"
 L["Copy From"] = "複製自"
 L["Count Font Size"] = "計數字體尺寸"

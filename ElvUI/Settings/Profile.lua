@@ -1043,14 +1043,6 @@ P['unitframe'] = {
 				["iconXOffset"] = -10,
 				["iconYOffset"] = 0,
 			},
-			['combobar'] = {
-				['enable'] = true,
-				['fill'] = 'fill',
-				['height'] = 10,
-				['detachFromFrame'] = false,
-				['detachedWidth'] = 250,
-				['autoHide'] = true,
-			},
 			['aurabar'] = {
 				['enable'] = true,
 				['anchorPoint'] = 'ABOVE',

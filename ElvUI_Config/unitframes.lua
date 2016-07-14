@@ -2878,52 +2878,6 @@ E.Options.args.unitframe.args.target = {
 				['FORCE_OFF'] = L["Force Off"],
 			},
 		},
-		combobar = {
-			order = 800,
-			type = 'group',
-			name = L["Combobar"],
-			get = function(info) return E.db.unitframe.units['target']['combobar'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.units['target']['combobar'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
-			args = {
-				enable = {
-					type = 'toggle',
-					order = 1,
-					name = L["Enable"],
-				},
-				height = {
-					type = 'range',
-					order = 2,
-					name = L["Height"],
-					min = ((E.db.unitframe.thinBorders or E.PixelMode) and 3 or 7), max = 15, step = 1,
-				},
-				fill = {
-					type = 'select',
-					order = 3,
-					name = L["Fill"],
-					values = {
-						['fill'] = L["Filled"],
-						['spaced'] = L["Spaced"],
-					},
-				},
-				autoHide = {
-					type = 'toggle',
-					name = L["Auto-Hide"],
-					order = 4,
-				},
-				detachFromFrame = {
-					type = 'toggle',
-					order = 5,
-					name = L["Detach From Frame"],
-				},
-				detachedWidth = {
-					type = 'range',
-					order = 6,
-					name = L["Detached Width"],
-					disabled = function() return not E.db.unitframe.units['target']['combobar'].detachFromFrame end,
-					min = 15, max = 450, step = 1,
-				},
-			},
-		},
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'target'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'target'),
 		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'target'),

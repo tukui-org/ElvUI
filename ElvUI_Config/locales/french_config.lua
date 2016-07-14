@@ -744,7 +744,6 @@ L["Coloring"] = "Coloration"
 L["Combat Fade"] = "Estomper hors combat"
 L["Combat Icon"] = true;
 L["Combo Point"] = true;
-L["Combobar"] = "Barre des points de combo"
 L["Configure Auras"] = "Configure les Auras"
 L["Copy From"] = "Copier depuis"
 L["Count Font Size"] = "Taille du texte du décompte" -- is  it count  when entering in the BattleGround? ;
