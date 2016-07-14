@@ -2661,7 +2661,9 @@ E.Options.args.unitframe.args.player = {
 					type = 'range',
 					order = 2,
 					name = L["Height"],
-					min = ((E.db.unitframe.thinBorders or E.PixelMode) and 3 or 7), max = 30, step = 1,
+					min = ((E.db.unitframe.thinBorders or E.PixelMode) and 3 or 7),
+					max = (E.db.unitframe.units['player']['classbar'].detachFromFrame and 300 or 30),
+					step = 1,
 				},
 				fill = {
 					type = 'select',
@@ -2672,26 +2674,47 @@ E.Options.args.unitframe.args.player = {
 						['spaced'] = L["Spaced"],
 					},
 				},
-				detachFromFrame = {
-					type = 'toggle',
-					order = 4,
-					name = L["Detach From Frame"],
-				},
-				detachedWidth = {
-					type = 'range',
-					order = 5,
-					name = L["Detached Width"],
-					disabled = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
-					min = 15, max = 800, step = 1,
-				},
 				autoHide = {
-					order = 6,
+					order = 4,
 					type = 'toggle',
 					name = L["Auto-Hide"],
 				},
+				-- spacer = {
+					-- order = 6,
+					-- type = "description",
+					-- name = "",
+					-- width = "full",
+				-- },
+				detachFromFrame = {
+					type = 'toggle',
+					order = 7,
+					name = L["Detach From Frame"],
+					set = function(info, value)
+						if value == true then
+							E.Options.args.unitframe.args.player.args.classbar.args.height.max = 300
+						else
+							E.Options.args.unitframe.args.player.args.classbar.args.height.max = 30
+						end
+						E.db.unitframe.units['player']['classbar'][ info[#info] ] = value;
+						UF:CreateAndUpdateUF('player')
+					end,
+				},
+				verticalOrientation = {
+					order = 8,
+					type = "toggle",
+					name = L["Vertical Orientation"],
+					disabled = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
+				},
+				detachedWidth = {
+					type = 'range',
+					order = 9,
+					name = L["Detached Width"],
+					disabled = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
+					min = ((E.db.unitframe.thinBorders or E.PixelMode) and 3 or 7), max = 800, step = 1,
+				},
 				parent = {
 					type = 'select',
-					order = 7,
+					order = 10,
 					name = L["Parent"],
 					desc = L["Choose UIPARENT to prevent it from hiding with the unitframe."],
 					disabled = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,

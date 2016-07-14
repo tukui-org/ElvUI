@@ -893,6 +893,7 @@ P['unitframe'] = {
 				['detachedWidth'] = 250,
 				['autoHide'] = false,
 				["parent"] = "FRAME",
+				["verticalOrientation"] = false,
 			},
 			['aurabar'] = {
 				['enable'] = true,

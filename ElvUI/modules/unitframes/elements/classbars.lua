@@ -26,7 +26,7 @@ function UF:Configure_ClassBar(frame)
 		bars.UpdateAllRuneTypes(frame)
 	end
 
-	--Fix height in case it is lower than the theme allows
+	--Fix height in case it is lower than the theme allows, or in case it's higher than 30px when not detached
 	if (not self.thinBorders and not E.PixelMode) and frame.CLASSBAR_HEIGHT > 0 and frame.CLASSBAR_HEIGHT < 7 then --A height of 7 means 6px for borders and just 1px for the actual power statusbar
 		frame.CLASSBAR_HEIGHT = 7
 		if db.classbar then db.classbar.height = 7 end
@@ -34,6 +34,10 @@ function UF:Configure_ClassBar(frame)
 	elseif (self.thinBorders or E.PixelMode) and frame.CLASSBAR_HEIGHT > 0 and frame.CLASSBAR_HEIGHT < 3 then --A height of 3 means 2px for borders and just 1px for the actual power statusbar
 		frame.CLASSBAR_HEIGHT = 3
 		if db.classbar then db.classbar.height = 3 end
+		UF.ToggleResourceBar(bars)  --Trigger update to health if needed
+	elseif (not frame.CLASSBAR_DETACHED and frame.CLASSBAR_HEIGHT > 30) then
+		frame.CLASSBAR_HEIGHT = 10
+		if db.classbar then db.classbar.height = 10 end
 		UF.ToggleResourceBar(bars)  --Trigger update to health if needed
 	end
 
@@ -169,6 +173,13 @@ function UF:Configure_ClassBar(frame)
 				else
 					bars[i]:SetStatusBarColor(unpack(ElvUF.colors[frame.ClassBar]))
 				end
+
+				if frame.CLASSBAR_DETACHED and db.classbar.verticalOrientation then
+					bars[i]:SetOrientation("VERTICAL")
+				else
+					bars[i]:SetOrientation("HORIZONTAL")
+				end
+
 				bars[i]:Show()
 			end
 		end
@@ -177,6 +188,14 @@ function UF:Configure_ClassBar(frame)
 			bars.backdrop:Show()
 		else
 			bars.backdrop:Hide()
+		end
+
+		if (frame.ClassBar == "AdditionalPower" or frame.ClassBar == "Stagger") then
+			if frame.CLASSBAR_DETACHED and db.classbar.verticalOrientation then
+				bars:SetOrientation("VERTICAL")
+			else
+				bars:SetOrientation("HORIZONTAL")
+			end
 		end
 	end
 
@@ -338,7 +357,7 @@ function UF:Construct_AdditionalPowerBar(frame)
 
 	additionalPower.text = additionalPower:CreateFontString(nil, 'OVERLAY')
 	UF:Configure_FontString(additionalPower.text)
-	
+
 	additionalPower:SetScript("OnShow", ToggleResourceBar)
 	additionalPower:SetScript("OnHide", ToggleResourceBar)
 
