@@ -392,8 +392,10 @@ function UF:PostUpdateAdditionalPower(unit, min, max, event)
 			self.text:SetFormattedText(color.."%d%%|r", floor(min / max * 100))
 		end
 	else
-		self.text:SetText()
-		self:Hide()
+		if (db.classbar.autoHide or max == nil) then
+			self.text:SetText()
+			self:Hide()
+		end
 	end
 end
 
