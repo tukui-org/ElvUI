@@ -339,6 +339,14 @@ local function LoadSkin()
 		end
 	end
 	hooksecurefunc("EncounterJournal_ToggleHeaders", SkinAbilitiesInfo)
+	
+	-- Search
+	EncounterJournalSearchResults:StripTextures()
+	EncounterJournalSearchResults:SetTemplate("Default")
+	EncounterJournalSearchBox.searchPreviewContainer:StripTextures()
+	
+	S:HandleCloseButton(EncounterJournalSearchResultsCloseButton)
+	S:HandleScrollBar(EncounterJournalSearchResultsScrollFrameScrollBar)
 end
 
 S:RegisterSkin('Blizzard_EncounterJournal', LoadSkin)
