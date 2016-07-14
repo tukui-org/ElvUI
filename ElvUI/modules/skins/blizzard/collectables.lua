@@ -312,6 +312,9 @@ local function LoadSkin()
 	
 	-- Appearances Tab
 	WardrobeCollectionFrame.progressBar:StripTextures()
+	WardrobeCollectionFrame.progressBar:CreateBackdrop("Default")
+	WardrobeCollectionFrame.progressBar:SetStatusBarTexture(E.media.normTex)
+	E:RegisterStatusBar(WardrobeCollectionFrame.progressBar)
 	S:HandleEditBox(WardrobeCollectionFrameSearchBox)
 	S:HandleButton(WardrobeCollectionFrame.FilterButton)
 	S:HandleDropDownBox(WardrobeCollectionFrameWeaponDropDown)
@@ -341,25 +344,22 @@ local function LoadSkin()
 	
 	for i = 1, #WardrobeTransmogFrame.Model.SlotButtons do
 		WardrobeTransmogFrame.Model.SlotButtons[i]:StripTextures()
+		WardrobeTransmogFrame.Model.SlotButtons[i]:SetFrameLevel(WardrobeTransmogFrame.Model.SlotButtons[i]:GetFrameLevel() + 2)
+		WardrobeTransmogFrame.Model.SlotButtons[i]:CreateBackdrop("Default")
+		WardrobeTransmogFrame.Model.SlotButtons[i].backdrop:SetAllPoints()
+		WardrobeTransmogFrame.Model.SlotButtons[i].Border:Kill()
 		WardrobeTransmogFrame.Model.SlotButtons[i].Icon:SetTexCoord(unpack(E.TexCoords))
 	end
 	
-	local function OnEnter_Button(self)
-		S:HandleButton(self)
-	end
-	
-	S:HandleButton(WardrobeTransmogFrame.SpecButton)
-	WardrobeTransmogFrame.SpecButton:SetScript("OnEnter", OnEnter_Button)
-	WardrobeTransmogFrame.SpecButton:SetScript("OnLeave", OnEnter_Button)
 	WardrobeTransmogFrame.SpecButton:ClearAllPoints()
 	WardrobeTransmogFrame.SpecButton:SetPoint("RIGHT", WardrobeTransmogFrame.ApplyButton, "LEFT", -2, 0)
+	S:HandleButton(WardrobeTransmogFrame.SpecButton)
 	S:HandleButton(WardrobeTransmogFrame.ApplyButton)
 	S:HandleButton(WardrobeTransmogFrame.Model.ClearAllPendingButton)
 	
 	-- Outfit Edit Frame
 	WardrobeOutfitEditFrame:StripTextures()
 	WardrobeOutfitEditFrame:CreateBackdrop("Transparent")
-	-- Needs Review
 	WardrobeOutfitEditFrame.EditBox:StripTextures()
 	S:HandleEditBox(WardrobeOutfitEditFrame.EditBox)
 	S:HandleButton(WardrobeOutfitEditFrame.AcceptButton)
