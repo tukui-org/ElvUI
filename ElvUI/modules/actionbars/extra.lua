@@ -26,12 +26,21 @@ function AB:Extra_SetAlpha()
 			button:SetAlpha(alpha)
 		end
 	end
+
+	local button = ZoneAbilityFrame.SpellButton
+	if button then
+		button:SetAlpha(alpha)
+	end
 end
 
 function AB:Extra_SetScale()
 	local scale = E.db.actionbar.extraActionButton.scale
 	if ExtraActionBarFrame then
 		ExtraActionBarFrame:SetScale(scale)
+	end
+
+	if ZoneAbilityFrame then
+		ZoneAbilityFrame:SetScale(scale)
 	end
 end
 
@@ -44,6 +53,11 @@ function AB:SetupExtraButton()
 	ExtraActionBarFrame:ClearAllPoints()
 	ExtraActionBarFrame:Point('CENTER', holder, 'CENTER')
 	ExtraActionBarFrame.ignoreFramePositionManager  = true
+
+	ZoneAbilityFrame:SetParent(holder)
+	ZoneAbilityFrame:ClearAllPoints()
+	ZoneAbilityFrame:Point('CENTER', holder, 'CENTER')
+	ZoneAbilityFrame.ignoreFramePositionManager = true
 
 	for i=1, ExtraActionBarFrame:GetNumChildren() do
 		local button = _G["ExtraActionButton"..i]
@@ -64,6 +78,20 @@ function AB:SetupExtraButton()
 				E:RegisterCooldown(button.cooldown)
 				button.cooldown:HookScript("OnShow", FixExtraActionCD)
 			end
+		end
+	end
+
+	local button = ZoneAbilityFrame.SpellButton
+		if button then
+		button:SetNormalTexture('')
+		button:StyleButton(nil, nil, nil, true)
+		button:SetTemplate()
+		button.Icon:SetDrawLayer('ARTWORK')
+		button.Icon:SetTexCoord(unpack(E.TexCoords))
+		button.Icon:SetInside()
+
+		if(button.Cooldown and E.private.cooldown.enable) then
+			E:RegisterCooldown(button.Cooldown)
 		end
 	end
 
