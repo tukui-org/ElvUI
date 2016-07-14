@@ -1582,6 +1582,9 @@ function B:Initialize()
 	BankFrame:SetAlpha(0)
 	BankFrame:Point("TOPLEFT")
 	BankFrame:SetScript("OnShow", nil)
+
+	--Disable "Loot to left most bag", as the interface option has been removed
+	SetInsertItemsLeftToRight(false)
 end
 
 function B:UpdateContainerFrameAnchors()
