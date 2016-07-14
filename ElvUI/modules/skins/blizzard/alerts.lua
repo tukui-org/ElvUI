@@ -18,7 +18,8 @@ local function LoadSkin()
 		end
 	end
 
-	hooksecurefunc("AlertFrame_SetAchievementAnchors", function(anchorFrame)
+	-- Needs Review
+	--[[hooksecurefunc("AlertFrame_SetAchievementAnchors", function(anchorFrame)
 		for i = 1, MAX_ACHIEVEMENT_ALERTS do
 			local frame = _G["AchievementAlertFrame"..i]
 
@@ -58,9 +59,9 @@ local function LoadSkin()
 				end
 			end
 		end
-	end)
+	end)]]
 
-	hooksecurefunc("AlertFrame_SetDungeonCompletionAnchors", function(anchorFrame)
+	--[[hooksecurefunc("AlertFrame_SetDungeonCompletionAnchors", function(anchorFrame)
 		for i = 1, DUNGEON_COMPLETION_MAX_REWARDS do
 			local frame = _G["DungeonCompletionAlertFrame"..i]
 			if frame then
@@ -97,9 +98,9 @@ local function LoadSkin()
 				end
 			end
 		end
-	end)
+	end)]]
 
-	hooksecurefunc("AlertFrame_SetGuildChallengeAnchors", function(anchorFrame)
+	--[[hooksecurefunc("AlertFrame_SetGuildChallengeAnchors", function(anchorFrame)
 		local frame = GuildChallengeAlertFrame
 
 		if frame then
@@ -135,9 +136,9 @@ local function LoadSkin()
 
 			SetLargeGuildTabardTextures("player", GuildChallengeAlertFrameEmblemIcon, nil, nil)
 		end
-	end)
+	end)]]
 
-	hooksecurefunc("AlertFrame_SetChallengeModeAnchors", function(anchorFrame)
+	--[[hooksecurefunc("AlertFrame_SetChallengeModeAnchors", function(anchorFrame)
 		local frame = ChallengeModeAlertFrame1
 
 		if frame then
@@ -178,9 +179,9 @@ local function LoadSkin()
 				ChallengeModeAlertFrame1DungeonTexture:SetParent(ChallengeModeAlertFrame1DungeonTexture.b)
 			end
 		end
-	end)
+	end)]]
 
-	hooksecurefunc("AlertFrame_SetScenarioAnchors", function(anchorFrame)
+	--[[hooksecurefunc("AlertFrame_SetScenarioAnchors", function(anchorFrame)
 		local frame = ScenarioAlertFrame1
 
 		if frame then
@@ -221,9 +222,9 @@ local function LoadSkin()
 				ScenarioAlertFrame1DungeonTexture:SetParent(ScenarioAlertFrame1DungeonTexture.b)
 			end
 		end
-	end)
+	end)]]
 
-	hooksecurefunc('AlertFrame_SetCriteriaAnchors', function()
+	--[[hooksecurefunc('AlertFrame_SetCriteriaAnchors', function()
 		for i = 1, MAX_ACHIEVEMENT_ALERTS do
 			local frame = _G['CriteriaAlertFrame'..i]
 			if frame then
@@ -255,7 +256,7 @@ local function LoadSkin()
 				_G['CriteriaAlertFrame'..i..'IconTexture']:SetTexCoord(unpack(E.TexCoords))
 			end
 		end
-	end)
+	end)]]
 
 	hooksecurefunc('LootWonAlertFrame_SetUp', function(frame)
 		frame:SetAlpha(1)
@@ -439,14 +440,15 @@ local function LoadSkin()
 		cover:SetAllPoints(squareBG)
 	end
 
-	hooksecurefunc("GarrisonFollowerAlertFrame_ShowAlert", function(_, _, _, _, quality)
+	-- Needs Review
+	--[[hooksecurefunc("GarrisonFollowerAlertFrame_ShowAlert", function(_, _, _, _, quality)
 		local color = BAG_ITEM_QUALITY_COLORS[quality]
 		if color then
 			GarrisonFollowerAlertFrame.PortraitFrame.squareBG:SetBackdropBorderColor(color.r, color.g, color.b)
 		else
 			GarrisonFollowerAlertFrame.PortraitFrame.squareBG:SetBackdropBorderColor(0, 0, 0)
 		end
-	end)
+	end)]]
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)
