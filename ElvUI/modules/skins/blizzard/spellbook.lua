@@ -9,6 +9,7 @@ local select, unpack = select, unpack
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.spellbook ~= true then return end
 	S:HandleCloseButton(SpellBookFrameCloseButton)
+	SpellBookFrame:SetTemplate("Transparent")
 
 	local StripAllTextures = {
 		"SpellBookFrame",
@@ -90,10 +91,11 @@ local function LoadSkin()
 
 	-- needs review
 	local function SkinTab(tab)
-		tab:StripTextures()
-		-- tab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
-		-- tab:GetNormalTexture():SetInside()
+		if tab.isSkinned then return; end
 
+		tab:StripTextures()
+		tab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
+		tab:GetNormalTexture():SetInside()
 		tab.pushed = true;
 		tab:CreateBackdrop("Default")
 		tab.backdrop:SetAllPoints()
@@ -112,27 +114,18 @@ local function LoadSkin()
 
 		local point, relatedTo, point2, x, y = tab:GetPoint()
 		tab:Point(point, relatedTo, point2, 1, y)
-	end
 
-	-- Skill Line Tabs
-	for i=1, MAX_SKILLLINE_TABS do
-		local tab = _G["SpellBookSkillLineTab"..i]
-		_G["SpellBookSkillLineTab"..i.."Flash"]:Kill()
-		SkinTab(tab)
+		tab.isSkinned = true
 	end
 
 	local function SkinSkillLine()
 		for i=1, MAX_SKILLLINE_TABS do
 			local tab = _G["SpellBookSkillLineTab"..i]
-			local _, _, _, _, isGuild = GetSpellTabInfo(i)
-			if isGuild then
-				tab:GetNormalTexture():SetInside()
-				tab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
-			end
+			SkinTab(tab)
 		end
 	end
 	hooksecurefunc("SpellBookFrame_UpdateSkillLineTabs", SkinSkillLine)
-	SpellBookFrame:SetTemplate("Transparent")
+	SpellBookFrame_UpdateSkillLineTabs() --This update fixes issue with tab textures being empty on first show
 
 	--Profession Tab
 	local professionbuttons = {
