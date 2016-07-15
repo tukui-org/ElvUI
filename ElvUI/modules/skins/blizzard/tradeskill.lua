@@ -116,7 +116,7 @@ local function LoadSkin()
 	TradeSkillFrame.RecipeList.scrollBar = CreateFrame("Slider", nil, TradeSkillFrame.RecipeList, "HybridScrollBarTemplateFixed")
 	S:HandleScrollBar(TradeSkillFrame.RecipeList.scrollBar)
 	TradeSkillFrame.RecipeList.scrollBar:SetFrameLevel(TradeSkillFrame.RecipeList.scrollBar.trackbg:GetFrameLevel()) --Fix issue with background intercepting clicks
-	C_Timer.After(0.1, function()
+	C_Timer.After(0.25, function()
 		--Scroll back to top
 		TradeSkillFrame.RecipeList.scrollBar:SetValue(1)
 		TradeSkillFrame.RecipeList.scrollBar:SetValue(0)
