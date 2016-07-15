@@ -3,6 +3,8 @@ local oUF = ns.oUF or oUF
 assert(oUF, 'oUF not loaded')
 
 local trinketSpells = {
+	[208683] = 120,
+	[195710] = 180,
 	[59752] = 120,
 	[42292] = 120,
 	[7744] = 45,
