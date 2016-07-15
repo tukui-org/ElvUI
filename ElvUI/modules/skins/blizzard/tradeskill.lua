@@ -48,52 +48,45 @@ local function LoadSkin()
 	S:HandleButton(TradeSkillFrame.DetailsFrame.CreateButton, true)
 	S:HandleButton(TradeSkillFrame.DetailsFrame.ExitButton, true)
 
-	-- Button / ScrollBar will be fixed in 7.1 see: http://git.tukui.org/Elv/elvui-beta/issues/5#note_10079
-	--[[S:HandleScrollBar(TradeSkillFrame.RecipeList.scrollBar)
-	S:HandleScrollBar(TradeSkillFrame.DetailsFrame.ScrollBar)
-	S:HandleNextPrevButton(TradeSkillFrame.DetailsFrame.CreateMultipleInputBox.DecrementButton)
+	--[[These cannot be skinned due to issues on Blizzards end.
+	S:HandleScrollBar(TradeSkillFrame.RecipeList.scrollBar)
+	S:HandleScrollBar(TradeSkillFrame.DetailsFrame.ScrollBar)]]
+
+	S:HandleNextPrevButton(TradeSkillFrame.DetailsFrame.CreateMultipleInputBox.DecrementButton, nil, true)
 	S:HandleNextPrevButton(TradeSkillFrame.DetailsFrame.CreateMultipleInputBox.IncrementButton)
-	TradeSkillFrame.DetailsFrame.CreateMultipleInputBox.IncrementButton:Point("LEFT", TradeSkillFrame.DetailsFrame.CreateMultipleInputBox, "RIGHT", 4, 0)]]
+	TradeSkillFrame.DetailsFrame.CreateMultipleInputBox.IncrementButton:Point("LEFT", TradeSkillFrame.DetailsFrame.CreateMultipleInputBox, "RIGHT", 4, 0)
 
-	-- Needs Review
-	--[[local once = false
-	hooksecurefunc("TradeSkillFrame_SetSelection", function(id)
-		TradeSkillSkillIcon:StyleButton()
-		if TradeSkillSkillIcon:GetNormalTexture() then
-			TradeSkillSkillIcon:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
-			TradeSkillSkillIcon:GetNormalTexture():SetInside()
+	hooksecurefunc(TradeSkillFrame.DetailsFrame, "RefreshDisplay", function()
+		local ResultIcon = TradeSkillFrame.DetailsFrame.Contents.ResultIcon
+		ResultIcon:StyleButton()
+		if ResultIcon:GetNormalTexture() then
+			ResultIcon:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
+			ResultIcon:GetNormalTexture():SetInside()
 		end
-		TradeSkillSkillIcon:SetTemplate("Default")
+		ResultIcon:SetTemplate("Default")
+		ResultIcon.Background:SetTexture(nil)
 
-		for i=1, MAX_TRADE_SKILL_REAGENTS do
-			local button = _G["TradeSkillReagent"..i]
-			local icon = _G["TradeSkillReagent"..i.."IconTexture"]
-			local count = _G["TradeSkillReagent"..i.."Count"]
-
-			icon:SetTexCoord(unpack(E.TexCoords))
-			icon:SetDrawLayer("OVERLAY")
-			if not icon.backdrop then
-				icon.backdrop = CreateFrame("Frame", nil, button)
-				icon.backdrop:SetFrameLevel(button:GetFrameLevel() - 1)
-				icon.backdrop:SetTemplate("Default")
-				icon.backdrop:SetOutside(icon)
+		for i = 1, #TradeSkillFrame.DetailsFrame.Contents.Reagents do
+			local Button = TradeSkillFrame.DetailsFrame.Contents.Reagents[i]
+			local Icon = Button.Icon
+			local Count = Button.Count
+			
+			Icon:SetTexCoord(unpack(E.TexCoords))
+			Icon:SetDrawLayer("OVERLAY")
+			if not Icon.backdrop then
+				Icon.backdrop = CreateFrame("Frame", nil, Button)
+				Icon.backdrop:SetFrameLevel(Button:GetFrameLevel() - 1)
+				Icon.backdrop:SetTemplate("Default")
+				Icon.backdrop:SetOutside(Icon)
 			end
-
-			icon:SetParent(icon.backdrop)
-			count:SetParent(icon.backdrop)
-			count:SetDrawLayer("OVERLAY")
-
-			if i > 2 and once == false then
-				local point, anchoredto, point2, x, y = button:GetPoint()
-				button:ClearAllPoints()
-				button:Point(point, anchoredto, point2, x, y - 3)
-				once = true
-			end
-
-			_G["TradeSkillReagent"..i.."NameFrame"]:Kill()
+			
+			Icon:SetParent(Icon.backdrop)
+			Count:SetParent(Icon.backdrop)
+			Count:SetDrawLayer("OVERLAY")
+			
+			Button.NameFrame:Kill()
 		end
-	end)]]
-
+	end)
 
 	--Guild Crafters
 	-- TradeSkillGuildFrame:StripTextures()
