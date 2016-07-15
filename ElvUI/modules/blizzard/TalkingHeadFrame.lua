@@ -43,7 +43,7 @@ function B:PositionTalkingHead()
 
 		--Set default position
 		TalkingHeadFrame:ClearAllPoints()
-		TalkingHeadFrame:SetPoint("BOTTOM", 0, 160)
+		TalkingHeadFrame:SetPoint("BOTTOM", 0, 265)
 
 		E:CreateMover(TalkingHeadFrame, "TalkingHeadFrameMover", "Talking Head Frame")
 	end
