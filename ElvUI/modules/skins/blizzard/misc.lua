@@ -359,11 +359,19 @@ local function LoadSkin()
 		S:HandleButton(_G[chatbuttons[i]], true)
 	end
 
-	ChatConfigFrameOkayButton:Point("RIGHT", ChatConfigFrameCancelButton, "RIGHT", -11, -1)
+	ChatConfigFrameDefaultButton:ClearAllPoints()
+	ChatConfigFrameDefaultButton:Point("TOPLEFT",ChatConfigCategoryFrame,"BOTTOMLEFT",1,-5)
+	ChatConfigFrameRedockButton:ClearAllPoints()
 	ChatConfigFrameRedockButton:Point("LEFT", ChatConfigFrameDefaultButton, "RIGHT", 1, 0)
-	ChatConfigFrameRedockButton:Height(18) -- Needs Review
+	CombatLogDefaultButton:ClearAllPoints()
+	CombatLogDefaultButton:Point("TOPLEFT",ChatConfigCategoryFrame,"BOTTOMLEFT",1,-5)
+	ChatConfigFrameOkayButton:ClearAllPoints()
+	ChatConfigFrameOkayButton:Point("RIGHT", ChatConfigFrameCancelButton, "RIGHT", -11, -1)
+	ChatConfigCombatSettingsFiltersDeleteButton:ClearAllPoints()
 	ChatConfigCombatSettingsFiltersDeleteButton:Point("TOPRIGHT", ChatConfigCombatSettingsFilters, "BOTTOMRIGHT", 0, -1)
+	ChatConfigCombatSettingsFiltersAddFilterButton:ClearAllPoints()
 	ChatConfigCombatSettingsFiltersAddFilterButton:Point("RIGHT", ChatConfigCombatSettingsFiltersDeleteButton, "LEFT", -1, 0)
+	ChatConfigCombatSettingsFiltersCopyFilterButton:ClearAllPoints()
 	ChatConfigCombatSettingsFiltersCopyFilterButton:Point("RIGHT", ChatConfigCombatSettingsFiltersAddFilterButton, "LEFT", -1, 0)
 
 	for i=1, 5 do
@@ -525,6 +533,7 @@ local function LoadSkin()
 			S:HandleCheckBox(_G["CombatConfigMessageTypesMiscCheckBox"..i])
 		end
 	end)
+
 -- >> Combat >> Tabs
 	for i = 1,#COMBAT_CONFIG_TABS do
 		local cctab = _G["CombatConfigTab"..i]
@@ -537,31 +546,6 @@ local function LoadSkin()
 	end
 	CombatConfigTab1:ClearAllPoints()
 	CombatConfigTab1:Point("BOTTOMLEFT",ChatConfigBackgroundFrame,"TOPLEFT",6,-2)
-
-   local ccbuttons = {
-		"ChatConfigFrameOkayButton",
-		"ChatConfigFrameDefaultButton",
-		"CombatLogDefaultButton",
-		"ChatConfigCombatSettingsFiltersDeleteButton",
-		"ChatConfigCombatSettingsFiltersAddFilterButton",
-		"ChatConfigCombatSettingsFiltersCopyFilterButton",
-		"CombatConfigSettingsSaveButton",
-	}
-
-   for i = 1, getn(ccbuttons) do
-		local ccbtn = _G[ccbuttons[i]]
-		if ccbtn then
-			S:HandleButton(ccbtn)
-
-		end
-	end
-
-	ChatConfigFrameOkayButton:Point("TOPRIGHT",ChatConfigBackgroundFrame,"BOTTOMRIGHT",-3,-5)
-	ChatConfigFrameDefaultButton:Point("TOPLEFT",ChatConfigCategoryFrame,"BOTTOMLEFT",1,-5)
-	CombatLogDefaultButton:Point("TOPLEFT",ChatConfigCategoryFrame,"BOTTOMLEFT",1,-5)
-	ChatConfigCombatSettingsFiltersDeleteButton:Point("TOPRIGHT",ChatConfigCombatSettingsFilters,"BOTTOMRIGHT",-3,-1)
-	ChatConfigCombatSettingsFiltersCopyFilterButton:Point("RIGHT",ChatConfigCombatSettingsFiltersDeleteButton,"LEFT",-2,0)
-	ChatConfigCombatSettingsFiltersAddFilterButton:Point("RIGHT",ChatConfigCombatSettingsFiltersCopyFilterButton,"LEFT",-2,0)
 
    local cccheckbox = {
 		"CombatConfigColorsHighlightingLine",
@@ -586,13 +570,13 @@ local function LoadSkin()
 		"CombatConfigSettingsParty",
 		"CombatConfigSettingsRaid",
 	}
-	for i = 1, getn(cccheckbox) do
+	for i = 1, #cccheckbox do
 		local ccbtn = _G[cccheckbox[i]]
 		S:HandleCheckBox(ccbtn)
 	end
 
-	S:HandleNextPrevButton(ChatConfigMoveFilterUpButton,true)
-	S:HandleNextPrevButton(ChatConfigMoveFilterDownButton,true)
+	S:HandleNextPrevButton(ChatConfigMoveFilterUpButton, true)
+	S:HandleNextPrevButton(ChatConfigMoveFilterDownButton, true)
 	ChatConfigMoveFilterUpButton:ClearAllPoints()
 	ChatConfigMoveFilterDownButton:ClearAllPoints()
 	ChatConfigMoveFilterUpButton:Point("TOPLEFT",ChatConfigCombatSettingsFilters,"BOTTOMLEFT",3,0)
