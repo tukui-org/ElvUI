@@ -40,54 +40,99 @@ function S:HandleButton(f, strip)
 end
 
 function S:HandleScrollBar(frame, thumbTrim)
-	if _G[frame:GetName().."BG"] then _G[frame:GetName().."BG"]:SetTexture(nil) end
-	if _G[frame:GetName().."Track"] then _G[frame:GetName().."Track"]:SetTexture(nil) end
+	if frame:GetName() then
+		if _G[frame:GetName().."BG"] then _G[frame:GetName().."BG"]:SetTexture(nil) end
+		if _G[frame:GetName().."Track"] then _G[frame:GetName().."Track"]:SetTexture(nil) end
 
-	if _G[frame:GetName().."Top"] then
-		_G[frame:GetName().."Top"]:SetTexture(nil)
-	end
-
-	if _G[frame:GetName().."Bottom"] then
-		_G[frame:GetName().."Bottom"]:SetTexture(nil)
-	end
-
-	if _G[frame:GetName().."Middle"] then
-		_G[frame:GetName().."Middle"]:SetTexture(nil)
-	end
-
-	if _G[frame:GetName().."ScrollUpButton"] and _G[frame:GetName().."ScrollDownButton"] then
-		_G[frame:GetName().."ScrollUpButton"]:StripTextures()
-		if not _G[frame:GetName().."ScrollUpButton"].icon then
-			S:HandleNextPrevButton(_G[frame:GetName().."ScrollUpButton"])
-			SquareButton_SetIcon(_G[frame:GetName().."ScrollUpButton"], 'UP')
-			_G[frame:GetName().."ScrollUpButton"]:Size(_G[frame:GetName().."ScrollUpButton"]:GetWidth() + 7, _G[frame:GetName().."ScrollUpButton"]:GetHeight() + 7)
+		if _G[frame:GetName().."Top"] then
+			_G[frame:GetName().."Top"]:SetTexture(nil)
 		end
 
-		_G[frame:GetName().."ScrollDownButton"]:StripTextures()
-		if not _G[frame:GetName().."ScrollDownButton"].icon then
-			S:HandleNextPrevButton(_G[frame:GetName().."ScrollDownButton"])
-			SquareButton_SetIcon(_G[frame:GetName().."ScrollDownButton"], 'DOWN')
-			_G[frame:GetName().."ScrollDownButton"]:Size(_G[frame:GetName().."ScrollDownButton"]:GetWidth() + 7, _G[frame:GetName().."ScrollDownButton"]:GetHeight() + 7)
+		if _G[frame:GetName().."Bottom"] then
+			_G[frame:GetName().."Bottom"]:SetTexture(nil)
 		end
 
-		if not frame.trackbg then
-			frame.trackbg = CreateFrame("Frame", nil, frame)
-			frame.trackbg:Point("TOPLEFT", _G[frame:GetName().."ScrollUpButton"], "BOTTOMLEFT", 0, -1)
-			frame.trackbg:Point("BOTTOMRIGHT", _G[frame:GetName().."ScrollDownButton"], "TOPRIGHT", 0, 1)
-			frame.trackbg:SetTemplate("Transparent")
+		if _G[frame:GetName().."Middle"] then
+			_G[frame:GetName().."Middle"]:SetTexture(nil)
 		end
 
-		if frame:GetThumbTexture() then
-			if not thumbTrim then thumbTrim = 3 end
-			frame:GetThumbTexture():SetTexture(nil)
-			if not frame.thumbbg then
-				frame.thumbbg = CreateFrame("Frame", nil, frame)
-				frame.thumbbg:Point("TOPLEFT", frame:GetThumbTexture(), "TOPLEFT", 2, -thumbTrim)
-				frame.thumbbg:Point("BOTTOMRIGHT", frame:GetThumbTexture(), "BOTTOMRIGHT", -2, thumbTrim)
-				frame.thumbbg:SetTemplate("Default", true, true)
-				frame.thumbbg.backdropTexture:SetVertexColor(0.6, 0.6, 0.6)
-				if frame.trackbg then
-					frame.thumbbg:SetFrameLevel(frame.trackbg:GetFrameLevel())
+		if _G[frame:GetName().."ScrollUpButton"] and _G[frame:GetName().."ScrollDownButton"] then
+			_G[frame:GetName().."ScrollUpButton"]:StripTextures()
+			if not _G[frame:GetName().."ScrollUpButton"].icon then
+				S:HandleNextPrevButton(_G[frame:GetName().."ScrollUpButton"])
+				SquareButton_SetIcon(_G[frame:GetName().."ScrollUpButton"], 'UP')
+				_G[frame:GetName().."ScrollUpButton"]:Size(_G[frame:GetName().."ScrollUpButton"]:GetWidth() + 7, _G[frame:GetName().."ScrollUpButton"]:GetHeight() + 7)
+			end
+
+			_G[frame:GetName().."ScrollDownButton"]:StripTextures()
+			if not _G[frame:GetName().."ScrollDownButton"].icon then
+				S:HandleNextPrevButton(_G[frame:GetName().."ScrollDownButton"])
+				SquareButton_SetIcon(_G[frame:GetName().."ScrollDownButton"], 'DOWN')
+				_G[frame:GetName().."ScrollDownButton"]:Size(_G[frame:GetName().."ScrollDownButton"]:GetWidth() + 7, _G[frame:GetName().."ScrollDownButton"]:GetHeight() + 7)
+			end
+
+			if not frame.trackbg then
+				frame.trackbg = CreateFrame("Frame", nil, frame)
+				frame.trackbg:Point("TOPLEFT", _G[frame:GetName().."ScrollUpButton"], "BOTTOMLEFT", 0, -1)
+				frame.trackbg:Point("BOTTOMRIGHT", _G[frame:GetName().."ScrollDownButton"], "TOPRIGHT", 0, 1)
+				frame.trackbg:SetTemplate("Transparent")
+			end
+
+			if frame:GetThumbTexture() then
+				if not thumbTrim then thumbTrim = 3 end
+				frame:GetThumbTexture():SetTexture(nil)
+				if not frame.thumbbg then
+					frame.thumbbg = CreateFrame("Frame", nil, frame)
+					frame.thumbbg:Point("TOPLEFT", frame:GetThumbTexture(), "TOPLEFT", 2, -thumbTrim)
+					frame.thumbbg:Point("BOTTOMRIGHT", frame:GetThumbTexture(), "BOTTOMRIGHT", -2, thumbTrim)
+					frame.thumbbg:SetTemplate("Default", true, true)
+					frame.thumbbg.backdropTexture:SetVertexColor(0.6, 0.6, 0.6)
+					if frame.trackbg then
+						frame.thumbbg:SetFrameLevel(frame.trackbg:GetFrameLevel())
+					end
+				end
+			end
+		end
+	else
+		if frame.Background then frame.Background:SetTexture(nil) end
+		if frame.trackBG then frame.trackBG:SetTexture(nil) end
+		if frame.Middle then frame.Middle:SetTexture(nil) end
+		if frame.Top then frame.Top:SetTexture(nil) end
+		if frame.Bottom then frame.Bottom:SetTexture(nil) end
+		if frame.ScrollBarTop then frame.ScrollBarTop:SetTexture(nil) end
+		if frame.ScrollBarBottom then frame.ScrollBarBottom:SetTexture(nil) end
+		if frame.ScrollBarMiddle then frame.ScrollBarMiddle:SetTexture(nil) end
+
+		if frame.ScrollUpButton and frame.ScrollDownButton then
+			if not frame.ScrollUpButton.icon then
+				S:HandleNextPrevButton(frame.ScrollUpButton, true, true)
+				frame.ScrollUpButton:Size(frame.ScrollUpButton:GetWidth() + 7, frame.ScrollUpButton:GetHeight() + 7)
+			end
+
+			if not frame.ScrollDownButton.icon then
+				S:HandleNextPrevButton(frame.ScrollDownButton, true)
+				frame.ScrollDownButton:Size(frame.ScrollDownButton:GetWidth() + 7, frame.ScrollDownButton:GetHeight() + 7)
+			end
+			
+			if not frame.trackbg then
+				frame.trackbg = CreateFrame("Frame", nil, frame)
+				frame.trackbg:Point("TOPLEFT", frame.ScrollUpButton, "BOTTOMLEFT", 0, -1)
+				frame.trackbg:Point("BOTTOMRIGHT", frame.ScrollDownButton, "TOPRIGHT", 0, 1)
+				frame.trackbg:SetTemplate("Transparent")
+			end
+			
+			if frame:GetThumbTexture() then
+				if not thumbTrim then thumbTrim = 3 end
+				frame:GetThumbTexture():SetTexture(nil)
+				if not frame.thumbbg then
+					frame.thumbbg = CreateFrame("Frame", nil, frame)
+					frame.thumbbg:Point("TOPLEFT", frame:GetThumbTexture(), "TOPLEFT", 2, -thumbTrim)
+					frame.thumbbg:Point("BOTTOMRIGHT", frame:GetThumbTexture(), "BOTTOMRIGHT", -2, thumbTrim)
+					frame.thumbbg:SetTemplate("Default", true, true)
+					frame.thumbbg.backdropTexture:SetVertexColor(0.6, 0.6, 0.6)
+					if frame.trackbg then
+						frame.thumbbg:SetFrameLevel(frame.trackbg:GetFrameLevel())
+					end
 				end
 			end
 		end
