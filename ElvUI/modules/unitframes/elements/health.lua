@@ -104,7 +104,7 @@ function UF:Configure_HealthBar(frame)
 	--Position
 	health:ClearAllPoints()
 	if frame.ORIENTATION == "LEFT" then
-		health:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER - frame.SPACING, -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
+		health:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER - frame.SPACING - (frame.PVPINFO_WIDTH or 0), -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
 
 		if frame.USE_POWERBAR_OFFSET then
 			health:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER - frame.SPACING - frame.POWERBAR_OFFSET, -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
@@ -117,7 +117,7 @@ function UF:Configure_HealthBar(frame)
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.PORTRAIT_WIDTH + frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING + frame.BOTTOM_OFFSET)
 		end
 	elseif frame.ORIENTATION == "RIGHT" then
-		health:Point("TOPLEFT", frame, "TOPLEFT", frame.BORDER + frame.SPACING, -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
+		health:Point("TOPLEFT", frame, "TOPLEFT", frame.BORDER + frame.SPACING + (frame.PVPINFO_WIDTH or 0), -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
 
 		if frame.USE_POWERBAR_OFFSET then
 			health:Point("TOPLEFT", frame, "TOPLEFT", frame.BORDER + frame.SPACING + frame.POWERBAR_OFFSET, -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
@@ -130,7 +130,7 @@ function UF:Configure_HealthBar(frame)
 			health:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -frame.PORTRAIT_WIDTH - frame.BORDER - frame.SPACING, frame.BORDER + frame.SPACING + frame.BOTTOM_OFFSET)
 		end
 	elseif frame.ORIENTATION == "MIDDLE" then
-		health:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER - frame.SPACING, -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
+		health:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER - frame.SPACING - (frame.PVPINFO_WIDTH or 0), -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
 
 		if frame.USE_POWERBAR_OFFSET then
 			health:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER - frame.SPACING - frame.POWERBAR_OFFSET, -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)

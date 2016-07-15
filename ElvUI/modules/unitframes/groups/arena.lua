@@ -155,6 +155,7 @@ function UF:Update_ArenaFrames(frame, db)
 		frame.BOTTOM_OFFSET = UF:GetHealthBottomOffset(frame)
 
 		frame.USE_TARGET_GLOW = db.targetGlow
+		frame.PVPINFO_WIDTH = db.pvpSpecIcon and frame.UNIT_HEIGHT or 0
 	end
 
 	frame.colors = ElvUF.colors
