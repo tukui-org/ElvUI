@@ -188,22 +188,22 @@ function S:HandleNextPrevButton(btn, useVertical, inverseDirection)
 		btn.icon:SetTexture([[Interface\Buttons\SquareButtonTextures]])
 		btn.icon:SetTexCoord(0.01562500, 0.20312500, 0.01562500, 0.20312500)
 
-		btn:SetScript('OnMouseDown', function(self)
+		btn:HookScript('OnMouseDown', function(self)
 			if self:IsEnabled() then
 				self.icon:Point("CENTER", -1, -1);
 			end
 		end)
 
-		btn:SetScript('OnMouseUp', function(self)
+		btn:HookScript('OnMouseUp', function(self)
 			self.icon:Point("CENTER", 0, 0);
 		end)
 
-		btn:SetScript('OnDisable', function(self)
+		btn:HookScript('OnDisable', function(self)
 			SetDesaturation(self.icon, true);
 			self.icon:SetAlpha(0.5);
 		end)
 
-		btn:SetScript('OnEnable', function(self)
+		btn:HookScript('OnEnable', function(self)
 			SetDesaturation(self.icon, false);
 			self.icon:SetAlpha(1.0);
 		end)
