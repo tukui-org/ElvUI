@@ -214,7 +214,7 @@ function AddOn:ToggleConfig()
 	end
 	ACD[mode](ACD, AddOnName)
 	
-	if self.GUIFrame and mode == "Open" then
+	if self.GUIFrame and mode == "Open" and AddOn.global.general.animateConfig then
 		local width, height = self.GUIFrame:GetSize()
 		self.GUIFrame:SetWidth(width - 40)
 		self.GUIFrame:SetHeight(height - 40)	

@@ -72,13 +72,26 @@ E.Options.args.general = {
 	get = function(info) return E.db.general[ info[#info] ] end,
 	set = function(info, value) E.db.general[ info[#info] ] = value end,
 	args = {
-		intro = {
+		animateConfig = {
 			order = 1,
+			type = "toggle",
+			name = L["Animate Config"],
+			get = function(info) return E.global.general.animateConfig end,
+			set = function(info, value) E.global.general.animateConfig = value; E:StaticPopup_Show("GLOBAL_RL") end,
+		},
+		spacer = {
+			order = 2,
+			type = "description",
+			name = "",
+			width = "full",
+		},
+		intro = {
+			order = 3,
 			type = "description",
 			name = L["ELVUI_DESC"]:gsub('ElvUI', E.UIName),
 		},
 		general = {
-			order = 2,
+			order = 4,
 			type = "group",
 			name = L["General"],
 			args = {
@@ -322,7 +335,7 @@ E.Options.args.general = {
 			},
 		},
 		media = {
-			order = 3,
+			order = 5,
 			type = "group",
 			name = L["Media"],
 			get = function(info) return E.db.general[ info[#info] ] end,
@@ -561,7 +574,7 @@ E.Options.args.general = {
 			},
 		},
 		minimap = {
-			order = 4,
+			order = 6,
 			get = function(info) return E.db.general.minimap[ info[#info] ] end,
 			type = "group",
 			name = MINIMAP_LABEL,
@@ -931,7 +944,7 @@ E.Options.args.general = {
 			},
 		},			
 		threat = {
-			order = 9,
+			order = 7,
 			get = function(info) return E.db.general.threat[ info[#info] ] end,
 			set = function(info, value) E.db.general.threat[ info[#info] ] = value; E:GetModule('Threat'):ToggleEnable()end,
 			type = "group",
@@ -963,7 +976,7 @@ E.Options.args.general = {
 			},
 		},
 		totems = {
-			order = 10,
+			order = 8,
 			type = "group",
 			name = L["Class Bar"],
 			get = function(info) return E.db.general.totems[ info[#info] ] end,
@@ -1009,7 +1022,7 @@ E.Options.args.general = {
 		},
 		cooldown = {
 			type = "group",
-			order = 11,
+			order = 9,
 			name = L["Cooldown Text"],
 			get = function(info)
 				local t = E.db.cooldown[ info[#info] ]
@@ -1076,7 +1089,7 @@ E.Options.args.general = {
 			},
 		},
 		objectiveFrame = {
-			order = 12,
+			order = 10,
 			type = "group",
 			name = L["Objective Frame"],
 			get = function(info) return E.db.general[ info[#info] ] end,

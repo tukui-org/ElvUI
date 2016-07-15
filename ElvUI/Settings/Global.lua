@@ -12,6 +12,7 @@ G['general'] = {
 		["yOffset"] = 0,
 	},
 	["disableTutorialButtons"] = true,
+	["animateConfig"] = true,
 }
 
 G['classtimer'] = {}
