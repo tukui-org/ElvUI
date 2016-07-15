@@ -60,8 +60,8 @@ function UF:Configure_ClassBar(frame)
 	if frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then
 		bars:ClearAllPoints()
 		bars:Point("CENTER", frame.Health.backdrop, "TOP", 0, 0)
-		if frame.ClassBar ~= "ClassIcons" then
-			CLASSBAR_WIDTH = CLASSBAR_WIDTH
+		if (frame.MAX_CLASS_BAR == 1) or (frame.ClassBar == "AdditionalPower") or (frame.ClassBar == "Stagger") then
+			CLASSBAR_WIDTH = CLASSBAR_WIDTH * 2/3
 		else
 			CLASSBAR_WIDTH = CLASSBAR_WIDTH * (frame.MAX_CLASS_BAR - 1) / frame.MAX_CLASS_BAR
 		end
@@ -84,7 +84,7 @@ function UF:Configure_ClassBar(frame)
 			bars.Holder.mover:SetScale(0.000001)
 			bars.Holder.mover:SetAlpha(0)
 		end
-	else
+	else --Detached
 		CLASSBAR_WIDTH = db.classbar.detachedWidth - ((frame.BORDER + frame.SPACING)*2)
 		if bars.Holder then bars.Holder:Size(db.classbar.detachedWidth, db.classbar.height) end
 
@@ -183,14 +183,14 @@ function UF:Configure_ClassBar(frame)
 				bars[i]:Show()
 			end
 		end
-	else
+
 		if not frame.USE_MINI_CLASSBAR then
 			bars.backdrop:Show()
 		else
 			bars.backdrop:Hide()
 		end
 
-		if (frame.ClassBar == "AdditionalPower" or frame.ClassBar == "Stagger") then
+	elseif (frame.ClassBar == "AdditionalPower" or frame.ClassBar == "Stagger") then
 			if frame.CLASSBAR_DETACHED and db.classbar.verticalOrientation then
 				bars:SetOrientation("VERTICAL")
 			else
@@ -441,7 +441,7 @@ function UF:ToggleAdditionalPower(frame)
 	if frame.AdditionalPower then
 		if frame.db.power.additionalPower then
 			frame:EnableElement('AdditionalPower')
-			UF.PostVisibilityAdditionalPower(frame.AdditionalPower, true) --This fixes issue where the bar will not show on initial login
+			-- UF.PostVisibilityAdditionalPower(frame.AdditionalPower, true) --This fixes issue where the bar will not show on initial login --This causes druid combopoints to bug out in Feral spec on login/reload
 		else
 			frame:DisableElement('AdditionalPower')
 		end
