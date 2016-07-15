@@ -45,8 +45,7 @@ local function LoadSkin()
 	-- Needs Review with Textures
 	PVPTalentPrestigeLevelDialog:StripTextures()
 	PVPTalentPrestigeLevelDialog:CreateBackdrop('Overlay')
-	PVPTalentPrestigeLevelDialog.Laurel:SetAlpha(1)
-	
+
 	S:HandleButton(PVPTalentPrestigeLevelDialog.Accept)
 	S:HandleButton(PVPTalentPrestigeLevelDialog.Cancel)
 	S:HandleCloseButton(PVPTalentPrestigeLevelDialog.CloseButton)
