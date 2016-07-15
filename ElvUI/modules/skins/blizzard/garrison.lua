@@ -43,7 +43,7 @@ local function LoadSkin()
 	end
 
 	-- Needs Review
-	--[[local function HandleShipFollowerPage(followerTab)
+	local function HandleShipFollowerPage(followerTab)
 		local traits = followerTab.Traits
 		for i = 1, #traits do
 			local icon = traits[i].Portrait
@@ -65,7 +65,7 @@ local function LoadSkin()
 				icon:SetTexCoord(unpack(E.TexCoords))
 			end
 		end
-	end]]
+	end
 
 	-- Building frame
 	GarrisonBuildingFrame:StripTextures(true)
