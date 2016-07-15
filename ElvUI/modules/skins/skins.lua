@@ -121,13 +121,13 @@ function S:HandleScrollBar(frame, thumbTrim)
 				frame.trackbg:SetTemplate("Transparent")
 			end
 			
-			if frame:GetThumbTexture() then
+			if frame.thumbTexture then
 				if not thumbTrim then thumbTrim = 3 end
-				frame:GetThumbTexture():SetTexture(nil)
+				frame.thumbTexture:SetTexture(nil)
 				if not frame.thumbbg then
 					frame.thumbbg = CreateFrame("Frame", nil, frame)
-					frame.thumbbg:Point("TOPLEFT", frame:GetThumbTexture(), "TOPLEFT", 2, -thumbTrim)
-					frame.thumbbg:Point("BOTTOMRIGHT", frame:GetThumbTexture(), "BOTTOMRIGHT", -2, thumbTrim)
+					frame.thumbbg:Point("TOPLEFT", frame.thumbTexture, "TOPLEFT", 2, -thumbTrim)
+					frame.thumbbg:Point("BOTTOMRIGHT", frame.thumbTexture, "BOTTOMRIGHT", -2, thumbTrim)
 					frame.thumbbg:SetTemplate("Default", true, true)
 					frame.thumbbg.backdropTexture:SetVertexColor(0.6, 0.6, 0.6)
 					if frame.trackbg then

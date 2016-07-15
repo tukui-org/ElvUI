@@ -97,6 +97,29 @@ local function LoadSkin()
 	TradeSkillFrame.DetailsFrame.GuildFrame.Container:StripTextures()
 	TradeSkillFrame.DetailsFrame.GuildFrame.Container:SetTemplate("Transparent")
 	-- S:HandleScrollBar(TradeSkillFrame.DetailsFrame.GuildFrame.Container.ScrollFrame.scrollBar) --This cannot be skinned due to issues on Blizzards end.
+
+	--BUGFIX: TradeSkillFrame.RecipeList.scrollBar
+	--Hide current scrollbar
+	TradeSkillFrame.RecipeList.scrollBar.ScrollBarTop:Hide()
+	TradeSkillFrame.RecipeList.scrollBar.ScrollBarTop = nil
+	TradeSkillFrame.RecipeList.scrollBar.ScrollBarBottom:Hide()
+	TradeSkillFrame.RecipeList.scrollBar.ScrollBarBottom = nil
+	TradeSkillFrame.RecipeList.scrollBar.ScrollBarMiddle:Hide()
+	TradeSkillFrame.RecipeList.scrollBar.thumbTexture:Hide()
+	TradeSkillFrame.RecipeList.scrollBar.thumbTexture = nil
+	TradeSkillFrameScrollUpButton:Hide()
+	TradeSkillFrameScrollUpButton = nil
+	TradeSkillFrameScrollDownButton:Hide()
+	TradeSkillFrameScrollDownButton = nil
+
+	--Create new one with fixed template
+	TradeSkillFrame.RecipeList.scrollBar = CreateFrame("Slider", nil, TradeSkillFrame.RecipeList, "HybridScrollBarTemplateFixed")
+	S:HandleScrollBar(TradeSkillFrame.RecipeList.scrollBar)
+	TradeSkillFrame.RecipeList.scrollBar:SetFrameLevel(TradeSkillFrame.RecipeList.scrollBar.trackbg:GetFrameLevel()) --Fix issue with background intercepting clicks
+	C_Timer.After(0.1, function() --Scroll back to top
+		TradeSkillFrame.RecipeList.scrollBar:SetValue(TradeSkillFrame.RecipeList.range)
+		TradeSkillFrame.RecipeList.scrollBar:SetValue(0)
+	end)
 end
 
 S:RegisterSkin("Blizzard_TradeSkillUI", LoadSkin)
