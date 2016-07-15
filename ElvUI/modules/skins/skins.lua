@@ -126,9 +126,9 @@ function S:HandleTab(tab)
 	tab.backdrop:Point("BOTTOMRIGHT", -10, 3)
 end
 
-function S:HandleNextPrevButton(btn, buttonOverride)
+function S:HandleNextPrevButton(btn, useVertical, inverseDirection)
 	local norm, pushed, disabled
-	local inverseDirection = btn:GetName() and (find(btn:GetName():lower(), 'left') or find(btn:GetName():lower(), 'prev') or find(btn:GetName():lower(), 'decrement') or find(btn:GetName():lower(), 'back'))
+	local inverseDirection = inverseDirection or btn:GetName() and (find(btn:GetName():lower(), 'left') or find(btn:GetName():lower(), 'prev') or find(btn:GetName():lower(), 'decrement') or find(btn:GetName():lower(), 'back'))
 
 	btn:StripTextures()
 	btn:SetNormalTexture(nil)
@@ -168,7 +168,7 @@ function S:HandleNextPrevButton(btn, buttonOverride)
 		end
 	end
 
-	if buttonOverride then
+	if useVertical then
 		if inverseDirection then
 			SquareButton_SetIcon(btn, 'UP')
 		else
