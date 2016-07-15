@@ -474,7 +474,7 @@ function CH:StyleChat(frame)
 	editbox:Hide()
 	
 	for i, text in pairs(ElvCharacterDB.ChatEditHistory) do
-		--editbox:AddHistoryLine(text)
+		editbox:AddHistoryLine(text)
 	end
 
 	hooksecurefunc("ChatEdit_UpdateHeader", function()
