@@ -31,7 +31,25 @@ local function LoadSkin()
 	PlayerTalentFrameInset.backdrop:Hide()
 
 	-- PVP Talents
+	-- The PVP Talent Portrait shows the Prestige Level via mouseover, so we don't should kill it.
+	PlayerTalentFramePVPTalents.XPBar:StripTextures()
+
+	PlayerTalentFramePVPTalents.XPBar.Bar:StripTextures() -- The default blizz bar looks good, we should keep it.
+	PlayerTalentFramePVPTalents.XPBar.Bar:CreateBackdrop("Default")
+	PlayerTalentFramePVPTalents.XPBar.Bar:SetStatusBarTexture(E.media.normTex)
+	E:RegisterStatusBar(PlayerTalentFramePVPTalents.XPBar.Bar)
+
 	S:HandleButton(PlayerTalentFramePVPTalents.XPBar.PrestigeReward.Accept)
+
+	-- Prestige Level Dialog
+	-- Needs Review with Textures
+	PVPTalentPrestigeLevelDialog:StripTextures()
+	PVPTalentPrestigeLevelDialog:CreateBackdrop('Overlay')
+	PVPTalentPrestigeLevelDialog.Laurel:SetAlpha(1)
+	
+	S:HandleButton(PVPTalentPrestigeLevelDialog.Accept)
+	S:HandleButton(PVPTalentPrestigeLevelDialog.Cancel)
+	S:HandleCloseButton(PVPTalentPrestigeLevelDialog.CloseButton)
 
 	if E.global.general.disableTutorialButtons then
 		PlayerTalentFrameSpecializationTutorialButton:Kill()
