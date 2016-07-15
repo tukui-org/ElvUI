@@ -18,6 +18,7 @@ P['general'] = {
 	['enhancedPvpMessages'] = true,
 	['objectiveFrameHeight'] = 480,
 	['bonusObjectivePosition'] = "LEFT",
+	["talkingHeadFrameScale"] = 0.9,
 
 	['afk'] = true,
 

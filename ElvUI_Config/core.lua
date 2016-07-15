@@ -1,5 +1,6 @@
 ﻿local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local D = E:GetModule("Distributor")
+local B = E:GetModule("Blizzard")
 local AceGUI = LibStub("AceGUI-3.0")
 
 local tsort, tinsert = table.sort, table.insert
@@ -222,6 +223,15 @@ E.Options.args.general = {
 					desc = L["Disables the tutorial button found on some frames."],
 					get = function(info) return E.global.general.disableTutorialButtons end,
 					set = function(info, value) E.global.general.disableTutorialButtons = value; E:StaticPopup_Show("GLOBAL_RL") end,
+				},
+				talkingHeadFrameScale = {
+					order = 20,
+					type = "range",
+					name = L["Talking Head Scale"],
+					isPercent = true,
+					min = 0.5, max = 2, step = 0.01,
+					get = function(info) return E.db.general.talkingHeadFrameScale end,
+					set = function(info, value) E.db.general.talkingHeadFrameScale = value; B:ScaleTalkingHeadFrame() end,
 				},
 				WorldMapCoordinates = {
 					order = 25,
