@@ -22,7 +22,6 @@
 	<Script file='flightmap.lua'/>
 	<Script file='garrison.lua'/>
 	<Script file='gbank.lua'/>
-	<!-- <Script file='glyph.lua'/> -->
 	<Script file='gossip.lua'/>
 	<Script file='guild.lua'/>
 	<Script file='guildcontrol.lua'/>
