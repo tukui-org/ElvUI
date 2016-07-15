@@ -70,7 +70,6 @@ V['skins'] = {
 		["barber"] = true,
 		["macro"] = true,
 		["debug"] = true,
-		-- ["trainer"] = true,
 		["socket"] = true,
 		['loot'] = true,
 		["alertframes"] = false,
