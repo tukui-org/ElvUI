@@ -363,6 +363,11 @@ L["Donations:"] = "|cff2eb7e4< 기부자 >|r"
 L["ELVUI_CREDITS"] = "저는 이 애드온의 유지와 개발 코딩에 도움을 주거나 기부를 한 분들께 특별히 감사하고 싶습니다. 포럼에서 저에게 개인적으로 메일을 준 분들에힌해 이름만 표기했으며만약 당신의 이름이 누락되어 있고 명단에 당신의 이름을 표기하고 하는 분들은 Elv에게 개인적인 메일을 보내주시기 바랍니다. "
 L["Testing:"] = "|cff2eb7e4< 테스터 >|r"
 
+--DataBars
+L["DATABAR_DESC"] = "Setup on-screen display of information bars."
+L["DataBars"] = true;
+L["Artifact Bar"] = true;
+
 --DataTexts
 L["24-Hour Time"] = "24시제로 표시"
 L["Battleground Texts"] = "전장에서 표시전환"

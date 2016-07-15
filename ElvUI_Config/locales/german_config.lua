@@ -315,6 +315,11 @@ L["Donations:"] = "Spenden:"
 L["ELVUI_CREDITS"] = "Ich möchte mich hier bei folgenden Personen bedanken, die durch ihre tatkräftige Unterstützung beim Testen und Coden, sowie durch Spenden, sehr geholfen haben. Bitte beachten: Für Spenden poste ich nur die Namen, die mich im Forum via PM angeschrieben haben. Sollte dein Name fehlen und du möchtest deinen Namen hinzugefügt haben, schreib mir bitte eine PM im Forum."
 L["Testing:"] = "Tester:"
 
+--DataBars
+L["DATABAR_DESC"] = "Einstellung der Informationsleisten."
+L["DataBars"] = "Informationsleisten"
+L["Artifact Bar"] = "Artifaktleiste"
+
 --DataTexts
 L["24-Hour Time"] = "24-Stunden-Format"
 L["Battleground Texts"] = "Schlachtfeld-Infotexte"

@@ -316,6 +316,11 @@ L["Donations:"] = "捐款:"
 L["ELVUI_CREDITS"] = "我想透过这个特别方式，向那些协助测试、编码及透过捐款协助过我的人表达感谢，请曾提供协助的朋友至论坛传私讯给我，我会将你的名字添加至此处。"
 L["Testing:"] = "测试:"
 
+--DataBars
+L["DATABAR_DESC"] = "Setup on-screen display of information bars."
+L["DataBars"] = true;
+L["Artifact Bar"] = true;
+
 --DataTexts
 L["24-Hour Time"] = "24小时制"
 L["Battleground Texts"] = "战场资讯"

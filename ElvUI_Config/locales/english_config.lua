@@ -306,6 +306,8 @@ L["Testing:"] = true;
 
 --DataBars
 L["DATABAR_DESC"] = "Setup on-screen display of information bars."
+L["DataBars"] = true;
+L["Artifact Bar"] = true;
 
 --DataTexts
 L["24-Hour Time"] = true;

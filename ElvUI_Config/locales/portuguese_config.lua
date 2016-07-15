@@ -315,6 +315,11 @@ L["Donations:"] = "Doações:"
 L["ELVUI_CREDITS"] = "Gostaria de agradecer especialmente às seguintes pessoas por me ajudarem a manter este addon, quer testando, codificando, ou através de doações. Em relação às doações, esta lista contém apenas o nome das pessoas que me contataram através de mensagem privada nos forums, se o seu nome está em falta e gostaria de o ver adicionado, por favor contate-me por mensagem privada."
 L["Testing:"] = "Testar:"
 
+--DataBars
+L["DATABAR_DESC"] = "Setup on-screen display of information bars."
+L["DataBars"] = true;
+L["Artifact Bar"] = true;
+
 --DataTexts
 L["24-Hour Time"] = "24 horas"
 L["Battleground Texts"] = "Textos do Campo de Batalha"
