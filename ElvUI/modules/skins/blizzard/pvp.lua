@@ -91,7 +91,18 @@ local function LoadSkin()
 
 	-- HonorBar
 	local honorBar = HonorFrame.XPBar
+	local bar = honorBar.Bar
+	local text = honorBar.Bar.OverlayFrame.Text
+
 	honorBar:StripTextures()
+
+	bar:StripTextures()
+	bar:CreateBackdrop("Default")
+	bar:SetStatusBarTexture(E.media.normTex)
+	E:RegisterStatusBar(bar)
+
+	text:ClearAllPoints()
+	text:Point("CENTER", bar)
 
 	hooksecurefunc("LFG_PermanentlyDisableRoleButton", function(self)
 		if self.bg then
@@ -139,7 +150,18 @@ local function LoadSkin()
 
 	-- ConquestBar
 	local conquestBar = ConquestFrame.XPBar
+	local bar = conquestBar.Bar
+	local text = conquestBar.Bar.OverlayFrame.Text
+	
 	conquestBar:StripTextures()
+
+	bar:StripTextures()
+	bar:CreateBackdrop("Default")
+	bar:SetStatusBarTexture(E.media.normTex)
+	E:RegisterStatusBar(bar)
+
+	text:ClearAllPoints()
+	text:Point("CENTER", bar)
 
 	local function handleButton(button)
 		button:StripTextures()
