@@ -35,7 +35,7 @@ local function LoadSkin()
 	PlayerTalentFramePVPTalents.XPBar:StripTextures()
 
 	PlayerTalentFramePVPTalents.XPBar.Bar:StripTextures() -- The default blizz bar looks good, we should keep it.
-	PlayerTalentFramePVPTalents.XPBar.Bar:CreateBackdrop("Default")
+	PlayerTalentFramePVPTalents.XPBar.Bar:CreateBackdrop('Default')
 	PlayerTalentFramePVPTalents.XPBar.Bar:SetStatusBarTexture(E.media.normTex)
 	E:RegisterStatusBar(PlayerTalentFramePVPTalents.XPBar.Bar)
 
@@ -44,7 +44,7 @@ local function LoadSkin()
 	-- Prestige Level Dialog
 	-- Needs Review with Textures
 	PVPTalentPrestigeLevelDialog:StripTextures()
-	PVPTalentPrestigeLevelDialog:CreateBackdrop('Overlay')
+	PVPTalentPrestigeLevelDialog:CreateBackdrop('Transparent')
 
 	S:HandleButton(PVPTalentPrestigeLevelDialog.Accept)
 	S:HandleButton(PVPTalentPrestigeLevelDialog.Cancel)
