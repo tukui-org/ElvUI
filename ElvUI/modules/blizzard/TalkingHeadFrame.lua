@@ -30,9 +30,9 @@ function B:ScaleTalkingHeadFrame()
 	end
 
 	--Use this to prevent the frame from auto closing, so you have time to test things.
-	TalkingHeadFrame:UnregisterEvent("SOUNDKIT_FINISHED")
-	TalkingHeadFrame:UnregisterEvent("TALKINGHEAD_CLOSE")
-	TalkingHeadFrame:UnregisterEvent("LOADING_SCREEN_ENABLED")
+	-- TalkingHeadFrame:UnregisterEvent("SOUNDKIT_FINISHED")
+	-- TalkingHeadFrame:UnregisterEvent("TALKINGHEAD_CLOSE")
+	-- TalkingHeadFrame:UnregisterEvent("LOADING_SCREEN_ENABLED")
 end
 
 function B:PositionTalkingHead()
