@@ -48,9 +48,8 @@ local function LoadSkin()
 	S:HandleButton(TradeSkillFrame.DetailsFrame.CreateButton, true)
 	S:HandleButton(TradeSkillFrame.DetailsFrame.ExitButton, true)
 
-	--[[These cannot be skinned due to issues on Blizzards end.
-	S:HandleScrollBar(TradeSkillFrame.RecipeList.scrollBar)
-	S:HandleScrollBar(TradeSkillFrame.DetailsFrame.ScrollBar)]]
+	-- S:HandleScrollBar(TradeSkillFrame.RecipeList.scrollBar) --This cannot be skinned due to issues on Blizzards end.
+	S:HandleScrollBar(TradeSkillFrame.DetailsFrame.ScrollBar)
 
 	S:HandleNextPrevButton(TradeSkillFrame.DetailsFrame.CreateMultipleInputBox.DecrementButton, nil, true)
 	S:HandleNextPrevButton(TradeSkillFrame.DetailsFrame.CreateMultipleInputBox.IncrementButton)
@@ -89,12 +88,15 @@ local function LoadSkin()
 	end)
 
 	--Guild Crafters
-	-- TradeSkillGuildFrame:StripTextures()
-	-- TradeSkillGuildFrame:SetTemplate("Transparent")
-	-- TradeSkillGuildFrame:Point("BOTTOMLEFT", TradeSkillFrame, "BOTTOMRIGHT", 3, 19)
-	-- TradeSkillGuildFrameContainer:StripTextures()
-	-- TradeSkillGuildFrameContainer:SetTemplate("Default")
-	-- S:HandleCloseButton(TradeSkillGuildFrameCloseButton)
+	S:HandleCloseButton(TradeSkillFrame.DetailsFrame.GuildFrame.CloseButton)
+	S:HandleButton(TradeSkillFrame.DetailsFrame.ViewGuildCraftersButton)
+	TradeSkillFrame.DetailsFrame.ViewGuildCraftersButton.LeftSeparator:SetTexture(nil)
+	TradeSkillFrame.DetailsFrame.ViewGuildCraftersButton.RightSeparator:SetTexture(nil)
+	TradeSkillFrame.DetailsFrame.GuildFrame:StripTextures()
+	TradeSkillFrame.DetailsFrame.GuildFrame:SetTemplate("Transparent")
+	TradeSkillFrame.DetailsFrame.GuildFrame.Container:StripTextures()
+	TradeSkillFrame.DetailsFrame.GuildFrame.Container:SetTemplate("Transparent")
+	-- S:HandleScrollBar(TradeSkillFrame.DetailsFrame.GuildFrame.Container.ScrollFrame.scrollBar) --This cannot be skinned due to issues on Blizzards end.
 end
 
 S:RegisterSkin("Blizzard_TradeSkillUI", LoadSkin)
