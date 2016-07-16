@@ -38,7 +38,7 @@ local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: ElvUIInstallFrame, InstallStepComplete, InstallStatus, InstallNextButton, InstallPrevButton
 -- GLOBALS: InstallOption1Button, InstallOption2Button, InstallOption3Button, InstallOption4Button
--- GLOBALS: RightChatDataPanel
+-- GLOBALS: LeftChatToggleButton, RightChatToggleButton, RightChatDataPanel
 -- GLOBALS: ChatFrame1, ChatFrame2, ChatFrame3, InterfaceOptionsActionBarsPanelPickupActionKeyDropDown
 
 local CURRENT_PAGE = 0
@@ -48,7 +48,6 @@ local function SetupChat()
 	InstallStepComplete.message = L["Chat Set"]
 	InstallStepComplete:Show()
 	--FCF_ResetChatWindows() TEMP DISABLE.. ERROR
-	
 	FCF_SetLocked(ChatFrame1, 1)
 	FCF_DockFrame(ChatFrame2)
 	FCF_SetLocked(ChatFrame2, 1)
@@ -57,7 +56,7 @@ local function SetupChat()
 	FCF_UnDockFrame(ChatFrame3)
 	FCF_SetLocked(ChatFrame3, 1)
 	ChatFrame3:Show()
-	
+
 	for i = 1, NUM_CHAT_WINDOWS do
 		local frame = _G[format("ChatFrame%s", i)]
 		local chatFrameId = frame:GetID()
@@ -66,7 +65,7 @@ local function SetupChat()
 		-- move general bottom left
 		if i == 1 then
 			frame:ClearAllPoints()
-			frame:Point("BOTTOMLEFT", LeftChatDataPanel, "TOPLEFT", 1, 3)
+			frame:Point("BOTTOMLEFT", LeftChatToggleButton, "TOPLEFT", 1, 3)
 		elseif i == 3 then
 			frame:ClearAllPoints()
 			frame:Point("BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 1, 3)
@@ -181,6 +180,13 @@ local function SetupChat()
 
 	if E.Chat then
 		E.Chat:PositionChat(true)
+		if E.db['RightChatPanelFaded'] then
+			RightChatToggleButton:Click()
+		end
+
+		if E.db['LeftChatPanelFaded'] then
+			LeftChatToggleButton:Click()
+		end
 	end
 end
 
