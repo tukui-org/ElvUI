@@ -148,12 +148,9 @@ local function Visibility(self, event, unit)
 	if(not UnitHasVehicleUI('player')) then
 		if(UnitPowerMax(unit, ADDITIONAL_POWER_BAR_INDEX) ~= 0) then
 			if(isBetaClient) then
-				if (playerClass == "DRUID" and GetSpecialization() == 1) or (playerClass ~= "DRUID") then
-					if(ALT_MANA_BAR_PAIR_DISPLAY_INFO[playerClass]) then
-						local powerType = UnitPowerType(unit)
-						shouldEnable = ALT_MANA_BAR_PAIR_DISPLAY_INFO[playerClass][powerType]
-						print(shouldEnable)
-					end
+				if(ALT_MANA_BAR_PAIR_DISPLAY_INFO[playerClass]) then
+					local powerType = UnitPowerType(unit)
+					shouldEnable = ALT_MANA_BAR_PAIR_DISPLAY_INFO[playerClass][powerType]
 				end
 			else
 				if(playerClass == 'DRUID' and UnitPowerType(unit) == ADDITIONAL_POWER_BAR_INDEX) then
