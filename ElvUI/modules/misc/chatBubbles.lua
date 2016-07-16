@@ -156,6 +156,7 @@ function M:SkinBubble(frame)
 	end
 	
 	frame:HookScript('OnShow', M.UpdateBubbleBorder)
+	frame:SetFrameStrata("DIALOG") --Doesn't work currently in Legion due to a bug on Blizzards end
 	M.UpdateBubbleBorder(frame)			
 	frame.isBubblePowered = true
 end
