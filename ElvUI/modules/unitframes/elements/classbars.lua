@@ -191,11 +191,10 @@ function UF:Configure_ClassBar(frame)
 		end
 
 	elseif (frame.ClassBar == "AdditionalPower" or frame.ClassBar == "Stagger") then
-			if frame.CLASSBAR_DETACHED and db.classbar.verticalOrientation then
-				bars:SetOrientation("VERTICAL")
-			else
-				bars:SetOrientation("HORIZONTAL")
-			end
+		if frame.CLASSBAR_DETACHED and db.classbar.verticalOrientation then
+			bars:SetOrientation("VERTICAL")
+		else
+			bars:SetOrientation("HORIZONTAL")
 		end
 	end
 
