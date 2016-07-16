@@ -61,9 +61,6 @@ function UF:Configure_Power(frame)
 
 		--Text
 		local attachPoint = self:GetObjectAnchorPoint(frame, db.power.attachTextTo)
-		if(E.global.tukuiMode and frame.InfoPanel and frame.InfoPanel:IsShown()) then
-			attachPoint = frame.InfoPanel
-		end
 		power.value:ClearAllPoints()
 		power.value:Point(db.power.position, attachPoint, db.power.position, db.power.xOffset, db.power.yOffset)
 		frame:Tag(power.value, db.power.text_format)
