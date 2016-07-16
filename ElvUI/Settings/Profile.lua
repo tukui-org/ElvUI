@@ -721,7 +721,7 @@ P['unitframe'] = {
 			["FURY"] = {r = 227/255, g = 126/255, b = 39/255},
 			["LUNAR_POWER"] = {r = .9, g = .86, b = .12},
 			["INSANITY"] = {r = 0.55, g = 0.14, b = 0.69},
-			
+			["MAELSTROM"] = {r = 0, g = 0.5, b = 1},
 		},
 		['reaction'] = {
 			['BAD'] = { r = 0.78, g = 0.25, b = 0.25 },

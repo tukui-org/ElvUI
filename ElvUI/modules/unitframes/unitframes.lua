@@ -373,6 +373,7 @@ function UF:UpdateColors()
 	ElvUF.colors.power.FURY = E:GetColorTable(db.power.FURY);
 	ElvUF.colors.power.LUNAR_POWER = E:GetColorTable(db.power.LUNAR_POWER)
 	ElvUF.colors.power.INSANITY = E:GetColorTable(db.power.INSANITY)
+	ElvUF.colors.power.MAELSTROM = E:GetColorTable(db.power.MAELSTROM)
 
 	ElvUF.colors.ComboPoints = {}
 	ElvUF.colors.ComboPoints[1] = E:GetColorTable(db.classResources.comboPoints[1])

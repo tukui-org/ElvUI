@@ -2255,8 +2255,13 @@ E.Options.args.unitframe = {
 								INSANITY = {
 									order = 9,
 									name = INSANITY,
+									type = 'color'
+								},
+								MAELSTROM = {
+									order = 10,
+									name = MAELSTROM,
 									type = 'color'									
-								},								
+								},
 							},
 						},
 						reactionGroup = {
