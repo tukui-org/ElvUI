@@ -72,13 +72,6 @@ local function Update(self, event, unit, powertype)
 	local additionalpower = self.AdditionalPower
 	if(additionalpower.PreUpdate) then additionalpower:PreUpdate(unit) end
 
-	-- Hide the bar if the active power type is the same as the alternate.
-	if(UnitPowerType('player') == ADDITIONAL_POWER_BAR_INDEX) then
-		return additionalpower:Hide()
-	elseif (not event) or (event and event ~= "ElementDisable") then
-		additionalpower:Show()
-	end
-
 	local cur = UnitPower('player', ADDITIONAL_POWER_BAR_INDEX)
 	local max = UnitPowerMax('player', ADDITIONAL_POWER_BAR_INDEX)
 	additionalpower:SetMinMaxValues(0, max)
@@ -159,6 +152,7 @@ local function Visibility(self, event, unit)
 					if(ALT_MANA_BAR_PAIR_DISPLAY_INFO[playerClass]) then
 						local powerType = UnitPowerType(unit)
 						shouldEnable = ALT_MANA_BAR_PAIR_DISPLAY_INFO[playerClass][powerType]
+						print(shouldEnable)
 					end
 				end
 			else
