@@ -50,7 +50,7 @@ function UF:Construct_AuraIcon(button)
 	button.text:Point('CENTER', 1, 1)
 	button.text:SetJustifyH('CENTER')
 
-	button:SetTemplate('Default', nil, nil, (UF.thinBorders and not E.global.tukuiMode))
+	button:SetTemplate('Default', nil, nil, UF.thinBorders)
 
 	button.cd.noOCC = true
 	button.cd.noCooldownCount = true
@@ -58,7 +58,7 @@ function UF:Construct_AuraIcon(button)
 	button.cd:SetInside()
 	button.cd:SetHideCountdownNumbers(true)
 
-	local offset = (UF.thinBorders and not E.global.tukuiMode) and E.mult or E.Border
+	local offset = UF.thinBorders and E.mult or E.Border
 	button.icon:SetInside(button, offset, offset)
 	button.icon:SetTexCoord(unpack(E.TexCoords))
 	button.icon:SetDrawLayer('ARTWORK')
@@ -132,7 +132,7 @@ function UF:Configure_Auras(frame, auraType)
 	end
 
 	local attachTo = self:GetAuraAnchorFrame(frame, db[auraType].attachTo, db.debuffs.attachTo == 'BUFFS' and db.buffs.attachTo == 'DEBUFFS')
-	local x, y = E:GetXYOffset(db[auraType].anchorPoint, (not E.global.tukuiMode and frame.SPACING)) --Use frame.SPACING override since it may be different from E.Spacing due to forced thin borders
+	local x, y = E:GetXYOffset(db[auraType].anchorPoint, frame.SPACING) --Use frame.SPACING override since it may be different from E.Spacing due to forced thin borders
 
 	if db[auraType].attachTo == "FRAME" then
 		y = 0

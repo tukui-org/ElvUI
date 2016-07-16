@@ -235,10 +235,6 @@ function E:UpdateMedia()
 		border = {r = 0, g = 0, b = 0}
 	end
 
-	if(self.global.tukuiMode) then
-		border = {r=0.6, g = 0.6, b = 0.6}
-	end
-
 	self["media"].bordercolor = {border.r, border.g, border.b}
 
 	--Backdrop Color
@@ -255,10 +251,6 @@ function E:UpdateMedia()
 		self.db['general'].valuecolor.r = value.r
 		self.db['general'].valuecolor.g = value.g
 		self.db['general'].valuecolor.b = value.b
-	end
-
-	if(self.global.tukuiMode) then
-		value = {r = 1, g = 1, b = 1}
 	end
 
 	self["media"].hexvaluecolor = self:RGBToHex(value.r, value.g, value.b)
@@ -1413,10 +1405,6 @@ function E:Initialize()
 		self:HelloKittyFix()
 	end
 
-	if(self.global.tukuiMode) then
-		self.UIName = "Tukui"
-	end
-
 	self:UpdateMedia()
 	self:UpdateFrameTemplates()
 	self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED", "CheckRole");
@@ -1445,19 +1433,7 @@ function E:Initialize()
 	self:RefreshModulesDB()
 	collectgarbage("collect");
 
-	if self:IsFoolsDay() and not E.global.aprilFools and not self.global.tukuiMode then
-		self:StaticPopup_Show("TUKUI_MODE")
-	end
-
-
 	if self.db.general.loginmessage then
 		print(select(2, E:GetModule('Chat'):FindURL("CHAT_MSG_DUMMY", format(L["LOGIN_MSG"]:gsub("ElvUI", E.UIName), self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version)))..'.')
-	end
-
-	if self.global.tukuiMode then
-		if(self:IsFoolsDay()) then
-			self:ShowTukuiFrame()
-		end
-		self:Print("Thank you for being a good sport, type /aprilfools to revert the changes.")
 	end
 end

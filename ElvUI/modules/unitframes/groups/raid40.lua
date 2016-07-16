@@ -156,7 +156,7 @@ function UF:Update_Raid40Frames(frame, db)
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
 
 		frame.UNIT_WIDTH = db.width
-		frame.UNIT_HEIGHT = (E.global.tukuiMode and not db.infoPanel.enable) and db.height + db.infoPanel.height or db.height
+		frame.UNIT_HEIGHT = db.infoPanel.enable and (db.height + db.infoPanel.height) or db.height
 
 		frame.USE_POWERBAR = db.power.enable
 		frame.POWERBAR_DETACHED = db.power.detachFromFrame
@@ -176,7 +176,7 @@ function UF:Update_Raid40Frames(frame, db)
 		frame.CLASSBAR_WIDTH = 0
 		frame.CLASSBAR_YOFFSET = 0
 
-		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and (db.infoPanel.enable or E.global.tukuiMode)
+		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and db.infoPanel.enable
 		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0
 
 		frame.BOTTOM_OFFSET = UF:GetHealthBottomOffset(frame)

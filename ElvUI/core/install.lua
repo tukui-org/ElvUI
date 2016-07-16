@@ -323,7 +323,7 @@ function E:SetupResolution(noDataReset)
 			E.db.unitframe.units.arena.castbar.width = 200;
 		end
 
-		local isPixel = E.private.general.pixelPerfect and not E.global.tukuiMode
+		local isPixel = E.private.general.pixelPerfect
 		local xOffset = isPixel and 103 or 106;
 		local yOffset = isPixel and 125 or 135;
 		local yOffsetSmall = isPixel and 76 or 80;
@@ -1023,14 +1023,8 @@ function E:Install()
 
 		f.tutorialImage = f:CreateTexture('InstallTutorialImage', 'OVERLAY')
 		f.tutorialImage:Size(256, 128)
-		
-		if(E.global.tukuiMode) then
-			f.tutorialImage:SetTexture('Interface\\AddOns\\ElvUI\\media\\textures\\tukui_logo.tga')	
-		else
-			f.tutorialImage:SetTexture('Interface\\AddOns\\ElvUI\\media\\textures\\logo.tga')
-		end
+		f.tutorialImage:SetTexture('Interface\\AddOns\\ElvUI\\media\\textures\\logo.tga')
 		f.tutorialImage:Point('BOTTOM', 0, 70)
-
 	end
 
 	ElvUIInstallFrame:Show()

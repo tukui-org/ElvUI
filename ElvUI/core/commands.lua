@@ -226,21 +226,6 @@ function E:EnableBlizzardAddOns()
 	end
 end
 
-function E:ToggleTukuiMode()
-	if(E.global.tukuiMode) then
-		E.global.tukuiMode = nil
-	else
-		E.global.tukuiMode = true
-	end
-	ReloadUI()
-end
-
-function E:DisableTukuiMode()
-	E.global.tukuiMode = nil
-	E.global.aprilFools = true
-	ReloadUI()
-end
-
 function E:LoadCommands()
 	self:RegisterChatCommand("in", "DelayScriptCall")
 	self:RegisterChatCommand("ec", "ToggleConfig")
@@ -258,8 +243,7 @@ function E:LoadCommands()
 	self:RegisterChatCommand('farmmode', 'FarmMode')
 	self:RegisterChatCommand('cleanguild', 'MassGuildKick')
 	self:RegisterChatCommand('enableblizzard', 'EnableBlizzardAddOns')
-	self:RegisterChatCommand('aprilfools', 'DisableTukuiMode')
-	self:RegisterChatCommand('tukuimode', 'ToggleTukuiMode')
+	-- self:RegisterChatCommand('aprilfools', '') --Don't need this until next april fools
 	
 	if E.ActionBars then
 		self:RegisterChatCommand('kb', E.ActionBars.ActivateBindMode)
