@@ -4,7 +4,7 @@ local UF = E:GetModule('UnitFrames');
 --Cache global variables
 --Lua functions
 local select, unpack = select, unpack
-local ceil, floor = math.ceil, math.floor
+local ceil, floor, max = math.ceil, math.floor, math.max
 local find, sub, gsub = string.find, string.sub, string.gsub
 --WoW API / Variables
 local CreateFrame = CreateFrame
@@ -21,10 +21,6 @@ function UF:Configure_ClassBar(frame)
 	if not bars then return end
 	local db = frame.db
 	bars.origParent = frame
-
-	if bars.UpdateAllRuneTypes then
-		bars.UpdateAllRuneTypes(frame)
-	end
 
 	--Fix height in case it is lower than the theme allows, or in case it's higher than 30px when not detached
 	if (not self.thinBorders and not E.PixelMode) and frame.CLASSBAR_HEIGHT > 0 and frame.CLASSBAR_HEIGHT < 7 then --A height of 7 means 6px for borders and just 1px for the actual power statusbar
@@ -54,7 +50,6 @@ function UF:Configure_ClassBar(frame)
 		else
 			bars.backdrop:SetBackdropBorderColor(c.r, c.g, c.b)
 		end
-
 	end
 
 	if frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then
@@ -198,7 +193,6 @@ function UF:Configure_ClassBar(frame)
 		end
 	end
 
-
 	if frame.CLASSBAR_DETACHED and db.classbar.parent == "UIPARENT" then
 		E.FrameLocks[bars] = true
 		bars:SetParent(E.UIParent)
@@ -207,12 +201,32 @@ function UF:Configure_ClassBar(frame)
 		bars:SetParent(frame)
 	end
 
-	if frame.db.classbar.enable and frame.CAN_HAVE_CLASSBAR and not frame:IsElementEnabled(frame.ClassBar) then
-		frame:EnableElement(frame.ClassBar)
-		bars:Show()
-	elseif not frame.USE_CLASSBAR and frame:IsElementEnabled(frame.ClassBar) then
-		frame:DisableElement(frame.ClassBar)
-		bars:Hide()
+	if frame.USE_CLASSBAR then
+		if frame.AdditionalPower and not frame:IsElementEnabled("AdditionalPower") then
+			frame:EnableElement("AdditionalPower")
+		end
+		if frame.Runes and not frame:IsElementEnabled("Runes") then
+			frame:EnableElement("Runes")
+		end
+		if frame.Stagger and not frame:IsElementEnabled("Stagger") then
+			frame:EnableElement("Stagger")
+		end
+		if frame.ClassIcons and not frame:IsElementEnabled("ClassIcons") then
+			frame:EnableElement("ClassIcons")
+		end
+	else
+		if frame.AdditionalPower and frame:IsElementEnabled("AdditionalPower") then
+			frame:DisableElement("AdditionalPower")
+		end
+		if frame.Runes and not frame:IsElementEnabled("Runes") then
+			frame:DisableElement("Runes")
+		end
+		if frame.Stagger and not frame:IsElementEnabled("Stagger") then
+			frame:DisableElement("Stagger")
+		end
+		if frame.ClassIcons and not frame:IsElementEnabled("ClassIcons") then
+			frame:DisableElement("ClassIcons")
+		end
 	end
 end
 
@@ -220,13 +234,11 @@ local function ToggleResourceBar(bars)
 	local frame = bars.origParent or bars:GetParent()
 	local db = frame.db
 	if not db then return end
-	frame.CLASSBAR_SHOWN = bars:IsShown()
+	frame.CLASSBAR_SHOWN = frame[frame.ClassBar]:IsShown()
 
 	local height
 	if db.classbar then
 		height = db.classbar.height
-	elseif db.combobar then
-		height = db.combobar.height
 	elseif frame.AltPowerBar then
 		height = db.power.height
 	end
@@ -257,7 +269,8 @@ function UF:Construct_ClassBar(frame)
 	local bars = CreateFrame("Frame", nil, frame)
 	bars:CreateBackdrop('Default', nil, nil, self.thinBorders)
 
-	for i = 1, UF['classMaxResourceBar'][E.myclass] do
+	local maxBars = max(UF['classMaxResourceBar'][E.myclass] or 0, MAX_COMBO_POINTS)
+	for i = 1, maxBars do
 		bars[i] = CreateFrame("StatusBar", frame:GetName().."ClassBarButton"..i, bars)
 		bars[i]:SetStatusBarTexture(E['media'].blankTex) --Dummy really, this needs to be set so we can change the color
 		bars[i]:GetStatusBarTexture():SetHorizTile(false)
@@ -309,7 +322,6 @@ function UF:UpdateClassBar(cur, max, hasMaxChanged, powerType, event)
 	end
 end
 
-
 -------------------------------------------------------------
 -- DEATHKNIGHT
 -------------------------------------------------------------
@@ -339,12 +351,12 @@ end
 -- ALTERNATIVE MANA BAR
 -------------------------------------------------------------
 function UF:Construct_AdditionalPowerBar(frame)
-	local additionalPower = CreateFrame('StatusBar', nil, frame)
+	local additionalPower = CreateFrame('StatusBar', "AdditionalPowerBar", frame)
 	additionalPower:SetFrameStrata("LOW")
 	additionalPower:SetFrameLevel(additionalPower:GetFrameLevel() + 1)
 	additionalPower.colorPower = true
 	additionalPower.PostUpdate = UF.PostUpdateAdditionalPower
-	additionalPower.PostUpdateVisibility = UF.PostUpdateVisibilityAdditionalPower
+	additionalPower.PostUpdateVisibility = UF.PostVisibilityAdditionalPower
 	additionalPower:CreateBackdrop('Default')
 	UF['statusbars'][additionalPower] = true
 	additionalPower:SetStatusBarTexture(E["media"].blankTex)
@@ -409,6 +421,7 @@ function UF:PostUpdateAdditionalPower(unit, min, max, event)
 			self.text:Point(powerValue:GetPoint())
 			self.text:SetFormattedText(color.."%d%%|r", floor(min / max * 100))
 		end
+		self:Show()
 	else
 		self.text:SetText()
 		self:Hide()
@@ -423,27 +436,14 @@ function UF:PostVisibilityAdditionalPower(enabled, stateChanged)
 	else
 		frame.ClassBar = 'ClassIcons'
 		self.text:SetText()
-		ToggleResourceBar(frame.ClassIcons)
-		return
 	end
 
 	if stateChanged then
-		ToggleResourceBar(frame.AdditionalPower)
+		ToggleResourceBar(frame[frame.ClassBar])
 		UF:Configure_ClassBar(frame)
 		UF:Configure_HealthBar(frame)
 		UF:Configure_Power(frame)
 		UF:Configure_InfoPanel(frame, true) --2nd argument is to prevent it from setting template, which removes threat border
-	end
-end
-
-function UF:ToggleAdditionalPower(frame)
-	if frame.AdditionalPower then
-		if frame.db.power.additionalPower then
-			frame:EnableElement('AdditionalPower')
-			-- UF.PostVisibilityAdditionalPower(frame.AdditionalPower, true) --This fixes issue where the bar will not show on initial login --This causes druid combopoints to bug out in Feral spec on login/reload
-		else
-			frame:DisableElement('AdditionalPower')
-		end
 	end
 end
 
@@ -471,7 +471,7 @@ function UF:PostUpdateStagger(event, unit, isShown, stateChanged)
 
 	--Only update when necessary
 	if(stateChanged) then
-		ToggleResourceBar(frame.Stagger)
+		ToggleResourceBar(frame[frame.ClassBar])
 		UF:Configure_ClassBar(frame)
 		UF:Configure_HealthBar(frame)
 		UF:Configure_Power(frame)

@@ -15,8 +15,6 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
-local CAN_HAVE_CLASSBAR = (E.myclass == "PALADIN" or E.myclass == "DRUID" or E.myclass == "PRIEST" or E.myclass == "DEATHKNIGHT" or E.myclass == "WARLOCK" or E.myclass == "MONK" or E.myclass == 'MAGE' or E.myclass == "ROGUE")
-
 function UF:Construct_PlayerFrame(frame)
 	frame.Threat = self:Construct_Threat(frame, true)
 
@@ -37,43 +35,23 @@ function UF:Construct_PlayerFrame(frame)
 
 	frame.Castbar = self:Construct_Castbar(frame, 'LEFT', L["Player Castbar"])
 
-	if E.myclass == "PALADIN" then
-		frame.ClassIcons = self:Construct_ClassBar(frame)
-		frame.ClassBar = 'ClassIcons'
-	elseif E.myclass == "WARLOCK" then
-		frame.ClassIcons = self:Construct_ClassBar(frame)
-		frame.ClassBar = 'ClassIcons'
-	elseif E.myclass == "DEATHKNIGHT" then
+	--Combo points was moved to the ClassIcons element, so all classes need to have a ClassBar now.
+	frame.ClassIcons = self:Construct_ClassBar(frame)
+	frame.ClassBar = 'ClassIcons'
+
+	--Some classes need another set of different classbars.
+	if E.myclass == "DEATHKNIGHT" then
 		frame.Runes = self:Construct_DeathKnightResourceBar(frame)
 		frame.ClassBar = 'Runes'
 	elseif E.myclass == "DRUID" then
 		frame.AdditionalPower = self:Construct_AdditionalPowerBar(frame)
-		frame.ClassIcons = self:Construct_ClassBar(frame)
-		if (GetSpecialization() == 1) then --Balance
-			frame.ClassBar = 'AdditionalPower'
-		else
-			frame.ClassBar = 'ClassIcons'
-		end
-	elseif E.myclass == "ROGUE" then
-		frame.ClassIcons = self:Construct_ClassBar(frame)
-		frame.ClassBar = 'ClassIcons'
 	elseif E.myclass == "MONK" then
-		frame.ClassIcons = self:Construct_ClassBar(frame)
 		frame.Stagger = self:Construct_Stagger(frame)
-		if (GetSpecialization() == SPEC_MONK_BREWMASTER) then
-			frame.ClassBar = 'Stagger'
-		else
-			frame.ClassBar = 'ClassIcons'
-		end
-	elseif E.myclass == 'MAGE' then
-		frame.ClassIcons = self:Construct_ClassBar(frame)
-		frame.ClassBar = 'ClassIcons'
 	elseif E.myclass == 'PRIEST' then
 		frame.AdditionalPower = self:Construct_AdditionalPowerBar(frame)
-		frame.ClassBar = 'AdditionalPower'
+	elseif E.myclass == 'SHAMAN' then
+		frame.AdditionalPower = self:Construct_AdditionalPowerBar(frame)
 	end
-	
-	
 
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)
 	frame.Resting = self:Construct_RestingIndicator(frame)
@@ -117,7 +95,7 @@ function UF:Update_PlayerFrame(frame, db)
 		frame.USE_PORTRAIT_OVERLAY = frame.USE_PORTRAIT and (db.portrait.overlay or frame.ORIENTATION == "MIDDLE")
 		frame.PORTRAIT_WIDTH = (frame.USE_PORTRAIT_OVERLAY or not frame.USE_PORTRAIT) and 0 or db.portrait.width
 
-		frame.CAN_HAVE_CLASSBAR = CAN_HAVE_CLASSBAR
+		frame.CAN_HAVE_CLASSBAR = true --Combo points are in ClassIcons now, so all classes need access to ClassBar
 		frame.MAX_CLASS_BAR = frame.MAX_CLASS_BAR or UF.classMaxResourceBar[E.myclass] or 0 --only set this initially
 		frame.USE_CLASSBAR = db.classbar.enable and frame.CAN_HAVE_CLASSBAR
 		frame.CLASSBAR_SHOWN = frame.CAN_HAVE_CLASSBAR and frame[frame.ClassBar]:IsShown()
@@ -177,9 +155,6 @@ function UF:Update_PlayerFrame(frame, db)
 	--Resource Bars
 	UF:Configure_ClassBar(frame)
 
-	--Alternate Power
-	UF:ToggleAdditionalPower(frame)
-
 	--Combat Fade
 	if db.combatfade and not frame:IsElementEnabled('CombatFade') then
 		frame:EnableElement('CombatFade')
@@ -215,6 +190,7 @@ tinsert(UF['unitstoload'], 'player')
 
 --Bugfix: Classbar is not updated correctly on initial login ( http://git.tukui.org/Elv/elvui/issues/987 )
 --ToggleResourceBar(bars) is called before the classbar has been updated, so we call it manually once.
+--[[THIS NO LONGER SEEMS TO BE NECESSARY. MONITOR IT FOR NOW
 local function UpdateClassBar()
 	local frame = _G["ElvUF_Player"]
 	if frame and frame.ClassBar then
@@ -228,4 +204,4 @@ f:RegisterEvent("PLAYER_ENTERING_WORLD")
 f:SetScript("OnEvent", function(self, event)
 	self:UnregisterEvent(event)
 	UpdateClassBar()
-end)
+end)]]

@@ -790,7 +790,6 @@ P['unitframe'] = {
 				['attachTextTo'] = 'Health',
 				['detachFromFrame'] = false,
 				['detachedWidth'] = 250,
-				['additionalPower'] = true,
 				["strataAndLevel"] = {
 					["useCustomStrata"] = false,
 					["frameStrata"] = "LOW",

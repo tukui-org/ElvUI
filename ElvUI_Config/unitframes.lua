@@ -1507,15 +1507,6 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 		}
 	end
 
-	if groupName == 'player' then
-		config.args.additionalPower = {
-			type = 'toggle',
-			order = 2,
-			name = L["Additional Power"],
-			desc = L["Display mana on an additional power bar for Balance Druids and Shadow Priests."],
-		}
-	end
-
 	return config
 end
 
