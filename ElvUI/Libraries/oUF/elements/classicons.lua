@@ -169,7 +169,7 @@ local function Visibility(self, event, unit)
 	elseif(not shouldEnable and (isEnabled or isEnabled == nil)) then
 		ClassPowerDisable(self)
 	elseif(shouldEnable and isEnabled) then
-		Path(self, event, unit, ClassPowerType)
+		Path(self, event, unit, unit == 'vehicle' and 'COMBO_POINTS' or ClassPowerType)
 	end
 end
 
