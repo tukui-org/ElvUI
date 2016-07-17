@@ -120,6 +120,9 @@ local function LoadSkin()
 	-- S:HandleScrollBar(AdventureMapQuestChoiceDialog.Details.ScrollBar)
 	S:HandleButton(AdventureMapQuestChoiceDialog.AcceptButton)
 	S:HandleButton(AdventureMapQuestChoiceDialog.DeclineButton)
+
+	--Dumb
+	OrderHallCommandBar.WorldMapButton:Kill()
 end
 
 S:RegisterSkin('Blizzard_OrderHallUI', LoadSkin)
