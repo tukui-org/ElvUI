@@ -8,5 +8,6 @@
 	<Script file='elements\level.lua'/>
 	<Script file='elements\threat.lua'/>
 	<Script file='elements\raidIcon.lua'/>
+	<Script file='elements\healerIcon.lua'/>
 	<Script file='elements\glow.lua'/>
 </Ui>

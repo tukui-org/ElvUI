@@ -1,6 +1,71 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+﻿local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:NewModule('NamePlates', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
 local LSM = LibStub("LibSharedMedia-3.0")
+
+local twipe = table.wipe
+
+mod.HealerSpecs = {
+	[L["Restoration"]] = true,
+	[L["Holy"]] = true,
+	[L["Discipline"]] = true,
+	[L["Mistweaver"]] = true,
+}
+mod.Healers = {};
+
+function mod:CheckBGHealers()
+	local name, _, talentSpec
+	for i = 1, GetNumBattlefieldScores() do
+		name, _, _, _, _, _, _, _, _, _, _, _, _, _, _, talentSpec = GetBattlefieldScore(i);
+		if name then
+			name = name:match("(.+)%-.+") or name
+			if name and self.HealerSpecs[talentSpec] then
+				self.Healers[name] = talentSpec
+			elseif name and self.Healers[name] then
+				self.Healers[name] = nil;
+			end
+		end
+	end
+end
+
+function mod:CheckArenaHealers()
+	local numOpps = GetNumArenaOpponentSpecs()
+	if not (numOpps > 1) then return end
+
+	for i=1, 5 do
+		local name = UnitName(format('arena%d', i))
+		if name and name ~= UNKNOWN then
+			local s = GetArenaOpponentSpec(i)
+			local _, talentSpec = nil, UNKNOWN
+			if s and s > 0 then
+				_, talentSpec = GetSpecializationInfoByID(s)
+			end
+
+			if talentSpec and talentSpec ~= UNKNOWN and self.HealerSpecs[talentSpec] then
+				self.Healers[name] = talentSpec
+			end
+		end
+	end
+end
+
+function mod:PLAYER_ENTERING_WORLD()
+	twipe(self.Healers)
+	local inInstance, instanceType = IsInInstance()
+	if inInstance and instanceType == 'pvp' and self.db.units.ENEMY_PLAYER.markHealers then
+		self.CheckHealerTimer = self:ScheduleRepeatingTimer("CheckBGHealers", 3)
+		self:CheckBGHealers()
+	elseif inInstance and instanceType == 'arena' and self.db.units.ENEMY_PLAYER.markHealers then
+		self:RegisterEvent('UNIT_NAME_UPDATE', 'CheckArenaHealers')
+		self:RegisterEvent("ARENA_OPPONENT_UPDATE", 'CheckArenaHealers');
+		self:CheckArenaHealers()
+	else
+		self:UnregisterEvent('UNIT_NAME_UPDATE')
+		self:UnregisterEvent("ARENA_OPPONENT_UPDATE")
+		if self.CheckHealerTimer then
+			self:CancelTimer(self.CheckHealerTimer)
+			self.CheckHealerTimer = nil;
+		end
+	end
+end
 
 function mod:ClassBar_Update(frame)
 	if(not self.ClassBar) then return end
@@ -147,7 +212,11 @@ function mod:CheckUnitType(frame)
 
 	if(role == "HEALER" and frame.UnitType ~= "HEALER") then
 		self:UpdateAllFrame(frame)
-	elseif(frame.UnitType == "FRIENDLY_PLAYER" or frame.UnitType == "FRIENDLY_NPC" or frame.UnitType == "HEALER") then
+	elseif(role ~= "HEALER" and frame.UnitType == "HEALER") then
+		self:UpdateAllFrame(frame)
+	elseif frame.UnitType == "FRIENDLY_PLAYER" then
+		self:UpdateAllFrame(frame)
+	elseif(frame.UnitType == "FRIENDLY_NPC" or frame.UnitType == "HEALER") then
 		if(CanAttack) then
 			self:UpdateAllFrame(frame)
 		end
@@ -180,6 +249,7 @@ function mod:NAME_PLATE_UNIT_ADDED(event, unit, frame)
 		frame.UnitFrame.UnitType = "FRIENDLY_NPC"
 	elseif(CanAttack and isPlayer) then
 		frame.UnitFrame.UnitType = "ENEMY_PLAYER"
+		self:UpdateElement_HealerIcon(frame.UnitFrame)
 	else
 		frame.UnitFrame.UnitType = "ENEMY_NPC"
 	end
@@ -318,6 +388,7 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame)
 		end
 	end
 	mod:UpdateElement_RaidIcon(frame)
+	mod:UpdateElement_HealerIcon(frame)
 	mod:UpdateElement_Name(frame)
 	mod:UpdateElement_Level(frame)
 		
@@ -341,6 +412,7 @@ function mod:NAME_PLATE_CREATED(event, frame)
 	frame.UnitFrame.Glow = self:ConstructElement_Glow(frame.UnitFrame)
 	frame.UnitFrame.Buffs = self:ConstructElement_Auras(frame.UnitFrame, 5, "LEFT")
 	frame.UnitFrame.Debuffs = self:ConstructElement_Auras(frame.UnitFrame, 5, "RIGHT")
+	frame.UnitFrame.HealerIcon = self:ConstructElement_HealerIcon(frame.UnitFrame)
 	frame.UnitFrame.RaidIcon = self:ConstructElement_RaidIcon(frame.UnitFrame)
 end
 
@@ -568,6 +640,8 @@ function mod:Initialize()
 	self:NAME_PLATE_UNIT_REMOVED("NAME_PLATE_UNIT_REMOVED", "player", self.PlayerFrame__)	
 	E:CreateMover(self.PlayerFrame__, "PlayerNameplate", L["Player Nameplate"])
 	self:TogglePlayerDisplayType()
+	
+	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 	
 	E.NamePlates = self
 end

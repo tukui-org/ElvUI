@@ -363,6 +363,7 @@ P["nameplates"] = {
 		},
 		['ENEMY_PLAYER'] = {
 			["minions"] = false,
+			["markHealers"] = true,
 			['healthbar'] = {
 				['enable'] = true,
 				['height'] = 10,

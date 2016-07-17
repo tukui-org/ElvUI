@@ -98,7 +98,7 @@ local function GetUnitSettings(unit, name)
 		name = name,
 		childGroups = "tab",
 		get = function(info) return E.db.nameplates.units[unit][ info[#info] ] end,
-		set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:ConfigureAll() end,		
+		set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:ConfigureAll() end,
 		args = {
 			copySettings = {
 				order = -10,
@@ -389,6 +389,15 @@ local function GetUnitSettings(unit, name)
 			desc = unit == "FRIENDLY_PLAYER" and OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_MINIONS or OPTION_TOOLTIP_UNIT_NAME_ENEMY_MINIONS,
 			type = "toggle",
 		}
+		if unit == "ENEMY_PLAYER" then
+			group.args.markHealers = {
+				type = "toggle",
+				order = 10,
+				name = L["Healer Icon"],
+				desc = L["Display a healer icon over known healers inside battlegrounds or arenas."],
+				set = function(info, value) E.db.nameplates.units.ENEMY_PLAYER[ info[#info] ] = value; NP:PLAYER_ENTERING_WORLD(); NP:ConfigureAll() end,
+			}
+		end
 	elseif unit == "ENEMY_NPC" then
 		group.args.minors = {
 			order = 0,
