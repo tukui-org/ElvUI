@@ -294,6 +294,12 @@ local function LoadSkin()
 	PlayerTalentFramePVPTalents.XPBar.PrestigeReward.Accept:SetPoint("TOP", PlayerTalentFramePVPTalents.XPBar.PrestigeReward, "BOTTOM", 0, 0)
 	S:HandleButton(PlayerTalentFramePVPTalents.XPBar.PrestigeReward.Accept)
 
+	--Honor progress bar
+	-- PlayerTalentFramePVPTalents.XPBar.Bar:StripTextures() -- The default blizz bar looks good, we should keep it.
+	PlayerTalentFramePVPTalents.XPBar.Bar:CreateBackdrop('Default')
+	-- PlayerTalentFramePVPTalents.XPBar.Bar:SetStatusBarTexture(E.media.normTex)
+	-- E:RegisterStatusBar(PlayerTalentFramePVPTalents.XPBar.Bar)
+
 	--Skin talent rows and buttons
 	for i = 1, MAX_PVP_TALENT_TIERS do
 		local row = PlayerTalentFramePVPTalents.Talents["Tier"..i]
