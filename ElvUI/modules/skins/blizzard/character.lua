@@ -60,6 +60,8 @@ local function LoadSkin()
 		end)
 	end
 
+	CharacterLevelText:FontTemplate()
+	CharacterStatsPane.ItemLevelFrame.Value:FontTemplate(nil, 20)
 	--Strip Textures
 	local charframe = {
 		"CharacterFrame",
@@ -145,17 +147,20 @@ local function LoadSkin()
 	for _, object in pairs(charframe) do
 		_G[object]:StripTextures()
 	end
-
+	local function StatsPane(type)
+		CharacterStatsPane[type]:StripTextures()
+		CharacterStatsPane[type]:CreateBackdrop("Transparent")
+		CharacterStatsPane[type].backdrop:ClearAllPoints()
+		CharacterStatsPane[type].backdrop:SetPoint("CENTER")
+		CharacterStatsPane[type].backdrop:SetWidth(150)
+		CharacterStatsPane[type].backdrop:SetHeight(18)
+	end
 	CharacterFrame:SetTemplate("Transparent")
-	CharacterStatsPane.ItemLevelCategory:StripTextures()
-	CharacterStatsPane.ItemLevelCategory:CreateBackdrop("Transparent", true)
-	CharacterStatsPane.ItemLevelCategory.backdrop:SetInside()
-	CharacterStatsPane.AttributesCategory:StripTextures()
-	CharacterStatsPane.AttributesCategory:CreateBackdrop("Transparent", true)
-	CharacterStatsPane.AttributesCategory.backdrop:SetInside()
-	CharacterStatsPane.EnhancementsCategory:StripTextures()
-	CharacterStatsPane.EnhancementsCategory:CreateBackdrop("Transparent", true)
-	CharacterStatsPane.EnhancementsCategory.backdrop:SetInside()
+	StatsPane("EnhancementsCategory")
+	StatsPane("ItemLevelCategory")
+	StatsPane("AttributesCategory")
+
+
 
 	--Titles
 	PaperDollTitlesPane:HookScript("OnShow", function(self)
