@@ -188,13 +188,13 @@ function mod:SetTargetFrame(frame)
 			self:UpdateAllFrame(frame)
 		end		
 
-		if(targetExists) then
+		if(targetExists and not UnitIsUnit(frame.unit, "player")) then
 			frame:SetAlpha(1 - self.db.nonTargetTransparency)
 		else
 			frame:SetAlpha(1)
 		end
 	else
-		if(targetExists) then
+		if(targetExists and not UnitIsUnit(frame.unit, "player"))  then
 			frame:SetAlpha(1 - self.db.nonTargetTransparency)
 		else
 			frame:SetAlpha(1)
@@ -270,6 +270,11 @@ function mod:NAME_PLATE_UNIT_ADDED(event, unit, frame)
 	else
 		frame.UnitFrame.UnitType = "ENEMY_NPC"
 	end
+
+	frame.UnitFrame.Buffs.db = self.db.units[frame.UnitFrame.UnitType].buffs
+	frame.UnitFrame.Debuffs.db = self.db.units[frame.UnitFrame.UnitType].debuffs
+	self:UpdateAuraIcons(frame.UnitFrame.Debuffs)
+	self:UpdateAuraIcons(frame.UnitFrame.Buffs)
 
 	if(frame.UnitFrame.UnitType == "PLAYER") then
 		mod.PlayerFrame = frame

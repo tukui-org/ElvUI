@@ -2,6 +2,10 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local mod = E:GetModule('NamePlates')
 local LSM = LibStub("LibSharedMedia-3.0")
 
+auraCache = {}
+local tinsert, tremove, twipe = table.insert, table.remove, table.wipe
+
+
 function mod:SetAura(aura, index, name, filter, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, spellId, isBossAura)
 	aura.icon:SetTexture(icon);
 	aura.name = name
@@ -163,7 +167,6 @@ end
 function mod:CreateAuraIcon(parent)
 	local aura = CreateFrame("Frame", nil, parent)
 	self:StyleFrame(aura, false)
-	aura:SetHeight(18)
 
 	aura.icon = aura:CreateTexture(nil, "OVERLAY")
 	aura.icon:SetAllPoints()
@@ -175,8 +178,7 @@ function mod:CreateAuraIcon(parent)
 	aura.cooldown.SizeOverride = 10
 	E:RegisterCooldown(aura.cooldown)
 
-	aura:Hide()
-	
+
 	aura.count = aura:CreateFontString(nil, "OVERLAY")
 	aura.count:SetPoint("BOTTOMRIGHT")
 	aura.count:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
@@ -188,20 +190,32 @@ function mod:Auras_SizeChanged(width, height)
 	local numAuras = #self.icons
 	for i=1, numAuras do
 		self.icons[i]:SetWidth((width - (mod.mult*numAuras)) / numAuras)
-		self.icons[i]:SetHeight(18 * self:GetParent().HealthBar.currentScale or 1)
+		self.icons[i]:SetHeight(self.db.baseHeight * self:GetParent().HealthBar.currentScale or 1)
 	end
 end
 
-function mod:ConstructElement_Auras(frame, maxAuras, side)
-	local auras = CreateFrame("FRAME", nil, frame)
+function mod:UpdateAuraIcons(auras)
+	local maxAuras = auras.db.numAuras
+	local numCurrentAuras = #auras.icons
+	if numCurrentAuras > maxAuras then
+		for i = auras.db.numAuras, #auras.icons do
+			tinsert(auras.icons[i], auras.icons)
+			auras.icons[i]:Hide()
+			auras.icons[i] = nil
+		end 
+	end
 
-	auras:SetScript("OnSizeChanged", mod.Auras_SizeChanged)
-	auras:SetHeight(18)
-	auras.side = side
-	
-	auras.icons = {}
+	if numCurrentAuras ~= maxAuras then
+		self.Auras_SizeChanged(auras, auras:GetWidth(), auras:GetHeight())
+	end
+
 	for i=1, maxAuras do
-		auras.icons[i] = mod:CreateAuraIcon(auras)
+		auras.icons[i] = tremove(auraCache) or mod:CreateAuraIcon(auras)
+		auras.icons[i]:SetParent(auras)
+		auras.icons[i]:ClearAllPoints()
+		auras.icons[i]:Hide()
+		auras.icons[i]:SetHeight(auras.db.baseHeight)
+
 		if(auras.side == "LEFT") then
 			if(i == 1) then
 				auras.icons[i]:SetPoint("LEFT", auras, "LEFT")
@@ -216,6 +230,15 @@ function mod:ConstructElement_Auras(frame, maxAuras, side)
 			end		
 		end
 	end
+end
+
+function mod:ConstructElement_Auras(frame, maxAuras, side)
+	local auras = CreateFrame("FRAME", nil, frame)
+
+	auras:SetScript("OnSizeChanged", mod.Auras_SizeChanged)
+	auras:SetHeight(18) -- this really doesn't matter
+	auras.side = side
+	auras.icons = {}
 	
 	return auras
 end
