@@ -5,7 +5,7 @@
 
 local Search = LibStub('CustomSearch-1.0')
 local Unfit = LibStub('Unfit-1.0')
-local Lib = LibStub:NewLibrary('LibItemSearch-1.2-ElvUI', 1)
+local Lib = LibStub:NewLibrary('LibItemSearch-1.2-ElvUI', 2)
 if Lib then
 	Lib.Filters = {}
 else
@@ -202,7 +202,7 @@ Lib.Filters.tipPhrases = {
 		['boe'] = ITEM_BIND_ON_EQUIP,
 		['bou'] = ITEM_BIND_ON_USE,
 		['boa'] = ITEM_BIND_TO_BNETACCOUNT,
-		-- [select(10, GetAuctionItemClasses())] = ITEM_BIND_QUEST,
+		[GetItemClassInfo(LE_ITEM_CLASS_QUESTITEM):lower()] = ITEM_BIND_QUEST,
 		[QUESTS_LABEL:lower()] = ITEM_BIND_QUEST,
 		[TOY:lower()] = TOY,
 		[MINIMAP_TRACKING_VENDOR_REAGENT:lower()] = PROFESSIONS_USED_IN_COOKING,
