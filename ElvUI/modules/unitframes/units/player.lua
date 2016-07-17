@@ -35,6 +35,10 @@ function UF:Construct_PlayerFrame(frame)
 
 	frame.Castbar = self:Construct_Castbar(frame, 'LEFT', L["Player Castbar"])
 
+	--Create a holder frame all "classbars" can be positioned into
+	frame.ClassBarHolder = CreateFrame("Frame", nil, frame)
+	frame.ClassBarHolder:Point("BOTTOM", E.UIParent, "BOTTOM", 0, 150)
+
 	--Combo points was moved to the ClassIcons element, so all classes need to have a ClassBar now.
 	frame.ClassIcons = self:Construct_ClassBar(frame)
 	frame.ClassBar = 'ClassIcons'

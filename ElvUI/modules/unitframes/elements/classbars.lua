@@ -19,7 +19,9 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 function UF:Configure_ClassBar(frame)
 	local bars = frame[frame.ClassBar]
 	if not bars then return end
+
 	local db = frame.db
+	bars.Holder = frame.ClassBarHolder
 	bars.origParent = frame
 
 	--Fix height in case it is lower than the theme allows, or in case it's higher than 30px when not detached
@@ -81,12 +83,9 @@ function UF:Configure_ClassBar(frame)
 		end
 	else --Detached
 		CLASSBAR_WIDTH = db.classbar.detachedWidth - ((frame.BORDER + frame.SPACING)*2)
-		if bars.Holder then bars.Holder:Size(db.classbar.detachedWidth, db.classbar.height) end
+		bars.Holder:Size(db.classbar.detachedWidth, db.classbar.height)
 
-		if not bars.Holder or (bars.Holder and not bars.Holder.mover) then
-			bars.Holder = CreateFrame("Frame", nil, bars)
-			bars.Holder:Point("BOTTOM", E.UIParent, "BOTTOM", 0, 150)
-			bars.Holder:Size(db.classbar.detachedWidth, db.classbar.height)
+		if not bars.Holder.mover then
 			bars:Width(CLASSBAR_WIDTH)
 			bars:Height(frame.CLASSBAR_HEIGHT - ((frame.BORDER+frame.SPACING)*2))
 			bars:ClearAllPoints()
@@ -107,9 +106,6 @@ function UF:Configure_ClassBar(frame)
 
 	if (frame.ClassBar == 'ClassIcons' or frame.ClassBar == 'Runes') then
 		for i = 1, (UF.classMaxResourceBar[E.myclass] or 0) do
-			bars[i]:Hide()
-			bars[i].backdrop:Hide()
-
 			if i <= frame.MAX_CLASS_BAR then
 				bars[i].backdrop.ignoreUpdates = true
 				bars[i].backdrop.backdropTexture:SetVertexColor(c.r, c.g, c.b)
@@ -151,13 +147,6 @@ function UF:Configure_ClassBar(frame)
 					bars[i]:SetStatusBarColor(unpack(ElvUF.colors.ClassBars[E.myclass][i]))
 				elseif E.myclass == "PALADIN" or E.myclass == "MAGE" or E.myclass == "WARLOCK" then
 					bars[i]:SetStatusBarColor(unpack(ElvUF.colors.ClassBars[E.myclass]))
-				elseif E.myclass == "ROGUE" or E.myclass == "DRUID" then
-					local r1, g1, b1 = unpack(ElvUF.colors.ComboPoints[1])
-					local r2, g2, b2 = unpack(ElvUF.colors.ComboPoints[2])
-					local r3, g3, b3 = unpack(ElvUF.colors.ComboPoints[3])
-
-					local r, g, b = ElvUF.ColorGradient(i, frame.MAX_CLASS_BAR > 5 and 6 or 5, r1, g1, b1, r2, g2, b2, r3, g3, b3)
-					bars[i]:SetStatusBarColor(r, g, b)
 				elseif E.myclass == "DEATHKNIGHT" then
 					local r, g, b = unpack(ElvUF.colors.ClassBars.DEATHKNIGHT)
 					bars[i]:SetStatusBarColor(r, g, b)
@@ -165,8 +154,13 @@ function UF:Configure_ClassBar(frame)
 						local mu = bars[i].bg.multiplier or 1
 						bars[i].bg:SetVertexColor(r * mu, g * mu, b * mu)
 					end
-				else
-					bars[i]:SetStatusBarColor(unpack(ElvUF.colors[frame.ClassBar]))
+				else -- Combo Points for everyone else
+					local r1, g1, b1 = unpack(ElvUF.colors.ComboPoints[1])
+					local r2, g2, b2 = unpack(ElvUF.colors.ComboPoints[2])
+					local r3, g3, b3 = unpack(ElvUF.colors.ComboPoints[3])
+
+					local r, g, b = ElvUF.ColorGradient(i, frame.MAX_CLASS_BAR > 5 and 6 or 5, r1, g1, b1, r2, g2, b2, r3, g3, b3)
+					bars[i]:SetStatusBarColor(r, g, b)
 				end
 
 				if frame.CLASSBAR_DETACHED and db.classbar.verticalOrientation then
@@ -174,8 +168,6 @@ function UF:Configure_ClassBar(frame)
 				else
 					bars[i]:SetOrientation("HORIZONTAL")
 				end
-
-				bars[i]:Show()
 			end
 		end
 
@@ -202,6 +194,9 @@ function UF:Configure_ClassBar(frame)
 	end
 
 	if frame.USE_CLASSBAR then
+		if frame.ClassIcons and not frame:IsElementEnabled("ClassIcons") then
+			frame:EnableElement("ClassIcons")
+		end
 		if frame.AdditionalPower and not frame:IsElementEnabled("AdditionalPower") then
 			frame:EnableElement("AdditionalPower")
 		end
@@ -211,10 +206,10 @@ function UF:Configure_ClassBar(frame)
 		if frame.Stagger and not frame:IsElementEnabled("Stagger") then
 			frame:EnableElement("Stagger")
 		end
-		if frame.ClassIcons and not frame:IsElementEnabled("ClassIcons") then
-			frame:EnableElement("ClassIcons")
-		end
 	else
+		if frame.ClassIcons and not frame:IsElementEnabled("ClassIcons") then
+			frame:DisableElement("ClassIcons")
+		end
 		if frame.AdditionalPower and frame:IsElementEnabled("AdditionalPower") then
 			frame:DisableElement("AdditionalPower")
 		end
@@ -223,9 +218,6 @@ function UF:Configure_ClassBar(frame)
 		end
 		if frame.Stagger and not frame:IsElementEnabled("Stagger") then
 			frame:DisableElement("Stagger")
-		end
-		if frame.ClassIcons and not frame:IsElementEnabled("ClassIcons") then
-			frame:DisableElement("ClassIcons")
 		end
 	end
 end
@@ -305,6 +297,12 @@ function UF:UpdateClassBar(cur, max, hasMaxChanged, powerType, event)
 		self:Show()
 	end
 
+	--Update this first, as we want to update the .bg colors after
+	if hasMaxChanged or event == "ClassPowerEnable" then
+		frame.MAX_CLASS_BAR = max
+		UF:Configure_ClassBar(frame)
+	end
+
 	local r, g, b
 	for i=1, #self do
 		r, g, b = self[i]:GetStatusBarColor()
@@ -314,11 +312,6 @@ function UF:UpdateClassBar(cur, max, hasMaxChanged, powerType, event)
 		else
 			self[i].bg:Hide()
 		end
-	end
-
-	if hasMaxChanged then
-		frame.MAX_CLASS_BAR = max
-		UF:Configure_ClassBar(frame)
 	end
 end
 
