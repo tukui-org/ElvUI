@@ -26,9 +26,10 @@ local function LoadSkin()
 	OrderHallCommandBar.ClassIcon:SetSize(46, 20)
 	OrderHallCommandBar.CurrencyIcon:SetAtlas("legionmission-icon-currency", false)
 	OrderHallCommandBar.AreaName:SetVertexColor(classColor.r, classColor.g, classColor.b)
-	-- maybe we should kill the WorldMapButton, it looks ugly as fuck and dont know why blizz adds it there
-	OrderHallCommandBar.WorldMapButton:ClearAllPoints()
-	OrderHallCommandBar.WorldMapButton:SetPoint("RIGHT", OrderHallCommandBar, -5, -2)
+	--Dumb
+	OrderHallCommandBar.WorldMapButton:Kill()
+	-- OrderHallCommandBar.WorldMapButton:ClearAllPoints()
+	-- OrderHallCommandBar.WorldMapButton:SetPoint("RIGHT", OrderHallCommandBar, -5, -2)
 
 	-- MissionFrame
 	OrderHallMissionFrame.ClassHallIcon:Kill()
@@ -120,9 +121,6 @@ local function LoadSkin()
 	-- S:HandleScrollBar(AdventureMapQuestChoiceDialog.Details.ScrollBar)
 	S:HandleButton(AdventureMapQuestChoiceDialog.AcceptButton)
 	S:HandleButton(AdventureMapQuestChoiceDialog.DeclineButton)
-
-	--Dumb
-	OrderHallCommandBar.WorldMapButton:Kill()
 end
 
 S:RegisterSkin('Blizzard_OrderHallUI', LoadSkin)
