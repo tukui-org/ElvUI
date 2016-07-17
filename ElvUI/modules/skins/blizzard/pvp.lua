@@ -96,10 +96,10 @@ local function LoadSkin()
 
 	honorBar:StripTextures()
 
-	bar:StripTextures()
+	-- bar:StripTextures() --The default bar looks pretty good
 	bar:CreateBackdrop("Default")
-	bar:SetStatusBarTexture(E.media.normTex)
-	E:RegisterStatusBar(bar)
+	-- bar:SetStatusBarTexture(E.media.normTex)
+	-- E:RegisterStatusBar(bar)
 
 	text:ClearAllPoints()
 	text:Point("CENTER", bar)
