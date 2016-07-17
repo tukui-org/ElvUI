@@ -196,8 +196,13 @@ function mod:ConfigureElement_HealthBar(frame, configuring)
 	
 	--Position
 	healthBar:SetPoint("BOTTOM", frame, "BOTTOM", 0, self.db.units[frame.UnitType].castbar.height + 3)
-	healthBar:SetHeight(self.db.units[frame.UnitType].healthbar.height)
-	healthBar:SetWidth(self.db.units[frame.UnitType].healthbar.width)
+	if(UnitIsUnit(frame.unit, "target") and not frame.isTarget) then
+		healthBar:SetHeight(self.db.units[frame.UnitType].healthbar.height * self.db.targetScale)
+		healthBar:SetWidth(self.db.units[frame.UnitType].healthbar.width * self.db.targetScale)
+	else
+		healthBar:SetHeight(self.db.units[frame.UnitType].healthbar.height)
+		healthBar:SetWidth(self.db.units[frame.UnitType].healthbar.width)
+	end
 
 	--Texture
 	healthBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
