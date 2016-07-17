@@ -23,7 +23,7 @@ P['general'] = {
 	['afk'] = true,
 
 	["fontSize"] = 12,
-	["font"] = "PT Sans Narrow",
+	["font"] = "Expressway",
 
 	["bordercolor"] = { r = 0.1,g = 0.1,b = 0.1 },
 	["backdropcolor"] = { r = 0.1,g = 0.1,b = 0.1 },
@@ -161,10 +161,10 @@ P['bags'] = {
 	['ignoreItems'] = '',
 	['itemLevel'] = true,
 	['itemLevelThreshold'] = 1,
-	['itemLevelFont'] = 'Arial Narrow',
+	['itemLevelFont'] = 'Homespun',
 	['itemLevelFontSize'] = 10,
 	['itemLevelFontOutline'] = "MONOCHROMEOUTLINE",
-	["countFont"] = 'Arial Narrow',
+	["countFont"] = 'Homespun',
 	["countFontSize"] = 10,
 	["countFontOutline"] = "MONOCHROMEOUTLINE",
 	["countFontColor"] = {r = 1, g = 1, b = 1},
@@ -181,8 +181,8 @@ P['bags'] = {
 --NamePlate
 P["nameplates"] = {
 	["statusbar"] = "ElvUI Norm",
-	['font'] = 'PT Sans Narrow',
-	['fontSize'] = 9,
+	['font'] = 'Homespun',
+	['fontSize'] = 8,
 	['fontOutline'] = 'MONOCHROMEOUTLINE',
 	['useTargetScale'] = true,
 	['targetScale'] = 1.15,
@@ -567,7 +567,7 @@ P['chat'] = {
 	['throttleInterval'] = 45,
 	['scrollDownInterval'] = 15,
 	['fade'] = true,
-	['font'] = 'Arial Narrow',
+	['font'] = 'Expressway',
 	['fontOutline'] = 'NONE',
 	['sticky'] = true,
 	['emotionIcons'] = true,
@@ -593,15 +593,15 @@ P['chat'] = {
 	['fadeTabsNoBackdrop'] = true,
 	["useAltKey"] = false,
 
-	['tabFont'] = 'Arial Narrow',
-	['tabFontSize'] = 10,
+	['tabFont'] = 'Expressway',
+	['tabFontSize'] = 12,
 	['tabFontOutline'] = 'NONE',
 }
 
 --Datatexts
 P['datatexts'] = {
-	['font'] = 'Arial Narrow',
-	['fontSize'] = 10,
+	['font'] = 'Expressway',
+	['fontSize'] = 12,
 	['fontOutline'] = 'NONE',
 	["wordWrap"] = false,
 
@@ -655,7 +655,7 @@ P['tooltip'] = {
 	['inspectInfo'] = true,
 	['itemCount'] = 'BAGS_ONLY',
 	['spellID'] = true,
-	["font"] = "Arial Narrow",
+	["font"] = "Expressway",
 	["fontOutline"] = "NONE",
 	["headerFontSize"] = 12,
 	["textFontSize"] = 12,
@@ -688,7 +688,7 @@ P['tooltip'] = {
 P['unitframe'] = {
 	['smoothbars'] = false,
 	['statusbar'] = "ElvUI Norm",
-	['font'] = 'Arial Narrow',
+	['font'] = 'Homespun',
 	['fontSize'] = 10,
 	['fontOutline'] = 'MONOCHROMEOUTLINE',
 	['OORAlpha'] = 0.35,
