@@ -155,10 +155,10 @@ local function LoadSkin()
 	
 	conquestBar:StripTextures()
 
-	bar:StripTextures()
+	-- bar:StripTextures() --Default bar looks good
 	bar:CreateBackdrop("Default")
-	bar:SetStatusBarTexture(E.media.normTex)
-	E:RegisterStatusBar(bar)
+	-- bar:SetStatusBarTexture(E.media.normTex)
+	-- E:RegisterStatusBar(bar)
 
 	text:ClearAllPoints()
 	text:Point("CENTER", bar)
