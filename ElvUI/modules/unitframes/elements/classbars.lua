@@ -36,7 +36,9 @@ function UF:Configure_ClassBar(frame)
 	elseif (not frame.CLASSBAR_DETACHED and frame.CLASSBAR_HEIGHT > 30) then
 		frame.CLASSBAR_HEIGHT = 10
 		if db.classbar then db.classbar.height = 10 end
-		UF.ToggleResourceBar(bars)  --Trigger update to health if needed
+		--Override visibility if Classbar is Additional Power in order to fix a bug when Auto Hide is enabled, height is higher than 30 and it goes from detached to not detached
+		local overrideVisibility = frame.ClassBar == "AdditionalPower"
+		UF.ToggleResourceBar(bars, overrideVisibility)  --Trigger update to health if needed
 	end
 
 	--We don't want to modify the original frame.CLASSBAR_WIDTH value, as it bugs out when the classbar gains more buttons
@@ -222,11 +224,12 @@ function UF:Configure_ClassBar(frame)
 	end
 end
 
-local function ToggleResourceBar(bars)
+local function ToggleResourceBar(bars, overrideVisibility)
 	local frame = bars.origParent or bars:GetParent()
 	local db = frame.db
 	if not db then return end
-	frame.CLASSBAR_SHOWN = frame[frame.ClassBar]:IsShown()
+
+	frame.CLASSBAR_SHOWN = (not not overrideVisibility) or frame[frame.ClassBar]:IsShown()
 
 	local height
 	if db.classbar then
