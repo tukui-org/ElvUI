@@ -459,12 +459,28 @@ function UF:Construct_Stagger(frame)
 	local stagger = CreateFrame("Statusbar", nil, frame)
 	UF['statusbars'][stagger] = true
 	stagger:CreateBackdrop("Default",nil, nil, self.thinBorders)
-	stagger.PostUpdateVisibility = UF.PostUpdateStagger
+	stagger.PostUpdate = UF.PostUpdateStagger
+	stagger.PostUpdateVisibility = UF.PostUpdateVisibilityStagger
 	stagger:SetFrameStrata("LOW")
+	
+	stagger:SetScript("OnShow", ToggleResourceBar)
+	stagger:SetScript("OnHide", ToggleResourceBar)
+
 	return stagger
 end
 
-function UF:PostUpdateStagger(event, unit, isShown, stateChanged)
+function UF:PostUpdateStagger(maxHealth, stagger, staggerPercent, r, g, b)
+	local frame = self.origParent or self:GetParent()
+	local db = frame.db
+
+	if stagger == 0 and db.classbar.autoHide then
+		self:Hide()
+	else
+		self:Show()
+	end
+end
+
+function UF:PostUpdateVisibilityStagger(event, unit, isShown, stateChanged)
 	local frame = self
 	local db = frame.db
 
