@@ -40,7 +40,7 @@ function mod:ConfigureElement_Name(frame)
 	if(self.db.units[frame.UnitType].healthbar.enable or frame.isTarget) then
 		name:SetJustifyH("LEFT")
 		name:SetPoint("BOTTOMLEFT", frame.HealthBar, "TOPLEFT", 0, E.Border*2)
-		-- name:SetPoint("BOTTOMRIGHT", frame.Level, "BOTTOMLEFT")
+		name:SetPoint("BOTTOMRIGHT", frame.Level, "BOTTOMLEFT")
 	else
 		name:SetJustifyH("CENTER")
 		name:SetPoint("TOP", frame, "CENTER")
