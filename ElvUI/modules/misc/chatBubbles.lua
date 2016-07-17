@@ -139,6 +139,7 @@ function M:SkinBubble(frame)
 			frame.borderright.backdrop:SetColorTexture(0, 0, 0)
 			frame.borderright.backdrop:SetDrawLayer("ARTWORK", -7)	
 		end
+		frame.text:FontTemplate(E.LSM:Fetch("font", E.private.general.chatBubbleFont), E.private.general.chatBubbleFontSize)
 	elseif E.private.general.chatBubbles == 'backdrop_noborder' then
 		frame:SetBackdrop(nil)
 
