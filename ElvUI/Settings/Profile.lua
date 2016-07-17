@@ -894,6 +894,7 @@ P['unitframe'] = {
 				['autoHide'] = false,
 				["parent"] = "FRAME",
 				["verticalOrientation"] = false,
+				["additionalPowerText"] = true,
 			},
 			['aurabar'] = {
 				['enable'] = true,

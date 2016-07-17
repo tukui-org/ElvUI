@@ -2673,12 +2673,11 @@ E.Options.args.unitframe.args.player = {
 					type = 'toggle',
 					name = L["Auto-Hide"],
 				},
-				-- spacer = {
-					-- order = 6,
-					-- type = "description",
-					-- name = "",
-					-- width = "full",
-				-- },
+				additionalPowerText = {
+					order = 5,
+					type = "toggle",
+					name = L["Additional Power Text"],
+				},
 				detachFromFrame = {
 					type = 'toggle',
 					order = 7,

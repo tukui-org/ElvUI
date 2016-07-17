@@ -377,45 +377,54 @@ function UF:PostUpdateAdditionalPower(unit, min, max, event)
 
 	local powerTextPosition = db.power.position
 
-	--Attempt to remove |cFFXXXXXX color codes in order to determine if power text is really empty
-	if powerValueText then
-		local _, endIndex = find(powerValueText, "|cff")
-		if endIndex then
-			endIndex = endIndex + 7 --Add hex code
-			powerValueText = sub(powerValueText, endIndex)
-			powerValueText = gsub(powerValueText, "%s+", "")
-		end
-	end
-
 	if ((min ~= max or not db.classbar.autoHide) and (event ~= "ElementDisable")) then
-		local color = ElvUF['colors'].power['MANA']
-		color = E:RGBToHex(color[1], color[2], color[3])
+		if db.classbar.additionalPowerText then
+			local color = ElvUF['colors'].power['MANA']
+			color = E:RGBToHex(color[1], color[2], color[3])
 
-		self.text:SetParent(powerValueParent)
-		self.text:ClearAllPoints()
-
-		if (powerValueText ~= "" and powerValueText ~= " ") then
-			if find(powerTextPosition, "RIGHT") then
-				self.text:Point("RIGHT", powerValue, "LEFT", 3, 0)
-				self.text:SetFormattedText(color.."%d%%|r |cffD7BEA5- |r", floor(min / max * 100))
-			elseif find(powerTextPosition, "LEFT") then
-				self.text:Point("LEFT", powerValue, "RIGHT", -3, 0)
-				self.text:SetFormattedText("|cffD7BEA5-|r"..color.." %d%%|r", floor(min / max * 100))
-			else
-				if select(4, powerValue:GetPoint()) <= 0 then
-					self.text:Point("LEFT", powerValue, "RIGHT", -3, 0)
-					self.text:SetFormattedText("|cffD7BEA5-|r"..color.." %d%%|r", floor(min / max * 100))
-				else
-					self.text:Point("RIGHT", powerValue, "LEFT", 3, 0)
-					self.text:SetFormattedText(color.."%d%%|r |cffD7BEA5- |r", floor(min / max * 100))
+			--Attempt to remove |cFFXXXXXX color codes in order to determine if power text is really empty
+			if powerValueText then
+				local _, endIndex = find(powerValueText, "|cff")
+				if endIndex then
+					endIndex = endIndex + 7 --Add hex code
+					powerValueText = sub(powerValueText, endIndex)
+					powerValueText = gsub(powerValueText, "%s+", "")
 				end
 			end
-		else
-			self.text:Point(powerValue:GetPoint())
-			self.text:SetFormattedText(color.."%d%%|r", floor(min / max * 100))
+
+			self.text:ClearAllPoints()
+			if not frame.CLASSBAR_DETACHED then
+				self.text:SetParent(powerValueParent)
+				if (powerValueText ~= "" and powerValueText ~= " ") then
+					if find(powerTextPosition, "RIGHT") then
+						self.text:Point("RIGHT", powerValue, "LEFT", 3, 0)
+						self.text:SetFormattedText(color.."%d%%|r |cffD7BEA5- |r", floor(min / max * 100))
+					elseif find(powerTextPosition, "LEFT") then
+						self.text:Point("LEFT", powerValue, "RIGHT", -3, 0)
+						self.text:SetFormattedText("|cffD7BEA5-|r"..color.." %d%%|r", floor(min / max * 100))
+					else
+						if select(4, powerValue:GetPoint()) <= 0 then
+							self.text:Point("LEFT", powerValue, "RIGHT", -3, 0)
+							self.text:SetFormattedText("|cffD7BEA5-|r"..color.." %d%%|r", floor(min / max * 100))
+						else
+							self.text:Point("RIGHT", powerValue, "LEFT", 3, 0)
+							self.text:SetFormattedText(color.."%d%%|r |cffD7BEA5- |r", floor(min / max * 100))
+						end
+					end
+				else
+					self.text:Point(powerValue:GetPoint())
+					self.text:SetFormattedText(color.."%d%%|r", floor(min / max * 100))
+				end
+			else
+				self.text:SetParent(self)
+				self.text:Point("CENTER", self)
+				self.text:SetFormattedText(color.."%d%%|r", floor(min / max * 100))
+			end
+		else --Text disabled
+			self.text:SetText()
 		end
 		self:Show()
-	else
+	else --Bar disabled
 		self.text:SetText()
 		self:Hide()
 	end
