@@ -341,11 +341,13 @@ local function LoadSkin()
 		for i = 1, MAX_PVP_TALENT_TIERS do
 			for j = 1, MAX_PVP_TALENT_COLUMNS do
 				local button = self.Talents["Tier"..i]["Talent"..j]
-				if button.knownSelection:IsShown() then
-					button.bg.SelectedTexture:Show()
-					button.bg.SelectedTexture:SetColorTexture(0, 1, 0, 0.1)
-				else
-					button.bg.SelectedTexture:Hide()
+				if button.knownSelection then
+					if button.knownSelection:IsShown() then
+						button.bg.SelectedTexture:Show()
+						button.bg.SelectedTexture:SetColorTexture(0, 1, 0, 0.1)
+					else
+						button.bg.SelectedTexture:Hide()
+					end
 				end
 			end
 		end
