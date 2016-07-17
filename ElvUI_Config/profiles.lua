@@ -1,15 +1,6 @@
 --Contains preset profiles.. 
 if(not ElvDB.profiles["Minimalistic"]) then
 	ElvDB.profiles["Minimalistic"] = {
-		["nameplate"] = {
-			["debuffs"] = {
-				["font"] = "Expressway",
-			},
-			["font"] = "Expressway",
-			["buffs"] = {
-				["font"] = "Expressway",
-			},
-		},
 		["currentTutorial"] = 2,
 		["general"] = {
 			["reputation"] = {

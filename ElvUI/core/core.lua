@@ -1342,6 +1342,11 @@ function E:DBConversions()
 		--Add old enabled state
 		E.global.general.WorldMapCoordinates.enable = enabledState
 	end
+	
+	--Remove old nameplate settings, no need for them to take up space
+	if E.db.nameplate then
+		E.db.nameplate = nil
+	end
 end
 
 local CPU_USAGE = {}
