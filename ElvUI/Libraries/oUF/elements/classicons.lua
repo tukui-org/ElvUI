@@ -58,7 +58,7 @@ local _, PlayerClass = UnitClass'player'
 -- Holds the class specific stuff.
 local ClassPowerID, ClassPowerType
 local ClassPowerEnable, ClassPowerDisable
-local RequireSpec, RequireSpell, RequireForm
+local RequireSpec, RequireSpell, RequirePower
 
 local UpdateTexture = function(element)
 	local color = oUF.colors.power[ClassPowerType]
@@ -153,12 +153,14 @@ local function Visibility(self, event, unit)
 	if(UnitHasVehicleUI('player')) then
 		shouldEnable = true
 	elseif(ClassPowerID) then
-		if(((not RequireForm and not RequireSpec) or (RequireSpec == GetSpecialization() and RequireForm == GetShapeshiftFormID()) or (not RequireForm and RequireSpec == GetSpecialization()) or (not RequireSpec and RequireForm == GetShapeshiftFormID()))) then
+		if(not RequireSpec or RequireSpec == GetSpecialization()) then
 			if(not RequireSpell or IsPlayerSpell(RequireSpell)) then
-				self:UnregisterEvent('SPELLS_CHANGED', Visibility)
-				shouldEnable = true
-			else
-				self:RegisterEvent('SPELLS_CHANGED', Visibility, true)
+				if(not RequirePower or RequirePower == UnitPowerType('player')) then
+					self:UnregisterEvent('SPELLS_CHANGED', Visibility)
+					shouldEnable = true
+				else
+					self:RegisterEvent('SPELLS_CHANGED', Visibility, true)
+				end
 			end
 		end
 	end
@@ -183,9 +185,8 @@ end
 
 do
 	ClassPowerEnable = function(self)
-		self:RegisterEvent('UNIT_DISPLAYPOWER', Path)
+		self:RegisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
 		self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
-		self:RegisterEvent('UNIT_MAXPOWER', Path)
 
 		if(UnitHasVehicleUI('player')) then
 			Path(self, 'ClassPowerEnable', 'vehicle', 'COMBO_POINTS')
@@ -196,9 +197,8 @@ do
 	end
 
 	ClassPowerDisable = function(self)
-		self:UnregisterEvent('UNIT_DISPLAYPOWER', Path)
+		self:UnregisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
 		self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
-		self:UnregisterEvent('UNIT_MAXPOWER', Path)
 
 		local element = self.ClassIcons
 		for i = 1, #element do
@@ -238,14 +238,13 @@ do
 			RequireSpec = SPEC_WARLOCK_AFFLICTION
 			RequireSpell = WARLOCK_SOULBURN
 		end
-	elseif(PlayerClass == 'ROGUE') then
+	elseif(PlayerClass == 'ROGUE' or PlayerClass == 'DRUID') then
 		ClassPowerID = SPELL_POWER_COMBO_POINTS
-		ClassPowerType = "COMBO_POINTS"
-	elseif(PlayerClass == 'DRUID') then
-		ClassPowerID = SPELL_POWER_COMBO_POINTS
-		ClassPowerType = "COMBO_POINTS"
-		RequireSpec = 2 --SPEC_DRUID_FERAL
-		RequireForm = CAT_FORM
+		ClassPowerType = 'COMBO_POINTS'
+
+		if(isBetaClient and PlayerClass == 'DRUID') then
+			RequirePower = SPELL_POWER_ENERGY
+		end
 	elseif(PlayerClass == 'MAGE' and isBetaClient) then
 		ClassPowerID = SPELL_POWER_ARCANE_CHARGES
 		ClassPowerType = 'ARCANE_CHARGES'
@@ -265,10 +264,6 @@ local Enable = function(self, unit)
 
 	if(RequireSpec) then
 		self:RegisterEvent('PLAYER_TALENT_UPDATE', VisibilityPath, true)
-	end
-	
-	if(RequireForm) then
-		self:RegisterEvent('UPDATE_SHAPESHIFT_FORM', VisibilityPath, true)
 	end
 
 	element.ClassPowerEnable = ClassPowerEnable
