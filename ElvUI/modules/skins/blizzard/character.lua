@@ -53,6 +53,7 @@ local function LoadSkin()
 
 		hooksecurefunc(slot.IconBorder, 'SetVertexColor', function(self, r, g, b)
 			self:GetParent():SetBackdropBorderColor(r, g, b)
+			self:SetTexture("")
 		end)
 		hooksecurefunc(slot.IconBorder, 'Hide', function(self)
 			self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
@@ -146,6 +147,15 @@ local function LoadSkin()
 	end
 
 	CharacterFrame:SetTemplate("Transparent")
+	CharacterStatsPane.ItemLevelCategory:StripTextures()
+	CharacterStatsPane.ItemLevelCategory:CreateBackdrop("Default", true)
+	CharacterStatsPane.ItemLevelCategory.backdrop:SetInside()
+	CharacterStatsPane.AttributesCategory:StripTextures()
+	CharacterStatsPane.AttributesCategory:CreateBackdrop("Default", true)
+	CharacterStatsPane.AttributesCategory.backdrop:SetInside()	
+	CharacterStatsPane.EnhancementsCategory:StripTextures()
+	CharacterStatsPane.EnhancementsCategory:CreateBackdrop("Default", true)
+	CharacterStatsPane.EnhancementsCategory.backdrop:SetInside()	
 
 	--Titles
 	PaperDollTitlesPane:HookScript("OnShow", function(self)
