@@ -214,7 +214,7 @@ function mod:UpdateAuraIcons(auras)
 		auras.icons[i]:SetParent(auras)
 		auras.icons[i]:ClearAllPoints()
 		auras.icons[i]:Hide()
-		auras.icons[i]:SetHeight(auras.db.baseHeight)
+		auras.icons[i]:SetHeight(auras.db.baseHeight or 18)
 
 		if(auras.side == "LEFT") then
 			if(i == 1) then
