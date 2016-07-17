@@ -470,13 +470,21 @@ E.Options.args.nameplate = {
 					order = 4,
 					disabled = function() return E.db.nameplates.useTargetScale ~= true end,
 				},
+				nonTargetTransparency = {
+					name = L["Non-Target Transparency"],
+					desc = L["Set the transparency level of nameplates that are not the target nameplate."],
+					type = "range",
+					min = 0, max = 1, step = 0.01,
+					isPercent = true,
+					order = 5,					
+				},
 				lowHealthThreshold = {
 					name = L["Low Health Threshold"],
 					desc = L["Make the unitframe glow yellow when it is below this percent of health, it will glow red when the health value is half of this value."],
 					type = "range",
 					isPercent = true,
 					min = 0.2, max = 1, step = 0.01, 
-					order = 5,
+					order = 6,
 				},
 				statusbar = {
 					order = 0,

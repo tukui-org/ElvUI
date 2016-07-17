@@ -154,6 +154,7 @@ function mod:SetTargetFrame(frame)
 		frame:SetFrameLevel(parent:GetFrameLevel() + 2)
 	end
 
+	local targetExists = UnitExists("target")
 	if(UnitIsUnit(frame.unit, "target") and not frame.isTarget) then
 		if(self.db.useTargetScale) then
 			self:SetFrameScale(frame, self.db.targetScale)
@@ -174,6 +175,10 @@ function mod:SetTargetFrame(frame)
 			self:RegisterEvents(frame, frame.unit)
 			self:UpdateElement_All(frame, frame.unit, true)
 		end
+
+		if(targetExists) then
+			frame:SetAlpha(1)
+		end
 	elseif (frame.isTarget) then
 		if(self.db.useTargetScale) then
 			self:SetFrameScale(frame, frame.ThreatScale or 1)
@@ -182,6 +187,18 @@ function mod:SetTargetFrame(frame)
 		if(self.db.units[frame.UnitType].healthbar.enable ~= true) then
 			self:UpdateAllFrame(frame)
 		end		
+
+		if(targetExists) then
+			frame:SetAlpha(1 - self.db.nonTargetTransparency)
+		else
+			frame:SetAlpha(1)
+		end
+	else
+		if(targetExists) then
+			frame:SetAlpha(1 - self.db.nonTargetTransparency)
+		else
+			frame:SetAlpha(1)
+		end
 	end
 	
 	mod:ClassBar_Update(frame)

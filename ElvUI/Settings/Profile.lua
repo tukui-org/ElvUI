@@ -186,6 +186,7 @@ P["nameplates"] = {
 	['fontOutline'] = 'MONOCHROMEOUTLINE',
 	['useTargetScale'] = true,
 	['targetScale'] = 1.15,
+	['nonTargetTransparency'] = 0.35,
 	["motionType"] =  "STACKED",
 	["onlyShowTarget"] = false,
 	["lowHealthThreshold"] = 0.4,
