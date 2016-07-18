@@ -214,7 +214,7 @@ end
 
 function mod:ConstructElement_HealthBar(parent)
 	local frame = CreateFrame("StatusBar", "$parentHealthBar", parent)
-	self:StyleFrame(frame, true)
+	self:StyleFrame(frame)
 	
 	parent.AbsorbBar = CreateFrame("StatusBar", "$parentAbsorbBar", frame)
 	parent.AbsorbBar:SetStatusBarTexture(LSM:Fetch("background", "ElvUI Blank"))

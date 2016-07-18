@@ -234,11 +234,11 @@ end
 
 function mod:ConstructElement_CastBar(parent)
 	local frame = CreateFrame("StatusBar", "$parentCastBar", parent)
-	self:StyleFrame(frame, true)
+	self:StyleFrame(frame)
 	frame:SetScript("OnUpdate", mod.UpdateElement_CastBarOnUpdate)
 	
 	frame.Icon = frame:CreateTexture(nil, "BORDER")
-	self:StyleFrame(frame.Icon, false)
+	self:StyleFrame(frame.Icon)
 	
 	frame.Name = frame:CreateFontString(nil, "OVERLAY")
 	frame.Time = frame:CreateFontString(nil, "OVERLAY")

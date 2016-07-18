@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local mod = E:GetModule('NamePlates')
 local LSM = LibStub("LibSharedMedia-3.0")
 
-auraCache = {}
+local auraCache = {}
 local tinsert, tremove, twipe = table.insert, table.remove, table.wipe
 
 
@@ -166,7 +166,7 @@ end
 
 function mod:CreateAuraIcon(parent)
 	local aura = CreateFrame("Frame", nil, parent)
-	self:StyleFrame(aura, false)
+	self:StyleFrame(aura)
 
 	aura.icon = aura:CreateTexture(nil, "OVERLAY")
 	aura.icon:SetAllPoints()
@@ -199,7 +199,7 @@ function mod:UpdateAuraIcons(auras)
 	local numCurrentAuras = #auras.icons
 	if numCurrentAuras > maxAuras then
 		for i = auras.db.numAuras, #auras.icons do
-			tinsert(auras.icons[i], auras.icons)
+			tinsert(auras.icons[i], auraCache)
 			auras.icons[i]:Hide()
 			auras.icons[i] = nil
 		end 
@@ -210,7 +210,7 @@ function mod:UpdateAuraIcons(auras)
 	end
 
 	for i=1, maxAuras do
-		auras.icons[i] = tremove(auraCache) or mod:CreateAuraIcon(auras)
+		auras.icons[i] = auras.icons[i] or tremove(auraCache) or mod:CreateAuraIcon(auras)
 		auras.icons[i]:SetParent(auras)
 		auras.icons[i]:ClearAllPoints()
 		auras.icons[i]:Hide()

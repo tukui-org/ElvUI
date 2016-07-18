@@ -217,18 +217,18 @@ function mod:SetTargetFrame(frame)
 	mod:ClassBar_Update(frame)
 end
 
-function mod:StyleFrame(frame, useBackdrop)
+function mod:StyleFrame(frame, useMainFrame)
 	local parent = frame
 
-	if(parent:GetObjectType() == "Texture") then
-		parent = frame:GetParent()
-		parent:CreateBackdrop("Transparent")
-		parent.backdrop:SetOutside(frame)
-		parent.backdrop:SetFrameLevel(1)
+	if(parent:GetObjectType() == "Texture" or useMainFrame) then
+		if(not useMainFrame) then
+			parent = frame:GetParent()
+		end
+		parent:SetTemplate("Transparent")
+		return
 	end
 
 	parent:CreateBackdrop("Transparent")
-	parent.backdrop:SetFrameLevel(1)
 end
 
 
