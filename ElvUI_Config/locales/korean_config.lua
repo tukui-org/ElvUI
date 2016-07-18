@@ -577,7 +577,6 @@ L["Healer Frames"] = true;
 L["Healer Icon"] = "힐러 아이콘 표시"
 L["Hide"] = "숨기기"
 L["Icon Base Height"] = true;
-L["Level"] = true;
 L["Low Health Threshold"] = "낮은 생명력 임계점"
 L["Make the unitframe glow yellow when it is below this percent of health, it will glow red when the health value is half of this value."] = true;
 L["NamePlates"] = "이름표"

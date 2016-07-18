@@ -529,7 +529,6 @@ L["Healer Frames"] = true;
 L["Healer Icon"] = "补职图标"
 L["Hide"] = "隐藏"
 L["Icon Base Height"] = true;
-L["Level"] = true;
 L["Low Health Threshold"] = "低生命值阀值"
 L["Make the unitframe glow yellow when it is below this percent of health, it will glow red when the health value is half of this value."] = true;
 L["NamePlates"] = "姓名面板(血条)"

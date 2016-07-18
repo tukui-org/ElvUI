@@ -130,7 +130,7 @@ local function GetUnitSettings(unit, name)
 					header = {
 						order = 0,
 						type = "header",
-						name = L["Level"],
+						name = LEVEL,
 					},
 					enable = {
 						order = 1,

@@ -528,7 +528,6 @@ L["Healer Frames"] = true;
 L["Healer Icon"] = "Icono de Sanador"
 L["Hide"] = "Ocultar"
 L["Icon Base Height"] = true;
-L["Level"] = true;
 L["Low Health Threshold"] = "Umbral de Salud Baja"
 L["Make the unitframe glow yellow when it is below this percent of health, it will glow red when the health value is half of this value."] = true;
 L["NamePlates"] = "Placas de Nombre"

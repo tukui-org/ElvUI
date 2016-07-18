@@ -529,7 +529,6 @@ L["Healer Frames"] = "Heiler Rahmen"
 L["Healer Icon"] = "Heilersymbol"
 L["Hide"] = "Verstecken" --Also used in DataTexts
 L["Icon Base Height"] = "Symbol Grundhöhe"
-L["Level"] = true;
 L["Low Health Threshold"] = "Niedrige Lebensbedrohung"
 L["Make the unitframe glow yellow when it is below this percent of health, it will glow red when the health value is half of this value."] = "Färbe das Einheitenfensterleuchten gelb, wenn es unter diesen Prozentwert des Lebens sinkt. Es wird Rot angezeigt, wenn es die Hälfte des Wertes erreicht"
 L["NamePlates"] = "Namensplaketten"

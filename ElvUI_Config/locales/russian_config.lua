@@ -528,7 +528,6 @@ L["Healer Frames"] = "Лекари"
 L["Healer Icon"] = "Иконки лекарей"
 L["Hide"] = "Скрыть" --Also used in DataTexts
 L["Icon Base Height"] = "Базовая высота иконки"
-L["Level"] = "Уровень"
 L["Low Health Threshold"] = "Пороговое значение здоровья"
 L["Make the unitframe glow yellow when it is below this percent of health, it will glow red when the health value is half of this value."] = "Заставляет индикатор подсвечиваться желтым при установленном проценте здоровья. При достижении половины этого значения вечение станет красным."
 L["NamePlates"] = "Индикаторы здоровья"

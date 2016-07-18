@@ -517,7 +517,6 @@ L["Healer Frames"] = true;
 L["Healer Icon"] = true;
 L["Hide"] = true; --Also used in DataTexts
 L["Icon Base Height"] = true;
-L["Level"] = true;
 L["Low Health Threshold"] = true;
 L["Make the unitframe glow yellow when it is below this percent of health, it will glow red when the health value is half of this value."] = true;
 L["NamePlates"] = true;
