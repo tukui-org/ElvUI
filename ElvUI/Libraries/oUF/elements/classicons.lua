@@ -161,6 +161,8 @@ local function Visibility(self, event, unit)
 				else
 					self:RegisterEvent('SPELLS_CHANGED', Visibility, true)
 				end
+			elseif (RequireSpell) then
+				self:RegisterEvent('SPELLS_CHANGED', Visibility, true)
 			end
 		end
 	end
@@ -244,6 +246,7 @@ do
 
 		if(isBetaClient and PlayerClass == 'DRUID') then
 			RequirePower = SPELL_POWER_ENERGY
+			RequireSpell = 5221 -- Shred
 		end
 	elseif(PlayerClass == 'MAGE' and isBetaClient) then
 		ClassPowerID = SPELL_POWER_ARCANE_CHARGES
