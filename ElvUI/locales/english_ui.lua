@@ -64,10 +64,6 @@ L["says"] = true;
 L["whispers"] = true;
 L["yells"] = true;
 
---DataBars
-
-
-
 --DataTexts
 L["(Hold Shift) Memory Usage"] = true;
 L["AP"] = true;
