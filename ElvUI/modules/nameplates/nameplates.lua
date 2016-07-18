@@ -164,11 +164,15 @@ function mod:SetTargetFrame(frame)
 	--Match parent's frame level for targetting purposes. Best time to do it is here.
 	local parent = self:GetNamePlateForUnit(frame.unit);
 	if(parent) then
-		frame:SetFrameLevel(parent:GetFrameLevel() + 2)
+		if frame:GetFrameLevel() < 100 then
+			frame:SetFrameLevel(parent:GetFrameLevel() + 100)
+		end
 	end
 
 	local targetExists = UnitExists("target")
 	if(UnitIsUnit(frame.unit, "target") and not frame.isTarget) then
+		frame:SetFrameLevel(parent:GetFrameLevel() + 5)
+		frame.Glow:SetFrameLevel(parent:GetFrameLevel() + 3)
 		if(self.db.useTargetScale) then
 			self:SetFrameScale(frame, self.db.targetScale)
 		end
