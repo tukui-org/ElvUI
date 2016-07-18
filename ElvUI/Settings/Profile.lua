@@ -39,12 +39,14 @@ P['general'] = {
 				['position'] = "TOPLEFT",
 				['xOffset'] = 0,
 				['yOffset'] = 0,
+				["hide"] = false,
 			},
 			['calendar'] = {
 				['scale'] = 1,
 				['position'] = "TOPRIGHT",
 				['xOffset'] = 0,
 				['yOffset'] = 0,
+				["hide"] = true,
 			},
 			['mail'] = {
 				['scale'] = 1,
