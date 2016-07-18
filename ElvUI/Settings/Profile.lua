@@ -23,7 +23,7 @@ P['general'] = {
 	['afk'] = true,
 
 	["fontSize"] = 12,
-	["font"] = "Expressway",
+	["font"] = "PT Sans Narrow",
 
 	["bordercolor"] = { r = 0.1,g = 0.1,b = 0.1 },
 	["backdropcolor"] = { r = 0.1,g = 0.1,b = 0.1 },
@@ -569,7 +569,7 @@ P['chat'] = {
 	['throttleInterval'] = 45,
 	['scrollDownInterval'] = 15,
 	['fade'] = true,
-	['font'] = 'Expressway',
+	['font'] = 'PT Sans Narrow',
 	['fontOutline'] = 'NONE',
 	['sticky'] = true,
 	['emotionIcons'] = true,
@@ -595,14 +595,14 @@ P['chat'] = {
 	['fadeTabsNoBackdrop'] = true,
 	["useAltKey"] = false,
 
-	['tabFont'] = 'Expressway',
+	['tabFont'] = 'PT Sans Narrow',
 	['tabFontSize'] = 12,
 	['tabFontOutline'] = 'NONE',
 }
 
 --Datatexts
 P['datatexts'] = {
-	['font'] = 'Expressway',
+	['font'] = 'PT Sans Narrow',
 	['fontSize'] = 12,
 	['fontOutline'] = 'NONE',
 	["wordWrap"] = false,
@@ -657,7 +657,7 @@ P['tooltip'] = {
 	['inspectInfo'] = true,
 	['itemCount'] = 'BAGS_ONLY',
 	['spellID'] = true,
-	["font"] = "Expressway",
+	["font"] = "PT Sans Narrow",
 	["fontOutline"] = "NONE",
 	["headerFontSize"] = 12,
 	["textFontSize"] = 12,
