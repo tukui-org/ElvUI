@@ -284,10 +284,6 @@ function mod:NAME_PLATE_UNIT_ADDED(event, unit, frame)
 		frame.UnitFrame.UnitType = "ENEMY_NPC"
 	end
 
-	frame.UnitFrame.Buffs.db = self.db.units[frame.UnitFrame.UnitType].buffs
-	frame.UnitFrame.Debuffs.db = self.db.units[frame.UnitFrame.UnitType].debuffs
-	self:UpdateAuraIcons(frame.UnitFrame.Debuffs)
-	self:UpdateAuraIcons(frame.UnitFrame.Buffs)
 
 	if(frame.UnitFrame.UnitType == "PLAYER") then
 		mod.PlayerFrame = frame
@@ -298,6 +294,16 @@ function mod:NAME_PLATE_UNIT_ADDED(event, unit, frame)
 		self:ConfigureElement_PowerBar(frame.UnitFrame)
 		self:ConfigureElement_CastBar(frame.UnitFrame)
 		self:ConfigureElement_Glow(frame.UnitFrame)	
+
+		if(self.db.units[frame.UnitFrame.UnitType].buffs.enable) then
+			frame.UnitFrame.Buffs.db = self.db.units[frame.UnitFrame.UnitType].buffs
+			self:UpdateAuraIcons(frame.UnitFrame.Buffs)
+		end
+
+		if(self.db.units[frame.UnitFrame.UnitType].debuffs.enable) then
+			frame.UnitFrame.Debuffs.db = self.db.units[frame.UnitFrame.UnitType].debuffs
+			self:UpdateAuraIcons(frame.UnitFrame.Debuffs)
+		end		
 	end
 	
 	self:ConfigureElement_Level(frame.UnitFrame)
