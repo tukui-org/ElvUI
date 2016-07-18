@@ -267,7 +267,7 @@ local function GetUnitSettings(unit, name)
 					numAuras = {
 						order = 2,
 						name = L["# Displayed Auras"],
-						desc = L["Controls how many auras are displayed, this will also affect the size of the auras"],
+						desc = L["Controls how many auras are displayed, this will also affect the size of the auras."],
 						type = "range",
 						min = 1, max = 8, step = 1,
 						get = function(info) return E.db.nameplates.units[unit].debuffs[ info[#info] ] end,
@@ -344,7 +344,7 @@ local function GetUnitSettings(unit, name)
 					numAuras = {
 						order = 2,
 						name = L["# Displayed Auras"],
-						desc = L["Controls how many auras are displayed, this will also affect the size of the auras"],
+						desc = L["Controls how many auras are displayed, this will also affect the size of the auras."],
 						type = "range",
 						min = 1, max = 8, step = 1,
 						get = function(info) return E.db.nameplates.units[unit].buffs[ info[#info] ] end,
@@ -499,7 +499,7 @@ E.Options.args.nameplate = {
 				},
 				targetScale = {
 					name = L["Target Scale"],
-					desc = L["Scale of the nameplate that is targetted"],
+					desc = L["Scale of the nameplate that is targetted."],
 					type = "range",
 					min = 0.3, max = 2, step = 0.01,
 					isPercent = true,

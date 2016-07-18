@@ -64,6 +64,10 @@ L["says"] = true;
 L["whispers"] = true;
 L["yells"] = true;
 
+--DataBars
+
+
+
 --DataTexts
 L["(Hold Shift) Memory Usage"] = true;
 L["AP"] = true;
@@ -228,6 +232,9 @@ L["XP:"] = true;
 L["You don't have permission to mark targets."] = true;
 
 --Movers
+L["Honor Bar"] = true;
+L["Artifact Bar"] = true;
+L["Player Nameplate"] = true;
 L["Alternative Power"] = true;
 L["Archeology Progress Bar"] = true;
 L["Arena Frames"] = true; --Also used in UnitFrames
@@ -277,11 +284,12 @@ L["TargetTargetTarget Frame"] = true; --Also used in UnitFrames
 L["Tooltip"] = true;
 L["Vehicle Seat Frame"] = true;
 
---NamePlates
-L["Discipline"] = true;
-L["Holy"] = true;
-L["Mistweaver"] = true;
-L["Restoration"] = true;
+--Plugin Installer
+L["ElvUI Plugin Installation"] = true;
+L["In Progress"] = true;
+L["List of installations in queue:"] = true;
+L["Pending"] = true;
+L["Steps"] = true;
 
 --Prints
 L[" |cff00ff00bound to |r"] = true;
