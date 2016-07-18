@@ -244,7 +244,7 @@ L["Focus Castbar"] = "Fokus Zauberbalken"
 L["Focus Frame"] = "Fokusfenster" --Also used in UnitFrames
 L["FocusTarget Frame"] = "Fokus-Ziel Fenster" --Also used in UnitFrames
 L["GM Ticket Frame"] = "GM-Ticket-Fenster"
-L["Honor Bar"] = true;
+L["Honor Bar"] = "Ehreleiste"
 L["Left Chat"] = "Linker Chat"
 L["Loot / Alert Frames"] = "Beute-/Alarmfenster"
 L["Loot Frame"] = "Beute-Fenster"
@@ -264,7 +264,7 @@ L["Player Buffs"] = "Spieler Buffs"
 L["Player Castbar"] = "Spieler Zauberbalken"
 L["Player Debuffs"] = "Spieler Debuffs"
 L["Player Frame"] = "Spielerfenster" --Also used in UnitFrames
-L["Player Nameplate"] = true;
+L["Player Nameplate"] = "Spieler Namensplaketten"
 L["Player Powerbar"] = "Spieler Kraftleiste"
 L["Raid Frames"] = "Schlachtzugsfenster" --Also used in UnitFrames
 L["Raid Pet Frames"] = "Schlachtzugspets-Fenster"
@@ -282,10 +282,10 @@ L["Vehicle Seat Frame"] = "Fahrzeugfenster"
 
 --Plugin Installer
 L["ElvUI Plugin Installation"] = true;
-L["In Progress"] = true;
-L["List of installations in queue:"] = true;
-L["Pending"] = true;
-L["Steps"] = true;
+L["In Progress"] = "In Bearbeitung"
+L["List of installations in queue:"] = "Liste von Installationen in Warteschlange:"
+L["Pending"] = "Ausstehend"
+L["Steps"] = "Schritte"
 
 --Prints
 L[" |cff00ff00bound to |r"] = " |cff00ff00gebunden zu |r"
