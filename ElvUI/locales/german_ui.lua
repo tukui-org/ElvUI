@@ -231,6 +231,7 @@ L["You don't have permission to mark targets."] = "Du hast keine Rechte um ein Z
 L["Alternative Power"] = "Alternative Energie"
 L["Archeology Progress Bar"] = "Archeologie Fortschrittsleiste"
 L["Arena Frames"] = "Arena Fenster" --Also used in UnitFrames
+L["Artifact Bar"] = "Artifaktleiste"
 L["Bags"] = "Taschen" --Also in DataTexts
 L["Bar "] = "Leiste " --Also in ActionBars
 L["BNet Frame"] = "BNet-Fenster"
@@ -243,6 +244,7 @@ L["Focus Castbar"] = "Fokus Zauberbalken"
 L["Focus Frame"] = "Fokusfenster" --Also used in UnitFrames
 L["FocusTarget Frame"] = "Fokus-Ziel Fenster" --Also used in UnitFrames
 L["GM Ticket Frame"] = "GM-Ticket-Fenster"
+L["Honor Bar"] = true;
 L["Left Chat"] = "Linker Chat"
 L["Loot / Alert Frames"] = "Beute-/Alarmfenster"
 L["Loot Frame"] = "Beute-Fenster"
@@ -262,6 +264,7 @@ L["Player Buffs"] = "Spieler Buffs"
 L["Player Castbar"] = "Spieler Zauberbalken"
 L["Player Debuffs"] = "Spieler Debuffs"
 L["Player Frame"] = "Spielerfenster" --Also used in UnitFrames
+L["Player Nameplate"] = true;
 L["Player Powerbar"] = "Spieler Kraftleiste"
 L["Raid Frames"] = "Schlachtzugsfenster" --Also used in UnitFrames
 L["Raid Pet Frames"] = "Schlachtzugspets-Fenster"
@@ -277,11 +280,12 @@ L["TargetTargetTarget Frame"] = "Ziel des Ziels des Ziels Fenster"
 L["Tooltip"] = "Tooltip"
 L["Vehicle Seat Frame"] = "Fahrzeugfenster"
 
---NamePlates
-L["Discipline"] = "Disziplin"
-L["Holy"] = "Heilig"
-L["Mistweaver"] = "Nebelwirker"
-L["Restoration"] = "Wiederherstellung"
+--Plugin Installer
+L["ElvUI Plugin Installation"] = true;
+L["In Progress"] = true;
+L["List of installations in queue:"] = true;
+L["Pending"] = true;
+L["Steps"] = true;
 
 --Prints
 L[" |cff00ff00bound to |r"] = " |cff00ff00gebunden zu |r"

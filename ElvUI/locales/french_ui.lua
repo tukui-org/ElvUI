@@ -231,6 +231,7 @@ L["You don't have permission to mark targets."] = "Vous n'avez pas la permission
 L["Alternative Power"] = "Puissance Alternative"
 L["Archeology Progress Bar"] = "Barre de progression d'Archéologie";
 L["Arena Frames"] = "Cadre d'arène" --Also used in UnitFrames
+L["Artifact Bar"] = true;
 L["Bags"] = "Sacs" --Also in DataTexts
 L["Bar "] = "Barre " --Also in ActionBars
 L["BNet Frame"] = "Cadre BNet"
@@ -243,6 +244,7 @@ L["Focus Castbar"] = "Barre d'incantation du Focus"
 L["Focus Frame"] = "Cadre Focus" --Also used in UnitFrames
 L["FocusTarget Frame"] = "Cadre de la cible de votre Focus" --Also used in UnitFrames
 L["GM Ticket Frame"] = "Cadre du ticket MJ"
+L["Honor Bar"] = true;
 L["Left Chat"] = "Chat gauche"
 L["Loot / Alert Frames"] = "Cadres de butin / Alerte"
 L["Loot Frame"] = "Cadre de butin";
@@ -262,6 +264,7 @@ L["Player Buffs"] = "Améliorations du joueur";
 L["Player Castbar"] = "Barre d'incantation du joueur"
 L["Player Debuffs"] = "Affaiblissements du joueur";
 L["Player Frame"] = "Cadre du joueur" --Also used in UnitFrames
+L["Player Nameplate"] = true;
 L["Player Powerbar"] = "Barre de pouvoir du joueur";  -- need review.
 L["Raid Frames"] = "Cadres de Raid";
 L["Raid Pet Frames"] = "Cadres de Raid des Familiers";
@@ -277,11 +280,12 @@ L["TargetTargetTarget Frame"] = "Cadre de la cible de la cible de la cible";
 L["Tooltip"] = "Infobulle"
 L["Vehicle Seat Frame"] = "Cadre de siège du véhicule"
 
---NamePlates
-L["Discipline"] = "Discipline"
-L["Holy"] = "Sacré"
-L["Mistweaver"] = "Tisse-Brume"
-L["Restoration"] = "Restauration"
+--Plugin Installer
+L["ElvUI Plugin Installation"] = true;
+L["In Progress"] = true;
+L["List of installations in queue:"] = true;
+L["Pending"] = true;
+L["Steps"] = true;
 
 --Prints
 L[" |cff00ff00bound to |r"] = "|cff00ff00assigné à |r"

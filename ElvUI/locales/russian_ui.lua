@@ -231,6 +231,7 @@ L["You don't have permission to mark targets."] = "У вас нет разреш
 L["Alternative Power"] = "Альтернативный ресурс"
 L["Archeology Progress Bar"] = "Прогресс археологии"
 L["Arena Frames"] = "Арена" --Also used in UnitFrames
+L["Artifact Bar"] = true;
 L["Bags"] = "Сумки" --Also in DataTexts
 L["Bar "] = "Панель " --Also in ActionBars
 L["BNet Frame"] = "Оповещения BNet"
@@ -243,6 +244,7 @@ L["Focus Castbar"] = "Полоса заклинаний фокуса"
 L["Focus Frame"] = "Фокус" --Also used in UnitFrames
 L["FocusTarget Frame"] = "Цель фокуса" --Also used in UnitFrames
 L["GM Ticket Frame"] = "Запрос ГМу"
+L["Honor Bar"] = true;
 L["Left Chat"] = "Левый чат"
 L["Loot / Alert Frames"] = "Розыгрыш/оповещения"
 L["Loot Frame"] = "Окно добычи"
@@ -262,6 +264,7 @@ L["Player Buffs"] = "Баффы игрока"
 L["Player Castbar"] = "Полоса заклинаний игрока"
 L["Player Debuffs"] = "Дебаффы игрока"
 L["Player Frame"] = "Игрок" --Also used in UnitFrames
+L["Player Nameplate"] = true;
 L["Player Powerbar"] = "Полоса ресурса игрока"
 L["Raid Frames"] = "Рейд"
 L["Raid Pet Frames"] = "Питомцы рейда"
@@ -277,11 +280,12 @@ L["TargetTargetTarget Frame"] = "Цель цели цели"
 L["Tooltip"] = "Подсказка"
 L["Vehicle Seat Frame"] = "Техника"
 
---NamePlates
-L["Discipline"] = "Послушание"
-L["Holy"] = "Свет"
-L["Mistweaver"] = "Ткач туманов"
-L["Restoration"] = "Исцеление"
+--Plugin Installer
+L["ElvUI Plugin Installation"] = true;
+L["In Progress"] = true;
+L["List of installations in queue:"] = true;
+L["Pending"] = true;
+L["Steps"] = true;
 
 --Prints
 L[" |cff00ff00bound to |r"] = " |cff00ff00назначено для |r"

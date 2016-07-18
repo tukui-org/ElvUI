@@ -231,6 +231,7 @@ L["You don't have permission to mark targets."] = "No tienes permiso para marcar
 L["Alternative Power"] = "Poder Alternativo"
 L["Archeology Progress Bar"] = true;
 L["Arena Frames"] = "Marcos de Arena"
+L["Artifact Bar"] = true;
 L["Bags"] = "Bolsas"
 L["Bar "] = "Barra "
 L["BNet Frame"] = "Marco BNet"
@@ -243,6 +244,7 @@ L["Focus Castbar"] = "Barra de Lanzamiento del Foco"
 L["Focus Frame"] = "Marco de Foco"
 L["FocusTarget Frame"] = "Marco de Objetivo del Foco"
 L["GM Ticket Frame"] = "Marco de Consultas para el MJ"
+L["Honor Bar"] = true;
 L["Left Chat"] = "Chat Izquierdo"
 L["Loot / Alert Frames"] = "Marcos de Botín / Alerta"
 L["Loot Frame"] = true;
@@ -262,6 +264,7 @@ L["Player Buffs"] = true;
 L["Player Castbar"] = "Barra de Lanzamiento del Jugador"
 L["Player Debuffs"] = true;
 L["Player Frame"] = "Marco de Jugador"
+L["Player Nameplate"] = true;
 L["Player Powerbar"] = true;
 L["Raid Frames"] = true;
 L["Raid Pet Frames"] = true;
@@ -277,11 +280,12 @@ L["TargetTargetTarget Frame"] = true;
 L["Tooltip"] = "Descripción Emergente"
 L["Vehicle Seat Frame"] = "Marco del Asiento del Vehículo"
 
---NamePlates
-L["Discipline"] = "Disciplina"
-L["Holy"] = "Sagrado"
-L["Mistweaver"] = "Tejedor de niebla"
-L["Restoration"] = "Restauración"
+--Plugin Installer
+L["ElvUI Plugin Installation"] = true;
+L["In Progress"] = true;
+L["List of installations in queue:"] = true;
+L["Pending"] = true;
+L["Steps"] = true;
 
 --Prints
 L[" |cff00ff00bound to |r"] = " |cff00ff00ligado(a) a |r"

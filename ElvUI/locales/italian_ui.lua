@@ -231,6 +231,7 @@ L["You don't have permission to mark targets."] = true;
 L["Alternative Power"] = true;
 L["Archeology Progress Bar"] = true;
 L["Arena Frames"] = true; --Also used in UnitFrames
+L["Artifact Bar"] = true;
 L["Bags"] = true; --Also in DataTexts
 L["Bar "] = true; --Also in ActionBars
 L["BNet Frame"] = true;
@@ -243,6 +244,7 @@ L["Focus Castbar"] = true;
 L["Focus Frame"] = true; --Also used in UnitFrames
 L["FocusTarget Frame"] = true; --Also used in UnitFrames
 L["GM Ticket Frame"] = true;
+L["Honor Bar"] = true;
 L["Left Chat"] = true;
 L["Loot / Alert Frames"] = true;
 L["Loot Frame"] = true;
@@ -262,6 +264,7 @@ L["Player Buffs"] = true;
 L["Player Castbar"] = true;
 L["Player Debuffs"] = true;
 L["Player Frame"] = true; --Also used in UnitFrames
+L["Player Nameplate"] = true;
 L["Player Powerbar"] = true;
 L["Raid Frames"] = true;
 L["Raid Pet Frames"] = true;
@@ -277,11 +280,12 @@ L["TargetTargetTarget Frame"] = true;
 L["Tooltip"] = true;
 L["Vehicle Seat Frame"] = true;
 
---NamePlates
-L["Discipline"] = true;
-L["Holy"] = true;
-L["Mistweaver"] = true;
-L["Restoration"] = true;
+--Plugin Installer
+L["ElvUI Plugin Installation"] = true;
+L["In Progress"] = true;
+L["List of installations in queue:"] = true;
+L["Pending"] = true;
+L["Steps"] = true;
 
 --Prints
 L[" |cff00ff00bound to |r"] = true;

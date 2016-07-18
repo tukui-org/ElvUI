@@ -231,6 +231,7 @@ L["You don't have permission to mark targets."] = "Você não tem permissão par
 L["Alternative Power"] = "Recurso Alternativo"
 L["Archeology Progress Bar"] = true;
 L["Arena Frames"] = "Quadros de Arenas"
+L["Artifact Bar"] = true;
 L["Bags"] = "Bolsas"
 L["Bar "] = "Barra "
 L["BNet Frame"] = "Quadro do Bnet"
@@ -243,6 +244,7 @@ L["Focus Castbar"] = "Barra de Lançamento do Foco"
 L["Focus Frame"] = "Quadro do Foco"
 L["FocusTarget Frame"] = "Quadro do Alvo do Foco"
 L["GM Ticket Frame"] = "Quadro de Consulta com GM"
+L["Honor Bar"] = true;
 L["Left Chat"] = "Bate-papo esquerdo"
 L["Loot / Alert Frames"] = "Quadro de Saque / Alerta"
 L["Loot Frame"] = true;
@@ -262,6 +264,7 @@ L["Player Buffs"] = true;
 L["Player Castbar"] = "Barra de lançamento do Jogador"
 L["Player Debuffs"] = true;
 L["Player Frame"] = "Quadro do Jogador"
+L["Player Nameplate"] = true;
 L["Player Powerbar"] = true;
 L["Raid Frames"] = true;
 L["Raid Pet Frames"] = true;
@@ -277,11 +280,12 @@ L["TargetTargetTarget Frame"] = true;
 L["Tooltip"] = "Tooltip"
 L["Vehicle Seat Frame"] = "Quadro de Assento de Veículo"
 
---NamePlates
-L["Discipline"] = "Disciplina"
-L["Holy"] = "Sagrado"
-L["Mistweaver"] = "Tecelão da Névoa"
-L["Restoration"] = "Restauração"
+--Plugin Installer
+L["ElvUI Plugin Installation"] = true;
+L["In Progress"] = true;
+L["List of installations in queue:"] = true;
+L["Pending"] = true;
+L["Steps"] = true;
 
 --Prints
 L[" |cff00ff00bound to |r"] = " |cff00ff00Ligado a |r"

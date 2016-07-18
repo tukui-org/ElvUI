@@ -231,6 +231,7 @@ L["You don't have permission to mark targets."] = "你沒有標記目標的權�
 L["Alternative Power"] = "特殊能量條框架"
 L["Archeology Progress Bar"] = true;
 L["Arena Frames"] = "競技場框架" --Also used in UnitFrames
+L["Artifact Bar"] = true;
 L["Bags"] = "背包" --Also in DataTexts
 L["Bar "] = "快捷列 " --Also in ActionBars
 L["BNet Frame"] = "戰網提示資訊"
@@ -243,6 +244,7 @@ L["Focus Castbar"] = "焦點目標施法條"
 L["Focus Frame"] = "焦點目標框架" --Also used in UnitFrames
 L["FocusTarget Frame"] = "焦點目標的目標框架" --Also used in UnitFrames
 L["GM Ticket Frame"] = "GM 對話框"
+L["Honor Bar"] = true;
 L["Left Chat"] = "左側對話框"
 L["Loot / Alert Frames"] = "拾取 / 提醒框架"
 L["Loot Frame"] = true;
@@ -262,6 +264,7 @@ L["Player Buffs"] = true;
 L["Player Castbar"] = "玩家施法條"
 L["Player Debuffs"] = true;
 L["Player Frame"] = "玩家框架" --Also used in UnitFrames
+L["Player Nameplate"] = true;
 L["Player Powerbar"] = true;
 L["Raid Frames"] = true;
 L["Raid Pet Frames"] = true;
@@ -277,11 +280,12 @@ L["TargetTargetTarget Frame"] = true;
 L["Tooltip"] = "浮動提示"
 L["Vehicle Seat Frame"] = "載具座位框"
 
---NamePlates
-L["Discipline"] = "戒律"
-L["Holy"] = "神聖"
-L["Mistweaver"] = '織霧'
-L["Restoration"] = "恢復"
+--Plugin Installer
+L["ElvUI Plugin Installation"] = true;
+L["In Progress"] = true;
+L["List of installations in queue:"] = true;
+L["Pending"] = true;
+L["Steps"] = true;
 
 --Prints
 L[" |cff00ff00bound to |r"] = " |cff00ff00綁定到 |r"
