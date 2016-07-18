@@ -161,7 +161,7 @@ local function Visibility(self, event, unit)
 				else
 					self:RegisterEvent('SPELLS_CHANGED', Visibility, true)
 				end
-			elseif (RequireSpell) then
+			else
 				self:RegisterEvent('SPELLS_CHANGED', Visibility, true)
 			end
 		end
