@@ -4,7 +4,7 @@ local L = AceLocale:NewLocale("ElvUI", "ruRU")
 if not L then return; end
 
 -- *_DESC locales
-L["AURAS_DESC"] = 'Настройка иконок эффектов, находящихся у миникарты.'
+L["AURAS_DESC"] = "Настройка иконок эффектов, находящихся у миникарты."
 L["BAGS_DESC"] = "Настройки сумок ElvUI"
 L["CHAT_DESC"] = "Настройте отображение чата ElvUI."
 L["DATATEXT_DESC"] = "Установка отображения информационных текстов."
@@ -46,17 +46,17 @@ L["TEXT_FORMAT_DESC"] = [=[Строка для изменения вида те�
 [powercolor][power:current]
 
 Форматы здоровья/резурсов:
-'current' - текущее значение
-'percent' - значение в процентах
-'current-max' - текущее значение, за которым идет максимальное значение. Будет отображать только максимальное значение, если текущее равно ему.
-'current-percent' - текущее значение, за которым идет значение в процентах.Будет отображать только максимальное значение, если текущее равно ему.
-'current-max-percent' - текущее значение, максимальное значение, за которым идет значение в процентах, Будет отображать только максимальное значение, если текущее равно ему.
-'deficit' - отображает значение недостающего до максимума здоровья/ресурса. Не будет отображать ничего, если текущее значение равно максимальному.
+"current" - текущее значение
+"percent" - значение в процентах
+"current-max" - текущее значение, за которым идет максимальное значение. Будет отображать только максимальное значение, если текущее равно ему.
+"current-percent" - текущее значение, за которым идет значение в процентах.Будет отображать только максимальное значение, если текущее равно ему.
+"current-max-percent" - текущее значение, максимальное значение, за которым идет значение в процентах, Будет отображать только максимальное значение, если текущее равно ему.
+"deficit" - отображает значение недостающего до максимума здоровья/ресурса. Не будет отображать ничего, если текущее значение равно максимальному.
 
 Форматы имени:
-'name:short' - Имя с ограничением длины в 10 символов
-'name:medium' - Имя с ограничением длины в 15 символов
-'name:long' - Имя с ограничением длины в 20 символов
+"name:short" - Имя с ограничением длины в 10 символов
+"name:medium" - Имя с ограничением длины в 15 символов
+"name:long" - Имя с ограничением длины в 20 символов
 
 Для отключения оставьте поле пустым, для дополнительной информации посетите http://www.tukui.org]=];
 L["IGNORE_ITEMS_DESC"] = [=[Вменяемые параметры:
@@ -316,8 +316,8 @@ L["ELVUI_CREDITS"] = "Я бы хотел выделить следующих л�
 L["Testing:"] = "Тестирование:"
 
 --DataBars
-L["DATABAR_DESC"] = "Setup on-screen display of information bars."
-L["DataBars"] = true;
+L["DATABAR_DESC"] = "Контролирует отображение информационных полос."
+L["DataBars"] = "Инфо-полосы"
 
 --DataTexts
 L["24-Hour Time"] = "24х часовой формат"
@@ -371,7 +371,7 @@ L["Accept Invites"] = "Принимать приглашения"
 L["Adjust the position of the threat bar to either the left or right datatext panels."] = "Изменяет позицию полосы угрозы"
 L["Adjust the size of the minimap."] = "Изменяет размер миникарты"
 L["AFK Mode"] = "Режим АФК"
-L["Animate Config"] = true;
+L["Animate Config"] = "Анимировать настройки"
 L["Announce Interrupts"] = "Объявлять о прерываниях"
 L["Announce when you interrupt a spell to the specified chat channel."] = "Объявлять о прерванных Вами заклинаниях в указанный канал чата."
 L["Attempt to support eyefinity/nvidia surround."] = "Пытаться поддерживать eyefinity/nvidia surround"
@@ -398,7 +398,7 @@ L["Display emotion icons in chat."] = "Показывать смайлы в ча
 L["Emotion Icons"] = "Иконки эмоций"
 L["Enable/Disable the loot frame."] = "Включить/выключить окно добычи ElvUI."
 L["Enable/Disable the loot roll frame."] = "Включить/выключить фрейм распределения добычи ElvUI."
-L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the minimap datatexts.|r"] = true;
+L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the minimap datatexts.|r"] = "Включить/выключить миникарту. |cffFF0000АХТУНГ: отключение карты уберет и соответственные инфо-тексты.|r"
 L["Enhanced PVP Messages"] = "Улущенные PvP сообщения"
 L["General"] = "Общие"
 L["Height of the objective tracker. Increase size to be able to see more objectives."] = "Высота списка заданий. Увеличение размера позволить видеть большее количество."
@@ -424,11 +424,11 @@ L["Reset all frames to their original positions."] = "Установить вс�
 L["Reset Anchors"] = "Сбросить позиции"
 L["Reverse Fill Direction"] = "Обратное заполнение"
 L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."] = "Отображать ошибки типа ADDON_ACTION_BLOCKED в фрейме ошибок lua. Эти ошибки в большинстве случаев не сильно важны и не влияют на производительность. Также многие из этих ошибок не могут быть исправлены. Пожалуйста, сообщайте об этих ошибках только если Вы заметите дефект в игре."
-L["Skin Backdrop (No Borders)"] = true;
+L["Skin Backdrop (No Borders)"] = "Стилизовать фон (без границ)"
 L["Skin Backdrop"] = "Стилизовать фон"
 L["Skin the blizzard chat bubbles."] = "Стилизовать облачка сообщения Blizzard"
 L["Smaller World Map"] = "Маленькая карта мира"
-L["Talking Head Scale"] = true;
+L["Talking Head Scale"] = 'Масштаб "говорящей головы"'
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "Шрифт, которым будет написан текст над головами игроков. |cffFF0000ВНИМАНИЕ: Необходим перезапуск игры или релог для начала действия этой настройки.|r"
 L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."] = "Тонкие границы изменят общий вид интерфейса. Это небольшое улучшение производительности относительно традиционного вида."
 L["Thin Border Theme"] = "Тонкие границы"
@@ -436,8 +436,8 @@ L["Toggle Tutorials"] = "Показать помощь"
 L["Top Panel"] = "Верхняя панель"
 L["When you go AFK display the AFK screen."] = "Отображать специальный экран, когда вы переходите в состояние \"Отсутствует\"."
 L["World Map Coordinates"] = "Координаты карты мира"
-L["X-Offset"] = true;
-L["Y-Offset"] = true;
+L["X-Offset"] = "Отступ по X"
+L["Y-Offset"] = "Отступ по Y"
 
 --Media
 L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."] = "Пименить этот шрифт ко всем элементам интерфейса. Некоторые шрифты будут попущены из-за более мелкого азмера по умолчанию."
@@ -494,68 +494,62 @@ L["Unlock various elements of the UI to be repositioned."] = "Разблокир
 L["Version"] = "Версия"
 
 --NamePlates
-L["# Displayed Auras"] = true;
+L["# Displayed Auras"] = "Кол-во аур"
 L["Add Name"] = "Добавить имя"
-L["Bad Color"] = true;
-L["Bad Scale"] = true;
-L["Bad Transition Color"] = true;
-L["Base Height for the Aura Icon"] = true;
-L["Boss Auras"] = true;
-L["By forcing the nameplate to always show it will not move on the screen to stay below your characters feet."] = true;
+L["Bad Color"] = "Плохой цвет"
+L["Bad Scale"] = "Плохой масштаб"
+L["Bad Transition Color"] = "Цвет плохого перехода"
+L["Base Height for the Aura Icon"] = "Базовая высота иконок аур"
+L["Boss Auras"] = "Ауры боссов"
+L["By forcing the nameplate to always show it will not move on the screen to stay below your characters feet."] = "При принудительном отображении индикатор перестанет двигаться по экрану с целью постоянно оставаться около ног вашего персонажа.Ы"
 L["Cast Bar"] = "Полоса заклинаний"
-L["Cast Color"] = true;
-L["Cast No Interrupt Color"] = true;
-L["Color Tanked"] = true;
-L["Controls how many auras are displayed, this will also affect the size of the auras."] = true;
-L["Copy settings from another unit."] = true;
-L["Copy Settings From"] = true;
-L["Default Settings"] = true;
+L["Cast Color"] = "Цвет полосы заклинаний"
+L["Cast No Interrupt Color"] = "Цвет не прерываемого"
+L["Color Tanked"] = "Окрашивать танкуемых"
+L["Controls how many auras are displayed, this will also affect the size of the auras."] = "Контроллирует кол-во отображаемых эффектов. Также влияет на размер иконок."
+L["Copy settings from another unit."] = "Скопировать настройки с другого юнита."
+L["Copy Settings From"] = "Скопировать из"
+L["Default Settings"] = "Умолчания"
 L["Display a healer icon over known healers inside battlegrounds or arenas."] = "Отображать иконки лекаря над известными целителями на полях боя и аренах"
-L["Display Minions"] = true;
-L["Display Minor Units"] = true;
-L["Enable/Disable the scaling of targetted nameplates."] = true;
-L["Enemy NPC Frames"] = true;
-L["Enemy Player Frames"] = true;
+L["Display Minions"] = "Отображать миньонов"
+L["Display Minor Units"] = "Отображать малых существ"
+L["Enable/Disable the scaling of targetted nameplates."] = "Включить/выключить масштабирование индикатора цели."
+L["Enemy NPC Frames"] = "Враждебные НИП"
+L["Enemy Player Frames"] = "Враждебные игроки"
 L["Enemy"] = "Враг" --Also used in UnitFrames
-L["ENEMY_NPC"] = "Enemy NPC"
-L["ENEMY_PLAYER"] = "Enemy Player"
-L["Filter"] = true;
+L["Filter"] = "Фильтр"
 L["Filters"] = "Фильтры" --Also used in UnitFrames
-L["Friendly NPC Frames"] = true;
-L["Friendly Player Frames"] = true;
-L["FRIENDLY_NPC"] = "Friendly NPC"
-L["FRIENDLY_PLAYER"] = "Friendly Player"
-L["Good Color"] = true;
-L["Good Scale"] = true;
-L["Good Transition Color"] = true;
-L["Healer Frames"] = true;
+L["Friendly NPC Frames"] = "Дружественные НИП"
+L["Friendly Player Frames"] = "Дружественные игроки"
+L["Good Color"] = "Хороший цвет"
+L["Good Scale"] = "Хороший масштаб"
+L["Good Transition Color"] = "Цвет хорошего перехода"
+L["Healer Frames"] = "Лекари"
 L["Healer Icon"] = "Иконки лекарей"
-L["HEALER"] = "Healer"
 L["Hide"] = "Скрыть" --Also used in DataTexts
-L["Icon Base Height"] = true;
-L["Level"] = true;
+L["Icon Base Height"] = "Базовая высота иконки"
+L["Level"] = "Уровень"
 L["Low Health Threshold"] = "Пороговое значение здоровья"
-L["Make the unitframe glow yellow when it is below this percent of health, it will glow red when the health value is half of this value."] = true;
+L["Make the unitframe glow yellow when it is below this percent of health, it will glow red when the health value is half of this value."] = "Заставляет индикатор подсвечиваться желтым при установленном проценте здоровья. При достижении половины этого значения вечение станет красным."
 L["NamePlates"] = "Индикаторы здоровья"
-L["Non-Target Transparency"] = true;
-L["Only show a nameplate for the unit you have targetted."] = true;
-L["Only Show Target"] = true;
-L["Personal Auras"] = true;
-L["Player Nameplate"] = true;
-L["PLAYER"] = "Player"
-L["Reaction Colors"] = true;
+L["Non-Target Transparency"] = "Прозрачность не цели"
+L["Only show a nameplate for the unit you have targetted."] = "Показывать индикатор только для юнита, являющегося вашей целью."
+L["Only Show Target"] = "Только цель"
+L["Personal Auras"] = "Личные ауры"
+L["Player Nameplate"] = "Игрок"
+L["Reaction Colors"] = "Цвета отношений"
 L["Remove Name"] = "Удалить имя"
-L["Scale of the nameplate that is targetted."] = true;
-L["Set Settings to Default"] = true;
-L["Set the transparency level of nameplates that are not the target nameplate."] = true;
-L["Set to either stack nameplates vertically or allow them to overlap."] = true;
+L["Scale of the nameplate that is targetted."] = "Масштаб индикатора цели."
+L["Set Settings to Default"] = "Сбросить настройки на умолчания"
+L["Set the transparency level of nameplates that are not the target nameplate."] = "Устанавливает степень прозрачности для индикаторов юнитов, не являющихся вашей целью."
+L["Set to either stack nameplates vertically or allow them to overlap."] = "Выстраивать индикаторы в столбик или позволить им накладываться друг на друга."
 L["Tagged NPC"] = "Чужой НИП"
-L["Tanked Color"] = true;
-L["Target Scale"] = true;
-L["Targeted Nameplate"] = true;
+L["Tanked Color"] = "Цвет танкуемого"
+L["Target Scale"] = "Масштаб цели";
+L["Targeted Nameplate"] = "Индиатор цели"
 L["Threat"] = "Угроза"
-L["Use Tanked Color when a nameplate is being effectively tanked by another tank."] = true;
-L["Use Target Scale"] = true;
+L["Use Tanked Color when a nameplate is being effectively tanked by another tank."] = "Испльзовать этот цвет для юнитов, которых держит другой танк."
+L["Use Target Scale"] = "Масштабирование цели"
 
 --Profiles Export/Import
 L["Choose Export Format"] = "Выберите формат экспорта"
@@ -585,7 +579,7 @@ L["Achievement Frame"] = "Достижения"
 L["AddOn Manager"] = "Модификации"
 L["Alert Frames"] = "Предупреждения"
 L["Archaeology Frame"] = "Археология"
-L["Artifact"] = true;
+L["Artifact"] = "Артефакт"
 L["Auction Frame"] = "Аукцион"
 L["Barbershop Frame"] = "Парикмахерская"
 L["BG Map"] = "Карта ПБ"
@@ -617,7 +611,7 @@ L["Mirror Timers"] = "Таймеры"
 L["Misc Frames"] = "Прочие фреймы"
 L["Mounts & Pets"] = "Транспорт и питомцы"
 L["Non-Raid Frame"] = "Не рейдовые фреймы"
-L["Orderhall"] = true;
+L["Orderhall"] = "Оплот класса"
 L["Pet Battle"] = "Битвы питомцев"
 L["Petition Frame"] = "Хартия гильдии"
 L["PvP Frames"] = "ПвП фреймы"
@@ -631,7 +625,7 @@ L["Spellbook"] = "Книга заклинаний"
 L["Stable"] = "Стойла"
 L["Tabard Frame"] = "Создание накидки"
 L["Talent Frame"] = "Таланты"
-L["TalkingHead"] = true;
+L["TalkingHead"] = "Говорящая голова"
 L["Taxi Frame"] = "Такси"
 L["Time Manager"] = "Секундомер"
 L["Trade Frame"] = "Обмен"
@@ -677,12 +671,12 @@ L["2D"] = '2D'
 L["3D"] = '3D'
 L["Above"] = "Сверху"
 L["Absorbs"] = "Поглощения"
-L["Add a spell to the filter. Use spell ID if you don't want to match all auras which share the same name."] = true;
+L["Add a spell to the filter. Use spell ID if you don't want to match all auras which share the same name."] = "Добавить заклинание в фильтр. Используйте ID, если вы не хотите фильтровать все заклинания с одинаковым именем."
 L["Add a spell to the filter."] = "Добавить заклинание в фильтр"
-L["Add Spell ID or Name"] = true;
+L["Add Spell ID or Name"] = "Добавить ID или имя заклинания"
 L["Add SpellID"] = "Добавить ID заклинания"
 L["Additional Filter"] = "Дополнительный фильтр"
-L["Additional Power Text"] = true;
+L["Additional Power Text"] = "Текст дополнительного ресурса"
 L["Affliction"] = "Колдовство"
 L["Allow auras considered to be part of a boss encounter."] = "Разрешить считать ауры частью боя с боссом"
 L["Allow Boss Encounter Auras"] = "Разрешить ауры битв с боссами"
@@ -929,9 +923,9 @@ L["Rapidly update the health, uses more memory and cpu. Only recommended for hea
 L["Reaction Castbars"] = "Полоса заклинаний по реакции"
 L["Reactions"] = "Отношение"
 L["Remaining"] = "Оставшееся"
-L["Remove a spell from the filter. Use the spell ID if you see the ID as part of the spell name in the filter."] = true;
-L["Remove a spell from the filter."] = "Удаляет заклинание из фильтра"
-L["Remove Spell ID or Name"] = true;
+L["Remove a spell from the filter. Use the spell ID if you see the ID as part of the spell name in the filter."] = "Удалить заклинание из фильтра. Используйте ID, если в фильтре имя удаляемого заклинания содержить ID."
+L["Remove a spell from the filter."] = "Удалить заклинание из фильтра."
+L["Remove Spell ID or Name"] = "Удалить ID или имя заклинания"
 L["Remove SpellID"] = "Удалить ID заклинания"
 L["Rest Icon"] = "Иконка отдыха"
 L["Restore Defaults"] = "Восстановить умолчания" --Also used in Media and ActionBars sections
@@ -945,7 +939,7 @@ L["Select an additional filter to use. If the selected filter is a whitelist and
 L["Select Filter"] = "Выбрать фильтр"
 L["Select Spell"] = "Выбрать заклинание"
 L["Select the display method of the portrait."] = "Выбирите метод отображения портрета"
-L["Set the filter type. Blacklist will hide any auras in the list and show all others. Whitelist will show any auras in the filter and hide all others."] = true;
+L["Set the filter type. Blacklist will hide any auras in the list and show all others. Whitelist will show any auras in the filter and hide all others."] = "Выберите тип фильтра. Черный список будет скрывать содержащиеся заклинания и отображать остальные. Белый список будет показывать включенные заклинания и скрывать все остальные."
 L["Set the font size for unitframes."] = "Устанавливает шрифт для рамок юнитов."
 L["Set the order that the group will sort."] = "Устанавливает метод сортировки в группе."
 L["Set the orientation of the UnitFrame."] = "Устанавливает ориентацию рамки."
@@ -1029,7 +1023,7 @@ L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the glo
 L["Use thin borders on certain unitframe elements."] = "Использовать тонкие границы на некоторых элементах рамок юнитов."
 L["Use this backdrop color for units that are dead or ghosts."] = "Использовать этот цвет фона для юнитов, которые мертвы или бегут  кладбища."
 L["Value must be a number"] = "Значение должно быть числом"
-L["Vertical Orientation"] = true;
+L["Vertical Orientation"] = "Заполнение по вертикали"
 L["Vertical Spacing"] = "Отступ по вертикали"
 L["Vertical"] = "Вертикально" --Also used in bags section
 L["Visibility"] = "Видимость"

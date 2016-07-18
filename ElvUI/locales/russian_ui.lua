@@ -35,7 +35,7 @@ L["Trigger"] = "Триггер"
 --Bags
 L["Bank"] = "Банк"
 L["Deposit Reagents"] = "Сложить материалы"
-L["Hold Control + Right Click:"] = "Зажать control + ПКМ:"
+L["Hold Control + Right Click:"] = "Зажать Control + ПКМ:"
 L["Hold Shift + Drag:"] = "Зажать shift и перетаскивать:"
 L["Purchase Bags"] = "Приобрести слот"
 L["Purchase"] = "Приобрести слот"
@@ -203,7 +203,7 @@ L["You may need to further alter these settings depending how low you resolution
 L["Your current resolution is %s, this is considered a %s resolution."] = "Ваше текущее разрешение - %s, это считается %s разрешением."
 
 --Misc
-L["ABOVE_THREAT_FORMAT"] = '%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]'
+L["ABOVE_THREAT_FORMAT"] = '%s: %.0f%% [на %.0f%% опережаем |cff%02x%02x%02x%s|r]'
 L["Average Group iLvl:"] = "Средний ур. предметов:"
 L["Bars"] = "Полосы" --Also used in UnitFrames
 L["Calendar"] = "Календарь"
@@ -231,7 +231,7 @@ L["You don't have permission to mark targets."] = "У вас нет разреш
 L["Alternative Power"] = "Альтернативный ресурс"
 L["Archeology Progress Bar"] = "Прогресс археологии"
 L["Arena Frames"] = "Арена" --Also used in UnitFrames
-L["Artifact Bar"] = true;
+L["Artifact Bar"] = "Полоса Артефакта"
 L["Bags"] = "Сумки" --Also in DataTexts
 L["Bar "] = "Панель " --Also in ActionBars
 L["BNet Frame"] = "Оповещения BNet"
@@ -244,7 +244,7 @@ L["Focus Castbar"] = "Полоса заклинаний фокуса"
 L["Focus Frame"] = "Фокус" --Also used in UnitFrames
 L["FocusTarget Frame"] = "Цель фокуса" --Also used in UnitFrames
 L["GM Ticket Frame"] = "Запрос ГМу"
-L["Honor Bar"] = true;
+L["Honor Bar"] = "Полоса Чести"
 L["Left Chat"] = "Левый чат"
 L["Loot / Alert Frames"] = "Розыгрыш/оповещения"
 L["Loot Frame"] = "Окно добычи"
@@ -264,7 +264,7 @@ L["Player Buffs"] = "Баффы игрока"
 L["Player Castbar"] = "Полоса заклинаний игрока"
 L["Player Debuffs"] = "Дебаффы игрока"
 L["Player Frame"] = "Игрок" --Also used in UnitFrames
-L["Player Nameplate"] = true;
+L["Player Nameplate"] = "Индикатор игрока"
 L["Player Powerbar"] = "Полоса ресурса игрока"
 L["Raid Frames"] = "Рейд"
 L["Raid Pet Frames"] = "Питомцы рейда"
@@ -281,11 +281,11 @@ L["Tooltip"] = "Подсказка"
 L["Vehicle Seat Frame"] = "Техника"
 
 --Plugin Installer
-L["ElvUI Plugin Installation"] = true;
-L["In Progress"] = true;
-L["List of installations in queue:"] = true;
-L["Pending"] = true;
-L["Steps"] = true;
+L["ElvUI Plugin Installation"] = "Установка плагина ElvUI"
+L["In Progress"] = "В процессе"
+L["List of installations in queue:"] = "Очередь установки:"
+L["Pending"] = "Ожидает"
+L["Steps"] = "Шаги"
 
 --Prints
 L[" |cff00ff00bound to |r"] = " |cff00ff00назначено для |r"
@@ -296,15 +296,15 @@ L["Battleground datatexts temporarily hidden, to show type /bgstats or right cli
 L["Battleground datatexts will now show again if you are inside a battleground."] = "Информация поля боя снова будет отображаться, если Вы находитесь на них."
 L["Binds Discarded"] = "Назначения отменены"
 L["Binds Saved"] = "Назначения сохранены"
-L["Confused.. Try Again!"] = "Что за... Попробуйте еще раз!"
+L["Confused.. Try Again!"] = "Что за?.. Попробуйте еще раз!"
 L["No gray items to delete."] = "Нет предметов серого качества для удаления."
 L["The spell '%s' has been added to the Blacklist unitframe aura filter."] = 'Заклинание "%s" было добавлено в фильтр "Blacklist" аур рамок юнитов.'
 L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."] = "Эта опция вызвала конфликт точек фиксации, в результате которого \"%s\" крепится к самому себе. Пожалуйста, проверье настройки точек фиксации. \"%s\" будет прикреплено к \"%s\"."
 L["Vendored gray items for:"] = "Проданы серые предметы на сумму:"
 L["You don't have enough money to repair."] = "У вас недостаточно денег для ремонта."
 L["You must be at a vendor."] = "Вы должны находиться у торговца"
-L["Your items have been repaired for: "] = "Ваши предметы отремонтированы на: "
-L["Your items have been repaired using guild bank funds for: "] = "Ваши предметы отремонтированы за счет гильдии на: "
+L["Your items have been repaired for: "] = "Ремонт обошелся в "
+L["Your items have been repaired using guild bank funds for: "] = "Ремонт обошелся гильдии в "
 L["|cFFE30000Lua error recieved. You can view the error message when you exit combat."] = "|cFFE30000Обнаружена ошибка lua. Вы получите отчет о ней после завершения боя."
 
 --Static Popups
