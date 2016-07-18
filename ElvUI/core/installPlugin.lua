@@ -1,3 +1,46 @@
+--Plugins pass their info using the table like:
+--[[ 
+	addon = {
+		Title = "Your Own Title",
+		Name = "AddOnName",
+		tutorialImage = "TexturePath",
+		Pages = {
+			[1] = function1,
+			[2] = function2,
+			[3] = function3,
+		},
+		StepTitles = {
+			[1] = "Title 1",
+			[2] = "Title 2",
+			[3] = "Title 3",
+		},
+		StepTitlesColor = {r,g,b},
+		StepTitlesColorSelected = {r,g,b},
+	}
+	Title is wat displayed on top of the window. By default it's ""ElvUI Plugin Installation""
+	Name is how your installation will be showin in "pending list", Default is "Unknown"
+	tutorialImage is a path to your own texture to use in frame. if not specified, then it will use ElvUI's one
+	Pages is a table to set up pages of your install where numbers are representing actual pages' order and function is what previously was used to set layout. For example
+		function function1()
+			PluginInstallFrame.SubTitle:SetText("Title Text")
+			PluginInstallFrame.Desc1:SetText("Desc 1 Tet")
+			PluginInstallFrame.Desc2:SetText("Desc 2 Tet")
+			PluginInstallFrame.Desc3:SetText("Desc 3 Tet")
+
+			PluginInstallFrame.Option1:Show()
+			PluginInstallFrame.Option1:SetScript('OnClick', function() <Do Some Stuff> end)
+			PluginInstallFrame.Option1:SetText("Text 1")
+
+			PluginInstallFrame.Option2:Show()
+			PluginInstallFrame.Option2:SetScript('OnClick', function() <Do Some Other Stuff> end)
+			PluginInstallFrame.Option2:SetText("Text 2")
+		end
+	StepTitles - a table to specify "titles" for your install steps. If specified and number of lines here = number of pages then you'll get an additional frame to the right of main frame
+	with a list of steps (current one being highlighted), clicking on those will open respective step. BenikUI style of doing stuff.
+	StepTitlesColor - a table with color values to color "titles" when they are not active
+	StepTitlesColorSelected - a table with color values to color "titles" when they are active
+]]
+
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local PI = E:NewModule("PluginInstaller")
 
@@ -319,48 +362,6 @@ function PI:CreateFrame()
 	f:SetScript("OnHide", function() PI:CloseInstall() end)
 end
 
---Plugins pass their info using the table like:
---[[ 
-	addon = {
-		Title = "Your Own Title",
-		Name = "AddOnName",
-		tutorialImage = "TexturePath",
-		Pages = {
-			[1] = function1,
-			[2] = function2,
-			[3] = function3,
-		},
-		StepTitles = {
-			[1] = "Title 1",
-			[2] = "Title 2",
-			[3] = "Title 3",
-		},
-		StepTitlesColor = {r,g,b},
-		StepTitlesColorSelected = {r,g,b},
-	}
-	Title is wat displayed on top of the window. By default it's ""ElvUI Plugin Installation""
-	Name is how your installation will be showin in "pending list", Default is "Unknown"
-	tutorialImage is a path to your own texture to use in frame. if not specified, then it will use ElvUI's one
-	Pages is a table to set up pages of your install where numbers are representing actual pages' order and function is what previously was used to set layout. For example
-		function function1()
-			PluginInstallFrame.SubTitle:SetText("Title Text")
-			PluginInstallFrame.Desc1:SetText("Desc 1 Tet")
-			PluginInstallFrame.Desc2:SetText("Desc 2 Tet")
-			PluginInstallFrame.Desc3:SetText("Desc 3 Tet")
-
-			PluginInstallFrame.Option1:Show()
-			PluginInstallFrame.Option1:SetScript('OnClick', function() <Do Some Stuff> end)
-			PluginInstallFrame.Option1:SetText("Text 1")
-
-			PluginInstallFrame.Option2:Show()
-			PluginInstallFrame.Option2:SetScript('OnClick', function() <Do Some Other Stuff> end)
-			PluginInstallFrame.Option2:SetText("Text 2")
-		end
-	StepTitles - a table to specify "titles" for your install steps. If specified and number of lines here = number of pages then you'll get an additional frame to the right of main frame
-	with a list of steps (current one being highlighted), clicking on those will open respective step. BenikUI style of doing stuff.
-	StepTitlesColor - a table with color values to color "titles" when they are not active
-	StepTitlesColorSelected - a table with color values to color "titles" when they are active
-]]
 function PI:Queue(addon)
 	local queue = true
 	for k, v in pairs(self.Installs) do
