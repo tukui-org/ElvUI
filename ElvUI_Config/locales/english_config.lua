@@ -356,15 +356,11 @@ L["This feature will allow you to transfer, settings to other characters."] = tr
 L["You must be targeting a player."] = true;
 
 --General
-L["Skin Backdrop (No Borders)"] = true;
-L["X-Offset"] = true;
-L["Y-Offset"] = true;
-L["Animate Config"] = true;
-L["Talking Head Scale"] = true;
 L["Accept Invites"] = true;
 L["Adjust the position of the threat bar to either the left or right datatext panels."] = true;
 L["Adjust the size of the minimap."] = true;
 L["AFK Mode"] = true;
+L["Animate Config"] = true;
 L["Announce Interrupts"] = true;
 L["Announce when you interrupt a spell to the specified chat channel."] = true;
 L["Attempt to support eyefinity/nvidia surround."] = true;
@@ -417,9 +413,11 @@ L["Reset all frames to their original positions."] = true;
 L["Reset Anchors"] = true;
 L["Reverse Fill Direction"] = true;
 L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."] = true;
+L["Skin Backdrop (No Borders)"] = true;
 L["Skin Backdrop"] = true;
 L["Skin the blizzard chat bubbles."] = true;
 L["Smaller World Map"] = true;
+L["Talking Head Scale"] = true;
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = true;
 L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."] = true;
 L["Thin Border Theme"] = true;
@@ -427,6 +425,8 @@ L["Toggle Tutorials"] = true;
 L["Top Panel"] = true;
 L["When you go AFK display the AFK screen."] = true;
 L["World Map Coordinates"] = true;
+L["X-Offset"] = true;
+L["Y-Offset"] = true;
 
 --Media
 L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."] = true;
@@ -570,13 +570,11 @@ L["Profile"] = true;
 L["Table"] = true;
 
 --Skins
-L["TalkingHead"] = true;
-L["Artifact"] = true;
-L["Orderhall"] = true;
 L["Achievement Frame"] = true;
 L["AddOn Manager"] = true;
 L["Alert Frames"] = true;
 L["Archaeology Frame"] = true;
+L["Artifact"] = true;
 L["Auction Frame"] = true;
 L["Barbershop Frame"] = true;
 L["BG Map"] = true;
@@ -608,6 +606,7 @@ L["Mirror Timers"] = true;
 L["Misc Frames"] = true;
 L["Mounts & Pets"] = true;
 L["Non-Raid Frame"] = true;
+L["Orderhall"] = true;
 L["Pet Battle"] = true;
 L["Petition Frame"] = true;
 L["PvP Frames"] = true;
@@ -621,6 +620,7 @@ L["Spellbook"] = true;
 L["Stable"] = true;
 L["Tabard Frame"] = true;
 L["Talent Frame"] = true;
+L["TalkingHead"] = true;
 L["Taxi Frame"] = true;
 L["Time Manager"] = true;
 L["Trade Frame"] = true;
@@ -661,8 +661,6 @@ L["Tooltip Font Settings"] = true;
 L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."] = true;
 
 --UnitFrames
-L["Vertical Orientation"] = true;
-L["Additional Power Text"] = true;
 L["%s and then %s"] = true;
 L["2D"] = true;
 L["3D"] = true;
@@ -673,6 +671,7 @@ L["Add a spell to the filter."] = true;
 L["Add Spell ID or Name"] = true;
 L["Add SpellID"] = true;
 L["Additional Filter"] = true;
+L["Additional Power Text"] = true;
 L["Affliction"] = true;
 L["Allow auras considered to be part of a boss encounter."] = true;
 L["Allow Boss Encounter Auras"] = true;
@@ -1019,6 +1018,7 @@ L["Use the profile specific filter 'Buff Indicator (Profile)' instead of the glo
 L["Use thin borders on certain unitframe elements."] = true;
 L["Use this backdrop color for units that are dead or ghosts."] = true;
 L["Value must be a number"] = true;
+L["Vertical Orientation"] = true;
 L["Vertical Spacing"] = true;
 L["Vertical"] = true; --Also used in bags section
 L["Visibility"] = true;
