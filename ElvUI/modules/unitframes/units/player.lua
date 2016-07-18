@@ -194,7 +194,6 @@ tinsert(UF['unitstoload'], 'player')
 
 --Bugfix: Classbar is not updated correctly on initial login ( http://git.tukui.org/Elv/elvui/issues/987 )
 --ToggleResourceBar(bars) is called before the classbar has been updated, so we call it manually once.
---[[THIS NO LONGER SEEMS TO BE NECESSARY. MONITOR IT FOR NOW
 local function UpdateClassBar()
 	local frame = _G["ElvUF_Player"]
 	if frame and frame.ClassBar then
@@ -208,4 +207,4 @@ f:RegisterEvent("PLAYER_ENTERING_WORLD")
 f:SetScript("OnEvent", function(self, event)
 	self:UnregisterEvent(event)
 	UpdateClassBar()
-end)]]
+end)
