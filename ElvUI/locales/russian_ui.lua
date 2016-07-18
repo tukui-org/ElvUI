@@ -272,6 +272,7 @@ L["Raid-40 Frames"] = "Рейд 40"
 L["Reputation Bar"] = "Полоса репутации"
 L["Right Chat"] = "Правый чат"
 L["Stance Bar"] = "Панель стоек" --Also in ActionBars
+L["Talking Head Frame"] = "Говорящая голова"
 L["Target Castbar"] = "Полоса заклинаний цели"
 L["Target Frame"] = "Цель" --Also used in UnitFrames
 L["Target Powerbar"] = "Полоса ресурса цели"

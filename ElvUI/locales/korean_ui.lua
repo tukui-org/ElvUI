@@ -272,6 +272,7 @@ L["Raid-40 Frames"] = "레이드 프레임(40인)"
 L["Reputation Bar"] = "평판 바"
 L["Right Chat"] = "우측 패널"
 L["Stance Bar"] = "태세 바"
+L["Talking Head Frame"] = true
 L["Target Castbar"] = "대상 시전바"
 L["Target Frame"] = "대상 프레임"
 L["Target Powerbar"] = true;

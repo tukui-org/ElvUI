@@ -272,6 +272,7 @@ L["Raid-40 Frames"] = true;
 L["Reputation Bar"] = true;
 L["Right Chat"] = true;
 L["Stance Bar"] = true; --Also in ActionBars
+L["Talking Head Frame"] = true
 L["Target Castbar"] = true;
 L["Target Frame"] = true; --Also used in UnitFrames
 L["Target Powerbar"] = true;

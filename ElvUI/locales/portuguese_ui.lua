@@ -272,6 +272,7 @@ L["Raid-40 Frames"] = true;
 L["Reputation Bar"] = "Barra de Reputação"
 L["Right Chat"] = "Bate-papo direito"
 L["Stance Bar"] = "Barra de Postura"
+L["Talking Head Frame"] = true
 L["Target Castbar"] = "Barra de lançamento do Alvo"
 L["Target Frame"] = "Quadro do Alvo"
 L["Target Powerbar"] = true;

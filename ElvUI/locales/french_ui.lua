@@ -272,6 +272,7 @@ L["Raid-40 Frames"] = "Cadres de Raid 40";
 L["Reputation Bar"] = "Barre de réputation"
 L["Right Chat"] = "Chat de droite"
 L["Stance Bar"] = "Barre de posture" --Also in ActionBars
+L["Talking Head Frame"] = true
 L["Target Castbar"] = "Barre d'incantation de la cible"
 L["Target Frame"] = "Cadre de la cible" --Also used in UnitFrames
 L["Target Powerbar"] = "Barre de pouvoir de la cible";  -- need review.

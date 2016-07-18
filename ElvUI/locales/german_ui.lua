@@ -272,6 +272,7 @@ L["Raid-40 Frames"] = "40er Schlachtzugsfenster" --Also used in UnitFrames
 L["Reputation Bar"] = "Rufleiste"
 L["Right Chat"] = "Rechter Chat"
 L["Stance Bar"] = "Haltungsleiste" --Also in ActionBars
+L["Talking Head Frame"] = true
 L["Target Castbar"] = "Ziel Zauberbalken"
 L["Target Frame"] = "Zielfenster" --Also used in UnitFrames
 L["Target Powerbar"] = "Ziel Kraftleiste"

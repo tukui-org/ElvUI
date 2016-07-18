@@ -272,6 +272,7 @@ L["Raid-40 Frames"] = true;
 L["Reputation Bar"] = "聲望條"
 L["Right Chat"] = "右側對話框"
 L["Stance Bar"] = "姿態列" --Also in ActionBars
+L["Talking Head Frame"] = true
 L["Target Castbar"] = "目標施法條"
 L["Target Frame"] = "目標框架" --Also used in UnitFrames
 L["Target Powerbar"] = true;

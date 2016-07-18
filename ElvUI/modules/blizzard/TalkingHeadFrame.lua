@@ -45,7 +45,7 @@ function B:PositionTalkingHead()
 		TalkingHeadFrame:ClearAllPoints()
 		TalkingHeadFrame:SetPoint("BOTTOM", 0, 265)
 
-		E:CreateMover(TalkingHeadFrame, "TalkingHeadFrameMover", "Talking Head Frame")
+		E:CreateMover(TalkingHeadFrame, "TalkingHeadFrameMover", L["Talking Head Frame"])
 	end
 
 	if IsAddOnLoaded("Blizzard_TalkingHeadUI") then
