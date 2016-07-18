@@ -231,6 +231,7 @@ L["You don't have permission to mark targets."] = "你没有标记目标的权�
 L["Alternative Power"] = "特殊能量条"
 L["Archeology Progress Bar"] = true;
 L["Arena Frames"] = "竞技场框架"
+L["Artifact Bar"] = true;
 L["Bags"] = "背包" --Also in DataTexts
 L["Bar "] = "快捷列 " --Also in ActionBars
 L["BNet Frame"] = "战网提示资讯"
@@ -243,6 +244,7 @@ L["Focus Castbar"] = "焦点目标施法条"
 L["Focus Frame"] = "专注目标框架"
 L["FocusTarget Frame"] = "专注目标的目标框架"
 L["GM Ticket Frame"] = "GM 对话框"
+L["Honor Bar"] = true;
 L["Left Chat"] = "左侧对话框"
 L["Loot / Alert Frames"] = "拾取 / 提醒框"
 L["Loot Frame"] = true;
@@ -262,6 +264,7 @@ L["Player Buffs"] = true;
 L["Player Castbar"] = "玩家施法条"
 L["Player Debuffs"] = true;
 L["Player Frame"] = "玩家框架"
+L["Player Nameplate"] = true;
 L["Player Powerbar"] = true;
 L["Raid Frames"] = true;
 L["Raid Pet Frames"] = true;
@@ -277,11 +280,12 @@ L["TargetTargetTarget Frame"] = true;
 L["Tooltip"] = "浮动提示"
 L["Vehicle Seat Frame"] = "载具座位框"
 
---NamePlates
-L["Discipline"] = "戒律"
-L["Holy"] = "神圣"
-L["Mistweaver"] = '织雾'
-L["Restoration"] = "恢复"
+--Plugin Installer
+L["ElvUI Plugin Installation"] = true;
+L["In Progress"] = true;
+L["List of installations in queue:"] = true;
+L["Pending"] = true;
+L["Steps"] = true;
 
 --Prints
 L[" |cff00ff00bound to |r"] = " |cff00ff00绑定到 |r"
