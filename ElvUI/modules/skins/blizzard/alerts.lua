@@ -18,125 +18,109 @@ local function LoadSkin()
 		end
 	end
 
-	-- Needs Review
-	--[[hooksecurefunc("AlertFrame_SetAchievementAnchors", function(anchorFrame)
-		for i = 1, MAX_ACHIEVEMENT_ALERTS do
-			local frame = _G["AchievementAlertFrame"..i]
+	hooksecurefunc(AchievementAlertSystem, "setUpFunction", function(frame)
+		frame:SetAlpha(1)
+		if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
+		if not frame.backdrop then
+			frame:CreateBackdrop("Transparent")
+			frame.backdrop:Point("TOPLEFT", frame.Background, "TOPLEFT", -2, -6)
+			frame.backdrop:Point("BOTTOMRIGHT", frame.Background, "BOTTOMRIGHT", -2, 6)
+		end
 
-			if frame then
-				frame:SetAlpha(1)
-				if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
-				if not frame.backdrop then
-					frame:CreateBackdrop("Transparent")
-					frame.backdrop:Point("TOPLEFT", _G[frame:GetName().."Background"], "TOPLEFT", -2, -6)
-					frame.backdrop:Point("BOTTOMRIGHT", _G[frame:GetName().."Background"], "BOTTOMRIGHT", -2, 6)
-				end
+		-- Background
+		frame.Background:SetTexture(nil)
+		frame.OldAchievement:Kill()
+		frame.glow:Kill()
+		frame.shine:Kill()
+		frame.GuildBanner:Kill()
+		frame.GuildBorder:Kill()
+		-- Text
+		frame.Unlocked:FontTemplate(nil, 12)
+		frame.Unlocked:SetTextColor(1, 1, 1)
+		frame.Name:FontTemplate(nil, 12)
 
-				-- Background
-				_G["AchievementAlertFrame"..i.."Background"]:SetTexture(nil)
-				_G["AchievementAlertFrame"..i..'OldAchievement']:Kill()
-				_G["AchievementAlertFrame"..i.."Glow"]:Kill()
-				_G["AchievementAlertFrame"..i.."Shine"]:Kill()
-				_G["AchievementAlertFrame"..i.."GuildBanner"]:Kill()
-				_G["AchievementAlertFrame"..i.."GuildBorder"]:Kill()
-				-- Text
-				_G["AchievementAlertFrame"..i.."Unlocked"]:FontTemplate(nil, 12)
-				_G["AchievementAlertFrame"..i.."Unlocked"]:SetTextColor(1, 1, 1)
-				_G["AchievementAlertFrame"..i.."Name"]:FontTemplate(nil, 12)
+		-- Icon
+		frame.Icon.Texture:SetTexCoord(unpack(E.TexCoords))
+		frame.Icon.Overlay:Kill()
 
-				-- Icon
-				_G["AchievementAlertFrame"..i.."IconTexture"]:SetTexCoord(unpack(E.TexCoords))
-				_G["AchievementAlertFrame"..i.."IconOverlay"]:Kill()
+		frame.Icon.Texture:ClearAllPoints()
+		frame.Icon.Texture:Point("LEFT", frame, 7, 0)
 
-				_G["AchievementAlertFrame"..i.."IconTexture"]:ClearAllPoints()
-				_G["AchievementAlertFrame"..i.."IconTexture"]:Point("LEFT", frame, 7, 0)
+		if not frame.Icon.Texture.b then
+			frame.Icon.Texture.b = CreateFrame("Frame", nil, frame)
+			frame.Icon.Texture.b:SetTemplate("Default")
+			frame.Icon.Texture.b:SetOutside(frame.Icon.Texture)
+			frame.Icon.Texture:SetParent(frame.Icon.Texture.b)
+		end
+	end)
 
-				if not _G["AchievementAlertFrame"..i.."IconTexture"].b then
-					_G["AchievementAlertFrame"..i.."IconTexture"].b = CreateFrame("Frame", nil, _G["AchievementAlertFrame"..i])
-					_G["AchievementAlertFrame"..i.."IconTexture"].b:SetTemplate("Default")
-					_G["AchievementAlertFrame"..i.."IconTexture"].b:SetOutside(_G["AchievementAlertFrame"..i.."IconTexture"])
-					_G["AchievementAlertFrame"..i.."IconTexture"]:SetParent(_G["AchievementAlertFrame"..i.."IconTexture"].b)
-				end
+	hooksecurefunc(DungeonCompletionAlertSystem, "setUpFunction", function(frame)
+		frame:SetAlpha(1)
+		if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
+		if not frame.backdrop then
+			frame:CreateBackdrop("Transparent")
+			frame.backdrop:Point("TOPLEFT", frame, "TOPLEFT", -2, -6)
+			frame.backdrop:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -2, 6)
+		end
+
+		frame.shine:Kill()
+		frame.glowFrame:Kill()
+		frame.glowFrame.glow:Kill()
+
+		frame.raidArt:Kill()
+		frame.dungeonArt1:Kill()
+		frame.dungeonArt2:Kill()
+		frame.dungeonArt3:Kill()
+		frame.dungeonArt4:Kill()
+		frame.heroicIcon:Kill()
+
+		-- Icon
+		frame.dungeonTexture:SetTexCoord(unpack(E.TexCoords))
+		frame.dungeonTexture:SetDrawLayer('OVERLAY')
+		frame.dungeonTexture:ClearAllPoints()
+		frame.dungeonTexture:Point("LEFT", frame, 7, 0)
+
+		if not frame.dungeonTexture.b then
+			frame.dungeonTexture.b = CreateFrame("Frame", nil, frame)
+			frame.dungeonTexture.b:SetTemplate("Default")
+			frame.dungeonTexture.b:SetOutside(frame.dungeonTexture)
+			frame.dungeonTexture:SetParent(frame.dungeonTexture.b)
+		end
+	end)
+
+	hooksecurefunc(GuildChallengeAlertSystem, "setUpFunction", function(frame)
+		frame:SetAlpha(1)
+		if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
+
+		if not frame.backdrop then
+			frame:CreateBackdrop("Transparent")
+			frame.backdrop:Point("TOPLEFT", frame, "TOPLEFT", -2, -6)
+			frame.backdrop:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -2, 6)
+		end
+
+		-- Background
+		local region = select(2, frame:GetRegions())
+		if region:GetObjectType() == "Texture" then
+			if region:GetTexture() == "Interface\\GuildFrame\\GuildChallenges" then
+				region:Kill()
 			end
 		end
-	end)]]
 
-	--[[hooksecurefunc("AlertFrame_SetDungeonCompletionAnchors", function(anchorFrame)
-		for i = 1, DUNGEON_COMPLETION_MAX_REWARDS do
-			local frame = _G["DungeonCompletionAlertFrame"..i]
-			if frame then
-				frame:SetAlpha(1)
-				if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
-				if not frame.backdrop then
-					frame:CreateBackdrop("Transparent")
-					frame.backdrop:Point("TOPLEFT", frame, "TOPLEFT", -2, -6)
-					frame.backdrop:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -2, 6)
-				end
+		frame.glow:Kill()
+		frame.shine:Kill()
+		_G[frame:GetName().."EmblemBorder"]:Kill()
 
-				frame.shine:Kill()
-				frame.glowFrame:Kill()
-				frame.glowFrame.glow:Kill()
-
-				frame.raidArt:Kill()
-				frame.dungeonArt1:Kill()
-				frame.dungeonArt2:Kill()
-				frame.dungeonArt3:Kill()
-				frame.dungeonArt4:Kill()
-				frame.heroicIcon:Kill()
-
-				-- Icon
-				frame.dungeonTexture:SetTexCoord(unpack(E.TexCoords))
-				frame.dungeonTexture:SetDrawLayer('OVERLAY')
-				frame.dungeonTexture:ClearAllPoints()
-				frame.dungeonTexture:Point("LEFT", frame, 7, 0)
-
-				if not frame.dungeonTexture.b then
-					frame.dungeonTexture.b = CreateFrame("Frame", nil, frame)
-					frame.dungeonTexture.b:SetTemplate("Default")
-					frame.dungeonTexture.b:SetOutside(frame.dungeonTexture)
-					frame.dungeonTexture:SetParent(frame.dungeonTexture.b)
-				end
-			end
+		-- Icon border
+		local EmblemIcon = _G[frame:GetName().."EmblemIcon"]
+		if not EmblemIcon.b then
+			EmblemIcon.b = CreateFrame("Frame", nil, frame)
+			EmblemIcon.b:SetTemplate("Default")
+			EmblemIcon.b:Point("TOPLEFT", EmblemIcon, "TOPLEFT", -3, 3)
+			EmblemIcon.b:Point("BOTTOMRIGHT", EmblemIcon, "BOTTOMRIGHT", 3, -2)
+			EmblemIcon:SetParent(EmblemIcon.b)
 		end
-	end)]]
-
-	--[[hooksecurefunc("AlertFrame_SetGuildChallengeAnchors", function(anchorFrame)
-		local frame = GuildChallengeAlertFrame
-
-		if frame then
-			frame:SetAlpha(1)
-			if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
-
-			if not frame.backdrop then
-				frame:CreateBackdrop("Transparent")
-				frame.backdrop:Point("TOPLEFT", frame, "TOPLEFT", -2, -6)
-				frame.backdrop:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -2, 6)
-			end
-
-			-- Background
-			local region = select(2, frame:GetRegions())
-			if region:GetObjectType() == "Texture" then
-				if region:GetTexture() == "Interface\\GuildFrame\\GuildChallenges" then
-					region:Kill()
-				end
-			end
-
-			GuildChallengeAlertFrameGlow:Kill()
-			GuildChallengeAlertFrameShine:Kill()
-			GuildChallengeAlertFrameEmblemBorder:Kill()
-
-			-- Icon border
-			if not GuildChallengeAlertFrameEmblemIcon.b then
-				GuildChallengeAlertFrameEmblemIcon.b = CreateFrame("Frame", nil, frame)
-				GuildChallengeAlertFrameEmblemIcon.b:SetTemplate("Default")
-				GuildChallengeAlertFrameEmblemIcon.b:Point("TOPLEFT", GuildChallengeAlertFrameEmblemIcon, "TOPLEFT", -3, 3)
-				GuildChallengeAlertFrameEmblemIcon.b:Point("BOTTOMRIGHT", GuildChallengeAlertFrameEmblemIcon, "BOTTOMRIGHT", 3, -2)
-				GuildChallengeAlertFrameEmblemIcon:SetParent(GuildChallengeAlertFrameEmblemIcon.b)
-			end
-
-			SetLargeGuildTabardTextures("player", GuildChallengeAlertFrameEmblemIcon, nil, nil)
-		end
-	end)]]
+		SetLargeGuildTabardTextures("player", EmblemIcon, nil, nil)
+	end)
 
 	--[[hooksecurefunc("AlertFrame_SetChallengeModeAnchors", function(anchorFrame)
 		local frame = ChallengeModeAlertFrame1
