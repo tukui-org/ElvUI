@@ -220,10 +220,11 @@ end
 function mod:StyleFrame(frame, useMainFrame)
 	local parent = frame
 
-	if(parent:GetObjectType() == "Texture" or useMainFrame) then
-		if(not useMainFrame) then
-			parent = frame:GetParent()
-		end
+	if(parent:GetObjectType() == "Texture") then
+		parent = frame:GetParent()
+	end
+
+	if useMainFrame then
 		parent:SetTemplate("Transparent")
 		return
 	end

@@ -36,7 +36,7 @@ end
 
 function mod:ConstructElement_PowerBar(parent)
 	local frame = CreateFrame("StatusBar", "$parentPowerBar", parent)
-	self:StyleFrame(frame, true)
+	self:StyleFrame(frame)
 	frame:Hide()
 
 	return frame

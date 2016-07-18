@@ -70,7 +70,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 			frame.CastBar.Text:SetText(text);
 		end
 		if ( frame.CastBar.Icon ) then
-			frame.CastBar.Icon:SetTexture(texture);
+			frame.CastBar.Icon.texture:SetTexture(texture);
 		end
 
 		frame.CastBar.casting = true;
@@ -217,7 +217,7 @@ function mod:ConfigureElement_CastBar(frame)
 	else
 		castBar.Icon:SetWidth(self.db.units[frame.UnitType].castbar.height + self.db.units[frame.UnitType].healthbar.height + E.Border + E.Spacing*3)
 	end
-	castBar.Icon:SetTexCoord(unpack(E.TexCoords))
+	castBar.Icon.texture:SetTexCoord(unpack(E.TexCoords))
 	
 	castBar.Name:SetPoint("TOPLEFT", castBar, "BOTTOMLEFT", 0, -E.Border*3)
 	castBar.Time:SetPoint("TOPRIGHT", castBar, "BOTTOMRIGHT", 0, -E.Border*3)
@@ -237,9 +237,12 @@ function mod:ConstructElement_CastBar(parent)
 	self:StyleFrame(frame)
 	frame:SetScript("OnUpdate", mod.UpdateElement_CastBarOnUpdate)
 	
-	frame.Icon = frame:CreateTexture(nil, "BORDER")
+	frame.Icon = CreateFrame("Frame", nil, frame)
+	frame.Icon.texture = frame.Icon:CreateTexture(nil, "BORDER")
+	frame.Icon.texture:SetAllPoints()
 	self:StyleFrame(frame.Icon)
-	
+
+
 	frame.Name = frame:CreateFontString(nil, "OVERLAY")
 	frame.Time = frame:CreateFontString(nil, "OVERLAY")
 	frame.Spark = frame:CreateTexture(nil, "OVERLAY")
