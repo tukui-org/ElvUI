@@ -218,7 +218,7 @@ P["nameplates"] = {
 	},			
 	['units'] = {
 		['PLAYER'] = {
-			['enable'] = true,
+			['enable'] = false,
 			["alwaysShow"] = false,
 			['healthbar'] = {
 				['enable'] = true,
