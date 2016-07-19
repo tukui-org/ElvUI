@@ -1479,10 +1479,15 @@ function CH:SetupChat(event, ...)
 		if not frame.scriptsSet then
 			frame:SetScript("OnMouseWheel", ChatFrame_OnMouseScroll)
 
+			--[[THIS CAUSES LUA ERROR WHEN RESETTING CHAT TO DEFAULTS OR WHEN RUNNING FCF_ResetChatWindows()
 			if id > NUM_CHAT_WINDOWS then
 				frame:SetScript("OnEvent", CH.FloatingChatFrame_OnEvent)
 			elseif id ~= 2 then
 				frame:SetScript("OnEvent", CH.ChatFrame_OnEvent)
+			end]]
+			--Use this instead for the time being
+			if id ~= 2 then
+				frame:SetScript("OnEvent", CH.FloatingChatFrame_OnEvent)
 			end
 
 			hooksecurefunc(frame, "SetScript", function(f, script, func)
