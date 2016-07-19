@@ -532,7 +532,7 @@ function UF.groupPrototype:Configure_Groups(self)
 	local width, height, newCols, newRows = 0, 0, 0, 0
 	local direction = db.growthDirection
 	local xMult, yMult = DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction], DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction]
-	local UNIT_HEIGHT = db.infoPanel and (db.height + db.infoPanel.height) or db.height
+	local UNIT_HEIGHT = db.infoPanel and db.infoPanel.enable and (db.height + db.infoPanel.height) or db.height
 
 	local numGroups = self.numGroups
 	for i=1, numGroups do
