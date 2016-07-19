@@ -18,6 +18,7 @@ local MAX_HONOR_LEVEL = MAX_HONOR_LEVEL
 -- GLOBALS: GameTooltip,  RightChatPanel
 
 function mod:UpdateHonor(event, unit)
+	if not mod.db.honor.enable then return end
 	if event == "HONOR_PRESTIGE_UPDATE"  and unit ~= "player" then return end
 	local bar = self.honorBar
 	local showHonor = UnitLevel("player") >= MAX_PLAYER_LEVEL
