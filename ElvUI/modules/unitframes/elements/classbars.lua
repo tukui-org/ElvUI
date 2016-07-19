@@ -8,6 +8,7 @@ local ceil, floor, max = math.ceil, math.floor, math.max
 local find, sub, gsub = string.find, string.sub, string.gsub
 --WoW API / Variables
 local CreateFrame = CreateFrame
+local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: ElvUF_Player
@@ -107,7 +108,8 @@ function UF:Configure_ClassBar(frame)
 	bars:Height(frame.CLASSBAR_HEIGHT - ((frame.BORDER + frame.SPACING)*2))
 
 	if (frame.ClassBar == 'ClassIcons' or frame.ClassBar == 'Runes') then
-		for i = 1, (UF.classMaxResourceBar[E.myclass] or 0) do
+		local maxClassBarButtons = max(UF.classMaxResourceBar[E.myclass] or 0, MAX_COMBO_POINTS)
+		for i = 1, maxClassBarButtons do
 			if i <= frame.MAX_CLASS_BAR then
 				bars[i].backdrop.ignoreUpdates = true
 				bars[i].backdrop.backdropTexture:SetVertexColor(c.r, c.g, c.b)
@@ -150,11 +152,20 @@ function UF:Configure_ClassBar(frame)
 				elseif E.myclass == "PALADIN" or E.myclass == "MAGE" or E.myclass == "WARLOCK" then
 					bars[i]:SetStatusBarColor(unpack(ElvUF.colors.ClassBars[E.myclass]))
 				elseif E.myclass == "DEATHKNIGHT" then
-					local r, g, b = unpack(ElvUF.colors.ClassBars.DEATHKNIGHT)
-					bars[i]:SetStatusBarColor(r, g, b)
-					if (bars[i].bg) then
-						local mu = bars[i].bg.multiplier or 1
-						bars[i].bg:SetVertexColor(r * mu, g * mu, b * mu)
+					if frame.ClassBar == "Runes" then
+						local r, g, b = unpack(ElvUF.colors.ClassBars["DEATHKNIGHT"])
+						bars[i]:SetStatusBarColor(r, g, b)
+						if (bars[i].bg) then
+							local mu = bars[i].bg.multiplier or 1
+							bars[i].bg:SetVertexColor(r * mu, g * mu, b * mu)
+						end
+					else
+						local r1, g1, b1 = unpack(ElvUF.colors.ComboPoints[1])
+						local r2, g2, b2 = unpack(ElvUF.colors.ComboPoints[2])
+						local r3, g3, b3 = unpack(ElvUF.colors.ComboPoints[3])
+
+						local r, g, b = ElvUF.ColorGradient(i, frame.MAX_CLASS_BAR > 5 and 6 or 5, r1, g1, b1, r2, g2, b2, r3, g3, b3)
+						bars[i]:SetStatusBarColor(r, g, b)
 					end
 				else -- Combo Points for everyone else
 					local r1, g1, b1 = unpack(ElvUF.colors.ComboPoints[1])
@@ -266,7 +277,7 @@ function UF:Construct_ClassBar(frame)
 
 	local maxBars = max(UF['classMaxResourceBar'][E.myclass] or 0, MAX_COMBO_POINTS)
 	for i = 1, maxBars do
-		bars[i] = CreateFrame("StatusBar", frame:GetName().."ClassBarButton"..i, bars)
+		bars[i] = CreateFrame("StatusBar", frame:GetName().."ClassIconButton"..i, bars)
 		bars[i]:SetStatusBarTexture(E['media'].blankTex) --Dummy really, this needs to be set so we can change the color
 		bars[i]:GetStatusBarTexture():SetHorizTile(false)
 		UF['statusbars'][bars[i]] = true
@@ -326,7 +337,7 @@ function UF:Construct_DeathKnightResourceBar(frame)
 	runes:CreateBackdrop('Default', nil, nil, self.thinBorders)
 
 	for i = 1, UF['classMaxResourceBar'][E.myclass] do
-		runes[i] = CreateFrame("StatusBar", frame:GetName().."ClassBarButton"..i, runes)
+		runes[i] = CreateFrame("StatusBar", frame:GetName().."RuneButton"..i, runes)
 		UF['statusbars'][runes[i]] = true
 		runes[i]:SetStatusBarTexture(E['media'].blankTex)
 		runes[i]:GetStatusBarTexture():SetHorizTile(false)
@@ -339,8 +350,32 @@ function UF:Construct_DeathKnightResourceBar(frame)
 		runes[i].bg:SetTexture(E['media'].blankTex)
 		runes[i].bg.multiplier = 0.3
 	end
+	
+	runes.PostUpdateVisibility = UF.PostVisibilityRunes
+	runes:SetScript("OnShow", ToggleResourceBar)
+	runes:SetScript("OnHide", ToggleResourceBar)
 
 	return runes
+end
+
+function UF:PostVisibilityRunes(enabled, stateChanged)
+	local frame = self.origParent or self:GetParent()
+
+	if enabled then
+		frame.ClassBar = "Runes"
+		frame.MAX_CLASS_BAR = #self
+	else
+		frame.ClassBar = "ClassIcons"
+		frame.MAX_CLASS_BAR = MAX_COMBO_POINTS
+	end
+
+	if stateChanged then
+		ToggleResourceBar(frame[frame.ClassBar])
+		UF:Configure_ClassBar(frame)
+		UF:Configure_HealthBar(frame)
+		UF:Configure_Power(frame)
+		UF:Configure_InfoPanel(frame, true) --2nd argument is to prevent it from setting template, which removes threat border
+	end
 end
 
 -------------------------------------------------------------
@@ -434,7 +469,7 @@ function UF:PostUpdateAdditionalPower(unit, min, max, event)
 end
 
 function UF:PostVisibilityAdditionalPower(enabled, stateChanged)
-	local frame = self:GetParent()
+	local frame = self.origParent or self:GetParent()
 
 	if enabled then
 		frame.ClassBar = 'AdditionalPower'
