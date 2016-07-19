@@ -5,8 +5,7 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.artifact ~= true then return end
 	
 	ArtifactFrame:StripTextures()
-	ArtifactFrame:SetTemplate("Transparent")
-	ArtifactFrame:CreateBackdrop()
+	ArtifactFrame:CreateBackdrop("Transparent")
 	ArtifactFrame.BorderFrame:StripTextures()
 	S:HandleCloseButton(ArtifactFrame.CloseButton)
 	
