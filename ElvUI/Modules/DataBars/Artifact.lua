@@ -16,6 +16,8 @@ local ARTIFACT_POWER = ARTIFACT_POWER
 -- GLOBALS: GameTooltip
 
 function mod:UpdateArtifact(event)
+	if not mod.db.artifact.enable then return end
+
 	local bar = self.artifactBar
 	local showArtifact = HasArtifactEquipped();
 	if not showArtifact then

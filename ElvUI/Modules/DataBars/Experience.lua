@@ -26,6 +26,8 @@ function mod:GetXP(unit)
 end
 
 function mod:UpdateExperience(event)
+	if not mod.db.experience.enable then return end
+
 	local bar = self.expBar
 
 	if (UnitLevel('player') == MAX_PLAYER_LEVEL and self.db.experience.hideAtMaxLevel) or IsXPUserDisabled() then

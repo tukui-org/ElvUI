@@ -19,6 +19,8 @@ local FACTION_BAR_COLORS = FACTION_BAR_COLORS
 local backupColor = FACTION_BAR_COLORS[1]
 local FactionStandingLabelUnknown = UNKNOWN
 function mod:UpdateReputation(event)
+	if not mod.db.reputation.enable then return end
+
 	local bar = self.repBar
 
 	local ID
