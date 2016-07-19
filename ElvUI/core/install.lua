@@ -47,7 +47,7 @@ local MAX_PAGE = 8
 local function SetupChat()
 	InstallStepComplete.message = L["Chat Set"]
 	InstallStepComplete:Show()
-	--FCF_ResetChatWindows() TEMP DISABLE.. ERROR
+	FCF_ResetChatWindows()
 	FCF_SetLocked(ChatFrame1, 1)
 	FCF_DockFrame(ChatFrame2)
 	FCF_SetLocked(ChatFrame2, 1)
