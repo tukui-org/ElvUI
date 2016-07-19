@@ -40,6 +40,11 @@ local function LoadSkin()
 				armor.backdrop:SetFrameLevel(armor:GetFrameLevel())
 			end
 		end
+
+		local xpbar = follower.followerTab.XPBar
+		xpbar:StripTextures()
+		xpbar:SetStatusBarTexture(E["media"].normTex)
+		xpbar:CreateBackdrop("Transparent")
 	end
 
 	-- Needs Review
