@@ -9,14 +9,14 @@
 ## X-oUF: ElvUF
 
 developer\load_developer.xml
-libraries\load_libraries.xml
+Libraries\Load_Libraries.xml
 locales\load_locales.xml
 media\load_media.xml
 init.lua
-settings\load_config.xml
+Settings\Load_Config.xml
 core\load_core.xml 
 layout\load_layout.xml
-modules\load_modules.xml
+Modules\load_modules.xml
 
 ## X-Tukui-ProjectID: -2
 ## X-Tukui-ProjectFolders: ElvUI_Config, ElvUI

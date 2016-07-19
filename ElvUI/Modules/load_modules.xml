@@ -3,7 +3,7 @@
 	<Include file="nameplates\load_nameplates.xml"/>
 	<Include file="tooltip\load_tooltip.xml"/>
 	<Include file="datatexts\load_datatexts.xml"/>
-	<Include file="databars\load_databars.xml"/>
+	<Include file="DataBars\Load_Databars.xml"/>
 	<Include file="actionbars\load_actionbars.xml"/>
 	<Include file="unitframes\load_unitframes.xml"/>
 	<Include file="maps\load_maps.xml"/>

@@ -6,7 +6,7 @@
 ## RequiredDeps: ElvUI
 ## LoadOnDemand: 1
 
-libraries\load_libraries.xml
+Libraries\Load_Libraries.xml
 locales\load_locales.xml
 core.lua
 actionbars.lua
@@ -14,7 +14,7 @@ auras.lua
 bags.lua
 chat.lua
 datatexts.lua 
-databars.lua
+DataBars.lua
 filters.lua
 skins.lua
 tooltip.lua
