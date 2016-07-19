@@ -1,6 +1,6 @@
 ## Interface: 70000
 ## Author: Elv
-## Version: 1.03
+## Version: 1.04
 ## Title: |cff1784d1ElvUI Config|r
 ## Notes: Options for ElvUI.
 ## RequiredDeps: ElvUI
