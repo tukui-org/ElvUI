@@ -10,4 +10,5 @@
 	<Script file='capturebar.lua'/>
 	<Script file='alertframe.lua'/>
 	<Script file='altpower.lua'/>
+	<Script file='TalkingHeadFrame.lua'/>
 </Ui>

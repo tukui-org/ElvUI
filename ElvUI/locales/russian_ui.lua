@@ -35,7 +35,7 @@ L["Trigger"] = "Триггер"
 --Bags
 L["Bank"] = "Банк"
 L["Deposit Reagents"] = "Сложить материалы"
-L["Hold Control + Right Click:"] = "Зажать control + ПКМ:"
+L["Hold Control + Right Click:"] = "Зажать Control + ПКМ:"
 L["Hold Shift + Drag:"] = "Зажать shift и перетаскивать:"
 L["Purchase Bags"] = "Приобрести слот"
 L["Purchase"] = "Приобрести слот"
@@ -98,7 +98,6 @@ L["lvl"] = "ур."
 L["Main Hand"] = "Правая рука"
 L["Mission(s) Report:"] = "Отчет миссий:"
 L["Mitigation By Level: "] = "Снижение на уровне: "
-L["Multistrike"] = "Мног. атака"
 L["Naval Mission(s) Report:"] = "Отчет морских миссий:"
 L["No Guild"] = "Нет гильдии"
 L["Offhand"] = "Левая рука"
@@ -204,7 +203,7 @@ L["You may need to further alter these settings depending how low you resolution
 L["Your current resolution is %s, this is considered a %s resolution."] = "Ваше текущее разрешение - %s, это считается %s разрешением."
 
 --Misc
-L["ABOVE_THREAT_FORMAT"] = '%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]'
+L["ABOVE_THREAT_FORMAT"] = '%s: %.0f%% [на %.0f%% опережаем |cff%02x%02x%02x%s|r]'
 L["Average Group iLvl:"] = "Средний ур. предметов:"
 L["Bars"] = "Полосы" --Also used in UnitFrames
 L["Calendar"] = "Календарь"
@@ -212,7 +211,6 @@ L["Can't Roll"] = "Не могу бросить кости"
 L["Disband Group"] = "Распустить группу"
 L["Enable"] = "Включить" --Doesn't fit a section since it's used a lot of places
 L["Experience"] = "Опыт"
-L["Farm Mode"] = "Режим фарма" -- Minimap middle click menu
 L["Fishy Loot"] = "Улов"
 L["iLvl"] = true --Column header in raidbrowser/don't need translation in ru, ppl understand it as is
 L["Important Group Members:"] = "Важные члены группы:"
@@ -233,10 +231,10 @@ L["You don't have permission to mark targets."] = "У вас нет разреш
 L["Alternative Power"] = "Альтернативный ресурс"
 L["Archeology Progress Bar"] = "Прогресс археологии"
 L["Arena Frames"] = "Арена" --Also used in UnitFrames
+L["Artifact Bar"] = "Полоса Артефакта"
 L["Bags"] = "Сумки" --Also in DataTexts
 L["Bar "] = "Панель " --Also in ActionBars
 L["BNet Frame"] = "Оповещения BNet"
-L["BodyGuard Frame"] = "Телохранитель"
 L["Boss Button"] = "Кнопка босса"
 L["Boss Frames"] = "Боссы" --Also used in UnitFrames
 L["Class Bar"] = "Классовая полоса"
@@ -246,6 +244,7 @@ L["Focus Castbar"] = "Полоса заклинаний фокуса"
 L["Focus Frame"] = "Фокус" --Also used in UnitFrames
 L["FocusTarget Frame"] = "Цель фокуса" --Also used in UnitFrames
 L["GM Ticket Frame"] = "Запрос ГМу"
+L["Honor Bar"] = "Полоса Чести"
 L["Left Chat"] = "Левый чат"
 L["Loot / Alert Frames"] = "Розыгрыш/оповещения"
 L["Loot Frame"] = "Окно добычи"
@@ -265,6 +264,7 @@ L["Player Buffs"] = "Баффы игрока"
 L["Player Castbar"] = "Полоса заклинаний игрока"
 L["Player Debuffs"] = "Дебаффы игрока"
 L["Player Frame"] = "Игрок" --Also used in UnitFrames
+L["Player Nameplate"] = "Индикатор игрока"
 L["Player Powerbar"] = "Полоса ресурса игрока"
 L["Raid Frames"] = "Рейд"
 L["Raid Pet Frames"] = "Питомцы рейда"
@@ -272,6 +272,7 @@ L["Raid-40 Frames"] = "Рейд 40"
 L["Reputation Bar"] = "Полоса репутации"
 L["Right Chat"] = "Правый чат"
 L["Stance Bar"] = "Панель стоек" --Also in ActionBars
+L["Talking Head Frame"] = "Говорящая голова"
 L["Target Castbar"] = "Полоса заклинаний цели"
 L["Target Frame"] = "Цель" --Also used in UnitFrames
 L["Target Powerbar"] = "Полоса ресурса цели"
@@ -280,11 +281,12 @@ L["TargetTargetTarget Frame"] = "Цель цели цели"
 L["Tooltip"] = "Подсказка"
 L["Vehicle Seat Frame"] = "Техника"
 
---NamePlates
-L["Discipline"] = "Послушание"
-L["Holy"] = "Свет"
-L["Mistweaver"] = "Ткач туманов"
-L["Restoration"] = "Исцеление"
+--Plugin Installer
+L["ElvUI Plugin Installation"] = "Установка плагина ElvUI"
+L["In Progress"] = "В процессе"
+L["List of installations in queue:"] = "Очередь установки:"
+L["Pending"] = "Ожидает"
+L["Steps"] = "Шаги"
 
 --Prints
 L[" |cff00ff00bound to |r"] = " |cff00ff00назначено для |r"
@@ -295,15 +297,15 @@ L["Battleground datatexts temporarily hidden, to show type /bgstats or right cli
 L["Battleground datatexts will now show again if you are inside a battleground."] = "Информация поля боя снова будет отображаться, если Вы находитесь на них."
 L["Binds Discarded"] = "Назначения отменены"
 L["Binds Saved"] = "Назначения сохранены"
-L["Confused.. Try Again!"] = "Что за... Попробуйте еще раз!"
+L["Confused.. Try Again!"] = "Что за?.. Попробуйте еще раз!"
 L["No gray items to delete."] = "Нет предметов серого качества для удаления."
 L["The spell '%s' has been added to the Blacklist unitframe aura filter."] = 'Заклинание "%s" было добавлено в фильтр "Blacklist" аур рамок юнитов.'
 L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."] = "Эта опция вызвала конфликт точек фиксации, в результате которого \"%s\" крепится к самому себе. Пожалуйста, проверье настройки точек фиксации. \"%s\" будет прикреплено к \"%s\"."
 L["Vendored gray items for:"] = "Проданы серые предметы на сумму:"
 L["You don't have enough money to repair."] = "У вас недостаточно денег для ремонта."
 L["You must be at a vendor."] = "Вы должны находиться у торговца"
-L["Your items have been repaired for: "] = "Ваши предметы отремонтированы на: "
-L["Your items have been repaired using guild bank funds for: "] = "Ваши предметы отремонтированы за счет гильдии на: "
+L["Your items have been repaired for: "] = "Ремонт обошелся в "
+L["Your items have been repaired using guild bank funds for: "] = "Ремонт обошелся гильдии в "
 L["|cFFE30000Lua error recieved. You can view the error message when you exit combat."] = "|cFFE30000Обнаружена ошибка lua. Вы получите отчет о ней после завершения боя."
 
 --Static Popups
@@ -352,11 +354,9 @@ L["ElvUI has a dual spec feature which allows you to load different profiles bas
 L["For technical support visit us at http://www.tukui.org."] = 'За технической поддержкой обращайтесь на http://www.tukui.org.'
 L["If you accidently remove a chat frame you can always go the in-game configuration menu, press install, go to the chat portion and reset them."] = 'Если Вы случайно удалили вкладку чата, всегда можно сделать следующее: зайти в конфигурацию, запустить установку, дойти до шага настроек чата и сбросить их.'
 L["If you are experiencing issues with ElvUI try disabling all your addons except ElvUI, remember ElvUI is a full UI replacement addon, you cannot run two addons that do the same thing."] = 'Если Вы испытываете проблемы с ElvUI, попробуйте отключить все аддоны, кроме самого ElvUI. Помните, ElvUI это аддон, полностью заменяющий интерфейс, Вы не можете одновременно использовать два аддона, выполняющих одинаковые функции.'
-L["The buff panel to the right of minimap is a list of your consolidated buffs. You can disable it in Buffs and Debuffs options of ElvUI."] = 'Панель с баффами справа от миникарты это список Ваших объединенных баффов. Вы можете отключить ее в разделе эффектов и аур в настройках ElvUI.'
 L["The focus unit can be set by typing /focus when you are targeting the unit you want to focus. It is recommended you make a macro to do this."] = 'Запомненную цель (фокус) можно установить командой /focus при взятии нужного врага в цель. Для этого рекомендуется сделать макрос.'
 L["To move abilities on the actionbars by default hold shift + drag. You can change the modifier key from the actionbar options menu."] = 'Для перемещения способностей по панелям команд нужно перемещать их с зажатой клавишей shift. Вы можете поменять модификатор в опциях панелей команд.'
 L["To setup which channels appear in which chat frame, right click the chat tab and go to settings."] = 'Для настройки отображения каналов в чате кликните правой кнопкой мыши на закладке нужного чата и выберите пункт "параметры".'
-L["Using the /farmmode <size> command will spawn a larger minimap on your screen that can be moved around, very useful when farming."] = 'Использование команды /farmmode <размер> откроет миникарту большего размера, которую можно свободно перемещать по экрану. Очень полезно при фарме.'
 L["You can access copy chat and chat menu functions by mouse over the top right corner of chat panel and left/right click on the button that will appear."] = 'Вы можете получить доступ к функциям копирования чата и меню чата, наведя курсор на верхний правый угол панели чата и кликнув левой/правой кнопкой мыши на появившейся кнопке.'
 L["You can see someones average item level of their gear by holding shift and mousing over them. It should appear inside the tooltip."] = "Вы можете узнать средний уровень предметов игрока, зажав shift и наведя на них курсор. Информация будет отражена в подсказке."
 L["You can set your keybinds quickly by typing /kb."] = "Вы можете быстро назначать клавиши, введя команду /kb."

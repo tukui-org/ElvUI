@@ -15,6 +15,7 @@ function B:Initialize()
 	self:SkinBlizzTimers()
 	self:PositionVehicleFrame()
 	self:PositionAltPowerBar()
+	self:PositionTalkingHead()
 
 	if not IsAddOnLoaded("DugisGuideViewerZ") then
 		self:MoveObjectiveFrame()

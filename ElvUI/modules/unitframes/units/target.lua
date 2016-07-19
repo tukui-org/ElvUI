@@ -40,7 +40,6 @@ function UF:Construct_TargetFrame(frame)
 	frame.Castbar.SafeZone = nil
 	frame.Castbar.LatencyTexture:Hide()
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)
-	frame.CPoints = self:Construct_Combobar(frame)
 	frame.HealPrediction = self:Construct_HealComm(frame)
 	frame.DebuffHighlight = self:Construct_DebuffHighlight(frame)
 	frame.GPS = self:Construct_GPS(frame)
@@ -75,16 +74,6 @@ function UF:Update_TargetFrame(frame, db)
 		frame.USE_PORTRAIT = db.portrait and db.portrait.enable
 		frame.USE_PORTRAIT_OVERLAY = frame.USE_PORTRAIT and (db.portrait.overlay or frame.ORIENTATION == "MIDDLE")
 		frame.PORTRAIT_WIDTH = (frame.USE_PORTRAIT_OVERLAY or not frame.USE_PORTRAIT) and 0 or db.portrait.width
-
-		frame.CAN_HAVE_CLASSBAR = db.combobar.enable
-		frame.MAX_CLASS_BAR = MAX_COMBO_POINTS
-		frame.USE_CLASSBAR = db.combobar.enable
-		frame.CLASSBAR_SHOWN = frame.CAN_HAVE_CLASSBAR and frame.CPoints:IsShown()
-		frame.CLASSBAR_DETACHED = db.combobar.detachFromFrame
-		frame.USE_MINI_CLASSBAR = db.combobar.fill == "spaced" and frame.USE_CLASSBAR
-		frame.CLASSBAR_HEIGHT = frame.USE_CLASSBAR and db.combobar.height or 0
-		frame.CLASSBAR_WIDTH = frame.UNIT_WIDTH - ((frame.BORDER+frame.SPACING)*2) - frame.PORTRAIT_WIDTH  - frame.POWERBAR_OFFSET
-		frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN or frame.CLASSBAR_DETACHED) and 0 or (frame.USE_MINI_CLASSBAR and (frame.SPACING+(frame.CLASSBAR_HEIGHT/2)) or (frame.CLASSBAR_HEIGHT + frame.SPACING))
 
 		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and db.infoPanel.enable
 		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0
@@ -130,9 +119,6 @@ function UF:Update_TargetFrame(frame, db)
 
 	--Castbar
 	UF:Configure_Castbar(frame)
-
-	--Combo Bar
-	UF:Configure_ComboPoints(frame)
 
 	--Debuff Highlight
 	UF:Configure_DebuffHighlight(frame)

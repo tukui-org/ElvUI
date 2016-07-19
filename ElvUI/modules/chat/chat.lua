@@ -117,8 +117,6 @@ local Var = {
 -- GLOBALS: ICON_TAG_LIST, ICON_LIST, GROUP_TAG_LIST, DEFAULT_CHAT_FRAME, ChatFrameMenuButton
 -- GLOBALS: WIM, ChatTypeGroup, GeneralDockManagerOverflowButtonList, GeneralDockManagerScrollFrame
 -- GLOBALS: CombatLogQuickButtonFrame_CustomAdditionalFilterButton, UISpecialFrames, ChatFontNormal
--- GLOBALS: InterfaceOptionsSocialPanelTimestampsButton, InterfaceOptionsSocialPanelTimestamps
--- GLOBALS: InterfaceOptionsSocialPanelChatStyle, InterfaceOptionsSocialPanelChatStyleButton
 
 local CreatedFrames = 0;
 local lines = {};
@@ -251,11 +249,12 @@ local specialChatIcons = {
 		["Elv"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\elvui.blp:13:22|t",
 	},
 	["Arathor"] = {
-	   ["Mallouh"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\elvui.blp:13:22|t",
+		["Mallouh"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\elvui.blp:13:22|t",
 	}
 }
 
 CH.Keywords = {};
+CH.ClassNames = {}
 
 local function ChatFrame_OnMouseScroll(frame, delta)
 	if delta < 0 then
@@ -449,9 +448,9 @@ function CH:StyleChat(frame)
 	end
 
 	local a, b, c = select(6, editbox:GetRegions()); a:Kill(); b:Kill(); c:Kill()
-	_G[format(editbox:GetName().."FocusLeft", id)]:Kill()
-	_G[format(editbox:GetName().."FocusMid", id)]:Kill()
-	_G[format(editbox:GetName().."FocusRight", id)]:Kill()
+	_G[format(editbox:GetName().."Left", id)]:Kill()
+	_G[format(editbox:GetName().."Mid", id)]:Kill()
+	_G[format(editbox:GetName().."Right", id)]:Kill()
 	editbox:SetTemplate('Default', true)
 	editbox:SetAltArrowKeyMode(CH.db.useAltKey)
 	editbox:HookScript("OnEditFocusGained", function(self) self:Show(); if not LeftChatPanel:IsShown() then LeftChatPanel.editboxforced = true; LeftChatToggleButton:GetScript('OnEnter')(LeftChatToggleButton) end end)
@@ -464,7 +463,8 @@ function CH:StyleChat(frame)
 	editbox.historyLines = ElvCharacterDB.ChatEditHistory
 	editbox.historyIndex = 0
 	editbox:HookScript("OnArrowPressed", OnArrowPressed)
-
+	editbox:Hide()
+	
 	for i, text in pairs(ElvCharacterDB.ChatEditHistory) do
 		editbox:AddHistoryLine(text)
 	end
@@ -677,6 +677,8 @@ function CH:UpdateChatTabs()
 				CH:SetupChatTabs(tab, false)
 			end
 		elseif not isDocked and chat:IsShown() then
+			tab:SetParent(RightChatPanel)
+			chat:SetParent(RightChatPanel)
 			CH:SetupChatTabs(tab, fadeUndockedTabs and true or false)
 		else
 			if E.db.chat.panelBackdrop == 'HIDEBOTH' or E.db.chat.panelBackdrop == 'RIGHT' then
@@ -973,8 +975,32 @@ function CH:GetBNFriendColor(name, id)
 	end
 end
 
-function CH:GetPluginReplacementIcon(nameRealm)
-	return
+
+local PluginIconsCalls = {}
+function CH:AddPluginIcons(func)
+	tinsert(PluginIconsCalls, func)
+end
+
+function CH:GetPluginIcon(sender)
+	local icon
+	for i = 1, #PluginIconsCalls do
+		icon = PluginIconsCalls[i](sender)
+		if icon then break end
+	end
+	return icon
+end
+
+local function GetChatIcons(sender)
+	local pflag
+	if(specialChatIcons[PLAYER_REALM] and specialChatIcons[PLAYER_REALM][E.myname] ~= true) then
+		for realm, _ in pairs(specialChatIcons) do
+			for character, texture in pairs(specialChatIcons[realm]) do
+				if sender == character.."-"..realm then
+					return texture
+				end
+			end
+		end
+	end
 end
 
 --Copied from FrameXML/ChatFrame.lua and modified to use pcall on GetPlayerInfoByGUID
@@ -997,13 +1023,14 @@ function GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, a
 	end
 
 	if ( info and info.colorNameByClass and arg12 ) then
-		local _, localizedClass, englishClass, localizedRace, englishRace, sex = pcall(GetPlayerInfoByGUID, arg12)
+		local _, localizedClass, englishClass, localizedRace, englishRace, sex, name, realm = pcall(GetPlayerInfoByGUID, arg12)
 
 		if ( englishClass ) then
 			local classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[englishClass] or RAID_CLASS_COLORS[englishClass];
 			if ( not classColorTable ) then
 				return arg2;
 			end
+			CH.ClassNames[name:lower()] = englishClass
 			return format("\124cff%.2x%.2x%.2x", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255)..arg2.."\124r"
 		end
 	end
@@ -1252,51 +1279,39 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			end
 
 			-- Add AFK/DND flags
-			local pflag;
-			local pluginIcon, flags = CH:GetPluginReplacementIcon(arg2, arg6, type)
-			if(pluginIcon and flags) then
-				pflag = pluginIcon
-			else
-				if(strlen(arg6) > 0) then
-					if ( arg6 == "GM" ) then
-						--If it was a whisper, dispatch it to the GMChat addon.
-						if ( type == "WHISPER" ) then
-							return;
-						end
-						--Add Blizzard Icon, this was sent by a GM
-						pflag = "|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t ";
-					elseif ( arg6 == "DEV" ) then
-						--Add Blizzard Icon, this was sent by a Dev
-						pflag = "|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t ";
-					else
-						pflag = _G["CHAT_FLAG_"..arg6];
+			local pflag = GetChatIcons(arg2);
+			local pluginIcon = CH:GetPluginIcon(arg2)
+			if(strlen(arg6) > 0) then
+				if ( arg6 == "GM" ) then
+					--If it was a whisper, dispatch it to the GMChat addon.
+					if ( type == "WHISPER" ) then
+						return;
 					end
+					--Add Blizzard Icon, this was sent by a GM
+					pflag = "|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t ";
+				elseif ( arg6 == "DEV" ) then
+					--Add Blizzard Icon, this was sent by a Dev
+					pflag = "|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t ";
+				elseif ( arg6 == "DND" or arg6 == "AFK") then
+					pflag = (pflag or pluginIcon or "").._G["CHAT_FLAG_"..arg6];
 				else
-					if(specialChatIcons[PLAYER_REALM] and specialChatIcons[PLAYER_REALM][E.myname] ~= true) then
-						for realm, _ in pairs(specialChatIcons) do
-							for character, texture in pairs(specialChatIcons[realm]) do
-								if arg2 == character.."-"..realm then
-									pflag = texture
-								end
-							end
-						end
-					else
-						if(pluginIcon) then
-							pflag = pluginIcon
-						end
-					end
-
-					if(pflag == true) then
-						pflag = nil
-					end
-
-					if(not pflag and lfgRoles[arg2] and (type == "PARTY_LEADER" or type == "PARTY" or type == "RAID" or type == "RAID_LEADER" or type == "INSTANCE_CHAT" or type == "INSTANCE_CHAT_LEADER")) then
-						pflag = lfgRoles[arg2]
-					end
+					pflag = _G["CHAT_FLAG_"..arg6];
+				end
+			else
+				if not pflag and pluginIcon then
+					pflag = pluginIcon
 				end
 
-				pflag = pflag or ""
+				if(pflag == true) then
+					pflag = ""
+				end
+
+				if(lfgRoles[arg2] and (type == "PARTY_LEADER" or type == "PARTY" or type == "RAID" or type == "RAID_LEADER" or type == "INSTANCE_CHAT" or type == "INSTANCE_CHAT_LEADER")) then
+					pflag = lfgRoles[arg2]..(pflag or "")
+				end
 			end
+
+			pflag = pflag or ""
 
 			if ( type == "WHISPER_INFORM" and GMChatFrame_IsGM and GMChatFrame_IsGM(arg2) ) then
 				return;
@@ -1602,6 +1617,12 @@ function CH:CheckKeyword(message)
 				end
 			end
 		end
+		
+		if(CH.ClassNames[lowerCaseWord]) then
+			classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[CH.ClassNames[lowerCaseWord]] or RAID_CLASS_COLORS[CH.ClassNames[lowerCaseWord]];
+			tempWord = word:gsub("%p", "")
+			word = word:gsub(tempWord, format("\124cff%.2x%.2x%.2x", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255)..tempWord.."\124r")
+		end		
 
 		if isFirstWord then
 			rebuiltString = word
@@ -1672,10 +1693,6 @@ function CH:UpdateChatKeywords()
 
 	for i=1, #{split(',', keywords)} do
 		local stringValue = select(i, split(',', keywords));
-		if stringValue == '%MYNAME%' then
-			stringValue = E.myname;
-		end
-
 		if stringValue ~= '' then
 			CH.Keywords[stringValue] = true;
 		end
@@ -1852,7 +1869,7 @@ function CH:CheckLFGRoles()
 			name, realm = UnitName(unit..i)
 
 			if(role and name) then
-				name = realm and name..'-'..realm or name..'-'..PLAYER_REALM;
+				name = (realm and realm ~= '') and name..'-'..realm or name ..'-'..PLAYER_REALM
 				lfgRoles[name] = rolePaths[role]
 			end
 		end
@@ -2088,15 +2105,6 @@ function CH:Initialize()
 
 	S:HandleCloseButton(close)
 
-	--Disable Blizzard
-	InterfaceOptionsSocialPanelTimestampsButton:SetAlpha(0)
-	InterfaceOptionsSocialPanelTimestampsButton:SetScale(0.000001)
-	InterfaceOptionsSocialPanelTimestamps:SetAlpha(0)
-	InterfaceOptionsSocialPanelTimestamps:SetScale(0.000001)
-
-	InterfaceOptionsSocialPanelChatStyle:EnableMouse(false)
-	InterfaceOptionsSocialPanelChatStyleButton:Hide()
-	InterfaceOptionsSocialPanelChatStyle:SetAlpha(0)
 
 	CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Size(20, 22)
 	CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Point("TOPRIGHT", CombatLogQuickButtonFrame_Custom, "TOPRIGHT", 0, -1)

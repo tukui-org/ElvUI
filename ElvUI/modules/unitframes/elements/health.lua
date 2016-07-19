@@ -6,8 +6,8 @@ local UF = E:GetModule('UnitFrames');
 local random = random
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local UnitIsTapped = UnitIsTapped
-local UnitIsTappedByPlayer = UnitIsTappedByPlayer
+local UnitIsTapDenied = UnitIsTapDenied
+local UnitIsTapDeniedByPlayer = UnitIsTapDeniedByPlayer
 local UnitReaction = UnitReaction
 local UnitIsPlayer = UnitIsPlayer
 local UnitClass = UnitClass
@@ -97,10 +97,10 @@ function UF:Configure_HealthBar(frame)
 	--Position
 	health:ClearAllPoints()
 	if frame.ORIENTATION == "LEFT" then
-		health:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER - frame.SPACING - frame.STAGGER_WIDTH, -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
+		health:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER - frame.SPACING - (frame.PVPINFO_WIDTH or 0), -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
 
 		if frame.USE_POWERBAR_OFFSET then
-			health:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER - frame.SPACING - frame.POWERBAR_OFFSET - frame.STAGGER_WIDTH, -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
+			health:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER - frame.SPACING - frame.POWERBAR_OFFSET, -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.PORTRAIT_WIDTH + frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING + frame.POWERBAR_OFFSET)
 		elseif frame.POWERBAR_DETACHED or not frame.USE_POWERBAR or frame.USE_INSET_POWERBAR then
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.PORTRAIT_WIDTH + frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING + frame.BOTTOM_OFFSET)
@@ -110,10 +110,10 @@ function UF:Configure_HealthBar(frame)
 			health:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.PORTRAIT_WIDTH + frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING + frame.BOTTOM_OFFSET)
 		end
 	elseif frame.ORIENTATION == "RIGHT" then
-		health:Point("TOPLEFT", frame, "TOPLEFT", frame.BORDER + frame.SPACING + frame.STAGGER_WIDTH, -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
+		health:Point("TOPLEFT", frame, "TOPLEFT", frame.BORDER + frame.SPACING + (frame.PVPINFO_WIDTH or 0), -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
 
 		if frame.USE_POWERBAR_OFFSET then
-			health:Point("TOPLEFT", frame, "TOPLEFT", frame.BORDER + frame.SPACING + frame.POWERBAR_OFFSET + frame.STAGGER_WIDTH, -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
+			health:Point("TOPLEFT", frame, "TOPLEFT", frame.BORDER + frame.SPACING + frame.POWERBAR_OFFSET, -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
 			health:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -frame.PORTRAIT_WIDTH - frame.BORDER - frame.SPACING, frame.BORDER + frame.SPACING + frame.POWERBAR_OFFSET)
 		elseif frame.POWERBAR_DETACHED or not frame.USE_POWERBAR or frame.USE_INSET_POWERBAR then
 			health:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -frame.PORTRAIT_WIDTH - frame.BORDER - frame.SPACING, frame.BORDER + frame.SPACING + frame.BOTTOM_OFFSET)
@@ -123,7 +123,7 @@ function UF:Configure_HealthBar(frame)
 			health:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -frame.PORTRAIT_WIDTH - frame.BORDER - frame.SPACING, frame.BORDER + frame.SPACING + frame.BOTTOM_OFFSET)
 		end
 	elseif frame.ORIENTATION == "MIDDLE" then
-		health:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER - frame.SPACING - frame.STAGGER_WIDTH, -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
+		health:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER - frame.SPACING - (frame.PVPINFO_WIDTH or 0), -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
 
 		if frame.USE_POWERBAR_OFFSET then
 			health:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.BORDER - frame.SPACING - frame.POWERBAR_OFFSET, -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
@@ -191,7 +191,7 @@ function UF:PostUpdateHealth(unit, min, max)
 
 	local r, g, b = self:GetStatusBarColor()
 	local colors = E.db['unitframe']['colors'];
-	if (colors.healthclass == true and colors.colorhealthbyvalue == true) or (colors.colorhealthbyvalue and parent.isForced) and not (UnitIsTapped(unit) and not UnitIsTappedByPlayer(unit)) then
+	if (colors.healthclass == true and colors.colorhealthbyvalue == true) or (colors.colorhealthbyvalue and parent.isForced) and not (UnitIsTapDenied(unit) and not UnitIsTapDeniedByPlayer(unit)) then
 		local newr, newg, newb = ElvUF.ColorGradient(min, max, 1, 0, 0, 1, 1, 0, r, g, b)
 
 		self:SetStatusBarColor(newr, newg, newb)

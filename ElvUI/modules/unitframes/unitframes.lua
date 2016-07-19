@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:NewModule('UnitFrames', 'AceTimer-3.0', 'AceEvent-3.0', 'AceHook-3.0');
 local LSM = LibStub("LibSharedMedia-3.0");
-local BG = LibStub("LibBodyguard-1.0");
 UF.LSM = LSM
 
 --Cache global variables
@@ -32,12 +31,7 @@ local MAX_BOSS_FRAMES = MAX_BOSS_FRAMES
 -- GLOBALS: UIParent, ElvCharacterDB, ElvUF_Parent, oUF_RaidDebuffs, CompactRaidFrameManager
 -- GLOBALS: PlayerFrame, RuneFrame, PetFrame, TargetFrame, ComboFrame, FocusFrame
 -- GLOBALS: FocusFrameToT, TargetFrameToT, CompactUnitFrameProfiles
--- GLOBALS: InterfaceOptionsFrameCategoriesButton10, InterfaceOptionsStatusTextPanelPlayer
--- GLOBALS: InterfaceOptionsStatusTextPanelPet, InterfaceOptionsStatusTextPanelTarget
--- GLOBALS: InterfaceOptionsCombatPanelEnemyCastBarsOnPortrait
--- GLOBALS: InterfaceOptionsCombatPanelEnemyCastBarsOnNameplates
--- GLOBALS: InterfaceOptionsCombatPanelTargetOfTarget, InterfaceOptionsDisplayPanelShowAggroPercentage
--- GLOBALS: InterfaceOptionsStatusTextPanelParty, InterfaceOptionsFrameCategoriesButton11
+
 
 local _, ns = ...
 local ElvUF = ns.oUF
@@ -73,11 +67,11 @@ UF["headerFunctions"] = {}
 UF['classMaxResourceBar'] = {
 	['DEATHKNIGHT'] = 6,
 	['PALADIN'] = 5,
-	['WARLOCK'] = 4,
-	['PRIEST'] = 5,
+	['WARLOCK'] = 5,
 	['MONK'] = 6,
 	['MAGE'] = 4,
-	['ROGUE'] = 5,
+	['ROGUE'] = 8,
+	["DRUID"] = 5
 }
 
 UF['mapIDs'] = {
@@ -259,7 +253,6 @@ function UF:Construct_UF(frame, unit)
 	end
 
 	frame.SHADOW_SPACING = 3
-	frame.STAGGER_WIDTH = 0	--placeholder
 	frame.CLASSBAR_YOFFSET = 0	--placeholder
 	frame.BOTTOM_OFFSET = 0 --placeholder
 	frame:SetFrameLevel(5)
@@ -376,49 +369,30 @@ function UF:UpdateColors()
 	ElvUF.colors.power.FOCUS = E:GetColorTable(db.power.FOCUS);
 	ElvUF.colors.power.ENERGY = E:GetColorTable(db.power.ENERGY);
 	ElvUF.colors.power.RUNIC_POWER = E:GetColorTable(db.power.RUNIC_POWER);
-
-	ElvUF.colors.Runes = {}
-	ElvUF.colors.Runes[1] = E:GetColorTable(db.classResources.DEATHKNIGHT[1])
-	ElvUF.colors.Runes[2] = E:GetColorTable(db.classResources.DEATHKNIGHT[2])
-	ElvUF.colors.Runes[3] = E:GetColorTable(db.classResources.DEATHKNIGHT[3])
-	ElvUF.colors.Runes[4] = E:GetColorTable(db.classResources.DEATHKNIGHT[4])
-
-	ElvUF.colors.HolyPower = E:GetColorTable(db.classResources.PALADIN);
-
-	ElvUF.colors.ArcaneChargeBar = E:GetColorTable(db.classResources.MAGE);
+	ElvUF.colors.power.PAIN = E:GetColorTable(db.power.PAIN);
+	ElvUF.colors.power.FURY = E:GetColorTable(db.power.FURY);
+	ElvUF.colors.power.LUNAR_POWER = E:GetColorTable(db.power.LUNAR_POWER)
+	ElvUF.colors.power.INSANITY = E:GetColorTable(db.power.INSANITY)
+	ElvUF.colors.power.MAELSTROM = E:GetColorTable(db.power.MAELSTROM)
 
 	ElvUF.colors.ComboPoints = {}
 	ElvUF.colors.ComboPoints[1] = E:GetColorTable(db.classResources.comboPoints[1])
 	ElvUF.colors.ComboPoints[2] = E:GetColorTable(db.classResources.comboPoints[2])
 	ElvUF.colors.ComboPoints[3] = E:GetColorTable(db.classResources.comboPoints[3])
-	ElvUF.colors.ComboPoints[4] = E:GetColorTable(db.classResources.comboPoints[4])
-	ElvUF.colors.ComboPoints[5] = E:GetColorTable(db.classResources.comboPoints[5])
 
-	ElvUF.colors.Anticipation = {}
-	ElvUF.colors.Anticipation[1] = E:GetColorTable(db.classResources.ROGUE[1])
-	ElvUF.colors.Anticipation[2] = E:GetColorTable(db.classResources.ROGUE[2])
-	ElvUF.colors.Anticipation[3] = E:GetColorTable(db.classResources.ROGUE[3])
-	ElvUF.colors.Anticipation[4] = E:GetColorTable(db.classResources.ROGUE[4])
-	ElvUF.colors.Anticipation[5] = E:GetColorTable(db.classResources.ROGUE[5])
-
-	ElvUF.colors.ShadowOrbs = E:GetColorTable(db.classResources.PRIEST);
-
-	ElvUF.colors.EclipseBar = {}
-	ElvUF.colors.EclipseBar[1] = E:GetColorTable(db.classResources.DRUID[1])
-	ElvUF.colors.EclipseBar[2] = E:GetColorTable(db.classResources.DRUID[2])
-
-	ElvUF.colors.Harmony = {}
-	ElvUF.colors.Harmony[1] = E:GetColorTable(db.classResources.MONK[1])
-	ElvUF.colors.Harmony[2] = E:GetColorTable(db.classResources.MONK[2])
-	ElvUF.colors.Harmony[3] = E:GetColorTable(db.classResources.MONK[3])
-	ElvUF.colors.Harmony[4] = E:GetColorTable(db.classResources.MONK[4])
-	ElvUF.colors.Harmony[5] = E:GetColorTable(db.classResources.MONK[5])
-	ElvUF.colors.Harmony[6] = E:GetColorTable(db.classResources.MONK[6])
-
-	ElvUF.colors.ShardBar = {}
-	ElvUF.colors.ShardBar[1] = E:GetColorTable(db.classResources.WARLOCK[1])
-	ElvUF.colors.ShardBar[2] = E:GetColorTable(db.classResources.WARLOCK[2])
-	ElvUF.colors.ShardBar[3] = E:GetColorTable(db.classResources.WARLOCK[3])
+	--Monk, Mage, Paladin and Warlock, Death Knight
+	ElvUF.colors.ClassBars = {}
+	ElvUF.colors.ClassBars.MONK = {}
+	ElvUF.colors.ClassBars.PALADIN = E:GetColorTable(db.classResources.PALADIN);
+	ElvUF.colors.ClassBars.MAGE = E:GetColorTable(db.classResources.MAGE);
+	ElvUF.colors.ClassBars.MONK[1] = E:GetColorTable(db.classResources.MONK[1])
+	ElvUF.colors.ClassBars.MONK[2] = E:GetColorTable(db.classResources.MONK[2])
+	ElvUF.colors.ClassBars.MONK[3] = E:GetColorTable(db.classResources.MONK[3])
+	ElvUF.colors.ClassBars.MONK[4] = E:GetColorTable(db.classResources.MONK[4])
+	ElvUF.colors.ClassBars.MONK[5] = E:GetColorTable(db.classResources.MONK[5])
+	ElvUF.colors.ClassBars.MONK[6] = E:GetColorTable(db.classResources.MONK[6])
+	ElvUF.colors.ClassBars.DEATHKNIGHT = E:GetColorTable(db.classResources.DEATHKNIGHT)
+	ElvUF.colors.ClassBars.WARLOCK = E:GetColorTable(db.classResources.WARLOCK)
 
 	ElvUF.colors.reaction[1] = bad
 	ElvUF.colors.reaction[2] = bad
@@ -473,7 +447,6 @@ function UF:Update_AllFrames()
 	self:UpdateColors()
 	self:Update_FontStrings()
 	self:Update_StatusBars()
-	BG:UpdateSettings()
 
 	for unit in pairs(self['units']) do
 		if self.db['units'][unit].enable then
@@ -1047,7 +1020,7 @@ function UF:DisableBlizzard(event)
 		CompactRaidFrameContainer:UnregisterAllEvents()
 
 		HideRaid()
-		hooksecurefunc("CompactUnitFrame_RegisterEvents", CompactUnitFrame_UnregisterEvents)
+		--hooksecurefunc("CompactUnitFrame_RegisterEvents", CompactUnitFrame_UnregisterEvents) -- breaks nameplates names
 	end
 end
 
@@ -1161,31 +1134,6 @@ end
 
 function UF:PLAYER_ENTERING_WORLD(event)
 	self:Update_AllFrames()
-
-	local showing = BG:IsShowing()
-
-	if not BG:Exists() and not BG.db.Active then
-		if showing then BG:HideFrame() end
-		return
-	end
-
-	if(not BG:IsValidZone()) then
-		BG:HideFrame()
-	elseif showing then
-		BG:UpdateSettings()
-	elseif BG:GetStatus() ~= BG.Status.Inactive and BG.db.Active then
-		BG:ShowFrame()
-	end
-end
-
-function UF:ZONE_CHANGED_NEW_AREA()
-	local validZone = BG:IsValidZone()
-	if not validZone then
-		if not BG:IsShowing() then return end
-		BG:HideFrame()
-	elseif BG.db.Active and BG:GetStatus() ~= BG.Status.Inactive then
-		BG:ShowFrame()
-	end
 end
 
 function UF:UnitFrameThreatIndicator_Initialize(_, unitFrame)
@@ -1208,41 +1156,20 @@ function UF:Initialize()
 
 	self:LoadUnits()
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
-	self:RegisterEvent('ZONE_CHANGED_NEW_AREA')
 
 	--InterfaceOptionsFrameCategoriesButton9:SetScale(0.0001)
-	if E.private["unitframe"]["disabledBlizzardFrames"].arena and E.private["unitframe"]["disabledBlizzardFrames"].focus and E.private["unitframe"]["disabledBlizzardFrames"].party then
+	--[[if E.private["unitframe"]["disabledBlizzardFrames"].arena and E.private["unitframe"]["disabledBlizzardFrames"].focus and E.private["unitframe"]["disabledBlizzardFrames"].party then
 		InterfaceOptionsFrameCategoriesButton10:SetScale(0.0001)
 	end
 
-	if E.private["unitframe"]["disabledBlizzardFrames"].player then
-		InterfaceOptionsStatusTextPanelPlayer:SetScale(0.0001)
-		InterfaceOptionsStatusTextPanelPlayer:SetAlpha(0)
-		InterfaceOptionsStatusTextPanelPet:SetScale(0.0001)
-		InterfaceOptionsStatusTextPanelPet:SetAlpha(0)
-	end
-
 	if E.private["unitframe"]["disabledBlizzardFrames"].target then
-		InterfaceOptionsStatusTextPanelTarget:SetScale(0.0001)
-		InterfaceOptionsStatusTextPanelTarget:SetAlpha(0)
-		InterfaceOptionsCombatPanelEnemyCastBarsOnPortrait:SetAlpha(0)
-		InterfaceOptionsCombatPanelEnemyCastBarsOnPortrait:EnableMouse(false)
-		InterfaceOptionsCombatPanelEnemyCastBarsOnNameplates:ClearAllPoints()
-		InterfaceOptionsCombatPanelEnemyCastBarsOnNameplates:Point(InterfaceOptionsCombatPanelEnemyCastBarsOnPortrait:GetPoint())
 		InterfaceOptionsCombatPanelTargetOfTarget:SetScale(0.0001)
 		InterfaceOptionsCombatPanelTargetOfTarget:SetAlpha(0)
-		InterfaceOptionsDisplayPanelShowAggroPercentage:SetScale(0.0001)
-		InterfaceOptionsDisplayPanelShowAggroPercentage:SetAlpha(0)
-	end
-
-	if E.private["unitframe"]["disabledBlizzardFrames"].party then
-		InterfaceOptionsStatusTextPanelParty:SetScale(0.0001)
-		InterfaceOptionsStatusTextPanelParty:SetAlpha(0)
-	end
+	end]]
 
 	if E.private["unitframe"]["disabledBlizzardFrames"].party and E.private["unitframe"]["disabledBlizzardFrames"].raid then
 		self:DisableBlizzard()
-		InterfaceOptionsFrameCategoriesButton11:SetScale(0.0001)
+		--InterfaceOptionsFrameCategoriesButton11:SetScale(0.0001)
 
 		self:RegisterEvent('GROUP_ROSTER_UPDATE', 'DisableBlizzard')
 		UIParent:UnregisterEvent('GROUP_ROSTER_UPDATE') --This may fuck shit up.. we'll see...
@@ -1269,33 +1196,6 @@ function UF:Initialize()
 	ORD.ShowDispelableDebuff = true
 	ORD.FilterDispellableDebuff = true
 	ORD.MatchBySpellName = true
-
-	ElvCharacterDB.BodyGuard = ElvCharacterDB.BodyGuard or {}
-	ElvCharacterDB.BodyGuard.MaxHealth = ElvCharacterDB.BodyGuard.MaxHealth or 0
-	ElvCharacterDB.BodyGuard.Health = ElvCharacterDB.BodyGuard.Health or 0
-	ElvCharacterDB.BodyGuard.Active = ElvCharacterDB.BodyGuard.Active or false
-
-	BG:UpdateFromBuilding()
-
-	BG:CreateFrame()
-	BG.LoginHealth = true
-	BG:RegisterCallback('guid', BG.GUIDUpdate)
-	BG:RegisterCallback('status', BG.StatusUpdate)
-	BG:RegisterCallback('name', BG.NameUpdate)
-	BG:RegisterCallback('level', BG.LevelUpdate)
-	BG:RegisterCallback('health', BG.HealthUpdate)
-	BG:RegisterCallback('gossip_opened', BG.GossipOpened)
-	BG:RegisterCallback('gossip_closed', BG.GossipClosed)
-	BG.db = ElvCharacterDB.BodyGuard
-
-	if type(BG.db.IsInValidZone) ~= "boolean" then
-		BG.db.IsInValidZone = BG:IsValidZone()
-	end
-
-	if BG.db.Active and BG.db.IsInValidZone then
-		BG:ShowFrame()
-		BG:HealthUpdate(BG.db.Health, BG.db.MaxHealth)
-	end
 end
 
 function UF:ResetUnitSettings(unit)
@@ -1325,7 +1225,6 @@ end
 local ignoreSettings = {
 	['position'] = true,
 	['playerOnly'] = true,
-	['noConsolidated'] = true,
 	['useBlacklist'] = true,
 	['useWhitelist'] = true,
 	['noDuration'] = true,
@@ -1395,7 +1294,7 @@ local function updateColor(self, r, g, b)
 	end
 
 	if self.bg and self.bg:GetObjectType() == 'Texture' and not self.bg.multiplier then
-		self.bg:SetTexture(r * 0.35, g * 0.35, b * 0.35)
+		self.bg:SetColorTexture(r * 0.35, g * 0.35, b * 0.35)
 	end
 end
 

@@ -3,7 +3,7 @@
 	<Script file='debugTools.lua'/>
 	<Script file='chatBubbles.lua'/>
 	<Script file='raidmarker.lua'/>
-	<Script file='exprepbar.lua'/>
+	<Script file='watchbars.lua'/>
 	<Script file='loot.lua'/>
 	<Script file='loot_roll.lua'/>
 	<Script file='raidutility.lua'/>

@@ -21,8 +21,8 @@ local GetInventoryItemTexture = GetInventoryItemTexture
 local IsAddOnLoaded = IsAddOnLoaded
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: BuffFrame, ConsolidatedBuffs, TemporaryEnchantFrame, DebuffTypeColor
--- GLOBALS: Minimap, LeftMiniPanel, InterfaceOptionsFrameCategoriesButton12
+-- GLOBALS: BuffFrame, TemporaryEnchantFrame, DebuffTypeColor, Minimap 
+-- GLOBALS: LeftMiniPanel, InterfaceOptionsFrameCategoriesButton12
 
 local Masque = LibStub("Masque", true)
 local MasqueGroupBuffs = Masque and Masque:Group("ElvUI", "Buffs")
@@ -121,7 +121,7 @@ function A:CreateIcon(button)
 	button.time:FontTemplate(font, self.db.fontSize, self.db.fontOutline)
 
 	button.highlight = button:CreateTexture(nil, "HIGHLIGHT")
-	button.highlight:SetTexture(1, 1, 1, 0.45)
+	button.highlight:SetColorTexture(1, 1, 1, 0.45)
 	button.highlight:SetInside()
 
 	E:SetUpAnimGroup(button)
@@ -254,7 +254,7 @@ function A:UpdateHeader(header)
 	local db = self.db.debuffs
 	if header:GetAttribute('filter') == 'HELPFUL' then
 		db = self.db.buffs
-		header:SetAttribute("consolidateTo", self.db.consolidatedBuffs.enable == true and E.private.general.minimap.enable == true and 1 or 0)
+		header:SetAttribute("consolidateTo", 0)
 		header:SetAttribute('weaponTemplate', ("ElvUIAuraTemplate%d"):format(db.size))
 	end
 
@@ -339,13 +339,9 @@ function A:CreateAuraHeader(filter)
 end
 
 function A:Initialize()
-	self:Construct_ConsolidatedBuffs()
-
 	if(E.private.auras.disableBlizzard) then
 		BuffFrame:Kill()
-		ConsolidatedBuffs:Kill()
 		TemporaryEnchantFrame:Kill();
-		InterfaceOptionsFrameCategoriesButton12:SetScale(0.0001)
 	end
 
 	if(not E.private.auras.enable) then return end

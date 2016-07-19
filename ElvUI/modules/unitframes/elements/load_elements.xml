@@ -6,7 +6,6 @@
 	<Script file='castbar.lua'/>
 	<Script file='classbars.lua'/>
 	<Script file='combatindicator.lua'/>
-	<Script file='combopoints.lua'/>
 	<Script file='customtext.lua'/>
 	<Script file='debuffhighlight.lua'/>
 	<Script file='gps.lua'/>
@@ -25,7 +24,6 @@
 	<Script file='restingindicator.lua'/>
 	<Script file='resurrectionicon.lua'/>
 	<Script file='roleicons.lua'/>
-	<Script file='stagger.lua'/>
 	<Script file='targetglow.lua'/>
 	<Script file='threat.lua'/>
 	<Script file='trinket.lua'/>

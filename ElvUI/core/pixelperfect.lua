@@ -63,7 +63,7 @@ function E:UIScale(event)
 		self.eyefinity = width;
 	end
 
-	self.mult = 768/match(GetCVar("gxResolution"), "%d+x(%d+)")/scale;
+	self.mult = 768/match(self.resolution, "%d+x(%d+)")/scale;
 	self.Spacing = self.PixelMode and 0 or self.mult
 	self.Border = (self.PixelMode and self.mult or self.mult*2)
 	--Set UIScale, NOTE: SetCVar for UIScale can cause taints so only do this when we need to..
@@ -95,6 +95,7 @@ function E:UIScale(event)
 			end
 
 			self.UIParent:SetSize(width, height);
+			self.UIParent.origHeight = self.UIParent:GetHeight()
 		else
 			--[[Eyefinity Test mode
 				Resize the E.UIParent to be smaller than it should be, all objects inside should relocate.
@@ -103,10 +104,11 @@ function E:UIScale(event)
 			--self.UIParent:SetSize(UIParent:GetWidth() - 250, UIParent:GetHeight() - 250);
 
 			self.UIParent:SetSize(UIParent:GetSize());
+			self.UIParent.origHeight = self.UIParent:GetHeight()
 		end
 
 		self.UIParent:ClearAllPoints();
-		self.UIParent:Point("CENTER");
+		self.UIParent:Point("BOTTOM");
 
 		--Calculate potential coordinate differences
 		self.diffGetLeft = E:Round(abs(UIParent:GetLeft() - self.UIParent:GetLeft()))

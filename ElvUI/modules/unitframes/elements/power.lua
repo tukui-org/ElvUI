@@ -128,13 +128,13 @@ function UF:Configure_Power(frame)
 			power:SetFrameLevel(frame:GetFrameLevel() + 3)
 		elseif frame.USE_POWERBAR_OFFSET then
 			if frame.ORIENTATION == "LEFT" then
-				power:Point("TOPRIGHT", frame.Health, "TOPRIGHT", frame.POWERBAR_OFFSET + frame.STAGGER_WIDTH, -frame.POWERBAR_OFFSET)
+				power:Point("TOPRIGHT", frame.Health, "TOPRIGHT", frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
 				power:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
 			elseif frame.ORIENTATION == "MIDDLE" then
 				power:Point("TOPLEFT", frame, "TOPLEFT", frame.BORDER + frame.SPACING, -frame.POWERBAR_OFFSET -frame.CLASSBAR_YOFFSET)
 				power:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -frame.BORDER - frame.SPACING, frame.BORDER)
 			else
-				power:Point("TOPLEFT", frame.Health, "TOPLEFT", -frame.POWERBAR_OFFSET - frame.STAGGER_WIDTH, -frame.POWERBAR_OFFSET)
+				power:Point("TOPLEFT", frame.Health, "TOPLEFT", -frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
 				power:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", -frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
 			end
 			power:SetFrameStrata("LOW")
@@ -150,13 +150,13 @@ function UF:Configure_Power(frame)
 
 			if frame.ORIENTATION == "LEFT" then
 				power:Width(frame.POWERBAR_WIDTH - frame.BORDER*2)
-				power:Point("RIGHT", frame, "BOTTOMRIGHT", -(frame.BORDER*2 + 4) -frame.STAGGER_WIDTH, ((frame.POWERBAR_HEIGHT-frame.BORDER)/2))
+				power:Point("RIGHT", frame, "BOTTOMRIGHT", -(frame.BORDER*2 + 4), ((frame.POWERBAR_HEIGHT-frame.BORDER)/2))
 			elseif frame.ORIENTATION == "RIGHT" then
 				power:Width(frame.POWERBAR_WIDTH - frame.BORDER*2)
-				power:Point("LEFT", frame, "BOTTOMLEFT", (frame.BORDER*2 + 4) +frame.STAGGER_WIDTH, ((frame.POWERBAR_HEIGHT-frame.BORDER)/2))
+				power:Point("LEFT", frame, "BOTTOMLEFT", (frame.BORDER*2 + 4), ((frame.POWERBAR_HEIGHT-frame.BORDER)/2))
 			else
 				power:Point("LEFT", frame, "BOTTOMLEFT", (frame.BORDER*2 + 4), ((frame.POWERBAR_HEIGHT-frame.BORDER)/2))
-				power:Point("RIGHT", frame, "BOTTOMRIGHT", -(frame.BORDER*2 + 4) -frame.STAGGER_WIDTH, ((frame.POWERBAR_HEIGHT-frame.BORDER)/2))
+				power:Point("RIGHT", frame, "BOTTOMRIGHT", -(frame.BORDER*2 + 4 + (frame.PVPINFO_WIDTH or 0)), ((frame.POWERBAR_HEIGHT-frame.BORDER)/2))
 			end
 
 			power:SetFrameStrata("MEDIUM")
@@ -198,15 +198,6 @@ function UF:Configure_Power(frame)
 		power:Hide()
 	end
 
-	if frame.DruidAltMana then
-		if db.power.druidMana then
-			frame:EnableElement('DruidAltMana')
-		else
-			frame:DisableElement('DruidAltMana')
-			frame.DruidAltMana:Hide()
-		end
-	end
-
 	--Transparency Settings
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg)
 end
@@ -221,7 +212,7 @@ function UF:PostUpdatePower(unit, min, max)
 		pType = random(0, 4)
 		self:SetValue(min)
 		local color = ElvUF['colors'].power[tokens[pType]]
-
+		
 		if not self.colorClass then
 			self:SetStatusBarColor(color[1], color[2], color[3])
 			local mu = self.bg.multiplier or 1

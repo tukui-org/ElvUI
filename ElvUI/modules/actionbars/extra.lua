@@ -27,7 +27,7 @@ function AB:Extra_SetAlpha()
 		end
 	end
 
-	local button = DraenorZoneAbilityFrame.SpellButton
+	local button = ZoneAbilityFrame.SpellButton
 	if button then
 		button:SetAlpha(alpha)
 	end
@@ -38,8 +38,9 @@ function AB:Extra_SetScale()
 	if ExtraActionBarFrame then
 		ExtraActionBarFrame:SetScale(scale)
 	end
-	if DraenorZoneAbilityFrame then
-		DraenorZoneAbilityFrame:SetScale(scale)
+
+	if ZoneAbilityFrame then
+		ZoneAbilityFrame:SetScale(scale)
 	end
 end
 
@@ -51,12 +52,12 @@ function AB:SetupExtraButton()
 	ExtraActionBarFrame:SetParent(holder)
 	ExtraActionBarFrame:ClearAllPoints()
 	ExtraActionBarFrame:Point('CENTER', holder, 'CENTER')
-	DraenorZoneAbilityFrame:SetParent(holder)
-	DraenorZoneAbilityFrame:ClearAllPoints()
-	DraenorZoneAbilityFrame:Point('CENTER', holder, 'CENTER')
-
-	DraenorZoneAbilityFrame.ignoreFramePositionManager = true
 	ExtraActionBarFrame.ignoreFramePositionManager  = true
+
+	ZoneAbilityFrame:SetParent(holder)
+	ZoneAbilityFrame:ClearAllPoints()
+	ZoneAbilityFrame:Point('CENTER', holder, 'CENTER')
+	ZoneAbilityFrame.ignoreFramePositionManager = true
 
 	for i=1, ExtraActionBarFrame:GetNumChildren() do
 		local button = _G["ExtraActionButton"..i]
@@ -69,7 +70,7 @@ function AB:SetupExtraButton()
 			button:SetTemplate()
 			_G["ExtraActionButton"..i..'Icon']:SetDrawLayer('ARTWORK')
 			local tex = button:CreateTexture(nil, 'OVERLAY')
-			tex:SetTexture(0.9, 0.8, 0.1, 0.3)
+			tex:SetColorTexture(0.9, 0.8, 0.1, 0.3)
 			tex:SetInside()
 			button:SetCheckedTexture(tex)
 
@@ -80,8 +81,8 @@ function AB:SetupExtraButton()
 		end
 	end
 
-	local button = DraenorZoneAbilityFrame.SpellButton
-	if button then
+	local button = ZoneAbilityFrame.SpellButton
+		if button then
 		button:SetNormalTexture('')
 		button:StyleButton(nil, nil, nil, true)
 		button:SetTemplate()

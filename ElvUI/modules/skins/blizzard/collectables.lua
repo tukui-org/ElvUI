@@ -18,7 +18,7 @@ local function LoadSkin()
 	CollectionsJournal:SetTemplate('Transparent')
 	CollectionsJournalPortrait:SetAlpha(0)
 
-	for i=1, 4 do
+	for i=1, 5 do
 		S:HandleTab(_G['CollectionsJournalTab'..i])
 	end
 
@@ -309,6 +309,61 @@ local function LoadSkin()
 			button.name:SetTextColor(0.6, 0.6, 0.6)
 		end
 	end)
+	
+	-- Appearances Tab
+	WardrobeCollectionFrame.progressBar:StripTextures()
+	WardrobeCollectionFrame.progressBar:CreateBackdrop("Default")
+	WardrobeCollectionFrame.progressBar:SetStatusBarTexture(E.media.normTex)
+	E:RegisterStatusBar(WardrobeCollectionFrame.progressBar)
+	S:HandleEditBox(WardrobeCollectionFrameSearchBox)
+	S:HandleButton(WardrobeCollectionFrame.FilterButton)
+	S:HandleDropDownBox(WardrobeCollectionFrameWeaponDropDown)
+	
+	WardrobeCollectionFrame.ModelsFrame:StripTextures()
+
+	S:HandleNextPrevButton(WardrobeCollectionFrame.NavigationFrame.PrevPageButton, nil, true)
+	S:HandleNextPrevButton(WardrobeCollectionFrame.NavigationFrame.NextPageButton)
+
+	-- Transmogrify NPC
+	WardrobeFrame:StripTextures()
+	WardrobeFrame:SetTemplate("Transparent")
+	WardrobeOutfitFrame:StripTextures()
+	WardrobeOutfitFrame:SetTemplate("Transparent")
+	S:HandleCloseButton(WardrobeFrameCloseButton)
+	S:HandleDropDownBox(WardrobeOutfitDropDown)
+	WardrobeOutfitDropDown:SetSize(200, 32)
+	WardrobeOutfitDropDownText:ClearAllPoints()
+	WardrobeOutfitDropDownText:SetPoint("CENTER", WardrobeOutfitDropDown, 10, 2)
+	S:HandleButton(WardrobeOutfitDropDown.SaveButton)
+	WardrobeOutfitDropDown.SaveButton:ClearAllPoints()
+	WardrobeOutfitDropDown.SaveButton:SetPoint("LEFT", WardrobeOutfitDropDown, "RIGHT", 1, 4)
+
+	WardrobeTransmogFrame:StripTextures()
+	WardrobeTransmogFrame.Inset:StripTextures()
+	
+	for i = 1, #WardrobeTransmogFrame.Model.SlotButtons do
+		WardrobeTransmogFrame.Model.SlotButtons[i]:StripTextures()
+		WardrobeTransmogFrame.Model.SlotButtons[i]:SetFrameLevel(WardrobeTransmogFrame.Model.SlotButtons[i]:GetFrameLevel() + 2)
+		WardrobeTransmogFrame.Model.SlotButtons[i]:CreateBackdrop("Default")
+		WardrobeTransmogFrame.Model.SlotButtons[i].backdrop:SetAllPoints()
+		WardrobeTransmogFrame.Model.SlotButtons[i].Border:Kill()
+		WardrobeTransmogFrame.Model.SlotButtons[i].Icon:SetTexCoord(unpack(E.TexCoords))
+	end
+	
+	WardrobeTransmogFrame.SpecButton:ClearAllPoints()
+	WardrobeTransmogFrame.SpecButton:SetPoint("RIGHT", WardrobeTransmogFrame.ApplyButton, "LEFT", -2, 0)
+	S:HandleButton(WardrobeTransmogFrame.SpecButton)
+	S:HandleButton(WardrobeTransmogFrame.ApplyButton)
+	S:HandleButton(WardrobeTransmogFrame.Model.ClearAllPendingButton)
+	
+	-- Outfit Edit Frame
+	WardrobeOutfitEditFrame:StripTextures()
+	WardrobeOutfitEditFrame:CreateBackdrop("Transparent")
+	WardrobeOutfitEditFrame.EditBox:StripTextures()
+	S:HandleEditBox(WardrobeOutfitEditFrame.EditBox)
+	S:HandleButton(WardrobeOutfitEditFrame.AcceptButton)
+	S:HandleButton(WardrobeOutfitEditFrame.CancelButton)
+	S:HandleButton(WardrobeOutfitEditFrame.DeleteButton)
 end
 
 S:RegisterSkin("Blizzard_Collections", LoadSkin)

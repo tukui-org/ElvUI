@@ -35,15 +35,15 @@ local GuildInstanceDifficulty = GuildInstanceDifficulty
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GetMinimapShape, SpellBookFrame, PlayerTalentFrame, TalentFrame_LoadUI
--- GLOBALS: GlyphFrame, GlyphFrame_LoadUI, PlayerTalentFrame, TimeManagerFrame
+-- GLOBALS: PlayerTalentFrame, TimeManagerFrame
 -- GLOBALS: GameTimeFrame, GuildFrame, GuildFrame_LoadUI, Minimap, MinimapCluster
--- GLOBALS: FarmModeMap, BuffsMover, DebuffsMover, LookingForGuildFrame, MiniMapWorldMapButton
+-- GLOBALS: BuffsMover, DebuffsMover, LookingForGuildFrame, MiniMapWorldMapButton
 -- GLOBALS: LookingForGuildFrame_LoadUI, EncounterJournal_LoadUI, EncounterJournal
 -- GLOBALS: GameMenuFrame, VideoOptionsFrame, VideoOptionsFrameCancel, AudioOptionsFrame
 -- GLOBALS: AudioOptionsFrameCancel, InterfaceOptionsFrame, InterfaceOptionsFrameCancel
 -- GLOBALS: LibStub, ElvUIPlayerBuffs, MMHolder, StoreMicroButton, TimeManagerClockButton
 -- GLOBALS: FeedbackUIButton, MiniMapTrackingDropDown, LeftMiniPanel, RightMiniPanel
--- GLOBALS: MinimapMover, AurasHolder, AurasMover, ElvConfigToggle, ElvUI_ConsolidatedBuffs
+-- GLOBALS: MinimapMover, AurasHolder, AurasMover, ElvConfigToggle
 -- GLOBALS: GarrisonLandingPageMinimapButton, GarrisonLandingPageTutorialBox, MiniMapMailFrame
 -- GLOBALS: QueueStatusMinimapButton, QueueStatusFrame, MiniMapInstanceDifficulty
 -- GLOBALS: MiniMapChallengeMode, MinimapBorder, MinimapBorderTop, MinimapZoomIn, MinimapZoomOut
@@ -69,10 +69,6 @@ local menuList = {
 			TalentFrame_LoadUI()
 		end
 
-		if not GlyphFrame then
-			GlyphFrame_LoadUI()
-		end
-
 		if not PlayerTalentFrame:IsShown() then
 			ShowUIPanel(PlayerTalentFrame)
 		else
@@ -83,8 +79,6 @@ local menuList = {
 	func = function()
 		ToggleCollectionsJournal()
 	end},
-	{text = L["Farm Mode"],
-	func = FarmMode},
 	{text = TIMEMANAGER_TITLE,
 	func = function() ToggleFrame(TimeManagerFrame) end},
 	{text = ACHIEVEMENT_BUTTON,
@@ -172,8 +166,7 @@ function M:Minimap_OnMouseUp(btn)
 		local xoff = -1
 
 		if position:match("RIGHT") then xoff = E:Scale(-16) end
-
-		ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, self, xoff, E:Scale(-3))
+		ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, "cursor")
 	else
 		Minimap_OnClick(self)
 	end
@@ -205,13 +198,6 @@ function M:UpdateSettings()
 	E.MinimapSize = E.private.general.minimap.enable and E.db.general.minimap.size or Minimap:GetWidth() + 10
 	E.MinimapWidth = E.MinimapSize
 	E.MinimapHeight = E.MinimapSize
-
-	if E.db.auras.consolidatedBuffs.enable and E.private.auras.disableBlizzard then
-		local numBuffs = E.db.auras.consolidatedBuffs.filter and 7 or 8 --This is one short because I'm just counting the total spaces between icons, add +1 below for the actual amount of buffs
-		E.ConsolidatedBuffsWidth = (E.MinimapHeight + (numBuffs*E.Border) + E.Border*2 - (E.Spacing*numBuffs)) / (numBuffs + 1)
-	else
-		E.ConsolidatedBuffsWidth = 0;
-	end
 
 	if E.private.general.minimap.enable then
 		Minimap:Size(E.MinimapSize, E.MinimapSize)
@@ -276,7 +262,7 @@ function M:UpdateSettings()
 	end
 
 	if MMHolder then
-		MMHolder:Width((Minimap:GetWidth() + E.Border + E.Spacing*3) + E.ConsolidatedBuffsWidth)
+		MMHolder:Width((Minimap:GetWidth() + E.Border + E.Spacing*3))
 
 		if E.db.datatexts.minimapPanels then
 			MMHolder:Height(Minimap:GetHeight() + (LeftMiniPanel and (LeftMiniPanel:GetHeight() + E.Border) or 24) + E.Spacing*3)
@@ -299,29 +285,16 @@ function M:UpdateSettings()
 		MinimapMover:Size(MMHolder:GetSize())
 	end
 
-	if ElvConfigToggle then
-		if E.db.auras.consolidatedBuffs.enable and E.db.datatexts.minimapPanels and E.private.general.minimap.enable and E.private.auras.disableBlizzard then
-			ElvConfigToggle:Show()
-			ElvConfigToggle:Width(E.ConsolidatedBuffsWidth)
-		else
-			ElvConfigToggle:Hide()
-		end
-	end
-
-	if ElvUI_ConsolidatedBuffs then
-		E:GetModule('Auras'):Update_ConsolidatedBuffsSettings()
-	end
-
 	--Stop here if ElvUI Minimap is disabled.
 	if not E.private.general.minimap.enable then
 		return;
 	end
 
 	if GarrisonLandingPageMinimapButton then
-		local pos = E.db.general.minimap.icons.garrison.position or "TOPLEFT"
-		local scale = E.db.general.minimap.icons.garrison.scale or 1
+		local pos = E.db.general.minimap.icons.classHall.position or "TOPLEFT"
+		local scale = E.db.general.minimap.icons.classHall.scale or 1
 		GarrisonLandingPageMinimapButton:ClearAllPoints()
-		GarrisonLandingPageMinimapButton:Point(pos, Minimap, pos, E.db.general.minimap.icons.garrison.xOffset or 0, E.db.general.minimap.icons.garrison.yOffset or 0)
+		GarrisonLandingPageMinimapButton:Point(pos, Minimap, pos, E.db.general.minimap.icons.classHall.xOffset or 0, E.db.general.minimap.icons.classHall.yOffset or 0)
 		GarrisonLandingPageMinimapButton:SetScale(scale)
 		if GarrisonLandingPageTutorialBox then
 			GarrisonLandingPageTutorialBox:SetScale(1/scale)
@@ -391,15 +364,11 @@ function M:Initialize()
 
 	local mmholder = CreateFrame('Frame', 'MMHolder', Minimap)
 	mmholder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -3, -3)
-	mmholder:Width((Minimap:GetWidth() + 29) + E.ConsolidatedBuffsWidth)
+	mmholder:Width((Minimap:GetWidth() + 29))
 	mmholder:Height(Minimap:GetHeight() + 53)
 
 	Minimap:ClearAllPoints()
-	if E.db.auras.consolidatedBuffs.position == "LEFT" then
-		Minimap:Point("TOPRIGHT", mmholder, "TOPRIGHT", -E.Border, -E.Border)
-	else
-		Minimap:Point("TOPLEFT", mmholder, "TOPLEFT", E.Border, -E.Border)
-	end
+	Minimap:Point("TOPRIGHT", mmholder, "TOPRIGHT", -E.Border, -E.Border)
 	Minimap:SetMaskTexture('Interface\\ChatFrame\\ChatFrameBackground')
 	Minimap:SetQuestBlobRingAlpha(0)
 	Minimap:SetArchBlobRingAlpha(0)
@@ -445,7 +414,7 @@ function M:Initialize()
 	MiniMapMailBorder:Hide()
 	MiniMapMailIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\mail")
 
-	if E.private.general.minimap.hideGarrison then
+	if E.private.general.minimap.hideClassHallReport then
 		GarrisonLandingPageMinimapButton:Kill()
 		GarrisonLandingPageMinimapButton.IsShown = function() return true end
 	end
@@ -485,78 +454,6 @@ function M:Initialize()
 	MinimapCluster:SetAllPoints(Minimap)
 	MinimapBackdrop:ClearAllPoints()
 	MinimapBackdrop:SetAllPoints(Minimap)
-
-	--Create Farmmode Minimap
-	local fm = CreateFrame('Minimap', 'FarmModeMap', E.UIParent)
-	fm:Size(E.db.farmSize)
-	fm:Point('TOP', E.UIParent, 'TOP', 0, -120)
-	fm:SetClampedToScreen(true)
-	fm:CreateBackdrop('Default')
-	fm:EnableMouseWheel(true)
-	fm:SetScript("OnMouseWheel", M.Minimap_OnMouseWheel)
-	fm:SetScript("OnMouseUp", M.Minimap_OnMouseUp)
-	fm:RegisterForDrag("LeftButton", "RightButton")
-	fm:SetMovable(true)
-	fm:SetScript("OnDragStart", function(self) self:StartMoving() end)
-	fm:SetScript("OnDragStop", function(self) self:StopMovingOrSizing() end)
-	if AstrolabeMapMonitor then AstrolabeMapMonitor:MonitorWorldMap(fm) end
-	fm:Hide()
-	E.FrameLocks['FarmModeMap'] = true;
-
-	FarmModeMap:SetScript('OnShow', function()
-		if BuffsMover and not E:HasMoverBeenMoved('BuffsMover') then
-			BuffsMover:ClearAllPoints()
-			BuffsMover:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -3, -3)
-		end
-		if DebuffsMover and not E:HasMoverBeenMoved('DebuffsMover') then
-			DebuffsMover:ClearAllPoints()
-			DebuffsMover:Point("TOPRIGHT", ElvUIPlayerBuffs, "BOTTOMRIGHT", 0, -3)
-		end
-		MinimapCluster:ClearAllPoints()
-		MinimapCluster:SetAllPoints(FarmModeMap)
-		if IsAddOnLoaded('Routes') then
-			LibStub("AceAddon-3.0"):GetAddon('Routes'):ReparentMinimap(FarmModeMap)
-		end
-
-		if IsAddOnLoaded('GatherMate2') then
-			LibStub('AceAddon-3.0'):GetAddon('GatherMate2'):GetModule('Display'):ReparentMinimapPins(FarmModeMap)
-		end
-		if Astrolabe then Astrolabe:SetTargetMinimap(FarmModeMap) end
-	end)
-
-	FarmModeMap:SetScript('OnHide', function()
-		if BuffsMover and not E:HasMoverBeenMoved('BuffsMover') then
-			E:ResetMovers(L["Player Buffs"])
-		end
-		if DebuffsMover and not E:HasMoverBeenMoved('DebuffsMover') then
-			E:ResetMovers(L["Player Debuffs"])
-		end
-		MinimapCluster:ClearAllPoints()
-		MinimapCluster:SetAllPoints(Minimap)
-		if IsAddOnLoaded('Routes') then
-			LibStub("AceAddon-3.0"):GetAddon('Routes'):ReparentMinimap(Minimap)
-		end
-
-		if IsAddOnLoaded('GatherMate2') then
-			LibStub('AceAddon-3.0'):GetAddon('GatherMate2'):GetModule('Display'):ReparentMinimapPins(Minimap)
-		end
-		if Astrolabe then Astrolabe:SetTargetMinimap(Minimap) end
-	end)
-
-
-	UIParent:HookScript('OnShow', function()
-		if not FarmModeMap.enabled then
-			FarmModeMap:Hide()
-		end
-	end)
-	
-	--PET JOURNAL TAINT FIX AS OF 5.1
-	--[[local info = UIPanelWindows['PetJournalParent'];
-	for name, value in pairs(info) do
-		PetJournalParent:SetAttribute("UIPanelLayout-"..name, value);
-	end
-
-	PetJournalParent:SetAttribute("UIPanelLayout-defined", true);]]
 end
 
 E:RegisterInitialModule(M:GetName())

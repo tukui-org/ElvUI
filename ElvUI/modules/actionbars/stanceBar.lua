@@ -14,7 +14,7 @@ local GetShapeshiftForm = GetShapeshiftForm
 local GetNumShapeshiftForms = GetNumShapeshiftForms
 local GetShapeshiftFormCooldown = GetShapeshiftFormCooldown
 local GetShapeshiftFormInfo = GetShapeshiftFormInfo
-local CooldownFrame_SetTimer = CooldownFrame_SetTimer
+local CooldownFrame_Set = CooldownFrame_Set
 local InCombatLockdown = InCombatLockdown
 local RegisterStateDriver = RegisterStateDriver
 local UnregisterStateDriver = UnregisterStateDriver
@@ -37,7 +37,7 @@ function AB:UPDATE_SHAPESHIFT_COOLDOWN()
 		if i <= numForms then
 			cooldown = _G["ElvUI_StanceBarButton"..i.."Cooldown"];
 			start, duration, enable = GetShapeshiftFormCooldown(i);
-			CooldownFrame_SetTimer(cooldown, start, duration, enable);
+			CooldownFrame_Set(cooldown, start, duration, enable);
 			cooldown:SetDrawBling(cooldown:GetEffectiveAlpha() > 0.5) --Cooldown Bling Fix
 		end
 	end
@@ -78,10 +78,10 @@ function AB:StyleShapeShift(event)
 				if isActive then
 					StanceBarFrame.lastSelected = button:GetID();
 					if numForms == 1 then
-						button.checked:SetTexture(1, 1, 1, 0.5)
+						button.checked:SetColorTexture(1, 1, 1, 0.5)
 						button:SetChecked(true);
 					else
-						button.checked:SetTexture(1, 1, 1, 0.5)
+						button.checked:SetColorTexture(1, 1, 1, 0.5)
 						button:SetChecked(self.db.stanceBar.style ~= 'darkenInactive');
 					end
 				else
@@ -91,9 +91,9 @@ function AB:StyleShapeShift(event)
 						button:SetChecked(self.db.stanceBar.style == 'darkenInactive');
 						button.checked:SetAlpha(1)
 						if self.db.stanceBar.style == 'darkenInactive' then
-							button.checked:SetTexture(0, 0, 0, 0.5)
+							button.checked:SetColorTexture(0, 0, 0, 0.5)
 						else
-							button.checked:SetTexture(1, 1, 1, 0.5)
+							button.checked:SetColorTexture(1, 1, 1, 0.5)
 						end
 					end
 				end

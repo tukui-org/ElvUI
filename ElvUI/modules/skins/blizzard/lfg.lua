@@ -14,7 +14,6 @@ local C_LFGList_GetApplicationInfo = C_LFGList.GetApplicationInfo
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.lfg ~= true then return end
 	PVEFrame:StripTextures()
-	PVEFrame:StripTextures()
 	PVEFrameLeftInset:StripTextures()
 	RaidFinderQueueFrame:StripTextures(true)
 	PVEFrameBg:Hide()
@@ -24,7 +23,7 @@ local function LoadSkin()
 	PVEFrameTopRightCorner:Hide()
 	PVEFrameTopBorder:Hide()
 	PVEFrameLeftInsetBg:Hide()
-	PVEFrame.shadows:Hide()
+	PVEFrame.shadows:Kill() -- We need to kill it, because if you switch to Mythic Dungeon Tab and back, it shows back up.
 	S:HandleButton(LFDQueueFramePartyBackfillBackfillButton)
 	S:HandleButton(LFDQueueFramePartyBackfillNoBackfillButton)
 	S:HandleButton(LFDQueueFrameRandomScrollFrameChildFrameBonusRepFrame.ChooseButton)
@@ -537,35 +536,8 @@ S:RegisterSkin("ElvUI", LoadSkin)
 local function LoadSecondarySkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.lfg ~= true then return end
 	ChallengesFrameInset:StripTextures()
+	ChallengesFrameInset:Hide()
 	ChallengesFrameInsetBg:Hide()
-	ChallengesFrameDetails.bg:Hide()
-
-	S:HandleButton(ChallengesFrameLeaderboard, true)
-	select(2, ChallengesFrameDetails:GetRegions()):Hide()
-	select(9, ChallengesFrameDetails:GetRegions()):Hide()
-	select(10, ChallengesFrameDetails:GetRegions()):Hide()
-	select(11, ChallengesFrameDetails:GetRegions()):Hide()
-	ChallengesFrameDungeonButton1:Point("TOPLEFT", ChallengesFrame, "TOPLEFT", 8, -83)
-
-	for i = 1, 8 do
-		local bu = ChallengesFrame["button"..i]
-		S:HandleButton(bu)
-		bu:StyleButton()
-		bu:SetHighlightTexture("")
-		bu.selectedTex:SetAlpha(.2)
-		bu.selectedTex:Point("TOPLEFT", 1, -1)
-		bu.selectedTex:Point("BOTTOMRIGHT", -1, 1)
-		bu.NoMedal:Kill()
-	end
-
-	for i = 1, 3 do
-		local rewardsRow = ChallengesFrame["RewardRow"..i]
-		for j = 1, 2 do
-			local bu = rewardsRow["Reward"..j]
-			bu:CreateBackdrop()
-			bu.Icon:SetTexCoord(unpack(E.TexCoords))
-		end
-	end
 end
 
 S:RegisterSkin("Blizzard_ChallengesUI", LoadSecondarySkin)

@@ -77,7 +77,7 @@ local function Point(obj, arg1, arg2, arg3, arg4, arg5)
 	obj:SetPoint(arg1, arg2, arg3, arg4, arg5)
 end
 
-local function SetOutside(obj, anchor, xOffset, yOffset)
+local function SetOutside(obj, anchor, xOffset, yOffset, anchor2)
 	xOffset = xOffset or E.Border
 	yOffset = yOffset or E.Border
 	anchor = anchor or obj:GetParent()
@@ -88,10 +88,10 @@ local function SetOutside(obj, anchor, xOffset, yOffset)
 	end
 
 	obj:Point('TOPLEFT', anchor, 'TOPLEFT', -xOffset, yOffset)
-	obj:Point('BOTTOMRIGHT', anchor, 'BOTTOMRIGHT', xOffset, -yOffset)
+	obj:Point('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', xOffset, -yOffset)
 end
 
-local function SetInside(obj, anchor, xOffset, yOffset)
+local function SetInside(obj, anchor, xOffset, yOffset, anchor2)
 	xOffset = xOffset or E.Border
 	yOffset = yOffset or E.Border
 	anchor = anchor or obj:GetParent()
@@ -102,7 +102,7 @@ local function SetInside(obj, anchor, xOffset, yOffset)
 	end
 
 	obj:Point('TOPLEFT', anchor, 'TOPLEFT', xOffset, -yOffset)
-	obj:Point('BOTTOMRIGHT', anchor, 'BOTTOMRIGHT', -xOffset, yOffset)
+	obj:Point('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', -xOffset, yOffset)
 end
 
 local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode)
@@ -276,7 +276,7 @@ local function FontTemplate(fs, font, fontSize, fontStyle)
 	font = font or LSM:Fetch("font", E.db['general'].font)
 	fontSize = fontSize or E.db.general.fontSize
 
-	if fontStyle == 'OUTLINE' and E.db.general.font:lower():find('pixel') then
+	if fontStyle == 'OUTLINE' and (E.db.general.font == "Homespun") then
 		if (fontSize > 10 and not fs.fontSize) then
 			fontStyle = 'MONOCHROMEOUTLINE'
 			fontSize = 10
@@ -297,7 +297,7 @@ end
 local function StyleButton(button, noHover, noPushed, noChecked)
 	if button.SetHighlightTexture and not button.hover and not noHover then
 		local hover = button:CreateTexture()
-		hover:SetTexture(1, 1, 1, 0.3)
+		hover:SetColorTexture(1, 1, 1, 0.3)
 		hover:SetInside()
 		button.hover = hover
 		button:SetHighlightTexture(hover)
@@ -305,7 +305,7 @@ local function StyleButton(button, noHover, noPushed, noChecked)
 
 	if button.SetPushedTexture and not button.pushed and not noPushed then
 		local pushed = button:CreateTexture()
-		pushed:SetTexture(0.9, 0.8, 0.1, 0.3)
+		pushed:SetColorTexture(0.9, 0.8, 0.1, 0.3)
 		pushed:SetInside()
 		button.pushed = pushed
 		button:SetPushedTexture(pushed)
@@ -313,9 +313,8 @@ local function StyleButton(button, noHover, noPushed, noChecked)
 
 	if button.SetCheckedTexture and not button.checked and not noChecked then
 		local checked = button:CreateTexture()
-		checked:SetTexture(1, 1, 1)
+		checked:SetColorTexture(1, 1, 1, 0.3)
 		checked:SetInside()
-		checked:SetAlpha(0.3)
 		button.checked = checked
 		button:SetCheckedTexture(checked)
 	end

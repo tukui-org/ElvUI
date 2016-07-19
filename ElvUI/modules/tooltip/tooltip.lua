@@ -41,8 +41,8 @@ local UnitIsDND = UnitIsDND
 local GetQuestDifficultyColor = GetQuestDifficultyColor
 local UnitRace = UnitRace
 local UnitFactionGroup = UnitFactionGroup
-local UnitIsTapped = UnitIsTapped
-local UnitIsTappedByPlayer = UnitIsTappedByPlayer
+local UnitIsTapDenied = UnitIsTapDenied
+local UnitIsTapDeniedByPlayer = UnitIsTapDeniedByPlayer
 local UnitReaction = UnitReaction
 local UnitIsWildBattlePet = UnitIsWildBattlePet
 local UnitIsBattlePetCompanion = UnitIsBattlePetCompanion
@@ -91,7 +91,7 @@ local ID = ID
 
 local GameTooltip, GameTooltipStatusBar = _G["GameTooltip"], _G["GameTooltipStatusBar"]
 local S_ITEM_LEVEL = ITEM_LEVEL:gsub( "%%d", "(%%d+)" )
-local playerGUID = UnitGUID("player")
+local playerGUID --Will be set in Initialize
 local targetList, inspectCache = {}, {}
 local NIL_COLOR = { r=1, g=1, b=1 }
 local TAPPED_COLOR = { r=.6, g=.6, b=.6 }
@@ -107,7 +107,6 @@ local tooltips = {
 	ItemRefShoppingTooltip3,
 	AutoCompleteBox,
 	FriendsTooltip,
-	ConsolidatedBuffsTooltip,
 	ShoppingTooltip1,
 	ShoppingTooltip2,
 	ShoppingTooltip3,
@@ -544,7 +543,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 			self:ShowInspectInfo(tt, unit, level, color.r, color.g, color.b, 0)
 		end
 	else
-		if(UnitIsTapped(unit) and not UnitIsTappedByPlayer(unit)) then
+		if UnitIsTapDenied(unit) then
 			color = TAPPED_COLOR
 		else
 			local unitReaction = UnitReaction(unit, "player")
@@ -734,23 +733,6 @@ function TT:SetUnitAura(tt, unit, index, filter)
 	end
 end
 
-function TT:SetConsolidatedUnitAura(tt, unit, index)
-	local name = GetRaidBuffTrayAuraInfo(index)
-	local _, _, _, _, _, _, _, caster, _, _, id = UnitAura(unit, name)
-	if id and self.db.spellID then
-		if caster then
-			local name = UnitName(caster)
-			local _, class = UnitClass(caster)
-			local color = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
-			tt:AddDoubleLine(("|cFFCA3C3C%s|r %d"):format(ID, id), format("|c%s%s|r", color.colorStr, name))
-		else
-			tt:AddLine(("|cFFCA3C3C%s|r %d"):format(ID, id))
-		end
-
-		tt:Show()
-	end
-end
-
 function TT:GameTooltip_OnTooltipSetSpell(tt)
 	local id = select(3, tt:GetSpell())
 	if not id or not self.db.spellID then return end
@@ -883,7 +865,7 @@ function TT:Initialize()
 	self:SecureHook(GameTooltip, "SetUnitAura")
 	self:SecureHook(GameTooltip, "SetUnitBuff", "SetUnitAura")
 	self:SecureHook(GameTooltip, "SetUnitDebuff", "SetUnitAura")
-	self:SecureHook(GameTooltip, "SetUnitConsolidatedBuff", "SetConsolidatedUnitAura")
+	--self:SecureHook(GameTooltip, "SetUnitConsolidatedBuff", "SetConsolidatedUnitAura")
 	self:HookScript(GameTooltip, "OnTooltipSetSpell", "GameTooltip_OnTooltipSetSpell")
 	self:HookScript(GameTooltip, 'OnTooltipCleared', 'GameTooltip_OnTooltipCleared')
 	self:HookScript(GameTooltip, 'OnTooltipSetItem', 'GameTooltip_OnTooltipSetItem')
@@ -902,6 +884,9 @@ function TT:Initialize()
 	--Variable is localized at top of file, then set here when we're sure the frame has been created
 	--Used to check if keybinding is active, if so then don't hide tooltips on actionbars
 	keybindFrame = ElvUI_KeyBinder
+	
+	--Variable is localized at top of file, but setting it right away doesn't work on first session after opening up WoW
+	playerGUID = UnitGUID("player")
 end
 
 E:RegisterModule(TT:GetName())

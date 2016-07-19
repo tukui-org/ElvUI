@@ -4,6 +4,11 @@ local NP = E:GetModule('NamePlates')
 local selectedFilter
 local filters
 
+local pairs, type = pairs, type
+local LEVEL = LEVEL
+local OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_MINIONS, OPTION_TOOLTIP_UNIT_NAME_ENEMY_MINIONS, OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS = OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_MINIONS, OPTION_TOOLTIP_UNIT_NAME_ENEMY_MINIONS, OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS
+local NONE = NONE
+
 local positionValues = {
 	TOPLEFT = 'TOPLEFT',
 	LEFT = 'LEFT',
@@ -79,12 +84,376 @@ local function UpdateFilterGroup()
 	}
 end
 
+local ORDER = 100
+local function GetUnitSettings(unit, name)
+	local copyValues = {}
+	for x, y in pairs(NP.db.units) do
+		if(type(y) == "table" and x ~= unit) then
+			copyValues[x] = L[x]
+		end
+	end
+	local group = {
+		type = "group",
+		order = ORDER,
+		name = name,
+		childGroups = "tab",
+		get = function(info) return E.db.nameplates.units[unit][ info[#info] ] end,
+		set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:ConfigureAll() end,
+		args = {
+			copySettings = {
+				order = -10,
+				name = L["Copy Settings From"],
+				desc = L["Copy settings from another unit."],
+				type = "select",
+				values = copyValues,
+				get = function() return '' end,
+				set = function(info, value)
+					NP:CopySettings(value, unit)
+					NP:ConfigureAll()
+				end,
+			},
+			defaultSettings = {
+				order = -9,
+				name = L["Default Settings"],
+				desc = L["Set Settings to Default"],
+				type = "execute",
+				func = function(info, value)
+					NP:ResetSettings(unit)
+					NP:ConfigureAll()
+				end,
+			},
+			levelGroup = {
+				order = -1,
+				name = LEVEL,
+				type = "group",	
+				args = {
+					header = {
+						order = 0,
+						type = "header",
+						name = LEVEL,
+					},
+					enable = {
+						order = 1,
+						name = L["Enable"],
+						type = "toggle",
+						get = function(info) return E.db.nameplates.units[unit].showLevel end,
+						set = function(info, value) E.db.nameplates.units[unit].showLevel = value; NP:ConfigureAll() end,
+					},
+				},
+			},
+			nameGroup = {
+				order = -1,
+				name = L["Name"],
+				type = "group",
+				args = {
+					header = {
+						order = 0,
+						type = "header",
+						name = L["Name"],
+					},
+					enable = {
+						order = 1,
+						name = L["Enable"],
+						type = "toggle",
+						get = function(info) return E.db.nameplates.units[unit].showName end,
+						set = function(info, value) E.db.nameplates.units[unit].showName = value; NP:ConfigureAll() end,
+					},
+				},
+			},
+			healthGroup = {
+				order = 2,
+				name = L["Health"],
+				type = "group",
+				get = function(info) return E.db.nameplates.units[unit].healthbar[ info[#info] ] end,
+				set = function(info, value) E.db.nameplates.units[unit].healthbar[ info[#info] ] = value; NP:ConfigureAll() end,
+				args = {
+					header = {
+						order = 0,
+						type = "header",
+						name = L["Health"],
+					},
+					enable = {
+						order = 1,
+						name = L["Enable"],
+						type = "toggle",
+						disabled = function() return unit == "PLAYER" end,
+					},
+					height = {
+						order = 2,
+						name = L["Height"],
+						type = "range",
+						min = 4, max = 20, step = 1,
+					},
+					width = {
+						order = 3,
+						name = L["Width"],
+						type = "range",
+						min = 50, max = 200, step = 1,
+					},
+				},
+			},
+			powerGroup = {
+				order = 3,
+				name = L["Power"],
+				type = "group",
+				get = function(info) return E.db.nameplates.units[unit].powerbar[ info[#info] ] end,
+				set = function(info, value) E.db.nameplates.units[unit].powerbar[ info[#info] ] = value; NP:ConfigureAll() end,
+				disabled = function() return not E.db.nameplates.units[unit].healthbar.enable end,
+				args = {
+					header = {
+						order = 0,
+						type = "header",
+						name = L["Power"],
+					},
+					enable = {
+						order = 1,
+						name = L["Enable"],
+						type = "toggle",
+					},
+					height = {
+						order = 2,
+						name = L["Height"],
+						type = "range",
+						min = 4, max = 20, step = 1,
+					},
+				},
+			},
+			castGroup = {
+				order = 4,
+				name = L["Cast Bar"],
+				type = "group",
+				get = function(info) return E.db.nameplates.units[unit].castbar[ info[#info] ] end,
+				set = function(info, value) E.db.nameplates.units[unit].castbar[ info[#info] ] = value; NP:ConfigureAll() end,
+				disabled = function() return not E.db.nameplates.units[unit].healthbar.enable end,
+				args = {
+					header = {
+						order = 0,
+						type = "header",
+						name = L["Cast Bar"],
+					},
+					enable = {
+						order = 1,
+						name = L["Enable"],
+						type = "toggle",
+					},
+					height = {
+						order = 2,
+						name = L["Height"],
+						type = "range",
+						min = 4, max = 20, step = 1,
+					},
+				},
+			},
+			buffsGroup = {
+				order = 5,
+				name = L["Buffs"],
+				type = "group",
+				get = function(info) return E.db.nameplates.units[unit].buffs.filters[ info[#info] ] end,
+				set = function(info, value) E.db.nameplates.units[unit].buffs.filters[ info[#info] ] = value; NP:ConfigureAll() end,
+				disabled = function() return not E.db.nameplates.units[unit].healthbar.enable end,
+				args = {
+					header = {
+						order = 0,
+						type = "header",
+						name = L["Buffs"],
+					},
+					enable = {
+						order = 1,
+						name = L["Enable"],
+						type = "toggle",
+						get = function(info) return E.db.nameplates.units[unit].buffs[ info[#info] ] end,
+						set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,
+					},
+					numAuras = {
+						order = 2,
+						name = L["# Displayed Auras"],
+						desc = L["Controls how many auras are displayed, this will also affect the size of the auras."],
+						type = "range",
+						min = 1, max = 8, step = 1,
+						get = function(info) return E.db.nameplates.units[unit].debuffs[ info[#info] ] end,
+						set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,						
+					},	
+					baseHeight = {
+						order = 3,
+						name = L["Icon Base Height"],
+						desc = L["Base Height for the Aura Icon"],
+						type = "range",
+						min = 6, max = 30, step = 1,
+						get = function(info) return E.db.nameplates.units[unit].debuffs[ info[#info] ] end,
+						set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,						
+					},										
+					filtersGroup = {
+						name = L["Filters"],
+						order = 4,
+						type = "group",
+						guiInline = true,
+						args = {
+							personal = {
+								order = 1,
+								type = "toggle",
+								name = L["Personal Auras"],
+							},
+							boss = {
+								order = 2,
+								type = "toggle",
+								name = L["Boss Auras"],
+							},
+							maxDuration = {
+								order = 3,
+								type = "range",
+								name = L["Maximum Duration"],
+								min = 5, max = 3000, step = 1,
+							},
+							filter = {
+								order = 4,
+								type = "select",
+								name = L["Filter"],
+								values = function()
+									local filters = {}
+									filters[''] = NONE
+									for filter in pairs(E.global.unitframe['aurafilters']) do
+										filters[filter] = filter
+									end
+									return filters
+								end,
+							},
+						},
+					},
+				},
+			},
+			debuffsGroup = {
+				order = 6,
+				name = L["Debuffs"],
+				type = "group",
+				get = function(info) return E.db.nameplates.units[unit].debuffs.filters[ info[#info] ] end,
+				set = function(info, value) E.db.nameplates.units[unit].debuffs.filters[ info[#info] ] = value; NP:ConfigureAll() end,
+				disabled = function() return not E.db.nameplates.units[unit].healthbar.enable end,	
+				args = {
+					header = {
+						order = 0,
+						type = "header",
+						name = L["Debuffs"],
+					},
+					enable = {
+						order = 1,
+						name = L["Enable"],
+						type = "toggle",
+						get = function(info) return E.db.nameplates.units[unit].debuffs[ info[#info] ] end,
+						set = function(info, value) E.db.nameplates.units[unit].debuffs[ info[#info] ] = value; NP:ConfigureAll() end,
+					},
+					numAuras = {
+						order = 2,
+						name = L["# Displayed Auras"],
+						desc = L["Controls how many auras are displayed, this will also affect the size of the auras."],
+						type = "range",
+						min = 1, max = 8, step = 1,
+						get = function(info) return E.db.nameplates.units[unit].buffs[ info[#info] ] end,
+						set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,						
+					},
+					baseHeight = {
+						order = 3,
+						name = L["Icon Base Height"],
+						desc = L["Base Height for the Aura Icon"],
+						type = "range",
+						min = 6, max = 30, step = 1,
+						get = function(info) return E.db.nameplates.units[unit].buffs[ info[#info] ] end,
+						set = function(info, value) E.db.nameplates.units[unit].buffs[ info[#info] ] = value; NP:ConfigureAll() end,						
+					},							
+					filtersGroup = {
+						name = L["Filters"],
+						order = 4,
+						type = "group",
+						guiInline = true,
+						args = {
+							personal = {
+								order = 1,
+								type = "toggle",
+								name = L["Personal Auras"],
+							},
+							boss = {
+								order = 2,
+								type = "toggle",
+								name = L["Boss Auras"],
+							},	
+							maxDuration = {
+								order = 3,
+								type = "range",
+								name = L["Maximum Duration"],
+								min = 5, max = 3000, step = 1,
+							},
+							filter = {
+								order = 4,
+								type = "select",
+								name = L["Filter"],
+								values = function()
+									local filters = {}
+									filters[''] = NONE
+									for filter in pairs(E.global.unitframe['aurafilters']) do
+										filters[filter] = filter
+									end
+									return filters
+								end,
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+
+	if unit == "PLAYER" then
+		group.args.enable = {
+			order = -15,
+			name = L["Enable"],
+			type = "toggle",
+		}
+		group.args.alwaysShow = {
+			order = -13,
+			name = L["Always Display"],
+			desc = L["By forcing the nameplate to always show it will not move on the screen to stay below your characters feet."],
+			type = "toggle"
+		}
+		group.args.spacer = {
+			order = -14,
+			type = "description",
+			name = ""
+		}
+	elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
+		group.args.minions = {
+			order = 0,
+			name = L["Display Minions"],
+			desc = unit == "FRIENDLY_PLAYER" and OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_MINIONS or OPTION_TOOLTIP_UNIT_NAME_ENEMY_MINIONS,
+			type = "toggle",
+		}
+		if unit == "ENEMY_PLAYER" then
+			group.args.markHealers = {
+				type = "toggle",
+				order = 10,
+				name = L["Healer Icon"],
+				desc = L["Display a healer icon over known healers inside battlegrounds or arenas."],
+				set = function(info, value) E.db.nameplates.units.ENEMY_PLAYER[ info[#info] ] = value; NP:PLAYER_ENTERING_WORLD(); NP:ConfigureAll() end,
+			}
+		end
+	elseif unit == "ENEMY_NPC" then
+		group.args.minors = {
+			order = 0,
+			name = L["Display Minor Units"],
+			desc = OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS,
+			type = "toggle",
+		}
+	end
+
+
+	ORDER = ORDER + 100
+	return group
+end
+
 E.Options.args.nameplate = {
 	type = "group",
 	name = L["NamePlates"],
-	childGroups = "select",
-	get = function(info) return E.db.nameplate[ info[#info] ] end,
-	set = function(info, value) E.db.nameplate[ info[#info] ] = value; NP:UpdateAllPlates() end,
+	childGroups = "tree",
+	get = function(info) return E.db.nameplates[ info[#info] ] end,
+	set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:ConfigureAll() end,
 	args = {
 		intro = {
 			order = 1,
@@ -95,75 +464,76 @@ E.Options.args.nameplate = {
 			order = 2,
 			type = "toggle",
 			name = L["Enable"],
-			get = function(info) return E.private.nameplate[ info[#info] ] end,
-			set = function(info, value) E.private.nameplate[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end
+			get = function(info) return E.private.nameplates[ info[#info] ] end,
+			set = function(info, value) E.private.nameplates[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end
 		},
 		general = {
 			order = 1,
 			type = "group",
 			name = L["General"],
+			guiInline = true,
+			order = 3,
 			disabled = function() return not E.NamePlates; end,
 			args = {
-				smallPlates = {
+				onlyShowTarget = {
 					type = "toggle",
 					order = 1,
-					name = L["Small Plates"],
-					desc = L["Adjust nameplate size on smaller mobs to scale down. This will only adjust the health bar width not the actual nameplate hitbox you click on."],
+					name = L["Only Show Target"],
+					desc = L["Only show a nameplate for the unit you have targetted."],
 				},
-				combatHide = {
-					type = "toggle",
+				motionType = {
+					type = "select",
 					order = 2,
-					name = L["Combat Toggle"],
-					desc = L["Toggle the nameplates to be visible outside of combat and visible inside combat."],
-					set = function(info, value) E.db.nameplate[ info[#info] ] = value; NP:CombatToggle() end,
+					name = UNIT_NAMEPLATES_TYPES,
+					desc = L["Set to either stack nameplates vertically or allow them to overlap."],
+					values = {
+						['STACKED'] = UNIT_NAMEPLATES_TYPE_2,
+						['OVERLAP'] = UNIT_NAMEPLATES_TYPE_1,
+					},
 				},
-				comboPoints = {
+				useTargetScale = {
+					name = L["Use Target Scale"],
+					desc = L["Enable/Disable the scaling of targetted nameplates."],
 					type = "toggle",
 					order = 3,
-					name = L["Combo Points"],
-					desc = L["Display combo points on nameplates."],
 				},
-				nonTargetAlpha = {
-					type = 'range',
+				targetScale = {
+					name = L["Target Scale"],
+					desc = L["Scale of the nameplate that is targetted."],
+					type = "range",
+					min = 0.3, max = 2, step = 0.01,
+					isPercent = true,
 					order = 4,
-					name = L["Non-Target Alpha"],
-					desc = L["Alpha of nameplates that are not your current target."],
-					min = 0, max = 1, step = 0.01, isPercent = true,
+					disabled = function() return E.db.nameplates.useTargetScale ~= true end,
 				},
-				targetAlpha = {
-					type = 'range',
-					order = 4,
-					name = L["Target Alpha"],
-					desc = L["Alpha of current target nameplate."],
-					min = 0, max = 1, step = 0.01, isPercent = true,
+				nonTargetTransparency = {
+					name = L["Non-Target Transparency"],
+					desc = L["Set the transparency level of nameplates that are not the target nameplate."],
+					type = "range",
+					min = 0, max = 1, step = 0.01,
+					isPercent = true,
+					order = 5,					
 				},
-				colorNameByValue = {
-					type = 'toggle',
-					order = 5,
-					name = L["Color Name By Health Value"],
+				lowHealthThreshold = {
+					name = L["Low Health Threshold"],
+					desc = L["Make the unitframe glow yellow when it is below this percent of health, it will glow red when the health value is half of this value."],
+					type = "range",
+					isPercent = true,
+					min = 0.2, max = 1, step = 0.01, 
+					order = 6,
 				},
+				statusbar = {
+					order = 0,
+					type = "select", 
+					dialogControl = 'LSM30_Statusbar',
+					name = L["StatusBar Texture"],
+					values = AceGUIWidgetLSMlists.statusbar,
+				},	
 				fontGroup = {
 					order = 100,
 					type = 'group',
-					guiInline = true,
 					name = L["Fonts"],
 					args = {
-						showName = {
-							type = 'toggle',
-							order = 1,
-							name = L["Show Name"],
-						},
-						showLevel = {
-							type = 'toggle',
-							order = 2,
-							name = L["Show Level"],
-						},
-						wrapName = {
-							type = 'toggle',
-							order = 3,
-							name = L["Wrap Name"],
-							desc = L["Wraps name instead of truncating it."],
-						},
 						font = {
 							type = "select", dialogControl = 'LSM30_Font',
 							order = 4,
@@ -174,7 +544,7 @@ E.Options.args.nameplate = {
 							order = 5,
 							name = L["Font Size"],
 							type = "range",
-							min = 4, max = 22, step = 1,
+							min = 4, max = 212, step = 1,
 						},
 						fontOutline = {
 							order = 6,
@@ -190,31 +560,168 @@ E.Options.args.nameplate = {
 						},
 					},
 				},
-				reactions = {
-					order = 200,
+				classBarGroup = {
+					order = 125,
 					type = "group",
-					name = L["Reaction Coloring"],
-					guiInline = true,
+					name = L["Classbar"],
+					get = function(info) return E.db.nameplates.classbar[ info[#info] ] end,
+					set = function(info, value) E.db.nameplates.classbar[ info[#info] ] = value; NP:ConfigureAll() end,
+					args = {
+						enable = {
+							type = "toggle",
+							order = 1,
+							name = L["Enable"]
+						},
+						attachTo = {
+							type = "select",
+							order = 2,
+							name = L["Attach To"],
+							values = {
+								PLAYER = L["Player Nameplate"],
+								TARGET = L["Targeted Nameplate"],
+							},
+						},
+						position = {
+							type = "select",
+							order = 3,
+							name = L["Position"],
+							values = {
+								ABOVE = L["Above"],
+								BELOW = L["Below"],	
+							},
+						},
+					},
+				},
+				threatGroup = {
+					order = 150,
+					type = "group",
+					name = L["Threat"],
 					get = function(info)
-						local t = E.db.nameplate.reactions[ info[#info] ]
-						local d = P.nameplate.reactions[info[#info]]
+						local t = E.db.nameplates.threat[ info[#info] ]
+						local d = P.nameplates.threat[info[#info]]
 						return t.r, t.g, t.b, t.a, d.r, d.g, d.b
 					end,
 					set = function(info, r, g, b)
-						E.db.nameplate.reactions[ info[#info] ] = {}
-						local t = E.db.nameplate.reactions[ info[#info] ]
+						E.db.nameplates[ info[#info] ] = {}
+						local t = E.db.nameplates.threat[ info[#info] ]
 						t.r, t.g, t.b = r, g, b
-						NP:UpdateAllPlates()
 					end,
 					args = {
-						friendlyNPC = {
+						goodColor = {
 							type = "color",
 							order = 1,
-							name = L["Friendly NPC"],
+							name = L["Good Color"],
 							hasAlpha = false,
 						},
-						friendlyPlayer = {
-							name = L["Friendly Player"],
+						badColor = {
+							name = L["Bad Color"],
+							order = 2,
+							type = 'color',
+							hasAlpha = false,
+						},
+						goodTransition = {
+							type = "color",
+							order = 3,
+							name = L["Good Transition Color"],
+							hasAlpha = false,
+						},
+						badTransition = {
+							name = L["Bad Transition Color"],
+							order = 4,
+							type = 'color',
+							hasAlpha = false,
+						},
+						beingTankedByTank = {
+							name = L["Color Tanked"],
+							desc = L["Use Tanked Color when a nameplate is being effectively tanked by another tank."],
+							order = 5,
+							type = "toggle",
+							get = function(info) return E.db.nameplates.threat[ info[#info] ] end,
+							set = function(info, value) E.db.nameplates.threat[ info[#info] ] = value; end,
+						},
+						beingTankedByTankColor = {
+							name = L["Tanked Color"],
+							order = 6,
+							type = 'color',
+							hasAlpha = false,
+							disabled = function() return not E.db.nameplates.threat.beingTankedByTank end,
+						},		
+						goodScale = {
+							name = L["Good Scale"],
+							order = 7,
+							type = 'range',
+							get = function(info) return E.db.nameplates.threat[ info[#info] ] end,
+							set = function(info, value) E.db.nameplates.threat[ info[#info] ] = value; end,
+							min = 0.3, max = 2, step = 0.01,
+							isPercent = true,
+						},
+						badScale = {
+							name = L["Bad Scale"],
+							order = 8,
+							type = 'range',
+							get = function(info) return E.db.nameplates.threat[ info[#info] ] end,
+							set = function(info, value) E.db.nameplates.threat[ info[#info] ] = value; end,
+							min = 0.3, max = 2, step = 0.01,
+							isPercent = true,
+						},
+					},
+				},
+
+				castGroup = {
+					order = 200,
+					type = "group",
+					name = L["Cast Bar"],
+					get = function(info)
+						local t = E.db.nameplates[ info[#info] ]
+						local d = P.nameplates[info[#info]]
+						return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+					end,
+					set = function(info, r, g, b)
+						E.db.nameplates[ info[#info] ] = {}
+						local t = E.db.nameplates[ info[#info] ]
+						t.r, t.g, t.b = r, g, b
+						NP:ForEachPlate("ConfigureElement_CastBar")
+					end,
+					args = {
+						castColor = {
+							type = "color",
+							order = 1,
+							name = L["Cast Color"],
+							hasAlpha = false,
+						},
+						castNoInterruptColor = {
+							name = L["Cast No Interrupt Color"],
+							order = 2,
+							type = 'color',
+							hasAlpha = false,
+						},
+					},
+				},
+				reactions = {
+					order = 150,
+					type = "group",
+					name = L["Reaction Colors"],
+					get = function(info)
+						local t = E.db.nameplates.reactions[ info[#info] ]
+						local d = P.nameplates.reactions[info[#info]]
+						return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+					end,
+					set = function(info, r, g, b)
+						E.db.nameplates.reactions[ info[#info] ] = {}
+						local t = E.db.nameplates.reactions[ info[#info] ]
+						t.r, t.g, t.b = r, g, b
+						NP:ForEachPlate("UpdateElement_HealthColor", true)
+						NP:ForEachPlate("UpdateElement_Name", true)
+					end,
+					args = {
+						--[[offline = {
+							type = "color",
+							order = 1,
+							name = L["Offline"],
+							hasAlpha = false,
+						},]]
+						bad = {
+							name = L["Enemy"],
 							order = 2,
 							type = 'color',
 							hasAlpha = false,
@@ -225,8 +732,8 @@ E.Options.args.nameplate = {
 							type = 'color',
 							hasAlpha = false,
 						},
-						enemy = {
-							name = L["Enemy"],
+						good = {
+							name = L["Friendly"],
 							order = 4,
 							type = 'color',
 							hasAlpha = false,
@@ -241,555 +748,15 @@ E.Options.args.nameplate = {
 				},
 			},
 		},
-		healthBar = {
-			type = "group",
-			order = 2,
-			name = L["Health Bar"],
-			disabled = function() return not E.NamePlates; end,
-			get = function(info) return E.db.nameplate.healthBar[ info[#info] ] end,
-			set = function(info, value) E.db.nameplate.healthBar[ info[#info] ] = value; NP:UpdateAllPlates() end,
-			args = {
-				width = {
-					type = "range",
-					order = 1,
-					name = L["Width"],
-					desc = L["Controls the width of the nameplate"],
-					type = "range",
-					min = 50, max = 125, step = 1,
-				},
-				height = {
-					type = "range",
-					order = 2,
-					name = L["Height"],
-					desc = L["Controls the height of the nameplate"],
-					type = "range",
-					min = 4, max = 30, step = 1,
-				},
-				lowThreshold = {
-					type = 'range',
-					order = 3,
-					name = L["Low Health Threshold"],
-					desc = L["Color the border of the nameplate yellow when it reaches this point, it will be colored red when it reaches half this value."],
-					isPercent = true,
-					min = 0, max = 1, step = 0.01,
-				},
-				colorByRaidIcon = {
-					type = "toggle",
-					order = 4,
-					name = L["Color By Raid Icon"],
-				},
-				spacer = {
-					order = 5,
-					type = "description",
-					name = "\n",
-				},
-				lowHPScale = {
-					type = "group",
-					order = 6,
-					name = L["Scale if Low Health"],
-					guiInline = true,
-					get = function(info) return E.db.nameplate.healthBar.lowHPScale[ info[#info] ] end,
-					set = function(info, value) E.db.nameplate.healthBar.lowHPScale[ info[#info] ] = value; NP:UpdateAllPlates() end,
-					args = {
-						enable = {
-							type = "toggle",
-							name = L["Enable"],
-							order = 1,
-							desc = L["Adjust nameplate size on low health"],
-						},
-						width = {
-							type = "range",
-							order = 2,
-							name = L["Low HP Width"],
-							desc = L["Controls the width of the nameplate on low health"],
-							type = "range",
-							min = 50, max = 125, step = 1,
-						},
-						height = {
-							type = "range",
-							order = 3,
-							name = L["Low HP Height"],
-							desc = L["Controls the height of the nameplate on low health"],
-							type = "range",
-							min = 4, max = 30, step = 1,
-						},
-						toFront = {
-							type = "toggle",
-							order = 4,
-							name = L["Bring to front on low health"],
-							desc = L["Bring nameplate to front on low health"],
-						},
-						changeColor = {
-							type = "toggle",
-							order = 5,
-							name = L["Change color on low health"],
-							desc = L["Change color on low health"],
-						},
-						color = {
-							get = function(info)
-								local t = E.db.nameplate.healthBar.lowHPScale.color
-								local d = P.nameplate.healthBar.lowHPScale.color
-								return t.r, t.g, t.b, t.a, d.r, d.g, d.b
-							end,
-							set = function(info, r, g, b)
-								E.db.nameplate.healthBar.lowHPScale.color = {}
-								local t = E.db.nameplate.healthBar.lowHPScale.color
-								t.r, t.g, t.b = r, g, b
-								NP:UpdateAllPlates()
-							end,
-							name = L["Color on low health"],
-							order = 6,
-							type = 'color',
-							hasAlpha = false,
-						},
-					},
-				},
-				fontGroup = {
-					order = 7,
-					type = "group",
-					name = L["Fonts"],
-					guiInline = true,
-					get = function(info) return E.db.nameplate.healthBar.text[ info[#info] ] end,
-					set = function(info, value) E.db.nameplate.healthBar.text[ info[#info] ] = value; NP:UpdateAllPlates() end,
-					args = {
-						enable = {
-							type = "toggle",
-							name = L["Enable"],
-							order = 1,
-						},
-						format = {
-							type = "select",
-							order = 2,
-							name = L["Format"],
-							values = {
-								['CURRENT_MAX_PERCENT'] = L["Current - Max | Percent"],
-								['CURRENT_PERCENT'] = L["Current - Percent"],
-								['CURRENT_MAX'] = L["Current - Max"],
-								['CURRENT'] = L["Current"],
-								['PERCENT'] = L["Percent"],
-								['DEFICIT'] = L["Deficit"],
-							},
-						},
-					},
-				}
-			},
-		},
-		castBar = {
-			type = "group",
-			order = 3,
-			name = L["Cast Bar"],
-			disabled = function() return not E.NamePlates; end,
-			get = function(info) return E.db.nameplate.castBar[ info[#info] ] end,
-			set = function(info, value) E.db.nameplate.castBar[ info[#info] ] = value; NP:UpdateAllPlates() end,
-			args = {
-				height = {
-					type = "range",
-					order = 1,
-					name = L["Height"],
-					type = "range",
-					min = 4, max = 30, step = 1,
-				},
-				colors = {
-					order = 100,
-					type = "group",
-					name = L["Colors"],
-					guiInline = true,
-					get = function(info)
-						local t = E.db.nameplate.castBar[ info[#info] ]
-						local d = P.nameplate.castBar[ info[#info] ]
-						return t.r, t.g, t.b, t.a, d.r, d.g, d.b
-					end,
-					set = function(info, r, g, b)
-						E.db.nameplate.castBar[ info[#info] ] = {}
-						local t = E.db.nameplate.castBar[ info[#info] ]
-						t.r, t.g, t.b = r, g, b
-						NP:UpdateAllPlates()
-					end,
-					args = {
-						color = {
-							type = "color",
-							order = 1,
-							name = L["Can Interrupt"],
-							hasAlpha = false,
-						},
-						noInterrupt = {
-							name = L["No Interrupt"],
-							order = 2,
-							type = 'color',
-							hasAlpha = false,
-						},
-					},
-				},
-			},
-		},
-		targetIndicator = {
-			type = "group",
-			order = 4,
-			name = L["Target Indicator"],
-			get = function(info) return E.db.nameplate.targetIndicator[ info[#info] ] end,
-			set = function(info, value) E.db.nameplate.targetIndicator[ info[#info] ] = value; WorldFrame.elapsed = 3; NP:UpdateAllPlates() end,
-			args = {
-				enable = {
-					order = 1,
-					type = "toggle",
-					name = L["Enable"],
-				},
-				width = {
-					order = 2,
-					name = L["Width"],
-					type = "range",
-					min = 0, max = 220, step = 1,
-					disabled = function() return (NP.db.targetIndicator.style == "glow") end,
-					set = function(info, value) E.db.nameplate.targetIndicator[ info[#info] ] = value; NP:SetTargetIndicatorDimensions() end,
-				},
-				height = {
-					order = 3,
-					name = L["Height"],
-					type = "range",
-					min = 0, max = 220, step = 1,
-					disabled = function() return (NP.db.targetIndicator.style == "glow") end,
-					set = function(info, value) E.db.nameplate.targetIndicator[ info[#info] ] = value; NP:SetTargetIndicatorDimensions() end,
-				},
-				style = {
-					order = 4,
-					name = L["Style"],
-					type = "select",
-					values = {
-						arrow = L["Vertical Arrow"],
-						doubleArrow = L["Horrizontal Arrows"],
-						doubleArrowInverted = L["Horrizontal Arrows (Inverted)"],
-						glow = L["Glow"]
-					},
-					set = function(info, value) E.db.nameplate.targetIndicator[ info[#info] ] = value; NP:SetTargetIndicator(); NP:UpdateAllPlates() end,
-				},
-				xOffset = {
-					order = 5,
-					name = L["X-Offset"],
-					type = 'range',
-					min = -100, max = 100, step = 1,
-					disabled = function() return (NP.db.targetIndicator.style ~= "doubleArrow" and NP.db.targetIndicator.style ~= "doubleArrowInverted") end
-				},
-				yOffset = {
-					order = 6,
-					name = L["Y-Offset"],
-					type = 'range',
-					min = -100, max = 100, step = 1,
-					disabled = function() return (NP.db.targetIndicator.style ~= "arrow") end
-				},
-				colorMatchHealthBar = {
-					order = 10,
-					type = "toggle",
-					name = L["Color By Healthbar"],
-					desc = L["Match the color of the healthbar."],
-					set = function(info, value)
-						E.db.nameplate.targetIndicator.colorMatchHealthBar = value;
-						if(not value) then
-							local color = E.db.nameplate.targetIndicator.color
-							NP:ColorTargetIndicator(color.r, color.g, color.b)
-						else
-							WorldFrame.elapsed = 3
-						end
-					end,
-				},
-				color = {
-					type = "color",
-					name = L["Color"],
-					order = 11,
-					disabled = function() return E.db.nameplate.targetIndicator.colorMatchHealthBar end,
-					get = function(info)
-						local t = E.db.nameplate.targetIndicator[ info[#info] ]
-						local d = P.nameplate.targetIndicator[ info[#info] ]
-						return t.r, t.g, t.b, t.a, d.r, d.g, d.b
-					end,
-					set = function(info, r, g, b)
-						E.db.nameplate.targetIndicator[ info[#info] ] = {}
-						local t = E.db.nameplate.targetIndicator[ info[#info] ]
-						t.r, t.g, t.b = r, g, b
-						NP:UpdateAllPlates()
-					end,
-				},
-			},
-		},
-		raidHealIcon = {
-			type = "group",
-			order = 5,
-			name = L["Raid/Healer Icon"],
-			get = function(info) return E.db.nameplate.raidHealIcon[ info[#info] ] end,
-			set = function(info, value) E.db.nameplate.raidHealIcon[ info[#info] ] = value; NP:UpdateAllPlates() end,
-			args = {
-				markHealers = {
-					type = 'toggle',
-					order = 1,
-					name = L["Healer Icon"],
-					desc = L["Display a healer icon over known healers inside battlegrounds or arenas."],
-					set = function(info, value) E.db.nameplate.raidHealIcon[ info[#info] ] = value; NP:PLAYER_ENTERING_WORLD(); NP:UpdateAllPlates() end,
-				},
-				size = {
-					order = 2,
-					type = "range",
-					name = L["Size"],
-					min = 10, max = 200, step = 1,
-				},
-				attachTo = {
-					type = "select",
-					order = 3,
-					name = L["Attach To"],
-					values = positionValues,
-				},
-				xOffset = {
-					type = "range",
-					order = 4,
-					name = L["X-Offset"],
-					min = -150, max = 150, step = 1,
-				},
-				yOffset = {
-					type = "range",
-					order = 5,
-					name = L["Y-Offset"],
-					min = -150, max = 150, step = 1,
-				},
-			},
-		},
-		buffs = {
-			type = "group",
-			order = 4,
-			name = L["Buffs"],
-			get = function(info) return E.db.nameplate.buffs[ info[#info] ] end,
-			set = function(info, value) E.db.nameplate.buffs[ info[#info] ] = value; NP:UpdateAllPlates() end,
-			args = {
-				numAuras = {
-					type = "range",
-					order = 1,
-					name = L["Number of Auras"],
-					type = "range",
-					min = 2, max = 8, step = 1,
-				},
-				stretchTexture = {
-					type = "toggle",
-					name = L["Stretch Texture"],
-					desc = L["Stretch the icon texture, intended for icons that don't have the same width/height."],
-					order = 2,
-				},
-				showPersonal = {
-					order = 3,
-					type = "toggle",
-					name = L["Show Personal Auras"],
-				},
-				additionalFilter = {
-					type = "select",
-					order = 5,
-					name = L["Additional Filter"],
-					values = function()
-						filters = {}
-						filters[''] = NONE
-						for filter in pairs(E.global['unitframe']['aurafilters']) do
-							filters[filter] = filter
-						end
-						return filters
-					end,
-				},
-				configureButton = {
-					order = 7,
-					name = L["Configure Selected Filter"],
-					type = 'execute',
-					width = 'full',
-					func = function() E:SetToFilterConfig(E.db.nameplate.buffs.additionalFilter) end,
-				},
-				fontGroup = {
-					order = 100,
-					type = 'group',
-					guiInline = true,
-					name = L["Fonts"],
-					args = {
-						font = {
-							type = "select", dialogControl = 'LSM30_Font',
-							order = 4,
-							name = L["Font"],
-							values = AceGUIWidgetLSMlists.font,
-						},
-						fontSize = {
-							order = 5,
-							name = L["Font Size"],
-							type = "range",
-							min = 4, max = 22, step = 1,
-						},
-						fontOutline = {
-							order = 6,
-							name = L["Font Outline"],
-							desc = L["Set the font outline."],
-							type = "select",
-							values = {
-								['NONE'] = L["None"],
-								['OUTLINE'] = 'OUTLINE',
-
-								['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
-								['THICKOUTLINE'] = 'THICKOUTLINE',
-							},
-						},
-					},
-				},
-			},
-		},
-		debuffs = {
-			type = "group",
-			order = 4,
-			name = L["Debuffs"],
-			get = function(info) return E.db.nameplate.debuffs[ info[#info] ] end,
-			set = function(info, value) E.db.nameplate.debuffs[ info[#info] ] = value; NP:UpdateAllPlates() end,
-			args = {
-				numAuras = {
-					type = "range",
-					order = 1,
-					name = L["Number of Auras"],
-					type = "range",
-					min = 2, max = 8, step = 1,
-				},
-				stretchTexture = {
-					type = "toggle",
-					name = L["Stretch Texture"],
-					desc = L["Stretch the icon texture, intended for icons that don't have the same width/height."],
-					order = 2,
-				},
-				showPersonal = {
-					order = 3,
-					type = "toggle",
-					name = L["Show Personal Auras"],
-				},
-				additionalFilter = {
-					type = "select",
-					order = 5,
-					name = L["Additional Filter"],
-					values = function()
-						filters = {}
-						filters[''] = NONE
-						for filter in pairs(E.global['unitframe']['aurafilters']) do
-							filters[filter] = filter
-						end
-						return filters
-					end,
-				},
-				configureButton = {
-					order = 7,
-					name = L["Configure Selected Filter"],
-					type = 'execute',
-					width = 'full',
-					func = function() E:SetToFilterConfig(E.db.nameplate.debuffs.additionalFilter) end,
-				},
-				fontGroup = {
-					order = 100,
-					type = 'group',
-					guiInline = true,
-					name = L["Fonts"],
-					args = {
-						font = {
-							type = "select", dialogControl = 'LSM30_Font',
-							order = 4,
-							name = L["Font"],
-							values = AceGUIWidgetLSMlists.font,
-						},
-						fontSize = {
-							order = 5,
-							name = L["Font Size"],
-							type = "range",
-							min = 4, max = 22, step = 1,
-						},
-						fontOutline = {
-							order = 6,
-							name = L["Font Outline"],
-							desc = L["Set the font outline."],
-							type = "select",
-							values = {
-								['NONE'] = L["None"],
-								['OUTLINE'] = 'OUTLINE',
-
-								['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
-								['THICKOUTLINE'] = 'THICKOUTLINE',
-							},
-						},
-					},
-				},
-			},
-		},
-		threat = {
-			type = "group",
-			order = 6,
-			name = L["Threat"],
-			get = function(info) return E.db.nameplate.threat[ info[#info] ] end,
-			set = function(info, value) E.db.nameplate.threat[ info[#info] ] = value; NP:UpdateAllPlates() end,
-			args = {
-				enable = {
-					type = "toggle",
-					order = 1,
-					name = L["Enable"],
-				},
-				scaling = {
-					type = 'group',
-					name = L["Scaling"],
-					guiInline = true,
-					order = 2,
-					args = {
-						goodScale = {
-							type = 'range',
-							name = L["Good"],
-							order = 1,
-							min = 0.5, max = 1.5, step = 0.01, isPercent = true,
-						},
-						badScale = {
-							type = 'range',
-							name = L["Bad"],
-							order = 1,
-							min = 0.5, max = 1.5, step = 0.01, isPercent = true,
-						},
-					},
-				},
-				colors = {
-					order = 3,
-					type = "group",
-					name = L["Colors"],
-					guiInline = true,
-					get = function(info)
-						local t = E.db.nameplate.threat[ info[#info] ]
-						local d = P.nameplate.threat[ info[#info] ]
-						return t.r, t.g, t.b, t.a, d.r, d.g, d.b
-					end,
-					set = function(info, r, g, b)
-						E.db.nameplate.castBar[ info[#info] ] = {}
-						local t = E.db.nameplate.threat[ info[#info] ]
-						t.r, t.g, t.b = r, g, b
-						NP:UpdateAllPlates()
-					end,
-					args = {
-						goodColor = {
-							type = "color",
-							order = 1,
-							name = L["Good"],
-							hasAlpha = false,
-						},
-						badColor = {
-							name = L["Bad"],
-							order = 2,
-							type = 'color',
-							hasAlpha = false,
-						},
-						goodTransitionColor = {
-							name = L["Good Transition"],
-							order = 3,
-							type = 'color',
-							hasAlpha = false,
-						},
-						badTransitionColor = {
-							name = L["Bad Transition"],
-							order = 4,
-							type = 'color',
-							hasAlpha = false,
-						},
-					},
-				},
-			},
-		},
+		playerGroup = GetUnitSettings("PLAYER", L["Player Frame"]),
+		healerGroup = GetUnitSettings("HEALER", L["Healer Frames"]),
+		friendlyPlayerGroup = GetUnitSettings("FRIENDLY_PLAYER", L["Friendly Player Frames"]),
+		enemyPlayerGroup = GetUnitSettings("ENEMY_PLAYER", L["Enemy Player Frames"]),
+		friendlyNPCGroup = GetUnitSettings("FRIENDLY_NPC", L["Friendly NPC Frames"]),
+		enemyNPCGroup = GetUnitSettings("ENEMY_NPC", L["Enemy NPC Frames"]),
 		filters = {
 			type = "group",
-			order = 200,
+			order = -100,
 			name = L["Filters"],
 			disabled = function() return not E.NamePlates; end,
 			args = {

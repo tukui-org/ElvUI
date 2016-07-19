@@ -21,11 +21,9 @@ E.TutorialList = {
 	L["ElvUI has a dual spec feature which allows you to load different profiles based on your current spec on the fly. You can enable this from the profiles tab."],
 	L["You can access copy chat and chat menu functions by mouse over the top right corner of chat panel and left/right click on the button that will appear."],
 	L["If you are experiencing issues with ElvUI try disabling all your addons except ElvUI, remember ElvUI is a full UI replacement addon, you cannot run two addons that do the same thing."],
-	L["The buff panel to the right of minimap is a list of your consolidated buffs. You can disable it in Buffs and Debuffs options of ElvUI."],
 	L["If you accidently remove a chat frame you can always go the in-game configuration menu, press install, go to the chat portion and reset them."],
 	L["To setup which channels appear in which chat frame, right click the chat tab and go to settings."],
 	L["You can use the /resetui command to reset all of your movers. You can also use the command to reset a specific mover, /resetui <mover name>.\nExample: /resetui Player Frame"],
-	L["Using the /farmmode <size> command will spawn a larger minimap on your screen that can be moved around, very useful when farming."],
 	L["To move abilities on the actionbars by default hold shift + drag. You can change the modifier key from the actionbar options menu."],
 	L["You can see someones average item level of their gear by holding shift and mousing over them. It should appear inside the tooltip."]
 }

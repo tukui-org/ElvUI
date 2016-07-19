@@ -1,5 +1,6 @@
 ﻿local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local D = E:GetModule("Distributor")
+local B = E:GetModule("Blizzard")
 local AceGUI = LibStub("AceGUI-3.0")
 
 local tsort, tinsert = table.sort, table.insert
@@ -71,13 +72,26 @@ E.Options.args.general = {
 	get = function(info) return E.db.general[ info[#info] ] end,
 	set = function(info, value) E.db.general[ info[#info] ] = value end,
 	args = {
-		intro = {
+		animateConfig = {
 			order = 1,
+			type = "toggle",
+			name = L["Animate Config"],
+			get = function(info) return E.global.general.animateConfig end,
+			set = function(info, value) E.global.general.animateConfig = value; E:StaticPopup_Show("GLOBAL_RL") end,
+		},
+		spacer = {
+			order = 2,
+			type = "description",
+			name = "",
+			width = "full",
+		},
+		intro = {
+			order = 3,
 			type = "description",
 			name = L["ELVUI_DESC"]:gsub('ElvUI', E.UIName),
 		},
 		general = {
-			order = 2,
+			order = 4,
 			type = "group",
 			name = L["General"],
 			args = {
@@ -209,14 +223,6 @@ E.Options.args.general = {
 					get = function(info) return E.global.general.smallerWorldMap end,
 					set = function(info, value) E.global.general.smallerWorldMap = value; E:StaticPopup_Show("GLOBAL_RL") end
 				},
-				WorldMapCoordinates = {
-					order = 17,
-					type = 'toggle',
-					name = L["World Map Coordinates"],
-					desc = L["Puts coordinates on the world map."],
-					get = function(info) return E.global.general.WorldMapCoordinates end,
-					set = function(info, value) E.global.general.WorldMapCoordinates = value; E:StaticPopup_Show("GLOBAL_RL") end
-				},
 				enhancedPvpMessages = {
 					order = 18,
 					type = 'toggle',
@@ -230,6 +236,62 @@ E.Options.args.general = {
 					desc = L["Disables the tutorial button found on some frames."],
 					get = function(info) return E.global.general.disableTutorialButtons end,
 					set = function(info, value) E.global.general.disableTutorialButtons = value; E:StaticPopup_Show("GLOBAL_RL") end,
+				},
+				talkingHeadFrameScale = {
+					order = 20,
+					type = "range",
+					name = L["Talking Head Scale"],
+					isPercent = true,
+					min = 0.5, max = 2, step = 0.01,
+					get = function(info) return E.db.general.talkingHeadFrameScale end,
+					set = function(info, value) E.db.general.talkingHeadFrameScale = value; B:ScaleTalkingHeadFrame() end,
+				},
+				WorldMapCoordinates = {
+					order = 25,
+					type = "group",
+					guiInline = true,
+					name = L["World Map Coordinates"],
+					args = {
+						enable = {
+							order = 1,
+							type = 'toggle',
+							name = L["Enable"],
+							desc = L["Puts coordinates on the world map."],
+							get = function(info) return E.global.general.WorldMapCoordinates.enable end,
+							set = function(info, value) E.global.general.WorldMapCoordinates.enable = value; E:StaticPopup_Show("GLOBAL_RL") end
+						},
+						position = {
+							order = 2,
+							type = "select",
+							name = L["Position"],
+							get = function(info) return E.global.general.WorldMapCoordinates.position end,
+							set = function(info, value) E.global.general.WorldMapCoordinates.position = value; E:GetModule('WorldMap'):PositionCoords() end,
+							values = {
+								["TOP"] = "TOP",
+								["TOPLEFT"] = "TOPLEFT",
+								["TOPRIGHT"] = "TOPRIGHT",
+								["BOTTOM"] = "BOTTOM",
+								["BOTTOMLEFT"] = "BOTTOMLEFT",
+								["BOTTOMRIGHT"] = "BOTTOMRIGHT",
+							},
+						},
+						xOffset = {
+							order = 4,
+							type = "range",
+							name = L["X-Offset"],
+							get = function(info) return E.global.general.WorldMapCoordinates.xOffset end,
+							set = function(info, value) E.global.general.WorldMapCoordinates.xOffset = value; E:GetModule('WorldMap'):PositionCoords()end,
+							min = -200, max = 200, step = 1,
+						},
+						yOffset = {
+							order = 5,
+							type = "range",
+							name = L["Y-Offset"],
+							get = function(info) return E.global.general.WorldMapCoordinates.yOffset end,
+							set = function(info, value) E.global.general.WorldMapCoordinates.yOffset = value; E:GetModule('WorldMap'):PositionCoords() end,
+							min = -200, max = 200, step = 1,
+						},
+					},
 				},
 				chatBubbles = {
 					order = 30,
@@ -247,6 +309,7 @@ E.Options.args.general = {
 							values = {
 								['backdrop'] = L["Skin Backdrop"],
 								['nobackdrop'] = L["Remove Backdrop"],
+								['backdrop_noborder'] = L["Skin Backdrop (No Borders)"],
 								['disabled'] = L["Disabled"]
 							}
 						},
@@ -265,14 +328,14 @@ E.Options.args.general = {
 							name = L["Font Size"],
 							get = function(info) return E.private.general.chatBubbleFontSize end,
 							set = function(info, value) E.private.general.chatBubbleFontSize = value; E:StaticPopup_Show("PRIVATE_RL") end,
-							min = 4, max = 20, step = 1,
+							min = 4, max = 212, step = 1,
 						},
 					},
 				},
 			},
 		},
 		media = {
-			order = 3,
+			order = 5,
 			type = "group",
 			name = L["Media"],
 			get = function(info) return E.db.general[ info[#info] ] end,
@@ -289,7 +352,7 @@ E.Options.args.general = {
 							name = L["Font Size"],
 							desc = L["Set the font size for everything in UI. Note: This doesn't effect somethings that have their own seperate options (UnitFrame Font, Datatext Font, ect..)"],
 							type = "range",
-							min = 4, max = 22, step = 1,
+							min = 4, max = 212, step = 1,
 							set = function(info, value) E.db.general[ info[#info] ] = value; E:UpdateMedia(); E:UpdateFontTemplates(); end,
 						},
 						font = {
@@ -313,16 +376,14 @@ E.Options.args.general = {
 								E.db.bags.itemLevelFontSize = fontSize
 								E.db.bags.countFont = font
 								E.db.bags.countFontSize = fontSize
-								E.db.nameplate.font = font
+								E.db.nameplates.font = font
 								--E.db.nameplate.fontSize = fontSize --Dont use this because nameplate font it somewhat smaller than the rest of the font sizes
-								E.db.nameplate.buffs.font = font
+								--E.db.nameplate.buffs.font = font
 								--E.db.nameplate.buffs.fontSize = fontSize  --Dont use this because nameplate font it somewhat smaller than the rest of the font sizes
-								E.db.nameplate.debuffs.font = font
+								--E.db.nameplate.debuffs.font = font
 								--E.db.nameplate.debuffs.fontSize = fontSize   --Dont use this because nameplate font it somewhat smaller than the rest of the font sizes
 								E.db.auras.font = font
 								E.db.auras.fontSize = fontSize
-								E.db.auras.consolidatedBuffs.font = font
-								--E.db.auras.consolidatedBuffs.fontSize = fontSize --Size is smaller by default
 								E.db.chat.font = font
 								E.db.chat.fontSize = fontSize
 								E.db.chat.tabFont = font
@@ -513,7 +574,7 @@ E.Options.args.general = {
 			},
 		},
 		minimap = {
-			order = 4,
+			order = 6,
 			get = function(info) return E.db.general.minimap[ info[#info] ] end,
 			type = "group",
 			name = MINIMAP_LABEL,
@@ -522,7 +583,7 @@ E.Options.args.general = {
 					order = 1,
 					type = "toggle",
 					name = L["Enable"],
-					desc = L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the consolidated buffs bar, and prevent you from seeing the minimap datatexts.|r"],
+					desc = L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the minimap datatexts.|r"],
 					get = function(info) return E.private.general.minimap[ info[#info] ] end,
 					set = function(info, value) E.private.general.minimap[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
 				},
@@ -559,12 +620,12 @@ E.Options.args.general = {
 					type = 'group',
 					name = L["Minimap Buttons"],
 					args = {
-						garrison = {
+						classHall = {
 							order = 1,
 							type = 'group',
-							name = GARRISON_LOCATION_TOOLTIP,
-							get = function(info) return E.db.general.minimap.icons.garrison[ info[#info] ] end,
-							set = function(info, value) E.db.general.minimap.icons.garrison[ info[#info] ] = value; E:GetModule('Minimap'):UpdateSettings() end,
+							name = ORDER_HALL_LANDING_PAGE_TITLE,
+							get = function(info) return E.db.general.minimap.icons.classHall[ info[#info] ] end,
+							set = function(info, value) E.db.general.minimap.icons.classHall[ info[#info] ] = value; E:GetModule('Minimap'):UpdateSettings() end,
 							args = {
 								scale = {
 									order = 1,
@@ -576,7 +637,7 @@ E.Options.args.general = {
 									order = 2,
 									type = 'select',
 									name = L["Position"],
-									disabled = function() return E.private.general.minimap.hideGarrison end,
+									disabled = function() return E.private.general.minimap.hideClassHallReport end,
 									values = {
 										["LEFT"] = L["Left"],
 										["RIGHT"] = L["Right"],
@@ -593,21 +654,21 @@ E.Options.args.general = {
 									type = 'range',
 									name = L["xOffset"],
 									min = -50, max = 50, step = 1,
-									disabled = function() return E.private.general.minimap.hideGarrison end,
+									disabled = function() return E.private.general.minimap.hideClassHallReport end,
 								},
 								yOffset = {
 									order = 4,
 									type = 'range',
 									name = L["yOffset"],
 									min = -50, max = 50, step = 1,
-									disabled = function() return E.private.general.minimap.hideGarrison end,
+									disabled = function() return E.private.general.minimap.hideClassHallReport end,
 								},
-								hideGarrison = {
+								hideClassHallReport = {
 									order = 5,
 									type = 'toggle',
 									name = L["Hide"],
-									get = function(info) return E.private.general.minimap.hideGarrison end,
-									set = function(info, value) E.private.general.minimap.hideGarrison = value; E:StaticPopup_Show("PRIVATE_RL") end,
+									get = function(info) return E.private.general.minimap.hideClassHallReport end,
+									set = function(info, value) E.private.general.minimap.hideClassHallReport = value; E:StaticPopup_Show("PRIVATE_RL") end,
 								},
 							},
 						},
@@ -881,155 +942,7 @@ E.Options.args.general = {
 					},
 				},
 			},
-		},
-		experience = {
-			order = 5,
-			get = function(info) return E.db.general.experience[ info[#info] ] end,
-			set = function(info, value) E.db.general.experience[ info[#info] ] = value; E:GetModule('Misc'):UpdateExpRepDimensions() end,
-			type = "group",
-			name = XPBAR_LABEL,
-			args = {
-				enable = {
-					order = 0,
-					type = "toggle",
-					name = L["Enable"],
-					set = function(info, value) E.db.general.experience[ info[#info] ] = value; E:GetModule('Misc'):EnableDisable_ExperienceBar() end,
-				},
-				mouseover = {
-					order = 1,
-					type = "toggle",
-					name = L["Mouseover"],
-				},
-				hideAtMaxLevel = {
-					order = 2,
-					type = "toggle",
-					name = L["Hide At Max Level"],
-					set = function(info, value) E.db.general.experience[ info[#info] ] = value; E:GetModule('Misc'):UpdateExperience() end,
-				},
-				hideInVehicle = {
-					order = 3,
-					type = "toggle",
-					name = L["Hide In Vehicle"],
-					set = function(info, value) E.db.general.experience[ info[#info] ] = value; E:GetModule('Misc'):UpdateExperience() end,
-				},
-				reverseFill = {
-					order = 4,
-					type = "toggle",
-					name = L["Reverse Fill Direction"],
-				},
-				orientation = {
-					order = 5,
-					type = "select",
-					name = L["Orientation"],
-					desc = L["Direction the bar moves on gains/losses"],
-					values = {
-						['HORIZONTAL'] = L["Horizontal"],
-						['VERTICAL'] = L["Vertical"]
-					}
-				},
-				width = {
-					order = 6,
-					type = "range",
-					name = L["Width"],
-					min = 5, max = ceil(GetScreenWidth() or 800), step = 1,
-				},
-				height = {
-					order = 7,
-					type = "range",
-					name = L["Height"],
-					min = 5, max = ceil(GetScreenHeight() or 800), step = 1,
-				},
-				textSize = {
-					order = 8,
-					name = L["Font Size"],
-					type = "range",
-					min = 6, max = 22, step = 1,
-				},
-				textFormat = {
-					order = 9,
-					type = 'select',
-					name = L["Text Format"],
-					values = {
-						NONE = NONE,
-						PERCENT = L["Percent"],
-						CURMAX = L["Current - Max"],
-						CURPERC = L["Current - Percent"],
-					},
-					set = function(info, value) E.db.general.experience[ info[#info] ] = value; E:GetModule('Misc'):UpdateExperience() end,
-				},
-			},
-		},
-		reputation = {
-			order = 6,
-			get = function(info) return E.db.general.reputation[ info[#info] ] end,
-			set = function(info, value) E.db.general.reputation[ info[#info] ] = value; E:GetModule('Misc'):UpdateExpRepDimensions() end,
-			type = "group",
-			name = REPUTATION,
-			args = {
-				enable = {
-					order = 0,
-					type = "toggle",
-					name = L["Enable"],
-					set = function(info, value) E.db.general.reputation[ info[#info] ] = value; E:GetModule('Misc'):EnableDisable_ReputationBar() end,
-				},
-				mouseover = {
-					order = 1,
-					type = "toggle",
-					name = L["Mouseover"],
-				},
-				hideInVehicle = {
-					order = 2,
-					type = "toggle",
-					name = L["Hide In Vehicle"],
-					set = function(info, value) E.db.general.reputation[ info[#info] ] = value; E:GetModule('Misc'):UpdateReputation() end,
-				},
-				reverseFill = {
-					order = 3,
-					type = "toggle",
-					name = L["Reverse Fill Direction"],
-				},
-				orientation = {
-					order = 4,
-					type = "select",
-					name = L["Orientation"],
-					desc = L["Direction the bar moves on gains/losses"],
-					values = {
-						['HORIZONTAL'] = L["Horizontal"],
-						['VERTICAL'] = L["Vertical"]
-					}
-				},
-				textFormat = {
-					order = 5,
-					type = 'select',
-					name = L["Text Format"],
-					values = {
-						NONE = NONE,
-						PERCENT = L["Percent"],
-						CURMAX = L["Current - Max"],
-						CURPERC = L["Current - Percent"],
-					},
-					set = function(info, value) E.db.general.reputation[ info[#info] ] = value; E:GetModule('Misc'):UpdateReputation() end,
-				},
-				width = {
-					order = 6,
-					type = "range",
-					name = L["Width"],
-					min = 5, max = ceil(GetScreenWidth() or 800), step = 1,
-				},
-				height = {
-					order = 7,
-					type = "range",
-					name = L["Height"],
-					min = 5, max = ceil(GetScreenHeight() or 800), step = 1,
-				},
-				textSize = {
-					order = 8,
-					name = L["Font Size"],
-					type = "range",
-					min = 6, max = 22, step = 1,
-				},
-			},
-		},
+		},			
 		threat = {
 			order = 7,
 			get = function(info) return E.db.general.threat[ info[#info] ] end,
@@ -1109,7 +1022,7 @@ E.Options.args.general = {
 		},
 		cooldown = {
 			type = "group",
-			order = 10,
+			order = 9,
 			name = L["Cooldown Text"],
 			get = function(info)
 				local t = E.db.cooldown[ info[#info] ]
@@ -1176,7 +1089,7 @@ E.Options.args.general = {
 			},
 		},
 		objectiveFrame = {
-			order = 11,
+			order = 10,
 			type = "group",
 			name = L["Objective Frame"],
 			get = function(info) return E.db.general[ info[#info] ] end,

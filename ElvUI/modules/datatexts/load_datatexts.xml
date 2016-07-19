@@ -21,7 +21,7 @@
 	<Script file='hps.lua'/>
 	<Script file='leech.lua'/>
 	<Script file='mastery.lua'/>
-	<Script file='multistrike.lua'/>
+	<Script file='orderhall.lua'/>
 	<Script file='regen.lua'/>
 	<Script file='resolve.lua'/>
 	<Script file='specswitch.lua'/>

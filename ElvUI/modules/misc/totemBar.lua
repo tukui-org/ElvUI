@@ -9,7 +9,7 @@ local unpack = unpack
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetTotemInfo = GetTotemInfo
-local CooldownFrame_SetTimer = CooldownFrame_SetTimer
+local CooldownFrame_Set = CooldownFrame_Set
 local MAX_TOTEMS = MAX_TOTEMS
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
@@ -23,7 +23,7 @@ function TOTEMS:Update(event)
 			self.bar[i]:Show()
 			self.bar[i].iconTexture:SetTexture(icon)
 			displayedTotems = displayedTotems + 1
-			CooldownFrame_SetTimer(self.bar[i].cooldown, startTime, duration, 1)
+			CooldownFrame_Set(self.bar[i].cooldown, startTime, duration, 1)
 
 			for d=1, MAX_TOTEMS do
 				if _G['TotemFrameTotem'..d..'IconTexture']:GetTexture() == icon then

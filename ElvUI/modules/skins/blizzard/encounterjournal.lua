@@ -33,6 +33,7 @@ local function LoadSkin()
 	S:HandleTab(InstanceSelect.suggestTab)
 	S:HandleTab(InstanceSelect.dungeonsTab)
 	S:HandleTab(InstanceSelect.raidsTab)
+	S:HandleTab(InstanceSelect.LootJournalTab)
 	InstanceSelect.suggestTab.backdrop:SetTemplate("Default", true)
 	InstanceSelect.dungeonsTab.backdrop:SetTemplate("Default", true)
 	InstanceSelect.raidsTab.backdrop:SetTemplate("Default", true)
@@ -42,6 +43,8 @@ local function LoadSkin()
 	InstanceSelect.dungeonsTab:Point("BOTTOMLEFT", InstanceSelect.suggestTab, "BOTTOMRIGHT", 0, 0)
 	InstanceSelect.raidsTab:ClearAllPoints()
 	InstanceSelect.raidsTab:Point("BOTTOMLEFT", InstanceSelect.dungeonsTab, "BOTTOMRIGHT", 0, 0)
+	InstanceSelect.LootJournalTab:ClearAllPoints()
+	InstanceSelect.LootJournalTab:Point("BOTTOMLEFT", InstanceSelect.raidsTab, "BOTTOMRIGHT", 0, 0)
 
 	--Encounter Info Frame
 	local EncounterInfo = EJ.encounter.info
@@ -151,6 +154,12 @@ local function LoadSkin()
 	EncounterInstance.mapButton:Point("BOTTOMLEFT", EncounterInstance.loreBG, "BOTTOMLEFT", 25, 35)
 	S:HandleScrollBar(EncounterInstance.loreScroll.ScrollBar, 4)
 	EncounterInstance.loreScroll.child.lore:SetTextColor(1, 1, 1)
+
+	--Loot Frame
+	S:HandleScrollBar(EncounterJournalScrollBar)
+	S:HandleButton(EncounterJournal.LootJournal.LegendariesFrame.ClassButton, true)
+	S:HandleButton(EncounterJournal.LootJournal.LegendariesFrame.SlotButton, true)
+	S:HandleDropDownBox(LootJournalViewDropDown)
 
 	--Suggestions
 	for i = 1, AJ_MAX_NUM_SUGGESTIONS do
@@ -330,6 +339,14 @@ local function LoadSkin()
 		end
 	end
 	hooksecurefunc("EncounterJournal_ToggleHeaders", SkinAbilitiesInfo)
+	
+	-- Search
+	EncounterJournalSearchResults:StripTextures()
+	EncounterJournalSearchResults:SetTemplate("Default")
+	EncounterJournalSearchBox.searchPreviewContainer:StripTextures()
+	
+	S:HandleCloseButton(EncounterJournalSearchResultsCloseButton)
+	S:HandleScrollBar(EncounterJournalSearchResultsScrollFrameScrollBar)
 end
 
 S:RegisterSkin('Blizzard_EncounterJournal', LoadSkin)

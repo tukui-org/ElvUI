@@ -13,5 +13,5 @@
   </Binding> 
    <Binding name="Toggle Chat (Both)" runOnUp="false" category="BINDING_HEADER_ELVUI">
     HideBothChat()
-  </Binding>   
+  </Binding>
 </Bindings>

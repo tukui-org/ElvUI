@@ -3,6 +3,8 @@ local M = E:NewModule('WorldMap', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0')
 E.WorldMap = M
 
 --Cache global variables
+--Lua functions
+local find = string.find
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
@@ -19,6 +21,15 @@ local WORLDMAP_WINDOWED_SIZE = WORLDMAP_WINDOWED_SIZE
 -- GLOBALS: WorldMapFrame, WorldMapFrameSizeUpButton, WorldMapFrameSizeDownButton
 -- GLOBALS: UIParent, CoordsHolder, WorldMapDetailFrame, DropDownList1
 -- GLOBALS: NumberFontNormal, WORLDMAP_SETTINGS, BlackoutWorld
+
+local INVERTED_POINTS = {
+	["TOPLEFT"] = "BOTTOMLEFT",
+	["TOPRIGHT"] = "BOTTOMRIGHT",
+	["BOTTOMLEFT"] = "TOPLEFT",
+	["BOTTOMRIGHT"] = "TOPRIGHT",
+	["TOP"] = "BOTTOM",
+	["BOTTOM"] = "TOP",
+}
 
 function M:SetLargeWorldMap()
 	if InCombatLockdown() then return end
@@ -63,7 +74,6 @@ end
 
 function M:UpdateCoords()
 	if(not WorldMapFrame:IsShown()) then return end
-	local inInstance, _ = IsInInstance()
 	local x, y = GetPlayerMapPosition("player")
 	x = E:Round(100 * x, 2)
 	y = E:Round(100 * y, 2)
@@ -91,19 +101,31 @@ function M:UpdateCoords()
 	end
 end
 
-function M:ResetDropDownListPosition(frame)
-	DropDownList1:ClearAllPoints()
-	DropDownList1:Point("TOPRIGHT", frame, "BOTTOMRIGHT", -17, -4)
+function M:PositionCoords()
+	local db = E.global.general.WorldMapCoordinates
+	local position = db.position
+	local xOffset = db.xOffset
+	local yOffset = db.yOffset
+
+	local x, y = 5, 5
+	if find(position, "RIGHT") then	x = -5 end
+	if find(position, "TOP") then y = -5 end
+
+	CoordsHolder.playerCoords:ClearAllPoints()
+	CoordsHolder.playerCoords:Point(position, WorldMapScrollFrame, position, x + xOffset, y + yOffset)
+	CoordsHolder.mouseCoords:ClearAllPoints()
+	CoordsHolder.mouseCoords:Point(position, CoordsHolder.playerCoords, INVERTED_POINTS[position], 0, y)
 end
 
-
-
-
+function M:ResetDropDownListPosition(frame)
+	--DropDownList1:ClearAllPoints()
+	--DropDownList1:Point("TOPRIGHT", frame, "BOTTOMRIGHT", -17, -4)
+end
 
 function M:Initialize()
 	--setfenv(WorldMapFrame_OnShow, setmetatable({ UpdateMicroButtons = function() end }, { __index = _G })) --blizzard taint fix
 
-	if(E.global.general.WorldMapCoordinates) then
+	if(E.global.general.WorldMapCoordinates.enable) then
 		local CoordsHolder = CreateFrame('Frame', 'CoordsHolder', WorldMapFrame)
 		CoordsHolder:SetFrameLevel(WorldMapDetailFrame:GetFrameLevel() + 1)
 		CoordsHolder:SetFrameStrata(WorldMapDetailFrame:GetFrameStrata())
@@ -113,12 +135,11 @@ function M:Initialize()
 		CoordsHolder.mouseCoords:SetTextColor(1, 1 ,0)
 		CoordsHolder.playerCoords:SetFontObject(NumberFontNormal)
 		CoordsHolder.mouseCoords:SetFontObject(NumberFontNormal)
-		CoordsHolder.playerCoords:Point("BOTTOMLEFT", WorldMapFrame.BorderFrame.Inset, "BOTTOMLEFT", 5, 5)
 		CoordsHolder.playerCoords:SetText(PLAYER..":   0, 0")
-		CoordsHolder.mouseCoords:Point("BOTTOMLEFT", CoordsHolder.playerCoords, "TOPLEFT", 0, 5)
 		CoordsHolder.mouseCoords:SetText(MOUSE_LABEL..":   0, 0")
 
 		self:ScheduleRepeatingTimer('UpdateCoords', 0.05)
+		M:PositionCoords()
 	end
 
 	if(E.global.general.smallerWorldMap) then

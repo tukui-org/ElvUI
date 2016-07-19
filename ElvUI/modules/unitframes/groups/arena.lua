@@ -147,7 +147,6 @@ function UF:Update_ArenaFrames(frame, db)
 		frame.USE_PORTRAIT_OVERLAY = frame.USE_PORTRAIT
 		frame.PORTRAIT_WIDTH = (frame.USE_PORTRAIT_OVERLAY or not frame.USE_PORTRAIT) and 0 or db.portrait.width
 
-		frame.STAGGER_WIDTH = db.pvpSpecIcon and frame.UNIT_HEIGHT or 0
 		frame.CLASSBAR_YOFFSET = 0
 
 		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and db.infoPanel.enable
@@ -156,6 +155,7 @@ function UF:Update_ArenaFrames(frame, db)
 		frame.BOTTOM_OFFSET = UF:GetHealthBottomOffset(frame)
 
 		frame.USE_TARGET_GLOW = db.targetGlow
+		frame.PVPINFO_WIDTH = db.pvpSpecIcon and frame.UNIT_HEIGHT or 0
 	end
 
 	frame.colors = ElvUF.colors

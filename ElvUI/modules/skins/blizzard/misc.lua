@@ -28,7 +28,6 @@ local function LoadSkin()
 		"DropDownList1Backdrop",
 		"DropDownList2Backdrop",
 		"AutoCompleteBox",
-		"ConsolidatedBuffsTooltip",
 		"ReadyCheckFrame",
 		"StackSplitFrame",
 		"QueueStatusFrame",
@@ -113,6 +112,9 @@ local function LoadSkin()
 			S:HandleButton(ElvuiMenuButtons)
 		end
 	end
+
+	-- Skin the ElvUI Menu Button
+	S:HandleButton(GameMenuFrame.ElvUI)
 
 	if IsAddOnLoaded("OptionHouse") then
 		S:HandleButton(GameMenuButtonOptionHouse)
@@ -223,7 +225,6 @@ local function LoadSkin()
 			self:Hide()
 		end
 	end)
-
 
 	RolePollPopup:SetTemplate("Transparent")
 
@@ -344,6 +345,7 @@ local function LoadSkin()
 
 	local chatbuttons = {
 		"ChatConfigFrameDefaultButton",
+		"ChatConfigFrameRedockButton",
 		"ChatConfigFrameOkayButton",
 		"CombatLogDefaultButton",
 		"ChatConfigCombatSettingsFiltersCopyFilterButton",
@@ -357,9 +359,19 @@ local function LoadSkin()
 		S:HandleButton(_G[chatbuttons[i]], true)
 	end
 
+	ChatConfigFrameDefaultButton:ClearAllPoints()
+	ChatConfigFrameDefaultButton:Point("TOPLEFT",ChatConfigCategoryFrame,"BOTTOMLEFT",1,-5)
+	ChatConfigFrameRedockButton:ClearAllPoints()
+	ChatConfigFrameRedockButton:Point("LEFT", ChatConfigFrameDefaultButton, "RIGHT", 1, 0)
+	CombatLogDefaultButton:ClearAllPoints()
+	CombatLogDefaultButton:Point("TOPLEFT",ChatConfigCategoryFrame,"BOTTOMLEFT",1,-5)
+	ChatConfigFrameOkayButton:ClearAllPoints()
 	ChatConfigFrameOkayButton:Point("RIGHT", ChatConfigFrameCancelButton, "RIGHT", -11, -1)
+	ChatConfigCombatSettingsFiltersDeleteButton:ClearAllPoints()
 	ChatConfigCombatSettingsFiltersDeleteButton:Point("TOPRIGHT", ChatConfigCombatSettingsFilters, "BOTTOMRIGHT", 0, -1)
+	ChatConfigCombatSettingsFiltersAddFilterButton:ClearAllPoints()
 	ChatConfigCombatSettingsFiltersAddFilterButton:Point("RIGHT", ChatConfigCombatSettingsFiltersDeleteButton, "LEFT", -1, 0)
+	ChatConfigCombatSettingsFiltersCopyFilterButton:ClearAllPoints()
 	ChatConfigCombatSettingsFiltersCopyFilterButton:Point("RIGHT", ChatConfigCombatSettingsFiltersAddFilterButton, "LEFT", -1, 0)
 
 	for i=1, 5 do
@@ -521,6 +533,7 @@ local function LoadSkin()
 			S:HandleCheckBox(_G["CombatConfigMessageTypesMiscCheckBox"..i])
 		end
 	end)
+
 -- >> Combat >> Tabs
 	for i = 1,#COMBAT_CONFIG_TABS do
 		local cctab = _G["CombatConfigTab"..i]
@@ -533,31 +546,6 @@ local function LoadSkin()
 	end
 	CombatConfigTab1:ClearAllPoints()
 	CombatConfigTab1:Point("BOTTOMLEFT",ChatConfigBackgroundFrame,"TOPLEFT",6,-2)
-
-   local ccbuttons = {
-		"ChatConfigFrameOkayButton",
-		"ChatConfigFrameDefaultButton",
-		"CombatLogDefaultButton",
-		"ChatConfigCombatSettingsFiltersDeleteButton",
-		"ChatConfigCombatSettingsFiltersAddFilterButton",
-		"ChatConfigCombatSettingsFiltersCopyFilterButton",
-		"CombatConfigSettingsSaveButton",
-	}
-
-   for i = 1, getn(ccbuttons) do
-		local ccbtn = _G[ccbuttons[i]]
-		if ccbtn then
-			S:HandleButton(ccbtn)
-
-		end
-	end
-
-	ChatConfigFrameOkayButton:Point("TOPRIGHT",ChatConfigBackgroundFrame,"BOTTOMRIGHT",-3,-5)
-	ChatConfigFrameDefaultButton:Point("TOPLEFT",ChatConfigCategoryFrame,"BOTTOMLEFT",1,-5)
-	CombatLogDefaultButton:Point("TOPLEFT",ChatConfigCategoryFrame,"BOTTOMLEFT",1,-5)
-	ChatConfigCombatSettingsFiltersDeleteButton:Point("TOPRIGHT",ChatConfigCombatSettingsFilters,"BOTTOMRIGHT",-3,-1)
-	ChatConfigCombatSettingsFiltersCopyFilterButton:Point("RIGHT",ChatConfigCombatSettingsFiltersDeleteButton,"LEFT",-2,0)
-	ChatConfigCombatSettingsFiltersAddFilterButton:Point("RIGHT",ChatConfigCombatSettingsFiltersCopyFilterButton,"LEFT",-2,0)
 
    local cccheckbox = {
 		"CombatConfigColorsHighlightingLine",
@@ -582,13 +570,13 @@ local function LoadSkin()
 		"CombatConfigSettingsParty",
 		"CombatConfigSettingsRaid",
 	}
-	for i = 1, getn(cccheckbox) do
+	for i = 1, #cccheckbox do
 		local ccbtn = _G[cccheckbox[i]]
 		S:HandleCheckBox(ccbtn)
 	end
 
-	S:HandleNextPrevButton(ChatConfigMoveFilterUpButton,true)
-	S:HandleNextPrevButton(ChatConfigMoveFilterDownButton,true)
+	S:HandleNextPrevButton(ChatConfigMoveFilterUpButton, true)
+	S:HandleNextPrevButton(ChatConfigMoveFilterDownButton, true)
 	ChatConfigMoveFilterUpButton:ClearAllPoints()
 	ChatConfigMoveFilterDownButton:ClearAllPoints()
 	ChatConfigMoveFilterUpButton:Point("TOPLEFT",ChatConfigCombatSettingsFilters,"BOTTOMLEFT",3,0)
@@ -700,58 +688,38 @@ local function LoadSkin()
 
 	local interfacecheckbox = {
 		-- Controls
-		"ControlsPanelBlockChatChannelInvites",
 		"ControlsPanelStickyTargeting",
 		"ControlsPanelAutoDismount",
 		"ControlsPanelAutoClearAFK",
-		"ControlsPanelBlockTrades",
-		"ControlsPanelBlockGuildInvites",
 		"ControlsPanelLootAtMouse",
 		"ControlsPanelAutoLootCorpse",
 		"ControlsPanelInteractOnLeftClick",
-		"ControlsPanelAutoOpenLootHistory",
-		"ControlsPanelReverseCleanUpBags",
-		"ControlsPanelReverseNewLoot",
 		-- Combat
-		"CombatPanelEnemyCastBarsOnOnlyTargetNameplates",
-		"CombatPanelEnemyCastBarsNameplateSpellNames",
-		"CombatPanelAttackOnAssist",
-		"CombatPanelStopAutoAttack",
 		"CombatPanelTargetOfTarget",
-		"CombatPanelShowSpellAlerts",
-		"CombatPanelReducedLagTolerance",
-		"CombatPanelActionButtonUseKeyDown",
-		"CombatPanelEnemyCastBarsOnPortrait",
-		"CombatPanelEnemyCastBarsOnNameplates",
+		"CombatPanelFlashLowHealthWarning",
 		"CombatPanelAutoSelfCast",
-	  "CombatPanelLossOfControl",
+		"CombatPanelLossOfControl",
+		"CombatPanelEnableFloatingCombatText",
 		-- Display
-		"DisplayPanelShowCloak",
-		"DisplayPanelShowHelm",
-		"DisplayPanelShowAggroPercentage",
-		"DisplayPanelPlayAggroSounds",
-		"DisplayPanelShowSpellPointsAvg",
-		"DisplayPanelShowFreeBagSpace",
-		"DisplayPanelCinematicSubtitles",
 		"DisplayPanelRotateMinimap",
-		"DisplayPanelShowAccountAchievments",
 		"DisplayPanelAJAlerts",
-		--Objectives
-		"ObjectivesPanelAutoQuestTracking",
-		"ObjectivesPanelMapFade",
+		"DisplayPanelShowTutorials",
 		-- Social
+		"SocialPanelBlockTrades",
+		"SocialPanelBlockGuildInvites",
+		"SocialPanelBlockChatChannelInvites",
+		"SocialPanelShowAccountAchievments",
+		"SocialPanelOnlineFriends",
+		"SocialPanelOfflineFriends",
+		"SocialPanelBroadcasts",
+		"SocialPanelFriendRequests",
+		"SocialPanelShowToastWindow",
+		"SocialPanelGuildMemberAlert",
 		"SocialPanelProfanityFilter",
 		"SocialPanelSpamFilter",
-		"SocialPanelChatBubbles",
-		"SocialPanelPartyChat",
-		"SocialPanelChatHoverDelay",
-		"SocialPanelGuildMemberAlert",
-		"SocialPanelChatMouseScroll",
 		"SocialPanelEnableTwitter",
-		"SocialPanelWholeChatWindowClickable",
-		-- Action bars
+		-- ActionBars
 		"ActionBarsPanelLockActionBars",
-		"ActionBarsPanelSecureAbilityToggle",
 		"ActionBarsPanelAlwaysShowActionBars",
 		"ActionBarsPanelBottomLeft",
 		"ActionBarsPanelBottomRight",
@@ -760,96 +728,21 @@ local function LoadSkin()
 		"ActionBarsPanelCountdownCooldowns",
 		-- Names
 		"NamesPanelMyName",
-		"NamesPanelFriendlyPlayerNames",
-		"NamesPanelFriendlyPets",
-		"NamesPanelFriendlyGuardians",
-		"NamesPanelFriendlyTotems",
-		"NamesPanelUnitNameplatesFriends",
-		"NamesPanelUnitNameplatesFriendlyGuardians",
-		"NamesPanelUnitNameplatesFriendlyPets",
-		"NamesPanelUnitNameplatesFriendlyTotems",
-		"NamesPanelGuilds",
-		"NamesPanelGuildTitles",
-		"NamesPanelTitles",
 		"NamesPanelNonCombatCreature",
+		"NamesPanelFriendlyPlayerNames",
+		"NamesPanelFriendlyMinions",
 		"NamesPanelEnemyPlayerNames",
-		"NamesPanelEnemyPets",
-		"NamesPanelEnemyGuardians",
-		"NamesPanelEnemyTotems",
-		"NamesPanelUnitNameplatesEnemyPets",
-		"NamesPanelUnitNameplatesEnemies",
-		"NamesPanelUnitNameplatesEnemyGuardians",
-		"NamesPanelUnitNameplatesEnemyTotems",
-		"NamesPanelMinus",
-		"NamesPanelUnitNameplatesEnemyMinus",
-
-		-- Combat Text
-		"CombatTextPanelTargetDamage",
-		"CombatTextPanelPeriodicDamage",
-		"CombatTextPanelPetDamage",
-		"CombatTextPanelHealing",
-		"CombatTextPanelHealingAbsorbTarget",
-		"CombatTextPanelHealingAbsorbSelf",
-		"CombatTextPanelTargetEffects",
-		"CombatTextPanelOtherTargetEffects",
-		"CombatTextPanelEnableFCT",
-		"CombatTextPanelDodgeParryMiss",
-		"CombatTextPanelDamageReduction",
-		"CombatTextPanelRepChanges",
-		"CombatTextPanelReactiveAbilities",
-		"CombatTextPanelFriendlyHealerNames",
-		"CombatTextPanelCombatState",
-		"CombatTextPanelComboPoints",
-		"CombatTextPanelLowManaHealth",
-		"CombatTextPanelEnergyGains",
-		"CombatTextPanelPeriodicEnergyGains",
-		"CombatTextPanelHonorGains",
-		"CombatTextPanelAuras",
-		"CombatTextPanelPetBattle",
-		-- Buffs & Debuffs
-		"BuffsPanelDispellableDebuffs",
-		"BuffsPanelCastableBuffs",
-		"BuffsPanelConsolidateBuffs",
-		"BuffsPanelShowAllEnemyDebuffs",
+		"NamesPanelEnemyMinions",
 		-- Camera
-		"CameraPanelFollowTerrain",
-		"CameraPanelHeadBob",
 		"CameraPanelWaterCollision",
-		"CameraPanelSmartPivot",
 		-- Mouse
 		"MousePanelInvertMouse",
 		"MousePanelClickToMove",
-		"MousePanelWoWMouse",
 		"MousePanelEnableMouseSpeed",
-		-- Help
-		"HelpPanelShowTutorials",
-		"HelpPanelEnhancedTooltips",
-		"HelpPanelShowLuaErrors",
-		"BattlenetPanelOnlineFriends",
-		"BattlenetPanelOfflineFriends",
-		"BattlenetPanelBroadcasts",
-		"BattlenetPanelFriendRequests",
-		"BattlenetPanelShowToastWindow",
-		-- Status Text
-		"StatusTextPanelPlayer",
-		"StatusTextPanelPet",
-		"StatusTextPanelParty",
-		"StatusTextPanelTarget",
-		"StatusTextPanelAlternateResource",
-		"StatusTextPanelXP",
-		-- Unit Frames
-		"UnitFramePanelPartyPets",
-		"UnitFramePanelArenaEnemyFrames",
-		"UnitFramePanelArenaEnemyCastBar",
-		"UnitFramePanelArenaEnemyPets",
-		"UnitFramePanelFullSizeFocusFrame",
-
-		--Assessability
+		-- Accessability
 		"AccessibilityPanelMovePad",
+		"AccessibilityPanelCinematicSubtitles",
 		"AccessibilityPanelColorblindMode",
-
-		--Watev
-		"NamesPanelUnitNameplatesNameplateClassColors",
 	}
 
 	for i = 1, getn(interfacecheckbox) do
@@ -860,34 +753,26 @@ local function LoadSkin()
 			print(interfacecheckbox[i])
 		end
 	end
+
 	local interfacedropdown ={
 		-- Controls
 		"ControlsPanelAutoLootKeyDropDown",
 		-- Combat
-		"CombatPanelTOTDropDown",
 		"CombatPanelFocusCastKeyDropDown",
 		"CombatPanelSelfCastKeyDropDown",
-		"CombatPanelLossOfControlFullDropDown",
-		"CombatPanelLossOfControlSilenceDropDown",
-		"CombatPanelLossOfControlInterruptDropDown",
-		"CombatPanelLossOfControlDisarmDropDown",
-		"CombatPanelLossOfControlRootDropDown",
-		--Objectives
-		"ObjectivesPanelQuestSorting",
+		-- Display
+		"DisplayPanelSelfHighlightDropDown",
+		"DisplayPanelDisplayDropDown",
+		"DisplayPanelChatBubblesDropDown",
 		-- Social
-		"SocialPanelChatStyle",
 		"SocialPanelWhisperMode",
 		"SocialPanelTimestamps",
-		"SocialPanelBnWhisperMode",
-		"SocialPanelConversationMode",
+		"SocialPanelChatStyle",
 		-- Action bars
 		"ActionBarsPanelPickupActionKeyDropDown",
 		-- Names
 		"NamesPanelNPCNamesDropDown",
 		"NamesPanelUnitNameplatesMotionDropDown",
-		-- Combat Text
-		"CombatTextPanelFCTDropDown",
-		"CombatTextPanelTargetModeDropDown",
 		-- Camera
 		"CameraPanelStyleDropDown",
 		-- Mouse
@@ -895,27 +780,22 @@ local function LoadSkin()
 		-- Language
 		"LanguagesPanelLocaleDropDown",
 		"LanguagesPanelAudioLocaleDropDown",
-		-- Status Text
-		"StatusTextPanelDisplayDropDown",
-
-		--Assess-ability
+		-- Assessability
 		"AccessibilityPanelColorFilterDropDown",
-
-		--Locales
-		"InterfaceOptionsLanguagesPanelAudioLocaleDropDown",
 	}
+
 	for i = 1, getn(interfacedropdown) do
 		local idropdown = _G["InterfaceOptions"..interfacedropdown[i]]
 		if idropdown then
 			S:HandleDropDownBox(idropdown)
 			DropDownList1:SetTemplate("Transparent")
+		else
+			print(interfacedropdown[i])
 		end
 	end
 
 	-- Display
 	S:HandleDropDownBox(InterfaceOptionsDisplayPanelOutlineDropDown, 210)
-
-	S:HandleButton(InterfaceOptionsHelpPanelResetTutorials)
 	local optioncheckbox = {
 		-- Display
 		"Display_RaidSettingsEnabledCheckBox",
@@ -967,15 +847,11 @@ local function LoadSkin()
 		"Graphics_TextureResolutionDropDown",
 		"Graphics_FilteringDropDown",
 		"Graphics_ProjectedTexturesDropDown",
-		"Graphics_ViewDistanceDropDown",
-		"Graphics_EnvironmentalDetailDropDown",
-		"Graphics_GroundClutterDropDown",
 		"Graphics_ShadowsDropDown",
 		"Graphics_LiquidDetailDropDown",
 		"Graphics_SunshaftsDropDown",
 		"Graphics_ParticleDensityDropDown",
 		"Graphics_SSAODropDown",
-		"Graphics_RefractionDropDown",
 		"Graphics_DepthEffectsDropDown",
 		"Graphics_LightingQualityDropDown",
 		"Graphics_OutlineModeDropDown",
@@ -983,15 +859,11 @@ local function LoadSkin()
 		"RaidGraphics_TextureResolutionDropDown",
 		"RaidGraphics_FilteringDropDown",
 		"RaidGraphics_ProjectedTexturesDropDown",
-		"RaidGraphics_ViewDistanceDropDown",
-		"RaidGraphics_EnvironmentalDetailDropDown",
-		"RaidGraphics_GroundClutterDropDown",
 		"RaidGraphics_ShadowsDropDown",
 		"RaidGraphics_LiquidDetailDropDown",
 		"RaidGraphics_SunshaftsDropDown",
 		"RaidGraphics_ParticleDensityDropDown",
 		"RaidGraphics_SSAODropDown",
-		"RaidGraphics_RefractionDropDown",
 		"RaidGraphics_DepthEffectsDropDown",
 		"RaidGraphics_LightingQualityDropDown",
 		"RaidGraphics_OutlineModeDropDown",
@@ -1005,13 +877,16 @@ local function LoadSkin()
 		"Advanced_MultisampleAlphaTest",
 		"Advanced_PostProcessAntiAliasingDropDown",
 		"Advanced_MultisampleAntiAliasingDropDown",
+		"Advanced_PhysicsInteractionDropDown",
 
 		-- Audio
 		"AudioOptionsSoundPanelHardwareDropDown",
 		"AudioOptionsSoundPanelSoundChannelsDropDown",
+		"AudioOptionsSoundPanelSoundCacheSizeDropDown",
 		"AudioOptionsVoicePanelInputDeviceDropDown",
 		"AudioOptionsVoicePanelChatModeDropDown",
 		"AudioOptionsVoicePanelOutputDeviceDropDown",
+
 		-- Raid Profiles
 		"CompactUnitFrameProfilesProfileSelector",
 		"CompactUnitFrameProfilesGeneralOptionsFrameHealthTextDropdown",
@@ -1022,6 +897,8 @@ local function LoadSkin()
 		if odropdown then
 			S:HandleDropDownBox(odropdown,165)
 			DropDownList1:SetTemplate("Transparent")
+		else
+			print(optiondropdown[i])
 		end
 	end
 	local buttons = {
@@ -1030,7 +907,9 @@ local function LoadSkin()
 		"AudioOptionsVoicePanelChatMode1KeyBindingButton",
 		"CompactUnitFrameProfilesSaveButton",
 		"CompactUnitFrameProfilesDeleteButton",
-		"InterfaceOptionsSocialPanelTwitterLoginButton"
+		"InterfaceOptionsSocialPanelTwitterLoginButton",
+		"InterfaceOptionsDisplayPanelResetTutorials",
+		"InterfaceOptionsSocialPanelRedockChat"
 	}
 	for _, button in pairs(buttons) do
 		S:HandleButton(_G[button])
@@ -1074,6 +953,9 @@ local function LoadSkin()
 
 	local sliders = {
 		"Graphics_Quality",
+		"Graphics_ViewDistanceSlider",
+		"Graphics_EnvironmentalDetailSlider",
+		"Graphics_GroundClutterSlider",
 		"RaidGraphics_Quality",
 		"Advanced_UIScaleSlider",
 		"Advanced_MaxFPSSlider",
@@ -1090,17 +972,16 @@ local function LoadSkin()
 		"AudioOptionsVoicePanelAmbienceFade",
 		"AudioOptionsSoundPanelDialogVolume",
 		"InterfaceOptionsCombatPanelSpellAlertOpacitySlider",
-		"InterfaceOptionsCombatPanelMaxSpellStartRecoveryOffset",
-		"InterfaceOptionsBattlenetPanelToastDurationSlider",
 		"InterfaceOptionsCameraPanelMaxDistanceSlider",
 		"InterfaceOptionsCameraPanelFollowSpeedSlider",
 		"InterfaceOptionsMousePanelMouseSensitivitySlider",
 		"InterfaceOptionsMousePanelMouseLookSpeedSlider",
 		"InterfaceOptionsAccessibilityPanelColorblindStrengthSlider",
 		"OpacityFrameSlider",
+		"CompactUnitFrameProfilesGeneralOptionsFrameHeightSlider",
+		"CompactUnitFrameProfilesGeneralOptionsFrameWidthSlider"
 	}
-	Graphics_RightQuality:Kill()
-	RaidGraphics_RightQuality:Kill()
+
 	for _, slider in pairs(sliders) do
 		S:HandleSliderFrame(_G[slider])
 	end

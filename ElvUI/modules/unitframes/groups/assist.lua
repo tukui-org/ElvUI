@@ -108,9 +108,7 @@ function UF:Update_AssistFrames(frame, db)
 		frame.USE_PORTRAIT_OVERLAY = false
 		frame.PORTRAIT_WIDTH = 0
 
-		frame.CLASSBAR_WIDTH = 0
 		frame.CLASSBAR_YOFFSET = 0
-		frame.STAGGER_WIDTH = 0
 		frame.BOTTOM_OFFSET = 0
 	end
 

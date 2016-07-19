@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule('Bags');
 local Search = LibStub('LibItemSearch-1.2-ElvUI');
+
 --Cache global variables
 --Lua functions
 local ipairs, pairs, tonumber, select, unpack = ipairs, pairs, tonumber, select, unpack
@@ -74,7 +75,6 @@ local bagStacks = {};
 local bagMaxStacks = {};
 local bagGroups = {};
 local initialOrder = {};
-local itemTypes, itemSubTypes
 local bagSorted, bagLocked = {}, {};
 local bagRole
 local moves = {};
@@ -136,18 +136,6 @@ B.SortUpdateTimer = frame
 
 local function IsGuildBankBag(bagid)
 	return (bagid > 50 and bagid <= 58)
-end
-
-local function BuildSortOrder()
-	itemTypes = {}
-	itemSubTypes = {}
-	for i, iType in ipairs({GetAuctionItemClasses()}) do
-		itemTypes[iType] = i
-		itemSubTypes[iType] = {}
-		for ii, isType in ipairs({GetAuctionItemSubClasses(i)}) do
-			itemSubTypes[iType][isType] = ii
-		end
-	end
 end
 
 local function UpdateLocation(from, to)
@@ -217,8 +205,8 @@ local function DefaultSort(a, b)
 		end
 	end
 
-	local _, _, aRarity, _, _, aType, aSubType, _, aEquipLoc = GetItemInfo(aID)
-	local _, _, bRarity, _, _, bType, bSubType, _, bEquipLoc = GetItemInfo(bID)
+	local _, _, aRarity, _, _, _, _, _, aEquipLoc, _, _, aItemClassId, aItemSubClassId = GetItemInfo(aID)
+	local _, _, bRarity, _, _, _, _, _, bEquipLoc, _, _, bItemClassId, bItemSubClassId = GetItemInfo(bID)
 
 	if bagPetIDs[a] then
 		aRarity = 1
@@ -232,11 +220,11 @@ local function DefaultSort(a, b)
 		return aRarity > bRarity
 	end
 
-	if itemTypes[aType] ~= itemTypes[bType] then
-		return (itemTypes[aType] or 99) < (itemTypes[bType] or 99)
+	if aItemClassId ~= bItemClassId then
+		return (aItemClassId or 99) < (bItemClassId or 99)
 	end
 
-	if aType == ARMOR or aType == ENCHSLOT_WEAPON then
+	if aItemClassId == LE_ITEM_CLASS_ARMOR or aItemClassId == LE_ITEM_CLASS_WEAPON then
 		local aEquipLoc = inventorySlots[aEquipLoc] or -1
 		local bEquipLoc = inventorySlots[bEquipLoc] or -1
 		if aEquipLoc == bEquipLoc then
@@ -247,11 +235,11 @@ local function DefaultSort(a, b)
 			return aEquipLoc < bEquipLoc
 		end
 	end
-	if aSubType == bSubType then
+	if (aItemClassId == bItemClassId) and (aItemSubClassId == bItemSubClassId) then
 		return PrimarySort(a, b)
 	end
 
-	return ((itemSubTypes[aType] or {})[aSubType] or 99) < ((itemSubTypes[bType] or {})[bSubType] or 99)
+	return (aItemSubClassId or 99) < (bItemSubClassId or 99)
 end
 
 local function ReverseSort(a, b)
@@ -543,7 +531,6 @@ end
 
 function B.Sort(bags, sorter, invertDirection)
 	if not sorter then sorter = invertDirection and ReverseSort or DefaultSort end
-	if not itemTypes then BuildSortOrder() end
 
 	twipe(blackListedSlots)
 

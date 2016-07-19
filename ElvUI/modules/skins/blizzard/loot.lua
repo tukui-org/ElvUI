@@ -21,7 +21,8 @@ local LOOT = LOOT
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.loot ~= true then return end
-	local frame = MissingLootFrame
+	-- Needs Review
+	--[[local frame = MissingLootFrame
 
 	frame:StripTextures()
 	frame:CreateBackdrop("Default")
@@ -46,7 +47,7 @@ local function LoadSkin()
 		local numRows = ceil(numItems / 2);
 		MissingLootFrame:Height(numRows * 43 + 38 + MissingLootFrameLabel:GetHeight());
 	end
-	hooksecurefunc("MissingLootFrame_Show", SkinButton)
+	hooksecurefunc("MissingLootFrame_Show", SkinButton)]]
 
 	-- loot history frame
 	LootHistoryFrame:StripTextures()
@@ -127,7 +128,7 @@ local function LoadSkin()
 	BonusRollFrame.PromptFrame.IconBackdrop:SetFrameLevel(BonusRollFrame.PromptFrame.IconBackdrop:GetFrameLevel() - 1)
 	BonusRollFrame.PromptFrame.IconBackdrop:SetOutside(BonusRollFrame.PromptFrame.Icon)
 	BonusRollFrame.PromptFrame.IconBackdrop:SetTemplate()
-	BonusRollFrame.PromptFrame.Timer.Bar:SetTexture(1, 1, 1)
+	BonusRollFrame.PromptFrame.Timer.Bar:SetColorTexture(1, 1, 1)
 	BonusRollFrame.PromptFrame.Timer.Bar:SetVertexColor(1, 1, 1)
 
 	LootFrame:StripTextures()

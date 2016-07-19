@@ -41,7 +41,7 @@ local NUM_PET_ACTION_SLOTS = NUM_PET_ACTION_SLOTS
 -- GLOBALS: UIParent, GarrisonMissionFrame, GarrisonMissionList_Update, GameTooltip, Minimap
 -- GLOBALS: GARRISON_FOLLOWER_MAX_LEVEL, GARRISON_LONG_MISSION_TIME, GARRISON_LONG_MISSION_TIME_FORMAT
 -- GLOBALS: ElvUI_StaticPopup1, ElvUI_StaticPopup1Button1, LeftChatPanel, RightChatPanel
--- GLOBALS: LeftChatToggleButton, RightChatToggleButton, ElvUI_StanceBar, ObjectiveTrackerFrame
+-- GLOBALS: ElvUI_StanceBar, ObjectiveTrackerFrame
 -- GLOBALS: HelloKittyLeft, HelloKittyRight
 
 
@@ -337,8 +337,6 @@ do
 		tinsert(self.massiveShakeObjects, ObjectiveTrackerFrame)
 		tinsert(self.massiveShakeObjects, LeftChatPanel)
 		tinsert(self.massiveShakeObjects, RightChatPanel)
-		tinsert(self.massiveShakeObjects, LeftChatToggleButton)
-		tinsert(self.massiveShakeObjects, RightChatToggleButton)
 
 		for unit in pairs(UF['units']) do
 			tinsert(self.massiveShakeObjects, UF[unit])

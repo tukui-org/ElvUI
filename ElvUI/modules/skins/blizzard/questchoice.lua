@@ -20,6 +20,8 @@ local function LoadSkin()
 	QuestChoiceFrame:CreateBackdrop("Transparent")
 	S:HandleButton(QuestChoiceFrame.Option1.OptionButton)
 	S:HandleButton(QuestChoiceFrame.Option2.OptionButton)
+	S:HandleButton(QuestChoiceFrame.Option3.OptionButton)
+	S:HandleButton(QuestChoiceFrame.Option4.OptionButton)
 	S:HandleCloseButton(QuestChoiceFrame.CloseButton)
 	QuestChoiceFrame.CloseButton:SetFrameLevel(10)
 end

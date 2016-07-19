@@ -144,11 +144,6 @@ E.Options.args.skins = {
 					name = L["Debug Tools"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
-				trainer = {
-					type = "toggle",
-					name = L["Trainer Frame"],
-					desc = L["TOGGLESKIN_DESC"],
-				},
 				socket = {
 					type = "toggle",
 					name = L["Socket Frame"],
@@ -322,6 +317,21 @@ E.Options.args.skins = {
 				objectiveTracker = {
 					type = "toggle",
 					name = OBJECTIVES_TRACKER_LABEL,
+					desc = L["TOGGLESKIN_DESC"],
+				},
+				orderhall = {
+					type = "toggle",
+					name = L["Orderhall"], -- Temp Name
+					desc = L["TOGGLESKIN_DESC"],
+				},
+				artifact = {
+					type = "toggle",
+					name = L["Artifact"], -- Temp Name
+					desc = L["TOGGLESKIN_DESC"],
+				},
+				talkinghead = {
+					type = "toggle",
+					name = L["TalkingHead"], -- Temp Name
 					desc = L["TOGGLESKIN_DESC"],
 				},
 			},

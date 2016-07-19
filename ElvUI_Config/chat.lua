@@ -388,7 +388,7 @@ E.Options.args.chat = {
 					order = 5,
 					name = L["Tab Font Size"],
 					type = "range",
-					min = 4, max = 22, step = 1,
+					min = 4, max = 212, step = 1,
 				},
 				tabFontOutline = {
 					order = 6,

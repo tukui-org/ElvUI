@@ -750,6 +750,10 @@ function AB:DisableBlizzard()
 	MultiBarBottomRight:SetParent(UIHider)
 	MultiBarLeft:SetParent(UIHider)
 	MultiBarRight:SetParent(UIHider)
+	
+	--Look into what this does
+	ArtifactWatchBar:SetParent(UIHider)
+	HonorWatchBar:SetParent(UIHider)
 
 	-- Hide MultiBar Buttons, but keep the bars alive
 	for i=1,12 do
@@ -842,8 +846,6 @@ function AB:DisableBlizzard()
 	IconIntroTracker:Hide()
 	IconIntroTracker:SetParent(UIHider)
 
-	InterfaceOptionsCombatPanelActionButtonUseKeyDown:SetScale(0.0001)
-	InterfaceOptionsCombatPanelActionButtonUseKeyDown:SetAlpha(0)
 	InterfaceOptionsActionBarsPanelAlwaysShowActionBars:EnableMouse(false)
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton:SetScale(0.0001)
 	InterfaceOptionsActionBarsPanelLockActionBars:SetScale(0.0001)
@@ -852,8 +854,6 @@ function AB:DisableBlizzard()
 	InterfaceOptionsActionBarsPanelLockActionBars:SetAlpha(0)
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetAlpha(0)
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetScale(0.00001)
-	InterfaceOptionsStatusTextPanelXP:SetAlpha(0)
-	InterfaceOptionsStatusTextPanelXP:SetScale(0.00001)
 	self:SecureHook('BlizzardOptionsPanel_OnEvent')
 	--InterfaceOptionsFrameCategoriesButton6:SetScale(0.00001)
 	if PlayerTalentFrame then

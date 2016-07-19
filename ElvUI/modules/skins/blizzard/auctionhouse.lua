@@ -46,21 +46,21 @@ local function LoadSkin()
 	AuctionProgressFrameCancelButton:Size(28, 28)
 	AuctionProgressFrameCancelButton:Point("LEFT", AuctionProgressBar, "RIGHT", 8, 0)
 
-	AuctionProgressBarIcon:SetTexCoord(unpack(E.TexCoords))
-
-	local backdrop = CreateFrame("Frame", nil, AuctionProgressBarIcon:GetParent())
-	backdrop:SetOutside(AuctionProgressBarIcon)
+	local backdrop = CreateFrame("Frame", nil, AuctionProgressBar.Icon:GetParent())
+	AuctionProgressBar.Icon:SetTexCoord(unpack(E.TexCoords))
+	backdrop:SetOutside(AuctionProgressBar.Icon)
 	backdrop:SetTemplate("Default")
-	AuctionProgressBarIcon:SetParent(backdrop)
+	AuctionProgressBar.Icon:SetParent(backdrop)
 
-	AuctionProgressBarText:ClearAllPoints()
-	AuctionProgressBarText:Point("CENTER")
+	AuctionProgressBar.Text:ClearAllPoints()
+	AuctionProgressBar.Text:Point("CENTER")
 
 	AuctionProgressBar:StripTextures()
 	AuctionProgressBar:CreateBackdrop("Default")
 	AuctionProgressBar:SetStatusBarTexture(E["media"].normTex)
 	AuctionProgressBar:SetStatusBarColor(1, 1, 0)
 	E:RegisterStatusBar(AuctionProgressBar)
+
 	S:HandleNextPrevButton(BrowseNextPageButton)
 	S:HandleNextPrevButton(BrowsePrevPageButton)
 
@@ -100,8 +100,6 @@ local function LoadSkin()
 	AuctionsItemButton:StripTextures()
 	AuctionsItemButton:StyleButton()
 	AuctionsItemButton:SetTemplate("Default", true)
-	--BrowseResetButton:Point("TOPLEFT", AuctionFrameBrowse, "TOPLEFT", 81, -74)
-	--BrowseSearchButton:Point("TOPRIGHT", AuctionFrameBrowse, "TOPRIGHT", 25, -34)
 
 	AuctionsItemButton:HookScript('OnEvent', function(self, event, ...)
 		self:SetBackdropBorderColor(unpack(E["media"].bordercolor))

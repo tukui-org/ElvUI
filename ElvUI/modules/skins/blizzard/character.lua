@@ -12,7 +12,6 @@ local SquareButton_SetIcon = SquareButton_SetIcon
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.character ~= true then return end
 	S:HandleCloseButton(CharacterFrameCloseButton)
-	S:HandleScrollBar(CharacterStatsPaneScrollBar)
 	S:HandleScrollBar(ReputationListScrollFrameScrollBar)
 	S:HandleScrollBar(TokenFrameContainerScrollBar)
 	S:HandleScrollBar(GearManagerDialogPopupScrollFrameScrollBar)
@@ -54,11 +53,117 @@ local function LoadSkin()
 
 		hooksecurefunc(slot.IconBorder, 'SetVertexColor', function(self, r, g, b)
 			self:GetParent():SetBackdropBorderColor(r, g, b)
+			self:SetTexture("")
 		end)
 		hooksecurefunc(slot.IconBorder, 'Hide', function(self)
 			self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end)
 	end
+
+	CharacterLevelText:FontTemplate()
+	CharacterStatsPane.ItemLevelFrame.Value:FontTemplate(nil, 20)
+
+	local function ColorizeStatPane(frame)
+		if(frame.leftGrad) then return end
+		local r, g, b = 0.8, 0.8, 0.8
+		frame.leftGrad = frame:CreateTexture(nil, "BORDER")
+		frame.leftGrad:SetWidth(80)
+		frame.leftGrad:SetHeight(frame:GetHeight())
+		frame.leftGrad:SetPoint("LEFT", frame, "CENTER")
+		frame.leftGrad:SetTexture(E.media.blankTex)
+		frame.leftGrad:SetGradientAlpha("Horizontal", r, g, b, 0.35, r, g, b, 0)
+
+		frame.rightGrad = frame:CreateTexture(nil, "BORDER")
+		frame.rightGrad:SetWidth(80)
+		frame.rightGrad:SetHeight(frame:GetHeight())
+		frame.rightGrad:SetPoint("RIGHT", frame, "CENTER")
+		frame.rightGrad:SetTexture([[Interface\BUTTONS\WHITE8X8.blp]])
+		frame.rightGrad:SetGradientAlpha("Horizontal", r, g, b, 0, r, g, b, 0.35)
+	end
+	CharacterStatsPane.ItemLevelFrame.Background:SetAlpha(0)
+	ColorizeStatPane(CharacterStatsPane.ItemLevelFrame)
+
+	hooksecurefunc("PaperDollFrame_UpdateStats", function()
+		local level = UnitLevel("player");
+		local categoryYOffset = -5;
+		local statYOffset = 0;
+
+		if ( level >= MIN_PLAYER_LEVEL_FOR_ITEM_LEVEL_DISPLAY ) then
+			PaperDollFrame_SetItemLevel(CharacterStatsPane.ItemLevelFrame, "player");
+			CharacterStatsPane.ItemLevelFrame.Value:SetTextColor(GetItemLevelColor());
+			CharacterStatsPane.ItemLevelCategory:Show();
+			CharacterStatsPane.ItemLevelFrame:Show();
+			CharacterStatsPane.AttributesCategory:SetPoint("TOP", 0, -76);
+		else
+			CharacterStatsPane.ItemLevelCategory:Hide();
+			CharacterStatsPane.ItemLevelFrame:Hide();
+			CharacterStatsPane.AttributesCategory:SetPoint("TOP", 0, -20);
+			categoryYOffset = -12;
+			statYOffset = -6;
+		end
+
+		local spec = GetSpecialization();
+		local role = GetSpecializationRole(spec);
+
+		CharacterStatsPane.statsFramePool:ReleaseAll();
+		-- we need a stat frame to first do the math to know if we need to show the stat frame
+		-- so effectively we'll always pre-allocate
+		local statFrame = CharacterStatsPane.statsFramePool:Acquire();
+
+		local lastAnchor;
+
+		for catIndex = 1, #PAPERDOLL_STATCATEGORIES do
+			local catFrame = CharacterStatsPane[PAPERDOLL_STATCATEGORIES[catIndex].categoryFrame];
+			local numStatInCat = 0;
+			for statIndex = 1, #PAPERDOLL_STATCATEGORIES[catIndex].stats do
+				local stat = PAPERDOLL_STATCATEGORIES[catIndex].stats[statIndex];
+				local showStat = true;
+				if ( showStat and stat.primary ) then
+					local primaryStat = select(7, GetSpecializationInfo(spec, nil, nil, nil, UnitSex("player")));
+					if ( stat.primary ~= primaryStat ) then
+						showStat = false;
+					end
+				end
+				if ( showStat and stat.roles ) then
+					local foundRole = false;
+					for _, statRole in pairs(stat.roles) do
+						if ( role == statRole ) then
+							foundRole = true;
+							break;
+						end
+					end
+					showStat = foundRole;
+				end
+				if ( showStat ) then
+					statFrame.onEnterFunc = nil;
+					PAPERDOLL_STATINFO[stat.stat].updateFunc(statFrame, "player");
+					if ( not stat.hideAt or stat.hideAt ~= statFrame.numericValue ) then
+						if ( numStatInCat == 0 ) then
+							if ( lastAnchor ) then
+								catFrame:SetPoint("TOP", lastAnchor, "BOTTOM", 0, categoryYOffset);
+							end
+							lastAnchor = catFrame;
+							statFrame:SetPoint("TOP", catFrame, "BOTTOM", 0, -2);
+						else
+							statFrame:SetPoint("TOP", lastAnchor, "BOTTOM", 0, statYOffset);
+						end
+						numStatInCat = numStatInCat + 1;
+						statFrame.Background:SetShown(false);
+						ColorizeStatPane(statFrame)
+						statFrame.leftGrad:SetShown((numStatInCat % 2) == 0)
+						statFrame.rightGrad:SetShown((numStatInCat % 2) == 0)
+						lastAnchor = statFrame;
+						-- done with this stat frame, get the next one
+						statFrame = CharacterStatsPane.statsFramePool:Acquire();
+					end
+				end
+			end
+			catFrame:SetShown(numStatInCat > 0);
+		end
+		-- release the current stat frame
+		CharacterStatsPane.statsFramePool:Release(statFrame);
+	end)
+
 
 	--Strip Textures
 	local charframe = {
@@ -70,30 +175,6 @@ local function LoadSkin()
 		"PaperDollSidebarTabs",
 		"PaperDollEquipmentManagerPane",
 	}
-
-
-	CharacterFrameExpandButton:Size(CharacterFrameExpandButton:GetWidth() - 7, CharacterFrameExpandButton:GetHeight() - 7)
-	S:HandleNextPrevButton(CharacterFrameExpandButton)
-
-	hooksecurefunc('CharacterFrame_Collapse', function()
-		CharacterFrameExpandButton:SetNormalTexture(nil);
-		CharacterFrameExpandButton:SetPushedTexture(nil);
-		CharacterFrameExpandButton:SetDisabledTexture(nil);
-		SquareButton_SetIcon(CharacterFrameExpandButton, 'RIGHT')
-	end)
-
-	hooksecurefunc('CharacterFrame_Expand', function()
-		CharacterFrameExpandButton:SetNormalTexture(nil);
-		CharacterFrameExpandButton:SetPushedTexture(nil);
-		CharacterFrameExpandButton:SetDisabledTexture(nil);
-		SquareButton_SetIcon(CharacterFrameExpandButton, 'LEFT');
-	end)
-
-	if (GetCVar("characterFrameCollapsed") ~= "0") then
-		SquareButton_SetIcon(CharacterFrameExpandButton, 'RIGHT')
-	else
-		SquareButton_SetIcon(CharacterFrameExpandButton, 'LEFT');
-	end
 
 	S:HandleCloseButton(ReputationDetailCloseButton)
 	S:HandleCloseButton(TokenFramePopupCloseButton)
@@ -169,8 +250,24 @@ local function LoadSkin()
 	for _, object in pairs(charframe) do
 		_G[object]:StripTextures()
 	end
-
+	local function StatsPane(type)
+		CharacterStatsPane[type]:StripTextures()
+		CharacterStatsPane[type]:CreateBackdrop("Transparent")
+		CharacterStatsPane[type].backdrop:ClearAllPoints()
+		CharacterStatsPane[type].backdrop:SetPoint("CENTER")
+		CharacterStatsPane[type].backdrop:SetWidth(150)
+		CharacterStatsPane[type].backdrop:SetHeight(18)
+		--CharacterStatsPane[type].backdrop:CreateShadow()
+		--CharacterStatsPane[type].backdrop.shadow:SetBackdropBorderColor(0.8, 0.8, 0.8, 0.7)
+		--E:Flash(CharacterStatsPane[type].backdrop.shadow, 1, true)
+		--CharacterStatsPane[type].Title:SetTextColor(RAID_CLASS_COLORS[E.myclass].r, RAID_CLASS_COLORS[E.myclass].g, RAID_CLASS_COLORS[E.myclass].b)
+	end
 	CharacterFrame:SetTemplate("Transparent")
+	StatsPane("EnhancementsCategory")
+	StatsPane("ItemLevelCategory")
+	StatsPane("AttributesCategory")
+
+
 
 	--Titles
 	PaperDollTitlesPane:HookScript("OnShow", function(self)
@@ -221,9 +318,10 @@ local function LoadSkin()
 				end
 			end)
 
-			if not object.icon.bordertop then
+			-- Is this still needed?
+			--[[if not object.icon.bordertop then
 				E:GetModule("NamePlates"):CreateBackdrop(object, object.icon)
-			end
+			end]]
 		end
 		GearManagerDialogPopup:StripTextures()
 		GearManagerDialogPopup:SetTemplate("Transparent")
@@ -265,10 +363,10 @@ local function LoadSkin()
 		for i=1, #PAPERDOLL_SIDEBARS do
 			local tab = _G["PaperDollSidebarTab"..i]
 			if tab and not tab.backdrop then
-				tab.Highlight:SetTexture(1, 1, 1, 0.3)
+				tab.Highlight:SetColorTexture(1, 1, 1, 0.3)
 				tab.Highlight:Point("TOPLEFT", 3, -4)
 				tab.Highlight:Point("BOTTOMRIGHT", -1, 0)
-				tab.Hider:SetTexture(0.4,0.4,0.4,0.4)
+				tab.Hider:SetColorTexture(0.4,0.4,0.4,0.4)
 				tab.Hider:Point("TOPLEFT", 3, -4)
 				tab.Hider:Point("BOTTOMRIGHT", -1, 0)
 				tab.TabBg:Kill()
@@ -292,10 +390,11 @@ local function LoadSkin()
 	end
 	hooksecurefunc("PaperDollFrame_UpdateSidebarTabs", FixSidebarTabCoords)
 
+	-- Must be redone?!
 	--Stat panels, atm it looks like 7 is the max
-	for i=1, 7 do
-		_G["CharacterStatsPaneCategory"..i]:StripTextures()
-	end
+	--[[for i=1, 7 do
+		_G["CharacterStatsPaneCategory.."..i]:StripTextures()
+	end]]
 
 	--Reputation
 	local function UpdateFactionSkins()
@@ -352,18 +451,6 @@ local function LoadSkin()
 		TokenFramePopup:SetTemplate("Transparent")
 		TokenFramePopup:Point("TOPLEFT", TokenFrame, "TOPRIGHT", 4, -28)
 	end)
-
-	--Pet
-	PetModelFrame:CreateBackdrop("Default")
-	S:HandleRotateButton(PetModelFrameRotateRightButton)
-	S:HandleRotateButton(PetModelFrameRotateLeftButton)
-	PetModelFrameRotateRightButton:ClearAllPoints()
-	PetModelFrameRotateRightButton:Point("LEFT", PetModelFrameRotateLeftButton, "RIGHT", 4, 0)
-
-	local xtex = PetPaperDollPetInfo:GetRegions()
-	xtex:SetTexCoord(.12, .63, .15, .55)
-	PetPaperDollPetInfo:CreateBackdrop("Default")
-	PetPaperDollPetInfo:Size(24, 24)
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)

@@ -13,7 +13,6 @@ local GetSpecializationInfo = GetSpecializationInfo
 local GetLootSpecialization = GetLootSpecialization
 local GetSpecializationInfoByID = GetSpecializationInfoByID
 local GetNumSpecGroups = GetNumSpecGroups
-local SetActiveSpecGroup = SetActiveSpecGroup
 local EasyMenu = EasyMenu
 local LOOT = LOOT
 local SELECT_LOOT_SPECIALIZATION = SELECT_LOOT_SPECIALIZATION
@@ -33,6 +32,13 @@ local menuList = {
 	{ notCheckable = true },
 	{ notCheckable = true }
 }
+local specList = {
+	{ text = SPECIALIZATION, isTitle = true, notCheckable = true },
+	{ notCheckable = true },
+	{ notCheckable = true },
+	{ notCheckable = true },
+	{ notCheckable = true }
+}
 
 local function OnEvent(self, event)
 	lastPanel = self
@@ -46,8 +52,12 @@ local function OnEvent(self, event)
 	active = GetActiveSpecGroup()
 
 	local talent, loot = '', ''
-	if GetSpecialization(false, false, active) then
-		talent = format('|T%s:14:14:0:0:64:64:4:60:4:60|t', select(4, GetSpecializationInfo(GetSpecialization(false, false, active))))
+	local i = GetSpecialization(false, false, active)
+	if i then
+		i = select(4, GetSpecializationInfo(i))
+		if(i) then
+			talent = format('|T%s:14:14:0:0:64:64:4:60:4:60|t', i)
+		end
 	end
 
 	local specialization = GetLootSpecialization()
@@ -56,13 +66,17 @@ local function OnEvent(self, event)
 
 		if specIndex then
 			local specID, _, _, texture = GetSpecializationInfo(specIndex);
-			loot = format('|T%s:14:14:0:0:64:64:4:60:4:60|t', texture)
+			if texture then
+				loot = format('|T%s:14:14:0:0:64:64:4:60:4:60|t', texture)
+			else
+				loot = 'N/A'
+			end
 		else
 			loot = 'N/A'
 		end
 	else
 		local specID, _, _, texture = GetSpecializationInfoByID(specialization);
-		if specID then
+		if texture then
 			loot = format('|T%s:14:14:0:0:64:64:4:60:4:60|t', texture)
 		else
 			loot = 'N/A'
@@ -99,9 +113,18 @@ local function OnEnter(self)
 
 	DT.tooltip:AddLine(' ')
 	DT.tooltip:AddLine(L["|cffFFFFFFLeft Click:|r Change Talent Specialization"])
+	DT.tooltip:AddLine(L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"])
 	DT.tooltip:AddLine(L["|cffFFFFFFRight Click:|r Change Loot Specialization"])
 
 	DT.tooltip:Show()
+end
+
+local function SetSpec(id)
+	local spec = _G["PlayerTalentFrameSpecializationSpecButton"..id]
+	SpecButton_OnClick(spec)
+	local learn = PlayerTalentFrameSpecializationLearnButton
+
+	StaticPopup_Show("CONFIRM_LEARN_SPEC", nil, nil, learn:GetParent())
 end
 
 local function OnClick(self, button)
@@ -109,7 +132,28 @@ local function OnClick(self, button)
 	if not specIndex then return end
 
 	if button == "LeftButton" then
-		SetActiveSpecGroup(active == 1 and 2 or 1)
+		DT.tooltip:Hide()
+		if not PlayerTalentFrame then
+			LoadAddOn("Blizzard_TalentUI")
+		end
+		if IsShiftKeyDown() then 
+			if not PlayerTalentFrame:IsShown() then
+				ShowUIPanel(PlayerTalentFrame)
+			else
+				HideUIPanel(PlayerTalentFrame)
+			end
+		else
+			for index = 1, 4 do
+				local id, name, _, texture = GetSpecializationInfo(index);
+				if ( id ) then
+					specList[index + 1].text = format('|T%s:14:14:0:0:64:64:4:60:4:60|t  %s', texture, name)
+					specList[index + 1].func = function() SetSpec(index) end
+				else
+					specList[index + 1] = nil
+				end
+			end
+			EasyMenu(specList, menuFrame, "cursor", -15, -7, "MENU", 2)
+		end
 	else
 		DT.tooltip:Hide()
 		local specID, specName = GetSpecializationInfo(specIndex);

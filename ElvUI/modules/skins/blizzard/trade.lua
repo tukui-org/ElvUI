@@ -61,24 +61,24 @@ local function LoadSkin()
 		end
 	end
 
-	TradeHighlightPlayerTop:SetTexture(0, 1, 0, 0.2)
-	TradeHighlightPlayerBottom:SetTexture(0, 1, 0, 0.2)
-	TradeHighlightPlayerMiddle:SetTexture(0, 1, 0, 0.2)
+	TradeHighlightPlayerTop:SetColorTexture(0, 1, 0, 0.2)
+	TradeHighlightPlayerBottom:SetColorTexture(0, 1, 0, 0.2)
+	TradeHighlightPlayerMiddle:SetColorTexture(0, 1, 0, 0.2)
 	TradeHighlightPlayer:SetFrameStrata("HIGH")
 
-	TradeHighlightPlayerEnchantTop:SetTexture(0, 1, 0, 0.2)
-	TradeHighlightPlayerEnchantBottom:SetTexture(0, 1, 0, 0.2)
-	TradeHighlightPlayerEnchantMiddle:SetTexture(0, 1, 0, 0.2)
+	TradeHighlightPlayerEnchantTop:SetColorTexture(0, 1, 0, 0.2)
+	TradeHighlightPlayerEnchantBottom:SetColorTexture(0, 1, 0, 0.2)
+	TradeHighlightPlayerEnchantMiddle:SetColorTexture(0, 1, 0, 0.2)
 	TradeHighlightPlayerEnchant:SetFrameStrata("HIGH")
 
-	TradeHighlightRecipientTop:SetTexture(0, 1, 0, 0.2)
-	TradeHighlightRecipientBottom:SetTexture(0, 1, 0, 0.2)
-	TradeHighlightRecipientMiddle:SetTexture(0, 1, 0, 0.2)
+	TradeHighlightRecipientTop:SetColorTexture(0, 1, 0, 0.2)
+	TradeHighlightRecipientBottom:SetColorTexture(0, 1, 0, 0.2)
+	TradeHighlightRecipientMiddle:SetColorTexture(0, 1, 0, 0.2)
 	TradeHighlightRecipient:SetFrameStrata("HIGH")
 
-	TradeHighlightRecipientEnchantTop:SetTexture(0, 1, 0, 0.2)
-	TradeHighlightRecipientEnchantBottom:SetTexture(0, 1, 0, 0.2)
-	TradeHighlightRecipientEnchantMiddle:SetTexture(0, 1, 0, 0.2)
+	TradeHighlightRecipientEnchantTop:SetColorTexture(0, 1, 0, 0.2)
+	TradeHighlightRecipientEnchantBottom:SetColorTexture(0, 1, 0, 0.2)
+	TradeHighlightRecipientEnchantMiddle:SetColorTexture(0, 1, 0, 0.2)
 	TradeHighlightRecipientEnchant:SetFrameStrata("HIGH")
 end
 

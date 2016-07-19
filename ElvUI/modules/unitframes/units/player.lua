@@ -15,8 +15,6 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
-local CAN_HAVE_CLASSBAR = (E.myclass == "PALADIN" or E.myclass == "DRUID" or E.myclass == "DEATHKNIGHT" or E.myclass == "WARLOCK" or E.myclass == "PRIEST" or E.myclass == "MONK" or E.myclass == 'MAGE' or E.myclass == 'ROGUE')
-
 function UF:Construct_PlayerFrame(frame)
 	frame.Threat = self:Construct_Threat(frame, true)
 
@@ -37,32 +35,26 @@ function UF:Construct_PlayerFrame(frame)
 
 	frame.Castbar = self:Construct_Castbar(frame, 'LEFT', L["Player Castbar"])
 
-	if E.myclass == "PALADIN" then
-		frame.HolyPower = self:Construct_PaladinResourceBar(frame, nil, UF.UpdateClassBar)
-		frame.ClassBar = 'HolyPower'
-	elseif E.myclass == "WARLOCK" then
-		frame.ShardBar = self:Construct_WarlockResourceBar(frame)
-		frame.ClassBar = 'ShardBar'
-	elseif E.myclass == "DEATHKNIGHT" then
+	--Create a holder frame all "classbars" can be positioned into
+	frame.ClassBarHolder = CreateFrame("Frame", nil, frame)
+	frame.ClassBarHolder:Point("BOTTOM", E.UIParent, "BOTTOM", 0, 150)
+
+	--Combo points was moved to the ClassIcons element, so all classes need to have a ClassBar now.
+	frame.ClassIcons = self:Construct_ClassBar(frame)
+	frame.ClassBar = 'ClassIcons'
+
+	--Some classes need another set of different classbars.
+	if E.myclass == "DEATHKNIGHT" then
 		frame.Runes = self:Construct_DeathKnightResourceBar(frame)
 		frame.ClassBar = 'Runes'
 	elseif E.myclass == "DRUID" then
-		frame.EclipseBar = self:Construct_DruidResourceBar(frame)
-		frame.DruidAltMana = self:Construct_DruidAltManaBar(frame)
-		frame.ClassBar = 'EclipseBar'
+		frame.AdditionalPower = self:Construct_AdditionalPowerBar(frame)
 	elseif E.myclass == "MONK" then
-		frame.Harmony = self:Construct_MonkResourceBar(frame)
 		frame.Stagger = self:Construct_Stagger(frame)
-		frame.ClassBar = 'Harmony'
-	elseif E.myclass == "PRIEST" then
-		frame.ShadowOrbs = self:Construct_PriestResourceBar(frame)
-		frame.ClassBar = 'ShadowOrbs'
-	elseif E.myclass == 'MAGE' then
-		frame.ArcaneChargeBar = self:Construct_MageResourceBar(frame)
-		frame.ClassBar = 'ArcaneChargeBar'
-	elseif E.myclass == 'ROGUE' then
-		frame.Anticipation = self:Construct_RogueResourceBar(frame)
-		frame.ClassBar = 'Anticipation'
+	elseif E.myclass == 'PRIEST' then
+		frame.AdditionalPower = self:Construct_AdditionalPowerBar(frame)
+	elseif E.myclass == 'SHAMAN' then
+		frame.AdditionalPower = self:Construct_AdditionalPowerBar(frame)
 	end
 
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)
@@ -107,7 +99,7 @@ function UF:Update_PlayerFrame(frame, db)
 		frame.USE_PORTRAIT_OVERLAY = frame.USE_PORTRAIT and (db.portrait.overlay or frame.ORIENTATION == "MIDDLE")
 		frame.PORTRAIT_WIDTH = (frame.USE_PORTRAIT_OVERLAY or not frame.USE_PORTRAIT) and 0 or db.portrait.width
 
-		frame.CAN_HAVE_CLASSBAR = CAN_HAVE_CLASSBAR
+		frame.CAN_HAVE_CLASSBAR = true --Combo points are in ClassIcons now, so all classes need access to ClassBar
 		frame.MAX_CLASS_BAR = frame.MAX_CLASS_BAR or UF.classMaxResourceBar[E.myclass] or 0 --only set this initially
 		frame.USE_CLASSBAR = db.classbar.enable and frame.CAN_HAVE_CLASSBAR
 		frame.CLASSBAR_SHOWN = frame.CAN_HAVE_CLASSBAR and frame[frame.ClassBar]:IsShown()
@@ -117,9 +109,6 @@ function UF:Update_PlayerFrame(frame, db)
 		frame.CLASSBAR_WIDTH = frame.UNIT_WIDTH - ((frame.BORDER+frame.SPACING)*2) - frame.PORTRAIT_WIDTH  -(frame.ORIENTATION == "MIDDLE" and (frame.POWERBAR_OFFSET*2) or frame.POWERBAR_OFFSET)
 		--If formula for frame.CLASSBAR_YOFFSET changes, then remember to update it in classbars.lua too
 		frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN or frame.CLASSBAR_DETACHED) and 0 or (frame.USE_MINI_CLASSBAR and (frame.SPACING+(frame.CLASSBAR_HEIGHT/2)) or (frame.CLASSBAR_HEIGHT - (frame.BORDER-frame.SPACING)))
-
-		frame.STAGGER_SHOWN = frame.Stagger and frame.Stagger:IsShown()
-		frame.STAGGER_WIDTH = frame.STAGGER_SHOWN and (db.stagger.width + (frame.BORDER*2)) or 0;
 
 		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and db.infoPanel.enable
 		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0
@@ -170,11 +159,6 @@ function UF:Update_PlayerFrame(frame, db)
 	--Resource Bars
 	UF:Configure_ClassBar(frame)
 
-	--Stagger
-	if E.myclass == "MONK" then
-		UF:Configure_Stagger(frame)
-	end
-
 	--Combat Fade
 	if db.combatfade and not frame:IsElementEnabled('CombatFade') then
 		frame:EnableElement('CombatFade')
@@ -208,15 +192,6 @@ end
 
 tinsert(UF['unitstoload'], 'player')
 
---Bugfix: Death Runes show as Blood Runes on first login ( http://git.tukui.org/Elv/elvui/issues/411 )
---For some reason the registered "PLAYER_ENTERING_WORLD" in runebar.lua doesn't trigger on first login.
-local function UpdateAllRunes()
-	local frame = _G["ElvUF_Player"]
-	if frame and frame.Runes and frame.Runes.UpdateAllRuneTypes then
-		frame.Runes.UpdateAllRuneTypes(frame)
-	end
-end
-
 --Bugfix: Classbar is not updated correctly on initial login ( http://git.tukui.org/Elv/elvui/issues/987 )
 --ToggleResourceBar(bars) is called before the classbar has been updated, so we call it manually once.
 local function UpdateClassBar()
@@ -232,5 +207,4 @@ f:RegisterEvent("PLAYER_ENTERING_WORLD")
 f:SetScript("OnEvent", function(self, event)
 	self:UnregisterEvent(event)
 	UpdateClassBar()
-	C_TimerAfter(5, UpdateAllRunes) --Delay it, since the WoW client updates Death Runes after PEW
 end)

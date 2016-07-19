@@ -12,6 +12,7 @@ local function LoadSkin(event)
 	local function SkinAchievement(Achievement, BiggerIcon)
 		if Achievement.isSkinned then return; end
 
+		Achievement:SetFrameLevel(Achievement:GetFrameLevel() + 2)
 		Achievement:StripTextures(true)
 		Achievement:CreateBackdrop("Default", true)
 		Achievement.backdrop:SetInside()
@@ -161,7 +162,13 @@ local function LoadSkin(event)
 
 	S:HandleCloseButton(AchievementFrameCloseButton, AchievementFrame.backdrop)
 	S:HandleDropDownBox(AchievementFrameFilterDropDown)
-	AchievementFrameFilterDropDown:Point("TOPRIGHT", AchievementFrame, "TOPRIGHT", -44, 5)
+	S:HandleEditBox(AchievementFrame.searchBox)
+	AchievementFrame.searchBox.backdrop:Point("TOPLEFT", AchievementFrame.searchBox, "TOPLEFT", -5, -5)
+	AchievementFrame.searchBox.backdrop:Point("BOTTOMRIGHT", AchievementFrame.searchBox, "BOTTOMRIGHT", 0, 5)
+	AchievementFrame.searchBox:ClearAllPoints()
+	AchievementFrame.searchBox:Point("BOTTOMRIGHT", AchievementFrameAchievementsContainer, "TOPRIGHT", -2, 0)
+	AchievementFrameFilterDropDown:ClearAllPoints()
+	AchievementFrameFilterDropDown:Point("RIGHT", AchievementFrame.searchBox.backdrop, "LEFT", 2, -3)
 
 	-- ScrollBars
 	S:HandleScrollBar(AchievementFrameCategoriesContainerScrollBar, 5)
@@ -169,6 +176,14 @@ local function LoadSkin(event)
 	S:HandleScrollBar(AchievementFrameStatsContainerScrollBar, 5)
 	S:HandleScrollBar(AchievementFrameComparisonContainerScrollBar, 5)
 	S:HandleScrollBar(AchievementFrameComparisonStatsContainerScrollBar, 5)
+
+	-- Search
+	AchievementFrame.searchResults:StripTextures()
+	AchievementFrame.searchResults:SetTemplate("Default")
+	AchievementFrame.searchPreviewContainer:StripTextures()
+	
+	S:HandleCloseButton(AchievementFrame.searchResults.closeButton)
+	S:HandleScrollBar(AchievementFrameScrollFrameScrollBar)
 
 	--Tabs
 	for i = 1, 3 do
@@ -212,7 +227,7 @@ local function LoadSkin(event)
 		button:StripTextures()
 		highlight:StripTextures()
 
-		_G[highlight:GetName().."Middle"]:SetTexture(1, 1, 1, 0.3)
+		_G[highlight:GetName().."Middle"]:SetColorTexture(1, 1, 1, 0.3)
 		_G[highlight:GetName().."Middle"]:SetAllPoints(frame)
 	end
 
@@ -254,7 +269,7 @@ local function LoadSkin(event)
 		local frame = _G["AchievementFrameStatsContainerButton"..i]
 		frame:StyleButton()
 
-		_G["AchievementFrameStatsContainerButton"..i.."BG"]:SetTexture(1, 1, 1, 0.2)
+		_G["AchievementFrameStatsContainerButton"..i.."BG"]:SetColorTexture(1, 1, 1, 0.2)
 		_G["AchievementFrameStatsContainerButton"..i.."HeaderLeft"]:Kill()
 		_G["AchievementFrameStatsContainerButton"..i.."HeaderRight"]:Kill()
 		_G["AchievementFrameStatsContainerButton"..i.."HeaderMiddle"]:Kill()
@@ -263,7 +278,7 @@ local function LoadSkin(event)
 		_G[frame]:StripTextures()
 		_G[frame]:StyleButton()
 
-		_G[frame.."BG"]:SetTexture(1, 1, 1, 0.2)
+		_G[frame.."BG"]:SetColorTexture(1, 1, 1, 0.2)
 		_G[frame.."HeaderLeft"]:Kill()
 		_G[frame.."HeaderRight"]:Kill()
 		_G[frame.."HeaderMiddle"]:Kill()
