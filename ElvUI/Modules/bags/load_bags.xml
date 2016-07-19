@@ -1,0 +1,5 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">	
+	<Script file='bags.lua'/>
+	<Script file='bagbar.lua'/>
+	<Script file='sort.lua'/>
+</Ui>
