@@ -1,6 +1,6 @@
 ## Interface: 60200
 ## Author: Elv
-## Version: 1.02
+## Version: 1.03
 ## Title: |cff1784d1ElvUI Config|r
 ## Notes: Options for ElvUI.
 ## RequiredDeps: ElvUI
