@@ -155,7 +155,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 			frame.CastBar.Text:SetText(text);
 		end
 		if ( frame.CastBar.Icon ) then
-			frame.CastBar.Icon:SetTexture(texture);
+			frame.CastBar.Icon.texture:SetTexture(texture);
 		end
 		if ( frame.CastBar.Spark ) then
 			frame.CastBar.Spark:Hide();
