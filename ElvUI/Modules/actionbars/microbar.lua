@@ -75,22 +75,22 @@ function AB:UpdateMicroButtonsParent(parent)
 	end
 end
 
--- local __buttons = {}
---if(C_StorePublic.IsEnabled()) then
-	-- __buttons[10] = "StoreMicroButton"
-	-- for i=10, #MICRO_BUTTONS do
-		-- __buttons[i + 1] = MICRO_BUTTONS[i]
-	-- end
---end
+local __buttons = {}
+-- if(C_StorePublic.IsEnabled()) then
+	__buttons[10] = "StoreMicroButton"
+	for i=10, #MICRO_BUTTONS do
+		__buttons[i + 1] = MICRO_BUTTONS[i]
+	end
+-- end
 
 function AB:UpdateMicroPositionDimensions()
 	if not ElvUI_MicroBar then return; end
 	local numRows = 1
 	local prevButton = ElvUI_MicroBar
 	for i=1, (#MICRO_BUTTONS - 1) do
-		local button = _G[MICRO_BUTTONS[i]]
+		local button = _G[__buttons[i]] or _G[MICRO_BUTTONS[i]]
 		local lastColumnButton = i-self.db.microbar.buttonsPerRow;
-		lastColumnButton = _G[MICRO_BUTTONS[lastColumnButton]]
+		lastColumnButton = _G[__buttons[lastColumnButton]] or _G[MICRO_BUTTONS[lastColumnButton]]
 
 		button:Width(28)
 		button:Height(58)
