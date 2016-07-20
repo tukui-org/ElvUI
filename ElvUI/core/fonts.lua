@@ -42,10 +42,10 @@ function E:UpdateBlizzardFonts()
 	end
 
 	if self.eyefinity then
-		SetCVar("CombatLogPeriodicSpells",0)
-		SetCVar("PetMeleeDamage",0)
-		SetCVar("CombatDamage",0)
-		SetCVar("CombatHealing",0)
+		SetCVar("floatingcombattextcombatlogperiodicspells",0)
+		SetCVar("floatingcombattextpetmeleedamage",0)
+		SetCVar("floatingcombattextcombatdamage",0)
+		SetCVar("floatingcombattextcombathealing",0)
 
 		-- set an invisible font for xp, honor kill, etc
 		COMBAT = [=[Interface\Addons\ElvUI\media\fonts\Invisible.ttf]=]
