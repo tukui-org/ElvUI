@@ -96,6 +96,7 @@ end
 function B:AlertMovers()
 	UIPARENT_MANAGED_FRAME_POSITIONS["GroupLootContainer"] = nil
 	E:CreateMover(AlertFrameHolder, "AlertFrameMover", L["Loot / Alert Frames"], nil, nil, E.PostAlertMove)
+	self:SecureHook(AlertFrame, "UpdateAnchors", E.PostAlertMove)
 
 	--From Leatrix Plus
 	-- Achievements
@@ -116,11 +117,11 @@ function B:AlertMovers()
 	hooksecurefunc(GarrisonShipFollowerAlertSystem, "AdjustAnchors", B.AdjustAnchors)	-- /run GarrisonShipFollowerAlertSystem:AddAlert(592, "Test", "Transport", "GarrBuilding_Barracks_1_H", 3, 2, 1)
 	hooksecurefunc(GarrisonTalentAlertSystem, "AdjustAnchors",  B.AdjustAnchors) 		-- GarrisonTalentAlertSystem
 	-- Loot
-	hooksecurefunc(LegendaryItemAlertSystem, "AdjustAnchors",  B.AdjustAnchors) 		-- /run LegendaryItemAlertSystem:AddAlert("\\124cffa335ee\\124Hitem:18832::::::::::\\124h[Brutality Blade]\\124h\\124r")
-	hooksecurefunc(LootAlertSystem, "AdjustAnchors", B.AdjustQueuedAnchors) 			-- /run LootAlertSystem:AddAlert("\\124cffa335ee\\124Hitem:18832::::::::::\\124h[Brutality Blade]\\124h\\124r", 1, 1, 1, 1, false, false, 0, false, false)
-	hooksecurefunc(LootUpgradeAlertSystem, "AdjustAnchors", B.AdjustQueuedAnchors) 		-- /run LootUpgradeAlertSystem:AddAlert("\\124cffa335ee\\124Hitem:18832::::::::::\\124h[Brutality Blade]\\124h\\124r", 1, 1, 1, nil, nil, false)
+	hooksecurefunc(LegendaryItemAlertSystem, "AdjustAnchors",  B.AdjustAnchors) 		-- /run LegendaryItemAlertSystem:AddAlert("\124cffa335ee\124Hitem:18832::::::::::\124h[Brutality Blade]\124h\124r")
+	hooksecurefunc(LootAlertSystem, "AdjustAnchors", B.AdjustQueuedAnchors) 			-- /run LootAlertSystem:AddAlert("\124cffa335ee\124Hitem:18832::::::::::\124h[Brutality Blade]\124h\124r", 1, 1, 1, 1, false, false, 0, false, false)
+	hooksecurefunc(LootUpgradeAlertSystem, "AdjustAnchors", B.AdjustQueuedAnchors) 		-- /run LootUpgradeAlertSystem:AddAlert("\124cffa335ee\124Hitem:18832::::::::::\124h[Brutality Blade]\124h\124r", 1, 1, 1, nil, nil, false)
 	hooksecurefunc(MoneyWonAlertSystem, "AdjustAnchors", B.AdjustQueuedAnchors) 		-- /run MoneyWonAlertSystem:AddAlert(815)
-	hooksecurefunc(StorePurchaseAlertSystem, "AdjustAnchors", B.AdjustAnchors) 			-- /run StorePurchaseAlertSystem:AddAlert("\\124cffa335ee\\124Hitem:180545::::::::::\\124h[Mystic Runesaber]\\124h\\124r", "", "", 214)
+	hooksecurefunc(StorePurchaseAlertSystem, "AdjustAnchors", B.AdjustAnchors) 			-- /run StorePurchaseAlertSystem:AddAlert("\124cffa335ee\124Hitem:180545::::::::::\124h[Mystic Runesaber]\124h\124r", "", "", 214)
 	-- Professions
 	hooksecurefunc(DigsiteCompleteAlertSystem, "AdjustAnchors", B.AdjustAnchors) 		-- /run DigsiteCompleteAlertSystem:AddAlert(1)
 	hooksecurefunc(NewRecipeLearnedAlertSystem, "AdjustAnchors", B.AdjustQueuedAnchors)	-- /run NewRecipeLearnedAlertSystem:AddAlert(204)
