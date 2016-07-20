@@ -115,3 +115,20 @@ end
 
 SLASH_TEXLIST1 = "/texlist"
 SlashCmdList["TEXLIST"] = TextureList
+
+local function GetPoint(frame)
+	if frame ~= "" then
+		frame = _G[frame]
+	else
+		frame = GetMouseFocus()
+	end
+	
+	local point, relativeTo, relativePoint, xOffset, yOffset = frame:GetPoint()
+	local frameName = frame.GetName and frame:GetName() or "nil"
+	local relativeToName = relativeTo.GetName and relativeTo:GetName() or "nil"
+	
+	print(frameName, point, relativeToName, relativePoint, xOffset, yOffset)
+end
+
+SLASH_GETPOINT1 = "/getpoint"
+SlashCmdList["GETPOINT"] = GetPoint
