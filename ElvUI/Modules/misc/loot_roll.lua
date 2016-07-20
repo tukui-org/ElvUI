@@ -33,7 +33,7 @@ local ROLL_DISENCHANT = ROLL_DISENCHANT
 local PASS = PASS
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: GameTooltip, AlertFrameHolder, WorldFrame, AlertFrame_FixAnchors
+-- GLOBALS: GameTooltip, AlertFrameHolder, WorldFrame
 -- GLOBALS: MAX_PLAYER_LEVEL, UIParent
 
 local pos = 'TOP';
@@ -256,7 +256,7 @@ function M:START_LOOT_ROLL(event, rollID, time)
 
 	f:Point("CENTER", WorldFrame, "CENTER")
 	f:Show()
-	AlertFrame_FixAnchors()
+	AlertFrame:UpdateAnchors()
 
 	--Add cached roll info, if any
 	for rollID, rollTable in pairs(cachedRolls) do

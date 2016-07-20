@@ -6,7 +6,6 @@ local B = E:GetModule('Blizzard');
 local _G = _G
 local pairs = pairs
 --WoW API / Variables
-local AlertFrame_FixAnchors = AlertFrame_FixAnchors
 local MAX_ACHIEVEMENT_ALERTS = MAX_ACHIEVEMENT_ALERTS
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
