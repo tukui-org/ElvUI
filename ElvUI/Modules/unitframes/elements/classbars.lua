@@ -110,6 +110,9 @@ function UF:Configure_ClassBar(frame)
 	if (frame.ClassBar == 'ClassIcons' or frame.ClassBar == 'Runes') then
 		local maxClassBarButtons = max(UF.classMaxResourceBar[E.myclass] or 0, MAX_COMBO_POINTS)
 		for i = 1, maxClassBarButtons do
+			bars[i]:Hide()
+			bars[i].backdrop:Hide()
+
 			if i <= frame.MAX_CLASS_BAR then
 				bars[i].backdrop.ignoreUpdates = true
 				bars[i].backdrop.backdropTexture:SetVertexColor(c.r, c.g, c.b)
@@ -181,6 +184,8 @@ function UF:Configure_ClassBar(frame)
 				else
 					bars[i]:SetOrientation("HORIZONTAL")
 				end
+
+				bars[i]:Show()
 			end
 		end
 
@@ -350,7 +355,7 @@ function UF:Construct_DeathKnightResourceBar(frame)
 		runes[i].bg:SetTexture(E['media'].blankTex)
 		runes[i].bg.multiplier = 0.3
 	end
-	
+
 	runes.PostUpdateVisibility = UF.PostVisibilityRunes
 	runes:SetScript("OnShow", ToggleResourceBar)
 	runes:SetScript("OnHide", ToggleResourceBar)
@@ -497,7 +502,7 @@ function UF:Construct_Stagger(frame)
 	stagger.PostUpdate = UF.PostUpdateStagger
 	stagger.PostUpdateVisibility = UF.PostUpdateVisibilityStagger
 	stagger:SetFrameStrata("LOW")
-	
+
 	stagger:SetScript("OnShow", ToggleResourceBar)
 	stagger:SetScript("OnHide", ToggleResourceBar)
 
