@@ -66,16 +66,26 @@ function E:PostAlertMove(screenQuadrant)
 		end
 
 		AlertFrame:ClearAllPoints()
+		GroupLootContainer:ClearAllPoints()
 		if lastShownFrame then
 			AlertFrame:SetAllPoints(lastShownFrame)
+			GroupLootContainer:SetPoint(POSITION, lastShownFrame, ANCHOR_POINT, 0, YOFFSET)
 		else
 			AlertFrame:SetAllPoints(AlertFrameHolder)
+			GroupLootContainer:SetPoint(POSITION, AlertFrameHolder, ANCHOR_POINT, 0, YOFFSET)
+		end
+		if GroupLootContainer:IsShown() then
+			B.GroupLootContainer_Update(GroupLootContainer)
 		end
 	else
 		AlertFrame:ClearAllPoints()
 		AlertFrame:SetAllPoints(AlertFrameHolder)
+		GroupLootContainer:ClearAllPoints()
+		GroupLootContainer:SetPoint(POSITION, AlertFrameHolder, ANCHOR_POINT, 0, YOFFSET)
+		if GroupLootContainer:IsShown() then
+			B.GroupLootContainer_Update(GroupLootContainer)
+		end
 	end
-
 end
 
 function B:AdjustAnchors(relativeAlert)
@@ -93,10 +103,37 @@ function B:AdjustQueuedAnchors(relativeAlert)
 	end
 end
 
+function B:GroupLootContainer_Update()
+	local lastIdx = nil;
+
+	for i=1, self.maxIndex do
+		local frame = self.rollFrames[i];
+		local prevFrame = self.rollFrames[i-1]
+		if ( frame ) then
+			frame:ClearAllPoints();
+			if prevFrame then
+				frame:SetPoint(POSITION, prevFrame or self, ANCHOR_POINT, 0, YOFFSET);
+			else
+				frame:SetPoint("CENTER", self, "BOTTOM", 0, self.reservedSize * (i-1 + 0.5));
+			end
+			lastIdx = i;
+		end
+	end
+
+	if ( lastIdx ) then
+		self:SetHeight(self.reservedSize * lastIdx);
+		self:Show();
+	else
+		self:Hide();
+	end
+end
+
 function B:AlertMovers()
 	UIPARENT_MANAGED_FRAME_POSITIONS["GroupLootContainer"] = nil
 	E:CreateMover(AlertFrameHolder, "AlertFrameMover", L["Loot / Alert Frames"], nil, nil, E.PostAlertMove)
+
 	self:SecureHook(AlertFrame, "UpdateAnchors", E.PostAlertMove)
+	hooksecurefunc("GroupLootContainer_Update", B.GroupLootContainer_Update)
 
 	--From Leatrix Plus
 	-- Achievements
