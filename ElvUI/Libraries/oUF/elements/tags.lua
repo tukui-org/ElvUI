@@ -660,7 +660,7 @@ local Tag = function(self, fs, tagstr)
 			else
 				numTags = -1
 				func = function(self)
-					return self:SetFormattedText('[error]')
+					return self:SetFormattedText('[invalid tag]')
 				end
 			end
 		end
