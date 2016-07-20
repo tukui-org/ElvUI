@@ -220,16 +220,16 @@ function UF:Configure_ClassBar(frame)
 			frame:EnableElement("Stagger")
 		end
 	else
-		if frame.ClassIcons and not frame:IsElementEnabled("ClassIcons") then
+		if frame.ClassIcons and frame:IsElementEnabled("ClassIcons") then
 			frame:DisableElement("ClassIcons")
 		end
 		if frame.AdditionalPower and frame:IsElementEnabled("AdditionalPower") then
 			frame:DisableElement("AdditionalPower")
 		end
-		if frame.Runes and not frame:IsElementEnabled("Runes") then
+		if frame.Runes and frame:IsElementEnabled("Runes") then
 			frame:DisableElement("Runes")
 		end
-		if frame.Stagger and not frame:IsElementEnabled("Stagger") then
+		if frame.Stagger and frame:IsElementEnabled("Stagger") then
 			frame:DisableElement("Stagger")
 		end
 	end

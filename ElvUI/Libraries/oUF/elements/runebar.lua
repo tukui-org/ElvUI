@@ -237,6 +237,8 @@ local Disable = function(self)
 	if(not isBetaClient) then
 		self:UnregisterEvent("RUNE_TYPE_UPDATE", UpdateType)
 	end
+	
+	RunesDisable(self)
 end
 
 oUF:AddElement("Runes", VisibilityPath, Enable, Disable)
