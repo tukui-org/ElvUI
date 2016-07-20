@@ -616,7 +616,7 @@ local function CopySettings(from, to)
 end
 
 function mod:ResetSettings(unit)
-	CopySettings(P.nameplate.units[unit], self.db.units[unit])
+	CopySettings(P.nameplates.units[unit], self.db.units[unit])
 end
 
 function mod:CopySettings(from, to)
