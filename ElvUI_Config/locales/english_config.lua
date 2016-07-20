@@ -233,6 +233,7 @@ L["Attempt to lock the left and right chat frame positions. Disabling this optio
 L["Below Chat"] = true;
 L["Chat EditBox Position"] = true;
 L["Chat History"] = true;
+L["Class Color Mentions"] = true;
 L["Copy Text"] = true;
 L["Display LFG Icons in group chat."] = true;
 L["Display the hyperlink tooltip while hovering over a hyperlink."] = true;
@@ -284,6 +285,7 @@ L["Toggle showing of the left and right chat panels."] = true;
 L["Toggle the chat tab panel backdrop."] = true;
 L["URL Links"] = true;
 L["Use Alt Key"] = true;
+L["Use class color for the names of players when they are mentioned."] = true;
 L["When opening the Chat Editbox to type a message having this option set means it will retain the last channel you spoke in. If this option is turned off opening the Chat Editbox should always default to the SAY channel."] = true;
 L["Whisper Alert"] = true;
 L[ [=[Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.

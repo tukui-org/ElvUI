@@ -15,7 +15,7 @@ local CreateFrame = CreateFrame
 
 function M:UpdateBubbleBorder()
 	if not self.text then return end
-	
+
 	if(E.private.general.chatBubbles == 'backdrop') then
 		if E.PixelMode then
 			self:SetBackdropBorderColor(self.text:GetTextColor())
@@ -27,26 +27,28 @@ function M:UpdateBubbleBorder()
 			self.borderright:SetColorTexture(r, g, b)
 		end
 	end
-	
+
 	local classColorTable, lowerCaseWord, isFirstWord, rebuiltString, tempWord
 	local text = self.text:GetText()
 	for word in text:gmatch("[^%s]+") do
 		lowerCaseWord = word:lower()
 		lowerCaseWord = lowerCaseWord:gsub("%p", "")
-		if(CH.ClassNames[lowerCaseWord]) then
-			classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[CH.ClassNames[lowerCaseWord]] or RAID_CLASS_COLORS[CH.ClassNames[lowerCaseWord]];
-			tempWord = word:gsub("%p", "")
-			word = word:gsub(tempWord, format("\124cff%.2x%.2x%.2x", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255)..tempWord.."\124r")
+
+		if E.private.general.classColorMentionsSpeech then
+			if(CH.ClassNames[lowerCaseWord]) then
+				classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[CH.ClassNames[lowerCaseWord]] or RAID_CLASS_COLORS[CH.ClassNames[lowerCaseWord]];
+				tempWord = word:gsub("%p", "")
+				word = word:gsub(tempWord, format("\124cff%.2x%.2x%.2x", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255)..tempWord.."\124r")
+			end
 		end
-		
+
 		if not isFirstWord then
 			rebuiltString = word
 			isFirstWord = true
 		else
 			rebuiltString = format("%s %s", rebuiltString, word)
-		end		
-	end	
-
+		end
+	end
 
 	self.text:SetText(rebuiltString)
 end
@@ -61,7 +63,7 @@ function M:SkinBubble(frame)
 			frame.text = region
 		end
 	end
-	
+
 	if(E.private.general.chatBubbles == 'backdrop') then
 		if E.PixelMode then
 			frame:SetBackdrop({
@@ -137,7 +139,7 @@ function M:SkinBubble(frame)
 			frame.borderright.backdrop:SetPoint("BOTTOMRIGHT", frame.borderright, "BOTTOMRIGHT", mult, -mult)
 			frame.borderright.backdrop:SetWidth(mult * 3)
 			frame.borderright.backdrop:SetColorTexture(0, 0, 0)
-			frame.borderright.backdrop:SetDrawLayer("ARTWORK", -7)	
+			frame.borderright.backdrop:SetDrawLayer("ARTWORK", -7)
 		end
 		frame.text:FontTemplate(E.LSM:Fetch("font", E.private.general.chatBubbleFont), E.private.general.chatBubbleFontSize)
 	elseif E.private.general.chatBubbles == 'backdrop_noborder' then
@@ -155,10 +157,10 @@ function M:SkinBubble(frame)
 		frame.text:FontTemplate(E.LSM:Fetch("font", E.private.general.chatBubbleFont), E.private.general.chatBubbleFontSize)
 		frame:SetClampedToScreen(false)
 	end
-	
+
 	frame:HookScript('OnShow', M.UpdateBubbleBorder)
 	frame:SetFrameStrata("DIALOG") --Doesn't work currently in Legion due to a bug on Blizzards end
-	M.UpdateBubbleBorder(frame)			
+	M.UpdateBubbleBorder(frame)
 	frame.isBubblePowered = true
 end
 

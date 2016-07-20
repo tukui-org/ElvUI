@@ -282,6 +282,7 @@ L["Attempt to lock the left and right chat frame positions. Disabling this optio
 L["Below Chat"] = "채팅창 아래에 배치"
 L["Chat EditBox Position"] = "대화입력창 위치"
 L["Chat History"] = "이전 채팅내역 기억"
+L["Class Color Mentions"] = true;
 L["Copy Text"] = "내용 복사"
 L["Display LFG Icons in group chat."] = "말한 사람에게 역할 아이콘이 설정되어 있는 경우 이름에 같이 표시할지 여부를 결정합니다."
 L["Display the hyperlink tooltip while hovering over a hyperlink."] = "각종 링크에 커서를 갖다 댄(마우스오버) 동안에 링크에 대한 툴팁을 표시합니다."
@@ -331,6 +332,7 @@ L["Toggle showing of the left and right chat panels."] = "패널의 배경 표�
 L["Toggle the chat tab panel backdrop."] = "패널 상단에 위치한 탭 부분의 표시 여부를 결정합니다."
 L["URL Links"] = "URL 주소 강조"
 L["Use Alt Key"] = true;
+L["Use class color for the names of players when they are mentioned."] = true;
 L["When opening the Chat Editbox to type a message having this option set means it will retain the last channel you spoke in. If this option is turned off opening the Chat Editbox should always default to the SAY channel."] = "이전에 말한 채널을 계속 유지할지 여부를 결정합니다.|n|n체크 해제 시 대화입력창을 열 때마다 일반 채널로 설정됩니다."
 L["Whisper Alert"] = "귓말이 오면 소리로 알림"
 L[ [=[Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.

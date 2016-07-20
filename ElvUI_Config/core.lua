@@ -296,8 +296,8 @@ E.Options.args.general = {
 				chatBubbles = {
 					order = 30,
 					type = "group",
-					guiInline = true,
 					name = L["Chat Bubbles"],
+					guiInline = true,
 					args = {
 						style = {
 							order = 1,
@@ -313,22 +313,33 @@ E.Options.args.general = {
 								['disabled'] = L["Disabled"]
 							}
 						},
-						font = {
+						classColorMentionsSpeech = {
 							order = 2,
+							type = "toggle",
+							name = L["Class Color Mentions"],
+							desc = L["Use class color for the names of players when they are mentioned."],
+							get = function(info) return E.private.general.classColorMentionsSpeech end,
+							set = function(info, value) E.private.general.classColorMentionsSpeech = value; E:StaticPopup_Show("PRIVATE_RL") end,
+							disabled = function() return E.private.general.chatBubbles == "disabled" end,
+						},
+						font = {
+							order = 3,
 							type = "select",
 							name = L["Font"],
 							dialogControl = 'LSM30_Font',
 							values = AceGUIWidgetLSMlists.font,
 							get = function(info) return E.private.general.chatBubbleFont end,
 							set = function(info, value) E.private.general.chatBubbleFont = value; E:StaticPopup_Show("PRIVATE_RL") end,
+							disabled = function() return E.private.general.chatBubbles == "disabled" end,
 						},
 						fontSize = {
-							order = 3,
+							order = 4,
 							type = "range",
 							name = L["Font Size"],
 							get = function(info) return E.private.general.chatBubbleFontSize end,
 							set = function(info, value) E.private.general.chatBubbleFontSize = value; E:StaticPopup_Show("PRIVATE_RL") end,
 							min = 4, max = 212, step = 1,
+							disabled = function() return E.private.general.chatBubbles == "disabled" end,
 						},
 					},
 				},

@@ -464,7 +464,7 @@ function CH:StyleChat(frame)
 	editbox.historyIndex = 0
 	editbox:HookScript("OnArrowPressed", OnArrowPressed)
 	editbox:Hide()
-	
+
 	for i, text in pairs(ElvCharacterDB.ChatEditHistory) do
 		editbox:AddHistoryLine(text)
 	end
@@ -1622,12 +1622,14 @@ function CH:CheckKeyword(message)
 				end
 			end
 		end
-		
-		if(CH.ClassNames[lowerCaseWord]) then
-			classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[CH.ClassNames[lowerCaseWord]] or RAID_CLASS_COLORS[CH.ClassNames[lowerCaseWord]];
-			tempWord = word:gsub("%p", "")
-			word = word:gsub(tempWord, format("\124cff%.2x%.2x%.2x", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255)..tempWord.."\124r")
-		end		
+
+		if self.db.classColorMentionsChat then
+			if(CH.ClassNames[lowerCaseWord]) then
+				classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[CH.ClassNames[lowerCaseWord]] or RAID_CLASS_COLORS[CH.ClassNames[lowerCaseWord]];
+				tempWord = word:gsub("%p", "")
+				word = word:gsub(tempWord, format("\124cff%.2x%.2x%.2x", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255)..tempWord.."\124r")
+			end
+		end
 
 		if isFirstWord then
 			rebuiltString = word

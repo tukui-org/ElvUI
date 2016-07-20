@@ -125,10 +125,11 @@ E.Options.args.chat = {
 						CH:UpdateSettings()
 					end,
 				},
-				spacer = {
+				classColorMentionsChat = {
 					order = 11,
-					type = 'description',
-					name = '',
+					type = "toggle",
+					name = L["Class Color Mentions"],
+					desc = L["Use class color for the names of players when they are mentioned."],
 				},
 				throttleInterval = {
 					order = 12,

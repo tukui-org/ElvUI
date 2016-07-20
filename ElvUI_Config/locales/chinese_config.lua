@@ -236,6 +236,7 @@ L["Attempt to lock the left and right chat frame positions. Disabling this optio
 L["Below Chat"] = '对话框下方'
 L["Chat EditBox Position"] = '对话輸入框位置'
 L["Chat History"] = '对话历史'
+L["Class Color Mentions"] = true;
 L["Copy Text"] = "复制文字"
 L["Display LFG Icons in group chat."] = true;
 L["Display the hyperlink tooltip while hovering over a hyperlink."] = "鼠标悬停在超链接上时显示链接提示框"
@@ -287,6 +288,7 @@ L["Toggle showing of the left and right chat panels."] = "切换左/右对话框
 L["Toggle the chat tab panel backdrop."] = "显示/隐藏对话框架标签面板背景."
 L["URL Links"] = "网址连结"
 L["Use Alt Key"] = true;
+L["Use class color for the names of players when they are mentioned."] = true;
 L["When opening the Chat Editbox to type a message having this option set means it will retain the last channel you spoke in. If this option is turned off opening the Chat Editbox should always default to the SAY channel."] = "当你开始输入消息时此选项的启用将会让你保留最后一次对话的频道, 如果关闭将始终使用说话频道."
 L["Whisper Alert"] = "密语警报"
 L[ [=[Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.

@@ -235,6 +235,7 @@ L["Attempt to lock the left and right chat frame positions. Disabling this optio
 L["Below Chat"] = "Debajo del Chat"
 L["Chat EditBox Position"] = "Posición del Cuadro de Edición del Chat"
 L["Chat History"] = "Historial de Chat"
+L["Class Color Mentions"] = true;
 L["Copy Text"] = "Copiar Texto"
 L["Display LFG Icons in group chat."] = true;
 L["Display the hyperlink tooltip while hovering over a hyperlink."] = "Muestra la descripción emergente del enlace cuando pasas el cursor sobre él."
@@ -286,6 +287,7 @@ L["Toggle showing of the left and right chat panels."] = "Muestra/Oculta los pan
 L["Toggle the chat tab panel backdrop."] = "Muestra/oculta el fondo del panel de pestañas"
 L["URL Links"] = "Enlaces URL"
 L["Use Alt Key"] = true;
+L["Use class color for the names of players when they are mentioned."] = true;
 L["When opening the Chat Editbox to type a message having this option set means it will retain the last channel you spoke in. If this option is turned off opening the Chat Editbox should always default to the SAY channel."] = "Cuando abres el Cuadro de Edición del chat para escribir un mensaje teniendo esta opción activa significa que recordará el último canal en el que habló. Si esta opción esta desactivada siempre hablarás por defecto en el canal DECIR."
 L["Whisper Alert"] = "Alerta de Susurro"
 L[ [=[Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.

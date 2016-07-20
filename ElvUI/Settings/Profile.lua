@@ -594,6 +594,7 @@ P['chat'] = {
 	['fadeUndockedTabs'] = true,
 	['fadeTabsNoBackdrop'] = true,
 	["useAltKey"] = false,
+	["classColorMentionsChat"] = true,
 
 	['tabFont'] = 'PT Sans Narrow',
 	['tabFontSize'] = 12,
