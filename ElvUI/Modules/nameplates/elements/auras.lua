@@ -190,7 +190,7 @@ function mod:Auras_SizeChanged(width, height)
 	local numAuras = #self.icons
 	for i=1, numAuras do
 		self.icons[i]:SetWidth((width - (mod.mult*numAuras)) / numAuras)
-		self.icons[i]:SetHeight(self.db.baseHeight * self:GetParent().HealthBar.currentScale or 1)
+		self.icons[i]:SetHeight((self.db.baseHeight or 18) * self:GetParent().HealthBar.currentScale or 1)
 	end
 end
 
