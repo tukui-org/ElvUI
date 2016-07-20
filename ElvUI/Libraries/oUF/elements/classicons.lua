@@ -58,7 +58,7 @@ local _, PlayerClass = UnitClass'player'
 -- Holds the class specific stuff.
 local ClassPowerID, ClassPowerType
 local ClassPowerEnable, ClassPowerDisable
-local RequireSpec, RequireSpell, RequirePower
+local RequireSpec, RequireSpell
 
 local UpdateTexture = function(element)
 	local color = oUF.colors.power[ClassPowerType]
@@ -155,12 +155,8 @@ local function Visibility(self, event, unit)
 	elseif(ClassPowerID) then
 		if(not RequireSpec or RequireSpec == GetSpecialization()) then
 			if(not RequireSpell or IsPlayerSpell(RequireSpell)) then
-				if(not RequirePower or RequirePower == UnitPowerType('player')) then
-					self:UnregisterEvent('SPELLS_CHANGED', Visibility)
-					shouldEnable = true
-				else
-					self:RegisterEvent('SPELLS_CHANGED', Visibility, true)
-				end
+				self:UnregisterEvent('SPELLS_CHANGED', Visibility)
+				shouldEnable = true
 			else
 				self:RegisterEvent('SPELLS_CHANGED', Visibility, true)
 			end
@@ -187,7 +183,7 @@ end
 
 do
 	ClassPowerEnable = function(self)
-		self:RegisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
+		self:RegisterEvent('UNIT_DISPLAYPOWER', Path)
 		self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
 
 		if(UnitHasVehicleUI('player')) then
@@ -199,7 +195,7 @@ do
 	end
 
 	ClassPowerDisable = function(self)
-		self:UnregisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
+		self:UnregisterEvent('UNIT_DISPLAYPOWER', Path)
 		self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
 
 		local element = self.ClassIcons
@@ -245,7 +241,6 @@ do
 		ClassPowerType = 'COMBO_POINTS'
 
 		if(isBetaClient and PlayerClass == 'DRUID') then
-			RequirePower = SPELL_POWER_ENERGY
 			RequireSpell = 5221 -- Shred
 		end
 	elseif(PlayerClass == 'MAGE' and isBetaClient) then
