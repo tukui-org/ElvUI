@@ -5,6 +5,7 @@ local UF = E:GetModule('UnitFrames');
 --Lua functions
 local _G = _G
 local unpack, pairs = unpack, pairs
+local max = math.max
 local format = format
 --WoW API / Variables
 local C_TimerAfter = C_Timer.After
@@ -100,7 +101,7 @@ function UF:Update_PlayerFrame(frame, db)
 		frame.PORTRAIT_WIDTH = (frame.USE_PORTRAIT_OVERLAY or not frame.USE_PORTRAIT) and 0 or db.portrait.width
 
 		frame.CAN_HAVE_CLASSBAR = true --Combo points are in ClassIcons now, so all classes need access to ClassBar
-		frame.MAX_CLASS_BAR = frame.MAX_CLASS_BAR or UF.classMaxResourceBar[E.myclass] or 0 --only set this initially
+		frame.MAX_CLASS_BAR = frame.MAX_CLASS_BAR or max(UF.classMaxResourceBar[E.myclass] or 0, MAX_COMBO_POINTS) --only set this initially
 		frame.USE_CLASSBAR = db.classbar.enable and frame.CAN_HAVE_CLASSBAR
 		frame.CLASSBAR_SHOWN = frame.CAN_HAVE_CLASSBAR and frame[frame.ClassBar]:IsShown()
 		frame.CLASSBAR_DETACHED = db.classbar.detachFromFrame
