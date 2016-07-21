@@ -68,7 +68,7 @@ E.Options.args.general = {
 	type = "group",
 	name = L["General"],
 	order = 1,
-	childGroups = "select",
+	childGroups = "tab",
 	get = function(info) return E.db.general[ info[#info] ] end,
 	set = function(info, value) E.db.general[ info[#info] ] = value end,
 	args = {
@@ -95,8 +95,13 @@ E.Options.args.general = {
 			type = "group",
 			name = L["General"],
 			args = {
-				pixelPerfect = {
+				generalHeader = {
 					order = 1,
+					type = "header",
+					name = L["General"],
+				},
+				pixelPerfect = {
+					order = 2,
 					name = L["Thin Border Theme"],
 					desc = L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."],
 					type = 'toggle',
@@ -104,7 +109,7 @@ E.Options.args.general = {
 					set = function(info, value) E.private.general.pixelPerfect = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
 				interruptAnnounce = {
-					order = 2,
+					order = 3,
 					name = L["Announce Interrupts"],
 					desc = L["Announce when you interrupt a spell to the specified chat channel."],
 					type = 'select',
@@ -117,7 +122,7 @@ E.Options.args.general = {
 					},
 				},
 				autoRepair = {
-					order = 3,
+					order = 4,
 					name = L["Auto Repair"],
 					desc = L["Automatically repair using the following method when visiting a merchant."],
 					type = 'select',
@@ -128,26 +133,26 @@ E.Options.args.general = {
 					},
 				},
 				autoAcceptInvite = {
-					order = 4,
+					order = 5,
 					name = L["Accept Invites"],
 					desc = L["Automatically accept invites from guild/friends."],
 					type = 'toggle',
 				},
 				vendorGrays = {
-					order = 5,
+					order = 6,
 					name = L["Vendor Grays"],
 					desc = L["Automatically vendor gray items when visiting a vendor."],
 					type = 'toggle',
 				},
 				autoRoll = {
-					order = 6,
+					order = 7,
 					name = L["Auto Greed/DE"],
 					desc = L["Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level."],
 					type = 'toggle',
 					disabled = function() return not E.private.general.lootRoll end
 				},
 				loot = {
-					order = 7,
+					order = 8,
 					type = "toggle",
 					name = L["Loot"],
 					desc = L["Enable/Disable the loot frame."],
@@ -155,7 +160,7 @@ E.Options.args.general = {
 					set = function(info, value) E.private.general.loot = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
 				lootRoll = {
-					order = 8,
+					order = 9,
 					type = "toggle",
 					name = L["Loot Roll"],
 					desc = L["Enable/Disable the loot roll frame."],
@@ -163,7 +168,7 @@ E.Options.args.general = {
 					set = function(info, value) E.private.general.lootRoll = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
 				autoScale = {
-					order = 9,
+					order = 10,
 					name = L["Auto Scale"],
 					desc = L["Automatically scale the User Interface based on your screen resolution"],
 					type = "toggle",
@@ -171,7 +176,7 @@ E.Options.args.general = {
 					set = function(info, value) E.global.general[ info[#info] ] = value; E:StaticPopup_Show("GLOBAL_RL") end
 				},
 				eyefinity = {
-					order = 10,
+					order = 11,
 					name = L["Multi-Monitor Support"],
 					desc = L["Attempt to support eyefinity/nvidia surround."],
 					type = "toggle",
@@ -179,19 +184,19 @@ E.Options.args.general = {
 					set = function(info, value) E.global.general[ info[#info] ] = value; E:StaticPopup_Show("GLOBAL_RL") end
 				},
 				hideErrorFrame = {
-					order = 11,
+					order = 12,
 					name = L["Hide Error Text"],
 					desc = L["Hides the red error text at the top of the screen while in combat."],
 					type = "toggle"
 				},
 				taintLog = {
-					order = 12,
+					order = 13,
 					type = "toggle",
 					name = L["Log Taints"],
 					desc = L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."],
 				},
 				bottomPanel = {
-					order = 13,
+					order = 14,
 					type = 'toggle',
 					name = L["Bottom Panel"],
 					desc = L["Display a panel across the bottom of the screen. This is for cosmetic only."],
@@ -199,7 +204,7 @@ E.Options.args.general = {
 					set = function(info, value) E.db.general.bottomPanel = value; E:GetModule('Layout'):BottomPanelVisibility() end
 				},
 				topPanel = {
-					order = 14,
+					order = 15,
 					type = 'toggle',
 					name = L["Top Panel"],
 					desc = L["Display a panel across the top of the screen. This is for cosmetic only."],
@@ -207,7 +212,7 @@ E.Options.args.general = {
 					set = function(info, value) E.db.general.topPanel = value; E:GetModule('Layout'):TopPanelVisibility() end
 				},
 				afk = {
-					order = 15,
+					order = 16,
 					type = 'toggle',
 					name = L["AFK Mode"],
 					desc = L["When you go AFK display the AFK screen."],
@@ -215,22 +220,14 @@ E.Options.args.general = {
 					set = function(info, value) E.db.general.afk = value; E:GetModule('AFK'):Toggle() end
 
 				},
-				smallerWorldMap = {
-					order = 16,
-					type = 'toggle',
-					name = L["Smaller World Map"],
-					desc = L["Make the world map smaller."],
-					get = function(info) return E.global.general.smallerWorldMap end,
-					set = function(info, value) E.global.general.smallerWorldMap = value; E:StaticPopup_Show("GLOBAL_RL") end
-				},
 				enhancedPvpMessages = {
-					order = 18,
+					order = 17,
 					type = 'toggle',
 					name = L["Enhanced PVP Messages"],
 					desc = L["Display battleground messages in the middle of the screen."],
 				},
 				disableTutorialButtons = {
-					order = 19,
+					order = 18,
 					type = 'toggle',
 					name = L["Disable Tutorial Buttons"],
 					desc = L["Disables the tutorial button found on some frames."],
@@ -238,7 +235,7 @@ E.Options.args.general = {
 					set = function(info, value) E.global.general.disableTutorialButtons = value; E:StaticPopup_Show("GLOBAL_RL") end,
 				},
 				talkingHeadFrameScale = {
-					order = 20,
+					order = 19,
 					type = "range",
 					name = L["Talking Head Scale"],
 					isPercent = true,
@@ -246,102 +243,74 @@ E.Options.args.general = {
 					get = function(info) return E.db.general.talkingHeadFrameScale end,
 					set = function(info, value) E.db.general.talkingHeadFrameScale = value; B:ScaleTalkingHeadFrame() end,
 				},
-				WorldMapCoordinates = {
-					order = 25,
-					type = "group",
-					guiInline = true,
-					name = L["World Map Coordinates"],
-					args = {
-						enable = {
-							order = 1,
-							type = 'toggle',
-							name = L["Enable"],
-							desc = L["Puts coordinates on the world map."],
-							get = function(info) return E.global.general.WorldMapCoordinates.enable end,
-							set = function(info, value) E.global.general.WorldMapCoordinates.enable = value; E:StaticPopup_Show("GLOBAL_RL") end
-						},
-						position = {
-							order = 2,
-							type = "select",
-							name = L["Position"],
-							get = function(info) return E.global.general.WorldMapCoordinates.position end,
-							set = function(info, value) E.global.general.WorldMapCoordinates.position = value; E:GetModule('WorldMap'):PositionCoords() end,
-							values = {
-								["TOP"] = "TOP",
-								["TOPLEFT"] = "TOPLEFT",
-								["TOPRIGHT"] = "TOPRIGHT",
-								["BOTTOM"] = "BOTTOM",
-								["BOTTOMLEFT"] = "BOTTOMLEFT",
-								["BOTTOMRIGHT"] = "BOTTOMRIGHT",
-							},
-						},
-						xOffset = {
-							order = 4,
-							type = "range",
-							name = L["X-Offset"],
-							get = function(info) return E.global.general.WorldMapCoordinates.xOffset end,
-							set = function(info, value) E.global.general.WorldMapCoordinates.xOffset = value; E:GetModule('WorldMap'):PositionCoords()end,
-							min = -200, max = 200, step = 1,
-						},
-						yOffset = {
-							order = 5,
-							type = "range",
-							name = L["Y-Offset"],
-							get = function(info) return E.global.general.WorldMapCoordinates.yOffset end,
-							set = function(info, value) E.global.general.WorldMapCoordinates.yOffset = value; E:GetModule('WorldMap'):PositionCoords() end,
-							min = -200, max = 200, step = 1,
-						},
+				objectiveFrameHeaderSpacing = {
+					order = 29,
+					type = "description",
+					name = " ",
+				},
+				objectiveFrameHeader = {
+					order = 30,
+					type = "header",
+					name = L["Objective Frame"],
+				},
+				objectiveFrameHeight = {
+					order = 31,
+					type = 'range',
+					name = L["Objective Frame Height"],
+					desc = L["Height of the objective tracker. Increase size to be able to see more objectives."],
+					min = 400, max = E.screenheight, step = 1,
+					get = function(info) return E.db.general.objectiveFrameHeight end,
+					set = function(info, value) E.db.general.objectiveFrameHeight = value; E:GetModule('Blizzard'):ObjectiveFrameHeight(); end,
+				},
+				bonusObjectivePosition = {
+					order = 32,
+					type = 'select',
+					name = L["Bonus Reward Position"],
+					desc = L["Position of bonus quest reward frame relative to the objective tracker."],
+					get = function(info) return E.db.general.bonusObjectivePosition end,
+					set = function(info, value) E.db.general.bonusObjectivePosition = value; end,
+					values = {
+						['RIGHT'] = L["Right"],
+						['LEFT'] = L["Left"],
+						['AUTO'] = L["Auto"],
 					},
 				},
-				chatBubbles = {
-					order = 30,
-					type = "group",
-					name = L["Chat Bubbles"],
-					guiInline = true,
-					args = {
-						style = {
-							order = 1,
-							type = "select",
-							name = L["Chat Bubbles Style"],
-							desc = L["Skin the blizzard chat bubbles."],
-							get = function(info) return E.private.general.chatBubbles end,
-							set = function(info, value) E.private.general.chatBubbles = value; E:StaticPopup_Show("PRIVATE_RL") end,
-							values = {
-								['backdrop'] = L["Skin Backdrop"],
-								['nobackdrop'] = L["Remove Backdrop"],
-								['backdrop_noborder'] = L["Skin Backdrop (No Borders)"],
-								['disabled'] = L["Disabled"]
-							}
-						},
-						classColorMentionsSpeech = {
-							order = 2,
-							type = "toggle",
-							name = L["Class Color Mentions"],
-							desc = L["Use class color for the names of players when they are mentioned."],
-							get = function(info) return E.private.general.classColorMentionsSpeech end,
-							set = function(info, value) E.private.general.classColorMentionsSpeech = value; E:StaticPopup_Show("PRIVATE_RL") end,
-							disabled = function() return E.private.general.chatBubbles == "disabled" end,
-						},
-						font = {
-							order = 3,
-							type = "select",
-							name = L["Font"],
-							dialogControl = 'LSM30_Font',
-							values = AceGUIWidgetLSMlists.font,
-							get = function(info) return E.private.general.chatBubbleFont end,
-							set = function(info, value) E.private.general.chatBubbleFont = value; E:StaticPopup_Show("PRIVATE_RL") end,
-							disabled = function() return E.private.general.chatBubbles == "disabled" end,
-						},
-						fontSize = {
-							order = 4,
-							type = "range",
-							name = L["Font Size"],
-							get = function(info) return E.private.general.chatBubbleFontSize end,
-							set = function(info, value) E.private.general.chatBubbleFontSize = value; E:StaticPopup_Show("PRIVATE_RL") end,
-							min = 4, max = 212, step = 1,
-							disabled = function() return E.private.general.chatBubbles == "disabled" end,
-						},
+				threatHeaderSpacing = {
+					order = 39,
+					type = "description",
+					name = " ",
+				},
+				threatHeader = {
+					order = 40,
+					type = "header",
+					name = L["Threat"],
+				},
+				threatEnable = {
+					order = 41,
+					type = "toggle",
+					name = L["Enable"],
+					get = function(info) return E.db.general.threat.enable end,
+					set = function(info, value) E.db.general.threat.enable = value; E:GetModule('Threat'):ToggleEnable()end,
+				},
+				threatPosition = {
+					order = 42,
+					type = 'select',
+					name = L["Position"],
+					desc = L["Adjust the position of the threat bar to either the left or right datatext panels."],
+					values = {
+						['LEFTCHAT'] = L["Left Chat"],
+						['RIGHTCHAT'] = L["Right Chat"],
 					},
+					get = function(info) return E.db.general.threat.position end,
+					set = function(info, value) E.db.general.threat.position = value; E:GetModule('Threat'):UpdatePosition() end,
+				},
+				threatTextSize = {
+					order = 43,
+					name = L["Font Size"],
+					type = "range",
+					min = 6, max = 22, step = 1,
+					get = function(info) return E.db.general.threat.textSize end,
+					set = function(info, value) E.db.general.threat.textSize = value; E:GetModule('Threat'):UpdatePosition() end,
 				},
 			},
 		},
@@ -352,8 +321,13 @@ E.Options.args.general = {
 			get = function(info) return E.db.general[ info[#info] ] end,
 			set = function(info, value) E.db.general[ info[#info] ] = value end,
 			args = {
-				fonts = {
+				header = {
 					order = 1,
+					type = "header",
+					name = L["Media"],
+				},
+				fonts = {
+					order = 2,
 					type = "group",
 					name = L["Fonts"],
 					guiInline = true,
@@ -446,7 +420,7 @@ E.Options.args.general = {
 					},
 				},
 				textures = {
-					order = 2,
+					order = 3,
 					type = "group",
 					name = L["Textures"],
 					guiInline = true,
@@ -499,7 +473,7 @@ E.Options.args.general = {
 					},
 				},
 				colors = {
-					order = 3,
+					order = 4,
 					type = "group",
 					name = L["Colors"],
 					guiInline = true,
@@ -590,8 +564,13 @@ E.Options.args.general = {
 			type = "group",
 			name = MINIMAP_LABEL,
 			args = {
-				enable = {
+				header = {
 					order = 1,
+					type = "header",
+					name = MINIMAP_LABEL,
+				},
+				enable = {
+					order = 2,
 					type = "toggle",
 					name = L["Enable"],
 					desc = L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the minimap datatexts.|r"],
@@ -599,7 +578,7 @@ E.Options.args.general = {
 					set = function(info, value) E.private.general.minimap[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
 				},
 				size = {
-					order = 2,
+					order = 3,
 					type = "range",
 					name = L["Size"],
 					desc = L["Adjust the size of the minimap."],
@@ -608,7 +587,7 @@ E.Options.args.general = {
 					disabled = function() return not E.private.general.minimap.enable end,
 				},
 				locationText = {
-					order = 3,
+					order = 4,
 					type = 'select',
 					name = L["Location Text"],
 					desc = L["Change settings for the display of the location text that is on the minimap."],
@@ -622,12 +601,12 @@ E.Options.args.general = {
 					disabled = function() return not E.private.general.minimap.enable end,
 				},
 				spacer = {
-					order = 4,
+					order = 5,
 					type = "description",
 					name = "\n",
 				},
 				icons = {
-					order = 5,
+					order = 6,
 					type = 'group',
 					name = L["Minimap Buttons"],
 					args = {
@@ -953,38 +932,6 @@ E.Options.args.general = {
 					},
 				},
 			},
-		},			
-		threat = {
-			order = 7,
-			get = function(info) return E.db.general.threat[ info[#info] ] end,
-			set = function(info, value) E.db.general.threat[ info[#info] ] = value; E:GetModule('Threat'):ToggleEnable()end,
-			type = "group",
-			name = L["Threat"],
-			args = {
-				enable = {
-					order = 1,
-					type = "toggle",
-					name = L["Enable"],
-				},
-				position = {
-					order = 2,
-					type = 'select',
-					name = L["Position"],
-					desc = L["Adjust the position of the threat bar to either the left or right datatext panels."],
-					values = {
-						['LEFTCHAT'] = L["Left Chat"],
-						['RIGHTCHAT'] = L["Right Chat"],
-					},
-					set = function(info, value) E.db.general.threat[ info[#info] ] = value; E:GetModule('Threat'):UpdatePosition() end,
-				},
-				textSize = {
-					order = 3,
-					name = L["Font Size"],
-					type = "range",
-					min = 6, max = 22, step = 1,
-					set = function(info, value) E.db.general.threat[ info[#info] ] = value; E:GetModule('Threat'):UpdatePosition() end,
-				},
-			},
 		},
 		totems = {
 			order = 8,
@@ -993,26 +940,31 @@ E.Options.args.general = {
 			get = function(info) return E.db.general.totems[ info[#info] ] end,
 			set = function(info, value) E.db.general.totems[ info[#info] ] = value; E:GetModule('Totems'):PositionAndSize() end,
 			args = {
-				enable = {
+				header = {
 					order = 1,
+					type = "header",
+					name = L["Class Bar"],
+				},
+				enable = {
+					order = 2,
 					type = "toggle",
 					name = L["Enable"],
 					set = function(info, value) E.db.general.totems[ info[#info] ] = value; E:GetModule('Totems'):ToggleEnable() end,
 				},
 				size = {
-					order = 2,
+					order = 3,
 					type = 'range',
 					name = L["Button Size"],
 					min = 24, max = 60, step = 1,
 				},
 				spacing = {
-					order = 3,
+					order = 4,
 					type = 'range',
 					name = L["Button Spacing"],
 					min = 1, max = 10, step = 1,
 				},
 				sortDirection = {
-					order = 4,
+					order = 5,
 					type = 'select',
 					name = L["Sort Direction"],
 					values = {
@@ -1021,7 +973,7 @@ E.Options.args.general = {
 					},
 				},
 				growthDirection = {
-					order = 5,
+					order = 6,
 					type = 'select',
 					name = L["Bar Direction"],
 					values = {
@@ -1047,9 +999,14 @@ E.Options.args.general = {
 				E:UpdateCooldownSettings();
 			end,
 			args = {
+				header = {
+					order = 1,
+					type = "header",
+					name = L["Cooldown Text"],
+				},
 				enable = {
 					type = "toggle",
-					order = 1,
+					order = 2,
 					name = L["Enable"],
 					desc = L["Display cooldown text on anything with the cooldown spiral."],
 					get = function(info) return E.private.cooldown[ info[#info] ] end,
@@ -1057,10 +1014,10 @@ E.Options.args.general = {
 				},
 				threshold = {
 					type = 'range',
+					order = 3,
 					name = L["Low Threshold"],
 					desc = L["Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red"],
 					min = -1, max = 20, step = 1,
-					order = 2,
 					get = function(info) return E.db.cooldown[ info[#info] ] end,
 					set = function(info, value)
 						E.db.cooldown[ info[#info] ] = value
@@ -1099,30 +1056,133 @@ E.Options.args.general = {
 				},
 			},
 		},
-		objectiveFrame = {
-			order = 10,
+		chatBubbles = {
+			order = 11,
 			type = "group",
-			name = L["Objective Frame"],
-			get = function(info) return E.db.general[ info[#info] ] end,
-			set = function(info, value) E.db.general[ info[#info] ] = value end,
+			name = L["Chat Bubbles"],
 			args = {
-				objectiveFrameHeight = {
+				header = {
 					order = 1,
-					type = 'range',
-					name = L["Objective Frame Height"],
-					desc = L["Height of the objective tracker. Increase size to be able to see more objectives."],
-					min = 400, max = E.screenheight, step = 1,
-					set = function(info, value) E.db.general.objectiveFrameHeight = value; E:GetModule('Blizzard'):ObjectiveFrameHeight(); end,
+					type = "header",
+					name = L["Chat Bubbles"],
 				},
-				bonusObjectivePosition = {
+				style = {
 					order = 2,
-					type = 'select',
-					name = L["Bonus Reward Position"],
-					desc = L["Position of bonus quest reward frame relative to the objective tracker."],
+					type = "select",
+					name = L["Chat Bubbles Style"],
+					desc = L["Skin the blizzard chat bubbles."],
+					get = function(info) return E.private.general.chatBubbles end,
+					set = function(info, value) E.private.general.chatBubbles = value; E:StaticPopup_Show("PRIVATE_RL") end,
 					values = {
-						['RIGHT'] = L["Right"],
-						['LEFT'] = L["Left"],
-						['AUTO'] = L["Auto"],
+						['backdrop'] = L["Skin Backdrop"],
+						['nobackdrop'] = L["Remove Backdrop"],
+						['backdrop_noborder'] = L["Skin Backdrop (No Borders)"],
+						['disabled'] = L["Disabled"]
+					}
+				},
+				classColorMentionsSpeech = {
+					order = 2,
+					type = "toggle",
+					name = L["Class Color Mentions"],
+					desc = L["Use class color for the names of players when they are mentioned."],
+					get = function(info) return E.private.general.classColorMentionsSpeech end,
+					set = function(info, value) E.private.general.classColorMentionsSpeech = value; E:StaticPopup_Show("PRIVATE_RL") end,
+					disabled = function() return E.private.general.chatBubbles == "disabled" end,
+				},
+				font = {
+					order = 3,
+					type = "select",
+					name = L["Font"],
+					dialogControl = 'LSM30_Font',
+					values = AceGUIWidgetLSMlists.font,
+					get = function(info) return E.private.general.chatBubbleFont end,
+					set = function(info, value) E.private.general.chatBubbleFont = value; E:StaticPopup_Show("PRIVATE_RL") end,
+					disabled = function() return E.private.general.chatBubbles == "disabled" end,
+				},
+				fontSize = {
+					order = 4,
+					type = "range",
+					name = L["Font Size"],
+					get = function(info) return E.private.general.chatBubbleFontSize end,
+					set = function(info, value) E.private.general.chatBubbleFontSize = value; E:StaticPopup_Show("PRIVATE_RL") end,
+					min = 4, max = 212, step = 1,
+					disabled = function() return E.private.general.chatBubbles == "disabled" end,
+				},
+			},
+		},
+		worldMap = {
+			order = 12,
+			type = "group",
+			-- guiInline = true,
+			name = WORLD_MAP,
+			args = {
+				header = {
+					order = 1,
+					type = "header",
+					name = WORLD_MAP,
+				},
+				smallerWorldMap = {
+					order = 2,
+					type = 'toggle',
+					name = L["Smaller World Map"],
+					desc = L["Make the world map smaller."],
+					get = function(info) return E.global.general.smallerWorldMap end,
+					set = function(info, value) E.global.general.smallerWorldMap = value; E:StaticPopup_Show("GLOBAL_RL") end
+				},
+				WorldMapCoordinatesEnable = {
+					order = 3,
+					type = 'toggle',
+					name = L["World Map Coordinates"],
+					desc = L["Puts coordinates on the world map."],
+					get = function(info) return E.global.general.WorldMapCoordinates.enable end,
+					set = function(info, value) E.global.general.WorldMapCoordinates.enable = value; E:StaticPopup_Show("GLOBAL_RL") end
+				},
+				spacing = {
+					order = 4,
+					type = "description",
+					name = " ",
+				},
+				WorldMapCoordinates = {
+					order = 5,
+					type = "group",
+					name = L["World Map Coordinates"],
+					guiInline = true,
+					hidden = function() return not E.global.general.WorldMapCoordinates.enable end,
+					args = {
+						position = {
+							order = 2,
+							type = "select",
+							name = L["Position"],
+							get = function(info) return E.global.general.WorldMapCoordinates.position end,
+							set = function(info, value) E.global.general.WorldMapCoordinates.position = value; E:GetModule('WorldMap'):PositionCoords() end,
+							disabled = function() return not E.global.general.WorldMapCoordinates.enable end,
+							values = {
+								["TOP"] = "TOP",
+								["TOPLEFT"] = "TOPLEFT",
+								["TOPRIGHT"] = "TOPRIGHT",
+								["BOTTOM"] = "BOTTOM",
+								["BOTTOMLEFT"] = "BOTTOMLEFT",
+								["BOTTOMRIGHT"] = "BOTTOMRIGHT",
+							},
+						},
+						xOffset = {
+							order = 3,
+							type = "range",
+							name = L["X-Offset"],
+							get = function(info) return E.global.general.WorldMapCoordinates.xOffset end,
+							set = function(info, value) E.global.general.WorldMapCoordinates.xOffset = value; E:GetModule('WorldMap'):PositionCoords()end,
+							disabled = function() return not E.global.general.WorldMapCoordinates.enable end,
+							min = -200, max = 200, step = 1,
+						},
+						yOffset = {
+							order = 4,
+							type = "range",
+							name = L["Y-Offset"],
+							get = function(info) return E.global.general.WorldMapCoordinates.yOffset end,
+							set = function(info, value) E.global.general.WorldMapCoordinates.yOffset = value; E:GetModule('WorldMap'):PositionCoords() end,
+							disabled = function() return not E.global.general.WorldMapCoordinates.enable end,
+							min = -200, max = 200, step = 1,
+						},
 					},
 				},
 			},
