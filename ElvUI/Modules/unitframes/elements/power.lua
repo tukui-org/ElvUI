@@ -225,4 +225,9 @@ function UF:PostUpdatePower(unit, min, max)
 	if db and db.power and db.power.hideonnpc then
 		UF:PostNamePosition(parent, unit)
 	end
+
+	--Force update to AdditionalPower in order to reposition text if necessary
+	if parent:IsElementEnabled("AdditionalPower") then
+		parent.AdditionalPower:ForceUpdate()
+	end
 end
