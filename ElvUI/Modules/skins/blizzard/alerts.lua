@@ -472,8 +472,8 @@ local function LoadSkin()
 	frame.MissionType:SetParent(frame.MissionType.b)
 	--Create Backdrop
 	frame:CreateBackdrop("Transparent")
-	frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 8, -8)
-	frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 8)
+	frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 8, -2)
+	frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 2)
 	
 	-- Garrison random mission alert
 	frame = GarrisonRandomMissionAlertFrame
@@ -491,8 +491,8 @@ local function LoadSkin()
 	frame.MissionType:SetParent(frame.MissionType.b)
 	--Create Backdrop
 	frame:CreateBackdrop("Transparent")
-	frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 8, -8)
-	frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 8)
+	frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 8, -2)
+	frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 2)
 
 
 	-- World Quest Complete Alert
