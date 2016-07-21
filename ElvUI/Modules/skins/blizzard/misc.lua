@@ -801,6 +801,7 @@ local function LoadSkin()
 		"Advanced_MaxFPSBKCheckBox",
 		"Advanced_UseUIScale",
 		"Advanced_ShowHDModels",
+		"Advanced_DesktopGamma",
 		--Network
 		"NetworkOptionsPanelAdvancedCombatLogging",
 		-- Audio
@@ -958,6 +959,7 @@ local function LoadSkin()
 		"Advanced_MaxFPSSlider",
 		"Advanced_MaxFPSBKSlider",
 		"Advanced_RenderScaleSlider",
+		"Advanced_GammaSlider",
 		"AudioOptionsSoundPanelMasterVolume",
 		"AudioOptionsSoundPanelSoundVolume",
 		"AudioOptionsSoundPanelMusicVolume",
