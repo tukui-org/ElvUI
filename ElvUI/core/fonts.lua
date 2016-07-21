@@ -37,7 +37,7 @@ function E:UpdateBlizzardFonts()
 
 	CHAT_FONT_HEIGHTS = {6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 
-	if self.db.general.font:lower():find('pixel') then
+	if self.db.general.font == "Homespun" then
 		MONOCHROME = 'MONOCHROME'
 	end
 
@@ -89,7 +89,7 @@ function E:UpdateBlizzardFonts()
 		SetFont(SubZoneTextString,					NORMAL, 25, MONOCHROME.."OUTLINE")
 		SetFont(PVPInfoTextString,					NORMAL, 22, MONOCHROME.."OUTLINE")
 		SetFont(PVPArenaTextString,					NORMAL, 22, MONOCHROME.."OUTLINE")
-		SetFont(CombatTextFont,                     COMBAT, 200, "OUTLINE") -- number here just increase the font quality.
+		SetFont(CombatTextFont,                     COMBAT, 200, MONOCHROME.."OUTLINE") -- number here just increase the font quality.
 		SetFont(FriendsFont_Normal, NORMAL, self.db.general.fontSize)
 		SetFont(FriendsFont_Small, NORMAL, self.db.general.fontSize)
 		SetFont(FriendsFont_Large, NORMAL, self.db.general.fontSize)
