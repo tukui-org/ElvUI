@@ -376,6 +376,7 @@ function mod:UpdateAllFrame(frame)
 end
 
 function mod:ConfigureAll()
+	if E.private.nameplates.enable ~= true then return; end
 	self:ForEachPlate("UpdateAllFrame")
 	self:UpdateCVars()
 	self:TogglePlayerDisplayType()
