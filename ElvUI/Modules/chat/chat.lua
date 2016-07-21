@@ -985,7 +985,7 @@ function CH:GetPluginIcon(sender)
 	local icon
 	for i = 1, #PluginIconsCalls do
 		icon = PluginIconsCalls[i](sender)
-		if icon then break end
+		if icon and icon ~= "" then break end
 	end
 	return icon
 end
