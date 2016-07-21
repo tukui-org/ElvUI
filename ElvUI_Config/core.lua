@@ -609,7 +609,7 @@ E.Options.args.general = {
 						classHall = {
 							order = 1,
 							type = 'group',
-							name = ORDER_HALL_LANDING_PAGE_TITLE,
+							name = GARRISON_LANDING_PAGE_TITLE,
 							get = function(info) return E.db.general.minimap.icons.classHall[ info[#info] ] end,
 							set = function(info, value) E.db.general.minimap.icons.classHall[ info[#info] ] = value; E:GetModule('Minimap'):UpdateSettings() end,
 							args = {
