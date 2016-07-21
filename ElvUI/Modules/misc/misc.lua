@@ -47,7 +47,7 @@ local MAX_PARTY_MEMBERS = MAX_PARTY_MEMBERS
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: RaidBossEmoteFrame, ChatTypeInfo, QueueStatusMinimapButton, LFGInvitePopup
 
-local interruptMsg = INTERRUPTED.." %s's \124cff71d5ff\124Hspell:%d\124h[%s]\124h\124r!"
+local interruptMsg = INTERRUPTED.." %s's \124cff71d5ff\124Hspell:%d:0\124h[%s]\124h\124r!"
 
 function M:ErrorFrameToggle(event)
 	if not E.db.general.hideErrorFrame then return end
