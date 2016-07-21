@@ -455,7 +455,7 @@ E.Options.args.general = {
 						E:UpdateFrameTemplates()
 					end
 				},
-				applyFontToAll = {
+				applyTextureToAll = {
 					order = 23,
 					type = 'execute',
 					name = L["Apply Texture To All"],
