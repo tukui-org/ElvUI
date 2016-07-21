@@ -301,8 +301,8 @@ function mod:NAME_PLATE_UNIT_ADDED(event, unit, frame)
 	if(frame.UnitFrame.UnitType == "PLAYER") then
 		mod.PlayerFrame = frame
 	end
-	
-	if(self.db.units[frame.UnitFrame.UnitType].healthbar.enable) then
+
+	if(self.db.units[frame.UnitFrame.UnitType].healthbar.enable or self.db.onlyShowTarget) then
 		self:ConfigureElement_HealthBar(frame.UnitFrame)
 		self:ConfigureElement_PowerBar(frame.UnitFrame)
 		self:ConfigureElement_CastBar(frame.UnitFrame)
@@ -426,7 +426,7 @@ function mod:UpdateInVehicle(frame, noEvents)
 end
 
 function mod:UpdateElement_All(frame, unit, noTargetFrame)
-	if(self.db.units[frame.UnitType].healthbar.enable) then
+	if(self.db.units[frame.UnitType].healthbar.enable or self.db.onlyShowTarget) then
 		mod:UpdateElement_MaxHealth(frame)
 		mod:UpdateElement_Health(frame)
 		mod:UpdateElement_HealthColor(frame)

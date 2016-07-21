@@ -45,7 +45,8 @@ function mod:ConfigureElement_Glow(frame)
 		edgeFile = LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = E:Scale(3),
 		insets = {left = E:Scale(5), right = E:Scale(5), top = E:Scale(5), bottom = E:Scale(5)},
 	})
-	frame.Glow:SetBackdropBorderColor(0, 0, 0)
+
+	--frame.Glow:SetBackdropBorderColor(0, 0, 0)
 	frame.Glow:SetScale(E.PixelMode and 1.5 or 2)
 end
 
