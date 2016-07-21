@@ -256,9 +256,6 @@ local function LoadSkin()
 			S:HandleCheckBox(_G["MovieRecordingOptionsFrameCheckButton"..i])
 		end
 
-		S:HandleCheckBox(iTunesRemoteOptionsFrameCheckButton7)
-		S:HandleCheckBox(iTunesRemoteOptionsFrameCheckButton8)
-
 		S:HandleCheckBox(MacKeyboardOptionsFrameCheckButton9)
 		S:HandleCheckBox(MacKeyboardOptionsFrameCheckButton10)
 		S:HandleCheckBox(MacKeyboardOptionsFrameCheckButton11)
