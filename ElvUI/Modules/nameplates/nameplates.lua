@@ -650,6 +650,35 @@ function mod:UpdateVehicleStatus(event, unit)
 	end
 end
 
+function mod:PLAYER_REGEN_DISABLED()
+	if(self.db.showFriendlyCombat == "TOGGLE_ON") then
+		SetCVar("nameplateShowFriends", 1);
+	elseif(self.db.showFriendlyCombat == "TOGGLE_OFF") then
+		SetCVar("nameplateShowFriends", 0);
+	end
+
+	if(self.db.showEnemyCombat == "TOGGLE_ON") then
+		SetCVar("nameplateShowEnemies", 1);
+	elseif(self.db.showEnemyCombat == "TOGGLE_OFF") then
+		SetCVar("nameplateShowEnemies", 0);
+	end
+
+end
+
+function mod:PLAYER_REGEN_ENABLED()
+	if(self.db.showFriendlyCombat == "TOGGLE_ON") then
+		SetCVar("nameplateShowFriends", 0);
+	elseif(self.db.showFriendlyCombat == "TOGGLE_OFF") then
+		SetCVar("nameplateShowFriends", 1);
+	end
+
+	if(self.db.showEnemyCombat == "TOGGLE_ON") then
+		SetCVar("nameplateShowEnemies", 0);
+	elseif(self.db.showEnemyCombat == "TOGGLE_OFF") then
+		SetCVar("nameplateShowEnemies", 1);
+	end
+end
+
 function mod:Initialize()
 	self.db = E.db["nameplates"]
 	if E.private["nameplates"].enable ~= true then return end
@@ -672,6 +701,8 @@ function mod:Initialize()
 	InterfaceOptionsNamesPanelUnitNameplates:Kill()
 	NamePlateDriverFrame:UnregisterAllEvents()
 	NamePlateDriverFrame.ApplyFrameOptions = E.noop
+	self:RegisterEvent("PLAYER_REGEN_ENABLED");
+	self:RegisterEvent("PLAYER_REGEN_DISABLED");
 	self:RegisterEvent("NAME_PLATE_CREATED");
 	self:RegisterEvent("NAME_PLATE_UNIT_ADDED");
 	self:RegisterEvent("NAME_PLATE_UNIT_REMOVED");

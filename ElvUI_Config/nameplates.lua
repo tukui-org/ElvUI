@@ -529,6 +529,33 @@ E.Options.args.nameplate = {
 					name = L["StatusBar Texture"],
 					values = AceGUIWidgetLSMlists.statusbar,
 				},	
+				showEnemyCombat = {
+					order = 7,
+					type = "select",
+					name = L["Enemy Combat Toggle"],
+					desc = L["Control enemy nameplates toggling on or off when in combat."],
+					values = {
+						["DISABLED"] = L["Disabled"],
+						["TOGGLE_ON"] = L["Toggle On While In Combat"],
+						["TOGGLE_OFF"] = L["Toggle Off While In Combat"],
+					},
+					set = function(info, value) 
+						E.db.nameplates[ info[#info] ] = value; 
+						NP:PLAYER_REGEN_ENABLED()
+					end,
+				},
+				showFriendlyCombat = {
+					order = 7,
+					type = "select",
+					name = L["Friendly Combat Toggle"],
+					desc = L["Control friendly nameplates toggling on or off when in combat."],
+					values = {
+						["DISABLED"] = L["Disabled"],
+						["TOGGLE_ON"] = L["Toggle On While In Combat"],
+						["TOGGLE_OFF"] = L["Toggle Off While In Combat"],
+					},					
+					set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:PLAYER_REGEN_ENABLED() end,
+				},				
 				fontGroup = {
 					order = 100,
 					type = 'group',
