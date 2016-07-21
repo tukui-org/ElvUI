@@ -365,7 +365,7 @@ L["Sends your current profile to your target."] = "Envía tu perfil actual a tu 
 L["Sends your filter settings to your target."] = "Envía los ajustes de tus filtros a tu objetivo."
 L["Share Current Profile"] = "Compartir Perfil Actual"
 L["Share Filters"] = "Compartir Filtros"
-L["This feature will allow you to transfer, settings to other characters."] = "Esta característica te permitirá transferir ciertos ajustes a otros personajes."
+L["This feature will allow you to transfer settings to other characters."] = "Esta característica te permitirá transferir ciertos ajustes a otros personajes."
 L["You must be targeting a player."] = "Debes enfocar a un jugador."
 
 --General

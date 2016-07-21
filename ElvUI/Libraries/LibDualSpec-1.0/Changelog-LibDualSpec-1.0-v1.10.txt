@@ -1,0 +1,21 @@
+tag v1.10
+b5a82120457176a3def77f9a2766a1d8535b31c7
+Kyle Buller <bullerk@gmail.com>
+2016-07-18 00:51:56 -0500
+
+Tagging as v1.10
+
+
+--------------------
+
+Kyle Buller:
+	- Reset specs to the current profile if their profile is deleted.
+	Reimplementing the delete option to prevent listing all used profiles
+	would be a lot of work.
+	- Save a profile for each spec explicitly.
+Adirelle:
+	- TOC bump.
+	- New korean translation, provided by Arstraea.
+	- More debug.
+	- Added optional debug using AdiDebug.
+	- TOC bump.

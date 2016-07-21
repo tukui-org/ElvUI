@@ -413,7 +413,7 @@ L["Sends your current profile to your target."] = "대상에게 지금 활성화
 L["Sends your filter settings to your target."] = "대셍에게 지금 사용하고 있는 필터 설정을 전송합니다."
 L["Share Current Profile"] = "프로필설정 전송"
 L["Share Filters"] = "필터설정 전송"
-L["This feature will allow you to transfer, settings to other characters."] = "전송 기능을 통해 대상에게 자신의 설정을 넘겨줄 수 있습니다."
+L["This feature will allow you to transfer settings to other characters."] = "전송 기능을 통해 대상에게 자신의 설정을 넘겨줄 수 있습니다."
 L["You must be targeting a player."] = "유저를 대상으로 잡은 후에 시도해야 합니다."
 
 --General

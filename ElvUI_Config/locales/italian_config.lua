@@ -354,7 +354,7 @@ L["Sends your current profile to your target."] = true;
 L["Sends your filter settings to your target."] = true;
 L["Share Current Profile"] = true;
 L["Share Filters"] = true;
-L["This feature will allow you to transfer, settings to other characters."] = true;
+L["This feature will allow you to transfer settings to other characters."] = true;
 L["You must be targeting a player."] = true;
 
 --General

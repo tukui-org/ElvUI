@@ -17,7 +17,7 @@
 	<Include file='oUF_Plugins\oUF_Plugins.xml'/>
 	<Include file="LibActionButton-1.0\LibActionButton-1.0.xml"/>
 	<Script file="LibDataBroker\LibDataBroker-1.1.lua"/>
-	<!--<Script file="LibDualSpec-1.0\LibDualSpec-1.0.lua"/>-->
+	<Script file="LibDualSpec-1.0\LibDualSpec-1.0.lua"/>
 	<Script file="LibElvUIPlugin-1.0\LibElvUIPlugin-1.0.lua"/>
 	<Include file="UTF8\UTF8.xml"/>
 	<Include file="LibItemSearch-1.2\LibItemSearch-1.2.xml"/>

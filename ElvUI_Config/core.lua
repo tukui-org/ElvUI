@@ -1515,23 +1515,28 @@ E.Options.args.profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(E.data);
 AC:RegisterOptionsTable("ElvProfiles", E.Options.args.profiles)
 E.Options.args.profiles.order = -10
 
--- LibStub('LibDualSpec-1.0'):EnhanceOptions(E.Options.args.profiles, E.data)
+LibStub('LibDualSpec-1.0'):EnhanceOptions(E.Options.args.profiles, E.data)
 
 if not E.Options.args.profiles.plugins then
 	E.Options.args.profiles.plugins = {}
 end
 
 E.Options.args.profiles.plugins["ElvUI"] = {
-	desc = {
-		name = L["This feature will allow you to transfer, settings to other characters."],
+	spacer = {
+		order = 89,
 		type = 'description',
-		order = 40.4,
+		name = '\n\n',
+	},
+	desc = {
+		name = L["This feature will allow you to transfer settings to other characters."],
+		type = 'description',
+		order = 90,
 	},
 	distributeProfile = {
 		name = L["Share Current Profile"],
 		desc = L["Sends your current profile to your target."],
 		type = 'execute',
-		order = 40.5,
+		order = 91,
 		func = function()
 			if not UnitExists("target") or not UnitIsPlayer("target") or not UnitIsFriend("player", "target") or UnitIsUnit("player", "target") then
 				E:Print(L["You must be targeting a player."])
@@ -1549,7 +1554,7 @@ E.Options.args.profiles.plugins["ElvUI"] = {
 		name = L["Share Filters"],
 		desc = L["Sends your filter settings to your target."],
 		type = 'execute',
-		order = 40.6,
+		order = 92,
 		func = function()
 			if not UnitExists("target") or not UnitIsPlayer("target") or not UnitIsFriend("player", "target") or UnitIsUnit("player", "target") then
 				E:Print(L["You must be targeting a player."])
@@ -1564,21 +1569,21 @@ E.Options.args.profiles.plugins["ElvUI"] = {
 			end
 		end,
 	},
-	spacer = {
-		order = 40.7,
+	spacer2 = {
+		order = 93,
 		type = 'description',
 		name = '',
 	},
 	exportProfile = {
 		name = L["Export Profile"],
 		type = 'execute',
-		order = 40.8,
+		order = 94,
 		func = function() ExportImport_Open("export") end,
 	},
 	importProfile = {
 		name = L["Import Profile"],
 		type = 'execute',
-		order = 40.9,
+		order = 95,
 		func = function() ExportImport_Open("import") end,
 	},
 }

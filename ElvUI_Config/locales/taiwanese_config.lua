@@ -365,7 +365,7 @@ L["Sends your current profile to your target."] = "發送你的配置文件到�
 L["Sends your filter settings to your target."] = "發送你的過濾器配置到當前目標."
 L["Share Current Profile"] = "分享當前的配置文件"
 L["Share Filters"] = "分享過濾器配置"
-L["This feature will allow you to transfer, settings to other characters."] = "此功能將使你設置轉移給其他角色."
+L["This feature will allow you to transfer settings to other characters."] = "此功能將使你設置轉移給其他角色."
 L["You must be targeting a player."] = "你必須以一名玩家為目標."
 
 --General
