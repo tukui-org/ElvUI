@@ -1119,7 +1119,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			if ( self.privateMessageList and not self.privateMessageList[strlower(arg2)] ) then
 				return true;
 			elseif ( self.excludePrivateMessageList and self.excludePrivateMessageList[strlower(arg2)]
-				and ( (chatGroup == "WHISPER" and GetCVar("whisperMode") ~= "popout_and_inline") or (chatGroup == "BN_WHISPER" and GetCVar("bnWhisperMode") ~= "popout_and_inline") ) ) then
+				and ( (chatGroup == "WHISPER" and GetCVar("whisperMode") ~= "popout_and_inline") or (chatGroup == "BN_WHISPER" and GetCVar("whisperMode") ~= "popout_and_inline") ) ) then
 				return true;
 			end
 		end
@@ -1388,6 +1388,8 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 						body = format(_G["CHAT_"..type.."_GET"]..message, pflag..playerLink..coloredName.."|h");
 					elseif ( type == "TEXT_EMOTE") then
 						body = gsub(message, arg2, pflag..playerLink..coloredName.."|h", 1);
+					elseif (type == "GUILD_ITEM_LOOTED") then
+						body = gsub(message, "$s", "|Hplayer:"..arg2.."|h".."["..coloredName.."]".."|h");
 					else
 						body = format(_G["CHAT_"..type.."_GET"]..message, pflag..playerLink.."["..coloredName.."]".."|h");
 					end
