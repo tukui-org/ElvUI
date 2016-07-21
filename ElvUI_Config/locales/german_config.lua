@@ -235,7 +235,7 @@ L["Attempt to lock the left and right chat frame positions. Disabling this optio
 L["Below Chat"] = "Unter dem Chat"
 L["Chat EditBox Position"] = "Position der Texteingabeleiste"
 L["Chat History"] = "Chatverlauf"
-L["Class Color Mentions"] = true;
+L["Class Color Mentions"] = "Erwähnung in Klassenfarbe"
 L["Copy Text"] = "Text kopieren"
 L["Display LFG Icons in group chat."] = "LFG Symbole im Gruppenchat anzeigen"
 L["Display the hyperlink tooltip while hovering over a hyperlink."] = "Zeigt den Hyperlink Tooltip beim Überfahren eines Hyperlinks."
