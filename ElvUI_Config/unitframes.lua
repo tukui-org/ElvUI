@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
+local NP = E:GetModule("NamePlates")
 local _, ns = ...
 local ElvUF = ns.oUF
 
@@ -2194,6 +2195,7 @@ E.Options.args.unitframe = {
 								local t = E.db.unitframe.colors.power[ info[#info] ]
 								t.r, t.g, t.b = r, g, b
 								UF:Update_AllFrames()
+								NP:ConfigureAll()
 							end,
 							args = {
 								powerclass = {
