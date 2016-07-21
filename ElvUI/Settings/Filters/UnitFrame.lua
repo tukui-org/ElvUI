@@ -955,16 +955,14 @@ G.unitframe.ChannelTicks = {
 	[SpellName(755)] = 6, -- Health Funnel
 	-- [SpellName(103103)] = 4, --Malefic Grasp
 	--Druid
-	-- [SpellName(16914)] = 10, -- "Hurricane"
 	--Priest
 	[SpellName(48045)] = 5, -- "Mind Sear"
 	[SpellName(179338)] = 5, -- "Searing insanity"
 	[SpellName(64843)] = 4, -- Divine Hymn
+	[SpellName(15407)] = 4, -- Mind Flay
 	--Mage
 	[SpellName(5143)] = 5, -- "Arcane Missiles"
-	-- [SpellName(10)] = 8, -- "Blizzard"
 	[SpellName(12051)] = 3, -- "Evocation"
-
 	--Monk
 	[SpellName(115175)] = 9, -- "Smoothing Mist"
 }
@@ -988,7 +986,7 @@ f:SetScript("OnEvent", function(self, event)
 		--E.global.unitframe.ChannelTicks[SpellName(129197)] = mfTicks -- "Mind Flay (Insanity)"
 	end
 
-	local penanceTicks = 2
+	local penanceTicks = 3
 	local equippedPriestTier17 = 0
 	for _, item in pairs(priestTier17) do
 		if IsEquippedItem(item) then
@@ -996,7 +994,7 @@ f:SetScript("OnEvent", function(self, event)
 		end
 	end
 	if equippedPriestTier17 >= 2 then
-		penanceTicks = 3
+		penanceTicks = 4
 	end
 	E.global.unitframe.ChannelTicks[SpellName(47540)] = penanceTicks --Penance
 end)
@@ -1004,14 +1002,11 @@ end)
 G.unitframe.ChannelTicksSize = {
 	--Warlock
 	[SpellName(689)] = 1, -- "Drain Life"
-	-- [SpellName(108371)] = 1, -- "Harvest Life"
-	-- [SpellName(103103)] = 1, -- "Malefic Grasp"
 }
 
 --Spells Effected By Haste
 G.unitframe.HastedChannelTicks = {
-	--[SpellName(64901)] = true, -- Hymn of Hope
-	-- [SpellName(64843)] = true, -- Divine Hymn
+
 }
 
 --This should probably be the same as the whitelist filter + any personal class ones that may be important to watch
