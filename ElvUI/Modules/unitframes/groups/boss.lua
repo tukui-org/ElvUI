@@ -41,6 +41,7 @@ function UF:Construct_BossFrames(frame)
 	frame.Castbar = self:Construct_Castbar(frame, 'RIGHT')
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)
 	frame.AltPowerBar = self:Construct_AltPowerBar(frame)
+	frame.ClassBar = "AltPowerBar"
 	frame.Range = UF:Construct_Range(frame)
 	frame:SetAttribute("type2", "focus")
 	frame.customTexts = {}
