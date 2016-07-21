@@ -975,17 +975,6 @@ f:SetScript("OnEvent", function(self, event)
 	local class = select(2, UnitClass("player"))
 	if lower(class) ~= "priest" then return; end
 
-	if event == "PLAYER_ENTERING_WORLD" then
-		self:UnregisterEvent("PLAYER_ENTERING_WORLD")
-
-		local mfTicks = 3
-		if IsSpellKnown(157223) then --Enhanced Mind Flay
-			mfTicks = 4
-		end
-		E.global.unitframe.ChannelTicks[SpellName(15407)] = mfTicks -- "Mind Flay"
-		--E.global.unitframe.ChannelTicks[SpellName(129197)] = mfTicks -- "Mind Flay (Insanity)"
-	end
-
 	local penanceTicks = 3
 	local equippedPriestTier17 = 0
 	for _, item in pairs(priestTier17) do
