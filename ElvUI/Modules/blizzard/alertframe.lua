@@ -111,8 +111,8 @@ function B:GroupLootContainer_Update()
 		local prevFrame = self.rollFrames[i-1]
 		if ( frame ) then
 			frame:ClearAllPoints();
-			if prevFrame then
-				frame:SetPoint(POSITION, prevFrame or self, ANCHOR_POINT, 0, YOFFSET);
+			if prevFrame and not (prevFrame == frame) then
+				frame:SetPoint(POSITION, prevFrame, ANCHOR_POINT, 0, YOFFSET);
 			else
 				frame:SetPoint("CENTER", self, "BOTTOM", 0, self.reservedSize * (i-1 + 0.5));
 			end
