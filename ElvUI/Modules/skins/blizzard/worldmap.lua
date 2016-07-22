@@ -68,6 +68,7 @@ local function LoadSkin()
 	}
 
 	local function HandleReward(frame)
+		if frame.backdrop then return end
 		frame.NameFrame:SetAlpha(0)
 		frame.Icon:SetTexCoord(unpack(E.TexCoords))
 		frame:CreateBackdrop()
