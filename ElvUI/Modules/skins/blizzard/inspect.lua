@@ -102,17 +102,6 @@ local function LoadSkin()
 		end)
 	end
 
-	hooksecurefunc('InspectPaperDollItemSlotButton_Update', function(button)
-		local unit = InspectFrame.unit;
-		local quality = GetInventoryItemQuality(unit, button:GetID())
-		if quality and button.backdrop then
-			local r, g, b = GetItemQualityColor(quality)
-			button.backdrop:SetBackdropBorderColor(r, g ,b)
-		elseif button.backdrop then
-			button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-		end
-	end)
-
 	InspectPVPFrame.BG:Kill()
 	InspectGuildFrameBG:Kill()
 	InspectTalentFrame:StripTextures()
