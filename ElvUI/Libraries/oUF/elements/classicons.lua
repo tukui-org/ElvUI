@@ -61,7 +61,7 @@ local ClassPowerEnable, ClassPowerDisable
 local RequireSpec, RequireSpell, RequirePower
 
 local UpdateTexture = function(element)
-	local color = oUF.colors.power[ClassPowerType]
+	local color = oUF.colors.power[ClassPowerType or 'COMBO_POINTS']
 	for i = 1, #element do
 		local icon = element[i]
 		if(icon.SetDesaturated) then
