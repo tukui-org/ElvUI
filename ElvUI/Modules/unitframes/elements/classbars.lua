@@ -417,7 +417,7 @@ function UF:PostUpdateAdditionalPower(unit, min, max, event)
 	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 
-	if ((min ~= max or not db.classbar.autoHide) and (event ~= "ElementDisable")) then
+	if ((min ~= max or (not db.classbar.autoHide and frame.USE_CLASSBAR)) and (event ~= "ElementDisable")) then
 		if db.classbar.additionalPowerText then
 			local powerValue = frame.Power.value
 			local powerValueText = powerValue:GetText()
