@@ -940,3 +940,17 @@ ElvUF.Tags.Methods['classificationcolor'] = function(unit)
 		return Hex(1, 0, 0) --Red
 	end
 end
+
+ElvUF.Tags.Events['guild'] = 'PLAYER_GUILD_UPDATE'
+ElvUF.Tags.Methods['guild'] = function(unit)
+	local guildName = GetGuildInfo(unit)
+
+	return guildName or ""
+end
+
+ElvUF.Tags.Events['guild:brackets'] = 'PLAYER_GUILD_UPDATE'
+ElvUF.Tags.Methods['guild:brackets'] = function(unit)
+	local guildName = GetGuildInfo(unit)
+
+	return guildName and format("<%s>", guildName) or ""
+end
