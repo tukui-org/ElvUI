@@ -103,43 +103,6 @@ local function LoadSkin()
 			self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end)
 	end
-
-	hooksecurefunc("VoidStorage_ItemsUpdate", function(doDeposit, doContents)
-		local self = VoidStorageFrame;
-		if ( doDeposit ) then
-			for i=1, 9 do
-				local button = _G["VoidStorageDepositButton"..i]
-				local _, _, quality = GetVoidTransferDepositInfo(i);
-				if (quality and quality > LE_ITEM_QUALITY_COMMON and BAG_ITEM_QUALITY_COLORS[quality]) then
-					button:SetBackdropBorderColor(BAG_ITEM_QUALITY_COLORS[quality].r, BAG_ITEM_QUALITY_COLORS[quality].g, BAG_ITEM_QUALITY_COLORS[quality].b);
-				else
-					button:SetTemplate()
-				end
-			end
-		end
-
-		if ( doContents ) then
-			for i=1, 9 do
-				local button = _G["VoidStorageWithdrawButton"..i]
-				local _, _, quality = GetVoidTransferWithdrawalInfo(i);
-				if (quality and quality > LE_ITEM_QUALITY_COMMON and BAG_ITEM_QUALITY_COLORS[quality]) then
-					button:SetBackdropBorderColor(BAG_ITEM_QUALITY_COLORS[quality].r, BAG_ITEM_QUALITY_COLORS[quality].g, BAG_ITEM_QUALITY_COLORS[quality].b);
-				else
-					button:SetTemplate()
-				end
-			end
-
-			for i = 1, 80 do
-				local button = _G["VoidStorageStorageButton"..i]
-				local _, _, _, _, _, quality = GetVoidItemInfo(self.page, i);
-				if (quality and quality > LE_ITEM_QUALITY_COMMON and BAG_ITEM_QUALITY_COLORS[quality]) then
-					button:SetBackdropBorderColor(BAG_ITEM_QUALITY_COLORS[quality].r, BAG_ITEM_QUALITY_COLORS[quality].g, BAG_ITEM_QUALITY_COLORS[quality].b);
-				else
-					button:SetTemplate()
-				end
-			end
-		end
-	end)
 end
 
 S:RegisterSkin("Blizzard_VoidStorageUI", LoadSkin)
