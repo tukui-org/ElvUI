@@ -92,6 +92,14 @@ local function LoadSkin()
 		slot:SetFrameLevel(slot:GetFrameLevel() + 2)
 		slot:CreateBackdrop("Default")
 		slot.backdrop:SetAllPoints()
+
+		hooksecurefunc(slot.IconBorder, 'SetVertexColor', function(self, r, g, b)
+			self:GetParent():SetBackdropBorderColor(r,g,b)
+			self:SetTexture("")
+		end)
+		hooksecurefunc(slot.IconBorder, 'Hide', function(self)
+			self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
+		end)
 	end
 
 	hooksecurefunc('InspectPaperDollItemSlotButton_Update', function(button)

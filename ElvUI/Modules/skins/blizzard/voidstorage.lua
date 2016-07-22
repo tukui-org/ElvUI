@@ -59,11 +59,23 @@ local function LoadSkin()
 
 		button_d:StyleButton()
 		button_d:SetTemplate()
-		button_d.IconBorder:SetAlpha(0)
+		hooksecurefunc(button_d.IconBorder, 'SetVertexColor', function(self, r, g, b)
+			self:GetParent():SetBackdropBorderColor(r,g,b)
+			self:SetTexture("")
+		end)
+		hooksecurefunc(button_d.IconBorder, 'Hide', function(self)
+			self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
+		end)
 
 		button_w:StyleButton()
 		button_w:SetTemplate()
-		button_w.IconBorder:SetAlpha(0)
+		hooksecurefunc(button_w.IconBorder, 'SetVertexColor', function(self, r, g, b)
+			self:GetParent():SetBackdropBorderColor(r,g,b)
+			self:SetTexture("")
+		end)
+		hooksecurefunc(button_w.IconBorder, 'Hide', function(self)
+			self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
+		end)
 
 		icon_d:SetTexCoord(unpack(E.TexCoords))
 		icon_d:SetInside()
@@ -83,45 +95,14 @@ local function LoadSkin()
 
 		icon:SetTexCoord(unpack(E.TexCoords))
 		icon:SetInside()
-		button.IconBorder:SetAlpha(0)
+		hooksecurefunc(button.IconBorder, 'SetVertexColor', function(self, r, g, b)
+			self:GetParent():SetBackdropBorderColor(r,g,b)
+			self:SetTexture("")
+		end)
+		hooksecurefunc(button.IconBorder, 'Hide', function(self)
+			self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
+		end)
 	end
-
-	hooksecurefunc("VoidStorage_ItemsUpdate", function(doDeposit, doContents)
-		local self = VoidStorageFrame;
-		if ( doDeposit ) then
-			for i=1, 9 do
-				local button = _G["VoidStorageDepositButton"..i]
-				local _, _, quality = GetVoidTransferDepositInfo(i);
-				if (quality and quality > LE_ITEM_QUALITY_COMMON and BAG_ITEM_QUALITY_COLORS[quality]) then
-					button:SetBackdropBorderColor(BAG_ITEM_QUALITY_COLORS[quality].r, BAG_ITEM_QUALITY_COLORS[quality].g, BAG_ITEM_QUALITY_COLORS[quality].b);
-				else
-					button:SetTemplate()
-				end
-			end
-		end
-
-		if ( doContents ) then
-			for i=1, 9 do
-				local button = _G["VoidStorageWithdrawButton"..i]
-				local _, _, quality = GetVoidTransferWithdrawalInfo(i);
-				if (quality and quality > LE_ITEM_QUALITY_COMMON and BAG_ITEM_QUALITY_COLORS[quality]) then
-					button:SetBackdropBorderColor(BAG_ITEM_QUALITY_COLORS[quality].r, BAG_ITEM_QUALITY_COLORS[quality].g, BAG_ITEM_QUALITY_COLORS[quality].b);
-				else
-					button:SetTemplate()
-				end
-			end
-
-			for i = 1, 80 do
-				local button = _G["VoidStorageStorageButton"..i]
-				local _, _, _, _, _, quality = GetVoidItemInfo(self.page, i);
-				if (quality and quality > LE_ITEM_QUALITY_COMMON and BAG_ITEM_QUALITY_COLORS[quality]) then
-					button:SetBackdropBorderColor(BAG_ITEM_QUALITY_COLORS[quality].r, BAG_ITEM_QUALITY_COLORS[quality].g, BAG_ITEM_QUALITY_COLORS[quality].b);
-				else
-					button:SetTemplate()
-				end
-			end
-		end
-	end)
 end
 
 S:RegisterSkin("Blizzard_VoidStorageUI", LoadSkin)
