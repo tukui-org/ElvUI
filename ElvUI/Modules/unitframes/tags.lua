@@ -75,7 +75,7 @@ local DEAD = DEAD
 local PVP = PVP
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: Hex
+-- GLOBALS: Hex, PowerBarColor
 
 ------------------------------------------------------------------------
 --	Tags
@@ -361,6 +361,16 @@ ElvUF.Tags.Methods['power:max'] = function(unit)
 	local max = UnitPowerMax(unit, UnitPowerType(unit))
 
 	return E:GetFormattedText('CURRENT', max, max)
+end
+
+ElvUF.Tags.Methods['manacolor'] = function(unit)
+	local altR, altG, altB = PowerBarColor["MANA"]
+	local color = ElvUF['colors'].power["MANA"]
+	if color then
+		return Hex(color[1], color[2], color[3])
+	else
+		return Hex(altR, altG, altB)
+	end
 end
 
 ElvUF.Tags.Events['mana:current'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
