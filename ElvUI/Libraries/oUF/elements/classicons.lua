@@ -58,7 +58,7 @@ local _, PlayerClass = UnitClass'player'
 -- Holds the class specific stuff.
 local ClassPowerID, ClassPowerType
 local ClassPowerEnable, ClassPowerDisable
-local RequireSpec, RequireSpell, RequirePower
+local RequireSpec, RequireSpell, RequireFormID
 
 local UpdateTexture = function(element)
 	local color = oUF.colors.power[ClassPowerType or 'COMBO_POINTS']
@@ -154,13 +154,24 @@ local function Visibility(self, event, unit)
 		shouldEnable = true
 	elseif(ClassPowerID) then
 		if(not RequireSpec or RequireSpec == GetSpecialization()) then
-			if(not RequireSpell or IsPlayerSpell(RequireSpell)) then
-				if(not RequirePower or RequirePower == UnitPowerType('player')) then
-					self:UnregisterEvent('SPELLS_CHANGED', Visibility)
-					shouldEnable = true
+			if(not RequireFormID or RequireFormID == GetShapeshiftFormID()) then
+				if(not RequireSpell or IsPlayerSpell(RequireSpell)) then
+					if(not RequirePower or RequirePower == UnitPowerType('player')) then
+						self:UnregisterEvent('SPELLS_CHANGED', Visibility)
+						shouldEnable = true
+					else
+						self:RegisterEvent('SPELLS_CHANGED', Visibility, true)
+					end
 				else
 					self:RegisterEvent('SPELLS_CHANGED', Visibility, true)
 				end
+			end
+		end
+		
+		if(not RequireSpec or RequireSpec == GetSpecialization()) then
+			if(not RequireSpell or IsPlayerSpell(RequireSpell)) then
+				self:UnregisterEvent('SPELLS_CHANGED', Visibility)
+				shouldEnable = true
 			else
 				self:RegisterEvent('SPELLS_CHANGED', Visibility, true)
 			end
@@ -247,7 +258,7 @@ do
 		ClassPowerType = 'COMBO_POINTS'
 
 		if(isBetaClient and PlayerClass == 'DRUID') then
-			RequirePower = SPELL_POWER_ENERGY
+			RequireFormID = 1 --CAT_FORM
 			RequireSpell = 5221 -- Shred
 		end
 	elseif(PlayerClass == 'MAGE' and isBetaClient) then
@@ -269,6 +280,10 @@ local Enable = function(self, unit)
 
 	if(RequireSpec) then
 		self:RegisterEvent('PLAYER_TALENT_UPDATE', VisibilityPath, true)
+	end
+
+	if(RequireFormID) then
+		self:RegisterEvent('UPDATE_SHAPESHIFT_FORM', VisibilityPath, true)
 	end
 
 	element.ClassPowerEnable = ClassPowerEnable
