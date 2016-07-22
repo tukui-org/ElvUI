@@ -70,7 +70,7 @@ local function LoadSkin()
 	LFDRoleCheckPopupRoleButtonHealer:GetChildren():SetFrameLevel(LFDRoleCheckPopupRoleButtonHealer:GetChildren():GetFrameLevel() + 1)
 
 	-- reskin popup buttons
-	for i = 1, 3 do
+	for i = 1, 4 do
 		for j = 1, 3 do
 			S:HandleButton(_G["StaticPopup"..i.."Button"..j])
 			S:HandleEditBox(_G["StaticPopup"..i.."EditBox"])
