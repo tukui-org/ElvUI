@@ -228,7 +228,6 @@ function UF:PostUpdatePower(unit, min, max)
 
 	--Force update to AdditionalPower in order to reposition text if necessary
 	if parent:IsElementEnabled("AdditionalPower") then
-		-- E:Delay(0.01, parent.AdditionalPower.ForceUpdate, parent.AdditionalPower) --Delay it slightly so Power text has a chance to clear itself first
-		parent.AdditionalPower:ForceUpdate()
+		E:Delay(0.01, parent.AdditionalPower.ForceUpdate, parent.AdditionalPower) --Delay it slightly so Power text has a chance to clear itself first
 	end
 end
