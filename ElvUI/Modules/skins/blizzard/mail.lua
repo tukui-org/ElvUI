@@ -65,6 +65,13 @@ local function LoadSkin()
 				b:SetTemplate("Default", true)
 				b:StyleButton()
 				b.skinned = true
+				hooksecurefunc(b.IconBorder, 'SetVertexColor', function(self, r, g, b)
+					self:GetParent():SetBackdropBorderColor(r, g, b)
+					self:SetTexture("")
+				end)
+				hooksecurefunc(b.IconBorder, 'Hide', function(self)
+					self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
+				end)
 			end
 			local t = b:GetNormalTexture()
 			if t then
