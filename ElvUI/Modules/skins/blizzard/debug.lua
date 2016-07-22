@@ -40,12 +40,13 @@ local function LoadSkin()
 	  insets = { left = -noscalemult, right = -noscalemult, top = -noscalemult, bottom = -noscalemult}
 	}
 
-	for i=1, ScriptErrorsFrame:GetNumChildren() do
-		local child = select(i, ScriptErrorsFrame:GetChildren())
-		if child:GetObjectType() == "Button" and not child:GetName() then
-			S:HandleButton(child)
-		end
-	end
+	S:HandleButton(ScriptErrorsFrame.reload)
+	S:HandleButton(ScriptErrorsFrame.reload)
+	S:HandleButton(ScriptErrorsFrame.close)
+	S:HandleButton(ScriptErrorsFrame.firstButton)
+	S:HandleButton(ScriptErrorsFrame.lastButton)
+	S:HandleNextPrevButton(ScriptErrorsFrame.previous, nil, true)
+	S:HandleNextPrevButton(ScriptErrorsFrame.next)
 
 	FrameStackTooltip:HookScript("OnShow", function(self)
 		local noscalemult = E.mult * GetCVar('uiScale')

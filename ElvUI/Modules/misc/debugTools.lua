@@ -55,7 +55,6 @@ function D:ModifyErrorFrame()
 	end
 	ScriptErrorsFrameScrollFrameText:HookScript("OnEscapePressed", UnHighlightText)
 
-
 	ScriptErrorsFrame:SetSize(500, 300)
 	ScriptErrorsFrameScrollFrame:SetSize(ScriptErrorsFrame:GetWidth() - 45, ScriptErrorsFrame:GetHeight() - 71)
 
@@ -65,7 +64,7 @@ function D:ModifyErrorFrame()
 
 	-- Add a first button
 	local firstButton = CreateFrame("Button", nil, ScriptErrorsFrame, "UIPanelButtonTemplate")
-	firstButton:Point("BOTTOM", ScriptErrorsFrame, "BOTTOM", -((BUTTON_WIDTH + BUTTON_WIDTH/2) + (BUTTON_SPACING * 4)), 8)
+	firstButton:Point("BOTTOMRIGHT", ScriptErrorsFrame.previous, "BOTTOMLEFT", -BUTTON_SPACING, 0)
 	firstButton:SetText("First")
 	firstButton:Height(BUTTON_HEIGHT)
 	firstButton:Width(BUTTON_WIDTH)
@@ -86,23 +85,6 @@ function D:ModifyErrorFrame()
 		ScriptErrorsFrame_Update()
 	end)
 	ScriptErrorsFrame.lastButton = lastButton
-
-	ScriptErrorsFrame.previous:ClearAllPoints()
-	ScriptErrorsFrame.previous:Point("BOTTOMLEFT", firstButton, "BOTTOMRIGHT", BUTTON_SPACING, 0)
-	ScriptErrorsFrame.previous:Width(BUTTON_WIDTH)
-	ScriptErrorsFrame.previous:Height(BUTTON_HEIGHT)
-
-	ScriptErrorsFrame.next:ClearAllPoints()
-	ScriptErrorsFrame.next:Point("BOTTOMLEFT", ScriptErrorsFrame.previous, "BOTTOMRIGHT", BUTTON_SPACING, 0)
-	ScriptErrorsFrame.next:Width(BUTTON_WIDTH)
-	ScriptErrorsFrame.next:Height(BUTTON_HEIGHT)
-
-	ScriptErrorsFrame.close:ClearAllPoints()
-	ScriptErrorsFrame.close:Point("BOTTOMRIGHT", ScriptErrorsFrame, "BOTTOMRIGHT", -8, 8)
-	ScriptErrorsFrame.close:SetSize(75, BUTTON_HEIGHT)
-
-	ScriptErrorsFrame.indexLabel:ClearAllPoints()
-	ScriptErrorsFrame.indexLabel:Point("BOTTOMLEFT", ScriptErrorsFrame, "BOTTOMLEFT", -6, 8)
 end
 
 function D:ScriptErrorsFrame_UpdateButtons()
