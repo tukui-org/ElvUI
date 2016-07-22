@@ -415,15 +415,14 @@ end
 
 function UF:PostUpdateAdditionalPower(unit, min, max, event)
 	local frame = self.origParent or self:GetParent()
-	local powerValue = frame.Power.value
-	local powerValueText = powerValue:GetText()
-	local powerValueParent = powerValue:GetParent()
 	local db = frame.db
-
-	local powerTextPosition = db.power.position
 
 	if ((min ~= max or not db.classbar.autoHide) and (event ~= "ElementDisable")) then
 		if db.classbar.additionalPowerText then
+			local powerValue = frame.Power.value
+			local powerValueText = powerValue:GetText()
+			local powerValueParent = powerValue:GetParent()
+			local powerTextPosition = db.power.position
 			local color = ElvUF['colors'].power['MANA']
 			color = E:RGBToHex(color[1], color[2], color[3])
 
