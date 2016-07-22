@@ -15,23 +15,21 @@ local MAX_TOTEMS = MAX_TOTEMS
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: LeftChatPanel
 
-function TOTEMS:Update(event)
-	local displayedTotems = 0
+function TOTEMS:Update()
+	local _, button, startTime, duration, icon
+
 	for i=1, MAX_TOTEMS do
-		local haveTotem, name, startTime, duration, icon = GetTotemInfo(i);
-		if haveTotem and icon and icon ~= '' then
+		button = _G["TotemFrameTotem"..i];
+		_, _, startTime, duration, icon = GetTotemInfo(button.slot);
+
+		if button:IsShown() then
 			self.bar[i]:Show()
 			self.bar[i].iconTexture:SetTexture(icon)
-			displayedTotems = displayedTotems + 1
 			CooldownFrame_Set(self.bar[i].cooldown, startTime, duration, 1)
 
-			for d=1, MAX_TOTEMS do
-				if _G['TotemFrameTotem'..d..'IconTexture']:GetTexture() == icon then
-					_G['TotemFrameTotem'..d]:ClearAllPoints();
-					_G['TotemFrameTotem'..d]:SetParent(self.bar[i].holder);
-					_G['TotemFrameTotem'..d]:SetAllPoints(self.bar[i].holder);
-				end
-			end
+			button:ClearAllPoints();
+			button:SetParent(self.bar[i].holder);
+			button:SetAllPoints(self.bar[i].holder);
 		else
 			self.bar[i]:Hide()
 		end
@@ -101,7 +99,6 @@ function TOTEMS:Initialize()
 	self.db = E.db.general.totems
 
 	local bar = CreateFrame('Frame', 'ElvUI_TotemBar', E.UIParent)
-	bar = CreateFrame('Frame', 'ElvUI_TotemBar', E.UIParent)
 	bar:Point('TOPLEFT', LeftChatPanel, 'TOPRIGHT', 14, 0)
 	self.bar = bar;
 
@@ -125,9 +122,9 @@ function TOTEMS:Initialize()
 		E:RegisterCooldown(frame.cooldown)
 		self.bar[i] = frame;
 	end
-	
+
 	self:PositionAndSize()
-	
+
 	E:CreateMover(bar, 'TotemBarMover', L["Class Bar"]);
 	self:ToggleEnable()
 end
