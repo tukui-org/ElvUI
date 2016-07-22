@@ -218,6 +218,14 @@ local function LoadSkin()
 				if not button.backdrop then
 					button:CreateBackdrop("Default")
 					button.backdrop:SetAllPoints()
+
+					hooksecurefunc(button.IconBorder, 'SetVertexColor', function(self, r, g, b)
+						self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
+						self:SetTexture("")
+					end)
+					hooksecurefunc(button.IconBorder, 'Hide', function(self)
+						self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+					end)
 				end
 
 				icon:SetInside()
