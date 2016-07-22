@@ -41,7 +41,6 @@ local function LoadSkin()
 	}
 
 	S:HandleButton(ScriptErrorsFrame.reload)
-	S:HandleButton(ScriptErrorsFrame.reload)
 	S:HandleButton(ScriptErrorsFrame.close)
 	S:HandleButton(ScriptErrorsFrame.firstButton)
 	S:HandleButton(ScriptErrorsFrame.lastButton)
