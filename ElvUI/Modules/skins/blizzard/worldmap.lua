@@ -64,12 +64,10 @@ local function LoadSkin()
 	local rewardFrames = {
 		['MoneyFrame'] = true,
 		['XPFrame'] = true,
-		['SpellFrame'] = true,
 		['SkillPointFrame'] = true, -- this may have extra textures.. need to check on it when possible
 	}
 
-	-- Seems to be removed in legion
-	--[[local function HandleReward(frame)
+	local function HandleReward(frame)
 		frame.NameFrame:SetAlpha(0)
 		frame.Icon:SetTexCoord(unpack(E.TexCoords))
 		frame:CreateBackdrop()
@@ -87,17 +85,18 @@ local function LoadSkin()
 		HandleReward(MapQuestInfoRewardsFrame[frame])
 	end
 
-
 	hooksecurefunc('QuestInfo_GetRewardButton', function(rewardsFrame, index)
 		local button = MapQuestInfoRewardsFrame.RewardButtons[index]
 		if(button) then
 			HandleReward(button)
 		end
-	end)]]
+	end)
 
 	S:HandleNextPrevButton(WorldMapFrame.UIElementsFrame.OpenQuestPanelButton)
 	S:HandleNextPrevButton(WorldMapFrame.UIElementsFrame.CloseQuestPanelButton)
 	SquareButton_SetIcon(WorldMapFrame.UIElementsFrame.CloseQuestPanelButton, 'LEFT')
+	
+	WorldMapTooltip.BackdropFrame:Kill()
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)
