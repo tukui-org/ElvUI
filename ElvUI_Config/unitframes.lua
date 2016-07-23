@@ -2718,6 +2718,52 @@ E.Options.args.unitframe.args.player = {
 						["UIPARENT"] = "UIPARENT",
 					},
 				},
+				strataAndLevel = {
+					order = 20,
+					type = "group",
+					name = L["Strata and Level"],
+					get = function(info) return E.db.unitframe.units['player']['classbar']["strataAndLevel"][ info[#info] ] end,
+					set = function(info, value) E.db.unitframe.units['player']['classbar']["strataAndLevel"][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
+					guiInline = true,
+					disabled = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
+					hidden = function() return not E.db.unitframe.units['player']['classbar'].detachFromFrame end,
+					args = {
+						useCustomStrata = {
+							order = 1,
+							type = "toggle",
+							name = L["Use Custom Strata"],
+						},
+						frameStrata = {
+							order = 2,
+							type = "select",
+							name = L["Frame Strata"],
+							values = {
+								["BACKGROUND"] = "BACKGROUND",
+								["LOW"] = "LOW",
+								["MEDIUM"] = "MEDIUM",
+								["HIGH"] = "HIGH",
+								["DIALOG"] = "DIALOG",
+								["TOOLTIP"] = "TOOLTIP",
+							},
+						},
+						spacer = {
+							order = 3,
+							type = "description",
+							name = "",
+						},
+						useCustomLevel = {
+							order = 4,
+							type = "toggle",
+							name = L["Use Custom Level"],
+						},
+						frameLevel = {
+							order = 5,
+							type = "range",
+							name = L["Frame Level"],
+							min = 0, max = 128, step = 1,
+						},
+					},
+				},
 			},
 		},
 		pvp = {

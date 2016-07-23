@@ -914,6 +914,12 @@ P['unitframe'] = {
 				["parent"] = "FRAME",
 				["verticalOrientation"] = false,
 				["additionalPowerText"] = true,
+				["strataAndLevel"] = {
+					["useCustomStrata"] = false,
+					["frameStrata"] = "LOW",
+					["useCustomLevel"] = false,
+					["frameLevel"] = 1,
+				},
 			},
 			['aurabar'] = {
 				['enable'] = true,
