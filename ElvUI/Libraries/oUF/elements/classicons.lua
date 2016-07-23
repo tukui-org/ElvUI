@@ -167,15 +167,6 @@ local function Visibility(self, event, unit)
 				end
 			end
 		end
-		
-		if(not RequireSpec or RequireSpec == GetSpecialization()) then
-			if(not RequireSpell or IsPlayerSpell(RequireSpell)) then
-				self:UnregisterEvent('SPELLS_CHANGED', Visibility)
-				shouldEnable = true
-			else
-				self:RegisterEvent('SPELLS_CHANGED', Visibility, true)
-			end
-		end
 	end
 
 	local isEnabled = element.isEnabled
