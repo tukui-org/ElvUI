@@ -1,18 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('NamePlates')
 local LSM = LibStub("LibSharedMedia-3.0")
-
---Cache global variables
---Lua functions
-local select, unpack = select, unpack
---WoW API / Variables
-local CreateFrame = CreateFrame
-local GetTime = GetTime
-local UnitCastingInfo = UnitCastingInfo
-local UnitChannelInfo = UnitChannelInfo
-local FAILED = FAILED
-local INTERRUPTED = INTERRUPTED
-
 function mod:UpdateElement_CastBarOnUpdate(elapsed)
 	if ( self.casting ) then
 		self.value = self.value + elapsed;
@@ -40,7 +28,7 @@ end
 
 function mod:UpdateElement_Cast(frame, event, ...)
 	if(self.db.units[frame.UnitType].castbar.enable ~= true) then return end
-
+	
 	local arg1 = ...;
 	local unit = frame.displayedUnit
 	if ( event == "PLAYER_ENTERING_WORLD" ) then
@@ -56,10 +44,10 @@ function mod:UpdateElement_Cast(frame, event, ...)
 		    frame.CastBar:Hide()
 		end
 	end
-
+	
 	if ( arg1 ~= unit ) then
 		return;
-	end
+	end		
 
 	if ( event == "UNIT_SPELLCAST_START" ) then
 		local name, nameSubtext, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible = UnitCastingInfo(unit);
@@ -69,7 +57,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 		end
 
 		frame.CastBar.canInterrupt = not notInterruptible
-
+		
 		if ( frame.CastBar.Spark ) then
 			frame.CastBar.Spark:Show();
 		end
@@ -144,8 +132,8 @@ function mod:UpdateElement_Cast(frame, event, ...)
 			if ( not frame.CastBar.casting ) then
 				if ( frame.CastBar.Spark ) then
 					frame.CastBar.Spark:Show();
-				end
-
+				end			
+				
 				frame.CastBar.casting = true;
 				frame.CastBar.channeling = nil;
 			end
@@ -162,7 +150,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 		frame.CastBar.maxValue = (endTime - startTime) / 1000;
 		frame.CastBar:SetMinMaxValues(0, frame.CastBar.maxValue);
 		frame.CastBar:SetValue(frame.CastBar.value);
-
+		
 		if ( frame.CastBar.Text ) then
 			frame.CastBar.Text:SetText(text);
 		end
@@ -195,14 +183,14 @@ function mod:UpdateElement_Cast(frame, event, ...)
 	elseif ( event == "UNIT_SPELLCAST_NOT_INTERRUPTIBLE" ) then
 		frame.CastBar.canInterrupt = nil
 	end
-
+	
 	if(frame.CastBar.canInterrupt) then
 		frame.CastBar:SetStatusBarColor(self.db.castColor.r, self.db.castColor.g, self.db.castColor.b)
 	else
 		frame.CastBar:SetStatusBarColor(self.db.castNoInterruptColor.r, self.db.castNoInterruptColor.g, self.db.castNoInterruptColor.b)
 	end
 	frame.CastBar.canInterrupt = nil
-
+	
 	if(self.db.classbar.enable and self.db.classbar.position == "BELOW") then
 		self:ClassBar_Update(frame)
 	end
@@ -215,7 +203,7 @@ function mod:ConfigureElement_CastBar(frame)
 	castBar:ClearAllPoints()
 	if(self.db.units[frame.UnitType].powerbar.enable) then
 		castBar:SetPoint("TOPLEFT", frame.PowerBar, "BOTTOMLEFT", 0, -E.Border - E.Spacing*3)
-		castBar:SetPoint("TOPRIGHT", frame.PowerBar, "BOTTOMRIGHT", 0, -E.Border - E.Spacing*3)
+		castBar:SetPoint("TOPRIGHT", frame.PowerBar, "BOTTOMRIGHT", 0, -E.Border - E.Spacing*3)	
 	else
 		castBar:SetPoint("TOPLEFT", frame.HealthBar, "BOTTOMLEFT", 0, -E.Border - E.Spacing*3)
 		castBar:SetPoint("TOPRIGHT", frame.HealthBar, "BOTTOMRIGHT", 0, -E.Border - E.Spacing*3)
@@ -230,18 +218,18 @@ function mod:ConfigureElement_CastBar(frame)
 		castBar.Icon:SetWidth(self.db.units[frame.UnitType].castbar.height + self.db.units[frame.UnitType].healthbar.height + E.Border + E.Spacing*3)
 	end
 	castBar.Icon.texture:SetTexCoord(unpack(E.TexCoords))
-
+	
 	castBar.Name:SetPoint("TOPLEFT", castBar, "BOTTOMLEFT", 0, -E.Border*3)
 	castBar.Time:SetPoint("TOPRIGHT", castBar, "BOTTOMRIGHT", 0, -E.Border*3)
 	castBar.Name:SetPoint("TOPRIGHT", castBar.Time, "TOPLEFT")
-
+	
 	castBar.Name:SetJustifyH("LEFT")
 	castBar.Name:SetJustifyV("TOP")
-	castBar.Name:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
+	castBar.Name:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)	
 	castBar.Time:SetJustifyH("RIGHT")
 	castBar.Time:SetJustifyV("TOP")
-	castBar.Time:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
-
+	castBar.Time:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)	
+	
 	--Texture
 	castBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
 end
@@ -250,11 +238,12 @@ function mod:ConstructElement_CastBar(parent)
 	local frame = CreateFrame("StatusBar", "$parentCastBar", parent)
 	self:StyleFrame(frame)
 	frame:SetScript("OnUpdate", mod.UpdateElement_CastBarOnUpdate)
-
+	
 	frame.Icon = CreateFrame("Frame", nil, frame)
 	frame.Icon.texture = frame.Icon:CreateTexture(nil, "BORDER")
 	frame.Icon.texture:SetAllPoints()
 	self:StyleFrame(frame.Icon)
+
 
 	frame.Name = frame:CreateFontString(nil, "OVERLAY")
 	frame.Name:SetWordWrap(false)
@@ -265,5 +254,5 @@ function mod:ConstructElement_CastBar(parent)
 	frame.Spark:SetBlendMode("ADD")
 	frame.Spark:SetSize(15, 15)
 	frame:Hide()
-	return frame
+	return frame	
 end

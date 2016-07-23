@@ -2,18 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local mod = E:GetModule('NamePlates')
 local LSM = LibStub("LibSharedMedia-3.0")
 
---Cache global variables
---Lua functions
---WoW API / Variables
-local UnitClass = UnitClass
-local UnitName = UnitName
-local UnitReaction = UnitReaction
-local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
-
---Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: UIParent, NPCTitleScanningTooltipTextLeft2
-
 local tooltip = CreateFrame('GameTooltip', "NPCTitleScanningTooltip", UIParent, 'GameTooltipTemplate')
 
 function mod:UpdateElement_Name(frame)
@@ -25,7 +13,7 @@ function mod:UpdateElement_Name(frame)
 
 	if(frame.UnitType == "FRIENDLY_PLAYER" or frame.UnitType == "ENEMY_PLAYER") then
 		local _, class = UnitClass(frame.displayedUnit)
-		local color = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
+		local color = RAID_CLASS_COLORS[class]
 		if(class and color) then
 			frame.Name:SetTextColor(color.r, color.g, color.b)
 		end
