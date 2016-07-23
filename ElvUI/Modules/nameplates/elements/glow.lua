@@ -2,6 +2,13 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 local mod = E:GetModule('NamePlates')
 local LSM = LibStub("LibSharedMedia-3.0")
 
+--Cache global variables
+--Lua functions
+--WoW API / Variables
+local CreateFrame = CreateFrame
+local UnitHealth = UnitHealth
+local UnitHealthMax = UnitHealthMax
+local UnitIsUnit = UnitIsUnit
 
 function mod:UpdateElement_Glow(frame)
 	if(not frame.HealthBar:IsShown()) then return end
@@ -19,7 +26,7 @@ function mod:UpdateElement_Glow(frame)
 			else
 				r, g, b = 1, 1, 0
 			end
-			
+
 			shouldShow = true
 		end
 	end
@@ -34,7 +41,6 @@ function mod:UpdateElement_Glow(frame)
 	elseif(frame.Glow:IsShown()) then
 		frame.Glow:Hide()
 	end
-	
 end
 
 function mod:ConfigureElement_Glow(frame)
