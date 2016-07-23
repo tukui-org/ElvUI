@@ -123,77 +123,80 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode)
 	if(forcePixelMode) then
 		f.forcePixelMode = forcePixelMode
 	end
-	
-	if E.private.general.pixelPerfect or f.forcePixelMode then
-		f:SetBackdrop({
-		  bgFile = E["media"].blankTex,
-		  edgeFile = E["media"].blankTex,
-		  tile = false, tileSize = 0, edgeSize = E.mult,
-		  insets = { left = 0, right = 0, top = 0, bottom = 0}
-		})
-	else
-		f:SetBackdrop({
-		  bgFile = E["media"].blankTex,
-		  edgeFile = E["media"].blankTex,
-		  tile = false, tileSize = 0, edgeSize = E.mult,
-		  insets = { left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
-		})
-	end
+	if t ~= "NoDrop" then
+		if E.private.general.pixelPerfect or f.forcePixelMode then
+			f:SetBackdrop({
+			  bgFile = E["media"].blankTex,
+			  edgeFile = E["media"].blankTex,
+			  tile = false, tileSize = 0, edgeSize = E.mult,
+			  insets = { left = 0, right = 0, top = 0, bottom = 0}
+			})
+		else
+			f:SetBackdrop({
+			  bgFile = E["media"].blankTex,
+			  edgeFile = E["media"].blankTex,
+			  tile = false, tileSize = 0, edgeSize = E.mult,
+			  insets = { left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
+			})
+		end
 
-	if not f.backdropTexture and t ~= 'Transparent' then
-		local backdropTexture = f:CreateTexture(nil, "BORDER")
-		backdropTexture:SetDrawLayer("BACKGROUND", 1)
-		f.backdropTexture = backdropTexture
-	elseif t == 'Transparent' then
-		f:SetBackdropColor(backdropr, backdropg, backdropb, backdropa)
+		if not f.backdropTexture and t ~= 'Transparent' then
+			local backdropTexture = f:CreateTexture(nil, "BORDER")
+			backdropTexture:SetDrawLayer("BACKGROUND", 1)
+			f.backdropTexture = backdropTexture
+		elseif t == 'Transparent' then
+			f:SetBackdropColor(backdropr, backdropg, backdropb, backdropa)
+
+			if f.backdropTexture then
+				f.backdropTexture:Hide()
+				f.backdropTexture = nil
+			end
+
+			if not f.oborder and not f.iborder and not E.private.general.pixelPerfect and not f.forcePixelMode then
+				local border = CreateFrame("Frame", nil, f)
+				border:SetInside(f, E.mult, E.mult)
+				border:SetBackdrop({
+					edgeFile = E["media"].blankTex,
+					edgeSize = E.mult,
+					insets = { left = E.mult, right = E.mult, top = E.mult, bottom = E.mult }
+				})
+				border:SetBackdropBorderColor(0, 0, 0, 1)
+				f.iborder = border
+
+				if f.oborder then return end
+				local border = CreateFrame("Frame", nil, f)
+				border:SetOutside(f, E.mult, E.mult)
+				border:SetFrameLevel(f:GetFrameLevel() + 1)
+				border:SetBackdrop({
+					edgeFile = E["media"].blankTex,
+					edgeSize = E.mult,
+					insets = { left = E.mult, right = E.mult, top = E.mult, bottom = E.mult }
+				})
+				border:SetBackdropBorderColor(0, 0, 0, 1)
+				f.oborder = border
+			end
+		end
 
 		if f.backdropTexture then
-			f.backdropTexture:Hide()
-			f.backdropTexture = nil
-		end
+			f:SetBackdropColor(0, 0, 0, backdropa)
+			f.backdropTexture:SetVertexColor(backdropr, backdropg, backdropb)
+			f.backdropTexture:SetAlpha(backdropa)
+			if glossTex then
+				f.backdropTexture:SetTexture(E["media"].glossTex)
+			else
+				f.backdropTexture:SetTexture(E["media"].blankTex)
+			end
 
-		if not f.oborder and not f.iborder and not E.private.general.pixelPerfect and not f.forcePixelMode then
-			local border = CreateFrame("Frame", nil, f)
-			border:SetInside(f, E.mult, E.mult)
-			border:SetBackdrop({
-				edgeFile = E["media"].blankTex,
-				edgeSize = E.mult,
-				insets = { left = E.mult, right = E.mult, top = E.mult, bottom = E.mult }
-			})
-			border:SetBackdropBorderColor(0, 0, 0, 1)
-			f.iborder = border
-
-			if f.oborder then return end
-			local border = CreateFrame("Frame", nil, f)
-			border:SetOutside(f, E.mult, E.mult)
-			border:SetFrameLevel(f:GetFrameLevel() + 1)
-			border:SetBackdrop({
-				edgeFile = E["media"].blankTex,
-				edgeSize = E.mult,
-				insets = { left = E.mult, right = E.mult, top = E.mult, bottom = E.mult }
-			})
-			border:SetBackdropBorderColor(0, 0, 0, 1)
-			f.oborder = border
+			if(f.forcePixelMode or forcePixelMode) then
+				f.backdropTexture:SetInside(f, E.mult, E.mult)
+			else
+				f.backdropTexture:SetInside(f)
+			end
 		end
+	else
+		f:SetBackdrop(nil)
+		if f.backdropTexture then f.backdropTexture:SetTexture(nil) end
 	end
-
-	if f.backdropTexture then
-		f:SetBackdropColor(0, 0, 0, backdropa)
-		f.backdropTexture:SetVertexColor(backdropr, backdropg, backdropb)
-		f.backdropTexture:SetAlpha(backdropa)
-		if glossTex then
-			f.backdropTexture:SetTexture(E["media"].glossTex)
-		else
-			f.backdropTexture:SetTexture(E["media"].blankTex)
-		end
-
-		if(f.forcePixelMode or forcePixelMode) then
-			f.backdropTexture:SetInside(f, E.mult, E.mult)
-		else
-			f.backdropTexture:SetInside(f)
-		end
-	end
-
 	f:SetBackdropBorderColor(borderr, borderg, borderb)
 
 	if not f.ignoreUpdates and not f.forcePixelMode then
