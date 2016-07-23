@@ -331,10 +331,12 @@ function LO:CreateChatPanels()
 
 	--Load Settings
 	if E.db['LeftChatPanelFaded'] then
+		LeftChatToggleButton:SetAlpha(0)
 		LeftChatPanel:Hide()
 	end
 
 	if E.db['RightChatPanelFaded'] then
+		RightChatToggleButton:SetAlpha(0)
 		RightChatPanel:Hide()
 	end
 
