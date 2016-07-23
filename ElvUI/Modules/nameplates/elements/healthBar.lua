@@ -74,7 +74,9 @@ function mod:UpdateElement_HealthColor(frame)
 							end	
 						end
 					end
-				else
+				end
+				
+				if (not status) or (status and not self.db.threat.useThreatColor) then
 					--By Reaction
 					local reactionType = UnitReaction(frame.unit, "player")
 					if(reactionType == 4) then

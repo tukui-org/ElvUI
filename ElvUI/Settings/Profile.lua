@@ -80,7 +80,7 @@ P['general'] = {
 				["hide"] = false,
 			},
 		}
-	},		
+	},
 	['threat'] = {
 		['enable'] = true,
 		['position'] = 'RIGHTCHAT',
@@ -130,7 +130,7 @@ P['databars'] = {
 		['orientation'] = 'VERTICAL',
 		["reverseFill"] = false,
 		["hideInVehicle"] = false,
-	},	
+	},
 	['honor'] = {
 		['enable'] = true,
 		['width'] = 10,
@@ -197,10 +197,10 @@ P["nameplates"] = {
 	["classbar"] = {
 		["enable"] = true,
 		["attachTo"] = "TARGET",
-		["position"] = "ABOVE"	
+		["position"] = "ABOVE"
 	},
 	['castColor'] = { r = 1,g = 208/255,b = 0 },
-	['castNoInterruptColor'] = { r = 0.78, g = 0.25, b = 0.25 },	
+	['castNoInterruptColor'] = { r = 0.78, g = 0.25, b = 0.25 },
 	['reactions'] = {
 		["tapped"] = {r = 0.6, g = 0.6, b = 0.6},
 		["good"] = {r = 75/255,  g = 175/255, b = 76/255},
@@ -217,7 +217,8 @@ P["nameplates"] = {
 		["beingTankedByTank"] = true,
 		["goodScale"] = 0.8,
 		["badScale"] = 1.2,
-	},			
+		["useThreatColor"] = true,
+	},
 	['units'] = {
 		['PLAYER'] = {
 			['enable'] = false,
@@ -242,12 +243,12 @@ P["nameplates"] = {
 				['text'] = {
 					['enable'] = false,
 					['format'] = 'CURRENT',
-				}		
+				}
 			},
 			['castbar'] = {
 				['enable'] = true,
 				['height'] = 8,
-			},			
+			},
 			['buffs'] = {
 				['enable'] = true,
 				['numAuras'] = 4,
@@ -269,7 +270,7 @@ P["nameplates"] = {
 					['maxDuration'] = 120,
 					['filter'] = 'CCDebuffs'
 				},
-			},			
+			},
 		},
 		['HEALER'] = {
 			['healthbar'] = {
@@ -293,12 +294,12 @@ P["nameplates"] = {
 				['text'] = {
 					['enable'] = false,
 					['format'] = 'CURRENT',
-				}		
+				}
 			},
 			['castbar'] = {
 				['enable'] = true,
 				['height'] = 8,
-			},			
+			},
 			['buffs'] = {
 				['enable'] = true,
 				['numAuras'] = 4,
@@ -320,7 +321,7 @@ P["nameplates"] = {
 					['maxDuration'] = 120,
 					['filter'] = 'CCDebuffs'
 				},
-			},				
+			},
 		},
 		['FRIENDLY_PLAYER'] = {
 			["minions"] = false,
@@ -346,12 +347,12 @@ P["nameplates"] = {
 				['text'] = {
 					['enable'] = false,
 					['format'] = 'CURRENT',
-				}		
+				}
 			},
 			['castbar'] = {
 				['enable'] = true,
 				['height'] = 8,
-			},			
+			},
 			['buffs'] = {
 				['enable'] = true,
 				['numAuras'] = 4,
@@ -372,7 +373,7 @@ P["nameplates"] = {
 					['maxDuration'] = 120,
 					['filter'] = 'CCDebuffs'
 				},
-			},				
+			},
 		},
 		['ENEMY_PLAYER'] = {
 			["minions"] = false,
@@ -398,12 +399,12 @@ P["nameplates"] = {
 				['text'] = {
 					['enable'] = false,
 					['format'] = 'CURRENT',
-				}		
+				}
 			},
 			['castbar'] = {
 				['enable'] = true,
 				['height'] = 8,
-			},			
+			},
 			['buffs'] = {
 				['enable'] = true,
 				['numAuras'] = 4,
@@ -425,7 +426,7 @@ P["nameplates"] = {
 					['maxDuration'] = 120,
 					['filter'] = 'CCDebuffs'
 				},
-			},				
+			},
 		},
 		['FRIENDLY_NPC'] = {
 			['healthbar'] = {
@@ -448,12 +449,12 @@ P["nameplates"] = {
 				['text'] = {
 					['enable'] = false,
 					['format'] = 'CURRENT',
-				}		
+				}
 			},
 			['castbar'] = {
 				['enable'] = false,
 				['height'] = 8,
-			},			
+			},
 			['buffs'] = {
 				['enable'] = true,
 				['numAuras'] = 4,
@@ -475,7 +476,7 @@ P["nameplates"] = {
 					['maxDuration'] = 120,
 					['filter'] = 'CCDebuffs'
 				},
-			},				
+			},
 		},
 		['ENEMY_NPC'] = {
 			["minors"] = true,
@@ -499,12 +500,12 @@ P["nameplates"] = {
 				['text'] = {
 					['enable'] = false,
 					['format'] = 'CURRENT',
-				}		
+				}
 			},
 			['castbar'] = {
 				['enable'] = true,
 				['height'] = 8,
-			},			
+			},
 			['buffs'] = {
 				['enable'] = true,
 				['numAuras'] = 4,
@@ -526,9 +527,9 @@ P["nameplates"] = {
 					['maxDuration'] = 120,
 					['filter'] = 'CCDebuffs'
 				},
-			},				
+			},
 		},
-	},		
+	},
 };
 
 --Auras
