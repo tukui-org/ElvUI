@@ -626,6 +626,7 @@ L["Taxi Frame"] = true;
 L["Time Manager"] = true;
 L["Trade Frame"] = true;
 L["TradeSkill Frame"] = true;
+L["Trainer Frame"] = true;
 L["Transmogrify Frame"] = true;
 L["Void Storage"] = true;
 L["World Map"] = true;

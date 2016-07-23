@@ -144,6 +144,11 @@ E.Options.args.skins = {
 					name = L["Debug Tools"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
+				trainer = {
+					type = "toggle",
+					name = L["Trainer Frame"],
+					desc = L["TOGGLESKIN_DESC"],
+				},
 				socket = {
 					type = "toggle",
 					name = L["Socket Frame"],
