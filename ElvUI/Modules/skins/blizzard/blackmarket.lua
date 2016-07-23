@@ -59,7 +59,7 @@ local function LoadSkin()
 				button.skinned = true
 			end
 
-			if ( index <= numItems ) then
+			if ( type(numItems) == "number" and index <= numItems ) then
 				local name, texture = C_BlackMarket_GetItemInfoByIndex(index);
 				if ( name ) then
 					button.Item.IconTexture:SetTexture(texture);
