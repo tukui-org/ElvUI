@@ -304,19 +304,19 @@ local function GetUnitSettings(unit, name)
 								name = L["Maximum Duration"],
 								min = 5, max = 3000, step = 1,
 							},
-							filter = {
-								order = 4,
-								type = "select",
-								name = L["Filter"],
-								values = function()
-									local filters = {}
-									filters[''] = NONE
-									for filter in pairs(E.global.unitframe['aurafilters']) do
-										filters[filter] = filter
-									end
-									return filters
-								end,
-							},
+							-- filter = {
+								-- order = 4,
+								-- type = "select",
+								-- name = L["Filter"],
+								-- values = function()
+									-- local filters = {}
+									-- filters[''] = NONE
+									-- for filter in pairs(E.global.unitframe['aurafilters']) do
+										-- filters[filter] = filter
+									-- end
+									-- return filters
+								-- end,
+							-- },
 						},
 					},
 				},
@@ -381,19 +381,19 @@ local function GetUnitSettings(unit, name)
 								name = L["Maximum Duration"],
 								min = 5, max = 3000, step = 1,
 							},
-							filter = {
-								order = 4,
-								type = "select",
-								name = L["Filter"],
-								values = function()
-									local filters = {}
-									filters[''] = NONE
-									for filter in pairs(E.global.unitframe['aurafilters']) do
-										filters[filter] = filter
-									end
-									return filters
-								end,
-							},
+							-- filter = {
+								-- order = 4,
+								-- type = "select",
+								-- name = L["Filter"],
+								-- values = function()
+									-- local filters = {}
+									-- filters[''] = NONE
+									-- for filter in pairs(E.global.unitframe['aurafilters']) do
+										-- filters[filter] = filter
+									-- end
+									-- return filters
+								-- end,
+							-- },
 						},
 					},
 				},
