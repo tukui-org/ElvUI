@@ -556,6 +556,7 @@ L["Targeted Nameplate"] = "Ausgewählte Namensplaketten"
 L["Threat"] = "Bedrohung"
 L["Toggle Off While In Combat"] = "Ausblenden im Kampf"
 L["Toggle On While In Combat"] = "Einblenden im Kampf"
+L["Use Class Color"] = true;
 L["Use Tanked Color when a nameplate is being effectively tanked by another tank."] = "Benutze angetankte Farbe der Namensplakette, wenn sie von einem anderen Tank getankt werden."
 L["Use Target Scale"] = "Benutze Ziel Skalierung"
 

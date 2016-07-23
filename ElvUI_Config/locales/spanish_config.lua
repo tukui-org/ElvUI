@@ -555,6 +555,7 @@ L["Targeted Nameplate"] = true;
 L["Threat"] = "Amenaza"
 L["Toggle Off While In Combat"] = true;
 L["Toggle On While In Combat"] = true;
+L["Use Class Color"] = true;
 L["Use Tanked Color when a nameplate is being effectively tanked by another tank."] = true;
 L["Use Target Scale"] = true;
 

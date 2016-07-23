@@ -231,7 +231,7 @@ P["nameplates"] = {
 				['text'] = {
 					['enable'] = false,
 					['format'] = 'CURRENT',
-				}
+				},
 			},
 			['showName'] = false,
 			['showLevel'] = false,
@@ -281,7 +281,8 @@ P["nameplates"] = {
 				['text'] = {
 					['enable'] = false,
 					['format'] = 'CURRENT',
-				}
+				},
+				["useClassColor"] = true,
 			},
 			['showName'] = true,
 			['showLevel'] = false,
@@ -332,7 +333,8 @@ P["nameplates"] = {
 				['text'] = {
 					['enable'] = false,
 					['format'] = 'CURRENT',
-				}
+				},
+				["useClassColor"] = true,
 			},
 			['showName'] = true,
 			['showLevel'] = false,
@@ -384,7 +386,8 @@ P["nameplates"] = {
 				['text'] = {
 					['enable'] = false,
 					['format'] = 'CURRENT',
-				}
+				},
+				["useClassColor"] = true,
 			},
 			['showName'] = true,
 			['showLevel'] = true,
@@ -434,7 +437,7 @@ P["nameplates"] = {
 				['text'] = {
 					['enable'] = false,
 					['format'] = 'CURRENT',
-				}
+				},
 			},
 			['showName'] = true,
 			['showLevel'] = true,
@@ -485,7 +488,7 @@ P["nameplates"] = {
 				['text'] = {
 					['enable'] = false,
 					['format'] = 'CURRENT',
-				}
+				},
 			},
 			['showName'] = true,
 			['showLevel'] = true,

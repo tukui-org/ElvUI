@@ -524,8 +524,8 @@ L["Enemy Player Frames"] = true;
 L["Enemy"] = "敵對"
 L["Filter"] = true;
 L["Filters"] = "過濾器"
-L["Friendly NPC Frames"] = true;
 L["Friendly Combat Toggle"] = true;
+L["Friendly NPC Frames"] = true;
 L["Friendly Player Frames"] = true;
 L["Good Color"] = true;
 L["Good Scale"] = true;
@@ -555,6 +555,7 @@ L["Targeted Nameplate"] = true;
 L["Threat"] = "仇恨"
 L["Toggle Off While In Combat"] = true;
 L["Toggle On While In Combat"] = true;
+L["Use Class Color"] = true;
 L["Use Tanked Color when a nameplate is being effectively tanked by another tank."] = true;
 L["Use Target Scale"] = true;
 

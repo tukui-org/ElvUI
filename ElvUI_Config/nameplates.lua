@@ -434,12 +434,23 @@ local function GetUnitSettings(unit, name)
 				set = function(info, value) E.db.nameplates.units.ENEMY_PLAYER[ info[#info] ] = value; NP:PLAYER_ENTERING_WORLD(); NP:ConfigureAll() end,
 			}
 		end
+		group.args.healthGroup.args.useClassColor = {
+			order = 4,
+			type = "toggle",
+			name = L["Use Class Color"],
+		}
 	elseif unit == "ENEMY_NPC" then
 		group.args.minors = {
 			order = 0,
 			name = L["Display Minor Units"],
 			desc = OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS,
 			type = "toggle",
+		}
+	elseif unit == "HEALER" then
+		group.args.healthGroup.args.useClassColor = {
+			order = 4,
+			type = "toggle",
+			name = L["Use Class Color"],
 		}
 	end
 

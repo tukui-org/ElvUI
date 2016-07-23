@@ -3,6 +3,9 @@ local mod = E:GetModule('NamePlates')
 local LSM = LibStub("LibSharedMedia-3.0")
 local max = math.max
 
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
+local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
+
 function mod:UpdateElement_HealthColor(frame)
 	if(not frame.HealthBar:IsShown()) then return end
 
@@ -17,8 +20,9 @@ function mod:UpdateElement_HealthColor(frame)
 		else
 			--Try to color it by class.
 			local _, class = UnitClass(frame.displayedUnit);
-			local classColor = RAID_CLASS_COLORS[class];
-			if ( (frame.UnitType == "FRIENDLY_PLAYER" or frame.UnitType == "HEALER" or frame.UnitType == "ENEMY_PLAYER" or frame.UnitType == "PLAYER") and classColor and not frame.inVehicle ) then
+			local classColor = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class];
+			local useClassColor = self.db.units[frame.UnitType].healthbar.useClassColor
+			if ( ( (frame.UnitType == "FRIENDLY_PLAYER" and useClassColor) or (frame.UnitType == "HEALER" and useClassColor) or (frame.UnitType == "ENEMY_PLAYER" and useClassColor) or frame.UnitType == "PLAYER") and classColor and not frame.inVehicle ) then
 				-- Use class colors for players if class color option is turned on
 				r, g, b = classColor.r, classColor.g, classColor.b;
 			elseif ( not UnitPlayerControlled(frame.unit) and UnitIsTapDenied(frame.unit) ) then
