@@ -36,6 +36,7 @@ function mod:ConfigureElement_Name(frame)
 	local name = frame.Name
 	
 	name:SetJustifyH("LEFT")
+	name:SetJustifyV("BOTTOM")
 	name:ClearAllPoints()
 	if(self.db.units[frame.UnitType].healthbar.enable or frame.isTarget) then
 		name:SetJustifyH("LEFT")
@@ -50,5 +51,8 @@ function mod:ConfigureElement_Name(frame)
 end
 
 function mod:ConstructElement_Name(frame)
-	return frame:CreateFontString(nil, "OVERLAY")
+	local name = frame:CreateFontString(nil, "OVERLAY")
+	name:SetWordWrap(false)
+
+	return name
 end

@@ -224,10 +224,12 @@ function mod:ConfigureElement_CastBar(frame)
 	castBar.Name:SetPoint("TOPRIGHT", castBar.Time, "TOPLEFT")
 	
 	castBar.Name:SetJustifyH("LEFT")
+	castBar.Name:SetJustifyV("TOP")
 	castBar.Name:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)	
 	castBar.Time:SetJustifyH("RIGHT")
+	castBar.Time:SetJustifyV("TOP")
 	castBar.Time:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)	
-		
+	
 	--Texture
 	castBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
 end
@@ -244,7 +246,9 @@ function mod:ConstructElement_CastBar(parent)
 
 
 	frame.Name = frame:CreateFontString(nil, "OVERLAY")
+	frame.Name:SetWordWrap(false)
 	frame.Time = frame:CreateFontString(nil, "OVERLAY")
+	frame.Time:SetWordWrap(false)
 	frame.Spark = frame:CreateTexture(nil, "OVERLAY")
 	frame.Spark:SetTexture([[Interface\CastingBar\UI-CastingBar-Spark]])
 	frame.Spark:SetBlendMode("ADD")
