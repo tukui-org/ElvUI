@@ -123,7 +123,7 @@ local function SetTemplate(f, t, glossTex, ignoreUpdates, forcePixelMode)
 	if(forcePixelMode) then
 		f.forcePixelMode = forcePixelMode
 	end
-	if t ~= "NoDrop" then
+	if t ~= "NoBackdrop" then
 		if E.private.general.pixelPerfect or f.forcePixelMode then
 			f:SetBackdrop({
 			  bgFile = E["media"].blankTex,
