@@ -187,6 +187,15 @@ function UF:Configure_ClassBar(frame, cur)
 					bars[i]:SetOrientation("HORIZONTAL")
 				end
 
+				--Fix missing backdrop colors on Combo Points when using Spaced style
+				if frame.ClassBar == "ClassIcons" then
+					if frame.USE_MINI_CLASSBAR then
+						bars[i].bg:SetParent(bars[i].backdrop)
+					else
+						bars[i].bg:SetParent(bars)
+					end
+				end
+
 				if cur >= i then bars[i]:Show() end
 			end
 		end
