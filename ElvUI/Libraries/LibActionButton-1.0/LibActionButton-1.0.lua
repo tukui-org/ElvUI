@@ -129,9 +129,8 @@ local PLAYERCLASS = select(2, UnitClass('player'))
 local HOLY_POWER_SPELLS = {
 	[85256] = GetSpellInfo(85256), --Templar's Verdict
 	[53385] = GetSpellInfo(53385), --Divine Storm
-	[210191] = GetSpellInfo(210191), --Word of Glory
-	[202273] = GetSpellInfo(202273), --Seal of Light
-	[215661] = GetSpellInfo(215661), --Justicar's Vengeance
+	[157048] = GetSpellInfo(157048), -- Final Verdict
+	[152262] = GetSpellInfo(152262), --Seraphim
 };
 
 local DefaultConfig = {
@@ -1205,9 +1204,7 @@ function UpdateUsable(self)
 		local isUsable, notEnoughMana = self:IsUsable()
 		local action = self._state_action
 		--print(type(UnitPower('player', SPELL_POWER_HOLY_POWER)))
-		if PLAYERCLASS == 'PALADIN' and IsHolyPowerAbility(action) and not (UnitPower('player', SPELL_POWER_HOLY_POWER) >= 3) and not UnitBuff("player", DIVINE_PURPOSE) then
-			self.icon:SetVertexColor(unpack(self.config.colors.hp))
-		elseif isUsable then
+		if isUsable then
 			self.icon:SetVertexColor(1.0, 1.0, 1.0)
 			--self.NormalTexture:SetVertexColor(1.0, 1.0, 1.0)
 		elseif notEnoughMana then
