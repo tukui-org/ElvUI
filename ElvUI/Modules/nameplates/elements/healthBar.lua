@@ -210,7 +210,15 @@ end
 
 function mod:UpdateElement_Health(frame)
 	local health = UnitHealth(frame.displayedUnit);
+	local _, maxHealth = frame.HealthBar:GetMinMaxValues()
+
 	frame.HealthBar:SetValue(health)
+
+	if self.db.units[frame.UnitType].healthbar.text.enable then
+		frame.HealthBar.text:SetText(E:GetFormattedText(self.db.units[frame.UnitType].healthbar.text.format, health, maxHealth))
+	else
+		frame.HealthBar.text:SetText("")
+	end
 end
 
 function mod:ConfigureElement_HealthBar(frame, configuring)
@@ -234,6 +242,9 @@ function mod:ConfigureElement_HealthBar(frame, configuring)
 		healthBar:Show()
 	end
 	absorbBar:Hide()
+
+	healthBar.text:SetAllPoints(healthBar)
+	healthBar.text:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)	
 end
 
 function mod:ConstructElement_HealthBar(parent)
@@ -252,6 +263,8 @@ function mod:ConstructElement_HealthBar(parent)
 	parent.PersonalHealPrediction:SetStatusBarTexture(LSM:Fetch("background", "ElvUI Blank"))
 	parent.PersonalHealPrediction:SetStatusBarColor(0, 1, 0.5, 0.25)
 
+	frame.text = frame:CreateFontString(nil, "OVERLAY")
+	frame.text:SetWordWrap(false)
 	frame.scale = CreateAnimationGroup(frame)
 
 	frame.scale.width = frame.scale:CreateAnimation("Width")

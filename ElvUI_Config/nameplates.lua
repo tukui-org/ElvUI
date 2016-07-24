@@ -192,6 +192,34 @@ local function GetUnitSettings(unit, name)
 						type = "range",
 						min = 50, max = 200, step = 1,
 					},
+					textGroup = {
+						order = 100,
+						type = "group",
+						name = L["Text"],
+						guiInline = true,
+						get = function(info) return E.db.nameplates.units[unit].healthbar.text[ info[#info] ] end,
+						set = function(info, value) E.db.nameplates.units[unit].healthbar.text[ info[#info] ] = value; NP:ConfigureAll() end,						
+						args = {
+							enable = {
+								order = 1,
+								name = L["Enable"],
+								type = "toggle",
+							},
+							format = {
+								order = 2,
+								name = L["Format"],
+								type = "select",
+								values = {
+									['CURRENT'] = L["Current"],
+									['CURRENT_MAX'] = L["Current / Max"],
+									['CURRENT_PERCENT'] =  L["Current - Percent"],
+									['CURRENT_MAX_PERCENT'] = L["Current / Max - Percent"],
+									['PERCENT'] = L["Percent"],
+									['DEFICIT'] = L["Deficit"],
+								},
+							},							
+						},
+					},
 				},
 			},
 			powerGroup = {
