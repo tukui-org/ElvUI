@@ -31,7 +31,6 @@ function UF:Construct_TargetGlow(frame)
 end
 
 function UF:UpdateTargetGlow(event)
-	if not frame.VARIABLES_SET then return end
 	if not self.unit then return; end
 	local unit = self.unit
 
@@ -67,6 +66,7 @@ function UF:UpdateTargetGlow(event)
 end
 
 function UF:Configure_TargetGlow(frame)
+	if not frame.VARIABLES_SET then return end
 	local SHADOW_SPACING = frame.SHADOW_SPACING
 	local targetHealthGlow = frame.TargetGlow
 	local targetPowerGlow = frame.TargetGlow.powerGlow

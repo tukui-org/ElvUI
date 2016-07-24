@@ -54,7 +54,6 @@ local function GetBattleFieldIndexFromUnitName(name)
 end
 
 function UF:UpdateRoleIcon()
-	if not frame.VARIABLES_SET then return end
 	local lfdrole = self.LFDRole
 	if not self.db then return; end
 	local db = self.db.roleIcon;
