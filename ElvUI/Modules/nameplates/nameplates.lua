@@ -227,6 +227,7 @@ function mod:SetTargetFrame(frame)
 
 			self:ConfigureElement_Level(frame)
 			self:ConfigureElement_Name(frame)
+			self:ConfigureElement_NPCTitle(frame)
 			self:RegisterEvents(frame, frame.unit)
 			self:UpdateElement_All(frame, frame.unit, true)
 		end
@@ -350,7 +351,7 @@ function mod:NAME_PLATE_UNIT_ADDED(event, unit, frame)
 
 	self:ConfigureElement_Level(frame.UnitFrame)
 	self:ConfigureElement_Name(frame.UnitFrame)
-
+	self:ConfigureElement_NPCTitle(frame.UnitFrame)
 	self:RegisterEvents(frame.UnitFrame, unit)
 	self:UpdateElement_All(frame.UnitFrame, unit)
 	frame.UnitFrame:Show()
@@ -473,6 +474,7 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame)
 	mod:UpdateElement_RaidIcon(frame)
 	mod:UpdateElement_HealerIcon(frame)
 	mod:UpdateElement_Name(frame)
+	mod:UpdateElement_NPCTitle(frame)
 	mod:UpdateElement_Level(frame)
 
 	if(not noTargetFrame) then --infinite loop lol
@@ -492,6 +494,7 @@ function mod:NAME_PLATE_CREATED(event, frame)
 	frame.UnitFrame.CastBar = self:ConstructElement_CastBar(frame.UnitFrame)
 	frame.UnitFrame.Level = self:ConstructElement_Level(frame.UnitFrame)
 	frame.UnitFrame.Name = self:ConstructElement_Name(frame.UnitFrame)
+	frame.UnitFrame.NPCTitle = self:ConstructElement_NPCTitle(frame.UnitFrame)
 	frame.UnitFrame.Glow = self:ConstructElement_Glow(frame.UnitFrame)
 	frame.UnitFrame.Buffs = self:ConstructElement_Auras(frame.UnitFrame, 5, "LEFT")
 	frame.UnitFrame.Debuffs = self:ConstructElement_Auras(frame.UnitFrame, 5, "RIGHT")
@@ -512,6 +515,7 @@ function mod:OnEvent(event, unit, ...)
 		mod:UpdateElement_Glow(self)
 	elseif(event == "UNIT_NAME_UPDATE") then
 		mod:UpdateElement_Name(self)
+		mod:UpdateElement_NPCTitle(self)
 		mod:UpdateElement_HealthColor(self) --Unit class sometimes takes a bit to load
 	elseif(event == "UNIT_LEVEL") then
 		mod:UpdateElement_Level(self)
