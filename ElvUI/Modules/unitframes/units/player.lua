@@ -81,7 +81,6 @@ function UF:Update_PlayerFrame(frame, db)
 	frame.db = db
 
 	do
-	print("set player variables")
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
 
 		frame.UNIT_WIDTH = db.width
