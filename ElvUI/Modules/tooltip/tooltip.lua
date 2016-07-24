@@ -879,6 +879,7 @@ function TT:Initialize()
 	E.Skins:HandleCloseButton(ItemRefCloseButton)
 	for _, tt in pairs(tooltips) do
 		self:HookScript(tt, 'OnShow', 'SetStyle')
+		if tt.BackdropFrame then tt.BackdropFrame:Kill() end
 	end
 
 	--Variable is localized at top of file, then set here when we're sure the frame has been created
