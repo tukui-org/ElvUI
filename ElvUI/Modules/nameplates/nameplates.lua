@@ -601,7 +601,7 @@ function mod:RegisterEvents(frame, unit)
 
 		frame:RegisterEvent("PLAYER_ENTERING_WORLD");
 
-		if(self.db.units[frame.UnitType].buffs.enable and self.db.units[frame.UnitType].debuffs.enable) then
+		if(self.db.units[frame.UnitType].buffs.enable or self.db.units[frame.UnitType].debuffs.enable) then
 			frame:RegisterUnitEvent("UNIT_AURA", unit, displayedUnit)
 		end
 		frame:RegisterEvent("RAID_TARGET_UPDATE")
