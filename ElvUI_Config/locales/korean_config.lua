@@ -277,6 +277,7 @@ L["Above Chat"] = "채팅창 위에 배치"
 L["Adjust the height of your right chat panel."] = "우측 패널의 세로길이를 결정합니다."
 L["Adjust the width of your right chat panel."] = "우측 패널의 가로길이를 결정합니다."
 L["Alerts"] = "알림"
+L["Allowed Combat Repeat"] = true;
 L["Attempt to create URL links inside the chat."] = "대화 내역에 URL 주소가 있으면 강조하고 클릭 시 복사할 수 있게끔 합니다."
 L["Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish."] = "좌우측 패널에 채팅창 고정 여부를 결정합니다. 체크 해제 시 좌측에 고정된 기본 채팅창도 움직일 수 있습니다."
 L["Below Chat"] = "채팅창 아래에 배치"
@@ -303,6 +304,7 @@ L["List of words to color in chat if found in a message. If you wish to add mult
 L["Lock Positions"] = "패널에 채팅창 고정"
 L["Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session."] = "애드온 리로드나 로그아웃 이전의 채팅내역을 보존하여 접속했을 때 보여줍니다."
 L["No Alert In Combat"] = true;
+L["Number of repeat characters while in combat before the chat editbox is automatically closed."] = true;
 L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."] = "채팅창의 스크롤이 맨 아래가 아니라면 이 값 만큼 시간이 지났을 때 맨 아래로 자동 스크롤링 됩니다."
 L["Panel Backdrop"] = "패널 배경 표시"
 L["Panel Height"] = "패널 세로길이"

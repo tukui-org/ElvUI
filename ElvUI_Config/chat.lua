@@ -154,8 +154,15 @@ E.Options.args.chat = {
 						E.db.chat[ info[#info] ] = value
 					end,
 				},
-				timeStampFormat = {
+				numAllowedCombatRepeat = {
 					order = 14,
+					type = "range",
+					name = L["Allowed Combat Repeat"],
+					desc = L["Number of repeat characters while in combat before the chat editbox is automatically closed."],
+					min = 2, max = 10, step = 1,
+				},
+				timeStampFormat = {
+					order = 15,
 					type = 'select',
 					name = TIMESTAMPS_LABEL,
 					desc = OPTION_TOOLTIP_TIMESTAMPS,

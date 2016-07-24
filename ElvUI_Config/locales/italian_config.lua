@@ -228,6 +228,7 @@ L["Above Chat"] = true;
 L["Adjust the height of your right chat panel."] = true;
 L["Adjust the width of your right chat panel."] = true;
 L["Alerts"] = true;
+L["Allowed Combat Repeat"] = true;
 L["Attempt to create URL links inside the chat."] = true;
 L["Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish."] = true;
 L["Below Chat"] = true;
@@ -256,6 +257,7 @@ L["List of words to color in chat if found in a message. If you wish to add mult
 L["Lock Positions"] = true;
 L["Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session."] = true;
 L["No Alert In Combat"] = true;
+L["Number of repeat characters while in combat before the chat editbox is automatically closed."] = true;
 L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."] = true;
 L["Panel Backdrop"] = true;
 L["Panel Height"] = true;

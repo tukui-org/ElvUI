@@ -230,6 +230,7 @@ L["Above Chat"] = "En-dessus du Chat"
 L["Adjust the height of your right chat panel."] = "Ajuste la hauteur de la fenêtre de discussion de droite.";
 L["Adjust the width of your right chat panel."] = "Ajuste la largeur de la fenêtre de discussion de droite.";
 L["Alerts"] = "Alertes";
+L["Allowed Combat Repeat"] = true;
 L["Attempt to create URL links inside the chat."] = "Tentative pour créer un lien URL dans les fenêtres de discussion."
 L["Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish."] = "Tentative pour verrouiller les positions gauche et droite du cadre de discussion. La désactivation de cette option vous permet de déplacer la fenêtre de discussion principale où vous le souhaitez."
 L["Below Chat"] = "En-dessous du Chat"
@@ -258,6 +259,7 @@ L["List of words to color in chat if found in a message. If you wish to add mult
 L["Lock Positions"] = "Verrouiller les positions"
 L["Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session."] = "Active la fenêtre principale de l'historique de discussion. Ainsi quand vous rechargez l'interface ou effectuez une connexion / déconnexion, vous voyez l'historique de la dernière session"
 L["No Alert In Combat"] = "Pas d'alerte en combat";
+L["Number of repeat characters while in combat before the chat editbox is automatically closed."] = true;
 L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."] = "Temps en secondes pour faire défiler vers le bas de la fenêtre de discussion si vous ne l'avez pas fait défiler jusqu'en bas."
 L["Panel Backdrop"] = "Arrière-plan de la fenêtre de discussion"
 L["Panel Height"] = "Hauteur de la fenêtre de discussion"

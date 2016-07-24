@@ -230,6 +230,7 @@ L["Above Chat"] = "Über dem Chat"
 L["Adjust the height of your right chat panel."] = "Passe die Höhe des rechten Chatfensters an."
 L["Adjust the width of your right chat panel."] = "Passe die Breite des rechten Chatfensters an."
 L["Alerts"] = "Alarme"
+L["Allowed Combat Repeat"] = true;
 L["Attempt to create URL links inside the chat."] = "Eine Möglichkeit um Internet-Links im Chat anzuzeigen."
 L["Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish."] = "Fixiere das rechte und linke Chatfenster. Deaktiviere diese Option um das Hauptchatfenster nach Belieben zu verschieben."
 L["Below Chat"] = "Unter dem Chat"
@@ -258,6 +259,7 @@ L["List of words to color in chat if found in a message. If you wish to add mult
 L["Lock Positions"] = "Positionen fixieren"
 L["Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session."] = "Sichert den Chatverlauf der Hauptchatfenster. Wenn du dein UI neulädst oder einloggst, siehst du den Chatverlauf der letzten Sitzung."
 L["No Alert In Combat"] = "Kein Alarm im Kampf"
+L["Number of repeat characters while in combat before the chat editbox is automatically closed."] = true;
 L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."] = "Anzahl der Sekunden um im Chatfenster nach unten zu scrollen, wenn du nicht komplett nach unten gescrollt bist."
 L["Panel Backdrop"] = "Fensterhintergrund"
 L["Panel Height"] = "Fensterhöhe"

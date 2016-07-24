@@ -230,6 +230,7 @@ L["Above Chat"] = "Над чатом"
 L["Adjust the height of your right chat panel."] = "Настроить высоту правой панели чата"
 L["Adjust the width of your right chat panel."] = "Настроить ширину правой панели чата."
 L["Alerts"] = "Оповещения"
+L["Allowed Combat Repeat"] = true;
 L["Attempt to create URL links inside the chat."] = "Пытаться создавать интернет-ссылки в чате."
 L["Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish."] = "Закрепляет позиции левого и правого чата к соответственным панелям. Отключение этой опции позволит перемещать чат независимо от них."
 L["Below Chat"] = "Под чатом"
@@ -258,6 +259,7 @@ L["List of words to color in chat if found in a message. If you wish to add mult
 L["Lock Positions"] = "Закрепить"
 L["Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session."] = "Записывать содержимое основных чатов. Таким образом, после перезагрузки интерфейса или входа/выхода из игры, Вы увидите сообщения из прошлой сессии."
 L["No Alert In Combat"] = "Без оповещений в бою"
+L["Number of repeat characters while in combat before the chat editbox is automatically closed."] = true;
 L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."] = "Время в секундах, через которое чат автоматически покрутится вниз до конца, если Вы не сделаете это вручную."
 L["Panel Backdrop"] = "Фон панелей"
 L["Panel Height"] = "Высота панели"

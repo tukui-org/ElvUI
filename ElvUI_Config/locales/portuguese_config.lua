@@ -230,6 +230,7 @@ L["Above Chat"] = "Acima do Bate-papo"
 L["Adjust the height of your right chat panel."] = true;
 L["Adjust the width of your right chat panel."] = true;
 L["Alerts"] = true;
+L["Allowed Combat Repeat"] = true;
 L["Attempt to create URL links inside the chat."] = "Tentar criar links URL dentro do bate-papo."
 L["Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish."] = "Tentar bloquear a posição dos painéis do bate-papo esquerdo e direito. Desativar esta opção permitirá mover os painéis de bate-papo para qualquer lugar que desejar."
 L["Below Chat"] = "Abaixo do Bate-papo"
@@ -258,6 +259,7 @@ L["List of words to color in chat if found in a message. If you wish to add mult
 L["Lock Positions"] = "Travar Posições"
 L["Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session."] = "Armazenar o histórico dos quadros principais do bate-papo. Para que possa ver o histórico de sua última sessão ao relogar ou conectar e desconectar."
 L["No Alert In Combat"] = true;
+L["Number of repeat characters while in combat before the chat editbox is automatically closed."] = true;
 L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."] = "Tempo, em segundos, para rolar o bate-papo até ao fim caso nao tenha rolado completamente."
 L["Panel Backdrop"] = "Fundo do Painel"
 L["Panel Height"] = "Altura do Painel"

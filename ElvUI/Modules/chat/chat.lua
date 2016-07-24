@@ -384,7 +384,7 @@ function CH:StyleChat(frame)
 		local text = self:GetText()
 
 		if InCombatLockdown() then
-			local MIN_REPEAT_CHARACTERS = 5
+			local MIN_REPEAT_CHARACTERS = E.db.chat.numAllowedCombatRepeat
 			if (len(text) > MIN_REPEAT_CHARACTERS) then
 			local repeatChar = true;
 			for i=1, MIN_REPEAT_CHARACTERS, 1 do

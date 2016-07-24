@@ -601,6 +601,7 @@ P['chat'] = {
 	['fadeTabsNoBackdrop'] = true,
 	["useAltKey"] = false,
 	["classColorMentionsChat"] = true,
+	["numAllowedCombatRepeat"] = 3,
 
 	['tabFont'] = 'PT Sans Narrow',
 	['tabFontSize'] = 12,

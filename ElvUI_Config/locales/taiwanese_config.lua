@@ -230,6 +230,7 @@ L["Above Chat"] = '對話框上方'
 L["Adjust the height of your right chat panel."] = true;
 L["Adjust the width of your right chat panel."] = true;
 L["Alerts"] = true;
+L["Allowed Combat Repeat"] = true;
 L["Attempt to create URL links inside the chat."] = "對話視窗出現網址時建立連結."
 L["Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish."] = "鎖定左右對話框架的位置.禁用此選項將允許你移動對話框架到任意位置."
 L["Below Chat"] = '對話框下方'
@@ -258,6 +259,7 @@ L["List of words to color in chat if found in a message. If you wish to add mult
 L["Lock Positions"] = '鎖定位置'
 L["Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session."] = '記錄對話歷史,當你重載,登錄和退出時會恢復你最後一次會話'
 L["No Alert In Combat"] = true;
+L["Number of repeat characters while in combat before the chat editbox is automatically closed."] = true;
 L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."] = "對話框滾動到底部所需要的滾動時間(秒)."
 L["Panel Backdrop"] = "對話框背景"
 L["Panel Height"] = "對話框高度"
