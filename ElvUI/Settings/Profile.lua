@@ -194,6 +194,7 @@ P["nameplates"] = {
 	["lowHealthThreshold"] = 0.4,
 	["showFriendlyCombat"] = "DISABLED",
 	["showEnemyCombat"] = "DISABLED",
+	["showNPCTitles"] = true,
 	["classbar"] = {
 		["enable"] = true,
 		["attachTo"] = "TARGET",

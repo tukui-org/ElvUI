@@ -19,7 +19,7 @@ tooltip:SetSize(200, 200)
 GameTooltip_SetDefaultAnchor(tooltip, UIParent)
 
 function mod:UpdateElement_NPCTitle(frame)
-	if not UnitIsPlayer(frame.unit) and not UnitPlayerControlled(frame.unit) and not UnitIsUnit("target", frame.unit) and self.db.units[frame.UnitType].showNPCTitle then
+	if not UnitIsPlayer(frame.unit) and not UnitPlayerControlled(frame.unit) and not UnitIsUnit("target", frame.unit) and self.db.showNPCTitles then
 		tooltip:SetOwner(UIParent, "ANCHOR_NONE")
 		tooltip:SetUnit(frame.unit)
 		tooltip:Show()

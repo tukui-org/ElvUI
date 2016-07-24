@@ -568,7 +568,13 @@ E.Options.args.nameplate = {
 						["TOGGLE_OFF"] = L["Toggle Off While In Combat"],
 					},					
 					set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:PLAYER_REGEN_ENABLED() end,
-				},				
+				},		
+				showNPCTitles = {
+					order = 8,
+					type = "toggle",
+					name = L["Show NPC Titles"],
+					desc = L["Display NPC Titles whenever healthbars arent displayed and names are."]
+				},		
 				fontGroup = {
 					order = 100,
 					type = 'group',
