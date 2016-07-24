@@ -1,0 +1,48 @@
+local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local mod = E:GetModule('NamePlates')
+local LSM = LibStub("LibSharedMedia-3.0")
+ 
+local tooltip = CreateFrame("GameTooltip", "ElvUI_NPCTitle", UIParent, "GameTooltipTemplate")
+tooltip:SetPoint("CENTER")
+tooltip:SetSize(200, 200)
+GameTooltip_SetDefaultAnchor(tooltip, UIParent)
+
+function mod:UpdateElement_NPCTitle(frame)
+	if not UnitIsPlayer(frame.unit) and not UnitPlayerControlled(frame.unit) and not UnitIsUnit("target", frame.unit) and self.db.units[frame.UnitType].showNPCTitle then
+		tooltip:SetOwner(UIParent,ANCHOR_NONE)
+		tooltip:SetUnit(frame.unit)
+		tooltip:Show()
+
+		local title = ElvUI_NPCTitleTextLeft2:GetText();
+		tooltip:Hide()
+		if not title or title:find('^Level ') then return end
+
+		frame.NPCTitle:SetText(title)
+		local reactionType = UnitReaction(frame.unit, "player")
+		local r, g, b
+		if(reactionType == 4) then
+			r, g, b = self.db.reactions.neutral.r, self.db.reactions.neutral.g, self.db.reactions.neutral.b
+		elseif(reactionType > 4) then
+			r, g, b = self.db.reactions.good.r, self.db.reactions.good.g, self.db.reactions.good.b
+		else
+			r, g, b = self.db.reactions.bad.r, self.db.reactions.bad.g, self.db.reactions.bad.b
+		end	
+
+		frame.NPCTitle:SetTextColor(r - 0.1, g - 0.1, b - 0.1)
+	else
+		frame.NPCTitle:SetText("")
+	end
+end
+ 
+function mod:ConfigureElement_NPCTitle(frame)
+	local title = frame.NPCTitle
+	
+	title:SetJustifyH("CENTER")
+	title:SetPoint("TOP", frame.Name, "BOTTOM", 0, -2)
+	
+	title:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
+end
+
+function mod:ConstructElement_NPCTitle(frame)
+	return frame:CreateFontString(nil, "OVERLAY")
+end
