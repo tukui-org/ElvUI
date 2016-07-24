@@ -3,16 +3,16 @@ Copyright (c) 2010-2015, Hendrik "nevcairiel" Leppkes <h.leppkes@gmail.com>
 
 All rights reserved.
 
-Redistribution and use in source and binary forms, with or without
+Redistribution and use in source and binary forms, with or without 
 modification, are permitted provided that the following conditions are met:
 
-    * Redistributions of source code must retain the above copyright notice,
+    * Redistributions of source code must retain the above copyright notice, 
       this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright notice,
-      this list of conditions and the following disclaimer in the documentation
+    * Redistributions in binary form must reproduce the above copyright notice, 
+      this list of conditions and the following disclaimer in the documentation 
       and/or other materials provided with the distribution.
-    * Neither the name of the developer nor the names of its contributors
-      may be used to endorse or promote products derived from this software without
+    * Neither the name of the developer nor the names of its contributors 
+      may be used to endorse or promote products derived from this software without 
       specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
@@ -29,7 +29,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ]]
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 3
+local MINOR_VERSION = 4
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
@@ -120,19 +120,6 @@ local EndChargeCooldown
 
 local InitializeEventHandler, OnEvent, ForAllButtons, OnUpdate
 
-
-local SPELL_POWER_HOLY_POWER = SPELL_POWER_HOLY_POWER;
-local HAND_OF_LIGHT = GetSpellInfo(90174);
-local DIVINE_CRUSADER = GetSpellInfo(144595)
-local DIVINE_PURPOSE = GetSpellInfo(223819)
-local PLAYERCLASS = select(2, UnitClass('player'))
-local HOLY_POWER_SPELLS = {
-	[85256] = GetSpellInfo(85256), --Templar's Verdict
-	[53385] = GetSpellInfo(53385), --Divine Storm
-	[157048] = GetSpellInfo(157048), -- Final Verdict
-	[152262] = GetSpellInfo(152262), --Seraphim
-};
-
 local DefaultConfig = {
 	outOfRangeColoring = "button",
 	tooltip = "enabled",
@@ -140,7 +127,6 @@ local DefaultConfig = {
 	colors = {
 		range = { 0.8, 0.1, 0.1 },
 		mana = { 0.5, 0.5, 1.0 },
-		hp = { 0.5, 0.5, 1.0 }
 	},
 	hideElements = {
 		macro = false,
@@ -1178,23 +1164,6 @@ function UpdateButtonState(self)
 	lib.callbacks:Fire("OnButtonState", self)
 end
 
-local function IsHolyPowerAbility(actionId)
-	if not actionId or type(actionId) ~= 'number' then return false; end
-	local actionType, id = GetActionInfo(actionId);
-	if actionType == 'macro' then
-		local macroSpell = GetMacroSpell(id);
-		if macroSpell then
-			for spellId, spellName in pairs(HOLY_POWER_SPELLS) do
-				if macroSpell == spellName then
-					return true;
-				end
-			end
-		end
-	else
-		return HOLY_POWER_SPELLS[id];
-	end
-	return false;
-end
 function UpdateUsable(self)
 	-- TODO: make the colors configurable
 	-- TODO: allow disabling of the whole recoloring
@@ -1202,8 +1171,6 @@ function UpdateUsable(self)
 		self.icon:SetVertexColor(unpack(self.config.colors.range))
 	else
 		local isUsable, notEnoughMana = self:IsUsable()
-		local action = self._state_action
-		--print(type(UnitPower('player', SPELL_POWER_HOLY_POWER)))
 		if isUsable then
 			self.icon:SetVertexColor(1.0, 1.0, 1.0)
 			--self.NormalTexture:SetVertexColor(1.0, 1.0, 1.0)
