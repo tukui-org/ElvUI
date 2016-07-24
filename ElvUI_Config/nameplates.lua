@@ -21,6 +21,7 @@ local positionValues = {
 	BOTTOM = 'BOTTOM',
 };
 
+--[[This has not been implemented (yet?)
 local function UpdateFilterGroup()
 	if not selectedFilter or not E.global['nameplate']['filter'][selectedFilter] then
 		E.Options.args.nameplate.args.filters.args.filterGroup = nil
@@ -83,6 +84,7 @@ local function UpdateFilterGroup()
 		},
 	}
 end
+]]
 
 local ORDER = 100
 local function GetUnitSettings(unit, name)
@@ -804,6 +806,7 @@ E.Options.args.nameplate = {
 		enemyPlayerGroup = GetUnitSettings("ENEMY_PLAYER", L["Enemy Player Frames"]),
 		friendlyNPCGroup = GetUnitSettings("FRIENDLY_NPC", L["Friendly NPC Frames"]),
 		enemyNPCGroup = GetUnitSettings("ENEMY_NPC", L["Enemy NPC Frames"]),
+		--[[Not implemented (yet?)
 		filters = {
 			type = "group",
 			order = -100,
@@ -865,5 +868,6 @@ E.Options.args.nameplate = {
 				},
 			},
 		},
+		]]
 	},
 }
