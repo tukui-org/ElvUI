@@ -31,6 +31,7 @@ function UF:Construct_TargetGlow(frame)
 end
 
 function UF:UpdateTargetGlow(event)
+	if not frame.VARIABLES_SET then return end
 	if not self.unit then return; end
 	local unit = self.unit
 

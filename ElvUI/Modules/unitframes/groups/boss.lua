@@ -91,6 +91,8 @@ function UF:Update_BossFrames(frame, db)
 		frame.BOTTOM_OFFSET = UF:GetHealthBottomOffset(frame)
 
 		frame.USE_TARGET_GLOW = db.targetGlow
+
+		frame.VARIABLES_SET = true
 	end
 
 	frame.colors = ElvUF.colors

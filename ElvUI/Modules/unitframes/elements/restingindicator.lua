@@ -14,6 +14,7 @@ function UF:Construct_RestingIndicator(frame)
 end
 
 function UF:Configure_RestingIndicator(frame)
+	if not frame.VARIABLES_SET then return end
 	local rIcon = frame.Resting
 	local db = frame.db
 	if db.restIcon then

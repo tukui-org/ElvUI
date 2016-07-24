@@ -21,6 +21,6 @@ end
 
 function UF:Configure_ReadyCheckIcon(frame)
 	if not frame:IsElementEnabled('ReadyCheck') then
-			frame:EnableElement('ReadyCheck')
+		frame:EnableElement('ReadyCheck')
 	end
 end

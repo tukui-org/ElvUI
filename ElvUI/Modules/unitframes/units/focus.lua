@@ -76,6 +76,8 @@ function UF:Update_FocusFrame(frame, db)
 		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0
 
 		frame.BOTTOM_OFFSET = UF:GetHealthBottomOffset(frame)
+
+		frame.VARIABLES_SET = true
 	end
 
 	frame.Portrait = frame.Portrait or (db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D)

@@ -68,6 +68,7 @@ function UF:Construct_AuraBarHeader(frame)
 end
 
 function UF:Configure_AuraBars(frame)
+	if not frame.VARIABLES_SET then return end
 	local auraBars = frame.AuraBars
 	local db = frame.db
 	if db.aurabar.enable then

@@ -18,6 +18,7 @@ function UF:Construct_Trinket(frame)
 end
 
 function UF:Configure_Trinket(frame)
+	if not frame.VARIABLES_SET then return end
 	local db = frame.db
 	local trinket = frame.Trinket
 

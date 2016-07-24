@@ -30,6 +30,7 @@ function UF:Construct_RaidDebuffs(frame)
 end
 
 function UF:Configure_RaidDebuffs(frame)
+	if not frame.VARIABLES_SET then return end
 	local db = frame.db
 	local rdebuffs = frame.RaidDebuffs
 	local stackColor = db.rdebuffs.stack.color

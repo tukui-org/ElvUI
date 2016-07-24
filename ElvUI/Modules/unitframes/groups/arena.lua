@@ -156,6 +156,8 @@ function UF:Update_ArenaFrames(frame, db)
 
 		frame.USE_TARGET_GLOW = db.targetGlow
 		frame.PVPINFO_WIDTH = db.pvpSpecIcon and frame.UNIT_HEIGHT or 0
+
+		frame.VARIABLES_SET = true
 	end
 
 	frame.colors = ElvUF.colors

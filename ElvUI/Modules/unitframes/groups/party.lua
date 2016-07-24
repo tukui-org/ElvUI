@@ -169,6 +169,8 @@ function UF:Update_PartyFrames(frame, db)
 		frame.BOTTOM_OFFSET = UF:GetHealthBottomOffset(frame)
 
 		frame.USE_TARGET_GLOW = db.targetGlow
+
+		frame.VARIABLES_SET = true
 	end
 
 	if frame.isChild then

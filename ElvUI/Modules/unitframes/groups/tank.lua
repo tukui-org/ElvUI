@@ -112,6 +112,8 @@ function UF:Update_TankFrames(frame, db)
 
 		frame.CLASSBAR_YOFFSET = 0
 		frame.BOTTOM_OFFSET = 0
+
+		frame.VARIABLES_SET = true
 	end
 
 	if frame.isChild and frame.originalParent then

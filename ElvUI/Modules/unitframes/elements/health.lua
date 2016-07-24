@@ -53,6 +53,7 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 end
 
 function UF:Configure_HealthBar(frame)
+	if not frame.VARIABLES_SET then return end
 	local db = frame.db
 	local health = frame.Health
 

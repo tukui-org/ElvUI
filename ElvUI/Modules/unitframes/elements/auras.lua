@@ -111,6 +111,7 @@ local function ReverseUpdate(frame)
 end
 
 function UF:Configure_Auras(frame, auraType)
+	if not frame.VARIABLES_SET then return end
 	local db = frame.db
 
 	local auras = frame[auraType]

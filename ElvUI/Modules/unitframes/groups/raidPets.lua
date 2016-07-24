@@ -134,6 +134,8 @@ function UF:Update_RaidpetFrames(frame, db)
 		frame.BOTTOM_OFFSET = 0
 
 		frame.USE_TARGET_GLOW = db.targetGlow
+
+		frame.VARIABLES_SET = true
 	end
 
 	if not InCombatLockdown() then
