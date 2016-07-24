@@ -234,6 +234,16 @@ function E:CalculateMoverPoints(mover, nudgeX, nudgeY)
 	local screenWidth, screenHeight, screenCenter = E.UIParent:GetRight(), E.UIParent:GetTop(), E.UIParent:GetCenter()
 	local x, y = mover:GetCenter()
 
+	if not x or not y then --wtf just happened here?
+		E:Print("An error happened with one of the movers. Please take a screenshot of your UI and report it on the Tukui forum http://tukui.org")
+		E:Print("Offending mover:", mover:GetName())
+		E:Print("Values were: x =", x, "y =", y)
+
+		--Set some dummy values to allow the script to continue
+		if not x then x = 300 end
+		if not y then y = 300 end
+	end
+
 	local LEFT = screenWidth / 3
 	local RIGHT = screenWidth * 2 / 3
 	local TOP = screenHeight / 2
