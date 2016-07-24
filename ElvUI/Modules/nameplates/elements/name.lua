@@ -12,7 +12,7 @@ local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
--- GLOBALS: UIParent, NPCTitleScanningTooltipTextLeft2
+-- GLOBALS: UIParent
 
 local tooltip = CreateFrame('GameTooltip', "NPCTitleScanningTooltip", UIParent, 'GameTooltipTemplate')
 

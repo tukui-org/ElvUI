@@ -1,7 +1,18 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('NamePlates')
 local LSM = LibStub("LibSharedMedia-3.0")
- 
+
+--Cache global variables
+--Lua functions
+--WoW API / Variables
+local UnitIsPlayer = UnitIsPlayer
+local UnitIsUnit = UnitIsUnit
+local UnitPlayerControlled = UnitPlayerControlled
+local UnitReaction = UnitReaction
+
+--Global variables that we don't cache, list them here for the mikk's Find Globals script
+-- GLOBALS: UIParent, ElvUI_NPCTitleTextLeft2
+
 local tooltip = CreateFrame("GameTooltip", "ElvUI_NPCTitle", UIParent, "GameTooltipTemplate")
 tooltip:SetPoint("CENTER")
 tooltip:SetSize(200, 200)
@@ -9,7 +20,7 @@ GameTooltip_SetDefaultAnchor(tooltip, UIParent)
 
 function mod:UpdateElement_NPCTitle(frame)
 	if not UnitIsPlayer(frame.unit) and not UnitPlayerControlled(frame.unit) and not UnitIsUnit("target", frame.unit) and self.db.units[frame.UnitType].showNPCTitle then
-		tooltip:SetOwner(UIParent,ANCHOR_NONE)
+		tooltip:SetOwner(UIParent, "ANCHOR_NONE")
 		tooltip:SetUnit(frame.unit)
 		tooltip:Show()
 
