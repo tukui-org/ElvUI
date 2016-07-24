@@ -1,6 +1,11 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('NamePlates')
 
+--Cache global variables
+--Lua functions
+--WoW API / Variables
+local UnitName = UnitName
+
 function mod:UpdateElement_HealerIcon(frame)
 	local icon = frame.HealerIcon;
 	local name, realm = UnitName(frame.unit)
