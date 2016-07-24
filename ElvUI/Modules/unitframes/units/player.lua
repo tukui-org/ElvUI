@@ -207,5 +207,6 @@ local f = CreateFrame("Frame")
 f:RegisterEvent("PLAYER_ENTERING_WORLD")
 f:SetScript("OnEvent", function(self, event)
 	self:UnregisterEvent(event)
+	if not E.db.unitframe.units.player.enable then return end
 	UpdateClassBar()
 end)
