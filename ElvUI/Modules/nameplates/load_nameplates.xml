@@ -10,4 +10,5 @@
 	<Script file='elements\raidIcon.lua'/>
 	<Script file='elements\healerIcon.lua'/>
 	<Script file='elements\glow.lua'/>
+	<Script file='elements\NPCTitle.lua'/>
 </Ui>
