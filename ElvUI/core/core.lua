@@ -12,6 +12,7 @@ local floor = floor
 local format, find, split, match, strrep, len, sub, gsub = string.format, string.find, string.split, string.match, strrep, string.len, string.sub, string.gsub
 --WoW API / Variables
 local CreateFrame = CreateFrame
+local C_Timer_After = C_Timer.After
 local DoEmote = DoEmote
 local GetBonusBarOffset = GetBonusBarOffset
 local GetCombatRatingBonus = GetCombatRatingBonus
@@ -901,6 +902,11 @@ f:RegisterEvent("CHAT_MSG_ADDON")
 f:SetScript('OnEvent', SendRecieve)
 
 function E:UpdateAll(ignoreInstall)
+	if not self.initialized then
+		C_Timer_After(1, function() E:UpdateAll(ignoreInstall) end)
+		return
+	end
+
 	self.private = self.charSettings.profile
 	self.db = self.data.profile;
 	self.global = self.data.global;
@@ -1402,8 +1408,8 @@ function E:Initialize()
 	self.data.RegisterCallback(self, "OnProfileChanged", "UpdateAll")
 	self.data.RegisterCallback(self, "OnProfileCopied", "UpdateAll")
 	self.data.RegisterCallback(self, "OnProfileReset", "OnProfileReset")
-	LibStub('LibDualSpec-1.0'):EnhanceDatabase(self.data, "ElvUI")
 	self.charSettings = LibStub("AceDB-3.0"):New("ElvPrivateDB", self.privateVars);
+	LibStub('LibDualSpec-1.0'):EnhanceDatabase(self.data, "ElvUI")
 	self.private = self.charSettings.profile
 	self.db = self.data.profile;
 	self.global = self.data.global;
