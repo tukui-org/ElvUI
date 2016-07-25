@@ -603,6 +603,19 @@ E.Options.args.nameplate = {
 					name = L["Show NPC Titles"],
 					desc = L["Display NPC Titles whenever healthbars arent displayed and names are."]
 				},		
+				loadDistance = {
+					order = 9,
+					type = "range",
+					name = L["Load Distance"],
+					desc = L["How far away a nameplate should be before it loads."],
+					min = 10, max = 60, step = 1,
+				},
+				clampToScreen = {
+					order = 10,
+					type = "toggle",
+					name = L["Clamp Nameplates"],
+					desc = L["Clamp nameplates to the top of the screen when outside of view."],
+				},				
 				fontGroup = {
 					order = 100,
 					type = 'group',

@@ -634,6 +634,10 @@ function mod:UpdateCVars()
 	E:LockCVar("nameplateShowFriendlyMinions", self.db.units.FRIENDLY_PLAYER.minions == true and "1" or "0")
 	E:LockCVar("nameplateShowEnemyMinions", self.db.units.ENEMY_PLAYER.minions == true and "1" or "0")
 	E:LockCVar("nameplateShowEnemyMinus", self.db.units.ENEMY_NPC.minors == true and "1" or "0")
+
+	E:LockCVar("nameplateMaxDistance", self.db.loadDistance)
+	E:LockCVar("nameplateOtherTopInset", self.db.clampToScreen and "0.08" or "-1")
+	E:LockCVar("nameplateOtherBottomInset", self.db.clampToScreen and "0.1" or "-1")
 end
 
 local function CopySettings(from, to)
