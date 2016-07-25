@@ -553,7 +553,7 @@ function mod:OnEvent(event, unit, ...)
 		end
 	elseif ( event == "UNIT_ENTERED_VEHICLE" or event == "UNIT_EXITED_VEHICLE" or event == "UNIT_PET" ) then
 		mod:UpdateInVehicle(self)
-		mod:UpdateElement_All(self)
+		mod:UpdateElement_All(self, unit, true)
 	else
 		mod:UpdateElement_Cast(self, event, unit, ...)
 	end
