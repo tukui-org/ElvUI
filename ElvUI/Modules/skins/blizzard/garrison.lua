@@ -148,6 +148,7 @@ local function LoadSkin()
 
 	GarrisonMissionFrameTab1:ClearAllPoints()
 	GarrisonMissionFrameTab1:Point("BOTTOMLEFT", 11, -40)
+	GarrisonMissionFrame.GarrCorners:Hide()
 
 	-- Follower list
 	local FollowerList = GarrisonMissionFrame.FollowerList
@@ -263,6 +264,7 @@ local function LoadSkin()
 	GarrisonShipyardFrame.BorderFrame:StripTextures(true)
 	GarrisonShipyardFrame:CreateBackdrop("Transparent")
 	GarrisonShipyardFrame.backdrop:SetOutside(GarrisonShipyardFrame.BorderFrame)
+	GarrisonShipyardFrame.BorderFrame.GarrCorners:Hide()
 	S:HandleCloseButton(GarrisonShipyardFrame.BorderFrame.CloseButton2)
 	S:HandleTab(GarrisonShipyardFrameTab1)
 	S:HandleTab(GarrisonShipyardFrameTab2)
