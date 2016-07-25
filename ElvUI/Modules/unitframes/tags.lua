@@ -45,7 +45,6 @@ local UnitIsPVP = UnitIsPVP
 local GetPVPTimer = GetPVPTimer
 local GetSpecialization = GetSpecialization
 local GetShapeshiftFormID = GetShapeshiftFormID
-local GetEclipseDirection = GetEclipseDirection 
 local UnitGetTotalAbsorbs = UnitGetTotalAbsorbs
 local UnitGetIncomingHeals = UnitGetIncomingHeals
 local IsInRaid = IsInRaid
@@ -631,11 +630,7 @@ local function GetClassPower(class)
 	elseif class == 'DRUID' and GetShapeshiftFormID() == MOONKIN_FORM then
 		min = UnitPower('player', SPELL_POWER_ECLIPSE)
 		max = UnitPowerMax('player', SPELL_POWER_ECLIPSE)
-		if GetEclipseDirection() == 'moon' then
-			r, g, b = .80, .82,  .60
-		else
-			r, g, b = .30, .52, .90
-		end
+		r, g, b = PowerBarColor["LUNAR_POWER"].r, PowerBarColor["LUNAR_POWER"].g, PowerBarColor["LUNAR_POWER"].b
 	elseif class == 'PRIEST' and spec == SPEC_PRIEST_SHADOW and UnitLevel("player") > SHADOW_ORBS_SHOW_LEVEL then
 		min = UnitPower("player", SPELL_POWER_SHADOW_ORBS)
 		max = UnitPowerMax("player", SPELL_POWER_SHADOW_ORBS)
