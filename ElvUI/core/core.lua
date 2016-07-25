@@ -12,36 +12,38 @@ local floor = floor
 local format, find, split, match, strrep, len, sub, gsub = string.format, string.find, string.split, string.match, strrep, string.len, string.sub, string.gsub
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local GetCVar, SetCVar, GetCVarBool = GetCVar, SetCVar, GetCVarBool
-local IsAddOnLoaded = IsAddOnLoaded
-local PlayMusic, StopMusic = PlayMusic, StopMusic
-local GetSpellInfo = GetSpellInfo
-local IsInInstance, IsInGroup, IsInRaid = IsInInstance, IsInGroup, IsInRaid
-local RequestBattlefieldScoreData = RequestBattlefieldScoreData
-local GetSpecialization, GetActiveSpecGroup = GetSpecialization, GetActiveSpecGroup
-local GetCombatRatingBonus = GetCombatRatingBonus
-local GetDodgeChance, GetParryChance = GetDodgeChance, GetParryChance
-local UnitLevel, UnitStat, UnitAttackPower = UnitLevel, UnitStat, UnitAttackPower
-local SendAddonMessage = SendAddonMessage
-local InCombatLockdown = InCombatLockdown
 local DoEmote = DoEmote
-local SendChatMessage = SendChatMessage
+local GetBonusBarOffset = GetBonusBarOffset
+local GetCombatRatingBonus = GetCombatRatingBonus
+local GetCVar, SetCVar, GetCVarBool = GetCVar, SetCVar, GetCVarBool
+local GetDodgeChance, GetParryChance = GetDodgeChance, GetParryChance
 local GetFunctionCPUUsage = GetFunctionCPUUsage
 local GetMapNameByID = GetMapNameByID
-local GetBonusBarOffset = GetBonusBarOffset
+local GetSpecialization, GetActiveSpecGroup = GetSpecialization, GetActiveSpecGroup
+local GetSpecializationRole = GetSpecializationRole
+local GetSpellInfo = GetSpellInfo
+local InCombatLockdown = InCombatLockdown
+local IsAddOnLoaded = IsAddOnLoaded
+local IsInInstance, IsInGroup, IsInRaid = IsInInstance, IsInGroup, IsInRaid
+local PlayMusic, StopMusic = PlayMusic, StopMusic
+local RequestBattlefieldScoreData = RequestBattlefieldScoreData
+local SendAddonMessage = SendAddonMessage
+local SendChatMessage = SendChatMessage
+local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitHasVehicleUI = UnitHasVehicleUI
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
-local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
+local UnitLevel, UnitStat, UnitAttackPower = UnitLevel, UnitStat, UnitAttackPower
 local COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN = COMBAT_RATING_RESILIENCE_PLAYER_DAMAGE_TAKEN
+local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
+local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
-local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local NUM_PET_ACTION_SLOTS = NUM_PET_ACTION_SLOTS
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: LibStub, UIParent, MAX_PLAYER_LEVEL, ScriptErrorsFrame_OnError
 -- GLOBALS: ElvUIPlayerBuffs, ElvUIPlayerDebuffs, LeftChatPanel, RightChatPanel
--- GLOBALS: ElvUI_StaticPopup1, ElvUI_StaticPopup1Button1
+-- GLOBALS: ElvUI_StaticPopup1, ElvUI_StaticPopup1Button1, OrderHallCommandBar
 -- GLOBALS: ElvUI_StanceBar, ObjectiveTrackerFrame, GameTooltip, Minimap
 
 
