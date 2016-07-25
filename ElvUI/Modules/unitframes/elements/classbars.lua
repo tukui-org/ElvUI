@@ -73,7 +73,7 @@ function UF:Configure_ClassBar(frame, cur)
 		bars:SetFrameLevel(frame:GetFrameLevel() + 5)
 
 		if bars.Holder and bars.Holder.mover then
-			bars.Holder.mover:SetScale(0.000001)
+			bars.Holder.mover:SetScale(0.0001)
 			bars.Holder.mover:SetAlpha(0)
 		end
 	elseif not frame.CLASSBAR_DETACHED then
@@ -88,7 +88,7 @@ function UF:Configure_ClassBar(frame, cur)
 		bars:SetFrameLevel(frame:GetFrameLevel() + 5)
 
 		if bars.Holder and bars.Holder.mover then
-			bars.Holder.mover:SetScale(0.000001)
+			bars.Holder.mover:SetScale(0.0001)
 			bars.Holder.mover:SetAlpha(0)
 		end
 	else --Detached

@@ -1578,7 +1578,7 @@ function B:Initialize()
 	self:RegisterEvent("PLAYERBANKBAGSLOTS_CHANGED")
 	self:RegisterEvent("GUILDBANKFRAME_OPENED")
 
-	BankFrame:SetScale(0.00001)
+	BankFrame:SetScale(0.0001)
 	BankFrame:SetAlpha(0)
 	BankFrame:Point("TOPLEFT")
 	BankFrame:SetScript("OnShow", nil)

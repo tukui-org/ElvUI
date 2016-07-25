@@ -853,7 +853,7 @@ function AB:DisableBlizzard()
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton:SetAlpha(0)
 	InterfaceOptionsActionBarsPanelLockActionBars:SetAlpha(0)
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetAlpha(0)
-	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetScale(0.00001)
+	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetScale(0.0001)
 	self:SecureHook('BlizzardOptionsPanel_OnEvent')
 	--InterfaceOptionsFrameCategoriesButton6:SetScale(0.00001)
 	if PlayerTalentFrame then
