@@ -471,6 +471,7 @@ local function LoadSkin()
 
 	S:HandleEditBox(LFGListFrame.EntryCreation.Name)
 	S:HandleEditBox(LFGListFrame.EntryCreation.ItemLevel.EditBox)
+	S:HandleEditBox(LFGListFrame.EntryCreation.HonorLevel.EditBox)
 	S:HandleEditBox(LFGListFrame.EntryCreation.VoiceChat.EditBox)
 
 	S:HandleDropDownBox(LFGListEntryCreationActivityDropDown)
@@ -478,6 +479,7 @@ local function LoadSkin()
 	S:HandleDropDownBox(LFGListEntryCreationCategoryDropDown, 330)
 
 	S:HandleCheckBox(LFGListFrame.EntryCreation.ItemLevel.CheckButton)
+	S:HandleCheckBox(LFGListFrame.EntryCreation.HonorLevel.CheckButton)
 	S:HandleCheckBox(LFGListFrame.EntryCreation.VoiceChat.CheckButton)
 
 	LFGListFrame.EntryCreation.ActivityFinder.Dialog:StripTextures()
