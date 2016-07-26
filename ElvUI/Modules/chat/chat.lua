@@ -1034,6 +1034,11 @@ function GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, a
 				CH.ClassNames[name:lower()] = englishClass
 				if realm and realm ~= '' then
 					CH.ClassNames[name.."-"..gsub(realm,"[%s%-]","")] = englishClass
+				else
+					local _, myRealm = UnitFullName("player")
+					if myRealm and myRealm ~= "" then
+						CH.ClassNames[name.."-"..gsub(myRealm,"[%s%-]","")] = englishClass
+					end
 				end
 			end
 			return format("\124cff%.2x%.2x%.2x", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255)..arg2.."\124r"
