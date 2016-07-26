@@ -83,7 +83,7 @@ local UnitName = UnitName
 local GetTime = GetTime
 local UnitCastingInfo = UnitCastingInfo
 local UnitChannelInfo = UnitChannelInfo
---local tradeskillCurrent, tradeskillTotal, mergeTradeskill = 0, 0, false
+local tradeskillCurrent, tradeskillTotal, mergeTradeskill = 0, 0, false
 
 local updateSafeZone = function(self)
 	local sz = self.SafeZone
@@ -103,6 +103,7 @@ local updateSafeZone = function(self)
 end
 
 local UNIT_SPELLCAST_SENT = function (self, event, unit, spell, rank, target, castid)
+	print("event:", event, "unit:", unit, "spell:", spell, "rank", rank, "target", target, "castid:", castid)
 	local castbar = self.Castbar
 	castbar.curTarget = (target and target ~= "") and target or nil
 
