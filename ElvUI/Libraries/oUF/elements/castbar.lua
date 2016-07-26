@@ -103,7 +103,6 @@ local updateSafeZone = function(self)
 end
 
 local UNIT_SPELLCAST_SENT = function (self, event, unit, spell, rank, target, castid)
-	print("event:", event, "unit:", unit, "spell:", spell, "rank", rank, "target", target, "castid:", castid)
 	local castbar = self.Castbar
 	castbar.curTarget = (target and target ~= "") and target or nil
 
@@ -500,7 +499,7 @@ local Enable = function(object, unit)
 		castbar.ForceUpdate = ForceUpdate
 
 		if(not (unit and unit:match'%wtarget$')) then
-			object:RegisterEvent("UNIT_SPELLCAST_SENT", UNIT_SPELLCAST_SENT)
+			object:RegisterEvent("UNIT_SPELLCAST_SENT", UNIT_SPELLCAST_SENT, true)
 			object:RegisterEvent("UNIT_SPELLCAST_START", UNIT_SPELLCAST_START)
 			object:RegisterEvent("UNIT_SPELLCAST_FAILED", UNIT_SPELLCAST_FAILED)
 			object:RegisterEvent("UNIT_SPELLCAST_FAILED_QUIET", UNIT_SPELLCAST_FAILED_QUIET)
