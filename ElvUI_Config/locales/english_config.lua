@@ -553,7 +553,7 @@ L["Use Tanked Color when a nameplate is being effectively tanked by another tank
 L["Use Target Scale"] = true;
 L["Use Threat Color"] = true;
 L["Load Distance"] = true;
-L["How far away a nameplate should be before it loads."] = true;
+L["Only load nameplates for units within this range."] = true;
 L["Clamp Nameplates"] = true;
 L["Clamp nameplates to the top of the screen when outside of view."] = true;
 
