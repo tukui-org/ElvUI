@@ -133,7 +133,7 @@ local UNIT_SPELLCAST_START = function(self, event, unit, spell)
 	castbar.interrupt = notInterruptible
 	castbar.isTradeSkill = isTradeSkill
 
-	--[[if(mergeTradeskill and isTradeSkill and UnitIsUnit(unit, "player")) then
+	if(mergeTradeskill and isTradeSkill and UnitIsUnit(unit, "player")) then
 		castbar.duration = castbar.duration + (castbar.max * tradeskillCurrent);
 		castbar.max = max * tradeskillTotal;
 
@@ -143,7 +143,7 @@ local UNIT_SPELLCAST_START = function(self, event, unit, spell)
 		castbar:SetValue(castbar.duration)
 	else
 		castbar:SetValue(0)		
-	end]]
+	end
 	castbar:SetValue(0)
 
 	castbar:SetMinMaxValues(0, castbar.max)
@@ -572,10 +572,10 @@ local Disable = function(object, unit)
 	end
 end
 
---[[hooksecurefunc("DoTradeSkill", function(index, num, ...)
+hooksecurefunc(C_TradeSkillUI, "CraftRecipe", function(_, num)
 	tradeskillCurrent = 0
-	tradeskillTotal = tonumber(num) or 1
+	tradeskillTotal = num or 1
 	mergeTradeskill = true
-end)]]
+end)
 
 oUF:AddElement('Castbar', Update, Enable, Disable)
