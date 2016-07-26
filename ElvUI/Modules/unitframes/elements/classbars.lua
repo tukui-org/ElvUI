@@ -26,8 +26,6 @@ function UF:Configure_ClassBar(frame, cur)
 	bars.Holder = frame.ClassBarHolder
 	bars.origParent = frame
 
-	if not cur then cur = 0 end
-
 	--Fix height in case it is lower than the theme allows, or in case it's higher than 30px when not detached
 	if (not self.thinBorders and not E.PixelMode) and frame.CLASSBAR_HEIGHT > 0 and frame.CLASSBAR_HEIGHT < 7 then --A height of 7 means 6px for borders and just 1px for the actual power statusbar
 		frame.CLASSBAR_HEIGHT = 7
@@ -125,6 +123,12 @@ function UF:Configure_ClassBar(frame, cur)
 	bars:Height(frame.CLASSBAR_HEIGHT - ((frame.BORDER + frame.SPACING)*2))
 
 	if (frame.ClassBar == 'ClassIcons' or frame.ClassBar == 'Runes') then
+
+		--This fixes issue with ComboPoints showing as active when they are not.
+		if frame.ClassBar == "ClassIcons" and not cur then 
+			cur = 0
+		end
+
 		local maxClassBarButtons = max(UF.classMaxResourceBar[E.myclass] or 0, MAX_COMBO_POINTS)
 		for i = 1, maxClassBarButtons do
 			bars[i]:Hide()
