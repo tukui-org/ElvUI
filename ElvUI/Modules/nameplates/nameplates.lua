@@ -217,6 +217,7 @@ function mod:SetTargetFrame(frame)
 		frame.isTarget = true
 		if(self.db.units[frame.UnitType].healthbar.enable ~= true) then
 			frame.Name:ClearAllPoints()
+			frame.NPCTitle:ClearAllPoints()
 			frame.Level:ClearAllPoints()
 			frame.HealthBar.r, frame.HealthBar.g, frame.HealthBar.b = nil, nil, nil
 			frame.CastBar:Hide()
@@ -378,10 +379,12 @@ function mod:NAME_PLATE_UNIT_REMOVED(event, unit, frame, ...)
 	frame.UnitFrame.AbsorbBar:Hide()
 	frame.UnitFrame.HealPrediction:Hide()
 	frame.UnitFrame.PersonalHealPrediction:Hide()
-	frame.UnitFrame.Name:ClearAllPoints()
 	frame.UnitFrame.Level:ClearAllPoints()
 	frame.UnitFrame.Level:SetText("")
+	frame.UnitFrame.Name:ClearAllPoints()
 	frame.UnitFrame.Name:SetText("")
+	frame.UnitFrame.NPCTitle:ClearAllPoints()
+	frame.UnitFrame.NPCTitle:SetText("")
 	frame.UnitFrame:Hide()
 	frame.UnitFrame.isTarget = nil
 	frame.UnitFrame.displayedUnit = nil
@@ -717,7 +720,6 @@ end
 function mod:Initialize()
 	self.db = E.db["nameplates"]
 	if E.private["nameplates"].enable ~= true then return end
-	E.NamePlates = mod
 
 	self:UpdateVehicleStatus()
 
@@ -765,6 +767,5 @@ function mod:Initialize()
 
 	E.NamePlates = self
 end
-
 
 E:RegisterModule(mod:GetName())
