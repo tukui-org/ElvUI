@@ -2851,7 +2851,7 @@ P["actionbar"] = {
 	['microbar'] = {
 		['enabled'] = false,
 		['mouseover'] = false,
-		['buttonsPerRow'] = 12,
+		['buttonsPerRow'] = 11,
 		['alpha'] = 1,
 	},
 
