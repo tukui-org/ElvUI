@@ -215,7 +215,7 @@ function UF:Configure_ClassBar(frame, cur)
 					end
 				end
 
-				if cur >= i then bars[i]:Show() end
+				if cur and cur >= i then bars[i]:Show() end
 			end
 		end
 
