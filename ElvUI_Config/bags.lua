@@ -242,7 +242,7 @@ E.Options.args.bags = {
 					type = 'range',
 					name = L["Panel Width (Bags)"],
 					desc = L["Adjust the width of the bag frame."],
-					min = 150, max = 700, step = 1,
+					min = 150, max = 1400, step = 1,
 					set = function(info, value) E.db.bags[ info[#info] ] = value; B:Layout();end,
 					disabled = function() return E.db.bags.alignToChat end
 				},
@@ -251,7 +251,7 @@ E.Options.args.bags = {
 					type = 'range',
 					name = L["Panel Width (Bank)"],
 					desc = L["Adjust the width of the bank frame."],
-					min = 150, max = 700, step = 1,
+					min = 150, max = 1400, step = 1,
 					set = function(info, value) E.db.bags[ info[#info] ] = value; B:Layout(true) end,
 					disabled = function() return E.db.bags.alignToChat end
 				},
