@@ -13,6 +13,7 @@ local format, find, split, match, strrep, len, sub, gsub = string.format, string
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local C_Timer_After = C_Timer.After
+local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
 local DoEmote = DoEmote
 local GetBonusBarOffset = GetBonusBarOffset
 local GetCombatRatingBonus = GetCombatRatingBonus
@@ -1018,12 +1019,66 @@ end
 
 function E:AddNonPetBattleFrames(event)
 	if InCombatLockdown() then return end
-	for object, _ in pairs(E.FrameLocks) do
+	for object, data in pairs(E.FrameLocks) do
 		local obj = _G[object] or object
-		obj:SetParent(UIParent)
+		local parent, strata
+		if type(data) == "table" then
+			parent, strata = data.parent, data.strata
+		elseif data == true then
+			parent = UIParent
+		end
+		obj:SetParent(parent)
+		if strata then
+			obj:SetFrameStrata(strata)
+		end
 	end
 
 	self:UnregisterEvent("PLAYER_REGEN_DISABLED")
+end
+
+function E:RegisterPetBattleHideFrames(object, originalParent, originalStrata)
+	if not object or not originalParent then
+		E:Print("Error. Usage: RegisterPetBattleHideFrames(object, originalParent, originalStrata)")
+		return
+	end
+
+	local object = _G[object] or object
+	--If already doing pokemon
+	if C_PetBattles_IsInBattle() then
+		object:SetParent(E.HiddenFrame)
+	end
+	E.FrameLocks[object] = {
+		["parent"] = originalParent,
+		["strata"] = originalStrata or nil,
+	}
+end
+
+function E:UnregisterPetBattleHideFrames(object)
+	if not object then
+		E:Print("Error. Usage: UnregisterPetBattleHideFrames((object)")
+		return
+	end
+
+	local object = _G[object] or object
+	--Check if object was registered to begin with
+	if not E.FrameLocks[object] then
+		return
+	end
+
+	--Change parent of object back to original parent
+	local originalParent = E.FrameLocks[object].parent
+	if originalParent then
+		object:SetParent(originalParent)
+	end
+
+	--Change strata of object back to original
+	local originalStrata = E.FrameLocks[object].strata
+	if originalStrata then
+		object:SetFrameStrata(originalStrata)
+	end
+
+	--Remove object from table
+	E.FrameLocks[object] = nil
 end
 
 function E:EnterVehicleHideFrames(event, unit)
