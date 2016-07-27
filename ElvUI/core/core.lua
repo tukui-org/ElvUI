@@ -1055,7 +1055,7 @@ end
 
 function E:UnregisterPetBattleHideFrames(object)
 	if not object then
-		E:Print("Error. Usage: UnregisterPetBattleHideFrames((object)")
+		E:Print("Error. Usage: UnregisterPetBattleHideFrames(object)")
 		return
 	end
 
