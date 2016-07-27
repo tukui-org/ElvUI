@@ -200,10 +200,10 @@ local Update = function(self, event, unit)
 			if(power.GetAlternativeColor) then
 				r, g, b = power:GetAlternativeColor(unit, ptype, ptoken, altR, altG, altB)
 			elseif(altR) then
-				if(altR > 0 and altR < 1) or (altG > 0 and altG < 1) or (altB > 0 and altB < 1) then
-					r, g, b = altR, altG, altB
-				else
+				if(altR > 1) or (altG > 1) or (altB > 1) then
 					r, g, b = altR / 255, altG / 255, altB / 255
+				else
+					r, g, b = altR, altG, altB
 				end
 			else
 				t = self.colors.power[ptype]
