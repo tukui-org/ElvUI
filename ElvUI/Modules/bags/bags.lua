@@ -405,8 +405,16 @@ function B:UpdateSlot(bagID, slotID)
 
 		--Item Level
 		if iLvl and B.db.itemLevel and (itemEquipLoc ~= nil and itemEquipLoc ~= "" and itemEquipLoc ~= "INVTYPE_BAG" and itemEquipLoc ~= "INVTYPE_QUIVER" and itemEquipLoc ~= "INVTYPE_TABARD") and (slot.rarity and slot.rarity > 1) then
+			--From LibItemUpgradeInfo-1.0
+			local itemString = clink:match("item[%-?%d:]+") or ""-- Standardize itemlink to itemstring
+			local instaid, _, numBonuses, affixes = select(12, strsplit(":", itemString, 15))
+			instaid = tonumber(instaid) or 7
+			numBonuses = tonumber(numBonuses) or 0
+			local upgradeBonus
+			if instaid > 0 and (instaid-4) % 8 == 0 then
+				upgradeBonus = tonumber((select(numBonuses + 1, strsplit(":", affixes))))
+			end
 			-- Adjust Item Level if upgraded
-			local upgradeBonus = tonumber(clink:match(":(%d+)\124h%["));
 			local iLvlBonus = UpgradeTable[upgradeBonus] and UpgradeTable[upgradeBonus].ilevel or 0
 			iLvl = iLvl + iLvlBonus;
 
