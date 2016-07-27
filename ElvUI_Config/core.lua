@@ -119,6 +119,7 @@ E.Options.args.general = {
 						['PARTY'] = L["Party Only"],
 						['RAID'] = L["Party / Raid"],
 						['RAID_ONLY'] = L["Raid Only"],
+						["EMOTE"] = CHAT_MSG_EMOTE,
 					},
 				},
 				autoRepair = {

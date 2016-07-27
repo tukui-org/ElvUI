@@ -93,6 +93,8 @@ function M:COMBAT_LOG_EVENT_UNFILTERED(_, _, event, _, sourceGUID, _, _, _, _, d
 		end
 	elseif E.db.general.interruptAnnounce == "SAY" then
 		SendChatMessage(format(interruptMsg, destName, spellID, spellName), "SAY")
+	elseif E.db.general.interruptAnnounce == "EMOTE" then
+		SendChatMessage(format(interruptMsg, destName, spellID, spellName), "EMOTE")
 	end
 end
 
