@@ -133,6 +133,10 @@ local function AttemptAutoRepair(playerOverride)
 	end
 end
 
+local function VendorGrays()
+	E:GetModule('Bags'):VendorGrays(nil, true)
+end
+
 function M:UI_ERROR_MESSAGE(event, messageType)
 	if messageType == LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY then
 		autoRepairStatus = "GUILD_REPAIR_FAILED"
@@ -149,7 +153,7 @@ end
 
 function M:MERCHANT_SHOW()
 	if E.db.general.vendorGrays then
-		E:GetModule('Bags'):VendorGrays(nil, true)
+		C_Timer_After(0.5, VendorGrays)
 	end
 
 	local autoRepair = E.db.general.autoRepair
