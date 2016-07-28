@@ -92,7 +92,9 @@ function B:AdjustAnchors(relativeAlert)
 	if self.alertFrame:IsShown() then
 		self.alertFrame:ClearAllPoints()
 		self.alertFrame:SetPoint(POSITION, relativeAlert, ANCHOR_POINT, 0, YOFFSET);
+		return self.alertFrame;
 	end
+	return relativeAlert;
 end
 
 function B:AdjustQueuedAnchors(relativeAlert)
@@ -101,6 +103,7 @@ function B:AdjustQueuedAnchors(relativeAlert)
 		alertFrame:SetPoint(POSITION, relativeAlert, ANCHOR_POINT, 0, YOFFSET);
 		relativeAlert = alertFrame;
 	end
+	return relativeAlert;
 end
 
 function B:GroupLootContainer_Update()
@@ -132,34 +135,37 @@ function B:AlertMovers()
 	UIPARENT_MANAGED_FRAME_POSITIONS["GroupLootContainer"] = nil
 	E:CreateMover(AlertFrameHolder, "AlertFrameMover", L["Loot / Alert Frames"], nil, nil, E.PostAlertMove)
 
-	self:SecureHook(AlertFrame, "UpdateAnchors", E.PostAlertMove)
+	--Replace AdjustAnchors functions to allow alerts to grow down if needed.
+	--We will need to keep an eye on this in case it taints. It shouldn't, but you never know.
+	for i, alertFrameSubSystem in ipairs(AlertFrame.alertFrameSubSystems) do
+		if alertFrameSubSystem.alertFramePool then --queued alert system
+			alertFrameSubSystem.AdjustAnchors = B.AdjustQueuedAnchors
+		elseif not alertFrameSubSystem.anchorFrame then --simple alert system
+			alertFrameSubSystem.AdjustAnchors = B.AdjustAnchors
+		end
+	end
+	
 	hooksecurefunc("GroupLootContainer_Update", B.GroupLootContainer_Update)
-
-	--From Leatrix Plus
-	-- Achievements
-	hooksecurefunc(AchievementAlertSystem, "AdjustAnchors", B.AdjustQueuedAnchors) 		-- /run AchievementAlertSystem:AddAlert(5192)
-	hooksecurefunc(CriteriaAlertSystem, "AdjustAnchors", B.AdjustQueuedAnchors) 		-- /run CriteriaAlertSystem:AddAlert(9023, "Doing great!")
-	-- Encounters
-	hooksecurefunc(DungeonCompletionAlertSystem, "AdjustAnchors", B.AdjustAnchors) 		-- /run DungeonCompletionAlertSystem
-	hooksecurefunc(GuildChallengeAlertSystem, "AdjustAnchors", B.AdjustAnchors) 		-- /run GuildChallengeAlertSystem:AddAlert(3, 2, 5)
-	hooksecurefunc(InvasionAlertSystem, "AdjustAnchors", B.AdjustAnchors) 				-- /run InvasionAlertSystem:AddAlert(1)
-	hooksecurefunc(ScenarioAlertSystem, "AdjustAnchors",  B.AdjustAnchors) 				-- ScenarioAlertSystem
-	hooksecurefunc(WorldQuestCompleteAlertSystem, "AdjustAnchors", B.AdjustAnchors) 	-- /run WorldQuestCompleteAlertSystem:AddAlert(112)
-	-- Garrisons
-	hooksecurefunc(GarrisonBuildingAlertSystem, "AdjustAnchors",  B.AdjustAnchors) 		-- /run GarrisonBuildingAlertSystem:AddAlert("Barracks")
-	hooksecurefunc(GarrisonFollowerAlertSystem, "AdjustAnchors",  B.AdjustAnchors) 		-- /run GarrisonFollowerAlertSystem:AddAlert(204, "Ben Stone", 90, 3, false)
-	hooksecurefunc(GarrisonMissionAlertSystem, "AdjustAnchors", B.AdjustAnchors) 		-- /run GarrisonMissionAlertSystem:AddAlert(681) (Requires a mission ID that is in your mission list.)
-	hooksecurefunc(GarrisonShipMissionAlertSystem, "AdjustAnchors", B.AdjustAnchors)	-- No test for this, it was missing from Leatrix Plus
-	hooksecurefunc(GarrisonRandomMissionAlertSystem, "AdjustAnchors", B.AdjustAnchors)	-- GarrisonRandomMissionAlertSystem
-	hooksecurefunc(GarrisonShipFollowerAlertSystem, "AdjustAnchors", B.AdjustAnchors)	-- /run GarrisonShipFollowerAlertSystem:AddAlert(592, "Test", "Transport", "GarrBuilding_Barracks_1_H", 3, 2, 1)
-	hooksecurefunc(GarrisonTalentAlertSystem, "AdjustAnchors",  B.AdjustAnchors) 		-- GarrisonTalentAlertSystem
-	-- Loot
-	hooksecurefunc(LegendaryItemAlertSystem, "AdjustAnchors",  B.AdjustAnchors) 		-- /run LegendaryItemAlertSystem:AddAlert("\124cffa335ee\124Hitem:18832::::::::::\124h[Brutality Blade]\124h\124r")
-	hooksecurefunc(LootAlertSystem, "AdjustAnchors", B.AdjustQueuedAnchors) 			-- /run LootAlertSystem:AddAlert("\124cffa335ee\124Hitem:18832::::::::::\124h[Brutality Blade]\124h\124r", 1, 1, 1, 1, false, false, 0, false, false)
-	hooksecurefunc(LootUpgradeAlertSystem, "AdjustAnchors", B.AdjustQueuedAnchors) 		-- /run LootUpgradeAlertSystem:AddAlert("\124cffa335ee\124Hitem:18832::::::::::\124h[Brutality Blade]\124h\124r", 1, 1, 1, nil, nil, false)
-	hooksecurefunc(MoneyWonAlertSystem, "AdjustAnchors", B.AdjustQueuedAnchors) 		-- /run MoneyWonAlertSystem:AddAlert(815)
-	hooksecurefunc(StorePurchaseAlertSystem, "AdjustAnchors", B.AdjustAnchors) 			-- /run StorePurchaseAlertSystem:AddAlert("\124cffa335ee\124Hitem:180545::::::::::\124h[Mystic Runesaber]\124h\124r", "", "", 214)
-	-- Professions
-	hooksecurefunc(DigsiteCompleteAlertSystem, "AdjustAnchors", B.AdjustAnchors) 		-- /run DigsiteCompleteAlertSystem:AddAlert(1)
-	hooksecurefunc(NewRecipeLearnedAlertSystem, "AdjustAnchors", B.AdjustQueuedAnchors)	-- /run NewRecipeLearnedAlertSystem:AddAlert(204)
+	
+	--[[ Code you can use for alert testing
+		--Queued Alerts:
+		/run AchievementAlertSystem:AddAlert(5192)
+		/run CriteriaAlertSystem:AddAlert(9023, "Doing great!")
+		/run LootAlertSystem:AddAlert("\124cffa335ee\124Hitem:18832::::::::::\124h[Brutality Blade]\124h\124r", 1, 1, 1, 1, false, false, 0, false, false)
+		/run LootUpgradeAlertSystem:AddAlert("\124cffa335ee\124Hitem:18832::::::::::\124h[Brutality Blade]\124h\124r", 1, 1, 1, nil, nil, false)
+		/run MoneyWonAlertSystem:AddAlert(815)
+		/run NewRecipeLearnedAlertSystem:AddAlert(204)
+		
+		--Simple Alerts
+		/run GuildChallengeAlertSystem:AddAlert(3, 2, 5)
+		/run InvasionAlertSystem:AddAlert(1)
+		/run WorldQuestCompleteAlertSystem:AddAlert(112)
+		/run GarrisonBuildingAlertSystem:AddAlert("Barracks")
+		/run GarrisonFollowerAlertSystem:AddAlert(204, "Ben Stone", 90, 3, false)
+		/run GarrisonMissionAlertSystem:AddAlert(681) (Requires a mission ID that is in your mission list.)
+		/run GarrisonShipFollowerAlertSystem:AddAlert(592, "Test", "Transport", "GarrBuilding_Barracks_1_H", 3, 2, 1)
+		/run LegendaryItemAlertSystem:AddAlert("\124cffa335ee\124Hitem:18832::::::::::\124h[Brutality Blade]\124h\124r")
+		/run StorePurchaseAlertSystem:AddAlert("\124cffa335ee\124Hitem:180545::::::::::\124h[Mystic Runesaber]\124h\124r", "", "", 214)
+		/run DigsiteCompleteAlertSystem:AddAlert(1)
+	]]
 end
