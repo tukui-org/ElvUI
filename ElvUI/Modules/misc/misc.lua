@@ -122,7 +122,7 @@ local function AttemptAutoRepair(playerOverride)
 						E:Print(L["Your items have been repaired using guild bank funds for: "]..E:FormatMoney(cost, "SMART", true)) --Amount, style, textOnly
 					end
 				elseif autoRepair == "PLAYER" then
-					if autoRepairStatus == "PLAYER_REPAIR_SUCCESS" then
+					if autoRepairStatus == "PLAYER_REPAIR_FAILED" then
 						E:Print(L["You don't have enough money to repair."])
 					else
 						E:Print(L["Your items have been repaired for: "]..E:FormatMoney(cost, "SMART", true)) --Amount, style, textOnly
