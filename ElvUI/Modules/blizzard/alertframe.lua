@@ -144,7 +144,8 @@ function B:AlertMovers()
 			alertFrameSubSystem.AdjustAnchors = B.AdjustAnchors
 		end
 	end
-	
+
+	self:SecureHook(AlertFrame, "UpdateAnchors", E.PostAlertMove)
 	hooksecurefunc("GroupLootContainer_Update", B.GroupLootContainer_Update)
 	
 	--[[ Code you can use for alert testing
