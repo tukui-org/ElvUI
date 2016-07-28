@@ -27,7 +27,7 @@ local function sortFunction(a, b)
 end
 
 local function OnEnter(self, _, noUpdate)
-	--[[DT:SetupTooltip(self)
+	DT:SetupTooltip(self)
 
 	if(not noUpdate) then
 		DT.tooltip:Hide()
@@ -36,7 +36,7 @@ local function OnEnter(self, _, noUpdate)
 	end
 
 	--Buildings
-	local buildings = C_GarrisonGetBuildings();
+	local buildings = C_GarrisonGetBuildings(LE_GARRISON_TYPE_6_0);
 	local numBuildings = #buildings
 	local hasBuilding = false
 	if(numBuildings > 0) then
@@ -57,7 +57,8 @@ local function OnEnter(self, _, noUpdate)
 	end
 
 	--Missions
-	local inProgressMissions = C_GarrisonGetInProgressMissions(LE_FOLLOWER_TYPE_GARRISON_6_0)
+	local inProgressMissions = {};
+	C_GarrisonGetInProgressMissions(inProgressMissions, LE_FOLLOWER_TYPE_GARRISON_6_0)
 	local numMissions = #inProgressMissions
 	if(numMissions > 0) then
 		tsort(inProgressMissions, sortFunction) --Sort by time left, lowest first
@@ -83,7 +84,8 @@ local function OnEnter(self, _, noUpdate)
 	end
 
 	--Naval Missions
-	local inProgressShipMissions = C_GarrisonGetInProgressMissions(LE_FOLLOWER_TYPE_SHIPYARD_6_2)
+	local inProgressShipMissions = {};
+	C_GarrisonGetInProgressMissions(inProgressShipMissions, LE_FOLLOWER_TYPE_SHIPYARD_6_2)
 	local numShipMissions = #inProgressShipMissions
 	if(numShipMissions > 0) then
 		tsort(inProgressShipMissions, sortFunction) --Sort by time left, lowest first
@@ -112,7 +114,7 @@ local function OnEnter(self, _, noUpdate)
 		DT.tooltip:Show()
 	else
 		DT.tooltip:Hide()
-	end]]
+	end
 end
 
 local function OnEvent(self, event, ...)
