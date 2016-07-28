@@ -13,7 +13,7 @@ local IsShiftKeyDown = IsShiftKeyDown
 local ReloadUI = ReloadUI
 
 local displayString = ""
-local configText = "ElvUI Config"
+local configText = "ElvUI"
 local reloadText = RELOADUI
 local plugins
 local lastPanel
