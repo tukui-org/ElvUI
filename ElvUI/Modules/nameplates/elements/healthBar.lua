@@ -228,7 +228,7 @@ function mod:ConfigureElement_HealthBar(frame, configuring)
 
 	--Position
 	healthBar:SetPoint("BOTTOM", frame, "BOTTOM", 0, self.db.units[frame.UnitType].castbar.height + 3)
-	if(UnitIsUnit(frame.unit, "target") and not frame.isTarget) then
+	if(UnitIsUnit(frame.unit, "target") and not frame.isTarget and self.db.useTargetScale) then
 		healthBar:SetHeight(self.db.units[frame.UnitType].healthbar.height * self.db.targetScale)
 		healthBar:SetWidth(self.db.units[frame.UnitType].healthbar.width * self.db.targetScale)
 	else
