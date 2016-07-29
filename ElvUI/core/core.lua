@@ -902,16 +902,6 @@ f:RegisterEvent("GROUP_ROSTER_UPDATE")
 f:RegisterEvent("CHAT_MSG_ADDON")
 f:SetScript('OnEvent', SendRecieve)
 
---Adds a 2nd delayed update to unitframes.
---We need this for when profiles are changed automatically when zoning into dungeon or battleground.
---Fixes http://git.tukui.org/Elv/elvui/issues/1223
-function E:UpdateAllDelayed()
-	E:UpdateAll()
-
-	local UF = self:GetModule('UnitFrames')
-	C_Timer_After(1, function() UF:Update_AllFrames() end)
-end
-
 function E:UpdateAll(ignoreInstall)
 	if not self.initialized then
 		C_Timer_After(1, function() E:UpdateAll(ignoreInstall) end)
@@ -1470,7 +1460,7 @@ function E:Initialize()
 	twipe(self.private)
 
 	self.data = LibStub("AceDB-3.0"):New("ElvDB", self.DF);
-	self.data.RegisterCallback(self, "OnProfileChanged", "UpdateAllDelayed")
+	self.data.RegisterCallback(self, "OnProfileChanged", "UpdateAll")
 	self.data.RegisterCallback(self, "OnProfileCopied", "UpdateAll")
 	self.data.RegisterCallback(self, "OnProfileReset", "OnProfileReset")
 	self.charSettings = LibStub("AceDB-3.0"):New("ElvPrivateDB", self.privateVars);
