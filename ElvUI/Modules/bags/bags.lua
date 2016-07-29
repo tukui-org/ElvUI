@@ -86,62 +86,37 @@ B.ProfessionColors = {
 	[0x010000] = {222/255, 13/255,  65/255} -- Cooking
 }
 
---From http://mods.curse.com/addons/wow/libitemupgradeinfo-1-0
-local UpgradeTable = {
-	[  0] = {                       ilevel = 0 },
-	[  1] = { upgrade = 1, max = 1, ilevel = 8 },
-	[373] = { upgrade = 1, max = 3, ilevel = 4 },
-	[374] = { upgrade = 2, max = 3, ilevel = 8 },
-	[375] = { upgrade = 1, max = 3, ilevel = 4 },
-	[376] = { upgrade = 2, max = 3, ilevel = 4 },
-	[377] = { upgrade = 3, max = 3, ilevel = 4 },
-	[378] = {                       ilevel = 7 },
-	[379] = { upgrade = 1, max = 2, ilevel = 4 },
-	[380] = { upgrade = 2, max = 2, ilevel = 4 },
-	[445] = { upgrade = 0, max = 2, ilevel = 0 },
-	[446] = { upgrade = 1, max = 2, ilevel = 4 },
-	[447] = { upgrade = 2, max = 2, ilevel = 8 },
-	[451] = { upgrade = 0, max = 1, ilevel = 0 },
-	[452] = { upgrade = 1, max = 1, ilevel = 8 },
-	[453] = { upgrade = 0, max = 2, ilevel = 0 },
-	[454] = { upgrade = 1, max = 2, ilevel = 4 },
-	[455] = { upgrade = 2, max = 2, ilevel = 8 },
-	[456] = { upgrade = 0, max = 1, ilevel = 0 },
-	[457] = { upgrade = 1, max = 1, ilevel = 8 },
-	[458] = { upgrade = 0, max = 4, ilevel = 0 },
-	[459] = { upgrade = 1, max = 4, ilevel = 4 },
-	[460] = { upgrade = 2, max = 4, ilevel = 8 },
-	[461] = { upgrade = 3, max = 4, ilevel = 12 },
-	[462] = { upgrade = 4, max = 4, ilevel = 16 },
-	[465] = { upgrade = 0, max = 2, ilevel = 0 },
-	[466] = { upgrade = 1, max = 2, ilevel = 4 },
-	[467] = { upgrade = 2, max = 2, ilevel = 8 },
-	[468] = { upgrade = 0, max = 4, ilevel = 0 },
-	[469] = { upgrade = 1, max = 4, ilevel = 4 },
-	[470] = { upgrade = 2, max = 4, ilevel = 8 },
-	[471] = { upgrade = 3, max = 4, ilevel = 12 },
-	[472] = { upgrade = 4, max = 4, ilevel = 16 },
-	[491] = { upgrade = 0, max = 4, ilevel = 0 },
-	[492] = { upgrade = 1, max = 4, ilevel = 4 },
-	[493] = { upgrade = 2, max = 4, ilevel = 8 },
-	[494] = { upgrade = 0, max = 6, ilevel = 0 },
-	[495] = { upgrade = 1, max = 6, ilevel = 4 },
-	[496] = { upgrade = 2, max = 6, ilevel = 8 },
-	[497] = { upgrade = 3, max = 6, ilevel = 12 },
-	[498] = { upgrade = 4, max = 6, ilevel = 16 },
-	[503] = { upgrade = 3, max = 3, ilevel = 1 },
-	[504] = { upgrade = 3, max = 4, ilevel = 12 },
-	[505] = { upgrade = 4, max = 4, ilevel = 16 },
-	[506] = { upgrade = 5, max = 6, ilevel = 20 },
-	[507] = { upgrade = 6, max = 6, ilevel = 24 },
-	[529] = { upgrade = 0, max = 2, ilevel = 0 },
-	[530] = { upgrade = 1, max = 2, ilevel = 5 },
-	[531] = { upgrade = 2, max = 2, ilevel = 10 },
-	[535] = { upgrade = 1, max = 3, ilevel = 15 },
-	[536] = { upgrade = 2, max = 3, ilevel = 30 },
-	[537] = { upgrade = 3, max = 3, ilevel = 45 },
-	[538] = { upgrade = 0, max = 3, ilevel = 0 },
-}
+local itemLevelCache = {}
+local itemLevelPattern = ITEM_LEVEL:gsub("%%d", "(%%d+)")
+local tooltip = CreateFrame("GameTooltip", "ElvUI_ItemScanningTooltip", UIParent, "GameTooltipTemplate")
+tooltip:SetOwner(UIParent, "ANCHOR_NONE")
+
+--Scan tooltip for item level information and cache the value
+local function GetItemLevel(itemLink)
+	if not itemLink or not GetItemInfo(itemLink) then
+		return
+	end
+
+	tooltip:ClearLines()
+	tooltip:SetHyperlink(itemLink)
+
+	if not itemLevelCache[itemLink] then
+		local itemLevel
+		for i = 2, 6 do
+			local text = _G["ElvUI_ItemScanningTooltipTextLeft"..i]:GetText()
+			if text then
+				itemLevel = tonumber(text:match(itemLevelPattern))
+
+				if itemLevel then
+					itemLevelCache[itemLink] = itemLevel
+					break
+				end
+			end
+		end
+	end
+
+	return itemLevelCache[itemLink]
+end
 
 function B:GetContainerFrame(arg)
 	if type(arg) == 'boolean' and arg == true then
@@ -393,7 +368,7 @@ function B:UpdateSlot(bagID, slotID)
 		slot:SetBackdropBorderColor(unpack(B.ProfessionColors[bagType]))
 	elseif (clink) then
 		local iLvl, itemEquipLoc
-		slot.name, _, _, iLvl, _, _, _, _, itemEquipLoc = GetItemInfo(clink);
+		slot.name, _, _, _, _, _, _, _, itemEquipLoc = GetItemInfo(clink);
 
 		local isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID);
 		local r, g, b
@@ -403,21 +378,11 @@ function B:UpdateSlot(bagID, slotID)
 			slot.shadow:SetBackdropBorderColor(r, g, b)
 		end
 
+		--GetItemLevel will return cached item level
+		iLvl = GetItemLevel(clink)
+
 		--Item Level
 		if iLvl and B.db.itemLevel and (itemEquipLoc ~= nil and itemEquipLoc ~= "" and itemEquipLoc ~= "INVTYPE_BAG" and itemEquipLoc ~= "INVTYPE_QUIVER" and itemEquipLoc ~= "INVTYPE_TABARD") and (slot.rarity and slot.rarity > 1) then
-			--From LibItemUpgradeInfo-1.0
-			local itemString = clink:match("item[%-?%d:]+") or ""-- Standardize itemlink to itemstring
-			local instaid, _, numBonuses, affixes = select(12, strsplit(":", itemString, 15))
-			instaid = tonumber(instaid) or 7
-			numBonuses = tonumber(numBonuses) or 0
-			local upgradeBonus
-			if instaid > 0 and (instaid-4) % 8 == 0 then
-				upgradeBonus = tonumber((select(numBonuses + 1, strsplit(":", affixes))))
-			end
-			-- Adjust Item Level if upgraded
-			local iLvlBonus = UpgradeTable[upgradeBonus] and UpgradeTable[upgradeBonus].ilevel or 0
-			iLvl = iLvl + iLvlBonus;
-
 			if (iLvl >= E.db.bags.itemLevelThreshold) then
 				slot.itemLevel:SetText(iLvl)
 				slot.itemLevel:SetTextColor(r, g, b)
