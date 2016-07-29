@@ -458,7 +458,7 @@ function mod:UpdateInVehicle(frame, noEvents)
 end
 
 function mod:UpdateElement_All(frame, unit, noTargetFrame)
-	if(self.db.units[frame.UnitType].healthbar.enable or self.db.onlyShowTarget) then
+	if(self.db.units[frame.UnitType].healthbar.enable or self.db.onlyShowTarget or frame.isTarget) then
 		mod:UpdateElement_MaxHealth(frame)
 		mod:UpdateElement_Health(frame)
 		mod:UpdateElement_HealthColor(frame)
