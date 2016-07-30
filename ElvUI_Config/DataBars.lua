@@ -257,12 +257,6 @@ E.Options.args.databars = {
 					type = "toggle",
 					name = L["Mouseover"],
 				},
-				hideAtMaxLevel = {
-					order = 2,
-					type = "toggle",
-					name = L["Hide At Max Level"],
-					set = function(info, value) mod.db.honor[ info[#info] ] = value; mod:UpdateHonor() end,
-				},
 				hideInVehicle = {
 					order = 3,
 					type = "toggle",
