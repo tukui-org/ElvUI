@@ -579,7 +579,7 @@ local function LoadSkin()
 		local button = self.CategoryButtons[btnIndex]
 		if(button) then
 			button:SetTemplate("Default")
-			button.Icon:SetDrawLayer("BORDER")
+			button.Icon:SetDrawLayer("BACKGROUND", 2)
 			button.Icon:SetAllPoints()
 			button.Cover:Hide()
 			button.SelectedTexture:Hide()
