@@ -574,6 +574,26 @@ local function LoadSkin()
 	LFGListApplicationViewerScrollFrameScrollBar:ClearAllPoints()
 	LFGListApplicationViewerScrollFrameScrollBar:Point("TOPLEFT", LFGListFrame.ApplicationViewer.Inset, "TOPRIGHT", 0, -14)
 	LFGListApplicationViewerScrollFrameScrollBar:Point("BOTTOMLEFT", LFGListFrame.ApplicationViewer.Inset, "BOTTOMRIGHT", 0, 14)
+
+	hooksecurefunc("LFGListCategorySelection_AddButton", function(self, btnIndex, categoryID, filters)
+		local button = self.CategoryButtons[btnIndex]
+		if(button) then
+			button:SetTemplate("Default")
+			button.Icon:SetDrawLayer("BACKGROUND", 2)
+			button.Icon:SetAllPoints()
+			button.Cover:Hide()
+			button.SelectedTexture:Hide()
+			button.HighlightTexture:SetColorTexture(1, 1, 1, 0.3)
+			button.HighlightTexture:SetInside()
+
+			local selected = self.selectedCategory == categoryID and self.selectedFilters == filters
+			if(selected) then
+				button:SetBackdropBorderColor(1, 1, 0)
+			else
+				button:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+			end
+		end
+	end);
 end
 
 S:RegisterSkin("ElvUI", LoadSkin)
