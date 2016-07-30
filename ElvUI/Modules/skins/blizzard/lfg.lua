@@ -578,14 +578,16 @@ local function LoadSkin()
 	hooksecurefunc("LFGListCategorySelection_AddButton", function(self, btnIndex, categoryID, filters)
 		local button = self.CategoryButtons[btnIndex]
 		if(button) then
-			button:SetTemplate("Default")
-			button.Icon:SetDrawLayer("BACKGROUND", 2)
-			button.Icon:SetAllPoints()
-			button.Cover:Hide()
-			button.SelectedTexture:Hide()
-			button.HighlightTexture:SetColorTexture(1, 1, 1, 0.3)
-			button.HighlightTexture:SetInside()
+			if not button.isSkinned then
+				button:SetTemplate("Default")
+				button.Icon:SetDrawLayer("BACKGROUND", 2)
+				button.Icon:SetAllPoints()
+				button.Cover:Hide()
+				button.HighlightTexture:SetColorTexture(1, 1, 1, 0.1)
+				button.HighlightTexture:SetInside()
+			end
 
+			button.SelectedTexture:Hide()
 			local selected = self.selectedCategory == categoryID and self.selectedFilters == filters
 			if(selected) then
 				button:SetBackdropBorderColor(1, 1, 0)
