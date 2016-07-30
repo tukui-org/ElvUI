@@ -581,7 +581,7 @@ local function LoadSkin()
 			if not button.isSkinned then
 				button:SetTemplate("Default")
 				button.Icon:SetDrawLayer("BACKGROUND", 2)
-				button.Icon:SetAllPoints()
+				button.Icon:SetInside()
 				button.Cover:Hide()
 				button.HighlightTexture:SetColorTexture(1, 1, 1, 0.1)
 				button.HighlightTexture:SetInside()
