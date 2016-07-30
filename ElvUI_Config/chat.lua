@@ -305,7 +305,7 @@ E.Options.args.chat = {
 						end
 						bags:Layout(true);
 					end,
-					min = 50, max = 700, step = 1,
+					min = 50, max = 1000, step = 1,
 				},
 				spacer2 = {
 					order = 10,
@@ -334,7 +334,7 @@ E.Options.args.chat = {
 						E:GetModule('Chat'):PositionChat(true);
 						E:GetModule('Bags'):Layout();
 					end,
-					min = 50, max = 700, step = 1,
+					min = 50, max = 1000, step = 1,
 				},
 				panelBackdropNameLeft = {
 					order = 13,
