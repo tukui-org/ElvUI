@@ -585,6 +585,7 @@ local function LoadSkin()
 				button.Cover:Hide()
 				button.HighlightTexture:SetColorTexture(1, 1, 1, 0.1)
 				button.HighlightTexture:SetInside()
+				button.isSkinned = true
 			end
 
 			button.SelectedTexture:Hide()
