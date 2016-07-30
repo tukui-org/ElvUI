@@ -303,7 +303,7 @@ ElvUF.Tags.Methods['powercolor'] = function(unit)
 	local color = ElvUF['colors'].power[pToken]
 	if color then
 		return Hex(color[1], color[2], color[3])
-	else
+	elseif altR then
 		--UnitPowerType is not consistent in how it returns rgb color values
 		if altR > 1 or altG > 1 or altB > 1 then
 			altR, altG, altB = altR/255, altG/255, altB/255
