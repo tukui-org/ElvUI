@@ -31,8 +31,10 @@ function mod:UpdateExperience(event)
 	local bar = self.expBar
 
 	if (UnitLevel('player') == MAX_PLAYER_LEVEL and self.db.experience.hideAtMaxLevel) or IsXPUserDisabled() then
+		E:DisableMover(self.expBar.mover:GetName())
 		bar:Hide()
 	else
+		E:EnableMover(self.expBar.mover:GetName())
 		bar:Show()
 		
 		if self.db.experience.hideInVehicle then
