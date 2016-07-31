@@ -8,7 +8,6 @@ local select, unpack = select, unpack
 local tinsert, tremove, twipe = table.insert, table.remove, table.wipe
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local GetSpellInfo = GetSpellInfo
 local UnitBuff = UnitBuff
 local UnitDebuff = UnitDebuff
 local BUFF_STACKS_OVERFLOW = BUFF_STACKS_OVERFLOW
@@ -84,7 +83,7 @@ function mod:UpdateElement_Auras(frame)
 			while ( frameNum <= maxDebuffs ) do
 				local name, _, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, _, isBossAura = UnitDebuff(frame.displayedUnit, index, filter);
 				if ( name ) then
-					if (unitCaster == mod.playerUnitToken and not frame.Debuffs.shownIDs[spellId] and (duration > 0 or (duration == 0 and name == GetSpellInfo(172))) and duration <= self.db.units[frame.UnitType].debuffs.filters.maxDuration) then
+					if (unitCaster == mod.playerUnitToken and not frame.Debuffs.shownIDs[spellId] and (duration > 0 or (duration == 0 and spellId == 146739)) and duration <= self.db.units[frame.UnitType].debuffs.filters.maxDuration) then
 						local debuffFrame = frame.Debuffs.icons[frameNum];
 						mod:SetAura(debuffFrame, index, name, filter, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, spellId, isBossAura)
 						frameNum = frameNum + 1;
