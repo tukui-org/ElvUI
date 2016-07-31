@@ -8,7 +8,7 @@ local select, unpack = select, unpack
 local tinsert, tremove, twipe = table.insert, table.remove, table.wipe
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local GetSpecialization, GetTalentInfo, GetSpellInfo = GetSpecialization, GetTalentInfo, GetSpellInfo
+local GetSpellInfo = GetSpellInfo
 local UnitBuff = UnitBuff
 local UnitDebuff = UnitDebuff
 local BUFF_STACKS_OVERFLOW = BUFF_STACKS_OVERFLOW
@@ -43,15 +43,6 @@ function mod:HideAuraIcons(auras)
 	for i=1, #auras.icons do
 		auras.icons[i]:Hide()
 	end
-end
-
-local function Cor(name)
-	local show = false
-	if E.myclass ~= "WARLOCK" then return show end
-	if GetSpecialization() ~= 1 then return show end
-	local selected = select(4,GetTalentInfo(2,2,1))
-	if selected and name == GetSpellInfo(172) then show = true end
-	return show
 end
 
 function mod:UpdateElement_Auras(frame)
@@ -93,7 +84,7 @@ function mod:UpdateElement_Auras(frame)
 			while ( frameNum <= maxDebuffs ) do
 				local name, _, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, _, isBossAura = UnitDebuff(frame.displayedUnit, index, filter);
 				if ( name ) then
-					if (unitCaster == mod.playerUnitToken and not frame.Debuffs.shownIDs[spellId] and (duration > 0 or (duration == 0 and Cor(name))) and duration <= self.db.units[frame.UnitType].debuffs.filters.maxDuration) then
+					if (unitCaster == mod.playerUnitToken and not frame.Debuffs.shownIDs[spellId] and (duration > 0 or (duration == 0 and name == GetSpellInfo(172))) and duration <= self.db.units[frame.UnitType].debuffs.filters.maxDuration) then
 						local debuffFrame = frame.Debuffs.icons[frameNum];
 						mod:SetAura(debuffFrame, index, name, filter, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, spellId, isBossAura)
 						frameNum = frameNum + 1;
