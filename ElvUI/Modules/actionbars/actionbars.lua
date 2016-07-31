@@ -908,6 +908,7 @@ function AB:FixKeybindText(button)
 		text = gsub(text, 'NMULTIPLY', "*");
 		text = gsub(text, 'NMINUS', "N-");
 		text = gsub(text, 'NPLUS', "N+");
+		text = gsub(text, 'NEQUALS', "N=");
 
 		hotkey:SetText(text);
 	end
