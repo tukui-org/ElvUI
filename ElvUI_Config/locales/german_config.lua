@@ -190,7 +190,7 @@ L["The minimum item level required for it to be shown."] = "Das minimale Itemlev
 L["The size of the individual buttons on the bag frame."] = "Die Größe der einzelnen Tasten auf dem Taschenfenster."
 L["The size of the individual buttons on the bank frame."] = "Die Größe der einzelnen Tasten auf dem Bankfenster."
 L["The spacing between buttons."] = "Der Abstand zwischen den Tasten."
-L["This makes the item level display more reliable but uses more resources. If this is disabled then upgraded items will not show the correct item level."] "Dieses macht das Anzeigen des Itemlevels zuverlässiger aber es werden mehr Resourcen verwended. Wenn du es deaktivierst, wir bei aufgewerteten Gegenständen nicht dass korrekte Itemlevel angezeigt."
+L["This makes the item level display more reliable but uses more resources. If this is disabled then upgraded items will not show the correct item level."] = "Dieses macht das Anzeigen des Itemlevels zuverlässiger aber es werden mehr Resourcen verwended. Wenn du es deaktivierst, wir bei aufgewerteten Gegenständen nicht dass korrekte Itemlevel angezeigt."
 L["Top to Bottom"] = "Von oben nach unten"
 L["Use coin icons instead of colored text."] = "Benutze Währungssymbole anstatt von farbigem Text."
 L["Use Tooltip Scanning"] = "Benutze Tooltip-Scanning"
