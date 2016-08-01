@@ -162,6 +162,7 @@ P['bags'] = {
 	["junkIcon"] = false,
 	['ignoreItems'] = '',
 	['itemLevel'] = true,
+	["useTooltipScanning"] = true,
 	['itemLevelThreshold'] = 1,
 	['itemLevelFont'] = 'Homespun',
 	['itemLevelFontSize'] = 10,
