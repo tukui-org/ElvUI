@@ -123,6 +123,9 @@ local function LoadSkin()
 	GuildMemberOfficerNoteBackground:SetTemplate("Transparent")
 	GuildMemberRankDropdown:SetFrameLevel(GuildMemberRankDropdown:GetFrameLevel() + 5)
 	S:HandleDropDownBox(GuildMemberRankDropdown, 175)
+	--Increase height of GuildMemberDetailFrame by changing global variables
+	GUILD_DETAIL_NORM_HEIGHT = 225; --Default 175
+	GUILD_DETAIL_OFFICER_HEIGHT = 278; --Default 228
 
 	--News
 	GuildNewsFrame:StripTextures()
