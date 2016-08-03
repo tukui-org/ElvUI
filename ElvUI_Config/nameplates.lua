@@ -608,7 +608,7 @@ E.Options.args.nameplate = {
 					type = "range",
 					name = L["Load Distance"],
 					desc = L["Only load nameplates for units within this range."],
-					min = 10, max = 60, step = 1,
+					min = 10, max = 100, step = 1,
 				},
 				clampToScreen = {
 					order = 10,
