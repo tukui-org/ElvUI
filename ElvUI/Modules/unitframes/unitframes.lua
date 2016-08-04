@@ -1006,6 +1006,7 @@ function UF:DisableBlizzard(event)
 			CompactRaidFrameManager:HookScript('OnShow', HideRaid)
 			CompactRaidFrameManager.hookedHide = true
 		end
+		CompactRaidFrameContainer:UnregisterAllEvents()
 
 		HideRaid()
 		--hooksecurefunc("CompactUnitFrame_RegisterEvents", CompactUnitFrame_UnregisterEvents) -- breaks nameplates names
