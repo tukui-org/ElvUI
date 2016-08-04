@@ -206,7 +206,12 @@ function E:LoadCommands()
 	self:RegisterChatCommand("ec", "ToggleConfig")
 	self:RegisterChatCommand("elvui", "ToggleConfig")
 	self:RegisterChatCommand('cpuimpact', 'GetCPUImpact')
+
 	self:RegisterChatCommand('cpuusage', 'GetTopCPUFunc')
+	-- Args: Module["Bags"] ShowAll[true] delay[5] minCalls[15]
+	-- Example: /cpuuage UnitFrames nil 50 25
+	-- module (arg1) can also be "all" to check all modules
+
 	self:RegisterChatCommand('bgstats', 'BGStats')
 	self:RegisterChatCommand('hellokitty', 'HelloKittyToggle')
 	self:RegisterChatCommand('hellokittyfix', 'HelloKittyFix')
