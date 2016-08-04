@@ -1414,7 +1414,7 @@ end
 
 local CPU_USAGE = {}
 local function CompareCPUDiff(showall, module, minCalls)
-	local greatestUsage, greatestCalls, greatestName
+	local greatestUsage, greatestCalls, greatestName, newName, newFunc
 	local greatestDiff, lastModule, mod, newUsage, calls, differance = 0;
 
 	for name, oldUsage in pairs(CPU_USAGE) do
