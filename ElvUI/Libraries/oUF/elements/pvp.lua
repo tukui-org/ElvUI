@@ -41,8 +41,6 @@
 local parent, ns = ...
 local oUF = ns.oUF
 
-local isBetaClient = select(4, GetBuildInfo()) >= 70000
-
 local function Update(self, event, unit)
 	if(unit ~= self.unit) then return end
 
@@ -54,7 +52,7 @@ local function Update(self, event, unit)
 
 	local status
 	local hasPrestige
-	local level = isBetaClient and UnitPrestige(unit) or 0
+	local level = UnitPrestige(unit)
 	local factionGroup = UnitFactionGroup(unit)
 
 	if(UnitIsPVPFreeForAll(unit)) then
@@ -98,7 +96,7 @@ local function Update(self, event, unit)
 	if(status) then
 		pvp:Show()
 
-		if(pvp.Prestige and isBetaClient) then
+		if(pvp.Prestige) then
 			if(hasPrestige) then
 				pvp.Prestige:Show()
 			else
@@ -108,7 +106,7 @@ local function Update(self, event, unit)
 	else
 		pvp:Hide()
 
-		if(pvp.Prestige and isBetaClient) then
+		if(pvp.Prestige) then
 			pvp.Prestige:Hide()
 		end
 	end
@@ -135,7 +133,7 @@ local function Enable(self)
 
 		self:RegisterEvent('UNIT_FACTION', Path)
 
-		if(pvp.Prestige and isBetaClient) then
+		if(pvp.Prestige) then
 			self:RegisterEvent('HONOR_PRESTIGE_UPDATE', Path)
 		end
 
@@ -151,7 +149,7 @@ local function Disable(self)
 
 		self:UnregisterEvent('UNIT_FACTION', Path)
 
-		if(pvp.Prestige and isBetaClient) then
+		if(pvp.Prestige) then
 			pvp.Prestige:Hide()
 
 			self:UnregisterEvent('HONOR_PRESTIGE_UPDATE', Path)
