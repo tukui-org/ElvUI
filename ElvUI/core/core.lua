@@ -1459,7 +1459,7 @@ function E:GetTopCPUFunc(msg)
 
 	twipe(CPU_USAGE)
 	if module == "all" then
-		for _, registeredModule in pairs(self['RegisteredInitialModules']) do
+		for _, registeredModule in pairs(self['RegisteredModules']) do
 			mod = self:GetModule(registeredModule, true) or self
 			for name, func in pairs(mod) do
 				if type(mod[name]) == "function" and name ~= "GetModule" then
