@@ -195,8 +195,8 @@ L["Top to Bottom"] = "Du haut vers le bas"
 L["Use coin icons instead of colored text."] = "Utiliser les icônes de pièces au lieu du texte coloré.";
 L["Use Tooltip Scanning"] = true;
 L["X Offset Bags"] = "Décalage X des sacs";
-L["X Offset Bank"] = "Décalage Y des sacs";
-L["Y Offset Bags"] = "Décalage X de la banque";
+L["X Offset Bank"] = "Décalage X de la banque";
+L["Y Offset Bags"] = "Décalage Y des sacs";
 L["Y Offset Bank"] = "Décalage Y de la banque";
 
 --Buffs and Debuffs
