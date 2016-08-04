@@ -1446,6 +1446,7 @@ end
 
 function E:GetTopCPUFunc(msg)
 	local module, showall, delay, minCalls = msg:match("^([^%s]+)%s*([^%s]*)%s*([^%s]*)%s*(.*)$")
+	local mod
 
 	module = (module == "nil" and nil) or module
 	if not module then
@@ -1459,7 +1460,7 @@ function E:GetTopCPUFunc(msg)
 	twipe(CPU_USAGE)
 	if module == "all" then
 		for _, registeredModule in pairs(self['RegisteredInitialModules']) do
-			local mod = self:GetModule(registeredModule, true) or self
+			mod = self:GetModule(registeredModule, true) or self
 			for name, func in pairs(mod) do
 				if type(mod[name]) == "function" and name ~= "GetModule" then
 					CPU_USAGE[registeredModule..":"..name] = GetFunctionCPUUsage(mod[name], true)
@@ -1467,7 +1468,7 @@ function E:GetTopCPUFunc(msg)
 			end
 		end
 	else
-		local mod = self:GetModule(module, true) or self
+		mod = self:GetModule(module, true) or self
 		for name, func in pairs(mod) do
 			if type(mod[name]) == "function" and name ~= "GetModule" then
 				CPU_USAGE[module..":"..name] = GetFunctionCPUUsage(mod[name], true)
