@@ -610,6 +610,7 @@ function AB:StyleButton(button, noBackdrop, useMasque)
 	local normal2 = button:GetNormalTexture()
 	local shine = _G[name.."Shine"];
 	local combat = InCombatLockdown()
+	local color = self.db.fontColor
 
 	if not button.noBackdrop then
 		button.noBackdrop = noBackdrop;
@@ -631,6 +632,7 @@ function AB:StyleButton(button, noBackdrop, useMasque)
 		count:ClearAllPoints();
 		count:Point("BOTTOMRIGHT", 0, 2);
 		count:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
+		count:SetTextColor(color.r, color.g, color.b)
 	end
 
 	if not button.noBackdrop and not button.backdrop and not button.useMasque then
@@ -649,6 +651,7 @@ function AB:StyleButton(button, noBackdrop, useMasque)
 
 	if self.db.hotkeytext then
 		hotkey:FontTemplate(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
+		hotkey:SetTextColor(color.r, color.g, color.b)
 	end
 
 	--Extra Action Button
