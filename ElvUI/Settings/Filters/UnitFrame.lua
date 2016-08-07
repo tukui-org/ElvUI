@@ -963,8 +963,6 @@ G.unitframe.ChannelTicks = {
 	--Mage
 	[SpellName(5143)] = 5, -- "Arcane Missiles"
 	[SpellName(12051)] = 3, -- "Evocation"
-	--Monk
-	[SpellName(115175)] = 9, -- "Smoothing Mist"
 }
 
 local priestTier17 = {115560,115561,115562,115563,115564}
