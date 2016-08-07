@@ -1115,6 +1115,7 @@ function AB:Initialize()
 	self:RegisterEvent('PET_BATTLE_OPENING_DONE', 'RemoveBindings')
 	self:RegisterEvent('UPDATE_VEHICLE_ACTIONBAR', 'VehicleFix')
 	self:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR', 'VehicleFix')
+	self:RegisterEvent('VEHICLE_UPDATE', 'UpdateButtonSettings')
 
 	if C_PetBattlesIsInBattle() then
 		self:RemoveBindings()
