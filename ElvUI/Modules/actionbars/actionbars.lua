@@ -269,16 +269,36 @@ function AB:PositionAndSizeBar(barName)
 		RegisterStateDriver(bar, "page", page);
 		bar:SetAttribute("page", page)
 
-		RegisterStateDriver(bar.vehicleFix, "vehicleFix", "[vehicleui] 1;0")
-		bar.vehicleFix:SetAttribute("_onstate-vehicleFix", [[
-			local bar = self:GetParent()
-			local ParsedText = SecureCmdOptionParse(self:GetParent():GetAttribute("page"))
+		if barName == "bar1" then
+			RegisterStateDriver(bar.vehicleFix, "vehicleFix", "[vehicleui] 1;0")
+			bar.vehicleFix:SetAttribute("_onstate-vehicleFix", [[
+				local bar = self:GetParent()
+				local ParsedText = SecureCmdOptionParse(self:GetParent():GetAttribute("page"))
 
-			if newstate == 1 then
-				if(HasVehicleActionBar()) then
-					bar:SetAttribute("state", 12)
-					bar:ChildUpdate("state", 12)
-					self:GetFrameRef("MainMenuBarArtFrame"):SetAttribute("actionpage", 12) --Update MainMenuBarArtFrame too. See http://www.tukui.org/forums/topic.php?id=35332
+				if newstate == 1 then
+					if(HasVehicleActionBar()) then
+						bar:SetAttribute("state", 12)
+						bar:ChildUpdate("state", 12)
+						self:GetFrameRef("MainMenuBarArtFrame"):SetAttribute("actionpage", 12) --Update MainMenuBarArtFrame too. See http://www.tukui.org/forums/topic.php?id=35332
+					else
+						if HasTempShapeshiftActionBar() and self:GetAttribute("hasTempBar") then
+							ParsedText = GetTempShapeshiftBarIndex() or ParsedText
+						end
+
+						if ParsedText ~= 0 then
+							bar:SetAttribute("state", ParsedText)
+							bar:ChildUpdate("state", ParsedText)
+							self:GetFrameRef("MainMenuBarArtFrame"):SetAttribute("actionpage", ParsedText)
+						else
+							local newCondition = bar:GetAttribute("newCondition")
+							if newCondition then
+								newstate = SecureCmdOptionParse(newCondition)
+								bar:SetAttribute("state", newstate)
+								bar:ChildUpdate("state", newstate)
+								self:GetFrameRef("MainMenuBarArtFrame"):SetAttribute("actionpage", newstate)
+							end
+						end
+					end
 				else
 					if HasTempShapeshiftActionBar() and self:GetAttribute("hasTempBar") then
 						ParsedText = GetTempShapeshiftBarIndex() or ParsedText
@@ -298,26 +318,8 @@ function AB:PositionAndSizeBar(barName)
 						end
 					end
 				end
-			else
-				if HasTempShapeshiftActionBar() and self:GetAttribute("hasTempBar") then
-					ParsedText = GetTempShapeshiftBarIndex() or ParsedText
-				end
-
-				if ParsedText ~= 0 then
-					bar:SetAttribute("state", ParsedText)
-					bar:ChildUpdate("state", ParsedText)
-					self:GetFrameRef("MainMenuBarArtFrame"):SetAttribute("actionpage", ParsedText)
-				else
-					local newCondition = bar:GetAttribute("newCondition")
-					if newCondition then
-						newstate = SecureCmdOptionParse(newCondition)
-						bar:SetAttribute("state", newstate)
-						bar:ChildUpdate("state", newstate)
-						self:GetFrameRef("MainMenuBarArtFrame"):SetAttribute("actionpage", newstate)
-					end
-				end
-			end
-		]]);	
+			]]);
+		end
 
 		if not bar.initialized then
 			bar.initialized = true;
@@ -1115,7 +1117,6 @@ function AB:Initialize()
 	self:RegisterEvent('PET_BATTLE_OPENING_DONE', 'RemoveBindings')
 	self:RegisterEvent('UPDATE_VEHICLE_ACTIONBAR', 'VehicleFix')
 	self:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR', 'VehicleFix')
-	self:RegisterEvent('VEHICLE_UPDATE', 'UpdateButtonSettings')
 
 	if C_PetBattlesIsInBattle() then
 		self:RemoveBindings()
