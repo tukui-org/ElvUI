@@ -509,6 +509,50 @@ ElvUF.Tags.Methods['name:long'] = function(unit)
 	return name ~= nil and E:ShortenString(name, 20) or ''
 end
 
+ElvUF.Tags.Events['name:veryshort:status'] = 'UNIT_NAME_UPDATE UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
+ElvUF.Tags.Methods['name:veryshort:status'] = function(unit)
+	local status = UnitIsDead(unit) and DEAD or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
+	local name = UnitName(unit)
+	if (status) then
+		return status
+	else
+		return name ~= nil and E:ShortenString(name, 5) or ''
+	end
+end
+
+ElvUF.Tags.Events['name:short:status'] = 'UNIT_NAME_UPDATE UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
+ElvUF.Tags.Methods['name:short:status'] = function(unit)
+	local status = UnitIsDead(unit) and DEAD or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
+	local name = UnitName(unit)
+	if (status) then
+		return status
+	else
+		return name ~= nil and E:ShortenString(name, 10) or ''
+	end
+end
+
+ElvUF.Tags.Events['name:medium:status'] = 'UNIT_NAME_UPDATE UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
+ElvUF.Tags.Methods['name:medium:status'] = function(unit)
+	local status = UnitIsDead(unit) and DEAD or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
+	local name = UnitName(unit)
+	if (status) then
+		return status
+	else
+		return name ~= nil and E:ShortenString(name, 15) or ''
+	end
+end
+
+ElvUF.Tags.Events['name:long:status'] = 'UNIT_NAME_UPDATE UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
+ElvUF.Tags.Methods['name:long:status'] = function(unit)
+	local status = UnitIsDead(unit) and DEAD or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
+	local name = UnitName(unit)
+	if (status) then
+		return status
+	else
+		return name ~= nil and E:ShortenString(name, 20) or ''
+	end
+end
+
 ElvUF.Tags.Events['realm'] = 'UNIT_NAME_UPDATE'
 ElvUF.Tags.Methods['realm'] = function(unit)
 	local _, realm = UnitName(unit)
