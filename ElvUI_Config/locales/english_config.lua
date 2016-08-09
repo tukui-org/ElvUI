@@ -480,7 +480,6 @@ L["Scale"] = true;
 L["Top Left"] = true;
 L["Top Right"] = true;
 L["Top"] = true;
-L["WebTicket"] = true;
 
 --Misc
 L["Install"] = true;

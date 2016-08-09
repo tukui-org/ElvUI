@@ -539,7 +539,6 @@ L["Scale"] = "크기"
 L["Top Left"] = "상단 좌측"
 L["Top Right"] = "상단 우측"
 L["Top"] = "상단 중앙"
-L["WebTicket"] = true;
 
 --Misc
 L["Install"] = "설치"

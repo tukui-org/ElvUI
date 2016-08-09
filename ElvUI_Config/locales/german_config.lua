@@ -491,7 +491,10 @@ L["Scale"] = "Skalierung"
 L["Top Left"] = "Oben links"
 L["Top Right"] = "Oben rechts"
 L["Top"] = "Oben"
+<<<<<<< HEAD
 L["WebTicket"] = true; -- no need to translate
+=======
+>>>>>>> parent of cd952da... Add WebTicket to the Minimap button.
 
 --Misc
 L["Enable"] = "Eingeschaltet"
