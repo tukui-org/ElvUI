@@ -491,6 +491,7 @@ L["Scale"] = "Skalierung"
 L["Top Left"] = "Oben links"
 L["Top Right"] = "Oben rechts"
 L["Top"] = "Oben"
+L["WebTicket"] = true;
 
 --Misc
 L["Enable"] = "Eingeschaltet"

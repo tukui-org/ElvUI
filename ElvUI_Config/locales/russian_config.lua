@@ -491,6 +491,7 @@ L["Scale"] = "Масштаб"
 L["Top Left"] = "Вверху слева"
 L["Top Right"] = "Вверху справа"
 L["Top"] = "Вверху"
+L["WebTicket"] = true;
 
 --Misc
 L["Install"] = "Установка"

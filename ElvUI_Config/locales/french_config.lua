@@ -491,6 +491,7 @@ L["Scale"] = "Echelle";
 L["Top Left"] = "En haut à gauche";
 L["Top Right"] = "En haut à droite";
 L["Top"] = "En haut";
+L["WebTicket"] = true;
 
 --Misc
 L["Install"] = "Installer"

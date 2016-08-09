@@ -491,6 +491,7 @@ L["Scale"] = "缩放"
 L["Top Left"] = "左上"
 L["Top Right"] = "右上"
 L["Top"] = "上"
+L["WebTicket"] = true;
 
 --Misc
 L["Install"] = "安装"

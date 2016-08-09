@@ -352,7 +352,16 @@ function M:UpdateSettings()
 		MiniMapChallengeMode:Point(pos, Minimap, pos, E.db.general.minimap.icons.challengeMode.xOffset or 8, E.db.general.minimap.icons.challengeMode.yOffset or -8)
 		MiniMapChallengeMode:SetScale(scale)
 	end
+
+	if HelpOpenWebTicketButton then
+		local pos = E.db.general.minimap.icons.webTicket.position or "TOPLEFT"
+		local scale = E.db.general.minimap.icons.webTicket.scale or 1
+		HelpOpenWebTicketButton:ClearAllPoints()
+		HelpOpenWebTicketButton:Point(pos, Minimap, pos, E.db.general.minimap.icons.webTicket.xOffset or 0, E.db.general.minimap.icons.webTicket.yOffset or 0)
+		HelpOpenWebTicketButton:SetScale(scale)
+	end
 end
+
 
 function M:Initialize()
 	menuFrame:SetTemplate("Transparent", true)

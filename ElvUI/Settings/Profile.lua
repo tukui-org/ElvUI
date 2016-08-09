@@ -79,6 +79,12 @@ P['general'] = {
 				['yOffset'] = 2,
 				["hide"] = false,
 			},
+			['webTicket'] = {
+				['scale'] = 1,
+				['position'] = "TOPRIGHT",
+				['xOffset'] = 0,
+				['yOffset'] = 0,
+			},
 		}
 	},
 	['threat'] = {
