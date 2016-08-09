@@ -85,6 +85,7 @@ L["Earned:"] = "賺取:"
 L["Feet"] = "腳部"
 L["Friends List"] = "好友列表"
 L["Friends"] = "好友" --Also in Skins
+L["Gold:"] = true;
 L["goldabbrev"] = "|cffffd700金|r" --Also used in Bags
 L["Hands"] = "手部"
 L["Head"] = "頭部"

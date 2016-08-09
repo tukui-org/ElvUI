@@ -85,6 +85,7 @@ L["Earned:"] = "Ganada:"
 L["Feet"] = "Pies"
 L["Friends List"] = "Lista de Amigos"
 L["Friends"] = "Amigos"
+L["Gold:"] = true;
 L["goldabbrev"] = "|cffffd700g|r"
 L["Hands"] = "Manos"
 L["Head"] = "Cabeza"

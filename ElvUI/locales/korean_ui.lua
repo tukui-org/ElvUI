@@ -85,6 +85,7 @@ L["Earned:"] = "수입:"
 L["Feet"] = "발"
 L["Friends List"] = "친구 목록"
 L["Friends"] = "친구"
+L["Gold:"] = true;
 L["goldabbrev"] = "|TInterface\\MoneyFrame\\UI-MoneyIcons:0:0:1:0:64:16:1:16:1:16|t" --"|cffffd700●|r"
 L["Hands"] = "손"
 L["Head"] = "머리"
