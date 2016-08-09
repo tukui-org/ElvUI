@@ -191,6 +191,15 @@ function M:PLAYER_REGEN_ENABLED()
 	self:UpdateSettings()
 end
 
+local function PositionTicketButtons()
+	local pos = E.db.general.minimap.icons.ticket.position or "TOPRIGHT"
+	HelpOpenTicketButton:ClearAllPoints()
+	HelpOpenTicketButton:Point(pos, Minimap, pos, E.db.general.minimap.icons.ticket.xOffset or 0, E.db.general.minimap.icons.ticket.yOffset or 0)
+	HelpOpenWebTicketButton:ClearAllPoints()
+	HelpOpenWebTicketButton:Point(pos, Minimap, pos, E.db.general.minimap.icons.ticket.xOffset or 0, E.db.general.minimap.icons.ticket.yOffset or 0)
+end
+hooksecurefunc("HelpOpenTicketButton_Move", PositionTicketButtons)
+
 function M:UpdateSettings()
 	if InCombatLockdown() then
 		self:RegisterEvent('PLAYER_REGEN_ENABLED')
@@ -351,6 +360,14 @@ function M:UpdateSettings()
 		MiniMapChallengeMode:ClearAllPoints()
 		MiniMapChallengeMode:Point(pos, Minimap, pos, E.db.general.minimap.icons.challengeMode.xOffset or 8, E.db.general.minimap.icons.challengeMode.yOffset or -8)
 		MiniMapChallengeMode:SetScale(scale)
+	end
+
+	if HelpOpenTicketButton and HelpOpenWebTicketButton then
+		local scale = E.db.general.minimap.icons.ticket.scale or 1
+		HelpOpenTicketButton:SetScale(scale)
+		HelpOpenWebTicketButton:SetScale(scale)
+
+		PositionTicketButtons()
 	end
 end
 

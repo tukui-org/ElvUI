@@ -486,6 +486,7 @@ L["LFG Queue"] = "Очередь"
 L["Location Text"] = "Текст локации"
 L["Minimap Buttons"] = "Кнопки миникарты"
 L["Minimap Mouseover"] = "При наведении мыши"
+L["Open Ticket"] = true;
 L["Right"] = "Правый"
 L["Scale"] = "Масштаб"
 L["Top Left"] = "Вверху слева"

@@ -19,15 +19,4 @@ function B:PositionGMFrames()
 
 	HelpOpenTicketButton:SetParent(Minimap)
 	HelpOpenWebTicketButton:SetParent(Minimap)
-
-	local function PositionTicketButtons()
-		--We can use same position, as they don't show up at the same time
-		HelpOpenTicketButton:ClearAllPoints()
-		HelpOpenTicketButton:Point("TOPRIGHT", Minimap, "TOPRIGHT")
-		HelpOpenWebTicketButton:ClearAllPoints()
-		HelpOpenWebTicketButton:Point("TOPRIGHT", Minimap, "TOPRIGHT")
-	end
-	hooksecurefunc("HelpOpenTicketButton_Move", PositionTicketButtons)
-
-	PositionTicketButtons()
 end

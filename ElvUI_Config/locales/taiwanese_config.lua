@@ -486,6 +486,7 @@ L["LFG Queue"] = true;
 L["Location Text"] = "所在位置文字"
 L["Minimap Buttons"] = true;
 L["Minimap Mouseover"] = "小地圖滑鼠滑過"
+L["Open Ticket"] = true;
 L["Right"] = true;
 L["Scale"] = "右"
 L["Top Left"] = true;

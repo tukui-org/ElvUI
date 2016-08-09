@@ -534,6 +534,7 @@ L["LFG Queue"] = "파티찾기 표시기"
 L["Location Text"] = "지역이름 표시 방법"
 L["Minimap Buttons"] = "미니맵 버튼"
 L["Minimap Mouseover"] = "마우스오버 때만 표시"
+L["Open Ticket"] = true;
 L["Right"] = "오른쪽"
 L["Scale"] = "크기"
 L["Top Left"] = "상단 좌측"

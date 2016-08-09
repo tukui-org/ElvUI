@@ -486,6 +486,7 @@ L["LFG Queue"] = "Outil raid";
 L["Location Text"] = "Texte de localisation"
 L["Minimap Buttons"] = "Bouton de la minimap";
 L["Minimap Mouseover"] = "Au survol de la Minicarte"
+L["Open Ticket"] = true;
 L["Right"] = "Droite"
 L["Scale"] = "Echelle";
 L["Top Left"] = "En haut à gauche";

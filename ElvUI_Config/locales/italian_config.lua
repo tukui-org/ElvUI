@@ -475,6 +475,7 @@ L["LFG Queue"] = true;
 L["Location Text"] = true;
 L["Minimap Buttons"] = true;
 L["Minimap Mouseover"] = true;
+L["Open Ticket"] = true;
 L["Right"] = true;
 L["Scale"] = true;
 L["Top Left"] = true;
