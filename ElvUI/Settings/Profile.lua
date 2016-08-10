@@ -233,6 +233,7 @@ P["nameplates"] = {
 		['PLAYER'] = {
 			['enable'] = false,
 			["alwaysShow"] = false,
+			["clickthrough"] = false,
 			['healthbar'] = {
 				['enable'] = true,
 				['height'] = 10,

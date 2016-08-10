@@ -717,6 +717,10 @@ function mod:PLAYER_REGEN_ENABLED()
 	end
 end
 
+function mod:TogglePlayerMouse()
+	self.PlayerFrame__:EnableMouse(not self.db.units.PLAYER.clickthrough)
+end
+
 function mod:Initialize()
 	self.db = E.db["nameplates"]
 	if E.private["nameplates"].enable ~= true then return end
@@ -762,6 +766,7 @@ function mod:Initialize()
 	self:NAME_PLATE_UNIT_REMOVED("NAME_PLATE_UNIT_REMOVED", "player", self.PlayerFrame__)
 	E:CreateMover(self.PlayerFrame__, "PlayerNameplate", L["Player Nameplate"])
 	self:TogglePlayerDisplayType()
+	self.PlayerFrame__:EnableMouse(not self.db.units.PLAYER.clickthrough)
 
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 

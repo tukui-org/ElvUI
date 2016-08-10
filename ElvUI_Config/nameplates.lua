@@ -443,6 +443,12 @@ local function GetUnitSettings(unit, name)
 			desc = L["By forcing the nameplate to always show it will not move on the screen to stay below your characters feet."],
 			type = "toggle"
 		}
+		group.args.clickthrough = {
+			order = -13,
+			name = L["Click Through"],
+			type = "toggle",
+			set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:TogglePlayerMouse() end,
+		}
 		group.args.spacer = {
 			order = -14,
 			type = "description",
