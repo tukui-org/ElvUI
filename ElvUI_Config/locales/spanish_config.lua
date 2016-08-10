@@ -417,6 +417,7 @@ L["Login Message"] = "Mensaje de inicio"
 L["Loot Roll"] = "Marco de Botín"
 L["Loot"] = "Botín"
 L["Make the world map smaller."] = true;
+L["Map Opacity When Moving"] = true;
 L["Multi-Monitor Support"] = true;
 L["Name Font"] = "Fuente para Nombres"
 L["Objective Frame Height"] = true;

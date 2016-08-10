@@ -417,6 +417,7 @@ L["Login Message"] = "Login Nachricht"
 L["Loot Roll"] = "Würfelfenster"
 L["Loot"] = "Beute"
 L["Make the world map smaller."] = "Macht die Weltkarte kleiner."
+L["Map Opacity When Moving"] = true;
 L["Multi-Monitor Support"] = "Multi-Monitor-Unterstützung"
 L["Name Font"] = "Schriftart von Spielernamen"
 L["Objective Frame Height"] = "Questfenster Höhe"

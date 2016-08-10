@@ -417,6 +417,7 @@ L["Login Message"] = "Сообщение загрузки"
 L["Loot Roll"] = "Раздел добычи"
 L["Loot"] = "Добыча"
 L["Make the world map smaller."] = "Сделать карту мира меньше. Она больше не будет занимать весь экран в увеличенном варианте."
+L["Map Opacity When Moving"] = true;
 L["Multi-Monitor Support"] = "Поддержка нескольких мониторов"
 L["Name Font"] = "Шрифт имени"
 L["Objective Frame Height"] = "Высота списка заданий"

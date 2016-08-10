@@ -417,6 +417,7 @@ L["Login Message"] = "登入資訊"
 L["Loot Roll"] = "擲骰"
 L["Loot"] = "拾取"
 L["Make the world map smaller."] = true;
+L["Map Opacity When Moving"] = true;
 L["Multi-Monitor Support"] = true;
 L["Name Font"] = "名稱字體"
 L["Objective Frame Height"] = true;

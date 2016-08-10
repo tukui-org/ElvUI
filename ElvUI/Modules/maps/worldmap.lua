@@ -155,6 +155,12 @@ function M:Initialize()
 			self:SetSmallWorldMap()
 		end
 	end
+
+	--Set alpha used when moving
+	WORLD_MAP_MIN_ALPHA = E.global.general.mapAlphaWhenMoving
+	SetCVar("mapAnimMinAlpha", E.global.general.mapAlphaWhenMoving)
+	--Enable/Disable map fading when moving
+	SetCVar("mapFade", (E.global.general.fadeMapWhenMoving == true and 1 or 0))
 end
 
 E:RegisterInitialModule(M:GetName())

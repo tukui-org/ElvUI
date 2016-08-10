@@ -406,6 +406,7 @@ L["Login Message"] = true;
 L["Loot Roll"] = true;
 L["Loot"] = true;
 L["Make the world map smaller."] = true;
+L["Map Opacity When Moving"] = true;
 L["Multi-Monitor Support"] = true;
 L["Name Font"] = true;
 L["Objective Frame Height"] = true;

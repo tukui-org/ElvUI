@@ -417,6 +417,7 @@ L["Login Message"] = "Mensagem de Entrada"
 L["Loot Roll"] = "Disputa de Saques"
 L["Loot"] = "Saque"
 L["Make the world map smaller."] = true;
+L["Map Opacity When Moving"] = true;
 L["Multi-Monitor Support"] = true;
 L["Name Font"] = "Fonte de Nomes"
 L["Objective Frame Height"] = true;
