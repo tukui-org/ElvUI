@@ -381,8 +381,7 @@ E.Options.args.chat = {
 					values = {
 						['NONE'] = L["None"],
 						['OUTLINE'] = 'OUTLINE',
-
-						['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
+						['MONOCHROMEOUTLINE'] = 'MONOCHROMEOUTLINE',
 						['THICKOUTLINE'] = 'THICKOUTLINE',
 					},
 				},
