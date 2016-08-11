@@ -1572,4 +1572,15 @@ function E:Initialize()
 			end
 		end)
 	end
+
+	-- We must run the CVar for cameraDistanceMaxFactor on login, otherwise it won't get saved.
+	local f = CreateFrame("Frame")
+	function f:OnEvent(event, addon)
+		hooksecurefunc("BlizzardOptionsPanel_SetupControl", function(control)
+			if control == InterfaceOptionsCameraPanelMaxDistanceSlider then SetCVar("cameraDistanceMaxFactor", 2.6) end
+		end)
+		self:UnregisterEvent(event)
+	end
+	f:RegisterEvent("ADDON_LOADED")
+	f:SetScript("OnEvent", f.OnEvent)
 end
