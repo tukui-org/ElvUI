@@ -35,21 +35,29 @@ function B:ScaleTalkingHeadFrame()
 	-- TalkingHeadFrame:UnregisterEvent("LOADING_SCREEN_ENABLED")
 end
 
-function B:PositionTalkingHead()
-	local function CreateMover()
-		--Prevent WoW from moving the frame around
-		TalkingHeadFrame.ignoreFramePositionManager = true
-		UIPARENT_MANAGED_FRAME_POSITIONS["TalkingHeadFrame"] = nil
+local function InitializeTalkingHead()
+	--Prevent WoW from moving the frame around
+	TalkingHeadFrame.ignoreFramePositionManager = true
+	UIPARENT_MANAGED_FRAME_POSITIONS["TalkingHeadFrame"] = nil
 
-		--Set default position
-		TalkingHeadFrame:ClearAllPoints()
-		TalkingHeadFrame:SetPoint("BOTTOM", 0, 265)
+	--Set default position
+	TalkingHeadFrame:ClearAllPoints()
+	TalkingHeadFrame:SetPoint("BOTTOM", 0, 265)
 
-		E:CreateMover(TalkingHeadFrame, "TalkingHeadFrameMover", L["Talking Head Frame"])
+	E:CreateMover(TalkingHeadFrame, "TalkingHeadFrameMover", L["Talking Head Frame"])
+	
+	--Iterate through all alert subsystems in order to find the one created for TalkingHeadFrame, and then remove it.
+	--We do this to prevent alerts from anchoring to this frame when it is shown.
+	for index, alertFrameSubSystem in ipairs(AlertFrame.alertFrameSubSystems) do
+		if alertFrameSubSystem.anchorFrame and alertFrameSubSystem.anchorFrame == TalkingHeadFrame then
+			table.remove(AlertFrame.alertFrameSubSystems, index)
+		end
 	end
+end
 
+function B:PositionTalkingHead()
 	if IsAddOnLoaded("Blizzard_TalkingHeadUI") then
-		CreateMover()
+		InitializeTalkingHead()
 		B:ScaleTalkingHeadFrame()
 	else --We want the mover to be available immediately, so we load it ourselves
 		local f = CreateFrame("Frame")
@@ -57,7 +65,7 @@ function B:PositionTalkingHead()
 		f:SetScript("OnEvent", function(self, event)
 			self:UnregisterEvent(event)
 			TalkingHead_LoadUI();
-			CreateMover()
+			InitializeTalkingHead()
 			B:ScaleTalkingHeadFrame()
 		end)
 	end
