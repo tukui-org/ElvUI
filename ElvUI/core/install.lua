@@ -638,35 +638,35 @@ local function SetupAuras(style)
 
 	local frame = UF["player"]
 	E:CopyTable(E.db.unitframe.units.player.buffs, P.unitframe.units.player.buffs)
-	UF:Configure_Auras(frame, "Buffs")
-
 	E:CopyTable(E.db.unitframe.units.player.debuffs, P.unitframe.units.player.debuffs)
-	UF:Configure_Auras(frame, "Debuffs")
-
 	E:CopyTable(E.db.unitframe.units.player.aurabar, P.unitframe.units.player.aurabar)
-	UF:Configure_AuraBars(frame)
+	if frame then
+		UF:Configure_Auras(frame, "Buffs")
+		UF:Configure_Auras(frame, "Debuffs")
+		UF:Configure_AuraBars(frame)
+	end
 	
-	frame = UF["target"]
+	local frame = UF["target"]
 	E:CopyTable(E.db.unitframe.units.target.buffs, P.unitframe.units.target.buffs)
-	UF:Configure_Auras(frame, "Buffs")
-
 	E:CopyTable(E.db.unitframe.units.target.debuffs, P.unitframe.units.target.debuffs)
-	UF:Configure_Auras(frame, "Debuffs")
-
 	E:CopyTable(E.db.unitframe.units.target.aurabar, P.unitframe.units.target.aurabar)
 	E.db.unitframe.units.target.smartAuraDisplay = P.unitframe.units.target.smartAuraDisplay
-	UF:Configure_AuraBars(frame)
+	if frame then
+		UF:Configure_Auras(frame, "Buffs")
+		UF:Configure_Auras(frame, "Debuffs")
+		UF:Configure_AuraBars(frame)
+	end
 
-	frame = UF["focus"]
+	local frame = UF["focus"]
 	E:CopyTable(E.db.unitframe.units.focus.buffs, P.unitframe.units.focus.buffs)
-	UF:Configure_Auras(frame, "Buffs")
-
 	E:CopyTable(E.db.unitframe.units.focus.debuffs, P.unitframe.units.focus.debuffs)
-	UF:Configure_Auras(frame, "Debuffs")
-
 	E:CopyTable(E.db.unitframe.units.focus.aurabar, P.unitframe.units.focus.aurabar)
 	E.db.unitframe.units.focus.smartAuraDisplay = P.unitframe.units.focus.smartAuraDisplay
-	UF:Configure_AuraBars(frame)
+	if frame then
+		UF:Configure_Auras(frame, "Buffs")
+		UF:Configure_Auras(frame, "Debuffs")
+		UF:Configure_AuraBars(frame)
+	end
 
 	if not style then
 		--PLAYER
