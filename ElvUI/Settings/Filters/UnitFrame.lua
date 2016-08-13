@@ -950,6 +950,7 @@ P['unitframe']['filters'] = {
 G.unitframe.ChannelTicks = {
 	--Warlock
 	[SpellName(689)] = 6, -- "Drain Life"
+	[SpellName(198590)] = 6, -- "Drain Soul"
 	-- [SpellName(108371)] = 6, -- "Harvest Life"
 	[SpellName(5740)] = 4, -- "Rain of Fire"
 	[SpellName(755)] = 6, -- Health Funnel
@@ -989,6 +990,7 @@ end)
 G.unitframe.ChannelTicksSize = {
 	--Warlock
 	[SpellName(689)] = 1, -- "Drain Life"
+	[SpellName(198590)] = 1, -- "Drain Soul"
 }
 
 --Spells Effected By Haste
