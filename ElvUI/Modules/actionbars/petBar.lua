@@ -242,6 +242,9 @@ function AB:PositionAndSizeBarPet()
 
 	RegisterStateDriver(bar, "show", self.db['barPet'].visibility);
 
+	--Fix issue with mover not updating size when bar is hidden
+	bar:GetScript("OnSizeChanged")(bar)
+
 	if MasqueGroup and E.private.actionbar.masque.petBar then MasqueGroup:ReSkin() end
 end
 
