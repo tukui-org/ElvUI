@@ -32,6 +32,8 @@ local INVERT_ANCHORPOINT = {
 	BOTTOM = 'TOP',
 }
 
+local ticks = {}
+
 function UF:Construct_Castbar(frame, direction, moverName)
 	local castbar = CreateFrame("StatusBar", nil, frame)
 	castbar:SetFrameStrata("HIGH")
@@ -204,6 +206,11 @@ function UF:Configure_Castbar(frame)
 		end
 	end
 
+	--Adjust tick heights
+	for i=1, #ticks do
+		ticks[i]:Height(castbar:GetHeight())
+	end
+
 	if db.castbar.enable and not frame:IsElementEnabled('Castbar') then
 		frame:EnableElement('Castbar')
 	elseif not db.castbar.enable and frame:IsElementEnabled('Castbar') then
@@ -262,7 +269,6 @@ function UF:CustomTimeText(duration)
 	end
 end
 
-local ticks = {}
 function UF:HideTicks()
 	for i=1, #ticks do
 		ticks[i]:Hide()
