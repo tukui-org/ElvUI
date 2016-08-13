@@ -175,28 +175,20 @@ function UF:Configure_ClassBar(frame, cur)
 					bars[i]:SetStatusBarColor(unpack(ElvUF.colors.ClassBars[E.myclass][i]))
 				elseif E.myclass == "PALADIN" or E.myclass == "MAGE" or E.myclass == "WARLOCK" then
 					bars[i]:SetStatusBarColor(unpack(ElvUF.colors.ClassBars[E.myclass]))
-				elseif E.myclass == "DEATHKNIGHT" then
-					if frame.ClassBar == "Runes" then
-						local r, g, b = unpack(ElvUF.colors.ClassBars["DEATHKNIGHT"])
-						bars[i]:SetStatusBarColor(r, g, b)
-						if (bars[i].bg) then
-							local mu = bars[i].bg.multiplier or 1
-							bars[i].bg:SetVertexColor(r * mu, g * mu, b * mu)
-						end
-					else
-						local r1, g1, b1 = unpack(ElvUF.colors.ComboPoints[1])
-						local r2, g2, b2 = unpack(ElvUF.colors.ComboPoints[2])
-						local r3, g3, b3 = unpack(ElvUF.colors.ComboPoints[3])
-
-						local r, g, b = ElvUF.ColorGradient(i, frame.MAX_CLASS_BAR > 5 and 6 or 5, r1, g1, b1, r2, g2, b2, r3, g3, b3)
-						bars[i]:SetStatusBarColor(r, g, b)
+				elseif E.myclass == "DEATHKNIGHT" and frame.ClassBar == "Runes" then
+					local r, g, b = unpack(ElvUF.colors.ClassBars["DEATHKNIGHT"])
+					bars[i]:SetStatusBarColor(r, g, b)
+					if (bars[i].bg) then
+						local mu = bars[i].bg.multiplier or 1
+						bars[i].bg:SetVertexColor(r * mu, g * mu, b * mu)
 					end
 				else -- Combo Points for everyone else
 					local r1, g1, b1 = unpack(ElvUF.colors.ComboPoints[1])
 					local r2, g2, b2 = unpack(ElvUF.colors.ComboPoints[2])
 					local r3, g3, b3 = unpack(ElvUF.colors.ComboPoints[3])
+					local maxComboPoints = ((frame.MAX_CLASS_BAR == 8 and 8) or (frame.MAX_CLASS_BAR > 5 and 6 or 5))
 
-					local r, g, b = ElvUF.ColorGradient(i, frame.MAX_CLASS_BAR > 5 and 6 or 5, r1, g1, b1, r2, g2, b2, r3, g3, b3)
+					local r, g, b = ElvUF.ColorGradient(i, maxComboPoints, r1, g1, b1, r2, g2, b2, r3, g3, b3)
 					bars[i]:SetStatusBarColor(r, g, b)
 				end
 
