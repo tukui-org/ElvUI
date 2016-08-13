@@ -60,7 +60,7 @@ local OnUpdate = function(self, elapsed)
 	end
 end
 
-local Update = function(self, event, rid)
+local Update = function(self, event, rid, isEnergize)
 	local runes = self.Runes
 	local rune = runes[rid]
 	if(not rune) then return end
@@ -75,7 +75,7 @@ local Update = function(self, event, rid)
 			return
 		end
 
-		if(runeReady) then
+		if(isEnergize or runeReady) then
 			rune:SetMinMaxValues(0, 1)
 			rune:SetValue(1)
 			rune:SetScript("OnUpdate", nil)
@@ -90,7 +90,7 @@ local Update = function(self, event, rid)
 	end
 
 	if(runes.PostUpdate) then
-		return runes:PostUpdate(rune, rid, start, duration, runeReady)
+		return runes:PostUpdate(rune, rid, start, duration, isEnergize or runeReady)
 	end
 end
 
