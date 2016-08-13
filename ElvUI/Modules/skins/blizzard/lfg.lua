@@ -256,7 +256,7 @@ local function LoadSkin()
 	HandleGoldIcon("ScenarioQueueFrameRandomScrollFrameChildFrameMoneyReward")
 
 	for i = 1, NUM_LFD_CHOICE_BUTTONS do
-		S:HandleCheckBox(_G["LFDQueueFrameSpecificListButton"..i].enableButton)
+		S:HandleCheckBox(_G["LFDQueueFrameSpecificListButton"..i].enableButton, nil, true)
 	end
 
 	hooksecurefunc("ScenarioQueueFrameSpecific_Update", function()
@@ -265,7 +265,7 @@ local function LoadSkin()
 			local button = _G["ScenarioQueueFrameSpecificButton"..i]
 
 			if button and not button.skinned then
-				S:HandleCheckBox(button.enableButton)
+				S:HandleCheckBox(button.enableButton, nil, true)
 				button.skinned = true;
 			end
 		end
@@ -273,7 +273,7 @@ local function LoadSkin()
 
 	for i = 1, NUM_LFR_CHOICE_BUTTONS do
 		local bu = _G["LFRQueueFrameSpecificListButton"..i].enableButton
-		S:HandleCheckBox(bu)
+		S:HandleCheckBox(bu, nil, true)
 	end
 
 	S:HandleDropDownBox(LFDQueueFrameTypeDropDown)
@@ -382,7 +382,7 @@ local function LoadSkin()
 			LFRBrowseFrame:StripTextures()
 			for _, roleButton in pairs(roleButtons) do
 				roleButton:SetNormalTexture("")
-				S:HandleCheckBox(roleButton.checkButton)
+				S:HandleCheckBox(roleButton.checkButton, nil, true)
 				roleButton:GetChildren():SetFrameLevel(roleButton:GetChildren():GetFrameLevel() + 1)
 			end
 
