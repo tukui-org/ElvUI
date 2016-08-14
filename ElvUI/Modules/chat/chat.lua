@@ -241,8 +241,8 @@ local specialChatIcons = {
 	},
 	["Spirestone"] = {
 		["Elv"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\elvui.blp:13:22|t",
-		["Tirain"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\tyroneBiggums.tga:16:18|t",
-		["Sinth"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\tyroneBiggums.tga:16:18|t",
+		["Tirain"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\mr_hankey.tga:16:18|t",
+		["Sinth"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\mr_hankey.tga:16:18|t",
 	},
 	["Arathor"] = {
 		["Mallouh"] = "|TInterface\\AddOns\\ElvUI\\media\\textures\\chatLogos\\elvui.blp:13:22|t",
