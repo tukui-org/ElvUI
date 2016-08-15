@@ -468,6 +468,7 @@ L["Make the world map smaller."] = "월드맵을 작게 표시합니다."
 L["Map Opacity When Moving"] = true;
 L["Multi-Monitor Support"] = "다중모니터 지원"
 L["Name Font"] = "캐릭터 이름 글꼴"
+L["Number Prefix"] = true;
 L["Objective Frame Height"] = "퀘스트프레임 세로길이"
 L["Party / Raid"] = "파티&레이드 채널로"
 L["Party Only"] = "파티채널만"

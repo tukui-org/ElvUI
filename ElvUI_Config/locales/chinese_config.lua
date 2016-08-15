@@ -420,6 +420,7 @@ L["Make the world map smaller."] = "让世界地图更小。"
 L["Map Opacity When Moving"] = true;
 L["Multi-Monitor Support"] = "多显示器支持"
 L["Name Font"] = "名称字体"
+L["Number Prefix"] = true;
 L["Objective Frame Height"] = "任务框架高度"
 L["Party / Raid"] = "小队/团队"
 L["Party Only"] = "仅小队"

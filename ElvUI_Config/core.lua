@@ -244,6 +244,17 @@ E.Options.args.general = {
 					get = function(info) return E.db.general.talkingHeadFrameScale end,
 					set = function(info, value) E.db.general.talkingHeadFrameScale = value; B:ScaleTalkingHeadFrame() end,
 				},
+				numberPrefixStyle = {
+					order = 20,
+					type = "select",
+					name = L["Number Prefix"],
+					get = function(info) return E.db.general.numberPrefixStyle end,
+					set = function(info, value) E.db.general.numberPrefixStyle = value; E:StaticPopup_Show("CONFIG_RL") end,
+					values = {
+						["METRIC"] = "k, M, G",
+						["ENGLISH"] = "K, M, B",
+					},
+				},
 				objectiveFrameHeaderSpacing = {
 					order = 29,
 					type = "description",

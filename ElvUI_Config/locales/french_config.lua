@@ -420,6 +420,7 @@ L["Make the world map smaller."] = "Rendre la carte du monde plus petite";
 L["Map Opacity When Moving"] = true;
 L["Multi-Monitor Support"] = "Support Multi-Moniteur";
 L["Name Font"] = "Nom de la police"
+L["Number Prefix"] = true;
 L["Objective Frame Height"] = "Hauteur du cadre d'objectif";
 L["Party / Raid"] = "Groupe / Raid";
 L["Party Only"] = "Groupe seulement";

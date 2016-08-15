@@ -19,8 +19,8 @@ P['general'] = {
 	['objectiveFrameHeight'] = 480,
 	['bonusObjectivePosition'] = "LEFT",
 	["talkingHeadFrameScale"] = 0.9,
-
 	['afk'] = true,
+	["numberPrefixStyle"] = "METRIC",
 
 	["fontSize"] = 12,
 	["font"] = "PT Sans Narrow",
