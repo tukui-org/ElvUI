@@ -993,7 +993,6 @@ L["Spec Icon"] = "天賦圖示"
 L["Spell not found in list."] = "列表中未發現技能"
 L["Stack Counter"] = true;
 L["Stack Threshold"] = true;
-L["Stagger Bar"] = "醉酒列"
 L["Start Near Center"] = "由中心開始"
 L["Statusbar Fill Orientation"] = true;
 L["StatusBar Texture"] = "狀態條材質"

@@ -993,7 +993,6 @@ L["Spec Icon"] = "Icono de Especialidad"
 L["Spell not found in list."] = "Hechizo no encontrado en la lista."
 L["Stack Counter"] = true;
 L["Stack Threshold"] = true;
-L["Stagger Bar"] = "Barra de Tambaleo"
 L["Start Near Center"] = "Comenzar Cerca del Centro"
 L["Statusbar Fill Orientation"] = true;
 L["StatusBar Texture"] = "Textura de la Barra de Estado"

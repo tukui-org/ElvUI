@@ -982,7 +982,6 @@ L["Spec Icon"] = true;
 L["Spell not found in list."] = true;
 L["Stack Counter"] = true;
 L["Stack Threshold"] = true;
-L["Stagger Bar"] = true;
 L["Start Near Center"] = true;
 L["Statusbar Fill Orientation"] = true;
 L["StatusBar Texture"] = true;

@@ -1042,7 +1042,6 @@ L["Spec Icon"] = "특성 아이콘"
 L["Spell not found in list."] = "목록에서 주문을 찾을 수 없습니다."
 L["Stack Counter"] = true;
 L["Stack Threshold"] = "중첩 기준점"
-L["Stagger Bar"] = "시간차 표시 바"
 L["Start Near Center"] = "가운데 정렬"
 L["Statusbar Fill Orientation"] = true;
 L["StatusBar Texture"] = "바 텍스쳐"
