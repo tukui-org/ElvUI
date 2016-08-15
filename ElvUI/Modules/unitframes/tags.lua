@@ -11,67 +11,68 @@ local twipe = table.wipe
 local ceil, sqrt, floor = math.ceil, math.sqrt, math.floor
 local format = string.format
 --WoW API / Variables
+local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
+local GetNumGroupMembers = GetNumGroupMembers
+local GetPVPTimer = GetPVPTimer
+local GetQuestGreenRange = GetQuestGreenRange
+local GetRelativeDifficultyColor = GetRelativeDifficultyColor
+local GetShapeshiftFormID = GetShapeshiftFormID
+local GetSpecialization = GetSpecialization
+local GetThreatStatusColor = GetThreatStatusColor
 local GetTime = GetTime
-local UnitGUID = UnitGUID
-local UnitIsUnit = UnitIsUnit
-local UnitPower = UnitPower
-local UnitPowerMax = UnitPowerMax
+local GetUnitSpeed = GetUnitSpeed
+local IsInGroup = IsInGroup
+local IsInRaid = IsInRaid
+local QuestDifficultyColors = QuestDifficultyColors
 local UnitAlternatePowerTextureInfo = UnitAlternatePowerTextureInfo
-local UnitIsAFK = UnitIsAFK
-local UnitIsDeadOrGhost = UnitIsDeadOrGhost
-local UnitIsConnected = UnitIsConnected
+local UnitBattlePetLevel = UnitBattlePetLevel
+local UnitClass = UnitClass
+local UnitClassification = UnitClassification
+local UnitDetailedThreatSituation = UnitDetailedThreatSituation
+local UnitExists = UnitExists
+local UnitGetIncomingHeals = UnitGetIncomingHeals
+local UnitGetTotalAbsorbs = UnitGetTotalAbsorbs
+local UnitGUID = UnitGUID
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
-local UnitIsDead = UnitIsDead
-local UnitIsGhost = UnitIsGhost
-local UnitPowerType = UnitPowerType
-local UnitIsWildBattlePet = UnitIsWildBattlePet
+local UnitIsAFK = UnitIsAFK
 local UnitIsBattlePetCompanion = UnitIsBattlePetCompanion
-local UnitBattlePetLevel = UnitBattlePetLevel
-local GetRelativeDifficultyColor = GetRelativeDifficultyColor
-local QuestDifficultyColors = QuestDifficultyColors
-local UnitLevel = UnitLevel
-local GetQuestGreenRange = GetQuestGreenRange
-local UnitReaction = UnitReaction
-local UnitClass = UnitClass
-local UnitIsPlayer = UnitIsPlayer
-local UnitDetailedThreatSituation = UnitDetailedThreatSituation
-local IsInGroup = IsInGroup
-local UnitExists = UnitExists
-local GetThreatStatusColor = GetThreatStatusColor
+local UnitIsConnected = UnitIsConnected
+local UnitIsDead = UnitIsDead
+local UnitIsDeadOrGhost = UnitIsDeadOrGhost
 local UnitIsDND = UnitIsDND
-local UnitIsPVPFreeForAll = UnitIsPVPFreeForAll
+local UnitIsGhost = UnitIsGhost
+local UnitIsPlayer = UnitIsPlayer
 local UnitIsPVP = UnitIsPVP
-local GetPVPTimer = GetPVPTimer
-local GetSpecialization = GetSpecialization
-local GetShapeshiftFormID = GetShapeshiftFormID
-local UnitGetTotalAbsorbs = UnitGetTotalAbsorbs
-local UnitGetIncomingHeals = UnitGetIncomingHeals
-local IsInRaid = IsInRaid
-local GetNumGroupMembers = GetNumGroupMembers
-local UnitClassification = UnitClassification
-local GetUnitSpeed = GetUnitSpeed
-local C_PetJournalGetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
-local DEFAULT_AFK_MESSAGE = DEFAULT_AFK_MESSAGE
-local UNKNOWN = UNKNOWN
-local UNITNAME_SUMMON_TITLE17 = UNITNAME_SUMMON_TITLE17
+local UnitIsPVPFreeForAll = UnitIsPVPFreeForAll
+local UnitIsUnit = UnitIsUnit
+local UnitIsWildBattlePet = UnitIsWildBattlePet
+local UnitLevel = UnitLevel
+local UnitPower = UnitPower
+local UnitPowerMax = UnitPowerMax
+local UnitPowerType = UnitPowerType
+local UnitReaction = UnitReaction
 local ALTERNATE_POWER_INDEX = ALTERNATE_POWER_INDEX
-local SPELL_POWER_MANA = SPELL_POWER_MANA
-local SPELL_POWER_HOLY_POWER = SPELL_POWER_HOLY_POWER
-local SPELL_POWER_CHI = SPELL_POWER_CHI
-local SPELL_POWER_ECLIPSE = SPELL_POWER_ECLIPSE
-local SPELL_POWER_SHADOW_ORBS = SPELL_POWER_SHADOW_ORBS
-local SPELL_POWER_BURNING_EMBERS = SPELL_POWER_BURNING_EMBERS
-local SPELL_POWER_SOUL_SHARDS = SPELL_POWER_SOUL_SHARDS
-local SPELL_POWER_DEMONIC_FURY = SPELL_POWER_DEMONIC_FURY
+local DEAD = DEAD
+local DEFAULT_AFK_MESSAGE = DEFAULT_AFK_MESSAGE
+local MOONKIN_FORM = MOONKIN_FORM
+local PVP = PVP
+local SHADOW_ORBS_SHOW_LEVEL = SHADOW_ORBS_SHOW_LEVEL
+local SPEC_MONK_BREWMASTER = SPEC_MONK_BREWMASTER
 local SPEC_PRIEST_SHADOW = SPEC_PRIEST_SHADOW
-local SPEC_WARLOCK_DESTRUCTION = SPEC_WARLOCK_DESTRUCTION
 local SPEC_WARLOCK_AFFLICTION = SPEC_WARLOCK_AFFLICTION
 local SPEC_WARLOCK_DEMONOLOGY = SPEC_WARLOCK_DEMONOLOGY
-local SHADOW_ORBS_SHOW_LEVEL = SHADOW_ORBS_SHOW_LEVEL
-local MOONKIN_FORM = MOONKIN_FORM
-local DEAD = DEAD
-local PVP = PVP
+local SPEC_WARLOCK_DESTRUCTION = SPEC_WARLOCK_DESTRUCTION
+local SPELL_POWER_BURNING_EMBERS = SPELL_POWER_BURNING_EMBERS
+local SPELL_POWER_CHI = SPELL_POWER_CHI
+local SPELL_POWER_DEMONIC_FURY = SPELL_POWER_DEMONIC_FURY
+local SPELL_POWER_ECLIPSE = SPELL_POWER_ECLIPSE
+local SPELL_POWER_HOLY_POWER = SPELL_POWER_HOLY_POWER
+local SPELL_POWER_MANA = SPELL_POWER_MANA
+local SPELL_POWER_SHADOW_ORBS = SPELL_POWER_SHADOW_ORBS
+local SPELL_POWER_SOUL_SHARDS = SPELL_POWER_SOUL_SHARDS
+local UNITNAME_SUMMON_TITLE17 = UNITNAME_SUMMON_TITLE17
+local UNKNOWN = UNKNOWN
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: Hex, PowerBarColor
@@ -429,7 +430,7 @@ ElvUF.Tags.Methods['difficultycolor'] = function(unit)
 	if ( UnitIsWildBattlePet(unit) or UnitIsBattlePetCompanion(unit) ) then
 		local level = UnitBattlePetLevel(unit)
 
-		local teamLevel = C_PetJournalGetPetTeamAverageLevel();
+		local teamLevel = C_PetJournal_GetPetTeamAverageLevel();
 		if teamLevel < level or teamLevel > level then
 			local c = GetRelativeDifficultyColor(teamLevel, level)
 			r, g, b = c.r, c.g, c.b
@@ -664,41 +665,44 @@ local Harmony = {
 	[6] = {.17, .63, .33, 1},
 }
 
+local StaggerColors = ElvUF.colors.power["STAGGER"]
+-- percentages at which the bar should change color
+local STAGGER_YELLOW_TRANSITION = STAGGER_YELLOW_TRANSITION
+local STAGGER_RED_TRANSITION = STAGGER_RED_TRANSITION
+-- table indices of bar colors
+local STAGGER_GREEN_INDEX = STAGGER_GREEN_INDEX or 1
+local STAGGER_YELLOW_INDEX = STAGGER_YELLOW_INDEX or 2
+local STAGGER_RED_INDEX = STAGGER_RED_INDEX or 3
+
 local function GetClassPower(class)
 	local min, max, r, g, b = 0, 0, 0, 0, 0
+	
 	local spec = GetSpecialization()
-	if class == 'PALADIN' then
+	if class == 'PALADIN' and spec == SPEC_PALADIN_RETRIBUTION then
 		min = UnitPower('player', SPELL_POWER_HOLY_POWER);
 		max = UnitPowerMax('player', SPELL_POWER_HOLY_POWER);
 		r, g, b = 228/255, 225/255, 16/255
 	elseif class == 'MONK' then
-		min = UnitPower("player", SPELL_POWER_CHI)
-		max = UnitPowerMax("player", SPELL_POWER_CHI)
-		r, g, b = unpack(Harmony[min])
-	elseif class == 'DRUID' and GetShapeshiftFormID() == MOONKIN_FORM then
-		min = UnitPower('player', SPELL_POWER_ECLIPSE)
-		max = UnitPowerMax('player', SPELL_POWER_ECLIPSE)
-		r, g, b = PowerBarColor["LUNAR_POWER"].r, PowerBarColor["LUNAR_POWER"].g, PowerBarColor["LUNAR_POWER"].b
-	elseif class == 'PRIEST' and spec == SPEC_PRIEST_SHADOW and UnitLevel("player") > SHADOW_ORBS_SHOW_LEVEL then
-		min = UnitPower("player", SPELL_POWER_SHADOW_ORBS)
-		max = UnitPowerMax("player", SPELL_POWER_SHADOW_ORBS)
-		r, g, b = 1, 1, 1
-	elseif class == 'WARLOCK' then
-		if (spec == SPEC_WARLOCK_DESTRUCTION) then
-			min = UnitPower("player", SPELL_POWER_BURNING_EMBERS, true)
-			max = UnitPowerMax("player", SPELL_POWER_BURNING_EMBERS, true)
-			min = floor(min / 10)
-			max = floor(max / 10)
-			r, g, b = 230/255, 95/255,  95/255
-		elseif ( spec == SPEC_WARLOCK_AFFLICTION ) then
-			min = UnitPower("player", SPELL_POWER_SOUL_SHARDS)
-			max = UnitPowerMax("player", SPELL_POWER_SOUL_SHARDS)
-			r, g, b = 148/255, 130/255, 201/255
-		elseif spec == SPEC_WARLOCK_DEMONOLOGY then
-			min = UnitPower("player", SPELL_POWER_DEMONIC_FURY)
-			max = UnitPowerMax("player", SPELL_POWER_DEMONIC_FURY)
-			r, g, b = 148/255, 130/255, 201/255
+		if spec == SPEC_MONK_BREWMASTER then
+			min = UnitStagger("player")
+			max = UnitHealthMax("player")
+			local staggerRatio = min / max
+			if (staggerRatio >= STAGGER_RED_TRANSITION) then
+				r, g, b = unpack(StaggerColors[STAGGER_RED_INDEX])
+			elseif (staggerRatio >= STAGGER_YELLOW_TRANSITION) then
+				r, g, b = unpack(StaggerColors[STAGGER_YELLOW_INDEX])
+			else
+				r, g, b = unpack(StaggerColors[STAGGER_GREEN_INDEX])
+			end
+		else
+			min = UnitPower("player", SPELL_POWER_CHI)
+			max = UnitPowerMax("player", SPELL_POWER_CHI)
+			r, g, b = unpack(Harmony[min])
 		end
+	elseif class == 'WARLOCK' then
+		min = UnitPower("player", SPELL_POWER_SOUL_SHARDS)
+		max = UnitPowerMax("player", SPELL_POWER_SOUL_SHARDS)
+		r, g, b = 148/255, 130/255, 201/255
 	end
 
 	return min, max, r, g, b
@@ -732,7 +736,7 @@ end
 
 ElvUF.Tags.Events['classpower:current-percent'] = 'UNIT_POWER_FREQUENT PLAYER_TALENT_UPDATE UPDATE_SHAPESHIFT_FORM'
 ElvUF.Tags.Methods['classpower:current-percent'] = function()
-	local min, max = GetClassPower(E.myclass)
+	local min, max, staggerPercent = GetClassPower(E.myclass)
 	if min == 0 then
 		return ' '
 	else
