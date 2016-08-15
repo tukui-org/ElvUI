@@ -4,7 +4,7 @@
 
  Widget
 
- Runes - An array holding six StatusBar's.
+ Runes - An array holding StatusBar's.
 
  Sub-Widgets
 
@@ -52,15 +52,11 @@ local oUF = ns.oUF
 
 local OnUpdate = function(self, elapsed)
 	local duration = self.duration + elapsed
-	if(duration >= self.max) then
-		return self:SetScript("OnUpdate", nil)
-	else
-		self.duration = duration
-		return self:SetValue(duration)
-	end
+	self.duration = duration
+	self:SetValue(duration)
 end
 
-local Update = function(self, event, rid, isEnergize)
+local Update = function(self, event, rid, energized)
 	local runes = self.Runes
 	local rune = runes[rid]
 	if(not rune) then return end
@@ -70,12 +66,9 @@ local Update = function(self, event, rid, isEnergize)
 		rune:Hide()
 	else
 		start, duration, runeReady = GetRuneCooldown(rid)
-		if(not start) then
-			-- As of 6.2.0 GetRuneCooldown returns nil values when zoning
-			return
-		end
+		if(not start) then return end
 
-		if(isEnergize or runeReady) then
+		if(energized or runeReady) then
 			rune:SetMinMaxValues(0, 1)
 			rune:SetValue(1)
 			rune:SetScript("OnUpdate", nil)
@@ -90,16 +83,17 @@ local Update = function(self, event, rid, isEnergize)
 	end
 
 	if(runes.PostUpdate) then
-		return runes:PostUpdate(rune, rid, start, duration, isEnergize or runeReady)
+		return runes:PostUpdate(rune, rid, start, duration, energized or runeReady)
 	end
 end
 
 local Path = function(self, event, ...)
-	local UpdateMethod = self.Runes.Override or Update
+	local runes = self.Runes
+	local UpdateMethod = runes.Override or Update
 	if(event == 'RUNE_POWER_UPDATE') then
 		return UpdateMethod(self, event, ...)
 	else
-		for index = 1, 6 do
+		for index = 1, #runes do
 			UpdateMethod(self, event, index)
 		end
 	end
@@ -167,7 +161,7 @@ local Enable = function(self, unit)
 		runes.__owner = self
 		runes.ForceUpdate = ForceUpdate
 
-		for i=1, 6 do
+		for i = 1, #runes do
 			local rune = runes[i]
 
 			local r, g, b = unpack(self.colors.power.RUNES)
