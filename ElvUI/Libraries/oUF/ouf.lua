@@ -50,6 +50,11 @@ local updateActiveUnit = function(self, event, unit)
 		modUnit = "vehicle"
 	end
 
+	-- UNIT_EXITED_VEHICLE returns player as unit, which is not the case for pet frame
+	if (modUnit == 'pet') and (realUnit == 'pet') and (unit == 'player') then
+		unit = nil
+	end
+
 	-- Drop out if the event unit doesn't match any of the frame units.
 	if(not UnitExists(modUnit) or unit and unit ~= realUnit and unit ~= modUnit) then return end
 
