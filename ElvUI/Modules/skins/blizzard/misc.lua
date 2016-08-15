@@ -138,7 +138,7 @@ local function LoadSkin()
 		hooksecurefunc(GhostFrame, "SetBackdropBorderColor", forceBackdropColor)
 
 		GhostFrame:ClearAllPoints()
-		GhostFrame:Point("TOP", E.UIParent, "TOP", 0, -150)
+		GhostFrame:Point("TOP", E.UIParent, "TOP", 0, -270)
 		S:HandleButton(GhostFrameContentsFrame)
 		GhostFrameContentsFrameIcon:SetTexture(nil)
 		local x = CreateFrame("Frame", nil, GhostFrame)
