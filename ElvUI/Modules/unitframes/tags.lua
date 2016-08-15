@@ -12,6 +12,7 @@ local ceil, sqrt, floor = math.ceil, math.sqrt, math.floor
 local format = string.format
 --WoW API / Variables
 local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
+local GetGuildInfo = GetGuildInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetPVPTimer = GetPVPTimer
 local GetQuestGreenRange = GetQuestGreenRange
@@ -52,6 +53,7 @@ local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
 local UnitReaction = UnitReaction
+local UnitStagger = UnitStagger
 local ALTERNATE_POWER_INDEX = ALTERNATE_POWER_INDEX
 local DEAD = DEAD
 local DEFAULT_AFK_MESSAGE = DEFAULT_AFK_MESSAGE
@@ -59,6 +61,7 @@ local MOONKIN_FORM = MOONKIN_FORM
 local PVP = PVP
 local SHADOW_ORBS_SHOW_LEVEL = SHADOW_ORBS_SHOW_LEVEL
 local SPEC_MONK_BREWMASTER = SPEC_MONK_BREWMASTER
+local SPEC_PALADIN_RETRIBUTION = SPEC_PALADIN_RETRIBUTION
 local SPEC_PRIEST_SHADOW = SPEC_PRIEST_SHADOW
 local SPEC_WARLOCK_AFFLICTION = SPEC_WARLOCK_AFFLICTION
 local SPEC_WARLOCK_DEMONOLOGY = SPEC_WARLOCK_DEMONOLOGY
@@ -414,7 +417,7 @@ end
 
 ElvUF.Tags.Events['mana:deficit'] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
 ElvUF.Tags.Methods['mana:deficit'] = function(unit)
-	return E:GetFormattedText('DEFICIT', UnitPower(unit, pType), UnitPowerMax(unit, SPELL_POWER_MANA))
+	return E:GetFormattedText('DEFICIT', UnitPower(unit), UnitPowerMax(unit, SPELL_POWER_MANA))
 end
 
 ElvUF.Tags.Events['mana:max'] = 'UNIT_MAXPOWER'
