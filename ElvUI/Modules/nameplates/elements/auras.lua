@@ -136,7 +136,7 @@ function mod:UpdateElement_Auras(frame)
 			while ( frameNum <= maxBuffs ) do
 				local name, _, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId, _, isBossAura = UnitBuff(frame.displayedUnit, index, filter);
 				if ( name ) then
-					if ( unitCaster == mod.playerUnitToken and not frame.Buffs.shownIDs[spellId] and duration > 0 and duration <= self.db.units[frame.UnitType].buffs.filters.maxDuration ) then
+					if ( unitCaster == mod.playerUnitToken and not frame.Buffs.shownIDs[spellId] and (duration > 0 or (duration == 0 and durationOverride[spellId])) and duration <= self.db.units[frame.UnitType].buffs.filters.maxDuration ) then
 						local buffFrame = frame.Buffs.icons[frameNum];
 						mod:SetAura(buffFrame, index, name, filter, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, spellId, isBossAura)
 						frameNum = frameNum + 1;
