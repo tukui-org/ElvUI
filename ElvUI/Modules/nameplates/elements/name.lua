@@ -19,11 +19,12 @@ local tooltip = CreateFrame('GameTooltip', "NPCTitleScanningTooltip", UIParent, 
 function mod:UpdateElement_Name(frame)
 	local name, realm = UnitName(frame.displayedUnit)
 	if((not self.db.units[frame.UnitType].showName and frame.UnitType ~= "PLAYER") or not name) then return end
-	if frame.UnitType == "PLAYER" and not self.db.units[frame.UnitType].showName then frame.Name:SetText() return end 
+	if frame.UnitType == "PLAYER" and not self.db.units[frame.UnitType].showName then frame.Name:SetText() return end
 
 	frame.Name:SetText(name)
 
-	if(frame.UnitType == "FRIENDLY_PLAYER" or frame.UnitType == "ENEMY_PLAYER") then
+	local useClassColor = self.db.units[frame.UnitType].name and self.db.units[frame.UnitType].name.useClassColor
+	if useClassColor and (frame.UnitType == "FRIENDLY_PLAYER" or frame.UnitType == "ENEMY_PLAYER" or frame.UnitType == "HEALER" or frame.UnitType == "PLAYER") then
 		local _, class = UnitClass(frame.displayedUnit)
 		local color = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class]
 		if(class and color) then

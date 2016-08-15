@@ -41,7 +41,7 @@ function mod:UpdateElement_HealthColor(frame)
 			local _, class = UnitClass(frame.displayedUnit);
 			local classColor = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[class] or RAID_CLASS_COLORS[class];
 			local useClassColor = self.db.units[frame.UnitType].healthbar.useClassColor
-			if ( ( (frame.UnitType == "FRIENDLY_PLAYER" and useClassColor) or (frame.UnitType == "HEALER" and useClassColor) or (frame.UnitType == "ENEMY_PLAYER" and useClassColor) or frame.UnitType == "PLAYER") and classColor and not frame.inVehicle ) then
+			if (classColor and not frame.inVehicle and ((frame.UnitType == "FRIENDLY_PLAYER" and useClassColor) or (frame.UnitType == "HEALER" and useClassColor) or (frame.UnitType == "ENEMY_PLAYER" and useClassColor) or (frame.UnitType == "PLAYER" and useClassColor))) then
 				-- Use class colors for players if class color option is turned on
 				r, g, b = classColor.r, classColor.g, classColor.b;
 			elseif ( not UnitPlayerControlled(frame.unit) and UnitIsTapDenied(frame.unit) ) then

@@ -244,6 +244,7 @@ P["nameplates"] = {
 					['enable'] = false,
 					['format'] = 'CURRENT',
 				},
+				["useClassColor"] = true,
 			},
 			['showName'] = false,
 			['showLevel'] = false,
@@ -281,6 +282,9 @@ P["nameplates"] = {
 					['maxDuration'] = 120,
 					['filter'] = 'CCDebuffs'
 				},
+			},
+			["name"] = {
+				["useClassColor"] = true,
 			},
 		},
 		['HEALER'] = {
@@ -332,6 +336,9 @@ P["nameplates"] = {
 					['maxDuration'] = 120,
 					['filter'] = 'CCDebuffs'
 				},
+			},
+			["name"] = {
+				["useClassColor"] = true,
 			},
 		},
 		['FRIENDLY_PLAYER'] = {
@@ -385,6 +392,9 @@ P["nameplates"] = {
 					['filter'] = 'CCDebuffs'
 				},
 			},
+			["name"] = {
+				["useClassColor"] = true,
+			},
 		},
 		['ENEMY_PLAYER'] = {
 			["minions"] = false,
@@ -437,6 +447,9 @@ P["nameplates"] = {
 					['maxDuration'] = 120,
 					['filter'] = 'CCDebuffs'
 				},
+			},
+			["name"] = {
+				["useClassColor"] = true,
 			},
 		},
 		['FRIENDLY_NPC'] = {
