@@ -162,6 +162,15 @@ local function LoadSkin()
 	WhoFrame:HookScript("OnShow", UpdateWhoSkins)
 	hooksecurefunc("FriendsFrame_OnEvent", UpdateWhoSkins)
 
+	--Increase width of Level column slightly
+	WhoFrameColumn_SetWidth(WhoFrameColumnHeader3, 37) --Default is 32
+	for i = 1, 17 do
+		local level = _G["WhoFrameButton"..i.."Level"]
+		if level then
+			level:SetWidth(level:GetWidth() + 5)
+		end
+	end
+
 	ChannelFrameDaughterFrame:CreateBackdrop("Transparent")
 
 	FriendsFrame:SetTemplate('Transparent')
