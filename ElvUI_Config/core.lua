@@ -253,6 +253,7 @@ E.Options.args.general = {
 					values = {
 						["METRIC"] = "k, M, G",
 						["ENGLISH"] = "K, M, B",
+						["CHINESE"] = "W, Y",
 					},
 				},
 				objectiveFrameHeaderSpacing = {

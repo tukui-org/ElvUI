@@ -25,6 +25,14 @@ function E:ShortValue(v)
 		else
 			return format("%d", v)
 		end
+	elseif E.db.general.numberPrefixStyle == "CHINESE" then
+		if abs(v) >= 1e8 then
+			return format("%.1fY", v / 1e8)
+		elseif abs(v) >= 1e4 then
+			return format("%.1fW", v / 1e4)
+		else
+			return format("%d", v)
+		end
 	else
 		if abs(v) >= 1e9 then
 			return format("%.1fB", v / 1e9)
