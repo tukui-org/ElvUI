@@ -1081,14 +1081,8 @@ local color
 --Update text color when button is updated
 function AB:LAB_ButtonUpdate(button)
 	color = AB.db.fontColor
-
-	if button.Count then
-		button.Count:SetTextColor(color.r, color.g, color.b)
-	end
-	
-	if AB.db.hotkeytext then
-		button.HotKey:SetTextColor(color.r, color.g, color.b)
-	end
+	button.Count:SetTextColor(color.r, color.g, color.b)
+	button.HotKey:SetTextColor(color.r, color.g, color.b)
 end
 LAB.RegisterCallback(AB, "OnButtonUpdate", AB.LAB_ButtonUpdate)
 
