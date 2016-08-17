@@ -176,7 +176,29 @@ E.Options.args.chat = {
 						["%H:%M:%S "] =	"15:27:32"
 					},
 				},
-
+				useCustomTimeColor = {
+					order = 16,
+					type = "toggle",
+					name = L["Custom Timestamp Color"],
+					disabled = function() return not E.db.chat.timeStampFormat == "NONE" end,
+				},
+				customTimeColor = {
+					order = 17,
+					type = "color",
+					hasAlpha = false,
+					name = L["Timestamp Color"],
+					disabled = function() return (not E.db.chat.timeStampFormat == "NONE" or not E.db.chat.useCustomTimeColor) end,
+					get = function(info)
+						local t = E.db.chat.customTimeColor
+						local d = P.chat.customTimeColor
+						return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+					end,
+					set = function(info, r, g, b)
+						E.db.chat.customTimeColor = {}
+						local t = E.db.chat.customTimeColor
+						t.r, t.g, t.b = r, g, b
+					end,
+				},
 			},
 		},
 		alerts = {

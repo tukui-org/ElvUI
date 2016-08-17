@@ -935,7 +935,13 @@ function CH:ConcatenateTimeStamp(msg)
 		timeStamp = timeStamp:gsub(' ', '')
 		timeStamp = timeStamp:gsub('AM', ' AM')
 		timeStamp = timeStamp:gsub('PM', ' PM')
-		msg = '|cffB3B3B3['..timeStamp..'] |r'..msg
+		if CH.db.useCustomTimeColor then
+			local color = CH.db.customTimeColor
+			local hexColor = E:RGBToHex(color.r, color.g, color.b)
+			msg = format("%s[%s]|r %s", hexColor, timeStamp, msg)
+		else
+			msg = format("[%s] %s", timeStamp, msg)
+		end
 		CH.timeOverride = nil;
 	end
 
