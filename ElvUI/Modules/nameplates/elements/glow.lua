@@ -13,7 +13,7 @@ local UnitIsUnit = UnitIsUnit
 function mod:UpdateElement_Glow(frame)
 	if(not frame.HealthBar:IsShown()) then return end
 	local r, g, b, shouldShow;
-	if ( UnitIsUnit(frame.unit, "target") ) then
+	if (UnitIsUnit(frame.unit, "target") and self.db.useTargetGlow) then
 		r, g, b = 1, 1, 1
 		shouldShow = true
 	else

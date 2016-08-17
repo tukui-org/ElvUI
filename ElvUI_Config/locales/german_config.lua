@@ -573,6 +573,7 @@ L["Toggle Off While In Combat"] = "Im Kampf ausblenden"
 L["Toggle On While In Combat"] = "Im Kampf einblenden"
 L["Use Class Color"] = "Benutze Klassenfarbe"
 L["Use Tanked Color when a nameplate is being effectively tanked by another tank."] = "Benutze 'Angetankte Farbe' für die Namensplakette, wenn die Einheit von einem anderen Tank getankt wird."
+L["Use Target Glow"] = true;
 L["Use Target Scale"] = "Benutze Ziel Skalierung"
 L["Use Threat Color"] = "Benutze Bedrohungsfarbe"
 

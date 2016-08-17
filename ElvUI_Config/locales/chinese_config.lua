@@ -572,6 +572,7 @@ L["Toggle Off While In Combat"] = "战斗时关闭"
 L["Toggle On While In Combat"] = "战斗时启用"
 L["Use Class Color"] = "使用职业颜色"
 L["Use Tanked Color when a nameplate is being effectively tanked by another tank."] = "当另一个坦克更有效的坦住时姓名板使用被坦住的颜色"
+L["Use Target Glow"] = true;
 L["Use Target Scale"] = "使用目标缩放"
 L["Use Threat Color"] = "使用仇恨颜色"
 

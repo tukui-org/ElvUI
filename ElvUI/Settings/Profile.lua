@@ -204,6 +204,7 @@ P["nameplates"] = {
 	["showNPCTitles"] = true,
 	["clampToScreen"] = false,
 	["loadDistance"] = 40,
+	["useTargetGlow"] = true,
 	["classbar"] = {
 		["enable"] = true,
 		["attachTo"] = "TARGET",
@@ -229,6 +230,7 @@ P["nameplates"] = {
 		["badScale"] = 1.2,
 		["useThreatColor"] = true,
 	},
+
 	['units'] = {
 		['PLAYER'] = {
 			['enable'] = false,

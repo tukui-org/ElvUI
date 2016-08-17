@@ -572,6 +572,7 @@ L["Toggle Off While In Combat"] = "Включать в бою"
 L["Toggle On While In Combat"] = "Отключить в бою"
 L["Use Class Color"] = "Использовать цвет класса"
 L["Use Tanked Color when a nameplate is being effectively tanked by another tank."] = "Испльзовать этот цвет для юнитов, которых держит другой танк."
+L["Use Target Glow"] = true;
 L["Use Target Scale"] = "Масштабирование цели"
 L["Use Threat Color"] = "Использовать цвет угрозы"
 
