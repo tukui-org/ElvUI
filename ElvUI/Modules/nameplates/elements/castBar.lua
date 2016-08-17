@@ -73,7 +73,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 		if ( frame.CastBar.Spark ) then
 			frame.CastBar.Spark:Show();
 		end
-		frame.CastBar.Name:SetText(text)
+		frame.CastBar.Name:SetText(name)
 		frame.CastBar.value = (GetTime() - (startTime / 1000));
 		frame.CastBar.maxValue = (endTime - startTime) / 1000;
 		frame.CastBar:SetMinMaxValues(0, frame.CastBar.maxValue);
@@ -136,7 +136,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 				return;
 			end
 			frame.canInterrupt = not notInterruptible
-			frame.CastBar.Name:SetText(text)
+			frame.CastBar.Name:SetText(name)
 			frame.CastBar.value = (GetTime() - (startTime / 1000));
 			frame.CastBar.maxValue = (endTime - startTime) / 1000;
 			frame.CastBar:SetMinMaxValues(0, frame.CastBar.maxValue);
@@ -157,7 +157,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 			return;
 		end
 
-		frame.CastBar.Name:SetText(text)
+		frame.CastBar.Name:SetText(name)
 		frame.CastBar.value = (endTime / 1000) - GetTime();
 		frame.CastBar.maxValue = (endTime - startTime) / 1000;
 		frame.CastBar:SetMinMaxValues(0, frame.CastBar.maxValue);
@@ -184,7 +184,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 				frame.CastBar:Hide();
 				return;
 			end
-			frame.CastBar.Name:SetText(text)
+			frame.CastBar.Name:SetText(name)
 			frame.CastBar.value = ((endTime / 1000) - GetTime());
 			frame.CastBar.maxValue = (endTime - startTime) / 1000;
 			frame.CastBar:SetMinMaxValues(0, frame.CastBar.maxValue);
