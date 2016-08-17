@@ -231,8 +231,8 @@ function mod:ConfigureElement_CastBar(frame)
 	end
 	castBar.Icon.texture:SetTexCoord(unpack(E.TexCoords))
 
-	castBar.Name:SetPoint("TOPLEFT", castBar, "BOTTOMLEFT", 0, -E.Border*3)
 	castBar.Time:SetPoint("TOPRIGHT", castBar, "BOTTOMRIGHT", 0, -E.Border*3)
+	castBar.Name:SetPoint("TOPLEFT", castBar, "BOTTOMLEFT", 0, -E.Border*3)
 	castBar.Name:SetPoint("TOPRIGHT", castBar.Time, "TOPLEFT")
 
 	castBar.Name:SetJustifyH("LEFT")
@@ -241,6 +241,17 @@ function mod:ConfigureElement_CastBar(frame)
 	castBar.Time:SetJustifyH("RIGHT")
 	castBar.Time:SetJustifyV("TOP")
 	castBar.Time:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
+
+	if (self.db.units[frame.UnitType].castbar.hideSpellName) then
+		castBar.Name:Hide()
+	else
+		castBar.Name:Show()
+	end
+	if (self.db.units[frame.UnitType].castbar.hideTime) then
+		castBar.Time:Hide()
+	else
+		castBar.Time:Show()
+	end
 
 	--Texture
 	castBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))

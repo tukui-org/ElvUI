@@ -260,6 +260,8 @@ P["nameplates"] = {
 			['castbar'] = {
 				['enable'] = true,
 				['height'] = 8,
+				["hideSpellName"] = false,
+				["hideTime"] = false,
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -314,6 +316,8 @@ P["nameplates"] = {
 			['castbar'] = {
 				['enable'] = true,
 				['height'] = 8,
+				["hideSpellName"] = false,
+				["hideTime"] = false,
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -370,6 +374,8 @@ P["nameplates"] = {
 			['castbar'] = {
 				['enable'] = true,
 				['height'] = 8,
+				["hideSpellName"] = false,
+				["hideTime"] = false,
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -425,6 +431,8 @@ P["nameplates"] = {
 			['castbar'] = {
 				['enable'] = true,
 				['height'] = 8,
+				["hideSpellName"] = false,
+				["hideTime"] = false,
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -478,6 +486,8 @@ P["nameplates"] = {
 			['castbar'] = {
 				['enable'] = false,
 				['height'] = 8,
+				["hideSpellName"] = false,
+				["hideTime"] = false,
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -529,6 +539,8 @@ P["nameplates"] = {
 			['castbar'] = {
 				['enable'] = true,
 				['height'] = 8,
+				["hideSpellName"] = false,
+				["hideTime"] = false,
 			},
 			['buffs'] = {
 				['enable'] = true,
