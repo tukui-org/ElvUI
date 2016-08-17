@@ -127,6 +127,14 @@ local function LoadSkin()
 		b:SetTemplate("Default", true)
 		b:StyleButton()
 
+		hooksecurefunc(b.IconBorder, 'SetVertexColor', function(self, r, g, b)
+			self:GetParent():SetBackdropBorderColor(r, g, b)
+			self:SetTexture("")
+		end)
+		hooksecurefunc(b.IconBorder, 'Hide', function(self)
+			self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
+		end)
+
 		local t = _G["OpenMailAttachmentButton"..i.."IconTexture"]
 		if t then
 			t:SetTexCoord(unpack(E.TexCoords))
