@@ -634,7 +634,6 @@ L["Mail Frame"] = "Fenêtre du Courrier"
 L["Merchant Frame"] = "Marchand"
 L["Mirror Timers"] = "Fenêtre des Timers mirroirs"; --need review
 L["Misc Frames"] = "Divers"
-L["Mounts & Pets"] = "Montures et Mascottes"
 L["Non-Raid Frame"] = "Info Raid"
 L["Orderhall"] = true;
 L["Pet Battle"] = "Combats de mascottes"

@@ -683,7 +683,6 @@ L["Mail Frame"] = "우편함"
 L["Merchant Frame"] = "상인 창"
 L["Mirror Timers"] = true;
 L["Misc Frames"] = "기타 프레임"
-L["Mounts & Pets"] = "탈것과 애완동물 창"
 L["Non-Raid Frame"] = "비공격대 프레임"
 L["Orderhall"] = true;
 L["Pet Battle"] = "애완동물대전 관련"

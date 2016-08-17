@@ -623,7 +623,6 @@ L["Mail Frame"] = true;
 L["Merchant Frame"] = true;
 L["Mirror Timers"] = true;
 L["Misc Frames"] = true;
-L["Mounts & Pets"] = true;
 L["Non-Raid Frame"] = true;
 L["Orderhall"] = true;
 L["Pet Battle"] = true;

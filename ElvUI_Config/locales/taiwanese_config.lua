@@ -634,7 +634,6 @@ L["Mail Frame"] = "信箱"
 L["Merchant Frame"] = "商人"
 L["Mirror Timers"] = true;
 L["Misc Frames"] = "其他"
-L["Mounts & Pets"] = "寵物"
 L["Non-Raid Frame"] = "非團隊框架"
 L["Orderhall"] = true;
 L["Pet Battle"] = "寵物戰鬥"

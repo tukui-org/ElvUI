@@ -209,9 +209,9 @@ E.Options.args.skins = {
 					name = L["LFG Frame"],
 					desc = L["TOGGLESKIN_DESC"],
 				},
-				mounts = {
+				collections = {
 					type = "toggle",
-					name = L["Mounts & Pets"],
+					name = COLLECTIONS,
 					desc = L["TOGGLESKIN_DESC"],
 				},
 				quest = {

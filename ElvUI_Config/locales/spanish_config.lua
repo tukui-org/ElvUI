@@ -634,7 +634,6 @@ L["Mail Frame"] = "Correo"
 L["Merchant Frame"] = "Mercader"
 L["Mirror Timers"] = true;
 L["Misc Frames"] = "Misceláneos"
-L["Mounts & Pets"] = "Monturas y Mascotas"
 L["Non-Raid Frame"] = "No-Banda"
 L["Orderhall"] = true;
 L["Pet Battle"] = "Combate de Mascotas"
