@@ -90,12 +90,8 @@ local function LoadSkin()
 		local b = _G["PetJournalListScrollFrameButton"..i]
 		S:HandleItemButton(b)
 		b.dragButton.favorite:SetParent(b.backdrop)
-		b.dragButton.levelBG:SetAlpha(0)
-		b.dragButton.level:SetParent(b.backdrop)
 		b.dragButton.ActiveTexture:Kill()
 	end
-
-
 
 	local function ColorSelectedPet()
 		local petButtons = PetJournal.listScroll.buttons;
@@ -137,32 +133,36 @@ local function LoadSkin()
 	PetJournalHealPetButton.texture:SetTexture([[Interface\Icons\spell_magic_polymorphrabbit]])
 	PetJournalLoadoutBorder:StripTextures()
 	for i=1, 3 do
-		_G['PetJournalLoadoutPet'..i]:StripTextures()
-		_G['PetJournalLoadoutPet'..i]:CreateBackdrop()
-		_G['PetJournalLoadoutPet'..i].backdrop:SetAllPoints()
-		_G['PetJournalLoadoutPet'..i].petTypeIcon:Point('BOTTOMLEFT', 2, 2)
+		local petButton = _G['PetJournalLoadoutPet'..i]
+		local petButtonHealthFrame = _G['PetJournalLoadoutPet'..i..'HealthFrame']
+		local petButtonXPBar = _G['PetJournalLoadoutPet'..i..'XPBar']
+		petButton:StripTextures()
+		petButton:CreateBackdrop()
+		petButton.backdrop:SetAllPoints()
+		petButton.petTypeIcon:Point('BOTTOMLEFT', 2, 2)
 
 
-		_G['PetJournalLoadoutPet'..i].dragButton:SetOutside(_G['PetJournalLoadoutPet'..i..'Icon'])
-		_G['PetJournalLoadoutPet'..i].dragButton:SetFrameLevel(_G['PetJournalLoadoutPet'..i].dragButton:GetFrameLevel() + 1)
+		petButton.dragButton:SetOutside(_G['PetJournalLoadoutPet'..i..'Icon'])
+		petButton.dragButton:SetFrameLevel(_G['PetJournalLoadoutPet'..i].dragButton:GetFrameLevel() + 1)
 
-		_G['PetJournalLoadoutPet'..i].hover = true;
-		_G['PetJournalLoadoutPet'..i].pushed = true;
-		_G['PetJournalLoadoutPet'..i].checked = true;
-		S:HandleItemButton(_G['PetJournalLoadoutPet'..i])
+		petButton.hover = true;
+		petButton.pushed = true;
+		petButton.checked = true;
+		S:HandleItemButton(petButton)
+		petButton.levelBG:SetAtlas("PetJournal-LevelBubble", true)
 
-		_G['PetJournalLoadoutPet'..i].backdrop:SetFrameLevel(_G['PetJournalLoadoutPet'..i].backdrop:GetFrameLevel() + 1)
+		petButton.backdrop:SetFrameLevel(_G['PetJournalLoadoutPet'..i].backdrop:GetFrameLevel() + 1)
 
-		_G['PetJournalLoadoutPet'..i].setButton:StripTextures()
-		_G['PetJournalLoadoutPet'..i..'HealthFrame'].healthBar:StripTextures()
-		_G['PetJournalLoadoutPet'..i..'HealthFrame'].healthBar:CreateBackdrop('Default')
-		_G['PetJournalLoadoutPet'..i..'HealthFrame'].healthBar:SetStatusBarTexture(E.media.normTex)
-		 E:RegisterStatusBar(_G['PetJournalLoadoutPet'..i..'HealthFrame'].healthBar)
-		_G['PetJournalLoadoutPet'..i..'XPBar']:StripTextures()
-		_G['PetJournalLoadoutPet'..i..'XPBar']:CreateBackdrop('Default')
-		_G['PetJournalLoadoutPet'..i..'XPBar']:SetStatusBarTexture(E.media.normTex)
-		E:RegisterStatusBar(_G['PetJournalLoadoutPet'..i..'XPBar'])
-		_G['PetJournalLoadoutPet'..i..'XPBar']:SetFrameLevel(_G['PetJournalLoadoutPet'..i..'XPBar']:GetFrameLevel() + 2)
+		petButton.setButton:StripTextures()
+		petButtonHealthFrame.healthBar:StripTextures()
+		petButtonHealthFrame.healthBar:CreateBackdrop('Default')
+		petButtonHealthFrame.healthBar:SetStatusBarTexture(E.media.normTex)
+		E:RegisterStatusBar(petButtonHealthFrame.healthBar)
+		petButtonXPBar:StripTextures()
+		petButtonXPBar:CreateBackdrop('Default')
+		petButtonXPBar:SetStatusBarTexture(E.media.normTex)
+		E:RegisterStatusBar(petButtonXPBar)
+		petButtonXPBar:SetFrameLevel(petButtonXPBar:GetFrameLevel() + 2)
 
 		for index = 1, 3 do
 			local f = _G['PetJournalLoadoutPet'..i..'Spell'..index]
@@ -183,15 +183,13 @@ local function LoadSkin()
 	PetJournalPetCard:StripTextures()
 	PetJournalPetCard:SetTemplate('Default')
 	PetJournalPetCardInset:StripTextures()
+	PetJournalPetCardPetInfoQualityBorder:SetAlpha(0)
 
-	PetJournalPetCardPetInfo.levelBG:SetAlpha(0)
 	PetJournalPetCardPetInfoIcon:SetTexCoord(unpack(E.TexCoords))
 	PetJournalPetCardPetInfo:CreateBackdrop()
 	PetJournalPetCardPetInfo.favorite:SetParent(PetJournalPetCardPetInfo.backdrop)
 	PetJournalPetCardPetInfo.backdrop:SetOutside(PetJournalPetCardPetInfoIcon)
 	PetJournalPetCardPetInfoIcon:SetParent(PetJournalPetCardPetInfo.backdrop)
-	PetJournalPetCardPetInfo.backdrop:SetFrameLevel(PetJournalPetCardPetInfo.backdrop:GetFrameLevel() + 2)
-	PetJournalPetCardPetInfo.level:SetParent(PetJournalPetCardPetInfo.backdrop)
 
 	local tt = PetJournalPrimaryAbilityTooltip
 	tt.Background:SetTexture(nil)
