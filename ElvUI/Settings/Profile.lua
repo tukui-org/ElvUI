@@ -257,7 +257,7 @@ P["nameplates"] = {
 				['text'] = {
 					['enable'] = false,
 					['format'] = 'CURRENT',
-				}
+				},
 			},
 			['castbar'] = {
 				['enable'] = true,
@@ -313,7 +313,7 @@ P["nameplates"] = {
 				['text'] = {
 					['enable'] = false,
 					['format'] = 'CURRENT',
-				}
+				},
 			},
 			['castbar'] = {
 				['enable'] = true,
@@ -371,7 +371,7 @@ P["nameplates"] = {
 				['text'] = {
 					['enable'] = false,
 					['format'] = 'CURRENT',
-				}
+				},
 			},
 			['castbar'] = {
 				['enable'] = true,
@@ -428,7 +428,7 @@ P["nameplates"] = {
 				['text'] = {
 					['enable'] = false,
 					['format'] = 'CURRENT',
-				}
+				},
 			},
 			['castbar'] = {
 				['enable'] = true,
@@ -483,7 +483,7 @@ P["nameplates"] = {
 				['text'] = {
 					['enable'] = false,
 					['format'] = 'CURRENT',
-				}
+				},
 			},
 			['castbar'] = {
 				['enable'] = false,
@@ -536,7 +536,7 @@ P["nameplates"] = {
 				['text'] = {
 					['enable'] = false,
 					['format'] = 'CURRENT',
-				}
+				},
 			},
 			['castbar'] = {
 				['enable'] = true,

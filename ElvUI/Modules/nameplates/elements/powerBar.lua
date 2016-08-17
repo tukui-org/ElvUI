@@ -20,6 +20,7 @@ function mod:UpdateElement_Power(frame)
 	self:UpdateElement_MaxPower(frame)
 
 	local curValue = UnitPower(frame.displayedUnit, frame.PowerToken);
+	local maxValue = UnitPowerMax(frame.displayedUnit, frame.PowerToken);
 	frame.PowerBar:SetValue(curValue);
 
 	local color = E.db.unitframe.colors.power[frame.PowerToken] or PowerBarColor[frame.PowerToken] or temp
@@ -30,6 +31,12 @@ function mod:UpdateElement_Power(frame)
 	if(self.db.classbar.enable and self.db.classbar.position == "BELOW") then
 		self:ClassBar_Update(frame)
 	end
+	
+	if self.db.units[frame.UnitType].powerbar.text.enable then
+		frame.PowerBar.text:SetText(E:GetFormattedText(self.db.units[frame.UnitType].powerbar.text.format, curValue, maxValue))
+	else
+		frame.PowerBar.text:SetText("")
+	end
 end
 
 function mod:ConfigureElement_PowerBar(frame)
@@ -38,12 +45,18 @@ function mod:ConfigureElement_PowerBar(frame)
 	powerBar:SetPoint("TOPRIGHT", frame.HealthBar, "BOTTOMRIGHT", 0, -E.Border - E.Spacing*3)
 	powerBar:SetHeight(self.db.units[frame.UnitType].powerbar.height)
 	powerBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
+	
+	powerBar.text:SetAllPoints(powerBar)
+	powerBar.text:SetFont(LSM:Fetch("font", self.db.font), self.db.fontSize, self.db.fontOutline)
 end
 
 function mod:ConstructElement_PowerBar(parent)
 	local frame = CreateFrame("StatusBar", "$parentPowerBar", parent)
 	self:StyleFrame(frame)
-	frame:Hide()
+	
+	frame.text = frame:CreateFontString(nil, "OVERLAY")
+	frame.text:SetWordWrap(false)
 
+	frame:Hide()
 	return frame
 end
