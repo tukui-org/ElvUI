@@ -1573,8 +1573,11 @@ function E:Initialize()
 		end)
 	end
 
-	-- We must run the CVar for cameraDistanceMaxFactor on login, otherwise it won't get saved.
+	--We need to set the real max distance after the slider control has been set up because it is reset at this point
+	--We only do this if the user had set max camera distance to "Far" in the options. At some point Blizzard will fix the resetting.
 	hooksecurefunc("BlizzardOptionsPanel_SetupControl", function(control)
-		if control == InterfaceOptionsCameraPanelMaxDistanceSlider then SetCVar("cameraDistanceMaxFactor", 2.6) end
+		if control == InterfaceOptionsCameraPanelMaxDistanceSlider and E:Round(tonumber(GetCVar("cameraDistanceMaxFactor")), 1) == 1.9 then
+			SetCVar("cameraDistanceMaxFactor", 2.6)
+		end
 	end)
 end
