@@ -141,7 +141,16 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 
 		local x, y, point = E:CalculateMoverPoints(self)
 		self:ClearAllPoints()
-		self:Point(self.positionOverride or point, E.UIParent, self.positionOverride and "BOTTOMLEFT" or point, x, y)
+		local overridePoint;
+		if (self.positionOverride) then
+			if (self.positionOverride == "BOTTOM" or self.positionOverride == "TOP") then
+				overridePoint = "BOTTOM";
+			else
+				overridePoint = "BOTTOMLEFT";
+			end
+		end
+
+		self:Point(self.positionOverride or point, E.UIParent, overridePoint and overridePoint or point, x, y)
 		if self.positionOverride then
 			self.parent:ClearAllPoints()
 			self.parent:Point(self.positionOverride, self, self.positionOverride)
@@ -278,6 +287,12 @@ function E:CalculateMoverPoints(mover, nudgeX, nudgeY)
 		elseif(mover.positionOverride == "BOTTOMRIGHT") then
 			x = mover:GetRight() - E.diffGetRight
 			y = mover:GetBottom() - E.diffGetBottom
+		elseif(mover.positionOverride == "BOTTOM") then
+			x = mover:GetCenter() - screenCenter;
+			y = mover:GetBottom() - E.diffGetBottom;
+		elseif(mover.positionOverride == "TOP") then
+			x = mover:GetCenter() - screenCenter;
+			y = mover:GetTop() - E.diffGetTop;
 		end
 	end
 

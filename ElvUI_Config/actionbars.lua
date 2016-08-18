@@ -7,6 +7,8 @@ local points = {
 	["TOPRIGHT"] = "TOPRIGHT",
 	["BOTTOMLEFT"] = "BOTTOMLEFT",
 	["BOTTOMRIGHT"] = "BOTTOMRIGHT",
+	["BOTTOM"] = "BOTTOM",
+	["TOP"] = "TOP",
 }
 
 local function BuildABConfig()
