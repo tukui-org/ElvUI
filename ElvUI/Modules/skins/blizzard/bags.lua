@@ -96,6 +96,7 @@ local function LoadSkin()
 			button.type = QUESTS_LABEL
 		end
 
+		button.IconBorder:SetTexture(nil)
 		UpdateBorderColors(button)
 	end
 
