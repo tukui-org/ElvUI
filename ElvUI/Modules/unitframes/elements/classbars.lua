@@ -533,7 +533,7 @@ function UF:PostUpdateStagger(maxHealth, stagger, staggerPercent, r, g, b)
 	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 
-	if stagger == 0 and db.classbar.autoHide then
+	if not frame.USE_CLASSBAR or (stagger == 0 and db.classbar.autoHide) then
 		self:Hide()
 	else
 		self:Show()
