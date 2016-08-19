@@ -49,6 +49,7 @@ local function LoadSkin()
 			end
 			button:SetTemplate("Default", true)
 			button:StyleButton()
+			button.IconBorder:SetAlpha(0)
 
 			local icon = button.icon
 			icon:SetInside()
@@ -96,7 +97,6 @@ local function LoadSkin()
 			button.type = QUESTS_LABEL
 		end
 
-		button.IconBorder:SetTexture(nil)
 		UpdateBorderColors(button)
 	end
 
