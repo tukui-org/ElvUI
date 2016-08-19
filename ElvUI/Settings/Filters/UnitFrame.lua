@@ -144,7 +144,7 @@ G.unitframe.aurafilters['TurtleBuffs'] = {
 		--Priest
 			[33206] = Defaults(3), -- Pain Suppression
 			[47788] = Defaults(), -- Guardian Spirit
-			[62618] = Defaults(), -- Power Word: Barrier
+			[81782] = Defaults(), -- Power Word: Barrier
 			[47585] = Defaults(5), -- Dispersion
 		--Warlock
 			[104773] = Defaults(), -- Unending Resolve
@@ -223,7 +223,7 @@ G.unitframe.aurafilters['PlayerBuffs'] = {
 		--Priest
 			[33206] = Defaults(), -- Pain Suppression
 			[47788] = Defaults(), -- Guardian Spirit
-			[62618] = Defaults(), -- Power Word: Barrier
+			[81782] = Defaults(), -- Power Word: Barrier
 			[47585] = Defaults(), -- Dispersion
 			--[6346] = Defaults(), -- Fear Ward
 			[10060] = Defaults(), -- Power Infusion
