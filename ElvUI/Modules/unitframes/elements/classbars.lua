@@ -125,7 +125,7 @@ function UF:Configure_ClassBar(frame, cur)
 	if (frame.ClassBar == 'ClassIcons' or frame.ClassBar == 'Runes') then
 
 		--This fixes issue with ComboPoints showing as active when they are not.
-		if frame.ClassBar == "ClassIcons" and not cur then 
+		if frame.ClassBar == "ClassIcons" and not cur then
 			cur = 0
 		end
 
@@ -338,7 +338,7 @@ function UF:UpdateClassBar(cur, max, hasMaxChanged, powerType, event)
 	end
 
 	--Update this first, as we want to update the .bg colors after
-	if hasMaxChanged or event == "ClassPowerEnable" then
+	if hasMaxChanged then
 		frame.MAX_CLASS_BAR = max
 		UF:Configure_ClassBar(frame, cur)
 	end
