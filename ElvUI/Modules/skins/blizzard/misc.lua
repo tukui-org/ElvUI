@@ -58,6 +58,12 @@ local function LoadSkin()
 	end
 
 	--LFD Role Picker frame
+	local roleButtons = {
+		LFDRoleCheckPopupRoleButtonTank,
+		LFDRoleCheckPopupRoleButtonDPS,
+		LFDRoleCheckPopupRoleButtonHealer,
+	}
+
 	LFDRoleCheckPopup:StripTextures()
 	LFDRoleCheckPopup:SetTemplate("Transparent")
 	S:HandleButton(LFDRoleCheckPopupAcceptButton)
@@ -68,6 +74,11 @@ local function LoadSkin()
 	LFDRoleCheckPopupRoleButtonTank:GetChildren():SetFrameLevel(LFDRoleCheckPopupRoleButtonTank:GetChildren():GetFrameLevel() + 1)
 	LFDRoleCheckPopupRoleButtonDPS:GetChildren():SetFrameLevel(LFDRoleCheckPopupRoleButtonDPS:GetChildren():GetFrameLevel() + 1)
 	LFDRoleCheckPopupRoleButtonHealer:GetChildren():SetFrameLevel(LFDRoleCheckPopupRoleButtonHealer:GetChildren():GetFrameLevel() + 1)
+
+	for _, roleButton in pairs(roleButtons) do
+		S:HandleCheckBox(roleButton.checkButton or roleButton.CheckButton, true)
+		roleButton:DisableDrawLayer("OVERLAY")
+	end
 
 	-- reskin popup buttons
 	for i = 1, 4 do
