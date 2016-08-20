@@ -68,12 +68,6 @@ local function LoadSkin()
 	LFDRoleCheckPopup:SetTemplate("Transparent")
 	S:HandleButton(LFDRoleCheckPopupAcceptButton)
 	S:HandleButton(LFDRoleCheckPopupDeclineButton)
-	S:HandleCheckBox(LFDRoleCheckPopupRoleButtonTank:GetChildren())
-	S:HandleCheckBox(LFDRoleCheckPopupRoleButtonDPS:GetChildren())
-	S:HandleCheckBox(LFDRoleCheckPopupRoleButtonHealer:GetChildren())
-	LFDRoleCheckPopupRoleButtonTank:GetChildren():SetFrameLevel(LFDRoleCheckPopupRoleButtonTank:GetChildren():GetFrameLevel() + 1)
-	LFDRoleCheckPopupRoleButtonDPS:GetChildren():SetFrameLevel(LFDRoleCheckPopupRoleButtonDPS:GetChildren():GetFrameLevel() + 1)
-	LFDRoleCheckPopupRoleButtonHealer:GetChildren():SetFrameLevel(LFDRoleCheckPopupRoleButtonHealer:GetChildren():GetFrameLevel() + 1)
 
 	for _, roleButton in pairs(roleButtons) do
 		S:HandleCheckBox(roleButton.checkButton or roleButton.CheckButton, true)
