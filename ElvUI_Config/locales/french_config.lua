@@ -418,6 +418,7 @@ L["Log Taints"] = "Journal  des corruptions"
 L["Login Message"] = "Message de connexion"
 L["Loot Roll"] = "Cadre de butin"
 L["Loot"] = "Butin"
+L["Lowest Allowed UI Scale"] = true;
 L["Make the world map smaller."] = "Rendre la carte du monde plus petite";
 L["Map Opacity When Moving"] = true;
 L["Multi-Monitor Support"] = "Support Multi-Moniteur";

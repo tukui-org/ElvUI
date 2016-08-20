@@ -418,6 +418,7 @@ L["Log Taints"] = "錯誤記錄";
 L["Login Message"] = "登入資訊"
 L["Loot Roll"] = "擲骰"
 L["Loot"] = "拾取"
+L["Lowest Allowed UI Scale"] = true;
 L["Make the world map smaller."] = true;
 L["Map Opacity When Moving"] = true;
 L["Multi-Monitor Support"] = true;

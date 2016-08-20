@@ -418,6 +418,7 @@ L["Log Taints"] = "Отслеживать недочеты"
 L["Login Message"] = "Сообщение загрузки"
 L["Loot Roll"] = "Раздел добычи"
 L["Loot"] = "Добыча"
+L["Lowest Allowed UI Scale"] = true;
 L["Make the world map smaller."] = "Сделать карту мира меньше. Она больше не будет занимать весь экран в увеличенном варианте."
 L["Map Opacity When Moving"] = "Прозрачность карты в движении"
 L["Multi-Monitor Support"] = "Поддержка нескольких мониторов"

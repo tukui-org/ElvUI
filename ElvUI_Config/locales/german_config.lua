@@ -418,6 +418,7 @@ L["Log Taints"] = "Log Fehler"
 L["Login Message"] = "Login Nachricht"
 L["Loot Roll"] = "Würfelfenster"
 L["Loot"] = "Beute"
+L["Lowest Allowed UI Scale"] = true;
 L["Make the world map smaller."] = "Macht die Weltkarte kleiner."
 L["Map Opacity When Moving"] = "Deckkraft der Karte während der Bewegung"
 L["Multi-Monitor Support"] = "Multi-Monitor-Unterstützung"

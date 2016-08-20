@@ -466,6 +466,7 @@ L["Log Taints"] = "Taint 에러 표시"
 L["Login Message"] = "로그인 메세지 표시"
 L["Loot Roll"] = "주사위 굴림창"
 L["Loot"] = "전리품 확인창"
+L["Lowest Allowed UI Scale"] = true;
 L["Make the world map smaller."] = "월드맵을 작게 표시합니다."
 L["Map Opacity When Moving"] = true;
 L["Multi-Monitor Support"] = "다중모니터 지원"

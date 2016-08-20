@@ -168,14 +168,6 @@ E.Options.args.general = {
 					get = function(info) return E.private.general.lootRoll end,
 					set = function(info, value) E.private.general.lootRoll = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
-				autoScale = {
-					order = 10,
-					name = L["Auto Scale"],
-					desc = L["Automatically scale the User Interface based on your screen resolution"],
-					type = "toggle",
-					get = function(info) return E.global.general.autoScale end,
-					set = function(info, value) E.global.general[ info[#info] ] = value; E:StaticPopup_Show("GLOBAL_RL") end
-				},
 				eyefinity = {
 					order = 11,
 					name = L["Multi-Monitor Support"],
@@ -235,8 +227,24 @@ E.Options.args.general = {
 					get = function(info) return E.global.general.disableTutorialButtons end,
 					set = function(info, value) E.global.general.disableTutorialButtons = value; E:StaticPopup_Show("GLOBAL_RL") end,
 				},
-				talkingHeadFrameScale = {
+				autoScale = {
 					order = 19,
+					name = L["Auto Scale"],
+					desc = L["Automatically scale the User Interface based on your screen resolution"],
+					type = "toggle",
+					get = function(info) return E.global.general.autoScale end,
+					set = function(info, value) E.global.general[ info[#info] ] = value; E:StaticPopup_Show("GLOBAL_RL") end
+				},
+				minUiScale = {
+					order = 20,
+					type = "range",
+					name = L["Lowest Allowed UI Scale"],
+					min = 0.32, max = 0.64, step = 0.01,
+					get = function(info) return E.global.general.minUiScale end,
+					set = function(info, value) E.global.general.minUiScale = value; E:StaticPopup_Show("GLOBAL_RL") end
+				},
+				talkingHeadFrameScale = {
+					order = 21,
 					type = "range",
 					name = L["Talking Head Scale"],
 					isPercent = true,
@@ -245,7 +253,7 @@ E.Options.args.general = {
 					set = function(info, value) E.db.general.talkingHeadFrameScale = value; B:ScaleTalkingHeadFrame() end,
 				},
 				numberPrefixStyle = {
-					order = 20,
+					order = 22,
 					type = "select",
 					name = L["Number Prefix"],
 					get = function(info) return E.db.general.numberPrefixStyle end,

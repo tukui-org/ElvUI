@@ -418,6 +418,7 @@ L["Log Taints"] = "Capturar Problemas"
 L["Login Message"] = "Mensagem de Entrada"
 L["Loot Roll"] = "Disputa de Saques"
 L["Loot"] = "Saque"
+L["Lowest Allowed UI Scale"] = true;
 L["Make the world map smaller."] = true;
 L["Map Opacity When Moving"] = true;
 L["Multi-Monitor Support"] = true;
