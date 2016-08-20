@@ -1214,6 +1214,7 @@ end
 local ignoreSettings = {
 	['position'] = true,
 	['playerOnly'] = true,
+	["selfBuffs"] = true,
 	['useBlacklist'] = true,
 	['useWhitelist'] = true,
 	['noDuration'] = true,
@@ -1251,6 +1252,7 @@ function UF:MergeUnitSettings(fromUnit, toUnit, isGroupUnit)
 								db[toUnit][option][opt] = val
 							end
 						elseif not filter[opt] then
+							print("opt:", opt)
 							if type(val) == 'table' then
 								for o, v in pairs(db[fromUnit][option][opt]) do
 									if not filter[o] then
