@@ -170,7 +170,6 @@ L["Layout"] = "레이아웃"
 L["Lock"] = "잠금"
 L["Low Resolution"] = "저해상도 세팅"
 L["low"] = "저"
-L["Movers unlocked. Move them now and click Lock when you are done."] = "프레임을 드래그로 원하는 위치로 이동시키세요.|n[잠금] 버튼을 누르면 이동모드가 종료됩니다."
 L["Nudge"] = "미세조정"
 L["Physical DPS"] = "근접 딜러"
 L["Please click the button below so you can setup variables and ReloadUI."] = "아래 버튼을 누르면 설치를 마무리하고 UI를 재시작합니다."
@@ -281,6 +280,12 @@ L["TargetTarget Frame"] = "대상의대상 프레임"
 L["TargetTargetTarget Frame"] = "대상의대상의대상 프레임"
 L["Tooltip"] = "툴팁"
 L["Vehicle Seat Frame"] = "차량 좌석 프레임"
+L["DESC_MOVERCONFIG"] = [=[프레임을 드래그로 원하는 위치로 이동시키세요.|n[잠금] 버튼을 누르면 이동모드가 종료됩니다.
+
+Options:
+  Shift + RightClick - Hides mover temporarily.
+  Ctrl + RightClick - Resets mover position to default.
+]=]
 
 --Plugin Installer
 L["ElvUI Plugin Installation"] = true;

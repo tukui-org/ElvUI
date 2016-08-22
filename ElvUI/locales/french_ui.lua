@@ -170,7 +170,6 @@ L["Layout"] = "Disposition"
 L["Lock"] = "Verrouiller"
 L["Low Resolution"] = "Basse résolution"
 L["low"] = "Faible"
-L["Movers unlocked. Move them now and click Lock when you are done."] = "Cadres déverrouillés. Déplacez-les et cliquez sur Verrouiller une fois terminé."
 L["Nudge"] = 'Pousser'
 L["Physical DPS"] = "DPS Physique"
 L["Please click the button below so you can setup variables and ReloadUI."] = "Pour configurer les variables et recharger l'interface, cliquez sur le bouton ci-dessous."
@@ -281,6 +280,12 @@ L["TargetTarget Frame"] = "Cadre de la cible de votre cible" --Also used in Unit
 L["TargetTargetTarget Frame"] = "Cadre de la cible de la cible de la cible";
 L["Tooltip"] = "Infobulle"
 L["Vehicle Seat Frame"] = "Cadre de siège du véhicule"
+L["DESC_MOVERCONFIG"] = [=[Cadres déverrouillés. Déplacez-les et cliquez sur Verrouiller une fois terminé.
+
+Options:
+  Shift + RightClick - Hides mover temporarily.
+  Ctrl + RightClick - Resets mover position to default.
+]=]
 
 --Plugin Installer
 L["ElvUI Plugin Installation"] = true;

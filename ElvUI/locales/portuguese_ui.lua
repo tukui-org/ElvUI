@@ -170,7 +170,6 @@ L["Layout"] = "Layout"
 L["Lock"] = "Travar"
 L["Low Resolution"] = "Baixa Resolução"
 L["low"] = "baixo"
-L["Movers unlocked. Move them now and click Lock when you are done."] = "Movedores destravados. Mova-os agora e clique Travar quando acabar."
 L["Nudge"] = "Ajuste fino"
 L["Physical DPS"] = "DPS Físico"
 L["Please click the button below so you can setup variables and ReloadUI."] = "Por favor, clique no botão abaixo para que possa configurar as variáveis e Recarregar a IU."
@@ -281,6 +280,12 @@ L["TargetTarget Frame"] = "Quadro do Alvo do Alvo"
 L["TargetTargetTarget Frame"] = true;
 L["Tooltip"] = "Tooltip"
 L["Vehicle Seat Frame"] = "Quadro de Assento de Veículo"
+L["DESC_MOVERCONFIG"] = [=[Movedores destravados. Mova-os agora e clique Travar quando acabar.
+
+Options:
+  Shift + RightClick - Hides mover temporarily.
+  Ctrl + RightClick - Resets mover position to default.
+]=]
 
 --Plugin Installer
 L["ElvUI Plugin Installation"] = true;

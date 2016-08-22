@@ -170,7 +170,6 @@ L["Layout"] = "界面布局"
 L["Lock"] = "锁定"
 L["Low Resolution"] = "低分辨率"
 L["low"] = "低"
-L["Movers unlocked. Move them now and click Lock when you are done."] = "解除框架移动锁定. 现在可以移动它们, 移好后请点击「锁定」."
 L["Nudge"] = "微调"
 L["Physical DPS"] = "物理输出"
 L["Please click the button below so you can setup variables and ReloadUI."] = "请按下方按钮设定变数并重载介面。"
@@ -281,6 +280,12 @@ L["TargetTarget Frame"] = "目标的目标框架"
 L["TargetTargetTarget Frame"] = "目标的目标的目标框架"
 L["Tooltip"] = "鼠标提示"
 L["Vehicle Seat Frame"] = "载具座位框"
+L["DESC_MOVERCONFIG"] = [=[解除框架移动锁定. 现在可以移动它们, 移好后请点击「锁定」.
+
+Options:
+  Shift + RightClick - Hides mover temporarily.
+  Ctrl + RightClick - Resets mover position to default.
+]=]
 
 --Plugin Installer
 L["ElvUI Plugin Installation"] = "ElvUI插件安装"

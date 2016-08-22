@@ -170,7 +170,6 @@ L["Layout"] = "Расположение"
 L["Lock"] = "Закрепить"
 L["Low Resolution"] = "Низкое разрешение"
 L["low"] = "низким"
-L["Movers unlocked. Move them now and click Lock when you are done."] = "Блокировка отключена. Передвиньте фреймы и нажмите 'Закрепить', когда закончите."
 L["Nudge"] = "Сдвиг"
 L["Physical DPS"] = "Физический урон"
 L["Please click the button below so you can setup variables and ReloadUI."] = "Пожалуйста, нажмите кнопку ниже для установки переменных и перезагрузки интерфейса."
@@ -281,6 +280,12 @@ L["TargetTarget Frame"] = "Цель цели" --Also used in UnitFrames
 L["TargetTargetTarget Frame"] = "Цель цели цели"
 L["Tooltip"] = "Подсказка"
 L["Vehicle Seat Frame"] = "Техника"
+L["DESC_MOVERCONFIG"] = [=[Блокировка отключена. Передвиньте фреймы и нажмите 'Закрепить', когда закончите.
+
+Options:
+  Shift + RightClick - Hides mover temporarily.
+  Ctrl + RightClick - Resets mover position to default.
+]=]
 
 --Plugin Installer
 L["ElvUI Plugin Installation"] = "Установка плагина ElvUI"

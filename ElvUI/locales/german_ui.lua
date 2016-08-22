@@ -170,7 +170,6 @@ L["Layout"] = "Layout"
 L["Lock"] = "Sperren"
 L["Low Resolution"] = "Niedrige Auflösung"
 L["low"] = "niedrig"
-L["Movers unlocked. Move them now and click Lock when you are done."] = "Ankerpunkte entriegelt. Bewege die Ankerpunkte und klicke 'sperren', wenn du fertig bist."
 L["Nudge"] = "Stoß"
 L["Physical DPS"] = "Physische DPS"
 L["Please click the button below so you can setup variables and ReloadUI."] = "Bitte klicke die Taste unten um den Installationsprozess abzuschließen und das Benutzerinterface neu zu laden."
@@ -281,6 +280,12 @@ L["TargetTarget Frame"] = "Ziel des Ziels Fenster" --Also used in UnitFrames
 L["TargetTargetTarget Frame"] = "Ziel des Ziels des Ziels Fenster"
 L["Tooltip"] = "Tooltip"
 L["Vehicle Seat Frame"] = "Fahrzeugfenster"
+L["DESC_MOVERCONFIG"] = [=[Ankerpunkte entriegelt. Bewege die Ankerpunkte und klicke 'sperren', wenn du fertig bist.
+
+Options:
+  Shift + RightClick - Hides mover temporarily.
+  Ctrl + RightClick - Resets mover position to default.
+]=]
 
 --Plugin Installer
 L["ElvUI Plugin Installation"] = true;
