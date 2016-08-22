@@ -7,8 +7,6 @@ local points = {
 	["TOPRIGHT"] = "TOPRIGHT",
 	["BOTTOMLEFT"] = "BOTTOMLEFT",
 	["BOTTOMRIGHT"] = "BOTTOMRIGHT",
-	["BOTTOM"] = "BOTTOM",
-	["TOP"] = "TOP",
 }
 
 local function BuildABConfig()
@@ -313,7 +311,14 @@ local function BuildABConfig()
 				type = 'select',
 				name = L["Anchor Point"],
 				desc = L["The first button anchors itself to this point on the bar."],
-				values = points,
+				values = {
+					["TOPLEFT"] = "TOPLEFT",
+					["TOPRIGHT"] = "TOPRIGHT",
+					["BOTTOMLEFT"] = "BOTTOMLEFT",
+					["BOTTOMRIGHT"] = "BOTTOMRIGHT",
+					["BOTTOM"] = "BOTTOM",
+					["TOP"] = "TOP",
+				},
 			},
 			backdrop = {
 				order = 4,
