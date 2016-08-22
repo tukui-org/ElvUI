@@ -229,7 +229,7 @@ local function Chat_OnEvent(self, event, arg1, arg2, arg3, arg4, arg5, arg6, arg
 		body = body:gsub("%[BN_CONVERSATION:", '%['.."")
 	end
 
-	self:AddMessage(CH:ConcatenateTimeStamp(body), info.r, info.g, info.b, info.id, false, accessID, typeID);
+	self:AddMessage(body, info.r, info.g, info.b, info.id, false, accessID, typeID);
 end
 
 function AFK:LoopAnimations()
