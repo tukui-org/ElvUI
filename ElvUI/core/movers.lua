@@ -192,6 +192,8 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 			--Allow resetting of anchor by Ctrl+RightClick
 			if IsControlKeyDown() and self.textString then
 				E:ResetMovers(self.textString)
+			elseif IsShiftKeyDown() then --Allow hiding a mover temporarily
+				self:Hide()
 			end
 		end
 	end
