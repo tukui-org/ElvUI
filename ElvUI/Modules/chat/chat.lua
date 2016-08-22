@@ -486,6 +486,10 @@ function CH:StyleChat(frame)
 		end
 	end)
 
+	--This usually taints, but LibChatAnims should make sure it doesn't.
+	frame.OldAddMessage = frame.AddMessage
+	frame.AddMessage = CH.AddMessage
+
 	--copy chat button
 	frame.button = CreateFrame('Frame', format("CopyChatButton%d", id), frame)
 	frame.button:SetAlpha(0.35)
@@ -516,6 +520,10 @@ function CH:StyleChat(frame)
 
 	CreatedFrames = id
 	frame.styled = true
+end
+
+function CH:AddMessage(text, ...)
+	self.OldAddMessage(self, CH:ConcatenateTimeStamp(text), ...)
 end
 
 function CH:UpdateSettings()
