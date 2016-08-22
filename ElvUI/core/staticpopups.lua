@@ -155,16 +155,6 @@ E.PopupDialogs['CONFIGAURA_SET'] = {
 	hideOnEscape = false,
 }
 
-E.PopupDialogs['QUEUE_TAINT'] = {
-	text = L["A taint has occured that is preventing you from using the queue system. Please reload your user interface and try again."],
-	button1 = ACCEPT,
-	button2 = CANCEL,
-	OnAccept = function() ReloadUI(); end,
-	timeout = 0,
-	whileDead = 1,
-	hideOnEscape = false,
-}
-
 E.PopupDialogs['FAILED_UISCALE'] = {
 	text = L["You have changed your UIScale, however you still have the AutoScale option enabled in ElvUI. Press accept if you would like to disable the Auto Scale option."],
 	button1 = ACCEPT,
