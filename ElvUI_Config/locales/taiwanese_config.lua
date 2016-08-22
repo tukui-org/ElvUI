@@ -7,42 +7,42 @@ if not L then return end
 L["AURAS_DESC"] = "小地圖旁的光環圖示設定."
 L["BAGS_DESC"] = "調整 ElvUI 背包設定."
 L["CHAT_DESC"] = "對話框架設定."
-L["DATATEXT_DESC"] = "屏幕資訊文字顯示設定."
-L["ELVUI_DESC"] = "ElvUI 為一套功能完整, 可用來替換 WOW 原始介面的 UI 套件"
+L["DATATEXT_DESC"] = "螢幕資訊文字顯示設定."
+L["ELVUI_DESC"] = "ElvUI 為一套功能完整，可用來替換 WOW 原始介面的 UI 套件"
 L["NAMEPLATE_DESC"] = "修改血條設定."
-L["PANEL_DESC"] = "調整左、右對話框的尺寸, 此設定將會影響對話與背包框架的尺寸."
+L["PANEL_DESC"] = "調整左、右對話框的尺寸，此設定將會影響對話與背包框架的尺寸."
 L["SKINS_DESC"] = "調整外觀設定."
 L["TOGGLESKIN_DESC"] = "啟用/停用此外觀."
 L["TOOLTIP_DESC"] = "浮動提示資訊設定選項."
-L["SEARCH_SYNTAX_DESC"] = [=[With the new addition of LibItemSearch, you now have access to much more advanced item searches. The following is a documentation of the search syntax. See the full explanation at: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
+L["SEARCH_SYNTAX_DESC"] = [=[因為新增加的 LibItemSearch，你現在可以使用更進階的物品搜尋. 下面是一份搜尋語法的文件. 想要看更完整的解釋請到: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
 
-Specific Searching:
-    • q:[quality] or quality:[quality]. For instance, q:epic will find all epic items.
-    • l:[level], lvl:[level] or level:[level]. For example, l:30 will find all items with level 30.
-    • t:[search], type:[search] or slot:[search]. For instance, t:weapon will find all weapons.
-    • n:[name] or name:[name]. For instance, typing n:muffins will find all items with names containing "muffins".
-    • s:[set] or set:[set]. For example, s:fire will find all items in equipment sets you have with names that start with fire.
-    • tt:[search], tip:[search] or tooltip:[search]. For instance, tt:binds will find all items that can be bound to account, on equip, or on pickup.
-
-
-Search Operators:
-    • ! : Negates a search. For example, !q:epic will find all items that are NOT epic.
-    • | : Joins two searches. Typing q:epic | t:weapon will find all items that are either epic OR weapons.
-    • & : Intersects two searches. For instance, q:epic & t:weapon will find all items that are epic AND weapons
-    • >, <, <=, => : Performs comparisons on numerical searches. For example, typing lvl: >30 will find all items with level HIGHER than 30.
+條件搜尋:
+    • q:[品質] 或 quality:[品質]. 舉例，q:史詩 會搜尋所有史詩物品.
+    • l:[裝等]，lvl:[裝等] 或 level:[裝等]. 舉例，l:30 會搜尋所有裝等30的物品.
+    • t:[類型]，type:[類型] 或 slot:[類型]. 舉例，t:武器 會搜尋所有武器.
+    • n:[名稱] 或 name:[名稱]. 舉例，輸入 n:muffins 會搜尋所有物品名稱中含有 "muffins".
+    • s:[套裝] 或 set:[套裝]. 舉例，s:火 會在你定義的套裝名稱起始為 火 的套裝中搜尋所有裝備.
+    • tt:[關鍵字]，tip:[關鍵字] 或 tooltip:[關鍵字]. 舉例，tt:綁定 會搜尋所有物品提示中含有綁定兩字的物品 如 帳號綁定，裝備綁定 或 拾取綁定.
 
 
-The following search keywords can also be used:
-    • soulbound, bound, bop : Bind on pickup items.
-    • bou : Bind on use items.
-    • boe : Bind on equip items.
-    • boa : Bind on account items.
-    • quest : Quest bound items.
-    • reagents, reagent, crafting : Profession reagents.
-    • naval : Naval equipment.
-    • follower, followe, follow : Follower items.
-    • relic, reli, rel : Artifact Relics.
-    • power, powe, pow : Items granting Artifact Power.]=];
+搜尋運算子:
+    • ! : 反向搜尋. 舉例，!q:史詩 會搜尋所有不是史詩的物品
+    • | : 聯集搜尋. 輸入 q:史詩 | t:武器 會搜尋所有史詩物品 或是 武器.
+    • & : 交集搜尋. 舉例，q:史詩 & t:武器 會搜尋所有既是史詩 也是 武器的物品
+    • >, <, <=, => : 在數值搜尋時進行比較. 舉例，輸入 lvl: >30 會搜尋所有裝等大於30的物品.
+
+
+以下的關鍵字也可以被使用:
+    • soulbound, bound, bop : 拾取綁定.
+    • bou : 使用後綁定.
+    • boe : 裝備後綁定.
+    • boa : 帳號綁定.
+    • quest : 任務綁定
+    • reagents, reagent, crafting : 專業技能材料
+    • naval : 海軍裝備.
+    • follower, followe, follow : 追隨者物品
+    • relic, reli, rel : 神器符文.
+    • power, powe, pow : 賦予神器能量物品.]=];
 L["TEXT_FORMAT_DESC"] = [=[請填入代碼以變更文字格式。
 
 範例：
@@ -68,193 +68,193 @@ L["TEXT_FORMAT_DESC"] = [=[請填入代碼以變更文字格式。
 --ActionBars
 L["Action Paging"] = "快捷列翻頁"
 L["ActionBars"] = "快捷列"
-L["Allow Masque to handle the skinning of this element."] = true;
+L["Allow Masque to handle the skinning of this element."] = "允許 Masque 來處理此元件的皮膚"
 L["Alpha"] = "透明度"
 L["Anchor Point"] = "定位方向"
-L["Backdrop Spacing"] = true;
+L["Backdrop Spacing"] = "背景間距"
 L["Backdrop"] = "背景"
 L["Button Size"] = "按鈕尺寸"
 L["Button Spacing"] = "按鈕間距"
 L["Buttons Per Row"] = "每行按鈕數"
 L["Buttons"] = "按鈕數"
 L["Change the alpha level of the frame."] = "改變框架透明度."
-L["Color of the actionbutton when not usable."] = true;
+L["Color of the actionbutton when not usable."] = "無法使用的技能快捷鍵顏色."
 L["Color of the actionbutton when out of power (Mana, Rage, Focus, Holy Power)."] = "施放能量 (法力、怒氣、集中值、聖能) 不足的技能快捷鍵顏色."
 L["Color of the actionbutton when out of range."] = "超出施放範圍的技能快捷鍵顏色."
-L["Color of the actionbutton when usable."] = true;
+L["Color of the actionbutton when usable."] = "可使用的技能快捷鍵顏色."
 L["Color when the text is about to expire"] = "即將冷卻完畢的數字顏色."
 L["Color when the text is in the days format."] = "以天顯示的文字顏色."
 L["Color when the text is in the hours format."] = "以小時顯示的文字顏色."
 L["Color when the text is in the minutes format."] = "以分顯示的文字顏色."
 L["Color when the text is in the seconds format."] = "以秒顯示的文字顏色."
 L["Cooldown Text"] = "冷卻文字"
-L["Darken Inactive"] = true;
+L["Darken Inactive"] = "非啟用者變暗";
 L["Days"] = "天"
 L["Display bind names on action buttons."] = "在快捷列按鈕上顯示快捷鍵名稱."
-L["Display cooldown text on anything with the cooldown spiral."] = "顯示技能冷卻時間."
+L["Display cooldown text on anything with the cooldown spiral."] = "在任何冷卻動畫上顯示技能冷卻時間."
 L["Display macro names on action buttons."] = "在快捷列按鈕上顯示巨集名稱."
 L["Expiring"] = "即將冷卻完畢"
-L["Global Fade Transparency"] = true;
-L["Height Multiplier"] = "高度倍增"
-L["Hide Cooldown Bling"] = true;
-L["Hides the bling animation on buttons at the end of the global cooldown."] = true;
+L["Global Fade Transparency"] = "全局漸隱透明度"
+L["Height Multiplier"] = "高度倍數"
+L["Hide Cooldown Bling"] = "隱藏冷卻閃光"
+L["Hides the bling animation on buttons at the end of the global cooldown."] = "隱藏當公共冷卻時間結束時的閃光動畫"
 L["Hours"] = "時"
-L["If you unlock actionbars then trying to move a spell might instantly cast it if you cast spells on key press instead of key release."] = true;
-L["Inherit Global Fade"] = true;
-L["Inherit the global fade, mousing over, targetting, setting focus, losing health, entering combat will set the remove transparency. Otherwise it will use the transparency level in the general actionbar settings for global fade alpha."] = true;
+L["If you unlock actionbars then trying to move a spell might instantly cast it if you cast spells on key press instead of key release."] = "如果你將快捷列解鎖後嘗試移動技能, 技能可能會馬上施放因為你使用按下施法而非釋放施法"
+L["Inherit Global Fade"] = "繼承全局漸隱"
+L["Inherit the global fade, mousing over, targetting, setting focus, losing health, entering combat will set the remove transparency. Otherwise it will use the transparency level in the general actionbar settings for global fade alpha."] = "繼承全局漸隱, 當滑鼠滑過, 設為目標, 設為焦點, 損失血量, 進入戰鬥時都會變為不透明, 除此之外將會使用在全局快捷列中的所設定的全局漸隱透明度"
 L["Key Down"] = "按下施法"
 L["Keybind Mode"] = "快捷鍵綁定模式"
 L["Keybind Text"] = "快捷鍵文字"
 L["Low Threshold"] = "冷卻時間低閥值"
 L["Macro Text"] = "巨集名稱"
-L["Masque Support"] = true;
+L["Masque Support"] = "Masque 支援"
 L["Minutes"] = "分"
 L["Mouse Over"] = "滑鼠滑過顯示"
 L["Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop."] = "根據此值增加背景的高度或寬度. 一般用來設定在一個背景框裡放置多條快捷列."
-L["Not Usable"] = true;
+L["Not Usable"] = "無法使用"
 L["Out of Power"] = "施放能量不足"
 L["Out of Range"] = "超出施放範圍"
 L["Restore Bar"] = "還原快捷列"
 L["Restore the actionbars default settings"] = "恢復此快捷列的預設設定"
 L["Seconds"] = "秒"
-L["Show Empty Buttons"] = true;
-L["Shows a swipe animation when a spell is recharging but still has charges left."] = true;
-L["The amount of buttons to display per row."] = "每行按鈕顯示數量."
+L["Show Empty Buttons"] = "顯示空白按鈕"
+L["Shows a swipe animation when a spell is recharging but still has charges left."] = "當法術仍有可使用次數並在充能時顯示一個倒數動畫"
+L["The amount of buttons to display per row."] = "每行所顯示的按鈕數量."
 L["The amount of buttons to display."] = "快捷列按鈕顯示數量."
 L["The button you must hold down in order to drag an ability to another action button."] = "需按住此按鈕，才可將技能拖曳至另一快捷鈕中."
 L["The first button anchors itself to this point on the bar."] = "快捷列第一個按鈕的所在位置."
 L["The size of the action buttons."] = "快捷列按鈕尺寸."
-L["The spacing between the backdrop and the buttons."] = true;
-L["This setting will be updated upon changing stances."] = true;
+L["The spacing between the backdrop and the buttons."] = "背景與按鈕之間的間隙"
+L["This setting will be updated upon changing stances."] = "此設定將在切換姿態時更新"
 L["Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red"] = "冷卻時間低於此秒數後將變為紅色數字, 並以小數顯示, 設為- 1 冷卻時間將不會變為紅色."
 L["Toggles the display of the actionbars backdrop."] = "顯示/隱藏快捷列背景框."
-L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."] = true;
-L["Usable"] = true;
-L["Use Draw Swipe"] = true;
-L["Use Position Override"] = true;
+L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."] = "當非戰鬥, 沒有目標, 滿血, 未施法且沒有焦點目標存在時的透明度"
+L["Usable"] = "可以使用"
+L["Use Draw Swipe"] = "使用充能動畫"
+L["Use Position Override"] = "使用位置覆蓋"
 L["Visibility State"] = "顯示狀態"
-L["When enabled it will use the Anchor Point setting to determine growth direction, otherwise it will be determined by where the bar is positioned."] = true;
-L["Width Multiplier"] = "寬度倍增"
-L["Zone Ability"] = true;
+L["When enabled it will use the Anchor Point setting to determine growth direction, otherwise it will be determined by where the bar is positioned."] = "當啟用時會使用定位點的位置來決定按鈕增長的方向,否則將會依照快捷列的位置來決定"
+L["Width Multiplier"] = "寬度倍數"
+L["Zone Ability"] = "區域能力"
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
- Example: '[combat] 2;']=] ] = [=[此功能與巨集概念類似，可根據不同情境，切換至不同的快捷列設置。
+ Example: '[combat] 2;']=] ] = [=[此功能與巨集概念類似, 可根據不同情況切換至不同的快捷列設定。
 例如：'[combat] 2;']=]
 L[ [=[This works like a macro, you can run different situations to get the actionbar to show/hide differently.
- Example: '[combat] show;hide']=] ] = [=[此功能與巨集概念類似，可根據不同情境，切換顯示/隱藏快捷列。
+ Example: '[combat] show;hide']=] ] = [=[此功能與巨集概念類似, 可根據不同情境, 切換顯示/隱藏快捷列。
 例如：'[combat] show;hide']=]
 
 --Bags
-L["Add an item or search syntax to the ignored list. Items matching the search syntax will be ignored."] = true;
-L["Add Item or Search Syntax"] = true;
-L["Adjust the width of the bag frame."] = '調整背包框架寬度.'
-L["Adjust the width of the bank frame."] = '調整銀行框架寬度.'
-L["Align the width of the bag frame to fit inside the chat box."] = '調整背包框架寬度以適應對話框.'
+L["Add an item or search syntax to the ignored list. Items matching the search syntax will be ignored."] = "增加一個物品或是搜尋語法到忽略清單. 符合搜尋語法的物品將會被忽略"
+L["Add Item or Search Syntax"] = "增加物品或是搜尋語法"
+L["Adjust the width of the bag frame."] = "調整背包框架寬度."
+L["Adjust the width of the bank frame."] = "調整銀行框架寬度."
+L["Align the width of the bag frame to fit inside the chat box."] = "調整背包框架的寬度來符合對話框."
 L["Ascending"] = "升序"
-L["Bag Sorting"] = true;
+L["Bag Sorting"] = "背包排序"
 L["Bag-Bar"] = "背包條"
 L["Bar Direction"] = "背包條排序方向"
-L["Blizzard Style"] = true;
+L["Blizzard Style"] = "暴雪風格"
 L["Bottom to Top"] = "底部至頂部"
-L["Button Size (Bag)"] = '單個格子尺寸 (背包)'
-L["Button Size (Bank)"] = '單個格子尺寸 (銀行)'
-L["Clear Search On Close"] = true;
-L["Condensed"] = true;
-L["Currency Format"] = '貨幣格式'
+L["Button Size (Bag)"] = "單個格子尺寸 (背包)"
+L["Button Size (Bank)"] = "單個格子尺寸 (銀行)"
+L["Clear Search On Close"] = "關閉時清空搜尋"
+L["Condensed"] = "濃縮"
+L["Currency Format"] = "貨幣格式"
 L["Descending"] = "降序"
 L["Direction the bag sorting will use to allocate the items."] = "整理背包物品時，將依此排序方向排放物品."
-L["Disable Bag Sort"] = true;
-L["Disable Bank Sort"] = true;
-L["Display Item Level"] = true;
-L["Display the junk icon on all grey items that can be vendored."] = true;
+L["Disable Bag Sort"] = "停用背包排序"
+L["Disable Bank Sort"] = "停用銀行排序"
+L["Display Item Level"] = "顯示物品等級"
+L["Display the junk icon on all grey items that can be vendored."] = "在所有可販賣的灰色物品上顯示垃圾圖示"
 L["Display the upgrade icon on items that WoW considers an upgrade for your character."] = true;
-L["Displays item level on equippable items."] = true;
+L["Displays item level on equippable items."] = "在可裝備物品上顯示裝備等級"
 L["Enable/Disable the all-in-one bag."] = "啟用/停用整合背包."
 L["Enable/Disable the Bag-Bar."] = "啟用/停用背包條."
-L["Full"] = true;
-L["Global"] = true;
-L["Here you can add items or search terms that you want to be excluded from sorting. To remove an item just click on its name in the list."] = true;
-L["Icons and Text (Short)"] = true;
-L["Icons and Text"] = '圖示與文字'
-L["Ignored Items and Search Syntax (Global)"] = true;
-L["Ignored Items and Search Syntax (Profile)"] = true;
-L["Item Count Font"] = true;
-L["Item Level Threshold"] = true;
-L["Item Level"] = true;
-L["Money Format"] = true;
-L["Panel Width (Bags)"] = '框架寬度 (背包)'
-L["Panel Width (Bank)"] = '框架寬度 (銀行)'
-L["Search Syntax"] = true;
-L["Set the size of your bag buttons."] = "設定你的背包格尺寸."
-L["Short (Whole Numbers)"] = true;
-L["Short"] = true;
-L["Show Coins"] = true;
-L["Show Junk Icon"] = true;
+L["Full"] = "滿"
+L["Global"] = "全局"
+L["Here you can add items or search terms that you want to be excluded from sorting. To remove an item just click on its name in the list."] = "在此你可以新增物品或是搜尋語法來排除排序某些物品. 要移除物品請點選列表中的物品名稱"
+L["Icons and Text (Short)"] = "圖示與文字(簡短)"
+L["Icons and Text"] = "圖示與文字"
+L["Ignored Items and Search Syntax (Global)"] = "忽略的物品與搜尋語法 (全局)"
+L["Ignored Items and Search Syntax (Profile)"] = "忽略的物品與搜尋語法 (個人)"
+L["Item Count Font"] = "物品記數字型"
+L["Item Level Threshold"] = "物品等級閥值"
+L["Item Level"] = "物品等級"
+L["Money Format"] = "金幣格式"
+L["Panel Width (Bags)"] = "框架寬度 (背包)"
+L["Panel Width (Bank)"] = "框架寬度 (銀行)"
+L["Search Syntax"] = "搜尋語法"
+L["Set the size of your bag buttons."] = "設定你的背包格子大小."
+L["Short (Whole Numbers)"] = "短 (完整數字)"
+L["Short"] = "短"
+L["Show Coins"] = "顯示硬幣"
+L["Show Junk Icon"] = "顯示垃圾圖示"
 L["Show Upgrade Icon"] = true;
-L["Smart"] = true;
-L["Sort Direction"] = "整理排序方向"
-L["Sort Inverted"] = '倒序排列'
+L["Smart"] = "智慧"
+L["Sort Direction"] = "排序方向"
+L["Sort Inverted"] = "倒序排列"
 L["The direction that the bag frames be (Horizontal or Vertical)."] = "背包框架排序方向 (水平或垂直)."
-L["The direction that the bag frames will grow from the anchor."] = "新增的背包框架將依此定位方向排序."
-L["The display format of the currency icons that get displayed below the main bag. (You have to be watching a currency for this to display)"] = '背包主框架下方的兌換通貨圖示顯示格式.需先設定監控特定兌換通貨，才會顯示於背包框架.'
-L["The display format of the money text that is shown at the top of the main bag."] = true;
-L["The frame is not shown unless you mouse over the frame."] = "僅於游標移經快捷列時顯示框架."
-L["The minimum item level required for it to be shown."] = true;
-L["The size of the individual buttons on the bag frame."] = '背包框架單個格子的尺寸.'
-L["The size of the individual buttons on the bank frame."] = '銀行框架單個格子的尺寸.'
+L["The direction that the bag frames will grow from the anchor."] = "新增的背包框架將從錨點依此方向增加."
+L["The display format of the currency icons that get displayed below the main bag. (You have to be watching a currency for this to display)"] = "背包主框架下方的兌換通貨圖示顯示格式.需先設定監控特定兌換通貨，才會顯示於背包框架."
+L["The display format of the money text that is shown at the top of the main bag."] = "在背包主框架上方的金幣顯示格式"
+L["The frame is not shown unless you mouse over the frame."] = "僅於滑鼠移經快捷列時顯示框架."
+L["The minimum item level required for it to be shown."] = "顯示的最低物品等級"
+L["The size of the individual buttons on the bag frame."] = "背包框架單個格子的大小."
+L["The size of the individual buttons on the bank frame."] = "銀行框架單個格子的大小."
 L["The spacing between buttons."] = "兩個按鈕間的距離."
-L["This makes the item level display more reliable but uses more resources. If this is disabled then upgraded items will not show the correct item level."] = true;
+L["This makes the item level display more reliable but uses more resources. If this is disabled then upgraded items will not show the correct item level."] = "這會顯示較為可靠的物品等級. 如果將此停用, 已升級物品可能不會顯示正確的物品等級"
 L["Top to Bottom"] = "頂部至底部"
-L["Use coin icons instead of colored text."] = true;
-L["Use Tooltip Scanning"] = true;
+L["Use coin icons instead of colored text."] = "使用硬幣圖示取代上色文字"
+L["Use Tooltip Scanning"] = "使用提示掃描"
 
 --Buffs and Debuffs
 L["Begin a new row or column after this many auras."] = "在這些光環旁開始新的行或列."
-L["Count xOffset"] = true;
-L["Count yOffset"] = true;
-L["Defines how the group is sorted."] = "請定義群組分類方式."
-L["Defines the sort order of the selected sort method."] = "請定義所選分類方式的排序."
-L["Disabled Blizzard"] = true;
-L["Fade Threshold"] = "剩餘時間閥值"
+L["Count xOffset"] = "層數X偏移"
+L["Count yOffset"] = "層數Y偏移"
+L["Defines how the group is sorted."] = "定義群組的排序方式."
+L["Defines the sort order of the selected sort method."] = "定義所選排序方式的排序方向."
+L["Disabled Blizzard"] = "停用暴雪框架"
+L["Fade Threshold"] = "漸隱時間閥值"
 L["Index"] = "索引"
-L["Indicate whether buffs you cast yourself should be separated before or after."] = "將你自身施放的增益從整體增益之前或之後分離出來."
+L["Indicate whether buffs you cast yourself should be separated before or after."] = "將你自身施放的增益放於整體增益最前方或或最後方."
 L["Limit the number of rows or columns."] = "最大行數或列數."
 L["Max Wraps"] = "每行最大數"
 L["No Sorting"] = "不分類"
 L["Other's First"] = "他人光環優先"
 L["Remaining Time"] = "剩餘時間"
-L["Reverse Style"] = true;
+L["Reverse Style"] = "倒序風格"
 L["Seperate"] = "光環分離"
 L["Set the size of the individual auras."] = "設定每個光環的尺寸."
 L["Sort Method"] = "分類方式"
-L["The direction the auras will grow and then the direction they will grow after they reach the wrap after limit."] = true;
-L["Threshold before text changes red, goes into decimal form, and the icon will fade. Set to -1 to disable."] = "冷卻時間低於此秒數後將變為紅色數字以小數顯示, 並且圖示會漸隱. 設定為-1 禁用此功能."
-L["Time xOffset"] = true;
-L["Time yOffset"] = true;
+L["The direction the auras will grow and then the direction they will grow after they reach the wrap after limit."] = "光環增加的方向與到達每行最大數後換行增加的方向"
+L["Threshold before text changes red, goes into decimal form, and the icon will fade. Set to -1 to disable."] = "冷卻時間低於此秒數後將變為紅色數字且以小數顯示, 並且圖示會漸隱. 設定為-1 禁用此功能."
+L["Time xOffset"] = "時間X偏移"
+L["Time yOffset"] = "時間Y偏移"
 L["Time"] = "時間"
-L["When enabled active buff icons will light up instead of becoming darker, while inactive buff icons will become darker instead of being lit up."] = true;
+L["When enabled active buff icons will light up instead of becoming darker, while inactive buff icons will become darker instead of being lit up."] = "當啟用時啟動的增益會以變亮取代變暗, 非啟動的增益會變暗取代變亮"
 L["Wrap After"] = "每行光環數"
 L["Your Auras First"] = "自身光環優先"
 
 --Chat
-L["Above Chat"] = '對話框上方'
-L["Adjust the height of your right chat panel."] = true;
-L["Adjust the width of your right chat panel."] = true;
-L["Alerts"] = true;
+L["Above Chat"] = "對話框上方"
+L["Adjust the height of your right chat panel."] = "調整右側聊天框的高度"
+L["Adjust the width of your right chat panel."] = "調整右側聊天框的寬度"
+L["Alerts"] = "警示"
 L["Allowed Combat Repeat"] = true;
 L["Attempt to create URL links inside the chat."] = "對話視窗出現網址時建立連結."
 L["Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish."] = "鎖定左右對話框架的位置.禁用此選項將允許你移動對話框架到任意位置."
-L["Below Chat"] = '對話框下方'
-L["Chat EditBox Position"] = '對話輸入框位置'
+L["Below Chat"] = "對話框下方"
+L["Chat EditBox Position"] = "對話輸入框位置"
 L["Chat History"] = "對話記錄"
-L["Class Color Mentions"] = true;
+L["Class Color Mentions"] = "使用職業上色"
 L["Copy Text"] = "複製文字"
-L["Custom Timestamp Color"] = true;
-L["Display LFG Icons in group chat."] = true;
+L["Custom Timestamp Color"] = "自訂時間戳記顏色"
+L["Display LFG Icons in group chat."] = "在隊伍聊天中顯示預組圖示"
 L["Display the hyperlink tooltip while hovering over a hyperlink."] = "滑鼠懸停在超鏈接上時顯示鏈接提示框."
-L["Enable the use of separate size options for the right chat panel."] = true;
+L["Enable the use of separate size options for the right chat panel."] = "啟用獨立的右聊天框大小選項"
 L["Fade Chat"] = "對話內容漸隱"
 L["Fade Tabs No Backdrop"] = true;
-L["Fade the chat text when there is no activity."] = '未出現新訊息時，隱藏對話框的文字.'
+L["Fade the chat text when there is no activity."] = "未出現新訊息時，隱藏對話框的文字."
 L["Fade Undocked Tabs"] = true;
 L["Fades the text on chat tabs that are docked in a panel where the backdrop is disabled."] = true;
 L["Fades the text on chat tabs that are not docked at the left or right chat panel."] = true;
@@ -267,8 +267,8 @@ L["Keywords"] = "關鍵字"
 L["Left Only"] = "僅顯示左框背景"
 L["LFG Icons"] = true;
 L["List of words to color in chat if found in a message. If you wish to add multiple words you must seperate the word with a comma. To search for your current name you can use %MYNAME%.\n\nExample:\n%MYNAME%, ElvUI, RBGs, Tank"] = "如果在對話信息中發現如下文字會自動上色該文字. 如果你需要添加多個詞必須用逗號分開. 如要搜尋角色名稱可使用%MYNAME %.\n\n例如:\n%MYNAME%, ElvUI, RBGs, Tank"
-L["Lock Positions"] = '鎖定位置'
-L["Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session."] = '記錄對話歷史,當你重載,登錄和退出時會恢復你最後一次會話'
+L["Lock Positions"] = "鎖定位置"
+L["Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session."] = "記錄對話歷史,當你重載,登錄和退出時會恢復你最後一次會話"
 L["No Alert In Combat"] = true;
 L["Number of repeat characters while in combat before the chat editbox is automatically closed."] = true;
 L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."] = "對話框滾動到底部所需要的滾動時間(秒)."
@@ -277,7 +277,7 @@ L["Panel Height"] = "對話框高度"
 L["Panel Texture (Left)"] = "對話框材質(左)"
 L["Panel Texture (Right)"] = "對話框材質(右)"
 L["Panel Width"] = "對話框寛度"
-L["Position of the Chat EditBox, if datatexts are disabled this will be forced to be above chat."] = '對話編輯框位置,如果底部的信息文字被禁用的話,將會強制顯示在對話框頂部.'
+L["Position of the Chat EditBox, if datatexts are disabled this will be forced to be above chat."] = "對話編輯框位置,如果底部的信息文字被禁用的話,將會強制顯示在對話框頂部."
 L["Prevent the same messages from displaying in chat more than once within this set amount of seconds, set to zero to disable."] = "單位時間(秒) 內屏蔽重複對話信息, 設定為0 禁用此功能."
 L["Require holding the Alt key down to move cursor or cycle through messages in the editbox."] = true;
 L["Right Only"] = "僅顯示右框背景"
@@ -406,14 +406,14 @@ L["Automatically scale the User Interface based on your screen resolution"] = "�
 L["Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level."] = "當你的等級達到滿級時, 自動選擇貪婪或分解綠色物品."
 L["Automatically vendor gray items when visiting a vendor."] = "當訪問商人時自動出售灰色物品."
 L["Bonus Reward Position"] = true;
-L["Bottom Panel"] = '底部面板'
+L["Bottom Panel"] = "底部面板"
 L["Chat Bubbles Style"] = true;
 L["Chat Bubbles"] = true;
 L["Direction the bar moves on gains/losses"] = true;
 L["Disable Tutorial Buttons"] = true;
 L["Disables the tutorial button found on some frames."] = true;
-L["Display a panel across the bottom of the screen. This is for cosmetic only."] = '顯示跨越屏幕底部的面板,僅僅是用于裝飾.'
-L["Display a panel across the top of the screen. This is for cosmetic only."] = '顯示跨越屏幕頂部的面板,僅僅是用于裝飾.'
+L["Display a panel across the bottom of the screen. This is for cosmetic only."] = "顯示跨越螢幕底部的面板,僅僅是用于裝飾."
+L["Display a panel across the top of the screen. This is for cosmetic only."] = "顯示跨越螢幕頂部的面板,僅僅是用于裝飾."
 L["Display battleground messages in the middle of the screen."] = true;
 L["Display emotion icons in chat."] = "在對話中顯示表情圖示."
 L["Emotion Icons"] = "表情圖示"
@@ -426,7 +426,7 @@ L["Height of the objective tracker. Increase size to be able to see more objecti
 L["Hide At Max Level"] = true;
 L["Hide Error Text"] = "隱藏錯誤文字"
 L["Hide In Vehicle"] = true;
-L["Hides the red error text at the top of the screen while in combat."] = "戰鬥中隱藏屏幕頂部紅字錯誤信息."
+L["Hides the red error text at the top of the screen while in combat."] = "戰鬥中隱藏螢幕頂部紅字錯誤信息."
 L["Log Taints"] = "錯誤記錄";
 L["Login Message"] = "登入資訊"
 L["Loot Roll"] = "擲骰"
@@ -455,7 +455,7 @@ L["The Thin Border Theme option will change the overall apperance of your UI. Us
 L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."] = true;
 L["Thin Border Theme"] = true;
 L["Toggle Tutorials"] = "教學開關"
-L["Top Panel"] = '頂部面板'
+L["Top Panel"] = "頂部面板"
 L["When you go AFK display the AFK screen."] = true;
 
 --Media
@@ -714,21 +714,21 @@ L["Choose when you want the tooltip to show. If a modifer is chosen, then you ne
 L["Comparison Font Size"] = true;
 L["Cursor Anchor"] = true;
 L["Custom Faction Colors"] = true;
-L["Display guild ranks if a unit is guilded."] = "当目标有公會時顯示其在公會內的會階."
-L["Display how many of a certain item you have in your possession."] = '顯示當前物品在你身上的數量'
+L["Display guild ranks if a unit is guilded."] = "當目標有公會時顯示其位階."
+L["Display how many of a certain item you have in your possession."] = "顯示當前物品在你身上的數量"
 L["Display player titles."] = "顯示玩家稱號."
 L["Display the players talent spec and item level in the tooltip, this may not immediately update when mousing over a unit."] = true;
-L["Display the spell or item ID when mousing over a spell or item tooltip."] = '鼠標提示中顯示技能或物品的ID'
+L["Display the spell or item ID when mousing over a spell or item tooltip."] = "滑鼠提示中顯示技能或物品的ID"
 L["Guild Ranks"] = "公會會階"
 L["Header Font Size"] = true;
 L["Health Bar"] = true;
 L["Hide tooltip while in combat."] = "戰鬥時不顯示提示."
 L["Inspect Info"] = true;
-L["Item Count"] = '物品數量'
-L["Never Hide"] = "从不隐藏"
+L["Item Count"] = "物品數量"
+L["Never Hide"] = "從不隱藏"
 L["Player Titles"] = "玩家稱號"
 L["Should tooltip be anchored to mouse cursor"] = true;
-L["Spell/Item IDs"] = '技能/物品ID'
+L["Spell/Item IDs"] = "技能/物品ID"
 L["Target Info"] = true;
 L["Text Font Size"] = true;
 L["This setting controls the size of text in item comparison tooltips."] = true;
@@ -736,7 +736,7 @@ L["Tooltip Font Settings"] = true;
 L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."] = "顯示團隊中目標與你目前浮動提示目標相同的隊友."
 
 --UnitFrames
-L["%s and then %s"] = '%s 与 %s'
+L["%s and then %s"] = "%s 與 %s"
 L["2D"] = "2D"
 L["3D"] = "3D"
 L["Above"] = "向上"
@@ -745,12 +745,12 @@ L["Add a spell to the filter. Use spell ID if you don't want to match all auras 
 L["Add a spell to the filter."] = "添加一個技能到過濾器"
 L["Add Spell ID or Name"] = true;
 L["Add SpellID"] = "添加技能ID"
-L["Additional Filter"] = '額外的過濾器'
+L["Additional Filter"] = "額外的過濾器"
 L["Additional Power Text"] = true;
 L["Affliction"] = "痛苦"
 L["Allow auras considered to be part of a boss encounter."] = true;
 L["Allow Boss Encounter Auras"] = true;
-L["Allow Whitelisted Auras"] = '允許白名單中的光環'
+L["Allow Whitelisted Auras"] = "允許白名單中的光環"
 L["An X offset (in pixels) to be used when anchoring new frames."] = true;
 L["An Y offset (in pixels) to be used when anchoring new frames."] = true;
 L["Anticipation"] = true;
@@ -780,7 +780,7 @@ L["Buffs"] = "增益光環"
 L["By Type"] = "類型"
 L["Camera Distance Scale"] = "視角鏡頭的距離"
 L["Castbar"] = "施法條"
-L["Center"] = '置中'
+L["Center"] = "置中"
 L["Check if you are in range to cast spells on this specific unit."] = "檢查你是否在技能有效範圍內."
 L["Choose UIPARENT to prevent it from hiding with the unitframe."] = true;
 L["Class Backdrop"] = "生命條背景職業色"
@@ -937,11 +937,11 @@ L["Match Frame Width"] = "匹配視窗寬度"
 L["Max Bars"] = true;
 L["Maximum Duration"] = true;
 L["Method to sort by."] = true;
-L["Middle Click - Set Focus"] = "鼠標中鍵 - 設置焦點"
-L["Middle clicking the unit frame will cause your focus to match the unit."] = "鼠標中鍵點擊單位框架設置焦點."
+L["Middle Click - Set Focus"] = "滑鼠中鍵 - 設置焦點"
+L["Middle clicking the unit frame will cause your focus to match the unit."] = "滑鼠中鍵點擊單位框架設置焦點."
 L["Middle"] = true;
 L["Model Rotation"] = "模型旋轉"
-L["Mouseover"] = "鼠標滑過顯示"
+L["Mouseover"] = "滑鼠滑過顯示"
 L["Name"] = "姓名"
 L["Neutral"] = "中立"
 L["Non-Interruptable"] = "不可斷法的施法條色"
@@ -954,7 +954,7 @@ L["Offset of the powerbar to the healthbar, set to 0 to disable."] = "偏移能�
 L["Offset position for text."] = "偏移文本的位置."
 L["Offset"] = "偏移"
 L["Only show when the unit is not in range."] = "不在範圍內時顯示."
-L["Only show when you are mousing over a frame."] = "鼠標滑過時顯示."
+L["Only show when you are mousing over a frame."] = "滑鼠滑過時顯示."
 L["OOR Alpha"] = "超出距離透明度"
 L["Others"] = "他人的"
 L["Overlay the healthbar"] = "頭像重疊顯示於生命條上"
@@ -1051,7 +1051,7 @@ L["Tank Frames"] = "坦克框架"
 L["Tank Target"] = "坦克目標"
 L["Tapped"] = "被攻擊"
 L["Target Glow"] = true;
-L["Target On Mouse-Down"] = "鼠標按下設為目標"
+L["Target On Mouse-Down"] = "滑鼠按下設為目標"
 L["Target units on mouse down rather than mouse up. \n\n|cffFF0000Warning: If you are using the addon 'Clique' you may have to adjust your clique settings when changing this."] = "按下滑鼠時設為目標,而不是鬆開滑鼠按鍵時. \n\n|cffFF0000警告: 如果使用'Clique'等點擊施法插件, 你可能需要調整這些插件的設置."
 L["Text Color"] = "文字顔色"
 L["Text Format"] = "文字格式"
