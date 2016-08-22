@@ -280,8 +280,8 @@ L["Vehicle Seat Frame"] = "Fahrzeugfenster"
 L["DESC_MOVERCONFIG"] = [=[Ankerpunkte entriegelt. Bewege die Ankerpunkte und klicke 'sperren', wenn du fertig bist.
 
 Options:
-  Shift + RightClick - Hides mover temporarily.
-  Ctrl + RightClick - Resets mover position to default.
+  Shift + Rechtsklick - Blendet den Anker vorübergehend aus.
+  Strg + Rechtsklick - Setzt den Anker auf Ursprungsposition zurück.
 ]=]
 
 --Plugin Installer
