@@ -179,11 +179,12 @@ function mod:UpdateElement_Cast(frame, event, ...)
 		frame.CastBar:Show();
 	elseif ( event == "UNIT_SPELLCAST_CHANNEL_UPDATE" ) then
 		if ( frame.CastBar:IsShown() ) then
-			local name, nameSubtext, text, texture, startTime, endTime, isTradeSkill = UnitChannelInfo(unit);
+			local name, nameSubtext, text, texture, startTime, endTime, isTradeSkill, notInterruptible = UnitChannelInfo(unit);
 			if ( not name ) then
 				frame.CastBar:Hide();
 				return;
 			end
+			frame.CastBar.canInterrupt = not notInterruptible
 			frame.CastBar.Name:SetText(name)
 			frame.CastBar.value = ((endTime / 1000) - GetTime());
 			frame.CastBar.maxValue = (endTime - startTime) / 1000;
