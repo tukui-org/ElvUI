@@ -135,7 +135,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 				frame.CastBar:Hide();
 				return;
 			end
-			frame.canInterrupt = not notInterruptible
+
 			frame.CastBar.Name:SetText(name)
 			frame.CastBar.value = (GetTime() - (startTime / 1000));
 			frame.CastBar.maxValue = (endTime - startTime) / 1000;
