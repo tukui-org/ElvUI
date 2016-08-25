@@ -74,7 +74,7 @@ function mod:CheckArenaHealers()
 	local numOpps = GetNumArenaOpponentSpecs()
 	if not (numOpps > 1) then return end
 
-	for i=1, 5 do
+	for i=1, 3 do
 		local name = UnitName(format('arena%d', i))
 		if name and name ~= UNKNOWN then
 			local s = GetArenaOpponentSpec(i)

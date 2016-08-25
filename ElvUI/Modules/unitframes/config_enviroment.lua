@@ -280,7 +280,7 @@ function UF:PLAYER_REGEN_DISABLED()
 		end
 	end
 
-	for i=1, 5 do
+	for i=1, 3 do
 		if self['arena'..i] and self['arena'..i].isForced then
 			self:UnforceShow(self['arena'..i])
 		end

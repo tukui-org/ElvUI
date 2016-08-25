@@ -1106,7 +1106,7 @@ function ElvUF:DisableBlizzard(unit)
 			HandleFrame('ArenaPrepFrame'..id)
 			HandleFrame('ArenaEnemyFrame'..id..'PetFrame')
 		else
-			for i=1, 5 do
+			for i=1, 3 do
 				HandleFrame(('ArenaEnemyFrame%d'):format(i))
 				HandleFrame(('ArenaPrepFrame%d'):format(i))
 				HandleFrame(('ArenaEnemyFrame%dPetFrame'):format(i))

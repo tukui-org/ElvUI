@@ -239,4 +239,4 @@ function UF:Update_ArenaFrames(frame, db)
 	frame:UpdateAllElements()
 end
 
-UF['unitgroupstoload']['arena'] = {5, 'ELVUI_UNITTARGET'}
+UF['unitgroupstoload']['arena'] = {3, 'ELVUI_UNITTARGET'}
