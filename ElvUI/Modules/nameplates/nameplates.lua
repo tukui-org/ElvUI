@@ -260,13 +260,11 @@ function mod:SetTargetFrame(frame)
 
 	mod:ClassBar_Update(frame)
 
-	if (frame.UnitType ~= "PLAYER") then --We don't want to show/hide player nameplate
-		--WoW shows nameplates for any unit which is in combat with you, even when nameplateShowAll is set to 0
-		if frame.isTarget then
-			frame:Show()
-		elseif self.db.onlyShowTarget then
-			frame:Hide()
-		end
+	--WoW shows nameplates for any unit which is in combat with you, even when nameplateShowAll is set to 0
+	if frame.isTarget then
+		frame:Show()
+	elseif self.db.onlyShowTarget and frame.UnitType ~= "PLAYER" then
+		frame:Hide()
 	end
 end
 
@@ -365,13 +363,11 @@ function mod:NAME_PLATE_UNIT_ADDED(event, unit, frame)
 	self:RegisterEvents(frame.UnitFrame, unit)
 	self:UpdateElement_All(frame.UnitFrame, unit)
 
-	if (frame.UnitFrame.UnitType ~= "PLAYER") then --We don't want to show/hide player nameplate
-		-- WoW shows nameplates for all units that are in combat with you, even if nameplateShowAll is set to 0.
-		if ((self.db.onlyShowTarget and frame.UnitFrame.isTarget) or not self.db.onlyShowTarget) then
-			frame.UnitFrame:Show()
-		else
-			frame.UnitFrame:Hide()
-		end
+	-- WoW shows nameplates for all units that are in combat with you, even if nameplateShowAll is set to 0.
+	if ((self.db.onlyShowTarget and frame.UnitFrame.isTarget) or not self.db.onlyShowTarget) or (frame.UnitFrame.UnitType == "PLAYER") then
+		frame.UnitFrame:Show()
+	else
+		frame.UnitFrame:Hide()
 	end
 end
 
