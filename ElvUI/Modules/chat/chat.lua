@@ -117,7 +117,6 @@ local Var = {
 -- GLOBALS: ICON_TAG_LIST, ICON_LIST, GROUP_TAG_LIST, DEFAULT_CHAT_FRAME, ChatFrameMenuButton
 -- GLOBALS: WIM, ChatTypeGroup, GeneralDockManagerOverflowButtonList, GeneralDockManagerScrollFrame
 -- GLOBALS: CombatLogQuickButtonFrame_CustomAdditionalFilterButton, UISpecialFrames, ChatFontNormal
--- GLOBALS: CHAT_TIMESTAMP_FORMAT
 
 local CreatedFrames = 0;
 local lines = {};
@@ -524,28 +523,19 @@ function CH:StyleChat(frame)
 end
 
 function CH:AddMessage(msg, ...)
-	if type(msg) == "string" then
-		local timeStamp
-
-		if CHAT_TIMESTAMP_FORMAT ~= nil then
-			timeStamp = BetterDate(CHAT_TIMESTAMP_FORMAT, time());
-			msg = msg:gsub(timeStamp, '')
+	if (CH.db.timeStampFormat and CH.db.timeStampFormat ~= 'NONE' ) then
+		local timeStamp = BetterDate(CH.db.timeStampFormat, CH.timeOverride or time());
+		timeStamp = timeStamp:gsub(' ', '')
+		timeStamp = timeStamp:gsub('AM', ' AM')
+		timeStamp = timeStamp:gsub('PM', ' PM')
+		if CH.db.useCustomTimeColor then
+			local color = CH.db.customTimeColor
+			local hexColor = E:RGBToHex(color.r, color.g, color.b)
+			msg = format("%s[%s]|r %s", hexColor, timeStamp, msg)
+		else
+			msg = format("[%s] %s", timeStamp, msg)
 		end
-
-		if (CH.db.timeStampFormat and CH.db.timeStampFormat ~= 'NONE' ) then
-			timeStamp = BetterDate(CH.db.timeStampFormat, CH.timeOverride or time());
-			timeStamp = timeStamp:gsub(' ', '')
-			timeStamp = timeStamp:gsub('AM', ' AM')
-			timeStamp = timeStamp:gsub('PM', ' PM')
-			if CH.db.useCustomTimeColor then
-				local color = CH.db.customTimeColor
-				local hexColor = E:RGBToHex(color.r, color.g, color.b)
-				msg = format("%s[%s]|r %s", hexColor, timeStamp, msg)
-			else
-				msg = format("[%s] %s", timeStamp, msg)
-			end
-			CH.timeOverride = nil;
-		end
+		CH.timeOverride = nil;
 	end
 
 	self.OldAddMessage(self, msg, ...)
