@@ -152,9 +152,16 @@ local function LoadSkin()
 		SetLargeGuildTabardTextures("player", EmblemIcon, nil, nil)
 	end
 
-	-- local function SkinInvasionAlert(frame)
-		
-	-- end
+	local function SkinInvasionAlert(frame)
+		frame:SetAlpha(1)
+		if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
+
+		if not frame.backdrop then
+			frame:CreateBackdrop("Transparent")
+			frame.backdrop:Point("TOPLEFT", frame, "TOPLEFT", 4, 4)
+			frame.backdrop:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -7, 6)
+		end
+	end
 
 	local function SkinScenarioAlert(frame)
 		frame:SetAlpha(1)
@@ -407,7 +414,7 @@ local function LoadSkin()
 	-- Encounters
 	hooksecurefunc(DungeonCompletionAlertSystem, "setUpFunction", SkinDungeonCompletionAlert)
 	hooksecurefunc(GuildChallengeAlertSystem, "setUpFunction", SkinGuildChallengeAlert)
-	-- hooksecurefunc(InvasionAlertSystem, "setUpFunction", SkinInvasionAlert)
+	hooksecurefunc(InvasionAlertSystem, "setUpFunction", SkinInvasionAlert)
 	hooksecurefunc(ScenarioAlertSystem, "setUpFunction", SkinScenarioAlert)
 	hooksecurefunc(WorldQuestCompleteAlertSystem, "setUpFunction", SkinWorldQuestCompleteAlert)
 
