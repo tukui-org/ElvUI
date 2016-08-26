@@ -322,9 +322,35 @@ local function LoadSkin()
 	
 	-- end
 
-	-- local function SkinNewRecipeLearnedAlert(frame)
-	
-	-- end
+	local function SkinNewRecipeLearnedAlert(frame)
+		frame:SetAlpha(1)
+		if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
+
+		if not frame.backdrop then
+			frame:CreateBackdrop("Transparent")
+			frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 19, -6)
+			frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -23, 6)
+		end
+
+		frame.glow:Kill()
+		frame.shine:Kill()
+		frame:GetRegions():Hide()
+
+		frame.Icon:SetMask("")
+		frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+		frame.Icon:SetDrawLayer("BORDER", 5)
+		frame.Icon:ClearAllPoints()
+		frame.Icon:SetPoint("LEFT", frame.backdrop, 9, 0)
+
+		-- Icon border
+		if not frame.Icon.b then
+			frame.Icon.b = CreateFrame("Frame", nil, frame)
+			frame.Icon.b:SetTemplate("Default")
+			frame.Icon.b:SetPoint("TOPLEFT", frame.Icon, "TOPLEFT", -2, 2)
+			frame.Icon.b:SetPoint("BOTTOMRIGHT", frame.Icon, "BOTTOMRIGHT", 2, -2)
+			frame.Icon:SetParent(frame.Icon.b)
+		end
+	end
 
 	--[[ HOOKS ]]--
 	-- Achievements
@@ -351,7 +377,7 @@ local function LoadSkin()
 	-- hooksecurefunc(StorePurchaseAlertSystem, "setUpFunction", SkinStorePurchaseAlert)
 	-- Professions
 	-- hooksecurefunc(DigsiteCompleteAlertSystem, "setUpFunction", SkinDigsiteCompleteAlert)
-	-- hooksecurefunc(NewRecipeLearnedAlertSystem, "setUpFunction", SkinNewRecipeLearnedAlert)
+	hooksecurefunc(NewRecipeLearnedAlertSystem, "setUpFunction", SkinNewRecipeLearnedAlert)
 
 
 	--[[ STATIC SKINNING ]]--
