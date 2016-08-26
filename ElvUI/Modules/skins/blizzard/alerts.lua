@@ -344,9 +344,21 @@ local function LoadSkin()
 		end
 	end
 
-	-- local function SkinDigsiteCompleteAlert(frame)
-	
-	-- end
+	local function SkinDigsiteCompleteAlert(frame)
+		frame:SetAlpha(1)
+		if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
+
+		if not frame.backdrop then
+			frame:CreateBackdrop("Transparent")
+			frame.backdrop:SetPoint("TOPLEFT", frame, "TOPLEFT", -16, -6)
+			frame.backdrop:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", 13, 6)
+		end
+
+		frame.glow:Kill()
+		frame.shine:Kill()
+		frame:GetRegions():Hide()
+		frame.DigsiteTypeTexture:SetPoint("LEFT", -10, -14)
+	end
 
 	local function SkinNewRecipeLearnedAlert(frame)
 		frame:SetAlpha(1)
@@ -402,7 +414,7 @@ local function LoadSkin()
 	hooksecurefunc(MoneyWonAlertSystem, "setUpFunction", SkinMoneyWonAlert)
 	hooksecurefunc(StorePurchaseAlertSystem, "setUpFunction", SkinStorePurchaseAlert)
 	-- Professions
-	-- hooksecurefunc(DigsiteCompleteAlertSystem, "setUpFunction", SkinDigsiteCompleteAlert)
+	hooksecurefunc(DigsiteCompleteAlertSystem, "setUpFunction", SkinDigsiteCompleteAlert)
 	hooksecurefunc(NewRecipeLearnedAlertSystem, "setUpFunction", SkinNewRecipeLearnedAlert)
 
 
