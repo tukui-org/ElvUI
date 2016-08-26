@@ -195,10 +195,19 @@ local function LoadSkin()
 		end
 	end
 
-	-- local function SkinWorldQuestCompleteAlert(frame)
-		
-	-- end
-	
+	local function SkinWorldQuestCompleteAlert(frame)
+		frame:SetAlpha(1)
+		if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
+
+		if not frame.backdrop then
+			frame:CreateBackdrop("Transparent")
+			frame.backdrop:SetPoint("TOPLEFT", frame, "TOPLEFT", 10, -6)
+			frame.backdrop:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -14, 6)
+		end
+
+		frame.shine:Kill()
+	end
+
 	local function SkinGarrisonFollowerAlert(frame, _, _, _, quality)
 		local color = ITEM_QUALITY_COLORS[quality]
 		if color then
@@ -207,7 +216,7 @@ local function LoadSkin()
 			frame.PortraitFrame.squareBG:SetBackdropBorderColor(0, 0, 0)
 		end
 	end
-	
+
 	local function SkinGarrisonRandomMissionAlert(frame, _, _, _, _, _, quality)
 		local color = ITEM_QUALITY_COLORS[quality]
 		if color then
@@ -216,15 +225,15 @@ local function LoadSkin()
 			frame.PortraitFrame.squareBG:SetBackdropBorderColor(0, 0, 0)
 		end
 	end
-	
+
 	-- local function SkinGarrisonShipFollowerAlert(frame)
 	
 	-- end
-	
+
 	-- local function SkinGarrisonTalentAlert(frame)
 		
 	-- end
-	
+
 	local function SkinLegendaryItemAlert(frame, itemLink)
 		local _, _, itemRarity = GetItemInfo(itemLink)
 		local color = ITEM_QUALITY_COLORS[itemRarity]
@@ -234,7 +243,7 @@ local function LoadSkin()
 			frame.Icon.b:SetBackdropBorderColor(0, 0, 0)
 		end
 	end
-	
+
 	local function SkinLootWonAlert(frame)
 		frame:SetAlpha(1)
 		if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
@@ -263,7 +272,7 @@ local function LoadSkin()
 			frame.backdrop:Point('BOTTOMRIGHT', frame.Icon.b, 'BOTTOMRIGHT', 180, -4)
 		end
 	end
-	
+
 	local function SkinLootUpgradeAlert(frame)
 		frame:SetAlpha(1)
 		if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
@@ -290,7 +299,7 @@ local function LoadSkin()
 			frame.backdrop:Point('BOTTOMRIGHT', frame.Icon.b, 'BOTTOMRIGHT', 180, -8)
 		end
 	end
-	
+
 	local function SkinMoneyWonAlert(frame)
 		frame:SetAlpha(1)
 		if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
@@ -313,7 +322,7 @@ local function LoadSkin()
 			frame.backdrop:Point('BOTTOMRIGHT', frame.Icon.b, 'BOTTOMRIGHT', 180, -4)
 		end
 	end
-	
+
 	local function SkinStorePurchaseAlert(frame)
 		frame:SetAlpha(1)
 		if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
@@ -400,7 +409,7 @@ local function LoadSkin()
 	hooksecurefunc(GuildChallengeAlertSystem, "setUpFunction", SkinGuildChallengeAlert)
 	-- hooksecurefunc(InvasionAlertSystem, "setUpFunction", SkinInvasionAlert)
 	hooksecurefunc(ScenarioAlertSystem, "setUpFunction", SkinScenarioAlert)
-	-- hooksecurefunc(WorldQuestCompleteAlertSystem, "setUpFunction", SkinWorldQuestCompleteAlert)
+	hooksecurefunc(WorldQuestCompleteAlertSystem, "setUpFunction", SkinWorldQuestCompleteAlert)
 
 	-- Garrisons
 	hooksecurefunc(GarrisonFollowerAlertSystem, "setUpFunction", SkinGarrisonFollowerAlert)
