@@ -3881,7 +3881,7 @@ E.Options.args.unitframe.args.arena = {
 			order = 3,
 			name = L["Display Frames"],
 			desc = L["Force the frames to show, they will act as if they are the player frame."],
-			func = function() UF:ToggleForceShowGroupFrames('arena', 5) end,
+			func = function() UF:ToggleForceShowGroupFrames('arena', 3) end,
 		},
 		enable = {
 			type = 'toggle',

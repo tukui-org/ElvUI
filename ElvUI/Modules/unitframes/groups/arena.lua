@@ -230,9 +230,9 @@ function UF:Update_ArenaFrames(frame, db)
 
 	if db.growthDirection == 'UP' or db.growthDirection == 'DOWN' then
 		ArenaHeader:Width(frame.UNIT_WIDTH)
-		ArenaHeader:Height(frame.UNIT_HEIGHT + ((frame.UNIT_HEIGHT + db.spacing) * 4))
+		ArenaHeader:Height(frame.UNIT_HEIGHT + ((frame.UNIT_HEIGHT + db.spacing) * 2))
 	elseif db.growthDirection == 'LEFT' or db.growthDirection == 'RIGHT' then
-		ArenaHeader:Width(frame.UNIT_WIDTH + ((frame.UNIT_WIDTH + db.spacing) * 4))
+		ArenaHeader:Width(frame.UNIT_WIDTH + ((frame.UNIT_WIDTH + db.spacing) * 2))
 		ArenaHeader:Height(frame.UNIT_HEIGHT)
 	end
 
