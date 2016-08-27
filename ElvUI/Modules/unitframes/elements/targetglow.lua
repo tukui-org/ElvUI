@@ -17,13 +17,15 @@ function UF:Construct_TargetGlow(frame)
 	frame:CreateShadow('Default')
 	local x = frame.shadow
 	frame.shadow = nil
-	--x:SetFrameStrata('BACKGROUND')
+	x:SetFrameStrata("BACKGROUND")
+	x:SetFrameLevel(1)
 	x:Hide();
 
 	--Secondary TargetGlow, for power frame when using power offset
 	frame:CreateShadow('Default')
 	local shadow = frame.shadow
-	shadow:SetFrameStrata('BACKGROUND')
+	shadow:SetFrameStrata("BACKGROUND")
+	shadow:SetFrameLevel(1)
 	x.powerGlow = shadow
 	frame.shadow = nil
 
