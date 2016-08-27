@@ -599,11 +599,16 @@ E.Options.args.nameplate = {
 						['OVERLAP'] = UNIT_NAMEPLATES_TYPE_1,
 					},
 				},
-				onlyShowTarget = {
-					type = "toggle",
+				displayStyle = {
+					type = "select",
 					order = 2,
-					name = L["Only Show Target"],
-					desc = L["Only show a nameplate for the unit you have targetted."],
+					name = L["Display Style"],
+					desc = L["Controls which nameplates will be displayed."],
+					values = {
+						["ALL"] = ALL,
+						["BLIZZARD"] = L["Target, Quest, Combat"],
+						["TARGET"] = L["Only Show Target"],
+					},
 				},
 				showNPCTitles = {
 					order = 3,

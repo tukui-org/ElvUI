@@ -260,11 +260,11 @@ function mod:SetTargetFrame(frame)
 
 	mod:ClassBar_Update(frame)
 
-	--WoW shows nameplates for any unit which is in combat with you, even when nameplateShowAll is set to 0
-	if frame.isTarget then
-		frame:Show()
-	elseif self.db.onlyShowTarget and frame.UnitType ~= "PLAYER" then
+	if (self.db.displayStyle == "TARGET" and not frame.isTarget and frame.UnitType ~= "PLAYER") then
+		--Hide if we only allow our target to be displayed and the frame is not our current target and the frame is not the player nameplate
 		frame:Hide()
+	else
+		frame:Show()
 	end
 end
 
@@ -340,7 +340,7 @@ function mod:NAME_PLATE_UNIT_ADDED(event, unit, frame)
 		mod.PlayerFrame = frame
 	end
 
-	if(self.db.units[frame.UnitFrame.UnitType].healthbar.enable or self.db.onlyShowTarget) then
+	if(self.db.units[frame.UnitFrame.UnitType].healthbar.enable or self.db.displayStyle ~= "ALL") then
 		self:ConfigureElement_HealthBar(frame.UnitFrame)
 		self:ConfigureElement_PowerBar(frame.UnitFrame)
 		self:ConfigureElement_CastBar(frame.UnitFrame)
@@ -363,11 +363,11 @@ function mod:NAME_PLATE_UNIT_ADDED(event, unit, frame)
 	self:RegisterEvents(frame.UnitFrame, unit)
 	self:UpdateElement_All(frame.UnitFrame, unit)
 
-	-- WoW shows nameplates for all units that are in combat with you, even if nameplateShowAll is set to 0.
-	if ((self.db.onlyShowTarget and frame.UnitFrame.isTarget) or not self.db.onlyShowTarget) or (frame.UnitFrame.UnitType == "PLAYER") then
-		frame.UnitFrame:Show()
-	else
+	if (self.db.displayStyle == "TARGET" and not frame.UnitFrame.isTarget and frame.UnitFrame.UnitType ~= "PLAYER") then
+		--Hide if we only allow our target to be displayed and the frame is not our current target and the frame is not the player nameplate
 		frame.UnitFrame:Hide()
+	else
+		frame.UnitFrame:Show()
 	end
 end
 
@@ -471,7 +471,7 @@ function mod:UpdateInVehicle(frame, noEvents)
 end
 
 function mod:UpdateElement_All(frame, unit, noTargetFrame)
-	if(self.db.units[frame.UnitType].healthbar.enable or self.db.onlyShowTarget or frame.isTarget) then
+	if(self.db.units[frame.UnitType].healthbar.enable or (self.db.displayStyle ~= "ALL") or frame.isTarget) then
 		mod:UpdateElement_MaxHealth(frame)
 		mod:UpdateElement_Health(frame)
 		mod:UpdateElement_HealthColor(frame)
@@ -646,7 +646,7 @@ end
 function mod:UpdateCVars()
 	E:LockCVar("nameplateShowSelf", (self.db.units.PLAYER.alwaysShow == true or self.db.units.PLAYER.enable ~= true) and "0" or "1")
 	E:LockCVar("nameplateMotion", self.db.motionType == "STACKED" and "1" or "0")
-	E:LockCVar("nameplateShowAll", self.db.onlyShowTarget == true and "0" or "1")
+	E:LockCVar("nameplateShowAll", self.db.displayStyle ~= "ALL" and "0" or "1")
 	E:LockCVar("nameplateShowFriendlyMinions", self.db.units.FRIENDLY_PLAYER.minions == true and "1" or "0")
 	E:LockCVar("nameplateShowEnemyMinions", self.db.units.ENEMY_PLAYER.minions == true and "1" or "0")
 	E:LockCVar("nameplateShowEnemyMinus", self.db.units.ENEMY_NPC.minors == true and "1" or "0")
