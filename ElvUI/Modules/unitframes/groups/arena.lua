@@ -230,13 +230,13 @@ function UF:Update_ArenaFrames(frame, db)
 
 	if db.growthDirection == 'UP' or db.growthDirection == 'DOWN' then
 		ArenaHeader:Width(frame.UNIT_WIDTH)
-		ArenaHeader:Height(frame.UNIT_HEIGHT + ((frame.UNIT_HEIGHT + db.spacing) * 2))
+		ArenaHeader:Height(frame.UNIT_HEIGHT + ((frame.UNIT_HEIGHT + db.spacing) * 4))
 	elseif db.growthDirection == 'LEFT' or db.growthDirection == 'RIGHT' then
-		ArenaHeader:Width(frame.UNIT_WIDTH + ((frame.UNIT_WIDTH + db.spacing) * 2))
+		ArenaHeader:Width(frame.UNIT_WIDTH + ((frame.UNIT_WIDTH + db.spacing) * 4))
 		ArenaHeader:Height(frame.UNIT_HEIGHT)
 	end
 
 	frame:UpdateAllElements()
 end
 
-UF['unitgroupstoload']['arena'] = {3, 'ELVUI_UNITTARGET'}
+UF['unitgroupstoload']['arena'] = {5, 'ELVUI_UNITTARGET'}

@@ -1781,7 +1781,7 @@ function UF:CreateCustomTextGroup(unit, objectName)
 					E.db.unitframe.units[unit].customTexts[objectName] = nil;
 
 					if unit == 'boss' or unit == 'arena' then
-						for i=1, 5 do --Arena only has 3 units but there's a nil-check in place
+						for i=1, 5 do
 							if UF[unit..i] then
 								UF[unit..i]:Tag(UF[unit..i]["customTexts"][objectName], '');
 								UF[unit..i]["customTexts"][objectName]:Hide();
@@ -3881,7 +3881,7 @@ E.Options.args.unitframe.args.arena = {
 			order = 3,
 			name = L["Display Frames"],
 			desc = L["Force the frames to show, they will act as if they are the player frame."],
-			func = function() UF:ToggleForceShowGroupFrames('arena', 3) end,
+			func = function() UF:ToggleForceShowGroupFrames('arena', 5) end,
 		},
 		enable = {
 			type = 'toggle',
