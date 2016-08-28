@@ -42,9 +42,9 @@ function mod:UpdateReputation(event)
 		if self.db.reputation.combat then
 			if event == "PLAYER_REGEN_DISABLED" then
 				bar:Hide()
+			elseif event == "PLAYER_REGEN_ENABLED" then
+				bar:Show()
 			end
-		elseif event == "PLAYER_REGEN_ENABLED" then
-			bar:Show()
 		end
 
 		local text = ''
