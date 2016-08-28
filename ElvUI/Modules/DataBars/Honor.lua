@@ -22,9 +22,9 @@ function mod:UpdateHonor(event, unit)
 	if event == "HONOR_PRESTIGE_UPDATE"  and unit ~= "player" then return end
 	local bar = self.honorBar
 	local showHonor = UnitLevel("player") >= MAX_PLAYER_LEVEL
-	if not showHonor or (event == "PLAYER_REGEN_DISABLED" and self.db.reputation.hideInCombat) then
+	if not showHonor or (event == "PLAYER_REGEN_DISABLED" and self.db.honor.hideInCombat) then
 		bar:Hide()
-	elseif showHonor and (not self.db.reputation.hideInCombat or not InCombatLockdown()) then
+	elseif showHonor and (not self.db.honor.hideInCombat or not InCombatLockdown()) then
 		bar:Show()
 
 		local current = UnitHonor("player");

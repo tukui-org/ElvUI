@@ -20,9 +20,9 @@ function mod:UpdateArtifact(event)
 
 	local bar = self.artifactBar
 	local showArtifact = HasArtifactEquipped();
-	if not showArtifact or (event == "PLAYER_REGEN_DISABLED" and self.db.reputation.hideInCombat) then
+	if not showArtifact or (event == "PLAYER_REGEN_DISABLED" and self.db.artifact.hideInCombat) then
 		bar:Hide()
-	elseif showArtifact and (not self.db.reputation.hideInCombat or not InCombatLockdown()) then
+	elseif showArtifact and (not self.db.artifact.hideInCombat or not InCombatLockdown()) then
 		bar:Show()
 
 		if self.db.artifact.hideInVehicle then

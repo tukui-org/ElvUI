@@ -31,10 +31,10 @@ function mod:UpdateExperience(event)
 	local bar = self.expBar
 	local hideXP = ((UnitLevel('player') == MAX_PLAYER_LEVEL and self.db.experience.hideAtMaxLevel) or IsXPUserDisabled())
 
-	if hideXP or (event == "PLAYER_REGEN_DISABLED" and self.db.reputation.hideInCombat) then
+	if hideXP or (event == "PLAYER_REGEN_DISABLED" and self.db.experience.hideInCombat) then
 		E:DisableMover(self.expBar.mover:GetName())
 		bar:Hide()
-	elseif not hideXP and (not self.db.reputation.hideInCombat or not InCombatLockdown()) then
+	elseif not hideXP and (not self.db.experience.hideInCombat or not InCombatLockdown()) then
 		E:EnableMover(self.expBar.mover:GetName())
 		bar:Show()
 
