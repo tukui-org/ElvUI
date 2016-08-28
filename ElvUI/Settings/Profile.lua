@@ -114,6 +114,7 @@ P['databars'] = {
 		["reverseFill"] = false,
 		["hideAtMaxLevel"] = true,
 		["hideInVehicle"] = false,
+		["hideInCombat"] = false,
 	},
 	['reputation'] = {
 		['enable'] = false,
@@ -137,6 +138,7 @@ P['databars'] = {
 		['orientation'] = 'VERTICAL',
 		["reverseFill"] = false,
 		["hideInVehicle"] = false,
+		["hideInCombat"] = false,
 	},
 	['honor'] = {
 		['enable'] = true,
@@ -148,6 +150,7 @@ P['databars'] = {
 		['orientation'] = 'VERTICAL',
 		["reverseFill"] = false,
 		["hideInVehicle"] = false,
+		["hideInCombat"] = false,
 	},
 }
 

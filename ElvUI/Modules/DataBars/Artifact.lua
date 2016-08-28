@@ -10,8 +10,8 @@ local format = format
 local HasArtifactEquipped = HasArtifactEquipped
 local MainMenuBar_GetNumArtifactTraitsPurchasableFromXP = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP
 local C_ArtifactUIGetEquippedArtifactInfo = C_ArtifactUI.GetEquippedArtifactInfo
-
 local ARTIFACT_POWER = ARTIFACT_POWER
+
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameTooltip
 
@@ -20,9 +20,9 @@ function mod:UpdateArtifact(event)
 
 	local bar = self.artifactBar
 	local showArtifact = HasArtifactEquipped();
-	if not showArtifact then
+	if not showArtifact or (event == "PLAYER_REGEN_DISABLED" and self.db.reputation.hideInCombat) then
 		bar:Hide()
-	else
+	elseif showArtifact and (not self.db.reputation.hideInCombat or not InCombatLockdown()) then
 		bar:Show()
 
 		if self.db.artifact.hideInVehicle then
@@ -73,13 +73,13 @@ function mod:UpdateArtifactDimensions()
 	self.artifactBar:Width(self.db.artifact.width)
 	self.artifactBar:Height(self.db.artifact.height)
 	self.artifactBar.statusBar:SetOrientation(self.db.artifact.orientation)
-	self.artifactBar.statusBar:SetReverseFill(self.db.artifact.reverseFill)	
+	self.artifactBar.statusBar:SetReverseFill(self.db.artifact.reverseFill)
 	self.artifactBar.text:FontTemplate(nil, self.db.artifact.textSize)
 	if self.db.artifact.mouseover then
 		self.artifactBar:SetAlpha(0)
 	else
 		self.artifactBar:SetAlpha(1)
-	end		
+	end
 end
 
 function mod:EnableDisable_ArtifactBar()
@@ -100,6 +100,12 @@ function mod:LoadArtifactBar()
 	self.artifactBar = self:CreateBar('ElvUI_ArtifactBar', self.ArtifactBar_OnEnter, 'RIGHT', self.honorBar, 'LEFT', E.Border - E.Spacing*3, 0)
 	self.artifactBar.statusBar:SetStatusBarColor(.901, .8, .601)
 	self.artifactBar.statusBar:SetMinMaxValues(0, 325)
+
+	self.artifactBar.eventFrame = CreateFrame("Frame")
+	self.artifactBar.eventFrame:Hide()
+	self.artifactBar.eventFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
+	self.artifactBar.eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
+	self.artifactBar.eventFrame:SetScript("OnEvent", function(self, event) mod:UpdateArtifact(event) end)
 
 	self:UpdateArtifactDimensions()
 	E:CreateMover(self.artifactBar, "ArtifactBarMover", L["Artifact Bar"])

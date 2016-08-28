@@ -9,11 +9,11 @@ local format = format
 --WoW API / Variables
 local UnitHonor, UnitHonorMax, UnitHonorLevel, GetMaxPlayerHonorLevel, CanPrestige = UnitHonor, UnitHonorMax, UnitHonorLevel, GetMaxPlayerHonorLevel, CanPrestige
 local UnitLevel = UnitLevel
-
 local MAX_PLAYER_LEVEL = 110 --Hardcoded until Legion is released properly, then use MAX_PLAYER_LEVEL
 local PVP_HONOR_PRESTIGE_AVAILABLE = PVP_HONOR_PRESTIGE_AVAILABLE
 local HONOR = HONOR
 local MAX_HONOR_LEVEL = MAX_HONOR_LEVEL
+
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameTooltip,  RightChatPanel
 
@@ -22,9 +22,9 @@ function mod:UpdateHonor(event, unit)
 	if event == "HONOR_PRESTIGE_UPDATE"  and unit ~= "player" then return end
 	local bar = self.honorBar
 	local showHonor = UnitLevel("player") >= MAX_PLAYER_LEVEL
-	if not showHonor then
+	if not showHonor or (event == "PLAYER_REGEN_DISABLED" and self.db.reputation.hideInCombat) then
 		bar:Hide()
-	else
+	elseif showHonor and (not self.db.reputation.hideInCombat or not InCombatLockdown()) then
 		bar:Show()
 
 		local current = UnitHonor("player");
@@ -139,6 +139,12 @@ function mod:LoadHonorBar()
 	self.honorBar = self:CreateBar('ElvUI_HonorBar', self.HonorBar_OnEnter, 'RIGHT', RightChatPanel, 'LEFT', E.Border - E.Spacing*3, 0)
 	self.honorBar.statusBar:SetStatusBarColor(240/255, 114/255, 65/255)
 	self.honorBar.statusBar:SetMinMaxValues(0, 325)
+
+	self.honorBar.eventFrame = CreateFrame("Frame")
+	self.honorBar.eventFrame:Hide()
+	self.honorBar.eventFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
+	self.honorBar.eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
+	self.honorBar.eventFrame:SetScript("OnEvent", function(self, event) mod:UpdateHonor(event) end)
 
 	self:UpdateHonorDimensions()
 	E:CreateMover(self.honorBar, "HonorBarMover", L["Honor Bar"])
