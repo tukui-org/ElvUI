@@ -13,11 +13,10 @@ local MAX_PLAYER_LEVEL = 110 --Hardcoded until Legion is released properly, then
 local PVP_HONOR_PRESTIGE_AVAILABLE = PVP_HONOR_PRESTIGE_AVAILABLE
 local HONOR = HONOR
 local MAX_HONOR_LEVEL = MAX_HONOR_LEVEL
-local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: GameTooltip,  RightChatPanel
+-- GLOBALS: GameTooltip, RightChatPanel, CreateFrame
 
 function mod:UpdateHonor(event, unit)
 	if not mod.db.honor.enable then return end
