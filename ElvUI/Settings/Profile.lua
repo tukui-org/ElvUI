@@ -125,6 +125,7 @@ P['databars'] = {
 		['orientation'] = 'VERTICAL',
 		["reverseFill"] = false,
 		["hideInVehicle"] = false,
+		["combat"] = false,
 	},
 	['artifact'] = {
 		['enable'] = true,

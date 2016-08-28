@@ -39,6 +39,14 @@ function mod:UpdateReputation(event)
 			E:UnregisterObjectForVehicleLock(bar)
 		end
 
+		if self.db.reputation.combat then
+			if event == "PLAYER_REGEN_DISABLED" then
+				bar:Hide()
+			end
+		elseif event == "PLAYER_REGEN_ENABLED" then
+			bar:Show()
+		end
+
 		local text = ''
 		local textFormat = self.db.reputation.textFormat
 		local color = FACTION_BAR_COLORS[reaction] or backupColor
@@ -127,6 +135,8 @@ function mod:LoadReputationBar()
 	self.repBar = self:CreateBar('ElvUI_ReputationBar', self.ReputationBar_OnEnter, 'RIGHT', RightChatPanel, 'LEFT', E.Border - E.Spacing*3, 0)
 	E:RegisterStatusBar(self.repBar.statusBar)
 
+	self:RegisterEvent("PLAYER_REGEN_DISABLED", "UpdateReputation")
+	self:RegisterEvent("PLAYER_REGEN_ENABLED", "UpdateReputation")
 	self:UpdateReputationDimensions()
 
 	E:CreateMover(self.repBar, "ReputationBarMover", L["Reputation Bar"])

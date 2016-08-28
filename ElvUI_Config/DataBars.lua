@@ -121,13 +121,20 @@ E.Options.args.databars = {
 					name = L["Hide In Vehicle"],
 					set = function(info, value) mod.db.reputation[ info[#info] ] = value; mod:UpdateReputation() end,
 				},
-				reverseFill = {
+				combat = {
 					order = 3,
+					type = "toggle",
+					name = COMBAT,
+					desc = L["Hide in Combat"],
+					set = function(info, value) mod.db.reputation[ info[#info] ] = value; mod:UpdateReputation() end,
+				},
+				reverseFill = {
+					order = 4,
 					type = "toggle",
 					name = L["Reverse Fill Direction"],
 				},
 				orientation = {
-					order = 4,
+					order = 5,
 					type = "select",
 					name = L["Statusbar Fill Orientation"],
 					desc = L["Direction the bar moves on gains/losses"],
@@ -137,7 +144,7 @@ E.Options.args.databars = {
 					}
 				},
 				textFormat = {
-					order = 5,
+					order = 6,
 					type = 'select',
 					name = L["Text Format"],
 					values = {
@@ -149,19 +156,19 @@ E.Options.args.databars = {
 					set = function(info, value) mod.db.reputation[ info[#info] ] = value; mod:UpdateReputation() end,
 				},
 				width = {
-					order = 6,
+					order = 7,
 					type = "range",
 					name = L["Width"],
 					min = 5, max = ceil(GetScreenWidth() or 800), step = 1,
 				},
 				height = {
-					order = 7,
+					order = 8,
 					type = "range",
 					name = L["Height"],
 					min = 5, max = ceil(GetScreenHeight() or 800), step = 1,
 				},
 				textSize = {
-					order = 8,
+					order = 9,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,

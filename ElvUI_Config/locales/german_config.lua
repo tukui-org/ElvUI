@@ -326,6 +326,7 @@ L["Testing:"] = "Tester:"
 --DataBars
 L["DATABAR_DESC"] = "Einstellung der Informationsleisten."
 L["DataBars"] = "Informationsleisten"
+L["Hide in Combat"] = "Im Kampf ausblenden"
 
 --DataTexts
 L["24-Hour Time"] = "24-Stunden-Format"

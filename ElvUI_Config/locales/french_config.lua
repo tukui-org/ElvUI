@@ -326,6 +326,7 @@ L["Testing:"] = "Testeurs: "
 --DataBars
 L["DATABAR_DESC"] = "Setup on-screen display of information bars."
 L["DataBars"] = true;
+L["Hide in Combat"] = true;
 
 --DataTexts
 L["24-Hour Time"] = "Mode 24 Heures"
