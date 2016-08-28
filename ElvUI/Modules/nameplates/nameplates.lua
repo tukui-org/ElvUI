@@ -225,6 +225,7 @@ function mod:SetTargetFrame(frame)
 			self:ConfigureElement_PowerBar(frame)
 			self:ConfigureElement_CastBar(frame)
 			self:ConfigureElement_Glow(frame)
+			self:ConfigureElement_Elite(frame)
 
 			self:ConfigureElement_Level(frame)
 			self:ConfigureElement_Name(frame)
@@ -345,6 +346,7 @@ function mod:NAME_PLATE_UNIT_ADDED(event, unit, frame)
 		self:ConfigureElement_PowerBar(frame.UnitFrame)
 		self:ConfigureElement_CastBar(frame.UnitFrame)
 		self:ConfigureElement_Glow(frame.UnitFrame)
+		self:ConfigureElement_Elite(frame.UnitFrame)
 
 		if(self.db.units[frame.UnitFrame.UnitType].buffs.enable) then
 			frame.UnitFrame.Buffs.db = self.db.units[frame.UnitFrame.UnitType].buffs
@@ -360,6 +362,7 @@ function mod:NAME_PLATE_UNIT_ADDED(event, unit, frame)
 	self:ConfigureElement_Level(frame.UnitFrame)
 	self:ConfigureElement_Name(frame.UnitFrame)
 	self:ConfigureElement_NPCTitle(frame.UnitFrame)
+	self:UpdateElement_Elite(frame.UnitFrame)
 	self:RegisterEvents(frame.UnitFrame, unit)
 	self:UpdateElement_All(frame.UnitFrame, unit)
 
@@ -398,6 +401,7 @@ function mod:NAME_PLATE_UNIT_REMOVED(event, unit, frame, ...)
 	frame.UnitFrame.Name:SetText("")
 	frame.UnitFrame.NPCTitle:ClearAllPoints()
 	frame.UnitFrame.NPCTitle:SetText("")
+	frame.UnitFrame.Elite:Hide()
 	frame.UnitFrame:Hide()
 	frame.UnitFrame.isTarget = nil
 	frame.UnitFrame.displayedUnit = nil
@@ -516,6 +520,7 @@ function mod:NAME_PLATE_CREATED(event, frame)
 	frame.UnitFrame.Debuffs = self:ConstructElement_Auras(frame.UnitFrame, 5, "RIGHT")
 	frame.UnitFrame.HealerIcon = self:ConstructElement_HealerIcon(frame.UnitFrame)
 	frame.UnitFrame.RaidIcon = self:ConstructElement_RaidIcon(frame.UnitFrame)
+	frame.UnitFrame.Elite = self:ConstructElement_Elite(frame.UnitFrame)
 end
 
 function mod:OnEvent(event, unit, ...)
