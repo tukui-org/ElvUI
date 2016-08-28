@@ -11,6 +11,8 @@ local HasArtifactEquipped = HasArtifactEquipped
 local MainMenuBar_GetNumArtifactTraitsPurchasableFromXP = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP
 local C_ArtifactUIGetEquippedArtifactInfo = C_ArtifactUI.GetEquippedArtifactInfo
 local ARTIFACT_POWER = ARTIFACT_POWER
+local CreateFrame = CreateFrame
+local InCombatLockdown = InCombatLockdown
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameTooltip
