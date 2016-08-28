@@ -121,11 +121,10 @@ E.Options.args.databars = {
 					name = L["Hide In Vehicle"],
 					set = function(info, value) mod.db.reputation[ info[#info] ] = value; mod:UpdateReputation() end,
 				},
-				combat = {
+				hideInCombat = {
 					order = 3,
 					type = "toggle",
-					name = COMBAT,
-					desc = L["Hide in Combat"],
+					name = L["Hide in Combat"],
 					set = function(info, value) mod.db.reputation[ info[#info] ] = value; mod:UpdateReputation() end,
 				},
 				reverseFill = {

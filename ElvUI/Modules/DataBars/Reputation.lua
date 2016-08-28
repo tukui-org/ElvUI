@@ -28,23 +28,15 @@ function mod:UpdateReputation(event)
 	local name, reaction, min, max, value = GetWatchedFactionInfo()
 	local numFactions = GetNumFactions();
 
-	if not name then
+	if not name or (event == "PLAYER_REGEN_DISABLED" and self.db.reputation.hideInCombat) then
 		bar:Hide()
-	else
+	elseif (not self.db.reputation.hideInCombat or not InCombatLockdown()) then
 		bar:Show()
 		
 		if self.db.reputation.hideInVehicle then
 			E:RegisterObjectForVehicleLock(bar, E.UIParent)
 		else
 			E:UnregisterObjectForVehicleLock(bar)
-		end
-
-		if self.db.reputation.combat then
-			if event == "PLAYER_REGEN_DISABLED" then
-				bar:Hide()
-			elseif event == "PLAYER_REGEN_ENABLED" then
-				bar:Show()
-			end
 		end
 
 		local text = ''
