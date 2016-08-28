@@ -1466,12 +1466,22 @@ function B:OpenBank()
 		self:PositionBagFrames();
 	end
 
-	self:Layout(true)
 	BankFrame:Show()
 	self.BankFrame:Show();
 	self.BankFrame:UpdateAllSlots();
 	self.BagFrame:Show();
 	self:UpdateTokens()
+
+	--Allow opening reagent tab directly by holding Shift
+	if IsShiftKeyDown() then
+		BankFrame.selectedTab = 2
+		self.BankFrame.holderFrame:Hide()
+		self.BankFrame.reagentFrame:Show()
+		self.BankFrame.editBox:Point('RIGHT', self.BankFrame.depositButton, 'LEFT', -5, 0);
+		self.BankFrame.bagText:SetText(L["Reagent Bank"])
+	end
+
+	self:Layout(true)
 end
 
 function B:PLAYERBANKBAGSLOTS_CHANGED()
