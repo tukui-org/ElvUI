@@ -272,6 +272,23 @@ local function SortAurasByDuration(a, b)
 	end
 end
 
+local function SortAurasByCaster(a, b)
+	if (a and b and a:GetParent().db) then
+		if a:IsShown() and b:IsShown() then
+			local sortDirection = a:GetParent().db.sortDirection
+			local aPlayer = a.isPlayer or false
+			local bPlayer = b.isPlayer or false
+			if(sortDirection == "DESCENDING") then
+				return (aPlayer and not bPlayer)
+			else
+				return (not aPlayer and bPlayer)
+			end
+		elseif a:IsShown() then
+			return true
+		end
+	end
+end
+
 function UF:SortAuras()
 	if not self.db then return end
 
@@ -282,6 +299,8 @@ function UF:SortAuras()
 		tsort(self, SortAurasByName)
 	elseif(self.db.sortMethod == "DURATION") then
 		tsort(self, SortAurasByDuration)
+	elseif (self.db.sortMethod == "PLAYER") then
+		tsort(self, SortAurasByCaster)
 	end
 
 	--Look into possibly applying filter priorities for auras here.
