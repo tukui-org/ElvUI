@@ -481,6 +481,10 @@ L["The texture that will be used mainly for statusbars."] = "La texture qui sera
 L["This texture will get used on objects like chat windows and dropdown menus."] = "Cette texture sera utilisée pour les fenêtres de discussion et les menus déroulants."
 L["Value Color"] = "Couleur des Textes d'informations"
 
+--Maps
+L["Maps"] = "Cartes";
+
+
 --Minimap
 L["Always Display"] = "Toujours afficher"
 L["Bottom Left"] = "En bas à gauche";

@@ -205,7 +205,7 @@ function M:UpdateSettings()
 		self:RegisterEvent('PLAYER_REGEN_ENABLED')
 	end
 	E.MinimapSize = E.private.general.minimap.enable and E.db.general.minimap.size or Minimap:GetWidth() + 10
-	E.MinimapWidth = E.MinimapSize
+	E.MinimapWidth = E.MinimapSize	
 	E.MinimapHeight = E.MinimapSize
 
 	if E.private.general.minimap.enable then
@@ -381,7 +381,7 @@ function M:Initialize()
 
 	local mmholder = CreateFrame('Frame', 'MMHolder', Minimap)
 	mmholder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -3, -3)
-	mmholder:Width((Minimap:GetWidth() + 29))
+	mmholder:Width((Minimap:GetWidth() + 29))	
 	mmholder:Height(Minimap:GetHeight() + 53)
 
 	Minimap:ClearAllPoints()

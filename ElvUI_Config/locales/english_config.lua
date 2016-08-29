@@ -470,6 +470,9 @@ L["The texture that will be used mainly for statusbars."] = true;
 L["This texture will get used on objects like chat windows and dropdown menus."] = true;
 L["Value Color"] = true;
 
+--Maps
+L["Maps"] = true;
+
 --Minimap
 L["Always Display"] = true;
 L["Bottom Left"] = true;

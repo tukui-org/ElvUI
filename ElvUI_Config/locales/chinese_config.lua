@@ -481,6 +481,8 @@ L["The texture that will be used mainly for statusbars."] = "此材质主用于�
 L["This texture will get used on objects like chat windows and dropdown menus."] = "主要用于对话视窗及下拉选单等物件的材质"
 L["Value Color"] = "数值颜色"
 
+L["Maps"] = "地图";
+
 --Minimap
 L["Always Display"] = "总是显示"
 L["Bottom Left"] = "左下"
