@@ -231,13 +231,13 @@ function mod:UpdateAuraIcons(auras)
 
 		if(auras.side == "LEFT") then
 			if(i == 1) then
-				auras.icons[i]:SetPoint("LEFT", auras, "LEFT")
+				auras.icons[i]:SetPoint("BOTTOMLEFT", auras, "BOTTOMLEFT")
 			else
 				auras.icons[i]:SetPoint("LEFT", auras.icons[i-1], "RIGHT", E.Border + E.Spacing*3, 0)
 			end
 		else
 			if(i == 1) then
-				auras.icons[i]:SetPoint("RIGHT", auras, "RIGHT")
+				auras.icons[i]:SetPoint("BOTTOMRIGHT", auras, "BOTTOMRIGHT")
 			else
 				auras.icons[i]:SetPoint("RIGHT", auras.icons[i-1], "LEFT", -(E.Border + E.Spacing*3), 0)
 			end
