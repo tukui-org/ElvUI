@@ -537,6 +537,33 @@ local function GetUnitSettings(unit, name)
 			desc = OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS,
 			type = "toggle",
 		}
+		group.args.healthGroup.args.eliteIcon = {
+			order = 10,
+			name = L["Elite Icon"],
+			type = "group",
+			guiInline = true,
+			get = function(info) return E.db.nameplates.units[unit].healthbar.eliteIcon[ info[#info] ] end,
+			set = function(info, value) E.db.nameplates.units[unit].healthbar.eliteIcon[ info[#info] ] = value; NP:ConfigureAll() end,
+			args = {
+				enable = {
+					order = 1,
+					name = L["Enable"],
+					type = "toggle",
+				},
+				xoffset = {
+					order = 2,
+					name = L["X-Offset"],
+					type = "range",
+					min = -100, max = 100, step = 1,
+				},
+				yoffset = {
+					order = 2,
+					name = L["Y-Offset"],
+					type = "range",
+					min = -100, max = 100, step = 1,
+				},
+			},
+		}
 	elseif unit == "HEALER" then
 		group.args.healthGroup.args.useClassColor = {
 			order = 4,

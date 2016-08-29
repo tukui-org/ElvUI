@@ -526,6 +526,11 @@ P["nameplates"] = {
 				['width'] = 150,
 				['healPrediction'] = true,
 				['glowStyle'] = "TARGET_THREAT",
+				['eliteIcon'] = {
+					['enable'] = false,
+					['xoffset'] = 0,
+					['yoffset'] = 0,
+				},
 				['text'] = {
 					['enable'] = false,
 					['format'] = 'CURRENT',

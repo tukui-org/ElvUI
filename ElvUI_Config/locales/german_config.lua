@@ -534,6 +534,7 @@ L["Display Minions"] = "Zeige Begleiter"
 L["Display Minor Units"] = "Zeige kleine Einheiten"
 L["Display NPC Titles whenever healthbars arent displayed and names are."] = "Zeige NPC Titel, wenn die Lebensleiste ausgeblendet, der Name aber aktiviert ist."
 L["Display Style"] = "Anzeigestil"
+L["Elite Icon"] = true
 L["Enable/Disable the scaling of targetted nameplates."] = "Aktiviere/Deaktiviere die Skalierung von ausgefählten Namensplaketten."
 L["Enemy Combat Toggle"] = "Im Kampf für Gegner umschalten"
 L["Enemy NPC Frames"] = "Gegnerische NPC Rahmen"

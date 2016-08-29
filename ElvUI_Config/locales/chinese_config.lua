@@ -533,6 +533,7 @@ L["Display Minions"] = "显示守护者"
 L["Display Minor Units"] = "显示守护者单位"
 L["Display NPC Titles whenever healthbars arent displayed and names are."] = "无论是否显示NPC的名字和血条都显示NPC的头衔"
 L["Display Style"] = true;
+L["Elite Icon"] = true
 L["Enable/Disable the scaling of targetted nameplates."] = "启用/禁用目标姓名板的缩放"
 L["Enemy Combat Toggle"] = "敌对战斗开关"
 L["Enemy NPC Frames"] = "敌对NPC框架"
