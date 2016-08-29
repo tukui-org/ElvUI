@@ -346,7 +346,6 @@ function mod:NAME_PLATE_UNIT_ADDED(event, unit, frame)
 		self:ConfigureElement_PowerBar(frame.UnitFrame)
 		self:ConfigureElement_CastBar(frame.UnitFrame)
 		self:ConfigureElement_Glow(frame.UnitFrame)
-		self:ConfigureElement_Elite(frame.UnitFrame)
 
 		if(self.db.units[frame.UnitFrame.UnitType].buffs.enable) then
 			frame.UnitFrame.Buffs.db = self.db.units[frame.UnitFrame.UnitType].buffs
@@ -362,7 +361,7 @@ function mod:NAME_PLATE_UNIT_ADDED(event, unit, frame)
 	self:ConfigureElement_Level(frame.UnitFrame)
 	self:ConfigureElement_Name(frame.UnitFrame)
 	self:ConfigureElement_NPCTitle(frame.UnitFrame)
-	self:UpdateElement_Elite(frame.UnitFrame)
+	self:ConfigureElement_Elite(frame.UnitFrame)
 	self:RegisterEvents(frame.UnitFrame, unit)
 	self:UpdateElement_All(frame.UnitFrame, unit)
 
@@ -496,6 +495,7 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame)
 	mod:UpdateElement_Name(frame)
 	mod:UpdateElement_NPCTitle(frame)
 	mod:UpdateElement_Level(frame)
+	mod:UpdateElement_Elite(frame)
 
 	if(not noTargetFrame) then --infinite loop lol
 		mod:SetTargetFrame(frame)
