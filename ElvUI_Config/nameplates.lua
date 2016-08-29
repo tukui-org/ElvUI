@@ -493,6 +493,7 @@ local function GetUnitSettings(unit, name)
 			name = L["Click Through"],
 			type = "toggle",
 			set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:TogglePlayerMouse() end,
+			disabled = function() return not E.db.nameplates.units[unit].alwaysShow end,
 		}
 		group.args.healthGroup.args.useClassColor = {
 			order = 4,
