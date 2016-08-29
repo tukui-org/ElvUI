@@ -28,7 +28,7 @@ end
 function mod:ConfigureElement_Elite(frame)
 	local icon = frame.Elite
 	if self.db.units[frame.UnitType].healthbar.eliteIcon then
-		local size = self.db.units[frame.UnitType].healthbar.height + 10
+		local size = self.db.units[frame.UnitType].healthbar.eliteIcon.size
 		icon:SetSize(size,size)
 		icon:SetPoint("RIGHT", frame.HealthBar, "RIGHT", self.db.units[frame.UnitType].healthbar.eliteIcon.xoffset, self.db.units[frame.UnitType].healthbar.eliteIcon.yoffset)
 	end

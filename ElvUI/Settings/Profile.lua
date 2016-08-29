@@ -475,6 +475,7 @@ P["nameplates"] = {
 				['glowStyle'] = "TARGET_THREAT",
 				['eliteIcon'] = {
 					['enable'] = false,
+					['size'] = 20,
 					['xoffset'] = 0,
 					['yoffset'] = 0,
 				},
@@ -533,6 +534,7 @@ P["nameplates"] = {
 				['glowStyle'] = "TARGET_THREAT",
 				['eliteIcon'] = {
 					['enable'] = false,
+					['size'] = 20,
 					['xoffset'] = 0,
 					['yoffset'] = 0,
 				},

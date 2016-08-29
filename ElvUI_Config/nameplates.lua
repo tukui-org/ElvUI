@@ -550,14 +550,20 @@ local function GetUnitSettings(unit, name)
 					name = L["Enable"],
 					type = "toggle",
 				},
-				xoffset = {
+				size = {
 					order = 2,
+					type = "range",
+					name = L["Size"],
+					min = 12, max = 42, step = 1,
+				},
+				xoffset = {
+					order = 3,
 					name = L["X-Offset"],
 					type = "range",
 					min = -100, max = 100, step = 1,
 				},
 				yoffset = {
-					order = 2,
+					order = 4,
 					name = L["Y-Offset"],
 					type = "range",
 					min = -100, max = 100, step = 1,
@@ -578,14 +584,20 @@ local function GetUnitSettings(unit, name)
 					name = L["Enable"],
 					type = "toggle",
 				},
-				xoffset = {
+				size = {
 					order = 2,
+					type = "range",
+					name = L["Size"],
+					min = 12, max = 42, step = 1,
+				},
+				xoffset = {
+					order = 3,
 					name = L["X-Offset"],
 					type = "range",
 					min = -100, max = 100, step = 1,
 				},
 				yoffset = {
-					order = 2,
+					order = 4,
 					name = L["Y-Offset"],
 					type = "range",
 					min = -100, max = 100, step = 1,
