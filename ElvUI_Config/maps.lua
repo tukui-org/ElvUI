@@ -11,6 +11,11 @@ E.Options.args.maps = {
 			type = "group",
 			name = WORLD_MAP,
 			args = {
+				header = {
+					order = 0,
+					type = "header",
+					name = WORLD_MAP,
+				},
 				smallerWorldMap = {
 					order = 1,
 					type = "toggle",
@@ -92,6 +97,11 @@ E.Options.args.maps = {
 			name = MINIMAP_LABEL,
 			get = function(info) return E.db.general.minimap[ info[#info] ] end,
 			args = {
+				header = {
+					order = 0,
+					type = "header",
+					name = MINIMAP_LABEL,
+				},
 				enable = { --TODO pull this out to modules config
 					order = 1,
 					type = "toggle",
