@@ -529,6 +529,8 @@ L["The texture that will be used mainly for statusbars."] = "기본적으로 상
 L["This texture will get used on objects like chat windows and dropdown menus."] = "채팅창이나 메뉴 같은 프레임에 입혀지는 텍스쳐입니다."
 L["Value Color"] = "강조 색상"
 
+L["Maps"] = true;
+
 --Minimap
 L["Always Display"] = "항상 표시"
 L["Bottom Left"] = "하단 좌측"

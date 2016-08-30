@@ -22,3 +22,5 @@ unitframes.lua
 tag_info.lua
 nameplates.lua
 profiles.lua
+
+maps.lua
