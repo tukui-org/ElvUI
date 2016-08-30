@@ -338,7 +338,6 @@ L["Blocks datatext tooltip from showing in combat."] = true;
 L["BottomLeftMiniPanel"] = "Minimap BottomLeft (Inside)"
 L["BottomMiniPanel"] = "Minimap Bottom (Inside)"
 L["BottomRightMiniPanel"] = "Minimap BottomRight (Inside)"
-L["Change settings for the display of the location text that is on the minimap."] = "Alterar as configurações de exibição do texto de localização que está no minimapa."
 L["Datatext Panel (Left)"] = "Painel de Textos Informativos (Esquerdo)"
 L["Datatext Panel (Right)"] = "Painel de Textos Informativos (Direito)"
 L["DataTexts"] = "Textos Informativos"
@@ -378,7 +377,6 @@ L["You must be targeting a player."] = "É necessário ter um jogador como alvo.
 --General
 L["Accept Invites"] = "Aceitar Convites"
 L["Adjust the position of the threat bar to either the left or right datatext panels."] = "Ajustar a posição da barra de agro para os painéis de texto informativos da esquerda ou da direita."
-L["Adjust the size of the minimap."] = "Ajustar o tamanho do minimapa."
 L["AFK Mode"] = true;
 L["Animate Config"] = true;
 L["Announce Interrupts"] = "Anunciar Interrupções"
@@ -407,7 +405,6 @@ L["Display emotion icons in chat."] = "Exibir ícones emotivos no bate-papo."
 L["Emotion Icons"] = "Ícones Emotivos"
 L["Enable/Disable the loot frame."] = "Ativar/Desativar painel de saques."
 L["Enable/Disable the loot roll frame."] = "Ativar/Desativar painel de disputa de saques"
-L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the minimap datatexts.|r"] = true;
 L["Enhanced PVP Messages"] = true;
 L["General"] = "Geral"
 L["Height of the objective tracker. Increase size to be able to see more objectives."] = true;
@@ -420,8 +417,6 @@ L["Login Message"] = "Mensagem de Entrada"
 L["Loot Roll"] = "Disputa de Saques"
 L["Loot"] = "Saque"
 L["Lowest Allowed UI Scale"] = true;
-L["Make the world map smaller."] = true;
-L["Map Opacity When Moving"] = true;
 L["Multi-Monitor Support"] = true;
 L["Name Font"] = "Fonte de Nomes"
 L["Number Prefix"] = true;
@@ -429,7 +424,6 @@ L["Objective Frame Height"] = true;
 L["Party / Raid"] = true;
 L["Party Only"] = true;
 L["Position of bonus quest reward frame relative to the objective tracker."] = true;
-L["Puts coordinates on the world map."] = true;
 L["Raid Only"] = true;
 L["Remove Backdrop"] = "Remover Fundo"
 L["Reset all frames to their original positions."] = "Restaurar todos os quadros para as posições originais"
@@ -439,7 +433,6 @@ L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are les
 L["Skin Backdrop (No Borders)"] = true;
 L["Skin Backdrop"] = "Redesenhar o Fundo"
 L["Skin the blizzard chat bubbles."] = "Redesenhar os balões de conversação da Blizzard"
-L["Smaller World Map"] = true;
 L["Talking Head Scale"] = true;
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "A fonte do texto que aparece sobre a cabeça dos jogadores. |cffFF0000ATENÇÃO: Para esta alteração fazer efeito é necessário que o jogo seja reiniciado ou relogado.|r"
 L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."] = true;
@@ -447,9 +440,6 @@ L["Thin Border Theme"] = true;
 L["Toggle Tutorials"] = "Ativar Tutoriais"
 L["Top Panel"] = "Painel Superior"
 L["When you go AFK display the AFK screen."] = true;
-L["World Map Coordinates"] = true;
-L["X-Offset"] = true;
-L["Y-Offset"] = true;
 
 --Media
 L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."] = true;
@@ -482,25 +472,33 @@ L["This texture will get used on objects like chat windows and dropdown menus."]
 L["Value Color"] = "Cor dos Valores"
 
 --Maps
-L["Maps"] = true;
-
---Minimap
+L["Adjust the size of the minimap."] = "Ajustar o tamanho do minimapa."
 L["Always Display"] = "Exibir sempre"
 L["Bottom Left"] = true;
 L["Bottom Right"] = true;
 L["Bottom"] = true;
+L["Change settings for the display of the location text that is on the minimap."] = "Alterar as configurações de exibição do texto de localização que está no minimapa."
+L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the minimap datatexts.|r"] = true;
 L["Instance Difficulty"] = true;
 L["Left"] = "Esquerda"
 L["LFG Queue"] = true;
 L["Location Text"] = "Texto de Localização"
+L["Make the world map smaller."] = true;
+L["Map Opacity When Moving"] = true;
+L["Maps"] = true;
 L["Minimap Buttons"] = true;
 L["Minimap Mouseover"] = "Passar com o rato(mouse) sobre o minimapa"
 L["Open Ticket"] = true;
+L["Puts coordinates on the world map."] = true;
 L["Right"] = "Direita"
 L["Scale"] = true;
+L["Smaller World Map"] = true;
 L["Top Left"] = true;
 L["Top Right"] = true;
 L["Top"] = true;
+L["World Map Coordinates"] = true;
+L["X-Offset"] = true;
+L["Y-Offset"] = true;
 
 --Misc
 L["Install"] = "Instalação"

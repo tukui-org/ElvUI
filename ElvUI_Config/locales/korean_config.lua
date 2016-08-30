@@ -386,7 +386,6 @@ L["Blocks datatext tooltip from showing in combat."] = true;
 L["BottomLeftMiniPanel"] = "Minimap BottomLeft (Inside)"
 L["BottomMiniPanel"] = "Minimap Bottom (Inside)"
 L["BottomRightMiniPanel"] = "Minimap BottomRight (Inside)"
-L["Change settings for the display of the location text that is on the minimap."] = "미니맵 상단에 있는 지역이름의 표시방법을 결정합니다."
 L["Datatext Panel (Left)"] = "좌측 정보문자 탭 사용"
 L["Datatext Panel (Right)"] = "우측 정보문자 탭 사용"
 L["DataTexts"] = "정보문자"
@@ -426,7 +425,6 @@ L["You must be targeting a player."] = "유저를 대상으로 잡은 후에 시
 --General
 L["Accept Invites"] = "지인의 초대 자동수락"
 L["Adjust the position of the threat bar to either the left or right datatext panels."] = "위협수치 바를 어느 패널의 정보문자 탭에 배치할지 결정합니다."
-L["Adjust the size of the minimap."] = "미니맵의 크기를 결정합니다."
 L["AFK Mode"] = "자리비움 모드"
 L["Animate Config"] = true;
 L["Announce Interrupts"] = "차단 성공시 알림"
@@ -455,7 +453,6 @@ L["Display emotion icons in chat."] = "메시지 안에 이모티콘이 있으�
 L["Emotion Icons"] = "이모티콘 전환"
 L["Enable/Disable the loot frame."] = "주사위 굴림 및 전리품 획득 확인창의 사용 여부를 결정합니다.|n|n이 창은 |cff2eb7e4/loot|r 명령어로 볼 수 있습니다."
 L["Enable/Disable the loot roll frame."] = "ElvUI 디자인의 입찰 / 차비 / 마력추출을 선택하는 주사위 굴림창 사용 여부를 결정합니다."
-L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the minimap datatexts.|r"] = true;
 L["Enhanced PVP Messages"] = true;
 L["General"] = "일반"
 L["Height of the objective tracker. Increase size to be able to see more objectives."] = "퀘스트프레임의 길이를 결정합니다."
@@ -468,8 +465,6 @@ L["Login Message"] = "로그인 메세지 표시"
 L["Loot Roll"] = "주사위 굴림창"
 L["Loot"] = "전리품 확인창"
 L["Lowest Allowed UI Scale"] = true;
-L["Make the world map smaller."] = "월드맵을 작게 표시합니다."
-L["Map Opacity When Moving"] = true;
 L["Multi-Monitor Support"] = "다중모니터 지원"
 L["Name Font"] = "캐릭터 이름 글꼴"
 L["Number Prefix"] = true;
@@ -477,7 +472,6 @@ L["Objective Frame Height"] = "퀘스트프레임 세로길이"
 L["Party / Raid"] = "파티&레이드 채널로"
 L["Party Only"] = "파티채널만"
 L["Position of bonus quest reward frame relative to the objective tracker."] = "퀘스트프레임에서 표시될 목표보상의 위치를 결정합니다."
-L["Puts coordinates on the world map."] = true;
 L["Raid Only"] = "레이드채널만"
 L["Remove Backdrop"] = "표시하지 않음"
 L["Reset all frames to their original positions."] = "ElvUI 에서 움직일 수 있는 모든 프레임의 위치를 기본 위치로 초기화합니다."
@@ -487,7 +481,6 @@ L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are les
 L["Skin Backdrop (No Borders)"] = true;
 L["Skin Backdrop"] = "반투명 스킨적용"
 L["Skin the blizzard chat bubbles."] = "말풍선에 디자인을 변경해 스킨을 입힐지, 혹은 투명하게 하여 안보이게 할지 결정합니다."
-L["Smaller World Map"] = "월드맵 축소"
 L["Talking Head Scale"] = true;
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "화면상에서 캐릭터 위에 표시되는 이름, 길드, 칭호 등의 글꼴을 변경합니다.|n|n|cffff0000WARNING|r|n이 설정은 리로드가 아닌 캐릭터에 재접속하야 적용됩니다."
 L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."] = true;
@@ -495,9 +488,6 @@ L["Thin Border Theme"] = true;
 L["Toggle Tutorials"] = "애드온 튜토리얼 확인"
 L["Top Panel"] = "상단 패널 표시"
 L["When you go AFK display the AFK screen."] = "자리비움 시 UI가 자리비움모드로 전환됩니다."
-L["World Map Coordinates"] = true;
-L["X-Offset"] = true;
-L["Y-Offset"] = true;
 
 --Media
 L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."] = true;
@@ -529,25 +519,34 @@ L["The texture that will be used mainly for statusbars."] = "기본적으로 상
 L["This texture will get used on objects like chat windows and dropdown menus."] = "채팅창이나 메뉴 같은 프레임에 입혀지는 텍스쳐입니다."
 L["Value Color"] = "강조 색상"
 
-L["Maps"] = true;
-
---Minimap
+--Maps
+L["Adjust the size of the minimap."] = "미니맵의 크기를 결정합니다."
 L["Always Display"] = "항상 표시"
 L["Bottom Left"] = "하단 좌측"
 L["Bottom Right"] = "하단 우측"
 L["Bottom"] = "하단 중앙"
+L["Change settings for the display of the location text that is on the minimap."] = "미니맵 상단에 있는 지역이름의 표시방법을 결정합니다."
+L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the minimap datatexts.|r"] = true;
 L["Instance Difficulty"] = "인스 난이도"
 L["Left"] = "왼쪽"
 L["LFG Queue"] = "파티찾기 표시기"
 L["Location Text"] = "지역이름 표시 방법"
+L["Make the world map smaller."] = "월드맵을 작게 표시합니다."
+L["Map Opacity When Moving"] = true;
+L["Maps"] = true;
 L["Minimap Buttons"] = "미니맵 버튼"
 L["Minimap Mouseover"] = "마우스오버 때만 표시"
 L["Open Ticket"] = true;
+L["Puts coordinates on the world map."] = true;
 L["Right"] = "오른쪽"
 L["Scale"] = "크기"
+L["Smaller World Map"] = "월드맵 축소"
 L["Top Left"] = "상단 좌측"
 L["Top Right"] = "상단 우측"
 L["Top"] = "상단 중앙"
+L["World Map Coordinates"] = true;
+L["X-Offset"] = true;
+L["Y-Offset"] = true;
 
 --Misc
 L["Install"] = "설치"

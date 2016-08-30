@@ -338,7 +338,6 @@ L["Blocks datatext tooltip from showing in combat."] = true;
 L["BottomLeftMiniPanel"] = "Minimap BottomLeft (Inside)"
 L["BottomMiniPanel"] = "Minimap Bottom (Inside)"
 L["BottomRightMiniPanel"] = "Minimap BottomRight (Inside)"
-L["Change settings for the display of the location text that is on the minimap."] = "改變小地圖所在位置文字的顯示設定."
 L["Datatext Panel (Left)"] = "左側資訊框"
 L["Datatext Panel (Right)"] = "右側資訊框"
 L["DataTexts"] = "資訊文字"
@@ -378,7 +377,6 @@ L["You must be targeting a player."] = "你必須以一名玩家為目標."
 --General
 L["Accept Invites"] = "接受組隊邀請"
 L["Adjust the position of the threat bar to either the left or right datatext panels."] = "調整仇恨條的位置於左側或右側資訊面板"
-L["Adjust the size of the minimap."] = "調整小地圖尺寸."
 L["AFK Mode"] = true;
 L["Animate Config"] = true;
 L["Announce Interrupts"] = "斷法通告"
@@ -407,7 +405,6 @@ L["Display emotion icons in chat."] = "在對話中顯示表情圖示."
 L["Emotion Icons"] = "表情圖示"
 L["Enable/Disable the loot frame."] = "啟用/停用拾取框架."
 L["Enable/Disable the loot roll frame."] = "啟用/停用擲骰框架."
-L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the minimap datatexts.|r"] = true;
 L["Enhanced PVP Messages"] = true;
 L["General"] = "一般設定"
 L["Height of the objective tracker. Increase size to be able to see more objectives."] = true;
@@ -420,8 +417,6 @@ L["Login Message"] = "登入資訊"
 L["Loot Roll"] = "擲骰"
 L["Loot"] = "拾取"
 L["Lowest Allowed UI Scale"] = true;
-L["Make the world map smaller."] = true;
-L["Map Opacity When Moving"] = true;
 L["Multi-Monitor Support"] = true;
 L["Name Font"] = "名稱字體"
 L["Number Prefix"] = true;
@@ -429,7 +424,6 @@ L["Objective Frame Height"] = true;
 L["Party / Raid"] = true;
 L["Party Only"] = true;
 L["Position of bonus quest reward frame relative to the objective tracker."] = true;
-L["Puts coordinates on the world map."] = true;
 L["Raid Only"] = true;
 L["Remove Backdrop"] = "移除背景"
 L["Reset all frames to their original positions."] = "重設所有框架至預設位置."
@@ -439,7 +433,6 @@ L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are les
 L["Skin Backdrop (No Borders)"] = true;
 L["Skin Backdrop"] = "美化背景"
 L["Skin the blizzard chat bubbles."] = "美化暴雪對話泡泡."
-L["Smaller World Map"] = true;
 L["Talking Head Scale"] = true;
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "玩家頭頂姓名的字體. |cffFF0000警告: 你需要重新開啟遊戲或重新登錄才能使用此功能.|r"
 L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."] = true;
@@ -447,9 +440,6 @@ L["Thin Border Theme"] = true;
 L["Toggle Tutorials"] = "教學開關"
 L["Top Panel"] = '頂部面板'
 L["When you go AFK display the AFK screen."] = true;
-L["World Map Coordinates"] = true;
-L["X-Offset"] = true;
-L["Y-Offset"] = true;
 
 --Media
 L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."] = true;
@@ -482,25 +472,33 @@ L["This texture will get used on objects like chat windows and dropdown menus."]
 L["Value Color"] = "數值顏色"
 
 --Maps
-L["Maps"] = true;
-
---Minimap
+L["Adjust the size of the minimap."] = "調整小地圖尺寸."
 L["Always Display"] = "總是顯示"
 L["Bottom Left"] = true;
 L["Bottom Right"] = true;
 L["Bottom"] = true;
+L["Change settings for the display of the location text that is on the minimap."] = "改變小地圖所在位置文字的顯示設定."
+L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the minimap datatexts.|r"] = true;
 L["Instance Difficulty"] = true;
 L["Left"] = "左"
 L["LFG Queue"] = true;
 L["Location Text"] = "所在位置文字"
+L["Make the world map smaller."] = true;
+L["Map Opacity When Moving"] = true;
+L["Maps"] = true;
 L["Minimap Buttons"] = true;
 L["Minimap Mouseover"] = "小地圖滑鼠滑過"
 L["Open Ticket"] = true;
+L["Puts coordinates on the world map."] = true;
 L["Right"] = true;
 L["Scale"] = "右"
+L["Smaller World Map"] = true;
 L["Top Left"] = true;
 L["Top Right"] = true;
 L["Top"] = true;
+L["World Map Coordinates"] = true;
+L["X-Offset"] = true;
+L["Y-Offset"] = true;
 
 --Misc
 L["Install"] = "安裝"
