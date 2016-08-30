@@ -104,6 +104,10 @@ function mod:ExperienceBar_OnEnter()
 	GameTooltip:Show()
 end
 
+function mod:ExperienceBar_OnClick()
+
+end
+
 function mod:UpdateExperienceDimensions()
 	self.expBar:Width(self.db.experience.width)
 	self.expBar:Height(self.db.experience.height)
@@ -144,7 +148,7 @@ function mod:EnableDisable_ExperienceBar()
 end
 
 function mod:LoadExperienceBar()
-	self.expBar = self:CreateBar('ElvUI_ExperienceBar', self.ExperienceBar_OnEnter, 'LEFT', LeftChatPanel, 'RIGHT', -E.Border + E.Spacing*3, 0)
+	self.expBar = self:CreateBar('ElvUI_ExperienceBar', self.ExperienceBar_OnEnter, self.ExperienceBar_OnClick, 'LEFT', LeftChatPanel, 'RIGHT', -E.Border + E.Spacing*3, 0)
 	self.expBar.statusBar:SetStatusBarColor(0, 0.4, 1, .8)
 	self.expBar.rested = CreateFrame('StatusBar', nil, self.expBar)
 	self.expBar.rested:SetInside()

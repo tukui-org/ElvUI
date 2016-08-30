@@ -110,6 +110,10 @@ function mod:HonorBar_OnEnter()
 	GameTooltip:Show()
 end
 
+function mod:HonorBar_OnClick()
+
+end
+
 function mod:UpdateHonorDimensions()
 	self.honorBar:Width(self.db.honor.width)
 	self.honorBar:Height(self.db.honor.height)
@@ -137,7 +141,7 @@ function mod:EnableDisable_HonorBar()
 end
 
 function mod:LoadHonorBar()
-	self.honorBar = self:CreateBar('ElvUI_HonorBar', self.HonorBar_OnEnter, 'RIGHT', RightChatPanel, 'LEFT', E.Border - E.Spacing*3, 0)
+	self.honorBar = self:CreateBar('ElvUI_HonorBar', self.HonorBar_OnEnter, self.HonorBar_OnClick, 'RIGHT', RightChatPanel, 'LEFT', E.Border - E.Spacing*3, 0)
 	self.honorBar.statusBar:SetStatusBarColor(240/255, 114/255, 65/255)
 	self.honorBar.statusBar:SetMinMaxValues(0, 325)
 

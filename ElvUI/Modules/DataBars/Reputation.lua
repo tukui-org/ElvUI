@@ -97,6 +97,10 @@ function mod:ReputationBar_OnEnter()
 	GameTooltip:Show()
 end
 
+function mod:ReputationBar_OnClick()
+	ToggleCharacter("ReputationFrame");
+end
+
 function mod:UpdateReputationDimensions()
 	self.repBar:Width(self.db.reputation.width)
 	self.repBar:Height(self.db.reputation.height)
@@ -124,7 +128,7 @@ end
 
 
 function mod:LoadReputationBar()
-	self.repBar = self:CreateBar('ElvUI_ReputationBar', self.ReputationBar_OnEnter, 'RIGHT', RightChatPanel, 'LEFT', E.Border - E.Spacing*3, 0)
+	self.repBar = self:CreateBar('ElvUI_ReputationBar', self.ReputationBar_OnEnter, self.ReputationBar_OnClick, 'RIGHT', RightChatPanel, 'LEFT', E.Border - E.Spacing*3, 0)
 	E:RegisterStatusBar(self.repBar.statusBar)
 
 	self.repBar.eventFrame = CreateFrame("Frame")
