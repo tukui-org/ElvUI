@@ -109,23 +109,6 @@ local function LoadSkin()
 	OrderHallTalentFrame.CurrencyIcon:SetAtlas("legionmission-icon-currency", false)
 
 	S:HandleCloseButton(OrderHallTalentFrameCloseButton)
-
-	-- Needs Review
-	-- Scouting Map Quest Choise
-	AdventureMapQuestChoiceDialog:StripTextures()
-	AdventureMapQuestChoiceDialog:SetTemplate("Transparent")
-
-	-- Quick Fix for the Font Color
-	AdventureMapQuestChoiceDialog.Details.Child.TitleHeader:SetTextColor(1, 1, 0)
-	AdventureMapQuestChoiceDialog.Details.Child.DescriptionText:SetTextColor(1, 1, 1)
-
-	AdventureMapQuestChoiceDialog.Details.Child.ObjectivesHeader:SetTextColor(1, 1, 0)
-	AdventureMapQuestChoiceDialog.Details.Child.ObjectivesText:SetTextColor(1, 1, 1)
-
-	S:HandleCloseButton(AdventureMapQuestChoiceDialog.CloseButton)
-	S:HandleScrollBar(AdventureMapQuestChoiceDialog.Details.ScrollBar)
-	S:HandleButton(AdventureMapQuestChoiceDialog.AcceptButton)
-	S:HandleButton(AdventureMapQuestChoiceDialog.DeclineButton)
 end
 
 S:RegisterSkin('Blizzard_OrderHallUI', LoadSkin)

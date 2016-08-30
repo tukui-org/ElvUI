@@ -339,6 +339,11 @@ E.Options.args.skins = {
 					name = L["TalkingHead"], -- Temp Name
 					desc = L["TOGGLESKIN_DESC"],
 				},
+				AdventureMap = {
+					type = "toggle",
+					name = ADVENTURE_MAP_TITLE,
+					desc = L["TOGGLESKIN_DESC"],
+				},
 			},
 		},
 	},

@@ -1,6 +1,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">	
 	<Script file='achievement.lua'/>
 	<Script file='addonmanager.lua'/>
+	<Script file='AdventureMap.lua'/>
 	<Script file='alerts.lua'/>
 	<Script file='archaeology.lua'/>
 	<Script file='artifact.lua'/>
