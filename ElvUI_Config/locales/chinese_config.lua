@@ -482,7 +482,7 @@ L["This texture will get used on objects like chat windows and dropdown menus."]
 L["Value Color"] = "数值颜色"
 
 -- Maps
-L["Maps"] = "地图";
+L["Maps"] = true;
 
 --Minimap
 L["Always Display"] = "总是显示"

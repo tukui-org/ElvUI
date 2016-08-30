@@ -482,7 +482,7 @@ L["This texture will get used on objects like chat windows and dropdown menus."]
 L["Value Color"] = "Cor dos Valores"
 
 --Maps
-L["Maps"] = "Mapas";
+L["Maps"] = true;
 
 --Minimap
 L["Always Display"] = "Exibir sempre"

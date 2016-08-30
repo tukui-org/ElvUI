@@ -482,7 +482,7 @@ L["This texture will get used on objects like chat windows and dropdown menus."]
 L["Value Color"] = "Цвет значений"
 
 --Maps
-L["Maps"] = "Карты";
+L["Maps"] = true;
 
 
 --Minimap
