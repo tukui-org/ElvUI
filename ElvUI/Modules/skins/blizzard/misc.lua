@@ -1063,25 +1063,10 @@ local function LoadSkin()
 				S:HandleNextPrevButton(navButton.MenuArrowButton, true)
 			end
 
-			navButton.xoffset = 1 --Make a 1px gap between each navbutton
 			navButton.isSkinned = true
 		end
 	end
 	hooksecurefunc("NavBar_AddButton", SkinNavBarButtons)
-	
-	--This is necessary to fix position of button right next to homebutton.
-	local function SetHomeButtonOffsetX(self)
-		local homeButton = self.homeButton
-		if homeButton then
-			homeButton.xoffset = 1
-		end
-	end
-	hooksecurefunc("NavBar_Initialize", SetHomeButtonOffsetX)
-
-	--WorldMapFrameNavBar loads before this file, so our hook has no effect on this one.
-	if WorldMapFrameNavBar then
-		SetHomeButtonOffsetX(WorldMapFrameNavBar)
-	end
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)

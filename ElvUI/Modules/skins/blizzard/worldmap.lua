@@ -14,7 +14,9 @@ local function LoadSkin()
 	WorldMapFrameNavBarOverlay:StripTextures()
 
 	WorldMapFrameNavBarHomeButton:StripTextures()
-	WorldMapFrameNavBarHomeButton:SetTemplate("Default", true)
+	WorldMapFrameNavBarHomeButton:CreateBackdrop("Default", true)
+	WorldMapFrameNavBarHomeButton.backdrop:SetPoint("TOPLEFT", WorldMapFrameNavBarHomeButton, "TOPLEFT", 0, 0)
+	WorldMapFrameNavBarHomeButton.backdrop:SetPoint("BOTTOMRIGHT", WorldMapFrameNavBarHomeButton, "BOTTOMRIGHT", -15, 0)
 	WorldMapFrameNavBarHomeButton:SetFrameLevel(1)
 	WorldMapFrameNavBarHomeButton.text:FontTemplate()
 
