@@ -96,6 +96,23 @@ local function LoadSkin()
 	S:HandleNextPrevButton(WorldMapFrame.UIElementsFrame.OpenQuestPanelButton)
 	S:HandleNextPrevButton(WorldMapFrame.UIElementsFrame.CloseQuestPanelButton)
 	SquareButton_SetIcon(WorldMapFrame.UIElementsFrame.CloseQuestPanelButton, 'LEFT')
+
+	-- WorldMapFrame Tooltip Statusbar
+	local function HandleTooltipStatusBar()
+		local bar = _G["WorldMapTaskTooltipStatusBar"].Bar
+		local label = bar.Label
+
+		if bar then
+			bar:StripTextures()
+			bar:SetStatusBarTexture(E["media"].normTex)
+			bar:SetTemplate("Transparent")
+
+			label:ClearAllPoints()
+			label:Point("CENTER", bar, 0, 0)
+			label:SetDrawLayer("OVERLAY")
+		end
+	end
+	hooksecurefunc("TaskPOI_OnEnter", HandleTooltipStatusBar)
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)
