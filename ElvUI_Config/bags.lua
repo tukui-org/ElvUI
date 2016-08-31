@@ -355,7 +355,7 @@ E.Options.args.bags = {
 				description = {
 					order = 1,
 					type = "description",
-					name = L["Items in this list or items that match any Search Syntax query in this list will be ignored when sorting. Separate each entry with a comma."],
+					name = L["Items in this list or items that match any Search Syntax query in this list will be ignored when sorting. Separate each entry with a semicolon ;."],
 				},
 				ignoreItems = {
 					order = 100,

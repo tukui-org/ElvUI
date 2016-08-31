@@ -535,9 +535,9 @@ function B.Sort(bags, sorter, invertDirection)
 	twipe(blackListedSlots)
 
 	local ignoreItems = B.db.ignoreItems
-	ignoreItems = ignoreItems:gsub(',%s', ',') --remove spaces that follow a comma
+	ignoreItems = ignoreItems:gsub(';%s', ';') --remove spaces that follow a semicolon
 	ignoreItems = ignoreItems:gsub("\n", "") --remove accidental newlines
-	buildBlacklist(split(",", ignoreItems))
+	buildBlacklist(split(";", ignoreItems))
 
 	for i, bag, slot in B.IterateBags(bags, nil, 'both') do
 		local bagSlot = B:Encode_BagSlot(bag, slot)

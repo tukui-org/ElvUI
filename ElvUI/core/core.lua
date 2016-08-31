@@ -1407,6 +1407,14 @@ function E:DBConversions()
 	if E.db.nameplate then
 		E.db.nameplate = nil
 	end
+
+	--We have changed the required separator from a comma to a semicolon.
+	--Because there is no good way to determine if a comma is part of an item string or not,
+	--we just have to reset it all and let people build a new list.
+	if not E.db.bagSortIgnoreItemsReset then
+		E.db.bags.ignoreItems = nil
+		E.db.bagSortIgnoreItemsReset = true
+	end
 end
 
 local CPU_USAGE = {}
