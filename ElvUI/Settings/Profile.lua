@@ -235,6 +235,9 @@ P["nameplates"] = {
 		["useThreatColor"] = true,
 	},
 
+	["clickableWidth"] = 150,
+	["clickableHeight"] = 50,
+
 	['units'] = {
 		['PLAYER'] = {
 			['enable'] = false,

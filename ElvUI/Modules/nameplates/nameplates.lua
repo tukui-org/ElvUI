@@ -440,8 +440,8 @@ end
 
 function mod:SetBaseNamePlateSize()
 	local self = mod
-	local baseWidth = self.db.units["ENEMY_NPC"].healthbar.width
-	local baseHeight = self.db.units["ENEMY_NPC"].castbar.height + self.db.units["ENEMY_NPC"].healthbar.height + 30
+	local baseWidth = self.db.clickableWidth
+	local baseHeight = self.db.clickableHeight
 	NamePlateDriverFrame:SetBaseNamePlateSize(baseWidth, baseHeight)
 	self.PlayerFrame__:SetSize(baseWidth, baseHeight)
 end

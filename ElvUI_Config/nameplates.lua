@@ -792,6 +792,22 @@ E.Options.args.nameplate = {
 					desc = L["Only load nameplates for units within this range."],
 					min = 10, max = 100, step = 1,
 				},
+				clickableWidth = {
+					order = 13,
+					type = "range",
+					name = L["Clickable Width"],
+					desc = L["Controls how big of an area on the screen will accept clicks to target unit."],
+					min = 50, max = 200, step = 1,
+					set = function(info, value) E.db.nameplates.clickableWidth = value; E:StaticPopup_Show("CONFIG_RL") end,
+				},
+				clickableHeight = {
+					order = 14,
+					type = "range",
+					name = L["Clickable Height"],
+					desc = L["Controls how big of an area on the screen will accept clicks to target unit."],
+					min = 10, max = 75, step = 1,
+					set = function(info, value) E.db.nameplates.clickableHeight = value; E:StaticPopup_Show("CONFIG_RL") end,
+				},
 				fontGroup = {
 					order = 100,
 					type = 'group',
