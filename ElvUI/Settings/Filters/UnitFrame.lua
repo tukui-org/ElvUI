@@ -952,7 +952,7 @@ G.unitframe.ChannelTicks = {
 	[SpellName(689)] = 6, -- "Drain Life"
 	[SpellName(198590)] = 6, -- "Drain Soul"
 	-- [SpellName(108371)] = 6, -- "Harvest Life"
-	[SpellName(5740)] = 4, -- "Rain of Fire"
+	-- [SpellName(5740)] = 4, -- "Rain of Fire"
 	[SpellName(755)] = 6, -- Health Funnel
 	-- [SpellName(103103)] = 4, --Malefic Grasp
 	--Druid
