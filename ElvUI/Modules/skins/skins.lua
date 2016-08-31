@@ -19,7 +19,7 @@ function S:SetOriginalBackdrop()
 end
 
 function S:HandleButton(f, strip, name)
-	assert(f, format("%s %s", name, "doesn't exist!")
+	assert(f, format("%s %s", name or "", "doesn't exist!"))
 	if f.Left then f.Left:SetAlpha(0) end
 	if f.Middle then f.Middle:SetAlpha(0) end
 	if f.Right then f.Right:SetAlpha(0) end
