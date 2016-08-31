@@ -569,8 +569,12 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 			if(isPetWild or isPetCompanion) then
 				level = UnitBattlePetLevel(unit)
 
-				local petType = UnitBattlePetType(unit)
-				creatureType = format("%s %s", creatureType, PET_TYPE_SUFFIX[petType])
+				local petType = PET_TYPE_SUFFIX[UnitBattlePetType(unit)]
+				if creatureType then
+					creatureType = format("%s %s", creatureType, petType)
+				else
+					creatureType = petType
+				end
 
 				local teamLevel = C_PetJournalGetPetTeamAverageLevel();
 				if(teamLevel) then
