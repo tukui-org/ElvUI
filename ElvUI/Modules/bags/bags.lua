@@ -8,7 +8,7 @@ local _G = _G
 local type, ipairs, pairs, unpack, select, assert, pcall, tonumber = type, ipairs, pairs, unpack, select, assert, pcall, tonumber
 local tinsert = table.insert
 local floor, abs, ceil = math.floor, math.abs, math.ceil
-local len, sub, find, format, gsub = string.len, string.sub, string.find, string.format, string.gsub
+local len, sub, find, format, gsub, match = string.len, string.sub, string.find, string.format, string.gsub, string.match
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetContainerNumSlots = GetContainerNumSlots
@@ -87,7 +87,12 @@ B.ProfessionColors = {
 }
 
 local itemLevelCache = {}
-local itemLevelPattern = ITEM_LEVEL:gsub("%%d", "(%%d+)")
+local itemLevelPattern = gsub(ITEM_LEVEL, "%%d", "(%%d+)")
+local tooltipLines = { --These are the lines we wish to scan
+	"ElvUI_ItemScanningTooltipTextLeft2",
+	"ElvUI_ItemScanningTooltipTextLeft3",
+	"ElvUI_ItemScanningTooltipTextLeft4",
+}
 local tooltip = CreateFrame("GameTooltip", "ElvUI_ItemScanningTooltip", UIParent, "GameTooltipTemplate")
 tooltip:SetOwner(UIParent, "ANCHOR_NONE")
 
@@ -97,22 +102,24 @@ local function GetItemLevel(itemLink)
 		return
 	end
 
-	tooltip:ClearLines()
-	tooltip:SetHyperlink(itemLink)
-
 	if not itemLevelCache[itemLink] then
-		local itemLevel
-		for i = 2, 6 do
-			local text = _G["ElvUI_ItemScanningTooltipTextLeft"..i]:GetText()
+		tooltip:ClearLines()
+		tooltip:SetHyperlink(itemLink)
+
+		local text, itemLevel
+		for index = 1, #tooltipLines do
+			text = _G[tooltipLines[index]]:GetText()
+
 			if text then
-				itemLevel = tonumber(text:match(itemLevelPattern))
+				itemLevel = tonumber(match(text, itemLevelPattern))
 
 				if itemLevel then
 					itemLevelCache[itemLink] = itemLevel
-					break
+					return itemLevel
 				end
 			end
 		end
+		itemLevelCache[itemLink] = 0 --Cache items that don't have an item level so we don't loop over them again and again
 	end
 
 	return itemLevelCache[itemLink]
