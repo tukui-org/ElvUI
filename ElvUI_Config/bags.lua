@@ -4,6 +4,7 @@ local B = E:GetModule('Bags')
 E.Options.args.bags = {
 	type = 'group',
 	name = L["Bags"],
+	childGroups = "tab",
 	get = function(info) return E.db.bags[ info[#info] ] end,
 	set = function(info, value) E.db.bags[ info[#info] ] = value end,
 	args = {
@@ -24,9 +25,13 @@ E.Options.args.bags = {
 			order = 3,
 			type = "group",
 			name = L["General"],
-			guiInline = true,
 			disabled = function() return not E.bags end,
 			args = {
+				header = {
+					order = 0,
+					type = "header",
+					name = L["General"],
+				},
 				currencyFormat = {
 					order = 1,
 					type = 'select',
@@ -62,7 +67,7 @@ E.Options.args.bags = {
 					set = function(info, value) E.db.bags[ info[#info] ] = value; B:UpdateGoldText(); end,
 				},
 				junkIcon = {
-					order = 3,
+					order = 4,
 					type = 'toggle',
 					name = L["Show Junk Icon"],
 					desc = L["Display the junk icon on all grey items that can be vendored."],
@@ -78,6 +83,7 @@ E.Options.args.bags = {
 					order = 6,
 					type = "group",
 					name = L["Item Count Font"],
+					guiInline = true,
 					args = {
 						countFont = {
 							order = 1,
@@ -128,6 +134,7 @@ E.Options.args.bags = {
 					order = 7,
 					type = "group",
 					name = L["Item Level"],
+					guiInline = true,
 					args = {
 						itemLevel = {
 							order = 1,
@@ -184,38 +191,19 @@ E.Options.args.bags = {
 						},
 					},
 				},
-				bagSortingGroup = {
-					order = 8,
-					type = "group",
-					guiInline = true,
-					name = L["Bag Sorting"],
-					args = {
-						description = {
-							order = 1,
-							type = "description",
-							name = L["Items in this list or items that match any Search Syntax query in this list will be ignored when sorting. Separate each entry with a comma."],
-						},
-						ignoreItems = {
-							order = 100,
-							name = L["Ignore Items"],
-							desc = L["IGNORE_ITEMS_DESC"],
-							type = 'input',
-							width = 'full',
-							multiline = true,
-							set = function(info, value) E.db.bags.ignoreItems = value; end,
-						},
-					},
-				},
-
 			},
 		},
 		sizeAndPos = {
 			order = 4,
 			type = "group",
 			name = L["Size and Positions"],
-			guiInline = true,
 			disabled = function() return not E.bags end,
 			args = {
+				header = {
+					order = 0,
+					type = "header",
+					name = L["Size and Positions"],
+				},
 				alignToChat = {
 					order = 1,
 					type = 'toggle',
@@ -291,10 +279,14 @@ E.Options.args.bags = {
 			order = 5,
 			type = "group",
 			name = L["Bag-Bar"],
-			guiInline = true,
 			get = function(info) return E.db.bags.bagBar[ info[#info] ] end,
 			set = function(info, value) E.db.bags.bagBar[ info[#info] ] = value; B:SizeAndPositionBagBar() end,
 			args = {
+				header = {
+					order = 0,
+					type = "header",
+					name = L["Bag-Bar"],
+				},
 				enable = {
 					order = 1,
 					type = "toggle",
@@ -350,18 +342,49 @@ E.Options.args.bags = {
 				},
 			},
 		},
-		search_syntax = {
+		bagSortingGroup = {
 			order = 6,
+			type = "group",
+			name = L["Bag Sorting"],
+			args = {
+				header = {
+					order = 0,
+					type = "header",
+					name = L["Bag Sorting"],
+				},
+				description = {
+					order = 1,
+					type = "description",
+					name = L["Items in this list or items that match any Search Syntax query in this list will be ignored when sorting. Separate each entry with a comma."],
+				},
+				ignoreItems = {
+					order = 100,
+					name = L["Ignore Items"],
+					desc = L["IGNORE_ITEMS_DESC"],
+					type = 'input',
+					width = 'full',
+					multiline = true,
+					set = function(info, value) E.db.bags.ignoreItems = value; end,
+				},
+			},
+		},
+		search_syntax = {
+			order = 7,
 			type = "group",
 			name = L["Search Syntax"],
 			disabled = function() return not E.bags end,
 			args = {
+				header = {
+					order = 0,
+					type = "header",
+					name = L["Search Syntax"],
+				},
 				text = {
 					order = 1,
 					type = "input",
-					multiline = 30,
+					multiline = 26,
 					width = "full",
-					name = L["Search Syntax"],
+					name = "",
 					get = function(info) return L["SEARCH_SYNTAX_DESC"]; end,
 					set = function(info, value) value = L["SEARCH_SYNTAX_DESC"]; end,
 				},
