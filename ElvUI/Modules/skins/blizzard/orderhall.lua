@@ -26,89 +26,72 @@ local function LoadSkin()
 	OrderHallCommandBar.ClassIcon:SetSize(46, 20)
 	OrderHallCommandBar.CurrencyIcon:SetAtlas("legionmission-icon-currency", false)
 	OrderHallCommandBar.AreaName:SetVertexColor(classColor.r, classColor.g, classColor.b)
-	--Dumb
 	OrderHallCommandBar.WorldMapButton:Kill()
-	-- OrderHallCommandBar.WorldMapButton:ClearAllPoints()
-	-- OrderHallCommandBar.WorldMapButton:SetPoint("RIGHT", OrderHallCommandBar, -5, -2)
 
 	-- MissionFrame
 	OrderHallMissionFrame.ClassHallIcon:Kill()
 	OrderHallMissionFrame:StripTextures()
+	OrderHallMissionFrame.GarrCorners:Hide()
 	OrderHallMissionFrame:CreateBackdrop("Transparent")
 	OrderHallMissionFrame.backdrop:SetOutside(OrderHallMissionFrame.BorderFrame)
-
 	S:HandleCloseButton(OrderHallMissionFrame.CloseButton)
 
-	for i = 1, 3 do 
+	for i = 1, 3 do
 		S:HandleTab(_G["OrderHallMissionFrameTab" .. i])
 	end
 
-	OrderHallMissionFrameMissions:StripTextures()
-	OrderHallMissionFrameMissionsListScrollFrame:StripTextures()
-	OrderHallMissionFrame.MissionTab:StripTextures()
-
-	S:HandleScrollBar(OrderHallMissionFrameMissionsListScrollFrameScrollBar)
-	S:HandleButton(OrderHallMissionFrameMissions.CombatAllyUI.InProgress.Unassign)
-	S:HandleCloseButton(OrderHallMissionFrame.MissionTab.ZoneSupportMissionPage.CloseButton)
-	S:HandleButton(OrderHallMissionFrame.MissionTab.ZoneSupportMissionPage.StartMissionButton)
-
-	for i, v in ipairs(OrderHallMissionFrame.MissionTab.MissionList.listScroll.buttons) do
-		local Button = _G["OrderHallMissionFrameMissionsListScrollFrameButton" .. i]
-		if Button and not Button.skinned then
+	for _, Button in pairs(OrderHallMissionFrame.MissionTab.MissionList.listScroll.buttons) do
+		if not Button.isSkinned then
 			Button:StripTextures()
 			Button:SetTemplate()
 			S:HandleButton(Button)
 			Button:SetBackdropBorderColor(0, 0, 0, 0)
 			Button.LocBG:Hide()
-			for i = 1, #Button.Rewards do
-				local Texture = Button.Rewards[i].Icon:GetTexture()
-
-				Button.Rewards[i]:StripTextures()
-				S:HandleButton(Button.Rewards[i])
-				Button.Rewards[i]:CreateBackdrop()
-				Button.Rewards[i].Icon:SetTexture(Texture)
-				Button.Rewards[i].backdrop:ClearAllPoints()
-				Button.Rewards[i].backdrop:SetOutside(Button.Rewards[i].Icon)
-				Button.Rewards[i].Icon:SetTexCoord(unpack(E.TexCoords))
-			end
 			Button.isSkinned = true
 		end
 	end
 
-	-- Mission Tab
-	local follower = OrderHallMissionFrameFollowers
-	follower:StripTextures()
-	follower.MaterialFrame:StripTextures()
+	-- Followers
+	local FollowerList = OrderHallMissionFrame.FollowerList
+	local FollowerTab = OrderHallMissionFrame.FollowerTab
+	FollowerList:StripTextures()
+	FollowerList.MaterialFrame:StripTextures()
+	S:HandleEditBox(FollowerList.SearchBox)
+	S:HandleScrollBar(OrderHallMissionFrame.FollowerList.listScroll.scrollBar)
+	hooksecurefunc(FollowerList, "ShowFollower", function(self)
+		S:HandleFollowerPage(self, true)
+	end)
+	FollowerTab:StripTextures()
+	FollowerTab.Class:SetSize(50, 43)
+	FollowerTab.XPBar:StripTextures()
+	FollowerTab.XPBar:SetStatusBarTexture(E["media"].normTex)
+	FollowerTab.XPBar:CreateBackdrop()
 
-	S:HandleEditBox(follower.SearchBox)
-	S:HandleCloseButton(OrderHallMissionFrame.MissionTab.MissionPage.CloseButton)
-	S:HandleButton(OrderHallMissionFrame.MissionTab.MissionPage.StartMissionButton)
-	S:HandleScrollBar(OrderHallMissionFrameFollowersListScrollFrameScrollBar)
-
-	-- Follower Tab
-	local followerList = OrderHallMissionFrame.FollowerTab
-	followerList:StripTextures()
-	followerList.ModelCluster:StripTextures()
-	followerList.Class:SetSize(50, 43)
-	followerList.XPBar:StripTextures()
-	followerList.XPBar:SetStatusBarTexture(E["media"].normTex)
-	followerList.XPBar:CreateBackdrop()
-
-	-- Mission Stage
-	local mission = OrderHallMissionFrameMissions
-	mission.CompleteDialog:StripTextures()
-	mission.CompleteDialog:SetTemplate("Transparent")
-
-	S:HandleButton(mission.CompleteDialog.BorderFrame.ViewButton)
+	-- Missions
+	local MissionTab = OrderHallMissionFrame.MissionTab
+	local MissionList = MissionTab.MissionList
+	local MissionPage = MissionTab.MissionPage
+	local ZoneSupportMissionPage = MissionTab.ZoneSupportMissionPage
+	S:HandleScrollBar(MissionList.listScroll.scrollBar)
+	MissionList.CompleteDialog:StripTextures()
+	MissionList.CompleteDialog:SetTemplate("Transparent")
+	S:HandleButton(MissionList.CompleteDialog.BorderFrame.ViewButton)
+	MissionList:StripTextures()
+	MissionList.listScroll:StripTextures()
+	S:HandleButton(OrderHallMissionFrameMissions.CombatAllyUI.InProgress.Unassign)
+	S:HandleCloseButton(MissionPage.CloseButton)
+	S:HandleButton(MissionPage.StartMissionButton)
+	S:HandleCloseButton(ZoneSupportMissionPage.CloseButton)
+	S:HandleButton(ZoneSupportMissionPage.StartMissionButton)
 	S:HandleButton(OrderHallMissionFrame.MissionComplete.NextMissionButton)
 
 	-- TalentFrame
-	OrderHallTalentFrame:StripTextures()
-	OrderHallTalentFrame:SetTemplate("Transparent")
-	ClassHallTalentInset:StripTextures()
-	OrderHallTalentFrame.CurrencyIcon:SetAtlas("legionmission-icon-currency", false)
-
-	S:HandleCloseButton(OrderHallTalentFrameCloseButton)
+	local TalentFrame = OrderHallTalentFrame
+	TalentFrame:StripTextures()
+	TalentFrame.LeftInset:StripTextures()
+	TalentFrame:SetTemplate("Transparent")
+	TalentFrame.CurrencyIcon:SetAtlas("legionmission-icon-currency", false)
+	S:HandleCloseButton(TalentFrame.CloseButton)
 end
 
 S:RegisterSkin('Blizzard_OrderHallUI', LoadSkin)
