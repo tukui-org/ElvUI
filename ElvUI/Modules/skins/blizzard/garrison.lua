@@ -34,6 +34,7 @@ local function LoadSkin()
 			if not frame.backdrop then
 				S:HandleIcon(frame.Icon)
 			end
+			if frame.IconBorder then frame.IconBorder:SetTexture() end
 			frame.Icon:SetDrawLayer("BORDER", 0)
 		end)
 	end
