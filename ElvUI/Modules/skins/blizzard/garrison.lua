@@ -8,69 +8,38 @@ local unpack = unpack
 local CreateFrame = CreateFrame
 
 local function LoadSkin()
-	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.garrison ~= true then return end
-
-	local function HandleFollowerPage(follower, hasItems)
-		local abilities = follower.followerTab.AbilitiesFrame.Abilities
-		if follower.numAbilitiesStyled == nil then
-			follower.numAbilitiesStyled = 1
-		end
-		local numAbilitiesStyled = follower.numAbilitiesStyled
-		local ability = abilities[numAbilitiesStyled]
-		while ability do
-			local icon = ability.IconButton.Icon
-			S:HandleIcon(icon, ability.IconButton)
-			icon:SetDrawLayer("BORDER", 0)
-			numAbilitiesStyled = numAbilitiesStyled + 1
-			ability = abilities[numAbilitiesStyled]
-		end
-		follower.numAbilitiesStyled = numAbilitiesStyled
-
-		if hasItems then
-			local weapon = follower.followerTab.ItemWeapon
-			local armor = follower.followerTab.ItemArmor
-			if not weapon.backdrop then
-				S:HandleIcon(weapon.Icon, weapon)
-				weapon.Border:SetTexture(nil)
-				weapon.backdrop:SetFrameLevel(weapon:GetFrameLevel())
+	if E.private.skins.blizzard.enable ~= true then return; end
+	
+	if E.private.skins.blizzard.orderhall or E.private.skins.blizzard.garrison then
+		--These hooks affect both Garrison and OrderHall, so make sure they are set even if Garrison skin is disabled
+		hooksecurefunc("GarrisonMissionButton_SetRewards", function(self, rewards, numRewards)
+			if self.numRewardsStyled == nil then
+				self.numRewardsStyled = 0
 			end
-			if not armor.backdrop then
-				S:HandleIcon(armor.Icon, armor)
-				armor.Border:SetTexture(nil)
-				armor.backdrop:SetFrameLevel(armor:GetFrameLevel())
+			while self.numRewardsStyled < numRewards do
+				self.numRewardsStyled = self.numRewardsStyled + 1
+				local reward = self.Rewards[self.numRewardsStyled]
+				local icon = reward.Icon
+				reward:GetRegions():Hide()
+				if reward.IconBorder then reward.IconBorder:SetTexture() end --OrderHall reward texture
+				if not reward.border then
+					reward.border = CreateFrame("Frame", nil, reward)
+					S:HandleIcon(reward.Icon, reward.border)
+				end
 			end
-		end
+		end)
 
-		local xpbar = follower.followerTab.XPBar
-		xpbar:StripTextures()
-		xpbar:SetStatusBarTexture(E["media"].normTex)
-		xpbar:CreateBackdrop("Transparent")
+		hooksecurefunc("GarrisonMissionPage_SetReward", function(frame, reward)
+			frame.BG:SetTexture()
+			if not frame.backdrop then
+				S:HandleIcon(frame.Icon)
+			end
+			frame.Icon:SetDrawLayer("BORDER", 0)
+		end)
 	end
 
-	-- Needs Review
-	local function HandleShipFollowerPage(followerTab)
-		local traits = followerTab.Traits
-		for i = 1, #traits do
-			local icon = traits[i].Portrait
-			local border = traits[i].Border
-			border:SetTexture(nil) -- I think the default border looks nice, not sure if we want to replace that
-			-- The landing page icons display inner borders
-			if followerTab.isLandingPage then
-				icon:SetTexCoord(unpack(E.TexCoords))
-			end
-		end
-
-		local equipment = followerTab.EquipmentFrame.Equipment
-		for i = 1, #equipment do
-			local icon = equipment[i].Icon
-			local border = equipment[i].Border
-			border:SetAtlas("ShipMission_ShipFollower-TypeFrame") -- This border is ugly though, use the traits border instead
-			-- The landing page icons display inner borders
-			if followerTab.isLandingPage then
-				icon:SetTexCoord(unpack(E.TexCoords))
-			end
-		end
-	end
+	--Stop here if Garrison skin is disabled
+	if E.private.skins.blizzard.garrison ~= true then return end
 
 	-- Building frame
 	GarrisonBuildingFrame:StripTextures(true)
@@ -157,7 +126,7 @@ local function LoadSkin()
 	S:HandleEditBox(FollowerList.SearchBox)
 	S:HandleScrollBar(FollowerList.listScroll.scrollBar)
 	hooksecurefunc(FollowerList, "ShowFollower", function(self)
-		HandleFollowerPage(self, true)
+		S:HandleFollowerPage(self, true)
 	end)
 
 	-- Mission list
@@ -171,30 +140,6 @@ local function LoadSkin()
 	S:HandleButton(MissionList.CompleteDialog.BorderFrame.ViewButton)
 	S:HandleButton(MissionPage.StartMissionButton)
 	S:HandleButton(GarrisonMissionFrame.MissionComplete.NextMissionButton)
-
-	hooksecurefunc("GarrisonMissionButton_SetRewards", function(self, rewards, numRewards)
-		if self.numRewardsStyled == nil then
-			self.numRewardsStyled = 0
-		end
-		while self.numRewardsStyled < numRewards do
-			self.numRewardsStyled = self.numRewardsStyled + 1
-			local reward = self.Rewards[self.numRewardsStyled]
-			local icon = reward.Icon
-			reward:GetRegions():Hide()
-			if not reward.border then
-				reward.border = CreateFrame("Frame", nil, reward)
-				S:HandleIcon(reward.Icon, reward.border)
-			end
-		end
-	end)
-
-	hooksecurefunc("GarrisonMissionPage_SetReward", function(frame, reward)
-		frame.BG:SetTexture()
-		if not frame.backdrop then
-			S:HandleIcon(frame.Icon)
-		end
-		frame.Icon:SetDrawLayer("BORDER", 0)
-	end)
 
 	MissionPage.StartMissionButton.Flash:Hide()
 	MissionPage.StartMissionButton.Flash.Show = E.noop
@@ -238,7 +183,7 @@ local function LoadSkin()
 	S:HandleScrollBar(scrollFrame.scrollBar)
 
 	hooksecurefunc(FollowerList, "ShowFollower", function(self)
-		HandleFollowerPage(self)
+		S:HandleFollowerPage(self)
 	end)
 
 	hooksecurefunc("GarrisonFollowerButton_AddAbility", function(self, index)
@@ -317,7 +262,6 @@ local function LoadSkin()
 		S:HandleIcon(bonusIcon) --TODO: Check how this actually looks
 	end
 
-
 	-- Threat Counter Tooltips
 	-- The tooltip starts using blue backdrop and white border unless we re-set the template.
 	-- We should check if there is a better way of doing this.
@@ -332,14 +276,14 @@ end
 local function SkinTooltip()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.garrison ~= true then return end
 
-	local function restyleGarrisonFollowerTooltipTemplate(frame)
+	local function SkinFollowerTooltip(frame)
 		for i = 1, 9 do
 			select(i, frame:GetRegions()):Hide()
 		end
 		frame:SetTemplate("Transparent")
 	end
 
-	local function restyleGarrisonFollowerAbilityTooltipTemplate(frame)
+	local function SkinAbilityTooltip(frame)
 		for i = 1, 9 do
 			select(i, frame:GetRegions()):Hide()
 		end
@@ -352,17 +296,21 @@ local function SkinTooltip()
 		frame:SetTemplate("Transparent")
 	end
 
-	restyleGarrisonFollowerTooltipTemplate(GarrisonFollowerTooltip)
-	restyleGarrisonFollowerAbilityTooltipTemplate(GarrisonFollowerAbilityTooltip)
-	restyleGarrisonFollowerTooltipTemplate(FloatingGarrisonFollowerTooltip)
+	SkinFollowerTooltip(GarrisonFollowerTooltip)
+	SkinFollowerTooltip(FloatingGarrisonFollowerTooltip)
+	SkinFollowerTooltip(FloatingGarrisonMissionTooltip)
+	SkinFollowerTooltip(FloatingGarrisonShipyardFollowerTooltip)
+	SkinFollowerTooltip(GarrisonShipyardFollowerTooltip)
+
+	SkinAbilityTooltip(GarrisonFollowerAbilityTooltip)
+	SkinAbilityTooltip(FloatingGarrisonFollowerAbilityTooltip)
+	SkinAbilityTooltip(GarrisonFollowerMissionAbilityWithoutCountersTooltip)
+	SkinAbilityTooltip(GarrisonFollowerAbilityWithoutCountersTooltip)
+
 	S:HandleCloseButton(FloatingGarrisonFollowerTooltip.CloseButton)
-	restyleGarrisonFollowerAbilityTooltipTemplate(FloatingGarrisonFollowerAbilityTooltip)
 	S:HandleCloseButton(FloatingGarrisonFollowerAbilityTooltip.CloseButton)
-	restyleGarrisonFollowerTooltipTemplate(FloatingGarrisonMissionTooltip)
 	S:HandleCloseButton(FloatingGarrisonMissionTooltip.CloseButton)
-	restyleGarrisonFollowerTooltipTemplate(FloatingGarrisonShipyardFollowerTooltip)
 	S:HandleCloseButton(FloatingGarrisonShipyardFollowerTooltip.CloseButton)
-	restyleGarrisonFollowerTooltipTemplate(GarrisonShipyardFollowerTooltip)
 
 	hooksecurefunc("GarrisonFollowerTooltipTemplate_SetGarrisonFollower", function(tooltipFrame)
 		-- Abilities

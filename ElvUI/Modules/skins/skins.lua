@@ -472,6 +472,67 @@ function S:HandleSliderFrame(frame)
 	end
 end
 
+function S:HandleFollowerPage(follower, hasItems)
+	local abilities = follower.followerTab.AbilitiesFrame.Abilities
+	if follower.numAbilitiesStyled == nil then
+		follower.numAbilitiesStyled = 1
+	end
+	local numAbilitiesStyled = follower.numAbilitiesStyled
+	local ability = abilities[numAbilitiesStyled]
+	while ability do
+		local icon = ability.IconButton.Icon
+		S:HandleIcon(icon, ability.IconButton)
+		icon:SetDrawLayer("BORDER", 0)
+		numAbilitiesStyled = numAbilitiesStyled + 1
+		ability = abilities[numAbilitiesStyled]
+	end
+	follower.numAbilitiesStyled = numAbilitiesStyled
+
+	if hasItems then
+		local weapon = follower.followerTab.ItemWeapon
+		local armor = follower.followerTab.ItemArmor
+		if not weapon.backdrop then
+			S:HandleIcon(weapon.Icon, weapon)
+			weapon.Border:SetTexture(nil)
+			weapon.backdrop:SetFrameLevel(weapon:GetFrameLevel())
+		end
+		if not armor.backdrop then
+			S:HandleIcon(armor.Icon, armor)
+			armor.Border:SetTexture(nil)
+			armor.backdrop:SetFrameLevel(armor:GetFrameLevel())
+		end
+	end
+
+	local xpbar = follower.followerTab.XPBar
+	xpbar:StripTextures()
+	xpbar:SetStatusBarTexture(E["media"].normTex)
+	xpbar:CreateBackdrop("Transparent")
+end
+
+function S:HandleShipFollowerPage(followerTab)
+	local traits = followerTab.Traits
+	for i = 1, #traits do
+		local icon = traits[i].Portrait
+		local border = traits[i].Border
+		border:SetTexture(nil) -- I think the default border looks nice, not sure if we want to replace that
+		-- The landing page icons display inner borders
+		if followerTab.isLandingPage then
+			icon:SetTexCoord(unpack(E.TexCoords))
+		end
+	end
+
+	local equipment = followerTab.EquipmentFrame.Equipment
+	for i = 1, #equipment do
+		local icon = equipment[i].Icon
+		local border = equipment[i].Border
+		border:SetAtlas("ShipMission_ShipFollower-TypeFrame") -- This border is ugly though, use the traits border instead
+		-- The landing page icons display inner borders
+		if followerTab.isLandingPage then
+			icon:SetTexCoord(unpack(E.TexCoords))
+		end
+	end
+end
+
 function S:ADDON_LOADED(event, addon)
 	if self.allowBypass[addon] then
 		S.addonsToLoad[addon]()
