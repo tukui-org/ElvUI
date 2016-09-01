@@ -5,7 +5,7 @@ local TT = E:GetModule('Tooltip')
 E.Options.args.tooltip = {
 	type = "group",
 	name = L["Tooltip"],
-	childGroups = "select",
+	childGroups = "tab",
 	get = function(info) return E.db.tooltip[ info[#info] ] end,
 	set = function(info, value) E.db.tooltip[ info[#info] ] = value; end,
 	args = {
@@ -75,11 +75,6 @@ E.Options.args.tooltip = {
 						["NONE"] = L["None"],
 					},
 				},
-				useCustomFactionColors = {
-					order = 8,
-					type = 'toggle',
-					name = L["Custom Faction Colors"],
-				},
 				fontGroup = {
 					order = 9,
 					type = "group",
@@ -144,7 +139,15 @@ E.Options.args.tooltip = {
 					type = "group",
 					name = L["Custom Faction Colors"],
 					guiInline = true,
-					args = {},
+					args = {
+						useCustomFactionColors = {
+							order = 0,
+							type = 'toggle',
+							name = L["Custom Faction Colors"],
+							get = function(info) return E.db.tooltip.useCustomFactionColors end,
+							set = function(info, value) E.db.tooltip.useCustomFactionColors = value; end,
+						},
+					},
 					get = function(info)
 						local t = E.db.tooltip.factionColors[ info[#info] ]
 						local d = P.tooltip.factionColors[ info[#info] ]
