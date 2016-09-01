@@ -9,6 +9,8 @@ local LEVEL = LEVEL
 local OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_MINIONS, OPTION_TOOLTIP_UNIT_NAME_ENEMY_MINIONS, OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS = OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_MINIONS, OPTION_TOOLTIP_UNIT_NAME_ENEMY_MINIONS, OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS
 local NONE = NONE
 
+local ACD = LibStub("AceConfigDialog-3.0-ElvUI")
+
 local positionValues = {
 	TOPLEFT = 'TOPLEFT',
 	LEFT = 'LEFT',
@@ -674,139 +676,194 @@ E.Options.args.nameplate = {
 			get = function(info) return E.private.nameplates[ info[#info] ] end,
 			set = function(info, value) E.private.nameplates[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end
 		},
-		general = {
-			order = 1,
-			type = "group",
-			name = L["General"],
-			guiInline = true,
+		header = {
 			order = 3,
+			type = "header",
+			name = L["Shortcuts"],
+		},
+		generalShortcut = {
+			order = 4,
+			type = "execute",
+			name = L["General Options"],
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "generalGroup") end,
+		},
+		playerShortcut = {
+			order = 5,
+			type = "execute",
+			name = L["Player Frame"],
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "playerGroup") end,
+		},
+		healerShortcut = {
+			order = 6,
+			type = "execute",
+			name = L["Healer Frames"],
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "healerGroup") end,
+		},
+		friendlyPlayerShortcut = {
+			order = 7,
+			type = "execute",
+			name = L["Friendly Player Frames"],
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "friendlyPlayerGroup") end,
+		},
+		enemyPlayerShortcut = {
+			order = 8,
+			type = "execute",
+			name = L["Enemy Player Frames"],
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "enemyPlayerGroup") end,
+		},
+		friendlyNPCShortcut = {
+			order = 99,
+			type = "execute",
+			name = L["Friendly NPC Frames"],
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "friendlyNPCGroup") end,
+		},
+		enemyNPCShortcut = {
+			order = 10,
+			type = "execute",
+			name = L["Enemy NPC Frames"],
+			func = function() ACD:SelectGroup("ElvUI", "nameplate", "enemyNPCGroup") end,
+		},
+		
+		generalGroup = {
+			order = 20,
+			type = "group",
+			name = L["General Options"],
+			childGroups = "tab",
 			disabled = function() return not E.NamePlates; end,
 			args = {
-				statusbar = {
-					order = 0,
-					type = "select",
-					dialogControl = 'LSM30_Statusbar',
-					name = L["StatusBar Texture"],
-					values = AceGUIWidgetLSMlists.statusbar,
-				},
-				motionType = {
-					type = "select",
+				general = {
 					order = 1,
-					name = UNIT_NAMEPLATES_TYPES,
-					desc = L["Set to either stack nameplates vertically or allow them to overlap."],
-					values = {
-						['STACKED'] = UNIT_NAMEPLATES_TYPE_2,
-						['OVERLAP'] = UNIT_NAMEPLATES_TYPE_1,
+					type = "group",
+					name = L["General"],
+					args = {
+						statusbar = {
+							order = 0,
+							type = "select",
+							dialogControl = 'LSM30_Statusbar',
+							name = L["StatusBar Texture"],
+							values = AceGUIWidgetLSMlists.statusbar,
+						},
+						motionType = {
+							type = "select",
+							order = 1,
+							name = UNIT_NAMEPLATES_TYPES,
+							desc = L["Set to either stack nameplates vertically or allow them to overlap."],
+							values = {
+								['STACKED'] = UNIT_NAMEPLATES_TYPE_2,
+								['OVERLAP'] = UNIT_NAMEPLATES_TYPE_1,
+							},
+						},
+						displayStyle = {
+							type = "select",
+							order = 2,
+							name = L["Display Style"],
+							desc = L["Controls which nameplates will be displayed."],
+							values = {
+								["ALL"] = ALL,
+								["BLIZZARD"] = L["Target, Quest, Combat"],
+								["TARGET"] = L["Only Show Target"],
+							},
+						},
+						showNPCTitles = {
+							order = 3,
+							type = "toggle",
+							name = L["Show NPC Titles"],
+							desc = L["Display NPC Titles whenever healthbars arent displayed and names are."]
+						},
+						clampToScreen = {
+							order = 4,
+							type = "toggle",
+							name = L["Clamp Nameplates"],
+							desc = L["Clamp nameplates to the top of the screen when outside of view."],
+						},
+						useTargetGlow = {
+							order = 5,
+							type = "toggle",
+							name = L["Use Target Glow"],
+						},
+						useTargetScale = {
+							order = 6,
+							type = "toggle",
+							name = L["Use Target Scale"],
+							desc = L["Enable/Disable the scaling of targetted nameplates."],
+						},
+						targetScale = {
+							name = L["Target Scale"],
+							desc = L["Scale of the nameplate that is targetted."],
+							type = "range",
+							min = 0.3, max = 2, step = 0.01,
+							isPercent = true,
+							order = 7,
+							disabled = function() return E.db.nameplates.useTargetScale ~= true end,
+						},
+						nonTargetTransparency = {
+							name = L["Non-Target Transparency"],
+							desc = L["Set the transparency level of nameplates that are not the target nameplate."],
+							type = "range",
+							min = 0, max = 1, step = 0.01,
+							isPercent = true,
+							order = 8,
+						},
+						lowHealthThreshold = {
+							order = 9,
+							name = L["Low Health Threshold"],
+							desc = L["Make the unitframe glow yellow when it is below this percent of health, it will glow red when the health value is half of this value."],
+							type = "range",
+							isPercent = true,
+							min = 0, max = 1, step = 0.01,
+						},
+						showEnemyCombat = {
+							order = 10,
+							type = "select",
+							name = L["Enemy Combat Toggle"],
+							desc = L["Control enemy nameplates toggling on or off when in combat."],
+							values = {
+								["DISABLED"] = L["Disabled"],
+								["TOGGLE_ON"] = L["Toggle On While In Combat"],
+								["TOGGLE_OFF"] = L["Toggle Off While In Combat"],
+							},
+							set = function(info, value)
+								E.db.nameplates[ info[#info] ] = value;
+								NP:PLAYER_REGEN_ENABLED()
+							end,
+						},
+						showFriendlyCombat = {
+							order = 11,
+							type = "select",
+							name = L["Friendly Combat Toggle"],
+							desc = L["Control friendly nameplates toggling on or off when in combat."],
+							values = {
+								["DISABLED"] = L["Disabled"],
+								["TOGGLE_ON"] = L["Toggle On While In Combat"],
+								["TOGGLE_OFF"] = L["Toggle Off While In Combat"],
+							},
+							set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:PLAYER_REGEN_ENABLED() end,
+						},
+						loadDistance = {
+							order = 12,
+							type = "range",
+							name = L["Load Distance"],
+							desc = L["Only load nameplates for units within this range."],
+							min = 10, max = 100, step = 1,
+						},
+						clickableWidth = {
+							order = 13,
+							type = "range",
+							name = L["Clickable Width"],
+							desc = L["Controls how big of an area on the screen will accept clicks to target unit."],
+							min = 50, max = 200, step = 1,
+							set = function(info, value) E.db.nameplates.clickableWidth = value; E:StaticPopup_Show("CONFIG_RL") end,
+						},
+						clickableHeight = {
+							order = 14,
+							type = "range",
+							name = L["Clickable Height"],
+							desc = L["Controls how big of an area on the screen will accept clicks to target unit."],
+							min = 10, max = 75, step = 1,
+							set = function(info, value) E.db.nameplates.clickableHeight = value; E:StaticPopup_Show("CONFIG_RL") end,
+						},
 					},
-				},
-				displayStyle = {
-					type = "select",
-					order = 2,
-					name = L["Display Style"],
-					desc = L["Controls which nameplates will be displayed."],
-					values = {
-						["ALL"] = ALL,
-						["BLIZZARD"] = L["Target, Quest, Combat"],
-						["TARGET"] = L["Only Show Target"],
-					},
-				},
-				showNPCTitles = {
-					order = 3,
-					type = "toggle",
-					name = L["Show NPC Titles"],
-					desc = L["Display NPC Titles whenever healthbars arent displayed and names are."]
-				},
-				clampToScreen = {
-					order = 4,
-					type = "toggle",
-					name = L["Clamp Nameplates"],
-					desc = L["Clamp nameplates to the top of the screen when outside of view."],
-				},
-				useTargetGlow = {
-					order = 5,
-					type = "toggle",
-					name = L["Use Target Glow"],
-				},
-				useTargetScale = {
-					order = 6,
-					type = "toggle",
-					name = L["Use Target Scale"],
-					desc = L["Enable/Disable the scaling of targetted nameplates."],
-				},
-				targetScale = {
-					name = L["Target Scale"],
-					desc = L["Scale of the nameplate that is targetted."],
-					type = "range",
-					min = 0.3, max = 2, step = 0.01,
-					isPercent = true,
-					order = 7,
-					disabled = function() return E.db.nameplates.useTargetScale ~= true end,
-				},
-				nonTargetTransparency = {
-					name = L["Non-Target Transparency"],
-					desc = L["Set the transparency level of nameplates that are not the target nameplate."],
-					type = "range",
-					min = 0, max = 1, step = 0.01,
-					isPercent = true,
-					order = 8,
-				},
-				lowHealthThreshold = {
-					order = 9,
-					name = L["Low Health Threshold"],
-					desc = L["Make the unitframe glow yellow when it is below this percent of health, it will glow red when the health value is half of this value."],
-					type = "range",
-					isPercent = true,
-					min = 0, max = 1, step = 0.01,
-				},
-				showEnemyCombat = {
-					order = 10,
-					type = "select",
-					name = L["Enemy Combat Toggle"],
-					desc = L["Control enemy nameplates toggling on or off when in combat."],
-					values = {
-						["DISABLED"] = L["Disabled"],
-						["TOGGLE_ON"] = L["Toggle On While In Combat"],
-						["TOGGLE_OFF"] = L["Toggle Off While In Combat"],
-					},
-					set = function(info, value)
-						E.db.nameplates[ info[#info] ] = value;
-						NP:PLAYER_REGEN_ENABLED()
-					end,
-				},
-				showFriendlyCombat = {
-					order = 11,
-					type = "select",
-					name = L["Friendly Combat Toggle"],
-					desc = L["Control friendly nameplates toggling on or off when in combat."],
-					values = {
-						["DISABLED"] = L["Disabled"],
-						["TOGGLE_ON"] = L["Toggle On While In Combat"],
-						["TOGGLE_OFF"] = L["Toggle Off While In Combat"],
-					},
-					set = function(info, value) E.db.nameplates[ info[#info] ] = value; NP:PLAYER_REGEN_ENABLED() end,
-				},
-				loadDistance = {
-					order = 12,
-					type = "range",
-					name = L["Load Distance"],
-					desc = L["Only load nameplates for units within this range."],
-					min = 10, max = 100, step = 1,
-				},
-				clickableWidth = {
-					order = 13,
-					type = "range",
-					name = L["Clickable Width"],
-					desc = L["Controls how big of an area on the screen will accept clicks to target unit."],
-					min = 50, max = 200, step = 1,
-					set = function(info, value) E.db.nameplates.clickableWidth = value; E:StaticPopup_Show("CONFIG_RL") end,
-				},
-				clickableHeight = {
-					order = 14,
-					type = "range",
-					name = L["Clickable Height"],
-					desc = L["Controls how big of an area on the screen will accept clicks to target unit."],
-					min = 10, max = 75, step = 1,
-					set = function(info, value) E.db.nameplates.clickableHeight = value; E:StaticPopup_Show("CONFIG_RL") end,
+					
 				},
 				fontGroup = {
 					order = 100,
@@ -957,9 +1014,8 @@ E.Options.args.nameplate = {
 						},
 					},
 				},
-
 				castGroup = {
-					order = 200,
+					order = 175,
 					type = "group",
 					name = L["Cast Bar"],
 					get = function(info)
@@ -989,7 +1045,7 @@ E.Options.args.nameplate = {
 					},
 				},
 				reactions = {
-					order = 150,
+					order = 200,
 					type = "group",
 					name = L["Reaction Colors"],
 					get = function(info)
