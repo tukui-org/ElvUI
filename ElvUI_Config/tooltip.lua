@@ -27,6 +27,11 @@ E.Options.args.tooltip = {
 			name = L["General"],
 			disabled = function() return not E.Tooltip; end,
 			args = {
+				header = {
+					order = 0,
+					type = "header",
+					name = L["General"],
+				},
 				cursorAnchor = {
 					order = 1,
 					type = 'toggle',
@@ -168,6 +173,11 @@ E.Options.args.tooltip = {
 			get = function(info) return E.db.tooltip.visibility[ info[#info] ] end,
 			set = function(info, value) E.db.tooltip.visibility[ info[#info] ] = value; end,
 			args = {
+				header = {
+					order = 0,
+					type = "header",
+					name = L["Visibility"],
+				},
 				actionbars = {
 					order = 1,
 					type = 'select',
@@ -222,6 +232,11 @@ E.Options.args.tooltip = {
 			get = function(info) return E.db.tooltip.healthBar[ info[#info] ] end,
 			set = function(info, value) E.db.tooltip.healthBar[ info[#info] ] = value; end,
 			args = {
+				header = {
+					order = 0,
+					type = "header",
+					name = L["Health Bar"],
+				},
 				height = {
 					order = 1,
 					name = L["Height"],
