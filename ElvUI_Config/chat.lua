@@ -4,6 +4,7 @@ local CH = E:GetModule('Chat')
 E.Options.args.chat = {
 	type = "group",
 	name = L["Chat"],
+	childGroups = "tab",
 	get = function(info) return E.db.chat[ info[#info] ] end,
 	set = function(info, value) E.db.chat[ info[#info] ] = value end,
 	args = {
@@ -23,8 +24,12 @@ E.Options.args.chat = {
 			order = 3,
 			type = "group",
 			name = L["General"],
-			guiInline = true,
 			args = {
+				header = {
+					order = 0,
+					type = "header",
+					name = L["General"],
+				},
 				url = {
 					order = 1,
 					type = 'toggle',
@@ -205,8 +210,12 @@ E.Options.args.chat = {
 			order = 4,
 			type = 'group',
 			name = L["Alerts"],
-			guiInline = true,
 			args = {
+				header = {
+					order = 0,
+					type = "header",
+					name = L["Alerts"],
+				},
 				whisperSound = {
 					order = 1,
 					type = 'select', dialogControl = 'LSM30_Sound',
@@ -238,8 +247,12 @@ E.Options.args.chat = {
 			order = 5,
 			type = 'group',
 			name = L["Panels"],
-			guiInline = true,
 			args = {
+				header = {
+					order = 0,
+					type = "header",
+					name = L["Panels"],
+				},
 				lockPositions = {
 					order = 1,
 					type = 'toggle',
@@ -385,10 +398,14 @@ E.Options.args.chat = {
 		fontGroup = {
 			order = 120,
 			type = 'group',
-			guiInline = true,
 			name = L["Fonts"],
 			set = function(info, value) E.db.chat[ info[#info] ] = value; CH:SetupChat() end,
 			args = {
+				header = {
+					order = 0,
+					type = "header",
+					name = L["Fonts"],
+				},
 				font = {
 					type = "select", dialogControl = 'LSM30_Font',
 					order = 1,
