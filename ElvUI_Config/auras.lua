@@ -88,7 +88,7 @@ local auraOptions = {
 E.Options.args.auras = {
 	type = 'group',
 	name = BUFFOPTIONS_LABEL,
-	childGroups = "select",
+	childGroups = "tab",
 	get = function(info) return E.db.auras[ info[#info] ] end,
 	set = function(info, value) E.db.auras[ info[#info] ] = value; A:UpdateHeader(ElvUIPlayerBuffs); A:UpdateHeader(ElvUIPlayerDebuffs) end,
 	args = {
