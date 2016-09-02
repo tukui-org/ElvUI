@@ -59,16 +59,6 @@ L["TEXT_FORMAT_DESC"] = [=[Строка для изменения вида те�
 "name:long" - Имя с ограничением длины в 20 символов
 
 Для отключения оставьте поле пустым, для дополнительной информации посетите http://www.tukui.org]=];
-L["IGNORE_ITEMS_DESC"] = [=[Вменяемые параметры:
-
-Названия предметов или ссылки на предметы
-
-Параметры синтаксиса поиска. Примеры:
-q:epic
-s:Tank Set
-q:epic&lvl:>300
-
-За дополнительной информацией обращаться в "Сумки->Синтаксис поиска".]=];
 
 --ActionBars
 L["Action Paging"] = "Переключение панелей"
@@ -140,6 +130,8 @@ L[ [=[This works like a macro, you can run different situations to get the actio
  Пример: '[combat] show;hide']=]
 
 --Bags
+L["Add an item or search syntax to the ignored list. Items matching the search syntax will be ignored."] = true;
+L["Add Item or Search Syntax"] = true;
 L["Adjust the width of the bag frame."] = "Установить размер фрейма сумок"
 L["Adjust the width of the bank frame."] = "Установить размер фрейма банка"
 L["Align the width of the bag frame to fit inside the chat box."] = "Установить размер сумок/банка по ширине чата"
@@ -161,13 +153,13 @@ L["Displays item level on equippable items."] = "Отображает урове
 L["Enable/Disable the all-in-one bag."] = 'Включить/выключить режим сумки "все в одной". '
 L["Enable/Disable the Bag-Bar."] = "Включить/выключить панель сумок"
 L["Full"] = "Полный"
+L["Here you can add items or search terms that you want to be excluded from sorting. To remove an item just click on its name in the list."] = true;
 L["Icons and Text (Short)"] = "Иконки и текст (короткий)"
 L["Icons and Text"] = "Иконки и текст"
-L["Ignore Items"] = "Игнорировать предметы"
+L["Ignored Items and Search Syntax"] = true;
 L["Item Count Font"] = "Шрифт кол-ва предметов"
 L["Item Level Threshold"] = "Ограничение уровня предметов"
 L["Item Level"] = "Уровень предметов"
-L["Items in this list or items that match any Search Syntax query in this list will be ignored when sorting. Separate each entry with a semicolon ;."] = "Предметы в списке или предметы, которые попадают под ситаксис поиска в списке, будут проигнорированы при сортировке. Прежметы должны быть разделены точкой с запятой (;)"
 L["Money Format"] = "Формат денег"
 L["Panel Width (Bags)"] = "Ширина сумок"
 L["Panel Width (Bank)"] = "Ширина банка"

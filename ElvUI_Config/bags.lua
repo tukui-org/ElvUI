@@ -73,12 +73,6 @@ E.Options.args.bags = {
 					desc = L["Display the junk icon on all grey items that can be vendored."],
 					set = function(info, value) E.db.bags[ info[#info] ] = value; B:UpdateAllBagSlots(); end,
 				},
-				sortInverted = {
-					order = 5,
-					type = 'toggle',
-					name = L["Sort Inverted"],
-					desc = L["Direction the bag sorting will use to allocate the items."],
-				},
 				countGroup = {
 					order = 6,
 					type = "group",
@@ -315,20 +309,48 @@ E.Options.args.bags = {
 					type = "header",
 					name = L["Bag Sorting"],
 				},
-				description = {
+				sortInverted = {
 					order = 1,
+					type = 'toggle',
+					name = L["Sort Inverted"],
+					desc = L["Direction the bag sorting will use to allocate the items."],
+				},
+				spacer = {
+					order = 2,
 					type = "description",
-					name = L["Items in this list or items that match any Search Syntax query in this list will be ignored when sorting. Separate each entry with a semicolon ;."],
+					name = " ",
 				},
-				ignoreItems = {
-					order = 100,
-					name = L["Ignore Items"],
-					desc = L["IGNORE_ITEMS_DESC"],
+				description = {
+					order = 3,
+					type = "description",
+					width = "double",
+					name = L["Here you can add items or search terms that you want to be excluded from sorting. To remove an item just click on its name in the list."],
+				},
+				addEntry = {
+					order = 4,
+					name = L["Add Item or Search Syntax"],
+					desc = L["Add an item or search syntax to the ignored list. Items matching the search syntax will be ignored."],
 					type = 'input',
-					width = 'full',
-					multiline = true,
-					set = function(info, value) E.db.bags.ignoreItems = value; end,
+					get = function(info) return "" end,
+					set = function(info, value)
+						if value == "" or string.gsub(value, "%s+", "") == "" then return; end --Don't allow empty entries
+
+						--Store by itemID if possible
+						local itemID = string.match(value, "item:(%d+)")
+						E.db.bags.ignoredItems[(itemID or value)] = value
+					end,
 				},
+				ignoredEntries = {
+					order = 5,
+					type = "multiselect",
+					name = L["Ignored Items and Search Syntax"],
+					values = E.db.bags.ignoredItems,
+					get = function(info, value)	return E.db.bags.ignoredItems[value] end,
+					set = function(info, value)
+						E.db.bags.ignoredItems[value] = nil
+						GameTooltip:Hide()--Make sure tooltip is properly hidden
+					end,
+				}
 			},
 		},
 		search_syntax = {

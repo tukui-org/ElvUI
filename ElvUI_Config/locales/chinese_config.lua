@@ -59,16 +59,6 @@ L["TEXT_FORMAT_DESC"] = [=[提供一个更改文字格式的方式
 'name:long' - 姓名显示限制于20字节内
 
 空白则为禁用. 如需技术支援请至 http://www.tukui.org]=];
-L["IGNORE_ITEMS_DESC"] = [=[Valid entries:
-
-Item links or item names
-
-Terms from Search Syntax. Examples:
-q:epic
-s:Tank Set
-q:epic&lvl:>300
-
-See "Bags->Search Syntax" for more.]=];
 
 --ActionBars
 L["Action Paging"] = "动作条翻页"
@@ -140,6 +130,8 @@ L[ [=[This works like a macro, you can run different situations to get the actio
  例如: '[combat] show;hide']=]
 
 --Bags
+L["Add an item or search syntax to the ignored list. Items matching the search syntax will be ignored."] = true;
+L["Add Item or Search Syntax"] = true;
 L["Adjust the width of the bag frame."] = '调整背包框架宽度'
 L["Adjust the width of the bank frame."] = '调整银行框架宽度'
 L["Align the width of the bag frame to fit inside the chat box."] = '调整背包框的宽度以适应聊天框'
@@ -161,13 +153,13 @@ L["Displays item level on equippable items."] = "显示所有可装备物品的�
 L["Enable/Disable the all-in-one bag."] = "开/关整合背包。"
 L["Enable/Disable the Bag-Bar."] = "启用/禁用 背包条."
 L["Full"] = "满"
+L["Here you can add items or search terms that you want to be excluded from sorting. To remove an item just click on its name in the list."] = true;
 L["Icons and Text (Short)"] = "图标和文字(短)"
 L["Icons and Text"] = "图标和文字"
-L["Ignore Items"] = "忽略项目"
+L["Ignored Items and Search Syntax"] = true;
 L["Item Count Font"] = "物品数目字体"
 L["Item Level Threshold"] = "物品等级阈值"
 L["Item Level"] = "物品等级"
-L["Items in this list or items that match any Search Syntax query in this list will be ignored when sorting. Separate each entry with a semicolon ;."] = true;
 L["Money Format"] = "金币格式"
 L["Panel Width (Bags)"] = '背包面板宽度'
 L["Panel Width (Bank)"] = '银行面板宽度'
