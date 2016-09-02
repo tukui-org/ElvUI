@@ -18,7 +18,6 @@ local function LoadSkin()
 		"StaticPopup2",
 		"StaticPopup3",
 		"StaticPopup4",
-		"GameMenuFrame",
 		"InterfaceOptionsFrame",
 		"VideoOptionsFrame",
 		"AudioOptionsFrame",
@@ -41,6 +40,9 @@ local function LoadSkin()
 		_G[skins[i]]:SetTemplate("Transparent")
 	end
 
+	if not IsAddOnLoaded("ConsolePort") then
+		GameMenuFrame:SetTemplate("Transparent")
+	end
 
 	local ChatMenus = {
 		"ChatMenu",
@@ -93,34 +95,36 @@ local function LoadSkin()
 		end
 	end
 
-	-- reskin all esc/menu buttons
-	local BlizzardMenuButtons = {
-		"GameMenuButtonOptions",
-		"GameMenuButtonSoundOptions",
-		"GameMenuButtonUIOptions",
-		"GameMenuButtonKeybindings",
-		"GameMenuButtonMacros",
-		"GameMenuButtonAddOns",
-		"GameMenuButtonWhatsNew",
-		"GameMenuButtonRatings",
-		"GameMenuButtonAddons",
-		"GameMenuButtonLogout",
-		"GameMenuButtonQuit",
-		"GameMenuButtonContinue",
-		"GameMenuButtonMacOptions",
-		"GameMenuButtonStore",
-		"GameMenuButtonHelp"
-	}
+	if not IsAddOnLoaded("ConsolePort") then
+		-- reskin all esc/menu buttons
+		local BlizzardMenuButtons = {
+			"GameMenuButtonOptions",
+			"GameMenuButtonSoundOptions",
+			"GameMenuButtonUIOptions",
+			"GameMenuButtonKeybindings",
+			"GameMenuButtonMacros",
+			"GameMenuButtonAddOns",
+			"GameMenuButtonWhatsNew",
+			"GameMenuButtonRatings",
+			"GameMenuButtonAddons",
+			"GameMenuButtonLogout",
+			"GameMenuButtonQuit",
+			"GameMenuButtonContinue",
+			"GameMenuButtonMacOptions",
+			"GameMenuButtonStore",
+			"GameMenuButtonHelp"
+		}
 
-	for i = 1, #BlizzardMenuButtons do
-		local menuButton = _G[BlizzardMenuButtons[i]]
-		if menuButton then
-			S:HandleButton(menuButton, nil, "BlizzardMenuButtons[i]")
+		for i = 1, #BlizzardMenuButtons do
+			local menuButton = _G[BlizzardMenuButtons[i]]
+			if menuButton then
+				S:HandleButton(menuButton, nil, "BlizzardMenuButtons[i]")
+			end
 		end
+		
+		-- Skin the ElvUI Menu Button
+		S:HandleButton(GameMenuFrame.ElvUI, nil, "GameMenuFrame.ElvUI")
 	end
-
-	-- Skin the ElvUI Menu Button
-	S:HandleButton(GameMenuFrame.ElvUI, nil, "GameMenuFrame.ElvUI")
 
 	if IsAddOnLoaded("OptionHouse") then
 		S:HandleButton(GameMenuButtonOptionHouse, nil, "GameMenuButtonOptionHouse")
@@ -158,7 +162,6 @@ local function LoadSkin()
 
 	-- hide header textures and move text/buttons.
 	local BlizzardHeader = {
-		"GameMenuFrame",
 		"InterfaceOptionsFrame",
 		"AudioOptionsFrame",
 		"VideoOptionsFrame",
@@ -175,6 +178,12 @@ local function LoadSkin()
 				title:Point("TOP", BlizzardHeader[i], 0, 0)
 			end
 		end
+	end
+
+	if not IsAddOnLoaded("ConsolePort") then
+		GameMenuFrameHeader:SetTexture("")
+		GameMenuFrameHeader:ClearAllPoints()
+		GameMenuFrameHeader:Point("TOP", GameMenuFrame, 0, 7)
 	end
 
 	-- here we reskin all "normal" buttons
