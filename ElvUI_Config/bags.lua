@@ -193,23 +193,16 @@ E.Options.args.bags = {
 				},
 			},
 		},
-		sizeAndPos = {
+		sizeGroup = {
 			order = 4,
 			type = "group",
-			name = L["Size and Positions"],
+			name = L["Size"],
 			disabled = function() return not E.bags end,
 			args = {
 				header = {
 					order = 0,
 					type = "header",
-					name = L["Size and Positions"],
-				},
-				alignToChat = {
-					order = 1,
-					type = 'toggle',
-					name = L["Align To Chat"],
-					desc = L["Align the width of the bag frame to fit inside the chat box."],
-					set = function(info, value) E.db.bags[ info[#info] ] = value; B:Layout(); B:Layout(true) end,
+					name = L["Size"],
 				},
 				bagSize = {
 					order = 2,
@@ -234,7 +227,6 @@ E.Options.args.bags = {
 					desc = L["Adjust the width of the bag frame."],
 					min = 150, max = 1400, step = 1,
 					set = function(info, value) E.db.bags[ info[#info] ] = value; B:Layout();end,
-					disabled = function() return E.db.bags.alignToChat end
 				},
 				bankWidth = {
 					order = 5,
@@ -243,35 +235,6 @@ E.Options.args.bags = {
 					desc = L["Adjust the width of the bank frame."],
 					min = 150, max = 1400, step = 1,
 					set = function(info, value) E.db.bags[ info[#info] ] = value; B:Layout(true) end,
-					disabled = function() return E.db.bags.alignToChat end
-				},
-				xOffset = {
-					order = 6,
-					type = 'range',
-					name = L["X Offset Bags"],
-					min = -5000, max = 5000, step = 1,
-					set = function(info, value) E.db.bags[ info[#info] ] = value; B:PositionBagFrames(); end,
-				},
-				yOffset = {
-					order = 7,
-					type = 'range',
-					name = L["Y Offset Bags"],
-					min = -3000, max = 3000, step = 1,
-					set = function(info, value) E.db.bags[ info[#info] ] = value; B:PositionBagFrames(); end,
-				},
-				xOffsetBank = {
-					order = 8,
-					type = 'range',
-					name = L["X Offset Bank"],
-					min = -5000, max = 5000, step = 1,
-					set = function(info, value) E.db.bags[ info[#info] ] = value; B:PositionBagFrames(); end,
-				},
-				yOffsetBank = {
-					order = 9,
-					type = 'range',
-					name = L["Y Offset Bank"],
-					min = -3000, max = 3000, step = 1,
-					set = function(info, value) E.db.bags[ info[#info] ] = value; B:PositionBagFrames(); end,
 				},
 			},
 		},

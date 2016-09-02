@@ -143,10 +143,14 @@ Exemplo: '[combat] show;hide']=];
 L["Adjust the width of the bag frame."] = "Ajusta a largura do quadro das bolsas."
 L["Adjust the width of the bank frame."] = "Ajusta a largura do quadro do banco."
 L["Align the width of the bag frame to fit inside the chat box."] = "Alinha a largura do quadro das bolsas para caber dentro do quadro do bate-papo."
-L["Align To Chat"] = "Alinhar com o Bate-papo"
 L["Ascending"] = "Ascendente"
+L["Bag Mover (Grow Down)"] = true;
+L["Bag Mover (Grow Up)"] = true;
+L["Bag Mover"] = true;
 L["Bag Sorting"] = true;
 L["Bag-Bar"] = "Barra das Bolsas"
+L["Bank Mover (Grow Down)"] = true;
+L["Bank Mover (Grow Up)"] = true;
 L["Bar Direction"] = "Direção da Barra"
 L["Blizzard Style"] = true;
 L["Bottom to Top"] = "De baixo para cima"
@@ -194,10 +198,6 @@ L["This makes the item level display more reliable but uses more resources. If t
 L["Top to Bottom"] = "De cima para baixo"
 L["Use coin icons instead of colored text."] = true;
 L["Use Tooltip Scanning"] = true;
-L["X Offset Bags"] = true;
-L["X Offset Bank"] = true;
-L["Y Offset Bags"] = true;
-L["Y Offset Bank"] = true;
 
 --Buffs and Debuffs
 L["Begin a new row or column after this many auras."] = "Começar uma nova coluna ou linha depois dessa quantia de auras."

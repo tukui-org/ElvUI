@@ -531,7 +531,7 @@ function B:Layout(isBank)
 	if not f then return; end
 	local buttonSize = isBank and self.db.bankSize or self.db.bagSize;
 	local buttonSpacing = E.Border*2;
-	local containerWidth = (self.db.alignToChat == true and ((not isBank and E.db.chat.separateSizes and E.db.chat.panelWidthRight or E.db.chat.panelWidth) or E.db.chat.panelWidth) - (E.Border*14-E.Spacing*4)) or (isBank and self.db.bankWidth) or self.db.bagWidth
+	local containerWidth = ((isBank and self.db.bankWidth) or self.db.bagWidth)
 	local numContainerColumns = floor(containerWidth / (buttonSize + buttonSpacing));
 	local holderWidth = ((buttonSize + buttonSpacing) * numContainerColumns) - buttonSpacing;
 	local numContainerRows = 0;
@@ -1054,21 +1054,6 @@ function B:ContructContainerFrame(name, isBank)
 	f:RegisterEvent('PLAYERBANKSLOTS_CHANGED');
 	f:RegisterEvent("QUEST_ACCEPTED");
 	f:RegisterEvent("QUEST_REMOVED");
-	f:SetMovable(true)
-	f:RegisterForDrag("LeftButton", "RightButton")
-	f:RegisterForClicks("AnyUp");
-	f:SetScript("OnDragStart", function(self) if IsShiftKeyDown() then self:StartMoving() end end)
-	f:SetScript("OnDragStop", function(self) self:StopMovingOrSizing() end)
-	f:SetScript("OnClick", function(self) if IsControlKeyDown() then B:PositionBagFrames() end end)
-	f:SetScript("OnEnter", function(self)
-		GameTooltip:SetOwner(self, "ANCHOR_TOPLEFT", 0, 4)
-		GameTooltip:ClearLines()
-		GameTooltip:AddDoubleLine(L["Hold Shift + Drag:"], L["Temporary Move"], 1, 1, 1)
-		GameTooltip:AddDoubleLine(L["Hold Control + Right Click:"], L["Reset Position"], 1, 1, 1)
-
-		GameTooltip:Show()
-	end)
-	f:SetScript('OnLeave', function(self) GameTooltip:Hide() end)
 	f.isBank = isBank
 
 	f:SetScript('OnEvent', B.OnEvent);
@@ -1078,6 +1063,11 @@ function B:ContructContainerFrame(name, isBank)
 	f.topOffset = 50;
 	f.BagIDs = isBank and {-1, 5, 6, 7, 8, 9, 10, 11} or {0, 1, 2, 3, 4};
 	f.Bags = {};
+
+	local mover = (isBank and ElvUIBankMover or ElvUIBagMover)
+	if mover then
+		f:Point(mover.POINT, mover)
+	end
 
 	f.closeButton = CreateFrame('Button', name..'CloseButton', f, 'UIPanelCloseButton');
 	f.closeButton:Point('TOPRIGHT', -4, -4);
@@ -1409,26 +1399,6 @@ function B:ContructContainerFrame(name, isBank)
 	return f
 end
 
-function B:PositionBagFrames()
-	if self.BagFrame then
-		self.BagFrame:ClearAllPoints()
-		if E.db.datatexts.rightChatPanel then
-			self.BagFrame:Point('BOTTOMRIGHT', RightChatToggleButton, 'TOPRIGHT', 0 + E.db.bags.xOffset, 4 + E.db.bags.yOffset);
-		else
-			self.BagFrame:Point('BOTTOMRIGHT', RightChatToggleButton, 'BOTTOMRIGHT', 0 + E.db.bags.xOffset, 0 + E.db.bags.yOffset);
-		end
-	end
-
-	if self.BankFrame then
-		self.BankFrame:ClearAllPoints()
-		if E.db.datatexts.leftChatPanel then
-			self.BankFrame:Point('BOTTOMLEFT', LeftChatToggleButton, 'TOPLEFT', 0 + E.db.bags.xOffsetBank, 4 + E.db.bags.yOffsetBank);
-		else
-			self.BankFrame:Point('BOTTOMLEFT', LeftChatToggleButton, 'BOTTOMLEFT', 0 + E.db.bags.xOffsetBank, 0 + E.db.bags.yOffsetBank);
-		end
-	end
-end
-
 function B:ToggleBags(id)
 	if id and GetContainerNumSlots(id) == 0 then return; end --Closes a bag when inserting a new container..
 
@@ -1470,7 +1440,6 @@ end
 function B:OpenBank()
 	if not self.BankFrame then
 		self.BankFrame = self:ContructContainerFrame('ElvUI_BankContainerFrame', true);
-		self:PositionBagFrames();
 	end
 
 	BankFrame:Show()
@@ -1531,54 +1500,6 @@ function B:PLAYER_ENTERING_WORLD()
 	C_Timer_After(2, function() B:UpdateBagTypes() end) --Update bag types for bagslot coloring
 end
 
-function B:Initialize()
-	self:LoadBagBar();
-
-	if not E.private.bags.enable then
-		self:SecureHook('UpdateContainerFrameAnchors');
-		return;
-	end
-	E.bags = self;
-
-	self.db = E.db.bags;
-	self.BagFrames = {};
-
-	self.BagFrame = self:ContructContainerFrame('ElvUI_ContainerFrame');
-
-	--Hook onto Blizzard Functions
-	--self:SecureHook('UpdateNewItemList', 'ClearNewItems')
-	self:SecureHook('OpenAllBags', 'OpenBags');
-	self:SecureHook('CloseAllBags', 'CloseBags');
-	self:SecureHook('ToggleBag', 'ToggleBags')
-	self:SecureHook('ToggleAllBags', 'ToggleBackpack');
-	self:SecureHook('ToggleBackpack')
-	self:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens');
-
-	self:PositionBagFrames();
-	self:Layout();
-
-	E.Bags = self;
-
-	self:DisableBlizzard();
-	self:RegisterEvent("GUILDBANKBAGSLOTS_CHANGED")
-	self:RegisterEvent("PLAYER_ENTERING_WORLD")
-	self:RegisterEvent("PLAYER_MONEY", "UpdateGoldText")
-	self:RegisterEvent("PLAYER_TRADE_MONEY", "UpdateGoldText")
-	self:RegisterEvent("TRADE_MONEY_CHANGED", "UpdateGoldText")
-	self:RegisterEvent("BANKFRAME_OPENED", "OpenBank")
-	self:RegisterEvent("BANKFRAME_CLOSED", "CloseBank")
-	self:RegisterEvent("PLAYERBANKBAGSLOTS_CHANGED")
-	self:RegisterEvent("GUILDBANKFRAME_OPENED")
-
-	BankFrame:SetScale(0.0001)
-	BankFrame:SetAlpha(0)
-	BankFrame:Point("TOPLEFT")
-	BankFrame:SetScript("OnShow", nil)
-
-	--Disable "Loot to left most bag", as the interface option has been removed
-	SetInsertItemsLeftToRight(false)
-end
-
 function B:UpdateContainerFrameAnchors()
 	local frame, xOffset, yOffset, screenHeight, freeScreenHeight, leftMostPoint, column;
 	local screenWidth = GetScreenWidth();
@@ -1633,7 +1554,7 @@ function B:UpdateContainerFrameAnchors()
 		frame:SetScale(1);
 		if ( index == 1 ) then
 			-- First bag
-			frame:Point("BOTTOMRIGHT", RightChatToggleButton, "TOPRIGHT", 2, 2);
+			frame:Point("BOTTOMRIGHT", ElvUIBagFrameHolder, "BOTTOMRIGHT", E.Spacing, -E.Border);
 			bagsPerColumn = bagsPerColumn + 1
 		elseif ( freeScreenHeight < frame:GetHeight() ) then
 			-- Start a new column
@@ -1652,6 +1573,112 @@ function B:UpdateContainerFrameAnchors()
 		end
 		freeScreenHeight = freeScreenHeight - frame:GetHeight() - VISIBLE_CONTAINER_SPACING;
 	end
+end
+
+function B:PostBagMove(screenQuadrant)
+	if not E.private.bags.enable then return; end
+
+	--self refers to the mover (bag or bank)
+	local _, y = self:GetCenter();
+	local screenHeight = E.UIParent:GetTop();
+
+	if (y > (screenHeight / 2)) then
+		self:SetText(self.textGrowDown)
+		self.POINT = "TOP"
+	else
+		self:SetText(self.textGrowUp)
+		self.POINT = "BOTTOM"
+	end
+
+	local bagFrame
+	if (self.name == "ElvUIBankMover") then
+		bagFrame = B.BankFrame
+	else
+		bagFrame = B.BagFrame
+	end
+
+	if (bagFrame) then
+		bagFrame:ClearAllPoints()
+		bagFrame:Point(self.POINT, self)
+	end
+end
+
+function B:Initialize()
+	self:LoadBagBar();
+
+	--Bag Mover (We want it created even if Bags module is disabled, so we can use it for default bags too)
+	local BagFrameHolder = CreateFrame("Frame", "ElvUIBagFrameHolder", E.UIParent)
+	BagFrameHolder:Width(200)
+	BagFrameHolder:Height(22)
+	BagFrameHolder:SetFrameLevel(BagFrameHolder:GetFrameLevel() + 400)
+	
+	if not E.private.bags.enable then
+		--Set a different default anchor
+		BagFrameHolder:Point("BOTTOMRIGHT", RightChatPanel, "BOTTOMRIGHT", -(E.Border*2), 22 + E.Border*4 - E.Spacing*2)
+		E:CreateMover(BagFrameHolder, 'ElvUIBagMover', L["Bag Mover"], nil, nil, B.PostBagMove)
+
+		self:SecureHook('UpdateContainerFrameAnchors');
+		return;
+	end
+
+	E.bags = self;
+	self.db = E.db.bags;
+	self.BagFrames = {};
+
+	--Bag Mover: Set default anchor point and create mover
+	BagFrameHolder:Point("BOTTOM", RightChatPanel, "BOTTOM", 0, 22 + E.Border*4 - E.Spacing*2)
+	E:CreateMover(BagFrameHolder, 'ElvUIBagMover', L["Bag Mover (Grow Up)"], nil, nil, B.PostBagMove)
+
+	--Bank Mover
+	local BankFrameHolder = CreateFrame("Frame", "ElvUIBankFrameHolder", E.UIParent)
+	BankFrameHolder:Width(200)
+	BankFrameHolder:Height(22)
+	BankFrameHolder:Point("BOTTOM", LeftChatPanel, "BOTTOM", 0, 22 + E.Border*4 - E.Spacing*2)
+	BankFrameHolder:SetFrameLevel(BankFrameHolder:GetFrameLevel() + 400)
+	E:CreateMover(BankFrameHolder, 'ElvUIBankMover', L["Bank Mover (Grow Up)"], nil, nil, B.PostBagMove)
+
+	--Set some variables on movers
+	ElvUIBagMover.textGrowUp = L["Bag Mover (Grow Up)"]
+	ElvUIBagMover.textGrowDown = L["Bag Mover (Grow Down)"]
+	ElvUIBagMover.POINT = "BOTTOM"
+	ElvUIBankMover.textGrowUp = L["Bank Mover (Grow Up)"]
+	ElvUIBankMover.textGrowDown = L["Bank Mover (Grow Down)"]
+	ElvUIBankMover.POINT = "BOTTOM"
+
+	--Create Bag Frame
+	self.BagFrame = self:ContructContainerFrame('ElvUI_ContainerFrame');
+
+	--Hook onto Blizzard Functions
+	--self:SecureHook('UpdateNewItemList', 'ClearNewItems')
+	self:SecureHook('OpenAllBags', 'OpenBags');
+	self:SecureHook('CloseAllBags', 'CloseBags');
+	self:SecureHook('ToggleBag', 'ToggleBags')
+	self:SecureHook('ToggleAllBags', 'ToggleBackpack');
+	self:SecureHook('ToggleBackpack')
+	self:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens');
+
+	self:Layout();
+
+	E.Bags = self;
+
+	self:DisableBlizzard();
+	self:RegisterEvent("GUILDBANKBAGSLOTS_CHANGED")
+	self:RegisterEvent("PLAYER_ENTERING_WORLD")
+	self:RegisterEvent("PLAYER_MONEY", "UpdateGoldText")
+	self:RegisterEvent("PLAYER_TRADE_MONEY", "UpdateGoldText")
+	self:RegisterEvent("TRADE_MONEY_CHANGED", "UpdateGoldText")
+	self:RegisterEvent("BANKFRAME_OPENED", "OpenBank")
+	self:RegisterEvent("BANKFRAME_CLOSED", "CloseBank")
+	self:RegisterEvent("PLAYERBANKBAGSLOTS_CHANGED")
+	self:RegisterEvent("GUILDBANKFRAME_OPENED")
+
+	BankFrame:SetScale(0.0001)
+	BankFrame:SetAlpha(0)
+	BankFrame:Point("TOPLEFT")
+	BankFrame:SetScript("OnShow", nil)
+
+	--Disable "Loot to left most bag", as the interface option has been removed
+	SetInsertItemsLeftToRight(false)
 end
 
 E:RegisterModule(B:GetName())

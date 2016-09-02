@@ -143,10 +143,14 @@ Exemple: '[combat] show;hide']=]
 L["Adjust the width of the bag frame."] = "Ajuster la largeur de la fenêtre du sac."
 L["Adjust the width of the bank frame."] = "Ajuster la largeur de la fenêtre du sac de banque."
 L["Align the width of the bag frame to fit inside the chat box."] = "Aligner la largeur de la fenêtre du sac pour s'adapter à l'intérieur de la zone de chat."
-L["Align To Chat"] = "Aligner sur le Chat"
 L["Ascending"] = "Ascendant"
+L["Bag Mover (Grow Down)"] = true;
+L["Bag Mover (Grow Up)"] = true;
+L["Bag Mover"] = true;
 L["Bag Sorting"] = "Tri des sacs";
 L["Bag-Bar"] = "Barre des sacs"
+L["Bank Mover (Grow Down)"] = true;
+L["Bank Mover (Grow Up)"] = true;
 L["Bar Direction"] = "Direction de la barre"
 L["Blizzard Style"] = "Style Blizzard";
 L["Bottom to Top"] = "Du bas vers le haut"
@@ -194,10 +198,6 @@ L["This makes the item level display more reliable but uses more resources. If t
 L["Top to Bottom"] = "Du haut vers le bas"
 L["Use coin icons instead of colored text."] = "Utiliser les icônes de pièces au lieu du texte coloré.";
 L["Use Tooltip Scanning"] = true;
-L["X Offset Bags"] = "Décalage X des sacs";
-L["X Offset Bank"] = "Décalage X de la banque";
-L["Y Offset Bags"] = "Décalage Y des sacs";
-L["Y Offset Bank"] = "Décalage Y de la banque";
 
 --Buffs and Debuffs
 L["Begin a new row or column after this many auras."] = "Commencer une nouvelle ligne ou colonne après cette limite d'auras."

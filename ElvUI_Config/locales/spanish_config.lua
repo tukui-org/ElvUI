@@ -143,10 +143,14 @@ L[ [=[This works like a macro, you can run different situations to get the actio
 L["Adjust the width of the bag frame."] = "Ajustar el ancho del marco de las bolsas."
 L["Adjust the width of the bank frame."] = "Ajustar el ancho del marco del banco."
 L["Align the width of the bag frame to fit inside the chat box."] = "Alinea el ancho del marco de las bolsas para que quepa dentro del chat"
-L["Align To Chat"] = "Alinear al chat"
 L["Ascending"] = "Ascendente"
+L["Bag Mover (Grow Down)"] = true;
+L["Bag Mover (Grow Up)"] = true;
+L["Bag Mover"] = true;
 L["Bag Sorting"] = true;
 L["Bag-Bar"] = "Barra de las Bolsas"
+L["Bank Mover (Grow Down)"] = true;
+L["Bank Mover (Grow Up)"] = true;
 L["Bar Direction"] = "Dirección de la Barra"
 L["Blizzard Style"] = true;
 L["Bottom to Top"] = "De Abajo hacia Arriba"
@@ -194,10 +198,6 @@ L["This makes the item level display more reliable but uses more resources. If t
 L["Top to Bottom"] = "De Arriba hacia Abajo"
 L["Use coin icons instead of colored text."] = true;
 L["Use Tooltip Scanning"] = true;
-L["X Offset Bags"] = true;
-L["X Offset Bank"] = true;
-L["Y Offset Bags"] = true;
-L["Y Offset Bank"] = true;
 
 --Buffs and Debuffs
 L["Begin a new row or column after this many auras."] = "Empieza una nueva fila o columna después de estas auras."

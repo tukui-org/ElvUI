@@ -143,10 +143,14 @@ L[ [=[This works like a macro, you can run different situations to get the actio
 L["Adjust the width of the bag frame."] = '調整背包框架寬度.'
 L["Adjust the width of the bank frame."] = '調整銀行框架寬度.'
 L["Align the width of the bag frame to fit inside the chat box."] = '調整背包框架寬度以適應對話框.'
-L["Align To Chat"] = '對齊對話框架'
 L["Ascending"] = "升序"
+L["Bag Mover (Grow Down)"] = true;
+L["Bag Mover (Grow Up)"] = true;
+L["Bag Mover"] = true;
 L["Bag Sorting"] = true;
 L["Bag-Bar"] = "背包條"
+L["Bank Mover (Grow Down)"] = true;
+L["Bank Mover (Grow Up)"] = true;
 L["Bar Direction"] = "背包條排序方向"
 L["Blizzard Style"] = true;
 L["Bottom to Top"] = "底部至頂部"
@@ -194,10 +198,6 @@ L["This makes the item level display more reliable but uses more resources. If t
 L["Top to Bottom"] = "頂部至底部"
 L["Use coin icons instead of colored text."] = true;
 L["Use Tooltip Scanning"] = true;
-L["X Offset Bags"] = true;
-L["X Offset Bank"] = true;
-L["Y Offset Bags"] = true;
-L["Y Offset Bank"] = true;
 
 --Buffs and Debuffs
 L["Begin a new row or column after this many auras."] = "在這些光環旁開始新的行或列."

@@ -190,10 +190,14 @@ L[ [=[This works like a macro, you can run different situations to get the actio
 L["Adjust the width of the bag frame."] = "통합가방 프레임의 가로길이를 결정합니다."
 L["Adjust the width of the bank frame."] = "통합은행 프레임의 가로길이를 결정합니다."
 L["Align the width of the bag frame to fit inside the chat box."] = "통합은행 프레임의 가로길이를 좌측 패널, 통합가방 프레임의 가로길이를 우측 패널 각각의 가로길이에 맞춥니다."
-L["Align To Chat"] = "패널에 맞춤"
 L["Ascending"] = "오름차순"
+L["Bag Mover (Grow Down)"] = true;
+L["Bag Mover (Grow Up)"] = true;
+L["Bag Mover"] = true;
 L["Bag Sorting"] = true;
 L["Bag-Bar"] = "가방바"
+L["Bank Mover (Grow Down)"] = true;
+L["Bank Mover (Grow Up)"] = true;
 L["Bar Direction"] = "바 방향"
 L["Blizzard Style"] = "블리자드 기본"
 L["Bottom to Top"] = "상단 아래쪽으로 이동"
@@ -241,10 +245,6 @@ L["This makes the item level display more reliable but uses more resources. If t
 L["Top to Bottom"] = "위에서 아래로"
 L["Use coin icons instead of colored text."] = "골드 이미지를 글자가 아닌 아이콘으로 표시합니다."
 L["Use Tooltip Scanning"] = true;
-L["X Offset Bags"] = "가방 위치 가로기준"
-L["X Offset Bank"] = "은행 위치 가로기준"
-L["Y Offset Bags"] = "가방 위치 세로기준"
-L["Y Offset Bank"] = "은행 위치 세로기준"
 
 --Buffs and Debuffs
 L["Begin a new row or column after this many auras."] = "한 줄에 아이콘이 이 값보다 많으면 다음 줄에 배치합니다."

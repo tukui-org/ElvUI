@@ -143,10 +143,14 @@ L[ [=[This works like a macro, you can run different situations to get the actio
 L["Adjust the width of the bag frame."] = "Установить размер фрейма сумок"
 L["Adjust the width of the bank frame."] = "Установить размер фрейма банка"
 L["Align the width of the bag frame to fit inside the chat box."] = "Установить размер сумок/банка по ширине чата"
-L["Align To Chat"] = "По чату"
 L["Ascending"] = "Восходящее"
+L["Bag Mover (Grow Down)"] = true;
+L["Bag Mover (Grow Up)"] = true;
+L["Bag Mover"] = true;
 L["Bag Sorting"] = "Сортировка сумок"
 L["Bag-Bar"] = "Панель сумок"
+L["Bank Mover (Grow Down)"] = true;
+L["Bank Mover (Grow Up)"] = true;
 L["Bar Direction"] = "Направление панели"
 L["Blizzard Style"] = "Стиль Blizzard"
 L["Bottom to Top"] = "Снизу вверх"
@@ -194,10 +198,6 @@ L["This makes the item level display more reliable but uses more resources. If t
 L["Top to Bottom"] = "Сверху вниз"
 L["Use coin icons instead of colored text."] = "Использовать иконки монет вместо окрашенного текста."
 L["Use Tooltip Scanning"] = "Использовать сканирование подсказок"
-L["X Offset Bags"] = "Отступ сумок по X";
-L["X Offset Bank"] = "Отступ банка по X";
-L["Y Offset Bags"] = "Отступ сумок по Y";
-L["Y Offset Bank"] = "Отступ банка по Y";
 
 --Buffs and Debuffs
 L["Begin a new row or column after this many auras."] = "Начинать новый ряд/столбец после этого количества аур."

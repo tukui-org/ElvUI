@@ -143,10 +143,14 @@ L[ [=[This works like a macro, you can run different situations to get the actio
 L["Adjust the width of the bag frame."] = "Passe die Breite des Taschenfensters an."
 L["Adjust the width of the bank frame."] = "Passe die Breite des Bankfensters an."
 L["Align the width of the bag frame to fit inside the chat box."] = "Passt die Breite der Taschenfenster an, damit diese innerhalb des Chatfensters passen."
-L["Align To Chat"] = "Zum Chat ausrichten"
 L["Ascending"] = "Aufsteigend"
+L["Bag Mover (Grow Down)"] = true;
+L["Bag Mover (Grow Up)"] = true;
+L["Bag Mover"] = true;
 L["Bag Sorting"] = "Taschen Sortierung"
 L["Bag-Bar"] = "Taschenleiste"
+L["Bank Mover (Grow Down)"] = true;
+L["Bank Mover (Grow Up)"] = true;
 L["Bar Direction"] = "Ausrichtung Leiste"
 L["Blizzard Style"] = "Blizzard Stil"
 L["Bottom to Top"] = "Von unten nach oben"
@@ -194,10 +198,6 @@ L["This makes the item level display more reliable but uses more resources. If t
 L["Top to Bottom"] = "Von oben nach unten"
 L["Use coin icons instead of colored text."] = "Benutze Währungssymbole anstatt von farbigem Text."
 L["Use Tooltip Scanning"] = "Benutze Tooltip-Scanning"
-L["X Offset Bags"] = "X-Versatz Taschen"
-L["X Offset Bank"] = "X-Versatz Bank"
-L["Y Offset Bags"] = "Y-Versatz Taschen"
-L["Y Offset Bank"] = "Y-Versatz Bank"
 
 --Buffs and Debuffs
 L["Begin a new row or column after this many auras."] = "Beginne nach so vielen Stärkungszaubern eine neue Reihe oder Spalte."
