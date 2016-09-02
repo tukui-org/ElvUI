@@ -130,8 +130,8 @@ L[ [=[This works like a macro, you can run different situations to get the actio
  Beispiel: '[combat] show;hide']=]
 
 --Bags
-L["Add an item or search syntax to the ignored list. Items matching the search syntax will be ignored."] = true;
-L["Add Item or Search Syntax"] = true;
+L["Add an item or search syntax to the ignored list. Items matching the search syntax will be ignored."] = "Füge ein Gegenstand oder ein Suchoperator zu der Ignorierliste hinzu. Gegenstände die auf den Suchoperator zutreffen werden ignoriert."
+L["Add Item or Search Syntax"] = "Füge Gegenstand oder Suchoperator hinzu"
 L["Adjust the width of the bag frame."] = "Passe die Breite des Taschenfensters an."
 L["Adjust the width of the bank frame."] = "Passe die Breite des Bankfensters an."
 L["Align the width of the bag frame to fit inside the chat box."] = "Passt die Breite der Taschenfenster an, damit diese innerhalb des Chatfensters passen."
@@ -153,10 +153,10 @@ L["Displays item level on equippable items."] = "Zeigt das Itemlevel für ausrü
 L["Enable/Disable the all-in-one bag."] = "Einschalten/Ausschalten der zusammengefassten Tasche."
 L["Enable/Disable the Bag-Bar."] = "Aktiviere/Deaktiviere die Taschenleiste."
 L["Full"] = "Voll"
-L["Here you can add items or search terms that you want to be excluded from sorting. To remove an item just click on its name in the list."] = true;
+L["Here you can add items or search terms that you want to be excluded from sorting. To remove an item just click on its name in the list."] = "Hier kannst du Gegenstände oder Suchbedingungen vom Suchen ausschließen. Um ein Gegenstand zu entfernen, klicke einfach auf den Namen in der Liste."
 L["Icons and Text (Short)"] = "Symbole und Text (Kurz)"
 L["Icons and Text"] = "Symbole und Text"
-L["Ignored Items and Search Syntax"] = true;
+L["Ignored Items and Search Syntax"] = "Ignorierte Gegenstände oder Suchoperatoren"
 L["Item Count Font"] = "Gegenstandszähler Schriftart"
 L["Item Level Threshold"] = "Itemlevel Schwellenwert"
 L["Item Level"] = "Itemlevel"
