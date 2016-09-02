@@ -5,21 +5,22 @@ local S = E:GetModule('Skins')
 --Lua functions
 local unpack = unpack
 
-local otf = ObjectiveTrackerFrame
-
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.objectiveTracker ~= true then return end
 
-	hooksecurefunc('ObjectiveTracker_Update', function(reason, id)
-		if otf.MODULES then
-			for i = 1, #otf.MODULES do
-				local module = otf.MODULES[i]
-				-- Hide header art
-				module.Header.Background:SetAtlas(nil)
-				module.Header.Text:FontTemplate()
-			end
-		end
-	end)
+	ObjectiveTrackerBlocksFrame.QuestHeader:StripTextures()
+	ObjectiveTrackerBlocksFrame.QuestHeader.Text:FontTemplate()
+
+
+	ObjectiveTrackerBlocksFrame.AchievementHeader:StripTextures()
+	ObjectiveTrackerBlocksFrame.AchievementHeader.Text:FontTemplate()
+
+
+	ObjectiveTrackerBlocksFrame.ScenarioHeader:StripTextures()
+	ObjectiveTrackerBlocksFrame.ScenarioHeader.Text:FontTemplate()
+
+	BONUS_OBJECTIVE_TRACKER_MODULE.Header:StripTextures()
+	BONUS_OBJECTIVE_TRACKER_MODULE.Header.Text:FontTemplate()
 
 	local function OnClick(self)
 		local textObject = self.text
