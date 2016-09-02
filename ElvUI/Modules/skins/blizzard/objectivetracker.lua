@@ -10,17 +10,15 @@ local function LoadSkin()
 
 	ObjectiveTrackerBlocksFrame.QuestHeader:StripTextures()
 	ObjectiveTrackerBlocksFrame.QuestHeader.Text:FontTemplate()
-
-
 	ObjectiveTrackerBlocksFrame.AchievementHeader:StripTextures()
 	ObjectiveTrackerBlocksFrame.AchievementHeader.Text:FontTemplate()
-
-
 	ObjectiveTrackerBlocksFrame.ScenarioHeader:StripTextures()
 	ObjectiveTrackerBlocksFrame.ScenarioHeader.Text:FontTemplate()
 
 	BONUS_OBJECTIVE_TRACKER_MODULE.Header:StripTextures()
 	BONUS_OBJECTIVE_TRACKER_MODULE.Header.Text:FontTemplate()
+	WORLD_QUEST_TRACKER_MODULE.Header:StripTextures()
+	WORLD_QUEST_TRACKER_MODULE.Header.Text:FontTemplate()
 
 	local function OnClick(self)
 		local textObject = self.text
