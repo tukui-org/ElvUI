@@ -110,6 +110,11 @@ function AddOn:OnInitialize()
 		GameMenuButton:Point("TOPLEFT", GameMenuButtonAddons, "BOTTOMLEFT", 0, -1)
 		hooksecurefunc('GameMenuFrame_UpdateVisibleButtons', self.PositionGameMenuButton)
 	else
+		if GameMenuButton.Middle then
+			GameMenuButton.Middle:Hide()
+			GameMenuButton.Left:Hide()
+			GameMenuButton.Right:Hide()
+		end
 		ConsolePort:GetData().Atlas.SetFutureButtonStyle(GameMenuButton, nil, nil, true)
 		GameMenuButton:Size(240, 46)
 		GameMenuButton:Point("TOP", GameMenuButtonWhatsNew, "BOTTOMLEFT", 0, -1)
