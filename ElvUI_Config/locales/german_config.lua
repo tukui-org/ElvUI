@@ -38,11 +38,11 @@ Die folgenden Suchbegriffe können auch benutzt werden:
     • boe : Beim Ausrüsten gebundene Gegenstände.
     • boa : An den Account gebundene Gegenstände.
     • quest : Gebundene Quest Gegenstände.
-    • reagents, reagent, crafting : Profession reagents.
-    • naval : Naval equipment.
-    • follower, followe, follow : Follower items.
-    • relic, reli, rel : Artifact Relics.
-    • power, powe, pow : Items granting Artifact Power.]=];
+    • reagents, reagent, crafting : Berufs Reagenzien.
+    • naval : Schiffsausrüstung.
+    • follower, followe, follow : Anhänger Gegenstände.
+    • relic, reli, rel : Artefakt Relikte.
+    • power, powe, pow : Gegenstände die Artefaktkraft gewähren.]=];
 L["TEXT_FORMAT_DESC"] = [=[Wähle eine Zeichenfolge um das Textformat zu ändern.
 
 Beispiele:
