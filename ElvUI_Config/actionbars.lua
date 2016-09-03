@@ -430,24 +430,24 @@ E.Options.args.actionbar = {
 			name = "",
 		},
 		macrotext = {
+			order = 4,
 			type = "toggle",
 			name = L["Macro Text"],
 			desc = L["Display macro names on action buttons."],
-			order = 4,
 			disabled = function() return not E.private.actionbar.enable end,
 		},
 		hotkeytext = {
+			order = 5,
 			type = "toggle",
 			name = L["Keybind Text"],
 			desc = L["Display bind names on action buttons."],
-			order = 5,
 			disabled = function() return not E.private.actionbar.enable end,
 		},
 		keyDown = {
+			order = 6,
 			type = 'toggle',
 			name = L["Key Down"],
 			desc = OPTION_TOOLTIP_ACTION_BUTTON_USE_KEY_DOWN,
-			order = 6,
 			disabled = function() return not E.private.actionbar.enable end,
 		},
 		lockActionBars = {
@@ -464,12 +464,20 @@ E.Options.args.actionbar = {
 				LOCK_ACTIONBAR = (value == true and "1" or "0")
 			end,
 		},
+		hideCooldownBling = {
+			order = 8,
+			type = "toggle",
+			name = L["Hide Cooldown Bling"],
+			desc = L["Hides the bling animation on buttons at the end of the global cooldown."],
+			get = function(info) return E.private.actionbar.hideCooldownBling end,
+			set = function(info, value) E.private.actionbar.hideCooldownBling = value; E:StaticPopup_Show("CONFIG_RL") end,
+		},
 		movementModifier = {
+			order = 9,
 			type = 'select',
 			name = PICKUP_ACTION_KEY_TEXT,
 			desc = L["The button you must hold down in order to drag an ability to another action button."],
 			disabled = function() return (not E.private.actionbar.enable or not E.db.actionbar.lockActionBars) end,
-			order = 8,
 			values = {
 				['NONE'] = NONE,
 				['SHIFT'] = SHIFT_KEY,
@@ -477,57 +485,59 @@ E.Options.args.actionbar = {
 				['CTRL'] = CTRL_KEY,
 			},
 		},
-		noRangeColor = {
-			type = 'color',
-			order = 9,
-			name = L["Out of Range"],
-			desc = L["Color of the actionbutton when out of range."],
-			get = function(info)
-				local t = E.db.actionbar[ info[#info] ]
-				local d = P.actionbar[info[#info]]
-				return t.r, t.g, t.b, t.a, d.r, d.g, d.b
-			end,
-			set = function(info, r, g, b)
-				E.db.actionbar[ info[#info] ] = {}
-				local t = E.db.actionbar[ info[#info] ]
-				t.r, t.g, t.b = r, g, b
-				AB:UpdateButtonSettings();
-			end,
-		},
-		noPowerColor = {
-			type = 'color',
-			order = 10,
-			name = L["Out of Power"],
-			desc = L["Color of the actionbutton when out of power (Mana, Rage, Focus, Holy Power)."],
-			get = function(info)
-				local t = E.db.actionbar[ info[#info] ]
-				local d = P.actionbar[info[#info]]
-				return t.r, t.g, t.b, t.a, d.r, d.g, d.b
-			end,
-			set = function(info, r, g, b)
-				E.db.actionbar[ info[#info] ] = {}
-				local t = E.db.actionbar[ info[#info] ]
-				t.r, t.g, t.b = r, g, b
-				AB:UpdateButtonSettings();
-			end,
-		},
-		hideCooldownBling = {
-			order = 11,
-			type = "toggle",
-			name = L["Hide Cooldown Bling"],
-			desc = L["Hides the bling animation on buttons at the end of the global cooldown."],
-			get = function(info) return E.private.actionbar.hideCooldownBling end,
-			set = function(info, value) E.private.actionbar.hideCooldownBling = value; E:StaticPopup_Show("CONFIG_RL") end,
-		},
 		globalFadeAlpha = {
-			order = 12,
+			order = 10,
 			type = 'range',
 			name = L["Global Fade Transparency"],
 			desc = L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."],
 			min = 0, max = 1, step = 0.01,
 			isPercent = true,	
 			set = function(info, value) E.db.actionbar[ info[#info] ] = value; AB.fadeParent:SetAlpha(1-value) end,
-		},		
+		},
+		colorGroup = {
+			order = 11,
+			type = "group",
+			name = L["Colors"],
+			guiInline = true,
+			get = function(info)
+				local t = E.db.actionbar[ info[#info] ]
+				local d = P.actionbar[info[#info]]
+				return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+			end,
+			set = function(info, r, g, b)
+				E.db.actionbar[ info[#info] ] = {}
+				local t = E.db.actionbar[ info[#info] ]
+				t.r, t.g, t.b = r, g, b
+				AB:UpdateButtonSettings();
+			end,
+			args = {
+				noRangeColor = {
+					type = 'color',
+					order = 1,
+					name = L["Out of Range"],
+					desc = L["Color of the actionbutton when out of range."],
+				},
+				noPowerColor = {
+					type = 'color',
+					order = 2,
+					name = L["Out of Power"],
+					desc = L["Color of the actionbutton when out of power (Mana, Rage, Focus, Holy Power)."],
+					
+				},
+				usableColor = {
+					type = 'color',
+					order = 3,
+					name = L["Usable"],
+					desc = L["Color of the actionbutton when usable."],
+				},
+				notUsableColor = {
+					type = 'color',
+					order = 4,
+					name = L["Not Usable"],
+					desc = L["Color of the actionbutton when not usable."],
+				},
+			},
+		},
 		fontGroup = {
 			order = 13,
 			type = 'group',
