@@ -215,6 +215,9 @@ local function ExportImport_Open(mode)
 	Frame:AddChild(Box)
 	--Save original script so we can restore it later
 	Box.editBox.OnTextChangedOrig = Box.editBox:GetScript("OnTextChanged")
+	Box.editBox.OnCursorChangedOrig = Box.editBox:GetScript("OnCursorChanged")
+	--Remove OnCursorChanged script as it causes weird behaviour with long text
+	Box.editBox:SetScript("OnCursorChanged", nil)
 
 	local Label1 = AceGUI:Create("Label")
 	local font = GameFontHighlightSmall:GetFont()
@@ -324,6 +327,7 @@ local function ExportImport_Open(mode)
 		end)
 		Frame:AddChild(decodeButton)
 
+		local oldText = ""
 		local function OnTextChanged()
 			local text = Box:GetText()
 			if text == "" then
@@ -331,7 +335,7 @@ local function ExportImport_Open(mode)
 				Label2:SetText("")
 				importButton:SetDisabled(true)
 				decodeButton:SetDisabled(true)
-			else
+			elseif oldText ~= text then
 				local stringType = D:GetImportStringType(text)
 				if stringType == "Base64" then
 					decodeButton:SetDisabled(false)
@@ -354,7 +358,10 @@ local function ExportImport_Open(mode)
 				end
 
 				--Scroll frame doesn't scroll to the bottom by itself, so let's do that now
+				Box.scrollFrame:UpdateScrollChildRect()
 				Box.scrollFrame:SetVerticalScroll(Box.scrollFrame:GetVerticalScrollRange())
+
+				oldText = text
 			end
 		end
 
@@ -368,7 +375,9 @@ local function ExportImport_Open(mode)
 		--Restore changed scripts
 		Box.editBox:SetScript("OnChar", nil)
 		Box.editBox:SetScript("OnTextChanged", Box.editBox.OnTextChangedOrig)
+		Box.editBox:SetScript("OnCursorChanged", Box.editBox.OnCursorChangedOrig)
 		Box.editBox.OnTextChangedOrig = nil
+		Box.editBox.OnCursorChangedOrig = nil
 
 		--Clear stored export string
 		exportString = ""
