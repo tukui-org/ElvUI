@@ -76,6 +76,30 @@ function mod:UpdateHonor(event, unit)
 			else
 				text = format('%s - %d%%', E:ShortValue(current), current / max * 100)
 			end
+		elseif textFormat == 'CUR' then
+			if (CanPrestige()) then
+				text = PVP_HONOR_PRESTIGE_AVAILABLE
+			elseif (level == levelmax) then
+				text = MAX_HONOR_LEVEL
+			else
+				text = format('%s', E:ShortValue(current))
+			end
+		elseif textFormat == 'REM' then
+			if (CanPrestige()) then
+				text = PVP_HONOR_PRESTIGE_AVAILABLE
+			elseif (level == levelmax) then
+				text = MAX_HONOR_LEVEL
+			else
+				text = format('%s', E:ShortValue(max-cur))
+			end	
+		elseif textFormat == 'CURREM' then
+			if (CanPrestige()) then
+				text = PVP_HONOR_PRESTIGE_AVAILABLE
+			elseif (level == levelmax) then
+				text = MAX_HONOR_LEVEL
+			else
+				text = format('%s - %s', E:ShortValue(current), E:ShortValue(max-cur))
+			end
 		end		
 
 		bar.text:SetText(text)	
