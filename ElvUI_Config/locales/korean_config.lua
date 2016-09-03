@@ -368,6 +368,7 @@ L["Testing:"] = "|cff2eb7e4< 테스터 >|r"
 
 --DataBars
 L["DATABAR_DESC"] = "Setup on-screen display of information bars."
+L["Current - Remaining"] = true;
 L["DataBars"] = true;
 L["Hide in Combat"] = true;
 

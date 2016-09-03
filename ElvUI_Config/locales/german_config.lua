@@ -321,6 +321,7 @@ L["Testing:"] = "Tester:"
 
 --DataBars
 L["DATABAR_DESC"] = "Einstellung der Informationsleisten."
+L["Current - Remaining"] = true;
 L["DataBars"] = "Informationsleisten"
 L["Hide in Combat"] = "Im Kampf ausblenden"
 
