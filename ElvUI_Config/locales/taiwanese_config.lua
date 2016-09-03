@@ -37,7 +37,12 @@ The following search keywords can also be used:
     • bou : Bind on use items.
     • boe : Bind on equip items.
     • boa : Bind on account items.
-    • quest : Quest bound items.]=];
+    • quest : Quest bound items.
+    • reagents, reagent, crafting : Profession reagents.
+    • naval : Naval equipment.
+    • follower, followe, follow : Follower items.
+    • relic, reli, rel : Artifact Relics.
+    • power, powe, pow : Items granting Artifact Power.]=];
 L["TEXT_FORMAT_DESC"] = [=[請填入代碼以變更文字格式。
 
 範例：
