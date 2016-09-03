@@ -33,7 +33,6 @@ L["Trigger"] = "Disparador"
 L["Bank"] = true;
 L["Deposit Reagents"] = true;
 L["Hold Control + Right Click:"] = "Mantén Control y Haz Clic Derecho:"
-L["Hold Shift + Drag:"] = "Mantén Shift y Arrastra:"
 L["Purchase Bags"] = true;
 L["Purchase"] = "Comprar"
 L["Reagent Bank"] = true;

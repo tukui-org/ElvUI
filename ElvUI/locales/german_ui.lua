@@ -33,7 +33,6 @@ L["Trigger"] = "Auslöser"
 L["Bank"] = true;
 L["Deposit Reagents"] = "Reagenzien einlagern"
 L["Hold Control + Right Click:"] = "Halte Steuerung + Rechtsklick:"
-L["Hold Shift + Drag:"] = "Halte Shift + Bewege die Maus:"
 L["Purchase Bags"] = "Taschen kaufen"
 L["Purchase"] = "Kaufen"
 L["Reagent Bank"] = "Reagenzien Bank"

@@ -33,7 +33,6 @@ L["Trigger"] = "触发器"
 L["Bank"] = "银行"
 L["Deposit Reagents"] = "导入材料"
 L["Hold Control + Right Click:"] = '按住 Ctrl 并按鼠标右键：'
-L["Hold Shift + Drag:"] = '按住 Shift 并拖动: '
 L["Purchase Bags"] = "购买背包"
 L["Purchase"] = "购买"
 L["Reagent Bank"] = "材料银行"

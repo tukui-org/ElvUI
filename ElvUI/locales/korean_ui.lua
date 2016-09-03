@@ -33,7 +33,6 @@ L["Trigger"] = "묶음을 펼치고 각 주문에 지정하세요."
 L["Bank"] = "은행"
 L["Deposit Reagents"] = REAGENTBANK_DEPOSIT
 L["Hold Control + Right Click:"] = "Shift 우클릭:"
-L["Hold Shift + Drag:"] = "Shift 드래그:"
 L["Purchase Bags"] = "가방 슬롯 구입"
 L["Purchase"] = "구입"
 L["Reagent Bank"] = REAGENT_BANK
