@@ -878,7 +878,6 @@ function AB:UpdateButtonConfig(bar, buttonName)
 	SetModifiedClick("PICKUPACTION", self.db.movementModifier)
 	bar.buttonConfig.colors.range = E:GetColorTable(self.db.noRangeColor)
 	bar.buttonConfig.colors.mana = E:GetColorTable(self.db.noPowerColor)
-	bar.buttonConfig.colors.hp = E:GetColorTable(self.db.noPowerColor)
 
 	for i, button in pairs(bar.buttons) do
 		bar.buttonConfig.keyBoundTarget = format(buttonName.."%d", i)
