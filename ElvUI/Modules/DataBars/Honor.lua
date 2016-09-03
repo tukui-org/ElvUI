@@ -33,7 +33,7 @@ function mod:UpdateHonor(event, unit)
 		local level = UnitHonorLevel("player");
         local levelmax = GetMaxPlayerHonorLevel();
 
-		
+
         if (level == levelmax) then
 			-- Force the bar to full for the max level
 			bar.statusBar:SetMinMaxValues(0, 1)
@@ -65,7 +65,7 @@ function mod:UpdateHonor(event, unit)
 				text = PVP_HONOR_PRESTIGE_AVAILABLE
 			elseif (level == levelmax) then
 				text = MAX_HONOR_LEVEL
-			else		
+			else
 				text = format('%s - %s', E:ShortValue(current), E:ShortValue(max))
 			end
 		elseif textFormat == 'CURPERC' then
@@ -90,19 +90,19 @@ function mod:UpdateHonor(event, unit)
 			elseif (level == levelmax) then
 				text = MAX_HONOR_LEVEL
 			else
-				text = format('%s', E:ShortValue(max-cur))
-			end	
+				text = format('%s', E:ShortValue(max-current))
+			end
 		elseif textFormat == 'CURREM' then
 			if (CanPrestige()) then
 				text = PVP_HONOR_PRESTIGE_AVAILABLE
 			elseif (level == levelmax) then
 				text = MAX_HONOR_LEVEL
 			else
-				text = format('%s - %s', E:ShortValue(current), E:ShortValue(max-cur))
+				text = format('%s - %s', E:ShortValue(current), E:ShortValue(max-current))
 			end
-		end		
+		end
 
-		bar.text:SetText(text)	
+		bar.text:SetText(text)
 	end
 end
 
@@ -148,7 +148,7 @@ function mod:UpdateHonorDimensions()
 		self.honorBar:SetAlpha(0)
 	else
 		self.honorBar:SetAlpha(1)
-	end		
+	end
 end
 
 function mod:EnableDisable_HonorBar()
