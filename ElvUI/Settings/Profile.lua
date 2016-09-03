@@ -157,10 +157,6 @@ P['databars'] = {
 --Bags
 P['bags'] = {
 	['sortInverted'] = true,
-	['xOffset'] = 0,
-	['yOffset'] = 0,
-	['xOffsetBank'] = 0,
-	['yOffsetBank'] = 0,
 	['bagSize'] = 34,
 	['bankSize'] = 34,
 	['bagWidth'] = 406,
