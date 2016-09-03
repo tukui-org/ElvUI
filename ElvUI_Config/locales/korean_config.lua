@@ -67,8 +67,7 @@ L["SEARCH_SYNTAX_DESC"] = [=[
      - naval : Naval equipment.
      - follower, followe, follow : Follower items.
      - relic, reli, rel : Artifact Relics.
-     - power, powe, pow : Items granting Artifact Power.]=];
-]=]
+     - power, powe, pow : Items granting Artifact Power.]=]
 
 L["TEXT_FORMAT_DESC"] = [=[글자가 표시되는 형식을 변경할 수 있습니다.
 
