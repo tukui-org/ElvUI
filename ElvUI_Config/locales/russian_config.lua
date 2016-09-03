@@ -38,11 +38,11 @@ L["SEARCH_SYNTAX_DESC"] = [=[С добавлением библиотеки LibI
     • boe : персональные при одевании.
     • boa : привязоные к учетной записи.
     • quest : специальные предметы для заданий.
-    • reagents, reagent, crafting : Profession reagents.
-    • naval : Naval equipment.
-    • follower, followe, follow : Follower items.
-    • relic, reli, rel : Artifact Relics.
-    • power, powe, pow : Items granting Artifact Power.]=];
+    • reagents, reagent, crafting : Реагенты профессий.
+    • naval : Оборудование флота.
+    • follower, followe, follow : Предметы последователей.
+    • relic, reli, rel : Реликвии артефактов.
+    • power, powe, pow : Предметы, дающие силу артефакта.]=];
 L["TEXT_FORMAT_DESC"] = [=[Строка для изменения вида текста.
 
 Примеры:
