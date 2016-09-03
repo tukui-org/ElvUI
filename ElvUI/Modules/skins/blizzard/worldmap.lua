@@ -108,6 +108,7 @@ local function LoadSkin()
 			bar:StripTextures()
 			bar:SetStatusBarTexture(E["media"].normTex)
 			bar:SetTemplate("Transparent")
+			E:RegisterStatusBar(bar)
 
 			label:ClearAllPoints()
 			label:Point("CENTER", bar, 0, 0)
