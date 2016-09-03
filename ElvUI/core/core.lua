@@ -695,6 +695,8 @@ function E:RemoveTableDuplicates(cleanTable, checkTable)
 	return cleaned
 end
 
+local recurse
+
 --The code in this function is from WeakAuras, credit goes to Mirrored and the WeakAuras Team
 function E:TableToLuaString(inTable)
 	if type(inTable) ~= "table" then
@@ -703,7 +705,7 @@ function E:TableToLuaString(inTable)
 	end
 
 	local ret = "{\n";
-	local function recurse(table, level)
+	function recurse(table, level)
 		for i,v in pairs(table) do
 			ret = ret..strrep("    ", level).."[";
 			if(type(i) == "string") then
@@ -751,7 +753,7 @@ local profileFormat = {
 }
 
 local lineStructureTable = {}
-local recurse, buildLineStructure
+local buildLineStructure
 
 function E:ProfileTableToPluginFormat(inTable, profileType)
 	local profileText = profileFormat[profileType]
