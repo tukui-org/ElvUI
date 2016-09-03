@@ -169,7 +169,7 @@ local escapes = {
 }
 local function CleanString(str)
     for k, v in pairs(escapes) do
-        str = gsub(str, k, v)
+        str = str:gsub(k, v)
     end
     return str
 end
