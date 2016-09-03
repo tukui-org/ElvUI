@@ -5,7 +5,7 @@
 
 local Search = LibStub('CustomSearch-1.0')
 local Unfit = LibStub('Unfit-1.0')
-local Lib = LibStub:NewLibrary('LibItemSearch-1.2-ElvUI', 4)
+local Lib = LibStub:NewLibrary('LibItemSearch-1.2-ElvUI', 5)
 if Lib then
 	Lib.Filters = {}
 else
@@ -226,7 +226,11 @@ Lib.Filters.tipPhrases = {
 		['followe'] = 'follower',
 		['follow'] = 'follower',
 		["relic"] = (GetItemSubClassInfo(LE_ITEM_CLASS_GEM, 11)),
+		["reli"] = (GetItemSubClassInfo(LE_ITEM_CLASS_GEM, 11)),
+		["rel"] = (GetItemSubClassInfo(LE_ITEM_CLASS_GEM, 11)),
 		["power"] = ARTIFACT_POWER,
+		["powe"] = ARTIFACT_POWER,
+		["pow"] = ARTIFACT_POWER,
 	}
 }
 
