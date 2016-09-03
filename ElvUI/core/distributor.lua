@@ -358,7 +358,7 @@ function D:GetImportStringType(dataString)
 end
 
 function D:Decode(dataString)
-	local profileType, profileKey, profileData, message
+	local profileInfo, profileType, profileKey, profileData, message
 	local stringType = self:GetImportStringType(dataString)
 
 	if stringType == "Base64" then
@@ -371,7 +371,9 @@ function D:Decode(dataString)
 		end
 
 		local serializedData, success
-		serializedData, profileType, profileKey = E:SplitString(decompressedData, "::")
+		serializedData, profileInfo = E:SplitString(decompressedData, "^^::") -- "^^" indicates the end of the AceSerializer string
+		serializedData = format("%s%s", serializedData, "^^") --Add back the AceSerializer terminator
+		profileType, profileKey = E:SplitString(profileInfo, "::")
 		success, profileData = D:Deserialize(serializedData)
 		if not success then
 			E:Print("Error deserializing:", profileData)
@@ -379,7 +381,9 @@ function D:Decode(dataString)
 		end
 	elseif stringType == "Table" then
 		local profileDataAsString
-		profileDataAsString, profileType, profileKey = E:SplitString(dataString, "::")
+		profileDataAsString, profileInfo = E:SplitString(dataString, "}::") -- "}::" indicates the end of the table
+		profileDataAsString = format("%s%s", profileDataAsString, "}") --Add back the missing "}"
+		profileType, profileKey = E:SplitString(profileInfo, "::")
 		if not profileDataAsString then
 			E:Print("Error extracting profile data. Invalid import string!")
 			return
