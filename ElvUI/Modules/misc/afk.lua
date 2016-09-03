@@ -13,6 +13,8 @@ local format, strsub = string.format, string.sub
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
+local CinematicFrame = CinematicFrame
+local MovieFrame = MovieFrame
 local MoveViewLeftStart = MoveViewLeftStart
 local MoveViewLeftStop = MoveViewLeftStop
 local CloseAllBags = CloseAllBags
@@ -59,7 +61,7 @@ function AFK:UpdateTimer()
 end
 
 function AFK:SetAFK(status)
-	if(InCombatLockdown()) then return end
+	if(InCombatLockdown() or CinematicFrame:IsShown() or MovieFrame:IsShown()) then return end
 	if(status) then
 		MoveViewLeftStart(CAMERA_SPEED);
 		self.AFKMode:Show()
