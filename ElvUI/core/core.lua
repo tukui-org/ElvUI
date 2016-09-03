@@ -751,6 +751,7 @@ local profileFormat = {
 }
 
 local lineStructureTable = {}
+local recurse, buildLineStructure
 
 function E:ProfileTableToPluginFormat(inTable, profileType)
 	local profileText = profileFormat[profileType]
@@ -763,7 +764,7 @@ function E:ProfileTableToPluginFormat(inTable, profileType)
 	local lineStructure = ""
 	local sameLine = false
 
-	local function buildLineStructure()
+	function buildLineStructure()
 		local str = profileText
 		for _, v in ipairs(lineStructureTable) do
 			if type(v) == "string" then
@@ -776,7 +777,7 @@ function E:ProfileTableToPluginFormat(inTable, profileType)
 		return str
 	end
 
-	local function recurse(tbl)
+	function recurse(tbl)
 		lineStructure = buildLineStructure()
 		for k, v in pairs(tbl) do
 			if not sameLine then
@@ -1244,14 +1245,6 @@ function E:DBConversions()
 	--Remove old nameplate settings, no need for them to take up space
 	if E.db.nameplate then
 		E.db.nameplate = nil
-	end
-
-	--We have changed the required separator from a comma to a semicolon.
-	--Because there is no good way to determine if a comma is part of an item string or not,
-	--we just have to reset it all and let people build a new list.
-	if not E.db.bagSortIgnoreItemsReset then
-		E.db.bags.ignoreItems = ""
-		E.db.bagSortIgnoreItemsReset = true
 	end
 end
 
