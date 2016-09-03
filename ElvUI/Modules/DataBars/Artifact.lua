@@ -45,8 +45,14 @@ function mod:UpdateArtifact(event)
 			text = format('%s - %s', E:ShortValue(xp), E:ShortValue(xpForNextPoint))
 		elseif textFormat == 'CURPERC' then
 			text = format('%s - %d%%', E:ShortValue(xp), xp / xpForNextPoint * 100)
+		elseif textFormat == 'CUR' then
+			text = format('%s', E:ShortValue(xp))
+		elseif textFormat == 'REM' then
+			text = format('%s', E:ShortValue(xpForNextPoint - xp))
+		elseif textFormat == 'CURREM' then
+			text = format('%s - %s', E:ShortValue(xp), E:ShortValue(xpForNextPoint - xp))
 		end
-
+		
 		bar.text:SetText(text)
 	end
 end
