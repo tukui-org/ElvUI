@@ -5,7 +5,7 @@
 
 local Search = LibStub('CustomSearch-1.0')
 local Unfit = LibStub('Unfit-1.0')
-local Lib = LibStub:NewLibrary('LibItemSearch-1.2-ElvUI', 3)
+local Lib = LibStub:NewLibrary('LibItemSearch-1.2-ElvUI', 4)
 if Lib then
 	Lib.Filters = {}
 else
@@ -163,6 +163,17 @@ Lib.Filters.tip = {
 	end
 }
 
+local escapes = {
+	["|c%x%x%x%x%x%x%x%x"] = "", -- color start
+	["|r"] = "", -- color end
+}
+local function CleanString(str)
+    for k, v in pairs(escapes) do
+        str = gsub(str, k, v)
+    end
+    return str
+end
+
 Lib.Filters.tipPhrases = {
 	canSearch = function(self, _, search)
 		return self.keywords[search]
@@ -184,7 +195,9 @@ Lib.Filters.tipPhrases = {
 
 		local matches = false
 		for i = 1, scanner:NumLines() do
-			if search == _G['LibItemSearchTooltipScannerTextLeft' .. i]:GetText() then
+			local text = _G['LibItemSearchTooltipScannerTextLeft' .. i]:GetText()
+			text = CleanString(text)
+			if search == text then
 				matches = true
 				break
 			end
