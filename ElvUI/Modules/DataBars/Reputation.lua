@@ -7,11 +7,12 @@ local _G = _G
 local format = format
 
 --WoW API / Variables
-local GetWatchedFactionInfo, GetNumFactions, GetFactionInfo = GetWatchedFactionInfo, GetNumFactions, GetFactionInfo
 local GetFriendshipReputation = GetFriendshipReputation
-local REPUTATION, STANDING = REPUTATION, STANDING
-local FACTION_BAR_COLORS = FACTION_BAR_COLORS
+local GetWatchedFactionInfo, GetNumFactions, GetFactionInfo = GetWatchedFactionInfo, GetNumFactions, GetFactionInfo
 local InCombatLockdown = InCombatLockdown
+local ToggleCharacter = ToggleCharacter
+local FACTION_BAR_COLORS = FACTION_BAR_COLORS
+local REPUTATION, STANDING = REPUTATION, STANDING
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameTooltip, RightChatPanel, CreateFrame

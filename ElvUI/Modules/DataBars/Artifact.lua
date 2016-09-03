@@ -7,14 +7,17 @@ local _G = _G
 local format = format
 
 --WoW API / Variables
-local HasArtifactEquipped = HasArtifactEquipped
-local MainMenuBar_GetNumArtifactTraitsPurchasableFromXP = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP
 local C_ArtifactUIGetEquippedArtifactInfo = C_ArtifactUI.GetEquippedArtifactInfo
-local ARTIFACT_POWER = ARTIFACT_POWER
+local HasArtifactEquipped = HasArtifactEquipped
+local HideUIPanel = HideUIPanel
 local InCombatLockdown = InCombatLockdown
+local MainMenuBar_GetNumArtifactTraitsPurchasableFromXP = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP
+local ShowUIPanel = ShowUIPanel
+local SocketInventoryItem = SocketInventoryItem
+local ARTIFACT_POWER = ARTIFACT_POWER
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: GameTooltip, CreateFrame
+-- GLOBALS: GameTooltip, CreateFrame, ArtifactFrame
 
 function mod:UpdateArtifact(event)
 	if not mod.db.artifact.enable then return end
@@ -52,7 +55,7 @@ function mod:UpdateArtifact(event)
 		elseif textFormat == 'CURREM' then
 			text = format('%s - %s', E:ShortValue(xp), E:ShortValue(xpForNextPoint - xp))
 		end
-		
+
 		bar.text:SetText(text)
 	end
 end
