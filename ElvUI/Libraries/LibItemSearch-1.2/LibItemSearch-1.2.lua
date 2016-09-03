@@ -213,6 +213,7 @@ Lib.Filters.tipPhrases = {
 		['followe'] = 'follower',
 		['follow'] = 'follower',
 		["relic"] = (GetItemSubClassInfo(LE_ITEM_CLASS_GEM, 11)),
+		["power"] = ARTIFACT_POWER,
 	}
 }
 
