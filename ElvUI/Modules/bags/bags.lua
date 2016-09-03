@@ -1038,7 +1038,7 @@ function B:VendorGrayCheck()
 	end
 end
 
-function B:ContructContainerFrame(name, isBank)
+function B:ConstructContainerFrame(name, isBank)
 	local f = CreateFrame('Button', name, E.UIParent);
 	f:SetTemplate('Transparent');
 	f:SetFrameStrata('HIGH');
@@ -1439,7 +1439,7 @@ end
 
 function B:OpenBank()
 	if not self.BankFrame then
-		self.BankFrame = self:ContructContainerFrame('ElvUI_BankContainerFrame', true);
+		self.BankFrame = self:ConstructContainerFrame('ElvUI_BankContainerFrame', true);
 	end
 
 	BankFrame:Show()
@@ -1646,7 +1646,7 @@ function B:Initialize()
 	ElvUIBankMover.POINT = "BOTTOM"
 
 	--Create Bag Frame
-	self.BagFrame = self:ContructContainerFrame('ElvUI_ContainerFrame');
+	self.BagFrame = self:ConstructContainerFrame('ElvUI_ContainerFrame');
 
 	--Hook onto Blizzard Functions
 	--self:SecureHook('UpdateNewItemList', 'ClearNewItems')
