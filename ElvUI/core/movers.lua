@@ -358,6 +358,7 @@ function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag, moverT
 		E.CreatedMovers[name]["postdrag"] = postdrag
 		E.CreatedMovers[name]["snapoffset"] = snapoffset
 		E.CreatedMovers[name]["point"] = GetPoint(parent)
+		E.CreatedMovers[name]["ignoreOrderHall"] = ignoreOrderHall
 
 		E.CreatedMovers[name]["type"] = {}
 		local types = {split(',', moverTypes)}
