@@ -1159,6 +1159,12 @@ function E:OrderHall_OnShow()
 			end
 		end
 	end
+	
+	if ElvUI_TopPanel then
+		ElvUI_TopPanel:ClearAllPoints()
+		ElvUI_TopPanel:Point('TOPLEFT', E.UIParent, 'TOPLEFT', -1, (1 - OrderHallCommandBar:GetHeight()))
+		ElvUI_TopPanel:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', 1, (1 - OrderHallCommandBar:GetHeight()))
+	end
 end
 
 function E:OrderHall_OnHide()
@@ -1166,6 +1172,12 @@ function E:OrderHall_OnHide()
 		local point, anchor, relativePoint, xOffset, yOffset = unpack(positionData)
 		mover:ClearAllPoints()
 		mover:SetPoint(point, anchor, relativePoint, xOffset, yOffset)
+	end
+	
+	if ElvUI_TopPanel then
+		ElvUI_TopPanel:ClearAllPoints()
+		ElvUI_TopPanel:Point('TOPLEFT', E.UIParent, 'TOPLEFT', -1, 1)
+		ElvUI_TopPanel:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', 1, 1)
 	end
 end
 
