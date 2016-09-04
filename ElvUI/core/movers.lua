@@ -77,7 +77,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, ig
 	f.overlay = overlay
 	f.snapOffset = snapOffset or -2
 	f.anchor = anchor
-	f.ignoreOrderHall = ignoreOrderHall
+	f.ignoreOrderHall = ignoreOrderHall --If true then don't reposition if mover overlaps OrderHall Bar
 
 	f:SetFrameLevel(parent:GetFrameLevel() + 1)
 	if overlay == true then
