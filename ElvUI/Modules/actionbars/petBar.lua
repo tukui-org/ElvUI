@@ -98,10 +98,6 @@ function AB:UpdatePet(event, unit)
 			SetDesaturation(icon, 1);
 			button:SetChecked(0);
 		end
-
-		if not button.useMasque then
-			checked:SetAlpha(0.3)
-		end
 	end
 end
 
@@ -228,16 +224,6 @@ function AB:PositionAndSizeBarPet()
 		end
 
 		self:StyleButton(button, nil, MasqueGroup and E.private.actionbar.masque.petBar and true or nil);
-
-		--wtf lol
-		if not button.useMasque and not button.CheckFixed then
-			hooksecurefunc(button:GetCheckedTexture(), 'SetAlpha', function(self, value)
-				if value == 1 then
-					self:SetAlpha(0.3)
-				end
-			end)
-			button.CheckFixed = true;
-		end
 	end
 
 	RegisterStateDriver(bar, "show", self.db['barPet'].visibility);
