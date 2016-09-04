@@ -8,7 +8,7 @@ local ipairs, pairs, tonumber, select, unpack = ipairs, pairs, tonumber, select,
 local tinsert, tremove, tsort, twipe = table.insert, table.remove, table.sort, table.wipe
 local floor = math.floor
 local band = bit.band
-local match, split, gmatch, find = string.match, string.split, string.gmatch, string.find
+local match, gmatch, find = string.match, string.gmatch, string.find
 --WoW API / Variables
 local GetTime = GetTime
 local InCombatLockdown = InCombatLockdown
@@ -615,9 +615,8 @@ function B.Fill(sourceBags, targetBags, reverse, canMove)
 
 	twipe(blackListedSlots)
 
-	local ignoreItems = B.db.ignoreItems
-	ignoreItems = ignoreItems:gsub(',%s', ',') --remove spaces that follow a comma
-	buildBlacklist(split(",", ignoreItems))
+	local ignoredItems = B.db.ignoredItems
+	buildBlacklist(ignoredItems)
 
 	for _, bag, slot in B.IterateBags(targetBags, reverse, "deposit") do
 		local bagSlot = B:Encode_BagSlot(bag, slot)
