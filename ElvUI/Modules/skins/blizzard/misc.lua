@@ -68,8 +68,8 @@ local function LoadSkin()
 
 	LFDRoleCheckPopup:StripTextures()
 	LFDRoleCheckPopup:SetTemplate("Transparent")
-	S:HandleButton(LFDRoleCheckPopupAcceptButton, nil, "LFDRoleCheckPopupAcceptButton")
-	S:HandleButton(LFDRoleCheckPopupDeclineButton, nil, "LFDRoleCheckPopupDeclineButton")
+	S:HandleButton(LFDRoleCheckPopupAcceptButton)
+	S:HandleButton(LFDRoleCheckPopupDeclineButton)
 
 	for _, roleButton in pairs(roleButtons) do
 		S:HandleCheckBox(roleButton.checkButton or roleButton.CheckButton, true)
@@ -79,7 +79,7 @@ local function LoadSkin()
 	-- reskin popup buttons
 	for i = 1, 4 do
 		for j = 1, 3 do
-			S:HandleButton(_G["StaticPopup"..i.."Button"..j], nil, "StaticPopup"..i.."Button"..j)
+			S:HandleButton(_G["StaticPopup"..i.."Button"..j])
 			S:HandleEditBox(_G["StaticPopup"..i.."EditBox"])
 			S:HandleEditBox(_G["StaticPopup"..i.."MoneyInputFrameGold"])
 			S:HandleEditBox(_G["StaticPopup"..i.."MoneyInputFrameSilver"])
@@ -118,21 +118,21 @@ local function LoadSkin()
 		for i = 1, #BlizzardMenuButtons do
 			local menuButton = _G[BlizzardMenuButtons[i]]
 			if menuButton then
-				S:HandleButton(menuButton, nil, "BlizzardMenuButtons[i]")
+				S:HandleButton(menuButton)
 			end
 		end
-		
+
 		-- Skin the ElvUI Menu Button
-		S:HandleButton(GameMenuFrame.ElvUI, nil, "GameMenuFrame.ElvUI")
+		S:HandleButton(GameMenuFrame.ElvUI)
 	end
 
 	if IsAddOnLoaded("OptionHouse") then
-		S:HandleButton(GameMenuButtonOptionHouse, nil, "GameMenuButtonOptionHouse")
+		S:HandleButton(GameMenuButtonOptionHouse)
 	end
 
 	-- skin return to graveyard button
 	do
-		S:HandleButton(GhostFrame, nil, "GhostFrame")
+		S:HandleButton(GhostFrame)
 		GhostFrame:SetBackdropColor(0,0,0,0)
 		GhostFrame:SetBackdropBorderColor(0,0,0,0)
 
@@ -148,7 +148,7 @@ local function LoadSkin()
 
 		GhostFrame:ClearAllPoints()
 		GhostFrame:Point("TOP", E.UIParent, "TOP", 0, -270)
-		S:HandleButton(GhostFrameContentsFrame, nil, "GhostFrameContentsFrame")
+		S:HandleButton(GhostFrameContentsFrame)
 		GhostFrameContentsFrameIcon:SetTexture(nil)
 		local x = CreateFrame("Frame", nil, GhostFrame)
 		x:SetFrameStrata("MEDIUM")
@@ -205,14 +205,14 @@ local function LoadSkin()
 		"RolePollPopupAcceptButton"
 	}
 
-	for i = 1, #BlizzardButtons do
-		local button = _G[BlizzardButtons[i]]
-		if button then
-			S:HandleButton(button, nil, BlizzardButtons[i])
+	for i = 1, getn(BlizzardButtons) do
+		local ElvuiButtons = _G[BlizzardButtons[i]]
+		if ElvuiButtons then
+			S:HandleButton(ElvuiButtons)
 		end
 	end
-	S:HandleButton(LFDReadyCheckPopup.YesButton, nil, "LFDReadyCheckPopup.YesButton")
-	S:HandleButton(LFDReadyCheckPopup.NoButton, nil, "LFDReadyCheckPopup.NoButton")
+	S:HandleButton(LFDReadyCheckPopup.YesButton)
+	S:HandleButton(LFDReadyCheckPopup.NoButton)
 
 	-- if a button position is not really where we want, we move it here
 	VideoOptionsFrameCancel:ClearAllPoints()
@@ -264,7 +264,7 @@ local function LoadSkin()
 		S:HandleDropDownBox(MovieRecordingOptionsFrameFramerateDropDown)
 		S:HandleDropDownBox(MovieRecordingOptionsFrameCodecDropDown)
 
-		S:HandleButton(MovieRecordingOptionsButtonCompress, nil, "MovieRecordingOptionsButtonCompress")
+		S:HandleButton(MovieRecordingOptionsButtonCompress)
 		S:HandleSliderFrame(MovieRecordingOptionsFrameQualitySlider)
 
 		for i=1, 6 do
@@ -279,8 +279,8 @@ local function LoadSkin()
 	--PVP QUEUE FRAME
 	PVPReadyDialog:StripTextures()
 	PVPReadyDialog:SetTemplate("Transparent")
-	S:HandleButton(PVPReadyDialogEnterBattleButton, nil, "PVPReadyDialogEnterBattleButton")
-	S:HandleButton(PVPReadyDialogLeaveQueueButton, nil, "PVPReadyDialogLeaveQueueButton")
+	S:HandleButton(PVPReadyDialogEnterBattleButton)
+	S:HandleButton(PVPReadyDialogLeaveQueueButton)
 	S:HandleCloseButton(PVPReadyDialogCloseButton)
 	PVPReadyDialogRoleIcon.texture:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
 	PVPReadyDialogRoleIcon.texture:SetAlpha(0.5)
@@ -368,7 +368,7 @@ local function LoadSkin()
 	}
 
 	for i = 1, #chatbuttons do
-		S:HandleButton(_G[chatbuttons[i]], true, chatbuttons[i])
+		S:HandleButton(_G[chatbuttons[i]], true)
 	end
 
 	ChatConfigFrameDefaultButton:ClearAllPoints()
@@ -643,7 +643,7 @@ local function LoadSkin()
 	for i=1, BattleTagInviteFrame:GetNumChildren() do
 		local child = select(i, BattleTagInviteFrame:GetChildren())
 		if child:GetObjectType() == 'Button' then
-			S:HandleButton(child, nil, "BattleTagInviteFrameChild")
+			S:HandleButton(child)
 		end
 	end
 
@@ -925,12 +925,12 @@ local function LoadSkin()
 		"InterfaceOptionsSocialPanelRedockChat"
 	}
 	for _, button in pairs(buttons) do
-		S:HandleButton(_G[button], nil, button)
+		S:HandleButton(_G[button])
 	end
 	AudioOptionsVoicePanelChatMode1KeyBindingButton:ClearAllPoints()
 	AudioOptionsVoicePanelChatMode1KeyBindingButton:Point("CENTER", AudioOptionsVoicePanelBinding, "CENTER", 0, -10)
 	S:HandleCheckBox(CompactUnitFrameProfilesRaidStylePartyFrames)
-	S:HandleButton(CompactUnitFrameProfilesGeneralOptionsFrameResetPositionButton, nil, "CompactUnitFrameProfilesGeneralOptionsFrameResetPositionButton")
+	S:HandleButton(CompactUnitFrameProfilesGeneralOptionsFrameResetPositionButton)
 	GraphicsButton:StripTextures()
 	RaidButton:StripTextures()
 	local raidcheckbox = {
@@ -1036,8 +1036,8 @@ local function LoadSkin()
 
 	ReportCheatingDialog:StripTextures()
 	ReportCheatingDialogCommentFrame:StripTextures()
-	S:HandleButton(ReportCheatingDialogReportButton, nil, "ReportCheatingDialogReportButton")
-	S:HandleButton(ReportCheatingDialogCancelButton, nil, "ReportCheatingDialogCancelButton")
+	S:HandleButton(ReportCheatingDialogReportButton)
+	S:HandleButton(ReportCheatingDialogCancelButton)
 	ReportCheatingDialog:SetTemplate("Transparent")
 	S:HandleEditBox(ReportCheatingDialogCommentFrameEditBox)
 
@@ -1045,19 +1045,19 @@ local function LoadSkin()
 	ReportPlayerNameDialogCommentFrame:StripTextures()
 	S:HandleEditBox(ReportPlayerNameDialogCommentFrameEditBox)
 	ReportPlayerNameDialog:SetTemplate("Transparent")
-	S:HandleButton(ReportPlayerNameDialogReportButton, nil, "ReportPlayerNameDialogReportButton")
-	S:HandleButton(ReportPlayerNameDialogCancelButton, nil, "ReportPlayerNameDialogCancelButton")
+	S:HandleButton(ReportPlayerNameDialogReportButton)
+	S:HandleButton(ReportPlayerNameDialogCancelButton)
 
 	S:HandleCloseButton(SideDressUpModelCloseButton)
 	SideDressUpFrame:StripTextures()
 	SideDressUpFrame.BGTopLeft:Hide()
 	SideDressUpFrame.BGBottomLeft:Hide()
-	S:HandleButton(SideDressUpModelResetButton, nil, "SideDressUpModelResetButton")
+	S:HandleButton(SideDressUpModelResetButton)
 	SideDressUpFrame:SetTemplate("Transparent")
 
 	--What's New
 	SplashFrame:CreateBackdrop("Transparent")
-	S:HandleButton(SplashFrame.BottomCloseButton, nil, "SplashFrame.BottomCloseButton")
+	S:HandleButton(SplashFrame.BottomCloseButton)
 	S:HandleCloseButton(SplashFrame.TopCloseButton)
 
 	--NavBar Buttons (Used in WorldMapFrame, EncounterJournal and HelpFrame)
@@ -1067,7 +1067,7 @@ local function LoadSkin()
 		end
 		local navButton = self.navList[#self.navList]
 		if navButton and not navButton.isSkinned then
-			S:HandleButton(navButton, true, "navButton")
+			S:HandleButton(navButton, true)
 			if navButton.MenuArrowButton then
 				S:HandleNextPrevButton(navButton.MenuArrowButton, true)
 			end
