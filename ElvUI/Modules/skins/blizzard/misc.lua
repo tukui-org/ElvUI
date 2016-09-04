@@ -925,12 +925,16 @@ local function LoadSkin()
 		"InterfaceOptionsSocialPanelRedockChat"
 	}
 	for _, button in pairs(buttons) do
-		S:HandleButton(_G[button])
+		if button then
+			S:HandleButton(_G[button])
+		end
 	end
 	AudioOptionsVoicePanelChatMode1KeyBindingButton:ClearAllPoints()
 	AudioOptionsVoicePanelChatMode1KeyBindingButton:Point("CENTER", AudioOptionsVoicePanelBinding, "CENTER", 0, -10)
-	S:HandleCheckBox(CompactUnitFrameProfilesRaidStylePartyFrames)
-	S:HandleButton(CompactUnitFrameProfilesGeneralOptionsFrameResetPositionButton)
+	if CompactUnitFrameProfiles then --Some addons disable the Blizzard addon
+		S:HandleCheckBox(CompactUnitFrameProfilesRaidStylePartyFrames)
+		S:HandleButton(CompactUnitFrameProfilesGeneralOptionsFrameResetPositionButton)
+	end
 	GraphicsButton:StripTextures()
 	RaidButton:StripTextures()
 	local raidcheckbox = {
@@ -999,8 +1003,11 @@ local function LoadSkin()
 		"CompactUnitFrameProfilesGeneralOptionsFrameWidthSlider"
 	}
 
-	for _, slider in pairs(sliders) do
-		S:HandleSliderFrame(_G[slider])
+	for i = 1, #sliders do
+		local slider = _G[sliders[i]]
+		if slider then
+			S:HandleSliderFrame(slider)
+		end
 	end
 
 	-- mac option
