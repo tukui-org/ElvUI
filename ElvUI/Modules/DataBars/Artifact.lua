@@ -49,7 +49,7 @@ function mod:UpdateArtifact(event)
 		elseif textFormat == 'CURPERC' then
 			text = format('%s - %d%%', E:ShortValue(xp), xp / xpForNextPoint * 100)
 		elseif textFormat == 'CUR' then
-			text = format('%s', E:ShortValue(xp))
+			text = format('%s', E:ShortValue(totalXP))
 		elseif textFormat == 'REM' then
 			text = format('%s', E:ShortValue(xpForNextPoint - xp))
 		elseif textFormat == 'CURREM' then
