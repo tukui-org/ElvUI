@@ -1142,7 +1142,7 @@ function E:OrderHall_OnShow()
 	for moverName in pairs(E.CreatedMovers) do
 		local mover = _G[moverName]
 		--We only want to reposition movers that are anchored to ElvUIParent
-		if (mover.anchor and mover.anchor == "ElvUIParent") then
+		if (mover.anchor == "ElvUIParent" and not mover.ignoreOrderHall) then
 			local moverTop = mover:GetTop()
 			local ElvUIParentTop = ElvUIParent:GetTop()
 			local diff = ElvUIParentTop - moverTop
