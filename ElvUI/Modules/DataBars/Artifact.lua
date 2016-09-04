@@ -15,6 +15,7 @@ local MainMenuBar_GetNumArtifactTraitsPurchasableFromXP = MainMenuBar_GetNumArti
 local ShowUIPanel = ShowUIPanel
 local SocketInventoryItem = SocketInventoryItem
 local ARTIFACT_POWER = ARTIFACT_POWER
+local ARTIFACT_POWER_TOOLTIP_BODY = ARTIFACT_POWER_TOOLTIP_BODY
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameTooltip, CreateFrame, ArtifactFrame
