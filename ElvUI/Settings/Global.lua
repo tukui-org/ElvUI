@@ -16,6 +16,7 @@ G['general'] = {
 	},
 	["disableTutorialButtons"] = true,
 	["animateConfig"] = true,
+	["disableOrderHallBar"] = false,
 }
 
 G['classtimer'] = {}

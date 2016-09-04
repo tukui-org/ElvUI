@@ -393,6 +393,7 @@ L["Bottom Panel"] = "Нижняя панель"
 L["Chat Bubbles Style"] = "Стиль облачков сообщений"
 L["Chat Bubbles"] = "Облачка сообщений"
 L["Direction the bar moves on gains/losses"] = "направление заполнения полосы"
+L["Disable OrderHall Bar"] = true;
 L["Disable Tutorial Buttons"] = "Отключить кнопки обучения"
 L["Disables the tutorial button found on some frames."] = "Отключает кнопки обучения на некоторых фреймах."
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = "Отображать панель на нижней границе экрана. Это косметический элемент."

@@ -393,6 +393,7 @@ L["Bottom Panel"] = "底部面板"
 L["Chat Bubbles Style"] = "聊天气泡样式"
 L["Chat Bubbles"] = "聊天气泡"
 L["Direction the bar moves on gains/losses"] = true;
+L["Disable OrderHall Bar"] = true;
 L["Disable Tutorial Buttons"] = "禁用教程按钮"
 L["Disables the tutorial button found on some frames."] = "禁用部分框体上的教程按钮"
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = '显示跨越屏幕底部的面板,仅仅是用于装饰.'

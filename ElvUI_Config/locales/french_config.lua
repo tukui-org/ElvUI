@@ -393,6 +393,7 @@ L["Bottom Panel"] = "Bandeau en bas"
 L["Chat Bubbles Style"] = 'Style des bulles de discussion'
 L["Chat Bubbles"] = "Bulles de discussion";
 L["Direction the bar moves on gains/losses"] = "Direction que prend la barre quand gain / perte";
+L["Disable OrderHall Bar"] = true;
 L["Disable Tutorial Buttons"] = true;
 L["Disables the tutorial button found on some frames."] = true;
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = "Affiche un bandeau au bas de l'écran. Option purement cosmétique."

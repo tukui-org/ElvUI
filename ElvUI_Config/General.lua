@@ -164,8 +164,15 @@ E.Options.args.general = {
 					get = function(info) return E.global.general.disableTutorialButtons end,
 					set = function(info, value) E.global.general.disableTutorialButtons = value; E:StaticPopup_Show("GLOBAL_RL") end,
 				},
-				autoScale = {
+				disableOrderHallBar = {
 					order = 19,
+					type = "toggle",
+					name = L["Disable OrderHall Bar"],
+					get = function(info) return E.global.general.disableOrderHallBar end,
+					set = function(info, value) E.global.general.disableOrderHallBar = value; E:StaticPopup_Show("GLOBAL_RL") end,
+				},
+				autoScale = {
+					order = 20,
 					name = L["Auto Scale"],
 					desc = L["Automatically scale the User Interface based on your screen resolution"],
 					type = "toggle",
@@ -173,7 +180,7 @@ E.Options.args.general = {
 					set = function(info, value) E.global.general[ info[#info] ] = value; E:StaticPopup_Show("GLOBAL_RL") end
 				},
 				minUiScale = {
-					order = 20,
+					order = 21,
 					type = "range",
 					name = L["Lowest Allowed UI Scale"],
 					min = 0.32, max = 0.64, step = 0.01,
@@ -181,7 +188,7 @@ E.Options.args.general = {
 					set = function(info, value) E.global.general.minUiScale = value; E:StaticPopup_Show("GLOBAL_RL") end
 				},
 				talkingHeadFrameScale = {
-					order = 21,
+					order = 22,
 					type = "range",
 					name = L["Talking Head Scale"],
 					isPercent = true,
@@ -200,75 +207,6 @@ E.Options.args.general = {
 						["ENGLISH"] = "K, M, B",
 						["CHINESE"] = "W, Y",
 					},
-				},
-				objectiveFrameHeaderSpacing = {
-					order = 29,
-					type = "description",
-					name = " ",
-				},
-				objectiveFrameHeader = {
-					order = 30,
-					type = "header",
-					name = L["Objective Frame"],
-				},
-				objectiveFrameHeight = {
-					order = 31,
-					type = 'range',
-					name = L["Objective Frame Height"],
-					desc = L["Height of the objective tracker. Increase size to be able to see more objectives."],
-					min = 400, max = E.screenheight, step = 1,
-					get = function(info) return E.db.general.objectiveFrameHeight end,
-					set = function(info, value) E.db.general.objectiveFrameHeight = value; E:GetModule('Blizzard'):ObjectiveFrameHeight(); end,
-				},
-				bonusObjectivePosition = {
-					order = 32,
-					type = 'select',
-					name = L["Bonus Reward Position"],
-					desc = L["Position of bonus quest reward frame relative to the objective tracker."],
-					get = function(info) return E.db.general.bonusObjectivePosition end,
-					set = function(info, value) E.db.general.bonusObjectivePosition = value; end,
-					values = {
-						['RIGHT'] = L["Right"],
-						['LEFT'] = L["Left"],
-						['AUTO'] = L["Auto"],
-					},
-				},
-				threatHeaderSpacing = {
-					order = 39,
-					type = "description",
-					name = " ",
-				},
-				threatHeader = {
-					order = 40,
-					type = "header",
-					name = L["Threat"],
-				},
-				threatEnable = {
-					order = 41,
-					type = "toggle",
-					name = L["Enable"],
-					get = function(info) return E.db.general.threat.enable end,
-					set = function(info, value) E.db.general.threat.enable = value; E:GetModule('Threat'):ToggleEnable()end,
-				},
-				threatPosition = {
-					order = 42,
-					type = 'select',
-					name = L["Position"],
-					desc = L["Adjust the position of the threat bar to either the left or right datatext panels."],
-					values = {
-						['LEFTCHAT'] = L["Left Chat"],
-						['RIGHTCHAT'] = L["Right Chat"],
-					},
-					get = function(info) return E.db.general.threat.position end,
-					set = function(info, value) E.db.general.threat.position = value; E:GetModule('Threat'):UpdatePosition() end,
-				},
-				threatTextSize = {
-					order = 43,
-					name = L["Font Size"],
-					type = "range",
-					min = 6, max = 22, step = 1,
-					get = function(info) return E.db.general.threat.textSize end,
-					set = function(info, value) E.db.general.threat.textSize = value; E:GetModule('Threat'):UpdatePosition() end,
 				},
 			},
 		},
@@ -515,7 +453,7 @@ E.Options.args.general = {
 			},
 		},
 		totems = {
-			order = 8,
+			order = 6,
 			type = "group",
 			name = L["Class Bar"],
 			get = function(info) return E.db.general.totems[ info[#info] ] end,
@@ -566,7 +504,7 @@ E.Options.args.general = {
 		},
 		cooldown = {
 			type = "group",
-			order = 9,
+			order = 7,
 			name = L["Cooldown Text"],
 			get = function(info)
 				local t = E.db.cooldown[ info[#info] ]
@@ -638,7 +576,7 @@ E.Options.args.general = {
 			},
 		},
 		chatBubbles = {
-			order = 11,
+			order = 8,
 			type = "group",
 			name = L["Chat Bubbles"],
 			args = {
@@ -688,6 +626,79 @@ E.Options.args.general = {
 					set = function(info, value) E.private.general.chatBubbleFontSize = value; E:StaticPopup_Show("PRIVATE_RL") end,
 					min = 4, max = 212, step = 1,
 					disabled = function() return E.private.general.chatBubbles == "disabled" end,
+				},
+			},
+		},
+		objectiveFrameGroup = {
+			order = 9,
+			type = "group",
+			name = L["Objective Frame"],
+			args = {
+				objectiveFrameHeader = {
+					order = 30,
+					type = "header",
+					name = L["Objective Frame"],
+				},
+				objectiveFrameHeight = {
+					order = 31,
+					type = 'range',
+					name = L["Objective Frame Height"],
+					desc = L["Height of the objective tracker. Increase size to be able to see more objectives."],
+					min = 400, max = E.screenheight, step = 1,
+					get = function(info) return E.db.general.objectiveFrameHeight end,
+					set = function(info, value) E.db.general.objectiveFrameHeight = value; E:GetModule('Blizzard'):ObjectiveFrameHeight(); end,
+				},
+				bonusObjectivePosition = {
+					order = 32,
+					type = 'select',
+					name = L["Bonus Reward Position"],
+					desc = L["Position of bonus quest reward frame relative to the objective tracker."],
+					get = function(info) return E.db.general.bonusObjectivePosition end,
+					set = function(info, value) E.db.general.bonusObjectivePosition = value; end,
+					values = {
+						['RIGHT'] = L["Right"],
+						['LEFT'] = L["Left"],
+						['AUTO'] = L["Auto"],
+					},
+				},
+			},
+		},
+		threatGroup = {
+			order = 10,
+			type = "group",
+			name = L["Threat"],
+			args = {
+				threatHeader = {
+					order = 40,
+					type = "header",
+					name = L["Threat"],
+				},
+				threatEnable = {
+					order = 41,
+					type = "toggle",
+					name = L["Enable"],
+					get = function(info) return E.db.general.threat.enable end,
+					set = function(info, value) E.db.general.threat.enable = value; E:GetModule('Threat'):ToggleEnable()end,
+				},
+				threatPosition = {
+					order = 42,
+					type = 'select',
+					name = L["Position"],
+					desc = L["Adjust the position of the threat bar to either the left or right datatext panels."],
+					values = {
+						['LEFTCHAT'] = L["Left Chat"],
+						['RIGHTCHAT'] = L["Right Chat"],
+					},
+					get = function(info) return E.db.general.threat.position end,
+					set = function(info, value) E.db.general.threat.position = value; E:GetModule('Threat'):UpdatePosition() end,
+				},
+				threatTextSize = {
+					order = 43,
+					name = L["Font Size"],
+					type = "range",
+					min = 6, max = 22, step = 1,
+					get = function(info) return E.db.general.threat.textSize end,
+					set = function(info, value) E.db.general.threat.textSize = value; E:GetModule('Threat'):UpdatePosition() end,
 				},
 			},
 		},

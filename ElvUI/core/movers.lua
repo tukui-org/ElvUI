@@ -76,6 +76,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 	f.postdrag = postdrag
 	f.overlay = overlay
 	f.snapOffset = snapOffset or -2
+	f.anchor = anchor
 
 	f:SetFrameLevel(parent:GetFrameLevel() + 1)
 	if overlay == true then
@@ -113,6 +114,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 		end
 		local point, anchor, secondaryPoint, x, y = split(delim, anchorString)
 		f:Point(point, anchor, secondaryPoint, x, y)
+		f.anchor = anchor
 	else
 		f:Point(point, anchor, secondaryPoint, x, y)
 	end
@@ -323,7 +325,11 @@ function E:SaveMoverPosition(name)
 	if not _G[name] then return end
 	if not E.db.movers then E.db.movers = {} end
 
-	E.db.movers[name] = GetPoint(_G[name])
+	local mover = _G[name]
+	local _, anchor = mover:GetPoint()
+	mover.anchor = anchor:GetName()
+
+	E.db.movers[name] = GetPoint(mover)
 end
 
 function E:SetMoverSnapOffset(name, offset)
