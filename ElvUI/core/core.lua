@@ -1138,50 +1138,6 @@ function E:UnregisterObjectForVehicleLock(object)
 	E.VehicleLocks[object] = nil
 end
 
-local RepositionedMovers = {}
-function E:OrderHall_OnShow()
-	for moverName in pairs(E.CreatedMovers) do
-		local mover = _G[moverName]
-		--We only want to reposition movers that are anchored to ElvUIParent
-		if (mover.anchor == "ElvUIParent" and not mover.ignoreOrderHall) then
-			local moverTop = mover:GetTop()
-			local ElvUIParentTop = ElvUIParent:GetTop()
-			local diff = ElvUIParentTop - moverTop
-			local commandBarHeight = OrderHallCommandBar:GetHeight()
-
-			--Check if mover is positioned to overlap Order Hall Bar
-			if diff < commandBarHeight then
-				local point, anchor, relativePoint, xOffset, yOffset = mover:GetPoint()
-				--Store original values
-				RepositionedMovers[mover] = {point, anchor, relativePoint, xOffset, yOffset}
-				--Reposition mover and account for height of OrderHall Bar
-				mover:ClearAllPoints()
-				mover:SetPoint(point, anchor, relativePoint, xOffset, (yOffset - commandBarHeight))
-			end
-		end
-	end
-	
-	if ElvUI_TopPanel then
-		ElvUI_TopPanel:ClearAllPoints()
-		ElvUI_TopPanel:Point('TOPLEFT', E.UIParent, 'TOPLEFT', -1, (1 - OrderHallCommandBar:GetHeight()))
-		ElvUI_TopPanel:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', 1, (1 - OrderHallCommandBar:GetHeight()))
-	end
-end
-
-function E:OrderHall_OnHide()
-	for mover, positionData in pairs(RepositionedMovers) do
-		local point, anchor, relativePoint, xOffset, yOffset = unpack(positionData)
-		mover:ClearAllPoints()
-		mover:SetPoint(point, anchor, relativePoint, xOffset, yOffset)
-	end
-	
-	if ElvUI_TopPanel then
-		ElvUI_TopPanel:ClearAllPoints()
-		ElvUI_TopPanel:Point('TOPLEFT', E.UIParent, 'TOPLEFT', -1, 1)
-		ElvUI_TopPanel:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', 1, 1)
-	end
-end
-
 function E:ResetAllUI()
 	self:ResetMovers()
 
@@ -1437,7 +1393,7 @@ function E:Initialize()
 		print(select(2, E:GetModule('Chat'):FindURL("CHAT_MSG_DUMMY", format(L["LOGIN_MSG"]:gsub("ElvUI", E.UIName), self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version)))..'.')
 	end
 
-	--Disable OrderHall Bar or set up movers to be repositioned if they overlap
+	--Disable OrderHall Bar if needed
 	local function HandleCommandBar()
 		if E.global.general.disableOrderHallBar then
 			local bar = OrderHallCommandBar
@@ -1445,9 +1401,6 @@ function E:Initialize()
 			bar:SetScript("OnShow", bar.Hide)
 			bar:Hide()
 			UIParent:UnregisterEvent("UNIT_AURA")--Only used for OrderHall Bar
-		else
-			OrderHallCommandBar:HookScript("OnShow", E.OrderHall_OnShow)
-			OrderHallCommandBar:HookScript("OnHide", E.OrderHall_OnHide)
 		end
 	end
 	if OrderHallCommandBar then

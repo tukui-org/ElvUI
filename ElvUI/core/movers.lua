@@ -50,7 +50,7 @@ local coordFrame = CreateFrame('Frame')
 coordFrame:SetScript('OnUpdate', UpdateCoords)
 coordFrame:Hide()
 
-local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, ignoreOrderHall)
+local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 	if not parent then return end --If for some reason the parent isnt loaded yet
 	if E.CreatedMovers[name].Created then return end
 
@@ -76,8 +76,6 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag, ig
 	f.postdrag = postdrag
 	f.overlay = overlay
 	f.snapOffset = snapOffset or -2
-	f.anchor = anchor
-	f.ignoreOrderHall = ignoreOrderHall --If true then don't reposition if mover overlaps OrderHall Bar
 
 	f:SetFrameLevel(parent:GetFrameLevel() + 1)
 	if overlay == true then
@@ -346,7 +344,7 @@ function E:SaveMoverDefaultPosition(name)
 	E.CreatedMovers[name]["postdrag"](_G[name], E:GetScreenQuadrant(_G[name]))
 end
 
-function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag, moverTypes, ignoreOrderHall)
+function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag, moverTypes)
 	if not moverTypes then moverTypes = 'ALL,GENERAL' end
 	local p, p2, p3, p4, p5 = parent:GetPoint()
 
@@ -358,7 +356,6 @@ function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag, moverT
 		E.CreatedMovers[name]["postdrag"] = postdrag
 		E.CreatedMovers[name]["snapoffset"] = snapoffset
 		E.CreatedMovers[name]["point"] = GetPoint(parent)
-		E.CreatedMovers[name]["ignoreOrderHall"] = ignoreOrderHall
 
 		E.CreatedMovers[name]["type"] = {}
 		local types = {split(',', moverTypes)}
@@ -368,7 +365,7 @@ function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag, moverT
 		end
 	end
 
-	CreateMover(parent, name, text, overlay, snapoffset, postdrag, ignoreOrderHall)
+	CreateMover(parent, name, text, overlay, snapoffset, postdrag)
 end
 
 function E:ToggleMovers(show, moverType)
@@ -503,7 +500,7 @@ end
 --Called from core.lua
 function E:LoadMovers()
 	for n, _ in pairs(E.CreatedMovers) do
-		local p, t, o, so, pd, ignoreOrderHall
+		local p, t, o, so, pd
 		for key, value in pairs(E.CreatedMovers[n]) do
 			if key == "parent" then
 				p = value
@@ -515,10 +512,8 @@ function E:LoadMovers()
 				so = value
 			elseif key == "postdrag" then
 				pd = value
-			elseif key == "ignoreOrderHall" then
-				ignoreOrderHall = value
 			end
 		end
-		CreateMover(p, n, t, o, so, pd, ignoreOrderHall)
+		CreateMover(p, n, t, o, so, pd)
 	end
 end
