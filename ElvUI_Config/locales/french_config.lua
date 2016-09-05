@@ -435,6 +435,7 @@ L["Skin the blizzard chat bubbles."] = "Habillage des bulles de Chat."
 L["Talking Head Scale"] = true;
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "Police qui apparait sur le texte au dessus de la tête des joueurs. |cffFF0000ATTENTION: requiert un redémarrage du jeu ou une reconnexion pour que les changements soient pris en compte.|r"
 L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."] = true;
+L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."] = true;
 L["Thin Border Theme"] = true;
 L["Toggle Tutorials"] = "Afficher les tutoriels"
 L["Top Panel"] = "Bandeau en haut"

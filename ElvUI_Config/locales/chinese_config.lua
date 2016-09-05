@@ -435,6 +435,7 @@ L["Skin the blizzard chat bubbles."] = "美化暴雪对话泡泡."
 L["Talking Head Scale"] = "特写框体缩放"
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "玩家头顶姓名的字体. |cffFF0000警告: 你需要重新开启游戏或重新登录才能使用此功能.|r"
 L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."] = "细边框主题会改变所有的外观,使用细边框主题会略微提升性能"
+L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."] = true;
 L["Thin Border Theme"] = "细边框主题"
 L["Toggle Tutorials"] = "教学开关"
 L["Top Panel"] = '顶部面板'
