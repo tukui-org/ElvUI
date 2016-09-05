@@ -193,6 +193,7 @@ E.Options.args.general = {
 					order = 22,
 					type = "select",
 					name = L["Number Prefix"],
+					desc = L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."],
 					get = function(info) return E.db.general.numberPrefixStyle end,
 					set = function(info, value) E.db.general.numberPrefixStyle = value; E:StaticPopup_Show("CONFIG_RL") end,
 					values = {
