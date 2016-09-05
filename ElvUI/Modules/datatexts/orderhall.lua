@@ -14,9 +14,13 @@ local C_GarrisonGetLandingPageShipmentInfoByContainerID = C_Garrison.GetLandingP
 local C_GarrisonGetInProgressMissions = C_Garrison.GetInProgressMissions
 local C_GarrisonGetTalentTrees = C_Garrison.GetTalentTrees
 local C_GarrisonGetCompleteTalent = C_Garrison.GetCompleteTalent
+local CAPACITANCE_WORK_ORDERS = CAPACITANCE_WORK_ORDERS
 local COMPLETE = COMPLETE
-local LE_GARRISON_TYPE_7_0 = LE_GARRISON_TYPE_7_0
+local FOLLOWERLIST_LABEL_TROOPS = FOLLOWERLIST_LABEL_TROOPS
+local GARRISON_TALENT_ORDER_ADVANCEMENT = GARRISON_TALENT_ORDER_ADVANCEMENT
 local LE_FOLLOWER_TYPE_GARRISON_7_0 = LE_FOLLOWER_TYPE_GARRISON_7_0
+local LE_GARRISON_TYPE_7_0 = LE_GARRISON_TYPE_7_0
+local ORDER_HALL_MISSIONS = ORDER_HALL_MISSIONS
 
 local GARRISON_CURRENCY = 1220
 local GARRISON_ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", select(3, GetCurrencyInfo(GARRISON_CURRENCY)), 16, 16)
@@ -36,13 +40,16 @@ local function OnEnter(self, _, noUpdate)
 		return
 	end
 
+	local firstLine = true
+
 	--Missions
 	local inProgressMissions = C_GarrisonGetInProgressMissions(LE_FOLLOWER_TYPE_GARRISON_7_0)
 	local numMissions = #inProgressMissions
 	if(numMissions > 0) then
 		tsort(inProgressMissions, sortFunction) --Sort by time left, lowest first
 
-		DT.tooltip:AddLine(L["Mission(s) Report:"])
+		DT.tooltip:AddLine(ORDER_HALL_MISSIONS) -- "Class Hall Missions"
+		firstLine = false
 		for i=1, numMissions do
 			local mission = inProgressMissions[i]
 			local timeLeft = mission.timeLeft:match("%d")
@@ -66,7 +73,11 @@ local function OnEnter(self, _, noUpdate)
 		local name, _, _, shipmentsReady, shipmentsTotal = C_GarrisonGetLandingPageShipmentInfoByContainerID(followerShipments[i])
 		if ( name and shipmentsReady and shipmentsTotal ) then
 			if(hasFollowers == false) then
-				DT.tooltip:AddLine(L["Troop(s) Report:"])
+				if not firstLine then
+					DT.tooltip:AddLine(" ")
+				end
+				firstLine = false
+				DT.tooltip:AddLine(FOLLOWERLIST_LABEL_TROOPS) -- "Troops"
 				hasFollowers = true
 			end
 
@@ -81,7 +92,11 @@ local function OnEnter(self, _, noUpdate)
 		local name, _, _, shipmentsReady, shipmentsTotal = C_GarrisonGetLandingPageShipmentInfoByContainerID(looseShipments[i])
 		if ( name and shipmentsReady and shipmentsTotal ) then
 			if(hasLoose == false) then
-				DT.tooltip:AddLine(L["Others Report:"])
+				if not firstLine then
+					DT.tooltip:AddLine(" ")
+				end
+				firstLine = false
+				DT.tooltip:AddLine(CAPACITANCE_WORK_ORDERS) -- "Work Orders"
 				hasLoose = true
 			end
 
@@ -105,7 +120,11 @@ local function OnEnter(self, _, noUpdate)
 					showTalent = true;
 				end
 				if (showTalent) then
-					DT.tooltip:AddLine(L["Order Hall Talent Report:"]);
+					if not firstLine then
+						DT.tooltip:AddLine(" ")
+					end
+					firstLine = false
+					DT.tooltip:AddLine(GARRISON_TALENT_ORDER_ADVANCEMENT); -- "Order Advancement"
 					DT.tooltip:AddDoubleLine(talent.name, format(GARRISON_LANDING_SHIPMENT_COUNT, talent.isBeingResearched and 0 or 1, 1), 1, 1, 1);
 					hasTalent = true
 				end
