@@ -14,6 +14,7 @@ local C_GarrisonGetInProgressMissions = C_Garrison.GetInProgressMissions
 local C_GarrisonGetLandingPageShipmentInfo = C_Garrison.GetLandingPageShipmentInfo
 local GARRISON_LANDING_SHIPMENT_COUNT = GARRISON_LANDING_SHIPMENT_COUNT
 local COMPLETE = COMPLETE
+local LE_GARRISON_TYPE_6_0 = LE_GARRISON_TYPE_6_0
 local LE_FOLLOWER_TYPE_GARRISON_6_0 = LE_FOLLOWER_TYPE_GARRISON_6_0
 local LE_FOLLOWER_TYPE_SHIPYARD_6_2 = LE_FOLLOWER_TYPE_SHIPYARD_6_2
 
@@ -117,6 +118,22 @@ local function OnEnter(self, _, noUpdate)
 	end
 end
 
+
+local garrisonType = LE_GARRISON_TYPE_6_0;
+
+local function OnClick(self)
+	local isShown = GarrisonLandingPage and GarrisonLandingPage:IsShown();
+	if (not isShown) then
+		ShowGarrisonLandingPage(garrisonType);
+	elseif (GarrisonLandingPage) then
+		local currentGarrType = GarrisonLandingPage.garrTypeID;
+		HideUIPanel(GarrisonLandingPage);
+		if (currentGarrType ~= garrisonType) then
+			ShowGarrisonLandingPage(garrisonType);
+		end
+	end
+end
+
 local function OnEvent(self, event, ...)
 	if(event == "GARRISON_LANDINGPAGE_SHIPMENTS") then
 		if(GetMouseFocus() == self) then
@@ -131,4 +148,4 @@ local function OnEvent(self, event, ...)
 	self.text:SetFormattedText("%s %s %s %s", GARRISON_ICON, numGarrisonResources, OIL_ICON, numOil)
 end
 
-DT:RegisterDatatext('Garrison', {"PLAYER_ENTERING_WORLD", "CURRENCY_DISPLAY_UPDATE", "GARRISON_LANDINGPAGE_SHIPMENTS"}, OnEvent, nil, GarrisonLandingPage_Toggle, OnEnter)
+DT:RegisterDatatext('Garrison', {"PLAYER_ENTERING_WORLD", "CURRENCY_DISPLAY_UPDATE", "GARRISON_LANDINGPAGE_SHIPMENTS"}, OnEvent, nil, OnClick, OnEnter)
