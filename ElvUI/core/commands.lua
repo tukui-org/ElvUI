@@ -4,10 +4,8 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 --Lua functions
 local _G = _G
 local tonumber, type, pairs, select = tonumber, type, pairs, select
-local format, lower, split = string.format, string.lower, string.split
+local lower, split = string.lower, string.split
 --WoW API / Variables
-local InCombatLockdown = InCombatLockdown
-local UIFrameFadeOut, UIFrameFadeIn = UIFrameFadeOut, UIFrameFadeIn
 local EnableAddOn, DisableAllAddOns = EnableAddOn, DisableAllAddOns
 local SetCVar = SetCVar
 local ReloadUI = ReloadUI
@@ -21,12 +19,9 @@ local debugprofilestart, debugprofilestop = debugprofilestart, debugprofilestop
 local UpdateAddOnCPUUsage, GetAddOnCPUUsage = UpdateAddOnCPUUsage, GetAddOnCPUUsage
 local ResetCPUUsage = ResetCPUUsage
 local GetAddOnInfo = GetAddOnInfo
-local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: FarmMode, Minimap, FarmModeMap, EGrid, MacroEditBox, HelloKittyLeft
-
-
 
 function E:Grid(msg)
 	if msg and type(tonumber(msg))=="number" and tonumber(msg) <= 256 and tonumber(msg) >= 4 then
@@ -99,15 +94,15 @@ function E:MassGuildKick(msg)
 	if not minRankIndex then minRankIndex = GuildControlGetNumRanks() - 1 end
 
 	for i = 1, GetNumGuildMembers() do
-		local name, _, rankIndex, level, class, _, note, officerNote, connected, _, class = GetGuildRosterInfo(i)
+		local name, _, rankIndex, level, _, _, note, officerNote, connected, _, classFileName = GetGuildRosterInfo(i)
 		local minLevelx = minLevel
 
-		if class == "DEATHKNIGHT" then
+		if classFileName == "DEATHKNIGHT" then
 			minLevelx = minLevelx + 55
 		end
 
 		if not connected then
-			local years, months, days, hours = GetGuildRosterLastOnline(i)
+			local years, months, days = GetGuildRosterLastOnline(i)
 			if days ~= nil and ((years > 0 or months > 0 or days >= minDays) and rankIndex >= minRankIndex) and note ~= nil and officerNote ~= nil and (level <= minLevelx) then
 				GuildUninvite(name)
 			end

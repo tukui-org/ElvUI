@@ -5,7 +5,6 @@ local Sticky = LibStub("LibSimpleSticky-1.0")
 --Lua functions
 local _G = _G
 local type, unpack, pairs = type, unpack, pairs
-local min = math.min
 local format, split, find = string.format, string.split, string.find
 --WoW API / Variables
 local CreateFrame = CreateFrame
@@ -208,7 +207,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 		self:SetBackdropBorderColor(unpack(E["media"].rgbvaluecolor))
 	end
 
-	local function OnMouseWheel(self, delta)
+	local function OnMouseWheel(_, delta)
 		if IsShiftKeyDown() then
 			E:NudgeMover(delta)
 		else
@@ -233,7 +232,7 @@ local function CreateMover(parent, name, text, overlay, snapOffset, postdrag)
 
 	if postdrag ~= nil and type(postdrag) == 'function' then
 		f:RegisterEvent("PLAYER_ENTERING_WORLD")
-		f:SetScript("OnEvent", function(self, event)
+		f:SetScript("OnEvent", function(self)
 			postdrag(f, E:GetScreenQuadrant(f))
 			self:UnregisterAllEvents()
 		end)
@@ -346,7 +345,6 @@ end
 
 function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag, moverTypes)
 	if not moverTypes then moverTypes = 'ALL,GENERAL' end
-	local p, p2, p3, p4, p5 = parent:GetPoint()
 
 	if E.CreatedMovers[name] == nil then
 		E.CreatedMovers[name] = {}
@@ -443,7 +441,6 @@ function E:ResetMovers(arg)
 	else
 		for name, _ in pairs(E.CreatedMovers) do
 			for key, value in pairs(E.CreatedMovers[name]) do
-				local mover
 				if key == "text" then
 					if arg == value then
 						local f = _G[name]

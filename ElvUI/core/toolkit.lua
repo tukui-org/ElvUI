@@ -5,7 +5,6 @@ local LSM = LibStub("LibSharedMedia-3.0")
 --Lua functions
 local _G = _G
 local unpack, type, select, getmetatable = unpack, type, select, getmetatable
-local floor = math.floor
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS

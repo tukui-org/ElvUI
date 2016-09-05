@@ -100,14 +100,14 @@ function E:SpawnTutorialFrame()
 	f.nextButton:Width(20)
 	S:HandleButton(f.nextButton)
 	_G[f.nextButton:GetName() .. "Text"]:SetText('>')
-	f.nextButton:SetScript("OnClick", function(self) E:SetNextTutorial() end)
+	f.nextButton:SetScript("OnClick", function() E:SetNextTutorial() end)
 
 	f.prevButton = CreateFrame("Button", f:GetName()..'PrevButton', f, "OptionsButtonTemplate")
 	f.prevButton:Point("RIGHT", f.nextButton, 'LEFT', -4, 0)
 	f.prevButton:Width(20)
 	S:HandleButton(f.prevButton)
 	_G[f.prevButton:GetName() .. "Text"]:SetText('<')
-	f.prevButton:SetScript("OnClick", function(self) E:SetPrevTutorial() end)
+	f.prevButton:SetScript("OnClick", function() E:SetPrevTutorial() end)
 
 	return f
 end

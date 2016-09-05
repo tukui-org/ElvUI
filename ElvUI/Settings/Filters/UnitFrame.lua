@@ -5,7 +5,7 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Engine
 local print, unpack, select, pairs = print, unpack, select, pairs
 local lower = string.lower
 --WoW API / Variables
-local GetSpellInfo, IsSpellKnown = GetSpellInfo, IsSpellKnown
+local GetSpellInfo = GetSpellInfo
 local UnitClass, IsEquippedItem = UnitClass, IsEquippedItem
 
 local function SpellName(id)
@@ -969,7 +969,7 @@ local priestTier17 = {115560,115561,115562,115563,115564}
 local f = CreateFrame("Frame")
 f:RegisterEvent("PLAYER_ENTERING_WORLD")
 f:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
-f:SetScript("OnEvent", function(self, event)
+f:SetScript("OnEvent", function()
 	local class = select(2, UnitClass("player"))
 	if lower(class) ~= "priest" then return; end
 

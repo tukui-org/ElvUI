@@ -34,7 +34,7 @@ function E:SetUpAnimGroup(object, type, ...)
 		object.anim.fadeout:SetToAlpha(0)		
 		object.anim.fadeout:SetOrder(1)
 
-		object.anim:SetScript("OnFinished", function(self, requested)
+		object.anim:SetScript("OnFinished", function(_, requested)
 			if(not requested) then
 				object.anim:Play()
 			end
@@ -233,7 +233,6 @@ function E:UIFrameFade(frame, fadeInfo)
 	if ( not fadeInfo.mode ) then
 		fadeInfo.mode = "IN";
 	end
-	local alpha;
 	if ( fadeInfo.mode == "IN" ) then
 		if ( not fadeInfo.startAlpha ) then
 			fadeInfo.startAlpha = 0;
@@ -241,7 +240,6 @@ function E:UIFrameFade(frame, fadeInfo)
 		if ( not fadeInfo.endAlpha ) then
 			fadeInfo.endAlpha = 1.0;
 		end
-		alpha = 0;
 	elseif ( fadeInfo.mode == "OUT" ) then
 		if ( not fadeInfo.startAlpha ) then
 			fadeInfo.startAlpha = 1.0;
@@ -249,7 +247,6 @@ function E:UIFrameFade(frame, fadeInfo)
 		if ( not fadeInfo.endAlpha ) then
 			fadeInfo.endAlpha = 0;
 		end
-		alpha = 1.0;
 	end
 	frame:SetAlpha(fadeInfo.startAlpha);
 

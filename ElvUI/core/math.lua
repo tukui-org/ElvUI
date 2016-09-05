@@ -2,10 +2,9 @@ local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, Private
 
 --Cache global variables
 local select, tonumber, assert, type, unpack, pairs = select, tonumber, assert, type, unpack, pairs
-local tinsert, tremove, tconcat = tinsert, tremove, table.concat
-local atan2, modf, ceil, floor, abs, sqrt, pi, mod = math.atan2, math.modf, math.ceil, math.floor, math.abs, math.sqrt, math.pi, mod
-local bit_band, bit_lshift, bit_rshift = bit.band, bit.lshift, bit.rshift
-local format, sub, upper, string_char, string_byte, split, utf8sub = string.format, string.sub, string.upper, string.char, string.byte, string.split, string.utf8sub
+local tinsert, tremove = tinsert, tremove
+local atan2, modf, ceil, floor, abs, sqrt, mod = math.atan2, math.modf, math.ceil, math.floor, math.abs, math.sqrt, mod
+local format, sub, upper, split, utf8sub = string.format, string.sub, string.upper, string.split, string.utf8sub
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local UnitPosition = UnitPosition
@@ -270,7 +269,7 @@ function E:Delay(delay, func, ...)
 	end
 	if(waitFrame == nil) then
 		waitFrame = CreateFrame("Frame","WaitFrame", E.UIParent)
-		waitFrame:SetScript("onUpdate",function (self,elapse)
+		waitFrame:SetScript("onUpdate",function (_,elapse)
 			local count = #waitTable
 			local i = 1
 			while(i<=count) do

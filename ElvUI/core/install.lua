@@ -3,7 +3,6 @@ local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, Priv
 --Cache global variables
 --Lua functions
 local _G = _G
-local unpack = unpack
 local format = format
 --WoW API / Variables
 local CreateFrame = CreateFrame
@@ -60,7 +59,6 @@ local function SetupChat()
 	for i = 1, NUM_CHAT_WINDOWS do
 		local frame = _G[format("ChatFrame%s", i)]
 		local chatFrameId = frame:GetID()
-		local chatName = FCF_GetChatWindowInfo(chatFrameId)
 
 		-- move general bottom left
 		if i == 1 then

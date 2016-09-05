@@ -65,7 +65,6 @@ do
 		[19902] = "Here Kitty Kitty!",
 	}
 
-	local missionName
 	local function New()
 		local self = GarrisonMissionFrame.MissionTab.MissionList;
 		local missions;
@@ -233,7 +232,7 @@ do
 
 						--Establish a list of mounts
 						for i=1, MountJournal_GetNumMounts() do
-							local creatureName, spellID, icon, active, isUsable, sourceType, isFavorite, _, _, hideOnChar, isCollected = MountJournal_GetMountInfo(i);
+							local _, spellID, _, _, isUsable = MountJournal_GetMountInfo(i);
 							if(mountItemID[spellID] and isUsable) then
 								mountItemID[spellID] = nil
 							end
