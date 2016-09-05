@@ -3,7 +3,6 @@ local LSM = LibStub("LibSharedMedia-3.0")
 
 --Cache global variables
 --WoW API / Variables
-local GetChatWindowInfo = GetChatWindowInfo
 local SetCVar = SetCVar
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script

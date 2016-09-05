@@ -22,7 +22,6 @@ local GetItemCount = GetItemCount
 local GetMouseFocus = GetMouseFocus
 local GetNumGroupMembers = GetNumGroupMembers
 local GetQuestDifficultyColor = GetQuestDifficultyColor
-local GetRaidBuffTrayAuraInfo = GetRaidBuffTrayAuraInfo
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
 local GetScreenWidth = GetScreenWidth
 local GetSpecialization = GetSpecialization
@@ -55,7 +54,6 @@ local UnitIsDND = UnitIsDND
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsPVP = UnitIsPVP
 local UnitIsTapDenied = UnitIsTapDenied
-local UnitIsTapDeniedByPlayer = UnitIsTapDeniedByPlayer
 local UnitIsUnit = UnitIsUnit
 local UnitIsWildBattlePet = UnitIsWildBattlePet
 local UnitLevel = UnitLevel
@@ -95,7 +93,6 @@ local GameTooltip, GameTooltipStatusBar = _G["GameTooltip"], _G["GameTooltipStat
 local S_ITEM_LEVEL = ITEM_LEVEL:gsub( "%%d", "(%%d+)" )
 local playerGUID --Will be set in Initialize
 local targetList, inspectCache = {}, {}
-local NIL_COLOR = { r=1, g=1, b=1 }
 local TAPPED_COLOR = { r=.6, g=.6, b=.6 }
 local AFK_LABEL = " |cffFFFFFF[|r|cffFF0000"..L["AFK"].."|r|cffFFFFFF]|r"
 local DND_LABEL = " |cffFFFFFF[|r|cffFFFF00"..L["DND"].."|r|cffFFFFFF]|r"
@@ -140,7 +137,7 @@ function TT:GameTooltip_ShowCompareItem(tt, shift)
 	if ( not tt ) then
 		tt = GameTooltip;
 	end
-	local item, link = tt:GetItem();
+	local _, link = tt:GetItem();
 	if ( not link ) then
 		return;
 	end
@@ -407,7 +404,7 @@ function TT:GetTalentSpec(unit, isPlayer)
 	end
 end
 
-function TT:INSPECT_READY(event, GUID)
+function TT:INSPECT_READY(_, GUID)
 	if(self.lastGUID ~= GUID) then return end
 
 	local unit = "mouseover"
@@ -645,7 +642,7 @@ function TT:GameTooltipStatusBar_OnValueChanged(tt, value)
 		end
 	end
 
-	local min, max = tt:GetMinMaxValues()
+	local _, max = tt:GetMinMaxValues()
 	if(value > 0 and max == 1) then
 		tt.text:SetFormattedText("%d%%", floor(value * 100))
 		tt:SetStatusBarColor(TAPPED_COLOR.r, TAPPED_COLOR.g, TAPPED_COLOR.b) --most effeciant?
@@ -673,7 +670,7 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 	end
 
 	if not tt.itemCleared then
-		local item, link = tt:GetItem()
+		local _, link = tt:GetItem()
 		local num = GetItemCount(link)
 		local numall = GetItemCount(link,true)
 		local left = " "
@@ -705,7 +702,7 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 	end
 end
 
-function TT:GameTooltip_ShowStatusBar(tt, min, max, value, text)
+function TT:GameTooltip_ShowStatusBar(tt)
 	local statusBar = _G[tt:GetName().."StatusBar"..tt.shownStatusBars];
 	if statusBar and not statusBar.skinned then
 		statusBar:StripTextures()
@@ -722,7 +719,7 @@ function TT:SetStyle(tt)
 	tt:SetBackdropColor(r, g, b, self.db.colorAlpha)
 end
 
-function TT:MODIFIER_STATE_CHANGED(event, key)
+function TT:MODIFIER_STATE_CHANGED(_, key)
 	if((key == "LSHIFT" or key == "RSHIFT") and UnitExists("mouseover")) then
 		GameTooltip:SetUnit('mouseover')
 	end
@@ -765,7 +762,7 @@ function TT:GameTooltip_OnTooltipSetSpell(tt)
 	end
 end
 
-function TT:SetItemRef(link, text, button, chatFrame)
+function TT:SetItemRef(link)
 	if find(link,"^spell:") and self.db.spellID then
 		local id = sub(link,7)
 		ItemRefTooltip:AddLine(("|cFFCA3C3C%s|r %d"):format(ID, id))
@@ -773,10 +770,10 @@ function TT:SetItemRef(link, text, button, chatFrame)
 	end
 end
 
-function TT:RepositionBNET(frame, point, anchor, anchorPoint, xOffset, yOffset)
+function TT:RepositionBNET(frame, _, anchor)
 	if anchor ~= BNETMover then
-		BNToastFrame:ClearAllPoints()
-		BNToastFrame:SetPoint('TOPLEFT', BNETMover, 'TOPLEFT');
+		frame:ClearAllPoints()
+		frame:SetPoint('TOPLEFT', BNETMover, 'TOPLEFT');
 	end
 end
 

@@ -62,7 +62,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 	end
 
 	if ( event == "UNIT_SPELLCAST_START" ) then
-		local name, nameSubtext, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible = UnitCastingInfo(unit);
+		local name, _, text, texture, startTime, endTime, _, castID, notInterruptible = UnitCastingInfo(unit);
 		if ( not name) then
 			frame.CastBar:Hide();
 			return;
@@ -129,7 +129,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 		end
 	elseif ( event == "UNIT_SPELLCAST_DELAYED" ) then
 		if ( frame:IsShown() ) then
-			local name, nameSubtext, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible = UnitCastingInfo(unit);
+			local name, _, _, _, startTime, endTime, _, _, notInterruptible = UnitCastingInfo(unit);
 			if ( not name ) then
 				-- if there is no name, there is no bar
 				frame.CastBar:Hide();
@@ -151,7 +151,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 			end
 		end
 	elseif ( event == "UNIT_SPELLCAST_CHANNEL_START" ) then
-		local name, nameSubtext, text, texture, startTime, endTime, isTradeSkill, notInterruptible = UnitChannelInfo(unit);
+		local name, _, text, texture, startTime, endTime, _, notInterruptible = UnitChannelInfo(unit);
 		if ( not name) then
 			frame.CastBar:Hide();
 			return;
@@ -179,7 +179,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 		frame.CastBar:Show();
 	elseif ( event == "UNIT_SPELLCAST_CHANNEL_UPDATE" ) then
 		if ( frame.CastBar:IsShown() ) then
-			local name, nameSubtext, text, texture, startTime, endTime, isTradeSkill, notInterruptible = UnitChannelInfo(unit);
+			local name, _, _, _, startTime, endTime, _, notInterruptible = UnitChannelInfo(unit);
 			if ( not name ) then
 				frame.CastBar:Hide();
 				return;

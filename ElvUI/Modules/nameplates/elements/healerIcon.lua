@@ -8,7 +8,7 @@ local UnitName = UnitName
 
 function mod:UpdateElement_HealerIcon(frame)
 	local icon = frame.HealerIcon;
-	local name, realm = UnitName(frame.unit)
+	local name = UnitName(frame.unit)
 	icon:ClearAllPoints()
 	if(frame.HealthBar:IsShown()) then
 		icon:SetPoint("RIGHT", frame.HealthBar, "LEFT", -6, 0)
