@@ -112,7 +112,7 @@ function E:UIScale(event)
 		end
 
 		self.UIParent:ClearAllPoints();
-		self.UIParent:Point("BOTTOM");
+		self.UIParent:Point("CENTER");
 
 		--Calculate potential coordinate differences
 		self.diffGetLeft = E:Round(abs(UIParent:GetLeft() - self.UIParent:GetLeft()))
