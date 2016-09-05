@@ -542,7 +542,6 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 				[156934] = Defaults(), --Rupture
 				[175104] = Defaults(), --Melt Armor
 				[176121] = Defaults(), --Volatile Fire
-				[158702] = Defaults(), --Fixate
 				[155225] = Defaults(), --Melt
 
 			--Hans'gar and Franzok
