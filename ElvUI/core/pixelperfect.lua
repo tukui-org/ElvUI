@@ -101,6 +101,7 @@ function E:UIScale(event)
 			end
 
 			self.UIParent:SetSize(width, height);
+			self.UIParent.origHeight = self.UIParent:GetHeight()
 		else
 			--[[Eyefinity Test mode
 				Resize the E.UIParent to be smaller than it should be, all objects inside should relocate.
@@ -109,10 +110,15 @@ function E:UIScale(event)
 			--self.UIParent:SetSize(UIParent:GetWidth() - 250, UIParent:GetHeight() - 250);
 
 			self.UIParent:SetSize(UIParent:GetSize());
+			self.UIParent.origHeight = self.UIParent:GetHeight()
 		end
 
 		self.UIParent:ClearAllPoints();
-		self.UIParent:Point("CENTER");
+		if self.global.general.commandBarSetting == "ENABLED_RESIZEPARENT" then
+			self.UIParent:Point("BOTTOM");
+		else
+			self.UIParent:Point("CENTER");
+		end
 
 		--Calculate potential coordinate differences
 		self.diffGetLeft = E:Round(abs(UIParent:GetLeft() - self.UIParent:GetLeft()))

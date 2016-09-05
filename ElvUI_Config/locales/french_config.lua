@@ -401,6 +401,7 @@ L["Display a panel across the top of the screen. This is for cosmetic only."] = 
 L["Display battleground messages in the middle of the screen."] = "Afficher le message du champs de bataille au milieu de l'écran";
 L["Display emotion icons in chat."] = "Afficher les émoticônes dans le Chat"
 L["Emotion Icons"] = "Emoticônes"
+L["Enable + Adjust Movers"] = true;
 L["Enable/Disable the loot frame."] = "Activer / désactiver le cadre de butin."
 L["Enable/Disable the loot roll frame."] = "Activer / désactiver le cadre du tirage au sort du butin."
 L["Enhanced PVP Messages"] = "Messages PVP améliorés";

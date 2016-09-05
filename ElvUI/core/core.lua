@@ -491,6 +491,7 @@ E.UIParent = CreateFrame('Frame', 'ElvUIParent', UIParent);
 E.UIParent:SetFrameLevel(UIParent:GetFrameLevel());
 E.UIParent:SetPoint('CENTER', UIParent, 'CENTER');
 E.UIParent:SetSize(UIParent:GetSize());
+E.UIParent.origHeight = E.UIParent:GetHeight()
 E['snapBars'][#E['snapBars'] + 1] = E.UIParent
 
 E.HiddenFrame = CreateFrame('Frame')
@@ -1379,14 +1380,23 @@ function E:Initialize()
 		print(select(2, E:GetModule('Chat'):FindURL("CHAT_MSG_DUMMY", format(L["LOGIN_MSG"]:gsub("ElvUI", E.UIName), self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version)))..'.')
 	end
 
-	--Disable OrderHall Bar if needed
+	--Disable OrderHall Bar or resize ElvUIParent if needed
 	local function HandleCommandBar()
-		if E.global.general.disableOrderHallBar then
+		if E.global.general.commandBarSetting == "DISABLED" then
 			local bar = OrderHallCommandBar
 			bar:UnregisterAllEvents()
 			bar:SetScript("OnShow", bar.Hide)
 			bar:Hide()
 			UIParent:UnregisterEvent("UNIT_AURA")--Only used for OrderHall Bar
+		elseif E.global.general.commandBarSetting == "ENABLED_RESIZEPARENT" then
+			E.UIParent:SetPoint("BOTTOM", UIParent, "BOTTOM");
+			OrderHallCommandBar:HookScript("OnShow", function()
+				local height = E.UIParent.origHeight - OrderHallCommandBar:GetHeight()
+				E.UIParent:SetHeight(height)
+			end)
+			OrderHallCommandBar:HookScript("OnHide", function()
+				E.UIParent:SetHeight(E.UIParent.origHeight)
+			end)
 		end
 	end
 	if OrderHallCommandBar then

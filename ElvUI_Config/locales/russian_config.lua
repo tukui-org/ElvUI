@@ -401,6 +401,7 @@ L["Display a panel across the top of the screen. This is for cosmetic only."] = 
 L["Display battleground messages in the middle of the screen."] = "Отображать сообщения полей боя в центре экрана."
 L["Display emotion icons in chat."] = "Показывать смайлы в чате"
 L["Emotion Icons"] = "Иконки эмоций"
+L["Enable + Adjust Movers"] = true;
 L["Enable/Disable the loot frame."] = "Включить/выключить окно добычи ElvUI."
 L["Enable/Disable the loot roll frame."] = "Включить/выключить фрейм распределения добычи ElvUI."
 L["Enhanced PVP Messages"] = "Улущенные PvP сообщения"

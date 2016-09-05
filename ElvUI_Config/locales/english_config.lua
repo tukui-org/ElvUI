@@ -390,6 +390,7 @@ L["Display a panel across the top of the screen. This is for cosmetic only."] = 
 L["Display battleground messages in the middle of the screen."] = true;
 L["Display emotion icons in chat."] = true;
 L["Emotion Icons"] = true;
+L["Enable + Adjust Movers"] = true;
 L["Enable/Disable the loot frame."] = true;
 L["Enable/Disable the loot roll frame."] = true;
 L["Enhanced PVP Messages"] = true;

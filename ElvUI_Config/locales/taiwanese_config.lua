@@ -401,6 +401,7 @@ L["Display a panel across the top of the screen. This is for cosmetic only."] = 
 L["Display battleground messages in the middle of the screen."] = true;
 L["Display emotion icons in chat."] = "在對話中顯示表情圖示."
 L["Emotion Icons"] = "表情圖示"
+L["Enable + Adjust Movers"] = true;
 L["Enable/Disable the loot frame."] = "啟用/停用拾取框架."
 L["Enable/Disable the loot roll frame."] = "啟用/停用擲骰框架."
 L["Enhanced PVP Messages"] = true;
