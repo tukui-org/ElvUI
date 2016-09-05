@@ -717,7 +717,9 @@ function TT:GameTooltip_ShowStatusBar(tt, min, max, value, text)
 end
 
 function TT:SetStyle(tt)
-	tt:SetTemplate("Transparent")
+	tt:SetTemplate("Transparent", nil, true) --ignore updates
+	local r, g, b = tt:GetBackdropColor()
+	tt:SetBackdropColor(r, g, b, self.db.colorAlpha)
 end
 
 function TT:MODIFIER_STATE_CHANGED(event, key)

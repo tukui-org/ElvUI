@@ -80,6 +80,13 @@ E.Options.args.tooltip = {
 						["NONE"] = L["None"],
 					},
 				},
+				colorAlpha = {
+					order = 8,
+					type = "range",
+					name = OPACITY,
+					isPercent = true,
+					min = 0, max = 1, step = 0.01,
+				},
 				fontGroup = {
 					order = 9,
 					type = "group",

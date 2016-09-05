@@ -726,6 +726,7 @@ P['tooltip'] = {
 	["headerFontSize"] = 12,
 	["textFontSize"] = 12,
 	["smallTextFontSize"] = 12,
+	["colorAlpha"] = 0.8,
 	['visibility'] = {
 		['unitFrames'] = 'NONE',
 		["bags"] = "NONE",
