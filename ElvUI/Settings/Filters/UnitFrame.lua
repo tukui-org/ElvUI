@@ -711,7 +711,7 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 				[212494] = Defaults(), -- Annihilated (Main Tank debuff)
 				[212587] = Defaults(), -- Mark of Frost
 				[212531] = Defaults(), -- Mark of Frost (marked)
-				[212530] = Defaults(), -- Replicate: Mark of Frost 
+				[212530] = Defaults(), -- Replicate: Mark of Frost
 				[212647] = Defaults(), -- Frostbitten
 				[212736] = Defaults(), -- Pool of Frost
 				[213085] = Defaults(), -- Frozen Tempest
@@ -916,7 +916,7 @@ G.unitframe.buffwatch = {
 	MONK = {
 		[119611] = ClassBuff(119611, "TOPLEFT", {0.8, 0.4, 0.8}),	 --Renewing Mist
 		[116849] = ClassBuff(116849, "TOPRIGHT", {0.2, 0.8, 0.2}),	 -- Life Cocoon
-		[132120] = ClassBuff(132120, "BOTTOMLEFT", {0.4, 0.8, 0.2}), -- Enveloping Mist
+		[124682] = ClassBuff(124682, "BOTTOMLEFT", {0.4, 0.8, 0.2}), -- Enveloping Mist
 		[124081] = ClassBuff(124081, "BOTTOMRIGHT", {0.7, 0.4, 0}), -- Zen Sphere
 	},
 	ROGUE = {
@@ -1045,7 +1045,7 @@ G.oldBuffWatch = {
 	MONK = {
 		ClassBuff(119611, "TOPLEFT", {0.8, 0.4, 0.8}),	 --Renewing Mist
 		ClassBuff(116849, "TOPRIGHT", {0.2, 0.8, 0.2}),	 -- Life Cocoon
-		ClassBuff(132120, "BOTTOMLEFT", {0.4, 0.8, 0.2}), -- Enveloping Mist
+		ClassBuff(124682, "BOTTOMLEFT", {0.4, 0.8, 0.2}), -- Enveloping Mist
 		ClassBuff(124081, "BOTTOMRIGHT", {0.7, 0.4, 0}), -- Zen Sphere
 	},
 	ROGUE = {
