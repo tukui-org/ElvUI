@@ -15,7 +15,7 @@ function mod:UpdateElement_Elite(frame)
 		if c == 'elite' or c == "worldboss" then
 			icon:SetTexCoord(0, 0.15, 0.35, 0.63)
 			icon:Show()
-		elseif c == 'rareelite' then
+		elseif c == 'rareelite' or c == 'rare' then
 			icon:SetTexCoord(0, 0.15, 0.63, 0.91)
 			icon:Show()
 		else
