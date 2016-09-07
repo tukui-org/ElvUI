@@ -3,6 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 --Cache global variables
 --Lua functions
+local select, ipairs = select, ipairs
 local format = string.format
 local tsort = table.sort
 --WoW API / Variables
@@ -15,18 +16,24 @@ local C_GarrisonGetTalentTrees = C_Garrison.GetTalentTrees
 local C_GarrisonRequestLandingPageShipmentInfo = C_Garrison.RequestLandingPageShipmentInfo
 local C_Garrison_HasGarrison = C_Garrison.HasGarrison
 local GetCurrencyInfo = GetCurrencyInfo
+local GetMouseFocus = GetMouseFocus
+local HideUIPanel = HideUIPanel
+local ShowGarrisonLandingPage = ShowGarrisonLandingPage
+local UnitClass = UnitClass
 local CAPACITANCE_WORK_ORDERS = CAPACITANCE_WORK_ORDERS
 local COMPLETE = COMPLETE
 local FOLLOWERLIST_LABEL_TROOPS = FOLLOWERLIST_LABEL_TROOPS
+local GARRISON_LANDING_SHIPMENT_COUNT = GARRISON_LANDING_SHIPMENT_COUNT
 local GARRISON_TALENT_ORDER_ADVANCEMENT = GARRISON_TALENT_ORDER_ADVANCEMENT
 local LE_FOLLOWER_TYPE_GARRISON_7_0 = LE_FOLLOWER_TYPE_GARRISON_7_0
 local LE_GARRISON_TYPE_7_0 = LE_GARRISON_TYPE_7_0
 local ORDER_HALL_MISSIONS = ORDER_HALL_MISSIONS
 
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: GarrisonLandingPage
+
 local GARRISON_CURRENCY = 1220
 local GARRISON_ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", select(3, GetCurrencyInfo(GARRISON_CURRENCY)), 16, 16)
-
-local garrisonType = LE_GARRISON_TYPE_7_0;
 
 local function sortFunction(a, b)
 	return a.missionEndTime < b.missionEndTime
@@ -68,7 +75,7 @@ local function OnEnter(self, _, noUpdate)
 	end
 
 	-- Troop Work Orders
-	local followerShipments = C_GarrisonGetFollowerShipments(garrisonType)
+	local followerShipments = C_GarrisonGetFollowerShipments(LE_GARRISON_TYPE_7_0)
 	local hasFollowers = false
 	if (followerShipments) then
 		for i = 1, #followerShipments do
@@ -89,7 +96,7 @@ local function OnEnter(self, _, noUpdate)
 	end
 
 	-- "Loose Work Orders" (i.e. research, equipment)
-	local looseShipments = C_GarrisonGetLooseShipments(garrisonType)
+	local looseShipments = C_GarrisonGetLooseShipments(LE_GARRISON_TYPE_7_0)
 	local hasLoose = false
 	if (looseShipments) then
 		for i = 1, #looseShipments do
@@ -110,11 +117,11 @@ local function OnEnter(self, _, noUpdate)
 	end
 
 	-- Talents
-	local talentTrees = C_GarrisonGetTalentTrees(garrisonType, select(3, UnitClass("player")));
+	local talentTrees = C_GarrisonGetTalentTrees(LE_GARRISON_TYPE_7_0, select(3, UnitClass("player")));
 	-- this is a talent that has completed, but has not been seen in the talent UI yet.
 	local hasTalent = false
 	if (talentTrees) then
-		local completeTalentID = C_GarrisonGetCompleteTalent(garrisonType);
+		local completeTalentID = C_GarrisonGetCompleteTalent(LE_GARRISON_TYPE_7_0);
 		for treeIndex, tree in ipairs(talentTrees) do
 			for talentIndex, talent in ipairs(tree) do
 				local showTalent = false;
@@ -145,18 +152,18 @@ local function OnEnter(self, _, noUpdate)
 end
 
 local function OnClick(self)
-	if not (C_Garrison_HasGarrison(garrisonType)) then
+	if not (C_Garrison_HasGarrison(LE_GARRISON_TYPE_7_0)) then
 		return;
 	end
 
 	local isShown = GarrisonLandingPage and GarrisonLandingPage:IsShown();
 	if (not isShown) then
-		ShowGarrisonLandingPage(garrisonType);
+		ShowGarrisonLandingPage(LE_GARRISON_TYPE_7_0);
 	elseif (GarrisonLandingPage) then
 		local currentGarrType = GarrisonLandingPage.garrTypeID;
 		HideUIPanel(GarrisonLandingPage);
-		if (currentGarrType ~= garrisonType) then
-			ShowGarrisonLandingPage(garrisonType);
+		if (currentGarrType ~= LE_GARRISON_TYPE_7_0) then
+			ShowGarrisonLandingPage(LE_GARRISON_TYPE_7_0);
 		end
 	end
 end
