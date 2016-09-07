@@ -40,13 +40,24 @@ local function LoadSkin()
 		S:HandleTab(_G["OrderHallMissionFrameTab" .. i])
 	end
 
-	for _, Button in pairs(OrderHallMissionFrame.MissionTab.MissionList.listScroll.buttons) do
-		if not Button.isSkinned then
+	for i, v in ipairs(OrderHallMissionFrame.MissionTab.MissionList.listScroll.buttons) do
+		local Button = _G["OrderHallMissionFrameMissionsListScrollFrameButton" .. i]
+		if Button and not Button.isSkinned then
 			Button:StripTextures()
 			Button:SetTemplate()
 			S:HandleButton(Button)
 			Button:SetBackdropBorderColor(0, 0, 0, 0)
 			Button.LocBG:Hide()
+
+			for i = 1, #Button.Rewards do
+				local Texture = Button.Rewards[i].Icon:GetTexture()
+
+				Button.Rewards[i]:StripTextures()
+				Button.Rewards[i]:CreateBackdrop()
+				Button.Rewards[i].Icon:SetTexture(Texture)
+				Button.Rewards[i].backdrop:ClearAllPoints()
+				Button.Rewards[i].Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+			end
 			Button.isSkinned = true
 		end
 	end
