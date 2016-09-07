@@ -424,6 +424,10 @@ end
 
 function mod:ConfigureAll()
 	if E.private.nameplates.enable ~= true then return; end
+
+	--We don't allow player nameplate health to be disabled
+	self.db.units.PLAYER.healthbar.enable = true
+
 	self:ForEachPlate("UpdateAllFrame")
 	self:UpdateCVars()
 	self:TogglePlayerDisplayType()
@@ -740,6 +744,9 @@ end
 function mod:Initialize()
 	self.db = E.db["nameplates"]
 	if E.private["nameplates"].enable ~= true then return end
+
+	--We don't allow player nameplate health to be disabled
+	self.db.units.PLAYER.healthbar.enable = true
 
 	self:UpdateVehicleStatus()
 

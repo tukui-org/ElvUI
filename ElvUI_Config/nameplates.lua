@@ -143,6 +143,7 @@ local function GetUnitSettings(unit, name)
 						name = L["Enable"],
 						type = "toggle",
 						disabled = function() return unit == "PLAYER" end,
+						hidden = function() return unit == "PLAYER" end,
 					},
 					height = {
 						order = 2,
