@@ -486,9 +486,11 @@ function CH:StyleChat(frame)
 		end
 	end)
 
-	--This usually taints, but LibChatAnims should make sure it doesn't.
-	frame.OldAddMessage = frame.AddMessage
-	frame.AddMessage = CH.AddMessage
+	if id ~= 2 then --Don't add timestamps to combat log, they don't work.
+		--This usually taints, but LibChatAnims should make sure it doesn't.
+		frame.OldAddMessage = frame.AddMessage
+		frame.AddMessage = CH.AddMessage
+	end
 
 	--copy chat button
 	frame.button = CreateFrame('Frame', format("CopyChatButton%d", id), frame)
