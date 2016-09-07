@@ -6,14 +6,15 @@ local DT = E:GetModule('DataTexts')
 local format = string.format
 local tsort = table.sort
 --WoW API / Variables
-local GetCurrencyInfo = GetCurrencyInfo
-local C_GarrisonRequestLandingPageShipmentInfo = C_Garrison.RequestLandingPageShipmentInfo
-local C_GarrisonGetFollowerShipments = C_Garrison.GetFollowerShipments
-local C_GarrisonGetLooseShipments = C_Garrison.GetLooseShipments
-local C_GarrisonGetLandingPageShipmentInfoByContainerID = C_Garrison.GetLandingPageShipmentInfoByContainerID
-local C_GarrisonGetInProgressMissions = C_Garrison.GetInProgressMissions
-local C_GarrisonGetTalentTrees = C_Garrison.GetTalentTrees
 local C_GarrisonGetCompleteTalent = C_Garrison.GetCompleteTalent
+local C_GarrisonGetFollowerShipments = C_Garrison.GetFollowerShipments
+local C_GarrisonGetInProgressMissions = C_Garrison.GetInProgressMissions
+local C_GarrisonGetLandingPageShipmentInfoByContainerID = C_Garrison.GetLandingPageShipmentInfoByContainerID
+local C_GarrisonGetLooseShipments = C_Garrison.GetLooseShipments
+local C_GarrisonGetTalentTrees = C_Garrison.GetTalentTrees
+local C_GarrisonRequestLandingPageShipmentInfo = C_Garrison.RequestLandingPageShipmentInfo
+local C_Garrison_HasGarrison = C_Garrison.HasGarrison
+local GetCurrencyInfo = GetCurrencyInfo
 local CAPACITANCE_WORK_ORDERS = CAPACITANCE_WORK_ORDERS
 local COMPLETE = COMPLETE
 local FOLLOWERLIST_LABEL_TROOPS = FOLLOWERLIST_LABEL_TROOPS
@@ -44,7 +45,7 @@ local function OnEnter(self, _, noUpdate)
 
 	--Missions
 	local inProgressMissions = C_GarrisonGetInProgressMissions(LE_FOLLOWER_TYPE_GARRISON_7_0)
-	local numMissions = #inProgressMissions
+	local numMissions = (inProgressMissions and #inProgressMissions or 0)
 	if(numMissions > 0) then
 		tsort(inProgressMissions, sortFunction) --Sort by time left, lowest first
 
@@ -69,47 +70,51 @@ local function OnEnter(self, _, noUpdate)
 	-- Troop Work Orders
 	local followerShipments = C_GarrisonGetFollowerShipments(garrisonType)
 	local hasFollowers = false
-	for i = 1, #followerShipments do
-		local name, _, _, shipmentsReady, shipmentsTotal = C_GarrisonGetLandingPageShipmentInfoByContainerID(followerShipments[i])
-		if ( name and shipmentsReady and shipmentsTotal ) then
-			if(hasFollowers == false) then
-				if not firstLine then
-					DT.tooltip:AddLine(" ")
+	if (followerShipments) then
+		for i = 1, #followerShipments do
+			local name, _, _, shipmentsReady, shipmentsTotal = C_GarrisonGetLandingPageShipmentInfoByContainerID(followerShipments[i])
+			if ( name and shipmentsReady and shipmentsTotal ) then
+				if(hasFollowers == false) then
+					if not firstLine then
+						DT.tooltip:AddLine(" ")
+					end
+					firstLine = false
+					DT.tooltip:AddLine(FOLLOWERLIST_LABEL_TROOPS) -- "Troops"
+					hasFollowers = true
 				end
-				firstLine = false
-				DT.tooltip:AddLine(FOLLOWERLIST_LABEL_TROOPS) -- "Troops"
-				hasFollowers = true
-			end
 
-			DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal), 1, 1, 1)
+				DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal), 1, 1, 1)
+			end
 		end
 	end
 
 	-- "Loose Work Orders" (i.e. research, equipment)
 	local looseShipments = C_GarrisonGetLooseShipments(garrisonType)
 	local hasLoose = false
-	for i = 1, #looseShipments do
-		local name, _, _, shipmentsReady, shipmentsTotal = C_GarrisonGetLandingPageShipmentInfoByContainerID(looseShipments[i])
-		if ( name and shipmentsReady and shipmentsTotal ) then
-			if(hasLoose == false) then
-				if not firstLine then
-					DT.tooltip:AddLine(" ")
+	if (looseShipments) then
+		for i = 1, #looseShipments do
+			local name, _, _, shipmentsReady, shipmentsTotal = C_GarrisonGetLandingPageShipmentInfoByContainerID(looseShipments[i])
+			if ( name and shipmentsReady and shipmentsTotal ) then
+				if(hasLoose == false) then
+					if not firstLine then
+						DT.tooltip:AddLine(" ")
+					end
+					firstLine = false
+					DT.tooltip:AddLine(CAPACITANCE_WORK_ORDERS) -- "Work Orders"
+					hasLoose = true
 				end
-				firstLine = false
-				DT.tooltip:AddLine(CAPACITANCE_WORK_ORDERS) -- "Work Orders"
-				hasLoose = true
-			end
 
-			DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal), 1, 1, 1)
+				DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal), 1, 1, 1)
+			end
 		end
 	end
 
 	-- Talents
 	local talentTrees = C_GarrisonGetTalentTrees(garrisonType, select(3, UnitClass("player")));
 	-- this is a talent that has completed, but has not been seen in the talent UI yet.
-	local completeTalentID = C_GarrisonGetCompleteTalent(garrisonType);
 	local hasTalent = false
 	if (talentTrees) then
+		local completeTalentID = C_GarrisonGetCompleteTalent(garrisonType);
 		for treeIndex, tree in ipairs(talentTrees) do
 			for talentIndex, talent in ipairs(tree) do
 				local showTalent = false;
@@ -140,6 +145,10 @@ local function OnEnter(self, _, noUpdate)
 end
 
 local function OnClick(self)
+	if not (C_Garrison_HasGarrison(garrisonType)) then
+		return;
+	end
+
 	local isShown = GarrisonLandingPage and GarrisonLandingPage:IsShown();
 	if (not isShown) then
 		ShowGarrisonLandingPage(garrisonType);
