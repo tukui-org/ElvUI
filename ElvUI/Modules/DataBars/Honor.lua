@@ -143,7 +143,7 @@ function mod:UpdateHonorDimensions()
 	self.honorBar:Height(self.db.honor.height)
 	self.honorBar.statusBar:SetOrientation(self.db.honor.orientation)
 	self.honorBar.statusBar:SetReverseFill(self.db.honor.reverseFill)
-
+	self.honorBar.text:FontTemplate(nil, self.db.honor.textSize)
 	if self.db.honor.mouseover then
 		self.honorBar:SetAlpha(0)
 	else
