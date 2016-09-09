@@ -33,6 +33,7 @@ L["Trigger"] = "觸發器"
 L["Bank"] = true;
 L["Deposit Reagents"] = true;
 L["Hold Control + Right Click:"] = '按住 Ctrl 並按滑鼠右鍵：'
+L["Hold Shift + Drag:"] = '按住 Shift 並拖曳：'
 L["Purchase Bags"] = true;
 L["Purchase"] = "購買銀行欄位"
 L["Reagent Bank"] = true;

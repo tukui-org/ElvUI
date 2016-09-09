@@ -33,6 +33,7 @@ L["Trigger"] = true;
 L["Bank"] = true;
 L["Deposit Reagents"] = true;
 L["Hold Control + Right Click:"] = true;
+L["Hold Shift + Drag:"] = true;
 L["Purchase Bags"] = true;
 L["Purchase"] = true;
 L["Reagent Bank"] = true;
