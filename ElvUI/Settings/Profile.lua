@@ -176,6 +176,7 @@ P['bags'] = {
 	["countFontSize"] = 10,
 	["countFontOutline"] = "MONOCHROMEOUTLINE",
 	["countFontColor"] = {r = 1, g = 1, b = 1},
+	["reverseLoot"] = false,
 	['bagBar'] = {
 		['growthDirection'] = 'VERTICAL',
 		['sortDirection'] = 'ASCENDING',

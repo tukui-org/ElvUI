@@ -1698,8 +1698,8 @@ function B:Initialize()
 	BankFrame:Point("TOPLEFT")
 	BankFrame:SetScript("OnShow", nil)
 
-	--Disable "Loot to left most bag", as the interface option has been removed
-	SetInsertItemsLeftToRight(false)
+	--Enable/Disable "Loot to Leftmost Bag"
+	SetInsertItemsLeftToRight(E.db.bags.reverseLoot)
 end
 
 E:RegisterModule(B:GetName())

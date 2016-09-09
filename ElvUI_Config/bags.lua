@@ -73,6 +73,14 @@ E.Options.args.bags = {
 					desc = L["Display the junk icon on all grey items that can be vendored."],
 					set = function(info, value) E.db.bags[ info[#info] ] = value; B:UpdateAllBagSlots(); end,
 				},
+				reverseLoot = {
+					order = 5,
+					type = "toggle",
+					name = REVERSE_NEW_LOOT_TEXT,
+					set = function(info, value)
+						SetInsertItemsLeftToRight(value)
+					end,
+				},
 				countGroup = {
 					order = 6,
 					type = "group",
