@@ -344,6 +344,11 @@ E.Options.args.skins = {
 					name = ADVENTURE_MAP_TITLE,
 					desc = L["TOGGLESKIN_DESC"],
 				},
+				Obliterum = {
+					type = "toggle",
+					name = OBLITERUM_FORGE_TITLE,
+					desc = L["TOGGLESKIN_DESC"],
+				},
 			},
 		},
 	},

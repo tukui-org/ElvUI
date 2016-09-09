@@ -41,6 +41,7 @@
 	<Script file='misc.lua'/>
 	<Script file='nonraid.lua'/>
 	<Script file='objectivetracker.lua'/>
+	<Script file='obliterum.lua'/>
 	<Script file='orderhall.lua'/>
 	<Script file='petbattle.lua'/>
 	<Script file='petition.lua'/>
