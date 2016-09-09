@@ -377,7 +377,7 @@ function B:UpdateSlot(bagID, slotID)
 		slot:SetBackdropBorderColor(unpack(B.ProfessionColors[bagType]))
 	elseif (clink) then
 		local iLvl, itemEquipLoc
-		slot.name, _, _, iLvl, _, _, _, _, itemEquipLoc = GetItemInfo(clink);
+		slot.name, _, _, iLvl, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID = GetItemInfo(clink);
 
 		local isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID);
 		local r, g, b
@@ -393,7 +393,7 @@ function B:UpdateSlot(bagID, slotID)
 		end
 
 		--Item Level
-		if iLvl and B.db.itemLevel and (itemEquipLoc ~= nil and itemEquipLoc ~= "" and itemEquipLoc ~= "INVTYPE_BAG" and itemEquipLoc ~= "INVTYPE_QUIVER" and itemEquipLoc ~= "INVTYPE_TABARD") and (slot.rarity and slot.rarity > 1) then
+		if iLvl and B.db.itemLevel and ((itemClassID == 3 and itemSubClassID == 11) or (itemEquipLoc ~= nil and itemEquipLoc ~= "" and itemEquipLoc ~= "INVTYPE_BAG" and itemEquipLoc ~= "INVTYPE_QUIVER" and itemEquipLoc ~= "INVTYPE_TABARD") and (slot.rarity and slot.rarity > 1)) then
 			if (iLvl >= E.db.bags.itemLevelThreshold) then
 				slot.itemLevel:SetText(iLvl)
 				slot.itemLevel:SetTextColor(r, g, b)
