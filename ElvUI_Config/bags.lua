@@ -78,6 +78,7 @@ E.Options.args.bags = {
 					type = "toggle",
 					name = REVERSE_NEW_LOOT_TEXT,
 					set = function(info, value)
+						E.db.bags.reverseLoot = value;
 						SetInsertItemsLeftToRight(value)
 					end,
 				},
