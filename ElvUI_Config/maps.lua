@@ -24,28 +24,37 @@ E.Options.args.maps = {
 					descStyle = "inline",
 					get = function(info) return E.global.general.smallerWorldMap end,
 					set = function(info, value) E.global.general.smallerWorldMap = value; E:StaticPopup_Show("GLOBAL_RL") end,
-					width = "double"
+				},
+				fadeMapWhenMoving = {
+					order = 2,
+					type = "toggle",
+					name = MAP_FADE_TEXT,
+					get = function(info) return E.global.general.fadeMapWhenMoving end,
+					set = function(info, value)
+						E.global.general.fadeMapWhenMoving = value;
+						SetCVar("mapFade", (value == true and 1 or 0))
+					end,
 				},
 				mapAlphaWhenMoving = {
-					order = 2,
+					order = 3,
 					type = "range",
 					name = L["Map Opacity When Moving"],
 					isPercent = true,
 					min = 0, max = 1, step = 0.01,
 					get = function(info) return E.global.general.mapAlphaWhenMoving end,
 					set = function(info, value)
-							E.global.general.mapAlphaWhenMoving = value;
-							WORLD_MAP_MIN_ALPHA = value;
-							SetCVar("mapAnimMinAlpha", value)
-						end,
+						E.global.general.mapAlphaWhenMoving = value;
+						WORLD_MAP_MIN_ALPHA = value;
+						SetCVar("mapAnimMinAlpha", value)
+					end,
 				},
-				spacer  = {
-					order = 3,
+				spacer = {
+					order = 4,
 					type = "description",
 					name = "\n"
 				},
 				worldMapCoordinatesEnable = {
-					order = 4,
+					order = 5,
 					type = "toggle",
 					name = L["World Map Coordinates"],
 					desc = L["Puts coordinates on the world map."],
@@ -55,7 +64,7 @@ E.Options.args.maps = {
 					width = "full"
 				},
 				position = {
-					order = 5,
+					order = 6,
 					type = "select",
 					name = L["Position"],
 					get = function(info) return E.global.general.WorldMapCoordinates.position end,
@@ -71,7 +80,7 @@ E.Options.args.maps = {
 					},
 				},
 				xOffset = {
-					order = 6,
+					order = 7,
 					type = "range",
 					name = L["X-Offset"],
 					get = function(info) return E.global.general.WorldMapCoordinates.xOffset end,
@@ -80,7 +89,7 @@ E.Options.args.maps = {
 					min = -200, max = 200, step = 1,
 				},
 				yOffset = {
-					order = 7,
+					order = 8,
 					type = "range",
 					name = L["Y-Offset"],
 					get = function(info) return E.global.general.WorldMapCoordinates.yOffset end,
