@@ -329,6 +329,7 @@ L["Datatext Panel (Right)"] = true;
 L["DataTexts"] = true;
 L["Display data panels below the chat, used for datatexts."] = true;
 L["Display minimap panels below the minimap, used for datatexts."] = true;
+L["Displayed Currency"] = true;
 L["Gold Format"] = true;
 L["If not set to true then the server time will be displayed instead."] = true;
 L["left"] = "Left"

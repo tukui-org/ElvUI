@@ -340,6 +340,7 @@ L["Datatext Panel (Right)"] = "Панель информации (правая)"
 L["DataTexts"] = "Инфо-тексты"
 L["Display data panels below the chat, used for datatexts."] = "Отображать панели под чатом, используется для инфо-текстов"
 L["Display minimap panels below the minimap, used for datatexts."] = "Отображать панели информационных текстов под миникартой."
+L["Displayed Currency"] = true;
 L["Gold Format"] = "Формат золота"
 L["If not set to true then the server time will be displayed instead."] = "Если отключено, будет отображаться серверное время."
 L["left"] = "Слева"

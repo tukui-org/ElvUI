@@ -340,6 +340,7 @@ L["Datatext Panel (Right)"] = "Painel de Textos Informativos (Direito)"
 L["DataTexts"] = "Textos Informativos"
 L["Display data panels below the chat, used for datatexts."] = "Mostra painéis abaixo do bate-papo, usados para textos informativos."
 L["Display minimap panels below the minimap, used for datatexts."] = "Exibir painéis abaixo do minimapa, usados para textos informativos."
+L["Displayed Currency"] = true;
 L["Gold Format"] = true;
 L["If not set to true then the server time will be displayed instead."] = "Se não definido como verdade, então a hora do servidor será exibida."
 L["left"] = "esquerda"

@@ -79,18 +79,6 @@ E.Options.args.datatexts = {
 					guiInline = true,
 					name = L["General"],
 					args = {
-						time24 = {
-							order = 1,
-							type = 'toggle',
-							name = L["24-Hour Time"],
-							desc = L["Toggle 24-hour mode for the time datatext."],
-						},
-						localtime = {
-							order = 2,
-							type = 'toggle',
-							name = L["Local Time"],
-							desc = L["If not set to true then the server time will be displayed instead."],
-						},
 						battleground = {
 							order = 3,
 							type = 'toggle',
@@ -293,6 +281,67 @@ E.Options.args.datatexts = {
 					name = L["Small Panels"],
 					order = 12,
 					args = {},
+				},
+			},
+		},
+		currencies = {
+			order = 5,
+			type = "group",
+			name = "Currencies", --Name of datatext, which isn't localized
+			args = {
+				header = {
+					order = 1,
+					type = "header",
+					name = "Currencies",
+				},
+				displayedCurrency = {
+					order = 2,
+					type = "select",
+					name = L["Displayed Currency"],
+					get = function(info) return E.db.datatexts.currencies.displayedCurrency end,
+					set = function(info, value) E.db.datatexts.currencies.displayedCurrency = value; DT:LoadDataTexts() end,
+					values = function() return DT:Currencies_GetCurrencyList() end,
+				},
+				displayStyle = {
+					order = 3,
+					type = "select",
+					name = L["Currency Format"],
+					get = function(info) return E.db.datatexts.currencies.displayStyle end,
+					set = function(info, value) E.db.datatexts.currencies.displayStyle = value; DT:LoadDataTexts() end,
+					disabled = function() return (E.db.datatexts.currencies.displayedCurrency == "GOLD") end,
+					values = {
+						["ICON"] = L["Icons Only"],
+						["ICON_TEXT"] = L["Icons and Text"],
+						["ICON_TEXT_ABBR"] = L["Icons and Text (Short)"],
+					},
+				},
+			},
+		},
+		time = {
+			order = 6,
+			type = "group",
+			name = "Time", --Name of datatext, which isn't localized
+			args = {
+				header = {
+					order = 1,
+					type = "header",
+					name = "Time",
+				},
+				time24 = {
+					order = 2,
+					type = 'toggle',
+					name = L["24-Hour Time"],
+					desc = L["Toggle 24-hour mode for the time datatext."],
+					get = function(info) return E.db.datatexts.time24 end,
+					set = function(info, value) E.db.datatexts.time24 = value; DT:LoadDataTexts() end,
+				},
+				localtime = {
+					order = 3,
+					type = 'toggle',
+					name = L["Local Time"],
+					desc = L["If not set to true then the server time will be displayed instead."],
+					get = function(info) return E.db.datatexts.localtime end,
+					set = function(info, value) E.db.datatexts.localtime = value; DT:LoadDataTexts() end,
 				},
 			},
 		},

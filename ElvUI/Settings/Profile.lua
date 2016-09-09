@@ -692,14 +692,23 @@ P['datatexts'] = {
 		['TopRightMiniPanel'] = '',
 		['TopLeftMiniPanel'] = '',
 	},
-	['localtime'] = true,
-	['time24'] = false,
 	['battleground'] = true,
 	['panelTransparency'] = false,
-	['goldFormat'] = 'BLIZZARD',
-	['goldCoins'] = false,
 	["noCombatClick"] = false,
 	["noCombatHover"] = false,
+
+	--Datatext Options
+	--General
+	['goldFormat'] = 'BLIZZARD',
+	['goldCoins'] = false,
+	--Currencies Datatext
+	["currencies"] = {
+		["displayedCurrency"] = "GOLD",
+		["displayStyle"] = "ICON",
+	},
+	--Time Datatext
+	['localtime'] = true,
+	['time24'] = false,
 
 	--Enabled/Disabled Panels
 	['minimapPanels'] = true,

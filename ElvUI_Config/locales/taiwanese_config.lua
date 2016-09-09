@@ -340,6 +340,7 @@ L["Datatext Panel (Right)"] = "右側資訊框"
 L["DataTexts"] = "資訊文字"
 L["Display data panels below the chat, used for datatexts."] = "在對話框下顯示用於資訊的框架."
 L["Display minimap panels below the minimap, used for datatexts."] = "顯示小地圖下方的資訊框."
+L["Displayed Currency"] = true;
 L["Gold Format"] = true;
 L["If not set to true then the server time will be displayed instead."] = "若關閉此選項將顯示伺服器時間."
 L["left"] = "左"
