@@ -468,7 +468,7 @@ function UF:PostUpdateAdditionalPower(unit, min, max, event)
 			self.text:ClearAllPoints()
 			if not frame.CLASSBAR_DETACHED then
 				self.text:SetParent(powerValueParent)
-				if (powerValueText ~= "" and powerValueText ~= " ") then
+				if (powerValueText and (powerValueText ~= "" and powerValueText ~= " ")) then
 					if find(powerTextPosition, "RIGHT") then
 						self.text:Point("RIGHT", powerValue, "LEFT", 3, 0)
 						self.text:SetFormattedText(color.."%d%%|r |cffD7BEA5- |r", floor(min / max * 100))
