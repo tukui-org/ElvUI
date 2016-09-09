@@ -99,7 +99,7 @@ function UF:Configure_Portrait(frame, dontHide)
 	end
 end
 
-function UF:PortraitUpdate(unit)
+function UF:PortraitUpdate(unit, shouldUpdate)
 	local db = self:GetParent().db
 	if not db then return end
 
@@ -111,7 +111,7 @@ function UF:PortraitUpdate(unit)
 		self:SetAlpha(1)
 	end
 
-	if self:GetObjectType() ~= 'Texture' then
+	if shouldUpdate then
 		local rotation = portrait.rotation or 0
 		local camDistanceScale = portrait.camDistanceScale or 1
 		local xOffset, yOffset = (portrait.xOffset or 0), (portrait.yOffset or 0)

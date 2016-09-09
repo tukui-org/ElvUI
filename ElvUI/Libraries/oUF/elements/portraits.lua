@@ -44,6 +44,7 @@ local Update = function(self, event, unit)
 	if(not unit or not UnitIsUnit(self.unit, unit)) then return end
 
 	local portrait = self.Portrait
+	local modelUpdated = false
 	if(portrait.PreUpdate) then portrait:PreUpdate(unit) end
 
 	if(portrait:IsObjectType'Model') then
@@ -55,6 +56,7 @@ local Update = function(self, event, unit)
 			portrait:ClearModel()
 			portrait:SetModel('interface\\buttons\\talktomequestionmark.m2')
 			portrait.guid = nil
+			modelUpdated = true
 		elseif(portrait.guid ~= guid or event == 'UNIT_MODEL_CHANGED') then
 			portrait:SetCamDistanceScale(1)
 			portrait:SetPortraitZoom(1)
@@ -62,13 +64,14 @@ local Update = function(self, event, unit)
 			portrait:ClearModel()
 			portrait:SetUnit(unit)
 			portrait.guid = guid
+			modelUpdated = true
 		end
 	else
 		SetPortraitTexture(portrait, unit)
 	end
 
 	if(portrait.PostUpdate) then
-		return portrait:PostUpdate(unit)
+		return portrait:PostUpdate(unit, modelUpdated)
 	end
 end
 
