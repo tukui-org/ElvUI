@@ -376,7 +376,7 @@ function B:UpdateSlot(bagID, slotID)
 	if B.ProfessionColors[bagType] then
 		slot:SetBackdropBorderColor(unpack(B.ProfessionColors[bagType]))
 	elseif (clink) then
-		local iLvl, itemEquipLoc
+		local iLvl, itemEquipLoc, itemClassID, itemSubClassID
 		slot.name, _, _, iLvl, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID = GetItemInfo(clink);
 
 		local isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID);
