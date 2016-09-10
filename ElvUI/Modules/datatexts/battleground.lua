@@ -112,7 +112,7 @@ function DT:HideBattlegroundTexts()
 	E:Print(L["Battleground datatexts temporarily hidden, to show type /bgstats or right click the 'C' icon near the minimap."])
 end
 
-local function ValueColorUpdate(hex, r, g, b)
+local function ValueColorUpdate(hex)
 	displayString = join("", "%s: ", hex, "%s|r")
 
 	if lastPanel ~= nil then

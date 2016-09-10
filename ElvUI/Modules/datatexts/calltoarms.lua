@@ -39,7 +39,7 @@ local function MakeIconString(tank, healer, damage)
 	return str
 end
 
-local function OnEvent(self, event, ...)
+local function OnEvent(self)
 	local tankReward = false
 	local healerReward = false
 	local dpsReward = false
@@ -47,7 +47,7 @@ local function OnEvent(self, event, ...)
 
 	--Dungeons
 	for i=1, GetNumRandomDungeons() do
-		local id, name = GetLFGRandomDungeonInfo(i)
+		local id = GetLFGRandomDungeonInfo(i)
 		for x = 1,LFG_ROLE_NUM_SHORTAGE_TYPES do
 			local eligible, forTank, forHealer, forDamage, itemCount = GetLFGRoleShortageRewards(id, x)
 			if eligible and forTank and itemCount > 0 then tankReward = true; unavailable = false; end
@@ -58,7 +58,7 @@ local function OnEvent(self, event, ...)
 
 	--LFR
 	for i = 1, GetNumRFDungeons() do
-		local id, name = GetRFDungeonInfo(i)
+		local id = GetRFDungeonInfo(i)
 		for x = 1, LFG_ROLE_NUM_SHORTAGE_TYPES do
 			local eligible, forTank, forHealer, forDamage, itemCount = GetLFGRoleShortageRewards(id, x)
 			if eligible and forTank and itemCount > 0 then tankReward = true; unavailable = false; end
@@ -79,7 +79,7 @@ local function OnClick()
 	ToggleFrame(LFDParentFrame)
 end
 
-local function ValueColorUpdate(hex, r, g, b)
+local function ValueColorUpdate(hex)
 	NOBONUSREWARDS = BATTLEGROUND_HOLIDAY..": "..hex.."N/A|r"
 
 	if lastPanel ~= nil then
@@ -94,7 +94,6 @@ local function OnEnter(self)
 	end
 
 	DT:SetupTooltip(self)
-	local allUnavailable = true
 	local numCTA = 0
 	local addTooltipHeader = true
 	for i=1, GetNumRandomDungeons() do
@@ -112,7 +111,6 @@ local function OnEnter(self)
 		end
 
 		if not unavailable then
-			allUnavailable = false
 			local rolesString = MakeIconString(tankReward, healerReward, dpsReward)
 			if rolesString ~= ""  then
 				if addTooltipHeader then
@@ -127,7 +125,7 @@ local function OnEnter(self)
 
 	addTooltipHeader = true
 	for i = 1, GetNumRFDungeons() do
-		local id, name, typeID, subtype, minLevel, maxLevel = GetRFDungeonInfo(i);
+		local id, name = GetRFDungeonInfo(i);
 		local tankReward = false
 		local healerReward = false
 		local dpsReward = false
@@ -142,7 +140,6 @@ local function OnEnter(self)
 		end
 
 		if not unavailable then
-			allUnavailable = false
 			local rolesString = MakeIconString(tankReward, healerReward, dpsReward)
 			if rolesString ~= ""  then
 				if addTooltipHeader then
@@ -174,7 +171,7 @@ local function Update(self, elapsed)
 	end
 end
 
-local function OnLeave(self)
+local function OnLeave()
 	DT.tooltip:Hide();
 	enteredFrame = false;
 end

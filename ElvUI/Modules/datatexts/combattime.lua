@@ -32,7 +32,7 @@ local function DelayOnUpdate(self, elapsed)
 end
 
 local function OnEvent(self, event, timerType, timeSeconds, totalTime)
-	local inInstance, instanceType = IsInInstance()
+	local _, instanceType = IsInInstance()
 	if(event == "START_TIMER" and instanceType == "arena") then
 		startTime = timeSeconds
 		timer = 0
@@ -53,7 +53,7 @@ local function OnEvent(self, event, timerType, timeSeconds, totalTime)
 	lastPanel = self
 end
 
-local function ValueColorUpdate(hex, r, g, b)
+local function ValueColorUpdate(hex)
 	displayNumberString = join("", "%s: ", hex, "%s|r")
 
 	if lastPanel ~= nil then

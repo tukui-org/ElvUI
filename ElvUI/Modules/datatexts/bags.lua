@@ -16,7 +16,7 @@ local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
 local displayString = '';
 local lastPanel
 
-local function OnEvent(self, event, ...)
+local function OnEvent(self)
 	lastPanel = self
 	local free, total,used = 0, 0, 0
 	for i = 0, NUM_BAG_SLOTS do
@@ -34,7 +34,7 @@ local function OnEnter(self)
 	DT:SetupTooltip(self)
 
 	for i = 1, MAX_WATCHED_TOKENS do
-		local name, count, extraCurrencyType, icon, itemID = GetBackpackCurrencyInfo(i)
+		local name, count = GetBackpackCurrencyInfo(i)
 		if name and i == 1 then
 			DT.tooltip:AddLine(CURRENCY)
 			DT.tooltip:AddLine(" ")
@@ -45,7 +45,7 @@ local function OnEnter(self)
 	DT.tooltip:Show()
 end
 
-local function ValueColorUpdate(hex, r, g, b)
+local function ValueColorUpdate(hex)
 	displayString = join("", "%s", hex, "%d/%d|r")
 
 	if lastPanel ~= nil then

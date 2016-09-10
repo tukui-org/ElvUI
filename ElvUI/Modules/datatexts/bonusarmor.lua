@@ -66,13 +66,13 @@ local function OnEnter(self)
 	DT.tooltip:Show()
 end
 
-local function OnEvent(self, event, unit)
+local function OnEvent(self)
 	bonusArmor = UnitBonusArmor('player');
 	self.text:SetFormattedText(displayString, bonusArmorString, bonusArmor)
 	lastPanel = self
 end
 
-local function ValueColorUpdate(hex, r, g, b)
+local function ValueColorUpdate(hex)
 	displayString = join("", "%s", hex, "%d|r")
 
 	if lastPanel ~= nil then

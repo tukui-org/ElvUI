@@ -121,7 +121,7 @@ end
 
 local garrisonType = LE_GARRISON_TYPE_6_0;
 
-local function OnClick(self)
+local function OnClick()
 	local isShown = GarrisonLandingPage and GarrisonLandingPage:IsShown();
 	if (not isShown) then
 		ShowGarrisonLandingPage(garrisonType);
@@ -134,7 +134,7 @@ local function OnClick(self)
 	end
 end
 
-local function OnEvent(self, event, ...)
+local function OnEvent(self, event)
 	if(event == "GARRISON_LANDINGPAGE_SHIPMENTS") then
 		if(GetMouseFocus() == self) then
 			OnEnter(self, nil, true)

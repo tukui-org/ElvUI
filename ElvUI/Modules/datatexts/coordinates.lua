@@ -31,7 +31,7 @@ local function Click()
 	ToggleFrame(WorldMapFrame)
 end
 
-local function ValueColorUpdate(hex, r, g, b)
+local function ValueColorUpdate(hex)
 	displayString = join("", hex, "%.1f|r", " , ", hex, "%.1f|r")
 end
 E['valueColorUpdateFuncs'][ValueColorUpdate] = true

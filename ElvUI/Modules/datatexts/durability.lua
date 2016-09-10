@@ -29,7 +29,7 @@ local slots = {
 	["HeadSlot"] = L["Head"],
 }
 
-local function OnEvent(self, event, ...)
+local function OnEvent(self)
 	lastPanel = self
 	totalDurability = 100
 
@@ -63,7 +63,7 @@ local function OnEnter(self)
 	DT.tooltip:Show()
 end
 
-local function ValueColorUpdate(hex, r, g, b)
+local function ValueColorUpdate(hex)
 	displayString = join("", DURABILITY, ": ", hex, "%d%%|r")
 
 	if lastPanel ~= nil then

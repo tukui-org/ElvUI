@@ -18,7 +18,7 @@ local reloadText = RELOADUI
 local plugins
 local lastPanel
 
-local function OnEvent(self, event, ...)
+local function OnEvent(self, event)
 	lastPanel = self
 
 	if event == "PLAYER_ENTERING_WORLD" then
@@ -59,7 +59,7 @@ local function Click(self, button)
 	end
 end
 
-local function ValueColorUpdate(hex, r, g, b)
+local function ValueColorUpdate(hex)
 	displayString = join("", hex, "%s|r")
 
 	if lastPanel ~= nil then
