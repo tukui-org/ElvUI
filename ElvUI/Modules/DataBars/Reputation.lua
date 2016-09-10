@@ -50,7 +50,7 @@ function mod:UpdateReputation(event)
 
 		for i=1, numFactions do
 			local factionName, _, standingID,_,_,_,_,_,_,_,_,_,_, factionID = GetFactionInfo(i);
-			local friendID, friendRep, friendMaxRep, _, _, _, friendTextLevel = GetFriendshipReputation(factionID);
+			local friendID, _, _, _, _, _, friendTextLevel = GetFriendshipReputation(factionID);
 			if factionName == name then
 				if friendID ~= nil then
 					isFriend = true
