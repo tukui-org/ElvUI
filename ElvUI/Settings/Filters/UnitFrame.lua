@@ -325,7 +325,6 @@ G.unitframe.aurafilters['Blacklist'] = {
 		[57723] = Defaults(), --Exhaustion
 		[58539] = Defaults(), --watchers corpse
 		[26013] = Defaults(), --deserter
-		[6788] = Defaults(), --weakended soul
 		[71041] = Defaults(), --dungeon deserter
 		[41425] = Defaults(), --"Hypothermia"
 		[55711] = Defaults(), --Weakened Heart
@@ -579,12 +578,11 @@ end
 
 G.unitframe.buffwatch = {
 	PRIEST = {
-		[6788] = ClassBuff(6788, "TOPRIGHT", {1, 0, 0}, true),	 -- Weakened Soul
+		[194384] = ClassBuff(194384, "TOPRIGHT", {1, 0, 0.75}, true),	 -- Atonement
 		[41635] = ClassBuff(41635, "BOTTOMRIGHT", {0.2, 0.7, 0.2}),	 -- Prayer of Mending
 		[139] = ClassBuff(139, "BOTTOMLEFT", {0.4, 0.7, 0.2}), -- Renew
 		[17] = ClassBuff(17, "TOPLEFT", {0.81, 0.85, 0.1}, true),	 -- Power Word: Shield
 		[123258] = ClassBuff(123258, "TOPLEFT", {0.81, 0.85, 0.1}, true),	 -- Power Word: Shield Power Insight
-		[10060] = ClassBuff(10060 , "RIGHT", {227/255, 23/255, 13/255}), -- Power Infusion
 		[47788] = ClassBuff(47788, "LEFT", {221/255, 117/255, 0}, true), -- Guardian Spirit
 		[33206] = ClassBuff(33206, "LEFT", {227/255, 23/255, 13/255}, true), -- Pain Suppression
 	},
