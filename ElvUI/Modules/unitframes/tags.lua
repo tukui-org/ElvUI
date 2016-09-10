@@ -371,7 +371,7 @@ ElvUF.Tags.Methods['power:max'] = function(unit)
 end
 
 ElvUF.Tags.Methods['manacolor'] = function(unit)
-	local altR, altG, altB = PowerBarColor["MANA"]
+	local altR, altG, altB = PowerBarColor["MANA"].r, PowerBarColor["MANA"].g, PowerBarColor["MANA"].b
 	local color = ElvUF['colors'].power["MANA"]
 	if color then
 		return Hex(color[1], color[2], color[3])
