@@ -267,6 +267,8 @@ P["nameplates"] = {
 				['height'] = 8,
 				["hideSpellName"] = false,
 				["hideTime"] = false,
+				["castTimeFormat"] = "CURRENT",
+				["channelTimeFormat"] = "CURRENT",
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -323,6 +325,8 @@ P["nameplates"] = {
 				['height'] = 8,
 				["hideSpellName"] = false,
 				["hideTime"] = false,
+				["castTimeFormat"] = "CURRENT",
+				["channelTimeFormat"] = "CURRENT",
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -381,6 +385,8 @@ P["nameplates"] = {
 				['height'] = 8,
 				["hideSpellName"] = false,
 				["hideTime"] = false,
+				["castTimeFormat"] = "CURRENT",
+				["channelTimeFormat"] = "CURRENT",
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -438,6 +444,8 @@ P["nameplates"] = {
 				['height'] = 8,
 				["hideSpellName"] = false,
 				["hideTime"] = false,
+				["castTimeFormat"] = "CURRENT",
+				["channelTimeFormat"] = "CURRENT",
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -493,6 +501,8 @@ P["nameplates"] = {
 				['height'] = 8,
 				["hideSpellName"] = false,
 				["hideTime"] = false,
+				["castTimeFormat"] = "CURRENT",
+				["channelTimeFormat"] = "CURRENT",
 			},
 			['buffs'] = {
 				['enable'] = true,
@@ -553,6 +563,8 @@ P["nameplates"] = {
 				['height'] = 8,
 				["hideSpellName"] = false,
 				["hideTime"] = false,
+				["castTimeFormat"] = "CURRENT",
+				["channelTimeFormat"] = "CURRENT",
 			},
 			['buffs'] = {
 				['enable'] = true,

@@ -509,6 +509,8 @@ L["By forcing the nameplate to always show it will not move on the screen to sta
 L["Cast Bar"] = true;
 L["Cast Color"] = true;
 L["Cast No Interrupt Color"] = true;
+L["Cast Time Format"] = true;
+L["Channel Time Format"] = true;
 L["Clamp nameplates to the top of the screen when outside of view."] = true;
 L["Clamp Nameplates"] = true;
 L["Clickable Height"] = true;

@@ -520,6 +520,8 @@ L["By forcing the nameplate to always show it will not move on the screen to sta
 L["Cast Bar"] = "Полоса заклинаний"
 L["Cast Color"] = "Цвет полосы заклинаний"
 L["Cast No Interrupt Color"] = "Цвет непрерываемого"
+L["Cast Time Format"] = true;
+L["Channel Time Format"] = true;
 L["Clamp nameplates to the top of the screen when outside of view."] = "Собирать индикаторы на верхней границе экрана, когда их юнит вне поля зрения."
 L["Clamp Nameplates"] = "Собирать индикаторы"
 L["Clickable Height"] = "Кликабельная высота"

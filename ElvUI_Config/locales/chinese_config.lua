@@ -520,6 +520,8 @@ L["By forcing the nameplate to always show it will not move on the screen to sta
 L["Cast Bar"] = "施法条"
 L["Cast Color"] = "施法条颜色"
 L["Cast No Interrupt Color"] = "无法打断的颜色"
+L["Cast Time Format"] = true;
+L["Channel Time Format"] = true;
 L["Clamp nameplates to the top of the screen when outside of view."] = "当姓名板在屏幕外面时将他们紧靠在屏幕上方"
 L["Clamp Nameplates"] = "紧靠姓名板"
 L["Clickable Height"] = true;

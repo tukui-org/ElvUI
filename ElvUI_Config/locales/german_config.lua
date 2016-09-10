@@ -521,6 +521,8 @@ L["By forcing the nameplate to always show it will not move on the screen to sta
 L["Cast Bar"] = "Zauberleiste"
 L["Cast Color"] = "Zauberfarbe"
 L["Cast No Interrupt Color"] = "Nicht unterbrechbare Zauberfarbe"
+L["Cast Time Format"] = true;
+L["Channel Time Format"] = true;
 L["Clamp nameplates to the top of the screen when outside of view."] = "Hält die Namensplaketten am oberen Bildschirmrand, wenn nicht in Sicht."
 L["Clamp Nameplates"] = "Namensplaketten halten"
 L["Clickable Height"] = "Klickbare Höhe"

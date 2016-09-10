@@ -275,6 +275,26 @@ local function GetUnitSettings(unit, name)
 						type = "range",
 						min = 4, max = 20, step = 1,
 					},
+					castTimeFormat = {
+						order = 5,
+						type = "select",
+						name = L["Cast Time Format"],
+						values = {
+							["CURRENT"] = L["Current"],
+							["CURRENT_MAX"] = L["Current / Max"],
+							["REMAINING"] = L["Remaining"],
+						},
+					},
+					channelTimeFormat = {
+						order = 6,
+						type = "select",
+						name = L["Channel Time Format"],
+						values = {
+							["CURRENT"] = L["Current"],
+							["CURRENT_MAX"] = L["Current / Max"],
+							["REMAINING"] = L["Remaining"],
+						},
+					},
 				},
 			},
 			buffsGroup = {

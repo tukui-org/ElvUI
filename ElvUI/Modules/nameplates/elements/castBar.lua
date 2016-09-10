@@ -22,7 +22,15 @@ function mod:UpdateElement_CastBarOnUpdate(elapsed)
 			return;
 		end
 		self:SetValue(self.value);
-		self.Time:SetFormattedText("%.1f ", self.value)
+
+		if self.castTimeFormat == "CURRENT" then
+			self.Time:SetFormattedText("%.1f", self.value)
+		elseif self.castTimeFormat == "CURRENT_MAX" then
+			self.Time:SetFormattedText("%.1f / %.1f", self.value, self.maxValue)
+		else --REMAINING
+			self.Time:SetFormattedText("%.1f", (self.maxValue - self.value))
+		end
+
 		if ( self.Spark ) then
 			local sparkPosition = (self.value / self.maxValue) * self:GetWidth();
 			self.Spark:SetPoint("CENTER", self, "LEFT", sparkPosition, 0);
@@ -34,7 +42,14 @@ function mod:UpdateElement_CastBarOnUpdate(elapsed)
 			return;
 		end
 		self:SetValue(self.value);
-		self.Time:SetFormattedText("%.1f ", self.value)
+
+		if self.channelTimeFormat == "CURRENT" then
+			self.Time:SetFormattedText("%.1f", (self.maxValue - self.value))
+		elseif self.channelTimeFormat == "CURRENT_MAX" then
+			self.Time:SetFormattedText("%.1f / %.1f", (self.maxValue - self.value), self.maxValue)
+		else --REMAINING
+			self.Time:SetFormattedText("%.1f", self.value)
+		end
 	end
 end
 
@@ -256,6 +271,10 @@ function mod:ConfigureElement_CastBar(frame)
 
 	--Texture
 	castBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
+
+	--Castbar value formats
+	castBar.castTimeFormat = self.db.units[frame.UnitType].castbar.castTimeFormat
+	castBar.channelTimeFormat = self.db.units[frame.UnitType].castbar.channelTimeFormat
 end
 
 function mod:ConstructElement_CastBar(parent)
