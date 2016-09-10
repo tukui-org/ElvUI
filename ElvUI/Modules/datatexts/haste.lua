@@ -13,7 +13,7 @@ local STAT_HASTE = STAT_HASTE
 local displayNumberString = ''
 local lastPanel;
 
-local function OnEvent(self, event, unit)
+local function OnEvent(self)
 	local hasteRating
 	if E.role == "Caster" then
 		hasteRating = UnitSpellHaste("player")
@@ -26,7 +26,7 @@ local function OnEvent(self, event, unit)
 	lastPanel = self
 end
 
-local function ValueColorUpdate(hex, r, g, b)
+local function ValueColorUpdate(hex)
 	displayNumberString = join("", "%s: ", hex, "%.2f%%|r")
 
 	if lastPanel ~= nil then

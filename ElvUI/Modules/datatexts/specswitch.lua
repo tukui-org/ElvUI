@@ -20,7 +20,6 @@ local LOOT_SPECIALIZATION_DEFAULT = LOOT_SPECIALIZATION_DEFAULT
 
 local lastPanel, active
 local displayString = '';
-local talent = {}
 local activeString = join("", "|cff00FF00" , ACTIVE_PETS, "|r")
 local inactiveString = join("", "|cffFF0000", FACTION_INACTIVE, "|r")
 local menuFrame = CreateFrame("Frame", "LootSpecializationDatatextClickMenu", E.UIParent, "UIDropDownMenuTemplate")
@@ -40,7 +39,7 @@ local specList = {
 	{ notCheckable = true }
 }
 
-local function OnEvent(self, event)
+local function OnEvent(self)
 	lastPanel = self
 
 	local specIndex = GetSpecialization();
@@ -65,7 +64,7 @@ local function OnEvent(self, event)
 		local specIndex = GetSpecialization();
 
 		if specIndex then
-			local specID, _, _, texture = GetSpecializationInfo(specIndex);
+			local _, _, _, texture = GetSpecializationInfo(specIndex);
 			if texture then
 				loot = format('|T%s:14:14:0:0:64:64:4:60:4:60|t', texture)
 			else
@@ -75,7 +74,7 @@ local function OnEvent(self, event)
 			loot = 'N/A'
 		end
 	else
-		local specID, _, _, texture = GetSpecializationInfoByID(specialization);
+		local _, _, _, texture = GetSpecializationInfoByID(specialization);
 		if texture then
 			loot = format('|T%s:14:14:0:0:64:64:4:60:4:60|t', texture)
 		else
@@ -101,7 +100,7 @@ local function OnEnter(self)
 		local specIndex = GetSpecialization();
 
 		if specIndex then
-			local specID, name = GetSpecializationInfo(specIndex);
+			local _, name = GetSpecializationInfo(specIndex);
 			DT.tooltip:AddLine(format('|cffFFFFFF%s:|r %s', SELECT_LOOT_SPECIALIZATION, format(LOOT_SPECIALIZATION_DEFAULT, name)))
 		end
 	else
@@ -148,7 +147,7 @@ local function OnClick(self, button)
 		end
 	else
 		DT.tooltip:Hide()
-		local specID, specName = GetSpecializationInfo(specIndex);
+		local _, specName = GetSpecializationInfo(specIndex);
 		menuList[2].text = format(LOOT_SPECIALIZATION_DEFAULT, specName);
 
 		for index = 1, 4 do
@@ -165,7 +164,7 @@ local function OnClick(self, button)
 	end
 end
 
-local function ValueColorUpdate(hex, r, g, b)
+local function ValueColorUpdate()
 	displayString = join("", "|cffFFFFFF%s:|r ")
 
 	if lastPanel ~= nil then

@@ -71,7 +71,7 @@ local function OnClick(self)
 	GetHPS(self)
 end
 
-local function ValueColorUpdate(hex, r, g, b)
+local function ValueColorUpdate(hex)
 	displayString = join("", "%s: ", hex, "%.1f|r")
 
 	if lastPanel ~= nil then

@@ -13,7 +13,7 @@ local STAT_MASTERY = STAT_MASTERY
 local lastPanel
 local displayString = '';
 
-local function OnEvent(self, event)
+local function OnEvent(self)
 	lastPanel = self
 	self.text:SetFormattedText(displayString, STAT_MASTERY, GetMasteryEffect())
 end
@@ -37,7 +37,7 @@ local function OnEnter(self)
 	DT.tooltip:Show()
 end
 
-local function ValueColorUpdate(hex, r, g, b)
+local function ValueColorUpdate(hex)
 	displayString = join("", "%s: ", hex, "%.2f%%|r")
 
 	if lastPanel ~= nil then

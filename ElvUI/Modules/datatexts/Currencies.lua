@@ -5,7 +5,6 @@ local DT = E:GetModule('DataTexts')
 --Lua functions
 local select, pairs = select, pairs
 local format = string.format
-local join = string.join
 --WoW API / Variables
 local GetCurrencyInfo = GetCurrencyInfo
 local GetMoney = GetMoney
@@ -42,7 +41,7 @@ end
 local gold
 local chosenCurrency, currencyAmount
 
-local function OnEvent(self, event, unit)
+local function OnEvent(self)
 	gold = GetMoney();
 	if E.db.datatexts.currencies.displayedCurrency == "GOLD" then
 		self.text:SetText(E:FormatMoney(gold, E.db.datatexts.goldFormat or "BLIZZARD", not E.db.datatexts.goldCoins))

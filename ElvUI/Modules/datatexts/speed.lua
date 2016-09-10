@@ -32,13 +32,13 @@ local function OnEnter(self)
 	DT.tooltip:Show()
 end
 
-local function OnEvent(self, event, unit)
+local function OnEvent(self)
 	speed = GetSpeed();
 	self.text:SetFormattedText(displayModifierString, STAT_SPEED, speed)
 	lastPanel = self
 end
 
-local function ValueColorUpdate(hex, r, g, b)
+local function ValueColorUpdate(hex)
 	displayModifierString = join("", "%s: ", hex, "%.2f%%|r")
 
 	if lastPanel ~= nil then

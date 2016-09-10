@@ -12,7 +12,7 @@ local MANA_REGEN = MANA_REGEN
 local displayNumberString = ''
 local lastPanel;
 
-local function OnEvent(self, event, unit)
+local function OnEvent(self)
 	local baseMR, castingMR = GetManaRegen()
 	if InCombatLockdown() then
 		self.text:SetFormattedText(displayNumberString, MANA_REGEN, castingMR*5)
@@ -23,7 +23,7 @@ local function OnEvent(self, event, unit)
 	lastPanel = self
 end
 
-local function ValueColorUpdate(hex, r, g, b)
+local function ValueColorUpdate(hex)
 	displayNumberString = join("", "%s: ", hex, "%.2f|r")
 
 	if lastPanel ~= nil then

@@ -12,7 +12,7 @@ local spellpwr, healpwr
 local displayNumberString = ''
 local lastPanel;
 
-local function OnEvent(self, event, unit)
+local function OnEvent(self)
 	spellpwr = GetSpellBonusDamage(7)
 	healpwr = GetSpellBonusHealing()
 
@@ -25,7 +25,7 @@ local function OnEvent(self, event, unit)
 	lastPanel = self
 end
 
-local function ValueColorUpdate(hex, r, g, b)
+local function ValueColorUpdate(hex)
 	displayNumberString = join("", "%s: ", hex, "%d|r")
 
 	if lastPanel ~= nil then

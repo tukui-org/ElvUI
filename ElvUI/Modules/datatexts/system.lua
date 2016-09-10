@@ -6,7 +6,7 @@ local DT = E:GetModule('DataTexts')
 local select, collectgarbage = select, collectgarbage
 local sort, wipe = table.sort, wipe
 local floor = math.floor
-local format, join = string.format, string.join
+local format = string.format
 --WoW API / Variables
 local GetNumAddOns = GetNumAddOns
 local GetAddOnInfo = GetAddOnInfo
@@ -160,7 +160,7 @@ local function OnEnter(self)
 	DT.tooltip:Show()
 end
 
-local function OnLeave(self)
+local function OnLeave()
 	enteredFrame = false;
 	DT.tooltip:Hide()
 end

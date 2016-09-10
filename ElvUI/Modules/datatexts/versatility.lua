@@ -17,7 +17,6 @@ local VERSATILITY_TOOLTIP_FORMAT = VERSATILITY_TOOLTIP_FORMAT
 local STAT_VERSATILITY = STAT_VERSATILITY
 local CR_VERSATILITY_TOOLTIP = CR_VERSATILITY_TOOLTIP
 
-local versatility
 local displayModifierString = ''
 local lastPanel;
 
@@ -37,13 +36,13 @@ local function OnEnter(self)
 	DT.tooltip:Show()
 end
 
-local function OnEvent(self, event, unit)
+local function OnEvent(self)
 	local versatility = GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE) + GetVersatilityBonus(CR_VERSATILITY_DAMAGE_DONE);
 	self.text:SetFormattedText(displayModifierString, STAT_VERSATILITY, versatility)
 	lastPanel = self
 end
 
-local function ValueColorUpdate(hex, r, g, b)
+local function ValueColorUpdate(hex)
 	displayModifierString = join("", "%s: ", hex, "%.2f%%|r")
 
 	if lastPanel ~= nil then

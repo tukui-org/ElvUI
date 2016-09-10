@@ -151,7 +151,7 @@ local function OnEnter(self, _, noUpdate)
 	end
 end
 
-local function OnClick(self)
+local function OnClick()
 	if not (C_Garrison_HasGarrison(LE_GARRISON_TYPE_7_0)) then
 		return;
 	end
@@ -168,7 +168,7 @@ local function OnClick(self)
 	end
 end
 
-local function OnEvent(self, event, ...)
+local function OnEvent(self, event)
 	if(event == "GARRISON_LANDINGPAGE_SHIPMENTS" or event == "GARRISON_TALENT_UPDATE" or event == "GARRISON_TALENT_COMPLETE") then
 		if(GetMouseFocus() == self) then
 			OnEnter(self, nil, true)
