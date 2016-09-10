@@ -61,6 +61,11 @@ L["says"] = "dice"
 L["whispers"] = "susurra"
 L["yells"] = "grita"
 
+--DataBars
+L["Current Level:"] = true;
+L["Honor XP:"] = true;
+L["Honor Remaining:"] = true;
+
 --DataTexts
 L["(Hold Shift) Memory Usage"] = "(Mantén Shift) Uso de Memoria"
 L["AP"] = "PA"

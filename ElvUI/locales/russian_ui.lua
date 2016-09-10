@@ -61,6 +61,11 @@ L["says"] = "говорит"
 L["whispers"] = "шепчет"
 L["yells"] = "кричит"
 
+--DataBars
+L["Current Level:"] = true;
+L["Honor XP:"] = true;
+L["Honor Remaining:"] = true;
+
 --DataTexts
 L["(Hold Shift) Memory Usage"] = "(Зажать Shift) Использование памяти"
 L["AP"] = "Сила Ат."

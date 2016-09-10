@@ -61,6 +61,11 @@ L["says"] = "일반"
 L["whispers"] = "귓"
 L["yells"] = "외침"
 
+--DataBars
+L["Current Level:"] = true;
+L["Honor XP:"] = true;
+L["Honor Remaining:"] = true;
+
 --DataTexts
 L["(Hold Shift) Memory Usage"] = "Shift: 메모리 사용량"
 L["AP"] = "전투력"

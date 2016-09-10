@@ -61,6 +61,11 @@ L["says"] = true;
 L["whispers"] = true;
 L["yells"] = true;
 
+--DataBars
+L["Current Level:"] = true;
+L["Honor XP:"] = true;
+L["Honor Remaining:"] = true;
+
 --DataTexts
 L["(Hold Shift) Memory Usage"] = true;
 L["AP"] = true;

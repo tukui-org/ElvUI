@@ -61,6 +61,11 @@ L["says"] = "說"
 L["whispers"] = "密語"
 L["yells"] = "大喊"
 
+--DataBars
+L["Current Level:"] = true;
+L["Honor XP:"] = true;
+L["Honor Remaining:"] = true;
+
 --DataTexts
 L["(Hold Shift) Memory Usage"] = "(按住Shift) 記憶體使用量"
 L["AP"] = "攻擊強度"
