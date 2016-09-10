@@ -1600,7 +1600,7 @@ function CH:CheckKeyword(message)
 		end
 	end
 
-	local rebuiltString, lowerCaseWord
+	local classColorTable, tempWord, rebuiltString, lowerCaseWord
 	local isFirstWord = true
 	for word in message:gmatch("[^%s]+") do
 		lowerCaseWord = word:lower()
@@ -1621,11 +1621,11 @@ function CH:CheckKeyword(message)
 
 		if self.db.classColorMentionsChat then
 			if(CH.ClassNames[lowerCaseWord]) then
-				local classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[CH.ClassNames[lowerCaseWord]] or RAID_CLASS_COLORS[CH.ClassNames[lowerCaseWord]];
+				classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[CH.ClassNames[lowerCaseWord]] or RAID_CLASS_COLORS[CH.ClassNames[lowerCaseWord]];
 				tempWord = word:gsub("%p", "")
 				word = word:gsub(tempWord, format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, tempWord))
 			elseif(CH.ClassNames[word]) then
-				local classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[CH.ClassNames[word]] or RAID_CLASS_COLORS[CH.ClassNames[word]];
+				classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[CH.ClassNames[word]] or RAID_CLASS_COLORS[CH.ClassNames[word]];
 				word = word:gsub(word:gsub("%-","%%-"), format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, word))
 			end
 		end
