@@ -6,7 +6,7 @@ local DT = E:GetModule('DataTexts')
 local select, unpack = select, unpack
 local sort, wipe = table.sort, wipe
 local ceil = math.ceil
-local format, find, join, split, gsub = string.format, string.find, string.join, string.split, string.gsub
+local format, find, join, split = string.format, string.find, string.join, string.split
 --WoW API / Variables
 local GetNumGuildMembers = GetNumGuildMembers
 local GetGuildRosterInfo = GetGuildRosterInfo
@@ -117,13 +117,13 @@ local FRIEND_ONLINE = select(2, split(" ", ERR_FRIEND_ONLINE_SS, 2))
 local resendRequest = false
 local eventHandlers = {
 	['CHAT_MSG_SYSTEM'] = function(self, arg1)
-		if(FRIEND_ONLINE ~= nil and arg1 and arg1:find(FRIEND_ONLINE)) then
+		if(FRIEND_ONLINE ~= nil and arg1 and find(arg1, FRIEND_ONLINE) then
 			resendRequest = true
 		end
 	end,
 	-- when we enter the world and guildframe is not available then
 	-- load guild frame, update guild message and guild xp
-	["PLAYER_ENTERING_WORLD"] = function (self, arg1)
+	["PLAYER_ENTERING_WORLD"] = function()
 
 		if not GuildFrame and IsInGuild() then
 			LoadAddOn("Blizzard_GuildUI")
@@ -131,7 +131,7 @@ local eventHandlers = {
 		end
 	end,
 	-- Guild Roster updated, so rebuild the guild table
-	["GUILD_ROSTER_UPDATE"] = function (self)
+	["GUILD_ROSTER_UPDATE"] = function(self)
 		if(resendRequest) then
 			resendRequest = false;
 			return GuildRoster()
@@ -144,7 +144,7 @@ local eventHandlers = {
 		end
 	end,
 
-	["PLAYER_GUILD_UPDATE"] = function (self, arg1)
+	["PLAYER_GUILD_UPDATE"] = function()
 		GuildRoster()
 	end,
 	-- our guild message of the day changed
@@ -199,7 +199,7 @@ local function Click(self, btn)
 		for i = 1, #guildTable do
 			info = guildTable[i]
 			if info[7] and info[1] ~= E.myname then
-				local classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[9]], GetQuestDifficultyColor(info[3])
+				classc, levelc = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[info[9]], GetQuestDifficultyColor(info[3])
 				if UnitInParty(info[1]) or UnitInRaid(info[1]) then
 					grouped = "|cffaaaaaa*|r"
 				elseif not info[11] then
@@ -283,7 +283,7 @@ local function OnEnter(self, _, noUpdate)
 	end
 end
 
-local function ValueColorUpdate(hex, r, g, b)
+local function ValueColorUpdate(hex)
 	displayString = join("", GUILD, ": ", hex, "%d|r")
 	noGuildString = join("", hex, L["No Guild"])
 
