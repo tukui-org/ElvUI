@@ -32,7 +32,7 @@ local INVERT_ANCHORPOINT = {
 	BOTTOM = 'TOP',
 }
 
-ticks = {}
+local ticks = {}
 
 function UF:Construct_Castbar(frame, direction, moverName)
 	local castbar = CreateFrame("StatusBar", nil, frame)
