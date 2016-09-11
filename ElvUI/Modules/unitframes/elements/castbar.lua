@@ -32,7 +32,7 @@ local INVERT_ANCHORPOINT = {
 	BOTTOM = 'TOP',
 }
 
-local ticks = {}
+ticks = {}
 
 function UF:Construct_Castbar(frame, direction, moverName)
 	local castbar = CreateFrame("StatusBar", nil, frame)
@@ -207,9 +207,7 @@ function UF:Configure_Castbar(frame)
 	end
 
 	--Adjust tick heights
-	for i=1, #ticks do
-		ticks[i]:Height(castbar:GetHeight())
-	end
+	castbar.tickHeight = castbar:GetHeight()
 
 	if db.castbar.enable and not frame:IsElementEnabled('Castbar') then
 		frame:EnableElement('Castbar')
@@ -289,8 +287,9 @@ function UF:SetCastTicks(frame, numTicks, extraTickRatio)
 			E:RegisterStatusBar(ticks[i])
 			ticks[i]:SetVertexColor(0, 0, 0, 0.8)
 			ticks[i]:Width(1)
-			ticks[i]:Height(frame:GetHeight())
 		end
+
+		ticks[i]:Height(frame.tickHeight)
 
 		--[[if(ms ~= 0) then
 			local perc = (w / frame.max) * (ms / 1e5)
