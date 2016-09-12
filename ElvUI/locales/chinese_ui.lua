@@ -62,9 +62,9 @@ L["whispers"] = "密语"
 L["yells"] = "大喊"
 
 --DataBars
-L["Current Level:"] = true;
-L["Honor XP:"] = true;
-L["Honor Remaining:"] = true;
+L["Current Level:"] = "当前等级:"
+L["Honor XP:"] = "荣誉值:"
+L["Honor Remaining:"] = "荣誉值剩余:"
 
 --DataTexts
 L["(Hold Shift) Memory Usage"] = "(按住Shift) 内存占用"
@@ -87,7 +87,7 @@ L["Earned:"] = "赚取:"
 L["Feet"] = "脚"
 L["Friends List"] = "好友列表"
 L["Friends"] = "好友" --Also in Skins
-L["Gold:"] = true;
+L["Gold:"] = "金:"
 L["goldabbrev"] = "|cffffd700金|r"
 L["Hands"] = "手"
 L["Head"] = "头"
