@@ -62,9 +62,9 @@ L["whispers"] = "шепчет"
 L["yells"] = "кричит"
 
 --DataBars
-L["Current Level:"] = true;
-L["Honor XP:"] = true;
-L["Honor Remaining:"] = true;
+L["Current Level:"] = "Текущий уровень:"
+L["Honor XP:"] = "Честь: "
+L["Honor Remaining:"] = "Осталось Чести"
 
 --DataTexts
 L["(Hold Shift) Memory Usage"] = "(Зажать Shift) Использование памяти"
@@ -123,7 +123,7 @@ L["Waist"] = "Пояс"
 L["Wrist"] = "Запястья"
 L["|cffFFFFFFLeft Click:|r Change Talent Specialization"] = "|cffFFFFFFЛКМ:|r Изменить набор талантов"
 L["|cffFFFFFFRight Click:|r Change Loot Specialization"] = "|cffFFFFFFПКМ:|r Изменить специализацию для получения добычи"
-L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = true;
+L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = "|cffFFFFFFShift + ЛКМ:|r Показать окно специализации"
 
 --DebugTools
 L["%s: %s tried to call the protected function '%s'."] = "%s: %s tried to call the protected function '%s'."
