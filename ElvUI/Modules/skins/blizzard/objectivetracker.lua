@@ -96,6 +96,25 @@ local function LoadSkin()
 			item.skinned = true
 		end
 	end)
+	
+	hooksecurefunc(WORLD_QUEST_TRACKER_MODULE, "AddObjective", function(_, block)
+		local item = block.itemButton
+		if item and not item.skinned then
+			item:SetSize(25, 25)
+			item:SetTemplate("Transparent")
+			item:StyleButton()
+			item:SetNormalTexture(nil)
+			item.icon:SetTexCoord(unpack(E.TexCoords))
+			item.icon:SetPoint("TOPLEFT", item, 2, -2)
+			item.icon:SetPoint("BOTTOMRIGHT", item, -2, 2)
+			item.Cooldown:SetAllPoints(item.icon)
+			item.Count:ClearAllPoints()
+			item.Count:SetPoint("TOPLEFT", 1, -1)
+			item.Count:SetFont(E["media"].normFont, 14, "OUTLINE")
+			item.Count:SetShadowOffset(5, -5)
+			item.skinned = true
+		end
+	end)
 end
 
 S:RegisterSkin('ElvUI', LoadSkin)
