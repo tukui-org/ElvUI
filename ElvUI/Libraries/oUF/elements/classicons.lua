@@ -71,7 +71,7 @@ local UpdateTexture = function(element)
 end
 
 local Update = function(self, event, unit, powerType)
-	if(not (unit == 'player' and powerType == ClassPowerType)
+	if(not (unit == 'player' and (powerType == ClassPowerType or powerType ~= nil))
 		and not (unit == 'vehicle' and powerType == 'COMBO_POINTS')) then
 		return
 	end
