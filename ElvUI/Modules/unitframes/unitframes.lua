@@ -1121,9 +1121,9 @@ function UF:ADDON_LOADED(event, addon)
 	self:UnregisterEvent("ADDON_LOADED");
 end
 
--- function UF:PLAYER_ENTERING_WORLD(event)
-	-- self:Update_AllFrames()
--- end
+function UF:PLAYER_ENTERING_WORLD(event)
+	self:Update_AllFrames()
+end
 
 function UF:UnitFrameThreatIndicator_Initialize(_, unitFrame)
 	unitFrame:UnregisterAllEvents() --Arena Taint Fix
@@ -1144,7 +1144,7 @@ function UF:Initialize()
 	end)
 
 	self:LoadUnits()
-	-- self:RegisterEvent('PLAYER_ENTERING_WORLD')
+	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 
 	--InterfaceOptionsFrameCategoriesButton9:SetScale(0.0001)
 	--[[if E.private["unitframe"]["disabledBlizzardFrames"].arena and E.private["unitframe"]["disabledBlizzardFrames"].focus and E.private["unitframe"]["disabledBlizzardFrames"].party then
