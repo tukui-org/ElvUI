@@ -1453,6 +1453,10 @@ function B:CloseBags()
 	if self.BankFrame then
 		self.BankFrame:Hide();
 	end
+	
+	if E.db.bags.clearSearchOnClose then
+		B.ResetAndClear(self.BagFrame.editBox);
+	end
 
 	E:GetModule('Tooltip'):GameTooltip_SetDefaultAnchor(GameTooltip)
 end
