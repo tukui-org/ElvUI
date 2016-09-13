@@ -1123,6 +1123,7 @@ end
 
 function UF:PLAYER_ENTERING_WORLD(event)
 	self:Update_AllFrames()
+	self:UnregisterEvent(event)
 end
 
 function UF:UnitFrameThreatIndicator_Initialize(_, unitFrame)
