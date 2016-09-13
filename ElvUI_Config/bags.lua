@@ -76,8 +76,8 @@ E.Options.args.bags = {
 				clearSearchOnClose = {
 					order = 5,
 					type = 'toggle',
-					name = L["Clear Search Bar On Close"],
-					desc = L["Clear the search bar when closing the bag"],
+					name = L["Clear Search Box On Close"],
+					desc = L["Clear the Search Box when closing the bag"],
 					set = function(info, value) E.db.bags[info[#info]] = value; end
 				},
 				reverseLoot = {
