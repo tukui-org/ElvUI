@@ -4,8 +4,8 @@ local DT = E:GetModule('DataTexts')
 --Cache global variables
 --Lua functions
 local date = date
+local next, pairs, unpack = next, pairs, unpack
 local format, join = string.format, string.join
-local next = next
 --WoW API / Variables
 local GetGameTime = GetGameTime
 local RequestRaidInfo = RequestRaidInfo
@@ -141,7 +141,7 @@ local function OnEnter(self)
 
     if next(lockedInstances["dungeons"]) then
         DT.tooltip:AddLine(" ")
-        DT.tooltip:AddLine(L["Saved Donjon(s)"])
+        DT.tooltip:AddLine(L["Saved Dungeon(s)"])
 
         for pos,instance in pairs(lockedInstances["dungeons"]) do
             name, _, reset, difficultyId, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(instance)
