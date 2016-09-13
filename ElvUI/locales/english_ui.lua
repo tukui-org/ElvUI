@@ -107,6 +107,7 @@ L["Offhand"] = true;
 L["Profit:"] = true;
 L["Reset Data: Hold Shift + Right Click"] = true;
 L["Saved Raid(s)"] = true;
+L["Saved Dungeon(s)"] = true;
 L["Server: "] = true;
 L["Session:"] = true;
 L["Shoulder"] = true;
