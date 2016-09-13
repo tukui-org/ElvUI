@@ -107,6 +107,7 @@ L["Offhand"] = "副手"
 L["Profit:"] = "利潤: "
 L["Reset Data: Hold Shift + Right Click"] = "重置數據: 按住 Shift + 右鍵點擊"
 L["Saved Raid(s)"] = "已有進度的副本"
+L["Saved Dungeon(s)"] = true;
 L["Server: "] = "伺服器: "
 L["Session:"] = "本次登入:"
 L["Shoulder"] = "肩部"
