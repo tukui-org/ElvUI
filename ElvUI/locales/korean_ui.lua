@@ -107,6 +107,7 @@ L["Offhand"] = "보조장비"
 L["Profit:"] = "이익:"
 L["Reset Data: Hold Shift + Right Click"] = "기록 리셋: Shift + 우클릭"
 L["Saved Raid(s)"] = "귀속된 던전"
+L["Saved Dungeon(s)"] = true;
 L["Server: "] = "서버:"
 L["Session:"] = "현재 접속:"
 L["Shoulder"] = "어깨"

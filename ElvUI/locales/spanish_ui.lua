@@ -107,6 +107,7 @@ L["Offhand"] = "Mano Izquierda"
 L["Profit:"] = "Ganancia:"
 L["Reset Data: Hold Shift + Right Click"] = "Restablecer Datos: Mantén Shift + Clic Derecho"
 L["Saved Raid(s)"] = "Banda(s) Guardada(s)"
+L["Saved Dungeon(s)"] = true;
 L["Server: "] = "Servidor: "
 L["Session:"] = "Sesión:"
 L["Shoulder"] = "Hombros"
