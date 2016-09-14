@@ -152,6 +152,7 @@ L["Blizzard Style"] = true;
 L["Bottom to Top"] = "底部至頂部"
 L["Button Size (Bag)"] = '單個格子尺寸 (背包)'
 L["Button Size (Bank)"] = '單個格子尺寸 (銀行)'
+L["Clear Search Box On Close"] = true;
 L["Condensed"] = true;
 L["Currency Format"] = '貨幣格式'
 L["Descending"] = "降序"

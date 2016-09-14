@@ -152,7 +152,6 @@ L["Blizzard Style"] = "暴雪样式"
 L["Bottom to Top"] = '底部到顶部'
 L["Button Size (Bag)"] = '背包格子尺寸'
 L["Button Size (Bank)"] = '银行背包格子尺寸'
-L["Clear the Search Box when closing the bag"] = true;
 L["Clear Search Box On Close"] = true;
 L["Condensed"] = "巨集"
 L["Currency Format"] = "货币格式"

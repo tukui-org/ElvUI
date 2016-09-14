@@ -150,7 +150,6 @@ L["Blizzard Style"] = true;
 L["Bottom to Top"] = true;
 L["Button Size (Bag)"] = true;
 L["Button Size (Bank)"] = true;
-L["Clear the Search Box when closing the bag"] = true;
 L["Clear Search Box On Close"] = true;
 L["Condensed"] = true;
 L["Currency Format"] = true;

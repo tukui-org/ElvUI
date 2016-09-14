@@ -152,7 +152,6 @@ L["Blizzard Style"] = "Blizzard Stil"
 L["Bottom to Top"] = "Von unten nach oben"
 L["Button Size (Bag)"] = "Tasten Größe (Tasche)"
 L["Button Size (Bank)"] = "Tasten Größe (Bank)"
-L["Clear the Search Box when closing the bag"] = true;
 L["Clear Search Box On Close"] = true;
 L["Condensed"] = "Gekürzt"
 L["Currency Format"] = "Währungsformat"

@@ -198,7 +198,6 @@ L["Blizzard Style"] = "블리자드 기본"
 L["Bottom to Top"] = "상단 아래쪽으로 이동"
 L["Button Size (Bag)"] = "슬롯 크기 (가방)"
 L["Button Size (Bank)"] = "슬롯 크기 (은행)"
-L["Clear the Search Box when closing the bag"] = true;
 L["Clear Search Box On Close"] = true;
 L["Condensed"] = "간략하게"
 L["Currency Format"] = "화폐 표시방법"
