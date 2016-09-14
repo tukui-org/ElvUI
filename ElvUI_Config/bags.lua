@@ -73,8 +73,15 @@ E.Options.args.bags = {
 					desc = L["Display the junk icon on all grey items that can be vendored."],
 					set = function(info, value) E.db.bags[ info[#info] ] = value; B:UpdateAllBagSlots(); end,
 				},
-				reverseLoot = {
+				clearSearchOnClose = {
 					order = 5,
+					type = 'toggle',
+					name = L["Clear Search Box On Close"],
+					desc = L["Clear the Search Box when closing the bag"],
+					set = function(info, value) E.db.bags[info[#info]] = value; end
+				},
+				reverseLoot = {
+					order = 6,
 					type = "toggle",
 					name = REVERSE_NEW_LOOT_TEXT,
 					set = function(info, value)
@@ -83,7 +90,7 @@ E.Options.args.bags = {
 					end,
 				},
 				countGroup = {
-					order = 6,
+					order = 7,
 					type = "group",
 					name = L["Item Count Font"],
 					guiInline = true,
@@ -134,7 +141,7 @@ E.Options.args.bags = {
 					},
 				},
 				itemLevelGroup = {
-					order = 7,
+					order = 8,
 					type = "group",
 					name = L["Item Level"],
 					guiInline = true,
