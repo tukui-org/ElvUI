@@ -18,7 +18,7 @@ local function LoadSkin()
 
 	ArtifactFrame.ForgeBadgeFrame.ForgeClassBadgeIcon:Hide()
 	ArtifactFrame.ForgeBadgeFrame.ForgeLevelBackground:ClearAllPoints()
-	ArtifactFrame.ForgeBadgeFrame.ForgeLevelBackground:SetPoint("RIGHT", ArtifactFrame.PerksTab.TitleContainer.ArtifactName, "LEFT", 0, -12)
+	ArtifactFrame.ForgeBadgeFrame.ForgeLevelBackground:SetPoint("TOPLEFT", ArtifactFrame)
 end
 
 S:RegisterSkin("Blizzard_ArtifactUI", LoadSkin)
