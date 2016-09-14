@@ -1270,7 +1270,13 @@ function B:ContructContainerFrame(name, isBank)
 			end
 		end)
 
-		f:SetScript('OnHide', CloseBankFrame)
+		f:SetScript('OnHide', function()
+			CloseBankFrame()
+
+			if E.db.bags.clearSearchOnClose then
+				B.ResetAndClear(f.editBox);
+			end
+		end)
 
 
 		--Search
@@ -1411,6 +1417,10 @@ function B:ContructContainerFrame(name, isBank)
 					bagButton:SetChecked(false)
 				end
 			end
+
+			if E.db.bags.clearSearchOnClose then
+				B.ResetAndClear(f.editBox);
+			end
 		end)
 	end
 
@@ -1452,10 +1462,6 @@ function B:CloseBags()
 
 	if self.BankFrame then
 		self.BankFrame:Hide();
-	end
-	
-	if E.db.bags.clearSearchOnClose then
-		B.ResetAndClear(self.BagFrame.editBox);
 	end
 
 	E:GetModule('Tooltip'):GameTooltip_SetDefaultAnchor(GameTooltip)
