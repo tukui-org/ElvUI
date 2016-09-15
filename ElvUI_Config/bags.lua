@@ -88,8 +88,20 @@ E.Options.args.bags = {
 						SetInsertItemsLeftToRight(value)
 					end,
 				},
-				countGroup = {
+				disableBagSort = {
 					order = 7,
+					type = "toggle",
+					name = L["Disable Bag Sort"],
+					set = function(info, value) E.db.bags[info[#info]] = value; B:ToggleSortButtonState(false); end
+				},
+				disableBankSort = {
+					order = 8,
+					type = "toggle",
+					name = L["Disable Bank Sort"],
+					set = function(info, value) E.db.bags[info[#info]] = value; B:ToggleSortButtonState(true); end
+				},
+				countGroup = {
+					order = 8,
 					type = "group",
 					name = L["Item Count Font"],
 					guiInline = true,
@@ -140,7 +152,7 @@ E.Options.args.bags = {
 					},
 				},
 				itemLevelGroup = {
-					order = 8,
+					order = 9,
 					type = "group",
 					name = L["Item Level"],
 					guiInline = true,
