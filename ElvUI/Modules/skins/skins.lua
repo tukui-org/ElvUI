@@ -648,9 +648,9 @@ function S:Initialize()
 	self.db = E.private.skins
 
 	--Fire events for Blizzard addons that are already loaded
-	for addon in pairs(self.addonCallbacks) do
+	for addon, events in pairs(self.addonCallbacks) do
 		if IsAddOnLoaded(addon) then
-			for event in pairs(addon) do
+			for event in pairs(events) do
 				self.addonCallbacks[addon][event] = nil;
 				E.callbacks:Fire(event)
 			end
