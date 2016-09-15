@@ -1,6 +1,22 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:NewModule('Skins', 'AceTimer-3.0', 'AceHook-3.0', 'AceEvent-3.0')
 
+--Cache global variables
+--Lua functions
+local _G = _G
+local unpack, assert, pairs, select, type, pcall = unpack, assert, pairs, select, type, pcall
+local tinsert, wipe = table.insert, table.wipe
+--WoW API / Variables
+local SquareButton_SetIcon = SquareButton_SetIcon
+local CreateFrame = CreateFrame
+local SetDesaturation = SetDesaturation
+local hooksecurefunc = hooksecurefunc
+local IsAddOnLoaded = IsAddOnLoaded
+local GetCVarBool = GetCVarBool
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: ScriptErrorsFrame_OnError
+
 E.Skins = S
 S.addonsToLoad = {}
 S.nonAddonsToLoad = {}
