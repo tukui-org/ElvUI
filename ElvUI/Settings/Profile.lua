@@ -689,7 +689,7 @@ P['datatexts'] = {
 		['LeftChatDataPanel'] = {
 			['left'] = 'Talent/Loot Specialization',
 			['middle'] = 'Durability',
-			['right'] = 'Garrison',
+			['right'] = 'Orderhall',
 		},
 		['RightChatDataPanel'] = {
 			['left'] = 'System',
