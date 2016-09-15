@@ -87,4 +87,4 @@ local function LoadSkin()
 	S:HandleNextPrevButton(MerchantPrevPageButton)
 end
 
-S:RegisterSkin('ElvUI', LoadSkin)
+S:AddCallback("Merchant", LoadSkin)

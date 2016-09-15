@@ -227,4 +227,4 @@ local function LoadSkin()
 	SquareButton_SetIcon(LootFrameDownButton, 'DOWN')
 end
 
-S:RegisterSkin("ElvUI", LoadSkin)
+S:AddCallback("Loot", LoadSkin)

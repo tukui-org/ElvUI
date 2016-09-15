@@ -92,4 +92,4 @@ local function LoadSkin()
 	E:CreateMover(ArcheologyDigsiteProgressBar, "DigSiteProgressBarMover", L["Archeology Progress Bar"])
 end
 
-S:RegisterSkin("Blizzard_ArchaeologyUI", LoadSkin)
+S:AddCallbackForAddon("Blizzard_ArchaeologyUI", "Archaeology", LoadSkin)

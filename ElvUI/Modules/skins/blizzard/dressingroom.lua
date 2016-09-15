@@ -21,4 +21,4 @@ local function LoadSkin()
 	DressUpFrameResetButton:Point("RIGHT", DressUpFrameCancelButton, "LEFT", -2, 0)
 end
 
-S:RegisterSkin('ElvUI', LoadSkin)
+S:AddCallback("DressingRoom", LoadSkin)

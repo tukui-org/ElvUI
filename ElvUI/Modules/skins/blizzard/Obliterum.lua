@@ -36,4 +36,4 @@ local function LoadSkin()
 	S:HandleButton(ObliterumForgeFrame.ObliterateButton)
 end
 
-S:RegisterSkin('Blizzard_ObliterumUI', LoadSkin)
+S:AddCallbackForAddon('Blizzard_ObliterumUI', "Obliterum", LoadSkin)

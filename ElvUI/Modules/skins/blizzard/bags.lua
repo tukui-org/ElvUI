@@ -228,4 +228,4 @@ local function LoadSkin()
 	SkinBags()
 end
 
-S:RegisterSkin('ElvUI', LoadSkin)
+S:AddCallback("Bags", LoadSkin)

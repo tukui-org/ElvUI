@@ -107,4 +107,4 @@ local function LoadSkin()
 	InspectTalentFrame:StripTextures()
 end
 
-S:RegisterSkin("Blizzard_InspectUI", LoadSkin)
+S:AddCallbackForAddon("Blizzard_InspectUI", "Inspect", LoadSkin)

@@ -12,4 +12,4 @@ local function LoadSkin()
 	S:HandleCloseButton(FlightMapFrameCloseButton)
 end
 
-S:RegisterSkin('Blizzard_FlightMap', LoadSkin)
+S:AddCallbackForAddon('Blizzard_FlightMap', "FlightMap", LoadSkin)

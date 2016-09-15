@@ -43,4 +43,4 @@ local function LoadSkin()
 	S:HandleButton(AdventureMapQuestChoiceDialog.DeclineButton)
 end
 
-S:RegisterSkin('Blizzard_AdventureMap', LoadSkin)
+S:AddCallbackForAddon('Blizzard_AdventureMap', "AdventureMap", LoadSkin)

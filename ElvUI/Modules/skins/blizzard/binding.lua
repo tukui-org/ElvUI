@@ -47,4 +47,4 @@ local function LoadSkin()
 
 end
 
-S:RegisterSkin("Blizzard_BindingUI", LoadSkin)
+S:AddCallbackForAddon("Blizzard_BindingUI", "Binding", LoadSkin)

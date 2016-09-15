@@ -665,4 +665,4 @@ local function LoadSkin()
 	frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -20, 20)
 end
 
-S:RegisterSkin('ElvUI', LoadSkin)
+S:AddCallback("Alerts", LoadSkin)

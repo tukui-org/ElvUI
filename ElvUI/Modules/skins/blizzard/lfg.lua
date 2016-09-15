@@ -599,7 +599,7 @@ local function LoadSkin()
 	end);
 end
 
-S:RegisterSkin("ElvUI", LoadSkin)
+S:AddCallback("LFG", LoadSkin)
 
 local function LoadSecondarySkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.lfg ~= true then return end
@@ -608,4 +608,4 @@ local function LoadSecondarySkin()
 	ChallengesFrameInsetBg:Hide()
 end
 
-S:RegisterSkin("Blizzard_ChallengesUI", LoadSecondarySkin)
+S:AddCallbackForAddon("Blizzard_ChallengesUI", "Challenges", LoadSecondarySkin)

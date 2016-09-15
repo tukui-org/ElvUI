@@ -208,4 +208,4 @@ local function LoadSkin()
 	SpellBookFrameTabButton1:Point('TOPLEFT', SpellBookFrame, 'BOTTOMLEFT', 0, 2)
 end
 
-S:RegisterSkin('ElvUI', LoadSkin)
+S:AddCallback("Spellbook", LoadSkin)

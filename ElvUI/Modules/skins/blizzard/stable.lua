@@ -31,4 +31,4 @@ local function LoadSkin()
 	PetStableSelectedPetIcon:SetTexCoord(unpack(E.TexCoords))
 end
 
-S:RegisterSkin('ElvUI', LoadSkin)
+S:AddCallback("Stable", LoadSkin)

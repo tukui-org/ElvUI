@@ -105,4 +105,4 @@ local function LoadSkin()
 	end
 end
 
-S:RegisterSkin("Blizzard_VoidStorageUI", LoadSkin)
+S:AddCallbackForAddon("Blizzard_VoidStorageUI", "VoidStorage", LoadSkin)

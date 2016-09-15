@@ -45,4 +45,4 @@ local function LoadSkin()
 	S:HandleCloseButton(ItemSocketingFrameCloseButton)
 end
 
-S:RegisterSkin("Blizzard_ItemSocketingUI", LoadSkin)
+S:AddCallbackForAddon("Blizzard_ItemSocketingUI", "ItemSocket", LoadSkin)

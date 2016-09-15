@@ -379,5 +379,5 @@ local function SkinTooltip()
 	end)
 end
 
-S:RegisterSkin('Blizzard_GarrisonUI', LoadSkin)
-S:RegisterSkin('ElvUI', SkinTooltip)
+S:AddCallbackForAddon('Blizzard_GarrisonUI', "Garrison", LoadSkin)
+S:AddCallback("GarrisonTooltips", SkinTooltip)

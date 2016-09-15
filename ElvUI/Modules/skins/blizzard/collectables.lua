@@ -364,4 +364,4 @@ local function LoadSkin()
 	S:HandleButton(WardrobeOutfitEditFrame.DeleteButton)
 end
 
-S:RegisterSkin("Blizzard_Collections", LoadSkin)
+S:AddCallbackForAddon("Blizzard_Collections", "Collections", LoadSkin)

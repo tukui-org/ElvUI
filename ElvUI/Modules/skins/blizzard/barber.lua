@@ -60,4 +60,4 @@ local function LoadSkin()
 	BarberShopAltFormFrame:CreateBackdrop("Transparent")
 end
 
-S:RegisterSkin("Blizzard_BarbershopUI", LoadSkin)
+S:BattlefieldMinimap("Blizzard_BarbershopUI", "Barbershop", LoadSkin)

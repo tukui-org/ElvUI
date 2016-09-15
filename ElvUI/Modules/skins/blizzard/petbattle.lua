@@ -394,4 +394,4 @@ local function LoadSkin()
 	--StaticPopupSpecial_Show(PetBattleQueueReadyFrame);
 end
 
-S:RegisterSkin('ElvUI', LoadSkin)
+S:AddCallback("PetBattle", LoadSkin)

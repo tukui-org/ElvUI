@@ -201,4 +201,4 @@ local function LoadSkin()
 	QuestLogPopupDetailFrame.ShowMapButton:Size(QuestLogPopupDetailFrame.ShowMapButton:GetWidth() - 30, QuestLogPopupDetailFrame.ShowMapButton:GetHeight(), - 40)
 end
 
-S:RegisterSkin('ElvUI', LoadSkin)
+S:AddCallback("Quest", LoadSkin)

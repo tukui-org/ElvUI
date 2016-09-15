@@ -26,4 +26,4 @@ local function LoadSkin()
 	QuestChoiceFrame.CloseButton:SetFrameLevel(10)
 end
 
-S:RegisterSkin("Blizzard_QuestChoice", LoadSkin)
+S:AddCallbackForAddon("Blizzard_QuestChoice", "QuestChoice", LoadSkin)

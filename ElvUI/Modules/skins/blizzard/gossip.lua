@@ -67,4 +67,4 @@ local function LoadSkin()
 	NPCFriendshipStatusBar:CreateBackdrop('Default')
 end
 
-S:RegisterSkin('ElvUI', LoadSkin)
+S:AddCallback("Gossip", LoadSkin)

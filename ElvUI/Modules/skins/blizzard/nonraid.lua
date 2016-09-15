@@ -42,4 +42,4 @@ local function LoadSkin()
 	S:HandleCheckBox(RaidFrameAllAssistCheckButton)
 end
 
-S:RegisterSkin('ElvUI', LoadSkin)
+S:AddCallback("RaidInfo", LoadSkin)

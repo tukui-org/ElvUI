@@ -12,4 +12,4 @@ local function LoadSkin()
 	S:HandleCloseButton(TalkingHeadFrame.MainFrame.CloseButton)
 end
 
-S:RegisterSkin('Blizzard_TalkingHeadUI', LoadSkin)
+S:AddCallbackForAddon("Blizzard_TalkingHeadUI", "TalkingHead", LoadSkin)

@@ -118,4 +118,4 @@ local function LoadSkin()
 	hooksecurefunc("TaskPOI_OnEnter", HandleTooltipStatusBar)
 end
 
-S:RegisterSkin('ElvUI', LoadSkin)
+S:AddCallback("WorldMap", LoadSkin)

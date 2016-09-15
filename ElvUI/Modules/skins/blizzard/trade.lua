@@ -82,4 +82,4 @@ local function LoadSkin()
 	TradeHighlightRecipientEnchant:SetFrameStrata("HIGH")
 end
 
-S:RegisterSkin('ElvUI', LoadSkin)
+S:AddCallback("Trade", LoadSkin)

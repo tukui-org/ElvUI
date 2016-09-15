@@ -357,4 +357,4 @@ local f = CreateFrame("Frame")
 f:RegisterEvent("ADDON_LOADED")
 f:SetScript("OnEvent", attemptSkin)
 
-S:RegisterSkin('Ace3', S.SkinAce3, true)
+S:AddCallback("Ace3", S.SkinAce3)

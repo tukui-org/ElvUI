@@ -73,4 +73,4 @@ local function LoadSkin()
 	E:RegisterStatusBar(ClassTrainerStatusBar)
 end
 
-S:RegisterSkin("Blizzard_TrainerUI", LoadSkin)
+S:AddCallbackForAddon("Blizzard_TrainerUI", "Trainer", LoadSkin)

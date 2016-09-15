@@ -389,4 +389,4 @@ f:SetScript("OnEvent", function(self, event)
 	LoadSkin(event)
 end)
 
-S:RegisterSkin("Blizzard_AchievementUI", LoadSkin)
+S:AddCallbackForAddon("Blizzard_AchievementUI", "Achievement", LoadSkin)

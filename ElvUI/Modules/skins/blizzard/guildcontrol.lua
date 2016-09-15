@@ -139,4 +139,4 @@ local function LoadSkin()
 	GuildControlUIRankBankFrameRankDropDownButton:Width(20)
 end
 
-S:RegisterSkin("Blizzard_GuildControlUI", LoadSkin)
+S:AddCallbackForAddon("Blizzard_GuildControlUI", "GuildControl", LoadSkin)

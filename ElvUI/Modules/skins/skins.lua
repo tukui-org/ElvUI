@@ -5,6 +5,8 @@ E.Skins = S
 S.addonsToLoad = {}
 S.nonAddonsToLoad = {}
 S.allowBypass = {}
+S.addonCallbacks = {}
+S.nonAddonCallbacks = {}
 
 local find = string.find
 
@@ -535,16 +537,34 @@ end
 
 function S:ADDON_LOADED(event, addon)
 	if self.allowBypass[addon] then
-		S.addonsToLoad[addon]()
-		S.addonsToLoad[addon] = nil
+		if S.addonsToLoad[addon] then
+			--Load addons using the old deprecated register method
+			S.addonsToLoad[addon]()
+			S.addonsToLoad[addon] = nil
+		elseif S.addonCallbacks[addon] then
+			--Fire events to the skins that rely on this addon
+			for event in pairs(S.addonCallbacks[addon]) do
+				S.addonCallbacks[addon][event] = nil;
+				E.callbacks:Fire(event)
+			end
+		end
 		return
 	end
 
-	if not E.initialized or not S.addonsToLoad[addon] then return end
-	S.addonsToLoad[addon]()
-	S.addonsToLoad[addon] = nil
+	if not E.initialized then return end
+
+	if S.addonsToLoad[addon] then
+		S.addonsToLoad[addon]()
+		S.addonsToLoad[addon] = nil
+	elseif S.addonCallbacks[addon] then
+		for event in pairs(S.addonCallbacks[addon]) do
+			S.addonCallbacks[addon][event] = nil;
+			E.callbacks:Fire(event)
+		end
+	end
 end
 
+--Old deprecated register function. Keep it for the time being for any plugins that may need it.
 function S:RegisterSkin(name, loadFunc, forceLoad, bypass)
 	if bypass then
 		self.allowBypass[name] = true;
@@ -560,8 +580,89 @@ function S:RegisterSkin(name, loadFunc, forceLoad, bypass)
 	end
 end
 
+--Add callback for skin that relies on another addon.
+--These events will be fired when the addon is loaded.
+function S:AddCallbackForAddon(addonName, eventName, loadFunc, forceLoad, bypass)
+	if not addonName or type(addonName) ~= "string" then
+		E:Print("Invalid argument #1 to S:AddCallbackForAddon (string expected)")
+		return
+	elseif not eventName or type(eventName) ~= "string" then
+		E:Print("Invalid argument #2 to S:AddCallbackForAddon (string expected)")
+		return
+	elseif not loadFunc or type(loadFunc) ~= "function" then
+		E:Print("Invalid argument #3 to S:AddCallbackForAddon (function expected)")
+		return
+	end
+
+	if bypass then
+		self.allowBypass[addonName] = true;
+	end
+
+	--Create an event registry for this addon, so that we can fire multiple events when this addon is loaded
+	if not self.addonCallbacks[addonName] then
+		self.addonCallbacks[addonName] = {}
+	end
+	
+	if self.addonCallbacks[addonName][eventName] then
+		--Don't allow a registered callback to be overwritten
+		E:Print("Invalid argument #2 to S:AddCallbackForAddon (event name is already registered, please use a unique event name)")
+		return
+	end
+
+	--Register loadFunc to be called when event is fired
+	E.RegisterCallback(E, eventName, loadFunc)
+
+	if forceLoad then
+		E.callbacks:Fire(eventName)
+	else
+		--Insert eventName in this addons' registry
+		self.addonCallbacks[addonName][eventName] = true
+	end
+end
+
+--Add callback for skin that does not rely on a another addon.
+--These events will be fired when the Skins module is initialized.
+function S:AddCallback(eventName, loadFunc)
+	if not eventName or type(eventName) ~= "string" then
+		E:Print("Invalid argument #1 to S:AddCallback (string expected)")
+		return
+	elseif not loadFunc or type(loadFunc) ~= "function" then
+		E:Print("Invalid argument #2 to S:AddCallback (function expected)")
+		return
+	end
+
+	if self.nonAddonCallbacks[eventName] then
+		--Don't allow a registered callback to be overwritten
+		E:Print("Invalid argument #1 to S:AddCallback (event name is already registered, please use a unique event name)")
+		return
+	end
+
+	--Add event name to registry
+	self.nonAddonCallbacks[eventName] = true
+
+	--Register loadFunc to be called when event is fired
+	E.RegisterCallback(E, eventName, loadFunc)
+end
+
 function S:Initialize()
 	self.db = E.private.skins
+
+	--Fire events for Blizzard addons that are already loaded
+	for addon in pairs(self.addonCallbacks) do
+		if IsAddOnLoaded(addon) then
+			for event in pairs(addon) do
+				self.addonCallbacks[addon][event] = nil;
+				E.callbacks:Fire(event)
+			end
+		end
+	end
+	--Fire event for all skins that doesn't rely on a Blizzard addon
+	for eventName in pairs(self.nonAddonCallbacks) do
+		self.addonCallbacks[eventName] = nil;
+		E.callbacks:Fire(eventName)
+	end
+
+	--Old deprecated load functions. We keep this for the time being in case plugins make use of it.
 	for addon, loadFunc in pairs(self.addonsToLoad) do
 		if IsAddOnLoaded(addon) then
 			self.addonsToLoad[addon] = nil;

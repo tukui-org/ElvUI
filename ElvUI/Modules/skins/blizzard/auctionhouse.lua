@@ -343,4 +343,4 @@ local function LoadSkin()
 	WowTokenGameTimeTutorialRightBorder:SetAlpha(0)
 end
 
-S:RegisterSkin("Blizzard_AuctionUI", LoadSkin)
+S:AddCallbackForAddon("Blizzard_AuctionUI", "AuctionHouse", LoadSkin)

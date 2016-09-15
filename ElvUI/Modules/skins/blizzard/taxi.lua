@@ -11,4 +11,4 @@ local function LoadSkin()
 	S:HandleCloseButton(TaxiFrame.CloseButton)
 end
 
-S:RegisterSkin('ElvUI', LoadSkin)
+S:AddCallback("Taxi", LoadSkin)

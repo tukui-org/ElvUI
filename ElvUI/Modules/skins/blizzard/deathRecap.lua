@@ -25,4 +25,4 @@ local function LoadSkin()
 	end
 end
 
-S:RegisterSkin("Blizzard_DeathRecap", LoadSkin)
+S:AddCallbackForAddon("Blizzard_DeathRecap", "DeathRecap", LoadSkin)

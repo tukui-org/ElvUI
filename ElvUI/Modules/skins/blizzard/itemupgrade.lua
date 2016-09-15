@@ -32,4 +32,4 @@ local function LoadSkin()
 	ItemUpgradeFrame.ButtonFrame:DisableDrawLayer('BORDER')
 end
 
-S:RegisterSkin("Blizzard_ItemUpgradeUI", LoadSkin)
+S:AddCallbackForAddon("Blizzard_ItemUpgradeUI", "ItemUpgrade", LoadSkin)

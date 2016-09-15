@@ -266,4 +266,4 @@ local function LoadSkin()
 	S:HandleEditBox(RecruitAFriendNoteFrame)
 end
 
-S:RegisterSkin('ElvUI', LoadSkin)
+S:AddCallback("Friends", LoadSkin)

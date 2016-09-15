@@ -1085,4 +1085,4 @@ local function LoadSkin()
 	hooksecurefunc("NavBar_AddButton", SkinNavBarButtons)
 end
 
-S:RegisterSkin('ElvUI', LoadSkin)
+S:AddCallback("Misc", LoadSkin)
