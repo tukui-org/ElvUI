@@ -28,7 +28,7 @@ function mod:UpdateElement_Name(frame)
 		if(class and color) then
 			frame.Name:SetTextColor(color.r, color.g, color.b)
 		end
-	elseif(not self.db.units[frame.UnitType].healthbar.enable) then
+	elseif(not self.db.units[frame.UnitType].healthbar.enable and not frame.isTarget) then
 		local reactionType = UnitReaction(frame.unit, "player")
 		local r, g, b
 		if(reactionType == 4) then

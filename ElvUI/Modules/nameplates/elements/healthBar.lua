@@ -229,7 +229,7 @@ function mod:ConfigureElement_HealthBar(frame, configuring)
 
 	--Texture
 	healthBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
-	if(not configuring) then
+	if(not configuring) and (self.db.units[frame.UnitType].healthbar.enable or frame.isTarget) then
 		healthBar:Show()
 	end
 	absorbBar:Hide()
