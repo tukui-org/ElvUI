@@ -33,7 +33,7 @@ function mod:UpdateReputation(event)
 		bar:Hide()
 	elseif name and (not self.db.reputation.hideInCombat or not InCombatLockdown()) then
 		bar:Show()
-		
+
 		if self.db.reputation.hideInVehicle then
 			E:RegisterObjectForVehicleLock(bar, E.UIParent)
 		else
@@ -66,7 +66,7 @@ function mod:UpdateReputation(event)
 		else
 			standingLabel = FactionStandingLabelUnknown
 		end
-		
+
 		if textFormat == 'PERCENT' then
 			text = format('%s: %d%% [%s]', name, ((value - min) / (max - min) * 100), isFriend and friendText or standingLabel)
 		elseif textFormat == 'CURMAX' then
@@ -111,14 +111,14 @@ end
 function mod:UpdateReputationDimensions()
 	self.repBar:Width(self.db.reputation.width)
 	self.repBar:Height(self.db.reputation.height)
-	self.repBar.statusBar:SetOrientation(self.db.reputation.orientation)	
-	self.repBar.statusBar:SetReverseFill(self.db.reputation.reverseFill)	
+	self.repBar.statusBar:SetOrientation(self.db.reputation.orientation)
+	self.repBar.statusBar:SetReverseFill(self.db.reputation.reverseFill)
 	self.repBar.text:FontTemplate(nil, self.db.reputation.textSize)
 	if self.db.reputation.mouseover then
 		self.repBar:SetAlpha(0)
 	else
 		self.repBar:SetAlpha(1)
-	end	
+	end
 end
 
 function mod:EnableDisable_ReputationBar()
