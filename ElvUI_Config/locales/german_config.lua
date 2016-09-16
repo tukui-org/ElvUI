@@ -539,7 +539,7 @@ L["Controls which nameplates will be displayed."] = "Legt fest welche Namensplak
 L["Copy settings from another unit."] = "Kopiere Einstellungen von einer anderen Einheit."
 L["Copy Settings From"] = "Kopiere Einstellungen von"
 L["Default Settings"] = "Standard Einstellungen"
-L["Detection"] = true;
+L["Detection"] = "Aufspüren"
 L["Display a healer icon over known healers inside battlegrounds or arenas."] = "Zeige auf Schlachtfeldern oder in Arenen ein Heilersymbol über Heilern an."
 L["Display Minions"] = "Zeige Begleiter"
 L["Display Minor Units"] = "Zeige kleine Einheiten"
@@ -589,7 +589,7 @@ L["Set the transparency level of nameplates that are not the target nameplate."]
 L["Set to either stack nameplates vertically or allow them to overlap."] = "Namensplaketten übereinander stapeln oder überlappen."
 L["Shortcuts"] = "Verknüpfungen"
 L["Show NPC Titles"] = "Zeige NPC Titel"
-L["Suramar Detection"] = true;
+L["Suramar Detection"] = "Surumar Aufspüren"
 L["Tagged NPC"] = "Ausgewählter NPC"
 L["Tanked Color"] = "Angetankte Farbe"
 L["Target Scale"] = "Ziel Skalierung"
