@@ -225,7 +225,7 @@ function mod:SetTargetFrame(frame)
 			self:ConfigureElement_CastBar(frame)
 			self:ConfigureElement_Glow(frame)
 			self:ConfigureElement_Elite(frame)
-
+			self:ConfigureElement_Detection(frame)
 			self:ConfigureElement_Level(frame)
 			self:ConfigureElement_Name(frame)
 			self:ConfigureElement_NPCTitle(frame)
@@ -361,6 +361,7 @@ function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
 	self:ConfigureElement_Name(frame.UnitFrame)
 	self:ConfigureElement_NPCTitle(frame.UnitFrame)
 	self:ConfigureElement_Elite(frame.UnitFrame)
+	self:ConfigureElement_Detection(frame.UnitFrame)
 	self:RegisterEvents(frame.UnitFrame, unit)
 	self:UpdateElement_All(frame.UnitFrame, unit)
 
@@ -400,6 +401,7 @@ function mod:NAME_PLATE_UNIT_REMOVED(_, unit, frame)
 	frame.UnitFrame.NPCTitle:ClearAllPoints()
 	frame.UnitFrame.NPCTitle:SetText("")
 	frame.UnitFrame.Elite:Hide()
+	frame.UnitFrame.DetectionModel:Hide()
 	frame.UnitFrame:Hide()
 	frame.UnitFrame.isTarget = nil
 	frame.UnitFrame.displayedUnit = nil
@@ -481,7 +483,6 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame)
 		mod:UpdateElement_MaxHealth(frame)
 		mod:UpdateElement_Health(frame)
 		mod:UpdateElement_HealthColor(frame)
-
 		mod:UpdateElement_Glow(frame)
 		mod:UpdateElement_Cast(frame)
 		mod:UpdateElement_Auras(frame)
@@ -499,6 +500,7 @@ function mod:UpdateElement_All(frame, unit, noTargetFrame)
 	mod:UpdateElement_NPCTitle(frame)
 	mod:UpdateElement_Level(frame)
 	mod:UpdateElement_Elite(frame)
+	mod:UpdateElement_Detection(frame)
 
 	if(not noTargetFrame) then --infinite loop lol
 		mod:SetTargetFrame(frame)
@@ -524,6 +526,7 @@ function mod:NAME_PLATE_CREATED(_, frame)
 	frame.UnitFrame.HealerIcon = self:ConstructElement_HealerIcon(frame.UnitFrame)
 	frame.UnitFrame.RaidIcon = self:ConstructElement_RaidIcon(frame.UnitFrame)
 	frame.UnitFrame.Elite = self:ConstructElement_Elite(frame.UnitFrame)
+	frame.UnitFrame.DetectionModel = self:ConstructElement_Detection(frame.UnitFrame)
 end
 
 function mod:OnEvent(event, unit, ...)

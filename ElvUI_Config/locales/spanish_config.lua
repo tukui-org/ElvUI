@@ -538,6 +538,7 @@ L["Controls which nameplates will be displayed."] = true;
 L["Copy settings from another unit."] = true;
 L["Copy Settings From"] = true;
 L["Default Settings"] = true;
+L["Detection"] = true;
 L["Display a healer icon over known healers inside battlegrounds or arenas."] = "Muestra un icono de sanados sobre los sanadores conocidos en los campos de batalla o arenas."
 L["Display Minions"] = true;
 L["Display Minor Units"] = true;
@@ -586,6 +587,7 @@ L["Set the transparency level of nameplates that are not the target nameplate."]
 L["Set to either stack nameplates vertically or allow them to overlap."] = true;
 L["Shortcuts"] = true;
 L["Show NPC Titles"] = true;
+L["Suramar Detection"] = true;
 L["Tagged NPC"] = true;
 L["Tanked Color"] = true;
 L["Target Scale"] = true;

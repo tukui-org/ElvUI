@@ -538,6 +538,7 @@ L["Controls which nameplates will be displayed."] = "Определяет, ка�
 L["Copy settings from another unit."] = "Скопировать настройки с другого юнита."
 L["Copy Settings From"] = "Скопировать из"
 L["Default Settings"] = "Умолчания"
+L["Detection"] = true;
 L["Display a healer icon over known healers inside battlegrounds or arenas."] = "Отображать иконки лекаря над известными целителями на полях боя и аренах"
 L["Display Minions"] = "Отображать миньонов"
 L["Display Minor Units"] = "Отображать малых существ"
@@ -587,6 +588,7 @@ L["Set the transparency level of nameplates that are not the target nameplate."]
 L["Set to either stack nameplates vertically or allow them to overlap."] = "Выстраивать индикаторы в столбик или позволить им накладываться друг на друга."
 L["Shortcuts"] = "Ярлыки"
 L["Show NPC Titles"] = "Титулы НИП"
+L["Suramar Detection"] = true;
 L["Tagged NPC"] = "Чужой НИП"
 L["Tanked Color"] = "Цвет танкуемого"
 L["Target Scale"] = "Масштаб цели";

@@ -610,6 +610,25 @@ local function GetUnitSettings(unit, name)
 				},
 			},
 		}
+		group.args.detection = {
+			order = 11,
+			name = L["Detection"],
+			type = "group",
+			get = function(info) return E.db.nameplates.units[unit].detection[ info[#info] ] end,
+			set = function(info, value) E.db.nameplates.units[unit].detection[ info[#info] ] = value; NP:ConfigureAll() end,
+			args = {
+				header = {
+					order = 0,
+					type = "header",
+					name = L["Suramar Detection"],
+				},
+				enable = {
+					order = 1,
+					name = L["Enable"],
+					type = "toggle",
+				},
+			},
+		}
 	elseif unit == "FRIENDLY_NPC" then
 		group.args.eliteIcon = {
 			order = 10,

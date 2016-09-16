@@ -538,6 +538,7 @@ L["Controls which nameplates will be displayed."] = "控制何种姓名板被显
 L["Copy settings from another unit."] = "从其他框架中复制设置"
 L["Copy Settings From"] = "复制设置"
 L["Default Settings"] = "默认设置"
+L["Detection"] = true;
 L["Display a healer icon over known healers inside battlegrounds or arenas."] = "战场或竞技场中，为已确认为治疗的玩家标上补职图标."
 L["Display Minions"] = "显示守护者"
 L["Display Minor Units"] = "显示守护者单位"
@@ -587,6 +588,7 @@ L["Set the transparency level of nameplates that are not the target nameplate."]
 L["Set to either stack nameplates vertically or allow them to overlap."] = "设置将姓名板垂直排列或者允许重叠"
 L["Shortcuts"] = "快捷键"
 L["Show NPC Titles"] = "显示NPC头衔"
+L["Suramar Detection"] = true;
 L["Tagged NPC"] = "标记的NPC"
 L["Tanked Color"] = "坦克颜色"
 L["Target Scale"] = "目标缩放"
