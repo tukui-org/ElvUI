@@ -512,9 +512,6 @@ local blackList = {}
 local blackListQueries = {}
 
 local function buildBlacklist(...)
-	twipe(blackList)
-	twipe(blackListQueries)
-
 	for entry in pairs(...) do
 		local itemName = GetItemInfo(entry)
 
@@ -533,10 +530,14 @@ end
 function B.Sort(bags, sorter, invertDirection)
 	if not sorter then sorter = invertDirection and ReverseSort or DefaultSort end
 
+	--Wipe tables before we begin
+	twipe(blackList)
+	twipe(blackListQueries)
 	twipe(blackListedSlots)
 
-	local ignoredItems = B.db.ignoredItems
-	buildBlacklist(ignoredItems)
+	--Build blacklist of items based on the profile and global list
+	buildBlacklist(B.db.ignoredItems)
+	buildBlacklist(E.global.bags.ignoredItems)
 
 	for i, bag, slot in B.IterateBags(bags, nil, 'both') do
 		local bagSlot = B:Encode_BagSlot(bag, slot)
@@ -613,10 +614,13 @@ end
 function B.Fill(sourceBags, targetBags, reverse, canMove)
 	if not canMove then canMove = DefaultCanMove end
 
+	--Wipe tables before we begin
+	twipe(blackList)
 	twipe(blackListedSlots)
 
-	local ignoredItems = B.db.ignoredItems
-	buildBlacklist(ignoredItems)
+	--Build blacklist of items based on the profile and global list
+	buildBlacklist(B.db.ignoredItems)
+	buildBlacklist(E.global.ignoredItems)
 
 	for _, bag, slot in B.IterateBags(targetBags, reverse, "deposit") do
 		local bagSlot = B:Encode_BagSlot(bag, slot)
