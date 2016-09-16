@@ -589,7 +589,7 @@ L["Set the transparency level of nameplates that are not the target nameplate."]
 L["Set to either stack nameplates vertically or allow them to overlap."] = "Namensplaketten übereinander stapeln oder überlappen."
 L["Shortcuts"] = "Verknüpfungen"
 L["Show NPC Titles"] = "Zeige NPC Titel"
-L["Suramar Detection"] = "Surumar Aufspüren"
+L["Suramar Detection"] = "Surumar Aufspürung"
 L["Tagged NPC"] = "Ausgewählter NPC"
 L["Tanked Color"] = "Angetankte Farbe"
 L["Target Scale"] = "Ziel Skalierung"
