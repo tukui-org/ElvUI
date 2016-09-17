@@ -129,9 +129,9 @@ L["Threshold before text turns red and is in decimal form. Set to -1 for it to n
 L["Toggles the display of the actionbars backdrop."] = "Aktiviere den Hintergrund der Aktionsleisten."
 L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."] = "Transparenz Level wenn nicht im Kampf, kein Ziel ausgewählt, volle Gesundheit, nicht am Zaubern und kein Fokus existiert."
 L["Usable"] = "Nutzbar"
-L["Use Position Override"] = true;
+L["Use Position Override"] = "Benutze Überschreibung der Position"
 L["Visibility State"] = "Sichbarkeitszustand"
-L["When enabled it will use the Anchor Point setting to determine growth direction, otherwise it will be determined by where the bar is positioned."] = true;
+L["When enabled it will use the Anchor Point setting to determine growth direction, otherwise it will be determined by where the bar is positioned."] = "Wenn aktiviert, wird der Ankerpunkt benutzt um die Wachstumsrichtung festzulegen. Andernfalls wird festgelegt wo die Leiste positioniert ist."
 L["Width Multiplier"] = "Breitenmultiplikator"
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = [=[Dieses funktioniert wie ein Makro, du kannst verschiedene Situationen haben um die Aktionsleiste zu wechseln.
