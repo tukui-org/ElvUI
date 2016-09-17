@@ -620,7 +620,7 @@ function B.Fill(sourceBags, targetBags, reverse, canMove)
 
 	--Build blacklist of items based on the profile and global list
 	buildBlacklist(B.db.ignoredItems)
-	buildBlacklist(E.global.ignoredItems)
+	buildBlacklist(E.global.bags.ignoredItems)
 
 	for _, bag, slot in B.IterateBags(targetBags, reverse, "deposit") do
 		local bagSlot = B:Encode_BagSlot(bag, slot)
