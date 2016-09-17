@@ -125,7 +125,11 @@ function AB:PositionAndSizeBarShapeShift()
 	local widthMult = self.db['stanceBar'].widthMult;
 	local heightMult = self.db['stanceBar'].heightMult;
 	if bar.mover then
-		bar.mover.positionOverride = point;
+		if self.db['stanceBar'].usePositionOverride then
+			bar.mover.positionOverride = point;
+		else
+			bar.mover.positionOverride = nil
+		end
 		E:UpdatePositionOverride(bar.mover:GetName())
 	end
 
@@ -134,13 +138,13 @@ function AB:PositionAndSizeBarShapeShift()
 	if find(position, "LEFT") or position == "TOP" or position == "BOTTOM" then
 		if point == "TOP" then
 			point = "TOPLEFT"
-		else
+		elseif point == "BOTTOM" then
 			point = "BOTTOMLEFT"
 		end
 	else
 		if point == "TOP" then
 			point = "TOPRIGHT"
-		else
+		elseif point == "BOTTOM" then
 			point = "BOTTOMRIGHT"
 		end
 	end

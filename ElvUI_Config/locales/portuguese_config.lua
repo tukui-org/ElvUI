@@ -129,7 +129,9 @@ L["Threshold before text turns red and is in decimal form. Set to -1 for it to n
 L["Toggles the display of the actionbars backdrop."] = "Mostra/Oculta o fundo das barras de acção"
 L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."] = true;
 L["Usable"] = true;
+L["Use Position Override"] = true;
 L["Visibility State"] = "Estado de Visibilidade"
+L["When enabled it will use the Anchor Point setting to determine growth direction, otherwise it will be determined by where the bar is positioned."] = true;
 L["Width Multiplier"] = "Multiplicador de Comprimento"
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
 Example: '[combat] 2;']=] ] = [=[Isto funciona como uma macro, você pode executar várias situações para que a barra de ação pagine de forma diferente.

@@ -129,7 +129,9 @@ L["Threshold before text turns red and is in decimal form. Set to -1 for it to n
 L["Toggles the display of the actionbars backdrop."] = "Включить отображение фона панели команд."
 L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."] = "Уровень прозрачности вне боя, без цели, без фокуса, с полным здоровьем и без произношения заклинаний."
 L["Usable"] = "Можно использовать"
+L["Use Position Override"] = true;
 L["Visibility State"] = "Статус отображения"
+L["When enabled it will use the Anchor Point setting to determine growth direction, otherwise it will be determined by where the bar is positioned."] = true;
 L["Width Multiplier"] = "Множитель ширины"
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = [=[Работает как макрос. Вы можете задать различные условия для отображения разных панелей.

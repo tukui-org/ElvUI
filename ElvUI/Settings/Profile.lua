@@ -3088,6 +3088,7 @@ P["actionbar"] = {
 		["backdropSpacing"] = 2,
 		['alpha'] = 1,
 		['inheritGlobalFade'] = false,
+		["usePositionOverride"] = true,
 	},
 	['extraActionButton'] = {
 		['alpha'] = 1,

@@ -129,7 +129,9 @@ L["Threshold before text turns red and is in decimal form. Set to -1 for it to n
 L["Toggles the display of the actionbars backdrop."] = "切换动作条显示背景框"
 L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."] = "在非战斗，无目标存在，满血，未施法，无焦点目标存在时的不透明度"
 L["Usable"] = "可用"
+L["Use Position Override"] = true;
 L["Visibility State"] = "可见状态"
+L["When enabled it will use the Anchor Point setting to determine growth direction, otherwise it will be determined by where the bar is positioned."] = true;
 L["Width Multiplier"] = "宽度倍增"
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = [=[和宏写法类似, 能根据不同姿态切换动作条.
