@@ -341,7 +341,7 @@ E.PopupDialogs["WARNING_BLIZZARD_ADDONS"] = {
 }
 
 E.PopupDialogs['APPLY_FONT_WARNING'] = {
-	text = L["Are you sure you want to apply this font to all ElvUI elements?\n\n|cfffff000Note: This cannot be undone.|r\n"], -- This may need review before adding it in the locales.
+	text = L["Are you sure you want to apply this font to all ElvUI elements?"],
 	OnAccept = function()
 		local font = E.db.general.font
 		local fontSize = E.db.general.fontSize

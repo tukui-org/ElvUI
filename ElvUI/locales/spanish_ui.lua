@@ -325,6 +325,7 @@ L["|cFFE30000Lua error recieved. You can view the error message when you exit co
 
 --Static Popups
 L["A setting you have changed will change an option for this character only. This setting that you have changed will be uneffected by changing user profiles. Changing this setting requires that you reload your User Interface."] = "La opción que has cambiado se aplicará sólo para este personaje. Esta opción no se verá alterada al cambiar el perfil de usuario. Cambiar esta opción requiere que recargues tu Interfaz de Usuario."
+L["Are you sure you want to apply this font to all ElvUI elements?"] = true;
 L["Are you sure you want to delete all your gray items?"] = "¿Estás seguro que quieres eliminar todos tus objetos grises?"
 L["Are you sure you want to disband the group?"] = "¿Estás seguro que quieres deshacer el grupo?"
 L["Are you sure you want to reset all the settings on this profile?"] = "¿Estás seguro que deseas restablecer todos los ajustes de este perfil?"

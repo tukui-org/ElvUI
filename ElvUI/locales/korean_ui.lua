@@ -325,6 +325,7 @@ L["|cFFE30000Lua error recieved. You can view the error message when you exit co
 
 --Static Popups
 L["A setting you have changed will change an option for this character only. This setting that you have changed will be uneffected by changing user profiles. Changing this setting requires that you reload your User Interface."] = "이 설정은 캐릭터별로 따로 저장되므로|n프로필에 영향을 주지도, 받지도 않습니다.|n|n설정 적용을 위해 리로드 하시겠습니까?"
+L["Are you sure you want to apply this font to all ElvUI elements?"] = true;
 L["Are you sure you want to delete all your gray items?"] = "모든 잡동사니를 버리겠습니까?"
 L["Are you sure you want to disband the group?"] = "현재 그룹을 해산하시겠습니까?"
 L["Are you sure you want to reset all the settings on this profile?"] = "현재 사용중인 프로필을 초기화 하시겠습니까?"
