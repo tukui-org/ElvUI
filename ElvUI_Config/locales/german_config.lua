@@ -133,6 +133,7 @@ L["Use Position Override"] = "Benutze Überschreibung der Position"
 L["Visibility State"] = "Sichbarkeitszustand"
 L["When enabled it will use the Anchor Point setting to determine growth direction, otherwise it will be determined by where the bar is positioned."] = "Wenn aktiviert, wird der Ankerpunkt benutzt um die Wachstumsrichtung festzulegen. Andernfalls wird festgelegt wo die Leiste positioniert ist."
 L["Width Multiplier"] = "Breitenmultiplikator"
+L["Zone Ability"] = true;
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = [=[Dieses funktioniert wie ein Makro, du kannst verschiedene Situationen haben um die Aktionsleiste zu wechseln.
  Beispiel: '[combat] 2;']=]

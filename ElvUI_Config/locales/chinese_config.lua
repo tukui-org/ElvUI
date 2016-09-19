@@ -133,6 +133,7 @@ L["Use Position Override"] = true;
 L["Visibility State"] = "可见状态"
 L["When enabled it will use the Anchor Point setting to determine growth direction, otherwise it will be determined by where the bar is positioned."] = true;
 L["Width Multiplier"] = "宽度倍增"
+L["Zone Ability"] = true;
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = [=[和宏写法类似, 能根据不同姿态切换动作条.
  例如: '[combat] 2;']=]

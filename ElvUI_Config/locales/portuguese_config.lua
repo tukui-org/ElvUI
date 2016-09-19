@@ -133,6 +133,7 @@ L["Use Position Override"] = true;
 L["Visibility State"] = "Estado de Visibilidade"
 L["When enabled it will use the Anchor Point setting to determine growth direction, otherwise it will be determined by where the bar is positioned."] = true;
 L["Width Multiplier"] = "Multiplicador de Comprimento"
+L["Zone Ability"] = true;
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
 Example: '[combat] 2;']=] ] = [=[Isto funciona como uma macro, você pode executar várias situações para que a barra de ação pagine de forma diferente.
 Exemplo: '[combat] 2;']=];

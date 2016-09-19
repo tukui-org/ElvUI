@@ -45,18 +45,22 @@ function AB:Extra_SetScale()
 end
 
 function AB:SetupExtraButton()
-	local holder = CreateFrame('Frame', nil, E.UIParent)
-	holder:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 150)
-	holder:Size(ExtraActionBarFrame:GetSize())
+	local ExtraActionBarHolder = CreateFrame('Frame', nil, E.UIParent)
+	ExtraActionBarHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 150)
+	ExtraActionBarHolder:Size(ExtraActionBarFrame:GetSize())
 
-	ExtraActionBarFrame:SetParent(holder)
+	ExtraActionBarFrame:SetParent(ExtraActionBarHolder)
 	ExtraActionBarFrame:ClearAllPoints()
-	ExtraActionBarFrame:Point('CENTER', holder, 'CENTER')
+	ExtraActionBarFrame:Point('CENTER', ExtraActionBarHolder, 'CENTER')
 	ExtraActionBarFrame.ignoreFramePositionManager  = true
 
-	ZoneAbilityFrame:SetParent(holder)
+	local ZoneAbilityHolder = CreateFrame('Frame', nil, E.UIParent)
+	ZoneAbilityHolder:Point('BOTTOM', ExtraActionBarFrame, 'TOP', 0, 2)
+	ZoneAbilityHolder:Size(ExtraActionBarFrame:GetSize())
+
+	ZoneAbilityFrame:SetParent(ZoneAbilityHolder)
 	ZoneAbilityFrame:ClearAllPoints()
-	ZoneAbilityFrame:Point('CENTER', holder, 'CENTER')
+	ZoneAbilityFrame:Point('CENTER', ZoneAbilityHolder, 'CENTER')
 	ZoneAbilityFrame.ignoreFramePositionManager = true
 
 	for i=1, ExtraActionBarFrame:GetNumChildren() do
@@ -102,5 +106,6 @@ function AB:SetupExtraButton()
 	AB:Extra_SetAlpha()
 	AB:Extra_SetScale()
 
-	E:CreateMover(holder, 'BossButton', L["Boss Button"], nil, nil, nil, 'ALL,ACTIONBARS');
+	E:CreateMover(ExtraActionBarHolder, 'BossButton', L["Boss Button"], nil, nil, nil, 'ALL,ACTIONBARS');
+	E:CreateMover(ZoneAbilityHolder, 'ZoneAbility', L["Zone Ability"], nil, nil, nil, 'ALL,ACTIONBARS');
 end
