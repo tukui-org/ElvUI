@@ -925,8 +925,10 @@ local function LoadSkin()
 		"InterfaceOptionsSocialPanelRedockChat"
 	}
 	for _, button in pairs(buttons) do
-		if button then
+		if _G[button] then
 			S:HandleButton(_G[button])
+		else
+			E:Print("ElvUI tried to skin a non-existent button:", button)
 		end
 	end
 	AudioOptionsVoicePanelChatMode1KeyBindingButton:ClearAllPoints()
