@@ -783,7 +783,8 @@ function TT:CheckBackdropColor()
 	r = E:Round(r, 1)
 	g = E:Round(g, 1)
 	b = E:Round(b, 1)
-	local red, green, blue, alpha = unpack(E.media.backdropfadecolor)
+	local red, green, blue = unpack(E.media.backdropfadecolor)
+	local alpha = self.db.colorAlpha
 
 	if(r ~= red or g ~= green or b ~= blue) then
 		GameTooltip:SetBackdropColor(red, green, blue, alpha)
