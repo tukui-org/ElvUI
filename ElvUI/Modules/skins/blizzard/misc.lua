@@ -918,8 +918,6 @@ local function LoadSkin()
 		"RecordLoopbackSoundButton",
 		"PlayLoopbackSoundButton",
 		"AudioOptionsVoicePanelChatMode1KeyBindingButton",
-		"CompactUnitFrameProfilesSaveButton",
-		"CompactUnitFrameProfilesDeleteButton",
 		"InterfaceOptionsSocialPanelTwitterLoginButton",
 		"InterfaceOptionsDisplayPanelResetTutorials",
 		"InterfaceOptionsSocialPanelRedockChat"
@@ -927,8 +925,6 @@ local function LoadSkin()
 	for _, button in pairs(buttons) do
 		if _G[button] then
 			S:HandleButton(_G[button])
-		else
-			E:Print("ElvUI tried to skin a non-existent button:", button)
 		end
 	end
 	AudioOptionsVoicePanelChatMode1KeyBindingButton:ClearAllPoints()
@@ -936,6 +932,8 @@ local function LoadSkin()
 	if CompactUnitFrameProfiles then --Some addons disable the Blizzard addon
 		S:HandleCheckBox(CompactUnitFrameProfilesRaidStylePartyFrames)
 		S:HandleButton(CompactUnitFrameProfilesGeneralOptionsFrameResetPositionButton)
+		S:HandleButton(CompactUnitFrameProfilesSaveButton)
+		S:HandleButton(CompactUnitFrameProfilesDeleteButton)
 	end
 	GraphicsButton:StripTextures()
 	RaidButton:StripTextures()
