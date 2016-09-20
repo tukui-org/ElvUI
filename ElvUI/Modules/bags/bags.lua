@@ -324,6 +324,14 @@ function B:UpdateCountDisplay()
 			bagFrame:UpdateAllSlots()
 		end
 	end
+
+	--Reagent Bank
+	for i = 1, 98 do
+		local slot = self.BankFrame.reagentFrame.slots[i]
+		slot.Count:FontTemplate(E.LSM:Fetch("font", E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
+		slot.Count:SetTextColor(color.r, color.g, color.b)
+		self:UpdateReagentSlot(i)
+	end
 end
 
 function B:UpdateBagTypes(isBank)
