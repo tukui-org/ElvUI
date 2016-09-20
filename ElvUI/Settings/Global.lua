@@ -31,3 +31,8 @@ G['unitframe'] = {
 G["bags"] = {
 	["ignoredItems"] = {},
 }
+
+G["datatexts"] = {
+	["useCustomCurrencyTooltip"] = true,
+	["customCurrencies"] = {},
+}

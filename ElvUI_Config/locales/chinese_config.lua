@@ -335,6 +335,7 @@ L["Hide in Combat"] = "战斗中隐藏"
 
 --DataTexts
 L["24-Hour Time"] = "24小时制"
+L["Add Currency ID"] = true;
 L["Battleground Texts"] = "战场资讯"
 L["Block Combat Click"] = "战斗中屏蔽点击"
 L["Block Combat Hover"] = "战斗中屏蔽提示"
@@ -343,6 +344,8 @@ L["Blocks datatext tooltip from showing in combat."] = "战斗中禁用鼠标提
 L["BottomLeftMiniPanel"] = "小地图左下内侧"
 L["BottomMiniPanel"] = "小地图底部内侧"
 L["BottomRightMiniPanel"] = "小地图右下内侧"
+L["Custom Currencies"] = true;
+L["Custom Currency"] = true;
 L["Datatext Panel (Left)"] = "左侧资讯框"
 L["Datatext Panel (Right)"] = "右侧资讯框"
 L["DataTexts"] = "资讯文字"
@@ -364,10 +367,12 @@ L["RightChatDataPanel"] = "右聊天框"
 L["RightMiniPanel"] = "小地图右方"
 L["Small Panels"] = "迷你面板"
 L["The display format of the money text that is shown in the gold datatext and its tooltip."] = "在信息文字中显示的金钱格式"
+L["This allows you to create a new datatext which will track the currency with the supplied currency ID. The datatext can be added to a panel immediately after creation."] = true;
 L["Toggle 24-hour mode for the time datatext."] = "切换时间显示为24小时制."
 L["TopLeftMiniPanel"] = "小地图左上内侧"
 L["TopMiniPanel"] = "小地图顶部内侧"
 L["TopRightMiniPanel"] =  "小地图右上内侧"
+L["Use Tooltip"] = true;
 L["When inside a battleground display personal scoreboard information on the main datatext bars."] = "处于战场时, 在主资讯文字条显示你的战场得分讯息."
 L["Word Wrap"] = "自动换行"
 

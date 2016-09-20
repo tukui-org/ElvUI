@@ -30,4 +30,5 @@
 	<Script file='time.lua'/>
 	<Script file='versatility.lua'/>
 	<Script file='Currencies.lua'/>
+	<Script file='CustomCurrency.lua'/>
 </Ui>

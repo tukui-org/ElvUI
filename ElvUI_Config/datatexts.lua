@@ -46,6 +46,66 @@ function DT:PanelLayoutOptions()
 	end
 end
 
+local function CreateCustomCurrencyOptions(currencyID)
+	local currency = E.global.datatexts.customCurrencies[currencyID] --The datatext has been registered prior to this
+	if currency then
+		E.Options.args.datatexts.args.customCurrency.args.currencies.args[currency.NAME] = {
+			order = 1,
+			type = "group",
+			name = currency.NAME,
+			guiInline = false,
+			args = {
+				displayStyle = {
+					order = 1,
+					type = "select",
+					name = L["Display Style"],
+					get = function(info) return E.global.datatexts.customCurrencies[currencyID].DISPLAY_STYLE end,
+					set = function(info, value)
+						--Save new display style
+						E.global.datatexts.customCurrencies[currencyID].DISPLAY_STYLE = value
+						--Update internal value
+						DT:SetCustomCurrencyDisplayStyle(currency.NAME, value)
+						--Reload datatexts
+						DT:LoadDataTexts()
+					end,
+					values = {
+						["ICON"] = L["Icons Only"],
+						["ICON_TEXT"] = L["Icons and Text"],
+						["ICON_TEXT_ABBR"] = L["Icons and Text (Short)"],
+					},
+				},
+				removeDT = {
+					order = 2,
+					type = "execute",
+					name = DELETE,
+					func = function()
+						--Remove stored entries of this currency datatext
+						DT:RemoveCustomCurrency(currency.NAME)
+						--Remove options group
+						E.Options.args.datatexts.args.customCurrency.args.currencies.args[currency.NAME] = nil
+						--Remove entry from registered datatext storage
+						DT.RegisteredDataTexts[currency.NAME] = nil
+						--Remove from persistent storage
+						E.global.datatexts.customCurrencies[currencyID] = nil
+						--Remove currency from datatext selection
+						datatexts[currency.NAME] = nil
+						DT:PanelLayoutOptions()
+						--Reload datatexts to clear panel
+						DT:LoadDataTexts()
+					end,
+				},
+			},
+		}
+	end
+end
+
+local function SetupCustomCurrencies()
+	--Create options for all stored custom currency datatexts
+	for currencyID in pairs(E.global.datatexts.customCurrencies) do
+		CreateCustomCurrencyOptions(currencyID)
+	end
+end
+
 E.Options.args.datatexts = {
 	type = "group",
 	name = L["DataTexts"],
@@ -345,7 +405,67 @@ E.Options.args.datatexts = {
 				},
 			},
 		},
+		customCurrency = {
+			order = 5,
+			type = "group",
+			name = L["Custom Currency"],
+			args = {
+				header = {
+					order = 1,
+					type = "header",
+					name = L["Custom Currency"],
+				},
+				description = {
+					order = 2,
+					type = "description",
+					name = L["This allows you to create a new datatext which will track the currency with the supplied currency ID. The datatext can be added to a panel immediately after creation."],
+				},
+				addCustomCurrency = {
+					order = 3,
+					type = "input",
+					name = L["Add Currency ID"],
+					desc = "http://www.wowhead.com/currencies",
+					get = function() return "" end,
+					set = function(info, value)
+						local currencyID = tonumber(value)
+						if not currencyID then return; end
+						--Register a new datatext where name is the name of the currency
+						DT:RegisterCustomCurrencyDT(currencyID)
+						--Create options for this datatext
+						CreateCustomCurrencyOptions(currencyID)
+						DT:PanelLayoutOptions()
+						--Reload datatexts in case the currency we just added was already selected on a panel
+						DT:LoadDataTexts()
+					end,
+				},
+				spacer = {
+					order = 4,
+					type = "description",
+					name = " ",
+					width = "normal",
+				},
+				useCustomCurrencyTooltip = {
+					order = 5,
+					type = "toggle",
+					name = L["Use Tooltip"],
+					get = function(info) return E.global.datatexts.useCustomCurrencyTooltip end,
+					set = function(info, value) E.global.datatexts.useCustomCurrencyTooltip = value; E:StaticPopup_Show("GLOBAL_RL") end,
+				},
+				spacer2 = {
+					order = 6,
+					type = "description",
+					name = "\n",
+				},
+				currencies = {
+					order = 7,
+					type = "group",
+					name = L["Custom Currencies"],
+					args = {}
+				},
+			},
+		},
 	},
 }
 
 DT:PanelLayoutOptions()
+SetupCustomCurrencies()

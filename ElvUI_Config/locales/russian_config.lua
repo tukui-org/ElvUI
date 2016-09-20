@@ -335,6 +335,7 @@ L["Hide in Combat"] = "Скрывать в бою"
 
 --DataTexts
 L["24-Hour Time"] = "24х часовой формат"
+L["Add Currency ID"] = true;
 L["Battleground Texts"] = "Текст ПБ"
 L["Block Combat Click"] = "Блокировать нажатия в бою"
 L["Block Combat Hover"] = "Блокировать подсказки в бою"
@@ -343,6 +344,8 @@ L["Blocks datatext tooltip from showing in combat."] = "Скрывает под�
 L["BottomLeftMiniPanel"] = "Миникарта снизу слева (внутри)"
 L["BottomMiniPanel"] = "Миникарта снизу (внутри)"
 L["BottomRightMiniPanel"] = "Миникарта снизу справа (внутри)"
+L["Custom Currencies"] = true;
+L["Custom Currency"] = true;
 L["Datatext Panel (Left)"] = "Панель информации (левая)"
 L["Datatext Panel (Right)"] = "Панель информации (правая)"
 L["DataTexts"] = "Инфо-тексты"
@@ -364,10 +367,12 @@ L["RightChatDataPanel"] = "Правая панель чата"
 L["RightMiniPanel"] = "Миникарта, справа"
 L["Small Panels"] = "Малые панели"
 L["The display format of the money text that is shown in the gold datatext and its tooltip."] = "Формат отображения золота на инфо-тексте золота и его подсказке."
+L["This allows you to create a new datatext which will track the currency with the supplied currency ID. The datatext can be added to a panel immediately after creation."] = true;
 L["Toggle 24-hour mode for the time datatext."] = "Включить 24х часовой формат отображения времени."
 L["TopLeftMiniPanel"] = "Миникарта сверху слева (внутри)"
 L["TopMiniPanel"] = "Миникарта сверху (внутри)"
 L["TopRightMiniPanel"] = "Миникарта сверху справа (внутри)"
+L["Use Tooltip"] = true;
 L["When inside a battleground display personal scoreboard information on the main datatext bars."] = "На полях боя отображать личную информацию на основных полосах инфо-текстов"
 L["Word Wrap"] = "Перенос слов"
 
