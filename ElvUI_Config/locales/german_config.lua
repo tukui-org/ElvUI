@@ -335,7 +335,7 @@ L["Hide in Combat"] = "Im Kampf ausblenden"
 
 --DataTexts
 L["24-Hour Time"] = "24-Stunden-Format"
-L["Add Currency ID"] = true;
+L["Add Currency ID"] = "Währungs-ID hinzufügen"
 L["Battleground Texts"] = "Schlachtfeld-Infotexte"
 L["Block Combat Click"] = "Blockiere Klicks im Kampf"
 L["Block Combat Hover"] = "Blockiere Hovereffekt im Kampf"
@@ -344,8 +344,8 @@ L["Blocks datatext tooltip from showing in combat."] = "Blockiere Infotextetoolt
 L["BottomLeftMiniPanel"] = "Minimap Untenlinks (Innen)"
 L["BottomMiniPanel"] = "Minimap Unten (Innen)"
 L["BottomRightMiniPanel"] = "Minimap Untenrechts (Innen)"
-L["Custom Currencies"] = true;
-L["Custom Currency"] = true;
+L["Custom Currencies"] = "Benutzerdefinierte Währungen"
+L["Custom Currency"] = "Benutzerdefinierte Währung"
 L["Datatext Panel (Left)"] = "Infotextleiste (Links)"
 L["Datatext Panel (Right)"] = "Infotextleiste (Rechts)"
 L["DataTexts"] = "Infotexte"
@@ -367,12 +367,12 @@ L["RightChatDataPanel"] = "Rechter Chat"
 L["RightMiniPanel"] = "Minimap Rechts"
 L["Small Panels"] = "Schmale Leisten"
 L["The display format of the money text that is shown in the gold datatext and its tooltip."] = "Das Anzeigeformat für Gold in den Haupt-Infoleisten und Tooltips."
-L["This allows you to create a new datatext which will track the currency with the supplied currency ID. The datatext can be added to a panel immediately after creation."] = true;
+L["This allows you to create a new datatext which will track the currency with the supplied currency ID. The datatext can be added to a panel immediately after creation."] = "Dieses erlaubt dir einen neuen Infotext zu erstellen, der die Währung verfolgt mit der bereitgestellten Währungs-ID. Der Infotext kann sofort nach der Erstellung einer Leiste hinzugefügt werden."
 L["Toggle 24-hour mode for the time datatext."] = "Wählt das 24-Stunden-Format für den Zeit-Infotext."
 L["TopLeftMiniPanel"] = "Minimap Obenlinks (Innen)"
 L["TopMiniPanel"] = "Minimap Oben (Innen)"
 L["TopRightMiniPanel"] = "Minimap Obenrechts (Innen)"
-L["Use Tooltip"] = true;
+L["Use Tooltip"] = "Benutze Tooltip"
 L["When inside a battleground display personal scoreboard information on the main datatext bars."] = "Zeige innerhalb eines Schlachtfeldes persönliche Statistiken in den Haupt-Infoleisten."
 L["Word Wrap"] = "Zeilenumbruch"
 
