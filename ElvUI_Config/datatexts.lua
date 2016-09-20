@@ -406,7 +406,7 @@ E.Options.args.datatexts = {
 			},
 		},
 		customCurrency = {
-			order = 5,
+			order = 7,
 			type = "group",
 			name = L["Custom Currency"],
 			args = {
