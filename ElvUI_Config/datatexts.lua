@@ -55,27 +55,8 @@ local function CreateCustomCurrencyOptions(currencyID)
 			name = currency.NAME,
 			guiInline = false,
 			args = {
-				displayStyle = {
-					order = 1,
-					type = "select",
-					name = L["Display Style"],
-					get = function(info) return E.global.datatexts.customCurrencies[currencyID].DISPLAY_STYLE end,
-					set = function(info, value)
-						--Save new display style
-						E.global.datatexts.customCurrencies[currencyID].DISPLAY_STYLE = value
-						--Update internal value
-						DT:SetCustomCurrencyDisplayStyle(currency.NAME, value)
-						--Reload datatexts
-						DT:LoadDataTexts()
-					end,
-					values = {
-						["ICON"] = L["Icons Only"],
-						["ICON_TEXT"] = L["Icons and Text"],
-						["ICON_TEXT_ABBR"] = L["Icons and Text (Short)"],
-					},
-				},
 				removeDT = {
-					order = 2,
+					order = 1,
 					type = "execute",
 					name = DELETE,
 					func = function()
@@ -92,6 +73,42 @@ local function CreateCustomCurrencyOptions(currencyID)
 						DT:PanelLayoutOptions()
 						--Reload datatexts to clear panel
 						DT:LoadDataTexts()
+					end,
+				},
+				spacer = {
+					order = 2,
+					type = "description",
+					name = "\n",
+				},
+				displayStyle = {
+					order = 3,
+					type = "select",
+					name = L["Display Style"],
+					get = function(info) return E.global.datatexts.customCurrencies[currencyID].DISPLAY_STYLE end,
+					set = function(info, value)
+						--Save new display style
+						E.global.datatexts.customCurrencies[currencyID].DISPLAY_STYLE = value
+						--Update internal value
+						DT:UpdateCustomCurrencySettings(currency.NAME, "DISPLAY_STYLE", value)
+						--Reload datatexts
+						DT:LoadDataTexts()
+					end,
+					values = {
+						["ICON"] = L["Icons Only"],
+						["ICON_TEXT"] = L["Icons and Text"],
+						["ICON_TEXT_ABBR"] = L["Icons and Text (Short)"],
+					},
+				},
+				useTooltip = {
+					order = 4,
+					type = "toggle",
+					name = L["Use Tooltip"],
+					get = function(info) return E.global.datatexts.customCurrencies[currencyID].USE_TOOLTIP end,
+					set = function(info, value)
+						--Save new value
+						E.global.datatexts.customCurrencies[currencyID].USE_TOOLTIP = value
+						--Update internal value
+						DT:UpdateCustomCurrencySettings(currency.NAME, "USE_TOOLTIP", value)
 					end,
 				},
 			},
@@ -441,23 +458,10 @@ E.Options.args.datatexts = {
 				spacer = {
 					order = 4,
 					type = "description",
-					name = " ",
-					width = "normal",
-				},
-				useCustomCurrencyTooltip = {
-					order = 5,
-					type = "toggle",
-					name = L["Use Tooltip"],
-					get = function(info) return E.global.datatexts.useCustomCurrencyTooltip end,
-					set = function(info, value) E.global.datatexts.useCustomCurrencyTooltip = value; E:StaticPopup_Show("GLOBAL_RL") end,
-				},
-				spacer2 = {
-					order = 6,
-					type = "description",
 					name = "\n",
 				},
 				currencies = {
-					order = 7,
+					order = 5,
 					type = "group",
 					name = L["Custom Currencies"],
 					args = {}

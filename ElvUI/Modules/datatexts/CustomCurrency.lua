@@ -7,6 +7,8 @@ local select, pairs = select, pairs
 local format = string.format
 --WoW API / Variables
 local GetCurrencyInfo = GetCurrencyInfo
+local GetCurrencyListInfo = GetCurrencyListInfo
+local GetCurrencyListSize = GetCurrencyListSize
 
 local CustomCurrencies = {}
 local CurrencyListNameToIndex = {}
@@ -27,6 +29,7 @@ local function OnEvent(self)
 end
 
 local function OnEnter(self)
+	if not CustomCurrencies[self.name].USE_TOOLTIP then return; end
 	local index = CurrencyListNameToIndex[self.name]
 	if not index then return; end
 
@@ -50,9 +53,9 @@ local function RegisterNewDT(currencyID)
 
 	if name then
 		--Add to internal storage, stored with name as key
-		CustomCurrencies[name] = {NAME = name, ID = currencyID, ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", icon, 16, 16), DISPLAY_STYLE = "ICON"}
+		CustomCurrencies[name] = {NAME = name, ID = currencyID, ICON = format("\124T%s:%d:%d:0:0:64:64:4:60:4:60\124t", icon, 16, 16), DISPLAY_STYLE = "ICON", USE_TOOLTIP = true}
 		--Register datatext
-		DT:RegisterDatatext(name, {'PLAYER_ENTERING_WORLD', 'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE'}, OnEvent, nil, nil, (E.global.datatexts.useCustomCurrencyTooltip and OnEnter or nil))
+		DT:RegisterDatatext(name, {'PLAYER_ENTERING_WORLD', 'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE'}, OnEvent, nil, nil, OnEnter)
 		--Save info to persistent storage, stored with ID as key
 		E.global.datatexts.customCurrencies[currencyID] = CustomCurrencies[name]
 		--Get the currency index for this currency, so we can use it for a tooltip
@@ -67,21 +70,25 @@ function DT:RegisterCustomCurrencyDT(currencyID)
 	else
 		--We called this in DT:Initialize, so load all the stored currency datatexts
 		for currencyID, info in pairs(E.global.datatexts.customCurrencies) do
-			CustomCurrencies[info.NAME] = {NAME = info.NAME, ID = info.ID, ICON = info.ICON, DISPLAY_STYLE = info.DISPLAY_STYLE}
-			DT:RegisterDatatext(info.NAME, {'PLAYER_ENTERING_WORLD', 'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE'}, OnEvent, nil, nil, (E.global.datatexts.useCustomCurrencyTooltip and OnEnter or nil))
+			CustomCurrencies[info.NAME] = {NAME = info.NAME, ID = info.ID, ICON = info.ICON, DISPLAY_STYLE = info.DISPLAY_STYLE, USE_TOOLTIP = info.USE_TOOLTIP}
+			DT:RegisterDatatext(info.NAME, {'PLAYER_ENTERING_WORLD', 'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE'}, OnEvent, nil, nil, OnEnter)
 			--Get the currency index for this currency, so we can use it for a tooltip
 			AddCurrencyNameToIndex(info.NAME)
 		end
 	end
 end
 
-function DT:SetCustomCurrencyDisplayStyle(name, displayStyle)
-	if not name or not displayStyle then return; end
+function DT:UpdateCustomCurrencySettings(currencyName, option, value)
+	if not currencyName or not option then return; end
 
-	CustomCurrencies[name].DISPLAY_STYLE = displayStyle
+	if option == "DISPLAY_STYLE" then
+		CustomCurrencies[currencyName].DISPLAY_STYLE = value
+	elseif option == "USE_TOOLTIP" then
+		CustomCurrencies[currencyName].USE_TOOLTIP = value
+	end
 end
 
-function DT:RemoveCustomCurrency(name)
+function DT:RemoveCustomCurrency(currencyName)
 	--Remove from internal storage
-	CustomCurrencies[name] = nil
+	CustomCurrencies[currencyName] = nil
 end

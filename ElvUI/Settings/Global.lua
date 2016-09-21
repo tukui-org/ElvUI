@@ -33,6 +33,5 @@ G["bags"] = {
 }
 
 G["datatexts"] = {
-	["useCustomCurrencyTooltip"] = true,
 	["customCurrencies"] = {},
 }
