@@ -99,8 +99,22 @@ local function CreateCustomCurrencyOptions(currencyID)
 						["ICON_TEXT_ABBR"] = L["Icons and Text (Short)"],
 					},
 				},
-				useTooltip = {
+				showMax = {
 					order = 4,
+					type = "toggle",
+					name = L["Current / Max"],
+					get = function(info) return E.global.datatexts.customCurrencies[currencyID].SHOW_MAX end,
+					set = function(info, value)
+						--Save new value
+						E.global.datatexts.customCurrencies[currencyID].SHOW_MAX = value
+						--Update internal value
+						DT:UpdateCustomCurrencySettings(currency.NAME, "SHOW_MAX", value)
+						--Reload datatexts
+						DT:LoadDataTexts()
+					end,
+				},
+				useTooltip = {
+					order = 5,
 					type = "toggle",
 					name = L["Use Tooltip"],
 					get = function(info) return E.global.datatexts.customCurrencies[currencyID].USE_TOOLTIP end,
