@@ -152,7 +152,7 @@ function mod:UpdateElement_Auras(frame)
 	end
 
 	local TopLevel = frame.HealthBar
-	local TopOffset = self.db.units[frame.UnitType].showName and select(2, frame.Name:GetFont()) + 5 or 0
+	local TopOffset = ((self.db.units[frame.UnitType].showName and select(2, frame.Name:GetFont()) + 5) or 0)
 	if(hasDebuffs) then
 		TopOffset = TopOffset + 3
 		frame.Debuffs:SetPoint("BOTTOMLEFT", TopLevel, "TOPLEFT", 0, TopOffset)
@@ -212,6 +212,7 @@ function mod:Auras_SizeChanged(width)
 		self.icons[i]:SetWidth((width - (mod.mult*numAuras)) / numAuras)
 		self.icons[i]:SetHeight((self.db.baseHeight or 18) * (self:GetParent().HealthBar.currentScale or 1))
 	end
+	self:SetHeight((self.db.baseHeight or 18) * (self:GetParent().HealthBar.currentScale or 1))
 end
 
 function mod:UpdateAuraIcons(auras)
