@@ -113,7 +113,7 @@ local Var = {
 -- GLOBALS: CopyChatScrollFrame, CopyChatScrollFrameScrollBar, RightChatDataPanel
 -- GLOBALS: GeneralDockManagerOverflowButton, CombatLogQuickButtonFrame_Custom
 -- GLOBALS: UIParent, GeneralDockManagerScrollFrameChild, GameTooltip, CHAT_OPTIONS
--- GLOBALS: LOCALIZED_CLASS_NAMES_MALE, LOCALIZED_CLASS_NAMES_FEMALE, FriendsMicroButton
+-- GLOBALS: LOCALIZED_CLASS_NAMES_MALE, LOCALIZED_CLASS_NAMES_FEMALE, QuickJoinToastButton
 -- GLOBALS: ICON_TAG_LIST, ICON_LIST, GROUP_TAG_LIST, DEFAULT_CHAT_FRAME, ChatFrameMenuButton
 -- GLOBALS: WIM, ChatTypeGroup, GeneralDockManagerOverflowButtonList, GeneralDockManagerScrollFrame
 -- GLOBALS: CombatLogQuickButtonFrame_CustomAdditionalFilterButton, UISpecialFrames, ChatFontNormal
@@ -917,12 +917,12 @@ function CH:OnHyperlinkLeave(frame, refString)
 	end
 end
 
-function CH:OnMessageScrollChanged(frame)
-	if hyperLinkEntered == frame then
-		HideUIPanel(GameTooltip)
-		hyperLinkEntered = false;
-	end
-end
+-- function CH:OnMessageScrollChanged(frame)
+	-- if hyperLinkEntered == frame then
+		-- HideUIPanel(GameTooltip)
+		-- hyperLinkEntered = false;
+	-- end
+-- end
 
 function CH:EnableHyperlink()
 	for _, frameName in pairs(CHAT_FRAMES) do
@@ -930,7 +930,7 @@ function CH:EnableHyperlink()
 		if (not self.hooks or not self.hooks[frame] or not self.hooks[frame].OnHyperlinkEnter) then
 			self:HookScript(frame, 'OnHyperlinkEnter')
 			self:HookScript(frame, 'OnHyperlinkLeave')
-			self:HookScript(frame, 'OnMessageScrollChanged')
+			-- self:HookScript(frame, 'OnMessageScrollChanged')
 		end
 	end
 end
@@ -941,7 +941,7 @@ function CH:DisableHyperlink()
 		if self.hooks and self.hooks[frame] and self.hooks[frame].OnHyperlinkEnter then
 			self:Unhook(frame, 'OnHyperlinkEnter')
 			self:Unhook(frame, 'OnHyperlinkLeave')
-			self:Unhook(frame, 'OnMessageScrollChanged')
+			-- self:Unhook(frame, 'OnMessageScrollChanged')
 		end
 	end
 end
@@ -1925,7 +1925,7 @@ function CH:Initialize()
 	self:UpdateFading()
 	E.Chat = self
 	self:SecureHook('ChatEdit_OnEnterPressed')
-	FriendsMicroButton:Kill()
+	QuickJoinToastButton:Kill()
 	ChatFrameMenuButton:Kill()
 
 
