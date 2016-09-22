@@ -606,6 +606,10 @@ local function LoadSecondarySkin()
 	ChallengesFrameInset:StripTextures()
 	ChallengesFrameInset:Hide()
 	ChallengesFrameInsetBg:Hide()
+
+	-- Mythic+ KeyStoneFrame
+	S:HandleCloseButton(ChallengesKeystoneFrame.CloseButton)
+	S:HandleButton(ChallengesKeystoneFrame.StartButton, true)
 end
 
 S:AddCallbackForAddon("Blizzard_ChallengesUI", "Challenges", LoadSecondarySkin)
