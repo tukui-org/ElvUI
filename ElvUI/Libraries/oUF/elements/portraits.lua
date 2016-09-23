@@ -71,7 +71,7 @@ local Update = function(self, event, unit)
 	end
 
 	if(portrait.PostUpdate) then
-		return portrait:PostUpdate(unit, modelUpdated)
+		return portrait:PostUpdate(unit, event, modelUpdated)
 	end
 end
 
