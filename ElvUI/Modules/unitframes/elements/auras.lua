@@ -50,6 +50,8 @@ function UF:Construct_Debuffs(frame)
 end
 
 function UF:Construct_AuraIcon(button)
+	local offset = UF.thinBorders and E.mult or E.Border
+
 	button.text = button.cd:CreateFontString(nil, 'OVERLAY')
 	button.text:Point('CENTER', 1, 1)
 	button.text:SetJustifyH('CENTER')
@@ -59,10 +61,9 @@ function UF:Construct_AuraIcon(button)
 	button.cd.noOCC = true
 	button.cd.noCooldownCount = true
 	button.cd:SetReverse(true)
-	button.cd:SetInside()
+	button.cd:SetInside(button, offset, offset)
 	button.cd:SetHideCountdownNumbers(true)
 
-	local offset = UF.thinBorders and E.mult or E.Border
 	button.icon:SetInside(button, offset, offset)
 	button.icon:SetTexCoord(unpack(E.TexCoords))
 	button.icon:SetDrawLayer('ARTWORK')
