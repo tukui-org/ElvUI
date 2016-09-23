@@ -102,7 +102,7 @@ function UF:Update_TargetTargetFrame(frame, db)
 	UF:Configure_CustomTexts(frame)
 
 	E:SetMoverSnapOffset(frame:GetName()..'Mover', -(12 + self.db['units'].player.castbar.height))
-	frame:UpdateAllElements()
+	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end
 
 tinsert(UF['unitstoload'], 'targettarget')

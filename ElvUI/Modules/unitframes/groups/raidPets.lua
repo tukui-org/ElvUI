@@ -183,7 +183,7 @@ function UF:Update_RaidpetFrames(frame, db)
 	--CustomTexts
 	UF:Configure_CustomTexts(frame)
 
-	frame:UpdateAllElements()
+	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end
 
 --Added an additional argument at the end, specifying the header Template we want to use
