@@ -76,7 +76,7 @@ local function OnEvent(self)
 end
 
 local function OnClick()
-	ToggleFrame(LFDParentFrame)
+	PVEFrame_ToggleFrame("GroupFinderFrame", LFDParentFrame);
 end
 
 local function ValueColorUpdate(hex)
