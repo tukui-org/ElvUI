@@ -139,6 +139,10 @@ local function IsGuildBankBag(bagid)
 end
 
 local function UpdateLocation(from, to)
+	if not bagIDs[from] or not bagIDs[to] then
+		return B:StopStacking(L["Confused.. Try Again!"])
+	end
+
 	if (bagIDs[from] == bagIDs[to]) and (bagStacks[to] < bagMaxStacks[to]) then
 		local stackSize = bagMaxStacks[to]
 		if (bagStacks[to] + bagStacks[from]) > stackSize then
