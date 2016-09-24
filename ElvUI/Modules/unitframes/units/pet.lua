@@ -121,7 +121,7 @@ function UF:Update_PetFrame(frame, db)
 	UF:Configure_CustomTexts(frame)
 
 	UF:UpdateAuraWatch(frame)
-	frame:UpdateAllElements()
+	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end
 
 tinsert(UF['unitstoload'], 'pet')

@@ -243,7 +243,7 @@ function UF:Update_RaidFrames(frame, db)
 	--CustomTexts
 	UF:Configure_CustomTexts(frame)
 
-	frame:UpdateAllElements()
+	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end
 
 UF['headerstoload']['raid'] = true

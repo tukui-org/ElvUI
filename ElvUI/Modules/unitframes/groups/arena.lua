@@ -236,7 +236,7 @@ function UF:Update_ArenaFrames(frame, db)
 		ArenaHeader:Height(frame.UNIT_HEIGHT)
 	end
 
-	frame:UpdateAllElements()
+	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end
 
 UF['unitgroupstoload']['arena'] = {5, 'ELVUI_UNITTARGET'}

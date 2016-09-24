@@ -259,7 +259,7 @@ function UF:Update_PartyFrames(frame, db)
 
 	UF:Configure_Range(frame)
 
-	frame:UpdateAllElements()
+	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end
 
 UF['headerstoload']['party'] = {nil, 'ELVUI_UNITPET, ELVUI_UNITTARGET'}

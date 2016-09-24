@@ -99,7 +99,7 @@ function UF:Configure_Portrait(frame, dontHide)
 	end
 end
 
-function UF:PortraitUpdate(unit, shouldUpdate)
+function UF:PortraitUpdate(unit, event, shouldUpdate)
 	local db = self:GetParent().db
 	if not db then return end
 
@@ -111,7 +111,7 @@ function UF:PortraitUpdate(unit, shouldUpdate)
 		self:SetAlpha(1)
 	end
 
-	if shouldUpdate then
+	if shouldUpdate or event == "ElvUI_UpdateAllElements" then
 		local rotation = portrait.rotation or 0
 		local camDistanceScale = portrait.camDistanceScale or 1
 		local xOffset, yOffset = (portrait.xOffset or 0), (portrait.yOffset or 0)

@@ -144,7 +144,7 @@ function UF:Update_TargetFrame(frame, db)
 	UF:Configure_CustomTexts(frame)
 
 	E:SetMoverSnapOffset(frame:GetName()..'Mover', -(12 + db.castbar.height))
-	frame:UpdateAllElements()
+	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end
 
 tinsert(UF['unitstoload'], 'target')

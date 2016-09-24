@@ -126,7 +126,7 @@ function UF:Update_FocusFrame(frame, db)
 	--CustomTexts
 	UF:Configure_CustomTexts(frame)
 
-	frame:UpdateAllElements()
+	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end
 
 tinsert(UF['unitstoload'], 'focus')

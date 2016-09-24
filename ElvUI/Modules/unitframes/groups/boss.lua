@@ -166,7 +166,7 @@ function UF:Update_BossFrames(frame, db)
 		BossHeader:Height(frame.UNIT_HEIGHT)
 	end
 
-	frame:UpdateAllElements()
+	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end
 
 UF['unitgroupstoload']['boss'] = {MAX_BOSS_FRAMES}
