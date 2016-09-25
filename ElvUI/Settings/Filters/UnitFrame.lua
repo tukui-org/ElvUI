@@ -353,15 +353,17 @@ G.unitframe.aurafilters['Blacklist'] = {
 G.unitframe.aurafilters['Whitelist'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
-		[31821] = Defaults(), -- Devotion Aura
-		[2825] = Defaults(), -- Bloodlust
-		[32182] = Defaults(), -- Heroism
-		[80353] = Defaults(), --Time Warp
-		[90355] = Defaults(), --Ancient Hysteria
-		[47788] = Defaults(), --Guardian Spirit
-		[33206] = Defaults(), --Pain Suppression
-		[116849] = Defaults(), --Life Cocoon
-		[22812] = Defaults(), --Barkskin
+		[31821] = Defaults(),  -- Devotion Aura
+		[2825] = Defaults(),   -- Bloodlust
+		[32182] = Defaults(),  -- Heroism
+		[80353] = Defaults(),  -- Time Warp
+		[90355] = Defaults(),  -- Ancient Hysteria
+		[47788] = Defaults(),  -- Guardian Spirit
+		[33206] = Defaults(),  -- Pain Suppression
+		[116849] = Defaults(), -- Life Cocoon
+		[22812] = Defaults(),  -- Barkskin
+		[192132] = Defaults(), -- Mystic Empowerment: Thunder (Hyrja, Halls of Valor)
+		[192133] = Defaults(), -- Mystic Empowerment: Holy (Hyrja, Halls of Valor)
 	},
 }
 
