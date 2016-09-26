@@ -567,8 +567,16 @@ function B:Layout(isBank)
 			if not f.ContainerHolder[i] then
 				if(isBank) then
 					f.ContainerHolder[i] = CreateFrame("CheckButton", "ElvUIBankBag" .. bagID - 4, f.ContainerHolder, "BankItemButtonBagTemplate")
+					f.ContainerHolder[i]:SetScript('OnClick', function(self)
+						local inventoryID = self:GetInventorySlot();
+						PutItemInBag(inventoryID);--Put bag on empty slot, or drop item in this bag
+					end)
 				else
 					f.ContainerHolder[i] = CreateFrame("CheckButton", "ElvUIMainBag" .. bagID .. "Slot", f.ContainerHolder, "BagSlotButtonTemplate")
+					f.ContainerHolder[i]:SetScript('OnClick', function(self)
+						local id = self:GetID();
+						PutItemInBag(id);--Put bag on empty slot, or drop item in this bag
+					end)
 				end
 
 				f.ContainerHolder[i]:SetTemplate('Default', true)
@@ -577,7 +585,7 @@ function B:Layout(isBank)
 				f.ContainerHolder[i]:SetNormalTexture("")
 				f.ContainerHolder[i]:SetCheckedTexture(nil)
 				f.ContainerHolder[i]:SetPushedTexture("")
-				f.ContainerHolder[i]:SetScript('OnClick', nil)
+				
 				f.ContainerHolder[i].id = isBank and bagID or bagID + 1
 				f.ContainerHolder[i]:HookScript("OnEnter", function(self) B.SetSlotAlphaForBag(self, f) end)
 				f.ContainerHolder[i]:HookScript("OnLeave", function(self) B.ResetSlotAlphaForBags(self, f) end)
