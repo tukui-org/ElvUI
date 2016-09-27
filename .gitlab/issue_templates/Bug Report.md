@@ -1,26 +1,41 @@
 <!--- Provide a general summary of the issue in the Title above -->
 
-## Version Number
-<!--- Provide the version number (the actual number, do not say "latest") -->
+**Description**
+<!--- Please give a short description of the issue here -->
 
-## Steps to Reproduce
+
+**Version Number**
+<!--- Provide the version number here (the actual number, do not say "latest") -->
+
+
+**Steps to Reproduce**
 <!--- Provide all the steps necessary to reproduce the problem -->
-1.
-2.
-3.
-4.
+1. Step 1
+2. Step 2
+3. Step 3
+4. Step 4
 
-## Expected Behavior
+
+**Expected Behavior**
 <!--- Tell us what should happen -->
 
-## Actual Behavior
+
+**Actual Behavior**
 <!--- Tell us what happens instead -->
 
-## Additional Information
+
+**Only ElvUI Enabled**
+<!--- Please provide information about whether or not you can reproduce it -->
+<!--- when ElvUI is the only addon enabled -->
+
+
+**Additional Information**
 <!--- Please provide any additional information here -->
 
-## Error Log
 
+**Error Log**
+<!--- If you received an error then please post it in the empty space below, -->
+<!--- so that the error is wrapped in the 3 backquotes (before and after) -->
 ```
-POST_ERROR_HERE
+
 ```
