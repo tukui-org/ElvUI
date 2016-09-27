@@ -380,5 +380,6 @@ L["You can toggle the microbar by using your middle mouse button on the minimap 
 L["You can use the /resetui command to reset all of your movers. You can also use the command to reset a specific mover, /resetui <mover name>.\nExample: /resetui Player Frame"] = "Você pode usar o comando /resetui para restaurar todos os movedores. Pode usar este comando também para restaurar um movedor especifico escrevendo /resetui <nome do movedor> \nExemplo: /resetui Player Frame"
 
 --UnitFrames
+L["Dead"] = true;
 L["Ghost"] = "Fantasma"
 L["Offline"] = "Desconectado"
