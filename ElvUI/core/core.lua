@@ -906,7 +906,13 @@ function E:UpdateAll(ignoreInstall)
 	self.db.theme = nil;
 	self.db.install_complete = nil;
 
+	--The mover is positioned before it is resized, which causes issues for unitframes
+	--Allow movers to be "pushed" outside the screen, when they are resized they should be back in the screen area.
+	--We set movers to be clamped again at the bottom of this function.
+	self:SetMoversClampedToScreen(false)
+
 	self:SetMoversPositions()
+
 	self:UpdateMedia()
 	self:UpdateCooldownSettings()
 	if self.RefreshGUI then self:RefreshGUI() end --Refresh Config
@@ -994,6 +1000,8 @@ function E:UpdateAll(ignoreInstall)
 	LO:SetDataPanelStyle()
 
 	self:GetModule('Blizzard'):ObjectiveFrameHeight()
+	
+	self:SetMoversClampedToScreen(true) --Go back to using clamp after resizing has taken place.
 
 	collectgarbage('collect');
 end
