@@ -663,6 +663,23 @@ local function LoadSkin()
 	frame:CreateBackdrop("Transparent")
 	frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 20, -20)
 	frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -20, 20)
+
+	--Garrison Talent Alert
+	frame = GarrisonTalentAlertFrame
+	frame:GetRegions():Hide()
+	frame.glow:Kill()
+	frame.shine:Kill()
+	--Icon
+	frame.Icon:SetTexCoord(unpack(E.TexCoords))
+	frame.Icon:SetDrawLayer("ARTWORK")
+	frame.Icon.b = CreateFrame("Frame", nil, frame)
+	frame.Icon.b:SetTemplate("Default")
+	frame.Icon.b:SetOutside(frame.Icon)
+	frame.Icon:SetParent(frame.Icon.b)
+	--Create Backdrop
+	frame:CreateBackdrop("Transparent")
+	frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 8, -2)
+	frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 2)	
 end
 
 S:AddCallback("Alerts", LoadSkin)
