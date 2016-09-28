@@ -1,4 +1,4 @@
-<!--- Provide a general summary of the issue in the Title above -->
+/label ~Bug
 
 **Description**
 <!--- Please give a short description of the issue here -->

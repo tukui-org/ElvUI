@@ -1,4 +1,4 @@
-<!--- Provide a general summary of the request in the Title above -->
+/label ~"Feature Request"
 
 **Description**
 <!--- Please describe the request here. What part of the UI do you want changed? -->
