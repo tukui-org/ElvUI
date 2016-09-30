@@ -192,8 +192,6 @@ end
 
 local function UpdateDebuff(self, name, icon, count, debuffType, duration, endTime, spellId, stackThreshold)
 	local f = self.RaidDebuffs
-	
-	print(name, stackThreshold)
 
 	if name and (count >= stackThreshold) then
 		f.icon:SetTexture(icon)
