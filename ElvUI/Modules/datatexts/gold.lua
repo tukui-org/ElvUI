@@ -9,11 +9,10 @@ local join = string.join
 local IsLoggedIn = IsLoggedIn
 local GetMoney = GetMoney
 local IsShiftKeyDown = IsShiftKeyDown
-local ToggleAllBags = ToggleAllBags
 local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: ElvDB
+-- GLOBALS: ElvDB, ToggleAllBags
 
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
 local CURRENCY = CURRENCY
