@@ -494,6 +494,13 @@ function E:SetMoversPositions()
 	end
 end
 
+function E:SetMoversClampedToScreen(value)
+	for name, _ in pairs(E.CreatedMovers) do
+		local f = _G[name]
+		f:SetClampedToScreen(value)
+	end
+end
+
 --Called from core.lua
 function E:LoadMovers()
 	for n, _ in pairs(E.CreatedMovers) do

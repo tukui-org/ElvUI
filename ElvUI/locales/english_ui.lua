@@ -189,7 +189,7 @@ L["Skip Process"] = true;
 L["Sticky Frames"] = true;
 L["Tank"] = true;
 L["The chat windows function the same as Blizzard standard chat windows, you can right click the tabs and drag them around, rename, etc. Please click the button below to setup your chat windows."] = true;
-L["The in-game configuration menu can be accesses by typing the /ec command or by clicking the 'C' button on the minimap. Press the button below if you wish to skip the installation process."] = true;
+L["The in-game configuration menu can be accessed by typing the /ec command or by clicking the 'C' button on the minimap. Press the button below if you wish to skip the installation process."] = true;
 L["Theme Set"] = true;
 L["Theme Setup"] = true;
 L["This install process will help you learn some of the features in ElvUI has to offer and also prepare your user interface for usage."] = true;
@@ -381,5 +381,6 @@ L["You can toggle the microbar by using your middle mouse button on the minimap 
 L["You can use the /resetui command to reset all of your movers. You can also use the command to reset a specific mover, /resetui <mover name>.\nExample: /resetui Player Frame"] = true;
 
 --UnitFrames
+L["Dead"] = true;
 L["Ghost"] = true;
-L["Offline"] = true;	
+L["Offline"] = true;
