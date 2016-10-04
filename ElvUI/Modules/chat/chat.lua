@@ -915,8 +915,13 @@ function CH:OnHyperlinkEnter(frame, refString)
 end
 
 function CH:OnHyperlinkLeave(frame, refString)
-	local linkToken = refString:match("^([^:]+)")
-	if hyperlinkTypes[linkToken] then
+	-- local linkToken = refString:match("^([^:]+)")
+	-- if hyperlinkTypes[linkToken] then
+		-- HideUIPanel(GameTooltip)
+		-- hyperLinkEntered = nil;
+	-- end
+	
+	if hyperLinkEntered then
 		HideUIPanel(GameTooltip)
 		hyperLinkEntered = nil;
 	end
