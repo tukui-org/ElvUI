@@ -504,14 +504,10 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[215489] = Defaults(), -- Venomous Pool
 
 	-- Il'gynoth, Heart of the Corruption
-		[210279] = Defaults(), -- Creeping Nightmares
-		[213162] = Defaults(), -- Nightmare Blast
-		[212681] = Defaults(), -- Cleansed Ground
-		[210315] = Defaults(), -- Nightmare Brambles
-		[211507] = Defaults(), -- Nightmare Javelin
-		[211471] = Defaults(), -- Scorned Touch
+		[208929] = Defaults(), -- Spew Corruption
+		[210984] = Defaults(), -- Eye of Fate
+		[209469] = Defaults(5), -- Touch of Corruption
 		[208697] = Defaults(), -- Mind Flay
-		[215143] = Defaults(), -- Cursed Blood
 
 	-- Ursoc
 		[198108] = Defaults(), -- Unbalanced
@@ -526,12 +522,12 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[203121] = Defaults(), -- Mark of Taerar
 		[203125] = Defaults(), -- Mark of Emeriss
 		[203124] = Defaults(), -- Mark of Lethon
-		[204731] = Defaults(), -- Wasting Dread
-		[203110] = Defaults(), -- Slumbering Nightmare
-		[207681] = Defaults(), -- Nightmare Bloom
-		[205341] = Defaults(), -- Sleeping Fog
-		[203770] = Defaults(), -- Defiled Vines
-		[203787] = Defaults(), -- Volatile Infection
+		[204731] = Defaults(5), -- Wasting Dread
+		[203110] = Defaults(5), -- Slumbering Nightmare
+		[207681] = Defaults(5), -- Nightmare Bloom
+		[205341] = Defaults(5), -- Sleeping Fog
+		[203770] = Defaults(5), -- Defiled Vines
+		[203787] = Defaults(5), -- Volatile Infection
 
 	-- Cenarius
 		[210279] = Defaults(), -- Creeping Nightmares
