@@ -18,14 +18,11 @@
 
  Options
 
- .colorClass   - Use `self.colors.class[class]` to color the bar. This will
-                 always use DRUID as class.
- .colorSmooth  - Use `self.colors.smooth` to color the bar with a smooth
-                 gradient based on the players current mana percentage.
- .colorPower   - Use `self.colors.power[token]` to color the bar. This will
-                 always use MANA as token.
- .displayPairs - Overridable table of pairs used to match class and power to
-                 display or hide the element.
+ .colorClass  - Use `self.colors.class[class]` to color the bar.
+ .colorSmooth - Use `self.colors.smooth` to color the bar with a smooth
+                gradient based on the players current mana percentage.
+ .colorPower  - Use `self.colors.power[token]` to color the bar. This will
+                always use MANA as token.
 
  Sub-Widget Options
 
@@ -71,20 +68,20 @@ local ADDITIONAL_POWER_BAR_INDEX = ADDITIONAL_POWER_BAR_INDEX
 local function Update(self, event, unit, powertype)
 	if(unit ~= 'player' or (powertype and powertype ~= ADDITIONAL_POWER_BAR_NAME)) then return end
 
-	local additionalpower = self.AdditionalPower
-	if(additionalpower.PreUpdate) then additionalpower:PreUpdate(unit) end
+	local element = self.AdditionalPower
+	if(element.PreUpdate) then element:PreUpdate(unit) end
 
 	local cur = UnitPower('player', ADDITIONAL_POWER_BAR_INDEX)
 	local max = UnitPowerMax('player', ADDITIONAL_POWER_BAR_INDEX)
-	additionalpower:SetMinMaxValues(0, max)
-	additionalpower:SetValue(cur)
+	element:SetMinMaxValues(0, max)
+	element:SetValue(cur)
 
 	local r, g, b, t
-	if(additionalpower.colorClass) then
+	if(element.colorClass) then
 		t = self.colors.class[playerClass]
-	elseif(additionalpower.colorSmooth) then
-		r, g, b = self.ColorGradient(cur, max, unpack(additionalpower.smoothGradient or self.colors.smooth))
-	elseif(additionalpower.colorPower) then
+	elseif(element.colorSmooth) then
+		r, g, b = self.ColorGradient(cur, max, unpack(element.smoothGradient or self.colors.smooth))
+	elseif(element.colorPower) then
 		t = self.colors.power[ADDITIONAL_POWER_BAR_NAME]
 	end
 
@@ -93,17 +90,17 @@ local function Update(self, event, unit, powertype)
 	end
 
 	if(b) then
-		additionalpower:SetStatusBarColor(r, g, b)
+		element:SetStatusBarColor(r, g, b)
 
-		local bg = additionalpower.bg
+		local bg = element.bg
 		if(bg) then
 			local mu = bg.multiplier or 1
 			bg:SetVertexColor(r * mu, g * mu, b * mu)
 		end
 	end
 
-	if(additionalpower.PostUpdate) then
-		return additionalpower:PostUpdate(unit, cur, max, event)
+	if(element.PostUpdate) then
+		return element:PostUpdate(unit, cur, max)
 	end
 end
 
@@ -144,15 +141,14 @@ local function ElementDisable(self)
 end
 
 local function Visibility(self, event, unit)
-	local additionalpower = self.AdditionalPower
 	local shouldEnable
 
 	if(not UnitHasVehicleUI('player')) then
 		if(UnitPowerMax(unit, ADDITIONAL_POWER_BAR_INDEX) ~= 0) then
 			if(isBetaClient) then
-				if(additionalpower.displayPairs[playerClass]) then
+				if(ALT_MANA_BAR_PAIR_DISPLAY_INFO[playerClass]) then
 					local powerType = UnitPowerType(unit)
-					shouldEnable = additionalpower.displayPairs[playerClass][powerType]
+					shouldEnable = ALT_MANA_BAR_PAIR_DISPLAY_INFO[playerClass][powerType]
 				end
 			else
 				if(playerClass == 'DRUID' and UnitPowerType(unit) == ADDITIONAL_POWER_BAR_INDEX) then
@@ -178,16 +174,15 @@ local function ForceUpdate(element)
 end
 
 local Enable = function(self, unit)
-	local additionalpower = self.AdditionalPower
-	if(additionalpower and unit == 'player') then
-		additionalpower.displayPairs = additionalpower.displayPairs or ALT_MANA_BAR_PAIR_DISPLAY_INFO
-		additionalpower.__owner = self
-		additionalpower.ForceUpdate = ForceUpdate
+	local element = self.AdditionalPower
+	if(element and unit == 'player') then
+		element.__owner = self
+		element.ForceUpdate = ForceUpdate
 
 		self:RegisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
 
-		if(additionalpower:IsObjectType'StatusBar' and not additionalpower:GetStatusBarTexture()) then
-			additionalpower:SetStatusBarTexture[[Interface\TargetingFrame\UI-StatusBar]]
+		if(element:IsObjectType'StatusBar' and not element:GetStatusBarTexture()) then
+			element:SetStatusBarTexture[[Interface\TargetingFrame\UI-StatusBar]]
 		end
 
 		return true
@@ -195,8 +190,8 @@ local Enable = function(self, unit)
 end
 
 local Disable = function(self)
-	local additionalpower = self.AdditionalPower
-	if(additionalpower) then
+	local element = self.AdditionalPower
+	if(element) then
 		ElementDisable(self)
 
 		self:UnregisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
