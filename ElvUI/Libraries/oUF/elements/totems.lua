@@ -58,12 +58,6 @@
 local parent, ns = ...
 local oUF = ns.oUF
 
--- Order the list based upon the default UIs priorities.
-local priorities = STANDARD_TOTEM_PRIORITIES
-if(select(2, UnitClass'player') == 'SHAMAN') then
-	priorities = SHAMAN_TOTEM_PRIORITIES
-end
-
 local UpdateTooltip = function(self)
 	GameTooltip:SetTotem(self:GetID())
 end
@@ -80,14 +74,14 @@ local OnLeave = function()
 end
 
 local UpdateTotem = function(self, event, slot)
-	if(slot > MAX_TOTEMS) then return end
 	local totems = self.Totems
+	if(slot > #totems) then return end
 
-	if(totems.PreUpdate) then totems:PreUpdate(priorities[slot]) end
+	if(totems.PreUpdate) then totems:PreUpdate(slot) end
 
-	local totem = totems[priorities[slot]]
+	local totem = totems[slot]
 	local haveTotem, name, start, duration, icon = GetTotemInfo(slot)
-	if(duration > 0) then
+	if(haveTotem and duration > 0) then
 		if(totem.Icon) then
 			totem.Icon:SetTexture(icon)
 		end
@@ -102,7 +96,7 @@ local UpdateTotem = function(self, event, slot)
 	end
 
 	if(totems.PostUpdate) then
-		return totems:PostUpdate(priorities[slot], haveTotem, name, start, duration, icon)
+		return totems:PostUpdate(slot, haveTotem, name, start, duration, icon)
 	end
 end
 
@@ -111,7 +105,7 @@ local Path = function(self, ...)
 end
 
 local Update = function(self, event)
-	for i = 1, MAX_TOTEMS do
+	for i = 1, #self.Totems do
 		Path(self, event, i)
 	end
 end
@@ -125,13 +119,12 @@ local Enable = function(self)
 
 	if(totems) then
 		totems.__owner = self
-		totems.__map = { unpack(priorities) }
 		totems.ForceUpdate = ForceUpdate
 
-		for i = 1, MAX_TOTEMS do
+		for i = 1, #totems do
 			local totem = totems[i]
 
-			totem:SetID(priorities[i])
+			totem:SetID(i)
 
 			if(totem:IsMouseEnabled()) then
 				totem:SetScript('OnEnter', OnEnter)
@@ -158,9 +151,11 @@ local Enable = function(self)
 end
 
 local Disable = function(self)
-	if(self.Totems) then
-		for i = 1, MAX_TOTEMS do
-			self.Totems[i]:Hide()
+	local totems = self.Totems
+
+	if(totems) then
+		for i = 1, #totems do
+			totems[i]:Hide()
 		end
 		TotemFrame.Show = nil
 		TotemFrame:Show()
