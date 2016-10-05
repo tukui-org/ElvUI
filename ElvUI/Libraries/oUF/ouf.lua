@@ -46,6 +46,10 @@ local updateActiveUnit = function(self, event, unit)
 		realUnit = 'target'
 	end
 
+	if(modUnit == 'pet' and realUnit ~= 'pet') then
+		modUnit = 'vehicle'
+	end
+
 	if(not UnitExists(modUnit)) then return end
 
 	-- Change the active unit and run a full update.

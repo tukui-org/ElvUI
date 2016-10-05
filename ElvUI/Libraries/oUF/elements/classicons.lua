@@ -71,8 +71,8 @@ local UpdateTexture = function(element)
 end
 
 local Update = function(self, event, unit, powerType)
-	if(not (unit == 'player' and powerType == ClassPowerType)
-		and not (unit == 'vehicle' and powerType == 'COMBO_POINTS')) then
+	if(not (unit == 'player' and powerType == ClassPowerType
+		or unit == 'vehicle' and powerType == 'COMBO_POINTS')) then
 		return
 	end
 
@@ -95,7 +95,7 @@ local Update = function(self, event, unit, powerType)
 	if(event ~= 'ClassPowerDisable') then
 		if(unit == 'vehicle') then
 			-- XXX: UnitPower is bugged for vehicles, always returns 0 combo points
-			cur = GetComboPoints('vehicle', 'target')
+			cur = GetComboPoints(unit)
 			max = MAX_COMBO_POINTS
 		else
 			cur = UnitPower('player', ClassPowerID)
@@ -150,6 +150,7 @@ local function Visibility(self, event, unit)
 
 	if(UnitHasVehicleUI('player')) then
 		shouldEnable = true
+		unit = 'vehicle'
 	elseif(ClassPowerID) then
 		if(not RequireSpec or RequireSpec == GetSpecialization()) then
 			if(not RequireFormID or RequireFormID == GetShapeshiftFormID()) then
