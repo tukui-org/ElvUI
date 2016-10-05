@@ -179,6 +179,30 @@ E.Options.args.maps = {
 						},
 					},
 				},
+				zoomResetGroup = {
+					order = 4,
+					type = "group",
+					name = L["Reset Zoom"], -- TODO translate
+					inline = true,
+					args = {
+						enableZoomReset = {
+							order = 1,
+							type = "toggle",
+							name = L["Reset zoom"],
+							get = function(info) return E.db.general.minimap.resetZoom.enable end,
+							set = function(info, value) E.db.general.minimap.resetZoom.enable = value; M:UpdateSettings() end,
+						},
+						zoomRestTime = {
+							order = 2,
+							type = "range",
+							name = L["Seconds"], --TODO translate
+							min = 1, max = 15, step = 1,
+							get = function(info) return E.db.general.minimap.resetZoom.time end,
+							set = function(info, value) E.db.general.minimap.resetZoom.time = value; M:UpdateSettings() end,
+							disabled = function() return not E.db.general.minimap.resetZoom.enable end
+						}
+					}
+				},
 				spacer = {
 					order = 5,
 					type = "description",

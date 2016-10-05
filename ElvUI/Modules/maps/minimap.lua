@@ -201,6 +201,20 @@ local function PositionTicketButtons()
 end
 hooksecurefunc("HelpOpenTicketButton_Move", PositionTicketButtons)
 
+local zoomResetTimer = nil
+local function ResetZoomTimer()
+	if E.db.general.minimap.resetZoom.enable then
+		if zoomResetTimer ~= nil then
+			zoomResetTimer:Cancel()
+			zoomResetTimer = nil
+		end
+		if Minimap:GetZoom() ~= 0 then
+			zoomResetTimer = C_Timer.NewTimer(E.db.general.minimap.resetZoom.time, function() Minimap:SetZoom(0); resetZoomTimer:Cancel() end)
+		end
+	end
+end
+hooksecurefunc(Minimap, "SetZoom", ResetZoomTimer)
+
 function M:UpdateSettings()
 	if InCombatLockdown() then
 		self:RegisterEvent('PLAYER_REGEN_ENABLED')
