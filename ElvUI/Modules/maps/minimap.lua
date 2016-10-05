@@ -184,6 +184,7 @@ function M:Update_ZoneText()
 	if E.db.general.minimap.locationText == 'HIDE' or not E.private.general.minimap.enable then return; end
 	Minimap.location:SetText(strsub(GetMinimapZoneText(),1,46))
 	Minimap.location:SetTextColor(M:GetLocTextColor())
+	Minimap.location:FontTemplate(E.LSM:Fetch("font", E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline)
 end
 
 function M:PLAYER_REGEN_ENABLED()
@@ -221,7 +222,7 @@ function M:UpdateSettings()
 			RightMiniPanel:Hide()
 		end
 	end
-	
+
 	if BottomMiniPanel then
 		if E.db.datatexts.minimapBottom and E.private.general.minimap.enable then
 			BottomMiniPanel:Show()
@@ -229,7 +230,7 @@ function M:UpdateSettings()
 			BottomMiniPanel:Hide()
 		end
 	end
-	
+
 	if BottomLeftMiniPanel then
 		if E.db.datatexts.minimapBottomLeft and E.private.general.minimap.enable then
 			BottomLeftMiniPanel:Show()
@@ -237,7 +238,7 @@ function M:UpdateSettings()
 			BottomLeftMiniPanel:Hide()
 		end
 	end
-	
+
 	if BottomRightMiniPanel then
 		if E.db.datatexts.minimapBottomRight and E.private.general.minimap.enable then
 			BottomRightMiniPanel:Show()
@@ -245,7 +246,7 @@ function M:UpdateSettings()
 			BottomRightMiniPanel:Hide()
 		end
 	end
-	
+
 	if TopMiniPanel then
 		if E.db.datatexts.minimapTop and E.private.general.minimap.enable then
 			TopMiniPanel:Show()
@@ -253,7 +254,7 @@ function M:UpdateSettings()
 			TopMiniPanel:Hide()
 		end
 	end
-	
+
 	if TopLeftMiniPanel then
 		if E.db.datatexts.minimapTopLeft and E.private.general.minimap.enable then
 			TopLeftMiniPanel:Show()
@@ -261,7 +262,7 @@ function M:UpdateSettings()
 			TopLeftMiniPanel:Hide()
 		end
 	end
-	
+
 	if TopRightMiniPanel then
 		if E.db.datatexts.minimapTopRight and E.private.general.minimap.enable then
 			TopRightMiniPanel:Show()
@@ -465,7 +466,7 @@ function M:Initialize()
 	self:RegisterEvent("ZONE_CHANGED_INDOORS", "Update_ZoneText")
 	self:RegisterEvent('ADDON_LOADED')
 	self:UpdateSettings()
-	
+
 	--Make sure these invisible frames follow the minimap.
 	MinimapCluster:ClearAllPoints()
 	MinimapCluster:SetAllPoints(Minimap)
