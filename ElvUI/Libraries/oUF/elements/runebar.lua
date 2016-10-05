@@ -83,7 +83,7 @@ local Update = function(self, event, rid, energized)
 	end
 
 	if(runes.PostUpdate) then
-		return runes:PostUpdate(rune, rid, start, duration, energized or runeReady)
+		return runes:PostUpdate(rune, rid, energized and 0 or start, duration, energized or runeReady)
 	end
 end
 
