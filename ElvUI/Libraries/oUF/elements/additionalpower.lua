@@ -1,4 +1,4 @@
---[[ Element: Druid Mana Bar
+--[[ Element: Additional Power Bar
  Handles updating and visibility of a status bar displaying the player's
  alternate/additional power, such as Mana for Balance druids.
 
