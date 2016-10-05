@@ -60,7 +60,6 @@ local _, ns = ...
 local oUF = ns.oUF
 
 local playerClass = select(2, UnitClass('player'))
-local isBetaClient = select(4, GetBuildInfo()) >= 70000
 
 local ADDITIONAL_POWER_BAR_NAME = ADDITIONAL_POWER_BAR_NAME
 local ADDITIONAL_POWER_BAR_INDEX = ADDITIONAL_POWER_BAR_INDEX
@@ -145,15 +144,9 @@ local function Visibility(self, event, unit)
 
 	if(not UnitHasVehicleUI('player')) then
 		if(UnitPowerMax(unit, ADDITIONAL_POWER_BAR_INDEX) ~= 0) then
-			if(isBetaClient) then
-				if(ALT_MANA_BAR_PAIR_DISPLAY_INFO[playerClass]) then
-					local powerType = UnitPowerType(unit)
-					shouldEnable = ALT_MANA_BAR_PAIR_DISPLAY_INFO[playerClass][powerType]
-				end
-			else
-				if(playerClass == 'DRUID' and UnitPowerType(unit) == ADDITIONAL_POWER_BAR_INDEX) then
-					shouldEnable = true
-				end
+			if(ALT_MANA_BAR_PAIR_DISPLAY_INFO[playerClass]) then
+				local powerType = UnitPowerType(unit)
+				shouldEnable = ALT_MANA_BAR_PAIR_DISPLAY_INFO[playerClass][powerType]
 			end
 		end
 	end
