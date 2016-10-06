@@ -8,7 +8,8 @@ local UF = E:GetModule('UnitFrames');
 local CreateFrame = CreateFrame
 
 function UF:Construct_RaidRoleFrames(frame)
-	local anchor = CreateFrame('Frame', nil, frame)
+	local parent = frame.RaisedElementParent or frame
+	local anchor = CreateFrame('Frame', nil, parent)
 	frame.Leader = anchor:CreateTexture(nil, 'OVERLAY')
 	frame.Assistant = anchor:CreateTexture(nil, 'OVERLAY')
 	frame.MasterLooter = anchor:CreateTexture(nil, 'OVERLAY')
