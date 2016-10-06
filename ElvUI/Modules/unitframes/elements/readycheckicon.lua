@@ -8,8 +8,7 @@ local UF = E:GetModule('UnitFrames');
 local CreateFrame = CreateFrame
 
 function UF:Construct_ReadyCheckIcon(frame)
-	local parent = frame.RaisedElementParent or frame
-	local f = CreateFrame("FRAME", nil, parent)
+	local f = CreateFrame("FRAME", nil, frame)
 	f:SetFrameStrata("HIGH")
 	f:SetFrameLevel(100)
 
