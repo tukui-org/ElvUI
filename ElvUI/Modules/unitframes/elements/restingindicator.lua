@@ -7,7 +7,8 @@ local UF = E:GetModule('UnitFrames');
 --WoW API / Variables
 
 function UF:Construct_RestingIndicator(frame)
-	local resting = frame:CreateTexture(nil, "OVERLAY")
+	local parent = frame.RaisedElementParent or frame
+	local resting = parent:CreateTexture(nil, "OVERLAY")
 	resting:Size(22)
 
 	return resting

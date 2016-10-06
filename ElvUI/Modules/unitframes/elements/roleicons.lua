@@ -14,7 +14,8 @@ local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitIsConnected = UnitIsConnected
 
 function UF:Construct_RoleIcon(frame)
-	local f = CreateFrame('Frame', nil, frame)
+	local parent = frame.RaisedElementParent or frame
+	local f = CreateFrame('Frame', nil, parent)
 
 	local tex = f:CreateTexture(nil, "ARTWORK")
 	tex:Size(17)
