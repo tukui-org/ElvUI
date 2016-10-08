@@ -123,10 +123,8 @@ function E:RegisterCooldown(cooldown)
 	hooksecurefunc(cooldown, "SetCooldown", E.OnSetCooldown)
 	cooldown.isHooked = true
 	cooldown:SetHideCountdownNumbers(true)
-	cooldown.SetHideCountdownNumbers = E.noop
 	if E.private.actionbar.hideCooldownBling then
 		cooldown:SetDrawBling(false)
-		cooldown.SetDrawBling = E.noop
 	end
 end
 
