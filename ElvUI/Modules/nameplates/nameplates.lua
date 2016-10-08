@@ -297,6 +297,8 @@ function mod:CheckUnitType(frame)
 	elseif(role ~= "HEALER" and frame.UnitType == "HEALER") then
 		self:UpdateAllFrame(frame)
 	elseif frame.UnitType == "FRIENDLY_PLAYER" then
+		--This line right here is likely the cause of the fps drop when entering world
+		--CheckUnitType is being called about 1000 times because the "UNIT_FACTION" event is being triggered this amount of times for some insane reason
 		self:UpdateAllFrame(frame)
 	elseif(frame.UnitType == "FRIENDLY_NPC" or frame.UnitType == "HEALER") then
 		if(CanAttack) then
