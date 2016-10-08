@@ -144,8 +144,8 @@ local DefaultConfig = {
 	keyBoundTarget = false,
 	clickOnDown = false,
 	flyoutDirection = "UP",
-	hideCountDownNumbersOverride = true,
-	setDrawBlingOverride = true,
+	disableCountDownNumbers = false,
+	useDrawBling = true,
 }
 
 --- Create a new action button.
@@ -1234,9 +1234,7 @@ local function StartChargeCooldown(parent, chargeStart, chargeDuration)
 			lib.NumChargeCooldowns = lib.NumChargeCooldowns + 1
 			cooldown = CreateFrame("Cooldown", "LAB10ChargeCooldown"..lib.NumChargeCooldowns, parent, "CooldownFrameTemplate");
 			cooldown:SetScript("OnCooldownDone", EndChargeCooldown)
-			if not parent.config.hideCountDownNumbersOverride then
-				cooldown:SetHideCountdownNumbers(true)
-			end
+			cooldown:SetHideCountdownNumbers(true)
 			cooldown:SetDrawEdge(true)
 			cooldown:SetDrawSwipe(false)
 		end
@@ -1248,9 +1246,7 @@ local function StartChargeCooldown(parent, chargeStart, chargeDuration)
 		cooldown.parent = parent
 	end
 	-- set cooldown
-	if not parent.config.setDrawBlingOverride then
-		parent.chargeCooldown:SetDrawBling(parent.chargeCooldown:GetEffectiveAlpha() > 0.5)
-	end
+	parent.chargeCooldown:SetDrawBling(parent.config.useDrawBling and (parent.chargeCooldown:GetEffectiveAlpha() > 0.5))
 	parent.chargeCooldown:SetCooldown(chargeStart, chargeDuration)
 
 	-- update charge cooldown skin when masque is used
@@ -1273,17 +1269,13 @@ function UpdateCooldown(self)
 	local start, duration, enable = self:GetCooldown()
 	local charges, maxCharges, chargeStart, chargeDuration = self:GetCharges()
 
-	if not self.config.setDrawBlingOverride then
-		self.cooldown:SetDrawBling(self.cooldown:GetEffectiveAlpha() > 0.5)
-	end
+	self.cooldown:SetDrawBling(self.config.useDrawBling and (self.cooldown:GetEffectiveAlpha() > 0.5))
 
 	if (locStart + locDuration) > (start + duration) then
 		if self.cooldown.currentCooldownType ~= COOLDOWN_TYPE_LOSS_OF_CONTROL then
 			self.cooldown:SetEdgeTexture("Interface\\Cooldown\\edge-LoC")
 			self.cooldown:SetSwipeColor(0.17, 0, 0)
-			if not self.config.hideCountDownNumbersOverride then
-				self.cooldown:SetHideCountdownNumbers(true)
-			end
+			self.cooldown:SetHideCountdownNumbers(true)
 			self.cooldown.currentCooldownType = COOLDOWN_TYPE_LOSS_OF_CONTROL
 		end
 		if IsLegion then
@@ -1295,9 +1287,7 @@ function UpdateCooldown(self)
 		if self.cooldown.currentCooldownType ~= COOLDOWN_TYPE_NORMAL then
 			self.cooldown:SetEdgeTexture("Interface\\Cooldown\\edge")
 			self.cooldown:SetSwipeColor(0, 0, 0)
-			if not self.config.hideCountDownNumbersOverride then
-				self.cooldown:SetHideCountdownNumbers(false)
-			end
+			self.cooldown:SetHideCountdownNumbers(self.config.disableCountDownNumbers)
 			self.cooldown.currentCooldownType = COOLDOWN_TYPE_NORMAL
 		end
 		if locStart > 0 then
