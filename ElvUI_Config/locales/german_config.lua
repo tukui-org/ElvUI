@@ -118,7 +118,7 @@ L["Restore Bar"] = "Leiste zurücksetzen"
 L["Restore the actionbars default settings"] = "Wiederherstellung der vordefinierten Aktionsleisteneinstellung"
 L["Seconds"] = "Sekunden"
 L["Show Empty Buttons"] = "Zeige leere Tasten"
-L["Shows a swipe animation when a spell is recharging but still has charges left."] = true;
+L["Shows a swipe animation when a spell is recharging but still has charges left."] = "Zeigt eine 'Swipe' Animation wenn ein Zauber am Aufladen ist aber immer noch Aufladungen hat." -- not a really good translation for 'Swipe'
 L["The amount of buttons to display per row."] = "Anzahl der Aktionstasten in einer Reihe."
 L["The amount of buttons to display."] = "Anzahl der angezeigten Aktionstasten."
 L["The button you must hold down in order to drag an ability to another action button."] = "Die Taste, die du gedrückt halten musst, um eine Fähigkeit zu einer anderen Aktionstaste zu ziehen."
@@ -130,7 +130,7 @@ L["Threshold before text turns red and is in decimal form. Set to -1 for it to n
 L["Toggles the display of the actionbars backdrop."] = "Aktiviere den Hintergrund der Aktionsleisten."
 L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."] = "Transparenz Level wenn nicht im Kampf, kein Ziel ausgewählt, volle Gesundheit, nicht am Zaubern und kein Fokus existiert."
 L["Usable"] = "Nutzbar"
-L["Use Draw Swipe"] = true;
+L["Use Draw Swipe"] = "Benutze Draw Swipe" -- really bad
 L["Use Position Override"] = "Benutze Überschreibung der Position"
 L["Visibility State"] = "Sichbarkeitszustand"
 L["When enabled it will use the Anchor Point setting to determine growth direction, otherwise it will be determined by where the bar is positioned."] = "Wenn aktiviert, wird der Ankerpunkt benutzt um die Wachstumsrichtung festzulegen. Andernfalls wird festgelegt wo die Leiste positioniert ist."
