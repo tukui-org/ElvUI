@@ -532,6 +532,8 @@ function mod:NAME_PLATE_CREATED(_, frame)
 end
 
 function mod:OnEvent(event, unit, ...)
+	if(unit and self.displayedUnit and not UnitIsUnit(unit, self.displayedUnit)) then return end
+
 	if(event == "UNIT_HEALTH" or event == "UNIT_HEALTH_FREQUENT") then
 		mod:UpdateElement_Health(self)
 		mod:UpdateElement_HealPrediction(self)
