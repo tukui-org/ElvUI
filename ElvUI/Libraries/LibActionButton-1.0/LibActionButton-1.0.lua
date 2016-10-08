@@ -146,6 +146,7 @@ local DefaultConfig = {
 	flyoutDirection = "UP",
 	disableCountDownNumbers = false,
 	useDrawBling = true,
+	useDrawSwipeOnCharges = true,
 }
 
 --- Create a new action button.
@@ -1236,7 +1237,7 @@ local function StartChargeCooldown(parent, chargeStart, chargeDuration)
 			cooldown:SetScript("OnCooldownDone", EndChargeCooldown)
 			cooldown:SetHideCountdownNumbers(true)
 			cooldown:SetDrawEdge(true)
-			cooldown:SetDrawSwipe(false)
+			cooldown:SetDrawSwipe(parent.config.useDrawSwipeOnCharges)
 		end
 		cooldown:SetParent(parent)
 		cooldown:SetAllPoints(parent)
