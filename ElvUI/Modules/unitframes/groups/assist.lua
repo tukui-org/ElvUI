@@ -17,6 +17,10 @@ function UF:Construct_AssistFrames(unitGroup)
 	self:SetScript('OnEnter', UnitFrame_OnEnter)
 	self:SetScript('OnLeave', UnitFrame_OnLeave)
 
+	self.RaisedElementParent = CreateFrame('Frame', nil, self)
+	self.RaisedElementParent:SetFrameStrata("MEDIUM")
+	self.RaisedElementParent:SetFrameLevel(self:GetFrameLevel() + 10)
+
 	self.Health = UF:Construct_HealthBar(self, true)
 	self.Name = UF:Construct_NameText(self)
 	self.Threat = UF:Construct_Threat(self)

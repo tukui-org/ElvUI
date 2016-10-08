@@ -317,6 +317,25 @@ local tagStrings = {
 			return 'Affix'
 		end
 	end]],
+
+	['powercolor'] = [[function(u)
+		local pType, pToken, altR, altG, altB = UnitPowerType(u)
+		local t = _COLORS.power[pToken]
+
+		if(not t) then
+			if(altR) then
+				if(altR > 1 or altG > 1 or altB > 1) then
+					return Hex(altR / 255, altG / 255, altB / 255)
+				else
+					return Hex(altR, altG, altB)
+				end
+			else
+				return Hex(_COLORS.power[pType])
+			end
+		end
+
+		return Hex(t)
+	end]],
 }
 
 local tags = setmetatable(
@@ -399,6 +418,7 @@ local tagEvents = {
 	['holypower']           = 'UNIT_POWER SPELLS_CHANGED',
 	['chi']                 = 'UNIT_POWER SPELLS_CHANGED',
 	['arcanecharges']       = 'UNIT_POWER SPELLS_CHANGED',
+	['powercolor']          = 'UNIT_DISPLAYPOWER',
 }
 
 local unitlessEvents = {

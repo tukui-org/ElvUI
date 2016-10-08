@@ -29,7 +29,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ]]
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 6
+local MINOR_VERSION = 7
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
@@ -144,6 +144,9 @@ local DefaultConfig = {
 	keyBoundTarget = false,
 	clickOnDown = false,
 	flyoutDirection = "UP",
+	disableCountDownNumbers = false,
+	useDrawBling = true,
+	useDrawSwipeOnCharges = true,
 }
 
 --- Create a new action button.
@@ -1234,7 +1237,6 @@ local function StartChargeCooldown(parent, chargeStart, chargeDuration)
 			cooldown:SetScript("OnCooldownDone", EndChargeCooldown)
 			cooldown:SetHideCountdownNumbers(true)
 			cooldown:SetDrawEdge(true)
-			cooldown:SetDrawSwipe(false)
 		end
 		cooldown:SetParent(parent)
 		cooldown:SetAllPoints(parent)
@@ -1244,7 +1246,8 @@ local function StartChargeCooldown(parent, chargeStart, chargeDuration)
 		cooldown.parent = parent
 	end
 	-- set cooldown
-	parent.chargeCooldown:SetDrawBling(parent.chargeCooldown:GetEffectiveAlpha() > 0.5)
+	parent.chargeCooldown:SetDrawBling(parent.config.useDrawBling and (parent.chargeCooldown:GetEffectiveAlpha() > 0.5))
+	parent.chargeCooldown:SetDrawSwipe(parent.config.useDrawSwipeOnCharges)
 	parent.chargeCooldown:SetCooldown(chargeStart, chargeDuration)
 
 	-- update charge cooldown skin when masque is used
@@ -1267,7 +1270,7 @@ function UpdateCooldown(self)
 	local start, duration, enable = self:GetCooldown()
 	local charges, maxCharges, chargeStart, chargeDuration = self:GetCharges()
 
-	self.cooldown:SetDrawBling(self.cooldown:GetEffectiveAlpha() > 0.5)
+	self.cooldown:SetDrawBling(self.config.useDrawBling and (self.cooldown:GetEffectiveAlpha() > 0.5))
 
 	if (locStart + locDuration) > (start + duration) then
 		if self.cooldown.currentCooldownType ~= COOLDOWN_TYPE_LOSS_OF_CONTROL then
@@ -1285,7 +1288,7 @@ function UpdateCooldown(self)
 		if self.cooldown.currentCooldownType ~= COOLDOWN_TYPE_NORMAL then
 			self.cooldown:SetEdgeTexture("Interface\\Cooldown\\edge")
 			self.cooldown:SetSwipeColor(0, 0, 0)
-			self.cooldown:SetHideCountdownNumbers(false)
+			self.cooldown:SetHideCountdownNumbers(self.config.disableCountDownNumbers)
 			self.cooldown.currentCooldownType = COOLDOWN_TYPE_NORMAL
 		end
 		if locStart > 0 then

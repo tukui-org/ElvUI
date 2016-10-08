@@ -118,6 +118,7 @@ L["Restore Bar"] = "還原快捷列"
 L["Restore the actionbars default settings"] = "恢復此快捷列的預設設定"
 L["Seconds"] = "秒"
 L["Show Empty Buttons"] = true;
+L["Shows a swipe animation when a spell is recharging but still has charges left."] = true;
 L["The amount of buttons to display per row."] = "每行按鈕顯示數量."
 L["The amount of buttons to display."] = "快捷列按鈕顯示數量."
 L["The button you must hold down in order to drag an ability to another action button."] = "需按住此按鈕，才可將技能拖曳至另一快捷鈕中."
@@ -129,6 +130,7 @@ L["Threshold before text turns red and is in decimal form. Set to -1 for it to n
 L["Toggles the display of the actionbars backdrop."] = "顯示/隱藏快捷列背景框."
 L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."] = true;
 L["Usable"] = true;
+L["Use Draw Swipe"] = true;
 L["Use Position Override"] = true;
 L["Visibility State"] = "顯示狀態"
 L["When enabled it will use the Anchor Point setting to determine growth direction, otherwise it will be determined by where the bar is positioned."] = true;

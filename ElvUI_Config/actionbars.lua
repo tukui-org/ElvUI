@@ -475,11 +475,27 @@ E.Options.args.actionbar = {
 			type = "toggle",
 			name = L["Hide Cooldown Bling"],
 			desc = L["Hides the bling animation on buttons at the end of the global cooldown."],
-			get = function(info) return E.private.actionbar.hideCooldownBling end,
-			set = function(info, value) E.private.actionbar.hideCooldownBling = value; E:StaticPopup_Show("CONFIG_RL") end,
+			get = function(info) return E.db.actionbar.hideCooldownBling end,
+			set = function(info, value) E.db.actionbar.hideCooldownBling = value;
+				for _, bar in pairs(AB["handledBars"]) do
+					AB:UpdateButtonConfig(bar, bar.bindButtons)
+				end
+			end,
+		},
+		useDrawSwipeOnCharges = {
+			order = 9,
+			type = "toggle",
+			name = L["Use Draw Swipe"],
+			desc = L["Shows a swipe animation when a spell is recharging but still has charges left."],
+			get = function(info) return E.db.actionbar.useDrawSwipeOnCharges end,
+			set = function(info, value) E.db.actionbar.useDrawSwipeOnCharges = value;
+				for _, bar in pairs(AB["handledBars"]) do
+					AB:UpdateButtonConfig(bar, bar.bindButtons)
+				end
+			end,
 		},
 		movementModifier = {
-			order = 9,
+			order = 10,
 			type = 'select',
 			name = PICKUP_ACTION_KEY_TEXT,
 			desc = L["The button you must hold down in order to drag an ability to another action button."],
@@ -492,7 +508,7 @@ E.Options.args.actionbar = {
 			},
 		},
 		globalFadeAlpha = {
-			order = 10,
+			order = 11,
 			type = 'range',
 			name = L["Global Fade Transparency"],
 			desc = L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."],
@@ -501,7 +517,7 @@ E.Options.args.actionbar = {
 			set = function(info, value) E.db.actionbar[ info[#info] ] = value; AB.fadeParent:SetAlpha(1-value) end,
 		},
 		colorGroup = {
-			order = 11,
+			order = 12,
 			type = "group",
 			name = L["Colors"],
 			guiInline = true,

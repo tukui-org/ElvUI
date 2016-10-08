@@ -15,6 +15,7 @@ local UnitIsConnected = UnitIsConnected
 
 function UF:Construct_RoleIcon(frame)
 	local f = CreateFrame('Frame', nil, frame)
+	f:SetFrameStrata("MEDIUM")
 
 	local tex = f:CreateTexture(nil, "ARTWORK")
 	tex:Size(17)

@@ -255,7 +255,6 @@ function UF:Construct_UF(frame, unit)
 	frame.SHADOW_SPACING = 3
 	frame.CLASSBAR_YOFFSET = 0	--placeholder
 	frame.BOTTOM_OFFSET = 0 --placeholder
-	frame:SetFrameLevel(5)
 
 	frame.RaisedElementParent = CreateFrame('Frame', nil, frame)
 	frame.RaisedElementParent:SetFrameStrata("MEDIUM")
@@ -415,6 +414,7 @@ function UF:Update_StatusBars()
 	for statusbar in pairs(UF['statusbars']) do
 		if statusbar and statusbar:GetObjectType() == 'StatusBar' and not statusbar.isTransparent then
 			statusbar:SetStatusBarTexture(statusBarTexture)
+			if statusbar.texture then statusbar.texture = statusBarTexture end --Update .texture on oUF Power element
 		elseif statusbar and statusbar:GetObjectType() == 'Texture' then
 			statusbar:SetTexture(statusBarTexture)
 		end
@@ -742,7 +742,7 @@ function UF:CreateHeader(parent, groupFilter, overrideName, template, groupName,
 	local db = UF.db['units'][group]
 	ElvUF:SetActiveStyle("ElvUF_"..E:StringTitle(group))
 	local header = ElvUF:SpawnHeader(overrideName, headerTemplate, nil,
-			'oUF-initialConfigFunction', ("self:SetWidth(%d); self:SetHeight(%d); self:SetFrameLevel(5)"):format(db.width, db.height),
+			'oUF-initialConfigFunction', ("self:SetWidth(%d); self:SetHeight(%d);"):format(db.width, db.height),
 			'groupFilter', groupFilter,
 			'showParty', true,
 			'showRaid', true,
@@ -1137,6 +1137,7 @@ function UF:Initialize()
 	E.UnitFrames = UF;
 
 	local ElvUF_Parent = CreateFrame('Frame', 'ElvUF_Parent', E.UIParent, 'SecureHandlerStateTemplate');
+	ElvUF_Parent:SetFrameStrata("LOW")
 	RegisterStateDriver(ElvUF_Parent, "visibility", "[petbattle] hide; show")
 
 	self:UpdateColors()

@@ -270,7 +270,7 @@ else
 	function Lib:BelongsToSet(id, search)
 		for i = 1, GetNumEquipmentSets() do
 			local name = GetEquipmentSetInfo(i)
-			if Search:Find(search, name) then
+			if Search:Find(search, name) or search == "matchall" then
 				local items = GetEquipmentSetItemIDs(name)
 				for _, item in pairs(items) do
 					if id == item then

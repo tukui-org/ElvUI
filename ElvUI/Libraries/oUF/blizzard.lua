@@ -72,7 +72,7 @@ function oUF:DisableBlizzard(unit)
 		if(id) then
 			HandleFrame('Boss' .. id .. 'TargetFrame')
 		else
-			for i=1, 4 do
+			for i=1, 5 do
 				HandleFrame(('Boss%dTargetFrame'):format(i))
 			end
 		end
@@ -90,7 +90,7 @@ function oUF:DisableBlizzard(unit)
 		if(id) then
 			HandleFrame('ArenaEnemyFrame' .. id)
 		else
-			for i=1, 4 do
+			for i=1, 5 do
 				HandleFrame(('ArenaEnemyFrame%d'):format(i))
 			end
 		end

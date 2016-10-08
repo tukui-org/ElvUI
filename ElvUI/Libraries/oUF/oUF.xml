@@ -48,7 +48,7 @@
 	</Button>
 
 	<!-- Pet Battle Hider Frame -->
-	<Frame name="oUF_PetBattleFrameHider" inherits="SecureHandlerStateTemplate" parent="UIParent" setAllPoints="true">
+	<Frame name="oUF_PetBattleFrameHider" frameStrata="LOW" inherits="SecureHandlerStateTemplate" parent="UIParent" setAllPoints="true">
 		<Scripts>
 			<OnLoad>
 				RegisterStateDriver(self, "visibility", "[petbattle] hide; show")

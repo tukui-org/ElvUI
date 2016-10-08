@@ -47,8 +47,6 @@
                   to its internal function again.
 ]]
 
-if(select(4, GetBuildInfo()) < 70000) then return end
-
 local _, ns = ...
 local oUF = ns.oUF
 

@@ -2942,6 +2942,8 @@ P["actionbar"] = {
 
 	['globalFadeAlpha'] = 0,
 	["lockActionBars"] = true,
+	["hideCooldownBling"] = false,
+	["useDrawSwipeOnCharges"] = true,
 
 	['bar1'] = {
 		['enabled'] = true,

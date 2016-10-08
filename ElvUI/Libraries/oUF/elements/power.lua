@@ -21,6 +21,10 @@
  .displayAltPower   - Use this to let the widget display alternate power if the
                       unit has one. If no alternate power the display will fall
                       back to primary power.
+ .useAtlas          - Use this to let the widget use an atlas for its texture if
+                      `.atlas` is defined on the widget or an atlas is present in
+                      `self.colors.power` for the appropriate power type.
+ .atlas             - A custom atlas
 
  The following options are listed by priority. The first check that returns
  true decides the color of the bar.
@@ -67,12 +71,12 @@
    Power:SetPoint('BOTTOM')
    Power:SetPoint('LEFT')
    Power:SetPoint('RIGHT')
-   
+
    -- Add a background
    local Background = Power:CreateTexture(nil, 'BACKGROUND')
    Background:SetAllPoints(Power)
    Background:SetTexture(1, 1, 1, .5)
-   
+
    -- Options
    Power.frequentUpdates = true
    Power.colorTapping = true
@@ -80,10 +84,10 @@
    Power.colorPower = true
    Power.colorClass = true
    Power.colorReaction = true
-   
+
    -- Make the background darker.
    Background.multiplier = .5
-   
+
    -- Register it with oUF
    self.Power = Power
    self.Power.bg = Background
@@ -109,7 +113,7 @@ for power, color in next, PowerBarColor do
 				oUF.colors.power[power][index] = {color.r, color.g, color.b}
 			end
 		else
-			oUF.colors.power[power] = {color.r, color.g, color.b}
+			oUF.colors.power[power] = {color.r, color.g, color.b, atlas = color.atlas}
 		end
 	end
 end
@@ -152,9 +156,12 @@ local Update = function(self, event, unit)
 	end
 	local cur, max = UnitPower(unit, displayType), UnitPowerMax(unit, displayType)
 	local disconnected = not UnitIsConnected(unit)
+	local tapped = not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)
+
 	if max == 0 then
 		max = 1
 	end
+
 	power:SetMinMaxValues(min or 0, max)
 
 	if(disconnected) then
@@ -164,12 +171,16 @@ local Update = function(self, event, unit)
 	end
 
 	power.disconnected = disconnected
+	power.tapped = tapped
+
 	if power.frequentUpdates ~= power.__frequentUpdates then
 		power.__frequentUpdates = power.frequentUpdates
 		updateFrequentUpdates(self)
 	end
 
+	local ptype, ptoken, altR, altG, altB = UnitPowerType(unit)
 	local r, g, b, t
+
 	if(power.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
 		t = self.colors.tapped
 	elseif(power.colorDisconnected and disconnected) then
@@ -177,7 +188,6 @@ local Update = function(self, event, unit)
 	elseif(displayType == ALTERNATE_POWER_INDEX and power.altPowerColor) then
 		t = power.altPowerColor
 	elseif(power.colorPower) then
-		local ptype, ptoken, altR, altG, altB = UnitPowerType(unit)
 		t = self.colors.power[ptoken]
 		if(not t) then
 			if(power.GetAlternativeColor) then
@@ -209,18 +219,33 @@ local Update = function(self, event, unit)
 		r, g, b = t[1], t[2], t[3]
 	end
 
-	if(b) then
-		power:SetStatusBarColor(r, g, b)
-
-		local bg = power.bg
-		if(bg) then
-			local mu = bg.multiplier or 1
-			bg:SetVertexColor(r * mu, g * mu, b * mu)
+	t = self.colors.power[ptoken or ptype]
+	local atlas = power.atlas or (t and t.atlas)
+	if(power.useAtlas and atlas and displayType ~= ALTERNATE_POWER_INDEX) then
+		power:SetStatusBarAtlas(atlas)
+		power:SetStatusBarColor(1, 1, 1)
+		if(power.colorTapping or power.colorDisconnected) then
+			t = disconnected and self.colors.disconnected or self.colors.tapped
+			power:GetStatusBarTexture():SetDesaturated(disconnected or tapped)
+		end
+		if(t and b) then
+			r, g, b = t[1], t[2], t[3]
+		end
+	else
+		power:SetStatusBarTexture(power.texture)
+		if(b) then
+			power:SetStatusBarColor(r, g, b)
 		end
 	end
 
+	local bg = power.bg
+	if(bg and b) then
+		local mu = bg.multiplier or 1
+		bg:SetVertexColor(r * mu, g * mu, b * mu)
+	end
+
 	if(power.PostUpdate) then
-		return power:PostUpdate(unit, cur, max, min)
+		return power:PostUpdate(unit, cur, max, min, ptoken, ptype)
 	end
 end
 
@@ -267,8 +292,9 @@ local Enable = function(self, unit)
 		-- For tapping.
 		self:RegisterEvent('UNIT_FACTION', Path)
 
-		if(power:IsObjectType'StatusBar' and not power:GetStatusBarTexture()) then
-			power:SetStatusBarTexture[[Interface\TargetingFrame\UI-StatusBar]]
+		if(power:IsObjectType'StatusBar') then
+			power.texture = power:GetStatusBarTexture() and power:GetStatusBarTexture():GetTexture() or [[Interface\TargetingFrame\UI-StatusBar]]
+			power:SetStatusBarTexture(power.texture)
 		end
 
 		return true

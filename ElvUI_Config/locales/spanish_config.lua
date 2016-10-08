@@ -118,6 +118,7 @@ L["Restore Bar"] = "Restaurar Barra"
 L["Restore the actionbars default settings"] = "Restaura las barras de acción a los ajustes predeterminados."
 L["Seconds"] = "Segundos"
 L["Show Empty Buttons"] = true;
+L["Shows a swipe animation when a spell is recharging but still has charges left."] = true;
 L["The amount of buttons to display per row."] = "Número de botones a mostrar por fila"
 L["The amount of buttons to display."] = "Número de botones a mostrar"
 L["The button you must hold down in order to drag an ability to another action button."] = "Tecla que debes mantener presionado para mover una habilidad a otro botón de acción."
@@ -129,6 +130,7 @@ L["Threshold before text turns red and is in decimal form. Set to -1 for it to n
 L["Toggles the display of the actionbars backdrop."] = "Muestra/Oculta el fondo de las barras de acción."
 L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."] = true;
 L["Usable"] = true;
+L["Use Draw Swipe"] = true;
 L["Use Position Override"] = true;
 L["Visibility State"] = "Estado de Visibilidad"
 L["When enabled it will use the Anchor Point setting to determine growth direction, otherwise it will be determined by where the bar is positioned."] = true;
