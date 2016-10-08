@@ -1237,7 +1237,6 @@ local function StartChargeCooldown(parent, chargeStart, chargeDuration)
 			cooldown:SetScript("OnCooldownDone", EndChargeCooldown)
 			cooldown:SetHideCountdownNumbers(true)
 			cooldown:SetDrawEdge(true)
-			cooldown:SetDrawSwipe(parent.config.useDrawSwipeOnCharges)
 		end
 		cooldown:SetParent(parent)
 		cooldown:SetAllPoints(parent)
@@ -1248,6 +1247,7 @@ local function StartChargeCooldown(parent, chargeStart, chargeDuration)
 	end
 	-- set cooldown
 	parent.chargeCooldown:SetDrawBling(parent.config.useDrawBling and (parent.chargeCooldown:GetEffectiveAlpha() > 0.5))
+	parent.chargeCooldown:SetDrawSwipe(parent.config.useDrawSwipeOnCharges)
 	parent.chargeCooldown:SetCooldown(chargeStart, chargeDuration)
 
 	-- update charge cooldown skin when masque is used
