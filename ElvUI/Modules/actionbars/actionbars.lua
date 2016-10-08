@@ -881,7 +881,8 @@ function AB:UpdateButtonConfig(bar, buttonName)
 	bar.buttonConfig.colors.usable = E:GetColorTable(self.db.usableColor)
 	bar.buttonConfig.colors.notUsable = E:GetColorTable(self.db.notUsableColor)
 	bar.buttonConfig.disableCountDownNumbers = true
-	bar.buttonConfig.useDrawBling = (E.private.actionbar.hideCooldownBling ~= true)
+	bar.buttonConfig.useDrawBling = (self.db.hideCooldownBling ~= true)
+	bar.buttonConfig.useDrawSwipeOnCharges = self.db.useDrawSwipeOnCharges
 
 	for i, button in pairs(bar.buttons) do
 		bar.buttonConfig.keyBoundTarget = format(buttonName.."%d", i)

@@ -154,6 +154,7 @@ L["Restore Bar"] = "기본값으로 초기화"
 L["Restore the actionbars default settings"] = "이 행동단축바에 대한 모든 수치를 기본값으로 되돌립니다."
 L["Seconds"] = "초 단위 색상"
 L["Show Empty Buttons"] = true;
+L["Shows a swipe animation when a spell is recharging but still has charges left."] = true;
 L["The amount of buttons to display per row."] = "한 줄에 배치할 버튼의 수를 결정합니다."
 L["The amount of buttons to display."] = "표시할 버튼의 총 개수를 결정합니다."
 L["The button you must hold down in order to drag an ability to another action button."] = "이 키를 누른 상태로 아이콘을 드래그해야 행동단축바에서 기술이 빠져나와 없애거나 옮길 수 있습니다."
@@ -165,6 +166,7 @@ L["Threshold before text turns red and is in decimal form. Set to -1 for it to n
 L["Toggles the display of the actionbars backdrop."] = "행동단축바의 배경을 표시할지 여부를 결정합니다."
 L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."] = true;
 L["Usable"] = true;
+L["Use Draw Swipe"] = true;
 L["Use Position Override"] = true;
 L["Visibility State"] = "표시 자동전환 조건"
 L["When enabled it will use the Anchor Point setting to determine growth direction, otherwise it will be determined by where the bar is positioned."] = true;

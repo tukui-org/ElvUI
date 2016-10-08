@@ -118,6 +118,7 @@ L["Restore Bar"] = "还原动作条"
 L["Restore the actionbars default settings"] = "恢复此动作条的预设设定"
 L["Seconds"] = "秒"
 L["Show Empty Buttons"] = "显示空白按钮"
+L["Shows a swipe animation when a spell is recharging but still has charges left."] = true;
 L["The amount of buttons to display per row."] = "每行显示多少个按钮数"
 L["The amount of buttons to display."] = "显示多少个动作条按钮"
 L["The button you must hold down in order to drag an ability to another action button."] = "按住某个键后才能拖动动作条的按钮."
@@ -129,6 +130,7 @@ L["Threshold before text turns red and is in decimal form. Set to -1 for it to n
 L["Toggles the display of the actionbars backdrop."] = "切换动作条显示背景框"
 L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."] = "在非战斗，无目标存在，满血，未施法，无焦点目标存在时的不透明度"
 L["Usable"] = "可用"
+L["Use Draw Swipe"] = true;
 L["Use Position Override"] = "使用位置覆盖"
 L["Visibility State"] = "可见状态"
 L["When enabled it will use the Anchor Point setting to determine growth direction, otherwise it will be determined by where the bar is positioned."] = true;
