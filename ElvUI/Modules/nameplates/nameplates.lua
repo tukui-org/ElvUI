@@ -532,7 +532,9 @@ function mod:NAME_PLATE_CREATED(_, frame)
 end
 
 function mod:OnEvent(event, unit, ...)
-	if(unit and self.displayedUnit and not UnitIsUnit(unit, self.displayedUnit)) then return end
+	if (unit and self.displayedUnit and (not UnitIsUnit(unit, self.displayedUnit) and not ((unit == "vehicle" or unit == "player") and (self.displayedUnit == "vehicle" or self.displayedUnit == "player")))) then 
+		return
+	end
 
 	if(event == "UNIT_HEALTH" or event == "UNIT_HEALTH_FREQUENT") then
 		mod:UpdateElement_Health(self)
