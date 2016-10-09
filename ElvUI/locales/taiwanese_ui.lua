@@ -289,6 +289,7 @@ L["TargetTarget Frame"] = "目標的目標框架" --Also used in UnitFrames
 L["TargetTargetTarget Frame"] = true;
 L["Tooltip"] = "浮動提示"
 L["Vehicle Seat Frame"] = "載具座位框"
+L["Zone Ability"] = true
 L["DESC_MOVERCONFIG"] = [=[解除框架移動鎖定. 現在可以移動它們, 移好後請點擊「鎖定」.
 
 Options:

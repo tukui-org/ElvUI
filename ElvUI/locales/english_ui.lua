@@ -290,6 +290,7 @@ L["TargetTarget Frame"] = true; --Also used in UnitFrames
 L["TargetTargetTarget Frame"] = true; --Also used in UnitFrames
 L["Tooltip"] = true;
 L["Vehicle Seat Frame"] = true;
+L["Zone Ability"] = true
 L["DESC_MOVERCONFIG"] = [=[Movers unlocked. Move them now and click Lock when you are done.
 
 Options:

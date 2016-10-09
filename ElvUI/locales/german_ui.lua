@@ -289,6 +289,7 @@ L["TargetTarget Frame"] = "Ziel des Ziels Fenster" --Also used in UnitFrames
 L["TargetTargetTarget Frame"] = "Ziel des Ziels des Ziels Fenster"
 L["Tooltip"] = "Tooltip"
 L["Vehicle Seat Frame"] = "Fahrzeugfenster"
+L["Zone Ability"] = true
 L["DESC_MOVERCONFIG"] = [=[Ankerpunkte entriegelt. Bewege die Ankerpunkte und klicke 'sperren', wenn du fertig bist.
 
 Options:
