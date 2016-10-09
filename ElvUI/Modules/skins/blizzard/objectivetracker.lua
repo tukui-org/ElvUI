@@ -112,6 +112,7 @@ local function LoadSkin()
 			item.Count:SetPoint("TOPLEFT", 1, -1)
 			item.Count:SetFont(E["media"].normFont, 14, "OUTLINE")
 			item.Count:SetShadowOffset(5, -5)
+			E:RegisterCooldown(item.Cooldown)
 			item.skinned = true
 		end
 	end)
