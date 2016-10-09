@@ -118,7 +118,7 @@ L["Restore Bar"] = "Восстановить панель"
 L["Restore the actionbars default settings"] = "Восстанавливает настройки панели по умолчанию."
 L["Seconds"] = "Секунды"
 L["Show Empty Buttons"] = "Показывать пустые кнопки"
-L["Shows a swipe animation when a spell is recharging but still has charges left."] = true;
+L["Shows a swipe animation when a spell is recharging but still has charges left."] = "Отображать анимацию заполнения, когда заклинание перезаряжается, но все еще имеет заряды."
 L["The amount of buttons to display per row."] = "Количество кнопок в каждом ряду"
 L["The amount of buttons to display."] = "Количество отображаемых кнопок."
 L["The button you must hold down in order to drag an ability to another action button."] = "Кнопка, которую вы должны деражть нажатой для перемещения способностей на панелях команд."
@@ -130,7 +130,7 @@ L["Threshold before text turns red and is in decimal form. Set to -1 for it to n
 L["Toggles the display of the actionbars backdrop."] = "Включить отображение фона панели команд."
 L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."] = "Уровень прозрачности вне боя, без цели, без фокуса, с полным здоровьем и без произношения заклинаний."
 L["Usable"] = "Можно использовать"
-L["Use Draw Swipe"] = true;
+L["Use Draw Swipe"] = "трисовывать заполнение"
 L["Use Position Override"] = "Использовать точку фиксации"
 L["Visibility State"] = "Статус отображения"
 L["When enabled it will use the Anchor Point setting to determine growth direction, otherwise it will be determined by where the bar is positioned."] = "Если включено, будет использоваться точка фиксации для определения направления роста панели. В противном случае будет использоваться позиция фиксатора на экране."
