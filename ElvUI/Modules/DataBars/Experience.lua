@@ -46,6 +46,7 @@ function mod:UpdateExperience(event)
 		end
 
 		local cur, max = self:GetXP('player')
+		if max <= 0 then max = 1 end
 		bar.statusBar:SetMinMaxValues(0, max)
 		bar.statusBar:SetValue(cur - 1 >= 0 and cur - 1 or 0)
 		bar.statusBar:SetValue(cur)
