@@ -36,6 +36,10 @@ P['general'] = {
 		["locationFontSize"] = 12,
 		["locationFontOutline"] = "OUTLINE",
 		["locationFont"] = "PT Sans Narrow",
+		["resetZoom"] = {
+			["enable"] = false,
+			["time"] = 3,
+		},
 		['icons'] = {
 			['classHall'] = {
 				['scale'] = 0.8,

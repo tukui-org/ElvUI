@@ -208,7 +208,6 @@ E.Options.args.maps = {
 					type = "description",
 					name = "\n",
 				},
-
 				icons = {
 					order = 6,
 					type = "group",
