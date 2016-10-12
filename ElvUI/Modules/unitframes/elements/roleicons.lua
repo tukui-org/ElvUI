@@ -14,10 +14,7 @@ local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitIsConnected = UnitIsConnected
 
 function UF:Construct_RoleIcon(frame)
-	local f = CreateFrame('Frame', nil, frame)
-	f:SetFrameStrata("MEDIUM")
-
-	local tex = f:CreateTexture(nil, "ARTWORK")
+	local tex = frame.RaisedElementParent:CreateTexture(nil, "ARTWORK")
 	tex:Size(17)
 	tex:Point("BOTTOM", frame.Health, "BOTTOM", 0, 2)
 	tex.Override = UF.UpdateRoleIcon
