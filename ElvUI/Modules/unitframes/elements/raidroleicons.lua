@@ -58,7 +58,6 @@ function UF:RaidRoleUpdate()
 	local masterLooter = frame.MasterLooter
 
 	if not leader or not masterLooter or not assistant then return; end
-	print("test")
 
 	local unit = frame.unit
 	local db = frame.db
