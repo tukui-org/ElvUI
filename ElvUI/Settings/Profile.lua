@@ -185,6 +185,7 @@ P['bags'] = {
 		['sortDirection'] = 'ASCENDING',
 		['size'] = 30,
 		['spacing'] = 4,
+		["backdropSpacing"] = 4,
 		['showBackdrop'] = false,
 		['mouseover'] = false,
 	},
