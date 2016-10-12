@@ -67,8 +67,7 @@ function UF:Configure_ClassBar(frame, cur)
 			CLASSBAR_WIDTH = CLASSBAR_WIDTH * (frame.MAX_CLASS_BAR - 1) / frame.MAX_CLASS_BAR
 		end
 
-		bars:SetFrameStrata("MEDIUM")
-		bars:SetFrameLevel(frame:GetFrameLevel() + 5)
+		bars:SetFrameLevel(50) --RaisedElementParent uses 100, we want it lower than this
 
 		if bars.Holder and bars.Holder.mover then
 			bars.Holder.mover:SetScale(0.0001)
@@ -82,7 +81,6 @@ function UF:Configure_ClassBar(frame, cur)
 			bars:Point("BOTTOMLEFT", frame.Health.backdrop, "TOPLEFT", frame.BORDER, frame.SPACING*3)
 		end
 
-		bars:SetFrameStrata("LOW")
 		bars:SetFrameLevel(frame:GetFrameLevel() + 5)
 
 		if bars.Holder and bars.Holder.mover then
@@ -419,7 +417,6 @@ end
 -------------------------------------------------------------
 function UF:Construct_AdditionalPowerBar(frame)
 	local additionalPower = CreateFrame('StatusBar', "AdditionalPowerBar", frame)
-	additionalPower:SetFrameStrata("LOW")
 	additionalPower:SetFrameLevel(additionalPower:GetFrameLevel() + 1)
 	additionalPower.colorPower = true
 	additionalPower.PostUpdate = UF.PostUpdateAdditionalPower
@@ -531,7 +528,6 @@ function UF:Construct_Stagger(frame)
 	stagger:CreateBackdrop("Default",nil, nil, self.thinBorders)
 	stagger.PostUpdate = UF.PostUpdateStagger
 	stagger.PostUpdateVisibility = UF.PostUpdateVisibilityStagger
-	stagger:SetFrameStrata("LOW")
 
 	stagger:SetScript("OnShow", ToggleResourceBar)
 	stagger:SetScript("OnHide", ToggleResourceBar)
