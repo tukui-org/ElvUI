@@ -2982,8 +2982,8 @@ E.Options.args.unitframe.args.target = {
 			order = 449,
 			type = 'group',
 			name = L["PvP & Prestige Icon"],
-			get = function(info) return E.db.unitframe.units['player']['pvpIcon'][ info[#info] ] end,
-			set = function(info, value) E.db.unitframe.units['player']['pvpIcon'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
+			get = function(info) return E.db.unitframe.units['target']['pvpIcon'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['target']['pvpIcon'][ info[#info] ] = value; UF:CreateAndUpdateUF('target') end,
 			args = {
 				enable = {
 					order = 1,
