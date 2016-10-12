@@ -46,6 +46,7 @@ function UF:Construct_TargetFrame(frame)
 	frame.InfoPanel = self:Construct_InfoPanel(frame)
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
 	frame.Range = UF:Construct_Range(frame)
+	frame.PvP = UF:Construct_PvPIcon(frame)
 	frame.customTexts = {}
 	frame:Point('BOTTOMRIGHT', E.UIParent, 'BOTTOM', 413, 68)
 	E:CreateMover(frame, frame:GetName()..'Mover', L["Target Frame"], nil, nil, nil, 'ALL,SOLO')
@@ -139,6 +140,9 @@ function UF:Update_TargetFrame(frame, db)
 
 	--Range
 	UF:Configure_Range(frame)
+
+	--PvP & Prestige Icon
+	UF:Configure_PVPIcon(frame)
 
 	--CustomTexts
 	UF:Configure_CustomTexts(frame)

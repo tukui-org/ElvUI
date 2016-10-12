@@ -925,6 +925,13 @@ P['unitframe'] = {
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 			},
+			["pvpIcon"] = {
+				["enable"] = true,
+				["anchorPoint"] = "CENTER",
+				["xOffset"] = 0,
+				["yOffset"] = 0,
+				["scale"] = 1,
+			},
 			['portrait'] = {
 				['enable'] = false,
 				['width'] = 45,
@@ -1093,6 +1100,13 @@ P['unitframe'] = {
 				['xOffset'] = 0,
 				['yOffset'] = 0,
 				['attachTextTo'] = 'Health',
+			},
+			["pvpIcon"] = {
+				["enable"] = true,
+				["anchorPoint"] = "CENTER",
+				["xOffset"] = 0,
+				["yOffset"] = 0,
+				["scale"] = 1,
 			},
 			['portrait'] = {
 				['enable'] = false,

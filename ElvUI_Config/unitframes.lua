@@ -2767,10 +2767,54 @@ E.Options.args.unitframe.args.player = {
 				},
 			},
 		},
-		pvp = {
+		pvpIcon = {
+			order = 449,
+			type = 'group',
+			name = L["PvP & Prestige Icon"],
+			get = function(info) return E.db.unitframe.units['player']['pvpIcon'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['player']['pvpIcon'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
+			args = {
+				enable = {
+					order = 1,
+					type = "toggle",
+					name = L["Enable"],
+				},
+				scale = {
+					order = 2,
+					type = "range",
+					name = L["Scale"],
+					isPercent = true,
+					min = 0.1, max = 2, step = 0.01,
+				},
+				spacer = {
+					order = 3,
+					type = "description",
+					name = " ",
+				},
+				anchorPoint = {
+					order = 4,
+					type = "select",
+					name = L["Anchor Point"],
+					values = positionValues,
+				},
+				xOffset = {
+					order = 5,
+					type = "range",
+					name = L["X-Offset"],
+					min = -100, max = 100, step = 1,
+				},
+				yOffset = {
+					order = 6,
+					type = "range",
+					name = L["Y-Offset"],
+					min = -100, max = 100, step = 1,
+				},
+			},
+		},
+		pvpText = {
 			order = 450,
 			type = 'group',
-			name = PVP,
+			name = L["PvP Text"],
 			get = function(info) return E.db.unitframe.units['player']['pvp'][ info[#info] ] end,
 			set = function(info, value) E.db.unitframe.units['player']['pvp'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
 			args = {
@@ -2933,7 +2977,51 @@ E.Options.args.unitframe.args.target = {
 		castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateUF, 'target'),
 		aurabar = GetOptionsTable_AuraBars(false, UF.CreateAndUpdateUF, 'target'),
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'target'),
-		GPSArrow = GetOptionsTableForNonGroup_GPS('target')
+		GPSArrow = GetOptionsTableForNonGroup_GPS('target'),
+		pvpIcon = {
+			order = 449,
+			type = 'group',
+			name = L["PvP & Prestige Icon"],
+			get = function(info) return E.db.unitframe.units['player']['pvpIcon'][ info[#info] ] end,
+			set = function(info, value) E.db.unitframe.units['player']['pvpIcon'][ info[#info] ] = value; UF:CreateAndUpdateUF('player') end,
+			args = {
+				enable = {
+					order = 1,
+					type = "toggle",
+					name = L["Enable"],
+				},
+				scale = {
+					order = 2,
+					type = "range",
+					name = L["Scale"],
+					isPercent = true,
+					min = 0.1, max = 2, step = 0.01,
+				},
+				spacer = {
+					order = 3,
+					type = "description",
+					name = " ",
+				},
+				anchorPoint = {
+					order = 4,
+					type = "select",
+					name = L["Anchor Point"],
+					values = positionValues,
+				},
+				xOffset = {
+					order = 5,
+					type = "range",
+					name = L["X-Offset"],
+					min = -100, max = 100, step = 1,
+				},
+				yOffset = {
+					order = 6,
+					type = "range",
+					name = L["Y-Offset"],
+					min = -100, max = 100, step = 1,
+				},
+			},
+		},
 	},
 }
 
