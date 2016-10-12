@@ -135,8 +135,6 @@ function AB:PositionAndSizeBarPet()
 
 	local barWidth = (size * (buttonsPerRow * widthMult)) + ((buttonSpacing * (buttonsPerRow - 1)) * widthMult) + (buttonSpacing * (widthMult-1)) + ((self.db["barPet"].backdrop == true and (E.Border + backdropSpacing) or E.Spacing)*2)
 	local barHeight = (size * (numColumns * heightMult)) + ((buttonSpacing * (numColumns - 1)) * heightMult) + (buttonSpacing * (heightMult-1)) + ((self.db["barPet"].backdrop == true and (E.Border + backdropSpacing) or E.Spacing)*2)
-	-- bar:Width(spacing + ((size * (buttonsPerRow * widthMult)) + ((spacing * (buttonsPerRow - 1)) * widthMult) + (spacing * widthMult)));
-	-- bar:Height(spacing + ((size * (numColumns * heightMult)) + ((spacing * (numColumns - 1)) * heightMult) + (spacing * heightMult)));
 	bar:Width(barWidth);
 	bar:Height(barHeight);
 	
@@ -244,6 +242,15 @@ function AB:PositionAndSizeBarPet()
 	bar:GetScript("OnSizeChanged")(bar)
 
 	if MasqueGroup and E.private.actionbar.masque.petBar then MasqueGroup:ReSkin() end
+end
+
+function AB:UpdatePetCooldownSettings()
+	for i=1, NUM_PET_ACTION_SLOTS do
+		local button = _G["PetActionButton"..i];
+		if button and button.cooldown then
+			button.cooldown:SetDrawBling(not self.db.hideCooldownBling)
+		end
+	end
 end
 
 function AB:UpdatePetBindings()

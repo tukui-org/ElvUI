@@ -1126,6 +1126,7 @@ function AB:Initialize()
 	self:CreateVehicleLeave()
 
 	self:UpdateButtonSettings()
+	self:UpdatePetCooldownSettings()
 
 	self:LoadKeyBinder()
 	self:RegisterEvent("UPDATE_BINDINGS", "ReassignBindings")

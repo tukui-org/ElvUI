@@ -496,6 +496,7 @@ E.Options.args.actionbar = {
 				for _, bar in pairs(AB["handledBars"]) do
 					AB:UpdateButtonConfig(bar, bar.bindButtons)
 				end
+				AB:UpdatePetCooldownSettings()
 			end,
 		},
 		useDrawSwipeOnCharges = {

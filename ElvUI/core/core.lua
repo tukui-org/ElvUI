@@ -929,6 +929,7 @@ function E:UpdateAll(ignoreInstall)
 	local AB = self:GetModule('ActionBars')
 	AB.db = self.db.actionbar
 	AB:UpdateButtonSettings()
+	AB:UpdatePetCooldownSettings()
 	AB:UpdateMicroPositionDimensions()
 	AB:Extra_SetAlpha()
 	AB:Extra_SetScale()
