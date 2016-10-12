@@ -926,7 +926,7 @@ P['unitframe'] = {
 				['yOffset'] = 0,
 			},
 			["pvpIcon"] = {
-				["enable"] = true,
+				["enable"] = false,
 				["anchorPoint"] = "CENTER",
 				["xOffset"] = 0,
 				["yOffset"] = 0,
@@ -1102,7 +1102,7 @@ P['unitframe'] = {
 				['attachTextTo'] = 'Health',
 			},
 			["pvpIcon"] = {
-				["enable"] = true,
+				["enable"] = false,
 				["anchorPoint"] = "CENTER",
 				["xOffset"] = 0,
 				["yOffset"] = 0,
@@ -2957,7 +2957,7 @@ P["actionbar"] = {
 	['globalFadeAlpha'] = 0,
 	["lockActionBars"] = true,
 	["hideCooldownBling"] = false,
-	["useDrawSwipeOnCharges"] = true,
+	["useDrawSwipeOnCharges"] = false,
 
 	['bar1'] = {
 		['enabled'] = true,
