@@ -17,6 +17,7 @@ local ExtraActionBarHolder, ZoneAbilityHolder
 
 local function FixExtraActionCD(cd)
 	local start, duration = GetActionCooldown(cd:GetParent().action)
+	cd:SetHideCountdownNumbers(true)
 	E.OnSetCooldown(cd, start, duration, 0, 0)
 end
 
@@ -90,7 +91,7 @@ function AB:SetupExtraButton()
 	end
 
 	local button = ZoneAbilityFrame.SpellButton
-		if button then
+	if button then
 		button:SetNormalTexture('')
 		button:StyleButton(nil, nil, nil, true)
 		button:SetTemplate()
