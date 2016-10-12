@@ -15,7 +15,6 @@ function UF:Construct_AltPowerBar(frame)
 	UF['statusbars'][altpower] = true
 	altpower:GetStatusBarTexture():SetHorizTile(false)
 
-	altpower:SetFrameStrata("MEDIUM")
 	altpower.PostUpdate = UF.AltPowerBarPostUpdate
 	altpower:CreateBackdrop("Default", true)
 

@@ -3,7 +3,7 @@ local UF = E:GetModule('UnitFrames');
 
 function UF:Construct_InfoPanel(frame)
 	local infoPanel = CreateFrame("Frame", nil, frame)
-	infoPanel:SetFrameStrata("LOW")
+
 	infoPanel:SetFrameLevel(7) --Health is 10 and filled power is 5 by default
 	local thinBorders = self.thinBorders
 	infoPanel:CreateBackdrop("Default", true, nil, thinBorders)
