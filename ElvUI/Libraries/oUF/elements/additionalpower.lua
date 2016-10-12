@@ -99,7 +99,7 @@ local function Update(self, event, unit, powertype)
 	end
 
 	if(element.PostUpdate) then
-		return element:PostUpdate(unit, cur, max)
+		return element:PostUpdate(unit, cur, max, event)
 	end
 end
 
