@@ -22,7 +22,6 @@ end
 
 function UF:Configure_PVPIcon(frame)
 	local PvP = frame.PvP
-	local attachTo = 
 	PvP:ClearAllPoints()
 	PvP:Point(frame.db.pvpIcon.anchorPoint, frame.Health, frame.db.pvpIcon.anchorPoint, frame.db.pvpIcon.xOffset, frame.db.pvpIcon.yOffset)
 
