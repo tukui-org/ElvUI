@@ -20,8 +20,8 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 local BossHeader = CreateFrame('Frame', 'BossHeader', UIParent)
 function UF:Construct_BossFrames(frame)
 	frame.RaisedElementParent = CreateFrame('Frame', nil, frame)
-	frame.RaisedElementParent:SetFrameStrata("MEDIUM")
-	frame.RaisedElementParent:SetFrameLevel(frame:GetFrameLevel() + 10)
+	-- frame.RaisedElementParent:SetFrameStrata("MEDIUM")
+	frame.RaisedElementParent:SetFrameLevel(frame:GetFrameLevel() + 100)
 
 	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
 

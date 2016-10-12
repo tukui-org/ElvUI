@@ -257,8 +257,8 @@ function UF:Construct_UF(frame, unit)
 	frame.BOTTOM_OFFSET = 0 --placeholder
 
 	frame.RaisedElementParent = CreateFrame('Frame', nil, frame)
-	frame.RaisedElementParent:SetFrameStrata("MEDIUM")
-	frame.RaisedElementParent:SetFrameLevel(frame:GetFrameLevel() + 10)
+	-- frame.RaisedElementParent:SetFrameStrata("MEDIUM")
+	frame.RaisedElementParent:SetFrameLevel(frame:GetFrameLevel() + 100)
 
 	if not self['groupunits'][unit] then
 		local stringTitle = E:StringTitle(unit)
