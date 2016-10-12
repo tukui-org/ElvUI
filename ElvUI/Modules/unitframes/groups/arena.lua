@@ -55,7 +55,6 @@ end
 
 function UF:Construct_ArenaFrames(frame)
 	frame.RaisedElementParent = CreateFrame('Frame', nil, frame)
-	-- frame.RaisedElementParent:SetFrameStrata("MEDIUM")
 	frame.RaisedElementParent:SetFrameLevel(frame:GetFrameLevel() + 100)
 
 	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
