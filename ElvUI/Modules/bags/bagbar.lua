@@ -63,25 +63,25 @@ function B:SizeAndPositionBagBar()
 		button:ClearAllPoints()
 		if E.db.bags.bagBar.growthDirection == 'HORIZONTAL' and E.db.bags.bagBar.sortDirection == 'ASCENDING' then
 			if i == 1 then
-				button:Point('LEFT', ElvUIBags, 'LEFT', (E.db.bags.bagBar.showBackdrop and backdropSpacing or 0), 0)
+				button:Point('LEFT', ElvUIBags, 'LEFT', (E.db.bags.bagBar.showBackdrop and (backdropSpacing + E.Border) or 0), 0)
 			elseif prevButton then
 				button:Point('LEFT', prevButton, 'RIGHT', buttonSpacing, 0)
 			end
 		elseif E.db.bags.bagBar.growthDirection == 'VERTICAL' and E.db.bags.bagBar.sortDirection == 'ASCENDING' then
 			if i == 1 then
-				button:Point('TOP', ElvUIBags, 'TOP', 0, -(E.db.bags.bagBar.showBackdrop and backdropSpacing or 0))
+				button:Point('TOP', ElvUIBags, 'TOP', 0, -(E.db.bags.bagBar.showBackdrop and (backdropSpacing + E.Border) or 0))
 			elseif prevButton then
 				button:Point('TOP', prevButton, 'BOTTOM', 0, -buttonSpacing)
 			end
 		elseif E.db.bags.bagBar.growthDirection == 'HORIZONTAL' and E.db.bags.bagBar.sortDirection == 'DESCENDING' then
 			if i == 1 then
-				button:Point('RIGHT', ElvUIBags, 'RIGHT', -(E.db.bags.bagBar.showBackdrop and backdropSpacing or 0), 0)
+				button:Point('RIGHT', ElvUIBags, 'RIGHT', -(E.db.bags.bagBar.showBackdrop and (backdropSpacing + E.Border) or 0), 0)
 			elseif prevButton then
 				button:Point('RIGHT', prevButton, 'LEFT', -buttonSpacing, 0)
 			end
 		else
 			if i == 1 then
-				button:Point('BOTTOM', ElvUIBags, 'BOTTOM', 0, (E.db.bags.bagBar.showBackdrop and backdropSpacing or 0))
+				button:Point('BOTTOM', ElvUIBags, 'BOTTOM', 0, (E.db.bags.bagBar.showBackdrop and (backdropSpacing + E.Border) or 0))
 			elseif prevButton then
 				button:Point('BOTTOM', prevButton, 'TOP', 0, buttonSpacing)
 			end
