@@ -29,6 +29,7 @@ local Masque = LibStub("Masque", true)
 local MasqueGroup = Masque and Masque:Group("ElvUI", "Pet Bar")
 
 local bar = CreateFrame('Frame', 'ElvUI_BarPet', E.UIParent, 'SecureHandlerStateTemplate');
+bar:SetFrameStrata("LOW")
 
 function AB:UpdatePet(event, unit)
 	if(event == "UNIT_AURA" and unit ~= "pet") then return end
