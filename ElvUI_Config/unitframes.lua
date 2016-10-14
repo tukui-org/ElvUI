@@ -822,7 +822,8 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				order = 5,
 				name = L["Width"],
 				type = 'range',
-				min = 50, max = 600, step = 1,
+				softMax = 600,
+				min = 50, max = GetScreenWidth(), step = 1,
 			},
 			height = {
 				order = 6,
