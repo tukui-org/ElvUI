@@ -580,6 +580,7 @@ L["HEALER"] = "Healer"
 L["Hide Spell Name"] = true;
 L["Hide Time"] = true;
 L["Hide"] = "Ocultar"
+L["Hide the nameplate unless you are not on full health or have a target you can attack."] = true
 L["Icon Base Height"] = true;
 L["Load Distance"] = true;
 L["Low Health Threshold"] = "Umbral de Salud Baja"

@@ -518,6 +518,14 @@ local function GetUnitSettings(unit, name)
 			set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:TogglePlayerMouse() end,
 			disabled = function() return not E.db.nameplates.units[unit].alwaysShow end,
 		}
+		group.args.combatFade = {
+			order = -11,
+			name = L["Combat Fade"],
+			desc = L["Hide the nameplate unless you are not on full health or have a target you can attack."],
+			type = "toggle",
+			set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:UpdateVisibility() end,
+			disabled = function() return not E.db.nameplates.units[unit].alwaysShow end,
+		}
 		group.args.healthGroup.args.useClassColor = {
 			order = 4,
 			type = "toggle",
