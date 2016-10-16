@@ -521,7 +521,7 @@ local function GetUnitSettings(unit, name)
 		group.args.combatFade = {
 			order = -11,
 			name = L["Combat Fade"],
-			desc = L["Hide the nameplate unless you are not on full health or have a target you can attack."],
+			desc = L["Hide the nameplate unless you are in combat, you are not on full health or have a target you can attack."],
 			type = "toggle",
 			set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:UpdateVisibility() end,
 			disabled = function() return not E.db.nameplates.units[unit].alwaysShow end,
