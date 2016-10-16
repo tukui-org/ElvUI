@@ -187,7 +187,7 @@ E.Options.args.maps = {
 							type = "toggle",
 							name = L["Reset Zoom"],
 							get = function(info) return E.db.general.minimap.resetZoom.enable end,
-							set = function(info, value) E.db.general.minimap.resetZoom.enable = value; M:UpdateSettings() end,
+							set = function(info, value) E.db.general.minimap.resetZoom.enable = value; E:GetModule('Minimap'):UpdateSettings() end,
 						},
 						zoomRestTime = {
 							order = 2,
@@ -195,7 +195,7 @@ E.Options.args.maps = {
 							name = L["Seconds"],
 							min = 1, max = 15, step = 1,
 							get = function(info) return E.db.general.minimap.resetZoom.time end,
-							set = function(info, value) E.db.general.minimap.resetZoom.time = value; M:UpdateSettings() end,
+							set = function(info, value) E.db.general.minimap.resetZoom.time = value; E:GetModule('Minimap'):UpdateSettings() end,
 							disabled = function() return not E.db.general.minimap.resetZoom.enable end
 						}
 					}
