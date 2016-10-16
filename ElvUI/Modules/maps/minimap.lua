@@ -8,34 +8,35 @@ local _G = _G
 local tinsert = table.insert
 local gsub, upper, strsub = string.gsub, string.upper, strsub
 --WoW API / Variables
-local CreateFrame = CreateFrame
-local ToggleCharacter = ToggleCharacter
-local ShowUIPanel, HideUIPanel = ShowUIPanel, HideUIPanel
-local ToggleCollectionsJournal = ToggleCollectionsJournal
-local ToggleFrame = ToggleFrame
-local ToggleAchievementFrame = ToggleAchievementFrame
-local ToggleFriendsFrame = ToggleFriendsFrame
-local GarrisonLandingPageMinimapButton_OnClick = GarrisonLandingPageMinimapButton_OnClick
-local IsInGuild = IsInGuild
-local ToggleGuildFrame = ToggleGuildFrame
-local ToggleLFDParentFrame = ToggleLFDParentFrame
-local IsAddOnLoaded = IsAddOnLoaded
-local CloseMenus = CloseMenus
 local CloseAllWindows = CloseAllWindows
-local PlaySound = PlaySound
-local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
-local ToggleHelpFrame = ToggleHelpFrame
-local GetZonePVPInfo = GetZonePVPInfo
-local IsShiftKeyDown = IsShiftKeyDown
-local ToggleDropDownMenu = ToggleDropDownMenu
-local Minimap_OnClick = Minimap_OnClick
+local CloseMenus = CloseMenus
+local CreateFrame = CreateFrame
+local C_Timer_NewTimer = C_Timer.NewTimer
+local GarrisonLandingPageMinimapButton_OnClick = GarrisonLandingPageMinimapButton_OnClick
 local GetMinimapZoneText = GetMinimapZoneText
-local InCombatLockdown = InCombatLockdown
+local GetZonePVPInfo = GetZonePVPInfo
 local GuildInstanceDifficulty = GuildInstanceDifficulty
+local InCombatLockdown = InCombatLockdown
+local IsAddOnLoaded = IsAddOnLoaded
+local IsInGuild = IsInGuild
+local IsShiftKeyDown = IsShiftKeyDown
+local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
+local Minimap_OnClick = Minimap_OnClick
+local PlaySound = PlaySound
+local ShowUIPanel, HideUIPanel = ShowUIPanel, HideUIPanel
+local ToggleAchievementFrame = ToggleAchievementFrame
+local ToggleCharacter = ToggleCharacter
+local ToggleCollectionsJournal = ToggleCollectionsJournal
+local ToggleDropDownMenu = ToggleDropDownMenu
+local ToggleFrame = ToggleFrame
+local ToggleFriendsFrame = ToggleFriendsFrame
+local ToggleGuildFrame = ToggleGuildFrame
+local ToggleHelpFrame = ToggleHelpFrame
+local ToggleLFDParentFrame = ToggleLFDParentFrame
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GetMinimapShape, SpellBookFrame, PlayerTalentFrame, TalentFrame_LoadUI
--- GLOBALS: PlayerTalentFrame, TimeManagerFrame
+-- GLOBALS: PlayerTalentFrame, TimeManagerFrame, HelpOpenTicketButton, HelpOpenWebTicketButton
 -- GLOBALS: GameTimeFrame, GuildFrame, GuildFrame_LoadUI, Minimap, MinimapCluster
 -- GLOBALS: BuffsMover, DebuffsMover, LookingForGuildFrame, MiniMapWorldMapButton
 -- GLOBALS: LookingForGuildFrame_LoadUI, EncounterJournal_LoadUI, EncounterJournal
@@ -49,6 +50,8 @@ local GuildInstanceDifficulty = GuildInstanceDifficulty
 -- GLOBALS: MiniMapChallengeMode, MinimapBorder, MinimapBorderTop, MinimapZoomIn, MinimapZoomOut
 -- GLOBALS: MiniMapVoiceChatFrame, MinimapNorthTag, MinimapZoneTextButton, MiniMapTracking
 -- GLOBALS: MiniMapMailBorder, MiniMapMailIcon, QueueStatusMinimapButtonBorder, UIParent
+-- GLOBALS: BottomMiniPanel, BottomLeftMiniPanel, BottomRightMiniPanel, TopMiniPanel
+-- GLOBALS: TopLeftMiniPanel, TopRightMiniPanel, MinimapBackdrop
 
 local Astrolabe, AstrolabeMapMonitor
 if IsAddOnLoaded("Gatherer") then
@@ -209,7 +212,7 @@ local function ResetZoomTimer()
 			zoomResetTimer = nil
 		end
 		if Minimap:GetZoom() ~= 0 then
-			zoomResetTimer = C_Timer.NewTimer(E.db.general.minimap.resetZoom.time, function() Minimap:SetZoom(0); zoomResetTimer:Cancel() end)
+			zoomResetTimer = C_Timer_NewTimer(E.db.general.minimap.resetZoom.time, function() Minimap:SetZoom(0); zoomResetTimer:Cancel() end)
 		end
 	end
 end
