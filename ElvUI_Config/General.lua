@@ -615,7 +615,7 @@ E.Options.args.general = {
 					desc = L["Height of the objective tracker. Increase size to be able to see more objectives."],
 					min = 400, max = E.screenheight, step = 1,
 					get = function(info) return E.db.general.objectiveFrameHeight end,
-					set = function(info, value) E.db.general.objectiveFrameHeight = value; E:GetModule('Blizzard'):ObjectiveFrameHeight(); end,
+					set = function(info, value) E.db.general.objectiveFrameHeight = value; E:GetModule('Blizzard'):SetObjectiveFrameHeight(); end,
 				},
 				bonusObjectivePosition = {
 					order = 32,

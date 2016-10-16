@@ -1000,7 +1000,7 @@ function E:UpdateAll(ignoreInstall)
 	LO:TopPanelVisibility()
 	LO:SetDataPanelStyle()
 
-	self:GetModule('Blizzard'):ObjectiveFrameHeight()
+	self:GetModule('Blizzard'):SetObjectiveFrameHeight()
 	
 	self:SetMoversClampedToScreen(true) --Go back to using clamp after resizing has taken place.
 
