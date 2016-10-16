@@ -99,26 +99,25 @@ E.Options.args.maps = {
 				},
 			},
 		},
-
 		minimap = {
 			order = 2,
 			type = "group",
 			name = MINIMAP_LABEL,
 			get = function(info) return E.db.general.minimap[ info[#info] ] end,
+			childGroups = "tab",
 			args = {
 				header = {
 					order = 0,
 					type = "header",
 					name = MINIMAP_LABEL,
 				},
-				enable = { --TODO pull this out to modules config
+				enable = {
 					order = 1,
 					type = "toggle",
 					name = L["Enable"],
 					desc = L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the minimap datatexts.|r"],
 					get = function(info) return E.private.general.minimap[ info[#info] ] end,
 					set = function(info, value) E.private.general.minimap[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
-					width = "full"
 				},
 				size = {
 					order = 2,
@@ -134,7 +133,6 @@ E.Options.args.maps = {
 					order = 3,
 					type = "group",
 					name = L["Location Text"],
-					inline = true,
 					args = {
 						locationText = {
 						    order = 1,
@@ -162,7 +160,7 @@ E.Options.args.maps = {
 						    order = 3,
 						    type = "range",
 						    name = L["Font Size"],
-						    min = 10, max = 36, step = 1,
+						    min = 6, max = 36, step = 1,
 						    set = function(info, value) E.db.general.minimap.locationFontSize = value; E:GetModule('Minimap'):UpdateSettings(); E:GetModule('Minimap'):Update_ZoneText() end,
 						},
 						locationFontOutline = {
@@ -182,20 +180,19 @@ E.Options.args.maps = {
 				zoomResetGroup = {
 					order = 4,
 					type = "group",
-					name = L["Reset Zoom"], -- TODO translate
-					inline = true,
+					name = L["Reset Zoom"],
 					args = {
 						enableZoomReset = {
 							order = 1,
 							type = "toggle",
-							name = L["Reset zoom"],
+							name = L["Reset Zoom"],
 							get = function(info) return E.db.general.minimap.resetZoom.enable end,
 							set = function(info, value) E.db.general.minimap.resetZoom.enable = value; M:UpdateSettings() end,
 						},
 						zoomRestTime = {
 							order = 2,
 							type = "range",
-							name = L["Seconds"], --TODO translate
+							name = L["Seconds"],
 							min = 1, max = 15, step = 1,
 							get = function(info) return E.db.general.minimap.resetZoom.time end,
 							set = function(info, value) E.db.general.minimap.resetZoom.time = value; M:UpdateSettings() end,
