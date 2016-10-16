@@ -250,6 +250,7 @@ P["nameplates"] = {
 			['enable'] = false,
 			["alwaysShow"] = false,
 			["clickthrough"] = false,
+			["combatFade"] = false,
 			['healthbar'] = {
 				['enable'] = true,
 				['height'] = 10,

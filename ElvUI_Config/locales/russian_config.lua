@@ -582,6 +582,7 @@ L["HEALER"] = "Healer"
 L["Hide Spell Name"] = "Скрыть название заклинания"
 L["Hide Time"] = "Скрыть время"
 L["Hide"] = "Скрыть" --Also used in DataTexts
+L["Hide the nameplate unless you are in combat, you are not on full health or have a target you can attack."] = "Скрывать индикатор если вы не в бою, у вас полное здоровье или нет цели, которую можно атаковать."
 L["Icon Base Height"] = "Базовая высота иконки"
 L["Load Distance"] = "Дистанция показа"
 L["Low Health Threshold"] = "Пороговое значение здоровья"
