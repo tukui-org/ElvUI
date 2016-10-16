@@ -201,7 +201,7 @@ local function PositionTicketButtons()
 end
 hooksecurefunc("HelpOpenTicketButton_Move", PositionTicketButtons)
 
-local zoomResetTimer = nil
+local zoomResetTimer
 local function ResetZoomTimer()
 	if E.db.general.minimap.resetZoom.enable then
 		if zoomResetTimer ~= nil then
@@ -209,7 +209,7 @@ local function ResetZoomTimer()
 			zoomResetTimer = nil
 		end
 		if Minimap:GetZoom() ~= 0 then
-			zoomResetTimer = C_Timer.NewTimer(E.db.general.minimap.resetZoom.time, function() Minimap:SetZoom(0); resetZoomTimer:Cancel() end)
+			zoomResetTimer = C_Timer.NewTimer(E.db.general.minimap.resetZoom.time, function() Minimap:SetZoom(0); zoomResetTimer:Cancel() end)
 		end
 	end
 end
