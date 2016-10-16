@@ -53,12 +53,6 @@ local ToggleLFDParentFrame = ToggleLFDParentFrame
 -- GLOBALS: BottomMiniPanel, BottomLeftMiniPanel, BottomRightMiniPanel, TopMiniPanel
 -- GLOBALS: TopLeftMiniPanel, TopRightMiniPanel, MinimapBackdrop
 
-local Astrolabe, AstrolabeMapMonitor
-if IsAddOnLoaded("Gatherer") then
-	Astrolabe = DongleStub("Astrolabe-1.0")
-	AstrolabeMapMonitor = DongleStub("AstrolabeMapMonitor")
-end
-
 local menuFrame = CreateFrame("Frame", "MinimapRightClickMenu", E.UIParent)
 
 local menuList = {
