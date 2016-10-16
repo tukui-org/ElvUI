@@ -99,7 +99,7 @@ E.Options.args.maps = {
 				},
 			},
 		},
-		
+
 		minimap = {
 			order = 2,
 			type = "group",
@@ -130,28 +130,86 @@ E.Options.args.maps = {
 					set = function(info, value) E.db.general.minimap[ info[#info] ] = value; E:GetModule('Minimap'):UpdateSettings() end,
 					disabled = function() return not E.private.general.minimap.enable end,
 				},
-				locationText = {
+				locationTextGroup = {
 					order = 3,
-					type = 'select',
+					type = "group",
 					name = L["Location Text"],
-					desc = L["Change settings for the display of the location text that is on the minimap."],
-					get = function(info) return E.db.general.minimap.locationText end,
-					set = function(info, value) E.db.general.minimap.locationText = value; E:GetModule('Minimap'):UpdateSettings(); E:GetModule('Minimap'):Update_ZoneText() end,
-					values = {
-						['MOUSEOVER'] = L["Minimap Mouseover"],
-						['SHOW'] = L["Always Display"],
-						['HIDE'] = L["Hide"],
+					inline = true,
+					args = {
+						locationText = {
+						    order = 1,
+						    type = 'select',
+						    name = L["Location Text"],
+						    desc = L["Change settings for the display of the location text that is on the minimap."],
+						    get = function(info) return E.db.general.minimap.locationText end,
+						    set = function(info, value) E.db.general.minimap.locationText = value; E:GetModule('Minimap'):UpdateSettings(); E:GetModule('Minimap'):Update_ZoneText() end,
+						    values = {
+						        ['MOUSEOVER'] = L["Minimap Mouseover"],
+						        ['SHOW'] = L["Always Display"],
+						        ['HIDE'] = L["Hide"],
+						    },
+						    disabled = function() return not E.private.general.minimap.enable end,
+						},
+						locationFont = {
+						    order = 2,
+						    type = "select",
+						    dialogControl = 'LSM30_Font',
+						    name = L["Font"],
+						    values = AceGUIWidgetLSMlists.font,
+						    set = function(info, value) E.db.general.minimap.locationFont = value; E:GetModule('Minimap'):Update_ZoneText() end,
+						},
+						locationFontSize = {
+						    order = 3,
+						    type = "range",
+						    name = L["Font Size"],
+						    min = 10, max = 36, step = 1,
+						    set = function(info, value) E.db.general.minimap.locationFontSize = value; E:GetModule('Minimap'):UpdateSettings(); E:GetModule('Minimap'):Update_ZoneText() end,
+						},
+						locationFontOutline = {
+						    order = 4,
+						    type = "select",
+						    name = L["Font Outline"],
+						    set = function(info, value) E.db.general.minimap.locationFontOutline = value; E:GetModule('Minimap'):Update_ZoneText() end,
+						    values = {
+						        ['NONE'] = L["None"],
+						        ['OUTLINE'] = 'OUTLINE',
+						        ['MONOCHROMEOUTLINE'] = 'MONOCROMEOUTLINE',
+						        ['THICKOUTLINE'] = 'THICKOUTLINE',
+						    },
+						},
 					},
-					disabled = function() return not E.private.general.minimap.enable end,
+				},
+				zoomResetGroup = {
+					order = 4,
+					type = "group",
+					name = L["Reset Zoom"], -- TODO translate
+					inline = true,
+					args = {
+						enableZoomReset = {
+							order = 1,
+							type = "toggle",
+							name = L["Reset zoom"],
+							get = function(info) return E.db.general.minimap.resetZoom.enable end,
+							set = function(info, value) E.db.general.minimap.resetZoom.enable = value; M:UpdateSettings() end,
+						},
+						zoomRestTime = {
+							order = 2,
+							type = "range",
+							name = L["Seconds"], --TODO translate
+							min = 1, max = 15, step = 1,
+							get = function(info) return E.db.general.minimap.resetZoom.time end,
+							set = function(info, value) E.db.general.minimap.resetZoom.time = value; M:UpdateSettings() end,
+							disabled = function() return not E.db.general.minimap.resetZoom.enable end
+						}
+					}
 				},
 				spacer = {
-					order = 4,
+					order = 5,
 					type = "description",
 					name = "\n",
 				},
-				
 				icons = {
-					order = 5,
+					order = 6,
 					type = "group",
 					name = L["Minimap Buttons"],
 					args = {
@@ -198,8 +256,8 @@ E.Options.args.maps = {
 									name = L["Scale"],
 									min = 0.5, max = 2, step = 0.05
 								},
-								
-								
+
+
 								xOffset = {
 									order = 5,
 									type = "range",
@@ -214,7 +272,7 @@ E.Options.args.maps = {
 									min = -50, max = 50, step = 1,
 									disabled = function() return E.private.general.minimap.hideClassHallReport end,
 								},
-								
+
 							},
 						},
 						calendar = {
@@ -237,7 +295,7 @@ E.Options.args.maps = {
 									type = "description",
 									name = "",
 									width = "full"
-								},							
+								},
 								position = {
 									order = 3,
 									type = "select",
@@ -259,7 +317,7 @@ E.Options.args.maps = {
 									type = "range",
 									name = L["Scale"],
 									min = 0.5, max = 2, step = 0.05,
-								},								
+								},
 								xOffset = {
 									order = 5,
 									type = "range",
@@ -274,7 +332,7 @@ E.Options.args.maps = {
 									min = -50, max = 50, step = 1,
 									disabled = function() return E.private.general.minimap.hideCalendar end,
 								},
-								
+
 							},
 						},
 						mail = {
@@ -347,7 +405,7 @@ E.Options.args.maps = {
 									name = L["Scale"],
 									min = 0.5, max = 2, step = 0.05,
 								},
-								
+
 								xOffset = {
 									order = 3,
 									type = "range",
@@ -390,7 +448,7 @@ E.Options.args.maps = {
 									name = L["Scale"],
 									min = 0.5, max = 2, step = 0.05,
 								},
-								
+
 								xOffset = {
 									order = 3,
 									type = "range",
@@ -433,7 +491,7 @@ E.Options.args.maps = {
 									name = L["Scale"],
 									min = 0.5, max = 2, step = 0.05,
 								},
-								
+
 								xOffset = {
 									order = 3,
 									type = "range",
@@ -465,7 +523,7 @@ E.Options.args.maps = {
 									type = "description",
 									name = "",
 									width = "full"
-								},	
+								},
 								position = {
 									order = 3,
 									type = "select",
@@ -487,7 +545,7 @@ E.Options.args.maps = {
 									name = L["Scale"],
 									min = 0.5, max = 2, step = 0.05,
 								},
-								
+
 								xOffset = {
 									order = 5,
 									type = "range",
@@ -500,7 +558,7 @@ E.Options.args.maps = {
 									name = L["yOffset"],
 									min = -50, max = 50, step = 1,
 								},
-								
+
 							},
 						},
 						ticket = {
@@ -531,7 +589,7 @@ E.Options.args.maps = {
 									name = L["Scale"],
 									min = 0.5, max = 2, step = 0.05,
 								},
-								
+
 								xOffset = {
 									order = 3,
 									type = "range",
