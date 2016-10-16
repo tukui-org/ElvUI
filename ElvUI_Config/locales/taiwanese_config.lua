@@ -506,6 +506,7 @@ L["Minimap Buttons"] = true;
 L["Minimap Mouseover"] = "小地圖滑鼠滑過"
 L["Open Ticket"] = true;
 L["Puts coordinates on the world map."] = true;
+L["Reset Zoom"] = true;
 L["Right"] = true;
 L["Scale"] = "右"
 L["Smaller World Map"] = true;

@@ -506,6 +506,7 @@ L["Minimap Buttons"] = "Minimap Tasten"
 L["Minimap Mouseover"] = "Minimap Mouseover"
 L["Open Ticket"] = "Offenes Ticket"
 L["Puts coordinates on the world map."] = "Platziert Koordinaten auf der Weltkarte."
+L["Reset Zoom"] = true;
 L["Right"] = "Rechts"
 L["Scale"] = "Skalierung"
 L["Smaller World Map"] = "Kleinere Weltkarte"

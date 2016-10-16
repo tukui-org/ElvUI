@@ -553,6 +553,7 @@ L["Minimap Buttons"] = "미니맵 버튼"
 L["Minimap Mouseover"] = "마우스오버 때만 표시"
 L["Open Ticket"] = true;
 L["Puts coordinates on the world map."] = true;
+L["Reset Zoom"] = true;
 L["Right"] = "오른쪽"
 L["Scale"] = "크기"
 L["Smaller World Map"] = "월드맵 축소"

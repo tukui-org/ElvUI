@@ -495,6 +495,7 @@ L["Minimap Buttons"] = true;
 L["Minimap Mouseover"] = true;
 L["Open Ticket"] = true;
 L["Puts coordinates on the world map."] = true;
+L["Reset Zoom"] = true;
 L["Right"] = true;
 L["Scale"] = true;
 L["Smaller World Map"] = true;

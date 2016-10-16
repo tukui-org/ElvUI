@@ -506,6 +506,7 @@ L["Minimap Buttons"] = "小地图按钮"
 L["Minimap Mouseover"] = "小地图鼠标滑过"
 L["Open Ticket"] = "表单"
 L["Puts coordinates on the world map."] = "在世界地图上放置坐标"
+L["Reset Zoom"] = true;
 L["Right"] = "右"
 L["Scale"] = "缩放"
 L["Smaller World Map"] = "更小的世界地图"

@@ -506,6 +506,7 @@ L["Minimap Buttons"] = true;
 L["Minimap Mouseover"] = "Ratón por encima del Minimapa"
 L["Open Ticket"] = true;
 L["Puts coordinates on the world map."] = true;
+L["Reset Zoom"] = true;
 L["Right"] = "Derecha"
 L["Scale"] = true;
 L["Smaller World Map"] = true;

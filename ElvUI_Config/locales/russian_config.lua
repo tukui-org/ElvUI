@@ -507,6 +507,7 @@ L["Minimap Buttons"] = "Кнопки миникарты"
 L["Minimap Mouseover"] = "При наведении мыши"
 L["Open Ticket"] = "Открытый запрос"
 L["Puts coordinates on the world map."] = "Добавляет координаты на карту мира."
+L["Reset Zoom"] = true;
 L["Right"] = "Правый"
 L["Scale"] = "Масштаб"
 L["Top Left"] = "Вверху слева"
