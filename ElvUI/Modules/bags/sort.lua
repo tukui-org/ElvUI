@@ -4,7 +4,7 @@ local Search = LibStub('LibItemSearch-1.2-ElvUI');
 
 --Cache global variables
 --Lua functions
-local ipairs, pairs, tonumber, select, unpack = ipairs, pairs, tonumber, select, unpack
+local ipairs, pairs, tonumber, select, unpack, pcall = ipairs, pairs, tonumber, select, unpack, pcall
 local tinsert, tremove, tsort, twipe = table.insert, table.remove, table.sort, table.wipe
 local floor = math.floor
 local band = bit.band
@@ -35,6 +35,8 @@ local QueryGuildBankTab = QueryGuildBankTab
 local GetCurrentGuildBankTab = GetCurrentGuildBankTab
 local C_PetJournalGetPetInfoBySpeciesID = C_PetJournal.GetPetInfoBySpeciesID
 local ARMOR, ENCHSLOT_WEAPON = ARMOR, ENCHSLOT_WEAPON
+local LE_ITEM_CLASS_ARMOR = LE_ITEM_CLASS_ARMOR
+local LE_ITEM_CLASS_WEAPON = LE_ITEM_CLASS_WEAPON
 
 local guildBags = {51,52,53,54,55,56,57,58}
 local bankBags = {BANK_CONTAINER}
