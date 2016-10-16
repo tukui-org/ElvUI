@@ -11,7 +11,7 @@ local gsub, upper, strsub = string.gsub, string.upper, strsub
 local CloseAllWindows = CloseAllWindows
 local CloseMenus = CloseMenus
 local CreateFrame = CreateFrame
-local C_Timer_NewTimer = C_Timer.NewTimer
+local C_Timer_After = C_Timer.After
 local GarrisonLandingPageMinimapButton_OnClick = GarrisonLandingPageMinimapButton_OnClick
 local GetMinimapZoneText = GetMinimapZoneText
 local GetZonePVPInfo = GetZonePVPInfo
@@ -198,19 +198,20 @@ local function PositionTicketButtons()
 end
 hooksecurefunc("HelpOpenTicketButton_Move", PositionTicketButtons)
 
-local zoomResetTimer
-local function ResetZoomTimer()
-	if E.db.general.minimap.resetZoom.enable then
-		if zoomResetTimer ~= nil then
-			zoomResetTimer:Cancel()
-			zoomResetTimer = nil
-		end
-		if Minimap:GetZoom() ~= 0 then
-			zoomResetTimer = C_Timer_NewTimer(E.db.general.minimap.resetZoom.time, function() Minimap:SetZoom(0); zoomResetTimer:Cancel() end)
-		end
+local isResetting
+local function ResetZoom()
+	Minimap:SetZoom(0)
+	MinimapZoomIn:Enable(); --Reset enabled state of buttons
+	MinimapZoomOut:Disable();
+	isResetting = false
+end
+local function SetupZoomReset()
+	if E.db.general.minimap.resetZoom.enable and not isResetting then
+		isResetting = true
+		C_Timer_After(E.db.general.minimap.resetZoom.time, ResetZoom)
 	end
 end
-hooksecurefunc(Minimap, "SetZoom", ResetZoomTimer)
+hooksecurefunc(Minimap, "SetZoom", SetupZoomReset)
 
 function M:UpdateSettings()
 	if InCombatLockdown() then
