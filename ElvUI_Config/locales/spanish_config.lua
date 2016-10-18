@@ -882,7 +882,6 @@ L["Friendly"] = "Amistoso"
 L["Frost"] = "Escarcha"
 L["Glow"] = "Brillo"
 L["Good"] = "Amistoso"
-L["GPS Arrow"] = true;
 L["Group By"] = "Agrupar Por"
 L["Grouping & Sorting"] = true;
 L["Groups Per Row/Column"] = true;

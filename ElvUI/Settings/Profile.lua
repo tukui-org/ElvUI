@@ -1209,14 +1209,6 @@ P['unitframe'] = {
 				['xOffset'] = 0,
 				['yOffset'] = 8,
 			},
-			['GPSArrow'] = {
-				['enable'] = false,
-				['size'] = 45,
-				['xOffset'] = 0,
-				['yOffset'] = 0,
-				['onMouseOver'] = true,
-				['outOfRange'] = true
-			},
 		},
 		['targettarget'] = {
 			['enable'] = true,
@@ -1546,14 +1538,6 @@ P['unitframe'] = {
 				["attachToObject"] = "Frame",
 				['xOffset'] = 0,
 				['yOffset'] = 8,
-			},
-			['GPSArrow'] = {
-				['enable'] = false,
-				['size'] = 45,
-				['xOffset'] = 0,
-				['yOffset'] = 0,
-				['onMouseOver'] = true,
-				['outOfRange'] = true
 			},
 		},
 		['focustarget'] = {
@@ -2279,14 +2263,6 @@ P['unitframe'] = {
 				['xOffset'] = 0,
 				['yOffset'] = 8,
 			},
-			['GPSArrow'] = {
-				['enable'] = true,
-				['size'] = 45,
-				['xOffset'] = 0,
-				['yOffset'] = 0,
-				['onMouseOver'] = true,
-				['outOfRange'] = true
-			},
 		},
 		['raid'] = {
 			['enable'] = true,
@@ -2443,14 +2419,6 @@ P['unitframe'] = {
 				['xOffset'] = 0,
 				['yOffset'] = 8,
 			},
-			['GPSArrow'] = {
-				['enable'] = true,
-				['size'] = 40,
-				['xOffset'] = 0,
-				['yOffset'] = 0,
-				['onMouseOver'] = true,
-				['outOfRange'] = true
-			},
 		},
 		['raid40'] = {
 			['enable'] = true,
@@ -2606,14 +2574,6 @@ P['unitframe'] = {
 				["attachToObject"] = "Frame",
 				['xOffset'] = 0,
 				['yOffset'] = 8,
-			},
-			['GPSArrow'] = {
-				['enable'] = false,
-				['size'] = 45,
-				['xOffset'] = 0,
-				['yOffset'] = 0,
-				['onMouseOver'] = true,
-				['outOfRange'] = true
 			},
 		},
 		['raidpet'] = {

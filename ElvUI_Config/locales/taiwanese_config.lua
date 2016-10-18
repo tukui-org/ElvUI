@@ -883,7 +883,6 @@ L["Friendly"] = "友好"
 L["Frost"] = "冰霜符文"
 L["Glow"] = "閃爍"
 L["Good"] = "安全"
-L["GPS Arrow"] = true;
 L["Group By"] = "隊伍排列方式"
 L["Grouping & Sorting"] = true;
 L["Groups Per Row/Column"] = true;

@@ -40,7 +40,6 @@ function UF:Construct_FocusFrame(frame)
 	frame.AuraBars = self:Construct_AuraBarHeader(frame)
 	frame.Range = UF:Construct_Range(frame)
 	frame.Threat = UF:Construct_Threat(frame)
-	frame.GPS = self:Construct_GPS(frame)
 	frame.InfoPanel = self:Construct_InfoPanel(frame)
 
 	frame.customTexts = {}
@@ -110,9 +109,6 @@ function UF:Update_FocusFrame(frame, db)
 
 	--OverHealing
 	UF:Configure_HealComm(frame)
-
-	--GPSArrow
-	UF:Configure_GPS(frame)
 
 	--Raid Icon
 	UF:Configure_RaidIcon(frame)

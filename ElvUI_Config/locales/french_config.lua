@@ -883,7 +883,6 @@ L["Friendly"] = "Amical"
 L["Frost"] = "Givre"
 L["Glow"] = "Lueur"
 L["Good"] = "Bonne"
-L["GPS Arrow"] = "Flêche GPS";
 L["Group By"] = "Groupe par"
 L["Grouping & Sorting"] = "Regroupement et tri";
 L["Groups Per Row/Column"] = "Nombres de groupes par ligne/colonne"

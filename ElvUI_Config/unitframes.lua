@@ -1098,104 +1098,6 @@ local function GetOptionsTable_CustomText(updateFunc, groupName, numUnits, order
 	return config
 end
 
-local function GetOptionsTable_GPS(groupName)
-	local config = {
-		order = 3000,
-		type = 'group',
-		name = L["GPS Arrow"],
-		get = function(info) return E.db.unitframe.units[groupName]['GPSArrow'][ info[#info] ] end,
-		set = function(info, value) E.db.unitframe.units[groupName]['GPSArrow'][ info[#info] ] = value; UF:CreateAndUpdateHeaderGroup(groupName) end,
-		args = {
-			enable = {
-				type = 'toggle',
-				order = 1,
-				name = L["Enable"],
-			},
-			onMouseOver = {
-				type = 'toggle',
-				order = 2,
-				name = L["Mouseover"],
-				desc = L["Only show when you are mousing over a frame."],
-			},
-			outOfRange = {
-				type = 'toggle',
-				order = 3,
-				name = L["Out of Range"],
-				desc = L["Only show when the unit is not in range."],
-			},
-			size = {
-				type = 'range',
-				name = L["Size"],
-				order = 4,
-				min = 8, max = 60, step = 1,
-			},
-			xOffset = {
-				order = 5,
-				type = 'range',
-				name = L["xOffset"],
-				min = -300, max = 300, step = 1,
-			},
-			yOffset = {
-				order = 6,
-				type = 'range',
-				name = L["yOffset"],
-				min = -300, max = 300, step = 1,
-			},
-		}
-	}
-
-	return config
-end
-
-local function GetOptionsTableForNonGroup_GPS(unit)
-	local config = {
-		order = 3000,
-		type = 'group',
-		name = L["GPS Arrow"],
-		get = function(info) return E.db.unitframe.units[unit]['GPSArrow'][ info[#info] ] end,
-		set = function(info, value) E.db.unitframe.units[unit]['GPSArrow'][ info[#info] ] = value; UF:CreateAndUpdateUF(unit) end,
-		args = {
-			enable = {
-				type = 'toggle',
-				order = 1,
-				name = L["Enable"],
-			},
-			onMouseOver = {
-				type = 'toggle',
-				order = 2,
-				name = L["Mouseover"],
-				desc = L["Only show when you are mousing over a frame."],
-			},
-			outOfRange = {
-				type = 'toggle',
-				order = 3,
-				name = L["Out of Range"],
-				desc = L["Only show when the unit is not in range."],
-			},
-			size = {
-				type = 'range',
-				name = L["Size"],
-				order = 4,
-				min = 8, max = 60, step = 1,
-			},
-			xOffset = {
-				order = 5,
-				type = 'range',
-				name = L["xOffset"],
-				min = -300, max = 300, step = 1,
-			},
-			yOffset = {
-				order = 6,
-				type = 'range',
-				name = L["yOffset"],
-				min = -300, max = 300, step = 1,
-			},
-		}
-	}
-
-	return config
-end
-
 local function GetOptionsTable_Name(updateFunc, groupName, numUnits)
 	local config = {
 		order = 400,
@@ -2978,7 +2880,6 @@ E.Options.args.unitframe.args.target = {
 		castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateUF, 'target'),
 		aurabar = GetOptionsTable_AuraBars(false, UF.CreateAndUpdateUF, 'target'),
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'target'),
-		GPSArrow = GetOptionsTableForNonGroup_GPS('target'),
 		pvpIcon = {
 			order = 449,
 			type = 'group',
@@ -3394,7 +3295,6 @@ E.Options.args.unitframe.args.focus = {
 		castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateUF, 'focus'),
 		aurabar = GetOptionsTable_AuraBars(false, UF.CreateAndUpdateUF, 'focus'),
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'focus'),
-		GPSArrow = GetOptionsTableForNonGroup_GPS('focus')
 	},
 }
 
@@ -4715,7 +4615,6 @@ E.Options.args.unitframe.args.party = {
 			},
 		},
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'party'),
-		GPSArrow = GetOptionsTable_GPS('party')
 	},
 }
 
@@ -5126,7 +5025,6 @@ E.Options.args.unitframe.args['raid'] = {
 		},
 		rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'raid'),
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'raid'),
-		GPSArrow = GetOptionsTable_GPS('raid'),
 	},
 }
 
@@ -5537,7 +5435,6 @@ E.Options.args.unitframe.args['raid40'] = {
 		},
 		rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'raid40'),
-		GPSArrow = GetOptionsTable_GPS('raid40'),
 	},
 }
 

@@ -8,7 +8,6 @@
 	<Script file='combatindicator.lua'/>
 	<Script file='customtext.lua'/>
 	<Script file='debuffhighlight.lua'/>
-	<Script file='gps.lua'/>
 	<Script file='healprediction.lua'/>
 	<Script file='health.lua'/>
 	<Script file='infopanel.lua'/>

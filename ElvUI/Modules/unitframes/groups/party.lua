@@ -68,7 +68,6 @@ function UF:Construct_PartyFrames(unitGroup)
 		self.RaidIcon = UF:Construct_RaidIcon(self)
 		self.ReadyCheck = UF:Construct_ReadyCheckIcon(self)
 		self.HealPrediction = UF:Construct_HealComm(self)
-		self.GPS = UF:Construct_GPS(self)
 		self.customTexts = {}
 		self.Sparkle = CreateFrame("Frame", nil, self)
 		self.Sparkle:SetAllPoints(self.Health)
@@ -244,8 +243,6 @@ function UF:Update_PartyFrames(frame, db)
 		UF:Configure_RoleIcon(frame)
 
 		UF:Configure_HealComm(frame)
-
-		UF:Configure_GPS(frame)
 
 		UF:Configure_RaidRoleIcons(frame)
 

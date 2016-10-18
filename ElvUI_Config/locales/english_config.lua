@@ -872,7 +872,6 @@ L["Friendly"] = true;
 L["Frost"] = true;
 L["Glow"] = true; --Also used in NamePlates
 L["Good"] = true;
-L["GPS Arrow"] = true;
 L["Group By"] = true;
 L["Grouping & Sorting"] = true;
 L["Groups Per Row/Column"] = true;
