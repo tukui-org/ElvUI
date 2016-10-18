@@ -9,7 +9,6 @@ local find = string.find
 local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
 local SetUIPanelAttribute = SetUIPanelAttribute
-local IsInInstance = IsInInstance
 local GetPlayerMapPosition = GetPlayerMapPosition
 local GetCursorPosition = GetCursorPosition
 local PLAYER = PLAYER
@@ -117,14 +116,7 @@ function M:PositionCoords()
 	CoordsHolder.mouseCoords:Point(position, CoordsHolder.playerCoords, INVERTED_POINTS[position], 0, y)
 end
 
-function M:ResetDropDownListPosition(frame)
-	--DropDownList1:ClearAllPoints()
-	--DropDownList1:Point("TOPRIGHT", frame, "BOTTOMRIGHT", -17, -4)
-end
-
 function M:Initialize()
-	--setfenv(WorldMapFrame_OnShow, setmetatable({ UpdateMicroButtons = function() end }, { __index = _G })) --blizzard taint fix
-
 	if(E.global.general.WorldMapCoordinates.enable) then
 		local CoordsHolder = CreateFrame('Frame', 'CoordsHolder', WorldMapFrame)
 		CoordsHolder:SetFrameLevel(WorldMapDetailFrame:GetFrameLevel() + 1)
