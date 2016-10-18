@@ -4,7 +4,7 @@ local UF = E:GetModule('UnitFrames');
 --Cache global variables
 --Lua functions
 local select, unpack = select, unpack
-local ceil, floor, max = math.ceil, math.floor, math.max
+local floor, max = math.floor, math.max
 local find, sub, gsub = string.find, string.sub, string.gsub
 --WoW API / Variables
 local CreateFrame = CreateFrame
@@ -324,7 +324,7 @@ function UF:Construct_ClassBar(frame)
 	return bars
 end
 
-function UF:UpdateClassBar(cur, max, hasMaxChanged, powerType, event)
+function UF:UpdateClassBar(cur, max, hasMaxChanged)
 	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 	if not db then return; end
@@ -535,7 +535,7 @@ function UF:Construct_Stagger(frame)
 	return stagger
 end
 
-function UF:PostUpdateStagger(maxHealth, stagger, staggerPercent, r, g, b)
+function UF:PostUpdateStagger(maxHealth, stagger)
 	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 
@@ -548,7 +548,6 @@ end
 
 function UF:PostUpdateVisibilityStagger(event, unit, isShown, stateChanged)
 	local frame = self
-	local db = frame.db
 
 	if(isShown) then
 		frame.ClassBar = 'Stagger'

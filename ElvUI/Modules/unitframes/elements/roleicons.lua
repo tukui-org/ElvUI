@@ -5,7 +5,6 @@ local UF = E:GetModule('UnitFrames');
 --Lua functions
 local random = math.random
 --WoW API / Variables
-local CreateFrame = CreateFrame
 local GetNumBattlefieldScores = GetNumBattlefieldScores
 local GetBattlefieldScore = GetBattlefieldScore
 local IsInInstance = IsInInstance

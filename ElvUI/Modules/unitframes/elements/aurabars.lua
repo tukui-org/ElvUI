@@ -188,7 +188,6 @@ function UF:AuraBarFilter(unit, name, rank, icon, count, debuffType, duration, e
 	local playerOnlyFilter = false
 	local isPlayer = unitCaster == 'player' or unitCaster == 'vehicle'
 	local isFriend = UnitIsFriend('player', unit)
-	local auraType = isFriend and db.friendlyAuraType or db.enemyAuraType
 
 	if UF:CheckFilter(db.playerOnly, isFriend) then
 		if isPlayer then
@@ -273,7 +272,7 @@ end
 
 local GOTAK_ID = 86659
 local GOTAK = GetSpellInfo(GOTAK_ID)
-function UF:ColorizeAuraBars(event, unit)
+function UF:ColorizeAuraBars()
 	local bars = self.bars
 	for index = 1, #bars do
 		local frame = bars[index]

@@ -202,15 +202,14 @@ end
 
 local tokens = { [0] = "MANA", "RAGE", "FOCUS", "ENERGY", "RUNIC_POWER" }
 function UF:PostUpdatePower(unit, min, max)
-	local pType, _, altR, altG, altB = UnitPowerType(unit)
 	local parent = self.origParent or self:GetParent()
 
 	if parent.isForced then
-		min = random(1, max)
-		pType = random(0, 4)
-		self:SetValue(min)
+		local pType = random(0, 4)
 		local color = ElvUF['colors'].power[tokens[pType]]
-		
+		min = random(1, max)
+		self:SetValue(min)
+
 		if not self.colorClass then
 			self:SetStatusBarColor(color[1], color[2], color[3])
 			local mu = self.bg.multiplier or 1

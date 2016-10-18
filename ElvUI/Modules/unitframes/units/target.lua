@@ -7,18 +7,9 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 --Cache global variables
 --Lua functions
 local _G = _G
-local pairs, unpack = pairs, unpack
 local tinsert = table.insert
-local ceil = math.ceil
-local format = format
 --WoW API / Variables
 local IsAddOnLoaded = IsAddOnLoaded
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
-local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
-local MAX_COMBO_POINTS = MAX_COMBO_POINTS
-
---Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: ElvUF_Player
 
 function UF:Construct_TargetFrame(frame)
 	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
@@ -36,7 +27,7 @@ function UF:Construct_TargetFrame(frame)
 
 	frame.Debuffs = self:Construct_Debuffs(frame)
 	frame.Threat = self:Construct_Threat(frame)
-	frame.Castbar = self:Construct_Castbar(frame, 'RIGHT', L["Target Castbar"])
+	frame.Castbar = self:Construct_Castbar(frame, L["Target Castbar"])
 	frame.Castbar.SafeZone = nil
 	frame.Castbar.LatencyTexture:Hide()
 	frame.RaidIcon = UF:Construct_RaidIcon(frame)

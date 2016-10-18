@@ -7,7 +7,6 @@ local random = random
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local UnitIsTapDenied = UnitIsTapDenied
-local UnitIsTapDeniedByPlayer = UnitIsTapDeniedByPlayer
 local UnitReaction = UnitReaction
 local UnitIsPlayer = UnitIsPlayer
 local UnitClass = UnitClass

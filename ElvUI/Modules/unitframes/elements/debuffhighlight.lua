@@ -32,7 +32,6 @@ function UF:Construct_DebuffHighlight(frame)
 end
 
 function UF:Configure_DebuffHighlight(frame)
-	local dbh = frame.DebuffHighlight
 	if E.db.unitframe.debuffHighlighting ~= 'NONE' then
 		frame:EnableElement('DebuffHighlight')
 		frame.DebuffHighlightFilterTable = E.global.unitframe.DebuffHighlightColors
