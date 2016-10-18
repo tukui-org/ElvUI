@@ -14,13 +14,13 @@ local UpdateMicroButtonsParent = UpdateMicroButtonsParent
 -- GLOBALS: MICRO_BUTTONS, CharacterMicroButton, GuildMicroButtonTabard
 -- GLOBALS: GuildMicroButton, MicroButtonPortrait
 
-local function Button_OnEnter(self)
+local function Button_OnEnter()
 	if AB.db.microbar.mouseover then
 		E:UIFrameFadeIn(ElvUI_MicroBar, 0.2, ElvUI_MicroBar:GetAlpha(), AB.db.microbar.alpha)
 	end
 end
 
-local function Button_OnLeave(self)
+local function Button_OnLeave()
 	if AB.db.microbar.mouseover then
 		E:UIFrameFadeOut(ElvUI_MicroBar, 0.2, ElvUI_MicroBar:GetAlpha(), 0)
 	end

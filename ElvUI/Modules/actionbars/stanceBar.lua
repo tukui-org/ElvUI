@@ -45,7 +45,7 @@ function AB:UPDATE_SHAPESHIFT_COOLDOWN()
 	self:StyleShapeShift("UPDATE_SHAPESHIFT_COOLDOWN")
 end
 
-function AB:StyleShapeShift(event)
+function AB:StyleShapeShift()
 	local numForms = GetNumShapeshiftForms();
 	local texture, name, isActive, isCastable, _;
 	local buttonName, button, icon, cooldown;

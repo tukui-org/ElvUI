@@ -3,12 +3,12 @@ local DT = E:GetModule('DataTexts')
 
 --Cache global variables
 --WoW API / Variables
-local GetNumRandomDungeons = GetNumRandomDungeons
 local GetLFGRandomDungeonInfo = GetLFGRandomDungeonInfo
+local GetLFGRoleShortageRewards = GetLFGRoleShortageRewards
+local GetNumRandomDungeons = GetNumRandomDungeons
 local GetNumRFDungeons = GetNumRFDungeons
 local GetRFDungeonInfo = GetRFDungeonInfo
-local GetLFGRoleShortageRewards = GetLFGRoleShortageRewards
-local ToggleFrame = ToggleFrame
+local PVEFrame_ToggleFrame = PVEFrame_ToggleFrame
 local LFG_ROLE_NUM_SHORTAGE_TYPES = LFG_ROLE_NUM_SHORTAGE_TYPES
 local BATTLEGROUND_HOLIDAY = BATTLEGROUND_HOLIDAY
 local DUNGEONS = DUNGEONS

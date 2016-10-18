@@ -12,7 +12,6 @@ local SquareButton_SetIcon = SquareButton_SetIcon
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: LibStub
 
-local AceGUI = LibStub("AceGUI-3.0", true)
 local RegisterAsWidget, RegisterAsContainer
 local function SetModifiedBackdrop(self)
 	if self.backdrop then self = self.backdrop end
@@ -191,7 +190,7 @@ function S:SkinAce3()
 			end
 			button:SetParent(frame.backdrop)
 			text:SetParent(frame.backdrop)
-			button:HookScript('OnClick', function(this, button)
+			button:HookScript('OnClick', function(this)
 				local self = this.obj
 				if self.dropdown then
 					self.dropdown:SetTemplate('Default', true)

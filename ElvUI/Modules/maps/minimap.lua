@@ -6,7 +6,7 @@ E.Minimap = M
 --Lua functions
 local _G = _G
 local tinsert = table.insert
-local gsub, upper, strsub = string.gsub, string.upper, strsub
+local strsub = strsub
 --WoW API / Variables
 local CloseAllWindows = CloseAllWindows
 local CloseMenus = CloseMenus
@@ -18,7 +18,6 @@ local GetZonePVPInfo = GetZonePVPInfo
 local GuildInstanceDifficulty = GuildInstanceDifficulty
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
-local IsInGuild = IsInGuild
 local IsShiftKeyDown = IsShiftKeyDown
 local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
 local Minimap_OnClick = Minimap_OnClick
@@ -160,9 +159,6 @@ function M:Minimap_OnMouseUp(btn)
 			E:DropDown(menuList, menuFrame, -160, 0)
 		end
 	elseif btn == "RightButton" then
-		local xoff = -1
-
-		if position:match("RIGHT") then xoff = E:Scale(-16) end
 		ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, "cursor")
 	else
 		Minimap_OnClick(self)

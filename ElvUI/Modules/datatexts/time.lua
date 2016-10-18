@@ -41,7 +41,7 @@ local enteredFrame = false;
 
 local Update, lastPanel; -- UpValue
 local localizedName, isActive, startTime, canEnter, _
-local name, reset, difficultyId, locked, extended, isRaid, maxPlayers, numEncounters, encounterProgress
+local name, reset, difficultyId, extended, maxPlayers, numEncounters, encounterProgress
 
 local function ValueColorUpdate(hex)
 	europeDisplayFormat = join("", "%02d", hex, ":|r%02d")

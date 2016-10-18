@@ -1,4 +1,4 @@
-local E, L, DF = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, L, V, P, G = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 local RU = E:NewModule('RaidUtility', 'AceEvent-3.0');
 
 --Cache global variables
@@ -140,7 +140,7 @@ function RU:Initialize()
 		raidUtil:SetPoint(raidUtilPoint, self, raidUtilPoint)
 		closeButton:SetPoint(raidUtilPoint, raidUtil, closeButtonPoint, 0, yOffset)
 	]=]):format(-E.Border + E.Spacing*3))
-	RaidUtility_ShowButton:SetScript("OnMouseUp", function(self) RaidUtilityPanel.toggled = true end)
+	RaidUtility_ShowButton:SetScript("OnMouseUp", function() RaidUtilityPanel.toggled = true end)
 	RaidUtility_ShowButton:SetMovable(true)
 	RaidUtility_ShowButton:SetClampedToScreen(true)
 	RaidUtility_ShowButton:SetClampRectInsets(0, 0, -1, 1)
@@ -170,12 +170,12 @@ function RU:Initialize()
 	self:CreateUtilButton("RaidUtility_CloseButton", RaidUtilityPanel, "UIMenuButtonStretchTemplate, SecureHandlerClickTemplate", 136, 18, "TOP", RaidUtilityPanel, "BOTTOM", 0, -1, CLOSE, nil)
 	RaidUtility_CloseButton:SetFrameRef("RaidUtility_ShowButton", RaidUtility_ShowButton)
 	RaidUtility_CloseButton:SetAttribute("_onclick", [=[self:GetParent():Hide(); self:GetFrameRef("RaidUtility_ShowButton"):Show();]=])
-	RaidUtility_CloseButton:SetScript("OnMouseUp", function(self) RaidUtilityPanel.toggled = false end)
+	RaidUtility_CloseButton:SetScript("OnMouseUp", function() RaidUtilityPanel.toggled = false end)
 	RaidUtilityPanel:SetFrameRef("RaidUtility_CloseButton", RaidUtility_CloseButton)
 
 	--Disband Raid button
 	self:CreateUtilButton("DisbandRaidButton", RaidUtilityPanel, "UIMenuButtonStretchTemplate", RaidUtilityPanel:GetWidth() * 0.8, 18, "TOP", RaidUtilityPanel, "TOP", 0, -5, L["Disband Group"], nil)
-	DisbandRaidButton:SetScript("OnMouseUp", function(self)
+	DisbandRaidButton:SetScript("OnMouseUp", function()
 		if CheckRaidStatus() then
 			E:StaticPopup_Show("DISBAND_RAID")
 		end
@@ -183,7 +183,7 @@ function RU:Initialize()
 
 	--Role Check button
 	self:CreateUtilButton("RoleCheckButton", RaidUtilityPanel, "UIMenuButtonStretchTemplate", RaidUtilityPanel:GetWidth() * 0.8, 18, "TOP", DisbandRaidButton, "BOTTOM", 0, -5, ROLE_POLL, nil)
-	RoleCheckButton:SetScript("OnMouseUp", function(self)
+	RoleCheckButton:SetScript("OnMouseUp", function()
 		if CheckRaidStatus() then
 			InitiateRolePoll()
 		end
@@ -203,7 +203,7 @@ function RU:Initialize()
 
 	--Ready Check button
 	self:CreateUtilButton("ReadyCheckButton", RaidUtilityPanel, "UIMenuButtonStretchTemplate", RoleCheckButton:GetWidth() * 0.75, 18, "TOPLEFT", RoleCheckButton, "BOTTOMLEFT", 0, -5, READY_CHECK, nil)
-	ReadyCheckButton:SetScript("OnMouseUp", function(self)
+	ReadyCheckButton:SetScript("OnMouseUp", function()
 		if CheckRaidStatus() then
 			DoReadyCheck()
 		end
@@ -211,7 +211,7 @@ function RU:Initialize()
 
 	--Raid Control Panel
 	self:CreateUtilButton("RaidControlButton", RaidUtilityPanel, "UIMenuButtonStretchTemplate", RoleCheckButton:GetWidth(), 18, "TOPLEFT", ReadyCheckButton, "BOTTOMLEFT", 0, -5, L["Raid Menu"], nil)
-	RaidControlButton:SetScript("OnMouseUp", function(self)
+	RaidControlButton:SetScript("OnMouseUp", function()
 		ToggleFriendsFrame(4)
 	end)
 

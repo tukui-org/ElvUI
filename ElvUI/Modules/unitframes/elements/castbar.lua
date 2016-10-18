@@ -1,12 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
-local LSM = LibStub("LibSharedMedia-3.0");
 
 --Cache global variables
 --Lua functions
 local unpack, tonumber = unpack, tonumber
-local floor, abs, min = math.floor, abs, math.min
-local sub, utf8sub, utf8len = string.sub, string.utf8sub, string.utf8len
+local abs, min = abs, math.min
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local UnitSpellHaste = UnitSpellHaste
@@ -34,7 +32,7 @@ local INVERT_ANCHORPOINT = {
 
 local ticks = {}
 
-function UF:Construct_Castbar(frame, direction, moverName)
+function UF:Construct_Castbar(frame, moverName)
 	local castbar = CreateFrame("StatusBar", nil, frame)
 	castbar:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() + 30) --Make it appear above everything else
 	self['statusbars'][castbar] = true
@@ -308,7 +306,7 @@ end
 local MageSpellName = GetSpellInfo(5143) --Arcane Missiles
 local MageBuffName = GetSpellInfo(166872) --4p T17 bonus proc for arcane
 
-function UF:PostCastStart(unit, name, rank, castid)
+function UF:PostCastStart(unit, name)
 	local db = self:GetParent().db
 	if not db or not db.castbar then return; end
 
@@ -424,7 +422,7 @@ function UF:PostCastStart(unit, name, rank, castid)
 	end
 end
 
-function UF:PostCastStop(unit, name, castid)
+function UF:PostCastStop()
 	self.chainChannel = nil
 	self.prevSpellCast = nil
 end
@@ -525,7 +523,7 @@ function UF:PostCastInterruptible(unit)
 	end
 end
 
-function UF:PostCastNotInterruptible(unit)
+function UF:PostCastNotInterruptible()
 	local colors = ElvUF.colors
 	self:SetStatusBarColor(colors.castNoInterrupt[1], colors.castNoInterrupt[2], colors.castNoInterrupt[3])
 end

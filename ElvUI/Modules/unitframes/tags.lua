@@ -8,7 +8,7 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 local _G = _G
 local unpack, pairs = unpack, pairs
 local twipe = table.wipe
-local ceil, sqrt, floor = math.ceil, math.sqrt, math.floor
+local floor = math.floor
 local format = string.format
 --WoW API / Variables
 local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
@@ -17,7 +17,6 @@ local GetNumGroupMembers = GetNumGroupMembers
 local GetPVPTimer = GetPVPTimer
 local GetQuestGreenRange = GetQuestGreenRange
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
-local GetShapeshiftFormID = GetShapeshiftFormID
 local GetSpecialization = GetSpecialization
 local GetThreatStatusColor = GetThreatStatusColor
 local GetTime = GetTime
@@ -56,22 +55,12 @@ local UnitReaction = UnitReaction
 local UnitStagger = UnitStagger
 local ALTERNATE_POWER_INDEX = ALTERNATE_POWER_INDEX
 local DEFAULT_AFK_MESSAGE = DEFAULT_AFK_MESSAGE
-local MOONKIN_FORM = MOONKIN_FORM
 local PVP = PVP
-local SHADOW_ORBS_SHOW_LEVEL = SHADOW_ORBS_SHOW_LEVEL
 local SPEC_MONK_BREWMASTER = SPEC_MONK_BREWMASTER
 local SPEC_PALADIN_RETRIBUTION = SPEC_PALADIN_RETRIBUTION
-local SPEC_PRIEST_SHADOW = SPEC_PRIEST_SHADOW
-local SPEC_WARLOCK_AFFLICTION = SPEC_WARLOCK_AFFLICTION
-local SPEC_WARLOCK_DEMONOLOGY = SPEC_WARLOCK_DEMONOLOGY
-local SPEC_WARLOCK_DESTRUCTION = SPEC_WARLOCK_DESTRUCTION
-local SPELL_POWER_BURNING_EMBERS = SPELL_POWER_BURNING_EMBERS
 local SPELL_POWER_CHI = SPELL_POWER_CHI
-local SPELL_POWER_DEMONIC_FURY = SPELL_POWER_DEMONIC_FURY
-local SPELL_POWER_ECLIPSE = SPELL_POWER_ECLIPSE
 local SPELL_POWER_HOLY_POWER = SPELL_POWER_HOLY_POWER
 local SPELL_POWER_MANA = SPELL_POWER_MANA
-local SPELL_POWER_SHADOW_ORBS = SPELL_POWER_SHADOW_ORBS
 local SPELL_POWER_SOUL_SHARDS = SPELL_POWER_SOUL_SHARDS
 local UNITNAME_SUMMON_TITLE17 = UNITNAME_SUMMON_TITLE17
 local UNKNOWN = UNKNOWN
@@ -354,7 +343,7 @@ ElvUF.Tags.Methods['power:max'] = function(unit)
 	return E:GetFormattedText('CURRENT', max, max)
 end
 
-ElvUF.Tags.Methods['manacolor'] = function(unit)
+ElvUF.Tags.Methods['manacolor'] = function()
 	local altR, altG, altB = PowerBarColor["MANA"].r, PowerBarColor["MANA"].g, PowerBarColor["MANA"].b
 	local color = ElvUF['colors'].power["MANA"]
 	if color then
@@ -723,7 +712,7 @@ end
 
 ElvUF.Tags.Events['classpower:current-percent'] = 'UNIT_POWER_FREQUENT PLAYER_TALENT_UPDATE UPDATE_SHAPESHIFT_FORM'
 ElvUF.Tags.Methods['classpower:current-percent'] = function()
-	local min, max, staggerPercent = GetClassPower(E.myclass)
+	local min, max = GetClassPower(E.myclass)
 	if min == 0 then
 		return ' '
 	else

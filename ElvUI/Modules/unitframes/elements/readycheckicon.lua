@@ -3,9 +3,7 @@ local UF = E:GetModule('UnitFrames');
 
 --Cache global variables
 --Lua functions
-
 --WoW API / Variables
-local CreateFrame = CreateFrame
 
 function UF:Construct_ReadyCheckIcon(frame)
 	local tex = frame.RaisedElementParent:CreateTexture(nil, "OVERLAY", nil, 7)

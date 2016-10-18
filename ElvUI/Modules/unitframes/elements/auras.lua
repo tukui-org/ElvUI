@@ -350,7 +350,7 @@ function UF:UpdateAuraIconSettings(auras, noCycle)
 	end
 end
 
-function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, duration, timeLeft)
+function UF:PostUpdateAura(unit, button, index)
 	local name, _, _, _, dtype, duration, expiration, _, isStealable = UnitAura(unit, index, button.filter)
 	local isFriend = UnitIsFriend('player', unit)
 	
@@ -467,7 +467,6 @@ function UF:CheckFilter(filterType, isFriend)
 end
 
 function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, timeLeft, unitCaster, isStealable, _, spellID, canApplyAura, isBossAura)
-	local isPlayer, isFriend
 	local db = self:GetParent().db
 	if not db or not db[self.type] then return true; end
 
@@ -479,7 +478,6 @@ function UF:AuraFilter(unit, icon, name, rank, texture, count, dtype, duration, 
 	local playerOnlyFilter = false
 	local isPlayer = unitCaster == 'player' or unitCaster == 'vehicle'
 	local isFriend = UnitIsFriend('player', unit)
-	local auraType = isFriend and db.friendlyAuraType or db.enemyAuraType
 
 	icon.isPlayer = isPlayer
 	icon.owner = unitCaster

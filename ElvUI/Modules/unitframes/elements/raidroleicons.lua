@@ -59,7 +59,6 @@ function UF:RaidRoleUpdate()
 
 	if not leader or not masterLooter or not assistant then return; end
 
-	local unit = frame.unit
 	local db = frame.db
 	local isLeader = leader:IsShown()
 	local isMasterLooter = masterLooter:IsShown()

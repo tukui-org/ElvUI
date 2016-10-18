@@ -6,7 +6,6 @@ local AB = E:GetModule('ActionBars');
 local _G = _G
 local ceil = math.ceil
 --WoW API / Variables
-local hooksecurefunc = hooksecurefunc
 local RegisterStateDriver = RegisterStateDriver
 local GetBindingKey = GetBindingKey
 local PetHasActionBar = PetHasActionBar
@@ -40,7 +39,6 @@ function AB:UpdatePet(event, unit)
 		local icon = _G[buttonName.."Icon"];
 		local autoCast = _G[buttonName.."AutoCastable"];
 		local shine = _G[buttonName.."Shine"];
-		local checked = button:GetCheckedTexture();
 		local name, subtext, texture, isToken, isActive, autoCastAllowed, autoCastEnabled = GetPetActionInfo(i);
 
 		if not isToken then

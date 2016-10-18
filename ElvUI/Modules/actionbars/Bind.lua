@@ -6,7 +6,7 @@ local AB = E:GetModule('ActionBars');
 local _G = _G
 local select, tonumber, pairs = select, tonumber, pairs
 local floor = math.floor
-local find, format = string.find, string.format
+local format = string.format
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 local EnumerateFrames = EnumerateFrames
@@ -424,7 +424,7 @@ function AB:LoadKeyBinder()
 		self:SetChecked(GetCurrentBindingSet() == 2)
 	end)
 
-	perCharCheck:SetScript("OnClick", function(self)
+	perCharCheck:SetScript("OnClick", function()
 		if ( AB.bindingsChanged ) then
 			E:StaticPopup_Show("CONFIRM_LOSE_BINDING_CHANGES");
 		else
@@ -442,7 +442,7 @@ function AB:LoadKeyBinder()
 	local save = CreateFrame("Button", f:GetName()..'SaveButton', f, "OptionsButtonTemplate")
 	_G[save:GetName() .. "Text"]:SetText(L["Save"])
 	save:Width(150)
-	save:SetScript("OnClick", function(self)
+	save:SetScript("OnClick", function()
 		AB:DeactivateBindMode(true)
 	end)
 
@@ -450,7 +450,7 @@ function AB:LoadKeyBinder()
 	discard:Width(150)
 	_G[discard:GetName() .. "Text"]:SetText(L["Discard"])
 
-	discard:SetScript("OnClick", function(self)
+	discard:SetScript("OnClick", function()
 		AB:DeactivateBindMode(false)
 	end)
 
