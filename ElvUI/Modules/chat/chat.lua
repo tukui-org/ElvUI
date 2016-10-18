@@ -38,7 +38,6 @@ local BetterDate = BetterDate
 local BNGetGameAccountInfo = BNGetGameAccountInfo
 local BNGetFriendInfo = BNGetFriendInfo
 local BNGetNumFriends = BNGetNumFriends
-local Ambiguate = Ambiguate
 local GetPlayerInfoByGUID = GetPlayerInfoByGUID
 local StaticPopup_Visible = StaticPopup_Visible
 local Chat_GetChatCategory = Chat_GetChatCategory
@@ -62,7 +61,6 @@ local ChatFrame_GetMobileEmbeddedTexture = ChatFrame_GetMobileEmbeddedTexture
 local ChatEdit_SetLastTellTarget = ChatEdit_SetLastTellTarget
 local PlaySound = PlaySound
 local FlashClientIcon = FlashClientIcon
-local BNIsSelf = BNIsSelf
 local FCFManager_ShouldSuppressMessageFlash = FCFManager_ShouldSuppressMessageFlash
 local FCF_StartAlertFlash = FCF_StartAlertFlash
 local ChatFrame_ConfigEventHandler = ChatFrame_ConfigEventHandler
@@ -122,13 +120,7 @@ local CreatedFrames = 0;
 local lines = {};
 local lfgRoles = {};
 local msgList, msgCount, msgTime = {}, {}, {}
-local good, maybe, filter, login = {}, {}, {}, false
 local chatFilters = {};
-local cvars = {
-	["bnWhisperMode"] = true,
-	["conversationMode"] = true,
-	["whisperMode"] = true,
-}
 
 local PLAYER_REALM = gsub(E.myrealm,'[%s%-]','')
 local PLAYER_NAME = E.myname.."-"..PLAYER_REALM
@@ -136,7 +128,6 @@ local PLAYER_NAME = E.myname.."-"..PLAYER_REALM
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
 
-local TIMESTAMP_FORMAT
 local DEFAULT_STRINGS = {
 	GUILD = L["G"],
 	PARTY = L["P"],
@@ -370,10 +361,10 @@ function CH:StyleChat(frame)
 
 	tab.text = _G[name.."TabText"]
 	tab.text:SetTextColor(unpack(E["media"].rgbvaluecolor))
-	hooksecurefunc(tab.text, "SetTextColor", function(t, r, g, b, a)
+	hooksecurefunc(tab.text, "SetTextColor", function(self, r, g, b)
 		local rR, gG, bB = unpack(E["media"].rgbvaluecolor)
 		if r ~= rR or g ~= gG or b ~= bB then
-			t:SetTextColor(rR, gG, bB)
+			self:SetTextColor(rR, gG, bB)
 		end
 	end)
 
@@ -609,7 +600,6 @@ function CH:OnLeave(frame)
 	end
 end
 
-local x = CreateFrame('Frame')
 function CH:SetupChatTabs(frame, hook)
 	if hook and (not self.hooks or not self.hooks[frame] or not self.hooks[frame].OnEnter) then
 		self:HookScript(frame, 'OnEnter')
@@ -732,7 +722,7 @@ function CH:PositionChat(override)
 
 	if not self.db.lockPositions or E.private.chat.enable ~= true then return end
 
-	local chat, chatbg, tab, id, point, button, isDocked
+	local chat, chatbg, tab, id, point, isDocked
 	local fadeUndockedTabs = E.db["chat"].fadeUndockedTabs
 	local fadeTabsNoBackdrop = E.db["chat"].fadeTabsNoBackdrop
 
@@ -741,7 +731,6 @@ function CH:PositionChat(override)
 
 		chat = _G[format("ChatFrame%d", i)]
 		chatbg = format("ChatFrame%dBackground", i)
-		button = _G[format("ButtonCF%d", i)]
 		id = chat:GetID()
 		tab = _G[format("ChatFrame%sTab", i)]
 		point = GetChatWindowSavedPosition(id)
@@ -1010,7 +999,6 @@ function CH:GetPluginIcon(sender)
 end
 
 local function GetChatIcons(sender)
-	local pflag
 	if(specialChatIcons[PLAYER_REALM] and specialChatIcons[PLAYER_REALM][E.myname] ~= true) then
 		for realm, _ in pairs(specialChatIcons) do
 			for character, texture in pairs(specialChatIcons[realm]) do
@@ -1238,7 +1226,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			elseif ( arg1 == "FRIEND_REMOVED" or arg1 == "BATTLETAG_FRIEND_REMOVED" ) then
 				message = format(globalstring, arg2);
 			elseif ( arg1 == "FRIEND_ONLINE" or arg1 == "FRIEND_OFFLINE" ) then
-				local _, accountName, battleTag, _, characterName, _, client = BNGetFriendInfoByID(arg13);
+				local _, _, _, _, characterName, _, client = BNGetFriendInfoByID(arg13);
 				if (client and client ~= "") then
 					local _, _, battleTag = BNGetFriendInfoByID(arg13);
 					characterName = BNet_GetValidatedCharacterName(characterName, battleTag, client) or "";
@@ -1332,7 +1320,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 					local groupIndex = GROUP_TAG_LIST[term];
 					local groupList = "[";
 					for i=1, GetNumGroupMembers() do
-						local name, rank, subgroup, level, class, classFileName = GetRaidRosterInfo(i);
+						local name, _, subgroup, _, _, classFileName = GetRaidRosterInfo(i);
 						if ( name and subgroup == groupIndex ) then
 							local classColorTable = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[classFileName] or RAID_CLASS_COLORS[classFileName];
 							if ( classColorTable ) then
@@ -1458,7 +1446,7 @@ function CH:FloatingChatFrame_OnEvent(event, ...)
 	FloatingChatFrame_OnEvent(self, event, ...);
 end
 
-function CH:SetupChat(event, ...)
+function CH:SetupChat()
 	if E.private.chat.enable ~= true then return end
 	for _, frameName in pairs(CHAT_FRAMES) do
 		local frame = _G[frameName]
@@ -1532,7 +1520,6 @@ function CH:ChatThrottleHandler(event, ...)
 	end
 end
 
-local locale = GetLocale()
 function CH:CHAT_MSG_CHANNEL(event, message, author, ...)
 	local blockFlag = false
 	local msg = PrepareMessage(author, message)
@@ -1834,7 +1821,7 @@ function CH:ChatFrame_RemoveMessageEventFilter (event, filter)
 	end
 end
 
-function CH:FCF_SetWindowAlpha(frame, alpha, doNotSave)
+function CH:FCF_SetWindowAlpha(frame, alpha)
 	frame.oldAlpha = alpha or 1;
 end
 
