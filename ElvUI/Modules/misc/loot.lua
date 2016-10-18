@@ -35,6 +35,7 @@ local LOOT = LOOT
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameTooltip, LootFrame, LootSlot, GroupLootDropDown, UISpecialFrames
+-- GLOBALS: UIParent
 
 local coinTextureIDs = {
 	[133784] = true,
