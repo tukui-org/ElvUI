@@ -87,7 +87,7 @@ local TARGET = TARGET
 -- GLOBALS: ShoppingTooltip1TextRight3, ShoppingTooltip1TextRight4, ShoppingTooltip2TextLeft1
 -- GLOBALS: ShoppingTooltip2TextLeft2, ShoppingTooltip2TextLeft3, ShoppingTooltip2TextLeft4
 -- GLOBALS: ShoppingTooltip2TextRight1, ShoppingTooltip2TextRight2, ShoppingTooltip2TextRight3
--- GLOBALS: ShoppingTooltip2TextRight4, GameTooltipTextLeft1, GameTooltipTextLeft2
+-- GLOBALS: ShoppingTooltip2TextRight4, GameTooltipTextLeft1, GameTooltipTextLeft2, WorldMapTooltip
 
 local GameTooltip, GameTooltipStatusBar = _G["GameTooltip"], _G["GameTooltipStatusBar"]
 local S_ITEM_LEVEL = ITEM_LEVEL:gsub( "%%d", "(%%d+)" )
@@ -131,121 +131,6 @@ local SlotName = {
 	"Hands","Waist","Legs","Feet","Finger0","Finger1",
 	"Trinket0","Trinket1","MainHand","SecondaryHand"
 }
-
---All this does is increase the spacing between tooltips when you compare items
-function TT:GameTooltip_ShowCompareItem(tt, shift)
-	if ( not tt ) then
-		tt = GameTooltip;
-	end
-	local _, link = tt:GetItem();
-	if ( not link ) then
-		return;
-	end
-
-	local shoppingTooltip1, shoppingTooltip2, shoppingTooltip3 = unpack(tt.shoppingTooltips);
-
-	local item1 = nil;
-	local item2 = nil;
-	local item3 = nil;
-	local side = "left";
-	if ( shoppingTooltip1:SetHyperlinkCompareItem(link, 1, shift, tt) ) then
-		item1 = true;
-	end
-	if ( shoppingTooltip2:SetHyperlinkCompareItem(link, 2, shift, tt) ) then
-		item2 = true;
-	end
-	if ( shoppingTooltip3:SetHyperlinkCompareItem(link, 3, shift, tt) ) then
-		item3 = true;
-	end
-
-	-- find correct side
-	local rightDist = 0;
-	local leftPos = tt:GetLeft();
-	local rightPos = tt:GetRight();
-	if ( not rightPos ) then
-		rightPos = 0;
-	end
-	if ( not leftPos ) then
-		leftPos = 0;
-	end
-
-	rightDist = GetScreenWidth() - rightPos;
-
-	if (leftPos and (rightDist < leftPos)) then
-		side = "left";
-	else
-		side = "right";
-	end
-
-	-- see if we should slide the tooltip
-	if ( tt:GetAnchorType() and tt:GetAnchorType() ~= "ANCHOR_PRESERVE" ) then
-		local totalWidth = 0;
-		if ( item1  ) then
-			totalWidth = totalWidth + shoppingTooltip1:GetWidth();
-		end
-		if ( item2  ) then
-			totalWidth = totalWidth + shoppingTooltip2:GetWidth();
-		end
-		if ( item3  ) then
-			totalWidth = totalWidth + shoppingTooltip3:GetWidth();
-		end
-
-		if ( (side == "left") and (totalWidth > leftPos) ) then
-			tt:SetAnchorType(tt:GetAnchorType(), (totalWidth - leftPos), 0);
-		elseif ( (side == "right") and (rightPos + totalWidth) >  GetScreenWidth() ) then
-			tt:SetAnchorType(tt:GetAnchorType(), -((rightPos + totalWidth) - GetScreenWidth()), 0);
-		end
-	end
-
-	-- anchor the compare tooltips
-	if ( item3 ) then
-		shoppingTooltip3:SetOwner(tt, "ANCHOR_NONE");
-		shoppingTooltip3:ClearAllPoints();
-		if ( side and side == "left" ) then
-			shoppingTooltip3:Point("TOPRIGHT", tt, "TOPLEFT", -2, -10);
-		else
-			shoppingTooltip3:Point("TOPLEFT", tt, "TOPRIGHT", 2, -10);
-		end
-		shoppingTooltip3:SetHyperlinkCompareItem(link, 3, shift, tt);
-		shoppingTooltip3:Show();
-	end
-
-	if ( item1 ) then
-		if( item3 ) then
-			shoppingTooltip1:SetOwner(shoppingTooltip3, "ANCHOR_NONE");
-		else
-			shoppingTooltip1:SetOwner(tt, "ANCHOR_NONE");
-		end
-		shoppingTooltip1:ClearAllPoints();
-		if ( side and side == "left" ) then
-			if( item3 ) then
-				shoppingTooltip1:Point("TOPRIGHT", shoppingTooltip3, "TOPLEFT", -2, 0);
-			else
-				shoppingTooltip1:Point("TOPRIGHT", tt, "TOPLEFT", -2, -10);
-			end
-		else
-			if( item3 ) then
-				shoppingTooltip1:Point("TOPLEFT", shoppingTooltip3, "TOPRIGHT", 2, 0);
-			else
-				shoppingTooltip1:Point("TOPLEFT", tt, "TOPRIGHT", 2, -10);
-			end
-		end
-		shoppingTooltip1:SetHyperlinkCompareItem(link, 1, shift, tt);
-		shoppingTooltip1:Show();
-
-		if ( item2 ) then
-			shoppingTooltip2:SetOwner(shoppingTooltip1, "ANCHOR_NONE");
-			shoppingTooltip2:ClearAllPoints();
-			if ( side and side == "left" ) then
-				shoppingTooltip2:Point("TOPRIGHT", shoppingTooltip1, "TOPLEFT", -2, 0);
-			else
-				shoppingTooltip2:Point("TOPLEFT", shoppingTooltip1, "TOPRIGHT", 2, 0);
-			end
-			shoppingTooltip2:SetHyperlinkCompareItem(link, 2, shift, tt);
-			shoppingTooltip2:Show();
-		end
-	end
-end
 
 function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 	if E.private.tooltip.enable ~= true then return end
@@ -874,11 +759,9 @@ function TT:Initialize()
 	self:SecureHook('GameTooltip_SetDefaultAnchor')
 	self:SecureHook('GameTooltip_ShowStatusBar')
 	self:SecureHook("SetItemRef")
-	--self:SecureHook("GameTooltip_ShowCompareItem")
 	self:SecureHook(GameTooltip, "SetUnitAura")
 	self:SecureHook(GameTooltip, "SetUnitBuff", "SetUnitAura")
 	self:SecureHook(GameTooltip, "SetUnitDebuff", "SetUnitAura")
-	--self:SecureHook(GameTooltip, "SetUnitConsolidatedBuff", "SetConsolidatedUnitAura")
 	self:HookScript(GameTooltip, "OnTooltipSetSpell", "GameTooltip_OnTooltipSetSpell")
 	self:HookScript(GameTooltip, 'OnTooltipCleared', 'GameTooltip_OnTooltipCleared')
 	self:HookScript(GameTooltip, 'OnTooltipSetItem', 'GameTooltip_OnTooltipSetItem')
@@ -901,7 +784,7 @@ function TT:Initialize()
 	WorldMapTooltip.ItemTooltip:CreateBackdrop()
 	WorldMapTooltip.ItemTooltip.backdrop:SetOutside(WorldMapTooltip.ItemTooltip.Icon)
 	WorldMapTooltip.ItemTooltip.Count:ClearAllPoints()
-	WorldMapTooltip.ItemTooltip.Count:SetPoint("BOTTOMRIGHT", WorldMapTooltip.ItemTooltip.Icon, "BOTTOMRIGHT", 0, 2)
+	WorldMapTooltip.ItemTooltip.Count:SetPoint("BOTTOMRIGHT", WorldMapTooltip.ItemTooltip.Icon, "BOTTOMRIGHT", 1, 0)
 
 	--Variable is localized at top of file, then set here when we're sure the frame has been created
 	--Used to check if keybinding is active, if so then don't hide tooltips on actionbars
