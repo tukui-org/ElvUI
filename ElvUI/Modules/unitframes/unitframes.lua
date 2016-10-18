@@ -7,6 +7,9 @@ UF.LSM = LSM
 --Lua functions
 local _G = _G
 local select, pairs, type, unpack, assert, tostring = select, pairs, type, unpack, assert, tostring
+local min = math.min
+local tinsert = table.insert
+local find, gsub, format = string.find, string.gsub, string.format
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
@@ -23,7 +26,6 @@ local RegisterStateDriver = RegisterStateDriver
 local UnregisterAttributeDriver = UnregisterAttributeDriver
 local CompactRaidFrameManager_UpdateShown = CompactRaidFrameManager_UpdateShown
 local CompactRaidFrameContainer = CompactRaidFrameContainer
-local CompactUnitFrame_UnregisterEvents = CompactUnitFrame_UnregisterEvents
 local MAX_RAID_MEMBERS = MAX_RAID_MEMBERS
 local MAX_BOSS_FRAMES = MAX_BOSS_FRAMES
 
@@ -35,13 +37,7 @@ local MAX_BOSS_FRAMES = MAX_BOSS_FRAMES
 
 local _, ns = ...
 local ElvUF = ns.oUF
-local AceTimer = LibStub:GetLibrary("AceTimer-3.0")
 assert(ElvUF, "ElvUI was unable to locate oUF.")
-
-local opposites = {
-	['DEBUFFS'] = 'BUFFS',
-	['BUFFS'] = 'DEBUFFS'
-}
 
 UF['headerstoload'] = {}
 UF['unitgroupstoload'] = {}
@@ -216,10 +212,6 @@ local DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER = {
 	LEFT_DOWN = -1,
 	LEFT_UP = 1,
 }
-
-local find, gsub, split, format = string.find, string.gsub, string.split, string.format
-local min, abs = math.min, math.abs
-local tremove, tinsert = table.remove, table.insert
 
 function UF:ConvertGroupDB(group)
 	local db = self.db.units[group.groupName]
@@ -472,7 +464,7 @@ function UF:Update_AllFrames()
 	self:UpdateAllHeaders()
 end
 
-function UF:CreateAndUpdateUFGroup(group, numGroup, template)
+function UF:CreateAndUpdateUFGroup(group, numGroup)
 	if InCombatLockdown() then self:RegisterEvent('PLAYER_REGEN_ENABLED'); return end
 
 	for i=1, numGroup do
@@ -767,10 +759,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerUpdat
 	if(raidFilter and numGroups and (self[group] and not self[group].blockVisibilityChanges)) then
 		local inInstance, instanceType = IsInInstance()
 		if(inInstance and (instanceType == 'raid' or instanceType == 'pvp')) then
-			local _, _, _, _, maxPlayers, _, _, mapID, maxPlayersInstance = GetInstanceInfo()
-			--[[if maxPlayersInstance > 0 then
-				maxPlayers = maxPlayersInstance
-			end]]
+			local _, _, _, _, maxPlayers, _, _, mapID = GetInstanceInfo()
 
 			if UF.mapIDs[mapID] then
 				maxPlayers = UF.mapIDs[mapID]
@@ -995,7 +984,7 @@ local function HideRaid()
 	end
 end
 
-function UF:DisableBlizzard(event)
+function UF:DisableBlizzard()
 	if (not E.private["unitframe"]["disabledBlizzardFrames"].raid) and (not E.private["unitframe"]["disabledBlizzardFrames"].party) then return; end
 	if not CompactRaidFrameManager_UpdateShown then
 		E:StaticPopup_Show("WARNING_BLIZZARD_ADDONS")
@@ -1008,7 +997,6 @@ function UF:DisableBlizzard(event)
 		CompactRaidFrameContainer:UnregisterAllEvents()
 
 		HideRaid()
-		--hooksecurefunc("CompactUnitFrame_RegisterEvents", CompactUnitFrame_UnregisterEvents) -- breaks nameplates names
 	end
 end
 
@@ -1121,7 +1109,7 @@ function UF:ADDON_LOADED(event, addon)
 end
 
 local hasEnteredWorld = false
-function UF:PLAYER_ENTERING_WORLD(event)
+function UF:PLAYER_ENTERING_WORLD()
 	if not hasEnteredWorld then
 		--We only want to run Update_AllFrames once when we first log in or /reload
 		self:Update_AllFrames()
