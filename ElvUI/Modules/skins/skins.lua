@@ -199,7 +199,6 @@ function S:HandleTab(tab)
 end
 
 function S:HandleNextPrevButton(btn, useVertical, inverseDirection)
-	local norm, pushed, disabled
 	local inverseDirection = inverseDirection or btn:GetName() and (find(btn:GetName():lower(), 'left') or find(btn:GetName():lower(), 'prev') or find(btn:GetName():lower(), 'decrement') or find(btn:GetName():lower(), 'back'))
 
 	btn:StripTextures()
@@ -326,10 +325,10 @@ function S:HandleDropDownBox(frame, width)
 	if(button) then
 		button:ClearAllPoints()
 		button:Point("RIGHT", frame, "RIGHT", -10, 3)
-		hooksecurefunc(button, "SetPoint", function(self, point, attachTo, anchorPoint, xOffset, yOffset, noReset)
+		hooksecurefunc(button, "SetPoint", function(self, _, _, _, _, _, noReset)
 			if not noReset then
-				button:ClearAllPoints()
-				button:SetPoint("RIGHT", frame, "RIGHT", E:Scale(-10), E:Scale(3), true)
+				self:ClearAllPoints()
+				self:SetPoint("RIGHT", frame, "RIGHT", E:Scale(-10), E:Scale(3), true)
 			end
 		end)
 
