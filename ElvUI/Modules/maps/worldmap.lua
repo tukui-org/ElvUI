@@ -7,10 +7,11 @@ E.WorldMap = M
 local find = string.find
 --WoW API / Variables
 local CreateFrame = CreateFrame
-local InCombatLockdown = InCombatLockdown
-local SetUIPanelAttribute = SetUIPanelAttribute
-local GetPlayerMapPosition = GetPlayerMapPosition
 local GetCursorPosition = GetCursorPosition
+local GetPlayerMapPosition = GetPlayerMapPosition
+local InCombatLockdown = InCombatLockdown
+local SetCVar = SetCVar
+local SetUIPanelAttribute = SetUIPanelAttribute
 local PLAYER = PLAYER
 local MOUSE_LABEL = MOUSE_LABEL
 local WORLDMAP_FULLMAP_SIZE = WORLDMAP_FULLMAP_SIZE
@@ -18,8 +19,8 @@ local WORLDMAP_WINDOWED_SIZE = WORLDMAP_WINDOWED_SIZE
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: WorldMapFrame, WorldMapFrameSizeUpButton, WorldMapFrameSizeDownButton
--- GLOBALS: UIParent, CoordsHolder, WorldMapDetailFrame, DropDownList1
--- GLOBALS: NumberFontNormal, WORLDMAP_SETTINGS, BlackoutWorld
+-- GLOBALS: UIParent, CoordsHolder, WorldMapDetailFrame, DropDownList1, WORLD_MAP_MIN_ALPHA
+-- GLOBALS: NumberFontNormal, WORLDMAP_SETTINGS, BlackoutWorld, WorldMapScrollFrame
 
 local INVERTED_POINTS = {
 	["TOPLEFT"] = "BOTTOMLEFT",
