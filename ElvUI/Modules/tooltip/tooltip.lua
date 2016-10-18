@@ -201,41 +201,12 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 	end
 end
 
-function TT:GetAvailableTooltip()
-	for i=1, #GameTooltip.shoppingTooltips do
-		if(not GameTooltip.shoppingTooltips[i]:IsShown()) then
-			return GameTooltip.shoppingTooltips[i]
-		end
-	end
-end
-
-function TT:ScanForItemLevel(itemLink)
-	local tooltip = self:GetAvailableTooltip();
-	tooltip:SetOwner(UIParent, "ANCHOR_NONE");
-	tooltip:SetHyperlink(itemLink);
-	tooltip:Show();
-
-	local itemLevel = 0;
-	for i = 2, tooltip:NumLines() do
-		local text = _G[ tooltip:GetName() .."TextLeft"..i]:GetText();
-		if(text and text ~= "") then
-			local value = tonumber(text:match(S_ITEM_LEVEL));
-			if(value) then
-				itemLevel = value;
-			end
-		end
-	end
-
-	tooltip:Hide();
-	return itemLevel
-end
-
 function TT:GetItemLvL(unit)
 	local total, item = 0, 0;
 	for i = 1, #SlotName do
 		local itemLink = GetInventoryItemLink(unit, GetInventorySlotInfo(("%sSlot"):format(SlotName[i])));
 		if (itemLink ~= nil) then
-			local itemLevel = self:ScanForItemLevel(itemLink);
+			local itemLevel = GetDetailedItemLevelInfo(itemLink)
 			if(itemLevel and itemLevel > 0) then
 				item = item + 1;
 				total = total + itemLevel;
