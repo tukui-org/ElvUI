@@ -7,7 +7,7 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 --Cache global variables
 --Lua functions
 local _G = _G
-local unpack = pairs, unpack
+local unpack = unpack
 local tinsert = table.insert
 --WoW API / Variables
 local CreateFrame = CreateFrame
