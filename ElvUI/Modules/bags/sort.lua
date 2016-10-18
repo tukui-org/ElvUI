@@ -13,8 +13,6 @@ local match, gmatch, find = string.match, string.gmatch, string.find
 local GetTime = GetTime
 local InCombatLockdown = InCombatLockdown
 local GetItemInfo = GetItemInfo
-local GetAuctionItemClasses = GetAuctionItemClasses
-local GetAuctionItemSubClasses = GetAuctionItemSubClasses
 local GetContainerItemID = GetContainerItemID
 local GetGuildBankItemInfo = GetGuildBankItemInfo
 local GetContainerItemInfo = GetContainerItemInfo
@@ -34,7 +32,6 @@ local GetCursorInfo = GetCursorInfo
 local QueryGuildBankTab = QueryGuildBankTab
 local GetCurrentGuildBankTab = GetCurrentGuildBankTab
 local C_PetJournalGetPetInfoBySpeciesID = C_PetJournal.GetPetInfoBySpeciesID
-local ARMOR, ENCHSLOT_WEAPON = ARMOR, ENCHSLOT_WEAPON
 local LE_ITEM_CLASS_ARMOR = LE_ITEM_CLASS_ARMOR
 local LE_ITEM_CLASS_WEAPON = LE_ITEM_CLASS_WEAPON
 
@@ -88,7 +85,7 @@ local specialtyBags = {};
 local emptySlots = {};
 
 local moveRetries = 0
-local movesUnderway, lastItemID, lockStop, lastDestination, lastMove
+local lastItemID, lockStop, lastDestination, lastMove
 local moveTracker = {}
 
 local inventorySlots = {
@@ -362,7 +359,7 @@ end
 function B:GetNumSlots(bag, role)
 	if IsGuildBankBag(bag) then
 		if not role then role = "deposit" end
-		local name, icon, canView, canDeposit, numWithdrawals = GetGuildBankTabInfo(bag - 50)
+		local name, _, canView, canDeposit, numWithdrawals = GetGuildBankTabInfo(bag - 50)
 		if name and canView --[[and ((role == "withdraw" and numWithdrawals ~= 0) or (role == "deposit" and canDeposit) or (role == "both" and numWithdrawals ~= 0 and canDeposit))]] then
 			return 98
 		end
@@ -642,7 +639,7 @@ function B.Fill(sourceBags, targetBags, reverse, canMove)
 	for _, bag, slot in B.IterateBags(sourceBags, not reverse, "withdraw") do
 		if #emptySlots == 0 then break end
 		local bagSlot = B:Encode_BagSlot(bag, slot)
-		local targetBag, targetSlot = B:Decode_BagSlot(emptySlots[1])
+		local targetBag = B:Decode_BagSlot(emptySlots[1])
 		local link = B:GetItemLink(bag, slot);
 
 		if link and blackList[GetItemInfo(link)] then
@@ -728,7 +725,6 @@ function B:DoMove(move)
 		return false, 'source/target_locked'
 	end
 
-	local sourceLink = B:GetItemLink(sourceBag, sourceSlot)
 	local sourceItemID = self:GetItemID(sourceBag, sourceSlot)
 	local targetItemID = self:GetItemID(targetBag, targetSlot)
 
@@ -825,8 +821,7 @@ function B:DoMoves()
 	lastItemID, lockStop, lastDestination, lastMove = nil, nil, nil, nil
 	twipe(moveTracker)
 
-	local start, success, moveID, targetID, moveSource, moveTarget, wasGuild
-	start = GetTime()
+	local success, moveID, targetID, moveSource, moveTarget, wasGuild
 	if #moves > 0 then
 		for i = #moves, 1, -1 do
 			success, moveID, moveSource, targetID, moveTarget, wasGuild = B:DoMove(moves[i])
