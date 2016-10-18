@@ -14,11 +14,13 @@ local CreateFrame = CreateFrame
 local C_PetJournalGetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
 local GameTooltip_ClearMoney = GameTooltip_ClearMoney
 local GetAverageItemLevel = GetAverageItemLevel
+local GetDetailedItemLevelInfo = GetDetailedItemLevelInfo
 local GetGuildInfo = GetGuildInfo
 local GetInspectSpecialization = GetInspectSpecialization
 local GetInventoryItemLink = GetInventoryItemLink
 local GetInventorySlotInfo = GetInventorySlotInfo
 local GetItemCount = GetItemCount
+local GetItemInfo = GetItemInfo
 local GetMouseFocus = GetMouseFocus
 local GetNumGroupMembers = GetNumGroupMembers
 local GetQuestDifficultyColor = GetQuestDifficultyColor
@@ -203,13 +205,23 @@ end
 
 function TT:GetItemLvL(unit)
 	local total, item = 0, 0;
+	local artifactEquipped = false
 	for i = 1, #SlotName do
 		local itemLink = GetInventoryItemLink(unit, GetInventorySlotInfo(("%sSlot"):format(SlotName[i])));
 		if (itemLink ~= nil) then
-			local itemLevel = GetDetailedItemLevelInfo(itemLink)
-			if(itemLevel and itemLevel > 0) then
-				item = item + 1;
-				total = total + itemLevel;
+			local _, _, rarity, _, _, _, _, _, equipLoc = GetItemInfo(itemLink)
+			--Check if we have an artifact equipped in main hand
+			if (equipLoc and equipLoc == "INVTYPE_WEAPONMAINHAND" and rarity and rarity == 6) then
+				artifactEquipped = true
+			end
+
+			--If we have artifact equipped in main hand, then we should not count the offhand as it displays an incorrect item level
+			if (not artifactEquipped or (artifactEquipped and equipLoc and equipLoc ~= "INVTYPE_WEAPONOFFHAND")) then
+				local itemLevel = GetDetailedItemLevelInfo(itemLink)
+				if(itemLevel and itemLevel > 0) then
+					item = item + 1;
+					total = total + itemLevel;
+				end
 			end
 		end
 	end
