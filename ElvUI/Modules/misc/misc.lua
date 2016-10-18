@@ -145,10 +145,10 @@ function M:UI_ERROR_MESSAGE(event, messageType)
 	end
 end
 
-function M:MERCHANT_CLOSE()
+function M:MERCHANT_CLOSED()
 	self:UnregisterEvent("UI_ERROR_MESSAGE")
 	self:UnregisterEvent("UPDATE_INVENTORY_DURABILITY")
-	self:UnregisterEvent("MERCHANT_CLOSE")
+	self:UnregisterEvent("MERCHANT_CLOSED")
 end
 
 function M:MERCHANT_SHOW()
@@ -162,7 +162,7 @@ function M:MERCHANT_SHOW()
 	--Prepare to catch "not enough money" messages
 	self:RegisterEvent("UI_ERROR_MESSAGE")
 	--Use this to unregister events afterwards
-	self:RegisterEvent("MERCHANT_CLOSE")
+	self:RegisterEvent("MERCHANT_CLOSED")
 
 	AttemptAutoRepair()
 end
