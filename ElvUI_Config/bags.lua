@@ -164,15 +164,8 @@ E.Options.args.bags = {
 							desc = L["Displays item level on equippable items."],
 							set = function(info, value) E.db.bags.itemLevel = value; B:UpdateItemLevelDisplay() end,
 						},
-						useTooltipScanning = {
-							order = 2,
-							type = 'toggle',
-							name = L["Use Tooltip Scanning"],
-							desc = L["This makes the item level display more reliable but uses more resources. If this is disabled then upgraded items will not show the correct item level."],
-							set = function(info, value) E.db.bags.useTooltipScanning = value; B:UpdateItemLevelDisplay() end,
-						},
 						itemLevelThreshold = {
-							order = 3,
+							order = 2,
 							name = L["Item Level Threshold"],
 							desc = L["The minimum item level required for it to be shown."],
 							type = 'range',
@@ -181,7 +174,7 @@ E.Options.args.bags = {
 							set = function(info, value) E.db.bags.itemLevelThreshold = value; B:UpdateItemLevelDisplay() end,
 						},
 						itemLevelFont = {
-							order = 4,
+							order = 3,
 							type = "select",
 							dialogControl = 'LSM30_Font',
 							name = L["Font"],
@@ -190,7 +183,7 @@ E.Options.args.bags = {
 							set = function(info, value) E.db.bags.itemLevelFont = value; B:UpdateItemLevelDisplay() end,
 						},
 						itemLevelFontSize = {
-							order = 5,
+							order = 4,
 							type = "range",
 							name = L["Font Size"],
 							min = 4, max = 212, step = 1,
@@ -198,7 +191,7 @@ E.Options.args.bags = {
 							set = function(info, value) E.db.bags.itemLevelFontSize = value; B:UpdateItemLevelDisplay() end,
 						},
 						itemLevelFontOutline = {
-							order = 6,
+							order = 5,
 							type = "select",
 							name = L["Font Outline"],
 							disabled = function() return not E.db.bags.itemLevel end,
