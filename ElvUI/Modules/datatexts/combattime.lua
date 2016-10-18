@@ -31,7 +31,7 @@ local function DelayOnUpdate(self, elapsed)
 	end
 end
 
-local function OnEvent(self, event, timerType, timeSeconds, totalTime)
+local function OnEvent(self, event, _, timeSeconds)
 	local _, instanceType = IsInInstance()
 	if(event == "START_TIMER" and instanceType == "arena") then
 		startTime = timeSeconds

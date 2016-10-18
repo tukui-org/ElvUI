@@ -3,7 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 --Cache global variables
 --Lua functions
-local select, pairs = select, pairs
+local pairs = pairs
 local format = string.format
 --WoW API / Variables
 local GetCurrencyInfo = GetCurrencyInfo
