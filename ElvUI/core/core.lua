@@ -1252,7 +1252,7 @@ function E:DBConversions()
 end
 
 local CPU_USAGE = {}
-local function CompareCPUDiff(showall, module, minCalls)
+local function CompareCPUDiff(showall, minCalls)
 	local greatestUsage, greatestCalls, greatestName, newName, newFunc
 	local greatestDiff, lastModule, mod, newUsage, calls, differance = 0;
 
@@ -1315,7 +1315,7 @@ function E:GetTopCPUFunc(msg)
 		end
 	end
 
-	self:Delay(delay, CompareCPUDiff, showall, module, minCalls)
+	self:Delay(delay, CompareCPUDiff, showall, minCalls)
 	self:Print("Calculating CPU Usage differences (module: "..(module or "?")..", showall: "..tostring(showall)..", minCalls: "..tostring(minCalls)..", delay: "..tostring(delay)..")")
 end
 
