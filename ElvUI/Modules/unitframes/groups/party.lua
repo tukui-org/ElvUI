@@ -25,8 +25,7 @@ function UF:Construct_PartyFrames(unitGroup)
 	self:SetScript('OnLeave', UnitFrame_OnLeave)
 
 	self.RaisedElementParent = CreateFrame('Frame', nil, self)
-	self.RaisedElementParent:SetFrameStrata("MEDIUM")
-	self.RaisedElementParent:SetFrameLevel(self:GetFrameLevel() + 10)
+	self.RaisedElementParent:SetFrameLevel(self:GetFrameLevel() + 100)
 	self.BORDER = E.Border
 	self.SPACING = E.Spacing
 	self.SHADOW_SPACING = 3

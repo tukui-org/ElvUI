@@ -11,9 +11,11 @@
 	<Script file='gps.lua'/>
 	<Script file='healprediction.lua'/>
 	<Script file='health.lua'/>
+	<Script file='infopanel.lua'/>
 	<Script file='name.lua'/>
 	<Script file='portrait.lua'/>
 	<Script file='power.lua'/>
+	<Script file='PvPIcon.lua'/>
 	<Script file='pvpindicator.lua'/>
 	<Script file='pvpspecicon.lua'/>
 	<Script file='raiddebuffs.lua'/>
@@ -27,5 +29,4 @@
 	<Script file='targetglow.lua'/>
 	<Script file='threat.lua'/>
 	<Script file='trinket.lua'/>
-	<Script file='infopanel.lua'/>
 </Ui>

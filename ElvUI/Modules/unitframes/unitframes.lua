@@ -257,8 +257,7 @@ function UF:Construct_UF(frame, unit)
 	frame.BOTTOM_OFFSET = 0 --placeholder
 
 	frame.RaisedElementParent = CreateFrame('Frame', nil, frame)
-	frame.RaisedElementParent:SetFrameStrata("MEDIUM")
-	frame.RaisedElementParent:SetFrameLevel(frame:GetFrameLevel() + 10)
+	frame.RaisedElementParent:SetFrameLevel(frame:GetFrameLevel() + 100)
 
 	if not self['groupunits'][unit] then
 		local stringTitle = E:StringTitle(unit)
@@ -1121,9 +1120,16 @@ function UF:ADDON_LOADED(event, addon)
 	self:UnregisterEvent("ADDON_LOADED");
 end
 
+local hasEnteredWorld = false
 function UF:PLAYER_ENTERING_WORLD(event)
-	self:Update_AllFrames()
-	self:UnregisterEvent(event)
+	if not hasEnteredWorld then
+		--We only want to run Update_AllFrames once when we first log in or /reload
+		self:Update_AllFrames()
+		hasEnteredWorld = true
+	else
+		--We need to update headers in case we zoned into an instance
+		UF:UpdateAllHeaders()
+	end
 end
 
 function UF:UnitFrameThreatIndicator_Initialize(_, unitFrame)

@@ -6,26 +6,17 @@ local UF = E:GetModule('UnitFrames');
 local CreateFrame = CreateFrame
 
 function UF:Construct_HealComm(frame)
-	local mhpb = CreateFrame('StatusBar', nil, frame)
+	local mhpb = CreateFrame('StatusBar', nil, frame.Health)
 	mhpb:SetStatusBarTexture(E["media"].blankTex)
-	mhpb:SetFrameLevel(frame.Health:GetFrameLevel() - 2)
 	mhpb:Hide()
 
-	local ohpb = CreateFrame('StatusBar', nil, frame)
+	local ohpb = CreateFrame('StatusBar', nil, frame.Health)
 	ohpb:SetStatusBarTexture(E["media"].blankTex)
-	mhpb:SetFrameLevel(mhpb:GetFrameLevel())
 	ohpb:Hide()
 
-	local absorbBar = CreateFrame('StatusBar', nil, frame)
+	local absorbBar = CreateFrame('StatusBar', nil, frame.Health)
 	absorbBar:SetStatusBarTexture(E["media"].blankTex)
-	absorbBar:SetFrameLevel(mhpb:GetFrameLevel())
 	absorbBar:Hide()
-
-	if frame.Health then
-		ohpb:SetParent(frame.Health)
-		mhpb:SetParent(frame.Health)
-		absorbBar:SetParent(frame.Health)
-	end
 
 	return {
 		myBar = mhpb,
@@ -46,9 +37,9 @@ function UF:Configure_HealComm(frame)
 		end
 
 		if not frame.USE_PORTRAIT_OVERLAY then
-			healPrediction.myBar:SetParent(frame)
-			healPrediction.otherBar:SetParent(frame)
-			healPrediction.absorbBar:SetParent(frame)
+			healPrediction.myBar:SetParent(frame.Health)
+			healPrediction.otherBar:SetParent(frame.Health)
+			healPrediction.absorbBar:SetParent(frame.Health)
 		else
 			healPrediction.myBar:SetParent(frame.Portrait.overlay)
 			healPrediction.otherBar:SetParent(frame.Portrait.overlay)

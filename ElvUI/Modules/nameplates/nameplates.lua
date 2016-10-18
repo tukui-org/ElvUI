@@ -107,6 +107,9 @@ function mod:PLAYER_ENTERING_WORLD()
 			self.CheckHealerTimer = nil;
 		end
 	end
+	if self.db.units.PLAYER.alwaysShow then
+		mod:UpdateVisibility()
+	end
 end
 
 function mod:ClassBar_Update(frame)
@@ -532,12 +535,17 @@ function mod:NAME_PLATE_CREATED(_, frame)
 end
 
 function mod:OnEvent(event, unit, ...)
-	if(unit and self.displayedUnit and not UnitIsUnit(unit, self.displayedUnit)) then return end
+	if (unit and self.displayedUnit and (not UnitIsUnit(unit, self.displayedUnit) and not ((unit == "vehicle" or unit == "player") and (self.displayedUnit == "vehicle" or self.displayedUnit == "player")))) then 
+		return
+	end
 
 	if(event == "UNIT_HEALTH" or event == "UNIT_HEALTH_FREQUENT") then
 		mod:UpdateElement_Health(self)
 		mod:UpdateElement_HealPrediction(self)
 		mod:UpdateElement_Glow(self)
+		if unit == "vehicle" or unit == "player" then
+			mod:UpdateVisibility()
+		end
 	elseif(event == "UNIT_ABSORB_AMOUNT_CHANGED" or event == "UNIT_HEAL_ABSORB_AMOUNT_CHANGED" or event == "UNIT_HEAL_PREDICTION") then
 		mod:UpdateElement_HealPrediction(self)
 	elseif(event == "UNIT_MAXHEALTH") then
@@ -557,6 +565,7 @@ function mod:OnEvent(event, unit, ...)
 		mod:SetTargetFrame(self)
 		mod:UpdateElement_Glow(self)
 		mod:UpdateElement_HealthColor(self)
+		mod:UpdateVisibility()
 	elseif(event == "UNIT_AURA") then
 		mod:UpdateElement_Auras(self)
 		if(self.IsPlayerFrame) then
@@ -728,6 +737,10 @@ function mod:PLAYER_REGEN_DISABLED()
 	elseif(self.db.showEnemyCombat == "TOGGLE_OFF") then
 		SetCVar("nameplateShowEnemies", 0);
 	end
+
+	if self.db.units.PLAYER.alwaysShow then
+		self:UpdateVisibility()
+	end
 end
 
 function mod:PLAYER_REGEN_ENABLED()
@@ -741,6 +754,26 @@ function mod:PLAYER_REGEN_ENABLED()
 		SetCVar("nameplateShowEnemies", 0);
 	elseif(self.db.showEnemyCombat == "TOGGLE_OFF") then
 		SetCVar("nameplateShowEnemies", 1);
+	end
+	self:UpdateVisibility()
+end
+
+function mod:UpdateVisibility()
+	local frame = self.PlayerFrame__
+	if self.db.units.PLAYER.alwaysShow then
+		local target, dead = UnitExists("target"), UnitIsDead("target")
+		local combat = UnitAffectingCombat("player")
+		local curHP, maxHP = UnitHealth("player"), UnitHealthMax("player")
+		local CanAttack = UnitCanAttack("player", "target")
+		if self.db.units.PLAYER.combatFade and (curHP ~= maxHP or combat or (target and CanAttack and not dead)) then
+			frame.UnitFrame:Show()
+		elseif not self.db.units.PLAYER.combatFade then
+			frame.UnitFrame:Show()
+		else
+			frame.UnitFrame:Hide()
+		end
+	else
+		frame.UnitFrame:Hide()
 	end
 end
 

@@ -16,7 +16,6 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 	local power = CreateFrame('StatusBar', nil, frame)
 	UF['statusbars'][power] = true
 
-	power:SetFrameStrata("LOW")
 	power.PostUpdate = self.PostUpdatePower
 
 	if bg then
@@ -124,8 +123,7 @@ function UF:Configure_Power(frame)
 				power.Holder.mover:SetAlpha(1)
 			end
 
-			power:SetFrameStrata("MEDIUM")
-			power:SetFrameLevel(frame:GetFrameLevel() + 3)
+			power:SetFrameLevel(50) --RaisedElementParent uses 100, we want lower value to allow certain icons and texts to appear above power
 		elseif frame.USE_POWERBAR_OFFSET then
 			if frame.ORIENTATION == "LEFT" then
 				power:Point("TOPRIGHT", frame.Health, "TOPRIGHT", frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
@@ -137,14 +135,12 @@ function UF:Configure_Power(frame)
 				power:Point("TOPLEFT", frame.Health, "TOPLEFT", -frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
 				power:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", -frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
 			end
-			power:SetFrameStrata("LOW")
-			power:SetFrameLevel(frame.Health:GetFrameLevel() -5)
+			power:SetFrameLevel(frame.Health:GetFrameLevel() -5) --Health uses 10
 		elseif frame.USE_INSET_POWERBAR then
 			power:Height(frame.POWERBAR_HEIGHT  - ((frame.BORDER + frame.SPACING)*2))
 			power:Point("BOTTOMLEFT", frame.Health, "BOTTOMLEFT", frame.BORDER + (frame.BORDER*2), frame.BORDER + (frame.BORDER*2))
 			power:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT", -(frame.BORDER + (frame.BORDER*2)), frame.BORDER + (frame.BORDER*2))
-			power:SetFrameStrata("MEDIUM")
-			power:SetFrameLevel(frame:GetFrameLevel() + 3)
+			power:SetFrameLevel(50)
 		elseif frame.USE_MINI_POWERBAR then
 			power:Height(frame.POWERBAR_HEIGHT  - ((frame.BORDER + frame.SPACING)*2))
 
@@ -159,14 +155,12 @@ function UF:Configure_Power(frame)
 				power:Point("RIGHT", frame, "BOTTOMRIGHT", -(frame.BORDER*2 + 4 + (frame.PVPINFO_WIDTH or 0)), ((frame.POWERBAR_HEIGHT-frame.BORDER)/2))
 			end
 
-			power:SetFrameStrata("MEDIUM")
-			power:SetFrameLevel(frame:GetFrameLevel() + 3)
+			power:SetFrameLevel(50)
 		else
 			power:Point("TOPRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", -frame.BORDER,  -frame.SPACING*3)
 			power:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", frame.BORDER, -frame.SPACING*3)
 			power:Height(frame.POWERBAR_HEIGHT  - ((frame.BORDER + frame.SPACING)*2))
 
-			power:SetFrameStrata(frame.Health:GetFrameStrata())
 			power:SetFrameLevel(frame.Health:GetFrameLevel() - 5)
 		end
 
@@ -180,6 +174,8 @@ function UF:Configure_Power(frame)
 
 		if db.power.strataAndLevel and db.power.strataAndLevel.useCustomStrata then
 			power:SetFrameStrata(db.power.strataAndLevel.frameStrata)
+		else
+			power:SetFrameStrata("LOW")
 		end
 		if db.power.strataAndLevel and db.power.strataAndLevel.useCustomLevel then
 			power:SetFrameLevel(db.power.strataAndLevel.frameLevel)

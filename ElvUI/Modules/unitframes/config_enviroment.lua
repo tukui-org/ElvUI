@@ -72,6 +72,7 @@ local function createConfigEnv()
 			return format("|cff%02x%02x%02x", r*255, g*255, b*255)
 		end,
 		ColorGradient = ElvUF.ColorGradient,
+		_COLORS = ElvUF.colors
 	}, {
 		__index = _G,
 		__newindex = function(tbl, key, value) _G[key] = value end,

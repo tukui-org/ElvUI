@@ -502,12 +502,14 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[213124] = Defaults(), -- Venomous Pool
 		[210850] = Defaults(), -- Twisting Shadows
 		[215489] = Defaults(), -- Venomous Pool
+		[218519] = Defaults(), -- Wind Burn (Mythic)
 
 	-- Il'gynoth, Heart of the Corruption
-		[208929] = Defaults(), -- Spew Corruption
-		[210984] = Defaults(), -- Eye of Fate
+		[208929] = Defaults(),  -- Spew Corruption
+		[210984] = Defaults(),  -- Eye of Fate
 		[209469] = Defaults(5), -- Touch of Corruption
-		[208697] = Defaults(), -- Mind Flay
+		[208697] = Defaults(),  -- Mind Flay
+		[215143] = Defaults(),  -- Cursed Blood
 
 	-- Ursoc
 		[198108] = Defaults(), -- Unbalanced
@@ -518,10 +520,10 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[197980] = Defaults(), -- Nightmarish Cacophony
 
 	-- Dragons of Nightmare
-		[203102] = Defaults(), -- Mark of Ysondre
-		[203121] = Defaults(), -- Mark of Taerar
-		[203125] = Defaults(), -- Mark of Emeriss
-		[203124] = Defaults(), -- Mark of Lethon
+		[203102] = Defaults(),  -- Mark of Ysondre
+		[203121] = Defaults(),  -- Mark of Taerar
+		[203125] = Defaults(),  -- Mark of Emeriss
+		[203124] = Defaults(),  -- Mark of Lethon
 		[204731] = Defaults(5), -- Wasting Dread
 		[203110] = Defaults(5), -- Slumbering Nightmare
 		[207681] = Defaults(5), -- Nightmare Bloom

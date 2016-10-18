@@ -330,9 +330,11 @@ function B:UpdateCountDisplay()
 	if self.BankFrame and self.BankFrame.reagentFrame then
 		for i = 1, 98 do
 			local slot = self.BankFrame.reagentFrame.slots[i]
-			slot.Count:FontTemplate(E.LSM:Fetch("font", E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
-			slot.Count:SetTextColor(color.r, color.g, color.b)
-			self:UpdateReagentSlot(i)
+			if slot then
+				slot.Count:FontTemplate(E.LSM:Fetch("font", E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
+				slot.Count:SetTextColor(color.r, color.g, color.b)
+				self:UpdateReagentSlot(i)
+			end
 		end
 	end
 end

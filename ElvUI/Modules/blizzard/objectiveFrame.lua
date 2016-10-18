@@ -2,6 +2,8 @@ local E, L, DF = unpack(select(2, ...))
 local B = E:GetModule('Blizzard');
 
 --Cache global variables
+--Lua functions
+local min = math.min
 --WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 local GetScreenWidth = GetScreenWidth
@@ -15,14 +17,19 @@ ObjectiveFrameHolder:Width(130)
 ObjectiveFrameHolder:Height(22)
 ObjectiveFrameHolder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300)
 
-function B:ObjectiveFrameHeight()
-	ObjectiveTrackerFrame:Height(E.db.general.objectiveFrameHeight)
+function B:SetObjectiveFrameHeight()
+	local top = ObjectiveTrackerFrame:GetTop() or 0
+	local screenHeight = GetScreenHeight()
+	local gapFromTop = screenHeight - top
+	local maxHeight = screenHeight - gapFromTop
+	local objectiveFrameHeight = min(maxHeight, E.db.general.objectiveFrameHeight)
+
+	ObjectiveTrackerFrame:Height(objectiveFrameHeight)
 end
 
 local function IsFramePositionedLeft(frame)
 	local x = frame:GetCenter()
 	local screenWidth = GetScreenWidth()
-	local screenHeight = GetScreenHeight()
 	local positionedLeft = false
 
 	if x and x < (screenWidth / 2) then
@@ -38,7 +45,7 @@ function B:MoveObjectiveFrame()
 
 	ObjectiveTrackerFrame:ClearAllPoints()
 	ObjectiveTrackerFrame:Point('TOP', ObjectiveFrameHolder, 'TOP')
-	B:ObjectiveFrameHeight()
+	B:SetObjectiveFrameHeight()
 	ObjectiveTrackerFrame:SetClampedToScreen(false)
 
 	local function ObjectiveTrackerFrame_SetPosition(_,_, parent)

@@ -25,8 +25,7 @@ function UF:Construct_RaidFrames(unitGroup)
 	self:SetScript('OnLeave', UnitFrame_OnLeave)
 
 	self.RaisedElementParent = CreateFrame('Frame', nil, self)
-	self.RaisedElementParent:SetFrameStrata("MEDIUM")
-	self.RaisedElementParent:SetFrameLevel(self:GetFrameLevel() + 10)
+	self.RaisedElementParent:SetFrameLevel(self:GetFrameLevel() + 100)
 
 	self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
 

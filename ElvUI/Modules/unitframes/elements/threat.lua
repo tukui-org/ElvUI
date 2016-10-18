@@ -71,7 +71,8 @@ function UF:Configure_Threat(frame)
 				end
 			end
 		elseif db.threatStyle == "ICONTOPLEFT" or db.threatStyle == "ICONTOPRIGHT" or db.threatStyle == "ICONBOTTOMLEFT" or db.threatStyle == "ICONBOTTOMRIGHT" or db.threatStyle == "ICONTOP" or db.threatStyle == "ICONBOTTOM" or db.threatStyle == "ICONLEFT" or db.threatStyle == "ICONRIGHT" then
-			threat:SetFrameStrata('HIGH')
+			threat:SetFrameStrata('LOW')
+			threat:SetFrameLevel(75) --Inset power uses 50, we want it to appear above that
 			local point = db.threatStyle
 			point = point:gsub("ICON", "")
 

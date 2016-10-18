@@ -4,7 +4,7 @@ local Search = LibStub('LibItemSearch-1.2-ElvUI');
 
 --Cache global variables
 --Lua functions
-local ipairs, pairs, tonumber, select, unpack = ipairs, pairs, tonumber, select, unpack
+local ipairs, pairs, tonumber, select, unpack, pcall = ipairs, pairs, tonumber, select, unpack, pcall
 local tinsert, tremove, tsort, twipe = table.insert, table.remove, table.sort, table.wipe
 local floor = math.floor
 local band = bit.band
@@ -35,6 +35,8 @@ local QueryGuildBankTab = QueryGuildBankTab
 local GetCurrentGuildBankTab = GetCurrentGuildBankTab
 local C_PetJournalGetPetInfoBySpeciesID = C_PetJournal.GetPetInfoBySpeciesID
 local ARMOR, ENCHSLOT_WEAPON = ARMOR, ENCHSLOT_WEAPON
+local LE_ITEM_CLASS_ARMOR = LE_ITEM_CLASS_ARMOR
+local LE_ITEM_CLASS_WEAPON = LE_ITEM_CLASS_WEAPON
 
 local guildBags = {51,52,53,54,55,56,57,58}
 local bankBags = {BANK_CONTAINER}
@@ -70,6 +72,7 @@ local coreGroups = {
 
 local bagCache = {};
 local bagIDs = {};
+local bagQualities = {};
 local bagPetIDs = {};
 local bagStacks = {};
 local bagMaxStacks = {};
@@ -148,10 +151,12 @@ local function UpdateLocation(from, to)
 			bagStacks[to] = bagStacks[to] + bagStacks[from]
 			bagStacks[from] = nil
 			bagIDs[from] = nil
+			bagQualities[from] = nil
 			bagMaxStacks[from] = nil
 		end
 	else
 		bagIDs[from], bagIDs[to] = bagIDs[to], bagIDs[from]
+		bagQualities[from], bagQualities[to] = bagQualities[to], bagQualities[from]
 		bagStacks[from], bagStacks[to] = bagStacks[to], bagStacks[from]
 		bagMaxStacks[from], bagMaxStacks[to] = bagMaxStacks[to], bagMaxStacks[from]
 	end
@@ -207,6 +212,10 @@ local function DefaultSort(a, b)
 
 	local _, _, aRarity, _, _, _, _, _, aEquipLoc, _, _, aItemClassId, aItemSubClassId = GetItemInfo(aID)
 	local _, _, bRarity, _, _, _, _, _, bEquipLoc, _, _, bItemClassId, bItemSubClassId = GetItemInfo(bID)
+
+	aRarity = bagQualities[a]
+	bRarity = bagQualities[b]
+
 
 	if bagPetIDs[a] then
 		aRarity = 1
@@ -421,6 +430,7 @@ function B:ScanBags()
 			end
 
 			bagIDs[bagSlot] = itemID
+			bagQualities[bagSlot] = select(3, GetItemInfo(B:GetItemLink(bag, slot)))
 			bagStacks[bagSlot] = select(2, B:GetItemInfo(bag, slot))
 		end
 	end
@@ -680,6 +690,7 @@ function B:StartStacking()
 	twipe(bagMaxStacks)
 	twipe(bagStacks)
 	twipe(bagIDs)
+	twipe(bagQualities)
 	twipe(bagPetIDs)
 	twipe(moveTracker)
 

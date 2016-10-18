@@ -279,33 +279,41 @@ E.Options.args.bags = {
 					get = function(info) return E.private.bags.bagBar end,
 					set = function(info, value) E.private.bags.bagBar = value; E:StaticPopup_Show("PRIVATE_RL") end
 				},
-				size = {
+				showBackdrop = {
 					order = 2,
+					type = 'toggle',
+					name = L["Backdrop"],
+				},
+				mouseover = {
+					order = 3,
+					name = L["Mouse Over"],
+					desc = L["The frame is not shown unless you mouse over the frame."],
+					type = "toggle",
+				},
+				size = {
+					order = 4,
 					type = 'range',
 					name = L["Button Size"],
 					desc = L["Set the size of your bag buttons."],
 					min = 24, max = 60, step = 1,
 				},
 				spacing = {
-					order = 3,
+					order = 5,
 					type = 'range',
 					name = L["Button Spacing"],
 					desc = L["The spacing between buttons."],
 					min = 1, max = 10, step = 1,
 				},
-				showBackdrop = {
-					order = 4,
-					type = 'toggle',
-					name = L["Backdrop"],
-				},
-				mouseover = {
-					order = 5,
-					name = L["Mouse Over"],
-					desc = L["The frame is not shown unless you mouse over the frame."],
-					type = "toggle",
+				backdropSpacing = {
+					order = 6,
+					type = 'range',
+					name = L["Backdrop Spacing"],
+					desc = L["The spacing between the backdrop and the buttons."],
+					min = 0, max = 10, step = 1,
+					disabled = function() return not E.private.actionbar.enable end,
 				},
 				sortDirection = {
-					order = 6,
+					order = 7,
 					type = 'select',
 					name = L["Sort Direction"],
 					desc = L["The direction that the bag frames will grow from the anchor."],

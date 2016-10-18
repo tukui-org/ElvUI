@@ -606,18 +606,17 @@ local function LoadSkin()
 		end
 	end)
 
-	--[[GuildInviteFrame:StripTextures()
+	GuildInviteFrame:StripTextures()
 	GuildInviteFrame:SetTemplate('Transparent')
-	GuildInviteFrameLevel:StripTextures()
-	GuildInviteFrameLevel:ClearAllPoints()
-	GuildInviteFrameLevel:Point('TOP', GuildInviteFrame, 'CENTER', -15, -25)
+	GuildInviteFrame.Points:ClearAllPoints()
+	GuildInviteFrame.Points:Point('TOP', GuildInviteFrame, 'CENTER', 15, -25)
 	S:HandleButton(GuildInviteFrameJoinButton)
 	S:HandleButton(GuildInviteFrameDeclineButton)
 	GuildInviteFrame:Height(225)
 	GuildInviteFrame:HookScript("OnEvent", function()
 		GuildInviteFrame:Height(225)
 	end)
-	GuildInviteFrameWarningText:Kill()]]
+	GuildInviteFrameWarningText:Kill()
 
 	--[[local function SkinWatchFrameItems()
 		for i=1, WATCHFRAME_NUM_ITEMS do
