@@ -4,7 +4,6 @@ E.Misc = M;
 
 --Cache global variables
 --Lua functions
-local floor = math.floor
 local format, gsub = string.format, string.gsub
 --WoW API / Variables
 local UnitGUID = UnitGUID

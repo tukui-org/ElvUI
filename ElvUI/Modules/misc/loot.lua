@@ -49,7 +49,7 @@ local coinTextureIDs = {
 local lootFrame, lootFrameHolder
 local iconSize = 30;
 
-local sq, ss, sn
+local ss
 local OnEnter = function(self)
 	local slot = self:GetID()
 	if(LootSlotHasItem(slot)) then
@@ -86,8 +86,6 @@ local OnClick = function(self)
 	else
 		StaticPopup_Hide("CONFIRM_LOOT_DISTRIBUTION")
 		ss = self:GetID()
-		sq = self.quality
-		sn = self.name:GetText()
 		LootSlot(ss)
 	end
 end
@@ -238,7 +236,7 @@ function M:LOOT_OPENED(event, autoloot)
 	if(items > 0) then
 		for i=1, items do
 			local slot = lootFrame.slots[i] or createSlot(i)
-			local textureID, item, quantity, quality, locked, isQuestItem, questId, isActive = GetLootSlotInfo(i)
+			local textureID, item, quantity, quality, _, isQuestItem, questId, isActive = GetLootSlotInfo(i)
 			local color = ITEM_QUALITY_COLORS[quality]
 
 			if coinTextureIDs[textureID] then
@@ -333,7 +331,7 @@ function M:LoadLoot()
 	lootFrame.title:FontTemplate(nil, nil, 'OUTLINE')
 	lootFrame.title:Point('BOTTOMLEFT', lootFrame, 'TOPLEFT', 0,  1)
 	lootFrame.slots = {}
-	lootFrame:SetScript("OnHide", function(self)
+	lootFrame:SetScript("OnHide", function()
 		StaticPopup_Hide"CONFIRM_LOOT_DISTRIBUTION"
 		CloseLoot()
 	end)

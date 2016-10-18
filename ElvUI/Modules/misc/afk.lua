@@ -17,7 +17,6 @@ local CinematicFrame = CinematicFrame
 local MovieFrame = MovieFrame
 local MoveViewLeftStart = MoveViewLeftStart
 local MoveViewLeftStop = MoveViewLeftStop
-local CloseAllBags = CloseAllBags
 local IsInGuild = IsInGuild
 local GetGuildInfo = GetGuildInfo
 local PVEFrame_ToggleFrame = PVEFrame_ToggleFrame
