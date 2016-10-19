@@ -15,7 +15,6 @@ G['general'] = {
 		["yOffset"] = 0,
 	},
 	["disableTutorialButtons"] = true,
-	["animateConfig"] = true,
 	["commandBarSetting"] = "ENABLED_RESIZEPARENT",
 }
 
