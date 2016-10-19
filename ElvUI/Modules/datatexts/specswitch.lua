@@ -6,17 +6,24 @@ local DT = E:GetModule('DataTexts')
 local select = select
 local format, join = string.format, string.join
 --WoW API / Variables
-local SetLootSpecialization = SetLootSpecialization
-local GetSpecialization = GetSpecialization
-local GetActiveSpecGroup = GetActiveSpecGroup
-local GetSpecializationInfo = GetSpecializationInfo
-local GetLootSpecialization = GetLootSpecialization
-local GetSpecializationInfoByID = GetSpecializationInfoByID
-local GetNumSpecGroups = GetNumSpecGroups
 local EasyMenu = EasyMenu
+local GetActiveSpecGroup = GetActiveSpecGroup
+local GetLootSpecialization = GetLootSpecialization
+local GetNumSpecGroups = GetNumSpecGroups
+local GetSpecialization = GetSpecialization
+local GetSpecializationInfo = GetSpecializationInfo
+local GetSpecializationInfoByID = GetSpecializationInfoByID
+local HideUIPanel = HideUIPanel
+local IsShiftKeyDown = IsShiftKeyDown
+local SetLootSpecialization = SetLootSpecialization
+local SetSpecialization = SetSpecialization
+local ShowUIPanel = ShowUIPanel
 local LOOT = LOOT
 local SELECT_LOOT_SPECIALIZATION = SELECT_LOOT_SPECIALIZATION
 local LOOT_SPECIALIZATION_DEFAULT = LOOT_SPECIALIZATION_DEFAULT
+
+--Global variables that we don't cache, list them here for the mikk's Find Globals script
+-- GLOBALS: PlayerTalentFrame, LoadAddOn, 
 
 local lastPanel, active
 local displayString = '';

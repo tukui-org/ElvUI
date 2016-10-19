@@ -4,11 +4,13 @@ local Sticky = LibStub("LibSimpleSticky-1.0")
 --Cache global variables
 --Lua functions
 local _G = _G
-local type, unpack, pairs = type, unpack, pairs
+local type, unpack, pairs, error = type, unpack, pairs, error
 local format, split, find = string.format, string.split, string.find
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
+local IsControlKeyDown = IsControlKeyDown
+local IsShiftKeyDown = IsShiftKeyDown
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script

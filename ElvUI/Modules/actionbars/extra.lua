@@ -11,7 +11,7 @@ local GetActionCooldown = GetActionCooldown
 local HasExtraActionBar = HasExtraActionBar
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: ExtraActionBarFrame, DraenorZoneAbilityFrame
+-- GLOBALS: ExtraActionBarFrame, ZoneAbilityFrame
 
 local ExtraActionBarHolder, ZoneAbilityHolder
 

@@ -20,7 +20,7 @@ local GetInventoryItemTexture = GetInventoryItemTexture
 local IsAddOnLoaded = IsAddOnLoaded
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: BuffFrame, TemporaryEnchantFrame, DebuffTypeColor, Minimap 
+-- GLOBALS: BuffFrame, TemporaryEnchantFrame, DebuffTypeColor, Minimap, MMHolder
 -- GLOBALS: LeftMiniPanel, InterfaceOptionsFrameCategoriesButton12
 
 local Masque = LibStub("Masque", true)

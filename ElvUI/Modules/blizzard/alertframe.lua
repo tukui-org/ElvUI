@@ -16,6 +16,7 @@ local MAX_ACHIEVEMENT_ALERTS = MAX_ACHIEVEMENT_ALERTS
 -- GLOBALS: GuildChallengeAlertFrame, DigsiteCompleteToastFrame, GarrisonBuildingAlertFrame
 -- GLOBALS: GarrisonMissionAlertFrame, GarrisonFollowerAlertFrame, GarrisonShipFollowerAlertFrame
 -- GLOBALS: GarrisonShipMissionAlertFrame, UIPARENT_MANAGED_FRAME_POSITIONS
+-- GLOBALS: hooksecurefunc, ipairs
 
 local AlertFrameHolder = CreateFrame("Frame", "AlertFrameHolder", E.UIParent)
 AlertFrameHolder:Width(180)

@@ -6,17 +6,22 @@ local DT = E:GetModule('DataTexts')
 local format = string.format
 local tsort = table.sort
 --WoW API / Variables
-local GetMouseFocus = GetMouseFocus
-local GetCurrencyInfo = GetCurrencyInfo
-local C_GarrisonRequestLandingPageShipmentInfo = C_Garrison.RequestLandingPageShipmentInfo
 local C_GarrisonGetBuildings = C_Garrison.GetBuildings
 local C_GarrisonGetInProgressMissions = C_Garrison.GetInProgressMissions
 local C_GarrisonGetLandingPageShipmentInfo = C_Garrison.GetLandingPageShipmentInfo
+local C_GarrisonRequestLandingPageShipmentInfo = C_Garrison.RequestLandingPageShipmentInfo
+local GetCurrencyInfo = GetCurrencyInfo
+local GetMouseFocus = GetMouseFocus
+local HideUIPanel = HideUIPanel
+local ShowGarrisonLandingPage = ShowGarrisonLandingPage
 local GARRISON_LANDING_SHIPMENT_COUNT = GARRISON_LANDING_SHIPMENT_COUNT
 local COMPLETE = COMPLETE
 local LE_GARRISON_TYPE_6_0 = LE_GARRISON_TYPE_6_0
 local LE_FOLLOWER_TYPE_GARRISON_6_0 = LE_FOLLOWER_TYPE_GARRISON_6_0
 local LE_FOLLOWER_TYPE_SHIPYARD_6_2 = LE_FOLLOWER_TYPE_SHIPYARD_6_2
+
+--Global variables that we don't cache, list them here for mikk's FindGlobals script
+-- GLOBALS: GarrisonLandingPage
 
 local GARRISON_CURRENCY = 824
 local OIL_CURRENCY = 1101
