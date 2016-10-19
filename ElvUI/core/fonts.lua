@@ -16,7 +16,7 @@ local SetCVar = SetCVar
 -- GLOBALS: SystemFont_Shadow_Outline_Huge2, SystemFont_Shadow_Small, SystemFont_Small
 -- GLOBALS: SystemFont_Tiny, Tooltip_Med,  Tooltip_Small, ZoneTextString, SubZoneTextString
 -- GLOBALS: PVPInfoTextString, PVPArenaTextString, CombatTextFont, FriendsFont_Normal
--- GLOBALS: FriendsFont_Small, FriendsFont_Large, FriendsFont_UserText
+-- GLOBALS: FriendsFont_Small, FriendsFont_Large, FriendsFont_UserText, GameFontHighlightMedium
 
 local function SetFont(obj, font, size, style, r, g, b, sr, sg, sb, sox, soy)
 	obj:SetFont(font, size, style)

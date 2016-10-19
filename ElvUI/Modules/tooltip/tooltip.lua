@@ -87,7 +87,7 @@ local TARGET = TARGET
 -- GLOBALS: ShoppingTooltip1TextRight3, ShoppingTooltip1TextRight4, ShoppingTooltip2TextLeft1
 -- GLOBALS: ShoppingTooltip2TextLeft2, ShoppingTooltip2TextLeft3, ShoppingTooltip2TextLeft4
 -- GLOBALS: ShoppingTooltip2TextRight1, ShoppingTooltip2TextRight2, ShoppingTooltip2TextRight3
--- GLOBALS: ShoppingTooltip2TextRight4, GameTooltipTextLeft1, GameTooltipTextLeft2
+-- GLOBALS: ShoppingTooltip2TextRight4, GameTooltipTextLeft1, GameTooltipTextLeft2, WorldMapTooltip
 
 local GameTooltip, GameTooltipStatusBar = _G["GameTooltip"], _G["GameTooltipStatusBar"]
 local S_ITEM_LEVEL = ITEM_LEVEL:gsub( "%%d", "(%%d+)" )

@@ -12,7 +12,7 @@ local UpdateMicroButtonsParent = UpdateMicroButtonsParent
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: ElvUI_MicroBar, MainMenuBarPerformanceBar, MainMenuMicroButton
 -- GLOBALS: MICRO_BUTTONS, CharacterMicroButton, GuildMicroButtonTabard
--- GLOBALS: GuildMicroButton, MicroButtonPortrait
+-- GLOBALS: GuildMicroButton, MicroButtonPortrait, CollectionsMicroButtonAlert
 
 local function Button_OnEnter()
 	if AB.db.microbar.mouseover then

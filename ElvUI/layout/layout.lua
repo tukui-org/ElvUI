@@ -9,7 +9,7 @@ local UIFrameFadeIn, UIFrameFadeOut = UIFrameFadeIn, UIFrameFadeOut
 
 --Global variables that we don't cache, list them here for the mikk's Find Globals script
 -- GLOBALS: HideLeftChat, HideRightChat, HideBothChat, LeftChatPanel, RightChatPanel, Minimap
--- GLOBALS: GameTooltip, LeftChatTab, RightChatTab
+-- GLOBALS: GameTooltip, LeftChatTab, RightChatTab, LeftChatToggleButton, RightChatToggleButton
 -- GLOBALS: LeftChatDataPanel, LeftMiniPanel, RightChatDataPanel, RightMiniPanel, ElvConfigToggle
 
 local PANEL_HEIGHT = 22;

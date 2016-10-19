@@ -3,6 +3,7 @@ local B = E:GetModule('Blizzard');
 
 --No point caching anything here, but list them here for mikk's FindGlobals script
 -- GLOBALS: IsAddOnLoaded, CreateFrame, TalkingHeadFrame, UIPARENT_MANAGED_FRAME_POSITIONS, TalkingHead_LoadUI
+-- GLOBALS: Model_ApplyUICamera, AlertFrame, ipairs, table
 
 function B:ScaleTalkingHeadFrame()
 	local scale = E.db.general.talkingHeadFrameScale or 1

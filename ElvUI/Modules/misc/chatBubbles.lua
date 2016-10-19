@@ -5,9 +5,11 @@ local CH = E:GetModule("Chat");
 --Cache global variables
 --Lua functions
 local select, unpack, type = select, unpack, type
-local strlower, find = strlower, string.find
+local strlower, find, format = strlower, string.find, string.format
 --WoW API / Variables
 local CreateFrame = CreateFrame
+local CUSTOM_CLASS_COLORS = CUSTOM_CLASS_COLORS
+local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: UIParent, WorldFrame

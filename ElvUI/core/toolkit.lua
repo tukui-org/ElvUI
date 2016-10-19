@@ -4,7 +4,7 @@ local LSM = LibStub("LibSharedMedia-3.0")
 --Cache global variables
 --Lua functions
 local _G = _G
-local unpack, type, select, getmetatable = unpack, type, select, getmetatable
+local unpack, type, select, getmetatable, assert = unpack, type, select, getmetatable, assert
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
