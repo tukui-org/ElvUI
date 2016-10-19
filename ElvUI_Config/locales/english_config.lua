@@ -380,7 +380,6 @@ L["You must be targeting a player."] = true;
 L["Accept Invites"] = true;
 L["Adjust the position of the threat bar to either the left or right datatext panels."] = true;
 L["AFK Mode"] = true;
-L["Animate Config"] = true;
 L["Announce Interrupts"] = true;
 L["Announce when you interrupt a spell to the specified chat channel."] = true;
 L["Attempt to support eyefinity/nvidia surround."] = true;

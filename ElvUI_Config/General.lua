@@ -9,19 +9,6 @@ E.Options.args.general = {
 	get = function(info) return E.db.general[ info[#info] ] end,
 	set = function(info, value) E.db.general[ info[#info] ] = value end,
 	args = {
-		animateConfig = {
-			order = 1,
-			type = "toggle",
-			name = L["Animate Config"],
-			get = function(info) return E.global.general.animateConfig end,
-			set = function(info, value) E.global.general.animateConfig = value; E:StaticPopup_Show("GLOBAL_RL") end,
-		},
-		spacer = {
-			order = 2,
-			type = "description",
-			name = "",
-			width = "full",
-		},
 		intro = {
 			order = 3,
 			type = "description",
