@@ -73,14 +73,21 @@ E.Options.args.bags = {
 					desc = L["Display the junk icon on all grey items that can be vendored."],
 					set = function(info, value) E.db.bags[ info[#info] ] = value; B:UpdateAllBagSlots(); end,
 				},
-				clearSearchOnClose = {
+				upgradeIcon = {
 					order = 5,
+					type = 'toggle',
+					name = L["Show Upgrade Icon"],
+					desc = L["Display the upgrade icon on items that WoW considers an upgrade for your character."],
+					set = function(info, value) E.db.bags[ info[#info] ] = value; B:UpdateAllBagSlots(); end,
+				},
+				clearSearchOnClose = {
+					order = 6,
 					type = 'toggle',
 					name = L["Clear Search On Close"],
 					set = function(info, value) E.db.bags[info[#info]] = value; end
 				},
 				reverseLoot = {
-					order = 6,
+					order = 7,
 					type = "toggle",
 					name = REVERSE_NEW_LOOT_TEXT,
 					set = function(info, value)
@@ -89,19 +96,19 @@ E.Options.args.bags = {
 					end,
 				},
 				disableBagSort = {
-					order = 7,
+					order = 8,
 					type = "toggle",
 					name = L["Disable Bag Sort"],
 					set = function(info, value) E.db.bags[info[#info]] = value; B:ToggleSortButtonState(false); end
 				},
 				disableBankSort = {
-					order = 8,
+					order = 9,
 					type = "toggle",
 					name = L["Disable Bank Sort"],
 					set = function(info, value) E.db.bags[info[#info]] = value; B:ToggleSortButtonState(true); end
 				},
 				countGroup = {
-					order = 8,
+					order = 10,
 					type = "group",
 					name = L["Item Count Font"],
 					guiInline = true,
@@ -152,7 +159,7 @@ E.Options.args.bags = {
 					},
 				},
 				itemLevelGroup = {
-					order = 9,
+					order = 11,
 					type = "group",
 					name = L["Item Level"],
 					guiInline = true,

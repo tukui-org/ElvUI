@@ -39,6 +39,7 @@ local GetNumBankSlots = GetNumBankSlots
 local GetScreenWidth, GetScreenHeight = GetScreenWidth, GetScreenHeight
 local HandleModifiedItemClick = HandleModifiedItemClick
 local IsBagOpen, IsOptionFrameOpen = IsBagOpen, IsOptionFrameOpen
+local IsContainerItemAnUpgrade = IsContainerItemAnUpgrade
 local IsModifiedClick = IsModifiedClick
 local IsReagentBankUnlocked = IsReagentBankUnlocked
 local IsShiftKeyDown, IsControlKeyDown = IsShiftKeyDown, IsControlKeyDown
@@ -331,6 +332,34 @@ local function IsItemEligibleForItemLevelDisplay(classID, subClassID, equipLoc, 
 	return false
 end
 
+local UpdateItemUpgradeIcon, UpgradeCheck_OnUpdate
+local ITEM_UPGRADE_CHECK_TIME = 0.5;
+function UpgradeCheck_OnUpdate(self, elapsed)
+	self.timeSinceUpgradeCheck = self.timeSinceUpgradeCheck + elapsed;
+	
+	if (self.timeSinceUpgradeCheck >= ITEM_UPGRADE_CHECK_TIME) then
+		UpdateItemUpgradeIcon(self);
+	end
+end
+
+function UpdateItemUpgradeIcon(slot)
+	if not E.db.bags.upgradeIcon then
+		slot.UpgradeIcon:SetShown(false);
+		return
+	end
+
+	slot.timeSinceUpgradeCheck = 0;
+	
+	local itemIsUpgrade = IsContainerItemAnUpgrade(slot:GetParent():GetID(), slot:GetID());
+	if (itemIsUpgrade == nil) then -- nil means not all the data was available to determine if this is an upgrade.
+		slot.UpgradeIcon:SetShown(false);
+		slot:SetScript("OnUpdate", UpgradeCheck_OnUpdate);
+	else
+		slot.UpgradeIcon:SetShown(itemIsUpgrade);
+		slot:SetScript("OnUpdate", nil);
+	end
+end
+
 function B:UpdateSlot(bagID, slotID)
 	if (self.Bags[bagID] and self.Bags[bagID].numSlots ~= GetContainerNumSlots(bagID)) or not self.Bags[bagID] or not self.Bags[bagID][slotID] then
 		return;
@@ -406,6 +435,9 @@ function B:UpdateSlot(bagID, slotID)
 		slot.shadow:Hide()
 		E:StopFlash(slot.shadow)
 	end
+
+	--Check if item is an upgrade and show/hide upgrade icon accordingly
+	UpdateItemUpgradeIcon(slot)
 
 	if (texture) then
 		local start, duration, enable = GetContainerItemCooldown(bagID, slotID)
