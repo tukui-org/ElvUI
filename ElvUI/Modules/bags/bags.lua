@@ -387,6 +387,11 @@ function B:UpdateSlot(bagID, slotID)
 		end
 	end
 
+	if slot.UpgradeIcon then
+		--Check if item is an upgrade and show/hide upgrade icon accordingly
+		UpdateItemUpgradeIcon(slot)
+	end
+
 	slot.itemLevel:SetText("")
 	if B.ProfessionColors[bagType] then
 		slot:SetBackdropBorderColor(unpack(B.ProfessionColors[bagType]))
@@ -435,9 +440,6 @@ function B:UpdateSlot(bagID, slotID)
 		slot.shadow:Hide()
 		E:StopFlash(slot.shadow)
 	end
-
-	--Check if item is an upgrade and show/hide upgrade icon accordingly
-	UpdateItemUpgradeIcon(slot)
 
 	if (texture) then
 		local start, duration, enable = GetContainerItemCooldown(bagID, slotID)
