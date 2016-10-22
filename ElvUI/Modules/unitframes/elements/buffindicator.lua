@@ -12,7 +12,7 @@ local GetSpellInfo = GetSpellInfo
 
 function UF:Construct_AuraWatch(frame)
 	local auras = CreateFrame("Frame", nil, frame)
-	auras:SetFrameLevel(frame:GetFrameLevel() + 55)
+	auras:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() + 10)
 	auras:SetInside(frame.Health)
 	auras.presentAlpha = 1
 	auras.missingAlpha = 0
