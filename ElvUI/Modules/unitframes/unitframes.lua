@@ -1299,6 +1299,8 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 		end
 
 		statusBar:SetStatusBarTexture(0, 0, 0, 0)
+		if statusBar.texture then statusBar.texture = statusBar:GetStatusBarTexture() end --Needed for Power element
+
 		backdropTex:ClearAllPoints()
 		if statusBarOrientation == 'VERTICAL' then
 			backdropTex:Point("TOPLEFT", statusBar, "TOPLEFT")
@@ -1331,6 +1333,8 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 			statusBar:GetParent().ignoreUpdates = nil
 		end
 		statusBar:SetStatusBarTexture(LSM:Fetch("statusbar", self.db.statusbar))
+		if statusBar.texture then statusBar.texture = statusBar:GetStatusBarTexture() end
+
 		if adjustBackdropPoints then
 			backdropTex:ClearAllPoints()
 			if statusBarOrientation == 'VERTICAL' then
