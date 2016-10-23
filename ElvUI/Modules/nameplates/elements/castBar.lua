@@ -50,6 +50,10 @@ function mod:UpdateElement_CastBarOnUpdate(elapsed)
 		else --REMAINING
 			self.Time:SetFormattedText("%.1f", self.value)
 		end
+	elseif (self.holdTime > 0) then
+		self.holdTime = self.holdTime - elapsed
+	else
+		self:Hide()
 	end
 end
 
@@ -77,7 +81,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 	end
 
 	if ( event == "UNIT_SPELLCAST_START" ) then
-		local name, _, text, texture, startTime, endTime, _, castID, notInterruptible = UnitCastingInfo(unit);
+		local name, _, _, texture, startTime, endTime, _, castID, notInterruptible = UnitCastingInfo(unit);
 		if ( not name) then
 			frame.CastBar:Hide();
 			return;
@@ -93,9 +97,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 		frame.CastBar.maxValue = (endTime - startTime) / 1000;
 		frame.CastBar:SetMinMaxValues(0, frame.CastBar.maxValue);
 		frame.CastBar:SetValue(frame.CastBar.value);
-		if ( frame.CastBar.Text ) then
-			frame.CastBar.Text:SetText(text);
-		end
+
 		if ( frame.CastBar.Icon ) then
 			frame.CastBar.Icon.texture:SetTexture(texture);
 		end
@@ -103,6 +105,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 		frame.CastBar.casting = true;
 		frame.CastBar.castID = castID;
 		frame.CastBar.channeling = nil;
+		frame.CastBar.holdTime = 0
 
 		frame.CastBar:Show()
 	elseif ( event == "UNIT_SPELLCAST_STOP" or event == "UNIT_SPELLCAST_CHANNEL_STOP") then
@@ -130,17 +133,16 @@ function mod:UpdateElement_Cast(frame, event, ...)
 			if ( frame.CastBar.Spark ) then
 				frame.CastBar.Spark:Hide();
 			end
-			if ( frame.CastBar.Text ) then
-				if ( event == "UNIT_SPELLCAST_FAILED" ) then
-					frame.CastBar.Text:SetText(FAILED);
-				else
-					frame.CastBar.Text:SetText(INTERRUPTED);
-				end
+
+			if ( event == "UNIT_SPELLCAST_FAILED" ) then
+				frame.CastBar.Name:SetText(FAILED);
+			else
+				frame.CastBar.Name:SetText(INTERRUPTED);
 			end
 			frame.CastBar.casting = nil;
 			frame.CastBar.channeling = nil;
 			frame.CastBar.canInterrupt = nil
-			frame.CastBar:Hide()
+			frame.CastBar.holdTime = 2 --How long the castbar should stay visible after being interrupted, in seconds
 		end
 	elseif ( event == "UNIT_SPELLCAST_DELAYED" ) then
 		if ( frame:IsShown() ) then
@@ -166,7 +168,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 			end
 		end
 	elseif ( event == "UNIT_SPELLCAST_CHANNEL_START" ) then
-		local name, _, text, texture, startTime, endTime, _, notInterruptible = UnitChannelInfo(unit);
+		local name, _, _, texture, startTime, endTime, _, notInterruptible = UnitChannelInfo(unit);
 		if ( not name) then
 			frame.CastBar:Hide();
 			return;
@@ -177,10 +179,8 @@ function mod:UpdateElement_Cast(frame, event, ...)
 		frame.CastBar.maxValue = (endTime - startTime) / 1000;
 		frame.CastBar:SetMinMaxValues(0, frame.CastBar.maxValue);
 		frame.CastBar:SetValue(frame.CastBar.value);
+		frame.CastBar.holdTime = 0
 
-		if ( frame.CastBar.Text ) then
-			frame.CastBar.Text:SetText(text);
-		end
 		if ( frame.CastBar.Icon ) then
 			frame.CastBar.Icon.texture:SetTexture(texture);
 		end
