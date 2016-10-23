@@ -14,11 +14,14 @@ function B:Initialize()
 	self:PositionGMFrames()
 	self:SkinBlizzTimers()
 	self:PositionVehicleFrame()
-	self:PositionAltPowerBar()
 	self:PositionTalkingHead()
 
 	if not IsAddOnLoaded("DugisGuideViewerZ") then
 		self:MoveObjectiveFrame()
+	end
+
+	if not IsAddOnLoaded("SimplePowerBar") then
+		self:PositionAltPowerBar()
 	end
 
 	E:CreateMover(LossOfControlFrame, 'LossControlMover', L["Loss Control Icon"])
