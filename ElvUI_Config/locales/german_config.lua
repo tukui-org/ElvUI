@@ -532,7 +532,6 @@ L["Bad Scale"] = "Schlechte Skalierung"
 L["Bad Transition Color"] = "Schlechte Übergangsfarbe"
 L["Base Height for the Aura Icon"] = "Grundhöhe der Auren Symbole"
 L["Boss Auras"] = "Boss Auren"
-L["By forcing the nameplate to always show it will not move on the screen to stay below your characters feet."] = "Die Namensplakette wird immer unter deinen Charakter angezeigt."
 L["Cast Bar"] = "Zauberleiste"
 L["Cast Color"] = "Zauberfarbe"
 L["Cast No Interrupt Color"] = "Nicht unterbrechbare Zauberfarbe"
@@ -612,10 +611,12 @@ L["Threat"] = "Bedrohung"
 L["Toggle Off While In Combat"] = "Im Kampf ausblenden"
 L["Toggle On While In Combat"] = "Im Kampf einblenden"
 L["Use Class Color"] = "Benutze Klassenfarbe"
+L["Use Static Position"] = true;
 L["Use Tanked Color when a nameplate is being effectively tanked by another tank."] = "Benutze 'Angetankte Farbe' für die Namensplakette, wenn die Einheit von einem anderen Tank getankt wird."
 L["Use Target Glow"] = "Benutze Ziel Leuchten"
 L["Use Target Scale"] = "Benutze Ziel Skalierung"
 L["Use Threat Color"] = "Benutze Bedrohungsfarbe"
+L["When enabled the nameplate will stay visible in a locked position."] = true;
 
 --Profiles Export/Import
 L["Choose Export Format"] = "Wähle Export Format"

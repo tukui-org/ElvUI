@@ -531,7 +531,6 @@ L["Bad Scale"] = "危险缩放"
 L["Bad Transition Color"] = "危险过渡颜色"
 L["Base Height for the Aura Icon"] = "光环图标基础高度"
 L["Boss Auras"] = "Boss光环"
-L["By forcing the nameplate to always show it will not move on the screen to stay below your characters feet."] = true;
 L["Cast Bar"] = "施法条"
 L["Cast Color"] = "施法条颜色"
 L["Cast No Interrupt Color"] = "无法打断的颜色"
@@ -611,10 +610,12 @@ L["Threat"] = "仇恨"
 L["Toggle Off While In Combat"] = "战斗时关闭"
 L["Toggle On While In Combat"] = "战斗时启用"
 L["Use Class Color"] = "使用职业颜色"
+L["Use Static Position"] = true;
 L["Use Tanked Color when a nameplate is being effectively tanked by another tank."] = "当另一个坦克更有效的坦住时姓名板使用被坦住的颜色"
 L["Use Target Glow"] = "目标外框高亮"
 L["Use Target Scale"] = "使用目标缩放"
 L["Use Threat Color"] = "使用仇恨颜色"
+L["When enabled the nameplate will stay visible in a locked position."] = true;
 
 --Profiles Export/Import
 L["Choose Export Format"] = "选择导出格式"

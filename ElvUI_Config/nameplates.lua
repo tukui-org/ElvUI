@@ -507,8 +507,8 @@ local function GetUnitSettings(unit, name)
 		}
 		group.args.alwaysShow = {
 			order = -13,
-			name = L["Always Display"],
-			desc = L["By forcing the nameplate to always show it will not move on the screen to stay below your characters feet."],
+			name = L["Use Static Position"],
+			desc = L["When enabled the nameplate will stay visible in a locked position."],
 			type = "toggle"
 		}
 		group.args.clickthrough = {
