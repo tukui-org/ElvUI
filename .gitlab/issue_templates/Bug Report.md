@@ -1,5 +1,3 @@
-/label ~Bug
-
 **Description**
 <!--- Please give a short description of the issue here -->
 
