@@ -14,6 +14,7 @@ local CreateFrame = CreateFrame
 local C_PetJournalGetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
 local GameTooltip_ClearMoney = GameTooltip_ClearMoney
 local GetAverageItemLevel = GetAverageItemLevel
+local GetCreatureDifficultyColor = GetCreatureDifficultyColor
 local GetDetailedItemLevelInfo = GetDetailedItemLevelInfo
 local GetGuildInfo = GetGuildInfo
 local GetInspectSpecialization = GetInspectSpecialization
@@ -23,7 +24,6 @@ local GetItemCount = GetItemCount
 local GetItemInfo = GetItemInfo
 local GetMouseFocus = GetMouseFocus
 local GetNumGroupMembers = GetNumGroupMembers
-local GetQuestDifficultyColor = GetQuestDifficultyColor
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
 local GetScreenWidth = GetScreenWidth
 local GetSpecialization = GetSpecialization
@@ -439,7 +439,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 
 		local levelLine = self:GetLevelLine(tt, lineOffset)
 		if(levelLine) then
-			local diffColor = GetQuestDifficultyColor(level)
+			local diffColor = GetCreatureDifficultyColor(level)
 			local race, englishRace = UnitRace(unit)
 			local _, factionGroup = UnitFactionGroup(unit)
 			if(factionGroup and englishRace == "Pandaren") then
@@ -488,10 +488,10 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 				if(teamLevel) then
 					diffColor = GetRelativeDifficultyColor(teamLevel, level);
 				else
-					diffColor = GetQuestDifficultyColor(level)
+					diffColor = GetCreatureDifficultyColor(level)
 				end
 			else
-				diffColor = GetQuestDifficultyColor(level)
+				diffColor = GetCreatureDifficultyColor(level)
 			end
 
 			if(UnitIsPVP(unit)) then
