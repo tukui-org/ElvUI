@@ -111,15 +111,20 @@ local tooltips = {
 	ShoppingTooltip1,
 	ShoppingTooltip2,
 	ShoppingTooltip3,
-	WorldMapTooltip,
 	WorldMapCompareTooltip1,
 	WorldMapCompareTooltip2,
 	WorldMapCompareTooltip3,
 	DropDownList1MenuBackdrop,
 	DropDownList2MenuBackdrop,
 	DropDownList3MenuBackdrop,
-	BNToastFrame
+	BNToastFrame,
 }
+
+if E.wowbuild >= 22882 then
+	WorldMapTooltip
+else
+	WorldMapTooltip.BackdropFrame
+end
 
 local classification = {
 	worldboss = format("|cffAF5050 %s|r", BOSS),
@@ -811,6 +816,9 @@ function TT:Initialize()
 	E.Skins:HandleCloseButton(ItemRefCloseButton)
 	for _, tt in pairs(tooltips) do
 		self:HookScript(tt, 'OnShow', 'SetStyle')
+		if E.wowbuild >= 22882 and tt.BackdropFrame then
+			tt.BackdropFrame:Kill()
+		end
 	end
 
 	--World Quest Reward Icon
