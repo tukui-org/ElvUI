@@ -121,9 +121,9 @@ local tooltips = {
 }
 
 if E.wowbuild >= 22882 then
-	WorldMapTooltip
+	tinsert(tooltips, WorldMapTooltip)
 else
-	WorldMapTooltip.BackdropFrame
+	tinsert(tooltips, WorldMapTooltip.BackdropFrame)
 end
 
 local classification = {
