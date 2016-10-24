@@ -433,7 +433,6 @@ function E:SetupLayout(layout, noDataReset)
 			E.db.unitframe.units.party.roleIcon.position = "BOTTOMRIGHT"
 			E.db.unitframe.units.party.health.text_format = "[healthcolor][health:deficit]"
 			E.db.unitframe.units.party.health.position = "BOTTOM"
-			E.db.unitframe.units.party.GPSArrow.size = 40
 			E.db.unitframe.units.party.width = 80
 			E.db.unitframe.units.party.height = 45
 			E.db.unitframe.units.party.name.text_format = "[namecolor][name:short]"

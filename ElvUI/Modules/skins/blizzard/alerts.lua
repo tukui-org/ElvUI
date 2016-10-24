@@ -153,13 +153,31 @@ local function LoadSkin()
 	end
 
 	local function SkinInvasionAlert(frame)
-		frame:SetAlpha(1)
-		if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
-
-		if not frame.backdrop then
+		if not frame.isSkinned then
+			frame:SetAlpha(1)
+			hooksecurefunc(frame, "SetAlpha", forceAlpha);
 			frame:CreateBackdrop("Transparent")
 			frame.backdrop:Point("TOPLEFT", frame, "TOPLEFT", 4, 4)
 			frame.backdrop:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -7, 6)
+			--Background contains the item border too, so have to remove it
+			local region, icon = frame:GetRegions()
+			if region and region:GetObjectType() == "Texture" then
+				if region:GetAtlas() == "legioninvasion-Toast-Frame" then
+					region:Kill()
+				end
+			end
+			-- Icon border
+			if icon and icon:GetObjectType() == "Texture" then
+				if icon:GetTexture() == "Interface\\Icons\\Ability_Warlock_DemonicPower" then
+					icon.b = CreateFrame("Frame", nil, frame)
+					icon.b:SetTemplate("Default")
+					icon.b:SetOutside(icon)
+					icon:SetParent(icon.b)
+					icon:SetDrawLayer("OVERLAY")
+					icon:SetTexCoord(unpack(E.TexCoords))
+				end
+			end
+			frame.isSkinned = true
 		end
 	end
 
@@ -203,28 +221,194 @@ local function LoadSkin()
 	end
 
 	local function SkinWorldQuestCompleteAlert(frame)
-		frame:SetAlpha(1)
-		if not frame.hooked then hooksecurefunc(frame, "SetAlpha", forceAlpha);frame.hooked = true end
-
-		if not frame.backdrop then
+		if not frame.isSkinned then
+			frame:SetAlpha(1)
+			hooksecurefunc(frame, "SetAlpha", forceAlpha)
 			frame:CreateBackdrop("Transparent")
 			frame.backdrop:SetPoint("TOPLEFT", frame, "TOPLEFT", 10, -6)
 			frame.backdrop:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -14, 6)
+			frame.shine:Kill()
+			-- Background
+			for i = 1, frame:GetNumRegions() do
+				local region = select(i, frame:GetRegions())
+				if region:GetObjectType() == "Texture" then
+					if region:GetTexture() == "Interface\\LFGFrame\\UI-LFG-DUNGEONTOAST" then
+						region:Kill()
+					end
+				end
+			end
+			--Icon
+			frame.QuestTexture:SetTexCoord(unpack(E.TexCoords))
+			frame.QuestTexture:SetDrawLayer("ARTWORK")
+			frame.QuestTexture.b = CreateFrame("Frame", nil, frame)
+			frame.QuestTexture.b:SetTemplate("Default")
+			frame.QuestTexture.b:SetOutside(frame.QuestTexture)
+			frame.QuestTexture:SetParent(frame.QuestTexture.b)
 		end
-
-		frame.shine:Kill()
 	end
 
 	local function SkinGarrisonFollowerAlert(frame, _, _, _, quality)
+		if not frame.isSkinned then
+			frame.glow:Kill()
+			frame.shine:Kill()
+			frame.FollowerBG:SetAlpha(0)
+			frame.DieIcon:SetAlpha(0)
+			--Background
+			for i = 1, frame:GetNumRegions() do
+				local region = select(i, frame:GetRegions())
+				if region:GetObjectType() == "Texture" then
+					if region:GetAtlas() == "Garr_MissionToast" then
+						region:Kill()
+					end 
+				end
+			end
+			--Create Backdrop
+			frame:CreateBackdrop("Transparent")
+			frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 16, -3)
+			frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -16, 16)
+
+			frame.PortraitFrame.PortraitRing:Hide()
+			frame.PortraitFrame.PortraitRingQuality:SetTexture("")
+			frame.PortraitFrame.LevelBorder:SetAlpha(0)
+
+			local level = frame.PortraitFrame.Level
+			level:ClearAllPoints()
+			level:Point("BOTTOM", frame.PortraitFrame, 0, 12)
+
+			local squareBG = CreateFrame("Frame", nil, frame.PortraitFrame)
+			squareBG:SetFrameLevel(frame.PortraitFrame:GetFrameLevel()-1)
+			squareBG:Point("TOPLEFT", 3, -3)
+			squareBG:Point("BOTTOMRIGHT", -3, 11)
+			squareBG:SetTemplate("Default")
+			frame.PortraitFrame.squareBG = squareBG
+
+			local cover = frame.PortraitFrame.PortraitRingCover
+			if cover then
+				cover:SetColorTexture(0, 0, 0)
+				cover:SetAllPoints(squareBG)
+			end
+		end
+
 		local color = ITEM_QUALITY_COLORS[quality]
 		if color then
 			frame.PortraitFrame.squareBG:SetBackdropBorderColor(color.r, color.g, color.b)
 		else
 			frame.PortraitFrame.squareBG:SetBackdropBorderColor(0, 0, 0)
+		end
+	end
+
+	local function SkinGarrisonShipFollowerAlert(frame)
+		if not frame.isSkinned then
+			frame.glow:Kill()
+			frame.shine:Kill()
+			frame.FollowerBG:SetAlpha(0)
+			frame.DieIcon:SetAlpha(0)
+			--Background
+			frame.Background:Kill()
+			--Create Backdrop
+			frame:CreateBackdrop("Transparent")
+			frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 16, -3)
+			frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -16, 16)
+		end
+	end
+
+	local function SkinGarrisonTalentAlert(frame)
+		if not frame.isSkinned then
+			frame:GetRegions():Hide()
+			frame.glow:Kill()
+			frame.shine:Kill()
+			--Icon
+			frame.Icon:SetTexCoord(unpack(E.TexCoords))
+			frame.Icon:SetDrawLayer("ARTWORK")
+			frame.Icon.b = CreateFrame("Frame", nil, frame)
+			frame.Icon.b:SetTemplate("Default")
+			frame.Icon.b:SetOutside(frame.Icon)
+			frame.Icon:SetParent(frame.Icon.b)
+			--Create Backdrop
+			frame:CreateBackdrop("Transparent")
+			frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 8, -2)
+			frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 2)
+		end
+	end
+
+	local function SkinGarrisonBuildingAlert(frame)
+		if not frame.isSkinned then
+			frame.glow:Kill()
+			frame.shine:Kill()
+			frame:GetRegions():Hide()
+			--Create Backdrop
+			frame:CreateBackdrop("Transparent")
+			frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 8, -8)
+			frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 8)
+			--Icon
+			frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+			frame.Icon:SetDrawLayer("ARTWORK")
+			frame.Icon.b = CreateFrame("Frame", nil, frame)
+			frame.Icon.b:SetTemplate("Default")
+			frame.Icon.b:SetOutside(frame.Icon)
+			frame.Icon:SetParent(frame.Icon.b)
+		end
+	end
+
+	local function SkinGarrisonMissionAlert(frame)
+		if not frame.isSkinned then
+			frame.glow:Kill()
+			frame.shine:Kill()
+			frame.IconBG:Hide()
+			frame.Background:Kill()
+			--Icon
+			frame.MissionType:SetTexCoord(unpack(E.TexCoords))
+			frame.MissionType:SetDrawLayer("ARTWORK")
+			frame.MissionType.b = CreateFrame("Frame", nil, frame)
+			frame.MissionType.b:SetTemplate("Default")
+			frame.MissionType.b:SetOutside(frame.MissionType)
+			frame.MissionType:SetParent(frame.MissionType.b)
+			--Create Backdrop
+			frame:CreateBackdrop("Transparent")
+			frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 8, -2)
+			frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 2)
+		end
+	end
+
+	local function SkinGarrisonShipMissionAlert(frame)
+		if not frame.isSkinned then
+			frame.Background:Kill()
+			frame.glow:Kill()
+			frame.shine:Kill()
+			--Icon
+			frame.MissionType:SetTexCoord(unpack(E.TexCoords))
+			frame.MissionType:SetDrawLayer("ARTWORK")
+			frame.MissionType.b = CreateFrame("Frame", nil, frame)
+			frame.MissionType.b:SetTemplate("Default")
+			frame.MissionType.b:SetOutside(frame.MissionType)
+			frame.MissionType:SetParent(frame.MissionType.b)
+			--Create Backdrop
+			frame:CreateBackdrop("Transparent")
+			frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 8, -2)
+			frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 2)
 		end
 	end
 
 	local function SkinGarrisonRandomMissionAlert(frame, _, _, _, _, _, quality)
+		if not frame.isSkinned then
+			frame.Background:Kill()
+			frame.Blank:Kill()
+			frame.IconBG:Kill()
+			frame.glow:Kill()
+			frame.shine:Kill()
+			--Icon
+			frame.MissionType:SetTexCoord(unpack(E.TexCoords))
+			frame.MissionType:SetDrawLayer("ARTWORK")
+			frame.MissionType.b = CreateFrame("Frame", nil, frame)
+			frame.MissionType.b:SetTemplate("Default")
+			frame.MissionType.b:SetOutside(frame.MissionType)
+			frame.MissionType:SetParent(frame.MissionType.b)
+			--Create Backdrop
+			frame:CreateBackdrop("Transparent")
+			frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 8, -2)
+			frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 2)
+		end
+		
 		local color = ITEM_QUALITY_COLORS[quality]
 		if color then
 			frame.PortraitFrame.squareBG:SetBackdropBorderColor(color.r, color.g, color.b)
@@ -233,15 +417,31 @@ local function LoadSkin()
 		end
 	end
 
-	-- local function SkinGarrisonShipFollowerAlert(frame)
-	
-	-- end
-
-	-- local function SkinGarrisonTalentAlert(frame)
-		
-	-- end
-
 	local function SkinLegendaryItemAlert(frame, itemLink)
+		if not frame.isSkinned then
+			frame.Background:Kill()
+			frame.Background2:Kill()
+			frame.Background3:Kill()
+			frame.Ring1:Kill()
+			frame.Particles3:Kill()
+			frame.Particles2:Kill()
+			frame.Particles1:Kill()
+			frame.Starglow:Kill()
+			frame.glow:Kill()
+			frame.shine:Kill()
+			--Icon
+			frame.Icon:SetTexCoord(unpack(E.TexCoords))
+			frame.Icon:SetDrawLayer("ARTWORK")
+			frame.Icon.b = CreateFrame("Frame", nil, frame)
+			frame.Icon.b:SetTemplate("Default")
+			frame.Icon.b:SetOutside(frame.Icon)
+			frame.Icon:SetParent(frame.Icon.b)
+			--Create Backdrop
+			frame:CreateBackdrop("Transparent")
+			frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 20, -20)
+			frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -20, 20)
+		end
+
 		local _, _, itemRarity = GetItemInfo(itemLink)
 		local color = ITEM_QUALITY_COLORS[itemRarity]
 		if color then
@@ -420,8 +620,12 @@ local function LoadSkin()
 
 	-- Garrisons
 	hooksecurefunc(GarrisonFollowerAlertSystem, "setUpFunction", SkinGarrisonFollowerAlert)
-	-- hooksecurefunc(GarrisonShipFollowerAlertSystem, "setUpFunction", SkinGarrisonShipFollowerAlert)
-	-- hooksecurefunc(GarrisonTalentAlertSystem, "setUpFunction", SkinGarrisonTalentAlert)
+	hooksecurefunc(GarrisonShipFollowerAlertSystem, "setUpFunction", SkinGarrisonShipFollowerAlert)
+	hooksecurefunc(GarrisonTalentAlertSystem, "setUpFunction", SkinGarrisonTalentAlert)
+	hooksecurefunc(GarrisonBuildingAlertSystem, "setUpFunction", SkinGarrisonBuildingAlert)
+	hooksecurefunc(GarrisonMissionAlertSystem, "setUpFunction", SkinGarrisonMissionAlert)
+	hooksecurefunc(GarrisonShipMissionAlertSystem, "setUpFunction", SkinGarrisonShipMissionAlert)
+	hooksecurefunc(GarrisonRandomMissionAlertSystem, "setUpFunction", SkinGarrisonRandomMissionAlert)
 
 	-- Loot
 	hooksecurefunc(LegendaryItemAlertSystem, "setUpFunction", SkinLegendaryItemAlert)
@@ -435,34 +639,6 @@ local function LoadSkin()
 
 
 	--[[ STATIC SKINNING ]]--
-	--Scenario Legion Invasion Alert Frame
-	local frame = ScenarioLegionInvasionAlertFrame
-	frame:SetAlpha(1)
-	hooksecurefunc(frame, "SetAlpha", forceAlpha)
-	--Create Backdrop
-	frame:CreateBackdrop("Transparent")
-	frame.backdrop:Point("TOPLEFT", frame, "TOPLEFT", -2, -6)
-	frame.backdrop:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -2, 6)
-	--Background contains the item border too, so have to remove it
-	local region, icon = frame:GetRegions()
-	if region and region:GetObjectType() == "Texture"then
-		if region:GetAtlas() == "legioninvasion-Toast-Frame" then
-			region:Kill()
-		end
-	end
-	-- Icon border
-	if icon and icon:GetObjectType() == "Texture"then
-		if icon:GetTexture() == "Interface\\Icons\\Ability_Warlock_DemonicPower" then
-			icon.b = CreateFrame("Frame", nil, frame)
-			icon.b:SetTemplate("Default")
-			icon.b:SetOutside(icon)
-			icon:SetParent(icon.b)
-			icon:SetDrawLayer("OVERLAY")
-			icon:SetTexCoord(unpack(E.TexCoords))
-		end
-	end
-
-
 	--Bonus Roll Money
 	frame = BonusRollMoneyWonFrame
 	frame:SetAlpha(1)
@@ -499,187 +675,6 @@ local function LoadSkin()
 	frame:CreateBackdrop("Transparent")
 	frame.backdrop:Point('TOPLEFT', frame.Icon.b, 'TOPLEFT', -4, 4)
 	frame.backdrop:Point('BOTTOMRIGHT', frame.Icon.b, 'BOTTOMRIGHT', 180, -4)
-
-
-	-- Garrison building alert
-	frame = GarrisonBuildingAlertFrame
-	frame.glow:Kill()
-	frame.shine:Kill()
-	frame:GetRegions():Hide()
-	--Create Backdrop
-	frame:CreateBackdrop("Transparent")
-	frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 8, -8)
-	frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 8)
-	--Icon
-	frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-	frame.Icon:SetDrawLayer("ARTWORK")
-	frame.Icon.b = CreateFrame("Frame", nil, frame)
-	frame.Icon.b:SetTemplate("Default")
-	frame.Icon.b:SetOutside(frame.Icon)
-	frame.Icon:SetParent(frame.Icon.b)
-
-
-	-- Garrison mission alert
-	frame = GarrisonMissionAlertFrame
-	frame.glow:Kill()
-	frame.shine:Kill()
-	frame.IconBG:Hide()
-	frame.Background:Kill()
-	--Icon
-	frame.MissionType:SetTexCoord(unpack(E.TexCoords))
-	frame.MissionType:SetDrawLayer("ARTWORK")
-	frame.MissionType.b = CreateFrame("Frame", nil, frame)
-	frame.MissionType.b:SetTemplate("Default")
-	frame.MissionType.b:SetOutside(frame.MissionType)
-	frame.MissionType:SetParent(frame.MissionType.b)
-	--Create Backdrop
-	frame:CreateBackdrop("Transparent")
-	frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 8, -2)
-	frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 2)
-
-
-	-- Garrison ship mission alert
-	frame = GarrisonShipMissionAlertFrame
-	frame.Background:Kill()
-	frame.glow:Kill()
-	frame.shine:Kill()
-	--Icon
-	frame.MissionType:SetTexCoord(unpack(E.TexCoords))
-	frame.MissionType:SetDrawLayer("ARTWORK")
-	frame.MissionType.b = CreateFrame("Frame", nil, frame)
-	frame.MissionType.b:SetTemplate("Default")
-	frame.MissionType.b:SetOutside(frame.MissionType)
-	frame.MissionType:SetParent(frame.MissionType.b)
-	--Create Backdrop
-	frame:CreateBackdrop("Transparent")
-	frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 8, -2)
-	frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 2)
-	
-	-- Garrison random mission alert
-	frame = GarrisonRandomMissionAlertFrame
-	frame.Background:Kill()
-	frame.Blank:Kill()
-	frame.IconBG:Kill()
-	frame.glow:Kill()
-	frame.shine:Kill()
-	--Icon
-	frame.MissionType:SetTexCoord(unpack(E.TexCoords))
-	frame.MissionType:SetDrawLayer("ARTWORK")
-	frame.MissionType.b = CreateFrame("Frame", nil, frame)
-	frame.MissionType.b:SetTemplate("Default")
-	frame.MissionType.b:SetOutside(frame.MissionType)
-	frame.MissionType:SetParent(frame.MissionType.b)
-	--Create Backdrop
-	frame:CreateBackdrop("Transparent")
-	frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 8, -2)
-	frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 2)
-
-
-	-- World Quest Complete Alert
-	frame = WorldQuestCompleteAlertFrame
-	frame:CreateBackdrop("Transparent")
-	frame.backdrop:Point("TOPLEFT", frame, "TOPLEFT", -2, -6)
-	frame.backdrop:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -2, 6)
-	-- Background
-	for i = 1, frame:GetNumRegions() do
-		local region = select(i, frame:GetRegions())
-		if region:GetObjectType() == "Texture" then
-			if region:GetTexture() == "Interface\\LFGFrame\\UI-LFG-DUNGEONTOAST" then
-				region:Kill()
-			end
-		end
-	end
-	--Icon
-	frame.QuestTexture:SetTexCoord(unpack(E.TexCoords))
-	frame.QuestTexture:SetDrawLayer("ARTWORK")
-	frame.QuestTexture.b = CreateFrame("Frame", nil, frame)
-	frame.QuestTexture.b:SetTemplate("Default")
-	frame.QuestTexture.b:SetOutside(frame.QuestTexture)
-	frame.QuestTexture:SetParent(frame.QuestTexture.b)
-
-
-	-- Garrison follower alert
-	local frame = GarrisonFollowerAlertFrame
-	frame.glow:Kill()
-	frame.shine:Kill()
-	frame.FollowerBG:SetAlpha(0)
-	frame.DieIcon:SetAlpha(0)
-	--Background
-	for i = 1, frame:GetNumRegions() do
-		local region = select(i, frame:GetRegions())
-		if region:GetObjectType() == "Texture" then
-			if region:GetAtlas() == "Garr_MissionToast" then
-				region:Kill()
-			end 
-		end
-	end
-	--Create Backdrop
-	frame:CreateBackdrop("Transparent")
-	frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 16, -3)
-	frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -16, 16)
-
-	frame.PortraitFrame.PortraitRing:Hide()
-	frame.PortraitFrame.PortraitRingQuality:SetTexture("")
-	frame.PortraitFrame.LevelBorder:SetAlpha(0)
-
-	local level = frame.PortraitFrame.Level
-	level:ClearAllPoints()
-	level:Point("BOTTOM", frame.PortraitFrame, 0, 12)
-
-	local squareBG = CreateFrame("Frame", nil, frame.PortraitFrame)
-	squareBG:SetFrameLevel(frame.PortraitFrame:GetFrameLevel()-1)
-	squareBG:Point("TOPLEFT", 3, -3)
-	squareBG:Point("BOTTOMRIGHT", -3, 11)
-	squareBG:SetTemplate("Default")
-	frame.PortraitFrame.squareBG = squareBG
-
-	local cover = frame.PortraitFrame.PortraitRingCover
-	if cover then
-		cover:SetColorTexture(0, 0, 0)
-		cover:SetAllPoints(squareBG)
-	end
-
-
-	--Legendary Item Alert
-	frame = LegendaryItemAlertFrame
-	frame.Background:Kill()
-	frame.Background2:Kill()
-	frame.Background3:Kill()
-	frame.Ring1:Kill()
-	frame.Particles3:Kill()
-	frame.Particles2:Kill()
-	frame.Particles1:Kill()
-	frame.Starglow:Kill()
-	frame.glow:Kill()
-	frame.shine:Kill()
-	--Icon
-	frame.Icon:SetTexCoord(unpack(E.TexCoords))
-	frame.Icon:SetDrawLayer("ARTWORK")
-	frame.Icon.b = CreateFrame("Frame", nil, frame)
-	frame.Icon.b:SetTemplate("Default")
-	frame.Icon.b:SetOutside(frame.Icon)
-	frame.Icon:SetParent(frame.Icon.b)
-	--Create Backdrop
-	frame:CreateBackdrop("Transparent")
-	frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 20, -20)
-	frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -20, 20)
-
-	--Garrison Talent Alert
-	frame = GarrisonTalentAlertFrame
-	frame:GetRegions():Hide()
-	frame.glow:Kill()
-	frame.shine:Kill()
-	--Icon
-	frame.Icon:SetTexCoord(unpack(E.TexCoords))
-	frame.Icon:SetDrawLayer("ARTWORK")
-	frame.Icon.b = CreateFrame("Frame", nil, frame)
-	frame.Icon.b:SetTemplate("Default")
-	frame.Icon.b:SetOutside(frame.Icon)
-	frame.Icon:SetParent(frame.Icon.b)
-	--Create Backdrop
-	frame:CreateBackdrop("Transparent")
-	frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 8, -2)
-	frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 2)	
 end
 
 S:AddCallback("Alerts", LoadSkin)

@@ -51,7 +51,6 @@ function UF:Construct_RaidFrames()
 	self.RaidIcon = UF:Construct_RaidIcon(self)
 	self.ReadyCheck = UF:Construct_ReadyCheckIcon(self)
 	self.HealPrediction = UF:Construct_HealComm(self)
-	self.GPS = UF:Construct_GPS(self)
 	self.Range = UF:Construct_Range(self)
 	self.customTexts = {}
 	self.InfoPanel = UF:Construct_InfoPanel(self)
@@ -218,9 +217,6 @@ function UF:Update_RaidFrames(frame, db)
 
 	--OverHealing
 	UF:Configure_HealComm(frame)
-
-	--GPSArrow
-	UF:Configure_GPS(frame)
 
 	--Raid Roles
 	UF:Configure_RaidRoleIcons(frame)
