@@ -129,19 +129,21 @@ local createAuraIcon = function(icons, index)
 	return button
 end
 
-local customFilter = function(icons, unit, icon, name, rank, texture, count, dtype, duration, expirationTime, caster)
+local customFilter = function(icons, unit, icon, name)
 	if((icons.onlyShowPlayer and icon.isPlayer) or (not icons.onlyShowPlayer and name)) then
 		return true
 	end
 end
 
 local updateIcon = function(unit, icons, index, offset, filter, isDebuff, visible)
-	local name, rank, texture, count, dtype, duration, expirationTime, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff, casterIsPlayer, nameplateShowAll = UnitAura(unit, index, filter)
-	
+	local name, rank, texture, count, dispelType, duration, expiration, caster, isStealable,
+		nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer, nameplateShowAll,
+		timeMod, effect1, effect2, effect3 = UnitAura(unit, index, filter)
+
 	if icons.forceShow then
 		spellID = 47540
 		name, rank, texture = GetSpellInfo(spellID)
-		count, dtype, duration, expirationTime, caster, isStealable, shouldConsolidate, canApplyAura, isBossDebuff = 5, 'Magic', 0, 60, 'player', nil, nil, nil, nil
+		count, dispelType, duration, expiration, caster, isStealable, nameplateShowSelf, canApplyAura, isBossDebuff = 5, 'Magic', 0, 60, 'player', nil, nil, nil, nil
 	end
 	
 	if(name) then
@@ -201,8 +203,11 @@ local updateIcon = function(unit, icons, index, offset, filter, isDebuff, visibl
 		]]
 		local show = true
 		if not icons.forceShow then
-			show = (icons.CustomFilter or customFilter) (icons, unit, icon, name, rank, texture, count, dtype, duration, expirationTime, caster, isStealable, shouldConsolidate, spellID, canApplyAura, isBossDebuff, casterIsPlayer, nameplateShowAll)
+			show = (icons.CustomFilter or customFilter) (icons, unit, icon, name, rank, texture,
+				count, dispelType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID,
+				canApply, isBossDebuff, casterIsPlayer, nameplateShowAll,timeMod, effect1, effect2, effect3)
 		end
+
 		if(show) then
 			-- We might want to consider delaying the creation of an actual cooldown
 			-- object to this point, but I think that will just make things needlessly
@@ -210,7 +215,7 @@ local updateIcon = function(unit, icons, index, offset, filter, isDebuff, visibl
 			local cd = icon.cd
 			if(cd and not icons.disableCooldown) then
 				if(duration and duration > 0) then
-					cd:SetCooldown(expirationTime - duration, duration)
+					cd:SetCooldown(expiration - duration, duration)
 					cd:Show()
 				else
 					cd:Hide()
@@ -218,7 +223,7 @@ local updateIcon = function(unit, icons, index, offset, filter, isDebuff, visibl
 			end
 
 			if((isDebuff and icons.showDebuffType) or (not isDebuff and icons.showBuffType) or icons.showType) then
-				local color = DebuffTypeColor[dtype] or DebuffTypeColor.none
+				local color = DebuffTypeColor[dispelType] or DebuffTypeColor.none
 
 				icon.overlay:SetVertexColor(color.r, color.g, color.b)
 				icon.overlay:Show()
