@@ -579,7 +579,12 @@ function CH:CopyChat(frame)
 		if fontSize < 10 then fontSize = 12 end
 		FCF_SetChatWindowFontSize(frame, frame, 0.01)
 		CopyChatFrame:Show()
-		local lineCt = self:GetLines(frame.FontStringContainer:GetRegions())
+		local lineCt
+		if E.wowbuild >= 22882 then
+			lineCt = self:GetLines(frame.FontStringContainer:GetRegions())
+		else
+			lineCt = self:GetLines(frame:GetRegions())
+		end
 		local text = tconcat(lines, "\n", 1, lineCt)
 		FCF_SetChatWindowFontSize(frame, frame, fontSize)
 		CopyChatFrameEditBox:SetText(text)
@@ -1925,9 +1930,13 @@ function CH:Initialize()
 	self:UpdateFading()
 	E.Chat = self
 	self:SecureHook('ChatEdit_OnEnterPressed')
-	QuickJoinToastButton:Kill()
 	ChatFrameMenuButton:Kill()
 
+	if E.wowbuild >= 22882 then
+		QuickJoinToastButton:Kill()
+	else
+		FriendsMicroButton:Kill()
+	end
 
 	if WIM then
 	  WIM.RegisterWidgetTrigger("chat_display", "whisper,chat,w2w,demo", "OnHyperlinkClick", function(self) CH.clickedframe = self end);
