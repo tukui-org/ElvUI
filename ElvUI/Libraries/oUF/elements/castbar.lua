@@ -15,6 +15,11 @@
              steal.
  .SafeZone - A Texture to represent latency.
 
+ Options
+
+ .timeToHold - A Number to indicate for how many seconds the castbar should be
+               visible after a _FAILED or _INTERRUPTED event. Defaults to 0.
+
  Credits
 
  Based upon oUF_Castbar by starlon.
@@ -76,10 +81,10 @@
  Hooks and Callbacks
 
 ]]
-local parent, ns = ...
+local _, ns = ...
 local oUF = ns.oUF
 
-local UnitName = UnitName
+local GetNetStats = GetNetStats
 local GetTime = GetTime
 local UnitCastingInfo = UnitCastingInfo
 local UnitChannelInfo = UnitChannelInfo
@@ -111,14 +116,13 @@ local UNIT_SPELLCAST_SENT = function (self, event, unit, spell, rank, target, ca
 	end
 end
 
-local UNIT_SPELLCAST_START = function(self, event, unit, spell)
+local UNIT_SPELLCAST_START = function(self, event, unit)
 	if(self.unit ~= unit and self.realUnit ~= unit) then return end
 
 	local castbar = self.Castbar
-	local name, _, text, texture, startTime, endTime, isTradeSkill, castid, notInterruptible = UnitCastingInfo(unit)
+	local name, _, text, texture, startTime, endTime, isTradeSkill, castid, notInterruptible, spellid = UnitCastingInfo(unit)
 	if(not name) then
-		castbar:Hide()
-		return
+		return castbar:Hide()
 	end
 
 	endTime = endTime / 1e3
@@ -130,7 +134,9 @@ local UNIT_SPELLCAST_START = function(self, event, unit, spell)
 	castbar.max = max
 	castbar.delay = 0
 	castbar.casting = true
-	castbar.interrupt = notInterruptible
+	castbar.interrupt = notInterruptible -- NOTE: deprecated; to be removed
+	castbar.notInterruptible = notInterruptible
+	castbar.holdTime = 0
 	castbar.isTradeSkill = isTradeSkill
 
 	if(mergeTradeskill and isTradeSkill and UnitIsUnit(unit, "player")) then
@@ -169,12 +175,12 @@ local UNIT_SPELLCAST_START = function(self, event, unit, spell)
 	end
 
 	if(castbar.PostCastStart) then
-		castbar:PostCastStart(unit, name, castid)
+		castbar:PostCastStart(unit, name, castid, spellid)
 	end	
 	castbar:Show()
 end
 
-local UNIT_SPELLCAST_FAILED = function(self, event, unit, spellname, _, castid)
+local UNIT_SPELLCAST_FAILED = function(self, event, unit, spellname, _, castid, spellid)
 	if(self.unit ~= unit and self.realUnit ~= unit) then return end
 
 	local castbar = self.Castbar
@@ -187,13 +193,18 @@ local UNIT_SPELLCAST_FAILED = function(self, event, unit, spellname, _, castid)
 		castbar.tradeSkillCastId = nil
 	end
 
+	local text = castbar.Text
+	if(text) then
+		text:SetText(FAILED)
+	end
+
 	castbar.casting = nil
-	castbar.interrupt = nil
-	castbar:SetValue(0)
-	castbar:Hide()
+	castbar.interrupt = nil -- NOTE: deprecated; to be removed
+	castbar.notInterruptible = nil
+	castbar.holdTime = castbar.timeToHold or 0
 
 	if(castbar.PostCastFailed) then
-		return castbar:PostCastFailed(unit, spellname, castid)
+		return castbar:PostCastFailed(unit, spellname, castid, spellid)
 	end
 end
 
@@ -211,12 +222,13 @@ local UNIT_SPELLCAST_FAILED_QUIET = function(self, event, unit, spellname, _, ca
 	end
 	
 	castbar.casting = nil
-	castbar.interrupt = nil
+	castbar.interrupt = nil -- NOTE: deprecated; to be removed
+	castbar.notInterruptible = nil
 	castbar:SetValue(0)
 	castbar:Hide()
 end
 
-local UNIT_SPELLCAST_INTERRUPTED = function(self, event, unit, spellname, _, castid)
+local UNIT_SPELLCAST_INTERRUPTED = function(self, event, unit, spellname, _, castid, spellid)
 	if(self.unit ~= unit and self.realUnit ~= unit) then return end
 
 	local castbar = self.Castbar
@@ -224,26 +236,32 @@ local UNIT_SPELLCAST_INTERRUPTED = function(self, event, unit, spellname, _, cas
 		return
 	end
 
+	local text = castbar.Text
+	if(text) then
+		text:SetText(INTERRUPTED)
+	end
+
 	castbar.casting = nil
 	castbar.channeling = nil
-
-	castbar:SetValue(0)
-	castbar:Hide()
+	castbar.holdTime = castbar.timeToHold or 0
 
 	if(castbar.PostCastInterrupted) then
-		return castbar:PostCastInterrupted(unit, spellname, castid)
+		return castbar:PostCastInterrupted(unit, spellname, castid, spellid)
 	end
 end
 
 local UNIT_SPELLCAST_INTERRUPTIBLE = function(self, event, unit)
 	if(self.unit ~= unit and self.realUnit ~= unit) then return end
 
-	local shield = self.Castbar.Shield
+	local castbar = self.Castbar
+	local shield = castbar.Shield
 	if(shield) then
 		shield:Hide()
 	end
 
-	local castbar = self.Castbar
+	castbar.interrupt = nil -- NOTE: deprecated; to be removed
+	castbar.notInterruptible = nil
+
 	if(castbar.PostCastInterruptible) then
 		return castbar:PostCastInterruptible(unit)
 	end
@@ -252,22 +270,25 @@ end
 local UNIT_SPELLCAST_NOT_INTERRUPTIBLE = function(self, event, unit)
 	if(self.unit ~= unit and self.realUnit ~= unit) then return end
 
-	local shield = self.Castbar.Shield
+	local castbar = self.Castbar
+	local shield = castbar.Shield
 	if(shield) then
 		shield:Show()
 	end
 
-	local castbar = self.Castbar
+	castbar.interrupt = nil -- NOTE: deprecated; to be removed
+	castbar.notInterruptible = nil
+
 	if(castbar.PostCastNotInterruptible) then
 		return castbar:PostCastNotInterruptible(unit)
 	end
 end
 
-local UNIT_SPELLCAST_DELAYED = function(self, event, unit, spellname, _, castid)
+local UNIT_SPELLCAST_DELAYED = function(self, event, unit, _, _, _, spellid)
 	if(self.unit ~= unit and self.realUnit ~= unit) then return end
 
 	local castbar = self.Castbar
-	local name, _, text, texture, startTime, endTime = UnitCastingInfo(unit)
+	local name, _, _, _, startTime, _, _, castid = UnitCastingInfo(unit)
 	if(not startTime or not castbar:IsShown()) then return end
 
 	local duration = GetTime() - (startTime / 1000)
@@ -279,11 +300,11 @@ local UNIT_SPELLCAST_DELAYED = function(self, event, unit, spellname, _, castid)
 	castbar:SetValue(duration)
 
 	if(castbar.PostCastDelayed) then
-		return castbar:PostCastDelayed(unit, name, castid)
+		return castbar:PostCastDelayed(unit, name, castid, spellid)
 	end
 end
 
-local UNIT_SPELLCAST_STOP = function(self, event, unit, spellname, _, castid)
+local UNIT_SPELLCAST_STOP = function(self, event, unit, spellname, _, castid, spellid)
 	if(self.unit ~= unit and self.realUnit ~= unit) then return end
 
 	local castbar = self.Castbar
@@ -297,21 +318,20 @@ local UNIT_SPELLCAST_STOP = function(self, event, unit, spellname, _, castid)
 		end
 	else
 		castbar.casting = nil
-		castbar.interrupt = nil
-		castbar:SetValue(0)
-		castbar:Hide()
+		castbar.interrupt = nil -- NOTE: deprecated; to be removed
+		castbar.notInterruptible = nil
 	end
 
 	if(castbar.PostCastStop) then
-		return castbar:PostCastStop(unit, spellname, castid)
+		return castbar:PostCastStop(unit, spellname, castid, spellid)
 	end
 end
 
-local UNIT_SPELLCAST_CHANNEL_START = function(self, event, unit, spellname)
+local UNIT_SPELLCAST_CHANNEL_START = function(self, event, unit, _, _, _, spellid)
 	if(self.unit ~= unit and self.realUnit ~= unit) then return end
 
 	local castbar = self.Castbar
-	local name, _, text, texture, startTime, endTime, isTrade, notInterruptible = UnitChannelInfo(unit)
+	local name, _, _, texture, startTime, endTime, _, notInterruptible = UnitChannelInfo(unit)
 	if(not name) then
 		return
 	end
@@ -328,7 +348,9 @@ local UNIT_SPELLCAST_CHANNEL_START = function(self, event, unit, spellname)
 	castbar.endTime = endTime
 	castbar.extraTickRatio = 0
 	castbar.channeling = true
-	castbar.interrupt = notInterruptible
+	castbar.interrupt = notInterruptible -- NOTE: deprecated; to be removed
+	castbar.notInterruptible = notInterruptible
+	castbar.holdTime = 0
 
 	-- We have to do this, as it's possible for spell casts to never have _STOP
 	-- executed or be fully completed by the OnUpdate handler before CHANNEL_START
@@ -359,15 +381,15 @@ local UNIT_SPELLCAST_CHANNEL_START = function(self, event, unit, spellname)
 		updateSafeZone(castbar)
 	end
 
-	if(castbar.PostChannelStart) then castbar:PostChannelStart(unit, name) end
+	if(castbar.PostChannelStart) then castbar:PostChannelStart(unit, name, spellid) end
 	castbar:Show()
 end
 
-local UNIT_SPELLCAST_CHANNEL_UPDATE = function(self, event, unit, spellname)
+local UNIT_SPELLCAST_CHANNEL_UPDATE = function(self, event, unit, _, _, _, spellid)
 	if(self.unit ~= unit and self.realUnit ~= unit) then return end
 
 	local castbar = self.Castbar
-	local name, _, text, texture, startTime, endTime, oldStart = UnitChannelInfo(unit)
+	local name, _, _, _, startTime, endTime = UnitChannelInfo(unit)
 	if(not name or not castbar:IsShown()) then
 		return
 	end
@@ -385,23 +407,21 @@ local UNIT_SPELLCAST_CHANNEL_UPDATE = function(self, event, unit, spellname)
 	castbar:SetValue(duration)
 
 	if(castbar.PostChannelUpdate) then
-		return castbar:PostChannelUpdate(unit, name)
+		return castbar:PostChannelUpdate(unit, name, spellid)
 	end
 end
 
-local UNIT_SPELLCAST_CHANNEL_STOP = function(self, event, unit, spellname)
+local UNIT_SPELLCAST_CHANNEL_STOP = function(self, event, unit, spellname, _, _, spellid)
 	if(self.unit ~= unit and self.realUnit ~= unit) then return end
 
 	local castbar = self.Castbar
 	if(castbar:IsShown()) then
 		castbar.channeling = nil
-		castbar.interrupt = nil
-
-		castbar:SetValue(castbar.max)
-		castbar:Hide()
+		castbar.interrupt = nil -- NOTE: deprecated; to be removed
+		castbar.notInterruptible = nil
 
 		if(castbar.PostChannelStop) then
-			return castbar:PostChannelStop(unit, spellname)
+			return castbar:PostChannelStop(unit, spellname, spellid)
 		end
 	end
 end
@@ -471,13 +491,13 @@ local onUpdate = function(self, elapsed)
 		if(self.Spark) then
 			self.Spark:SetPoint("CENTER", self, "LEFT", (duration / self.max) * self:GetWidth(), 0)
 		end
+	elseif(self.holdTime > 0) then
+		self.holdTime = self.holdTime - elapsed
 	else
-		self.unitName = nil
 		self.casting = nil
 		self.castid = nil
 		self.channeling = nil
 
-		self:SetValue(1)
 		self:Hide()
 	end
 end
@@ -491,31 +511,32 @@ local ForceUpdate = function(element)
 	return Update(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
-local Enable = function(object, unit)
-	local castbar = object.Castbar
+local Enable = function(self, unit)
+	local castbar = self.Castbar
 
 	if(castbar) then
-		castbar.__owner = object
+		castbar.__owner = self
 		castbar.ForceUpdate = ForceUpdate
 
 		if(not (unit and unit:match'%wtarget$')) then
-			object:RegisterEvent("UNIT_SPELLCAST_SENT", UNIT_SPELLCAST_SENT, true)
-			object:RegisterEvent("UNIT_SPELLCAST_START", UNIT_SPELLCAST_START)
-			object:RegisterEvent("UNIT_SPELLCAST_FAILED", UNIT_SPELLCAST_FAILED)
-			object:RegisterEvent("UNIT_SPELLCAST_FAILED_QUIET", UNIT_SPELLCAST_FAILED_QUIET)
-			object:RegisterEvent("UNIT_SPELLCAST_STOP", UNIT_SPELLCAST_STOP)
-			object:RegisterEvent("UNIT_SPELLCAST_INTERRUPTED", UNIT_SPELLCAST_INTERRUPTED)
-			object:RegisterEvent("UNIT_SPELLCAST_INTERRUPTIBLE", UNIT_SPELLCAST_INTERRUPTIBLE)
-			object:RegisterEvent("UNIT_SPELLCAST_NOT_INTERRUPTIBLE", UNIT_SPELLCAST_NOT_INTERRUPTIBLE)
-			object:RegisterEvent("UNIT_SPELLCAST_DELAYED", UNIT_SPELLCAST_DELAYED)
-			object:RegisterEvent("UNIT_SPELLCAST_CHANNEL_START", UNIT_SPELLCAST_CHANNEL_START)
-			object:RegisterEvent("UNIT_SPELLCAST_CHANNEL_UPDATE", UNIT_SPELLCAST_CHANNEL_UPDATE)
-			object:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP", UNIT_SPELLCAST_CHANNEL_STOP)
+			self:RegisterEvent("UNIT_SPELLCAST_SENT", UNIT_SPELLCAST_SENT, true)
+			self:RegisterEvent("UNIT_SPELLCAST_START", UNIT_SPELLCAST_START)
+			self:RegisterEvent("UNIT_SPELLCAST_FAILED", UNIT_SPELLCAST_FAILED)
+			self:RegisterEvent("UNIT_SPELLCAST_FAILED_QUIET", UNIT_SPELLCAST_FAILED_QUIET)
+			self:RegisterEvent("UNIT_SPELLCAST_STOP", UNIT_SPELLCAST_STOP)
+			self:RegisterEvent("UNIT_SPELLCAST_INTERRUPTED", UNIT_SPELLCAST_INTERRUPTED)
+			self:RegisterEvent("UNIT_SPELLCAST_INTERRUPTIBLE", UNIT_SPELLCAST_INTERRUPTIBLE)
+			self:RegisterEvent("UNIT_SPELLCAST_NOT_INTERRUPTIBLE", UNIT_SPELLCAST_NOT_INTERRUPTIBLE)
+			self:RegisterEvent("UNIT_SPELLCAST_DELAYED", UNIT_SPELLCAST_DELAYED)
+			self:RegisterEvent("UNIT_SPELLCAST_CHANNEL_START", UNIT_SPELLCAST_CHANNEL_START)
+			self:RegisterEvent("UNIT_SPELLCAST_CHANNEL_UPDATE", UNIT_SPELLCAST_CHANNEL_UPDATE)
+			self:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP", UNIT_SPELLCAST_CHANNEL_STOP)
 		end
 
+		castbar.holdTime = 0
 		castbar:SetScript("OnUpdate", castbar.OnUpdate or onUpdate)
 
-		if(object.unit == "player") then
+		if(self.unit == "player") then
 			CastingBarFrame:UnregisterAllEvents()
 			CastingBarFrame.Show = CastingBarFrame.Hide
 			CastingBarFrame:Hide()
@@ -550,23 +571,23 @@ local Enable = function(object, unit)
 	end
 end
 
-local Disable = function(object, unit)
-	local castbar = object.Castbar
+local Disable = function(self)
+	local castbar = self.Castbar
 
 	if(castbar) then
 		castbar:Hide()
-		object:UnregisterEvent("UNIT_SPELLCAST_SENT", UNIT_SPELLCAST_SENT)
-		object:UnregisterEvent("UNIT_SPELLCAST_START", UNIT_SPELLCAST_START)
-		object:UnregisterEvent("UNIT_SPELLCAST_FAILED", UNIT_SPELLCAST_FAILED)
-		object:UnregisterEvent("UNIT_SPELLCAST_FAILED_QUIET", UNIT_SPELLCAST_FAILED_QUIET)
-		object:UnregisterEvent("UNIT_SPELLCAST_STOP", UNIT_SPELLCAST_STOP)
-		object:UnregisterEvent("UNIT_SPELLCAST_INTERRUPTED", UNIT_SPELLCAST_INTERRUPTED)
-		object:UnregisterEvent("UNIT_SPELLCAST_INTERRUPTIBLE", UNIT_SPELLCAST_INTERRUPTIBLE)
-		object:UnregisterEvent("UNIT_SPELLCAST_NOT_INTERRUPTIBLE", UNIT_SPELLCAST_NOT_INTERRUPTIBLE)
-		object:UnregisterEvent("UNIT_SPELLCAST_DELAYED", UNIT_SPELLCAST_DELAYED)
-		object:UnregisterEvent("UNIT_SPELLCAST_CHANNEL_START", UNIT_SPELLCAST_CHANNEL_START)
-		object:UnregisterEvent("UNIT_SPELLCAST_CHANNEL_UPDATE", UNIT_SPELLCAST_CHANNEL_UPDATE)
-		object:UnregisterEvent("UNIT_SPELLCAST_CHANNEL_STOP", UNIT_SPELLCAST_CHANNEL_STOP)
+		self:UnregisterEvent("UNIT_SPELLCAST_SENT", UNIT_SPELLCAST_SENT)
+		self:UnregisterEvent("UNIT_SPELLCAST_START", UNIT_SPELLCAST_START)
+		self:UnregisterEvent("UNIT_SPELLCAST_FAILED", UNIT_SPELLCAST_FAILED)
+		self:UnregisterEvent("UNIT_SPELLCAST_FAILED_QUIET", UNIT_SPELLCAST_FAILED_QUIET)
+		self:UnregisterEvent("UNIT_SPELLCAST_STOP", UNIT_SPELLCAST_STOP)
+		self:UnregisterEvent("UNIT_SPELLCAST_INTERRUPTED", UNIT_SPELLCAST_INTERRUPTED)
+		self:UnregisterEvent("UNIT_SPELLCAST_INTERRUPTIBLE", UNIT_SPELLCAST_INTERRUPTIBLE)
+		self:UnregisterEvent("UNIT_SPELLCAST_NOT_INTERRUPTIBLE", UNIT_SPELLCAST_NOT_INTERRUPTIBLE)
+		self:UnregisterEvent("UNIT_SPELLCAST_DELAYED", UNIT_SPELLCAST_DELAYED)
+		self:UnregisterEvent("UNIT_SPELLCAST_CHANNEL_START", UNIT_SPELLCAST_CHANNEL_START)
+		self:UnregisterEvent("UNIT_SPELLCAST_CHANNEL_UPDATE", UNIT_SPELLCAST_CHANNEL_UPDATE)
+		self:UnregisterEvent("UNIT_SPELLCAST_CHANNEL_STOP", UNIT_SPELLCAST_CHANNEL_STOP)
 
 		castbar:SetScript("OnUpdate", nil)
 	end
