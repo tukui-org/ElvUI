@@ -203,6 +203,35 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 	end
 end
 
+function TT:GetAvailableTooltip()
+	for i=1, #GameTooltip.shoppingTooltips do
+		if(not GameTooltip.shoppingTooltips[i]:IsShown()) then
+			return GameTooltip.shoppingTooltips[i]
+		end
+	end
+end
+ 
+function TT:ScanForItemLevel(itemLink)
+	local tooltip = self:GetAvailableTooltip();
+	tooltip:SetOwner(UIParent, "ANCHOR_NONE");
+	tooltip:SetHyperlink(itemLink);
+	tooltip:Show();
+
+	local itemLevel = 0;
+	for i = 2, tooltip:NumLines() do
+		local text = _G[ tooltip:GetName() .."TextLeft"..i]:GetText();
+		if(text and text ~= "") then
+			local value = tonumber(text:match(S_ITEM_LEVEL));
+			if(value) then
+				itemLevel = value;
+			end
+		end
+	end
+
+	tooltip:Hide();
+	return itemLevel
+end
+
 function TT:GetItemLvL(unit)
 	local total, item = 0, 0;
 	local artifactEquipped = false
@@ -217,7 +246,12 @@ function TT:GetItemLvL(unit)
 
 			--If we have artifact equipped in main hand, then we should not count the offhand as it displays an incorrect item level
 			if (not artifactEquipped or (artifactEquipped and equipLoc and equipLoc ~= "INVTYPE_WEAPONOFFHAND")) then
-				local itemLevel = GetDetailedItemLevelInfo(itemLink)
+				local itemLevel
+				if E.wowbuild >= 22882 then
+					itemLevel = GetDetailedItemLevelInfo(itemLink)
+				else
+					itemLevel = self:ScanForItemLevel(itemLink);
+				end
 				if(itemLevel and itemLevel > 0) then
 					item = item + 1;
 					total = total + itemLevel;
