@@ -32,7 +32,7 @@ local dataStrings = {
 	[5] = HONOR,
 	[2] = KILLING_BLOWS,
 	[4] = DEATHS,
-	[3] = HONORABLE_KILLS,
+	[3] = KILLS,
 	[11] = SHOW_COMBAT_HEALING,
 }
 

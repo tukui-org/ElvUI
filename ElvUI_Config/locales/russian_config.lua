@@ -533,7 +533,6 @@ L["Bad Scale"] = "Плохой масштаб"
 L["Bad Transition Color"] = "Цвет плохого перехода"
 L["Base Height for the Aura Icon"] = "Базовая высота иконок аур"
 L["Boss Auras"] = "Ауры боссов"
-L["By forcing the nameplate to always show it will not move on the screen to stay below your characters feet."] = "При принудительном отображении индикатор перестанет двигаться по экрану с целью постоянно оставаться около ног вашего персонажа."
 L["Cast Bar"] = "Полоса заклинаний"
 L["Cast Color"] = "Цвет полосы заклинаний"
 L["Cast No Interrupt Color"] = "Цвет непрерываемого"
@@ -613,10 +612,12 @@ L["Threat"] = "Угроза"
 L["Toggle Off While In Combat"] = "Включать в бою"
 L["Toggle On While In Combat"] = "Отключить в бою"
 L["Use Class Color"] = "Использовать цвет класса"
+L["Use Static Position"] = true;
 L["Use Tanked Color when a nameplate is being effectively tanked by another tank."] = "Использовать этот цвет для юнитов, которых держит другой танк."
 L["Use Target Glow"] = "Использовать выделение цели"
 L["Use Target Scale"] = "Масштабирование цели"
 L["Use Threat Color"] = "Использовать цвет угрозы"
+L["When enabled the nameplate will stay visible in a locked position."] = true;
 
 --Profiles Export/Import
 L["Choose Export Format"] = "Выберите формат экспорта"
