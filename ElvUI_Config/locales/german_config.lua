@@ -611,12 +611,12 @@ L["Threat"] = "Bedrohung"
 L["Toggle Off While In Combat"] = "Im Kampf ausblenden"
 L["Toggle On While In Combat"] = "Im Kampf einblenden"
 L["Use Class Color"] = "Benutze Klassenfarbe"
-L["Use Static Position"] = true;
+L["Use Static Position"] = "Benutze statische Position"
 L["Use Tanked Color when a nameplate is being effectively tanked by another tank."] = "Benutze 'Angetankte Farbe' für die Namensplakette, wenn die Einheit von einem anderen Tank getankt wird."
 L["Use Target Glow"] = "Benutze Ziel Leuchten"
 L["Use Target Scale"] = "Benutze Ziel Skalierung"
 L["Use Threat Color"] = "Benutze Bedrohungsfarbe"
-L["When enabled the nameplate will stay visible in a locked position."] = true;
+L["When enabled the nameplate will stay visible in a locked position."] = "Wenn aktiviert, sind die Namensplaketten in einer festen Position sichtbar."
 
 --Profiles Export/Import
 L["Choose Export Format"] = "Wähle Export Format"
