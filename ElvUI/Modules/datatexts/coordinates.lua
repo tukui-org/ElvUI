@@ -13,8 +13,11 @@ local ToggleFrame = ToggleFrame
 
 local displayString = ""
 local x, y = 0, 0
+local inRestrictedArea = false
 
 local function Update(self, elapsed)
+	if inRestrictedArea then return; end
+
 	self.timeSinceUpdate = (self.timeSinceUpdate or 0) + elapsed
 
 	if self.timeSinceUpdate > 0.1 then
@@ -24,6 +27,16 @@ local function Update(self, elapsed)
 
 		self.text:SetFormattedText(displayString, x, y)
 		self.timeSinceUpdate = 0
+	end
+end
+
+local function OnEvent(self)
+	local x = GetPlayerMapPosition("player")
+	if not x then
+		inRestrictedArea = true
+		self.text:SetText("N/A")
+	else
+		inRestrictedArea = false
 	end
 end
 
@@ -47,4 +60,4 @@ E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 	onEnterFunc - function to fire OnEnter
 	onLeaveFunc - function to fire OnLeave, if not provided one will be set for you that hides the tooltip.
 ]]
-DT:RegisterDatatext('Coords', nil, nil, Update, Click)
+DT:RegisterDatatext('Coords', {"PLAYER_ENTERING_WORLD"}, OnEvent, Update, Click)
