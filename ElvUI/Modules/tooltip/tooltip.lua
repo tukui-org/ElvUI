@@ -378,7 +378,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 
 	if(not unit) then
 		local GMF = GetMouseFocus()
-		if(GMF and GMF:GetAttribute("unit")) then
+		if(GMF and GMF.GetAttribute and GMF:GetAttribute("unit")) then
 			unit = GMF:GetAttribute("unit")
 		end
 		if(not unit or not UnitExists(unit)) then
@@ -548,7 +548,7 @@ function TT:GameTooltipStatusBar_OnValueChanged(tt, value)
 	local unit = select(2, tt:GetParent():GetUnit())
 	if(not unit) then
 		local GMF = GetMouseFocus()
-		if(GMF and GMF:GetAttribute("unit")) then
+		if(GMF and GMF.GetAttribute and GMF:GetAttribute("unit")) then
 			unit = GMF:GetAttribute("unit")
 		end
 	end
