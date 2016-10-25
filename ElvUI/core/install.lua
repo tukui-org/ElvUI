@@ -200,6 +200,7 @@ local function SetupCVars()
 	SetCVar('lockActionBars', 1)
 	SetCVar('SpamFilter', 0)
 	SetCVar("nameplateShowSelf", 0)
+	SetCVar("cameraDistanceMaxZoomFactor", 2.6)
 	
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetValue('SHIFT')
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:RefreshValue()
