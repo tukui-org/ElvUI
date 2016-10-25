@@ -35,8 +35,10 @@ local function OnEvent(self)
 	if not x then
 		inRestrictedArea = true
 		self.text:SetText("N/A")
+		self:Hide()
 	else
 		inRestrictedArea = false
+		self:Show()
 	end
 end
 
