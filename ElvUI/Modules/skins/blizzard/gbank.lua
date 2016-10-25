@@ -100,15 +100,21 @@ local function LoadSkin()
 	GuildItemSearchBox.backdrop:Point("TOPLEFT", 10, -1)
 	GuildItemSearchBox.backdrop:Point("BOTTOMRIGHT", -1, 1)
 
-	for i=1, NUM_GUILDBANK_ICONS_SHOWN do
-		local button = _G["GuildBankPopupButton"..i]
-		local icon = _G[button:GetName().."Icon"]
-		button:StripTextures()
-		button:SetTemplate("Default")
-		button:StyleButton(true)
-		icon:SetInside()
-		icon:SetTexCoord(unpack(E.TexCoords))
+	--These icons are now created when the GuildBankPopupFrame is first shown,
+	-- so run a hook once when that happens and then unhook
+	local function SkinGuildBankPopupFrameIcons()
+		for i=1, NUM_GUILDBANK_ICONS_SHOWN do
+			local button = _G["GuildBankPopupButton"..i]
+			local icon = _G[button:GetName().."Icon"]
+			button:StripTextures()
+			button:SetTemplate("Default")
+			button:StyleButton(true)
+			icon:SetInside()
+			icon:SetTexCoord(unpack(E.TexCoords))
+		end
+		S:Unhook(GuildBankPopupFrame, "OnShow")
 	end
+	S:HookScript(GuildBankPopupFrame, "OnShow", SkinGuildBankPopupFrameIcons)
 
 	S:HandleScrollBar(GuildBankTransactionsScrollFrameScrollBar)
 	S:HandleScrollBar(GuildBankInfoScrollFrameScrollBar)
