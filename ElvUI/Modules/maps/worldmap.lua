@@ -38,6 +38,7 @@ function M:SetLargeWorldMap()
 	WorldMapFrame:EnableKeyboard(false)
 	WorldMapFrame:SetScale(1)
 	WorldMapFrame:EnableMouse(true)
+	WorldMapTooltip:SetFrameStrata("TOOLTIP")
 
 	if WorldMapFrame:GetAttribute('UIPanelLayout-area') ~= 'center' then
 		SetUIPanelAttribute(WorldMapFrame, "area", "center");
