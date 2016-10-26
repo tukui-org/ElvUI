@@ -252,8 +252,14 @@ local function LoadSkin()
 	S:HandleEditBox(RecruitAFriendNoteFrame)
 
 	--Quick join
-	-- S:HandleScrollBar(QuickJoinScrollFrameScrollBar)
+	S:HandleScrollBar(QuickJoinScrollFrameScrollBar)
 	S:HandleButton(QuickJoinFrame.JoinQueueButton)
+	QuickJoinFrame.JoinQueueButton:SetSize(131, 21)  --Match button on other tab
+	QuickJoinFrame.JoinQueueButton:ClearAllPoints()
+	QuickJoinFrame.JoinQueueButton:Point("BOTTOMRIGHT", QuickJoinFrame, "BOTTOMRIGHT", -6, 4)
+	QuickJoinScrollFrameTop:SetTexture(nil)
+	QuickJoinScrollFrameBottom:SetTexture(nil)
+	QuickJoinScrollFrameMiddle:SetTexture(nil)
 end
 
 S:AddCallback("Friends", LoadSkin)
