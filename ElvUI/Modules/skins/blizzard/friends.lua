@@ -250,6 +250,10 @@ local function LoadSkin()
 	S:HandleEditBox(RecruitAFriendNameEditBox)
 	RecruitAFriendNoteFrame:StripTextures()
 	S:HandleEditBox(RecruitAFriendNoteFrame)
+
+	--Quick join
+	-- S:HandleScrollBar(QuickJoinScrollFrameScrollBar)
+	S:HandleButton(QuickJoinFrame.JoinQueueButton)
 end
 
 S:AddCallback("Friends", LoadSkin)
