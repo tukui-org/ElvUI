@@ -332,11 +332,14 @@ local function LoadSkin()
 			end]]
 		end
 		GearManagerDialogPopup:StripTextures()
+		GearManagerDialogPopup.BorderBox:StripTextures()
 		GearManagerDialogPopup:SetTemplate("Transparent")
 		GearManagerDialogPopup:Point("LEFT", PaperDollFrame, "RIGHT", 4, 0)
 		GearManagerDialogPopupScrollFrame:StripTextures()
 		GearManagerDialogPopupEditBox:StripTextures()
 		GearManagerDialogPopupEditBox:SetTemplate("Default")
+		GearManagerDialogPopupOkay:ClearAllPoints()
+		-- We have to adjust the postition of the Buttons
 		S:HandleButton(GearManagerDialogPopupOkay)
 		S:HandleButton(GearManagerDialogPopupCancel)
 
