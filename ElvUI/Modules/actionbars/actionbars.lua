@@ -874,7 +874,7 @@ function AB:UpdateButtonConfig(bar, buttonName)
 	bar.buttonConfig.colors.mana = E:GetColorTable(self.db.noPowerColor)
 	bar.buttonConfig.colors.usable = E:GetColorTable(self.db.usableColor)
 	bar.buttonConfig.colors.notUsable = E:GetColorTable(self.db.notUsableColor)
-	bar.buttonConfig.disableCountDownNumbers = true
+	bar.buttonConfig.disableCountDownNumbers = E.private.cooldown.enable
 	bar.buttonConfig.useDrawBling = (self.db.hideCooldownBling ~= true)
 	bar.buttonConfig.useDrawSwipeOnCharges = self.db.useDrawSwipeOnCharges
 
