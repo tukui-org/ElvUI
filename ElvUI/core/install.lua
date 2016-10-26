@@ -201,6 +201,7 @@ local function SetupCVars()
 	SetCVar('SpamFilter', 0)
 	SetCVar("nameplateShowSelf", 0)
 	SetCVar("cameraDistanceMaxZoomFactor", 2.6)
+	SetCVar("nameplateShowFriendlyNPCs", 1)
 	
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetValue('SHIFT')
 	InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:RefreshValue()
