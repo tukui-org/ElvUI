@@ -46,6 +46,7 @@ do
 	elseif class == "WARLOCK" then
 		AddSpell(enemySpells, 5782) -- Fear (30 yards)
 		AddSpell(longEnemySpells, 689) -- Drain Life (40 yards)
+		AddSpell(longEnemySpells, 234153) -- Drain Life (40 yards)
 		AddSpell(petSpells, 755) -- Health Funnel (45 yards)
 		AddSpell(friendlySpells, 20707) -- Soulstone (40 yards)
 	elseif class == "MAGE" then
