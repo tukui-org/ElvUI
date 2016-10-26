@@ -59,6 +59,7 @@ local function LoadSkin()
 	EncounterInfo.instanceTitle:ClearAllPoints()
 	EncounterInfo.instanceTitle:Point("BOTTOM", EncounterInfo.bossesScroll, "TOP", 10, 15)
 
+	S:HandleButton(EncounterJournalEncounterFrameInfoLootScrollFrameSlotFilterToggle, true)
 	EncounterInfo.difficulty:StripTextures()
 	EncounterInfo.reset:StripTextures()
 	S:HandleButton(EncounterInfo.reset)
