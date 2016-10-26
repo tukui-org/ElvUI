@@ -142,7 +142,7 @@ function mod:UpdateElement_Cast(frame, event, ...)
 			frame.CastBar.casting = nil;
 			frame.CastBar.channeling = nil;
 			frame.CastBar.canInterrupt = nil
-			frame.CastBar.holdTime = 2 --How long the castbar should stay visible after being interrupted, in seconds
+			frame.CastBar.holdTime = self.db.units[frame.UnitType].castbar.timeToHold --How long the castbar should stay visible after being interrupted, in seconds
 		end
 	elseif ( event == "UNIT_SPELLCAST_DELAYED" ) then
 		if ( frame:IsShown() ) then
