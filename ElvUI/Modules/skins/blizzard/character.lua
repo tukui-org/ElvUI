@@ -302,66 +302,29 @@ local function LoadSkin()
 	PaperDollEquipmentManagerPaneEquipSet:Point("TOPLEFT", PaperDollEquipmentManagerPane, "TOPLEFT", 8, 0)
 	PaperDollEquipmentManagerPaneSaveSet:Point("LEFT", PaperDollEquipmentManagerPaneEquipSet, "RIGHT", 4, 0)
 	PaperDollEquipmentManagerPaneEquipSet.ButtonBackground:SetTexture(nil)
-	PaperDollEquipmentManagerPane:HookScript("OnShow", function(self)
-		for x, object in pairs(PaperDollEquipmentManagerPane.buttons) do
-			object.BgTop:SetTexture(nil)
-			object.BgBottom:SetTexture(nil)
-			object.BgMiddle:SetTexture(nil)
-			object.icon:Size(36, 36)
-			--object.Check:SetTexture(nil)
-			object.icon:SetTexCoord(unpack(E.TexCoords))
-
-			--Making all icons the same size and position because otherwise BlizzardUI tries to attach itself to itself when it refreshes
-			object.icon:Point("LEFT", object, "LEFT", 4, 0)
-			hooksecurefunc(object.icon, "SetPoint", function(self, point, attachTo, anchorPoint, xOffset, yOffset, isForced)
-				if isForced ~= true then
-					self:SetPoint("LEFT", object, "LEFT", 4, 0, true)
-				end
-			end)
-
-
-			hooksecurefunc(object.icon, "SetSize", function(self, width, height)
-				if width == 30 or height == 30 then
-					self:Size(36, 36)
-				end
-			end)
-
-			-- Is this still needed?
-			--[[if not object.icon.bordertop then
-				E:GetModule("NamePlates"):CreateBackdrop(object, object.icon)
-			end]]
-		end
-		GearManagerDialogPopup:StripTextures()
-		GearManagerDialogPopup.BorderBox:StripTextures()
-		GearManagerDialogPopup:SetTemplate("Transparent")
-		GearManagerDialogPopup:Point("LEFT", PaperDollFrame, "RIGHT", 4, 0)
-		GearManagerDialogPopupScrollFrame:StripTextures()
-		GearManagerDialogPopupEditBox:StripTextures()
-		GearManagerDialogPopupEditBox:SetTemplate("Default")
-		-- We have to adjust the postition of the Buttons
-		S:HandleButton(GearManagerDialogPopupOkay)
-		S:HandleButton(GearManagerDialogPopupCancel)
-
-		for i=1, NUM_GEARSET_ICONS_SHOWN do
-			local button = _G["GearManagerDialogPopupButton"..i]
-			local icon = button.icon
-
-			if button then
-				button:StripTextures()
-				button:StyleButton(true)
-
-				icon:SetTexCoord(unpack(E.TexCoords))
-				_G["GearManagerDialogPopupButton"..i.."Icon"]:SetTexture(nil)
-
-				icon:SetInside()
-				button:SetFrameLevel(button:GetFrameLevel() + 2)
-				if not button.backdrop then
-					button:CreateBackdrop("Default")
-					button.backdrop:SetAllPoints()
-				end
+	--Itemset buttons
+	for _, object in pairs(PaperDollEquipmentManagerPane.buttons) do
+		object.BgTop:SetTexture(nil)
+		object.BgBottom:SetTexture(nil)
+		object.BgMiddle:SetTexture(nil)
+		object.icon:Size(36, 36)
+		object.icon:SetTexCoord(unpack(E.TexCoords))
+		--Making all icons the same size and position because otherwise BlizzardUI tries to attach itself to itself when it refreshes
+		object.icon:Point("LEFT", object, "LEFT", 4, 0)
+		hooksecurefunc(object.icon, "SetPoint", function(self, point, attachTo, anchorPoint, xOffset, yOffset, isForced)
+			if isForced ~= true then
+				self:SetPoint("LEFT", object, "LEFT", 4, 0, true)
 			end
-		end
-	end)
+		end)
+		hooksecurefunc(object.icon, "SetSize", function(self, width, height)
+			if width == 30 or height == 30 then
+				self:Size(36, 36)
+			end
+		end)
+	end
+
+	--Icon selection frame
+	S:HandleIconSelectionFrame(GearManagerDialogPopup, NUM_GEARSET_ICONS_SHOWN, "GearManagerDialogPopupButton", frameNameOverride)
 
 	--Handle Tabs at bottom of character frame
 	for i=1, 4 do
