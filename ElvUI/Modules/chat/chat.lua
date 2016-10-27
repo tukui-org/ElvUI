@@ -1185,7 +1185,10 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			if (C_SocialIsSocialEnabled()) then
 				local achieveID = GetAchievementInfoFromHyperlink(arg1);
 				if (achieveID) then
-					message = message .. " " .. Social_GetShareAchievementLink(achieveID, true);
+					local isGuildAchievement = select(12, GetAchievementInfo(achieveID));
+ 					if (isGuildAchievement) then
+ 						message = message .. " " .. Social_GetShareAchievementLink(achieveID, true);
+ 					end
 				end
 			end
 			self:AddMessage(message, info.r, info.g, info.b, info.id);
@@ -1229,7 +1232,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 			end
 			local accessID = ChatHistory_GetAccessID(Chat_GetChatCategory(type), arg8);
 			local typeID = ChatHistory_GetAccessID(infoType, arg8, arg12);
-			self:AddMessage(format(globalstring, arg8, arg4), info.r, info.g, info.b, info.id, false, accessID, typeID)
+			self:AddMessage(format(globalstring, arg8, arg4), info.r, info.g, info.b, info.id, accessID, accessID, typeID)
 		elseif ( type == "BN_INLINE_TOAST_ALERT" ) then
 			local globalstring = _G["BN_INLINE_TOAST_"..arg1];
 			local message;
@@ -1415,7 +1418,7 @@ function CH:ChatFrame_MessageEventHandler(event, ...)
 				body = body:gsub("%[BN_CONVERSATION:", '%[1'.."")
 				body = body:gsub("^%["..Var.RAID_WARNING.."%]", '['..L["RW"]..']')
 			end
-			self:AddMessage(body, info.r, info.g, info.b, info.id, false, accessID, typeID);
+			self:AddMessage(body, info.r, info.g, info.b, info.id, accessID, accessID, typeID);
 		end
 
 		if ( type == "WHISPER" or type == "BN_WHISPER" ) then
