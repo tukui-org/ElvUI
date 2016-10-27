@@ -781,6 +781,7 @@ P['tooltip'] = {
 		['height'] = 7,
 		['font'] = 'Homespun',
 		['fontSize'] = 10,
+		['statusPosition'] = "BOTTOM",
 	},
 	["useCustomFactionColors"] = false,
 	["factionColors"] = {

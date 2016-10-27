@@ -251,8 +251,17 @@ E.Options.args.tooltip = {
 					min = 1, max = 15, step = 1,
 					set = function(info, value) E.db.tooltip.healthBar.height = value; GameTooltipStatusBar:Height(value); end,
 				},
-				fontGroup = {
+				statusPosition = {
 					order = 2,
+					type = "select",
+					name = L["Position"],
+					values = {
+						["BOTTOM"] = L["Bottom"],
+						["TOP"] = L["Top"],
+					},
+				},
+				fontGroup = {
+					order = 3,
 					name = L["Fonts"],
 					type = "group",
 					guiInline = true,
