@@ -82,13 +82,10 @@ local function LoadSkin()
 	for i = 1, MAX_ACCOUNT_MACROS do
 		local b = _G["MacroButton"..i]
 		local t = _G["MacroButton"..i.."Icon"]
-		local pb = _G["MacroPopupButton"..i]
-		local pt = _G["MacroPopupButton"..i.."Icon"]
 
 		if b then
 			b:StripTextures()
 			b:StyleButton(true)
-
 			b:SetTemplate("Default", true)
 		end
 
@@ -96,19 +93,14 @@ local function LoadSkin()
 			t:SetTexCoord(unpack(E.TexCoords))
 			t:SetInside()
 		end
-
-		if pb then
-			pb:StripTextures()
-			pb:StyleButton(true)
-
-			pb:SetTemplate("Default")
-		end
-
-		if pt then
-			pt:SetTexCoord(unpack(E.TexCoords))
-			pt:SetInside()
-		end
 	end
+
+	--Icon selection frame
+	ShowUIPanel(MacroFrame); --Toggle frame to create necessary variables needed for popup frame
+	HideUIPanel(MacroFrame);
+	MacroPopupFrame:Show() --Toggle the frame in order to create the necessary button elements
+	MacroPopupFrame:Hide()
+	S:HandleIconSelectionFrame(MacroPopupFrame, NUM_MACRO_ICONS_SHOWN, "MacroPopupButton", "MacroPopup")
 end
 
 S:AddCallbackForAddon("Blizzard_MacroUI", "Macro", LoadSkin)
