@@ -100,6 +100,9 @@ local function LoadSkin()
 	GuildItemSearchBox.backdrop:Point("TOPLEFT", 10, -1)
 	GuildItemSearchBox.backdrop:Point("BOTTOMRIGHT", -1, 1)
 
+	S:HandleScrollBar(GuildBankTransactionsScrollFrameScrollBar)
+	S:HandleScrollBar(GuildBankInfoScrollFrameScrollBar)
+
 	--These icons are now created when the GuildBankPopupFrame is first shown,
 	-- so toggle the frame in order to create the necessary elements
 	GuildBankPopupFrame:Show()
@@ -116,8 +119,6 @@ local function LoadSkin()
 	GuildBankPopupFrame:Height(GuildBankPopupFrame:GetHeight() + 10)
 	GuildBankPopupScrollFrame:Height(GuildBankPopupScrollFrame:GetHeight() + 10)
 	GuildBankPopupFrame.BorderBox:StripTextures()
-	S:HandleScrollBar(GuildBankTransactionsScrollFrameScrollBar)
-	S:HandleScrollBar(GuildBankInfoScrollFrameScrollBar)
 	GuildBankPopupCancelButton:ClearAllPoints()
 	GuildBankPopupCancelButton:Point("BOTTOMRIGHT", GuildBankPopupFrame, "BOTTOMRIGHT", -5, 5)
 end
