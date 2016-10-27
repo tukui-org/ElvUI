@@ -92,35 +92,9 @@ local function LoadSkin()
 	S:HandleScrollBar(GuildBankInfoScrollFrameScrollBar)
 
 	--Popup
-	GuildBankPopupFrame:StripTextures()
-	GuildBankPopupScrollFrame:StripTextures()
-	GuildBankPopupFrame:SetTemplate("Transparent")
-	GuildBankPopupFrame:Point("TOPLEFT", GuildBankFrame, "TOPRIGHT", 1, -30)
-	S:HandleButton(GuildBankPopupOkayButton)
-	S:HandleButton(GuildBankPopupCancelButton)
-	S:HandleEditBox(GuildBankPopupEditBox)
-	GuildBankPopupNameLeft:Kill()
-	GuildBankPopupNameRight:Kill()
-	GuildBankPopupNameMiddle:Kill()
-
-	--These icons are now created when the GuildBankPopupFrame is first shown,
-	-- so toggle the frame in order to create the necessary elements
-	GuildBankPopupFrame:Show()
+	GuildBankPopupFrame:Show() --Toggle the frame in order to create the necessary button elements
 	GuildBankPopupFrame:Hide()
-	for i=1, NUM_GUILDBANK_ICONS_SHOWN do
-		local button = _G["GuildBankPopupButton"..i]
-		local icon = _G[button:GetName().."Icon"]
-		button:StripTextures()
-		button:SetTemplate("Default")
-		button:StyleButton(true)
-		icon:SetInside()
-		icon:SetTexCoord(unpack(E.TexCoords))
-	end
-	GuildBankPopupFrame:Height(GuildBankPopupFrame:GetHeight() + 10)
-	GuildBankPopupScrollFrame:Height(GuildBankPopupScrollFrame:GetHeight() + 10)
-	GuildBankPopupFrame.BorderBox:StripTextures()
-	GuildBankPopupCancelButton:ClearAllPoints()
-	GuildBankPopupCancelButton:Point("BOTTOMRIGHT", GuildBankPopupFrame, "BOTTOMRIGHT", -5, 5)
+	S:HandleIconSelectionFrame(GuildBankPopupFrame, NUM_GUILDBANK_ICONS_SHOWN, "GuildBankPopupButton", "GuildBankPopup")
 end
 
 S:AddCallbackForAddon("Blizzard_GuildBankUI", "GuildBank", LoadSkin)
