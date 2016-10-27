@@ -100,26 +100,26 @@ local function LoadSkin()
 	GuildItemSearchBox.backdrop:Point("TOPLEFT", 10, -1)
 	GuildItemSearchBox.backdrop:Point("BOTTOMRIGHT", -1, 1)
 
-	GuildBankPopupFrame.BorderBox:StripTextures()
-
 	--These icons are now created when the GuildBankPopupFrame is first shown,
-	-- so run a hook once when that happens and then unhook
-	-- local function SkinGuildBankPopupFrameIcons()
-		-- for i=1, NUM_GUILDBANK_ICONS_SHOWN do
-			-- local button = _G["GuildBankPopupButton"..i]
-			-- local icon = _G[button:GetName().."Icon"]
-			-- button:StripTextures()
-			-- button:SetTemplate("Default")
-			-- button:StyleButton(true)
-			-- icon:SetInside()
-			-- icon:SetTexCoord(unpack(E.TexCoords))
-		-- end
-		-- S:Unhook(GuildBankPopupFrame, "OnShow")
-	-- end
-	-- S:HookScript(GuildBankPopupFrame, "OnShow", SkinGuildBankPopupFrameIcons)
-
+	-- so toggle the frame in order to create the necessary elements
+	GuildBankPopupFrame:Show()
+	GuildBankPopupFrame:Hide()
+	for i=1, NUM_GUILDBANK_ICONS_SHOWN do
+		local button = _G["GuildBankPopupButton"..i]
+		local icon = _G[button:GetName().."Icon"]
+		button:StripTextures()
+		button:SetTemplate("Default")
+		button:StyleButton(true)
+		icon:SetInside()
+		icon:SetTexCoord(unpack(E.TexCoords))
+	end
+	GuildBankPopupFrame:Height(GuildBankPopupFrame:GetHeight() + 10)
+	GuildBankPopupScrollFrame:Height(GuildBankPopupScrollFrame:GetHeight() + 10)
+	GuildBankPopupFrame.BorderBox:StripTextures()
 	S:HandleScrollBar(GuildBankTransactionsScrollFrameScrollBar)
 	S:HandleScrollBar(GuildBankInfoScrollFrameScrollBar)
+	GuildBankPopupCancelButton:ClearAllPoints()
+	GuildBankPopupCancelButton:Point("BOTTOMRIGHT", GuildBankPopupFrame, "BOTTOMRIGHT", -5, 5)
 end
 
 S:AddCallbackForAddon("Blizzard_GuildBankUI", "GuildBank", LoadSkin)
