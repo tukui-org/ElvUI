@@ -164,7 +164,6 @@ local function LoadSkin()
 		CharacterStatsPane.statsFramePool:Release(statFrame);
 	end)
 
-
 	--Strip Textures
 	local charframe = {
 		"CharacterFrame",
@@ -240,11 +239,9 @@ local function LoadSkin()
 
 	--Swap item flyout frame (shown when holding alt over a slot)
 	EquipmentFlyoutFrame:HookScript("OnShow", SkinItemFlyouts)
-	-- hooksecurefunc("EquipmentFlyout_Show", SkinItemFlyouts)	--This spams like crazy. Are Blizzard using this in an OnUpdate somewhere? It doesn't seem to be needed either so comment out for now.
 
 	--Icon in upper right corner of character frame
 	CharacterFramePortrait:Kill()
-	--CharacterModelFrame:CreateBackdrop("Default")
 
 	local scrollbars = {
 		"PaperDollTitlesPaneScrollBar",
@@ -265,17 +262,11 @@ local function LoadSkin()
 		CharacterStatsPane[type].backdrop:SetPoint("CENTER")
 		CharacterStatsPane[type].backdrop:SetWidth(150)
 		CharacterStatsPane[type].backdrop:SetHeight(18)
-		--CharacterStatsPane[type].backdrop:CreateShadow()
-		--CharacterStatsPane[type].backdrop.shadow:SetBackdropBorderColor(0.8, 0.8, 0.8, 0.7)
-		--E:Flash(CharacterStatsPane[type].backdrop.shadow, 1, true)
-		--CharacterStatsPane[type].Title:SetTextColor(RAID_CLASS_COLORS[E.myclass].r, RAID_CLASS_COLORS[E.myclass].g, RAID_CLASS_COLORS[E.myclass].b)
 	end
 	CharacterFrame:SetTemplate("Transparent")
 	StatsPane("EnhancementsCategory")
 	StatsPane("ItemLevelCategory")
 	StatsPane("AttributesCategory")
-
-
 
 	--Titles
 	PaperDollTitlesPane:HookScript("OnShow", function(self)
@@ -283,8 +274,6 @@ local function LoadSkin()
 			object.BgTop:SetTexture(nil)
 			object.BgBottom:SetTexture(nil)
 			object.BgMiddle:SetTexture(nil)
-
-			--object.Check:SetTexture(nil)
 			object.text:FontTemplate()
 			hooksecurefunc(object.text, "SetFont", function(self, font, fontSize, fontStyle)
 				if font ~= E["media"].normFont then
@@ -363,12 +352,6 @@ local function LoadSkin()
 	end
 	hooksecurefunc("PaperDollFrame_UpdateSidebarTabs", FixSidebarTabCoords)
 
-	-- Must be redone?!
-	--Stat panels, atm it looks like 7 is the max
-	--[[for i=1, 7 do
-		_G["CharacterStatsPaneCategory.."..i]:StripTextures()
-	end]]
-
 	--Reputation
 	local function UpdateFactionSkins()
 		ReputationListScrollFrame:StripTextures()
@@ -385,8 +368,6 @@ local function LoadSkin()
 				end
 
 				_G["ReputationBar"..i.."Background"]:SetTexture(nil)
-				--_G["ReputationBar"..i.."LeftLine"]:Kill()
-				--_G["ReputationBar"..i.."BottomLine"]:Kill()
 				_G["ReputationBar"..i.."ReputationBarHighlight1"]:SetTexture(nil)
 				_G["ReputationBar"..i.."ReputationBarHighlight2"]:SetTexture(nil)
 				_G["ReputationBar"..i.."ReputationBarAtWarHighlight1"]:SetTexture(nil)
