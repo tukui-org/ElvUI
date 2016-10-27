@@ -67,16 +67,19 @@ function E:UIScale(event)
 	self.mult = 768/match(self.resolution, "%d+x(%d+)")/scale;
 	self.Spacing = self.PixelMode and 0 or self.mult
 	self.Border = (self.PixelMode and self.mult or self.mult*2)
-	--Set UIScale, NOTE: SetCVar for UIScale can cause taints so only do this when we need to..
-	if E.Round and E:Round(UIParent:GetScale(), 5) ~= E:Round(scale, 5) and (event == 'PLAYER_LOGIN') then
-		SetCVar("useUiScale", 1);
-		SetCVar("uiScale", scale);
-		WorldMapFrame.hasTaint = true;
-	end
-	
-	--SetCVar for UI scale only accepts value as low as 0.64, so scale UIParent if needed
-	if (scale < 0.64) then
-		UIParent:SetScale(scale)
+
+	if self.global.general.autoScale then
+		--Set UIScale, NOTE: SetCVar for UIScale can cause taints so only do this when we need to..
+		if E.Round and E:Round(UIParent:GetScale(), 5) ~= E:Round(scale, 5) and (event == 'PLAYER_LOGIN') then
+			SetCVar("useUiScale", 1);
+			SetCVar("uiScale", scale);
+			WorldMapFrame.hasTaint = true;
+		end
+		
+		--SetCVar for UI scale only accepts value as low as 0.64, so scale UIParent if needed
+		if (scale < 0.64) then
+			UIParent:SetScale(scale)
+		end
 	end
 
 	if (event == 'PLAYER_LOGIN' or event == 'UI_SCALE_CHANGED') then
