@@ -10,6 +10,7 @@ local C_GarrisonGetBuildings = C_Garrison.GetBuildings
 local C_GarrisonGetInProgressMissions = C_Garrison.GetInProgressMissions
 local C_GarrisonGetLandingPageShipmentInfo = C_Garrison.GetLandingPageShipmentInfo
 local C_GarrisonRequestLandingPageShipmentInfo = C_Garrison.RequestLandingPageShipmentInfo
+local C_Garrison_HasGarrison = C_Garrison.HasGarrison
 local GetCurrencyInfo = GetCurrencyInfo
 local GetMouseFocus = GetMouseFocus
 local HideUIPanel = HideUIPanel
@@ -127,6 +128,10 @@ end
 local garrisonType = LE_GARRISON_TYPE_6_0;
 
 local function OnClick()
+	if not (C_Garrison_HasGarrison(garrisonType)) then
+		return;
+	end
+
 	local isShown = GarrisonLandingPage and GarrisonLandingPage:IsShown();
 	if (not isShown) then
 		ShowGarrisonLandingPage(garrisonType);
