@@ -18,6 +18,7 @@ V['general'] = {
 		['enable'] = true,
 		['hideClassHallReport'] = false,
 		['hideCalendar'] = true,
+		["hideBlobs"] = false,
 	},
 	["classColorMentionsSpeech"] = true,
 }

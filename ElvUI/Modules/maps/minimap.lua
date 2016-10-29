@@ -445,6 +445,12 @@ function M:Initialize()
 		GarrisonLandingPageMinimapButton.IsShown = function() return true end
 	end
 
+	--Hide the BlopRing on Minimap
+	if E.private.general.minimap.hideBlobs then
+		Minimap:SetArchBlobRingScalar(0)
+		Minimap:SetQuestBlobRingScalar(0)
+	end
+
 	QueueStatusMinimapButtonBorder:Hide()
 	QueueStatusFrame:SetClampedToScreen(true)
 

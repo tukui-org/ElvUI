@@ -154,6 +154,15 @@ E.Options.args.maps = {
 							set = function(info, value) E.db.general.minimap[ info[#info] ] = value; MM:UpdateSettings() end,
 							disabled = function() return not E.private.general.minimap.enable end,
 						},
+						hideBlobs = {
+							order = 3,
+							type = "toggle",
+							name = L["Hide blob ring"],
+							desc = L["Hides the minimap blob ring for quest and archaeology."],
+							get = function(info) return E.private.general.minimap[ info[#info] ] end,
+							set = function(info, value) E.private.general.minimap[ info[#info] ] = value; E:StaticPopup_Show("PRIVATE_RL") end,
+							disabled = function() return not E.private.general.minimap.enable end,
+						},
 					},
 				},
 				locationTextGroup = {
