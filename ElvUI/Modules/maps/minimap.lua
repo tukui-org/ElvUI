@@ -440,15 +440,13 @@ function M:Initialize()
 	MiniMapMailBorder:Hide()
 	MiniMapMailIcon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\mail")
 
+	--Hide the BlopRing on Minimap
+	Minimap:SetArchBlobRingScalar(0)
+	Minimap:SetQuestBlobRingScalar(0)
+
 	if E.private.general.minimap.hideClassHallReport then
 		GarrisonLandingPageMinimapButton:Kill()
 		GarrisonLandingPageMinimapButton.IsShown = function() return true end
-	end
-
-	--Hide the BlopRing on Minimap
-	if E.private.general.minimap.hideBlobs then
-		Minimap:SetArchBlobRingScalar(0)
-		Minimap:SetQuestBlobRingScalar(0)
 	end
 
 	QueueStatusMinimapButtonBorder:Hide()
