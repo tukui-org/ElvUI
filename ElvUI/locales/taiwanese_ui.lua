@@ -39,7 +39,7 @@ L["Purchase"] = "購買銀行欄位"
 L["Reagent Bank"] = "材料銀行"
 L["Reset Position"] = "重設位置"
 L["Show/Hide Reagents"] = "顯示/隱藏材料"
-L["Sort Tab"] = true; --Not used, yet?
+L["Sort Tab"] = "選項排列" --Not used, yet?
 L["Temporary Move"] = "移動背包"
 L["Toggle Bags"] = "開啟/關閉背包"
 L["Vendor Grays"] = "出售灰色物品"
@@ -289,7 +289,7 @@ L["TargetTarget Frame"] = "目標的目標框架" --Also used in UnitFrames
 L["TargetTargetTarget Frame"] = "目標的目標的目標框架"
 L["Tooltip"] = "浮動提示"
 L["Vehicle Seat Frame"] = "載具座位框"
-L["Zone Ability"] = true
+L["Zone Ability"] = "區域技能"
 L["DESC_MOVERCONFIG"] = [=[解除框架移動鎖定. 現在可以移動它們, 移好後請點擊「鎖定」.
 
 Options:
