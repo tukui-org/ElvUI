@@ -62,6 +62,7 @@ end
 
 function UF:Construct_AuraBarHeader(frame)
 	local auraBar = CreateFrame('Frame', nil, frame)
+	auraBar:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() + 10) --Make them appear above any text element
 	auraBar.PostCreateBar = UF.Construct_AuraBars
 	auraBar.gap = (-frame.BORDER + frame.SPACING*3)
 	auraBar.spacing = (-frame.BORDER + frame.SPACING*3)
