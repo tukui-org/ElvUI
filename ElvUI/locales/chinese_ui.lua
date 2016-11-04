@@ -4,10 +4,10 @@ local L = AceLocale:NewLocale("ElvUI", "zhCN")
 if not L then return end
 
 --*_ADDON locales
-L["INCOMPATIBLE_ADDON"] = "插件 %s 不相容于 ElvUI 的 %s 模组。请停用不相容的插件，或停用模组。"
+L["INCOMPATIBLE_ADDON"] = "插件 %s 不相容于 ElvUI 的 %s 模组, 请停用不相容的插件, 或停用模组."
 
 --*_MSG locales
-L["LOGIN_MSG"] = "欢迎使用 %sElvUI|r %s%s|r 版，请输入 /ec 进入设定介面。如需技术支援，请至 http://www.tukui.org"
+L["LOGIN_MSG"] = "欢迎使用 %sElvUI|r %s%s|r 版, 请输入/ec进入设定介面. 如需技术支持,请至 http://www.tukui.org"
 
 --ActionBars
 L["Binding"] = "绑定"
@@ -26,14 +26,14 @@ L["KEY_PAGEUP"] = "PU"
 L["KEY_SHIFT"] = "S"
 L["KEY_SPACE"] = "SpB"
 L["No bindings set."] = "无绑定设定"
-L["Remove Bar %d Action Page"] = "移除第 %d 动作条"
+L["Remove Bar %d Action Page"] = "移除第%d动作条"
 L["Trigger"] = "触发器"
 
 --Bags
 L["Bank"] = "银行"
 L["Deposit Reagents"] = "导入材料"
 L["Hold Control + Right Click:"] = '按住 Ctrl 并按鼠标右键:'
-L["Hold Shift + Drag:"] = '按住 Shift 并拖动: '
+L["Hold Shift + Drag:"] = '按住 Shift 并拖动:'
 L["Purchase Bags"] = "购买背包"
 L["Purchase"] = "购买"
 L["Reagent Bank"] = "材料银行"
@@ -209,7 +209,7 @@ L["Your current resolution is %s, this is considered a %s resolution."] = "你�
 --Misc
 L["ABOVE_THREAT_FORMAT"] = '%s: %.0f%% [%.0f%% 以上 |cff%02x%02x%02x%s|r]'
 L["Average Group iLvl:"] = "平均小队装等"
-L["Bars"] = "条"
+L["Bars"] = "状态条"
 L["Calendar"] = "日历"
 L["Can't Roll"] = "无法需求此装备"
 L["Disband Group"] = "解散队伍"
