@@ -195,7 +195,7 @@ function E:EnableBlizzardAddOns()
 		local reason = select(5, GetAddOnInfo(addon))
 		if reason == "DISABLED" then
 			EnableAddOn(addon)
-			E:Print("The following addon was re-enabled: "..addon)
+			E:Print("The following addon was re-enabled:", addon)
 		end
 	end
 end
