@@ -398,10 +398,6 @@ function B:UpdateSlot(bagID, slotID)
 	elseif (clink) then
 		local iLvl, itemEquipLoc, itemClassID, itemSubClassID
 		slot.name, _, _, iLvl, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID = GetItemInfo(clink);
-		
-		if E.wowbuild >= 22882 then
-			iLvl = GetDetailedItemLevelInfo(clink)
-		end
 
 		local isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID);
 		local r, g, b

@@ -139,15 +139,9 @@ local function LoadSkin()
 	GuildNewsFiltersFrame:SetTemplate("Transparent")
 	S:HandleCloseButton(GuildNewsFiltersFrameCloseButton)
 
-	if E.wowbuild >= 22882 then
-		for i = 1, #GuildNewsFiltersFrame.GuildNewsFilterButtons do
-			local checkbox = GuildNewsFiltersFrame.GuildNewsFilterButtons[i]
-			S:HandleCheckBox(checkbox)
-		end
-	else
-		for i=1, 6 do
-			S:HandleCheckBox(_G["GuildNewsFilterButton"..i])
-		end
+	for i = 1, #GuildNewsFiltersFrame.GuildNewsFilterButtons do
+		local checkbox = GuildNewsFiltersFrame.GuildNewsFilterButtons[i]
+		S:HandleCheckBox(checkbox)
 	end
 
 	GuildNewsFiltersFrame:Point("TOPLEFT", GuildFrame, "TOPRIGHT", 4, -20)

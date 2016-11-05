@@ -1949,12 +1949,7 @@ function CH:Initialize()
 	E.Chat = self
 	self:SecureHook('ChatEdit_OnEnterPressed')
 	ChatFrameMenuButton:Kill()
-
-	if E.wowbuild >= 22882 then
-		QuickJoinToastButton:Kill()
-	else
-		FriendsMicroButton:Kill()
-	end
+	QuickJoinToastButton:Kill()
 
 	if WIM then
 	  WIM.RegisterWidgetTrigger("chat_display", "whisper,chat,w2w,demo", "OnHyperlinkClick", function(self) CH.clickedframe = self end);
