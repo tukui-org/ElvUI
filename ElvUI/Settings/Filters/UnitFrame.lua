@@ -46,6 +46,7 @@ G.unitframe.aurafilters['CCDebuffs'] = {
 		[91800] = Defaults(4), --Gnaw (Pet)
 		[91797] = Defaults(4), --Monstrous Blow (Pet)
 		--[?????] = Defaults(), --Reanimation (missing data)
+		[210141] = Defaults(3), --Zombie Explosion
 	--Demon Hunter
 		[207685] = Defaults(4), --Sigil of Misery
 		[217832] = Defaults(3), --Imprison
@@ -112,7 +113,6 @@ G.unitframe.aurafilters['CCDebuffs'] = {
 		[123407] = Defaults(1), --Spinning Fire Blossom
 		[116706] = Defaults(1), --Disable
 		[232055] = Defaults(4), --Fists of Fury (it's this one or the other)
-		[120086] = Defaults(4), --Fists of Fury
 	--Paladin
 		[853] = Defaults(3), --Hammer of Justice
 		[20066] = Defaults(3), --Repentance
@@ -188,7 +188,7 @@ G.unitframe.aurafilters['TurtleBuffs'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
 	--Death Knight
-		[48797] = Defaults(), --Anti-Magic Shell
+		[48707] = Defaults(), --Anti-Magic Shell
 		[81256] = Defaults(), --Dancing Rune Weapon
 		[55233] = Defaults(), --Vampiric Blood
 		[193320] = Defaults(), --Umbilicus Eternus
@@ -317,7 +317,7 @@ G.unitframe.aurafilters['PlayerBuffs'] = {
 	['type'] = 'Whitelist',
 	['spells'] = {
 	--Death Knight
-		[48797] = Defaults(), --Anti-Magic Shell
+		[48707] = Defaults(), --Anti-Magic Shell
 		[81256] = Defaults(), --Dancing Rune Weapon
 		[55233] = Defaults(), --Vampiric Blood
 		[193320] = Defaults(), --Umbilicus Eternus
@@ -332,6 +332,8 @@ G.unitframe.aurafilters['PlayerBuffs'] = {
 		[152279] = Defaults(), --Breath of Sindragosa
 		[233411] = Defaults(), --Blood for Blood
 		[212552] = Defaults(), --Wraith Walk
+		[215711] = Defaults(), --Soul Reaper
+		[194918] = Defaults(), --Blighted Rune Weapon
 	--Demon Hunter
 		[207811] = Defaults(), --Nether Bond (DH)
 		[207810] = Defaults(), --Nether Bond (Target)
@@ -377,6 +379,7 @@ G.unitframe.aurafilters['PlayerBuffs'] = {
 		[203727] = Defaults(), --Thorns
 		[233756] = Defaults(), --Eclipse (it's this one or the other)
 		[234084] = Defaults(), --Eclipse
+		[22842] = Defaults(), --Frenzied Regeneration
 	--Hunter
 		[186265] = Defaults(), --Aspect of the Turtle
 		[53480] = Defaults(), --Roar of Sacrifice
@@ -389,6 +392,8 @@ G.unitframe.aurafilters['PlayerBuffs'] = {
 		[186289] = Defaults(), --Aspect of the Eagle
 		[186257] = Defaults(), --Aspect of the Cheetah
 		[118922] = Defaults(), --Posthaste
+		[90355] = Defaults(), -- Ancient Hysteria (Pet)
+		[160452] = Defaults(), -- Netherwinds (Pet)
 	--Mage
 		[45438] = Defaults(), --Ice Block
 		[113862] = Defaults(), --Greater Invisibility
@@ -454,6 +459,7 @@ G.unitframe.aurafilters['PlayerBuffs'] = {
 		[199545] = Defaults(), --Steed of Glory
 		[210294] = Defaults(), --Divine Favor
 		[221886] = Defaults(), --Divine Steed
+		[31821] = Defaults(), --Aura Mastery
 	--Priest
 		[81782] = Defaults(), --Power Word: Barrier
 		[47585] = Defaults(), --Dispersion
@@ -479,6 +485,7 @@ G.unitframe.aurafilters['PlayerBuffs'] = {
 		[197767] = Defaults(), --Speed of the Pious
 		[210980] = Defaults(), --Focus in the Light
 		[221660] = Defaults(), --Holy Concentration
+		[15286] = Defaults(), --Vampiric Embrace
 	--Rogue
 		[5277] = Defaults(), --Evasion
 		[31224] = Defaults(), --Cloak of Shadows
@@ -525,6 +532,8 @@ G.unitframe.aurafilters['PlayerBuffs'] = {
 		[157384] = Defaults(), --Eye of the Storm
 		[192082] = Defaults(), --Wind Rush
 		[2645] = Defaults(), --Ghost Wolf
+		[32182] = Defaults(), --Heroism
+		[108281] = Defaults(), --Ancestral Guidance
 	--Warlock
 		[108416] = Defaults(), --Dark Pact
 		[104773] = Defaults(), --Unending Resolve
@@ -571,11 +580,13 @@ G.unitframe.aurafilters['PlayerBuffs'] = {
 		[26297] = Defaults(), -- Berserking
 		[68992] = Defaults(), -- Darkflight
 		[58984] = Defaults(), -- Shadowmeld
-	--Potion
+	--Consumables
 		[188029] = Defaults(), --Unbending Potion (Legion Armor)
 		[188028] = Defaults(), --Potion of the Old War (Legion Melee)
 		[188027] = Defaults(), --Potion of Deadly Grace (Legion Caster)
 		[229206] = Defaults(), --Potion of Prolonged Power (Legion)
+		[178207] = Defaults(), --Drums of Fury
+		[230935] = Defaults(), --Drums of the Mountain
 	},
 }
 
