@@ -335,7 +335,7 @@ L["Testing:"] = "Tester:"
 L["Current - Remaining"] = "Aktuell - Verbleibend"
 L["DataBars"] = "Informationsleisten"
 L["Hide In Combat"] = "Im Kampf ausblenden"
-L["Hide Outside PvP"] = true;
+L["Hide Outside PvP"] = "Verstecke ausserhalb von PvP"
 L["Setup on-screen display of information bars."] = "Einstellung der Informationsleisten."
 
 --DataTexts
