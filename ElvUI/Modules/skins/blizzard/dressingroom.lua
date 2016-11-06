@@ -17,6 +17,20 @@ local function LoadSkin()
 	DressUpFrameOutfitDropDown:SetSize(195, 34)
 	
 	S:HandleCloseButton(DressUpFrameCloseButton, DressUpFrame.backdrop)
+	
+	-- Wardrobe edit frame
+	WardrobeOutfitFrame:StripTextures(true)
+	WardrobeOutfitFrame:SetTemplate("Transparent")
+
+	WardrobeOutfitEditFrame:StripTextures(true)
+	WardrobeOutfitEditFrame:SetTemplate("Transparent")
+	WardrobeOutfitEditFrame.EditBox:StripTextures()
+	S:HandleEditBox(WardrobeOutfitEditFrame.EditBox)
+	WardrobeOutfitEditFrame.EditBox.backdrop:Point("TOPLEFT", WardrobeOutfitEditFrame.EditBox, "TOPLEFT", -5, -5)
+	WardrobeOutfitEditFrame.EditBox.backdrop:Point("BOTTOMRIGHT", WardrobeOutfitEditFrame.EditBox, "BOTTOMRIGHT", 0, 5)
+	S:HandleButton(WardrobeOutfitEditFrame.AcceptButton)
+	S:HandleButton(WardrobeOutfitEditFrame.CancelButton)
+	S:HandleButton(WardrobeOutfitEditFrame.DeleteButton)
 
 	DressUpFrameResetButton:Point("RIGHT", DressUpFrameCancelButton, "LEFT", -2, 0)
 end
