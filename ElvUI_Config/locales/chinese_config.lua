@@ -335,7 +335,7 @@ L["Testing:"] = "测试:"
 L["DATABAR_DESC"] = "设置各种数据条"
 L["Current - Remaining"] = "当前值 - 剩余值"
 L["DataBars"] = "数据条"
-L["Hide in Combat"] = "战斗中隐藏"
+L["Hide In Combat"] = "战斗中隐藏"
 
 --DataTexts
 L["24-Hour Time"] = "24小时制"

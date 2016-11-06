@@ -382,7 +382,7 @@ L["Testing:"] = "|cff2eb7e4< 테스터 >|r"
 L["DATABAR_DESC"] = "Setup on-screen display of information bars."
 L["Current - Remaining"] = true;
 L["DataBars"] = true;
-L["Hide in Combat"] = true;
+L["Hide In Combat"] = true;
 
 --DataTexts
 L["24-Hour Time"] = "24시제로 표시"

@@ -334,7 +334,7 @@ L["Testing:"] = "Тестирование:"
 L["DATABAR_DESC"] = "Контролирует отображение информационных полос."
 L["Current - Remaining"] = "Текущий - Осталось"
 L["DataBars"] = "Инфо-полосы"
-L["Hide in Combat"] = "Скрывать в бою"
+L["Hide In Combat"] = "Скрывать в бою"
 
 --DataTexts
 L["24-Hour Time"] = "24х часовой формат"

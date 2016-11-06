@@ -53,7 +53,7 @@ E.Options.args.databars = {
 				hideInCombat = {
 					order = 4,
 					type = "toggle",
-					name = L["Hide in Combat"],
+					name = L["Hide In Combat"],
 					set = function(info, value) mod.db.experience[ info[#info] ] = value; mod:UpdateExperience() end,
 				},
 				reverseFill = {
@@ -133,7 +133,7 @@ E.Options.args.databars = {
 				hideInCombat = {
 					order = 3,
 					type = "toggle",
-					name = L["Hide in Combat"],
+					name = L["Hide In Combat"],
 					set = function(info, value) mod.db.reputation[ info[#info] ] = value; mod:UpdateReputation() end,
 				},
 				reverseFill = {
@@ -213,7 +213,7 @@ E.Options.args.databars = {
 				hideInCombat = {
 					order = 3,
 					type = "toggle",
-					name = L["Hide in Combat"],
+					name = L["Hide In Combat"],
 					set = function(info, value) mod.db.artifact[ info[#info] ] = value; mod:UpdateArtifact() end,
 				},
 				reverseFill = {
@@ -293,7 +293,13 @@ E.Options.args.databars = {
 				hideInCombat = {
 					order = 3,
 					type = "toggle",
-					name = L["Hide in Combat"],
+					name = L["Hide In Combat"],
+					set = function(info, value) mod.db.honor[ info[#info] ] = value; mod:UpdateHonor() end,
+				},
+				hideOutsidePvP = {
+					order = 3,
+					type = "toggle",
+					name = L["Hide Not PvP-Flagged"],
 					set = function(info, value) mod.db.honor[ info[#info] ] = value; mod:UpdateHonor() end,
 				},
 				reverseFill = {
