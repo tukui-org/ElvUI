@@ -13,7 +13,7 @@ E.Options.args.databars = {
 		intro = {
 			order = 1,
 			type = "description",
-			name = L["DATABAR_DESC"],
+			name = L["Setup on-screen display of information bars."],
 		},
 		spacer = {
 			order = 2,
@@ -299,7 +299,7 @@ E.Options.args.databars = {
 				hideOutsidePvP = {
 					order = 3,
 					type = "toggle",
-					name = L["Hide Not PvP-Flagged"],
+					name = L["Hide Outside PvP"],
 					set = function(info, value) mod.db.honor[ info[#info] ] = value; mod:UpdateHonor() end,
 				},
 				reverseFill = {

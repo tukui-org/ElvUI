@@ -158,6 +158,7 @@ P['databars'] = {
 		["reverseFill"] = false,
 		["hideInVehicle"] = false,
 		["hideInCombat"] = false,
+		["hideOutsidePvP"] = false,
 	},
 }
 

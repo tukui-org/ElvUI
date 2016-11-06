@@ -6,7 +6,13 @@ local mod = E:GetModule('DataBars');
 local _G = _G
 local format = format
 --WoW API / Variables
-local UnitHonor, UnitHonorMax, UnitHonorLevel, GetMaxPlayerHonorLevel, CanPrestige = UnitHonor, UnitHonorMax, UnitHonorLevel, GetMaxPlayerHonorLevel, CanPrestige
+local CanPrestige = CanPrestige
+local GetMaxPlayerHonorLevel = GetMaxPlayerHonorLevel
+local ToggleTalentFrame = ToggleTalentFrame
+local UnitHonor = UnitHonor
+local UnitHonorLevel = UnitHonorLevel
+local UnitHonorMax = UnitHonorMax
+local UnitIsPVP = UnitIsPVP
 local UnitLevel = UnitLevel
 local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL
 local PVP_HONOR_PRESTIGE_AVAILABLE = PVP_HONOR_PRESTIGE_AVAILABLE
@@ -19,12 +25,21 @@ local InCombatLockdown = InCombatLockdown
 
 function mod:UpdateHonor(event, unit)
 	if not mod.db.honor.enable then return end
-	if event == "HONOR_PRESTIGE_UPDATE"  and unit ~= "player" then return end
+	if event == "HONOR_PRESTIGE_UPDATE" and unit ~= "player" then return end
+	if event == "PLAYER_FLAGS_CHANGED" and unit ~= "player" then return end
+
 	local bar = self.honorBar
 	local showHonor = UnitLevel("player") >= MAX_PLAYER_LEVEL
-	if not showHonor or (event == "PLAYER_REGEN_DISABLED" and self.db.honor.hideInCombat) then
+
+	if (self.db.honor.hideInCombat and (event == "PLAYER_REGEN_DISABLED" or InCombatLockdown())) then
+		showHonor = false
+	elseif (self.db.honor.hideOutsidePvP and not UnitIsPVP("player")) then
+		showHonor = false
+	end
+
+	if not showHonor then
 		bar:Hide()
-	elseif showHonor and (not self.db.honor.hideInCombat or not InCombatLockdown()) then
+	else
 		bar:Show()
 
 		local current = UnitHonor("player");
@@ -174,7 +189,8 @@ function mod:LoadHonorBar()
 	self.honorBar.eventFrame:Hide()
 	self.honorBar.eventFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
 	self.honorBar.eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
-	self.honorBar.eventFrame:SetScript("OnEvent", function(self, event) mod:UpdateHonor(event) end)
+	self.honorBar.eventFrame:RegisterEvent("PLAYER_FLAGS_CHANGED")
+	self.honorBar.eventFrame:SetScript("OnEvent", function(self, event, unit) mod:UpdateHonor(event, unit) end)
 
 	self:UpdateHonorDimensions()
 	E:CreateMover(self.honorBar, "HonorBarMover", L["Honor Bar"])

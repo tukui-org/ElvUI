@@ -332,10 +332,11 @@ L["ELVUI_CREDITS"] = "我想透過這個特別方式, 向那些協助測試、�
 L["Testing:"] = "測試："
 
 --DataBars
-L["DATABAR_DESC"] = "設置各種數據條"
 L["Current - Remaining"] = "當前值 - 剩餘值"
 L["DataBars"] = "數據條"
 L["Hide In Combat"] = "戰鬥中隱藏"
+L["Hide Outside PvP"] = true;
+L["Setup on-screen display of information bars."] = "設置各種數據條"
 
 --DataTexts
 L["24-Hour Time"] = "24小時制"

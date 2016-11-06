@@ -332,10 +332,11 @@ L["ELVUI_CREDITS"] = "Gostaria de agradecer especialmente às seguintes pessoas 
 L["Testing:"] = "Testar:"
 
 --DataBars
-L["DATABAR_DESC"] = "Setup on-screen display of information bars."
 L["Current - Remaining"] = true;
 L["DataBars"] = true;
 L["Hide In Combat"] = true;
+L["Hide Outside PvP"] = true;
+L["Setup on-screen display of information bars."] = true;
 
 --DataTexts
 L["24-Hour Time"] = "24 horas"

@@ -379,10 +379,11 @@ L["ELVUI_CREDITS"] = "저는 이 애드온의 유지와 개발 코딩에 도움�
 L["Testing:"] = "|cff2eb7e4< 테스터 >|r"
 
 --DataBars
-L["DATABAR_DESC"] = "Setup on-screen display of information bars."
 L["Current - Remaining"] = true;
 L["DataBars"] = true;
 L["Hide In Combat"] = true;
+L["Hide Outside PvP"] = true;
+L["Setup on-screen display of information bars."] = true;
 
 --DataTexts
 L["24-Hour Time"] = "24시제로 표시"
