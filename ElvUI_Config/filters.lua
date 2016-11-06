@@ -1028,7 +1028,7 @@ local function UpdateFilterGroup()
 			},
 		}
 
-		if selectedFilter == "RaidDebuffs" then
+		if selectedFilter == "RaidDebuffs" or selectedFilter == "CCDebuffs" then
 			E.Options.args.filters.args.spellGroup.args.priority = {
 				name = L["Priority"],
 				type = "range",
@@ -1043,20 +1043,22 @@ local function UpdateFilterGroup()
 				min = 0, max = 99, step = 1,
 				desc = L["Set the priority order of the spell, please note that prioritys are only used for the raid debuff module, not the standard buff/debuff module. If you want to disable set to zero."],
 			}
-			E.Options.args.filters.args.spellGroup.args.stackThreshold = {
-				name = L["Stack Threshold"],
-				type = "range",
-				get = function()
-					if selectedFolder or not selectedSpell then
-						return 0
-					else
-						return E.global.unitframe['aurafilters'][selectedFilter]['spells'][(spellID or selectedSpell)].stackThreshold
-					end
-				end,
-				set = function(info, value) E.global.unitframe['aurafilters'][selectedFilter]['spells'][(spellID or selectedSpell)].stackThreshold = value; UpdateFilterGroup(); UF:Update_AllFrames(); end,
-				min = 0, max = 99, step = 1,
-				desc = L["The debuff needs to reach this amount of stacks before it is shown. Set to 0 to always show the debuff."],
-			}
+			if selectedFilter == "RaidDebuffs" then
+				E.Options.args.filters.args.spellGroup.args.stackThreshold = {
+					name = L["Stack Threshold"],
+					type = "range",
+					get = function()
+						if selectedFolder or not selectedSpell then
+							return 0
+						else
+							return E.global.unitframe['aurafilters'][selectedFilter]['spells'][(spellID or selectedSpell)].stackThreshold
+						end
+					end,
+					set = function(info, value) E.global.unitframe['aurafilters'][selectedFilter]['spells'][(spellID or selectedSpell)].stackThreshold = value; UpdateFilterGroup(); UF:Update_AllFrames(); end,
+					min = 0, max = 99, step = 1,
+					desc = L["The debuff needs to reach this amount of stacks before it is shown. Set to 0 to always show the debuff."],
+				}
+			end
 		end
 	end
 
