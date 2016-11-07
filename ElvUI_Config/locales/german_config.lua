@@ -747,13 +747,13 @@ L["Add a spell to the filter. Use spell ID if you don't want to match all auras 
 L["Add a spell to the filter."] = "Zauber zum Filter hinzufügen"
 L["Add Spell ID or Name"] = "Zauber ID oder Name hinzufügen"
 L["Add SpellID"] = "ZauberID hinzufügen"
-L["Additional Filter Override"] = true;
+L["Additional Filter Override"] = "Zusätzlicher Filter überschreiben"
 L["Additional Filter"] = "Zusätzlicher Filter"
 L["Additional Power Text"] = "Zusätzlicher Kraft Text"
 L["Affliction"] = "Gebrechen"
 L["Allow auras considered to be part of a boss encounter."] = "Erlaube den Auren als Teil eines Bosskampfes betrachtet zu werden"
 L["Allow Boss Encounter Auras"] = "Erlaube Bosskampf Auren"
-L["Allow non-personal auras from additional filter when 'Block Non-Personal Auras' is enabled."] = true;
+L["Allow non-personal auras from additional filter when 'Block Non-Personal Auras' is enabled."] = "Erlaube nicht-persönliche Auren vom zusätzlichen Filter wenn 'Blocke Nicht-Persönliche Auren' aktiviert ist."
 L["Allow Whitelisted Auras"] = "Erlaube Whitelisted Auren"
 L["An X offset (in pixels) to be used when anchoring new frames."] = "X-Versatz (in Pixeln) der verwendet werden soll um neue Fenster zu ankern"
 L["An Y offset (in pixels) to be used when anchoring new frames."] = "Y-Versatz (in Pixeln) der verwendet werden soll um neue Fenster zu ankern"
