@@ -735,11 +735,13 @@ L["Add a spell to the filter. Use spell ID if you don't want to match all auras 
 L["Add a spell to the filter."] = true;
 L["Add Spell ID or Name"] = true;
 L["Add SpellID"] = true;
+L["Additional Filter Override"] = true;
 L["Additional Filter"] = true;
 L["Additional Power Text"] = true;
 L["Affliction"] = true;
 L["Allow auras considered to be part of a boss encounter."] = true;
 L["Allow Boss Encounter Auras"] = true;
+L["Allow non-personal auras from additional filter when 'Block Non-Personal Auras' is enabled."] = true;
 L["Allow Whitelisted Auras"] = true;
 L["An X offset (in pixels) to be used when anchoring new frames."] = true;
 L["An Y offset (in pixels) to be used when anchoring new frames."] = true;

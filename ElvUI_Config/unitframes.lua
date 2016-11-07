@@ -215,18 +215,18 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 			desc = L["Don't display auras that have no duration."],
 		}
 		config.args.filters.args.onlyDispellable = {
-			order = 13,
+			order = 14,
 			type = 'toggle',
 			name = L["Block Non-Dispellable Auras"],
 			desc = L["Don't display auras that cannot be purged or dispelled by your class."],
 		}
 		--[[config.args.filters.args.selfBuffs = {
-			order = 14,
+			order = 15,
 			type = 'toggle',
 			name = L["Allow Self Buffs"],
 		}]]
 		config.args.filters.args.useFilter = {
-			order = 16,
+			order = 17,
 			name = L["Additional Filter"],
 			desc = L["Select an additional filter to use. If the selected filter is a whitelist and no other filters are being used (with the exception of Block Non-Personal Auras) then it will block anything not on the whitelist, otherwise it will simply add auras on the whitelist in addition to any other filter settings."],
 			type = 'select',
@@ -238,6 +238,12 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 				end
 				return filters
 			end,
+		}
+		config.args.filters.args.additionalFilterAllowNonPersonal = {
+			order = 18,
+			type = 'toggle',
+			name = L["Additional Filter Override"],
+			desc = L["Allow non-personal auras from additional filter when 'Block Non-Personal Auras' is enabled."],
 		}
 	else
 		config.args.filters.args.playerOnly = {
@@ -337,7 +343,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 			},
 		}
 		config.args.filters.args.onlyDispellable = {
-			order = 13,
+			order = 14,
 			guiInline = true,
 			type = 'group',
 			name = L["Block Non-Dispellable Auras"],
@@ -361,7 +367,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 			},
 		}
 		--[[config.args.filters.args.selfBuffs = {
-			order = 14,
+			order = 15,
 			guiInline = true,
 			type = 'group',
 			name = L["Allow Self-Buffs"],
@@ -385,7 +391,7 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 			},
 		}]]
 		config.args.filters.args.useFilter = {
-			order = 16,
+			order = 17,
 			name = L["Additional Filter"],
 			desc = L["Select an additional filter to use. If the selected filter is a whitelist and no other filters are being used (with the exception of Block Non-Personal Auras) then it will block anything not on the whitelist, otherwise it will simply add auras on the whitelist in addition to any other filter settings."],
 			type = 'select',
@@ -398,11 +404,17 @@ local function GetOptionsTable_AuraBars(friendlyOnly, updateFunc, groupName)
 				return filters
 			end,
 		}
+		config.args.filters.args.additionalFilterAllowNonPersonal = {
+			order = 18,
+			type = 'toggle',
+			name = L["Additional Filter Override"],
+			desc = L["Allow non-personal auras from additional filter when 'Block Non-Personal Auras' is enabled."],
+		}
 	end
 
 
 	config.args.filters.args.maxDuration = {
-		order = 17,
+		order = 16,
 		type = 'range',
 		name = L["Maximum Duration"],
 		desc = L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."],
@@ -562,7 +574,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 			desc = L["Don't display auras that have no duration."],
 		}
 		config.args.filters.args.onlyDispellable = {
-			order = 13,
+			order = 14,
 			type = 'toggle',
 			name = L["Block Non-Dispellable Auras"],
 			desc = L["Don't display auras that cannot be purged or dispelled by your class."],
@@ -577,7 +589,7 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 		}
 
 		config.args.filters.args.useFilter = {
-			order = 15,
+			order = 16,
 			name = L["Additional Filter"],
 			desc = L["Select an additional filter to use. If the selected filter is a whitelist and no other filters are being used (with the exception of Block Non-Personal Auras) then it will block anything not on the whitelist, otherwise it will simply add auras on the whitelist in addition to any other filter settings."],
 			type = 'select',
@@ -589,6 +601,13 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 				end
 				return filters
 			end,
+		}
+
+		config.args.filters.args.additionalFilterAllowNonPersonal = {
+			order = 17,
+			type = 'toggle',
+			name = L["Additional Filter Override"],
+			desc = L["Allow non-personal auras from additional filter when 'Block Non-Personal Auras' is enabled."],
 		}
 	else
 		config.args.filters.args.playerOnly = {
@@ -750,6 +769,12 @@ local function GetOptionsTable_Auras(friendlyUnitOnly, auraType, isGroupFrame, u
 				end
 				return filters
 			end,
+		}
+		config.args.filters.args.additionalFilterAllowNonPersonal = {
+			order = 17,
+			type = 'toggle',
+			name = L["Additional Filter Override"],
+			desc = L["Allow non-personal auras from additional filter when 'Block Non-Personal Auras' is enabled."],
 		}
 	end
 
