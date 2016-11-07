@@ -269,6 +269,7 @@ L["List of words to color in chat if found in a message. If you wish to add mult
 L["Lock Positions"] = "Закрепить"
 L["Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session."] = "Записывать содержимое основных чатов. Таким образом, после перезагрузки интерфейса или входа/выхода из игры, Вы увидите сообщения из прошлой сессии."
 L["No Alert In Combat"] = "Без оповещений в бою"
+L["Number of messages you scroll for each step."] = true;
 L["Number of repeat characters while in combat before the chat editbox is automatically closed."] = "Кол-во одинаковых символов введенных в бою, после которого поле ввода автоматически закроется."
 L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."] = "Время в секундах, через которое чат автоматически покрутится вниз до конца, если Вы не сделаете это вручную."
 L["Panel Backdrop"] = "Фон панелей"
@@ -283,6 +284,7 @@ L["Right Only"] = "Только правый"
 L["Right Panel Height"] = "Высота правого чата"
 L["Right Panel Width"] = "Ширина правого чата"
 L["Scroll Interval"] = "Интервал прокрутки"
+L["Scroll Messages"] = true;
 L["Separate Panel Sizes"] = "Разные размеры панелей"
 L["Set the font outline."] = "Устанавливает границу шрифта."
 L["Short Channels"] = "Короткие каналы"

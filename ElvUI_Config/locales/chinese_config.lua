@@ -270,6 +270,7 @@ L["List of words to color in chat if found in a message. If you wish to add mult
 L["Lock Positions"] = '锁定位置'
 L["Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session."] = '记录对话历史,当你重载,登录和退出时会恢复你最后一次会话'
 L["No Alert In Combat"] = "战斗中不警报"
+L["Number of messages you scroll for each step."] = true;
 L["Number of repeat characters while in combat before the chat editbox is automatically closed."] = "当你在战斗中按下技能键时,有可能你的输入框还处于打开状态,这个功能可以在你按下技能键并且在输入框中输入下列个数字符串却没有放出技能时帮你自动关闭输入框"
 L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."] = "聊天框滚动到底部所需要的滚动时间(秒)"
 L["Panel Backdrop"] = "聊天框背景"
@@ -284,6 +285,7 @@ L["Right Only"] = "仅显示右边"
 L["Right Panel Height"] = "右面板高度"
 L["Right Panel Width"] = "右面板宽度"
 L["Scroll Interval"] = "滚动间隔"
+L["Scroll Messages"] = true;
 L["Separate Panel Sizes"] = "分离框体大小"
 L["Set the font outline."] = "设定字体的描边"
 L["Short Channels"] = "隐藏频道名称"

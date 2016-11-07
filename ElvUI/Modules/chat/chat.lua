@@ -256,12 +256,14 @@ local specialChatIcons = {
 CH.Keywords = {};
 CH.ClassNames = {}
 
+local numScrollMessages
 local function ChatFrame_OnMouseScroll(frame, delta)
+	numScrollMessages = CH.db.numScrollMessages or 3
 	if delta < 0 then
 		if IsShiftKeyDown() then
 			frame:ScrollToBottom()
 		else
-			for i = 1, 3 do
+			for i = 1, numScrollMessages do
 				frame:ScrollDown()
 			end
 		end
@@ -269,7 +271,7 @@ local function ChatFrame_OnMouseScroll(frame, delta)
 		if IsShiftKeyDown() then
 			frame:ScrollToTop()
 		else
-			for i = 1, 3 do
+			for i = 1, numScrollMessages do
 				frame:ScrollUp()
 			end
 		end

@@ -270,6 +270,7 @@ L["List of words to color in chat if found in a message. If you wish to add mult
 L["Lock Positions"] = "Travar Posições"
 L["Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session."] = "Armazenar o histórico dos quadros principais do bate-papo. Para que possa ver o histórico de sua última sessão ao relogar ou conectar e desconectar."
 L["No Alert In Combat"] = true;
+L["Number of messages you scroll for each step."] = true;
 L["Number of repeat characters while in combat before the chat editbox is automatically closed."] = true;
 L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."] = "Tempo, em segundos, para rolar o bate-papo até ao fim caso nao tenha rolado completamente."
 L["Panel Backdrop"] = "Fundo do Painel"
@@ -284,6 +285,7 @@ L["Right Only"] = "Somente Direita"
 L["Right Panel Height"] = true;
 L["Right Panel Width"] = true;
 L["Scroll Interval"] = "Intervalo de Rolar"
+L["Scroll Messages"] = true;
 L["Separate Panel Sizes"] = true;
 L["Set the font outline."] = "Definir o contorno de fonte."
 L["Short Channels"] = "Abreviar os Canáis"

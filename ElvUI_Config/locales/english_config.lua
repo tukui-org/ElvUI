@@ -268,6 +268,7 @@ L["List of words to color in chat if found in a message. If you wish to add mult
 L["Lock Positions"] = true;
 L["Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session."] = true;
 L["No Alert In Combat"] = true;
+L["Number of messages you scroll for each step."] = true;
 L["Number of repeat characters while in combat before the chat editbox is automatically closed."] = true;
 L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."] = true;
 L["Panel Backdrop"] = true;
@@ -282,6 +283,7 @@ L["Right Only"] = true;
 L["Right Panel Height"] = true;
 L["Right Panel Width"] = true;
 L["Scroll Interval"] = true;
+L["Scroll Messages"] = true;
 L["Separate Panel Sizes"] = true;
 L["Set the font outline."] = true; --Also used in UnitFrames section
 L["Short Channels"] = true;

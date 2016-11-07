@@ -314,6 +314,7 @@ L["List of words to color in chat if found in a message. If you wish to add mult
 L["Lock Positions"] = "패널에 채팅창 고정"
 L["Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session."] = "애드온 리로드나 로그아웃 이전의 채팅내역을 보존하여 접속했을 때 보여줍니다."
 L["No Alert In Combat"] = true;
+L["Number of messages you scroll for each step."] = true;
 L["Number of repeat characters while in combat before the chat editbox is automatically closed."] = true;
 L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."] = "채팅창의 스크롤이 맨 아래가 아니라면 이 값 만큼 시간이 지났을 때 맨 아래로 자동 스크롤링 됩니다."
 L["Panel Backdrop"] = "패널 배경 표시"
@@ -328,6 +329,7 @@ L["Right Only"] = "우측 배경만 표시"
 L["Right Panel Height"] = "우측 패널 세로길이"
 L["Right Panel Width"] = "우측 패널 가로길이"
 L["Scroll Interval"] = "자동 스크롤링 시간"
+L["Scroll Messages"] = true;
 L["Separate Panel Sizes"] = "좌우패널 크기 따로설정"
 L["Set the font outline."] = "글꼴의 외곽선을 결정합니다."
 L["Short Channels"] = "채널명 요약"
