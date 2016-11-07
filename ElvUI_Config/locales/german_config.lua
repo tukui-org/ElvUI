@@ -747,7 +747,7 @@ L["Add a spell to the filter. Use spell ID if you don't want to match all auras 
 L["Add a spell to the filter."] = "Zauber zum Filter hinzufügen"
 L["Add Spell ID or Name"] = "Zauber ID oder Name hinzufügen"
 L["Add SpellID"] = "ZauberID hinzufügen"
-L["Additional Filter Override"] = "Zusätzlicher Filer überschreiben"
+L["Additional Filter Override"] = "Zusätzlicher Filter überschreiben"
 L["Additional Filter"] = "Zusätzlicher Filter"
 L["Additional Power Text"] = "Zusätzlicher Kraft Text"
 L["Affliction"] = "Gebrechen"
