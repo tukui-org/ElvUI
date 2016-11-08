@@ -270,7 +270,7 @@ L["List of words to color in chat if found in a message. If you wish to add mult
 L["Lock Positions"] = "Positionen fixieren"
 L["Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session."] = "Sichert den Chatverlauf der Hauptchatfenster. Wenn du dein UI neulädst oder einloggst, siehst du den Chatverlauf der letzten Sitzung."
 L["No Alert In Combat"] = "Kein Alarm im Kampf"
-L["Number of messages you scroll for each step."] = true;
+L["Number of messages you scroll for each step."] = "Anzahl der Nachrichten die mit jeden Schritt gescrollt werden."
 L["Number of repeat characters while in combat before the chat editbox is automatically closed."] = "Anzahl der wiederholten Zeichen im Kampf, bevor das Chateingabefeld automatisch schließt."
 L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."] = "Anzahl der Sekunden um im Chatfenster nach unten zu scrollen, wenn du nicht komplett nach unten gescrollt bist."
 L["Panel Backdrop"] = "Fensterhintergrund"
@@ -285,7 +285,7 @@ L["Right Only"] = "Nur Rechts"
 L["Right Panel Height"] = "Rechte Fensterhöhe"
 L["Right Panel Width"] = "Rechte Fensterbreite"
 L["Scroll Interval"] = "Scroll-Interval"
-L["Scroll Messages"] = true;
+L["Scroll Messages"] = "Scroll Nachrichten"
 L["Separate Panel Sizes"] = "Getrennte Chatfenster Größenoptionen"
 L["Set the font outline."] = "Setzt die Schrift auf Outline." --Also used in UnitFrames section
 L["Short Channels"] = "Kurze Kanäle"
