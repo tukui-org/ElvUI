@@ -557,7 +557,7 @@ local function removeIconFromLine(text)
 	for i=1, 8 do
 		text = gsub(text, "|TInterface\\TargetingFrame\\UI%-RaidTargetingIcon_"..i..":0|t", "{"..strlower(_G["RAID_TARGET_"..i]).."}")
 	end
-	text = gsub(text, "(|TInterface(.*)|t)", "") --We need to look at this, battle net friend online/offline message gets messed up
+	text = gsub(text, "|TInterface(.-)|t", "")
 
 	return text
 end
