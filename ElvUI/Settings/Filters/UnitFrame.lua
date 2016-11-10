@@ -836,6 +836,13 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[207409] = Defaults(), -- Madness
 		[211634] = Defaults(), -- The Infinite Dark
 		[208385] = Defaults(), -- Tainted Discharge
+
+-- Trial of Valor
+	-- Odyn
+
+	-- Guarm
+
+	-- Helya
 	},
 }
 
