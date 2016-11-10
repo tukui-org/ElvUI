@@ -845,9 +845,9 @@ G.unitframe.aurafilters['RaidDebuffs'] = {
 		[227781] = Defaults(), -- Glowing Fragment
 
 	-- Guarm
-		[228226] = Defaults(), -- Flame Lick
-		[228246] = Defaults(), -- Frost Lick
-		[228250] = Defaults(), -- Shadow Lick
+		[228228] = Defaults(), -- Flame Lick
+		[228248] = Defaults(), -- Frost Lick
+		[228253] = Defaults(), -- Shadow Lick
 		[227539] = Defaults(), -- Fiery Phlegm
 		[227566] = Defaults(), -- Salty Spittle
 		[227570] = Defaults(), -- Dark Discharge
