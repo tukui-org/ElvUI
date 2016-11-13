@@ -7,6 +7,10 @@ local mod = E:GetModule('NamePlates')
 local UnitName = UnitName
 
 function mod:UpdateElement_HealerIcon(frame)
+	if (not self.db.units[frame.UnitType].enable) then
+		return;
+	end
+
 	local icon = frame.HealerIcon;
 	local name = UnitName(frame.unit)
 	icon:ClearAllPoints()
