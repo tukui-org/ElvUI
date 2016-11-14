@@ -8,7 +8,7 @@ local GetRaidTargetIndex = GetRaidTargetIndex
 local SetRaidTargetIconTexture = SetRaidTargetIconTexture
 
 function mod:UpdateElement_RaidIcon(frame)
-	if (not self.db.units[frame.UnitType].enable) then
+	if (self.db.units[frame.UnitType].enable == false) then
 		return;
 	end
 
