@@ -1516,7 +1516,7 @@ local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
 				order = 3,
 				type = 'range',
 				name = L["Size"],
-				min = 8, max = 35, step = 1,
+				min = 8, max = 100, step = 1,
 			},
 			font = {
 				order = 4,
