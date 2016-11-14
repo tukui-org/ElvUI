@@ -16,7 +16,12 @@
 		},
 		StepTitlesColor = {r,g,b},
 		StepTitlesColorSelected = {r,g,b},
+		StepTitleWidth = 140,
+		StepTitleButtonWidth = 130,
+		StepTitleTextJustification = "CENTER",
 	}
+	E:GetModule("PluginInstaller"):Queue(addon)
+
 	Title is wat displayed on top of the window. By default it's ""ElvUI Plugin Installation""
 	Name is how your installation will be showin in "pending list", Default is "Unknown"
 	tutorialImage is a path to your own texture to use in frame. if not specified, then it will use ElvUI's one
@@ -39,6 +44,9 @@
 	with a list of steps (current one being highlighted), clicking on those will open respective step. BenikUI style of doing stuff.
 	StepTitlesColor - a table with color values to color "titles" when they are not active
 	StepTitlesColorSelected - a table with color values to color "titles" when they are active
+	StepTitleWidth - Width of the steps frame on the right side
+	StepTitleButtonWidth - Width of each step button in the steps frame
+	StepTitleTextJustification - The justification of the text on each step button ("LEFT", "RIGHT", "CENTER"). Default: "CENTER"
 ]]
 
 local E, L, V, P, G, _ = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
@@ -47,8 +55,9 @@ local PI = E:NewModule("PluginInstaller")
 --Cache global variables
 --Lua functions
 local _G = _G
-local pairs, tinsert, tremove, unpack = pairs, tinsert, tremove, unpack
-
+local pairs, unpack = pairs, unpack
+local tinsert, tremove = tinsert, tremove
+local format = string.format
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local PlaySoundFile = PlaySoundFile
@@ -113,7 +122,7 @@ local function SetPage(PageNum, PrevPage)
 	end
 
 	f.Pages[f.CurrentPage]()
-	f.Status.text:SetText(f.CurrentPage.." / "..f.MaxPage)
+	f.Status.text:SetFormattedText("%d / %d", f.CurrentPage, f.MaxPage)
 	if f.StepTitles then 
 		for i = 1, #f.side.Lines do
 			local b = f.side.Lines[i]
@@ -124,7 +133,7 @@ local function SetPage(PageNum, PrevPage)
 			else
 				color = f.StepTitlesColor or {1,1,1}
 			end
-			b.text:SetTextColor(color[1] or color.r,color[2] or color.g,color[3] or color.b)
+			b.text:SetTextColor(color[1] or color.r, color[2] or color.g, color[3] or color.b)
 		end
 	end
 end
@@ -223,7 +232,7 @@ function PI:CreateFrame()
 
 	f.Status = CreateFrame("StatusBar", "PluginInstallStatus", f)
 	f.Status:SetFrameLevel(f.Status:GetFrameLevel() + 2)
-	f.Status:CreateBackdrop("Default")
+	f.Status:CreateBackdrop("Default", true)
 	f.Status:SetStatusBarTexture(E["media"].normTex)
 	f.Status:SetStatusBarColor(unpack(E["media"].rgbvaluecolor))
 	f.Status:Point("TOPLEFT", f.Prev, "TOPRIGHT", 6, -2)
@@ -316,13 +325,23 @@ function PI:CreateFrame()
 	f.pending = CreateFrame("Frame", "PluginInstallPendingButton", f)
 	f.pending:Size(20, 20)
 	f.pending:SetPoint("TOPLEFT", f, "TOPLEFT", 8, -8)
-	f.pending:SetScript("OnEnter", function(self) _G["GameTooltip"]:SetOwner(self, "ANCHOR_BOTTOMLEFT", E.PixelMode and -7 or -9); PI:PendingList(); _G["GameTooltip"]:Show() end)
-	f.pending:SetScript("OnLeave", function() _G["GameTooltip"]:Hide() end)
 	f.pending.tex = f.pending:CreateTexture(nil, 'OVERLAY')
 	f.pending.tex:Point('TOPLEFT', f.pending, 'TOPLEFT', 2, -2)
 	f.pending.tex:Point('BOTTOMRIGHT', f.pending, 'BOTTOMRIGHT', -2, 2)
 	f.pending.tex:SetTexture([[Interface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon]])
 	f.pending:CreateBackdrop("Transparent")
+	f.pending:SetScript("OnEnter", function(self)
+		_G["GameTooltip"]:SetOwner(self, "ANCHOR_BOTTOMLEFT", E.PixelMode and -7 or -9);
+		_G["GameTooltip"]:AddLine(L["List of installations in queue:"], 1, 1, 1)
+		_G["GameTooltip"]:AddLine(" ")
+		for i = 1, #PI.Installs do
+			_G["GameTooltip"]:AddDoubleLine(format("%d. %s", i, (PI.Installs[i].Name or UNKNOWN)), i == 1 and format("|cff00FF00%s|r", L["In Progress"]) or format("|cffFF0000%s|r", L["Pending"]))
+		end
+		_G["GameTooltip"]:Show()
+	end)
+	f.pending:SetScript("OnLeave", function()
+		_G["GameTooltip"]:Hide()
+	end)
 
 	f.tutorialImage = f:CreateTexture('PluginInstallTutorialImage', 'OVERLAY')
 	f.tutorialImage:Size(256, 128)
@@ -363,12 +382,17 @@ function PI:CreateFrame()
 end
 
 function PI:Queue(addon)
-	local queue = true
+	local addonIsQueued = false
 	for k, v in pairs(self.Installs) do
-		if v.Name == addon.Name then queue = false end
+		if v.Name == addon.Name then
+			addonIsQueued = true
+		end
 	end
 
-	if queue then tinsert(self.Installs, #(self.Installs)+1, addon); self:RunInstall() end
+	if not addonIsQueued then
+		tinsert(self.Installs, #(self.Installs)+1, addon)
+		self:RunInstall()
+	end
 end
 
 function PI:CloseInstall()
@@ -401,12 +425,19 @@ function PI:RunInstall()
 		PluginInstallFrame:Show()
 		f:SetPoint("CENTER")
 		if db.StepTitles and #db.StepTitles == f.MaxPage then
-			f.StepTitles = db.StepTitles
+			f:SetPoint("CENTER", E.UIParent, "CENTER", -((db.StepTitleWidth or 140)/2), 0)
+			f.side:SetWidth(db.StepTitleWidth or 140)
 			f.side:Show()
+
 			for i = 1, #f.side.Lines do
-				if db.StepTitles[i] then f.side.Lines[i]:Show() end
+				if db.StepTitles[i] then
+					f.side.Lines[i]:SetWidth(db.StepTitleButtonWidth or 130)
+					f.side.Lines[i].text:SetJustifyH(db.StepTitleTextJustification or "CEMTER")
+					f.side.Lines[i]:Show()
+				end
 			end
-			f:SetPoint("CENTER", E.UIParent, "CENTER", -70, 0)
+
+			f.StepTitles = db.StepTitles
 			f.StepTitlesColor = db.StepTitlesColor
 			f.StepTitlesColorSelected = db.StepTitlesColorSelected
 		end
@@ -418,14 +449,6 @@ function PI:RunInstall()
 	else
 		f.pending:Hide()
 		E:StopFlash(f.pending)
-	end
-end
-
-function PI:PendingList()
-	_G["GameTooltip"]:AddLine(L["List of installations in queue:"], 1, 1, 1)
-	_G["GameTooltip"]:AddLine(" ")
-	for i = 1, #(self.Installs) do
-		_G["GameTooltip"]:AddDoubleLine(i..". "..(self.Installs[i].Name or UNKNOWN), i == 1 and "|cff00FF00"..L["In Progress"].."|r" or "|cffFF0000"..L["Pending"].."|r")
 	end
 end
 
