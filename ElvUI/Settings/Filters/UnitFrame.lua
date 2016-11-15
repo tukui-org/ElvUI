@@ -958,6 +958,7 @@ G.unitframe.ChannelTicks = {
 	--Mage
 	[SpellName(5143)] = 5, -- "Arcane Missiles"
 	[SpellName(12051)] = 3, -- "Evocation"
+	[SpellName(205021)] = 10, -- "Ray of Frost"
 }
 
 local priestTier17 = {115560,115561,115562,115563,115564}
@@ -989,7 +990,7 @@ G.unitframe.ChannelTicksSize = {
 
 --Spells Effected By Haste
 G.unitframe.HastedChannelTicks = {
-
+	[SpellName(205021)] = true, -- "Ray of Frost"
 }
 
 --This should probably be the same as the whitelist filter + any personal class ones that may be important to watch
