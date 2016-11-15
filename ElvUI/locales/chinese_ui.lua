@@ -255,6 +255,7 @@ L["FocusTarget Frame"] = "专注目标的目标框架"
 L["GM Ticket Frame"] = "GM 对话框"
 L["Honor Bar"] = "荣誉条"
 L["Left Chat"] = "左侧对话框"
+L["Level Up Display / Boss Banner"] = true;
 L["Loot / Alert Frames"] = "拾取 / 提醒框"
 L["Loot Frame"] = "拾取框架"
 L["Loss Control Icon"] = "失去控制图标"

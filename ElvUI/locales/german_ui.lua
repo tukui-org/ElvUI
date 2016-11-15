@@ -255,6 +255,7 @@ L["FocusTarget Frame"] = "Fokus-Ziel Fenster" --Also used in UnitFrames
 L["GM Ticket Frame"] = "GM-Ticket-Fenster"
 L["Honor Bar"] = "Ehreleiste"
 L["Left Chat"] = "Linker Chat"
+L["Level Up Display / Boss Banner"] = true;
 L["Loot / Alert Frames"] = "Beute-/Alarmfenster"
 L["Loot Frame"] = "Beute-Fenster"
 L["Loss Control Icon"] = "Kontrollverlustsymbol"

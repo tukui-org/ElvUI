@@ -255,6 +255,7 @@ L["FocusTarget Frame"] = "주시대상의 대상 프레임"
 L["GM Ticket Frame"] = "GM요청 번호표"
 L["Honor Bar"] = true;
 L["Left Chat"] = "좌측 패널"
+L["Level Up Display / Boss Banner"] = true;
 L["Loot / Alert Frames"] = "획득/알림 창"
 L["Loot Frame"] = "전리품 프레임";
 L["Loss Control Icon"] = "제어손실 표시"

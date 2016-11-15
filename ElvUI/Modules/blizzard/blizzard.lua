@@ -15,6 +15,7 @@ function B:Initialize()
 	self:SkinBlizzTimers()
 	self:PositionVehicleFrame()
 	self:PositionTalkingHead()
+	self:Handle_LevelUpDisplay_BossBanner()
 
 	if not IsAddOnLoaded("DugisGuideViewerZ") then
 		self:MoveObjectiveFrame()
