@@ -255,6 +255,9 @@ local function LoadSkin()
 	for _, object in pairs(charframe) do
 		_G[object]:StripTextures()
 	end
+	--Re-add the overlay texture which was removed right above
+	CharacterModelFrameBackgroundOverlay:SetColorTexture(0,0,0)
+
 	local function StatsPane(type)
 		CharacterStatsPane[type]:StripTextures()
 		CharacterStatsPane[type]:CreateBackdrop("Transparent")
