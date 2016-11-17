@@ -3,13 +3,16 @@ local S = E:GetModule('Skins')
 
 local function LoadSkin()
 	if(not E.private.skins.blizzard.questChoice) then return end
-	for i = 1, 2 do
+	for i = 1, 4 do
 		local option = QuestChoiceFrame["Option"..i]
 		local rewards = option.Rewards
-		local icon = rewards.Item.Icon
+		local item = rewards.Item
+		local icon = item.Icon
 		local currencies = rewards.Currencies
 
+		item.IconBorder:SetAlpha(0)
 		S:HandleIcon(icon)
+		icon:SetDrawLayer("ARTWORK")
 
 		for j = 1, 3 do
 			local cu = currencies["Currency"..j]
