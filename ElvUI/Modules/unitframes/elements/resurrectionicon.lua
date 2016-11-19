@@ -7,7 +7,7 @@ local UF = E:GetModule('UnitFrames');
 --WoW API / Variables
 
 function UF:Construct_ResurectionIcon(frame)
-	local tex = frame.RaisedElementParent:CreateTexture(nil, "OVERLAY")
+	local tex = frame.RaisedElementParent.TextureParent:CreateTexture(nil, "OVERLAY")
 	tex:Point('CENTER', frame.Health.value, 'CENTER')
 	tex:Size(30, 25)
 	tex:SetDrawLayer('OVERLAY', 7)

@@ -7,11 +7,11 @@ local UF = E:GetModule('UnitFrames');
 --WoW API / Variables
 
 function UF:Construct_PvPIcon(frame)
-	local PvP = frame.RaisedElementParent:CreateTexture(nil, 'ARTWORK', nil, 1)
+	local PvP = frame.RaisedElementParent.TextureParent:CreateTexture(nil, 'ARTWORK', nil, 1)
 	PvP:SetSize(30, 30)
 	PvP:SetPoint('CENTER', frame, 'CENTER')
 
-	local Prestige = frame.RaisedElementParent:CreateTexture(nil, 'ARTWORK')
+	local Prestige = frame.RaisedElementParent.TextureParent:CreateTexture(nil, 'ARTWORK')
 	Prestige:SetSize(50, 52)
 	Prestige:SetPoint('CENTER', PvP, 'CENTER')
 
