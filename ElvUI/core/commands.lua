@@ -213,6 +213,22 @@ function E:EnableBlizzardAddOns()
 	end
 end
 
+local statusFrame
+function E:ShowStatusReport()
+	if not statusFrame then
+		statusFrame = CreateFrame("Frame", nil, E.UIParent)
+		statusFrame:Size(400, 600)
+		statusFrame:Point("CENTER", 0, 200)
+		statusFrame:SetFrameStrata("HIGH")
+		statusFrame:CreateBackdrop("Transparent", nil, true)
+		statusFrame.backdrop:SetBackdropColor(0, 0, 0, 0.8)
+		statusFrame:Hide()
+	end
+
+	statusFrame:Raise() --Set framelevel above everything else
+	statusFrame:SetShown(not statusFrame:IsShown()) --Toggle displayed state
+end
+
 function E:LoadCommands()
 	self:RegisterChatCommand("in", "DelayScriptCall")
 	self:RegisterChatCommand("ec", "ToggleConfig")
@@ -237,6 +253,7 @@ function E:LoadCommands()
 	self:RegisterChatCommand("resetui", "ResetUI")
 	self:RegisterChatCommand('cleanguild', 'MassGuildKick')
 	self:RegisterChatCommand('enableblizzard', 'EnableBlizzardAddOns')
+	self:RegisterChatCommand("estatus", "ShowStatusReport")
 	-- self:RegisterChatCommand('aprilfools', '') --Don't need this until next april fools
 	
 	if E.ActionBars then
