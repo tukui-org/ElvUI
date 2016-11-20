@@ -289,6 +289,17 @@ ElvUF.Tags.Methods['health:percent-nostatus'] = function(unit)
 	return E:GetFormattedText('PERCENT', UnitHealth(unit), UnitHealthMax(unit))
 end
 
+ElvUF.Tags.Events['health:deficit-percent:name'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_NAME_UPDATE'
+ElvUF.Tags.Methods['health:deficit-percent:name'] = function(unit)
+	local deficit = UnitHealthMax(unit) - UnitHealth(unit)
+
+	if (deficit > 0) then
+		return _TAGS["health:percent-nostatus"](unit)
+	else
+		return _TAGS["name"](unit)
+	end
+end
+
 ElvUF.Tags.Events['power:current'] = 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER'
 ElvUF.Tags.Methods['power:current'] = function(unit)
 	local pType = UnitPowerType(unit)
