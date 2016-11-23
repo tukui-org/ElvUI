@@ -432,7 +432,7 @@ function PI:RunInstall()
 			for i = 1, #f.side.Lines do
 				if db.StepTitles[i] then
 					f.side.Lines[i]:SetWidth(db.StepTitleButtonWidth or 130)
-					f.side.Lines[i].text:SetJustifyH(db.StepTitleTextJustification or "CEMTER")
+					f.side.Lines[i].text:SetJustifyH(db.StepTitleTextJustification or "CENTER")
 					f.side.Lines[i]:Show()
 				end
 			end
