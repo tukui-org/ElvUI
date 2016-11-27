@@ -131,6 +131,20 @@ local function LoadSkin()
 	S:HandleScrollBar(ScrollOfResurrectionSelectionFrameListScrollFrameScrollBar, 4)
 	S:HandleEditBox(ScrollOfResurrectionSelectionFrameTargetEditBox)
 
+	--Pending invites
+	S:HandleButton(FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton)
+	local function SkinFriendRequest(frame)
+		if frame.isSkinned then return; end
+		S:HandleButton(frame.DeclineButton)
+		S:HandleButton(frame.AcceptButton)
+		frame.isSkinned = true
+	end
+	hooksecurefunc(FriendsFrameFriendsScrollFrame.invitePool, "Acquire", function()
+		for object in pairs(FriendsFrameFriendsScrollFrame.invitePool.activeObjects) do
+			SkinFriendRequest(object)
+		end
+	end)
+
 	--Who Frame
 	local function UpdateWhoSkins()
 		WhoListScrollFrame:StripTextures()
