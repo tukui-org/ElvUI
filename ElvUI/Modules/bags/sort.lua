@@ -556,8 +556,13 @@ function B.Sort(bags, sorter, invertDirection)
 			end
 
 			if not blackListedSlots[bagSlot] then
+				local method
 				for _,itemsearchquery in pairs(blackListQueries) do
-					local success, result = pcall(Search.Matches, Search, link, itemsearchquery)
+					method = Search.Matches
+					if Search.Filters.tipPhrases.keywords[itemsearchquery] then
+						method = Search.TooltipPhrase
+					end
+					local success, result = pcall(method, Search, link, itemsearchquery)
 					if success and result then
 						blackListedSlots[bagSlot] = result
 						break
