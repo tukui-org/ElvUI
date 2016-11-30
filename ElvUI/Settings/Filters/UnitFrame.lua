@@ -901,7 +901,8 @@ G.unitframe.buffwatch = {
 		[188550] = ClassBuff(188550, "TOPLEFT", {0.4, 0.8, 0.2}), -- Lifebloom T18 4pc
 		[48438] = ClassBuff(48438, "BOTTOMRIGHT", {0.8, 0.4, 0}), -- Wild Growth
 		[207386] = ClassBuff(207386, "TOP", {0.4, 0.2, 0.8}),     -- Spring Blossoms
-		[102351] = ClassBuff(102351, "LEFT", {0.2, 0.8, 0.8}),    -- Cenarion Ward
+		[102351] = ClassBuff(102351, "LEFT", {0.2, 0.8, 0.8}),    -- Cenarion Ward (Initial Buff)
+		[102352] = ClassBuff(102352, "LEFT", {0.2, 0.8, 0.8}),    -- Cenarion Ward (HoT)
 		[200389] = ClassBuff(200389, "BOTTOM", {1, 1, 0.4}),      -- Cultivation
 	},
 	PALADIN = {
