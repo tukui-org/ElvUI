@@ -994,6 +994,10 @@ function AB:StyleFlyout(button)
 		end
 	end
 
+	if button:GetParent() and button:GetParent():GetParent() and button:GetParent():GetParent():GetName() and button:GetParent():GetParent():GetName() == "SpellBookSpellIconsFrame" then
+		return
+	end
+
 	--Change arrow direction depending on what bar the button is on
 	local arrowDistance
 	if ((SpellFlyout:IsShown() and SpellFlyout:GetParent() == button) or GetMouseFocus() == button) then
@@ -1002,30 +1006,28 @@ function AB:StyleFlyout(button)
 		arrowDistance = 2
 	end
 
-	if button:GetParent() and button:GetParent():GetParent() and button:GetParent():GetParent():GetName() and button:GetParent():GetParent():GetName() == "SpellBookSpellIconsFrame" then
-		return
-	end
-
-	if button:GetParent() then
-		local point = E:GetScreenQuadrant(button:GetParent())
+	local actionbar = button:GetParent()
+	if actionbar then
+		local direction = actionbar.db and actionbar.db.flyoutDirection or "AUTOMATIC"
+		local point = E:GetScreenQuadrant(actionbar)
 		if point == "UNKNOWN" then return end
 
-		if strfind(point, "TOP") then
+		if ((direction == "AUTOMATIC" and strfind(point, "TOP")) or direction == "DOWN") then
 			button.FlyoutArrow:ClearAllPoints()
 			button.FlyoutArrow:Point("BOTTOM", button, "BOTTOM", 0, -arrowDistance)
 			SetClampedTextureRotation(button.FlyoutArrow, 180)
 			if not combat then button:SetAttribute("flyoutDirection", "DOWN") end
-		elseif point == "RIGHT" then
+		elseif ((direction == "AUTOMATIC" and point == "RIGHT") or direction == "LEFT") then
 			button.FlyoutArrow:ClearAllPoints()
 			button.FlyoutArrow:Point("LEFT", button, "LEFT", -arrowDistance, 0)
 			SetClampedTextureRotation(button.FlyoutArrow, 270)
 			if not combat then button:SetAttribute("flyoutDirection", "LEFT") end
-		elseif point == "LEFT" then
+		elseif ((direction == "AUTOMATIC" and point == "LEFT") or direction == "RIGHT") then
 			button.FlyoutArrow:ClearAllPoints()
 			button.FlyoutArrow:Point("RIGHT", button, "RIGHT", arrowDistance, 0)
 			SetClampedTextureRotation(button.FlyoutArrow, 90)
 			if not combat then button:SetAttribute("flyoutDirection", "RIGHT") end
-		elseif point == "CENTER" or strfind(point, "BOTTOM") then
+		elseif ((direction == "AUTOMATIC" and (point == "CENTER" or strfind(point, "BOTTOM"))) or direction == "UP") then
 			button.FlyoutArrow:ClearAllPoints()
 			button.FlyoutArrow:Point("TOP", button, "TOP", 0, arrowDistance)
 			SetClampedTextureRotation(button.FlyoutArrow, 0)

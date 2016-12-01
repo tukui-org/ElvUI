@@ -71,6 +71,7 @@ L["ActionBars"] = "Barras de Ações"
 L["Allow Masque to handle the skinning of this element."] = true;
 L["Alpha"] = "Transparência"
 L["Anchor Point"] = "Ponto de Fixação"
+L["Automatic"] = true;
 L["Backdrop Spacing"] = true;
 L["Backdrop"] = "Fundo"
 L["Button Size"] = "Tamanho do botão"

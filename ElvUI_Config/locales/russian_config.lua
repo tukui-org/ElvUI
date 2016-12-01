@@ -71,6 +71,7 @@ L["ActionBars"] = "Панели команд"
 L["Allow Masque to handle the skinning of this element."] = "Разрешить Masque обрабатывать этот элемент."
 L["Alpha"] = "Прозрачность"
 L["Anchor Point"] = "Точка фиксации"
+L["Automatic"] = true;
 L["Backdrop Spacing"] = "Отступ фона"
 L["Backdrop"] = "Фон"
 L["Button Size"] = "Размер кнопок"

@@ -107,6 +107,7 @@ L["ActionBars"] = "행동단축바"
 L["Allow Masque to handle the skinning of this element."] = true;
 L["Alpha"] = "투명도"
 L["Anchor Point"] = "첫 번째 요소 위치"
+L["Automatic"] = true;
 L["Backdrop Spacing"] = true;
 L["Backdrop"] = "배경"
 L["Button Size"] = "버튼 크기"

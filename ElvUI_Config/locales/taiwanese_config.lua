@@ -71,6 +71,7 @@ L["ActionBars"] = "快捷列"
 L["Allow Masque to handle the skinning of this element."] = "允許 Masque 來處理此元件的皮膚"
 L["Alpha"] = "透明度"
 L["Anchor Point"] = "定位方向"
+L["Automatic"] = true;
 L["Backdrop Spacing"] = "背景間距"
 L["Backdrop"] = "背景"
 L["Button Size"] = "按鈕尺寸"
