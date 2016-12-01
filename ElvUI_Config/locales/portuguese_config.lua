@@ -96,6 +96,7 @@ L["Display cooldown text on anything with the cooldown spiral."] = "Exibir texto
 L["Display macro names on action buttons."] = "Exibir nomes das macros nos botões de ação."
 L["Global Fade Transparency"] = true;
 L["Expiring"] = "Expirando"
+L["Flyout Direction"] = true;
 L["Height Multiplier"] = "Multiplicador de Altura"
 L["Hide Cooldown Bling"] = true;
 L["Hides the bling animation on buttons at the end of the global cooldown."] = true;

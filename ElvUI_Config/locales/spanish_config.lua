@@ -95,6 +95,7 @@ L["Display bind names on action buttons."] = "Muestra las teclas asignadas en lo
 L["Display cooldown text on anything with the cooldown spiral."] = "Muestra el texto de reutilización sobre todo lo que tenga la espiral de reutilización."
 L["Display macro names on action buttons."] = "Muestra el nombre de las macros en los botones."
 L["Expiring"] = "Expiración"
+L["Flyout Direction"] = true;
 L["Global Fade Transparency"] = true;
 L["Height Multiplier"] = "Multiplicador de Altura"
 L["Hide Cooldown Bling"] = true;

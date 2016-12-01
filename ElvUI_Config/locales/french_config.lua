@@ -95,6 +95,7 @@ L["Display bind names on action buttons."] = "Affiche les noms des raccourcis su
 L["Display cooldown text on anything with the cooldown spiral."] = "Affiche le temps de recharge au format numérique plutôt que la spirale d'origine."
 L["Display macro names on action buttons."] = "Affiche les noms des macros sur les boutons dans la barre d'action."
 L["Expiring"] = "Expiration"
+L["Flyout Direction"] = true;
 L["Global Fade Transparency"] = true;
 L["Height Multiplier"] = "Multiplicateur hauteur"
 L["Hide Cooldown Bling"] = "Masquer l'effet du temps de recharge";

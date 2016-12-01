@@ -95,6 +95,7 @@ L["Display bind names on action buttons."] = "在快捷列按鈕上顯示快捷�
 L["Display cooldown text on anything with the cooldown spiral."] = "在任何冷卻動畫上顯示技能冷卻時間."
 L["Display macro names on action buttons."] = "在快捷列按鈕上顯示巨集名稱."
 L["Expiring"] = "即將冷卻完畢"
+L["Flyout Direction"] = true;
 L["Global Fade Transparency"] = "全局漸隱透明度"
 L["Height Multiplier"] = "高度倍數"
 L["Hide Cooldown Bling"] = "隱藏冷卻閃光"
