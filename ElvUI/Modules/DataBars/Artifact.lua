@@ -152,8 +152,6 @@ function mod:EnableDisable_ArtifactBar()
 		self:RegisterEvent('UNIT_INVENTORY_CHANGED', 'UpdateArtifact')
 		self:RegisterEvent("CHAT_MSG_LOOT", 'UpdateArtifact')
 		self:RegisterEvent("PLAYER_ENTERING_WORLD", 'UpdateArtifact')
-		self:RegisterEvent("UNIT_INVENTORY_CHANGED", 'UpdateArtifact')
-
 
 		self:UpdateArtifact()
 		E:EnableMover(self.artifactBar.mover:GetName())
@@ -162,7 +160,6 @@ function mod:EnableDisable_ArtifactBar()
 		self:UnregisterEvent('UNIT_INVENTORY_CHANGED')
 		self:UnregisterEvent("CHAT_MSG_LOOT")
 		self:UnregisterEvent("PLAYER_ENTERING_WORLD")
-		self:UnregisterEvent("UNIT_INVENTORY_CHANGED")
 
 		self.artifactBar:Hide()
 		E:DisableMover(self.artifactBar.mover:GetName())
