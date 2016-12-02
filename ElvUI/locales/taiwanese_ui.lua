@@ -63,8 +63,9 @@ L["yells"] = "大喊"
 
 --DataBars
 L["Current Level:"] = "目前等級"
-L["Honor XP:"] = "榮譽:"
 L["Honor Remaining:"] = "剩餘:"
+L["Honor XP:"] = "榮譽:"
+L["In Bags:"] = true;
 
 --DataTexts
 L["(Hold Shift) Memory Usage"] = "(按住Shift) 記憶體使用量"

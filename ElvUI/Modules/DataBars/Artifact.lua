@@ -113,9 +113,12 @@ function mod:ArtifactBar_OnEnter()
 
 	local _, _, _, _, totalXP, pointsSpent = C_ArtifactUIGetEquippedArtifactInfo();
 	local numPointsAvailableToSpend, xp, xpForNextPoint = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP(pointsSpent, totalXP);
+	local remaining = xpForNextPoint - xp
+	local apInBags = self.BagArtifactPower
 
 	GameTooltip:AddDoubleLine(L["XP:"], format(' %d / %d (%d%%)', xp, xpForNextPoint, xp/xpForNextPoint * 100), 1, 1, 1)
-	GameTooltip:AddDoubleLine(L["Remaining:"], format(' %d (%d%% - %d %s)', xpForNextPoint - xp, (xpForNextPoint - xp) / xpForNextPoint * 100, 20 * (xpForNextPoint - xp) / xpForNextPoint, L["Bars"]), 1, 1, 1)
+	GameTooltip:AddDoubleLine(L["Remaining:"], format(' %d (%d%% - %d %s)', xpForNextPoint - xp, remaining / xpForNextPoint * 100, 20 * remaining / xpForNextPoint, L["Bars"]), 1, 1, 1)
+	GameTooltip:AddDoubleLine(L["In Bags:"], format(' %d (%d%% - %d %s)', apInBags, apInBags / xpForNextPoint * 100, 20 * apInBags / xpForNextPoint, L["Bars"]), 1, 1, 1)
 	GameTooltip:AddLine(" ")
 	GameTooltip:AddLine(format(ARTIFACT_POWER_TOOLTIP_BODY, numPointsAvailableToSpend), nil, nil, nil, true)
 
@@ -170,7 +173,7 @@ local function OnTooltipSetItem(self)
 	if (mod.artifactBar.line2:GetText() == AP_NAME) then
 		if strfind(mod.artifactBar.line4:GetText(), "(%d+),(%d+)") then
 			local Num = gsub(strmatch(mod.artifactBar.line4:GetText(), "(%d+,%d+)"), ",", "")
-			
+
 			mod.artifactBar.BagArtifactPower = mod.artifactBar.BagArtifactPower + tonumber(Num)
 		elseif strfind(mod.artifactBar.line4:GetText(), "%d+") then
 			mod.artifactBar.BagArtifactPower = mod.artifactBar.BagArtifactPower + tonumber(strmatch(mod.artifactBar.line4:GetText(), "%d+"))
@@ -183,8 +186,6 @@ function mod:LoadArtifactBar()
 	self.artifactBar.statusBar:SetStatusBarColor(.901, .8, .601)
 	self.artifactBar.statusBar:SetMinMaxValues(0, 325)
 	self.artifactBar.statusBar:SetFrameLevel(self.artifactBar:GetFrameLevel() + 2)
-
-	self.artifactBar.BagArtifactPower = 0
 
 	self.artifactBar.eventFrame = CreateFrame("Frame")
 	self.artifactBar.eventFrame:Hide()
@@ -200,6 +201,7 @@ function mod:LoadArtifactBar()
 	self.artifactBar.bagValue:SetMinMaxValues(0, 1)
 	self.artifactBar.bagValue:SetValue(0)
 	self.artifactBar.bagValue:SetFrameLevel(self.artifactBar:GetFrameLevel() + 1)
+	self.artifactBar.BagArtifactPower = 0
 
 	self.artifactBar.tooltip = CreateFrame("GameTooltip", "BagArtifactPowerTooltip", UIParent, "GameTooltipTemplate")
 	self.artifactBar.line2 = BagArtifactPowerTooltipTextLeft2

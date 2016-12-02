@@ -63,8 +63,9 @@ L["yells"] = "schreien"
 
 --DataBars
 L["Current Level:"] = "Derzeitiges Level:"
-L["Honor XP:"] = "Ehre XP:"
 L["Honor Remaining:"] = "Ehre verbleibend:"
+L["Honor XP:"] = "Ehre XP:"
+L["In Bags:"] = true;
 
 --DataTexts
 L["(Hold Shift) Memory Usage"] = "(Shift gedrückt) Speichernutzung"

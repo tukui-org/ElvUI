@@ -63,8 +63,9 @@ L["yells"] = "grita"
 
 --DataBars
 L["Current Level:"] = true;
-L["Honor XP:"] = true;
 L["Honor Remaining:"] = true;
+L["Honor XP:"] = true;
+L["In Bags:"] = true;
 
 --DataTexts
 L["(Hold Shift) Memory Usage"] = "(Mantén Shift) Uso de Memoria"
