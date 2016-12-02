@@ -614,7 +614,7 @@ E.Options.args.general = {
 					values = {
 						['RIGHT'] = L["Right"],
 						['LEFT'] = L["Left"],
-						['AUTO'] = L["Auto"],
+						['AUTO'] = L["Automatic"],
 					},
 				},
 			},
