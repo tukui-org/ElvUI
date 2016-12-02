@@ -26,8 +26,6 @@ local AP_NAME = format("|cFFE6CC80%s|r", ARTIFACT_POWER)
 
 function mod:GetArtifactPowerInBags()
 	if InCombatLockdown() then
-		self:RegisterEvent("PLAYER_REGEN_DISABLED")
-
 		return self.LastKnownAP
 	end
 
