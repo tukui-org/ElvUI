@@ -4,25 +4,25 @@ local mod = E:GetModule('DataBars');
 --Cache global variables
 --Lua functions
 local _G = _G
-local format = format
-local gsub = gsub
-local tonumber = tonumber
-local strmatch = strmatch
-
+local tonumber, select = tonumber, select
+local format, gsub, strmatch, strfind = string.format, string.gsub, string.match, string.find
 --WoW API / Variables
 local C_ArtifactUIGetEquippedArtifactInfo = C_ArtifactUI.GetEquippedArtifactInfo
+local GetContainerItemInfo = GetContainerItemInfo
+local GetContainerNumSlots = GetContainerNumSlots
 local HasArtifactEquipped = HasArtifactEquipped
 local HideUIPanel = HideUIPanel
 local InCombatLockdown = InCombatLockdown
 local MainMenuBar_GetNumArtifactTraitsPurchasableFromXP = MainMenuBar_GetNumArtifactTraitsPurchasableFromXP
 local ShowUIPanel = ShowUIPanel
 local SocketInventoryItem = SocketInventoryItem
+local AP_NAME = format("|cFFE6CC80%s|r", ARTIFACT_POWER)
 local ARTIFACT_POWER = ARTIFACT_POWER
 local ARTIFACT_POWER_TOOLTIP_BODY = ARTIFACT_POWER_TOOLTIP_BODY
-local AP_NAME = format("|cFFE6CC80%s|r", ARTIFACT_POWER)
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
--- GLOBALS: GameTooltip, CreateFrame, ArtifactFrame
+-- GLOBALS: GameTooltip, CreateFrame, ArtifactFrame, UIParent
+-- GLOBALS: BagArtifactPowerTooltipTextLeft2, BagArtifactPowerTooltipTextLeft4
 
 function mod:GetArtifactPowerInBags()
 	if InCombatLockdown() then
