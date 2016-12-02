@@ -26,10 +26,10 @@ local ARTIFACT_POWER_TOOLTIP_BODY = ARTIFACT_POWER_TOOLTIP_BODY
 
 function mod:GetArtifactPowerInBags()
 	if InCombatLockdown() then
-		return self.LastKnownAP
+		return self.artifactBar.LastKnownAP
 	end
 
-	self.BagArtifactPower = 0
+	self.artifactBar.BagArtifactPower = 0
 	local ID
 	for bag = 0, 4 do
 		for slot = 1, GetContainerNumSlots(bag) do
@@ -41,11 +41,11 @@ function mod:GetArtifactPowerInBags()
 		end
 	end
 
-	if(not self.LastKnownAP) or (self.LastKnownAP ~= self.BagArtifactPower) then
-		self.LastKnownAP = self.BagArtifactPower
+	if(not self.artifactBar.LastKnownAP) or (self.artifactBar.LastKnownAP ~= self.artifactBar.BagArtifactPower) then
+		self.artifactBar.LastKnownAP = self.artifactBar.BagArtifactPower
 	end
 
-	return self.BagArtifactPower
+	return self.artifactBar.BagArtifactPower
 end
 
 function mod:UpdateArtifact(event, unit)
@@ -167,24 +167,24 @@ function mod:EnableDisable_ArtifactBar()
 end
 
 local function OnTooltipSetItem(self)
-	if (mod.line2:GetText() == AP_NAME) then
-		if strfind(mod.line4:GetText(), "(%d+),(%d+)") then
+	if (mod.artifactBar.line2:GetText() == AP_NAME) then
+		if strfind(mod.artifactBar.line4:GetText(), "(%d+),(%d+)") then
 			local Num = gsub(strmatch(mod.line4:GetText(), "(%d+,%d+)"), ",", "")
 			
-			mod.BagArtifactPower = mod.BagArtifactPower + tonumber(Num)
+			mod.artifactBar.BagArtifactPower = mod.artifactBar.BagArtifactPower + tonumber(Num)
 		elseif strfind(mod.line4:GetText(), "%d+") then
-			mod.BagArtifactPower = mod.BagArtifactPower + tonumber(strmatch(mod.line4:GetText(), "%d+"))
+			mod.artifactBar.BagArtifactPower = mod.artifactBar.BagArtifactPower + tonumber(strmatch(mod.line4:GetText(), "%d+"))
 		end
 	end
 end
 
 function mod:LoadArtifactBar()
-	self.BagArtifactPower = 0
-
 	self.artifactBar = self:CreateBar('ElvUI_ArtifactBar', self.ArtifactBar_OnEnter, self.ArtifactBar_OnClick, 'RIGHT', self.honorBar, 'LEFT', E.Border - E.Spacing*3, 0)
 	self.artifactBar.statusBar:SetStatusBarColor(.901, .8, .601)
 	self.artifactBar.statusBar:SetMinMaxValues(0, 325)
 	self.artifactBar.statusBar:SetFrameLevel(self.artifactBar:GetFrameLevel() + 2)
+
+	self.artifactBar.BagArtifactPower = 0
 
 	self.artifactBar.eventFrame = CreateFrame("Frame")
 	self.artifactBar.eventFrame:Hide()
@@ -202,8 +202,8 @@ function mod:LoadArtifactBar()
 	self.artifactBar.bagValue:SetFrameLevel(self.artifactBar:GetFrameLevel() + 1)
 
 	self.artifactBar.tooltip = CreateFrame("GameTooltip", "BagArtifactPowerTooltip", UIParent, "GameTooltipTemplate")
-	self.line2 = BagArtifactPowerTooltipTextLeft2
-	self.line4 = BagArtifactPowerTooltipTextLeft4
+	self.artifactBar.line2 = BagArtifactPowerTooltipTextLeft2
+	self.artifactBar.line4 = BagArtifactPowerTooltipTextLeft4
 	self.artifactBar.tooltip:HookScript("OnTooltipSetItem", OnTooltipSetItem)
 
 	self:UpdateArtifactDimensions()
