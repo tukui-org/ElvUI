@@ -196,7 +196,7 @@ function mod:LoadArtifactBar()
 
 	self.artifactBar.bagValue = CreateFrame("StatusBar")
 	self.artifactBar.bagValue:SetAllPoints(self.artifactBar.statusBar)
-	self.artifactBar.bagValue:SetStatusBarTexture(self.artifactBar.statusBar:GetStatusBarTexture())
+	self.artifactBar.bagValue:SetStatusBarTexture(E['media'].normTex)
 	self.artifactBar.bagValue:SetStatusBarColor(0, 0.43, 0.95)
 	self.artifactBar.bagValue:SetFrameStrata("MEDIUM")
 	self.artifactBar.bagValue:SetMinMaxValues(0, 1)
