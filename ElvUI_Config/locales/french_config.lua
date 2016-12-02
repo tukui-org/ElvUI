@@ -71,7 +71,6 @@ L["ActionBars"] = "Barres d'actions"
 L["Allow Masque to handle the skinning of this element."] = "Autoriser Masque à gérer l'habillage de cet élement.";
 L["Alpha"] = "Alpha"
 L["Anchor Point"] = "Point d'ancrage" --also in unitframes
-L["Automatic"] = true;
 L["Backdrop Spacing"] = true;
 L["Backdrop"] = "Fond"
 L["Button Size"] = "Taille des boutons"

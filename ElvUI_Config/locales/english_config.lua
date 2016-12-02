@@ -71,7 +71,6 @@ L["ActionBars"] = true;
 L["Allow Masque to handle the skinning of this element."] = true;
 L["Alpha"] = true;
 L["Anchor Point"] = true; --also in unitframes
-L["Automatic"] = true;
 L["Backdrop Spacing"] = true;
 L["Backdrop"] = true;
 L["Button Size"] = true; --Also used in Bags

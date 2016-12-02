@@ -84,7 +84,7 @@ local function BuildABConfig()
 						["DOWN"] = L["Down"],
 						["LEFT"] = L["Left"],
 						["RIGHT"] = L["Right"],
-						["AUTOMATIC"] = L["Automatic"],
+						["AUTOMATIC"] = L["Auto"],
 					},
 				},
 				buttons = {
