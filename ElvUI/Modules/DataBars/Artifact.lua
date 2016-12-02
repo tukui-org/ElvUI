@@ -138,7 +138,7 @@ function mod:UpdateArtifactDimensions()
 	self.artifactBar.statusBar:SetOrientation(self.db.artifact.orientation)
 	self.artifactBar.statusBar:SetReverseFill(self.db.artifact.reverseFill)
 	self.artifactBar.bagValue:SetOrientation(self.db.artifact.orientation)
-	self.artifactBar.bagValue:SetReverseFille(self.db.artifact.reverseFill)
+	self.artifactBar.bagValue:SetReverseFill(self.db.artifact.reverseFill)
 
 	self.artifactBar.text:FontTemplate(nil, self.db.artifact.textSize)
 	if self.db.artifact.mouseover then
@@ -198,7 +198,7 @@ function mod:LoadArtifactBar()
 
 	self.artifactBar.bagValue = CreateFrame("StatusBar")
 	self.artifactBar.bagValue:SetAllPoints(self.artifactBar.statusBar)
-	self.artifactBar.bagValue:SetStatusBarTexture(self.artifactBar.statusBar:GetTexture())
+	self.artifactBar.bagValue:SetStatusBarTexture(self.artifactBar.statusBar:GetStatusBarTexture())
 	self.artifactBar.bagValue:SetStatusBarColor(0, 0.43, 0.95)
 	self.artifactBar.bagValue:SetFrameStrata("MEDIUM")
 	self.artifactBar.bagValue:SetMinMaxValues(0, 1)
