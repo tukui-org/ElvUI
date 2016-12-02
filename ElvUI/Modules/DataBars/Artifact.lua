@@ -193,7 +193,7 @@ function mod:LoadArtifactBar()
 	self.artifactBar.eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
 	self.artifactBar.eventFrame:SetScript("OnEvent", function(self, event) mod:UpdateArtifact(event) end)
 
-	self.artifactBar.bagValue = CreateFrame("StatusBar")
+	self.artifactBar.bagValue = CreateFrame("StatusBar", nil, self.artifactBar)
 	self.artifactBar.bagValue:SetAllPoints(self.artifactBar.statusBar)
 	self.artifactBar.bagValue:SetStatusBarTexture(E['media'].normTex)
 	self.artifactBar.bagValue:SetStatusBarColor(0, 0.43, 0.95)
