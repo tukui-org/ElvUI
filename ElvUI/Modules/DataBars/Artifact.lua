@@ -33,7 +33,7 @@ function mod:GetArtifactPowerInBags()
 
 	self.BagArtifactPower = 0
 	local ID
-	for bag = 0, 4 don
+	for bag = 0, 4 do
 		for slot = 1, GetContainerNumSlots(bag) do
 			ID = select(10, GetContainerItemInfo(bag, slot))
 
