@@ -171,8 +171,8 @@ end
 
 local function OnTooltipSetItem(self)
 	if (mod.artifactBar.line2:GetText() == AP_NAME) then
-		if strfind(mod.artifactBar.line4:GetText(), "(%d+),(%d+)") then
-			local Num = gsub(strmatch(mod.artifactBar.line4:GetText(), "(%d+,%d+)"), ",", "")
+		if strfind(mod.artifactBar.line4:GetText(), "(%d+)[,.](%d+)") then
+			local Num = gsub(strmatch(mod.artifactBar.line4:GetText(), "(%d+[,.]%d+)"), "[,.]", "")
 
 			mod.artifactBar.BagArtifactPower = mod.artifactBar.BagArtifactPower + tonumber(Num)
 		elseif strfind(mod.artifactBar.line4:GetText(), "%d+") then
