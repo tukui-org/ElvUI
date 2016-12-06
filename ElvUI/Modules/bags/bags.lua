@@ -195,6 +195,7 @@ function B:SetSearch(query)
 	local method = Search.Matches
 	if Search.Filters.tipPhrases.keywords[query] then
 		method = Search.TooltipPhrase
+		query = Search.Filters.tipPhrases.keywords[query]
 	end
 
 	for _, bagFrame in pairs(self.BagFrames) do
@@ -235,6 +236,7 @@ function B:SetGuildBankSearch(query)
 	local method = Search.Matches
 	if Search.Filters.tipPhrases.keywords[query] then
 		method = Search.TooltipPhrase
+		query = Search.Filters.tipPhrases.keywords[query]
 	end
 
 	if GuildBankFrame and GuildBankFrame:IsShown() then

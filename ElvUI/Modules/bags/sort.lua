@@ -561,6 +561,7 @@ function B.Sort(bags, sorter, invertDirection)
 					method = Search.Matches
 					if Search.Filters.tipPhrases.keywords[itemsearchquery] then
 						method = Search.TooltipPhrase
+						itemsearchquery = Search.Filters.tipPhrases.keywords[itemsearchquery]
 					end
 					local success, result = pcall(method, Search, link, itemsearchquery)
 					if success and result then
