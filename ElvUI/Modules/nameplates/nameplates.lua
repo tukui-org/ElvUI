@@ -346,7 +346,10 @@ function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
 	end
 
 	if(frame.UnitFrame.UnitType == "PLAYER") then
-		mod.PlayerFrame = frame
+		self.PlayerFrame = frame
+		self.PlayerNamePlateAnchor:SetParent(frame)
+		self.PlayerNamePlateAnchor:SetAllPoints(frame.UnitFrame)
+		self.PlayerNamePlateAnchor:Show()
 	end
 
 	if(self.db.units[frame.UnitFrame.UnitType].healthbar.enable or self.db.displayStyle ~= "ALL") then
@@ -388,7 +391,8 @@ function mod:NAME_PLATE_UNIT_REMOVED(_, unit, frame)
 
 	local unitType = frame.UnitFrame.UnitType
 	if(frame.UnitFrame.UnitType == "PLAYER") then
-		mod.PlayerFrame = nil
+		self.PlayerFrame = nil
+		self.PlayerNamePlateAnchor:Hide()
 	end
 
 	self:HideAuraIcons(frame.UnitFrame.Buffs)
@@ -711,12 +715,16 @@ function mod:TogglePlayerDisplayType()
 		RegisterUnitWatch(self.PlayerFrame__)
 		E:EnableMover("PlayerNameplate")
 		self:NAME_PLATE_UNIT_ADDED("NAME_PLATE_UNIT_ADDED", "player", self.PlayerFrame__)
+		self.PlayerNamePlateAnchor:SetParent(self.PlayerFrame__)
+		self.PlayerNamePlateAnchor:SetAllPoints(self.PlayerFrame__.UnitFrame)
+		self.PlayerNamePlateAnchor:Show()
 	else
 		UnregisterUnitWatch(self.PlayerFrame__)
 		E:DisableMover("PlayerNameplate")
 		if(self.PlayerFrame__:IsShown()) then
 			self:NAME_PLATE_UNIT_REMOVED("NAME_PLATE_UNIT_REMOVED", "player", self.PlayerFrame__)
 			self.PlayerFrame__:Hide()
+			self.PlayerNamePlateAnchor:Hide()
 		end
 	end
 end
@@ -803,6 +811,12 @@ function mod:Initialize()
 	self.PlayerFrame__:SetAttribute("toggleForVehicle", true)
 	self.PlayerFrame__:SetPoint("TOP", UIParent, "CENTER", 0, -150)
 	self.PlayerFrame__:Hide()
+
+	--Create anchor frame for the default player resource bar, the one that moves around
+	--Other addons can anchor stuff to this frame to make sure it follows the movement of the resource bar
+	--Request: http://git.tukui.org/Elv/elvui/issues/1708
+	self.PlayerNamePlateAnchor = CreateFrame("Frame", "ElvUIPlayerNamePlateAnchor", E.UIParent)
+	self.PlayerNamePlateAnchor:Hide()
 
 	self:UpdateCVars()
 	InterfaceOptionsNamesPanelUnitNameplates:Kill()
