@@ -169,14 +169,24 @@ function mod:EnableDisable_ArtifactBar()
 	end
 end
 
+local apLineIndex
 local function OnTooltipSetItem(self)
-	if (mod.artifactBar.line2:GetText() == AP_NAME) then
-		if strfind(mod.artifactBar.line4:GetText(), "(%d+)[,.](%d+)") then
-			local Num = gsub(strmatch(mod.artifactBar.line4:GetText(), "(%d+[,.]%d+)"), "[,.]", "")
+	local apFound
+	if (mod.artifactBar.tooltipLines[2]:GetText() == AP_NAME) then
+		apLineIndex = 4
+		apFound = true
+	elseif (mod.artifactBar.tooltipLines[3]:GetText() == AP_NAME) then --When using colorblind mode then line 2 becomes the rarity, pushing ap text down 1 line
+		apLineIndex = 5
+		apFound = true
+	end
+	
+	if (apFound) then
+		if strfind(mod.artifactBar.tooltipLines[apLineIndex]:GetText(), "(%d+)[,.](%d+)") then
+			local Num = gsub(strmatch(mod.artifactBar.tooltipLines[apLineIndex]:GetText(), "(%d+[,.]%d+)"), "[,.]", "")
 
 			mod.artifactBar.BagArtifactPower = mod.artifactBar.BagArtifactPower + tonumber(Num)
-		elseif strfind(mod.artifactBar.line4:GetText(), "%d+") then
-			mod.artifactBar.BagArtifactPower = mod.artifactBar.BagArtifactPower + tonumber(strmatch(mod.artifactBar.line4:GetText(), "%d+"))
+		elseif strfind(mod.artifactBar.tooltipLines[apLineIndex]:GetText(), "%d+") then
+			mod.artifactBar.BagArtifactPower = mod.artifactBar.BagArtifactPower + tonumber(strmatch(mod.artifactBar.tooltipLines[apLineIndex]:GetText(), "%d+"))
 		end
 	end
 end
@@ -204,8 +214,11 @@ function mod:LoadArtifactBar()
 	self.artifactBar.BagArtifactPower = 0
 
 	self.artifactBar.tooltip = CreateFrame("GameTooltip", "BagArtifactPowerTooltip", UIParent, "GameTooltipTemplate")
-	self.artifactBar.line2 = BagArtifactPowerTooltipTextLeft2
-	self.artifactBar.line4 = BagArtifactPowerTooltipTextLeft4
+	self.artifactBar.tooltipLines = {}
+	for i = 1, 5 do
+		self.artifactBar.tooltipLines[i] = _G[format("BagArtifactPowerTooltipTextLeft%d", i)]
+	end
+	
 	self.artifactBar.tooltip:HookScript("OnTooltipSetItem", OnTooltipSetItem)
 
 	self:UpdateArtifactDimensions()
