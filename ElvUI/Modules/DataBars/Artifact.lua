@@ -9,6 +9,7 @@ local format, gsub, strmatch, strfind = string.format, string.gsub, string.match
 --WoW API / Variables
 local C_ArtifactUIGetEquippedArtifactInfo = C_ArtifactUI.GetEquippedArtifactInfo
 local GetContainerItemInfo = GetContainerItemInfo
+local GetContainerItemLink = GetContainerItemLink
 local GetContainerNumSlots = GetContainerNumSlots
 local HasArtifactEquipped = HasArtifactEquipped
 local HideUIPanel = HideUIPanel
@@ -22,31 +23,6 @@ local ARTIFACT_POWER_TOOLTIP_BODY = ARTIFACT_POWER_TOOLTIP_BODY
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameTooltip, CreateFrame, ArtifactFrame, UIParent
--- GLOBALS: BagArtifactPowerTooltipTextLeft2, BagArtifactPowerTooltipTextLeft4
-
-function mod:GetArtifactPowerInBags()
-	if InCombatLockdown() then
-		return self.artifactBar.LastKnownAP
-	end
-
-	self.artifactBar.BagArtifactPower = 0
-	local ID
-	for bag = 0, 4 do
-		for slot = 1, GetContainerNumSlots(bag) do
-			ID = select(10, GetContainerItemInfo(bag, slot))
-
-			if(ID) then
-				self.artifactBar.tooltip:SetItemByID(ID)
-			end
-		end
-	end
-
-	if(not self.artifactBar.LastKnownAP) or (self.artifactBar.LastKnownAP ~= self.artifactBar.BagArtifactPower) then
-		self.artifactBar.LastKnownAP = self.artifactBar.BagArtifactPower
-	end
-
-	return self.artifactBar.BagArtifactPower
-end
 
 function mod:UpdateArtifact(event, unit)
 	if not mod.db.artifact.enable then return end
@@ -169,8 +145,13 @@ function mod:EnableDisable_ArtifactBar()
 	end
 end
 
+--This function scans the tooltip of an item to determine whether or not it grants AP.
+--If it is found to grant AP, then the value is extracted and returned.
 local apLineIndex
-local function OnTooltipSetItem(self)
+local function GetAPFromTooltip(itemLink)
+	mod.artifactBar.tooltip:ClearLines()
+	mod.artifactBar.tooltip:SetHyperlink(itemLink)
+
 	local apFound
 	if (mod.artifactBar.tooltipLines[2]:GetText() == AP_NAME) then
 		apLineIndex = 4
@@ -179,16 +160,74 @@ local function OnTooltipSetItem(self)
 		apLineIndex = 5
 		apFound = true
 	end
-	
-	if (apFound) then
-		if strfind(mod.artifactBar.tooltipLines[apLineIndex]:GetText(), "(%d+)[,.](%d+)") then
-			local Num = gsub(strmatch(mod.artifactBar.tooltipLines[apLineIndex]:GetText(), "(%d+[,.]%d+)"), "[,.]", "")
 
-			mod.artifactBar.BagArtifactPower = mod.artifactBar.BagArtifactPower + tonumber(Num)
-		elseif strfind(mod.artifactBar.tooltipLines[apLineIndex]:GetText(), "%d+") then
-			mod.artifactBar.BagArtifactPower = mod.artifactBar.BagArtifactPower + tonumber(strmatch(mod.artifactBar.tooltipLines[apLineIndex]:GetText(), "%d+"))
+	if not (apFound) then
+		return nil
+	end
+
+	local apValue = 0
+	if strfind(mod.artifactBar.tooltipLines[apLineIndex]:GetText(), "(%d+)[,.](%d+)") then
+		apValue = gsub(strmatch(mod.artifactBar.tooltipLines[apLineIndex]:GetText(), "(%d+[,.]%d+)"), "[,.]", "")
+		apValue = tonumber(apValue)
+	elseif strfind(mod.artifactBar.tooltipLines[apLineIndex]:GetText(), "%d+") then
+		apValue = tonumber(strmatch(mod.artifactBar.tooltipLines[apLineIndex]:GetText(), "%d+"))
+	end
+
+	return apValue
+end
+
+--This function is responsible for retrieving the AP value from an itemLink.
+--It will cache the itemLink and respective AP value for future requests, thus saving CPU resources.
+local apValueCache = {}
+local function GetAPForItem(itemLink)
+	if apValueCache[itemLink] then
+		return apValueCache[itemLink]
+	else
+		local apValue = GetAPFromTooltip(itemLink)
+		if apValue > 0 then
+			apValueCache[itemLink] = apValue
+		end
+		return apValue
+	end
+end
+
+--This function is responsible for checking if an item grants AP.
+--It will cache the itemID and a boolean value for future requests, which prevents scanning unnecessary items.
+local apItemCache = {}
+local function ItemGrantsAP(itemID, itemLink)
+	if apItemCache[itemID] then
+		return apItemCache[itemID]
+	else
+		local itemGrantsAP = (GetAPFromTooltip(itemLink) ~= nil)
+		apItemCache[itemID] = itemGrantsAP
+		return itemGrantsAP
+	end
+end
+
+function mod:GetArtifactPowerInBags()
+	if InCombatLockdown() then
+		return self.artifactBar.LastKnownAP
+	end
+
+	self.artifactBar.BagArtifactPower = 0
+	local ID, link, AP
+	for bag = 0, 4 do
+		for slot = 1, GetContainerNumSlots(bag) do
+			ID = select(10, GetContainerItemInfo(bag, slot))
+			link = GetContainerItemLink(bag, slot)
+
+			if (ID and link and ItemGrantsAP(ID, link)) then
+				AP = GetAPForItem(link)
+				self.artifactBar.BagArtifactPower = self.artifactBar.BagArtifactPower + AP
+			end
 		end
 	end
+
+	if(not self.artifactBar.LastKnownAP) or (self.artifactBar.LastKnownAP ~= self.artifactBar.BagArtifactPower) then
+		self.artifactBar.LastKnownAP = self.artifactBar.BagArtifactPower
+	end
+
+	return self.artifactBar.BagArtifactPower
 end
 
 function mod:LoadArtifactBar()
@@ -214,12 +253,11 @@ function mod:LoadArtifactBar()
 	self.artifactBar.BagArtifactPower = 0
 
 	self.artifactBar.tooltip = CreateFrame("GameTooltip", "BagArtifactPowerTooltip", UIParent, "GameTooltipTemplate")
+	self.artifactBar.tooltip:SetOwner(UIParent, "ANCHOR_NONE")
 	self.artifactBar.tooltipLines = {}
 	for i = 1, 5 do
 		self.artifactBar.tooltipLines[i] = _G[format("BagArtifactPowerTooltipTextLeft%d", i)]
 	end
-	
-	self.artifactBar.tooltip:HookScript("OnTooltipSetItem", OnTooltipSetItem)
 
 	self:UpdateArtifactDimensions()
 	E:CreateMover(self.artifactBar, "ArtifactBarMover", L["Artifact Bar"])
