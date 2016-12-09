@@ -30,6 +30,11 @@ function mod:UpdateArtifact(event, unit)
 		return
 	end
 
+	if (event == "PLAYER_ENTERING_WORLD") then
+		--We only need to scan bags once on this event, not on every load screen
+		self.artifactBar.eventFrame:UnregisterEvent("PLAYER_ENTERING_WORLD")
+	end
+
 	local bar = self.artifactBar
 	local showArtifact = HasArtifactEquipped();
 	if not showArtifact or (event == "PLAYER_REGEN_DISABLED" and self.db.artifact.hideInCombat) then
@@ -130,7 +135,6 @@ function mod:EnableDisable_ArtifactBar()
 		self:RegisterEvent('ARTIFACT_XP_UPDATE', 'UpdateArtifact')
 		self:RegisterEvent('UNIT_INVENTORY_CHANGED', 'UpdateArtifact')
 		self:RegisterEvent("CHAT_MSG_LOOT", 'UpdateArtifact')
-		self:RegisterEvent("PLAYER_ENTERING_WORLD", 'UpdateArtifact')
 
 		self:UpdateArtifact()
 		E:EnableMover(self.artifactBar.mover:GetName())
@@ -138,7 +142,6 @@ function mod:EnableDisable_ArtifactBar()
 		self:UnregisterEvent('ARTIFACT_XP_UPDATE')
 		self:UnregisterEvent('UNIT_INVENTORY_CHANGED')
 		self:UnregisterEvent("CHAT_MSG_LOOT")
-		self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 
 		self.artifactBar:Hide()
 		E:DisableMover(self.artifactBar.mover:GetName())
@@ -195,7 +198,7 @@ end
 --It will cache the itemID and a boolean value for future requests, which prevents scanning unnecessary items.
 local apItemCache = {}
 local function ItemGrantsAP(itemID, itemLink)
-	if apItemCache[itemID] then
+	if apItemCache[itemID] ~= nil then
 		return apItemCache[itemID]
 	else
 		local itemGrantsAP = (GetAPFromTooltip(itemLink) ~= nil)
@@ -240,6 +243,7 @@ function mod:LoadArtifactBar()
 	self.artifactBar.eventFrame:Hide()
 	self.artifactBar.eventFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
 	self.artifactBar.eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
+	self.artifactBar.eventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
 	self.artifactBar.eventFrame:SetScript("OnEvent", function(self, event) mod:UpdateArtifact(event) end)
 
 	self.artifactBar.bagValue = CreateFrame("StatusBar", nil, self.artifactBar)
