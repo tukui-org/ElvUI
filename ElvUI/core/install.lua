@@ -653,7 +653,6 @@ local function SetupAuras(style)
 	E:CopyTable(E.db.unitframe.units.target.buffs, P.unitframe.units.target.buffs)
 	E:CopyTable(E.db.unitframe.units.target.debuffs, P.unitframe.units.target.debuffs)
 	E:CopyTable(E.db.unitframe.units.target.aurabar, P.unitframe.units.target.aurabar)
-	E.db.unitframe.units.target.smartAuraDisplay = P.unitframe.units.target.smartAuraDisplay
 	if frame then
 		UF:Configure_Auras(frame, "Buffs")
 		UF:Configure_Auras(frame, "Debuffs")
@@ -664,7 +663,6 @@ local function SetupAuras(style)
 	E:CopyTable(E.db.unitframe.units.focus.buffs, P.unitframe.units.focus.buffs)
 	E:CopyTable(E.db.unitframe.units.focus.debuffs, P.unitframe.units.focus.debuffs)
 	E:CopyTable(E.db.unitframe.units.focus.aurabar, P.unitframe.units.focus.aurabar)
-	E.db.unitframe.units.focus.smartAuraDisplay = P.unitframe.units.focus.smartAuraDisplay
 	if frame then
 		UF:Configure_Auras(frame, "Buffs")
 		UF:Configure_Auras(frame, "Debuffs")
@@ -681,7 +679,6 @@ local function SetupAuras(style)
 		E:GetModule('UnitFrames'):CreateAndUpdateUF("player")
 
 		--TARGET
-		E.db.unitframe.units.target.smartAuraDisplay = 'DISABLED';
 		E.db.unitframe.units.target.debuffs.enable = true;
 		E.db.unitframe.units.target.aurabar.enable = false;
 		E:GetModule('UnitFrames'):CreateAndUpdateUF("target")
