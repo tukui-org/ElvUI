@@ -118,7 +118,6 @@ local tooltips = {
 	DropDownList1MenuBackdrop,
 	DropDownList2MenuBackdrop,
 	DropDownList3MenuBackdrop,
-	BNToastFrame,
 }
 
 local classification = {
