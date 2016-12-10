@@ -282,7 +282,7 @@ function TT:INSPECT_READY(_, GUID)
 	if(self.lastGUID ~= GUID) then return end
 
 	local unit = "mouseover"
-	if(UnitExists(unit)) then --This is false if unit is in different zone. Bug?
+	if(UnitExists(unit)) then --This only works for units in the same zone and is not a bug. We should add a check if unit is in players group too.
 		local itemLevel = self:GetItemLvL(unit)
 		local talentName = self:GetTalentSpec(unit)
 		inspectCache[GUID] = {time = GetTime()}
