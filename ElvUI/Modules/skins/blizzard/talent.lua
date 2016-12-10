@@ -297,10 +297,19 @@ local function LoadSkin()
 	S:HandleButton(PlayerTalentFramePVPTalents.XPBar.PrestigeReward.Accept)
 
 	--Honor progress bar
-	-- PlayerTalentFramePVPTalents.XPBar.Bar:StripTextures() -- The default blizz bar looks good, we should keep it.
-	PlayerTalentFramePVPTalents.XPBar.Bar:CreateBackdrop('Default')
-	-- PlayerTalentFramePVPTalents.XPBar.Bar:SetStatusBarTexture(E.media.normTex)
-	-- E:RegisterStatusBar(PlayerTalentFramePVPTalents.XPBar.Bar)
+	PlayerTalentFramePVPTalents.XPBar.Bar:CreateBackdrop("Default")
+
+	PlayerTalentFramePVPTalents.XPBar.NextAvailable:StripTextures()
+	PlayerTalentFramePVPTalents.XPBar.NextAvailable:CreateBackdrop("Default")
+	PlayerTalentFramePVPTalents.XPBar.NextAvailable.backdrop:SetPoint("TOPLEFT", PlayerTalentFramePVPTalents.XPBar.NextAvailable.Icon, -2, 2)
+	PlayerTalentFramePVPTalents.XPBar.NextAvailable.backdrop:SetPoint("BOTTOMRIGHT", PlayerTalentFramePVPTalents.XPBar.NextAvailable.Icon, 2, -2)
+	PlayerTalentFramePVPTalents.XPBar.NextAvailable:ClearAllPoints()
+	PlayerTalentFramePVPTalents.XPBar.NextAvailable:SetPoint("LEFT", PlayerTalentFramePVPTalents.XPBar.Bar, "RIGHT", 3, -2)
+
+	--Next Available Icon
+	PlayerTalentFramePVPTalents.XPBar.NextAvailable.Icon:SetDrawLayer("ARTWORK")
+	PlayerTalentFramePVPTalents.XPBar.NextAvailable.Icon:SetTexCoord(unpack(E.TexCoords))
+	PlayerTalentFramePVPTalents.XPBar.NextAvailable.Icon.SetTexCoord = E.noop
 
 	--Skin talent rows and buttons
 	for i = 1, MAX_PVP_TALENT_TIERS do

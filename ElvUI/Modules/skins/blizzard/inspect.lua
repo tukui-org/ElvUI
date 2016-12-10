@@ -45,10 +45,51 @@ local function LoadSkin()
 			end
 		end
 	end)
-	
-	for i=1, 4 do
+
+	-- PVE Talents
+	for i = 1, 7 do
+		for j = 1, 3 do
+			local button = _G["TalentsTalentRow"..i.."Talent"..j]
+			local icon = _G["TalentsTalentRow"..i.."Talent"..j.."IconTexture"]
+
+			button:StripTextures()
+			button:CreateBackdrop("Default")
+			button.backdrop:SetPoint("TOPLEFT", icon, -2, 2)
+			button.backdrop:SetPoint("BOTTOMRIGHT", icon, 2, -2)
+
+			icon:SetTexCoord(unpack(E.TexCoords))
+		end
+	end
+
+	-- PVP Talents
+	for i = 1, 6 do
+		for j = 1, 3 do
+			local button = _G["InspectPVPFrameTalentRow"..i.."Talent"..j]
+			local icon = _G["InspectPVPFrameTalentRow"..i.."Talent"..j.."IconTexture"]
+
+			button:StripTextures()
+			button:CreateBackdrop("Default")
+			button.backdrop:SetPoint("TOPLEFT", icon, -2, 2)
+			button.backdrop:SetPoint("BOTTOMRIGHT", icon, 2, -2)
+
+			icon:SetTexCoord(unpack(E.TexCoords))
+		end
+	end
+
+	for i = 1, 4 do
 		S:HandleTab(_G["InspectFrameTab"..i])
 	end
+
+	InspectModelFrame:StripTextures()
+	InspectModelFrame:CreateBackdrop("Default")
+	InspectModelFrame.backdrop:SetPoint("TOPLEFT", -3, 4)
+	InspectModelFrame.backdrop:SetPoint("BOTTOMRIGHT", 4, 0)
+
+	-- Background Texture
+	InspectModelFrameBackgroundTopLeft:SetPoint("TOPLEFT", InspectModelFrame.backdrop, "TOPLEFT", 2, -2)
+	InspectModelFrameBackgroundTopRight:SetPoint("TOPRIGHT", InspectModelFrame.backdrop, "TOPRIGHT", -2, -2)
+	InspectModelFrameBackgroundBotLeft:SetPoint("BOTTOMLEFT", InspectModelFrame.backdrop, "BOTTOMLEFT", 2, -50)
+	InspectModelFrameBackgroundBotRight:SetPoint("BOTTOMRIGHT", InspectModelFrame.backdrop, "BOTTOMRIGHT", -2, -50)
 
 	InspectModelFrameBorderTopLeft:Kill()
 	InspectModelFrameBorderTopRight:Kill()
@@ -60,7 +101,6 @@ local function LoadSkin()
 	InspectModelFrameBorderBottom:Kill()
 	InspectModelFrameBorderBottom2:Kill()
 	InspectModelFrameBackgroundOverlay:Kill()
-	InspectModelFrame:CreateBackdrop("Default")
 
 	local slots = {
 		"HeadSlot",
