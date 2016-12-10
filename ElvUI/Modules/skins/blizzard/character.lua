@@ -121,7 +121,7 @@ local function LoadSkin()
 				local stat = PAPERDOLL_STATCATEGORIES[catIndex].stats[statIndex];
 				local showStat = true;
 				if ( showStat and stat.primary ) then
-					local primaryStat = select(7, GetSpecializationInfo(spec, nil, nil, nil, UnitSex("player")));
+					local primaryStat = select(6, GetSpecializationInfo(spec, nil, nil, nil, UnitSex("player")));
 					if ( stat.primary ~= primaryStat ) then
 						showStat = false;
 					end

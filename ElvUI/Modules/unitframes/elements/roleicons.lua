@@ -34,7 +34,7 @@ for i = 1, GetNumClasses() do
 	local _, class, classID = GetClassInfo(i)
 	specNameToRole[class] = {}
 	for j = 1, GetNumSpecializationsForClassID(classID) do
-		local _, spec, _, _, _, role = GetSpecializationInfoForClassID(classID, j)
+		local _, spec, _, _, role = GetSpecializationInfoForClassID(classID, j)
 		specNameToRole[class][spec] = role
 	end
 end
