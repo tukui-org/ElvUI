@@ -8,30 +8,45 @@ local _G = _G
 local tinsert = table.insert
 local strsub = strsub
 --WoW API / Variables
+local ClearAllTracking = ClearAllTracking
 local CloseAllWindows = CloseAllWindows
 local CloseMenus = CloseMenus
 local CreateFrame = CreateFrame
 local C_Timer_After = C_Timer.After
 local GarrisonLandingPageMinimapButton_OnClick = GarrisonLandingPageMinimapButton_OnClick
 local GetMinimapZoneText = GetMinimapZoneText
+local GetNumTrackingTypes = GetNumTrackingTypes
+local GetTrackingInfo = GetTrackingInfo
 local GetZonePVPInfo = GetZonePVPInfo
 local GuildInstanceDifficulty = GuildInstanceDifficulty
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
 local IsShiftKeyDown = IsShiftKeyDown
+local Lib_ToggleDropDownMenu = Lib_ToggleDropDownMenu
+local Lib_UIDropDownMenu_AddButton = Lib_UIDropDownMenu_AddButton
+local Lib_UIDropDownMenu_CreateInfo = Lib_UIDropDownMenu_CreateInfo
 local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
+local MiniMapTrackingDropDownButton_IsActive = MiniMapTrackingDropDownButton_IsActive
+local MiniMapTrackingDropDown_IsNoTrackingActive = MiniMapTrackingDropDown_IsNoTrackingActive
+local MiniMapTracking_SetTracking = MiniMapTracking_SetTracking
 local Minimap_OnClick = Minimap_OnClick
 local PlaySound = PlaySound
 local ShowUIPanel, HideUIPanel = ShowUIPanel, HideUIPanel
 local ToggleAchievementFrame = ToggleAchievementFrame
 local ToggleCharacter = ToggleCharacter
 local ToggleCollectionsJournal = ToggleCollectionsJournal
-local ToggleDropDownMenu = ToggleDropDownMenu
 local ToggleFrame = ToggleFrame
 local ToggleFriendsFrame = ToggleFriendsFrame
 local ToggleGuildFrame = ToggleGuildFrame
 local ToggleHelpFrame = ToggleHelpFrame
 local ToggleLFDParentFrame = ToggleLFDParentFrame
+local UnitClass = UnitClass
+local HUNTER_TRACKING = HUNTER_TRACKING
+local HUNTER_TRACKING_TEXT = HUNTER_TRACKING_TEXT
+local LIB_UIDROPDOWNMENU_MENU_VALUE = LIB_UIDROPDOWNMENU_MENU_VALUE
+local MINIMAP_TRACKING_NONE = MINIMAP_TRACKING_NONE
+local TOWNSFOLK = TOWNSFOLK
+local TOWNSFOLK_TRACKING_TEXT = TOWNSFOLK_TRACKING_TEXT
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GetMinimapShape, SpellBookFrame, PlayerTalentFrame, TalentFrame_LoadUI
