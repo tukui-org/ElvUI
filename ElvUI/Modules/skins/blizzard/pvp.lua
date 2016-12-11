@@ -93,16 +93,26 @@ local function LoadSkin()
 	local honorBar = HonorFrame.XPBar
 	local bar = honorBar.Bar
 	local text = honorBar.Bar.OverlayFrame.Text
+	local nextAvailable = honorBar.NextAvailable
+	local icon = nextAvailable.Icon
 
 	honorBar:StripTextures()
 
-	-- bar:StripTextures() --The default bar looks pretty good
 	bar:CreateBackdrop("Default")
-	-- bar:SetStatusBarTexture(E.media.normTex)
-	-- E:RegisterStatusBar(bar)
 
 	text:ClearAllPoints()
 	text:Point("CENTER", bar)
+
+	nextAvailable:StripTextures()
+	nextAvailable:CreateBackdrop("Default")
+	nextAvailable.backdrop:SetPoint("TOPLEFT", HonorFrame.XPBar.NextAvailable.Icon, -2, 2)
+	nextAvailable.backdrop:SetPoint("BOTTOMRIGHT", HonorFrame.XPBar.NextAvailable.Icon, 2, -2)
+	nextAvailable:ClearAllPoints()
+	nextAvailable:SetPoint("LEFT", bar, "RIGHT", 0, -2)
+
+	icon:SetDrawLayer("ARTWORK")
+	icon:SetTexCoord(unpack(E.TexCoords))
+	icon.SetTexCoord = E.noop
 
 	hooksecurefunc("LFG_PermanentlyDisableRoleButton", function(self)
 		if self.bg then
