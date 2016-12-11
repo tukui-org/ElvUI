@@ -31,6 +31,9 @@ for i = 1, LIB_UIDROPDOWNMENU_MAXLEVELS do
 		local b = CreateFrame("Button", listFrameName.."Button"..j, f, "Lib_UIDropDownMenuButtonTemplate");
 		b:SetID(j);
 	end
+
+	--Allow closing with escape
+	tinsert(UIMenus, listFrameName)
 end
 
 function Lib_UIDropDownMenuDelegate_OnAttributeChanged (self, attribute, value)
