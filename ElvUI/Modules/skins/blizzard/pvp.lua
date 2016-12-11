@@ -162,16 +162,26 @@ local function LoadSkin()
 	local conquestBar = ConquestFrame.XPBar
 	local bar = conquestBar.Bar
 	local text = conquestBar.Bar.OverlayFrame.Text
-	
+	local nextAvailable = conquestBar.NextAvailable
+	local icon = nextAvailable.Icon
+
 	conquestBar:StripTextures()
 
-	-- bar:StripTextures() --Default bar looks good
 	bar:CreateBackdrop("Default")
-	-- bar:SetStatusBarTexture(E.media.normTex)
-	-- E:RegisterStatusBar(bar)
 
 	text:ClearAllPoints()
 	text:Point("CENTER", bar)
+
+	nextAvailable:StripTextures()
+	nextAvailable:CreateBackdrop("Default")
+	nextAvailable.backdrop:SetPoint("TOPLEFT", HonorFrame.XPBar.NextAvailable.Icon, -2, 2)
+	nextAvailable.backdrop:SetPoint("BOTTOMRIGHT", HonorFrame.XPBar.NextAvailable.Icon, 2, -2)
+	nextAvailable:ClearAllPoints()
+	nextAvailable:SetPoint("LEFT", bar, "RIGHT", 0, -2)
+
+	icon:SetDrawLayer("ARTWORK")
+	icon:SetTexCoord(unpack(E.TexCoords))
+	icon.SetTexCoord = E.noop
 
 	local function handleButton(button)
 		button:StripTextures()
