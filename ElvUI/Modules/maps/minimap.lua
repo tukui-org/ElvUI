@@ -52,6 +52,8 @@ local ToggleLFDParentFrame = ToggleLFDParentFrame
 -- GLOBALS: BottomMiniPanel, BottomLeftMiniPanel, BottomRightMiniPanel, TopMiniPanel
 -- GLOBALS: TopLeftMiniPanel, TopRightMiniPanel, MinimapBackdrop
 
+--This function is copied from FrameXML and modified to use DropDownMenu library function calls
+--Using the regular DropDownMenu code causes taints in various places.
 local function MiniMapTrackingDropDown_Initialize(self, level)
 	local name, texture, active, category, nested, numTracking;
 	local count = GetNumTrackingTypes();
@@ -130,15 +132,16 @@ local function MiniMapTrackingDropDown_Initialize(self, level)
 	end
 end
 
-local TestDropDown = CreateFrame("Frame", "TestDropDown", UIParent, "UIDropDownMenuTemplate")
-TestDropDown:SetID(1)
-TestDropDown:SetClampedToScreen(true)
-TestDropDown:Hide()
-Lib_UIDropDownMenu_Initialize(TestDropDown, MiniMapTrackingDropDown_Initialize, "MENU");
-TestDropDown.noResize = true
+--Create the new minimap tracking dropdown frame and initialize it
+local ElvUIMiniMapTrackingDropDown = CreateFrame("Frame", "ElvUIMiniMapTrackingDropDown", UIParent, "UIDropDownMenuTemplate")
+ElvUIMiniMapTrackingDropDown:SetID(1)
+ElvUIMiniMapTrackingDropDown:SetClampedToScreen(true)
+ElvUIMiniMapTrackingDropDown:Hide()
+Lib_UIDropDownMenu_Initialize(ElvUIMiniMapTrackingDropDown, MiniMapTrackingDropDown_Initialize, "MENU");
+ElvUIMiniMapTrackingDropDown.noResize = true
 
+--Create the minimap micro menu
 local menuFrame = CreateFrame("Frame", "MinimapRightClickMenu", E.UIParent)
-
 local menuList = {
 	{text = CHARACTER_BUTTON,
 	func = function() ToggleCharacter("PaperDollFrame") end},
@@ -239,8 +242,7 @@ function M:Minimap_OnMouseUp(btn)
 			E:DropDown(menuList, menuFrame, -160, 0)
 		end
 	elseif btn == "RightButton" then
-		-- ToggleDropDownMenu(1, nil, MiniMapTrackingDropDown, "cursor")
-		Lib_ToggleDropDownMenu(1, nil, TestDropDown, "cursor");
+		Lib_ToggleDropDownMenu(1, nil, ElvUIMiniMapTrackingDropDown, "cursor");
 	else
 		Minimap_OnClick(self)
 	end
