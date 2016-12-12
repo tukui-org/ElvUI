@@ -5,7 +5,6 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.pvp ~= true then return end
 
 	PVPUIFrame:StripTextures()
-	--PVPUIFrame.Shadows:StripTextures()
 
 	for i=1, 2 do
 		S:HandleTab(_G["PVPUIFrameTab"..i])
@@ -25,12 +24,10 @@ local function LoadSkin()
 		button:StyleButton(nil, true)
 	end
 
-
-	-->>>HONOR FRAME
+	-- Honor Frame
 	S:HandleDropDownBox(HonorFrameTypeDropDown, 210)
 
 	HonorFrame.Inset:StripTextures()
-	--HonorFrame.Inset:SetTemplate("Transparent")
 
 	S:HandleScrollBar(HonorFrameSpecificFrameScrollBar)
 	S:HandleButton(HonorFrameQueueButton, true)
@@ -120,12 +117,12 @@ local function LoadSkin()
 		end
 	end)
 
-	-->>>CONQUEST FRAME
+	-- Conquest Frame
 	ConquestFrame.Inset:StripTextures()
 	ConquestFrame:StripTextures()
 	ConquestFrame.ShadowOverlay:StripTextures()
 	S:HandleButton(ConquestJoinButton, true)
-	
+
 	ConquestFrame.RoleInset:StripTextures()
 	S:HandleCheckBox(ConquestFrame.RoleInset.DPSIcon.checkButton, true)
 	S:HandleCheckBox(ConquestFrame.RoleInset.TankIcon.checkButton, true)
@@ -197,7 +194,7 @@ local function LoadSkin()
 
 	ConquestFrame.Arena3v3:Point("TOP", ConquestFrame.Arena2v2, "BOTTOM", 0, -2)
 
-	-->>>WARGRAMES FRAME
+	-- WarGames Frame
 	WarGamesFrame:StripTextures()
 	WarGamesFrame.RightInset:StripTextures()
 	S:HandleButton(WarGameStartButton, true)
