@@ -168,7 +168,7 @@ local function GetAPFromTooltip(itemLink)
 		return nil
 	end
 
-	local apValue = 0
+	local apValue
 	if strfind(mod.artifactBar.tooltipLines[apLineIndex]:GetText(), "(%d+)[,.](%d+)") then
 		apValue = gsub(strmatch(mod.artifactBar.tooltipLines[apLineIndex]:GetText(), "(%d+[,.]%d+)"), "[,.]", "")
 		apValue = tonumber(apValue)
@@ -186,7 +186,7 @@ local function GetAPForItem(itemLink)
 	if apValueCache[itemLink] then
 		return apValueCache[itemLink]
 	else
-		local apValue = GetAPFromTooltip(itemLink)
+		local apValue = GetAPFromTooltip(itemLink) or 0
 		if apValue > 0 then
 			apValueCache[itemLink] = apValue
 		end
