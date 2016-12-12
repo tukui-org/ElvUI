@@ -43,7 +43,6 @@ local ToggleLFDParentFrame = ToggleLFDParentFrame
 local UnitClass = UnitClass
 local HUNTER_TRACKING = HUNTER_TRACKING
 local HUNTER_TRACKING_TEXT = HUNTER_TRACKING_TEXT
-local LIB_UIDROPDOWNMENU_MENU_VALUE = LIB_UIDROPDOWNMENU_MENU_VALUE
 local MINIMAP_TRACKING_NONE = MINIMAP_TRACKING_NONE
 local TOWNSFOLK = TOWNSFOLK
 local TOWNSFOLK_TRACKING_TEXT = TOWNSFOLK_TRACKING_TEXT
@@ -65,7 +64,7 @@ local TOWNSFOLK_TRACKING_TEXT = TOWNSFOLK_TRACKING_TEXT
 -- GLOBALS: MiniMapVoiceChatFrame, MinimapNorthTag, MinimapZoneTextButton, MiniMapTracking
 -- GLOBALS: MiniMapMailBorder, MiniMapMailIcon, QueueStatusMinimapButtonBorder, UIParent
 -- GLOBALS: BottomMiniPanel, BottomLeftMiniPanel, BottomRightMiniPanel, TopMiniPanel
--- GLOBALS: TopLeftMiniPanel, TopRightMiniPanel, MinimapBackdrop
+-- GLOBALS: TopLeftMiniPanel, TopRightMiniPanel, MinimapBackdrop, LIB_UIDROPDOWNMENU_MENU_VALUE
 
 --This function is copied from FrameXML and modified to use DropDownMenu library function calls
 --Using the regular DropDownMenu code causes taints in various places.
