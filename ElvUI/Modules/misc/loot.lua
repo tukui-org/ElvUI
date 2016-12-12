@@ -62,7 +62,7 @@ local function GroupLootDropDown_Initialize()
 end
 
 --Create the new group loot dropdown frame and initialize it
-local ElvUIGroupLootDropDown = CreateFrame("Frame", "ElvUIGroupLootDropDown", UIParent, "UIDropDownMenuTemplate")
+local ElvUIGroupLootDropDown = CreateFrame("Frame", "ElvUIGroupLootDropDown", UIParent, "Lib_UIDropDownMenuTemplate")
 ElvUIGroupLootDropDown:SetID(1)
 ElvUIGroupLootDropDown:Hide()
 Lib_UIDropDownMenu_Initialize(ElvUIGroupLootDropDown, nil, "MENU");

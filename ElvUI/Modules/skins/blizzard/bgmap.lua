@@ -49,7 +49,7 @@ local function LoadSkin()
 		info.notCheckable = true;
 		Lib_UIDropDownMenu_AddButton(info, LIB_UIDROPDOWNMENU_MENU_LEVEL);
 	end
-	local ElvUIBattlefieldMinimapTabDropDown = CreateFrame("Frame", "ElvUIBattlefieldMinimapTabDropDown", UIParent, "UIDropDownMenuTemplate")
+	local ElvUIBattlefieldMinimapTabDropDown = CreateFrame("Frame", "ElvUIBattlefieldMinimapTabDropDown", UIParent, "Lib_UIDropDownMenuTemplate")
 	ElvUIBattlefieldMinimapTabDropDown:SetID(1)
 	ElvUIBattlefieldMinimapTabDropDown:Hide()
 	Lib_UIDropDownMenu_Initialize(ElvUIBattlefieldMinimapTabDropDown, BattlefieldMinimapTabDropDown_Initialize, "MENU");
