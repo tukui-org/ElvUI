@@ -96,7 +96,7 @@ local function LoadSkin()
 	TradeSkillFrame.DetailsFrame.GuildFrame:SetTemplate("Transparent")
 	TradeSkillFrame.DetailsFrame.GuildFrame.Container:StripTextures()
 	TradeSkillFrame.DetailsFrame.GuildFrame.Container:SetTemplate("Transparent")
-	S:HandleScrollBar(TradeSkillFrameScrollFrame.scrollBar)
+	-- S:HandleScrollBar(TradeSkillFrame.DetailsFrame.GuildFrame.Container.ScrollFrame.scrollBar) --This cannot be skinned due to issues on Blizzards end.
 
 	--BUGFIX: TradeSkillFrame.RecipeList.scrollBar
 	--Hide current scrollbar
