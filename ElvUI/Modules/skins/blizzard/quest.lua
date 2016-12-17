@@ -107,6 +107,13 @@ local function LoadSkin()
 		end
 	end)
 
+	--Reward: Title
+	QuestInfoPlayerTitleFrame.FrameLeft:SetTexture(nil)
+	QuestInfoPlayerTitleFrame.FrameCenter:SetTexture(nil)
+	QuestInfoPlayerTitleFrame.FrameRight:SetTexture(nil)
+	QuestInfoPlayerTitleFrame.Icon:SetTexCoord(unpack(E.TexCoords))
+	QuestInfoPlayerTitleFrame:CreateBackdrop("Default")
+	QuestInfoPlayerTitleFrame.backdrop:SetOutside(QuestInfoPlayerTitleFrame.Icon)
 
 	--Quest Frame
 	QuestFrame:StripTextures(true)
