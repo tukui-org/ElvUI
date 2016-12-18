@@ -92,7 +92,6 @@ L["Gold:"] = "Oro:";
 L["goldabbrev"] = "|cffffd700g|r"
 L["Hands"] = "Manos"
 L["Head"] = "Cabeza"
-L["Hit"] = "Golpe"
 L["Hold Shift + Right Click:"] = "Mantén Shift + Botón Derecho:";
 L["Home Latency:"] = "Latencia Local:"
 L["HP"] = "Salud"
