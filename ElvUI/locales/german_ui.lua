@@ -92,7 +92,6 @@ L["Gold:"] = true;
 L["goldabbrev"] = "|cffffd700g|r" --Also used in gold datatext
 L["Hands"] = "Hände"
 L["Head"] = "Kopf"
-L["Hit"] = "Hit"
 L["Hold Shift + Right Click:"] = "Halte Umschalt + Rechts Klick:"
 L["Home Latency:"] = "Standort Latenz"
 L["HP"] = "HP"
