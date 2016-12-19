@@ -92,7 +92,6 @@ L["Gold:"] = "金錢:"
 L["goldabbrev"] = "|cffffd700金|r" --Also used in Bags
 L["Hands"] = "手部"
 L["Head"] = "頭部"
-L["Hit"] = "命中"
 L["Hold Shift + Right Click:"] = "按住 Shift 並按滑鼠右鍵"
 L["Home Latency:"] = "本機延遲:"
 L["HP"] = "生命值"

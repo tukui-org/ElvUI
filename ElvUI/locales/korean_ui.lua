@@ -92,7 +92,6 @@ L["Gold:"] = true;
 L["goldabbrev"] = "|TInterface\\MoneyFrame\\UI-MoneyIcons:0:0:1:0:64:16:1:16:1:16|t" --"|cffffd700●|r"
 L["Hands"] = "손"
 L["Head"] = "머리"
-L["Hit"] = "적중도"
 L["Hold Shift + Right Click:"] = true;
 L["Home Latency:"] = "지연 시간:"
 L["HP"] = "주문력"
