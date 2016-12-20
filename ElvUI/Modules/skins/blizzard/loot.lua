@@ -49,7 +49,7 @@ local function LoadSkin()
 	end
 	hooksecurefunc("MissingLootFrame_Show", SkinButton)]]
 
-	-- loot history frame
+	-- Loot history frame
 	LootHistoryFrame:StripTextures()
 	S:HandleCloseButton(LootHistoryFrame.CloseButton)
 	LootHistoryFrame:StripTextures()
@@ -86,7 +86,7 @@ local function LoadSkin()
 	end
 	hooksecurefunc("LootHistoryFrame_FullUpdate", UpdateLoots)
 
-	--masterloot
+	-- Master Loot
 	MasterLooterFrame:StripTextures()
 	MasterLooterFrame:SetTemplate()
 
@@ -121,15 +121,34 @@ local function LoadSkin()
 		end
 	end)
 
+	-- Bonus Roll Frame
 	BonusRollFrame:StripTextures()
 	BonusRollFrame:SetTemplate('Transparent')
+
 	BonusRollFrame.PromptFrame.Icon:SetTexCoord(unpack(E.TexCoords))
+
 	BonusRollFrame.PromptFrame.IconBackdrop = CreateFrame("Frame", nil, BonusRollFrame.PromptFrame)
 	BonusRollFrame.PromptFrame.IconBackdrop:SetFrameLevel(BonusRollFrame.PromptFrame.IconBackdrop:GetFrameLevel() - 1)
 	BonusRollFrame.PromptFrame.IconBackdrop:SetOutside(BonusRollFrame.PromptFrame.Icon)
 	BonusRollFrame.PromptFrame.IconBackdrop:SetTemplate()
+
 	BonusRollFrame.PromptFrame.Timer.Bar:SetColorTexture(1, 1, 1)
 	BonusRollFrame.PromptFrame.Timer.Bar:SetVertexColor(1, 1, 1)
+
+	BonusRollFrame.SpecRing:SetTexture("")
+	BonusRollFrame.SpecIcon:SetPoint("TOPLEFT", BonusRollFrame, "TOPLEFT", 0, -3)
+	BonusRollFrame.SpecIcon:SetTexCoord(unpack(E.TexCoords))
+
+	BonusRollFrame.SpecIcon.b = CreateFrame("Frame", nil, BonusRollFrame)
+	BonusRollFrame.SpecIcon.b:SetFrameLevel(6)
+	BonusRollFrame.SpecIcon.b:SetTemplate("Default")
+	BonusRollFrame.SpecIcon.b:SetPoint("TOPLEFT", BonusRollFrame.SpecIcon, "TOPLEFT", 0, 0)
+	BonusRollFrame.SpecIcon.b:SetPoint("BOTTOMRIGHT", BonusRollFrame.SpecIcon, "BOTTOMRIGHT", 0, 0)
+	BonusRollFrame.SpecIcon:SetParent(BonusRollFrame.SpecIcon.b)
+
+	hooksecurefunc("BonusRollFrame_StartBonusRoll", function()
+		BonusRollFrame.SpecIcon.b:SetShown(BonusRollFrame.SpecIcon:IsShown() and BonusRollFrame.SpecIcon:GetTexture() ~= nil)
+	end)
 
 	LootFrame:StripTextures()
 	LootFrameInset:StripTextures()
