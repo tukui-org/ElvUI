@@ -134,14 +134,14 @@ function mod:EnableDisable_ArtifactBar()
 	if self.db.artifact.enable then
 		self:RegisterEvent('ARTIFACT_XP_UPDATE', 'UpdateArtifact')
 		self:RegisterEvent('UNIT_INVENTORY_CHANGED', 'UpdateArtifact')
-		self:RegisterEvent("CHAT_MSG_LOOT", 'UpdateArtifact')
+		self:RegisterEvent("BAG_UPDATE_DELAYED", 'UpdateArtifact')
 
 		self:UpdateArtifact()
 		E:EnableMover(self.artifactBar.mover:GetName())
 	else
 		self:UnregisterEvent('ARTIFACT_XP_UPDATE')
 		self:UnregisterEvent('UNIT_INVENTORY_CHANGED')
-		self:UnregisterEvent("CHAT_MSG_LOOT")
+		self:UnregisterEvent("BAG_UPDATE_DELAYED")
 
 		self.artifactBar:Hide()
 		E:DisableMover(self.artifactBar.mover:GetName())
