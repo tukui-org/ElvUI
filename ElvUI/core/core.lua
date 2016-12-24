@@ -170,7 +170,7 @@ E.ClassRole = {
 E.noop = function() end;
 
 function E:Print(...)
-	print(self["media"].hexvaluecolor..self.UIName..':|r', ...)
+	print(self["media"].hexvaluecolor..'ElvUI:|r', ...)
 end
 
 --Workaround for people wanting to use white and it reverting to their class color.
@@ -872,7 +872,7 @@ local function SendRecieve(_, event, prefix, message, _, sender)
 
 		if prefix == "ELVUI_VERSIONCHK" and not E.recievedOutOfDateMessage then
 			if(tonumber(message) ~= nil and tonumber(message) > tonumber(E.version)) then
-				E:Print(L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"]:gsub("ElvUI", E.UIName))
+				E:Print(L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"])
 
 				if((tonumber(message) - tonumber(E.version)) >= 0.05) then
 					E:StaticPopup_Show("ELVUI_UPDATE_AVAILABLE")
@@ -1386,7 +1386,7 @@ function E:Initialize()
 	collectgarbage("collect");
 
 	if self.db.general.loginmessage then
-		print(select(2, E:GetModule('Chat'):FindURL("CHAT_MSG_DUMMY", format(L["LOGIN_MSG"]:gsub("ElvUI", E.UIName), self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version)))..'.')
+		print(select(2, E:GetModule('Chat'):FindURL("CHAT_MSG_DUMMY", format(L["LOGIN_MSG"], self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version)))..'.')
 	end
 
 	--Disable OrderHall Bar or resize ElvUIParent if needed
