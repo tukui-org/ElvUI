@@ -188,8 +188,6 @@ local function GetAPFromTooltip(itemLink)
 		apValue = tonumber(strmatch(mod.artifactBar.tooltipLines[apLineIndex]:GetText(), "%d+"))
 	end
 
-	mod.artifactBar.tooltip:Hide()
-
 	return apValue
 end
 
