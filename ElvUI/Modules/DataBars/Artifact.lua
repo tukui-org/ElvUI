@@ -158,9 +158,6 @@ local apLineIndex
 local function GetAPFromTooltip(itemLink)
 	local apValue = 0
 
-	--Clear tooltip from previous item
-	mod.artifactBar.tooltip:ClearLines()
-
 	--We need to use SetHyperlink, as SetItemByID doesn't work for items you looted before gaining Artifact Knowledge level.
 	--For those items it would display a value higher than what you would actually get.
 	--We also need to use pcall to trap errors that will occur when supplying itemLink for certain items (caged pets among others)
@@ -190,6 +187,8 @@ local function GetAPFromTooltip(itemLink)
 	elseif strfind(mod.artifactBar.tooltipLines[apLineIndex]:GetText(), "%d+") then
 		apValue = tonumber(strmatch(mod.artifactBar.tooltipLines[apLineIndex]:GetText(), "%d+"))
 	end
+
+	mod.artifactBar.tooltip:Hide()
 
 	return apValue
 end
