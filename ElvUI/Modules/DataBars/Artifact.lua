@@ -211,11 +211,13 @@ end
 
 --Blacklisted item IDs, these cause error when used with :SetHyperlink
 local blacklistedItemID = {
-	[82800] = true, --Pet Cage
+	[5043] = true, --Red Ribboned Gif
+	[5044] = true, --Blue Ribboned Gift
 	[17302] = true, --Blue Ribboned Holiday Gift
 	[17305] = true, --Green Ribboned Holiday Gift
 	[17308] = true, --Purple Ribboned Holiday Gift
 	[21363] = true, --Festive Gift
+	[82800] = true, --Pet Cage
 }
 
 function mod:GetArtifactPowerInBags()
