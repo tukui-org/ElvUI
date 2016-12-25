@@ -4,7 +4,7 @@ local mod = E:GetModule('DataBars');
 --Cache global variables
 --Lua functions
 local _G = _G
-local tonumber, select = tonumber, select
+local tonumber, select, pcall = tonumber, select, pcall
 local format, gsub, strmatch, strfind = string.format, string.gsub, string.match, string.find
 --WoW API / Variables
 local C_ArtifactUIGetEquippedArtifactInfo = C_ArtifactUI.GetEquippedArtifactInfo
@@ -148,17 +148,26 @@ function mod:EnableDisable_ArtifactBar()
 	end
 end
 
+--AP item caches
+local apValueCache = {}
+local apItemCache = {}
+
 --This function scans the tooltip of an item to determine whether or not it grants AP.
 --If it is found to grant AP, then the value is extracted and returned.
 local apLineIndex
 local function GetAPFromTooltip(itemLink)
+	local apValue = 0
+
+	--Clear tooltip from previous item
 	mod.artifactBar.tooltip:ClearLines()
+
 	--We need to use SetHyperlink, as SetItemByID doesn't work for items you looted before gaining Artifact Knowledge level.
 	--For those items it would display a value higher than what you would actually get.
 	--We also need to use pcall to trap errors that will occur when supplying itemLink for certain items (caged pets among others)
 	local success = pcall(mod.artifactBar.tooltip.SetHyperlink, mod.artifactBar.tooltip, itemLink)
 	if (not success) then
-		return nil
+		apItemCache[itemLink] = false --Cache item as not granting AP
+		return apValue
 	end
 
 	local apFound
@@ -170,11 +179,11 @@ local function GetAPFromTooltip(itemLink)
 		apFound = true
 	end
 
-	if not (apFound) then
-		return nil
+	if (not apFound) then
+		apItemCache[itemLink] = false --Cache item as not granting AP
+		return apValue
 	end
 
-	local apValue
 	if strfind(mod.artifactBar.tooltipLines[apLineIndex]:GetText(), "(%d+)[,.%s](%d+)") then
 		apValue = gsub(strmatch(mod.artifactBar.tooltipLines[apLineIndex]:GetText(), "(%d+[,.%s]%d+)"), "[,.%s]", "")
 		apValue = tonumber(apValue)
@@ -187,29 +196,22 @@ end
 
 --This function is responsible for retrieving the AP value from an itemLink.
 --It will cache the itemLink and respective AP value for future requests, thus saving CPU resources.
-local apValueCache = {}
 local function GetAPForItem(itemLink)
+	if (apItemCache[itemLink] == false) then
+		--Get out early if item has already been determined to not grant AP
+		return 0
+	end
+
+	--Check if item is cached and return value
 	if apValueCache[itemLink] then
 		return apValueCache[itemLink]
 	else
-		local apValue = GetAPFromTooltip(itemLink) or 0
+		--Not cached, do a tooltip scan and cache the value
+		local apValue = GetAPFromTooltip(itemLink)
 		if apValue > 0 then
 			apValueCache[itemLink] = apValue
 		end
 		return apValue
-	end
-end
-
---This function is responsible for checking if an item grants AP.
---It will cache the itemID and a boolean value for future requests, which prevents scanning unnecessary items.
-local apItemCache = {}
-local function ItemGrantsAP(itemID, itemLink)
-	if apItemCache[itemID] ~= nil then
-		return apItemCache[itemID]
-	else
-		local itemGrantsAP = (GetAPFromTooltip(itemLink) ~= nil)
-		apItemCache[itemID] = itemGrantsAP
-		return itemGrantsAP
 	end
 end
 
@@ -225,7 +227,7 @@ function mod:GetArtifactPowerInBags()
 			ID = select(10, GetContainerItemInfo(bag, slot))
 			link = GetContainerItemLink(bag, slot)
 
-			if (ID and link and ItemGrantsAP(ID, link)) then
+			if (ID and link) then
 				AP = GetAPForItem(link)
 				self.artifactBar.BagArtifactPower = self.artifactBar.BagArtifactPower + AP
 			end
