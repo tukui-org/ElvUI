@@ -21,11 +21,13 @@ local function LoadSkin()
 				local reward = self.Rewards[self.numRewardsStyled]
 				local icon = reward.Icon
 				reward:GetRegions():Hide()
-				if reward.IconBorder then reward.IconBorder:SetTexture() end --OrderHall reward texture
+				local r, g, b = 0, 0, 0
+				if reward.IconBorder then r, g, b = reward.IconBorder:GetVertexColor(); reward.IconBorder:SetTexture() end --OrderHall reward texture
 				if not reward.border then
 					reward.border = CreateFrame("Frame", nil, reward)
 					S:HandleIcon(reward.Icon, reward.border)
 				end
+				reward.border.backdrop:SetBackdropBorderColor(r, g, b)
 			end
 		end)
 
