@@ -53,6 +53,19 @@ local function LoadSkin()
 			if frame.IconBorder then
 				frame.IconBorder:SetTexture()
 			end
+
+			-- Set border color according to rarity of item
+			-- for _, reward in pairs(frame.Rewards) do -- WIP
+				local r, g, b
+				if frame.IconBorder:IsShown() then
+					-- This is an item, use the color set by WoW
+					r, g, b = frame.IconBorder:GetVertexColor()
+				else
+					-- This is a currency, use the default ElvUI border color
+					r, g, b = unpack(E["media"].bordercolor)
+				end
+			-- end
+			frame.backdrop:SetBackdropBorderColor(r, g, b)
 			frame.Icon:SetDrawLayer("BORDER", 0)
 		end)
 	end
