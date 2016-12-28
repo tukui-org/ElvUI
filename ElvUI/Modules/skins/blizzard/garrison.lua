@@ -54,7 +54,7 @@ local function LoadSkin()
 				frame.IconBorder:SetTexture()
 			end
 
-			-- Set border color according to rarity of item
+			--[[ Set border color according to rarity of item
 			-- for _, reward in pairs(frame.Rewards) do -- WIP
 				local r, g, b
 				if frame.IconBorder:IsShown() then
@@ -65,7 +65,7 @@ local function LoadSkin()
 					r, g, b = unpack(E["media"].bordercolor)
 				end
 			-- end
-			frame.backdrop:SetBackdropBorderColor(r, g, b)
+			frame.backdrop:SetBackdropBorderColor(r, g, b)]]
 			frame.Icon:SetDrawLayer("BORDER", 0)
 		end)
 	end
