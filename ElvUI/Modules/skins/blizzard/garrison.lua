@@ -33,15 +33,17 @@ local function LoadSkin()
 
 			--Set border color according to rarity of item
 			for _, reward in pairs(self.Rewards) do
-				local r, g, b
-				if reward.IconBorder:IsShown() then
-					--This is an item, use the color set by WoW
-					r, g, b = reward.IconBorder:GetVertexColor()
-				else
-					--This is a currency, use the default ElvUI border color
-					r, g, b = unpack(E["media"].bordercolor)
+				if reward.border and reward.border.backdrop then
+					local r, g, b
+					if reward.IconBorder:IsShown() then
+						--This is an item, use the color set by WoW
+						r, g, b = reward.IconBorder:GetVertexColor()
+					else
+						--This is a currency, use the default ElvUI border color
+						r, g, b = unpack(E["media"].bordercolor)
+					end
+					reward.border.backdrop:SetBackdropBorderColor(r, g, b)
 				end
-				reward.border.backdrop:SetBackdropBorderColor(r, g, b)
 			end
 		end)
 
