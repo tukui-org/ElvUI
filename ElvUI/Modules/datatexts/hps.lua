@@ -33,7 +33,7 @@ local function GetHPS(self)
 	else
 		hps = healTotal / combatTime
 	end
-	self.text:SetFormattedText(displayString, L["HPS"], hps)
+	self.text:SetFormattedText(displayString, L["HPS"], E:ShortValue(hps))
 end
 
 local function OnEvent(self, event, ...)
@@ -72,7 +72,7 @@ local function OnClick(self)
 end
 
 local function ValueColorUpdate(hex)
-	displayString = join("", "%s: ", hex, "%.1f|r")
+	displayString = join("", "%s: ", hex, "%s")
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)
