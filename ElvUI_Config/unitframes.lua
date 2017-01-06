@@ -1112,7 +1112,7 @@ local function GetOptionsTable_CustomText(updateFunc, groupName, numUnits, order
 				['yOffset'] = 0,
 				['justifyH'] = 'CENTER',
 				['fontOutline'] = E.db.unitframe.fontOutline,
-				['attachTextTo'] = 'HEALTH'
+				['attachTextTo'] = 'Health'
 			};
 
 			UF:CreateCustomTextGroup(groupName, textName)
