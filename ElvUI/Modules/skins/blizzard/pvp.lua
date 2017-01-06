@@ -5,7 +5,6 @@ local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.pvp ~= true then return end
 
 	PVPUIFrame:StripTextures()
-	--PVPUIFrame.Shadows:StripTextures()
 
 	for i=1, 2 do
 		S:HandleTab(_G["PVPUIFrameTab"..i])
@@ -25,12 +24,10 @@ local function LoadSkin()
 		button:StyleButton(nil, true)
 	end
 
-
-	-->>>HONOR FRAME
+	-- Honor Frame
 	S:HandleDropDownBox(HonorFrameTypeDropDown, 210)
 
 	HonorFrame.Inset:StripTextures()
-	--HonorFrame.Inset:SetTemplate("Transparent")
 
 	S:HandleScrollBar(HonorFrameSpecificFrameScrollBar)
 	S:HandleButton(HonorFrameQueueButton, true)
@@ -93,16 +90,26 @@ local function LoadSkin()
 	local honorBar = HonorFrame.XPBar
 	local bar = honorBar.Bar
 	local text = honorBar.Bar.OverlayFrame.Text
+	local nextAvailable = honorBar.NextAvailable
+	local icon = nextAvailable.Icon
 
 	honorBar:StripTextures()
 
-	-- bar:StripTextures() --The default bar looks pretty good
 	bar:CreateBackdrop("Default")
-	-- bar:SetStatusBarTexture(E.media.normTex)
-	-- E:RegisterStatusBar(bar)
 
 	text:ClearAllPoints()
 	text:Point("CENTER", bar)
+
+	nextAvailable:StripTextures()
+	nextAvailable:CreateBackdrop("Default")
+	nextAvailable.backdrop:SetPoint("TOPLEFT", HonorFrame.XPBar.NextAvailable.Icon, -2, 2)
+	nextAvailable.backdrop:SetPoint("BOTTOMRIGHT", HonorFrame.XPBar.NextAvailable.Icon, 2, -2)
+	nextAvailable:ClearAllPoints()
+	nextAvailable:SetPoint("LEFT", bar, "RIGHT", 0, -2)
+
+	icon:SetDrawLayer("ARTWORK")
+	icon:SetTexCoord(unpack(E.TexCoords))
+	icon.SetTexCoord = E.noop
 
 	hooksecurefunc("LFG_PermanentlyDisableRoleButton", function(self)
 		if self.bg then
@@ -110,12 +117,12 @@ local function LoadSkin()
 		end
 	end)
 
-	-->>>CONQUEST FRAME
+	-- Conquest Frame
 	ConquestFrame.Inset:StripTextures()
 	ConquestFrame:StripTextures()
 	ConquestFrame.ShadowOverlay:StripTextures()
 	S:HandleButton(ConquestJoinButton, true)
-	
+
 	ConquestFrame.RoleInset:StripTextures()
 	S:HandleCheckBox(ConquestFrame.RoleInset.DPSIcon.checkButton, true)
 	S:HandleCheckBox(ConquestFrame.RoleInset.TankIcon.checkButton, true)
@@ -152,16 +159,26 @@ local function LoadSkin()
 	local conquestBar = ConquestFrame.XPBar
 	local bar = conquestBar.Bar
 	local text = conquestBar.Bar.OverlayFrame.Text
-	
+	local nextAvailable = conquestBar.NextAvailable
+	local icon = nextAvailable.Icon
+
 	conquestBar:StripTextures()
 
-	-- bar:StripTextures() --Default bar looks good
 	bar:CreateBackdrop("Default")
-	-- bar:SetStatusBarTexture(E.media.normTex)
-	-- E:RegisterStatusBar(bar)
 
 	text:ClearAllPoints()
 	text:Point("CENTER", bar)
+
+	nextAvailable:StripTextures()
+	nextAvailable:CreateBackdrop("Default")
+	nextAvailable.backdrop:SetPoint("TOPLEFT", HonorFrame.XPBar.NextAvailable.Icon, -2, 2)
+	nextAvailable.backdrop:SetPoint("BOTTOMRIGHT", HonorFrame.XPBar.NextAvailable.Icon, 2, -2)
+	nextAvailable:ClearAllPoints()
+	nextAvailable:SetPoint("LEFT", bar, "RIGHT", 0, -2)
+
+	icon:SetDrawLayer("ARTWORK")
+	icon:SetTexCoord(unpack(E.TexCoords))
+	icon.SetTexCoord = E.noop
 
 	local function handleButton(button)
 		button:StripTextures()
@@ -177,7 +194,7 @@ local function LoadSkin()
 
 	ConquestFrame.Arena3v3:Point("TOP", ConquestFrame.Arena2v2, "BOTTOM", 0, -2)
 
-	-->>>WARGRAMES FRAME
+	-- WarGames Frame
 	WarGamesFrame:StripTextures()
 	WarGamesFrame.RightInset:StripTextures()
 	S:HandleButton(WarGameStartButton, true)

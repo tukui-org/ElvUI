@@ -18,7 +18,11 @@ local function LoadSkin()
 			local seconds = frame.value%60
 			local text = frame.label:GetText()
 
-			frame.TimerText:SetText(format("%s (%d:%02d)", text, minutes, seconds))
+			if frame.value > 0 then
+				frame.TimerText:SetText(format("%s (%d:%02d)", text, minutes, seconds))
+			else
+				frame.TimerText:SetText(format("%s (0:00)", text))
+			end
 			frame.timeSinceUpdate = 0
 		else
 			frame.timeSinceUpdate = frame.timeSinceUpdate + elapsed

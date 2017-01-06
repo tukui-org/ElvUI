@@ -8,34 +8,65 @@ local unpack, pairs = unpack, pairs
 local tinsert = table.insert
 local max = math.max
 --WoW API / Variables
-local CreateFrame = CreateFrame
-local LootSlotHasItem = LootSlotHasItem
-local CursorUpdate = CursorUpdate
-local ResetCursor = ResetCursor
-local IsModifiedClick = IsModifiedClick
-local HandleModifiedItemClick = HandleModifiedItemClick
-local GetLootSlotLink = GetLootSlotLink
-local StaticPopup_Hide = StaticPopup_Hide
-local CursorOnUpdate = CursorOnUpdate
-local ToggleDropDownMenu = ToggleDropDownMenu
-local MasterLooterFrame_UpdatePlayers = MasterLooterFrame_UpdatePlayers
 local CloseLoot = CloseLoot
-local GetNumLootItems = GetNumLootItems
-local IsFishingLoot = IsFishingLoot
-local UnitIsFriend = UnitIsFriend
-local UnitIsDead = UnitIsDead
-local UnitName = UnitName
-local GetCVar = GetCVar
+local CreateFrame = CreateFrame
+local CursorOnUpdate = CursorOnUpdate
+local CursorUpdate = CursorUpdate
+local DoMasterLootRoll = DoMasterLootRoll
 local GetCursorPosition = GetCursorPosition
+local GetCVar = GetCVar
 local GetLootSlotInfo = GetLootSlotInfo
+local GetLootSlotLink = GetLootSlotLink
+local GetNumLootItems = GetNumLootItems
 local GiveMasterLoot = GiveMasterLoot
+local HandleModifiedItemClick = HandleModifiedItemClick
+local IsFishingLoot = IsFishingLoot
+local IsModifiedClick = IsModifiedClick
+local Lib_ToggleDropDownMenu = Lib_ToggleDropDownMenu
+local Lib_UIDropDownMenu_AddButton = Lib_UIDropDownMenu_AddButton
+local Lib_UIDropDownMenu_CreateInfo = Lib_UIDropDownMenu_CreateInfo
+local LootSlotHasItem = LootSlotHasItem
+local MasterLooterFrame_UpdatePlayers = MasterLooterFrame_UpdatePlayers
+local ResetCursor = ResetCursor
+local StaticPopup_Hide = StaticPopup_Hide
+local UnitIsDead = UnitIsDead
+local UnitIsFriend = UnitIsFriend
+local UnitName = UnitName
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
-local TEXTURE_ITEM_QUEST_BANG = TEXTURE_ITEM_QUEST_BANG
 local LOOT = LOOT
+local TEXTURE_ITEM_QUEST_BANG = TEXTURE_ITEM_QUEST_BANG
 
 --Global variables that we don't cache, list them here for mikk's FindGlobals script
 -- GLOBALS: GameTooltip, LootFrame, LootSlot, GroupLootDropDown, UISpecialFrames
--- GLOBALS: UIParent
+-- GLOBALS: UIParent, GameFontNormalLeft, MasterLooterFrame_Show, MASTER_LOOTER
+-- GLOBALS: ASSIGN_LOOT, REQUEST_ROLL
+
+--This function is copied from FrameXML and modified to use DropDownMenu library function calls
+--Using the regular DropDownMenu code causes taints in various places.
+local function GroupLootDropDown_Initialize()
+	local info = Lib_UIDropDownMenu_CreateInfo();
+	info.isTitle = 1;
+	info.text = MASTER_LOOTER;
+	info.fontObject = GameFontNormalLeft;
+	info.notCheckable = 1;
+	Lib_UIDropDownMenu_AddButton(info);
+
+	info = Lib_UIDropDownMenu_CreateInfo();
+	info.notCheckable = 1;
+	info.text = ASSIGN_LOOT;
+	info.func = MasterLooterFrame_Show;
+	Lib_UIDropDownMenu_AddButton(info);
+	info.text = REQUEST_ROLL;
+	info.func = function() DoMasterLootRoll(LootFrame.selectedSlot); end;
+	Lib_UIDropDownMenu_AddButton(info);
+end
+
+--Create the new group loot dropdown frame and initialize it
+local ElvUIGroupLootDropDown = CreateFrame("Frame", "ElvUIGroupLootDropDown", UIParent, "Lib_UIDropDownMenuTemplate")
+ElvUIGroupLootDropDown:SetID(1)
+ElvUIGroupLootDropDown:Hide()
+Lib_UIDropDownMenu_Initialize(ElvUIGroupLootDropDown, nil, "MENU");
+ElvUIGroupLootDropDown.initialize = GroupLootDropDown_Initialize;
 
 local coinTextureIDs = {
 	[133784] = true,
@@ -192,7 +223,7 @@ function M:LOOT_CLOSED()
 end
 
 function M:OPEN_MASTER_LOOT_LIST()
-	ToggleDropDownMenu(1, nil, GroupLootDropDown, lootFrame.slots[ss], 0, 0)
+	Lib_ToggleDropDownMenu(1, nil, ElvUIGroupLootDropDown, lootFrame.slots[ss], 0, 0)
 end
 
 function M:UPDATE_MASTER_LOOT_LIST()

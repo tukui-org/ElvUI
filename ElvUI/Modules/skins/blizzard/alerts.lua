@@ -481,7 +481,11 @@ local function LoadSkin()
 		frame.shine:Kill()
 		frame.BGAtlas:Kill()
 		frame.PvPBackground:Kill()
-		if frame.SpecRing and frame.SpecIcon and frame.SpecIcon.GetTexture and frame.SpecIcon:GetTexture() == nil then frame.SpecRing:Hide() end
+
+		frame.SpecRing:SetTexture("")
+		frame.SpecIcon:SetPoint("TOPLEFT", frame, "TOPLEFT", 10, -15)
+		frame.SpecIcon:SetTexCoord(unpack(E.TexCoords))
+
 
 		-- Icon border
 		if not frame.Icon.b then
@@ -490,6 +494,16 @@ local function LoadSkin()
 			frame.Icon.b:SetOutside(frame.Icon)
 			frame.Icon:SetParent(frame.Icon.b)
 		end
+
+		if not frame.SpecIcon.b then
+			frame.SpecIcon.b = CreateFrame("Frame", nil, frame)
+			frame.SpecIcon.b:SetFrameLevel(3)
+			frame.SpecIcon.b:SetTemplate("Default")
+			frame.SpecIcon.b:SetPoint("TOPLEFT", frame.SpecIcon, "TOPLEFT", -2, 2)
+			frame.SpecIcon.b:SetPoint("BOTTOMRIGHT", frame.SpecIcon, "BOTTOMRIGHT", 2, -2)
+			frame.SpecIcon:SetParent(frame.SpecIcon.b)
+		end
+		frame.SpecIcon.b:SetShown(frame.SpecIcon:IsShown() and frame.SpecIcon:GetTexture() ~= nil)
 
 		if not frame.backdrop then
 			frame:CreateBackdrop("Transparent")

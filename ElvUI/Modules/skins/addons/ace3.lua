@@ -34,18 +34,21 @@ local function SkinScrollBar(frame, thumbTrim)
 	end
 
 	if _G[frame:GetName().."ScrollUpButton"] and _G[frame:GetName().."ScrollDownButton"] then
+		local scrollUpWidth, scrollUpHeight = _G[frame:GetName().."ScrollUpButton"]:GetWidth(), _G[frame:GetName().."ScrollUpButton"]:GetHeight()
+		local scrollDownWidth, scrollDownHeight = _G[frame:GetName().."ScrollDownButton"]:GetWidth(), _G[frame:GetName().."ScrollDownButton"]:GetHeight()
+
 		_G[frame:GetName().."ScrollUpButton"]:StripTextures()
 		if not _G[frame:GetName().."ScrollUpButton"].icon then
 			S:HandleNextPrevButton(_G[frame:GetName().."ScrollUpButton"])
 			SquareButton_SetIcon(_G[frame:GetName().."ScrollUpButton"], 'UP')
-			_G[frame:GetName().."ScrollUpButton"]:Size(_G[frame:GetName().."ScrollUpButton"]:GetWidth() + 7, _G[frame:GetName().."ScrollUpButton"]:GetHeight() + 7)
+			_G[frame:GetName().."ScrollUpButton"]:Size(scrollUpWidth, scrollUpHeight) --Set size back to what it originally was
 		end
 
 		_G[frame:GetName().."ScrollDownButton"]:StripTextures()
 		if not _G[frame:GetName().."ScrollDownButton"].icon then
 			S:HandleNextPrevButton(_G[frame:GetName().."ScrollDownButton"])
 			SquareButton_SetIcon(_G[frame:GetName().."ScrollDownButton"], 'DOWN')
-			_G[frame:GetName().."ScrollDownButton"]:Size(_G[frame:GetName().."ScrollDownButton"]:GetWidth() + 7, _G[frame:GetName().."ScrollDownButton"]:GetHeight() + 7)
+			_G[frame:GetName().."ScrollDownButton"]:Size(scrollDownWidth, scrollDownHeight) --Set size back to what it originally was
 		end
 
 		if not frame.trackbg then

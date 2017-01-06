@@ -5,7 +5,6 @@
 	<Script file='avoidance.lua'/>
 	<Script file='bags.lua'/>
 	<Script file='battleground.lua'/>
-	<Script file='bonusarmor.lua'/>
 	<Script file='calltoarms.lua'/>
 	<Script file='combattime.lua'/>
 	<Script file='coordinates.lua'/>

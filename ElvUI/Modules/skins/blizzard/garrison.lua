@@ -3,13 +3,13 @@ local S = E:GetModule('Skins')
 
 --Cache global variables
 --Lua functions
-local unpack = unpack
+local unpack, pairs = unpack, pairs
 --WoW API / Variables
 local CreateFrame = CreateFrame
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true then return; end
-	
+
 	if E.private.skins.blizzard.orderhall or E.private.skins.blizzard.garrison then
 		--These hooks affect both Garrison and OrderHall, so make sure they are set even if Garrison skin is disabled
 		hooksecurefunc("GarrisonMissionButton_SetRewards", function(self, rewards, numRewards)
@@ -19,12 +19,30 @@ local function LoadSkin()
 			while self.numRewardsStyled < numRewards do
 				self.numRewardsStyled = self.numRewardsStyled + 1
 				local reward = self.Rewards[self.numRewardsStyled]
-				local icon = reward.Icon
 				reward:GetRegions():Hide()
-				if reward.IconBorder then reward.IconBorder:SetTexture() end --OrderHall reward texture
+
 				if not reward.border then
 					reward.border = CreateFrame("Frame", nil, reward)
 					S:HandleIcon(reward.Icon, reward.border)
+				end
+
+				if reward.IconBorder then
+					reward.IconBorder:SetTexture()
+				end
+			end
+
+			--Set border color according to rarity of item
+			for _, reward in pairs(self.Rewards) do
+				if reward.border and reward.border.backdrop then
+					local r, g, b
+					if reward.IconBorder:IsShown() then
+						--This is an item, use the color set by WoW
+						r, g, b = reward.IconBorder:GetVertexColor()
+					else
+						--This is a currency, use the default ElvUI border color
+						r, g, b = unpack(E["media"].bordercolor)
+					end
+					reward.border.backdrop:SetBackdropBorderColor(r, g, b)
 				end
 			end
 		end)
@@ -34,7 +52,22 @@ local function LoadSkin()
 			if not frame.backdrop then
 				S:HandleIcon(frame.Icon)
 			end
-			if frame.IconBorder then frame.IconBorder:SetTexture() end
+			if frame.IconBorder then
+				frame.IconBorder:SetTexture()
+			end
+
+			--[[ Set border color according to rarity of item
+			-- for _, reward in pairs(frame.Rewards) do -- WIP
+				local r, g, b
+				if frame.IconBorder:IsShown() then
+					-- This is an item, use the color set by WoW
+					r, g, b = frame.IconBorder:GetVertexColor()
+				else
+					-- This is a currency, use the default ElvUI border color
+					r, g, b = unpack(E["media"].bordercolor)
+				end
+			-- end
+			frame.backdrop:SetBackdropBorderColor(r, g, b)]]
 			frame.Icon:SetDrawLayer("BORDER", 0)
 		end)
 	end

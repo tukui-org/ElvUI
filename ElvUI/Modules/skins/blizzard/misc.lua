@@ -32,6 +32,12 @@ local function LoadSkin()
 		"StackSplitFrame",
 		"QueueStatusFrame",
 		"LFDReadyCheckPopup",
+
+		--DropDownMenu library support
+		"Lib_DropDownList1MenuBackdrop",
+		"Lib_DropDownList2MenuBackdrop",
+		"Lib_DropDownList1Backdrop",
+		"Lib_DropDownList2Backdrop",
 	}
 
 	QueueStatusFrame:StripTextures()
