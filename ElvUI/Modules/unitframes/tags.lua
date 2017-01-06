@@ -259,6 +259,23 @@ ElvUF.Tags.Methods['health:percent'] = function(unit)
 	end
 end
 
+ElvUF.Tags.Events['health:percent-with-absorbs'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_ABSORB_AMOUNT_CHANGED UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
+ElvUF.Tags.Methods['health:percent-with-absorbs'] = function(unit)
+	local status = UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
+
+	if (status) then
+		return status
+	end
+		
+	local absorb = UnitGetTotalAbsorbs(unit) or 0
+	if absorb == 0 then
+		return E:GetFormattedText('PERCENT', UnitHealth(unit), UnitHealthMax(unit))
+	end
+	
+	local healthTotalIncludingAbsorbs = UnitHealth(unit) + absorb
+	return E:GetFormattedText('PERCENT', healthTotalIncludingAbsorbs, UnitHealthMax(unit))
+end
+
 ElvUF.Tags.Events['health:current-nostatus'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
 ElvUF.Tags.Methods['health:current-nostatus'] = function(unit)
 	return E:GetFormattedText('CURRENT', UnitHealth(unit), UnitHealthMax(unit))
