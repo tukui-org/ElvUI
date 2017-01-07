@@ -925,6 +925,7 @@ function E:UpdateAll(ignoreInstall)
 	CH.db = self.db.chat
 	CH:PositionChat(true);
 	CH:SetupChat()
+	CH:UpdateAnchors()
 
 	local AB = self:GetModule('ActionBars')
 	AB.db = self.db.actionbar
@@ -988,6 +989,7 @@ function E:UpdateAll(ignoreInstall)
 	end
 
 	self:GetModule('Minimap'):UpdateSettings()
+	self:GetModule("AFK"):Toggle()
 
 	self:UpdateBorderColors()
 	self:UpdateBackdropColors()

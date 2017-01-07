@@ -61,7 +61,6 @@ function AFK:UpdateTimer()
 end
 
 function AFK:SetAFK(status)
-	if(InCombatLockdown() or CinematicFrame:IsShown() or MovieFrame:IsShown()) then return end
 	if(status) then
 		MoveViewLeftStart(CAMERA_SPEED);
 		self.AFKMode:Show()
@@ -131,7 +130,15 @@ function AFK:OnEvent(event, ...)
 		self:UnregisterEvent("PLAYER_REGEN_ENABLED")
 	end
 
-	if(UnitIsAFK("player")) then
+	if (not E.db.general.afk) then return; end
+	if (InCombatLockdown() or CinematicFrame:IsShown() or MovieFrame:IsShown()) then return; end
+	if (UnitCastingInfo("player") ~= nil) then
+		 --Don't activate afk if player is crafting stuff, check back in 30 seconds
+		self:ScheduleTimer('OnEvent', 30)
+		return;
+	end
+
+	if (UnitIsAFK("player")) then
 		self:SetAFK(true)
 	else
 		self:SetAFK(false)
