@@ -130,6 +130,7 @@ function AFK:OnEvent(event, ...)
 		self:UnregisterEvent("PLAYER_REGEN_ENABLED")
 	end
 
+	if (not E.db.general.afk) then return; end
 	if (InCombatLockdown() or CinematicFrame:IsShown() or MovieFrame:IsShown()) then return; end
 	if (UnitCastingInfo("player") ~= nil) then
 		 --Don't activate afk if player is crafting stuff, check back in 30 seconds
