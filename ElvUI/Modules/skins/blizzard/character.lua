@@ -8,11 +8,10 @@ local unpack, pairs, select = unpack, pairs, select
 --WoW API / Variables
 local CharacterFrameExpandButton = CharacterFrameExpandButton
 local SquareButton_SetIcon = SquareButton_SetIcon
-local DCS = false
 
 local function LoadSkin()
 	if E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.character ~= true then return end
-	if IsAddOnLoaded("DejaCharacterStats") then DCS = true end
+
 	S:HandleCloseButton(CharacterFrameCloseButton)
 	S:HandleScrollBar(ReputationListScrollFrameScrollBar)
 	S:HandleScrollBar(TokenFrameContainerScrollBar)
@@ -90,18 +89,20 @@ local function LoadSkin()
 		local categoryYOffset = -5;
 		local statYOffset = 0;
 
-		if ( level >= MIN_PLAYER_LEVEL_FOR_ITEM_LEVEL_DISPLAY ) then
-			if not DCS then PaperDollFrame_SetItemLevel(CharacterStatsPane.ItemLevelFrame, "player"); end
-			CharacterStatsPane.ItemLevelFrame.Value:SetTextColor(GetItemLevelColor());
-			CharacterStatsPane.ItemLevelCategory:Show();
-			CharacterStatsPane.ItemLevelFrame:Show();
-			CharacterStatsPane.AttributesCategory:SetPoint("TOP", 0, -76);
-		else
-			CharacterStatsPane.ItemLevelCategory:Hide();
-			CharacterStatsPane.ItemLevelFrame:Hide();
-			CharacterStatsPane.AttributesCategory:SetPoint("TOP", 0, -20);
-			categoryYOffset = -12;
-			statYOffset = -6;
+		if (not IsAddOnLoaded("DejaCharacterStats")) then 
+			if ( level >= MIN_PLAYER_LEVEL_FOR_ITEM_LEVEL_DISPLAY ) then
+				PaperDollFrame_SetItemLevel(CharacterStatsPane.ItemLevelFrame, "player");
+				CharacterStatsPane.ItemLevelFrame.Value:SetTextColor(GetItemLevelColor());
+				CharacterStatsPane.ItemLevelCategory:Show();
+				CharacterStatsPane.ItemLevelFrame:Show();
+				CharacterStatsPane.AttributesCategory:SetPoint("TOP", 0, -76);
+			else
+				CharacterStatsPane.ItemLevelCategory:Hide();
+				CharacterStatsPane.ItemLevelFrame:Hide();
+				CharacterStatsPane.AttributesCategory:SetPoint("TOP", 0, -20);
+				categoryYOffset = -12;
+				statYOffset = -6;
+			end
 		end
 
 		local spec = GetSpecialization();
