@@ -37,7 +37,11 @@ function UF:UpdatePrep(event, unit, status)
 	local _, spec, texture, class
 
 	if s and s > 0 then
-		_, spec, _, texture, _, _, class = GetSpecializationInfoByID(s)
+		if E.wowbuild > 23222 then --7.1.5
+			_, spec, _, texture, _, class = GetSpecializationInfoByID(s)
+		else
+			_, spec, _, texture, _, _, class = GetSpecializationInfoByID(s)
+		end
 	end
 
 	if class and spec then
