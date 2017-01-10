@@ -1,5 +1,5 @@
 --[[
-Copyright (c) 2010-2015, Hendrik "nevcairiel" Leppkes <h.leppkes@gmail.com>
+Copyright (c) 2010-2016, Hendrik "nevcairiel" Leppkes <h.leppkes@gmail.com>
 
 All rights reserved.
 
@@ -29,13 +29,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ]]
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 7
+local MINOR_VERSION = 8
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
 if not lib then return end
-
-local IsLegion = select(4, GetBuildInfo()) >= 70000
 
 -- Lua functions
 local _G = _G
@@ -58,7 +56,7 @@ local C_ToyBox = C_ToyBox
 -- GLOBALS: GetItemIcon, GetItemCount, GetItemCooldown, IsEquippedItem, IsCurrentItem, IsUsableItem, IsConsumableItem, IsItemInRange
 -- GLOBALS: GetActionCharges, IsItemAction, GetSpellCharges
 -- GLOBALS: RANGE_INDICATOR, ATTACK_BUTTON_FLASH_TIME, TOOLTIP_UPDATE_TIME
--- GLOBALS: DraenorZoneAbilityFrame, HasDraenorZoneAbility, GetLastDraenorSpellTexture
+-- GLOBALS: ZoneAbilityFrame, HasZoneAbility, GetLastZoneAbilitySpellTexture
 
 local KeyBound = LibStub("LibKeyBound-1.0", true)
 local CBH = LibStub("CallbackHandler-1.0")
@@ -117,7 +115,7 @@ local type_meta_map = {
 
 local ButtonRegistry, ActiveButtons, ActionButtons, NonActionButtons = lib.buttonRegistry, lib.activeButtons, lib.actionButtons, lib.nonActionButtons
 
-local Update, UpdateButtonState, UpdateUsable, UpdateCount, UpdateCooldown, UpdateTooltip, UpdateNewAction
+local Update, UpdateButtonState, UpdateUsable, UpdateCount, UpdateCooldown, UpdateTooltip, UpdateNewAction, ClearNewActionHighlight
 local StartFlash, StopFlash, UpdateFlash, UpdateHotkeys, UpdateRangeTimer, UpdateOverlayGlow
 local UpdateFlyout, ShowGrid, HideGrid, UpdateGrid, SetupSecureSnippets, WrapOnClick
 local ShowOverlayGlow, HideOverlayGlow
@@ -568,7 +566,7 @@ function Generic:OnEnter()
 	end
 
 	if self._state_type == "action" and self.NewActionTexture then
-		lib.ACTION_HIGHLIGHT_MARKS[self._state_action] = false
+		ClearNewActionHighlight(self._state_action, false, false)
 		UpdateNewAction(self)
 	end
 
@@ -628,6 +626,10 @@ function Generic:PostClick()
 		PickupAny("clear", oldType, oldAction)
 	end
 	self._receiving_drag = nil
+
+	if self._state_type == "action" and lib.ACTION_HIGHLIGHT_MARKS[self._state_action] then
+		ClearNewActionHighlight(self._state_action, false, false)
+	end
 end
 
 -----------------------------------------------------------
@@ -747,6 +749,7 @@ function OnEvent(frame, event, arg1, ...)
 	elseif event == "ACTIONBAR_SLOT_CHANGED" then
 		for button in next, ButtonRegistry do
 			if button._state_type == "action" and (arg1 == 0 or arg1 == tonumber(button._state_action)) then
+				ClearNewActionHighlight(button._state_action, true, false)
 				Update(button)
 			end
 		end
@@ -1095,17 +1098,17 @@ function Update(self)
 	-- Update icon and hotkey
 	local texture = self:GetTexture()
 
-	-- Draenor zone button handling
-	self.draenorZoneDisabled = false
+	-- Zone ability button handling
+	self.zoneAbilityDisabled = false
 	self.icon:SetDesaturated(false)
 	if self._state_type == "action" then
 		local action_type, id = GetActionInfo(self._state_action)
-		if ((action_type == "spell" or action_type == "companion") and DraenorZoneAbilityFrame and DraenorZoneAbilityFrame.baseName and not HasDraenorZoneAbility()) then
-			local name = GetSpellInfo(DraenorZoneAbilityFrame.baseName)
+		if ((action_type == "spell" or action_type == "companion") and ZoneAbilityFrame and ZoneAbilityFrame.baseName and not HasZoneAbility()) then
+			local name = GetSpellInfo(ZoneAbilityFrame.baseName)
 			local abilityName = GetSpellInfo(id)
 			if name == abilityName then
-				texture = GetLastDraenorSpellTexture()
-				self.draenorZoneDisabled = true
+				texture = GetLastZoneAbilitySpellTexture()
+				self.zoneAbilityDisabled = true
 				self.icon:SetDesaturated(true)
 			end
 		end
@@ -1228,7 +1231,7 @@ function EndChargeCooldown(self)
 	tinsert(lib.ChargeCooldowns, self)
 end
 
-local function StartChargeCooldown(parent, chargeStart, chargeDuration)
+local function StartChargeCooldown(parent, chargeStart, chargeDuration, chargeModRate)
 	if not parent.chargeCooldown then
 		local cooldown = tremove(lib.ChargeCooldowns)
 		if not cooldown then
@@ -1236,7 +1239,6 @@ local function StartChargeCooldown(parent, chargeStart, chargeDuration)
 			cooldown = CreateFrame("Cooldown", "LAB10ChargeCooldown"..lib.NumChargeCooldowns, parent, "CooldownFrameTemplate");
 			cooldown:SetScript("OnCooldownDone", EndChargeCooldown)
 			cooldown:SetHideCountdownNumbers(true)
-			cooldown:SetDrawEdge(true)
 		end
 		cooldown:SetParent(parent)
 		cooldown:SetAllPoints(parent)
@@ -1248,7 +1250,7 @@ local function StartChargeCooldown(parent, chargeStart, chargeDuration)
 	-- set cooldown
 	parent.chargeCooldown:SetDrawBling(parent.config.useDrawBling and (parent.chargeCooldown:GetEffectiveAlpha() > 0.5))
 	parent.chargeCooldown:SetDrawSwipe(parent.config.useDrawSwipeOnCharges)
-	parent.chargeCooldown:SetCooldown(chargeStart, chargeDuration)
+	CooldownFrame_Set(parent.chargeCooldown, chargeStart, chargeDuration, true, true, chargeModRate)
 
 	-- update charge cooldown skin when masque is used
 	if Masque and Masque.UpdateCharge then
@@ -1267,8 +1269,8 @@ end
 
 function UpdateCooldown(self)
 	local locStart, locDuration = self:GetLossOfControlCooldown()
-	local start, duration, enable = self:GetCooldown()
-	local charges, maxCharges, chargeStart, chargeDuration = self:GetCharges()
+	local start, duration, enable, modRate = self:GetCooldown()
+	local charges, maxCharges, chargeStart, chargeDuration, chargeModRate = self:GetCharges()
 
 	self.cooldown:SetDrawBling(self.config.useDrawBling and (self.cooldown:GetEffectiveAlpha() > 0.5))
 
@@ -1279,11 +1281,7 @@ function UpdateCooldown(self)
 			self.cooldown:SetHideCountdownNumbers(true)
 			self.cooldown.currentCooldownType = COOLDOWN_TYPE_LOSS_OF_CONTROL
 		end
-		if IsLegion then
-			CooldownFrame_Set(self.cooldown, locStart, locDuration, true, true)
-		else
-			CooldownFrame_SetTimer(self.cooldown, locStart, locDuration, 1, true)
-		end
+		CooldownFrame_Set(self.cooldown, locStart, locDuration, true, true, modRate)
 	else
 		if self.cooldown.currentCooldownType ~= COOLDOWN_TYPE_NORMAL then
 			self.cooldown:SetEdgeTexture("Interface\\Cooldown\\edge")
@@ -1296,16 +1294,11 @@ function UpdateCooldown(self)
 		end
 
 		if charges and maxCharges and charges > 0 and charges < maxCharges then
-			StartChargeCooldown(self, chargeStart, chargeDuration)
+			StartChargeCooldown(self, chargeStart, chargeDuration, chargeModRate)
 		elseif self.chargeCooldown then
 			EndChargeCooldown(self.chargeCooldown)
 		end
-
-		if IsLegion then
-			CooldownFrame_Set(self.cooldown, start, duration, enable)
-		else
-			CooldownFrame_SetTimer(self.cooldown, start, duration, enable)
-		end
+		CooldownFrame_Set(self.cooldown, start, duration, enable, false, modRate)
 	end
 end
 
@@ -1380,13 +1373,42 @@ function UpdateOverlayGlow(self)
 	end
 end
 
-hooksecurefunc("MarkNewActionHighlight", function(action, flag)
-	lib.ACTION_HIGHLIGHT_MARKS[action] = flag
+function ClearNewActionHighlight(action, preventIdenticalActionsFromClearing, value)
+	lib.ACTION_HIGHLIGHT_MARKS[action] = value
+
 	for button in next, ButtonRegistry do
 		if button._state_type == "action" and action == tonumber(button._state_action) then
 			UpdateNewAction(button)
 		end
 	end
+
+	if preventIdenticalActionsFromClearing then
+		return
+	end
+
+	-- iterate through actions and unmark all that are the same type
+	local unmarkedType, unmarkedID = GetActionInfo(action)
+	for actionKey, markValue in pairs(lib.ACTION_HIGHLIGHT_MARKS) do
+		if markValue then
+			local actionType, actionID = GetActionInfo(actionKey)
+			if actionType == unmarkedType and actionID == unmarkedID then
+				ClearNewActionHighlight(actionKey, true, value)
+			end
+		end
+	end
+end
+
+hooksecurefunc("MarkNewActionHighlight", function(action)
+	lib.ACTION_HIGHLIGHT_MARKS[action] = true
+	for button in next, ButtonRegistry do
+		if button._state_type == "action" and action == tonumber(button._state_action) then
+			UpdateNewAction(button)
+		end
+	end
+end)
+
+hooksecurefunc("ClearNewActionHighlight", function(action, preventIdenticalActionsFromClearing)
+	ClearNewActionHighlight(action, preventIdenticalActionsFromClearing, nil)
 end)
 
 function UpdateNewAction(self)
