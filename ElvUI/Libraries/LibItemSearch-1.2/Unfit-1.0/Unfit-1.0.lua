@@ -1,5 +1,5 @@
 --[[
-Copyright 2011-2015 João Cardoso
+Copyright 2011-2016 João Cardoso
 Unfit is distributed under the terms of the GNU General Public License (Version 3).
 As a special exception, the copyright holders of this library give you permission to embed it
 with independent modules to produce an addon, regardless of the license terms of these
@@ -18,7 +18,7 @@ along with the library. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
 This file is part of Unfit.
 --]]
 
-local Lib = LibStub:NewLibrary('Unfit-1.0', 8)
+local Lib = LibStub:NewLibrary('Unfit-1.0', 9)
 if not Lib then
 	return
 end
@@ -121,7 +121,7 @@ function Lib:IsItemUnusable(...)
 end
 
 function Lib:IsClassUnusable(class, subclass, slot)
-	if class and subclass then
+	if class and subclass and Lib.unusable[class] then
 		return slot ~= '' and Lib.unusable[class][subclass] or slot == 'INVTYPE_WEAPONOFFHAND' and Lib.cannotDual
 	end
 end
