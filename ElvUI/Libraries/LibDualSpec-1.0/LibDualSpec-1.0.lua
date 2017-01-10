@@ -31,7 +31,7 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 --]]
 
-local MAJOR, MINOR = "LibDualSpec-1.0", 14
+local MAJOR, MINOR = "LibDualSpec-1.0", 17
 assert(LibStub, MAJOR.." requires LibStub")
 local lib, minor = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
@@ -48,7 +48,7 @@ lib.mixin = lib.mixin or {}
 lib.upgrades = lib.upgrades or {}
 lib.currentSpec = lib.currentSpec or 0
 
-if minor and minor < 14 then
+if minor and minor < 15 then
 	lib.talentsLoaded, lib.talentGroup = nil, nil
 	lib.specLoaded, lib.specGroup = nil, nil
 	lib.eventFrame:UnregisterAllEvents()
@@ -69,9 +69,9 @@ local AceDB3 = LibStub('AceDB-3.0', true)
 local AceDBOptions3 = LibStub('AceDBOptions-3.0', true)
 local AceConfigRegistry3 = LibStub('AceConfigRegistry-3.0', true)
 
--- earlier alternative to GetNumSpecializations()
-local _, class = UnitClass("player")
-local numSpecs = class == "DRUID" and 4 or class == "DEMONHUNTER" and 2 or 3
+-- classId specialization functions don't require player data to be loaded
+local _, _, classId = UnitClass("player")
+local numSpecs = GetNumSpecializationsForClassID(classId)
 
 -- ----------------------------------------------------------------------------
 -- Localization
@@ -88,25 +88,25 @@ do
 		-- L_ENABLED_DESC = "When enabled, your profile will be set to the specified profile when you change specialization."
 		-- L_CURRENT = "%s (Current)"
 	elseif locale == "deDE" then
-		-- L_ENABLED = "Enable spec profiles"
-		-- L_ENABLED_DESC = "When enabled, your profile will be set to the specified profile when you change specialization."
-		-- L_CURRENT = "%s (Current)"
+		L_ENABLED = "Spezialisierungsprofile aktivieren"
+		L_ENABLED_DESC = "Falls diese Option aktiviert ist, wird dein Profil auf das angegebene Profil gesetzt, wenn du die Spezialisierung wechselst."
+		L_CURRENT = "%s (Momentan)"
 	elseif locale == "koKR" then
 		-- L_ENABLED = "Enable spec profiles"
 		-- L_ENABLED_DESC = "When enabled, your profile will be set to the specified profile when you change specialization."
 		-- L_CURRENT = "%s (Current)"
 	elseif locale == "ruRU" then
-		-- L_ENABLED = "Enable spec profiles"
-		-- L_ENABLED_DESC = "When enabled, your profile will be set to the specified profile when you change specialization."
-		-- L_CURRENT = "%s (Current)"
+		L_ENABLED = "Включить профили специализации"
+		L_ENABLED_DESC = "Если включено, ваш профиль будет зависеть от выбранной специализации."
+		L_CURRENT = "%s (Текущий)"
 	elseif locale == "zhCN" then
-		-- L_ENABLED = "Enable spec profiles"
-		-- L_ENABLED_DESC = "When enabled, your profile will be set to the specified profile when you change specialization."
-		-- L_CURRENT = "%s (Current)"
+		L_ENABLED = "启用专精配置文件"
+		L_ENABLED_DESC = "当启用后，当切换专精时配置文件将设置为专精配置文件。"
+		L_CURRENT = "%s（当前）"
 	elseif locale == "zhTW" then
-		-- L_ENABLED = "Enable spec profiles"
-		-- L_ENABLED_DESC = "When enabled, your profile will be set to the specified profile when you change specialization."
-		-- L_CURRENT = "%s (Current)"
+		L_ENABLED = "啟用專精設定檔"
+		L_ENABLED_DESC = "當啟用後，當你切換專精時設定檔會設定為專精設定檔。"
+		L_CURRENT = "%s (目前) "
 	elseif locale == "esES" or locale == "esMX" then
 		-- L_ENABLED = "Enable spec profiles"
 		-- L_ENABLED_DESC = "When enabled, your profile will be set to the specified profile when you change specialization."
@@ -138,7 +138,7 @@ end
 -- @name enhancedDB:SetDualSpecEnabled
 function mixin:SetDualSpecEnabled(enabled)
 	local db = registry[self].db.char
-	db.enabled = enabled
+	db.enabled = not not enabled
 
 	local currentProfile = self:GetCurrentProfile()
 	for i = 1, numSpecs do
@@ -149,16 +149,16 @@ function mixin:SetDualSpecEnabled(enabled)
 	self:CheckDualSpecState()
 end
 
---- Get the alternate profile name.
+--- Get the profile assigned to a specialization.
 -- Defaults to the current profile.
 -- @param spec (number) the specialization index.
--- @return (string) Alternate profile name.
+-- @return (string) the profile name.
 -- @name enhancedDB:GetDualSpecProfile
 function mixin:GetDualSpecProfile(spec)
 	return registry[self].db.char[spec or lib.currentSpec] or self:GetCurrentProfile()
 end
 
---- Set the alternate profile name.
+--- Set the profile assigned to a specialization.
 -- No validation are done to ensure the profile is valid.
 -- @param profileName (string) the profile name to use.
 -- @param spec (number) the specialization index.
@@ -172,11 +172,8 @@ function mixin:SetDualSpecProfile(profileName, spec)
 end
 
 --- Check if a profile swap should occur.
--- Do nothing if the dual spec feature is disabled. In the other
--- case, if the internally stored talent spec is different from the
--- actual active talent spec, the database swaps to the alternate profile.
 -- There is normally no reason to call this method directly as LibDualSpec
--- takes care of calling it at appropriate times.
+-- takes care of calling it at the appropriate time.
 -- @name enhancedDB:CheckDualSpecState
 function mixin:CheckDualSpecState()
 	if not registry[self].db.char.enabled then return end
@@ -193,7 +190,7 @@ end
 -- ----------------------------------------------------------------------------
 
 local function EmbedMixin(target)
-	for k,v in pairs(mixin) do
+	for k,v in next, mixin do
 		rawset(target, k, v)
 	end
 end
@@ -221,6 +218,7 @@ local function UpgradeDatabase(target)
 	end
 end
 
+-- Reset a spec profile to the current one if its profile is deleted.
 function lib:OnProfileDeleted(event, target, profileName)
 	local db = registry[target].db.char
 	if not db.enabled then return end
@@ -302,21 +300,31 @@ options.choose = {
 }
 
 options.enabled = {
-	name = L_ENABLED,
+	name = "|cffffd200"..L_ENABLED.."|r",
 	desc = L_ENABLED_DESC,
+	descStyle = "inline",
 	type = "toggle",
 	order = 41,
+	width = "full",
 	get = function(info) return info.handler.db:IsDualSpecEnabled() end,
 	set = function(info, value) info.handler.db:SetDualSpecEnabled(value) end,
 	hidden = NoDualSpec,
 }
 
-options.newline = {
-	name = "",
-	type = "description",
-	order = 42,
-	hidden = NoDualSpec,
-}
+for i = 1, numSpecs do
+	local _, specName = GetSpecializationInfoForClassID(classId, i)
+	options["specProfile" .. i] = {
+		type = "select",
+		name = function() return lib.currentSpec == i and L_CURRENT:format(specName) or specName end,
+		order = 42 + i,
+		get = function(info) return info.handler.db:GetDualSpecProfile(i) end,
+		set = function(info, value) info.handler.db:SetDualSpecProfile(value, i) end,
+		values = "ListProfiles",
+		arg = "common",
+		disabled = function(info) return not info.handler.db:IsDualSpecEnabled() end,
+		hidden = NoDualSpec,
+	}
+end
 
 --- Embed dual spec options into an existing AceDBOptions-3.0 option table.
 -- @name LibDualSpec:EnhanceOptions
@@ -394,23 +402,7 @@ local function eventHandler(self, event)
 
 	if event == "PLAYER_LOGIN" then
 		self:UnregisterEvent(event)
-		self:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED")
-
-		-- Build the spec options now that spec info should be available
-		for i = 1, numSpecs do
-			local _, specName = GetSpecializationInfo(i)
-			options["specProfile" .. i] = {
-				type = "select",
-				name = function() return lib.currentSpec == i and L_CURRENT:format(specName) or specName end,
-				order = 42 + i,
-				get = function(info) return info.handler.db:GetDualSpecProfile(i) end,
-				set = function(info, value) info.handler.db:SetDualSpecProfile(value, i) end,
-				values = "ListProfiles",
-				arg = "common",
-				disabled = function(info) return not info.handler.db:IsDualSpecEnabled() end,
-				hidden = NoDualSpec,
-			}
-		end
+		self:RegisterUnitEvent("PLAYER_SPECIALIZATION_CHANGED", "player")
 	end
 
 	if lib.currentSpec > 0 and next(upgrades) then
