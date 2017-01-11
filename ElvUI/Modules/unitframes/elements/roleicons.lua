@@ -34,12 +34,7 @@ for i = 1, GetNumClasses() do
 	local _, class, classID = GetClassInfo(i)
 	specNameToRole[class] = {}
 	for j = 1, GetNumSpecializationsForClassID(classID) do
-		local _, spec, role
-		if E.wowbuild > 23222 then --7.1.5
-			_, spec, _, _, role = GetSpecializationInfoForClassID(classID, j)
-		else
-			_, spec, _, _, _, role = GetSpecializationInfoForClassID(classID, j)
-		end
+		local _, spec, _, _, role = GetSpecializationInfoForClassID(classID, j)
 		specNameToRole[class][spec] = role
 	end
 end

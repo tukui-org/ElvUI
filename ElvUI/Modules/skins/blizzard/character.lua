@@ -122,12 +122,7 @@ local function LoadSkin()
 				local stat = PAPERDOLL_STATCATEGORIES[catIndex].stats[statIndex];
 				local showStat = true;
 				if ( showStat and stat.primary ) then
-					local primaryStat
-					if E.wowbuild > 23222 then --7.1.5
-						primaryStat = select(6, GetSpecializationInfo(spec, nil, nil, nil, UnitSex("player")));
-					else
-						primaryStat = select(7, GetSpecializationInfo(spec, nil, nil, nil, UnitSex("player")));
-					end
+					local primaryStat = select(6, GetSpecializationInfo(spec, nil, nil, nil, UnitSex("player")));
 					if ( stat.primary ~= primaryStat ) then
 						showStat = false;
 					end
