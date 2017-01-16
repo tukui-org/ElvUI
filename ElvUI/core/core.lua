@@ -1321,6 +1321,40 @@ function E:GetTopCPUFunc(msg)
 	self:Print("Calculating CPU Usage differences (module: "..(module or "?")..", showall: "..tostring(showall)..", minCalls: "..tostring(minCalls)..", delay: "..tostring(delay)..")")
 end
 
+local function SetOriginalHeight()
+	if InCombatLockdown() then
+		E:RegisterEvent("PLAYER_REGEN_ENABLED", SetOriginalHeight)
+		return
+	end
+	E:UnregisterEvent("PLAYER_REGEN_ENABLED")
+	E.UIParent:SetHeight(E.UIParent.origHeight)
+end
+
+local function SetModifiedHeight()
+	if InCombatLockdown() then
+		E:RegisterEvent("PLAYER_REGEN_ENABLED", SetModifiedHeight)
+		return
+	end
+	E:UnregisterEvent("PLAYER_REGEN_ENABLED")
+	local height = E.UIParent.origHeight - OrderHallCommandBar:GetHeight()
+	E.UIParent:SetHeight(height)
+end
+
+--This function handles disabling of OrderHall Bar or resizing of ElvUIParent if needed
+local function HandleCommandBar()
+	if E.global.general.commandBarSetting == "DISABLED" then
+		local bar = OrderHallCommandBar
+		bar:UnregisterAllEvents()
+		bar:SetScript("OnShow", bar.Hide)
+		bar:Hide()
+		UIParent:UnregisterEvent("UNIT_AURA")--Only used for OrderHall Bar
+	elseif E.global.general.commandBarSetting == "ENABLED_RESIZEPARENT" then
+		E.UIParent:SetPoint("BOTTOM", UIParent, "BOTTOM");
+		OrderHallCommandBar:HookScript("OnShow", SetModifiedHeight)
+		OrderHallCommandBar:HookScript("OnHide", SetOriginalHeight)
+	end
+end
+
 function E:Initialize()
 	twipe(self.db)
 	twipe(self.global)
@@ -1391,25 +1425,6 @@ function E:Initialize()
 		print(select(2, E:GetModule('Chat'):FindURL("CHAT_MSG_DUMMY", format(L["LOGIN_MSG"], self["media"].hexvaluecolor, self["media"].hexvaluecolor, self.version)))..'.')
 	end
 
-	--Disable OrderHall Bar or resize ElvUIParent if needed
-	local function HandleCommandBar()
-		if E.global.general.commandBarSetting == "DISABLED" then
-			local bar = OrderHallCommandBar
-			bar:UnregisterAllEvents()
-			bar:SetScript("OnShow", bar.Hide)
-			bar:Hide()
-			UIParent:UnregisterEvent("UNIT_AURA")--Only used for OrderHall Bar
-		elseif E.global.general.commandBarSetting == "ENABLED_RESIZEPARENT" then
-			E.UIParent:SetPoint("BOTTOM", UIParent, "BOTTOM");
-			OrderHallCommandBar:HookScript("OnShow", function()
-				local height = E.UIParent.origHeight - OrderHallCommandBar:GetHeight()
-				E.UIParent:SetHeight(height)
-			end)
-			OrderHallCommandBar:HookScript("OnHide", function()
-				E.UIParent:SetHeight(E.UIParent.origHeight)
-			end)
-		end
-	end
 	if OrderHallCommandBar then
 		HandleCommandBar()
 	else
