@@ -39,7 +39,6 @@ local GetNumBankSlots = GetNumBankSlots
 local GetScreenWidth, GetScreenHeight = GetScreenWidth, GetScreenHeight
 local HandleModifiedItemClick = HandleModifiedItemClick
 local IsBagOpen, IsOptionFrameOpen = IsBagOpen, IsOptionFrameOpen
-local IsContainerItemAnUpgrade = IsContainerItemAnUpgrade
 local IsModifiedClick = IsModifiedClick
 local IsReagentBankUnlocked = IsReagentBankUnlocked
 local IsShiftKeyDown, IsControlKeyDown = IsShiftKeyDown, IsControlKeyDown
