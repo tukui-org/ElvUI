@@ -44,8 +44,8 @@ local function LoadSkin()
 	S:HandleButton(MountJournalMountButton, true)
 	S:HandleEditBox(MountJournalSearchBox)
 	S:HandleScrollBar(MountJournalListScrollFrameScrollBar)
-	S:HandleRotateButton(MountJournal.MountDisplay.ModelFrame.RotateLeftButton)
-	S:HandleRotateButton(MountJournal.MountDisplay.ModelFrame.RotateRightButton)
+	S:HandleRotateButton(MountJournal.MountDisplay.ModelScene.RotateLeftButton)
+	S:HandleRotateButton(MountJournal.MountDisplay.ModelScene.RotateRightButton)
 
 	for i = 1, #MountJournal.ListScrollFrame.buttons do
 		local b = _G["MountJournalListScrollFrameButton"..i];
@@ -232,9 +232,9 @@ local function LoadSkin()
 
 	S:HandleEditBox(ToyBox.searchBox)
 	ToyBox.iconsFrame:StripTextures()
-	S:HandleNextPrevButton(ToyBox.navigationFrame.nextPageButton)
-	S:HandleNextPrevButton(ToyBox.navigationFrame.prevPageButton)
-	SquareButton_SetIcon(ToyBox.navigationFrame.prevPageButton, 'LEFT')
+	S:HandleNextPrevButton(ToyBox.PagingFrame.NextPageButton)
+	S:HandleNextPrevButton(ToyBox.PagingFrame.PrevPageButton)
+	SquareButton_SetIcon(ToyBox.PagingFrame.PrevPageButton, 'LEFT')
 	ToyBox.progressBar:StripTextures()
 
 	local function TextColorModified(self, r, g, b)
@@ -267,9 +267,9 @@ local function LoadSkin()
 
 	S:HandleEditBox(HeirloomsJournal.SearchBox)
 	HeirloomsJournal.iconsFrame:StripTextures()
-	S:HandleNextPrevButton(HeirloomsJournal.navigationFrame.nextPageButton)
-	S:HandleNextPrevButton(HeirloomsJournal.navigationFrame.prevPageButton)
-	SquareButton_SetIcon(HeirloomsJournal.navigationFrame.prevPageButton, 'LEFT')
+	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.NextPageButton)
+	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.PrevPageButton)
+	SquareButton_SetIcon(HeirloomsJournal.PagingFrame.PrevPageButton, 'LEFT')
 	HeirloomsJournal.progressBar:StripTextures()
 	S:HandleDropDownBox(HeirloomsJournalClassDropDown)
 	hooksecurefunc(HeirloomsJournal, "LayoutCurrentPage", function()
@@ -317,10 +317,10 @@ local function LoadSkin()
 	S:HandleButton(WardrobeCollectionFrame.FilterButton)
 	S:HandleDropDownBox(WardrobeCollectionFrameWeaponDropDown)
 	
-	WardrobeCollectionFrame.ModelsFrame:StripTextures()
+	WardrobeCollectionFrame.ItemsCollectionFrame:StripTextures()
 
-	S:HandleNextPrevButton(WardrobeCollectionFrame.NavigationFrame.PrevPageButton, nil, true)
-	S:HandleNextPrevButton(WardrobeCollectionFrame.NavigationFrame.NextPageButton)
+	-- S:HandleNextPrevButton(WardrobeCollectionFrame.NavigationFrame.PrevPageButton, nil, true)
+	-- S:HandleNextPrevButton(WardrobeCollectionFrame.NavigationFrame.NextPageButton)
 
 	-- Transmogrify NPC
 	WardrobeFrame:StripTextures()
