@@ -289,7 +289,6 @@ local function PositionTicketButtons()
 	HelpOpenWebTicketButton:ClearAllPoints()
 	HelpOpenWebTicketButton:Point(pos, Minimap, pos, E.db.general.minimap.icons.ticket.xOffset or 0, E.db.general.minimap.icons.ticket.yOffset or 0)
 end
-hooksecurefunc("HelpOpenTicketButton_Move", PositionTicketButtons)
 
 local isResetting
 local function ResetZoom()
