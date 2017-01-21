@@ -319,8 +319,8 @@ local function LoadSkin()
 	
 	WardrobeCollectionFrame.ItemsCollectionFrame:StripTextures()
 
-	-- S:HandleNextPrevButton(WardrobeCollectionFrame.NavigationFrame.PrevPageButton, nil, true)
-	-- S:HandleNextPrevButton(WardrobeCollectionFrame.NavigationFrame.NextPageButton)
+	S:HandleNextPrevButton(WardrobeCollectionFrame.ItemsCollectionFrame.PagingFrame.PrevPageButton, nil, true)
+	S:HandleNextPrevButton(WardrobeCollectionFrame.ItemsCollectionFrame.PagingFrame.NextPageButton)
 
 	-- Transmogrify NPC
 	WardrobeFrame:StripTextures()
