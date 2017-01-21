@@ -53,6 +53,7 @@ local function LoadSkin()
 		b.favorite:SetTexture("Interface\\COMMON\\FavoritesIcon")
 		b.favorite:Point("TOPLEFT",b.DragButton,"TOPLEFT",-8,8)
 		b.favorite:SetSize(32,32)
+		b.selectedTexture:SetColorTexture(1, 1, 1, 0.1)
 	end
 
 	-----------------------------
@@ -91,6 +92,7 @@ local function LoadSkin()
 		S:HandleItemButton(b)
 		b.dragButton.favorite:SetParent(b.backdrop)
 		b.dragButton.ActiveTexture:Kill()
+		b.selectedTexture:SetColorTexture(1, 1, 1, 0.1)
 	end
 
 	local function ColorSelectedPet()
@@ -309,6 +311,15 @@ local function LoadSkin()
 	end)
 	
 	-- Appearances Tab
+	local function SkinTab(tab)
+		S:HandleTab(tab)
+		tab.backdrop:SetTemplate("Default", true)
+		tab.backdrop:SetOutside(nil, 2, 2)
+	end
+	SkinTab(WardrobeCollectionFrame.ItemsTab)
+	SkinTab(WardrobeCollectionFrame.SetsTab)
+
+	--Items
 	WardrobeCollectionFrame.progressBar:StripTextures()
 	WardrobeCollectionFrame.progressBar:CreateBackdrop("Default")
 	WardrobeCollectionFrame.progressBar:SetStatusBarTexture(E.media.normTex)
@@ -316,11 +327,50 @@ local function LoadSkin()
 	S:HandleEditBox(WardrobeCollectionFrameSearchBox)
 	S:HandleButton(WardrobeCollectionFrame.FilterButton)
 	S:HandleDropDownBox(WardrobeCollectionFrameWeaponDropDown)
-	
 	WardrobeCollectionFrame.ItemsCollectionFrame:StripTextures()
-
+	WardrobeCollectionFrame.ItemsCollectionFrame:SetTemplate("Transparent")
 	S:HandleNextPrevButton(WardrobeCollectionFrame.ItemsCollectionFrame.PagingFrame.PrevPageButton, nil, true)
 	S:HandleNextPrevButton(WardrobeCollectionFrame.ItemsCollectionFrame.PagingFrame.NextPageButton)
+
+	--Sets
+	WardrobeCollectionFrame.SetsCollectionFrame:StripTextures()
+	WardrobeCollectionFrame.SetsCollectionFrame:SetTemplate("Transparent")
+	WardrobeCollectionFrame.SetsCollectionFrame.LeftInset:StripTextures()
+	S:HandleButton(WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantSetsButton)
+	S:HandleScrollBar(WardrobeCollectionFrame.SetsCollectionFrame.ScrollFrame.scrollBar)
+
+	--Skin set buttons
+	for i = 1, #WardrobeCollectionFrame.SetsCollectionFrame.ScrollFrame.buttons do
+		local b = WardrobeCollectionFrame.SetsCollectionFrame.ScrollFrame.buttons[i];
+		S:HandleItemButton(b)
+		b.SelectedTexture:SetColorTexture(1, 1, 1, 0.1)
+	end
+
+	--Set quality color on set item buttons
+	local function SetItemQuality(self, itemFrame)
+		if (itemFrame.backdrop) then
+			if (itemFrame.collected) then
+				local r, g, b = itemFrame.IconBorder:GetVertexColor()
+				itemFrame.backdrop:SetBackdropBorderColor(r, g, b)
+			else
+				itemFrame.backdrop:SetBackdropBorderColor(0, 0, 0)
+			end
+		end
+	end
+	hooksecurefunc(WardrobeCollectionFrame.SetsCollectionFrame, "SetItemFrameQuality", SetItemQuality)
+
+	--Skin set item buttons
+	local function SkinSetItemButtons(self)
+		for itemFrame in self.DetailsFrame.itemFramesPool:EnumerateActive() do
+			if (not itemFrame.isSkinned) then
+				S:HandleIcon(itemFrame.Icon, itemFrame)
+				itemFrame.IconBorder:SetAlpha(0)
+				itemFrame.isSkinned = true
+			end
+			SetItemQuality(self, itemFrame)
+		end
+	end
+	hooksecurefunc(WardrobeCollectionFrame.SetsCollectionFrame, "DisplaySet", SkinSetItemButtons)
 
 	-- Transmogrify NPC
 	WardrobeFrame:StripTextures()
@@ -353,6 +403,12 @@ local function LoadSkin()
 	S:HandleButton(WardrobeTransmogFrame.SpecButton)
 	S:HandleButton(WardrobeTransmogFrame.ApplyButton)
 	S:HandleButton(WardrobeTransmogFrame.Model.ClearAllPendingButton)
+	
+	--Transmogrify NPC Sets tab
+	WardrobeCollectionFrame.SetsTransmogFrame:StripTextures()
+	WardrobeCollectionFrame.SetsTransmogFrame:SetTemplate("Transparent")
+	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.NextPageButton)
+	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.PrevPageButton, nil, true)
 	
 	-- Outfit Edit Frame
 	WardrobeOutfitEditFrame:StripTextures()
