@@ -146,7 +146,7 @@ local function Update(self, event, unit)
 	end
 
 	if(hp.PostUpdate) then
-		return hp:PostUpdate(unit, myIncomingHeal, allIncomingHeal, totalAbsorb)
+		return hp:PostUpdate(unit, myIncomingHeal, allIncomingHeal, totalAbsorb, myCurrentHealAbsorb)
 	end
 end
 
