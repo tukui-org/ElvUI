@@ -239,7 +239,6 @@ L["Bar "] = "바 "
 L["BNet Frame"] = "배틀넷 알림"
 L["Boss Button"] = "특수능력 버튼"
 L["Boss Frames"] = "보스 프레임"
-L["Class Bar"] = "직업바 (토템)"
 L["Class Totems"] = true;
 L["Classbar"] = "직업바"
 L["Experience Bar"] = "경험치 바"

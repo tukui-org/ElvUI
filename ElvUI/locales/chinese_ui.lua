@@ -239,7 +239,6 @@ L["Bar "] = "动作条 " --Also in ActionBars
 L["BNet Frame"] = "战网提示资讯"
 L["Boss Button"] = "特殊技能键"
 L["Boss Frames"] = "首领框架"
-L["Class Bar"] = "职业条"
 L["Class Totems"] = true;
 L["Classbar"] = "职业特有条"
 L["Experience Bar"] = "经验条"

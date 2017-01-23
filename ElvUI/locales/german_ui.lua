@@ -239,7 +239,6 @@ L["Bar "] = "Leiste " --Also in ActionBars
 L["BNet Frame"] = "BNet-Fenster"
 L["Boss Button"] = "Boss Button"
 L["Boss Frames"] = "Boss Fenster" --Also used in UnitFrames
-L["Class Bar"] = "Klassenleiste"
 L["Class Totems"] = true;
 L["Classbar"] = "Klassenleiste"
 L["Experience Bar"] = "Erfahrungsleiste"

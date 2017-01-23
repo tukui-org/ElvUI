@@ -239,7 +239,6 @@ L["Bar "] = "Barra "
 L["BNet Frame"] = "Quadro do Bnet"
 L["Boss Button"] = "Botão de Chefe"
 L["Boss Frames"] = "Quadros dos Chefes"
-L["Class Bar"] = true;
 L["Class Totems"] = true;
 L["Classbar"] = "Barra da Classe"
 L["Experience Bar"] = "Barra de Experiência"
