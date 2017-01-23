@@ -240,6 +240,7 @@ L["BNet Frame"] = "Marco BNet"
 L["Boss Button"] = "Botón de Jefe"
 L["Boss Frames"] = "Marco de Jefe"
 L["Class Bar"] = "Barra de Clase";
+L["Class Totems"] = true;
 L["Classbar"] = "Barra de Clase"
 L["Experience Bar"] = "Barra de Experiencia"
 L["Focus Castbar"] = "Barra de Lanzamiento del Foco"

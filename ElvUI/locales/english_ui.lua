@@ -241,6 +241,7 @@ L["BNet Frame"] = true;
 L["Boss Button"] = true;
 L["Boss Frames"] = true; --Also used in UnitFrames
 L["Class Bar"] = true;
+L["Class Totems"] = true;
 L["Classbar"] = true; --Also used in UnitFrames
 L["Experience Bar"] = true;
 L["Focus Castbar"] = true;

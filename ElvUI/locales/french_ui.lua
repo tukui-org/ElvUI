@@ -240,6 +240,7 @@ L["BNet Frame"] = "Cadre BNet"
 L["Boss Button"] = "Bouton du Boss"
 L["Boss Frames"] = "Cadre du Boss" --Also used in UnitFrames
 L["Class Bar"] = "Barre de classe";
+L["Class Totems"] = true;
 L["Classbar"] = "Barre de Classe"
 L["Experience Bar"] = "Barre d'expérience"
 L["Focus Castbar"] = "Barre d'incantation du Focus"

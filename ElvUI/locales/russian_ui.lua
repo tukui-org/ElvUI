@@ -240,6 +240,7 @@ L["BNet Frame"] = "Оповещения BNet"
 L["Boss Button"] = "Кнопка босса"
 L["Boss Frames"] = "Боссы" --Also used in UnitFrames
 L["Class Bar"] = "Классовая полоса"
+L["Class Totems"] = true;
 L["Classbar"] = "Полоса класса"
 L["Experience Bar"] = "Полоса опыта"
 L["Focus Castbar"] = "Полоса заклинаний фокуса"

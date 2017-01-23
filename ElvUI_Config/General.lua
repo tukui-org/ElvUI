@@ -411,14 +411,14 @@ E.Options.args.general = {
 		totems = {
 			order = 6,
 			type = "group",
-			name = L["Class Bar"],
+			name = L["Class Totems"],
 			get = function(info) return E.db.general.totems[ info[#info] ] end,
 			set = function(info, value) E.db.general.totems[ info[#info] ] = value; E:GetModule('Totems'):PositionAndSize() end,
 			args = {
 				header = {
 					order = 1,
 					type = "header",
-					name = L["Class Bar"],
+					name = L["Class Totems"],
 				},
 				enable = {
 					order = 2,

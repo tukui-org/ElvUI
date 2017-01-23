@@ -240,6 +240,7 @@ L["BNet Frame"] = "戰網提示資訊"
 L["Boss Button"] = "特殊技能鍵"
 L["Boss Frames"] = "首領框架" --Also used in UnitFrames
 L["Class Bar"] = "職業條"
+L["Class Totems"] = true;
 L["Classbar"] = "職業特有條"
 L["Experience Bar"] = "經驗條"
 L["Focus Castbar"] = "焦點目標施法條"
