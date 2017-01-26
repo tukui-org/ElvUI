@@ -20,6 +20,7 @@ function UF:Construct_HealComm(frame)
 
 	local healAbsorbBar = CreateFrame('StatusBar', nil, frame.Health)
 	healAbsorbBar:SetStatusBarTexture(E["media"].blankTex)
+	healAbsorbBar:SetReverseFill(true)
 	healAbsorbBar:Hide()
 
 	return {
@@ -74,7 +75,7 @@ function UF:Configure_HealComm(frame)
 	end
 end
 
-local function UpdateFillBar(frame, previousTexture, bar, amount)
+local function UpdateFillBar(frame, previousTexture, bar, amount, inverted)
 	if ( amount == 0 ) then
 		bar:Hide();
 		return previousTexture;
@@ -83,11 +84,21 @@ local function UpdateFillBar(frame, previousTexture, bar, amount)
 	local orientation = frame.Health:GetOrientation()
 	bar:ClearAllPoints()
 	if orientation == 'HORIZONTAL' then
-		bar:Point("TOPLEFT", previousTexture, "TOPRIGHT");
-		bar:Point("BOTTOMLEFT", previousTexture, "BOTTOMRIGHT");
+		if (inverted) then
+			bar:Point("TOPRIGHT", previousTexture, "TOPRIGHT");
+			bar:Point("BOTTOMRIGHT", previousTexture, "BOTTOMRIGHT");
+		else
+			bar:Point("TOPLEFT", previousTexture, "TOPRIGHT");
+			bar:Point("BOTTOMLEFT", previousTexture, "BOTTOMRIGHT");
+		end
 	else
-		bar:Point("BOTTOMRIGHT", previousTexture, "TOPRIGHT");
-		bar:Point("BOTTOMLEFT", previousTexture, "TOPLEFT");
+		if (inverted) then
+			bar:Point("TOPRIGHT", previousTexture, "TOPRIGHT");
+			bar:Point("TOPLEFT", previousTexture, "TOPLEFT");
+		else
+			bar:Point("BOTTOMRIGHT", previousTexture, "TOPRIGHT");
+			bar:Point("BOTTOMLEFT", previousTexture, "TOPLEFT");
+		end
 	end
 
 	local totalWidth, totalHeight = frame.Health:GetSize();
@@ -104,8 +115,8 @@ function UF:UpdateHealComm(unit, myIncomingHeal, allIncomingHeal, totalAbsorb, h
 	local frame = self.parent
 	local previousTexture = frame.Health:GetStatusBarTexture();
 
+	UpdateFillBar(frame, previousTexture, self.healAbsorbBar, healAbsorb, true);
 	previousTexture = UpdateFillBar(frame, previousTexture, self.myBar, myIncomingHeal);
 	previousTexture = UpdateFillBar(frame, previousTexture, self.otherBar, allIncomingHeal);
 	previousTexture = UpdateFillBar(frame, previousTexture, self.absorbBar, totalAbsorb);
-	previousTexture = UpdateFillBar(frame, previousTexture, self.healAbsorbBar, healAbsorb);
 end
