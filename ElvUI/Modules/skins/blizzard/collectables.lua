@@ -325,6 +325,7 @@ local function LoadSkin()
 	WardrobeCollectionFrame.progressBar:SetStatusBarTexture(E.media.normTex)
 	E:RegisterStatusBar(WardrobeCollectionFrame.progressBar)
 	S:HandleEditBox(WardrobeCollectionFrameSearchBox)
+	WardrobeCollectionFrameSearchBox:SetFrameLevel(5)
 	S:HandleButton(WardrobeCollectionFrame.FilterButton)
 	S:HandleDropDownBox(WardrobeCollectionFrameWeaponDropDown)
 	WardrobeCollectionFrame.ItemsCollectionFrame:StripTextures()
@@ -349,11 +350,16 @@ local function LoadSkin()
 	--Set quality color on set item buttons
 	local function SetItemQuality(self, itemFrame)
 		if (itemFrame.backdrop) then
-			if (itemFrame.collected) then
-				local r, g, b = itemFrame.IconBorder:GetVertexColor()
-				itemFrame.backdrop:SetBackdropBorderColor(r, g, b)
-			else
+			local _, _, quality = GetItemInfo(itemFrame.itemID);
+			local alpha = 1
+			if (not itemFrame.collected) then
+				alpha = 0.4
+			end
+			
+			if (not quality or quality < 2) then --Not collected or item is white or grey
 				itemFrame.backdrop:SetBackdropBorderColor(0, 0, 0)
+			else
+				itemFrame.backdrop:SetBackdropBorderColor(ITEM_QUALITY_COLORS[quality].r, ITEM_QUALITY_COLORS[quality].g, ITEM_QUALITY_COLORS[quality].b, alpha)
 			end
 		end
 	end
@@ -364,9 +370,9 @@ local function LoadSkin()
 		for itemFrame in self.DetailsFrame.itemFramesPool:EnumerateActive() do
 			if (not itemFrame.isSkinned) then
 				S:HandleIcon(itemFrame.Icon, itemFrame)
-				itemFrame.IconBorder:SetAlpha(0)
 				itemFrame.isSkinned = true
 			end
+			itemFrame.IconBorder:SetAlpha(0)
 			SetItemQuality(self, itemFrame)
 		end
 	end
