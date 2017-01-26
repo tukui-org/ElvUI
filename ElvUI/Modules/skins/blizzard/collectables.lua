@@ -344,6 +344,8 @@ local function LoadSkin()
 	for i = 1, #WardrobeCollectionFrame.SetsCollectionFrame.ScrollFrame.buttons do
 		local b = WardrobeCollectionFrame.SetsCollectionFrame.ScrollFrame.buttons[i];
 		S:HandleItemButton(b)
+		b.Favorite:SetAtlas("PetJournal-FavoritesIcon", true)
+		b.Favorite:Point("TOPLEFT", b.Icon, "TOPLEFT", -8, 8)
 		b.SelectedTexture:SetColorTexture(1, 1, 1, 0.1)
 	end
 
