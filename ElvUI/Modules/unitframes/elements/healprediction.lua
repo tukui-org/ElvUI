@@ -119,6 +119,12 @@ function UF:UpdateHealComm(unit, myIncomingHeal, allIncomingHeal, totalAbsorb, h
 	local frame = self.parent
 	local previousTexture = frame.Health:GetStatusBarTexture();
 
+	local health, maxHealth = UnitHealth(unit), UnitHealthMax(unit)
+	if (not self.healAbsorbBar.invertDirection and (health + healAbsorb > maxHealth * frame.HealPrediction.maxOverflow)) then
+		healAbsorb = maxHealth * frame.HealPrediction.maxOverflow - health
+		self.healAbsorbBar:SetValue(healAbsorb)
+	end
+
 	previousTexture = UpdateFillBar(frame, previousTexture, self.myBar, myIncomingHeal);
 	previousTexture = UpdateFillBar(frame, previousTexture, self.otherBar, allIncomingHeal);
 	previousTexture = UpdateFillBar(frame, previousTexture, self.absorbBar, totalAbsorb);
