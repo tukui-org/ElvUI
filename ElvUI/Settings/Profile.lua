@@ -860,6 +860,7 @@ P['unitframe'] = {
 			['others'] = {r = 0, g = 1, b = 0, a = 0.25},
 			['absorbs'] = {r = 1, g = 1, b = 0, a = 0.25},
 			['healAbsorbs'] = {r = 1, g = 0, b = 0, a = 0.25},
+			["maxOverflow"] = 0,
 		},
 
 		['classResources'] = {
