@@ -65,7 +65,6 @@ function UF:Configure_HealComm(frame)
 		healPrediction.otherBar:SetStatusBarColor(c.others.r, c.others.g, c.others.b, c.others.a)
 		healPrediction.absorbBar:SetStatusBarColor(c.absorbs.r, c.absorbs.g, c.absorbs.b, c.absorbs.a)
 		healPrediction.healAbsorbBar:SetStatusBarColor(c.healAbsorbs.r, c.healAbsorbs.g, c.healAbsorbs.b, c.healAbsorbs.a)
-		healPrediction.healAbsorbBar.invertDirection = frame.db.healAbsorbsInvertDirection or false
 	
 		healPrediction.maxOverflow = (1 + (c.maxOverflow or 0))
 	else
@@ -84,25 +83,11 @@ local function UpdateFillBar(frame, previousTexture, bar, amount)
 	local orientation = frame.Health:GetOrientation()
 	bar:ClearAllPoints()
 	if orientation == 'HORIZONTAL' then
-		if (bar.invertDirection) then
-			bar:Point("TOPRIGHT", previousTexture, "TOPRIGHT");
-			bar:Point("BOTTOMRIGHT", previousTexture, "BOTTOMRIGHT");
-			bar:SetReverseFill(true)
-		else
-			bar:Point("TOPLEFT", previousTexture, "TOPRIGHT");
-			bar:Point("BOTTOMLEFT", previousTexture, "BOTTOMRIGHT");
-			bar:SetReverseFill(false)
-		end
+		bar:Point("TOPLEFT", previousTexture, "TOPRIGHT");
+		bar:Point("BOTTOMLEFT", previousTexture, "BOTTOMRIGHT");
 	else
-		if (bar.invertDirection) then
-			bar:Point("TOPRIGHT", previousTexture, "TOPRIGHT");
-			bar:Point("TOPLEFT", previousTexture, "TOPLEFT");
-			bar:SetReverseFill(true)
-		else
-			bar:Point("BOTTOMRIGHT", previousTexture, "TOPRIGHT");
-			bar:Point("BOTTOMLEFT", previousTexture, "TOPLEFT");
-			bar:SetReverseFill(false)
-		end
+		bar:Point("BOTTOMRIGHT", previousTexture, "TOPRIGHT");
+		bar:Point("BOTTOMLEFT", previousTexture, "TOPLEFT");
 	end
 
 	local totalWidth, totalHeight = frame.Health:GetSize();
