@@ -1168,6 +1168,10 @@ function UF:Initialize()
 		E.RaidUtility.Initialize = E.noop
 	end
 
+	if (E.private["unitframe"]["disabledBlizzardFrames"].party) then
+		SetCVar("showPartyBackground", 0)
+	end
+
 	if E.private["unitframe"]["disabledBlizzardFrames"].arena then
 		self:SecureHook('UnitFrameThreatIndicator_Initialize')
 
