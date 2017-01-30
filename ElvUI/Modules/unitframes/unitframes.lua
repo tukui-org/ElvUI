@@ -1087,6 +1087,7 @@ function ElvUF:DisableBlizzard(unit)
 				HandleFrame(('PartyMemberFrame%d'):format(i))
 			end
 		end
+		HandleFrame(PartyMemberBackground)
 	elseif(unit:match'(arena)%d?$' == 'arena') and E.private["unitframe"]["disabledBlizzardFrames"].arena then
 		local id = unit:match'arena(%d)'
 
@@ -1166,10 +1167,6 @@ function UF:Initialize()
 
 	if (not E.private["unitframe"]["disabledBlizzardFrames"].party) and (not E.private["unitframe"]["disabledBlizzardFrames"].raid) then
 		E.RaidUtility.Initialize = E.noop
-	end
-
-	if (E.private["unitframe"]["disabledBlizzardFrames"].party) then
-		SetCVar("showPartyBackground", 0)
 	end
 
 	if E.private["unitframe"]["disabledBlizzardFrames"].arena then
