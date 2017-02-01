@@ -334,11 +334,12 @@ local function LoadSkin()
 	S:HandleNextPrevButton(WardrobeCollectionFrame.ItemsCollectionFrame.PagingFrame.NextPageButton)
 
 	--Sets
-	WardrobeCollectionFrame.SetsCollectionFrame:StripTextures()
+	WardrobeCollectionFrame.SetsCollectionFrame.RightInset:StripTextures()
 	WardrobeCollectionFrame.SetsCollectionFrame:SetTemplate("Transparent")
 	WardrobeCollectionFrame.SetsCollectionFrame.LeftInset:StripTextures()
 	S:HandleButton(WardrobeCollectionFrame.SetsCollectionFrame.DetailsFrame.VariantSetsButton)
 	S:HandleScrollBar(WardrobeCollectionFrame.SetsCollectionFrame.ScrollFrame.scrollBar)
+	S:HandleCloseButton(WardrobeCollectionFrame.SetsTabHelpBox.CloseButton)
 
 	--Skin set buttons
 	for i = 1, #WardrobeCollectionFrame.SetsCollectionFrame.ScrollFrame.buttons do
