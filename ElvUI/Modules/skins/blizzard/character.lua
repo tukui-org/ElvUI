@@ -359,6 +359,7 @@ local function LoadSkin()
 	hooksecurefunc("PaperDollFrame_UpdateSidebarTabs", FixSidebarTabCoords)
 
 	--Reputation
+	S:HandleCloseButton(CharacterFrame.ReputationTabHelpBox.CloseButton)
 	local function UpdateFactionSkins()
 		ReputationListScrollFrame:StripTextures()
 		ReputationFrame:StripTextures(true)
