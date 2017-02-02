@@ -197,7 +197,7 @@ Lib.Filters.tipPhrases = {
 		for i = 1, scanner:NumLines() do
 			local text = _G['LibItemSearchTooltipScannerTextLeft' .. i]:GetText()
 			text = CleanString(text)
-			if search == text then
+			if search == text or text:find(search) then
 				matches = true
 				break
 			end
