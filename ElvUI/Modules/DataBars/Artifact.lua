@@ -184,7 +184,10 @@ local function GetAPFromTooltip(itemLink)
 		return apValue
 	end
 
-	if strfind(mod.artifactBar.tooltipLines[apLineIndex]:GetText(), "(%d+)[,.%s](%d+)") then
+	if strfind(mod.artifactBar.tooltipLines[apLineIndex]:GetText(), "(%d+)[,.%s](%d+)[,.%s](%d+)") then
+		apValue = gsub(strmatch(mod.artifactBar.tooltipLines[apLineIndex]:GetText(), "(%d+[,.%s]%d+[,.%s]%d+)"), "[,.%s]", "")
+		apValue = tonumber(apValue)
+	elseif strfind(mod.artifactBar.tooltipLines[apLineIndex]:GetText(), "(%d+)[,.%s](%d+)") then
 		apValue = gsub(strmatch(mod.artifactBar.tooltipLines[apLineIndex]:GetText(), "(%d+[,.%s]%d+)"), "[,.%s]", "")
 		apValue = tonumber(apValue)
 	elseif strfind(mod.artifactBar.tooltipLines[apLineIndex]:GetText(), "%d+") then
