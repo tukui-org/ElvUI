@@ -26,7 +26,12 @@ function mod:UpdateReputation(event)
 
 	local ID
 	local isFriend, friendText, standingLabel
-	local name, reaction, min, max, value = GetWatchedFactionInfo()
+	local name, reaction, min, max, value, factionID = GetWatchedFactionInfo()
+	if (C_Reputation.IsFactionParagon(factionID)) then
+		local currentValue, threshold = C_Reputation.GetFactionParagonInfo(factionID)
+		min, max, value = 0, threshold, currentValue
+	end
+	
 	local numFactions = GetNumFactions();
 
 	if not name or (event == "PLAYER_REGEN_DISABLED" and self.db.reputation.hideInCombat) then
@@ -93,6 +98,10 @@ function mod:ReputationBar_OnEnter()
 	GameTooltip:SetOwner(self, 'ANCHOR_CURSOR', 0, -4)
 
 	local name, reaction, min, max, value, factionID = GetWatchedFactionInfo()
+	if (C_Reputation.IsFactionParagon(factionID)) then
+		local currentValue, threshold = C_Reputation.GetFactionParagonInfo(factionID)
+		min, max, value = 0, threshold, currentValue
+	end
 	local friendID, _, _, _, _, _, friendTextLevel = GetFriendshipReputation(factionID);
 	if name then
 		GameTooltip:AddLine(name)
