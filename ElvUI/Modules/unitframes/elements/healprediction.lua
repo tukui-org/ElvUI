@@ -18,10 +18,16 @@ function UF:Construct_HealComm(frame)
 	absorbBar:SetStatusBarTexture(E["media"].blankTex)
 	absorbBar:Hide()
 
+	local healAbsorbBar = CreateFrame('StatusBar', nil, frame.Health)
+	healAbsorbBar:SetStatusBarTexture(E["media"].blankTex)
+	healAbsorbBar:SetReverseFill(true)
+	healAbsorbBar:Hide()
+
 	return {
 		myBar = mhpb,
 		otherBar = ohpb,
 		absorbBar = absorbBar,
+		healAbsorbBar = healAbsorbBar,
 		maxOverflow = 1,
 		PostUpdate = UF.UpdateHealComm
 	}
@@ -40,10 +46,12 @@ function UF:Configure_HealComm(frame)
 			healPrediction.myBar:SetParent(frame.Health)
 			healPrediction.otherBar:SetParent(frame.Health)
 			healPrediction.absorbBar:SetParent(frame.Health)
+			healPrediction.healAbsorbBar:SetParent(frame.Health)
 		else
 			healPrediction.myBar:SetParent(frame.Portrait.overlay)
 			healPrediction.otherBar:SetParent(frame.Portrait.overlay)
 			healPrediction.absorbBar:SetParent(frame.Portrait.overlay)
+			healPrediction.healAbsorbBar:SetParent(frame.Portrait.overlay)
 		end
 
 		local orientation = frame.db.health and frame.db.health.orientation
@@ -51,11 +59,15 @@ function UF:Configure_HealComm(frame)
 			healPrediction.myBar:SetOrientation(orientation)
 			healPrediction.otherBar:SetOrientation(orientation)
 			healPrediction.absorbBar:SetOrientation(orientation)
+			healPrediction.healAbsorbBar:SetOrientation(orientation)
 		end
 
 		healPrediction.myBar:SetStatusBarColor(c.personal.r, c.personal.g, c.personal.b, c.personal.a)
 		healPrediction.otherBar:SetStatusBarColor(c.others.r, c.others.g, c.others.b, c.others.a)
 		healPrediction.absorbBar:SetStatusBarColor(c.absorbs.r, c.absorbs.g, c.absorbs.b, c.absorbs.a)
+		healPrediction.healAbsorbBar:SetStatusBarColor(c.healAbsorbs.r, c.healAbsorbs.g, c.healAbsorbs.b, c.healAbsorbs.a)
+	
+		healPrediction.maxOverflow = (1 + (c.maxOverflow or 0))
 	else
 		if frame:IsElementEnabled('HealPrediction') then
 			frame:DisableElement('HealPrediction')
@@ -63,7 +75,7 @@ function UF:Configure_HealComm(frame)
 	end
 end
 
-local function UpdateFillBar(frame, previousTexture, bar, amount)
+local function UpdateFillBar(frame, previousTexture, bar, amount, inverted)
 	if ( amount == 0 ) then
 		bar:Hide();
 		return previousTexture;
@@ -72,11 +84,21 @@ local function UpdateFillBar(frame, previousTexture, bar, amount)
 	local orientation = frame.Health:GetOrientation()
 	bar:ClearAllPoints()
 	if orientation == 'HORIZONTAL' then
-		bar:Point("TOPLEFT", previousTexture, "TOPRIGHT");
-		bar:Point("BOTTOMLEFT", previousTexture, "BOTTOMRIGHT");
+		if (inverted) then
+			bar:Point("TOPRIGHT", previousTexture, "TOPRIGHT");
+			bar:Point("BOTTOMRIGHT", previousTexture, "BOTTOMRIGHT");
+		else
+			bar:Point("TOPLEFT", previousTexture, "TOPRIGHT");
+			bar:Point("BOTTOMLEFT", previousTexture, "BOTTOMRIGHT");
+		end
 	else
-		bar:Point("BOTTOMRIGHT", previousTexture, "TOPRIGHT");
-		bar:Point("BOTTOMLEFT", previousTexture, "TOPLEFT");
+		if (inverted) then
+			bar:Point("TOPRIGHT", previousTexture, "TOPRIGHT");
+			bar:Point("TOPLEFT", previousTexture, "TOPLEFT");
+		else
+			bar:Point("BOTTOMRIGHT", previousTexture, "TOPRIGHT");
+			bar:Point("BOTTOMLEFT", previousTexture, "TOPLEFT");
+		end
 	end
 
 	local totalWidth, totalHeight = frame.Health:GetSize();
@@ -89,10 +111,11 @@ local function UpdateFillBar(frame, previousTexture, bar, amount)
 	return bar:GetStatusBarTexture();
 end
 
-function UF:UpdateHealComm(unit, myIncomingHeal, allIncomingHeal, totalAbsorb)
+function UF:UpdateHealComm(unit, myIncomingHeal, allIncomingHeal, totalAbsorb, healAbsorb)
 	local frame = self.parent
 	local previousTexture = frame.Health:GetStatusBarTexture();
 
+	UpdateFillBar(frame, previousTexture, self.healAbsorbBar, healAbsorb, true);
 	previousTexture = UpdateFillBar(frame, previousTexture, self.myBar, myIncomingHeal);
 	previousTexture = UpdateFillBar(frame, previousTexture, self.otherBar, allIncomingHeal);
 	previousTexture = UpdateFillBar(frame, previousTexture, self.absorbBar, totalAbsorb);

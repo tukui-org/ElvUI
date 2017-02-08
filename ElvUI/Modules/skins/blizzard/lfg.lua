@@ -608,6 +608,11 @@ local function LoadSecondarySkin()
 	ChallengesFrameInset:Hide()
 	ChallengesFrameInsetBg:Hide()
 
+	-- Mythic Dungeon Tab
+	ChallengesFrame.GuildBest:StripTextures()
+	ChallengesFrame.GuildBest:CreateBackdrop("Transparent")
+	ChallengesFrame.GuildBest.Line:Hide()
+
 	-- Mythic+ KeyStoneFrame
 	S:HandleCloseButton(ChallengesKeystoneFrame.CloseButton)
 	S:HandleButton(ChallengesKeystoneFrame.StartButton, true)

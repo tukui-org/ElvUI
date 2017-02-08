@@ -858,7 +858,9 @@ P['unitframe'] = {
 		['healPrediction'] = {
 			['personal'] = {r = 0, g = 1, b = 0.5, a = 0.25},
 			['others'] = {r = 0, g = 1, b = 0, a = 0.25},
-			['absorbs'] = {r = 1, g = 1, b = 0, a = 0.25}
+			['absorbs'] = {r = 1, g = 1, b = 0, a = 0.25},
+			['healAbsorbs'] = {r = 1, g = 0, b = 0, a = 0.25},
+			["maxOverflow"] = 0,
 		},
 
 		['classResources'] = {
