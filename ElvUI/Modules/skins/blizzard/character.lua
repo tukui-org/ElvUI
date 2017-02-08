@@ -392,6 +392,25 @@ local function LoadSkin()
 	hooksecurefunc("ExpandFactionHeader", UpdateFactionSkins)
 	hooksecurefunc("CollapseFactionHeader", UpdateFactionSkins)
 
+	--Reputation Paragon Tooltip
+	local tooltip = ReputationParagonTooltip
+	local statusBar = ReputationParagonTooltipStatusBar.Bar
+	local statusBarTexture = ReputationParagonTooltipStatusBarTexture
+	local reward = tooltip.ItemTooltip
+	local icon = reward.Icon
+	tooltip:SetTemplate("Transparent")
+	if icon then
+		S:HandleIcon(icon)
+		reward.IconBorder:SetTexture(nil)
+		reward.IconBorder:SetAlpha(0)
+	end
+	tooltip:HookScript("OnShow", function(self)
+		self:SetTemplate("Transparent")
+	end)
+	statusBar:StripTextures()
+	statusBar:SetStatusBarTexture(E["media"].normTex)
+	statusBar:CreateBackdrop("Transparent")
+
 	--Currency
 	TokenFrame:HookScript("OnShow", function()
 		for i=1, GetCurrencyListSize() do
