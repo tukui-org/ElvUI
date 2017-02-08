@@ -7,6 +7,8 @@ local _G = _G
 local format = format
 
 --WoW API / Variables
+local C_Reputation_GetFactionParagonInfo = C_Reputation.GetFactionParagonInfo
+local C_Reputation_IsFactionParagon = C_Reputation.IsFactionParagon
 local GetFriendshipReputation = GetFriendshipReputation
 local GetWatchedFactionInfo, GetNumFactions, GetFactionInfo = GetWatchedFactionInfo, GetNumFactions, GetFactionInfo
 local InCombatLockdown = InCombatLockdown
@@ -27,8 +29,8 @@ function mod:UpdateReputation(event)
 	local ID
 	local isFriend, friendText, standingLabel
 	local name, reaction, min, max, value, factionID = GetWatchedFactionInfo()
-	if (C_Reputation.IsFactionParagon(factionID)) then
-		local currentValue, threshold = C_Reputation.GetFactionParagonInfo(factionID)
+	if (C_Reputation_IsFactionParagon(factionID)) then
+		local currentValue, threshold = C_Reputation_GetFactionParagonInfo(factionID)
 		min, max, value = 0, threshold, currentValue
 	end
 	
@@ -98,8 +100,8 @@ function mod:ReputationBar_OnEnter()
 	GameTooltip:SetOwner(self, 'ANCHOR_CURSOR', 0, -4)
 
 	local name, reaction, min, max, value, factionID = GetWatchedFactionInfo()
-	if (C_Reputation.IsFactionParagon(factionID)) then
-		local currentValue, threshold = C_Reputation.GetFactionParagonInfo(factionID)
+	if (C_Reputation_IsFactionParagon(factionID)) then
+		local currentValue, threshold = C_Reputation_GetFactionParagonInfo(factionID)
 		min, max, value = 0, threshold, currentValue
 	end
 	local friendID, _, _, _, _, _, friendTextLevel = GetFriendshipReputation(factionID);
