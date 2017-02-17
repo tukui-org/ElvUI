@@ -414,9 +414,10 @@ function E:EnableMover(name)
 	end
 
 	--Make sure we add anchor information from a potential profile switch
-	if E.db["movers"] and E.db["movers"][name] and type(E.db["movers"][name]) == 'string' then
-		self.CreatedMovers[name]["point"] = E.db["movers"][name]
-	end
+	--Commented out, as it created an issue with trying to reset a mover after having used EnableMover on it. Not sure if this code is even needed anymore.
+	-- if E.db["movers"] and E.db["movers"][name] and type(E.db["movers"][name]) == 'string' then
+		-- self.CreatedMovers[name]["point"] = E.db["movers"][name]
+	-- end
 
 	if self.configMode then
 		_G[name]:Show()
