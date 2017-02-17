@@ -507,31 +507,67 @@ local function GetUnitSettings(unit, name)
 			name = L["Enable"],
 			type = "toggle",
 		}
-		group.args.spacer = {
-			order = -14,
-			type = "description",
-			name = ""
-		}
-		group.args.alwaysShow = {
-			order = -13,
-			name = L["Use Static Position"],
-			desc = L["When enabled the nameplate will stay visible in a locked position."],
-			type = "toggle"
-		}
-		group.args.clickthrough = {
-			order = -12,
-			name = L["Click Through"],
-			type = "toggle",
-			set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:TogglePlayerMouse() end,
-			disabled = function() return not E.db.nameplates.units[unit].alwaysShow end,
-		}
-		group.args.combatFade = {
-			order = -11,
-			name = L["Combat Fade"],
-			desc = L["Hide the nameplate unless you are in combat, you are not on full health or have a target you can attack."],
-			type = "toggle",
-			set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:UpdateVisibility() end,
-			disabled = function() return not E.db.nameplates.units[unit].alwaysShow end,
+		group.args.general = {
+			order = 0,
+			type = "group",
+			name = L["General"],
+			args = {
+				useStaticPosition = {
+					order = 1,
+					type = "toggle",
+					name = L["Use Static Position"],
+					desc = L["When enabled the nameplate will stay visible in a locked position."],
+					get = function(info) return E.db.nameplates.units[unit].useStaticPosition end,
+					set = function(info, value) E.db.nameplates.units[unit].useStaticPosition = value; NP:ConfigureAll() end,
+				},
+				clickthrough = {
+					order = 2,
+					type = "toggle",
+					name = L["Click Through"],
+					set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:TogglePlayerMouse() end,
+					disabled = function() return not E.db.nameplates.units[unit].useStaticPosition end,
+				},
+				visibility = {
+					order = 10,
+					type = "group",
+					guiInline = true,
+					name = L["Visibility"],
+					args = {
+						showAlways = {
+							order = 1,
+							type = "toggle",
+							name = L["Always Show"],
+							get = function(info) return E.db.nameplates.units[unit].visibility.showAlways end,
+							set = function(info, value) E.db.nameplates.units[unit].visibility.showAlways = value; NP:ConfigureAll() end,
+						},
+						showInCombat = {
+							order = 2,
+							type = "toggle",
+							name = L["Show In Combat"],
+							get = function(info) return E.db.nameplates.units[unit].visibility.showInCombat end,
+							set = function(info, value) E.db.nameplates.units[unit].visibility.showInCombat = value; NP:ConfigureAll() end,
+							disabled = function() return E.db.nameplates.units[unit].visibility.showAlways end,
+						},
+						showWithTarget = {
+							order = 2,
+							type = "toggle",
+							name = L["Show With Target"],
+							get = function(info) return E.db.nameplates.units[unit].visibility.showWithTarget end,
+							set = function(info, value) E.db.nameplates.units[unit].visibility.showWithTarget = value; NP:ConfigureAll() end,
+							disabled = function() return E.db.nameplates.units[unit].visibility.showAlways end,
+						},
+						hideDelay = {
+							order = 4,
+							type = "range",
+							name = L["Hide Delay"],
+							min = 0, max = 20, step = 0.5,
+							get = function(info) return E.db.nameplates.units[unit].visibility.hideDelay end,
+							set = function(info, value) E.db.nameplates.units[unit].visibility.hideDelay = value; NP:ConfigureAll() end,
+							disabled = function() return E.db.nameplates.units[unit].visibility.showAlways end,
+						},
+					},
+				},
+			},
 		}
 		group.args.healthGroup.args.useClassColor = {
 			order = 4,

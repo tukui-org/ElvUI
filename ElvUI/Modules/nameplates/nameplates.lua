@@ -10,6 +10,7 @@ local format, match = string.format, string.match
 local CreateFrame = CreateFrame
 local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 local C_NamePlate_GetNamePlates = C_NamePlate.GetNamePlates
+local C_Timer_After = C_Timer.After
 local GetArenaOpponentSpec = GetArenaOpponentSpec
 local GetBattlefieldScore = GetBattlefieldScore
 local GetNumArenaOpponentSpecs = GetNumArenaOpponentSpecs
@@ -111,7 +112,7 @@ function mod:PLAYER_ENTERING_WORLD()
 			self.CheckHealerTimer = nil;
 		end
 	end
-	if self.db.units.PLAYER.alwaysShow then
+	if self.db.units.PLAYER.useStaticPosition then
 		mod:UpdateVisibility()
 	end
 end
@@ -189,7 +190,7 @@ function mod:SetFrameScale(frame, scale)
 end
 
 function mod:GetNamePlateForUnit(unit)
-	if(unit == "player" and self.db.units.PLAYER.alwaysShow and self.db.units.PLAYER.enable) then
+	if(unit == "player" and self.db.units.PLAYER.useStaticPosition and self.db.units.PLAYER.enable) then
 		return self.PlayerFrame__
 	else
 		return C_NamePlate_GetNamePlateForUnit(unit)
@@ -270,7 +271,7 @@ function mod:SetTargetFrame(frame)
 	if (self.db.displayStyle == "TARGET" and not frame.isTarget and frame.UnitType ~= "PLAYER") then
 		--Hide if we only allow our target to be displayed and the frame is not our current target and the frame is not the player nameplate
 		frame:Hide()
-	else
+	elseif (frame.UnitType ~= "PLAYER" or not self.db.units.PLAYER.useStaticPosition) then --Visibility for static nameplate is handled in UpdateVisibility
 		frame:Show()
 	end
 end
@@ -380,7 +381,7 @@ function mod:NAME_PLATE_UNIT_ADDED(_, unit, frame)
 	if (self.db.displayStyle == "TARGET" and not frame.UnitFrame.isTarget and frame.UnitFrame.UnitType ~= "PLAYER") then
 		--Hide if we only allow our target to be displayed and the frame is not our current target and the frame is not the player nameplate
 		frame.UnitFrame:Hide()
-	else
+	elseif (frame.UnitType ~= "PLAYER" or not self.db.units.PLAYER.useStaticPosition) then --Visibility for static nameplate is handled in UpdateVisibility
 		frame.UnitFrame:Show()
 	end
 end
@@ -675,7 +676,6 @@ function mod:SetClassNameplateBar(frame)
 end
 
 function mod:UpdateCVars()
-	E:LockCVar("nameplateShowSelf", (self.db.units.PLAYER.alwaysShow == true or self.db.units.PLAYER.enable ~= true) and "0" or "1")
 	E:LockCVar("nameplateMotion", self.db.motionType == "STACKED" and "1" or "0")
 	E:LockCVar("nameplateShowAll", self.db.displayStyle ~= "ALL" and "0" or "1")
 	E:LockCVar("nameplateShowFriendlyMinions", self.db.units.FRIENDLY_PLAYER.minions == true and "1" or "0")
@@ -685,6 +685,13 @@ function mod:UpdateCVars()
 	E:LockCVar("nameplateMaxDistance", self.db.loadDistance)
 	E:LockCVar("nameplateOtherTopInset", self.db.clampToScreen and "0.08" or "-1")
 	E:LockCVar("nameplateOtherBottomInset", self.db.clampToScreen and "0.1" or "-1")
+
+	--Player nameplate
+	E:LockCVar("nameplateShowSelf", (self.db.units.PLAYER.useStaticPosition == true or self.db.units.PLAYER.enable ~= true) and "0" or "1")
+	E:LockCVar("nameplatePersonalShowAlways", (self.db.units.PLAYER.visibility.showAlways == true and "1" or "0"))
+	E:LockCVar("nameplatePersonalShowInCombat", (self.db.units.PLAYER.visibility.showInCombat == true and "1" or "0"))
+	E:LockCVar("nameplatePersonalShowWithTarget", (self.db.units.PLAYER.visibility.showWithTarget == true and "1" or "0"))
+	E:LockCVar("nameplatePersonalHideDelaySeconds", self.db.units.PLAYER.visibility.hideDelay)
 end
 
 local function CopySettings(from, to)
@@ -710,14 +717,14 @@ function mod:CopySettings(from, to)
 end
 
 function mod:TogglePlayerDisplayType()
-	if(self.db.units.PLAYER.enable and self.db.units.PLAYER.alwaysShow) then
+	if(self.db.units.PLAYER.enable and self.db.units.PLAYER.useStaticPosition) then
 		self.PlayerFrame__:Show()
 		RegisterUnitWatch(self.PlayerFrame__)
 		E:EnableMover("PlayerNameplate")
 		self:NAME_PLATE_UNIT_ADDED("NAME_PLATE_UNIT_ADDED", "player", self.PlayerFrame__)
 		self.PlayerNamePlateAnchor:SetParent(self.PlayerFrame__)
 		self.PlayerNamePlateAnchor:SetAllPoints(self.PlayerFrame__.UnitFrame)
-		self.PlayerNamePlateAnchor:Show()
+		self:UpdateVisibility()
 	else
 		UnregisterUnitWatch(self.PlayerFrame__)
 		E:DisableMover("PlayerNameplate")
@@ -750,7 +757,7 @@ function mod:PLAYER_REGEN_DISABLED()
 		SetCVar("nameplateShowEnemies", 0);
 	end
 
-	if self.db.units.PLAYER.alwaysShow then
+	if self.db.units.PLAYER.useStaticPosition then
 		self:UpdateVisibility()
 	end
 end
@@ -770,19 +777,33 @@ function mod:PLAYER_REGEN_ENABLED()
 	self:UpdateVisibility()
 end
 
+local function HidePlayerNamePlate()
+	mod.PlayerFrame__.UnitFrame:Hide()
+	mod.PlayerNamePlateAnchor:Hide()
+end
+
 function mod:UpdateVisibility()
 	local frame = self.PlayerFrame__
-	if self.db.units.PLAYER.alwaysShow then
-		local target, dead = UnitExists("target"), UnitIsDead("target")
-		local combat = UnitAffectingCombat("player")
-		local curHP, maxHP = UnitHealth("player"), UnitHealthMax("player")
-		local CanAttack = UnitCanAttack("player", "target")
-		if self.db.units.PLAYER.combatFade and (curHP ~= maxHP or combat or (target and CanAttack and not dead)) then
+	if self.db.units.PLAYER.useStaticPosition then
+		if (self.db.units.PLAYER.visibility.showAlways) then
 			frame.UnitFrame:Show()
-		elseif not self.db.units.PLAYER.combatFade then
-			frame.UnitFrame:Show()
+			self.PlayerNamePlateAnchor:Show()
 		else
-			frame.UnitFrame:Hide()
+			local curHP, maxHP = UnitHealth("player"), UnitHealthMax("player")
+			local inCombat = UnitAffectingCombat("player")
+			local hasTarget = UnitExists("target")
+			local canAttack = UnitCanAttack("player", "target")
+			
+			if (curHP ~= maxHP) or (self.db.units.PLAYER.visibility.showInCombat and inCombat) or (self.db.units.PLAYER.visibility.showWithTarget and hasTarget and canAttack) then
+				frame.UnitFrame:Show()
+				self.PlayerNamePlateAnchor:Show()
+			elseif frame.UnitFrame:IsShown() then
+				if (self.db.units.PLAYER.visibility.hideDelay > 0) then
+					C_Timer_After(self.db.units.PLAYER.visibility.hideDelay, HidePlayerNamePlate)
+				else
+					HidePlayerNamePlate()
+				end
+			end
 		end
 	else
 		frame.UnitFrame:Hide()

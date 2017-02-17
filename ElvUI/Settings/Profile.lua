@@ -249,9 +249,14 @@ P["nameplates"] = {
 	['units'] = {
 		['PLAYER'] = {
 			['enable'] = false,
-			["alwaysShow"] = false,
+			["useStaticPosition"] = false,
 			["clickthrough"] = false,
-			["combatFade"] = false,
+			["visibility"] = {
+				["showAlways"] = false,
+				["showInCombat"] = true,
+				["showWithTarget"] = false,
+				["hideDelay"] = 3,
+			},
 			['healthbar'] = {
 				['enable'] = true,
 				['height'] = 10,
