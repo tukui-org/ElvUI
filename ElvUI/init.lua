@@ -217,7 +217,7 @@ function AddOn:ToggleConfig(msg)
 	local ACD = LibStub("AceConfigDialog-3.0-ElvUI")
 
 	local pages
-	if (msg ~= "") then
+	if (msg and msg ~= "") then
 		pages = {string.split(",", msg)}
 	end
 	local mode = 'Close'
