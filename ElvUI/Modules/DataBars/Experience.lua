@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('DataBars');
+local LSM = LibStub("LibSharedMedia-3.0")
 
 --Cache global variables
 --Lua functions
@@ -128,7 +129,7 @@ function mod:UpdateExperienceDimensions()
 	self.expBar:Width(self.db.experience.width)
 	self.expBar:Height(self.db.experience.height)
 
-	self.expBar.text:FontTemplate(nil, self.db.experience.textSize)
+	self.expBar.text:FontTemplate(LSM:Fetch("font", self.db.experience.font), self.db.experience.textSize, self.db.experience.fontOutline)
 	self.expBar.rested:SetOrientation(self.db.experience.orientation)
 	self.expBar.statusBar:SetReverseFill(self.db.experience.reverseFill)
 

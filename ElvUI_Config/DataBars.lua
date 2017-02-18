@@ -83,14 +83,31 @@ E.Options.args.databars = {
 					name = L["Height"],
 					min = 5, max = ceil(GetScreenHeight() or 800), step = 1,
 				},
-				textSize = {
+				font = {
 					order = 9,
+					type = "select", dialogControl = "LSM30_Font",
+					name = L["Font"],
+					values = AceGUIWidgetLSMlists.font,
+				},
+				textSize = {
+					order = 10,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},
+				fontOutline = {
+					order = 11,
+					type = "select",
+					name = L["Font Outline"],
+					values = {
+						["NONE"] = L["None"],
+						["OUTLINE"] = "OUTLINE",
+						["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
+						["THICKOUTLINE"] = "THICKOUTLINE",
+					},
+				},
 				textFormat = {
-					order = 10,
+					order = 12,
 					type = 'select',
 					name = L["Text Format"],
 					width = "double",
@@ -143,8 +160,13 @@ E.Options.args.databars = {
 					type = "toggle",
 					name = L["Reverse Fill Direction"],
 				},
-				orientation = {
+				spacer = {
 					order = 5,
+					type = "description",
+					name = " ",
+				},
+				orientation = {
+					order = 6,
 					type = "select",
 					name = L["Statusbar Fill Orientation"],
 					desc = L["Direction the bar moves on gains/losses"],
@@ -165,14 +187,31 @@ E.Options.args.databars = {
 					name = L["Height"],
 					min = 5, max = ceil(GetScreenHeight() or 800), step = 1,
 				},
-				textSize = {
+				font = {
 					order = 9,
+					type = "select", dialogControl = "LSM30_Font",
+					name = L["Font"],
+					values = AceGUIWidgetLSMlists.font,
+				},
+				textSize = {
+					order = 10,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},
+				fontOutline = {
+					order = 11,
+					type = "select",
+					name = L["Font Outline"],
+					values = {
+						["NONE"] = L["None"],
+						["OUTLINE"] = "OUTLINE",
+						["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
+						["THICKOUTLINE"] = "THICKOUTLINE",
+					},
+				},
 				textFormat = {
-					order = 10,
+					order = 12,
 					type = 'select',
 					name = L["Text Format"],
 					width = "double",
@@ -253,14 +292,31 @@ E.Options.args.databars = {
 					name = L["Height"],
 					min = 5, max = ceil(GetScreenHeight() or 800), step = 1,
 				},
-				textSize = {
+				font = {
 					order = 9,
+					type = "select", dialogControl = "LSM30_Font",
+					name = L["Font"],
+					values = AceGUIWidgetLSMlists.font,
+				},
+				textSize = {
+					order = 10,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},
+				fontOutline = {
+					order = 11,
+					type = "select",
+					name = L["Font Outline"],
+					values = {
+						["NONE"] = L["None"],
+						["OUTLINE"] = "OUTLINE",
+						["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
+						["THICKOUTLINE"] = "THICKOUTLINE",
+					},
+				},
 				textFormat = {
-					order = 10,
+					order = 12,
 					type = 'select',
 					name = L["Text Format"],
 					width = "double",
@@ -309,18 +365,18 @@ E.Options.args.databars = {
 					set = function(info, value) mod.db.honor[ info[#info] ] = value; mod:UpdateHonor() end,
 				},
 				hideOutsidePvP = {
-					order = 3,
+					order = 4,
 					type = "toggle",
 					name = L["Hide Outside PvP"],
 					set = function(info, value) mod.db.honor[ info[#info] ] = value; mod:UpdateHonor() end,
 				},
 				reverseFill = {
-					order = 4,
+					order = 5,
 					type = "toggle",
 					name = L["Reverse Fill Direction"],
 				},
 				orientation = {
-					order = 5,
+					order = 6,
 					type = "select",
 					name = L["Statusbar Fill Orientation"],
 					desc = L["Direction the bar moves on gains/losses"],
@@ -330,25 +386,42 @@ E.Options.args.databars = {
 					}
 				},
 				width = {
-					order = 6,
+					order = 7,
 					type = "range",
 					name = L["Width"],
 					min = 5, max = ceil(GetScreenWidth() or 800), step = 1,
 				},
 				height = {
-					order = 7,
+					order = 8,
 					type = "range",
 					name = L["Height"],
 					min = 5, max = ceil(GetScreenHeight() or 800), step = 1,
 				},
+				font = {
+					order = 9,
+					type = "select", dialogControl = "LSM30_Font",
+					name = L["Font"],
+					values = AceGUIWidgetLSMlists.font,
+				},
 				textSize = {
-					order = 8,
+					order = 10,
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
 				},
+				fontOutline = {
+					order = 11,
+					type = "select",
+					name = L["Font Outline"],
+					values = {
+						["NONE"] = L["None"],
+						["OUTLINE"] = "OUTLINE",
+						["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
+						["THICKOUTLINE"] = "THICKOUTLINE",
+					},
+				},
 				textFormat = {
-					order = 9,
+					order = 12,
 					type = 'select',
 					name = L["Text Format"],
 					width = "double",

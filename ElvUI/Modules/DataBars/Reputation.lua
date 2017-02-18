@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('DataBars');
+local LSM = LibStub("LibSharedMedia-3.0")
 
 --Cache global variables
 --Lua functions
@@ -115,7 +116,7 @@ function mod:UpdateReputationDimensions()
 	self.repBar:Height(self.db.reputation.height)
 	self.repBar.statusBar:SetOrientation(self.db.reputation.orientation)
 	self.repBar.statusBar:SetReverseFill(self.db.reputation.reverseFill)
-	self.repBar.text:FontTemplate(nil, self.db.reputation.textSize)
+	self.repBar.text:FontTemplate(LSM:Fetch("font", self.db.reputation.font), self.db.reputation.textSize, self.db.reputation.fontOutline)
 	if self.db.reputation.mouseover then
 		self.repBar:SetAlpha(0)
 	else

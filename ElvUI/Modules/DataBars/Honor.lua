@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('DataBars');
+local LSM = LibStub("LibSharedMedia-3.0")
 
 --Cache global variables
 --Lua functions
@@ -131,7 +132,7 @@ function mod:UpdateHonorDimensions()
 	self.honorBar:Height(self.db.honor.height)
 	self.honorBar.statusBar:SetOrientation(self.db.honor.orientation)
 	self.honorBar.statusBar:SetReverseFill(self.db.honor.reverseFill)
-	self.honorBar.text:FontTemplate(nil, self.db.honor.textSize)
+	self.honorBar.text:FontTemplate(LSM:Fetch("font", self.db.honor.font), self.db.honor.textSize, self.db.honor.fontOutline)
 	if self.db.honor.mouseover then
 		self.honorBar:SetAlpha(0)
 	else
