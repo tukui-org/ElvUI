@@ -245,6 +245,11 @@ P["nameplates"] = {
 
 	["clickableWidth"] = 150,
 	["clickableHeight"] = 50,
+	["clickThrough"] = {
+		["personal"] = false,
+		["friendly"] = false,
+		["enemy"] = false,
+	},
 
 	['units'] = {
 		['PLAYER'] = {

@@ -520,13 +520,6 @@ local function GetUnitSettings(unit, name)
 					get = function(info) return E.db.nameplates.units[unit].useStaticPosition end,
 					set = function(info, value) E.db.nameplates.units[unit].useStaticPosition = value; NP:ConfigureAll() end,
 				},
-				clickthrough = {
-					order = 2,
-					type = "toggle",
-					name = L["Click Through"],
-					set = function(info, value) E.db.nameplates.units[unit][ info[#info] ] = value; NP:TogglePlayerMouse() end,
-					disabled = function() return not E.db.nameplates.units[unit].useStaticPosition end,
-				},
 				visibility = {
 					order = 10,
 					type = "group",
@@ -967,6 +960,33 @@ E.Options.args.nameplate = {
 							desc = L["Controls how big of an area on the screen will accept clicks to target unit."],
 							min = 10, max = 75, step = 1,
 							set = function(info, value) E.db.nameplates.clickableHeight = value; E:StaticPopup_Show("CONFIG_RL") end,
+						},
+						clickThrough = {
+							order = 15,
+							type = "group",
+							guiInline = true,
+							name = L["Click Through"],
+							get = function(info) return E.db.nameplates.clickThrough[ info[#info] ] end,
+							args = {
+								personal = {
+									order = 1,
+									type = "toggle",
+									name = L["Personal"],
+									set = function(info, value) E.db.nameplates.clickThrough.personal = value; NP:SetNamePlateSelfClickThrough() end,
+								},
+								friendly = {
+									order = 2,
+									type = "toggle",
+									name = L["Friendly"],
+									set = function(info, value) E.db.nameplates.clickThrough.friendly = value; NP:SetNamePlateFriendlyClickThrough() end,
+								},
+								enemy = {
+									order = 1,
+									type = "toggle",
+									name = L["Enemy"],
+									set = function(info, value) E.db.nameplates.clickThrough.enemy = value; NP:SetNamePlateEnemyClickThrough() end,
+								},
+							},
 						},
 					},
 					
