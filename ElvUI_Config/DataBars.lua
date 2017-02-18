@@ -93,6 +93,7 @@ E.Options.args.databars = {
 					order = 10,
 					type = 'select',
 					name = L["Text Format"],
+					width = "double",
 					values = {
 						NONE = NONE,
 						PERCENT = L["Percent"],
@@ -101,6 +102,7 @@ E.Options.args.databars = {
 						CURMAX = L["Current - Max"],
 						CURPERC = L["Current - Percent"],
 						CURREM = L["Current - Remaining"],
+						CURPERCREM = L["Current - Percent (Remaining)"],
 					},
 					set = function(info, value) mod.db.experience[ info[#info] ] = value; mod:UpdateExperience() end,
 				},
@@ -151,21 +153,6 @@ E.Options.args.databars = {
 						['VERTICAL'] = L["Vertical"]
 					}
 				},
-				textFormat = {
-					order = 6,
-					type = 'select',
-					name = L["Text Format"],
-					values = {
-						NONE = NONE,
-						CUR = L["Current"],
-						REM = L["Remaining"],
-						PERCENT = L["Percent"],
-						CURMAX = L["Current - Max"],
-						CURPERC = L["Current - Percent"],
-						CURREM = L["Current - Remaining"],						
-					},
-					set = function(info, value) mod.db.reputation[ info[#info] ] = value; mod:UpdateReputation() end,
-				},
 				width = {
 					order = 7,
 					type = "range",
@@ -183,6 +170,23 @@ E.Options.args.databars = {
 					name = L["Font Size"],
 					type = "range",
 					min = 6, max = 22, step = 1,
+				},
+				textFormat = {
+					order = 10,
+					type = 'select',
+					name = L["Text Format"],
+					width = "double",
+					values = {
+						NONE = NONE,
+						CUR = L["Current"],
+						REM = L["Remaining"],
+						PERCENT = L["Percent"],
+						CURMAX = L["Current - Max"],
+						CURPERC = L["Current - Percent"],
+						CURREM = L["Current - Remaining"],
+						CURPERCREM = L["Current - Percent (Remaining)"],
+					},
+					set = function(info, value) mod.db.reputation[ info[#info] ] = value; mod:UpdateReputation() end,
 				},
 			},
 		},
@@ -259,6 +263,7 @@ E.Options.args.databars = {
 					order = 10,
 					type = 'select',
 					name = L["Text Format"],
+					width = "double",
 					values = {
 						NONE = NONE,
 						CUR = L["Current"],
@@ -267,6 +272,7 @@ E.Options.args.databars = {
 						CURMAX = L["Current - Max"],
 						CURPERC = L["Current - Percent"],
 						CURREM = L["Current - Remaining"],
+						CURPERCREM = L["Current - Percent (Remaining)"],
 					},
 					set = function(info, value) mod.db.artifact[ info[#info] ] = value; mod:UpdateArtifact() end,
 				},
@@ -345,6 +351,7 @@ E.Options.args.databars = {
 					order = 9,
 					type = 'select',
 					name = L["Text Format"],
+					width = "double",
 					values = {
 						NONE = NONE,
 						PERCENT = L["Percent"],
@@ -353,6 +360,7 @@ E.Options.args.databars = {
 						CURMAX = L["Current - Max"],
 						CURPERC = L["Current - Percent"],
 						CURREM = L["Current - Remaining"],
+						CURPERCREM = L["Current - Percent (Remaining)"],
 					},
 					set = function(info, value) mod.db.honor[ info[#info] ] = value; mod:UpdateHonor() end,
 				},

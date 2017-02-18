@@ -79,6 +79,8 @@ function mod:UpdateReputation(event)
 			text = format('%s: %s [%s]', name, E:ShortValue((max - min) - (value-min)), isFriend and friendText or standingLabel)
 		elseif textFormat == 'CURREM' then
 			text = format('%s: %s - %s [%s]', name, E:ShortValue(value - min), E:ShortValue((max - min) - (value-min)), isFriend and friendText or standingLabel)
+		elseif textFormat == 'CURPERCREM' then
+			text = format('%s: %s - %d%% (%s) [%s]', name, E:ShortValue(value - min), ((value - min) / (max - min) * 100), E:ShortValue((max - min) - (value-min)), isFriend and friendText or standingLabel)
 		end
 
 		bar.text:SetText(text)

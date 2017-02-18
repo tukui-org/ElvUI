@@ -329,6 +329,7 @@ L["ELVUI_CREDITS"] = "Je voudrais remercier tout spécialement ceux qui m'ont ai
 L["Testing:"] = "Testeurs: "
 
 --DataBars
+L["Current - Percent (Remaining)"] = true;
 L["Current - Remaining"] = true;
 L["DataBars"] = true;
 L["Hide In Combat"] = true;

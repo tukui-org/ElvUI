@@ -70,6 +70,8 @@ function mod:UpdateExperience(event)
 				text = format('%s R:%s', E:ShortValue(max - cur), E:ShortValue(rested))
 			elseif textFormat == 'CURREM' then
 				text = format('%s - %s R:%s', E:ShortValue(cur), E:ShortValue(max - cur), E:ShortValue(rested))
+			elseif textFormat == 'CURPERCREM' then
+				text = format('%s - %d%% (%s) R:%s', E:ShortValue(cur), cur / max * 100, E:ShortValue(max - cur), E:ShortValue(rested))
 			end
 		else
 			bar.rested:SetMinMaxValues(0, 1)
@@ -87,6 +89,8 @@ function mod:UpdateExperience(event)
 				text = format('%s', E:ShortValue(max - cur))
 			elseif textFormat == 'CURREM' then
 				text = format('%s - %s', E:ShortValue(cur), E:ShortValue(max - cur))
+			elseif textFormat == 'CURPERCREM' then
+				text = format('%s - %d%% (%s)', E:ShortValue(cur), cur / max * 100, E:ShortValue(max - cur))
 			end
 		end
 

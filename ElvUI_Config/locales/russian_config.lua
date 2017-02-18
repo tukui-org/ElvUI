@@ -328,6 +328,7 @@ L["ELVUI_CREDITS"] = "Я бы хотел выделить следующих л�
 L["Testing:"] = "Тестирование:"
 
 --DataBars
+L["Current - Percent (Remaining)"] = true;
 L["Current - Remaining"] = "Текущий - Осталось"
 L["DataBars"] = "Инфо-полосы"
 L["Hide In Combat"] = "Скрывать в бою"
